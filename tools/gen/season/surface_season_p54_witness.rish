@@ -24,11 +24,11 @@ assert livetest.ok else "surface-p54: livetest failed"
 assert livetest.out contains "live-five witness" else "surface-p54: livetest banner missing"
 assert livetest.out contains ":quit" else "surface-p54: :quit missing from livetest"
 assert livetest.out contains "GREEN" else "surface-p54: livetest not GREEN"
-assert livetest.out contains "idle · ceiling hand" else "surface-p54: idle/ceiling hand banner missing"
+assert livetest.out contains "ceiling hand" else "surface-p54: ceiling hand banner missing"
 
 let hand = run ["sh" "-c" "grep -qF 'idle · ceiling still' counsel/20260729-140917_surface-season-p54-live-five-type-quit.md && grep -qF 'idle/ceiling hand' counsel/20260729-140917_surface-season-p54-live-five-type-quit.md && echo HAND_OK"]
 assert hand.ok else "surface-p54: idle/ceiling hand seat scan failed"
-assert hand.out contains "HAND_OK" else "surface-p54: idle · ceiling must stay hand"
+assert hand.out contains "HAND_OK" else "surface-p54: p54 counsel must keep dated idle/ceiling hand seat"
 
 say "GREEN: surface-p54 — livetest type · :quit"
-say "GREEN: surface-p54 — idle · ceiling still hand."
+say "GREEN: surface-p54 — dated counsel keeps idle/ceiling hand at p54."

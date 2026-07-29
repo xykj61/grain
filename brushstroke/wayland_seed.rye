@@ -20,13 +20,14 @@
 //!   brushstroke/bin/brushstroke-wayland-seed brush <path.brush>     # present .brush on Wayland
 //!   brushstroke/bin/brushstroke-wayland-seed livetest               # p54 · type · :quit headless
 //!   brushstroke/bin/brushstroke-wayland-seed live                  # p54 · type · :quit hosted
+//!   brushstroke/bin/brushstroke-wayland-seed idletest [ms]         # p56 · pong idle (needs display)
 //!
 //! Requires a running Wayland compositor (`WAYLAND_DISPLAY`) for the default mode,
-//! `brush <path>`, and `live`. `brushtest` and `livetest` are headless.
+//! `brush <path>`, `live`, and `idletest`. `brushtest` and `livetest` are headless.
 //!
 //! Frame tidy (p52): glass `brush.Frame` (= BrushFrame) feeds this host `Frame`
 //! through one named hop — `Frame.from_brush`.
-//! Live-five (p54): type · :quit metal; idle · ceiling stay hand.
+//! Live-five: type · :quit (p54) · idle pong (p56) · ceiling still hand.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -43,6 +44,11 @@ const c = @cImport({
 
 const max_key_actions: u32 = 64;
 const max_prompt_bytes: u32 = 64;
+/// Default automated idle slice — covers a typical compositor ping window (~10s).
+/// Pond's ~1 minute hand ritual stays affirmable via `idletest 60000`.
+const default_idle_ms: u32 = 12_000;
+const idle_step_ms: u32 = 50;
+const max_idle_ms: u32 = 120_000;
 
 pub const KeyAction = union(enum) {
     none,
@@ -291,6 +297,7 @@ const App = struct {
     configured: bool = false,
     frame_done: bool = false,
     should_close: bool = false,
+    ping_count: u32 = 0,
     keyboard_enabled: bool = false,
     keyboard_focused: bool = false,
     key_actions: [max_key_actions]KeyAction = undefined,
@@ -375,7 +382,8 @@ const App = struct {
         wm_base: ?*c.xdg_wm_base,
         serial: u32,
     ) callconv(.c) void {
-        _ = data;
+        const app: *App = @ptrCast(@alignCast(data));
+        app.ping_count += 1;
         c.xdg_wm_base_pong(wm_base, serial);
     }
 
@@ -953,7 +961,7 @@ fn run_brush_present(garden: std.mem.Allocator, io: std.Io, path: []const u8) !u
 }
 
 /// Headless live-five slice: type changes Frame signature; `:quit` exits clean.
-/// Idle · ceiling stay hand (not claimed here).
+/// Idle is hosted (`idletest`); ceiling stays hand.
 fn run_live_five_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     var prompt = Prompt{};
     prompt.apply(.{ .char_ = 'h' });
@@ -986,15 +994,48 @@ fn run_live_five_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     var buf: [176]u8 = undefined;
     const msg = try std.fmt.bufPrint(
         &buf,
-        "live-five witness: type sig={x}->{x} :quit — GREEN (idle · ceiling hand)\n",
+        "live-five witness: type sig={x}->{x} :quit — GREEN (ceiling hand)\n",
         .{ sig_mid, sig_typing },
     );
     try std.Io.File.stdout().writeStreamingAll(io, msg);
     return 0;
 }
 
+/// Hosted idle slice: hold a surface and count xdg_wm_base ping/pong.
+/// Needs WAYLAND_DISPLAY. Ceiling stays hand.
+fn run_idle_witness(garden: std.mem.Allocator, io: std.Io, idle_ms: u32) !u8 {
+    // invariant: idle slice is positive and under the named ceiling
+    assert(idle_ms > 0);
+    assert(idle_ms <= max_idle_ms);
+    const note = "idle · compositor pong";
+    const boot = try live_frame_lines(garden, "", note);
+    var app = try present_value(garden, boot);
+    defer app.display.disconnect();
+    try app.prepare_surface();
+    app.set_window_title("brushstroke idle");
+    app.set_app_id("brushstroke-idle");
+    try app.set_frame(boot);
+
+    var waited: u32 = 0;
+    while (waited < idle_ms and !app.wants_close()) {
+        try app.dispatch_once(@intCast(idle_step_ms));
+        waited += idle_step_ms;
+    }
+    // invariant: compositor pinged at least once while we idled
+    assert(app.ping_count > 0);
+
+    var buf: [160]u8 = undefined;
+    const msg = try std.fmt.bufPrint(
+        &buf,
+        "live-five idle witness: pongs={d} ms={d} — GREEN (ceiling hand)\n",
+        .{ app.ping_count, waited },
+    );
+    try std.Io.File.stdout().writeStreamingAll(io, msg);
+    return 0;
+}
+
 /// Hosted live-five: keyboard into Prompt · Frame redraw · `:quit` exits.
-/// Needs WAYLAND_DISPLAY. Idle · ceiling stay hand.
+/// Needs WAYLAND_DISPLAY. Ceiling stays hand after p56 idle.
 fn run_live(garden: std.mem.Allocator, io: std.Io) !u8 {
     var note: []const u8 = "type in window · :quit exits";
     const boot = try live_frame_lines(garden, "", note);
@@ -1009,7 +1050,7 @@ fn run_live(garden: std.mem.Allocator, io: std.Io) !u8 {
     var prompt = Prompt{};
     try std.Io.File.stdout().writeStreamingAll(
         io,
-        "brushstroke live — type in the window; :quit exits. idle · ceiling still hand.\n",
+        "brushstroke live — type in the window; :quit exits. ceiling still hand.\n",
     );
 
     while (!app.wants_close()) {
@@ -1025,7 +1066,7 @@ fn run_live(garden: std.mem.Allocator, io: std.Io) !u8 {
                         if (is_quit_line(line)) {
                             try std.Io.File.stdout().writeStreamingAll(
                                 io,
-                                "GREEN: brushstroke live — type · :quit (idle · ceiling hand)\n",
+                                "GREEN: brushstroke live — type · :quit (ceiling hand)\n",
                             );
                             return 0;
                         }
@@ -1050,7 +1091,7 @@ fn run_live(garden: std.mem.Allocator, io: std.Io) !u8 {
     }
     try std.Io.File.stdout().writeStreamingAll(
         io,
-        "GREEN: brushstroke live — window close (idle · ceiling hand)\n",
+        "GREEN: brushstroke live — window close (ceiling hand)\n",
     );
     return 0;
 }
@@ -1116,6 +1157,14 @@ pub fn main(init: std.process.Init) !u8 {
     }
     if (args.len >= 2 and std.mem.eql(u8, args[1], "livetest")) {
         return run_live_five_witness(garden, io);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "idletest")) {
+        var idle_ms: u32 = default_idle_ms;
+        if (args.len >= 3) {
+            idle_ms = std.fmt.parseInt(u32, args[2], 10) catch default_idle_ms;
+            if (idle_ms == 0 or idle_ms > max_idle_ms) idle_ms = default_idle_ms;
+        }
+        return run_idle_witness(garden, io, idle_ms);
     }
     if (args.len >= 2 and std.mem.eql(u8, args[1], "live")) {
         return run_live(garden, io);

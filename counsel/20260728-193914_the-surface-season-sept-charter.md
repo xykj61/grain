@@ -8,7 +8,8 @@
 **Informal tag:** nest-7 · MUR is nest **three** (not “innermost” as living depth)  
 **Ground:** origin/main `d3e208613a` (pre-send) · Shape **B** seated from [s8 eval](20260728-193058_generator-season-s8-pond-gui-season-evaluation.md)  
 **Within:** paused **sext** Generator (s8 complete / s9 next) · paused MUR (**three**) · paused Inner · paused Constellation  
-**Status:** **OPEN** · p0–p55 complete · bookmark **p55 complete / p56 next** · Identity Remake handed back `20260729.162032`  
+**Status:** **OPEN** · p0–p56 complete · bookmark **p56 complete / p57 next** · Identity Remake handed back `20260729.162032`  
+Radiant pass `20260729.162549` — p56 live-five idle pong · ceiling hand  
 Radiant pass `20260729.162232` — p55 check-in · recommend idle  
 Radiant pass `20260729.162032` — return_surface_p55 · Identity Remake PAUSED · Surface finishing edge  
 Radiant pass `20260729.141658` — Surface PAUSED · Identity Remake k0 · Codeberg retired  
@@ -123,8 +124,8 @@ Keaton's word this stamp: *seat all recommendations in the order you best recomm
 | Bow · seats | **p0** | Charter · ordered recommendations · `src/sec` · Generator pause |
 | Prep spine | **p1–p3** | One thin `tools/gen/<family>/` · Glow choir hygiene pin · first vegan-dogfood in `src/` |
 | Surface study | **p4–p8** | River/Zig ledger · Wayland connector · Pond frame · DAG paper |
-| Constructive waves | **p9–p55** | Pond GUI · Brushstroke/`.brush` · graph redraw as named |
-| Harden · residual | **p56–p61** | Choir · living pins · residual clear |
+| Constructive waves | **p9–p56** | Pond GUI · Brushstroke/`.brush` · graph redraw as named · live-five through idle |
+| Harden · residual | **p57–p61** | Ceiling · choir · living pins · residual clear |
 | Horizon · close | **p62–p63** | **Warn×2** · seat `extend_or_return` |
 
 ## Hard lines

@@ -1,0 +1,43 @@
+# tools/gen/season/surface_season_p56_witness.rish — live-five idle pong.
+#
+#   rishi/bin/rishi run tools/gen/season/surface_season_p56_witness.rish
+#
+# Needs WAYLAND_DISPLAY for idletest. Ceiling stays hand.
+
+say "surface-p56: Language EN — live-five idle pong opens."
+say "surface-p56: Style Radiant — hosted idletest; refuse ceiling claim."
+say "surface-p56: Lens TAME — Surface Season p56."
+
+let counsel = run ["test" "-f" "counsel/20260729-162549_surface-season-p56-live-five-idle.md"]
+assert counsel.ok else "surface-p56: p56 counsel missing"
+
+let metal = run ["sh" "-c" "grep -q 'fn run_idle_witness' brushstroke/wayland_seed.rye && grep -q 'ping_count' brushstroke/wayland_seed.rye && grep -q 'idletest' brushstroke/wayland_seed.rye && echo METAL_OK"]
+assert metal.ok else "surface-p56: idle metal scan failed"
+assert metal.out contains "METAL_OK" else "surface-p56: idle metal missing"
+
+let seed_bin = "brushstroke/bin/brushstroke-wayland-seed"
+let have = run ["test" "-x" seed_bin]
+assert have.ok else "surface-p56: build wayland_seed first — see p56 counsel"
+
+let display = run ["sh" "-c" "test -n \"$WAYLAND_DISPLAY\" && echo DISPLAY_OK"]
+assert display.ok else "surface-p56: WAYLAND_DISPLAY required for idletest"
+assert display.out contains "DISPLAY_OK" else "surface-p56: WAYLAND_DISPLAY empty"
+
+let livetest = run ["sh" "-c" "${seed_bin} livetest 2>&1"]
+assert livetest.ok else "surface-p56: livetest failed"
+assert livetest.out contains "GREEN" else "surface-p56: livetest not GREEN"
+assert livetest.out contains "ceiling hand" else "surface-p56: ceiling hand banner missing"
+
+let idletest = run ["sh" "-c" "${seed_bin} idletest 2>&1"]
+assert idletest.ok else "surface-p56: idletest failed"
+assert idletest.out contains "live-five idle witness" else "surface-p56: idle banner missing"
+assert idletest.out contains "pongs=" else "surface-p56: pong count missing"
+assert idletest.out contains "GREEN" else "surface-p56: idletest not GREEN"
+assert idletest.out contains "ceiling hand" else "surface-p56: ceiling must stay hand on idle GREEN"
+
+let hand = run ["sh" "-c" "grep -qF 'ceiling still **hand**' counsel/20260729-162549_surface-season-p56-live-five-idle.md && grep -qF 'No ceiling invent' counsel/20260729-162549_surface-season-p56-live-five-idle.md && echo HAND_OK"]
+assert hand.ok else "surface-p56: ceiling hand seat scan failed"
+assert hand.out contains "HAND_OK" else "surface-p56: ceiling must stay hand"
+
+say "GREEN: surface-p56 — idletest pong · livetest still GREEN"
+say "GREEN: surface-p56 — ceiling still hand."
