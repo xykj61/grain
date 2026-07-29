@@ -1,0 +1,24 @@
+# tools/gen/season/surface_season_p54_witness.rish — waits word hold.
+#
+#   rishi/bin/rishi run tools/gen/season/surface_season_p54_witness.rish
+
+say "surface-p54: Language EN — waits word after p53."
+say "surface-p54: Style Radiant — report hold; refuse re-press."
+say "surface-p54: Lens TAME — Surface Season p54."
+
+let counsel = run ["test" "-f" "counsel/20260729-140523_surface-season-p54-waits-word.md"]
+assert counsel.ok else "surface-p54: p54 counsel missing"
+
+let hold = run ["sh" "-c" "grep -q 'HOLD' counsel/20260729-140523_surface-season-p54-waits-word.md && grep -q 'no re-press' counsel/20260729-140523_surface-season-p54-waits-word.md && grep -q 'p53 still stands' counsel/20260729-140523_surface-season-p54-waits-word.md && echo HOLD_OK"]
+assert hold.ok else "surface-p54: hold scan failed"
+assert hold.out contains "HOLD_OK" else "surface-p54: hold pins missing"
+
+let empty = run ["sh" "-c" "grep -q 'Ungated invent' counsel/20260729-140523_surface-season-p54-waits-word.md && grep -q 'empty' counsel/20260729-140523_surface-season-p54-waits-word.md && echo EMPTY_OK"]
+assert empty.ok else "surface-p54: empty-queue scan failed"
+assert empty.out contains "EMPTY_OK" else "surface-p54: ungated invent must read empty"
+
+let prior = run ["test" "-f" "counsel/20260729-140251_surface-season-p53-check-in-next-lean.md"]
+assert prior.ok else "surface-p54: prior p53 counsel missing"
+
+say "GREEN: surface-p54 — waits word · prior p53 stands"
+say "GREEN: surface-p54 — no invent · no re-press this stamp."
