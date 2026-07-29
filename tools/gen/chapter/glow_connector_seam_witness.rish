@@ -36,6 +36,8 @@ let desk3h = run ["test" "-f" "src/sur/shape-brush-parse-error-count.glow"]
 assert desk3h.ok else "glow-connector: hop1 sur brush-parse-error-count pedestal missing"
 let desk3i = run ["test" "-f" "src/sur/shape-brush-surface-field-count.glow"]
 assert desk3i.ok else "glow-connector: hop1 sur brush-surface-field-count pedestal missing"
+let desk3j = run ["test" "-f" "src/sur/shape-brush-frame-field-count.glow"]
+assert desk3j.ok else "glow-connector: hop1 sur brush-frame-field-count pedestal missing"
 let desk4 = run ["test" "-f" "src/til/tilak-root-count.glow"]
 assert desk4.ok else "glow-connector: hop1 til pedestal missing"
 let desk4b = run ["test" "-f" "src/til/shape-manifest-field-count.glow"]
