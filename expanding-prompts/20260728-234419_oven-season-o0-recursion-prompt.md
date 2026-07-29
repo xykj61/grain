@@ -1,6 +1,6 @@
 # Kiln Chapter — Recursion Prompt (printout · eight scopes · o0)
 
-**Stamp:** `20260728.234419`  
+**Stamp:** `20260728.234419` · Radiant pass `20260728.235520` (o1 path cut)  
 **Use:** paste the fenced block as the next counsel/bench session opener.  
 **Prior printout:** [`20260728-233053_surface-season-p37-recursion-prompt.md`](20260728-233053_surface-season-p37-recursion-prompt.md) (Surface-era; sept now paused).
 
@@ -33,13 +33,13 @@ CORE · QUINT (CLOSED — handed back — do not advance g/q-rounds):
 
 SEXT SCOPE (paused — do not advance s-rounds):
   Generator Chapter PAUSED at s8 complete / s9 next.
-  Homes LIVE: tools/gen/chapter/ · fund/ · amphora/ · anvil/ (path rename is oct work).
+  Homes LIVE: tools/gen/chapter/ · fund/ · amphora/ · kiln/ (path cut o1).
   Handback lean when Generator resumes: return_mur_u92.
   Charter: counsel/20260728-183510_the-generator-season-sext-charter.md
 
 SEPT SCOPE (paused — do not advance p-rounds):
   Surface Chapter PAUSED at p38 complete / p39 next.
-  Last seat: path-breach survey (anvil/ → kiln/ sized · not cut).
+  Last Surface seat: path-breach survey (cut ran under Kiln o1).
   Handback lean when Surface resumes: return_generator_s9.
   Charter: counsel/20260728-193914_the-surface-season-sept-charter.md
   Survey: counsel/20260728-233638_surface-season-p38-anvil-path-breach-survey.md
@@ -47,27 +47,24 @@ SEPT SCOPE (paused — do not advance p-rounds):
     Realidream · wafer · shred-prep · invent HELD · src/web REFUSED · live-five hand.
 
 OCT SCOPE (OPEN — walk here):
-  Kiln Chapter OPEN · o0 complete / o1 next.
-  Working lean: forge path anvil/ → kiln/ · corpus · Skate views · peal · Kiln faculty.
+  Kiln Chapter OPEN · o1 complete / o2 next.
+  Working lean: kiln/ LIVE · corpus · Skate views · peal · Kiln faculty tidy.
   Handback lean: return_surface_p39.
   Charter: counsel/20260728-234419_the-kiln-season-oct-charter.md
-  Seat: counsel/20260728-234419_oven-season-o0-bow-surface-paused.md
+  Seat: counsel/20260728-235520_oven-season-o1-path-cut.md
   Recursion: expanding-prompts/20260728-234419_oven-season-o0-recursion-prompt.md
-  Target path: kiln/ (Brickoven only if reseated).
-  Cut waits word: cut kiln path / approve breach.
-  Heavy doors (from survey): anvil/ module · tools/gen/anvil/ · 14 inference_anvil_* ·
-    drawn_terminal.rye · parity · .gitignore · peal · oven_seat_witness flip.
+  Path: kiln/ · anvil/ gone · accrete shims at old tools/anvil_* · inference_anvil_*.
   Hold out: [debrided] Anvil (retired) tribute · Class H fossils · shred RED.
 
 HARD LINES:
   No shred · no deploy · no wallet/gas/keys · no silent whole-tree sed ·
   no m/i/u/g/q/s/p advance while oct walks · no LoRA invent as early rungs ·
-  survey ≠ cut · tribute kept.
+  tribute kept.
 
-NEXT (o1):
-  cut kiln path (approve breach) — or check-in if a seam asks before the cut.
+NEXT (o2):
+  Kiln metal tidy residual — or check-in if a seam asks.
 
-Bench: prin scope · anvil_path_breach_survey_witness · oven_seat_witness ·
-  sundial · corpus lap1 after cut · one Skate view after cut · parity smoke after cut.
+Bench: prin scope · oven_season_o1_witness · oven_seat_witness ·
+  anvil_path_breach_survey_witness · oven_corpus_lap1 · inference_oven_corpus_view · sundial.
 ] ]
 ```

@@ -1,4 +1,4 @@
-# tools/anvil_corpus_lap4.rish — accrete shim → tools/gen/kiln/oven_corpus_lap4.rish (Kiln Chapter o1)
+# tools/oven_corpus_lap4.rish — shim → tools/gen/kiln/oven_corpus_lap4.rish (Kiln Chapter o1)
 if length args == 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/kiln/oven_corpus_lap4.rish"]
 if length args != 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/kiln/oven_corpus_lap4.rish" args[0]]
 if r.out != "" then say r.out

@@ -13,17 +13,17 @@ assert bow.ok else "kiln-season-o0: o0 bow missing"
 let prompt = run ["test" "-f" "expanding-prompts/20260728-234419_oven-season-o0-recursion-prompt.md"]
 assert prompt.ok else "kiln-season-o0: recursion printout missing"
 
-let pins = run ["sh" "-c" "grep -q 'PAUSED' counsel/20260728-234419_the-kiln-season-oct-charter.md && grep -q 'return_surface_p39' counsel/20260728-234419_the-kiln-season-oct-charter.md && grep -q 'o0 complete' counsel/20260728-234419_the-kiln-season-oct-charter.md && grep -q 'oct' context/LEXICON.md && grep -q 'The Kiln Chapter' context/LEXICON.md && echo O0_OK"]
+let pins = run ["sh" "-c" "grep -q 'PAUSED' counsel/20260728-234419_the-kiln-season-oct-charter.md && grep -q 'return_surface_p39' counsel/20260728-234419_the-kiln-season-oct-charter.md && grep -q 'o0' counsel/20260728-234419_the-kiln-season-oct-charter.md && grep -q 'oct' context/LEXICON.md && grep -q 'The Kiln Chapter' context/LEXICON.md && echo O0_OK"]
 assert pins.ok else "kiln-season-o0: seat pin scan failed"
 assert pins.out contains "O0_OK" else "kiln-season-o0: oct lexicon or handback not seated"
 
-let held = run ["sh" "-c" "test -d anvil && echo ANVIL_HELD"]
-assert held.ok else "kiln-season-o0: anvil/ must still exist at o0"
-assert held.out contains "ANVIL_HELD" else "kiln-season-o0: do not cut at o0"
+let held = run ["sh" "-c" "test -d kiln && echo OVEN_LIVE"]
+assert held.ok else "kiln-season-o0: kiln/ must exist after o1 (o0 charter still seated)"
+assert held.out contains "OVEN_LIVE" else "kiln-season-o0: path cut may already be landed"
 
 let scope = run ["sh" "-c" "grep -q 'oct:   Kiln Chapter — OPEN' tools/gen/chapter/prin_scope.rish && grep -q 'sept:   Surface Chapter — PAUSED' tools/gen/chapter/prin_scope.rish && echo SCOPE_OK"]
 assert scope.ok else "kiln-season-o0: prin_scope pin scan failed"
 assert scope.out contains "SCOPE_OK" else "kiln-season-o0: prin_scope not eight-nest"
 
-say "GREEN: kiln-season-o0 — oct OPEN · Surface PAUSED · anvil/ held · Kiln Chapter"
-say "GREEN: kiln-season-o0 — cut waits o1 word."
+say "GREEN: kiln-season-o0 — oct OPEN · Surface PAUSED · kiln/ LIVE · Kiln Chapter"
+say "GREEN: kiln-season-o0 — o0 charter seated."

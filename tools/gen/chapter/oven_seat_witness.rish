@@ -4,7 +4,7 @@
 
 say "kiln-seat: Language EN — Kiln living forge; Anvil tribute held."
 say "kiln-seat: Style Radiant — bread not blades."
-say "kiln-seat: Lens TAME — Surface Chapter p36."
+say "kiln-seat: Lens TAME — Kiln Chapter o1."
 
 let seat = run ["test" "-f" "counsel/20260728-232511_surface-season-p36-kiln-seated.md"]
 assert seat.ok else "kiln-seat: p36 counsel missing"
@@ -19,8 +19,8 @@ assert kiln.out contains "OVEN_OK" else "kiln-seat: Kiln section missing"
 let lex = run ["sh" "-c" "grep -q 'Living name for the local forge' context/LEXICON.md && grep -q 'Retired living forge name' context/LEXICON.md && grep -q 'Kiln was Anvil' context/LEXICON.md && echo LEX_OK"]
 assert lex.ok else "kiln-seat: lexicon scan failed"
 assert lex.out contains "LEX_OK" else "kiln-seat: Kiln · Anvil rename-forward missing"
-let held = run ["sh" "-c" "test -d anvil && echo PATH_HELD"]
-assert held.ok else "kiln-seat: anvil/ directory should still exist (path breach held)"
-assert held.out contains "PATH_HELD" else "kiln-seat: do not remove anvil/ this seat"
+let held = run ["sh" "-c" "test -d kiln && test ! -d anvil && echo PATH_OVEN"]
+assert held.ok else "kiln-seat: kiln/ directory should exist after o1 cut"
+assert held.out contains "PATH_OVEN" else "kiln-seat: anvil/ must be gone after o1 cut"
 
-say "GREEN: kiln-seat — Kiln living · Anvil fossils · lexicon · anvil/ path held · Surface p36"
+say "GREEN: kiln-seat — Kiln living · Anvil fossils · lexicon · kiln/ path LIVE · Kiln Chapter o1"

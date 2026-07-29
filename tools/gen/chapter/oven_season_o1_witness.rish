@@ -1,0 +1,24 @@
+# tools/gen/chapter/oven_season_o1_witness.rish — Kiln Chapter o1 path cut.
+#
+#   rishi/bin/rishi run tools/gen/chapter/oven_season_o1_witness.rish
+
+say "kiln-season-o1: Language EN — cut the forge path."
+say "kiln-season-o1: Style Radiant — prove kiln/; refuse anvil/ ghost."
+say "kiln-season-o1: Lens TAME — Kiln Chapter o1."
+
+let counsel = run ["test" "-f" "counsel/20260728-235520_oven-season-o1-path-cut.md"]
+assert counsel.ok else "kiln-season-o1: o1 counsel missing"
+
+let cut = run ["sh" "-c" "test -d kiln && test -f kiln/oven_core.rye && test -f kiln/kiln.rye && test -f kiln/kiln.peal && test ! -d anvil && echo CUT_OK"]
+assert cut.ok else "kiln-season-o1: path cut incomplete"
+assert cut.out contains "CUT_OK" else "kiln-season-o1: kiln/ not LIVE"
+
+let gen = run ["test" "-f" "tools/gen/kiln/oven_corpus_lap1.rish"]
+assert gen.ok else "kiln-season-o1: gen kiln lap1 missing"
+let view = run ["test" "-f" "tools/inference_oven_corpus_view.rish"]
+assert view.ok else "kiln-season-o1: inference kiln view missing"
+let shim = run ["test" "-f" "tools/anvil_corpus_lap1.rish"]
+assert shim.ok else "kiln-season-o1: anvil accrete shim missing"
+
+say "GREEN: kiln-season-o1 — kiln/ LIVE · anvil/ gone · shims kept · Kiln Chapter"
+say "GREEN: kiln-season-o1 — path cut seated."
