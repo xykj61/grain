@@ -8,7 +8,8 @@
 **Informal tag:** nest-7 · MUR is nest **three** (not “innermost” as living depth)  
 **Ground:** origin/main `d3e208613a` (pre-send) · Shape **B** seated from [s8 eval](20260728-193058_generator-season-s8-pond-gui-season-evaluation.md)  
 **Within:** paused **sext** Generator (s8 complete / s9 next) · paused MUR (**three**) · paused Inner · paused Constellation  
-**Status:** **OPEN** · p0–p57 complete · bookmark **p57 complete / p58 next** · Identity Remake handed back `20260729.162032`  
+**Status:** **OPEN** · p0–p58 complete · bookmark **p58 complete / p59 next** · Identity Remake handed back `20260729.162032`  
+Radiant pass `20260729.164636` — p58 check-in · recommend handback  
 Radiant pass `20260729.163034` — p57 live-five ceiling · limbs complete  
 Radiant pass `20260729.162549` — p56 live-five idle pong · ceiling hand  
 Radiant pass `20260729.162232` — p55 check-in · recommend idle  
