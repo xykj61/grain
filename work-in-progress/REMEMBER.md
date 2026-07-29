@@ -6,14 +6,14 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260728.201349` (EDT) · voice Quin  
+**Last refreshed:** `20260728.201630` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin** · **sundial**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss** · **first resident** (routine) · **vegan-dogfood** (easter egg)  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes**  
-**Git nib:** `94be754065` · Grain · **Surface** p10 · sur first resident · autoproject96/grain
-**Bookmark:** [`counsel/20260728-201349_surface-season-p10-sur-first-resident.md`](../counsel/20260728-201349_surface-season-p10-sur-first-resident.md)
+**Git nib:** `6235b50c65` · Grain · **Surface** p11 · til first resident · autoproject96/grain
+**Bookmark:** [`counsel/20260728-201630_surface-season-p11-til-first-resident.md`](../counsel/20260728-201630_surface-season-p11-til-first-resident.md)
 
-**Season:** Framework · EDT · **Grain** · **finishing edge:** **sept Surface** — p10 sur pedestal · Generator **PAUSED** s8/s9 · MUR **PAUSED** u91/u92 · shred RED · Geode PREP · OS horizon PARK · F undisturbed. Prefer **git nib**. · `prin scope`
+**Season:** Framework · EDT · **Grain** · **finishing edge:** **sept Surface** — p11 til pedestal · Generator **PAUSED** s8/s9 · MUR **PAUSED** u91/u92 · shred RED · Geode PREP · OS horizon PARK · F undisturbed. Prefer **git nib**. · `prin scope`
 
 ---
 
@@ -52,7 +52,7 @@ WOV retirement stays **roadmap last**. No live deploy · wallet · gas · privat
 
 | Door | Kind |
 |------|------|
-| **Surface Season p11+** | **OPEN** · til first resident · .brush · or more sur |
+| **Surface Season p12+** | **OPEN** · .brush fixture · app resident · or more pedestals |
 | **Generator Season** | **PAUSED** s8/s9 · resume on Surface handback |
 | **Glow prep spine** | p1–p3 charted · vegan-dogfood before surface invent |
 | **MUR↔WOV unify design** | **0–5 GREEN** · dual-accept/retire held · MUR paused |

@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.201630` — [Surface Season p11 til first resident](20260728-201630_surface-season-p11-til-first-resident.bron) — tilak roots · %tile held · p12 next
 - `20260728.201349` — [Surface Season p10 sur first resident](20260728-201349_surface-season-p10-sur-first-resident.bron) — placard pedestal · p11 next
 - `20260728.200807` — [Surface Season p9 first resident seated](20260728-200807_surface-season-p9-first-resident-seated.bron) — lexicon · inc desk · p10 next
 - `20260728.200431` — [Surface Season p9 vocab vegan-dogfood easter egg](20260728-200431_surface-season-p9-vocab-vegan-dogfood-easter-egg.bron) — slate · routine term awaits

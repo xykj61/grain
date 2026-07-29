@@ -1,0 +1,13 @@
+::  name       tilak root count
+::  shape      roots - int (@u32)
+::  invariant  always two hardcoded engine roots: plain-bytes and manifest
+::  example    2
+::  readers    Pond · Amphora · Weave · Surface first resident
+::  nib        surface-p11-v0
+::
+::  Surface Season p11 — first resident in src/til.
+::  Names the two Tilak roots from the marked-value brief; does not seat %tile
+::  (held for Keaton). Thin +$ / $: one-field shape so the room opens honestly.
++$  tilak-root-count-shape
+  $:  roots=@u32
+  ==

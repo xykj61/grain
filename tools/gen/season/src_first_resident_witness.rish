@@ -7,7 +7,7 @@
 
 say "first-resident: Language EN — Glow desks that live in src/."
 say "first-resident: Style Radiant — prove the desks; refuse shred."
-say "first-resident: Lens TAME — Surface Season p10."
+say "first-resident: Lens TAME — Surface Season p11."
 
 let zig = "vendor/zig-toolchain/zig"
 
@@ -41,5 +41,19 @@ let sgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" sdesk]
 assert sgate.ok else "first-resident: sur shape lower/build/run failed"
 assert sgate.out contains "EXIT:0" else "first-resident: sur shape did not exit 0"
 
-say "GREEN: first-resident — lib double · lib inc · sur count · Surface p10"
+say "first-resident: til tilak-root-count..."
+let tdesk = "src/til/tilak-root-count.glow"
+let tplacard = run ["sh" "-c" "head -n 7 src/til/tilak-root-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert tplacard.ok else "first-resident: til placard scan failed"
+let tcount = trim tplacard.out
+assert tcount == "6" else "first-resident: til placard missing six lines"
+let troots = run ["sh" "-c" "grep -q 'plain-bytes' src/til/tilak-root-count.glow && grep -q 'manifest' src/til/tilak-root-count.glow && grep -q '%tile' src/til/tilak-root-count.glow && echo ROOTS_OK"]
+assert troots.ok else "first-resident: til roots/%tile notes missing"
+assert troots.out contains "ROOTS_OK" else "first-resident: til roots not named"
+let tgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" tdesk]
+assert tgate.ok else "first-resident: til shape lower/build/run failed"
+assert tgate.out contains "EXIT:0" else "first-resident: til shape did not exit 0"
+
+say "GREEN: first-resident — lib · sur · til · Surface p11"
 say "GREEN: first-resident — Glow userland desks live at home first."
+
