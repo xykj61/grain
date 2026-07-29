@@ -1,0 +1,14 @@
+::  name       brush pin key count
+::  shape      keys - int (@u32)
+::  invariant  a welcome .brush carries four required pins: at-nib · present · max-lines · lines
+::  example    4
+::  readers    Brushstroke · Surface · .brush lower · refuse suite
+::  nib        surface-p45-v0
+::
+::  Surface Season p45 — eleventh pedestal in src/sur (structure museum).
+::  Names the required pin keys in brushstroke/brush_parse.rye /
+::  seed-frame.brush. Optional refuse: is not counted. Does not invent
+::  a Wayland window · skate/ graduation · or Realidream invent.
++$  brush-pin-key-count-shape
+  $:  keys=@u32
+  ==
