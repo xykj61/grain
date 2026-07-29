@@ -1,0 +1,13 @@
+::  name       brush frame field count
+::  shape      fields - int (@u32)
+::  invariant  BrushFrame carries three fields: at_nib · max_lines · lines
+::  example    3
+::  readers    Brushstroke · Surface · .brush lower · Skate grid
+::  nib        surface-p44-v0
+::
+::  Surface Season p44 — tenth pedestal in src/sur (structure museum).
+::  Names BrushFrame in brushstroke/brush_parse.rye (three fields).
+::  Does not invent a Wayland window · skate/ graduation · or Realidream invent.
++$  brush-frame-field-count-shape
+  $:  fields=@u32
+  ==

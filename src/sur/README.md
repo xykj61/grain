@@ -1,8 +1,8 @@
 # sur — Structures
 
 **Language:** EN  
-**Last updated:** 2026-07-29 (Surface p43 — ninth pedestal)  
-**Status:** Living — room open; nine pedestals seated
+**Last updated:** 2026-07-29 (Surface p44 — tenth pedestal)  
+**Status:** Living — room open; ten pedestals seated
 
 The data-structure museum: every non-networked shape on its own pedestal, viewable in isolation, named once and composed elsewhere. House style: [`PLACARD.md`](PLACARD.md).
 
@@ -19,6 +19,7 @@ The data-structure museum: every non-networked shape on its own pedestal, viewab
 | [`shape-brush-max-pin-bytes.glow`](shape-brush-max-pin-bytes.glow) | One pin value ceiling (bytes = 128) | same |
 | [`shape-brush-parse-error-count.glow`](shape-brush-parse-error-count.glow) | Named `ParseError` paths (errors = 10) | same |
 | [`shape-brush-surface-field-count.glow`](shape-brush-surface-field-count.glow) | `BrushSurface` fields (fields = 4) | same |
+| [`shape-brush-frame-field-count.glow`](shape-brush-frame-field-count.glow) | `BrushFrame` fields (fields = 3) | same |
 
 ```
 rishi/bin/rishi run tools/glow_run.rish src/sur/shape-surface-count.glow
@@ -30,7 +31,8 @@ rishi/bin/rishi run tools/glow_run.rish src/sur/shape-brush-max-bytes.glow
 rishi/bin/rishi run tools/glow_run.rish src/sur/shape-brush-max-pin-bytes.glow
 rishi/bin/rishi run tools/glow_run.rish src/sur/shape-brush-parse-error-count.glow
 rishi/bin/rishi run tools/glow_run.rish src/sur/shape-brush-surface-field-count.glow
+rishi/bin/rishi run tools/glow_run.rish src/sur/shape-brush-frame-field-count.glow
 rishi/bin/rishi run tools/gen/season/src_first_resident_witness.rish
 ```
 
-Further candidates: `BrushFrame` field count · `.brush` pin-key count · nest-type / truth-semantics / Glow Book shapes. Brush_parse numeric bounds through p41; refuse-path count p42; surface fields p43.
+Further candidates: `.brush` pin-key count · nest-type / truth-semantics / Glow Book shapes. Brush_parse surface+frame field lane through p44.

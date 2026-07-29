@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260729.133125` — [Surface Season p44 sur brush frame field count](20260729-133125_surface-season-p44-sur-brush-frame-field-count.bron) — sur×10 BrushFrame×3
 - `20260729.132811` — [Surface Season p43 sur brush surface field count](20260729-132811_surface-season-p43-sur-brush-surface-field-count.bron) — sur×9 BrushSurface×4
 - `20260729.132224` — [Surface Season p42 sur brush parse error count](20260729-132224_surface-season-p42-sur-brush-parse-error-count.bron) — sur×8 ParseError×10
 - `20260729.131728` — [Surface Season p41 sur brush max pin bytes](20260729-131728_surface-season-p41-sur-brush-max-pin-bytes.bron) — sur×7 pin-bytes=128
