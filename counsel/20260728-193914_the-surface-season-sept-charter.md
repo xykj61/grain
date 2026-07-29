@@ -8,7 +8,8 @@
 **Informal tag:** nest-7 · MUR is nest **three** (not “innermost” as living depth)  
 **Ground:** origin/main `d3e208613a` (pre-send) · Shape **B** seated from [s8 eval](20260728-193058_generator-season-s8-pond-gui-season-evaluation.md)  
 **Within:** paused **sext** Generator (s8 complete / s9 next) · paused MUR (**three**) · paused Inner · paused Constellation  
-**Status:** **OPEN** · p0–p58 complete · bookmark **p58 complete / p59 next** · Identity Remake handed back `20260729.162032`  
+**Status:** **PAUSED** · p0–p58 complete · bookmark **p58 complete / p59 next** · handed into Equinox/deca `20260729.165912` · handback into Surface `return_surface_p59`  
+Radiant pass `20260729.165912` — Equinox deca opens · Surface PAUSED · Cursor paused  
 Radiant pass `20260729.164636` — p58 check-in · recommend handback  
 Radiant pass `20260729.163034` — p57 live-five ceiling · limbs complete  
 Radiant pass `20260729.162549` — p56 live-five idle pong · ceiling hand  
@@ -30,11 +31,11 @@ Radiant pass `20260729.132811` — p43 sur brush-surface-field-count · sur×9
 Radiant pass `20260729.132224` — p42 sur brush-parse-error-count · sur×8  
 Radiant pass `20260729.131728` — p41 sur brush-max-pin-bytes · sur×7  
 Radiant pass `20260729.131327` — return_surface_p41 · Nona PAUSED · Surface finishing edge  
-Radiant pass `20260729.130911` — Nona n2 residual · Kiln/Generator living depth words  
+Radiant pass `20260729.130911` — Nona n2 residual · Oven/Generator living depth words  
 Radiant pass `20260729.125911` — Nona nest-9 opens · Surface pause · nest accuracy  
 Radiant pass `20260729.000718` — p40 sur brush-max-bytes · sur×6  
-Radiant pass `20260729.000500` — return_surface_p39 · Kiln PAUSED · Surface OPEN  
-Radiant pass `20260728.234419` — Shape pause · Surface p38/p39 · Kiln oct opens  
+Radiant pass `20260729.000500` — return_surface_p39 · Oven PAUSED · Surface OPEN  
+Radiant pass `20260728.234419` — Shape pause · Surface p38/p39 · Oven oct opens  
 Radiant pass `20260728.233638` — p38 anvil path-breach survey SEATED · cut held  
 Radiant pass `20260728.215052` — p27 brush stdout redraw · Skate lean  
 Radiant pass `20260728.213917` — Skate/Realidream lean SEATED · lexicon  
@@ -89,12 +90,12 @@ Radiant pass `20260728.194334` — p1 tools/gen/anvil home LIVE · five corpus l
 | **quint** | Keeh Chapter | lean-16 CLOSED | **CLOSED** |
 | **sext** | Generator Chapter | **s8 complete / s9 next** | **PAUSED** |
 | **sept** | **Surface Chapter** | **p51** complete / **p52** next | **OPEN** (finishing edge) |
-| **oct** | Kiln Chapter | o3 complete / o4 next | **PAUSED** |
+| **oct** | Oven Chapter | o3 complete / o4 next | **PAUSED** |
 | **nona** | Nona Chapter | n3 complete / n4 next | **PAUSED** (handed back) |
 
 Handback lean (while sept walks): `extend_or_return=return_generator_s9`.  
 Nona handback: `return_surface_p41` **seated** `20260729.131327`.  
-Kiln remains **PAUSED** at o3/o4 (path cut LIVE).  
+Oven remains **PAUSED** at o3/o4 (path cut LIVE).  
 Generator still carries its own lean `return_mur_u92` for when sext resumes.  
 Warn **p62** and **p63** remain for when sept resumes.
 
