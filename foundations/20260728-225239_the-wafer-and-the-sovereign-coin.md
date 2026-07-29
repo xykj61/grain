@@ -2,13 +2,13 @@
 
 *Why the greenest, fastest compute keeps its memory on the wafer beside the cores, and why a community that issues its own currency can build it as public infrastructure. This is the hardware economics beneath the open model, and it follows the very shape we hold for money.*
 
-**Stamp:** `20260629.063512`
-**Voice:** Reya 2, with **Kaeden Reyklah** as coauthor
+**Stamp:** `20260728.225239`
+**Voice:** Quin · lineage **Kaeden Reyklah** with Reya 2 (June vision)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Vision — **far horizon** · **fossil** — living path [`20260728-225239_the-wafer-and-the-sovereign-coin.md`](20260728-225239_the-wafer-and-the-sovereign-coin.md) · Surface p33 thin seat yes `20260728.225239`
+**Status:** Vision — **far horizon**; **living mutant**; invent held
 
-*Written together by Kaeden and Reya 2. Body held; living stack words live in the mutant.*
-Radiant pass `20260725.035453`
+*Mutant seated Surface p33 thin — seat yes `20260728.225239`. Poetics held; Grain naming sharpened.*
+Radiant pass `20260728.225239`
 
 ---
 

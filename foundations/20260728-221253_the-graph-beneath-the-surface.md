@@ -35,7 +35,7 @@ Every change is an event, and every event names its parents, the way each entry 
 
 ## The Hot Graph, Held Close
 
-For a great graph to feel instant, its working set must live in fast memory held close to the compute, rather than fetched across a slow gap on every step. At a small scale this is simply the device's own memory. At a large scale it is a wafer that carries its memory upon itself, beside the cores, so the hot work never waits on a distant fetch — the most ecological way to keep a vast graph warm, which [the wafer and the sovereign coin](20260629-063512_the-wafer-and-the-sovereign-coin.md) describes in full. The cold remainder rests in low-cost storage, and the log makes the whole recomputable, so nothing precious depends on the cache alone.
+For a great graph to feel instant, its working set must live in fast memory held close to the compute, rather than fetched across a slow gap on every step. At a small scale this is simply the device's own memory. At a large scale it is a wafer that carries its memory upon itself, beside the cores, so the hot work never waits on a distant fetch — the most ecological way to keep a vast graph warm, which [the wafer and the sovereign coin](20260728-225239_the-wafer-and-the-sovereign-coin.md) describes in full. The cold remainder rests in low-cost storage, and the log makes the whole recomputable, so nothing precious depends on the cache alone.
 
 ## Why It Holds
 

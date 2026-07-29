@@ -1,0 +1,29 @@
+# tools/gen/season/wafer_thin_witness.rish — Surface p33 · wafer living mutant
+#
+#   rishi/bin/rishi run tools/gen/season/wafer_thin_witness.rish
+
+say "wafer-thin: Language EN — living wafer over June fossil."
+say "wafer-thin: Style Radiant — poetics held · invent held."
+say "wafer-thin: Lens TAME — Surface Season p33."
+
+let seat = run ["test" "-f" "counsel/20260728-225239_surface-season-p33-wafer-thin.md"]
+assert seat.ok else "wafer-thin: p33 counsel missing"
+let living = run ["test" "-f" "foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md"]
+assert living.ok else "wafer-thin: living wafer missing"
+let fossil = run ["test" "-f" "foundations/20260629-063512_the-wafer-and-the-sovereign-coin.md"]
+assert fossil.ok else "wafer-thin: June wafer fossil missing"
+
+let bare = run ["sh" "-c" "grep -q '\\*\\*living mutant\\*\\*' foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md && grep -q 'invent held' foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md && echo BARE"]
+assert bare.ok else "wafer-thin: bare Status scan failed"
+assert bare.out contains "BARE" else "wafer-thin: living mutant · invent held missing"
+let banner = run ["sh" "-c" "grep -q 'fossil' foundations/20260629-063512_the-wafer-and-the-sovereign-coin.md && grep -q '20260728-225239_the-wafer-and-the-sovereign-coin.md' foundations/20260629-063512_the-wafer-and-the-sovereign-coin.md && echo FOSSIL_OK"]
+assert banner.ok else "wafer-thin: fossil banner scan failed"
+assert banner.out contains "FOSSIL_OK" else "wafer-thin: fossil must point living"
+let ptr = run ["sh" "-c" "grep -q '20260728-225239_the-wafer-and-the-sovereign-coin.md' foundations/README.md && grep -q '20260728-225239_the-wafer-and-the-sovereign-coin.md' foundations/20260728-221253_the-graph-beneath-the-surface.md && grep -q '20260728-225239_the-wafer-and-the-sovereign-coin.md' foundations/20260728-221253_lantern-lattice-anvil.md && echo PTR_OK"]
+assert ptr.ok else "wafer-thin: living pointer scan failed"
+assert ptr.out contains "PTR_OK" else "wafer-thin: README · graph · lantern must cite living wafer"
+let held = run ["sh" "-c" "test ! -f foundations/20260728-225239_money-that-stays-close-to-home.md && test ! -f foundations/20260728-225239_the-device-that-forgets.md && test ! -f foundations/20260728-225239_mantrapod-venture-pitch.md && echo HELD"]
+assert held.ok else "wafer-thin: held-deps check failed"
+assert held.out contains "HELD" else "wafer-thin: money · device · mantrapod must stay unmutated this seat"
+
+say "GREEN: wafer-thin — living · fossil · pointers · deps held · Surface p33"
