@@ -30,9 +30,9 @@ Radiant pass `20260728.234419` — oct opens · Surface pause · Keaton seat app
 | **quad** | Gren Season | lean-16 CLOSED | **CLOSED** |
 | **quint** | Keeh Season | lean-16 CLOSED | **CLOSED** |
 | **sext** | Generator Season | **s8 complete / s9 next** | **PAUSED** |
-| **sept** | Surface Season | **p40** complete / **p41** next | **PAUSED** |
+| **sept** | Surface Season | **p40** complete / **p41** next | **OPEN** |
 | **oct** | **Kiln Season** | **o3** complete / **o4** next | **PAUSED** |
-| **nona** | Nona Season | n2 / n3 next | **OPEN** (steals the walk) |
+| **nona** | Nona Season | n3 complete / n4 next | **PAUSED** (handed back) |
 
 Handback lean (when Kiln resumes): park until named · prior lean `return_surface_p39` **seated**.  
 Surface handback (while sept walks): `return_generator_s9`.  

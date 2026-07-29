@@ -8,7 +8,10 @@
 **Informal tag:** nest-9 · **true deepest** (replaces the old habit of freezing “innermost” on MUR while deeper nests walk)  
 **Ground:** origin/main `dd283c70c4` · Surface p40 complete · Kiln already handed back  
 **Within:** paused **sept** Surface (p40 complete / p41 next) · paused **oct** Kiln (o3/o4) · paused Generator · paused MUR (**three**) · paused Inner · paused Constellation  
-**Status:** **OPEN** · n0 complete this stamp · **n1** next (living nest-label breach wave)  
+**Status:** **PAUSED** · n0–n3 complete · bookmark **n3 complete / n4 next** · handed back `return_surface_p41` `20260729.131327`  
+Radiant pass `20260729.131327` — handback Surface p41 · Nona PAUSED · accuracy · SDD · residual kept  
+Radiant pass `20260729.130911` — n2 living depth residual  
+Radiant pass `20260729.130535` — n1 Season-Driven Development  
 Radiant pass `20260729.125911` — nona opens · Surface pause · nest taxonomy seat · **no history force-push**
 
 *Written together by Keaton and Quin.*
@@ -43,11 +46,11 @@ Radiant pass `20260729.125911` — nona opens · Surface pause · nest taxonomy 
 | **quad** | Gren Season | lean-16 CLOSED | **CLOSED** |
 | **quint** | Keeh Season | lean-16 CLOSED | **CLOSED** |
 | **sext** | Generator Season | **s8 complete / s9 next** | **PAUSED** |
-| **sept** | Surface Season | **p40 complete / p41 next** | **PAUSED** |
+| **sept** | Surface Season | **p40 complete / p41 next** | **OPEN** |
 | **oct** | Kiln Season | **o3 complete / o4 next** | **PAUSED** |
-| **nona** | **Nona Season** | **n0** complete / **n1** next | **OPEN** |
+| **nona** | **Nona Season** | **n3** complete / **n4** next | **PAUSED** |
 
-Handback lean: `extend_or_return=return_surface_p41`.  
+Handback lean: `extend_or_return=return_surface_p41` **seated** `20260729.131327`.  
 Surface still carries `return_generator_s9`. Kiln still carries `return_surface_p39` historically (already used). Generator carries `return_mur_u92`.  
 Warn **n62** and **n63**: extend **128**, return Surface **p41**, or other word he seats.
 

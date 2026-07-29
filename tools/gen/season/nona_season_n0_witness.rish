@@ -15,7 +15,7 @@ let lex = run ["sh" "-c" "grep -q '^\| \*\*three\*\*' context/LEXICON.md && grep
 assert lex.ok else "nona-season-n0: lexicon scan failed"
 assert lex.out contains "LEX_OK" else "nona-season-n0: three · quad · nona not seated"
 
-let scope = run ["sh" "-c" "grep -q 'nona:  Nona Season — OPEN' tools/gen/season/prin_scope.rish && grep -q 'three:  MUR Season' tools/gen/season/prin_scope.rish && grep -q 'quad:   Gren Season' tools/gen/season/prin_scope.rish && grep -q 'sept:   Surface Season — PAUSED' tools/gen/season/prin_scope.rish && grep -q 'return_surface_p41' tools/gen/season/prin_scope.rish && echo SCOPE_OK"]
+let scope = run ["sh" "-c" "grep -q 'three:  MUR Season' tools/gen/season/prin_scope.rish && grep -q 'quad:   Gren Season' tools/gen/season/prin_scope.rish && grep -q 'nona:  Nona Season' tools/gen/season/prin_scope.rish && grep -q 'return_surface_p41' tools/gen/season/prin_scope.rish && echo SCOPE_OK"]
 assert scope.ok else "nona-season-n0: prin_scope pin scan failed"
 assert scope.out contains "SCOPE_OK" else "nona-season-n0: nine-nest slate incomplete"
 
@@ -23,5 +23,5 @@ let refuse = run ["sh" "-c" "grep -q 'no force-push' counsel/20260729-125911_the
 assert refuse.ok else "nona-season-n0: force-push refuse scan failed"
 assert refuse.out contains "REFUSE_OK" else "nona-season-n0: force-push must stay refused"
 
-say "GREEN: nona-season-n0 — nona OPEN · three · quad · Surface PAUSED · Nona Season"
+say "GREEN: nona-season-n0 — three · quad · nona nest law · return_surface_p41 named"
 say "GREEN: nona-season-n0 — nest accuracy seated · history not force-pushed."

@@ -1,0 +1,21 @@
+# tools/gen/season/nona_season_n3_witness.rish — Nona handback return_surface_p41.
+#
+#   rishi/bin/rishi run tools/gen/season/nona_season_n3_witness.rish
+
+say "nona-season-n3: Language EN — handback return_surface_p41."
+say "nona-season-n3: Style Radiant — pause nona · open sept."
+say "nona-season-n3: Lens TAME — Nona Season n3."
+
+let handback = run ["test" "-f" "counsel/20260729-131327_nona-handback-return-surface-p41.md"]
+assert handback.ok else "nona-season-n3: handback counsel missing"
+
+let scope = run ["sh" "-c" "grep -q 'sept:   Surface Season — OPEN' tools/gen/season/prin_scope.rish && grep -q 'nona:  Nona Season — PAUSED' tools/gen/season/prin_scope.rish && grep -q 'return_surface_p41' tools/gen/season/prin_scope.rish && grep -q 'return_generator_s9' tools/gen/season/prin_scope.rish && echo SCOPE_OK"]
+assert scope.ok else "nona-season-n3: prin_scope pin scan failed"
+assert scope.out contains "SCOPE_OK" else "nona-season-n3: sept OPEN · nona PAUSED incomplete"
+
+let lex = run ["sh" "-c" "grep -q 'The Surface Season' context/LEXICON.md && grep -q '\*\*OPEN\*\* · p40 complete' context/LEXICON.md && grep -q 'The Nona Season' context/LEXICON.md && grep -q '\*\*PAUSED\*\* · n3 complete' context/LEXICON.md && echo LEX_OK"]
+assert lex.ok else "nona-season-n3: lexicon scan failed"
+assert lex.out contains "LEX_OK" else "nona-season-n3: LEXICON Surface/Nona status incomplete"
+
+say "GREEN: nona-season-n3 — return_surface_p41 · Surface OPEN · Nona PAUSED"
+say "GREEN: nona-season-n3 — nest accuracy · SDD · residual stay living."
