@@ -1,6 +1,6 @@
 # Surface Season — Recursion Prompt (printout · seven scopes)
 
-**Stamp:** `20260728.193914` · Radiant pass `20260728.201630`  
+**Stamp:** `20260728.193914` · Radiant pass `20260728.201911`  
 **Use:** paste the fenced block as the next counsel/bench session opener.
 
 **Sundial:** `rishi/bin/rishi run tools/gen/season/sundial.rish` · `prin sundial`  
@@ -37,16 +37,17 @@ SEXT SCOPE (paused — do not advance s-rounds):
   Charter: counsel/20260728-183510_the-generator-season-sext-charter.md
 
 SEPT SCOPE (OPEN — walk here):
-  Surface Season OPEN · p11 complete / p12 next.
+  Surface Season OPEN · p12 complete / p13 next.
   Working lean: Pond Glow GUI · Brushstroke/.brush · Ubuntu Wayland ·
-    Mantra/Weave DAG · first-resident userland (vegan-dogfood = easter egg).
+    Mantra/Weave DAG · first-resident userland · thin .brush (parser held).
   Handback lean: return_generator_s9.
   Charter: counsel/20260728-193914_the-surface-season-sept-charter.md
-  Seat: counsel/20260728-201630_surface-season-p11-til-first-resident.md
-  Prep+study+pedestals: p1–p11 (anvil · hygiene · first-resident · Wayland ·
-    connector · pond-frame · choir · one-graph DAG · lib/sur/til residents).
+  Seat: counsel/20260728-201911_surface-season-p12-thin-brush-fixture.md
+  Prep+study+pedestals: p1–p12 (anvil · hygiene · first-resident · Wayland ·
+    connector · pond-frame · choir · one-graph DAG · lib/sur/til · .brush fixture).
   First residents LIVE: src/lib (double · inc) · src/sur (surface-count) ·
-    src/til (tilak-root-count). %tile HELD. src/sec OPEN · src/web REFUSED.
+    src/til (tilak-root-count). .brush LIVE: brushstroke/seed-frame.brush (parser held).
+    %tile HELD. src/sec OPEN · src/web REFUSED.
   Horizon PARK: Genode · seL4 · SixOS · s6 · Nix (proven-seat parallel).
   Geode PREP parallel (d0) — does not steal p-rounds.
   Live-five still hand.
@@ -57,11 +58,11 @@ HARD LINES:
   first-resident routine · vegan-dogfood easter-egg only ·
   no m/i/u/g/q/s advance while sept walks · %tile not seated yet.
 
-NEXT (p12):
-  Thin .brush fixture · src/app first resident · or second sur/til pedestal —
+NEXT (p13):
+  src/app first resident · second sur/til pedestal · or connector harden —
   or check-in if a seam asks.
 
-Bench: prin scope · src_first_resident_witness · surface_study_choir ·
-  glow_connector_seam_witness · sundial · fascia · gen_home as needed.
+Bench: prin scope · brush_shape_witness · src_first_resident_witness ·
+  glow_connector_seam_witness · surface_study_choir · sundial · gen_home as needed.
 ] ]
 ```

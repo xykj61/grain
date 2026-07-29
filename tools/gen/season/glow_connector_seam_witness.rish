@@ -29,5 +29,8 @@ assert ledger.ok else "glow-connector: p4 Wayland ledger missing"
 let hygiene = run ["test" "-f" "tools/gen/season/glow_hygiene_pin.rish"]
 assert hygiene.ok else "glow-connector: glow hygiene pin missing"
 
-say "GREEN: glow-connector — sketch · seed · first-resident · ledger · hygiene pins present"
+let brush = run ["test" "-f" "brushstroke/seed-frame.brush"]
+assert brush.ok else "glow-connector: thin .brush fixture missing"
+
+say "GREEN: glow-connector — sketch · seed · first-resident · ledger · hygiene · .brush pins present"
 say "GREEN: glow-connector — Glow never speaks Wayland; Frame is the glass contract."

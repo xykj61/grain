@@ -1,0 +1,35 @@
+# tools/gen/season/brush_shape_witness.rish — Surface p12 · thin .brush fixture
+#
+#   rishi/bin/rishi run tools/gen/season/brush_shape_witness.rish
+#
+# Orientation only — holds the parser; does not lower .brush.
+
+say "brush-shape: Language EN — one fixture describes Frame at a nib."
+say "brush-shape: Style Radiant — prove the file; refuse invent language."
+say "brush-shape: Lens TAME — Surface Season p12."
+
+let fixture = "brushstroke/seed-frame.brush"
+let have = run ["test" "-f" fixture]
+assert have.ok else "brush-shape: seed-frame.brush missing"
+
+let placard = run ["sh" "-c" "head -n 7 brushstroke/seed-frame.brush | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert placard.ok else "brush-shape: placard scan failed"
+let pcount = trim placard.out
+assert pcount == "6" else "brush-shape: placard missing six lines"
+
+let pins = run ["sh" "-c" "grep -q 'at-nib:' brushstroke/seed-frame.brush && grep -q 'present:    Frame' brushstroke/seed-frame.brush && grep -q 'Holds the parser' brushstroke/seed-frame.brush && grep -q 'Never JS' brushstroke/seed-frame.brush && echo PINS_OK"]
+assert pins.ok else "brush-shape: fixture pins scan failed"
+assert pins.out contains "PINS_OK" else "brush-shape: at-nib · Frame · hold-parser · refuse web not named"
+
+let silo = run ["test" "-f" "gratitude/css-sail-glob.md"]
+assert silo.ok else "brush-shape: CSS/Sail/glob gratitude silo missing"
+
+let seat = run ["test" "-f" "counsel/20260728-201911_surface-season-p12-thin-brush-fixture.md"]
+assert seat.ok else "brush-shape: p12 counsel seat missing"
+
+let refuse_css = run ["sh" "-c" "test ! -f brushstroke/seed-frame.css && test ! -f brushstroke/seed-frame.html && test ! -f brushstroke/seed-frame.json && echo CLEAN"]
+assert refuse_css.ok else "brush-shape: refuse web twins check failed"
+assert refuse_css.out contains "CLEAN" else "brush-shape: web-twin files must stay absent"
+
+say "GREEN: brush-shape — fixture · placard · gratitude silo · parser held"
+say "GREEN: brush-shape — .brush opens under brushstroke/; no CSS rail."
