@@ -1,0 +1,13 @@
+::  name       frame max lines
+::  shape      max - int (@u32)
+::  invariant  Tally-bounded Frame ceiling; seed and wayland_seed both use 8
+::  example    8
+::  readers    Brushstroke · Surface · connector hop 3
+::  nib        surface-p15-v0
+::
+::  Surface Chapter p15 — second pedestal in src/sur (structure museum).
+::  Names the Frame max_lines bound shared by brushstroke/seed.rye and
+::  brushstroke/wayland_seed.rye. Does not invent a second Frame type.
++$  frame-max-lines-shape
+  $:  max=@u32
+  ==
