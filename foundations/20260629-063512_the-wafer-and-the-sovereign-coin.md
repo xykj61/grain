@@ -34,7 +34,7 @@ A sovereign-scale public investment — large in itself, yet modest beside the b
 
 ## The Hardware Beneath the Model
 
-This wafer is where the open model is forged and from which it is served — the foundation beneath [Lantern, Lattice, and Anvil](20260629-063512_lantern-lattice-anvil.md). Open weights rest on open silicon; the answers come fast, and green, and close; and every token is metered honestly in the local currency on the shared ledger. The whole stack, model and machine together, is held in common, priced at its real cost, and owned by no one in particular — which is to say, owned by everyone who tends it. At a pocket scale, the same kinship lives in [the device that forgets](20260628-133212_the-device-that-forgets.md) and the [Mantrapod venture pitch](20260629-020012_mantrapod-venture-pitch.md).
+This wafer is where the open model is forged and from which it is served — the foundation beneath [Lantern, Lattice, and Anvil](20260728-221253_lantern-lattice-anvil.md). Open weights rest on open silicon; the answers come fast, and green, and close; and every token is metered honestly in the local currency on the shared ledger. The whole stack, model and machine together, is held in common, priced at its real cost, and owned by no one in particular — which is to say, owned by everyone who tends it. At a pocket scale, the same kinship lives in [the device that forgets](20260628-133212_the-device-that-forgets.md) and the [Mantrapod venture pitch](20260629-020012_mantrapod-venture-pitch.md).
 
 ---
 

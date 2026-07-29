@@ -2,15 +2,14 @@
 
 *The substrate under [Realidream](20260728-220203_realidream.md), set down on our own roots: **Weave** is the append-only DAG of immutable signed facts — the streaming graph that unifies program, page, and interface when the far horizon arrives. Mantra is the version-control **projection** over Weave. Bounded, deterministic, recomputable from a faithful history.*
 
-**Stamp:** `20260629.063512` (affirmed `2026-06-30`)
-**Last updated:** 2026-06-30
-**Voice:** Reya 2, with **Kaeden Reyklah** as coauthor
+**Stamp:** `20260728.221253`
+**Voice:** Quin · lineage **Kaeden Reyklah** with Reya 2 (June vision)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME — safety, performance, then the joy of the craft; the silo principle
-**Status:** Vision — **far horizon** · **fossil** — living path [`20260728-221253_the-graph-beneath-the-surface.md`](20260728-221253_the-graph-beneath-the-surface.md) · Surface p31 thin seat yes `20260728.221253`
+**Status:** Vision — **far horizon**; living mutant of [`20260629-063512_the-graph-beneath-the-surface.md`](20260629-063512_the-graph-beneath-the-surface.md); invent held
 
-*Written together by Kaeden and Reya 2. Body held; living stack words live in the mutant.*
-Radiant pass `20260725.035453`
+*Mutant seated Surface p31 thin — seat yes `20260728.221253`. Poetics held; Grain naming sharpened.*
+Radiant pass `20260728.221253`
 
 ---
 
@@ -28,7 +27,7 @@ The deeper move is to place the program, the page, and the interface in one grap
 
 ## The Three Modules Beneath
 
-The graph rests on three Rye OS modules. Tally holds the bounds: a known ceiling of nodes, named before the machine runs, so the graph grows within a budget rather than without limit. Mantra holds the history: an append-only log of signed facts, where each node's lineage is a chain anyone can replay and check, and nothing is ever quietly rewritten. Tablecloth holds the fold: the deterministic table that turns the log of facts into a view, so the same history always yields the same surface. Bounds that cannot be exceeded, a history that cannot be forged, and a fold that cannot drift — these three are the graph's backend.
+The graph rests on three Grain modules. Tally holds the bounds: a known ceiling of nodes, named before the machine runs, so the graph grows within a budget rather than without limit. Mantra holds the history: an append-only log of signed facts, where each node's lineage is a chain anyone can replay and check, and nothing is ever quietly rewritten. Tablecloth holds the fold: the deterministic table that turns the log of facts into a view, so the same history always yields the same surface. Bounds that cannot be exceeded, a history that cannot be forged, and a fold that cannot drift — these three are the graph's backend.
 
 ## Events, Ordered and Final
 
@@ -40,7 +39,7 @@ For a great graph to feel instant, its working set must live in fast memory held
 
 ## Why It Holds
 
-The result is faster, because only what changed recomputes. It is more correct, because the same events always reach the same state. It is more unified, because code, content, and screen share one model. And it is more honest, because the state is explicit and the history is a chain of signed facts anyone can replay. This is the shape we keep everywhere — a key in a hand, a signed event, an append-only log, a pure fold into a view — carried now into the surface a person looks at all day. [Realidream](20260728-220203_realidream.md) stands on this graph, and Skate and the rest draw from it too.
+The result is faster, because only what changed recomputes. It is more correct, because the same events always reach the same state. It is more unified, because code, content, and screen share one model. And it is more honest, because the state is explicit and the history is a chain of signed facts anyone can replay. This is the shape we keep everywhere — a key in a hand, a signed event, an append-only log, a pure fold into a view — carried now into the surface a person looks at all day. [Realidream](20260728-220203_realidream.md) stands on this graph; Skate, the paint target Pond aims at, draws from it too.
 
 ---
 

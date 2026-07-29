@@ -1,0 +1,56 @@
+# tools/gen/season/horizon_stack_thin_witness.rish — Surface p31 thin · graph + lantern
+#
+#   rishi/bin/rishi run tools/gen/season/horizon_stack_thin_witness.rish
+#
+# Living mutants · fossils · living pointers. Plain-text · anywhere held.
+
+say "horizon-thin: Language EN — Weave + model layer living mutants."
+say "horizon-thin: Style Radiant — poetics held · Grain naming sharpened."
+say "horizon-thin: Lens TAME — Surface Season p31 thin."
+
+let seat = run ["test" "-f" "counsel/20260728-221253_surface-season-p31-horizon-stack-thin.md"]
+assert seat.ok else "horizon-thin: p31 counsel seat missing"
+
+let graph = run ["test" "-f" "foundations/20260728-221253_the-graph-beneath-the-surface.md"]
+assert graph.ok else "horizon-thin: living graph missing"
+let graph_fossil = run ["test" "-f" "foundations/20260629-063512_the-graph-beneath-the-surface.md"]
+assert graph_fossil.ok else "horizon-thin: June graph fossil missing"
+
+let lantern = run ["test" "-f" "foundations/20260728-221253_lantern-lattice-anvil.md"]
+assert lantern.ok else "horizon-thin: living lantern missing"
+let lantern_fossil = run ["test" "-f" "foundations/20260629-063512_lantern-lattice-anvil.md"]
+assert lantern_fossil.ok else "horizon-thin: June lantern fossil missing"
+
+say "horizon-thin: lean words..."
+let gwords = run ["sh" "-c" "grep -q 'Grain modules' foundations/20260728-221253_the-graph-beneath-the-surface.md && grep -q 'paint target' foundations/20260728-221253_the-graph-beneath-the-surface.md && grep -q 'invent held' foundations/20260728-221253_the-graph-beneath-the-surface.md && echo GRAPH_LEAN"]
+assert gwords.ok else "horizon-thin: graph lean scan failed"
+assert gwords.out contains "GRAPH_LEAN" else "horizon-thin: graph Grain/Skate lean missing"
+let lwords = run ["sh" "-c" "grep -q 'for Grain and the public' foundations/20260728-221253_lantern-lattice-anvil.md && grep -q 'invent held' foundations/20260728-221253_lantern-lattice-anvil.md && echo LANTERN_LEAN"]
+assert lwords.ok else "horizon-thin: lantern lean scan failed"
+assert lwords.out contains "LANTERN_LEAN" else "horizon-thin: lantern Grain lean missing"
+
+say "horizon-thin: fossils point living..."
+let gf = run ["sh" "-c" "grep -q 'fossil' foundations/20260629-063512_the-graph-beneath-the-surface.md && grep -q '20260728-221253_the-graph-beneath-the-surface.md' foundations/20260629-063512_the-graph-beneath-the-surface.md && echo GF_OK"]
+assert gf.ok else "horizon-thin: graph fossil banner failed"
+assert gf.out contains "GF_OK" else "horizon-thin: graph fossil must point living"
+let lf = run ["sh" "-c" "grep -q 'fossil' foundations/20260629-063512_lantern-lattice-anvil.md && grep -q '20260728-221253_lantern-lattice-anvil.md' foundations/20260629-063512_lantern-lattice-anvil.md && echo LF_OK"]
+assert lf.ok else "horizon-thin: lantern fossil banner failed"
+assert lf.out contains "LF_OK" else "horizon-thin: lantern fossil must point living"
+
+say "horizon-thin: living pointers..."
+let readme = run ["sh" "-c" "grep -q '20260728-221253_the-graph-beneath-the-surface.md' foundations/README.md && grep -q '20260728-221253_lantern-lattice-anvil.md' foundations/README.md && echo README_OK"]
+assert readme.ok else "horizon-thin: README scan failed"
+assert readme.out contains "README_OK" else "horizon-thin: README must cite living graph and lantern"
+let dream = run ["sh" "-c" "grep -q '20260728-221253_the-graph-beneath-the-surface.md' foundations/20260728-220203_realidream.md && grep -q '20260728-221253_lantern-lattice-anvil.md' foundations/20260728-220203_realidream.md && echo DREAM_OK"]
+assert dream.ok else "horizon-thin: living Realidream outbound scan failed"
+assert dream.out contains "DREAM_OK" else "horizon-thin: Realidream must cite living graph and lantern"
+let wafer = run ["sh" "-c" "grep -q '20260728-221253_lantern-lattice-anvil.md' foundations/20260629-063512_the-wafer-and-the-sovereign-coin.md && echo WAFER_OK"]
+assert wafer.ok else "horizon-thin: wafer outbound scan failed"
+assert wafer.out contains "WAFER_OK" else "horizon-thin: wafer must cite living lantern"
+
+let held = run ["sh" "-c" "test -f foundations/20260628-133212_a-home-in-plain-text.md && test -f foundations/20260628-124512_anywhere-we-are-found.md && test ! -f foundations/20260728-221253_a-home-in-plain-text.md && test ! -f foundations/20260728-221253_anywhere-we-are-found.md && echo HELD"]
+assert held.ok else "horizon-thin: held-cluster check failed"
+assert held.out contains "HELD" else "horizon-thin: plain-text and anywhere must stay unmutated this seat"
+
+say "GREEN: horizon-thin — graph · lantern living · fossils · breach · Surface p31"
+say "GREEN: horizon-thin — plain-text · anywhere held; invent held."

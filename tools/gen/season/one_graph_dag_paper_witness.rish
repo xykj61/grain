@@ -11,8 +11,10 @@ say "one-graph: Lens TAME — Surface Season p8."
 let paper = run ["test" "-f" "counsel/20260728-200159_surface-season-p8-one-graph-dag-redraw-paper.md"]
 assert paper.ok else "one-graph: p8 paper counsel missing"
 
-let graph = run ["test" "-f" "foundations/20260629-063512_the-graph-beneath-the-surface.md"]
-assert graph.ok else "one-graph: graph-beneath-surface foundation missing"
+let graph = run ["test" "-f" "foundations/20260728-221253_the-graph-beneath-the-surface.md"]
+assert graph.ok else "one-graph: living graph-beneath-surface foundation missing"
+let graph_fossil = run ["test" "-f" "foundations/20260629-063512_the-graph-beneath-the-surface.md"]
+assert graph_fossil.ok else "one-graph: June graph-beneath fossil missing"
 
 let dream = run ["test" "-f" "foundations/20260728-220203_realidream.md"]
 assert dream.ok else "one-graph: living realidream foundation missing"

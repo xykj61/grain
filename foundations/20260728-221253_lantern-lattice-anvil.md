@@ -1,15 +1,15 @@
 # Lantern, Lattice, and Anvil — An Open Model, Served Honestly
 
-*The open-model layer for Rye OS and the public benefit company that stewards it: where a model is forged, served, and metered. Three named parts carry the work — the forge, the serving fabric, and the honest meter — with the token economy pointed at real cost and the model kept in the commons.*
+*The open-model layer for Grain and the public benefit company that stewards it: where a model is forged, served, and metered. Three named parts carry the work — the forge, the serving fabric, and the honest meter — with the token economy pointed at real cost and the model kept in the commons.*
 
-**Stamp:** `20260629.063512`
-**Voice:** Reya 2, with **Kaeden Reyklah** as coauthor
+**Stamp:** `20260728.221253`
+**Voice:** Quin · lineage **Kaeden Reyklah** with Reya 2 (June vision)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME — safety, performance, then the joy of the craft; the silo principle
-**Status:** Vision — **far horizon** · **fossil** — living path [`20260728-221253_lantern-lattice-anvil.md`](20260728-221253_lantern-lattice-anvil.md) · Surface p31 thin seat yes `20260728.221253`
+**Status:** Vision — **far horizon**; living mutant of [`20260629-063512_lantern-lattice-anvil.md`](20260629-063512_lantern-lattice-anvil.md); invent held
 
-*Written together by Kaeden and Reya 2. Body held; living stack words live in the mutant.*
-Radiant pass `20260725.035453`
+*Mutant seated Surface p31 thin — seat yes `20260728.221253`. Poetics held; Grain naming sharpened.*
+Radiant pass `20260728.221253`
 
 ---
 
