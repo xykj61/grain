@@ -6,9 +6,12 @@
 **Kind:** season charter · Keaton's word · **nona** scope · rounds **n0–n63** (sixty-four · N = 2⁶)  
 **Working lean:** **Nona Chapter** — true deepest nest · living nest-label accuracy breach (final `season_name=` held)  
 **Informal tag:** nest-9 · **true deepest** (replaces the old habit of freezing “innermost” on MUR while deeper nests walk)  
-**Ground:** origin/main `dd283c70c4` · Surface p40 complete · Kiln already handed back  
-**Within:** paused **sept** Surface (p40 complete / p41 next) · paused **oct** Kiln (o3/o4) · paused Generator · paused MUR (**three**) · paused Inner · paused Constellation  
-**Status:** **OPEN** · n0 complete this stamp · **n1** next (living nest-label breach wave)  
+**Ground:** origin/main `dd283c70c4` · Surface p40 complete · Oven already handed back  
+**Within:** paused **sept** Surface (p40 complete / p41 next) · paused **oct** Oven (o3/o4) · paused Generator · paused MUR (**three**) · paused Inner · paused Constellation  
+**Status:** **PAUSED** · n0–n3 complete · bookmark **n3 complete / n4 next** · handed back `return_surface_p41` `20260729.131327`  
+Radiant pass `20260729.131327` — handback Surface p41 · Nona PAUSED · accuracy · SDD · residual kept  
+Radiant pass `20260729.130911` — n2 living depth residual  
+Radiant pass `20260729.130535` — n1 Chapter-Driven Development  
 Radiant pass `20260729.125911` — nona opens · Surface pause · nest taxonomy seat · **no history force-push**
 
 *Written together by Keaton and Quin.*
@@ -26,7 +29,7 @@ Radiant pass `20260729.125911` — nona opens · Surface pause · nest taxonomy 
 | 5 | **quint** | — | Keeh |
 | 6 | **sext** | — | Generator |
 | 7 | **sept** | — | Surface |
-| 8 | **oct** | — | Kiln |
+| 8 | **oct** | — | Oven |
 | 9 | **nona** | **true deepest** while this nest walks | **Nona Chapter** |
 
 **Rule:** when a deeper nest opens, the living “deepest” label moves with it. Dated counsel may keep old words; living pins (`prin scope` · LEXICON · waymarks) use the table above.
@@ -43,17 +46,17 @@ Radiant pass `20260729.125911` — nona opens · Surface pause · nest taxonomy 
 | **quad** | Gren Chapter | lean-16 CLOSED | **CLOSED** |
 | **quint** | Keeh Chapter | lean-16 CLOSED | **CLOSED** |
 | **sext** | Generator Chapter | **s8 complete / s9 next** | **PAUSED** |
-| **sept** | Surface Chapter | **p40 complete / p41 next** | **PAUSED** |
-| **oct** | Kiln Chapter | **o3 complete / o4 next** | **PAUSED** |
-| **nona** | **Nona Chapter** | **n0** complete / **n1** next | **OPEN** |
+| **sept** | Surface Chapter | **p40 complete / p41 next** | **OPEN** |
+| **oct** | Oven Chapter | **o3 complete / o4 next** | **PAUSED** |
+| **nona** | **Nona Chapter** | **n3** complete / **n4** next | **PAUSED** |
 
-Handback lean: `extend_or_return=return_surface_p41`.  
-Surface still carries `return_generator_s9`. Kiln still carries `return_surface_p39` historically (already used). Generator carries `return_mur_u92`.  
+Handback lean: `extend_or_return=return_surface_p41` **seated** `20260729.131327`.  
+Surface still carries `return_generator_s9`. Oven still carries `return_surface_p39` historically (already used). Generator carries `return_mur_u92`.  
 Warn **n62** and **n63**: extend **128**, return Surface **p41**, or other word he seats.
 
 ## What this season is for
 
-1. **Save Surface** — pause cleanly at p40/p41 after Kiln handback already landed.  
+1. **Save Surface** — pause cleanly at p40/p41 after Oven handback already landed.  
 2. **Open nest-9** — true deepest clock for nest-label accuracy.  
 3. **Living breach** — `innermost`→**three** · `core`→**quad** on living doors; retire those two as living depth words.  
 4. **Refuse history rewrite** — no force-push · no stamp rewrite.  
@@ -97,11 +100,11 @@ Warn **n62** and **n63**: extend **128**, return Surface **p41**, or other word 
 
 ## Trey — documentary frame
 
-*Camera: a ninth small clock; the word “innermost” lifted off MUR and set on the shelf as history; three and quad painted on the older doors; Surface wiped to a pause at p40; Kiln already quiet.*
+*Camera: a ninth small clock; the word “innermost” lifted off MUR and set on the shelf as history; three and quad painted on the older doors; Surface wiped to a pause at p40; Oven already quiet.*
 
 He does not rewrite the past to make the map pretty. He opens the deepest room and tells the truth from here forward.
 
-*Cut. Nona Chapter seated. Surface held. Kiln held.*
+*Cut. Nona Chapter seated. Surface held. Oven held.*
 
 ---
 
