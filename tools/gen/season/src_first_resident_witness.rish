@@ -7,7 +7,7 @@
 
 say "first-resident: Language EN — Glow desks that live in src/."
 say "first-resident: Style Radiant — prove the desks; refuse shred."
-say "first-resident: Lens TAME — Surface Season p42."
+say "first-resident: Lens TAME — Surface Season p43."
 
 let zig = "vendor/zig-toolchain/zig"
 
@@ -136,6 +136,23 @@ let errgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" errdes
 assert errgate.ok else "first-resident: sur brush-parse-error-count shape lower/build/run failed"
 assert errgate.out contains "EXIT:0" else "first-resident: sur brush-parse-error-count shape did not exit 0"
 
+say "first-resident: sur brush-surface-field-count pedestal..."
+let surfdesk = "src/sur/shape-brush-surface-field-count.glow"
+let surfplacard = run ["sh" "-c" "head -n 7 src/sur/shape-brush-surface-field-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert surfplacard.ok else "first-resident: sur brush-surface-field-count placard scan failed"
+let surfcount = trim surfplacard.out
+assert surfcount == "6" else "first-resident: sur brush-surface-field-count placard missing six lines"
+let surfnotes = run ["sh" "-c" "grep -q 'example    4' src/sur/shape-brush-surface-field-count.glow && grep -q 'BrushSurface' src/sur/shape-brush-surface-field-count.glow && grep -q 'at_nib' src/sur/shape-brush-surface-field-count.glow && grep -q 'line_count' src/sur/shape-brush-surface-field-count.glow && echo SURF_OK"]
+assert surfnotes.ok else "first-resident: sur brush-surface-field-count notes scan failed"
+assert surfnotes.out contains "SURF_OK" else "first-resident: sur BrushSurface field count=4 not named"
+let surfrye = run ["sh" "-c" "sed -n '/^pub const BrushSurface = struct {/,/^};/p' brushstroke/brush_parse.rye | grep -cE '^[ ]+[a-z_]+:'"]
+assert surfrye.ok else "first-resident: brush_parse BrushSurface scan failed"
+let surfrye_n = trim surfrye.out
+assert surfrye_n == "4" else "first-resident: brush_parse BrushSurface field count is not four"
+let surfgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" surfdesk]
+assert surfgate.ok else "first-resident: sur brush-surface-field-count shape lower/build/run failed"
+assert surfgate.out contains "EXIT:0" else "first-resident: sur brush-surface-field-count shape did not exit 0"
+
 say "first-resident: til tilak-root-count..."
 let tdesk = "src/til/tilak-root-count.glow"
 let tplacard = run ["sh" "-c" "head -n 7 src/til/tilak-root-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
@@ -214,7 +231,7 @@ let rgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" rdesk]
 assert rgate.ok else "first-resident: sec mand shape lower/build/run failed"
 assert rgate.out contains "EXIT:0" else "first-resident: sec mand shape did not exit 0"
 
-say "GREEN: first-resident — lib · sur×8 · til×2 · app×2 · sec×2 · Surface p42"
+say "GREEN: first-resident — lib · sur×9 · til×2 · app×2 · sec×2 · Surface p43"
 say "GREEN: first-resident — Glow userland desks live at home first."
 
 
