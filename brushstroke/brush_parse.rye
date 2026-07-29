@@ -1,8 +1,9 @@
-//! brushstroke/brush_parse.rye — .brush → Frame → stdout/Skate grid (p23–p28).
+//! brushstroke/brush_parse.rye — .brush → Frame → stdout/Skate grid (p23–p28 · p52).
 //!
 //! `.brush` describes how a value at a nib is drawn. Parse · refuse · lower to
-//! BrushFrame; `redraw_brush_frame` paints stdout; `brush_frame_to_grid` fills a
-//! skate_grid.Grid (headless raster proof). No Wayland window · no CSS/HTML/JSON.
+//! glass `Frame` (alias `BrushFrame` for the sur museum); `redraw_brush_frame`
+//! paints stdout; `brush_frame_to_grid` fills a skate_grid.Grid (headless raster
+//! proof). No Wayland window · no CSS/HTML/JSON.
 //!
 //! TAME (hosted Rye): opening triad · u32 counts · named bounds · `// invariant:`
 //! on every assert · short verb-named functions · named errors with try.
@@ -45,11 +46,15 @@ pub const BrushSurface = struct {
 };
 
 /// Frame lowered from a welcome .brush — line texts slice the source buffer.
+/// Glass contract name is `Frame` (p52); `BrushFrame` stays the seated museum alias.
 pub const BrushFrame = struct {
     at_nib: []const u8,
     max_lines: u32,
     lines: []const []const u8,
 };
+
+/// Glass Frame — same type as BrushFrame. Wayland host converts via Frame.from_brush.
+pub const Frame = BrushFrame;
 
 pub const ParseError = error{
     MissingAtNib,
