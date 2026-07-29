@@ -1,0 +1,42 @@
+# tools/gen/season/brush_parse_witness.rish — Surface p23 · .brush parser begun
+#
+#   rishi/bin/rishi run tools/gen/season/brush_parse_witness.rish
+#
+# Builds brush_parse · selftest GREEN · fixture path GREEN.
+# Does not paint · does not open Wayland · does not lower to Skate.
+
+say "brush-parse: Language EN — .brush pins read as Frame at a nib."
+say "brush-parse: Style Radiant — prove parse · refuse missing pins."
+say "brush-parse: Lens TAME — Surface Season p23."
+
+let zig = "vendor/zig-toolchain/zig"
+let mkdir = run ["mkdir" "-p" "brushstroke/bin"]
+assert mkdir.ok else "brush-parse: mkdir bin failed"
+
+say "brush-parse: build..."
+let build = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "brushstroke/brush_parse.rye" "-femit-bin=brushstroke/bin/brush-parse"]
+assert build.ok else "brush-parse: rye build failed"
+
+say "brush-parse: selftest..."
+let self = run ["brushstroke/bin/brush-parse" "selftest"]
+assert self.ok else "brush-parse: selftest failed"
+assert self.out contains "GREEN: brush-parse selftest" else "brush-parse: selftest not GREEN"
+
+say "brush-parse: seed-frame.brush path..."
+# print pins on stderr; GREEN on stdout — merge for one assert stream
+let path = run ["sh" "-c" "brushstroke/bin/brush-parse brushstroke/seed-frame.brush 2>&1"]
+assert path.ok else "brush-parse: seed-frame path failed"
+assert path.out contains "at-nib=brushstroke-seed" else "brush-parse: at-nib pin missing"
+assert path.out contains "present=Frame" else "brush-parse: present Frame missing"
+assert path.out contains "line-count=3" else "brush-parse: line-count not 3"
+assert path.out contains "GREEN: brush-parse" else "brush-parse: path run not GREEN"
+
+let seat = run ["test" "-f" "counsel/20260728-211918_surface-season-p23-brush-parser-begun.md"]
+assert seat.ok else "brush-parse: p23 counsel seat missing"
+
+let begun = run ["sh" "-c" "grep -q 'Parser begun' brushstroke/seed-frame.brush && echo BEGUN"]
+assert begun.ok else "brush-parse: fixture begun note scan failed"
+assert begun.out contains "BEGUN" else "brush-parse: fixture must say Parser begun"
+
+say "GREEN: brush-parse — build · selftest · seed-frame · Surface p23"
+say "GREEN: brush-parse — .brush parser begun; paint and Wayland still later."

@@ -1,0 +1,214 @@
+//! brushstroke/brush_parse.rye — begin the .brush parser (Surface Season p23).
+//!
+//! `.brush` describes how a value at a nib is drawn. This first parser reads
+//! the thin surface pins (at-nib · present · max-lines · lines) and refuses
+//! anything that is not Frame-at-a-nib. It does not paint · does not open
+//! Wayland · does not invent CSS/HTML/JSON · does not lower to Skate yet.
+//!
+//! Build and run:
+//!   mkdir -p brushstroke/bin
+//!   export RYE_ZIG="$PWD/vendor/zig-toolchain/zig"
+//!   rye/bin/rye build brushstroke/brush_parse.rye -femit-bin=brushstroke/bin/brush-parse
+//!   brushstroke/bin/brush-parse selftest
+//!   brushstroke/bin/brush-parse brushstroke/seed-frame.brush
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const brush_parse_version = "20260728.211918";
+
+/// Tally-bounded Frame ceiling — matches seed.rye · wayland_seed.rye · sur pedestal.
+pub const max_frame_lines: u32 = 8;
+
+/// Bound on a single .brush source file this parser will read.
+pub const max_brush_bytes: u32 = 16 * 1024;
+
+pub const BrushSurface = struct {
+    at_nib: []const u8,
+    present: []const u8,
+    max_lines: u32,
+    line_count: u32,
+};
+
+pub const ParseError = error{
+    MissingAtNib,
+    MissingPresent,
+    PresentNotFrame,
+    MissingMaxLines,
+    MaxLinesOutOfBound,
+    MissingLines,
+    EmptyLine,
+    TooManyLines,
+    BadMaxLines,
+};
+
+/// Parse a .brush source buffer into a BrushSurface.
+/// Invariant: present is Frame; line_count <= max_lines <= max_frame_lines.
+pub fn parse_brush(src: []const u8) ParseError!BrushSurface {
+    var at_nib: ?[]const u8 = null;
+    var present: ?[]const u8 = null;
+    var max_lines: ?u32 = null;
+    var line_count: u32 = 0;
+    var in_lines = false;
+    var saw_lines_header = false;
+
+    var it = std.mem.splitScalar(u8, src, '\n');
+    while (it.next()) |raw| {
+        const line = trim_right(raw);
+        if (line.len == 0) continue;
+        if (!std.mem.startsWith(u8, line, "::")) continue;
+
+        const body = trim_left(line[2..]);
+        if (std.mem.startsWith(u8, body, "at-nib:")) {
+            at_nib = trim_left(body["at-nib:".len..]);
+            in_lines = false;
+            continue;
+        }
+        if (std.mem.startsWith(u8, body, "present:")) {
+            present = trim_left(body["present:".len..]);
+            in_lines = false;
+            continue;
+        }
+        if (std.mem.startsWith(u8, body, "max-lines:")) {
+            const text = trim_left(body["max-lines:".len..]);
+            max_lines = try parse_u32_decimal(text);
+            in_lines = false;
+            continue;
+        }
+        if (std.mem.eql(u8, body, "lines:") or std.mem.startsWith(u8, body, "lines:")) {
+            saw_lines_header = true;
+            in_lines = true;
+            continue;
+        }
+        if (std.mem.startsWith(u8, body, "refuse:")) {
+            in_lines = false;
+            continue;
+        }
+        // Placard keys and free notes stay comments; only indented line bodies count.
+        if (in_lines) {
+            if (body.len == 0) return error.EmptyLine;
+            // Line bodies under `lines:` are indented with spaces in the fixture.
+            if (line.len >= 4 and line[2] == ' ' and line[3] == ' ') {
+                const text = trim_left(body);
+                if (text.len == 0) return error.EmptyLine;
+                line_count += 1;
+                if (line_count > max_frame_lines) return error.TooManyLines;
+            } else {
+                in_lines = false;
+            }
+        }
+    }
+
+    const nib = at_nib orelse return error.MissingAtNib;
+    if (nib.len == 0) return error.MissingAtNib;
+    const pres = present orelse return error.MissingPresent;
+    if (!std.mem.eql(u8, pres, "Frame")) return error.PresentNotFrame;
+    const ceiling = max_lines orelse return error.MissingMaxLines;
+    if (ceiling == 0 or ceiling > max_frame_lines) return error.MaxLinesOutOfBound;
+    if (!saw_lines_header) return error.MissingLines;
+    if (line_count == 0) return error.MissingLines;
+    if (line_count > ceiling) return error.TooManyLines;
+
+    const surface = BrushSurface{
+        .at_nib = nib,
+        .present = pres,
+        .max_lines = ceiling,
+        .line_count = line_count,
+    };
+    // invariant: Frame-at-nib pins hold after parse
+    assert(std.mem.eql(u8, surface.present, "Frame"));
+    assert(surface.at_nib.len > 0);
+    assert(surface.line_count > 0);
+    assert(surface.line_count <= surface.max_lines);
+    assert(surface.max_lines <= max_frame_lines);
+    return surface;
+}
+
+fn trim_left(s: []const u8) []const u8 {
+    var i: u32 = 0;
+    while (i < s.len and (s[i] == ' ' or s[i] == '\t')) : (i += 1) {}
+    return s[i..];
+}
+
+fn trim_right(s: []const u8) []const u8 {
+    if (s.len == 0) return s;
+    var end: u32 = @intCast(s.len);
+    while (end > 0 and (s[end - 1] == ' ' or s[end - 1] == '\t' or s[end - 1] == '\r')) : (end -= 1) {}
+    return s[0..end];
+}
+
+fn parse_u32_decimal(text: []const u8) ParseError!u32 {
+    if (text.len == 0) return error.BadMaxLines;
+    var value: u32 = 0;
+    for (text) |c| {
+        if (c < '0' or c > '9') return error.BadMaxLines;
+        const digit: u32 = c - '0';
+        if (value > (std.math.maxInt(u32) - digit) / 10) return error.BadMaxLines;
+        value = value * 10 + digit;
+    }
+    return value;
+}
+
+fn run_selftest(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const cwd = std.Io.Dir.cwd();
+
+    const src = try cwd.readFileAlloc(io, "brushstroke/seed-frame.brush", garden, .limited(max_brush_bytes));
+    const surface = try parse_brush(src);
+    // invariant: seed fixture pins match living seed Frame
+    assert(std.mem.eql(u8, surface.at_nib, "brushstroke-seed"));
+    assert(std.mem.eql(u8, surface.present, "Frame"));
+    assert(surface.max_lines == 8);
+    assert(surface.line_count == 3);
+
+    const missing_nib =
+        \\::  name       refuse missing nib
+        \\::  present:    Frame
+        \\::  max-lines:  8
+        \\::  lines:
+        \\::    one line
+    ;
+    const refused = parse_brush(missing_nib);
+    assert(refused == error.MissingAtNib);
+
+    const not_frame =
+        \\::  at-nib:     x
+        \\::  present:    Widget
+        \\::  max-lines:  8
+        \\::  lines:
+        \\::    one line
+    ;
+    const refused_frame = parse_brush(not_frame);
+    assert(refused_frame == error.PresentNotFrame);
+
+    try std.Io.File.stdout().writeStreamingAll(io, "GREEN: brush-parse selftest — seed-frame · refuse missing-nib · refuse not-Frame\n");
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    // argv0 · optional path or "selftest"
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(init);
+    }
+    if (args.len < 2) {
+        try std.Io.File.stderr().writeStreamingAll(io, "usage: brush-parse <path.brush>|selftest\n");
+        return 2;
+    }
+    const path = args[1];
+    const cwd = std.Io.Dir.cwd();
+    const src = try cwd.readFileAlloc(io, path, garden, .limited(max_brush_bytes));
+    const surface = try parse_brush(src);
+    print("brush-parse: at-nib={s} present={s} max-lines={d} line-count={d}\n", .{
+        surface.at_nib,
+        surface.present,
+        surface.max_lines,
+        surface.line_count,
+    });
+    try std.Io.File.stdout().writeStreamingAll(io, "GREEN: brush-parse\n");
+    return 0;
+}
