@@ -1,18 +1,18 @@
-# Kiln Chapter — Recursion Prompt (printout · eight scopes · o0)
+# Oven Chapter — Recursion Prompt (printout · eight scopes · o0)
 
-**Stamp:** `20260728.234419` · Radiant pass `20260728.235520` (o1 path cut)  
-**Use:** paste the fenced block as the next counsel/bench session opener.  
-**Prior printout:** [`20260728-233053_surface-season-p37-recursion-prompt.md`](20260728-233053_surface-season-p37-recursion-prompt.md) (Surface-era; sept now paused).
+**Stamp:** `20260728.234419` · Radiant pass `20260729.000500` (handback Surface p39 · Oven PAUSED)  
+**Use:** archival Oven-era paste; Surface walk is **OPEN** again at p39.  
+**Prior printout:** [`20260728-233053_surface-season-p37-recursion-prompt.md`](20260728-233053_surface-season-p37-recursion-prompt.md).
 
 **Sundial:** `rishi/bin/rishi run tools/gen/chapter/sundial.rish` · `prin sundial`  
 **Scope:** `rishi/bin/rishi run tools/gen/chapter/prin_scope.rish` · `prin scope`  
 **Path survey:** `rishi/bin/rishi run tools/gen/chapter/anvil_path_breach_survey_witness.rish`  
-**Kiln seat:** `rishi/bin/rishi run tools/gen/chapter/oven_seat_witness.rish`
+**Oven seat:** `rishi/bin/rishi run tools/gen/chapter/oven_seat_witness.rish`
 
 ---
 
 ```
-[ [ Quin — counsel session, the Kiln Chapter (oct nest · o0–o63 · N=64),
+[ [ Quin — counsel session, the Oven Chapter (oct nest · o0–o63 · N=64),
 nest-8 inside paused Surface · paused Generator · paused MUR.
 Outer voice: Quin (Radiant · TAME). Nested voices: Trey (documentary) · Trya when the craft asks.
 
@@ -33,27 +33,27 @@ CORE · QUINT (CLOSED — handed back — do not advance g/q-rounds):
 
 SEXT SCOPE (paused — do not advance s-rounds):
   Generator Chapter PAUSED at s8 complete / s9 next.
-  Homes LIVE: tools/gen/chapter/ · fund/ · amphora/ · kiln/ (path cut o1).
+  Homes LIVE: tools/gen/chapter/ · fund/ · amphora/ · oven/ (path cut o1).
   Handback lean when Generator resumes: return_mur_u92.
   Charter: counsel/20260728-183510_the-generator-season-sext-charter.md
 
 SEPT SCOPE (paused — do not advance p-rounds):
   Surface Chapter PAUSED at p38 complete / p39 next.
-  Last Surface seat: path-breach survey (cut ran under Kiln o1).
+  Last Surface seat: path-breach survey (cut ran under Oven o1).
   Handback lean when Surface resumes: return_generator_s9.
   Charter: counsel/20260728-193914_the-surface-season-sept-charter.md
   Survey: counsel/20260728-233638_surface-season-p38-anvil-path-breach-survey.md
-  Prior Surface metal (held): sur×5 · .brush · skate_grid · Kiln name · living mutants ·
+  Prior Surface metal (held): sur×5 · .brush · skate_grid · Oven name · living mutants ·
     Realidream · wafer · shred-prep · invent HELD · src/web REFUSED · live-five hand.
 
 OCT SCOPE (OPEN — walk here):
-  Kiln Chapter OPEN · o1 complete / o2 next.
-  Working lean: kiln/ LIVE · corpus · Skate views · peal · Kiln faculty tidy.
+  Oven Chapter OPEN · o1 complete / o2 next.
+  Working lean: oven/ LIVE · corpus · Skate views · peal · Oven faculty tidy.
   Handback lean: return_surface_p39.
-  Charter: counsel/20260728-234419_the-kiln-season-oct-charter.md
+  Charter: counsel/20260728-234419_the-oven-season-oct-charter.md
   Seat: counsel/20260728-235520_oven-season-o1-path-cut.md
   Recursion: expanding-prompts/20260728-234419_oven-season-o0-recursion-prompt.md
-  Path: kiln/ · anvil/ gone · accrete shims at old tools/anvil_* · inference_anvil_*.
+  Path: oven/ · anvil/ gone · accrete shims at old tools/anvil_* · inference_anvil_*.
   Hold out: [debrided] Anvil (retired) tribute · Class H fossils · shred RED.
 
 HARD LINES:
@@ -62,7 +62,7 @@ HARD LINES:
   tribute kept.
 
 NEXT (o2):
-  Kiln metal tidy residual — or check-in if a seam asks.
+  Oven metal tidy residual — or check-in if a seam asks.
 
 Bench: prin scope · oven_season_o1_witness · oven_seat_witness ·
   anvil_path_breach_survey_witness · oven_corpus_lap1 · inference_oven_corpus_view · sundial.

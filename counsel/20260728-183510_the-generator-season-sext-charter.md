@@ -35,12 +35,12 @@ Radiant pass `20260728.183510` — sext opens · MUR paused · Glow/Rishi/Dojo r
 | **core** | Gren Chapter | lean-16 CLOSED · handed back | **CLOSED** |
 | **quint** | Keeh Chapter | lean-16 CLOSED · handed back | **CLOSED** |
 | **sext** | **Generator Chapter** | **s8** complete / **s9** next | **PAUSED** |
-| **sept** | Surface Chapter | p38 / p39 next | **PAUSED** |
-| **oct** | Kiln Chapter | o0 / o1 next | **OPEN** (steals the walk) |
+| **sept** | Surface Chapter | p39 / p40 next | **OPEN** |
+| **oct** | Kiln Chapter | o3 / o4 next | **PAUSED** |
 
 Handback lean (when Generator resumes): `extend_or_return=return_mur_u92`.  
-Surface handback (when sept resumes): `return_generator_s9`.  
-Kiln handback (while oct walks): `return_surface_p39`.  
+Surface handback (while sept walks): `return_generator_s9`.  
+Kiln remains **PAUSED** after `return_surface_p39` `20260729.000500`.  
 Warn **s62** and **s63** remain for when sext resumes: extend to **128**, or return MUR **u92**, or other word he seats.
 
 Geode stays **PREP** parallel (d0) — does not steal s-rounds. Deeper nests do not advance s-rounds while OPEN.
