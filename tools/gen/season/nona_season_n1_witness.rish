@@ -19,9 +19,9 @@ let lex = run ["sh" "-c" "grep -q 'Season-Driven Development' context/LEXICON.md
 assert lex.ok else "nona-season-n1: lexicon scan failed"
 assert lex.out contains "LEX_OK" else "nona-season-n1: SDD · Nest-Season not in LEXICON"
 
-let scope = run ["sh" "-c" "grep -q 'n1 complete / n2 next' tools/gen/season/prin_scope.rish && grep -q 'Season-Driven Development' tools/gen/season/prin_scope.rish && echo SCOPE_OK"]
+let scope = run ["sh" "-c" "grep -q 'Season-Driven Development' tools/gen/season/prin_scope.rish && grep -q 'Nest-Season Development' tools/gen/season/prin_scope.rish && echo SCOPE_OK"]
 assert scope.ok else "nona-season-n1: prin_scope pin scan failed"
-assert scope.out contains "SCOPE_OK" else "nona-season-n1: n1/SDD pin incomplete"
+assert scope.out contains "SCOPE_OK" else "nona-season-n1: SDD pin incomplete"
 
 say "GREEN: nona-season-n1 — SDD named · foundations · template · LEXICON"
 say "GREEN: nona-season-n1 — Nest-Season Development seated beside nest accuracy."

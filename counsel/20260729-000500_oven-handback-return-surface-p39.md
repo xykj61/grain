@@ -28,8 +28,8 @@
 | Oct Kiln | **PAUSED** · o3 complete / o4 next · handed back |
 | Sept Surface | **OPEN** · **p39** this turn |
 | Sext Generator | still **PAUSED** s8/s9 |
-| Outer · inner · innermost | still **PAUSED** |
-| Core · quint | still **CLOSED** |
+| Outer · inner · three | still **PAUSED** |
+| Quad · quint | still **CLOSED** |
 
 ## Trey — documentary frame
 
