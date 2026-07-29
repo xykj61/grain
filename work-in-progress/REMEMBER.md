@@ -6,14 +6,14 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260729.155634` (EDT) · voice Quin  
+**Last refreshed:** `20260729.160015` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin** · **sundial**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss** · **first resident** (routine) · **vegan-dogfood** (easter egg) · **living mutant** · **shred-prep list** · **transitive writing crawl** · **Kiln** · **three** · **quad** · **nona** · **SDD** · **Nest-Chapter**  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes**  
-**Git nib:** `2601bdee78` · Grain · **Identity Remake k4** · Livermore · GitHub-only force-push · autoproject96/grain
-**Bookmark:** [`counsel/20260729-155634_identity-remake-k3-k4-rewrite-force-push.md`](../counsel/20260729-155634_identity-remake-k3-k4-rewrite-force-push.md)
+**Git nib:** `684359f64a` · Grain · **Identity Remake k5** · it worked · recommend handback · autoproject96/grain
+**Bookmark:** [`counsel/20260729-160015_identity-remake-k5-it-worked-check-in.md`](../counsel/20260729-160015_identity-remake-k5-it-worked-check-in.md)
 
-**Chapter:** Framework · EDT · **Grain** · **finishing edge:** **inner** — Identity Remake **OPEN** · k4 force-push landed · Surface **PAUSED** p54/p55 · GitHub-only · Codeberg retired · Nona **PAUSED** · three/quad living · Kiln **PAUSED** · Generator **PAUSED** · MUR paused · Geode PREP · OS PARK · Prefer **git nib**. · `prin scope`
+**Chapter:** Framework · EDT · **Grain** · **finishing edge:** **inner** — Identity Remake **OPEN** · k5 complete / **k6** next · recommend `return_surface_p55` · Surface **PAUSED** p54/p55 · GitHub-only · Codeberg retired · Nona **PAUSED** · three/quad living · Kiln **PAUSED** · Generator **PAUSED** · MUR paused · Geode PREP · OS PARK · Prefer **git nib**. · `prin scope`
 
 ---
 
@@ -26,7 +26,7 @@
 Fascia **shred** still waits circled shred yes — distinct from rename and from prune.  
 WOV retirement stays **roadmap last**. No live deploy · wallet · gas · private key.
 
-**Identity Remake (inner)** **OPEN** — k4 `20260729.155634` · history rewrite + force-push GREEN · Livermore · GitHub-only.
+**Identity Remake (inner)** **OPEN** — k5 `20260729.160015` · it worked · recommend handback `return_surface_p55`.
 **Surface Chapter (sept)** **PAUSED** — p54 complete / **p55** next · live-five type/:quit · idle/ceiling hand · sur×11 kept. Resume after Identity Remake handback.  
 **Nona Chapter (nona)** **PAUSED** n3/n4 — nest accuracy · SDD · residual **SEATED** · handed back `return_surface_p41`.  
 **Kiln Chapter (oct)** **PAUSED** o3/o4 — path cut LIVE · handed back earlier.  
@@ -57,7 +57,7 @@ WOV retirement stays **roadmap last**. No live deploy · wallet · gas · privat
 
 | Door | Kind |
 |------|------|
-| **Identity Remake k5+** | **OPEN** · residual tidy · handback Surface |
+| **Identity Remake k6+** | **OPEN** · waits word: handback · forge · tidy |
 | **Surface Chapter p55+** | **PAUSED** · waits Identity Remake handback |
 | **Nona Chapter** | **PAUSED** n3/n4 · `return_surface_p41` seated |
 | **Living depth residual** | **SEATED** n2 · Kiln · Generator · MUR · LEXICON year |
