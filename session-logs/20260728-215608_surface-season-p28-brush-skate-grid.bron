@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260728.215608
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Surface Season p28 brush skate grid
+prompt waymark p27 complete p28 next · Skate/Realidream lean SEATED · asks none
+think continue p28 from summary — BrushFrame to skate.Grid like wayland_seed to_grid
+think import skate_grid · brush_frame_to_grid put_line · headless raster lit proof
+think CLI grid path · selftest skate-grid banner · witness + p28 counsel
+obs brush_parse_witness GREEN · seed lit=1097 · no Wayland window · invent held
+file brushstroke/brush_parse.rye Frame fills skate.Grid and proves lit pixels
+file tools/gen/season/brush_parse_witness.rish p28 grid path and seat
+file counsel/20260728-215608_surface-season-p28-brush-skate-grid.md p28 landed seat
+file work-in-progress/REMEMBER.md finishing edge p28 · git nib same-commit
+recommend keep-going p29 pedestals or Wayland-from-Frame on word — mechanical under seated Skate lean
+product_nib Surface-Season-p28
+git_nib 382388c380

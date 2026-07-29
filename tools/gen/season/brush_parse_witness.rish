@@ -1,13 +1,13 @@
-# tools/gen/season/brush_parse_witness.rish — p23–p26 parse/lower · p27 stdout redraw
+# tools/gen/season/brush_parse_witness.rish — p23–p27 · p28 BrushFrame→skate_grid
 #
 #   rishi/bin/rishi run tools/gen/season/brush_parse_witness.rish
 #
-# Builds brush_parse · selftest · parse/lower/redraw paths · TAME density.
-# Hosted Skate lean = stdout lines; no Wayland · no skate_grid yet.
+# Builds brush_parse · selftest · parse/lower/redraw/grid paths · TAME density.
+# Skate lean = stdout + headless skate_grid; no Wayland window yet.
 
 say "brush-parse: Language EN — .brush pins read as Frame at a nib."
-say "brush-parse: Style Radiant — prove parse · refuse · lower · redraw."
-say "brush-parse: Lens TAME — Surface Season p27."
+say "brush-parse: Style Radiant — prove parse · refuse · lower · redraw · grid."
+say "brush-parse: Lens TAME — Surface Season p28."
 
 let zig = "vendor/zig-toolchain/zig"
 let mkdir = run ["mkdir" "-p" "brushstroke/bin"]
@@ -24,6 +24,7 @@ assert self.out contains "GREEN: brush-parse selftest" else "brush-parse: selfte
 assert self.out contains "refuse-suite" else "brush-parse: refuse-suite banner missing"
 assert self.out contains "lower" else "brush-parse: lower banner missing"
 assert self.out contains "redraw" else "brush-parse: redraw banner missing"
+assert self.out contains "skate-grid" else "brush-parse: skate-grid banner missing"
 
 say "brush-parse: seed-frame.brush path..."
 let path = run ["sh" "-c" "brushstroke/bin/brush-parse brushstroke/seed-frame.brush 2>&1"]
@@ -43,6 +44,8 @@ let seat26 = run ["test" "-f" "counsel/20260728-213205_surface-season-p26-brush-
 assert seat26.ok else "brush-parse: p26 counsel seat missing"
 let seat27 = run ["test" "-f" "counsel/20260728-215052_surface-season-p27-brush-stdout-redraw.md"]
 assert seat27.ok else "brush-parse: p27 counsel seat missing"
+let seat28 = run ["test" "-f" "counsel/20260728-215608_surface-season-p28-brush-skate-grid.md"]
+assert seat28.ok else "brush-parse: p28 counsel seat missing"
 
 say "brush-parse: refuse helpers..."
 let helpers = run ["sh" "-c" "grep -q 'fn assert_parse_error' brushstroke/brush_parse.rye && grep -q 'fn prove_refuse_pins' brushstroke/brush_parse.rye && grep -q 'fn prove_refuse_bounds' brushstroke/brush_parse.rye && echo REFUSE_OK"]
@@ -69,6 +72,17 @@ assert redraw_run.out contains "(seed version string)" else "brush-parse: redraw
 assert redraw_run.out contains "GREEN: brush-parse redraw" else "brush-parse: redraw not GREEN"
 assert redraw_run.out contains "stdout Skate lean" else "brush-parse: Skate lean note missing"
 
+say "brush-parse: grid path..."
+let grid_helpers = run ["sh" "-c" "grep -q 'pub fn brush_frame_to_grid' brushstroke/brush_parse.rye && grep -q 'fn prove_seed_grid' brushstroke/brush_parse.rye && grep -q 'skate_grid.rye' brushstroke/brush_parse.rye && echo GRID_OK"]
+assert grid_helpers.ok else "brush-parse: grid helper scan failed"
+assert grid_helpers.out contains "GRID_OK" else "brush-parse: brush_frame_to_grid missing"
+let grid_run = run ["sh" "-c" "brushstroke/bin/brush-parse grid brushstroke/seed-frame.brush 2>&1"]
+assert grid_run.ok else "brush-parse: grid path failed"
+assert grid_run.out contains "cols=40" else "brush-parse: grid cols not 40"
+assert grid_run.out contains "rows=8" else "brush-parse: grid rows not 8"
+assert grid_run.out contains "lit=" else "brush-parse: lit count missing"
+assert grid_run.out contains "GREEN: brush-parse grid" else "brush-parse: grid not GREEN"
+
 let begun = run ["sh" "-c" "grep -q 'Parser begun' brushstroke/seed-frame.brush && echo BEGUN"]
 assert begun.ok else "brush-parse: fixture begun note scan failed"
 assert begun.out contains "BEGUN" else "brush-parse: fixture must say Parser begun"
@@ -87,5 +101,5 @@ let widths = run ["sh" "-c" "grep -q 'slice_len_u32' brushstroke/brush_parse.rye
 assert widths.ok else "brush-parse: width pins scan failed"
 assert widths.out contains "WIDTH" else "brush-parse: named bounds / u32 seam helper missing"
 
-say "GREEN: brush-parse — build · selftest · refuse · lower · redraw · TAME · Surface p27"
-say "GREEN: brush-parse — stdout Skate lean live; Wayland and skate_grid still later."
+say "GREEN: brush-parse — build · selftest · refuse · lower · redraw · grid · TAME · Surface p28"
+say "GREEN: brush-parse — Skate grid live (headless); Wayland window still later."
