@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260728.233053
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Surface Chapter p37 sur brush skate rows and recursion prompt
+prompt kg as recommended and produce the new recursion prompt with all outer to inner paused progress state included
+think kg pedestals is the mechanical door after Oven; pair height with seated cols=40
+think land shape-brush-skate-rows.glow rows=8 naming brush_skate_rows equals max_frame_lines
+think GREEN first-resident sur times five and glow-connector hop1
+think write living recursion printout with full seven-scope pause stack for session paste
+think p0 opener kept as dated artifact with pointer to living printout
+obs no Wayland invent · anvil path still held · Generator MUR Inner Outer untouched
+obs handback remains return_generator_s9 · shred RED
+file src/sur/shape-brush-skate-rows.glow fifth sur pedestal rows equals eight
+file tools/gen/chapter/src_first_resident_witness.rish pin skate-rows placard
+file tools/gen/chapter/glow_connector_seam_witness.rish hop1 desk present
+file expanding-prompts/20260728-233053_surface-season-p37-recursion-prompt.md living seven-scope printout
+file counsel/20260728-233053_surface-season-p37-sur-brush-skate-rows.md seat note
+file work-in-progress/REMEMBER.md finishing edge p37 p38
+git_nib a353b890aa
+recommend check-in open anvil path-breach survey, or kg more pedestals under written first-resident policy
