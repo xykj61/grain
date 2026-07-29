@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260728.233638
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Surface Chapter p38 anvil path breach survey
+prompt i approve open
+think open means path-breach survey not cut rename
+think map anvil homes gen family drawn_terminal fourteen Skate views parity peal gitignore
+think target oven matches Oven seat · [debrided] tribute held out
+think seat counsel witness GREEN · anvil still present · cut waits separate word
+obs approximately seventy-three files say anvil · forty-nine path anvil slash · one large drawn_terminal seam
+obs MUR u66 shape for cut sequence when approved
+file counsel/20260728-233638_surface-season-p38-anvil-path-breach-survey.md survey seat
+file tools/gen/chapter/anvil_path_breach_survey_witness.rish pin survey not cut
+file expanding-prompts/20260728-233053_surface-season-p37-recursion-prompt.md radiant pass p38
+file work-in-progress/REMEMBER.md finishing edge p38 p39
+git_nib 222c2f1c29
+recommend check-in cut oven path when ready, or kg pedestals while path waits

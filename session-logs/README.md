@@ -4,6 +4,7 @@
 **Status:** Living pin — newest-first index (current day)  
 **Bound:** under `living_pin_max_bytes`
 
+- `20260728.233638` — [Surface Chapter p38 anvil path survey](20260728-233638_surface-season-p38-anvil-path-survey.bron) — kiln/ sized · anvil/ not cut
 - `20260728.233053` — [Surface Chapter p37 sur rows + recursion](20260728-233053_surface-season-p37-sur-rows-recursion.bron) — sur×5 rows=8 · seven-scope printout
 - `20260728.232511` — [Surface Chapter p36 Kiln seated](20260728-232511_surface-season-p36-kiln-seated.bron) — living Kiln · anvil/ path held
 - `20260728.232415` — [Anvil forge to Kiln name lean](20260728-232415_anvil-forge-to-kiln-name-lean.bron) — prefer Kiln · breach wait seat

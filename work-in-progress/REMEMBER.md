@@ -6,14 +6,14 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260728.233053` (EDT) · voice Quin  
+**Last refreshed:** `20260728.233638` (EDT) · voice Quin  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin** · **sundial**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss** · **first resident** (routine) · **vegan-dogfood** (easter egg) · **living mutant** · **shred-prep list** · **transitive writing crawl** · **Kiln** (was forge Anvil)  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes**  
-**Git nib:** `a353b890aa` · Grain · **Surface p37** · sur×5 rows · recursion printout · autoproject96/grain
-**Bookmark:** [`counsel/20260728-233053_surface-season-p37-sur-brush-skate-rows.md`](../counsel/20260728-233053_surface-season-p37-sur-brush-skate-rows.md)
+**Git nib:** `222c2f1c29` · Grain · **Surface p38** · anvil path survey · autoproject96/grain
+**Bookmark:** [`counsel/20260728-233638_surface-season-p38-anvil-path-breach-survey.md`](../counsel/20260728-233638_surface-season-p38-anvil-path-breach-survey.md)
 
-**Chapter:** Framework · EDT · **Grain** · **finishing edge:** **sept Surface** — p37 sur rows **SEATED** / p38 next · recursion printout living · Kiln **SEATED** · `anvil/` path breach held · transitive crawl **SEATED** · shred RED · Generator **PAUSED** s8/s9 · MUR **PAUSED** u91/u92 · Geode PREP · OS horizon PARK · F undisturbed. Prefer **git nib**. · `prin scope`
+**Chapter:** Framework · EDT · **Grain** · **finishing edge:** **sept Surface** — p38 path survey **SEATED** / p39 next · target `kiln/` sized · `anvil/` **not cut** · Kiln **SEATED** · recursion printout living · transitive crawl **SEATED** · shred RED · Generator **PAUSED** s8/s9 · MUR **PAUSED** u91/u92 · Geode PREP · OS horizon PARK · F undisturbed. Prefer **git nib**. · `prin scope`
 
 ---
 
@@ -46,7 +46,7 @@ WOV retirement stays **roadmap last**. No live deploy · wallet · gas · privat
 
 **`--cursor` launch** GREEN — `rishi/bin/rishi run tools/launch-cursor.rish --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu`.
 
-**Shred-prep** — [`SHRED_PREP.md`](SHRED_PREP.md) Class H · Kiln living · Anvil essay fossils · `anvil/` path held · shred RED.
+**Shred-prep** — [`SHRED_PREP.md`](SHRED_PREP.md) Class H · Kiln living · Anvil essay fossils · `anvil/` path survey seated (not cut) · shred RED.
 
 ---
 
@@ -54,10 +54,10 @@ WOV retirement stays **roadmap last**. No live deploy · wallet · gas · privat
 
 | Door | Kind |
 |------|------|
-| **Surface Chapter p38+** | **OPEN** · pedestals · `anvil/` path breach survey · dated batch · Wayland/live-five |
+| **Surface Chapter p39+** | **OPEN** · cut kiln path · pedestals · dated batch · Wayland/live-five |
 | **Recursion printout** | **SEATED** p37 · `expanding-prompts/20260728-233053_surface-season-p37-recursion-prompt.md` |
 | **Kiln** | **SEATED** p36 `20260728.232511` · living forge · bread not blades |
-| **`anvil/` path rename** | **HELD** — filename breach later |
+| **`anvil/` → `kiln/` path** | **SURVEY SEATED** p38 · cut waits **approve breach** / **cut kiln path** |
 | **Transitive writing crawl** | **SEATED** p34 · BFS foundations to leaves |
 | **Shred-prep list** | **SEATED** · Class H · shred RED |
 | **Horizon / Realidream / Skate lean** | **SEATED** · invent held |
