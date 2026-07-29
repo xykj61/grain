@@ -1,10 +1,8 @@
-//! brushstroke/brush_parse.rye — .brush parser (p23–p25) · Frame lower (p26) · stdout redraw (p27).
+//! brushstroke/brush_parse.rye — .brush → Frame → stdout/Skate grid (p23–p28).
 //!
-//! `.brush` describes how a value at a nib is drawn. This parser reads the thin
-//! surface pins (at-nib · present · max-lines · lines) and refuses anything that
-//! is not Frame-at-a-nib. `lower_brush` turns a welcome parse into a BrushFrame;
-//! `redraw_brush_frame` paints that Frame to stdout — the thin hosted Skate lean
-//! (lines as the grid) before Wayland / skate_grid. No CSS/HTML/JSON · no src/web.
+//! `.brush` describes how a value at a nib is drawn. Parse · refuse · lower to
+//! BrushFrame; `redraw_brush_frame` paints stdout; `brush_frame_to_grid` fills a
+//! skate_grid.Grid (headless raster proof). No Wayland window · no CSS/HTML/JSON.
 //!
 //! TAME (hosted Rye): opening triad · u32 counts · named bounds · `// invariant:`
 //! on every assert · short verb-named functions · named errors with try.
@@ -17,15 +15,21 @@
 //!   brushstroke/bin/brush-parse brushstroke/seed-frame.brush
 //!   brushstroke/bin/brush-parse lower brushstroke/seed-frame.brush
 //!   brushstroke/bin/brush-parse redraw brushstroke/seed-frame.brush
+//!   brushstroke/bin/brush-parse grid brushstroke/seed-frame.brush
 
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
+const skate = @import("skate_grid.rye");
 
-pub const brush_parse_version = "20260728.215052";
+pub const brush_parse_version = "20260728.215608";
 
 /// Tally-bounded Frame ceiling — matches seed.rye · wayland_seed.rye · sur pedestal.
 pub const max_frame_lines: u32 = 8;
+
+/// Thin Skate proof grid — not the full Wayland window; seats seed Frame lines.
+pub const brush_skate_cols: u32 = 40;
+pub const brush_skate_rows: u32 = max_frame_lines;
 
 /// Bound on a single .brush source file this parser will read.
 pub const max_brush_bytes: u32 = 16 * 1024;
@@ -253,7 +257,7 @@ pub fn lower_brush(src: []const u8, line_buf: *[max_frame_lines][]const u8) Pars
 }
 
 /// Redraw a BrushFrame to stdout — thin hosted Skate lean (one line = one grid row).
-/// Pure pass from values; no Wayland · no skate_grid buffer · no retained tree.
+/// Pure pass from values; no Wayland · no retained tree.
 pub fn redraw_brush_frame(frame: BrushFrame, io: std.Io) !void {
     // invariant: Frame carries at least one line before paint
     assert(frame.lines.len > 0);
@@ -270,6 +274,48 @@ pub fn redraw_brush_frame(frame: BrushFrame, io: std.Io) !void {
         try stdout.writeStreamingAll(io, text);
         try stdout.writeStreamingAll(io, "\n");
     }
+}
+
+/// Fill a skate_grid.Grid from a BrushFrame — Pond agents' Skate target (p28).
+pub fn brush_frame_to_grid(frame: BrushFrame, allocator: std.mem.Allocator) !skate.Grid {
+    // invariant: Frame carries lines before grid fill
+    assert(frame.lines.len > 0);
+    // invariant: Frame ceiling fits the proof grid rows
+    assert(frame.max_lines <= brush_skate_rows);
+    // invariant: line count respects the Frame ceiling
+    assert(frame.lines.len <= frame.max_lines);
+    var grid = try skate.Grid.init(allocator, brush_skate_cols, brush_skate_rows);
+    var i: u32 = 0;
+    const n: u32 = @intCast(frame.lines.len);
+    while (i < n) : (i += 1) {
+        // invariant: row index stays inside the Skate proof grid
+        assert(i < brush_skate_rows);
+        grid.put_line(i, frame.lines[i]);
+    }
+    // invariant: grid shape is the named proof budget
+    assert(grid.cols == brush_skate_cols);
+    assert(grid.rows == brush_skate_rows);
+    return grid;
+}
+
+/// Headless raster lit-pixel count for a grid — proves glyphs left the buffer.
+fn grid_lit_count(garden: std.mem.Allocator, grid: skate.Grid) !u32 {
+    const scale: u32 = 1;
+    const width: i32 = @intCast(brush_skate_cols * skate.cell_w * scale);
+    const height: i32 = @intCast(brush_skate_rows * skate.cell_h * scale);
+    // invariant: proof window is positive
+    assert(width > 0);
+    assert(height > 0);
+    const stride: u32 = @intCast(@as(u32, @intCast(width)) * 4);
+    const pixel_bytes: u32 = stride * @as(u32, @intCast(height));
+    const pixels = try garden.alloc(u8, pixel_bytes);
+    const bg = skate.Color{ .r = 0, .g = 0, .b = 0 };
+    const fg = skate.Color{ .r = 255, .g = 255, .b = 255 };
+    grid.rasterize(pixels, stride, width, height, bg, fg, scale);
+    const lit = grid.lit_pixel_count(pixels, stride, width, height, bg);
+    // invariant: seed Frame glyphs light at least one pixel
+    assert(lit > 0);
+    return lit;
 }
 
 fn trim_left(s: []const u8) []const u8 {
@@ -372,6 +418,23 @@ fn prove_seed_redraw(garden: std.mem.Allocator, io: std.Io) !void {
     // invariant: paint path left the Frame bounds intact
     assert(frame.lines.len == 3);
     assert(frame.max_lines == 8);
+}
+
+fn prove_seed_grid(garden: std.mem.Allocator, io: std.Io) !void {
+    const cwd = std.Io.Dir.cwd();
+    const src = try cwd.readFileAlloc(io, "brushstroke/seed-frame.brush", garden, .limited(max_brush_bytes));
+    // invariant: grid path reads the same living fixture
+    assert(src.len <= max_brush_bytes);
+    var line_buf: [max_frame_lines][]const u8 = undefined;
+    const frame = try lower_brush(src, &line_buf);
+    const grid = try brush_frame_to_grid(frame, garden);
+    // invariant: first glyph of line 0 landed in row 0
+    assert(grid.cells[0] == 'b');
+    // invariant: first glyph of line 1 landed in row 1
+    assert(grid.cells[brush_skate_cols] == 'f');
+    const lit = try grid_lit_count(garden, grid);
+    // invariant: raster left living ink
+    assert(lit > 0);
 }
 
 /// Refuse missing / wrong identity pins.
@@ -485,7 +548,8 @@ fn run_selftest(init: std.process.Init) !u8 {
     prove_refuse_bounds();
     try prove_seed_lower(garden, io);
     try prove_seed_redraw(garden, io);
-    try std.Io.File.stdout().writeStreamingAll(io, "GREEN: brush-parse selftest — seed-frame · refuse-suite · lower · redraw · TAME\n");
+    try prove_seed_grid(garden, io);
+    try std.Io.File.stdout().writeStreamingAll(io, "GREEN: brush-parse selftest — seed-frame · refuse-suite · lower · redraw · skate-grid · TAME\n");
     return 0;
 }
 
@@ -517,6 +581,21 @@ fn run_redraw_path(garden: std.mem.Allocator, io: std.Io, path: []const u8) !u8 
     return 0;
 }
 
+fn run_grid_path(garden: std.mem.Allocator, io: std.Io, path: []const u8) !u8 {
+    var line_buf: [max_frame_lines][]const u8 = undefined;
+    const frame = try load_brush_frame(garden, io, path, &line_buf);
+    const grid = try brush_frame_to_grid(frame, garden);
+    const lit = try grid_lit_count(garden, grid);
+    print("brush-parse grid: at-nib={s} cols={d} rows={d} lit={d}\n", .{
+        frame.at_nib,
+        grid.cols,
+        grid.rows,
+        lit,
+    });
+    try std.Io.File.stdout().writeStreamingAll(io, "GREEN: brush-parse grid\n");
+    return 0;
+}
+
 pub fn main(init: std.process.Init) !u8 {
     const garden = init.arena.allocator();
     const io = init.io;
@@ -533,8 +612,11 @@ pub fn main(init: std.process.Init) !u8 {
     if (args.len >= 3 and std.mem.eql(u8, args[1], "redraw")) {
         return run_redraw_path(garden, io, args[2]);
     }
+    if (args.len >= 3 and std.mem.eql(u8, args[1], "grid")) {
+        return run_grid_path(garden, io, args[2]);
+    }
     if (args.len < 2) {
-        try std.Io.File.stderr().writeStreamingAll(io, "usage: brush-parse <path.brush>|selftest|lower <path>|redraw <path>\n");
+        try std.Io.File.stderr().writeStreamingAll(io, "usage: brush-parse <path.brush>|selftest|lower <path>|redraw <path>|grid <path>\n");
         return 2;
     }
     const path = args[1];
