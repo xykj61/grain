@@ -1,11 +1,12 @@
 # Surface Season — Recursion Prompt (printout · seven scopes)
 
-**Stamp:** `20260728.193914` · Radiant pass `20260728.200159`  
+**Stamp:** `20260728.193914` · Radiant pass `20260728.201630`  
 **Use:** paste the fenced block as the next counsel/bench session opener.
 
 **Sundial:** `rishi/bin/rishi run tools/gen/season/sundial.rish` · `prin sundial`  
 **Scope:** `rishi/bin/rishi run tools/gen/season/prin_scope.rish` · `prin scope`  
-**Study choir:** `rishi/bin/rishi run tools/gen/season/surface_study_choir.rish` (needs `WAYLAND_DISPLAY`)
+**Study choir:** `rishi/bin/rishi run tools/gen/season/surface_study_choir.rish` (needs `WAYLAND_DISPLAY`)  
+**First-resident:** `rishi/bin/rishi run tools/gen/season/src_first_resident_witness.rish`
 
 ---
 
@@ -36,15 +37,16 @@ SEXT SCOPE (paused — do not advance s-rounds):
   Charter: counsel/20260728-183510_the-generator-season-sext-charter.md
 
 SEPT SCOPE (OPEN — walk here):
-  Surface Season OPEN · p8 complete / p9 next.
+  Surface Season OPEN · p11 complete / p12 next.
   Working lean: Pond Glow GUI · Brushstroke/.brush · Ubuntu Wayland ·
-    Mantra/Weave DAG · vegan-dogfood userland.
+    Mantra/Weave DAG · first-resident userland (vegan-dogfood = easter egg).
   Handback lean: return_generator_s9.
   Charter: counsel/20260728-193914_the-surface-season-sept-charter.md
-  Seat: counsel/20260728-200159_surface-season-p8-one-graph-dag-redraw-paper.md
-  Prep+study complete: p1–p8 (anvil · hygiene · vegan-dogfood · Wayland ·
-    connector · pond-frame · choir · one-graph DAG paper).
-  src/sec OPEN · src/web REFUSED.
+  Seat: counsel/20260728-201630_surface-season-p11-til-first-resident.md
+  Prep+study+pedestals: p1–p11 (anvil · hygiene · first-resident · Wayland ·
+    connector · pond-frame · choir · one-graph DAG · lib/sur/til residents).
+  First residents LIVE: src/lib (double · inc) · src/sur (surface-count) ·
+    src/til (tilak-root-count). %tile HELD. src/sec OPEN · src/web REFUSED.
   Horizon PARK: Genode · seL4 · SixOS · s6 · Nix (proven-seat parallel).
   Geode PREP parallel (d0) — does not steal p-rounds.
   Live-five still hand.
@@ -52,13 +54,14 @@ SEPT SCOPE (OPEN — walk here):
 HARD LINES:
   No shred · no deploy · no wallet/gas/keys · no River vendor · no src/web ·
   no JS/HTML/CSS/JSON home tongue · no OS infusion as early rungs ·
-  vegan-dogfood only · no m/i/u/g/q/s advance while sept walks.
+  first-resident routine · vegan-dogfood easter-egg only ·
+  no m/i/u/g/q/s advance while sept walks · %tile not seated yet.
 
-NEXT (p9):
-  Constructive wave as named — grow vegan-dogfood · .brush fixture ·
-  or connector harden — or check-in if a seam asks.
+NEXT (p12):
+  Thin .brush fixture · src/app first resident · or second sur/til pedestal —
+  or check-in if a seam asks.
 
-Bench: prin scope · surface_study_choir · one_graph_dag_paper_witness ·
-  sundial · fascia · gen_home as needed.
+Bench: prin scope · src_first_resident_witness · surface_study_choir ·
+  glow_connector_seam_witness · sundial · fascia · gen_home as needed.
 ] ]
 ```
