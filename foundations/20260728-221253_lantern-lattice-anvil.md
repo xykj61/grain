@@ -6,9 +6,9 @@
 **Voice:** Quin · lineage **Kaeden Reyklah** with Reya 2 (June vision)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME — safety, performance, then the joy of the craft; the silo principle
-**Status:** Vision — **far horizon**; **living mutant**; invent held
+**Status:** Vision — **far horizon** · **fossil** — living path [`20260728-232511_lantern-lattice-kiln.md`](20260728-232511_lantern-lattice-kiln.md) · Kiln seat `20260728.232511`
 
-*Mutant seated Surface p31 thin — seat yes `20260728.221253`. Poetics held; Grain naming sharpened.*
+*Mutant seated Surface p31 thin — seat yes `20260728.221253`. Body held; living forge name is now Kiln.*
 Radiant pass `20260728.221253`
 
 ---
