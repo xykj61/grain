@@ -8,7 +8,8 @@
 **Informal tag:** nest-8 · not innermost (MUR keeps u91/u92)  
 **Ground:** origin/main `cb217be6ce` (pre-send) · path survey [p38](20260728-233638_surface-season-p38-anvil-path-breach-survey.md) · Kiln name [p36](20260728-232511_surface-season-p36-kiln-seated.md)  
 **Within:** paused **sept** Surface (p38 complete / p39 next) · paused Generator · paused MUR · paused Inner · paused Constellation  
-**Status:** **OPEN** · o0–o2 complete · bookmark **o2 complete / o3 next**  
+**Status:** **OPEN** · o0–o3 complete · bookmark **o3 complete / o4 next** · path-residual queue empty  
+Radiant pass `20260729.000258` — o3 inference plan retarget · residual queue empty  
 Radiant pass `20260728.235951` — o2 residual tidy STEWARDS · homes · yonder links  
 Radiant pass `20260728.235520` — o1 path cut anvil/ → kiln/ LANDED  
 Radiant pass `20260728.234419` — oct opens · Surface pause · Keaton seat approved  
