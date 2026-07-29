@@ -1,8 +1,9 @@
-//! brushstroke/brush_parse.rye — .brush parser (p23 begin · p24 TAME · p25 refuse).
+//! brushstroke/brush_parse.rye — .brush parser (p23–p25) · thin Frame lower (p26).
 //!
 //! `.brush` describes how a value at a nib is drawn. This parser reads the thin
 //! surface pins (at-nib · present · max-lines · lines) and refuses anything that
-//! is not Frame-at-a-nib. It does not paint · does not open Wayland · does not
+//! is not Frame-at-a-nib. `lower_brush` turns a welcome parse into a BrushFrame
+//! (line texts as slices into the source). It does not open Wayland · does not
 //! invent CSS/HTML/JSON · does not lower to Skate yet.
 //!
 //! TAME (hosted Rye): opening triad · u32 counts · named bounds · `// invariant:`
@@ -14,12 +15,13 @@
 //!   rye/bin/rye build brushstroke/brush_parse.rye -femit-bin=brushstroke/bin/brush-parse
 //!   brushstroke/bin/brush-parse selftest
 //!   brushstroke/bin/brush-parse brushstroke/seed-frame.brush
+//!   brushstroke/bin/brush-parse lower brushstroke/seed-frame.brush
 
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
-pub const brush_parse_version = "20260728.212855";
+pub const brush_parse_version = "20260728.213205";
 
 /// Tally-bounded Frame ceiling — matches seed.rye · wayland_seed.rye · sur pedestal.
 pub const max_frame_lines: u32 = 8;
@@ -35,6 +37,13 @@ pub const BrushSurface = struct {
     present: []const u8,
     max_lines: u32,
     line_count: u32,
+};
+
+/// Frame lowered from a welcome .brush — line texts slice the source buffer.
+pub const BrushFrame = struct {
+    at_nib: []const u8,
+    max_lines: u32,
+    lines: []const []const u8,
 };
 
 pub const ParseError = error{
@@ -180,6 +189,68 @@ fn count_frame_line(line: []const u8, body: []const u8, line_count: *u32) ParseE
     return false;
 }
 
+/// Collect line-body slices under `lines:` into `line_buf` (second pass after parse).
+fn collect_brush_lines(src: []const u8, line_buf: *[max_frame_lines][]const u8) ParseError!u32 {
+    // invariant: collect shares parse's source budget
+    assert(src.len <= max_brush_bytes);
+    var line_count: u32 = 0;
+    var in_lines = false;
+    var it = std.mem.splitScalar(u8, src, '\n');
+    while (it.next()) |raw| {
+        const line = trim_right(raw);
+        if (slice_len_u32(line) == 0) continue;
+        if (!std.mem.startsWith(u8, line, "::")) continue;
+        const body = trim_left(line[2..]);
+        if (std.mem.startsWith(u8, body, "lines:")) {
+            in_lines = true;
+            continue;
+        }
+        if (std.mem.startsWith(u8, body, "at-nib:") or std.mem.startsWith(u8, body, "present:") or std.mem.startsWith(u8, body, "max-lines:") or std.mem.startsWith(u8, body, "refuse:")) {
+            in_lines = false;
+            continue;
+        }
+        if (!in_lines) continue;
+        const line_len = slice_len_u32(line);
+        if (line_len < 4 or line[2] != ' ' or line[3] != ' ') {
+            in_lines = false;
+            continue;
+        }
+        const text = trim_left(body);
+        if (slice_len_u32(text) == 0) return error.EmptyLine;
+        // invariant: buffer slot matches the living count
+        assert(line_count < max_frame_lines);
+        line_buf.*[line_count] = text;
+        line_count += 1;
+        if (line_count > max_frame_lines) return error.TooManyLines;
+    }
+    if (line_count == 0) return error.MissingLines;
+    // invariant: collected count never past the Frame ceiling
+    assert(line_count <= max_frame_lines);
+    return line_count;
+}
+
+/// Lower a welcome .brush into a BrushFrame. Line texts borrow from `src`.
+pub fn lower_brush(src: []const u8, line_buf: *[max_frame_lines][]const u8) ParseError!BrushFrame {
+    const surface = try parse_brush(src);
+    const n = try collect_brush_lines(src, line_buf);
+    // invariant: collect agrees with the parse line_count
+    assert(n == surface.line_count);
+    const frame = BrushFrame{
+        .at_nib = surface.at_nib,
+        .max_lines = surface.max_lines,
+        .lines = line_buf.*[0..n],
+    };
+    // invariant: lowered Frame carries at least one line
+    assert(frame.lines.len > 0);
+    // invariant: lowered count respects the file ceiling
+    assert(frame.lines.len <= frame.max_lines);
+    for (frame.lines) |text| {
+        // invariant: every lowered line is non-empty
+        assert(text.len > 0);
+    }
+    return frame;
+}
+
 fn trim_left(s: []const u8) []const u8 {
     var i: u32 = 0;
     const n = slice_len_u32(s);
@@ -248,6 +319,25 @@ fn prove_seed_fixture(garden: std.mem.Allocator, io: std.Io) !void {
     assert(surface.max_lines == 8);
     // invariant: seed Frame carries three example lines
     assert(surface.line_count == 3);
+}
+
+fn prove_seed_lower(garden: std.mem.Allocator, io: std.Io) !void {
+    const cwd = std.Io.Dir.cwd();
+    const src = try cwd.readFileAlloc(io, "brushstroke/seed-frame.brush", garden, .limited(max_brush_bytes));
+    // invariant: lower reads the same living fixture as parse
+    assert(src.len <= max_brush_bytes);
+    var line_buf: [max_frame_lines][]const u8 = undefined;
+    const frame = try lower_brush(src, &line_buf);
+    // invariant: lower yields three seed-frame lines
+    assert(frame.lines.len == 3);
+    // invariant: nib survives into the Frame
+    assert(std.mem.eql(u8, frame.at_nib, "brushstroke-seed"));
+    // invariant: line 0 matches the fixture body
+    assert(std.mem.eql(u8, frame.lines[0], "brushstroke seed"));
+    // invariant: line 1 matches the fixture body
+    assert(std.mem.eql(u8, frame.lines[1], "frame drawn from values"));
+    // invariant: line 2 is the fixture placeholder (not seed.rye's version string)
+    assert(std.mem.eql(u8, frame.lines[2], "(seed version string)"));
 }
 
 /// Refuse missing / wrong identity pins.
@@ -359,7 +449,26 @@ fn run_selftest(init: std.process.Init) !u8 {
     try prove_seed_fixture(garden, io);
     prove_refuse_pins();
     prove_refuse_bounds();
-    try std.Io.File.stdout().writeStreamingAll(io, "GREEN: brush-parse selftest — seed-frame · refuse-suite · TAME\n");
+    try prove_seed_lower(garden, io);
+    try std.Io.File.stdout().writeStreamingAll(io, "GREEN: brush-parse selftest — seed-frame · refuse-suite · lower · TAME\n");
+    return 0;
+}
+
+fn run_lower_path(garden: std.mem.Allocator, io: std.Io, path: []const u8) !u8 {
+    // invariant: lower path argument is non-empty
+    assert(path.len > 0);
+    const cwd = std.Io.Dir.cwd();
+    const src = try cwd.readFileAlloc(io, path, garden, .limited(max_brush_bytes));
+    // invariant: path read stays inside the named budget
+    assert(src.len <= max_brush_bytes);
+    var line_buf: [max_frame_lines][]const u8 = undefined;
+    const frame = try lower_brush(src, &line_buf);
+    print("brush-parse lower: at-nib={s} lines={d}\n", .{ frame.at_nib, frame.lines.len });
+    for (frame.lines) |text| {
+        try std.Io.File.stdout().writeStreamingAll(io, text);
+        try std.Io.File.stdout().writeStreamingAll(io, "\n");
+    }
+    try std.Io.File.stdout().writeStreamingAll(io, "GREEN: brush-parse lower\n");
     return 0;
 }
 
@@ -373,8 +482,11 @@ pub fn main(init: std.process.Init) !u8 {
     if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
         return run_selftest(init);
     }
+    if (args.len >= 3 and std.mem.eql(u8, args[1], "lower")) {
+        return run_lower_path(garden, io, args[2]);
+    }
     if (args.len < 2) {
-        try std.Io.File.stderr().writeStreamingAll(io, "usage: brush-parse <path.brush>|selftest\n");
+        try std.Io.File.stderr().writeStreamingAll(io, "usage: brush-parse <path.brush>|selftest|lower <path.brush>\n");
         return 2;
     }
     const path = args[1];
