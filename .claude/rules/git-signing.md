@@ -6,13 +6,9 @@ All commits MUST be GPG-signed. The global config already sets `commit.gpgsign=t
 - Never skip hooks with `--no-verify`
 - If a commit fails due to GPG, investigate and fix — do not disable signing
 
-After pushing, remind the user to upload their public GPG key to GitHub and Codeberg if commits show as "Unverified" on those platforms.
+After pushing, remind the user to upload their public GPG key to GitHub if commits show as "Unverified".
 
-Push to all four remotes when the user asks (canonical count: `context/REMOTE_ROSTER.md`):
-- `origin` (Codeberg veganreyklah2)
-- `github` (GitHub veganreyklah2)
-- `gp36-codeberg` (Codeberg groupproject36)
-- `gp36-github` (GitHub groupproject36)
+**Living remotes** (`20260729.141658` — Identity Remake): push `origin` (GitHub `autoproject96/grain`) only until a second forge is chosen. Codeberg is retired from living push. Canonical count: `context/REMOTE_ROSTER.md`.
 
 ## Commit message hygiene — no bare `@name` in subject or body
 
