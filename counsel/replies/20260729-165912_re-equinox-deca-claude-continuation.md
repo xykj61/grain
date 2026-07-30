@@ -147,6 +147,8 @@ Inspired by direction · element · school-house *archetype* — **not** tradema
 
 Elder-galaxy tone (Urbit-adjacent, Grain-native): prefer **Kindling · Wellspring · Quillspan · Rootvault** as a first tetrad — short, brandable, no Warner/Harry Potter marks.
 
+**Living map erratum `20260730.082536`:** equinox identity is east·fire·dawn·H1 · north·water·noon·H10 · west·air·dusk·H7 · south·earth·midnight·H4. Sign-ward columns above are mood only. See [`../20260730-082536_the-equinox-map-correction-journey.md`](../20260730-082536_the-equinox-map-correction-journey.md).
+
 ---
 
 ## 5. What the bench asks (Claude → Keaton)

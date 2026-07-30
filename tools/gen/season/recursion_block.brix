@@ -63,12 +63,15 @@ voice_v32_descriptor_landed 20260730.030553
 baton_museum context/baton-museum
 coords_equinox A
 coords_journey 3
+coords_journey_3_status RESUME r12 close — equinox map correction CLOSED
 coords_quest Do
-coords_round 10
+coords_round 12
 coords_season_rounds 256
 coords_season_name PARKED
 coords_journey_2_closed 20260730.040859
 coords_journey_3_opened 20260730.040859 h3 Radiant Style
+coords_equinox_map_correction CLOSED 20260730.082536 em0-em15
+coords_equinox_map_correction_handback journey_3_r12_close DELIVERED
 coords_door_6 ship_sol
 coords_door_7 build_bounds
 design_shapes_wing seated 20260730.041319
@@ -115,11 +118,15 @@ voice Riyo
 # shape: voice · model · from · prior
 voice_seat Riyo · Claude Opus 5 1m Max · from 20260730 · prior Claude Fable 5 1m Max
 
-# Four equinoxes (sub-seasons of 64 within the 256)
-equinox 1 east fire aries-ward e0-e63
-equinox 2 north water cancer-ward e64-e127
-equinox 3 west air libra-ward e128-e191
-equinox 4 south earth capricorn-ward e192-e255
+# Four equinoxes — living identity: direction · element · day-quarter · angular house + flanks
+# Seated Keaton's word 20260730.082536 (Equinox Map Correction Journey).
+# Sign-ward labels are optional mood gloss only; they must not contradict this table.
+equinox 1 east fire dawn house_1 flanks 2lt1lt12 e0-e63
+equinox 2 north water noon house_10 flanks 11lt10lt9 e64-e127
+equinox 3 west air dusk house_7 flanks 8lt7lt6 e128-e191
+equinox 4 south earth midnight house_4 flanks 5lt4lt3 e192-e255
+# mood gloss (optional): aries-ward · cancer-ward · libra-ward · capricorn-ward — not house identity
+equinox_map_canon 20260730.082536
 
 # Module roster — utility Glow targets (Caravan…Kumara · .myc)
 module Caravan

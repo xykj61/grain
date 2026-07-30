@@ -44,12 +44,16 @@ Radiant pass `20260729.165912` — deca opens · Surface pause · recursion_bloc
 
 ## Four equinoxes (sub-seasons)
 
-| Equinox | Rounds | Direction | Element · sign-ward | Zodiac houses (1-indexed) |
+Living identity refreshed `20260730.082536` (Equinox Map Correction Journey) — direction · element · day-quarter · angular house + flanks. Sign-ward is optional mood gloss only.
+
+| Equinox | Rounds | Direction · element · day-quarter | Angular | Flanks |
 | --- | --- | --- | --- | --- |
-| **I** | e0–e63 | **East** | Fire · Aries-ward | 12th · 1st · 2nd |
-| **II** | e64–e127 | **North** | Water · Cancer-ward | 11th · 10th · 9th |
-| **III** | e128–e191 | **West** | Air · Libra-ward | 8th · 7th · 6th |
-| **IV** | e192–e255 | **South** | Earth · Capricorn-ward | 5th · 4th · 3rd |
+| **I** | e0–e63 | **East · fire · dawn** | 1st | 2nd &lt; 1st == dawn &lt; 12th |
+| **II** | e64–e127 | **North · water · noon** | 10th | 11th &lt; 10th noon &lt; 9th |
+| **III** | e128–e191 | **West · air · dusk** | 7th | 8th &lt; 7th dusk &lt; 6th |
+| **IV** | e192–e255 | **South · earth · midnight** | 4th | 5th &lt; 4th midnight &lt; 3rd |
+
+Mood gloss (optional): Aries-ward · Cancer-ward · Libra-ward · Capricorn-ward — must not contradict water-at-10th or earth-at-4th.
 
 ## Round map (lean 256)
 
