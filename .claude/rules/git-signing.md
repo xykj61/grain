@@ -8,7 +8,7 @@ All commits MUST be GPG-signed. The global config already sets `commit.gpgsign=t
 
 After pushing, remind the user to upload their public GPG key to GitHub if commits show as "Unverified".
 
-**Living remotes** (`20260729.141658` — Identity Remake): push `origin` (GitHub `autoproject96/grain`) only until a second forge is chosen. Codeberg is retired from living push. Canonical count: `context/REMOTE_ROSTER.md`.
+**Living remotes** (`20260730.030553` — Keaton's word): always push **both** `origin` (GitHub `autoproject96/grain`) and `xykj61` (GitHub `xykj61/grain`). Codeberg stays retired from living push. Canonical count: `context/REMOTE_ROSTER.md`.
 
 ## Commit message hygiene — no bare `@name` in subject or body
 

@@ -1,20 +1,21 @@
 # Remote roster — canonical count
 
 **Language:** EN  
-**Seated:** `20260724.222620` · living refresh `20260729.141658`  
-**Voice:** Quin  
+**Seated:** `20260724.222620` · living refresh `20260730.030553`  
+**Voice:** Riyo  
 **Status:** Living pin — single home for the pier's remote count  
 **Bound:** keep thin  
 
 *One place names the count. Other pages point here rather than restate.*
 
-## Count (living — Grain / autoproject96)
+## Count (living — Grain)
 
-**Primary push targets** for the Grain pier (`20260729.141658`):
+**Primary push targets** (`20260730.030553` — Keaton's word: always both in Cursor):
 
 | Remote | Forge |
 |--------|-------|
 | `origin` | GitHub `autoproject96/grain` |
+| `xykj61` | GitHub `xykj61/grain` |
 
 **Retired from living push** (`20260729.141658`):
 
@@ -26,19 +27,15 @@
 
 | Remote | Forge |
 |--------|-------|
-| `xykj61-github` | GitHub `xykj61/urbit` |
+| `xykj61-github` | GitHub `xykj61/urbit` (elder urbit lane) |
 | `xykj61-codeberg` | Codeberg `xykj61/urbit` (retired with Codeberg living push) |
 | `gp36-codeberg` | Codeberg groupproject36 (retired with Codeberg living push) |
 | `gp36-github` | GitHub groupproject36 (when configured) |
 
-**This Framework pier today:** `origin` only → `autoproject96/grain` on GitHub.
+**Push law:** every Cursor send pushes **`origin` and `xykj61`** (same branch, same commits). [`.cursor/rules/git-signing.mdc`](../.cursor/rules/git-signing.mdc) · [`.cursor/rules/send-word.mdc`](../.cursor/rules/send-word.mdc) · [`.claude/rules/git-signing.md`](../.claude/rules/git-signing.md).
 
-**Push law:** [`.cursor/rules/git-signing.mdc`](../.cursor/rules/git-signing.mdc) · [`.claude/rules/git-signing.md`](../.claude/rules/git-signing.md)
-
-## Erratum note
-
-Dated counsel that says dual GitHub+Codeberg primary forges is historical through `20260729.141658`. Living primary is **GitHub alone**.
+**Create note:** if `xykj61/grain` is absent on GitHub, create the empty repo under the `xykj61` account (or load that account's deploy key), then `git push -u xykj61 HEAD`. The remote URL is seated even before the empty repo exists.
 
 ---
 
-*May the count live in one place. May every other page point home.*
+*May the count live in one place. May every send land on both piers.*
