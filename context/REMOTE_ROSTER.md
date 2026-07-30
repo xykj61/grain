@@ -1,7 +1,7 @@
 # Remote roster — canonical count
 
 **Language:** EN  
-**Seated:** `20260724.222620` · living refresh `20260730.033648`  
+**Seated:** `20260724.222620` · living refresh `20260730.034136`  
 **Voice:** Riyo  
 **Status:** Living pin — single home for the pier's remote count  
 **Bound:** keep thin  
@@ -17,7 +17,7 @@
 | `origin` | GitHub `autoproject96/grain` |
 | `xykj61` | GitHub `xykj61/grain` |
 
-**Pier write ruling** (red 32 · `20260730.033648`): ls-remote proves existence, never authorization. **auth-refused** (403) is named in the send-word guard. Counsel Option 2 (Cloud → `xykj61` branch+PR only; origin main from home pier) is **parked** until Keaton speaks — keys stay home.
+**Pier write ruling — Option 2 SEATED** (`20260730.034136` · Keaton's word · red 32 · counsel lean held): ls-remote proves existence, never authorization. **auth-refused** (403) is named in the send-word guard. **Cloud** pushes `xykj61` branch + PR only. **`origin` / `main` syncs from the home pier** after Keaton merges (or fast-forwards) and GPG-pushes — no home credential leaves home. Dual-send still *aims* both waters; when Cloud meets auth-refused on origin, name it and continue the `xykj61` path — dual-send incomplete until the home pier closes the gap.
 
 **Retired from living push** (`20260729.141658`):
 
@@ -40,4 +40,4 @@
 
 ---
 
-*May the count live in one place. May every send land on both piers.*
+*May the count live in one place. May every key stay home. May both piers agree when the home hand closes the gap.*

@@ -13,7 +13,7 @@ All commits MUST be GPG-signed. The global config already sets `commit.gpgsign=t
 
 After pushing, remind the user to upload their public GPG key to GitHub if commits show as "Unverified".
 
-**Living remotes** (`20260730.030553` — Keaton's word): always push **both** `origin` (GitHub `autoproject96/grain`) and `xykj61` (GitHub `xykj61/grain`) from Cursor. Codeberg stays retired from living push (Terms July 2026). Canonical count: `context/REMOTE_ROSTER.md`.
+**Living remotes** (`20260730.030553` — Keaton's word): always push **both** `origin` (GitHub `autoproject96/grain`) and `xykj61` (GitHub `xykj61/grain`) from Cursor. Codeberg stays retired from living push (Terms July 2026). Canonical count: `context/REMOTE_ROSTER.md`. **Pier write Option 2** (`20260730.034136` — Keaton's word): Cloud may meet **auth-refused** on `origin`; name it, finish the `xykj61` path, and leave `origin`/`main` sync to the home pier — never spread a home credential onto Cloud.
 
 ## Commit message hygiene — no bare `@name` in subject or body
 
