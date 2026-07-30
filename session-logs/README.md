@@ -1,3 +1,4 @@
+- `20260730.140147` — [E42 ch3 surface close GREEN · almanac 48 · ch3 FULL](20260730-140147_e42-ch3-surface-close-green.bron) — wing·safety·perf·naming · e43 next
 - `20260730.135900` — [Equinox TB arc explained · fresh fusion baton](20260730-135900_equinox-tb-arc-explain-counsel.bron) — clean-room study · e42 closes ch3
 - `20260730.135422` — [E41 TB naming GREEN · almanac 47 · ch3 15/16](20260730-135422_e41-tb-naming-green.bron) — nouns·units last · e42 next
 - `20260730.135023` — [E40 TB performance surface GREEN · almanac 46 · ch3 14/16](20260730-135023_e40-tb-perf-surface-green.bron) — sized·batching·explicit · e41 next

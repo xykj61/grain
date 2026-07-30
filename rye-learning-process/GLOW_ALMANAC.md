@@ -158,7 +158,7 @@ Expected halls_expected=13 · halls_absent=0 · census_breach_count=0, and verdi
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ch2_surface_witness.rish` · **Stamp:** `20260730.125750` · **Witness:** `tools/gen/season/equinox_ch2_surface_witness.rish`
 Expected SAFE census · reds complete/monotone/refuse · voice sites=6/refuse · baton halls=13/breach=0/absent refuse each GREEN in one choir. Metal answered GREEN. Chapter two closes at sixteen; chapter three waits for metal.
 
-## Chapter Three (15 of 16)
+## Chapter Three (16 of 16)
 
 Opened from metal at stamp `20260730.130733`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -222,6 +222,10 @@ Expected sized GREEN · batching GREEN · be-explicit GREEN, and CLONE=ABSENT / 
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_naming_choir_witness.rish` · **Stamp:** `20260730.135422` · **Witness:** `tools/gen/season/tigerbeetle_naming_census_witness.rish` · scan `tools/fixtures/tigerbeetle_naming_census.sh` · choir `equinox_tigerbeetle_naming_choir_witness.rish`
 Expected CLONE=present · GUIDE_NAMING · GUIDE_UNITS · GUIDE_ABBREV · TAME_NAMING · TAME_UNITS · SUPPLEMENT_NAMING · STYLE · LEXICON, and verdict=absent on a missing clone path. Metal answered GREEN. Clean-room study only.
 
+### 48. The chapter-three surface choir holds: wing, TB safety, TB performance, and naming GREEN together.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ch3_surface_witness.rish` · **Stamp:** `20260730.140147` · **Witness:** `tools/gen/season/equinox_ch3_surface_witness.rish`
+Expected wing halls=4/breach=0 · safety static/seventy/flow · performance sized/batching/explicit · naming, and verdict=missing_wing on an absent path. Metal answered GREEN. Chapter three closes at sixteen; chapter four waits for metal.
+
 ---
 
-*May every line here be one the machine said first. May the book close at its bound the way a season does. And may the rest of chapter three wait for metal, not memory.*
+*May every line here be one the machine said first. May the book close at its bound the way a season does. And may chapter four wait for metal, not memory.*

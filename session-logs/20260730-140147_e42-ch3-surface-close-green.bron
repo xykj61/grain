@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260730.140147
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title E42 ch3 surface close GREEN · almanac 48 · ch3 FULL
+prompt kg · seat e42 shape — chapter three closes from metal
+think twin e26 · leaf only · wing · TB safety · TB performance · naming · missing_wing
+think seat 48 · chapter three 16/16 FULL · chapter four waits for metal
+obs E42 GREEN · ch3 closes · no nested surfaces · clean-room TB limbs hold
+file tools/gen/season/equinox_ch3_surface_witness.rish ch3 close choir
+file tools/gen/season/equinox_ch3_surface_almanac.sh seat 48 · FULL
+file expanding-prompts/20260730-140107_e42-ch3-surface-close-charter.md charter
+file rye-learning-process/GLOW_ALMANAC.md seat 48 · ch3 FULL
+recommend keep-going seat e43 ch4-open metal · dual-push with send
