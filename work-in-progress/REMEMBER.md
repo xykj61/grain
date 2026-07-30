@@ -6,15 +6,15 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260730.034932` (EDT) · voice Riyo  
-**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin** · **sundial** · **reds-first** · **baton** · **shape** *(affection)*  
+**Last refreshed:** `20260730.041039` (EDT) · voice Riyo  
+**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin** · **sundial** · **reds-first** · **baton** · **shape** *(affection)* · **cell** · **tend**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss** · **first resident** (routine) · **vegan-dogfood** (easter egg) · **living mutant** · **shred-prep list** · **transitive writing crawl** · **Kiln** · **three** · **quad** · **nona** · **deca** · **undeca** *(canon)* · **equinoxes** · **SDD** · **Nest-Chapter** · **your / %your** · Glow=code · Brix=data · **baton** · **coords·basis·meters·reds·words·parked·artifacts·next·recommend** · **shape** *(seam affection · Lexicon row PARKED)*  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **bibliography.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes** · **mod-clock** · **REDS.md** · **Sangha pattern one** · **GLOW_ALMANAC ch1** · **tally/stack** · **baton-museum** · **discovery quartet** · **mycelium/fold** · **Check-quest shapes** · **pier Option 2**  
-**Git nib:** `abf6625f7e` · Grain · r8 check-in · charter queue empty  
-**Bookmark:** [`waymarks/20260730-034932_build-r8-charter-queue-empty.md`](../waymarks/20260730-034932_build-r8-charter-queue-empty.md)
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **bibliography.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes** · **mod-clock** · **REDS.md** · **Sangha pattern one** · **GLOW_ALMANAC ch1 6/16** · **tally/stack** · **baton-museum 12** · **discovery quartet** · **mycelium/fold** · **ship_sol** · **pier Option 2** · **tend one**  
+**Git nib:** `c88c7c5336` · Grain · J3 · door 6 · tend one  
+**Bookmark:** [`waymarks/20260730-041039_tend-one-fascia-delta.md`](../waymarks/20260730-041039_tend-one-fascia-delta.md)
 
-**Chapter:** Framework · EDT · **Grain** · **finishing edge:** **undeca** *(canon)* — Voice **OPEN** · 256 season · equinox **A** · journey **2** (h2 Aparigraha) · quest **Do** · round **8/256** · **charter code queue EMPTY** · almanac ch1 **5/16** · pier Option 2 **SEATED** · Cloud merge-here **approved** · name **parked** · Equinox **PAUSED** e6/e7 · Surface **PAUSED** · GitHub dual · narrow-scope (fascia 69) · Riyo stands · Prefer **git nib**. · `prin scope`  
-**Meters (fresh `20260730.034742`):** sundial **100 · green** (Δ0 hold) · fascia **69/100** (Δ−2 from 71 · target ≥80 · narrow-scope active)
+**Chapter:** Framework · EDT · **Grain** · **finishing edge:** **undeca** *(canon)* — Voice **OPEN** · 256 season · equinox **A** · journey **3** (h3 Radiant Style) · quest **Do** · round **9/256** · door 6 ship_sol **GREEN** · almanac ch1 **6/16** · tend one **Δ0** · pier Option 2 **SEATED** · Cloud merge-here **approved** · design-shapes wing **PROPOSED** · name **parked** · Equinox **PAUSED** e6/e7 · Surface **PAUSED** · GitHub dual · narrow-scope (fascia 69) · Riyo stands · Prefer **git nib**. · `prin scope`  
+**Meters (fresh `20260730.041039` tend exit):** sundial **100 · green** (Δ0 hold) · fascia **69/100** (tend entry 69 · exit 69 · Δ0 · target ≥80 · narrow-scope active)
 
 ---
 
@@ -27,7 +27,7 @@
 Fascia **shred** still waits circled shred yes — distinct from rename and from prune.  
 WOV retirement stays **roadmap last**. No live deploy · wallet · gas · private key.
 
-**Voice Chapter (undeca, canon)** **OPEN** — Journey 2 **CLOSED** at v31 `20260730.021541` · **v32** next (Build Journey · `descriptor.rye`) · Riyo stands · handback `return_equinox_e7`.  
+**Voice Chapter (undeca, canon)** **OPEN** — Journey 2 (h2) **CLOSED** `20260730.040859` · Journey 3 (h3 Radiant Style) **OPEN** at round 9 · Riyo stands · season handback `return_equinox_e7` still nested.  
 **Equinox Chapter (deca)** **PAUSED** — e6 complete / e7 next · handback into Voice nested · resume lean `return_surface_p59`.  
 **Surface Chapter (sept)** **PAUSED** — p58/p59 · live-five GREEN. Resume lean `return_generator_s9`.  
 **Identity Remake (inner)** **PAUSED** — k6 complete / k7 next · handed back `return_surface_p55`.  
@@ -46,7 +46,7 @@ WOV retirement stays **roadmap last**. No live deploy · wallet · gas · privat
 **Waymarks** — HAWM · TUBE · ZETA · JABS · LULU · STOA · SETU · claims `waymarks/`.  
 **Outer terminal / phone** — USB/`adb` paths and phone look stay on the operator desk; prefer git nib + `prin scope` for season state. Jail authors; host installs.
 
-**Baton museum** — eleven shapes, each one brix; a baton is state in a shape that crosses a seam. Affection remembered `20260730.032517`. Path `context/baton-museum/`.
+**Baton museum** — twelve halls (tend_round hall 12) · path `context/baton-museum/`. Affection remembered `20260730.032517`. Design-shapes wing **proposed** (recursion_block + tend as second consumer) — Keaton's yes seats.
 
 **Shape (affection)** — what a thing is that survives crossing a seam; the baton crosses sessions, the shape makes the crossing lossless. **Lexicon row PARKED** (propose-never-seat) — Glow **Shape** already seated for bounded normalizing types; seam sense waits Keaton's yes. Silence = stay parked.
 
@@ -70,10 +70,15 @@ WOV retirement stays **roadmap last**. No live deploy · wallet · gas · privat
 
 | Door | Kind |
 |------|------|
-| **Voice Chapter Build Journey** | **OPEN** · A·J2·Do · r8 **check-in** · charter code queue **EMPTY** · waymark 20260730-034932 · next door needs charter |
-| **Glow almanac ch1** | **OPEN** `20260730.034527` · 5 of 16 · seats 6–16 wait for new metal · `rye-learning-process/GLOW_ALMANAC.md` |
+| **Voice Chapter Build Journey** | **OPEN** · A·J3·Do · r9 · door 6 ship_sol GREEN · tend one Δ0 · next door or wing yes |
+| **Glow almanac ch1** | **OPEN** · 6 of 16 · seat 6 from ship_sol · `rye-learning-process/GLOW_ALMANAC.md` |
+| **mycelium/ship_sol.rye** | **GREEN** `20260730.040859` · door 6 · bound 1024 · cadence parked |
+| **Tend round (hall 12)** | **SEATED** · tend one complete · fascia Δ0 · waymark 20260730-041039 |
+| **Cell rule** | **SEATED** · `.cursor/rules/cell.mdc` · `.claude/rules/cell.md` |
+| **Voice seat roster** | **ACCRETED** · Riyo · Opus 5 1m Max · from 20260730 · prior Fable · in recursion_block.brix |
+| **Design-shapes wing** | **PROPOSED** · first recursion_block · second tend_round · awaits Keaton yes/no |
 | **Sangha pattern one** | **LANDED** `20260730.034319` · `docs-geode/sangha/01-descriptor-exchange.md` · from discovery quartet GREEN |
-| **Baton museum** | **SEATED** · eleven halls · Lexicon baton + nine limbs · census zero · breach banked |
+| **Baton museum** | **SEATED** · twelve halls · Lexicon baton + nine limbs · census zero · breach banked |
 | **bibliography.md** | **SEATED** · living root · MAP + ORGANIZING pointer lines · elders stay |
 | **mycelium/fold.rye** | **GREEN** · fifth primitive · supply = issued − taxed · counsel Check |
 | **shape → Lexicon** | **PARKED** · seam-crossing affection in memory · Glow Shape already seated · yes seats · silence parks |
