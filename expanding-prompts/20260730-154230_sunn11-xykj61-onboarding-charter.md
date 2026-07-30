@@ -9,16 +9,16 @@
 
 ## One sentence
 
-SUNN11 locks living onboarding clone URLs on **`xykj61/grain`**, refreshes `APPLY.md` so push guidance matches dual remotes, and witnesses that the agentic lane name stays where roster truth belongs.
+SUNN11 locks living onboarding clone URLs on **`xykj61/grain`**, names dual-push on SOURCE, and witnesses that the agentic lane name stays where roster truth belongs. Root `APPLY.md` stays pier-local (`/*` ignore) — not a tracked leaf.
 
 ## Check shape
 
 | Limb | Contract |
 | --- | --- |
 | **onboarding leaves** | SOURCE · README · CLAUDE · apprentice-welcome · enclosure · personalize.template clone `xykj61` |
-| **APPLY.md** | Living SUNN11 note · dual-push · xykj61 named · dated basis kept |
+| **SOURCE dual-push** | Living note · both remotes · REMOTE_ROSTER cite |
 | **roster** | `REMOTE_ROSTER` still names `origin` = `autoproject96/grain` |
-| **narrow** | no LICENSE · no dated counsel rewrite · no Codeberg living push |
+| **narrow** | no LICENSE · no dated counsel rewrite · no Codeberg living push · no force-add APPLY |
 
 ---
 

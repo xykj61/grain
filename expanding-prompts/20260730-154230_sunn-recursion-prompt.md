@@ -49,7 +49,7 @@ OPERATIONAL (baton fusion · living):
 BASIS: tip 441f333d8e · SUNN11 GREEN
   Witness: tools/gen/season/sunn11_xykj61_onboarding_witness.rish
   Charter: expanding-prompts/20260730-154230_sunn11-xykj61-onboarding-charter.md
-  Leaves: APPLY.md · SOURCE.md · first-season-personalize.md
+  Leaves: SOURCE.md · first-season-personalize.md · onboarding clone lock
 
 HARD LINES:
   no force-push · no shred/deploy · no wallet/gas/keys · edu/: git add -f
