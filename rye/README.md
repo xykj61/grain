@@ -43,7 +43,7 @@ rye/
     rye                     <- the built command (after building)
 ```
 
-The lessons learned while building Rye live in their own home, `../rye-learning-process/`, with the growing reference in `ALMANAC.md` — gate trio, Caravan seeds, Brushstroke, strengthening, and Zig 0.16.0 I/O.
+The lessons learned while building Rye live in their own home, `../rye-learning-process/`, with the elder reference at `archive/ALMANAC.md` — gate trio, Caravan seeds, Brushstroke, strengthening, and Zig 0.16.0 I/O.
 
 Sibling modules built with `rye build` include **Rishi** (`../rishi/`), **Caravan** (`../caravan/`), **Tally** (`../tally/`), **Brushstroke** (`../brushstroke/`), **Mantra** (`../mantra/`), and **Aurora** (`../aurora/`). What *seed* means in this family is defined in `../active-designing/yonder/20260622-235012_what-we-mean-by-seed.md`.
 
@@ -112,7 +112,7 @@ rishi/bin/rishi run tools/parity-selftest.rish # std must stay symlinked; tamper
 rishi/bin/rishi run tools/additive-gate.rish   # shape of std changes only (if any local patches)
 ```
 
-`rye/lib/std` is a **symlink** to the pinned toolchain — pristine overlay, not a fork. `parity.rish` runs each witness once against that `std` (the old differential baseline-vs-strengthened gate retired). `parity-selftest.rish` guards against accidental re-copying `std` into the tree. Details live in `../rye-learning-process/ALMANAC.md` under *The Gate Trio in Rishi*.
+`rye/lib/std` is a **symlink** to the pinned toolchain — pristine overlay, not a fork. `parity.rish` runs each witness once against that `std` (the old differential baseline-vs-strengthened gate retired). `parity-selftest.rish` guards against accidental re-copying `std` into the tree. Details live in `../rye-learning-process/archive/ALMANAC.md` under *The Gate Trio in Rishi*.
 
 ---
 

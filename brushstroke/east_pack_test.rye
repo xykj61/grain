@@ -1,0 +1,41 @@
+//! brushstroke/east_pack_test.rye — Equinox e1 East pack · grid read-back and frame width.
+//!
+//!   rye/bin/rye run brushstroke/east_pack_test.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const skate = @import("skate_grid.rye");
+const brush = @import("brush_parse.rye");
+
+const grid_cols: u32 = 12; // narrow on purpose, so truncation stays reachable
+const grid_rows: u32 = 3;
+
+fn check_grid_row(allocator: std.mem.Allocator) void {
+    var grid = skate.Grid.init(allocator, grid_cols, grid_rows) catch unreachable;
+    grid.put_line(0, "east");
+    const row = grid.row_cells(0);
+    assert(row.len == grid_cols); // postcondition: a row is exactly cols wide
+    assert(std.mem.startsWith(u8, row, "east")); // welcome: what was written reads back
+    const blank = grid.row_cells(2);
+    assert(blank[0] == ' '); // negative space: an unwritten row stays blank
+    print("skate: row_cells — read-back exact, blank row blank\n", .{});
+}
+
+fn check_frame_widest_line() void {
+    const lines = [_][]const u8{ "e1", "equinox east", "fire" };
+    const frame = brush.BrushFrame{ .at_nib = "e1", .max_lines = 3, .lines = lines[0..] };
+    const widest = brush.frame_widest_line(frame);
+    assert(widest == 12); // "equinox east" is twelve bytes
+    assert(widest <= grid_cols); // welcome: this frame fits a twelve-column grid exactly
+
+    const empty = brush.BrushFrame{ .at_nib = "e1", .max_lines = 0, .lines = &.{} };
+    assert(brush.frame_widest_line(empty) == 0); // negative space: no lines, no width
+    print("brushstroke: frame_widest_line — widest 12, empty 0\n", .{});
+}
+
+pub fn main() void {
+    check_grid_row(std.heap.page_allocator);
+    check_frame_widest_line();
+    print("GREEN: brushstroke east pack — row_cells and frame_widest_line\n", .{});
+}

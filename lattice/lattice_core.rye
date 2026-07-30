@@ -50,6 +50,26 @@ pub const Matrix = struct {
     }
 };
 
+/// True when every paired element sits within `epsilon` — the witness-grade
+/// float comparison. Exact `==` on f32 reports false for values a computation
+/// reached by different but equally correct routes, so witnesses that need
+/// agreement rather than identity ask here.
+pub fn approx_equal(a: *const Matrix, b: *const Matrix, epsilon: f32) TensorError!bool {
+    if (a.rows != b.rows or a.cols != b.cols) return error.ShapeMismatch;
+    if (epsilon < 0) return error.NegativeInput;
+    assert(a.len() <= max_elements); // invariant: shape stays inside the garden
+    assert(b.len() == a.len()); // invariant: shapes agreed above
+    var r: u32 = 0;
+    while (r < a.rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < a.cols) : (c += 1) {
+            const delta: f32 = @abs(a.at(r, c) - b.at(r, c));
+            if (delta > epsilon) return false;
+        }
+    }
+    return true;
+}
+
 pub fn add(a: *const Matrix, b: *const Matrix, out: *Matrix) TensorError!void {
     if (a.rows != b.rows or a.cols != b.cols) return error.ShapeMismatch;
     if (out.rows != a.rows or out.cols != a.cols) return error.ShapeMismatch;

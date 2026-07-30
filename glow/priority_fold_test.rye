@@ -1,0 +1,71 @@
+//! glow/priority_fold_test.rye — Equinox e6 · the cycle learns to turn.
+//!
+//!   rye/bin/rye run glow/priority_fold_test.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const clock = @import("mod_clock.rye");
+
+pub fn main() void {
+    // Every one of the sixteen slots resolves, and none falls outside the roster.
+    var seen_base: [12]u32 = .{0} ** 12;
+    var emphasis: u32 = 0;
+    var s: u32 = 0;
+    while (s < clock.priority_slots) : (s += 1) {
+        const p = clock.priority_of_slot(s);
+        if (s % clock.emphasis_stride == clock.emphasis_stride - 1) {
+            emphasis += 1;
+        } else {
+            seen_base[@intFromEnum(p)] += 1;
+        }
+    }
+    assert(emphasis == 4); // invariant: four emphasis slots per journey
+    var i: u32 = 0;
+    while (i < clock.priority_base_count) : (i += 1) {
+        assert(seen_base[@intCast(i)] == 1); // every base priority appears exactly once
+    }
+
+    // The four doubles land one per quarter, in the corrected order.
+    assert(clock.priority_of_slot(3) == .sameness_as_compression);
+    assert(clock.priority_of_slot(7) == .single_stranded);
+    assert(clock.priority_of_slot(11) == .explicit_bounds);
+    assert(clock.priority_of_slot(15) == .happy_zone_witnesses_first);
+
+    // And spacing is now PROVEN rather than intended: every doubled practice's
+    // two appearances sit at least min_emphasis_gap apart on the circular clock.
+    // The first arrangement passed the placement checks above while leaving
+    // sameness at slots 10 and 11 -- adjacent. Placement was never the property
+    // that mattered; the gap was.
+    for (clock.doubled) |d| {
+        var first: u32 = clock.priority_slots;
+        var second: u32 = clock.priority_slots;
+        var scan: u32 = 0;
+        while (scan < clock.priority_slots) : (scan += 1) {
+            if (clock.priority_of_slot(scan) == d) {
+                if (first == clock.priority_slots) first = scan else second = scan;
+            }
+        }
+        assert(first < clock.priority_slots); // invariant: a double appears twice
+        assert(second < clock.priority_slots);
+        const forward: u32 = second - first;
+        const back: u32 = clock.priority_slots - forward;
+        const gap: u32 = @min(forward, back);
+        assert(gap >= clock.min_emphasis_gap); // the property the spacing is for
+    }
+
+    // Base roster in order across the non-emphasis slots.
+    assert(clock.priority_of_slot(0) == .five_primitives);
+    assert(clock.priority_of_slot(2) == .explicit_bounds);
+    assert(clock.priority_of_slot(4) == .values_apart);
+    assert(clock.priority_of_slot(14) == .single_stranded);
+
+    // A round names its own priority — and a journey wraps to the same order.
+    assert(clock.priority_of_round(6) == .galls_law_graduation);
+    assert(clock.priority_of_round(11) == .explicit_bounds); // v11, under the corrected order
+    assert(clock.priority_of_round(22) == clock.priority_of_round(6)); // 22 = 6 + 16
+    assert(clock.priority_of_round(0) == .five_primitives);
+
+    print("GREEN: priority fold — 16 slots, 12 base once each, 4 doubles spaced\n", .{});
+    print("GREEN: priority fold — every doubled practice spaced at least 6 slots apart\n", .{});
+}

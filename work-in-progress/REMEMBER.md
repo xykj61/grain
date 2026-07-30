@@ -2,18 +2,18 @@
 
 **Language:** EN  
 **Status:** Living pin — operator carry card  
-**Voice:** Quin  
+**Voice:** Riyo  
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260729.165912` (EDT) · voice Quin  
-**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin** · **sundial**  
-**Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss** · **first resident** (routine) · **vegan-dogfood** (easter egg) · **living mutant** · **shred-prep list** · **transitive writing crawl** · **Kiln** · **three** · **quad** · **nona** · **deca** · **equinoxes** · **SDD** · **Nest-Chapter** · **your / %your** · Glow=code · Brix=data  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes** · **mod-clock**  
-**Git nib:** `e88196d7ce` · Grain · **Equinox e0** · Cursor paused · Claude continues · autoproject96/grain
-**Bookmark:** [`counsel/20260729-165912_the-equinox-season-deca-charter.md`](../counsel/20260729-165912_the-equinox-season-deca-charter.md)
+**Last refreshed:** `20260729.232755` (EDT) · voice Riyo  
+**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin** · **sundial** · **reds-first**  
+**Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss** · **first resident** (routine) · **vegan-dogfood** (easter egg) · **living mutant** · **shred-prep list** · **transitive writing crawl** · **Kiln** · **three** · **quad** · **nona** · **deca** · **undeca** *(proposed)* · **equinoxes** · **SDD** · **Nest-Chapter** · **your / %your** · Glow=code · Brix=data  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes** · **mod-clock** · **REDS.md**  
+**Git nib:** `02b5bf9627` · Grain · **Voice v15** FULL bundle land · journey 2 handoff · autoproject96/grain
+**Bookmark:** [`expanding-prompts/20260729-232755_voice-journey-two-handoff.md`](../expanding-prompts/20260729-232755_voice-journey-two-handoff.md)
 
-**Chapter:** Framework · EDT · **Grain** · **finishing edge:** **deca** — Equinox **OPEN** · e0 complete / **e1** next · Cursor **PAUSED** · Claude Fable 5 1m Max continues · Surface **PAUSED** p58/p59 · Identity Remake **PAUSED** k6 · GitHub-only · Codeberg retired · Nona **PAUSED** · three/quad living · Kiln **PAUSED** · Generator **PAUSED** · MUR paused · Geode PREP · OS PARK · Prefer **git nib**. · `prin scope`
+**Chapter:** Framework · EDT · **Grain** · **finishing edge:** **undeca** *(proposed)* — Voice **OPEN** · v15 complete / **v16** next · journey 1 closed · Equinox **PAUSED** e6/e7 · Surface **PAUSED** · Identity Remake **PAUSED** · GitHub-only · Riyo stands · Prefer **git nib**. · `prin scope`
 
 ---
 
@@ -26,13 +26,14 @@
 Fascia **shred** still waits circled shred yes — distinct from rename and from prune.  
 WOV retirement stays **roadmap last**. No live deploy · wallet · gas · private key.
 
-**Equinox Chapter (deca)** **OPEN** — e0 complete / **e1** next · Cursor **PAUSED** · Claude Fable continues `20260729.165912` · Glow=code · Brix=data · `%your` · mod-clock GREEN · handback `return_surface_p59`.  
-**Surface Chapter (sept)** **PAUSED** — p58/p59 · live-five GREEN · handed into deca. Resume lean `return_generator_s9`.  
+**Voice Chapter (undeca, proposed)** **OPEN** — v15 complete / **v16** next · journey 1 closed · journey 2 handoff `20260729.232755` · Riyo stands · handback `return_equinox_e7`.  
+**Equinox Chapter (deca)** **PAUSED** — e6 complete / e7 next · handback into Voice nested · resume lean `return_surface_p59`.  
+**Surface Chapter (sept)** **PAUSED** — p58/p59 · live-five GREEN. Resume lean `return_generator_s9`.  
 **Identity Remake (inner)** **PAUSED** — k6 complete / k7 next · handed back `return_surface_p55`.  
 **Nona Chapter (nona)** **PAUSED** n3/n4 — nest accuracy · SDD · residual **SEATED** · handed back `return_surface_p41`.  
 **Kiln Chapter (oct)** **PAUSED** o3/o4 — path cut LIVE · handed back earlier.  
 **Generator Chapter (sext)** **PAUSED** s8/s9 — handback when resumed `return_mur_u92`.  
-**Vocabulary:** nest **three** / **quad** / **nona** / **deca** · **equinoxes** · **SDD** · Nest-Chapter · Glow=code · Brix=data · your/%your.
+**Vocabulary:** nest **three** / **quad** / **nona** / **deca** / **undeca** *(proposed)* · **equinoxes** · **SDD** · Nest-Chapter · Glow=code · Brix=data · your/%your · reds-first.
 
 ---
 
@@ -58,8 +59,9 @@ WOV retirement stays **roadmap last**. No live deploy · wallet · gas · privat
 
 | Door | Kind |
 |------|------|
-| **Equinox Chapter e1+** | **OPEN** · Claude Fable · pick Prompt A–H · Cursor paused |
-| **Surface Chapter** | **PAUSED** p58/p59 · `return_surface_p59` into deca |
+| **Voice Chapter v16+** | **OPEN** · journey 2 · handoff expanding-prompts/20260729-232755_voice-journey-two-handoff.md |
+| **Equinox Chapter** | **PAUSED** e6/e7 · `return_equinox_e7` when Voice hands back |
+| **Surface Chapter** | **PAUSED** p58/p59 · `return_surface_p59` when Equinox resumes |
 | **Identity Remake** | **PAUSED** k6/k7 · `return_surface_p55` seated |
 | **Nona Chapter** | **PAUSED** n3/n4 · `return_surface_p41` seated |
 | **Living depth residual** | **SEATED** n2 · Kiln · Generator · MUR · LEXICON year |
