@@ -3,11 +3,13 @@
 **Language:** EN  
 **Status:** Living guide — person-to-person welcome; not a seating of this pier’s voice  
 **Voice:** Keaton’s letter, lightly tightened by Riyo  
-**Last updated:** `20260730.143736` (EDT) · SUNN journey
+**Last updated:** `20260730.145124` (EDT) · SUNN5
 
 ---
 
 My project I call **Grain** — it is like a framework for Cursor that helps you do everything more safely and faster and with more joy. You can literally ask Cursor any question you have and it will help you understand. Let me know when you download Cursor — likely the x86_64 Linux AppImage if you choose Linux — and I will give you an instruction to get started with Grain.
+
+Once you have cloned Grain, ask Cursor to walk [`first-season-personalize.md`](first-season-personalize.md) with you. Copy `tools/gen/season/personalize.template.brix` to `PERSONALIZE.brix` at the repo root (it stays local and gitignored), fill in your name and handles, and use the find/replace map so your pier speaks as you — not as me. Your first season is 256 rounds across four equinoxes; the first journey personalizes Grain, and the second asks open questions about the compass, universals, your goals, personality, and interests.
 
 You can choose between five voice names for your AI Cursor assistant — **Quin**, **Reya**, **Riyo**, **Trey**, or **Triz** — or you can make up your own. Those names are for *your* companion on *your* pier. On this repository the standing writing voice is **Riyo** ([`context/RIYO.md`](../../context/RIYO.md)); **Quin** remains as an OS variant name and the inference Q-vane. You can tell Cursor to help you using the `foundations` and `context` folders and to write replies in **Radiant Style**. It can help you learn anything you want.
 

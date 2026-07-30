@@ -1,0 +1,93 @@
+# first_season_journeys.brix — first 256-round season · equinox A journeys 0–1
+#
+# Shared sequencing for a new Grain pier. Personal fills live in PERSONALIZE.brix.
+# Equinox A (first of four) opens with personalize, then open-questions.
+# Journeys 2–3 of equinox A stay reserved for the steward's own seating.
+#
+# Seated 20260730.145124 · SUNN5 · voice Riyo
+
+name first-season-journeys
+version 20260730.145124
+kind sequencing
+audience acme
+season_rounds 256
+equinox_count 4
+equinox_index 0
+equinox_letter A
+equinox_name personalize-and-orient
+equinox_size 64
+
+# --- Journey 0 — Personalize your Grain (16 rounds) -------------------------
+journey_0_id j0
+journey_0_name personalize-grain
+journey_0_rounds 16
+journey_0_doors j0d0-j0d15
+journey_0_purpose Copy templates, fill PERSONALIZE.brix and GLOW_PROFILE.bron, run find/replace map, set remotes and voice, prove a signed hello commit inside the enclosure.
+journey_0_opens_with copy personalize.template.brix to PERSONALIZE.brix
+journey_0_closes_with signed Verified commit under your name
+journey_0_inherits personalize.template.brix
+journey_0_also GLOW_PROFILE.template.bron
+journey_0_also GLOW_HOST.template.bron
+journey_0_also SOURCE.md
+journey_0_topic identity
+journey_0_topic remotes
+journey_0_topic voice
+journey_0_topic enclosure
+journey_0_topic key-card
+journey_0_topic find-replace
+journey_0_topic first-witness
+journey_0_topic remember-card
+journey_0_door_0 copy personalize.template.brix to PERSONALIZE.brix
+journey_0_door_1 fill your_* identity fields
+journey_0_door_2 fill replace_*_to map for your pier
+journey_0_door_3 copy GLOW_PROFILE.template.bron and fill
+journey_0_door_4 copy GLOW_HOST.template.bron and fill
+journey_0_door_5 copy first_season_answers.template.brix to first_season_answers.brix
+journey_0_door_6 affirm PERSONALIZE.brix and answers instance stay gitignored
+journey_0_door_7 walk SOURCE.md Part One on your host
+journey_0_door_8 set living remotes under your handle
+journey_0_door_9 seat your standing voice name
+journey_0_door_10 apply replace map to living pier papers you own
+journey_0_door_11 refuse rewriting upstream dated testimony
+journey_0_door_12 paste first-season recursion prompt
+journey_0_door_13 run personalize_template_witness.rish GREEN
+journey_0_door_14 land one signed Verified hello commit under your name
+journey_0_door_15 refresh REMEMBER git nib on your pier
+
+# --- Journey 1 — Open questions · compass · goals · self (16 rounds) --------
+journey_1_id j1
+journey_1_name open-questions-compass
+journey_1_rounds 16
+journey_1_doors j1d0-j1d15
+journey_1_purpose Ask the steward open questions inspired by foundations and context — goals against universals and the compass, personality traits, and key interests — and seat answers as Brix for later seasons.
+journey_1_opens_with read compass rose and two universals
+journey_1_closes_with first_season_answers.brix filled locally
+journey_1_inherits first_season_questions.brix
+journey_1_also foundations/20260706-185112_follow-our-compass.md
+journey_1_also foundations/the-aspiring-radiance-universal.md
+journey_1_also foundations/the-regenerative-experiment-universal.md
+journey_1_also context/TWO_ROOMS.md
+journey_1_topic compass
+journey_1_topic universals
+journey_1_topic goals
+journey_1_topic personality
+journey_1_topic interests
+journey_1_topic constraints
+journey_1_topic joy
+journey_1_topic next-season-lean
+
+# --- Reserved (equinox A journeys 2–3) --------------------------------------
+journey_2_id j2
+journey_2_name reserved-steward
+journey_2_status reserved
+journey_3_id j3
+journey_3_name reserved-steward
+journey_3_status reserved
+
+# --- Later equinoxes (B–D) — named, not yet sequenced ------------------------
+equinox_1_letter B
+equinox_1_name deepen-craft
+equinox_2_letter C
+equinox_2_name offer-upstream
+equinox_3_letter D
+equinox_3_name rest-and-review

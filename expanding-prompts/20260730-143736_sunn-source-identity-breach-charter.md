@@ -24,7 +24,7 @@ SOURCE still speaks Quin · Dunsford · Codeberg-as-home · autoproject96 clone.
 | **SUNN2** | SOURCE Part One remotes — clone `xykj61/grain` · Codeberg retired note |
 | **SUNN3** | SOURCE apps — paid Claude · Claude iOS · Cursor iOS · Android not yet |
 | **SUNN4** | SOURCE Step 1–5 forge + Cursor/Claude depth refresh |
-| **SUNN5** | `manual/guides/apprentice-welcome.md` leaf |
+| **SUNN5** | apprentice-welcome + personalize Brix family (256-round first season) |
 | **SUNN6** | `first-day-personal-ops` · key-cards leaves that cite SOURCE |
 | **SUNN7** | macOS / enclosure leaves that cite SOURCE |
 | **SUNN8** | Root `README.md` · voice/name/onboarding touch |
@@ -52,7 +52,11 @@ SOURCE still speaks Quin · Dunsford · Codeberg-as-home · autoproject96 clone.
 | `expanding-prompts/20260730-143736_sunn-source-identity-breach-charter.md` | this charter |
 | `expanding-prompts/20260730-143736_sunn-census.md` | grep census |
 | `SOURCE.md` | SUNN1–3 living breach |
-| `manual/guides/apprentice-welcome.md` | SUNN5 start |
+| `manual/guides/apprentice-welcome.md` | SUNN5 welcome leaf |
+| `tools/gen/season/personalize.template.brix` | SUNN5 identity + replace map |
+| `tools/gen/season/first_season_journeys.brix` | SUNN5 equinox A j0–j1 |
+| `tools/gen/season/first_season_questions.brix` | SUNN5 open-question bank |
+| `manual/guides/first-season-personalize.md` | SUNN5 human walk |
 
 ---
 

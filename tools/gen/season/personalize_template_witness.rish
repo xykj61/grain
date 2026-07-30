@@ -1,0 +1,64 @@
+# tools/gen/season/personalize_template_witness.rish — SUNN5 personalize brix family.
+#
+#   rishi/bin/rishi run tools/gen/season/personalize_template_witness.rish
+#
+# Presence census on committed templates and sequencing — never reads PERSONALIZE.brix.
+
+say "personalize-brix: Language EN — template family for a new Grain season."
+say "personalize-brix: Style Radiant — Acme steward inherits, then replaces."
+say "personalize-brix: Lens TAME — SUNN5 · clean presence · no personal fill required."
+
+let t = run ["test" "-f" "tools/gen/season/personalize.template.brix"]
+assert t.ok else "personalize-brix: personalize.template.brix ABSENT"
+
+let j = run ["test" "-f" "tools/gen/season/first_season_journeys.brix"]
+assert j.ok else "personalize-brix: first_season_journeys.brix ABSENT"
+
+let q = run ["test" "-f" "tools/gen/season/first_season_questions.brix"]
+assert q.ok else "personalize-brix: first_season_questions.brix ABSENT"
+
+let a = run ["test" "-f" "tools/gen/season/first_season_answers.template.brix"]
+assert a.ok else "personalize-brix: first_season_answers.template.brix ABSENT"
+
+let r = run ["test" "-f" "expanding-prompts/20260730-144833_first-season-256-recursion-template.md"]
+assert r.ok else "personalize-brix: recursion template ABSENT"
+
+let g = run ["test" "-f" "manual/guides/first-season-personalize.md"]
+assert g.ok else "personalize-brix: manual guide ABSENT"
+
+let body = read-file "tools/gen/season/personalize.template.brix"
+assert body contains "replace_count 12" else "personalize-brix: want replace_count"
+assert body contains "season_rounds 256" else "personalize-brix: want 256 rounds"
+assert body contains "equinox_count 4" else "personalize-brix: want 4 equinoxes"
+assert body contains "your_name" else "personalize-brix: want your_name"
+assert body contains "source_pier_handle xykj61" else "personalize-brix: want source pier handle"
+
+let journeys = read-file "tools/gen/season/first_season_journeys.brix"
+assert journeys contains "personalize-grain" else "personalize-brix: want journey 0 name"
+assert journeys contains "open-questions-compass" else "personalize-brix: want journey 1 name"
+
+let questions = read-file "tools/gen/season/first_season_questions.brix"
+assert questions contains "question_count 16" else "personalize-brix: want 16 questions"
+assert questions contains "q_00_id compass-return" else "personalize-brix: want q_00"
+assert questions contains "q_15_id joy-and-next" else "personalize-brix: want q_15"
+
+# Root deny-all (`/*`) must ignore filled instances — even when absent.
+let ign_p = run ["git" "check-ignore" "-q" "PERSONALIZE.brix"]
+assert ign_p.ok else "personalize-brix: PERSONALIZE.brix must be gitignored by root deny-all"
+let ign_a = run ["git" "check-ignore" "-q" "first_season_answers.brix"]
+assert ign_a.ok else "personalize-brix: first_season_answers.brix must be gitignored by root deny-all"
+
+# Refuse — personal fill must not be tracked if somehow present
+let tracked = run ["sh" "-c" "git ls-files --error-unmatch PERSONALIZE.brix 2>/dev/null"]
+assert tracked.ok == false else "personalize-brix: PERSONALIZE.brix must not be tracked"
+let tracked_a = run ["sh" "-c" "git ls-files --error-unmatch first_season_answers.brix 2>/dev/null"]
+assert tracked_a.ok == false else "personalize-brix: first_season_answers.brix must not be tracked"
+
+let body2 = read-file "tools/gen/season/personalize.template.brix"
+assert body2 contains "answers_instance_path first_season_answers.brix" else "personalize-brix: want answers_instance_path"
+
+let journeys2 = read-file "tools/gen/season/first_season_journeys.brix"
+assert journeys2 contains "journey_0_door_0" else "personalize-brix: want j0 door sequence"
+assert journeys2 contains "journey_0_door_15" else "personalize-brix: want j0 door 15"
+
+say "GREEN: personalize-brix — templates · journeys · questions · recursion · guide · gitignored instances"

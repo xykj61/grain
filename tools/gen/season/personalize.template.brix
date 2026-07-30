@@ -1,0 +1,106 @@
+# personalize.template.brix — Acme / new-pier personalization data
+#
+# Brix = data · Glow = code. One key, one space, one value. `#` comments.
+#
+# Copy to the repository root and fill YOUR values:
+#   cp tools/gen/season/personalize.template.brix PERSONALIZE.brix
+#
+# PERSONALIZE.brix is gitignored (root deny-all). This template is tracked.
+# Pair with GLOW_PROFILE.bron · GLOW_HOST.bron · tools/key-card.conf.
+#
+# Purpose: let an Acme Corporation employee (or any new Grain steward)
+# de-associate the source pier's personal names, handles, and paths, then
+# inherit a first 256-round season with four equinoxes from these fields.
+#
+# Seated 20260730.145124 · SUNN5 · voice Riyo
+
+name personalize
+version 20260730.145124
+kind template
+audience acme
+voice Riyo
+lens tame
+
+# --- Your living identity (edit in PERSONALIZE.brix) -------------------------
+your_name Your Full Name
+your_handle_github your-github-handle
+your_email you@example.com
+your_timezone America/New_York
+your_timezone_label Eastern
+your_voice Riyo
+your_editor Cursor
+your_model Cursor Grok 4.5 300k High Fast
+your_clone_url https://github.com/your-github-handle/grain.git
+your_repo_dir ~/grain
+
+# --- Source pier you forked from (Grain living face — rewrite the "to" map) -
+# These name what the shared docs may still say until find/replace runs.
+source_pier_name Keaton Livermore
+source_pier_name_prior Keaton Dunsford
+source_pier_pseudonym Kaeden Reyklah
+source_pier_handle xykj61
+source_pier_email xykj61@gmail.com
+source_pier_email_prior keatondun@gmail.com
+source_pier_clone https://github.com/xykj61/grain.git
+source_pier_agent_lane autoproject96
+source_pier_legacy_path veganreyklah2
+source_pier_voice Riyo
+source_pier_az_star ~bandun
+source_pier_az_planet ~pacpet-solreb
+
+# --- Find / replace map (from → to) — apply before teaching your own pier ---
+# Tools and agents read these pairs; humans may sed. Never rewrite git history.
+replace_count 12
+replace_0_from Keaton Livermore
+replace_0_to Your Full Name
+replace_1_from Keaton Dunsford
+replace_1_to Your Full Name
+replace_2_from Kaeden Reyklah
+replace_2_to Your Full Name
+replace_3_from Kaeden
+replace_3_to Your First Name
+replace_4_from xykj61@gmail.com
+replace_4_to you@example.com
+replace_5_from keatondun@gmail.com
+replace_5_to you@example.com
+replace_6_from xykj61
+replace_6_to your-github-handle
+replace_7_from veganreyklah2
+replace_7_to grain
+replace_8_from https://github.com/xykj61/grain.git
+replace_8_to https://github.com/your-github-handle/grain.git
+replace_9_from ~/grain
+replace_9_to ~/grain
+replace_10_from ~bandun
+replace_10_to ~acme-star
+replace_11_from ~pacpet-solreb
+replace_11_to ~acme-corp-test-ship
+
+# --- First season arithmetic (Nest-Season / Equinox law) --------------------
+season_name Your First Grain Season
+season_rounds 256
+equinox_count 4
+equinox_size 64
+journey_count_per_equinox 4
+journey_size 16
+journey_total 16
+nest_label your-first
+round_letter r
+equinox_0_letter A
+equinox_0_focus personalize-and-ask
+handback_when_paused return_parent_bookmark
+
+# --- Pointers to sequencing data --------------------------------------------
+journeys_brix tools/gen/season/first_season_journeys.brix
+questions_brix tools/gen/season/first_season_questions.brix
+answers_template_path tools/gen/season/first_season_answers.template.brix
+answers_instance_path first_season_answers.brix
+recursion_template expanding-prompts/20260730-144833_first-season-256-recursion-template.md
+guide_path manual/guides/first-season-personalize.md
+profile_template GLOW_PROFILE.template.bron
+host_template GLOW_HOST.template.bron
+source_guide SOURCE.md
+compass foundations/20260706-185112_follow-our-compass.md
+universals_aspiring foundations/the-aspiring-radiance-universal.md
+universals_regenerative foundations/the-regenerative-experiment-universal.md
+checked YYYYMMDD.HHMMSS

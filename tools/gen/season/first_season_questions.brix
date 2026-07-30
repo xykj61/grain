@@ -1,0 +1,89 @@
+# first_season_questions.brix — open-question bank for equinox A · journey 1
+#
+# Sequencing for counsel/bench: one question family per door cluster.
+# Answers land in gitignored first_season_answers.brix at the repo root
+# (copy from first_season_answers.template.brix when that file exists, or
+# create fresh). Do not commit personal answers.
+#
+# Inspired by foundations (compass · universals) and context (Two Rooms · TAME).
+# Seated 20260730.145124 · SUNN5 · voice Riyo
+
+name first-season-questions
+version 20260730.145124
+kind question-bank
+audience acme
+journey open-questions-compass
+question_count 16
+one_question_max_per_response 1
+
+# --- Cluster A · Compass (doors j1d0–j1d3) ----------------------------------
+q_00_id compass-return
+q_00_cluster compass
+q_00_prompt When direction frays, where do you already return — people, texts, places, or practices — before you decide the next step?
+q_00_inspired_by foundations/20260706-185112_follow-our-compass.md
+q_01_id compass-rose
+q_01_cluster compass
+q_01_prompt After reading the compass rose (foundations → grain → two rooms → active-designing → TASKS → ROADMAP), which step feels most natural to you, and which feels hardest?
+q_01_inspired_by foundations/20260706-185112_follow-our-compass.md
+q_02_id grain-fit
+q_02_cluster compass
+q_02_prompt Name one project you have known that *did not* cut with the grain — what felt forced?
+q_02_inspired_by active-designing/20260702-184312_the-grain-and-the-crossing.md
+q_03_id two-rooms
+q_03_cluster compass
+q_03_prompt Do you prefer studying others' work first, or designing in your own names first — and why?
+q_03_inspired_by context/TWO_ROOMS.md
+
+# --- Cluster B · Universals & goals (doors j1d4–j1d7) -----------------------
+q_04_id aspiring-radiance
+q_04_cluster universals
+q_04_prompt The Aspiring Radiance Universal asks regenerative policy for every climate and community. Which climate or community do you feel most responsible to first?
+q_04_inspired_by foundations/the-aspiring-radiance-universal.md
+q_05_id regenerative-experiment
+q_05_cluster universals
+q_05_prompt The Regenerative Experiment Universal holds literary renewal across landscapes. What landscape — literal or metaphorical — do you want your work to renew?
+q_05_inspired_by foundations/the-regenerative-experiment-universal.md
+q_06_id goals-year
+q_06_cluster goals
+q_06_prompt In the next year, what is one concrete good you want Grain (or your fork of it) to help you ship or learn?
+q_06_inspired_by foundations/20260706-185112_follow-our-compass.md
+q_07_id goals-non-goal
+q_07_cluster goals
+q_07_prompt What is one tempting goal you choose *not* to chase this season — and what does that refusal protect?
+q_07_inspired_by context/equinox_foundations.brix
+
+# --- Cluster C · Personality & traits (doors j1d8–j1d11) --------------------
+q_08_id traits-three
+q_08_cluster personality
+q_08_prompt Name three personality traits you want your AI companion to honor when it writes and plans with you.
+q_08_inspired_by context/RIYO.md
+q_09_id traits-tension
+q_09_cluster personality
+q_09_prompt Which two of your strengths pull against each other — and how should the bench behave when they do?
+q_09_inspired_by context/RADIANT_STYLE.md
+q_10_id work-rhythm
+q_10_cluster personality
+q_10_prompt Do you prefer long deep sessions, many short kg laps, or mixed — and what does “done for today” feel like in your body?
+q_10_inspired_by context/QUIN.md
+q_11_id voice-choice
+q_11_cluster personality
+q_11_prompt Which standing voice name will you use on your pier (Riyo, Quin, Reya, Trey, Triz, or your own) — and what does that name ask of the prose?
+q_11_inspired_by context/RIYO.md
+
+# --- Cluster D · Interests & next lean (doors j1d12–j1d15) ------------------
+q_12_id interests-three
+q_12_cluster interests
+q_12_prompt Name three key interests outside this repository that you want the work to stay kind to.
+q_12_inspired_by foundations/README.md
+q_13_id interest-craft
+q_13_cluster interests
+q_13_prompt Which craft — language, systems, teaching, design, civic tech, or other — do you most want to deepen in equinox B?
+q_13_inspired_by tools/gen/season/first_season_journeys.brix
+q_14_id constraints
+q_14_cluster interests
+q_14_prompt What hard constraints (time, hardware, jurisdiction, care duties) must every plan respect?
+q_14_inspired_by active-designing/20260727-101510_the-acme-onboarding-walk.md
+q_15_id joy-and-next
+q_15_cluster interests
+q_15_prompt What would make this first 256-round season feel joyful at the close — and what is your lean for the first door of journey 2?
+q_15_inspired_by foundations/20260729-130535_season-driven-development.md
