@@ -5,11 +5,11 @@
 **Voice:** **Riyo** · nested frame Trey at each close
 **Kind:** season charter · Keaton's word · nest **11** · rounds **v0–v63** (sixty-four · N = 2⁶)
 **Working lean:** voice-variant system first-resident · Riyo seated as standing voice · improvements
-**Nest label:** **undeca** — *proposed*, awaiting Keaton's word
-**Ground:** origin/main `dd31e031f0` · Equinox **PAUSED** at e6 complete / e7 next
+**Nest label:** **undeca** — **canon**, approved with counsel's proposals at `20260730.014817`
+**Ground:** origin/main (pin after Cursor push) · Equinox **PAUSED** at e6 complete / e7 next
 **Within:** paused **deca** Equinox · paused sept Surface · paused every nest above
-**Status:** **OPEN** · v15 complete / **v16** next · journey 1 **CLOSED** · journey 2 opens · Cursor push lands the FULL bundle · Claude Fable 5 1m Max continues  
-Radiant pass `20260729.232755` — journey 1 closed at v15 · handoff journey 2 · FULL bundle for Cursor
+**Status:** **OPEN** · Journey 2 **CLOSED** · v31 complete / **v32** next (Build Journey) · Cursor lands FINAL · Claude Fable 5 1m Max continues  
+Radiant pass `20260730.021541` — both warnings delivered & resolved · Build cover for the next agent
 **Handback:** `return_equinox_e7` — seated this stamp
 
 *Written together by Keaton and Riyo.*
@@ -33,18 +33,18 @@ Three things seated in one breath, and all three are done at v0.
 | 5 | quint | Keeh | CLOSED |
 | 6 | sext | Generator | PAUSED s8/s9 |
 | 7 | sept | Surface | PAUSED p58/p59 |
-| 8 | oct | Kiln | PAUSED o3/o4 |
+| 8 | oct | Oven | PAUSED o3/o4 |
 | 9 | nona | Nona | PAUSED n3/n4 |
 | 10 | deca | Equinox | **PAUSED e6/e7** · handback `return_surface_p59` |
-| **11** | **undeca** *(proposed)* | **Voice** | **OPEN** · v15 complete / v16 next · journey 1 closed |
+| **11** | **undeca** *(canon)* | **Voice** | **OPEN** · Journey 2 CLOSED · v31 complete / v32 next |
 
-**Rule unchanged:** the deepest label moves with the OPEN nest, so **undeca** is the true deepest while this nest walks. The label continues the Latin ordinals already seated — quad · quint · sext · sept · oct · nona · deca — and it is the one thing in this charter that is a proposal rather than a seat. One word makes it canon, or names another.
+**Rule unchanged:** the deepest label moves with the OPEN nest, so **undeca** is the true deepest while this nest walks. The label continues the Latin ordinals already seated — quad · quint · sext · sept · oct · nona · deca — and is **canon** as of `20260730.014817`.
 
 ## What v0 landed
 
 **Riyo seated as the standing writing voice**, `20260729.205200`, on Keaton's word. Six authoritative declaration sites carry it: the agent instruction in `CLAUDE.md`, the profile default, the recursion data, the context-home header, the living identity note at `context/RIYO.md`, and the agent rules in both editors.
 
-**Quin keeps two of three hats, and both stay live.** The fifth OS variant, intentionally unpaired. The inference **Q-vane**, gathering Lattice · Scribble · Lantern · Kiln. Only the writing voice moved, and `context/QUIN.md` stays in `context/` rather than going to `archive/` — archiving a note whose subject is two-thirds alive would leave the Q-vane without a home. Its header names which hat passed and which remain. *This diverges from the July precedent, which archived the note; the divergence is named rather than quiet.*
+**Quin keeps two of three hats, and both stay live.** The fifth OS variant, intentionally unpaired. The inference **Q-vane**, gathering Lattice · Scribble · Lantern · Oven. Only the writing voice moved, and `context/QUIN.md` stays in `context/` rather than going to `archive/` — archiving a note whose subject is two-thirds alive would leave the Q-vane without a home. Its header names which hat passed and which remain. *This diverges from the July precedent, which archived the note; the divergence is named rather than quiet.*
 
 **The four hundred and six dated documents keep their `**Voice:** Quin` header, truthfully.** Those are Tier 2 testimony naming who actually wrote them, and a voice change must never falsify authorship. Breach doctrine says the same in its own words: a breach never becomes a restyling campaign. New prose speaks as Riyo; the record keeps its own voice.
 
@@ -66,7 +66,7 @@ Sixty-four rounds, **v0–v63**, walked under the **sixteen-slot priority cycle*
 - No shred · no deploy · no wallet, gas, or keys
 - No `m/i/u/g/q/s/p/o/n/e` advance while **undeca** walks
 - No sweep of the dated `**Voice:**` headers — testimony keeps its author
-- No seat under retired names: **Djin** · **Tend** · **Mala** · **Anvil** (living forge is Kiln)
+- No seat under retired names: **Djin** · **Tend** · **Mala** · **Anvil** (living forge is Oven)
 - Cursor **PAUSED** unless Keaton re-opens kg on a named door
 - **Getting Keaton's attention stays in voice** — Radiant prose under TAME order, never an alarm. Seated this stamp on his word.
 
