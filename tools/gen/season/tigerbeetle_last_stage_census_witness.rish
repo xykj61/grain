@@ -1,0 +1,30 @@
+# tools/gen/season/tigerbeetle_last_stage_census_witness.rish — e54 The Last Stage.
+#
+#   rishi/bin/rishi run tools/gen/season/tigerbeetle_last_stage_census_witness.rish
+#
+# Requires gratitude/tigerbeetle submodule present.
+# Clean-room: presence only · never copies into rye/.
+# Leaf only — no nested elder choirs.
+
+say "tb-last-stage: Language EN — the last stage keeps trying and stays small."
+say "tb-last-stage: Style Radiant — thank goodness, then back to the work."
+say "tb-last-stage: Lens TAME — e54 · clean-room study · almanac seat 59."
+
+let clone = run ["test" "-d" "gratitude/tigerbeetle/src"]
+assert clone.ok else "tb-last-stage: gratitude/tigerbeetle/src ABSENT — host clone first"
+
+let census = run ["sh" "tools/fixtures/tigerbeetle_last_stage_census.sh"]
+say census.out
+assert census.ok else "tb-last-stage: census failed or thin"
+assert census.out contains "CLONE=present" else "tb-last-stage: want CLONE=present"
+assert census.out contains "verdict=ok" else "tb-last-stage: want verdict=ok"
+assert census.out contains "GUIDE_LAST=yes" else "tb-last-stage: held guide must teach The Last Stage"
+assert census.out contains "GUIDE_FUN=yes" else "tb-last-stage: guide must keep trying and have fun"
+assert census.out contains "GUIDE_SMALL=yes" else "tb-last-stage: guide must keep the work small"
+assert census.out contains "GUIDE_BILBO=yes" else "tb-last-stage: guide must close with Bilbo"
+assert census.out contains "TAME_LAST=yes" else "tb-last-stage: TAME must teach The Last Stage"
+assert census.out contains "STYLE=yes" else "tb-last-stage: clone docs must teach the law"
+assert census.out contains "ELDER_TOOL=yes" else "tb-last-stage: tooling elder must be present"
+assert census.out contains "RADIANT=yes" else "tb-last-stage: Grain Radiant Style must be present"
+
+say "GREEN: tb-last-stage — guide·fun·small·bilbo·TAME·style·elder-tool·RADIANT ok"

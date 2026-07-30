@@ -226,7 +226,7 @@ Expected CLONE=present · GUIDE_NAMING · GUIDE_UNITS · GUIDE_ABBREV · TAME_NA
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ch3_surface_witness.rish` · **Stamp:** `20260730.140147` · **Witness:** `tools/gen/season/equinox_ch3_surface_witness.rish`
 Expected wing halls=4/breach=0 · safety static/seventy/flow · performance sized/batching/explicit · naming, and verdict=missing_wing on an absent path. Metal answered GREEN. Chapter three closes at sixteen; chapter four waits for metal.
 
-## Chapter Four (10 of 16)
+## Chapter Four (11 of 16)
 
 Opened from metal at stamp `20260730.140442`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -269,6 +269,10 @@ Expected CLONE=present · GUIDE_DEPS · GUIDE_ZERO · GUIDE_ZIG · GUIDE_SUPPLY 
 ### 58. Tooling stays small: Zig first, and scripts prefer Zig when the team grows.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_tooling_choir_witness.rish` · **Stamp:** `20260730.165750` · **Witness:** `tools/gen/season/tigerbeetle_tooling_census_witness.rish` · scan `tools/fixtures/tigerbeetle_tooling_census.sh` · choir `equinox_tigerbeetle_tooling_choir_witness.rish`
 Expected CLONE=present · GUIDE_TOOL · GUIDE_ZIG · GUIDE_SCRIPTS · GUIDE_RIGHT · TAME_TOOL · STYLE · ELDER_DEPS · RADIANT, and verdict=absent on a missing clone path. Metal answered GREEN. Clean-room study only.
+
+### 59. The last stage keeps trying, stays small, and laughs before the next pass.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_last_stage_choir_witness.rish` · **Stamp:** `20260730.170309` · **Witness:** `tools/gen/season/tigerbeetle_last_stage_census_witness.rish` · scan `tools/fixtures/tigerbeetle_last_stage_census.sh` · choir `equinox_tigerbeetle_last_stage_choir_witness.rish`
+Expected CLONE=present · GUIDE_LAST · GUIDE_FUN · GUIDE_SMALL · GUIDE_BILBO · TAME_LAST · STYLE · ELDER_TOOL · RADIANT, and verdict=absent on a missing clone path. Metal answered GREEN. Clean-room study only.
 
 ---
 

@@ -1,0 +1,30 @@
+# tools/gen/season/equinox_tigerbeetle_last_stage_choir_witness.rish — e54 → almanac.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_last_stage_choir_witness.rish
+#
+# Leaf welcome + refuse only — no nested elder choirs.
+
+say "equinox-tb-last-stage-choir: Language EN — last stage stays small; refuse an absent clone."
+say "equinox-tb-last-stage-choir: Style Radiant — welcome and refuse share one seat."
+say "equinox-tb-last-stage-choir: Lens TAME — e54 · keep trying · almanac seat 59."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_last_stage_census_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-tb-last-stage-choir: welcome RED"
+assert welcome.out contains "GREEN: tb-last-stage" else "equinox-tb-last-stage-choir: welcome missing GREEN"
+assert welcome.out contains "GUIDE_LAST=yes" else "equinox-tb-last-stage-choir: want GUIDE_LAST"
+assert welcome.out contains "GUIDE_SMALL=yes" else "equinox-tb-last-stage-choir: want GUIDE_SMALL"
+assert welcome.out contains "TAME_LAST=yes" else "equinox-tb-last-stage-choir: want TAME_LAST"
+assert welcome.out contains "ELDER_TOOL=yes" else "equinox-tb-last-stage-choir: want ELDER_TOOL"
+
+let refuse = run ["sh" "tools/fixtures/tigerbeetle_last_stage_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
+say refuse.out
+assert refuse.ok == false else "equinox-tb-last-stage-choir: absent clone must fail"
+assert refuse.out contains "verdict=absent" else "equinox-tb-last-stage-choir: want verdict=absent"
+assert refuse.out contains "CLONE=ABSENT" else "equinox-tb-last-stage-choir: want CLONE=ABSENT"
+
+let almanac = run ["sh" "tools/gen/season/equinox_tigerbeetle_last_stage_almanac.sh"]
+assert almanac.ok else "equinox-tb-last-stage-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-tb-last-stage-choir — last stage · small · Bilbo · elder tooling · absent refuses · almanac seat 59"
