@@ -1,0 +1,43 @@
+//! comlink/discovery/introduce_test.rye — hop welcome and refuse.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/discovery/introduce_test.rye
+
+const std = @import("std");
+const print = std.debug.print;
+const desc = @import("descriptor.rye");
+const table_mod = @import("table.rye");
+const introduce = @import("introduce.rye");
+
+pub fn main() !void {
+    if (introduce.introduce_hops_max != 2) return error.HopsBound;
+
+    const star = table_mod.PeerId.from_slice("star-~bandun") orelse return error.StarId;
+    const ship = table_mod.PeerId.from_slice("ship-solreb") orelse return error.ShipId;
+    const peer = table_mod.PeerId.from_slice("peer-fresh") orelse return error.PeerId;
+    const d_ship = desc.Descriptor.from_slice("ship|udp://10|fresh|star-line") orelse return error.DescShip;
+    const d_peer = desc.Descriptor.from_slice("peer|udp://11|fresh|ship-line") orelse return error.DescPeer;
+
+    // Hop 1: star introduces ship.
+    const hop1 = introduce.Introduction.init(star, ship, d_ship, 1, .star) orelse return error.Hop1Init;
+    var backing: [4096]u8 = undefined;
+    var table = table_mod.PeerTable.init(&backing);
+    try introduce.accept(&table, hop1, 1000);
+    if (table.get(ship) == null) return error.ShipMissing;
+
+    // Hop 2: ship introduces peer.
+    const hop2_n = introduce.next_hop(1) orelse return error.NextHop2;
+    if (hop2_n != 2) return error.NextHopWrong;
+    const hop2 = introduce.Introduction.init(ship, peer, d_peer, hop2_n, .ship) orelse return error.Hop2Init;
+    try introduce.accept(&table, hop2, 1001);
+    if (table.count() != 2) return error.CountAfterTwo;
+
+    // Hop 3 refuses at the door.
+    if (introduce.next_hop(2) != null) return error.NextHop3ShouldNull;
+    if (introduce.Introduction.init(peer, ship, d_ship, 3, .ship) != null) return error.Hop3ShouldRefuse;
+
+    // Role mismatch refuses: ship cannot claim hop 1; star cannot claim hop 2.
+    if (introduce.Introduction.init(ship, peer, d_peer, 1, .ship) != null) return error.ShipHop1;
+    if (introduce.Introduction.init(star, peer, d_peer, 2, .star) != null) return error.StarHop2;
+
+    print("GREEN: discovery introduce — hops_max {d} star→ship→peer · refuse past\n", .{introduce.introduce_hops_max});
+}

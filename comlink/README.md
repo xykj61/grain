@@ -1,11 +1,22 @@
 # Comlink — the Sealed Wire, Hosted and on Real Virtio
 
 **Language:** EN
-**Last updated:** 2026-07-10 (Tablecloth query device **15575**/**15576**; Granary device **15573**/**15574**; hosted resin **38496**/**38497**)
+**Last updated:** 2026-07-30 (discovery table · gossip · introduce under Build Journey v32)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Checkable — sealed datagram wire
+**Status:** Checkable — sealed datagram wire · peer discovery home
 
 **Comlink carries a sealed datagram, and the format never forks.** `wire_format.rye` defines one offset layout and one seal/open pair, and every rung above it — a hosted UDP socket on localhost, or a real virtio-net link between two freestanding guests on QEMU virt — reads and writes exactly the same bytes. A fact that crosses this wire arrives whole or not at all; nothing here retries a partial frame.
+
+## Discovery (`discovery/`)
+
+Build Journey doors that *find* peers and never order Mycelium. Bounds sit in `tools/gen/season/recursion_block.brix` (v27): max_peers 256 · descriptor 512 · fanout 8 · staleness 4096 · introduce hops 2.
+
+| File | Proves |
+|------|--------|
+| [`discovery/descriptor.rye`](discovery/descriptor.rye) | signed self-description bound at 512 |
+| [`discovery/table.rye`](discovery/table.rye) | peer table over Tally stack free-list + Region pack |
+| [`discovery/gossip.rye`](discovery/gossip.rye) | fanout-8 freshest select · fold remote offer |
+| [`discovery/introduce.rye`](discovery/introduce.rye) | star→ship→peer hops · refuse past 2 |
 
 ## The Core
 
