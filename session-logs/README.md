@@ -1,3 +1,4 @@
+- `20260730.141743` — [E47 TB buffer-bleeds GREEN · almanac 53 · ch4 5/16](20260730-141743_e47-tb-buffer-bleeds-green.bron) — alloc·defer · e48 next
 - `20260730.141330` — [E46 TB shrink-scope GREEN · almanac 52 · ch4 4/16](20260730-141330_e46-tb-shrink-scope-green.bron) — POCPOU · e47 next
 - `20260730.141038` — [E45 TB cache-inplace GREEN · almanac 51 · ch4 3/16](20260730-141038_e45-tb-cache-inplace-green.bron) — no-dup·inplace · e46 next
 - `20260730.140756` — [E44 TB say-how GREEN · almanac 50 · ch4 2/16](20260730-140756_e44-tb-say-how-green.bron) — goal·method · e45 next
