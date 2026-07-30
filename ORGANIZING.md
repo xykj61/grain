@@ -3,9 +3,11 @@
 *A durable guide to where work lives, how new writing earns its place, and how the tree stays honest over time.*
 
 **Language:** EN
-**Last updated:** 2026-07-27 (`20260727.234128` — root `saga/` shelf for season close narratives)
+**Last updated:** 2026-07-30 (`20260730.033024` — bibliography root pointer)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **Voice:** Quin
+
+*The root gathering of sources now lives at [`bibliography.md`](bibliography.md).*
 
 ---
 
