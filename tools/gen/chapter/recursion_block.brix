@@ -93,14 +93,16 @@ coords_fascia_equinox OPEN
 coords_fascia_nest duodeca
 coords_fascia_nest_n 12
 coords_fascia_rounds f0-f63
-coords_fascia_round 2
-coords_fascia_status f2 complete / f3 next · exit bar MET
+coords_fascia_round 3
+coords_fascia_status f3 complete / f4 next · exit bar MET · harden hold
 coords_fascia_entry 69
 coords_fascia_now 90
 coords_fascia_f1_delta +11
 coords_fascia_f1_stamp 20260730.091805 ratchet clear
 coords_fascia_f2_delta +10
 coords_fascia_f2_stamp 20260730.093112 exit bar met
+coords_fascia_f3_delta 0
+coords_fascia_f3_stamp 20260730.093412 harden hold
 coords_fascia_exit_bar 90
 coords_fascia_exit_bar_status MET 20260730.093112
 coords_fascia_handback return_voice_j4_d10
