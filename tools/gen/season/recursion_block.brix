@@ -291,7 +291,7 @@ coords_e49_charter expanding-prompts/20260730-142537_e49-tb-off-by-one-charter.m
 coords_e49_recursion expanding-prompts/20260730-142650_equinox-season-e49-recursion-prompt.md
 coords_sunn OPEN 20260730.152953
 coords_sunn_resumed 20260730.152953 return_sunn_sunn8 CONSUMED
-coords_sunn_status SUNN0-8 GREEN · SUNN9 next · OPEN
+coords_sunn_status SUNN0-9 GREEN · SUNN10 next · OPEN
 coords_sunn_waymark SUNN
 coords_sunn_input source-pier-papers-identity-refresh
 coords_sunn_charter expanding-prompts/20260730-143736_sunn-source-identity-breach-charter.md
@@ -319,6 +319,12 @@ coords_sunn8_path README.md
 coords_sunn8_witness tools/gen/season/sunn8_root_readme_witness.rish
 coords_sunn8_charter expanding-prompts/20260730-152852_sunn8-root-readme-charter.md
 coords_sunn8_recursion expanding-prompts/20260730-152953_sunn-recursion-prompt.md
+coords_sunn9 claude_llms_stewards GREEN 20260730.153327
+coords_sunn9_path CLAUDE.md
+coords_sunn9_also llms.txt · STEWARDS.md
+coords_sunn9_witness tools/gen/season/sunn9_claude_llms_stewards_witness.rish
+coords_sunn9_charter expanding-prompts/20260730-153243_sunn9-claude-llms-stewards-charter.md
+coords_sunn9_recursion expanding-prompts/20260730-153327_sunn-recursion-prompt.md
 coords_pole GREEN 20260730.150702
 coords_pole_status POLE0-3 GREEN · handback return_sunn_sunn8 CONSUMED
 coords_pole_waymark POLE
