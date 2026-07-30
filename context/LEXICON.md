@@ -317,3 +317,10 @@ Full loop bounds: [`work-in-progress/ready-to-ask-claude.md`](../work-in-progres
 ---
 
 *May each name carry its idea. May the lexicon grow only when a name earns its place.*
+
+## Resin cut append · `20260730.072710`
+
+| **shape** | The house word for what a thing is that survives crossing a seam: baton shapes, brix shapes, witness shapes, the shape of a season. A shape is named before it is filled, and a crossing proves itself lossless by arriving still in shape. Preferred over template, format, schema, and structure wherever it reads naturally. Distinct from **Shape** (Grain), the bounded normalizing type. Seated by Keaton's word, `20260730.072710`. |
+| **Amphora** (relay pattern) | Amphora also names the relay pattern that **shape** generalizes. A whole shreds into parts, parity travels beside them, the set crosses a seam, and the far side restores verified. Instantiated over bytes by the module, and over counsel artifacts by the relay resin. Second consumer reached `20260730`; graduated from module to pattern by the second-consumer rule. Stands beside the shred-with-parity Amphora row without altering its words. Seated by Keaton's word, `20260730.072710`. |
+| **resin** | The packed whole that crosses a seam: content-addressed, manifest-bearing, restored verified rather than trusted. A counsel resin gathers every bead minted since the last landing and crosses as one bundle — guaranteed at each equinox close, and permitted earlier when the pending set reaches its bound. Sibling sense to Amber's bit-faithful resins. Seated by Keaton's word, `20260730.072710`. |
+| **bead** | One part of a resin, addressed by its content. Here, one dated artifact. Beads carry a class: **workshop** beads land at their stated homes on relay, and **personal** beads land only with Keaton's word behind them. Seated by Keaton's word, `20260730.072710`. |
