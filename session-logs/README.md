@@ -1,3 +1,4 @@
+- `20260730.033648` — [red 32 auth-refused · myc fold](20260730-033648_red32-auth-refused-myc-fold.bron) — row 32 · 403 guard · fold GREEN · pier Option 2 parked
 - `20260730.033024` — [lexicon limbs · bibliography · introduce](20260730-033024_lexicon-limbs-bibliography-introduce.bron) — nine limbs · bibliography root · introduce GREEN · myc next
 - `20260730.032517` — [remember shape · table Check · gossip](20260730-032517_remember-shape-table-gossip-check.bron) — affection · Check shapes · gossip GREEN · introduce next
 - `20260730.032348` — [baton J2 table single-file](20260730-032348_baton-j2-table-single.bron) — waters agree · red 31 · ls-remote guard · table.rye GREEN
