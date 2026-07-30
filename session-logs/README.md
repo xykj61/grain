@@ -1,3 +1,4 @@
+- `20260730.084042` — [Door 9 persistence proof chartered](20260730-084042_door-9-persistence-chartered.bron) — lean A · fold_persist · bound 4096
 - `20260730.083821` — [Door 8 green · recursion prompt print](20260730-083821_door-8-green-recursion-print.bron) — fact_fold shape · j4 paste block
 - `20260730.083457` — [J3 close · flank arrows · J4 open](20260730-083457_j3-close-flank-arrows-j4-open.bron) — 2nd→1st→12th · h4 Accrete-never-break · door 8 next
 - `20260730.082808` — [Equinox Map Correction Journey em0-em15](20260730-082808_equinox-map-correction-journey.bron) — dawn H1 · noon H10 · dusk H7 · midnight H4 · j3 r12 next
