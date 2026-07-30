@@ -1,0 +1,70 @@
+# tools/gen/season/sunn12_riyo_writing_voice_witness.rish — SUNN12 living writing voice.
+#
+#   rishi/bin/rishi run tools/gen/season/sunn12_riyo_writing_voice_witness.rish
+#
+# Dated **Voice:** Quin headers stay testimony — never asserted away here.
+# Quin OS variant + Q-vane stay named.
+
+say "sunn12: Language EN — living writing voice is Riyo."
+say "sunn12: Style Radiant — Riyo writes · Quin keeps OS + Q-vane."
+say "sunn12: Lens TAME — SUNN12 · style · commit · session · organizing."
+
+let r = read-file "context/RADIANT_STYLE.md"
+assert r contains "The voice that writes in this style is Riyo" else "sunn12: RADIANT_STYLE want Riyo writer"
+assert r contains "SUNN12" else "sunn12: RADIANT_STYLE want SUNN12"
+assert r contains "RIYO.md" else "sunn12: RADIANT_STYLE want RIYO.md cite"
+assert r contains "fifth OS variant" else "sunn12: RADIANT_STYLE want Quin OS hat named"
+assert r contains "Q-vane" else "sunn12: RADIANT_STYLE want Q-vane named"
+assert (r contains "The voice that writes in this style is Quin") == false else "sunn12: RADIANT_STYLE must not keep Quin as writer"
+
+let c = read-file "CONTRIBUTING.md"
+assert c contains "Voice:** Riyo" else "sunn12: CONTRIBUTING want Voice Riyo"
+assert c contains "context/RIYO.md" else "sunn12: CONTRIBUTING want RIYO.md"
+assert c contains "Riyo's Radiant Style" else "sunn12: CONTRIBUTING want Riyo Radiant Style"
+assert c contains "Q-vane" else "sunn12: CONTRIBUTING want Q-vane kept"
+
+let o = read-file "ORGANIZING.md"
+assert o contains "standing writing voice" else "sunn12: ORGANIZING want standing writing voice"
+assert o contains "RIYO.md" else "sunn12: ORGANIZING want RIYO.md"
+assert o contains "SUNN12" else "sunn12: ORGANIZING want SUNN12"
+assert o contains "Q-vane" else "sunn12: ORGANIZING want Q-vane"
+
+let g = read-file "GLOW_PROFILE.template.bron"
+assert g contains "Standing writing voice is" else "sunn12: GLOW_PROFILE want standing writing voice comment"
+assert g contains "Riyo (20260729.205200)" else "sunn12: GLOW_PROFILE want Riyo seat stamp"
+assert g contains "voice Riyo" else "sunn12: GLOW_PROFILE want voice Riyo field"
+
+let crs = read-file ".cursor/rules/radiant-style.mdc"
+assert crs contains "Voice: **Riyo**" else "sunn12: cursor radiant-style want Voice Riyo"
+assert crs contains "context/RIYO.md" else "sunn12: cursor radiant-style want RIYO.md"
+
+let clrs = read-file ".claude/rules/radiant-style.md"
+assert clrs contains "**Riyo** is the voice that writes" else "sunn12: claude radiant-style want Riyo writer"
+
+let csc = read-file ".cursor/rules/commit-messages.mdc"
+assert csc contains "Riyo's Radiant Style" else "sunn12: cursor commit-messages want Riyo Radiant"
+assert csc contains "**Riyo's** voice" else "sunn12: cursor commit-messages want Riyo voice"
+
+let clc = read-file ".claude/rules/commit-messages.md"
+assert clc contains "Riyo's Radiant Style" else "sunn12: claude commit-messages want Riyo Radiant"
+assert clc contains "**Riyo's** voice" else "sunn12: claude commit-messages want Riyo voice"
+
+let css = read-file ".cursor/rules/session-logs.mdc"
+assert css contains "voice Riyo" else "sunn12: cursor session-logs want voice Riyo"
+assert css contains "record `voice Riyo`" else "sunn12: cursor session-logs want record voice Riyo"
+assert (css contains "record `voice Quin`") == false else "sunn12: cursor session-logs must not require voice Quin"
+
+let cls = read-file ".claude/rules/session-logs.md"
+assert cls contains "voice Riyo" else "sunn12: claude session-logs want voice Riyo"
+assert cls contains "record `voice Riyo`" else "sunn12: claude session-logs want record voice Riyo"
+
+let q = read-file "context/QUIN.md"
+assert q contains "fifth OS variant" else "sunn12: QUIN.md want OS hat"
+assert q contains "Q-vane" else "sunn12: QUIN.md want Q-vane"
+assert q contains "Standing voice:** **Riyo**" else "sunn12: QUIN.md header want Standing voice Riyo"
+
+let lex = read-file "context/LEXICON.md"
+assert lex contains "Elder writing-voice season" else "sunn12: LEXICON Quin want elder writing season"
+assert lex contains "SUNN0–12 GREEN" else "sunn12: LEXICON SUNN want SUNN0-12"
+
+say "GREEN: sunn12 — living writing voice Riyo · Quin OS+Q-vane held · dated Voice stays"

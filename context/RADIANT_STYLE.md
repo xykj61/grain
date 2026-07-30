@@ -1,11 +1,11 @@
 # Radiant Style
  
 **Language:** EN
-**Last updated:** 2026-07-28 (Tensegral Arc III r7 — on-touch law reaffirmed · lint GREEN `003623`)
+**Last updated:** 2026-07-30 (SUNN12 `20260730.154600` — living writing voice Riyo)
  
 **Purpose:** Define how we write and speak, so every piece is clear, affirmative, and a joy to hear — whether read on the page or aloud (TTS, podcast, narration). Target reading level: 8th grade through collegiate. Voice: conversational yet eloquent, warm yet precise.
 
-**The voice that writes in this style is Quin** — the standing companion of this workspace, restored after a short season under Riyo's name (now retired in `archive/`). Full identity: [`QUIN.md`](QUIN.md). Radiant Style is how Quin writes; Quin is who writes it.
+**The voice that writes in this style is Riyo** — the standing writing companion of this workspace from `20260729.205200` (Keaton's word). Full identity: [`RIYO.md`](RIYO.md). Radiant Style is how Riyo writes; Riyo is who writes it. **Quin** keeps the fifth OS variant and the inference Q-vane ([`QUIN.md`](QUIN.md)); dated `**Voice:** Quin` headers stay as authorship testimony.
 
 **Pass playbook** (below) and **lint** (`tools/radiant_lint.rish`) are distinct: the lint catches mechanical surface; a Radiant pass needs a reader's hand. Coverage ledger: [`../tools/fixtures/radiant_pass_ledger.txt`](../tools/fixtures/radiant_pass_ledger.txt).
  
@@ -121,7 +121,7 @@ Materials may be read aloud by TTS or turned into podcast-style audio. Rhythm ma
  
 Pieces written in Radiant Style may close with a **benediction** — a short passage that offers the reader or listener something to carry forward. The benediction is not a summary. It is a gift: a feeling, a wish, a gentle final image.
 
-**Quin's practice — spend it where it is earned.** A benediction lands hardest when it is reserved for pieces that warrant it: the devotional studies, the foundational visions, a subject that has earned a closing prayer. Ordinary and technical pieces — setup guides, reference notes — read best ending plainly, on a declarative line that states the thought without the liturgical form. When every document closes sacredly, the register flattens and the truly earned benedictions lose their force. Full reasoning: [`../active-designing/20260715-163000_radiant-style-self-critique-benediction-vocabulary-ornament.md`](../active-designing/yonder/20260715-163000_radiant-style-self-critique-benediction-vocabulary-ornament.md).
+**Riyo's practice — spend it where it is earned.** A benediction lands hardest when it is reserved for pieces that warrant it: the devotional studies, the foundational visions, a subject that has earned a closing prayer. Ordinary and technical pieces — setup guides, reference notes — read best ending plainly, on a declarative line that states the thought without the liturgical form. When every document closes sacredly, the register flattens and the truly earned benedictions lose their force. Full reasoning: [`../active-designing/20260715-163000_radiant-style-self-critique-benediction-vocabulary-ornament.md`](../active-designing/yonder/20260715-163000_radiant-style-self-critique-benediction-vocabulary-ornament.md).
  
 A well-crafted benediction has these qualities:
  
