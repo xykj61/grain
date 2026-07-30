@@ -6,15 +6,15 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260730.085938` (EDT) · voice Riyo  
+**Last refreshed:** `20260730.090221` (EDT) · voice Riyo  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin** · **sundial** · **reds-first** · **baton** · **shape** · **resin** · **bead** · **cell** · **tend** · **SAFE** · **equinox map**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss** · **first resident** (routine) · **vegan-dogfood** (easter egg) · **living mutant** · **shred-prep list** · **transitive writing crawl** · **Kiln** · **three** · **quad** · **nona** · **deca** · **undeca** *(canon)* · **equinoxes** · **equinox map** · **SDD** · **Nest-Chapter** · **your / %your** · Glow=code · Brix=data · **baton** · **coords·basis·meters·reds·words·parked·artifacts·next·recommend** · **shape** *(seam)* · **resin** · **bead**  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **bibliography.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes** · **mod-clock** · **REDS.md** · **Sangha pattern one · two** · **GLOW_ALMANAC 8/16** · **tally/stack** · **baton-museum 13** · **design-shapes · fact_fold · relay_resin** · **discovery quartet** · **mycelium/fold** · **fold_persist** · **ship_sol** · **build_bounds** · **resin-wheel-a** · **equinox map CLOSED** · **flank arrows** · **door 8–9 GREEN** · **tend two DONE**  
-**Git nib:** `ab0d2c8155` · Grain · j4 · Cursor Grok fresh-agent handoff  
-**Bookmark:** [`waymarks/20260730-085938_cursor-grok-j4-handoff.md`](../waymarks/20260730-085938_cursor-grok-j4-handoff.md)
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **bibliography.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes** · **mod-clock** · **REDS.md** · **Sangha pattern one · two** · **GLOW_ALMANAC 8/16** · **tally/stack** · **baton-museum 13** · **design-shapes · fact_fold · relay_resin** · **discovery quartet** · **mycelium/fold** · **fold_persist** · **ship_sol** · **build_bounds** · **resin-wheel-a** · **equinox map CLOSED** · **flank arrows** · **door 8–9 GREEN** · **door 10 CHARTERED** · **tend two DONE**  
+**Git nib:** `2da04bb36b` · Grain · j4 · door 10 refusal-storm charter  
+**Bookmark:** [`waymarks/20260730-090221_door-10-refusal-storm-chartered.md`](../waymarks/20260730-090221_door-10-refusal-storm-chartered.md)
 
-**Chapter:** Framework · EDT · **Grain** · **finishing edge:** **undeca** *(canon)* — Voice **OPEN** · 256 season · equinox **A** · Journey 4 **OPEN** (h4 Accrete-never-break) · door 8–9 **GREEN** · tend two **DONE** Δ0 · almanac **8/16** · equinox map **CLOSED** green · flanks `2nd→1st→12th` · canon east·fire·dawn / north·water·noon / west·air·dusk / south·earth·midnight · name **parked** · Equinox **PAUSED** e6/e7 · Surface **PAUSED** · GitHub dual · Riyo stands · Prefer **git nib**. · `prin scope`  
-**Meters (fresh `20260730.085559`):** sundial **100 · green** · fascia **69/100** (hold · tend Δ0)
+**Chapter:** Framework · EDT · **Grain** · **finishing edge:** **undeca** *(canon)* — Voice **OPEN** · 256 season · equinox **A** · Journey 4 **OPEN** (h4 Accrete-never-break) · door 8–9 **GREEN** · door 10 **CHARTERED** · tend two **DONE** Δ0 · almanac **8/16** · equinox map **CLOSED** green · flanks `2nd→1st→12th` · canon east·fire·dawn / north·water·noon / west·air·dusk / south·earth·midnight · name **parked** · Equinox **PAUSED** e6/e7 · Surface **PAUSED** · GitHub dual · Riyo stands · Prefer **git nib**. · `prin scope`  
+**Meters (fresh `20260730.090149`):** sundial **100 · green** · fascia **69/100** (hold · Δ0)
 
 ---
 
@@ -72,10 +72,11 @@ WOV retirement stays **roadmap last**. No live deploy · wallet · gas · privat
 |------|------|
 | **Equinox Map Correction** | **CLOSED** · em0–em15 · map canon seated · handback consumed at j3 r12 |
 | **Voice Chapter Journey 3** | **CLOSED** `20260730.083457` · h3 Radiant Style · doors 6–7 · resin · map nest |
-| **Voice Chapter Journey 4** | **OPEN** · A·J4 · h4 Accrete-never-break · door 8–9 **GREEN** · tend two **DONE** · handoff seated · next door 10 charter |
+| **Voice Chapter Journey 4** | **OPEN** · A·J4 · h4 Accrete-never-break · door 8–9 **GREEN** · door 10 **CHARTERED** · tend two **DONE** · next kg create storm |
 | **Cursor Grok J4 handoff** | **SEATED** `20260730.085938` · `expanding-prompts/20260730-085938_cursor-grok-j4-fresh-agent-handoff.md` |
 | **Door 8 fact fold** | **GREEN** `20260730.083821` · Sangha pattern two · `fact_fold.brix` graduated |
 | **Door 9 persistence** | **GREEN** `20260730.085312` · `fold_persist.rye` · snapshot bound 4096 · almanac seat 8 |
+| **Door 10 refusal storm** | **CHARTERED** `20260730.090221` · `mycelium/refusal_storm.rye` · bound min_cases 5 · create next |
 | **Glow almanac ch1** | **OPEN** · 8 of 16 · seat 8 from fold_persist · `rye-learning-process/GLOW_ALMANAC.md` |
 | **mycelium/ship_sol.rye** | **GREEN** `20260730.040859` · door 6 · bound 1024 · cadence parked |
 | **mycelium/build_bounds.rye** | **GREEN** `20260730.041405` · door 7 · design-shapes metal check |
