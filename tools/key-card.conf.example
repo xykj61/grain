@@ -4,6 +4,13 @@
 # tools/key-card.conf is gitignored; only this .example template is committed,
 # so the walkthrough works for anyone who clones the repository.
 #
+# SUNN6 (`20260730.145723`): living slots are GitHub SSH · Second SSH · OpenPGP.
+# `FP_SSH_SECOND` replaces the historical Codeberg slot. A GitHub-only pier
+# fills FP_SSH_GITHUB + FP_OPENPGP and may leave SECOND as the example
+# placeholder (skip its audit path), or use SECOND for a second GitHub key
+# (dual remotes) / another forge. Legacy name FP_SSH_CODEBERG is still
+# accepted by the generators as an alias for FP_SSH_SECOND.
+#
 # Read by:
 #   tools/make_key_card_macos.sh   (macOS: Homebrew qrencode + magick)
 #   tools/make-key-card.sh         (Linux: vendored libqrencode + apt fonts)
@@ -18,16 +25,16 @@ NAME="Your Name"
 HANDLE="youruser"                 # forge handle; shown on the card as @youruser
 EMAIL="you@example.com"
 
-FP_SSH_CODEBERG="SHA256:EXAMPLEexampleCODEBERGsshFINGERPRINTexample00"
 FP_SSH_GITHUB="SHA256:EXAMPLEexampleGITHUBsshFINGERPRINTexampleexa00"
+FP_SSH_SECOND="SHA256:EXAMPLEexampleSECONDsshFINGERPRINTexampleexa00"
 FP_OPENPGP="0000 0000 0000 0000 0000 0000 0000 0000 0000 0000"
 
 # --- Audit inputs (optional but recommended) --------------------------------
 # When set, tools/key_card_audit.sh confirms each declared fingerprint above
 # actually matches the real key on this host BEFORE a card is rendered, so a
 # card can never ship a wrong fingerprint. Leave blank to skip a given check.
-KEY_SSH_CODEBERG=""               # e.g. "$HOME/.ssh/id_ed25519_codeberg.pub"
 KEY_SSH_GITHUB=""                 # e.g. "$HOME/.ssh/id_ed25519_github.pub"
+KEY_SSH_SECOND=""                 # e.g. "$HOME/.ssh/id_ed25519_github_xy.pub"
 GPG_EMAIL=""                      # e.g. "you@example.com" (gpg --fingerprint lookup)
 
 # --- Palette (defaults shown: PLAIN — white bg, black text/QR) ---------------
@@ -35,7 +42,7 @@ GPG_EMAIL=""                      # e.g. "you@example.com" (gpg --fingerprint lo
 # cleanly and scans reliably. Uncomment to theme it.
 # BG="#FFFFFF"
 # FG="#000000"
-# LABEL_1="SSH · Codeberg"
-# LABEL_2="SSH · GitHub"
+# LABEL_1="SSH · GitHub"
+# LABEL_2="SSH · Second"
 # LABEL_3="OpenPGP · sign"
 # FOOTER="three public keys · ed25519 ssh + openpgp"
