@@ -70,7 +70,7 @@ coords_quest Do
 coords_round 24
 coords_voice_handback return_equinox_e7 CONSUMED 20260730.111804
 coords_equinox_season OPEN
-coords_equinox_status e17 GREEN · e18 next · true deepest
+coords_equinox_status e18 GREEN · e19 next · true deepest
 coords_true_deepest deca
 coords_e7 equinox_map GREEN 20260730.113507
 coords_e7_path context/equinox_map.brix
@@ -124,9 +124,15 @@ coords_e17_path gratitude/TIGER_STYLE.md
 coords_e17_witness tools/gen/season/tigerstyle_void_return_witness.rish
 coords_e17_charter expanding-prompts/20260730-121418_e17-tigerstyle-void-return-charter.md
 coords_e17_recursion expanding-prompts/20260730-121626_equinox-season-e17-recursion-prompt.md
+coords_e18 tb_void_census GREEN 20260730.122332
+coords_e18_path gratitude/tigerbeetle
+coords_e18_rev 97c7a8ef38
+coords_e18_witness tools/gen/season/tigerbeetle_void_census_witness.rish
+coords_e18_charter expanding-prompts/20260730-122159_e18-tigerbeetle-void-census-charter.md
+coords_e18_recursion expanding-prompts/20260730-122332_equinox-season-e18-recursion-prompt.md
 coords_almanac_ch1 16 of 16
-coords_almanac_ch2 7 of 16
-coords_almanac_seat 23
+coords_almanac_ch2 8 of 16
+coords_almanac_seat 24
 coords_season_rounds 256
 coords_season_name PARKED
 coords_tend_two DONE 20260730.085559 fascia_entry 69 fascia_exit 69 delta 0

@@ -1,7 +1,7 @@
 # Gratitude
 
 **Language:** EN
-**Last updated:** 2026-07-28 (Helen Atthowe — Linn · Kia/Hyundai sponsors · Wayne)
+**Last updated:** 2026-07-30 (e18 · tigerbeetle submodule restored · void census)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 
 ---
@@ -16,7 +16,7 @@ When we adapt one of these works into Radiant Style, the rewrite lives elsewhere
 
 - **`TIGER_STYLE.md`** — TigerBeetle's coding style guide. Safety, performance, and developer experience, woven into a discipline we admire. Our radiant adaptation lives at `../external-research/TAME_GUIDANCE.md`, and the gratitude bridge that records its lineage lives at `../external-research/20260620-014412_system.md`.
   - Source: <https://raw.githubusercontent.com/tigerbeetle/tigerbeetle/refs/heads/main/docs/TIGER_STYLE.md>
-- **`tigerbeetle/`** — TigerBeetle's full source, the financial database whose Tiger Style we adapted into TAME Guidance. We keep the code close to study how its principles live in practice, especially its assertions: the `maybe` dual of `assert`, the precondition blocks gathered at each function's door, and the control-plane / data-plane economy that decides when an expensive check earns a `verify` gate. Those three habits are folded into `../external-research/TAME_GUIDANCE.md`, and the discipline of carrying such craft into Rye's own `std` is recorded in `../external-research/yonder/strengthening-compiler/9999_STRENGTHENING.md`. Cloned whole and unmodified (rev `59f2b99`), Apache-2.0.
+- **`tigerbeetle/`** — TigerBeetle's full source, the financial database whose Tiger Style we adapted into TAME Guidance. We keep the code close to study how its principles live in practice, especially its assertions: the `maybe` dual of `assert`, the precondition blocks gathered at each function's door, and the control-plane / data-plane economy that decides when an expensive check earns a `verify` gate. Those three habits are folded into `../external-research/TAME_GUIDANCE.md`, and the discipline of carrying such craft into Rye's own `std` is recorded in `../external-research/yonder/strengthening-compiler/9999_STRENGTHENING.md`. Git submodule · cloned whole and unmodified (living pin rev `97c7a8ef38` · e18 `20260730.122159`; elder note once named `59f2b99`), Apache-2.0.
   - Source: <https://github.com/tigerbeetle/tigerbeetle>
 - **`ironbeetle/`** — Our own-voice silos from matklad's IronBeetle live series (stamp `20260712.092212`). **Silo pilot complete** at thirty-four episodes (`105212`). Understanding written fresh; captions never quoted. Filed by Kaeden's labels and content. **Shelf home beside** the unmodified `tigerbeetle/` submodule.
   - Written: 001, 002, 004, 005, 006, 008–015, 018–022, 025, 028, 030, 031½ (`ep031-5`), 032–038, 040, 042–045 (incl. 037½ as `ep037-5`)

@@ -1,0 +1,31 @@
+# tools/gen/season/tigerbeetle_void_census_witness.rish — e18 TB src void census.
+#
+#   rishi/bin/rishi run tools/gen/season/tigerbeetle_void_census_witness.rish
+#
+# Requires gratitude/tigerbeetle submodule present (host clone checkpoint).
+# Clean-room: counts only · never copies into rye/.
+
+say "tb-void-census: Language EN — the held clone speaks in counts."
+say "tb-void-census: Style Radiant — void density measured, never assumed."
+say "tb-void-census: Lens TAME — e18 · clean-room study · almanac seat 24."
+
+let clone = run ["test" "-d" "gratitude/tigerbeetle/src"]
+assert clone.ok else "tb-void-census: gratitude/tigerbeetle/src ABSENT — host clone first"
+
+let census = run ["sh" "tools/fixtures/tigerbeetle_void_census.sh"]
+say census.out
+assert census.ok else "tb-void-census: census failed or thin"
+assert census.out contains "CLONE=present" else "tb-void-census: want CLONE=present"
+assert census.out contains "verdict=ok" else "tb-void-census: want verdict=ok"
+assert census.out contains "STYLE=yes" else "tb-void-census: clone must hold docs/TIGER_STYLE.md"
+
+let guide = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerstyle_void_return_witness.rish"]
+# tigerstyle witness appends seat 23 idempotently; tolerate GREEN
+assert guide.ok else "tb-void-census: held-guide witness went RED"
+assert guide.out contains "CLONE=present" else "tb-void-census: guide witness must see clone present"
+
+let almanac = run ["sh" "tools/gen/season/equinox_tigerbeetle_void_census_almanac.sh"]
+assert almanac.ok else "tb-void-census: almanac append failed"
+say almanac.out
+
+say "GREEN: tb-void-census — clone present · void density ok · guide still GREEN · almanac seat 24"

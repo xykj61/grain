@@ -18,7 +18,7 @@
 	url = https://github.com/fukuchi/libqrencode
 [submodule "gratitude/tigerbeetle"]
 	path = gratitude/tigerbeetle
-	url = https://github.com/tigerbeetle/tigerbeetle
+	url = https://github.com/tigerbeetle/tigerbeetle.git
 [submodule "gratitude/nips"]
 	path = gratitude/nips
 	url = https://github.com/nostr-protocol/nips
