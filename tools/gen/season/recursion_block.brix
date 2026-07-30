@@ -64,12 +64,14 @@ baton_museum context/baton-museum
 coords_equinox A
 coords_journey 3
 coords_quest Do
-coords_round 9
+coords_round 10
 coords_season_rounds 256
 coords_season_name PARKED
 coords_journey_2_closed 20260730.040859
 coords_journey_3_opened 20260730.040859 h3 Radiant Style
 coords_door_6 ship_sol
+coords_door_7 build_bounds
+design_shapes_wing seated 20260730.041319
 # myc opening numbers approved 20260730.014817 (were a proposal at 20260729.231500)
 myc_genesis 12288
 myc_star_price 64

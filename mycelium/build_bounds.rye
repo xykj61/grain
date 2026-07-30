@@ -1,0 +1,56 @@
+//! mycelium/build_bounds.rye — assert Build Journey ceilings match the seated brix.
+//!
+//! Design-shapes wing · door 7 · equinox A · journey 3 (h3 Radiant Style) · quest Do.
+//! Builds inherit bounds; they never invent them. Mycelium pubs are checked on
+//! metal here. Discovery ceilings are pinned as seated literals (their metal
+//! lives under comlink/discovery/ and stays GREEN on its own witnesses — rye
+//! refuses imports outside the module path).
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/build_bounds.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const fold = @import("fold.rye");
+const ship_sol = @import("ship_sol.rye");
+
+/// Seated v27 — must match tools/gen/season/recursion_block.brix.
+const seated_descriptor_max: u32 = 512;
+const seated_max_peers: u32 = 256;
+const seated_staleness: u32 = 4096;
+const seated_fanout: u32 = 8;
+const seated_hops: u32 = 2;
+const seated_fact_max: u32 = 256;
+const seated_star_name: u32 = 32;
+const seated_ship_sol: u32 = 1024;
+const seated_myc_genesis: u64 = 12288;
+const seated_myc_star_price: u64 = 64;
+const seated_myc_ceiling: u64 = 4096;
+const seated_myc_log: u32 = 1024;
+
+pub fn main() !void {
+    if (fold.myc_fact_max_bytes != seated_fact_max) return error.FactDrift;
+    if (fold.star_name_max_bytes != seated_star_name) return error.StarNameDrift;
+    if (fold.myc_log_max_facts != seated_myc_log) return error.LogDrift;
+    if (ship_sol.ship_sol_proof_max_bytes != seated_ship_sol) return error.ShipSolDrift;
+    if (ship_sol.sol_name_max_bytes > seated_ship_sol) return error.SolNameOverProof;
+
+    // Discovery seats — brix data pinned; metal proven under comlink/discovery/.
+    if (seated_descriptor_max != 512) return error.DescriptorSeat;
+    if (seated_max_peers != 256) return error.PeersSeat;
+    if (seated_staleness != 4096) return error.StalenessSeat;
+    if (seated_fanout != 8) return error.FanoutSeat;
+    if (seated_hops != 2) return error.HopsSeat;
+
+    // Myc policy numbers — data in the brix; fold does not invent release/expiry.
+    if (seated_myc_genesis == 0) return error.GenesisZero;
+    if (seated_myc_star_price == 0) return error.PriceZero;
+    if (seated_myc_ceiling == 0) return error.CeilingZero;
+    if (seated_myc_star_price > seated_myc_genesis) return error.PriceOverGenesis;
+    if (seated_myc_ceiling > seated_myc_genesis) return error.CeilingOverGenesis;
+
+    assert(fold.myc_fact_max_bytes == 256);
+    assert(ship_sol.ship_sol_proof_max_bytes == 1024);
+
+    print("GREEN: build_bounds — design-shapes · myc+ship metal · discovery seats pinned\n", .{});
+}

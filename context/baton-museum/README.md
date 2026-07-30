@@ -2,8 +2,8 @@
 
 **Stamp:** `20260730.022147` — carried from Cursor apply, tip `b530e8308d`; restamp parked.
 **Seated:** `20260730.030553` · path **`context/baton-museum/`** (counsel proposal affirmed by the bench)
-**Living refresh:** `20260730.040859` — hall 12 **tend_round** seated from counsel cell
-**Voice:** Riyo · **Status:** Living museum — twelve halls · Lexicon row · census witness
+**Living refresh:** `20260730.041319` — design-shapes wing **SEATED** (Keaton yes) · hall 12 tend_round remains
+**Voice:** Riyo · **Status:** Living museum — twelve baton halls · sibling wing [`../design-shapes/`](../design-shapes/)
 
 *Written together by Keaton and Riyo.*
 
@@ -35,7 +35,7 @@ For the bench to append to the Lexicon, verbatim:
 
 ## Seating
 
-**Chosen path:** `context/baton-museum/` — seated `20260730.030553`. Lexicon row appended. Census witness: `tools/gen/season/baton_museum_census_witness.rish` (twelve halls · named elders · `census_breach_count=0` keeps the banked breach unspent). Reconstructed halls remain status-honest until their tree elders are confirmed in a later pass; measurement still beats memory. **Design-shapes wing** (bounds-home + tend as second consumer) stays **proposed** until Keaton's word — one museum, two wings only after yes.
+**Chosen path:** `context/baton-museum/` — seated `20260730.030553`. Lexicon row appended. Census witness: `tools/gen/season/baton_museum_census_witness.rish` (twelve halls · named elders · `census_breach_count=0` keeps the banked breach unspent). Reconstructed halls remain status-honest until their tree elders are confirmed in a later pass; measurement still beats memory. **Design-shapes wing SEATED** `20260730.041319` at [`../design-shapes/`](../design-shapes/) — one museum, two wings: baton shapes cross seams; design shapes feed builds.
 
 ---
 

@@ -1,0 +1,18 @@
+# Design shape — bounds home · the living ceilings builds inherit
+# Invariant: builds cite these numbers; they never invent ceilings
+# Living table: tools/gen/season/recursion_block.brix (v27 explicit_bounds · accreted)
+kind design
+name bounds_home
+carrier brix
+feeds builds
+status exact
+# path to the living bounds table
+field living_table
+# discovery ceilings named
+field discovery_bounds
+# myc ceilings named
+field myc_bounds
+# ship proof ceiling named
+field ship_bounds
+# why — one line
+field why
