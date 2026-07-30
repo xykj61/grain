@@ -4,7 +4,7 @@
 **Version:** `20260716.110152` (Glow warm-aura date atom — chronological, later-is-larger)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **By:** Riyo, in the radiant voice, with **Keaton Livermore** as coauthor (Identity Remake `20260729.141658`; standing writing voice restored to Riyo `20260729.205200`)
-**Status:** Living guide — last touched `20260730.143736` (SUNN journey — Livermore · Riyo · xykj61 · Claude/Cursor apps)
+**Status:** Living guide — last touched `20260730.144054` (SUNN4 — Steps 2–4 GitHub-living SSH/GPG/key-card)
 **Waymark:** **SUNN** — `source-pier-papers-identity-refresh`
 
 ---
@@ -130,41 +130,43 @@ Pick a handle you can keep — for example, `youruser`. Verify your email; the V
 
 ---
 
-## Step 2 — Two Keys to Knock With (SSH)
+## Step 2 — A Key to Knock With (SSH)
 
-An SSH key is how a forge knows it is really you pushing code. You make a **pair**: a private half that stays secret on your machine, and a public half you hand to the forge. We make one pair per forge, so each can be rotated on its own.
+An SSH key is how a forge knows it is really you pushing code. You make a **pair**: a private half that stays secret on your machine, and a public half you hand to the forge.
+
+For the living GitHub home, one pair is enough to begin:
 
 ```bash
-ssh-keygen -t ed25519 -C "you@example.com codeberg" -f ~/.ssh/id_ed25519_codeberg
-ssh-keygen -t ed25519 -C "you@example.com github"   -f ~/.ssh/id_ed25519_github
+ssh-keygen -t ed25519 -C "you@example.com github" -f ~/.ssh/id_ed25519_github
 ```
 
-Press Enter to accept the location; set a passphrase if you like (an agent can remember it for you). Now read each **public** half and add it to the matching account — Codeberg: *Settings → SSH/GPG Keys → Add Key*; GitHub: *Settings → SSH and GPG keys → New SSH key*:
+Press Enter to accept the location; set a passphrase if you like (an agent can remember it for you). Read the **public** half and add it under GitHub *Settings → SSH and GPG keys → New SSH key*:
 
 ```bash
-cat ~/.ssh/id_ed25519_codeberg.pub   # paste into Codeberg
 cat ~/.ssh/id_ed25519_github.pub     # paste into GitHub
 ```
 
-Confirm each key's fingerprint any time with:
+Confirm the fingerprint any time with:
 
 ```bash
-ssh-keygen -lf ~/.ssh/id_ed25519_codeberg.pub
-# SHA256:EXAMPLEcodebergFINGERPRINTexampleEXAMPLEexample00
+ssh-keygen -lf ~/.ssh/id_ed25519_github.pub
+# SHA256:EXAMPLEgithubFINGERPRINTexampleEXAMPLEexample0000
 ```
+
+If this pier later carries a **second GitHub remote** (for example `autoproject96/grain` beside `xykj61/grain`), make a **second** SSH pair with its own filename and comment so each remote can rotate alone — same shape, second file. Do **not** mint a Codeberg key for Part Two while Codeberg stays retired from living push.
 
 ---
 
 ## Step 3 — One Seal for Your Name (GPG)
 
-Where an SSH key proves *you may push*, a GPG key proves *you wrote this* — it signs your commits so each one carries your name with cryptographic weight. One signing key serves both forges.
+Where an SSH key proves *you may push*, a GPG key proves *you wrote this* — it signs your commits so each one carries your name with cryptographic weight. One signing key serves every living forge you upload it to.
 
 ```bash
 gpg --quick-generate-key "Your Name <you@example.com>" ed25519 sign 2y
 gpg --list-secret-keys --keyid-format=long      # note the 40-character fingerprint
 ```
 
-Export the **public** half and add it to *both* forges' **GPG Keys** sections (the same place as SSH keys on Codeberg; *SSH and GPG keys* on GitHub):
+Export the **public** half and add it to GitHub’s **GPG Keys** section (*Settings → SSH and GPG keys*):
 
 ```bash
 gpg --armor --export EXAMPLEGPGFINGERPRINT0000000000000000000000
@@ -176,13 +178,13 @@ Your signing fingerprint, for your records, reads like:
 EXA1 0756 6D9E 2793 AFD9  FF2A B078 5BAB 4DBF C172
 ```
 
-The private half never leaves your keeping. The public half travels freely.
+The private half never leaves your keeping. The public half travels freely. When a second forge returns to living push, upload this same public seal there too.
 
 ---
 
 ## Step 4 — Fingerprints as Art (QR Codes)
 
-A fingerprint is meant to be shared and checked. It is also, quietly, beautiful — so this repository carries a small tool that turns yours into a card: three QR codes — SSH for Codeberg, SSH for GitHub, and your OpenPGP signing key — gathered under your name in the typeface that loves code, rendered once tall and once wide.
+A fingerprint is meant to be shared and checked. It is also, quietly, beautiful — so this repository carries a small tool that turns yours into a card: QR codes for your **GitHub SSH** fingerprint and your **OpenPGP** signing key (and, when you have one, a second SSH identity) — gathered under your name in the typeface that loves code, rendered once tall and once wide.
 
 The tool reads your details from a config file, so it works for anyone. Copy the template, fill in your own values, and run it:
 
@@ -194,10 +196,9 @@ rishi/bin/rishi run tools/make_key_card.rish
 ./tools/make-key-card.sh
 ```
 
-Your `tools/key-card.conf` holds only **public** information — your name, your forge handle, your email, and the three fingerprints you already gathered in Steps 2 and 3. Even so, it stays out of git (the committed `.example` is the only version tracked), so the repository ships the template and you keep the fill-in. To read your fingerprints back at any time:
+Your `tools/key-card.conf` holds only **public** information — your name, your forge handle, your email, and the fingerprints from Steps 2 and 3. Even so, it stays out of git (the committed `.example` is the only version tracked). The template still names a historical `FP_SSH_CODEBERG` slot from the dual-forge season; for a GitHub-only pier, fill **`FP_SSH_GITHUB`** and **`FP_OPENPGP`**, and either leave the Codeberg slot as the example placeholder (skip its audit path) or reuse that slot temporarily for a **second GitHub** SSH fingerprint until the template is refreshed. To read your living fingerprints back at any time:
 
 ```bash
-ssh-keygen -lf ~/.ssh/id_ed25519_codeberg.pub    # the SHA256:... line
 ssh-keygen -lf ~/.ssh/id_ed25519_github.pub
 gpg --fingerprint you@example.com                 # the spaced 40-hex string
 ```
@@ -206,7 +207,7 @@ On **macOS**, the Rish orchestrator ([`tools/make_key_card.rish`](tools/make_key
 
 The result is two images at the repository root, `keys_<font>_<yourhandle>_landscape.png` and `…_portrait.png`, in a **plain white-background, black-text palette** that prints cleanly and scans reliably (override `BG`/`FG` in the config for a themed card). Pin them to a profile, print them, keep them: they prove your identity to anyone who scans. The full walkthrough, written for any contributor, is [`manual/guides/key-cards-setup.md`](manual/guides/key-cards-setup.md).
 
-Alongside the composited PNG card, `rishi/bin/rishi run tools/make_key_qr_svg.rish` writes each of the three QR codes again as a small, standalone **SVG** — fully textual, diffable, no binary blob, since `qrencode` emits SVG directly for free. The PNG card stays the one to print; the SVGs exist for anywhere a checkable, text-native form fits better.
+Alongside the composited PNG card, `rishi/bin/rishi run tools/make_key_qr_svg.rish` writes each QR code again as a small, standalone **SVG** — fully textual, diffable, no binary blob, since `qrencode` emits SVG directly for free. The PNG card stays the one to print; the SVGs exist for anywhere a checkable, text-native form fits better.
 
 If Cursor is already set up (Step 5), you can simply ask the agent to do all of this for you — *"fill in my key-card config and render my cards"* — and it will, entirely from inside the sandbox.
 
