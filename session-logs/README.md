@@ -1,3 +1,4 @@
+- `20260730.160653` — [SUNN13 REMEMBER bookmark season pin complete](20260730-160653_sunn13-remember-pin-complete.bron) — pin 7c438bbbcb · living 6028275905
 - `20260730.154456` — [SUNN11 witness drop pier-local APPLY](20260730-154456_sunn11-apply-ignore-red-fix.bron) — tracked leaves · dual-push on SOURCE
 - `20260730.160405` — [SUNN13 root survey PUBKEYS MAP licenses GREEN](20260730-160405_sunn13-root-survey-green.bron) — Livermore · Riyo · LICENSE hold · SUNN14 next
 - `20260730.154600` — [SUNN12 living writing voice Riyo GREEN](20260730-154600_sunn12-riyo-writing-voice-green.bron) — style·commit·session · Quin hats held · SUNN13 next
