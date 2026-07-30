@@ -68,7 +68,9 @@ A red enters this ledger when it is found. Rows are never edited or removed; a l
 
 | 30 | The Journey-2 CLOSED FINAL bundle overwrote living REDS row 27 (sundial/`rg`) with a different red, dropping a landed row instead of accreting | Cursor apply at `20260730.022006`: `git show e2457f7773:work-in-progress/REDS.md` versus extract | Rows are never edited or removed; parallel authoring merges by accretion. A bundle that rewrites a numbered row is itself a red. |
 
-**Rows: 30 · in the tree before the ledger: 6 · recovered by opening it: 14 · added under the reds-first law: 10**
+| 31 | Living remote `xykj61` was seated in the roster and dual-push law, yet GitHub had no `xykj61/grain`; the Framework pier's SSH agent authenticated as `veganreyklah2`, so empty-repo create and first push failed while `origin` alone looked green | `git push -u xykj61 main` refused repo-absent; Keaton created the empty repo by word (`20260730.031352`) and both `main` tips met at `a9090a4ec5` then `8b22e7acd0` | Before any push, `git ls-remote` each living remote, capture `$?` before any pipe, and name **repo-absent** out loud — never ship into a water that has not answered. |
+
+**Rows: 31 · in the tree before the ledger: 6 · recovered by opening it: 14 · added under the reds-first law: 11**
 
 **Reds-first accounting for v11:** two reds found, both fixed in-round with witnesses on metal, ledger closed. The remaining journey allocation is therefore **released** rather than booked — which is the law working, not the law skipped.
 
