@@ -226,7 +226,7 @@ Expected CLONE=present · GUIDE_NAMING · GUIDE_UNITS · GUIDE_ABBREV · TAME_NA
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ch3_surface_witness.rish` · **Stamp:** `20260730.140147` · **Witness:** `tools/gen/season/equinox_ch3_surface_witness.rish`
 Expected wing halls=4/breach=0 · safety static/seventy/flow · performance sized/batching/explicit · naming, and verdict=missing_wing on an absent path. Metal answered GREEN. Chapter three closes at sixteen; chapter four waits for metal.
 
-## Chapter Four (15 of 16)
+## Chapter Four (16 of 16)
 
 Opened from metal at stamp `20260730.140442`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -290,6 +290,10 @@ Expected inplace GREEN · shrink GREEN · bleeds GREEN · off-by-one GREEN, and 
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_surfaces_hold_witness.rish` · **Stamp:** `20260730.190140` · **Witness:** `tools/gen/season/equinox_tigerbeetle_surfaces_hold_witness.rish` · iron `tools/fixtures/ironbeetle_shelf_census.sh`
 Expected say-why GREEN · off-by-one GREEN · style-numbers GREEN · IRON present · COUNT≥34 · ep001 · ep045, and ABSENT refuses on a missing iron shelf or clone. Metal answered GREEN. Surfaces hold toward chapter-four close. Clean-room study only.
 
+### 64. The chapter-four surface choir holds: DX, mid, style, and IronBeetle GREEN together.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ch4_surface_witness.rish` · **Stamp:** `20260730.190447` · **Witness:** `tools/gen/season/equinox_ch4_surface_witness.rish`
+Expected dx why/how · mid inplace/shrink/bleeds/obo · style numbers/deps/tooling/last · iron COUNT≥34, and ABSENT refuses on a missing clone or iron shelf. Metal answered GREEN. Chapter four closes at sixteen; chapter five waits for metal.
+
 ---
 
-*May every line here be one the machine said first. May the book close at its bound the way a season does. And may the rest of chapter four wait for metal, not memory.*
+*May every line here be one the machine said first. May the book close at its bound the way a season does. And may chapter five wait for metal, not memory.*
