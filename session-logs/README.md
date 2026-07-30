@@ -1,3 +1,4 @@
+- `20260730.133534` — [E35 TB control-flow GREEN · almanac 41 · ch3 9/16](20260730-133534_e35-tb-control-flow-green.bron) — no recursion · e36 next
 - `20260730.133248` — [E34 TB seventy-line GREEN · almanac 40 · ch3 8/16](20260730-133248_e34-tb-seventy-line-green.bron) — tidy ratchet · e35 next
 - `20260730.132954` — [E33 TB static-alloc GREEN · almanac 39 · ch3 7/16](20260730-132954_e33-tb-static-alloc-green.bron) — guide·TAME·density · e34 next
 - `20260730.132258` — [E32 design-shapes surface GREEN · almanac 38 · ch3 6/16](20260730-132258_e32-design-shapes-surface-green.bron) — wing·bounds·resin·fold·tend · e33 next
