@@ -30,6 +30,8 @@ assert (enc contains "Reya 2") == false else "sunn7: enclosure must not keep Rey
 
 let src = read-file "SOURCE.md"
 assert src contains "Ubuntu 26.04" else "sunn7: SOURCE want Ubuntu 26.04"
-assert src contains "SUNN7" else "sunn7: SOURCE want SUNN7 touch"
+
+# Door stamp lives on the macos leaf — SOURCE Status accretes later doors.
+assert mac contains "SUNN7" else "sunn7: macos want SUNN7 stamp"
 
 say "GREEN: sunn7 — macos guide · enclosure-editors · SOURCE host face"

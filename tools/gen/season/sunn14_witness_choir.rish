@@ -1,0 +1,86 @@
+# tools/gen/season/sunn14_witness_choir.rish — SUNN14 witness choir.
+#
+#   rishi/bin/rishi run tools/gen/season/sunn14_witness_choir.rish
+#
+# Leaf witnesses already GREEN alone must GREEN together.
+# Refuse a thin SOURCE stub. Census marked GREEN beside this run.
+# No almanac append — Equinox paused; SUNN owns this choir.
+
+say "sunn14: Language EN — SUNN leaves choir; refuse a thin SOURCE."
+say "sunn14: Style Radiant — welcome and refuse share one seat."
+say "sunn14: Lens TAME — SUNN14 · limbs 5–13 · voice roster · thickness."
+
+# --- Welcome limbs (leaf witnesses only) ------------------------------------
+
+let p5 = run ["rishi/bin/rishi" "run" "tools/gen/season/personalize_template_witness.rish"]
+say p5.out
+assert p5.ok else "sunn14: personalize limb RED"
+assert p5.out contains "GREEN:" else "sunn14: personalize missing GREEN"
+
+let s6 = run ["rishi/bin/rishi" "run" "tools/gen/season/sunn6_key_cards_ops_witness.rish"]
+say s6.out
+assert s6.ok else "sunn14: sunn6 limb RED"
+assert s6.out contains "GREEN: sunn6" else "sunn14: sunn6 missing GREEN"
+
+let s7 = run ["rishi/bin/rishi" "run" "tools/gen/season/sunn7_macos_enclosure_witness.rish"]
+say s7.out
+assert s7.ok else "sunn14: sunn7 limb RED"
+assert s7.out contains "GREEN: sunn7" else "sunn14: sunn7 missing GREEN"
+
+let s8 = run ["rishi/bin/rishi" "run" "tools/gen/season/sunn8_root_readme_witness.rish"]
+say s8.out
+assert s8.ok else "sunn14: sunn8 limb RED"
+assert s8.out contains "GREEN: sunn8" else "sunn14: sunn8 missing GREEN"
+
+let s9 = run ["rishi/bin/rishi" "run" "tools/gen/season/sunn9_claude_llms_stewards_witness.rish"]
+say s9.out
+assert s9.ok else "sunn14: sunn9 limb RED"
+assert s9.out contains "GREEN: sunn9" else "sunn14: sunn9 missing GREEN"
+
+let s10 = run ["rishi/bin/rishi" "run" "tools/gen/season/sunn10_keys_glow_os_witness.rish"]
+say s10.out
+assert s10.ok else "sunn14: sunn10 limb RED"
+assert s10.out contains "GREEN: sunn10" else "sunn14: sunn10 missing GREEN"
+
+let s11 = run ["rishi/bin/rishi" "run" "tools/gen/season/sunn11_xykj61_onboarding_witness.rish"]
+say s11.out
+assert s11.ok else "sunn14: sunn11 limb RED"
+assert s11.out contains "GREEN: sunn11" else "sunn14: sunn11 missing GREEN"
+
+let s12 = run ["rishi/bin/rishi" "run" "tools/gen/season/sunn12_riyo_writing_voice_witness.rish"]
+say s12.out
+assert s12.ok else "sunn14: sunn12 limb RED"
+assert s12.out contains "GREEN: sunn12" else "sunn14: sunn12 missing GREEN"
+
+let s13 = run ["rishi/bin/rishi" "run" "tools/gen/season/sunn13_root_survey_witness.rish"]
+say s13.out
+assert s13.ok else "sunn14: sunn13 limb RED"
+assert s13.out contains "GREEN: sunn13" else "sunn14: sunn13 missing GREEN"
+
+let voice = run ["rishi/bin/rishi" "run" "tools/gen/season/voice_roster_witness.rish"]
+say voice.out
+assert voice.ok else "sunn14: voice-roster limb RED"
+assert voice.out contains "GREEN: voice-roster" else "sunn14: voice-roster missing GREEN"
+assert voice.out contains "drift=0" else "sunn14: voice-roster want zero drift"
+
+# --- SOURCE thickness welcome + thin refuse ---------------------------------
+
+let thick = run ["sh" "tools/fixtures/sunn_source_thickness_scan.sh" "SOURCE.md"]
+say thick.out
+assert thick.ok else "sunn14: living SOURCE thickness RED"
+assert thick.out contains "verdict=ok" else "sunn14: living SOURCE want verdict=ok"
+assert thick.out contains "bytes=" else "sunn14: living SOURCE want bytes="
+
+let thin = run ["sh" "tools/fixtures/sunn_source_thickness_scan.sh" "tools/fixtures/sunn_source_THIN.md"]
+say thin.out
+assert thin.ok == false else "sunn14: thin SOURCE stub must fail"
+assert thin.out contains "verdict=thin" else "sunn14: thin stub want verdict=thin"
+
+# --- Census leaf present and GREEN-stamped ----------------------------------
+
+let census = read-file "expanding-prompts/20260730-143736_sunn-census.md"
+assert census contains "SUNN14" else "sunn14: census want SUNN14 stamp"
+assert census contains "**Status:** GREEN" else "sunn14: census want Status GREEN"
+assert census contains "LICENSE copyright HOLD" else "sunn14: census want LICENSE hold named"
+
+say "GREEN: sunn14 — limbs 5–13 · voice roster · SOURCE thick · thin refuses · census GREEN"
