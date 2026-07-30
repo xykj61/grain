@@ -1,3 +1,5 @@
+- `20260730.083457` — [J3 close · flank arrows · J4 open](20260730-083457_j3-close-flank-arrows-j4-open.bron) — 2nd→1st→12th · h4 Accrete-never-break · door 8 next
+- `20260730.082808` — [Equinox Map Correction Journey em0-em15](20260730-082808_equinox-map-correction-journey.bron) — dawn H1 · noon H10 · dusk H7 · midnight H4 · j3 r12 next
 - `20260730.072710` — [send · print Claude relay](20260730-072710_send-claude-relay-print.bron) — home-sync paste · door 8 · tend r11
 - `20260730.072425` — [bundle prep · cell hall 13](20260730-072425_bundle-prep-cell-hall13.bron) — packet · discipline · census named · hall 13
 - `20260730.041405` — [design-shapes wing · door 7](20260730-041405_design-shapes-door7.bron) — wing SEATED · build_bounds GREEN · round-recos yes
@@ -10,7 +12,6 @@
 - `20260730.033024` — [lexicon limbs · bibliography · introduce](20260730-033024_lexicon-limbs-bibliography-introduce.bron) — nine limbs · bibliography root · introduce GREEN · myc next
 - `20260730.032517` — [remember shape · table Check · gossip](20260730-032517_remember-shape-table-gossip-check.bron) — affection · Check shapes · gossip GREEN · introduce next
 - `20260730.032348` — [baton J2 table single-file](20260730-032348_baton-j2-table-single.bron) — waters agree · red 31 · ls-remote guard · table.rye GREEN
-- `20260730.082808` — [Equinox Map Correction Journey em0-em15](20260730-082808_equinox-map-correction-journey.bron) — dawn H1 · noon H10 · dusk H7 · midnight H4 · j3 r12 next
 - `20260730.082011` — [Resin wheel-a early crossing land](20260730-082011_resin-wheel-a-early-crossing-land.bron) — 15 beads · LEXICON append · fact-fold · fascia 69
 - `20260730.031352` — [xykj61/grain first push](20260730-031352_xykj61-grain-first-push.bron) — empty repo · dual send proven · tip a9090a4ec5
 - `20260730.030901` — [Baton museum · 256 open · dual remotes](20260730-030901_baton-museum-256-open-bench.bron) — museum · census zero · descriptor · origin+xykj61

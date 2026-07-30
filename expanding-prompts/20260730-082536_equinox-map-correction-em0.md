@@ -2,7 +2,7 @@
 
 **Stamp:** `20260730.082536` · **Voice:** Riyo · **Style:** Radiant · **Lens:** TAME  
 **Coords:** equinox A · Equinox Map Correction Journey · em0/em15 · foundation accrete-never-break  
-**Basis:** `c96d03e786` · Journey 3 Build PAUSED before r12
+**Basis:** `c96d03e786` · Journey 3 Build PAUSED before r12 · handback consumed `20260730.083457`
 
 *Written together by Keaton and Riyo.*
 
@@ -19,10 +19,11 @@
 
 ## Canon (do not invent)
 
-- east · fire · dawn · 1st · `2nd < 1st == dawn < 12th`  
-- north · water · noon · 10th · `11th < 10th noon < 9th`  
-- west · air · dusk · 7th · `8th < 7th dusk < 6th`  
-- south · earth · midnight · 4th · `5th < 4th midnight < 3rd`
+- east · fire · dawn · 1st · `2nd → 1st → 12th`  
+- north · water · noon · 10th · `11th → 10th → 9th`  
+- west · air · dusk · 7th · `8th → 7th → 6th`  
+- south · earth · midnight · 4th · `5th → 4th → 3rd`  
+- flank notation: path arrows (`→` / `->`), seated `20260730.083225`
 
 ## Next
 
