@@ -158,7 +158,7 @@ Expected halls_expected=13 · halls_absent=0 · census_breach_count=0, and verdi
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ch2_surface_witness.rish` · **Stamp:** `20260730.125750` · **Witness:** `tools/gen/season/equinox_ch2_surface_witness.rish`
 Expected SAFE census · reds complete/monotone/refuse · voice sites=6/refuse · baton halls=13/breach=0/absent refuse each GREEN in one choir. Metal answered GREEN. Chapter two closes at sixteen; chapter three waits for metal.
 
-## Chapter Three (2 of 16)
+## Chapter Three (3 of 16)
 
 Opened from metal at stamp `20260730.130733`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -169,6 +169,10 @@ Expected halls_expected=4 · halls_absent=0 · census_breach_count=0, and verdic
 ### 34. Build ceilings inherit the living bounds table; ten pairs match and metal stays GREEN.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_bounds_home_choir_witness.rish` · **Stamp:** `20260730.131214` · **Witness:** `tools/gen/season/bounds_home_census_witness.rish` · scan `tools/fixtures/bounds_home_census.sh` · metal `mycelium/build_bounds.rye` · choir `equinox_bounds_home_choir_witness.rish`
 Expected pairs_matched=10 · pairs_drift=0 · living_table_named · build_bounds GREEN, and verdict=missing_shape on an absent path. Metal answered GREEN. Chapter three continues; builds inherit, they do not invent.
+
+### 35. The resin limb names at most twelve beads; a thirteenth without a manifest refuses whole.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_relay_resin_choir_witness.rish` · **Stamp:** `20260730.131415` · **Witness:** `tools/gen/season/relay_resin_census_witness.rish` · scan `tools/fixtures/relay_resin_census.sh` · choir `equinox_relay_resin_choir_witness.rish`
+Expected max_limb_beads=12 · limb_beads=12 · LEXICON · MANIFEST_BEAD, and verdict=over_bound on a thirteen-bead fixture without compaction. Metal answered GREEN. Amphora-shaped bound; the roster becomes a bead past twelve.
 
 ---
 

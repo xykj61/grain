@@ -1,0 +1,21 @@
+# tools/gen/season/relay_resin_census_witness.rish — twelve-bead resin limb.
+#
+#   rishi/bin/rishi run tools/gen/season/relay_resin_census_witness.rish
+#
+# Design-shapes wing · relay_resin. Amphora-shaped bound: twelve named beads;
+# past that the roster becomes a manifest bead.
+
+say "relay-resin-census: Language EN — twelve beads by name; past that, a manifest."
+say "relay-resin-census: Style Radiant — the limb stays one glance."
+say "relay-resin-census: Lens TAME — e29 · design-shapes · almanac seat 35."
+
+let scan = run ["sh" "tools/fixtures/relay_resin_census.sh"]
+say scan.out
+assert scan.ok else "relay-resin-census: welcome census failed"
+assert scan.out contains "verdict=ok" else "relay-resin-census: want verdict=ok"
+assert scan.out contains "max_limb_beads=12" else "relay-resin-census: want bound twelve"
+assert scan.out contains "limb_beads=12" else "relay-resin-census: want twelve fixture beads"
+assert scan.out contains "LEXICON=yes" else "relay-resin-census: want resin and bead lexicon rows"
+assert scan.out contains "MANIFEST_BEAD=yes" else "relay-resin-census: want seated manifest bead"
+
+say "GREEN: relay-resin-census — bound 12 · limb 12 · lexicon · manifest bead seated"

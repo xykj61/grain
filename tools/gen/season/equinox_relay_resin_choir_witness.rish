@@ -1,0 +1,31 @@
+# tools/gen/season/equinox_relay_resin_choir_witness.rish — e29 relay resin → almanac.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_relay_resin_choir_witness.rish
+
+say "equinox-relay-resin-choir: Language EN — twelve by name; thirteen refuses without a manifest."
+say "equinox-relay-resin-choir: Style Radiant — welcome and refuse share one seat."
+say "equinox-relay-resin-choir: Lens TAME — e29 · relay_resin · almanac seat 35."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/season/relay_resin_census_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-relay-resin-choir: welcome RED"
+assert welcome.out contains "GREEN: relay-resin-census" else "equinox-relay-resin-choir: welcome missing GREEN"
+assert welcome.out contains "max_limb_beads=12" else "equinox-relay-resin-choir: want bound twelve"
+
+# Refuse: thirteen named beads without a manifest mark.
+let refuse = run ["sh" "tools/fixtures/relay_resin_census.sh" "context/design-shapes/relay_resin.brix" "tools/fixtures/relay_resin_limb_overbound.txt"]
+say refuse.out
+assert refuse.ok == false else "equinox-relay-resin-choir: overbound limb must fail status"
+assert refuse.out contains "verdict=over_bound" else "equinox-relay-resin-choir: want over_bound verdict"
+
+# Absent shape is loud.
+let absent = run ["sh" "tools/fixtures/relay_resin_census.sh" "tools/fixtures/relay_resin_ABSENT.brix"]
+say absent.out
+assert absent.ok == false else "equinox-relay-resin-choir: absent shape must fail"
+assert absent.out contains "verdict=missing_shape" else "equinox-relay-resin-choir: want missing_shape"
+
+let almanac = run ["sh" "tools/gen/season/equinox_relay_resin_choir_almanac.sh"]
+assert almanac.ok else "equinox-relay-resin-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-relay-resin-choir — bound 12 · over_bound refuse · missing_shape refuse · almanac seat 35"

@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260730.131415
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title E29 relay-resin limb GREEN · almanac 35 · ch3 3/16
+prompt kg · seat e29 shape — chapter three continues from metal
+think e28 bounds-home · next hall relay_resin · Amphora twelve-bead paste bound
+think Welcome limb 12 · over_bound 13 · missing_shape · seat 35
+obs E29 GREEN · chapter three 3/16 · roster becomes a bead past twelve
+file tools/fixtures/relay_resin_census.sh twelve-bead scan
+file tools/fixtures/relay_resin_limb_ok.txt welcome fixture
+file tools/fixtures/relay_resin_limb_overbound.txt refuse fixture
+file tools/gen/season/relay_resin_census_witness.rish welcome
+file tools/gen/season/equinox_relay_resin_choir_witness.rish e29 choir
+file tools/gen/season/equinox_relay_resin_choir_almanac.sh seat 35
+file expanding-prompts/20260730-131349_e29-relay-resin-limb-charter.md charter
+file rye-learning-process/GLOW_ALMANAC.md seat 35 · ch3 3/16
+recommend keep-going seat e30 ch3-continue metal · dual-push with send
