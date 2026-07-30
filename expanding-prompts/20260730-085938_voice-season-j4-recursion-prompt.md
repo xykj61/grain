@@ -47,7 +47,7 @@ EQUINOX MAP (canon 20260730.082536 · flank arrows 20260730.083225):
   D south · earth · midnight · H4 · flanks 5th→4th→3rd
 
 BASIS / REMOTES:
-  tip 60b807cff9 · origin + xykj61 always both
+  tip 4b185d37a8 · origin + xykj61 always both
   Handoff: expanding-prompts/20260730-085938_cursor-grok-j4-fresh-agent-handoff.md
   REMEMBER: work-in-progress/REMEMBER.md
   Brix: tools/gen/season/recursion_block.brix

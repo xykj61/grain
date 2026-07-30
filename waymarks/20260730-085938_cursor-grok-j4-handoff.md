@@ -2,7 +2,7 @@
 
 **Stamp:** `20260730.085938` · **Voice:** Riyo  
 **Coords:** equinox A · journey 4 · round 15/256 · handoff  
-**Basis:** tip `d1cb20b8f7` · dual remotes agree
+**Basis:** tip `4b185d37a8` · dual remotes agree
 
 ---
 

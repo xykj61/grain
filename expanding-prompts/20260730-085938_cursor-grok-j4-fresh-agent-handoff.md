@@ -3,7 +3,7 @@
 **Stamp:** `20260730.085938` · **Voice:** Riyo (standing season voice) · writing bench: Quin per session-logs  
 **Kind:** bench handoff · fresh Cursor agent on Framework  
 **Model:** Cursor Grok 4.5 300k High Fast  
-**Basis:** tip `d1cb20b8f7` · git nib `83f1fad0e6` · origin = xykj61  
+**Basis:** tip `4b185d37a8` · git nib `83f1fad0e6` · origin = xykj61  
 **Coords:** equinox A · Journey 4 (h4 Accrete-never-break) · round 15/256 · door 9 GREEN · tend two DONE
 
 *Written together by Keaton and Riyo for the next Cursor hand.*
@@ -47,7 +47,7 @@ Optional depth: `counsel/20260730-022147_the-256-season-charter.md` · equinox m
 | **Museum** | baton halls **13** · breach census **0** · design-shapes wing seated |
 | **Map** | east·fire·dawn H1 · north·water·noon H10 · west·air·dusk H7 · south·earth·midnight H4 |
 | **Flanks** | `2nd→1st→12th` etc. · arrows only · not `<` · not `>>` |
-| **Waters** | origin + xykj61 **agree** at `d1cb20b8f7` |
+| **Waters** | origin + xykj61 **agree** at `4b185d37a8` |
 | **Parked** | season name · membership/join/departure · myc cadence/release · shape Lexicon seam |
 
 ### Queue (still useful — numbers drifted from door labels)
@@ -90,7 +90,7 @@ From `20260730-034932` seats: persistence (9) landed as **door 9**. Tend two lan
 ```
 You are the Cursor bench on ~/grain (Framework). Model: Cursor Grok 4.5 300k High Fast.
 Read expanding-prompts/20260730-085938_cursor-grok-j4-fresh-agent-handoff.md whole, then REMEMBER.md, then recursion_block.brix.
-Voice Season undeca · Journey 4 h4 Accrete-never-break · tip d1cb20b8f7 (verify).
+Voice Season undeca · Journey 4 h4 Accrete-never-break · tip 4b185d37a8 (verify).
 Door 8–9 GREEN · tend two DONE · fascia 69 · almanac 8/16.
 Habit: after each round dual-push origin+xykj61 and print a fresh recursion prompt for repaste.
 Round-recos YES. Next: charter door 10 (refusal storm lean) unless I name discovery round-trip.
