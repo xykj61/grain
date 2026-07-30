@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260730.041405
+editor Cursor
+model Cursor Grok 4.5 High Fast
+voice Riyo
+host Cursor Cloud · Eastern (EDT) time convention
+title design-shapes wing · door 7
+prompt kg yes to all recommendations for rounds — seat wing · keep going
+think Keaton yes seats design-shapes · context/design-shapes · Lexicon · museum two wings
+think Door 7 build_bounds — myc+ship metal match brix · discovery seats pinned · module-path law
+think Almanac seat 7 · round 10 · round-recos YES pin · coords_door_7
+obs Blanket yes means recommended leans seat without re-ask · parked policy still parked
+file context/design-shapes/README.md wing charter
+file context/design-shapes/bounds_home.brix · tend_hygiene.brix
+file mycelium/build_bounds.rye door 7 GREEN
+file context/LEXICON.md design-shapes row
+file session-logs/20260730-041405_design-shapes-door7.bron this pass
+product_nib baton
+suite_nib design-shapes
+recommend keep-going door 8 next mechanical build
