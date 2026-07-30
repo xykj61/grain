@@ -4,7 +4,7 @@
 **Version:** `20260716.110152` (Glow warm-aura date atom — chronological, later-is-larger)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **By:** Riyo, in the radiant voice, with **Keaton Livermore** as coauthor (Identity Remake `20260729.141658`; standing writing voice restored to Riyo `20260729.205200`)
-**Status:** Living guide — last touched `20260730.161004` (SUNN14 — witness choir · refuse thin SOURCE)
+**Status:** Living guide — last touched `20260730.161633` (SUNN15 — journey close · handback Equinox e50)
 **Waymark:** **SUNN** — `source-pier-papers-identity-refresh`
 
 ---

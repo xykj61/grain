@@ -70,7 +70,7 @@ coords_quest Do
 coords_round 50
 coords_voice_handback return_equinox_e7 CONSUMED 20260730.111804
 coords_equinox_season OPEN
-coords_equinox_status PAUSED e49 GREEN · e50 next · SUNN OPEN · ch4 7/16
+coords_equinox_status OPEN e49 GREEN · e50 next · return_equinox_e50 CONSUMED · ch4 7/16
 coords_true_deepest deca
 coords_e7 equinox_map GREEN 20260730.113507
 coords_e7_path context/equinox_map.brix
@@ -289,15 +289,19 @@ coords_e49_path gratitude/tigerbeetle
 coords_e49_witness tools/gen/season/equinox_tigerbeetle_off_by_one_choir_witness.rish
 coords_e49_charter expanding-prompts/20260730-142537_e49-tb-off-by-one-charter.md
 coords_e49_recursion expanding-prompts/20260730-142650_equinox-season-e49-recursion-prompt.md
-coords_sunn OPEN 20260730.152953
+coords_sunn CLOSED 20260730.161633
+coords_sunn_opened 20260730.143736
 coords_sunn_resumed 20260730.152953 return_sunn_sunn8 CONSUMED
-coords_sunn_status SUNN0-14 GREEN · SUNN15 next · OPEN
+coords_sunn_status SUNN0-15 GREEN · CLOSED
 coords_sunn_waymark SUNN
 coords_sunn_input source-pier-papers-identity-refresh
 coords_sunn_charter expanding-prompts/20260730-143736_sunn-source-identity-breach-charter.md
-coords_sunn_handback return_equinox_e50
-coords_sunn_nested_equinox return_equinox_e50
+coords_sunn_handback return_equinox_e50 CONSUMED 20260730.161633
+coords_sunn_nested_equinox return_equinox_e50 CONSUMED
 coords_sunn_pole_handback return_sunn_sunn8 CONSUMED 20260730.152953
+coords_sunn_close_counsel counsel/20260730-161633_sunn-handback-return-equinox-e50.md
+coords_sunn_close_witness tools/gen/season/sunn15_journey_close_witness.rish
+coords_sunn_close_recursion expanding-prompts/20260730-161633_equinox-season-e50-recursion-prompt.md
 coords_sunn4 source_steps_github_living GREEN 20260730.144054
 coords_sunn4_path SOURCE.md
 coords_sunn4_recursion expanding-prompts/20260730-144054_sunn-recursion-prompt.md
@@ -355,6 +359,11 @@ coords_sunn14_also thickness scan · thin fixture · census GREEN
 coords_sunn14_witness tools/gen/season/sunn14_witness_choir.rish
 coords_sunn14_charter expanding-prompts/20260730-161004_sunn14-witness-choir-charter.md
 coords_sunn14_recursion expanding-prompts/20260730-161004_sunn-recursion-prompt.md
+coords_sunn15 journey_close GREEN 20260730.161633
+coords_sunn15_path counsel/20260730-161633_sunn-handback-return-equinox-e50.md
+coords_sunn15_witness tools/gen/season/sunn15_journey_close_witness.rish
+coords_sunn15_charter expanding-prompts/20260730-161633_sunn15-journey-close-charter.md
+coords_sunn15_recursion expanding-prompts/20260730-161633_equinox-season-e50-recursion-prompt.md
 coords_pole GREEN 20260730.150702
 coords_pole_status POLE0-3 GREEN · handback return_sunn_sunn8 CONSUMED
 coords_pole_waymark POLE

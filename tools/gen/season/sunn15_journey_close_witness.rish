@@ -1,0 +1,42 @@
+# tools/gen/season/sunn15_journey_close_witness.rish — SUNN15 journey close.
+#
+#   rishi/bin/rishi run tools/gen/season/sunn15_journey_close_witness.rish
+#
+# Choir still GREEN · handback CONSUMED · Equinox finishing edge named.
+
+say "sunn15: Language EN — SUNN closes; Equinox resumes at e50."
+say "sunn15: Style Radiant — handback consumed · nested surface waits."
+say "sunn15: Lens TAME — SUNN15 · close · return_equinox_e50 CONSUMED."
+
+let choir = run ["rishi/bin/rishi" "run" "tools/gen/season/sunn14_witness_choir.rish"]
+say choir.out
+assert choir.ok else "sunn15: sunn14 choir RED"
+assert choir.out contains "GREEN: sunn14" else "sunn15: choir missing GREEN"
+
+let rb = read-file "tools/gen/season/recursion_block.brix"
+assert rb contains "coords_sunn_status SUNN0-15 GREEN · CLOSED" else "sunn15: recursion want SUNN CLOSED"
+assert rb contains "return_equinox_e50 CONSUMED 20260730.161633" else "sunn15: recursion want handback CONSUMED"
+assert rb contains "coords_equinox_status OPEN e49 GREEN · e50 next" else "sunn15: recursion want Equinox OPEN"
+assert (rb contains "coords_sunn_status SUNN0-14 GREEN · SUNN15 next · OPEN") == false else "sunn15: recursion must not keep SUNN OPEN next"
+
+let counsel = read-file "counsel/20260730-161633_sunn-handback-return-equinox-e50.md"
+assert counsel contains "return_equinox_e50` **CONSUMED**" else "sunn15: counsel want handback CONSUMED"
+assert counsel contains "SUNN Journey** | **CLOSED**" else "sunn15: counsel want SUNN CLOSED"
+assert counsel contains "e50 next" else "sunn15: counsel want e50 next"
+
+let rem = read-file "work-in-progress/REMEMBER.md"
+assert rem contains "SUNN Journey** **CLOSED**" else "sunn15: REMEMBER want SUNN CLOSED"
+assert rem contains "return_equinox_e50` **CONSUMED**" else "sunn15: REMEMBER want handback CONSUMED"
+assert rem contains "Equinox Season (deca)** **OPEN**" else "sunn15: REMEMBER want Equinox OPEN"
+assert rem contains "e50 next" else "sunn15: REMEMBER want e50 next"
+
+let src = read-file "SOURCE.md"
+assert src contains "SUNN15" else "sunn15: SOURCE want SUNN15 stamp"
+assert src contains "Keaton Livermore" else "sunn15: SOURCE want Livermore"
+assert src contains "standing writing voice is **Riyo**" else "sunn15: SOURCE want Riyo writing"
+
+let lex = read-file "context/LEXICON.md"
+assert lex contains "CLOSED" else "sunn15: LEXICON SUNN want CLOSED"
+assert lex contains "return_equinox_e50 CONSUMED" else "sunn15: LEXICON want handback CONSUMED"
+
+say "GREEN: sunn15 — SUNN0-15 CLOSED · return_equinox_e50 CONSUMED · Equinox OPEN e50"
