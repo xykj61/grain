@@ -1,0 +1,166 @@
+//! comlink/discovery/introduce.rye — star-as-introducer seam, hops bounded.
+//!
+//! Build Journey · equinox A · journey 2 (h2 Aparigraha) · quest Do.
+//! Bounds inherited from tools/gen/season/recursion_block.brix (v27 seat):
+//!   discovery_introduce_hops_max 2
+//!   discovery_descriptor_max_bytes 512
+//!
+//! Check shape: a peer arrives carrying only what Aparigraha allows; identity
+//! checked at the seam through the kumara path; negative space asserted as
+//! loudly as welcome — a stranger with the wrong shape is turned away.
+//! Mycelium untouched.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/discovery/introduce.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const desc = @import("descriptor.rye");
+const table_mod = @import("table.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+
+/// Star introduces ship — one hop up, one down; deeper wants a word.
+pub const introduce_hops_max: u32 = 2;
+
+pub const IntroduceRole = enum(u8) {
+    star = 1,
+    ship = 2,
+};
+
+/// One introduction — Aparigraha: only identity, descriptor, hop, and seal.
+pub const Introduction = struct {
+    introducer_pk: [kumara.PublicKey.encoded_length]u8 = undefined,
+    introduced: table_mod.PeerId = .{},
+    descriptor: desc.Descriptor = .{},
+    hop: u32 = 0,
+    role: IntroduceRole = .star,
+    sig: [kumara.signature_length]u8 = undefined,
+
+    /// Build a signed introduction. Refuse wrong hop/role or empty payload.
+    pub fn mint(
+        introducer: kumara.KeyPair,
+        introduced: table_mod.PeerId,
+        descriptor: desc.Descriptor,
+        hop: u32,
+        role: IntroduceRole,
+    ) ?Introduction {
+        if (hop == 0 or hop > introduce_hops_max) return null;
+        if (introduced.len == 0) return null;
+        if (descriptor.len == 0 or descriptor.len > desc.descriptor_max_bytes) return null;
+        if (hop == 1 and role != .star) return null;
+        if (hop == 2 and role != .ship) return null;
+
+        var intro = Introduction{
+            .introduced = introduced,
+            .descriptor = descriptor,
+            .hop = hop,
+            .role = role,
+        };
+        const pk_bytes = introducer.public_key.toBytes();
+        tally_copy.copy_disjoint(u8, intro.introducer_pk[0..], pk_bytes[0..]);
+
+        var msg: [1 + table_mod.peer_id_max_bytes + desc.descriptor_max_bytes]u8 = undefined;
+        const msg_len = canonical_message(&intro, &msg);
+        const sig = kumara.sign(msg[0..msg_len], introducer, null);
+        const sig_bytes = sig.toBytes();
+        tally_copy.copy_disjoint(u8, intro.sig[0..], sig_bytes[0..]);
+        return intro;
+    }
+};
+
+fn canonical_message(intro: *const Introduction, out: []u8) usize {
+    assert(out.len >= 1 + intro.introduced.len + intro.descriptor.len);
+    out[0] = @intCast(intro.hop);
+    var off: usize = 1;
+    const id = intro.introduced.as_slice();
+    tally_copy.copy_disjoint(u8, out[off..][0..id.len], id);
+    off += id.len;
+    const body = intro.descriptor.as_slice();
+    tally_copy.copy_disjoint(u8, out[off..][0..body.len], body);
+    off += body.len;
+    return off;
+}
+
+/// Next hop after a successful introduction — null past the ceiling.
+pub fn next_hop(current: u32) ?u32 {
+    if (current == 0) return 1;
+    if (current >= introduce_hops_max) return null;
+    return current + 1;
+}
+
+/// Accept into the table at `now`. Loud refuse on hop, shape, or kumara verify.
+pub fn accept(table: *table_mod.PeerTable, intro: Introduction, now: u64) error{
+    HopRefused,
+    ShapeRefused,
+    IdentityRefused,
+    Full,
+}!void {
+    if (intro.hop == 0 or intro.hop > introduce_hops_max) return error.HopRefused;
+    if (intro.hop == 1 and intro.role != .star) return error.ShapeRefused;
+    if (intro.hop == 2 and intro.role != .ship) return error.ShapeRefused;
+    if (intro.introduced.len == 0) return error.ShapeRefused;
+    if (intro.descriptor.len == 0 or intro.descriptor.len > desc.descriptor_max_bytes) return error.ShapeRefused;
+
+    const pk = kumara.PublicKey.fromBytes(intro.introducer_pk) catch return error.IdentityRefused;
+    var msg: [1 + table_mod.peer_id_max_bytes + desc.descriptor_max_bytes]u8 = undefined;
+    const msg_len = canonical_message(&intro, &msg);
+    kumara.verify_bytes(msg[0..msg_len], intro.sig[0..], pk) catch return error.IdentityRefused;
+
+    try table.upsert(intro.introduced, intro.descriptor, now);
+}
+
+/// Selftest — Check shape: Aparigraha payload · kumara seam · negative space loud.
+pub fn main() !void {
+    if (introduce_hops_max != 2) return error.HopsBound;
+
+    const star_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
+    const ship_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
+    const star_kp = kumara.keypair_from_seed(&star_seed);
+    const ship_kp = kumara.keypair_from_seed(&ship_seed);
+
+    const ship_id = table_mod.PeerId.from_slice("ship-solreb") orelse return error.ShipId;
+    const peer_id = table_mod.PeerId.from_slice("peer-fresh") orelse return error.PeerId;
+    const d_ship = desc.Descriptor.from_slice("ship|udp://10|fresh|star-line") orelse return error.DescShip;
+    const d_peer = desc.Descriptor.from_slice("peer|udp://11|fresh|ship-line") orelse return error.DescPeer;
+
+    // Hop 1: star introduces ship — kumara-sealed.
+    const hop1 = Introduction.mint(star_kp, ship_id, d_ship, 1, .star) orelse return error.Hop1Mint;
+    var backing: [4096]u8 = undefined;
+    var table = table_mod.PeerTable.init(&backing);
+    try accept(&table, hop1, 1000);
+    if (table.get(ship_id) == null) return error.ShipMissing;
+
+    // Hop 2: ship introduces peer.
+    const hop2_n = next_hop(1) orelse return error.NextHop2;
+    const hop2 = Introduction.mint(ship_kp, peer_id, d_peer, hop2_n, .ship) orelse return error.Hop2Mint;
+    try accept(&table, hop2, 1001);
+    if (table.count() != 2) return error.CountAfterTwo;
+
+    // Negative space — wrong shape turned away loudly.
+    if (next_hop(2) != null) return error.NextHop3ShouldNull;
+    if (Introduction.mint(ship_kp, peer_id, d_peer, 3, .ship) != null) return error.Hop3ShouldRefuse;
+    if (Introduction.mint(ship_kp, peer_id, d_peer, 1, .ship) != null) return error.ShipHop1;
+    if (Introduction.mint(star_kp, peer_id, d_peer, 2, .star) != null) return error.StarHop2;
+    if (Introduction.mint(star_kp, ship_id, desc.Descriptor.init_empty(), 1, .star) != null) return error.EmptyDesc;
+
+    // Tampered signature — IdentityRefused; table unchanged.
+    var bad = hop1;
+    bad.sig[0] ^= 0xff;
+    const before = table.count();
+    if (accept(&table, bad, 1002)) |_| return error.TamperAccepted else |err| {
+        if (err != error.IdentityRefused) return error.WrongRefuse;
+    }
+    if (table.count() != before) return error.TamperMutated;
+
+    // Wrong hop on an otherwise-sealed blob — HopRefused.
+    var wrong_hop = hop1;
+    wrong_hop.hop = 3;
+    if (accept(&table, wrong_hop, 1003)) |_| return error.Hop3Accepted else |err| {
+        if (err != error.HopRefused) return error.WrongHopRefuse;
+    }
+
+    print("GREEN: discovery introduce — Check shape · hops_max {d} · kumara seam · negative space loud\n", .{
+        introduce_hops_max,
+    });
+}
