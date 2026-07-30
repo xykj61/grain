@@ -1,11 +1,11 @@
 # Pattern Two — The Fact Fold
 
-**Stamp:** `20260730.072710` — carried; restamp on Keaton's word.
+**Stamp:** `20260730.072710` — carried; metal blanks `20260730.081647` · door 8 **GREEN** under j4 `20260730.083821`.
 **Voice:** Riyo · nested documentary voice: Trey · **Style:** Radiant · **Discipline:** TAME
-**Coords:** equinox A · journey 3 (h3 Radiant Style) · door 8 · round 10/256
+**Coords:** equinox A · journey 4 (h4 Accrete-never-break) · door 8 **CLOSED** · round 13/256
 **Destination:** `docs-geode/sangha/02-fact-fold.md` — living page, plain spoken name
 **Elder sibling:** `docs-geode/sangha/01-descriptor-exchange.md` — the bench conforms this page's headings to pattern one where they differ
-**Written from:** `mycelium/fold.rye`, green on metal
+**Written from:** `mycelium/fold.rye`, green on metal · design shape `context/design-shapes/fact_fold.brix`
 
 *Written together by Keaton and Riyo.*
 
