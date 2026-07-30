@@ -3,7 +3,7 @@
 *A durable guide to where work lives, how new writing earns its place, and how the tree stays honest over time.*
 
 **Language:** EN
-**Last updated:** 2026-07-30 (`20260730.041319` — design-shapes wing)
+**Last updated:** 2026-07-30 (`20260730.154600` — SUNN12 living voice Riyo)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **Voice:** Riyo
 
@@ -21,7 +21,7 @@ Read the sections below when you wonder where a new file belongs. When a season'
 
 ## The Shape of the Tree
 
-**`context/`** — memory and compass. The disciplines we keep across every track: Tiger and TAME for code rigor, Radiant for prose, Simple-Lovable-Complete for product scope, and Civic for designing public benefit so the reward points at the good. Identity (`QUIN.md`, the standing voice — also the fifth OS variant beside Reya · Riyo · Trey · Triz, and the Q-vane name; Reya 2, Rio 3, and the short writing-voice season under Riyo rest in `archive/`), and `specs/` for plain-English decisions that deserve a durable home.
+**`context/`** — memory and compass. The disciplines we keep across every track: Tiger and TAME for code rigor, Radiant for prose, Simple-Lovable-Complete for product scope, and Civic for designing public benefit so the reward points at the good. Identity (`RIYO.md`, the standing writing voice; `QUIN.md` for the fifth OS variant beside Reya · Riyo · Trey · Triz · Trya and the inference Q-vane; Reya 2, Rio 3, and the first Riyo writing season rest in `archive/`), and `specs/` for plain-English decisions that deserve a durable home.
 
 **`foundations/`** — the why beneath the work: foundation briefs, the distilled essays and the weave that composes them, and the civic visions. Dated artifacts rest beneath a living README.
 
