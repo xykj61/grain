@@ -4,6 +4,8 @@
 **Style:** Radiant (see [`context/RADIANT_STYLE.md`](context/RADIANT_STYLE.md))
 **Status:** Living — the human map; models take [`llms.txt`](llms.txt), keepers take [`ORGANIZING.md`](ORGANIZING.md), and *you* take this
 
+*The root gathering of sources now lives at [`bibliography.md`](bibliography.md).*
+
 ---
 
 Welcome, traveler. Sixty-some doors face you at this root, and every one of them is friendly once you know which is which. This page is the map on the wall by the entrance: where the treasure is, where the machines hum, where the laws are kept, and which rooms are simply fun. Nothing here is required reading. Everything here is findable in one glance.
