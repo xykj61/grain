@@ -294,6 +294,14 @@ Expected say-why GREEN · off-by-one GREEN · style-numbers GREEN · IRON presen
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ch4_surface_witness.rish` · **Stamp:** `20260730.190447` · **Witness:** `tools/gen/season/equinox_ch4_surface_witness.rish`
 Expected dx why/how · mid inplace/shrink/bleeds/obo · style numbers/deps/tooling/last · iron COUNT≥34, and ABSENT refuses on a missing clone or iron shelf. Metal answered GREEN. Chapter four closes at sixteen; chapter five waits for metal.
 
+## Chapter Five (1 of 16)
+
+Opened from metal at stamp `20260730.191221`. Themes arrive after findings; this chapter carries none in advance.
+
+### 65. IronBeetle ep001 teaches the wire that needs no parser; checksum meets cast before trust.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep001_choir_witness.rish` · **Stamp:** `20260730.191221` · **Witness:** `tools/gen/season/ironbeetle_ep001_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep001_census.sh` · choir `equinox_ironbeetle_ep001_choir_witness.rish`
+Expected IRON=present · EP001 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Chapter five opens; clean-room study only.
+
 ---
 
-*May every line here be one the machine said first. May the book close at its bound the way a season does. And may chapter five wait for metal, not memory.*
+*May every line here be one the machine said first. May the book close at its bound the way a season does. And may the rest of chapter five wait for metal, not memory.*

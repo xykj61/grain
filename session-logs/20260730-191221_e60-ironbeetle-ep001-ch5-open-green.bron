@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260730.191221
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title e60 IronBeetle ep001 opens chapter five GREEN
+prompt kg · e60 — chapter five opens from metal
+think ch4 FULL · shelf presence already measured · ep001 content never censused · e27/e43 open pattern
+think Metal = gratitude/ironbeetle ep001 own-voice · honors·source·teach·rhyme·clean·matklad
+think Seat 65 opens Chapter Five 1/16 · expedition stays gated · themes wait for findings
+obs e60 GREEN · ch5 OPEN · e61 ep002 double-entry next
+file expanding-prompts/20260730-191159_e60-ironbeetle-ep001-ch5-open-charter.md charter
+file tools/fixtures/ironbeetle_ep001_census.sh scan GREEN
+file tools/gen/season/equinox_ironbeetle_ep001_choir_witness.rish choir GREEN
+file rye-learning-process/GLOW_ALMANAC.md seat 65 · ch5 open
+file waymarks/20260730-191221_e60-ironbeetle-ep001-ch5-open-green.md finishing edge
+file expanding-prompts/20260730-191221_equinox-season-e61-recursion-prompt.md fusion
+recommend keep-going e61 IronBeetle ep002 double-entry
