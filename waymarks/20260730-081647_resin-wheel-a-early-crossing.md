@@ -1,7 +1,7 @@
 # Waymark — Resin Wheel A · Early Crossing Landed
 
 **Stamp:** `20260730.081647` · **Voice:** Riyo · **Coords:** equinox A · journey 3 · quest Do · round 10/256 · tend r11
-**Basis:** xykj61/main `747233e1d0` · origin ff'd to match · tip after land *(pin at send)*
+**Basis:** xykj61/main `747233e1d0` · origin ff'd to match · tip `d0a78b7eb2`
 **Resin:** `resin-wheel-a-20260730-072710.zip` · sha3_256 `48eeb1ebe32397e67c5a40905e2c6a632c64069cadf897f2a0cac55c64899a01` · MATCH
 
 ---
