@@ -1,0 +1,32 @@
+# tools/gen/season/copy_sameness_negative_witness.rish — the sameness guard bites.
+#
+#   rishi/bin/rishi run tools/gen/season/copy_sameness_negative_witness.rish
+#
+# Voice Season v3 · slot 3 (emphasis) · happy_zone_witnesses_first.
+#
+# At e6 I planted a drift by hand, watched the guard fire, and restored the file.
+# That proved the guard once, in one sitting, by an act nobody can repeat from
+# the record. This points the same scan at a fixture built to hold the violation,
+# so the refusal is observed on every run and no live file is ever touched.
+#
+# Fixture: context/fixtures/copy_sameness_drift/tally_copy_drifted.rye —
+# standing exempt, per the intentional-violation law. It must stay wrong.
+
+say "copy-sameness-negative: Language EN — the sameness guard is proven to bite."
+say "copy-sameness-negative: Style Radiant — a fixture holds the violation, not a live file."
+say "copy-sameness-negative: Lens TAME — negative space beside positive."
+
+let fixture = "context/fixtures/copy_sameness_drift/tally_copy_drifted.rye"
+let have = run ["test" "-f" fixture]
+assert have.ok else "copy-sameness-negative: drift fixture absent"
+
+let drifted = run ["sh" "tools/fixtures/copy_sameness_scan.sh" "Riyo" fixture]
+assert drifted.out contains "verdict=drift" else "copy-sameness-negative: guard missed a drifted copy"
+assert drifted.ok == false else "copy-sameness-negative: refusal did not set a failing status"
+assert drifted.out contains "detail: drifted" else "copy-sameness-negative: no drifted path was named"
+
+let clean = run ["sh" "tools/fixtures/copy_sameness_scan.sh"]
+assert clean.ok else "copy-sameness-negative: clean call did not succeed"
+assert clean.out contains "verdict=ok" else "copy-sameness-negative: the live tree no longer agrees"
+
+say "GREEN: copy-sameness-negative — catches the fixture, passes the live tree"

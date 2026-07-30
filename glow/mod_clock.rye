@@ -42,6 +42,69 @@ pub fn compatible(house12: u32, slot16: u32) bool {
     return (house12 % gcd_clock) == (slot16 % gcd_clock);
 }
 
+pub const priority_slots: u32 = 16;
+
+/// The twelve base priorities — the ten grain strands (20260702.184312) plus
+/// Radiant and single-stranded. Roster seated 20260729.203719.
+/// Data twin: tools/gen/season/recursion_block.brix priority_1..priority_12.
+pub const Priority = enum(u8) {
+    five_primitives = 0,
+    tame_order = 1,
+    explicit_bounds = 2,
+    values_apart = 3,
+    accretion_one_clock = 4,
+    galls_law_graduation = 5,
+    seam_honesty = 6,
+    happy_zone_witnesses_first = 7,
+    sameness_as_compression = 8,
+    opening_lines_and_silo = 9,
+    radiant = 10,
+    single_stranded = 11,
+};
+
+pub const priority_base_count: u32 = 12;
+pub const emphasis_stride: u32 = 4; // one emphasis slot per quarter journey
+
+/// The four double-weighted practices, in the order they take emphasis slots.
+/// Order corrected 20260729.225900 (Voice v11). The first arrangement put
+/// sameness_as_compression at emphasis slot 11 while its base slot is 10 --
+/// adjacent, which is precisely the clustering the spacing exists to prevent.
+/// Searched all 24 orderings: this one maximizes the minimum gap between a
+/// doubled practice's two appearances, lifting it from 1 to 6.
+pub const doubled = [4]Priority{
+    .sameness_as_compression,
+    .single_stranded,
+    .explicit_bounds,
+    .happy_zone_witnesses_first,
+};
+
+/// The minimum gap this arrangement guarantees, asserted by the fold's witness.
+pub const min_emphasis_gap: u32 = 6;
+
+/// Slot to priority across one sixteen-slot journey.
+///
+/// Emphasis slots 3 · 7 · 11 · 15 carry the four doubles, one per quarter, so
+/// a doubled practice recurs across the whole journey rather than clustering
+/// at its end. The remaining twelve slots carry the base roster in order.
+/// The roster is data; this spacing is the fold — proposed, and one line of
+/// brix away from any other arrangement Keaton prefers.
+pub fn priority_of_slot(slot: u32) Priority {
+    assert(slot < priority_slots); // precondition: caller took slot = n % 16
+    if (slot % emphasis_stride == emphasis_stride - 1) {
+        const which: u32 = slot / emphasis_stride;
+        assert(which < doubled.len); // invariant: four emphasis slots, four doubles
+        return doubled[@intCast(which)];
+    }
+    const base: u32 = slot - (slot / emphasis_stride);
+    assert(base < priority_base_count); // invariant: twelve base slots, twelve names
+    return @enumFromInt(@as(u8, @intCast(base)));
+}
+
+/// The priority a numbered round is walked under — n mod 16.
+pub fn priority_of_round(n: u32) Priority {
+    return priority_of_slot(n % priority_slots);
+}
+
 /// Four direction houses for collaboration priority (seated Equinox e0).
 /// East 0 · North 1 · West 2 · South 3 — each covers three zodiac houses.
 pub const Direction = enum(u32) {

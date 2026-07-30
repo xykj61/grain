@@ -1,0 +1,43 @@
+# tools/gen/season/dep_crawl_bounds_negative_witness.rish — the bounds bite.
+#
+#   rishi/bin/rishi run tools/gen/season/dep_crawl_bounds_negative_witness.rish
+#
+# Voice Season v3 · slot 3 (emphasis) · happy_zone_witnesses_first.
+#
+# Why this exists: dep_crawl named two bounds at e4 -- 256 nodes and 16 depth --
+# and neither refusal path had ever been observed to fire. A bound never seen to
+# bite is a bound in name only. TAME's own law says every blocking witness
+# carries a known-bad fixture beside its known-good one, never PASS alone.
+#
+# Method: the same code path, smaller bounds. The scan accepts overrides used
+# only here; dep_crawl.rish asserts the named defaults on every ordinary run, so
+# an override cannot quietly become the norm.
+
+say "dep-crawl-negative: Language EN — the bounds are proven to bite."
+say "dep-crawl-negative: Style Radiant — a refusal observed, not assumed."
+say "dep-crawl-negative: Lens TAME — negative space asserted beside positive."
+
+let root = "brushstroke/east_pack_test.rye"
+let have = run ["test" "-f" root]
+assert have.ok else "dep-crawl-negative: fixture root absent"
+
+# Depth refusal: the real closure reaches depth 3, so a depth bound of 1 must bite.
+let deep = run ["sh" "tools/fixtures/dep_crawl_scan.sh" root "256" "1"]
+assert deep.out contains "verdict=bound_depth" else "dep-crawl-negative: depth bound did NOT bite at maxd=1"
+assert deep.ok == false else "dep-crawl-negative: depth refusal did not set a failing status"
+assert deep.out contains "maxd=1" else "dep-crawl-negative: depth bound not reported"
+
+# Node refusal: the real closure holds 5 nodes, so a node bound of 2 must bite.
+let wide = run ["sh" "tools/fixtures/dep_crawl_scan.sh" root "2" "16"]
+assert wide.out contains "verdict=bound_nodes" else "dep-crawl-negative: node bound did NOT bite at maxn=2"
+assert wide.ok == false else "dep-crawl-negative: node refusal did not set a failing status"
+assert wide.out contains "maxn=2" else "dep-crawl-negative: node bound not reported"
+
+# And the known-good side, at the named bounds, still closes.
+let ok = run ["sh" "tools/fixtures/dep_crawl_scan.sh" root]
+assert ok.ok else "dep-crawl-negative: default call did not succeed"
+assert ok.out contains "verdict=ok" else "dep-crawl-negative: default bounds no longer close"
+assert ok.out contains "maxn=256" else "dep-crawl-negative: default node bound drifted"
+assert ok.out contains "maxd=16" else "dep-crawl-negative: default depth bound drifted"
+
+say "GREEN: dep-crawl-negative — both bounds bite; the named defaults still close"

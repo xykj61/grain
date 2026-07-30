@@ -1,0 +1,27 @@
+# tools/gen/season/voice_roster_negative_witness.rish — the voice guard bites.
+#
+#   rishi/bin/rishi run tools/gen/season/voice_roster_negative_witness.rish
+#
+# Voice Season v3 · slot 3 (emphasis) · happy_zone_witnesses_first.
+#
+# The voice roster went red on five sites before Riyo was seated at v0, and I
+# watched it. Watching is not a fixture. This asks the same scan for a voice the
+# tree does NOT declare, so the refusal is observed on every run rather than
+# remembered from one sitting.
+
+say "voice-roster-negative: Language EN — the guard is proven to bite."
+say "voice-roster-negative: Style Radiant — a refusal observed on every run."
+say "voice-roster-negative: Lens TAME — negative space beside positive."
+
+# A name no declaration site carries, and none should.
+let absent = run ["sh" "tools/fixtures/voice_roster_scan.sh" "Nobody"]
+assert absent.out contains "verdict=drift" else "voice-roster-negative: guard accepted a voice the tree never declared"
+assert absent.ok == false else "voice-roster-negative: refusal did not set a failing status"
+assert absent.out contains "detail: drifted" else "voice-roster-negative: no site was named as drifting"
+
+# The standing voice still passes, so the guard discriminates rather than refusing all.
+let standing = run ["sh" "tools/fixtures/voice_roster_scan.sh" "Riyo"]
+assert standing.ok else "voice-roster-negative: standing-voice call did not succeed"
+assert standing.out contains "verdict=ok" else "voice-roster-negative: standing voice no longer passes"
+
+say "GREEN: voice-roster-negative — refuses an undeclared voice, accepts the standing one"

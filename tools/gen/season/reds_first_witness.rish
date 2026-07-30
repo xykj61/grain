@@ -1,0 +1,23 @@
+# tools/gen/season/reds_first_witness.rish — one law, one home, the crossing whole.
+#
+#   rishi/bin/rishi run tools/gen/season/reds_first_witness.rish
+#
+# Voice Season v10 · slot 10 · sameness_as_compression.
+#
+# Keaton asked that the rules, the code guidance, and the foundations policy all
+# carry a reds-first discipline. Sameness answers: one home, three citations --
+# a law kept in three places becomes three laws within a season. This witness
+# proves the law exists once, that all three citers point at it and none carries
+# its body, and that the crossing is whole: named study in external-research,
+# teachers thanked in gratitude, siloed law in foundations.
+
+say "reds-first: Language EN — a red books the allocation; the law lives in one place."
+say "reds-first: Style Radiant — cite rather than restate; thank in its own room."
+say "reds-first: Lens TAME — the crossing is asserted whole, not assumed."
+
+let scan = run ["sh" "tools/fixtures/reds_first_scan.sh"]
+say scan.out
+assert scan.out contains "verdict=ok" else "reds-first: the law is not single-homed or the crossing is incomplete"
+assert scan.ok else "reds-first: the verdict reads ok while the status fails — they must agree"
+
+say "GREEN: reds-first — one law, three citers, teachers thanked in their own room"

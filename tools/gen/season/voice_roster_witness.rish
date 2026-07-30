@@ -1,0 +1,25 @@
+# tools/gen/season/voice_roster_witness.rish — one standing voice, declared once.
+#
+#   rishi/bin/rishi run tools/gen/season/voice_roster_witness.rish [VoiceName]
+#
+# First resident of our own voice-variant system: before the six variants are
+# claimed as a surface anyone else can use, they are proven here, on this tree,
+# against this tree's own declaration sites. Dated docs keep the voice that
+# actually wrote them -- authorship is testimony, never restyled.
+
+say "voice-roster: Language EN — one standing voice, declared once everywhere."
+say "voice-roster: Style Radiant — name the sites; leave testimony alone."
+say "voice-roster: Lens TAME — six sites bounded and named up front."
+
+let want = "Riyo"
+if length args != 0 then let want = args[0]
+
+let scan = run ["sh" "tools/fixtures/voice_roster_scan.sh" want]
+say scan.out
+assert scan.out contains "verdict=ok" else "voice-roster: a declaration site does not carry the standing voice"
+# values_apart: the scan's status and its verdict key must agree. If they ever
+# disagree, a sentinel was typo'd or a path changed -- exactly the failure the
+# old text-only verdict could pass silently.
+assert scan.ok else "voice-roster: the verdict reads ok while the status fails — they must agree"
+
+say "GREEN: voice-roster — the standing voice is declared consistently"

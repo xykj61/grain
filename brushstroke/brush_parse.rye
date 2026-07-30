@@ -263,6 +263,22 @@ pub fn lower_brush(src: []const u8, line_buf: *[max_frame_lines][]const u8) Pars
 
 /// Redraw a BrushFrame to stdout — thin hosted Skate lean (one line = one grid row).
 /// Pure pass from values; no Wayland · no retained tree.
+/// The column count a grid needs to hold this frame with nothing truncated.
+/// `Grid.put_line` clips silently at `cols`, so a caller sizing a grid asks
+/// here first and learns the requirement before the machine runs.
+pub fn frame_widest_line(frame: BrushFrame) u32 {
+    assert(frame.lines.len <= max_frame_lines); // invariant: frame within its bound
+    assert(frame.max_lines <= max_frame_lines); // invariant: stated bound honest
+    var widest: u32 = 0;
+    for (frame.lines) |line| {
+        assert(line.len <= std.math.maxInt(u32)); // seam: std length into u32
+        const width: u32 = @intCast(line.len);
+        if (width > widest) widest = width;
+    }
+    assert(widest <= max_brush_bytes); // postcondition: width inside the byte bound
+    return widest;
+}
+
 pub fn redraw_brush_frame(frame: BrushFrame, io: std.Io) !void {
     // invariant: Frame carries at least one line before paint
     assert(frame.lines.len > 0);

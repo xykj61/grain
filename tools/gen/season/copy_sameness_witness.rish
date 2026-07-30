@@ -1,0 +1,28 @@
+# tools/gen/season/copy_sameness_witness.rish — one fold, sixteen copies, no drift.
+#
+#   rishi/bin/rishi run tools/gen/season/copy_sameness_witness.rish
+#
+# Round e6 · priority slot 6 · galls_law_graduation.
+# The graduation audit found copy_disjoint reachable from fifteen module-local
+# paths. Correction to counsel's first reading (20260729.204722): fourteen are
+# SYMLINKS to the one canonical tally/copy.rye — the tree already keeps sameness
+# through the filesystem. Exactly one, mand/tally_copy.rye, is a real file and
+# is therefore the only path that can drift silently. This guard makes it loud.
+
+say "copy-sameness: Language EN — one fold, many copies, no drift."
+say "copy-sameness: Style Radiant — fourteen symlinks, one real file, no drift."
+say "copy-sameness: Lens TAME — sameness asserted, never assumed."
+
+let scan = run ["sh" "tools/fixtures/copy_sameness_scan.sh"]
+say scan.out
+assert scan.out contains "verdict=ok" else "copy-sameness: a copy has drifted from tally/copy.rye"
+# values_apart: the scan's status and its verdict key must agree. If they ever
+# disagree, a sentinel was typo'd or a path changed -- exactly the failure the
+# old text-only verdict could pass silently.
+assert scan.ok else "copy-sameness: the verdict reads ok while the status fails — they must agree"
+
+say "copy-sameness: HAZARD, named on purpose — fourteen module-local paths are"
+say "copy-sameness:   symlinks to tally/copy.rye, so a write to ANY of them edits"
+say "copy-sameness:   the canon for every module at once. An on-touch edit inside"
+say "copy-sameness:   one module home is a tree-wide edit. Measured live 20260729."
+say "GREEN: copy-sameness — every tally_copy.rye matches the canon byte for byte"

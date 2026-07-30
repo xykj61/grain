@@ -1,0 +1,45 @@
+//! tally/divisions_test.rye — Equinox e5 · divisions within the outermost allocation.
+//!
+//!   rye/bin/rye run tally/divisions_test.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const tally = @import("gardens.rye");
+
+const outer_bytes: u32 = 1024; // the outermost allocation — the whole season's ground
+
+pub fn main() void {
+    var outer: [outer_bytes]u8 = undefined;
+    var parent = tally.Region.init(outer[0..]);
+    var g = tally.Gardens.init();
+
+    // Divide the whole into named divisions — no caller arithmetic anywhere.
+    g.add_division("blob", &parent, 512) catch unreachable;
+    g.add_division("diff", &parent, 256) catch unreachable;
+    assert(g.total_capacity() == 768); // welcome: the divisions sum to what was carved
+    assert(parent.remaining() == 256); // the whole keeps the rest, unclaimed
+    assert(g.total_capacity() <= outer_bytes); // invariant: divisions never exceed the whole
+
+    // Two divisions cannot reach each other — the proof that matters.
+    const blob = g.get("blob") orelse unreachable;
+    const diff = g.get("diff") orelse unreachable;
+    const b = blob.alloc(4) catch unreachable;
+    const d = diff.alloc(4) catch unreachable;
+    b[0] = 'A'; b[1] = 'A'; b[2] = 'A'; b[3] = 'A';
+    d[0] = 'B'; d[1] = 'B'; d[2] = 'B'; d[3] = 'B';
+    assert(b[0] == 'A'); // negative space: writing diff left blob untouched
+    assert(d[0] == 'B');
+    assert(@intFromPtr(b.ptr) != @intFromPtr(d.ptr)); // disjoint by construction
+
+    // A division larger than what remains is refused, not truncated.
+    const over = parent.divide(9999);
+    assert(over == error.OutOfBounds);
+    assert(parent.remaining() == 256); // refusal left the whole exactly as it was
+
+    // The whole may still be cleared as one season.
+    g.clear_all();
+    assert(g.total_remaining() == g.total_capacity());
+
+    print("GREEN: tally divisions — 768 of 1024 carved, disjoint, over-request refused\n", .{});
+}

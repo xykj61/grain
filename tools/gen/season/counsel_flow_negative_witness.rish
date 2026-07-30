@@ -1,0 +1,26 @@
+# tools/gen/season/counsel_flow_negative_witness.rish — the Brix guard bites.
+#
+#   rishi/bin/rishi run tools/gen/season/counsel_flow_negative_witness.rish
+#
+# Voice Season v5 · slot 5 · accretion_one_clock.
+# Fixture: context/fixtures/counsel_flow_unlawful/unlawful.brix — standing
+# exempt; it holds a CamelCase key, a double space, a condition, and a field
+# without a value, so the guard's four faults are each observed on every run.
+
+say "counsel-flow-negative: Language EN — the Brix guard is proven to bite."
+say "counsel-flow-negative: Style Radiant — a fixture holds the violation."
+say "counsel-flow-negative: Lens TAME — negative space beside positive."
+
+let bad = run ["sh" "tools/fixtures/counsel_flow_scan.sh" "context/fixtures/counsel_flow_unlawful/unlawful.brix"]
+assert bad.out contains "verdict=unlawful_brix" else "counsel-flow-negative: guard accepted unlawful Brix"
+assert bad.ok == false else "counsel-flow-negative: refusal did not set a failing status"
+assert bad.out contains "not lowercase_snake" else "counsel-flow-negative: CamelCase key not caught"
+assert bad.out contains "more than one space" else "counsel-flow-negative: double space not caught"
+assert bad.out contains "command or condition" else "counsel-flow-negative: condition not caught"
+assert bad.out contains "field without a value" else "counsel-flow-negative: bare field not caught"
+
+let good = run ["sh" "tools/fixtures/counsel_flow_scan.sh"]
+assert good.ok else "counsel-flow-negative: the living descriptor no longer passes"
+assert good.out contains "verdict=ok" else "counsel-flow-negative: living descriptor verdict changed"
+
+say "GREEN: counsel-flow-negative — four faults caught, the living contract passes"

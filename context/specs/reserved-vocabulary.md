@@ -28,6 +28,22 @@ Warm names still enter beside inherited types (`inherited-names.md`). This list 
 
 **Do not** use `plot` in public API, living docs, or witness vocabulary until this spec records an assignment with a one-line *why*.
 
+### `Sutra`
+
+**Status:** Reserved — no public assignment yet.
+
+**Why it matters:** Sanskrit *sūtra*, a thread; also a terse aphoristic line. A shell script is exactly that — a thread of terse lines — so the word fits a rune-spelled shell surface better than any alternate found. It sits in the house's own register beside Seva, Mand, Mudra, and Aparigraha.
+
+**Near miss (`20260729`):** proposed as the name of a Glow rune form of Rishi, after **Tend** was refused as a hard collision (Tend is a seated Tilak duty — absorb / express / tend, ratified `20260703.203712`, load-bearing in the referential-namespace design). Guard run: **Sutra 0 · Japa 0 · Vach 0** word-boundary hits in owned surfaces, so all three stand free.
+
+**Held rather than seated, on counsel's own recommendation:** the rune form was described as carrying **the same semantics** as Rishi, which makes it a rune spelling — an **aspect** — rather than a distinct language. The graduation rule applies to languages as readily as to code: a name earns its keep when the thing genuinely diverges, not when it gains a second spelling. So the rune surface grows as `rishi/runes/` first, and **Sutra stays unspent** until the semantics part ways.
+
+**Alternates parked beside it:** **Japa** (soft caution — *japa* means reciting mantras, and **Mantra** is a live module, so a reader may expect a relation that is not there) and **Vach** (soft caution — speech, while the artifact is written).
+
+**Do not** use `Sutra` in public API, living docs, or witness vocabulary until this spec records an assignment with a one-line *why*.
+
+---
+
 ---
 
 *May the words we save stay whole until the right ground asks for them.*

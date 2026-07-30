@@ -13,6 +13,42 @@ rounds e0-e255
 round_count 256
 equinox_count 4
 equinox_size 64
+journey_count_per_equinox 4
+journey_size 16
+journey_total 16
+
+# Priority cycle — twelve base, four double-weighted, sixteen slots.
+# One journey equals one full revolution. Seated 20260729.203253 on Keaton's
+# word "seat your recommendations"; base roster from the ten grain strands
+# (20260702.184312) plus Radiant and single-stranded as accretions.
+priority_cycle 16
+priority_cycle_base 12
+priority_1 five_primitives
+priority_2 tame_order
+priority_3 explicit_bounds
+priority_4 values_apart
+priority_5 accretion_one_clock
+priority_6 galls_law_graduation
+priority_7 seam_honesty
+priority_8 happy_zone_witnesses_first
+priority_9 sameness_as_compression
+priority_10 opening_lines_and_silo
+priority_11 radiant
+priority_12 single_stranded
+# Emphasis order corrected 20260729.225900 (v11): the first arrangement put
+# sameness at emphasis slot 11 beside its base slot 10. All 24 orderings searched;
+# this one lifts the minimum gap between a double's two appearances from 1 to 6.
+priority_double sameness_as_compression
+priority_double single_stranded
+priority_double explicit_bounds
+priority_double happy_zone_witnesses_first
+min_emphasis_gap 6
+
+# Equinox-close bundle — seated 20260729.185725 (Keaton) · generator green 20260729.200806
+equinox_bundle_rounds e63 e127 e191 e255
+equinox_bundle_max_bytes 268435456
+equinox_bundle_measured_basis 192267970
+check_in_every_rounds 8
 code_lang glow
 data_lang brix
 ask_key asks
@@ -20,9 +56,11 @@ ask_reply your
 handback return_surface_p59
 parent_scope sept
 parent_bookmark p58/p59
-editor_continue Claude Fable 5 1m Max
+editor_continue Claude Fable 5 1m Max (Keaton's word 20260729.231500)
+editor_continue_elder2 Claude Opus 5 1m Max (20260729.203719 through 20260729.231500)
+editor_continue_elder Claude Fable 5 1m Max (through 20260729.185725)
 editor_pause Cursor
-voice Quin
+voice Riyo
 
 # Four equinoxes (sub-seasons of 64 within the 256)
 equinox 1 east fire aries-ward e0-e63

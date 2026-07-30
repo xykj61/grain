@@ -1,0 +1,32 @@
+//! lattice/approx_equal_test.rye — Equinox e1 East pack · witness-grade float agreement.
+//!
+//!   rye/bin/rye run lattice/approx_equal_test.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lattice = @import("lattice_core.rye");
+
+const epsilon_default: f32 = 0.001; // agreement window for f32 witness compares
+
+pub fn main() void {
+    var a = lattice.Matrix.init(2, 2) catch unreachable;
+    var b = lattice.Matrix.init(2, 2) catch unreachable;
+    a.set(0, 0, 1.0);
+    b.set(0, 0, 1.0 + 0.0005); // inside the window
+    const near = lattice.approx_equal(&a, &b, epsilon_default) catch unreachable;
+    assert(near); // welcome: two correct routes to one value agree
+
+    b.set(0, 0, 1.5); // outside the window
+    const far = lattice.approx_equal(&a, &b, epsilon_default) catch unreachable;
+    assert(!far); // negative space: disagreement is reported, never smoothed
+
+    var wrong = lattice.Matrix.init(3, 2) catch unreachable;
+    const mismatch = lattice.approx_equal(&a, &wrong, epsilon_default);
+    assert(mismatch == error.ShapeMismatch); // refuse: shapes agree before values
+
+    const negative = lattice.approx_equal(&a, &b, -0.1);
+    assert(negative == error.NegativeInput); // refuse: a window cannot be negative
+
+    print("GREEN: lattice approx_equal — near, far, shape refuse, epsilon refuse\n", .{});
+}

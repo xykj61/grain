@@ -1,0 +1,23 @@
+# tools/gen/season/scan_convention_witness.rish — one decision, one home.
+#
+#   rishi/bin/rishi run tools/gen/season/scan_convention_witness.rish
+#
+# Voice Season v6 · slot 6 · galls_law_graduation.
+#
+# The scan-seam convention had five consumers and no canonical home -- each scan
+# restated it in an eight-line block. The canonical gloss says a form the tree
+# cites lives in one authoritative place; the graduation rule says the same about
+# code at its second outside consumer, which this passed three times over.
+# Seated at context/specs/20260729-215600_scan-seam-convention.md; this witness
+# keeps every scan pointing there rather than copying it back.
+
+say "scan-convention: Language EN — one decision, one home, many citations."
+say "scan-convention: Style Radiant — cite rather than restate."
+say "scan-convention: Lens TAME — the canonical place is asserted, not assumed."
+
+let scan = run ["sh" "tools/fixtures/scan_convention_scan.sh"]
+say scan.out
+assert scan.out contains "verdict=ok" else "scan-convention: a scan does not cite the single home"
+assert scan.ok else "scan-convention: the verdict reads ok while the status fails — they must agree"
+
+say "GREEN: scan-convention — every scan cites the spec; none restates it"

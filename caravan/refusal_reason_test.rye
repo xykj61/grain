@@ -1,0 +1,30 @@
+//! caravan/refusal_reason_test.rye — Equinox e2 East pack · legible refusals.
+//!
+//!   rye/bin/rye run caravan/refusal_reason_test.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const caps = @import("capabilities.rye");
+
+pub fn main() void {
+    var table: caps.CapabilityTable = .{};
+    const vfs = table.add_dependent("vfs") catch unreachable;
+    vfs.grant(caps.Capability.init("/usr", caps.right_read)) catch unreachable;
+
+    // welcome: granted resource, granted right
+    assert(table.refusal_reason("vfs", "/usr", caps.right_read) == .allowed);
+    assert(table.allows("vfs", "/usr", caps.right_read)); // elder agrees
+
+    // negative space: each refusal names itself
+    assert(table.refusal_reason("ghost", "/usr", caps.right_read) == .no_such_dependent);
+    assert(table.refusal_reason("vfs", "/etc", caps.right_read) == .no_such_resource);
+    assert(table.refusal_reason("vfs", "/usr", caps.right_write) == .rights_insufficient);
+
+    // the three refusals the elder collapsed into one bare false
+    assert(!table.allows("ghost", "/usr", caps.right_read));
+    assert(!table.allows("vfs", "/etc", caps.right_read));
+    assert(!table.allows("vfs", "/usr", caps.right_write));
+
+    print("GREEN: caravan refusal_reason — allowed, no_such_dependent, no_such_resource, rights_insufficient\n", .{});
+}

@@ -1,0 +1,25 @@
+# tools/gen/season/almanac_breach_witness.rish — the almanac breach, both sides.
+#
+#   rishi/bin/rishi run tools/gen/season/almanac_breach_witness.rish
+#
+# Voice v11. Designed at v7 under all six promises; approved by Keaton
+# 20260729.225900; executed this stamp.
+#
+# The promise this witness keeps is the fourth: witnessed both sides. It existed
+# before the first file moved, was RED with five faults, and is GREEN after.
+# The promise it protects going forward is the second and third together --
+# every byte preserved at the new address, every LIVING reference turned, and
+# every dated-testimony reference left exactly as written, because Tier 2 keeps
+# its words at any address and re-pointing a June session log would falsify it.
+
+say "almanac-breach: Language EN — the elder rests at its archive address."
+say "almanac-breach: Style Radiant — relocate and re-point; never rewrite."
+say "almanac-breach: Lens TAME — both sides witnessed, testimony untouched."
+
+let scan = run ["sh" "tools/fixtures/almanac_breach_scan.sh"]
+say scan.out
+assert scan.out contains "verdict=ok" else "almanac-breach: the breach is incomplete inside its scope"
+assert scan.out contains "elder_lines=310" else "almanac-breach: the elder lost bytes — a breach preserves every one"
+assert scan.ok else "almanac-breach: the verdict reads ok while the status fails — they must agree"
+
+say "GREEN: almanac-breach — 310 lines intact at the archive address, testimony untouched"

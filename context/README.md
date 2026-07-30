@@ -3,7 +3,7 @@
 **Language:** EN
 **Last updated:** 2026-07-17 (TWO_ROOMS Quin refresh · five OS variants named in the tree map)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
-**Voice:** Quin
+**Voice:** Riyo
 
 ---
 
@@ -20,7 +20,8 @@ Everything here lives inside the persistent project directory, so it survives ev
 - **`SIMPLE_LOVABLE_COMPLETE.md`** — how we ship. Simple, lovable, complete at every lap; our distillation of Jason Cohen's method, bound to how Rye OS grows. Source essay in `gratitude/`.
 - **`CIVIC_STYLE.md`** — how we design public benefit. Name the outcome you want, name what the reward measures, keep the two aligned — the civic companion to TAME, Radiant, and SLC.
 - **`TWO_ROOMS.md`** — the checkable room and the vision room; name the register at the door; doorway witness vocabulary (`checkable` · `vision` · `mixed` · `research for understanding`). Seated `20260705.203144`; Quin refresh `20260717.163748`.
-- **`QUIN.md`** — **Quin**, the standing voice (also the fifth OS variant beside Reya · Riyo · Trey · Triz, intentionally unpaired — five total settled — and the Q-vane name), restored after a short season under Riyo's name. The writing-voice seasons under Riyo, Reya 2, and Rio 3 rest retired in [`archive/`](archive/) (`RIYO.md`, `REYA2.md`, `RIO3.md`).
+- **`RIYO.md`** — **Riyo**, the standing voice, seated `20260729.205200` on Keaton's word; one of Grain's own OS variants, paired with Reya. The first Riyo season rests in [`archive/`](archive/RIYO.md) as its elder record.
+- **`QUIN.md`** — **Quin**, still live in two hats: the **fifth OS variant** (intentionally unpaired, beside Reya · Riyo · Trey · Triz · Trya) and the inference **Q-vane** (Lattice · Scribble · Lantern · Kiln). The writing-voice hat passed to Riyo; the note stays here rather than in `archive/` because two of its three subjects remain live. Reya 2 and Rio 3 rest retired in [`archive/`](archive/).
 - **`SILO_TECHNIQUE.md`** — the siloing technique: how an outside idea becomes an owned, understood concept in our own voice, with gratitude kept apart and honored. Portable, and meant to travel beside the voice guide and the identity note.
 - **`LEXICON.md`** — module names and one-line meanings; Weave, Dexter, Kumara, Bookie, the open horizons, the **preservation pair** (Amber = cellar software, Amphora = vessel software), and **Kitchen twin** (plain companion to a hard canon). **Nib** vocabulary for landed edges (product · suite · git) — retired *tip* in new prose only.
 

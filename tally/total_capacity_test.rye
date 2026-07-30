@@ -1,0 +1,31 @@
+//! tally/total_capacity_test.rye — Equinox e3 East pack · the budget's whole.
+//!
+//!   rye/bin/rye run tally/total_capacity_test.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const tally = @import("gardens.rye");
+
+pub fn main() void {
+    var blob: [512]u8 = undefined;
+    var diff: [256]u8 = undefined;
+    var g = tally.Gardens.init();
+    g.add("blob", blob[0..]) catch unreachable;
+    g.add("diff", diff[0..]) catch unreachable;
+
+    assert(g.total_capacity() == 768); // welcome: 512 + 256
+    assert(g.total_remaining() == 768); // nothing planted yet
+
+    const region = g.get("blob") orelse unreachable;
+    _ = region.alloc(100) catch unreachable;
+    assert(g.total_capacity() == 768); // invariant: the whole does not shrink
+    assert(g.total_remaining() == 668); // the remainder does
+
+    g.clear_all();
+    assert(g.total_remaining() == g.total_capacity()); // negative space: cleared is whole
+
+    var empty = tally.Gardens.init();
+    assert(empty.total_capacity() == 0); // no gardens, no budget
+    print("GREEN: tally total_capacity — 768 whole, 668 after 100, cleared restores\n", .{});
+}

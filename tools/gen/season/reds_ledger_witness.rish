@@ -1,0 +1,22 @@
+# tools/gen/season/reds_ledger_witness.rish — the reds reach the tree.
+#
+#   rishi/bin/rishi run tools/gen/season/reds_ledger_witness.rish
+#
+# Voice Season v9 · slot 9 · happy_zone_witnesses_first.
+#
+# Own-reds-immediately has always been law here, and it worked -- reds were named
+# the moment they were found. What the law never said is WHERE. A check at v9
+# found six reds written into the tree and twenty owned out loud, so fourteen
+# lessons were living only in a chat window that closes. work-in-progress/REDS.md
+# is the durable home; this witness keeps every row complete and the pin bounded.
+
+say "reds-ledger: Language EN — a red owned out loud is a memory; recorded, a proof."
+say "reds-ledger: Style Radiant — three fields per row, no softening."
+say "reds-ledger: Lens TAME — the pin's bound is named and checked."
+
+let scan = run ["sh" "tools/fixtures/reds_ledger_scan.sh"]
+say scan.out
+assert scan.out contains "verdict=ok" else "reds-ledger: a row is incomplete or the pin is past bound"
+assert scan.ok else "reds-ledger: the verdict reads ok while the status fails — they must agree"
+
+say "GREEN: reds-ledger — every red carries what went wrong, what caught it, what it taught"

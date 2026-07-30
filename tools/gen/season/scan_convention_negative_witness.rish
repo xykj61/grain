@@ -1,0 +1,28 @@
+# tools/gen/season/scan_convention_negative_witness.rish — the home guard bites.
+#
+#   rishi/bin/rishi run tools/gen/season/scan_convention_negative_witness.rish
+#
+# Voice Season v6 · slot 6 · galls_law_graduation.
+# Fixture: context/fixtures/scan_convention_uncited/uncited_scan.sh — standing
+# exempt; it restates the convention instead of citing it, on purpose, so both
+# faults are observed on every run rather than remembered from one sitting.
+
+say "scan-convention-negative: Language EN — the single-home guard is proven to bite."
+say "scan-convention-negative: Style Radiant — a fixture holds the violation."
+say "scan-convention-negative: Lens TAME — negative space beside positive."
+
+let f = "context/fixtures/scan_convention_uncited/uncited_scan.sh"
+let have = run ["test" "-f" f]
+assert have.ok else "scan-convention-negative: fixture absent"
+
+let bad = run ["sh" "tools/fixtures/scan_convention_scan.sh" f]
+assert bad.out contains "verdict=convention_not_single_homed" else "scan-convention-negative: guard accepted a restating scan"
+assert bad.ok == false else "scan-convention-negative: refusal did not set a failing status"
+assert bad.out contains "does not cite the single home" else "scan-convention-negative: uncited scan not named"
+assert bad.out contains "restates instead of citing" else "scan-convention-negative: restatement not named"
+
+let good = run ["sh" "tools/fixtures/scan_convention_scan.sh"]
+assert good.ok else "scan-convention-negative: the living roster no longer passes"
+assert good.out contains "verdict=ok" else "scan-convention-negative: living roster verdict changed"
+
+say "GREEN: scan-convention-negative — catches the fixture, passes the living roster"

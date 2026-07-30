@@ -1,0 +1,41 @@
+# tools/gen/season/bounds_typed_witness.rish — declared bounds carry their type.
+#
+#   rishi/bin/rishi run tools/gen/season/bounds_typed_witness.rish
+#
+# Voice Season v2 · slot 2 · explicit_bounds.
+#
+# Why this exists: TAME root rule 2 is this tree's most-cited discipline -- every
+# allocation, collection, and pipeline names its maximum size -- and the enforced
+# table in TAME_GUIDANCE checks authored usize, dated artifacts, unqualified
+# assert, opening lines, disjoint copies, parseInt, and error comparison. It has
+# never checked a bound. This is the first witness for rule 2.
+#
+# Advisory ratchet: prints the count, never fails.
+#
+# The standing population was ONE -- brushstroke/seed.rye, `const max_lines = 8;`
+# -- and it was turned to ZERO at 20260729.211500. Counsel first predicted that
+# annotating it would break the build, since the bound is compared against a
+# usize length; the build was run rather than the claim written, and it compiled
+# clean. Prediction refuted by measurement, which is the cheaper order.
+#
+# The turn was taken rather than parked because the file was already open for
+# that test, the change is a type annotation inside Tier 3 living code, and a
+# rule's first witness lands cleaner at population zero than carrying a standing
+# violation. One word reverses it. The separately parked one-liner --
+# mand/tally_copy.rye becoming a symlink -- stays parked, because that one
+# changes a file's identity rather than annotating a constant.
+
+say "bounds-typed: Language EN — declared bounds carry their type."
+say "bounds-typed: Style Radiant — count the population; turn the ratchet on touch."
+say "bounds-typed: Lens TAME — root rule 2, witnessed for the first time."
+
+let scan = run ["sh" "tools/fixtures/bounds_typed_scan.sh"]
+say scan.out
+assert scan.out contains "verdict=ok" else "bounds-typed: a declared bound lacks its type"
+# values_apart: the scan's status and its verdict key must agree. If they ever
+# disagree, a sentinel was typo'd or a path changed -- exactly the failure the
+# old text-only verdict could pass silently.
+assert scan.ok else "bounds-typed: the verdict reads ok while the status fails — they must agree"
+
+say "bounds-typed: advisory — a declared bound reads `const max_x: u32 = N; // why`"
+say "GREEN: bounds-typed — rule 2 has a witness; population zero, printed either way"

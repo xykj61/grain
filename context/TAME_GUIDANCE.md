@@ -206,6 +206,21 @@ The rules here that a machine can check are gathered near the end, in **What We 
 
 ---
 
+## Reds First — the allocation follows a fault
+
+A witness that refuses has stopped the work; **the remainder of the journey's
+allocation then belongs to the reds before it belongs to anything new**, cascading
+across journey, equinox, and season boundaries with each crossing named in the
+waymark. A red is not a ratchet: reds book the allocation, while ratchets turn on
+touch and book nothing. Breaches the fixes want stay gated — the discipline this
+law is siloed from stops and summons rather than proceeding.
+
+Canonical single home, cited rather than restated:
+[`../foundations/20260729-224828_reds-first-and-the-allocation.md`](../foundations/20260729-224828_reds-first-and-the-allocation.md).
+Ledger: [`../work-in-progress/REDS.md`](../work-in-progress/REDS.md).
+
+---
+
 ## Root — Universal Across the Family
 
 These disciplines hold for Rye, Brix, Rishi, and every module written in them. A language that has no supplement of its own still keeps the root. Where the root is silent, **996** and `gratitude/TIGER_STYLE.md` are authoritative.
@@ -552,7 +567,19 @@ Rishi is the shell: typed pipelines, process results as structured values, asser
 
 ### Run returns a structured value
 
-`run` produces a structured result: `{ status, out, err }`. Never treat `out` as reliable until `status` has been checked. A pipeline that discards `status` silently is a pipeline that has decided faults do not matter.
+`run` produces a structured result. Never treat `out` as reliable until the
+result field has been checked. A pipeline that discards it silently is a pipeline
+that has decided faults do not matter.
+
+**Erratum `20260729.214600`** — this section read *"a structured result: `{ status, out, err }`"* with the worked line `assert result.status == 0`. The field is **`ok`**, a boolean, and `status` does not exist: `say r.status` answers `NoSuchField` on `rishi 20260725.120701`. The wrong belief stays visible here rather than being quietly overwritten. Measured while wiring the Voice Season v4 witnesses, which is the first time anything asserted the field the doc named.
+
+```
+let result = run ["zig" "build"]
+assert result.ok else "build failed"   // invariant: build succeeded before tests
+if result.ok == false then say "(non-zero exit)"
+```
+
+A witness that wants to know **which** fault occurred reads a named `verdict=` key out of `out`, and asserts that the two channels agree — see the scan-seam convention in `tools/fixtures/*_scan.sh`.
 
 ```
 let result = run "zig" ["build"]
