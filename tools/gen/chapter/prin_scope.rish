@@ -9,7 +9,7 @@
 
 say "prin-scope: Language EN — twelve-nest season slate."
 say "prin-scope: Style Radiant — print orientation; refuse shred/deploy."
-say "prin-scope: Lens TAME — living pin; nest accuracy 20260730.115101 (deca · e10 GREEN · almanac 16/16)."
+say "prin-scope: Lens TAME — living pin; nest accuracy 20260730.115628 (deca · e11 GREEN · almanac ch2 open)."
 
 let g = run ["git" "rev-parse" "--short=10" "HEAD"]
 assert g.ok else "prin_scope: git rev-parse failed"
@@ -29,8 +29,8 @@ say "  sext:   Generator Chapter — PAUSED at s8 complete / s9 next"
 say "  sept:   Surface Chapter — PAUSED · p58 complete / p59 next (live-five GREEN · handed into deca)"
 say "  oct:   Kiln Chapter — PAUSED at o3 complete / o4 next (handed back)"
 say "  nona:  Nona Chapter — PAUSED · n3 complete / n4 next (handed back return_surface_p41)"
-say "  deca:  Equinox Chapter — OPEN · e10 GREEN surface choir · e11 next · almanac ch1 16/16 · true deepest · handback return_surface_p59 (Riyo · deca)"
-say "  undeca: Voice Chapter — PAUSED · Journey 4 doors 8-15 GREEN · Build queue CLOSED · tend three DONE · almanac 16/16 · handed back return_equinox_e7 20260730.111804"
+say "  deca:  Equinox Chapter — OPEN · e11 GREEN East pack almanac ch2 · e12 next · ch1 16/16 · ch2 1/16 · true deepest · handback return_surface_p59 (Riyo · deca)"
+say "  undeca: Voice Chapter — PAUSED · Journey 4 doors 8-15 GREEN · Build queue CLOSED · tend three DONE · almanac ch1 full · handed back return_equinox_e7 20260730.111804"
 say "  duodeca: Fascia Equinox — PAUSED · f3 complete / f4 next · exit bar MET fascia=90 · handed back return_voice_j4_d10 20260730.095331"
 say "  baton_museum: context/baton-museum/ — halls living · Lexicon baton · census zero"
 say "  coords_256: equinox A · Journey 4 PAUSED · door 15 GREEN · Voice handback CONSUMED · season name PARKED"
@@ -38,6 +38,7 @@ say "  coords_fascia_closed: duodeca PAUSED · entry 69 · exit 90 · handback C
 say "  equinox_map: context/equinox_map.brix GREEN e7 · H10-north by intention · witness tools/gen/chapter/equinox_map_witness.rish"
 say "  equinox_foundations: context/equinox_foundations.brix GREEN e8 · 3 per equinox · join map flanks · witness tools/gen/chapter/equinox_foundations_witness.rish"
 say "  equinox_surface: tools/gen/chapter/equinox_surface_witness.rish GREEN e10 · e0+map+foundations choir · almanac 16/16"
+say "  equinox_east_almanac: tools/gen/chapter/equinox_east_almanac_witness.rish GREEN e11 · East pack · almanac seat 17 · ch2 open"
 say "  flanks: 2nd->1st->12th · 11th->10th->9th · 8th->7th->6th · 5th->4th->3rd (arrow_path)"
 say "  remotes: origin autoproject96/grain · xykj61 xykj61/grain (always both)"
 say "  extend_or_return: return_surface_p59 (Equinox handback · seated 20260729.165912)"
