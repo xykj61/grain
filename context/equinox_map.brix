@@ -1,0 +1,54 @@
+# Equinox map canon — the four equinoxes of the wheel, each with its flank of three houses
+# Grouping: an `equinox` line opens a block; every line after it belongs to that block
+# Invariant: exactly four equinox blocks
+# Invariant: the twelve flank houses cover 1..12, each house exactly once
+# Invariant: each flank reads angular+1, angular, angular-1, descending, wrapping at 12
+# Invariant: each block's angular house sits at the centre of its own flank
+# Invariant: the four elements, directions, and hours each appear exactly once
+# Invariant: angular set = {1,4,7,10} — the kendras
+#
+# H10-north intention (seated e7 · 20260730.111804 · Keaton's map via 20260730.082536):
+# This wheel binds day-quarter to angular house (noon↔10th, midnight↔4th) and names
+# direction from that symbolic culmination of the *work* season, not from the sun's
+# geographic culmination on a northern-hemisphere sky chart. North = noon = water = SLC
+# (the work stands highest). South = midnight = earth = accrete-never-break (the work
+# goes home). Sky astrology may still read H10 south at culmination; this descriptor
+# is the symbolic work map. Say why recorded here so the question stays closed.
+#
+# Glow is code; Brix is data. Readable by splitLines and a first-space split.
+kind map
+name equinox_map
+count 4
+h10_north_reason day_quarter_to_angular_symbolic_work_wheel
+
+# A — the rising equinox, where the wheel opens
+equinox A
+direction east
+element fire
+hour dawn
+angular 1
+flank 2 1 12
+
+# B — the culminating equinox, where the work stands highest
+equinox B
+direction north
+element water
+hour noon
+angular 10
+flank 11 10 9
+
+# C — the setting equinox, where the work meets another
+equinox C
+direction west
+element air
+hour dusk
+angular 7
+flank 8 7 6
+
+# D — the resting equinox, where the work goes home
+equinox D
+direction south
+element earth
+hour midnight
+angular 4
+flank 5 4 3
