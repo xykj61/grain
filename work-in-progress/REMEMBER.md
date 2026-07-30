@@ -74,7 +74,8 @@ WOV retirement stays **roadmap last**. No live deploy · wallet · gas · privat
 | **Equinox Map Correction** | **CLOSED** · em0–em15 · map canon seated · handback consumed at j3 r12 |
 | **Voice Season Journey 3** | **CLOSED** `20260730.083457` · h3 Radiant Style · doors 6–7 · resin · map nest |
 | **Fascia Equinox (duodeca)** | **PAUSED** `20260730.095331` · f3 · exit bar MET 69→90 · handback CONSUMED |
-| **Equinox Season (deca)** | **OPEN** `20260730.111804` · true deepest · e20 **GREEN** · e21 next · `return_surface_p59` |
+| **Equinox Season (deca)** | **OPEN** `20260730.111804` · true deepest · e21 **GREEN** · e22 next · `return_surface_p59` |
+| **E21 TB golden rule** | **GREEN** `20260730.123827` · positive·negative·maybe triad · seat 27 |
 | **E20 TB control/data plane** | **GREEN** `20260730.123451` · GUIDE·ARCH·verify·TAME bridge · seat 26 |
 | **E19 TB assert census** | **GREEN** `20260730.122901` · assert 8175 · maybe 286 · constants.verify 69 · seat 25 |
 | **E18 TB void census** | **GREEN** `20260730.122332` · submodule `97c7a8ef38` · total_voidish 2192 · seat 24 |
@@ -96,7 +97,7 @@ WOV retirement stays **roadmap last**. No live deploy · wallet · gas · privat
 | **Door 14 create prep** | **GREEN** `20260730.110403` · `counsel/replies/20260730-105636_create-prep-build-journey-j4.md` · seat 16 DONE |
 | **Build Journey queue** | **CLOSED** `20260730.110403` · seat 16 · elder wire cleared as door 15 GREEN |
 | **Glow almanac ch1** | **FULL** · 16 of 16 · seat 16 from equinox_surface choir · `rye-learning-process/GLOW_ALMANAC.md` |
-| **Glow almanac ch2** | **OPEN** · 10 of 16 · seats 17–26 · … · TB assert census · TB control plane · `rye-learning-process/GLOW_ALMANAC.md` |
+| **Glow almanac ch2** | **OPEN** · 11 of 16 · seats 17–27 · … · TB control plane · TB golden rule · `rye-learning-process/GLOW_ALMANAC.md` |
 | **Door 12 five primitives reference** | **GREEN** `20260730.103002` · `docs-geode/sangha/03-five-primitives.md` · almanac seat 11 |
 | **Door 13 edu discovery walk** | **GREEN** `20260730.104053` · `edu/discovery/round-trip-walk.md` · almanac seat 12 |
 | **Fascia handback** | **CONSUMED** `20260730.095331` · `return_voice_j4_d10` · counsel handback seat |
@@ -122,7 +123,7 @@ WOV retirement stays **roadmap last**. No live deploy · wallet · gas · privat
 | **Pier write ruling** | **SEATED** `20260730.034136` · Option 2 · Cloud→xykj61 branch+PR · origin/main from home pier · keys stay home |
 | **Cloud merge on xykj61** | **APPROVED** `20260730.034520` · Keaton's word · Cloud FF-merges to `xykj61/main` itself · home still syncs origin |
 | **Dual remotes** | **SEATED** · ls-remote + auth-refused · reds 31–32 · xykj61/main living · origin/main awaits home sync |
-| **Equinox Season** | **OPEN** e20 GREEN / e21 next · almanac ch1 full · ch2 10/16 · nested `return_surface_p59` |
+| **Equinox Season** | **OPEN** e21 GREEN / e22 next · almanac ch1 full · ch2 11/16 · nested `return_surface_p59` |
 | **Surface Season** | **PAUSED** p58/p59 · `return_surface_p59` when Equinox resumes |
 | **Identity Remake** | **PAUSED** k6/k7 · `return_surface_p55` seated |
 | **Nona Season** | **PAUSED** n3/n4 · `return_surface_p41` seated |
