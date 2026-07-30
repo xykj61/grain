@@ -1,0 +1,17 @@
+# Baton — cell · one counsel printout that crosses the paste seam whole
+# Invariant: prose head · exactly one codeblock carrying all sections · baton final · recommend on the cell's tail
+# Seated `20260730.072425` · hall 13 (hall 12 is tend_round — measurement beats the packet's hall-twelve guess)
+kind baton
+name cell
+carrier counsel
+crosses counsel_to_bench_paste
+status exact
+# story head — prose before the single codeblock
+field story
+# the one codeblock — all sections; baton is the final section inside it
+field block
+# recommending line — rides the cell's tail, outside the codeblock
+field recommend
+# dual-editor rule homes
+field cursor_rule
+field claude_rule
