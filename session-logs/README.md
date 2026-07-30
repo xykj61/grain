@@ -1,3 +1,4 @@
+- `20260730.090650` — [Sundial meaning · fascia equinox ask](20260730-090650_sundial-fascia-equinox-ask.bron) — sundial ≠ fascia · equinox lean unseated
 - `20260730.090221` — [Door 10 refusal storm chartered](20260730-090221_door-10-refusal-storm-chartered.bron) — min_cases 5 · path refusal_storm.rye · kg create next
 - `20260730.085938` — [Cursor Grok J4 fresh-agent handoff](20260730-085938_cursor-grok-j4-handoff.bron) — handoff packet · door 10 charter next
 - `20260730.085559` — [Tend two fascia delta · recursion reprint](20260730-085559_tend-two-fascia-delta.bron) — 69→69 Δ0 · waters agree · next charter
