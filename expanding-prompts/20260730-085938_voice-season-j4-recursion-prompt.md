@@ -26,7 +26,7 @@ QUAD (closed): Gren lean-16 CLOSED
 QUINT (closed): Keeh lean-16 CLOSED
 SEXT (paused): Generator s8/s9 · return_mur_u92 when resumed
 SEPT (paused): Surface p58/p59 · live-five GREEN · return_generator_s9
-OCT (paused): Kiln o3/o4
+OCT (paused): Oven o3/o4
 NONA (paused): Nona n3/n4 · return_surface_p41
 DECA (paused): Equinox e6/e7 · return_surface_p59 · handback into Voice nested
 UNDECA (OPEN): Voice Chapter · equinox A · Journey 4 OPEN · round 15/256
@@ -47,7 +47,7 @@ EQUINOX MAP (canon 20260730.082536 · flank arrows 20260730.083225):
   D south · earth · midnight · H4 · flanks 5th→4th→3rd
 
 BASIS / REMOTES:
-  tip 60b807cff9 · origin + xykj61 always both
+  tip 4b185d37a8 · origin + xykj61 always both
   Handoff: expanding-prompts/20260730-085938_cursor-grok-j4-fresh-agent-handoff.md
   REMEMBER: work-in-progress/REMEMBER.md
   Brix: tools/gen/chapter/recursion_block.brix
