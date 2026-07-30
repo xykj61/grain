@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260730.133534
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title E35 TB control-flow GREEN · almanac 41 · ch3 9/16
+prompt kg · seat e35 shape — chapter three continues from metal
+think e33–e34 TB safety · next Power of Ten · explicit flow · no recursion
+think Guide·NASA·limit·TAME·supplement·style · absent refuse · leaf only · seat 41
+obs E35 GREEN · chapter three 9/16 · recursion stays out so bounds hold
+file tools/fixtures/tigerbeetle_control_flow_census.sh control-flow scan
+file tools/gen/season/tigerbeetle_control_flow_census_witness.rish welcome
+file tools/gen/season/equinox_tigerbeetle_control_flow_choir_witness.rish e35 choir
+file tools/gen/season/equinox_tigerbeetle_control_flow_almanac.sh seat 41
+file expanding-prompts/20260730-133438_e35-tb-control-flow-charter.md charter
+file rye-learning-process/GLOW_ALMANAC.md seat 41 · ch3 9/16
+recommend keep-going seat e36 ch3-continue metal · dual-push with send

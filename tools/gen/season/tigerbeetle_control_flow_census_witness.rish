@@ -1,0 +1,27 @@
+# tools/gen/season/tigerbeetle_control_flow_census_witness.rish — e35 control flow.
+#
+#   rishi/bin/rishi run tools/gen/season/tigerbeetle_control_flow_census_witness.rish
+#
+# Requires gratitude/tigerbeetle submodule present.
+# Clean-room: presence only · never copies into rye/.
+# Leaf only — no nested elder choirs.
+
+say "tb-control-flow: Language EN — simple explicit flow; recursion stays out."
+say "tb-control-flow: Style Radiant — what should be bounded stays bounded."
+say "tb-control-flow: Lens TAME — e35 · clean-room study · almanac seat 41."
+
+let clone = run ["test" "-d" "gratitude/tigerbeetle/src"]
+assert clone.ok else "tb-control-flow: gratitude/tigerbeetle/src ABSENT — host clone first"
+
+let census = run ["sh" "tools/fixtures/tigerbeetle_control_flow_census.sh"]
+say census.out
+assert census.ok else "tb-control-flow: census failed or thin"
+assert census.out contains "CLONE=present" else "tb-control-flow: want CLONE=present"
+assert census.out contains "verdict=ok" else "tb-control-flow: want verdict=ok"
+assert census.out contains "GUIDE_FLOW=yes" else "tb-control-flow: held guide must ban recursion"
+assert census.out contains "GUIDE_NASA=yes" else "tb-control-flow: guide must cite Power of Ten"
+assert census.out contains "TAME_FLOW=yes" else "tb-control-flow: TAME must keep flow simple"
+assert census.out contains "SUPPLEMENT_FLOW=yes" else "tb-control-flow: supplement must keep recursion out"
+assert census.out contains "STYLE=yes" else "tb-control-flow: clone docs must teach the law"
+
+say "GREEN: tb-control-flow — guide·NASA·limit·TAME·supplement·style ok"

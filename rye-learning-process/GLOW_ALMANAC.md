@@ -158,7 +158,7 @@ Expected halls_expected=13 · halls_absent=0 · census_breach_count=0, and verdi
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ch2_surface_witness.rish` · **Stamp:** `20260730.125750` · **Witness:** `tools/gen/season/equinox_ch2_surface_witness.rish`
 Expected SAFE census · reds complete/monotone/refuse · voice sites=6/refuse · baton halls=13/breach=0/absent refuse each GREEN in one choir. Metal answered GREEN. Chapter two closes at sixteen; chapter three waits for metal.
 
-## Chapter Three (8 of 16)
+## Chapter Three (9 of 16)
 
 Opened from metal at stamp `20260730.130733`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -193,6 +193,10 @@ Expected CLONE=present · GUIDE_STATIC · GUIDE_LIMIT · TAME_STATIC · STYLE ·
 ### 40. Functions hold a hard seventy-line bound; tidy ratchets the rule from the clone.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_seventy_line_choir_witness.rish` · **Stamp:** `20260730.133248` · **Witness:** `tools/gen/season/tigerbeetle_seventy_line_census_witness.rish` · scan `tools/fixtures/tigerbeetle_seventy_line_census.sh` · choir `equinox_tigerbeetle_seventy_line_choir_witness.rish`
 Expected CLONE=present · GUIDE_SEVENTY · TAME_SEVENTY · SUPPLEMENT_SEVENTY · STYLE · TIDY · RATCHET, and verdict=absent on a missing clone path. Metal answered GREEN. Clean-room study only.
+
+### 41. Control flow stays simple and explicit; recursion stays out so bounds hold.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_control_flow_choir_witness.rish` · **Stamp:** `20260730.133534` · **Witness:** `tools/gen/season/tigerbeetle_control_flow_census_witness.rish` · scan `tools/fixtures/tigerbeetle_control_flow_census.sh` · choir `equinox_tigerbeetle_control_flow_choir_witness.rish`
+Expected CLONE=present · GUIDE_FLOW · GUIDE_NASA · GUIDE_LIMIT · TAME_FLOW · SUPPLEMENT_FLOW · STYLE, and verdict=absent on a missing clone path. Metal answered GREEN. Clean-room study only.
 
 ---
 
