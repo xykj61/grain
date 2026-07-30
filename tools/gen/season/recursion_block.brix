@@ -65,7 +65,7 @@ voice_v32_descriptor_landed 20260730.030553
 baton_museum context/baton-museum
 coords_equinox A
 coords_journey 4
-coords_journey_4_status OPEN — h4 Accrete-never-break · door 9 GREEN · tend two DONE · door 10 charter SEATED · create next
+coords_journey_4_status PAUSED — h4 Accrete-never-break · door 9 GREEN · tend two DONE · door 10 charter SEATED · create waits handback
 coords_quest Do
 coords_round 15
 coords_season_rounds 256
@@ -76,6 +76,7 @@ coords_journey_2_closed 20260730.040859
 coords_journey_3_opened 20260730.040859 h3 Radiant Style
 coords_journey_3_closed 20260730.083457 r12 close
 coords_journey_4_opened 20260730.083457 h4 Accrete-never-break
+coords_journey_4_paused 20260730.090926 Voice pause for Fascia Equinox
 coords_equinox_map_correction CLOSED 20260730.082536 em0-em15
 coords_equinox_map_correction_handback journey_3_r12_close CONSUMED
 coords_door_6 ship_sol
@@ -87,9 +88,24 @@ coords_door_9_bound myc_fold_snapshot_max_bytes 4096
 coords_door_10 refusal_storm CHARTERED 20260730.090221
 coords_door_10_path mycelium/refusal_storm.rye
 coords_door_10_bound refusal_storm_min_cases 5
+# Fascia Equinox — nest 12 duodeca · seated 20260730.090926 on Keaton's word
+coords_fascia_equinox OPEN
+coords_fascia_nest duodeca
+coords_fascia_nest_n 12
+coords_fascia_rounds f0-f63
+coords_fascia_round 0
+coords_fascia_status f0 complete / f1 next
+coords_fascia_entry 69
+coords_fascia_exit_bar 90
+coords_fascia_handback return_voice_j4_d10
+coords_fascia_charter counsel/20260730-090926_the-fascia-equinox-duodeca-charter.md
+coords_voice_status PAUSED 20260730.090926
 design_shapes_wing seated 20260730.041319
 design_shapes_fact_fold seated 20260730.083821
 flank_arrow_path seated 20260730.083225
+fascia_exit_bar 90
+# why: Keaton's word 20260730.090926 — season exit when measured fascia >= 90
+fascia_entry_at_open 69
 # myc opening numbers approved 20260730.014817 (were a proposal at 20260729.231500)
 myc_genesis 12288
 myc_star_price 64
