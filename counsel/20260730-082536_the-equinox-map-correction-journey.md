@@ -5,8 +5,8 @@
 **Kind:** nested journey charter · Keaton's word · foundation **accrete-never-break**  
 **Nest:** undeca · 256 season · equinox **A** · rounds **em0–em15** (N = 16 = 2⁴)  
 **Basis:** tip `c96d03e786` · dual remotes  
-**Status:** **CLOSED** · em15 `20260730.082536` (open+sweep+close one send) · Journey 3 Build **resumes** at r12 close  
-**Handback:** Journey 3 at **r12 close** — seated
+**Status:** **CLOSED** · em15 `20260730.082536` (open+sweep+close one send) · handback **consumed** at Journey 3 r12 close `20260730.083457`  
+**Handback:** Journey 3 at **r12 close** — **consumed** · Journey 4 open
 
 *Written together by Keaton and Riyo.*
 
@@ -20,10 +20,12 @@ The four equinoxes in [`20260730-022147_the-256-season-charter.md`](20260730-022
 
 | Equinox | Direction · element · day-quarter | Angular house | Flanks |
 | --- | --- | --- | --- |
-| **A / I** | east · fire · dawn | 1st | 2nd &lt; 1st == dawn &lt; 12th |
-| **B / II** | north · water · noon | 10th | 11th &lt; 10th noon &lt; 9th |
-| **C / III** | west · air · dusk | 7th | 8th &lt; 7th dusk &lt; 6th |
-| **D / IV** | south · earth · midnight | 4th | 5th &lt; 4th midnight &lt; 3rd |
+| **A / I** | east · fire · dawn | 1st | 2nd → 1st → 12th *(dawn at 1st)* |
+| **B / II** | north · water · noon | 10th | 11th → 10th → 9th *(noon at 10th)* |
+| **C / III** | west · air · dusk | 7th | 8th → 7th → 6th *(dusk at 7th)* |
+| **D / IV** | south · earth · midnight | 4th | 5th → 4th → 3rd *(midnight at 4th)* |
+
+Flank notation seated `20260730.083225`: path arrows (`→` / `->`), not `<` and not `>>`.
 
 **Living identity:** direction · element · day-quarter · angular house + flanks.  
 **Sign-ward** labels (`aries-ward` · `cancer-ward` · `libra-ward` · `capricorn-ward`) are optional mood gloss only — they must not contradict water-at-10th or earth-at-4th.

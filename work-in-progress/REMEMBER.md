@@ -6,15 +6,15 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260730.082808` (EDT) · voice Riyo  
+**Last refreshed:** `20260730.083457` (EDT) · voice Riyo  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin** · **sundial** · **reds-first** · **baton** · **shape** · **resin** · **bead** · **cell** · **tend** · **SAFE** · **equinox map**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss** · **first resident** (routine) · **vegan-dogfood** (easter egg) · **living mutant** · **shred-prep list** · **transitive writing crawl** · **Kiln** · **three** · **quad** · **nona** · **deca** · **undeca** *(canon)* · **equinoxes** · **equinox map** · **SDD** · **Nest-Chapter** · **your / %your** · Glow=code · Brix=data · **baton** · **coords·basis·meters·reds·words·parked·artifacts·next·recommend** · **shape** *(seam)* · **resin** · **bead**  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **bibliography.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes** · **mod-clock** · **REDS.md** · **Sangha pattern one · two** · **GLOW_ALMANAC** · **tally/stack** · **baton-museum 13** · **design-shapes · relay_resin** · **discovery quartet** · **mycelium/fold** · **ship_sol** · **build_bounds** · **resin-wheel-a** · **equinox map CLOSED**  
-**Git nib:** `21cc644424` · Grain · equinox map correction CLOSED · j3 r12 next  
-**Bookmark:** [`waymarks/20260730-082808_equinox-map-correction-closed.md`](../waymarks/20260730-082808_equinox-map-correction-closed.md)
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **bibliography.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes** · **mod-clock** · **REDS.md** · **Sangha pattern one · two** · **GLOW_ALMANAC** · **tally/stack** · **baton-museum 13** · **design-shapes · relay_resin** · **discovery quartet** · **mycelium/fold** · **ship_sol** · **build_bounds** · **resin-wheel-a** · **equinox map CLOSED** · **flank arrows**  
+**Git nib:** `ee7ffef272` · Grain · j3 CLOSED · j4 OPEN · flank arrows  
+**Bookmark:** [`waymarks/20260730-083457_j3-close-handback-j4-open.md`](../waymarks/20260730-083457_j3-close-handback-j4-open.md)
 
-**Chapter:** Framework · EDT · **Grain** · **finishing edge:** **undeca** *(canon)* — Voice **OPEN** · 256 season · equinox **A** · Journey 3 **resumes r12 close** · equinox map **CLOSED** green · canon east·fire·dawn / north·water·noon / west·air·dusk / south·earth·midnight · name **parked** · Equinox **PAUSED** e6/e7 · Surface **PAUSED** · GitHub dual · Riyo stands · Prefer **git nib**. · `prin scope`  
-**Meters (fresh `20260730.082808`):** sundial **100 · green** · fascia **69/100** (hold · window delta −11)
+**Chapter:** Framework · EDT · **Grain** · **finishing edge:** **undeca** *(canon)* — Voice **OPEN** · 256 season · equinox **A** · Journey 3 **CLOSED** `20260730.083457` · Journey 4 **OPEN** (h4 Accrete-never-break) · equinox map **CLOSED** green · flanks `2nd→1st→12th` · canon east·fire·dawn / north·water·noon / west·air·dusk / south·earth·midnight · name **parked** · Equinox **PAUSED** e6/e7 · Surface **PAUSED** · GitHub dual · Riyo stands · Prefer **git nib**. · `prin scope`  
+**Meters (fresh `20260730.083335`):** sundial **100 · green** · fascia **69/100** (hold · window delta −9)
 
 ---
 
@@ -27,7 +27,7 @@
 Fascia **shred** still waits circled shred yes — distinct from rename and from prune.  
 WOV retirement stays **roadmap last**. No live deploy · wallet · gas · private key.
 
-**Voice Chapter (undeca, canon)** **OPEN** — Journey 2 (h2) **CLOSED** `20260730.040859` · Equinox Map Correction **CLOSED** `20260730.082536` · Journey 3 (h3) **resumes r12 close** · Riyo stands · season handback `return_equinox_e7` still nested.  
+**Voice Chapter (undeca, canon)** **OPEN** — Journey 2 (h2) **CLOSED** `20260730.040859` · Equinox Map Correction **CLOSED** `20260730.082536` · Journey 3 (h3) **CLOSED** `20260730.083457` · Journey 4 (h4 Accrete-never-break) **OPEN** · Riyo stands · season handback `return_equinox_e7` still nested.  
 **Equinox Chapter (deca)** **PAUSED** — e6 complete / e7 next · handback into Voice nested · resume lean `return_surface_p59`.  
 **Surface Chapter (sept)** **PAUSED** — p58/p59 · live-five GREEN. Resume lean `return_generator_s9`.  
 **Identity Remake (inner)** **PAUSED** — k6 complete / k7 next · handed back `return_surface_p55`.  
@@ -70,8 +70,9 @@ WOV retirement stays **roadmap last**. No live deploy · wallet · gas · privat
 
 | Door | Kind |
 |------|------|
-| **Equinox Map Correction** | **CLOSED** · em0–em15 · map canon seated · handback delivered |
-| **Voice Chapter Build Journey** | **OPEN** · A·J3 · **r12 close** next · then journey 4 (h4 accrete-never-break) |
+| **Equinox Map Correction** | **CLOSED** · em0–em15 · map canon seated · handback consumed at j3 r12 |
+| **Voice Chapter Journey 3** | **CLOSED** `20260730.083457` · h3 Radiant Style · doors 6–7 · resin · map nest |
+| **Voice Chapter Journey 4** | **OPEN** · A·J4 · h4 Accrete-never-break · **door 8** fold pattern two next |
 | **Glow almanac ch1** | **OPEN** · 7 of 16 · seat 7 from build_bounds · `rye-learning-process/GLOW_ALMANAC.md` |
 | **mycelium/ship_sol.rye** | **GREEN** `20260730.040859` · door 6 · bound 1024 · cadence parked |
 | **mycelium/build_bounds.rye** | **GREEN** `20260730.041405` · door 7 · design-shapes metal check |
