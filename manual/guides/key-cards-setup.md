@@ -1,10 +1,11 @@
 # Making Your Identity Key Cards
 
-**Language:** EN
-**Version:** `20260714.115000` (Pacific)
-**Style:** Radiant (see `../../context/RADIANT_STYLE.md`)
-**Voice:** Rio 3
-**Status:** Guide for the task — the macOS path is witnessed end to end on this host; the Linux path is the inherited script
+**Language:** EN  
+**Version:** `20260730.145723` (EDT)  
+**Style:** Radiant (see `../../context/RADIANT_STYLE.md`)  
+**Voice:** Riyo  
+**Status:** Guide for the task — the macOS path is witnessed end to end on this host; the Linux path is the inherited script  
+**Sibling:** [`SOURCE.md`](../../SOURCE.md) Step 4 · [`first-day-personal-ops.md`](first-day-personal-ops.md)
 
 ---
 
@@ -12,7 +13,7 @@
 
 ---
 
-A key card is a single image that carries your public identity — your name, your forge handle, your email, and the three fingerprints that let anyone verify your SSH and signing keys — laid out around a diamond, with each fingerprint rendered both as text and as a scannable QR code. You pin it to a profile, print it, or hand it over; because fingerprints are public by design, a key card is safe to share anywhere. This guide shows an Acme Corporation employee how to make their own.
+A key card is a single image that carries your public identity — your name, your forge handle, your email, and the fingerprints that let anyone verify your SSH and signing keys — laid out around a diamond, with each fingerprint rendered both as text and as a scannable QR code. You pin it to a profile, print it, or hand it over; because fingerprints are public by design, a key card is safe to share anywhere. This guide shows an Acme Corporation employee how to make their own on a **GitHub-living** pier (Codeberg is retired from this pier’s living push).
 
 ## What You Get
 
@@ -23,13 +24,15 @@ Two images at the repository root, one landscape and one portrait, sharing the s
 
 They default to a **plain palette** — white background, black text and QR — which prints cleanly on any printer and scans reliably under any light. If you want a themed card, you can override the colors; the plain default is what most people want.
 
+The three living slots are **SSH · GitHub**, **SSH · Second**, and **OpenPGP · sign**. Fill GitHub + OpenPGP for a single-forge pier; use Second for a second GitHub key (dual remotes) or another forge. Leave Second as the example placeholder and skip its audit path when you do not need it.
+
 ## Before You Start
 
-You need your three fingerprints, which are all public:
+You need your fingerprints, which are all public:
 
 ```bash
-ssh-keygen -lf ~/.ssh/your_codeberg_key.pub    # copy the "SHA256:..." part
 ssh-keygen -lf ~/.ssh/your_github_key.pub       # copy the "SHA256:..." part
+ssh-keygen -lf ~/.ssh/your_second_key.pub       # optional second SSH
 gpg --fingerprint you@example.com               # the spaced 40-hex string
 ```
 
@@ -41,7 +44,9 @@ Copy the committed template to your own gitignored config and fill it in:
 cp tools/key-card.conf.example tools/key-card.conf
 ```
 
-Open `tools/key-card.conf` and set your name, handle, email, and the three fingerprints. If you also fill in the optional `KEY_SSH_*` paths and `GPG_EMAIL`, the generator will **audit each fingerprint against the real key on your machine before it renders anything** — so a card can never go out with a fingerprint that does not match the key it claims. Your filled `tools/key-card.conf` stays out of git; only the `.example` template is tracked.
+Open `tools/key-card.conf` and set your name, handle, email, `FP_SSH_GITHUB`, `FP_SSH_SECOND`, and `FP_OPENPGP`. If you also fill in the optional `KEY_SSH_*` paths and `GPG_EMAIL`, the generator will **audit each fingerprint against the real key on your machine before it renders anything** — so a card can never go out with a fingerprint that does not match the key it claims. Your filled `tools/key-card.conf` stays out of git; only the `.example` template is tracked.
+
+Legacy configs that still name `FP_SSH_CODEBERG` / `KEY_SSH_CODEBERG` keep working — the generators treat those as aliases for the Second SSH slot.
 
 ## Make the Cards
 
@@ -72,7 +77,7 @@ The composited card above stays PNG — the diamond, the raster QR tiles, and th
 rishi/bin/rishi run tools/make_key_qr_svg.rish
 ```
 
-Writes `keys_<yourhandle>_ssh_codeberg.svg`, `keys_<yourhandle>_ssh_github.svg`, and `keys_<yourhandle>_openpgp.svg` at the repository root — allow-listed in `.gitignore` alongside the PNG cards, since a QR code encodes only a public fingerprint and is exactly as safe to commit and share as the fingerprint text itself.
+Writes `keys_<yourhandle>_ssh_github.svg`, `keys_<yourhandle>_ssh_second.svg`, and `keys_<yourhandle>_openpgp.svg` at the repository root — allow-listed in `.gitignore` alongside the PNG cards, since a QR code encodes only a public fingerprint and is exactly as safe to commit and share as the fingerprint text itself.
 
 ## Verify Before You Trust
 

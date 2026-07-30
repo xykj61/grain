@@ -290,7 +290,7 @@ coords_e49_witness tools/gen/season/equinox_tigerbeetle_off_by_one_choir_witness
 coords_e49_charter expanding-prompts/20260730-142537_e49-tb-off-by-one-charter.md
 coords_e49_recursion expanding-prompts/20260730-142650_equinox-season-e49-recursion-prompt.md
 coords_sunn OPEN 20260730.143736
-coords_sunn_status SUNN0-5 GREEN · SUNN6 next
+coords_sunn_status SUNN0-6 GREEN · SUNN7 next
 coords_sunn_waymark SUNN
 coords_sunn_input source-pier-papers-identity-refresh
 coords_sunn_charter expanding-prompts/20260730-143736_sunn-source-identity-breach-charter.md
@@ -303,6 +303,10 @@ coords_sunn5_path tools/gen/season/personalize.template.brix
 coords_sunn5_witness tools/gen/season/personalize_template_witness.rish
 coords_sunn5_recursion expanding-prompts/20260730-145124_sunn-recursion-prompt.md
 coords_sunn5_guide manual/guides/first-season-personalize.md
+coords_sunn6 key_cards_ops GREEN 20260730.145723
+coords_sunn6_path tools/key-card.conf.example
+coords_sunn6_witness tools/gen/season/sunn6_key_cards_ops_witness.rish
+coords_sunn6_recursion expanding-prompts/20260730-145723_sunn-recursion-prompt.md
 coords_almanac_ch1 16 of 16
 coords_almanac_ch2 16 of 16
 coords_almanac_ch3 16 of 16

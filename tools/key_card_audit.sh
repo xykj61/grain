@@ -20,21 +20,29 @@ MODE="${1:-pre}"
 # shellcheck source=/dev/null
 . "$CONF"
 
+# SUNN6: FP_SSH_SECOND / KEY_SSH_SECOND replace historical Codeberg names.
+if [ -z "${FP_SSH_SECOND:-}" ] && [ -n "${FP_SSH_CODEBERG:-}" ]; then
+  FP_SSH_SECOND="$FP_SSH_CODEBERG"
+fi
+if [ -z "${KEY_SSH_SECOND:-}" ] && [ -n "${KEY_SSH_CODEBERG:-}" ]; then
+  KEY_SSH_SECOND="$KEY_SSH_CODEBERG"
+fi
+
 IM="magick"; command -v magick >/dev/null 2>&1 || IM="convert"
 
 if [ "$MODE" = "pre" ]; then
   ok=1
-  if [ -n "${KEY_SSH_CODEBERG:-}" ]; then
-    if ssh-keygen -lf "$KEY_SSH_CODEBERG" 2>/dev/null | grep -qF "$FP_SSH_CODEBERG"; then
-      echo "audit: Codeberg SSH fingerprint matches real key ($KEY_SSH_CODEBERG)"
-    else echo "audit: Codeberg SSH fingerprint MISMATCH"; ok=0; fi
-  else echo "audit: Codeberg SSH key path not declared — skipped"; fi
-
   if [ -n "${KEY_SSH_GITHUB:-}" ]; then
     if ssh-keygen -lf "$KEY_SSH_GITHUB" 2>/dev/null | grep -qF "$FP_SSH_GITHUB"; then
       echo "audit: GitHub SSH fingerprint matches real key ($KEY_SSH_GITHUB)"
     else echo "audit: GitHub SSH fingerprint MISMATCH"; ok=0; fi
   else echo "audit: GitHub SSH key path not declared — skipped"; fi
+
+  if [ -n "${KEY_SSH_SECOND:-}" ]; then
+    if ssh-keygen -lf "$KEY_SSH_SECOND" 2>/dev/null | grep -qF "$FP_SSH_SECOND"; then
+      echo "audit: Second SSH fingerprint matches real key ($KEY_SSH_SECOND)"
+    else echo "audit: Second SSH fingerprint MISMATCH"; ok=0; fi
+  else echo "audit: Second SSH key path not declared — skipped"; fi
 
   if [ -n "${GPG_EMAIL:-}" ]; then
     want="$(printf '%s' "$FP_OPENPGP" | tr -d ' ')"

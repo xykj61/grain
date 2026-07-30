@@ -37,13 +37,17 @@ CONF="${1:-$REPO/tools/key-card.conf}"
 : "${NAME:?set NAME in the config}"
 : "${HANDLE:?set HANDLE in the config}"
 : "${EMAIL:?set EMAIL in the config}"
-: "${FP_SSH_CODEBERG:?set FP_SSH_CODEBERG in the config}"
+# SUNN6: FP_SSH_SECOND replaces historical FP_SSH_CODEBERG (legacy alias).
+if [ -z "${FP_SSH_SECOND:-}" ] && [ -n "${FP_SSH_CODEBERG:-}" ]; then
+  FP_SSH_SECOND="$FP_SSH_CODEBERG"
+fi
 : "${FP_SSH_GITHUB:?set FP_SSH_GITHUB in the config}"
+: "${FP_SSH_SECOND:?set FP_SSH_SECOND (or legacy FP_SSH_CODEBERG) in the config}"
 : "${FP_OPENPGP:?set FP_OPENPGP in the config}"
 
 # Plain palette by default: white background, black foreground.
 BG="${BG:-#FFFFFF}"; FG="${FG:-#000000}"
-L1="${LABEL_1:-SSH · Codeberg}"; L2="${LABEL_2:-SSH · GitHub}"; L3="${LABEL_3:-OpenPGP · sign}"
+L1="${LABEL_1:-SSH · GitHub}"; L2="${LABEL_2:-SSH · Second}"; L3="${LABEL_3:-OpenPGP · sign}"
 FOOTER="${FOOTER:-three public keys · ed25519 ssh + openpgp}"
 
 # Tooling: require qrencode and an ImageMagick command, name the fix if missing.
@@ -83,8 +87,8 @@ FONTM="$FONT"
 
 W="$(mktemp -d)"; trap 'rm -rf "$W"' EXIT
 qr() { qrencode -o "$W/$1.png" -m 2 -s 12 -l M --foreground="${FG#\#}" --background="${BG#\#}" "$2"; }
-qr cb  "$FP_SSH_CODEBERG"
 qr gh  "$FP_SSH_GITHUB"
+qr s2  "$FP_SSH_SECOND"
 qr pgp "$FP_OPENPGP"
 
 S=1024; QSZ=220; CW=290
@@ -93,9 +97,9 @@ NY=160
 FOOT=956
 SQ="$W/square.png"
 
-for k in cb gh pgp; do "$IM" "$W/$k.png" -filter point -resize ${QSZ}x${QSZ} "$W/${k}_r.png"; done
-"$IM" -background "$BG" -fill "$FG" -font "$FONT" -pointsize 15 -size ${CW}x caption:"$FP_SSH_CODEBERG" "$W/cap_cb.png"
+for k in gh s2 pgp; do "$IM" "$W/$k.png" -filter point -resize ${QSZ}x${QSZ} "$W/${k}_r.png"; done
 "$IM" -background "$BG" -fill "$FG" -font "$FONT" -pointsize 15 -size ${CW}x caption:"$FP_SSH_GITHUB"  "$W/cap_gh.png"
+"$IM" -background "$BG" -fill "$FG" -font "$FONT" -pointsize 15 -size ${CW}x caption:"$FP_SSH_SECOND" "$W/cap_s2.png"
 "$IM" -background "$BG" -fill "$FG" -font "$FONT" -pointsize 15 -size ${CW}x caption:"$FP_OPENPGP"     "$W/cap_pgp.png"
 
 "$IM" -size ${S}x${S} xc:"$BG" \
@@ -112,8 +116,8 @@ place() {
   "$IM" "$SQ" -gravity North "$W/${qr}_r.png"    -geometry +${qx}+${qy} -composite "$SQ"
   "$IM" "$SQ" -gravity North "$W/cap_${cap}.png" -geometry +${cx}+${cy} -composite "$SQ"
 }
-place "$L1" cb  cb  -312 488 -312 530 -312 770
-place "$L2" gh  gh     0 488    0 530    0 770
+place "$L1" gh  gh  -312 488 -312 530 -312 770
+place "$L2" s2  s2     0 488    0 530    0 770
 place "$L3" pgp pgp  312 488  312 530  312 770
 "$IM" "$SQ" -gravity North -fill "$FG" -font "$FONT" -pointsize 18 -annotate +0+${FOOT} "$FOOTER" "$SQ"
 

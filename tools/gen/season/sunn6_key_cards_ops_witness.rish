@@ -1,0 +1,52 @@
+# tools/gen/season/sunn6_key_cards_ops_witness.rish — SUNN6 key-cards + first-day ops.
+#
+#   rishi/bin/rishi run tools/gen/season/sunn6_key_cards_ops_witness.rish
+
+say "sunn6: Language EN — first-day ops · key-card GitHub-living template."
+say "sunn6: Style Radiant — Riyo voice · Codeberg slot retired to Second."
+say "sunn6: Lens TAME — presence · alias · no render required."
+
+let ops = run ["test" "-f" "manual/guides/first-day-personal-ops.md"]
+assert ops.ok else "sunn6: first-day-personal-ops.md ABSENT"
+
+let cards = run ["test" "-f" "manual/guides/key-cards-setup.md"]
+assert cards.ok else "sunn6: key-cards-setup.md ABSENT"
+
+let ex = run ["test" "-f" "tools/key-card.conf.example"]
+assert ex.ok else "sunn6: key-card.conf.example ABSENT"
+
+let ops_body = read-file "manual/guides/first-day-personal-ops.md"
+assert ops_body contains "Voice:** Riyo" else "sunn6: ops want Voice Riyo"
+assert ops_body contains "SOURCE.md" else "sunn6: ops want SOURCE cite"
+assert ops_body contains "Claude iOS" else "sunn6: ops want Claude iOS note"
+
+let cards_body = read-file "manual/guides/key-cards-setup.md"
+assert cards_body contains "Voice:** Riyo" else "sunn6: cards want Voice Riyo"
+assert cards_body contains "FP_SSH_SECOND" else "sunn6: cards want FP_SSH_SECOND"
+assert cards_body contains "ssh_second.svg" else "sunn6: cards want ssh_second.svg"
+assert cards_body contains "SOURCE.md" else "sunn6: cards want SOURCE cite"
+
+let conf = read-file "tools/key-card.conf.example"
+assert conf contains "FP_SSH_SECOND" else "sunn6: example want FP_SSH_SECOND"
+assert conf contains "FP_SSH_GITHUB" else "sunn6: example want FP_SSH_GITHUB"
+assert conf contains "KEY_SSH_SECOND" else "sunn6: example want KEY_SSH_SECOND"
+assert (conf contains "FP_SSH_CODEBERG=") == false else "sunn6: living example must not declare FP_SSH_CODEBERG="
+
+let sh = read-file "tools/make-key-card.sh"
+assert sh contains "FP_SSH_SECOND" else "sunn6: linux script want SECOND"
+assert sh contains "SSH · GitHub" else "sunn6: linux script want GitHub label"
+assert sh contains "FP_SSH_CODEBERG" else "sunn6: linux script want legacy alias"
+
+let mac = read-file "tools/make_key_card_macos.sh"
+assert mac contains "FP_SSH_SECOND" else "sunn6: macos script want SECOND"
+assert mac contains "SSH · Second" else "sunn6: macos script want Second label"
+
+let audit = read-file "tools/key_card_audit.sh"
+assert audit contains "KEY_SSH_SECOND" else "sunn6: audit want KEY_SSH_SECOND"
+assert audit contains "Second SSH" else "sunn6: audit want Second SSH prose"
+
+let src = read-file "SOURCE.md"
+assert src contains "FP_SSH_SECOND" else "sunn6: SOURCE want FP_SSH_SECOND"
+assert src contains "SUNN6" else "sunn6: SOURCE want SUNN6 touch"
+
+say "GREEN: sunn6 — ops · key-cards · example · scripts · SOURCE · legacy alias"

@@ -2,12 +2,13 @@
 
 **Language:** EN  
 **Status:** Living guide — generic hygiene beside SOURCE’s First Day  
-**Voice:** Quin  
-**Last updated:** `20260725.235100` (EDT)
+**Voice:** Riyo  
+**Last updated:** `20260730.145723` (EDT) · SUNN6  
+**Sibling:** [`SOURCE.md`](../../SOURCE.md) · [`apprentice-welcome.md`](apprentice-welcome.md) · [`first-season-personalize.md`](first-season-personalize.md)
 
 ---
 
-This page is the sibling to [`SOURCE.md`](../../SOURCE.md)’s First Day. SOURCE keeps one sentence about signing in. Here is the fuller hygiene, written in general terms.
+This page is the sibling to [`SOURCE.md`](../../SOURCE.md)’s First Day. SOURCE keeps one sentence about signing in. Here is the fuller hygiene, written in general terms so an Acme steward (or any new pier) can keep vault material out of git while still finishing day one.
 
 ## A browser you trust
 
@@ -16,6 +17,10 @@ Pick a browser you are willing to keep updated. **Brave** is a fine choice many 
 ## A real password manager
 
 Use a **password manager you trust** — a paid monthly plan such as **1Password** is one solid path; other reputable managers work. Save the accounts *you* rely on before you need them for billing or forge work. Vault material **never** enters this git tree — not in commits, not in session logs, not in screenshots you paste into the pier.
+
+## Apps this pier recommends (optional, paid)
+
+SOURCE Part One names a **paid Claude** subscription plus the **Claude iOS** and **Cursor iOS** apps when those help you. Cursor Android is not supported yet. Billing and App Store receipts stay in your vault — never in this repository.
 
 ## Extensions
 

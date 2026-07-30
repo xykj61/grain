@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260730.145723
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Cursor Cloud · xykj61/grain — Eastern (EDT) time convention
+title SUNN6 GREEN · key-cards ops · FP_SSH_SECOND
+prompt kg SUNN6 first-day-personal-ops · key-cards leaves
+think refresh first-day-personal-ops to Voice Riyo · Claude iOS note · SOURCE cite
+think refresh key-cards-setup GitHub-living · Second slot · Riyo
+think rename template FP_SSH_CODEBERG to FP_SSH_SECOND with legacy alias in scripts
+think reorder card labels GitHub · Second · OpenPGP · update audit and SVG paths
+think SOURCE Step 4 prose names living slots · witness presence GREEN
+obs parked key-card template refresh consumed · Codeberg retired from living labels
+obs legacy FP_SSH_CODEBERG still accepted so old filled confs keep rendering
+file tools/key-card.conf.example GitHub Second OpenPGP
+file tools/make-key-card.sh tools/make_key_card_macos.sh tools/key_card_audit.sh tools/make_key_qr_svg.rish
+file manual/guides/first-day-personal-ops.md manual/guides/key-cards-setup.md
+file SOURCE.md Step 4
+file tools/gen/season/sunn6_key_cards_ops_witness.rish
+recommend keep-going SUNN7 macos enclosure leaves
