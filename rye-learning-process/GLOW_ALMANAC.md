@@ -90,7 +90,7 @@ Expected houses 1..12 once · three per equinox · join equinox_map flanks · ke
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_surface_witness.rish` · **Stamp:** `20260730.115059` · **Witness:** `tools/gen/season/equinox_surface_witness.rish`
 Expected e0 · equinox_map · equinox_foundations each GREEN in one choir. Metal answered GREEN. Chapter one closes at sixteen; prose create-prep did not earn this seat.
 
-## Chapter Two (10 of 16)
+## Chapter Two (11 of 16)
 
 Opened from metal at stamp `20260730.115626`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -133,6 +133,10 @@ Expected CLONE=present · verdict=ok · STYLE=yes · MAYBE_DEF=yes · GUIDE_DENS
 ### 26. Control plane spends asserts freely; data plane gates the dear checks behind verify.
 **Ran:** `rishi/bin/rishi run tools/gen/season/tigerbeetle_control_plane_census_witness.rish` · **Stamp:** `20260730.123450` · **Witness:** `tools/gen/season/tigerbeetle_control_plane_census_witness.rish` · `tools/fixtures/tigerbeetle_control_plane_census.sh` · submodule `gratitude/tigerbeetle`
 Expected CLONE=present · GUIDE_PLANE=yes · ARCH_PLANE=yes · TAME_BRIDGE=yes · STYLE=yes with constants.verify≥20 and files_verify≥10. Metal answered GREEN. Census: CLONE=present · REV=97c7a8ef38 · GUIDE_PLANE=yes · ARCH_PLANE=yes · constants_verify=69 · files_verify=25 · STYLE=yes · TAME_BRIDGE=yes · verdict=ok. Clean-room study only.
+
+### 27. Assert the positive space and the negative; maybe marks what truly varies.
+**Ran:** `rishi/bin/rishi run tools/gen/season/tigerbeetle_golden_rule_census_witness.rish` · **Stamp:** `20260730.123827` · **Witness:** `tools/gen/season/tigerbeetle_golden_rule_census_witness.rish` · `tools/fixtures/tigerbeetle_golden_rule_census.sh` · submodule `gratitude/tigerbeetle`
+Expected CLONE=present · GUIDE_GOLDEN=yes · TAME_GOLDEN=yes · MAYBE_COMPLETES=yes · STYLE=yes with assert≥2000 · maybe≥100 · implication_assert≥20. Metal answered GREEN. Census: CLONE=present · REV=97c7a8ef38 · GUIDE_GOLDEN=yes · TAME_GOLDEN=yes · MAYBE_COMPLETES=yes · assert_calls=8175 · maybe_calls=286 · implication_assert=57 · STYLE=yes · verdict=ok. Clean-room study only.
 
 ---
 

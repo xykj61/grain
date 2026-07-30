@@ -1,0 +1,31 @@
+# tools/gen/season/tigerbeetle_golden_rule_census_witness.rish — e21 golden rule.
+#
+#   rishi/bin/rishi run tools/gen/season/tigerbeetle_golden_rule_census_witness.rish
+#
+# Requires gratitude/tigerbeetle submodule present.
+# Clean-room: presence + counts only · never copies into rye/.
+
+say "tb-golden-rule: Language EN — positive space · negative space · maybe."
+say "tb-golden-rule: Style Radiant — the boundary is where bugs gather."
+say "tb-golden-rule: Lens TAME — e21 · clean-room study · almanac seat 27."
+
+let clone = run ["test" "-d" "gratitude/tigerbeetle/src"]
+assert clone.ok else "tb-golden-rule: gratitude/tigerbeetle/src ABSENT — host clone first"
+
+let census = run ["sh" "tools/fixtures/tigerbeetle_golden_rule_census.sh"]
+say census.out
+assert census.ok else "tb-golden-rule: census failed or thin"
+assert census.out contains "CLONE=present" else "tb-golden-rule: want CLONE=present"
+assert census.out contains "verdict=ok" else "tb-golden-rule: want verdict=ok"
+assert census.out contains "GUIDE_GOLDEN=yes" else "tb-golden-rule: held guide must teach golden rule"
+assert census.out contains "TAME_GOLDEN=yes" else "tb-golden-rule: TAME must teach golden rule"
+assert census.out contains "MAYBE_COMPLETES=yes" else "tb-golden-rule: maybe must complete the triad"
+
+let elder = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_control_plane_census_witness.rish"]
+assert elder.ok else "tb-golden-rule: control-plane elder went RED"
+
+let almanac = run ["sh" "tools/gen/season/equinox_tigerbeetle_golden_rule_almanac.sh"]
+assert almanac.ok else "tb-golden-rule: almanac append failed"
+say almanac.out
+
+say "GREEN: tb-golden-rule — guide·TAME·maybe triad ok · control elder GREEN · almanac seat 27"

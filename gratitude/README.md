@@ -1,7 +1,7 @@
 # Gratitude
 
 **Language:** EN
-**Last updated:** 2026-07-30 (e20 · tigerbeetle control/data plane · assert + void elders hold)
+**Last updated:** 2026-07-30 (e21 · tigerbeetle golden rule · control/assert/void elders hold)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 
 ---
