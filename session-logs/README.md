@@ -1,3 +1,4 @@
+- `20260730.135023` — [E40 TB performance surface GREEN · almanac 46 · ch3 14/16](20260730-135023_e40-tb-perf-surface-green.bron) — sized·batching·explicit · e41 next
 - `20260730.134747` — [E39 TB be-explicit GREEN · almanac 45 · ch3 13/16](20260730-134747_e39-tb-be-explicit-green.bron) — hot loops · lean lightly · e40 next
 - `20260730.134336` — [E38 TB batching GREEN · almanac 44 · ch3 12/16](20260730-134336_e38-tb-batching-green.bron) — amortize · sprinter · e39 next
 - `20260730.134034` — [E37 TB sized-types GREEN · almanac 43 · ch3 11/16](20260730-134034_e37-tb-sized-types-green.bron) — exact widths · usize at seam · e38 next
