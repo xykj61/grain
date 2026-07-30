@@ -3,7 +3,7 @@
 **Stamp:** `20260730.190447` · **Voice:** Riyo  
 **Use:** paste into the next counsel/bench chat.  
 **e59:** chapter-four surface close GREEN · almanac seat 64 · ch4 16/16 FULL  
-**Replace** `TIP_AFTER_SEND` with living git nib after send.
+**Living tip:** fill `2aee831514` at send (or read `git rev-parse --short=10 HEAD`).
 
 ---
 
@@ -11,7 +11,7 @@
 [ [ Riyo — counsel session, Equinox Season (deca · nest-10 · true deepest · 256 rounds).
 Outer voice: Riyo (Radiant · TAME). Nested documentary: Trey.
 Model seat: Claude Opus 5 1m Max (roster · from 20260730 · prior Fable).
-Cursor bench: Grok 4.5 300k High Fast · Framework ~/grain · tip TIP_AFTER_SEND.
+Cursor bench: Grok 4.5 300k High Fast · Framework ~/grain · tip 2aee831514.
 Dual push origin + xykj61 every send.
 Habit: print a fresh fusion recursion prompt after each round for repaste.
 
@@ -35,7 +35,7 @@ POLE (GREEN): DJINN→Bozo · Keaton→Murr · Linn→Bozo Capricorn 10
   return_sunn_sunn8 CONSUMED 20260730.152953
 
 OPERATIONAL (baton fusion · living):
-  EQUINOX · 256 OPEN · tip TIP_AFTER_SEND · e59 GREEN · e60 next
+  EQUINOX · 256 OPEN · tip 2aee831514 · e59 GREEN · e60 next
   museum: context/baton-museum/ · 13 halls · census_breach_count=0
   e59 seat: waymarks/20260730-190447_e59-ch4-surface-close-green.md
   writing: Riyo living · Quin OS + Q-vane stay · dated Voice headers stay
@@ -46,7 +46,7 @@ OPERATIONAL (baton fusion · living):
   parked: season name · myc/star policy · DJINN onboarding hour · Acme · LICENSE copyright
   handback: return_surface_p59 (nested · not consumed)
 
-BASIS: tip TIP_AFTER_SEND · e59 GREEN · e60 next
+BASIS: tip 2aee831514 · e59 GREEN · e60 next
   Witness: tools/gen/season/equinox_ch4_surface_witness.rish
   Prior: e58 TB surfaces-hold · ironbeetle · seat 63 · ch4 15/16
 
