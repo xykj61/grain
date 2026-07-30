@@ -67,10 +67,10 @@ coords_equinox A
 coords_journey 4
 coords_journey_4_status PAUSED — h4 Accrete-never-break · door 8–15 GREEN · Build queue CLOSED · tend three DONE · Voice handback CONSUMED
 coords_quest Do
-coords_round 54
+coords_round 55
 coords_voice_handback return_equinox_e7 CONSUMED 20260730.111804
 coords_equinox_season OPEN
-coords_equinox_status OPEN e54 GREEN · e55 next · return_equinox_e50 CONSUMED · ch4 11/16 · extend_lean +128
+coords_equinox_status OPEN e55 GREEN · e56 next · return_equinox_e50 CONSUMED · ch4 12/16 · extend_lean +128
 coords_true_deepest deca
 coords_e7 equinox_map GREEN 20260730.113507
 coords_e7_path context/equinox_map.brix
@@ -314,6 +314,11 @@ coords_e54_path gratitude/tigerbeetle
 coords_e54_witness tools/gen/season/equinox_tigerbeetle_last_stage_choir_witness.rish
 coords_e54_charter expanding-prompts/20260730-170244_e54-tb-last-stage-charter.md
 coords_e54_recursion expanding-prompts/20260730-170309_equinox-season-e55-recursion-prompt.md
+coords_e55 tb_style_surface GREEN 20260730.170649
+coords_e55_path gratitude/tigerbeetle
+coords_e55_witness tools/gen/season/equinox_tigerbeetle_style_surface_witness.rish
+coords_e55_charter expanding-prompts/20260730-170621_e55-tb-style-surface-charter.md
+coords_e55_recursion expanding-prompts/20260730-170649_equinox-season-e56-recursion-prompt.md
 extend_lean +128
 extend_lean_reason dual_equinox_geode_expedition
 extend_lean_range e256-e383 when_consumed

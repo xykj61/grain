@@ -226,7 +226,7 @@ Expected CLONE=present · GUIDE_NAMING · GUIDE_UNITS · GUIDE_ABBREV · TAME_NA
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ch3_surface_witness.rish` · **Stamp:** `20260730.140147` · **Witness:** `tools/gen/season/equinox_ch3_surface_witness.rish`
 Expected wing halls=4/breach=0 · safety static/seventy/flow · performance sized/batching/explicit · naming, and verdict=missing_wing on an absent path. Metal answered GREEN. Chapter three closes at sixteen; chapter four waits for metal.
 
-## Chapter Four (11 of 16)
+## Chapter Four (12 of 16)
 
 Opened from metal at stamp `20260730.140442`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -273,6 +273,10 @@ Expected CLONE=present · GUIDE_TOOL · GUIDE_ZIG · GUIDE_SCRIPTS · GUIDE_RIGH
 ### 59. The last stage keeps trying, stays small, and laughs before the next pass.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_last_stage_choir_witness.rish` · **Stamp:** `20260730.170309` · **Witness:** `tools/gen/season/tigerbeetle_last_stage_census_witness.rish` · scan `tools/fixtures/tigerbeetle_last_stage_census.sh` · choir `equinox_tigerbeetle_last_stage_choir_witness.rish`
 Expected CLONE=present · GUIDE_LAST · GUIDE_FUN · GUIDE_SMALL · GUIDE_BILBO · TAME_LAST · STYLE · ELDER_TOOL · RADIANT, and verdict=absent on a missing clone path. Metal answered GREEN. Clean-room study only.
+
+### 60. The TigerBeetle style surface choir holds: numbers, dependencies, tooling, and last-stage GREEN together.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_style_surface_witness.rish` · **Stamp:** `20260730.170649` · **Witness:** `tools/gen/season/equinox_tigerbeetle_style_surface_witness.rish`
+Expected style GREEN · deps GREEN · tooling GREEN · last-stage GREEN, and CLONE=ABSENT / verdict=absent on a missing clone path. Metal answered GREEN. Four style leaves hold as one choir. Clean-room study only.
 
 ---
 
