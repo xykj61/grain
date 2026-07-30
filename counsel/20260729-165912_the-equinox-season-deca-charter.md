@@ -70,7 +70,7 @@ Mood gloss (optional): Aries-ward · Cancer-ward · Libra-ward · Capricorn-ward
 
 `extend_or_return=return_surface_p59` **seated** this stamp.  
 Surface still carries historical `return_generator_s9` when it resumes.  
-Warn **e254** / **e255**: extend **512**, return Surface **p59**, or other word he seats.
+Warn **e254** / **e255**: prefer **extend +128** (dual-equinox geode expedition · approved · gated `20260730.162222`), return Surface **p59**, or other word he seats. Default extend **512** yields to the +128 lean until he renames.
 
 ## Hard lines
 

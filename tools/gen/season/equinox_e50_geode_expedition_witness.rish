@@ -1,0 +1,33 @@
+# tools/gen/season/equinox_e50_geode_expedition_witness.rish — e50 pin seat.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_e50_geode_expedition_witness.rish
+#
+# Breach approved · gated · Lexicon geode umbrella · extend lean +128.
+
+say "e50: Language EN — yes seats the future dual-equinox expedition."
+say "e50: Style Radiant — approve · gate · do not begin."
+say "e50: Lens TAME — e50 · geode · +128 · outer pause."
+
+let counsel = read-file "counsel/20260730-162222_e50-dual-equinox-geode-expedition-breach.md"
+assert counsel contains "approved · seated · gated" else "e50: counsel want approved gated"
+assert counsel contains "does **not** begin this stamp" else "e50: counsel want gated begin"
+assert counsel contains "extend +128" else "e50: counsel want extend +128"
+assert counsel contains "outer pause" else "e50: counsel want outer pause"
+assert counsel contains "return_surface_p59" else "e50: counsel want nested handback"
+
+let lex = read-file "context/LEXICON.md"
+assert lex contains "| **geode** |" else "e50: LEXICON want geode row"
+assert lex contains "round · quest · journey · equinox · season" else "e50: LEXICON want umbrella senses"
+assert lex contains "docs-geode" else "e50: LEXICON want docs-geode distinction"
+
+let rb = read-file "tools/gen/season/recursion_block.brix"
+assert rb contains "coords_e50 geode_expedition_breach GREEN 20260730.162222" else "e50: recursion want coords_e50"
+assert rb contains "extend_lean +128" else "e50: recursion want extend_lean +128"
+assert rb contains "geode_expedition_breach APPROVED_GATED" else "e50: recursion want breach pin"
+
+let rem = read-file "work-in-progress/REMEMBER.md"
+assert rem contains "e50 GREEN" else "e50: REMEMBER want e50 GREEN"
+assert rem contains "geode expedition" else "e50: REMEMBER want expedition"
+assert rem contains "APPROVED · GATED" else "e50: REMEMBER want APPROVED GATED"
+
+say "GREEN: e50 — dual-equinox geode expedition breach APPROVED GATED · Lexicon geode · extend +128"

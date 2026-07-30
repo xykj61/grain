@@ -70,7 +70,7 @@ coords_quest Do
 coords_round 50
 coords_voice_handback return_equinox_e7 CONSUMED 20260730.111804
 coords_equinox_season OPEN
-coords_equinox_status OPEN e49 GREEN · e50 next · return_equinox_e50 CONSUMED · ch4 7/16
+coords_equinox_status OPEN e50 GREEN · e51 next · return_equinox_e50 CONSUMED · ch4 7/16 · extend_lean +128
 coords_true_deepest deca
 coords_e7 equinox_map GREEN 20260730.113507
 coords_e7_path context/equinox_map.brix
@@ -289,6 +289,17 @@ coords_e49_path gratitude/tigerbeetle
 coords_e49_witness tools/gen/season/equinox_tigerbeetle_off_by_one_choir_witness.rish
 coords_e49_charter expanding-prompts/20260730-142537_e49-tb-off-by-one-charter.md
 coords_e49_recursion expanding-prompts/20260730-142650_equinox-season-e49-recursion-prompt.md
+coords_e50 geode_expedition_breach GREEN 20260730.162222
+coords_e50_path counsel/20260730-162222_e50-dual-equinox-geode-expedition-breach.md
+coords_e50_witness tools/gen/season/equinox_e50_geode_expedition_witness.rish
+coords_e50_charter expanding-prompts/20260730-162222_e50-dual-equinox-geode-expedition-charter.md
+coords_e50_recursion expanding-prompts/20260730-162222_equinox-season-e51-recursion-prompt.md
+extend_lean +128
+extend_lean_reason dual_equinox_geode_expedition
+extend_lean_range e256-e383 when_consumed
+geode_expedition_breach APPROVED_GATED 20260730.162222
+geode_expedition_outer_pause maintain
+geode_expedition_begin_gate e254_e255_or_keaton_begin
 coords_sunn CLOSED 20260730.161633
 coords_sunn_opened 20260730.143736
 coords_sunn_resumed 20260730.152953 return_sunn_sunn8 CONSUMED
@@ -516,6 +527,7 @@ data_lang brix
 ask_key asks
 ask_reply your
 handback return_surface_p59
+extend_or_return prefer_extend_+128_geode_expedition_else_return_surface_p59
 parent_scope sept
 parent_bookmark p58/p59
 editor_continue Claude Opus 5 1m Max (reported 20260730 · from Fable)
