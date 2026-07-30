@@ -1,3 +1,4 @@
+- `20260730.034136` — [Option 2 seat · merge PR 2](20260730-034136_option2-seat-merge-pr2.bron) — Keaton word · Option 2 SEATED · merge + kg to Check/Act
 - `20260730.033648` — [red 32 auth-refused · myc fold](20260730-033648_red32-auth-refused-myc-fold.bron) — row 32 · 403 guard · fold GREEN · pier Option 2 parked
 - `20260730.033024` — [lexicon limbs · bibliography · introduce](20260730-033024_lexicon-limbs-bibliography-introduce.bron) — nine limbs · bibliography root · introduce GREEN · myc next
 - `20260730.032517` — [remember shape · table Check · gossip](20260730-032517_remember-shape-table-gossip-check.bron) — affection · Check shapes · gossip GREEN · introduce next
