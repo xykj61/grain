@@ -226,7 +226,7 @@ Expected CLONE=present · GUIDE_NAMING · GUIDE_UNITS · GUIDE_ABBREV · TAME_NA
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ch3_surface_witness.rish` · **Stamp:** `20260730.140147` · **Witness:** `tools/gen/season/equinox_ch3_surface_witness.rish`
 Expected wing halls=4/breach=0 · safety static/seventy/flow · performance sized/batching/explicit · naming, and verdict=missing_wing on an absent path. Metal answered GREEN. Chapter three closes at sixteen; chapter four waits for metal.
 
-## Chapter Four (7 of 16)
+## Chapter Four (8 of 16)
 
 Opened from metal at stamp `20260730.140442`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -257,6 +257,10 @@ Expected inplace GREEN · shrink GREEN · bleeds GREEN, and CLONE=ABSENT / verdi
 ### 55. Index, count, and size stay distinct; division shows its intent.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_off_by_one_choir_witness.rish` · **Stamp:** `20260730.142650` · **Witness:** `tools/gen/season/tigerbeetle_off_by_one_census_witness.rish` · scan `tools/fixtures/tigerbeetle_off_by_one_census.sh` · choir `equinox_tigerbeetle_off_by_one_choir_witness.rish`
 Expected CLONE=present · GUIDE_OBO · GUIDE_TYPES · GUIDE_DIV · TAME_OBO · STYLE · ELDER_CACHE · RADIANT, and verdict=absent on a missing clone path. Metal answered GREEN. Clean-room study only.
+
+### 56. Style holds by the numbers: zig fmt, four spaces, one hundred columns, and braced ifs.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_style_by_the_numbers_choir_witness.rish` · **Stamp:** `20260730.162658` · **Witness:** `tools/gen/season/tigerbeetle_style_by_the_numbers_census_witness.rish` · scan `tools/fixtures/tigerbeetle_style_by_the_numbers_census.sh` · choir `equinox_tigerbeetle_style_by_the_numbers_choir_witness.rish`
+Expected CLONE=present · GUIDE_STYLE · GUIDE_FMT · GUIDE_INDENT · GUIDE_COLS · GUIDE_BRACE · TAME_STYLE · STYLE · ELDER_OBO · RADIANT, and verdict=absent on a missing clone path. Metal answered GREEN. Clean-room study only.
 
 ---
 

@@ -1,0 +1,31 @@
+# tools/gen/season/tigerbeetle_style_by_the_numbers_census_witness.rish — e51 Style By The Numbers.
+#
+#   rishi/bin/rishi run tools/gen/season/tigerbeetle_style_by_the_numbers_census_witness.rish
+#
+# Requires gratitude/tigerbeetle submodule present.
+# Clean-room: presence only · never copies into rye/.
+# Leaf only — no nested elder choirs.
+
+say "tb-style-numbers: Language EN — style by the numbers; measure holds at one hundred."
+say "tb-style-numbers: Style Radiant — zig fmt, four spaces, braced ifs."
+say "tb-style-numbers: Lens TAME — e51 · clean-room study · almanac seat 56."
+
+let clone = run ["test" "-d" "gratitude/tigerbeetle/src"]
+assert clone.ok else "tb-style-numbers: gratitude/tigerbeetle/src ABSENT — host clone first"
+
+let census = run ["sh" "tools/fixtures/tigerbeetle_style_by_the_numbers_census.sh"]
+say census.out
+assert census.ok else "tb-style-numbers: census failed or thin"
+assert census.out contains "CLONE=present" else "tb-style-numbers: want CLONE=present"
+assert census.out contains "verdict=ok" else "tb-style-numbers: want verdict=ok"
+assert census.out contains "GUIDE_STYLE=yes" else "tb-style-numbers: held guide must teach Style By The Numbers"
+assert census.out contains "GUIDE_FMT=yes" else "tb-style-numbers: guide must teach zig fmt"
+assert census.out contains "GUIDE_INDENT=yes" else "tb-style-numbers: guide must teach four-space indent"
+assert census.out contains "GUIDE_COLS=yes" else "tb-style-numbers: guide must hold 100 columns"
+assert census.out contains "GUIDE_BRACE=yes" else "tb-style-numbers: guide must brace if statements"
+assert census.out contains "TAME_STYLE=yes" else "tb-style-numbers: TAME must teach Style By the Numbers"
+assert census.out contains "STYLE=yes" else "tb-style-numbers: clone docs must teach the law"
+assert census.out contains "ELDER_OBO=yes" else "tb-style-numbers: off-by-one elder must be present"
+assert census.out contains "RADIANT=yes" else "tb-style-numbers: Grain Radiant Style must be present"
+
+say "GREEN: tb-style-numbers — guide·fmt·indent·cols·brace·TAME·style·elder-obo·RADIANT ok"
