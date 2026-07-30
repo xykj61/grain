@@ -9,7 +9,7 @@
 
 say "prin-scope: Language EN — twelve-nest season slate."
 say "prin-scope: Style Radiant — print orientation; refuse shred/deploy."
-say "prin-scope: Lens TAME — living pin; nest accuracy 20260730.113930 (deca · e8 GREEN · equinox_foundations)."
+say "prin-scope: Lens TAME — living pin; nest accuracy 20260730.114356 (deca · e9 CHARTERED · create-prep)."
 
 let g = run ["git" "rev-parse" "--short=10" "HEAD"]
 assert g.ok else "prin_scope: git rev-parse failed"
@@ -29,7 +29,7 @@ say "  sext:   Generator Chapter — PAUSED at s8 complete / s9 next"
 say "  sept:   Surface Chapter — PAUSED · p58 complete / p59 next (live-five GREEN · handed into deca)"
 say "  oct:   Kiln Chapter — PAUSED at o3 complete / o4 next (handed back)"
 say "  nona:  Nona Chapter — PAUSED · n3 complete / n4 next (handed back return_surface_p41)"
-say "  deca:  Equinox Chapter — OPEN · e7 complete · e8 GREEN equinox_foundations · e9 next · true deepest · handback return_surface_p59 (Riyo · deca)"
+say "  deca:  Equinox Chapter — OPEN · e8 complete · e9 CHARTERED create-prep · kg create next · true deepest · handback return_surface_p59 (Riyo · deca)"
 say "  undeca: Voice Chapter — PAUSED · Journey 4 doors 8-15 GREEN · Build queue CLOSED · tend three DONE · almanac 15/16 · handed back return_equinox_e7 20260730.111804"
 say "  duodeca: Fascia Equinox — PAUSED · f3 complete / f4 next · exit bar MET fascia=90 · handed back return_voice_j4_d10 20260730.095331"
 say "  baton_museum: context/baton-museum/ — halls living · Lexicon baton · census zero"
