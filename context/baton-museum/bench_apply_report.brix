@@ -1,0 +1,23 @@
+# Baton — bench apply report · Cursor's verbatim account of what landed
+# Invariant: reported verbatim · pin what the bench reports · exit codes captured before any pipe
+kind baton
+name bench_apply_report
+carrier bench
+crosses bench_to_counsel
+status exact
+# event · apply stamp · new tip
+field header
+# pack exit and elapsed
+field pack
+# every green named with its proof phrase
+field greens
+# every red with three fields — wrong · caught · taught
+field reds
+# meters delta against the pinned values
+field meters_delta
+# the pins the next session stands on
+field pins
+# the door board — open rulings awaiting Keaton's word, when doors stand
+field doors
+# the named next motion
+field next

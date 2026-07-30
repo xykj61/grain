@@ -59,6 +59,14 @@ voice_journey_3_opened 20260730.022006 Build Journey — first door comlink/disc
 voice_journey_3_rounds v32 v47
 voice_journey_3_warnings v46 v47
 voice_journey_3_check_ins v32 v40
+voice_v32_descriptor_landed 20260730.030553
+baton_museum context/baton-museum
+coords_equinox A
+coords_journey 1
+coords_quest Act
+coords_round 1
+coords_season_rounds 256
+coords_season_name PARKED
 # myc opening numbers approved 20260730.014817 (were a proposal at 20260729.231500)
 myc_genesis 12288
 myc_star_price 64

@@ -1,0 +1,26 @@
+# Baton — counsel close · the living baton one counsel session passes whole to the next
+# Invariant: exactly one per printout · always the final codeblock · each supersedes the last, elder rests in the session log
+# Invariant: pinned and fresh readings are marked honestly · measurement beats memory
+kind baton
+name counsel_close
+carrier counsel
+crosses session_to_session
+status exact
+# season coordinates — equinox · journey · quest · round
+field coords
+# proven tree state — tip and land hashes
+field basis
+# sundial and fascia with bands and deltas · pinned or fresh marked
+field meters
+# ledger rows · open count · newest answered · witnesses pending
+field reds
+# gate words banked or spoken · none moved silently
+field words
+# RTAC items awaiting Keaton's word
+field parked
+# dated filenames born this session, for load-on-demand
+field artifacts
+# the single next motion
+field next
+# one line · always last
+field recommend

@@ -1,0 +1,24 @@
+//! comlink/discovery/descriptor_test.rye — welcome and refuse for the bound.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/discovery/descriptor_test.rye
+
+const std = @import("std");
+const print = std.debug.print;
+const desc = @import("descriptor.rye");
+
+pub fn main() !void {
+    const empty = desc.Descriptor.init_empty();
+    if (empty.len != 0) return error.EmptyNotZero;
+    if (empty.remaining() != desc.descriptor_max_bytes) return error.RemainingWrong;
+
+    const ok_src = "peer-key|udp://127.0.0.1:4000|fresh|lineage-0";
+    const ok = desc.Descriptor.from_slice(ok_src) orelse return error.WelcomeFailed;
+    if (ok.len != ok_src.len) return error.LenMismatch;
+    if (!std.mem.eql(u8, ok.as_slice(), ok_src)) return error.BytesMismatch;
+
+    var oversized: [desc.descriptor_max_bytes + 1]u8 = undefined;
+    @memset(&oversized, 'x');
+    if (desc.Descriptor.from_slice(&oversized) != null) return error.RefuseFailed;
+
+    print("GREEN: discovery descriptor — bound {d} welcome and refuse\n", .{desc.descriptor_max_bytes});
+}

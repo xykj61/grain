@@ -1,0 +1,14 @@
+# Baton — queue packet · feeds a full pipe one message at a time
+# Invariant: each packet arrives whole on its own · order carried by index, never by memory
+# Born the night the conversation pipe itself said it was full
+kind baton
+name queue_packet
+carrier counsel
+crosses full_pipe_to_fresh_seat
+status reconstructed
+# packet index and total — n of m
+field index
+# the payload — titles · urls · targets · mappings, whole in one message
+field payload
+# what the receiving seat does with this packet alone
+field motion

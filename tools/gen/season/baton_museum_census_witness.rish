@@ -1,0 +1,18 @@
+# tools/gen/season/baton_museum_census_witness.rish — eleven halls · named elders.
+#
+#   rishi/bin/rishi run tools/gen/season/baton_museum_census_witness.rish
+#
+# Seated `20260730.030553` with the museum. Census-zero keeps the banked
+# breach word unspent.
+
+say "baton-census: Language EN — eleven halls, counted once."
+say "baton-census: Style Radiant — name absences; keep breach banked when zero."
+say "baton-census: Lens TAME — museum path bounded; elders named up front."
+
+let scan = run ["sh" "tools/fixtures/baton_museum_census_scan.sh"]
+say scan.out
+assert scan.out contains "verdict=ok" else "baton-census: a hall or named elder is absent"
+assert scan.ok else "baton-census: the verdict reads ok while the status fails — they must agree"
+assert scan.out contains "census_breach_count=0" else "baton-census: census found a breach; spend the banked word only on Keaton's yes"
+
+say "GREEN: baton-census — eleven halls present · named elders hold · census zero"

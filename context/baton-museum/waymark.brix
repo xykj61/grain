@@ -1,0 +1,13 @@
+# Baton — waymark · the smallest baton · pins one nib once
+# Invariant: one nib · one stamp · one word
+kind baton
+name waymark
+carrier counsel
+crosses push_boundary
+status exact
+# the commit hash pinned
+field nib
+# the stamp at pinning
+field stamp
+# whose word confirmed it
+field word

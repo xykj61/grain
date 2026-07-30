@@ -1,0 +1,17 @@
+# Baton — handback · a journey returns its yield to the season
+# Elder: return_equinox_e7 · bench confirms fields against the tree
+kind baton
+name handback
+carrier counsel
+crosses journey_to_season
+status reconstructed
+# what returns, and from where
+field returned_from
+# greens carried home, named
+field greens
+# reds carried home — all closed or booked
+field reds
+# meters at the return
+field meters
+# the journey the season opens next
+field next

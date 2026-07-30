@@ -41,7 +41,8 @@
 |------|------|
 | [`../docs/`](../docs/README.md) | Compression shelf (distinct) |
 | [`../edu/`](../edu/README.md) | Living edu drafts |
-| Lexicon | **docs-geode** · **wave** · **year** · **crush** · **The Geode Season** |
+| Lexicon | **docs-geode** · **wave** · **year** · **crush** · **The Geode Season** · **baton** |
+| Baton museum | [`../context/baton-museum/`](../context/baton-museum/) — eleven halls · counsel close living baton |
 | Charter | [`../counsel/20260728-031722_the-geode-season-charter.md`](../counsel/20260728-031722_the-geode-season-charter.md) |
 | Cloud reply | [`../counsel/replies/20260728-031722_re-docs-geode-year-wave-crush.md`](../counsel/replies/20260728-031722_re-docs-geode-year-wave-crush.md) |
 

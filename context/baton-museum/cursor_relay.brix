@@ -1,0 +1,16 @@
+# Baton — cursor relay · the paste companion the bench applies to main
+# Invariant: additions-only packets · comment equals the base tip hash · cut only on a silent gate
+# Invariant: lands verbatim · reports verbatim
+kind baton
+name cursor_relay
+carrier counsel
+crosses counsel_to_bench_paste
+status from_record
+# stamp and the base tip the relay assumes
+field header
+# the additions-only packet · files and appends in apply order
+field packet
+# the witnesses to run after apply · parity stays green on metal
+field witnesses
+# the report expected back, verbatim
+field report_format

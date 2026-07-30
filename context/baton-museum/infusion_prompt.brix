@@ -1,0 +1,15 @@
+# Baton — infusion prompt · several counsels folded into one intake packet
+# Invariant: the unified state is stated once, restated nowhere
+kind baton
+name infusion_prompt
+carrier counsel
+crosses many_counsels_to_one_intake
+status reconstructed
+# the counsels folded in, named with their stamps
+field sources
+# the unified state after folding, stated once
+field unified_state
+# decisions carried and decisions still open
+field decisions
+# the first motion after intake
+field next
