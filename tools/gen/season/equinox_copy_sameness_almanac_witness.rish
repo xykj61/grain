@@ -1,0 +1,23 @@
+# tools/gen/season/equinox_copy_sameness_almanac_witness.rish — e16 copy-sameness → almanac.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_copy_sameness_almanac_witness.rish
+
+say "equinox-copy-sameness-almanac: Language EN — one fold, many copies, no drift."
+say "equinox-copy-sameness-almanac: Style Radiant — welcome and refuse share one seat."
+say "equinox-copy-sameness-almanac: Lens TAME — e16 · Glow almanac seat 22."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/season/copy_sameness_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-copy-sameness-almanac: welcome RED"
+assert welcome.out contains "GREEN: copy-sameness" else "equinox-copy-sameness-almanac: welcome missing GREEN"
+
+let refuse = run ["rishi/bin/rishi" "run" "tools/gen/season/copy_sameness_negative_witness.rish"]
+say refuse.out
+assert refuse.ok else "equinox-copy-sameness-almanac: refuse RED"
+assert refuse.out contains "GREEN: copy-sameness-negative" else "equinox-copy-sameness-almanac: refuse missing GREEN"
+
+let almanac = run ["sh" "tools/gen/season/equinox_copy_sameness_almanac.sh"]
+assert almanac.ok else "equinox-copy-sameness-almanac: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-copy-sameness-almanac — welcome · refuse · chapter two seat 22"

@@ -90,7 +90,7 @@ Expected houses 1..12 once · three per equinox · join equinox_map flanks · ke
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_surface_witness.rish` · **Stamp:** `20260730.115059` · **Witness:** `tools/gen/season/equinox_surface_witness.rish`
 Expected e0 · equinox_map · equinox_foundations each GREEN in one choir. Metal answered GREEN. Chapter one closes at sixteen; prose create-prep did not earn this seat.
 
-## Chapter Two (5 of 16)
+## Chapter Two (6 of 16)
 
 Opened from metal at stamp `20260730.115626`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -113,6 +113,10 @@ Expected Lexicon row with ship · repository · project tree · pier/verse disti
 ### 21. A capacity-one stack refuses a second push; the tower's frame bound bites from a fixture.
 **Ran:** `rishi/bin/rishi run tools/edu_tower_frame_bite_witness.rish` · **Stamp:** `20260730.120858` · **Witness:** `tools/edu_tower_frame_bite_witness.rish` · `edu/tower/frame_bound_overpush.rye`
 Expected overpush EXIT=1 with assertion failure · welcome tower still GREEN. Metal answered GREEN. Negative space as loud as welcome.
+
+### 22. Fourteen symlinks and one real file keep tally/copy.rye sameness; a drifted fixture is refused.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_copy_sameness_almanac_witness.rish` · **Stamp:** `20260730.121155` · **Witness:** `tools/gen/season/copy_sameness_witness.rish` · `tools/gen/season/copy_sameness_negative_witness.rish` · choir `equinox_copy_sameness_almanac_witness.rish`
+Expected welcome verdict=ok and refuse verdict=drift on the fixture while the live tree stays clean. Metal answered GREEN. Negative space as loud as welcome.
 
 ---
 
