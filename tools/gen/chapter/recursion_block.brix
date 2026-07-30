@@ -49,7 +49,7 @@ equinox_bundle_rounds e63 e127 e191 e255
 equinox_bundle_max_bytes 268435456
 equinox_bundle_measured_basis 192267970
 check_in_every_rounds 8
-voice_journey 3
+voice_journey 4
 voice_journey_2_opened 20260730.010834 on Keaton's word: open next journey recursion
 # stamp corrected v17 (20260730.011400): the first write anticipated the clock — red 28
 voice_journey_2_rounds v16 v31
@@ -59,22 +59,28 @@ voice_journey_3_opened 20260730.022006 Build Journey — first door comlink/disc
 voice_journey_3_rounds v32 v47
 voice_journey_3_warnings v46 v47
 voice_journey_3_check_ins v32 v40
+voice_journey_3_closed 20260730.083457 early close at r12 — handback to j4
+voice_journey_4_opened 20260730.083457 h4 Accrete-never-break — door 8 fold pattern two
 voice_v32_descriptor_landed 20260730.030553
 baton_museum context/baton-museum
 coords_equinox A
-coords_journey 3
-coords_journey_3_status RESUME r12 close — equinox map correction CLOSED
+coords_journey 4
+coords_journey_4_status OPEN — h4 Accrete-never-break · door 8 next
 coords_quest Do
-coords_round 12
+coords_round 13
 coords_season_rounds 256
 coords_season_name PARKED
 coords_journey_2_closed 20260730.040859
 coords_journey_3_opened 20260730.040859 h3 Radiant Style
+coords_journey_3_closed 20260730.083457 r12 close
+coords_journey_4_opened 20260730.083457 h4 Accrete-never-break
 coords_equinox_map_correction CLOSED 20260730.082536 em0-em15
-coords_equinox_map_correction_handback journey_3_r12_close DELIVERED
+coords_equinox_map_correction_handback journey_3_r12_close CONSUMED
 coords_door_6 ship_sol
 coords_door_7 build_bounds
+coords_door_8 fold_pattern_two
 design_shapes_wing seated 20260730.041319
+flank_arrow_path seated 20260730.083225
 # myc opening numbers approved 20260730.014817 (were a proposal at 20260729.231500)
 myc_genesis 12288
 myc_star_price 64
@@ -121,12 +127,14 @@ voice_seat Riyo · Claude Opus 5 1m Max · from 20260730 · prior Claude Fable 5
 # Four equinoxes — living identity: direction · element · day-quarter · angular house + flanks
 # Seated Keaton's word 20260730.082536 (Equinox Map Correction Journey).
 # Sign-ward labels are optional mood gloss only; they must not contradict this table.
-equinox 1 east fire dawn house_1 flanks 2lt1lt12 e0-e63
-equinox 2 north water noon house_10 flanks 11lt10lt9 e64-e127
-equinox 3 west air dusk house_7 flanks 8lt7lt6 e128-e191
-equinox 4 south earth midnight house_4 flanks 5lt4lt3 e192-e255
+# Flank path uses -> (walk around the cusp). Not < (fights arithmetic) and not >> (bitshift).
+equinox 1 east fire dawn house_1 flanks 2nd->1st->12th e0-e63
+equinox 2 north water noon house_10 flanks 11th->10th->9th e64-e127
+equinox 3 west air dusk house_7 flanks 8th->7th->6th e128-e191
+equinox 4 south earth midnight house_4 flanks 5th->4th->3rd e192-e255
 # mood gloss (optional): aries-ward · cancer-ward · libra-ward · capricorn-ward — not house identity
 equinox_map_canon 20260730.082536
+equinox_flank_notation arrow_path seated 20260730.083225
 
 # Module roster — utility Glow targets (Caravan…Kumara · .myc)
 module Caravan
