@@ -9,7 +9,7 @@
 
 say "prin-scope: Language EN — twelve-nest season slate."
 say "prin-scope: Style Radiant — print orientation; refuse shred/deploy."
-say "prin-scope: Lens TAME — living pin; nest accuracy 20260730.121626 (deca · e17 GREEN · tigerstyle void)."
+say "prin-scope: Lens TAME — living pin; nest accuracy 20260730.122332 (deca · e18 GREEN · TB void census)."
 
 let g = run ["git" "rev-parse" "--short=10" "HEAD"]
 assert g.ok else "prin_scope: git rev-parse failed"
@@ -29,7 +29,7 @@ say "  sext:   Generator Chapter — PAUSED at s8 complete / s9 next"
 say "  sept:   Surface Chapter — PAUSED · p58 complete / p59 next (live-five GREEN · handed into deca)"
 say "  oct:   Kiln Chapter — PAUSED at o3 complete / o4 next (handed back)"
 say "  nona:  Nona Chapter — PAUSED · n3 complete / n4 next (handed back return_surface_p41)"
-say "  deca:  Equinox Chapter — OPEN · e17 GREEN tigerstyle void · e18 next · ch1 16/16 · ch2 7/16 · true deepest · handback return_surface_p59 (Riyo · deca)"
+say "  deca:  Equinox Chapter — OPEN · e18 GREEN TB void census · e19 next · ch1 16/16 · ch2 8/16 · true deepest · handback return_surface_p59 (Riyo · deca)"
 say "  undeca: Voice Chapter — PAUSED · Journey 4 doors 8-15 GREEN · Build queue CLOSED · tend three DONE · almanac ch1 full · handed back return_equinox_e7 20260730.111804"
 say "  duodeca: Fascia Equinox — PAUSED · f3 complete / f4 next · exit bar MET fascia=90 · handed back return_voice_j4_d10 20260730.095331"
 say "  baton_museum: context/baton-museum/ — halls living · Lexicon baton · census zero"
@@ -44,7 +44,8 @@ say "  bounded_tower: edu/tower/bounded_tower.rye GREEN e13 · tally/stack · tu
 say "  houseplant: Lexicon GREEN e14 · ship owner project tree · distinct from pier/ship/verse · almanac seat 20"
 say "  tower_frame_bite: edu/tower/frame_bound_overpush.rye GREEN e15 · overpush EXIT=1 · welcome holds · almanac seat 21"
 say "  copy_sameness_almanac: equinox_copy_sameness_almanac_witness GREEN e16 · welcome+refuse · almanac seat 22"
-say "  tigerstyle_void: gratitude/TIGER_STYLE.md GREEN e17 · void trumps bool · !void examples · clone ABSENT · almanac seat 23"
+say "  tigerstyle_void: gratitude/TIGER_STYLE.md GREEN e17 · void trumps bool · !void examples · almanac seat 23"
+say "  tb_void_census: gratitude/tigerbeetle GREEN e18 · submodule · total_voidish>=1000 · almanac seat 24"
 say "  flanks: 2nd->1st->12th · 11th->10th->9th · 8th->7th->6th · 5th->4th->3rd (arrow_path)"
 say "  remotes: origin autoproject96/grain · xykj61 xykj61/grain (always both)"
 say "  extend_or_return: return_surface_p59 (Equinox handback · seated 20260729.165912)"
