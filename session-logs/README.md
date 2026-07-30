@@ -1,3 +1,4 @@
+- `20260730.131633` — [E30 fact-fold design GREEN · almanac 36 · ch3 4/16](20260730-131633_e30-fact-fold-design-green.bron) — three pairs · fold purity · e31 next
 - `20260730.131415` — [E29 relay-resin limb GREEN · almanac 35 · ch3 3/16](20260730-131415_e29-relay-resin-limb-green.bron) — max 12 · over_bound refuse · e30 next
 - `20260730.131214` — [E28 bounds-home inherit GREEN · almanac 34 · ch3 2/16](20260730-131214_e28-bounds-home-inherit-green.bron) — ten pairs · build_bounds metal · missing_shape refuse · e29 next
 - `20260730.130733` — [E27 design-shapes choir GREEN · almanac 33 · ch3 open](20260730-130733_e27-design-shapes-ch3-open-green.bron) — four halls · breach 0 · missing_wing refuse · e28 next
