@@ -1,0 +1,28 @@
+# tools/gen/season/tigerbeetle_sized_types_census_witness.rish — e37 sized types.
+#
+#   rishi/bin/rishi run tools/gen/season/tigerbeetle_sized_types_census_witness.rish
+#
+# Requires gratitude/tigerbeetle submodule present.
+# Clean-room: presence only · never copies into rye/.
+# Leaf only — no nested elder choirs.
+
+say "tb-sized-types: Language EN — exact widths; usize stays at the seam."
+say "tb-sized-types: Style Radiant — exact sizes keep behavior exact."
+say "tb-sized-types: Lens TAME — e37 · clean-room study · almanac seat 43."
+
+let clone = run ["test" "-d" "gratitude/tigerbeetle/src"]
+assert clone.ok else "tb-sized-types: gratitude/tigerbeetle/src ABSENT — host clone first"
+
+let census = run ["sh" "tools/fixtures/tigerbeetle_sized_types_census.sh"]
+say census.out
+assert census.ok else "tb-sized-types: census failed or thin"
+assert census.out contains "CLONE=present" else "tb-sized-types: want CLONE=present"
+assert census.out contains "verdict=ok" else "tb-sized-types: want verdict=ok"
+assert census.out contains "GUIDE_SIZED=yes" else "tb-sized-types: held guide must name sized types"
+assert census.out contains "TAME_SIZED=yes" else "tb-sized-types: TAME must prefer sized types"
+assert census.out contains "SUPPLEMENT_SIZED=yes" else "tb-sized-types: supplement must prefer fixed widths"
+assert census.out contains "STYLE=yes" else "tb-sized-types: clone docs must teach the law"
+assert census.out contains "WIDTH_CHECK=yes" else "tb-sized-types: Grain width-check must be present"
+assert census.out contains "USIZE_AUDIT=yes" else "tb-sized-types: Grain usize audit must be present"
+
+say "GREEN: tb-sized-types — guide·TAME·supplement·style·width-check·usize-audit ok"
