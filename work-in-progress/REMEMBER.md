@@ -145,7 +145,7 @@ WOV retirement stays **roadmap last**. No live deploy · wallet · gas · privat
 | **Pier write ruling** | **SEATED** `20260730.034136` · Option 2 · Cloud→xykj61 branch+PR · origin/main from home pier · keys stay home |
 | **Cloud merge on xykj61** | **APPROVED** `20260730.034520` · Keaton's word · Cloud FF-merges to `xykj61/main` itself · home still syncs origin |
 | **Dual remotes** | **SEATED** · ls-remote + auth-refused · reds 31–32 · xykj61/main living · origin/main awaits home sync |
-| **Equinox Season** | **OPEN** e35 GREEN / e36 next · almanac ch1+ch2 full · ch3 9/16 · nested `return_surface_p59` |
+| **Equinox Season** | **OPEN** e42 GREEN / e43 next · almanac ch1+ch2+ch3 full · nested `return_surface_p59` |
 | **Surface Season** | **PAUSED** p58/p59 · `return_surface_p59` when Equinox resumes |
 | **Identity Remake** | **PAUSED** k6/k7 · `return_surface_p55` seated |
 | **Nona Season** | **PAUSED** n3/n4 · `return_surface_p41` seated |
