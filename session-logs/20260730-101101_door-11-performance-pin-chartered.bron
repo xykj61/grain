@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260730.101101
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Door 11 performance pin chartered
+prompt kg · lean A charter performance pin after door 10 GREEN
+think Queue seat 12 = S0 wall-time baselines · no tuning · measure before movement
+think Path tools/myc_perf_pin.rish · report myc-s0-baselines.tsv · bound min_rows 5
+think Seat coords door 11 CHARTERED · pins · recursion reprint · dual-push
+obs Fascia 90 · tend three queued not forced · discovery round-trip still elder seat 6
+file expanding-prompts/20260730-101101_door-11-performance-pin-charter.md door 11 charter
+file waymarks/20260730-101101_door-11-performance-pin-chartered.md bookmark
+file tools/gen/season/recursion_block.brix myc_perf_baseline_min_rows 5
+file expanding-prompts/20260730-101101_voice-season-j4-recursion-prompt.md repaste
+recommend keep-going create door 11 myc_perf_pin
