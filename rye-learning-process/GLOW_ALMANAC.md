@@ -158,7 +158,7 @@ Expected halls_expected=13 · halls_absent=0 · census_breach_count=0, and verdi
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ch2_surface_witness.rish` · **Stamp:** `20260730.125750` · **Witness:** `tools/gen/season/equinox_ch2_surface_witness.rish`
 Expected SAFE census · reds complete/monotone/refuse · voice sites=6/refuse · baton halls=13/breach=0/absent refuse each GREEN in one choir. Metal answered GREEN. Chapter two closes at sixteen; chapter three waits for metal.
 
-## Chapter Three (14 of 16)
+## Chapter Three (15 of 16)
 
 Opened from metal at stamp `20260730.130733`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -217,6 +217,10 @@ Expected CLONE=present · GUIDE_EXPLICIT · GUIDE_HOTLOOP · TAME_EXPLICIT · ST
 ### 46. The TigerBeetle performance surface choir holds: sized-types, batching, and be-explicit GREEN together.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_perf_surface_witness.rish` · **Stamp:** `20260730.135023` · **Witness:** `tools/gen/season/equinox_tigerbeetle_perf_surface_witness.rish`
 Expected sized GREEN · batching GREEN · be-explicit GREEN, and CLONE=ABSENT / verdict=absent on a missing clone path. Metal answered GREEN. Three performance leaves hold as one choir. Clean-room study only.
+
+### 47. Names carry nouns and verbs just right; units trail, abbreviation stays out.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_naming_choir_witness.rish` · **Stamp:** `20260730.135422` · **Witness:** `tools/gen/season/tigerbeetle_naming_census_witness.rish` · scan `tools/fixtures/tigerbeetle_naming_census.sh` · choir `equinox_tigerbeetle_naming_choir_witness.rish`
+Expected CLONE=present · GUIDE_NAMING · GUIDE_UNITS · GUIDE_ABBREV · TAME_NAMING · TAME_UNITS · SUPPLEMENT_NAMING · STYLE · LEXICON, and verdict=absent on a missing clone path. Metal answered GREEN. Clean-room study only.
 
 ---
 

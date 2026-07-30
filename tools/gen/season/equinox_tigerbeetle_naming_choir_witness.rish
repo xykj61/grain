@@ -1,0 +1,29 @@
+# tools/gen/season/equinox_tigerbeetle_naming_choir_witness.rish — e41 → almanac.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_naming_choir_witness.rish
+#
+# Leaf welcome + refuse only — no nested elder choirs.
+
+say "equinox-tb-naming-choir: Language EN — Naming Things; refuse an absent clone."
+say "equinox-tb-naming-choir: Style Radiant — welcome and refuse share one seat."
+say "equinox-tb-naming-choir: Lens TAME — e41 · naming · almanac seat 47."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_naming_census_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-tb-naming-choir: welcome RED"
+assert welcome.out contains "GREEN: tb-naming" else "equinox-tb-naming-choir: welcome missing GREEN"
+assert welcome.out contains "GUIDE_NAMING=yes" else "equinox-tb-naming-choir: want GUIDE_NAMING"
+assert welcome.out contains "TAME_NAMING=yes" else "equinox-tb-naming-choir: want TAME_NAMING"
+assert welcome.out contains "LEXICON=yes" else "equinox-tb-naming-choir: want LEXICON"
+
+let refuse = run ["sh" "tools/fixtures/tigerbeetle_naming_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
+say refuse.out
+assert refuse.ok == false else "equinox-tb-naming-choir: absent clone must fail"
+assert refuse.out contains "verdict=absent" else "equinox-tb-naming-choir: want verdict=absent"
+assert refuse.out contains "CLONE=ABSENT" else "equinox-tb-naming-choir: want CLONE=ABSENT"
+
+let almanac = run ["sh" "tools/gen/season/equinox_tigerbeetle_naming_almanac.sh"]
+assert almanac.ok else "equinox-tb-naming-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-tb-naming-choir — naming · units last · lexicon · absent refuses · almanac seat 47"

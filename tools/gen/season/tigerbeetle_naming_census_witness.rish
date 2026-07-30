@@ -1,0 +1,30 @@
+# tools/gen/season/tigerbeetle_naming_census_witness.rish — e41 Naming Things.
+#
+#   rishi/bin/rishi run tools/gen/season/tigerbeetle_naming_census_witness.rish
+#
+# Requires gratitude/tigerbeetle submodule present.
+# Clean-room: presence only · never copies into rye/.
+# Leaf only — no nested elder choirs.
+
+say "tb-naming: Language EN — nouns and verbs just right; units trail the name."
+say "tb-naming: Style Radiant — write names in full; meaning first."
+say "tb-naming: Lens TAME — e41 · clean-room study · almanac seat 47."
+
+let clone = run ["test" "-d" "gratitude/tigerbeetle/src"]
+assert clone.ok else "tb-naming: gratitude/tigerbeetle/src ABSENT — host clone first"
+
+let census = run ["sh" "tools/fixtures/tigerbeetle_naming_census.sh"]
+say census.out
+assert census.ok else "tb-naming: census failed or thin"
+assert census.out contains "CLONE=present" else "tb-naming: want CLONE=present"
+assert census.out contains "verdict=ok" else "tb-naming: want verdict=ok"
+assert census.out contains "GUIDE_NAMING=yes" else "tb-naming: held guide must name Naming Things"
+assert census.out contains "GUIDE_UNITS=yes" else "tb-naming: guide must put units last"
+assert census.out contains "GUIDE_ABBREV=yes" else "tb-naming: guide must refuse abbreviation"
+assert census.out contains "TAME_NAMING=yes" else "tb-naming: TAME must write names in full"
+assert census.out contains "TAME_UNITS=yes" else "tb-naming: TAME must put units last"
+assert census.out contains "SUPPLEMENT_NAMING=yes" else "tb-naming: supplement must teach Naming (Tiger Style)"
+assert census.out contains "STYLE=yes" else "tb-naming: clone docs must teach the law"
+assert census.out contains "LEXICON=yes" else "tb-naming: Grain Lexicon must be present"
+
+say "GREEN: tb-naming — guide·units·abbrev·TAME·supplement·style·lexicon ok"
