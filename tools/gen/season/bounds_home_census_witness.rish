@@ -1,0 +1,25 @@
+# tools/gen/season/bounds_home_census_witness.rish — bounds inherit the living table.
+#
+#   rishi/bin/rishi run tools/gen/season/bounds_home_census_witness.rish
+#
+# Design-shapes wing law: builds read bounds from the brix; they do not invent.
+# Census pairs recursion_block keys to mycelium/build_bounds.rye seated literals,
+# then re-runs the metal check.
+
+say "bounds-home-census: Language EN — ten pairs, one living table."
+say "bounds-home-census: Style Radiant — inherit, never invent."
+say "bounds-home-census: Lens TAME — e28 · design-shapes · almanac seat 34."
+
+let scan = run ["sh" "tools/fixtures/bounds_home_census.sh"]
+say scan.out
+assert scan.ok else "bounds-home-census: census failed"
+assert scan.out contains "verdict=ok" else "bounds-home-census: want verdict=ok"
+assert scan.out contains "pairs_matched=10" else "bounds-home-census: want ten matched pairs"
+assert scan.out contains "pairs_drift=0" else "bounds-home-census: drift must be zero"
+
+let metal = run ["sh" "-c" "env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/build_bounds.rye 2>&1"]
+say metal.out
+assert metal.ok else "bounds-home-census: build_bounds metal RED"
+assert metal.out contains "GREEN: build_bounds" else "bounds-home-census: want GREEN build_bounds"
+
+say "GREEN: bounds-home-census — ten pairs · living table named · build_bounds GREEN"

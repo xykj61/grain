@@ -1,0 +1,27 @@
+# tools/gen/season/equinox_bounds_home_choir_witness.rish — e28 bounds inherit → almanac.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_bounds_home_choir_witness.rish
+#
+# Chapter three continues from metal. Leaf welcome + refuse only.
+
+say "equinox-bounds-home-choir: Language EN — inherit the table; refuse a missing shape."
+say "equinox-bounds-home-choir: Style Radiant — ten pairs hold; metal agrees."
+say "equinox-bounds-home-choir: Lens TAME — e28 · bounds home · almanac seat 34."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/season/bounds_home_census_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-bounds-home-choir: welcome RED"
+assert welcome.out contains "GREEN: bounds-home-census" else "equinox-bounds-home-choir: welcome missing GREEN"
+assert welcome.out contains "pairs_matched=10" else "equinox-bounds-home-choir: want ten pairs"
+
+# Refuse: a missing shape path is loud, not silent.
+let refuse = run ["sh" "tools/fixtures/bounds_home_census.sh" "tools/fixtures/bounds_home_ABSENT.brix"]
+say refuse.out
+assert refuse.ok == false else "equinox-bounds-home-choir: absent shape must fail status"
+assert refuse.out contains "verdict=missing_shape" else "equinox-bounds-home-choir: want missing_shape verdict"
+
+let almanac = run ["sh" "tools/gen/season/equinox_bounds_home_choir_almanac.sh"]
+assert almanac.ok else "equinox-bounds-home-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-bounds-home-choir — ten pairs · metal GREEN · absent refuses · almanac seat 34"
