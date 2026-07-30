@@ -54,6 +54,19 @@ pub const Grid = struct {
         tally_copy.copy_disjoint(u8, self.cells[base..][0..n_usize], text[0..n_usize]);
     }
 
+    /// The row's cells, read back whole — the reading sibling of `put_line`.
+    /// Named `row_cells` rather than `grid_row`: `rasterize` already binds a
+    /// local `grid_row`, and a shadowed name is a name not yet free.
+    /// Grid witnesses otherwise index `cells` by hand, which is exactly the
+    /// seam an off-by-one lands in.
+    pub fn row_cells(self: *const Grid, row: u32) []const u8 {
+        assert(row < self.rows); // precondition: caller checked the bound
+        const base: usize = @intCast(row * self.cols);
+        const span: usize = @intCast(self.cols);
+        assert(base + span <= self.cells.len); // invariant: row sits inside cells
+        return self.cells[base .. base + span];
+    }
+
     pub fn lit_pixel_count(_: Grid, pixels: []const u8, stride: u32, width: i32, height: i32, bg: Color) u32 {
         assert(width > 0);
         assert(height > 0);

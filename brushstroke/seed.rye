@@ -38,7 +38,7 @@ const Frame = struct {
     }
 };
 
-const max_lines = 8;
+const max_lines: u32 = 8; // frame height ceiling — Frame.init asserts against it
 
 /// Redraw: pure pass from values to the surface. Hosted seed uses stdout.
 fn redraw(frame: Frame, io: std.Io) !void {

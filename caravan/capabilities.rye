@@ -40,6 +40,14 @@ pub const right_exec: u8 = 1 << 2;
 pub const right_net: u8 = 1 << 3;
 pub const right_device: u8 = 1 << 4;
 
+/// Named outcome of a capability check — `.allowed`, or the reason it was not.
+pub const Refusal = enum(u8) {
+    allowed = 0,
+    no_such_dependent = 1,
+    no_such_resource = 2,
+    rights_insufficient = 3,
+};
+
 pub const Rights = struct {
     pub fn contains(have: u8, need: u8) bool {
         return (have & need) == need;
@@ -139,6 +147,38 @@ pub const CapabilityTable = struct {
             if (slot.active and std.mem.eql(u8, slot.label_slice(), label)) return slot;
         }
         return null;
+    }
+
+    /// Why a request was refused — or `.allowed` when it was not.
+    ///
+    /// `allows` answers yes or no, and a bare no covers three different
+    /// situations: the dependent is unknown, the resource was never granted, or
+    /// the rights fall short. A capability system that cannot say which one
+    /// cannot audit its own refusals, so this names the reason. Mand's ring-1
+    /// audits on grant; a refusal deserves the same legibility.
+    ///
+    /// Horizon, on-touch: `allows` may one day fold onto this as
+    /// `refusal_reason(...) == .allowed` — one fold, many callers. It keeps
+    /// its own body until a hand is already in this file.
+    pub fn refusal_reason(
+        self: *const CapabilityTable,
+        dependent_label: []const u8,
+        resource: []const u8,
+        need: u8,
+    ) Refusal {
+        assert(self.dependent_count <= max_dependents); // invariant: table within bound
+        const slot = self.find_dependent(dependent_label) orelse return .no_such_dependent;
+        assert(slot.cap_count <= max_caps_per_dependent); // invariant: dependent within bound
+        var i: u32 = 0;
+        while (i < slot.cap_count) : (i += 1) {
+            assert(i < max_caps_per_dependent);
+            const cap = &slot.caps[i];
+            if (std.mem.eql(u8, cap.name_slice(), resource)) {
+                if (Rights.contains(cap.rights_mask, need)) return .allowed;
+                return .rights_insufficient;
+            }
+        }
+        return .no_such_resource;
     }
 
     /// Returns true when the named dependent holds a capability for the resource

@@ -1,0 +1,16 @@
+# Intentional-violation fixture. Standing exempt: it exists to HOLD the
+# violations counsel_flow_scan must catch. It must stay wrong.
+name unlawful-flow
+version 20260729.215100
+voice Riyo
+register radiant
+lens tame
+audience acme
+attention_channel voice
+check_in_every_rounds 8
+coined_term_law name it plainly
+measurement_before_claim always
+BadKey value
+spaced_twice  value
+if condition then something
+lonely_field
