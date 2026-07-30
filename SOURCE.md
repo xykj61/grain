@@ -54,7 +54,7 @@ git clone https://github.com/xykj61/grain.git ~/grain
 cd ~/grain
 ```
 
-Public HTTPS, no fork, no keys yet. This pier’s living public clone is **`xykj61/grain`**. A second GitHub remote, `autoproject96/grain`, may exist as the agentic research lane (`origin` on this pier) — see [`context/REMOTE_ROSTER.md`](context/REMOTE_ROSTER.md). **Codeberg is retired** from living push (Terms July 2026) until a new second forge is chosen.
+Public HTTPS, no fork, no keys yet. This pier’s living public clone is **`xykj61/grain`**. A second GitHub remote, `autoproject96/grain`, may exist as the agentic research lane (`origin` on this pier) — see [`context/REMOTE_ROSTER.md`](context/REMOTE_ROSTER.md). Living Cursor sends **dual-push** both remotes when both exist. **Codeberg is retired** from living push (Terms July 2026) until a new second forge is chosen.
 
 Forks arrive naturally in Part Two, once forge accounts exist.
 
