@@ -8,7 +8,7 @@
 
 | | f1 | f2 |
 | --- | --- | --- |
-| history-weight (superseded) | 8 · pen 4 | **4 · pen 2** |
+| history-weight | 8 · pen 4 | **4 · pen 2** |
 | class-A | 8 · pen 16 | **4 · pen 8** |
 | ratchet | 0 | 0 |
 | clutter | 20 | **10** |
