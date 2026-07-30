@@ -226,7 +226,7 @@ Expected CLONE=present · GUIDE_NAMING · GUIDE_UNITS · GUIDE_ABBREV · TAME_NA
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ch3_surface_witness.rish` · **Stamp:** `20260730.140147` · **Witness:** `tools/gen/season/equinox_ch3_surface_witness.rish`
 Expected wing halls=4/breach=0 · safety static/seventy/flow · performance sized/batching/explicit · naming, and verdict=missing_wing on an absent path. Metal answered GREEN. Chapter three closes at sixteen; chapter four waits for metal.
 
-## Chapter Four (13 of 16)
+## Chapter Four (14 of 16)
 
 Opened from metal at stamp `20260730.140442`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -281,6 +281,10 @@ Expected style GREEN · deps GREEN · tooling GREEN · last-stage GREEN, and CLO
 ### 61. The TigerBeetle DX surface choir holds: say-why and say-how GREEN together.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_dx_surface_witness.rish` · **Stamp:** `20260730.185100` · **Witness:** `tools/gen/season/equinox_tigerbeetle_dx_surface_witness.rish`
 Expected say-why GREEN · say-how GREEN, and CLONE=ABSENT / verdict=absent on a missing clone path. Metal answered GREEN. Two DX leaves hold as one choir. Clean-room study only.
+
+### 62. The TigerBeetle mid surface choir holds: cache leaves and off-by-one GREEN together.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_mid_surface_witness.rish` · **Stamp:** `20260730.185703` · **Witness:** `tools/gen/season/equinox_tigerbeetle_mid_surface_witness.rish`
+Expected inplace GREEN · shrink GREEN · bleeds GREEN · off-by-one GREEN, and CLONE=ABSENT / verdict=absent on a missing clone path. Metal answered GREEN. Off-by-one joins the cache three. Clean-room study only.
 
 ---
 
