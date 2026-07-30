@@ -1,3 +1,4 @@
+- `20260730.105636` — [Door 14 create prep chartered](20260730-105636_door-14-create-prep-chartered.bron) — Build handback packet · kg create next
 - `20260730.104053` — [Door 13 edu discovery walk GREEN · almanac 12](20260730-104053_door-13-edu-discovery-walk-green.bron) — five steps · next create prep or wire
 - `20260730.103638` — [Door 13 edu discovery walk chartered](20260730-103638_door-13-edu-discovery-walk-chartered.bron) — edu walk · kg create next
 - `20260730.103002` — [Door 12 five primitives reference GREEN · almanac 11](20260730-103002_door-12-five-primitives-reference-green.bron) — sangha/03 · next edu demo or discovery
