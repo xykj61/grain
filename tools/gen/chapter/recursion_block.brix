@@ -65,16 +65,18 @@ voice_v32_descriptor_landed 20260730.030553
 baton_museum context/baton-museum
 coords_equinox A
 coords_journey 4
-coords_journey_4_status OPEN — h4 Accrete-never-break · door 8–11 GREEN · door 12 CHARTERED · tend three DONE · kg create next
+coords_journey_4_status OPEN — h4 Accrete-never-break · door 8–12 GREEN · tend three DONE · next charter edu demo or discovery round-trip
 coords_quest Do
 coords_round 17
 coords_season_rounds 256
 coords_season_name PARKED
 coords_tend_two DONE 20260730.085559 fascia_entry 69 fascia_exit 69 delta 0
 coords_tend_three DONE 20260730.102430 fascia_entry 90 fascia_exit 90 delta 0
-coords_door_12 five_primitives_reference CHARTERED 20260730.102700
+coords_door_12 five_primitives_reference GREEN 20260730.103002
 coords_door_12_path docs-geode/sangha/03-five-primitives.md
-coords_door_12_next kg create
+coords_door_12_witness tools/sangha_five_primitives_page_witness.rish
+coords_door_12_next DONE
+coords_almanac_ch1 11 of 16
 coords_cursor_grok_handoff 20260730.085938 expanding-prompts/20260730-085938_cursor-grok-j4-fresh-agent-handoff.md
 coords_journey_2_closed 20260730.040859
 coords_journey_3_opened 20260730.040859 h3 Radiant Style
@@ -99,7 +101,6 @@ coords_door_11_path tools/myc_perf_pin.rish
 coords_door_11_report work-in-progress/myc-s0-baselines.tsv
 coords_door_11_bound myc_perf_baseline_min_rows 5
 coords_door_11_next DONE
-coords_almanac_ch1 10 of 16
 # Fascia Equinox — nest 12 duodeca · seated 20260730.090926 · handed back 20260730.095331
 coords_fascia_equinox PAUSED
 coords_fascia_nest duodeca
