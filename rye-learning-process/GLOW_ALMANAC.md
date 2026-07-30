@@ -22,10 +22,30 @@
 <two to five lines: what was expected, what the metal answered, what it teaches>
 ```
 
-## Chapter One — awaiting its first running code
+## Chapter One — Build Journey greens (5 of 16)
 
-*The Build Journey (v32–v47) supplies the first entries: the discovery files, the myc fold, and whatever the metal teaches along the way. This page holds sixteen seats and fills none of them tonight — an almanac chartered honest is an almanac chartered empty.*
+Filled from Cloud bench runs at stamp `20260730.034527`. Eleven seats remain.
+
+### 1. A descriptor that fits 512 bytes is welcome; one that does not is refused whole.
+**Ran:** `env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/discovery/descriptor_test.rye` · **Stamp:** `20260730.034527` · **Witness:** `comlink/discovery/descriptor.rye` · `descriptor_test.rye`  
+Expected the seated ceiling to bite both ways. Metal answered GREEN — bound 512 welcome and refuse. Discovery carries length-prefixed self-description and nothing past the door.
+
+### 2. The peer table claims and reaches both ways inside 256 slots, stack LIFO untouched.
+**Ran:** `env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/discovery/table.rye` · **Stamp:** `20260730.034527` · **Witness:** `comlink/discovery/table.rye`  
+Expected claim↔reach, bound bitten, free-list LIFO. Metal answered GREEN — max_peers 256 · staleness 4096 inherited from the brix. The table finds peers and never orders them.
+
+### 3. Gossip fans out at most eight peers; malformed arrival refuses whole and never trims quiet.
+**Ran:** `env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/discovery/gossip.rye` · **Stamp:** `20260730.034527` · **Witness:** `comlink/discovery/gossip.rye`  
+Expected fanout 8 and refuse-whole on bad shape. Metal answered GREEN. What travels is a value under a named ceiling.
+
+### 4. Introduce arrives at hops ≤ 2 with kumara identity; wrong shape is turned away as loudly as welcome.
+**Ran:** `env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/discovery/introduce.rye` · **Stamp:** `20260730.034527` · **Witness:** `comlink/discovery/introduce.rye`  
+Expected Aparigraha arrival and negative space. Metal answered GREEN — hops_max 2 · kumara seam. A stranger with the wrong seal does not enter.
+
+### 5. Myc supply equals issued minus taxed at every prefix; overdraw and unknown kinds refuse whole.
+**Ran:** `env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/fold.rye` · **Stamp:** `20260730.034527` · **Witness:** `mycelium/fold.rye`  
+Expected purity (fresh = resumed), star uniqueness, and loud refuse. Metal answered GREEN — supply=872 · stars=1 · purity · refuse whole. The fold stays pure; policy numbers stay parked.
 
 ---
 
-*May every line here be one the machine said first. May the book close at its bound the way a season does. And may its first entry arrive from running code, soon.*
+*May every line here be one the machine said first. May the book close at its bound the way a season does. And may the remaining eleven seats wait for metal, not memory.*

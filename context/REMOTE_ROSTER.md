@@ -17,7 +17,7 @@
 | `origin` | GitHub `autoproject96/grain` |
 | `xykj61` | GitHub `xykj61/grain` |
 
-**Pier write ruling — Option 2 SEATED** (`20260730.034136` · Keaton's word · red 32 · counsel lean held): ls-remote proves existence, never authorization. **auth-refused** (403) is named in the send-word guard. **Cloud** pushes `xykj61` branch + PR only. **`origin` / `main` syncs from the home pier** after Keaton merges (or fast-forwards) and GPG-pushes — no home credential leaves home. Dual-send still *aims* both waters; when Cloud meets auth-refused on origin, name it and continue the `xykj61` path — dual-send incomplete until the home pier closes the gap.
+**Pier write ruling — Option 2 SEATED** (`20260730.034136` · Keaton's word · red 32 · counsel lean held): ls-remote proves existence, never authorization. **auth-refused** (403) is named in the send-word guard. **Cloud** pushes `xykj61` branch + PR, and **FF-merges to `xykj61/main` itself** (approved `20260730.034520` — Keaton's word: merge here in the Cloud environment). **`origin` / `main` syncs from the home pier** after Keaton pulls and GPG-pushes — no home credential leaves home. Dual-send still *aims* both waters; when Cloud meets auth-refused on origin, name it and continue the `xykj61` path — dual-send incomplete until the home pier closes the gap.
 
 **Retired from living push** (`20260729.141658`):
 
