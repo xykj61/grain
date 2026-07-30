@@ -10,7 +10,7 @@
 
 ## Why Class-A move was needed
 
-Superseded prune alone cannot clear a Class-A penalty of 16. The bar at 90 required sameness relocate: one living elder-anchor home, dated counsel archived or re-pointed, no Amphora cut.
+History-weight prune alone cannot clear a Class-A penalty of 16. The bar at 90 required sameness relocate: one living elder-anchor home, dated counsel yondered or re-pointed, no Amphora cut.
 
 ## What this round does *not* do
 
