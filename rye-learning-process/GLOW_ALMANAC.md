@@ -22,9 +22,9 @@
 <two to five lines: what was expected, what the metal answered, what it teaches>
 ```
 
-## Chapter One — Build Journey greens (9 of 16)
+## Chapter One — Build Journey greens (10 of 16)
 
-Entries 1–5 from stamp `20260730.034527`. Entry 6 from `20260730.040859`. Entry 7 from `20260730.041405`. Entry 8 from `20260730.085312`. Entry 9 from `20260730.100218`. Seven seats remain.
+Entries 1–5 from stamp `20260730.034527`. Entry 6 from `20260730.040859`. Entry 7 from `20260730.041405`. Entry 8 from `20260730.085312`. Entry 9 from `20260730.100218`. Entry 10 from `20260730.101622`. Six seats remain.
 
 ### 1. A descriptor that fits 512 bytes is welcome; one that does not is refused whole.
 **Ran:** `env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/discovery/descriptor_test.rye` · **Stamp:** `20260730.034527` · **Witness:** `comlink/discovery/descriptor.rye` · `descriptor_test.rye`  
@@ -62,6 +62,10 @@ Expected Amber-shaped snapshot · restore · fold remainder equals fresh; unknow
 **Ran:** `env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/refusal_storm.rye` · **Stamp:** `20260730.100218` · **Witness:** `mycelium/refusal_storm.rye`  
 Expected keypair tamper · unknown kind · append-only unchanged · overdraw · seam truncate/ship tamper — five cases under bound 5. Metal answered GREEN — cases=5 · bound=5 · log.len=3. Negative space gathers without inventing a sixth primitive.
 
+### 10. S0 wall-time baselines for five myc GREEN mains record elapsed_ms without tuning.
+**Ran:** `rishi/bin/rishi run tools/myc_perf_pin.rish` · **Stamp:** `20260730.101622` · **Witness:** `tools/myc_perf_pin.rish` · report `work-in-progress/myc-s0-baselines.tsv`  
+Expected correctness-first timing of fold · fold_persist · ship_sol · build_bounds · refusal_storm under bound 5 · no budget red. Metal answered GREEN — rows=5 · bound=5 · elapsed_ms fold=102 · fold_persist=72 · ship_sol=33 · build_bounds=24 · refusal_storm=112. Measurement precedes movement.
+
 ---
 
-*May every line here be one the machine said first. May the book close at its bound the way a season does. And may the remaining seven seats wait for metal, not memory.*
+*May every line here be one the machine said first. May the book close at its bound the way a season does. And may the remaining six seats wait for metal, not memory.*
