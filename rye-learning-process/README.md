@@ -1,7 +1,7 @@
 # The Rye Learning Process
 
 **Language:** EN
-**Last updated:** 2026-07-30 (`20260730.085517` — living twin points at GLOW_ALMANAC · ch1 8/16)
+**Last updated:** 2026-07-30 (`20260730.102430` — living twin points at GLOW_ALMANAC · ch1 10/16 · tend three)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Riyo
 **Status:** Foundation
