@@ -1,7 +1,7 @@
 # Remote roster — canonical count
 
 **Language:** EN  
-**Seated:** `20260724.222620` · living refresh `20260730.030553`  
+**Seated:** `20260724.222620` · living refresh `20260730.033648`  
 **Voice:** Riyo  
 **Status:** Living pin — single home for the pier's remote count  
 **Bound:** keep thin  
@@ -16,6 +16,8 @@
 |--------|-------|
 | `origin` | GitHub `autoproject96/grain` |
 | `xykj61` | GitHub `xykj61/grain` |
+
+**Pier write ruling** (red 32 · `20260730.033648`): ls-remote proves existence, never authorization. **auth-refused** (403) is named in the send-word guard. Counsel Option 2 (Cloud → `xykj61` branch+PR only; origin main from home pier) is **parked** until Keaton speaks — keys stay home.
 
 **Retired from living push** (`20260729.141658`):
 
