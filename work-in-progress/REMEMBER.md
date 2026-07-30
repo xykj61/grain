@@ -6,15 +6,15 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260730.111639` (EDT) · voice Riyo  
+**Last refreshed:** `20260730.111804` (EDT) · voice Riyo  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin** · **sundial** · **reds-first** · **baton** · **shape** · **resin** · **bead** · **cell** · **tend** · **SAFE** · **equinox map** · **fascia equinox**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss** · **first resident** (routine) · **vegan-dogfood** (easter egg) · **living mutant** · **shred-prep list** · **transitive writing crawl** · **Kiln** · **three** · **quad** · **nona** · **deca** · **undeca** *(canon)* · **duodeca** · **equinoxes** · **equinox map** · **SDD** · **Nest-Chapter** · **your / %your** · Glow=code · Brix=data · **baton** · **coords·basis·meters·reds·words·parked·artifacts·next·recommend** · **shape** *(seam)* · **resin** · **bead**  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **bibliography.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes** · **mod-clock** · **REDS.md** · **Sangha pattern one · two · three** · **GLOW_ALMANAC 13/16** · **tally/stack** · **baton-museum 13** · **design-shapes · fact_fold · relay_resin** · **discovery quartet** · **mycelium/fold** · **fold_persist** · **refusal_storm** · **ship_sol** · **build_bounds** · **myc_perf_pin** · **edu discovery walk** · **door 14 create prep GREEN** · **door 15 wire GREEN** · **Build queue CLOSED** · **resin-wheel-a** · **equinox map CLOSED** · **flank arrows** · **door 8–15 GREEN** · **tend three DONE** · **Fascia Equinox PAUSED**  
-**Git nib:** `ae6e42131a` · Grain · undeca · door 15 GREEN  
-**Bookmark:** [`waymarks/20260730-111639_door-15-discovery-wire-green.md`](../waymarks/20260730-111639_door-15-discovery-wire-green.md)
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **bibliography.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes** · **mod-clock** · **REDS.md** · **Sangha pattern one · two · three** · **GLOW_ALMANAC 13/16** · **tally/stack** · **baton-museum 13** · **design-shapes · fact_fold · relay_resin** · **discovery quartet** · **mycelium/fold** · **fold_persist** · **refusal_storm** · **ship_sol** · **build_bounds** · **myc_perf_pin** · **edu discovery walk** · **door 14 create prep GREEN** · **door 15 wire GREEN** · **Build queue CLOSED** · **Voice handback CONSUMED** · **Equinox OPEN e7** · **resin-wheel-a** · **equinox map CLOSED** · **flank arrows** · **door 8–15 GREEN** · **tend three DONE** · **Fascia Equinox PAUSED**  
+**Git nib:** `6ed4dcd42a` · Grain · deca · e7 next  
+**Bookmark:** [`waymarks/20260730-111804_voice-handback-equinox-e7.md`](../waymarks/20260730-111804_voice-handback-equinox-e7.md)
 
-**Chapter:** Framework · EDT · **Grain** · **finishing edge:** **undeca** *(canon)* — Voice **OPEN** · Journey 4 **OPEN** (h4 Accrete-never-break) · door 8–15 **GREEN** · discovery wire GREEN · Build queue **CLOSED** · next return or name door · tend three **DONE** · almanac **13/16** · Fascia Equinox **PAUSED** (69→90 · handback CONSUMED) · Equinox **PAUSED** e6/e7 · Surface **PAUSED** · GitHub dual · Riyo stands · Prefer **git nib**. · `prin scope`  
-**Meters (fresh `20260730.111639`):** sundial **100 · green** · fascia **90/100** (exit bar MET · shred RED)
+**Chapter:** Framework · EDT · **Grain** · **finishing edge:** **deca** — Equinox **OPEN** (e6 complete / **e7 next** · true deepest) · Voice **PAUSED** (J4 doors 8–15 GREEN · handback CONSUMED) · Fascia Equinox **PAUSED** (69→90) · Surface **PAUSED** · GitHub dual · Riyo stands · Prefer **git nib**. · `prin scope`  
+**Meters (fresh `20260730.111804`):** sundial **100 · green** · fascia **90/100** (exit bar MET · shred RED)
 
 ---
 
@@ -27,9 +27,9 @@
 Fascia **shred** still waits circled shred yes — distinct from rename and from prune.  
 WOV retirement stays **roadmap last**. No live deploy · wallet · gas · private key.
 
-**Voice Chapter (undeca, canon)** **OPEN** `20260730.095331` — Journey 4 h4 · door 8–15 GREEN · discovery wire `20260730.111639` · Build queue CLOSED · tend three DONE · almanac 13/16 · next return or name door · nested handback `return_equinox_e7` when Voice itself returns.  
+**Equinox Chapter (deca)** **OPEN** `20260730.111804` — true deepest · e6 complete / **e7 next** · handback `return_surface_p59` when Equinox returns.  
+**Voice Chapter (undeca, canon)** **PAUSED** `20260730.111804` — Journey 4 doors 8–15 GREEN · discovery wire · Build queue CLOSED · tend three DONE · almanac 13/16 · handback `return_equinox_e7` **CONSUMED**.  
 **Fascia Equinox (duodeca)** **PAUSED** `20260730.095331` — f3 complete · fascia **90** · exit bar MET · handback `return_voice_j4_d10` **CONSUMED** · shred RED.  
-**Equinox Chapter (deca)** **PAUSED** — e6 complete / e7 next · resume lean `return_surface_p59`.  
 **Surface Chapter (sept)** **PAUSED** — p58/p59 · live-five GREEN. Resume lean `return_generator_s9`.  
 **Identity Remake (inner)** **PAUSED** — k6 complete / k7 next · handed back `return_surface_p55`.  
 **Nona Chapter (nona)** **PAUSED** n3/n4 — nest accuracy · SDD · residual **SEATED** · handed back `return_surface_p41`.  
@@ -74,7 +74,9 @@ WOV retirement stays **roadmap last**. No live deploy · wallet · gas · privat
 | **Equinox Map Correction** | **CLOSED** · em0–em15 · map canon seated · handback consumed at j3 r12 |
 | **Voice Chapter Journey 3** | **CLOSED** `20260730.083457` · h3 Radiant Style · doors 6–7 · resin · map nest |
 | **Fascia Equinox (duodeca)** | **PAUSED** `20260730.095331` · f3 · exit bar MET 69→90 · handback CONSUMED |
-| **Voice Chapter Journey 4** | **OPEN** · A·J4 · h4 · door 8–15 **GREEN** · Build queue **CLOSED** · next return or name door |
+| **Equinox Chapter (deca)** | **OPEN** `20260730.111804` · true deepest · e6 complete / **e7 next** · `return_surface_p59` |
+| **Voice Chapter Journey 4** | **PAUSED** · A·J4 · doors 8–15 **GREEN** · Build queue **CLOSED** · handback CONSUMED |
+| **Voice handback** | **CONSUMED** `20260730.111804` · `return_equinox_e7` · counsel handback seat |
 | **Door 15 discovery wire** | **GREEN** `20260730.111639` · `tools/discovery_round_trip_wire.rish` · lane `round_trip_wire.rye` · almanac seat 13 |
 | **Door 14 create prep** | **GREEN** `20260730.110403` · `counsel/replies/20260730-105636_create-prep-build-journey-j4.md` · seat 16 DONE |
 | **Build Journey queue** | **CLOSED** `20260730.110403` · seat 16 · elder wire cleared as door 15 GREEN |
@@ -104,7 +106,7 @@ WOV retirement stays **roadmap last**. No live deploy · wallet · gas · privat
 | **Pier write ruling** | **SEATED** `20260730.034136` · Option 2 · Cloud→xykj61 branch+PR · origin/main from home pier · keys stay home |
 | **Cloud merge on xykj61** | **APPROVED** `20260730.034520` · Keaton's word · Cloud FF-merges to `xykj61/main` itself · home still syncs origin |
 | **Dual remotes** | **SEATED** · ls-remote + auth-refused · reds 31–32 · xykj61/main living · origin/main awaits home sync |
-| **Equinox Chapter** | **PAUSED** e6/e7 · `return_equinox_e7` when Voice hands back |
+| **Equinox Chapter** | **OPEN** e6/e7 · handback `return_equinox_e7` CONSUMED · nested `return_surface_p59` |
 | **Surface Chapter** | **PAUSED** p58/p59 · `return_surface_p59` when Equinox resumes |
 | **Identity Remake** | **PAUSED** k6/k7 · `return_surface_p55` seated |
 | **Nona Chapter** | **PAUSED** n3/n4 · `return_surface_p41` seated |

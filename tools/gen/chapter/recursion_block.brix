@@ -65,9 +65,13 @@ voice_v32_descriptor_landed 20260730.030553
 baton_museum context/baton-museum
 coords_equinox A
 coords_journey 4
-coords_journey_4_status OPEN — h4 Accrete-never-break · door 8–15 GREEN · Build queue CLOSED · tend three DONE · next return or name door
+coords_journey_4_status PAUSED — h4 Accrete-never-break · door 8–15 GREEN · Build queue CLOSED · tend three DONE · Voice handback CONSUMED
 coords_quest Do
-coords_round 23
+coords_round 24
+coords_voice_handback return_equinox_e7 CONSUMED 20260730.111804
+coords_equinox_season OPEN
+coords_equinox_status e6 complete / e7 next · true deepest
+coords_true_deepest deca
 coords_season_rounds 256
 coords_season_name PARKED
 coords_tend_two DONE 20260730.085559 fascia_entry 69 fascia_exit 69 delta 0
@@ -110,6 +114,8 @@ coords_journey_3_closed 20260730.083457 r12 close
 coords_journey_4_opened 20260730.083457 h4 Accrete-never-break
 coords_journey_4_paused 20260730.090926 Voice pause for Fascia Equinox
 coords_journey_4_resumed 20260730.095331 return_voice_j4_d10 CONSUMED
+coords_journey_4_paused_handback 20260730.111804 return_equinox_e7 CONSUMED
+coords_voice_season PAUSED 20260730.111804
 coords_equinox_map_correction CLOSED 20260730.082536 em0-em15
 coords_equinox_map_correction_handback journey_3_r12_close CONSUMED
 coords_door_6 ship_sol
