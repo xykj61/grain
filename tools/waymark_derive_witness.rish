@@ -1,7 +1,7 @@
 # waymark_derive_witness.rish — naming-grade sameness across the flw fixture pin.
 #
 # Asserts corpus count + SHA3-512 pins, re-derives every corpus-drawn seated
-# waymark (HAWM · TUBE · ZETA · JABS · LULU · STOA), and confirms SETU · SEVA ·
+# waymark (HAWM · TUBE · ZETA · JABS · LULU · STOA · SUNN), and confirms SETU · SEVA ·
 # MAND · MONA on the exclude list. SALA is historical (dropped from exclude).
 #
 #   rishi/bin/rishi run tools/waymark_derive_witness.rish
@@ -64,5 +64,7 @@ assert draw_run.out contains "ZETA" else "ZETA missing"
 assert draw_run.out contains "JABS" else "JABS missing"
 assert draw_run.out contains "LULU" else "LULU missing"
 assert draw_run.out contains "STOA" else "STOA missing"
+assert draw_run.out contains "SUNN" else "SUNN missing"
+assert (exclude_line.out contains "SUNN") else "exclude regex missing SUNN"
 
-say "GREEN: waymark derive witness — corpus pins · body twin · six seated draws · SETU·SEVA·MAND·MONA exclude · SALA retired"
+say "GREEN: waymark derive witness — corpus pins · body twin · seven seated draws · SETU·SEVA·MAND·MONA exclude · SALA retired"

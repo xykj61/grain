@@ -22,6 +22,7 @@ Before the first rung is written as `X0` / `X1` / … in TASKS, ROADMAP, compres
 | **LULU** | `glow-glass-hearth-display-and-wired-sync` | Hearth display presets · short home · Wired Glass |
 | **STOA** | `glow-language-rune-heads-nest-and-lowering-2` | Glow language SLC · rune heads · nest · composition |
 | **SETU** | *(hand-seated; not a corpus draw — absent from flw)* | USB hearth carry Glass↔Desk |
+| **SUNN** | `source-pier-papers-identity-refresh` | SOURCE.md identity · remotes · apps · onboarding refresh |
 
 **Hand-seated names on the exclude roster** (not waymark draws): **SEVA** (viewer; absent from flw), **MAND** (M vane; in flw), **MONA** (prior name of Mand — one season). **SALA** retired from exclude with the Sala→Seva alias close.
 
