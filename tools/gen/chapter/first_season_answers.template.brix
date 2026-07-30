@@ -1,0 +1,47 @@
+# first_season_answers.template.brix — local answers for journey 1
+#
+# Copy to the repository root (gitignored by deny-all) and fill as you go:
+#   cp tools/gen/chapter/first_season_answers.template.brix first_season_answers.brix
+#
+# Never git add -f the filled file.
+# Seated 20260730.145124 · SUNN5 · voice Riyo
+
+name first-season-answers
+version 20260730.145124
+kind answers
+journey open-questions-compass
+steward Your Full Name
+
+a_00_id compass-return
+a_00_answer
+a_01_id compass-rose
+a_01_answer
+a_02_id grain-fit
+a_02_answer
+a_03_id two-rooms
+a_03_answer
+a_04_id aspiring-radiance
+a_04_answer
+a_05_id regenerative-experiment
+a_05_answer
+a_06_id goals-year
+a_06_answer
+a_07_id goals-non-goal
+a_07_answer
+a_08_id traits-three
+a_08_answer
+a_09_id traits-tension
+a_09_answer
+a_10_id work-rhythm
+a_10_answer
+a_11_id voice-choice
+a_11_answer
+a_12_id interests-three
+a_12_answer
+a_13_id interest-craft
+a_13_answer
+a_14_id constraints
+a_14_answer
+a_15_id joy-and-next
+a_15_answer
+checked YYYYMMDD.HHMMSS
