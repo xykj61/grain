@@ -1,0 +1,31 @@
+# tools/gen/season/tigerbeetle_control_plane_census_witness.rish — e20 control/data plane.
+#
+#   rishi/bin/rishi run tools/gen/season/tigerbeetle_control_plane_census_witness.rish
+#
+# Requires gratitude/tigerbeetle submodule present.
+# Clean-room: presence + counts only · never copies into rye/.
+
+say "tb-control-plane: Language EN — control plane and data plane name the assert budget."
+say "tb-control-plane: Style Radiant — spend asserts where free; gate where dear."
+say "tb-control-plane: Lens TAME — e20 · clean-room study · almanac seat 26."
+
+let clone = run ["test" "-d" "gratitude/tigerbeetle/src"]
+assert clone.ok else "tb-control-plane: gratitude/tigerbeetle/src ABSENT — host clone first"
+
+let census = run ["sh" "tools/fixtures/tigerbeetle_control_plane_census.sh"]
+say census.out
+assert census.ok else "tb-control-plane: census failed or thin"
+assert census.out contains "CLONE=present" else "tb-control-plane: want CLONE=present"
+assert census.out contains "verdict=ok" else "tb-control-plane: want verdict=ok"
+assert census.out contains "GUIDE_PLANE=yes" else "tb-control-plane: held guide must name both planes"
+assert census.out contains "ARCH_PLANE=yes" else "tb-control-plane: clone ARCHITECTURE must name both planes"
+assert census.out contains "TAME_BRIDGE=yes" else "tb-control-plane: TAME_GUIDANCE bridge must hold"
+
+let elder = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_assert_census_witness.rish"]
+assert elder.ok else "tb-control-plane: assert census elder went RED"
+
+let almanac = run ["sh" "tools/gen/season/equinox_tigerbeetle_control_plane_almanac.sh"]
+assert almanac.ok else "tb-control-plane: almanac append failed"
+say almanac.out
+
+say "GREEN: tb-control-plane — guide·arch·verify·TAME bridge ok · assert elder GREEN · almanac seat 26"
