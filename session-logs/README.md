@@ -1,3 +1,4 @@
+- `20260730.115101` — [E10 equinox surface choir GREEN · almanac 16](20260730-115101_e10-equinox-surface-choir-green.bron) — ch1 full · e11 next
 - `20260730.114840` — [E9 equinox create-prep GREEN · e10 next](20260730-114840_e9-equinox-create-prep-green.bron) — H10 SLC packet · extend lean
 - `20260730.114356` — [E9 equinox create-prep CHARTERED · long recursion](20260730-114356_e9-equinox-create-prep-chartered.bron) — H10 SLC packet · kg create next
 - `20260730.113930` — [E8 equinox foundations Brix GREEN · almanac 15](20260730-113930_e8-equinox-foundations-green.bron) — join map flanks · e9 next
