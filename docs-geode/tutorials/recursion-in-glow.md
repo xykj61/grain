@@ -3,9 +3,9 @@
 *The classic three-peg tower is the world's favorite lesson in recursion. Here it becomes our lesson in the opposite discipline: the same tower, solved with an explicit stack whose depth is a named constant — because in this house, recursion stays out so that everything which should be bounded stays bounded.*
 
 **Language:** EN
-**Last updated:** 2026-07-30 (Equinox e13 · `20260730.120426`)
+**Last updated:** 2026-07-30 (Equinox e15 · frame-bound bite `20260730.120824`)
 **Style:** Radiant (see `../../context/RADIANT_STYLE.md`) · **Voice:** Riyo
-**Status:** Living tutorial · **metal GREEN** at `edu/tower/bounded_tower.rye` · witness `tools/edu_tower_witness.rish`
+**Status:** Living tutorial · **metal GREEN** at `edu/tower/bounded_tower.rye` · frame bite `edu/tower/frame_bound_overpush.rye` · witnesses `tools/edu_tower_witness.rish` · `tools/edu_tower_frame_bite_witness.rish`
 **Home:** `docs-geode/tutorials/` — the prod crystal for shipping docs
 **Naming note:** written for **Glow** and the **rune shell** surface; the rune shell's proper name awaits Keaton's word (`context/specs/reserved-vocabulary.md`)
 
@@ -88,12 +88,14 @@ The recursive insight survives whole — three tasks where three calls were — 
 
 ## What the witness asserts (e13 metal)
 
-The welcome side: `solve(3)` prints exactly seven moves and the postcondition holds. The negative space: a seventeenth ring is **refused** as `TooManyRings`, and a hand-shrunk stack of capacity one sits at the bound (one more push would assert). Run:
+The welcome side: `solve(3)` prints exactly seven moves and the postcondition holds. The negative space: a seventeenth ring is **refused** as `TooManyRings`, and a capacity-one stack **bites** on the second push — observed every run from the fixture `edu/tower/frame_bound_overpush.rye` (non-zero exit · assertion failure), never by shrinking the welcome tower by hand. Run:
 
 ```
 env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run edu/tower/bounded_tower.rye
 rishi/bin/rishi run tools/edu_tower_witness.rish
+rishi/bin/rishi run tools/edu_tower_frame_bite_witness.rish
 ```
+
 
 ## What we liked in the standing library — and what graduated
 
