@@ -70,7 +70,7 @@ coords_quest Do
 coords_round 24
 coords_voice_handback return_equinox_e7 CONSUMED 20260730.111804
 coords_equinox_season OPEN
-coords_equinox_status e7 complete · e8 GREEN · e9 next · true deepest
+coords_equinox_status e8 complete · e9 CHARTERED · create-prep next · true deepest
 coords_true_deepest deca
 coords_e7 equinox_map GREEN 20260730.113507
 coords_e7_path context/equinox_map.brix
@@ -80,6 +80,10 @@ coords_e8 equinox_foundations GREEN 20260730.113930
 coords_e8_path context/equinox_foundations.brix
 coords_e8_witness tools/gen/season/equinox_foundations_witness.rish
 coords_e8_charter expanding-prompts/20260730-113752_e8-equinox-foundations-charter.md
+coords_e9 equinox_create_prep CHARTERED 20260730.114356
+coords_e9_charter expanding-prompts/20260730-114356_e9-equinox-create-prep-charter.md
+coords_e9_packet counsel/replies/20260730-114356_create-prep-equinox-e0-e8.md
+coords_e9_recursion expanding-prompts/20260730-114356_equinox-season-e9-recursion-prompt.md
 coords_almanac_ch1 15 of 16
 coords_season_rounds 256
 coords_season_name PARKED
