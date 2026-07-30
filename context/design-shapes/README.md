@@ -26,6 +26,7 @@ A concept becomes a module at its **second outside consumer**. Design shapes ear
 | --- | --- | --- |
 | **bounds_home** | [`bounds_home.brix`](bounds_home.brix) | Points at the living recursion block; builds inherit, never invent |
 | **tend_hygiene** | [`tend_hygiene.brix`](tend_hygiene.brix) | Names tend as a design consumer; baton instance stays hall 12 |
+| **relay_resin** | [`relay_resin.brix`](relay_resin.brix) · essay [`relay_resin.md`](relay_resin.md) | Amphora's pattern over counsel artifacts; limb max twelve beads |
 
 ## Lexicon row (verbatim)
 

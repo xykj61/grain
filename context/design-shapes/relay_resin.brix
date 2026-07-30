@@ -1,0 +1,26 @@
+# Design shape — relay_resin · Amphora's pattern at the material of counsel artifacts
+# Invariant: the resin limb lists at most max_limb_beads by name; past that it prints
+#            counts by class plus the manifest bead's name
+# Invariant: every bead carries a class; a personal bead lands only with a word behind it
+# Invariant: the pending set is restated every pass — parity, never storage
+kind design_shape
+name relay_resin
+pattern amphora
+material counsel_artifacts
+# one bead — one dated artifact, addressed by its stamp and slug
+field bead
+# workshop | personal — workshop lands on relay, personal lands only on Keaton's word
+field class
+# where the bead lands in the tree, stated at minting time
+field destination
+# the word standing behind a personal bead, verbatim, or empty
+field word
+# pending | in_flight | landed | uncertain — honest, never optimistic
+field status
+# the bound and its why
+const max_limb_beads 12
+# why: a baton crosses by paste; twelve is one glance on a phone and one motion to copy
+# compaction past the bound — the roster becomes a bead, the bead carries the parity
+field manifest_bead
+# the crossing — one bundle at each equinox close, cut under the bundle discipline sheet
+field crossing
