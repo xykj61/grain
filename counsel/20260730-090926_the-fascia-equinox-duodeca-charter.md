@@ -32,7 +32,7 @@ Four things in one breath: keep going · pause Voice · open a new 64-round equi
 | 5 | quint | Keeh | CLOSED |
 | 6 | sext | Generator | PAUSED s8/s9 |
 | 7 | sept | Surface | PAUSED p58/p59 |
-| 8 | oct | Kiln | PAUSED o3/o4 |
+| 8 | oct | Oven | PAUSED o3/o4 |
 | 9 | nona | Nona | PAUSED n3/n4 |
 | 10 | deca | Equinox | PAUSED e6/e7 |
 | 11 | undeca *(canon)* | Voice | **PAUSED** · J4 h4 · door 10 CHARTERED · tend two DONE |
@@ -85,7 +85,7 @@ Four things in one breath: keep going · pause Voice · open a new 64-round equi
 | --- | --- |
 | This charter | Fascia Equinox · duodeca seat |
 | `counsel/20260730-090926_fascia-equinox-f0-bow.md` | f0 bow |
-| `expanding-prompts/20260730-090926_fascia-equinox-f0-recursion-prompt.md` | Long paste |
+| `expanding-prompts/yonder/20260730-090926_fascia-equinox-f0-recursion-prompt.md` | Long paste (yondered after f0; living paste renews each round) |
 | `waymarks/20260730-090926_fascia-equinox-opened.md` | Open waymark |
 | `tools/gen/chapter/recursion_block.brix` | coords · exit bar |
 | `prin_scope.rish` · `REMEMBER.md` · `LEXICON.md` | Living pins |
