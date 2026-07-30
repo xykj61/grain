@@ -289,14 +289,15 @@ coords_e49_path gratitude/tigerbeetle
 coords_e49_witness tools/gen/season/equinox_tigerbeetle_off_by_one_choir_witness.rish
 coords_e49_charter expanding-prompts/20260730-142537_e49-tb-off-by-one-charter.md
 coords_e49_recursion expanding-prompts/20260730-142650_equinox-season-e49-recursion-prompt.md
-coords_sunn OPEN 20260730.143736
-coords_sunn PAUSED 20260730.150702
-coords_sunn_status SUNN0-7 GREEN · SUNN8 next · PAUSED for POLE
+coords_sunn OPEN 20260730.152953
+coords_sunn_resumed 20260730.152953 return_sunn_sunn8 CONSUMED
+coords_sunn_status SUNN0-8 GREEN · SUNN9 next · OPEN
 coords_sunn_waymark SUNN
 coords_sunn_input source-pier-papers-identity-refresh
 coords_sunn_charter expanding-prompts/20260730-143736_sunn-source-identity-breach-charter.md
-coords_sunn_handback return_sunn_sunn8
+coords_sunn_handback return_equinox_e50
 coords_sunn_nested_equinox return_equinox_e50
+coords_sunn_pole_handback return_sunn_sunn8 CONSUMED 20260730.152953
 coords_sunn4 source_steps_github_living GREEN 20260730.144054
 coords_sunn4_path SOURCE.md
 coords_sunn4_recursion expanding-prompts/20260730-144054_sunn-recursion-prompt.md
@@ -313,8 +314,13 @@ coords_sunn7 macos_enclosure GREEN 20260730.145920
 coords_sunn7_path manual/guides/macos-ai-jail-setup.md
 coords_sunn7_witness tools/gen/season/sunn7_macos_enclosure_witness.rish
 coords_sunn7_recursion expanding-prompts/20260730-145920_sunn-recursion-prompt.md
+coords_sunn8 root_readme GREEN 20260730.152953
+coords_sunn8_path README.md
+coords_sunn8_witness tools/gen/season/sunn8_root_readme_witness.rish
+coords_sunn8_charter expanding-prompts/20260730-152852_sunn8-root-readme-charter.md
+coords_sunn8_recursion expanding-prompts/20260730-152953_sunn-recursion-prompt.md
 coords_pole GREEN 20260730.150702
-coords_pole_status POLE0-3 GREEN · handback return_sunn_sunn8
+coords_pole_status POLE0-3 GREEN · handback return_sunn_sunn8 CONSUMED
 coords_pole_waymark POLE
 coords_pole_input djinn-bozo-exec-keaton-murr-hats
 coords_pole_charter expanding-prompts/20260730-150702_pole-bozo-murr-hats-charter.md

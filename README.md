@@ -1,12 +1,15 @@
 # Grain
 
-**Language:** EN
-**Style:** Radiant (see [`context/RADIANT_STYLE.md`](context/RADIANT_STYLE.md))
-**Status:** Living — the front door to the repository; each claim below marks what runs today versus what is named and scoped
+**Language:** EN  
+**Style:** Radiant (see [`context/RADIANT_STYLE.md`](context/RADIANT_STYLE.md)) · **Voice:** Riyo  
+**Status:** Living — the front door to the repository; each claim below marks what runs today versus what is named and scoped  
+**Last updated:** `20260730.152852` (SUNN8 — voice · name · onboarding touch)
 
 ---
 
 Welcome. This repository is **Grain** — a body of work developed in the open as a **proposal to [Urbit](https://urbit.org)**, exploring what Urbit could become when its ideas are rebuilt in **Glow**, a language that keeps Hoon's runes over bounded, asserted, statically-disciplined semantics. It descends from `urbit/urbit` as a downstream research repository, and its intent is collaborative: to grow ideas here, prove them with witnesses, and offer the ones that earn their place back upstream as contributions — an infinite game played *with* Urbit, rather than against it. If you are an Acme Corporation employee opening this tree for the first time, this page is the one calm read that orients you — what Grain is, the five variants you can choose between, what actually boots today, and where to go next.
+
+**Who tends this pier.** The standing writing voice is **Riyo** ([`context/RIYO.md`](context/RIYO.md)). The living coauthor name is **Keaton Livermore**. The beginner clone is [`xykj61/grain`](https://github.com/xykj61/grain); dual remotes and the home pier story live in [`context/REMOTE_ROSTER.md`](context/REMOTE_ROSTER.md). The full first-day path is [`SOURCE.md`](SOURCE.md).
 
 Grain is one body of work with **one language, one value model, and one law** ([`context/TAME_GUIDANCE.md`](context/TAME_GUIDANCE.md)) — offered to you as a template in which you pick a variant and build. Its stance is a **collaborative, ethical accelerationism**: build ambitiously and in the open, measure honestly, and offer the work upstream as a gift rather than hold it apart ([`gratitude/TechnoOptimistManifesto.md`](gratitude/TechnoOptimistManifesto.md)).
 
@@ -28,7 +31,7 @@ The heart of the template is a choice among **five OS variants**. They are one d
 
 **How you would choose one.** A boot reads a signed, verified value naming which variant to wake — the design is in [`external-research/20260714-013700_aurora-vere-arvo-boot-fusion-and-kelvin-strategy.md`](external-research/20260714-013700_aurora-vere-arvo-boot-fusion-and-kelvin-strategy.md). Today the five variants are **named and scoped, rather than yet bootable**; the selection mechanism is designed as a small, reviewable step. When you copy a command from these docs, the ship name in it is always a deliberately invalid placeholder such as `~acme-corp-test-ship` — never a real point on the live network.
 
-**Quin carries more than one hat on purpose.** The same name is the standing writing companion ([`context/QUIN.md`](context/QUIN.md)), the inference **Q-vane** horizon, and the fifth OS variant — answer to "Quin," "Quin voice," and "Quin, five." Reya 2, Rio 3, and the short writing-voice season under Riyo's name rest in [`context/archive/`](context/archive/).
+**Quin keeps two living hats.** The **fifth OS variant** (intentionally unpaired) and the inference **Q-vane** stay Quin's ([`context/QUIN.md`](context/QUIN.md)). The **standing writing voice** moved to **Riyo** (`20260729.205200` — Keaton's word). Reya 2, Rio 3, and the first Riyo season rest in [`context/archive/`](context/archive/).
 
 The full onboarding surface for the variants lives in the manual: [`manual/glow-os/`](manual/glow-os/README.md) — an overview, a getting-started path, and one shared template filled once per variant so all five stay in lockstep.
 
@@ -65,14 +68,15 @@ The full onboarding surface for the variants lives in the manual: [`manual/glow-
 Two root configuration files hold what is specific to *your* machine and *your* identity, so the tree itself stays a clean, shareable template:
 
 - **[`GLOW_HOST.template.bron`](GLOW_HOST.template.bron)** — copy to `GLOW_HOST.bron` (kept out of git) and fill in this host's OS, architecture, and toolchain paths (`linux`/`x86_64` and `macos`/`aarch64` are both first-class). [`tools/glow_host_run.sh`](tools/glow_host_run.sh) reads it and refuses to run against a mismatched toolchain rather than silently reaching for the wrong one.
-- **[`GLOW_PROFILE.template.bron`](GLOW_PROFILE.template.bron)** — copy to `GLOW_PROFILE.bron` (kept out of git) and fill in the professional identity that signs the work: name, forge handles, contact, timezone for one-clock stamps, and session-log editor/model/voice defaults (standing voice **Quin**). The tree's own docs speak to a generic reader; the profile is where the specific "who" lives.
+- **[`GLOW_PROFILE.template.bron`](GLOW_PROFILE.template.bron)** — copy to `GLOW_PROFILE.bron` (kept out of git) and fill in the professional identity that signs the work: name, forge handles, contact, timezone for one-clock stamps, and session-log editor/model/voice defaults (standing voice **Riyo**). The tree's own docs speak to a generic reader; the profile is where the specific "who" lives.
 
 Then read, in order:
 
-1. **[`ORGANIZING.md`](ORGANIZING.md)** — where every kind of work lives in this tree.
-2. **[`manual/glow-os/`](manual/glow-os/README.md)** — the Grain onboarding rooms and the five variants.
-3. **[`docs/TUBE.md`](docs/TUBE.md)** and **[`glow/README.md`](glow/README.md)** — what the app ladder and language desk prove today.
-4. **[`CONTRIBUTING.md`](CONTRIBUTING.md)** — how a contribution arrives: small, signed, component-prefixed, in Radiant voice.
+1. **[`SOURCE.md`](SOURCE.md)** — from nothing to a signed, sandboxed home (clone · keys · Cursor · enclosure).
+2. **[`ORGANIZING.md`](ORGANIZING.md)** — where every kind of work lives in this tree.
+3. **[`manual/glow-os/`](manual/glow-os/README.md)** — the Grain onboarding rooms and the five variants.
+4. **[`docs/TUBE.md`](docs/TUBE.md)** and **[`glow/README.md`](glow/README.md)** — what the app ladder and language desk prove today.
+5. **[`CONTRIBUTING.md`](CONTRIBUTING.md)** — how a contribution arrives: small, signed, component-prefixed, in Radiant voice.
 
 ---
 
@@ -84,4 +88,4 @@ Then read, in order:
 
 ---
 
-*May the front door stay plain. May the five variants read as one system seen five ways. And may you find, on your first read, exactly what you came for.*
+*May the front door stay plain. May Riyo speak and Livermore sign. May the five variants read as one system seen five ways. And may you find, on your first read, exactly what you came for.*
