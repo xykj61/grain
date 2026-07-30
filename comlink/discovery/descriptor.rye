@@ -11,6 +11,7 @@
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
+const tally_copy = @import("tally_copy.rye");
 
 /// Hard ceiling — seated before this file existed (v27 · explicit_bounds).
 pub const descriptor_max_bytes: u32 = 512;
@@ -28,7 +29,7 @@ pub const Descriptor = struct {
     pub fn from_slice(src: []const u8) ?Descriptor {
         if (src.len > descriptor_max_bytes) return null;
         var d = Descriptor{};
-        @memcpy(d.bytes[0..src.len], src);
+        tally_copy.copy_disjoint(u8, d.bytes[0..src.len], src);
         d.len = @intCast(src.len);
         assert(d.len <= descriptor_max_bytes);
         return d;

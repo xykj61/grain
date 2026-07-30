@@ -36,6 +36,8 @@ const assert = std.debug.assert;
 const posix = std.posix;
 const skate = @import("skate_grid.rye");
 const brush = @import("brush_parse.rye");
+const tally_copy = @import("tally_copy.rye");
+const parse_int = @import("parse_int.rye");
 
 const c = @cImport({
     @cInclude("wayland-client.h");
@@ -122,7 +124,7 @@ const LiveTranscript = struct {
         assert(self.len <= max_live_transcript_bytes);
         const add: u32 = @intCast(text.len);
         if (add > max_live_transcript_bytes - self.len) return false;
-        @memcpy(self.bytes[self.len .. self.len + add], text);
+        tally_copy.copy_disjoint(u8, self.bytes[self.len .. self.len + add], text);
         self.len += add;
         // invariant: append stays inside the ceiling
         assert(self.len <= max_live_transcript_bytes);
@@ -1288,7 +1290,7 @@ pub fn main(init: std.process.Init) !u8 {
     if (args.len >= 2 and std.mem.eql(u8, args[1], "idletest")) {
         var idle_ms: u32 = default_idle_ms;
         if (args.len >= 3) {
-            idle_ms = std.fmt.parseInt(u32, args[2], 10) catch default_idle_ms;
+            idle_ms = parse_int.parse_int(u32, args[2], .{}) catch default_idle_ms;
             if (idle_ms == 0 or idle_ms > max_idle_ms) idle_ms = default_idle_ms;
         }
         return run_idle_witness(garden, io, idle_ms);

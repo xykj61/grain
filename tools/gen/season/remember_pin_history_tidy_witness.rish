@@ -18,7 +18,9 @@ let rule_z = run ["test" "-f" ".claude/rules/remember-git-nib.md"]
 assert rule_z.ok else "pin-tidy: claude remember-git-nib rule missing"
 
 say "pin-tidy: count pure habit follow-ups since first habit base..."
-let count = run ["python3" "tools/fixtures/remember_pin_habit_count.py"]
+# Counter lives under expanding-prompts/yonder/ so tools/*.py ratchet stays clear
+# (fascia f1 · 20260730.091805). Habit measure itself is unchanged.
+let count = run ["python3" "expanding-prompts/yonder/remember_pin_habit_count.py"]
 assert count.ok else "pin-tidy: habit count failed"
 let n = trim count.out
 assert n == "0" else "pin-tidy: expected 0 pure habit follow-ups; got ${n}"
