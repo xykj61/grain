@@ -1,0 +1,28 @@
+# tools/gen/season/ironbeetle_ep004_census_witness.rish — e62 IronBeetle ep004.
+#
+#   rishi/bin/rishi run tools/gen/season/ironbeetle_ep004_census_witness.rish
+#
+# Clean-room: presence only · never copies into rye/.
+# Leaf only — no nested elder choirs.
+
+say "iron-ep004: Language EN — the ledger refuses to be sharded."
+say "iron-ep004: Style Radiant — one serial core; pipeline the rest."
+say "iron-ep004: Lens TAME — e62 · clean-room study · almanac seat 67."
+
+let shelf = run ["test" "-d" "gratitude/ironbeetle"]
+assert shelf.ok else "iron-ep004: gratitude/ironbeetle ABSENT — host shelf first"
+
+let census = run ["sh" "tools/fixtures/ironbeetle_ep004_census.sh"]
+say census.out
+assert census.ok else "iron-ep004: census failed or thin"
+assert census.out contains "IRON=present" else "iron-ep004: want IRON=present"
+assert census.out contains "verdict=ok" else "iron-ep004: want verdict=ok"
+assert census.out contains "EP004=yes" else "iron-ep004: ep004 file must be present"
+assert census.out contains "HONORS=yes" else "iron-ep004: Honors heading must be present"
+assert census.out contains "SOURCE=yes" else "iron-ep004: Source heading must be present"
+assert census.out contains "TEACH=yes" else "iron-ep004: teach limbs (refuse-shard·pipeline·io_uring) must be present"
+assert census.out contains "RHYME=yes" else "iron-ep004: rhyme section must be present"
+assert census.out contains "CLEAN=yes" else "iron-ep004: Clean Room heading must be present"
+assert census.out contains "MATKLAD_OK=yes" else "iron-ep004: matklad companion must cite ironbeetle/"
+
+say "GREEN: iron-ep004 — honors·source·teach·rhyme·clean·matklad ok"

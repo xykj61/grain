@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260730.192532
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title e62 IronBeetle ep004 refuses-to-be-sharded GREEN
+prompt kg · e62 — IronBeetle ep004 refuses-to-be-sharded
+think ep003 gap stays open · ep004 next written silo · leaf census twin of e61
+think Teach: refuse shard · two shapes · pipeline · single thread · io_uring
+think Seat 67 · ch5 3/16 · ep005 next · expedition stays gated
+obs e62 GREEN · e63 IronBeetle ep005 next
+file expanding-prompts/20260730-192513_e62-ironbeetle-ep004-charter.md charter
+file tools/fixtures/ironbeetle_ep004_census.sh scan GREEN
+file tools/gen/season/equinox_ironbeetle_ep004_choir_witness.rish choir GREEN
+file rye-learning-process/GLOW_ALMANAC.md seat 67 · ch5 3/16
+file waymarks/20260730-192532_e62-ironbeetle-ep004-green.md finishing edge
+file expanding-prompts/20260730-192532_equinox-season-e63-recursion-prompt.md fusion
+recommend keep-going e63 IronBeetle ep005 a-limit-on-everything
