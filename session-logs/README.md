@@ -1,3 +1,4 @@
+- `20260730.072425` — [bundle prep · cell hall 13](20260730-072425_bundle-prep-cell-hall13.bron) — packet · discipline · census named · hall 13
 - `20260730.041405` — [design-shapes wing · door 7](20260730-041405_design-shapes-door7.bron) — wing SEATED · build_bounds GREEN · round-recos yes
 - `20260730.041039` — [J3 cell · tend · door 6](20260730-041039_j3-cell-tend-door6.bron) — roster · hall 12 · ship_sol GREEN · tend Δ0
 - `20260730.034932` — [r8 check-in · charter queue empty](20260730-034932_r8-charter-queue-empty.bron) — four doors done · fascia 69 · next door needs charter
