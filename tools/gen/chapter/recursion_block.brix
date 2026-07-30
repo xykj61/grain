@@ -65,12 +65,13 @@ voice_v32_descriptor_landed 20260730.030553
 baton_museum context/baton-museum
 coords_equinox A
 coords_journey 4
-coords_journey_4_status OPEN — h4 Accrete-never-break · door 9 GREEN · tend two DONE · next charter
+coords_journey_4_status OPEN — h4 Accrete-never-break · door 9 GREEN · tend two DONE · handoff · door 10 charter next
 coords_quest Do
 coords_round 15
 coords_season_rounds 256
 coords_season_name PARKED
 coords_tend_two DONE 20260730.085559 fascia_entry 69 fascia_exit 69 delta 0
+coords_cursor_grok_handoff 20260730.085938 expanding-prompts/20260730-085938_cursor-grok-j4-fresh-agent-handoff.md
 coords_journey_2_closed 20260730.040859
 coords_journey_3_opened 20260730.040859 h3 Radiant Style
 coords_journey_3_closed 20260730.083457 r12 close
