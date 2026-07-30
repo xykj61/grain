@@ -1,3 +1,4 @@
+- `20260730.085559` — [Tend two fascia delta · recursion reprint](20260730-085559_tend-two-fascia-delta.bron) — 69→69 Δ0 · waters agree · next charter
 - `20260730.085312` — [Door 9 fold_persist GREEN · recursion reprint](20260730-085312_door-9-fold-persist-green.bron) — sleep·wake · almanac 8/16 · prompt habit
 - `20260730.084042` — [Door 9 persistence proof chartered](20260730-084042_door-9-persistence-chartered.bron) — lean A · fold_persist · bound 4096
 - `20260730.083821` — [Door 8 green · recursion prompt print](20260730-083821_door-8-green-recursion-print.bron) — fact_fold shape · j4 paste block
