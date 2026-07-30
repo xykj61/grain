@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260730.115628
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Quin
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title E11 East pack opens almanac ch2 · seat 17
+prompt kg lean A seat e11 shape after ch1 full
+think Ch1 closed at e10 · ch2 opens only on metal · no theme in advance
+think East pack already GREEN never almanacked · honest first ch2 finding
+think Wrapper runs equinox_e1_east_pack_witness · appends seat 17
+obs E11 GREEN · almanac ch2 1/16 · e12 next · return nested
+file expanding-prompts/20260730-115553_e11-equinox-east-pack-almanac-charter.md e11 charter
+file tools/gen/season/equinox_east_almanac_witness.rish wrapper choir
+file tools/gen/season/equinox_east_almanac.sh ch2 seat 17
+file rye-learning-process/GLOW_ALMANAC.md chapter two opened
+recommend keep-going seat e12 shape · dual-push with send

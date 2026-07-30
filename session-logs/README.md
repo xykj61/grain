@@ -1,3 +1,4 @@
+- `20260730.115628` — [E11 East pack opens almanac ch2 · seat 17](20260730-115628_e11-equinox-east-pack-almanac-green.bron) — ch2 1/16 · e12 next
 - `20260730.115101` — [E10 equinox surface choir GREEN · almanac 16](20260730-115101_e10-equinox-surface-choir-green.bron) — ch1 full · e11 next
 - `20260730.114840` — [E9 equinox create-prep GREEN · e10 next](20260730-114840_e9-equinox-create-prep-green.bron) — H10 SLC packet · extend lean
 - `20260730.114356` — [E9 equinox create-prep CHARTERED · long recursion](20260730-114356_e9-equinox-create-prep-chartered.bron) — H10 SLC packet · kg create next
