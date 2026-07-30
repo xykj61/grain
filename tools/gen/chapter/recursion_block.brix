@@ -65,9 +65,9 @@ voice_v32_descriptor_landed 20260730.030553
 baton_museum context/baton-museum
 coords_equinox A
 coords_journey 4
-coords_journey_4_status OPEN — h4 Accrete-never-break · door 9 chartered · create next
+coords_journey_4_status OPEN — h4 Accrete-never-break · door 9 GREEN · tend two or next charter
 coords_quest Do
-coords_round 13
+coords_round 14
 coords_season_rounds 256
 coords_season_name PARKED
 coords_journey_2_closed 20260730.040859
@@ -79,9 +79,9 @@ coords_equinox_map_correction_handback journey_3_r12_close CONSUMED
 coords_door_6 ship_sol
 coords_door_7 build_bounds
 coords_door_8 fold_pattern_two GREEN 20260730.083821
-coords_door_9 persistence_proof CHARTERED 20260730.084042
+coords_door_9 persistence_proof GREEN 20260730.085312
 coords_door_9_path mycelium/fold_persist.rye
-coords_door_9_bound_lean myc_fold_snapshot_max_bytes 4096
+coords_door_9_bound myc_fold_snapshot_max_bytes 4096
 design_shapes_wing seated 20260730.041319
 design_shapes_fact_fold seated 20260730.083821
 flank_arrow_path seated 20260730.083225
@@ -111,6 +111,9 @@ star_name_max_bytes 32
 # why: a %term-compatible reserved name — lowercase and hyphens, generously
 ship_sol_proof_max_bytes 1024
 # why: the on-chain name-proof reference and its signature, liveness-checked
+myc_fold_snapshot_max_bytes 4096
+# why: one FoldState freeze for a journey-scale log · door 9 · power of two
+# seated 20260730.084042 lean · metal 20260730 door 9 create
 code_lang glow
 data_lang brix
 ask_key asks
