@@ -1,0 +1,28 @@
+# tools/gen/season/equinox_design_shapes_choir_witness.rish — e27 design-shapes → almanac ch3.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_design_shapes_choir_witness.rish
+#
+# Chapter three opens from metal. Leaf welcome + refuse only — no nested choirs.
+
+say "equinox-design-shapes-choir: Language EN — four halls open chapter three."
+say "equinox-design-shapes-choir: Style Radiant — a finding arrives; a theme may follow later."
+say "equinox-design-shapes-choir: Lens TAME — e27 · design-shapes wing · almanac seat 33."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/season/design_shapes_census_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-design-shapes-choir: welcome RED"
+assert welcome.out contains "GREEN: design-shapes-census" else "equinox-design-shapes-choir: welcome missing GREEN"
+assert welcome.out contains "halls_expected=4" else "equinox-design-shapes-choir: want four halls"
+assert welcome.out contains "census_breach_count=0" else "equinox-design-shapes-choir: want breach census zero"
+
+# Refuse: a missing wing path is loud, not silent.
+let refuse = run ["sh" "tools/fixtures/design_shapes_census_scan.sh" "tools/fixtures/design_shapes_ABSENT"]
+say refuse.out
+assert refuse.ok == false else "equinox-design-shapes-choir: absent wing must fail status"
+assert refuse.out contains "verdict=missing_wing" else "equinox-design-shapes-choir: want missing_wing verdict"
+
+let almanac = run ["sh" "tools/gen/season/equinox_design_shapes_choir_almanac.sh"]
+assert almanac.ok else "equinox-design-shapes-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-design-shapes-choir — four halls · breach 0 · absent refuses · almanac seat 33 · ch3 open"

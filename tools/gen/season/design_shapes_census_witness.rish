@@ -1,0 +1,19 @@
+# tools/gen/season/design_shapes_census_witness.rish — four design halls · named elders.
+#
+#   rishi/bin/rishi run tools/gen/season/design_shapes_census_witness.rish
+#
+# Sibling wing to baton-museum. Seated `20260730.041319`. Builds inherit; they do not invent.
+# Meter name: design-hall census. Breach stays census_breach_count.
+
+say "design-shapes-census: Language EN — four halls, counted once."
+say "design-shapes-census: Style Radiant — name absences; keep breach banked when zero."
+say "design-shapes-census: Lens TAME — wing path bounded; elders named up front."
+
+let scan = run ["sh" "tools/fixtures/design_shapes_census_scan.sh"]
+say scan.out
+assert scan.out contains "verdict=ok" else "design-shapes-census: a hall or named elder is absent"
+assert scan.ok else "design-shapes-census: the verdict reads ok while the status fails — they must agree"
+assert scan.out contains "census_breach_count=0" else "design-shapes-census: census found a breach; spend the banked word only on Keaton's yes"
+assert scan.out contains "halls_expected=4" else "design-shapes-census: expected four halls"
+
+say "GREEN: design-shapes-census — four halls present · named elders hold · breach census zero"

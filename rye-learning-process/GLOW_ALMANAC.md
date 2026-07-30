@@ -158,6 +158,14 @@ Expected halls_expected=13 · halls_absent=0 · census_breach_count=0, and verdi
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ch2_surface_witness.rish` · **Stamp:** `20260730.125750` · **Witness:** `tools/gen/season/equinox_ch2_surface_witness.rish`
 Expected SAFE census · reds complete/monotone/refuse · voice sites=6/refuse · baton halls=13/breach=0/absent refuse each GREEN in one choir. Metal answered GREEN. Chapter two closes at sixteen; chapter three waits for metal.
 
+## Chapter Three (1 of 16)
+
+Opened from metal at stamp `20260730.130733`. Themes arrive after findings; this chapter carries none in advance.
+
+### 33. The design-shapes wing holds four halls; a missing wing path is refused whole.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_design_shapes_choir_witness.rish` · **Stamp:** `20260730.130733` · **Witness:** `tools/gen/season/design_shapes_census_witness.rish` · scan `tools/fixtures/design_shapes_census_scan.sh` · choir `equinox_design_shapes_choir_witness.rish`
+Expected halls_expected=4 · halls_absent=0 · census_breach_count=0, and verdict=missing_wing on an absent path. Metal answered GREEN. Chapter three opens; builds inherit, they do not invent.
+
 ---
 
-*May every line here be one the machine said first. May the book close at its bound the way a season does. And may chapter three wait for metal, not memory.*
+*May every line here be one the machine said first. May the book close at its bound the way a season does. And may the rest of chapter three wait for metal, not memory.*

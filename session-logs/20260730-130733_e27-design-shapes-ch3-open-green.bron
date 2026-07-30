@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260730.130733
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title E27 design-shapes choir GREEN · almanac 33 · ch3 open
+prompt kg · seat e27 shape — chapter three opens from metal
+think ch2 closed at 32 · ch3 waits for metal · design-shapes wing seated but unmeasured
+think Mirror e25 baton census · four halls · elders · missing_wing refuse · seat 33
+obs E27 GREEN · chapter three open 1/16 · builds inherit they do not invent
+file tools/fixtures/design_shapes_census_scan.sh scan four halls
+file tools/gen/season/design_shapes_census_witness.rish welcome
+file tools/gen/season/equinox_design_shapes_choir_witness.rish e27 choir
+file tools/gen/season/equinox_design_shapes_choir_almanac.sh seat 33
+file expanding-prompts/20260730-130710_e27-design-shapes-ch3-open-charter.md charter
+file rye-learning-process/GLOW_ALMANAC.md seat 33 · ch3 open
+recommend keep-going seat e28 ch3-continue metal · dual-push with send
