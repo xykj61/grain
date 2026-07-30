@@ -70,7 +70,7 @@ coords_quest Do
 coords_round 50
 coords_voice_handback return_equinox_e7 CONSUMED 20260730.111804
 coords_equinox_season OPEN
-coords_equinox_status e48 GREEN · e49 next · true deepest · ch4 open
+coords_equinox_status e49 GREEN · e50 next · true deepest · ch4 open
 coords_true_deepest deca
 coords_e7 equinox_map GREEN 20260730.113507
 coords_e7_path context/equinox_map.brix
@@ -284,11 +284,16 @@ coords_e48_path gratitude/tigerbeetle
 coords_e48_witness tools/gen/season/equinox_tigerbeetle_cache_surface_witness.rish
 coords_e48_charter expanding-prompts/20260730-142211_e48-tb-cache-surface-charter.md
 coords_e48_recursion expanding-prompts/20260730-142304_equinox-season-e48-recursion-prompt.md
+coords_e49 tb_off_by_one GREEN 20260730.142650
+coords_e49_path gratitude/tigerbeetle
+coords_e49_witness tools/gen/season/equinox_tigerbeetle_off_by_one_choir_witness.rish
+coords_e49_charter expanding-prompts/20260730-142537_e49-tb-off-by-one-charter.md
+coords_e49_recursion expanding-prompts/20260730-142650_equinox-season-e49-recursion-prompt.md
 coords_almanac_ch1 16 of 16
 coords_almanac_ch2 16 of 16
 coords_almanac_ch3 16 of 16
-coords_almanac_ch4 6 of 16
-coords_almanac_seat 54
+coords_almanac_ch4 7 of 16
+coords_almanac_seat 55
 coords_almanac_ch2_status FULL
 coords_almanac_ch3_status FULL
 coords_almanac_ch4_status OPEN

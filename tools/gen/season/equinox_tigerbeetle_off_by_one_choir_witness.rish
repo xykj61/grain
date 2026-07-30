@@ -1,0 +1,30 @@
+# tools/gen/season/equinox_tigerbeetle_off_by_one_choir_witness.rish — e49 → almanac.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_off_by_one_choir_witness.rish
+#
+# Leaf welcome + refuse only — no nested elder choirs.
+
+say "equinox-tb-off-by-one-choir: Language EN — off-by-one; refuse an absent clone."
+say "equinox-tb-off-by-one-choir: Style Radiant — welcome and refuse share one seat."
+say "equinox-tb-off-by-one-choir: Lens TAME — e49 · index·count·size · almanac seat 55."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_off_by_one_census_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-tb-off-by-one-choir: welcome RED"
+assert welcome.out contains "GREEN: tb-off-by-one" else "equinox-tb-off-by-one-choir: welcome missing GREEN"
+assert welcome.out contains "GUIDE_OBO=yes" else "equinox-tb-off-by-one-choir: want GUIDE_OBO"
+assert welcome.out contains "GUIDE_TYPES=yes" else "equinox-tb-off-by-one-choir: want GUIDE_TYPES"
+assert welcome.out contains "TAME_OBO=yes" else "equinox-tb-off-by-one-choir: want TAME_OBO"
+assert welcome.out contains "ELDER_CACHE=yes" else "equinox-tb-off-by-one-choir: want ELDER_CACHE"
+
+let refuse = run ["sh" "tools/fixtures/tigerbeetle_off_by_one_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
+say refuse.out
+assert refuse.ok == false else "equinox-tb-off-by-one-choir: absent clone must fail"
+assert refuse.out contains "verdict=absent" else "equinox-tb-off-by-one-choir: want verdict=absent"
+assert refuse.out contains "CLONE=ABSENT" else "equinox-tb-off-by-one-choir: want CLONE=ABSENT"
+
+let almanac = run ["sh" "tools/gen/season/equinox_tigerbeetle_off_by_one_almanac.sh"]
+assert almanac.ok else "equinox-tb-off-by-one-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-tb-off-by-one-choir — off-by-one · types · division · elder cache · absent refuses · almanac seat 55"

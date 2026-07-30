@@ -1,0 +1,29 @@
+# tools/gen/season/tigerbeetle_off_by_one_census_witness.rish — e49 Off-By-One.
+#
+#   rishi/bin/rishi run tools/gen/season/tigerbeetle_off_by_one_census_witness.rish
+#
+# Requires gratitude/tigerbeetle submodule present.
+# Clean-room: presence only · never copies into rye/.
+# Leaf only — no nested elder choirs.
+
+say "tb-off-by-one: Language EN — off-by-one; index, count, and size stay distinct."
+say "tb-off-by-one: Style Radiant — division shows its intent; units stay in the name."
+say "tb-off-by-one: Lens TAME — e49 · clean-room study · almanac seat 55."
+
+let clone = run ["test" "-d" "gratitude/tigerbeetle/src"]
+assert clone.ok else "tb-off-by-one: gratitude/tigerbeetle/src ABSENT — host clone first"
+
+let census = run ["sh" "tools/fixtures/tigerbeetle_off_by_one_census.sh"]
+say census.out
+assert census.ok else "tb-off-by-one: census failed or thin"
+assert census.out contains "CLONE=present" else "tb-off-by-one: want CLONE=present"
+assert census.out contains "verdict=ok" else "tb-off-by-one: want verdict=ok"
+assert census.out contains "GUIDE_OBO=yes" else "tb-off-by-one: held guide must teach Off-By-One"
+assert census.out contains "GUIDE_TYPES=yes" else "tb-off-by-one: guide must keep index·count·size distinct"
+assert census.out contains "GUIDE_DIV=yes" else "tb-off-by-one: guide must show division intent"
+assert census.out contains "TAME_OBO=yes" else "tb-off-by-one: TAME must teach Off-By-One"
+assert census.out contains "STYLE=yes" else "tb-off-by-one: clone docs must teach the law"
+assert census.out contains "ELDER_CACHE=yes" else "tb-off-by-one: cache-surface elder must be present"
+assert census.out contains "RADIANT=yes" else "tb-off-by-one: Grain Radiant Style must be present"
+
+say "GREEN: tb-off-by-one — guide·types·div·TAME·style·elder-cache·RADIANT ok"
