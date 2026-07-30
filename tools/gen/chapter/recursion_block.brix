@@ -65,9 +65,9 @@ voice_v32_descriptor_landed 20260730.030553
 baton_museum context/baton-museum
 coords_equinox A
 coords_journey 4
-coords_journey_4_status OPEN — h4 Accrete-never-break · door 8–12 GREEN · tend three DONE · next charter edu demo or discovery round-trip
+coords_journey_4_status OPEN — h4 Accrete-never-break · door 8–12 GREEN · door 13 CHARTERED · tend three DONE · kg create next
 coords_quest Do
-coords_round 17
+coords_round 18
 coords_season_rounds 256
 coords_season_name PARKED
 coords_tend_two DONE 20260730.085559 fascia_entry 69 fascia_exit 69 delta 0
@@ -76,6 +76,10 @@ coords_door_12 five_primitives_reference GREEN 20260730.103002
 coords_door_12_path docs-geode/sangha/03-five-primitives.md
 coords_door_12_witness tools/sangha_five_primitives_page_witness.rish
 coords_door_12_next DONE
+coords_door_13 edu_discovery_walk CHARTERED 20260730.103638
+coords_door_13_path edu/discovery/round-trip-walk.md
+coords_door_13_witness tools/edu_discovery_walk_witness.rish
+coords_door_13_next kg create
 coords_almanac_ch1 11 of 16
 coords_cursor_grok_handoff 20260730.085938 expanding-prompts/20260730-085938_cursor-grok-j4-fresh-agent-handoff.md
 coords_journey_2_closed 20260730.040859
