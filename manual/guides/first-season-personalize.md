@@ -3,14 +3,14 @@
 **Language:** EN  
 **Status:** Living guide — Acme / new-steward walk  
 **Voice:** Riyo  
-**Last updated:** `20260730.145124` · SUNN5  
+**Last updated:** `20260730.154230` · SUNN11  
 **Data:** [`tools/gen/season/personalize.template.brix`](../../tools/gen/season/personalize.template.brix) · [`first_season_journeys.brix`](../../tools/gen/season/first_season_journeys.brix) · [`first_season_questions.brix`](../../tools/gen/season/first_season_questions.brix)
 
 ---
 
 ## What this is
 
-Grain’s shared tree still carries the source pier’s living face in places — names, handles, clone URLs. This walk gives you a **Brix template** whose filled, **gitignored** instance holds *your* identity and a find/replace map, plus a **first 256-round season** shape: four equinoxes of 64, sixteen journeys of 16.
+Grain’s shared tree still carries the source pier’s living face in places — names, handles, clone URLs. The living beginner clone is [`xykj61/grain`](https://github.com/xykj61/grain); the agentic lane `autoproject96` stays named in [`REMOTE_ROSTER.md`](../../context/REMOTE_ROSTER.md). This walk gives you a **Brix template** whose filled, **gitignored** instance holds *your* identity and a find/replace map, plus a **first 256-round season** shape: four equinoxes of 64, sixteen journeys of 16.
 
 **Equinox A** opens with two journeys:
 
@@ -21,7 +21,7 @@ Grain’s shared tree still carries the source pier’s living face in places �
 
 ## Steps
 
-1. Clone your fork (see [`SOURCE.md`](../../SOURCE.md)).  
+1. Clone the living public tree or your fork — beginner path [`SOURCE.md`](../../SOURCE.md) (`https://github.com/xykj61/grain.git`).  
 2. Copy and fill identity files:
    ```bash
    cp tools/gen/season/personalize.template.brix PERSONALIZE.brix

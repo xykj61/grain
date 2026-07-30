@@ -1,0 +1,45 @@
+# tools/gen/season/sunn11_xykj61_onboarding_witness.rish — SUNN11 xykj61 onboarding.
+#
+#   rishi/bin/rishi run tools/gen/season/sunn11_xykj61_onboarding_witness.rish
+
+say "sunn11: Language EN — living onboarding clones name xykj61."
+say "sunn11: Style Radiant — beginner xykj61 · origin lane autoproject96 kept."
+say "sunn11: Lens TAME — SUNN11 · clone lock · APPLY dual-push · roster truth."
+
+let s = read-file "SOURCE.md"
+assert s contains "git clone https://github.com/xykj61/grain.git ~/grain" else "sunn11: SOURCE want xykj61 clone"
+assert s contains "SUNN11" else "sunn11: SOURCE want SUNN11 stamp"
+assert (s contains "git clone https://github.com/autoproject96/grain") == false else "sunn11: SOURCE must not clone autoproject96"
+
+let r = read-file "README.md"
+assert r contains "xykj61/grain" else "sunn11: README want xykj61/grain"
+assert r contains "beginner clone" else "sunn11: README want beginner clone phrase"
+
+let c = read-file "CLAUDE.md"
+assert c contains "xykj61/grain" else "sunn11: CLAUDE want xykj61/grain"
+
+let w = read-file "manual/guides/apprentice-welcome.md"
+assert w contains "https://github.com/xykj61/grain.git" else "sunn11: apprentice-welcome want xykj61 clone"
+
+let e = read-file "context/specs/enclosure-editors.md"
+assert e contains "https://github.com/xykj61/grain.git" else "sunn11: enclosure want xykj61 clone"
+
+let p = read-file "tools/gen/season/personalize.template.brix"
+assert p contains "source_pier_clone https://github.com/xykj61/grain.git" else "sunn11: personalize want xykj61 clone"
+assert p contains "source_pier_agent_lane autoproject96" else "sunn11: personalize want agent lane kept"
+
+let a = read-file "APPLY.md"
+assert a contains "SUNN11" else "sunn11: APPLY want SUNN11 living refresh"
+assert a contains "xykj61/grain" else "sunn11: APPLY want xykj61/grain"
+assert a contains "dual" else "sunn11: APPLY want dual-push language"
+assert a contains "REMOTE_ROSTER" else "sunn11: APPLY want REMOTE_ROSTER cite"
+
+let f = read-file "manual/guides/first-season-personalize.md"
+assert f contains "SUNN11" else "sunn11: first-season-personalize want SUNN11"
+assert f contains "xykj61/grain" else "sunn11: first-season-personalize want xykj61/grain"
+
+let roster = read-file "context/REMOTE_ROSTER.md"
+assert roster contains "`origin` | GitHub `autoproject96/grain`" else "sunn11: roster want origin autoproject96"
+assert roster contains "`xykj61` | GitHub `xykj61/grain`" else "sunn11: roster want xykj61 remote"
+
+say "GREEN: sunn11 — living onboarding clones xykj61 · APPLY dual · roster origin kept"
