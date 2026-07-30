@@ -1,0 +1,246 @@
+//! comlink/discovery/table.rye — bounded peer table over Tally stack + Region.
+//!
+//! Build Journey · equinox A · journey 2 (h2 Aparigraha) · quest Do.
+//! Bounds inherited from tools/gen/season/recursion_block.brix (v27 seat):
+//!   discovery_max_peers 256
+//!   discovery_staleness_max_seconds 4096
+//!   discovery_descriptor_max_bytes 512
+//!
+//! Free-list of slot indices lives in a Stack. Descriptor bodies pack into a
+//! Region garden when a caller wants contiguous export bytes. Mycelium stays
+//! untouched — this table finds peers and never orders them.
+//! Gossip and introduce wait their own rounds (narrow-scope · fascia < 80).
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/discovery/table.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const desc = @import("descriptor.rye");
+const tally_stack = @import("tally_stack.rye");
+const tally_gardens = @import("tally_gardens.rye");
+const tally_copy = @import("tally_copy.rye");
+
+/// Hard ceiling — seated before this file existed (v27 · explicit_bounds).
+pub const max_peers: u32 = 256;
+
+/// Age-out window on the one clock — seconds.
+pub const staleness_max_seconds: u32 = 4096;
+
+/// Peer identity length ceiling — matches a Kumara key face (32 bytes).
+pub const peer_id_max_bytes: u32 = 32;
+
+pub const PeerId = struct {
+    bytes: [peer_id_max_bytes]u8 = undefined,
+    len: u32 = 0,
+
+    pub fn from_slice(src: []const u8) ?PeerId {
+        if (src.len == 0 or src.len > peer_id_max_bytes) return null;
+        var id = PeerId{};
+        tally_copy.copy_disjoint(u8, id.bytes[0..src.len], src);
+        id.len = @intCast(src.len);
+        assert(id.len <= peer_id_max_bytes);
+        return id;
+    }
+
+    pub fn as_slice(id: *const PeerId) []const u8 {
+        assert(id.len <= peer_id_max_bytes);
+        return id.bytes[0..id.len];
+    }
+
+    pub fn eql(a: *const PeerId, b: *const PeerId) bool {
+        if (a.len != b.len) return false;
+        return std.mem.eql(u8, a.as_slice(), b.as_slice());
+    }
+};
+
+pub const PeerRecord = struct {
+    id: PeerId = .{},
+    descriptor: desc.Descriptor = .{},
+    seen_at: u64 = 0,
+    live: bool = false,
+};
+
+const FreeStack = tally_stack.StackType(u32, max_peers);
+
+/// Bounded peer table. Slots are fixed; free indices ride a Stack; a Region
+/// garden packs live descriptor bodies for export without a second allocator.
+pub const PeerTable = struct {
+    slots: [max_peers]PeerRecord,
+    free: FreeStack,
+    live_count: u32,
+    garden: tally_gardens.Region,
+
+    pub fn init(backing: []u8) PeerTable {
+        var table = PeerTable{
+            .slots = undefined,
+            .free = .{},
+            .live_count = 0,
+            .garden = tally_gardens.Region.init(backing),
+        };
+        // Clear slots and push free indices high-to-low so first pop is 0.
+        var i: u32 = max_peers;
+        while (i > 0) {
+            i -= 1;
+            table.slots[i] = .{};
+            table.free.push(i);
+        }
+        assert(table.free.top == max_peers);
+        assert(table.live_count == 0);
+        return table;
+    }
+
+    pub fn count(table: *const PeerTable) u32 {
+        assert(table.live_count <= max_peers);
+        return table.live_count;
+    }
+
+    pub fn remaining(table: *const PeerTable) u32 {
+        assert(table.live_count <= max_peers);
+        return max_peers - table.live_count;
+    }
+
+    /// Welcome a peer. Refresh when the id is already live; refuse when full.
+    pub fn upsert(table: *PeerTable, id: PeerId, descriptor: desc.Descriptor, seen_at: u64) error{Full}!void {
+        assert(id.len > 0);
+        assert(id.len <= peer_id_max_bytes);
+        assert(descriptor.len <= desc.descriptor_max_bytes);
+
+        if (table.find_slot(id)) |idx| {
+            table.slots[idx].descriptor = descriptor;
+            table.slots[idx].seen_at = seen_at;
+            assert(table.slots[idx].live);
+            return;
+        }
+
+        const idx = table.free.pop() orelse return error.Full;
+        assert(idx < max_peers);
+        assert(!table.slots[idx].live);
+        table.slots[idx] = .{
+            .id = id,
+            .descriptor = descriptor,
+            .seen_at = seen_at,
+            .live = true,
+        };
+        table.live_count += 1;
+        assert(table.live_count <= max_peers);
+    }
+
+    pub fn get(table: *const PeerTable, id: PeerId) ?*const PeerRecord {
+        if (table.find_slot(id)) |idx| {
+            assert(table.slots[idx].live);
+            return &table.slots[idx];
+        }
+        return null;
+    }
+
+    /// Drop peers older than staleness_max_seconds relative to `now`.
+    /// Returns how many aged out.
+    pub fn age_out(table: *PeerTable, now: u64) u32 {
+        var removed: u32 = 0;
+        var i: u32 = 0;
+        while (i < max_peers) : (i += 1) {
+            if (!table.slots[i].live) continue;
+            const seen = table.slots[i].seen_at;
+            const age = if (now >= seen) now - seen else 0;
+            if (age > staleness_max_seconds) {
+                table.release_slot(i);
+                removed += 1;
+            }
+        }
+        return removed;
+    }
+
+    /// Pack every live descriptor into the Region garden. Refuse past the edge.
+    pub fn pack_descriptors(table: *PeerTable) error{OutOfBounds}!u32 {
+        table.garden.clear();
+        var n_packed: u32 = 0;
+        var i: u32 = 0;
+        while (i < max_peers) : (i += 1) {
+            if (!table.slots[i].live) continue;
+            const body = table.slots[i].descriptor.as_slice();
+            const n: u32 = @intCast(body.len);
+            const dest = try table.garden.alloc(n);
+            assert(dest.len == body.len);
+            tally_copy.copy_disjoint(u8, dest, body);
+            n_packed += 1;
+        }
+        assert(n_packed == table.live_count);
+        return n_packed;
+    }
+
+    fn find_slot(table: *const PeerTable, id: PeerId) ?u32 {
+        var i: u32 = 0;
+        while (i < max_peers) : (i += 1) {
+            if (!table.slots[i].live) continue;
+            if (table.slots[i].id.eql(&id)) return i;
+        }
+        return null;
+    }
+
+    fn release_slot(table: *PeerTable, idx: u32) void {
+        assert(idx < max_peers);
+        assert(table.slots[idx].live);
+        assert(table.live_count > 0);
+        table.slots[idx] = .{};
+        table.free.push(idx);
+        table.live_count -= 1;
+    }
+};
+
+/// Selftest — welcome, refresh, age-out, refuse-full, Region pack.
+pub fn main() !void {
+    var backing: [max_peers * desc.descriptor_max_bytes]u8 = undefined;
+    var table = PeerTable.init(&backing);
+    if (table.count() != 0) return error.NotEmpty;
+    if (table.remaining() != max_peers) return error.RemainingWrong;
+
+    const id_a = PeerId.from_slice("ship-a") orelse return error.IdA;
+    const id_b = PeerId.from_slice("ship-b") orelse return error.IdB;
+    const d_a = desc.Descriptor.from_slice("a|udp://1|fresh|line-0") orelse return error.DescA;
+    const d_b = desc.Descriptor.from_slice("b|udp://2|fresh|line-1") orelse return error.DescB;
+
+    try table.upsert(id_a, d_a, 100);
+    try table.upsert(id_b, d_b, 200);
+    if (table.count() != 2) return error.CountWrong;
+
+    const d_a2 = desc.Descriptor.from_slice("a|udp://1|fresher|line-2") orelse return error.DescA2;
+    try table.upsert(id_a, d_a2, 250);
+    if (table.count() != 2) return error.RefreshGrew;
+    const got = table.get(id_a) orelse return error.MissingA;
+    if (got.seen_at != 250) return error.SeenWrong;
+    if (!std.mem.eql(u8, got.descriptor.as_slice(), d_a2.as_slice())) return error.DescMismatch;
+
+    const removed = table.age_out(250 + staleness_max_seconds + 1);
+    if (removed != 2) return error.AgeOutWrong;
+    if (table.count() != 0) return error.AgeOutLeftLive;
+
+    var fill_backing: [max_peers * desc.descriptor_max_bytes]u8 = undefined;
+    var full = PeerTable.init(&fill_backing);
+    var i: u32 = 0;
+    while (i < max_peers) : (i += 1) {
+        var id_buf: [8]u8 = undefined;
+        const id_slice = try std.fmt.bufPrint(&id_buf, "p{d}", .{i});
+        const pid = PeerId.from_slice(id_slice) orelse return error.FillId;
+        const d = desc.Descriptor.from_slice("x") orelse return error.FillDesc;
+        try full.upsert(pid, d, 1);
+    }
+    if (full.count() != max_peers) return error.FillCount;
+    if (full.remaining() != 0) return error.FillRemaining;
+    const overflow_id = PeerId.from_slice("overflow") orelse return error.OverflowId;
+    const overflow_d = desc.Descriptor.from_slice("y") orelse return error.OverflowDesc;
+    if (full.upsert(overflow_id, overflow_d, 1)) |_| return error.ShouldRefuseFull else |_| {}
+
+    var pack_backing: [1024]u8 = undefined;
+    var pack_table = PeerTable.init(&pack_backing);
+    try pack_table.upsert(id_a, d_a, 10);
+    try pack_table.upsert(id_b, d_b, 20);
+    const n_packed = try pack_table.pack_descriptors();
+    if (n_packed != 2) return error.PackCount;
+    if (pack_table.garden.pos != d_a.len + d_b.len) return error.PackBytes;
+
+    print("GREEN: discovery table — max_peers {d} · staleness {d} · stack free-list · Region pack\n", .{
+        max_peers,
+        staleness_max_seconds,
+    });
+}
