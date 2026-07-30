@@ -1,0 +1,29 @@
+# tools/gen/season/equinox_ironbeetle_ep002_choir_witness.rish — e61 → almanac ch5.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep002_choir_witness.rish
+#
+# Chapter five continues from metal. Leaf welcome + refuse only — no nested choirs.
+
+say "equinox-iron-ep002-choir: Language EN — IronBeetle ep002 seats double-entry."
+say "equinox-iron-ep002-choir: Style Radiant — a finding arrives; a theme may follow later."
+say "equinox-iron-ep002-choir: Lens TAME — e61 · ep002 · almanac seat 66 · ch5 2/16."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/season/ironbeetle_ep002_census_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-iron-ep002-choir: welcome RED"
+assert welcome.out contains "GREEN: iron-ep002" else "equinox-iron-ep002-choir: welcome missing GREEN"
+assert welcome.out contains "TEACH=yes" else "equinox-iron-ep002-choir: want TEACH"
+assert welcome.out contains "CLEAN=yes" else "equinox-iron-ep002-choir: want CLEAN"
+assert welcome.out contains "MATKLAD_OK=yes" else "equinox-iron-ep002-choir: want MATKLAD_OK"
+
+let refuse = run ["sh" "tools/fixtures/ironbeetle_ep002_census.sh" "tools/fixtures/ironbeetle_ABSENT"]
+say refuse.out
+assert refuse.ok == false else "equinox-iron-ep002-choir: absent shelf must fail"
+assert refuse.out contains "verdict=absent" else "equinox-iron-ep002-choir: want verdict=absent"
+assert refuse.out contains "IRON=ABSENT" else "equinox-iron-ep002-choir: want IRON=ABSENT"
+
+let almanac = run ["sh" "tools/gen/season/equinox_ironbeetle_ep002_almanac.sh"]
+assert almanac.ok else "equinox-iron-ep002-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-iron-ep002-choir — ep002 · clean room · absent refuses · almanac seat 66 · ch5 2/16"

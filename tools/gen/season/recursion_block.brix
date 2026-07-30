@@ -70,7 +70,7 @@ coords_quest Do
 coords_round 59
 coords_voice_handback return_equinox_e7 CONSUMED 20260730.111804
 coords_equinox_season OPEN
-coords_equinox_status OPEN e60 GREEN · e61 next · return_equinox_e50 CONSUMED · ch5 1/16 · extend_lean +128
+coords_equinox_status OPEN e61 GREEN · e62 next · return_equinox_e50 CONSUMED · ch5 2/16 · extend_lean +128
 coords_true_deepest deca
 coords_e7 equinox_map GREEN 20260730.113507
 coords_e7_path context/equinox_map.brix
@@ -345,6 +345,11 @@ coords_e60_path gratitude/ironbeetle/20260712-092212_ironbeetle-ep001-intro-mess
 coords_e60_witness tools/gen/season/equinox_ironbeetle_ep001_choir_witness.rish
 coords_e60_charter expanding-prompts/20260730-191159_e60-ironbeetle-ep001-ch5-open-charter.md
 coords_e60_recursion expanding-prompts/20260730-191221_equinox-season-e61-recursion-prompt.md
+coords_e61 ironbeetle_ep002 GREEN 20260730.191731
+coords_e61_path gratitude/ironbeetle/20260712-092212_ironbeetle-ep002-double-entry-bookkeeping.md
+coords_e61_witness tools/gen/season/equinox_ironbeetle_ep002_choir_witness.rish
+coords_e61_charter expanding-prompts/20260730-191705_e61-ironbeetle-ep002-charter.md
+coords_e61_recursion expanding-prompts/20260730-191731_equinox-season-e62-recursion-prompt.md
 extend_lean +128
 extend_lean_reason dual_equinox_geode_expedition
 extend_lean_range e256-e383 when_consumed
@@ -443,8 +448,8 @@ coords_almanac_ch1 16 of 16
 coords_almanac_ch2 16 of 16
 coords_almanac_ch3 16 of 16
 coords_almanac_ch4 16 of 16
-coords_almanac_ch5 1 of 16
-coords_almanac_seat 65
+coords_almanac_ch5 2 of 16
+coords_almanac_seat 66
 coords_almanac_ch2_status FULL
 coords_almanac_ch3_status FULL
 coords_almanac_ch4_status FULL

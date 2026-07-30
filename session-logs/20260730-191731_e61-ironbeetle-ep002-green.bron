@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260730.191731
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title e61 IronBeetle ep002 double-entry GREEN
+prompt kg · e61 — IronBeetle ep002 double-entry bookkeeping
+think e60 opened ch5 on ep001 · ep002 already on shelf · leaf census twin of e44
+think Teach limbs: two columns · Double-Entry · debit · credit · batch · gateway
+think Seat 66 · ch5 2/16 · ep003 gap stays open · ep004 is next written silo
+obs e61 GREEN · e62 IronBeetle ep004 next · expedition stays gated
+file expanding-prompts/20260730-191705_e61-ironbeetle-ep002-charter.md charter
+file tools/fixtures/ironbeetle_ep002_census.sh scan GREEN
+file tools/gen/season/equinox_ironbeetle_ep002_choir_witness.rish choir GREEN
+file rye-learning-process/GLOW_ALMANAC.md seat 66 · ch5 2/16
+file waymarks/20260730-191731_e61-ironbeetle-ep002-green.md finishing edge
+file expanding-prompts/20260730-191731_equinox-season-e62-recursion-prompt.md fusion
+recommend keep-going e62 IronBeetle ep004 refuses-to-be-sharded
