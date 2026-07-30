@@ -65,7 +65,7 @@ voice_v32_descriptor_landed 20260730.030553
 baton_museum context/baton-museum
 coords_equinox A
 coords_journey 4
-coords_journey_4_status OPEN — h4 Accrete-never-break · door 9 GREEN · tend two DONE · handoff · door 10 charter next
+coords_journey_4_status OPEN — h4 Accrete-never-break · door 9 GREEN · tend two DONE · door 10 charter SEATED · create next
 coords_quest Do
 coords_round 15
 coords_season_rounds 256
@@ -84,6 +84,9 @@ coords_door_8 fold_pattern_two GREEN 20260730.083821
 coords_door_9 persistence_proof GREEN 20260730.085312
 coords_door_9_path mycelium/fold_persist.rye
 coords_door_9_bound myc_fold_snapshot_max_bytes 4096
+coords_door_10 refusal_storm CHARTERED 20260730.090221
+coords_door_10_path mycelium/refusal_storm.rye
+coords_door_10_bound refusal_storm_min_cases 5
 design_shapes_wing seated 20260730.041319
 design_shapes_fact_fold seated 20260730.083821
 flank_arrow_path seated 20260730.083225
@@ -116,6 +119,9 @@ ship_sol_proof_max_bytes 1024
 myc_fold_snapshot_max_bytes 4096
 # why: one FoldState freeze for a journey-scale log · door 9 · power of two
 # seated 20260730.084042 lean · metal 20260730 door 9 create
+refusal_storm_min_cases 5
+# why: one adversarial bite per primitive · storm incomplete under five
+# seated 20260730.090221 lean · door 10 charter · create inherits
 code_lang glow
 data_lang brix
 ask_key asks
@@ -132,6 +138,8 @@ voice Riyo
 # Model seat roster — accrete rows; never rewrite a dated stretch (dated_guard)
 # shape: voice · model · from · prior
 voice_seat Riyo · Claude Opus 5 1m Max · from 20260730 · prior Claude Fable 5 1m Max
+# Cursor bench seat — Framework pier · Grok high-fast (accrete · do not rewrite prior rows)
+voice_seat_cursor Riyo · Cursor Grok 4.5 300k High Fast · from 20260730.085938 · pier Framework ~/grain
 
 # Four equinoxes — living identity: direction · element · day-quarter · angular house + flanks
 # Seated Keaton's word 20260730.082536 (Equinox Map Correction Journey).
