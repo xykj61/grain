@@ -67,10 +67,10 @@ coords_equinox A
 coords_journey 4
 coords_journey_4_status PAUSED — h4 Accrete-never-break · door 8–15 GREEN · Build queue CLOSED · tend three DONE · Voice handback CONSUMED
 coords_quest Do
-coords_round 29
+coords_round 30
 coords_voice_handback return_equinox_e7 CONSUMED 20260730.111804
 coords_equinox_season OPEN
-coords_equinox_status e23 GREEN · e24 next · true deepest
+coords_equinox_status e24 GREEN · e25 next · true deepest
 coords_true_deepest deca
 coords_e7 equinox_map GREEN 20260730.113507
 coords_e7_path context/equinox_map.brix
@@ -159,9 +159,14 @@ coords_e23_path work-in-progress/REDS.md
 coords_e23_witness tools/gen/season/equinox_reds_choir_witness.rish
 coords_e23_charter expanding-prompts/20260730-124303_e23-reds-choir-charter.md
 coords_e23_recursion expanding-prompts/20260730-124325_equinox-season-e23-recursion-prompt.md
+coords_e24 voice_roster_choir GREEN 20260730.124935
+coords_e24_path context/RIYO.md
+coords_e24_witness tools/gen/season/equinox_voice_roster_choir_witness.rish
+coords_e24_charter expanding-prompts/20260730-124913_e24-voice-roster-choir-charter.md
+coords_e24_recursion expanding-prompts/20260730-124935_equinox-season-e24-recursion-prompt.md
 coords_almanac_ch1 16 of 16
-coords_almanac_ch2 13 of 16
-coords_almanac_seat 29
+coords_almanac_ch2 14 of 16
+coords_almanac_seat 30
 coords_season_rounds 256
 coords_season_name PARKED
 coords_tend_two DONE 20260730.085559 fascia_entry 69 fascia_exit 69 delta 0

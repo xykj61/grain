@@ -90,7 +90,7 @@ Expected houses 1..12 once · three per equinox · join equinox_map flanks · ke
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_surface_witness.rish` · **Stamp:** `20260730.115059` · **Witness:** `tools/gen/season/equinox_surface_witness.rish`
 Expected e0 · equinox_map · equinox_foundations each GREEN in one choir. Metal answered GREEN. Chapter one closes at sixteen; prose create-prep did not earn this seat.
 
-## Chapter Two (13 of 16)
+## Chapter Two (14 of 16)
 
 Opened from metal at stamp `20260730.115626`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -145,6 +145,10 @@ Expected SAFE=present · SPEC=present · SEATED=yes · BOUND_NAMED=yes · EMPTY_
 ### 29. The reds ledger accretes complete rows; a thin fixture is refused whole.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_reds_choir_witness.rish` · **Stamp:** `20260730.124325` · **Witness:** `tools/gen/season/reds_ledger_witness.rish` · `tools/gen/season/reds_ledger_monotone_witness.rish` · `tools/gen/season/reds_ledger_negative_witness.rish` · choir `equinox_reds_choir_witness.rish`
 Expected living ledger completeness and 1..N monotone indices, plus fixture refuse (incomplete_rows) while the live pin stays clean. Metal answered GREEN. Living rows=32. Negative space as loud as welcome.
+
+### 30. The standing voice is declared at six sites; an undeclared name is refused.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_voice_roster_choir_witness.rish` · **Stamp:** `20260730.124935` · **Witness:** `tools/gen/season/voice_roster_witness.rish` · `tools/gen/season/voice_roster_negative_witness.rish` · choir `equinox_voice_roster_choir_witness.rish`
+Expected sites=6 · drift=0 for Riyo, and verdict=drift for an undeclared voice while the standing call stays clean. Metal answered GREEN. Negative space as loud as welcome.
 
 ---
 
