@@ -1,0 +1,29 @@
+# tools/gen/season/equinox_tigerbeetle_say_how_choir_witness.rish — e44 → almanac.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_say_how_choir_witness.rish
+#
+# Leaf welcome + refuse only — no nested elder choirs.
+
+say "equinox-tb-say-how-choir: Language EN — say how; refuse an absent clone."
+say "equinox-tb-say-how-choir: Style Radiant — welcome and refuse share one seat."
+say "equinox-tb-say-how-choir: Lens TAME — e44 · say how · almanac seat 50."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_say_how_census_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-tb-say-how-choir: welcome RED"
+assert welcome.out contains "GREEN: tb-say-how" else "equinox-tb-say-how-choir: welcome missing GREEN"
+assert welcome.out contains "GUIDE_HOW=yes" else "equinox-tb-say-how-choir: want GUIDE_HOW"
+assert welcome.out contains "TAME_HOW=yes" else "equinox-tb-say-how-choir: want TAME_HOW"
+assert welcome.out contains "ELDER_WHY=yes" else "equinox-tb-say-how-choir: want ELDER_WHY"
+
+let refuse = run ["sh" "tools/fixtures/tigerbeetle_say_how_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
+say refuse.out
+assert refuse.ok == false else "equinox-tb-say-how-choir: absent clone must fail"
+assert refuse.out contains "verdict=absent" else "equinox-tb-say-how-choir: want verdict=absent"
+assert refuse.out contains "CLONE=ABSENT" else "equinox-tb-say-how-choir: want CLONE=ABSENT"
+
+let almanac = run ["sh" "tools/gen/season/equinox_tigerbeetle_say_how_almanac.sh"]
+assert almanac.ok else "equinox-tb-say-how-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-tb-say-how-choir — say how · methodology · elder why · absent refuses · almanac seat 50"

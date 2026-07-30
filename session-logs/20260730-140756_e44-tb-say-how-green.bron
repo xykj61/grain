@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260730.140756
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title E44 TB say-how GREEN · almanac 50 · ch4 2/16
+prompt kg · seat e44 shape — chapter four continues from metal
+think e43 say-why · next say how · goal and methodology · elder why · Radiant
+think Guide·method·TAME·style·elder·RADIANT · absent refuse · seat 50
+obs E44 GREEN · chapter four 2/16 · method meets the reader first
+file tools/fixtures/tigerbeetle_say_how_census.sh say-how scan
+file tools/gen/season/tigerbeetle_say_how_census_witness.rish welcome
+file tools/gen/season/equinox_tigerbeetle_say_how_choir_witness.rish e44 choir
+file tools/gen/season/equinox_tigerbeetle_say_how_almanac.sh seat 50
+file expanding-prompts/20260730-140707_e44-tb-say-how-charter.md charter
+file rye-learning-process/GLOW_ALMANAC.md seat 50 · ch4 2/16
+recommend keep-going seat e45 ch4-continue metal · dual-push with send

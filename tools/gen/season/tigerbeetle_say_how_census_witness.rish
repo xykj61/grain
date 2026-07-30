@@ -1,0 +1,28 @@
+# tools/gen/season/tigerbeetle_say_how_census_witness.rish — e44 Say how.
+#
+#   rishi/bin/rishi run tools/gen/season/tigerbeetle_say_how_census_witness.rish
+#
+# Requires gratitude/tigerbeetle submodule present.
+# Clean-room: presence only · never copies into rye/.
+# Leaf only — no nested elder choirs.
+
+say "tb-say-how: Language EN — say how; name the goal and the method."
+say "tb-say-how: Style Radiant — the reader gets up to speed, or skips ahead."
+say "tb-say-how: Lens TAME — e44 · clean-room study · almanac seat 50."
+
+let clone = run ["test" "-d" "gratitude/tigerbeetle/src"]
+assert clone.ok else "tb-say-how: gratitude/tigerbeetle/src ABSENT — host clone first"
+
+let census = run ["sh" "tools/fixtures/tigerbeetle_say_how_census.sh"]
+say census.out
+assert census.ok else "tb-say-how: census failed or thin"
+assert census.out contains "CLONE=present" else "tb-say-how: want CLONE=present"
+assert census.out contains "verdict=ok" else "tb-say-how: want verdict=ok"
+assert census.out contains "GUIDE_HOW=yes" else "tb-say-how: held guide must say how"
+assert census.out contains "GUIDE_METHOD=yes" else "tb-say-how: guide must name goal and methodology"
+assert census.out contains "TAME_HOW=yes" else "tb-say-how: TAME must say how"
+assert census.out contains "STYLE=yes" else "tb-say-how: clone docs must teach the law"
+assert census.out contains "ELDER_WHY=yes" else "tb-say-how: say-why elder must be present"
+assert census.out contains "RADIANT=yes" else "tb-say-how: Grain Radiant Style must be present"
+
+say "GREEN: tb-say-how — guide·method·TAME·style·elder-why·RADIANT ok"

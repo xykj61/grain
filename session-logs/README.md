@@ -1,3 +1,4 @@
+- `20260730.140756` — [E44 TB say-how GREEN · almanac 50 · ch4 2/16](20260730-140756_e44-tb-say-how-green.bron) — goal·method · e45 next
 - `20260730.140442` — [E43 TB say-why GREEN · almanac 49 · ch4 open](20260730-140442_e43-tb-say-why-ch4-open-green.bron) — comments as prose · e44 next
 - `20260730.140147` — [E42 ch3 surface close GREEN · almanac 48 · ch3 FULL](20260730-140147_e42-ch3-surface-close-green.bron) — wing·safety·perf·naming · e43 next
 - `20260730.135900` — [Equinox TB arc explained · fresh fusion baton](20260730-135900_equinox-tb-arc-explain-counsel.bron) — clean-room study · e42 closes ch3
