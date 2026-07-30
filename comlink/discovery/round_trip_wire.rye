@@ -1,0 +1,306 @@
+//! comlink/discovery/round_trip_wire.rye — discovery wire lane body (door 15).
+//!
+//! Two lanes exchange descriptors across a shared wire directory, converge
+//! tables at peers=2, introduce through kumara, and refuse stranger +
+//! malformed gossip loudly. Orchestration (spawn/wait-for · outer timeout)
+//! lives in tools/discovery_round_trip_wire.rish — this file is one lane.
+//!
+//! Bounds from tools/gen/season/recursion_block.brix (door 15 seat):
+//!   discovery_wire_peers 2
+//!   discovery_wire_convergence_rounds_max 8
+//!   discovery_wire_outer_timeout_seconds 64  (enforced by rish timeout)
+//!
+//! Zero new primitives — composes descriptor · table · gossip · introduce.
+//! Mycelium stays a process seam (fold run by the rish), not an import.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build \
+//!     comlink/discovery/round_trip_wire.rye -lc \
+//!     -femit-bin=comlink/.build/discovery_round_trip_wire
+//!   comlink/.build/discovery_round_trip_wire lane A /tmp/wire-dir
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const c = std.c;
+const desc = @import("descriptor.rye");
+const table_mod = @import("table.rye");
+const gossip = @import("gossip.rye");
+const introduce = @import("introduce.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+
+/// Smallest true conversation — seated door 15.
+pub const wire_peers: u32 = 2;
+/// Settle ceiling — seated door 15.
+pub const wire_convergence_rounds_max: u32 = 8;
+/// Outer long-loop bound — seated door 15; rish wraps timeout.
+pub const wire_outer_timeout_seconds: u32 = 64;
+
+const Lane = enum { a, b };
+
+fn sleep_ms(ms: u64) void {
+    var pause = c.timespec{
+        .sec = @intCast(ms / 1000),
+        .nsec = @intCast((ms % 1000) * 1_000_000),
+    };
+    _ = c.nanosleep(&pause, null);
+}
+
+fn path_join(buf: []u8, dir: []const u8, name: []const u8) ![]const u8 {
+    return std.fmt.bufPrint(buf, "{s}/{s}", .{ dir, name });
+}
+
+fn write_bytes(io: std.Io, path: []const u8, bytes: []const u8) !void {
+    try std.Io.Dir.cwd().writeFile(io, .{ .sub_path = path, .data = bytes });
+}
+
+fn read_into(io: std.Io, path: []const u8, buf: []u8) ![]const u8 {
+    return std.Io.Dir.cwd().readFile(io, path, buf);
+}
+
+fn file_exists(io: std.Io, path: []const u8) bool {
+    std.Io.Dir.cwd().access(io, path, .{}) catch return false;
+    return true;
+}
+
+fn lane_seed(lane: Lane) [kumara.seed_length]u8 {
+    return switch (lane) {
+        .a => .{0xa1} ** kumara.seed_length,
+        .b => .{0xb2} ** kumara.seed_length,
+    };
+}
+
+fn lane_id(lane: Lane) table_mod.PeerId {
+    const s: []const u8 = switch (lane) {
+        .a => "lane-a",
+        .b => "lane-b",
+    };
+    return table_mod.PeerId.from_slice(s) orelse unreachable;
+}
+
+fn lane_desc(lane: Lane) desc.Descriptor {
+    const s: []const u8 = switch (lane) {
+        .a => "lane-a|wire|fresh|star-line",
+        .b => "lane-b|wire|fresh|ship-line",
+    };
+    return desc.Descriptor.from_slice(s) orelse unreachable;
+}
+
+fn peer_of(lane: Lane) Lane {
+    return switch (lane) {
+        .a => .b,
+        .b => .a,
+    };
+}
+
+fn desc_name(lane: Lane) []const u8 {
+    return switch (lane) {
+        .a => "desc-a",
+        .b => "desc-b",
+    };
+}
+
+fn digest_name(lane: Lane) []const u8 {
+    return switch (lane) {
+        .a => "digest-a",
+        .b => "digest-b",
+    };
+}
+
+fn own_path(buf: []u8, joined: []const u8) []const u8 {
+    @memcpy(buf[0..joined.len], joined);
+    return buf[0..joined.len];
+}
+
+/// Canonical table digest — sorted peer ids joined by comma (peers=2).
+fn table_digest(table: *const table_mod.PeerTable, out: []u8) ![]const u8 {
+    var ids: [wire_peers][]const u8 = undefined;
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < table_mod.max_peers) : (i += 1) {
+        if (!table.slots[i].live) continue;
+        if (n >= wire_peers) return error.TooManyPeers;
+        ids[n] = table.slots[i].id.as_slice();
+        n += 1;
+    }
+    if (n != wire_peers) return error.PeerCount;
+    if (std.mem.lessThan(u8, ids[1], ids[0])) {
+        const tmp = ids[0];
+        ids[0] = ids[1];
+        ids[1] = tmp;
+    }
+    return std.fmt.bufPrint(out, "{s},{s}", .{ ids[0], ids[1] });
+}
+
+fn write_intro(io: std.Io, path: []const u8, intro: introduce.Introduction) !void {
+    var buf: [1 + 32 + 1 + 32 + 2 + 512 + 4 + 1 + 64]u8 = undefined;
+    var off: usize = 0;
+    buf[off] = 1;
+    off += 1;
+    tally_copy.copy_disjoint(u8, buf[off..][0..32], intro.introducer_pk[0..]);
+    off += 32;
+    buf[off] = @intCast(intro.introduced.len);
+    off += 1;
+    @memset(buf[off..][0..32], 0);
+    tally_copy.copy_disjoint(u8, buf[off..][0..intro.introduced.len], intro.introduced.as_slice());
+    off += 32;
+    std.mem.writeInt(u16, buf[off..][0..2], @intCast(intro.descriptor.len), .little);
+    off += 2;
+    tally_copy.copy_disjoint(u8, buf[off..][0..intro.descriptor.len], intro.descriptor.as_slice());
+    off += intro.descriptor.len;
+    std.mem.writeInt(u32, buf[off..][0..4], intro.hop, .little);
+    off += 4;
+    buf[off] = @intFromEnum(intro.role);
+    off += 1;
+    tally_copy.copy_disjoint(u8, buf[off..][0..64], intro.sig[0..]);
+    off += 64;
+    try write_bytes(io, path, buf[0..off]);
+}
+
+fn read_intro(io: std.Io, path: []const u8) !introduce.Introduction {
+    var raw: [1 + 32 + 1 + 32 + 2 + 512 + 4 + 1 + 64]u8 = undefined;
+    const slice = read_into(io, path, &raw) catch return error.IntroMissing;
+    const n = slice.len;
+    if (n < 1 + 32 + 1 + 32 + 2 + 4 + 1 + 64) return error.IntroShort;
+    var off: usize = 0;
+    if (raw[off] != 1) return error.IntroVersion;
+    off += 1;
+    var intro = introduce.Introduction{};
+    tally_copy.copy_disjoint(u8, intro.introducer_pk[0..], raw[off..][0..32]);
+    off += 32;
+    const id_len = raw[off];
+    off += 1;
+    if (id_len == 0 or id_len > table_mod.peer_id_max_bytes) return error.IntroId;
+    intro.introduced = table_mod.PeerId.from_slice(raw[off..][0..id_len]) orelse return error.IntroId;
+    off += 32;
+    const dlen = std.mem.readInt(u16, raw[off..][0..2], .little);
+    off += 2;
+    if (dlen == 0 or dlen > desc.descriptor_max_bytes) return error.IntroDesc;
+    if (off + dlen + 4 + 1 + 64 > n) return error.IntroTrunc;
+    intro.descriptor = desc.Descriptor.from_slice(raw[off..][0..dlen]) orelse return error.IntroDesc;
+    off += dlen;
+    intro.hop = std.mem.readInt(u32, raw[off..][0..4], .little);
+    off += 4;
+    intro.role = @enumFromInt(raw[off]);
+    off += 1;
+    tally_copy.copy_disjoint(u8, intro.sig[0..], raw[off..][0..64]);
+    return intro;
+}
+
+fn prove_refusals(table: *table_mod.PeerTable, star_kp: kumara.KeyPair, ship_id: table_mod.PeerId, ship_d: desc.Descriptor) !void {
+    const before = table.count();
+    const good = introduce.Introduction.mint(star_kp, ship_id, ship_d, 1, .star) orelse return error.MintRefuse;
+    var bad = good;
+    bad.sig[0] ^= 0xff;
+    if (introduce.accept(table, bad, 9000)) |_| return error.StrangerAccepted else |err| {
+        if (err != error.IdentityRefused) return error.WrongStranger;
+    }
+    if (table.count() != before) return error.StrangerMutated;
+    print("stranger refused · table_clean\n", .{});
+
+    var offer = gossip.GossipOffer.empty();
+    offer.ids[0] = ship_id;
+    offer.descriptors[0] = desc.Descriptor.init_empty();
+    offer.len = 1;
+    if (gossip.fold_offer(table, &offer, 9001)) |_| return error.BadGossipAccepted else |err| {
+        if (err != error.Malformed) return error.WrongGossipRefuse;
+    }
+    if (table.count() != before) return error.GossipPartial;
+    print("gossip_malformed refused whole\n", .{});
+}
+
+fn run_lane(io: std.Io, lane: Lane, dir: []const u8) !u8 {
+    if (wire_peers != 2) return error.PeersBound;
+    if (wire_convergence_rounds_max != 8) return error.ConvergeBound;
+    if (wire_outer_timeout_seconds != 64) return error.TimeoutBound;
+
+    const peer = peer_of(lane);
+    const my_id = lane_id(lane);
+    const my_d = lane_desc(lane);
+    const peer_id = lane_id(peer);
+    const peer_d_expect = lane_desc(peer);
+    const kp = kumara.keypair_from_seed(&lane_seed(lane));
+
+    var join_buf: [512]u8 = undefined;
+    var my_desc_owned: [512]u8 = undefined;
+    const my_desc_p = own_path(&my_desc_owned, try path_join(&join_buf, dir, desc_name(lane)));
+    var peer_desc_owned: [512]u8 = undefined;
+    const peer_desc_p = own_path(&peer_desc_owned, try path_join(&join_buf, dir, desc_name(peer)));
+    var intro_owned: [512]u8 = undefined;
+    const intro_p = own_path(&intro_owned, try path_join(&join_buf, dir, "intro.bin"));
+    var digest_owned: [512]u8 = undefined;
+    const digest_p = own_path(&digest_owned, try path_join(&join_buf, dir, digest_name(lane)));
+
+    var backing: [table_mod.max_peers * desc.descriptor_max_bytes]u8 = undefined;
+    var table = table_mod.PeerTable.init(&backing);
+    try table.upsert(my_id, my_d, 1);
+    try write_bytes(io, my_desc_p, my_d.as_slice());
+
+    var rounds: u32 = 0;
+    var converged = false;
+    while (rounds < wire_convergence_rounds_max) : (rounds += 1) {
+        sleep_ms(20);
+        if (file_exists(io, peer_desc_p)) {
+            var dbuf: [desc.descriptor_max_bytes]u8 = undefined;
+            if (read_into(io, peer_desc_p, &dbuf)) |got| {
+                if (got.len > 0 and got.len <= desc.descriptor_max_bytes) {
+                    const pd = desc.Descriptor.from_slice(got) orelse return error.PeerDesc;
+                    try table.upsert(peer_id, pd, @as(u64, rounds + 2));
+                }
+            } else |_| {}
+        }
+        try write_bytes(io, my_desc_p, my_d.as_slice());
+
+        if (lane == .a and table.get(peer_id) != null) {
+            const intro = introduce.Introduction.mint(kp, peer_id, peer_d_expect, 1, .star) orelse return error.IntroMint;
+            try write_intro(io, intro_p, intro);
+            try introduce.accept(&table, intro, @as(u64, rounds + 100));
+        }
+        if (lane == .b and file_exists(io, intro_p)) {
+            const intro = try read_intro(io, intro_p);
+            try introduce.accept(&table, intro, @as(u64, rounds + 100));
+        }
+
+        if (table.count() == wire_peers and table.get(my_id) != null and table.get(peer_id) != null) {
+            converged = true;
+            break;
+        }
+    }
+    if (!converged) return error.NoConverge;
+
+    var digest_buf: [128]u8 = undefined;
+    const digest = try table_digest(&table, &digest_buf);
+    try write_bytes(io, digest_p, digest);
+
+    try prove_refusals(&table, kumara.keypair_from_seed(&lane_seed(.a)), peer_id, peer_d_expect);
+
+    const lane_ch: u8 = switch (lane) {
+        .a => 'A',
+        .b => 'B',
+    };
+    print("table_digest={s}\n", .{digest});
+    print("GREEN: discovery wire lane {c} — table converged · peers={d} · rounds={d} · table_digest={s}\n", .{
+        lane_ch,
+        wire_peers,
+        rounds + 1,
+        digest,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 4 and std.mem.eql(u8, args[1], "lane")) {
+        const lane: Lane = if (std.mem.eql(u8, args[2], "A") or std.mem.eql(u8, args[2], "a"))
+            .a
+        else if (std.mem.eql(u8, args[2], "B") or std.mem.eql(u8, args[2], "b"))
+            .b
+        else
+            return error.BadLane;
+        return run_lane(io, lane, args[3]);
+    }
+    print("usage: round_trip_wire lane A|B <wire-dir>\n", .{});
+    return 2;
+}

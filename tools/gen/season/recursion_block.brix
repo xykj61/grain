@@ -65,9 +65,9 @@ voice_v32_descriptor_landed 20260730.030553
 baton_museum context/baton-museum
 coords_equinox A
 coords_journey 4
-coords_journey_4_status OPEN — h4 Accrete-never-break · door 8–14 GREEN · door 15 CHARTERED wire · Build queue CLOSED · tend three DONE · kg create next
+coords_journey_4_status OPEN — h4 Accrete-never-break · door 8–15 GREEN · Build queue CLOSED · tend three DONE · next return or name door
 coords_quest Do
-coords_round 22
+coords_round 23
 coords_season_rounds 256
 coords_season_name PARKED
 coords_tend_two DONE 20260730.085559 fascia_entry 69 fascia_exit 69 delta 0
@@ -86,14 +86,16 @@ coords_door_14_charter expanding-prompts/20260730-105636_door-14-create-prep-bui
 coords_door_14_next DONE
 coords_build_queue CLOSED seat 16 20260730.110403
 coords_build_handback_lean extend elder discovery wire
-coords_door_15 discovery_wire_round_trip CHARTERED 20260730.110806
+coords_door_15 discovery_wire_round_trip GREEN 20260730.111639
 coords_door_15_path tools/discovery_round_trip_wire.rish
+coords_door_15_lane comlink/discovery/round_trip_wire.rye
 coords_door_15_charter expanding-prompts/20260730-110806_door-15-discovery-wire-round-trip-charter.md
-coords_door_15_next kg create
+coords_door_15_next DONE
 coords_door_15_bound_peers 2
 coords_door_15_bound_converge 8
 coords_door_15_bound_timeout_s 64
-coords_almanac_ch1 12 of 16
+coords_door_15_almanac_stamp 20260730.111628
+coords_almanac_ch1 13 of 16
 # door 15 create seats these before or with metal — inherits, never invents at call sites
 discovery_wire_peers 2
 # why: smallest true conversation · elder seat 6 · door 15 charter 20260730.110806
