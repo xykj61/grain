@@ -3,18 +3,19 @@
 **Language:** EN
 **Version:** `20260716.110152` (Glow warm-aura date atom — chronological, later-is-larger)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
-**By:** Quin, in the radiant voice, with **Keaton Dunsford** as coauthor (an earlier living draft season under Riyo's name; standing voice is Quin again from `20260716.040000`)
-**Status:** Living guide — last touched `20260726.023800` (Part One — The First Day; Part Two banner; Step 7 Linux multi-identity note remains)
+**By:** Riyo, in the radiant voice, with **Keaton Livermore** as coauthor (Identity Remake `20260729.141658`; standing writing voice restored to Riyo `20260729.205200`)
+**Status:** Living guide — last touched `20260730.143736` (SUNN journey — Livermore · Riyo · xykj61 · Claude/Cursor apps)
+**Waymark:** **SUNN** — `source-pier-papers-identity-refresh`
 
 ---
 
 ## What This Is
 
-This is the whole path, start to finish, for someone brand new to coding who wants to stand where we stand: two homes for their code, a key to knock with at each, a seal that signs their name, an editor with a thoughtful AI at its side, and a gentle sandbox where that AI can work — and even sign commits — without ever touching the rest of the machine.
+This is the whole path, start to finish, for someone brand new to coding who wants to stand where we stand: a living forge home for your code, a key to knock with, a seal that signs their name, an editor with a thoughtful AI at its side, and a gentle sandbox where that AI can work — and even sign commits — without ever touching the rest of the machine.
 
 You do not need prior experience. Each step says what to do, and why it matters, so the shape of the thing makes sense as you build it. Wherever you see a placeholder like `youruser` or `you@example.com` or an `EXAMPLE…` fingerprint, put your own value in its place.
 
-**Part One** ends with a working, jailed Cursor on your machine. **Part Two** builds the signed forge home. A warm letter for a friend starting out lives at [`manual/guides/apprentice-welcome.md`](manual/guides/apprentice-welcome.md). This pier’s standing voice is **Quin** ([`context/QUIN.md`](context/QUIN.md)).
+**Part One** ends with a working, jailed Cursor on your machine. **Part Two** builds the signed forge home. A warm letter for a friend starting out lives at [`manual/guides/apprentice-welcome.md`](manual/guides/apprentice-welcome.md). This pier’s standing writing voice is **Riyo** ([`context/RIYO.md`](context/RIYO.md)); **Quin** keeps the fifth OS variant and the inference Q-vane ([`context/QUIN.md`](context/QUIN.md)).
 
 By the end you will have a repository that an AI agent can grow and **commit to, signed and verified, entirely from inside the sandbox** — nothing to sign by hand, nothing leaking out.
 
@@ -49,17 +50,15 @@ Run these in an **ordinary outer terminal** — outside Cursor, outside ai-jail.
 ### C2 — Clone Grain
 
 ```bash
-git clone https://codeberg.org/autoproject96/grain.git ~/grain
+git clone https://github.com/xykj61/grain.git ~/grain
 cd ~/grain
 ```
 
-Public HTTPS, no fork, no keys yet. The GitHub mirror is the alternate:
-
-`https://github.com/autoproject96/grain.git`
+Public HTTPS, no fork, no keys yet. This pier’s living public clone is **`xykj61/grain`**. A second GitHub remote, `autoproject96/grain`, may exist as the agentic research lane (`origin` on this pier) — see [`context/REMOTE_ROSTER.md`](context/REMOTE_ROSTER.md). **Codeberg is retired** from living push (Terms July 2026) until a new second forge is chosen.
 
 Forks arrive naturally in Part Two, once forge accounts exist.
 
-### C3 — Place the Cursor AppImage
+### C3 — Place the Cursor AppImage (and the phone apps)
 
 Go to **<https://cursor.com/download>**. Prefer the **AppImage** for your platform:
 
@@ -72,7 +71,15 @@ chmod +x ./Cursor-<version>-x86_64.AppImage
 # move the download into ~/grain if it landed elsewhere
 ```
 
-You will want a **paid Cursor plan that includes Agent mode**. Depth on extract and enclosure: Steps 5 and 6.
+**Subscriptions and phone apps (recommended):**
+
+1. **Cursor** — a **paid Cursor plan that includes Agent mode** (Pro or Ultra).  
+2. **Claude** — a **paid Claude subscription** (Claude Pro or Max) so you can work with Claude on the web and in the apps, independent of Cursor’s own model billing.  
+3. **Claude iOS** — install Anthropic’s **Claude** app from the App Store for counsel on the phone.  
+4. **Cursor iOS** — install the **Cursor** iOS app for Cloud Agents and on-the-go pier work.  
+5. **Cursor Android** — **not supported yet**; do not plan the first day around an Android Cursor client.
+
+Depth on extract and enclosure: Steps 5 and 6.
 
 ### C4 — Launch jailed Cursor
 
@@ -98,11 +105,11 @@ When that lands, Part One is done. Part Two builds the signed home.
 
 Eight pieces fit together:
 
-1. **Two accounts** — Codeberg (home) and GitHub (mirror).
-2. **Two SSH keys** — one per forge, for authenticating pushes.
-3. **One GPG key** — your signing seal, trusted by both forges.
+1. **Forge account(s)** — GitHub as the living home; a second forge later when chosen.
+2. **SSH key(s)** — one per living forge, for authenticating pushes.
+3. **One GPG key** — your signing seal, trusted by each living forge.
 4. **Fingerprint QR codes** — your keys turned into shareable art.
-5. **Cursor** — the editor, with Claude in Agent mode.
+5. **Cursor + Claude** — the editor in Agent mode, plus a paid Claude subscription and the iOS apps.
 6. **ai-jail** — the sandbox (becoming **Pond**, our TAME-style reimplementation in Rye).
 7. **gitconfig + ssh config** — teaching the tools who you are.
 8. **In-sandbox signing** — the quiet machinery that lets the agent sign for you.
@@ -111,14 +118,15 @@ Take them in order. Each rests on the one before.
 
 ---
 
-## Step 1 — Two Homes for Your Code
+## Step 1 — A Living Home for Your Code
 
-Make two accounts. They are free.
+Make a **GitHub** account — <https://github.com> — free, and the living forge for Grain today.
 
-- **Codeberg** — <https://codeberg.org> — a community-run, nonprofit forge. We treat it as home.
-- **GitHub** — <https://github.com> — the largest forge. We keep a mirror here for reach.
+Pick a handle you can keep — for example, `youruser`. Verify your email; the Verified badge later depends on it.
 
-Pick one handle and use it on both if you can, so your identity reads the same everywhere — for example, `youruser`. Verify your email on each account; the Verified badge later depends on it.
+**This pier** uses GitHub `xykj61/grain` as the public clone you just fetched, and may also carry `autoproject96/grain` as a second remote for agentic research. Canonical remote count: [`context/REMOTE_ROSTER.md`](context/REMOTE_ROSTER.md).
+
+**Codeberg** (<https://codeberg.org>) was the second home for a season. It is **retired from living push** under Terms (July 2026) that bar mostly-LLM projects and cryptocurrency-related projects. Keep an account if you like; do not plan Part Two around Codeberg until Grain names a new second forge.
 
 ---
 
@@ -210,9 +218,13 @@ If Cursor is already set up (Step 5), you can simply ask the agent to do all of 
 
 Go to **<https://cursor.com/download>**, choose **Linux**, and download the **x86_64 AppImage** — the right build for **Framework** laptops, whether Intel or AMD, on both NixOS and Ubuntu. A `.deb` is offered too, yet the sandbox launcher runs the AppImage, so the AppImage is the one to fetch. Save it into the project folder (or into `~/Downloads` and move it in), since Step 6 extracts it there.
 
-Subscribe to **Cursor Pro** or **Cursor Ultra** — the plans that give you generous access to the strongest models.
+Subscribe to **Cursor Pro** or **Cursor Ultra** — the plans that give you generous access to the strongest models and Agent mode.
 
-Open Cursor, enter **Agent mode**, and choose a **Claude** model (the Opus and Sonnet families are excellent partners for this kind of work). Agent mode lets the model read your project, run commands, and make changes with your blessing — which is exactly what the rest of this guide leans on.
+Separately, subscribe to a **paid Claude plan** (Claude Pro or Max) at **<https://claude.ai>**. Cursor’s Claude models and Anthropic’s own subscription are different bills; both earn their keep on this pier — Cursor for the jailed agent bench, Claude for counsel threads and the phone.
+
+Install the **Claude iOS** app and the **Cursor iOS** app from the App Store. Use Claude iOS for reading and asking on the go; use Cursor iOS for Cloud Agents against this repository. **Cursor Android is not supported yet** — stay on iOS or desktop until that client ships.
+
+Open Cursor, enter **Agent mode**, and choose a **Claude** model (the Opus and Sonnet families are excellent partners for this kind of work). Agent mode lets the model read your project, run commands, and make changes with your blessing — which is exactly what the rest of this guide leans on. On this pier the standing writing voice is **Riyo**.
 
 ---
 
