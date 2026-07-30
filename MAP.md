@@ -2,7 +2,9 @@
 
 **Language:** EN
 **Style:** Radiant (see [`context/RADIANT_STYLE.md`](context/RADIANT_STYLE.md))
+**Voice:** Riyo
 **Status:** Living — the human map; models take [`llms.txt`](llms.txt), keepers take [`ORGANIZING.md`](ORGANIZING.md), and *you* take this
+**Last updated:** `20260730.160405` (SUNN13 — root survey · writing voice · licenses hold)
 
 *The root gathering of sources now lives at [`bibliography.md`](bibliography.md).*
 
@@ -18,7 +20,7 @@ Welcome, traveler. Sixty-some doors face you at this root, and every one of them
 
 ## The Law Library
 
-Everything in [`context/`](context/README.md) is a promise we keep on purpose. [`RADIANT_STYLE.md`](context/RADIANT_STYLE.md) is how we speak. [`TAME_GUIDANCE.md`](context/TAME_GUIDANCE.md) is how the code stays safe — safety first, performance second, joy third. [`TWO_ROOMS.md`](context/TWO_ROOMS.md) is why every page tells you whether it is proven or proposed. [`BREACH.md`](context/BREACH.md) is how the tree is allowed to move all at once. [`LEXICON.md`](context/LEXICON.md) is every word we ever seated, with receipts. [`QUIN.md`](context/QUIN.md) is who is writing to you.
+Everything in [`context/`](context/README.md) is a promise we keep on purpose. [`RADIANT_STYLE.md`](context/RADIANT_STYLE.md) is how we speak. [`TAME_GUIDANCE.md`](context/TAME_GUIDANCE.md) is how the code stays safe — safety first, performance second, joy third. [`TWO_ROOMS.md`](context/TWO_ROOMS.md) is why every page tells you whether it is proven or proposed. [`BREACH.md`](context/BREACH.md) is how the tree is allowed to move all at once. [`LEXICON.md`](context/LEXICON.md) is every word we ever seated, with receipts. [`RIYO.md`](context/RIYO.md) is who is writing to you; [`QUIN.md`](context/QUIN.md) keeps the fifth OS variant and the inference Q-vane.
 
 ## The Proven Shelf
 
@@ -38,7 +40,11 @@ Everything in [`context/`](context/README.md) is a promise we keep on purpose. [
 
 ## The Curiosity Cabinet
 
-Some doors are just a delight. [`gratitude/`](gratitude/README.md) shelves the teachers whole and unaltered — TigerBeetle, Urbit, Monocypher and more — because we silo ideas, never scaffolding. [`external-research/`](external-research/) is the reading room. [`classical-vedic-astrology/`](classical-vedic-astrology/README.md) is exactly what it says, and yes, it has witnesses too. [`saga/`](saga/README.md) holds season close narratives — the lasting end reports (Sound's saga of the end lives here). [`bron-resins/`](bron-resins/) are compressed session memories. [`keys/`](keys/) and [`PUBKEYS.md`](PUBKEYS.md) are the public face of every signature in this tree — check us, that is what they are for.
+Some doors are just a delight. [`gratitude/`](gratitude/README.md) shelves the teachers whole and unaltered — TigerBeetle, Urbit, Monocypher and more — because we silo ideas, never scaffolding. [`external-research/`](external-research/) is the reading room. [`classical-vedic-astrology/`](classical-vedic-astrology/README.md) is exactly what it says, and yes, it has witnesses too. [`saga/`](saga/README.md) holds season close narratives — the lasting end reports (Sound's saga of the end lives here). [`bron-resins/`](bron-resins/) are compressed session memories. [`keys/`](keys/) and [`PUBKEYS.md`](PUBKEYS.md) are the public face of every signature in this tree — check us, that is what they are for. Living identity there is **Keaton Livermore** / `xykj61`.
+
+## Licenses (hold)
+
+Root [`LICENSE-MIT`](LICENSE-MIT) · [`LICENSE-APACHE`](LICENSE-APACHE) · [`LICENSE-CC-BY`](LICENSE-CC-BY) still name copyright **Kaeden Reyklah** — a living hold until Keaton names a copyright rewrite. Dated Kaeden / Reyklah testimony elsewhere stays; this survey does not restyle the license files.
 
 ## How to Read Any Page Here
 
