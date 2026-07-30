@@ -9,6 +9,7 @@
 //! Free-list of slot indices lives in a Stack. Descriptor bodies pack into a
 //! Region garden when a caller wants contiguous export bytes. Mycelium stays
 //! untouched — this table finds peers and never orders them.
+//! Check shape: claim↔reach both ways · bound bitten · tally stack LIFO untouched.
 //! Gossip and introduce wait their own rounds (narrow-scope · fascia < 80).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/discovery/table.rye
@@ -188,8 +189,18 @@ pub const PeerTable = struct {
     }
 };
 
-/// Selftest — welcome, refresh, age-out, refuse-full, Region pack.
+/// Selftest — Check shape: claim↔reach · bound bitten · stack LIFO · pack.
 pub fn main() !void {
+    // Tally stack LIFO proof — the free-list's own type, untouched beneath the table.
+    var lifo = tally_stack.StackType(u32, 4){};
+    lifo.push(1);
+    lifo.push(2);
+    lifo.push(3);
+    if (lifo.pop().? != 3) return error.LifoOrder;
+    if (lifo.pop().? != 2) return error.LifoOrder;
+    if (lifo.pop().? != 1) return error.LifoOrder;
+    if (lifo.pop() != null) return error.LifoEmptyNotNull;
+
     var backing: [max_peers * desc.descriptor_max_bytes]u8 = undefined;
     var table = PeerTable.init(&backing);
     if (table.count() != 0) return error.NotEmpty;
@@ -204,6 +215,20 @@ pub fn main() !void {
     try table.upsert(id_b, d_b, 200);
     if (table.count() != 2) return error.CountWrong;
 
+    // Claim → reach: every claimed id is gettable.
+    if (table.get(id_a) == null) return error.ClaimUnreachableA;
+    if (table.get(id_b) == null) return error.ClaimUnreachableB;
+    // Reach → claim: every live slot's id round-trips through get.
+    var live_seen: u32 = 0;
+    var si: u32 = 0;
+    while (si < max_peers) : (si += 1) {
+        if (!table.slots[si].live) continue;
+        live_seen += 1;
+        const again = table.get(table.slots[si].id) orelse return error.ReachUnclaimed;
+        if (!again.id.eql(&table.slots[si].id)) return error.ReachMismatch;
+    }
+    if (live_seen != table.count()) return error.LiveCountMismatch;
+
     const d_a2 = desc.Descriptor.from_slice("a|udp://1|fresher|line-2") orelse return error.DescA2;
     try table.upsert(id_a, d_a2, 250);
     if (table.count() != 2) return error.RefreshGrew;
@@ -211,9 +236,14 @@ pub fn main() !void {
     if (got.seen_at != 250) return error.SeenWrong;
     if (!std.mem.eql(u8, got.descriptor.as_slice(), d_a2.as_slice())) return error.DescMismatch;
 
+    // Free-stack LIFO reuse: age-out walks low→high, so last freed is first reused.
     const removed = table.age_out(250 + staleness_max_seconds + 1);
     if (removed != 2) return error.AgeOutWrong;
     if (table.count() != 0) return error.AgeOutLeftLive;
+    const id_c = PeerId.from_slice("ship-c") orelse return error.IdC;
+    const d_c = desc.Descriptor.from_slice("c|udp://3|fresh|line-3") orelse return error.DescC;
+    try table.upsert(id_c, d_c, 300);
+    if (table.slots[1].live == false or !table.slots[1].id.eql(&id_c)) return error.FreeLifoReuse;
 
     var fill_backing: [max_peers * desc.descriptor_max_bytes]u8 = undefined;
     var full = PeerTable.init(&fill_backing);
@@ -239,8 +269,7 @@ pub fn main() !void {
     if (n_packed != 2) return error.PackCount;
     if (pack_table.garden.pos != d_a.len + d_b.len) return error.PackBytes;
 
-    print("GREEN: discovery table — max_peers {d} · staleness {d} · stack free-list · Region pack\n", .{
+    print("GREEN: discovery table — Check shape · max_peers {d} · claim↔reach · stack LIFO · bound bitten\n", .{
         max_peers,
-        staleness_max_seconds,
     });
 }
