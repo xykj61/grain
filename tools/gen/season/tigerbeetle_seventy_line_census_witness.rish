@@ -1,0 +1,27 @@
+# tools/gen/season/tigerbeetle_seventy_line_census_witness.rish — e34 seventy-line bound.
+#
+#   rishi/bin/rishi run tools/gen/season/tigerbeetle_seventy_line_census_witness.rish
+#
+# Requires gratitude/tigerbeetle submodule present.
+# Clean-room: presence only · never copies into rye/.
+# Leaf only — no nested elder choirs.
+
+say "tb-seventy-line: Language EN — seventy lines; the screen is the bound."
+say "tb-seventy-line: Style Radiant — art is born of constraints."
+say "tb-seventy-line: Lens TAME — e34 · clean-room study · almanac seat 40."
+
+let clone = run ["test" "-d" "gratitude/tigerbeetle/src"]
+assert clone.ok else "tb-seventy-line: gratitude/tigerbeetle/src ABSENT — host clone first"
+
+let census = run ["sh" "tools/fixtures/tigerbeetle_seventy_line_census.sh"]
+say census.out
+assert census.ok else "tb-seventy-line: census failed or thin"
+assert census.out contains "CLONE=present" else "tb-seventy-line: want CLONE=present"
+assert census.out contains "verdict=ok" else "tb-seventy-line: want verdict=ok"
+assert census.out contains "GUIDE_SEVENTY=yes" else "tb-seventy-line: held guide must name seventy"
+assert census.out contains "TAME_SEVENTY=yes" else "tb-seventy-line: TAME must hold functions to seventy"
+assert census.out contains "SUPPLEMENT_SEVENTY=yes" else "tb-seventy-line: supplement must name the hard limit"
+assert census.out contains "TIDY=yes" else "tb-seventy-line: tidy.zig must enforce seventy"
+assert census.out contains "RATCHET=yes" else "tb-seventy-line: tidy ratchet min must be seventy"
+
+say "GREEN: tb-seventy-line — guide·TAME·supplement·style·tidy·ratchet ok"
