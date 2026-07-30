@@ -1,0 +1,30 @@
+# tools/gen/season/tigerbeetle_tooling_census_witness.rish — e53 Tooling.
+#
+#   rishi/bin/rishi run tools/gen/season/tigerbeetle_tooling_census_witness.rish
+#
+# Requires gratitude/tigerbeetle submodule present.
+# Clean-room: presence only · never copies into rye/.
+# Leaf only — no nested elder choirs.
+
+say "tb-tooling: Language EN — tooling stays small; Zig carries the scripts."
+say "tb-tooling: Style Radiant — the right tool is often the one already in hand."
+say "tb-tooling: Lens TAME — e53 · clean-room study · almanac seat 58."
+
+let clone = run ["test" "-d" "gratitude/tigerbeetle/src"]
+assert clone.ok else "tb-tooling: gratitude/tigerbeetle/src ABSENT — host clone first"
+
+let census = run ["sh" "tools/fixtures/tigerbeetle_tooling_census.sh"]
+say census.out
+assert census.ok else "tb-tooling: census failed or thin"
+assert census.out contains "CLONE=present" else "tb-tooling: want CLONE=present"
+assert census.out contains "verdict=ok" else "tb-tooling: want verdict=ok"
+assert census.out contains "GUIDE_TOOL=yes" else "tb-tooling: held guide must teach Tooling"
+assert census.out contains "GUIDE_ZIG=yes" else "tb-tooling: guide must name Zig as primary"
+assert census.out contains "GUIDE_SCRIPTS=yes" else "tb-tooling: guide must prefer scripts as Zig"
+assert census.out contains "GUIDE_RIGHT=yes" else "tb-tooling: guide must teach the right-tool lean"
+assert census.out contains "TAME_TOOL=yes" else "tb-tooling: TAME must teach Tooling"
+assert census.out contains "STYLE=yes" else "tb-tooling: clone docs must teach the law"
+assert census.out contains "ELDER_DEPS=yes" else "tb-tooling: dependencies elder must be present"
+assert census.out contains "RADIANT=yes" else "tb-tooling: Grain Radiant Style must be present"
+
+say "GREEN: tb-tooling — guide·zig·scripts·right·TAME·style·elder-deps·RADIANT ok"
