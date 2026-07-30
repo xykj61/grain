@@ -18,15 +18,17 @@ grep -q 'murr.fund' context/LEXICON.md
 grep -q '%murr' context/LEXICON.md
 grep -q 'MUR' context/LEXICON.md
 grep -q 'Kyler Murray' context/LEXICON.md
-grep -q 'DJINN' context/LEXICON.md
+grep -q 'Keaton Sealy Livermore' context/LEXICON.md
 grep -q 'innermost' context/LEXICON.md
 grep -q 'Mala (fund) (retired name)' context/LEXICON.md
 grep -q 'MALA (retired name)' context/LEXICON.md
+grep -q 'Bozo (fund)' context/LEXICON.md
 test -f context/CIVIC_STYLE.md
 test -f "$PAGE"
 grep -q 'Murr' "$PAGE"
 grep -q 'MUR' "$PAGE"
 grep -q 'Kyler Murray' "$PAGE"
+grep -q 'Keaton Sealy Livermore' "$PAGE"
 grep -q 'no live deploy' "$PAGE"
 grep -q 'witness:murr-open GREEN' "$PAGE"
 grep -q 'roadmap last' "$PAGE"
@@ -34,6 +36,7 @@ test -f gratitude/kyler-murray.md
 test -f gratitude/mur-movement-aesthetics.md
 test -f foundations/20260728-025220_murr-and-kyler-murray.md
 test -f counsel/20260728-025220_the-mur-season-innermost-charter.md
+test -f counsel/20260730-150702_pole-bozo-djinn-murr-keaton.md
 
 name=Murr
 len=$(printf '%s' "$name" | wc -c)
@@ -42,7 +45,7 @@ test "$len" -eq 4
 echo "seat: fund=Murr order=1 sign_index=0 (Aries) vane=%murr dns_prep=murr.fund"
 echo "module: MUR (was MALA) · L1 currency lean"
 echo "dedication: Kyler Murray (honor) · Minnesota Vikings QB as of 2026 public reporting"
-echo "executive: DJINN (moved from Djin)"
+echo "executive: Keaton Sealy Livermore (from DJINN · POLE 20260730.150702)"
 echo "season: MUR Season innermost u0-u127 · massive rename approved as waves"
 echo "wov: unify into MUR · retire WOV roadmap last"
 echo "page: edu/funds/murr-opening.md"

@@ -1,0 +1,28 @@
+# tools/gen/fund/gen_bozo_fund_prep.rish — Bozo fund prep (Capricorn · earth · seat 10 · was Linn).
+#
+# Affirms Bozo seat, Helen dedication, DJINN executive. Refuses deploy / wallet / gas / shred.
+#   rishi/bin/rishi run tools/gen/fund/gen_bozo_fund_prep.rish
+#   rishi/bin/rishi run tools/gen/fund/gen_bozo_fund_prep.rish deploy  # RED
+
+say "gen-bozo: Language EN — Bozo fund prep (Capricorn earth · seat 10 · Helen · DJINN)."
+say "gen-bozo: Style Radiant — GREEN after seat, dedication, executive, and opening page witness."
+say "gen-bozo: Lens TAME — prep only; sponsor held · no deploy."
+
+let verb = ""
+if length args != 0 then let verb = args[0]
+
+let prep = run ["sh" "tools/fixtures/gen_bozo_fund_prep.sh" verb]
+assert prep.ok else "gen-bozo REFUSE or seat door failed — see stderr"
+assert prep.out contains "GREEN: gen-bozo" else "gen-bozo missing GREEN line"
+assert prep.out contains "sign_index=9" else "gen-bozo Capricorn seat index unnamed"
+assert prep.out contains "witness:bozo-open GREEN" else "gen-bozo opening witness missing"
+assert prep.out contains "vane=%bozo" else "gen-bozo vane unnamed"
+assert prep.out contains "dedication: Helen Atthowe" else "gen-bozo Helen dedication unnamed"
+assert prep.out contains "executive: DJINN" else "gen-bozo DJINN executive unnamed"
+assert prep.out contains "bozo_fund=prep" else "gen-bozo prep flag missing"
+say prep.out
+
+let refuse = run ["sh" "tools/fixtures/gen_bozo_fund_prep.sh" "deploy"]
+assert (refuse.ok == false) else "gen-bozo refuse-walk broken: deploy must exit RED"
+
+say "GREEN: gen-bozo — prep open; Helen dedication; DJINN executive; Capricorn seat 10; deploy refuse post-fold RED."

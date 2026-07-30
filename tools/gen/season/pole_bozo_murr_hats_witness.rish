@@ -1,0 +1,30 @@
+# tools/gen/season/pole_bozo_murr_hats_witness.rish — POLE hats · Bozo · Murr.
+#
+#   rishi/bin/rishi run tools/gen/season/pole_bozo_murr_hats_witness.rish
+
+say "pole: Language EN — DJINN Bozo · Keaton Murr · Capricorn 10."
+say "pole: Style Radiant — rename-forward Linn→Bozo · Murr stays."
+say "pole: Lens TAME — presence · gen choir · deploy RED."
+
+let lex = read-file "context/LEXICON.md"
+assert lex contains "Bozo (fund)" else "pole: want Bozo (fund)"
+assert lex contains "Linn (fund) (retired name)" else "pole: want Linn retired"
+assert lex contains "Executive:** **DJINN**" else "pole: want DJINN on Bozo"
+assert lex contains "Executive:** **Keaton Sealy Livermore**" else "pole: want Keaton on Murr"
+assert lex contains "| **POLE** |" else "pole: want POLE waymark row"
+
+let bozo = run ["rishi/bin/rishi" "run" "tools/gen/fund/gen_bozo_fund_prep.rish"]
+assert bozo.ok else "pole: gen_bozo failed"
+assert bozo.out contains "executive: DJINN" else "pole: gen_bozo DJINN"
+
+let murr = run ["rishi/bin/rishi" "run" "tools/gen/fund/gen_murr_fund_prep.rish"]
+assert murr.ok else "pole: gen_murr failed"
+assert murr.out contains "executive: Keaton Sealy Livermore" else "pole: gen_murr Keaton"
+
+let linn = run ["rishi/bin/rishi" "run" "tools/gen/fund/gen_linn_fund_prep.rish"]
+assert linn.ok else "pole: gen_linn shim failed"
+
+let refuse = run ["rishi/bin/rishi" "run" "tools/gen/fund/gen_bozo_fund_prep.rish" "deploy"]
+assert (refuse.ok == false) else "pole: gen_bozo deploy must RED"
+
+say "GREEN: pole — Bozo DJINN · Murr Keaton · Linn retired shim · deploy RED"

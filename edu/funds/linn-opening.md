@@ -1,9 +1,10 @@
-# Linn Fund — Opening (Capricorn · earth · seat 10)
+# Linn Fund — Opening (Capricorn · earth · seat 10) — retired name
 
 **Stamp:** `20260728.035025` (Helen dedication) · seat `20260728.034317`  
-**Voice:** Quin · nested Trya (earth seat)  
-**Kind:** fund-prep page one — grow the seat; no deploy  
-**Generator:** `tools/gen_linn_fund_prep.rish`
+**Living name:** **Bozo (fund)** — rename-forward `20260730.150702` · see [`bozo-opening.md`](bozo-opening.md)  
+**Voice:** Quin · nested Trya (earth seat) — historical page voice  
+**Kind:** fund-prep page one — historical; living generator is `tools/gen_bozo_fund_prep.rish`  
+**Generator (historical shim):** `tools/gen_linn_fund_prep.rish` → bozo
 
 ---
 
@@ -11,14 +12,14 @@
 
 | Field | Standing |
 |-------|----------|
-| Fund | **Linn** |
+| Fund | **Linn** (retired → **Bozo**) |
 | Sign · element | **Capricorn · earth** |
 | Fund order | **10** |
 | Sign index | **9** (Aries = 0) |
-| Vane | `%linn` |
-| Domain | **linn.fund** — claim Keaton's hand alone |
-| Honor dedication | **Helen Atthowe** — *The Ecological Farm* |
-| Sponsor · executive | **held** (blank until his word) |
+| Vane | `%linn` (retired → `%bozo`) |
+| Domain | **linn.fund** (retired prep name → **bozo.fund**) |
+| Honor dedication | **Helen Atthowe** — *The Ecological Farm* (kept on Bozo) |
+| Sponsor · executive | historical **held** · living executive **DJINN** on Bozo |
 
 Civic Style governs. Design seat only until his hand claims the domain and any chain object.
 

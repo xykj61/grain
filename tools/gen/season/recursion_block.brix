@@ -290,11 +290,13 @@ coords_e49_witness tools/gen/season/equinox_tigerbeetle_off_by_one_choir_witness
 coords_e49_charter expanding-prompts/20260730-142537_e49-tb-off-by-one-charter.md
 coords_e49_recursion expanding-prompts/20260730-142650_equinox-season-e49-recursion-prompt.md
 coords_sunn OPEN 20260730.143736
-coords_sunn_status SUNN0-7 GREEN · SUNN8 next
+coords_sunn PAUSED 20260730.150702
+coords_sunn_status SUNN0-7 GREEN · SUNN8 next · PAUSED for POLE
 coords_sunn_waymark SUNN
 coords_sunn_input source-pier-papers-identity-refresh
 coords_sunn_charter expanding-prompts/20260730-143736_sunn-source-identity-breach-charter.md
-coords_sunn_handback return_equinox_e50
+coords_sunn_handback return_sunn_sunn8
+coords_sunn_nested_equinox return_equinox_e50
 coords_sunn4 source_steps_github_living GREEN 20260730.144054
 coords_sunn4_path SOURCE.md
 coords_sunn4_recursion expanding-prompts/20260730-144054_sunn-recursion-prompt.md
@@ -311,6 +313,16 @@ coords_sunn7 macos_enclosure GREEN 20260730.145920
 coords_sunn7_path manual/guides/macos-ai-jail-setup.md
 coords_sunn7_witness tools/gen/season/sunn7_macos_enclosure_witness.rish
 coords_sunn7_recursion expanding-prompts/20260730-145920_sunn-recursion-prompt.md
+coords_pole GREEN 20260730.150702
+coords_pole_status POLE0-3 GREEN · handback return_sunn_sunn8
+coords_pole_waymark POLE
+coords_pole_input djinn-bozo-exec-keaton-murr-hats
+coords_pole_charter expanding-prompts/20260730-150702_pole-bozo-murr-hats-charter.md
+coords_pole_witness tools/gen/season/pole_bozo_murr_hats_witness.rish
+coords_pole_recursion expanding-prompts/20260730-150702_pole-recursion-prompt.md
+coords_bozo_fund rename_forward_linn GREEN 20260730.150702
+coords_bozo_exec DJINN
+coords_murr_exec Keaton Sealy Livermore
 coords_almanac_ch1 16 of 16
 coords_almanac_ch2 16 of 16
 coords_almanac_ch3 16 of 16
