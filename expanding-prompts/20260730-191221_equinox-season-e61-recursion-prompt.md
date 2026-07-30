@@ -3,7 +3,7 @@
 **Stamp:** `20260730.191221` · **Voice:** Riyo  
 **Use:** paste into the next counsel/bench chat.  
 **e60:** IronBeetle ep001 GREEN · almanac seat 65 · ch5 1/16 OPEN  
-**Living tip:**  · read dd179b3852 when the card lags one amend.
+**Living tip:** `dd179b3852` · read `git rev-parse --short=10 HEAD` when the card lags one amend.
 
 ---
 
