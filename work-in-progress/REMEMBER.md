@@ -6,14 +6,14 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260730.032348` (EDT) · voice Riyo  
-**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin** · **sundial** · **reds-first** · **baton**  
-**Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss** · **first resident** (routine) · **vegan-dogfood** (easter egg) · **living mutant** · **shred-prep list** · **transitive writing crawl** · **Kiln** · **three** · **quad** · **nona** · **deca** · **undeca** *(canon)* · **equinoxes** · **SDD** · **Nest-Chapter** · **your / %your** · Glow=code · Brix=data · **baton**  
-**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes** · **mod-clock** · **REDS.md** · **Sangha** · **GLOW_ALMANAC** · **tally/stack** · **baton-museum** · **discovery/descriptor·table**  
-**Git nib:** `37eb8eb66b` · Grain · table.rye GREEN · red 31 · ls-remote guard · dual remotes  
+**Last refreshed:** `20260730.032517` (EDT) · voice Riyo · **remember**  
+**Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin** · **sundial** · **reds-first** · **baton** · **shape** *(affection)*  
+**Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss** · **first resident** (routine) · **vegan-dogfood** (easter egg) · **living mutant** · **shred-prep list** · **transitive writing crawl** · **Kiln** · **three** · **quad** · **nona** · **deca** · **undeca** *(canon)* · **equinoxes** · **SDD** · **Nest-Chapter** · **your / %your** · Glow=code · Brix=data · **baton** · **shape** *(seam affection · Lexicon row PARKED)*  
+**Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes** · **mod-clock** · **REDS.md** · **Sangha** · **GLOW_ALMANAC** · **tally/stack** · **baton-museum** · **discovery/descriptor·table** · **Check-quest shapes**  
+**Git nib:** `PENDING` · Grain · remember · table Check · gossip next  
 **Bookmark:** [`expanding-prompts/20260730-030553_bench-handoff-256-open.md`](../expanding-prompts/20260730-030553_bench-handoff-256-open.md)
 
-**Chapter:** Framework · EDT · **Grain** · **finishing edge:** **undeca** *(canon)* — Voice **OPEN** · 256 season · equinox **A** · journey **2** (h2 Aparigraha) · quest **Do** · round **6/256** · **table.rye** landed / **gossip.rye** next · name **parked** · Equinox **PAUSED** e6/e7 · Surface **PAUSED** · GitHub dual (`origin` · `xykj61`) · narrow-scope (fascia 71) · Riyo stands · Prefer **git nib**. · `prin scope`  
+**Chapter:** Framework · EDT · **Grain** · **finishing edge:** **undeca** *(canon)* — Voice **OPEN** · 256 season · equinox **A** · journey **2** (h2 Aparigraha) · quest **Do** · round **6/256** · Check shapes pre-written · **table** Check → **gossip** → **introduce** · name **parked** · Equinox **PAUSED** e6/e7 · Surface **PAUSED** · GitHub dual · narrow-scope (fascia 71) · Riyo stands · Prefer **git nib**. · `prin scope`  
 **Meters (fresh `20260730.032348`):** sundial **100 · green** (Δ0 hold) · fascia **71/100** (Δ0 · target ≥80 · narrow-scope active)
 
 ---
@@ -40,15 +40,24 @@ WOV retirement stays **roadmap last**. No live deploy · wallet · gas · privat
 
 ## Now
 
-**Pier path** — **`~/grain`** · agent **`home-xy-grain`**.  
+**Pier path** — **`~/grain`** · agent **`home-xy-grain`** · Cloud on `xykj61/grain`.  
 **Jail authors; host installs** — agents write inside the project / enclosure; host installs stay Keaton's hand.
 
 **Waymarks** — HAWM · TUBE · ZETA · JABS · LULU · STOA · SETU · claims `waymarks/`.  
 **Outer terminal / phone** — USB/`adb` paths and phone look stay on the operator desk; prefer git nib + `prin scope` for season state. Jail authors; host installs.
 
+**Baton museum** — eleven shapes, each one brix; a baton is state in a shape that crosses a seam. Affection remembered `20260730.032517`. Path `context/baton-museum/`.
+
+**Shape (affection)** — what a thing is that survives crossing a seam; the baton crosses sessions, the shape makes the crossing lossless. **Lexicon row PARKED** (propose-never-seat) — Glow **Shape** already seated for bounded normalizing types; seam sense waits Keaton's yes. Silence = stay parked.
+
+**Check-quest witness shapes** (counsel · contract level · bounds from `recursion_block.brix`):
+- **table** — claim↔reach both ways · bound named and bitten · tally stack LIFO untouched beneath
+- **gossip** — what travels is a value · named ceiling · refuse whole on malformed · never trim quiet
+- **introduce** — Aparigraha arrival · kumara identity at the seam · negative space as loud as welcome
+
 **Corpus twin** — Sound r11 **fold seated** · r22 outside-eyes · Prin matrix. C3–C5 homes blank; `quin-workshop/` untracked. H held.
 
-**Lane** (`autoproject96`) — never push across `groupproject36` / `xykj61`. Map: [`PUBKEYS.md`](../PUBKEYS.md) · [`context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md).
+**Lane** — dual push `origin` (autoproject96) + `xykj61` every send · ls-remote guard first. Map: [`PUBKEYS.md`](../PUBKEYS.md) · [`context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md).
 
 **`--cursor` launch** GREEN — `rishi/bin/rishi run tools/launch-cursor.rish --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu`.
 
@@ -60,9 +69,10 @@ WOV retirement stays **roadmap last**. No live deploy · wallet · gas · privat
 
 | Door | Kind |
 |------|------|
-| **Voice Chapter Build Journey** | **OPEN** · A·J2·Do · descriptor+table GREEN · next `gossip.rye` (single-file) · handoff expanding-prompts/20260730-030553_bench-handoff-256-open.md |
-| **Baton museum** | **SEATED** `context/baton-museum/` · Lexicon baton · census zero · breach banked |
-| **Dual remotes** | **SEATED** origin + xykj61 · ls-remote guard on send · main tips agree `8b22e7acd0` · red 31 closed |
+| **Voice Chapter Build Journey** | **OPEN** · A·J2·Do · table Check → gossip → introduce · single-file · handoff expanding-prompts/20260730-030553_bench-handoff-256-open.md |
+| **Baton museum** | **SEATED** · eleven halls · Lexicon baton · census zero · breach banked · affection remembered |
+| **shape → Lexicon** | **PARKED** · seam-crossing affection in memory · Glow Shape already seated · yes seats · silence parks |
+| **Dual remotes** | **SEATED** origin + xykj61 · ls-remote guard · main tips agree `8b22e7acd0` · red 31 closed |
 | **Equinox Chapter** | **PAUSED** e6/e7 · `return_equinox_e7` when Voice hands back |
 | **Surface Chapter** | **PAUSED** p58/p59 · `return_surface_p59` when Equinox resumes |
 | **Identity Remake** | **PAUSED** k6/k7 · `return_surface_p55` seated |
