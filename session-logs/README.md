@@ -1,3 +1,4 @@
+- `20260730.131214` — [E28 bounds-home inherit GREEN · almanac 34 · ch3 2/16](20260730-131214_e28-bounds-home-inherit-green.bron) — ten pairs · build_bounds metal · missing_shape refuse · e29 next
 - `20260730.130733` — [E27 design-shapes choir GREEN · almanac 33 · ch3 open](20260730-130733_e27-design-shapes-ch3-open-green.bron) — four halls · breach 0 · missing_wing refuse · e28 next
 - `20260730.125750` — [E26 ch2 surface choir GREEN · almanac 32](20260730-125750_e26-ch2-surface-choir-green.bron) — SAFE·reds·voice·baton · ch2 FULL · e27 next
 - `20260730.125244` — [E25 baton census choir GREEN · almanac 31](20260730-125244_e25-baton-census-choir-green.bron) — 13 halls · breach 0 · seat 31 · e26 next
