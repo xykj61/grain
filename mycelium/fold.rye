@@ -1,0 +1,314 @@
+//! mycelium/fold.rye — myc supply as a pure fold over signed facts.
+//!
+//! Build Journey · equinox A · journey 2 (h2 Aparigraha) · quest Do.
+//! Fifth primitive door — Check shape from counsel `20260730.033648`.
+//! Bounds from tools/gen/season/recursion_block.brix (v27 · myc opening):
+//!   myc_fact_max_bytes 256
+//!   star_name_max_bytes 32
+//!   myc_log_max_facts 1024  (named here: one journey-of-journeys of facts)
+//!
+//! supply = Σ issued − Σ taxed at every prefix · non-negative · tax overdraw
+//! refuses whole. Facts kumara-sealed. Unknown kinds refuse whole. Star
+//! reservation unique per name. Policy numbers (genesis · price · ceiling)
+//! stay parked — this file folds; it does not invent release or expiry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig \
+//!     rye/bin/rye run mycelium/fold.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+
+/// One signed fact's body ceiling — seated v27.
+pub const myc_fact_max_bytes: u32 = 256;
+
+/// Star name ceiling — seated v27 · %term-compatible.
+pub const star_name_max_bytes: u32 = 32;
+
+/// Append-only log length — power of two; holds a journey of journeys of facts.
+pub const myc_log_max_facts: u32 = 1024;
+
+pub const kind_issue: u8 = 1;
+pub const kind_tax: u8 = 2;
+pub const kind_star_reserve: u8 = 3;
+
+pub const Fact = struct {
+    kind: u8 = kind_issue,
+    amount: u64 = 0,
+    star: [star_name_max_bytes]u8 = undefined,
+    star_len: u32 = 0,
+    body: [myc_fact_max_bytes]u8 = undefined,
+    body_len: u32 = 0,
+    signer_pk: [kumara.PublicKey.encoded_length]u8 = undefined,
+    sig: [kumara.signature_length]u8 = undefined,
+
+    pub fn star_slice(f: *const Fact) []const u8 {
+        assert(f.star_len <= star_name_max_bytes);
+        return f.star[0..f.star_len];
+    }
+
+    pub fn body_slice(f: *const Fact) []const u8 {
+        assert(f.body_len <= myc_fact_max_bytes);
+        return f.body[0..f.body_len];
+    }
+};
+
+pub const FoldState = struct {
+    issued: u64 = 0,
+    taxed: u64 = 0,
+    /// Occupied star-name slots (unique reservation).
+    stars: [myc_log_max_facts][star_name_max_bytes]u8 = undefined,
+    star_lens: [myc_log_max_facts]u32 = undefined,
+    star_count: u32 = 0,
+
+    pub fn supply(s: *const FoldState) u64 {
+        assert(s.taxed <= s.issued);
+        return s.issued - s.taxed;
+    }
+};
+
+pub const Log = struct {
+    facts: [myc_log_max_facts]Fact = undefined,
+    len: u32 = 0,
+
+    pub fn empty() Log {
+        return .{ .facts = undefined, .len = 0 };
+    }
+};
+
+fn canonical_bytes(f: *const Fact, out: []u8) usize {
+    // kind · amount(le8) · star · body — bound bitten before copy.
+    assert(out.len >= 1 + 8 + f.star_len + f.body_len);
+    out[0] = f.kind;
+    var off: usize = 1;
+    var amt = f.amount;
+    var i: usize = 0;
+    while (i < 8) : (i += 1) {
+        out[off] = @truncate(amt);
+        amt >>= 8;
+        off += 1;
+    }
+    const star = f.star_slice();
+    tally_copy.copy_disjoint(u8, out[off..][0..star.len], star);
+    off += star.len;
+    const body = f.body_slice();
+    tally_copy.copy_disjoint(u8, out[off..][0..body.len], body);
+    off += body.len;
+    return off;
+}
+
+/// Mint a signed fact. Refuse oversized bodies or empty star on reserve.
+pub fn mint_fact(
+    signer: kumara.KeyPair,
+    kind: u8,
+    amount: u64,
+    star_name: []const u8,
+    body: []const u8,
+) ?Fact {
+    if (body.len > myc_fact_max_bytes) return null;
+    if (kind != kind_issue and kind != kind_tax and kind != kind_star_reserve) return null;
+    if (kind == kind_star_reserve) {
+        if (star_name.len == 0 or star_name.len > star_name_max_bytes) return null;
+        if (amount == 0) return null; // reservation carries a positive myc price
+    } else if (star_name.len != 0) {
+        return null; // issue/tax carry no star name — Aparigraha
+    }
+    if (kind != kind_star_reserve and amount == 0) return null;
+
+    var f = Fact{ .kind = kind, .amount = amount };
+    if (star_name.len > 0) {
+        tally_copy.copy_disjoint(u8, f.star[0..star_name.len], star_name);
+        f.star_len = @intCast(star_name.len);
+    }
+    if (body.len > 0) {
+        tally_copy.copy_disjoint(u8, f.body[0..body.len], body);
+        f.body_len = @intCast(body.len);
+    }
+    const pk = signer.public_key.toBytes();
+    tally_copy.copy_disjoint(u8, f.signer_pk[0..], pk[0..]);
+
+    var msg: [1 + 8 + star_name_max_bytes + myc_fact_max_bytes]u8 = undefined;
+    const n = canonical_bytes(&f, &msg);
+    const sig = kumara.sign(msg[0..n], signer, null);
+    const sb = sig.toBytes();
+    tally_copy.copy_disjoint(u8, f.sig[0..], sb[0..]);
+    return f;
+}
+
+fn star_taken(state: *const FoldState, name: []const u8) bool {
+    var i: u32 = 0;
+    while (i < state.star_count) : (i += 1) {
+        const len = state.star_lens[i];
+        if (len != name.len) continue;
+        if (std.mem.eql(u8, state.stars[i][0..len], name)) return true;
+    }
+    return false;
+}
+
+/// Fold one fact into state. Refuses whole on verify fail, unknown kind, overdraw, or double star.
+pub fn fold_fact(state: *FoldState, fact: *const Fact) error{
+    IdentityRefused,
+    UnknownKind,
+    Overdraw,
+    StarTaken,
+    LogFull,
+}!void {
+    const pk = kumara.PublicKey.fromBytes(fact.signer_pk) catch return error.IdentityRefused;
+    var msg: [1 + 8 + star_name_max_bytes + myc_fact_max_bytes]u8 = undefined;
+    const n = canonical_bytes(fact, &msg);
+    kumara.verify_bytes(msg[0..n], fact.sig[0..], pk) catch return error.IdentityRefused;
+
+    if (fact.kind == kind_issue) {
+        const next = state.issued +% fact.amount;
+        if (next < state.issued) return error.Overdraw; // wrap refuse
+        state.issued = next;
+        assert(state.taxed <= state.issued);
+    } else if (fact.kind == kind_tax) {
+        if (fact.amount > state.supply()) return error.Overdraw;
+        state.taxed += fact.amount;
+        assert(state.taxed <= state.issued);
+    } else if (fact.kind == kind_star_reserve) {
+        if (fact.star_len == 0) return error.UnknownKind;
+        const name = fact.star_slice();
+        if (star_taken(state, name)) return error.StarTaken;
+        if (fact.amount > state.supply()) return error.Overdraw;
+        // Reservation pays tax into the twelve — same drain as tax.
+        state.taxed += fact.amount;
+        assert(state.taxed <= state.issued);
+        if (state.star_count >= myc_log_max_facts) return error.LogFull;
+        const at = state.star_count;
+        tally_copy.copy_disjoint(u8, state.stars[at][0..name.len], name);
+        state.star_lens[at] = fact.star_len;
+        state.star_count += 1;
+    } else {
+        return error.UnknownKind;
+    }
+}
+
+/// Fold a whole log from empty. Refuses whole on any bad fact — no silent skip.
+pub fn fold_log(log: *const Log) error{
+    IdentityRefused,
+    UnknownKind,
+    Overdraw,
+    StarTaken,
+    LogFull,
+}!FoldState {
+    if (log.len > myc_log_max_facts) return error.LogFull;
+    var state = FoldState{};
+    var i: u32 = 0;
+    while (i < log.len) : (i += 1) {
+        try fold_fact(&state, &log.facts[i]);
+        assert(state.supply() == state.issued - state.taxed);
+    }
+    return state;
+}
+
+/// Append a fact to the log then fold. Mutates log only after fold accepts.
+pub fn append_fact(log: *Log, fact: Fact) error{
+    IdentityRefused,
+    UnknownKind,
+    Overdraw,
+    StarTaken,
+    LogFull,
+}!FoldState {
+    if (log.len >= myc_log_max_facts) return error.LogFull;
+    // Probe-fold on a copy of state via full replay including the new fact.
+    var probe = Log.empty();
+    var i: u32 = 0;
+    while (i < log.len) : (i += 1) {
+        probe.facts[i] = log.facts[i];
+    }
+    probe.facts[log.len] = fact;
+    probe.len = log.len + 1;
+    const state = try fold_log(&probe);
+    log.facts[log.len] = fact;
+    log.len += 1;
+    return state;
+}
+
+/// Selftest — Check shape: purity · invariant · kumara · star unique · refuse whole.
+pub fn main() !void {
+    const seed: [kumara.seed_length]u8 = .{0x7e} ** kumara.seed_length;
+    const kp = kumara.keypair_from_seed(&seed);
+
+    const issue = mint_fact(kp, kind_issue, 1000, "", "genesis-purpose") orelse return error.MintIssue;
+    const tax_ok = mint_fact(kp, kind_tax, 64, "", "star-price-drain") orelse return error.MintTax;
+    const star_a = mint_fact(kp, kind_star_reserve, 64, "bandun", "reserve") orelse return error.MintStar;
+    const star_dup = mint_fact(kp, kind_star_reserve, 64, "bandun", "again") orelse return error.MintDup;
+    const tax_over = mint_fact(kp, kind_tax, 10_000, "", "overdraw") orelse return error.MintOver;
+
+    var log = Log.empty();
+    var state = try append_fact(&log, issue);
+    if (state.supply() != 1000) return error.SupplyAfterIssue;
+
+    state = try append_fact(&log, tax_ok);
+    if (state.supply() != 936) return error.SupplyAfterTax;
+
+    state = try append_fact(&log, star_a);
+    if (state.supply() != 872) return error.SupplyAfterStar;
+    if (state.star_count != 1) return error.StarCount;
+
+    // Double reservation refuses whole — log unchanged.
+    const len_before = log.len;
+    if (append_fact(&log, star_dup)) |_| return error.DupAccepted else |err| {
+        if (err != error.StarTaken) return error.WrongDup;
+    }
+    if (log.len != len_before) return error.DupMutated;
+
+    // Overdraw refuses whole.
+    if (append_fact(&log, tax_over)) |_| return error.OverAccepted else |err| {
+        if (err != error.Overdraw) return error.WrongOver;
+    }
+    if (log.len != len_before) return error.OverMutated;
+
+    // Tampered signature — IdentityRefused.
+    var bad = issue;
+    bad.sig[0] ^= 0xff;
+    if (append_fact(&log, bad)) |_| return error.TamperAccepted else |err| {
+        if (err != error.IdentityRefused) return error.WrongTamper;
+    }
+
+    // Unknown kind: mint refuses; a hand-sealed kind=99 folds to UnknownKind.
+    if (mint_fact(kp, 99, 1, "", "nope") != null) return error.UnknownMinted;
+    var alien = Fact{ .kind = 99, .amount = 1 };
+    const alien_body = "alien";
+    tally_copy.copy_disjoint(u8, alien.body[0..alien_body.len], alien_body);
+    alien.body_len = alien_body.len;
+    const apk = kp.public_key.toBytes();
+    tally_copy.copy_disjoint(u8, alien.signer_pk[0..], apk[0..]);
+    var amsg: [1 + 8 + star_name_max_bytes + myc_fact_max_bytes]u8 = undefined;
+    const an = canonical_bytes(&alien, &amsg);
+    const asig = kumara.sign(amsg[0..an], kp, null).toBytes();
+    tally_copy.copy_disjoint(u8, alien.sig[0..], asig[0..]);
+    if (append_fact(&log, alien)) |_| return error.UnknownAccepted else |err| {
+        if (err != error.UnknownKind) return error.WrongUnknown;
+    }
+
+    // Purity: fresh fold equals resumed fold over the same prefix.
+    const fresh = try fold_log(&log);
+    const again = try fold_log(&log);
+    if (fresh.issued != again.issued or fresh.taxed != again.taxed) return error.PurityAmounts;
+    if (fresh.supply() != again.supply()) return error.PuritySupply;
+    if (fresh.star_count != again.star_count) return error.PurityStars;
+    if (!std.mem.eql(u8, fresh.stars[0][0..fresh.star_lens[0]], again.stars[0][0..again.star_lens[0]])) {
+        return error.PurityStarName;
+    }
+
+    // Invariant at every prefix length.
+    var prefix = Log.empty();
+    var p: u32 = 0;
+    while (p < log.len) : (p += 1) {
+        prefix.facts[p] = log.facts[p];
+        prefix.len = p + 1;
+        const st = try fold_log(&prefix);
+        if (st.taxed > st.issued) return error.InvariantNeg;
+        if (st.supply() != st.issued - st.taxed) return error.InvariantSupply;
+    }
+
+    print("GREEN: myc fold — Check shape · supply={d} · stars={d} · purity · refuse whole\n", .{
+        fresh.supply(),
+        fresh.star_count,
+    });
+}
