@@ -81,13 +81,18 @@ ratchet_out=0
 [ "$parseint" -gt 0 ] && ratchet_out=$((ratchet_out + 1))
 
 # --- signal 3: target-class A hits (Seva Fund lineage residual) ---
+# yonder excluded (f2 · 20260730.093112) — same relocate kit as superseded
 class_a="$(rg -n --no-heading 'Seva Fund|%seva|seva\.fund' \
   --glob '!**/quin-workshop/**' \
   --glob '!**/archive/**' \
+  --glob '!**/yonder/**' \
   --glob '!**/session-logs/**' \
   --glob '!**/20260728-011055_the-fascia-season-charter.md' \
   --glob "$EXCLUDE_SELF" \
   --glob "$EXCLUDE_I45" \
+  --glob "!**/20260728-023240*" \
+  --glob "!**/20260728-023555*" \
+  --glob "!**/20260728-023941*" \
   --glob "$EXCLUDE_I4STAMP" \
   --glob "$EXCLUDE_I5STAMP" \
   --glob "$EXCLUDE_I6STAMP" 2>/dev/null | wc -l | tr -d ' ')"

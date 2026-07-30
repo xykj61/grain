@@ -16,7 +16,7 @@
 
 | Meter | Value |
 | --- | --- |
-| fascia | **69** (clutter 31 · superseded 6 · ratchet 3 · class-A 8 · over70 0) |
+| fascia | **69** (clutter 31 · history-weight 6 · ratchet 3 · class-A 8 · over70 0) |
 | sundial | **100 · green** (Keeh prompt fidelity — sibling meter) |
 
 ## f1 lean
