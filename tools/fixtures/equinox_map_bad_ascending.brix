@@ -1,0 +1,28 @@
+# Negative fixture — ascending flank on A (should be 2 1 12 descending wrap)
+kind map
+name equinox_map_bad_ascending
+count 4
+equinox A
+direction east
+element fire
+hour dawn
+angular 1
+flank 12 1 2
+equinox B
+direction north
+element water
+hour noon
+angular 10
+flank 11 10 9
+equinox C
+direction west
+element air
+hour dusk
+angular 7
+flank 8 7 6
+equinox D
+direction south
+element earth
+hour midnight
+angular 4
+flank 5 4 3
