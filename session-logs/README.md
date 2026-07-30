@@ -1,3 +1,4 @@
+- `20260730.022147` — [Journey 2 CLOSED FINAL Cursor land](20260730-022147_journey2-closed-final-cursor-land.bron) — FINAL bundle · pack green · REDS 30 · Build v32 next
 - `20260730.001315` — [Press create relay Cursor land](20260730-001315_press-create-relay-cursor-land.bron) — press · REDS 27 · sundial POSIX
 # Session logs
 
