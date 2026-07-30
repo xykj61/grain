@@ -26,6 +26,10 @@ Every pattern page carries four parts, in order. **Context** — the situation, 
 
 **The fact fold** — [`02-fact-fold.md`](02-fact-fold.md) · stamped `20260730.072710`, metal blanks filled `20260730.081647` from `mycelium/fold.rye`. Supply = issued − taxed at every prefix; named refusals; witness green on metal.
 
+## Page three — landed
+
+**The five primitives** — [`03-five-primitives.md`](03-five-primitives.md) · stamped `20260730.103002` · door 12 GREEN. Keypair · signed event · append-only log · pure fold · capability — invariants, bounds, refuses, and witness commands from GREEN myc metal only.
+
 ---
 
 *May every page here be a composition the metal already blessed. May the crystal keep its standard as the shelf fills. And may the assembly of peers find, on this shelf, the patterns that let them find each other.*
