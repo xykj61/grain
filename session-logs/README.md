@@ -1,3 +1,4 @@
+- `20260730.104053` — [Door 13 edu discovery walk GREEN · almanac 12](20260730-104053_door-13-edu-discovery-walk-green.bron) — five steps · next create prep or wire
 - `20260730.103638` — [Door 13 edu discovery walk chartered](20260730-103638_door-13-edu-discovery-walk-chartered.bron) — edu walk · kg create next
 - `20260730.103002` — [Door 12 five primitives reference GREEN · almanac 11](20260730-103002_door-12-five-primitives-reference-green.bron) — sangha/03 · next edu demo or discovery
 - `20260730.102700` — [Door 12 five primitives reference chartered](20260730-102700_door-12-five-primitives-reference-chartered.bron) — sangha/03 · kg create next
