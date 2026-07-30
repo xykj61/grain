@@ -1,7 +1,7 @@
 # Waymark — Framework Cursor Handoff after POLE
 
 **Stamp:** `20260730.151451` · **Voice:** Riyo  
-**Basis:** tip `PLACEHOLDER_NO` · Keaton's word — craft send handoff to Framework Cursor
+**Basis:** tip `9b89dcba42` · Keaton's word — craft send handoff to Framework Cursor
 
 Handoff seated: Cloud → Framework. Living tip on `xykj61/main`; home syncs `origin`. POLE GREEN · SUNN PAUSED · default next `return_sunn_sunn8`.
 
