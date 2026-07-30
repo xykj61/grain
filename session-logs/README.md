@@ -1,3 +1,4 @@
+- `20260730.135900` — [Equinox TB arc explained · fresh fusion baton](20260730-135900_equinox-tb-arc-explain-counsel.bron) — clean-room study · e42 closes ch3
 - `20260730.135422` — [E41 TB naming GREEN · almanac 47 · ch3 15/16](20260730-135422_e41-tb-naming-green.bron) — nouns·units last · e42 next
 - `20260730.135023` — [E40 TB performance surface GREEN · almanac 46 · ch3 14/16](20260730-135023_e40-tb-perf-surface-green.bron) — sized·batching·explicit · e41 next
 - `20260730.134747` — [E39 TB be-explicit GREEN · almanac 45 · ch3 13/16](20260730-134747_e39-tb-be-explicit-green.bron) — hot loops · lean lightly · e40 next
