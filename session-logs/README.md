@@ -1,3 +1,4 @@
+- `20260730.134336` — [E38 TB batching GREEN · almanac 44 · ch3 12/16](20260730-134336_e38-tb-batching-green.bron) — amortize · sprinter · e39 next
 - `20260730.134034` — [E37 TB sized-types GREEN · almanac 43 · ch3 11/16](20260730-134034_e37-tb-sized-types-green.bron) — exact widths · usize at seam · e38 next
 - `20260730.133808` — [E36 TB safety surface GREEN · almanac 42 · ch3 10/16](20260730-133808_e36-tb-safety-surface-green.bron) — static·seventy·flow · e37 next
 - `20260730.133534` — [E35 TB control-flow GREEN · almanac 41 · ch3 9/16](20260730-133534_e35-tb-control-flow-green.bron) — no recursion · e36 next

@@ -1,0 +1,28 @@
+# tools/gen/season/tigerbeetle_batching_census_witness.rish — e38 amortize by batching.
+#
+#   rishi/bin/rishi run tools/gen/season/tigerbeetle_batching_census_witness.rish
+#
+# Requires gratitude/tigerbeetle submodule present.
+# Clean-room: presence only · never copies into rye/.
+# Leaf only — no nested elder choirs.
+
+say "tb-batching: Language EN — amortize by batching; the CPU sprints."
+say "tb-batching: Style Radiant — large enough chunks; costs share one bound."
+say "tb-batching: Lens TAME — e38 · clean-room study · almanac seat 44."
+
+let clone = run ["test" "-d" "gratitude/tigerbeetle/src"]
+assert clone.ok else "tb-batching: gratitude/tigerbeetle/src ABSENT — host clone first"
+
+let census = run ["sh" "tools/fixtures/tigerbeetle_batching_census.sh"]
+say census.out
+assert census.ok else "tb-batching: census failed or thin"
+assert census.out contains "CLONE=present" else "tb-batching: want CLONE=present"
+assert census.out contains "verdict=ok" else "tb-batching: want verdict=ok"
+assert census.out contains "GUIDE_BATCH=yes" else "tb-batching: held guide must amortize by batching"
+assert census.out contains "GUIDE_SPRINTER=yes" else "tb-batching: guide must name the CPU sprinter"
+assert census.out contains "TAME_BATCH=yes" else "tb-batching: TAME must amortize by batching"
+assert census.out contains "TAME_SPRINTER=yes" else "tb-batching: TAME must name the CPU sprinter"
+assert census.out contains "STYLE=yes" else "tb-batching: clone docs must teach the law"
+assert census.out contains "GRAIN_BATCH=yes" else "tb-batching: Grain resin_batch bounds must be present"
+
+say "GREEN: tb-batching — guide·sprinter·TAME·style·grain-batch ok"

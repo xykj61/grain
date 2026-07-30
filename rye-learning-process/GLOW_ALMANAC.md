@@ -158,7 +158,7 @@ Expected halls_expected=13 · halls_absent=0 · census_breach_count=0, and verdi
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ch2_surface_witness.rish` · **Stamp:** `20260730.125750` · **Witness:** `tools/gen/season/equinox_ch2_surface_witness.rish`
 Expected SAFE census · reds complete/monotone/refuse · voice sites=6/refuse · baton halls=13/breach=0/absent refuse each GREEN in one choir. Metal answered GREEN. Chapter two closes at sixteen; chapter three waits for metal.
 
-## Chapter Three (11 of 16)
+## Chapter Three (12 of 16)
 
 Opened from metal at stamp `20260730.130733`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -205,6 +205,10 @@ Expected static GREEN · seventy GREEN · control-flow GREEN, and CLONE=ABSENT /
 ### 43. Types carry exact widths; usize stays at the seam, not in design.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_sized_types_choir_witness.rish` · **Stamp:** `20260730.134034` · **Witness:** `tools/gen/season/tigerbeetle_sized_types_census_witness.rish` · scan `tools/fixtures/tigerbeetle_sized_types_census.sh` · choir `equinox_tigerbeetle_sized_types_choir_witness.rish`
 Expected CLONE=present · GUIDE_SIZED · TAME_SIZED · SUPPLEMENT_SIZED · STYLE · WIDTH_CHECK · USIZE_AUDIT, and verdict=absent on a missing clone path. Metal answered GREEN. Clean-room study only.
+
+### 44. Costs amortize by batching; the CPU sprints on large enough chunks.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_batching_choir_witness.rish` · **Stamp:** `20260730.134336` · **Witness:** `tools/gen/season/tigerbeetle_batching_census_witness.rish` · scan `tools/fixtures/tigerbeetle_batching_census.sh` · choir `equinox_tigerbeetle_batching_choir_witness.rish`
+Expected CLONE=present · GUIDE_BATCH · GUIDE_SPRINTER · TAME_BATCH · TAME_SPRINTER · STYLE · GRAIN_BATCH, and verdict=absent on a missing clone path. Metal answered GREEN. Clean-room study only.
 
 ---
 

@@ -1,0 +1,29 @@
+# tools/gen/season/equinox_tigerbeetle_batching_choir_witness.rish — e38 → almanac.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_batching_choir_witness.rish
+#
+# Leaf welcome + refuse only — no nested elder choirs.
+
+say "equinox-tb-batching-choir: Language EN — amortize by batching; refuse an absent clone."
+say "equinox-tb-batching-choir: Style Radiant — welcome and refuse share one seat."
+say "equinox-tb-batching-choir: Lens TAME — e38 · batching · almanac seat 44."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_batching_census_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-tb-batching-choir: welcome RED"
+assert welcome.out contains "GREEN: tb-batching" else "equinox-tb-batching-choir: welcome missing GREEN"
+assert welcome.out contains "GUIDE_BATCH=yes" else "equinox-tb-batching-choir: want GUIDE_BATCH"
+assert welcome.out contains "TAME_BATCH=yes" else "equinox-tb-batching-choir: want TAME_BATCH"
+assert welcome.out contains "GRAIN_BATCH=yes" else "equinox-tb-batching-choir: want GRAIN_BATCH"
+
+let refuse = run ["sh" "tools/fixtures/tigerbeetle_batching_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
+say refuse.out
+assert refuse.ok == false else "equinox-tb-batching-choir: absent clone must fail"
+assert refuse.out contains "verdict=absent" else "equinox-tb-batching-choir: want verdict=absent"
+assert refuse.out contains "CLONE=ABSENT" else "equinox-tb-batching-choir: want CLONE=ABSENT"
+
+let almanac = run ["sh" "tools/gen/season/equinox_tigerbeetle_batching_almanac.sh"]
+assert almanac.ok else "equinox-tb-batching-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-tb-batching-choir — amortize · sprinter · grain bounds · absent refuses · almanac seat 44"
