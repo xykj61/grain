@@ -60,7 +60,9 @@ A red enters this ledger when it is found. Rows are never edited or removed; a l
 | 25 | Six `.rye` files I authored carried the canonical head correctly and sat outside the opening-lines roster, so they passed by their author's care rather than by proof | running the elder witness and reading its count of 18 | A fixed roster is honest only while someone keeps adding to it. Correct-but-unguarded is the state just before correct-by-accident. |
 | 26 | Four ideas siloed at v8 were restated only into a counsel artifact outside the tree — described in passing rather than crossed into the clean room | this round's own priority, `opening_lines_and_silo` | A crossing is not complete until the insight lands in the clean room. Same class as reds owned aloud but never recorded. |
 
-**Rows: 26 · in the tree before the ledger: 6 · recovered by opening it: 14 · added under the reds-first law: 6**
+| 27 | `tools/fixtures/sundial.sh` measures checkpoints with `rg`; on a bench without ripgrep every prompt check silently misses, so the score reports tool availability rather than prompt health — 30 · orange against any door | the cross-bench delta the Cursor waymark asked v16 to report, then `which rg` and a `/tmp` shadow with `grep -Eq` that reproduced the host's 100 exactly | A fixture either declares its tools and refuses loudly when one is absent, or speaks POSIX. A witness that asserts only its own GREEN line stays green while the number beneath it changes meaning. |
+
+**Rows: 27 · in the tree before the ledger: 6 · recovered by opening it: 14 · added under the reds-first law: 7**
 
 **Reds-first accounting for v11:** two reds found, both fixed in-round with witnesses on metal, ledger closed. The remaining journey allocation is therefore **released** rather than booked — which is the law working, not the law skipped.
 

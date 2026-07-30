@@ -6,11 +6,11 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260729.232755` (EDT) · voice Riyo  
+**Last refreshed:** `20260730.001315` (EDT) · voice Riyo  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin** · **sundial** · **reds-first**  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss** · **first resident** (routine) · **vegan-dogfood** (easter egg) · **living mutant** · **shred-prep list** · **transitive writing crawl** · **Kiln** · **three** · **quad** · **nona** · **deca** · **undeca** *(proposed)* · **equinoxes** · **SDD** · **Nest-Chapter** · **your / %your** · Glow=code · Brix=data  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes** · **mod-clock** · **REDS.md**  
-**Git nib:** `02b5bf9627` · Grain · **Voice v15** FULL bundle land · journey 2 handoff · autoproject96/grain
+**Git nib:** `be3622288f` · Grain · **Voice v15** FULL bundle land · journey 2 handoff · autoproject96/grain
 **Bookmark:** [`expanding-prompts/20260729-232755_voice-journey-two-handoff.md`](../expanding-prompts/20260729-232755_voice-journey-two-handoff.md)
 
 **Chapter:** Framework · EDT · **Grain** · **finishing edge:** **undeca** *(proposed)* — Voice **OPEN** · v15 complete / **v16** next · journey 1 closed · Equinox **PAUSED** e6/e7 · Surface **PAUSED** · Identity Remake **PAUSED** · GitHub-only · Riyo stands · Prefer **git nib**. · `prin scope`
