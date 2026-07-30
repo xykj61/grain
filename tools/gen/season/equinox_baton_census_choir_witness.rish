@@ -1,0 +1,29 @@
+# tools/gen/season/equinox_baton_census_choir_witness.rish — e25 baton census → almanac.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_baton_census_choir_witness.rish
+
+say "equinox-baton-census-choir: Language EN — thirteen halls, counted once."
+say "equinox-baton-census-choir: Style Radiant — welcome and refuse share one seat."
+say "equinox-baton-census-choir: Lens TAME — e25 · museum-hall census · almanac seat 31."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/season/baton_museum_census_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-baton-census-choir: welcome RED"
+assert welcome.out contains "GREEN: baton-census" else "equinox-baton-census-choir: welcome missing GREEN"
+assert welcome.out contains "halls_expected=13" else "equinox-baton-census-choir: want thirteen halls"
+assert welcome.out contains "census_breach_count=0" else "equinox-baton-census-choir: want breach census zero"
+
+# Refuse: a missing museum path is loud, not silent.
+let refuse = run ["sh" "tools/fixtures/baton_museum_census_scan.sh" "tools/fixtures/baton_museum_ABSENT"]
+say refuse.out
+assert refuse.ok == false else "equinox-baton-census-choir: absent museum must fail status"
+assert refuse.out contains "verdict=missing_museum" else "equinox-baton-census-choir: want missing_museum verdict"
+
+let elder = run ["rishi/bin/rishi" "run" "tools/gen/season/equinox_voice_roster_choir_witness.rish"]
+assert elder.ok else "equinox-baton-census-choir: voice-roster elder went RED"
+
+let almanac = run ["sh" "tools/gen/season/equinox_baton_census_choir_almanac.sh"]
+assert almanac.ok else "equinox-baton-census-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-baton-census-choir — thirteen halls · breach 0 · absent refuses · almanac seat 31"
