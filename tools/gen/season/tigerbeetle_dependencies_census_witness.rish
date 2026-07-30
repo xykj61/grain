@@ -1,0 +1,30 @@
+# tools/gen/season/tigerbeetle_dependencies_census_witness.rish — e52 Dependencies.
+#
+#   rishi/bin/rishi run tools/gen/season/tigerbeetle_dependencies_census_witness.rish
+#
+# Requires gratitude/tigerbeetle submodule present.
+# Clean-room: presence only · never copies into rye/.
+# Leaf only — no nested elder choirs.
+
+say "tb-dependencies: Language EN — zero dependencies beyond Zig."
+say "tb-dependencies: Style Radiant — supply-chain risk stays out of the stack."
+say "tb-dependencies: Lens TAME — e52 · clean-room study · almanac seat 57."
+
+let clone = run ["test" "-d" "gratitude/tigerbeetle/src"]
+assert clone.ok else "tb-dependencies: gratitude/tigerbeetle/src ABSENT — host clone first"
+
+let census = run ["sh" "tools/fixtures/tigerbeetle_dependencies_census.sh"]
+say census.out
+assert census.ok else "tb-dependencies: census failed or thin"
+assert census.out contains "CLONE=present" else "tb-dependencies: want CLONE=present"
+assert census.out contains "verdict=ok" else "tb-dependencies: want verdict=ok"
+assert census.out contains "GUIDE_DEPS=yes" else "tb-dependencies: held guide must teach Dependencies"
+assert census.out contains "GUIDE_ZERO=yes" else "tb-dependencies: guide must teach zero dependencies"
+assert census.out contains "GUIDE_ZIG=yes" else "tb-dependencies: guide must name Zig toolchain"
+assert census.out contains "GUIDE_SUPPLY=yes" else "tb-dependencies: guide must name supply chain risk"
+assert census.out contains "TAME_DEPS=yes" else "tb-dependencies: TAME must teach Dependencies"
+assert census.out contains "STYLE=yes" else "tb-dependencies: clone docs must teach the law"
+assert census.out contains "ELDER_STYLE=yes" else "tb-dependencies: style-numbers elder must be present"
+assert census.out contains "RADIANT=yes" else "tb-dependencies: Grain Radiant Style must be present"
+
+say "GREEN: tb-dependencies — guide·zero·zig·supply·TAME·style·elder-style·RADIANT ok"

@@ -226,7 +226,7 @@ Expected CLONE=present · GUIDE_NAMING · GUIDE_UNITS · GUIDE_ABBREV · TAME_NA
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ch3_surface_witness.rish` · **Stamp:** `20260730.140147` · **Witness:** `tools/gen/season/equinox_ch3_surface_witness.rish`
 Expected wing halls=4/breach=0 · safety static/seventy/flow · performance sized/batching/explicit · naming, and verdict=missing_wing on an absent path. Metal answered GREEN. Chapter three closes at sixteen; chapter four waits for metal.
 
-## Chapter Four (8 of 16)
+## Chapter Four (9 of 16)
 
 Opened from metal at stamp `20260730.140442`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -261,6 +261,10 @@ Expected CLONE=present · GUIDE_OBO · GUIDE_TYPES · GUIDE_DIV · TAME_OBO · S
 ### 56. Style holds by the numbers: zig fmt, four spaces, one hundred columns, and braced ifs.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_style_by_the_numbers_choir_witness.rish` · **Stamp:** `20260730.162658` · **Witness:** `tools/gen/season/tigerbeetle_style_by_the_numbers_census_witness.rish` · scan `tools/fixtures/tigerbeetle_style_by_the_numbers_census.sh` · choir `equinox_tigerbeetle_style_by_the_numbers_choir_witness.rish`
 Expected CLONE=present · GUIDE_STYLE · GUIDE_FMT · GUIDE_INDENT · GUIDE_COLS · GUIDE_BRACE · TAME_STYLE · STYLE · ELDER_OBO · RADIANT, and verdict=absent on a missing clone path. Metal answered GREEN. Clean-room study only.
+
+### 57. Dependencies stay at zero beyond Zig; supply-chain risk stays out of the stack.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_dependencies_choir_witness.rish` · **Stamp:** `20260730.164244` · **Witness:** `tools/gen/season/tigerbeetle_dependencies_census_witness.rish` · scan `tools/fixtures/tigerbeetle_dependencies_census.sh` · choir `equinox_tigerbeetle_dependencies_choir_witness.rish`
+Expected CLONE=present · GUIDE_DEPS · GUIDE_ZERO · GUIDE_ZIG · GUIDE_SUPPLY · TAME_DEPS · STYLE · ELDER_STYLE · RADIANT, and verdict=absent on a missing clone path. Metal answered GREEN. Clean-room study only.
 
 ---
 
