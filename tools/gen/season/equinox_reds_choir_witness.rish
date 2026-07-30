@@ -1,0 +1,31 @@
+# tools/gen/season/equinox_reds_choir_witness.rish — e23 reds welcome+refuse → almanac.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_reds_choir_witness.rish
+
+say "equinox-reds-choir: Language EN — the ledger grows; the guard bites."
+say "equinox-reds-choir: Style Radiant — welcome and refuse share one seat."
+say "equinox-reds-choir: Lens TAME — e23 · measurement-beats-memory · almanac seat 29."
+
+let complete = run ["rishi/bin/rishi" "run" "tools/gen/season/reds_ledger_witness.rish"]
+say complete.out
+assert complete.ok else "equinox-reds-choir: completeness RED"
+assert complete.out contains "GREEN: reds-ledger" else "equinox-reds-choir: completeness missing GREEN"
+
+let mono = run ["rishi/bin/rishi" "run" "tools/gen/season/reds_ledger_monotone_witness.rish"]
+say mono.out
+assert mono.ok else "equinox-reds-choir: monotone RED"
+assert mono.out contains "GREEN: reds-monotone" else "equinox-reds-choir: monotone missing GREEN"
+
+let refuse = run ["rishi/bin/rishi" "run" "tools/gen/season/reds_ledger_negative_witness.rish"]
+say refuse.out
+assert refuse.ok else "equinox-reds-choir: refuse RED"
+assert refuse.out contains "GREEN: reds-ledger-negative" else "equinox-reds-choir: refuse missing GREEN"
+
+let elder = run ["rishi/bin/rishi" "run" "tools/gen/season/safe_list_census_witness.rish"]
+assert elder.ok else "equinox-reds-choir: SAFE elder went RED"
+
+let almanac = run ["sh" "tools/gen/season/equinox_reds_choir_almanac.sh"]
+assert almanac.ok else "equinox-reds-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-reds-choir — complete · monotone · refuse · SAFE elder · almanac seat 29"
