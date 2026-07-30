@@ -90,7 +90,7 @@ Expected houses 1..12 once · three per equinox · join equinox_map flanks · ke
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_surface_witness.rish` · **Stamp:** `20260730.115059` · **Witness:** `tools/gen/season/equinox_surface_witness.rish`
 Expected e0 · equinox_map · equinox_foundations each GREEN in one choir. Metal answered GREEN. Chapter one closes at sixteen; prose create-prep did not earn this seat.
 
-## Chapter Two (15 of 16)
+## Chapter Two (16 of 16)
 
 Opened from metal at stamp `20260730.115626`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -154,6 +154,10 @@ Expected sites=6 · drift=0 for Riyo, and verdict=drift for an undeclared voice 
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_baton_census_choir_witness.rish` · **Stamp:** `20260730.125244` · **Witness:** `tools/gen/season/baton_museum_census_witness.rish` · scan `tools/fixtures/baton_museum_census_scan.sh` · choir `equinox_baton_census_choir_witness.rish`
 Expected halls_expected=13 · halls_absent=0 · census_breach_count=0, and verdict=missing_museum on an absent path. Metal answered GREEN. Museum-hall census named; breach census stays zero and banked.
 
+### 32. The chapter-two surface choir holds: SAFE, reds, voice, and baton GREEN together.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ch2_surface_witness.rish` · **Stamp:** `20260730.125750` · **Witness:** `tools/gen/season/equinox_ch2_surface_witness.rish`
+Expected SAFE census · reds complete/monotone/refuse · voice sites=6/refuse · baton halls=13/breach=0/absent refuse each GREEN in one choir. Metal answered GREEN. Chapter two closes at sixteen; chapter three waits for metal.
+
 ---
 
-*May every line here be one the machine said first. May the book close at its bound the way a season does. And may chapter two wait for metal, not memory.*
+*May every line here be one the machine said first. May the book close at its bound the way a season does. And may chapter three wait for metal, not memory.*

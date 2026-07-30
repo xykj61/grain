@@ -1,3 +1,4 @@
+- `20260730.125750` — [E26 ch2 surface choir GREEN · almanac 32](20260730-125750_e26-ch2-surface-choir-green.bron) — SAFE·reds·voice·baton · ch2 FULL · e27 next
 - `20260730.125244` — [E25 baton census choir GREEN · almanac 31](20260730-125244_e25-baton-census-choir-green.bron) — 13 halls · breach 0 · seat 31 · e26 next
 - `20260730.124935` — [E24 voice roster choir GREEN · almanac 30](20260730-124935_e24-voice-roster-choir-green.bron) — sites=6 · refuse Nobody · seat 30 · e25 next
 - `20260730.124325` — [E23 reds choir GREEN · almanac 29](20260730-124325_e23-reds-choir-green.bron) — complete·monotone·refuse · seat 29 · e24 next
