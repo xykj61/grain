@@ -1,3 +1,4 @@
+- `20260730.130733` — [E27 design-shapes choir GREEN · almanac 33 · ch3 open](20260730-130733_e27-design-shapes-ch3-open-green.bron) — four halls · breach 0 · missing_wing refuse · e28 next
 - `20260730.125750` — [E26 ch2 surface choir GREEN · almanac 32](20260730-125750_e26-ch2-surface-choir-green.bron) — SAFE·reds·voice·baton · ch2 FULL · e27 next
 - `20260730.125244` — [E25 baton census choir GREEN · almanac 31](20260730-125244_e25-baton-census-choir-green.bron) — 13 halls · breach 0 · seat 31 · e26 next
 - `20260730.124935` — [E24 voice roster choir GREEN · almanac 30](20260730-124935_e24-voice-roster-choir-green.bron) — sites=6 · refuse Nobody · seat 30 · e25 next
