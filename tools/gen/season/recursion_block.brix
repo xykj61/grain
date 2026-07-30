@@ -65,7 +65,7 @@ voice_v32_descriptor_landed 20260730.030553
 baton_museum context/baton-museum
 coords_equinox A
 coords_journey 4
-coords_journey_4_status OPEN — h4 Accrete-never-break · door 8 next
+coords_journey_4_status OPEN — h4 Accrete-never-break · door 8 GREEN · next charter
 coords_quest Do
 coords_round 13
 coords_season_rounds 256
@@ -78,8 +78,9 @@ coords_equinox_map_correction CLOSED 20260730.082536 em0-em15
 coords_equinox_map_correction_handback journey_3_r12_close CONSUMED
 coords_door_6 ship_sol
 coords_door_7 build_bounds
-coords_door_8 fold_pattern_two
+coords_door_8 fold_pattern_two GREEN 20260730.083821
 design_shapes_wing seated 20260730.041319
+design_shapes_fact_fold seated 20260730.083821
 flank_arrow_path seated 20260730.083225
 # myc opening numbers approved 20260730.014817 (were a proposal at 20260729.231500)
 myc_genesis 12288
