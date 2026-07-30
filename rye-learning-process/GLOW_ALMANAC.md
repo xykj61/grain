@@ -226,7 +226,7 @@ Expected CLONE=present · GUIDE_NAMING · GUIDE_UNITS · GUIDE_ABBREV · TAME_NA
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ch3_surface_witness.rish` · **Stamp:** `20260730.140147` · **Witness:** `tools/gen/season/equinox_ch3_surface_witness.rish`
 Expected wing halls=4/breach=0 · safety static/seventy/flow · performance sized/batching/explicit · naming, and verdict=missing_wing on an absent path. Metal answered GREEN. Chapter three closes at sixteen; chapter four waits for metal.
 
-## Chapter Four (2 of 16)
+## Chapter Four (3 of 16)
 
 Opened from metal at stamp `20260730.140442`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -237,6 +237,10 @@ Expected CLONE=present · GUIDE_WHY · GUIDE_HOW · GUIDE_SENTENCE · TAME_WHY �
 ### 50. Tests say how; goal and method meet the reader before the dive.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_say_how_choir_witness.rish` · **Stamp:** `20260730.140756` · **Witness:** `tools/gen/season/tigerbeetle_say_how_census_witness.rish` · scan `tools/fixtures/tigerbeetle_say_how_census.sh` · choir `equinox_tigerbeetle_say_how_choir_witness.rish`
 Expected CLONE=present · GUIDE_HOW · GUIDE_METHOD · TAME_HOW · STYLE · ELDER_WHY · RADIANT, and verdict=absent on a missing clone path. Metal answered GREEN. Clean-room study only.
+
+### 51. Cache stays singular; larger structs initialize in place.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_cache_inplace_choir_witness.rish` · **Stamp:** `20260730.141038` · **Witness:** `tools/gen/season/tigerbeetle_cache_inplace_census_witness.rish` · scan `tools/fixtures/tigerbeetle_cache_inplace_census.sh` · choir `equinox_tigerbeetle_cache_inplace_choir_witness.rish`
+Expected CLONE=present · GUIDE_CACHE · GUIDE_NODUP · GUIDE_INPLACE · TAME_CACHE · STYLE · ELDER_HOW · RADIANT, and verdict=absent on a missing clone path. Metal answered GREEN. Clean-room study only.
 
 ---
 

@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260730.141038
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title E45 TB cache-inplace GREEN · almanac 51 · ch4 3/16
+prompt kg · seat e45 shape — chapter four continues from metal
+think e44 say-how · next Cache Invalidation · no aliases · in-place out pointer · elder how
+think Guide·nodup·inplace·TAME·style·elder·RADIANT · absent refuse · seat 51
+obs E45 GREEN · chapter four 3/16 · state stays singular · pointer stability
+file tools/fixtures/tigerbeetle_cache_inplace_census.sh cache-inplace scan
+file tools/gen/season/tigerbeetle_cache_inplace_census_witness.rish welcome
+file tools/gen/season/equinox_tigerbeetle_cache_inplace_choir_witness.rish e45 choir
+file tools/gen/season/equinox_tigerbeetle_cache_inplace_almanac.sh seat 51
+file expanding-prompts/20260730-141004_e45-tb-cache-inplace-charter.md charter
+file rye-learning-process/GLOW_ALMANAC.md seat 51 · ch4 3/16
+recommend keep-going seat e46 ch4-continue metal · dual-push with send

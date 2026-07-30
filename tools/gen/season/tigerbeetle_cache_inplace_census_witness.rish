@@ -1,0 +1,29 @@
+# tools/gen/season/tigerbeetle_cache_inplace_census_witness.rish — e45 Cache Invalidation.
+#
+#   rishi/bin/rishi run tools/gen/season/tigerbeetle_cache_inplace_census_witness.rish
+#
+# Requires gratitude/tigerbeetle submodule present.
+# Clean-room: presence only · never copies into rye/.
+# Leaf only — no nested elder choirs.
+
+say "tb-cache-inplace: Language EN — cache invalidation; no aliases; init in place."
+say "tb-cache-inplace: Style Radiant — pointer stability holds; state stays singular."
+say "tb-cache-inplace: Lens TAME — e45 · clean-room study · almanac seat 51."
+
+let clone = run ["test" "-d" "gratitude/tigerbeetle/src"]
+assert clone.ok else "tb-cache-inplace: gratitude/tigerbeetle/src ABSENT — host clone first"
+
+let census = run ["sh" "tools/fixtures/tigerbeetle_cache_inplace_census.sh"]
+say census.out
+assert census.ok else "tb-cache-inplace: census failed or thin"
+assert census.out contains "CLONE=present" else "tb-cache-inplace: want CLONE=present"
+assert census.out contains "verdict=ok" else "tb-cache-inplace: want verdict=ok"
+assert census.out contains "GUIDE_CACHE=yes" else "tb-cache-inplace: held guide must teach Cache Invalidation"
+assert census.out contains "GUIDE_NODUP=yes" else "tb-cache-inplace: guide must refuse duplicate aliases"
+assert census.out contains "GUIDE_INPLACE=yes" else "tb-cache-inplace: guide must teach in-place out pointer"
+assert census.out contains "TAME_CACHE=yes" else "tb-cache-inplace: TAME must teach Cache Invalidation"
+assert census.out contains "STYLE=yes" else "tb-cache-inplace: clone docs must teach the law"
+assert census.out contains "ELDER_HOW=yes" else "tb-cache-inplace: say-how elder must be present"
+assert census.out contains "RADIANT=yes" else "tb-cache-inplace: Grain Radiant Style must be present"
+
+say "GREEN: tb-cache-inplace — guide·nodup·inplace·TAME·style·elder-how·RADIANT ok"
