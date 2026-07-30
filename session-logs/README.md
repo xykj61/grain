@@ -1,3 +1,4 @@
+- `20260730.161404` — [SUNN14 REMEMBER pin after heredoc miss](20260730-161404_sunn14-remember-pin.bron) — pin dc2d6ed79f · living d4e2a5c3d6
 - `20260730.160653` — [SUNN13 REMEMBER bookmark season pin complete](20260730-160653_sunn13-remember-pin-complete.bron) — pin 7c438bbbcb · living 6028275905
 - `20260730.154456` — [SUNN11 witness drop pier-local APPLY](20260730-154456_sunn11-apply-ignore-red-fix.bron) — tracked leaves · dual-push on SOURCE
 - `20260730.161004` — [SUNN14 witness choir thin SOURCE refuse GREEN](20260730-161004_sunn14-witness-choir-green.bron) — limbs 5–13 · census GREEN · SUNN15 next
