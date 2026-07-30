@@ -7,9 +7,9 @@
 # Agents edit THIS file for waymark / seat / charter lines.
 # Old tools/prin_scope.rish is an accrete shim (Generator Chapter s4).
 
-say "prin-scope: Language EN — ten-nest season slate."
+say "prin-scope: Language EN — twelve-nest season slate."
 say "prin-scope: Style Radiant — print orientation; refuse shred/deploy."
-say "prin-scope: Lens TAME — living pin; nest accuracy 20260729.165912 (deca)."
+say "prin-scope: Lens TAME — living pin; nest accuracy 20260730.090926 (duodeca)."
 
 let g = run ["git" "rev-parse" "--short=10" "HEAD"]
 assert g.ok else "prin_scope: git rev-parse failed"
@@ -30,13 +30,16 @@ say "  sept:   Surface Chapter — PAUSED · p58 complete / p59 next (live-five 
 say "  oct:   Kiln Chapter — PAUSED at o3 complete / o4 next (handed back)"
 say "  nona:  Nona Chapter — PAUSED · n3 complete / n4 next (handed back return_surface_p41)"
 say "  deca:  Equinox Chapter — PAUSED · e6 complete / e7 next (handback return_surface_p59)"
-say "  undeca: Voice Chapter — OPEN · Journey 4 h4 Accrete-never-break · door 9 GREEN · door 10 CHARTERED · tend two DONE · equinox map CLOSED (true deepest · Riyo · undeca canon)"
+say "  undeca: Voice Chapter — PAUSED · Journey 4 h4 · door 10 CHARTERED · tend two DONE · equinox map CLOSED (Riyo · undeca canon · handback return_equinox_e7 nested)"
+say "  duodeca: Fascia Equinox — OPEN · f0 complete / f1 next · exit fascia>=90 · entry 69 (true deepest · Riyo)"
 say "  baton_museum: context/baton-museum/ — halls living · Lexicon baton · census zero"
-say "  coords_256: equinox A · Journey 4 round 15 · door 10 CHARTERED · kg create refusal_storm · season name PARKED"
+say "  coords_fascia: duodeca · f0/f1 · exit_bar 90 · handback return_voice_j4_d10"
+say "  coords_voice_bookmark: equinox A · Journey 4 round 15 · door 10 CHARTERED · season name PARKED"
 say "  equinox_map: east fire dawn H1 · north water noon H10 · west air dusk H7 · south earth midnight H4 (canon 20260730.082536)"
 say "  flanks: 2nd->1st->12th · 11th->10th->9th · 8th->7th->6th · 5th->4th->3rd (arrow_path)"
 say "  remotes: origin autoproject96/grain · xykj61 xykj61/grain (always both)"
-say "  extend_or_return: return_equinox_e7 (Voice handback · seated 20260729.205642)"
+say "  extend_or_return: return_voice_j4_d10 (Fascia Equinox handback · seated 20260730.090926)"
+say "  voice_handback_nested: return_equinox_e7 (when Voice itself returns · seated 20260729.205642)"
 say "  sdd:    Chapter-Driven Development · Nest-Chapter Development (foundations 20260729.130535)"
 say "  nona_handback: return_surface_p41 (seated 20260729.131327)"
 say "  identity_handback: return_surface_p55 (seated 20260729.162032)"
@@ -81,4 +84,4 @@ say "  mur_charter: counsel/20260728-025220_the-mur-season-innermost-charter.md"
 say "  geode_charter: counsel/20260728-031722_the-geode-season-charter.md"
 say "  warn:   e254/e255 extend 512 · return_surface_p59 · or other"
 
-say "GREEN: prin-scope — ten nests printed · living pin is .rish"
+say "GREEN: prin-scope — twelve nests printed · living pin is .rish"
