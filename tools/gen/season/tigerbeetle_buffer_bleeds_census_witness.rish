@@ -1,0 +1,28 @@
+# tools/gen/season/tigerbeetle_buffer_bleeds_census_witness.rish — e47 Buffer bleeds.
+#
+#   rishi/bin/rishi run tools/gen/season/tigerbeetle_buffer_bleeds_census_witness.rish
+#
+# Requires gratitude/tigerbeetle submodule present.
+# Clean-room: presence only · never copies into rye/.
+# Leaf only — no nested elder choirs.
+
+say "tb-buffer-bleeds: Language EN — buffer bleeds; alloc meets defer."
+say "tb-buffer-bleeds: Style Radiant — padding stays zeroed; leaks show."
+say "tb-buffer-bleeds: Lens TAME — e47 · clean-room study · almanac seat 53."
+
+let clone = run ["test" "-d" "gratitude/tigerbeetle/src"]
+assert clone.ok else "tb-buffer-bleeds: gratitude/tigerbeetle/src ABSENT — host clone first"
+
+let census = run ["sh" "tools/fixtures/tigerbeetle_buffer_bleeds_census.sh"]
+say census.out
+assert census.ok else "tb-buffer-bleeds: census failed or thin"
+assert census.out contains "CLONE=present" else "tb-buffer-bleeds: want CLONE=present"
+assert census.out contains "verdict=ok" else "tb-buffer-bleeds: want verdict=ok"
+assert census.out contains "GUIDE_BLEED=yes" else "tb-buffer-bleeds: held guide must teach buffer bleeds"
+assert census.out contains "GUIDE_GROUP=yes" else "tb-buffer-bleeds: guide must group alloc with defer"
+assert census.out contains "TAME_BLEED=yes" else "tb-buffer-bleeds: TAME must teach bleeds and alloc grouping"
+assert census.out contains "STYLE=yes" else "tb-buffer-bleeds: clone docs must teach the law"
+assert census.out contains "ELDER_SHRINK=yes" else "tb-buffer-bleeds: shrink-scope elder must be present"
+assert census.out contains "RADIANT=yes" else "tb-buffer-bleeds: Grain Radiant Style must be present"
+
+say "GREEN: tb-buffer-bleeds — guide·group·TAME·style·elder-shrink·RADIANT ok"
