@@ -1,3 +1,4 @@
+- `20260730.110806` — [Door 15 discovery wire round-trip chartered](20260730-110806_door-15-discovery-wire-chartered.bron) — peers 2 · converge 8 · kg create next
 - `20260730.110403` — [Door 14 create prep GREEN · Build queue closed](20260730-110403_door-14-create-prep-green.bron) — seat 16 DONE · next elder wire
 - `20260730.105636` — [Door 14 create prep chartered](20260730-105636_door-14-create-prep-chartered.bron) — Build handback packet · kg create next
 - `20260730.104053` — [Door 13 edu discovery walk GREEN · almanac 12](20260730-104053_door-13-edu-discovery-walk-green.bron) — five steps · next create prep or wire
