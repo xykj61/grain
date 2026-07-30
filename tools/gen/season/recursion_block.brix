@@ -70,7 +70,7 @@ coords_quest Do
 coords_round 24
 coords_voice_handback return_equinox_e7 CONSUMED 20260730.111804
 coords_equinox_season OPEN
-coords_equinox_status e11 GREEN · e12 next · true deepest
+coords_equinox_status e12 GREEN · e13 next · true deepest
 coords_true_deepest deca
 coords_e7 equinox_map GREEN 20260730.113507
 coords_e7_path context/equinox_map.brix
@@ -93,9 +93,13 @@ coords_e11 equinox_east_almanac GREEN 20260730.115628
 coords_e11_path tools/gen/season/equinox_east_almanac_witness.rish
 coords_e11_charter expanding-prompts/20260730-115553_e11-equinox-east-pack-almanac-charter.md
 coords_e11_recursion expanding-prompts/20260730-115628_equinox-season-e11-recursion-prompt.md
+coords_e12 equinox_priority_almanac GREEN 20260730.120317
+coords_e12_path tools/gen/season/equinox_priority_almanac_witness.rish
+coords_e12_charter expanding-prompts/20260730-120233_e12-priority-fold-almanac-charter.md
+coords_e12_recursion expanding-prompts/20260730-120317_equinox-season-e12-recursion-prompt.md
 coords_almanac_ch1 16 of 16
-coords_almanac_ch2 1 of 16
-coords_almanac_seat 17
+coords_almanac_ch2 2 of 16
+coords_almanac_seat 18
 coords_season_rounds 256
 coords_season_name PARKED
 coords_tend_two DONE 20260730.085559 fascia_entry 69 fascia_exit 69 delta 0

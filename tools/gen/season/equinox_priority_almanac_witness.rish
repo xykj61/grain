@@ -1,0 +1,22 @@
+# tools/gen/season/equinox_priority_almanac_witness.rish — e12 priority fold → almanac.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_priority_almanac_witness.rish
+
+say "equinox-priority-almanac: Language EN — a round names its priority."
+say "equinox-priority-almanac: Style Radiant — sixteen slots; doubles keep their gap."
+say "equinox-priority-almanac: Lens TAME — e12 · Glow almanac seat 18."
+
+let zig = "vendor/zig-toolchain/zig"
+let have = run ["test" "-x" zig]
+assert have.ok else "equinox-priority-almanac: toolchain absent"
+
+let fold = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run glow/priority_fold_test.rye 2>&1"]
+say fold.out
+assert fold.ok else "equinox-priority-almanac: priority fold RED"
+assert fold.out contains "GREEN: priority fold" else "equinox-priority-almanac: priority fold not GREEN"
+
+let almanac = run ["sh" "tools/gen/season/equinox_priority_almanac.sh"]
+assert almanac.ok else "equinox-priority-almanac: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-priority-almanac — priority fold · chapter two seat 18"
