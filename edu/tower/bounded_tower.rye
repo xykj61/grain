@@ -1,0 +1,57 @@
+//! edu/tower/bounded_tower.rye — classic three-peg tower · explicit stack · no recursion.
+//!
+//! Bounds named before the machine runs. Uses graduated tally/stack (second consumer).
+//! Tutorial: docs-geode/tutorials/recursion-in-glow.md
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run edu/tower/bounded_tower.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const tally_stack = @import("tally_stack.rye");
+
+const max_rings: u32 = 16; // a 16-ring tower is 65,535 moves — plenty
+const max_frames: u32 = 2 * max_rings - 1; // invariant: the frame stack never exceeds this
+
+const Task = struct { count: u32, from: u8, to: u8, via: u8 };
+const Stack = tally_stack.StackType(Task, max_frames);
+
+fn solve(rings: u32) error{ TooManyRings, TooFewRings }!u32 {
+    if (rings < 1) return error.TooFewRings;
+    if (rings > max_rings) return error.TooManyRings;
+
+    var s = Stack{};
+    s.push(.{ .count = rings, .from = 'A', .to = 'C', .via = 'B' });
+
+    var moves: u32 = 0;
+    const max_moves: u32 = (@as(u32, 1) << @intCast(rings)) - 1; // 2^n − 1, exact
+    while (s.pop()) |t| {
+        if (t.count == 1) {
+            moves += 1;
+            assert(moves <= max_moves);
+            print("move ring from {c} to {c}\n", .{ t.from, t.to });
+        } else {
+            // pushed in reverse so they pop in teaching order
+            s.push(.{ .count = t.count - 1, .from = t.via, .to = t.to, .via = t.from });
+            s.push(.{ .count = 1, .from = t.from, .to = t.to, .via = t.via });
+            s.push(.{ .count = t.count - 1, .from = t.from, .to = t.via, .via = t.to });
+        }
+    }
+    assert(moves == max_moves);
+    return moves;
+}
+
+pub fn main() void {
+    const moves = solve(3) catch unreachable;
+    assert(moves == 7); // welcome: three rings · seven moves
+
+    const refused = solve(17);
+    assert(refused == error.TooManyRings); // negative space: seventeenth ring refused whole
+
+    // Frame bound bites on a hand-shrunk stack (tutorial refuse limb).
+    var tiny = tally_stack.StackType(u32, 1){};
+    tiny.push(1);
+    assert(tiny.top == 1); // at the bound exactly — one more would assert
+
+    print("GREEN: bounded tower — solve(3)=7 moves · seventeen rings refused · frame bound held\n", .{});
+}
