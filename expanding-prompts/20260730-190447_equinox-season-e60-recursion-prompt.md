@@ -3,7 +3,7 @@
 **Stamp:** `20260730.190447` · **Voice:** Riyo  
 **Use:** paste into the next counsel/bench chat.  
 **e59:** chapter-four surface close GREEN · almanac seat 64 · ch4 16/16 FULL  
-**Living tip:** fill `2aee831514` at send (or read `git rev-parse --short=10 HEAD`).
+**Living tip:** `2aee831514` · read `git rev-parse --short=10 HEAD` when the card lags one amend.
 
 ---
 
