@@ -1,0 +1,167 @@
+//! mycelium/refusal_storm.rye — five primitives refuse loudly in one witness.
+//!
+//! Journey 4 · equinox A · h4 Accrete-never-break · door 10.
+//! Bound from tools/gen/season/recursion_block.brix:
+//!   refusal_storm_min_cases 5
+//!
+//! Adversarial fixtures across keypair · signed event · append-only log ·
+//! pure fold · seam/capability. Each refuse is named; honest state untouched.
+//! Discovery wire-lab and membership policy stay parked.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig \
+//!     rye/bin/rye run mycelium/refusal_storm.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+const fold = @import("fold.rye");
+const fold_persist = @import("fold_persist.rye");
+const ship_sol = @import("ship_sol.rye");
+
+/// One adversarial bite per primitive — seated door 10.
+pub const refusal_storm_min_cases: u32 = 5;
+
+fn seal_alien(signer: kumara.KeyPair, kind: u8, amount: u64, body: []const u8) fold.Fact {
+    var f = fold.Fact{ .kind = kind, .amount = amount };
+    if (body.len > 0) {
+        tally_copy.copy_disjoint(u8, f.body[0..body.len], body);
+        f.body_len = @intCast(body.len);
+    }
+    const pk = signer.public_key.toBytes();
+    tally_copy.copy_disjoint(u8, f.signer_pk[0..], pk[0..]);
+
+    // kind · amount(le8) · body — mirrors fold's canonical packing for alien kinds.
+    var msg: [1 + 8 + fold.myc_fact_max_bytes]u8 = undefined;
+    msg[0] = f.kind;
+    var off: usize = 1;
+    var amt = f.amount;
+    var i: usize = 0;
+    while (i < 8) : (i += 1) {
+        msg[off] = @truncate(amt);
+        amt >>= 8;
+        off += 1;
+    }
+    const b = f.body_slice();
+    tally_copy.copy_disjoint(u8, msg[off..][0..b.len], b);
+    off += b.len;
+    const sig = kumara.sign(msg[0..off], signer, null).toBytes();
+    tally_copy.copy_disjoint(u8, f.sig[0..], sig[0..]);
+    return f;
+}
+
+/// Selftest — refusal storm: five named refuses · log untouched · bound 5.
+pub fn main() !void {
+    assert(refusal_storm_min_cases == 5);
+
+    const seed: [kumara.seed_length]u8 = .{0xa1} ** kumara.seed_length;
+    const kp = kumara.keypair_from_seed(&seed);
+
+    const issue = fold.mint_fact(kp, fold.kind_issue, 1000, "", "storm-genesis") orelse return error.MintIssue;
+    const tax_ok = fold.mint_fact(kp, fold.kind_tax, 64, "", "drain") orelse return error.MintTax;
+    const star_a = fold.mint_fact(kp, fold.kind_star_reserve, 64, "bandun", "reserve") orelse return error.MintStar;
+    const star_dup = fold.mint_fact(kp, fold.kind_star_reserve, 64, "bandun", "again") orelse return error.MintDup;
+    const tax_over = fold.mint_fact(kp, fold.kind_tax, 10_000, "", "overdraw") orelse return error.MintOver;
+
+    var log = fold.Log.empty();
+    _ = try fold.append_fact(&log, issue);
+    _ = try fold.append_fact(&log, tax_ok);
+    _ = try fold.append_fact(&log, star_a);
+    if (log.len != 3) return error.SetupLen;
+
+    var cases: u32 = 0;
+
+    // 1) keypair — tampered seal → IdentityRefused · log unchanged.
+    {
+        const before = log.len;
+        var bad = issue;
+        bad.sig[0] ^= 0xff;
+        if (fold.append_fact(&log, bad)) |_| return error.TamperAccepted else |err| {
+            if (err != error.IdentityRefused) return error.WrongTamper;
+        }
+        if (log.len != before) return error.TamperMutated;
+        cases += 1;
+    }
+
+    // 2) signed event — unknown kind refuses whole · never skip silent.
+    {
+        const before = log.len;
+        if (fold.mint_fact(kp, 99, 1, "", "nope") != null) return error.UnknownMinted;
+        const alien = seal_alien(kp, 99, 1, "alien");
+        if (fold.append_fact(&log, alien)) |_| return error.UnknownAccepted else |err| {
+            if (err != error.UnknownKind) return error.WrongUnknown;
+        }
+        if (log.len != before) return error.UnknownMutated;
+        cases += 1;
+    }
+
+    // 3) append-only log — refused append leaves log.len identical (StarTaken).
+    {
+        const before = log.len;
+        if (fold.append_fact(&log, star_dup)) |_| return error.DupAccepted else |err| {
+            if (err != error.StarTaken) return error.WrongDup;
+        }
+        if (log.len != before) return error.DupMutated;
+        cases += 1;
+    }
+
+    // 4) pure fold — tax overdraw refuses whole · supply invariant on kept prefix.
+    {
+        const before = log.len;
+        const supply_before = (try fold.fold_log(&log)).supply();
+        if (fold.append_fact(&log, tax_over)) |_| return error.OverAccepted else |err| {
+            if (err != error.Overdraw) return error.WrongOver;
+        }
+        if (log.len != before) return error.OverMutated;
+        const supply_after = (try fold.fold_log(&log)).supply();
+        if (supply_after != supply_before) return error.OverSupplyDrift;
+        cases += 1;
+    }
+
+    // 5) capability / seal at seam — truncated snapshot refuses whole (fold_persist)
+    //    and ship_sol tamper refuses (second bite under the same limb · one enough).
+    {
+        var prefix = fold.Log.empty();
+        prefix.facts[0] = log.facts[0];
+        prefix.facts[1] = log.facts[1];
+        prefix.len = 2;
+        const mid = try fold.fold_log(&prefix);
+        var buf: [fold_persist.myc_fold_snapshot_max_bytes]u8 = undefined;
+        const n = try fold_persist.snapshot_state(&mid, 2, buf[0..]);
+        var trash = fold.FoldState{};
+        var pl: u32 = 0;
+        if (fold_persist.restore_state(buf[0 .. n / 2], &trash, &pl)) |_| {
+            return error.TruncAccepted;
+        } else |err| {
+            if (err != error.Truncated and err != error.BadStarLen) return error.WrongTrunc;
+        }
+
+        const sol = ship_sol.mint_proof(kp, "storm-ship.sol", 20260730100015) orelse return error.SolMint;
+        var bad_sol = sol;
+        bad_sol.sig[0] ^= 0xff;
+        if (ship_sol.verify_proof(&bad_sol)) |_| return error.SolTamperAccepted else |err| {
+            if (err != error.IdentityRefused) return error.WrongSolTamper;
+        }
+        cases += 1;
+    }
+
+    if (cases < refusal_storm_min_cases) return error.StormThin;
+    if (cases != refusal_storm_min_cases) return error.StormWide;
+
+    // Purity: same adversarial bytes → same refuse.
+    {
+        var bad = issue;
+        bad.sig[0] ^= 0xff;
+        const before = log.len;
+        if (fold.append_fact(&log, bad)) |_| return error.PurityTamperAccept else |_| {}
+        if (fold.append_fact(&log, bad)) |_| return error.PurityTamperAccept2 else |_| {}
+        if (log.len != before) return error.PurityMutated;
+    }
+
+    print("GREEN: myc refusal_storm — five primitives refuse · cases={d} · bound={d} · log.len={d}\n", .{
+        cases,
+        refusal_storm_min_cases,
+        log.len,
+    });
+}
