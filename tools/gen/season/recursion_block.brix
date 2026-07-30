@@ -93,14 +93,18 @@ coords_fascia_equinox OPEN
 coords_fascia_nest duodeca
 coords_fascia_nest_n 12
 coords_fascia_rounds f0-f63
-coords_fascia_round 1
-coords_fascia_status f1 complete / f2 next
+coords_fascia_round 2
+coords_fascia_status f2 complete / f3 next · exit bar MET
 coords_fascia_entry 69
-coords_fascia_now 80
+coords_fascia_now 90
 coords_fascia_f1_delta +11
 coords_fascia_f1_stamp 20260730.091805 ratchet clear
+coords_fascia_f2_delta +10
+coords_fascia_f2_stamp 20260730.093112 exit bar met
 coords_fascia_exit_bar 90
+coords_fascia_exit_bar_status MET 20260730.093112
 coords_fascia_handback return_voice_j4_d10
+coords_fascia_handback_available yes
 coords_fascia_charter counsel/20260730-090926_the-fascia-equinox-duodeca-charter.md
 coords_voice_status PAUSED 20260730.090926
 design_shapes_wing seated 20260730.041319
@@ -111,6 +115,8 @@ fascia_exit_bar 90
 fascia_entry_at_open 69
 fascia_ratchet_outstanding 0
 # cleared f1 — memcpy · parseInt · tools py yondered
+fascia_class_a_canonical 4
+# LEXICON · siya-turn ×2 · constellation SPEC — elder homes kept
 # myc opening numbers approved 20260730.014817 (were a proposal at 20260729.231500)
 myc_genesis 12288
 myc_star_price 64

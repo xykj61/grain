@@ -23,7 +23,7 @@
 | --- | --- |
 | `context/LEXICON.md` | Siya fund row · elder DNS anchor named |
 | `counsel/20260727-152801_the-siya-turn.md` | turn seat · vane rename ledger (two line-hits) |
-| `counsel/20260727-135351_seva-fund-the-wyoming-turn-and-the-unified-map.md` | Wyoming / claim ground |
+| `counsel/yonder/20260727-135351_seva-fund-the-wyoming-turn-and-the-unified-map.md` | Wyoming / claim ground (yondered f2 · 20260730.093112) |
 | `counsel/20260728-012725_the-constellation-season-prep.md` | seat-3 prep table |
 | `counsel/20260728-012906_constellation-season-m0-bow.md` | seat-3 bow table |
 | `active-designing/20260727-142516_the-constellation-and-the-twelve-funds.md` | twelve-funds design · elder anchor |

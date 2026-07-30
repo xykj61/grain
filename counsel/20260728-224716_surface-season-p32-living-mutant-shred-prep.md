@@ -2,7 +2,7 @@
 
 **Stamp:** `20260728.224716` · **Voice:** Quin · **Season:** Surface · **Scope:** sept · **Round:** p32  
 **Prior:** [p31 horizon thin](20260728-221253_surface-season-p31-horizon-stack-thin.md) · [u91 shred readiness](20260728-181016_mur-season-u91-shred-readiness.md)  
-**Ask:** add superseded writings to planning-to-shred list · crawl deps before mutant · no living→fossil backlink · seat living mutant vocab · deps wait seat  
+**Ask:** add writing fossils to planning-to-shred list · crawl deps before mutant · no living→fossil backlink · seat living mutant vocab · deps wait seat  
 **Status:** **SEATED** `20260728.224716` — habit + list + lexicon · wafer mutant **held** for next seat
 
 ## Verdict

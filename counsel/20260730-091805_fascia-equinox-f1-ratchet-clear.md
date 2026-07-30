@@ -18,7 +18,7 @@ No Amphora shred · no Class-A rewrite · no Voice unpause · no door 10 create 
 
 ## Next
 
-**f2 lean:** cut superseded half-weight and/or paper Class-A path toward shred-prep (still no cut) · re-measure toward 90.
+**f2 lean:** cut history-weight half-weight and/or paper Class-A path toward shred-prep (still no cut) · re-measure toward 90.
 
 ---
 

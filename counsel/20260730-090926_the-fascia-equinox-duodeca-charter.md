@@ -85,7 +85,7 @@ Four things in one breath: keep going · pause Voice · open a new 64-round equi
 | --- | --- |
 | This charter | Fascia Equinox · duodeca seat |
 | `counsel/20260730-090926_fascia-equinox-f0-bow.md` | f0 bow |
-| `expanding-prompts/20260730-090926_fascia-equinox-f0-recursion-prompt.md` | Long paste |
+| `expanding-prompts/yonder/20260730-090926_fascia-equinox-f0-recursion-prompt.md` | Long paste (yondered after f0; living paste renews each round) |
 | `waymarks/20260730-090926_fascia-equinox-opened.md` | Open waymark |
 | `tools/gen/season/recursion_block.brix` | coords · exit bar |
 | `prin_scope.rish` · `REMEMBER.md` · `LEXICON.md` | Living pins |

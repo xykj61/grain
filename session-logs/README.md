@@ -1,3 +1,4 @@
+- `20260730.093112` — [Fascia Equinox f2 exit bar met](20260730-093112_fascia-equinox-f2-exit-bar-met.bron) — 80→90 · handback available
 - `20260730.091805` — [Fascia Equinox f1 ratchet clear](20260730-091805_fascia-equinox-f1-ratchet-clear.bron) — 69→80 Δ+11 · ratchet 0 · class-A held
 - `20260730.090926` — [Fascia Equinox duodeca opened](20260730-090926_fascia-equinox-duodeca-opened.bron) — Voice paused · exit bar 90 · f0/f1
 - `20260730.090650` — [Sundial meaning · fascia equinox ask](20260730-090650_sundial-fascia-equinox-ask.bron) — sundial ≠ fascia · equinox lean unseated

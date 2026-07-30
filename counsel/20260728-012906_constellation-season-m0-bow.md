@@ -29,7 +29,7 @@ Radiant pass `20260728.050219` — living rename-forward: **MUR** / **Murr** (wa
 |---|------|----------------|-------------|------|
 | 1 | **Murr (was Mala)** | Aries · fire | **mala.fund** | claim **his** · `mala_fund=prep` |
 | 2 | **Djin** (was Twah) | Taurus · earth | **djin.fund** | claim **his** · `djin_fund=prep` |
-| 3 | **Siya** | Gemini · air | **siya.fund** | claim **his** · `siya_fund_claim=held` (seva.fund elder) |
+| 3 | **Siya** | Gemini · air | **siya.fund** | claim **his** · `siya_fund_claim=held` (elder DNS anchor — Lexicon Siya) |
 
 No `mala/` module home yet — fund seat and MUR (was MALA)-the-module remain distinct hats. Mycelium constellation SPEC + `mycelium/constellation/sui/` present (registry-only · unaudited · mints nothing).
 

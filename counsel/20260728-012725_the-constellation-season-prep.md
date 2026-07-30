@@ -35,7 +35,7 @@ Prep for a **new thirty-two-round season** is approved. The season's early spine
 |---|------|----------------|-----------|-------------------------|----------|
 | **1** | **Murr** (was Mala) | **Aries · fire** | `%murr` | **murr.fund** | Living — official maintainer of **MUR** (was MALA); leads planned **n-of-12**; dedication **Kyler Murray**; executive **DJINN**; Kamala-on-Mala historical |
 | **2** | **Gren** (was Djin · was Twah) | **Taurus · earth** | `%gren` | **gren.fund** | Living — edu-series gift; executive **Grain Energy PBC President → Keaton lean**; Twah→Djin→Gren rename spine |
-| **3** | **Siya** | **Gemini · air** | `%siya` | **siya.fund** (awaiting his claim; seva.fund elder anchor) | **Affirmed** — executor **Sara Sealy Livermore** |
+| **3** | **Siya** | **Gemini · air** | `%siya` | **siya.fund** (awaiting his claim; elder DNS anchor — see Lexicon Siya) | **Affirmed** — executor **Sara Sealy Livermore** |
 
 **Nara** (Virgo · earth · nara.live) remains recorded from Fascia f0; her `.fund` anchor question stays his. Opening triad living names: **Murr · Gren · Siya** (was Mala · Djin · Siya).
 
