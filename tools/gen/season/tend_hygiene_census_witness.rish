@@ -1,0 +1,22 @@
+# tools/gen/season/tend_hygiene_census_witness.rish — tend_hygiene design hall.
+#
+#   rishi/bin/rishi run tools/gen/season/tend_hygiene_census_witness.rish
+#
+# Design-shapes wing · tend_hygiene. Zero new code files; fascia in and out;
+# three tend waymarks; living coords delta 0.
+
+say "tend-hygiene-census: Language EN — measure; do not invent code."
+say "tend-hygiene-census: Style Radiant — fascia speaks; the waymark yields."
+say "tend-hygiene-census: Lens TAME — e31 · design-shapes · almanac seat 37."
+
+let scan = run ["sh" "tools/fixtures/tend_hygiene_census.sh"]
+say scan.out
+assert scan.ok else "tend-hygiene-census: census failed"
+assert scan.out contains "verdict=ok" else "tend-hygiene-census: want verdict=ok"
+assert scan.out contains "SHAPE_ZERO_CODE=yes" else "tend-hygiene-census: shape must forbid new code"
+assert scan.out contains "HALL_ZERO_CODE=yes" else "tend-hygiene-census: hall must forbid new code"
+assert scan.out contains "tend_waymarks=3" else "tend-hygiene-census: want three tend waymarks"
+assert scan.out contains "delta_two=0" else "tend-hygiene-census: tend two delta must be zero"
+assert scan.out contains "delta_three=0" else "tend-hygiene-census: tend three delta must be zero"
+
+say "GREEN: tend-hygiene-census — zero-code · three waymarks · fascia deltas 0"

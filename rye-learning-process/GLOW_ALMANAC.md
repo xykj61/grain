@@ -158,7 +158,7 @@ Expected halls_expected=13 · halls_absent=0 · census_breach_count=0, and verdi
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ch2_surface_witness.rish` · **Stamp:** `20260730.125750` · **Witness:** `tools/gen/season/equinox_ch2_surface_witness.rish`
 Expected SAFE census · reds complete/monotone/refuse · voice sites=6/refuse · baton halls=13/breach=0/absent refuse each GREEN in one choir. Metal answered GREEN. Chapter two closes at sixteen; chapter three waits for metal.
 
-## Chapter Three (4 of 16)
+## Chapter Three (5 of 16)
 
 Opened from metal at stamp `20260730.130733`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -177,6 +177,10 @@ Expected max_limb_beads=12 · limb_beads=12 · LEXICON · MANIFEST_BEAD, and ver
 ### 36. The fact-fold design hall points at living metal; three bounds match and purity holds.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_fact_fold_choir_witness.rish` · **Stamp:** `20260730.131633` · **Witness:** `tools/gen/season/fact_fold_census_witness.rish` · scan `tools/fixtures/fact_fold_census.sh` · metal `mycelium/fold.rye` · choir `equinox_fact_fold_choir_witness.rish`
 Expected pairs_matched=3 · PATTERN_CITES · fold GREEN with supply=872 · purity · refuse whole, and verdict=missing_shape on an absent path. Metal answered GREEN. Design hall and Sangha page keep one fold honest.
+
+### 37. Tend hygiene forbids new code files; three tend waymarks hold fascia delta zero.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_tend_hygiene_choir_witness.rish` · **Stamp:** `20260730.132032` · **Witness:** `tools/gen/season/tend_hygiene_census_witness.rish` · scan `tools/fixtures/tend_hygiene_census.sh` · choir `equinox_tend_hygiene_choir_witness.rish`
+Expected SHAPE_ZERO_CODE · HALL_ZERO_CODE · tend_waymarks=3 · delta_two=0 · delta_three=0, and verdict=missing_shape on an absent path. Metal answered GREEN. The fourth design hall closes the wing's measured set.
 
 ---
 

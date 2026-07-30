@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260730.132032
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title E31 tend-hygiene GREEN · almanac 37 · ch3 5/16
+prompt kg · seat e31 shape — chapter three continues from metal
+think e27–e30 measured three halls · tend_hygiene is the fourth · closes wing set
+think Zero-code invariant · three tend waymarks · fascia delta 0 · seat 37
+obs E31 GREEN · chapter three 5/16 · four design halls measured
+file tools/fixtures/tend_hygiene_census.sh tend hygiene scan
+file tools/gen/season/tend_hygiene_census_witness.rish welcome
+file tools/gen/season/equinox_tend_hygiene_choir_witness.rish e31 choir
+file tools/gen/season/equinox_tend_hygiene_choir_almanac.sh seat 37
+file expanding-prompts/20260730-131958_e31-tend-hygiene-charter.md charter
+file rye-learning-process/GLOW_ALMANAC.md seat 37 · ch3 5/16
+recommend keep-going seat e32 ch3-continue metal · dual-push with send

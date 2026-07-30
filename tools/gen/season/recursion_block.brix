@@ -67,10 +67,10 @@ coords_equinox A
 coords_journey 4
 coords_journey_4_status PAUSED — h4 Accrete-never-break · door 8–15 GREEN · Build queue CLOSED · tend three DONE · Voice handback CONSUMED
 coords_quest Do
-coords_round 36
+coords_round 37
 coords_voice_handback return_equinox_e7 CONSUMED 20260730.111804
 coords_equinox_season OPEN
-coords_equinox_status e30 GREEN · e31 next · true deepest
+coords_equinox_status e31 GREEN · e32 next · true deepest
 coords_true_deepest deca
 coords_e7 equinox_map GREEN 20260730.113507
 coords_e7_path context/equinox_map.brix
@@ -194,10 +194,15 @@ coords_e30_path context/design-shapes/fact_fold.brix
 coords_e30_witness tools/gen/season/equinox_fact_fold_choir_witness.rish
 coords_e30_charter expanding-prompts/20260730-131607_e30-fact-fold-design-charter.md
 coords_e30_recursion expanding-prompts/20260730-131633_equinox-season-e30-recursion-prompt.md
+coords_e31 tend_hygiene_choir GREEN 20260730.132032
+coords_e31_path context/design-shapes/tend_hygiene.brix
+coords_e31_witness tools/gen/season/equinox_tend_hygiene_choir_witness.rish
+coords_e31_charter expanding-prompts/20260730-131958_e31-tend-hygiene-charter.md
+coords_e31_recursion expanding-prompts/20260730-132032_equinox-season-e31-recursion-prompt.md
 coords_almanac_ch1 16 of 16
 coords_almanac_ch2 16 of 16
-coords_almanac_ch3 4 of 16
-coords_almanac_seat 36
+coords_almanac_ch3 5 of 16
+coords_almanac_seat 37
 coords_almanac_ch2_status FULL
 coords_almanac_ch3_status OPEN
 coords_season_rounds 256
