@@ -158,7 +158,7 @@ Expected halls_expected=13 · halls_absent=0 · census_breach_count=0, and verdi
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ch2_surface_witness.rish` · **Stamp:** `20260730.125750` · **Witness:** `tools/gen/season/equinox_ch2_surface_witness.rish`
 Expected SAFE census · reds complete/monotone/refuse · voice sites=6/refuse · baton halls=13/breach=0/absent refuse each GREEN in one choir. Metal answered GREEN. Chapter two closes at sixteen; chapter three waits for metal.
 
-## Chapter Three (6 of 16)
+## Chapter Three (7 of 16)
 
 Opened from metal at stamp `20260730.130733`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -185,6 +185,10 @@ Expected SHAPE_ZERO_CODE · HALL_ZERO_CODE · tend_waymarks=3 · delta_two=0 · 
 ### 38. The design-shapes surface choir holds: wing, bounds, resin, fact-fold, and tend GREEN together.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_design_shapes_surface_witness.rish` · **Stamp:** `20260730.132258` · **Witness:** `tools/gen/season/equinox_design_shapes_surface_witness.rish`
 Expected wing halls=4/breach=0 · bounds pairs=10 · resin bound 12 · fact-fold supply=872/purity · tend waymarks=3, and verdict=missing_wing on an absent path. Metal answered GREEN. Four halls and the wing hold as one choir.
+
+### 39. Memory is allocated at startup; the held guide, TAME, and clone teach the static law.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_static_alloc_choir_witness.rish` · **Stamp:** `20260730.132954` · **Witness:** `tools/gen/season/tigerbeetle_static_alloc_census_witness.rish` · scan `tools/fixtures/tigerbeetle_static_alloc_census.sh` · choir `equinox_tigerbeetle_static_alloc_choir_witness.rish`
+Expected CLONE=present · GUIDE_STATIC · GUIDE_LIMIT · TAME_STATIC · STYLE · static_mentions≥10 · allocator_word≥500 · init_allocator_files≥20, and verdict=absent on a missing clone path. Metal answered GREEN. Clean-room study only.
 
 ---
 

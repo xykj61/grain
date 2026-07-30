@@ -1,0 +1,26 @@
+# tools/gen/season/tigerbeetle_static_alloc_census_witness.rish — e33 static alloc.
+#
+#   rishi/bin/rishi run tools/gen/season/tigerbeetle_static_alloc_census_witness.rish
+#
+# Requires gratitude/tigerbeetle submodule present.
+# Clean-room: presence + counts only · never copies into rye/.
+# Leaf only — no nested elder choirs.
+
+say "tb-static-alloc: Language EN — allocate at startup; nothing dynamic after."
+say "tb-static-alloc: Style Radiant — bounds named upfront; latency stays honest."
+say "tb-static-alloc: Lens TAME — e33 · clean-room study · almanac seat 39."
+
+let clone = run ["test" "-d" "gratitude/tigerbeetle/src"]
+assert clone.ok else "tb-static-alloc: gratitude/tigerbeetle/src ABSENT — host clone first"
+
+let census = run ["sh" "tools/fixtures/tigerbeetle_static_alloc_census.sh"]
+say census.out
+assert census.ok else "tb-static-alloc: census failed or thin"
+assert census.out contains "CLONE=present" else "tb-static-alloc: want CLONE=present"
+assert census.out contains "verdict=ok" else "tb-static-alloc: want verdict=ok"
+assert census.out contains "GUIDE_STATIC=yes" else "tb-static-alloc: held guide must teach static allocation"
+assert census.out contains "GUIDE_LIMIT=yes" else "tb-static-alloc: guide must put a limit on everything"
+assert census.out contains "TAME_STATIC=yes" else "tb-static-alloc: TAME must teach allocate-at-startup"
+assert census.out contains "STYLE=yes" else "tb-static-alloc: clone must hold docs/TIGER_STYLE.md static law"
+
+say "GREEN: tb-static-alloc — guide·limit·TAME·style ok · density holds · almanac next"

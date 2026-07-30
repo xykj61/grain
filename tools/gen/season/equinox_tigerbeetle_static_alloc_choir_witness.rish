@@ -1,0 +1,29 @@
+# tools/gen/season/equinox_tigerbeetle_static_alloc_choir_witness.rish — e33 → almanac.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_static_alloc_choir_witness.rish
+#
+# Leaf welcome + refuse only — no nested elder choirs.
+
+say "equinox-tb-static-alloc-choir: Language EN — startup allocation; refuse an absent clone."
+say "equinox-tb-static-alloc-choir: Style Radiant — welcome and refuse share one seat."
+say "equinox-tb-static-alloc-choir: Lens TAME — e33 · static alloc · almanac seat 39."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_static_alloc_census_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-tb-static-alloc-choir: welcome RED"
+assert welcome.out contains "GREEN: tb-static-alloc" else "equinox-tb-static-alloc-choir: welcome missing GREEN"
+assert welcome.out contains "GUIDE_STATIC=yes" else "equinox-tb-static-alloc-choir: want GUIDE_STATIC"
+assert welcome.out contains "TAME_STATIC=yes" else "equinox-tb-static-alloc-choir: want TAME_STATIC"
+
+# Refuse: a missing clone path is loud, not silent.
+let refuse = run ["sh" "tools/fixtures/tigerbeetle_static_alloc_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
+say refuse.out
+assert refuse.ok == false else "equinox-tb-static-alloc-choir: absent clone must fail"
+assert refuse.out contains "verdict=absent" else "equinox-tb-static-alloc-choir: want verdict=absent"
+assert refuse.out contains "CLONE=ABSENT" else "equinox-tb-static-alloc-choir: want CLONE=ABSENT"
+
+let almanac = run ["sh" "tools/gen/season/equinox_tigerbeetle_static_alloc_almanac.sh"]
+assert almanac.ok else "equinox-tb-static-alloc-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-tb-static-alloc-choir — static law · density ok · absent refuses · almanac seat 39"
