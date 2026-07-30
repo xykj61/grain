@@ -1,8 +1,9 @@
 # The Rye Learning Process
 
 **Language:** EN
-**Last updated:** 2026-07-10 (Radiant Style pass round 3)
+**Last updated:** 2026-07-30 (`20260730.040859` — living twin points at GLOW_ALMANAC)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
+**Voice:** Riyo
 **Status:** Foundation
 
 ---
@@ -29,12 +30,13 @@ Every entry holds itself to one standard: a discovery is recorded only once real
 
 Dated findings carry `YYYYMMDD-HHMMSS_short-slug.md`; this README is the living foundation. Full naming law: [`../context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
-Each confirmed discovery earns a stamped note when it is substantial enough to stand alone. The reverse-chronological index below surfaces the newest first. The [**almanac**](archive/ALMANAC.md) remains the living aggregate those findings feed — revised in place as Rye grows.
+Each confirmed discovery earns a stamped note when it is substantial enough to stand alone. The reverse-chronological index below surfaces the newest first. The living Glow aggregate is [`GLOW_ALMANAC.md`](GLOW_ALMANAC.md) — entry law: running code only. The elder Rye reference rests at [`archive/ALMANAC.md`](archive/ALMANAC.md) (breached `20260729.225900`) and is not the living twin.
 
 ```
 rye-learning-process/
   README.md                 <- this foundation
-  archive/ALMANAC.md        <- the elder Rye reference (breached 20260729.225900)
+  GLOW_ALMANAC.md           <- living Glow almanac (powers of two)
+  archive/ALMANAC.md        <- elder Rye reference (historical)
   YYYYMMDD-HHMMSS_*.md      <- dated findings, newest sorts first by stamp
 ```
 
@@ -57,7 +59,8 @@ Recording a discovery is a small, glad ritual:
 
 | Kind | Document | Meaning |
 |------|----------|---------|
-| Living | [`ALMANAC.md`](archive/ALMANAC.md) | Growing reference — how Rye and its toolchain actually work |
+| Living | [`GLOW_ALMANAC.md`](GLOW_ALMANAC.md) | Glow findings — earned by running code only |
+| Elder | [`archive/ALMANAC.md`](archive/ALMANAC.md) | Rye toolchain reference — historical aggregate |
 | — | *(no dated findings yet)* | Stamped notes appear here as they are recorded |
 
 ---

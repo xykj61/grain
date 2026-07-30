@@ -1,11 +1,11 @@
-# tools/gen/season/baton_museum_census_witness.rish — eleven halls · named elders.
+# tools/gen/season/baton_museum_census_witness.rish — twelve halls · named elders.
 #
 #   rishi/bin/rishi run tools/gen/season/baton_museum_census_witness.rish
 #
-# Seated `20260730.030553` with the museum. Census-zero keeps the banked
-# breach word unspent.
+# Seated `20260730.030553` with the museum · hall 12 tend_round `20260730.040859`.
+# Census-zero keeps the banked breach word unspent.
 
-say "baton-census: Language EN — eleven halls, counted once."
+say "baton-census: Language EN — twelve halls, counted once."
 say "baton-census: Style Radiant — name absences; keep breach banked when zero."
 say "baton-census: Lens TAME — museum path bounded; elders named up front."
 
@@ -14,5 +14,6 @@ say scan.out
 assert scan.out contains "verdict=ok" else "baton-census: a hall or named elder is absent"
 assert scan.ok else "baton-census: the verdict reads ok while the status fails — they must agree"
 assert scan.out contains "census_breach_count=0" else "baton-census: census found a breach; spend the banked word only on Keaton's yes"
+assert scan.out contains "halls_expected=12" else "baton-census: expected twelve halls"
 
-say "GREEN: baton-census — eleven halls present · named elders hold · census zero"
+say "GREEN: baton-census — twelve halls present · named elders hold · census zero"

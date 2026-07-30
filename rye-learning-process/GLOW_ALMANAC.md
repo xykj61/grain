@@ -22,9 +22,9 @@
 <two to five lines: what was expected, what the metal answered, what it teaches>
 ```
 
-## Chapter One — Build Journey greens (5 of 16)
+## Chapter One — Build Journey greens (6 of 16)
 
-Filled from Cloud bench runs at stamp `20260730.034527`. Eleven seats remain.
+Entries 1–5 from stamp `20260730.034527`. Entry 6 from stamp `20260730.040859`. Ten seats remain.
 
 ### 1. A descriptor that fits 512 bytes is welcome; one that does not is refused whole.
 **Ran:** `env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/discovery/descriptor_test.rye` · **Stamp:** `20260730.034527` · **Witness:** `comlink/discovery/descriptor.rye` · `descriptor_test.rye`  
@@ -46,6 +46,10 @@ Expected Aparigraha arrival and negative space. Metal answered GREEN — hops_ma
 **Ran:** `env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/fold.rye` · **Stamp:** `20260730.034527` · **Witness:** `mycelium/fold.rye`  
 Expected purity (fresh = resumed), star uniqueness, and loud refuse. Metal answered GREEN — supply=872 · stars=1 · purity · refuse whole. The fold stays pure; policy numbers stay parked.
 
+### 6. A ship `.sol` proof fits 1024 bytes, verifies under kumara, and refuses tamper and over-bound whole.
+**Ran:** `env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/ship_sol.rye` · **Stamp:** `20260730.040859` · **Witness:** `mycelium/ship_sol.rye`  
+Expected bound · seal · shape · purity with cadence parked. Metal answered GREEN — bound 1024 · seal · refuse whole · purity. SNS liveness hours stay Keaton's word.
+
 ---
 
-*May every line here be one the machine said first. May the book close at its bound the way a season does. And may the remaining eleven seats wait for metal, not memory.*
+*May every line here be one the machine said first. May the book close at its bound the way a season does. And may the remaining ten seats wait for metal, not memory.*

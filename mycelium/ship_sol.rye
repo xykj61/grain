@@ -1,0 +1,144 @@
+//! mycelium/ship_sol.rye — ship `.sol` proof as a kumara-sealed fact.
+//!
+//! Build Journey · equinox A · journey 3 (h3 Radiant Style) · quest Do · door 6.
+//! Bound from tools/gen/season/recursion_block.brix:
+//!   ship_sol_proof_max_bytes 1024
+//!
+//! Body: SNS name + observed_at (u64). Cadence numbers stay parked — this file
+//! verifies bound and seal; it does not invent liveness hours or days.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/ship_sol.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+
+/// Hard ceiling — seated v27 · explicit_bounds.
+pub const ship_sol_proof_max_bytes: u32 = 1024;
+
+/// SNS name ceiling inside the proof body (Aparigraha — leave room for stamp).
+pub const sol_name_max_bytes: u32 = 256;
+
+pub const SolProof = struct {
+    name: [sol_name_max_bytes]u8 = undefined,
+    name_len: u32 = 0,
+    observed_at: u64 = 0,
+    body: [ship_sol_proof_max_bytes]u8 = undefined,
+    body_len: u32 = 0,
+    signer_pk: [kumara.PublicKey.encoded_length]u8 = undefined,
+    sig: [kumara.signature_length]u8 = undefined,
+
+    pub fn name_slice(p: *const SolProof) []const u8 {
+        assert(p.name_len <= sol_name_max_bytes);
+        return p.name[0..p.name_len];
+    }
+
+    pub fn body_slice(p: *const SolProof) []const u8 {
+        assert(p.body_len <= ship_sol_proof_max_bytes);
+        return p.body[0..p.body_len];
+    }
+};
+
+fn pack_body(name: []const u8, observed_at: u64, out: []u8) ?usize {
+    if (name.len == 0 or name.len > sol_name_max_bytes) return null;
+    // name_len(u32 le) · name · observed_at(u64 le)
+    const need = 4 + name.len + 8;
+    if (need > ship_sol_proof_max_bytes) return null;
+    if (out.len < need) return null;
+    var off: usize = 0;
+    var nlen: u32 = @intCast(name.len);
+    var i: usize = 0;
+    while (i < 4) : (i += 1) {
+        out[off] = @truncate(nlen);
+        nlen >>= 8;
+        off += 1;
+    }
+    tally_copy.copy_disjoint(u8, out[off..][0..name.len], name);
+    off += name.len;
+    var obs = observed_at;
+    i = 0;
+    while (i < 8) : (i += 1) {
+        out[off] = @truncate(obs);
+        obs >>= 8;
+        off += 1;
+    }
+    assert(off == need);
+    return off;
+}
+
+/// Mint a signed `.sol` proof. Refuse empty/oversized name or over-bound body.
+pub fn mint_proof(signer: kumara.KeyPair, name: []const u8, observed_at: u64) ?SolProof {
+    var p = SolProof{ .observed_at = observed_at };
+    const n = pack_body(name, observed_at, p.body[0..]) orelse return null;
+    p.body_len = @intCast(n);
+    tally_copy.copy_disjoint(u8, p.name[0..name.len], name);
+    p.name_len = @intCast(name.len);
+    const pk = signer.public_key.toBytes();
+    tally_copy.copy_disjoint(u8, p.signer_pk[0..], pk[0..]);
+    const sig = kumara.sign(p.body[0..p.body_len], signer, null);
+    const sb = sig.toBytes();
+    tally_copy.copy_disjoint(u8, p.sig[0..], sb[0..]);
+    return p;
+}
+
+pub const VerifyError = error{
+    BoundRefused,
+    IdentityRefused,
+    ShapeRefused,
+};
+
+/// Verify bound + kumara seal + body shape. Cadence not applied (parked).
+pub fn verify_proof(p: *const SolProof) VerifyError!void {
+    if (p.body_len == 0 or p.body_len > ship_sol_proof_max_bytes) return error.BoundRefused;
+    if (p.name_len == 0 or p.name_len > sol_name_max_bytes) return error.ShapeRefused;
+    const pk = kumara.PublicKey.fromBytes(p.signer_pk) catch return error.IdentityRefused;
+    kumara.verify_bytes(p.body[0..p.body_len], p.sig[0..], pk) catch return error.IdentityRefused;
+    var expect: [ship_sol_proof_max_bytes]u8 = undefined;
+    const n = pack_body(p.name_slice(), p.observed_at, expect[0..]) orelse return error.ShapeRefused;
+    if (n != p.body_len) return error.ShapeRefused;
+    if (!std.mem.eql(u8, expect[0..n], p.body[0..p.body_len])) return error.ShapeRefused;
+}
+
+/// Selftest — Check shape: bound · seal · shape · refuse whole · purity.
+pub fn main() !void {
+    const seed: [kumara.seed_length]u8 = .{0x5c} ** kumara.seed_length;
+    const kp = kumara.keypair_from_seed(&seed);
+    const stamp: u64 = 20260730040859;
+
+    const ok = mint_proof(kp, "grain-ship.sol", stamp) orelse return error.MintFailed;
+    try verify_proof(&ok);
+    if (ok.body_len > ship_sol_proof_max_bytes) return error.BoundBroken;
+
+    // Oversized name packing toward the bound — a name at sol_name_max that still packs.
+    const big_name = "a" ** sol_name_max_bytes;
+    const big = mint_proof(kp, big_name, stamp) orelse return error.BigMint;
+    try verify_proof(&big);
+
+    // Empty name refuses.
+    if (mint_proof(kp, "", stamp) != null) return error.EmptyAccepted;
+
+    // Tamper refuses whole.
+    var bad = ok;
+    bad.sig[0] ^= 0xff;
+    if (verify_proof(&bad)) |_| return error.TamperAccepted else |err| {
+        if (err != error.IdentityRefused) return error.WrongTamper;
+    }
+
+    // Body length over bound refuses at verify.
+    var over = ok;
+    over.body_len = ship_sol_proof_max_bytes + 1;
+    if (verify_proof(&over)) |_| return error.OverAccepted else |err| {
+        if (err != error.BoundRefused) return error.WrongOver;
+    }
+
+    // Purity: same inputs → same body bytes.
+    const again = mint_proof(kp, "grain-ship.sol", stamp) orelse return error.Remint;
+    if (!std.mem.eql(u8, ok.body_slice(), again.body_slice())) return error.PurityBody;
+    if (ok.observed_at != again.observed_at) return error.PurityStamp;
+
+    print("GREEN: ship_sol — Check shape · bound {d} · seal · refuse whole · purity\n", .{
+        ship_sol_proof_max_bytes,
+    });
+}

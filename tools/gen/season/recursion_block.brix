@@ -62,11 +62,14 @@ voice_journey_3_check_ins v32 v40
 voice_v32_descriptor_landed 20260730.030553
 baton_museum context/baton-museum
 coords_equinox A
-coords_journey 1
-coords_quest Act
-coords_round 1
+coords_journey 3
+coords_quest Do
+coords_round 9
 coords_season_rounds 256
 coords_season_name PARKED
+coords_journey_2_closed 20260730.040859
+coords_journey_3_opened 20260730.040859 h3 Radiant Style
+coords_door_6 ship_sol
 # myc opening numbers approved 20260730.014817 (were a proposal at 20260729.231500)
 myc_genesis 12288
 myc_star_price 64
@@ -100,11 +103,15 @@ ask_reply your
 handback return_surface_p59
 parent_scope sept
 parent_bookmark p58/p59
-editor_continue Claude Fable 5 1m Max (Keaton's word 20260729.231500)
+editor_continue Claude Opus 5 1m Max (reported 20260730 · from Fable)
+editor_continue_prior Claude Fable 5 1m Max (Keaton's word 20260729.231500 through 20260730)
 editor_continue_elder2 Claude Opus 5 1m Max (20260729.203719 through 20260729.231500)
 editor_continue_elder Claude Fable 5 1m Max (through 20260729.185725)
 editor_pause Cursor
 voice Riyo
+# Model seat roster — accrete rows; never rewrite a dated stretch (dated_guard)
+# shape: voice · model · from · prior
+voice_seat Riyo · Claude Opus 5 1m Max · from 20260730 · prior Claude Fable 5 1m Max
 
 # Four equinoxes (sub-seasons of 64 within the 256)
 equinox 1 east fire aries-ward e0-e63

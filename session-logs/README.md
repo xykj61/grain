@@ -1,3 +1,4 @@
+- `20260730.041039` — [J3 cell · tend · door 6](20260730-041039_j3-cell-tend-door6.bron) — roster · hall 12 · ship_sol GREEN · tend Δ0
 - `20260730.034932` — [r8 check-in · charter queue empty](20260730-034932_r8-charter-queue-empty.bron) — four doors done · fascia 69 · next door needs charter
 - `20260730.034527` — [Glow almanac ch1 · five entries](20260730-034527_glow-almanac-ch1-five.bron) — metal stamp · merge-here · ch1 5/16
 - `20260730.034319` — [J2 Check GREEN · Sangha Act](20260730-034319_j2-check-sangha-act.bron) — primitives hold · pattern one from discovery · almanac next

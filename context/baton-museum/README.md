@@ -2,7 +2,8 @@
 
 **Stamp:** `20260730.022147` — carried from Cursor apply, tip `b530e8308d`; restamp parked.
 **Seated:** `20260730.030553` · path **`context/baton-museum/`** (counsel proposal affirmed by the bench)
-**Voice:** Riyo · **Status:** Living museum — eleven halls · Lexicon row · census witness
+**Living refresh:** `20260730.040859` — hall 12 **tend_round** seated from counsel cell
+**Voice:** Riyo · **Status:** Living museum — twelve halls · Lexicon row · census witness
 
 *Written together by Keaton and Riyo.*
 
@@ -12,9 +13,9 @@
 
 A baton is state that crosses a boundary whole. A meter reads the present where it stands; a baton carries the present across a seam — session to session, counsel to bench, journey to season, agent to successor — so that the far side opens already knowing where it stands. The word was seated by Keaton's word this session, and the museum gathers every shape the practice has grown, because a concept earns its module at its second outside consumer, and the baton found its eleventh long before it found its name.
 
-## The Eleven Halls
+## The Twelve Halls
 
-Each hall is one `.brix` descriptor beside this charter, and eleven halls stand at the opening — the undeca canon, arrived at honestly. The **counsel close** is the living baton itself, the final codeblock of every printout. The **agent cover** wakes a fresh agent atop full handoffs, restating nothing. The **recursion prompt**, versioned v1 through v6 across the seasons, seats a bench with the laws held whole; its craft guide already rests in the tree at `external-research/20260703-013412_writing-recursion-prompts.md`. The **tiered handoff** keeps a fresh context light with its five load tiers, rotation at n mod 7. The **cursor relay** carries additions-only packets whose comment is the base tip hash, cut only on a silent gate. The **infusion prompt** folds many counsels into one intake. The **bench apply report** returns verbatim with its greens, reds, meters delta, pins, and door board. The **waymark** is the smallest baton — one nib, one stamp, one word. The **handback** returns a journey's yield to its season. The **season summary** is the mirror round's account of the whole. And the **queue packet** feeds a full pipe one message at a time, born the night the pipe itself said it was full.
+Each hall is one `.brix` descriptor beside this charter. Eleven halls opened the museum — the undeca canon, arrived at honestly — and hall **12 · tend_round** accreted when the tend shape found its second consumer seat (`20260730.040859`). The **counsel close** is the living baton itself, the final codeblock of every printout. The **agent cover** wakes a fresh agent atop full handoffs, restating nothing. The **recursion prompt**, versioned v1 through v6 across the seasons, seats a bench with the laws held whole; its craft guide already rests in the tree at `external-research/20260703-013412_writing-recursion-prompts.md`. The **tiered handoff** keeps a fresh context light with its five load tiers, rotation at n mod 7. The **cursor relay** carries additions-only packets whose comment is the base tip hash, cut only on a silent gate. The **infusion prompt** folds many counsels into one intake. The **bench apply report** returns verbatim with its greens, reds, meters delta, pins, and door board. The **waymark** is the smallest baton — one nib, one stamp, one word. The **handback** returns a journey's yield to its season. The **season summary** is the mirror round's account of the whole. The **queue packet** feeds a full pipe one message at a time, born the night the pipe itself said it was full. And the **tend round** is docs-and-measurement hygiene — zero new code files, fascia at entry and exit, one waymark naming the delta.
 
 Each descriptor carries a status line spoken honestly: **exact** where the elder's verbatim form is in hand, **from_record** where the session record preserved its fields, **reconstructed** where the shape is remembered and the bench must confirm against the tree elder before seating. Measurement beats memory; the museum says which is which.
 
@@ -34,7 +35,7 @@ For the bench to append to the Lexicon, verbatim:
 
 ## Seating
 
-**Chosen path:** `context/baton-museum/` — seated `20260730.030553`. Lexicon row appended. Census witness: `tools/gen/season/baton_museum_census_witness.rish` (eleven halls · named elders · `census_breach_count=0` keeps the banked breach unspent). Reconstructed halls remain status-honest until their tree elders are confirmed in a later pass; measurement still beats memory.
+**Chosen path:** `context/baton-museum/` — seated `20260730.030553`. Lexicon row appended. Census witness: `tools/gen/season/baton_museum_census_witness.rish` (twelve halls · named elders · `census_breach_count=0` keeps the banked breach unspent). Reconstructed halls remain status-honest until their tree elders are confirmed in a later pass; measurement still beats memory. **Design-shapes wing** (bounds-home + tend as second consumer) stays **proposed** until Keaton's word — one museum, two wings only after yes.
 
 ---
 
