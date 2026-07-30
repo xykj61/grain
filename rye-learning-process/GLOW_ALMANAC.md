@@ -22,9 +22,9 @@
 <two to five lines: what was expected, what the metal answered, what it teaches>
 ```
 
-## Chapter One — Build Journey greens (7 of 16)
+## Chapter One — Build Journey greens (8 of 16)
 
-Entries 1–5 from stamp `20260730.034527`. Entry 6 from `20260730.040859`. Entry 7 from `20260730.041405`. Nine seats remain.
+Entries 1–5 from stamp `20260730.034527`. Entry 6 from `20260730.040859`. Entry 7 from `20260730.041405`. Entry 8 from `20260730.085312`. Eight seats remain.
 
 ### 1. A descriptor that fits 512 bytes is welcome; one that does not is refused whole.
 **Ran:** `env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/discovery/descriptor_test.rye` · **Stamp:** `20260730.034527` · **Witness:** `comlink/discovery/descriptor.rye` · `descriptor_test.rye`  
@@ -54,6 +54,10 @@ Expected bound · seal · shape · purity with cadence parked. Metal answered GR
 **Ran:** `env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/build_bounds.rye` · **Stamp:** `20260730.041405` · **Witness:** `mycelium/build_bounds.rye`  
 Expected myc+ship pubs equal recursion_block seats; discovery literals pinned (module-path law). Metal answered GREEN — design-shapes · myc+ship metal · discovery seats pinned. Builds inherit; they do not invent.
 
+### 8. Fold state that sleeps as bounded bytes wakes equal to a fresh fold of the same log.
+**Ran:** `env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/fold_persist.rye` · **Stamp:** `20260730.085312` · **Witness:** `mycelium/fold_persist.rye`  
+Expected Amber-shaped snapshot · restore · fold remainder equals fresh; unknown version, truncate, trailing, and over-bound refuse whole. Metal answered GREEN — sleep·wake equal · supply=1072 · refuse whole · bound=4096. Accrete-never-break holds across the nap.
+
 ---
 
-*May every line here be one the machine said first. May the book close at its bound the way a season does. And may the remaining nine seats wait for metal, not memory.*
+*May every line here be one the machine said first. May the book close at its bound the way a season does. And may the remaining eight seats wait for metal, not memory.*
