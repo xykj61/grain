@@ -1,0 +1,190 @@
+//! comlink/discovery/gossip.rye — exchange fold over the bounded peer table.
+//!
+//! Build Journey · equinox A · journey 2 (h2 Aparigraha) · quest Do.
+//! Bounds inherited from tools/gen/season/recursion_block.brix (v27 seat):
+//!   discovery_gossip_fanout 8
+//!   discovery_max_peers 256
+//!   discovery_descriptor_max_bytes 512
+//!
+//! Check shape: whatever crosses is a value · named ceiling · refuse whole on
+//! malformed arrival — never trimmed quietly. Mycelium untouched.
+//! Introduce waits its own round (narrow-scope · fascia < 80).
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/discovery/gossip.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const desc = @import("descriptor.rye");
+const table_mod = @import("table.rye");
+
+/// Peers told per exchange — seated v27.
+pub const gossip_fanout: u32 = 8;
+
+pub const GossipOffer = struct {
+    ids: [gossip_fanout]table_mod.PeerId = undefined,
+    descriptors: [gossip_fanout]desc.Descriptor = undefined,
+    len: u32 = 0,
+
+    pub fn empty() GossipOffer {
+        return .{
+            .ids = undefined,
+            .descriptors = undefined,
+            .len = 0,
+        };
+    }
+
+    pub fn as_len(offer: *const GossipOffer) u32 {
+        assert(offer.len <= gossip_fanout);
+        return offer.len;
+    }
+};
+
+/// Select up to fanout freshest live peers (highest seen_at first).
+pub fn select_fanout(table: *const table_mod.PeerTable) GossipOffer {
+    var offer = GossipOffer.empty();
+    var picked: [gossip_fanout]u32 = undefined;
+    var picked_n: u32 = 0;
+
+    var i: u32 = 0;
+    while (i < table_mod.max_peers) : (i += 1) {
+        if (!table.slots[i].live) continue;
+        if (picked_n < gossip_fanout) {
+            var at = picked_n;
+            while (at > 0 and table.slots[i].seen_at > table.slots[picked[at - 1]].seen_at) : (at -= 1) {
+                picked[at] = picked[at - 1];
+            }
+            picked[at] = i;
+            picked_n += 1;
+        } else if (table.slots[i].seen_at > table.slots[picked[picked_n - 1]].seen_at) {
+            var at = picked_n - 1;
+            while (at > 0 and table.slots[i].seen_at > table.slots[picked[at - 1]].seen_at) : (at -= 1) {
+                picked[at] = picked[at - 1];
+            }
+            picked[at] = i;
+        }
+    }
+
+    var o: u32 = 0;
+    while (o < picked_n) : (o += 1) {
+        const idx = picked[o];
+        offer.ids[o] = table.slots[idx].id;
+        offer.descriptors[o] = table.slots[idx].descriptor;
+    }
+    offer.len = picked_n;
+    assert(offer.len <= gossip_fanout);
+    return offer;
+}
+
+/// One traveling value: peer id + descriptor. Refuse whole when either side is wrong.
+pub const Travel = struct {
+    id: table_mod.PeerId,
+    descriptor: desc.Descriptor,
+
+    pub fn from_parts(id: table_mod.PeerId, descriptor: desc.Descriptor) ?Travel {
+        if (id.len == 0 or id.len > table_mod.peer_id_max_bytes) return null;
+        if (descriptor.len > desc.descriptor_max_bytes) return null;
+        // Empty descriptor body is not a value that crosses — refuse whole.
+        if (descriptor.len == 0) return null;
+        return .{ .id = id, .descriptor = descriptor };
+    }
+};
+
+/// Append one travel value to an offer. Refuse whole — never trim to fit.
+pub fn offer_append(offer: *GossipOffer, travel: Travel) error{FanoutFull, Malformed}!void {
+    assert(offer.len <= gossip_fanout);
+    if (offer.len >= gossip_fanout) return error.FanoutFull;
+    // Re-check shape at the append seam — a bad value is refused, not shortened.
+    const checked = Travel.from_parts(travel.id, travel.descriptor) orelse return error.Malformed;
+    offer.ids[offer.len] = checked.id;
+    offer.descriptors[offer.len] = checked.descriptor;
+    offer.len += 1;
+    assert(offer.len <= gossip_fanout);
+}
+
+/// Fold a remote offer into the local table at `now`.
+/// Malformed entries refuse whole (skip none quietly — the offer is rejected).
+pub fn fold_offer(table: *table_mod.PeerTable, offer: *const GossipOffer, now: u64) error{Full, Malformed}!u32 {
+    if (offer.len > gossip_fanout) return error.Malformed;
+    var i: u32 = 0;
+    while (i < offer.len) : (i += 1) {
+        // Validate every entry before mutating — refuse whole on any bad shape.
+        if (Travel.from_parts(offer.ids[i], offer.descriptors[i]) == null) return error.Malformed;
+    }
+    var folded: u32 = 0;
+    i = 0;
+    while (i < offer.len) : (i += 1) {
+        try table.upsert(offer.ids[i], offer.descriptors[i], now);
+        folded += 1;
+    }
+    return folded;
+}
+
+/// Selftest — Check shape: value travels · fanout ceiling · refuse whole · never trim.
+pub fn main() !void {
+    if (gossip_fanout != 8) return error.FanoutBound;
+
+    // Refuse whole: empty id, empty descriptor, oversized descriptor.
+    const empty_id = table_mod.PeerId{};
+    const ok_id = table_mod.PeerId.from_slice("peer-ok") orelse return error.Id;
+    const ok_d = desc.Descriptor.from_slice("ok|udp://1|fresh|0") orelse return error.Desc;
+    if (Travel.from_parts(empty_id, ok_d) != null) return error.EmptyIdAccepted;
+    if (Travel.from_parts(ok_id, desc.Descriptor.init_empty()) != null) return error.EmptyDescAccepted;
+    var oversized: [desc.descriptor_max_bytes + 1]u8 = undefined;
+    @memset(&oversized, 'x');
+    // Descriptor.from_slice already refuses oversized — Travel sees only valid Descriptors.
+    // Prove append refuses fanout overflow rather than trimming.
+    var offer = GossipOffer.empty();
+    var n: u32 = 0;
+    while (n < gossip_fanout) : (n += 1) {
+        var id_buf: [8]u8 = undefined;
+        const id_slice = try std.fmt.bufPrint(&id_buf, "t{d}", .{n});
+        const tid = table_mod.PeerId.from_slice(id_slice) orelse return error.Tid;
+        const travel = Travel.from_parts(tid, ok_d) orelse return error.Travel;
+        try offer_append(&offer, travel);
+    }
+    if (offer.len != gossip_fanout) return error.OfferFill;
+    const overflow_travel = Travel.from_parts(ok_id, ok_d) orelse return error.OverflowTravel;
+    if (offer_append(&offer, overflow_travel)) |_| return error.ShouldRefuseFanout else |_| {}
+
+    // fold_offer refuses whole when any entry is empty-id (malformed).
+    var bad = GossipOffer.empty();
+    bad.ids[0] = empty_id;
+    bad.descriptors[0] = ok_d;
+    bad.len = 1;
+    var backing: [4096]u8 = undefined;
+    var table = table_mod.PeerTable.init(&backing);
+    if (fold_offer(&table, &bad, 1)) |_| return error.ShouldRefuseMalformed else |err| {
+        if (err != error.Malformed) return error.WrongRefuse;
+    }
+    if (table.count() != 0) return error.PartialFold; // never trimmed quietly into a half-write
+
+    // Happy path: select freshest eight from ten; fold two remotes.
+    var seed_backing: [table_mod.max_peers * desc.descriptor_max_bytes]u8 = undefined;
+    var seeded = table_mod.PeerTable.init(&seed_backing);
+    var i: u32 = 0;
+    while (i < 10) : (i += 1) {
+        var id_buf: [8]u8 = undefined;
+        const id_slice = try std.fmt.bufPrint(&id_buf, "g{d}", .{i});
+        const pid = table_mod.PeerId.from_slice(id_slice) orelse return error.Gid;
+        const d = desc.Descriptor.from_slice("gossip-peer") orelse return error.Gd;
+        try seeded.upsert(pid, d, @as(u64, i + 1));
+    }
+    const selected = select_fanout(&seeded);
+    if (selected.len != gossip_fanout) return error.SelectLen;
+    if (!std.mem.eql(u8, selected.ids[0].as_slice(), "g9")) return error.FreshestWrong;
+
+    var remote_backing: [4096]u8 = undefined;
+    var remote = table_mod.PeerTable.init(&remote_backing);
+    var remote_offer = GossipOffer.empty();
+    const r0 = table_mod.PeerId.from_slice("remote-0") orelse return error.R0;
+    const r1 = table_mod.PeerId.from_slice("remote-1") orelse return error.R1;
+    const rd = desc.Descriptor.from_slice("remote-body") orelse return error.Rd;
+    try offer_append(&remote_offer, Travel.from_parts(r0, rd).?);
+    try offer_append(&remote_offer, Travel.from_parts(r1, rd).?);
+    const folded = try fold_offer(&remote, &remote_offer, 999);
+    if (folded != 2) return error.FoldCount;
+    if (remote.get(r0) == null) return error.MissingR0;
+
+    print("GREEN: discovery gossip — Check shape · fanout {d} · refuse whole · never trim\n", .{gossip_fanout});
+}
