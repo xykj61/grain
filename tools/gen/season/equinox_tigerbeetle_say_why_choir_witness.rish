@@ -1,0 +1,29 @@
+# tools/gen/season/equinox_tigerbeetle_say_why_choir_witness.rish — e43 → almanac ch4.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_say_why_choir_witness.rish
+#
+# Chapter four opens from metal. Leaf welcome + refuse only — no nested choirs.
+
+say "equinox-tb-say-why-choir: Language EN — say why opens chapter four."
+say "equinox-tb-say-why-choir: Style Radiant — a finding arrives; a theme may follow later."
+say "equinox-tb-say-why-choir: Lens TAME — e43 · say why · almanac seat 49 · ch4 open."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_say_why_census_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-tb-say-why-choir: welcome RED"
+assert welcome.out contains "GREEN: tb-say-why" else "equinox-tb-say-why-choir: welcome missing GREEN"
+assert welcome.out contains "GUIDE_WHY=yes" else "equinox-tb-say-why-choir: want GUIDE_WHY"
+assert welcome.out contains "TAME_RADIANT=yes" else "equinox-tb-say-why-choir: want TAME_RADIANT"
+assert welcome.out contains "RADIANT=yes" else "equinox-tb-say-why-choir: want RADIANT"
+
+let refuse = run ["sh" "tools/fixtures/tigerbeetle_say_why_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
+say refuse.out
+assert refuse.ok == false else "equinox-tb-say-why-choir: absent clone must fail"
+assert refuse.out contains "verdict=absent" else "equinox-tb-say-why-choir: want verdict=absent"
+assert refuse.out contains "CLONE=ABSENT" else "equinox-tb-say-why-choir: want CLONE=ABSENT"
+
+let almanac = run ["sh" "tools/gen/season/equinox_tigerbeetle_say_why_almanac.sh"]
+assert almanac.ok else "equinox-tb-say-why-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-tb-say-why-choir — say why · comments as prose · absent refuses · almanac seat 49 · ch4 open"

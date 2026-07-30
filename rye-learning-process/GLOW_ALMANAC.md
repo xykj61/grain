@@ -226,6 +226,14 @@ Expected CLONE=present · GUIDE_NAMING · GUIDE_UNITS · GUIDE_ABBREV · TAME_NA
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ch3_surface_witness.rish` · **Stamp:** `20260730.140147` · **Witness:** `tools/gen/season/equinox_ch3_surface_witness.rish`
 Expected wing halls=4/breach=0 · safety static/seventy/flow · performance sized/batching/explicit · naming, and verdict=missing_wing on an absent path. Metal answered GREEN. Chapter three closes at sixteen; chapter four waits for metal.
 
+## Chapter Four (1 of 16)
+
+Opened from metal at stamp `20260730.140442`. Themes arrive after findings; this chapter carries none in advance.
+
+### 49. Comments say why; they are sentences, and Radiant voice keeps them honest.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_say_why_choir_witness.rish` · **Stamp:** `20260730.140442` · **Witness:** `tools/gen/season/tigerbeetle_say_why_census_witness.rish` · scan `tools/fixtures/tigerbeetle_say_why_census.sh` · choir `equinox_tigerbeetle_say_why_choir_witness.rish`
+Expected CLONE=present · GUIDE_WHY · GUIDE_HOW · GUIDE_SENTENCE · TAME_WHY · TAME_SENTENCE · TAME_RADIANT · SUPPLEMENT_WHY · STYLE · RADIANT, and verdict=absent on a missing clone path. Metal answered GREEN. Chapter four opens; clean-room study only.
+
 ---
 
-*May every line here be one the machine said first. May the book close at its bound the way a season does. And may chapter four wait for metal, not memory.*
+*May every line here be one the machine said first. May the book close at its bound the way a season does. And may the rest of chapter four wait for metal, not memory.*

@@ -1,0 +1,31 @@
+# tools/gen/season/tigerbeetle_say_why_census_witness.rish — e43 Say why / comments.
+#
+#   rishi/bin/rishi run tools/gen/season/tigerbeetle_say_why_census_witness.rish
+#
+# Requires gratitude/tigerbeetle submodule present.
+# Clean-room: presence only · never copies into rye/.
+# Leaf only — no nested elder choirs.
+
+say "tb-say-why: Language EN — say why; comments are sentences."
+say "tb-say-why: Style Radiant — show your workings; lead with what is."
+say "tb-say-why: Lens TAME — e43 · clean-room study · almanac seat 49 · ch4 open."
+
+let clone = run ["test" "-d" "gratitude/tigerbeetle/src"]
+assert clone.ok else "tb-say-why: gratitude/tigerbeetle/src ABSENT — host clone first"
+
+let census = run ["sh" "tools/fixtures/tigerbeetle_say_why_census.sh"]
+say census.out
+assert census.ok else "tb-say-why: census failed or thin"
+assert census.out contains "CLONE=present" else "tb-say-why: want CLONE=present"
+assert census.out contains "verdict=ok" else "tb-say-why: want verdict=ok"
+assert census.out contains "GUIDE_WHY=yes" else "tb-say-why: held guide must say why"
+assert census.out contains "GUIDE_HOW=yes" else "tb-say-why: guide must say how"
+assert census.out contains "GUIDE_SENTENCE=yes" else "tb-say-why: guide must treat comments as sentences"
+assert census.out contains "TAME_WHY=yes" else "tb-say-why: TAME must say why"
+assert census.out contains "TAME_SENTENCE=yes" else "tb-say-why: TAME must write comments as sentences"
+assert census.out contains "TAME_RADIANT=yes" else "tb-say-why: TAME must name Comments in the Radiant Voice"
+assert census.out contains "SUPPLEMENT_WHY=yes" else "tb-say-why: supplement must seat Say why"
+assert census.out contains "STYLE=yes" else "tb-say-why: clone docs must teach the law"
+assert census.out contains "RADIANT=yes" else "tb-say-why: Grain Radiant Style must be present"
+
+say "GREEN: tb-say-why — guide·how·sentence·TAME·radiant·supplement·style·RADIANT ok"
