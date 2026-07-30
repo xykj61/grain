@@ -1,3 +1,4 @@
+- `20260730.034527` — [Glow almanac ch1 · five entries](20260730-034527_glow-almanac-ch1-five.bron) — metal stamp · merge-here · ch1 5/16
 - `20260730.034319` — [J2 Check GREEN · Sangha Act](20260730-034319_j2-check-sangha-act.bron) — primitives hold · pattern one from discovery · almanac next
 - `20260730.034136` — [Option 2 seat · merge PR 2](20260730-034136_option2-seat-merge-pr2.bron) — Keaton word · Option 2 SEATED · merge + kg to Check/Act
 - `20260730.033648` — [red 32 auth-refused · myc fold](20260730-033648_red32-auth-refused-myc-fold.bron) — row 32 · 403 guard · fold GREEN · pier Option 2 parked
