@@ -1,0 +1,288 @@
+//! mycelium/fold_persist.rye — fold state across an Amber-shaped sleep.
+//!
+//! Journey 4 · equinox A · h4 Accrete-never-break · door 9.
+//! Bound from tools/gen/season/recursion_block.brix:
+//!   myc_fold_snapshot_max_bytes 4096
+//!
+//! Snapshot FoldState (+ prefix length) to bounded bytes, restore, fold the
+//! remainder, assert equality with a fresh fold of the full log. Malformed,
+//! truncated, unknown-version, and over-bound snapshots refuse whole.
+//! Membership · wallet · gas · keys stay parked.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig \
+//!     rye/bin/rye run mycelium/fold_persist.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const fold = @import("fold.rye");
+const tally_copy = @import("tally_copy.rye");
+
+/// One FoldState freeze for a journey-scale log — seated door 9 · power of two.
+pub const myc_fold_snapshot_max_bytes: u32 = 4096;
+
+/// Wire version — unknown versions refuse whole.
+pub const snapshot_version: u8 = 1;
+
+pub const SnapshotError = error{
+    OverBound,
+    Truncated,
+    UnknownVersion,
+    BadStarLen,
+    BadStarCount,
+    TrailingBytes,
+    PrefixPastLog,
+};
+
+/// Encode FoldState after folding `prefix_len` facts. Refuses when over bound.
+pub fn snapshot_state(
+    state: *const fold.FoldState,
+    prefix_len: u32,
+    out: []u8,
+) SnapshotError!usize {
+    // version · issued · taxed · prefix_len · star_count · stars…
+    var need: usize = 1 + 8 + 8 + 4 + 4;
+    var i: u32 = 0;
+    while (i < state.star_count) : (i += 1) {
+        const sl = state.star_lens[i];
+        if (sl == 0 or sl > fold.star_name_max_bytes) return error.BadStarLen;
+        need += 1 + sl;
+    }
+    if (need > myc_fold_snapshot_max_bytes) return error.OverBound;
+    if (out.len < need) return error.OverBound;
+
+    var off: usize = 0;
+    out[off] = snapshot_version;
+    off += 1;
+    off += write_u64_le(out[off..], state.issued);
+    off += write_u64_le(out[off..], state.taxed);
+    off += write_u32_le(out[off..], prefix_len);
+    off += write_u32_le(out[off..], state.star_count);
+
+    i = 0;
+    while (i < state.star_count) : (i += 1) {
+        const sl = state.star_lens[i];
+        out[off] = @intCast(sl);
+        off += 1;
+        tally_copy.copy_disjoint(u8, out[off..][0..sl], state.stars[i][0..sl]);
+        off += sl;
+    }
+    assert(off == need);
+    return off;
+}
+
+/// Decode snapshot bytes into FoldState + prefix_len. Refuses whole on faults.
+pub fn restore_state(
+    bytes: []const u8,
+    state_out: *fold.FoldState,
+    prefix_out: *u32,
+) SnapshotError!void {
+    if (bytes.len == 0) return error.Truncated;
+    if (bytes.len > myc_fold_snapshot_max_bytes) return error.OverBound;
+    if (bytes[0] != snapshot_version) return error.UnknownVersion;
+    if (bytes.len < 1 + 8 + 8 + 4 + 4) return error.Truncated;
+
+    var off: usize = 1;
+    const issued = read_u64_le(bytes[off..]);
+    off += 8;
+    const taxed = read_u64_le(bytes[off..]);
+    off += 8;
+    const prefix_len = read_u32_le(bytes[off..]);
+    off += 4;
+    const star_count = read_u32_le(bytes[off..]);
+    off += 4;
+
+    if (star_count > fold.myc_log_max_facts) return error.BadStarCount;
+    if (taxed > issued) return error.BadStarCount; // loud refuse — invariant broken in wire
+
+    var state = fold.FoldState{ .issued = issued, .taxed = taxed, .star_count = 0 };
+    var s: u32 = 0;
+    while (s < star_count) : (s += 1) {
+        if (off >= bytes.len) return error.Truncated;
+        const sl: u32 = bytes[off];
+        off += 1;
+        if (sl == 0 or sl > fold.star_name_max_bytes) return error.BadStarLen;
+        if (off + sl > bytes.len) return error.Truncated;
+        tally_copy.copy_disjoint(u8, state.stars[s][0..sl], bytes[off..][0..sl]);
+        state.star_lens[s] = sl;
+        state.star_count += 1;
+        off += sl;
+    }
+    if (off != bytes.len) return error.TrailingBytes;
+
+    state_out.* = state;
+    prefix_out.* = prefix_len;
+}
+
+/// Fold facts [prefix_len .. log.len) onto a restored state.
+pub fn fold_remainder(
+    state: *fold.FoldState,
+    log: *const fold.Log,
+    prefix_len: u32,
+) error{ IdentityRefused, UnknownKind, Overdraw, StarTaken, LogFull }!void {
+    if (prefix_len > log.len) return error.LogFull;
+    var i = prefix_len;
+    while (i < log.len) : (i += 1) {
+        try fold.fold_fact(state, &log.facts[i]);
+        assert(state.supply() == state.issued - state.taxed);
+    }
+}
+
+fn states_equal(a: *const fold.FoldState, b: *const fold.FoldState) bool {
+    if (a.issued != b.issued or a.taxed != b.taxed) return false;
+    if (a.star_count != b.star_count) return false;
+    var i: u32 = 0;
+    while (i < a.star_count) : (i += 1) {
+        if (a.star_lens[i] != b.star_lens[i]) return false;
+        const n = a.star_lens[i];
+        if (!std.mem.eql(u8, a.stars[i][0..n], b.stars[i][0..n])) return false;
+    }
+    return true;
+}
+
+fn write_u64_le(out: []u8, v: u64) usize {
+    var x = v;
+    var i: usize = 0;
+    while (i < 8) : (i += 1) {
+        out[i] = @truncate(x);
+        x >>= 8;
+    }
+    return 8;
+}
+
+fn write_u32_le(out: []u8, v: u32) usize {
+    var x = v;
+    var i: usize = 0;
+    while (i < 4) : (i += 1) {
+        out[i] = @truncate(x);
+        x >>= 8;
+    }
+    return 4;
+}
+
+fn read_u64_le(in: []const u8) u64 {
+    var v: u64 = 0;
+    var i: usize = 0;
+    while (i < 8) : (i += 1) {
+        v |= @as(u64, in[i]) << @intCast(8 * i);
+    }
+    return v;
+}
+
+fn read_u32_le(in: []const u8) u32 {
+    var v: u32 = 0;
+    var i: usize = 0;
+    while (i < 4) : (i += 1) {
+        v |= @as(u32, in[i]) << @intCast(8 * i);
+    }
+    return v;
+}
+
+/// Selftest — sleep · wake · equal · refuse whole.
+pub fn main() !void {
+    const kumara = @import("kumara.rye");
+    const seed: [kumara.seed_length]u8 = .{0xa1} ** kumara.seed_length;
+    const kp = kumara.keypair_from_seed(&seed);
+
+    const issue = fold.mint_fact(kp, fold.kind_issue, 1000, "", "persist-genesis") orelse return error.MintIssue;
+    const tax_ok = fold.mint_fact(kp, fold.kind_tax, 64, "", "drain") orelse return error.MintTax;
+    const star_a = fold.mint_fact(kp, fold.kind_star_reserve, 64, "napstar", "reserve") orelse return error.MintStar;
+    const issue2 = fold.mint_fact(kp, fold.kind_issue, 200, "", "after-nap") orelse return error.MintIssue2;
+
+    var log = fold.Log.empty();
+    _ = try fold.append_fact(&log, issue);
+    _ = try fold.append_fact(&log, tax_ok);
+    _ = try fold.append_fact(&log, star_a);
+    _ = try fold.append_fact(&log, issue2);
+
+    // Sleep after first two facts (issue + tax); wake and fold remainder.
+    var prefix = fold.Log.empty();
+    prefix.facts[0] = log.facts[0];
+    prefix.facts[1] = log.facts[1];
+    prefix.len = 2;
+    const mid = try fold.fold_log(&prefix);
+
+    var buf: [myc_fold_snapshot_max_bytes]u8 = undefined;
+    const n = try snapshot_state(&mid, 2, buf[0..]);
+    if (n == 0 or n > myc_fold_snapshot_max_bytes) return error.SnapSize;
+
+    // Purity of encode: same state → same bytes.
+    var buf2: [myc_fold_snapshot_max_bytes]u8 = undefined;
+    const n2 = try snapshot_state(&mid, 2, buf2[0..]);
+    if (n2 != n or !std.mem.eql(u8, buf[0..n], buf2[0..n2])) return error.SnapPurity;
+
+    var woken = fold.FoldState{};
+    var prefix_len: u32 = 0;
+    try restore_state(buf[0..n], &woken, &prefix_len);
+    if (prefix_len != 2) return error.PrefixWrong;
+    if (woken.issued != mid.issued or woken.taxed != mid.taxed) return error.WakeAmounts;
+
+    try fold_remainder(&woken, &log, prefix_len);
+    const fresh = try fold.fold_log(&log);
+    if (!states_equal(&woken, &fresh)) return error.SleepUnequal;
+    if (fresh.supply() != 1072) return error.SupplyWrong; // 1000-64-64+200
+
+    // Unknown version refuses whole.
+    var bad_ver = buf;
+    bad_ver[0] = 99;
+    var trash = fold.FoldState{};
+    var pl: u32 = 0;
+    if (restore_state(bad_ver[0..n], &trash, &pl)) |_| return error.BadVerAccepted else |err| {
+        if (err != error.UnknownVersion) return error.WrongBadVer;
+    }
+
+    // Truncated refuses whole.
+    if (restore_state(buf[0 .. n / 2], &trash, &pl)) |_| return error.TruncAccepted else |err| {
+        if (err != error.Truncated and err != error.BadStarLen) return error.WrongTrunc;
+    }
+
+    // Trailing bytes refuse whole.
+    var fat: [myc_fold_snapshot_max_bytes]u8 = undefined;
+    tally_copy.copy_disjoint(u8, fat[0..n], buf[0..n]);
+    fat[n] = 0xee;
+    if (restore_state(fat[0 .. n + 1], &trash, &pl)) |_| return error.TrailAccepted else |err| {
+        if (err != error.TrailingBytes) return error.WrongTrail;
+    }
+
+    // Tampered issued byte refuses via invariant (taxed > issued) or unequal wake.
+    var tamper = buf;
+    tamper[1] ^= 0xff; // issued low byte
+    if (restore_state(tamper[0..n], &trash, &pl)) |_| {
+        // If restore accepted a nonsense pair, fold_remainder / equality must still fail loudly.
+        if (trash.taxed <= trash.issued) {
+            // Continue fold — may or may not error; final equality must fail vs fresh.
+            fold_remainder(&trash, &log, pl) catch {};
+            if (states_equal(&trash, &fresh)) return error.TamperEqual;
+        }
+    } else |_| {
+        // refused whole — good
+    }
+
+    // Over-bound encode: many max-length stars until snapshot refuses.
+    var fat_state = fold.FoldState{ .issued = 1_000_000, .taxed = 0 };
+    var s: u32 = 0;
+    while (s < fold.myc_log_max_facts) : (s += 1) {
+        var name: [fold.star_name_max_bytes]u8 = undefined;
+        @memset(name[0..], 'a');
+        name[0] = @truncate(s);
+        name[1] = @truncate(s >> 8);
+        tally_copy.copy_disjoint(u8, fat_state.stars[s][0..], name[0..]);
+        fat_state.star_lens[s] = fold.star_name_max_bytes;
+        fat_state.star_count = s + 1;
+        var probe: [myc_fold_snapshot_max_bytes]u8 = undefined;
+        if (snapshot_state(&fat_state, 0, probe[0..])) |_| {
+            continue;
+        } else |err| {
+            if (err != error.OverBound) return error.WrongOver;
+            break;
+        }
+    }
+    if (fat_state.star_count < 2) return error.OverNeverBit;
+
+    assert(myc_fold_snapshot_max_bytes == 4096);
+
+    print("GREEN: myc fold_persist — sleep·wake equal · supply={d} · refuse whole · bound={d}\n", .{
+        fresh.supply(),
+        myc_fold_snapshot_max_bytes,
+    });
+}

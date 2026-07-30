@@ -13,6 +13,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const fold = @import("fold.rye");
 const ship_sol = @import("ship_sol.rye");
+const fold_persist = @import("fold_persist.rye");
 
 /// Seated v27 — must match tools/gen/season/recursion_block.brix.
 const seated_descriptor_max: u32 = 512;
@@ -23,6 +24,7 @@ const seated_hops: u32 = 2;
 const seated_fact_max: u32 = 256;
 const seated_star_name: u32 = 32;
 const seated_ship_sol: u32 = 1024;
+const seated_fold_snapshot: u32 = 4096;
 const seated_myc_genesis: u64 = 12288;
 const seated_myc_star_price: u64 = 64;
 const seated_myc_ceiling: u64 = 4096;
@@ -34,6 +36,7 @@ pub fn main() !void {
     if (fold.myc_log_max_facts != seated_myc_log) return error.LogDrift;
     if (ship_sol.ship_sol_proof_max_bytes != seated_ship_sol) return error.ShipSolDrift;
     if (ship_sol.sol_name_max_bytes > seated_ship_sol) return error.SolNameOverProof;
+    if (fold_persist.myc_fold_snapshot_max_bytes != seated_fold_snapshot) return error.SnapshotDrift;
 
     // Discovery seats — brix data pinned; metal proven under comlink/discovery/.
     if (seated_descriptor_max != 512) return error.DescriptorSeat;
