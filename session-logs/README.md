@@ -1,3 +1,4 @@
+- `20260730.120531` — [E13 bounded tower GREEN · almanac 19](20260730-120531_e13-bounded-tower-green.bron) — tutorial metal · ch2 3/16 · e14 next
 - `20260730.120317` — [E12 priority fold almanac GREEN · seat 18](20260730-120317_e12-priority-fold-almanac-green.bron) — ch2 2/16 · e13 next
 - `20260730.115628` — [E11 East pack opens almanac ch2 · seat 17](20260730-115628_e11-equinox-east-pack-almanac-green.bron) — ch2 1/16 · e12 next
 - `20260730.115101` — [E10 equinox surface choir GREEN · almanac 16](20260730-115101_e10-equinox-surface-choir-green.bron) — ch1 full · e11 next
