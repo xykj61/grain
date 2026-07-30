@@ -6,15 +6,15 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260730.034527` (EDT) · voice Riyo  
+**Last refreshed:** `20260730.034932` (EDT) · voice Riyo  
 **Product nib:** ZETA6 · LULU0–5 · **SETU6.5 · live-sent** · HOLD* · LIVE eyes · **HAWM folded** · **Seva** · **Mand ring-1 · ring-2 · ring-3** · **THREATS** · **five pillars** · **accrete tiers** · **redaction stance** · **always-in-it rhythm** · **Prin / %prin** · **sundial** · **reds-first** · **baton** · **shape** *(affection)*  
 **Language nib:** **STOA0–333** · glow mode SLC · digraph twin rung 1a GREEN · list1024 · Env512 · **stamp @u64 · Crockford** · **shape aura floor** · **Glow text floor GREEN** · **Glow Book weave GREEN (C2b)** · **baked-sample Acme gloss** · **first resident** (routine) · **vegan-dogfood** (easter egg) · **living mutant** · **shred-prep list** · **transitive writing crawl** · **Kiln** · **three** · **quad** · **nona** · **deca** · **undeca** *(canon)* · **equinoxes** · **SDD** · **Nest-Chapter** · **your / %your** · Glow=code · Brix=data · **baton** · **coords·basis·meters·reds·words·parked·artifacts·next·recommend** · **shape** *(seam affection · Lexicon row PARKED)*  
 **Suite nib:** ZETA0–6 · LULU0–5 · SETU0–SETU6.5 · live-sent · HOLD* · STOA0–333 · **Mand home** · **siblings seated** · **--cursor launch** · **Pond counsel 161616** · **one-clock blocking** · **tools/*.py blocking** · **stranger lap warm+cold REPORT** · **Grain umbrella living** · **OQ #1 · #3 · #4 · #5 answered** · **pass ledger** · **campaign STOPPED** · **growth law** · **wasmtime ABSENT** · **monocypher 4.0.3 GREEN** · **MAP.md** · **bibliography.md** · **breach T3–T4** · **U·V·I** · **C-Ladder C1·C2·C2b landed** · **r18 say/lint twin** · **r21 Verse · O1** · **r22 outside eyes** · **Prin** · **corpus twin fold seated (Sound r11)** · **C3–C5 await homes** · **mod-clock** · **REDS.md** · **Sangha pattern one** · **GLOW_ALMANAC ch1** · **tally/stack** · **baton-museum** · **discovery quartet** · **mycelium/fold** · **Check-quest shapes** · **pier Option 2**  
-**Git nib:** `ceb889af43` · Grain · almanac ch1 · five entries  
-**Bookmark:** [`expanding-prompts/20260730-030553_bench-handoff-256-open.md`](../expanding-prompts/20260730-030553_bench-handoff-256-open.md)
+**Git nib:** `abf6625f7e` · Grain · r8 check-in · charter queue empty  
+**Bookmark:** [`waymarks/20260730-034932_build-r8-charter-queue-empty.md`](../waymarks/20260730-034932_build-r8-charter-queue-empty.md)
 
-**Chapter:** Framework · EDT · **Grain** · **finishing edge:** **undeca** *(canon)* — Voice **OPEN** · 256 season · equinox **A** · journey **2** (h2 Aparigraha) · quest **Do** · round **8/256** · Glow almanac ch1 **5/16** · pier Option 2 **SEATED** · Cloud merge on xykj61 **approved** · name **parked** · Equinox **PAUSED** e6/e7 · Surface **PAUSED** · GitHub dual · narrow-scope (fascia 71) · Riyo stands · Prefer **git nib**. · `prin scope`  
-**Meters (fresh `20260730.032348`):** sundial **100 · green** (Δ0 hold) · fascia **71/100** (Δ0 · target ≥80 · narrow-scope active)
+**Chapter:** Framework · EDT · **Grain** · **finishing edge:** **undeca** *(canon)* — Voice **OPEN** · 256 season · equinox **A** · journey **2** (h2 Aparigraha) · quest **Do** · round **8/256** · **charter code queue EMPTY** · almanac ch1 **5/16** · pier Option 2 **SEATED** · Cloud merge-here **approved** · name **parked** · Equinox **PAUSED** e6/e7 · Surface **PAUSED** · GitHub dual · narrow-scope (fascia 69) · Riyo stands · Prefer **git nib**. · `prin scope`  
+**Meters (fresh `20260730.034742`):** sundial **100 · green** (Δ0 hold) · fascia **69/100** (Δ−2 from 71 · target ≥80 · narrow-scope active)
 
 ---
 
@@ -70,8 +70,8 @@ WOV retirement stays **roadmap last**. No live deploy · wallet · gas · privat
 
 | Door | Kind |
 |------|------|
-| **Voice Chapter Build Journey** | **OPEN** · A·J2·Do · r8 · almanac ch1 5/16 · next ch1 seats or charter next door · handoff expanding-prompts/20260730-030553_bench-handoff-256-open.md |
-| **Glow almanac ch1** | **OPEN** `20260730.034527` · 5 of 16 · discovery + myc fold from metal · `rye-learning-process/GLOW_ALMANAC.md` |
+| **Voice Chapter Build Journey** | **OPEN** · A·J2·Do · r8 **check-in** · charter code queue **EMPTY** · waymark 20260730-034932 · next door needs charter |
+| **Glow almanac ch1** | **OPEN** `20260730.034527` · 5 of 16 · seats 6–16 wait for new metal · `rye-learning-process/GLOW_ALMANAC.md` |
 | **Sangha pattern one** | **LANDED** `20260730.034319` · `docs-geode/sangha/01-descriptor-exchange.md` · from discovery quartet GREEN |
 | **Baton museum** | **SEATED** · eleven halls · Lexicon baton + nine limbs · census zero · breach banked |
 | **bibliography.md** | **SEATED** · living root · MAP + ORGANIZING pointer lines · elders stay |
