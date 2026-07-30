@@ -158,7 +158,7 @@ Expected halls_expected=13 · halls_absent=0 · census_breach_count=0, and verdi
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ch2_surface_witness.rish` · **Stamp:** `20260730.125750` · **Witness:** `tools/gen/season/equinox_ch2_surface_witness.rish`
 Expected SAFE census · reds complete/monotone/refuse · voice sites=6/refuse · baton halls=13/breach=0/absent refuse each GREEN in one choir. Metal answered GREEN. Chapter two closes at sixteen; chapter three waits for metal.
 
-## Chapter Three (5 of 16)
+## Chapter Three (6 of 16)
 
 Opened from metal at stamp `20260730.130733`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -181,6 +181,10 @@ Expected pairs_matched=3 · PATTERN_CITES · fold GREEN with supply=872 · purit
 ### 37. Tend hygiene forbids new code files; three tend waymarks hold fascia delta zero.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_tend_hygiene_choir_witness.rish` · **Stamp:** `20260730.132032` · **Witness:** `tools/gen/season/tend_hygiene_census_witness.rish` · scan `tools/fixtures/tend_hygiene_census.sh` · choir `equinox_tend_hygiene_choir_witness.rish`
 Expected SHAPE_ZERO_CODE · HALL_ZERO_CODE · tend_waymarks=3 · delta_two=0 · delta_three=0, and verdict=missing_shape on an absent path. Metal answered GREEN. The fourth design hall closes the wing's measured set.
+
+### 38. The design-shapes surface choir holds: wing, bounds, resin, fact-fold, and tend GREEN together.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_design_shapes_surface_witness.rish` · **Stamp:** `20260730.132258` · **Witness:** `tools/gen/season/equinox_design_shapes_surface_witness.rish`
+Expected wing halls=4/breach=0 · bounds pairs=10 · resin bound 12 · fact-fold supply=872/purity · tend waymarks=3, and verdict=missing_wing on an absent path. Metal answered GREEN. Four halls and the wing hold as one choir.
 
 ---
 
