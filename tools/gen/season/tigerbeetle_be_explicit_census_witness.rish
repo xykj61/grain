@@ -1,0 +1,27 @@
+# tools/gen/season/tigerbeetle_be_explicit_census_witness.rish — e39 be explicit.
+#
+#   rishi/bin/rishi run tools/gen/season/tigerbeetle_be_explicit_census_witness.rish
+#
+# Requires gratitude/tigerbeetle submodule present.
+# Clean-room: presence only · never copies into rye/.
+# Leaf only — no nested elder choirs.
+
+say "tb-be-explicit: Language EN — be explicit; hot loops stand alone."
+say "tb-be-explicit: Style Radiant — lean lightly on the compiler."
+say "tb-be-explicit: Lens TAME — e39 · clean-room study · almanac seat 45."
+
+let clone = run ["test" "-d" "gratitude/tigerbeetle/src"]
+assert clone.ok else "tb-be-explicit: gratitude/tigerbeetle/src ABSENT — host clone first"
+
+let census = run ["sh" "tools/fixtures/tigerbeetle_be_explicit_census.sh"]
+say census.out
+assert census.ok else "tb-be-explicit: census failed or thin"
+assert census.out contains "CLONE=present" else "tb-be-explicit: want CLONE=present"
+assert census.out contains "verdict=ok" else "tb-be-explicit: want verdict=ok"
+assert census.out contains "GUIDE_EXPLICIT=yes" else "tb-be-explicit: held guide must say Be explicit"
+assert census.out contains "GUIDE_HOTLOOP=yes" else "tb-be-explicit: guide must extract hot loops"
+assert census.out contains "TAME_EXPLICIT=yes" else "tb-be-explicit: TAME must lean lightly on the compiler"
+assert census.out contains "STYLE=yes" else "tb-be-explicit: clone docs must teach the law"
+assert census.out contains "COMPACTION=yes" else "tb-be-explicit: clone compaction path must be present"
+
+say "GREEN: tb-be-explicit — guide·hotloop·TAME·style·compaction ok"

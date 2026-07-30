@@ -1,0 +1,29 @@
+# tools/gen/season/equinox_tigerbeetle_be_explicit_choir_witness.rish — e39 → almanac.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_tigerbeetle_be_explicit_choir_witness.rish
+#
+# Leaf welcome + refuse only — no nested elder choirs.
+
+say "equinox-tb-be-explicit-choir: Language EN — be explicit; refuse an absent clone."
+say "equinox-tb-be-explicit-choir: Style Radiant — welcome and refuse share one seat."
+say "equinox-tb-be-explicit-choir: Lens TAME — e39 · be explicit · almanac seat 45."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_be_explicit_census_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-tb-be-explicit-choir: welcome RED"
+assert welcome.out contains "GREEN: tb-be-explicit" else "equinox-tb-be-explicit-choir: welcome missing GREEN"
+assert welcome.out contains "GUIDE_EXPLICIT=yes" else "equinox-tb-be-explicit-choir: want GUIDE_EXPLICIT"
+assert welcome.out contains "TAME_EXPLICIT=yes" else "equinox-tb-be-explicit-choir: want TAME_EXPLICIT"
+assert welcome.out contains "COMPACTION=yes" else "equinox-tb-be-explicit-choir: want COMPACTION"
+
+let refuse = run ["sh" "tools/fixtures/tigerbeetle_be_explicit_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
+say refuse.out
+assert refuse.ok == false else "equinox-tb-be-explicit-choir: absent clone must fail"
+assert refuse.out contains "verdict=absent" else "equinox-tb-be-explicit-choir: want verdict=absent"
+assert refuse.out contains "CLONE=ABSENT" else "equinox-tb-be-explicit-choir: want CLONE=ABSENT"
+
+let almanac = run ["sh" "tools/gen/season/equinox_tigerbeetle_be_explicit_almanac.sh"]
+assert almanac.ok else "equinox-tb-be-explicit-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-tb-be-explicit-choir — explicit · hot loops · compaction · absent refuses · almanac seat 45"

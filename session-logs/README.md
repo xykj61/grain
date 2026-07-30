@@ -1,3 +1,4 @@
+- `20260730.134747` — [E39 TB be-explicit GREEN · almanac 45 · ch3 13/16](20260730-134747_e39-tb-be-explicit-green.bron) — hot loops · lean lightly · e40 next
 - `20260730.134336` — [E38 TB batching GREEN · almanac 44 · ch3 12/16](20260730-134336_e38-tb-batching-green.bron) — amortize · sprinter · e39 next
 - `20260730.134034` — [E37 TB sized-types GREEN · almanac 43 · ch3 11/16](20260730-134034_e37-tb-sized-types-green.bron) — exact widths · usize at seam · e38 next
 - `20260730.133808` — [E36 TB safety surface GREEN · almanac 42 · ch3 10/16](20260730-133808_e36-tb-safety-surface-green.bron) — static·seventy·flow · e37 next
