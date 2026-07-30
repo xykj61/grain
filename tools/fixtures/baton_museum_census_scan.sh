@@ -1,5 +1,5 @@
 #!/bin/sh
-# tools/fixtures/baton_museum_census_scan.sh — twelve halls present; elders named.
+# tools/fixtures/baton_museum_census_scan.sh — thirteen halls present; elders named.
 #
 # Output convention: context/specs/20260729-215600_scan-seam-convention.md
 set -eu
@@ -7,7 +7,7 @@ root="${1:-context/baton-museum}"
 [ -d "$root" ] || { echo "verdict=missing_museum"; exit 2; }
 [ -f "$root/README.md" ] || { echo "verdict=missing_charter"; exit 2; }
 
-need="counsel_close.brix agent_cover.brix recursion_prompt.brix tiered_handoff.brix cursor_relay.brix infusion_prompt.brix bench_apply_report.brix waymark.brix handback.brix season_summary.brix queue_packet.brix tend_round.brix"
+need="counsel_close.brix agent_cover.brix recursion_prompt.brix tiered_handoff.brix cursor_relay.brix infusion_prompt.brix bench_apply_report.brix waymark.brix handback.brix season_summary.brix queue_packet.brix tend_round.brix cell.brix"
 absent=0
 for f in $need; do
   if [ -f "$root/$f" ]; then
@@ -33,7 +33,7 @@ else
   elder_miss=$((elder_miss + 1))
 fi
 
-halls=12
+halls=13
 echo "halls_expected=$halls"
 echo "halls_absent=$absent"
 echo "elder_miss=$elder_miss"
