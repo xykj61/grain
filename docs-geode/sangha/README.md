@@ -18,9 +18,9 @@
 
 Every pattern page carries four parts, in order. **Context** — the situation, plainly, for a reader who has never met this tree. **Forces** — what pulls against what; the tension that makes the pattern worth naming. **The fold** — the composition itself, as the pure fold it is: which facts enter, what anyone can recompute. **The witness** — the path to the code that proved it, with the stamp it ran at. A page missing its witness is a design note that wandered into the wrong room, and the shelf refuses it.
 
-## Page one, reserved
+## Page one — landed
 
-**The descriptor exchange** — how a peer announces itself and learns its neighbors: signed self-descriptions, gossiped at a named fan-out, folded into a bounded table, aged out at a named staleness. Reserved for the Build Journey's running code (v34 by the charter), written *from* `comlink/discovery/` after its witnesses go green — never before. The bounds it will cite are already seated in the brix, each with its why.
+**The descriptor exchange** — [`01-descriptor-exchange.md`](01-descriptor-exchange.md) · stamped `20260730.034319`. Written *from* the running `comlink/discovery/` quartet after its Check witnesses went green — never before. Bounds cited from `recursion_block.brix` (v27), each with its why. Page zero's reservation is fulfilled.
 
 ---
 
