@@ -2,10 +2,13 @@
 
 **Language:** EN  
 **Seated:** `20260724.143155`  
-**Voice:** Quin  
+**Last updated:** `20260730.153243` (SUNN9 — living voice face)  
+**Voice:** Riyo  
 **Status:** Living pin  
 **Bound:** keep under `living_pin_max_bytes`  
 **Counsel:** [`counsel/20260724-141612_names-maps-and-open-questions.md`](counsel/20260724-141612_names-maps-and-open-questions.md)
+
+*Standing writing voice is **Riyo**; **Quin** still stewards the Q-vane faculties (`kiln/` · `lantern/` · `lattice/` · `scribble/`) below.*
 
 *What kind is each root thing, and who stewards it?* Not every artifact is a vane.
 
