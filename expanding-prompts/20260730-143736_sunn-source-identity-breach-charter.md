@@ -26,7 +26,7 @@ SOURCE still speaks Quin · Dunsford · Codeberg-as-home · autoproject96 clone.
 | **SUNN4** | SOURCE Step 1–5 forge + Cursor/Claude depth refresh |
 | **SUNN5** | apprentice-welcome + personalize Brix family (256-round first season) |
 | **SUNN6** | first-day-personal-ops · key-cards · template FP_SSH_SECOND |
-| **SUNN7** | macOS / enclosure leaves that cite SOURCE |
+| **SUNN7** | macos-ai-jail-setup · enclosure-editors · ~/grain · Riyo |
 | **SUNN8** | Root `README.md` · voice/name/onboarding touch |
 | **SUNN9** | `CLAUDE.md` · `llms.txt` · `STEWARDS.md` voice |
 | **SUNN10** | `keys/README.md` · `manual/glow-os/overview.md` Livermore |

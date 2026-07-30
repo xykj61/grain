@@ -1,15 +1,16 @@
 # Setting Up the Sandbox on macOS
 
-**Language:** EN
-**Version:** `20260714.190500`
-**Style:** Radiant (see `../../context/RADIANT_STYLE.md`)
-**Voice:** Rio 3
-**Status:** Guide for the task — witnessed on this fork's own macOS host, including a real jailed-GUI launch and a live write-fence probe from inside a running jailed agent window; the Rish scripts below are the primary path, with their bash elders kept beside them
-**Versions, all enduring:** `20260714.052900` first page (bash launcher) · `060500` Rish-native pair · `070500` the GUI launch actually proven (app binary direct, `--no-sandbox`, Mach/IPC section) and upstream ai-jail's own new macOS backend adopted for CLI agents · `073300` two more findings from a live agent session: the multi-account SSH `IdentitiesOnly` collision and the GPG trustdb quirk · `081500` `--harden-home` closes the read side of the private-`$HOME` gap for named credential stores, with a dedicated jail-local key generator and an honest limit on self-testing from inside an already-jailed window · `085000` jail-local keys carry real identity from `GLOW_PROFILE.bron`, and a scoped-`GH_TOKEN` path lets `gh` work under `--harden-home` without the real broad token · `183000` the key generator now wires git itself and creates a jail-local `known_hosts` automatically; the harden witness checks `known_hosts` denial mechanically instead of only in prose · `190500` `--private-home` ships a full private-`$HOME` equivalent, enumerated fresh at each launch, correcting a first design that would have been fatal on this host's own layout
+**Language:** EN  
+**Version:** `20260730.145920` (EDT) · SUNN7  
+**Style:** Radiant (see `../../context/RADIANT_STYLE.md`)  
+**Voice:** Riyo  
+**Status:** Guide for the task — witnessed on this fork's own macOS host, including a real jailed-GUI launch and a live write-fence probe from inside a running jailed agent window; the Rish scripts below are the primary path, with their bash elders kept beside them  
+**Sibling:** [`SOURCE.md`](../../SOURCE.md) Step 6 · [`enclosure-editors.md`](../../context/specs/enclosure-editors.md) · [`key-cards-setup.md`](key-cards-setup.md)  
+**Versions, all enduring:** `20260714.052900` first page (bash launcher) · `060500` Rish-native pair · `070500` the GUI launch actually proven (app binary direct, `--no-sandbox`, Mach/IPC section) and upstream ai-jail's own new macOS backend adopted for CLI agents · `073300` two more findings from a live agent session: the multi-account SSH `IdentitiesOnly` collision and the GPG trustdb quirk · `081500` `--harden-home` closes the read side of the private-`$HOME` gap for named credential stores, with a dedicated jail-local key generator and an honest limit on self-testing from inside an already-jailed window · `085000` jail-local keys carry real identity from `GLOW_PROFILE.bron`, and a scoped-`GH_TOKEN` path lets `gh` work under `--harden-home` without the real broad token · `183000` the key generator now wires git itself and creates a jail-local `known_hosts` automatically; the harden witness checks `known_hosts` denial mechanically instead of only in prose · `190500` `--private-home` ships a full private-`$HOME` equivalent, enumerated fresh at each launch, correcting a first design that would have been fatal on this host's own layout · `20260730.145920` SUNN7 living face — `~/grain` · Voice Riyo · GitHub-living paste path
 
 ---
 
-You are on macOS, and `SOURCE.md`'s Step 6 describes ai-jail. When this guide was first written, that was a Linux-only tool — `bwrap`, namespaces, Landlock — and macOS needed its own path. Two things are true now, and this guide covers both:
+You are on macOS, and [`SOURCE.md`](../../SOURCE.md)'s Step 6 describes ai-jail. When this guide was first written, that was a Linux-only tool — `bwrap`, namespaces, Landlock — and macOS needed its own path. Two things are true now, and this guide covers both:
 
 1. **Upstream ai-jail itself now runs on macOS.** It grew a native `sandbox-exec` backend, and it is the right tool here for what it was always for: wrapping **terminal agents and shells** (`ai-jail claude`, `ai-jail bash`). Installed and witnessed on this host, v1.13.0.
 2. **This project's own launcher jails the Cursor GUI app** — something upstream does not aim at. It is a Rish script generating a Seatbelt profile and launching Cursor.app inside it, with project-local state. The research behind the approach lives in [`external-research/20260713-202929_macos-enclosure-and-qemu-vs-vz-study.md`](../../external-research/20260713-202929_macos-enclosure-and-qemu-vs-vz-study.md); the gratitude note for upstream's macOS arrival is [`gratitude/20260714-070200_ai-jail-macos-backend.md`](../../gratitude/20260714-070200_ai-jail-macos-backend.md).
@@ -29,13 +30,13 @@ You are on macOS, and `SOURCE.md`'s Step 6 describes ai-jail. When this guide wa
 From any terminal — Terminal.app or otherwise, with or without another Cursor already running:
 
 ```bash
-cd ~/urbit
+cd ~/grain
 rishi/bin/rishi run tools/cursor_jail_macos.rish
 # Optional: point at a non-default install
 rishi/bin/rishi run tools/cursor_jail_macos.rish --cursor /Applications/Cursor.app
 ```
 
-Cursor opens with its own state under `.cursor-state/`, and every write it or its extensions attempt lands only inside `~/urbit` (or fails). The launcher returns immediately; the jailed app keeps running on its own, independent of the terminal that started it.
+Cursor opens with its own state under `.cursor-state/`, and every write it or its extensions attempt lands only inside `~/grain` (or fails). The launcher returns immediately; the jailed app keeps running on its own, independent of the terminal that started it.
 
 **Prove the fence before you trust it** (worth doing once per host, and cheap enough to run any time):
 
@@ -76,13 +77,13 @@ It denies reads to a named list of real credential stores under `$HOME` — `~/.
 **Before your first `--harden-home` launch**, generate and register dedicated jail-local keys — from an ordinary terminal, **outside any jail**:
 
 ```bash
-cd ~/urbit
+cd ~/grain
 rishi/bin/rishi run tools/generate_jail_local_keys_macos.rish
 ```
 
-This makes a fresh SSH deploy key per forge, a jail-local `known_hosts` (fetched fresh via `ssh-keyscan`, since `--harden-home` denies the real `~/.ssh/known_hosts` too — it lives inside the same denied `~/.ssh` subpath, and without a jail-local replacement every push fails with `Host key verification failed` before it ever gets to checking your key), and a passphrase-free, signing-only GPG key — all living under this project's own gitignored `.ssh/` and `.gnupg-rye/`, never your master identity, always revocable, always this one small scope (the same shape `SOURCE.md` Step 8c already names for the Linux launcher). It prints exactly what to paste into GitHub's and Codeberg's key settings; you do the pasting yourself, on purpose. Running key *generation* from outside any jail, rather than delegating it to the agent that will later use the keys, is a deliberate choice — a "dedicated, revocable" key means less if the same agent that will wield it also minted it.
+This makes a fresh SSH deploy key for **GitHub** (and, today, still a historically named Codeberg-shaped second key file from the dual-forge season — the generator refresh that retires that mint is a later door), a jail-local `known_hosts` (fetched fresh via `ssh-keyscan`, since `--harden-home` denies the real `~/.ssh/known_hosts` too — it lives inside the same denied `~/.ssh` subpath, and without a jail-local replacement every push fails with `Host key verification failed` before it ever gets to checking your key), and a passphrase-free, signing-only GPG key — all living under this project's own gitignored `.ssh/` and `.gnupg-rye/`, never your master identity, always revocable, always this one small scope (the same shape `SOURCE.md` Step 8c already names for the Linux launcher). For a **GitHub-living** pier, paste the GitHub deploy key into GitHub’s SSH settings; skip Codeberg while it stays retired from living push. You do the pasting yourself, on purpose. Running key *generation* from outside any jail, rather than delegating it to the agent that will later use the keys, is a deliberate choice — a "dedicated, revocable" key means less if the same agent that will wield it also minted it.
 
-**Git wiring is automatic.** The script itself sets `core.sshCommand` (pointing at a repo-local `.git/ssh_config_urbit` it writes, naming both the identity files and the jail-local `known_hosts`), `gpg.program` (a tiny wrapper exporting `GNUPGHOME`, per `SOURCE.md` Step 8c's own pattern), and `user.signingkey` — nothing to configure by hand afterward. Rerunning the script is safe: it leaves existing key material alone and only refreshes the SSH comment and the repo-local config, so editing `GLOW_PROFILE.bron` and rerunning re-stamps identity without minting new keys.
+**Git wiring is automatic.** The script itself sets `core.sshCommand` (pointing at a repo-local `.git/ssh_config_urbit` it still writes under that historical filename — rename later; the file is untracked either way), naming the identity files and the jail-local `known_hosts`, plus `gpg.program` (a tiny wrapper exporting `GNUPGHOME`, per `SOURCE.md` Step 8c's own pattern), and `user.signingkey` — nothing to configure by hand afterward. Rerunning the script is safe: it leaves existing key material alone and only refreshes the SSH comment and the repo-local config, so editing `GLOW_PROFILE.bron` and rerunning re-stamps identity without minting new keys.
 
 **Prove it, from outside the jail.** `tools/cursor_jail_macos_harden_witness.rish` checks that `~/.ssh` and `~/.gnupg` are denied while `~/.gitconfig` and the project stay readable, yet only when the shell running it is not already inside a jail:
 
@@ -141,7 +142,7 @@ For CLI agents and shells — the thing upstream ai-jail wraps natively — inst
 curl -fsSL https://github.com/akitaonrails/ai-jail/releases/latest/download/ai-jail-macos-aarch64.tar.gz | tar xz
 sudo mv ai-jail /usr/local/bin/   # or anywhere on PATH
 
-cd ~/urbit
+cd ~/grain
 ai-jail bash        # a fenced shell in this project
 ai-jail --dry-run claude   # see the policy without running
 ```
@@ -162,26 +163,20 @@ The profile's Mach/IPC/pty section follows the static section of upstream ai-jai
 
 A running Cursor agent, working from inside the jail on this repo's own git remotes, hit two rough edges worth naming plainly — neither is a fence failure, both are ordinary tool behavior meeting a write-fenced `$HOME`.
 
-**SSH pushes fail with a wrong-key error, even though the right key exists.** If this Mac's `~/.ssh/config` already carries a `Host github.com` / `Host codeberg.org` block from an earlier, unrelated project — with `IdentitiesOnly yes` and a different `IdentityFile` — that global block wins for *every* repo on the host, this one included, and the push fails with `Permission denied (publickey)` even with the correct key sitting in `~/.ssh/` and already loaded in the agent. The global file is unwritable from inside the jail by design (Step 6's write fence), so fix it per-repo instead, entirely inside the fence:
+**SSH pushes fail with a wrong-key error, even though the right key exists.** If this Mac's `~/.ssh/config` already carries a `Host github.com` (or a retired `Host codeberg.org`) block from an earlier, unrelated project — with `IdentitiesOnly yes` and a different `IdentityFile` — that global block wins for *every* repo on the host, this one included, and the push fails with `Permission denied (publickey)` even with the correct key sitting in `~/.ssh/` and already loaded in the agent. The global file is unwritable from inside the jail by design (Step 6's write fence), so fix it per-repo instead, entirely inside the fence. A living GitHub-only shape:
 
 ```bash
-cat > .git/ssh_config_urbit <<'EOF'
+cat > .git/ssh_config_grain <<'EOF'
 Host github.com
   HostName github.com
   User git
-  IdentityFile ~/.ssh/id_ed25519_urbit_github
-  IdentitiesOnly yes
-
-Host codeberg.org
-  HostName codeberg.org
-  User git
-  IdentityFile ~/.ssh/id_ed25519_urbit_codeberg
+  IdentityFile ~/.ssh/id_ed25519_jail_github
   IdentitiesOnly yes
 EOF
-git config --local core.sshCommand "ssh -F $PWD/.git/ssh_config_urbit"
+git config --local core.sshCommand "ssh -F $PWD/.git/ssh_config_grain"
 ```
 
-`.git/` is never tracked, so this file and this config change need no gitignore entry — they simply never leave this one clone.
+If the key generator already wrote `.git/ssh_config_urbit` for you, that historical name still works — point `core.sshCommand` at whichever file is present. `.git/` is never tracked, so this file and this config change need no gitignore entry — they simply never leave this one clone.
 
 **`git log --show-signature` and `gpg --list-secret-keys` can hang or fail, even though signing itself works.** Both operations try to update `~/.gnupg/trustdb.gpg`, and the jail's write fence denies that — sometimes as a fast `Operation not permitted`, sometimes as a hang waiting on `gpg-agent`. Plain `gpg --sign` and `git commit` do not hit the same path and complete normally; every signed commit made from inside this jail proves it. Guard any signature-inspecting command with `timeout` so a trustdb stall cannot block a session:
 

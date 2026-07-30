@@ -4,7 +4,7 @@
 **Version:** `20260716.110152` (Glow warm-aura date atom — chronological, later-is-larger)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **By:** Riyo, in the radiant voice, with **Keaton Livermore** as coauthor (Identity Remake `20260729.141658`; standing writing voice restored to Riyo `20260729.205200`)
-**Status:** Living guide — last touched `20260730.145723` (SUNN6 — key-card template GitHub · Second · OpenPGP)
+**Status:** Living guide — last touched `20260730.145920` (SUNN7 — macos · enclosure leaves living face)
 **Waymark:** **SUNN** — `source-pier-papers-identity-refresh`
 
 ---
@@ -241,7 +241,7 @@ Install ai-jail (it uses `bwrap` on Linux):
 cargo install ai-jail            # or build from source; see github.com/akitaonrails/ai-jail
 ```
 
-> **Host OS:** we recommend the **latest stable NixOS** for new setups — bubblewrap and ai-jail install cleanly via nixpkgs or the project's Nix flake (`nix profile install github:akitaonrails/ai-jail`). This guide still documents **Ubuntu 24.04 LTS** first while our own hosts are **in transition**; see `context/specs/enclosure-editors.md` for the NixOS map and dual-editor templates.
+> **Host OS:** we recommend the **latest stable NixOS** for new setups — bubblewrap and ai-jail install cleanly via nixpkgs or the project's Nix flake (`nix profile install github:akitaonrails/ai-jail`). This Framework pier proves **Ubuntu 26.04 LTS** day to day; see `context/specs/enclosure-editors.md` for the NixOS map and dual-editor templates.
 
 Cursor ships as an AppImage; unpack it once in the project folder so the sandbox can launch it. The launcher runs the **extracted `AppRun`**, not the raw `.AppImage` file — a kind choice, because a raw AppImage mounts through FUSE, while `--appimage-extract` unpacks into `squashfs-root/` and the launcher runs `AppRun` directly, with no FUSE in the path.
 
@@ -497,7 +497,7 @@ export ANTHROPIC_API_KEY="sk-ant-..."    # your Anthropic console key
 ./tools/launch-zed.sh
 ```
 
-On **GNOME Wayland** (Ubuntu 24.04), ai-jail passes the display through; set **`USE_GPU=true`** in `tools/enclosure.conf` so Zed can reach `/dev/dri` (Vulkan/WebGPU). Without it, Zed may print `Landlock: fully enforced` and exit with no window. Full concurrency models, troubleshooting, and NixOS notes live in **`context/specs/enclosure-editors.md`**.
+On **GNOME Wayland** (Ubuntu 26.04 LTS on this Framework pier), ai-jail passes the display through; set **`USE_GPU=true`** in `tools/enclosure.conf` so Zed can reach `/dev/dri` (Vulkan/WebGPU). Without it, Zed may print `Landlock: fully enforced` and exit with no window. Full concurrency models, troubleshooting, and NixOS notes live in **`context/specs/enclosure-editors.md`**.
 
 ---
 

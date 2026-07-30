@@ -1,11 +1,13 @@
 # Spec: Two Editors in One Enclosure — Cursor, Zed, ai-jail, and a Cloneable Template
 
-**Language:** EN
-**Version:** `20260619.081812` (Rye chronological stamp)
-**Last updated:** 2026-06-19
-**Style:** Radiant (see `../RADIANT_STYLE.md`)
-**Status:** Living guide
-**Builds on:** `../../SOURCE.md`, `../../gratitude/ai-jail/README.md`, `../../tools/enclosure.conf.example`
+**Language:** EN  
+**Version:** `20260730.145920` (EDT) · SUNN7  
+**Last updated:** `20260730.145920`  
+**Style:** Radiant (see `../RADIANT_STYLE.md`)  
+**Voice:** Riyo  
+**Status:** Living guide  
+**Builds on:** `../../SOURCE.md`, `../../gratitude/ai-jail/README.md`, `../../tools/enclosure.conf.example`  
+**Sibling:** [`macos-ai-jail-setup.md`](../../manual/guides/macos-ai-jail-setup.md)
 
 ---
 
@@ -13,22 +15,22 @@
 
 This spec answers a practical question: how do you run **Zed** inside **ai-jail** from your project folder, with **Claude Code** (Anthropic API billing), while **Cursor** keeps working — and how does anyone who clones the repository do the same for their own username?
 
-The pattern matches `tools/key-card.conf`: copy the `.example`, fill in your values, run the launch script. Sensitive paths and keys stay gitignored; the template ships in git.
+The pattern matches `tools/key-card.conf`: copy the `.example`, fill in your values, run the launch script. Sensitive paths and keys stay gitignored; the template ships in git. Clone from **`https://github.com/xykj61/grain.git`** into `~/grain` unless your pier chooses another path (see [`SOURCE.md`](../../SOURCE.md)).
 
 ---
 
 ## Where We Stand on the Host OS
 
-**Recommended target:** the latest **NixOS stable** release (check [nixos.org/download](https://nixos.org/download.html) at install time — as of early 2026 that is the **25.05** series; newer stables appear on a six-month rhythm).
+**Recommended target:** the latest **NixOS stable** release (check [nixos.org/download](https://nixos.org/download.html) at install time — as of mid-2026 that is the **26.05** series; newer stables appear on a six-month rhythm).
 
-NixOS gives bubblewrap, ai-jail, and editors as declarative packages, without the Ubuntu 24.04+ AppArmor userns workaround. ai-jail ships a Nix flake:
+NixOS gives bubblewrap, ai-jail, and editors as declarative packages, without the Ubuntu AppArmor userns workaround. ai-jail ships a Nix flake:
 
 ```bash
 nix profile install github:akitaonrails/ai-jail
 # or: nix run github:akitaonrails/ai-jail -- --help
 ```
 
-**In transition:** this repository is still developed daily on **Ubuntu 24.04 LTS** (GNOME Wayland). The steps below include Ubuntu paths first; a short NixOS section at the end maps the same ideas. When our hosts finish migrating, `SOURCE.md` will lead with NixOS and keep Ubuntu as a footnote.
+**Pier-proven daily host:** this Framework pier develops on **Ubuntu 26.04 LTS** (GNOME Wayland). Ubuntu paths below stay first for that witness; a short NixOS section at the end maps the same ideas. Older notes that still say Ubuntu 24.04 name a prior host season — prefer 26.04 for new installs.
 
 ---
 
@@ -55,7 +57,7 @@ Two editors can share one repository if each keeps **its own state directory** i
 - **bubblewrap** (`bwrap`) — namespaces for the sandbox.
 - **ai-jail** — install per `gratitude/ai-jail/README.md` (`cargo install ai-jail`, GitHub release binary, Homebrew, or Nix flake).
 
-### Ubuntu 24.04 LTS (our current host)
+### Ubuntu 26.04 LTS (pier-proven Framework host)
 
 ```bash
 sudo apt install bubblewrap libwayland-dev libxkbcommon-dev
@@ -103,7 +105,7 @@ rishi/bin/rishi run tools/cursor_jail_macos.rish --cursor /Applications/Cursor.a
 ## One-Time Template Setup (any clone)
 
 ```bash
-cd ~/yourrepo
+cd ~/grain
 
 cp tools/enclosure.conf.example tools/enclosure.conf
 # Edit: HANDLE, REPO, paths to zed and Cursor AppRun
@@ -161,11 +163,11 @@ Two editors, two rule surfaces, one **`context/`** home.
 
 **This repository ships both:**
 
-- `.cursor/rules/` — Reya 2, Radiant Style, TAME Guidance, session logs (for Cursor).
+- `.cursor/rules/` — Riyo (standing voice), Radiant Style, TAME Guidance, session logs (for Cursor).
 - `.claude/rules/` — same disciplines for Claude Code (Zed).
-- `CLAUDE.md` + `.claude/rules/` — the same three themes for Claude in Zed.
+- `CLAUDE.md` + `.claude/rules/` — the same themes for Claude in Zed; standing voice **Riyo** (`context/RIYO.md`).
 
-Keep long-form guidance in `context/` (`QUIN.md`, `RADIANT_STYLE.md`, specs). Editor rule files stay thin pointers so Cursor and Zed stay aligned.
+Keep long-form guidance in `context/` (`RIYO.md`, `QUIN.md` for OS variant + Q-vane, `RADIANT_STYLE.md`, specs). Editor rule files stay thin pointers so Cursor and Zed stay aligned.
 
 **Inside ai-jail:** `CLAUDE.md` and `.claude/` live in the project mount and persist. Host `~/.claude` is tmpfs under `--private-home`; API keys via `ANTHROPIC_API_KEY` (or Zed `/login` state under `.zed-state/`) are the durable auth paths.
 
