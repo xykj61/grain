@@ -1,0 +1,87 @@
+//! comlink/discovery/gossip.rye — exchange fold over the bounded peer table.
+//!
+//! Build Journey v32 · gossip door · equinox A · journey 1.
+//! Bounds inherited from tools/gen/season/recursion_block.brix (v27 seat):
+//!   discovery_gossip_fanout 8
+//!   discovery_max_peers 256
+//!
+//! Gossip picks up to fanout freshest local peers to tell, then folds a remote
+//! batch of descriptors into the table. Mycelium stays untouched.
+//!
+//!   rye run comlink/discovery/gossip_test.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const desc = @import("descriptor.rye");
+const table_mod = @import("table.rye");
+
+/// Peers told per exchange — seated v27.
+pub const gossip_fanout: u32 = 8;
+
+pub const GossipOffer = struct {
+    ids: [gossip_fanout]table_mod.PeerId = undefined,
+    descriptors: [gossip_fanout]desc.Descriptor = undefined,
+    len: u32 = 0,
+
+    pub fn empty() GossipOffer {
+        return .{
+            .ids = undefined,
+            .descriptors = undefined,
+            .len = 0,
+        };
+    }
+
+    pub fn as_len(offer: *const GossipOffer) u32 {
+        assert(offer.len <= gossip_fanout);
+        return offer.len;
+    }
+};
+
+/// Select up to fanout freshest live peers (highest seen_at first).
+pub fn select_fanout(table: *const table_mod.PeerTable) GossipOffer {
+    var offer = GossipOffer.empty();
+    var picked: [gossip_fanout]u32 = undefined;
+    var picked_n: u32 = 0;
+
+    var i: u32 = 0;
+    while (i < table_mod.max_peers) : (i += 1) {
+        if (!table.slots[i].live) continue;
+        // Insert by descending seen_at into the picked window.
+        if (picked_n < gossip_fanout) {
+            var at = picked_n;
+            while (at > 0 and table.slots[i].seen_at > table.slots[picked[at - 1]].seen_at) : (at -= 1) {
+                picked[at] = picked[at - 1];
+            }
+            picked[at] = i;
+            picked_n += 1;
+        } else if (table.slots[i].seen_at > table.slots[picked[picked_n - 1]].seen_at) {
+            var at = picked_n - 1;
+            while (at > 0 and table.slots[i].seen_at > table.slots[picked[at - 1]].seen_at) : (at -= 1) {
+                picked[at] = picked[at - 1];
+            }
+            picked[at] = i;
+        }
+    }
+
+    var o: u32 = 0;
+    while (o < picked_n) : (o += 1) {
+        const idx = picked[o];
+        offer.ids[o] = table.slots[idx].id;
+        offer.descriptors[o] = table.slots[idx].descriptor;
+    }
+    offer.len = picked_n;
+    assert(offer.len <= gossip_fanout);
+    return offer;
+}
+
+/// Fold a remote offer into the local table at `now`. Returns how many upserts ran.
+pub fn fold_offer(table: *table_mod.PeerTable, offer: *const GossipOffer, now: u64) error{Full}!u32 {
+    assert(offer.len <= gossip_fanout);
+    var folded: u32 = 0;
+    var i: u32 = 0;
+    while (i < offer.len) : (i += 1) {
+        try table.upsert(offer.ids[i], offer.descriptors[i], now);
+        folded += 1;
+    }
+    return folded;
+}

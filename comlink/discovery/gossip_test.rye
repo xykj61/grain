@@ -1,0 +1,49 @@
+//! comlink/discovery/gossip_test.rye — fanout select and fold.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/discovery/gossip_test.rye
+
+const std = @import("std");
+const print = std.debug.print;
+const desc = @import("descriptor.rye");
+const table_mod = @import("table.rye");
+const gossip = @import("gossip.rye");
+
+pub fn main() !void {
+    if (gossip.gossip_fanout != 8) return error.FanoutBound;
+
+    var backing: [table_mod.max_peers * desc.descriptor_max_bytes]u8 = undefined;
+    var table = table_mod.PeerTable.init(&backing);
+
+    // Seed ten peers with rising freshness; fanout keeps the freshest eight.
+    var i: u32 = 0;
+    while (i < 10) : (i += 1) {
+        var id_buf: [8]u8 = undefined;
+        const id_slice = try std.fmt.bufPrint(&id_buf, "g{d}", .{i});
+        const pid = table_mod.PeerId.from_slice(id_slice) orelse return error.Id;
+        const d = desc.Descriptor.from_slice("gossip-peer") orelse return error.Desc;
+        try table.upsert(pid, d, @as(u64, i + 1));
+    }
+    const offer = gossip.select_fanout(&table);
+    if (offer.len != gossip.gossip_fanout) return error.OfferLen;
+    // Freshest should be g9 (seen 10) first.
+    if (!std.mem.eql(u8, offer.ids[0].as_slice(), "g9")) return error.FreshestWrong;
+    if (!std.mem.eql(u8, offer.ids[7].as_slice(), "g2")) return error.EighthWrong;
+
+    // Fold a remote offer of two new peers into a fresh table.
+    var remote_backing: [4096]u8 = undefined;
+    var remote = table_mod.PeerTable.init(&remote_backing);
+    var remote_offer = gossip.GossipOffer.empty();
+    const r0 = table_mod.PeerId.from_slice("remote-0") orelse return error.R0;
+    const r1 = table_mod.PeerId.from_slice("remote-1") orelse return error.R1;
+    remote_offer.ids[0] = r0;
+    remote_offer.ids[1] = r1;
+    remote_offer.descriptors[0] = desc.Descriptor.from_slice("r0") orelse return error.RD0;
+    remote_offer.descriptors[1] = desc.Descriptor.from_slice("r1") orelse return error.RD1;
+    remote_offer.len = 2;
+    const folded = try gossip.fold_offer(&remote, &remote_offer, 999);
+    if (folded != 2) return error.FoldCount;
+    if (remote.count() != 2) return error.RemoteCount;
+    if (remote.get(r0) == null) return error.MissingR0;
+
+    print("GREEN: discovery gossip — fanout {d} select freshest · fold welcome\n", .{gossip.gossip_fanout});
+}

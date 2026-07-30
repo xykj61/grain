@@ -1,0 +1,68 @@
+//! comlink/discovery/introduce.rye — star-as-introducer seam, hops bounded.
+//!
+//! Build Journey v32 · introduce door · equinox A · journey 1.
+//! Bounds inherited from tools/gen/season/recursion_block.brix (v27 seat):
+//!   discovery_introduce_hops_max 2
+//!
+//! A star introduces a ship (hop 1). That ship may introduce one peer further
+//! (hop 2). Deeper wants a word — refuse past the seated hop ceiling.
+//! Mycelium stays untouched; introduce finds a path, never orders myc.
+//!
+//!   rye run comlink/discovery/introduce_test.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const desc = @import("descriptor.rye");
+const table_mod = @import("table.rye");
+
+/// Star introduces ship — one hop up, one down; deeper wants a word.
+pub const introduce_hops_max: u32 = 2;
+
+pub const IntroduceRole = enum(u8) {
+    star = 1,
+    ship = 2,
+};
+
+pub const Introduction = struct {
+    introducer: table_mod.PeerId = .{},
+    introduced: table_mod.PeerId = .{},
+    descriptor: desc.Descriptor = .{},
+    hop: u32 = 0,
+    role: IntroduceRole = .star,
+
+    pub fn init(
+        introducer: table_mod.PeerId,
+        introduced: table_mod.PeerId,
+        descriptor: desc.Descriptor,
+        hop: u32,
+        role: IntroduceRole,
+    ) ?Introduction {
+        if (hop == 0 or hop > introduce_hops_max) return null;
+        if (introducer.len == 0 or introduced.len == 0) return null;
+        if (descriptor.len > desc.descriptor_max_bytes) return null;
+        // Hop 1 is the star's gift; hop 2 is a ship's one further word.
+        if (hop == 1 and role != .star) return null;
+        if (hop == 2 and role != .ship) return null;
+        return .{
+            .introducer = introducer,
+            .introduced = introduced,
+            .descriptor = descriptor,
+            .hop = hop,
+            .role = role,
+        };
+    }
+};
+
+/// Accept an introduction into the table at `now`. Refuse past hop bound.
+pub fn accept(table: *table_mod.PeerTable, intro: Introduction, now: u64) error{Full, HopRefused}!void {
+    assert(intro.hop >= 1);
+    if (intro.hop > introduce_hops_max) return error.HopRefused;
+    try table.upsert(intro.introduced, intro.descriptor, now);
+}
+
+/// Next hop after a successful introduction — null past the ceiling.
+pub fn next_hop(current: u32) ?u32 {
+    if (current == 0) return 1;
+    if (current >= introduce_hops_max) return null;
+    return current + 1;
+}

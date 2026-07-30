@@ -1,0 +1,68 @@
+//! comlink/discovery/table_test.rye — welcome, refuse-full, age-out, pack.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/discovery/table_test.rye
+
+const std = @import("std");
+const print = std.debug.print;
+const desc = @import("descriptor.rye");
+const table_mod = @import("table.rye");
+
+pub fn main() !void {
+    var backing: [table_mod.max_peers * desc.descriptor_max_bytes]u8 = undefined;
+    var table = table_mod.PeerTable.init(&backing);
+    if (table.count() != 0) return error.NotEmpty;
+    if (table.remaining() != table_mod.max_peers) return error.RemainingWrong;
+
+    const id_a = table_mod.PeerId.from_slice("ship-a") orelse return error.IdA;
+    const id_b = table_mod.PeerId.from_slice("ship-b") orelse return error.IdB;
+    const d_a = desc.Descriptor.from_slice("a|udp://1|fresh|line-0") orelse return error.DescA;
+    const d_b = desc.Descriptor.from_slice("b|udp://2|fresh|line-1") orelse return error.DescB;
+
+    try table.upsert(id_a, d_a, 100);
+    try table.upsert(id_b, d_b, 200);
+    if (table.count() != 2) return error.CountWrong;
+
+    // Refresh in place — count stays 2.
+    const d_a2 = desc.Descriptor.from_slice("a|udp://1|fresher|line-2") orelse return error.DescA2;
+    try table.upsert(id_a, d_a2, 250);
+    if (table.count() != 2) return error.RefreshGrew;
+    const got = table.get(id_a) orelse return error.MissingA;
+    if (got.seen_at != 250) return error.SeenWrong;
+    if (!std.mem.eql(u8, got.descriptor.as_slice(), d_a2.as_slice())) return error.DescMismatch;
+
+    // Age out A (seen 250) when now is far past the window; B (200) also ages.
+    const removed = table.age_out(250 + table_mod.staleness_max_seconds + 1);
+    if (removed != 2) return error.AgeOutWrong;
+    if (table.count() != 0) return error.AgeOutLeftLive;
+
+    // Fill to the bound, then refuse.
+    var fill_backing: [table_mod.max_peers * desc.descriptor_max_bytes]u8 = undefined;
+    var full = table_mod.PeerTable.init(&fill_backing);
+    var i: u32 = 0;
+    while (i < table_mod.max_peers) : (i += 1) {
+        var id_buf: [8]u8 = undefined;
+        const id_slice = try std.fmt.bufPrint(&id_buf, "p{d}", .{i});
+        const pid = table_mod.PeerId.from_slice(id_slice) orelse return error.FillId;
+        const d = desc.Descriptor.from_slice("x") orelse return error.FillDesc;
+        try full.upsert(pid, d, 1);
+    }
+    if (full.count() != table_mod.max_peers) return error.FillCount;
+    if (full.remaining() != 0) return error.FillRemaining;
+    const overflow_id = table_mod.PeerId.from_slice("overflow") orelse return error.OverflowId;
+    const overflow_d = desc.Descriptor.from_slice("y") orelse return error.OverflowDesc;
+    if (full.upsert(overflow_id, overflow_d, 1)) |_| return error.ShouldRefuseFull else |_| {}
+
+    // Pack two live descriptors into the Region garden.
+    var pack_backing: [1024]u8 = undefined;
+    var pack_table = table_mod.PeerTable.init(&pack_backing);
+    try pack_table.upsert(id_a, d_a, 10);
+    try pack_table.upsert(id_b, d_b, 20);
+    const n_packed = try pack_table.pack_descriptors();
+    if (n_packed != 2) return error.PackCount;
+    if (pack_table.garden.pos != d_a.len + d_b.len) return error.PackBytes;
+
+    print("GREEN: discovery table — max_peers {d} · staleness {d} · stack free-list · Region pack\n", .{
+        table_mod.max_peers,
+        table_mod.staleness_max_seconds,
+    });
+}

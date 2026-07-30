@@ -1,3 +1,4 @@
+- `20260730.032016` — [discovery table gossip introduce](20260730-032016_discovery-table-gossip-introduce.bron) — v32 quartet GREEN · dual remotes · myc fold next
 - `20260730.031352` — [xykj61/grain first push](20260730-031352_xykj61-grain-first-push.bron) — empty repo · dual send proven · tip a9090a4ec5
 - `20260730.030901` — [Baton museum · 256 open · dual remotes](20260730-030901_baton-museum-256-open-bench.bron) — museum · census zero · descriptor · origin+xykj61
 - `20260730.022147` — [Journey 2 CLOSED FINAL Cursor land](20260730-022147_journey2-closed-final-cursor-land.bron) — FINAL bundle · pack green · REDS 30 · Build v32 next
