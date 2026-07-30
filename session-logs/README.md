@@ -1,3 +1,4 @@
+- `20260730.132954` — [E33 TB static-alloc GREEN · almanac 39 · ch3 7/16](20260730-132954_e33-tb-static-alloc-green.bron) — guide·TAME·density · e34 next
 - `20260730.132258` — [E32 design-shapes surface GREEN · almanac 38 · ch3 6/16](20260730-132258_e32-design-shapes-surface-green.bron) — wing·bounds·resin·fold·tend · e33 next
 - `20260730.132032` — [E31 tend-hygiene GREEN · almanac 37 · ch3 5/16](20260730-132032_e31-tend-hygiene-green.bron) — zero-code · three tends · e32 next
 - `20260730.131633` — [E30 fact-fold design GREEN · almanac 36 · ch3 4/16](20260730-131633_e30-fact-fold-design-green.bron) — three pairs · fold purity · e31 next
