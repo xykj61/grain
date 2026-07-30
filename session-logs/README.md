@@ -1,3 +1,4 @@
+- `20260730.120905` — [E15 tower frame bite GREEN · almanac 21](20260730-120905_e15-tower-frame-bite-green.bron) — overpush EXIT=1 · ch2 5/16 · e16 next
 - `20260730.120714` — [E14 houseplant glossary GREEN · almanac 20](20260730-120714_e14-houseplant-glossary-green.bron) — ship owner tree · ch2 4/16 · e15 next
 - `20260730.120531` — [E13 bounded tower GREEN · almanac 19](20260730-120531_e13-bounded-tower-green.bron) — tutorial metal · ch2 3/16 · e14 next
 - `20260730.120317` — [E12 priority fold almanac GREEN · seat 18](20260730-120317_e12-priority-fold-almanac-green.bron) — ch2 2/16 · e13 next
