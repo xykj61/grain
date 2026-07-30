@@ -70,7 +70,7 @@ coords_quest Do
 coords_round 24
 coords_voice_handback return_equinox_e7 CONSUMED 20260730.111804
 coords_equinox_season OPEN
-coords_equinox_status e13 GREEN · e14 next · true deepest
+coords_equinox_status e14 GREEN · e15 next · true deepest
 coords_true_deepest deca
 coords_e7 equinox_map GREEN 20260730.113507
 coords_e7_path context/equinox_map.brix
@@ -103,9 +103,14 @@ coords_e13_witness tools/edu_tower_witness.rish
 coords_e13_charter expanding-prompts/20260730-120426_e13-bounded-tower-charter.md
 coords_e13_tutorial docs-geode/tutorials/recursion-in-glow.md
 coords_e13_recursion expanding-prompts/20260730-120531_equinox-season-e13-recursion-prompt.md
+coords_e14 houseplant_glossary GREEN 20260730.120714
+coords_e14_path context/LEXICON.md
+coords_e14_witness tools/gen/season/houseplant_glossary_witness.rish
+coords_e14_charter expanding-prompts/20260730-120643_e14-houseplant-glossary-charter.md
+coords_e14_recursion expanding-prompts/20260730-120714_equinox-season-e14-recursion-prompt.md
 coords_almanac_ch1 16 of 16
-coords_almanac_ch2 3 of 16
-coords_almanac_seat 19
+coords_almanac_ch2 4 of 16
+coords_almanac_seat 20
 coords_season_rounds 256
 coords_season_name PARKED
 coords_tend_two DONE 20260730.085559 fascia_entry 69 fascia_exit 69 delta 0

@@ -1,0 +1,36 @@
+# tools/gen/season/houseplant_glossary_witness.rish — e14 houseplant Lexicon seat.
+#
+#   rishi/bin/rishi run tools/gen/season/houseplant_glossary_witness.rish
+
+say "houseplant: Language EN — a ship owner's whole grain tree."
+say "houseplant: Style Radiant — the plant is the repository, not the keypair."
+say "houseplant: Lens TAME — e14 · glossary seat · Glow=code · Brix=data."
+
+let lex = run ["test" "-f" "context/LEXICON.md"]
+assert lex.ok else "houseplant: LEXICON.md missing"
+
+let row = run ["sh" "-c" "grep -F '| **houseplant** |' context/LEXICON.md"]
+assert row.ok else "houseplant: Lexicon row missing"
+assert row.out contains "ship" else "houseplant: row must name ship"
+assert row.out contains "repository" else "houseplant: row must name repository"
+assert row.out contains "project tree" else "houseplant: row must name project tree"
+assert row.out contains "20260730.120643" else "houseplant: seated stamp missing"
+
+# Distinctions held in the same file
+let pier = run ["sh" "-c" "grep -F '| **houseplant** |' context/LEXICON.md | grep -q 'pier' && echo DISTINCT_OK"]
+assert pier.ok else "houseplant: pier distinction scan failed"
+assert pier.out contains "DISTINCT_OK" else "houseplant: row must distinguish pier"
+
+let verse = run ["sh" "-c" "grep -F '| **houseplant** |' context/LEXICON.md | grep -q 'verse' && echo DISTINCT_OK"]
+assert verse.ok else "houseplant: verse distinction scan failed"
+assert verse.out contains "DISTINCT_OK" else "houseplant: row must distinguish verse"
+
+let ladder = run ["sh" "-c" "grep -F '| **fund · star · ship** |' context/LEXICON.md | grep -q 'houseplant' && echo LADDER_OK"]
+assert ladder.ok else "houseplant: fund-star-ship accretion scan failed"
+assert ladder.out contains "LADDER_OK" else "houseplant: ladder row must name houseplant"
+
+let almanac = run ["sh" "tools/gen/season/equinox_houseplant_almanac.sh"]
+assert almanac.ok else "houseplant: almanac append failed"
+say almanac.out
+
+say "GREEN: houseplant — Lexicon seated · ship owner's project tree · pier and verse kept distinct"
