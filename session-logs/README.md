@@ -1,3 +1,4 @@
+- `20260730.102430` — [Tend three fascia delta · recursion reprint](20260730-102430_tend-three-fascia-delta.bron) — 90→90 Δ0 · next charter reference page
 - `20260730.101622` — [Door 11 performance pin GREEN · almanac 10](20260730-101622_door-11-performance-pin-green.bron) — S0 baselines · next tend three or discovery
 - `20260730.101101` — [Door 11 performance pin chartered](20260730-101101_door-11-performance-pin-chartered.bron) — S0 baselines · min_rows 5 · kg create next
 - `20260730.100218` — [Door 10 refusal storm GREEN · almanac 9](20260730-100218_door-10-refusal-storm-green.bron) — five refuse limbs · next charter performance pin
