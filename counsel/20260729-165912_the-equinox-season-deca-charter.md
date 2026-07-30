@@ -7,7 +7,7 @@
 **Working lean:** **Equinox Chapter** — Glow = code · Brix = data · utility Glow across module **equinoxes** · `%your` ask-reply · mod-clock (12↔16 collaboration) · Claude Fable continuation  
 **Informal tag:** nest-10 · **true deepest** while open  
 **Ground:** origin/main `6338dff0a9` · Surface p58 check-in recommend handback  
-**Within:** paused **sept** Surface (p58 complete / p59 next) · paused Identity Remake · paused Generator · paused MUR · paused Nona · paused Kiln · paused Constellation  
+**Within:** paused **sept** Surface (p58 complete / p59 next) · paused Identity Remake · paused Generator · paused MUR · paused Nona · paused Oven · paused Constellation  
 **Status:** **OPEN** · e0 complete / **e1** next · Cursor **PAUSED** · Claude Fable 5 1m Max continues  
 Radiant pass `20260729.165912` — deca opens · Surface pause · recursion_block.brix · mod_clock · Claude package
 
@@ -26,7 +26,7 @@ Radiant pass `20260729.165912` — deca opens · Surface pause · recursion_bloc
 | 5 | **quint** | — | Keeh |
 | 6 | **sext** | — | Generator |
 | 7 | **sept** | — | Surface **PAUSED** |
-| 8 | **oct** | — | Kiln |
+| 8 | **oct** | — | Oven |
 | 9 | **nona** | — | Nona |
 | 10 | **deca** | **true deepest** while this nest walks | **Equinox Chapter** |
 
@@ -70,7 +70,7 @@ Mood gloss (optional): Aries-ward · Cancer-ward · Libra-ward · Capricorn-ward
 
 `extend_or_return=return_surface_p59` **seated** this stamp.  
 Surface still carries historical `return_generator_s9` when it resumes.  
-Warn **e254** / **e255**: extend **512**, return Surface **p59**, or other word he seats.
+Warn **e254** / **e255**: prefer **extend +128** (dual-equinox geode expedition · approved · gated `20260730.162222`), return Surface **p59**, or other word he seats. Default extend **512** yields to the +128 lean until he renames.
 
 ## Hard lines
 
