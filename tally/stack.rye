@@ -1,0 +1,30 @@
+//! tally/stack.rye — a bounded frame stack, generic over its element.
+//! Graduated at its second consumer (TAME worked example · Hanoi tutorial),
+//! approved on Keaton's word. The bound is named at construction; push asserts
+//! it; pop returns the empty as a value rather than a fault.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+/// Invariant: top <= max; items[0..top] are live.
+pub fn StackType(comptime T: type, comptime max: u32) type {
+    return struct {
+        const Stack = @This();
+        items: [max]T = undefined,
+        top: u32 = 0,
+
+        pub fn push(stack: *Stack, item: T) void {
+            assert(stack.top < max); // the bound, biting where it must
+            stack.items[@intCast(stack.top)] = item;
+            stack.top += 1;
+            assert(stack.top <= max); // postcondition: still within the bound
+        }
+        pub fn pop(stack: *Stack) ?T {
+            assert(stack.top <= max); // invariant on the second path
+            if (stack.top == 0) return null; // negative space: empty is a value
+            stack.top -= 1;
+            return stack.items[@intCast(stack.top)];
+        }
+    };
+}

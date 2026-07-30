@@ -62,7 +62,13 @@ A red enters this ledger when it is found. Rows are never edited or removed; a l
 
 | 27 | `tools/fixtures/sundial.sh` measures checkpoints with `rg`; on a bench without ripgrep every prompt check silently misses, so the score reports tool availability rather than prompt health — 30 · orange against any door | the cross-bench delta the Cursor waymark asked v16 to report, then `which rg` and a `/tmp` shadow with `grep -Eq` that reproduced the host's 100 exactly | A fixture either declares its tools and refuses loudly when one is absent, or speaks POSIX. A witness that asserts only its own GREEN line stays green while the number beneath it changes meaning. |
 
-**Rows: 27 · in the tree before the ledger: 6 · recovered by opening it: 14 · added under the reds-first law: 7**
+| 28 | The journey-2 line in `recursion_block.brix` carried stamp `20260729.233600` — anticipated before the clock ran, wrong even on the day (past midnight ET) | the v17 safety review, comparing the brix line to v16's measured stamp `20260730.010834` | One clock means the stamp is **copied from the clock's output**, never written ahead of it. Edit after the measurement, in the same hand. |
+
+| 29 | The v26 audit probe used `\|` inside `grep -E`, where it matches a literal pipe — both alternation patterns silently matched nothing | re-running one pattern singly and watching it hit | Third probe-string red of the sitting (v22 brackets, v2 scope, now this): **test the probe on a known hit before trusting its silence.** |
+
+| 30 | The Journey-2 CLOSED FINAL bundle overwrote living REDS row 27 (sundial/`rg`) with a different red, dropping a landed row instead of accreting | Cursor apply at `20260730.022006`: `git show e2457f7773:work-in-progress/REDS.md` versus extract | Rows are never edited or removed; parallel authoring merges by accretion. A bundle that rewrites a numbered row is itself a red. |
+
+**Rows: 30 · in the tree before the ledger: 6 · recovered by opening it: 14 · added under the reds-first law: 10**
 
 **Reds-first accounting for v11:** two reds found, both fixed in-round with witnesses on metal, ledger closed. The remaining journey allocation is therefore **released** rather than booked — which is the law working, not the law skipped.
 

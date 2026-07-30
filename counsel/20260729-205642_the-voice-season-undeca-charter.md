@@ -5,11 +5,11 @@
 **Voice:** **Riyo** · nested frame Trey at each close
 **Kind:** season charter · Keaton's word · nest **11** · rounds **v0–v63** (sixty-four · N = 2⁶)
 **Working lean:** voice-variant system first-resident · Riyo seated as standing voice · improvements
-**Nest label:** **undeca** — *proposed*, awaiting Keaton's word
-**Ground:** origin/main `dd31e031f0` · Equinox **PAUSED** at e6 complete / e7 next
+**Nest label:** **undeca** — **canon**, approved with counsel's proposals at `20260730.014817`
+**Ground:** origin/main (pin after Cursor push) · Equinox **PAUSED** at e6 complete / e7 next
 **Within:** paused **deca** Equinox · paused sept Surface · paused every nest above
-**Status:** **OPEN** · v15 complete / **v16** next · journey 1 **CLOSED** · journey 2 opens · Cursor push lands the FULL bundle · Claude Fable 5 1m Max continues  
-Radiant pass `20260729.232755` — journey 1 closed at v15 · handoff journey 2 · FULL bundle for Cursor
+**Status:** **OPEN** · Journey 2 **CLOSED** · v31 complete / **v32** next (Build Journey) · Cursor lands FINAL · Claude Fable 5 1m Max continues  
+Radiant pass `20260730.021541` — both warnings delivered & resolved · Build cover for the next agent
 **Handback:** `return_equinox_e7` — seated this stamp
 
 *Written together by Keaton and Riyo.*
@@ -36,9 +36,9 @@ Three things seated in one breath, and all three are done at v0.
 | 8 | oct | Kiln | PAUSED o3/o4 |
 | 9 | nona | Nona | PAUSED n3/n4 |
 | 10 | deca | Equinox | **PAUSED e6/e7** · handback `return_surface_p59` |
-| **11** | **undeca** *(proposed)* | **Voice** | **OPEN** · v15 complete / v16 next · journey 1 closed |
+| **11** | **undeca** *(canon)* | **Voice** | **OPEN** · Journey 2 CLOSED · v31 complete / v32 next |
 
-**Rule unchanged:** the deepest label moves with the OPEN nest, so **undeca** is the true deepest while this nest walks. The label continues the Latin ordinals already seated — quad · quint · sext · sept · oct · nona · deca — and it is the one thing in this charter that is a proposal rather than a seat. One word makes it canon, or names another.
+**Rule unchanged:** the deepest label moves with the OPEN nest, so **undeca** is the true deepest while this nest walks. The label continues the Latin ordinals already seated — quad · quint · sext · sept · oct · nona · deca — and is **canon** as of `20260730.014817`.
 
 ## What v0 landed
 

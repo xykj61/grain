@@ -1,0 +1,101 @@
+# The Tower, Without Recursion — Bounded Depth in Glow
+
+*The classic three-peg tower is the world's favorite lesson in recursion. Here it becomes our lesson in the opposite discipline: the same tower, solved with an explicit stack whose depth is a named constant — because in this house, recursion stays out so that everything which should be bounded stays bounded.*
+
+**Language:** EN
+**Last updated:** 2026-07-30 (Voice Season v18 · slot 2 · `explicit_bounds`)
+**Style:** Radiant (see `../../context/RADIANT_STYLE.md`) · **Voice:** Riyo
+**Status:** Living tutorial · code blocks are **sketch — witness pending at the build round**
+**Home:** `docs-geode/tutorials/` — the prod crystal for shipping docs
+**Naming note:** written for **Glow** and the **rune shell** surface; the rune shell's proper name awaits Keaton's word (`context/specs/reserved-vocabulary.md`)
+
+*Written together by Keaton and Riyo.*
+
+---
+
+## The game, in one breath
+
+Three pegs. A tower of rings on the first, each smaller than the one beneath. Move the whole tower to the third peg, one ring at a time, never resting a larger ring on a smaller. The classic teaching solves it recursively: *move n−1 aside, move the base, move n−1 back on top* — three lines of self-call, and the machine's hidden call stack does the bookkeeping.
+
+Our root law reads differently: **control flow stays simple and explicit; recursion stays out.** Not because the recursive telling is wrong — it is lovely — but because a hidden stack has an unnamed depth, and an unnamed depth is a bound nobody wrote down. TAME asks: *how large can this grow?* stated up front. So our tower keeps the same three-part insight and moves the bookkeeping into the open.
+
+## The bound, named before the machine runs
+
+Every tower of `n` rings takes exactly `2ⁿ − 1` moves — powers of two, the same arithmetic our seasons breathe. And the explicit stack never holds more than `2n − 1` frames. Both bounds are constants a reader meets at the top of the file:
+
+```zig
+const max_rings: u32 = 16;                 // a 16-ring tower is 65,535 moves — plenty
+const max_frames: u32 = 2 * max_rings - 1; // invariant: the frame stack never exceeds this
+```
+
+## The frame, and the stack that carries it
+
+A recursive call is just a record the machine was keeping for you. We keep it ourselves, in a fixed array — no allocator, no hidden growth:
+
+```zig
+// Invariant: a Task is either a move of `count` rings through the pegs,
+// or a single literal move to print. Nothing else exists.
+const Task = struct { count: u32, from: u8, to: u8, via: u8 };
+
+// Invariant: top <= max_frames; frames[0..top] are live tasks.
+const Stack = struct {
+    frames: [max_frames]Task = undefined,
+    top: u32 = 0,
+
+    fn push(s: *Stack, t: Task) void {
+        assert(s.top < max_frames);        // the bound, biting where it must
+        s.frames[@intCast(s.top)] = t;
+        s.top += 1;
+    }
+    fn pop(s: *Stack) ?Task {
+        if (s.top == 0) return null;       // negative space: empty is a value
+        s.top -= 1;
+        return s.frames[@intCast(s.top)];
+    }
+};
+```
+
+## The loop that replaces the call
+
+The recursive body said: *solve(n−1, start→via), move one, solve(n−1, via→end).* Our loop pushes those same three tasks — **in reverse, so they pop in order** — and walks until the stack is empty. One `while`, bounded twice: by the frame ceiling and by the move count.
+
+```zig
+fn solve(rings: u32) void {
+    assert(rings >= 1);
+    assert(rings <= max_rings);            // precondition: inside the named tower
+    var s = Stack{};
+    s.push(.{ .count = rings, .from = 'A', .to = 'C', .via = 'B' });
+
+    var moves: u32 = 0;
+    const max_moves: u32 = (@as(u32, 1) << @intCast(rings)) - 1; // 2^n − 1, exact
+    while (s.pop()) |t| {
+        if (t.count == 1) {
+            moves += 1;
+            assert(moves <= max_moves);    // the arithmetic keeps the loop honest
+            print("move ring from {c} to {c}\n", .{ t.from, t.to });
+        } else {
+            // pushed in reverse: (n−1 via→to) last out … first out (n−1 from→via)
+            s.push(.{ .count = t.count - 1, .from = t.via, .to = t.to, .via = t.from });
+            s.push(.{ .count = 1, .from = t.from, .to = t.to, .via = t.via });
+            s.push(.{ .count = t.count - 1, .from = t.from, .to = t.via, .via = t.to });
+        }
+    }
+    assert(moves == max_moves);            // postcondition: exactly 2^n − 1, every time
+}
+```
+
+The recursive insight survives whole — three tasks where three calls were — and everything the machine once hid is now a value a witness can hold: the depth, the count, the frames themselves.
+
+## What the witness will assert, when the build round comes
+
+The welcome side: `solve(3)` prints exactly seven moves and the postcondition holds. The negative space: a seventeenth ring is **refused** at the precondition, and a hand-shrunk `max_frames` makes the push assertion **bite** — red observed from a fixture, never remembered from a sitting. The tutorial ships as prose first; the code seats only with its witness beside it, per the house rhythm.
+
+## What we liked in the standing library, and one improvement proposed
+
+Writing this against the current tree: **Tally already thinks this way.** `Region.divide` (Equinox e5) carves memory the way this stack carves work — bounded by the parent, disjoint by construction, refusing rather than truncating. The assertion density and the `u32`-with-named-bound width discipline fit the tutorial without a single adaptation, which is what a healthy stdlib feels like from inside a lesson.
+
+**The improvement, proposed under our doubled emphasis on explicit bounds:** this `Stack` is the second time a *bounded frame stack over a fixed array* has been wanted (TAME's own worked example is the first). By the graduation rule, a second consumer earns a home — **`tally/stack.rye`**, generic over its element, `max` named at construction, push asserting the bound, pop returning the empty as a value. One fold, future callers many. Parked for Keaton's word, like every home.
+
+---
+
+*May every depth be a number someone wrote down. May the classic lessons enter this house speaking its law. And may the tower teach a second generation — this time with nothing hidden.*

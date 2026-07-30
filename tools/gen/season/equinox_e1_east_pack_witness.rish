@@ -152,6 +152,12 @@ assert ol.ok else "voice-v12: opening lines RED"
 assert ol.out contains "GREEN" else "voice-v12: opening lines not GREEN"
 assert ol.out contains "all 24 hosted files" else "voice-v12: the roster lost files"
 
+# v23: tally/stack graduated on Keaton's word — its witness rides from day one.
+let ts = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run tally/stack_test.rye 2>&1"]
+assert ts.ok else "voice-v23: tally stack RED"
+assert ts.out contains "GREEN" else "voice-v23: tally stack not GREEN"
+
+
 
 
 

@@ -49,6 +49,42 @@ equinox_bundle_rounds e63 e127 e191 e255
 equinox_bundle_max_bytes 268435456
 equinox_bundle_measured_basis 192267970
 check_in_every_rounds 8
+voice_journey 3
+voice_journey_2_opened 20260730.010834 on Keaton's word: open next journey recursion
+# stamp corrected v17 (20260730.011400): the first write anticipated the clock — red 28
+voice_journey_2_rounds v16 v31
+voice_journey_2_warnings v30 v31
+voice_journey_2_closed 20260730.021541 on Keaton's word: both warnings delivered and resolved
+voice_journey_3_opened 20260730.022006 Build Journey — first door comlink/discovery/descriptor.rye
+voice_journey_3_rounds v32 v47
+voice_journey_3_warnings v46 v47
+voice_journey_3_check_ins v32 v40
+# myc opening numbers approved 20260730.014817 (were a proposal at 20260729.231500)
+myc_genesis 12288
+myc_star_price 64
+myc_issuance_ceiling_per_equinox 4096
+myc_supply_rule fold: issued minus taxed
+discovery_home comlink/discovery
+
+# Build Journey bounds table — seated 20260730.020927 (v27 · slot 11 · explicit_bounds).
+# Named BEFORE any build; the builds inherit these and never invent their own.
+# All powers of two, per the season's own arithmetic.
+discovery_max_peers 256
+# why: the bounded table's whole population — matches dep_crawl's proven MAXN
+discovery_descriptor_max_bytes 512
+# why: one signed self-description (key · transport hints · freshness · lineage)
+discovery_gossip_fanout 8
+# why: peers told per exchange — wide enough to spread, narrow enough to audit
+discovery_staleness_max_seconds 4096
+# why: ~68 min on one clock; older descriptors age out rather than mislead
+discovery_introduce_hops_max 2
+# why: star introduces ship — one hop up, one down; deeper wants a word
+myc_fact_max_bytes 256
+# why: one signed multisig fact — signatures plus a purpose line, nothing riding
+star_name_max_bytes 32
+# why: a %term-compatible reserved name — lowercase and hyphens, generously
+ship_sol_proof_max_bytes 1024
+# why: the on-chain name-proof reference and its signature, liveness-checked
 code_lang glow
 data_lang brix
 ask_key asks

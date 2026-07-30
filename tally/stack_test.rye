@@ -1,0 +1,18 @@
+//! tally/stack_test.rye — welcome, refuse-shape, and order.
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const tally_stack = @import("stack.rye");
+
+pub fn main() void {
+    var s = tally_stack.StackType(u32, 4){};
+    s.push(1); s.push(2); s.push(3);
+    assert(s.pop().? == 3); // last in, first out
+    assert(s.pop().? == 2);
+    assert(s.pop().? == 1);
+    assert(s.pop() == null); // negative space: empty answers null, never a fault
+    var t = tally_stack.StackType(u32, 2){};
+    t.push(9); t.push(8);
+    assert(t.top == 2); // at the bound exactly — one more would assert
+    print("GREEN: tally stack — LIFO order, empty as value, bound held at 2\n", .{});
+}
