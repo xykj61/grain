@@ -70,7 +70,9 @@ A red enters this ledger when it is found. Rows are never edited or removed; a l
 
 | 31 | Living remote `xykj61` was seated in the roster and dual-push law, yet GitHub had no `xykj61/grain`; the Framework pier's SSH agent authenticated as `veganreyklah2`, so empty-repo create and first push failed while `origin` alone looked green | `git push -u xykj61 main` refused repo-absent; Keaton created the empty repo by word (`20260730.031352`) and both `main` tips met at `a9090a4ec5` then `8b22e7acd0` | Before any push, `git ls-remote` each living remote, capture `$?` before any pipe, and name **repo-absent** out loud — never ship into a water that has not answered. |
 
-**Rows: 31 · in the tree before the ledger: 6 · recovered by opening it: 14 · added under the reds-first law: 11**
+| 32 | `origin` push refused 403 — the Cloud pier is authenticated yet unauthorized on the origin water; the branch reached `xykj61` only while dual-send looked half-done | git's refusal, named in the send line at tip `828443c0d4` (`Permission to autoproject96/grain.git denied to cursor[bot]`) | Piers carry different keyrings — the ls-remote guard proves **existence**, never **authorization**; the guard grows a **403 / auth-refused** condition, and the dual-push law needs a per-pier ruling (counsel Option 2 parked: Cloud pushes `xykj61` branch + PR only; origin main syncs from the home pier). |
+
+**Rows: 32 · in the tree before the ledger: 6 · recovered by opening it: 14 · added under the reds-first law: 12**
 
 **Reds-first accounting for v11:** two reds found, both fixed in-round with witnesses on metal, ledger closed. The remaining journey allocation is therefore **released** rather than booked — which is the law working, not the law skipped.
 
