@@ -65,7 +65,7 @@ voice_v32_descriptor_landed 20260730.030553
 baton_museum context/baton-museum
 coords_equinox A
 coords_journey 4
-coords_journey_4_status OPEN — h4 Accrete-never-break · door 8–10 GREEN · door 11 CHARTERED · tend two DONE · kg create next
+coords_journey_4_status OPEN — h4 Accrete-never-break · door 8–11 GREEN · tend two DONE · next tend three or discovery round-trip
 coords_quest Do
 coords_round 15
 coords_season_rounds 256
@@ -90,12 +90,12 @@ coords_door_10 refusal_storm GREEN 20260730.100218
 coords_door_10_path mycelium/refusal_storm.rye
 coords_door_10_bound refusal_storm_min_cases 5
 coords_door_10_next DONE
-coords_door_11 performance_pin CHARTERED 20260730.101101
+coords_door_11 performance_pin GREEN 20260730.101622
 coords_door_11_path tools/myc_perf_pin.rish
 coords_door_11_report work-in-progress/myc-s0-baselines.tsv
 coords_door_11_bound myc_perf_baseline_min_rows 5
-coords_door_11_next kg create
-coords_almanac_ch1 9 of 16
+coords_door_11_next DONE
+coords_almanac_ch1 10 of 16
 # Fascia Equinox — nest 12 duodeca · seated 20260730.090926 · handed back 20260730.095331
 coords_fascia_equinox PAUSED
 coords_fascia_nest duodeca
