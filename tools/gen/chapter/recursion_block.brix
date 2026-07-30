@@ -65,7 +65,7 @@ voice_v32_descriptor_landed 20260730.030553
 baton_museum context/baton-museum
 coords_equinox A
 coords_journey 4
-coords_journey_4_status PAUSED — h4 Accrete-never-break · door 9 GREEN · tend two DONE · door 10 charter SEATED · create waits handback
+coords_journey_4_status OPEN — h4 Accrete-never-break · door 9 GREEN · tend two DONE · door 10 charter SEATED · kg create next
 coords_quest Do
 coords_round 15
 coords_season_rounds 256
@@ -77,6 +77,7 @@ coords_journey_3_opened 20260730.040859 h3 Radiant Style
 coords_journey_3_closed 20260730.083457 r12 close
 coords_journey_4_opened 20260730.083457 h4 Accrete-never-break
 coords_journey_4_paused 20260730.090926 Voice pause for Fascia Equinox
+coords_journey_4_resumed 20260730.095331 return_voice_j4_d10 CONSUMED
 coords_equinox_map_correction CLOSED 20260730.082536 em0-em15
 coords_equinox_map_correction_handback journey_3_r12_close CONSUMED
 coords_door_6 ship_sol
@@ -88,13 +89,14 @@ coords_door_9_bound myc_fold_snapshot_max_bytes 4096
 coords_door_10 refusal_storm CHARTERED 20260730.090221
 coords_door_10_path mycelium/refusal_storm.rye
 coords_door_10_bound refusal_storm_min_cases 5
-# Fascia Equinox — nest 12 duodeca · seated 20260730.090926 on Keaton's word
-coords_fascia_equinox OPEN
+coords_door_10_next kg create
+# Fascia Equinox — nest 12 duodeca · seated 20260730.090926 · handed back 20260730.095331
+coords_fascia_equinox PAUSED
 coords_fascia_nest duodeca
 coords_fascia_nest_n 12
 coords_fascia_rounds f0-f63
 coords_fascia_round 3
-coords_fascia_status f3 complete / f4 next · exit bar MET · harden hold
+coords_fascia_status f3 complete / f4 next · PAUSED · handback CONSUMED
 coords_fascia_entry 69
 coords_fascia_now 90
 coords_fascia_f1_delta +11
@@ -106,9 +108,9 @@ coords_fascia_f3_stamp 20260730.093412 harden hold
 coords_fascia_exit_bar 90
 coords_fascia_exit_bar_status MET 20260730.093112
 coords_fascia_handback return_voice_j4_d10
-coords_fascia_handback_available yes
+coords_fascia_handback_status CONSUMED 20260730.095331
 coords_fascia_charter counsel/20260730-090926_the-fascia-equinox-duodeca-charter.md
-coords_voice_status PAUSED 20260730.090926
+coords_voice_status OPEN 20260730.095331
 design_shapes_wing seated 20260730.041319
 design_shapes_fact_fold seated 20260730.083821
 flank_arrow_path seated 20260730.083225
