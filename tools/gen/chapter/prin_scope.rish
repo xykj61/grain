@@ -9,7 +9,7 @@
 
 say "prin-scope: Language EN — twelve-nest season slate."
 say "prin-scope: Style Radiant — print orientation; refuse shred/deploy."
-say "prin-scope: Lens TAME — living pin; nest accuracy 20260730.110403 (undeca · door 14 GREEN)."
+say "prin-scope: Lens TAME — living pin; nest accuracy 20260730.110806 (undeca · door 15 CHARTERED)."
 
 let g = run ["git" "rev-parse" "--short=10" "HEAD"]
 assert g.ok else "prin_scope: git rev-parse failed"
@@ -30,10 +30,10 @@ say "  sept:   Surface Chapter — PAUSED · p58 complete / p59 next (live-five 
 say "  oct:   Kiln Chapter — PAUSED at o3 complete / o4 next (handed back)"
 say "  nona:  Nona Chapter — PAUSED · n3 complete / n4 next (handed back return_surface_p41)"
 say "  deca:  Equinox Chapter — PAUSED · e6 complete / e7 next (handback return_surface_p59)"
-say "  undeca: Voice Chapter — OPEN · Journey 4 h4 Accrete-never-break · door 8-14 GREEN · Build queue CLOSED seat 16 · tend three DONE · almanac 12/16 · equinox map CLOSED (true deepest · Riyo · undeca canon)"
+say "  undeca: Voice Chapter — OPEN · Journey 4 h4 Accrete-never-break · door 8-14 GREEN · door 15 CHARTERED discovery wire · Build queue CLOSED · tend three DONE · almanac 12/16 · equinox map CLOSED (true deepest · Riyo · undeca canon)"
 say "  duodeca: Fascia Equinox — PAUSED · f3 complete / f4 next · exit bar MET fascia=90 · handed back return_voice_j4_d10 20260730.095331"
 say "  baton_museum: context/baton-museum/ — halls living · Lexicon baton · census zero"
-say "  coords_256: equinox A · Journey 4 · door 14 GREEN · next elder wire charter · season name PARKED"
+say "  coords_256: equinox A · Journey 4 · door 15 CHARTERED · kg create wire lab · season name PARKED"
 say "  coords_fascia_closed: duodeca PAUSED · entry 69 · exit 90 · handback CONSUMED"
 say "  equinox_map: east fire dawn H1 · north water noon H10 · west air dusk H7 · south earth midnight H4 (canon 20260730.082536)"
 say "  flanks: 2nd->1st->12th · 11th->10th->9th · 8th->7th->6th · 5th->4th->3rd (arrow_path)"
