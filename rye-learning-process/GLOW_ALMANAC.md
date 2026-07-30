@@ -90,7 +90,7 @@ Expected houses 1..12 once · three per equinox · join equinox_map flanks · ke
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_surface_witness.rish` · **Stamp:** `20260730.115059` · **Witness:** `tools/gen/season/equinox_surface_witness.rish`
 Expected e0 · equinox_map · equinox_foundations each GREEN in one choir. Metal answered GREEN. Chapter one closes at sixteen; prose create-prep did not earn this seat.
 
-## Chapter Two (8 of 16)
+## Chapter Two (9 of 16)
 
 Opened from metal at stamp `20260730.115626`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -125,6 +125,10 @@ Expected the dimensionality ladder and !void init/main examples on the held styl
 ### 24. The held TigerBeetle clone's src returns void often; density is measured, not assumed.
 **Ran:** `rishi/bin/rishi run tools/gen/season/tigerbeetle_void_census_witness.rish` · **Stamp:** `20260730.122332` · **Witness:** `tools/gen/season/tigerbeetle_void_census_witness.rish` · `tools/fixtures/tigerbeetle_void_census.sh` · submodule `gratitude/tigerbeetle`
 Expected CLONE=present · verdict=ok · STYLE=yes with files≥100 and total_voidish≥1000. Metal answered GREEN. Census: CLONE=present · REV=97c7a8ef38 · files=202 · bang_void=539 · plain_void=1653 · total_voidish=2192 · STYLE=yes · verdict=ok. Clean-room study only.
+
+### 25. The held TigerBeetle clone asserts densely; maybe and verify gate the rest.
+**Ran:** `rishi/bin/rishi run tools/gen/season/tigerbeetle_assert_census_witness.rish` · **Stamp:** `20260730.122855` · **Witness:** `tools/gen/season/tigerbeetle_assert_census_witness.rish` · `tools/fixtures/tigerbeetle_assert_census.sh` · submodule `gratitude/tigerbeetle`
+Expected CLONE=present · verdict=ok · STYLE=yes · MAYBE_DEF=yes · GUIDE_DENSITY=yes with assert≥2000 · maybe≥100 · constants.verify≥20 · files_assert≥100. Metal answered GREEN. Census: CLONE=present · REV=97c7a8ef38 · assert_calls=8175 · maybe_calls=286 · constants_verify=69 · files_assert=197 · STYLE=yes · MAYBE_DEF=yes · GUIDE_DENSITY=yes · verdict=ok. Clean-room study only.
 
 ---
 

@@ -1,0 +1,33 @@
+# tools/gen/season/tigerbeetle_assert_census_witness.rish — e19 TB assert census.
+#
+#   rishi/bin/rishi run tools/gen/season/tigerbeetle_assert_census_witness.rish
+#
+# Requires gratitude/tigerbeetle submodule present (host clone checkpoint).
+# Clean-room: counts only · never copies into rye/.
+
+say "tb-assert-census: Language EN — assert · maybe · verify speak in counts."
+say "tb-assert-census: Style Radiant — assertion density measured, never assumed."
+say "tb-assert-census: Lens TAME — e19 · clean-room study · almanac seat 25."
+
+let clone = run ["test" "-d" "gratitude/tigerbeetle/src"]
+assert clone.ok else "tb-assert-census: gratitude/tigerbeetle/src ABSENT — host clone first"
+
+let census = run ["sh" "tools/fixtures/tigerbeetle_assert_census.sh"]
+say census.out
+assert census.ok else "tb-assert-census: census failed or thin"
+assert census.out contains "CLONE=present" else "tb-assert-census: want CLONE=present"
+assert census.out contains "verdict=ok" else "tb-assert-census: want verdict=ok"
+assert census.out contains "STYLE=yes" else "tb-assert-census: clone must hold docs/TIGER_STYLE.md"
+assert census.out contains "MAYBE_DEF=yes" else "tb-assert-census: want stdx.maybe definition"
+assert census.out contains "GUIDE_DENSITY=yes" else "tb-assert-census: want held-guide density line"
+
+let voidish = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_void_census_witness.rish"]
+# void census appends seat 24 idempotently; tolerate GREEN
+assert voidish.ok else "tb-assert-census: void census elder went RED"
+assert voidish.out contains "CLONE=present" else "tb-assert-census: void elder must see clone present"
+
+let almanac = run ["sh" "tools/gen/season/equinox_tigerbeetle_assert_census_almanac.sh"]
+assert almanac.ok else "tb-assert-census: almanac append failed"
+say almanac.out
+
+say "GREEN: tb-assert-census — assert·maybe·verify density ok · void elder GREEN · almanac seat 25"
