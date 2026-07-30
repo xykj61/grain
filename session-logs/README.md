@@ -1,3 +1,4 @@
+- `20260730.124128` — [E22 SAFE list GREEN · almanac 28](20260730-124128_e22-safe-list-green.bron) — empty under bound 64 · shred RED · e23 next
 - `20260730.123827` — [E21 TB golden rule GREEN · almanac 27](20260730-123827_e21-tb-golden-rule-green.bron) — positive·negative·maybe · seat 27 · e22 next
 - `20260730.123451` — [E20 TB control/data plane GREEN · almanac 26](20260730-123451_e20-tb-control-plane-green.bron) — GUIDE·ARCH·verify · seat 26 · e21 next
 - `20260730.122901` — [E19 TB assert census GREEN · almanac 25](20260730-122901_e19-tb-assert-census-green.bron) — assert·maybe·verify · seat 25 · e20 next

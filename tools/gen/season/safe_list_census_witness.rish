@@ -1,0 +1,28 @@
+# tools/gen/season/safe_list_census_witness.rish — e22 SAFE list + oldness cycle.
+#
+#   rishi/bin/rishi run tools/gen/season/safe_list_census_witness.rish
+#
+# Empty list (0 of 64) is welcome. Shred stays RED. No rows invented.
+
+say "safe-list: Language EN — the safe list opens empty and grows by word."
+say "safe-list: Style Radiant — bound sixty-four; shred refuses without a circled yes."
+say "safe-list: Lens TAME — e22 · house-12 care · almanac seat 28."
+
+let census = run ["sh" "tools/fixtures/safe_list_census.sh"]
+say census.out
+assert census.ok else "safe-list: census failed or thin"
+assert census.out contains "SAFE=present" else "safe-list: want SAFE.md present"
+assert census.out contains "SPEC=present" else "safe-list: want oldness-cycle spec present"
+assert census.out contains "verdict=ok" else "safe-list: want verdict=ok"
+assert census.out contains "SEATED=yes" else "safe-list: SAFE must carry Seated"
+assert census.out contains "BOUND_NAMED=yes" else "safe-list: bound 64 must be named"
+assert census.out contains "SHRED_RED=yes" else "safe-list: shred must stay refused"
+
+let elder = run ["rishi/bin/rishi" "run" "tools/gen/season/tigerbeetle_golden_rule_census_witness.rish"]
+assert elder.ok else "safe-list: golden-rule elder went RED"
+
+let almanac = run ["sh" "tools/gen/season/equinox_safe_list_almanac.sh"]
+assert almanac.ok else "safe-list: almanac append failed"
+say almanac.out
+
+say "GREEN: safe-list — SAFE seated · bound 64 · empty welcome · shred RED · almanac seat 28"

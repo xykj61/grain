@@ -90,7 +90,7 @@ Expected houses 1..12 once · three per equinox · join equinox_map flanks · ke
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_surface_witness.rish` · **Stamp:** `20260730.115059` · **Witness:** `tools/gen/season/equinox_surface_witness.rish`
 Expected e0 · equinox_map · equinox_foundations each GREEN in one choir. Metal answered GREEN. Chapter one closes at sixteen; prose create-prep did not earn this seat.
 
-## Chapter Two (11 of 16)
+## Chapter Two (12 of 16)
 
 Opened from metal at stamp `20260730.115626`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -137,6 +137,10 @@ Expected CLONE=present · GUIDE_PLANE=yes · ARCH_PLANE=yes · TAME_BRIDGE=yes �
 ### 27. Assert the positive space and the negative; maybe marks what truly varies.
 **Ran:** `rishi/bin/rishi run tools/gen/season/tigerbeetle_golden_rule_census_witness.rish` · **Stamp:** `20260730.123827` · **Witness:** `tools/gen/season/tigerbeetle_golden_rule_census_witness.rish` · `tools/fixtures/tigerbeetle_golden_rule_census.sh` · submodule `gratitude/tigerbeetle`
 Expected CLONE=present · GUIDE_GOLDEN=yes · TAME_GOLDEN=yes · MAYBE_COMPLETES=yes · STYLE=yes with assert≥2000 · maybe≥100 · implication_assert≥20. Metal answered GREEN. Census: CLONE=present · REV=97c7a8ef38 · GUIDE_GOLDEN=yes · TAME_GOLDEN=yes · MAYBE_COMPLETES=yes · assert_calls=8175 · maybe_calls=286 · implication_assert=57 · STYLE=yes · verdict=ok. Clean-room study only.
+
+### 28. The SAFE list opens empty under a sixty-four-row bound; shred stays refused.
+**Ran:** `rishi/bin/rishi run tools/gen/season/safe_list_census_witness.rish` · **Stamp:** `20260730.124126` · **Witness:** `tools/gen/season/safe_list_census_witness.rish` · `tools/fixtures/safe_list_census.sh` · `SAFE.md` · `context/specs/oldness-cycle.md`
+Expected SAFE=present · SPEC=present · SEATED=yes · BOUND_NAMED=yes · EMPTY_OK · SHRED_RED=yes with rows≤64. Metal answered GREEN. Census: SAFE=present · SPEC=present · SEATED=yes · BOUND_NAMED=yes · SPEC_OK=yes · cycle=1 · rows=0 · bound=64 · EMPTY_OK=yes · SHRED_RED=yes · verdict=ok. Rows grow only by Keaton's word.
 
 ---
 
