@@ -3,9 +3,9 @@
 *The classic three-peg tower is the world's favorite lesson in recursion. Here it becomes our lesson in the opposite discipline: the same tower, solved with an explicit stack whose depth is a named constant — because in this house, recursion stays out so that everything which should be bounded stays bounded.*
 
 **Language:** EN
-**Last updated:** 2026-07-30 (Voice Season v18 · slot 2 · `explicit_bounds`)
+**Last updated:** 2026-07-30 (Equinox e13 · `20260730.120426`)
 **Style:** Radiant (see `../../context/RADIANT_STYLE.md`) · **Voice:** Riyo
-**Status:** Living tutorial · code blocks are **sketch — witness pending at the build round**
+**Status:** Living tutorial · **metal GREEN** at `edu/tower/bounded_tower.rye` · witness `tools/edu_tower_witness.rish`
 **Home:** `docs-geode/tutorials/` — the prod crystal for shipping docs
 **Naming note:** written for **Glow** and the **rune shell** surface; the rune shell's proper name awaits Keaton's word (`context/specs/reserved-vocabulary.md`)
 
@@ -86,15 +86,20 @@ fn solve(rings: u32) void {
 
 The recursive insight survives whole — three tasks where three calls were — and everything the machine once hid is now a value a witness can hold: the depth, the count, the frames themselves.
 
-## What the witness will assert, when the build round comes
+## What the witness asserts (e13 metal)
 
-The welcome side: `solve(3)` prints exactly seven moves and the postcondition holds. The negative space: a seventeenth ring is **refused** at the precondition, and a hand-shrunk `max_frames` makes the push assertion **bite** — red observed from a fixture, never remembered from a sitting. The tutorial ships as prose first; the code seats only with its witness beside it, per the house rhythm.
+The welcome side: `solve(3)` prints exactly seven moves and the postcondition holds. The negative space: a seventeenth ring is **refused** as `TooManyRings`, and a hand-shrunk stack of capacity one sits at the bound (one more push would assert). Run:
 
-## What we liked in the standing library, and one improvement proposed
+```
+env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run edu/tower/bounded_tower.rye
+rishi/bin/rishi run tools/edu_tower_witness.rish
+```
 
-Writing this against the current tree: **Tally already thinks this way.** `Region.divide` (Equinox e5) carves memory the way this stack carves work — bounded by the parent, disjoint by construction, refusing rather than truncating. The assertion density and the `u32`-with-named-bound width discipline fit the tutorial without a single adaptation, which is what a healthy stdlib feels like from inside a lesson.
+## What we liked in the standing library — and what graduated
 
-**The improvement, proposed under our doubled emphasis on explicit bounds:** this `Stack` is the second time a *bounded frame stack over a fixed array* has been wanted (TAME's own worked example is the first). By the graduation rule, a second consumer earns a home — **`tally/stack.rye`**, generic over its element, `max` named at construction, push asserting the bound, pop returning the empty as a value. One fold, future callers many. Parked for Keaton's word, like every home.
+Writing this against the current tree: **Tally already thinks this way.** `Region.divide` (Equinox e5) carves memory the way this stack carves work — bounded by the parent, disjoint by construction, refusing rather than truncating.
+
+**`tally/stack.rye` graduated** as the second consumer (TAME worked example · this tutorial). The tower imports it via `edu/tower/tally_stack.rye` → `../../tally/stack.rye`. The sketch's local `Stack` type is the teaching picture; the metal uses the graduated fold.
 
 ---
 
