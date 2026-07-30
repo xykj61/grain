@@ -3,7 +3,7 @@
 **Stamp:** `20260730.151451` · **Voice:** Riyo  
 **Kind:** bench handoff · Cloud → Framework Cursor session  
 **Model (Cloud tip):** Cursor Grok 4.5 300k High Fast  
-**Basis tip:** `9b89dcba42` · living on **`xykj61/main`**  
+**Basis tip:** `b1c8d9cc09` · living on **`xykj61/main`**  
 **Coords:** POLE GREEN · SUNN PAUSED (SUNN8 next) · Equinox PAUSED e49 · handback `return_sunn_sunn8`
 
 *Written for the home Framework Cursor hand. Cloud Option 2: living tip on xykj61; origin may lag until home syncs.*
@@ -27,7 +27,7 @@ cd ~/grain
 git fetch xykj61
 git fetch origin
 git checkout main
-git merge --ff-only xykj61/main    # tip should become 9b89dcba42 (or later handoff tip)
+git merge --ff-only xykj61/main    # tip should become b1c8d9cc09 (or later handoff tip)
 git push origin main               # home syncs autoproject96 — Option 2
 git rev-parse --short=10 HEAD
 git log --oneline -5 --show-signature
@@ -58,7 +58,7 @@ Optional depth: personalize kit · key-card SECOND · macos enclosure · `SOURCE
 
 | Field | Value |
 | --- | --- |
-| **Tip (xykj61)** | `9b89dcba42` — `context: seat POLE Bozo DJINN and Murr Keaton` |
+| **Tip (xykj61)** | `b1c8d9cc09` — `context: seat POLE Bozo DJINN and Murr Keaton` |
 | **POLE** | **GREEN** · waymark POLE · DJINN→Bozo · Keaton→Murr · Linn→Bozo Capricorn 10 |
 | **Bozo (fund)** | Capricorn · earth · seat **10** · `%bozo` · Helen kept · exec **DJINN** · was Linn |
 | **Murr (fund)** | Aries · fire · seat **1** · kept in place · exec **Keaton Sealy Livermore** |
@@ -97,7 +97,7 @@ Optional depth: personalize kit · key-card SECOND · macos enclosure · `SOURCE
 
 ## First motions (Framework agent)
 
-1. Sync tip (section above) · confirm `9b89dcba42` (or newer handoff tip).  
+1. Sync tip (section above) · confirm `b1c8d9cc09` (or newer handoff tip).  
 2. Fresh meters: `rishi/bin/rishi run tools/gen/season/prin_scope.rish` · sundial · fascia.  
 3. Prove hats: `rishi/bin/rishi run tools/gen/season/pole_bozo_murr_hats_witness.rish`.  
 4. **Default next:** `return_sunn_sunn8` — charter/kg SUNN8 root README unless Keaton names another word.  
@@ -129,7 +129,7 @@ SYNC FIRST:
   git fetch xykj61 && git fetch origin
   git checkout main && git merge --ff-only xykj61/main
   git push origin main
-  tip should be 9b89dcba42 (or later) — verify with git rev-parse --short=10 HEAD
+  tip should be b1c8d9cc09 (or later) — verify with git rev-parse --short=10 HEAD
 
 READ WHOLE:
   expanding-prompts/20260730-151451_framework-cursor-handoff-pole-sunn.md
