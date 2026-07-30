@@ -1,3 +1,4 @@
+- `20260730.141330` — [E46 TB shrink-scope GREEN · almanac 52 · ch4 4/16](20260730-141330_e46-tb-shrink-scope-green.bron) — POCPOU · e47 next
 - `20260730.141038` — [E45 TB cache-inplace GREEN · almanac 51 · ch4 3/16](20260730-141038_e45-tb-cache-inplace-green.bron) — no-dup·inplace · e46 next
 - `20260730.140756` — [E44 TB say-how GREEN · almanac 50 · ch4 2/16](20260730-140756_e44-tb-say-how-green.bron) — goal·method · e45 next
 - `20260730.140442` — [E43 TB say-why GREEN · almanac 49 · ch4 open](20260730-140442_e43-tb-say-why-ch4-open-green.bron) — comments as prose · e44 next
