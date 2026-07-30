@@ -1,0 +1,18 @@
+# Baton — tiered handoff · the load-order sheet that keeps a fresh context light
+# Invariant: tiers are a budget · tier x is never bulk-loaded, elders navigated in ranges
+# Elder: HANDOFF_r17 (Quin workshop) · bench confirms fields against the tree
+kind baton
+name tiered_handoff
+carrier counsel
+crosses season_to_fresh_agent
+status from_record
+# tier 0 — always loaded · handoff · charter · ladder · season summary · REMEMBER
+field tier0_always
+# tier 1 — before code work · grammar · workshop log · relay
+field tier1_before_code
+# tier 2 — compass rotation · one file per round at n mod 7 · never all seven
+field tier2_rotation
+# tier 3 — on demand, by task
+field tier3_on_demand
+# tier x — never bulk-load · long elders in 60-line ranges · corpus grepped via the ledger
+field tierx_never

@@ -1,0 +1,16 @@
+# Baton — season summary · the mirror round's account of a whole season
+kind baton
+name season_summary
+carrier counsel
+crosses season_to_archive
+status reconstructed
+# season name and span
+field season
+# rounds run and witnesses green
+field tally
+# reds total, all closed, lessons kept
+field reds
+# what graduates forward and what rests
+field yield
+# the closing wish
+field benediction

@@ -1,0 +1,20 @@
+# Baton — agent cover · the short sheet that wakes a fresh agent atop full handoffs
+# Invariant: restates nothing · points to the documents inherited whole
+# Elder: expanding-prompts/20260730-021541_build-journey-agent-cover.md
+kind baton
+name agent_cover
+carrier counsel
+crosses agent_to_successor_agent
+status exact
+# stamp · voice · model seat, one line
+field stamp_voice_seat
+# what closed, at which version, resolved by whose word
+field closes
+# the handoff documents inherited whole, restated nowhere
+field inherits
+# the first motions in order, before any build
+field motions
+# standing facts worth one line each — ledger count, words unmoved
+field standing
+# the closing wish
+field benediction

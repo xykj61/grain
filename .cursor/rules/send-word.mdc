@@ -10,8 +10,8 @@ When Keaton says **"send"** (from a client terminal — the Cursor iOS app, a de
 ## What "send" does, in order
 
 1. **Commit** the staged work in CONTRIBUTING style — component-prefixed subject under 50 characters, a Radiant body naming what changed and why, a `Related` section. One commit per logical change; more than one commit when the work spans logical changes.
-2. **Push** the working branch: `git push -u origin <branch>` (retry on network error, exponential backoff).
-3. **Merge to `main`**: fast-forward when clean (`git checkout main` · `git merge --ff-only <branch>` · `git push origin main`), preserving every signed commit exactly. Never a force-push, never an amend, unless Keaton says so explicitly.
+2. **Push** the working branch to **both** living remotes (`20260730.030553`): `git push -u origin <branch>` and `git push -u xykj61 <branch>` (retry on network error, exponential backoff). Canonical count: `context/REMOTE_ROSTER.md`.
+3. **Merge to `main`**: fast-forward when clean (`git checkout main` · `git merge --ff-only <branch>` · `git push origin main` · `git push xykj61 main`), preserving every signed commit exactly. Never a force-push, never an amend, unless Keaton says so explicitly.
 
 ## Discipline "send" always keeps
 
