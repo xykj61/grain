@@ -1,4 +1,6 @@
+- `20260730.151451` — [Framework Cursor handoff after POLE](20260730-151451_framework-cursor-handoff.bron) — sync origin · return_sunn_sunn8
 - `20260730.150702` — [POLE GREEN · DJINN Bozo · Keaton Murr](20260730-150702_pole-bozo-murr-hats.bron) — Capricorn 10 · SUNN PAUSED · return_sunn_sunn8
+
 - `20260730.145920` — [SUNN7 GREEN · macos · enclosure leaves](20260730-145920_sunn7-macos-enclosure.bron) — ~/grain · Ubuntu 26.04 · SUNN8 next
 - `20260730.145723` — [SUNN6 GREEN · key-cards ops · FP_SSH_SECOND](20260730-145723_sunn6-key-cards-ops.bron) — GitHub·Second·OpenPGP · SUNN7 next
 - `20260730.145124` — [SUNN5 GREEN · personalize Brix family · first season 256](20260730-145124_sunn5-personalize-brix-family.bron) — PERSONALIZE.brix · j0·j1 · SUNN6 next
