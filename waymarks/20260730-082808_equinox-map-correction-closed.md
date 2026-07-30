@@ -1,7 +1,7 @@
 # Waymark — Equinox Map Correction Closed
 
 **Stamp:** `20260730.082808` · **Voice:** Riyo  
-**Basis:** tip `a604285743`  
+**Basis:** tip `21cc644424`  
 **Coords:** equinox A · map correction **CLOSED** · Journey 3 **r12 close** next
 
 ---
