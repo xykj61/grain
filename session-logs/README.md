@@ -1,3 +1,4 @@
+- `20260730.122901` — [E19 TB assert census GREEN · almanac 25](20260730-122901_e19-tb-assert-census-green.bron) — assert·maybe·verify · seat 25 · e20 next
 - `20260730.122332` — [E18 TB void census GREEN · almanac 24](20260730-122332_e18-tb-void-census-green.bron) — submodule · total_voidish 2192 · e19 next
 - `20260730.121626` — [E17 tigerstyle void GREEN · almanac 23](20260730-121626_e17-tigerstyle-void-green.bron) — void trumps bool · clone ABSENT · e18 next
 - `20260730.121155` — [E16 copy-sameness almanac GREEN · fusion](20260730-121155_e16-copy-sameness-almanac-green.bron) — seat 22 · ch2 6/16 · e17 next
