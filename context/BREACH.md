@@ -1,7 +1,7 @@
 # Breach
 
 **Language:** EN
-**Last updated:** 2026-07-26 (`20260726.020605` — seated on Keaton's word)
+**Last updated:** `20260726` (`20260726.020605` — seated on Keaton's word)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 **Status:** Living — the condensed law; the reasoning lives in [`../foundations/20260726-020537_the-breach.md`](../foundations/20260726-020537_the-breach.md)
 

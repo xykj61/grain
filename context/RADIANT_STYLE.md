@@ -1,7 +1,7 @@
 # Radiant Style
  
 **Language:** EN
-**Last updated:** 2026-07-30 (SUNN12 `20260730.154600` — living writing voice Riyo)
+**Last updated:** `20260730` (SUNN12 `20260730.154600` — living writing voice Riyo)
  
 **Purpose:** Define how we write and speak, so every piece is clear, affirmative, and a joy to hear — whether read on the page or aloud (TTS, podcast, narration). Target reading level: 8th grade through collegiate. Voice: conversational yet eloquent, warm yet precise.
 

@@ -1,7 +1,7 @@
 # The Silo Technique
 
 **Language:** EN
-**Last updated:** 2026-07-12 (scoped relaxation for docs compression layer)
+**Last updated:** `20260712` (scoped relaxation for docs compression layer)
 **Style:** Radiant — best paired with the voice described in the Radiant Style guide
 
 **Purpose:** Name a way of taking in an idea from outside your work and making it truly your own — so that what enters your writing arrives as an owned, understood concept in your own voice, rather than a borrowed quotation wearing someone else's name. This is a portable technique; it travels to any subject and any tool.
