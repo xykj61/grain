@@ -3,7 +3,7 @@
 **Language:** EN  
 **Style:** Radiant (see [`context/RADIANT_STYLE.md`](context/RADIANT_STYLE.md)) · **Voice:** Riyo  
 **Status:** Living — the front door to the repository; each claim below marks what runs today versus what is named and scoped  
-**Last updated:** `20260731.130233` (Equinox e99 · commence M8 saga · ch7 7/16 · git nib living)
+**Last updated:** `20260731.131407` (Equinox e100 · commence M9 ascent · ch7 8/16 · git nib living)
 
 ---
 
