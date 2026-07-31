@@ -1,13 +1,13 @@
 # Equinox Seat Map — close path · Chapter Seven and Eight
 
 **Language:** EN  
-**Status:** Living pin — ch7 close **PERFORMED** · ch8 seat **128 RESERVED** · does not consume the fork  
+**Status:** Living pin — ch7 close **PERFORMED** · ch8 seat **128 RESERVED** · fork **EXTEND +128** · breach **closed unspent**  
 **Voice:** Riyo  
-**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260731.153703` (e116 one dated definition · 128 kept reserved)  
-**Seat:** Equinox e116 · almanac **120** · Chapter Eight **(8 of 16)**  
-**Basis:** one dated definition · both roofs source it · divergence witness · e115 suite kept · e92 ruling D  
+**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260731.170354` (e117 fork EXTEND · breach let-close · 128 kept reserved)  
+**Seat:** Equinox e117 · almanac **121** · Chapter Eight **(9 of 16)**  
+**Basis:** Keaton fuse kg approving all breaches forks recommendations · e116 roofs kept · e92 ruling D  
 
-*A chapter's sixteenth seat may carry check · test · prepare as a close choir. A duty is not a seat unless the almanac says so — only the close is a seat. When two roofs carry one name, either they agree or the name is doing two jobs. Seat the suite; do not manufacture meters. Look for the thing, not for the name of the thing. On-disk is not in-the-tree.*
+*A chapter's sixteenth seat may carry check · test · prepare as a close choir. A duty is not a seat unless the almanac says so — only the close is a seat. Approve-all seats recommended yes/no leans; hard lines still refuse shred. When two roofs carry one name, either they agree or the name is doing two jobs. Seat the suite; do not manufacture meters. Look for the thing, not for the name of the thing. On-disk is not in-the-tree.*
 
 ---
 
@@ -38,8 +38,8 @@
 | Opened | seat **113** · e109 ch7 surface |
 | Content seats | **114–127** · fill with findings |
 | Close choir | seat **128** · **RESERVED** for check · test · prepare |
-| e110–e115 | seats **114–119** · reserve through instrument suite |
-| This pin (e116) | seat **120** · one dated definition · roofs agree |
+| e110–e116 | seats **114–120** · reserve through one dated definition |
+| This pin (e117) | seat **121** · fork EXTEND · breach closed unspent |
 
 | Seat | Duty | Status |
 | --- | --- | --- |
@@ -50,8 +50,9 @@
 | **117** | fascia-health v1 · REDS 38 on-disk≠in-tree | **SPENT** e113 |
 | **118** | thing-not-name · REDS 39 look for the thing | **SPENT** e114 |
 | **119** | instrument suite · pass=10 · keaton-gated remainder | **SPENT** e115 |
-| **120** | one dated definition · roofs agree · REDS 40 | **this sitting** e116 |
-| **121–127** | content (unnamed yet) | open |
+| **120** | one dated definition · roofs agree · REDS 40 | **SPENT** e116 |
+| **121** | fork EXTEND +128 · breach closed unspent | **this sitting** e117 |
+| **122–127** | content (unnamed yet) | open |
 | **128** | **CLOSE CHOIR** as check · test · prepare | **RESERVED** |
 
 Ch5 and ch6 broke because nobody reserved a sixteenth seat. Ch7 recovered because the arithmetic was caught with seats left. Ch8 reserves **128** on day one.
@@ -61,25 +62,28 @@ Ch5 and ch6 broke because nobody reserved a sixteenth seat. Ch7 recovered becaus
 ## Itinerary (refined · duty ≠ seat)
 
 1. **BUNDLE SEND** — a crossing mode, not an almanac seat.  
-2. **SHRED lap** — **Keaton-gated**, Class O, shred **RED**. Not a seat.  
+2. **SHRED lap** — **Keaton-gated**, Class O, shred **RED**. Not a seat. Approve-all does not circle shred yes.  
 3. **CHECK · TEST · PREPARE** — only the close choir is a seat (112 LANDED · 128 RESERVED).
 
 ### Held beside the map
 
 | Item | State |
 | --- | --- |
-| THE FORK (`return_surface_p59`) | not consumed · Keaton alone |
+| THE FORK | **EXTEND +128** seated `20260731.170354` · handback nested **not consumed** |
+| THE BREACH (census) | **closed unspent** · `census_breach_count=0` |
+| Geode expedition | APPROVED · GATED · not begun |
 | close-seat row (ch5 + ch6) | still parked · e92 ruling D · Keaton alone |
 | Class O path rows | propose-never-seat until Keaton's word |
 | SAFE rows | 0 of 64 · Keaton alone |
-| Geode expedition | APPROVED · GATED |
 | Measurement queue | **empty** for counsel · remainder Keaton-gated |
 | REDS | **40** rows |
+| shred | **RED** |
 
 ---
 
 ## Hard lines
 
+- Approve-all seats recommended yes/no leans; it does not lift shred · SAFE · seat 128 · LICENSE · geode begin.  
 - When two roofs carry one name, either they agree or the name is doing two jobs.  
 - Seat the suite; do not manufacture meters.  
 - Look for the thing, not for the name of the thing.  
@@ -87,9 +91,9 @@ Ch5 and ch6 broke because nobody reserved a sixteenth seat. Ch7 recovered becaus
 - A duty with no witness has no seat, and a duty with no seat never lands.  
 - A record that cannot be found by the census that will look for it is not yet a record.  
 - A duty is not a seat unless the almanac says so. Prefer **git nib**.  
-- This pin does not perform shred, does not consume the fork, and does not seat Class O paths.  
+- This pin does not perform shred and does not seat Class O paths.  
 - Eyes: state no measurement you did not just run.
 
 ---
 
-*May four finds be true. May seat 128 wait for the close. May ch5 and ch6 still earn their close-seat row.*
+*May four finds be true. May seat 128 wait for the close. May extend deepen without consuming the handback.*
