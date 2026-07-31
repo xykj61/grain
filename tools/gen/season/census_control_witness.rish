@@ -1,0 +1,28 @@
+# tools/gen/season/census_control_witness.rish — commence M4b / e95 census control.
+#
+#   rishi/bin/rishi run tools/gen/season/census_control_witness.rish
+#
+# Proves green (3 of 3 duties) and proves red (naive-as-total must refuse).
+# Leaf only. Almanac seat 99 via equinox choir.
+
+say "census-control: Language EN — planted controls before any tree total."
+say "census-control: Style Radiant — positive proves firing; planted negative proves discrimination."
+say "census-control: Lens TAME — e95 · commence M4b · almanac seat 99 · ch7 3/16."
+
+let green = run ["sh" "tools/fixtures/census_control_scan.sh"]
+say green.out
+assert green.ok else "census-control: living scan must exit 0"
+assert green.out contains "verdict=ok" else "census-control: want verdict=ok"
+assert green.out contains "duties_honored=3" else "census-control: want duties_honored=3"
+assert green.out contains "duty1=honored" else "census-control: want duty1"
+assert green.out contains "duty2=honored" else "census-control: want duty2"
+assert green.out contains "duty3=honored" else "census-control: want duty3"
+assert green.out contains "duty1_h1_true=1" else "census-control: want true=1"
+assert green.out contains "duty1_h1_naive=4" else "census-control: want naive=4"
+
+let red = run ["sh" "tools/fixtures/census_control_scan.sh" "prove-red"]
+say red.out
+assert (red.ok == false) else "census-control: prove-red must refuse"
+assert red.out contains "verdict=misread" else "census-control: prove-red want verdict=misread"
+
+say "GREEN: census-control — 3 of 3 honored · naive-as-total refuses · planted discrimination holds"

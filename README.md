@@ -3,7 +3,7 @@
 **Language:** EN  
 **Style:** Radiant (see [`context/RADIANT_STYLE.md`](context/RADIANT_STYLE.md)) · **Voice:** Riyo  
 **Status:** Living — the front door to the repository; each claim below marks what runs today versus what is named and scoped  
-**Last updated:** `20260730.152852` (SUNN8 — voice · name · onboarding touch)
+**Last updated:** `20260731.120704` (Equinox e95 · commence census control · ch7 3/16 · git nib living)
 
 ---
 

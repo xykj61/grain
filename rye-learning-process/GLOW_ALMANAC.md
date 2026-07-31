@@ -430,7 +430,7 @@ Expected IRON=present · EP042 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep043_choir_witness.rish` · **Stamp:** `20260731.005634` · **Witness:** `tools/gen/season/ironbeetle_ep043_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep043_census.sh` · choir `equinox_ironbeetle_ep043_choir_witness.rish`
 Expected IRON=present · EP043 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only. Chapter six fills at sixteen.
 
-## Chapter Seven (2 of 16)
+## Chapter Seven (3 of 16)
 
 Opened from metal at stamp `20260731.114927`. Themes arrive after findings; this chapter carries none in advance. Ch5 and ch6 surface closes stay parked per e92 ruling D until a close-seat row is seated.
 
@@ -441,6 +441,10 @@ Expected IRON=present · EP044 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 ### 98. IronBeetle ep045 restates the whole machine in one breath: await by hand, one sequential core, prefetch before decide, DST as the quiet reason.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep045_choir_witness.rish` · **Stamp:** `20260731.115725` · **Witness:** `tools/gen/season/ironbeetle_ep045_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep045_census.sh` · choir `equinox_ironbeetle_ep045_choir_witness.rish`
 Expected IRON=present · EP045 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only. Chapter seven advances to two of sixteen.
+
+### 99. Census control seats planted positives and a planted negative: no total until the control reads; naive H1 refuses.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_census_control_choir_witness.rish` · **Stamp:** `20260731.120704` · **Witness:** `tools/gen/season/census_control_witness.rish` · scan `tools/fixtures/census_control_scan.sh` · choir `equinox_census_control_choir_witness.rish`
+Expected duties_honored=3 · true=1 · naive=4 · marker stamp in shape · glow cache untracked, and prove-red (naive-as-total) exits non-zero. Metal answered GREEN. Commence arc fills chapter seven after the IronBeetle written shelf ended; invent none.
 
 ---
 
