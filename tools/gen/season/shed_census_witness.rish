@@ -1,0 +1,30 @@
+# tools/gen/season/shed_census_witness.rish — commence M7 weave / e98 shed census.
+#
+#   rishi/bin/rishi run tools/gen/season/shed_census_witness.rish
+#
+# Proves green (C1 REFERENCED · C2 ORPHAN · census released) and proves red
+# (prove-red greedy index must refuse). Leaf only. Almanac via equinox choir.
+
+say "shed-census: Language EN — planted controls before orphan totals."
+say "shed-census: Style Radiant — C1 keeps reachable; C2 exposes unreachable."
+say "shed-census: Lens TAME — e98 · commence M7 weave · almanac seat 102 · ch7 6/16."
+
+let green = run ["sh" "tools/fixtures/shed_census_scan.sh"]
+say green.out
+assert green.ok else "shed-census: living scan must exit 0"
+assert green.out contains "control_gate=honored" else "shed-census: want control gate"
+assert green.out contains "tracked_controls=honored" else "shed-census: want tracked controls"
+assert green.out contains "C1=REFERENCED" else "shed-census: want C1 REFERENCED"
+assert green.out contains "C2=ORPHAN" else "shed-census: want C2 ORPHAN"
+assert green.out contains "controls_honored=2" else "shed-census: want 2 of 2"
+assert green.out contains "verdict=ok" else "shed-census: want verdict=ok"
+assert green.out contains "shred=RED" else "shed-census: shred stays RED"
+assert green.out contains "orphaned=" else "shed-census: want orphaned count"
+
+let red = run ["sh" "tools/fixtures/shed_census_scan.sh" "prove-red"]
+say red.out
+assert (red.ok == false) else "shed-census: prove-red must refuse"
+assert red.out contains "RED_C2-orphan" else "shed-census: prove-red want C2 refusal"
+assert red.out contains "census=withheld" else "shed-census: prove-red want withheld"
+
+say "GREEN: shed-census — C1 REFERENCED · C2 ORPHAN · 2 of 2 · prove-red refuses · shred RED"

@@ -430,7 +430,7 @@ Expected IRON=present · EP042 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep043_choir_witness.rish` · **Stamp:** `20260731.005634` · **Witness:** `tools/gen/season/ironbeetle_ep043_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep043_census.sh` · choir `equinox_ironbeetle_ep043_choir_witness.rish`
 Expected IRON=present · EP043 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only. Chapter six fills at sixteen.
 
-## Chapter Seven (5 of 16)
+## Chapter Seven (6 of 16)
 
 Opened from metal at stamp `20260731.114927`. Themes arrive after findings; this chapter carries none in advance. Ch5 and ch6 surface closes stay parked per e92 ruling D until a close-seat row is seated.
 
@@ -453,6 +453,10 @@ Expected control_gate=honored · advisory 11/11 · inventory behind control · b
 ### 101. Commence M6 see: eyes census behind the proven census control — almanac seats, waymarks, IronBeetle shelf end, museum, inventory.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_commence_m6_choir_witness.rish` · **Stamp:** `20260731.124416` · **Witness:** `tools/gen/season/commence_m6_see_witness.rish` · scan `tools/fixtures/commence_m6_see_scan.sh` · choir `equinox_commence_m6_choir_witness.rish`
 Expected control_gate=honored · see_almanac seats 97–100 · see_waymarks e93–e96 · see_shelf_end=ep045 · see_ep046=absent · baton breach 0 · inventory behind control. See != run. Metal answered GREEN. Invent none.
+
+### 102. Commence M7 weave: shed census behind proven control — C1 keeps reachable, C2 exposes unreachable; orphan floor informs Class O propose.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_shed_census_choir_witness.rish` · **Stamp:** `20260731.125153` · **Witness:** `tools/gen/season/shed_census_witness.rish` · scan `tools/fixtures/shed_census_scan.sh` · choir `equinox_shed_census_choir_witness.rish`
+Expected control_gate · tracked planted controls · C1=REFERENCED · C2=ORPHAN · controls 2 of 2 · orphan floor · fascia_health_now/if_shed · shred=RED · prove-red refuses. Class O propose-never-seat. Metal answered GREEN. Invent none.
 
 ---
 

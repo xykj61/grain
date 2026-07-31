@@ -1,0 +1,23 @@
+# tools/gen/season/equinox_shed_census_choir_witness.rish — e98 → almanac ch7 6/16.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_shed_census_choir_witness.rish
+#
+# Commence M7 weave: shed census behind proven control; seat 102.
+
+say "equinox-shed-census-choir: Language EN — control before orphan totals; the arc fills ch7."
+say "equinox-shed-census-choir: Style Radiant — weave counsel shed census into the home pier."
+say "equinox-shed-census-choir: Lens TAME — e98 · M7 weave · almanac seat 102 · ch7 6/16."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/season/shed_census_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-shed-census-choir: welcome RED"
+assert welcome.out contains "GREEN: shed-census" else "equinox-shed-census-choir: want GREEN"
+assert welcome.out contains "C1=REFERENCED" else "equinox-shed-census-choir: want C1"
+assert welcome.out contains "C2=ORPHAN" else "equinox-shed-census-choir: want C2"
+assert welcome.out contains "shred=RED" else "equinox-shed-census-choir: shred RED"
+
+let almanac = run ["sh" "tools/gen/season/equinox_shed_census_almanac.sh"]
+assert almanac.ok else "equinox-shed-census-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-shed-census-choir — M7 weave GREEN · shed census seated · almanac seat 102 · ch7 6/16"
