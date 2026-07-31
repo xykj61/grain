@@ -1,7 +1,7 @@
 # Simple, Lovable, Complete
 
 **Language:** EN
-**Last updated:** 2026-06-28
+**Last updated:** `20260628`
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 **Purpose:** Name how we ship — so that every release, at every size, is something a person can use today and genuinely love.

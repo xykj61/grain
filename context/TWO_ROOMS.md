@@ -1,7 +1,7 @@
 # Two Rooms — The Checkable and the Visionary
 
 **Language:** EN
-**Last updated:** 2026-07-17 (Quin voice · doorway vocabulary named · living discipline refreshed)
+**Last updated:** `20260717` (Quin voice · doorway vocabulary named · living discipline refreshed)
 **Style:** Radiant (see `RADIANT_STYLE.md` · standing voice `QUIN.md`)
 **Voice:** Quin
 **Status:** Seated — checkable-room canon; reviewed and kept `20260705.203144 UDT`; doorway witness from that stamp forward (`tools/two_rooms_doorway.rish`)

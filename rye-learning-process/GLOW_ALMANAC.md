@@ -498,7 +498,7 @@ Expected control_gate · seat_map 110 spent · 112 close choir proposed · bundl
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_e108_ch7_close_choir_witness.rish` · **Stamp:** `20260731.142604` · **Witness:** `tools/gen/season/equinox_e108_ch7_close_witness.rish` · scan `tools/fixtures/equinox_e108_ch7_close_scan.sh` · pin `work-in-progress/EQUINOX_SEAT_MAP.md`
 Expected control_gate · seat_map 112 close choir this sitting · shred opens Chapter Eight · REDS rows=37 · expect_next=38 · M3/M4 kept · zero_view · fascia i9 hold 92 · fork not_consumed · seats 97–111 → 112 · shelf end ep045 · baton breach 0. A chapter-close choir is a check. Metal answered GREEN. Chapter seven fills at sixteen. Invent none.
 
-## Chapter Eight (2 of 16)
+## Chapter Eight (3 of 16)
 
 Opened from metal at stamp `20260731.143548`. Themes arrive after findings; this chapter carries none in advance. Bundle and shred stay itinerary modes; Class O paths await Keaton's word.
 
@@ -509,6 +509,10 @@ Expected shelf ep044/ep045 · commence control/M5/M6/shed/M8/M9/saga-seat · met
 ### 114. Equinox e110: e92-shaped surface census finds four (ch2·ch3·ch4·ch7); ch7 close is findable as equinox_ch7_surface_witness; Chapter Eight reserves seat 128 for the close choir on day one (content fills 114–127).
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_e110_ch8_reserve_choir_witness.rish` · **Stamp:** `20260731.144219` · **Witness:** `tools/gen/season/equinox_e110_ch8_reserve_witness.rish` · scan `tools/fixtures/equinox_e110_ch8_reserve_scan.sh` · pin `work-in-progress/EQUINOX_SEAT_MAP.md`
 Expected control_gate · surface_count=4 · chapters 2,3,4,7 · ch5/ch6 absent · seat_128 reserved_close_choir · ch8 span 113–128 · fork not_consumed · shelf end ep045 · baton breach 0. A record that cannot be found by the census that will look for it is not yet a record. Metal answered GREEN. Invent none.
+
+### 115. Equinox e111 date dialect: eleven context Last updated values compact (hyphenated day -> YYYYMMDD in backticks); 17 of 17 compact; zero hyphenated; seat 128 stays reserved; surface census four kept.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_e111_date_dialect_choir_witness.rish` · **Stamp:** `20260731.145236` · **Witness:** `tools/gen/season/equinox_e111_date_dialect_witness.rish` · scan `tools/fixtures/equinox_e111_date_dialect_scan.sh`
+Expected control_gate · dialect_transformed=11 · hyphenated_last_updated=0 · 17_of_17_compact · lint label-only dep · seat_128 reserved · surface_count=4 · fork not_consumed · shelf end ep045 · baton breach 0. Carry the transformation, never the claim that it was done. A format change claims no review. Metal answered GREEN. Invent none.
 
 ---
 

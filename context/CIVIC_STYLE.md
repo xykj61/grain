@@ -3,7 +3,7 @@
 *The discipline we bring to public policy, law, and public-benefit institutions: name the outcome you actually want, name what the reward measures, and keep the two in alignment under every condition. This is the civic companion to the disciplines we already keep — Tiger Style and TAME for code, Radiant Style for prose, and Simple, Lovable, Complete for product.*
 
 **Language:** EN
-**Last updated:** 2026-06-28
+**Last updated:** `20260628`
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Companion to:** `TAME_GUIDANCE.md` (code), `RADIANT_STYLE.md` (prose), `SIMPLE_LOVABLE_COMPLETE.md` (product)

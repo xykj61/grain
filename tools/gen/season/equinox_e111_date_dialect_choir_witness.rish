@@ -1,0 +1,23 @@
+# tools/gen/season/equinox_e111_date_dialect_choir_witness.rish — e111 → ch8 3/16.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_e111_date_dialect_choir_witness.rish
+
+say "equinox-e111-choir: Language EN — control before the dialect; compact before the claim."
+say "equinox-e111-choir: Style Radiant — carry the transformation; advance no date."
+say "equinox-e111-choir: Lens TAME — e111 · date dialect · almanac seat 115 · ch8 3/16."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/season/equinox_e111_date_dialect_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-e111-choir: welcome RED"
+assert welcome.out contains "GREEN: e111-date-dialect" else "equinox-e111-choir: want GREEN"
+assert welcome.out contains "dialect_transformed=11" else "equinox-e111-choir: want 11"
+assert welcome.out contains "dialect_status=17_of_17_compact" else "equinox-e111-choir: want 17 of 17"
+assert welcome.out contains "seat_128=reserved_close_choir" else "equinox-e111-choir: want 128"
+assert welcome.out contains "census_breach_count=0" else "equinox-e111-choir: want breach 0"
+assert welcome.out contains "fork_status=not_consumed" else "equinox-e111-choir: want fork waiting"
+
+let almanac = run ["sh" "tools/gen/season/equinox_e111_date_dialect_almanac.sh"]
+assert almanac.ok else "equinox-e111-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-e111-choir — date dialect GREEN · almanac seat 115 · ch8 3/16"

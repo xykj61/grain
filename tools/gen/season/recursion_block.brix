@@ -70,7 +70,7 @@ coords_quest Do
 coords_round 59
 coords_voice_handback return_equinox_e7 CONSUMED 20260730.111804
 coords_equinox_season OPEN
-coords_equinox_status OPEN e110 GREEN · e92 ruling D · ch7 FULL · ch8 OPEN 2/16 · seat 128 reserved · census finds four · itinerary modes · REDS 37 · fascia i9 92 · saga SEATED · fork RETURN|EXTEND · ironbeetle shelf end · return_equinox_e50 CONSUMED · ch5 FULL · ch6 FULL · extend_lean +128
+coords_equinox_status OPEN e111 GREEN · e92 ruling D · ch7 FULL · ch8 OPEN 3/16 · date dialect 17 of 17 · seat 128 reserved · census finds four · itinerary modes · REDS 37 · fascia i9 92 · saga SEATED · fork RETURN|EXTEND · ironbeetle shelf end · return_equinox_e50 CONSUMED · ch5 FULL · ch6 FULL · extend_lean +128
 coords_true_deepest deca
 coords_e7 equinox_map GREEN 20260730.113507
 coords_e7_path context/equinox_map.brix
@@ -589,15 +589,22 @@ coords_e110 ch8_reserve GREEN 20260731.144223
 coords_e110_witness tools/gen/season/equinox_e110_ch8_reserve_choir_witness.rish
 coords_e110_charter expanding-prompts/20260731-144223_e110-ch8-reserve-charter.md
 coords_e110_recursion expanding-prompts/20260731-144223_equinox-season-e111-recursion-prompt.md
+coords_e111 date_dialect GREEN 20260731.145246
+coords_e111_witness tools/gen/season/equinox_e111_date_dialect_choir_witness.rish
+coords_e111_charter expanding-prompts/20260731-145246_e111-date-dialect-charter.md
+coords_e111_recursion expanding-prompts/20260731-145246_equinox-season-e112-recursion-prompt.md
 coords_seat_map work-in-progress/EQUINOX_SEAT_MAP.md
 coords_seat_110 SPENT_e106
 coords_seat_111 SPENT_e107_map
 coords_seat_112 CLOSE_CHOIR_LANDED_e108
 coords_seat_113 CH7_SURFACE_LANDED_e109
 coords_seat_114 CH8_RESERVE_LANDED_e110
+coords_seat_115 DATE_DIALECT_LANDED_e111
 coords_seat_128 RESERVED_CLOSE_CHOIR
 coords_surface_census_count 4
 coords_surface_census_chapters 2,3,4,7
+coords_date_dialect 17_of_17_compact
+coords_date_dialect_transformed 11
 coords_itinerary_bundle crossing_mode
 coords_itinerary_shred keaton_gated_mode
 coords_itinerary_close one_seat
@@ -616,7 +623,7 @@ coords_reds_row_33 zero_is_instrument_view_never_world
 coords_reds_rows_34_37 container_cross_e108
 coords_almanac_ch7 16 of 16
 coords_almanac_ch7_status FULL
-coords_almanac_ch8 2 of 16
+coords_almanac_ch8 3 of 16
 coords_almanac_ch8_status OPEN
 coords_ironbeetle_written_shelf ENDS_at_ep045
 extend_lean +128

@@ -1,0 +1,42 @@
+# tools/gen/season/equinox_e111_date_dialect_witness.rish — e111 date dialect.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_e111_date_dialect_witness.rish
+#
+# Law: carry the transformation, never the claim that it was done.
+# Eleven Last updated values compact; advance no date; rename no file.
+
+say "e111-date-dialect: Language EN — control first; then prove the dialect compact."
+say "e111-date-dialect: Style Radiant — a format change claims no review."
+say "e111-date-dialect: Lens TAME — e111 · date dialect · almanac 115 · ch8 3/16."
+
+let control = run ["rishi/bin/rishi" "run" "tools/gen/season/census_control_witness.rish"]
+say control.out
+assert control.ok else "e111-date-dialect: census control must GREEN"
+assert control.out contains "GREEN: census-control" else "e111-date-dialect: want control GREEN"
+
+let museum = run ["rishi/bin/rishi" "run" "tools/gen/season/baton_museum_census_witness.rish"]
+say museum.out
+assert museum.ok else "e111-date-dialect: baton museum RED"
+assert museum.out contains "census_breach_count=0" else "e111-date-dialect: want breach 0"
+
+let scope = run ["rishi/bin/rishi" "run" "tools/gen/season/prin_scope.rish"]
+say scope.out
+assert scope.ok else "e111-date-dialect: prin_scope RED"
+assert scope.out contains "GREEN: prin-scope" else "e111-date-dialect: want scope GREEN"
+
+let scan = run ["sh" "tools/fixtures/equinox_e111_date_dialect_scan.sh"]
+say scan.out
+assert scan.ok else "e111-date-dialect: scan must exit 0"
+assert scan.out contains "control_gate=honored" else "e111-date-dialect: want control_gate"
+assert scan.out contains "dialect=honored" else "e111-date-dialect: want dialect"
+assert scan.out contains "dialect_transformed=11" else "e111-date-dialect: want 11"
+assert scan.out contains "hyphenated_last_updated=0" else "e111-date-dialect: want zero hyphen"
+assert scan.out contains "dialect_status=17_of_17_compact" else "e111-date-dialect: want 17 of 17"
+assert scan.out contains "lint_dep=honored" else "e111-date-dialect: want lint dep"
+assert scan.out contains "seat_128=reserved_close_choir" else "e111-date-dialect: want 128 reserved"
+assert scan.out contains "surface_count=4" else "e111-date-dialect: want surface 4"
+assert scan.out contains "fork_status=not_consumed" else "e111-date-dialect: want fork waiting"
+assert scan.out contains "e111_date_dialect=ok" else "e111-date-dialect: want e111 ok"
+assert scan.out contains "verdict=ok" else "e111-date-dialect: want verdict=ok"
+
+say "GREEN: e111-date-dialect — 11 compact · 17 of 17 · 128 reserved · census four · fork waiting · museum"
