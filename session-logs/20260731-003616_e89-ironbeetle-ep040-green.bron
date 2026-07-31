@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260731.003616
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title e89 IronBeetle ep040 three-stages-offset-by-one GREEN
+prompt kg · e89 — IronBeetle ep040 three-stages-offset-by-one
+think e88 ep038 GREEN · ep040 next written silo · skip ep039 · leaf census twin
+think Teach: three stages · pipeline · free list · bar/beat clocks
+think Seat 94 · ch6 14/16 · ep042 next (skip ep041) · expedition stays gated
+obs e89 GREEN · e90 IronBeetle ep042 next
+file expanding-prompts/20260731-003547_e89-ironbeetle-ep040-charter.md charter
+file tools/fixtures/ironbeetle_ep040_census.sh scan GREEN
+file tools/gen/season/equinox_ironbeetle_ep040_choir_witness.rish choir GREEN
+file rye-learning-process/GLOW_ALMANAC.md seat 94 · ch6 14/16
+file waymarks/20260731-003616_e89-ironbeetle-ep040-green.md finishing edge
+file expanding-prompts/20260731-003616_equinox-season-e90-recursion-prompt.md fusion
+recommend keep-going e90 IronBeetle ep042 over-the-alps

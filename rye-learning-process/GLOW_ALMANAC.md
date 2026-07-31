@@ -362,7 +362,7 @@ Expected IRON=present · EP019 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep020_choir_witness.rish` · **Stamp:** `20260730.215259` · **Witness:** `tools/gen/season/ironbeetle_ep020_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep020_census.sh` · choir `equinox_ironbeetle_ep020_choir_witness.rish`
 Expected IRON=present · EP020 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only. Chapter five fills at sixteen.
 
-## Chapter Six (13 of 16)
+## Chapter Six (14 of 16)
 
 Opened from metal at stamp `20260730.220543`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -417,6 +417,10 @@ Expected IRON=present · EP037 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 ### 93. IronBeetle ep038 routes a whole compaction round from one beat number; even levels, then odd, from a single modulo.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep038_choir_witness.rish` · **Stamp:** `20260731.002402` · **Witness:** `tools/gen/season/ironbeetle_ep038_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep038_census.sh` · choir `equinox_ironbeetle_ep038_choir_witness.rish`
 Expected IRON=present · EP038 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only.
+
+### 94. IronBeetle ep040 overlaps read, merge, and write in three pipeline slots; bar and beat clocks pace one compaction round.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep040_choir_witness.rish` · **Stamp:** `20260731.003616` · **Witness:** `tools/gen/season/ironbeetle_ep040_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep040_census.sh` · choir `equinox_ironbeetle_ep040_choir_witness.rish`
+Expected IRON=present · EP040 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only.
 
 ---
 
