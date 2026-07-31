@@ -1,0 +1,28 @@
+# tools/gen/season/ironbeetle_ep037_census_witness.rish — e87 IronBeetle ep037½.
+#
+#   rishi/bin/rishi run tools/gen/season/ironbeetle_ep037_census_witness.rish
+#
+# Clean-room: presence only · never copies into rye/.
+# Leaf only — no nested elder choirs.
+
+say "iron-ep037: Language EN — garbage collection at the moment of allocation."
+say "iron-ep037: Style Radiant — compaction rides the commit cadence, never a background thread."
+say "iron-ep037: Lens TAME — e87 · clean-room study · almanac seat 92."
+
+let shelf = run ["test" "-d" "gratitude/ironbeetle"]
+assert shelf.ok else "iron-ep037: gratitude/ironbeetle ABSENT — host shelf first"
+
+let census = run ["sh" "tools/fixtures/ironbeetle_ep037_census.sh"]
+say census.out
+assert census.ok else "iron-ep037: census failed or thin"
+assert census.out contains "IRON=present" else "iron-ep037: want IRON=present"
+assert census.out contains "verdict=ok" else "iron-ep037: want verdict=ok"
+assert census.out contains "EP037=yes" else "iron-ep037: ep037.5 file must be present"
+assert census.out contains "HONORS=yes" else "iron-ep037: Honors heading must be present"
+assert census.out contains "SOURCE=yes" else "iron-ep037: Source heading must be present"
+assert census.out contains "TEACH=yes" else "iron-ep037: teach limbs (GC-at-alloc·compaction·no-background·determinism) must be present"
+assert census.out contains "RHYME=yes" else "iron-ep037: rhyme section must be present"
+assert census.out contains "CLEAN=yes" else "iron-ep037: Clean Room heading must be present"
+assert census.out contains "MATKLAD_OK=yes" else "iron-ep037: matklad companion must cite ironbeetle/"
+
+say "GREEN: iron-ep037 — honors·source·teach·rhyme·clean·matklad ok"

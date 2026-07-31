@@ -362,7 +362,7 @@ Expected IRON=present · EP019 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep020_choir_witness.rish` · **Stamp:** `20260730.215259` · **Witness:** `tools/gen/season/ironbeetle_ep020_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep020_census.sh` · choir `equinox_ironbeetle_ep020_choir_witness.rish`
 Expected IRON=present · EP020 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only. Chapter five fills at sixteen.
 
-## Chapter Six (11 of 16)
+## Chapter Six (12 of 16)
 
 Opened from metal at stamp `20260730.220543`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -409,6 +409,10 @@ Expected IRON=present · EP035 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 ### 91. IronBeetle ep036 keeps a cache that always hits via stash: a promise with a batch-sized deadline, plus an undo log for linked transfers.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep036_choir_witness.rish` · **Stamp:** `20260730.235319` · **Witness:** `tools/gen/season/ironbeetle_ep036_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep036_census.sh` · choir `equinox_ironbeetle_ep036_choir_witness.rish`
 Expected IRON=present · EP036 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only.
+
+### 92. IronBeetle ep037½ folds compaction into each commit: garbage collection at allocation so replicas stay byte-identical.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep037_choir_witness.rish` · **Stamp:** `20260731.002155` · **Witness:** `tools/gen/season/ironbeetle_ep037_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep037_census.sh` · choir `equinox_ironbeetle_ep037_choir_witness.rish`
+Expected IRON=present · EP037 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only.
 
 ---
 
