@@ -41,12 +41,28 @@ if ! test -f "$ALMANAC"; then
   echo "detail=almanac_missing"
   exit 1
 fi
-rg -q '^## Chapter Seven \(4 of 16\)$' "$ALMANAC" || {
-  echo "see_almanac=failed"
-  echo "verdict=misread"
-  echo "detail=want_ch7_4_of_16"
-  exit 1
-}
+# Accept ch7 at 4/16 (pre-seat) or 5+/16 (after M6 and later fills).
+CH7_LINE=$(rg -n '^## Chapter Seven \([0-9]+ of 16\)$' "$ALMANAC" | head -n1 || true)
+case "$CH7_LINE" in
+  *"Chapter Seven (4 of 16)"*|*"Chapter Seven (5 of 16)"*|*"Chapter Seven (6 of 16)"*|*"Chapter Seven (7 of 16)"*|*"Chapter Seven (8 of 16)"*|*"Chapter Seven (9 of 16)"*|*"Chapter Seven (10 of 16)"*|*"Chapter Seven (11 of 16)"*|*"Chapter Seven (12 of 16)"*|*"Chapter Seven (13 of 16)"*|*"Chapter Seven (14 of 16)"*|*"Chapter Seven (15 of 16)"*|*"Chapter Seven (16 of 16)"*)
+    ;;
+  *)
+    echo "see_almanac=failed"
+    echo "verdict=misread"
+    echo "detail=want_ch7_at_least_4_of_16"
+    echo "detail_line=$CH7_LINE"
+    exit 1
+    ;;
+esac
+# Reject still-open-at-3 or earlier.
+case "$CH7_LINE" in
+  *"Chapter Seven (1 of 16)"*|*"Chapter Seven (2 of 16)"*|*"Chapter Seven (3 of 16)"*)
+    echo "see_almanac=failed"
+    echo "verdict=misread"
+    echo "detail=ch7_below_seen_edge"
+    exit 1
+    ;;
+esac
 for n in 97 98 99 100; do
   rg -q "^### ${n}\\." "$ALMANAC" || {
     echo "see_almanac=failed"
@@ -56,7 +72,7 @@ for n in 97 98 99 100; do
   }
 done
 echo "see_almanac=honored"
-echo "see_ch7=4_of_16"
+echo "see_ch7_line=$CH7_LINE"
 echo "see_seats=97-100"
 
 # --- see waymarks e93-e96 ---
