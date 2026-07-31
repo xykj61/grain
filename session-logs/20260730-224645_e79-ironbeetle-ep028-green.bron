@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260730.224645
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title e79 IronBeetle ep028 freed-yet-not-freed-quite-yet GREEN
+prompt kg · e79 — IronBeetle ep028 freed-yet-not-freed-quite-yet
+think e78 ep025 GREEN · ep028 next written silo · skip ep026·ep027 · leaf census twin
+think Teach: FreeSet · staging · reserve · acquire · deterministic addresses
+think Seat 84 · ch6 4/16 · ep030 next (skip ep029) · expedition stays gated
+obs e79 GREEN · e80 IronBeetle ep030 next
+file expanding-prompts/20260730-224612_e79-ironbeetle-ep028-charter.md charter
+file tools/fixtures/ironbeetle_ep028_census.sh scan GREEN
+file tools/gen/season/equinox_ironbeetle_ep028_choir_witness.rish choir GREEN
+file rye-learning-process/GLOW_ALMANAC.md seat 84 · ch6 4/16
+file waymarks/20260730-224645_e79-ironbeetle-ep028-green.md finishing edge
+file expanding-prompts/20260730-224645_equinox-season-e80-recursion-prompt.md fusion
+recommend keep-going e80 IronBeetle ep030 which-entry-owns-this-address

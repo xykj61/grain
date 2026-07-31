@@ -362,7 +362,7 @@ Expected IRON=present · EP019 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep020_choir_witness.rish` · **Stamp:** `20260730.215259` · **Witness:** `tools/gen/season/ironbeetle_ep020_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep020_census.sh` · choir `equinox_ironbeetle_ep020_choir_witness.rish`
 Expected IRON=present · EP020 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only. Chapter five fills at sixteen.
 
-## Chapter Six (3 of 16)
+## Chapter Six (4 of 16)
 
 Opened from metal at stamp `20260730.220543`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -377,6 +377,10 @@ Expected IRON=present · EP022 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 ### 83. IronBeetle ep025 stores the tree's map as a list of changes; persistence means add, never erase.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep025_choir_witness.rish` · **Stamp:** `20260730.223644` · **Witness:** `tools/gen/season/ironbeetle_ep025_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep025_census.sh` · choir `equinox_ironbeetle_ep025_choir_witness.rish`
 Expected IRON=present · EP025 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only.
+
+### 84. IronBeetle ep028 stages a freed block until the next checkpoint; reserve then acquire keeps addresses deterministic.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep028_choir_witness.rish` · **Stamp:** `20260730.224645` · **Witness:** `tools/gen/season/ironbeetle_ep028_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep028_census.sh` · choir `equinox_ironbeetle_ep028_choir_witness.rish`
+Expected IRON=present · EP028 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only.
 
 ---
 
