@@ -1,0 +1,28 @@
+# tools/gen/season/ironbeetle_ep013_census_witness.rish — e70 IronBeetle ep013.
+#
+#   rishi/bin/rishi run tools/gen/season/ironbeetle_ep013_census_witness.rish
+#
+# Clean-room: presence only · never copies into rye/.
+# Leaf only — no nested elder choirs.
+
+say "iron-ep013: Language EN — three numbers worth memorizing."
+say "iron-ep013: Style Radiant — Op · commit_min · commit_max stay distinct on purpose."
+say "iron-ep013: Lens TAME — e70 · clean-room study · almanac seat 75."
+
+let shelf = run ["test" "-d" "gratitude/ironbeetle"]
+assert shelf.ok else "iron-ep013: gratitude/ironbeetle ABSENT — host shelf first"
+
+let census = run ["sh" "tools/fixtures/ironbeetle_ep013_census.sh"]
+say census.out
+assert census.ok else "iron-ep013: census failed or thin"
+assert census.out contains "IRON=present" else "iron-ep013: want IRON=present"
+assert census.out contains "verdict=ok" else "iron-ep013: want verdict=ok"
+assert census.out contains "EP013=yes" else "iron-ep013: ep013 file must be present"
+assert census.out contains "HONORS=yes" else "iron-ep013: Honors heading must be present"
+assert census.out contains "SOURCE=yes" else "iron-ep013: Source heading must be present"
+assert census.out contains "TEACH=yes" else "iron-ep013: teach limbs (Op·commit_min·commit_max·prepare-repair) must be present"
+assert census.out contains "RHYME=yes" else "iron-ep013: rhyme section must be present"
+assert census.out contains "CLEAN=yes" else "iron-ep013: Clean Room heading must be present"
+assert census.out contains "MATKLAD_OK=yes" else "iron-ep013: matklad companion must cite ironbeetle/"
+
+say "GREEN: iron-ep013 — honors·source·teach·rhyme·clean·matklad ok"

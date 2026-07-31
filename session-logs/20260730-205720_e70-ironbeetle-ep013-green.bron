@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260730.205720
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title e70 IronBeetle ep013 three-numbers-worth-memorizing GREEN
+prompt kg · e70 — IronBeetle ep013 three-numbers-worth-memorizing
+think e69 ep012 GREEN · ep013 next written silo · leaf census twin
+think Teach: Op · commit_min · commit_max · prepare repair · hole reasons · chain break
+think Seat 75 · ch5 11/16 · ep014 next · expedition stays gated
+obs e70 GREEN · e71 IronBeetle ep014 next
+file expanding-prompts/20260730-205658_e70-ironbeetle-ep013-charter.md charter
+file tools/fixtures/ironbeetle_ep013_census.sh scan GREEN
+file tools/gen/season/equinox_ironbeetle_ep013_choir_witness.rish choir GREEN
+file rye-learning-process/GLOW_ALMANAC.md seat 75 · ch5 11/16
+file waymarks/20260730-205720_e70-ironbeetle-ep013-green.md finishing edge
+file expanding-prompts/20260730-205720_equinox-season-e71-recursion-prompt.md fusion
+recommend keep-going e71 IronBeetle ep014 trust-the-primary-verify-everyone-else
