@@ -1,0 +1,54 @@
+# tools/gen/season/equinox_e113_fascia_health_witness.rish — e113 fascia-health + REDS 38.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_e113_fascia_health_witness.rish
+#
+# Law: on-disk is not in-the-tree.
+
+say "e113-fascia-health: Language EN — git ls-files presence before any ratio."
+say "e113-fascia-health: Style Radiant — the twelfth correction lands as REDS 38."
+say "e113-fascia-health: Lens TAME — e113 · fascia-health v1 · almanac 117 · ch8 5/16."
+
+let control = run ["rishi/bin/rishi" "run" "tools/gen/season/census_control_witness.rish"]
+say control.out
+assert control.ok else "e113-fascia-health: census control must GREEN"
+assert control.out contains "GREEN: census-control" else "e113-fascia-health: want control GREEN"
+
+let museum = run ["rishi/bin/rishi" "run" "tools/gen/season/baton_museum_census_witness.rish"]
+say museum.out
+assert museum.ok else "e113-fascia-health: baton museum RED"
+assert museum.out contains "census_breach_count=0" else "e113-fascia-health: want breach 0"
+
+let health = run ["rishi/bin/rishi" "run" "tools/gen/season/fascia_health_witness.rish"]
+say health.out
+assert health.ok else "e113-fascia-health: standing health RED"
+assert health.out contains "GREEN: fascia-health" else "e113-fascia-health: want health GREEN"
+assert health.out contains "fascia_health=" else "e113-fascia-health: want fascia_health"
+assert health.out contains "RED_on_disk_is_not_in_the_tree" else "e113-fascia-health: want prove-red law"
+
+let elder = run ["rishi/bin/rishi" "run" "tools/gen/season/equinox_e112_date_dialect_witness.rish"]
+say elder.out
+assert elder.ok else "e113-fascia-health: elder e112 RED"
+assert elder.out contains "GREEN: e112-date-dialect-witness" else "e113-fascia-health: want elder GREEN"
+
+let scope = run ["rishi/bin/rishi" "run" "tools/gen/season/prin_scope.rish"]
+say scope.out
+assert scope.ok else "e113-fascia-health: prin_scope RED"
+assert scope.out contains "GREEN: prin-scope" else "e113-fascia-health: want scope GREEN"
+
+let scan = run ["sh" "tools/fixtures/equinox_e113_fascia_health_scan.sh"]
+say scan.out
+assert scan.ok else "e113-fascia-health: scan must exit 0"
+assert scan.out contains "control_gate=honored" else "e113-fascia-health: want control_gate"
+assert scan.out contains "instruments_tracked=honored" else "e113-fascia-health: want instruments tracked"
+assert scan.out contains "fascia_health=honored" else "e113-fascia-health: want health honored"
+assert scan.out contains "fascia_prove_red=honored" else "e113-fascia-health: want prove-red"
+assert scan.out contains "reds_row=honored" else "e113-fascia-health: want REDS 38"
+assert scan.out contains "reds_row_n=38" else "e113-fascia-health: want row 38"
+assert scan.out contains "reds_law=on_disk_is_not_in_the_tree" else "e113-fascia-health: want law"
+assert scan.out contains "seat_128=reserved_close_choir" else "e113-fascia-health: want 128 reserved"
+assert scan.out contains "surface_count=4" else "e113-fascia-health: want surface 4"
+assert scan.out contains "fork_status=not_consumed" else "e113-fascia-health: want fork waiting"
+assert scan.out contains "e113_fascia_health=ok" else "e113-fascia-health: want e113 ok"
+assert scan.out contains "verdict=ok" else "e113-fascia-health: want verdict=ok"
+
+say "GREEN: e113-fascia-health — fascia-health v1 · REDS 38 · elder e112 · 128 reserved · census four · fork waiting · museum"

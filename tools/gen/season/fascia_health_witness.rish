@@ -1,0 +1,32 @@
+# tools/gen/season/fascia_health_witness.rish — fascia-health v1 standing instrument.
+#
+#   rishi/bin/rishi run tools/gen/season/fascia_health_witness.rish
+#
+# Law: on-disk is not in-the-tree. Planted controls before the ratio.
+
+say "fascia-health: Language EN — git ls-files presence; planted controls before ratio."
+say "fascia-health: Style Radiant — live surface over total surface, per room."
+say "fascia-health: Lens TAME — living-vs-dated · withhold until both controls read."
+
+let green = run ["sh" "tools/fixtures/fascia_health_scan.sh"]
+say green.out
+assert green.ok else "fascia-health: living scan must exit 0"
+assert green.out contains "control_gate=honored" else "fascia-health: want control gate"
+assert green.out contains "tracked_controls=honored" else "fascia-health: want tracked controls"
+assert green.out contains "C_live=live" else "fascia-health: want C_live"
+assert green.out contains "C_dated=dated" else "fascia-health: want C_dated"
+assert green.out contains "controls_honored=2" else "fascia-health: want 2 of 2"
+assert green.out contains "tracked_total=" else "fascia-health: want tracked_total"
+assert green.out contains "dated_testimony=" else "fascia-health: want dated_testimony"
+assert green.out contains "live_surface=" else "fascia-health: want live_surface"
+assert green.out contains "fascia_health=" else "fascia-health: want fascia_health"
+assert green.out contains "verdict=ok" else "fascia-health: want verdict=ok"
+assert green.out contains "shred=RED" else "fascia-health: shred stays RED"
+
+let red = run ["sh" "tools/fixtures/fascia_health_scan.sh" "prove-red"]
+say red.out
+assert (red.ok == false) else "fascia-health: prove-red must refuse"
+assert red.out contains "RED_on_disk_is_not_in_the_tree" else "fascia-health: prove-red want on-disk law"
+assert red.out contains "census=withheld" else "fascia-health: prove-red want withheld"
+
+say "GREEN: fascia-health — C_live · C_dated · ratio released · prove-red refuses · shred RED"

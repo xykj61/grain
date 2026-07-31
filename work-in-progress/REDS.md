@@ -1,7 +1,7 @@
 # REDS — the ledger of what we got wrong
 
 **Language:** EN
-**Stamp:** living ledger (born `20260729.222000`) · refreshed `20260731.142447` (Equinox e108 · rows 34–37 container cross)
+**Stamp:** living ledger (born `20260729.222000`) · refreshed `20260731.150648` (Equinox e113 · row 38 on-disk is not in-the-tree)
 **Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
 **Voice:** Riyo
 **Status:** Living pin — one row per red, oldest first
@@ -78,8 +78,9 @@ A red enters this ledger when it is found. Rows are never edited or removed; a l
 | 35 | An escaped-backtick shell pattern reported 0 hits where a known-true probe showed 79 | re-running the probe without the escape and watching the hits return | Verify a zero against a planted or known positive before trusting silence. A zero is a claim about the instrument's view. |
 | 36 | A naive `^#` H1 scan called 29 multi-H1 files where the fence-aware truth was 6 | M4 `radiant_h1_fence_scan` (control true=1 · naive=4) and the fence-aware roster | Fence-aware H1 counting. A hash inside a fenced block is not a document H1. |
 | 37 | A literal backtick inside `$( )` corrupted the shell pattern and planted negatives could not prove discrimination | the no-backtick hard line and planted-negative controls that refuse when the probe is broken | No backtick in shell patterns. Planted negatives prove discrimination only when the probe still parses. |
+| 38 | Claimed fascia-health instruments were landed after `test -f` saw them on disk; `git ls-files` showed none tracked — a true baton line corrected to a false one three times | counsel fuse at e113 · `git ls-files` empty for fascia_health_* · presence gate in `tools/fixtures/fascia_health_scan.sh` | On-disk is not in-the-tree. Test presence with `git ls-files`, the same instrument that counts. |
 
-**Rows: 37 · in the tree before the ledger: 6 · recovered by opening it: 14 · added under the reds-first law: 17**
+**Rows: 38 · in the tree before the ledger: 6 · recovered by opening it: 14 · added under the reds-first law: 18**
 
 **Reds-first accounting for v11:** two reds found, both fixed in-round with witnesses on metal, ledger closed. The remaining journey allocation is therefore **released** rather than booked — which is the law working, not the law skipped.
 

@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20260731.150648
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu cloud agent — Eastern (EDT) time convention
+title e113 fascia-health v1 + REDS 38 GREEN
+prompt fuse kg — counsel fascia v1 land + REDS 38 on-disk is not in-the-tree; Framework e112 GREEN e113 next
+think Fuse counsel A+B: land fascia-health v1 with planted C_live/C_dated and book REDS 38 in one seat — the twelfth correction was presence via test -f.
+think Keep tracked date_dialect instruments from e112; counsel discard applied only to untracked duplicates.
+think Classify per living-vs-dated: dated filename without living ledger is Tier 2; else live. Measured fascia_health=41.
+think Presence gate: git ls-files; if on disk untracked emit on_disk_is_not_in_the_tree. Prove-red refuses test_f_only.
+think Almanac seat 117 · ch8 5/16 · seat 128 reserved · fork waiting · invent no ep046.
+obs Law seated: on-disk is not in-the-tree. Test presence with git ls-files, the same instrument that counts.
+obs Meters re-cut: sundial 100 · fascia 92 i9 · fascia_health 41 · orphans 852 · REDS 38 · baton breach 0.
+file tools/fixtures/fascia_health_live_control.md C_live planted
+file tools/fixtures/20260731-150648_fascia_health_dated_control.md C_dated planted
+file tools/fixtures/fascia_health_scan.sh standing scan green+prove-red
+file tools/gen/season/fascia_health_witness.rish standing witness
+file tools/fixtures/equinox_e113_fascia_health_scan.sh equinox keep + REDS 38
+file work-in-progress/REDS.md row 38
+file waymarks/20260731-150648_e113-fascia-health-green.md green waymark
+file expanding-prompts/20260731-150648_equinox-season-e114-recursion-prompt.md next fusion prompt
+recommend check-in (either) Class O shred paths · or the fork · or kg e114 ch8 content behind control (not 128)
+product_nib Grain
+suite_nib Equinox
+git_nib LIVING
