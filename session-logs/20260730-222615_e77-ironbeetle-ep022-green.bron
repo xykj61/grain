@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260730.222615
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title e77 IronBeetle ep022 a-read-that-cannot-fail GREEN
+prompt kg · e77 — IronBeetle ep022 a-read-that-cannot-fail
+think e76 ep021 GREEN · ep022 next written silo · leaf census twin
+think Teach: read cannot fail · local first · peer repair · address match
+think Seat 82 · ch6 2/16 · ep025 next (skip ep023·ep024) · expedition stays gated
+obs e77 GREEN · e78 IronBeetle ep025 next
+file expanding-prompts/20260730-222546_e77-ironbeetle-ep022-charter.md charter
+file tools/fixtures/ironbeetle_ep022_census.sh scan GREEN
+file tools/gen/season/equinox_ironbeetle_ep022_choir_witness.rish choir GREEN
+file rye-learning-process/GLOW_ALMANAC.md seat 82 · ch6 2/16
+file waymarks/20260730-222615_e77-ironbeetle-ep022-green.md finishing edge
+file expanding-prompts/20260730-222615_equinox-season-e78-recursion-prompt.md fusion
+recommend keep-going e78 IronBeetle ep025 a-history-written-as-a-list-of-changes
