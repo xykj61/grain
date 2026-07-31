@@ -108,7 +108,7 @@ fn digest_name(lane: Lane) []const u8 {
 }
 
 fn own_path(buf: []u8, joined: []const u8) []const u8 {
-    @memcpy(buf[0..joined.len], joined);
+    tally_copy.copy_disjoint(u8, buf[0..joined.len], joined);
     return buf[0..joined.len];
 }
 

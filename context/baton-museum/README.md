@@ -33,7 +33,7 @@ Read the shape's descriptor, then fill its fields in order, honestly, marking pi
 
 For the bench to append to the Lexicon, verbatim:
 
-**baton** — state one seat passes whole to the next across a named boundary: session to session, counsel to bench, journey to season. The living baton is the final codeblock of every counsel printout, superseded rather than accreted, its elder resting in the session log. The museum of baton shapes lives at `baton-museum/`. Seated by Keaton's word, `20260730`.
+**baton** — state one seat passes whole to the next across a named boundary: session to session, counsel to bench, journey to season. The living baton is the final codeblock of every counsel printout, replaced rather than accreted, its elder resting in the session log. The museum of baton shapes lives at `baton-museum/`. Seated by Keaton's word, `20260730`.
 
 ## Seating
 
