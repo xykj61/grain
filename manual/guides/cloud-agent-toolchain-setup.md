@@ -65,6 +65,7 @@ This is acceptable for a same-sitting cloud agent for the reasons named above (n
 
 ## Related
 
+- [`20260731-014410_opus-bench-raise.md`](20260731-014410_opus-bench-raise.md) — Opus-measured raise: symlink `lib/` plus a `zig` wrapper (why `rye/lib/*` needs that exact shape).
 - `../../rye/README.md` — the persistent-host build path this recipe stands beside.
 - `../../context/specs/enclosure-editors.md` — the ai-jail-enclosed persistent-host path this guide is not a replacement for.
 - `../../work-in-progress/20260703-021412_counsel-and-confirmation-tests.md` — the earlier Cursor for iOS round that first used this exact pip recipe, against a persistent ai-jail host rather than a disposable cloud VM.
