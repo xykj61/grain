@@ -1,0 +1,35 @@
+# tools/gen/season/instrument_suite_witness.rish — instrument-season suite.
+#
+#   rishi/bin/rishi run tools/gen/season/instrument_suite_witness.rish
+#
+# Law: seat the suite; do not manufacture meters.
+
+say "instrument-suite: Language EN — every meter the arc identified, run together."
+say "instrument-suite: Style Radiant — counsel named nine; thing-not-name accreted tenth."
+say "instrument-suite: Lens TAME — find the completion; refuse manufactured work."
+
+let green = run ["sh" "tools/fixtures/instrument_suite_scan.sh"]
+say green.out
+assert green.ok else "instrument-suite: living scan must exit 0"
+assert green.out contains "pass=10" else "instrument-suite: want pass=10"
+assert green.out contains "fail=0" else "instrument-suite: want fail=0"
+assert green.out contains "limb_sundial=GREEN" else "instrument-suite: want sundial"
+assert green.out contains "limb_fascia_metric=GREEN" else "instrument-suite: want fascia"
+assert green.out contains "limb_census_control=GREEN" else "instrument-suite: want census control"
+assert green.out contains "limb_shed_census=GREEN" else "instrument-suite: want shed"
+assert green.out contains "limb_e111_dialect=GREEN" else "instrument-suite: want e111"
+assert green.out contains "limb_oldness=GREEN" else "instrument-suite: want oldness"
+assert green.out contains "limb_h1_fence=GREEN" else "instrument-suite: want h1"
+assert green.out contains "limb_radiant_lint=GREEN" else "instrument-suite: want lint"
+assert green.out contains "limb_e113_fascia_health=GREEN" else "instrument-suite: want e113"
+assert green.out contains "limb_thing_not_name=GREEN" else "instrument-suite: want thing-not-name"
+assert green.out contains "instrument_suite=ok" else "instrument-suite: want suite ok"
+assert green.out contains "verdict=ok" else "instrument-suite: want verdict=ok"
+
+let red = run ["sh" "tools/fixtures/instrument_suite_scan.sh" "prove-red"]
+say red.out
+assert (red.ok == false) else "instrument-suite: prove-red must refuse"
+assert red.out contains "RED_manufactured_suite_pass" else "instrument-suite: prove-red want manufactured refusal"
+assert red.out contains "census=withheld" else "instrument-suite: prove-red want withheld"
+
+say "GREEN: instrument-suite — pass=10 fail=0 · counsel nine + thing-not-name · prove-red refuses · shred RED"

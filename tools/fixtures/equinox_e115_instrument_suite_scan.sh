@@ -1,20 +1,21 @@
 #!/bin/sh
-# Equinox e114 — thing-not-name law + REDS 39.
+# Equinox e115 — instrument-season suite seated as findable record.
 # Exit 0 only when control reads and all limbs honor.
 # No backtick characters in patterns.
 #
-#   sh tools/fixtures/equinox_e114_thing_not_name_scan.sh
+#   sh tools/fixtures/equinox_e115_instrument_suite_scan.sh
 #
-# Law: look for the thing, not for the name of the thing.
+# Law: seat the suite; do not manufacture meters.
+# Remaining after this seat: Keaton-gated (fork · breach · shred · names).
 set -eu
 
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
-THING_SCAN=tools/fixtures/thing_not_name_scan.sh
+SUITE=tools/fixtures/instrument_suite_scan.sh
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 PRIN=tools/gen/season/prin_scope.rish
 MAP=work-in-progress/EQUINOX_SEAT_MAP.md
 REDS=work-in-progress/REDS.md
-ELDER=tools/gen/season/equinox_e113_fascia_health_witness.rish
+ELDER=tools/gen/season/equinox_e114_thing_not_name_witness.rish
 
 if ! test -f "$CONTROL_SCAN"; then
   echo "CONTROL=ABSENT"
@@ -32,11 +33,18 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 echo "control_gate=honored"
 
 for p in \
-  "$THING_SCAN" \
-  tools/fixtures/thing_not_name_emitter.sh \
-  tools/gen/season/thing_not_name_witness.rish \
-  tools/fixtures/shed_census_scan.sh \
-  tools/fixtures/fascia_health_scan.sh
+  "$SUITE" \
+  tools/gen/season/instrument_suite_witness.rish \
+  tools/fixtures/sundial.sh \
+  tools/fixtures/fascia_metric_v0.sh \
+  tools/gen/season/census_control_witness.rish \
+  tools/gen/season/shed_census_witness.rish \
+  tools/gen/season/equinox_e111_date_dialect_witness.rish \
+  tools/gen/season/oldness_census_witness.rish \
+  tools/gen/season/radiant_h1_fence_witness.rish \
+  tools/fixtures/radiant_lint_scan.sh \
+  tools/fixtures/equinox_e113_fascia_health_scan.sh \
+  tools/gen/season/thing_not_name_witness.rish
 do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     if test -f "$p"; then
@@ -55,91 +63,62 @@ do
 done
 echo "instruments_tracked=honored"
 
-THING_OUT=$(sh "$THING_SCAN")
-echo "$THING_OUT" | sed 's/^/thing_/'
-echo "$THING_OUT" | rg -q '^verdict=ok$' || {
-  echo "thing_not_name=failed"
+SUITE_OUT=$(sh "$SUITE")
+echo "$SUITE_OUT" | sed 's/^/suite_/'
+echo "$SUITE_OUT" | rg -q '^verdict=ok$' || {
+  echo "instrument_suite=failed"
   echo "verdict=misread"
   exit 1
 }
-echo "$THING_OUT" | rg -q '^roofs=2$' || {
-  echo "thing_not_name=failed"
+echo "$SUITE_OUT" | rg -q '^pass=10$' || {
+  echo "instrument_suite=failed"
   echo "verdict=misread"
-  echo "detail=want_roofs_2"
+  echo "detail=want_pass_10"
   exit 1
 }
-echo "thing_not_name=honored"
+echo "$SUITE_OUT" | rg -q '^fail=0$' || {
+  echo "instrument_suite=failed"
+  echo "verdict=misread"
+  exit 1
+}
+echo "instrument_suite=honored"
+echo "suite_pass=10"
+echo "suite_fail=0"
 
-RED_OUT=$(sh "$THING_SCAN" prove-red || true)
-echo "$RED_OUT" | rg -q 'RED_looked_for_name_not_thing' || {
-  echo "thing_prove_red=failed"
+RED_OUT=$(sh "$SUITE" prove-red || true)
+echo "$RED_OUT" | rg -q 'RED_manufactured_suite_pass' || {
+  echo "suite_prove_red=failed"
   echo "verdict=misread"
   exit 1
 }
-echo "$RED_OUT" | rg -q '^verdict=ok$' && {
-  echo "thing_prove_red=failed"
-  echo "verdict=misread"
-  exit 1
-}
-echo "thing_prove_red=honored"
+echo "suite_prove_red=honored"
 
-# --- REDS row 39 ---
+# REDS 39 kept (thing-not-name law) — no new red this seat
 git ls-files --error-unmatch "$REDS" >/dev/null 2>&1 || {
-  echo "reds_row=failed"
+  echo "reds_keep=failed"
   echo "verdict=misread"
   exit 1
 }
 rg -q '^\| 39 \|' "$REDS" || {
-  echo "reds_row=failed"
+  echo "reds_keep=failed"
   echo "verdict=misread"
-  echo "detail=want_row_39"
-  exit 1
-}
-rg -qi 'look for the thing, not for the name' "$REDS" || {
-  echo "reds_row=failed"
-  echo "verdict=misread"
-  echo "detail=want_thing_not_name_law"
-  exit 1
-}
-rg -q '^\| 38 \|' "$REDS" || {
-  echo "reds_row=failed"
-  echo "verdict=misread"
-  echo "detail=want_row_38_kept"
   exit 1
 }
 MONO=$(sh tools/fixtures/reds_ledger_monotone_scan.sh)
 echo "$MONO"
 echo "$MONO" | rg -q '^verdict=ok$' || {
-  echo "reds_row=failed"
+  echo "reds_keep=failed"
   echo "verdict=misread"
   exit 1
 }
-# Accrete-never-break: pin row 39's presence, not the living ledger total.
 ROWS=$(printf '%s\n' "$MONO" | sed -n 's/^rows=//p' | head -1)
-EXPECT=$(printf '%s\n' "$MONO" | sed -n 's/^expect_next=//p' | head -1)
 if test "${ROWS:-0}" -lt 39; then
-  echo "reds_row=failed"
+  echo "reds_keep=failed"
   echo "verdict=misread"
-  echo "detail=want_rows_at_least_39"
   exit 1
 fi
-if test "${EXPECT:-0}" -lt 40; then
-  echo "reds_row=failed"
-  echo "verdict=misread"
-  echo "detail=want_expect_next_at_least_40"
-  exit 1
-fi
-LEDGER=$(sh tools/fixtures/reds_ledger_scan.sh)
-echo "$LEDGER"
-echo "$LEDGER" | rg -q '^verdict=ok$' || {
-  echo "reds_row=failed"
-  echo "verdict=misread"
-  exit 1
-}
-echo "reds_row=honored"
-echo "reds_row_n=39"
+echo "reds_keep=honored"
 echo "reds_rows_living=${ROWS}"
-echo "reds_law=look_for_the_thing_not_the_name"
 
 git ls-files --error-unmatch "$ELDER" >/dev/null 2>&1 || {
   echo "elder=failed"
@@ -147,7 +126,7 @@ git ls-files --error-unmatch "$ELDER" >/dev/null 2>&1 || {
   exit 1
 }
 echo "elder=honored"
-echo "elder_seat=e113"
+echo "elder_seat=e114"
 
 rg -q 'RESERVED' "$MAP" || {
   echo "reserve_keep=failed"
@@ -171,13 +150,13 @@ fi
 echo "surface_keep=honored"
 echo "surface_count=4"
 
-rg -q '^### 117\.' "$ALMANAC" || {
+rg -q '^### 118\.' "$ALMANAC" || {
   echo "almanac=failed"
   echo "verdict=misread"
   exit 1
 }
 echo "almanac=honored"
-echo "seats_through=117"
+echo "seats_through=118"
 
 if rg -q 'equinox_handback: return_surface_p59 CONSUMED' "$PRIN"; then
   echo "fork=failed"
@@ -191,6 +170,8 @@ rg -q 'equinox_handback: return_surface_p59' "$PRIN" || {
 }
 echo "fork=honored"
 echo "fork_status=not_consumed"
+echo "remaining=keaton_gated"
+echo "remaining_note=fork_breach_shred_safe_close_seat_names"
 
 EP045=gratitude/ironbeetle/20260712-092212_ironbeetle-ep045-the-whole-machine-in-one-breath.md
 git ls-files --error-unmatch "$EP045" >/dev/null 2>&1 || {
@@ -208,6 +189,6 @@ echo "shelf=honored"
 echo "shelf_end=ep045"
 echo "shred=RED"
 
-echo "story=thing_not_name>reds_39>two_roofs>128_reserved>census_four>fork_waiting"
-echo "e114_thing_not_name=ok"
+echo "story=instrument_suite_10>counsel_nine_plus_thing_not_name>keaton_gated_remainder>128_reserved>fork_waiting"
+echo "e115_instrument_suite=ok"
 echo "verdict=ok"

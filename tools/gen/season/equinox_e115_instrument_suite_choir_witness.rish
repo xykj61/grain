@@ -1,0 +1,23 @@
+# tools/gen/season/equinox_e115_instrument_suite_choir_witness.rish — e115 → ch8 7/16.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_e115_instrument_suite_choir_witness.rish
+
+say "equinox-e115-choir: Language EN — seat the suite; refuse manufactured meters."
+say "equinox-e115-choir: Style Radiant — counsel proposes nothing further."
+say "equinox-e115-choir: Lens TAME — e115 · instrument suite · almanac 119 · ch8 7/16."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/season/equinox_e115_instrument_suite_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-e115-choir: welcome RED"
+assert welcome.out contains "GREEN: e115-instrument-suite" else "equinox-e115-choir: want GREEN"
+assert welcome.out contains "suite_pass=10" else "equinox-e115-choir: want pass 10"
+assert welcome.out contains "remaining=keaton_gated" else "equinox-e115-choir: want keaton_gated"
+assert welcome.out contains "seat_128=reserved_close_choir" else "equinox-e115-choir: want 128"
+assert welcome.out contains "census_breach_count=0" else "equinox-e115-choir: want breach 0"
+assert welcome.out contains "fork_status=not_consumed" else "equinox-e115-choir: want fork waiting"
+
+let almanac = run ["sh" "tools/gen/season/equinox_e115_instrument_suite_almanac.sh"]
+assert almanac.ok else "equinox-e115-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-e115-choir — instrument suite GREEN · almanac seat 119 · ch8 7/16"
