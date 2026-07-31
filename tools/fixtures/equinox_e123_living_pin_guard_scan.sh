@@ -1,13 +1,14 @@
 #!/bin/sh
-# Equinox e123 — living-pin content guard.
-# Non-empty · header · tracked · bound (enforce or hold_over) · emptied fixture caught.
-# Exit 0 only when control reads and every roster pin honors.
+# Equinox e123 — living-pin content guard (ONE roof).
+# Roster as data · C1 emptied · C2 whole · non-empty · header · tracked · bound.
+# Over-bound is advisory by design. No second guard script — two roofs refused.
 # No backtick characters in patterns. No git history walks.
 #
 #   sh tools/fixtures/equinox_e123_living_pin_guard_scan.sh
 #   sh tools/fixtures/equinox_e123_living_pin_guard_scan.sh prove-red
 #
 # Law: a duty with no witness never lands.
+# Law: when two roofs carry one name, either they agree or the name does two jobs.
 # Law: a witness must not depend on one bench's tools or on full history.
 # Law: name the Bench when a measurement is reported.
 set -eu
@@ -18,7 +19,6 @@ ROSTER=tools/fixtures/living_pin_guard_roster.txt
 EMPTIED=tools/fixtures/living_pin_emptied_control.md
 C1=tools/fixtures/living_pin_control/emptied_pin_control.md
 C2=tools/fixtures/living_pin_control/whole_pin_control.md
-GENERIC=tools/fixtures/living_pin_guard_scan.sh
 LEXICON=context/LEXICON.md
 COUNSEL=counsel/20260731-222426_e123-living-pin-guard.md
 MAP=work-in-progress/EQUINOX_SEAT_MAP.md
@@ -69,7 +69,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-for p in "$ROSTER" "$EMPTIED" "$C1" "$C2" "$GENERIC" "$LEXICON" "$COUNSEL" "$MAP" "$REMEMBER" "$PRIN" "$ELDER"; do
+for p in "$ROSTER" "$EMPTIED" "$C1" "$C2" "$LEXICON" "$COUNSEL" "$MAP" "$REMEMBER" "$PRIN" "$ELDER"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     if test -f "$p"; then
       echo "instrument=failed"
@@ -87,17 +87,17 @@ for p in "$ROSTER" "$EMPTIED" "$C1" "$C2" "$GENERIC" "$LEXICON" "$COUNSEL" "$MAP
 done
 echo "instruments_tracked=honored"
 
-# Generic guard (counsel prove) must GREEN — C1 caught · C2 whole · roster whole
-GENERIC_OUT=$(sh "$GENERIC")
-echo "$GENERIC_OUT"
-echo "$GENERIC_OUT" | rg -q '^verdict=pins_whole$' || {
-  echo "generic_guard=failed"
+# Refuse a second guard roof (counsel duplicate retired e124 tidy).
+if git ls-files --error-unmatch tools/fixtures/living_pin_guard_scan.sh >/dev/null 2>&1; then
+  echo "two_roofs=failed"
   echo "verdict=misread"
+  echo "detail=duplicate_living_pin_guard_scan_still_tracked"
   exit 1
-}
-echo "generic_guard=honored"
+fi
+echo "one_roof=honored"
+echo "duplicate_guard=retired"
 
-# Emptied fixtures must stay thin — the instrument that would have caught e121.
+# C1 emptied must stay thin — the instrument that would have caught e121.
 EBYTES=$(wc -c < "$EMPTIED" | tr -d ' ')
 if test "$EBYTES" -ge 200; then
   echo "emptied_control=failed"
@@ -113,9 +113,27 @@ if test "$C1_BYTES" -ge 200; then
   echo "detail=C1_contaminated"
   exit 1
 fi
+echo "OK C1-emptied  planted empty pin CAUGHT"
 echo "emptied_bytes=$EBYTES"
 echo "C1_bytes=$C1_BYTES"
 echo "emptied_control=honored"
+
+# C2 whole control must read whole
+C2_BYTES=$(wc -c < "$C2" | tr -d ' ')
+if test "$C2_BYTES" -lt 100; then
+  echo "C2=failed"
+  echo "verdict=misread"
+  echo "detail=whole_control_thin"
+  exit 1
+fi
+rg -q 'Living pin' "$C2" || {
+  echo "C2=failed"
+  echo "verdict=misread"
+  echo "detail=whole_control_header_missing"
+  exit 1
+}
+echo "OK C2-whole    planted whole pin reads whole"
+echo "C2_bytes=$C2_BYTES"
 
 PIN_COUNT=0
 OVER_HOLD=0
