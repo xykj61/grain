@@ -1,0 +1,28 @@
+# tools/gen/season/ironbeetle_ep045_census_witness.rish — e94 IronBeetle ep045.
+#
+#   rishi/bin/rishi run tools/gen/season/ironbeetle_ep045_census_witness.rish
+#
+# Clean-room: presence only · never copies into rye/.
+# Leaf only — no nested elder choirs.
+
+say "iron-ep045: Language EN — the whole machine, in one breath."
+say "iron-ep045: Style Radiant — await by hand; one sequential core; DST closes the series."
+say "iron-ep045: Lens TAME — e94 · clean-room study · almanac seat 98 · ch7 2/16."
+
+let shelf = run ["test" "-d" "gratitude/ironbeetle"]
+assert shelf.ok else "iron-ep045: gratitude/ironbeetle ABSENT — host shelf first"
+
+let census = run ["sh" "tools/fixtures/ironbeetle_ep045_census.sh"]
+say census.out
+assert census.ok else "iron-ep045: census failed or thin"
+assert census.out contains "IRON=present" else "iron-ep045: want IRON=present"
+assert census.out contains "verdict=ok" else "iron-ep045: want verdict=ok"
+assert census.out contains "EP045=yes" else "iron-ep045: ep045 file must be present"
+assert census.out contains "HONORS=yes" else "iron-ep045: Honors heading must be present"
+assert census.out contains "SOURCE=yes" else "iron-ep045: Source heading must be present"
+assert census.out contains "TEACH=yes" else "iron-ep045: teach limbs (one-breath·grand-recap-II·await-by-hand·whole-system·prefetch·determin) must be present"
+assert census.out contains "RHYME=yes" else "iron-ep045: rhyme section must be present"
+assert census.out contains "CLEAN=yes" else "iron-ep045: Clean Room heading must be present"
+assert census.out contains "MATKLAD_OK=yes" else "iron-ep045: matklad companion must cite ironbeetle/"
+
+say "GREEN: iron-ep045 — honors·source·teach·rhyme·clean·matklad ok"

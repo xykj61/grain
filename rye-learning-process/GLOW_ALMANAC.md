@@ -430,13 +430,17 @@ Expected IRON=present · EP042 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep043_choir_witness.rish` · **Stamp:** `20260731.005634` · **Witness:** `tools/gen/season/ironbeetle_ep043_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep043_census.sh` · choir `equinox_ironbeetle_ep043_choir_witness.rish`
 Expected IRON=present · EP043 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only. Chapter six fills at sixteen.
 
-## Chapter Seven (1 of 16)
+## Chapter Seven (2 of 16)
 
 Opened from metal at stamp `20260731.114927`. Themes arrive after findings; this chapter carries none in advance. Ch5 and ch6 surface closes stay parked per e92 ruling D until a close-seat row is seated.
 
 ### 97. IronBeetle ep044 traces everything we know from the first byte: two jobs of consensus, and honesty about unfinished code.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep044_choir_witness.rish` · **Stamp:** `20260731.114927` · **Witness:** `tools/gen/season/ironbeetle_ep044_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep044_census.sh` · choir `equinox_ironbeetle_ep044_choir_witness.rish`
 Expected IRON=present · EP044 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Chapter seven opens under e76 law; clean-room study only.
+
+### 98. IronBeetle ep045 restates the whole machine in one breath: await by hand, one sequential core, prefetch before decide, DST as the quiet reason.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep045_choir_witness.rish` · **Stamp:** `20260731.115725` · **Witness:** `tools/gen/season/ironbeetle_ep045_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep045_census.sh` · choir `equinox_ironbeetle_ep045_choir_witness.rish`
+Expected IRON=present · EP045 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only. Chapter seven advances to two of sixteen.
 
 ---
 

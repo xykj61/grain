@@ -1,3 +1,4 @@
+- `20260731.115725` — [e94 IronBeetle ep045 GREEN](20260731-115725_e94-ironbeetle-ep045-green.bron) — seat 98 · ch7 2/16 · shelf end · e95 next
 - `20260731.114927` — [e93 IronBeetle ep044 ch7 open GREEN](20260731-114927_e93-ironbeetle-ep044-ch7-open-green.bron) — seat 97 · e94 recursion · ep045 next
 - `20260731.020306` — [e92 ruling D · M2 glow rune census GREEN](20260731-020306_e92-ruling-d-m2-glow-rune-census.bron) — park closes · advisory 11 · ch7 via ep044
 - `20260731.014410` — [opus bench raise M1 census GREEN](20260731-014410_opus-bench-raise-m1-census.bron) — guide landed · tip 0981a393e1 · baton 0
