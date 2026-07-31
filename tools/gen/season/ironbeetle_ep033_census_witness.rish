@@ -1,0 +1,28 @@
+# tools/gen/season/ironbeetle_ep033_census_witness.rish — e83 IronBeetle ep033.
+#
+#   rishi/bin/rishi run tools/gen/season/ironbeetle_ep033_census_witness.rish
+#
+# Clean-room: presence only · never copies into rye/.
+# Leaf only — no nested elder choirs.
+
+say "iron-ep033: Language EN — sixteen thousand accounts at once."
+say "iron-ep033: Style Radiant — gather the batch before executing a single transfer."
+say "iron-ep033: Lens TAME — e83 · clean-room study · almanac seat 88."
+
+let shelf = run ["test" "-d" "gratitude/ironbeetle"]
+assert shelf.ok else "iron-ep033: gratitude/ironbeetle ABSENT — host shelf first"
+
+let census = run ["sh" "tools/fixtures/ironbeetle_ep033_census.sh"]
+say census.out
+assert census.ok else "iron-ep033: census failed or thin"
+assert census.out contains "IRON=present" else "iron-ep033: want IRON=present"
+assert census.out contains "verdict=ok" else "iron-ep033: want verdict=ok"
+assert census.out contains "EP033=yes" else "iron-ep033: ep033 file must be present"
+assert census.out contains "HONORS=yes" else "iron-ep033: Honors heading must be present"
+assert census.out contains "SOURCE=yes" else "iron-ep033: Source heading must be present"
+assert census.out contains "TEACH=yes" else "iron-ep033: teach limbs (prefetch·batch·caches·load-before-decide) must be present"
+assert census.out contains "RHYME=yes" else "iron-ep033: rhyme section must be present"
+assert census.out contains "CLEAN=yes" else "iron-ep033: Clean Room heading must be present"
+assert census.out contains "MATKLAD_OK=yes" else "iron-ep033: matklad companion must cite ironbeetle/"
+
+say "GREEN: iron-ep033 — honors·source·teach·rhyme·clean·matklad ok"
