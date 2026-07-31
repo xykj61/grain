@@ -362,7 +362,7 @@ Expected IRON=present · EP019 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep020_choir_witness.rish` · **Stamp:** `20260730.215259` · **Witness:** `tools/gen/season/ironbeetle_ep020_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep020_census.sh` · choir `equinox_ironbeetle_ep020_choir_witness.rish`
 Expected IRON=present · EP020 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only. Chapter five fills at sixteen.
 
-## Chapter Six (15 of 16)
+## Chapter Six (16 of 16)
 
 Opened from metal at stamp `20260730.220543`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -425,6 +425,10 @@ Expected IRON=present · EP040 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 ### 95. IronBeetle ep042 crosses the Alps into the merge loop itself; table_builder writes checksummed blocks from what the loop produces.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep042_choir_witness.rish` · **Stamp:** `20260731.005353` · **Witness:** `tools/gen/season/ironbeetle_ep042_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep042_census.sh` · choir `equinox_ironbeetle_ep042_choir_witness.rish`
 Expected IRON=present · EP042 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only.
+
+### 96. IronBeetle ep043 makes the Manifest the moment of truth: written tables stay unacknowledged until apply; snapshots defer erasure.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep043_choir_witness.rish` · **Stamp:** `20260731.005634` · **Witness:** `tools/gen/season/ironbeetle_ep043_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep043_census.sh` · choir `equinox_ironbeetle_ep043_choir_witness.rish`
+Expected IRON=present · EP043 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only. Chapter six fills at sixteen.
 
 ---
 
