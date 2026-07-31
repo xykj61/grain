@@ -1,0 +1,34 @@
+# tools/gen/season/thing_not_name_witness.rish — standing thing-not-name instrument.
+#
+#   rishi/bin/rishi run tools/gen/season/thing_not_name_witness.rish
+#
+# Law: look for the thing, not for the name of the thing.
+
+say "thing-not-name: Language EN — find emitted keys; filename search is not enough."
+say "thing-not-name: Style Radiant — two roofs can hold one kind of value."
+say "thing-not-name: Lens TAME — planted emitter · shed now-key · standalone fascia_health."
+
+let green = run ["sh" "tools/fixtures/thing_not_name_scan.sh"]
+say green.out
+assert green.ok else "thing-not-name: living scan must exit 0"
+assert green.out contains "control_gate=honored" else "thing-not-name: want control gate"
+assert green.out contains "tracked_instruments=honored" else "thing-not-name: want tracked"
+assert green.out contains "planted_value=honored" else "thing-not-name: want planted value"
+assert green.out contains "demo_meter=7" else "thing-not-name: want demo_meter=7"
+assert green.out contains "planted_name_absent=honored" else "thing-not-name: want name absent"
+assert green.out contains "name_hits_demo_meter=0" else "thing-not-name: want zero name hits"
+assert green.out contains "shed_roof=honored" else "thing-not-name: want shed roof"
+assert green.out contains "shed_key=fascia_health_now" else "thing-not-name: want shed key"
+assert green.out contains "health_roof=honored" else "thing-not-name: want health roof"
+assert green.out contains "health_key=fascia_health" else "thing-not-name: want health key"
+assert green.out contains "roofs=2" else "thing-not-name: want two roofs"
+assert green.out contains "law=look_for_the_thing_not_the_name" else "thing-not-name: want law"
+assert green.out contains "verdict=ok" else "thing-not-name: want verdict=ok"
+
+let red = run ["sh" "tools/fixtures/thing_not_name_scan.sh" "prove-red"]
+say red.out
+assert (red.ok == false) else "thing-not-name: prove-red must refuse"
+assert red.out contains "RED_looked_for_name_not_thing" else "thing-not-name: prove-red want name refusal"
+assert red.out contains "census=withheld" else "thing-not-name: prove-red want withheld"
+
+say "GREEN: thing-not-name — value found · name absent · two roofs · prove-red refuses · shred RED"

@@ -1,0 +1,54 @@
+# tools/gen/season/equinox_e114_thing_not_name_witness.rish — e114 thing-not-name + REDS 39.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_e114_thing_not_name_witness.rish
+#
+# Law: look for the thing, not for the name of the thing.
+
+say "e114-thing-not-name: Language EN — emitted keys before filename claims."
+say "e114-thing-not-name: Style Radiant — the thirteenth correction names the pattern."
+say "e114-thing-not-name: Lens TAME — e114 · thing-not-name · almanac 118 · ch8 6/16."
+
+let control = run ["rishi/bin/rishi" "run" "tools/gen/season/census_control_witness.rish"]
+say control.out
+assert control.ok else "e114-thing-not-name: census control must GREEN"
+assert control.out contains "GREEN: census-control" else "e114-thing-not-name: want control GREEN"
+
+let museum = run ["rishi/bin/rishi" "run" "tools/gen/season/baton_museum_census_witness.rish"]
+say museum.out
+assert museum.ok else "e114-thing-not-name: baton museum RED"
+assert museum.out contains "census_breach_count=0" else "e114-thing-not-name: want breach 0"
+
+let thing = run ["rishi/bin/rishi" "run" "tools/gen/season/thing_not_name_witness.rish"]
+say thing.out
+assert thing.ok else "e114-thing-not-name: standing thing RED"
+assert thing.out contains "GREEN: thing-not-name" else "e114-thing-not-name: want thing GREEN"
+assert thing.out contains "roofs=2" else "e114-thing-not-name: want roofs 2"
+assert thing.out contains "RED_looked_for_name_not_thing" else "e114-thing-not-name: want prove-red"
+
+let elder = run ["rishi/bin/rishi" "run" "tools/gen/season/equinox_e113_fascia_health_witness.rish"]
+say elder.out
+assert elder.ok else "e114-thing-not-name: elder e113 RED"
+assert elder.out contains "GREEN: e113-fascia-health" else "e114-thing-not-name: want elder GREEN"
+
+let scope = run ["rishi/bin/rishi" "run" "tools/gen/season/prin_scope.rish"]
+say scope.out
+assert scope.ok else "e114-thing-not-name: prin_scope RED"
+assert scope.out contains "GREEN: prin-scope" else "e114-thing-not-name: want scope GREEN"
+
+let scan = run ["sh" "tools/fixtures/equinox_e114_thing_not_name_scan.sh"]
+say scan.out
+assert scan.ok else "e114-thing-not-name: scan must exit 0"
+assert scan.out contains "control_gate=honored" else "e114-thing-not-name: want control_gate"
+assert scan.out contains "instruments_tracked=honored" else "e114-thing-not-name: want instruments"
+assert scan.out contains "thing_not_name=honored" else "e114-thing-not-name: want thing honored"
+assert scan.out contains "thing_prove_red=honored" else "e114-thing-not-name: want prove-red"
+assert scan.out contains "reds_row=honored" else "e114-thing-not-name: want REDS 39"
+assert scan.out contains "reds_row_n=39" else "e114-thing-not-name: want row 39"
+assert scan.out contains "reds_law=look_for_the_thing_not_the_name" else "e114-thing-not-name: want law"
+assert scan.out contains "seat_128=reserved_close_choir" else "e114-thing-not-name: want 128"
+assert scan.out contains "surface_count=4" else "e114-thing-not-name: want surface 4"
+assert scan.out contains "fork_status=not_consumed" else "e114-thing-not-name: want fork waiting"
+assert scan.out contains "e114_thing_not_name=ok" else "e114-thing-not-name: want e114 ok"
+assert scan.out contains "verdict=ok" else "e114-thing-not-name: want verdict=ok"
+
+say "GREEN: e114-thing-not-name — thing-not-name · REDS 39 · elder e113 · 128 reserved · census four · fork waiting · museum"
