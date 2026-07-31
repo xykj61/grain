@@ -8,6 +8,8 @@ let green = run ["sh" "tools/fixtures/equinox_e123_living_pin_guard_scan.sh"]
 assert green.ok else "e123-living-pin-guard: living scan must exit 0"
 assert green.out contains "pins=honored" else "e123-living-pin-guard: want pins honored"
 assert green.out contains "emptied_control=honored" else "e123-living-pin-guard: want emptied honored"
+assert green.out contains "generic_guard=honored" else "e123-living-pin-guard: want generic guard"
+assert green.out contains "over_bound=advisory" else "e123-living-pin-guard: want over-bound advisory"
 assert green.out contains "kinds=honored" else "e123-living-pin-guard: want kinds honored"
 assert green.out contains "history_independence=honored" else "e123-living-pin-guard: want no history walk"
 assert green.out contains "seat_128=reserved_close_choir" else "e123-living-pin-guard: want 128 reserved"

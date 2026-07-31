@@ -16,6 +16,9 @@ MODE=${1:-}
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
 ROSTER=tools/fixtures/living_pin_guard_roster.txt
 EMPTIED=tools/fixtures/living_pin_emptied_control.md
+C1=tools/fixtures/living_pin_control/emptied_pin_control.md
+C2=tools/fixtures/living_pin_control/whole_pin_control.md
+GENERIC=tools/fixtures/living_pin_guard_scan.sh
 LEXICON=context/LEXICON.md
 COUNSEL=counsel/20260731-222426_e123-living-pin-guard.md
 MAP=work-in-progress/EQUINOX_SEAT_MAP.md
@@ -26,13 +29,17 @@ ELDER=tools/gen/season/equinox_e122_roots_bench_kinds_witness.rish
 MAX_BYTES=24576
 
 if test "$MODE" = "prove-red"; then
-  # Apply the non-empty limb to the planted emptied fixture — must be caught.
-  if ! test -f "$EMPTIED"; then
+  # Prefer C1 zero-byte control; fall back to thin emptied fixture.
+  TARGET=$C1
+  if ! test -f "$TARGET"; then
+    TARGET=$EMPTIED
+  fi
+  if ! test -f "$TARGET"; then
     echo "detail=RED_emptied_fixture_absent"
     echo "verdict=misread"
     exit 1
   fi
-  EBYTES=$(wc -c < "$EMPTIED" | tr -d ' ')
+  EBYTES=$(wc -c < "$TARGET" | tr -d ' ')
   if test "$EBYTES" -ge 200; then
     echo "detail=RED_emptied_fixture_not_thin"
     echo "emptied_bytes=$EBYTES"
@@ -62,7 +69,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-for p in "$ROSTER" "$EMPTIED" "$LEXICON" "$COUNSEL" "$MAP" "$REMEMBER" "$PRIN" "$ELDER"; do
+for p in "$ROSTER" "$EMPTIED" "$C1" "$C2" "$GENERIC" "$LEXICON" "$COUNSEL" "$MAP" "$REMEMBER" "$PRIN" "$ELDER"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     if test -f "$p"; then
       echo "instrument=failed"
@@ -80,7 +87,17 @@ for p in "$ROSTER" "$EMPTIED" "$LEXICON" "$COUNSEL" "$MAP" "$REMEMBER" "$PRIN" "
 done
 echo "instruments_tracked=honored"
 
-# Emptied fixture must stay thin — the instrument that would have caught e121.
+# Generic guard (counsel prove) must GREEN — C1 caught · C2 whole · roster whole
+GENERIC_OUT=$(sh "$GENERIC")
+echo "$GENERIC_OUT"
+echo "$GENERIC_OUT" | rg -q '^verdict=pins_whole$' || {
+  echo "generic_guard=failed"
+  echo "verdict=misread"
+  exit 1
+}
+echo "generic_guard=honored"
+
+# Emptied fixtures must stay thin — the instrument that would have caught e121.
 EBYTES=$(wc -c < "$EMPTIED" | tr -d ' ')
 if test "$EBYTES" -ge 200; then
   echo "emptied_control=failed"
@@ -89,7 +106,15 @@ if test "$EBYTES" -ge 200; then
   echo "emptied_bytes=$EBYTES"
   exit 1
 fi
+C1_BYTES=$(wc -c < "$C1" | tr -d ' ')
+if test "$C1_BYTES" -ge 200; then
+  echo "emptied_control=failed"
+  echo "verdict=misread"
+  echo "detail=C1_contaminated"
+  exit 1
+fi
 echo "emptied_bytes=$EBYTES"
+echo "C1_bytes=$C1_BYTES"
 echo "emptied_control=honored"
 
 PIN_COUNT=0
@@ -137,8 +162,9 @@ while IFS="$(printf '\t')" read -r path min_bytes header bound_mode || test -n "
   fi
 
   if test "$BYTES" -gt "$MAX_BYTES"; then
-    if test "$bound_mode" = "hold_over"; then
-      echo "pin_over_bound_hold=$path"
+    if test "$bound_mode" = "advisory" || test "$bound_mode" = "hold_over"; then
+      # Over-bound is tidy debt; emptied is loss — different responses (counsel prove).
+      echo "pin_over_bound_advisory=$path"
       echo "pin_over_bound_bytes=$BYTES"
       OVER_HOLD=$((OVER_HOLD + 1))
     else
@@ -162,7 +188,8 @@ if test "$PIN_COUNT" -lt 1; then
   exit 1
 fi
 echo "pin_count=$PIN_COUNT"
-echo "over_bound_hold_count=$OVER_HOLD"
+echo "over_bound_advisory_count=$OVER_HOLD"
+echo "over_bound=advisory"
 echo "living_pin_max_bytes=$MAX_BYTES"
 echo "pins=honored"
 

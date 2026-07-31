@@ -1,9 +1,9 @@
 # Living-pin content guard roster (e123).
 # Columns: path<TAB>min_bytes<TAB>header_substr<TAB>bound_mode
-# bound_mode: enforce = must be <= living_pin_max_bytes
-#             hold_over = over-bound disclosed until a fold seat clears it
+# bound_mode: enforce = must be <= living_pin_max_bytes (fail hard)
+#             advisory = over-bound reported; emptied is loss, over-bound is tidy debt
 # No backtick characters. Presence tested with git ls-files.
-work-in-progress/REMEMBER.md	1000	Living pin — operator	hold_over
+work-in-progress/REMEMBER.md	1000	Living pin — operator	advisory
 work-in-progress/ROADMAP.md	200	The Roadmap — living pin	enforce
 work-in-progress/TASKS.md	200	Tasks — living pin	enforce
 work-in-progress/EQUINOX_SEAT_MAP.md	200	Status:** Living pin	enforce

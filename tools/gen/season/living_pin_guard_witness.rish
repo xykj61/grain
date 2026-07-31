@@ -1,0 +1,19 @@
+# tools/gen/season/living_pin_guard_witness.rish — generic living-pin guard.
+#   rishi/bin/rishi run tools/gen/season/living_pin_guard_witness.rish
+say "living-pin-guard: Language EN — a living pin may not go quietly to zero."
+say "living-pin-guard: Style Radiant — C1 emptied caught · C2 whole · over-bound advisory."
+say "living-pin-guard: Lens TAME — no history walk · shallow-root safe · counsel prove landed."
+
+let green = run ["sh" "tools/fixtures/living_pin_guard_scan.sh"]
+assert green.ok else "living-pin-guard: scan must exit 0"
+assert green.out contains "OK C1-emptied" else "living-pin-guard: want C1 caught"
+assert green.out contains "OK C2-whole" else "living-pin-guard: want C2 whole"
+assert green.out contains "over_bound=advisory" else "living-pin-guard: want over-bound advisory"
+assert green.out contains "history_independence=honored" else "living-pin-guard: want no history walk"
+assert green.out contains "verdict=pins_whole" else "living-pin-guard: want pins_whole"
+
+let red = run ["sh" "tools/fixtures/living_pin_guard_scan.sh" "prove-red"]
+assert (red.ok == false) else "living-pin-guard: prove-red must refuse"
+assert red.out contains "RED_living_pin_emptied_caught" else "living-pin-guard: prove-red want emptied caught"
+
+say "GREEN: living-pin-guard — C1·C2 · pins_whole · over-bound advisory · shred RED"

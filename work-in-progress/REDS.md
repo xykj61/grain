@@ -1,7 +1,7 @@
 # REDS — the ledger of what we got wrong
 
 **Language:** EN
-**Stamp:** living ledger (born `20260729.222000`) · refreshed `20260731.151129` (Equinox e114 · row 39 look for the thing not the name)
+**Stamp:** living ledger (born `20260729.222000`) · refreshed `20260731.223455` (Equinox fuse · row 41 counsel flip-flop on name the Bench)
 **Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
 **Voice:** Riyo
 **Status:** Living pin — one row per red, oldest first
@@ -81,8 +81,9 @@ A red enters this ledger when it is found. Rows are never edited or removed; a l
 | 38 | Claimed fascia-health instruments were landed after `test -f` saw them on disk; `git ls-files` showed none tracked — a true baton line corrected to a false one three times | counsel fuse at e113 · `git ls-files` empty for fascia_health_* · presence gate in `tools/fixtures/fascia_health_scan.sh` | On-disk is not in-the-tree. Test presence with `git ls-files`, the same instrument that counts. |
 | 39 | Searched for `fascia_health*` filenames, found none at an elder nib, and declared the ratio homeless — while `shed_census_scan.sh` already emitted `fascia_health_now=42` | counsel thirteenth correction · `tools/fixtures/thing_not_name_scan.sh` reading emitted keys from tracked instruments | Look for the thing, not for the name of the thing. Three faces in one day: wrong set (34), wrong place (38), wrong key (39). |
 | 40 | Two roofs carried the name `dated_testimony` yet counted different sets — shed used an unanchored name-only regex while standalone used living-vs-dated — so health ratios and the orphan floor inherited two jobs under one word | counsel fuse at e116 · shed vs fascia_health dated counts fourteen files apart · `tools/fixtures/dated_classify.py` + `dated_roof_divergence_scan.sh` | When two roofs carry one name, either they agree or the name is doing two jobs. Seat one definition in code; both roofs source it; diverge goes RED while they differ. |
+| 41 | Counsel said name the Bench, then reverted to name the root when e121 blurred kinds, tracking whichever baton arrived last rather than holding a position — until e122 refused the blur and restored different kinds | counsel owned flip-flop `20260731.223455` · seated law roots send words · a Bench measures · name the Bench | Hold the seated law across batons. A measurement names its Bench. Do not track the newest paste over a refused blur. |
 
-**Rows: 40 · in the tree before the ledger: 6 · recovered by opening it: 14 · added under the reds-first law: 20**
+**Rows: 41 · in the tree before the ledger: 6 · recovered by opening it: 14 · added under the reds-first law: 21**
 
 **Reds-first accounting for v11:** two reds found, both fixed in-round with witnesses on metal, ledger closed. The remaining journey allocation is therefore **released** rather than booked — which is the law working, not the law skipped.
 
