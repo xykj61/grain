@@ -1,7 +1,7 @@
 # The Work-in-Progress Stack
 
 **Language:** EN
-**Last updated:** `20260731.131407` (EDT) · Equinox OPEN · commence M9 ascent · ch7 8/16 · standing voice Riyo
+**Last updated:** `20260731.132316` (EDT) · Equinox OPEN · commence saga Seated · ch7 9/16 · standing voice Riyo
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Riyo
 **Status:** Foundation — living workbench; prefer **git nib** · see [`REMEMBER.md`](REMEMBER.md) · [`ROADMAP.md`](ROADMAP.md)

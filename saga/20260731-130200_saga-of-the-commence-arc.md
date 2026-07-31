@@ -3,11 +3,12 @@
 **Language:** EN  
 **Stamp:** `20260731.130200`  
 **Voice:** Riyo  
-**Status:** **Proposed** — counsel proposes; seating awaits Keaton's word · home [`../saga/`](README.md)  
-**Ground:** Equinox (deca) · commence arc nested · Framework M8 measurement GREEN `20260731.130233` · IronBeetle written shelf ENDS ep045 · invent none
+**Status:** **Seated** `20260731.131240` — Keaton's word *approve* · commence-arc close · home [`../saga/`](README.md)  
+**Ground:** Equinox (deca) · commence arc nested · Framework M8 measurement GREEN `20260731.130233` · Framework M9 ascent GREEN `20260731.131407` · IronBeetle written shelf ENDS ep045 · invent none
 
 *Written together by Keaton and Riyo.*  
-Radiant pass `20260731.130200` — counsel draft (container · uncrossed → home land)
+Radiant pass `20260731.131240` — seated (Keaton's word *approve*)  
+Radiant pass `20260731.130200` — counsel draft (container · crossed home)
 
 ---
 
@@ -18,12 +19,11 @@ Radiant pass `20260731.130200` — counsel draft (container · uncrossed → hom
 | **Arc** | Commence Arc (nested under Equinox) |
 | **Motto** | **trust the tree, test the instrument** |
 | **Movements** | M1–M9 · run · see · weave · saga · ascent |
-| **Almanac** | seats **97–104** home · ch7 opened at ep044 · advanced by instruments |
-
+| **Almanac** | seats **97–104** measured · seating seat follows · ch7 opened at ep044 |
 | **Shelf law** | IronBeetle written shelf ENDS at ep045 — the arc fills remaining ch7 seats |
 | **Voice** | Riyo · Radiant · TAME |
 
-Nine movements when ascent lands. The arc became the silo when the written IronBeetle shelf ran out — invent none.
+Nine movements measured. The arc became the silo when the written IronBeetle shelf ran out — invent none. M8 witness and this narrative complement: one proves the spine exists; one survives the reading.
 
 ## 2. Motto pane — trust the tree, test the instrument
 
@@ -46,11 +46,10 @@ Nine movements when ascent lands. The arc became the silo when the written IronB
 | **M5** | Run — re-cut greens behind control · seat 100 |
 | **M6** | See — eyes census of finishing edge · seat 101 |
 | **M7** | Weave — shed census home · Class O propose · seat 102 |
-| **M8** | Saga — ordered beats measured · this prose proposed · seat 103 |
-| **M9** | Ascent — handbacks consumed outward · nested `return_surface_p59` waiting · seat 104 |
+| **M8** | Saga — ordered beats measured · this prose proposed then seated · seat 103 |
+| **M9** | Ascent measured — handbacks outward · nested `return_surface_p59` waiting · seat 104 |
 
 Three witness tiers remain named on the baton (parse · desk · drawn); eyes state only what this sitting ran.
-
 
 ## 4. Thin edge & horizon pane
 
@@ -61,6 +60,7 @@ Three witness tiers remain named on the baton (parse · desk · drawn); eyes sta
 | Shred | **RED** — Class O propose-never-seat · SAFE 0 of 64 |
 | Fascia v1 | Still resin/uncrossed — paths not in baton text |
 | Expedition | APPROVED · GATED · outer Constellation m8/m9 PAUSED |
+| **The fork** | Nested `return_surface_p59` — **RETURN** or **EXTEND +128** · Keaton alone names |
 
 ## 5. Validator pane
 
@@ -78,20 +78,20 @@ Three witness tiers remain named on the baton (parse · desk · drawn); eyes sta
 
 The Commence Arc opened on a correction — tip and parent inverted, then hardened — and kept correcting: `find` inflated rye via glow cache, so `git ls-files` became law; planted controls that were untracked could not fire, so tracking became law; a naive H1 total had to refuse, so prove-red became law; an orphan named in its own charter broke C2, so the basename stayed unnamed in prose.
 
-Each rebuild made the resin stronger than the artifact it replaced. M5 ran the greens. M6 saw the edge. M7 wove counsel's shed census home. M8 measured the ordered story and proposed this close narrative. M9 ascends the consumed handbacks and names the nested return still waiting.
+Each rebuild made the resin stronger than the artifact it replaced. M5 ran the greens. M6 saw the edge. M7 wove counsel's shed census home. M8 measured the ordered story and proposed this close narrative. M9 measured ascent — consumed handbacks outward — and left the nested return waiting on a fork: return, or extend +128. Counsel may not name that return. The fork waits on Keaton's word alone.
 
 ## 7. Seating status
 
-**Status:** **Proposed** — awaits Keaton's seating word.
+**Status:** **Seated** `20260731.131240` — Keaton's word *approve* · commence-arc close.
 
-What stayed refused, stayed refused: shred · expedition begin · outer Constellation lift · SAFE row growth · Class O cut rows · breach spend-or-let-close (Keaton alone).
+What stayed refused, stayed refused: shred · expedition begin · outer Constellation lift · SAFE row growth · Class O cut rows · breach spend-or-let-close (Keaton alone) · consuming `return_surface_p59` without the fork word.
 
 Prior sagas: [`20260728-010054_saga-of-the-tensegral-season.md`](20260728-010054_saga-of-the-tensegral-season.md) · [`20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md`](20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md).
 
 Framework M8 measurement: [`../waymarks/20260731-130233_e99-commence-m8-saga-green.md`](../waymarks/20260731-130233_e99-commence-m8-saga-green.md).  
-Framework M9 ascent: [`../waymarks/20260731-131407_e100-commence-m9-ascent-green.md`](../waymarks/20260731-131407_e100-commence-m9-ascent-green.md).
+Framework M9 ascent: [`../waymarks/20260731-131407_e100-commence-m9-ascent-green.md`](../waymarks/20260731-131407_e100-commence-m9-ascent-green.md).  
+Framework e101 seating: [`../waymarks/20260731-132316_e101-commence-saga-seated-fork-green.md`](../waymarks/20260731-132316_e101-commence-saga-seated-fork-green.md).
 
 ---
 
-*May the tree earn trust by staying measurable. May every instrument prove green and red. May ascent name what was consumed without spending what is still nested.*
-
+*May the tree earn trust by staying measurable. May every instrument prove green and red. May the fork wait for the word that names it.*
