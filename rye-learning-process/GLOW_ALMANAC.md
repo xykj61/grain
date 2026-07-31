@@ -498,7 +498,7 @@ Expected control_gate · seat_map 110 spent · 112 close choir proposed · bundl
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_e108_ch7_close_choir_witness.rish` · **Stamp:** `20260731.142604` · **Witness:** `tools/gen/season/equinox_e108_ch7_close_witness.rish` · scan `tools/fixtures/equinox_e108_ch7_close_scan.sh` · pin `work-in-progress/EQUINOX_SEAT_MAP.md`
 Expected control_gate · seat_map 112 close choir this sitting · shred opens Chapter Eight · REDS rows=37 · expect_next=38 · M3/M4 kept · zero_view · fascia i9 hold 92 · fork not_consumed · seats 97–111 → 112 · shelf end ep045 · baton breach 0. A chapter-close choir is a check. Metal answered GREEN. Chapter seven fills at sixteen. Invent none.
 
-## Chapter Eight (12 of 16)
+## Chapter Eight (13 of 16)
 
 Opened from metal at stamp `20260731.143548`. Themes arrive after findings; this chapter carries none in advance. Bundle and shred stay itinerary modes; Class O paths await Keaton's word.
 
@@ -549,6 +549,10 @@ Expected control_gate · instruments_tracked · ch5+ch6 surface scans ok · surf
 ### 124. Equinox e120 Lexicon roots: seats **roots** as the general category of client surfaces — Claude web · Claude iOS · Cursor AppImage desktop · Cursor iOS; distinct from Bench · pier · Pond · digest/Tilak roots; seat 128 stays reserved; surface census six kept; close-seat answered kept.
 **Ran:** `sh tools/fixtures/equinox_e120_lexicon_roots_scan.sh` · **Stamp:** `20260731.175418` · **Witness:** `tools/gen/season/equinox_e120_lexicon_roots_witness.rish` · counsel `counsel/20260731-215300_e120-lexicon-roots.md` · Lexicon `context/LEXICON.md`
 Expected control_gate · instruments_tracked · roots=honored · four members · Bench/pier/Pond distinctions · prove-red RED_claimed_roots_absent_while_seated · seat_128 reserved · surface_count=6 · fork EXTEND · handback not_consumed · shelf end ep045 · baton breach 0. Look for the thing, not for the name of the thing. Metal answered GREEN. Invent none.
+
+### 125. Equinox e121 roots bench amend: Lexicon **roots** amended — surfaces through which work reaches the tree; members add Framework and counsel container beside Claude web · Claude iOS · Cursor AppImage desktop · Cursor iOS; a root that holds a raise is a **Bench**, and only a bench runs witnesses; name the root when a measurement is reported; Bench row accretes kinship; seat 128 stays reserved; surface census six kept.
+**Ran:** `sh tools/fixtures/equinox_e121_roots_bench_amend_scan.sh` · **Stamp:** `20260731.180617` · **Witness:** `tools/gen/season/equinox_e121_roots_bench_amend_witness.rish` · counsel `counsel/20260731-220432_e121-roots-bench-amend.md` · Lexicon `context/LEXICON.md`
+Expected control_gate · roots=honored · bench_kinship=honored · six members · prove-red RED_claimed_bench_not_raised_root · seat_128 reserved · surface_count=6 · fork EXTEND · handback not_consumed · shelf end ep045 · baton breach 0. Name the root when a measurement is reported. Metal answered GREEN. Invent none.
 
 ---
 

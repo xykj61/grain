@@ -1,7 +1,7 @@
 # The Roadmap — living pin
 
 **Language:** EN  
-**Last updated:** `20260731.215300` · voice Riyo  
+**Last updated:** `20260731.220432` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Full season ledger:** [`archive/20260724-132812_roadmap-season-ledger.md`](archive/20260724-132812_roadmap-season-ledger.md)  
 **Align:** [`20260726-050422_align-before-cursor-handoff.md`](archive/20260726-050422_align-before-cursor-handoff.md)  
@@ -9,17 +9,17 @@
 
 ---
 
-## Now — Equinox (deca) · Lexicon roots (`20260731.215300`)
+## Now — Equinox (deca) · roots bench amend (`20260731.220432`)
 
 | Order | Lap | Status |
 |-------|-----|--------|
-| — | Equinox e0–e119 · ch1–ch7 FULL · ch8 11/16 · close-seat answered · census six · park lifted · fork EXTEND · REDS 40 · 128 reserved | landed |
-| **1** | **e120** Lexicon **roots** · Claude web · Claude iOS · Cursor AppImage desktop · Cursor iOS · seat **124** · ch8 **12/16** | **this sitting** |
-| **2** | ch8 content seats **125–127** · SHRED lap by Keaton's word · Class O | Keaton / next mechanical |
+| — | Equinox e0–e120 · ch1–ch7 FULL · ch8 12/16 · roots seated · census six · park lifted · fork EXTEND · REDS 40 · 128 reserved | landed |
+| **1** | **e121** roots amended · bench = raised root · Framework · counsel container · seat **125** · ch8 **13/16** | **this sitting** |
+| **2** | ch8 content seats **126–127** · SHRED lap by Keaton's word · Class O | Keaton / next mechanical |
 | **3** | SAFE · seat **128** close later | Keaton alone |
 | **4** | Horizon: geode expedition begin (e254/e255 or Keaton begin) | GATED |
 
-**Finishing edge (season):** Equinox OPEN · e121 next · ch7 FULL · ch8 OPEN 12/16 · **roots** seated · census **six** · park **lifted** · roofs **CLOSED** · fork **EXTEND +128** · breach **closed unspent** · handback nested not consumed · 128 reserved · fascia **88** i9 · saga **Seated**.  
+**Finishing edge (season):** Equinox OPEN · e122 next · ch7 FULL · ch8 OPEN 13/16 · **roots** amended · bench = raised root · census **six** · park **lifted** · roofs **CLOSED** · fork **EXTEND +128** · breach **closed unspent** · handback nested not consumed · 128 reserved · fascia **88** i9 · saga **Seated**.  
 **Finishing edge (product horizon):** clone · bootstrap · one witness · one `rishi glow` line ≤ 30 minutes — still stands.
 
 **Shell ratchet** (seated `20260726.032231`): `.sh` to Rishi on-touch; advisory count each advise run; exemptions: `rye/bootstrap.sh`, external-interpreter seams, python-heredoc witness bodies until duty-8 verbs land, thin-delegate elders.
