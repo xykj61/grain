@@ -1,0 +1,23 @@
+# tools/gen/season/equinox_e116_dated_one_definition_choir_witness.rish — e116 → ch8 8/16.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_e116_dated_one_definition_choir_witness.rish
+
+say "equinox-e116-choir: Language EN — one dated definition; both roofs source it."
+say "equinox-e116-choir: Style Radiant — when two roofs carry one name, they agree."
+say "equinox-e116-choir: Lens TAME — e116 · dated definition · REDS 40 · almanac 120 · ch8 8/16."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/season/equinox_e116_dated_one_definition_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-e116-choir: welcome RED"
+assert welcome.out contains "GREEN: e116-dated-one-definition" else "equinox-e116-choir: want GREEN"
+assert welcome.out contains "reds_row_n=40" else "equinox-e116-choir: want REDS 40"
+assert welcome.out contains "roof_divergence=honored" else "equinox-e116-choir: want roofs"
+assert welcome.out contains "seat_128=reserved_close_choir" else "equinox-e116-choir: want 128"
+assert welcome.out contains "census_breach_count=0" else "equinox-e116-choir: want breach 0"
+assert welcome.out contains "fork_status=not_consumed" else "equinox-e116-choir: want fork waiting"
+
+let almanac = run ["sh" "tools/gen/season/equinox_e116_dated_one_definition_almanac.sh"]
+assert almanac.ok else "equinox-e116-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-e116-choir — one dated definition GREEN · REDS 40 · almanac seat 120 · ch8 8/16"

@@ -1,0 +1,64 @@
+# tools/gen/season/equinox_e116_dated_one_definition_witness.rish — e116 one dated definition.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_e116_dated_one_definition_witness.rish
+#
+# Law: when two roofs carry one name, either they agree or the name is doing two jobs.
+
+say "e116-dated-one-definition: Language EN — one classifier; both roofs source it."
+say "e116-dated-one-definition: Style Radiant — divergence goes RED while the name does two jobs."
+say "e116-dated-one-definition: Lens TAME — e116 · dated definition · almanac 120 · ch8 8/16."
+
+let control = run ["rishi/bin/rishi" "run" "tools/gen/season/census_control_witness.rish"]
+say control.out
+assert control.ok else "e116-dated-one-definition: census control must GREEN"
+assert control.out contains "GREEN: census-control" else "e116-dated-one-definition: want control GREEN"
+
+let museum = run ["rishi/bin/rishi" "run" "tools/gen/season/baton_museum_census_witness.rish"]
+say museum.out
+assert museum.ok else "e116-dated-one-definition: baton museum RED"
+assert museum.out contains "census_breach_count=0" else "e116-dated-one-definition: want breach 0"
+
+let pattern = run ["rishi/bin/rishi" "run" "tools/gen/season/dated_pattern_witness.rish"]
+say pattern.out
+assert pattern.ok else "e116-dated-one-definition: dated-pattern RED"
+assert pattern.out contains "GREEN: dated-pattern" else "e116-dated-one-definition: want pattern GREEN"
+assert pattern.out contains "definition=one" else "e116-dated-one-definition: want definition one"
+assert pattern.out contains "RED_dated_definition_blind" else "e116-dated-one-definition: want prove-red"
+
+let diverge = run ["rishi/bin/rishi" "run" "tools/gen/season/dated_roof_divergence_witness.rish"]
+say diverge.out
+assert diverge.ok else "e116-dated-one-definition: roof-divergence RED"
+assert diverge.out contains "GREEN: dated-roof-divergence" else "e116-dated-one-definition: want diverge GREEN"
+assert diverge.out contains "divergence=absent" else "e116-dated-one-definition: want absent"
+assert diverge.out contains "RED_roofs_diverge" else "e116-dated-one-definition: want prove-red"
+
+let elder = run ["rishi/bin/rishi" "run" "tools/gen/season/equinox_e115_instrument_suite_witness.rish"]
+say elder.out
+assert elder.ok else "e116-dated-one-definition: elder e115 RED"
+assert elder.out contains "GREEN: e115-instrument-suite" else "e116-dated-one-definition: want elder GREEN"
+
+let scope = run ["rishi/bin/rishi" "run" "tools/gen/season/prin_scope.rish"]
+say scope.out
+assert scope.ok else "e116-dated-one-definition: prin_scope RED"
+assert scope.out contains "GREEN: prin-scope" else "e116-dated-one-definition: want scope GREEN"
+
+let scan = run ["sh" "tools/fixtures/equinox_e116_dated_one_definition_scan.sh"]
+say scan.out
+assert scan.ok else "e116-dated-one-definition: scan must exit 0"
+assert scan.out contains "control_gate=honored" else "e116-dated-one-definition: want control_gate"
+assert scan.out contains "instruments_tracked=honored" else "e116-dated-one-definition: want instruments"
+assert scan.out contains "dated_pattern=honored" else "e116-dated-one-definition: want pattern"
+assert scan.out contains "pattern_prove_red=honored" else "e116-dated-one-definition: want pattern prove-red"
+assert scan.out contains "roof_divergence=honored" else "e116-dated-one-definition: want roofs"
+assert scan.out contains "diverge_prove_red=honored" else "e116-dated-one-definition: want diverge prove-red"
+assert scan.out contains "shared_source=honored" else "e116-dated-one-definition: want shared source"
+assert scan.out contains "reds_row=honored" else "e116-dated-one-definition: want REDS 40"
+assert scan.out contains "reds_row_n=40" else "e116-dated-one-definition: want row 40"
+assert scan.out contains "reds_law=when_two_roofs_carry_one_name_they_agree_or_the_name_does_two_jobs" else "e116-dated-one-definition: want law"
+assert scan.out contains "seat_128=reserved_close_choir" else "e116-dated-one-definition: want 128"
+assert scan.out contains "surface_count=4" else "e116-dated-one-definition: want surface 4"
+assert scan.out contains "fork_status=not_consumed" else "e116-dated-one-definition: want fork waiting"
+assert scan.out contains "e116_dated_one_definition=ok" else "e116-dated-one-definition: want e116 ok"
+assert scan.out contains "verdict=ok" else "e116-dated-one-definition: want verdict=ok"
+
+say "GREEN: e116-dated-one-definition — one definition · roofs agree · REDS 40 · elder e115 · 128 reserved · census four · fork waiting · museum"

@@ -1,0 +1,31 @@
+# tools/gen/season/dated_pattern_witness.rish — one dated definition standing instrument.
+#
+#   rishi/bin/rishi run tools/gen/season/dated_pattern_witness.rish
+#
+# Law: when two roofs carry one name, either they agree or the name is doing two jobs.
+
+say "dated-pattern: Language EN — one classifier; planted live and dated controls."
+say "dated-pattern: Style Radiant — prose law already lived; code now shares one definition."
+say "dated-pattern: Lens TAME — living-vs-dated · shared dated_classify."
+
+let green = run ["sh" "tools/fixtures/dated_pattern_scan.sh"]
+say green.out
+assert green.ok else "dated-pattern: living scan must exit 0"
+assert green.out contains "control_gate=honored" else "dated-pattern: want control gate"
+assert green.out contains "tracked_instruments=honored" else "dated-pattern: want tracked"
+assert green.out contains "C_live=live" else "dated-pattern: want C_live"
+assert green.out contains "C_dated=dated" else "dated-pattern: want C_dated"
+assert green.out contains "controls_honored=2" else "dated-pattern: want 2 of 2"
+assert green.out contains "law=honored" else "dated-pattern: want law honored"
+assert green.out contains "definition=one" else "dated-pattern: want one definition"
+assert green.out contains "shared_dated_testimony=" else "dated-pattern: want shared dated_testimony"
+assert green.out contains "verdict=ok" else "dated-pattern: want verdict=ok"
+assert green.out contains "shred=RED" else "dated-pattern: shred stays RED"
+
+let red = run ["sh" "tools/fixtures/dated_pattern_scan.sh" "prove-red"]
+say red.out
+assert (red.ok == false) else "dated-pattern: prove-red must refuse"
+assert red.out contains "RED_dated_definition_blind" else "dated-pattern: prove-red want blind refusal"
+assert red.out contains "census=withheld" else "dated-pattern: prove-red want withheld"
+
+say "GREEN: dated-pattern — one definition · C_live · C_dated · prove-red refuses · shred RED"

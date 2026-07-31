@@ -2,7 +2,7 @@
 
 *The RTAC living-header pattern is the one lawful way a file declares itself living. Dated testimony rests under Tier 2 of accrete-never-break; only proof-sealed bytes are absolute.*
 
-**Stamp:** living ledger (born `20260712.065146` bench-clock) · refreshed `20260724.222620` (three-tier accrete amend)
+**Stamp:** living ledger (born `20260712.065146` bench-clock) · refreshed `20260731.153703` (e116 shared dated_classify · two roofs one definition)
 **Language:** EN
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Status:** Living
@@ -60,6 +60,8 @@ Files matching `YYYYMMDD-HHMMSS_short-slug` (pattern `2026????-??????_*`) that *
 - A recorded Radiant pass or an erratum line is the lawful style / fact surface; a freeze-pointer stub redirects to a living twin.
 
 ## Machine gate
+
+**Shared classifier (e116):** `tools/fixtures/dated_classify.py` — one code definition of dated/live for every roof. Dated name is path-anchored `(^|/)\d{8}-\d{6}_`; living header is `**Stamp:** living ledger` or `living ledger (born`. Shed census and fascia-health both source this module. Divergence witness `tools/fixtures/dated_roof_divergence_scan.sh` goes RED while `dated_testimony` differs across roofs. Law: when two roofs carry one name, either they agree or the name is doing two jobs.
 
 `tools/dated_guard.rish` — staged **MODIFIED** paths matching the dated pattern that already exist on `main` are **red** unless the working tree declares living ledger, freeze pointer, or `Radiant pass <stamp>`. Paths on the Tier 1 refuse are **red** even with those headers. Wired beside `width-check` in parity. Vacuous green when the index has no such staged mods.
 

@@ -90,27 +90,17 @@ if test "$MODE" = "prove-red"; then
   exit 1
 fi
 
-# --- classify planted controls before library totals ---
+# --- classify planted controls before library totals (shared dated_classify) ---
 REPORT=$(LIVE="$LIVE" DATED="$DATED" python3 <<'PY'
-import os, re, subprocess
-from pathlib import Path
+import os, runpy, subprocess
 from collections import defaultdict
 
 live_ctrl = os.environ["LIVE"]
 dated_ctrl = os.environ["DATED"]
-dated_name = re.compile(r"(^|/)\d{8}-\d{6}_")
-living_hdr = re.compile(r"living ledger", re.I)
 
-def classify(path: str) -> str:
-    if not dated_name.search(path):
-        return "live"
-    try:
-        text = Path(path).read_text(encoding="utf-8", errors="ignore")[:8000]
-    except Exception:
-        return "dated"
-    if living_hdr.search(text):
-        return "live"
-    return "dated"
+# One dated definition — shared with shed census and divergence roofs.
+dc = runpy.run_path("tools/fixtures/dated_classify.py")
+classify = dc["classify"]
 
 c_live = classify(live_ctrl)
 c_dated = classify(dated_ctrl)
@@ -157,6 +147,7 @@ total = len(files)
 health = int(round(100.0 * live_n / total)) if total else 0
 print(f"tracked_total={total}")
 print(f"dated_testimony={dated_n}")
+print(f"dated_definition=living-vs-dated")
 print(f"live_surface={live_n}")
 print(f"fascia_health={health}")
 print("shred=RED")

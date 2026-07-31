@@ -68,16 +68,24 @@ fi
 
 # --- Python census: dated paths · mention floor · C1/C2 ---
 REPORT=$(CITED="$CITED" ORPHAN="$ORPHAN" CITER="$CITER" python3 <<'PY'
-import os, re, subprocess
+import os, runpy, subprocess
 from pathlib import Path
+from collections import Counter
 
 cited = os.environ["CITED"]
 orphan = os.environ["ORPHAN"]
 citer = os.environ["CITER"]
 
-files = subprocess.check_output(["git", "ls-files"], text=True).splitlines()
-dated_re = re.compile(r"\d{8}-\d{6}_")
-dated = [f for f in files if dated_re.search(f)]
+# One dated definition — shared with fascia_health and divergence roofs.
+dc = runpy.run_path("tools/fixtures/dated_classify.py")
+classify = dc["classify"]
+
+files = [
+    f
+    for f in subprocess.check_output(["git", "ls-files", "-z"], text=True).split("\0")
+    if f
+]
+dated = [f for f in files if classify(f) == "dated"]
 
 # Read text-ish tracked files once (skip obvious binaries by extension).
 skip_ext = {
@@ -135,8 +143,6 @@ print("controls_honored=2")
 print("controls: 2 of 2 honored - census released")
 
 orphans = [p for p in dated if not mentioned(p)]
-# Room tallies (first path segment).
-from collections import Counter
 rooms = Counter()
 for p in orphans:
     room = p.split("/", 1)[0] if "/" in p else "(root)"
@@ -144,15 +150,12 @@ for p in orphans:
 
 print(f"tracked_total={len(files)}")
 print(f"dated_testimony={len(dated)}")
+print(f"dated_definition=living-vs-dated")
 print(f"orphaned={len(orphans)}")
 share = (100.0 * len(orphans) / len(dated)) if dated else 0.0
 print(f"orphan_share_of_dated={share:.0f}%")
 # Fascia-health sketch from counsel: health_if_shed = now + ~10 when 862→0.
-# Report substance metric as orphan_share inverted into a simple 0-100 knit score.
-# health_now ≈ 100 - share (floor), health_if_orphans_shed ≈ health_now + share*scale.
 health_now = max(0, int(round(100 - share)))
-# Counsel measured 41 now / 51 if shed at share~18 — keep that shape:
-# health_now = 100 - 3.28*share approx → for 18% → 41. Use linear map seated here:
 health_now = max(0, min(100, int(round(100 - (59.0 / 18.0) * share))))
 health_if = min(100, health_now + 10)
 print(f"fascia_health_now={health_now}")

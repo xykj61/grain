@@ -1,0 +1,29 @@
+# tools/gen/season/dated_roof_divergence_witness.rish — roofs must agree on dated_testimony.
+#
+#   rishi/bin/rishi run tools/gen/season/dated_roof_divergence_witness.rish
+#
+# Law: when two roofs carry one name, either they agree or the name is doing two jobs.
+
+say "dated-roof-divergence: Language EN — shed and standalone share one dated count."
+say "dated-roof-divergence: Style Radiant — fascia_health and fascia_health_now keep their jobs."
+say "dated-roof-divergence: Lens TAME — assert dated_testimony equality, never force health equals now."
+
+let green = run ["sh" "tools/fixtures/dated_roof_divergence_scan.sh"]
+say green.out
+assert green.ok else "dated-roof-divergence: living scan must exit 0"
+assert green.out contains "control_gate=honored" else "dated-roof-divergence: want control gate"
+assert green.out contains "tracked_roofs=honored" else "dated-roof-divergence: want tracked roofs"
+assert green.out contains "dated_pattern=honored" else "dated-roof-divergence: want dated pattern"
+assert green.out contains "divergence=absent" else "dated-roof-divergence: want divergence absent"
+assert green.out contains "roofs_agree=honored" else "dated-roof-divergence: want roofs agree"
+assert green.out contains "dated_testimony=" else "dated-roof-divergence: want dated_testimony"
+assert green.out contains "verdict=ok" else "dated-roof-divergence: want verdict=ok"
+assert green.out contains "shred=RED" else "dated-roof-divergence: shred stays RED"
+
+let red = run ["sh" "tools/fixtures/dated_roof_divergence_scan.sh" "prove-red"]
+say red.out
+assert (red.ok == false) else "dated-roof-divergence: prove-red must refuse"
+assert red.out contains "RED_roofs_diverge" else "dated-roof-divergence: prove-red want diverge"
+assert red.out contains "census=withheld" else "dated-roof-divergence: prove-red want withheld"
+
+say "GREEN: dated-roof-divergence — roofs agree on dated_testimony · prove-red refuses · shred RED"
