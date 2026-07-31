@@ -1,0 +1,28 @@
+# tools/gen/season/ironbeetle_ep035_census_witness.rish — e85 IronBeetle ep035.
+#
+#   rishi/bin/rishi run tools/gen/season/ironbeetle_ep035_census_witness.rish
+#
+# Clean-room: presence only · never copies into rye/.
+# Leaf only — no nested elder choirs.
+
+say "iron-ep035: Language EN — a column that is also a clock."
+say "iron-ep035: Style Radiant — the internal key is time, and time places the record."
+say "iron-ep035: Lens TAME — e85 · clean-room study · almanac seat 90."
+
+let shelf = run ["test" "-d" "gratitude/ironbeetle"]
+assert shelf.ok else "iron-ep035: gratitude/ironbeetle ABSENT — host shelf first"
+
+let census = run ["sh" "tools/fixtures/ironbeetle_ep035_census.sh"]
+say census.out
+assert census.ok else "iron-ep035: census failed or thin"
+assert census.out contains "IRON=present" else "iron-ep035: want IRON=present"
+assert census.out contains "verdict=ok" else "iron-ep035: want verdict=ok"
+assert census.out contains "EP035=yes" else "iron-ep035: ep035 file must be present"
+assert census.out contains "HONORS=yes" else "iron-ep035: Honors heading must be present"
+assert census.out contains "SOURCE=yes" else "iron-ep035: Source heading must be present"
+assert census.out contains "TEACH=yes" else "iron-ep035: teach limbs (column/clock·write path·resubmission·timestamp key) must be present"
+assert census.out contains "RHYME=yes" else "iron-ep035: rhyme section must be present"
+assert census.out contains "CLEAN=yes" else "iron-ep035: Clean Room heading must be present"
+assert census.out contains "MATKLAD_OK=yes" else "iron-ep035: matklad companion must cite ironbeetle/"
+
+say "GREEN: iron-ep035 — honors·source·teach·rhyme·clean·matklad ok"

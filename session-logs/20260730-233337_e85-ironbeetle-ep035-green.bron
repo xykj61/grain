@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260730.233337
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title e85 IronBeetle ep035 a-column-that-is-also-a-clock GREEN
+prompt kg · e85 — IronBeetle ep035 a-column-that-is-also-a-clock
+think e84 ep034 GREEN · ep035 next written silo · leaf census twin
+think Teach: column/clock · write path · resubmission success · timestamp key
+think Seat 90 · ch6 10/16 · ep036 next · expedition stays gated
+obs e85 GREEN · e86 IronBeetle ep036 next
+file expanding-prompts/20260730-233316_e85-ironbeetle-ep035-charter.md charter
+file tools/fixtures/ironbeetle_ep035_census.sh scan GREEN
+file tools/gen/season/equinox_ironbeetle_ep035_choir_witness.rish choir GREEN
+file rye-learning-process/GLOW_ALMANAC.md seat 90 · ch6 10/16
+file waymarks/20260730-233337_e85-ironbeetle-ep035-green.md finishing edge
+file expanding-prompts/20260730-233337_equinox-season-e86-recursion-prompt.md fusion
+recommend keep-going e86 IronBeetle ep036 a-promise-with-a-deadline

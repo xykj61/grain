@@ -362,7 +362,7 @@ Expected IRON=present · EP019 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep020_choir_witness.rish` · **Stamp:** `20260730.215259` · **Witness:** `tools/gen/season/ironbeetle_ep020_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep020_census.sh` · choir `equinox_ironbeetle_ep020_choir_witness.rish`
 Expected IRON=present · EP020 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only. Chapter five fills at sixteen.
 
-## Chapter Six (9 of 16)
+## Chapter Six (10 of 16)
 
 Opened from metal at stamp `20260730.220543`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -401,6 +401,10 @@ Expected IRON=present · EP033 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 ### 89. IronBeetle ep034 forbids half-sync callbacks; asynchronous always means the next tick, and prefetch stays parallel while commit stays sequential.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep034_choir_witness.rish` · **Stamp:** `20260730.232630` · **Witness:** `tools/gen/season/ironbeetle_ep034_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep034_census.sh` · choir `equinox_ironbeetle_ep034_choir_witness.rish`
 Expected IRON=present · EP034 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only.
+
+### 90. IronBeetle ep035 makes the internal key a logical clock; resubmission of an identical transfer is success, not error.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep035_choir_witness.rish` · **Stamp:** `20260730.233337` · **Witness:** `tools/gen/season/ironbeetle_ep035_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep035_census.sh` · choir `equinox_ironbeetle_ep035_choir_witness.rish`
+Expected IRON=present · EP035 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only.
 
 ---
 
