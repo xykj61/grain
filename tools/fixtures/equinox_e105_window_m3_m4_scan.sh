@@ -139,7 +139,7 @@ rg -q 'equinox_handback: return_surface_p59' "$PRIN" || {
 echo "home_fork=honored"
 echo "home_fork_status=not_consumed"
 
-# --- almanac seats 97-108 · ch7 at least 12/16 ---
+# --- almanac seats 97-108 · ch7 at least 12/16 (elder floor; later seats may grow) ---
 CH7_LINE=$(rg -n '^## Chapter Seven \([0-9]+ of 16\)$' "$ALMANAC" | head -n1 || true)
 case "$CH7_LINE" in
   *"Chapter Seven (1 of 16)"*|*"Chapter Seven (2 of 16)"*|*"Chapter Seven (3 of 16)"*|*"Chapter Seven (4 of 16)"*|*"Chapter Seven (5 of 16)"*|*"Chapter Seven (6 of 16)"*|*"Chapter Seven (7 of 16)"*|*"Chapter Seven (8 of 16)"*|*"Chapter Seven (9 of 16)"*|*"Chapter Seven (10 of 16)"*|*"Chapter Seven (11 of 16)"*)

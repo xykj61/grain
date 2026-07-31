@@ -430,7 +430,7 @@ Expected IRON=present · EP042 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep043_choir_witness.rish` · **Stamp:** `20260731.005634` · **Witness:** `tools/gen/season/ironbeetle_ep043_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep043_census.sh` · choir `equinox_ironbeetle_ep043_choir_witness.rish`
 Expected IRON=present · EP043 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only. Chapter six fills at sixteen.
 
-## Chapter Seven (13 of 16)
+## Chapter Seven (14 of 16)
 
 Opened from metal at stamp `20260731.114927`. Themes arrive after findings; this chapter carries none in advance. Ch5 and ch6 surface closes stay parked per e92 ruling D until a close-seat row is seated.
 
@@ -485,6 +485,10 @@ Expected control_gate · metric_rev=i8 · class_a=4 · class_a_held_disclosed=4 
 ### 109. Equinox e105 window carry + M3/M4 home land: fascia metric i9 carries the window across revisions and restores the arc fall 100/85/92 (−15); M3 oldness census and M4 radiant H1 fence land from named paths; Class A i8 hold kept; fascia 92.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_e105_window_m3_m4_choir_witness.rish` · **Stamp:** `20260731.140842` · **Witness:** `tools/gen/season/equinox_e105_window_m3_m4_witness.rish` · scan `tools/fixtures/equinox_e105_window_m3_m4_scan.sh` · choir `equinox_e105_window_m3_m4_choir_witness.rish`
 Expected control_gate · metric_rev=i9 · window_carry=honored · window_min=85 · window_arc_fall=-15 · class_a held 4 · hold_not_exclude · fascia=92 · M3 four_fifths · SAFE 0/64 · M4 fence-aware · governing template · fork not_consumed · seats 97–108 · shelf end ep045 · baton breach 0. A revision carries its window. Metal answered GREEN. Invent none.
+
+### 110. Equinox e106 REDS zero-view: ledger row 33 records that a zero names the instrument's view, never the world; planted empty-view + archive-fall control; M3/M4 home land already consumed on e105; fascia i9 hold kept.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_e106_reds_zero_view_choir_witness.rish` · **Stamp:** `20260731.141409` · **Witness:** `tools/gen/season/equinox_e106_reds_zero_view_witness.rish` · scan `tools/fixtures/equinox_e106_reds_zero_view_scan.sh` · choir `equinox_e106_reds_zero_view_choir_witness.rish`
+Expected control_gate · REDS rows=33 · monotone expect_next=34 · zero_view planted · prove-red refuses · m3_m4 e105_consumed · metric_rev=i9 · hold_not_exclude · fascia=92 · fork not_consumed · seats 97–109 · shelf end ep045 · baton breach 0. Look where the thing would be before calling it gone. Metal answered GREEN. Invent none.
 
 ---
 

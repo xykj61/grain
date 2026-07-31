@@ -1,0 +1,21 @@
+# tools/gen/season/equinox_e106_reds_zero_view_choir_witness.rish — e106 → ch7 14/16.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_e106_reds_zero_view_choir_witness.rish
+
+say "equinox-e106-choir: Language EN — control before the red; a zero is a view."
+say "equinox-e106-choir: Style Radiant — look in the archive before naming absence."
+say "equinox-e106-choir: Lens TAME — e106 · REDS 33 · almanac seat 110 · ch7 14/16."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/season/equinox_e106_reds_zero_view_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-e106-choir: welcome RED"
+assert welcome.out contains "GREEN: e106-reds-zero-view" else "equinox-e106-choir: want GREEN"
+assert welcome.out contains "reds_row_n=33" else "equinox-e106-choir: want row 33"
+assert welcome.out contains "census_breach_count=0" else "equinox-e106-choir: want breach 0"
+assert welcome.out contains "fork_status=not_consumed" else "equinox-e106-choir: want fork waiting"
+
+let almanac = run ["sh" "tools/gen/season/equinox_e106_reds_zero_view_almanac.sh"]
+assert almanac.ok else "equinox-e106-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-e106-choir — REDS zero-view GREEN · almanac seat 110 · ch7 14/16"

@@ -1,0 +1,52 @@
+# tools/gen/season/equinox_e106_reds_zero_view_witness.rish — e106 REDS zero-view.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_e106_reds_zero_view_witness.rish
+
+say "e106-reds-zero-view: Language EN — control first; then record the red that teaches view vs world."
+say "e106-reds-zero-view: Style Radiant — M3/M4 already home; this round owns the zero-view law."
+say "e106-reds-zero-view: Lens TAME — e106 · REDS 33 · zero-view · seat 110 · ch7 14/16."
+
+let control = run ["rishi/bin/rishi" "run" "tools/gen/season/census_control_witness.rish"]
+say control.out
+assert control.ok else "e106-reds-zero-view: census control must GREEN"
+assert control.out contains "GREEN: census-control" else "e106-reds-zero-view: want control GREEN"
+
+let museum = run ["rishi/bin/rishi" "run" "tools/gen/season/baton_museum_census_witness.rish"]
+say museum.out
+assert museum.ok else "e106-reds-zero-view: baton museum RED"
+assert museum.out contains "census_breach_count=0" else "e106-reds-zero-view: want breach 0"
+
+let scope = run ["rishi/bin/rishi" "run" "tools/gen/season/prin_scope.rish"]
+say scope.out
+assert scope.ok else "e106-reds-zero-view: prin_scope RED"
+assert scope.out contains "GREEN: prin-scope" else "e106-reds-zero-view: want scope GREEN"
+
+let zero = run ["rishi/bin/rishi" "run" "tools/gen/season/zero_view_witness.rish"]
+say zero.out
+assert zero.ok else "e106-reds-zero-view: zero-view RED"
+assert zero.out contains "GREEN: zero-view" else "e106-reds-zero-view: want zero-view GREEN"
+
+let reds = run ["rishi/bin/rishi" "run" "tools/gen/season/reds_ledger_witness.rish"]
+say reds.out
+assert reds.ok else "e106-reds-zero-view: reds ledger RED"
+assert reds.out contains "GREEN: reds-ledger" else "e106-reds-zero-view: want reds GREEN"
+
+let mono = run ["rishi/bin/rishi" "run" "tools/gen/season/reds_ledger_monotone_witness.rish"]
+say mono.out
+assert mono.ok else "e106-reds-zero-view: reds monotone RED"
+assert mono.out contains "GREEN: reds-monotone" else "e106-reds-zero-view: want monotone GREEN"
+
+let scan = run ["sh" "tools/fixtures/equinox_e106_reds_zero_view_scan.sh"]
+say scan.out
+assert scan.ok else "e106-reds-zero-view: scan must exit 0"
+assert scan.out contains "control_gate=honored" else "e106-reds-zero-view: want control_gate"
+assert scan.out contains "reds_row=honored" else "e106-reds-zero-view: want reds row"
+assert scan.out contains "reds_row_n=33" else "e106-reds-zero-view: want row 33"
+assert scan.out contains "zero_view=honored" else "e106-reds-zero-view: want zero_view"
+assert scan.out contains "m3_m4_status=e105_consumed" else "e106-reds-zero-view: want M3/M4 consumed"
+assert scan.out contains "fascia_keep=honored" else "e106-reds-zero-view: want fascia keep"
+assert scan.out contains "fork_status=not_consumed" else "e106-reds-zero-view: want fork waiting"
+assert scan.out contains "e106_reds_zero_view=ok" else "e106-reds-zero-view: want e106 ok"
+assert scan.out contains "verdict=ok" else "e106-reds-zero-view: want verdict=ok"
+
+say "GREEN: e106-reds-zero-view — REDS 33 · zero-view planted · M3/M4 consumed · i9 hold · fork waiting · museum"

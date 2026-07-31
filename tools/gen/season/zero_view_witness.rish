@@ -1,0 +1,22 @@
+# tools/gen/season/zero_view_witness.rish — zero is the instrument's view.
+#
+#   rishi/bin/rishi run tools/gen/season/zero_view_witness.rish
+
+say "zero-view: Language EN — an empty view is not an empty world."
+say "zero-view: Style Radiant — open the archive before naming absence."
+say "zero-view: Lens TAME — planted empty view + archived fall · prove-red refuses."
+
+let scan = run ["sh" "tools/fixtures/zero_view_scan.sh"]
+say scan.out
+assert scan.ok else "zero-view: scan must exit 0"
+assert scan.out contains "view_n=0" else "zero-view: want empty view"
+assert scan.out contains "archive_has_85=1" else "zero-view: want archived fall"
+assert scan.out contains "law=zero_is_instrument_view_never_world" else "zero-view: want law"
+assert scan.out contains "verdict=ok" else "zero-view: want verdict=ok"
+
+let prove = run ["sh" "tools/fixtures/zero_view_scan.sh" "prove-red"]
+assert (prove.ok == false) else "zero-view: prove-red must refuse"
+assert prove.out contains "verdict=misread" else "zero-view: want prove-red misread"
+assert prove.out contains "zero_is_view_not_world" else "zero-view: want prove-red detail"
+
+say "GREEN: zero-view — empty view honored · archive opened · prove-red refuses world-gone"
