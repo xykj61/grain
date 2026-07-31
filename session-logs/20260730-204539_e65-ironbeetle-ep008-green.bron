@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260730.204539
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title e65 IronBeetle ep008 everyone-gets-to-be-a-dictator GREEN
+prompt kg · e65 — IronBeetle ep008 everyone-gets-to-be-a-dictator
+think e64 ep006 GREEN · ep007 gap · ep008 next written silo · leaf census twin
+think Teach: Dictator · Mathematics of Consensus · FLP · ballot · quorum
+think Seat 70 · ch5 6/16 · ep009 next · expedition stays gated
+obs e65 GREEN · e66 IronBeetle ep009 next
+file expanding-prompts/20260730-204510_e65-ironbeetle-ep008-charter.md charter
+file tools/fixtures/ironbeetle_ep008_census.sh scan GREEN
+file tools/gen/season/equinox_ironbeetle_ep008_choir_witness.rish choir GREEN
+file rye-learning-process/GLOW_ALMANAC.md seat 70 · ch5 6/16
+file waymarks/20260730-204539_e65-ironbeetle-ep008-green.md finishing edge
+file expanding-prompts/20260730-204539_equinox-season-e66-recursion-prompt.md fusion
+recommend keep-going e66 IronBeetle ep009 a-ledger-that-remembers-its-parent
