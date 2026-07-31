@@ -53,7 +53,7 @@ THE FORK (living · Keaton alone — counsel may not name return):
   law: handback state lives in Keaton's word, never in a grep that matches nearby CONSUMED
 
 OPERATIONAL (baton fusion · living):
-  EQUINOX · 256 OPEN · git nib LIVING · e112 GREEN · e113 next
+  EQUINOX · 256 OPEN · git nib d79bf039ae · e112 GREEN · e113 next
   museum: context/baton-museum/ · 13 halls · census_breach_count=0
   e112 seat: waymarks/20260731-150140_e112-planted-date-dialect-green.md
   e111 seat: waymarks/20260731-145246_e111-date-dialect-green.md
