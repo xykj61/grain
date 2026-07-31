@@ -70,7 +70,7 @@ coords_quest Do
 coords_round 59
 coords_voice_handback return_equinox_e7 CONSUMED 20260730.111804
 coords_equinox_season OPEN
-coords_equinox_status OPEN e111 GREEN · e92 ruling D · ch7 FULL · ch8 OPEN 3/16 · date dialect 17 of 17 · seat 128 reserved · census finds four · itinerary modes · REDS 37 · fascia i9 92 · saga SEATED · fork RETURN|EXTEND · ironbeetle shelf end · return_equinox_e50 CONSUMED · ch5 FULL · ch6 FULL · extend_lean +128
+coords_equinox_status OPEN e117 GREEN · fork EXTEND +128 · breach closed unspent · e92 ruling D · ch7 FULL · ch8 OPEN 9/16 · roofs agree · seat 128 reserved · census finds four · itinerary modes · REDS 40 · fascia i9 88 · saga SEATED · handback nested not consumed · ironbeetle shelf end · return_equinox_e50 CONSUMED · ch5 FULL · ch6 FULL · extend_lean +128 seated
 coords_true_deepest deca
 coords_e7 equinox_map GREEN 20260730.113507
 coords_e7_path context/equinox_map.brix
@@ -623,12 +623,17 @@ coords_reds_row_33 zero_is_instrument_view_never_world
 coords_reds_rows_34_37 container_cross_e108
 coords_almanac_ch7 16 of 16
 coords_almanac_ch7_status FULL
-coords_almanac_ch8 3 of 16
+coords_almanac_ch8 9 of 16
 coords_almanac_ch8_status OPEN
 coords_ironbeetle_written_shelf ENDS_at_ep045
 extend_lean +128
+extend_lean_status SEATED_e117 20260731.170354
 extend_lean_reason dual_equinox_geode_expedition
 extend_lean_range e256-e383 when_consumed
+census_breach_status closed_unspent
+census_breach_word let_close 20260731.170354
+fork_word EXTEND
+fork_handback return_surface_p59 nested_held_not_consumed
 geode_expedition_breach APPROVED_GATED 20260730.162222
 geode_expedition_outer_pause maintain
 geode_expedition_begin_gate e254_e255_or_keaton_begin
@@ -863,7 +868,7 @@ data_lang brix
 ask_key asks
 ask_reply your
 handback return_surface_p59
-extend_or_return prefer_extend_+128_geode_expedition_else_return_surface_p59
+extend_or_return EXTEND_+128_seated_20260731.170354_handback_nested_held
 parent_scope sept
 parent_bookmark p58/p59
 editor_continue Claude Opus 5 1m Max (reported 20260730 · from Fable)
