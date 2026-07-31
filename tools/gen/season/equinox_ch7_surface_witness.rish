@@ -1,0 +1,123 @@
+# tools/gen/season/equinox_ch7_surface_witness.rish — e109 chapter-seven surface.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_ch7_surface_witness.rish
+#
+# Fifteen limbs matching seats 97-111. Leaf witnesses only — no nested surfaces.
+# Twin of equinox_ch4_surface_witness.rish (e59). Opens Chapter Eight at seat 113.
+# Itinerary refine: bundle and shred are modes; only the close was a seat.
+
+say "equinox-ch7-surface: Language EN — chapter greens, one choir; fifteen limbs hold."
+say "equinox-ch7-surface: Style Radiant — a duty is not a seat unless the almanac says so."
+say "equinox-ch7-surface: Lens TAME — e109 · ch7 surface · almanac seat 113 · ch8 open."
+
+# --- shelf close (97 · 98) ---
+let ep044 = run ["rishi/bin/rishi" "run" "tools/gen/season/ironbeetle_ep044_census_witness.rish"]
+say ep044.out
+assert ep044.ok else "equinox-ch7-surface: ep044 limb failed"
+assert ep044.out contains "GREEN: iron-ep044" else "equinox-ch7-surface: ep044 not GREEN"
+
+let ep045 = run ["rishi/bin/rishi" "run" "tools/gen/season/ironbeetle_ep045_census_witness.rish"]
+say ep045.out
+assert ep045.ok else "equinox-ch7-surface: ep045 limb failed"
+assert ep045.out contains "GREEN: iron-ep045" else "equinox-ch7-surface: ep045 not GREEN"
+
+# --- commence arc (99-105) ---
+let control = run ["rishi/bin/rishi" "run" "tools/gen/season/census_control_witness.rish"]
+say control.out
+assert control.ok else "equinox-ch7-surface: census control limb failed"
+assert control.out contains "GREEN: census-control" else "equinox-ch7-surface: control not GREEN"
+
+let m5 = run ["rishi/bin/rishi" "run" "tools/gen/season/commence_m5_recut_witness.rish"]
+say m5.out
+assert m5.ok else "equinox-ch7-surface: M5 limb failed"
+assert m5.out contains "GREEN: commence-m5" else "equinox-ch7-surface: M5 not GREEN"
+
+let m6 = run ["rishi/bin/rishi" "run" "tools/gen/season/commence_m6_see_witness.rish"]
+say m6.out
+assert m6.ok else "equinox-ch7-surface: M6 limb failed"
+assert m6.out contains "GREEN: commence-m6" else "equinox-ch7-surface: M6 not GREEN"
+
+let m7 = run ["rishi/bin/rishi" "run" "tools/gen/season/shed_census_witness.rish"]
+say m7.out
+assert m7.ok else "equinox-ch7-surface: M7 shed limb failed"
+assert m7.out contains "GREEN: shed-census" else "equinox-ch7-surface: shed not GREEN"
+
+let m8 = run ["rishi/bin/rishi" "run" "tools/gen/season/commence_m8_saga_witness.rish"]
+say m8.out
+assert m8.ok else "equinox-ch7-surface: M8 limb failed"
+assert m8.out contains "GREEN: commence-m8" else "equinox-ch7-surface: M8 not GREEN"
+
+let m9 = run ["rishi/bin/rishi" "run" "tools/gen/season/commence_m9_ascent_witness.rish"]
+say m9.out
+assert m9.ok else "equinox-ch7-surface: M9 limb failed"
+assert m9.out contains "GREEN: commence-m9" else "equinox-ch7-surface: M9 not GREEN"
+
+let saga = run ["rishi/bin/rishi" "run" "tools/gen/season/commence_saga_seat_fork_witness.rish"]
+say saga.out
+assert saga.ok else "equinox-ch7-surface: saga seat limb failed"
+assert saga.out contains "GREEN: commence-saga-seat" else "equinox-ch7-surface: saga seat not GREEN"
+assert saga.out contains "seat_fork_status=not_consumed" else "equinox-ch7-surface: want fork waiting"
+
+# --- meter season (106-109) ---
+let e102 = run ["rishi/bin/rishi" "run" "tools/gen/season/equinox_e102_fascia_chase_witness.rish"]
+say e102.out
+assert e102.ok else "equinox-ch7-surface: e102 limb failed"
+assert e102.out contains "GREEN: e102-fascia-chase" else "equinox-ch7-surface: e102 not GREEN"
+
+let e103 = run ["rishi/bin/rishi" "run" "tools/gen/season/equinox_e103_class_a_window_witness.rish"]
+say e103.out
+assert e103.ok else "equinox-ch7-surface: e103 limb failed"
+assert e103.out contains "GREEN: e103-class-a-window" else "equinox-ch7-surface: e103 not GREEN"
+
+let e104 = run ["rishi/bin/rishi" "run" "tools/gen/season/equinox_e104_hold_class_o_witness.rish"]
+say e104.out
+assert e104.ok else "equinox-ch7-surface: e104 limb failed"
+assert e104.out contains "GREEN: e104-hold-class-o" else "equinox-ch7-surface: e104 not GREEN"
+
+let e105 = run ["rishi/bin/rishi" "run" "tools/gen/season/equinox_e105_window_m3_m4_witness.rish"]
+say e105.out
+assert e105.ok else "equinox-ch7-surface: e105 limb failed"
+assert e105.out contains "GREEN: e105-window-m3-m4" else "equinox-ch7-surface: e105 not GREEN"
+
+# --- ledger and map (110 · 111) ---
+let zero = run ["rishi/bin/rishi" "run" "tools/gen/season/zero_view_witness.rish"]
+say zero.out
+assert zero.ok else "equinox-ch7-surface: zero-view limb failed"
+assert zero.out contains "GREEN: zero-view" else "equinox-ch7-surface: zero-view not GREEN"
+
+let reds = run ["rishi/bin/rishi" "run" "tools/gen/season/reds_ledger_witness.rish"]
+say reds.out
+assert reds.ok else "equinox-ch7-surface: reds limb failed"
+assert reds.out contains "GREEN: reds-ledger" else "equinox-ch7-surface: reds not GREEN"
+
+let mono = run ["rishi/bin/rishi" "run" "tools/gen/season/reds_ledger_monotone_witness.rish"]
+say mono.out
+assert mono.ok else "equinox-ch7-surface: reds monotone limb failed"
+assert mono.out contains "GREEN: reds-monotone" else "equinox-ch7-surface: monotone not GREEN"
+
+let scan = run ["sh" "tools/fixtures/equinox_ch7_surface_scan.sh"]
+say scan.out
+assert scan.ok else "equinox-ch7-surface: surface scan must exit 0"
+assert scan.out contains "control_gate=honored" else "equinox-ch7-surface: want control_gate"
+assert scan.out contains "itinerary=honored" else "equinox-ch7-surface: want itinerary"
+assert scan.out contains "itinerary_shred=keaton_gated_mode" else "equinox-ch7-surface: want shred mode"
+assert scan.out contains "itinerary_close=one_seat" else "equinox-ch7-surface: want close one seat"
+assert scan.out contains "seat_map_112=close_choir_landed" else "equinox-ch7-surface: want 112 landed"
+assert scan.out contains "limbs=15" else "equinox-ch7-surface: want limbs 15"
+assert scan.out contains "ch7_status=FULL" else "equinox-ch7-surface: want ch7 FULL"
+assert scan.out contains "fork_status=not_consumed" else "equinox-ch7-surface: want fork waiting"
+assert scan.out contains "ch7_surface=ok" else "equinox-ch7-surface: want ch7_surface ok"
+assert scan.out contains "verdict=ok" else "equinox-ch7-surface: want verdict=ok"
+
+# Refuse — absent iron shelf (limb shape from ch4)
+let refuse_iron = run ["sh" "tools/fixtures/ironbeetle_ep045_census.sh" "tools/fixtures/ironbeetle_ABSENT"]
+say refuse_iron.out
+assert refuse_iron.ok == false else "equinox-ch7-surface: absent iron must fail"
+assert refuse_iron.out contains "IRON=ABSENT" else "equinox-ch7-surface: want IRON=ABSENT"
+assert refuse_iron.out contains "verdict=absent" else "equinox-ch7-surface: want verdict=absent"
+
+let almanac = run ["sh" "tools/gen/season/equinox_ch7_surface_almanac.sh"]
+assert almanac.ok else "equinox-ch7-surface: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-ch7-surface — fifteen limbs · itinerary modes · absent refuses · almanac seat 113 · ch8 open"

@@ -1,7 +1,7 @@
 # The Roadmap — living pin
 
 **Language:** EN  
-**Last updated:** `20260731.142608` (EDT) · voice Riyo  
+**Last updated:** `20260731.143552` (EDT) · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Full season ledger:** [`archive/20260724-132812_roadmap-season-ledger.md`](archive/20260724-132812_roadmap-season-ledger.md)  
 **Align:** [`20260726-050422_align-before-cursor-handoff.md`](archive/20260726-050422_align-before-cursor-handoff.md)  
@@ -9,24 +9,24 @@
 
 ---
 
-## Now — Equinox (deca) · ch7 FULL (`20260731.142608`)
+## Now — Equinox (deca) · ch7 surface · ch8 open (`20260731.143552`)
 
 | Order | Lap | Status |
 |-------|-----|--------|
-| — | Equinox e0–e107 · ch1–ch6 FULL · ch7 OPEN through seat 111 · commence M1–M9 · saga Seated · i9 window · M3/M4 · REDS 33 · seat map | landed |
-| **1** | **e108** ch7 close choir GREEN · seat **112** · ch7 **FULL 16/16** · REDS **34–37** · shred→ch8 | **this sitting** |
-| **2** | Chapter Eight open · SHRED lap by Keaton's word per path | Keaton alone · shred RED |
-| **3** | THE FORK · BUNDLE already crossed with e108 · breach · Class O paths · SAFE · close-seat row (ch5+ch6) | Keaton alone |
+| — | Equinox e0–e108 · ch1–ch7 FULL · close choir 112 · REDS 37 · commence · saga · i9 · M3/M4 | landed |
+| **1** | **e109** ch7 surface GREEN · fifteen limbs · itinerary modes · seat **113** · ch8 **1/16** | **this sitting** |
+| **2** | SHRED lap by Keaton's word per path · Class O · shred RED | Keaton alone · itinerary mode |
+| **3** | THE FORK · breach · SAFE · close-seat row (ch5+ch6) · ch8 next seat | Keaton alone |
 | **4** | Horizon: geode expedition begin (e254/e255 or Keaton begin) | GATED |
 
-**Finishing edge (season):** Equinox OPEN · e109 next · ch7 FULL · shred opens ch8 · nested handback `return_surface_p59` not consumed · fascia **92** i9 · saga **Seated**.  
+**Finishing edge (season):** Equinox OPEN · e110 next · ch7 FULL · ch8 OPEN · itinerary modes · nested handback `return_surface_p59` not consumed · fascia **92** i9 · saga **Seated**.  
 **Finishing edge (product horizon):** clone · bootstrap · one witness · one `rishi glow` line ≤ 30 minutes — still stands.
 
 **Shell ratchet** (seated `20260726.032231`): `.sh` to Rishi on-touch; advisory count each advise run; exemptions: `rye/bootstrap.sh`, external-interpreter seams, python-heredoc witness bodies until duty-8 verbs land, thin-delegate elders.
 
 **Speed law** (counsel `20260726.044729`): never fake GREEN · never hide ABSENT · never let FAST satisfy COLD · never cut a witness before S0 weighs it · no P-vane (graph inside Mantra).
 
-**Meter law** (e102–e108): re-cut every meter each round; a pin is a memory; window_min keeps falls visible; a zero names the instrument's view; look at spent seats before naming the remaining map; a chapter-close choir is a check.
+**Meter law** (e102–e109): re-cut every meter each round; a pin is a memory; window_min keeps falls visible; a zero names the instrument's view; look at spent seats before naming the remaining map; a duty is not a seat unless the almanac says so.
 
 **Census instrument** (commence): `git ls-files` never `find` · planted controls before totals · Class O propose-never-seat rooms (paths await Keaton).
 

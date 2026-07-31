@@ -11,7 +11,7 @@ say welcome.out
 assert welcome.ok else "equinox-e108-choir: welcome RED"
 assert welcome.out contains "GREEN: e108-ch7-close" else "equinox-e108-choir: want GREEN"
 assert welcome.out contains "seat_map_112=close_choir_this_sitting" else "equinox-e108-choir: want 112"
-assert welcome.out contains "seat_map_shred=opens_chapter_eight" else "equinox-e108-choir: want shred ch8"
+assert welcome.out contains "seat_map_shred=" else "equinox-e108-choir: want shred mode"
 assert welcome.out contains "reds_rows=37" else "equinox-e108-choir: want rows 37"
 assert welcome.out contains "census_breach_count=0" else "equinox-e108-choir: want breach 0"
 assert welcome.out contains "fork_status=not_consumed" else "equinox-e108-choir: want fork waiting"

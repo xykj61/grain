@@ -70,7 +70,7 @@ coords_quest Do
 coords_round 59
 coords_voice_handback return_equinox_e7 CONSUMED 20260730.111804
 coords_equinox_season OPEN
-coords_equinox_status OPEN e108 GREEN · e92 ruling D · ch7 FULL 16/16 · REDS 37 · shred opens ch8 · fascia i9 92 · saga SEATED · fork RETURN|EXTEND · ironbeetle shelf end · return_equinox_e50 CONSUMED · ch5 FULL · ch6 FULL · extend_lean +128
+coords_equinox_status OPEN e109 GREEN · e92 ruling D · ch7 FULL · ch8 OPEN 1/16 · itinerary modes · REDS 37 · fascia i9 92 · saga SEATED · fork RETURN|EXTEND · ironbeetle shelf end · return_equinox_e50 CONSUMED · ch5 FULL · ch6 FULL · extend_lean +128
 coords_true_deepest deca
 coords_e7 equinox_map GREEN 20260730.113507
 coords_e7_path context/equinox_map.brix
@@ -581,11 +581,18 @@ coords_e108 ch7_close_choir GREEN 20260731.142608
 coords_e108_witness tools/gen/season/equinox_e108_ch7_close_choir_witness.rish
 coords_e108_charter expanding-prompts/20260731-142608_e108-ch7-close-choir-charter.md
 coords_e108_recursion expanding-prompts/20260731-142608_equinox-season-e109-recursion-prompt.md
+coords_e109 ch7_surface GREEN 20260731.143552
+coords_e109_witness tools/gen/season/equinox_ch7_surface_witness.rish
+coords_e109_charter expanding-prompts/20260731-143552_e109-ch7-surface-charter.md
+coords_e109_recursion expanding-prompts/20260731-143552_equinox-season-e110-recursion-prompt.md
 coords_seat_map work-in-progress/EQUINOX_SEAT_MAP.md
 coords_seat_110 SPENT_e106
 coords_seat_111 SPENT_e107_map
 coords_seat_112 CLOSE_CHOIR_LANDED_e108
-coords_shred_lap opens_chapter_eight
+coords_seat_113 CH7_SURFACE_LANDED_e109
+coords_itinerary_bundle crossing_mode
+coords_itinerary_shred keaton_gated_mode
+coords_itinerary_close one_seat
 coords_fascia_fresh 92
 coords_fascia_metric_rev i9
 coords_fascia_window_carry honored
@@ -601,6 +608,8 @@ coords_reds_row_33 zero_is_instrument_view_never_world
 coords_reds_rows_34_37 container_cross_e108
 coords_almanac_ch7 16 of 16
 coords_almanac_ch7_status FULL
+coords_almanac_ch8 1 of 16
+coords_almanac_ch8_status OPEN
 coords_ironbeetle_written_shelf ENDS_at_ep045
 extend_lean +128
 extend_lean_reason dual_equinox_geode_expedition
