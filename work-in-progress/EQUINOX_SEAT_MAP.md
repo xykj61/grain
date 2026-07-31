@@ -1,13 +1,13 @@
 # Equinox Seat Map — close path · Chapter Seven and Eight
 
 **Language:** EN  
-**Status:** Living pin — **start rung** sh→rish · **build stack** seated · ch7 close **PERFORMED** · ch8 seat **128 RESERVED** · fork **EXTEND +128** · breach **closed unspent** · roofs **CLOSED** · close-seat **answered** · e92 park **lifted** · **roots ≠ Bench** · name the Bench · **living-pin guard** · emptied caught  
+**Status:** Living pin — **on-touch never campaign** · **start rung** sh→rish · **build stack** seated · ch7 close **PERFORMED** · ch8 seat **128 RESERVED** · fork **EXTEND +128** · breach **closed unspent** · roofs **CLOSED** · close-seat **answered** · e92 park **lifted** · **roots ≠ Bench** · name the Bench · **living-pin guard** · emptied caught  
 **Voice:** Riyo  
-**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260731.231123` (e126 start rung · 128 kept reserved)  
-**Seat:** Equinox e123 · almanac **127** · Chapter Eight **(15 of 16)** · e124–e126 no content seat  
-**Basis:** fuse kg · approve-all · start rung named · census_control climb · living-pin guard · **128 still reserved**  
+**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260731.231509` (e127 on-touch · 128 kept reserved)  
+**Seat:** Equinox e123 · almanac **127** · Chapter Eight **(15 of 16)** · e124–e127 no content seat  
+**Basis:** fuse kg · best path · on-touch correction · REDS 42 · shred held · **128 still reserved**  
 
-*A chapter's sixteenth seat may carry check · test · prepare as a close choir. A duty is not a seat unless the almanac says so — only the close is a seat. A surface witness claims no seat of its own. **roots** are where the hand sits to send words; a **Bench** is where claims become evidence — different kinds. Name the **Bench** when a measurement is reported. **Build stack:** sh → rish → glow·tend → docs-geode → Aurora·Caravan·Tally → Mantra·Weave — not prioritizing an upper layer over the one beneath; five refusals · layer order. **Start rung:** sh → rish seam — orchestration into `.rish`; `.sh` entries kept. When two roofs carry one name, either they agree or the name is doing two jobs. Approve-all seats recommended leans; it circles no gate. Seat the suite; do not manufacture meters. Look for the thing, not for the name of the thing. On-disk is not in-the-tree. A witness must not depend on one bench's tools.*
+*A chapter's sixteenth seat may carry check · test · prepare as a close choir. A duty is not a seat unless the almanac says so — only the close is a seat. A surface witness claims no seat of its own. **roots** are where the hand sits to send words; a **Bench** is where claims become evidence — different kinds. Name the **Bench** when a measurement is reported. **Build stack:** sh → rish → glow·tend → docs-geode → Aurora·Caravan·Tally → Mantra·Weave — foundations first; five refusals · layer order. **Start rung:** sh → rish seam — on-touch only. **Shell ratchet:** on-touch, never a campaign. When two roofs carry one name, either they agree or the name is doing two jobs. Approve-all · kg · best path seat recommended leans; they circle no gate — including shred. Seat the suite; do not manufacture meters. Look for the thing, not for the name of the thing. On-disk is not in-the-tree. A witness must not depend on one bench's tools.*
 
 ---
 
@@ -66,7 +66,7 @@
 ## Itinerary (refined · duty ≠ seat)
 
 1. **BUNDLE SEND** — a crossing mode, not an almanac seat.  
-2. **SHRED lap** — **Keaton-gated**, Class O, shred **RED**. Not a seat. Approve-all and fuse kg do not circle shred yes.  
+2. **SHRED lap** — **Keaton-gated**, Class O, shred **RED**. Not a seat. Approve-all · fuse kg · and **best path** do not circle shred yes.  
 3. **CHECK · TEST · PREPARE** — only the close choir is a seat (112 LANDED · 128 RESERVED).
 
 ### Held beside the map
@@ -82,8 +82,8 @@
 | Class O path rows | propose-never-seat until Keaton's word |
 | SAFE rows | 0 of 64 · Keaton alone |
 | Measurement queue | **empty** for counsel · remainder Keaton-gated |
-| REDS | **40** rows |
-| shred | **RED** |
+| REDS | **42** rows |
+| shred | **RED** · kg/best-path lean held · awaits circled shred yes |
 | Tool presence | **per-bench re-cut** · name the Bench · binaries gitignored |
 
 ---
@@ -91,7 +91,7 @@
 ## Hard lines
 
 - When two roofs carry one name, either they agree or the name is doing two jobs.  
-- Approve-all seats recommended yes/no leans; it does not lift shred · SAFE · seat 128 · LICENSE · geode begin.  
+- Approve-all · kg · best path seat recommended yes/no leans; they do not lift shred · SAFE · seat 128 · LICENSE · geode begin.  
 - A surface witness claims no seat of its own.  
 - **roots** send words; a **Bench** measures — different kinds.  
 - Name the **Bench** when a measurement is reported.  

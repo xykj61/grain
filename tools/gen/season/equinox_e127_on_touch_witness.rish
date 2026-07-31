@@ -1,0 +1,21 @@
+# tools/gen/season/equinox_e127_on_touch_witness.rish — e127 seat.
+#   rishi/bin/rishi run tools/gen/season/equinox_e127_on_touch_witness.rish
+say "e127-on-touch: Language EN — shell ratchet on-touch; never a campaign."
+say "e127-on-touch: Style Radiant — sh is where work correctly begins."
+say "e127-on-touch: Lens TAME — e127 · counsel direction corrected · shred held · 128 reserved."
+
+let green = run ["sh" "tools/fixtures/equinox_e127_on_touch_scan.sh"]
+assert green.ok else "e127-on-touch: living scan must exit 0"
+assert green.out contains "on_touch=honored" else "e127-on-touch: want on_touch"
+assert green.out contains "on_touch_law=shell_ratchet_on_touch_never_campaign" else "e127-on-touch: want law"
+assert green.out contains "reds_note=row_42_counsel_ladder_direction" else "e127-on-touch: want REDS 42"
+assert green.out contains "shred=RED" else "e127-on-touch: want shred RED"
+assert green.out contains "seat_128=reserved_close_choir" else "e127-on-touch: want 128 reserved"
+assert green.out contains "no_content_seat_claimed=honored" else "e127-on-touch: want no 128 spend"
+assert green.out contains "verdict=ok" else "e127-on-touch: want verdict ok"
+
+let red = run ["sh" "tools/fixtures/equinox_e127_on_touch_scan.sh" "prove-red"]
+assert (red.ok == false) else "e127-on-touch: prove-red must refuse"
+assert red.out contains "RED_on_touch_rish_first_campaign" else "e127-on-touch: prove-red want campaign refuse"
+
+say "GREEN: e127-on-touch — on-touch never campaign · REDS 42 · shred RED · 128 reserved"
