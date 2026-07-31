@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260730.210447
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title e71 IronBeetle ep014 trust-the-primary-verify-everyone-else GREEN
+prompt kg · e71 — IronBeetle ep014 trust-the-primary-verify-everyone-else
+think e70 ep013 GREEN · ep014 next written silo · leaf census twin
+think Teach: trust primary · verify others · repair_header · on_start_view · two receive paths
+think Seat 76 · ch5 12/16 · ep015 next · expedition stays gated
+obs e71 GREEN · e72 IronBeetle ep015 next
+file expanding-prompts/20260730-210423_e71-ironbeetle-ep014-charter.md charter
+file tools/fixtures/ironbeetle_ep014_census.sh scan GREEN
+file tools/gen/season/equinox_ironbeetle_ep014_choir_witness.rish choir GREEN
+file rye-learning-process/GLOW_ALMANAC.md seat 76 · ch5 12/16
+file waymarks/20260730-210447_e71-ironbeetle-ep014-green.md finishing edge
+file expanding-prompts/20260730-210447_equinox-season-e72-recursion-prompt.md fusion
+recommend keep-going e72 IronBeetle ep015 proving-a-negative

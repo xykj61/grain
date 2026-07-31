@@ -1,0 +1,28 @@
+# tools/gen/season/ironbeetle_ep014_census_witness.rish — e71 IronBeetle ep014.
+#
+#   rishi/bin/rishi run tools/gen/season/ironbeetle_ep014_census_witness.rish
+#
+# Clean-room: presence only · never copies into rye/.
+# Leaf only — no nested elder choirs.
+
+say "iron-ep014: Language EN — trust the primary, verify everyone else."
+say "iron-ep014: Style Radiant — repair_header chains; on_start_view trusts the view."
+say "iron-ep014: Lens TAME — e71 · clean-room study · almanac seat 76."
+
+let shelf = run ["test" "-d" "gratitude/ironbeetle"]
+assert shelf.ok else "iron-ep014: gratitude/ironbeetle ABSENT — host shelf first"
+
+let census = run ["sh" "tools/fixtures/ironbeetle_ep014_census.sh"]
+say census.out
+assert census.ok else "iron-ep014: census failed or thin"
+assert census.out contains "IRON=present" else "iron-ep014: want IRON=present"
+assert census.out contains "verdict=ok" else "iron-ep014: want verdict=ok"
+assert census.out contains "EP014=yes" else "iron-ep014: ep014 file must be present"
+assert census.out contains "HONORS=yes" else "iron-ep014: Honors heading must be present"
+assert census.out contains "SOURCE=yes" else "iron-ep014: Source heading must be present"
+assert census.out contains "TEACH=yes" else "iron-ep014: teach limbs (primary·verify·repair_header·on_start_view) must be present"
+assert census.out contains "RHYME=yes" else "iron-ep014: rhyme section must be present"
+assert census.out contains "CLEAN=yes" else "iron-ep014: Clean Room heading must be present"
+assert census.out contains "MATKLAD_OK=yes" else "iron-ep014: matklad companion must cite ironbeetle/"
+
+say "GREEN: iron-ep014 — honors·source·teach·rhyme·clean·matklad ok"
