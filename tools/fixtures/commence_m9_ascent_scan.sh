@@ -44,12 +44,17 @@ rg -q 'trust the tree, test the instrument' "$SAGA_PROSE" || {
   echo "detail=saga_motto_missing"
   exit 1
 }
-rg -q '\*\*Proposed\*\*' "$SAGA_PROSE" || {
+# Elder M9 accepted Proposed; after e101 seating, Seated also honors.
+if rg -q '\*\*Seated\*\*' "$SAGA_PROSE"; then
+  SAGA_STATUS=SEATED
+elif rg -q '\*\*Proposed\*\*' "$SAGA_PROSE"; then
+  SAGA_STATUS=PROPOSED
+else
   echo "ascent_saga=failed"
   echo "verdict=misread"
-  echo "detail=saga_must_stay_proposed_until_keaton_seats"
+  echo "detail=saga_status_missing"
   exit 1
-}
+fi
 rg -q 'Season Close Narratives' "$SAGA_README" || {
   echo "ascent_saga=failed"
   echo "verdict=misread"
@@ -57,7 +62,8 @@ rg -q 'Season Close Narratives' "$SAGA_README" || {
   exit 1
 }
 echo "ascent_saga=honored"
-echo "ascent_saga_status=PROPOSED"
+echo "ascent_saga_status=${SAGA_STATUS}"
+
 
 # --- commence waymark chain through M8 (nine beats) ---
 BEATS_OK=0

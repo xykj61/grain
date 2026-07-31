@@ -1,0 +1,23 @@
+# tools/gen/season/equinox_commence_saga_seat_choir_witness.rish — e101 → ch7 9/16.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_commence_saga_seat_choir_witness.rish
+#
+# Commence saga seated + fork named; almanac seat 105. Does not consume the fork.
+
+say "equinox-commence-saga-seat-choir: Language EN — control before seating; fork waits."
+say "equinox-commence-saga-seat-choir: Style Radiant — approve seats the narrative; return stays Keaton."
+say "equinox-commence-saga-seat-choir: Lens TAME — e101 · Seated · fork · almanac seat 105 · ch7 9/16."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/season/commence_saga_seat_fork_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-commence-saga-seat-choir: welcome RED"
+assert welcome.out contains "GREEN: commence-saga-seat" else "equinox-commence-saga-seat-choir: want GREEN"
+assert welcome.out contains "seat_saga_status=SEATED" else "equinox-commence-saga-seat-choir: want SEATED"
+assert welcome.out contains "census_breach_count=0" else "equinox-commence-saga-seat-choir: want breach 0"
+assert welcome.out contains "seat_fork_status=not_consumed" else "equinox-commence-saga-seat-choir: want fork waiting"
+
+let almanac = run ["sh" "tools/gen/season/equinox_commence_saga_seat_almanac.sh"]
+assert almanac.ok else "equinox-commence-saga-seat-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-commence-saga-seat-choir — saga SEATED · fork waiting · almanac seat 105 · ch7 9/16"
