@@ -70,7 +70,7 @@ coords_quest Do
 coords_round 59
 coords_voice_handback return_equinox_e7 CONSUMED 20260730.111804
 coords_equinox_season OPEN
-coords_equinox_status OPEN e91 GREEN · e92 Claude check-in READY · return_equinox_e50 CONSUMED · ch5 FULL · ch6 FULL · extend_lean +128
+coords_equinox_status OPEN e93 GREEN · e92 ruling D · ch7 OPEN 1/16 · return_equinox_e50 CONSUMED · ch5 FULL · ch6 FULL · extend_lean +128
 coords_true_deepest deca
 coords_e7 equinox_map GREEN 20260730.113507
 coords_e7_path context/equinox_map.brix
@@ -503,6 +503,15 @@ coords_e91_recursion expanding-prompts/20260731-005634_equinox-season-e92-recurs
 coords_e92_checkin expanding-prompts/20260731-010844_e92-ch6-surface-close-claude-check-in.md
 coords_e92_claude_package counsel/replies/20260731-010844_re-equinox-e92-ch6-surface-claude.md
 coords_e92_recursion expanding-prompts/20260731-010844_equinox-season-e92-claude-checkin-recursion-prompt.md
+coords_e92_ruling D 20260731.015541 park_closes · ch7_via_ep044
+coords_e92_ruling_path counsel/replies/20260731-015541_re-equinox-e92-surface-close-ruling-claude.md
+coords_e93 ironbeetle_ep044 GREEN 20260731.114927
+coords_e93_path gratitude/ironbeetle/20260712-092212_ironbeetle-ep044-everything-we-know-from-the-first-byte.md
+coords_e93_witness tools/gen/season/equinox_ironbeetle_ep044_choir_witness.rish
+coords_e93_charter expanding-prompts/20260731-114913_e93-ironbeetle-ep044-ch7-open-charter.md
+coords_e93_recursion expanding-prompts/20260731-114927_equinox-season-e94-recursion-prompt.md
+coords_almanac_ch7 1 of 16
+coords_almanac_ch7_status OPEN
 extend_lean +128
 extend_lean_reason dual_equinox_geode_expedition
 extend_lean_range e256-e383 when_consumed
