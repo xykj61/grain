@@ -1,0 +1,18 @@
+# tools/gen/season/equinox_e120_lexicon_roots_witness.rish — e120 seat.
+#   rishi/bin/rishi run tools/gen/season/equinox_e120_lexicon_roots_witness.rish
+say "e120-lexicon-roots: Language EN — roots name the client surfaces."
+say "e120-lexicon-roots: Style Radiant — Claude web · Claude iOS · Cursor AppImage · Cursor iOS."
+say "e120-lexicon-roots: Lens TAME — e120 · Lexicon roots · almanac 124 · ch8 12/16."
+
+let green = run ["sh" "tools/fixtures/equinox_e120_lexicon_roots_scan.sh"]
+assert green.ok else "e120-lexicon-roots: living scan must exit 0"
+assert green.out contains "roots=honored" else "e120-lexicon-roots: want roots honored"
+assert green.out contains "roots_members=claude_web·claude_ios·cursor_appimage_desktop·cursor_ios" else "e120-lexicon-roots: want four members"
+assert green.out contains "seat_128=reserved_close_choir" else "e120-lexicon-roots: want 128 reserved"
+assert green.out contains "verdict=ok" else "e120-lexicon-roots: want verdict ok"
+
+let red = run ["sh" "tools/fixtures/equinox_e120_lexicon_roots_scan.sh" "prove-red"]
+assert (red.ok == false) else "e120-lexicon-roots: prove-red must refuse"
+assert red.out contains "RED_claimed_roots_absent_while_seated" else "e120-lexicon-roots: prove-red want absent refuse"
+
+say "GREEN: e120-lexicon-roots — roots seated · four client surfaces · shred RED"
