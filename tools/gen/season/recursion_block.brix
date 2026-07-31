@@ -70,7 +70,7 @@ coords_quest Do
 coords_round 59
 coords_voice_handback return_equinox_e7 CONSUMED 20260730.111804
 coords_equinox_season OPEN
-coords_equinox_status OPEN e117 GREEN · fork EXTEND +128 · breach closed unspent · e92 ruling D · ch7 FULL · ch8 OPEN 9/16 · roofs agree · seat 128 reserved · census finds four · itinerary modes · REDS 40 · fascia i9 88 · saga SEATED · handback nested not consumed · ironbeetle shelf end · return_equinox_e50 CONSUMED · ch5 FULL · ch6 FULL · extend_lean +128 seated
+coords_equinox_status OPEN e118 GREEN · metal corrections · roofs CLOSED · two jobs · stale Cloud-blocked retired · fork EXTEND +128 · breach closed unspent · e92 ruling D · ch7 FULL · ch8 OPEN 10/16 · seat 128 reserved · census finds four · itinerary modes · REDS 40 · fascia i9 88 · saga SEATED · handback nested not consumed · ironbeetle shelf end · return_equinox_e50 CONSUMED · ch5 FULL · ch6 FULL · extend_lean +128 seated
 coords_true_deepest deca
 coords_e7 equinox_map GREEN 20260730.113507
 coords_e7_path context/equinox_map.brix
@@ -623,7 +623,7 @@ coords_reds_row_33 zero_is_instrument_view_never_world
 coords_reds_rows_34_37 container_cross_e108
 coords_almanac_ch7 16 of 16
 coords_almanac_ch7_status FULL
-coords_almanac_ch8 9 of 16
+coords_almanac_ch8 10 of 16
 coords_almanac_ch8_status OPEN
 coords_ironbeetle_written_shelf ENDS_at_ep045
 extend_lean +128
@@ -634,6 +634,10 @@ census_breach_status closed_unspent
 census_breach_word let_close 20260731.170354
 fork_word EXTEND
 fork_handback return_surface_p59 nested_held_not_consumed
+roofs_status CLOSED
+roofs_jobs fascia_health=live_over_total · fascia_health_now=orphan_share
+stale_cloud_blocked retired_e118 20260731.172902
+tool_presence per_bench_recut
 geode_expedition_breach APPROVED_GATED 20260730.162222
 geode_expedition_outer_pause maintain
 geode_expedition_begin_gate e254_e255_or_keaton_begin

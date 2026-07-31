@@ -1,7 +1,7 @@
 # The Roadmap — living pin
 
 **Language:** EN  
-**Last updated:** `20260731.170354` (EDT) · voice Riyo  
+**Last updated:** `20260731.172902` (EDT) · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Full season ledger:** [`archive/20260724-132812_roadmap-season-ledger.md`](archive/20260724-132812_roadmap-season-ledger.md)  
 **Align:** [`20260726-050422_align-before-cursor-handoff.md`](archive/20260726-050422_align-before-cursor-handoff.md)  
@@ -9,17 +9,17 @@
 
 ---
 
-## Now — Equinox (deca) · fork EXTEND (`20260731.170354`)
+## Now — Equinox (deca) · metal corrections (`20260731.172902`)
 
 | Order | Lap | Status |
 |-------|-----|--------|
-| — | Equinox e0–e116 · ch1–ch7 FULL · ch8 8/16 · roofs agree · REDS 40 · 128 reserved | landed |
-| **1** | **e117** fork EXTEND +128 · breach closed unspent · seat **121** · ch8 **9/16** | **this sitting** |
-| **2** | ch8 content seats **122–127** · SHRED lap by Keaton's word · Class O | Keaton / next mechanical |
+| — | Equinox e0–e117 · ch1–ch7 FULL · ch8 9/16 · fork EXTEND · breach closed · REDS 40 · 128 reserved | landed |
+| **1** | **e118** metal corrections · roofs CLOSED · stale blocked retired · seat **122** · ch8 **10/16** | **this sitting** |
+| **2** | ch8 content seats **123–127** · SHRED lap by Keaton's word · Class O | Keaton / next mechanical |
 | **3** | SAFE · close-seat row (ch5+ch6) · seat **128** close later | Keaton alone |
 | **4** | Horizon: geode expedition begin (e254/e255 or Keaton begin) | GATED |
 
-**Finishing edge (season):** Equinox OPEN · e118 next · ch7 FULL · ch8 OPEN 9/16 · fork **EXTEND +128** · breach **closed unspent** · handback nested not consumed · 128 reserved · fascia **88** i9 · saga **Seated**.  
+**Finishing edge (season):** Equinox OPEN · e119 next · ch7 FULL · ch8 OPEN 10/16 · roofs **CLOSED** · fork **EXTEND +128** · breach **closed unspent** · handback nested not consumed · 128 reserved · fascia **88** i9 · saga **Seated**.  
 **Finishing edge (product horizon):** clone · bootstrap · one witness · one `rishi glow` line ≤ 30 minutes — still stands.
 
 **Shell ratchet** (seated `20260726.032231`): `.sh` to Rishi on-touch; advisory count each advise run; exemptions: `rye/bootstrap.sh`, external-interpreter seams, python-heredoc witness bodies until duty-8 verbs land, thin-delegate elders.

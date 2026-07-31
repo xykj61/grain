@@ -1,0 +1,16 @@
+# tools/gen/season/equinox_e118_metal_corrections_choir_witness.rish — e118 → ch8 10/16.
+#   rishi/bin/rishi run tools/gen/season/equinox_e118_metal_corrections_choir_witness.rish
+say "equinox-e118-choir: Language EN — found corrections join the chapter."
+say "equinox-e118-choir: Style Radiant — two jobs keep their names."
+say "equinox-e118-choir: Lens TAME — e118 · roofs CLOSED · almanac 122 · ch8 10/16."
+
+let welcome = run ["sh" "tools/fixtures/baton_museum_census_scan.sh"]
+assert welcome.ok else "equinox-e118-choir: museum must exit 0"
+assert welcome.out contains "census_breach_count=0" else "equinox-e118-choir: want breach 0"
+
+let leaf = run ["sh" "tools/fixtures/equinox_e118_metal_corrections_scan.sh"]
+assert leaf.ok else "equinox-e118-choir: leaf scan must exit 0"
+assert leaf.out contains "e118_metal_corrections=ok" else "equinox-e118-choir: want e118 ok"
+assert leaf.out contains "roofs_status=CLOSED" else "equinox-e118-choir: want CLOSED"
+
+say "GREEN: equinox-e118-choir — metal corrections GREEN · roofs CLOSED · almanac seat 122 · ch8 10/16"
