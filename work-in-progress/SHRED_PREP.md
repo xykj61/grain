@@ -3,7 +3,7 @@
 **Language:** EN  
 **Status:** Living pin — **shred RED** · Amphora cut not opened · list only  
 **Voice:** Quin  
-**Last refreshed:** `20260728.232511` (EDT)  
+**Last refreshed:** `20260731.124815` (EDT) · Class O propose (Riyo · e98) · elder seat voice Quin held  
 **Seat:** Surface p36 Kiln · [`../counsel/20260728-232511_surface-season-p36-kiln-seated.md`](../counsel/20260728-232511_surface-season-p36-kiln-seated.md)
 
 *Accrete-never-break: fossils stay on disk until a circled shred proves parity. This list prepares the hand; it does not authorize a cut.*
@@ -16,8 +16,16 @@
 | --- | --- | --- |
 | **A** | Fund-lineage elder anchors (MUR u89–u91) | Content yes · cut no |
 | **H** | Horizon **writing fossils** superseded by a **living mutant** | Prep only · shred RED |
+| **O** | Unreachable testimony — no file in the tree names it (basename floor) | **Propose only** · never seat · shred RED |
 
-Class **H** is for Grep + Amphora later. It is **not** Class A.
+Class **H** is for Grep + Amphora later. It is **not** Class A.  
+Class **O** is **propose-never-seat** (`20260731.124815` · commence M7 weave): neither fund anchor nor superseded fossil — simply never pointed at. Instrument: `tools/fixtures/shed_census_scan.sh`. Every path still needs Keaton's word. `SAFE.md` refuses whole on any listed path. Rows are not opened here.
+
+### Class O — proposed row shape (empty · no paths seated)
+
+| path | room | last stamp | reachable? | Keaton's word |
+| --- | --- | --- | --- | --- |
+| *(none yet — propose only)* | — | — | orphan floor | await word |
 
 ---
 
