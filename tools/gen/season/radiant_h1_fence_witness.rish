@@ -1,0 +1,24 @@
+# tools/gen/season/radiant_h1_fence_witness.rish — M4 radiant H1 fence home land.
+#
+#   rishi/bin/rishi run tools/gen/season/radiant_h1_fence_witness.rish
+
+say "radiant-h1-fence: Language EN — control true/naive before roster totals."
+say "radiant-h1-fence: Style Radiant — fences hide shell and Zig comment hashes."
+say "radiant-h1-fence: Lens TAME — M4 home land · radiant_lint duty3 carried here."
+
+let scan = run ["sh" "tools/fixtures/radiant_h1_fence_scan.sh"]
+say scan.out
+assert scan.ok else "radiant-h1-fence: scan must exit 0"
+assert scan.out contains "control_gate=honored" else "radiant-h1-fence: want control_gate"
+assert scan.out contains "control_h1_true=1" else "radiant-h1-fence: want true=1"
+assert scan.out contains "control_h1_naive=4" else "radiant-h1-fence: want naive=4"
+assert scan.out contains "h1_fence=honored" else "radiant-h1-fence: want fence limb"
+assert scan.out contains "governing_template=yes" else "radiant-h1-fence: want template offender"
+assert scan.out contains "radiant_h1_fence=ok" else "radiant-h1-fence: want ok"
+assert scan.out contains "verdict=ok" else "radiant-h1-fence: want verdict=ok"
+
+let prove = run ["sh" "tools/fixtures/radiant_h1_fence_scan.sh" "prove-red"]
+assert (prove.ok == false) else "radiant-h1-fence: prove-red must refuse"
+assert prove.out contains "verdict=misread" else "radiant-h1-fence: want prove-red misread"
+
+say "GREEN: radiant-h1-fence — control proven · fence-aware roster · prove-red refuses · template named"

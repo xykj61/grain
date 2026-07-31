@@ -39,12 +39,13 @@ echo "$FASCIA_OUT" | rg -q '^GREEN: fascia-metric-v0' || {
   echo "verdict=misread"
   exit 1
 }
-echo "$FASCIA_OUT" | rg -q -F 'metric_rev=i8' || {
+# e104 landed i8 hold. Later i9 may carry the window — elder accepts i8 or i9.
+if ! echo "$FASCIA_OUT" | rg -q -F 'metric_rev=i8' && ! echo "$FASCIA_OUT" | rg -q -F 'metric_rev=i9'; then
   echo "hold_fascia=failed"
   echo "verdict=misread"
-  echo "detail=want_metric_rev_i8"
+  echo "detail=want_metric_rev_i8_or_i9"
   exit 1
-}
+fi
 echo "$FASCIA_OUT" | rg -q -F 'signal:target_class_a=4' || {
   echo "hold_fascia=failed"
   echo "verdict=misread"

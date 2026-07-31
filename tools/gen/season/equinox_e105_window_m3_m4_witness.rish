@@ -1,0 +1,49 @@
+# tools/gen/season/equinox_e105_window_m3_m4_witness.rish — e105 home land.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_e105_window_m3_m4_witness.rish
+
+say "e105-window-m3-m4: Language EN — control first; then carry the window and land M3/M4."
+say "e105-window-m3-m4: Style Radiant — a revision must not forget its fall."
+say "e105-window-m3-m4: Lens TAME — e105 · i9 · M3 oldness · M4 H1 fence · seat 109 · ch7 13/16."
+
+let control = run ["rishi/bin/rishi" "run" "tools/gen/season/census_control_witness.rish"]
+say control.out
+assert control.ok else "e105-window-m3-m4: census control must GREEN"
+assert control.out contains "GREEN: census-control" else "e105-window-m3-m4: want control GREEN"
+
+let museum = run ["rishi/bin/rishi" "run" "tools/gen/season/baton_museum_census_witness.rish"]
+say museum.out
+assert museum.ok else "e105-window-m3-m4: baton museum RED"
+assert museum.out contains "census_breach_count=0" else "e105-window-m3-m4: want breach 0"
+
+let scope = run ["rishi/bin/rishi" "run" "tools/gen/season/prin_scope.rish"]
+say scope.out
+assert scope.ok else "e105-window-m3-m4: prin_scope RED"
+assert scope.out contains "GREEN: prin-scope" else "e105-window-m3-m4: want scope GREEN"
+
+let m3 = run ["rishi/bin/rishi" "run" "tools/gen/season/oldness_census_witness.rish"]
+say m3.out
+assert m3.ok else "e105-window-m3-m4: M3 oldness RED"
+assert m3.out contains "GREEN: oldness-census" else "e105-window-m3-m4: want M3 GREEN"
+
+let m4 = run ["rishi/bin/rishi" "run" "tools/gen/season/radiant_h1_fence_witness.rish"]
+say m4.out
+assert m4.ok else "e105-window-m3-m4: M4 H1 fence RED"
+assert m4.out contains "GREEN: radiant-h1-fence" else "e105-window-m3-m4: want M4 GREEN"
+
+let scan = run ["sh" "tools/fixtures/equinox_e105_window_m3_m4_scan.sh"]
+say scan.out
+assert scan.ok else "e105-window-m3-m4: home scan must exit 0"
+assert scan.out contains "control_gate=honored" else "e105-window-m3-m4: want control_gate"
+assert scan.out contains "home_fascia=honored" else "e105-window-m3-m4: want fascia"
+assert scan.out contains "home_fascia_grade=92" else "e105-window-m3-m4: want fascia 92"
+assert scan.out contains "home_metric_rev=i9" else "e105-window-m3-m4: want i9"
+assert scan.out contains "home_window_carry=honored" else "e105-window-m3-m4: want window carry"
+assert scan.out contains "home_window_min=85" else "e105-window-m3-m4: want remembered fall"
+assert scan.out contains "home_m3=honored" else "e105-window-m3-m4: want M3"
+assert scan.out contains "home_m4=honored" else "e105-window-m3-m4: want M4"
+assert scan.out contains "home_fork_status=not_consumed" else "e105-window-m3-m4: want fork waiting"
+assert scan.out contains "e105_window_m3_m4=ok" else "e105-window-m3-m4: want e105 ok"
+assert scan.out contains "verdict=ok" else "e105-window-m3-m4: want verdict=ok"
+
+say "GREEN: e105-window-m3-m4 — i9 window carry · fall -15 · M3+M4 home land · hold kept · fork waiting · museum"
