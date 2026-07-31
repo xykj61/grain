@@ -1,13 +1,13 @@
 # Equinox Seat Map — close path · Chapter Seven and Eight
 
 **Language:** EN  
-**Status:** Living pin — ch7 close **PERFORMED** · ch8 seat **128 RESERVED** · fork **EXTEND +128** · breach **closed unspent** · roofs **CLOSED** · close-seat **answered** · e92 park **lifted**  
+**Status:** Living pin — ch7 close **PERFORMED** · ch8 seat **128 RESERVED** · fork **EXTEND +128** · breach **closed unspent** · roofs **CLOSED** · close-seat **answered** · e92 park **lifted** · **roots** seated  
 **Voice:** Riyo  
-**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260731.214426` (e119 close-seat surfaces · census six · park lifted · 128 kept reserved)  
-**Seat:** Equinox e119 · almanac **123** · Chapter Eight **(11 of 16)**  
-**Basis:** fuse kg · counsel close-seat answered · ch5+ch6 surfaces as tools · e118 roofs CLOSED kept · e92 park lifted  
+**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260731.215300` (e120 Lexicon roots · 128 kept reserved)  
+**Seat:** Equinox e120 · almanac **124** · Chapter Eight **(12 of 16)**  
+**Basis:** fuse kg · Keaton seat roots · e119 close-seat kept · e92 park lifted  
 
-*A chapter's sixteenth seat may carry check · test · prepare as a close choir. A duty is not a seat unless the almanac says so — only the close is a seat. A surface witness claims no seat of its own. When two roofs carry one name, either they agree or the name is doing two jobs. Approve-all seats recommended leans; it circles no gate. Seat the suite; do not manufacture meters. Look for the thing, not for the name of the thing. On-disk is not in-the-tree. A witness must not depend on one bench's tools.*
+*A chapter's sixteenth seat may carry check · test · prepare as a close choir. A duty is not a seat unless the almanac says so — only the close is a seat. A surface witness claims no seat of its own. **roots** name the client surfaces. When two roofs carry one name, either they agree or the name is doing two jobs. Approve-all seats recommended leans; it circles no gate. Seat the suite; do not manufacture meters. Look for the thing, not for the name of the thing. On-disk is not in-the-tree. A witness must not depend on one bench's tools.*
 
 ---
 
@@ -38,8 +38,8 @@
 | Opened | seat **113** · e109 ch7 surface |
 | Content seats | **114–127** · fill with findings |
 | Close choir | seat **128** · **RESERVED** for check · test · prepare |
-| e110–e118 | seats **114–122** · through metal corrections |
-| This pin (e119) | seat **123** · close-seat answered · ch5+ch6 tools · park lifted |
+| e110–e119 | seats **114–123** · through close-seat surfaces |
+| This pin (e120) | seat **124** · Lexicon **roots** · client surfaces |
 
 | Seat | Duty | Status |
 | --- | --- | --- |
@@ -53,11 +53,12 @@
 | **120** | one dated definition · roofs agree · REDS 40 | **SPENT** e116 |
 | **121** | fork EXTEND +128 · breach closed unspent | **SPENT** e117 |
 | **122** | metal corrections · roofs CLOSED · stale blocked retired | **SPENT** e118 |
-| **123** | close-seat answered · ch5+ch6 surfaces as tools · park lifted | **this sitting** e119 |
-| **124–127** | content (unnamed yet) | open |
+| **123** | close-seat answered · ch5+ch6 surfaces as tools · park lifted | **SPENT** e119 |
+| **124** | Lexicon **roots** · client surfaces category | **this sitting** e120 |
+| **125–127** | content (unnamed yet) | open |
 | **128** | **CLOSE CHOIR** as check · test · prepare | **RESERVED** |
 
-Ch5 and ch6 broke because nobody reserved a sixteenth seat. Ch7 recovered because the arithmetic was caught with seats left. Ch8 reserves **128** on day one. Close-seat answer: surfaces need no seat — they run as tools.
+Ch5 and ch6 broke because nobody reserved a sixteenth seat. Ch7 recovered because the arithmetic was caught with seats left. Ch8 reserves **128** on day one. Close-seat answer: surfaces need no seat — they run as tools. **roots** name Claude web · Claude iOS · Cursor AppImage desktop · Cursor iOS.
 
 ---
 
@@ -76,6 +77,7 @@ Ch5 and ch6 broke because nobody reserved a sixteenth seat. Ch7 recovered becaus
 | Roofs | **CLOSED** · dated_testimony agrees · two jobs named |
 | Geode expedition | APPROVED · GATED · not begun |
 | close-seat row (ch5 + ch6) | **answered** · park **lifted** · surfaces as tools · no seats spent |
+| **roots** | **seated** e120 · Claude web · Claude iOS · Cursor AppImage desktop · Cursor iOS |
 | Class O path rows | propose-never-seat until Keaton's word |
 | SAFE rows | 0 of 64 · Keaton alone |
 | Measurement queue | **empty** for counsel · remainder Keaton-gated |
@@ -90,6 +92,7 @@ Ch5 and ch6 broke because nobody reserved a sixteenth seat. Ch7 recovered becaus
 - When two roofs carry one name, either they agree or the name is doing two jobs.  
 - Approve-all seats recommended yes/no leans; it does not lift shred · SAFE · seat 128 · LICENSE · geode begin.  
 - A surface witness claims no seat of its own.  
+- **roots** are client surfaces; not Bench · pier · Pond.  
 - A witness must not depend on one bench's tools.  
 - Seat the suite; do not manufacture meters.  
 - Look for the thing, not for the name of the thing.  
@@ -102,4 +105,4 @@ Ch5 and ch6 broke because nobody reserved a sixteenth seat. Ch7 recovered becaus
 
 ---
 
-*May six finds be true. May seat 128 wait for the close. May two jobs keep their names.*
+*May six finds be true. May four roots name the hand. May seat 128 wait for the close.*

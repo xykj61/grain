@@ -1,7 +1,7 @@
 # Lexicon — Module Names and Their Meanings
 
 **Language:** EN
-**Last updated:** `20260730` (**e50 GREEN** · dual-equinox geode expedition breach APPROVED · GATED)
+**Last updated:** `20260731.215300` (**e120 GREEN** · **roots** seated · client surfaces category)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---
@@ -94,6 +94,7 @@ Living vocabulary for the Grain family (Glow language · Grain umbrella). Each n
 | **Sameness as the macro** | Law — public sameness compresses without private macros; one named fold, many callers. Foundations [`../foundations/20260703-182612_sameness-is-the-macro.md`](../foundations/20260703-182612_sameness-is-the-macro.md). Tensegral Arc II fold: [`../tools/tensegral_arc_ii_witness.rish`](../tools/tensegral_arc_ii_witness.rish) (`20260728.003317`) |
 | **align** | Glow word — walk the compass rose and reconcile ROADMAP/TASKS with green witnesses. Rule [`.cursor/rules/align.mdc`](../.cursor/rules/align.mdc) |
 | **send** | Glow word — commit · push · merge from client hand to pier. Rule [`.cursor/rules/send-word.mdc`](../.cursor/rules/send-word.mdc) |
+| **roots** | The general category of **client surfaces** Keaton uses to speak with companions — the living members are **Claude web** · **Claude iOS** · **Cursor AppImage desktop** · **Cursor iOS**. A root is where the hand sits to send words; it is not the **Bench** (where claims become evidence), not the **pier** (forge remote · send home), and not **Pond** (the agent enclosure). Distinct from digest/Tilak **roots** and from Rhyz's rhizome metaphor. Seated Keaton's word `20260731.215300` · Equinox e120. |
 | **Metalsmoke** | The thin edge's few honest integrated checks — world alone can answer, smallest slice, witnessed; happy zone stays in parity — [`active-designing/20260703-013412_metalsmoke.md`](../active-designing/20260703-013412_metalsmoke.md) · plainly [`../external-research/20260710-002017_metalsmoke-plainly.md`](../external-research/20260710-002017_metalsmoke-plainly.md) |
 | **Witness habitat** | Acme-facing name for the foundations' **happy zone** — the fast, isolated suite that proves pure folds and seam contracts; devices and hosts stay on a thin edge with metalsmoke. Prefer in tutorials and expanding-prompts; keep *happy zone* in foundations and gratitude — seated `20260717.173427` · Tensegral Arc IV fold [`../tools/tensegral_arc_iv_witness.rish`](../tools/tensegral_arc_iv_witness.rish) (`20260728.004954`) · study [`../external-research/20260717-173427_witness-habitat-foundations-fit-and-onboarding-gaps.md`](../external-research/20260717-173427_witness-habitat-foundations-fit-and-onboarding-gaps.md) · silo [`../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md`](../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md) · tutorial [`../manual/tutorials/cursor-and-the-compass.md`](../manual/tutorials/cursor-and-the-compass.md) |
 | **Compass card** | Succinct Bron pointer list for agent cold-start (`docs/compass_card.bron`) — paths only; pairs with Markdown compressor [`../docs/COMPASS.md`](../docs/COMPASS.md). Foundations stay on the raw shelf; cards never rewrite essays — seated `20260717.173848` · silo [`../active-designing/20260717-173848_compass-card-and-foundations-compress.md`](../active-designing/20260717-173848_compass-card-and-foundations-compress.md) |
