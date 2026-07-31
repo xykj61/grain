@@ -1,0 +1,44 @@
+# tools/gen/season/commence_m9_ascent_witness.rish — commence M9 / e100.
+#
+#   rishi/bin/rishi run tools/gen/season/commence_m9_ascent_witness.rish
+#
+# Measured commence-arc ascent behind the proven census control.
+# Ascent != saga != weave. Invent none. Leaf only. Almanac seat 104 via choir.
+
+say "commence-m9: Language EN — control first; then handback ascent on disk."
+say "commence-m9: Style Radiant — consume outward; nested return waits."
+say "commence-m9: Lens TAME — e100 · commence M9 ascent · almanac seat 104 · ch7 8/16."
+
+let control = run ["rishi/bin/rishi" "run" "tools/gen/season/census_control_witness.rish"]
+say control.out
+assert control.ok else "commence-m9: census control must GREEN before ascent"
+assert control.out contains "GREEN: census-control" else "commence-m9: want control GREEN"
+
+let museum = run ["rishi/bin/rishi" "run" "tools/gen/season/baton_museum_census_witness.rish"]
+say museum.out
+assert museum.ok else "commence-m9: baton museum RED"
+assert museum.out contains "census_breach_count=0" else "commence-m9: want breach 0"
+
+let scope = run ["rishi/bin/rishi" "run" "tools/gen/season/prin_scope.rish"]
+say scope.out
+assert scope.ok else "commence-m9: prin_scope RED"
+assert scope.out contains "GREEN: prin-scope" else "commence-m9: want scope GREEN"
+
+let scan = run ["sh" "tools/fixtures/commence_m9_ascent_scan.sh"]
+say scan.out
+assert scan.ok else "commence-m9: m9 ascent scan must exit 0"
+assert scan.out contains "control_gate=honored" else "commence-m9: want control_gate"
+assert scan.out contains "ascent_saga=honored" else "commence-m9: want ascent_saga"
+assert scan.out contains "ascent_saga_status=PROPOSED" else "commence-m9: want saga PROPOSED"
+assert scan.out contains "ascent_chain=honored" else "commence-m9: want ascent_chain"
+assert scan.out contains "ascent_beats=9" else "commence-m9: want 9 beats"
+assert scan.out contains "ascent_handbacks=honored" else "commence-m9: want handbacks"
+assert scan.out contains "ascent_nested=return_surface_p59" else "commence-m9: want nested handback"
+assert scan.out contains "ascent_nested_status=not_consumed" else "commence-m9: want nested not consumed"
+assert scan.out contains "ascent_almanac=honored" else "commence-m9: want ascent_almanac"
+assert scan.out contains "ascent_shelf_end=ep045" else "commence-m9: want shelf end"
+assert scan.out contains "ascent_ep046=absent" else "commence-m9: want ep046 absent"
+assert scan.out contains "m9_ascent=ok" else "commence-m9: want m9_ascent=ok"
+assert scan.out contains "verdict=ok" else "commence-m9: want verdict=ok"
+
+say "GREEN: commence-m9 — control proven · saga PROPOSED · 9 beats · seats 97-103 · handbacks ascent · nested waiting · shelf end · museum"

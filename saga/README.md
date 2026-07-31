@@ -1,9 +1,9 @@
 # Saga — Season Close Narratives
 
 **Language:** EN
-**Last updated:** 2026-07-28 (Tensegral saga **seated** `20260728.010302`)
+**Last updated:** 2026-07-31 (Commence Arc saga **proposed** `20260731.130200` · M9 ascent measured)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Voice:** Quin
+**Voice:** Riyo (dated Voice headers stay)
 **Status:** Living — root home for final draft / seated season sagas
 
 ---
@@ -16,8 +16,10 @@ A saga is not a check-in and not a waymark. It carries panes (parity · keys · 
 
 | Stamp | Saga | Status |
 |-------|------|--------|
+| `20260731.130200` | [The saga of the Commence Arc — trust the tree, test the instrument](20260731-130200_saga-of-the-commence-arc.md) | **Proposed** — seating awaits Keaton's word · Equinox commence arc |
 | `20260728.010054` | [The saga of the Tensegral Season — stay tensegral](20260728-010054_saga-of-the-tensegral-season.md) | **Seated** `20260728.010302` · Tensegral Season |
 | `20260727.233237` | [The saga of the end — parity weave and personal server key data](20260727-233237_saga-of-the-end-parity-weave-and-personal-server-key.md) | **Seated** `20260727.234617` · Sound Season |
+
 
 ## Infusion — Tally (bounds) and who calls it
 

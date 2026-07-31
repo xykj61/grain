@@ -70,7 +70,7 @@ coords_quest Do
 coords_round 59
 coords_voice_handback return_equinox_e7 CONSUMED 20260730.111804
 coords_equinox_season OPEN
-coords_equinox_status OPEN e99 GREEN · e92 ruling D · ch7 OPEN 7/16 · commence M8 saga · ironbeetle shelf end · return_equinox_e50 CONSUMED · ch5 FULL · ch6 FULL · extend_lean +128
+coords_equinox_status OPEN e100 GREEN · e92 ruling D · ch7 OPEN 8/16 · commence M9 ascent · saga PROPOSED · ironbeetle shelf end · return_equinox_e50 CONSUMED · ch5 FULL · ch6 FULL · extend_lean +128
 coords_true_deepest deca
 coords_e7 equinox_map GREEN 20260730.113507
 coords_e7_path context/equinox_map.brix
@@ -542,7 +542,13 @@ coords_e99_witness tools/gen/season/equinox_commence_m8_choir_witness.rish
 coords_e99_charter expanding-prompts/20260731-130233_e99-commence-m8-saga-charter.md
 coords_e99_recursion expanding-prompts/20260731-130233_equinox-season-e100-recursion-prompt.md
 coords_commence_m8 GREEN 20260731.130233
-coords_almanac_ch7 7 of 16
+coords_e100 commence_m9_ascent GREEN 20260731.131407
+coords_e100_witness tools/gen/season/equinox_commence_m9_choir_witness.rish
+coords_e100_charter expanding-prompts/20260731-131407_e100-commence-m9-ascent-charter.md
+coords_e100_recursion expanding-prompts/20260731-131407_equinox-season-e101-recursion-prompt.md
+coords_commence_m9 GREEN 20260731.131407
+coords_commence_saga_prose PROPOSED 20260731.130200
+coords_almanac_ch7 8 of 16
 coords_almanac_ch7_status OPEN
 coords_ironbeetle_written_shelf ENDS_at_ep045
 extend_lean +128

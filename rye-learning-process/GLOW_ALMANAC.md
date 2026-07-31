@@ -430,7 +430,7 @@ Expected IRON=present · EP042 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep043_choir_witness.rish` · **Stamp:** `20260731.005634` · **Witness:** `tools/gen/season/ironbeetle_ep043_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep043_census.sh` · choir `equinox_ironbeetle_ep043_choir_witness.rish`
 Expected IRON=present · EP043 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only. Chapter six fills at sixteen.
 
-## Chapter Seven (7 of 16)
+## Chapter Seven (8 of 16)
 
 Opened from metal at stamp `20260731.114927`. Themes arrive after findings; this chapter carries none in advance. Ch5 and ch6 surface closes stay parked per e92 ruling D until a close-seat row is seated.
 
@@ -461,6 +461,10 @@ Expected control_gate · tracked planted controls · C1=REFERENCED · C2=ORPHAN 
 ### 103. Commence M8 saga: the ordered commence-arc story behind the proven control — eight waymark beats, seats 97–102, shelf end ep045.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_commence_m8_choir_witness.rish` · **Stamp:** `20260731.130318` · **Witness:** `tools/gen/season/commence_m8_saga_witness.rish` · scan `tools/fixtures/commence_m8_saga_scan.sh` · choir `equinox_commence_m8_choir_witness.rish`
 Expected control_gate · saga_home · saga_beats=8 · saga_almanac seats 97–102 · saga_shelf_end=ep045 · saga_ep046=absent · baton breach 0. Saga != see != weave. Metal answered GREEN. Invent none.
+
+### 104. Commence M9 ascent: handbacks consumed outward, nested return_surface_p59 waiting, commence-arc prose saga PROPOSED — nine waymark beats, seats 97–103, shelf end ep045.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_commence_m9_choir_witness.rish` · **Stamp:** `20260731.131436` · **Witness:** `tools/gen/season/commence_m9_ascent_witness.rish` · scan `tools/fixtures/commence_m9_ascent_scan.sh` · choir `equinox_commence_m9_choir_witness.rish`
+Expected control_gate · ascent_saga PROPOSED · ascent_beats=9 · ascent_handbacks · ascent_nested=return_surface_p59 not_consumed · ascent_almanac seats 97–103 · ascent_shelf_end=ep045 · ascent_ep046=absent · baton breach 0. Ascent != saga != weave. Metal answered GREEN. Invent none.
 
 ---
 
