@@ -1,3 +1,4 @@
+- `20260731.171757` — [e118 fuse verify queue empty](20260731-171757_e118-fuse-verify-queue-empty.bron) — elder roof kg already e116/e117 · no e118 manufactured · dated_testimony 4851
 - `20260731.171411` — [e118 full baton print](20260731-171411_e118-full-baton-print.bron) — fresh meters · dated_testimony 4849 · fork EXTEND · queue empty · e118 next
 - `20260731.170354` — [e117 fork EXTEND + breach let-close GREEN](20260731-170354_e117-fork-extend-breach-close-green.bron) — seat 121 · EXTEND +128 · closed unspent · shred RED refused · ch8 9/16 · e118 next
 - `20260731.165818` — [e116 fuse verify already GREEN](20260731-165818_e116-fuse-verify-already-green.bron) — fuse kg re-paste · roofs agree 4842 · no e117 manufactured · Cloud rishi blocked

@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260731.171411` (EDT) · voice Riyo · e117 GREEN · full baton printed · dated_testimony 4849 · REDS 40 · ch8 OPEN 9/16 · 128 reserved · fascia 88 · fork EXTEND · e118 next  
+**Last refreshed:** `20260731.171757` (EDT) · voice Riyo · e117 GREEN · fuse verify · dated_testimony 4851 · REDS 40 · ch8 OPEN 9/16 · 128 reserved · fascia 88 · fork EXTEND · e118 next  
 
 
 
@@ -23,10 +23,10 @@
 **Git nib:** `f6f78b4187` · Grain · e117 GREEN fork EXTEND · breach closed unspent · REDS 40 · fascia 88  
 
 **Bookmark:** [`waymarks/20260731-170354_e117-fork-extend-breach-close-green.md`](../waymarks/20260731-170354_e117-fork-extend-breach-close-green.md)  
-**Handoff:** [`expanding-prompts/20260731-171411_equinox-season-e118-recursion-prompt.md`](../expanding-prompts/20260731-171411_equinox-season-e118-recursion-prompt.md)
+**Handoff:** [`expanding-prompts/20260731-171757_equinox-season-e118-recursion-prompt.md`](../expanding-prompts/20260731-171757_equinox-season-e118-recursion-prompt.md)
 
 **Season:** Framework · EDT · **Grain** · **finishing edge:** **Equinox** — **OPEN** (e117 GREEN fork **EXTEND +128** · breach **closed unspent** · e116 roofs agree · **ch7 FULL** · **ch8 OPEN 9/16** · seat **128 RESERVED** · census finds **four** · REDS **40** · fascia **88** · suite **Framework 10/10** · M3/M4 consumed · saga **Seated** · handback nested **not consumed** · IronBeetle shelf **ENDS** · e92 ruling D · ch5 FULL · ch6 FULL · extend **+128 seated** · `return_equinox_e50` **CONSUMED**) · geode expedition **APPROVED · GATED** · outer pause **maintain** · **SUNN CLOSED** · POLE **GREEN** · Voice **PAUSED** · Fascia Equinox **PAUSED** (69→90) · Surface **PAUSED** · GitHub dual · Riyo stands · Prefer **git nib**. · `prin scope`  
-**Meters (FRESH baton print · re-cut):** sundial **100 · green** · fascia **88/100** i9 · fascia_health **41** · fascia_health_now **42** · dated_testimony **4849** · orphans **851** · shred **RED** · REDS **40** · roofs **agree** · fork **EXTEND** · breach **closed unspent** · baton breach **0**
+**Meters (FRESH fuse verify · re-cut):** sundial **100 · green** · fascia **88/100** i9 · fascia_health **41** · fascia_health_now **42** · dated_testimony **4851** · orphans **851** · shred **RED** · REDS **40** · roofs **agree** · fork **EXTEND** · breach **closed unspent** · baton breach **0**
 
 ---
 
