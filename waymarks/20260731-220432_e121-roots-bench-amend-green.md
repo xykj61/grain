@@ -21,7 +21,7 @@ Almanac seat **125** · Chapter Eight **(13 of 16)**. Lexicon **roots** amended:
 | fascia | **88** i9 |
 | fascia_health | **41** live/total |
 | fascia_health_now | **43** orphan-share |
-| dated_testimony | **re-cut at send** |
+| dated_testimony | **4873** (both roofs) |
 | surface census | **6** |
 | REDS | **40** |
 | shred | **RED** |
