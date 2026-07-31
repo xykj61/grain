@@ -1,0 +1,28 @@
+# tools/gen/season/ironbeetle_ep012_census_witness.rish — e69 IronBeetle ep012.
+#
+#   rishi/bin/rishi run tools/gen/season/ironbeetle_ep012_census_witness.rish
+#
+# Clean-room: presence only · never copies into rye/.
+# Leaf only — no nested elder choirs.
+
+say "iron-ep012: Language EN — a ring for asking, a ring for answering."
+say "iron-ep012: Style Radiant — deadlines hold; completions drain without a second wait."
+say "iron-ep012: Lens TAME — e69 · clean-room study · almanac seat 74."
+
+let shelf = run ["test" "-d" "gratitude/ironbeetle"]
+assert shelf.ok else "iron-ep012: gratitude/ironbeetle ABSENT — host shelf first"
+
+let census = run ["sh" "tools/fixtures/ironbeetle_ep012_census.sh"]
+say census.out
+assert census.ok else "iron-ep012: census failed or thin"
+assert census.out contains "IRON=present" else "iron-ep012: want IRON=present"
+assert census.out contains "verdict=ok" else "iron-ep012: want verdict=ok"
+assert census.out contains "EP012=yes" else "iron-ep012: ep012 file must be present"
+assert census.out contains "HONORS=yes" else "iron-ep012: Honors heading must be present"
+assert census.out contains "SOURCE=yes" else "iron-ep012: Source heading must be present"
+assert census.out contains "TEACH=yes" else "iron-ep012: teach limbs (ask-ring·answer-ring·submission·completion) must be present"
+assert census.out contains "RHYME=yes" else "iron-ep012: rhyme section must be present"
+assert census.out contains "CLEAN=yes" else "iron-ep012: Clean Room heading must be present"
+assert census.out contains "MATKLAD_OK=yes" else "iron-ep012: matklad companion must cite ironbeetle/"
+
+say "GREEN: iron-ep012 — honors·source·teach·rhyme·clean·matklad ok"
