@@ -1,7 +1,7 @@
 # REDS — the ledger of what we got wrong
 
 **Language:** EN
-**Stamp:** living ledger (born `20260729.222000`) · refreshed `20260729.222000` (opened at Voice v9)
+**Stamp:** living ledger (born `20260729.222000`) · refreshed `20260731.141247` (Equinox e106 · row 33 zero-view)
 **Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
 **Voice:** Riyo
 **Status:** Living pin — one row per red, oldest first
@@ -72,7 +72,9 @@ A red enters this ledger when it is found. Rows are never edited or removed; a l
 
 | 32 | `origin` push refused 403 — the Cloud pier is authenticated yet unauthorized on the origin water; the branch reached `xykj61` only while dual-send looked half-done | git's refusal, named in the send line at tip `828443c0d4` (`Permission to autoproject96/grain.git denied to cursor[bot]`) | Piers carry different keyrings — the ls-remote guard proves **existence**, never **authorization**; the guard grows a **403 / auth-refused** condition, and the dual-push law needs a per-pier ruling (counsel Option 2 parked: Cloud pushes `xykj61` branch + PR only; origin main syncs from the home pier). |
 
-**Rows: 32 · in the tree before the ledger: 6 · recovered by opening it: 14 · added under the reds-first law: 12**
+| 33 | Read fascia `window_n=0` after an i7 rebaseline and claimed the arc's 100/85/92 readings were gone — inferred deletion from an empty view | opening the cache archives (`fascia_metric_v0_window.tsv.pre_i7` · `.pre_i8`) and the planted zero-view control (`tools/fixtures/zero_view_control/`) | A zero in a report is a claim about the instrument's **view**, never about the world. Look where the thing would be before calling it gone. |
+
+**Rows: 33 · in the tree before the ledger: 6 · recovered by opening it: 14 · added under the reds-first law: 13**
 
 **Reds-first accounting for v11:** two reds found, both fixed in-round with witnesses on metal, ledger closed. The remaining journey allocation is therefore **released** rather than booked — which is the law working, not the law skipped.
 

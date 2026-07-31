@@ -1,7 +1,7 @@
 # The Roadmap — living pin
 
 **Language:** EN  
-**Last updated:** `20260731.141014` (EDT) · voice Riyo  
+**Last updated:** `20260731.141441` (EDT) · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Full season ledger:** [`archive/20260724-132812_roadmap-season-ledger.md`](archive/20260724-132812_roadmap-season-ledger.md)  
 **Align:** [`20260726-050422_align-before-cursor-handoff.md`](archive/20260726-050422_align-before-cursor-handoff.md)  
@@ -9,25 +9,25 @@
 
 ---
 
-## Now — Equinox (deca) · window carry i9 (`20260731.141014`)
+## Now — Equinox (deca) · REDS zero-view (`20260731.141441`)
 
 | Order | Lap | Status |
 |-------|-----|--------|
-| — | Equinox e0–e104 · ch1–ch6 FULL · ch7 OPEN · commence M1–M9 · saga Seated · Class A i8 hold · Class O rooms | landed |
-| **1** | **e105** window carry + M3/M4 home land GREEN · seat **109** · ch7 **13/16** · fascia **92** i9 | **this sitting** |
+| — | Equinox e0–e105 · ch1–ch6 FULL · ch7 OPEN · commence M1–M9 · saga Seated · i8 hold · i9 window carry · M3/M4 home | landed |
+| **1** | **e106** REDS zero-view GREEN · seat **110** · ch7 **14/16** · REDS row **33** | **this sitting** |
 | **2** | **THE FORK** — `return_surface_p59` (RETURN) · or extend +128 (EXTEND) | Keaton alone |
 | **3** | Breach spend-or-let-close · Class O path rows · SAFE rows · close-seat row | Keaton alone |
 | **4** | Itinerary n-2 bundle send · n-1 shred · n prepare | held |
 | **5** | Horizon: geode expedition begin (e254/e255 or Keaton begin) | GATED |
 
-**Finishing edge (season):** Equinox OPEN · e106 next · nested handback `return_surface_p59` not consumed · fascia **92** i9 window carry · M3+M4 home · saga **Seated**.  
+**Finishing edge (season):** Equinox OPEN · e107 next · nested handback `return_surface_p59` not consumed · REDS **33** · fascia **92** i9 · M3/M4 consumed · saga **Seated**.  
 **Finishing edge (product horizon):** clone · bootstrap · one witness · one `rishi glow` line ≤ 30 minutes — still stands.
 
 **Shell ratchet** (seated `20260726.032231`): `.sh` to Rishi on-touch; advisory count each advise run; exemptions: `rye/bootstrap.sh`, external-interpreter seams, python-heredoc witness bodies until duty-8 verbs land, thin-delegate elders.
 
 **Speed law** (counsel `20260726.044729`): never fake GREEN · never hide ABSENT · never let FAST satisfy COLD · never cut a witness before S0 weighs it · no P-vane (graph inside Mantra).
 
-**Meter law** (e102–e105): re-cut every meter each round; a pin is a memory; window_min keeps falls visible; a revision carries its window forward; exclusion hides; holding discloses.
+**Meter law** (e102–e106): re-cut every meter each round; a pin is a memory; window_min keeps falls visible; a revision carries its window; a zero names the instrument's view, never the world; exclusion hides; holding discloses.
 
 **Census instrument** (commence): `git ls-files` never `find` · planted controls before totals · Class O propose-never-seat rooms (paths await Keaton).
 
