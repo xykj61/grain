@@ -1,0 +1,23 @@
+# tools/gen/season/equinox_e130_seal_desk_witness.rish — e130 seat.
+#   rishi/bin/rishi run tools/gen/season/equinox_e130_seal_desk_witness.rish
+say "e130-seal-desk: Language EN — counsel wrote Glow; the bound answered first."
+say "e130-seal-desk: Style Radiant — six lines at max_lines; seven refuses."
+say "e130-seal-desk: Lens TAME — e130 · seal-jam-cue · 128 reserved · shred RED."
+
+let green = run ["sh" "tools/fixtures/equinox_e130_seal_desk_scan.sh"]
+assert green.ok else "e130-seal-desk: living scan must exit 0"
+assert green.out contains "desk=honored" else "e130-seal-desk: want desk"
+assert green.out contains "desk_at_ceiling=honored" else "e130-seal-desk: want ceiling"
+assert green.out contains "bound=honored" else "e130-seal-desk: want max_lines bound"
+assert green.out contains "glow_run=honored" else "e130-seal-desk: want glow_run"
+assert green.out contains "ceiling=honored" else "e130-seal-desk: want seven refuse"
+assert green.out contains "seat_128=reserved_close_choir" else "e130-seal-desk: want 128 reserved"
+assert green.out contains "shred=RED" else "e130-seal-desk: want shred RED"
+assert green.out contains "product=glow_desk_landed" else "e130-seal-desk: want product"
+assert green.out contains "verdict=ok" else "e130-seal-desk: want verdict ok"
+
+let red = run ["sh" "tools/fixtures/equinox_e130_seal_desk_scan.sh" "prove-red"]
+assert (red.ok == false) else "e130-seal-desk: prove-red must refuse"
+assert red.out contains "RED_glow_past_max_lines" else "e130-seal-desk: prove-red want refuse"
+
+say "GREEN: e130-seal-desk — six at ceiling · seven refused · product landed · 128 reserved"

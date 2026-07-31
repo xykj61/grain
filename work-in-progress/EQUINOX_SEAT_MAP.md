@@ -1,13 +1,13 @@
 # Equinox Seat Map — close path · Chapter Seven and Eight
 
 **Language:** EN  
-**Status:** Living pin — **bundle send GREEN** · **Class O word-scope** · **on-touch never campaign** · **start rung** sh→rish · **build stack** seated · ch7 close **PERFORMED** · ch8 seat **128 RESERVED** · fork **EXTEND +128** · breach **closed unspent** · roofs **CLOSED** · close-seat **answered** · e92 park **lifted** · **roots ≠ Bench** · name the Bench · **living-pin guard** · emptied caught  
+**Status:** Living pin — **seal-jam-cue desk GREEN** · **max_lines** enforced · **bundle send GREEN** · **Class O word-scope** · **on-touch never campaign** · **start rung** sh→rish · **build stack** seated · ch7 close **PERFORMED** · ch8 seat **128 RESERVED** · fork **EXTEND +128** · breach **closed unspent** · roofs **CLOSED** · close-seat **answered** · e92 park **lifted** · **roots ≠ Bench** · name the Bench · **living-pin guard** · emptied caught  
 **Voice:** Riyo  
-**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260731.234032` (e129 first bundle send · 128 kept reserved)  
-**Seat:** Equinox e123 · almanac **127** · Chapter Eight **(15 of 16)** · e124–e129 no content seat  
-**Basis:** kg wow surprise · itinerary n-2 · first full `--all` cut ~192 MiB · **128 still reserved**  
+**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260731.234806` (e130 seal-jam-cue desk · 128 kept reserved)  
+**Seat:** Equinox e123 · almanac **127** · Chapter Eight **(15 of 16)** · e124–e130 no content seat  
+**Basis:** kg land the desk · counsel wrote Glow · bound refused seven · six at ceiling · **128 still reserved**  
 
-*A chapter's sixteenth seat may carry check · test · prepare as a close choir. A duty is not a seat unless the almanac says so — only the close is a seat. A surface witness claims no seat of its own. **roots** are where the hand sits to send words; a **Bench** is where claims become evidence — different kinds. Name the **Bench** when a measurement is reported. **Build stack:** sh → rish → glow·tend → docs-geode → Aurora·Caravan·Tally → Mantra·Weave — foundations first; five refusals · layer order. **Start rung:** sh → rish seam — on-touch only. **Shell ratchet:** on-touch, never a campaign. **Class O word-scope:** authorizing word on class/rooms, not per-path. **Bundle send:** crossing mode — cut · verify · stamped manifest; first rehearsal e129. When two roofs carry one name, either they agree or the name is doing two jobs. Approve-all · kg · approvals seat recommended leans; they circle no gate — including shred. Seat the suite; do not manufacture meters. Look for the thing, not for the name of the thing. On-disk is not in-the-tree. A witness must not depend on one bench's tools.*
+*A chapter's sixteenth seat may carry check · test · prepare as a close choir. A duty is not a seat unless the almanac says so — only the close is a seat. A surface witness claims no seat of its own. **roots** are where the hand sits to send words; a **Bench** is where claims become evidence — different kinds. Name the **Bench** when a measurement is reported. **Build stack:** sh → rish → glow·tend → docs-geode → Aurora·Caravan·Tally → Mantra·Weave — foundations first; five refusals · layer order. **Start rung:** sh → rish seam — on-touch only. **Shell ratchet:** on-touch, never a campaign. **Class O word-scope:** authorizing word on class/rooms, not per-path. **Bundle send:** crossing mode — cut · verify · stamped manifest; first rehearsal e129. **max_lines:** Glow multi-bind ceiling 6 — refuses past it. When two roofs carry one name, either they agree or the name is doing two jobs. Approve-all · kg · approvals seat recommended leans; they circle no gate — including shred. Seat the suite; do not manufacture meters. Look for the thing, not for the name of the thing. On-disk is not in-the-tree. A witness must not depend on one bench's tools.*
 
 ---
 
@@ -68,6 +68,14 @@
 1. **BUNDLE SEND** — a crossing mode, not an almanac seat. **First rehearsal GREEN** e129 `20260731.234032` (~192 MiB · stamped manifest tracked).  
 2. **SHRED lap** — **Keaton-gated**, Class O, shred **RED**. Not a seat. Word-scope is **class/rooms** (e128), not per-path. Opening words: `Class O yes` · `shred Class O` · `shed <room>` · or circled `shred yes`. Approve-all · kg · approvals · best path do not open the cut.  
 3. **CHECK · TEST · PREPARE** — only the close choir is a seat (112 LANDED · 128 RESERVED).
+
+### Product on the stack (e130 · not a content seat)
+
+| Item | State |
+| --- | --- |
+| seal-jam-cue desk | **GREEN** `glow/gen/compose-bind-nest-seal-jam-cue.glow` · six binds at `max_lines` · seven refuses |
+| max_lines | **6** · named in `glow/lower_multi.rye` · enforced by `glow_run` |
+| build-stack rung | **glow** on-touch · foundations still first · no campaign |
 
 ### Held beside the map
 
