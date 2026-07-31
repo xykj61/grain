@@ -1,3 +1,4 @@
+- `20260731.150140` — [e112 planted date-dialect witness GREEN](20260731-150140_e112-planted-date-dialect-green.bron) — seat 116 · C1/C2 · one_dialect · ch8 4/16 · e113 next
 - `20260731.145246` — [e111 date dialect GREEN](20260731-145246_e111-date-dialect-green.bron) — seat 115 · 17 of 17 compact · ch8 3/16 · e112 next
 - `20260731.144223` — [e110 ch8 reserve GREEN](20260731-144223_e110-ch8-reserve-green.bron) — seat 114 · census finds four · 128 reserved · ch8 2/16 · e111 next
 - `20260731.143552` — [e109 ch7 surface GREEN](20260731-143552_e109-ch7-surface-green.bron) — seat 113 · ch8 open · fifteen limbs · itinerary modes · e110 next

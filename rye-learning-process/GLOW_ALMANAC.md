@@ -498,7 +498,7 @@ Expected control_gate · seat_map 110 spent · 112 close choir proposed · bundl
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_e108_ch7_close_choir_witness.rish` · **Stamp:** `20260731.142604` · **Witness:** `tools/gen/season/equinox_e108_ch7_close_witness.rish` · scan `tools/fixtures/equinox_e108_ch7_close_scan.sh` · pin `work-in-progress/EQUINOX_SEAT_MAP.md`
 Expected control_gate · seat_map 112 close choir this sitting · shred opens Chapter Eight · REDS rows=37 · expect_next=38 · M3/M4 kept · zero_view · fascia i9 hold 92 · fork not_consumed · seats 97–111 → 112 · shelf end ep045 · baton breach 0. A chapter-close choir is a check. Metal answered GREEN. Chapter seven fills at sixteen. Invent none.
 
-## Chapter Eight (3 of 16)
+## Chapter Eight (4 of 16)
 
 Opened from metal at stamp `20260731.143548`. Themes arrive after findings; this chapter carries none in advance. Bundle and shred stay itinerary modes; Class O paths await Keaton's word.
 
@@ -513,6 +513,10 @@ Expected control_gate · surface_count=4 · chapters 2,3,4,7 · ch5/ch6 absent �
 ### 115. Equinox e111 date dialect: eleven context Last updated values compact (hyphenated day -> YYYYMMDD in backticks); 17 of 17 compact; zero hyphenated; seat 128 stays reserved; surface census four kept.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_e111_date_dialect_choir_witness.rish` · **Stamp:** `20260731.145236` · **Witness:** `tools/gen/season/equinox_e111_date_dialect_witness.rish` · scan `tools/fixtures/equinox_e111_date_dialect_scan.sh`
 Expected control_gate · dialect_transformed=11 · hyphenated_last_updated=0 · 17_of_17_compact · lint label-only dep · seat_128 reserved · surface_count=4 · fork not_consumed · shelf end ep045 · baton breach 0. Carry the transformation, never the claim that it was done. A format change claims no review. Metal answered GREEN. Invent none.
+
+### 116. Equinox e112 planted date-dialect witness: C1 hyphenated control counted; C2 compact control not counted as hyphen; library 17 of 17 compact (one_dialect); prove-red refuses; seat 128 stays reserved; surface census four kept.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_e112_date_dialect_choir_witness.rish` · **Stamp:** `20260731.150232` · **Witness:** `tools/gen/season/equinox_e112_date_dialect_witness.rish` · standing `tools/gen/season/date_dialect_witness.rish` · scan `tools/fixtures/date_dialect_scan.sh` · equinox scan `tools/fixtures/equinox_e112_date_dialect_witness_scan.sh`
+Expected control_gate · controls_honored=2 · hyphenated=0 · compact=17 · verdict=one_dialect · prove-red RED_C2-compact · elder e111 · seat_128 reserved · surface_count=4 · fork not_consumed · shelf end ep045 · baton breach 0. A duty with no witness has no seat, and a duty with no seat never lands. Carry the transformation, never the claim that it was done. Metal answered GREEN. Invent none.
 
 ---
 

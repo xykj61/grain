@@ -1,0 +1,22 @@
+# tools/gen/season/equinox_e112_date_dialect_choir_witness.rish — e112 → ch8 4/16.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_e112_date_dialect_choir_witness.rish
+
+say "equinox-e112-choir: Language EN — plant both ways before the library claim."
+say "equinox-e112-choir: Style Radiant — a duty with no witness has no seat."
+say "equinox-e112-choir: Lens TAME — e112 · planted dialect · almanac seat 116 · ch8 4/16."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/season/equinox_e112_date_dialect_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-e112-choir: welcome RED"
+assert welcome.out contains "GREEN: e112-date-dialect-witness" else "equinox-e112-choir: want GREEN"
+assert welcome.out contains "verdict=one_dialect" else "equinox-e112-choir: want one_dialect"
+assert welcome.out contains "seat_128=reserved_close_choir" else "equinox-e112-choir: want 128"
+assert welcome.out contains "census_breach_count=0" else "equinox-e112-choir: want breach 0"
+assert welcome.out contains "fork_status=not_consumed" else "equinox-e112-choir: want fork waiting"
+
+let almanac = run ["sh" "tools/gen/season/equinox_e112_date_dialect_almanac.sh"]
+assert almanac.ok else "equinox-e112-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-e112-choir — planted date-dialect GREEN · almanac seat 116 · ch8 4/16"
