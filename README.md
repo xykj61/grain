@@ -3,7 +3,7 @@
 **Language:** EN  
 **Style:** Radiant (see [`context/RADIANT_STYLE.md`](context/RADIANT_STYLE.md)) · **Voice:** Riyo  
 **Status:** Living — the front door to the repository; each claim below marks what runs today versus what is named and scoped  
-**Last updated:** `20260731.141014` (Equinox e105 · window carry i9 · M3/M4 · ch7 13/16 · git nib living)
+**Last updated:** `20260731.141441` (Equinox e106 · REDS zero-view · ch7 14/16 · git nib living)
 
 ---
 
