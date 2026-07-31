@@ -1,7 +1,7 @@
 # The Work-in-Progress Stack
 
 **Language:** EN
-**Last updated:** `20260731.134159` (EDT) · Equinox OPEN · fascia chase · ch7 10/16 · standing voice Riyo
+**Last updated:** `20260731.134911` (EDT) · Equinox OPEN · Class A i7 · ch7 11/16 · standing voice Riyo
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Riyo
 **Status:** Foundation — living workbench; prefer **git nib** · see [`REMEMBER.md`](REMEMBER.md) · [`ROADMAP.md`](ROADMAP.md)
