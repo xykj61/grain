@@ -1,3 +1,4 @@
+- `20260731.234032` — [e129 first bundle send GREEN](20260731-234032_e129-bundle-send-green.bron) — ~192 MiB cut · stamped manifest · crossing mode · 128 reserved
 - `20260731.232004` — [e128 Class O word-scope GREEN](20260731-232004_e128-class-o-word-scope-green.bron) — class/rooms · orphans 858 · cut held · 128 reserved
 - `20260731.231509` — [e127 on-touch never campaign GREEN](20260731-231509_e127-on-touch-green.bron) — shell ratchet on-touch · REDS 42 · shred held · 128 reserved
 - `20260731.231123` — [e126 start rung GREEN](20260731-231123_e126-start-rung-green.bron) — sh→rish named · census_control climb · 128 reserved
