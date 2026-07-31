@@ -1,0 +1,20 @@
+# tools/gen/season/equinox_e123_living_pin_guard_witness.rish — e123 seat.
+#   rishi/bin/rishi run tools/gen/season/equinox_e123_living_pin_guard_witness.rish
+say "e123-living-pin-guard: Language EN — a lost pin must be caught."
+say "e123-living-pin-guard: Style Radiant — content · header · bound · emptied fixture."
+say "e123-living-pin-guard: Lens TAME — e123 · almanac 127 · ch8 15/16 · no history walk."
+
+let green = run ["sh" "tools/fixtures/equinox_e123_living_pin_guard_scan.sh"]
+assert green.ok else "e123-living-pin-guard: living scan must exit 0"
+assert green.out contains "pins=honored" else "e123-living-pin-guard: want pins honored"
+assert green.out contains "emptied_control=honored" else "e123-living-pin-guard: want emptied honored"
+assert green.out contains "kinds=honored" else "e123-living-pin-guard: want kinds honored"
+assert green.out contains "history_independence=honored" else "e123-living-pin-guard: want no history walk"
+assert green.out contains "seat_128=reserved_close_choir" else "e123-living-pin-guard: want 128 reserved"
+assert green.out contains "verdict=ok" else "e123-living-pin-guard: want verdict ok"
+
+let red = run ["sh" "tools/fixtures/equinox_e123_living_pin_guard_scan.sh" "prove-red"]
+assert (red.ok == false) else "e123-living-pin-guard: prove-red must refuse"
+assert red.out contains "RED_living_pin_emptied_caught" else "e123-living-pin-guard: prove-red want emptied caught"
+
+say "GREEN: e123-living-pin-guard — pins guarded · emptied caught · shred RED"

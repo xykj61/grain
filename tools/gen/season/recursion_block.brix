@@ -70,7 +70,7 @@ coords_quest Do
 coords_round 59
 coords_voice_handback return_equinox_e7 CONSUMED 20260730.111804
 coords_equinox_season OPEN
-coords_equinox_status OPEN e122 GREEN · roots bench kinds · roots four client surfaces · roots not Bench · name the Bench · e121 blur dated refused · close-seat surfaces · census finds six · e92 park lifted · ch5+ch6 tools · roofs CLOSED · two jobs · stale Cloud-blocked retired · fork EXTEND +128 · breach closed unspent · e92 ruling D · close-seat answered · ch7 FULL · ch8 OPEN 14/16 · seat 128 reserved · itinerary modes · REDS 40 · fascia i9 88 · saga SEATED · handback nested not consumed · ironbeetle shelf end · return_equinox_e50 CONSUMED · ch5 FULL · ch6 FULL · extend_lean +128 seated
+coords_equinox_status OPEN e123 GREEN · living-pin guard · emptied caught · e122 roots bench kinds · roots four client surfaces · roots not Bench · name the Bench · e121 blur dated refused · close-seat surfaces · census finds six · e92 park lifted · ch5+ch6 tools · roofs CLOSED · two jobs · stale Cloud-blocked retired · fork EXTEND +128 · breach closed unspent · e92 ruling D · close-seat answered · ch7 FULL · ch8 OPEN 15/16 · seat 128 reserved · itinerary modes · REDS 40 · fascia i9 88 · saga SEATED · handback nested not consumed · ironbeetle shelf end · return_equinox_e50 CONSUMED · ch5 FULL · ch6 FULL · extend_lean +128 seated
 coords_true_deepest deca
 coords_e7 equinox_map GREEN 20260730.113507
 coords_e7_path context/equinox_map.brix
@@ -638,6 +638,11 @@ coords_e121 roots_bench_amend GREEN 20260731.220432
 coords_e121_witness tools/gen/season/equinox_e121_roots_bench_amend_witness.rish
 coords_e122 roots_bench_kinds GREEN 20260731.221131
 coords_e122_witness tools/gen/season/equinox_e122_roots_bench_kinds_witness.rish
+coords_e123 living_pin_guard GREEN 20260731.222426
+coords_e123_witness tools/gen/season/equinox_e123_living_pin_guard_witness.rish
+coords_living_pin_guard roster_nonempty_header_bound_emptied
+coords_living_pin_roster tools/fixtures/living_pin_guard_roster.txt
+coords_living_pin_emptied tools/fixtures/living_pin_emptied_control.md
 coords_roots Claude_web · Claude_iOS · Cursor_AppImage_desktop · Cursor_iOS
 coords_roots_kind hand_sits_to_send_words
 coords_bench_kind claims_become_evidence

@@ -498,7 +498,7 @@ Expected control_gate · seat_map 110 spent · 112 close choir proposed · bundl
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_e108_ch7_close_choir_witness.rish` · **Stamp:** `20260731.142604` · **Witness:** `tools/gen/season/equinox_e108_ch7_close_witness.rish` · scan `tools/fixtures/equinox_e108_ch7_close_scan.sh` · pin `work-in-progress/EQUINOX_SEAT_MAP.md`
 Expected control_gate · seat_map 112 close choir this sitting · shred opens Chapter Eight · REDS rows=37 · expect_next=38 · M3/M4 kept · zero_view · fascia i9 hold 92 · fork not_consumed · seats 97–111 → 112 · shelf end ep045 · baton breach 0. A chapter-close choir is a check. Metal answered GREEN. Chapter seven fills at sixteen. Invent none.
 
-## Chapter Eight (14 of 16)
+## Chapter Eight (15 of 16)
 
 Opened from metal at stamp `20260731.143548`. Themes arrive after findings; this chapter carries none in advance. Bundle and shred stay itinerary modes; Class O paths await Keaton's word.
 
@@ -557,6 +557,10 @@ Expected control_gate · roots=honored · bench_kinship=honored · six members �
 ### 126. Equinox e122 roots bench kinds: Lexicon **roots** restored to four client surfaces (Claude web · Claude iOS · Cursor AppImage desktop · Cursor iOS) — where the hand sits to send words; **Bench** kept a different kind — where claims become evidence; e121 blur that made Bench a raised root is refused; hard line corrected to name the **Bench** when a measurement is reported; seat 128 stays reserved; surface census six kept.
 **Ran:** `sh tools/fixtures/equinox_e122_roots_bench_kinds_scan.sh` · **Stamp:** `20260731.181541` · **Witness:** `tools/gen/season/equinox_e122_roots_bench_kinds_witness.rish` · counsel `counsel/20260731-221131_e122-roots-bench-kinds.md` · Lexicon `context/LEXICON.md`
 Expected control_gate · roots=honored · kinds=honored · four members · prove-red RED_claimed_bench_is_raised_root · name_the_bench law · seat_128 reserved · surface_count=6 · remember non-empty · fork EXTEND · handback not_consumed · shelf end ep045 · baton breach 0. When two roofs carry one name, either they agree or the name is doing two jobs. Metal answered GREEN. Invent none.
+
+### 127. Equinox e123 living-pin guard: content guard for rostered living pins — non-empty · header present · tracked via git ls-files · bound enforce or hold_over disclose; planted emptied fixture must be caught (prove-red RED_living_pin_emptied_caught); would have named the e121 REMEMBER wipe; no git-history walk; e122 roots≠Bench kinds kept; seat 128 stays reserved; surface census six kept. Approve-all seated this lean; shred · SAFE · geode stay Keaton-gated.
+**Ran:** `sh tools/fixtures/equinox_e123_living_pin_guard_scan.sh` · **Stamp:** `20260731.182809` · **Witness:** `tools/gen/season/equinox_e123_living_pin_guard_witness.rish` · counsel `counsel/20260731-222426_e123-living-pin-guard.md` · roster `tools/fixtures/living_pin_guard_roster.txt` · emptied `tools/fixtures/living_pin_emptied_control.md`
+Expected control_gate · pins=honored · emptied_control=honored · kinds=honored · history_independence · prove-red RED_living_pin_emptied_caught · seat_128 reserved · surface_count=6 · fork EXTEND · handback not_consumed · shelf end ep045 · baton breach 0. A duty with no witness never lands. Metal answered GREEN. Invent none.
 
 ---
 
