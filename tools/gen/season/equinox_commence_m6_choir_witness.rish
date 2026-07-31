@@ -1,0 +1,22 @@
+# tools/gen/season/equinox_commence_m6_choir_witness.rish — e97 → almanac ch7 5/16.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_commence_m6_choir_witness.rish
+#
+# Commence M6 see: eyes census behind proven control; seat 101.
+
+say "equinox-commence-m6-choir: Language EN — control before see; the arc fills ch7."
+say "equinox-commence-m6-choir: Style Radiant — eyes verify; invent none."
+say "equinox-commence-m6-choir: Lens TAME — e97 · M6 see · almanac seat 101 · ch7 5/16."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/season/commence_m6_see_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-commence-m6-choir: welcome RED"
+assert welcome.out contains "GREEN: commence-m6" else "equinox-commence-m6-choir: want GREEN"
+assert welcome.out contains "see_shelf_end=ep045" else "equinox-commence-m6-choir: want shelf end"
+assert welcome.out contains "census_breach_count=0" else "equinox-commence-m6-choir: want breach 0"
+
+let almanac = run ["sh" "tools/gen/season/equinox_commence_m6_almanac.sh"]
+assert almanac.ok else "equinox-commence-m6-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-commence-m6-choir — M6 see GREEN · almanac seat 101 · ch7 5/16"

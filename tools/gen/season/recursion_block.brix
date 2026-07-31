@@ -70,7 +70,7 @@ coords_quest Do
 coords_round 59
 coords_voice_handback return_equinox_e7 CONSUMED 20260730.111804
 coords_equinox_season OPEN
-coords_equinox_status OPEN e96 GREEN · e92 ruling D · ch7 OPEN 4/16 · commence M5 · ironbeetle shelf end · return_equinox_e50 CONSUMED · ch5 FULL · ch6 FULL · extend_lean +128
+coords_equinox_status OPEN e97 GREEN · e92 ruling D · ch7 OPEN 5/16 · commence M6 see · ironbeetle shelf end · return_equinox_e50 CONSUMED · ch5 FULL · ch6 FULL · extend_lean +128
 coords_true_deepest deca
 coords_e7 equinox_map GREEN 20260730.113507
 coords_e7_path context/equinox_map.brix
@@ -525,7 +525,12 @@ coords_e96_witness tools/gen/season/equinox_commence_m5_choir_witness.rish
 coords_e96_charter expanding-prompts/20260731-122009_e96-commence-m5-recut-charter.md
 coords_e96_recursion expanding-prompts/20260731-122009_equinox-season-e97-recursion-prompt.md
 coords_commence_m5 GREEN 20260731.122009
-coords_almanac_ch7 4 of 16
+coords_e97 commence_m6_see GREEN 20260731.124325
+coords_e97_witness tools/gen/season/equinox_commence_m6_choir_witness.rish
+coords_e97_charter expanding-prompts/20260731-124325_e97-commence-m6-see-charter.md
+coords_e97_recursion expanding-prompts/20260731-124325_equinox-season-e98-recursion-prompt.md
+coords_commence_m6 GREEN 20260731.124325
+coords_almanac_ch7 5 of 16
 coords_almanac_ch7_status OPEN
 coords_ironbeetle_written_shelf ENDS_at_ep045
 extend_lean +128

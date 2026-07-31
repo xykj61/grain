@@ -1,0 +1,41 @@
+# tools/gen/season/commence_m6_see_witness.rish — commence M6 / e97.
+#
+#   rishi/bin/rishi run tools/gen/season/commence_m6_see_witness.rish
+#
+# Eyes census behind the proven census control.
+# See != run: verifies finishing-edge presence; invents no episodes.
+# Pinned meters stay pinned. Leaf only. Almanac seat 101 via equinox choir.
+
+say "commence-m6: Language EN — control first; then eyes see the finishing edge."
+say "commence-m6: Style Radiant — see what sits; invent none; pinned meters stay."
+say "commence-m6: Lens TAME — e97 · commence M6 see · almanac seat 101 · ch7 5/16."
+
+let control = run ["rishi/bin/rishi" "run" "tools/gen/season/census_control_witness.rish"]
+say control.out
+assert control.ok else "commence-m6: census control must GREEN before see"
+assert control.out contains "GREEN: census-control" else "commence-m6: want control GREEN"
+
+let museum = run ["rishi/bin/rishi" "run" "tools/gen/season/baton_museum_census_witness.rish"]
+say museum.out
+assert museum.ok else "commence-m6: baton museum RED"
+assert museum.out contains "census_breach_count=0" else "commence-m6: want breach 0"
+assert museum.out contains "GREEN: baton-census" else "commence-m6: want museum GREEN"
+
+let scope = run ["rishi/bin/rishi" "run" "tools/gen/season/prin_scope.rish"]
+say scope.out
+assert scope.ok else "commence-m6: prin_scope RED"
+assert scope.out contains "GREEN: prin-scope" else "commence-m6: want scope GREEN"
+
+let scan = run ["sh" "tools/fixtures/commence_m6_see_scan.sh"]
+say scan.out
+assert scan.ok else "commence-m6: m6 see scan must exit 0"
+assert scan.out contains "control_gate=honored" else "commence-m6: want control_gate"
+assert scan.out contains "see_almanac=honored" else "commence-m6: want see_almanac"
+assert scan.out contains "see_waymarks=honored" else "commence-m6: want see_waymarks"
+assert scan.out contains "see_shelf=honored" else "commence-m6: want see_shelf"
+assert scan.out contains "see_shelf_end=ep045" else "commence-m6: want shelf end ep045"
+assert scan.out contains "see_ep046=absent" else "commence-m6: want ep046 absent"
+assert scan.out contains "inventory=honored" else "commence-m6: want inventory"
+assert scan.out contains "verdict=ok" else "commence-m6: want verdict=ok"
+
+say "GREEN: commence-m6 — control proven · eyes see ch7 seats · waymarks · shelf end · museum · inventory"
