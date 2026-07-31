@@ -58,6 +58,13 @@ let bound = run ["sh" "-c" "test ${bytes} -le 268435456 && echo BOUND_OK || echo
 assert bound.ok else "equinox-bundle: bound check failed"
 assert bound.out contains "BOUND_OK" else "equinox-bundle: bundle exceeds equinox_bundle_max_bytes"
 
+# Stamped manifest beside the bundle (discipline 20260730.041405 · e129)
+let man = run ["sh" "-c" "sh tools/gen/season/equinox_bundle_manifest.sh ${path} ${round} \"$(git remote get-url origin)\" --all \"$(git rev-parse HEAD)\" \"$(date -u +%Y%m%d.%H%M%S)\" \"closing round ${round} full --all\""]
+say man.out
+assert man.ok else "equinox-bundle: stamped manifest must write"
+assert man.out contains "verdict=ok" else "equinox-bundle: want manifest ok"
+
 say "equinox-bundle: round ${round} bytes ${bytes} verified within bound"
 say "equinox-bundle: kept at ${path} — inside the project, survives the session"
-say "GREEN: equinox-bundle — cut home-side · verified · within named bound"
+say "equinox-bundle: stamped manifest beside the cut"
+say "GREEN: equinox-bundle — cut home-side · verified · manifested · within named bound"

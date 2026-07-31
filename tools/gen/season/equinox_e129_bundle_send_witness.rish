@@ -1,0 +1,21 @@
+# tools/gen/season/equinox_e129_bundle_send_witness.rish — e129 seat.
+#   rishi/bin/rishi run tools/gen/season/equinox_e129_bundle_send_witness.rish
+say "e129-bundle-send: Language EN — crossing mode; the overdue step finally cuts."
+say "e129-bundle-send: Style Radiant — cut · verify · stamped manifest · never /tmp."
+say "e129-bundle-send: Lens TAME — e129 · first full bundle · 128 reserved · shred RED."
+
+let green = run ["sh" "tools/fixtures/equinox_e129_bundle_send_scan.sh"]
+assert green.ok else "e129-bundle-send: living scan must exit 0"
+assert green.out contains "manifest=honored" else "e129-bundle-send: want manifest"
+assert green.out contains "rehearsal=honored" else "e129-bundle-send: want rehearsal"
+assert green.out contains "crossing_mode=bundle_send" else "e129-bundle-send: want crossing mode"
+assert green.out contains "first_cut_within_bound=honored" else "e129-bundle-send: want bound"
+assert green.out contains "seat_128=reserved_close_choir" else "e129-bundle-send: want 128 reserved"
+assert green.out contains "shred=RED" else "e129-bundle-send: want shred RED"
+assert green.out contains "verdict=ok" else "e129-bundle-send: want verdict ok"
+
+let red = run ["sh" "tools/fixtures/equinox_e129_bundle_send_scan.sh" "prove-red"]
+assert (red.ok == false) else "e129-bundle-send: prove-red must refuse"
+assert red.out contains "RED_bundle_send_tmpfs_or_seat_claim" else "e129-bundle-send: prove-red want refuse"
+
+say "GREEN: e129-bundle-send — first cut · stamped manifest · crossing mode · 128 reserved"
