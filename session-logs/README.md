@@ -1,3 +1,4 @@
+- `20260731.014410` — [opus bench raise M1 census GREEN](20260731-014410_opus-bench-raise-m1-census.bron) — guide landed · tip 0981a393e1 · baton 0
 - `20260731.010844` — [e92 Claude check-in ch6 surface](20260731-010844_e92-ch6-surface-claude-checkin.bron) — package READY · await Claude
 - `20260731.005634` — [e91 IronBeetle ep043 GREEN](20260731-005634_e91-ironbeetle-ep043-green.bron) — seat 96 · ch6 FULL · e92 next
 - `20260731.005353` — [e90 IronBeetle ep042 GREEN](20260731-005353_e90-ironbeetle-ep042-green.bron) — seat 95 · ch6 15/16 · e91 next
