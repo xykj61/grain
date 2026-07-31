@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260730.211417
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title e72 IronBeetle ep015 proving-a-negative GREEN
+prompt kg · e72 — IronBeetle ep015 proving-a-negative
+think e71 ep014 GREEN · ep015 next written silo · leaf census twin
+think Teach: proving a negative · nack · view change · canonical · right to be stuck
+think Seat 77 · ch5 13/16 · ep018 next (skip ep016·ep017) · expedition stays gated
+obs e72 GREEN · e73 IronBeetle ep018 next
+file expanding-prompts/20260730-211338_e72-ironbeetle-ep015-charter.md charter
+file tools/fixtures/ironbeetle_ep015_census.sh scan GREEN
+file tools/gen/season/equinox_ironbeetle_ep015_choir_witness.rish choir GREEN
+file rye-learning-process/GLOW_ALMANAC.md seat 77 · ch5 13/16
+file waymarks/20260730-211417_e72-ironbeetle-ep015-green.md finishing edge
+file expanding-prompts/20260730-211417_equinox-season-e73-recursion-prompt.md fusion
+recommend keep-going e73 IronBeetle ep018 the-same-bug-byte-for-byte
