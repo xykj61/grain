@@ -1,0 +1,47 @@
+# tools/gen/season/equinox_e110_ch8_reserve_witness.rish — e110 census + reserve 128.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_e110_ch8_reserve_witness.rish
+#
+# Law: a record that cannot be found by the census that will look for it
+# is not yet a record. Reserve ch8 seat 128 for the close choir on day one.
+
+say "e110-ch8-reserve: Language EN — control first; then prove the census finds four."
+say "e110-ch8-reserve: Style Radiant — what ch7 recovered by catch, ch8 keeps by plan."
+say "e110-ch8-reserve: Lens TAME — e110 · surface census · reserve 128 · almanac 114 · ch8 2/16."
+
+let control = run ["rishi/bin/rishi" "run" "tools/gen/season/census_control_witness.rish"]
+say control.out
+assert control.ok else "e110-ch8-reserve: census control must GREEN"
+assert control.out contains "GREEN: census-control" else "e110-ch8-reserve: want control GREEN"
+
+let museum = run ["rishi/bin/rishi" "run" "tools/gen/season/baton_museum_census_witness.rish"]
+say museum.out
+assert museum.ok else "e110-ch8-reserve: baton museum RED"
+assert museum.out contains "census_breach_count=0" else "e110-ch8-reserve: want breach 0"
+
+let scope = run ["rishi/bin/rishi" "run" "tools/gen/season/prin_scope.rish"]
+say scope.out
+assert scope.ok else "e110-ch8-reserve: prin_scope RED"
+assert scope.out contains "GREEN: prin-scope" else "e110-ch8-reserve: want scope GREEN"
+
+# ch7 surface must still GREEN (the findable record)
+let ch7 = run ["rishi/bin/rishi" "run" "tools/gen/season/equinox_ch7_surface_witness.rish"]
+say ch7.out
+assert ch7.ok else "e110-ch8-reserve: ch7 surface RED"
+assert ch7.out contains "GREEN: equinox-ch7-surface" else "e110-ch8-reserve: want ch7 surface GREEN"
+
+let scan = run ["sh" "tools/fixtures/equinox_e110_ch8_reserve_scan.sh"]
+say scan.out
+assert scan.ok else "e110-ch8-reserve: scan must exit 0"
+assert scan.out contains "control_gate=honored" else "e110-ch8-reserve: want control_gate"
+assert scan.out contains "surface_census=honored" else "e110-ch8-reserve: want surface census"
+assert scan.out contains "surface_count=4" else "e110-ch8-reserve: want count 4"
+assert scan.out contains "surface_chapters=2,3,4,7" else "e110-ch8-reserve: want chapters 2,3,4,7"
+assert scan.out contains "surface_law=record_must_be_findable_by_census" else "e110-ch8-reserve: want findable law"
+assert scan.out contains "reserve=honored" else "e110-ch8-reserve: want reserve"
+assert scan.out contains "seat_128=reserved_close_choir" else "e110-ch8-reserve: want 128 reserved"
+assert scan.out contains "fork_status=not_consumed" else "e110-ch8-reserve: want fork waiting"
+assert scan.out contains "e110_ch8_reserve=ok" else "e110-ch8-reserve: want e110 ok"
+assert scan.out contains "verdict=ok" else "e110-ch8-reserve: want verdict=ok"
+
+say "GREEN: e110-ch8-reserve — census finds four · ch7 findable · seat 128 reserved · fork waiting · museum"

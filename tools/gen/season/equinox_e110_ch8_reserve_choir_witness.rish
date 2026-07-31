@@ -1,0 +1,22 @@
+# tools/gen/season/equinox_e110_ch8_reserve_choir_witness.rish — e110 → ch8 2/16.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_e110_ch8_reserve_choir_witness.rish
+
+say "equinox-e110-choir: Language EN — control before the census; reserve before the fill."
+say "equinox-e110-choir: Style Radiant — four finds are true; seat 128 waits for the close."
+say "equinox-e110-choir: Lens TAME — e110 · surface census · reserve 128 · almanac seat 114 · ch8 2/16."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/season/equinox_e110_ch8_reserve_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-e110-choir: welcome RED"
+assert welcome.out contains "GREEN: e110-ch8-reserve" else "equinox-e110-choir: want GREEN"
+assert welcome.out contains "surface_count=4" else "equinox-e110-choir: want count 4"
+assert welcome.out contains "seat_128=reserved_close_choir" else "equinox-e110-choir: want 128"
+assert welcome.out contains "census_breach_count=0" else "equinox-e110-choir: want breach 0"
+assert welcome.out contains "fork_status=not_consumed" else "equinox-e110-choir: want fork waiting"
+
+let almanac = run ["sh" "tools/gen/season/equinox_e110_ch8_reserve_almanac.sh"]
+assert almanac.ok else "equinox-e110-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-e110-choir — census finds four · seat 128 reserved · almanac seat 114 · ch8 2/16"
