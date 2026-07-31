@@ -1,7 +1,7 @@
 # REDS — the ledger of what we got wrong
 
 **Language:** EN
-**Stamp:** living ledger (born `20260729.222000`) · refreshed `20260731.141247` (Equinox e106 · row 33 zero-view)
+**Stamp:** living ledger (born `20260729.222000`) · refreshed `20260731.142447` (Equinox e108 · rows 34–37 container cross)
 **Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
 **Voice:** Riyo
 **Status:** Living pin — one row per red, oldest first
@@ -74,7 +74,12 @@ A red enters this ledger when it is found. Rows are never edited or removed; a l
 
 | 33 | Read fascia `window_n=0` after an i7 rebaseline and claimed the arc's 100/85/92 readings were gone — inferred deletion from an empty view | opening the cache archives (`fascia_metric_v0_window.tsv.pre_i7` · `.pre_i8`) and the planted zero-view control (`tools/fixtures/zero_view_control/`) | A zero in a report is a claim about the instrument's **view**, never about the world. Look where the thing would be before calling it gone. |
 
-**Rows: 33 · in the tree before the ledger: 6 · recovered by opening it: 14 · added under the reds-first law: 13**
+| 34 | Counted under `glow/.cache` with `find`, so the census mixed untracked cache noise into a tracked total | the commence census instrument and `git ls-files --error-unmatch` on living pins | Count with `git ls-files`, never `find`. Disclosure names what is counted; it never licenses zeroing the count by changing the tool. |
+| 35 | An escaped-backtick shell pattern reported 0 hits where a known-true probe showed 79 | re-running the probe without the escape and watching the hits return | Verify a zero against a planted or known positive before trusting silence. A zero is a claim about the instrument's view. |
+| 36 | A naive `^#` H1 scan called 29 multi-H1 files where the fence-aware truth was 6 | M4 `radiant_h1_fence_scan` (control true=1 · naive=4) and the fence-aware roster | Fence-aware H1 counting. A hash inside a fenced block is not a document H1. |
+| 37 | A literal backtick inside `$( )` corrupted the shell pattern and planted negatives could not prove discrimination | the no-backtick hard line and planted-negative controls that refuse when the probe is broken | No backtick in shell patterns. Planted negatives prove discrimination only when the probe still parses. |
+
+**Rows: 37 · in the tree before the ledger: 6 · recovered by opening it: 14 · added under the reds-first law: 17**
 
 **Reds-first accounting for v11:** two reds found, both fixed in-round with witnesses on metal, ledger closed. The remaining journey allocation is therefore **released** rather than booked — which is the law working, not the law skipped.
 

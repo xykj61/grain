@@ -430,7 +430,7 @@ Expected IRON=present · EP042 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep043_choir_witness.rish` · **Stamp:** `20260731.005634` · **Witness:** `tools/gen/season/ironbeetle_ep043_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep043_census.sh` · choir `equinox_ironbeetle_ep043_choir_witness.rish`
 Expected IRON=present · EP043 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only. Chapter six fills at sixteen.
 
-## Chapter Seven (15 of 16)
+## Chapter Seven (16 of 16)
 
 Opened from metal at stamp `20260731.114927`. Themes arrive after findings; this chapter carries none in advance. Ch5 and ch6 surface closes stay parked per e92 ruling D until a close-seat row is seated.
 
@@ -494,6 +494,10 @@ Expected control_gate · REDS rows=33 · monotone expect_next=34 · zero_view pl
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_e107_seat_map_choir_witness.rish` · **Stamp:** `20260731.141952` · **Witness:** `tools/gen/season/equinox_e107_seat_map_witness.rish` · scan `tools/fixtures/equinox_seat_map_scan.sh` · pin `work-in-progress/EQUINOX_SEAT_MAP.md`
 Expected control_gate · seat_map 110 spent · 112 close choir proposed · bundle crossing mode · shred Keaton-gated · fork not_consumed · seats 97–110 · shelf end ep045 · baton breach 0. Look at spent seats before naming the remaining map. Metal answered GREEN. Invent none.
 
+### 112. Equinox e108 Chapter Seven close choir: check·test·prepare on seat 112; REDS rows 34–37 cross (find→git ls-files · verify a zero · fence-aware H1 · no backtick); bundle as crossing mode; shred opens Chapter Eight; ch5+ch6 close-seat row still parked.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_e108_ch7_close_choir_witness.rish` · **Stamp:** `20260731.142604` · **Witness:** `tools/gen/season/equinox_e108_ch7_close_witness.rish` · scan `tools/fixtures/equinox_e108_ch7_close_scan.sh` · pin `work-in-progress/EQUINOX_SEAT_MAP.md`
+Expected control_gate · seat_map 112 close choir this sitting · shred opens Chapter Eight · REDS rows=37 · expect_next=38 · M3/M4 kept · zero_view · fascia i9 hold 92 · fork not_consumed · seats 97–111 → 112 · shelf end ep045 · baton breach 0. A chapter-close choir is a check. Metal answered GREEN. Chapter seven fills at sixteen. Invent none.
+
 ---
 
-*May every line here be one the machine said first. May the book close at its bound the way a season does. And may the rest of chapter seven wait for metal, not memory.*
+*May every line here be one the machine said first. May the book close at its bound the way a season does. And may chapter eight wait for metal, not memory — shred only by Keaton's word.*

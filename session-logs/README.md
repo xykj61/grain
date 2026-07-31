@@ -1,3 +1,4 @@
+- `20260731.142608` — [e108 ch7 close choir GREEN](20260731-142608_e108-ch7-close-choir-green.bron) — seat 112 · ch7 FULL · REDS 37 · shred→ch8 · e109 next
 - `20260731.142025` — [e107 corrected seat map GREEN](20260731-142025_e107-seat-map-green.bron) — seat 111 · ch7 15/16 · 112 close choir proposed · e108 next
 - `20260731.141441` — [e106 REDS zero-view GREEN](20260731-141441_e106-reds-zero-view-green.bron) — seat 110 · ch7 14/16 · REDS 33 · zero is view · e107 next
 - `20260731.141014` — [e105 window carry + M3/M4 GREEN](20260731-141014_e105-window-m3-m4-green.bron) — seat 109 · ch7 13/16 · i9 · fall −15 · M3+M4 home · e106 next
