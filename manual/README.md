@@ -64,6 +64,8 @@ Living ledger (full register): [`../context/specs/two-dev-environments-and-mobil
 - **`guides/key-cards-setup.md`** — making your identity key cards (SSH + GPG fingerprints as a scannable, printable image), audited end to end on macOS.
 - **`guides/filevault-setup.md`** — turning on macOS disk encryption, the single highest-priority security fix for a work machine.
 - **`guides/pixel-10a-grapheneos-setup.md`** — installing GrapheneOS on a Pixel 10a via the official web installer, transcribed from GrapheneOS's own instructions, with the device's own published verified-boot key hash to check at the end.
+- **`guides/cloud-agent-toolchain-setup.md`** — raising `rye` / `rishi` inside a Cursor Cloud Agent sandbox (July 15 path).
+- **`guides/20260731-014410_opus-bench-raise.md`** — Opus in-container raise: restore `vendor/zig-toolchain/lib` plus the `zig` wrapper; M1 census GREEN beside it.
 
 *Next rooms, in season: Aurora interface reference when the surface stabilizes; a Glow language reference when a general parser lands; utility pages rendered from their own `.bron` man records when the toolset's first lap lands.*
 
