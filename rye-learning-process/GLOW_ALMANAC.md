@@ -432,7 +432,7 @@ Expected IRON=present · EP043 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 
 ## Chapter Seven (16 of 16)
 
-Opened from metal at stamp `20260731.114927`. Themes arrive after findings; this chapter carries none in advance. Ch5 and ch6 surface closes stay parked per e92 ruling D until a close-seat row is seated.
+Opened from metal at stamp `20260731.114927`. Themes arrive after findings; this chapter carries none in advance. Ch5 and ch6 surface closes parked per e92 ruling D until close-seat; e119 answers close-seat — surfaces as tools, park lifted, no chapter-close seats spent.
 
 ### 97. IronBeetle ep044 traces everything we know from the first byte: two jobs of consensus, and honesty about unfinished code.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep044_choir_witness.rish` · **Stamp:** `20260731.114927` · **Witness:** `tools/gen/season/ironbeetle_ep044_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep044_census.sh` · choir `equinox_ironbeetle_ep044_choir_witness.rish`
@@ -498,7 +498,7 @@ Expected control_gate · seat_map 110 spent · 112 close choir proposed · bundl
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_e108_ch7_close_choir_witness.rish` · **Stamp:** `20260731.142604` · **Witness:** `tools/gen/season/equinox_e108_ch7_close_witness.rish` · scan `tools/fixtures/equinox_e108_ch7_close_scan.sh` · pin `work-in-progress/EQUINOX_SEAT_MAP.md`
 Expected control_gate · seat_map 112 close choir this sitting · shred opens Chapter Eight · REDS rows=37 · expect_next=38 · M3/M4 kept · zero_view · fascia i9 hold 92 · fork not_consumed · seats 97–111 → 112 · shelf end ep045 · baton breach 0. A chapter-close choir is a check. Metal answered GREEN. Chapter seven fills at sixteen. Invent none.
 
-## Chapter Eight (10 of 16)
+## Chapter Eight (11 of 16)
 
 Opened from metal at stamp `20260731.143548`. Themes arrive after findings; this chapter carries none in advance. Bundle and shred stay itinerary modes; Class O paths await Keaton's word.
 
@@ -541,6 +541,10 @@ Expected control_gate · instruments_tracked · fork_word=EXTEND · handback_sta
 ### 122. Equinox e118 metal corrections: roofs agree CLOSED — dated_testimony matches on both roofs while fascia_health (live/total) and fascia_health_now (orphan-share) keep two jobs under lookalike names; stale Cloud-blocked baton debt retires — each bench re-cuts tool presence (binaries gitignored); seat 128 stays reserved; surface census four kept; fork EXTEND and breach closed unspent kept.
 **Ran:** `sh tools/fixtures/equinox_e118_metal_corrections_scan.sh` · **Stamp:** `20260731.173310` · **Witness:** `tools/gen/season/equinox_e118_metal_corrections_witness.rish` · counsel `counsel/20260731-172902_e118-metal-corrections.md` · scan `tools/fixtures/equinox_e118_metal_corrections_scan.sh`
 Expected control_gate · instruments_tracked · roofs_status=CLOSED · divergence=absent · dated_testimony agrees · stale_cloud_blocked=retired · tool_presence=per_bench_recut · prove-red RED_claimed_diverge_while_agree · seat_128 reserved · surface_count=4 · fork EXTEND · handback not_consumed · shelf end ep045 · baton breach 0. When two roofs carry one name, either they agree or the name is doing two jobs. Metal answered GREEN. Invent none.
+
+### 123. Equinox e119 close-seat surfaces: close-seat row answered — a surface witness claims no seat of its own; ch5 and ch6 surfaces land as tools (equinox_ch5_surface_witness.rish · equinox_ch6_surface_witness.rish) over already-GREEN limbs with no chapter-close almanac row and no seat displaced; e92-shaped census finds six (ch2·ch3·ch4·ch5·ch6·ch7); e92 park lifted by Keaton fuse kg on the measured answer; seat 128 stays reserved.
+**Ran:** `sh tools/fixtures/equinox_e119_close_seat_surfaces_scan.sh` · **Stamp:** `20260731.174712` · **Witness:** `tools/gen/season/equinox_e119_close_seat_surfaces_witness.rish` · counsel `counsel/20260731-214426_e119-close-seat-surfaces.md` · scan `tools/fixtures/equinox_e119_close_seat_surfaces_scan.sh`
+Expected control_gate · instruments_tracked · ch5+ch6 surface scans ok · surface_count=6 · e92_park=lifted · no_almanac_seat honored · prove-red RED_claimed_four_while_six · seat_128 reserved · fork EXTEND · handback not_consumed · shelf end ep045 · baton breach 0. A surface witness claims no seat of its own. Metal answered GREEN. Invent none.
 
 ---
 

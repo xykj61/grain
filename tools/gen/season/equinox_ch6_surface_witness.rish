@@ -1,0 +1,111 @@
+# tools/gen/season/equinox_ch6_surface_witness.rish — chapter-six surface tool.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_ch6_surface_witness.rish
+#
+# Sixteen limbs matching seats 81-96. Leaf witnesses only — no nested surfaces.
+# Twin of equinox_ch7_surface_witness.rish (e109). Claims no almanac seat of its own.
+# Close-seat answer (e119): a surface witness runs over green limbs and lives as a tool.
+
+say "equinox-ch6-surface: Language EN — chapter greens, one choir; sixteen limbs hold."
+say "equinox-ch6-surface: Style Radiant — a surface witness claims no seat of its own."
+say "equinox-ch6-surface: Lens TAME — e119 · ch6 surface tool · no almanac seat · census six."
+
+# --- Grid / durability ---
+let ep021 = run ["rishi/bin/rishi" "run" "tools/gen/season/ironbeetle_ep021_census_witness.rish"]
+say ep021.out
+assert ep021.ok else "equinox-ch6-surface: ep021 limb failed"
+assert ep021.out contains "GREEN: iron-ep021" else "equinox-ch6-surface: ep021 not GREEN"
+
+let ep022 = run ["rishi/bin/rishi" "run" "tools/gen/season/ironbeetle_ep022_census_witness.rish"]
+say ep022.out
+assert ep022.ok else "equinox-ch6-surface: ep022 limb failed"
+assert ep022.out contains "GREEN: iron-ep022" else "equinox-ch6-surface: ep022 not GREEN"
+
+let ep025 = run ["rishi/bin/rishi" "run" "tools/gen/season/ironbeetle_ep025_census_witness.rish"]
+say ep025.out
+assert ep025.ok else "equinox-ch6-surface: ep025 limb failed"
+assert ep025.out contains "GREEN: iron-ep025" else "equinox-ch6-surface: ep025 not GREEN"
+
+let ep028 = run ["rishi/bin/rishi" "run" "tools/gen/season/ironbeetle_ep028_census_witness.rish"]
+say ep028.out
+assert ep028.ok else "equinox-ch6-surface: ep028 limb failed"
+assert ep028.out contains "GREEN: iron-ep028" else "equinox-ch6-surface: ep028 not GREEN"
+
+let ep030 = run ["rishi/bin/rishi" "run" "tools/gen/season/ironbeetle_ep030_census_witness.rish"]
+say ep030.out
+assert ep030.ok else "equinox-ch6-surface: ep030 limb failed"
+assert ep030.out contains "GREEN: iron-ep030" else "equinox-ch6-surface: ep030 not GREEN"
+
+let ep031 = run ["rishi/bin/rishi" "run" "tools/gen/season/ironbeetle_ep031_census_witness.rish"]
+say ep031.out
+assert ep031.ok else "equinox-ch6-surface: ep031 limb failed"
+assert ep031.out contains "GREEN: iron-ep031" else "equinox-ch6-surface: ep031 not GREEN"
+
+# --- values / prefetch / callbacks ---
+let ep032 = run ["rishi/bin/rishi" "run" "tools/gen/season/ironbeetle_ep032_census_witness.rish"]
+say ep032.out
+assert ep032.ok else "equinox-ch6-surface: ep032 limb failed"
+assert ep032.out contains "GREEN: iron-ep032" else "equinox-ch6-surface: ep032 not GREEN"
+
+let ep033 = run ["rishi/bin/rishi" "run" "tools/gen/season/ironbeetle_ep033_census_witness.rish"]
+say ep033.out
+assert ep033.ok else "equinox-ch6-surface: ep033 limb failed"
+assert ep033.out contains "GREEN: iron-ep033" else "equinox-ch6-surface: ep033 not GREEN"
+
+let ep034 = run ["rishi/bin/rishi" "run" "tools/gen/season/ironbeetle_ep034_census_witness.rish"]
+say ep034.out
+assert ep034.ok else "equinox-ch6-surface: ep034 limb failed"
+assert ep034.out contains "GREEN: iron-ep034" else "equinox-ch6-surface: ep034 not GREEN"
+
+let ep035 = run ["rishi/bin/rishi" "run" "tools/gen/season/ironbeetle_ep035_census_witness.rish"]
+say ep035.out
+assert ep035.ok else "equinox-ch6-surface: ep035 limb failed"
+assert ep035.out contains "GREEN: iron-ep035" else "equinox-ch6-surface: ep035 not GREEN"
+
+let ep036 = run ["rishi/bin/rishi" "run" "tools/gen/season/ironbeetle_ep036_census_witness.rish"]
+say ep036.out
+assert ep036.ok else "equinox-ch6-surface: ep036 limb failed"
+assert ep036.out contains "GREEN: iron-ep036" else "equinox-ch6-surface: ep036 not GREEN"
+
+# --- compaction pipeline ---
+let ep037 = run ["rishi/bin/rishi" "run" "tools/gen/season/ironbeetle_ep037_census_witness.rish"]
+say ep037.out
+assert ep037.ok else "equinox-ch6-surface: ep037 limb failed"
+assert ep037.out contains "GREEN: iron-ep037" else "equinox-ch6-surface: ep037 not GREEN"
+
+let ep038 = run ["rishi/bin/rishi" "run" "tools/gen/season/ironbeetle_ep038_census_witness.rish"]
+say ep038.out
+assert ep038.ok else "equinox-ch6-surface: ep038 limb failed"
+assert ep038.out contains "GREEN: iron-ep038" else "equinox-ch6-surface: ep038 not GREEN"
+
+let ep040 = run ["rishi/bin/rishi" "run" "tools/gen/season/ironbeetle_ep040_census_witness.rish"]
+say ep040.out
+assert ep040.ok else "equinox-ch6-surface: ep040 limb failed"
+assert ep040.out contains "GREEN: iron-ep040" else "equinox-ch6-surface: ep040 not GREEN"
+
+let ep042 = run ["rishi/bin/rishi" "run" "tools/gen/season/ironbeetle_ep042_census_witness.rish"]
+say ep042.out
+assert ep042.ok else "equinox-ch6-surface: ep042 limb failed"
+assert ep042.out contains "GREEN: iron-ep042" else "equinox-ch6-surface: ep042 not GREEN"
+
+let ep043 = run ["rishi/bin/rishi" "run" "tools/gen/season/ironbeetle_ep043_census_witness.rish"]
+say ep043.out
+assert ep043.ok else "equinox-ch6-surface: ep043 limb failed"
+assert ep043.out contains "GREEN: iron-ep043" else "equinox-ch6-surface: ep043 not GREEN"
+
+let scan = run ["sh" "tools/fixtures/equinox_ch6_surface_scan.sh"]
+say scan.out
+assert scan.ok else "equinox-ch6-surface: surface scan must exit 0"
+assert scan.out contains "limbs=16" else "equinox-ch6-surface: want limbs 16"
+assert scan.out contains "ch6_surface=ok" else "equinox-ch6-surface: want ch6_surface ok"
+assert scan.out contains "no_almanac_seat=honored" else "equinox-ch6-surface: want no almanac seat"
+assert scan.out contains "verdict=ok" else "equinox-ch6-surface: want verdict=ok"
+
+# Refuse — absent iron shelf
+let refuse_iron = run ["sh" "tools/fixtures/ironbeetle_ep043_census.sh" "tools/fixtures/ironbeetle_ABSENT"]
+say refuse_iron.out
+assert refuse_iron.ok == false else "equinox-ch6-surface: absent iron must fail"
+assert refuse_iron.out contains "IRON=ABSENT" else "equinox-ch6-surface: want IRON=ABSENT"
+assert refuse_iron.out contains "verdict=absent" else "equinox-ch6-surface: want verdict=absent"
+
+say "GREEN: equinox-ch6-surface — sixteen limbs · tool · no almanac seat · absent refuses"

@@ -1,0 +1,18 @@
+# tools/gen/season/equinox_e119_close_seat_surfaces_witness.rish — e119 seat.
+#   rishi/bin/rishi run tools/gen/season/equinox_e119_close_seat_surfaces_witness.rish
+say "e119-close-seat-surfaces: Language EN — close-seat answered; surfaces as tools."
+say "e119-close-seat-surfaces: Style Radiant — a surface witness claims no seat of its own."
+say "e119-close-seat-surfaces: Lens TAME — e119 · census six · park lifted · almanac 123 · ch8 11/16."
+
+let green = run ["sh" "tools/fixtures/equinox_e119_close_seat_surfaces_scan.sh"]
+assert green.ok else "e119-close-seat-surfaces: living scan must exit 0"
+assert green.out contains "surface_count=6" else "e119-close-seat-surfaces: want census six"
+assert green.out contains "e92_park=lifted" else "e119-close-seat-surfaces: want park lifted"
+assert green.out contains "seat_128=reserved_close_choir" else "e119-close-seat-surfaces: want 128 reserved"
+assert green.out contains "verdict=ok" else "e119-close-seat-surfaces: want verdict ok"
+
+let red = run ["sh" "tools/fixtures/equinox_e119_close_seat_surfaces_scan.sh" "prove-red"]
+assert (red.ok == false) else "e119-close-seat-surfaces: prove-red must refuse"
+assert red.out contains "RED_claimed_four_while_six" else "e119-close-seat-surfaces: prove-red want four-while-six refuse"
+
+say "GREEN: e119-close-seat-surfaces — close-seat answered · ch5+ch6 tools · census six · park lifted · shred RED"
