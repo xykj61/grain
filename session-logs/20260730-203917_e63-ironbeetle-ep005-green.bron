@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260730.203917
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title e63 IronBeetle ep005 a-limit-on-everything GREEN
+prompt kg · e63 — IronBeetle ep005 a-limit-on-everything
+think e62 ep004 GREEN · ep005 next written silo · leaf census twin
+think Teach: Limit on Everything · No Dynamic Allocation · back-pressure · static
+think Seat 68 · ch5 4/16 · ep006 next · expedition stays gated
+obs e63 GREEN · e64 IronBeetle ep006 next
+file expanding-prompts/20260730-203849_e63-ironbeetle-ep005-charter.md charter
+file tools/fixtures/ironbeetle_ep005_census.sh scan GREEN
+file tools/gen/season/equinox_ironbeetle_ep005_choir_witness.rish choir GREEN
+file rye-learning-process/GLOW_ALMANAC.md seat 68 · ch5 4/16
+file waymarks/20260730-203917_e63-ironbeetle-ep005-green.md finishing edge
+file expanding-prompts/20260730-203917_equinox-season-e64-recursion-prompt.md fusion
+recommend keep-going e64 IronBeetle ep006 safety-for-code-that-never-frees
