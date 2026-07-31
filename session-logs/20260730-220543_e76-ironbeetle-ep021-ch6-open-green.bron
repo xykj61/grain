@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260730.220543
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title e76 IronBeetle ep021 ch6 open GREEN
+prompt kg · e76 — IronBeetle ep021 a-queue-with-no-memory-of-its-own (opens ch6)
+think e75 ep020 GREEN · ch5 FULL · Keaton kg opens ch6 · surface close waits
+think Teach: Grid.Write · one substrate · borrowed queue · checksum one level up
+think Seat 81 · ch6 1/16 · ep022 next · expedition stays gated
+obs e76 GREEN · ch6 open · e77 IronBeetle ep022 next
+file expanding-prompts/20260730-220511_e76-ironbeetle-ep021-ch6-open-charter.md charter
+file tools/fixtures/ironbeetle_ep021_census.sh scan GREEN
+file tools/gen/season/equinox_ironbeetle_ep021_choir_witness.rish choir GREEN
+file rye-learning-process/GLOW_ALMANAC.md seat 81 · ch6 1/16 open
+file waymarks/20260730-220543_e76-ironbeetle-ep021-ch6-open-green.md finishing edge
+file expanding-prompts/20260730-220543_equinox-season-e77-recursion-prompt.md fusion
+recommend keep-going e77 IronBeetle ep022 a-read-that-cannot-fail

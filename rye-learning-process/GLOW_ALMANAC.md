@@ -362,6 +362,14 @@ Expected IRON=present · EP019 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep020_choir_witness.rish` · **Stamp:** `20260730.215259` · **Witness:** `tools/gen/season/ironbeetle_ep020_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep020_census.sh` · choir `equinox_ironbeetle_ep020_choir_witness.rish`
 Expected IRON=present · EP020 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only. Chapter five fills at sixteen.
 
+## Chapter Six (1 of 16)
+
+Opened from metal at stamp `20260730.220543`. Themes arrive after findings; this chapter carries none in advance.
+
+### 81. IronBeetle ep021 writes through one Grid; the queue borrows memory from its callers.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep021_choir_witness.rish` · **Stamp:** `20260730.220543` · **Witness:** `tools/gen/season/ironbeetle_ep021_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep021_census.sh` · choir `equinox_ironbeetle_ep021_choir_witness.rish`
+Expected IRON=present · EP021 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Chapter six opens; clean-room study only.
+
 ---
 
-*May every line here be one the machine said first. May the book close at its bound the way a season does. And may the rest of chapter five wait for metal, not memory.*
+*May every line here be one the machine said first. May the book close at its bound the way a season does. And may the rest of chapter six wait for metal, not memory.*
