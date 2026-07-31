@@ -498,7 +498,7 @@ Expected control_gate · seat_map 110 spent · 112 close choir proposed · bundl
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_e108_ch7_close_choir_witness.rish` · **Stamp:** `20260731.142604` · **Witness:** `tools/gen/season/equinox_e108_ch7_close_witness.rish` · scan `tools/fixtures/equinox_e108_ch7_close_scan.sh` · pin `work-in-progress/EQUINOX_SEAT_MAP.md`
 Expected control_gate · seat_map 112 close choir this sitting · shred opens Chapter Eight · REDS rows=37 · expect_next=38 · M3/M4 kept · zero_view · fascia i9 hold 92 · fork not_consumed · seats 97–111 → 112 · shelf end ep045 · baton breach 0. A chapter-close choir is a check. Metal answered GREEN. Chapter seven fills at sixteen. Invent none.
 
-## Chapter Eight (8 of 16)
+## Chapter Eight (9 of 16)
 
 Opened from metal at stamp `20260731.143548`. Themes arrive after findings; this chapter carries none in advance. Bundle and shred stay itinerary modes; Class O paths await Keaton's word.
 
@@ -533,6 +533,10 @@ Expected control_gate · instruments_tracked · pass=10 · fail=0 · prove-red R
 ### 120. Equinox e116 one dated definition: shared dated_classify seats living-vs-dated once in code; shed and fascia-health both source it; divergence witness goes RED while dated_testimony differs; REDS row 40 records when two roofs carry one name, either they agree or the name is doing two jobs; seat 128 stays reserved; surface census four kept.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_e116_dated_one_definition_choir_witness.rish` · **Stamp:** `20260731.154603` · **Witness:** `tools/gen/season/equinox_e116_dated_one_definition_witness.rish` · standing `tools/gen/season/dated_pattern_witness.rish` · `tools/gen/season/dated_roof_divergence_witness.rish` · scan `tools/fixtures/dated_pattern_scan.sh` · `tools/fixtures/dated_roof_divergence_scan.sh` · equinox scan `tools/fixtures/equinox_e116_dated_one_definition_scan.sh`
 Expected control_gate · instruments_tracked · definition=one · divergence=absent · roofs_agree · prove-red RED_dated_definition_blind · RED_roofs_diverge · REDS rows=40 · expect_next=41 · seat_128 reserved · surface_count=4 · fork not_consumed · shelf end ep045 · baton breach 0. When two roofs carry one name, either they agree or the name is doing two jobs. Metal answered GREEN. Invent none.
+
+### 121. Equinox e117 fork EXTEND + breach let-close: Keaton's word (fuse kg approving all breaches forks recommendations) seats THE FORK as EXTEND +128 with nested return_surface_p59 held not consumed; seats THE BREACH as let close — census_breach_count=0 banked approval closed unspent; roof reconciliation already e116; geode stays APPROVED GATED; shred RED; seat 128 stays reserved; surface census four kept.
+**Ran:** `sh tools/fixtures/equinox_e117_fork_extend_breach_close_scan.sh` · **Stamp:** `20260731.170541` · **Witness:** `tools/gen/season/equinox_e117_fork_extend_breach_close_witness.rish` · counsel `counsel/20260731-170354_e117-fork-extend-breach-let-close.md` · scan `tools/fixtures/equinox_e117_fork_extend_breach_close_scan.sh`
+Expected control_gate · instruments_tracked · fork_word=EXTEND · handback_status=not_consumed · breach_status=closed_unspent · geode APPROVED_GATED · seat_128 reserved · surface_count=4 · prove-red RED_approve_all_consumed_handback · roof e116 kept · shelf end ep045 · baton breach 0. Approve-all seats recommended yes/no leans; hard lines still refuse shred. Metal answered GREEN. Invent none.
 
 ---
 

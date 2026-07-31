@@ -1,0 +1,17 @@
+# tools/gen/season/equinox_e117_fork_extend_breach_close_choir_witness.rish — e117 → ch8 9/16.
+#   rishi/bin/rishi run tools/gen/season/equinox_e117_fork_extend_breach_close_choir_witness.rish
+say "equinox-e117-choir: Language EN — decision seat joins the chapter."
+say "equinox-e117-choir: Style Radiant — extend without consuming the handback."
+say "equinox-e117-choir: Lens TAME — e117 · fork EXTEND · breach closed unspent · almanac 121 · ch8 9/16."
+
+let welcome = run ["sh" "tools/fixtures/baton_museum_census_scan.sh"]
+assert welcome.ok else "equinox-e117-choir: museum must exit 0"
+assert welcome.out contains "census_breach_count=0" else "equinox-e117-choir: want breach 0"
+
+let leaf = run ["sh" "tools/fixtures/equinox_e117_fork_extend_breach_close_scan.sh"]
+assert leaf.ok else "equinox-e117-choir: leaf scan must exit 0"
+assert leaf.out contains "e117_fork_extend_breach_close=ok" else "equinox-e117-choir: want e117 ok"
+assert leaf.out contains "fork_word=EXTEND" else "equinox-e117-choir: want EXTEND"
+assert leaf.out contains "breach_status=closed_unspent" else "equinox-e117-choir: want closed unspent"
+
+say "GREEN: equinox-e117-choir — fork EXTEND GREEN · breach closed unspent · almanac seat 121 · ch8 9/16"

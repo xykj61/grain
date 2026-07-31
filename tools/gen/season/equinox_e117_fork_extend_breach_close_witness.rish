@@ -1,0 +1,25 @@
+# tools/gen/season/equinox_e117_fork_extend_breach_close_witness.rish — e117 seat.
+#   rishi/bin/rishi run tools/gen/season/equinox_e117_fork_extend_breach_close_witness.rish
+say "e117-fork-extend-breach-close: Language EN — two decisions from Keaton's approve."
+say "e117-fork-extend-breach-close: Style Radiant — EXTEND keeps the nest deepening."
+say "e117-fork-extend-breach-close: Lens TAME — e117 · fork EXTEND · breach closed unspent · almanac 121 · ch8 9/16."
+
+let green = run ["sh" "tools/fixtures/equinox_e117_fork_extend_breach_close_scan.sh"]
+assert green.ok else "e117-fork-extend-breach-close: living scan must exit 0"
+assert green.out contains "fork_word=EXTEND" else "e117-fork-extend-breach-close: want EXTEND"
+assert green.out contains "handback_status=not_consumed" else "e117-fork-extend-breach-close: want handback held"
+assert green.out contains "breach_status=closed_unspent" else "e117-fork-extend-breach-close: want closed unspent"
+assert green.out contains "geode_status=APPROVED_GATED" else "e117-fork-extend-breach-close: want geode gated"
+assert green.out contains "seat_128=reserved_close_choir" else "e117-fork-extend-breach-close: want 128 reserved"
+assert green.out contains "shred=RED" else "e117-fork-extend-breach-close: want shred RED"
+assert green.out contains "verdict=ok" else "e117-fork-extend-breach-close: want verdict ok"
+
+let museum = run ["sh" "tools/fixtures/baton_museum_census_scan.sh"]
+assert museum.ok else "e117-fork-extend-breach-close: museum must exit 0"
+assert museum.out contains "census_breach_count=0" else "e117-fork-extend-breach-close: want breach 0"
+
+let red = run ["sh" "tools/fixtures/equinox_e117_fork_extend_breach_close_scan.sh" "prove-red"]
+assert (red.ok == false) else "e117-fork-extend-breach-close: prove-red must refuse"
+assert red.out contains "RED_approve_all_consumed_handback" else "e117-fork-extend-breach-close: prove-red want handback refuse"
+
+say "GREEN: e117-fork-extend-breach-close — fork EXTEND +128 · breach closed unspent · handback held · geode GATED · shred RED"
