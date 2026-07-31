@@ -1,3 +1,4 @@
+- `20260730.225955` — [e82 IronBeetle ep032 GREEN](20260730-225955_e82-ironbeetle-ep032-green.bron) — seat 87 · ch6 7/16 · e83 next
 - `20260730.225826` — [e81 IronBeetle ep031.5 GREEN](20260730-225826_e81-ironbeetle-ep031-green.bron) — seat 86 · ch6 6/16 · e82 next
 - `20260730.224932` — [e80 IronBeetle ep030 GREEN](20260730-224932_e80-ironbeetle-ep030-green.bron) — seat 85 · ch6 5/16 · e81 next
 - `20260730.224645` — [e79 IronBeetle ep028 GREEN](20260730-224645_e79-ironbeetle-ep028-green.bron) — seat 84 · ch6 4/16 · e80 next
