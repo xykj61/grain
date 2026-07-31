@@ -1,11 +1,11 @@
 # Equinox Seat Map — close path · Chapter Seven and Eight
 
 **Language:** EN  
-**Status:** Living pin — ch7 close **PERFORMED** · ch8 seat **128 RESERVED** · fork **EXTEND +128** · breach **closed unspent** · roofs **CLOSED** · close-seat **answered** · e92 park **lifted** · **roots ≠ Bench** · name the Bench  
+**Status:** Living pin — ch7 close **PERFORMED** · ch8 seat **128 RESERVED** · fork **EXTEND +128** · breach **closed unspent** · roofs **CLOSED** · close-seat **answered** · e92 park **lifted** · **roots ≠ Bench** · name the Bench · **living-pin guard** · emptied caught  
 **Voice:** Riyo  
-**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260731.221131` (e122 roots bench kinds · 128 kept reserved)  
-**Seat:** Equinox e122 · almanac **126** · Chapter Eight **(14 of 16)**  
-**Basis:** fuse kg · counsel kinds correction · e121 blur refused · e120 sharpness restored  
+**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260731.222426` (e123 living-pin guard · 128 kept reserved)  
+**Seat:** Equinox e123 · almanac **127** · Chapter Eight **(15 of 16)**  
+**Basis:** fuse kg · approve-all · living-pin content guard · e122 kinds kept · e121 wipe lesson  
 
 *A chapter's sixteenth seat may carry check · test · prepare as a close choir. A duty is not a seat unless the almanac says so — only the close is a seat. A surface witness claims no seat of its own. **roots** are where the hand sits to send words; a **Bench** is where claims become evidence — different kinds. Name the **Bench** when a measurement is reported. When two roofs carry one name, either they agree or the name is doing two jobs. Approve-all seats recommended leans; it circles no gate. Seat the suite; do not manufacture meters. Look for the thing, not for the name of the thing. On-disk is not in-the-tree. A witness must not depend on one bench's tools.*
 
@@ -39,7 +39,8 @@
 | Content seats | **114–127** · fill with findings |
 | Close choir | seat **128** · **RESERVED** for check · test · prepare |
 | e110–e121 | seats **114–125** · through e121 blur (dated) |
-| This pin (e122) | seat **126** · roots ≠ Bench · name the Bench |
+| e122 | seat **126** · roots ≠ Bench · name the Bench |
+| This pin (e123) | seat **127** · living-pin content guard · emptied caught |
 
 | Seat | Duty | Status |
 | --- | --- | --- |
@@ -56,8 +57,8 @@
 | **123** | close-seat answered · ch5+ch6 surfaces as tools · park lifted | **SPENT** e119 |
 | **124** | Lexicon **roots** · four client surfaces | **SPENT** e120 |
 | **125** | roots amended · blur as root-subtype (dated · refused e122) | **SPENT** e121 |
-| **126** | roots ≠ Bench · name the Bench · kinds restored | **this sitting** e122 |
-| **127** | content (unnamed yet) | open |
+| **126** | roots ≠ Bench · name the Bench · kinds restored | **SPENT** e122 |
+| **127** | living-pin content guard · emptied caught | **this sitting** e123 |
 | **128** | **CLOSE CHOIR** as check · test · prepare | **RESERVED** |
 
 ---
