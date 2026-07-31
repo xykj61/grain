@@ -1,7 +1,7 @@
 # The Work-in-Progress Stack
 
 **Language:** EN
-**Last updated:** `20260731.124815` (EDT) · Equinox OPEN · commence M7 shed weave · ch7 6/16 · standing voice Riyo
+**Last updated:** `20260731.130233` (EDT) · Equinox OPEN · commence M8 saga · ch7 7/16 · standing voice Riyo
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Riyo
 **Status:** Foundation — living workbench; prefer **git nib** · see [`REMEMBER.md`](REMEMBER.md) · [`ROADMAP.md`](ROADMAP.md)

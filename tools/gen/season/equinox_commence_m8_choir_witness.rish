@@ -1,0 +1,22 @@
+# tools/gen/season/equinox_commence_m8_choir_witness.rish — e99 → almanac ch7 7/16.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_commence_m8_choir_witness.rish
+#
+# Commence M8 saga: ordered commence-arc story behind proven control; seat 103.
+
+say "equinox-commence-m8-choir: Language EN — control before saga; the arc fills ch7."
+say "equinox-commence-m8-choir: Style Radiant — measure the story already seated."
+say "equinox-commence-m8-choir: Lens TAME — e99 · M8 saga · almanac seat 103 · ch7 7/16."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/season/commence_m8_saga_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-commence-m8-choir: welcome RED"
+assert welcome.out contains "GREEN: commence-m8" else "equinox-commence-m8-choir: want GREEN"
+assert welcome.out contains "saga_beats=8" else "equinox-commence-m8-choir: want 8 beats"
+assert welcome.out contains "census_breach_count=0" else "equinox-commence-m8-choir: want breach 0"
+
+let almanac = run ["sh" "tools/gen/season/equinox_commence_m8_almanac.sh"]
+assert almanac.ok else "equinox-commence-m8-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-commence-m8-choir — M8 saga GREEN · almanac seat 103 · ch7 7/16"
