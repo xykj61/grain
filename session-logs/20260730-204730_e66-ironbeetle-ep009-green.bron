@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260730.204730
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title e66 IronBeetle ep009 parent-hash ledger GREEN
+prompt kg · e66 — IronBeetle ep009 a-ledger-that-remembers-its-parent
+think e65 ep008 GREEN · ep009 next written silo · leaf census twin
+think Teach: Remembers Its Own Parent · hash · prepare · primary · view
+think Seat 71 · ch5 7/16 · ep010 next · expedition stays gated
+obs e66 GREEN · e67 IronBeetle ep010 next
+file expanding-prompts/20260730-204704_e66-ironbeetle-ep009-charter.md charter
+file tools/fixtures/ironbeetle_ep009_census.sh scan GREEN
+file tools/gen/season/equinox_ironbeetle_ep009_choir_witness.rish choir GREEN
+file rye-learning-process/GLOW_ALMANAC.md seat 71 · ch5 7/16
+file waymarks/20260730-204730_e66-ironbeetle-ep009-green.md finishing edge
+file expanding-prompts/20260730-204730_equinox-season-e67-recursion-prompt.md fusion
+recommend keep-going e67 IronBeetle ep010 the-disk-is-allowed-to-lie
