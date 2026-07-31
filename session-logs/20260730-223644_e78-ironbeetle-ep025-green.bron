@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260730.223644
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title e78 IronBeetle ep025 a-history-written-as-a-list-of-changes GREEN
+prompt kg · e78 — IronBeetle ep025 a-history-written-as-a-list-of-changes
+think e77 ep022 GREEN · ep025 next written silo · skip ep023·ep024 · leaf census twin
+think Teach: history as changes · persistent dual sense · manifest log · accrete
+think Seat 83 · ch6 3/16 · ep028 next · expedition stays gated
+obs e78 GREEN · e79 IronBeetle ep028 next
+file expanding-prompts/20260730-223612_e78-ironbeetle-ep025-charter.md charter
+file tools/fixtures/ironbeetle_ep025_census.sh scan GREEN
+file tools/gen/season/equinox_ironbeetle_ep025_choir_witness.rish choir GREEN
+file rye-learning-process/GLOW_ALMANAC.md seat 83 · ch6 3/16
+file waymarks/20260730-223644_e78-ironbeetle-ep025-green.md finishing edge
+file expanding-prompts/20260730-223644_equinox-season-e79-recursion-prompt.md fusion
+recommend keep-going e79 IronBeetle ep028 freed-yet-not-freed-quite-yet
