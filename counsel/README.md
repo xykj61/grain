@@ -22,6 +22,7 @@ Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) · reorg proposal: [`20260707
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260731.015541` | [Reply — E92 surface close ruling · pick D](replies/20260731-015541_re-equinox-e92-surface-close-ruling-claude.md) | park both closes · open ch7 via ep044 |
 | `20260726.075641` | [Round 7.5 — The Missing Charter](20260726-075641_r7-5-the-missing-charter.md) | r7.5 repair · charter fate table · C1 |
 | `20260726.064111` | [The Workshop Charter](20260726-064111_the-workshop-charter.md) | multi-round season · Glow docs first · C1 |
 | `20260726.062108` | [Reply — Handoff F · COLD RED doorway · advice ask](replies/20260726-062108_re-handoff-cold-red-doorway-ask.md) | status · Vision vs Mixed · resume COLD · ask Claude |
