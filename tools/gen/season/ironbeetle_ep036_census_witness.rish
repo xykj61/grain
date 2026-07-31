@@ -1,0 +1,28 @@
+# tools/gen/season/ironbeetle_ep036_census_witness.rish — e86 IronBeetle ep036.
+#
+#   rishi/bin/rishi run tools/gen/season/ironbeetle_ep036_census_witness.rish
+#
+# Clean-room: presence only · never copies into rye/.
+# Leaf only — no nested elder choirs.
+
+say "iron-ep036: Language EN — a promise with a deadline."
+say "iron-ep036: Style Radiant — cache-and-stash holds for one batch, then clears."
+say "iron-ep036: Lens TAME — e86 · clean-room study · almanac seat 91."
+
+let shelf = run ["test" "-d" "gratitude/ironbeetle"]
+assert shelf.ok else "iron-ep036: gratitude/ironbeetle ABSENT — host shelf first"
+
+let census = run ["sh" "tools/fixtures/ironbeetle_ep036_census.sh"]
+say census.out
+assert census.ok else "iron-ep036: census failed or thin"
+assert census.out contains "IRON=present" else "iron-ep036: want IRON=present"
+assert census.out contains "verdict=ok" else "iron-ep036: want verdict=ok"
+assert census.out contains "EP036=yes" else "iron-ep036: ep036 file must be present"
+assert census.out contains "HONORS=yes" else "iron-ep036: Honors heading must be present"
+assert census.out contains "SOURCE=yes" else "iron-ep036: Source heading must be present"
+assert census.out contains "TEACH=yes" else "iron-ep036: teach limbs (promise/deadline·cache/stash·undo log) must be present"
+assert census.out contains "RHYME=yes" else "iron-ep036: rhyme section must be present"
+assert census.out contains "CLEAN=yes" else "iron-ep036: Clean Room heading must be present"
+assert census.out contains "MATKLAD_OK=yes" else "iron-ep036: matklad companion must cite ironbeetle/"
+
+say "GREEN: iron-ep036 — honors·source·teach·rhyme·clean·matklad ok"

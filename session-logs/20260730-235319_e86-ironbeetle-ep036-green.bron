@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260730.235319
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title e86 IronBeetle ep036 a-promise-with-a-deadline GREEN
+prompt kg · e86 — IronBeetle ep036 a-promise-with-a-deadline
+think e85 ep035 GREEN · ep036 next written silo · leaf census twin
+think Teach: promise/deadline · cache/stash · undo log · batch-sized guarantee
+think Seat 91 · ch6 11/16 · ep037.5 next · expedition stays gated
+obs e86 GREEN · e87 IronBeetle ep037.5 next
+file expanding-prompts/20260730-235255_e86-ironbeetle-ep036-charter.md charter
+file tools/fixtures/ironbeetle_ep036_census.sh scan GREEN
+file tools/gen/season/equinox_ironbeetle_ep036_choir_witness.rish choir GREEN
+file rye-learning-process/GLOW_ALMANAC.md seat 91 · ch6 11/16
+file waymarks/20260730-235319_e86-ironbeetle-ep036-green.md finishing edge
+file expanding-prompts/20260730-235319_equinox-season-e87-recursion-prompt.md fusion
+recommend keep-going e87 IronBeetle ep037.5 garbage-collection-at-allocation
