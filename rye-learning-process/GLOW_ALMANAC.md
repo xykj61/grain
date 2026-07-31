@@ -430,7 +430,7 @@ Expected IRON=present · EP042 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep043_choir_witness.rish` · **Stamp:** `20260731.005634` · **Witness:** `tools/gen/season/ironbeetle_ep043_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep043_census.sh` · choir `equinox_ironbeetle_ep043_choir_witness.rish`
 Expected IRON=present · EP043 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only. Chapter six fills at sixteen.
 
-## Chapter Seven (11 of 16)
+## Chapter Seven (12 of 16)
 
 Opened from metal at stamp `20260731.114927`. Themes arrive after findings; this chapter carries none in advance. Ch5 and ch6 surface closes stay parked per e92 ruling D until a close-seat row is seated.
 
@@ -477,6 +477,10 @@ Expected control_gate · chase_saga SEATED · chase_memcpy · chase_fascia_grade
 ### 107. Equinox e103 Class A refine + window_min: fascia metric i7 excludes four honest Siya-turn anchors; fall baseline is window_min; fascia 92→100.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_e103_class_a_window_choir_witness.rish` · **Stamp:** `20260731.135111` · **Witness:** `tools/gen/season/equinox_e103_class_a_window_witness.rish` · scan `tools/fixtures/equinox_e103_class_a_window_scan.sh` · choir `equinox_e103_class_a_window_choir_witness.rish`
 Expected control_gate · refine_memcpy paid · metric_rev=i7 · class_a=0 · class_a_honest_excluded=4 · baseline_kind=window_min · fascia=100 · fork not_consumed · seats 97–106 · shelf end ep045 · baton breach 0. A signal that penalizes an honest record is measuring the wrong thing. Metal answered GREEN. Invent none.
+
+### 108. Equinox e104 hold Class A disclosed + Class O rooms: fascia metric i8 holds four honest anchors with reason named (not excluded); Class O room home in SHRED_PREP; fascia 100→92; window_min kept.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_e104_hold_class_o_choir_witness.rish` · **Stamp:** `20260731.135935` · **Witness:** `tools/gen/season/equinox_e104_hold_class_o_witness.rish` · scan `tools/fixtures/equinox_e104_hold_class_o_scan.sh` · choir `equinox_e104_hold_class_o_choir_witness.rish`
+Expected control_gate · metric_rev=i8 · class_a=4 · class_a_held_disclosed=4 · law=hold_not_exclude · baseline_kind=window_min · fascia=92 · Class O rooms · no paths seated · fork not_consumed · seats 97–107 · shelf end ep045 · baton breach 0. Exclusion hides; holding discloses. Metal answered GREEN. Invent none.
 
 ---
 

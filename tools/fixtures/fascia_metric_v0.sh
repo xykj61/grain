@@ -1,13 +1,14 @@
 #!/bin/sh
-# fascia_metric_v0.sh — fascia metric (i4–i7).
+# fascia_metric_v0.sh — fascia metric (i4–i8).
 #
 # Four clutter signals → difficulty-style fascia grade 0–100.
 # Higher fascia = more knit; clutter lowers the grade.
 # i5: softer weights · window mean · self-path excludes.
 # i6: Amphora laps 1–3 stack named; weights unchanged (window stays like-to-like).
-# i7: Class A honest-anchor excludes by name · fall-visibility baseline = window_min.
+# i7: Class A honest-anchor excludes (trial) · fall-visibility baseline = window_min.
+# i8: Class A HOLD disclosed (e104) — exclusion hides; holding discloses.
+#     window_min baseline kept. A signal that cannot be honestly zeroed is held.
 # u74: glow lower emit-string parseInt excluded from ratchet (not app sites).
-# e103: a signal that penalizes an honest record is measuring the wrong thing.
 set -eu
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"
@@ -20,7 +21,7 @@ case "$verb" in
     ;;
 esac
 
-metric_rev=i7
+metric_rev=i8
 
 # Self-path excludes — the meter must not grade its own Inner Scope seats.
 EXCLUDE_SELF='!**/fascia_metric*'
@@ -28,10 +29,6 @@ EXCLUDE_I45='!**/inner-scope-i[4-9]*'
 EXCLUDE_I4STAMP='!**/20260728-023240*'
 EXCLUDE_I5STAMP='!**/20260728-023555*'
 EXCLUDE_I6STAMP='!**/20260728-023941*'
-# i7 honest Class A anchors — Siya-turn ruling keeps these standing (accrete-never-break).
-EXCLUDE_CLASS_A_LEXICON='!**/LEXICON.md'
-EXCLUDE_CLASS_A_SIYA_TURN='!**/20260727-152801_the-siya-turn.md'
-EXCLUDE_CLASS_A_CONSTELLATION='!**/mycelium/constellation/SPEC.md'
 
 # --- signal 1: superseded mentions (living design paths) ---
 superseded="$(rg -n --no-heading '\b[Ss]uperseded\b' \
@@ -86,15 +83,9 @@ ratchet_out=0
 [ "$camel" -gt 0 ] && ratchet_out=$((ratchet_out + 1))
 [ "$parseint" -gt 0 ] && ratchet_out=$((ratchet_out + 1))
 
-# --- signal 3: target-class A hits (Seva Fund lineage residual) ---
+# --- signal 3: target-class A hits (Seva Fund lineage · held disclosed) ---
 # yonder excluded (f2 · 20260730.093112) — same relocate kit as superseded
-# i7: honest anchors named by the Siya turn stay standing; residue only.
-class_a_honest="$(rg -n --no-heading 'Seva Fund|%seva|seva\.fund' \
-  context/LEXICON.md \
-  counsel/20260727-152801_the-siya-turn.md \
-  mycelium/constellation/SPEC.md \
-  2>/dev/null | wc -l | tr -d ' ')"
-class_a_honest="${class_a_honest:-0}"
+# i8: count the hits; name the honest anchors; do NOT exclude them into silence.
 class_a="$(rg -n --no-heading 'Seva Fund|%seva|seva\.fund' \
   --glob '!**/quin-workshop/**' \
   --glob '!**/archive/**' \
@@ -108,11 +99,14 @@ class_a="$(rg -n --no-heading 'Seva Fund|%seva|seva\.fund' \
   --glob "!**/20260728-023941*" \
   --glob "$EXCLUDE_I4STAMP" \
   --glob "$EXCLUDE_I5STAMP" \
-  --glob "$EXCLUDE_I6STAMP" \
-  --glob "$EXCLUDE_CLASS_A_LEXICON" \
-  --glob "$EXCLUDE_CLASS_A_SIYA_TURN" \
-  --glob "$EXCLUDE_CLASS_A_CONSTELLATION" 2>/dev/null | wc -l | tr -d ' ')"
+  --glob "$EXCLUDE_I6STAMP" 2>/dev/null | wc -l | tr -d ' ')"
 class_a="${class_a:-0}"
+class_a_held="$(rg -n --no-heading 'Seva Fund|%seva|seva\.fund' \
+  context/LEXICON.md \
+  counsel/20260727-152801_the-siya-turn.md \
+  mycelium/constellation/SPEC.md \
+  2>/dev/null | wc -l | tr -d ' ')"
+class_a_held="${class_a_held:-0}"
 
 # --- signal 4: over-70-line functions (authored .rye roster) ---
 over70=0
@@ -152,14 +146,14 @@ if [ -f tools/amphora_lap1.rish ] && [ -f tools/amphora_lap2.rish ] && [ -f tool
   amphora_stack=laps1-3
 fi
 
-# --- Moving window: fall-visibility baseline = window_min (i7) ---
+# --- Moving window: fall-visibility baseline = window_min (i7+, kept in i8) ---
 mkdir -p tools/.cache
 window_file=tools/.cache/fascia_metric_v0_window.tsv
-# Rebaseline once — archive rows that lack an i7+ metric_rev (pre-honest-anchor).
+# Rebaseline once — archive rows that lack an i8+ metric_rev (pre-hold-disclosed).
 if [ -f "$window_file" ] && [ -s "$window_file" ]; then
-  if ! awk -F'\t' 'NF >= 8 && $8 ~ /^i([7-9]|[1-9][0-9]+)$/ { found = 1 } END { exit !found }' "$window_file"; then
-    mv "$window_file" "${window_file}.pre_i7"
-    echo "window: rebaseline=i7+ (archived pre-honest-anchor readings)" >&2
+  if ! awk -F'\t' 'NF >= 8 && $8 ~ /^i([8-9]|[1-9][0-9]+)$/ { found = 1 } END { exit !found }' "$window_file"; then
+    mv "$window_file" "${window_file}.pre_i8"
+    echo "window: rebaseline=i8+ (archived pre-hold-disclosed readings)" >&2
   fi
 fi
 stamp="$(TZ=America/New_York date '+%Y%m%d.%H%M%S' 2>/dev/null || date '+%Y%m%d.%H%M%S')"
@@ -219,7 +213,7 @@ echo "metric_rev=${metric_rev}"
 echo "signal:superseded=${superseded} penalty=${pen_super} weight=half"
 echo "signal:ratchet_outstanding=${ratchet_out} (py=${tools_py} memcpy_app=${memcpy_app} camel=${camel} parseint=${parseint}) penalty=${pen_ratchet} weight=4"
 echo "signal:target_class_a=${class_a} penalty=${pen_target} weight=2"
-echo "signal:class_a_honest_excluded=${class_a_honest} paths=LEXICON+siya-turn+constellation-SPEC"
+echo "signal:class_a_held_disclosed=${class_a_held} law=hold_not_exclude paths=LEXICON+siya-turn+constellation-SPEC"
 echo "signal:over70=${over70} penalty=${pen_over70} weight=1"
 echo "clutter=${clutter}"
 echo "fascia=${fascia}"

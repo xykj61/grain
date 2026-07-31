@@ -101,7 +101,7 @@ fi
 echo "chase_fascia=honored"
 echo "chase_fascia_grade=${FASCIA_GRADE}"
 echo "chase_class_a_floor=held_or_refined"
-echo "chase_class_a_law=u89_paper_then_i7_honest_exclude"
+echo "chase_class_a_law=u89_paper_then_hold_or_refine"
 
 # --- fork still unconsumed ---
 if rg -q 'equinox_handback: return_surface_p59 CONSUMED' "$PRIN"; then

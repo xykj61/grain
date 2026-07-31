@@ -1,0 +1,42 @@
+# tools/gen/season/equinox_e104_hold_class_o_witness.rish — e104 / hold + Class O.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_e104_hold_class_o_witness.rish
+#
+# i8: Class A held disclosed. Class O rooms home. window_min kept.
+# Almanac seat 108 via choir.
+
+say "e104-hold-class-o: Language EN — control first; then hold what honesty cannot zero."
+say "e104-hold-class-o: Style Radiant — exclusion hides; holding discloses."
+say "e104-hold-class-o: Lens TAME — e104 · i8 · Class O rooms · almanac seat 108 · ch7 12/16."
+
+let control = run ["rishi/bin/rishi" "run" "tools/gen/season/census_control_witness.rish"]
+say control.out
+assert control.ok else "e104-hold-class-o: census control must GREEN before hold"
+assert control.out contains "GREEN: census-control" else "e104-hold-class-o: want control GREEN"
+
+let museum = run ["rishi/bin/rishi" "run" "tools/gen/season/baton_museum_census_witness.rish"]
+say museum.out
+assert museum.ok else "e104-hold-class-o: baton museum RED"
+assert museum.out contains "census_breach_count=0" else "e104-hold-class-o: want breach 0"
+
+let scope = run ["rishi/bin/rishi" "run" "tools/gen/season/prin_scope.rish"]
+say scope.out
+assert scope.ok else "e104-hold-class-o: prin_scope RED"
+assert scope.out contains "GREEN: prin-scope" else "e104-hold-class-o: want scope GREEN"
+
+let scan = run ["sh" "tools/fixtures/equinox_e104_hold_class_o_scan.sh"]
+say scan.out
+assert scan.ok else "e104-hold-class-o: hold scan must exit 0"
+assert scan.out contains "control_gate=honored" else "e104-hold-class-o: want control_gate"
+assert scan.out contains "hold_fascia=honored" else "e104-hold-class-o: want fascia hold"
+assert scan.out contains "hold_fascia_grade=92" else "e104-hold-class-o: want fascia 92"
+assert scan.out contains "hold_class_a=4" else "e104-hold-class-o: want class A 4"
+assert scan.out contains "hold_class_a_law=hold_not_exclude" else "e104-hold-class-o: want hold law"
+assert scan.out contains "hold_class_o=honored" else "e104-hold-class-o: want Class O rooms"
+assert scan.out contains "hold_baseline_kind=window_min" else "e104-hold-class-o: want window_min"
+assert scan.out contains "hold_fork_status=not_consumed" else "e104-hold-class-o: want fork waiting"
+assert scan.out contains "hold_almanac=honored" else "e104-hold-class-o: want almanac"
+assert scan.out contains "e104_hold_class_o=ok" else "e104-hold-class-o: want e104 ok"
+assert scan.out contains "verdict=ok" else "e104-hold-class-o: want verdict=ok"
+
+say "GREEN: e104-hold-class-o — control proven · i8 hold disclosed · fascia 92 · Class O rooms · window_min · fork waiting · museum"

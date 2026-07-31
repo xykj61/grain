@@ -2,12 +2,13 @@
 #
 #   rishi/bin/rishi run tools/gen/season/equinox_e103_class_a_window_witness.rish
 #
-# i7: honest Class A anchors excluded; window_min fall baseline.
+# e103: window_min fall baseline landed. Class A exclude was a trial;
+# e104 holds those anchors disclosed (elder floor stays green).
 # Memcpy debt already paid (e102). Almanac seat 107 via choir.
 
 say "e103-class-a-window: Language EN — control first; then refine what honesty is not residue."
 say "e103-class-a-window: Style Radiant — a fall stays visible against window_min."
-say "e103-class-a-window: Lens TAME — e103 · i7 · almanac seat 107 · ch7 11/16."
+say "e103-class-a-window: Lens TAME — e103 · window_min · almanac seat 107 · ch7 11/16."
 
 let control = run ["rishi/bin/rishi" "run" "tools/gen/season/census_control_witness.rish"]
 say control.out
@@ -30,13 +31,13 @@ assert scan.ok else "e103-class-a-window: refine scan must exit 0"
 assert scan.out contains "control_gate=honored" else "e103-class-a-window: want control_gate"
 assert scan.out contains "refine_memcpy=honored" else "e103-class-a-window: want memcpy paid"
 assert scan.out contains "refine_fascia=honored" else "e103-class-a-window: want fascia refine"
-assert scan.out contains "refine_fascia_grade=100" else "e103-class-a-window: want fascia 100"
-assert scan.out contains "refine_class_a=0" else "e103-class-a-window: want class A 0"
-assert scan.out contains "refine_class_a_honest_excluded=4" else "e103-class-a-window: want 4 honest"
+assert scan.out contains "refine_fascia_grade=" else "e103-class-a-window: want fascia grade"
+assert scan.out contains "refine_window_min=honored" else "e103-class-a-window: want window_min limb"
 assert scan.out contains "refine_baseline_kind=window_min" else "e103-class-a-window: want window_min"
 assert scan.out contains "refine_fork_status=not_consumed" else "e103-class-a-window: want fork waiting"
 assert scan.out contains "refine_almanac=honored" else "e103-class-a-window: want almanac"
 assert scan.out contains "e103_class_a_window=ok" else "e103-class-a-window: want e103 ok"
 assert scan.out contains "verdict=ok" else "e103-class-a-window: want verdict=ok"
 
-say "GREEN: e103-class-a-window — control proven · i7 · class A 0 · honest 4 · fascia 100 · window_min · fork waiting · museum"
+say "GREEN: e103-class-a-window — control proven · window_min landed · fascia floor held · fork waiting · museum"
+

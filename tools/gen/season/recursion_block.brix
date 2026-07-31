@@ -561,12 +561,17 @@ coords_e103 class_a_window GREEN 20260731.134911
 coords_e103_witness tools/gen/season/equinox_e103_class_a_window_choir_witness.rish
 coords_e103_charter expanding-prompts/20260731-134911_e103-class-a-window-charter.md
 coords_e103_recursion expanding-prompts/20260731-134911_equinox-season-e104-recursion-prompt.md
-coords_fascia_fresh 100
-coords_fascia_metric_rev i7
-coords_fascia_class_a_residue 0
-coords_fascia_class_a_honest_excluded 4
+coords_e104 hold_class_o GREEN 20260731.140017
+coords_e104_witness tools/gen/season/equinox_e104_hold_class_o_choir_witness.rish
+coords_e104_charter expanding-prompts/20260731-135609_e104-hold-class-o-charter.md
+coords_e104_recursion expanding-prompts/20260731-140017_equinox-season-e105-recursion-prompt.md
+coords_fascia_fresh 92
+coords_fascia_metric_rev i8
+coords_fascia_class_a_held_disclosed 4
+coords_fascia_class_a_law hold_not_exclude
 coords_fascia_baseline_kind window_min
-coords_almanac_ch7 11 of 16
+coords_class_o_rooms SHRED_PREP propose_never_seat
+coords_almanac_ch7 12 of 16
 coords_almanac_ch7_status OPEN
 coords_ironbeetle_written_shelf ENDS_at_ep045
 extend_lean +128

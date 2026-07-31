@@ -1,6 +1,7 @@
 #!/bin/sh
 # Equinox e103 Class A refine + window_min baseline scan.
-# Exit 0 only when control reads and i7 limbs honor.
+# Exit 0 when control reads and window_min + fascia floor honor.
+# Elder after e104: Class A may be held disclosed (i8); floor stays >=92.
 # No backtick characters in patterns.
 #
 #   sh tools/fixtures/equinox_e103_class_a_window_scan.sh
@@ -47,7 +48,7 @@ fi
 echo "refine_memcpy=honored"
 echo "refine_memcpy_note=counsel_A_consumed_e102"
 
-# --- i7 fascia measure ---
+# --- fascia measure (window_min kept; Class A hold/exclude refined by later seats) ---
 FASCIA_OUT=$(sh "$FASCIA_SH" measure)
 echo "$FASCIA_OUT"
 echo "$FASCIA_OUT" | rg -q '^GREEN: fascia-metric-v0' || {
@@ -55,24 +56,7 @@ echo "$FASCIA_OUT" | rg -q '^GREEN: fascia-metric-v0' || {
   echo "verdict=misread"
   exit 1
 }
-echo "$FASCIA_OUT" | rg -q -F 'metric_rev=i7' || {
-  echo "refine_fascia=failed"
-  echo "verdict=misread"
-  echo "detail=want_metric_rev_i7"
-  exit 1
-}
-echo "$FASCIA_OUT" | rg -q -F 'signal:target_class_a=0' || {
-  echo "refine_fascia=failed"
-  echo "verdict=misread"
-  echo "detail=want_class_a_residue_zero"
-  exit 1
-}
-echo "$FASCIA_OUT" | rg -q -F 'signal:class_a_honest_excluded=4' || {
-  echo "refine_fascia=failed"
-  echo "verdict=misread"
-  echo "detail=want_four_honest_anchors_excluded"
-  exit 1
-}
+# e103 landed window_min. e104 may HOLD Class A again (i8) — elder floor stays.
 echo "$FASCIA_OUT" | rg -q -F 'baseline_kind=window_min' || {
   echo "refine_fascia=failed"
   echo "verdict=misread"
@@ -86,16 +70,16 @@ echo "$FASCIA_OUT" | rg -q -F 'delta_vs_mean=' || {
   exit 1
 }
 FASCIA_GRADE=$(echo "$FASCIA_OUT" | rg -o 'fascia=[0-9]+' | head -n1 | cut -d= -f2)
-if test -z "$FASCIA_GRADE" || test "$FASCIA_GRADE" -lt 100; then
+if test -z "$FASCIA_GRADE" || test "$FASCIA_GRADE" -lt 92; then
   echo "refine_fascia=failed"
   echo "verdict=misread"
-  echo "detail=want_fascia_100_after_honest_exclude"
+  echo "detail=want_fascia_at_least_92"
   exit 1
 fi
 echo "refine_fascia=honored"
 echo "refine_fascia_grade=${FASCIA_GRADE}"
-echo "refine_class_a=0"
-echo "refine_class_a_honest_excluded=4"
+echo "refine_window_min=honored"
+echo "refine_class_a_note=e103_exclude_trial_refined_by_e104_hold"
 echo "refine_baseline_kind=window_min"
 
 # --- fork still unconsumed ---
@@ -159,6 +143,6 @@ echo "refine_shelf=honored"
 echo "refine_shelf_end=ep045"
 echo "shred=RED"
 
-echo "refine_story=e102_memcpy_paid>i7_honest_anchors_excluded>class_a_0>fascia_100>window_min_baseline>fork_waiting"
+echo "refine_story=e102_memcpy_paid>window_min_baseline>fascia_floor_92>fork_waiting>e104_may_hold_class_a"
 echo "e103_class_a_window=ok"
 echo "verdict=ok"

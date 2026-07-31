@@ -3,7 +3,7 @@
 **Language:** EN  
 **Status:** Living pin — **shred RED** · Amphora cut not opened · list only  
 **Voice:** Quin  
-**Last refreshed:** `20260731.124815` (EDT) · Class O propose (Riyo · e98) · elder seat voice Quin held  
+**Last refreshed:** `20260731.135609` (EDT) · Class O room home (Riyo · e104) · elder seat voice Quin held  
 **Seat:** Surface p36 Kiln · [`../counsel/20260728-232511_surface-season-p36-kiln-seated.md`](../counsel/20260728-232511_surface-season-p36-kiln-seated.md)
 
 *Accrete-never-break: fossils stay on disk until a circled shred proves parity. This list prepares the hand; it does not authorize a cut.*
@@ -14,18 +14,30 @@
 
 | Class | Meaning | Cut ready? |
 | --- | --- | --- |
-| **A** | Fund-lineage elder anchors (MUR u89–u91) | Content yes · cut no |
+| **A** | Fund-lineage elder anchors (MUR u89–u91) · held disclosed on fascia i8 | Content yes · cut no · hold not exclude |
 | **H** | Horizon **writing fossils** replaced by a **living mutant** | Prep only · shred RED |
 | **O** | Unreachable testimony — no file in the tree names it (basename floor) | **Propose only** · never seat · shred RED |
 
 Class **H** is for Grep + Amphora later. It is **not** Class A.  
-Class **O** is **propose-never-seat** (`20260731.124815` · commence M7 weave): neither fund anchor nor writing fossil — simply never pointed at. Instrument: `tools/fixtures/shed_census_scan.sh`. Every path still needs Keaton's word. `SAFE.md` refuses whole on any listed path. Rows are not opened here.
+Class **O** is **propose-never-seat** (`20260731.124815` · commence M7 weave · room home `20260731.135609`): neither fund anchor nor writing fossil — simply never pointed at. Instrument: `tools/fixtures/shed_census_scan.sh`. Every path still needs Keaton's word. `SAFE.md` refuses whole on any listed path. **No individual paths are seated here** — rooms name where the orphan floor waits.
 
-### Class O — proposed row shape (empty · no paths seated)
+### Class O — rooms (propose only · never seat paths)
+
+Floor measured by `shed_census_scan.sh` · basename orphan count. Rooms below give the 852 a lawful home to wait in. Paths stay unnamed until Keaton opens a row.
+
+| room | orphan share (floor) | reachable? | Keaton's word |
+| --- | --- | --- | --- |
+| session-logs | ~690 | orphan floor | await word · propose only |
+| counsel | ~87 | orphan floor | await word · propose only |
+| waymarks | ~57 | orphan floor | await word · propose only |
+| expanding-prompts | ~7 | orphan floor | await word · propose only |
+| bron-resins | ~4 | orphan floor | await word · propose only |
+| external-research | ~2 | orphan floor | await word · propose only |
+| *(other dated)* | remainder to floor | orphan floor | await word · propose only |
 
 | path | room | last stamp | reachable? | Keaton's word |
 | --- | --- | --- | --- | --- |
-| *(none yet — propose only)* | — | — | orphan floor | await word |
+| *(none — propose only · never seat)* | — | — | orphan floor | await word |
 
 ---
 
