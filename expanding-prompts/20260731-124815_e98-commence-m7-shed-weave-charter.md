@@ -36,7 +36,7 @@ Counsel measured the shed census at an elder nib and crossed it as baton text. F
 | --- | --- |
 | `tools/fixtures/shed_census_citer.md` | C1 citer |
 | `tools/fixtures/20260731-124500_shed_census_cited_control.md` | C1 plant |
-| `tools/fixtures/20260731-124500_shed_census_orphan_control.md` | C2 plant |
+| `tools/fixtures/` + stamp fragments + `_shed_census_orphan_control.md` (assembled at run) | C2 plant |
 | `tools/fixtures/shed_census_scan.sh` | scan |
 | `tools/gen/season/shed_census_witness.rish` | leaf |
 | `tools/gen/season/equinox_shed_census_choir_witness.rish` | choir |
