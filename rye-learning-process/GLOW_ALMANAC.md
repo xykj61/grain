@@ -362,7 +362,7 @@ Expected IRON=present · EP019 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep020_choir_witness.rish` · **Stamp:** `20260730.215259` · **Witness:** `tools/gen/season/ironbeetle_ep020_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep020_census.sh` · choir `equinox_ironbeetle_ep020_choir_witness.rish`
 Expected IRON=present · EP020 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only. Chapter five fills at sixteen.
 
-## Chapter Six (6 of 16)
+## Chapter Six (7 of 16)
 
 Opened from metal at stamp `20260730.220543`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -389,6 +389,10 @@ Expected IRON=present · EP030 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 ### 86. IronBeetle ep031½ keeps a durable fact in one coherent form; journal and checkpoint must truly copy the same thing.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep031_choir_witness.rish` · **Stamp:** `20260730.225826` · **Witness:** `tools/gen/season/ironbeetle_ep031_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep031_census.sh` · choir `equinox_ironbeetle_ep031_choir_witness.rish`
 Expected IRON=present · EP031 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only.
+
+### 87. IronBeetle ep032 orders engineering values: safety first, then performance, then experience — programming integrated over time.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep032_choir_witness.rish` · **Stamp:** `20260730.225955` · **Witness:** `tools/gen/season/ironbeetle_ep032_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep032_census.sh` · choir `equinox_ironbeetle_ep032_choir_witness.rish`
+Expected IRON=present · EP032 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only.
 
 ---
 
