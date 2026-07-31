@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260730.204939
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title e67 IronBeetle ep010 disk-is-allowed-to-lie GREEN
+prompt kg · e67 — IronBeetle ep010 the-disk-is-allowed-to-lie
+think e66 ep009 GREEN · ep010 next written silo · leaf census twin
+think Teach: Disk Is Allowed to Lie · Storage Fault · corrupt · checksum · repair
+think Seat 72 · ch5 8/16 · ep011 next · expedition stays gated
+obs e67 GREEN · e68 IronBeetle ep011 next
+file expanding-prompts/20260730-204915_e67-ironbeetle-ep010-charter.md charter
+file tools/fixtures/ironbeetle_ep010_census.sh scan GREEN
+file tools/gen/season/equinox_ironbeetle_ep010_choir_witness.rish choir GREEN
+file rye-learning-process/GLOW_ALMANAC.md seat 72 · ch5 8/16
+file waymarks/20260730-204939_e67-ironbeetle-ep010-green.md finishing edge
+file expanding-prompts/20260730-204939_equinox-season-e68-recursion-prompt.md fusion
+recommend keep-going e68 IronBeetle ep011 five-layers-down-to-the-kernel
