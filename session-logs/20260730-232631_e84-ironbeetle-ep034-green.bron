@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260730.232631
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title e84 IronBeetle ep034 a-callback-that-must-never-choose GREEN
+prompt kg · e84 — IronBeetle ep034 a-callback-that-must-never-choose
+think e83 ep033 GREEN · ep034 next written silo · leaf census twin
+think Teach: never half-sync callback · bounded pool · prefetch parallel · commit sequential
+think Seat 89 · ch6 9/16 · ep035 next · expedition stays gated
+obs e84 GREEN · e85 IronBeetle ep035 next
+file expanding-prompts/20260730-232545_e84-ironbeetle-ep034-charter.md charter
+file tools/fixtures/ironbeetle_ep034_census.sh scan GREEN
+file tools/gen/season/equinox_ironbeetle_ep034_choir_witness.rish choir GREEN
+file rye-learning-process/GLOW_ALMANAC.md seat 89 · ch6 9/16
+file waymarks/20260730-232631_e84-ironbeetle-ep034-green.md finishing edge
+file expanding-prompts/20260730-232631_equinox-season-e85-recursion-prompt.md fusion
+recommend keep-going e85 IronBeetle ep035 a-column-that-is-also-a-clock
