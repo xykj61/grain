@@ -65,15 +65,10 @@ rg -q 'this sitting' "$MAP" || {
   echo "detail=want_112_this_sitting"
   exit 1
 }
-rg -q 'Chapter Eight' "$MAP" || {
+rg -q 'BUNDLE SEND|crossing mode' "$MAP" || {
   echo "seat_map=failed"
   echo "verdict=misread"
-  echo "detail=want_shred_opens_ch8"
-  exit 1
-}
-rg -q 'BUNDLE SEND' "$MAP" || {
-  echo "seat_map=failed"
-  echo "verdict=misread"
+  echo "detail=want_bundle_as_crossing_mode"
   exit 1
 }
 rg -q 'crossing mode' "$MAP" || {
@@ -88,6 +83,11 @@ rg -q 'close-seat row' "$MAP" || {
   echo "detail=want_ch5_ch6_park_named"
   exit 1
 }
+rg -q 'Keaton' "$MAP" || {
+  echo "seat_map=failed"
+  echo "verdict=misread"
+  exit 1
+}
 if rg -q 'return_surface_p59 CONSUMED' "$MAP"; then
   echo "seat_map=failed"
   echo "verdict=misread"
@@ -95,10 +95,22 @@ if rg -q 'return_surface_p59 CONSUMED' "$MAP"; then
   exit 1
 fi
 # Must not still claim 112 only proposed after this close
-if rg -q 'seat_map_112=close_choir_proposed|112.*PROPOSED' "$MAP"; then
+if rg -q 'seat_map_112=close_choir_proposed|\*\*112\*\*.*\*\*PROPOSED\*\*' "$MAP"; then
   echo "seat_map=failed"
   echo "verdict=misread"
   echo "detail=112_must_not_remain_proposed"
+  exit 1
+fi
+# Shred: e108 named opens-ch8; e109 refined to keaton-gated mode (duty not seat)
+SHRED_MODE=unknown
+if rg -q 'Keaton-gated' "$MAP" && rg -q 'duty is not a seat|A duty is not a seat' "$MAP"; then
+  SHRED_MODE=keaton_gated_mode
+elif rg -q 'Chapter Eight' "$MAP"; then
+  SHRED_MODE=opens_chapter_eight
+else
+  echo "seat_map=failed"
+  echo "verdict=misread"
+  echo "detail=want_shred_mode_or_ch8_note"
   exit 1
 fi
 echo "seat_map=honored"
@@ -107,7 +119,7 @@ echo "seat_map_110=spent_e106"
 echo "seat_map_111=spent_e107"
 echo "seat_map_112=close_choir_this_sitting"
 echo "seat_map_bundle=crossing_mode"
-echo "seat_map_shred=opens_chapter_eight"
+echo "seat_map_shred=${SHRED_MODE}"
 echo "seat_map_shred_gate=keaton_word"
 
 # --- REDS 34-37 · container renumbered into tree ---
