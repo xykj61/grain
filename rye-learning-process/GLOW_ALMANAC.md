@@ -362,7 +362,7 @@ Expected IRON=present · EP019 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep020_choir_witness.rish` · **Stamp:** `20260730.215259` · **Witness:** `tools/gen/season/ironbeetle_ep020_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep020_census.sh` · choir `equinox_ironbeetle_ep020_choir_witness.rish`
 Expected IRON=present · EP020 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only. Chapter five fills at sixteen.
 
-## Chapter Six (5 of 16)
+## Chapter Six (6 of 16)
 
 Opened from metal at stamp `20260730.220543`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -385,6 +385,10 @@ Expected IRON=present · EP028 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 ### 85. IronBeetle ep030 asks which manifest-log entry owns a reused address; table_extent answers what an address alone cannot.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep030_choir_witness.rish` · **Stamp:** `20260730.224932` · **Witness:** `tools/gen/season/ironbeetle_ep030_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep030_census.sh` · choir `equinox_ironbeetle_ep030_choir_witness.rish`
 Expected IRON=present · EP030 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only.
+
+### 86. IronBeetle ep031½ keeps a durable fact in one coherent form; journal and checkpoint must truly copy the same thing.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep031_choir_witness.rish` · **Stamp:** `20260730.225826` · **Witness:** `tools/gen/season/ironbeetle_ep031_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep031_census.sh` · choir `equinox_ironbeetle_ep031_choir_witness.rish`
+Expected IRON=present · EP031 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only.
 
 ---
 
