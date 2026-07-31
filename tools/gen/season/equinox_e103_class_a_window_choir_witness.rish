@@ -1,0 +1,23 @@
+# tools/gen/season/equinox_e103_class_a_window_choir_witness.rish — e103 → ch7 11/16.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_e103_class_a_window_choir_witness.rish
+#
+# Class A honest-anchor refine + window_min baseline; almanac seat 107.
+
+say "equinox-e103-choir: Language EN — control before refine; honesty is not residue."
+say "equinox-e103-choir: Style Radiant — window_min keeps falls visible."
+say "equinox-e103-choir: Lens TAME — e103 · fascia 100 · almanac seat 107 · ch7 11/16."
+
+let welcome = run ["rishi/bin/rishi" "run" "tools/gen/season/equinox_e103_class_a_window_witness.rish"]
+say welcome.out
+assert welcome.ok else "equinox-e103-choir: welcome RED"
+assert welcome.out contains "GREEN: e103-class-a-window" else "equinox-e103-choir: want GREEN"
+assert welcome.out contains "refine_fascia_grade=100" else "equinox-e103-choir: want fascia 100"
+assert welcome.out contains "census_breach_count=0" else "equinox-e103-choir: want breach 0"
+assert welcome.out contains "refine_fork_status=not_consumed" else "equinox-e103-choir: want fork waiting"
+
+let almanac = run ["sh" "tools/gen/season/equinox_e103_class_a_window_almanac.sh"]
+assert almanac.ok else "equinox-e103-choir: almanac append failed"
+say almanac.out
+
+say "GREEN: equinox-e103-choir — Class A refine GREEN · almanac seat 107 · ch7 11/16"

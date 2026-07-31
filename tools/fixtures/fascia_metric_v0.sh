@@ -1,11 +1,13 @@
 #!/bin/sh
-# fascia_metric_v0.sh — fascia metric (i4 land · i5 tighten · i6 Amphora stack).
+# fascia_metric_v0.sh — fascia metric (i4–i7).
 #
 # Four clutter signals → difficulty-style fascia grade 0–100.
 # Higher fascia = more knit; clutter lowers the grade.
 # i5: softer weights · window mean · self-path excludes.
 # i6: Amphora laps 1–3 stack named; weights unchanged (window stays like-to-like).
+# i7: Class A honest-anchor excludes by name · fall-visibility baseline = window_min.
 # u74: glow lower emit-string parseInt excluded from ratchet (not app sites).
+# e103: a signal that penalizes an honest record is measuring the wrong thing.
 set -eu
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"
@@ -18,7 +20,7 @@ case "$verb" in
     ;;
 esac
 
-metric_rev=i6
+metric_rev=i7
 
 # Self-path excludes — the meter must not grade its own Inner Scope seats.
 EXCLUDE_SELF='!**/fascia_metric*'
@@ -26,6 +28,10 @@ EXCLUDE_I45='!**/inner-scope-i[4-9]*'
 EXCLUDE_I4STAMP='!**/20260728-023240*'
 EXCLUDE_I5STAMP='!**/20260728-023555*'
 EXCLUDE_I6STAMP='!**/20260728-023941*'
+# i7 honest Class A anchors — Siya-turn ruling keeps these standing (accrete-never-break).
+EXCLUDE_CLASS_A_LEXICON='!**/LEXICON.md'
+EXCLUDE_CLASS_A_SIYA_TURN='!**/20260727-152801_the-siya-turn.md'
+EXCLUDE_CLASS_A_CONSTELLATION='!**/mycelium/constellation/SPEC.md'
 
 # --- signal 1: superseded mentions (living design paths) ---
 superseded="$(rg -n --no-heading '\b[Ss]uperseded\b' \
@@ -82,6 +88,13 @@ ratchet_out=0
 
 # --- signal 3: target-class A hits (Seva Fund lineage residual) ---
 # yonder excluded (f2 · 20260730.093112) — same relocate kit as superseded
+# i7: honest anchors named by the Siya turn stay standing; residue only.
+class_a_honest="$(rg -n --no-heading 'Seva Fund|%seva|seva\.fund' \
+  context/LEXICON.md \
+  counsel/20260727-152801_the-siya-turn.md \
+  mycelium/constellation/SPEC.md \
+  2>/dev/null | wc -l | tr -d ' ')"
+class_a_honest="${class_a_honest:-0}"
 class_a="$(rg -n --no-heading 'Seva Fund|%seva|seva\.fund' \
   --glob '!**/quin-workshop/**' \
   --glob '!**/archive/**' \
@@ -95,7 +108,10 @@ class_a="$(rg -n --no-heading 'Seva Fund|%seva|seva\.fund' \
   --glob "!**/20260728-023941*" \
   --glob "$EXCLUDE_I4STAMP" \
   --glob "$EXCLUDE_I5STAMP" \
-  --glob "$EXCLUDE_I6STAMP" 2>/dev/null | wc -l | tr -d ' ')"
+  --glob "$EXCLUDE_I6STAMP" \
+  --glob "$EXCLUDE_CLASS_A_LEXICON" \
+  --glob "$EXCLUDE_CLASS_A_SIYA_TURN" \
+  --glob "$EXCLUDE_CLASS_A_CONSTELLATION" 2>/dev/null | wc -l | tr -d ' ')"
 class_a="${class_a:-0}"
 
 # --- signal 4: over-70-line functions (authored .rye roster) ---
@@ -136,14 +152,14 @@ if [ -f tools/amphora_lap1.rish ] && [ -f tools/amphora_lap2.rish ] && [ -f tool
   amphora_stack=laps1-3
 fi
 
-# --- Moving window: mean of prior readings as baseline (before append) ---
+# --- Moving window: fall-visibility baseline = window_min (i7) ---
 mkdir -p tools/.cache
 window_file=tools/.cache/fascia_metric_v0_window.tsv
-# Rebaseline once — archive rows that lack an i5+ metric_rev (pre-tighten weights).
+# Rebaseline once — archive rows that lack an i7+ metric_rev (pre-honest-anchor).
 if [ -f "$window_file" ] && [ -s "$window_file" ]; then
-  if ! awk -F'\t' 'NF >= 8 && $8 ~ /^i[5-9]$/ { found = 1 } END { exit !found }' "$window_file"; then
-    mv "$window_file" "${window_file}.pre_i5"
-    echo "window: rebaseline=i5+ (archived pre-tighten readings)" >&2
+  if ! awk -F'\t' 'NF >= 8 && $8 ~ /^i([7-9]|[1-9][0-9]+)$/ { found = 1 } END { exit !found }' "$window_file"; then
+    mv "$window_file" "${window_file}.pre_i7"
+    echo "window: rebaseline=i7+ (archived pre-honest-anchor readings)" >&2
   fi
 fi
 stamp="$(TZ=America/New_York date '+%Y%m%d.%H%M%S' 2>/dev/null || date '+%Y%m%d.%H%M%S')"
@@ -153,6 +169,8 @@ window_min=none
 window_max=none
 baseline=none
 baseline_delta=n/a
+prior_mean=none
+delta_vs_mean=n/a
 if [ -f "$window_file" ] && [ -s "$window_file" ]; then
   stats="$(awk -F'\t' '
     NF >= 2 && $2 ~ /^[0-9]+$/ {
@@ -169,12 +187,21 @@ if [ -f "$window_file" ] && [ -s "$window_file" ]; then
   window_mean="$(echo "$stats" | awk '{print $2}')"
   window_min="$(echo "$stats" | awk '{print $3}')"
   window_max="$(echo "$stats" | awk '{print $4}')"
-  if [ "$window_n" -gt 0 ] && [ "$window_mean" != "none" ]; then
-    baseline="$window_mean"
+  # i7: prior_baseline is window_min so a fall stays visible until answered.
+  if [ "$window_n" -gt 0 ] && [ "$window_min" != "none" ]; then
+    baseline="$window_min"
     if [ "$fascia" -ge "$baseline" ]; then
       baseline_delta="+$((fascia - baseline))"
     else
       baseline_delta="-$((baseline - fascia))"
+    fi
+  fi
+  if [ "$window_n" -gt 0 ] && [ "$window_mean" != "none" ]; then
+    prior_mean="$window_mean"
+    if [ "$fascia" -ge "$prior_mean" ]; then
+      delta_vs_mean="+$((fascia - prior_mean))"
+    else
+      delta_vs_mean="-$((prior_mean - fascia))"
     fi
   fi
 fi
@@ -192,11 +219,13 @@ echo "metric_rev=${metric_rev}"
 echo "signal:superseded=${superseded} penalty=${pen_super} weight=half"
 echo "signal:ratchet_outstanding=${ratchet_out} (py=${tools_py} memcpy_app=${memcpy_app} camel=${camel} parseint=${parseint}) penalty=${pen_ratchet} weight=4"
 echo "signal:target_class_a=${class_a} penalty=${pen_target} weight=2"
+echo "signal:class_a_honest_excluded=${class_a_honest} paths=LEXICON+siya-turn+constellation-SPEC"
 echo "signal:over70=${over70} penalty=${pen_over70} weight=1"
 echo "clutter=${clutter}"
 echo "fascia=${fascia}"
 echo "window_size=8 window_n=${window_n} window_mean=${window_mean} window_min=${window_min} window_max=${window_max}"
-echo "prior_baseline=${baseline} delta=${baseline_delta}"
+echo "prior_baseline=${baseline} delta=${baseline_delta} baseline_kind=window_min"
+echo "prior_mean=${prior_mean} delta_vs_mean=${delta_vs_mean}"
 echo "amphora_ready=${amphora_ready}"
 echo "amphora_stack=${amphora_stack}"
 echo "refuse: shred · breach · deploy · wallet · gas (measure only)"

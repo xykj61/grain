@@ -70,7 +70,7 @@ coords_quest Do
 coords_round 59
 coords_voice_handback return_equinox_e7 CONSUMED 20260730.111804
 coords_equinox_season OPEN
-coords_equinox_status OPEN e102 GREEN · e92 ruling D · ch7 OPEN 10/16 · fascia chase 92 · saga SEATED · fork RETURN|EXTEND · ironbeetle shelf end · return_equinox_e50 CONSUMED · ch5 FULL · ch6 FULL · extend_lean +128
+coords_equinox_status OPEN e103 GREEN · e92 ruling D · ch7 OPEN 11/16 · fascia i7 100 · saga SEATED · fork RETURN|EXTEND · ironbeetle shelf end · return_equinox_e50 CONSUMED · ch5 FULL · ch6 FULL · extend_lean +128
 coords_true_deepest deca
 coords_e7 equinox_map GREEN 20260730.113507
 coords_e7_path context/equinox_map.brix
@@ -557,9 +557,16 @@ coords_e102 fascia_chase GREEN 20260731.134159
 coords_e102_witness tools/gen/season/equinox_e102_fascia_chase_choir_witness.rish
 coords_e102_charter expanding-prompts/20260731-134159_e102-fascia-chase-charter.md
 coords_e102_recursion expanding-prompts/20260731-134159_equinox-season-e103-recursion-prompt.md
-coords_fascia_fresh 92
-coords_fascia_class_a_paper 4
-coords_almanac_ch7 10 of 16
+coords_e103 class_a_window GREEN 20260731.134911
+coords_e103_witness tools/gen/season/equinox_e103_class_a_window_choir_witness.rish
+coords_e103_charter expanding-prompts/20260731-134911_e103-class-a-window-charter.md
+coords_e103_recursion expanding-prompts/20260731-134911_equinox-season-e104-recursion-prompt.md
+coords_fascia_fresh 100
+coords_fascia_metric_rev i7
+coords_fascia_class_a_residue 0
+coords_fascia_class_a_honest_excluded 4
+coords_fascia_baseline_kind window_min
+coords_almanac_ch7 11 of 16
 coords_almanac_ch7_status OPEN
 coords_ironbeetle_written_shelf ENDS_at_ep045
 extend_lean +128

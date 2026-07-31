@@ -1,4 +1,6 @@
+- `20260731.134911` — [e103 Class A i7 + window_min GREEN](20260731-134911_e103-class-a-window-green.bron) — seat 107 · ch7 11/16 · fascia 100 · honest 4 · e104 next
 - `20260731.134159` — [e102 fascia chase GREEN](20260731-134159_e102-fascia-chase-green.bron) — seat 106 · ch7 10/16 · fascia 92 · class A paper 4 · e103 next
+
 - `20260731.132316` — [e101 commence saga Seated + fork GREEN](20260731-132316_e101-commence-saga-seated-fork-green.bron) — seat 105 · ch7 9/16 · approve · fork waiting · e102 next
 
 - `20260731.131407` — [e100 commence M9 ascent GREEN](20260731-131407_e100-commence-m9-ascent-green.bron) — seat 104 · ch7 8/16 · nine beats · saga PROPOSED · e101 next

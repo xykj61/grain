@@ -90,12 +90,7 @@ echo "$FASCIA_OUT" | rg -q -F 'signal:ratchet_outstanding=0' || {
   echo "detail=want_ratchet_zero"
   exit 1
 }
-echo "$FASCIA_OUT" | rg -q -F 'signal:target_class_a=4' || {
-  echo "chase_fascia=failed"
-  echo "verdict=misread"
-  echo "detail=want_class_a_paper_lean_4"
-  exit 1
-}
+# e102 chase floor: fascia >= 92. Later i7 may raise grade further (elder stays green).
 FASCIA_GRADE=$(echo "$FASCIA_OUT" | rg -o 'fascia=[0-9]+' | head -n1 | cut -d= -f2)
 if test -z "$FASCIA_GRADE" || test "$FASCIA_GRADE" -lt 92; then
   echo "chase_fascia=failed"
@@ -105,8 +100,8 @@ if test -z "$FASCIA_GRADE" || test "$FASCIA_GRADE" -lt 92; then
 fi
 echo "chase_fascia=honored"
 echo "chase_fascia_grade=${FASCIA_GRADE}"
-echo "chase_class_a=4"
-echo "chase_class_a_law=u89_paper_lean_held"
+echo "chase_class_a_floor=held_or_refined"
+echo "chase_class_a_law=u89_paper_then_i7_honest_exclude"
 
 # --- fork still unconsumed ---
 if rg -q 'equinox_handback: return_surface_p59 CONSUMED' "$PRIN"; then

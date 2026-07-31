@@ -430,7 +430,7 @@ Expected IRON=present · EP042 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep043_choir_witness.rish` · **Stamp:** `20260731.005634` · **Witness:** `tools/gen/season/ironbeetle_ep043_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep043_census.sh` · choir `equinox_ironbeetle_ep043_choir_witness.rish`
 Expected IRON=present · EP043 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only. Chapter six fills at sixteen.
 
-## Chapter Seven (10 of 16)
+## Chapter Seven (11 of 16)
 
 Opened from metal at stamp `20260731.114927`. Themes arrive after findings; this chapter carries none in advance. Ch5 and ch6 surface closes stay parked per e92 ruling D until a close-seat row is seated.
 
@@ -473,6 +473,10 @@ Expected control_gate · seat_saga SEATED 20260731.131240 · seat_m9 complement 
 ### 106. Equinox e102 fascia chase: re-cut meters; clear memcpy app and signal-1 prose; hold Class A paper lean at 4; fascia 85→92.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_e102_fascia_chase_choir_witness.rish` · **Stamp:** `20260731.134253` · **Witness:** `tools/gen/season/equinox_e102_fascia_chase_witness.rish` · scan `tools/fixtures/equinox_e102_fascia_chase_scan.sh` · choir `equinox_e102_fascia_chase_choir_witness.rish`
 Expected control_gate · chase_saga SEATED · chase_memcpy · chase_fascia_grade=92 · chase_class_a=4 paper lean · chase_fork not_consumed · seats 97–105 · shelf end ep045 · baton breach 0. Pins reform when a round re-cuts. Metal answered GREEN. Invent none.
+
+### 107. Equinox e103 Class A refine + window_min: fascia metric i7 excludes four honest Siya-turn anchors; fall baseline is window_min; fascia 92→100.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_e103_class_a_window_choir_witness.rish` · **Stamp:** `20260731.135111` · **Witness:** `tools/gen/season/equinox_e103_class_a_window_witness.rish` · scan `tools/fixtures/equinox_e103_class_a_window_scan.sh` · choir `equinox_e103_class_a_window_choir_witness.rish`
+Expected control_gate · refine_memcpy paid · metric_rev=i7 · class_a=0 · class_a_honest_excluded=4 · baseline_kind=window_min · fascia=100 · fork not_consumed · seats 97–106 · shelf end ep045 · baton breach 0. A signal that penalizes an honest record is measuring the wrong thing. Metal answered GREEN. Invent none.
 
 ---
 
