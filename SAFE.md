@@ -2,7 +2,7 @@
 
 **Language:** EN · **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **Seated:** `20260730` by Keaton's word · **Spec:** `context/specs/oldness-cycle.md`
-**Cycle:** 1 · **Rows:** 0 of 64 · **Last census:** `20260731.120704` (commence control seated · oldness rows still empty · shred RED)
+**Cycle:** 1 · **Rows:** 0 of 64 · **Last census:** `20260731.122009` (commence M5 re-cut behind control · oldness rows still empty · shred RED)
 
 ---
 
