@@ -1,7 +1,7 @@
 # The Roadmap — living pin
 
 **Language:** EN  
-**Last updated:** `20260731.220432` · voice Riyo  
+**Last updated:** `20260731.221131` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Full season ledger:** [`archive/20260724-132812_roadmap-season-ledger.md`](archive/20260724-132812_roadmap-season-ledger.md)  
 **Align:** [`20260726-050422_align-before-cursor-handoff.md`](archive/20260726-050422_align-before-cursor-handoff.md)  
@@ -9,24 +9,24 @@
 
 ---
 
-## Now — Equinox (deca) · roots bench amend (`20260731.220432`)
+## Now — Equinox (deca) · roots bench kinds (`20260731.221131`)
 
 | Order | Lap | Status |
 |-------|-----|--------|
-| — | Equinox e0–e120 · ch1–ch7 FULL · ch8 12/16 · roots seated · census six · park lifted · fork EXTEND · REDS 40 · 128 reserved | landed |
-| **1** | **e121** roots amended · bench = raised root · Framework · counsel container · seat **125** · ch8 **13/16** | **this sitting** |
-| **2** | ch8 content seats **126–127** · SHRED lap by Keaton's word · Class O | Keaton / next mechanical |
+| — | Equinox e0–e121 · ch1–ch7 FULL · ch8 13/16 · e121 blur dated · census six · park lifted · fork EXTEND · REDS 40 · 128 reserved | landed |
+| **1** | **e122** roots ≠ Bench · name the Bench · four client surfaces · seat **126** · ch8 **14/16** | **this sitting** |
+| **2** | ch8 content seat **127** · SHRED lap by Keaton's word · Class O | Keaton / next mechanical |
 | **3** | SAFE · seat **128** close later | Keaton alone |
 | **4** | Horizon: geode expedition begin (e254/e255 or Keaton begin) | GATED |
 
-**Finishing edge (season):** Equinox OPEN · e122 next · ch7 FULL · ch8 OPEN 13/16 · **roots** amended · bench = raised root · census **six** · park **lifted** · roofs **CLOSED** · fork **EXTEND +128** · breach **closed unspent** · handback nested not consumed · 128 reserved · fascia **88** i9 · saga **Seated**.  
+**Finishing edge (season):** Equinox OPEN · e123 next · ch7 FULL · ch8 OPEN 14/16 · **roots** four client surfaces · roots ≠ Bench · name the Bench · census **six** · park **lifted** · roofs **CLOSED** · fork **EXTEND +128** · breach **closed unspent** · handback nested not consumed · 128 reserved · fascia **88** i9 · saga **Seated**.  
 **Finishing edge (product horizon):** clone · bootstrap · one witness · one `rishi glow` line ≤ 30 minutes — still stands.
 
 **Shell ratchet** (seated `20260726.032231`): `.sh` to Rishi on-touch; advisory count each advise run; exemptions: `rye/bootstrap.sh`, external-interpreter seams, python-heredoc witness bodies until duty-8 verbs land, thin-delegate elders.
 
 **Speed law** (counsel `20260726.044729`): never fake GREEN · never hide ABSENT · never let FAST satisfy COLD · never cut a witness before S0 weighs it · no P-vane (graph inside Mantra).
 
-**Meter law** (e102–e111): re-cut every meter each round; a pin is a memory; a duty is not a seat unless the almanac says so; carry the transformation, never the claim that it was done.
+**Meter law** (e102–e111): re-cut every meter each round; a pin is a memory; a duty is not a seat unless the almanac says so; carry the transformation, never the claim that it was done. Name the **Bench** when a measurement is reported.
 
 **Census instrument** (commence): `git ls-files` never `find` · planted controls before totals · Class O propose-never-seat rooms (paths await Keaton).
 
