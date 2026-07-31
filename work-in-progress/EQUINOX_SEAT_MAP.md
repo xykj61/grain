@@ -1,13 +1,13 @@
 # Equinox Seat Map — close path · Chapter Seven and Eight
 
 **Language:** EN  
-**Status:** Living pin — ch7 close **PERFORMED** · ch8 seat **128 RESERVED** · fork **EXTEND +128** · breach **closed unspent** · roofs **CLOSED** · close-seat **answered** · e92 park **lifted** · **roots** amended · bench = raised root  
+**Status:** Living pin — ch7 close **PERFORMED** · ch8 seat **128 RESERVED** · fork **EXTEND +128** · breach **closed unspent** · roofs **CLOSED** · close-seat **answered** · e92 park **lifted** · **roots ≠ Bench** · name the Bench  
 **Voice:** Riyo  
-**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260731.220432` (e121 roots bench amend · 128 kept reserved)  
-**Seat:** Equinox e121 · almanac **125** · Chapter Eight **(13 of 16)**  
-**Basis:** fuse kg · counsel roots amend · e120 roots kept · bench kinship  
+**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260731.221131` (e122 roots bench kinds · 128 kept reserved)  
+**Seat:** Equinox e122 · almanac **126** · Chapter Eight **(14 of 16)**  
+**Basis:** fuse kg · counsel kinds correction · e121 blur refused · e120 sharpness restored  
 
-*A chapter's sixteenth seat may carry check · test · prepare as a close choir. A duty is not a seat unless the almanac says so — only the close is a seat. A surface witness claims no seat of its own. **roots** are surfaces through which work reaches the tree; a **Bench** is a root that holds a raise. Name the root when a measurement is reported. When two roofs carry one name, either they agree or the name is doing two jobs. Approve-all seats recommended leans; it circles no gate. Seat the suite; do not manufacture meters. Look for the thing, not for the name of the thing. On-disk is not in-the-tree. A witness must not depend on one bench's tools.*
+*A chapter's sixteenth seat may carry check · test · prepare as a close choir. A duty is not a seat unless the almanac says so — only the close is a seat. A surface witness claims no seat of its own. **roots** are where the hand sits to send words; a **Bench** is where claims become evidence — different kinds. Name the **Bench** when a measurement is reported. When two roofs carry one name, either they agree or the name is doing two jobs. Approve-all seats recommended leans; it circles no gate. Seat the suite; do not manufacture meters. Look for the thing, not for the name of the thing. On-disk is not in-the-tree. A witness must not depend on one bench's tools.*
 
 ---
 
@@ -38,8 +38,8 @@
 | Opened | seat **113** · e109 ch7 surface |
 | Content seats | **114–127** · fill with findings |
 | Close choir | seat **128** · **RESERVED** for check · test · prepare |
-| e110–e120 | seats **114–124** · through Lexicon roots |
-| This pin (e121) | seat **125** · roots amended · bench = raised root |
+| e110–e121 | seats **114–125** · through e121 blur (dated) |
+| This pin (e122) | seat **126** · roots ≠ Bench · name the Bench |
 
 | Seat | Duty | Status |
 | --- | --- | --- |
@@ -54,9 +54,10 @@
 | **121** | fork EXTEND +128 · breach closed unspent | **SPENT** e117 |
 | **122** | metal corrections · roofs CLOSED · stale blocked retired | **SPENT** e118 |
 | **123** | close-seat answered · ch5+ch6 surfaces as tools · park lifted | **SPENT** e119 |
-| **124** | Lexicon **roots** · client surfaces category | **SPENT** e120 |
-| **125** | roots amended · bench = raised root · six members | **this sitting** e121 |
-| **126–127** | content (unnamed yet) | open |
+| **124** | Lexicon **roots** · four client surfaces | **SPENT** e120 |
+| **125** | roots amended · blur as root-subtype (dated · refused e122) | **SPENT** e121 |
+| **126** | roots ≠ Bench · name the Bench · kinds restored | **this sitting** e122 |
+| **127** | content (unnamed yet) | open |
 | **128** | **CLOSE CHOIR** as check · test · prepare | **RESERVED** |
 
 ---
@@ -64,7 +65,7 @@
 ## Itinerary (refined · duty ≠ seat)
 
 1. **BUNDLE SEND** — a crossing mode, not an almanac seat.  
-2. **SHRED lap** — **Keaton-gated**, Class O, shred **RED**. Not a seat. Approve-all does not circle shred yes.  
+2. **SHRED lap** — **Keaton-gated**, Class O, shred **RED**. Not a seat. Approve-all and fuse kg do not circle shred yes.  
 3. **CHECK · TEST · PREPARE** — only the close choir is a seat (112 LANDED · 128 RESERVED).
 
 ### Held beside the map
@@ -76,13 +77,13 @@
 | Roofs | **CLOSED** · dated_testimony agrees · two jobs named |
 | Geode expedition | APPROVED · GATED · not begun |
 | close-seat row (ch5 + ch6) | **answered** · park **lifted** · surfaces as tools |
-| **roots** | **amended** e121 · six members · bench = raised root |
+| **roots** | **four** client surfaces · hand sits to send words · ≠ Bench |
 | Class O path rows | propose-never-seat until Keaton's word |
 | SAFE rows | 0 of 64 · Keaton alone |
 | Measurement queue | **empty** for counsel · remainder Keaton-gated |
 | REDS | **40** rows |
 | shred | **RED** |
-| Tool presence | **per-bench re-cut** · binaries gitignored |
+| Tool presence | **per-bench re-cut** · name the Bench · binaries gitignored |
 
 ---
 
@@ -91,8 +92,8 @@
 - When two roofs carry one name, either they agree or the name is doing two jobs.  
 - Approve-all seats recommended yes/no leans; it does not lift shred · SAFE · seat 128 · LICENSE · geode begin.  
 - A surface witness claims no seat of its own.  
-- **roots** touch the tree; a **Bench** is a root that holds a raise — only a bench runs witnesses.  
-- Name the root when a measurement is reported.  
+- **roots** send words; a **Bench** measures — different kinds.  
+- Name the **Bench** when a measurement is reported.  
 - A witness must not depend on one bench's tools.  
 - Seat the suite; do not manufacture meters.  
 - Look for the thing, not for the name of the thing.  
@@ -103,4 +104,4 @@
 
 ---
 
-*May six members name the touch. May only a raised root run witnesses. May seat 128 wait for the close.*
+*May four roots keep the hand. May measurements name their Bench. May seat 128 wait for the close.*

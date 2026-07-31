@@ -1,0 +1,19 @@
+# tools/gen/season/equinox_e122_roots_bench_kinds_witness.rish — e122 seat.
+#   rishi/bin/rishi run tools/gen/season/equinox_e122_roots_bench_kinds_witness.rish
+say "e122-roots-bench-kinds: Language EN — roots send words; a Bench measures."
+say "e122-roots-bench-kinds: Style Radiant — different kinds; one word must not do two jobs."
+say "e122-roots-bench-kinds: Lens TAME — e122 · kinds restored · almanac 126 · ch8 14/16."
+
+let green = run ["sh" "tools/fixtures/equinox_e122_roots_bench_kinds_scan.sh"]
+assert green.ok else "e122-roots-bench-kinds: living scan must exit 0"
+assert green.out contains "roots=honored" else "e122-roots-bench-kinds: want roots honored"
+assert green.out contains "kinds=honored" else "e122-roots-bench-kinds: want kinds honored"
+assert green.out contains "law=name_the_bench_when_a_measurement_is_reported" else "e122-roots-bench-kinds: want name the Bench"
+assert green.out contains "seat_128=reserved_close_choir" else "e122-roots-bench-kinds: want 128 reserved"
+assert green.out contains "verdict=ok" else "e122-roots-bench-kinds: want verdict ok"
+
+let red = run ["sh" "tools/fixtures/equinox_e122_roots_bench_kinds_scan.sh" "prove-red"]
+assert (red.ok == false) else "e122-roots-bench-kinds: prove-red must refuse"
+assert red.out contains "RED_claimed_bench_is_raised_root" else "e122-roots-bench-kinds: prove-red want blur refuse"
+
+say "GREEN: e122-roots-bench-kinds — roots ≠ Bench · name the Bench · shred RED"
