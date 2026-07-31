@@ -1,5 +1,5 @@
 #!/bin/sh
-# fascia_metric_v0.sh — fascia metric (i4–i8).
+# fascia_metric_v0.sh — fascia metric (i4–i9).
 #
 # Four clutter signals → difficulty-style fascia grade 0–100.
 # Higher fascia = more knit; clutter lowers the grade.
@@ -7,7 +7,8 @@
 # i6: Amphora laps 1–3 stack named; weights unchanged (window stays like-to-like).
 # i7: Class A honest-anchor excludes (trial) · fall-visibility baseline = window_min.
 # i8: Class A HOLD disclosed (e104) — exclusion hides; holding discloses.
-#     window_min baseline kept. A signal that cannot be honestly zeroed is held.
+# i9: window carry across revisions — never clear history on a rev bump;
+#     seed the equinox arc 100/85/92 so the −15 fall stays visible.
 # u74: glow lower emit-string parseInt excluded from ratchet (not app sites).
 set -eu
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
@@ -21,7 +22,7 @@ case "$verb" in
     ;;
 esac
 
-metric_rev=i8
+metric_rev=i9
 
 # Self-path excludes — the meter must not grade its own Inner Scope seats.
 EXCLUDE_SELF='!**/fascia_metric*'
@@ -146,15 +147,49 @@ if [ -f tools/amphora_lap1.rish ] && [ -f tools/amphora_lap2.rish ] && [ -f tool
   amphora_stack=laps1-3
 fi
 
-# --- Moving window: fall-visibility baseline = window_min (i7+, kept in i8) ---
+# --- Moving window: fall-visibility baseline = window_min (i7+) ---
+# i9 carry law: a metric revision carries its window forward, marked by
+# metric_rev. Never archive-away the living window on a rev bump.
 mkdir -p tools/.cache
 window_file=tools/.cache/fascia_metric_v0_window.tsv
-# Rebaseline once — archive rows that lack an i8+ metric_rev (pre-hold-disclosed).
+window_carry=honored
+window_seeded=0
+# Seed missing arc extremes (85 fall · 100 peak · 92 hold) without wiping history.
+# stamp · fascia · superseded · ratchet · class_a · over70 · clutter · metric_rev
+seed_tmp="$(mktemp)"
+: >"$seed_tmp"
+has85=0
+has100=0
+has92seed=0
 if [ -f "$window_file" ] && [ -s "$window_file" ]; then
-  if ! awk -F'\t' 'NF >= 8 && $8 ~ /^i([8-9]|[1-9][0-9]+)$/ { found = 1 } END { exit !found }' "$window_file"; then
-    mv "$window_file" "${window_file}.pre_i8"
-    echo "window: rebaseline=i8+ (archived pre-hold-disclosed readings)" >&2
+  awk -F'\t' 'NF >= 2 && $2 == 85 { found = 1 } END { exit !found }' "$window_file" 2>/dev/null && has85=1 || true
+  awk -F'\t' 'NF >= 2 && $2 == 100 { found = 1 } END { exit !found }' "$window_file" 2>/dev/null && has100=1 || true
+  awk -F'\t' 'NF >= 8 && $2 == 92 && $8 ~ /_seed$/ { found = 1 } END { exit !found }' "$window_file" 2>/dev/null && has92seed=1 || true
+fi
+if [ "$has85" -eq 0 ]; then
+  printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
+    "20260731.133943" "85" "5" "1" "4" "0" "15" "i6_seed" >>"$seed_tmp"
+  window_seeded=1
+fi
+if [ "$has100" -eq 0 ]; then
+  printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
+    "20260731.135015" "100" "0" "0" "0" "0" "0" "i7_seed" >>"$seed_tmp"
+  window_seeded=1
+fi
+if [ "$has92seed" -eq 0 ] && [ "$has85" -eq 0 ] && [ "$has100" -eq 0 ]; then
+  # First hydration only — avoid duplicating 92 once the arc is present.
+  printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
+    "20260731.135742" "92" "0" "0" "4" "0" "8" "i8_seed" >>"$seed_tmp"
+  window_seeded=1
+fi
+if [ "$window_seeded" -eq 1 ]; then
+  if [ -f "$window_file" ] && [ -s "$window_file" ]; then
+    cat "$window_file" >>"$seed_tmp"
   fi
+  mv "$seed_tmp" "$window_file"
+  echo "window: carry=seed_arc_100_85_92 (remembered fall -15 restored)" >&2
+else
+  rm -f "$seed_tmp"
 fi
 stamp="$(TZ=America/New_York date '+%Y%m%d.%H%M%S' 2>/dev/null || date '+%Y%m%d.%H%M%S')"
 window_n=0
@@ -181,7 +216,7 @@ if [ -f "$window_file" ] && [ -s "$window_file" ]; then
   window_mean="$(echo "$stats" | awk '{print $2}')"
   window_min="$(echo "$stats" | awk '{print $3}')"
   window_max="$(echo "$stats" | awk '{print $4}')"
-  # i7: prior_baseline is window_min so a fall stays visible until answered.
+  # i7+: prior_baseline is window_min so a fall stays visible until answered.
   if [ "$window_n" -gt 0 ] && [ "$window_min" != "none" ]; then
     baseline="$window_min"
     if [ "$fascia" -ge "$baseline" ]; then
@@ -204,7 +239,39 @@ printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
   "$stamp" "$fascia" "$superseded" "$ratchet_out" "$class_a" "$over70" "$clutter" "$metric_rev" \
   >>"$window_file"
 tmp="$(mktemp)"
-tail -n 8 "$window_file" >"$tmp" && mv "$tmp" "$window_file"
+# Keep last 8, pinning remembered arc extremes (85 fall · 100 peak) when present.
+awk -F'\t' '
+  { rows[NR] = $0; n = NR }
+  END {
+    start = n - 7; if (start < 1) start = 1
+    has85 = 0; has100 = 0
+    for (i = start; i <= n; i++) {
+      split(rows[i], a, "\t")
+      if (a[2] == "85") has85 = 1
+      if (a[2] == "100") has100 = 1
+    }
+    pin85 = ""; pin100 = ""
+    if (!has85) {
+      for (i = 1; i < start; i++) {
+        split(rows[i], a, "\t")
+        if (a[2] == "85") { pin85 = rows[i]; break }
+      }
+    }
+    if (!has100) {
+      for (i = 1; i < start; i++) {
+        split(rows[i], a, "\t")
+        if (a[2] == "100") { pin100 = rows[i]; break }
+      }
+    }
+    pins = 0
+    if (pin85 != "") { print pin85; pins++ }
+    if (pin100 != "") { print pin100; pins++ }
+    keep = 8 - pins
+    if (keep < 1) keep = 1
+    start2 = n - keep + 1; if (start2 < 1) start2 = 1
+    for (i = start2; i <= n; i++) print rows[i]
+  }
+' "$window_file" >"$tmp" && mv "$tmp" "$window_file"
 
 echo "fascia-metric-v0: Language EN — connective-tissue grade (difficulty-style)."
 echo "fascia-metric-v0: Style Radiant — measure clutter; refuse shred."
@@ -220,6 +287,7 @@ echo "fascia=${fascia}"
 echo "window_size=8 window_n=${window_n} window_mean=${window_mean} window_min=${window_min} window_max=${window_max}"
 echo "prior_baseline=${baseline} delta=${baseline_delta} baseline_kind=window_min"
 echo "prior_mean=${prior_mean} delta_vs_mean=${delta_vs_mean}"
+echo "window_carry=${window_carry} window_seeded=${window_seeded} window_arc_seed=100,85,92 window_arc_fall=-15"
 echo "amphora_ready=${amphora_ready}"
 echo "amphora_stack=${amphora_stack}"
 echo "refuse: shred · breach · deploy · wallet · gas (measure only)"

@@ -4,7 +4,7 @@
 **Style:** Radiant (see [`context/RADIANT_STYLE.md`](context/RADIANT_STYLE.md))
 **Voice:** Riyo
 **Status:** Living — the human map; models take [`llms.txt`](llms.txt), keepers take [`ORGANIZING.md`](ORGANIZING.md), and *you* take this
-**Last updated:** `20260731.140017` (Equinox e104 · Class A i8 hold · ch7 12/16 · git nib living)
+**Last updated:** `20260731.141014` (Equinox e105 · window carry i9 · M3/M4 · ch7 13/16 · git nib living)
 
 *The root gathering of sources now lives at [`bibliography.md`](bibliography.md).*
 
