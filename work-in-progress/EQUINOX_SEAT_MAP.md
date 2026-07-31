@@ -3,11 +3,11 @@
 **Language:** EN  
 **Status:** Living pin — ch7 close **PERFORMED** · ch8 seat **128 RESERVED** · does not consume the fork  
 **Voice:** Riyo  
-**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260731.145246` (e111 date dialect · 128 kept reserved)  
-**Seat:** Equinox e111 · almanac **115** · Chapter Eight **(3 of 16)**  
-**Basis:** counsel date dialect rule · e110 reserve 128 · e92 ruling D  
+**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260731.150140` (e112 planted date-dialect witness · 128 kept reserved)  
+**Seat:** Equinox e112 · almanac **116** · Chapter Eight **(4 of 16)**  
+**Basis:** counsel planted-control dialect rule · e111 transform kept · e110 reserve 128 · e92 ruling D  
 
-*A chapter's sixteenth seat may carry check · test · prepare as a close choir. A duty is not a seat unless the almanac says so — only the close is a seat. A record that cannot be found by the census that will look for it is not yet a record. What ch7 recovered by catch, ch8 keeps by plan.*
+*A chapter's sixteenth seat may carry check · test · prepare as a close choir. A duty is not a seat unless the almanac says so — only the close is a seat. A duty with no witness has no seat, and a duty with no seat never lands. A record that cannot be found by the census that will look for it is not yet a record. What ch7 recovered by catch, ch8 keeps by plan.*
 
 ---
 
@@ -39,14 +39,16 @@
 | Content seats | **114–127** · fill with findings |
 | Close choir | seat **128** · **RESERVED** for check · test · prepare |
 | e110 | seat **114** · prove census finds four · name the reserve |
-| This pin (e111) | seat **115** · date dialect compact · 17 of 17 |
+| e111 | seat **115** · date dialect compact · 17 of 17 |
+| This pin (e112) | seat **116** · planted date-dialect witness · one_dialect |
 
 | Seat | Duty | Status |
 | --- | --- | --- |
 | **113** | ch7 surface · chapter eight opens | **SPENT** e109 |
 | **114** | surface census + reserve 128 | **SPENT** e110 |
-| **115** | date dialect · eleven Last updated compact | **this sitting** e111 |
-| **116–127** | content (unnamed yet) | open |
+| **115** | date dialect · eleven Last updated compact | **SPENT** e111 |
+| **116** | planted date-dialect witness · C1/C2 · one_dialect | **this sitting** e112 |
+| **117–127** | content (unnamed yet) | open |
 | **128** | **CLOSE CHOIR** as check · test · prepare | **RESERVED** |
 
 Ch5 and ch6 broke because nobody reserved a sixteenth seat. Ch7 recovered because the arithmetic was caught with seats left. Ch8 reserves **128** on day one.
@@ -74,6 +76,7 @@ Ch5 and ch6 broke because nobody reserved a sixteenth seat. Ch7 recovered becaus
 
 ## Hard lines
 
+- A duty with no witness has no seat, and a duty with no seat never lands.  
 - A record that cannot be found by the census that will look for it is not yet a record.  
 - A duty is not a seat unless the almanac says so. Prefer **git nib**.  
 - This pin does not perform shred, does not consume the fork, and does not seat Class O paths.  
