@@ -1,10 +1,10 @@
 # The Work-in-Progress Stack
 
 **Language:** EN
-**Last updated:** 2026-07-17 (standing voice Quin)
+**Last updated:** `20260731.120704` (EDT) · Equinox OPEN · commence arc · standing voice Riyo
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Voice:** Quin
-**Status:** Foundation
+**Voice:** Riyo
+**Status:** Foundation — living workbench; prefer **git nib** · see [`REMEMBER.md`](REMEMBER.md) · [`ROADMAP.md`](ROADMAP.md)
 
 ---
 
