@@ -2,9 +2,9 @@
 
 **Language:** EN  
 **Status:** Living pin — **shred RED** · Amphora cut not opened · list only  
-**Voice:** Quin  
-**Last refreshed:** `20260731.135609` (EDT) · Class O room home (Riyo · e104) · elder seat voice Quin held  
-**Seat:** Surface p36 Kiln · [`../counsel/20260728-232511_surface-season-p36-kiln-seated.md`](../counsel/20260728-232511_surface-season-p36-kiln-seated.md)
+**Voice:** Riyo  
+**Last refreshed:** `20260731.232004` · Class O **word-scope** seated (e128) · elder Quin seat held in history  
+**Seat:** Surface p36 Kiln · Equinox e128 word-scope · [`../counsel/20260731-232004_e128-class-o-word-scope.md`](../counsel/20260731-232004_e128-class-o-word-scope.md)
 
 *Accrete-never-break: fossils stay on disk until a circled shred proves parity. This list prepares the hand; it does not authorize a cut.*
 
@@ -16,28 +16,41 @@
 | --- | --- | --- |
 | **A** | Fund-lineage elder anchors (MUR u89–u91) · held disclosed on fascia i8 | Content yes · cut no · hold not exclude |
 | **H** | Horizon **writing fossils** replaced by a **living mutant** | Prep only · shred RED |
-| **O** | Unreachable testimony — no file in the tree names it (basename floor) | **Propose only** · never seat · shred RED |
+| **O** | Unreachable testimony — no file in the tree names it (basename floor) | Word-scope on **class/rooms** · cut still RED |
 
 Class **H** is for Grep + Amphora later. It is **not** Class A.  
-Class **O** is **propose-never-seat** (`20260731.124815` · commence M7 weave · room home `20260731.135609`): neither fund anchor nor writing fossil — simply never pointed at. Instrument: `tools/fixtures/shed_census_scan.sh`. Every path still needs Keaton's word. `SAFE.md` refuses whole on any listed path. **No individual paths are seated here** — rooms name where the orphan floor waits.
+Class **O** (`20260731.124815` · room home `20260731.135609` · **word-scope e128** `20260731.232004`): neither fund anchor nor writing fossil — simply never pointed at. Instrument: `tools/fixtures/shed_census_scan.sh`. Membership is a **measured property**; the census is authority. **Keaton's authorizing word is on the class and/or the rooms — not on each orphan filename.** `SAFE.md` refuses whole on any listed path. Paths stay unnamed here; rooms wait the opening word.
 
-### Class O — rooms (propose only · never seat paths)
+### Class O — word-scope (e128)
 
-Floor measured by `shed_census_scan.sh` · basename orphan count. Rooms below give the 852 a lawful home to wait in. Paths stay unnamed until Keaton opens a row.
+| Opening word (any one) | Effect when spoken |
+| --- | --- |
+| `Class O yes` · `shred Class O` | authorize all Class O rooms (planted controls keep) |
+| `shed <room>` | authorize that room only |
+| circled `shred yes` covering Class O rooms | authorize the named Class O cut |
 
-| room | orphan share (floor) | reachable? | Keaton's word |
-| --- | --- | --- | --- |
-| session-logs | ~690 | orphan floor | await word · propose only |
-| counsel | ~87 | orphan floor | await word · propose only |
-| waymarks | ~57 | orphan floor | await word · propose only |
-| expanding-prompts | ~7 | orphan floor | await word · propose only |
-| bron-resins | ~4 | orphan floor | await word · propose only |
-| external-research | ~2 | orphan floor | await word · propose only |
-| *(other dated)* | remainder to floor | orphan floor | await word · propose only |
+Approvals · kg · best path seat this framing; they do **not** open the cut.
+
+### Class O — rooms (fresh cut · Bench Cursor Cloud · `20260731.232004`)
+
+Floor: **orphaned=858** · `fascia_health_now=43` · `fascia_health_if_orphans_shed=53` · shred **RED**.
+
+| room | orphans | reachable? | Keaton's word |
+| --- | ---: | --- | --- |
+| session-logs | 689 | orphan floor | await opening word |
+| counsel | 87 | orphan floor | await opening word |
+| waymarks | 57 | orphan floor | await opening word |
+| expanding-prompts | 14 | orphan floor | await opening word |
+| bron-resins | 4 | orphan floor | await opening word |
+| external-research | 2 | orphan floor | await opening word |
+| foundations | 2 | orphan floor | await opening word |
+| active-designing | 1 | orphan floor | await opening word |
+| classical-vedic-astrology | 1 | orphan floor | await opening word |
+| tools | 1 | planted orphan control | **keeps** — never shed |
 
 | path | room | last stamp | reachable? | Keaton's word |
 | --- | --- | --- | --- | --- |
-| *(none — propose only · never seat)* | — | — | orphan floor | await word |
+| *(none named — class/rooms word-scope)* | — | — | orphan floor | await opening word |
 
 ---
 
@@ -113,8 +126,10 @@ living Realidream also reaches:
 - No live shred · no `prin rish breach yes now` from this pin.  
 - Fossils HOLD until circled Amphora proof.  
 - Class A stays under MUR shred readiness — do not mix into Class H cuts.  
-- Outside one-hops are **named**, not auto-walked into the whole pier.
+- Outside one-hops are **named**, not auto-walked into the whole pier.  
+- Class O word-scope is class/rooms, not per-path — and still needs an opening word before any cut.  
+- Planted orphan controls keep.
 
 ---
 
-*Carry lightly. Prefer git nib. Shred stays RED.*
+*Carry lightly. Prefer git nib. Shred stays RED until the opening word.*
