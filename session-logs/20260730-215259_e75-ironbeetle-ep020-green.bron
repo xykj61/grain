@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260730.215259
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title e75 IronBeetle ep020 a-change-that-never-touches-what-came-before GREEN
+prompt kg · e75 — IronBeetle ep020 a-change-that-never-touches-what-came-before
+think e74 ep019 GREEN · ep020 next written silo · leaf census twin
+think Teach: LSM · immutable tables · levels · compaction · Manifest · shadow update
+think Seat 80 · ch5 16/16 FULL · no ch5 surface witness yet · Claude for close vs ch6
+obs e75 GREEN · ch5 FULL · e76 surface shape or ep021 next
+file expanding-prompts/20260730-215158_e75-ironbeetle-ep020-charter.md charter
+file tools/fixtures/ironbeetle_ep020_census.sh scan GREEN
+file tools/gen/season/equinox_ironbeetle_ep020_choir_witness.rish choir GREEN
+file rye-learning-process/GLOW_ALMANAC.md seat 80 · ch5 16/16 FULL
+file waymarks/20260730-215259_e75-ironbeetle-ep020-green.md finishing edge
+file expanding-prompts/20260730-215259_equinox-season-e76-recursion-prompt.md fusion
+recommend check-in Claude e76 ch5 surface close shape or ch6 open with ep021

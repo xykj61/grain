@@ -1,0 +1,28 @@
+# tools/gen/season/ironbeetle_ep020_census_witness.rish — e75 IronBeetle ep020.
+#
+#   rishi/bin/rishi run tools/gen/season/ironbeetle_ep020_census_witness.rish
+#
+# Clean-room: presence only · never copies into rye/.
+# Leaf only — no nested elder choirs.
+
+say "iron-ep020: Language EN — a change that never touches what came before."
+say "iron-ep020: Style Radiant — immutable tables stack; compaction keeps the levels honest."
+say "iron-ep020: Lens TAME — e75 · clean-room study · almanac seat 80."
+
+let shelf = run ["test" "-d" "gratitude/ironbeetle"]
+assert shelf.ok else "iron-ep020: gratitude/ironbeetle ABSENT — host shelf first"
+
+let census = run ["sh" "tools/fixtures/ironbeetle_ep020_census.sh"]
+say census.out
+assert census.ok else "iron-ep020: census failed or thin"
+assert census.out contains "IRON=present" else "iron-ep020: want IRON=present"
+assert census.out contains "verdict=ok" else "iron-ep020: want verdict=ok"
+assert census.out contains "EP020=yes" else "iron-ep020: ep020 file must be present"
+assert census.out contains "HONORS=yes" else "iron-ep020: Honors heading must be present"
+assert census.out contains "SOURCE=yes" else "iron-ep020: Source heading must be present"
+assert census.out contains "TEACH=yes" else "iron-ep020: teach limbs (LSM·levels·compaction·Manifest) must be present"
+assert census.out contains "RHYME=yes" else "iron-ep020: rhyme section must be present"
+assert census.out contains "CLEAN=yes" else "iron-ep020: Clean Room heading must be present"
+assert census.out contains "MATKLAD_OK=yes" else "iron-ep020: matklad companion must cite ironbeetle/"
+
+say "GREEN: iron-ep020 — honors·source·teach·rhyme·clean·matklad ok"

@@ -294,7 +294,7 @@ Expected say-why GREEN · off-by-one GREEN · style-numbers GREEN · IRON presen
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ch4_surface_witness.rish` · **Stamp:** `20260730.190447` · **Witness:** `tools/gen/season/equinox_ch4_surface_witness.rish`
 Expected dx why/how · mid inplace/shrink/bleeds/obo · style numbers/deps/tooling/last · iron COUNT≥34, and ABSENT refuses on a missing clone or iron shelf. Metal answered GREEN. Chapter four closes at sixteen; chapter five waits for metal.
 
-## Chapter Five (15 of 16)
+## Chapter Five (16 of 16)
 
 Opened from metal at stamp `20260730.191221`. Themes arrive after findings; this chapter carries none in advance.
 
@@ -357,6 +357,10 @@ Expected IRON=present · EP018 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 ### 79. IronBeetle ep019 reduces storage to a sorted array; tables are index plus value blocks.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep019_choir_witness.rish` · **Stamp:** `20260730.212920` · **Witness:** `tools/gen/season/ironbeetle_ep019_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep019_census.sh` · choir `equinox_ironbeetle_ep019_choir_witness.rish`
 Expected IRON=present · EP019 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only.
+
+### 80. IronBeetle ep020 shadows rather than overwrites; LSM levels and the Manifest keep the stack searchable.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep020_choir_witness.rish` · **Stamp:** `20260730.215259` · **Witness:** `tools/gen/season/ironbeetle_ep020_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep020_census.sh` · choir `equinox_ironbeetle_ep020_choir_witness.rish`
+Expected IRON=present · EP020 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only. Chapter five fills at sixteen.
 
 ---
 
