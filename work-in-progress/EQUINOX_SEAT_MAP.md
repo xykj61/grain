@@ -5,7 +5,7 @@
 **Voice:** Riyo  
 **Stamp:** living ledger (born `20260731.141857`) · refreshed `20260731.222426` (e123 living-pin guard · 128 kept reserved)  
 **Seat:** Equinox e123 · almanac **127** · Chapter Eight **(15 of 16)**  
-**Basis:** fuse kg · approve-all · living-pin content guard · counsel prove C1·C2 landed · e122 kinds kept · e121 wipe lesson · **128 still reserved**  
+**Basis:** fuse kg · approve-all · living-pin content guard · one roof · duplicate retired · C1·C2 kept · e122 kinds kept · e121 wipe lesson · **128 still reserved**  
 
 *A chapter's sixteenth seat may carry check · test · prepare as a close choir. A duty is not a seat unless the almanac says so — only the close is a seat. A surface witness claims no seat of its own. **roots** are where the hand sits to send words; a **Bench** is where claims become evidence — different kinds. Name the **Bench** when a measurement is reported. When two roofs carry one name, either they agree or the name is doing two jobs. Approve-all seats recommended leans; it circles no gate. Seat the suite; do not manufacture meters. Look for the thing, not for the name of the thing. On-disk is not in-the-tree. A witness must not depend on one bench's tools.*
 
