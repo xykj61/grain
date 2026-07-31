@@ -1,0 +1,38 @@
+# census_control_scan.rish — orchestration for three planted duties.
+#
+# POSIX seams keep the duty bodies; this file sequences them (TAME Guidance).
+# Entry (thin): tools/fixtures/census_control_scan.sh
+# Cloud / no-rishi drive of the same seams: census_control_scan_drive.sh
+#
+#   rishi/bin/rishi run tools/fixtures/census_control_scan.rish
+#   rishi/bin/rishi run tools/fixtures/census_control_scan.rish prove-red
+
+if args contains "prove-red" then let h1r = run ["sh" "tools/fixtures/census_control_h1_seam.sh"]
+if args contains "prove-red" then say h1r.out
+if args contains "prove-red" then say "duty1_mode=naive_as_total"
+if args contains "prove-red" then say "CONTROL=present"
+if args contains "prove-red" then say "verdict=misread"
+if args contains "prove-red" then say "detail=naive_total_refused"
+if args contains "prove-red" then exit 1
+
+let h1 = run ["sh" "tools/fixtures/census_control_h1_seam.sh"]
+say h1.out
+assert h1.ok else "census-control: h1 seam must exit 0"
+assert h1.out contains "duty1_h1_true=1" else "census-control: want true=1"
+assert h1.out contains "duty1_h1_naive=4" else "census-control: want naive=4"
+say "duty1=honored"
+
+let marker = run ["sh" "tools/fixtures/census_control_marker_seam.sh"]
+say marker.out
+assert marker.ok else "census-control: marker seam must exit 0"
+assert marker.out contains "duty2=honored" else "census-control: want duty2"
+
+let tracked = run ["sh" "tools/fixtures/census_control_tracked_seam.sh"]
+say tracked.out
+assert tracked.ok else "census-control: tracked seam must exit 0"
+assert tracked.out contains "duty3=honored" else "census-control: want duty3"
+
+say "CONTROL=present"
+say "duties_honored=3"
+say "verdict=ok"
+say "orchestration=rish"

@@ -1,0 +1,21 @@
+# tools/gen/season/equinox_e126_start_rung_witness.rish — e126 seat.
+#   rishi/bin/rishi run tools/gen/season/equinox_e126_start_rung_witness.rish
+say "e126-start-rung: Language EN — name the rung; climb sh→rish without skipping."
+say "e126-start-rung: Style Radiant — orchestration into rish; POSIX seams kept."
+say "e126-start-rung: Lens TAME — e126 · start rung · census_control climb · 128 reserved."
+
+let green = run ["sh" "tools/fixtures/equinox_e126_start_rung_scan.sh"]
+assert green.ok else "e126-start-rung: living scan must exit 0"
+assert green.out contains "start_rung=honored" else "e126-start-rung: want start rung"
+assert green.out contains "start_rung_name=sh_to_rish_seam" else "e126-start-rung: want seam name"
+assert green.out contains "climb=honored" else "e126-start-rung: want climb"
+assert green.out contains "control_gate=honored" else "e126-start-rung: want control"
+assert green.out contains "seat_128=reserved_close_choir" else "e126-start-rung: want 128 reserved"
+assert green.out contains "no_content_seat_claimed=honored" else "e126-start-rung: want no 128 spend"
+assert green.out contains "verdict=ok" else "e126-start-rung: want verdict ok"
+
+let red = run ["sh" "tools/fixtures/equinox_e126_start_rung_scan.sh" "prove-red"]
+assert (red.ok == false) else "e126-start-rung: prove-red must refuse"
+assert red.out contains "RED_start_rung_mantra_first" else "e126-start-rung: prove-red want mantra-first refuse"
+
+say "GREEN: e126-start-rung — sh→rish named · census_control climbed · 128 reserved · shred RED"

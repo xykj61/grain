@@ -1,3 +1,4 @@
+- `20260731.231123` — [e126 start rung GREEN](20260731-231123_e126-start-rung-green.bron) — sh→rish named · census_control climb · 128 reserved
 - `20260731.230116` — [e125 build stack GREEN](20260731-230116_e125-build-stack-green.bron) — sh→…→Mantra·Weave · five refusals · 128 reserved
 - `20260731.225812` — [e124 fuse verify one roof](20260731-225812_e124-fuse-verify-one-roof.bron) — already GREEN · counsel layering baton stale · queue empty
 - `20260731.224539` — [e124 one guard roof tidy](20260731-224539_e124-one-guard-roof.bron) — duplicate guard retired · one roof · 128 reserved · shred RED

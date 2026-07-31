@@ -1,7 +1,7 @@
 # The Roadmap — living pin
 
 **Language:** EN  
-**Last updated:** `20260731.230116` · voice Riyo  
+**Last updated:** `20260731.231123` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Full season ledger:** [`archive/20260724-132812_roadmap-season-ledger.md`](archive/20260724-132812_roadmap-season-ledger.md)  
 **Align:** [`20260726-050422_align-before-cursor-handoff.md`](archive/20260726-050422_align-before-cursor-handoff.md)  
@@ -9,20 +9,22 @@
 
 ---
 
-## Now — Equinox (deca) · build stack (`20260731.230116`)
+## Now — Equinox (deca) · start rung sh→rish (`20260731.231123`)
 
 | Order | Lap | Status |
 |-------|-----|--------|
-| — | Equinox e0–e122 · ch1–ch7 FULL · ch8 14/16 · roots ≠ Bench · census six · park lifted · fork EXTEND · REDS 40 · 128 reserved | landed |
-| **1** | **e123** living-pin content guard · emptied caught · seat **127** · ch8 **15/16** | **this sitting** |
-| **2** | SHRED lap by Keaton's word · Class O · SAFE | Keaton alone |
-| **3** | seat **128** close choir later | Keaton alone |
-| **4** | Horizon: geode expedition begin (e254/e255 or Keaton begin) | GATED |
+| — | Equinox e0–e125 · ch1–ch7 FULL · ch8 15/16 · build stack · living-pin guard · roots ≠ Bench · census six · park lifted · fork EXTEND · REDS 41 · 128 reserved | landed |
+| **1** | **e126** start rung named · census_control climb (seams + rish orch) · no content seat | **this sitting** |
+| **2** | more sh→rish climbs on fat scans · then glow·tend | open on seam |
+| **3** | SHRED lap by Keaton's word · Class O · SAFE | Keaton alone |
+| **4** | seat **128** close choir later | Keaton alone |
+| **5** | Horizon: geode expedition begin (e254/e255 or Keaton begin) | GATED |
 
-**Finishing edge (season):** Equinox OPEN · e124 next · ch7 FULL · ch8 OPEN 15/16 · living-pin guard seated · **roots** four client surfaces · roots ≠ Bench · name the Bench · census **six** · park **lifted** · roofs **CLOSED** · fork **EXTEND +128** · breach **closed unspent** · handback nested not consumed · 128 reserved · fascia **88** i9 · saga **Seated**.  
+**Finishing edge (season):** Equinox OPEN · e127 next · ch7 FULL · ch8 OPEN 15/16 · **start rung** sh→rish · build stack · living-pin guard · **roots** four client surfaces · roots ≠ Bench · name the Bench · census **six** · park **lifted** · roofs **CLOSED** · fork **EXTEND +128** · breach **closed unspent** · handback nested not consumed · 128 reserved · fascia **88** i9 · saga **Seated**.  
 **Finishing edge (product horizon):** clone · bootstrap · one witness · one `rishi glow` line ≤ 30 minutes — still stands.
 
-**Build stack** (seated `20260731.230116`): sh → rish → glow·tend → docs-geode → Aurora·Caravan·Tally → Mantra·Weave — foundations first; not prioritizing an upper layer over the one beneath.
+**Build stack** (seated `20260731.230116`): sh → rish → glow·tend → docs-geode → Aurora·Caravan·Tally → Mantra·Weave — foundations first; not prioritizing an upper layer over the one beneath.  
+**Start rung** (seated `20260731.231123`): sh → rish seam — keep `.sh` entries; climb orchestration into `.rish`.
 
 **Shell ratchet** (seated `20260726.032231`): `.sh` to Rishi on-touch; advisory count each advise run; exemptions: `rye/bootstrap.sh`, external-interpreter seams, python-heredoc witness bodies until duty-8 verbs land, thin-delegate elders.
 
