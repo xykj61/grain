@@ -7,7 +7,7 @@ type: reference
 # TAME Guidance — Operational Supplement
 
 **Language:** EN
-**Last updated:** 2026-07-20 (Glow G0–G5 · bartis STOA100–109 · barket STOA102/111–115 · nest/type STOA106–110)
+**Last updated:** `20260720` (Glow G0–G5 · bartis STOA100–109 · barket STOA102/111–115 · nest/type STOA106–110)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 **Voice:** Quin
 **Status:** Active — grow by supplement, earned when the language is ready

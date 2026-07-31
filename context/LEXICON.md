@@ -1,7 +1,7 @@
 # Lexicon — Module Names and Their Meanings
 
 **Language:** EN
-**Last updated:** 2026-07-30 (**e50 GREEN** · dual-equinox geode expedition breach APPROVED · GATED)
+**Last updated:** `20260730` (**e50 GREEN** · dual-equinox geode expedition breach APPROVED · GATED)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---

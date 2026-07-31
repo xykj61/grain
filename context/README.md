@@ -1,7 +1,7 @@
 # Context Home
 
 **Language:** EN
-**Last updated:** 2026-07-17 (TWO_ROOMS Quin refresh · five OS variants named in the tree map)
+**Last updated:** `20260717` (TWO_ROOMS Quin refresh · five OS variants named in the tree map)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 **Voice:** Riyo
 

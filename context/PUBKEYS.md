@@ -1,7 +1,7 @@
 # Public Keys
 
 **Language:** EN
-**Last updated:** 2026-07-12 (cloud Cursor lane-key seated `062656`)
+**Last updated:** `20260712` (cloud Cursor lane-key seated `062656`)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---
