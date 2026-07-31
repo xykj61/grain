@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260730.212920
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title e74 IronBeetle ep019 everything-is-a-sorted-array GREEN
+prompt kg · e74 — IronBeetle ep019 everything-is-a-sorted-array
+think e73 ep018 GREEN · ep019 next written silo · leaf census twin
+think Teach: sorted array · fixed blocks · table · index · key-from-value
+think Seat 79 · ch5 15/16 · ep020 next · expedition stays gated
+obs e74 GREEN · e75 IronBeetle ep020 next
+file expanding-prompts/20260730-212854_e74-ironbeetle-ep019-charter.md charter
+file tools/fixtures/ironbeetle_ep019_census.sh scan GREEN
+file tools/gen/season/equinox_ironbeetle_ep019_choir_witness.rish choir GREEN
+file rye-learning-process/GLOW_ALMANAC.md seat 79 · ch5 15/16
+file waymarks/20260730-212920_e74-ironbeetle-ep019-green.md finishing edge
+file expanding-prompts/20260730-212920_equinox-season-e75-recursion-prompt.md fusion
+recommend keep-going e75 IronBeetle ep020 a-change-that-never-touches-what-came-before
