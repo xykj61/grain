@@ -1,13 +1,13 @@
 # Equinox Seat Map — close path · Chapter Seven and Eight
 
 **Language:** EN  
-**Status:** Living pin — ch7 close **PERFORMED** · ch8 seat **128 RESERVED** · fork **EXTEND +128** · breach **closed unspent**  
+**Status:** Living pin — ch7 close **PERFORMED** · ch8 seat **128 RESERVED** · fork **EXTEND +128** · breach **closed unspent** · roofs **CLOSED**  
 **Voice:** Riyo  
-**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260731.170354` (e117 fork EXTEND · breach let-close · 128 kept reserved)  
-**Seat:** Equinox e117 · almanac **121** · Chapter Eight **(9 of 16)**  
-**Basis:** Keaton fuse kg approving all breaches forks recommendations · e116 roofs kept · e92 ruling D  
+**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260731.172902` (e118 metal corrections · roofs CLOSED · 128 kept reserved)  
+**Seat:** Equinox e118 · almanac **122** · Chapter Eight **(10 of 16)**  
+**Basis:** fuse kg · counsel metal corrections · e117 EXTEND kept · e92 ruling D  
 
-*A chapter's sixteenth seat may carry check · test · prepare as a close choir. A duty is not a seat unless the almanac says so — only the close is a seat. Approve-all seats recommended yes/no leans; hard lines still refuse shred. When two roofs carry one name, either they agree or the name is doing two jobs. Seat the suite; do not manufacture meters. Look for the thing, not for the name of the thing. On-disk is not in-the-tree.*
+*A chapter's sixteenth seat may carry check · test · prepare as a close choir. A duty is not a seat unless the almanac says so — only the close is a seat. When two roofs carry one name, either they agree or the name is doing two jobs. Approve-all seats recommended leans; it circles no gate. Seat the suite; do not manufacture meters. Look for the thing, not for the name of the thing. On-disk is not in-the-tree. A witness must not depend on one bench's tools.*
 
 ---
 
@@ -38,8 +38,8 @@
 | Opened | seat **113** · e109 ch7 surface |
 | Content seats | **114–127** · fill with findings |
 | Close choir | seat **128** · **RESERVED** for check · test · prepare |
-| e110–e116 | seats **114–120** · reserve through one dated definition |
-| This pin (e117) | seat **121** · fork EXTEND · breach closed unspent |
+| e110–e117 | seats **114–121** · through fork EXTEND + breach close |
+| This pin (e118) | seat **122** · metal corrections · roofs CLOSED |
 
 | Seat | Duty | Status |
 | --- | --- | --- |
@@ -51,8 +51,9 @@
 | **118** | thing-not-name · REDS 39 look for the thing | **SPENT** e114 |
 | **119** | instrument suite · pass=10 · keaton-gated remainder | **SPENT** e115 |
 | **120** | one dated definition · roofs agree · REDS 40 | **SPENT** e116 |
-| **121** | fork EXTEND +128 · breach closed unspent | **this sitting** e117 |
-| **122–127** | content (unnamed yet) | open |
+| **121** | fork EXTEND +128 · breach closed unspent | **SPENT** e117 |
+| **122** | metal corrections · roofs CLOSED · stale blocked retired | **this sitting** e118 |
+| **123–127** | content (unnamed yet) | open |
 | **128** | **CLOSE CHOIR** as check · test · prepare | **RESERVED** |
 
 Ch5 and ch6 broke because nobody reserved a sixteenth seat. Ch7 recovered because the arithmetic was caught with seats left. Ch8 reserves **128** on day one.
@@ -71,6 +72,7 @@ Ch5 and ch6 broke because nobody reserved a sixteenth seat. Ch7 recovered becaus
 | --- | --- |
 | THE FORK | **EXTEND +128** seated `20260731.170354` · handback nested **not consumed** |
 | THE BREACH (census) | **closed unspent** · `census_breach_count=0` |
+| Roofs | **CLOSED** · dated_testimony agrees · two jobs named |
 | Geode expedition | APPROVED · GATED · not begun |
 | close-seat row (ch5 + ch6) | still parked · e92 ruling D · Keaton alone |
 | Class O path rows | propose-never-seat until Keaton's word |
@@ -78,13 +80,15 @@ Ch5 and ch6 broke because nobody reserved a sixteenth seat. Ch7 recovered becaus
 | Measurement queue | **empty** for counsel · remainder Keaton-gated |
 | REDS | **40** rows |
 | shred | **RED** |
+| Tool presence | **per-bench re-cut** · binaries gitignored |
 
 ---
 
 ## Hard lines
 
-- Approve-all seats recommended yes/no leans; it does not lift shred · SAFE · seat 128 · LICENSE · geode begin.  
 - When two roofs carry one name, either they agree or the name is doing two jobs.  
+- Approve-all seats recommended yes/no leans; it does not lift shred · SAFE · seat 128 · LICENSE · geode begin.  
+- A witness must not depend on one bench's tools.  
 - Seat the suite; do not manufacture meters.  
 - Look for the thing, not for the name of the thing.  
 - On-disk is not in-the-tree. Test presence with `git ls-files`.  
@@ -96,4 +100,4 @@ Ch5 and ch6 broke because nobody reserved a sixteenth seat. Ch7 recovered becaus
 
 ---
 
-*May four finds be true. May seat 128 wait for the close. May extend deepen without consuming the handback.*
+*May four finds be true. May seat 128 wait for the close. May two jobs keep their names.*
