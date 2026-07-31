@@ -1,0 +1,36 @@
+# tools/gen/season/equinox_e107_seat_map_witness.rish — e107 corrected seat map.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_e107_seat_map_witness.rish
+
+say "e107-seat-map: Language EN — control first; then name spent seats before the remaining map."
+say "e107-seat-map: Style Radiant — seat 112 may close as a check; the bundle is a crossing."
+say "e107-seat-map: Lens TAME — e107 · seat map · almanac 111 · ch7 15/16."
+
+let control = run ["rishi/bin/rishi" "run" "tools/gen/season/census_control_witness.rish"]
+say control.out
+assert control.ok else "e107-seat-map: census control must GREEN"
+assert control.out contains "GREEN: census-control" else "e107-seat-map: want control GREEN"
+
+let museum = run ["rishi/bin/rishi" "run" "tools/gen/season/baton_museum_census_witness.rish"]
+say museum.out
+assert museum.ok else "e107-seat-map: baton museum RED"
+assert museum.out contains "census_breach_count=0" else "e107-seat-map: want breach 0"
+
+let scope = run ["rishi/bin/rishi" "run" "tools/gen/season/prin_scope.rish"]
+say scope.out
+assert scope.ok else "e107-seat-map: prin_scope RED"
+assert scope.out contains "GREEN: prin-scope" else "e107-seat-map: want scope GREEN"
+
+let scan = run ["sh" "tools/fixtures/equinox_seat_map_scan.sh"]
+say scan.out
+assert scan.ok else "e107-seat-map: scan must exit 0"
+assert scan.out contains "control_gate=honored" else "e107-seat-map: want control_gate"
+assert scan.out contains "seat_map=honored" else "e107-seat-map: want seat_map"
+assert scan.out contains "seat_map_110=spent_e106" else "e107-seat-map: want 110 spent"
+assert scan.out contains "seat_map_112=close_choir_proposed" else "e107-seat-map: want 112 proposed"
+assert scan.out contains "seat_map_bundle=crossing_mode" else "e107-seat-map: want bundle mode"
+assert scan.out contains "fork_status=not_consumed" else "e107-seat-map: want fork waiting"
+assert scan.out contains "e107_seat_map=ok" else "e107-seat-map: want e107 ok"
+assert scan.out contains "verdict=ok" else "e107-seat-map: want verdict=ok"
+
+say "GREEN: e107-seat-map — corrected map · 110 spent · 112 close choir proposed · fork waiting · museum"

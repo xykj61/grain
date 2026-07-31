@@ -430,7 +430,7 @@ Expected IRON=present · EP042 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep043_choir_witness.rish` · **Stamp:** `20260731.005634` · **Witness:** `tools/gen/season/ironbeetle_ep043_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep043_census.sh` · choir `equinox_ironbeetle_ep043_choir_witness.rish`
 Expected IRON=present · EP043 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only. Chapter six fills at sixteen.
 
-## Chapter Seven (14 of 16)
+## Chapter Seven (15 of 16)
 
 Opened from metal at stamp `20260731.114927`. Themes arrive after findings; this chapter carries none in advance. Ch5 and ch6 surface closes stay parked per e92 ruling D until a close-seat row is seated.
 
@@ -489,6 +489,10 @@ Expected control_gate · metric_rev=i9 · window_carry=honored · window_min=85 
 ### 110. Equinox e106 REDS zero-view: ledger row 33 records that a zero names the instrument's view, never the world; planted empty-view + archive-fall control; M3/M4 home land already consumed on e105; fascia i9 hold kept.
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_e106_reds_zero_view_choir_witness.rish` · **Stamp:** `20260731.141409` · **Witness:** `tools/gen/season/equinox_e106_reds_zero_view_witness.rish` · scan `tools/fixtures/equinox_e106_reds_zero_view_scan.sh` · choir `equinox_e106_reds_zero_view_choir_witness.rish`
 Expected control_gate · REDS rows=33 · monotone expect_next=34 · zero_view planted · prove-red refuses · m3_m4 e105_consumed · metric_rev=i9 · hold_not_exclude · fascia=92 · fork not_consumed · seats 97–109 · shelf end ep045 · baton breach 0. Look where the thing would be before calling it gone. Metal answered GREEN. Invent none.
+
+### 111. Equinox e107 seat map: corrected close path after seat 110 spent on e106; proposes seat 112 CLOSE CHOIR as check·test·prepare; bundle as crossing mode; shred Keaton-gated; ch5+ch6 close-seat row still parked.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_e107_seat_map_choir_witness.rish` · **Stamp:** `20260731.141952` · **Witness:** `tools/gen/season/equinox_e107_seat_map_witness.rish` · scan `tools/fixtures/equinox_seat_map_scan.sh` · pin `work-in-progress/EQUINOX_SEAT_MAP.md`
+Expected control_gate · seat_map 110 spent · 112 close choir proposed · bundle crossing mode · shred Keaton-gated · fork not_consumed · seats 97–110 · shelf end ep045 · baton breach 0. Look at spent seats before naming the remaining map. Metal answered GREEN. Invent none.
 
 ---
 
