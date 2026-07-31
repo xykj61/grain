@@ -1,3 +1,4 @@
+- `20260731.225812` — [e124 fuse verify one roof](20260731-225812_e124-fuse-verify-one-roof.bron) — already GREEN · counsel layering baton stale · queue empty
 - `20260731.224539` — [e124 one guard roof tidy](20260731-224539_e124-one-guard-roof.bron) — duplicate guard retired · one roof · 128 reserved · shred RED
 - `20260731.223455` — [e123 living-pin prove land](20260731-223455_e123-living-pin-prove-land.bron) — C1·C2 · over-bound advisory · REDS 41 · 128 reserved · no close
 - `20260731.222426` — [e123 living-pin guard GREEN](20260731-222426_e123-living-pin-guard-green.bron) — seat 127 · content guard · emptied caught · ch8 15/16 · e124 next
