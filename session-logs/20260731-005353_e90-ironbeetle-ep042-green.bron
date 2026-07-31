@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260731.005353
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title e90 IronBeetle ep042 over-the-alps GREEN
+prompt kg · e90 — IronBeetle ep042 over-the-alps
+think e89 ep040 GREEN · ep042 next written silo · skip ep041 · leaf census twin
+think Teach: Alps · MERGE loop · table_builder · checksummed blocks
+think Seat 95 · ch6 15/16 · ep043 next · expedition stays gated
+obs e90 GREEN · e91 IronBeetle ep043 next
+file expanding-prompts/20260731-005326_e90-ironbeetle-ep042-charter.md charter
+file tools/fixtures/ironbeetle_ep042_census.sh scan GREEN
+file tools/gen/season/equinox_ironbeetle_ep042_choir_witness.rish choir GREEN
+file rye-learning-process/GLOW_ALMANAC.md seat 95 · ch6 15/16
+file waymarks/20260731-005353_e90-ironbeetle-ep042-green.md finishing edge
+file expanding-prompts/20260731-005353_equinox-season-e91-recursion-prompt.md fusion
+recommend keep-going e91 IronBeetle ep043 nothing-is-real-until-the-manifest-says-so
