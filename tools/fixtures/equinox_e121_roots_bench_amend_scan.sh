@@ -139,13 +139,13 @@ fi
 echo "surface_keep=honored"
 echo "surface_count=6"
 
-rg -q '^### 124\.' "$ALMANAC" || {
+rg -q '^### 125\.' "$ALMANAC" || {
   echo "almanac=failed"
   echo "verdict=misread"
   exit 1
 }
 echo "almanac=honored"
-echo "seats_through=124"
+echo "seats_through=125"
 
 git ls-files --error-unmatch "$ELDER" >/dev/null 2>&1 || {
   echo "elder=failed"
