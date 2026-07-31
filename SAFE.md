@@ -2,7 +2,7 @@
 
 **Language:** EN · **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **Seated:** `20260730` by Keaton's word · **Spec:** `context/specs/oldness-cycle.md`
-**Cycle:** 1 · **Rows:** 0 of 64 · **Last census:** `20260731.134911` (Class A i7 · orphan floor held · shred RED)
+**Cycle:** 1 · **Rows:** 0 of 64 · **Last census:** `20260731.140017` (Class A i8 hold disclosed · Class O rooms · orphan floor held · shred RED)
 
 ---
 
