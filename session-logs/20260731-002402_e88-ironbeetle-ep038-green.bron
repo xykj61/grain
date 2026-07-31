@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260731.002402
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title e88 IronBeetle ep038 one-number-routes-the-whole-machine GREEN
+prompt kg · e88 — IronBeetle ep038 one-number-routes-the-whole-machine
+think e87 ep037.5 GREEN · ep038 next written silo · leaf census twin
+think Teach: beat number · modulo routing · even/odd levels · name corrected
+think Seat 93 · ch6 13/16 · ep040 next (skip ep039) · expedition stays gated
+obs e88 GREEN · e89 IronBeetle ep040 next
+file expanding-prompts/20260731-002323_e88-ironbeetle-ep038-charter.md charter
+file tools/fixtures/ironbeetle_ep038_census.sh scan GREEN
+file tools/gen/season/equinox_ironbeetle_ep038_choir_witness.rish choir GREEN
+file rye-learning-process/GLOW_ALMANAC.md seat 93 · ch6 13/16
+file waymarks/20260731-002402_e88-ironbeetle-ep038-green.md finishing edge
+file expanding-prompts/20260731-002402_equinox-season-e89-recursion-prompt.md fusion
+recommend keep-going e89 IronBeetle ep040 three-stages-offset-by-one
