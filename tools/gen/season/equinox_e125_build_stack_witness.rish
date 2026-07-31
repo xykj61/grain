@@ -1,0 +1,20 @@
+# tools/gen/season/equinox_e125_build_stack_witness.rish — e125 seat.
+#   rishi/bin/rishi run tools/gen/season/equinox_e125_build_stack_witness.rish
+say "e125-build-stack: Language EN — foundations first; never skip a layer."
+say "e125-build-stack: Style Radiant — sh before rish before glow before docs-geode."
+say "e125-build-stack: Lens TAME — e125 · build stack · 128 reserved · no content seat claimed."
+
+let green = run ["sh" "tools/fixtures/equinox_e125_build_stack_scan.sh"]
+assert green.ok else "e125-build-stack: living scan must exit 0"
+assert green.out contains "stack=honored" else "e125-build-stack: want stack honored"
+assert green.out contains "stack_order=sh>rish>glow_tend>docs-geode>aurora_caravan_tally>mantra_weave" else "e125-build-stack: want order"
+assert green.out contains "one_roof_kept" else "e125-build-stack: want one roof kept"
+assert green.out contains "seat_128=reserved_close_choir" else "e125-build-stack: want 128 reserved"
+assert green.out contains "no_content_seat_claimed=honored" else "e125-build-stack: want no 128 spend"
+assert green.out contains "verdict=ok" else "e125-build-stack: want verdict ok"
+
+let red = run ["sh" "tools/fixtures/equinox_e125_build_stack_scan.sh" "prove-red"]
+assert (red.ok == false) else "e125-build-stack: prove-red must refuse"
+assert red.out contains "RED_build_stack_mantra_first" else "e125-build-stack: prove-red want mantra-first refuse"
+
+say "GREEN: e125-build-stack — foundations first · 128 reserved · shred RED"
