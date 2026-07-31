@@ -1,7 +1,7 @@
 # The Roadmap — living pin
 
 **Language:** EN  
-**Last updated:** `20260731.132316` (EDT) · voice Riyo  
+**Last updated:** `20260731.134159` (EDT) · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Full season ledger:** [`archive/20260724-132812_roadmap-season-ledger.md`](archive/20260724-132812_roadmap-season-ledger.md)  
 **Align:** [`20260726-050422_align-before-cursor-handoff.md`](archive/20260726-050422_align-before-cursor-handoff.md)  
@@ -9,26 +9,28 @@
 
 ---
 
-## Now — Equinox (deca) · commence arc seated (`20260731.132316`)
+## Now — Equinox (deca) · fascia chase (`20260731.134159`)
 
 | Order | Lap | Status |
 |-------|-----|--------|
-| — | Equinox e0–e100 · ch1–ch6 FULL · ch7 OPEN · e92 ruling D · IronBeetle shelf ENDS · M1–M9 measured | landed |
-| — | Commence M1–M9 · almanac seats 97–104 · prose saga home | landed |
-| **1** | **e101** commence-arc saga **Seated** · fork named · seat **105** · ch7 **9/16** | **this sitting** |
+| — | Equinox e0–e101 · ch1–ch6 FULL · ch7 OPEN · commence M1–M9 · saga Seated · fork named | landed |
+| **1** | **e102** fascia chase GREEN · seat **106** · ch7 **10/16** · fascia **92** | **this sitting** |
 | **2** | **THE FORK** — `return_surface_p59` (RETURN) · or extend +128 (EXTEND) | Keaton alone |
 | **3** | Breach spend-or-let-close · Class O rows · SAFE rows · close-seat row | Keaton alone |
-| **4** | M3/M4 · fascia v1 cloud beads — home land when paths cross | held |
-| **5** | Horizon: geode expedition begin (e254/e255 or Keaton begin) | GATED |
+| **4** | Class A paper lean (4) · shred debt until circled | held · u89 |
+| **5** | M3/M4 cloud beads — home land when paths are named | held |
+| **6** | Horizon: geode expedition begin (e254/e255 or Keaton begin) | GATED |
 
-**Finishing edge (season):** Equinox OPEN · e102 next · nested handback `return_surface_p59` not consumed · commence saga **Seated** · fork waits.  
+**Finishing edge (season):** Equinox OPEN · e103 next · nested handback `return_surface_p59` not consumed · fascia **92** FRESH · saga **Seated**.  
 **Finishing edge (product horizon):** clone · bootstrap · one witness · one `rishi glow` line ≤ 30 minutes — still stands.
 
 **Shell ratchet** (seated `20260726.032231`): `.sh` to Rishi on-touch; advisory count each advise run; exemptions: `rye/bootstrap.sh`, external-interpreter seams, python-heredoc witness bodies until duty-8 verbs land, thin-delegate elders.
 
 **Speed law** (counsel `20260726.044729`): never fake GREEN · never hide ABSENT · never let FAST satisfy COLD · never cut a witness before S0 weighs it · no P-vane (graph inside Mantra).
 
-**Census instrument** (commence): `git ls-files` never `find` · planted controls before totals · M5 run · M6 see · M7 weave · M8 saga · M9 ascent · saga Seated · Class O propose-never-seat.
+**Meter law** (e102): re-cut every meter each round; a pin is a memory; the bounded window catches falls.
+
+**Census instrument** (commence): `git ls-files` never `find` · planted controls before totals · Class O propose-never-seat.
 
 ---
 
@@ -47,4 +49,4 @@ Elder F COLD · H · speed-ladder work from `20260726.050422` remains in the arc
 
 ---
 
-*May every newcomer reach a green line before the half-hour bell. May the commence arc fill chapter seven from instruments already on disk. May paused seasons keep every green they earned.*
+*May every newcomer reach a green line before the half-hour bell. May meters be re-cut so pins cannot hide a fall. May paused seasons keep every green they earned.*

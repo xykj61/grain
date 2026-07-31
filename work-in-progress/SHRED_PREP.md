@@ -15,11 +15,11 @@
 | Class | Meaning | Cut ready? |
 | --- | --- | --- |
 | **A** | Fund-lineage elder anchors (MUR u89–u91) | Content yes · cut no |
-| **H** | Horizon **writing fossils** superseded by a **living mutant** | Prep only · shred RED |
+| **H** | Horizon **writing fossils** replaced by a **living mutant** | Prep only · shred RED |
 | **O** | Unreachable testimony — no file in the tree names it (basename floor) | **Propose only** · never seat · shred RED |
 
 Class **H** is for Grep + Amphora later. It is **not** Class A.  
-Class **O** is **propose-never-seat** (`20260731.124815` · commence M7 weave): neither fund anchor nor superseded fossil — simply never pointed at. Instrument: `tools/fixtures/shed_census_scan.sh`. Every path still needs Keaton's word. `SAFE.md` refuses whole on any listed path. Rows are not opened here.
+Class **O** is **propose-never-seat** (`20260731.124815` · commence M7 weave): neither fund anchor nor writing fossil — simply never pointed at. Instrument: `tools/fixtures/shed_census_scan.sh`. Every path still needs Keaton's word. `SAFE.md` refuses whole on any listed path. Rows are not opened here.
 
 ### Class O — proposed row shape (empty · no paths seated)
 

@@ -1,0 +1,42 @@
+# tools/gen/season/equinox_e102_fascia_chase_witness.rish — e102 / fascia chase.
+#
+#   rishi/bin/rishi run tools/gen/season/equinox_e102_fascia_chase_witness.rish
+#
+# Re-cuts fascia behind control. Clears memcpy app + signal-1 prose.
+# Holds Class A paper lean (u89). Does not consume the fork. Almanac 106 via choir.
+
+say "e102-fascia-chase: Language EN — control first; then re-cut the connective grade."
+say "e102-fascia-chase: Style Radiant — pins reform when a round re-cuts; window catches falls."
+say "e102-fascia-chase: Lens TAME — e102 · fascia chase · almanac seat 106 · ch7 10/16."
+
+let control = run ["rishi/bin/rishi" "run" "tools/gen/season/census_control_witness.rish"]
+say control.out
+assert control.ok else "e102-fascia-chase: census control must GREEN before chase"
+assert control.out contains "GREEN: census-control" else "e102-fascia-chase: want control GREEN"
+
+let museum = run ["rishi/bin/rishi" "run" "tools/gen/season/baton_museum_census_witness.rish"]
+say museum.out
+assert museum.ok else "e102-fascia-chase: baton museum RED"
+assert museum.out contains "census_breach_count=0" else "e102-fascia-chase: want breach 0"
+
+let scope = run ["rishi/bin/rishi" "run" "tools/gen/season/prin_scope.rish"]
+say scope.out
+assert scope.ok else "e102-fascia-chase: prin_scope RED"
+assert scope.out contains "GREEN: prin-scope" else "e102-fascia-chase: want scope GREEN"
+
+let scan = run ["sh" "tools/fixtures/equinox_e102_fascia_chase_scan.sh"]
+say scan.out
+assert scan.ok else "e102-fascia-chase: chase scan must exit 0"
+assert scan.out contains "control_gate=honored" else "e102-fascia-chase: want control_gate"
+assert scan.out contains "chase_saga=honored" else "e102-fascia-chase: want saga seated"
+assert scan.out contains "chase_memcpy=honored" else "e102-fascia-chase: want memcpy chase"
+assert scan.out contains "chase_fascia=honored" else "e102-fascia-chase: want fascia chase"
+assert scan.out contains "chase_fascia_grade=92" else "e102-fascia-chase: want fascia 92"
+assert scan.out contains "chase_class_a=4" else "e102-fascia-chase: want class A 4"
+assert scan.out contains "chase_fork_status=not_consumed" else "e102-fascia-chase: want fork waiting"
+assert scan.out contains "chase_almanac=honored" else "e102-fascia-chase: want almanac"
+assert scan.out contains "chase_shelf_end=ep045" else "e102-fascia-chase: want shelf end"
+assert scan.out contains "e102_fascia_chase=ok" else "e102-fascia-chase: want e102 ok"
+assert scan.out contains "verdict=ok" else "e102-fascia-chase: want verdict=ok"
+
+say "GREEN: e102-fascia-chase — control proven · saga SEATED · memcpy 0 · signal1 0 · class A paper 4 · fascia 92 · fork waiting · museum"

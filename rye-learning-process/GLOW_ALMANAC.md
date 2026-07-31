@@ -430,7 +430,7 @@ Expected IRON=present · EP042 · HONORS · SOURCE · TEACH · RHYME · CLEAN ·
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ironbeetle_ep043_choir_witness.rish` · **Stamp:** `20260731.005634` · **Witness:** `tools/gen/season/ironbeetle_ep043_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep043_census.sh` · choir `equinox_ironbeetle_ep043_choir_witness.rish`
 Expected IRON=present · EP043 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, and verdict=absent on a missing iron shelf. Metal answered GREEN. Clean-room study only. Chapter six fills at sixteen.
 
-## Chapter Seven (9 of 16)
+## Chapter Seven (10 of 16)
 
 Opened from metal at stamp `20260731.114927`. Themes arrive after findings; this chapter carries none in advance. Ch5 and ch6 surface closes stay parked per e92 ruling D until a close-seat row is seated.
 
@@ -469,6 +469,10 @@ Expected control_gate · ascent_saga PROPOSED · ascent_beats=9 · ascent_handba
 ### 105. Commence-arc saga Seated + fork named: Keaton approve seats the narrative; nested return_surface_p59 stays unconsumed (RETURN or EXTEND +128).
 **Ran:** `rishi/bin/rishi run tools/gen/season/equinox_commence_saga_seat_choir_witness.rish` · **Stamp:** `20260731.132459` · **Witness:** `tools/gen/season/commence_saga_seat_fork_witness.rish` · scan `tools/fixtures/commence_saga_seat_fork_scan.sh` · choir `equinox_commence_saga_seat_choir_witness.rish`
 Expected control_gate · seat_saga SEATED 20260731.131240 · seat_m9 complement · seat_fork not_consumed · seat_almanac seats 97–104 · seat_shelf_end=ep045 · baton breach 0. Seating != consuming the fork. Metal answered GREEN. Invent none.
+
+### 106. Equinox e102 fascia chase: re-cut meters; clear memcpy app and signal-1 prose; hold Class A paper lean at 4; fascia 85→92.
+**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_e102_fascia_chase_choir_witness.rish` · **Stamp:** `20260731.134253` · **Witness:** `tools/gen/season/equinox_e102_fascia_chase_witness.rish` · scan `tools/fixtures/equinox_e102_fascia_chase_scan.sh` · choir `equinox_e102_fascia_chase_choir_witness.rish`
+Expected control_gate · chase_saga SEATED · chase_memcpy · chase_fascia_grade=92 · chase_class_a=4 paper lean · chase_fork not_consumed · seats 97–105 · shelf end ep045 · baton breach 0. Pins reform when a round re-cuts. Metal answered GREEN. Invent none.
 
 ---
 
