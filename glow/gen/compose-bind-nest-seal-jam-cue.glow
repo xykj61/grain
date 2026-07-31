@@ -1,0 +1,8 @@
+::  Five faces then a sealed nest jam-cue — six lines, the named ceiling exactly.
+::  Elder mix pair at compose-bind-nest-four-jam-cue (STOA48); this desk seals it.
+=/  from=@u32  5
+=/  amount=@u32  3
+=/  payload=@u32  9
+=/  seal=@u32  7
+=/  cell-pack=@u32  (jam (mix from amount) (mix payload seal))
+=/  right=@u32  (cue cell-pack)

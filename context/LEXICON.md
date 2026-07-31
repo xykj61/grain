@@ -1,7 +1,7 @@
 # Lexicon — Module Names and Their Meanings
 
 **Language:** EN
-**Last updated:** `20260731.234032` (**e129 GREEN** · first **bundle send** rehearsal cut)
+**Last updated:** `20260731.234806` (**e130 GREEN** · seal-jam-cue desk at **max_lines**)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---
@@ -15,6 +15,7 @@ Living vocabulary for the Grain family (Glow language · Grain umbrella). Each n
 | **Grain** | The project / OS umbrella — whole body of work; living supersede of spoken “Glow OS”. Optional “Grain OS.” Seated living `20260725.185041` — [`specs/20260725-185041_grain-umbrella-supersedes-glow-os.md`](specs/20260725-185041_grain-umbrella-supersedes-glow-os.md) · counsel [`../counsel/replies/20260725-185041_re-grain-brix-autoproject96-and-pier-status.md`](../counsel/replies/20260725-185041_re-grain-brix-autoproject96-and-pier-status.md) |
 | **houseplant** | A Grain **Kumara ship** owner's whole grain **repository project tree** — the living plant they tend (`~/grain` and kin). Distinct from **pier** (forge remote · send home), from **ship** (identity under a star), and from **verse** (the contributed body of teachings). One ship may keep one houseplant; the houseplant is the tree, not the keypair. Seated Keaton's word `20260730.120643` · e14. |
 | **Glow** | The language — runes · desks · `glow/` — **code** side of the Glow/Brix pair (data = **Brix**, seated `20260729.165912`). Unchanged when the umbrella became Grain. |
+| **max_lines** | Named Glow multi-line bind ceiling — `glow/lower_multi.rye` `pub const max_lines: u32 = 6`; bind array sized to it; `glow_run` refuses past it with `too many Glow lines`. A bound that refuses its own author is the bound working. Desk at the ceiling: `glow/gen/compose-bind-nest-seal-jam-cue.glow` (e130) ties elder `compose-bind-nest-four-jam-cue`. Seated e130 `20260731.234806` · counsel [`../counsel/20260731-234806_e130-seal-jam-cue-desk.md`](../counsel/20260731-234806_e130-seal-jam-cue-desk.md). |
 
 ## Cursor loop — gates and itinerary
 
