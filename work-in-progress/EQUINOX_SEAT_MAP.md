@@ -3,11 +3,11 @@
 **Language:** EN  
 **Status:** Living pin — ch7 close **PERFORMED** · ch8 seat **128 RESERVED** · does not consume the fork  
 **Voice:** Riyo  
-**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260731.151129` (e114 thing-not-name · REDS 39 · 128 kept reserved)  
-**Seat:** Equinox e114 · almanac **118** · Chapter Eight **(6 of 16)**  
-**Basis:** counsel thirteenth correction · REDS 39 thing≠name · e113 fascia-health kept · e92 ruling D  
+**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260731.152135` (e115 instrument suite · 128 kept reserved)  
+**Seat:** Equinox e115 · almanac **119** · Chapter Eight **(7 of 16)**  
+**Basis:** counsel instrument season complete · suite findable · e114 thing-not-name kept · e92 ruling D  
 
-*A chapter's sixteenth seat may carry check · test · prepare as a close choir. A duty is not a seat unless the almanac says so — only the close is a seat. Look for the thing, not for the name of the thing. On-disk is not in-the-tree. A duty with no witness has no seat, and a duty with no seat never lands.*
+*A chapter's sixteenth seat may carry check · test · prepare as a close choir. A duty is not a seat unless the almanac says so — only the close is a seat. Seat the suite; do not manufacture meters. Look for the thing, not for the name of the thing. On-disk is not in-the-tree.*
 
 ---
 
@@ -38,8 +38,8 @@
 | Opened | seat **113** · e109 ch7 surface |
 | Content seats | **114–127** · fill with findings |
 | Close choir | seat **128** · **RESERVED** for check · test · prepare |
-| e110–e113 | seats **114–117** · reserve · dialect · planted witness · fascia-health |
-| This pin (e114) | seat **118** · thing-not-name · REDS 39 |
+| e110–e114 | seats **114–118** · reserve through thing-not-name |
+| This pin (e115) | seat **119** · instrument suite pass=10 |
 
 | Seat | Duty | Status |
 | --- | --- | --- |
@@ -48,8 +48,9 @@
 | **115** | date dialect · eleven Last updated compact | **SPENT** e111 |
 | **116** | planted date-dialect witness · C1/C2 · one_dialect | **SPENT** e112 |
 | **117** | fascia-health v1 · REDS 38 on-disk≠in-tree | **SPENT** e113 |
-| **118** | thing-not-name · REDS 39 look for the thing | **this sitting** e114 |
-| **119–127** | content (unnamed yet) | open |
+| **118** | thing-not-name · REDS 39 look for the thing | **SPENT** e114 |
+| **119** | instrument suite · pass=10 · keaton-gated remainder | **this sitting** e115 |
+| **120–127** | content (unnamed yet) | open |
 | **128** | **CLOSE CHOIR** as check · test · prepare | **RESERVED** |
 
 Ch5 and ch6 broke because nobody reserved a sixteenth seat. Ch7 recovered because the arithmetic was caught with seats left. Ch8 reserves **128** on day one.
@@ -71,12 +72,14 @@ Ch5 and ch6 broke because nobody reserved a sixteenth seat. Ch7 recovered becaus
 | Class O path rows | propose-never-seat until Keaton's word |
 | SAFE rows | 0 of 64 · Keaton alone |
 | Geode expedition | APPROVED · GATED |
+| Measurement queue | **empty** for counsel · remainder Keaton-gated |
 | REDS | **39** rows |
 
 ---
 
 ## Hard lines
 
+- Seat the suite; do not manufacture meters.  
 - Look for the thing, not for the name of the thing.  
 - On-disk is not in-the-tree. Test presence with `git ls-files`.  
 - A duty with no witness has no seat, and a duty with no seat never lands.  
