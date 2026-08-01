@@ -11,7 +11,7 @@ Pond holds **applications** that compose Rye OS modules above the kernel and com
 
 **Pond clause:** Pond's enclosure aspect runs what Brix composes under policy.
 
-**Customs (landed `20260710.161125`):** [`customs.rye`](customs.rye) — first policy concept. At receipt, each Tilak mark earns **place**, **hold**, or **refuse**. Root allow-list: `plain-bytes` may be placed; `await-word` waits for a human word; unknown marks refuse whole. Amphora cold scrub calls `customs inspect` on the Amber manifest before restore. Witness: `tools/pond_customs.rish` (parity **230**).
+**Customs (landed `20260710.161125`):** [`customs.rye`](customs.rye) — first policy concept. At receipt, each Tilak mark earns **place**, **hold**, or **refuse**. Root allow-list: `plain-bytes` may be placed; `await-word` waits for a human word; unknown marks refuse whole. Amphora cold scrub calls `customs inspect` on the cellar manifest before restore. Witness: `tools/pond_customs.rish` (parity **230**).
 
 **First application:** [`apps/drawn_terminal.rye`](apps/drawn_terminal.rye) — SLC-2a Lap 3, the drawn terminal (Rishi session mirrored in a Brushstroke/Skate window). Granary weave view (`granaryviewtest`) folds resolve + Scribble onto Skate (parity **233**). Inference and commerce folds share that same glass.
 

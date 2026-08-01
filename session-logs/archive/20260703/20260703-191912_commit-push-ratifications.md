@@ -19,8 +19,8 @@ Kaeden requested commit, push, and full summary of the ratification arc. Reviewe
 |------|-----|
 | `context/specs/20260703-191112_resins-and-hash-tiers.md` | New ratified archive + digest law |
 | `context/LEXICON.md` | Bench, resin, SHA3 tiers seated |
-| `context/specs/20260701-221512_amber-functional-spec.md` | Companion pointer to resins law |
-| `amber/README.md` | Resin vocabulary; path hygiene note |
+| `context/specs/20260701-221512_cellar-functional-spec.md` | Companion pointer to resins law |
+| `cellar/README.md` | Resin vocabulary; path hygiene note |
 | `external-research/20260703-015512_bandwidth-and-moderation.md` | Stones → resins prose |
 | `work-in-progress/TASKS.md` | Five boxes checked; recorded rulings block |
 | `work-in-progress/ready-to-ask-claude.md` | Menu status updated |

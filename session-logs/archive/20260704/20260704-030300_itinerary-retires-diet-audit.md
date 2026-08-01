@@ -39,7 +39,7 @@ Spec: [`context/specs/20260704-030300_itinerary-retires-diet.md`](../context/spe
 | `external-research/README.md` | Index row |
 | `work-in-progress/ready-to-ask-claude.md` | Parked table + stale ungated line |
 | `external-research/20260703-200712_the-cloneable-repo-and-the-practice-ground.md` | diet → itinerary |
-| `active-designing/20260703-071212_amber-seasons.md` | lexicon companions |
+| `active-designing/20260703-071212_cellar-seasons.md` | lexicon companions |
 | `work-in-progress/20260703-041850_claude-strategy-roadmap-counsel.md` | STOPS counsel |
 | `work-in-progress/20260703-021412_counsel-and-confirmation-tests.md` | journey's pause |
 | `work-in-progress/20260703-014912_round-summary-and-decoder.md` | journey's pause |

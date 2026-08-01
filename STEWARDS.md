@@ -26,7 +26,7 @@
 | `linengrow/` · `mandi/` · `granary/` · `amphora/` · `dimeroll/` | Agents and goods | **Pool** |
 | `brushstroke/` | Design system | **Seva** |
 | `comlink/` | Wires | **Neth** · **Pool** jointly |
-| `amber/` | Archival module | Mantra / Weave |
+| `cellar/` | Archival module | Mantra / Weave |
 | `kiln/` · `lantern/` · `lattice/` · `scribble/` | Faculties | **Quin** |
 | `keys/` and key art | Identity custody | Kumara today; **Rhyz** at proven supersede |
 | `pond/` | Isolation stratum | non-vane, as seated |

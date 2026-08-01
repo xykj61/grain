@@ -1,0 +1,2 @@
+//! Plant — declared couples disagree (positive control).
+pub const max_partner: u16 = 778;

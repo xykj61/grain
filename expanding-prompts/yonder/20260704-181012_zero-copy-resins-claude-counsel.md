@@ -41,7 +41,7 @@
 ## What to read (order)
 
 1. [`20260704-180612_zero-copy-resins-and-the-sovereign-snapshot.md`](../../external-research/20260704-180612_zero-copy-resins-and-the-sovereign-snapshot.md) — the research anchor
-2. [`context/specs/20260703-191112_resins-and-hash-tiers.md`](../../context/specs/20260703-191112_resins-and-hash-tiers.md) · [`context/specs/20260701-221512_amber-functional-spec.md`](../../context/specs/20260701-221512_amber-functional-spec.md)
+2. [`context/specs/20260703-191112_resins-and-hash-tiers.md`](../../context/specs/20260703-191112_resins-and-hash-tiers.md) · [`context/specs/20260701-221512_cellar-functional-spec.md`](../../context/specs/20260701-221512_cellar-functional-spec.md)
 3. [`20260703-201612_the-amphora-and-the-crossing.md`](../../external-research/20260703-201612_the-amphora-and-the-crossing.md) · [`20260702-035018_puddle-sandboxed-rye-containers.md`](../../external-research/20260702-035018_puddle-sandboxed-rye-containers.md) (pier replay · double-boot · chunk store)
 4. [`20260704-031812_eight-asks-one-sitting.md`](../../counsel/20260704-031812_eight-asks-one-sitting.md) — priority counsel (Open Asks · gloss · Amphora lap-two)
 5. [`ROADMAP.md`](../../work-in-progress/ROADMAP.md) · [`TASKS.md`](../../work-in-progress/TASKS.md) · [`20260703-014912_round-summary-and-decoder.md`](../../work-in-progress/archive/20260703-014912_round-summary-and-decoder.md)

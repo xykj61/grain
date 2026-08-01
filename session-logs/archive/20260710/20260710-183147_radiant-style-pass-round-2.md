@@ -18,7 +18,7 @@ Archive session logs and the Radiant Style guide stayed untouched. TAME **refuse
 
 ## Files
 
-- READMEs: `rye/` · `rishi/` · `tally/` · `caravan/` · `manual/` · `amber/` · `work-in-progress/` · `context/` · `expanding-prompts/` · `counsel/`
+- READMEs: `rye/` · `rishi/` · `tally/` · `caravan/` · `manual/` · `cellar/` · `work-in-progress/` · `context/` · `expanding-prompts/` · `counsel/`
 - Hammocks/specs: comlink view-filter · SLC-L1–L4 · Open Asks · WOV exit · RW-1/RW-2
 - Rules: `.cursor/rules/collaboration.mdc` · `.claude/rules/collaboration.md`
 - Code: `mantra/recall_tablecloth_query.rye` · `mantra/recall_by_mark.rye` · `tally/no_padding.rye`

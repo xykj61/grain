@@ -27,7 +27,7 @@
 # durable identity ("this name must mean one thing for as long as the work
 # endures," the same promise that spec names for Aurora stage names), so it
 # belongs at the Canonical tier (SHA3-512), not the Working tier (SHA3-256)
-# reserved for high-volume store units like Amber resins.
+# reserved for high-volume store units like cellar resins.
 #
 # To derive a mark for a NEW ladder: change input_name below to that
 # ladder's own canonical, stable, descriptive name (lowercase, hyphenated),

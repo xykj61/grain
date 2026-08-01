@@ -13,7 +13,7 @@ DECA (OPEN): e138 GREEN · ch1–ch7 FULL · ch8 OPEN 15/16
   113–127 SPENT · 128 RESERVED close
   FORK EXTEND +128 · geode GATED · handback held · REDS 48
   surface witnesses 6 · shred RED · SAFE 0/64
-  Amber pause · amber/ kept · amber_first_ring GREEN · complements restored
+  Amber pause · amber/ kept · cellar_first_ring GREEN · complements restored
 
 HARD LINES:
   a breach after the first outside consumer is owed, never free

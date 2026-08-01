@@ -1,4 +1,4 @@
-//! amphora/vessel_seal.rye — Amber AEAD seal for Amphora vessel cargo.
+//! amphora/vessel_seal.rye — cellar AEAD seal for Amphora vessel cargo.
 //!
 //! ChaCha20-Poly1305 over the cargo block; shoulder is associated data
 //! (readable without opening the seal). Rite: seal, then Kumara stamp.
@@ -20,6 +20,7 @@ const tally_copy = @import("tally_copy.rye");
 
 pub const amphora_seal_version = "20260710.153745";
 pub const max_vessel_len: u32 = 8192;
+/// couples: vessel_fetch_wire.max_resin_bytes
 pub const max_seal_plain: u32 = 1024;
 pub const max_cargo: u32 = 16;
 pub const nonce_hex_len: u32 = ChaCha20Poly1305.nonce_length * 2;
@@ -207,7 +208,7 @@ fn run_seal_file(io: std.Io, path: []const u8) !u8 {
     try cwd.writeFile(io, .{ .sub_path = path, .data = out[0..off] });
     try open_check_text(out[0..off]);
     print("amphora: vessel sealed cargo_bytes={d}\n", .{plain_len});
-    print("GREEN: Amphora vessel — Amber AEAD seal written.\n", .{});
+    print("GREEN: Amphora vessel — cellar AEAD seal written.\n", .{});
     return 0;
 }
 
@@ -255,13 +256,13 @@ fn run_open_check(io: std.Io, path: []const u8) !u8 {
     const text = try cwd.readFile(io, path, &buf);
     try open_check_text(text);
     print("amphora: vessel seal opens\n", .{});
-    print("GREEN: Amphora vessel — Amber AEAD seal ok.\n", .{});
+    print("GREEN: Amphora vessel — cellar AEAD seal ok.\n", .{});
     return 0;
 }
 
 fn run_selftest() !u8 {
     const plain = "cargo plain-bytes cd416bd6cae889877c353fc9abe39daaff1668666049a8fd10974248d99d23ab hello.txt\n";
-    const ad = "amber-ring1-season";
+    const ad = "cellar-ring1-season";
     const nonce = [_]u8{0x07} ** ChaCha20Poly1305.nonce_length;
     var cipher: [max_seal_plain]u8 = undefined;
     var tag: [ChaCha20Poly1305.tag_length]u8 = undefined;
@@ -281,7 +282,7 @@ fn run_selftest() !u8 {
     assert(n.len == ChaCha20Poly1305.nonce_length);
 
     print("amphora: seal version {s}\n", .{amphora_seal_version});
-    print("GREEN: Amphora vessel — Amber AEAD seal, refuse wreck.\n", .{});
+    print("GREEN: Amphora vessel — cellar AEAD seal, refuse wreck.\n", .{});
     return 0;
 }
 

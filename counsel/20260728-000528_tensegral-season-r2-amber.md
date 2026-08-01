@@ -14,7 +14,7 @@
 
 | Witness | Result |
 |---------|--------|
-| `amber_first_ring.rish` | **GREEN** — export · openssl golden · restore · tamper refused |
+| `cellar_first_ring.rish` | **GREEN** — export · openssl golden · restore · tamper refused |
 | `amber_manifest_tilak.rish` | **GREEN** — legacy + Tilak goldens · unknown mark refused |
 
 ## Tighten (honest)

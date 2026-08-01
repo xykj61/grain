@@ -20,7 +20,7 @@
 #   values key=value · detail: prefixed · verdict= its own key · status agrees.
 set -eu
 roster="mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke
-        rye/src glow lattice dimeroll scribble lantern amber amphora mand
+        rye/src glow lattice dimeroll scribble lantern cellar amphora mand
         mandi granary"
 n=0
 for d in $roster; do

@@ -7,7 +7,7 @@
 **Editor:** Cursor · **Model:** Grok 4.5
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable-room research — explains living practice; cites ratified archive law
-**Ground:** [`context/specs/20260703-191112_resins-and-hash-tiers.md`](../context/specs/20260703-191112_resins-and-hash-tiers.md) · Amber functional spec [`221512`](../context/specs/20260701-221512_amber-functional-spec.md) · Amphora study [`201612`](20260703-201612_the-amphora-and-the-crossing.md) · LEXICON preservation pair · compass [`185112`](../foundations/20260706-185112_follow-our-compass.md)
+**Ground:** [`context/specs/20260703-191112_resins-and-hash-tiers.md`](../context/specs/20260703-191112_resins-and-hash-tiers.md) · Amber functional spec [`221512`](../context/specs/20260701-221512_cellar-functional-spec.md) · Amphora study [`201612`](20260703-201612_the-amphora-and-the-crossing.md) · LEXICON preservation pair · compass [`185112`](../foundations/20260706-185112_follow-our-compass.md)
 
 *Written by Kaeden and Rio 3 (Grok). Creative climb inside the jail — cellar and vessel in kitchen voice.*
 
@@ -65,7 +65,7 @@ Amber's **first lap is green** (parity **144**): fixture export under `resins/`,
 ## Companions
 
 - Ratified law: [`20260703-191112_resins-and-hash-tiers.md`](../context/specs/20260703-191112_resins-and-hash-tiers.md)
-- Amber: [`20260701-221512_amber-functional-spec.md`](../context/specs/20260701-221512_amber-functional-spec.md)
+- Amber: [`20260701-221512_cellar-functional-spec.md`](../context/specs/20260701-221512_cellar-functional-spec.md)
 - Amphora study: [`20260703-201612_the-amphora-and-the-crossing.md`](20260703-201612_the-amphora-and-the-crossing.md)
 - Sealed crossing silo: [`active-designing/20260703-201612_the-sealed-crossing.md`](../active-designing/20260703-201612_the-sealed-crossing.md)
 - One-clock plainly (sibling tonight): [`20260709-235921_one-clock-plainly.md`](20260709-235921_one-clock-plainly.md)

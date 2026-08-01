@@ -18,7 +18,7 @@ The Alice library is craft in `foundations/`, separate from the unified-keys hor
 - `foundations/20260701-232912_*` template + sample + html
 - `tools/cast_a_chart.py`
 - `external-research/20260701-213412_deep-archive-and-sovereign-host-blueprint.md`
-- `context/specs/20260701-221512_amber-functional-spec.md`
+- `context/specs/20260701-221512_cellar-functional-spec.md`
 - `expanding-prompts/20260701-231512_cursor-slc-2a-ring-three.md`
 - `expanding-prompts/yonder/20260701-221512_cursor-amber-and-deep-archive.md`
 - TASKS, LEXICON, stack record, ORGANIZING, README indexes

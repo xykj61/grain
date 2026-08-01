@@ -67,7 +67,7 @@ The map, drawn from the root as it stands today:
 | `linengrow/` · `mandi/` · `granary/` · `amphora/` · `dimeroll/` | Agents and goods on the market floor | **Pool** |
 | `brushstroke/` | Design system | **Sala** |
 | `comlink/` | Wires | **Neth** and **Pool** jointly |
-| `amber/` | Archival module | Mantra / Weave |
+| `cellar/` | Archival module | Mantra / Weave |
 | `anvil/` · `lantern/` | Faculties | **Quin** |
 | `keys/` and the key art | Identity custody | Kumara today; **Rhyz** at proven supersede |
 | `pond/` | Isolation stratum | non-vane, as seated |

@@ -41,7 +41,7 @@ Heuristic for this first census (strike freely at T2): **stay** if REMEMBER/TASK
 | `20260712-210800_pond-enclosure-scorecard-two-column.md` | 9 | 2026-07-25T18:57:05-04:00 | no | `active-designing/` |
 | `20260712-210800_pond-supersede-exit-criteria.md` | 9 | 2026-07-25T11:47:40-04:00 | yes | `active-designing/` |
 | `20260720-150635_stoa110-wet-refuse-nest.md` | 9 | 2026-07-25T11:47:40-04:00 | no | `active-designing/` |
-| `20260703-071212_amber-seasons.md` | 8 | 2026-07-25T11:47:40-04:00 | no | `active-designing/` |
+| `20260703-071212_cellar-seasons.md` | 8 | 2026-07-25T11:47:40-04:00 | no | `active-designing/` |
 | `20260703-202312_the-marked-value.md` | 8 | 2026-07-25T11:47:40-04:00 | no | `active-designing/` |
 | `20260712-113900_lane-kvm-retire-dbus-escape.md` | 8 | 2026-07-25T11:47:40-04:00 | no | `active-designing/` |
 | `20260712-204549_proven-seat-g1-claude-close.md` | 8 | 2026-07-25T11:47:40-04:00 | no | `active-designing/` |

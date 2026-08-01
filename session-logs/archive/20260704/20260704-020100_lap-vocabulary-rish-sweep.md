@@ -32,7 +32,7 @@ Ran sweep across context, foundations, WIP, active-designing (including yonder),
 | `context/LEXICON.md` | Lap seated; ring retired forward-facing |
 | ~150 living docs | Lap / thin edge phrase deltas |
 
-Frozen: `slc2a_ring*.rish`, `amber_first_ring.rish`, `slc1-ring-closed-handoff.md` filename — session logs keep historical *ring*.
+Frozen: `slc2a_ring*.rish`, `cellar_first_ring.rish`, `slc1-ring-closed-handoff.md` filename — session logs keep historical *ring*.
 
 ## Next step
 

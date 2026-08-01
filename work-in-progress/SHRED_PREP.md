@@ -1,22 +1,23 @@
 # SHRED_PREP — planning list toward first shred proof
 
 **Language:** EN  
-**Status:** Living pin — **shred RED** · Amphora cut not opened · Amber kept by accretion · list only  
+**Status:** Living pin — **shred RED** · Amphora cut not opened · cellar kept · Amber name superseded (e148) · list only  
 **Voice:** Riyo  
-**Last refreshed:** `20260801.012557` · e138 Amber retire by accretion · e137 breach withdrawn · Class O word-scope held  
-**Seat:** Surface p36 Kiln · Equinox e138 accretion · e128 word-scope · [`../counsel/20260801-012557_e138-amber-retire-by-accretion.md`](../counsel/20260801-012557_e138-amber-retire-by-accretion.md)
+****Last refreshed:** `20260801.033044` · e148 Cellar supersede · e138 keep-Amber withdrawn · Class O word-scope held  
+**Seat:** Surface p36 Kiln · Equinox e148 · e128 word-scope · elder [`../counsel/20260801-012557_e138-cellar-retire-by-accretion.md`](../counsel/20260801-012557_e138-cellar-retire-by-accretion.md)
 
-*Accrete-never-break: fossils stay on disk until a circled shred proves parity. This list prepares the hand; it does not authorize a cut.*
+*Accrete-never-break: fossils stay on disk until a circled shred proves parity. This list prepares the hand; it does not authorize a cut. Overwrite-in-place of a living name (e148) is not a shred — git history and cold storage keep the elder commits.*
 
-### Amber (e138) — retire by accretion · Amber kept whole · no shred of Amber
+### Cellar (e148) — Amber name superseded · cellar kept whole · no shred
 
 | Field | Standing |
 | --- | --- |
-| Path | **Retire by accretion** — Lexicon lane closed for new work · module + witness kept |
+| Path | **Supersede in place** — living code names **Cellar**; module + witness green |
+| Elder e138 | **Withdrawn as living keep-Amber law** — history in git · counsel kept as dated seat |
 | e137 breach | **Withdrawn** — not a living cut plan |
-| Pause | **Amber pause** kept — no new Amber-named metal |
-| Redact/shred Amber | **Refused** as living plan — custody first · build nothing that destroys |
-| `amber/` | **Kept whole** · `amber_first_ring` green |
+| Pause | **Cellar pause** — no new Amber-named metal (name gone from living code) |
+| Redact/shred cellar | **Refused** as living plan — custody first · build nothing that destroys |
+| `cellar/` | **Kept whole** · `cellar_first_ring` green · was `amber/` |
 
 ---
 

@@ -39,7 +39,7 @@ active-designing/20260702-184312_the-grain-and-the-crossing.md	20260725.110418	c
 active-designing/20260702-185912_brix-the-composer.md	20260725.110418	clean
 active-designing/20260702-195426_slcl1-verifiable-receipt.md	20260725.110418	clean
 active-designing/20260703-013412_metalsmoke.md	20260725.110418	clean
-active-designing/20260703-071212_amber-seasons.md	20260725.110418	clean
+active-designing/20260703-071212_cellar-seasons.md	20260725.110418	clean
 active-designing/20260703-140212_the-bench.md	20260725.110418	clean
 active-designing/20260703-140212_the-shape-carries-the-bound.md	20260725.110418	clean
 active-designing/20260703-200712_what-needs-ordering.md	20260725.110418	clean
@@ -112,7 +112,7 @@ active-designing/20260717-175220_dexter-english-qwerty-glass-keyboard.md	2026072
 active-designing/20260717-181715_tame-slc-rye-audit-ledger.md	20260725.111615	clean
 active-designing/20260717-183425_glow-form-factor-names-and-orientation.md	20260725.111615	clean
 active-designing/20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md	20260725.111615	clean
-active-designing/20260718-133455_glass-desk-compose-amber-amphora-revive.md	20260725.111615	clean
+active-designing/20260718-133455_glass-desk-compose-cellar-amphora-revive.md	20260725.111615	clean
 active-designing/20260718-185147_desk-hearth-hold-season.md	20260725.111615	clean
 active-designing/20260718-201232_setu6-device-wire-lab.md	20260725.111615	clean
 active-designing/20260718-201601_setu65-lab-tx-gate.md	20260725.111615	clean
@@ -438,7 +438,7 @@ active-designing/yonder/20260628-120912_brix-the-composer.md	20260725.110740	cle
 active-designing/yonder/20260703-182612_territories-revisited.md	20260725.111005	clean
 active-designing/yonder/20260705-045012_rye-astrology-atelier.md	20260725.111120	clean
 active-reviving/README.md	20260725.112515	clean
-amber/README.md	20260725.112515	changed
+cellar/README.md	20260725.112515	changed
 amphora/README.md	20260710.182821	legacy
 anvil/README.md	20260725.112515	changed
 aurora/README.md	20260725.112515	clean
@@ -557,7 +557,7 @@ context/keys/README.md	20260725.112515	clean
 context/specs/20260627-102012_one-clock-naming-law.md	20260725.035645	legacy
 context/specs/20260629-031512_slc1-ring-closed-handoff.md	20260725.035645	legacy
 context/specs/20260630-004512_module-name-provenance.md	20260725.035645	legacy
-context/specs/20260701-221512_amber-functional-spec.md	20260725.035645	legacy
+context/specs/20260701-221512_cellar-functional-spec.md	20260725.035645	legacy
 context/specs/20260702-035018_graduation-rule.md	20260725.035645	legacy
 context/specs/20260703-191112_resins-and-hash-tiers.md	20260725.035645	legacy
 context/specs/20260704-020800_one-word-one-gate.md	20260725.035645	legacy
@@ -853,7 +853,7 @@ expanding-prompts/yonder/20260630-030312_cursor-place-research-pieces.md	2026072
 expanding-prompts/yonder/20260630-030312_cursor-slc-2a-ring-one.md	20260725.110847	clean
 expanding-prompts/yonder/20260630-033312_cursor-slc-2a-ring-two.md	20260725.110847	clean
 expanding-prompts/yonder/20260630-033312_cursor-yonder-pass-nine.md	20260725.110847	clean
-expanding-prompts/yonder/20260701-221512_cursor-amber-and-deep-archive.md	20260725.110847	clean
+expanding-prompts/yonder/20260701-221512_cursor-cellar-and-deep-archive.md	20260725.110847	clean
 expanding-prompts/yonder/20260701-231512_cursor-slc-2a-ring-three.md	20260725.110847	clean
 expanding-prompts/yonder/20260702-202612_cursor-astrology-silos-19-20.md	20260725.110847	clean
 expanding-prompts/yonder/20260705-022512_cursor-infusion-final-brooke-round.md	20260725.111120	clean
@@ -980,7 +980,7 @@ external-research/20260709-235931_resins-cellar-vessel-plainly.md	20260725.11141
 external-research/20260710-000725_learning-chapter-plainly.md	20260725.111415	clean
 external-research/20260710-001249_settlement-seat-plainly.md	20260725.111415	clean
 external-research/20260710-002017_metalsmoke-plainly.md	20260725.111415	clean
-external-research/20260710-002422_amber-seasons-plainly.md	20260725.111415	clean
+external-research/20260710-002422_cellar-seasons-plainly.md	20260725.111415	clean
 external-research/20260710-002544_first-lap-goes-green-plainly.md	20260725.111415	clean
 external-research/20260710-002952_sealed-crossing-plainly.md	20260725.111415	clean
 external-research/20260710-125953_dimeroll-kick-digits-clean-room.md	20260725.111415	clean
@@ -1030,7 +1030,7 @@ external-research/20260717-173427_witness-habitat-foundations-fit-and-onboarding
 external-research/20260717-173848_foundations-archive-bron-compress-for-llm-context.md	20260725.111615	clean
 external-research/20260717-175220_glow-english-qwerty-glass-keyboard-ios-inspired.md	20260725.111615	clean
 external-research/20260718-122145_pixel10a-resolution-mantrapod-floor-and-wired-glass-slc.md	20260725.111615	clean
-external-research/20260718-133455_glass-desk-amber-amphora-compose-not-fuse.md	20260725.111615	clean
+external-research/20260718-133455_glass-desk-cellar-amphora-compose-not-fuse.md	20260725.111615	clean
 external-research/README.md	20260725.112515	clean
 external-research/TAME_GUIDANCE.md	20260725.112715	clean
 external-research/grain-lineage-silo/README.md	20260725.112515	clean
