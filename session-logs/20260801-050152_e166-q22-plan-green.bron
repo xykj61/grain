@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260801.050152
+editor Claude
+model Claude Fable 5 1M Max
+voice Riyo
+host Claude counsel container — Eastern (EDT) time convention
+title e166 Q22 chunk plan GREEN
+prompt whole-crossing kg continues
+think the bound is computed from the two named ceilings, never guessed
+obs chunks=5 ceiling=340 bytes=1565 stated on stderr before any write
+file amphora/src/main.rye Q22 plan_chunks max_carry_chunks
+file counsel/20260801-050152_e166-q22-chunk-plan.md seat
+recommend keep-going Q23 chunk write
+product_nib Amphora CLI wave e166 Q22
+suite_nib plan GREEN
+git_nib c2065756b2
