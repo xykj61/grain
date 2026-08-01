@@ -43,7 +43,8 @@
 //!   § Pour    — parse (Q6) · read (Q7) · seal (Q8) · stamp (Q9) · guard (Q10) · manifest (Q11): pour grown; witnesses wait Q12
 //!   § Carry   — J2: parse (Q19) · walls (Q20) · guard (Q21) · chunks (Q22+);
 //!               kind 0x33 frames · far dock verifies · fork law travels
-//!   § Restore — cold scrub; verify stamp+seal; restore byte-faithful
+//!   § Restore — J3: parse (Q35) · walls (Q36) · open (Q37+) · files
+//!               re-proven · re-pour equals parent · fork law at the out-home
 //!   § Main    — CLI: pour / carry / restore / version
 //!
 //! One loop · one crossing. Identity refuses a second pour that would fork.
@@ -73,7 +74,7 @@ const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
 const Dir = std.Io.Dir;
 
 /// Amphora CLI version — YYYYMMDD.HHMMSS, America/New_York, later is larger.
-const amphora_version = "20260801.050712";
+const amphora_version = "20260801.051317";
 
 // -------------------------------------------------------------------------
 // § Bounds — named with their why (Q4 · Q7 · Q8 · Q9)
@@ -1064,7 +1065,20 @@ fn cmd_carry(init: std.process.Init, args: []const []const u8) u8 {
 }
 
 // -------------------------------------------------------------------------
-// § Main — CLI (Q3–Q11 · carry Q19+ · restore waits · version)
+// § Restore — J3 The Return (doctrine seed, Q34 — code grows Q35+)
+// -------------------------------------------------------------------------
+//
+// Restore walks the cargo home without ever trusting the walk: both walls
+// verify before the seal is opened (the carry rite, reused), the seal
+// module's own open door yields the plaintext cargo, every restored file is
+// re-proven against the digest it rode in on, and the whole return is only
+// believed when the restored season re-pours to the very same parent. The
+// out-home takes a derived name — format vocabulary, park open — and the
+// fork law guards it exactly as it guards every other landing. Effects
+// come last; belief comes last of all.
+
+// -------------------------------------------------------------------------
+// § Main — CLI (Q3–Q11 · carry Q19+ · restore Q35+ · version)
 // =========================================================================
 
 pub fn main(init: std.process.Init) !u8 {
