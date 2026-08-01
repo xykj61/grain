@@ -72,7 +72,7 @@ const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
 const Dir = std.Io.Dir;
 
 /// Amphora CLI version — YYYYMMDD.HHMMSS, America/New_York, later is larger.
-const amphora_version = "20260801.045432";
+const amphora_version = "20260801.050056";
 
 // -------------------------------------------------------------------------
 // § Bounds — named with their why (Q4 · Q7 · Q8 · Q9)
@@ -141,6 +141,11 @@ const max_manifest_bytes: u32 = 1024;
 /// One manifest name ceiling — a listed name must fit the entry contract.
 /// couples: manifest_entry.max_name_len
 const max_manifest_name_len: u32 = 200;
+
+/// Assembled far-side vessel name inside a dock directory.
+/// Format vocabulary, not product vocabulary (Q21 lean; Class W precedent —
+/// Keaton's rename word replaces it whole, accrete-migrate on rename).
+const dock_vessel_name = "vessel.bron";
 
 /// Default stamp tool path when AMPHORA_VESSEL_CORE is unset (repo layout).
 const default_core_bin = "amphora/bin/vessel-core";
@@ -816,7 +821,39 @@ fn carry_verify_walls(
     print("amphora: carry walls verified rite=stamp-then-seal\n", .{});
 }
 
-/// Q20 door: parse · walls before motion; dock guard waits Q21.
+/// Read the source vessel's parent field — the identity that travels.
+/// Light line scan, path C: no vessel module import.
+fn read_vessel_parent(io: std.Io, vessel_path: []const u8, out: *[digest_hex_len]u8) CliError!void {
+    assert(vessel_path.len > 0);
+    var buf: [max_vessel_len]u8 = undefined;
+    const text = Dir.cwd().readFile(io, vessel_path, &buf) catch {
+        return error.StampUnverified;
+    };
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        if (!std.mem.startsWith(u8, raw, "parent ")) continue;
+        const value = raw["parent ".len..];
+        if (value.len != digest_hex_len) return error.StampUnverified;
+        // No tally_copy import from amphora/src (path C) — bounded byte copy.
+        var ci: u32 = 0;
+        while (ci < digest_hex_len) : (ci += 1) {
+            out[ci] = value[ci];
+        }
+        return;
+    }
+    return error.StampUnverified;
+}
+
+/// Build `<dock>/vessel.bron` — the far-side path the fork law guards.
+fn dock_vessel_path(dock: []const u8, buf: []u8) CliError![]const u8 {
+    assert(dock.len > 0);
+    assert(buf.len >= max_vessel_path_len);
+    return std.fmt.bufPrint(buf, "{s}/{s}", .{ dock, dock_vessel_name }) catch {
+        return error.PathTooLong;
+    };
+}
+
+/// Q21 door: parse · walls · dock guard; chunk plan waits Q22.
 fn cmd_carry(init: std.process.Init, args: []const []const u8) u8 {
     const parsed = parse_carry_args(args) catch |fault| {
         return switch (fault) {
@@ -845,6 +882,15 @@ fn cmd_carry(init: std.process.Init, args: []const []const u8) u8 {
             else => refuse(error.StampUnverified, parsed.vessel),
         };
     };
+
+    var parent_hex: [digest_hex_len]u8 = undefined;
+    read_vessel_parent(init.io, parsed.vessel, &parent_hex) catch
+        return refuse(error.StampUnverified, parsed.vessel);
+    var far_path_buf: [max_vessel_path_len]u8 = undefined;
+    const far_vessel = dock_vessel_path(parsed.dock, &far_path_buf) catch
+        return refuse(error.PathTooLong, parsed.dock);
+    guard_identity_fork(init.io, far_vessel, &parent_hex) catch
+        return refuse(error.IdentityFork, far_vessel);
     return refuse(error.CommandNotGrown, "carry");
 }
 
