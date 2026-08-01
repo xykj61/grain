@@ -57,7 +57,7 @@ Gall's Law: J2–J4 quests are cut at each journey's sixteenth from measured gro
 | **Q4** | bounds seated as named constants with their why — **GREEN** e145/e146 (`stamp_len` · exits · path · cargo · chunk) · shared roofs via path C witness e146 |
 | **Q5** | errors named for the fault — **GREEN** e147 (`CliError` six · `refuse` switch · module InvalidVessel/BadVessel named not swept) |
 | **Q6** | pour — argument parse (`pour <season> <vessel>`) — **GREEN** e150 |
-| **Q7** | pour — season read (Amber ring-1 / season path) |
+| **Q7** | pour — season read (cellar ring-1 / season path) — **GREEN** e151 |
 | **Q8** | pour — seal cargo (ChaCha20-Poly1305) inside pour |
 | **Q9** | pour — Kumara-stamp vessel body after seal; shoulder stays clear |
 | **Q10** | pour — write vessel · refuse a second pour that would fork identity |
