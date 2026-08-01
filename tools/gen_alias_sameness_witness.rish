@@ -11,7 +11,7 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/gen_alias_sameness_witness.rish
 
-let shape = run ["sh" "-c" "bad=0; pairs=0; for f in $(git ls-files 'tools/gen/*/*.rish' 'tools/gen/*/*.sh'); do b=$(basename $f); if [ -e tools/$b ]; then pairs=$((pairs+1)); if ! grep -q \"$f\" tools/$b; then bad=$((bad+1)); echo NOTWIN tools/$b; fi; n=$(wc -l < tools/$b); if [ $n -gt 16 ]; then bad=$((bad+1)); echo OVERROOF tools/$b lines=$n; fi; fi; done; echo pairs=$pairs bad=$bad; test $bad -eq 0"]
+let shape = run ["sh" "-c" "bad=0; pairs=0; for f in $(git ls-files 'tools/gen/*/*.rish' 'tools/gen/*/*.sh'); do b=$(basename $f); if [ -e tools/$b ]; then pairs=$((pairs+1)); if ! grep -qF $f tools/$b; then bad=$((bad+1)); echo NOTWIN tools/$b; fi; n=$(wc -l < tools/$b); if [ $n -gt 16 ]; then bad=$((bad+1)); echo OVERROOF tools/$b lines=$n; fi; fi; done; echo pairs=$pairs bad=$bad; test $bad -eq 0"]
 assert shape.ok else "gen_alias: every elder pair must be a lawful shim (twin named, under roof)"
 assert shape.out contains "pairs=33" else "gen_alias: thirty-three pairs stand"
 assert shape.out contains "bad=0" else "gen_alias: zero shim-shape faults"
