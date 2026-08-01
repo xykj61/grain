@@ -39,7 +39,8 @@
 //!
 //! Architecture (four sections, one file for the seed):
 //!   § Pour    — parse (Q6) · read (Q7) · seal (Q8) · stamp (Q9) · guard (Q10) · manifest (Q11): pour grown; witnesses wait Q12
-//!   § Carry   — move sealed vessel; kind 0x33 chunks; far dock verifies
+//!   § Carry   — J2: parse (Q19) · walls (Q20) · guard (Q21) · chunks (Q22+);
+//!               kind 0x33 frames · far dock verifies · fork law travels
 //!   § Restore — cold scrub; verify stamp+seal; restore byte-faithful
 //!   § Main    — CLI: pour / carry / restore / version
 //!
@@ -70,7 +71,7 @@ const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
 const Dir = std.Io.Dir;
 
 /// Amphora CLI version — YYYYMMDD.HHMMSS, America/New_York, later is larger.
-const amphora_version = "20260801.043522";
+const amphora_version = "20260801.045307";
 
 // -------------------------------------------------------------------------
 // § Bounds — named with their why (Q4 · Q7 · Q8 · Q9)
@@ -717,7 +718,20 @@ fn cmd_pour(init: std.process.Init, args: []const []const u8) u8 {
 }
 
 // =========================================================================
-// § Main — CLI (Q3–Q11 · carry/restore wait · version)
+// § Carry — J2 The Crossing (doc seed, Q18 — code grows Q19+)
+// -------------------------------------------------------------------------
+//
+// Carry moves a poured vessel to a far dock without ever trusting motion:
+// both walls verify BEFORE the first byte travels (stamp, then seal), the
+// far side guards identity exactly as pour does (same parent re-carries;
+// any other occupant refuses), cargo rides kind-0x33 chunk frames under the
+// wire module's named ceiling, and the crossing is only believed when the
+// far assembly reads byte-equal to the source. The manifest crosses whole,
+// readable at the dock before any seal is touched. Effects come last:
+// nothing lands at the dock until every check on the near side has passed.
+
+// -------------------------------------------------------------------------
+// § Main — CLI (Q3–Q11 · carry Q19+ · restore waits · version)
 // =========================================================================
 
 pub fn main(init: std.process.Init) !u8 {
