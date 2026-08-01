@@ -1,7 +1,7 @@
 # REDS — the ledger of what we got wrong
 
 **Language:** EN
-**Stamp:** living ledger (born `20260729.222000`) · refreshed `20260801.012557` (Equinox e138 · row 48 retire by accretion)
+**Stamp:** living ledger (born `20260729.222000`) · refreshed `20260801.162056` (self-work arc · rows 58–60 accreted)
 **Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
 **Voice:** Riyo
 **Status:** Living pin — one row per red, oldest first
@@ -98,6 +98,9 @@ A red enters this ledger when it is found. Rows are never edited or removed; a l
 | 55 | While bans stood exit 1 on a comment false-positive, `dated_classify.py`'s missing exempt (owed since e116) stayed invisible — the scan never reached the second failure | counsel fuse e147 `20260801.032014` · e145 exempt · planted positive proved discrimination | A red left standing hides every red behind it. A stuck gate is a compounding debt, never a flat one. |
 | 56 | Ten Amphora numbers recur under different names; grouping by value cannot tell a real coupling (340 · 1024) from a coincidence (4096 path vs slip) | counsel fuse e148 `20260801.033044` · `couples:` markers + planted pair | Coupling is declared, never inferred — the number finds coincidences. |
 | 57 | e148 treated AEAD shoulder `amber-ring1-season` and ring1 format tokens as renamable vocabulary and overwrote them mid-wave — counsel proved wrong associated data fails Poly1305 open; custody of the code is not custody of the sealed thing; stop-and-park on wire/custody was stepped over | counsel fuse e149 `20260801.033305` · Class W restored · wrong-ad control in seal selftest · Class P cellar module kept | A string bound into a tag is format, never a rename. Stop-and-park means stop. Class W waits a versioned shoulder and a both-sides witness. |
+| 58 | `git bundle verify` answered *complete history* on a bundle with a hundred megabytes torn off the tail — the crossing lane nearly trusted a header as a proof of the pack | counsel e194 `20260801.145854` · planted truncation · clone died at `early EOF` while verify stayed green | Verify reads the header, never the pack. The manifest's content address is the load-bearing wall; a clone is the second. Both plants stand in `equinox_bundle_negative_witness`. |
+| 59 | Five custody bars of the enclosure witness — host key, lane key, Documents, Downloads, Wayland — passed vacuously for their whole lives: backslash-quoted `test` guards compared literal quote characters | counsel e206 `20260801.160208` advisory sweep · planted key sailed the elder form rc=0 and bit the toothed form rc=1 | An assert that cannot fail protects nothing. After any quoting law lands, sweep every guard shape for it — row 9 taught the leak; this row teaches the vacuum. |
+| 60 | One arc relearned three standing laws the hard way: anchors composed from memory died twice, three stamps were typed before the clock answered, and the backslash law bit the very witness hunting it | counsel e204b–e207c · AssertionError on remembered needles · seat stamps versus the clock line in the same output | Same law, three faces: read the needle from the file, take the clock into a variable, and let the finder's tools obey the finding first. |
 
 **Rows: 57 · in the tree before the ledger: 6 · recovered by opening it: 14 · added under the reds-first law: 37**
 
