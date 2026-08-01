@@ -1,11 +1,11 @@
 # e141 — Amphora CLI · Glow · Tend · TAME · nested equinox charter (Q1)
 
-**Stamp:** `20260801.024355`  
-**Seat:** e141 · parent Equinox (deca) OPEN · nested wave **Q1 of 64**  
+**Stamp:** `20260801.024355` · J1 sixteen accreted `20260801.030237`  
+**Seat:** e141 · parent Equinox (deca) OPEN · nested wave **Q1 of 64** (living wave now Q3)  
 **Voice:** Riyo (Radiant · TAME) · Nested documentary: Trey  
 **Bench:** Cursor Cloud Grok 4.5 · living nib at commence `728497fffe`  
 **Word:** Keaton — `kg commence equinox` · fuse Claude Opus 5 relay packet  
-**Status:** GREEN — commence OPEN · name **HELD** · handback **HELD** · seat 128 **RESERVED**
+**Status:** GREEN — commence OPEN · name **HELD** · handback **HELD** · seat 128 **RESERVED** · J1 Q1–Q16 **in tree**
 
 *Written together by Keaton and Riyo from Claude's propose-never-seat relay.*
 
@@ -45,21 +45,28 @@ seal + stamp inside pour · chunk inside carry · never a choice.
 
 Gall's Law: J2–J4 quests are cut at each journey's sixteenth from measured ground — not a 64-round grand design written before round two.
 
-### J1 (fine)
+### J1 (fine) — sixteen written so the file can be made again
+
+*Accreted `20260801.030237` (e144): counsel G2 — the trim had left Q4–Q16 in chat only. Spans stay; each quest now has a duty line in the tree.*
 
 | Q | Duty |
 | --- | --- |
 | **Q1** | charter (this stamp) |
-| **Q2** | doc comment only · zero code |
-| **Q3** | `amphora version` |
-| **Q4** | named bounds |
-| **Q5** | named errors |
-| **Q6–Q11** | pour |
-| **Q12** | pour GREEN |
-| **Q13** | pour planted NEGATIVE |
-| **Q14** | 70-line + assert density |
-| **Q15** | width pass |
-| **Q16** | journey close · cuts J2 |
+| **Q2** | doc comment only · zero code — seed `amphora/src/main.rye` `//!` (e143) · README surface (e142) |
+| **Q3** | `amphora version` — free string on **stdout** · diagnostics on stderr · exit 0 (e144) |
+| **Q4** | bounds seated as named constants with their why (argv words · path · cargo · chunk · dock) |
+| **Q5** | errors named for the fault (season missing · vessel forked · stamp fail · seal fail · dock refuse · unknown · too many words) |
+| **Q6** | pour — argument parse (`pour <season> <vessel>`) |
+| **Q7** | pour — season read (Amber ring-1 / season path) |
+| **Q8** | pour — seal cargo (ChaCha20-Poly1305) inside pour |
+| **Q9** | pour — Kumara-stamp vessel body after seal; shoulder stays clear |
+| **Q10** | pour — write vessel · refuse a second pour that would fork identity |
+| **Q11** | pour — manifest entry under resins law |
+| **Q12** | pour witness **GREEN** (round path measured) |
+| **Q13** | pour witness planted **NEGATIVE** (tamper / fork / missing season) |
+| **Q14** | seventy-line audit + assertion density (roster must see amphora — e143) |
+| **Q15** | width pass — u32 counts · u64 wire · usize at the cast only |
+| **Q16** | journey close · suite re-cut · J2's sixteen cut from measured ground |
 
 ## Relay APPLY landed this stamp
 
