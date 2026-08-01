@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260801.150106` · voice Riyo · e196 Q63 · wave 61/64 · bundle lane whole (cut 75% of seat · sha3 wall · clone-proof) · Q53+Q54 await class-and-rooms · Q64 awaits seat 128 · SEA only · shred RED
+**Last refreshed:** `20260801.150445` · voice Riyo · e197 gate packet · census 932/5,028 · menu measured (687 elder logs · 89 waymarks · 17 recursions) · Q53+Q54 await class-and-rooms · Q64 awaits seat 128 · SEA only · shred RED
 **Pier at fusion:** `20260802.132104` · p191–p203 · Tend T1–T6·C1–C4·A1–A3·M1 · tip 33d77fe68c — counsel lane rebased atop, one file overlapped, union kept
 
 
