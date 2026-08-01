@@ -1,7 +1,7 @@
 # The Roadmap — living pin
 
 **Language:** EN  
-**Last updated:** `20260801.000743` · voice Riyo  
+**Last updated:** `20260801.040828` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Full season ledger:** [`archive/20260724-132812_roadmap-season-ledger.md`](archive/20260724-132812_roadmap-season-ledger.md)  
 **Align:** [`../foundations/20260706-185112_follow-our-compass.md`](../foundations/20260706-185112_follow-our-compass.md)  
@@ -9,13 +9,14 @@
 
 ---
 
-## Now — Amphora CLI wave Q8 (`20260801.000743`)
+## Now — Amphora CLI wave Q9 (`20260801.040828`)
 
 | Order | Lap | Status |
 |-------|-----|--------|
 | — | e141–e151 Q1–Q7 · path C · Class W park · season read | landed |
-| **1** | **e152 / Q8** seal cargo inside pour | **this sitting** |
-| **2** | **Q9** Kumara stamp inside pour | next kg |
+| — | **e152 / Q8** seal cargo inside pour | landed |
+| **1** | **e153 / Q9** Kumara stamp inside pour | **this sitting** |
+| **2** | **Q10** write-guard · refuse identity fork | next kg |
 | **3** | Keaton seats Crossing / stdout law / handback / P7 / Class W | Keaton alone |
 | **4** | seat **128** close choir | Keaton alone |
 | **5** | Class O shred · geode · stack on-touch | gated / on-touch |

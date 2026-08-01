@@ -29,15 +29,16 @@
 //!   Shared vessel bounds stay in amphora/*.rye; agreement via
 //!   tools/amphora_bounds_agree.rish (path C · alias groups · couples markers).
 //!
-//! Errors (named for the fault — Q5 · Q7 · Q8 accreted):
+//! Errors (named for the fault — Q5 · Q7 · Q8 · Q9 accreted):
 //!   UnknownCommand · TooManyWords · MissingOperand · PathTooLong
 //!   CommandNotGrown · ResultUnwritable
 //!   SeasonAbsent · SeasonEmpty · SeasonOverflow · SeasonUnreadable
 //!   CargoTooLarge · VesselUnwritable · SealToolAbsent · SealFailed
+//!   StampToolAbsent · StampFailed
 //!   Module split named, not swept: InvalidVessel vs BadVessel (G10).
 //!
 //! Architecture (four sections, one file for the seed):
-//!   § Pour    — parse (Q6) · season read (Q7) · seal (Q8); stamp waits Q9
+//!   § Pour    — parse (Q6) · season read (Q7) · seal (Q8) · stamp (Q9); write-guard waits Q10
 //!   § Carry   — move sealed vessel; kind 0x33 chunks; far dock verifies
 //!   § Restore — cold scrub; verify stamp+seal; restore byte-faithful
 //!   § Main    — CLI: pour / carry / restore / version
@@ -51,6 +52,8 @@
 //! Path C: this file does not import amphora/vessel_*.rye.
 //! Q8 seals by writing an unsealed vessel then running amphora/bin/vessel-seal
 //! (subprocess · same AEAD roof · import wall held).
+//! Q9 stamps by running amphora/bin/vessel-core sign after the seal
+//! (subprocess · stamp_sig outside the sealed head · rite: seal, then stamp).
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -59,10 +62,10 @@ const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
 const Dir = std.Io.Dir;
 
 /// Amphora CLI version — YYYYMMDD.HHMMSS, America/New_York, later is larger.
-const amphora_version = "20260801.000743";
+const amphora_version = "20260801.040828";
 
 // -------------------------------------------------------------------------
-// § Bounds — named with their why (Q4 · Q7 · Q8)
+// § Bounds — named with their why (Q4 · Q7 · Q8 · Q9)
 // -------------------------------------------------------------------------
 
 /// A compact stamp is eight date digits, one dot, six time digits.
@@ -118,6 +121,9 @@ const vessel_format = "amphora-v1";
 /// Default seal tool path when AMPHORA_VESSEL_SEAL is unset (repo layout).
 const default_seal_bin = "amphora/bin/vessel-seal";
 
+/// Default stamp tool path when AMPHORA_VESSEL_CORE is unset (repo layout).
+const default_core_bin = "amphora/bin/vessel-core";
+
 /// Success exit — was a bare return 0.
 const exit_ok: u8 = 0;
 
@@ -125,7 +131,7 @@ const exit_ok: u8 = 0;
 const exit_misread: u8 = 2;
 
 // -------------------------------------------------------------------------
-// § Errors — named for the fault (Q5 · Q7 · Q8)
+// § Errors — named for the fault (Q5 · Q7 · Q8 · Q9)
 // -------------------------------------------------------------------------
 
 /// CLI faults only. Vessel modules keep InvalidVessel / BadVessel (G10).
@@ -144,6 +150,8 @@ const CliError = error{
     VesselUnwritable,
     SealToolAbsent,
     SealFailed,
+    StampToolAbsent,
+    StampFailed,
 };
 
 /// One door for every CLI fault — switch on the name, never compare.
@@ -166,12 +174,14 @@ fn refuse(fault: CliError, detail: []const u8) u8 {
         error.VesselUnwritable => print("amphora: vessel unwritable — '{s}'\n", .{detail}),
         error.SealToolAbsent => print("amphora: seal tool absent — '{s}'\n", .{detail}),
         error.SealFailed => print("amphora: seal failed — '{s}'\n", .{detail}),
+        error.StampToolAbsent => print("amphora: stamp tool absent — '{s}'\n", .{detail}),
+        error.StampFailed => print("amphora: stamp failed — '{s}'\n", .{detail}),
     }
     return exit_misread;
 }
 
 // -------------------------------------------------------------------------
-// § Pour — parse (Q6) · season read (Q7) · seal (Q8); stamp waits Q9
+// § Pour — parse (Q6) · season read (Q7) · seal (Q8) · stamp (Q9); write-guard waits Q10
 // -------------------------------------------------------------------------
 
 /// Operands for `pour <season> <vessel>` after a successful parse.
@@ -406,7 +416,90 @@ fn verify_seal_fields(io: std.Io, vessel_path: []const u8) CliError!void {
     if (!has_nonce or !has_cargo) return error.SealFailed;
 }
 
-/// Q8 door: parse · read · write unsealed · seal; stamp waits Q9.
+/// Resolve vessel-core binary: env · sibling of argv0 · repo default.
+fn resolve_core_bin(
+    init: std.process.Init,
+    io: std.Io,
+    argv0: []const u8,
+    path_buf: []u8,
+) CliError![]const u8 {
+    assert(argv0.len > 0);
+    assert(path_buf.len > 0);
+    const cwd = Dir.cwd();
+    if (init.environ_map.get("AMPHORA_VESSEL_CORE")) |p| {
+        if (p.len == 0) return error.StampToolAbsent;
+        if (cwd.access(io, p, .{})) |_| {
+            return p;
+        } else |_| {
+            return error.StampToolAbsent;
+        }
+    }
+    if (std.mem.lastIndexOfScalar(u8, argv0, '/')) |slash| {
+        const dir = argv0[0..slash];
+        const sibling = std.fmt.bufPrint(path_buf, "{s}/vessel-core", .{dir}) catch {
+            return error.StampToolAbsent;
+        };
+        if (cwd.access(io, sibling, .{})) |_| {
+            return sibling;
+        } else |_| {}
+    }
+    if (cwd.access(io, default_core_bin, .{})) |_| {
+        return default_core_bin;
+    } else |_| {
+        return error.StampToolAbsent;
+    }
+}
+
+/// Path C: stamp via vessel-core sign subprocess — no comptime vessel import.
+fn run_vessel_core_sign(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    core_bin: []const u8,
+    vessel_path: []const u8,
+) CliError!void {
+    assert(core_bin.len > 0);
+    assert(vessel_path.len > 0);
+    const argv = [_][]const u8{ core_bin, "sign", vessel_path };
+    const result = std.process.run(allocator, io, .{ .argv = &argv }) catch {
+        return error.StampFailed;
+    };
+    const code: u8 = switch (result.term) {
+        .exited => |c| c,
+        else => return error.StampFailed,
+    };
+    if (code != 0) return error.StampFailed;
+}
+
+/// Confirm the stamp landed — a stamp_sig field must be present after sign.
+fn verify_stamp_field(io: std.Io, vessel_path: []const u8) CliError!void {
+    assert(vessel_path.len > 0);
+    var buf: [max_vessel_len]u8 = undefined;
+    const text = Dir.cwd().readFile(io, vessel_path, &buf) catch {
+        return error.StampFailed;
+    };
+    const has_sig = std.mem.indexOf(u8, text, "\nstamp_sig ") != null or std.mem.startsWith(u8, text, "stamp_sig ");
+    if (!has_sig) return error.StampFailed;
+}
+
+/// Q9: resolve vessel-core, sign the sealed vessel, confirm stamp_sig landed.
+/// Rite: seal, then stamp — stamp_sig stays outside the sealed head.
+fn stamp_sealed_vessel(
+    init: std.process.Init,
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    argv0: []const u8,
+    vessel_path: []const u8,
+) CliError!void {
+    assert(argv0.len > 0);
+    assert(vessel_path.len > 0);
+    var core_path_buf: [max_vessel_path_len]u8 = undefined;
+    const core_bin = try resolve_core_bin(init, io, argv0, &core_path_buf);
+    try run_vessel_core_sign(allocator, io, core_bin, vessel_path);
+    try verify_stamp_field(io, vessel_path);
+    print("amphora: vessel stamped rite=seal-then-stamp\n", .{});
+}
+
+/// Q9 door: parse · read · write unsealed · seal · stamp; write-guard waits Q10.
 fn cmd_pour(init: std.process.Init, args: []const []const u8) u8 {
     const allocator = init.arena.allocator();
     const io = init.io;
@@ -466,11 +559,19 @@ fn cmd_pour(init: std.process.Init, args: []const []const u8) u8 {
         return refuse(error.SealFailed, parsed.vessel);
     };
     print("amphora: vessel sealed cargo_bytes={d}\n", .{cargo_len});
+
+    stamp_sealed_vessel(init, allocator, io, args[0], parsed.vessel) catch |fault| {
+        return switch (fault) {
+            // Detail names the default roof; AMPHORA_VESSEL_CORE still gates resolve.
+            error.StampToolAbsent => refuse(error.StampToolAbsent, default_core_bin),
+            else => refuse(error.StampFailed, parsed.vessel),
+        };
+    };
     return refuse(error.CommandNotGrown, "pour");
 }
 
 // =========================================================================
-// § Main — CLI (Q3–Q8 · carry/restore wait · version)
+// § Main — CLI (Q3–Q9 · carry/restore wait · version)
 // =========================================================================
 
 pub fn main(init: std.process.Init) !u8 {
