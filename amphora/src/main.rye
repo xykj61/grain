@@ -23,12 +23,13 @@
 //!   stamp_len · stamp_dot_index · version_line_max · max_words
 //!   max_vessel_path_len · max_cargo_bytes · max_chunk_datagram
 //!   exit_ok · exit_misread
-//!   Shared vessel bounds (max_vessel_len · max_cargo · digest_hex_len) stay
-//!   in amphora/*.rye homes; agreement is proven by amphora_bounds_agree.
+//!   Shared vessel bounds stay in amphora/*.rye; agreement via
+//!   tools/amphora_bounds_agree.rish (path C · also alias value groups).
 //!
-//! Errors (named for the fault — Q5 will seat error set names):
-//!   season missing · vessel forked · stamp fail · seal fail · dock refuse
-//!   unknown command · too many words · quest waits
+//! Errors (named for the fault — Q5 · CLI's own six; does not rename modules):
+//!   UnknownCommand · TooManyWords · MissingOperand · PathTooLong
+//!   CommandNotGrown · ResultUnwritable
+//!   Module split named, not swept: InvalidVessel vs BadVessel (G10).
 //!
 //! Architecture (four sections, one file for the seed):
 //!   § Pour    — fill from season; seal then Kumara-stamp; no second pour
@@ -65,15 +66,14 @@ const version_line_max: u32 = 48;
 const max_words: u32 = 4;
 
 /// Path text ceiling for season · vessel · dock args (POSIX PATH_MAX lean).
-/// Why: refuse absurd paths before open; pour metal will enforce on read.
 const max_vessel_path_len: u16 = 4096;
 
 /// Sealed cargo / assembled resin ceiling in bytes.
-/// Why: matches vessel_fetch_wire.max_resin_bytes / vessel_seal.max_seal_plain.
+/// Why: matches max_resin_bytes / max_seal_plain (alias group · witness).
 const max_cargo_bytes: u32 = 1024;
 
 /// One datagram payload ceiling on the crossing wire.
-/// Why: matches vessel_fetch_wire.max_wire_payload; chunk (0x33) stays inside.
+/// Why: matches max_wire_payload (alias group · witness; width may differ).
 const max_chunk_datagram: u16 = 340;
 
 /// Success exit — was a bare return 0.
@@ -82,8 +82,38 @@ const exit_ok: u8 = 0;
 /// Misread / usage / unknown / waits — was bare return 2.
 const exit_misread: u8 = 2;
 
+// -------------------------------------------------------------------------
+// § Errors — named for the fault (Q5)
+// -------------------------------------------------------------------------
+
+/// CLI faults only. Vessel modules keep InvalidVessel / BadVessel (G10).
+const CliError = error{
+    UnknownCommand,
+    TooManyWords,
+    MissingOperand,
+    PathTooLong,
+    CommandNotGrown,
+    ResultUnwritable,
+};
+
+/// One door for every CLI fault — switch on the name, never compare.
+fn refuse(fault: CliError, detail: []const u8) u8 {
+    switch (fault) {
+        error.UnknownCommand => {
+            print("amphora: unknown command — '{s}'\n\n", .{detail});
+            print_usage();
+        },
+        error.TooManyWords => print("amphora: too many words\n", .{}),
+        error.MissingOperand => print("amphora: missing operand — '{s}'\n", .{detail}),
+        error.PathTooLong => print("amphora: path too long — '{s}'\n", .{detail}),
+        error.CommandNotGrown => print("amphora: command waits its quest — '{s}'\n", .{detail}),
+        error.ResultUnwritable => print("amphora: result unwritable — '{s}'\n", .{detail}),
+    }
+    return exit_misread;
+}
+
 // =========================================================================
-// § Main — CLI (Q3: version; Q4: bounds named; pour/carry/restore wait)
+// § Main — CLI (Q3 version · Q4 bounds · Q5 errors · pour waits)
 // =========================================================================
 
 pub fn main(init: std.process.Init) !u8 {
@@ -92,19 +122,17 @@ pub fn main(init: std.process.Init) !u8 {
     const args = try init.minimal.args.toSlice(allocator);
 
     assert(args.len >= 1);
-    assert(max_words == 4);
+    // Invariants that can fail if bounds move wrongly — not const == literal.
+    assert(max_words >= 2);
+    assert(max_chunk_datagram <= max_cargo_bytes);
     assert(amphora_version.len == stamp_len);
-    assert(max_vessel_path_len == 4096);
-    assert(max_cargo_bytes == 1024);
-    assert(max_chunk_datagram == 340);
+    assert(amphora_version[stamp_dot_index] == '.');
 
     if (args.len > max_words) {
-        print("amphora: at most {d} words, {d} given\n", .{ max_words, args.len });
-        return exit_misread;
+        return refuse(error.TooManyWords, "");
     }
     if (args.len < 2) {
-        print_usage();
-        return exit_misread;
+        return refuse(error.MissingOperand, "a command");
     }
 
     const cmd = args[1];
@@ -114,12 +142,25 @@ pub fn main(init: std.process.Init) !u8 {
         std.mem.eql(u8, cmd, "carry") or
         std.mem.eql(u8, cmd, "restore"))
     {
-        print("amphora: '{s}' waits its quest\n", .{cmd});
-        return exit_misread;
+        // Path operands (when present) must fit the named ceiling.
+        var i: u32 = 2;
+        while (i < args.len) : (i += 1) {
+            if (args[i].len > max_vessel_path_len) {
+                return refuse(error.PathTooLong, args[i]);
+            }
+        }
+        if (std.mem.eql(u8, cmd, "pour") and args.len < 4) {
+            return refuse(error.MissingOperand, "pour <season> <vessel>");
+        }
+        if (std.mem.eql(u8, cmd, "carry") and args.len < 4) {
+            return refuse(error.MissingOperand, "carry <vessel> <dock>");
+        }
+        if (std.mem.eql(u8, cmd, "restore") and args.len < 3) {
+            return refuse(error.MissingOperand, "restore <vessel>");
+        }
+        return refuse(error.CommandNotGrown, cmd);
     } else {
-        print("amphora: unknown command '{s}'\n\n", .{cmd});
-        print_usage();
-        return exit_misread;
+        return refuse(error.UnknownCommand, cmd);
     }
 }
 
@@ -129,13 +170,11 @@ fn cmd_version(io: std.Io) u8 {
     assert(amphora_version[stamp_dot_index] == '.');
     var buf: [version_line_max]u8 = undefined;
     const line = std.fmt.bufPrint(&buf, "amphora {s}\n", .{amphora_version}) catch {
-        print("amphora: version format failed\n", .{});
-        return exit_misread;
+        return refuse(error.ResultUnwritable, "version format");
     };
     const stdout = std.Io.File.stdout();
     stdout.writeStreamingAll(io, line) catch {
-        print("amphora: stdout write failed\n", .{});
-        return exit_misread;
+        return refuse(error.ResultUnwritable, "stdout");
     };
     return exit_ok;
 }
