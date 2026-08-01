@@ -59,7 +59,7 @@ let bus_net = trim bus_net_raw
 say "pond scorecard: bus_env=${bus_env} · bus_socket=${bus_sock} · bus_netns=${bus_net}"
 
 say "pond scorecard: column two — pond-required cells (record gaps; do not claim)…"
-let gap_r = run ["sh" "-c" "e=$(cat ${cache}/bus_env); s=$(cat ${cache}/bus_socket); n=$(cat ${cache}/bus_netns); if [ \"$e\" = empty ] && [ \"$s\" = absent ] && [ \"$n\" = unshared ]; then echo closed; else echo open; fi"]
+let gap_r = run ["sh" "-c" "e=$(cat ${cache}/bus_env); s=$(cat ${cache}/bus_socket); n=$(cat ${cache}/bus_netns); if [ x$e = xempty ] && [ x$s = xabsent ] && [ x$n = xunshared ]; then echo closed; else echo open; fi"]
 assert gap_r.ok else "gap_bus compute failed"
 let gap_bus = trim gap_r.out
 if gap_bus == "open" then say "pond scorecard column two: GAP bus three-door still open (unreachable is the floor)"

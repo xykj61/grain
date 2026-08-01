@@ -14,7 +14,7 @@ assert build.ok else "drawn_terminal build failed for Lap 3 metal smoke"
 assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
 say build.out
 
-let wayland = run ["sh" "-c" "test -n \"$WAYLAND_DISPLAY\""]
+let wayland = run ["sh" "-c" "test x$WAYLAND_DISPLAY != x"]
 assert wayland.ok else "WAYLAND_DISPLAY unset — run metalsmoke on GNOME Wayland metal"
 
 let smoke = run ["sh" "-c" "${bin} metalsmoke 2>&1"]
