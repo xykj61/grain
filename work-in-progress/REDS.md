@@ -1,7 +1,7 @@
 # REDS — the ledger of what we got wrong
 
 **Language:** EN
-**Stamp:** living ledger (born `20260729.222000`) · refreshed `20260731.231509` (Equinox e127 · row 42 counsel ladder direction)
+**Stamp:** living ledger (born `20260729.222000`) · refreshed `20260801.000833` (Equinox e131 · row 43 timing figure is a pin)
 **Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
 **Voice:** Riyo
 **Status:** Living pin — one row per red, oldest first
@@ -83,8 +83,9 @@ A red enters this ledger when it is found. Rows are never edited or removed; a l
 | 40 | Two roofs carried the name `dated_testimony` yet counted different sets — shed used an unanchored name-only regex while standalone used living-vs-dated — so health ratios and the orphan floor inherited two jobs under one word | counsel fuse at e116 · shed vs fascia_health dated counts fourteen files apart · `tools/fixtures/dated_classify.py` + `dated_roof_divergence_scan.sh` | When two roofs carry one name, either they agree or the name is doing two jobs. Seat one definition in code; both roofs source it; diverge goes RED while they differ. |
 | 41 | Counsel said name the Bench, then reverted to name the root when e121 blurred kinds, tracking whichever baton arrived last rather than holding a position — until e122 refused the blur and restored different kinds | counsel owned flip-flop `20260731.223455` · seated law roots send words · a Bench measures · name the Bench | Hold the seated law across batons. A measurement names its Bench. Do not track the newest paste over a refused blur. |
 | 42 | Counsel read the build-stack refusals as "climb higher," called living on sh a failure, and implied a rish-first campaign over the day's shell — the seated row says foundations first and shell ratchet on-touch never a campaign | counsel owned the backwards reading `20260731.231509` · Lexicon build stack · e127 on-touch seating | sh is where work correctly begins. Migrate on-touch only. Do not campaign the fat scans. |
+| 43 | Pinned desk-tier as ~57s, then "corrected" it to ~5s as if the second stopwatch were the truth — a third cut gave ~11s; three honest answers, none a constant | counsel fuse e131 `20260801.000833` · three cuts of `compose-bind-nest-seal-jam-cue` · Lexicon timing figure | A timing figure is a pin. Desk tier varies with cache warmth. Carry a range, or re-cut every round — including after a correction. |
 
-**Rows: 41 · in the tree before the ledger: 6 · recovered by opening it: 14 · added under the reds-first law: 21**
+**Rows: 43 · in the tree before the ledger: 6 · recovered by opening it: 14 · added under the reds-first law: 23**
 
 **Reds-first accounting for v11:** two reds found, both fixed in-round with witnesses on metal, ledger closed. The remaining journey allocation is therefore **released** rather than booked — which is the law working, not the law skipped.
 
