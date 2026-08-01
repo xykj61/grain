@@ -15,6 +15,15 @@
 set -eu
 
 MODE=${1:-rehearsal}
+# Guard (e199): the bundle home lives under the root ignore; a tracked file
+# beneath it means a forced add slipped past — refuse before any cut.
+TRACKED_BUNDLES=$(git ls-files bundles/ | head -1)
+if test -n "$TRACKED_BUNDLES"; then
+  echo "verdict=refused"
+  echo "cause=tracked_file_under_bundles"
+  echo "offender=$TRACKED_BUNDLES"
+  exit 1
+fi
 ARG2=${2:-}
 # couples: equinox_bundle_manifest.sh bound_bytes (one number, two speakers — keep in step)
 BOUND=268435456
