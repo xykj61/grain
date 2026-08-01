@@ -1,7 +1,7 @@
 # Lexicon — Module Names and Their Meanings
 
 **Language:** EN
-**Last updated:** `20260801.013831` (**e140 GREEN** · align Amphora CLI · commence gated · Claude pack)
+**Last updated:** `20260801.024355` (**e141 GREEN** · Amphora CLI wave Q1 commence · name HELD)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---
@@ -205,7 +205,7 @@ Full loop bounds: [`work-in-progress/ready-to-ask-claude.md`](../work-in-progres
 | **Express** | A Tilak's duty — render this type as another (prose, text, lines) |
 | **Tend** | A Tilak's duty — care for this type's history in its own grain (diff, patch, merge) |
 | **Pottery** | The value-object tier — linear resources thrown while owned, fired when sealed; `.pott` the working extension; greenware · kiln · glaze name the aspect family; horizon until measured demand |
-| **Amphora** | **Vessel software** — preservation **in motion** across a crossing: the sealed traveling container (manifest, stamp, parent mark, shoulder line); laps 1–3 seated `amphora/` (parse · pour/scrub · Comlink hosted + device fetch); forge view folds a live pour — [`amphora/README.md`](../amphora/README.md) · crossing plainly [`../external-research/20260710-145313_amphora-crossing-plainly.md`](../external-research/20260710-145313_amphora-crossing-plainly.md) · study [`../external-research/20260703-201612_the-amphora-and-the-crossing.md`](../external-research/20260703-201612_the-amphora-and-the-crossing.md) · silo [`active-designing/20260703-201612_the-sealed-crossing.md`](../active-designing/20260703-201612_the-sealed-crossing.md). Does **not** absorb Amber's cellar (e138). **CLI horizon** (e140): Glow · Tend · TAME desks wrapping pour · carry · scrub · fetch · seal — not begun; charter waits Claude. |
+| **Amphora** | **Vessel software** — preservation **in motion** across a crossing: the sealed traveling container (manifest, stamp, parent mark, shoulder line); laps 1–3 seated `amphora/` (parse · pour/scrub · Comlink hosted + device fetch); forge view folds a live pour — [`amphora/README.md`](../amphora/README.md) · crossing plainly [`../external-research/20260710-145313_amphora-crossing-plainly.md`](../external-research/20260710-145313_amphora-crossing-plainly.md) · study [`../external-research/20260703-201612_the-amphora-and-the-crossing.md`](../external-research/20260703-201612_the-amphora-and-the-crossing.md) · silo [`active-designing/20260703-201612_the-sealed-crossing.md`](../active-designing/20260703-201612_the-sealed-crossing.md). Does **not** absorb Amber's cellar (e138). Module dir **10 tracked** (9 `.rye` + README). **CLI wave** (e141 Q1): Glow · Tend · TAME · N=64 · commence **OPEN** · nest name **HELD** · handback **HELD** · shape `pour` · `carry` · `restore` · `version` — charter [`../counsel/20260801-024355_e141-amphora-cli-equinox-charter.md`](../counsel/20260801-024355_e141-amphora-cli-equinox-charter.md). |
 
 ## Preservation pair — cellar and vessel
 
