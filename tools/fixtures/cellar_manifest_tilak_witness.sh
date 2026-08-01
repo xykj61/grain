@@ -2,8 +2,8 @@
 # cellar_manifest_tilak_witness.sh — I6: Tilak three-field manifest + legacy still reads.
 set -eu
 ROOT=$(CDPATH= cd "$(dirname "$0")/../.." && pwd)
-LEGACY_GOLDEN=151b9c6d7efd9d7240368acf7eb81f4a75a4099f62e09ad7610e0658dc2d4fea
-TILAK_GOLDEN=4cffc7b5823516330c3e118212b2fec09dd14d7e67f1d24acf5dcbe07b30c6ed
+LEGACY_GOLDEN=fdca5dfde2bd63212322248a8f95e351c087bd6b0b14016de66a55d69cc090a4
+TILAK_GOLDEN=a0ddfe504f39d04b44a35cb1b43ac4220ca93abf8bea02df9ed0040e44d41978
 SRC="$ROOT/tools/fixtures/cellar_ring1_tree"
 tmpdir=$(mktemp -d)
 restore=$(mktemp -d)

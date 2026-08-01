@@ -2,7 +2,7 @@
 # cellar_ring1_witness.sh — welcome and unwelcome paths for cellar_first_ring.rish
 set -eu
 ROOT=$(CDPATH= cd "$(dirname "$0")/../.." && pwd)
-GOLDEN=151b9c6d7efd9d7240368acf7eb81f4a75a4099f62e09ad7610e0658dc2d4fea
+GOLDEN=fdca5dfde2bd63212322248a8f95e351c087bd6b0b14016de66a55d69cc090a4
 SRC="$ROOT/tools/fixtures/cellar_ring1_tree"
 tmpdir=$(mktemp -d)
 restore=$(mktemp -d)

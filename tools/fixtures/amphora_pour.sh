@@ -23,7 +23,7 @@ PARENT=$(openssl dgst -sha3-256 -r "$MANIFEST" | awk '{print $1}')
   printf '%s\n' '# amphora vessel — Cellar season poured for crossing'
   printf 'format amphora-v1\n'
   printf 'stamp %s\n' "$STAMP"
-  printf 'shoulder cellar-ring1-season\n'
+  printf 'shoulder amber-ring1-season\n'
   printf 'parent %s\n' "$PARENT"
   while read -r line; do
     case "$line" in
