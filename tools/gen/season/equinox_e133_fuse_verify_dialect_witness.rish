@@ -1,0 +1,25 @@
+# tools/gen/season/equinox_e133_fuse_verify_dialect_witness.rish — e133 seat.
+#   rishi/bin/rishi run tools/gen/season/equinox_e133_fuse_verify_dialect_witness.rish
+say "e133-fuse-verify: Language EN — dialect already green; counsel measured an elder nib."
+say "e133-fuse-verify: Style Radiant — first of eleven named; no second fix."
+say "e133-fuse-verify: Lens TAME — e133 · verify · shred held · 128 reserved."
+
+let green = run ["sh" "tools/fixtures/equinox_e133_fuse_verify_dialect_scan.sh"]
+assert green.ok else "e133-fuse-verify: living scan must exit 0"
+assert green.out contains "elder_fix=e132" else "e133-fuse-verify: want elder e132"
+assert green.out contains "dialect=already_green" else "e133-fuse-verify: want already green"
+assert green.out contains "bare_date=10" else "e133-fuse-verify: want bare 10"
+assert green.out contains "full_stamp=1" else "e133-fuse-verify: want stamp 1"
+assert green.out contains "first_of_eleven=lexicon" else "e133-fuse-verify: want Lexicon"
+assert green.out contains "compact_roof=one" else "e133-fuse-verify: want one roof"
+assert green.out contains "no_second_fix=honored" else "e133-fuse-verify: want no second fix"
+assert green.out contains "shred=RED" else "e133-fuse-verify: want shred RED"
+assert green.out contains "seat_128=reserved_close_choir" else "e133-fuse-verify: want 128 reserved"
+assert green.out contains "queue=empty_for_counsel" else "e133-fuse-verify: want empty queue"
+assert green.out contains "verdict=ok" else "e133-fuse-verify: want verdict ok"
+
+let red = run ["sh" "tools/fixtures/equinox_e133_fuse_verify_dialect_scan.sh" "prove-red"]
+assert (red.ok == false) else "e133-fuse-verify: prove-red must refuse"
+assert red.out contains "RED_second_fix_manufactured" else "e133-fuse-verify: prove-red want refuse"
+
+say "GREEN: e133-fuse-verify — e132 already green · 10+1 · one compact roof · shred RED · 128 reserved"

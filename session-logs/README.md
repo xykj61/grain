@@ -1,3 +1,4 @@
+- `20260801.003457` — [e133 fuse verify dialect already GREEN](20260801-003457_e133-fuse-verify-dialect-green.bron) — elder baton · e132 already green · first of eleven · 128 reserved
 - `20260801.001244` — [e132 date dialect timestamp GREEN](20260801-001244_e132-date-dialect-timestamp-green.bron) — compact stamps · suite 10/10 · REDS 44 · 128 reserved
 - `20260801.000833` — [e131 timing pin · manifest living-doc GREEN](20260801-000833_e131-timing-pin-manifest-limb-green.bron) — timing pin · REDS 43 · shred held · 128 reserved
 - `20260731.234806` — [e130 seal-jam-cue desk GREEN](20260731-234806_e130-seal-jam-cue-desk-green.bron) — six at max_lines · seven refused · glow product · 128 reserved
