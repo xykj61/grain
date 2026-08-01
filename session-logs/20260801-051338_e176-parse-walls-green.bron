@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260801.051338
+editor Claude
+model Claude Fable 5 1M Max
+voice Riyo
+host Claude counsel container — Eastern (EDT) time convention
+title e176 Q35 Q36 restore parse and walls GREEN
+prompt whole-return kg continues
+think derived out-home beats a second operand the charter never granted
+obs parse doors refuse by name · walls pass and speak the out-home · absent refuses
+file amphora/src/main.rye Q35 Q36 restore_out_path parse_restore_args cmd_restore
+file counsel/20260801-051338_e176-q35-q36-restore-parse-walls.md seat
+recommend keep-going Q37 open instrument
+product_nib Amphora CLI wave e176 Q35-Q36
+suite_nib restore parse walls GREEN
+git_nib post-e175
