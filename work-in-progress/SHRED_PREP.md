@@ -42,20 +42,21 @@ Class **O** (`20260731.124815` · room home `20260731.135609` · **word-scope e1
 
 Approvals · kg · best path seat this framing; they do **not** open the cut.
 
-### Class O — rooms (fresh cut · Bench Cursor Cloud · `20260731.232004`)
+### Class O — rooms (fresh cut · Bench Framework · Q50 `20260801.135914`)
 
-Floor: **orphaned=858** · `fascia_health_now=43` · `fascia_health_if_orphans_shed=53` · shred **RED**.
+Floor: **orphaned=921** · `fascia_health_now=41` · `fascia_health_if_orphans_shed=51` · `fascia_health=40` · shred **RED**.  
+Prior pin (counsel e184): orphans **895** · health_now **41** — delta **+26** orphans this re-measure.
 
 | room | orphans | reachable? | Keaton's word |
 | --- | ---: | --- | --- |
 | session-logs | 689 | orphan floor | await opening word |
 | counsel | 87 | orphan floor | await opening word |
-| waymarks | 57 | orphan floor | await opening word |
-| expanding-prompts | 14 | orphan floor | await opening word |
+| waymarks | 84 | orphan floor | await opening word |
+| expanding-prompts | 36 | orphan floor | await opening word |
+| active-designing | 15 | orphan floor | await opening word |
 | bron-resins | 4 | orphan floor | await opening word |
 | external-research | 2 | orphan floor | await opening word |
 | foundations | 2 | orphan floor | await opening word |
-| active-designing | 1 | orphan floor | await opening word |
 | classical-vedic-astrology | 1 | orphan floor | await opening word |
 | tools | 1 | planted orphan control | **keeps** — never shed |
 
