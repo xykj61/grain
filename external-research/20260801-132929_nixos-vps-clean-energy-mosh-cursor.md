@@ -1,12 +1,12 @@
 # A Clean-Energy NixOS Pier in the Cloud — Mosh and Cursor CLI from the Daylight DC-1
 
 **Language:** EN
-**Stamp:** `20260801.132929` (fused `133857` · Cursor-latency note `135514` · plan ladder `135914`)
+**Stamp:** `20260801.132929` (fused `133857` · plan ladder `135914` · **SEA checkout seated `140607`**)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **Status:** Research for understanding — frames a pier shape for Cursor CLI + NixOS; recommends no purchase, no deploy, and no keys from this file. Every cloud step runs by Keaton's own hands.
 **Home:** `external-research/20260801-132929_nixos-vps-clean-energy-mosh-cursor.md`
 **Scope:** research guide — no keys, no purchases, no deploys happen from counsel; every step below runs by Keaton's own hands
-**Provider seat (Keaton):** Vultr — plan type is the open question; region is preference.
+**Provider seat (Keaton):** Vultr · **region checkout code SEA** · plan High Performance AMD 2 vCPU / 4 GB shared
 
 *Written together by Keaton and Riyo.*
 
@@ -31,24 +31,24 @@ Skip **Regular** (older Intel / SATA). Within shared Cloud Compute the felt cock
 
 **Answer to "do I benefit from upgrading the 2 GB HF pick?"** Yes — one shelf, to **High Performance AMD · 2 vCPU · 4 GB · shared**. That is where the per-dollar curve bends for this bench. Dedicated is still unearned until steal appears. A second jump to 4/8 is comfort, not necessity, until a real compile queue proves it.
 
-### Region — preference, not the server-type question
+### Region — **SEA** (checkout code — loud)
 
-- **Seattle (SEA)** — Sabey SDC Columbia, East Wenatchee, Douglas County PUD hydro, PUE ~1.15. River seat. Counsel's network note: CLI is thin; models are cloud-side; major US DCs are within noise for that leg.
-- **New Jersey (EWR) / New York** — nearer AWS Ashburn where `api2.cursor.sh` was measured (`20260801.135514`). Pick this if long-lived agent-stream RTT is the vote you want.
+**Order SEA. Never EWR.**
 
-Same High Performance AMD 2/4 SKU in either region. Choose region for river vs Ashburn; choose the **plan** for felt speed.
+- **SEA** (seated) — Vultr label "Seattle"; servers at Sabey SDC Columbia, **East Wenatchee, WA**, Douglas County PUD hydro, PUE ~1.15. This is the clean-energy pier.
+- **EWR** — Vultr's **Newark, New Jersey** code. Wrong coast, wrong river. An earlier pier card floated EWR for Ashburn RTT; counsel corrected it (`20260801.140203`). Do not type EWR at checkout.
+
+Plan for felt speed (HP AMD 2/4); region for the river (SEA).
 
 ## The Instance Shape
 
 - **Plan (value seat):** High Performance AMD · **2 vCPU · 4 GB** · shared · NVMe.
 - **Plan (floor):** High Frequency · 1 vCPU · 2 GB — if the pier stays a thin cockpit.
-- **Region:** SEA (river) or EWR/NYC (Ashburn-near) — Keaton's preference on the same SKU.
+- **Region (checkout):** **SEA** — East Wenatchee hydro. Not EWR.
 - **OS to start from:** stock Debian or Ubuntu — replaced by nixos-anywhere. SSH public key at creation.
 - **Disk:** Vultr KVM → `/dev/vda` (named in disko below).
 
 Leave IPv6 on. Skip marketplace apps; identity arrives from the flake.
-
-Leave IPv6 on. Skip the marketplace apps; the whole point is that the machine's true identity arrives from your flake.
 
 ## The Flake — One Directory, Three Files
 
@@ -58,7 +58,7 @@ On the Framework (or any machine with Nix and flakes enabled), make a fresh dire
 
 ```nix
 {
-  description = "Cursor-near pier — NixOS on Vultr (EWR/NYC primary; SEA alternate)";
+  description = "Clean-energy pier — NixOS on Vultr SEA (East Wenatchee hydro)";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -230,7 +230,7 @@ Keys open every door and passwords open none. The firewall passes SSH and the Mo
 
 ## Costs, Held Lightly
 
-Cloud prices move; treat any number here as a season, not a stone. Confirm on Vultr's checkout page. Automatic backups add ~20% of base; a stopped instance keeps billing until destroyed; monthly figures are hourly under a 672-hour cap. Let plan type (HP AMD 2/4) carry the performance dollar; let region carry river vs Ashburn.
+Cloud prices move; treat any number here as a season, not a stone. Confirm on Vultr's checkout page — region code **SEA**. Automatic backups add ~20% of base; a stopped instance keeps billing until destroyed; monthly figures are hourly under a 672-hour cap.
 
 ---
 
@@ -240,7 +240,7 @@ Counsel's fresh analysis (fused at the pier `20260801.135914`): network leg to C
 
 ## Addendum `20260801.135914` — Bigger Budget, Same Provider (pier)
 
-Keaton seats Vultr and asks whether upgrading the HF 2 GB pick helps. **Yes — one shelf to High Performance AMD 2/4.** Further shelves (4/8, dedicated) wait on measurement. Region remains SEA or EWR on that same SKU.
+Keaton seats Vultr and asks whether upgrading the HF 2 GB pick helps. **Yes — one shelf to High Performance AMD 2/4.** Further shelves (4/8, dedicated) wait on measurement. **Checkout region: SEA** (corrected `20260801.140203` / seated `140607`).
 
 ---
 
