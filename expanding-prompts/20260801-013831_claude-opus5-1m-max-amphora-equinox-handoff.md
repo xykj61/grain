@@ -37,8 +37,8 @@ verify: git rev-parse --short=10 HEAD
 3. `work-in-progress/EQUINOX_SEAT_MAP.md` — seat **128 RESERVED**  
 4. `counsel/20260801-013831_e140-align-amphora-cli-new-equinox.md`  
 5. `counsel/20260801-013831_opus-relevant-at-nib-aa89d19443.md` — Opus pack catalog  
-6. `counsel/20260801-012557_e138-amber-retire-by-accretion.md`  
-7. `counsel/20260801-013236_e139-fuse-verify-amber-accretion.md`  
+6. `counsel/20260801-012557_e138-cellar-retire-by-accretion.md`  
+7. `counsel/20260801-013236_e139-fuse-verify-cellar-accretion.md`  
 8. `counsel/20260731-230116_e125-build-stack.md`  
 9. `amphora/README.md`  
 10. `active-designing/20260703-201612_the-sealed-crossing.md`  

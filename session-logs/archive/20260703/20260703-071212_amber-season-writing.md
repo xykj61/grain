@@ -39,7 +39,7 @@ stay outside the sweep) — Cursor's bench pins the number, per the standing rul
 
 ## Files
 
-- `active-designing/20260703-071212_amber-seasons.md` — created; the definition.
+- `active-designing/20260703-071212_cellar-seasons.md` — created; the definition.
 - `session-logs/20260703-071212_amber-season-writing.md` — created; this log.
 - `session-logs/20260703-043912_cursor-close-acknowledged.md` — created; the parked
   acknowledgment log, boarding as promised.
@@ -51,7 +51,7 @@ stay outside the sweep) — Cursor's bench pins the number, per the standing rul
 | 20260703.043912 | [Cursor close acknowledged](20260703-043912_cursor-close-acknowledged.md) | fc18707 held as reported; cross-check matched; no proposal cut from stale base. |
 
 `active-designing/README.md`:
-| `20260703-071212` | [The Season — Amber's unit of time and custody](20260703-071212_amber-seasons.md) | One word defined whole: hand-opened, heat-rationed, closed to the shelf; seal/scrub/restore kinds; lexicon row parked for Kaeden |
+| `20260703-071212` | [The Season — Amber's unit of time and custody](20260703-071212_cellar-seasons.md) | One word defined whole: hand-opened, heat-rationed, closed to the shelf; seal/scrub/restore kinds; lexicon row parked for Kaeden |
 
 ## Next step
 

@@ -41,8 +41,8 @@ Shorthand that means the same paste: **`kg`** after prep GREEN, naming this file
 
 | Pane | What to record |
 |------|----------------|
-| **Shelves** | Counts or standing notes for `saga/` · `amber/` · `amphora/` · `pond/` · `tally/` · `brix`/`.brix` · `glow/` (short, honest) |
-| **Standing battery** | Run and record: `foundation_seeds.rish` · `amber_first_ring.rish` · `amphora_lap1.rish` · `width_check_th4.rish` · `pond_customs.rish` (reaffirm) |
+| **Shelves** | Counts or standing notes for `saga/` · `cellar/` · `amphora/` · `pond/` · `tally/` · `brix`/`.brix` · `glow/` (short, honest) |
+| **Standing battery** | Run and record: `foundation_seeds.rish` · `cellar_first_ring.rish` · `amphora_lap1.rish` · `width_check_th4.rish` · `pond_customs.rish` (reaffirm) |
 | **Happy zone vs metalsmoke** | Name which greens are isolated habitat vs thin-edge integrated; do not green full parity while wasmtime is ABSENT |
 | **Motto check** | One sentence: how this measure stays tensegral (tension = suite law; compression = few edge checks) |
 | **Arc seed table** | Re-print Arc I–V seed witnesses from the prep receipt so Arc I opens with names ready |

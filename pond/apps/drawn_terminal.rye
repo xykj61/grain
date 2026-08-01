@@ -196,7 +196,7 @@ const lantern_echo_fixture = "lantern/fixtures/completion_echo.bron";
 const lantern_user_fixture = "lantern/fixtures/completion_user.bron";
 const tablecloth_query_hits_fixture = "tools/fixtures/tablecloth_query_hits.bron";
 const tablecloth_query_device_hits_fixture = "tools/fixtures/tablecloth_query_device_hits.bron";
-const forge_amber_manifest_fixture = "tools/fixtures/.forge_view_bundle/manifest.bron";
+const forge_cellar_manifest_fixture = "tools/fixtures/.forge_view_bundle/manifest.bron";
 const amphora_vessel_fixture = "tools/fixtures/.forge_view_bundle/vessel.bron";
 const amphora_device_fetch_hits_fixture = "tools/fixtures/amphora_device_fetch_hits.bron";
 const scribble_snippets_fixture = "scribble/fixtures/session_snippets.md";
@@ -1131,16 +1131,16 @@ fn run_query_unified_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Realidream forge view — Amber cellar + Amphora vessel from a live pour bundle.
+/// Realidream forge view — the cellar + Amphora vessel from a live pour bundle.
 /// Witness runs tools/fixtures/forge_view_pour.sh before forgeviewtest.
 fn compose_forge_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [2048]u8 = undefined;
-    const text = try cwd.readFile(io, forge_amber_manifest_fixture, &buf);
+    const text = try cwd.readFile(io, forge_cellar_manifest_fixture, &buf);
 
     const format = field_value(text, "format") orelse return error.BadForgeFixture;
     const stamp = field_value(text, "stamp") orelse return error.BadForgeFixture;
-    if (!std.mem.eql(u8, format, "amber-ring1-v2-tilak")) return error.BadForgeFixture;
+    if (!std.mem.eql(u8, format, "cellar-ring1-v2-tilak")) return error.BadForgeFixture;
 
     var entry_count: u32 = 0;
     var hello_digest: ?[]const u8 = null;
@@ -1185,7 +1185,7 @@ fn compose_forge_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.Sk
 
     const lines = try garden.alloc(surface.SkateLine, forge_view_max_lines);
     lines[0] = .{ .text = try garden.dupe(u8, "realidream forge view") };
-    lines[1] = .{ .text = try garden.dupe(u8, "cellar amber") };
+    lines[1] = .{ .text = try garden.dupe(u8, "cellar cellar") };
     lines[2] = .{ .text = try std.fmt.allocPrint(garden, "format {s}", .{format}) };
     lines[3] = .{ .text = try std.fmt.allocPrint(garden, "stamp {s}", .{stamp}) };
     lines[4] = .{ .text = try std.fmt.allocPrint(garden, "resins {d}", .{entry_count}) };
@@ -1212,13 +1212,13 @@ fn run_forge_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
 
     const golden = [_][]const u8{
         "realidream forge view",
-        "cellar amber",
-        "format amber-ring1-v2-tilak",
+        "cellar cellar",
+        "format cellar-ring1-v2-tilak",
         "stamp 20260710.145313",
         "resins 2",
         "resin hello.txt cd416bd6cae8",
         "vessel amphora poured cargo 2",
-        "shoulder amber-ring1-season",
+        "shoulder cellar-ring1-season",
     };
     assert(lines_equal(&golden, frame));
 
@@ -1288,7 +1288,7 @@ fn run_forge_device_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
 
     const cwd = std.Io.Dir.cwd();
     var buf: [2048]u8 = undefined;
-    const hosted = try cwd.readFile(io, "tools/fixtures/forge_amber_manifest.bron", &buf);
+    const hosted = try cwd.readFile(io, "tools/fixtures/forge_cellar_manifest.bron", &buf);
     if (field_value(hosted, "wire")) |_| return error.HostedMarkedDevice;
 
     var out: [160]u8 = undefined;
@@ -1305,12 +1305,12 @@ fn run_forge_device_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
 fn compose_forge_unified_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var man_buf: [2048]u8 = undefined;
-    const man = try cwd.readFile(io, forge_amber_manifest_fixture, &man_buf);
+    const man = try cwd.readFile(io, forge_cellar_manifest_fixture, &man_buf);
     var device_buf: [1024]u8 = undefined;
     const device = try cwd.readFile(io, amphora_device_fetch_hits_fixture, &device_buf);
 
     const format = field_value(man, "format") orelse return error.BadForgeFixture;
-    if (!std.mem.eql(u8, format, "amber-ring1-v2-tilak")) return error.BadForgeFixture;
+    if (!std.mem.eql(u8, format, "cellar-ring1-v2-tilak")) return error.BadForgeFixture;
     var hello_digest: ?[]const u8 = null;
     var entry_count: u32 = 0;
     var lines_iter = std.mem.splitScalar(u8, man, '\n');
@@ -1337,7 +1337,7 @@ fn compose_forge_unified_view_lines(garden: std.mem.Allocator, io: std.Io) ![]su
 
     const lines = try garden.alloc(surface.SkateLine, forge_unified_view_max_lines);
     lines[0] = .{ .text = try garden.dupe(u8, "realidream forge unified view") };
-    lines[1] = .{ .text = try garden.dupe(u8, "hosted cellar amber") };
+    lines[1] = .{ .text = try garden.dupe(u8, "hosted cellar cellar") };
     lines[2] = .{ .text = try std.fmt.allocPrint(garden, "hosted resins {d}", .{entry_count}) };
     lines[3] = .{ .text = try std.fmt.allocPrint(garden, "hosted resin hello.txt {s}", .{hosted_digest[0..12]}) };
     lines[4] = .{ .text = try garden.dupe(u8, "device wire device") };
@@ -1364,7 +1364,7 @@ fn run_forge_unified_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
 
     const golden = [_][]const u8{
         "realidream forge unified view",
-        "hosted cellar amber",
+        "hosted cellar cellar",
         "hosted resins 2",
         "hosted resin hello.txt cd416bd6cae8",
         "device wire device",
@@ -1384,7 +1384,7 @@ fn run_forge_unified_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Realidream forge query view — Tablecloth-query hit shape for Amber/Amphora forge facts.
+/// Realidream forge query view — Tablecloth-query hit shape for cellar/Amphora forge facts.
 fn compose_forge_query_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [1024]u8 = undefined;
@@ -1434,9 +1434,9 @@ fn run_forge_query_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
 
     const golden = [_][]const u8{
         "realidream forge query",
-        "filter tilak amber-manifest",
+        "filter tilak cellar-manifest",
         "hits 2",
-        "hit peerForge amber 1 manifest.bron",
+        "hit peerForge cellar 1 manifest.bron",
         "hit peerForge amphora 1 vessel.bron",
         "forge query fold green",
     };
@@ -1504,9 +1504,9 @@ fn run_forge_query_device_view_witness(garden: std.mem.Allocator, io: std.Io) !u
 
     const golden = [_][]const u8{
         "realidream forge query device",
-        "filter tilak amber-manifest",
+        "filter tilak cellar-manifest",
         "hits 2",
-        "hit peerForge amber 1 manifest.bron",
+        "hit peerForge cellar 1 manifest.bron",
         "hit peerForge amphora 1 vessel.bron",
         "forge query device fold green",
     };
@@ -2344,12 +2344,12 @@ fn run_forge_query_unified_view_witness(garden: std.mem.Allocator, io: std.Io) !
 
     const golden = [_][]const u8{
         "realidream forge query unified",
-        "hosted filter tilak amber-manifest",
+        "hosted filter tilak cellar-manifest",
         "hosted hits 2",
-        "hosted hit peerForge amber 1 manifest.bron",
-        "device filter tilak amber-manifest",
+        "hosted hit peerForge cellar 1 manifest.bron",
+        "device filter tilak cellar-manifest",
         "device hits 2",
-        "device hit peerForge amber 1 manifest.bron",
+        "device hit peerForge cellar 1 manifest.bron",
         "forge query unified fold green",
     };
     assert(lines_equal(&golden, frame));

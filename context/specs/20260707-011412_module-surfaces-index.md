@@ -32,7 +32,7 @@ This index answers one question fast: **what exists, where does it live, and wha
 | **Brushstroke** (+ Skate aspect) | Drawing to a surface; Skate is the grid | `brushstroke/` | seed in parity |
 | **Pond** (+ drawn terminal; Dexter aspect) | The enclosure where composed things run; Lap-3 metal-closed terminal | `pond/` | Doors 1–2 closed on GNOME |
 | **Aurora** | The freestanding RISC-V seed toward verified boot | `aurora/` | freestanding relay witnesses |
-| **Amber** | Cellar software: sealed, signed resins on deep storage, verified by folding | `amber/` | lap 1 in parity; spec `20260701-221512` |
+| **Amber** | Cellar software: sealed, signed resins on deep storage, verified by folding | `cellar/` | lap 1 in parity; spec `20260701-221512` |
 
 ## Linengrow — the First Whole Built on It
 

@@ -45,7 +45,7 @@ sh "$ROOT/tools/fixtures/amphora_scrub_arrival.sh" "$far" "$SRC"
 # Unwelcome: wipe a resin and prove verify fails without re-fetch.
 first=$(ls "$far/resins" | head -n1)
 printf 'X' >> "$far/resins/$first"
-if sh "$ROOT/tools/fixtures/amber_ring1_verify.sh" "$far" 2>/dev/null; then
+if sh "$ROOT/tools/fixtures/cellar_ring1_verify.sh" "$far" 2>/dev/null; then
   echo "FAIL tampered far resin should not verify"
   exit 1
 fi

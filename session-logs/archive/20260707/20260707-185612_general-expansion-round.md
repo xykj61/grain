@@ -23,7 +23,7 @@ Kaeden had not yet sent last round's tools-census-and-`maybe`-design counsel to 
 
 **Two of three tools/enrich witnesses:** `tools/tame_usize_audit.rish` (pure-function proof, zero file risk) and `tools/align_session_logs.rish` (a real, checked-in fixture at `tools/fixtures/align_session_logs_fixture/`, run via `enrich/root.rye`'s existing `VEGANREYKLAH2_ROOT` override, checksummed against the real `session-logs/README.md` before and after to prove it was never touched). `enrich_strengthening_docs.rye`'s witness is named as deferred — its fixture surface is genuinely larger and deserves its own sitting.
 
-**Three module READMEs:** `comlink/README.md`, `caravan/README.md`, `tally/README.md`, each grounded in its own files' doc comments, matching `amber/README.md`'s established shape.
+**Three module READMEs:** `comlink/README.md`, `caravan/README.md`, `tally/README.md`, each grounded in its own files' doc comments, matching `cellar/README.md`'s established shape.
 
 **Documentation:** `counsel/20260707-185612_claude-counsel-general-expansion-round.md` (the full account), this session log, `work-in-progress/TASKS.md` updated in place, four new stanzas wired into `tools/parity.rish` after the existing TAME-style stanza.
 

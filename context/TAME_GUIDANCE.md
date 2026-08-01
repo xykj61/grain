@@ -619,7 +619,7 @@ These are the machine-checkable rules — the lint surface. The discipline is th
 | **Unqualified assert** | `tools/tame-check.rish` (live witness, TH-2c) |
 | **Opening lines** (`const assert` + `const print`, no qualified debug calls) | `tools/opening_lines_witness.rish` (live witness, parity **140** — hosted corpus + `pond/apps/drawn_terminal.rye`) |
 | **At most one designed-not-built functional spec** (`context/specs/*.md` Status) | `tools/designed_not_built_witness.rish` (live witness, parity **143**, Edit 5 ruling `20260703.032812`) |
-| **Amber first lap** (export / verify / restore on fixture tree) | `tools/amber_first_ring.rish` (live witness, parity **144**, `20260703.051812`) |
+| **Amber first lap** (export / verify / restore on fixture tree) | `tools/cellar_first_ring.rish` (live witness, parity **144**, `20260703.051812`) |
 | **No `Self = @This()`** | `tools/tame-check.rish` (witness) |
 | **No tabs, no trailing whitespace** | `tools/tame-check.rish` (witness) |
 | **Line length ≤ 100 columns** | flag lines past 100, allowing a URL or a multiline-string result that itself fits |

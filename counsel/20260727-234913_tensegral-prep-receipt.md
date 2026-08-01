@@ -28,7 +28,7 @@ Radiant pass `20260727.235754` — Prim was a typo for Prin; Brix `alias Prim Pr
 | Witness | Result |
 |---------|--------|
 | `pond_customs.rish` | **GREEN** |
-| `amber_first_ring.rish` | **GREEN** |
+| `cellar_first_ring.rish` | **GREEN** |
 | `amphora_lap1.rish` | **GREEN** |
 | `foundation_seeds.rish` | **GREEN** |
 | `prin.rish help` | **GREEN** (exit 0) |
@@ -38,7 +38,7 @@ Radiant pass `20260727.235754` — Prim was a typo for Prin; Brix `alias Prim Pr
 | Arc | Seed witness |
 |-----|----------------|
 | **0 Bow** | Prep receipt + shelf counts · standing battery in r0 |
-| **I** | `width_check_th4.rish` (`.brix` · includes Prim→Prin alias) · `amber_first_ring.rish` · `amphora_lap1.rish` |
+| **I** | `width_check_th4.rish` (`.brix` · includes Prim→Prin alias) · `cellar_first_ring.rish` · `amphora_lap1.rish` |
 | **II** | `resin_unit_witness.rish` · Glow floors · `tensegral_arc_ii_witness.rish` (sameness fold) |
 | **III** | `radiant_lint.rish` (touched paths) · `tame_style_check.rish` (touched code) · consolidate = one canon home |
 | **IV** | Width/garden tighten on one module · unify one caller map · `foundation_seeds.rish` / Tally battery as happy-zone habitat |

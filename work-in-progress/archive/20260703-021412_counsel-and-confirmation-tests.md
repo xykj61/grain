@@ -209,7 +209,7 @@ retires to yonder, and Amber's arithmetic settles at 143 instead.
 
 ### Step 5 — what stays sealed tonight
 
-`amber/` remains sealed until Doors 2 and 3 land — the only Amber act available before then is
+`cellar/` remains sealed until Doors 2 and 3 land — the only Amber act available before then is
 reading the functional spec, and that is by design. MALA past its boxed rungs, every key and
 custody path, and every box tagged `(Kaeden …)` stay exactly where they are. **Journey's pause** is a
 question, never an off-route license, and this guide goes off-route on nothing.

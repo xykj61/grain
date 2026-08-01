@@ -19,7 +19,9 @@ const kind_response_chunk: u8 = 0x33;
 
 pub const digest_hex_len: u32 = 64;
 /// Assembled resin ceiling — chunked when it will not fit one datagram.
+/// couples: vessel_seal.max_seal_plain
 pub const max_resin_bytes: u32 = 1024;
+/// couples: main.max_chunk_datagram
 pub const max_wire_payload: u32 = 340;
 /// Single-frame overhead: kind + digest + u16 length.
 pub const response_header_len: u32 = 1 + digest_hex_len + 2;
@@ -225,7 +227,7 @@ pub const ResinAssembler = struct {
 };
 
 fn run_selftest_small() !void {
-    const hello = "amber ring one — small text fixture\n";
+    const hello = "cellar ring one — small text fixture\n";
     var digest: [digest_hex_len]u8 = undefined;
     digest_hex_of(hello, &digest);
 

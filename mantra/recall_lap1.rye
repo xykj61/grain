@@ -108,7 +108,7 @@ pub const SyncReport = struct {
     needed: u32,
 };
 
-/// In-memory bolt catalog + Amber resins for local laps.
+/// In-memory bolt catalog + cellar resins for local laps.
 pub const BoltCatalog = struct {
     leaves: [max_bindings]LeafBinding,
     leaf_count: u32,

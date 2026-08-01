@@ -9,7 +9,7 @@ audit_file() {
   local f="$1"
   local hits
   hits=$(grep -nE '\bring\b|\bRing\b' "$f" 2>/dev/null \
-    | grep -vE 'slc2a_ring|amber_first_ring|slc1-ring-closed|first-ring-goes-green|thin-ring|additive-gate|ring→lap|ring still' \
+    | grep -vE 'slc2a_ring|cellar_first_ring|slc1-ring-closed|first-ring-goes-green|thin-ring|additive-gate|ring→lap|ring still' \
     || true)
   if [ -n "$hits" ]; then
     echo "FAIL $f"
@@ -20,7 +20,7 @@ audit_file() {
 
 while IFS= read -r -d '' f; do
   audit_file "$f"
-done < <(find context foundations work-in-progress active-designing external-research amber pond rishi manual linengrow brushstroke tools \
+done < <(find context foundations work-in-progress active-designing external-research cellar pond rishi manual linengrow brushstroke tools \
   -type f \( -name '*.md' -o -name '*.rye' -o -name '*.rish' -o -name '*.mdc' \) \
   ! -path '*/session-logs/*' ! -path '*/gratitude/*' ! -path '*/archive/*' \
   -print0 2>/dev/null)

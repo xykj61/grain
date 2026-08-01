@@ -801,7 +801,7 @@ Radiant pass `20260727.230010` — path re-point only; claims unchanged
 | **17** | **Learning plainly + universal affirm** | **Landed** | Civic candidate kitchen twin [`000725`](../external-research/20260710-000725_learning-chapter-plainly.md); aspiring/regenerative **Reviewed and kept**; zip 58 / expanding-prompts hygiene |
 | **18** | **Settlement seat plainly** | **Landed** | Jul 6–7 dossier kitchen twin + supersession notes [`001249`](../external-research/20260710-001249_settlement-seat-plainly.md); external rail retired `152612` |
 | **19** | **Metalsmoke plainly + affirm** | **Landed** | Kitchen twin [`002017`](../external-research/20260710-002017_metalsmoke-plainly.md); silo **Reviewed and kept**; audit-rule stale line cleared; LEXICON row |
-| **20** | **Amber seasons + first-lap plainly** | **Landed** | Custody twin [`002422`](../external-research/20260710-002422_amber-seasons-plainly.md); shipping phrase [`002544`](../external-research/20260710-002544_first-lap-goes-green-plainly.md); Season LEXICON ask cleared |
+| **20** | **Amber seasons + first-lap plainly** | **Landed** | Custody twin [`002422`](../external-research/20260710-002422_cellar-seasons-plainly.md); shipping phrase [`002544`](../external-research/20260710-002544_first-lap-goes-green-plainly.md); Season LEXICON ask cleared |
 | **21** | **Sealed crossing plainly** | **Landed** | Kitchen twin [`002952`](../external-research/20260710-002952_sealed-crossing-plainly.md) affirmed Landed; crossing metal plainly [`145313`](../external-research/20260710-145313_amphora-crossing-plainly.md); Amphora laps 1–3 |
 | **22** | **Dimeroll lap 1** | **Landed** | Chart · journal · fold · unwelcome; `dimeroll/`; parity **207**; hammock [`125953`](../active-designing/20260710-125953_dimeroll-hammock.md) |
 | **23** | **Dimeroll books view** | **Landed** | Trial balance → Skate via `booksviewtest`; parity **208**; prompt [`125953`](../expanding-prompts/yonder/20260710-125953_dimeroll-lap1-books-view.md) |
@@ -1076,7 +1076,7 @@ Radiant pass `20260727.230010` — path re-point only; claims unchanged
 - [x] **Learning plainly + universal affirm** — Civic candidate kitchen twin [`000725`](../external-research/20260710-000725_learning-chapter-plainly.md) (CIVIC_STYLE untouched); aspiring/regenerative **Reviewed and kept**; resins H1 drift; zip 58 proposed→landed; Jul 9 prompts in expanding-prompts index; parity **206** (`20260710.000725`)
 - [x] **Settlement seat plainly** — kitchen twin [`001249`](../external-research/20260710-001249_settlement-seat-plainly.md); dated supersession on `002612`/`005512`/`222500`; Prior-bench SLC-L3 row marked superseded; compass rose asserts; parity **206** (`20260710.001249`)
 - [x] **Metalsmoke plainly + affirm** — kitchen twin [`002017`](../external-research/20260710-002017_metalsmoke-plainly.md); silo + happy-zone foundations affirmed; "awaiting ratification" cleared (audit rule `191312`); LEXICON **Metalsmoke**; parity **206** (`20260710.002017`)
-- [x] **Amber seasons + first-lap plainly** — kitchen twins [`002422`](../external-research/20260710-002422_amber-seasons-plainly.md) · [`002544`](../external-research/20260710-002544_first-lap-goes-green-plainly.md); seasons silo **Reviewed and kept** (LEXICON Season ask closed); first-lap essay affirmed; Lap/Green/Season plainly links; parity **206** (`20260710.002544`)
+- [x] **Amber seasons + first-lap plainly** — kitchen twins [`002422`](../external-research/20260710-002422_cellar-seasons-plainly.md) · [`002544`](../external-research/20260710-002544_first-lap-goes-green-plainly.md); seasons silo **Reviewed and kept** (LEXICON Season ask closed); first-lap essay affirmed; Lap/Green/Season plainly links; parity **206** (`20260710.002544`)
 - [x] **Sealed crossing plainly** — kitchen twin [`002952`](../external-research/20260710-002952_sealed-crossing-plainly.md) affirmed **Landed** `145313`; crossing metal plainly [`145313`](../external-research/20260710-145313_amphora-crossing-plainly.md); Amphora module seated; parity path through **226**
 - [x] **Dimeroll lap 1** — chart (cash/revenue/expense/equity), journal parse, trial-balance fold, unwelcome paths; now at `dimeroll/`; `tools/dimeroll_lap1.rish`; parity **207** (`20260710.125953`)
 - [x] **Dimeroll books view** — journal fixture → six Skate lines via `drawn-terminal booksviewtest`; `tools/dimeroll_books_view.rish`; parity **208** (`20260710.125953`)
@@ -1160,7 +1160,7 @@ Radiant pass `20260727.230010` — path re-point only; claims unchanged
 
 - [x] **I2 snapshot export lap 3 (hosted Comlink crossing)** — `mantra/snapshot_export_delivery.rye`; batch wire per revision group; ports **38490**/**38491**; `importCatalogHorizon` unchanged; spec [`context/specs/20260707-042512_snapshot-export-lap3.md`](../context/specs/20260707-042512_snapshot-export-lap3.md); parity **185**
 
-- [x] **I6 Amber manifest Tilak hygiene** — export writes `format amber-ring1-v2-tilak` + `entry plain-bytes <digest> <name>`; verify/restore accept legacy two-field and Tilak three-field; elder golden preserved; tamper + unknown mark refuse; `tools/amber_manifest_tilak.rish`; parity **183**
+- [x] **I6 Amber manifest Tilak hygiene** — export writes `format amber-ring1-v2-tilak` + `entry plain-bytes <digest> <name>`; verify/restore accept legacy two-field and Tilak three-field; elder golden preserved; tamper + unknown mark refuse; `tools/cellar_manifest_tilak.rish`; parity **183**
 
 - [x] **OA-L5 accept, complete, consent wire** — `linengrow/open_asks_lap5_delivery.rye`; hosted UDP ports **38488**/**38489**; device virtio ports **15561**/**15562**/**15563**; `tools/open_asks_lap5.rish` + `comlink/run_open_asks_lap5_wire_lab.sh`; parity **184**
 
@@ -1235,11 +1235,11 @@ Radiant pass `20260727.230010` — path re-point only; claims unchanged
 2. [x] **(Cursor) Wire Edit 5 → parity 143.** One commit, message `Wire Edit 5 designed-not-built witness — parity 143` (`20260703.032812`):
    - [x] Append the standard quartet at the tail of [`tools/parity.rish`](../tools/parity.rish), after the width-check block: `say` banner → `run ["rishi/bin/rishi" "run" "tools/designed_not_built_witness.rish"]` → `assert .ok else` → `say "GREEN: …"`
    - [x] Full suite green on metal; ROADMAP gate-trio line and this ladder's parity numbers refreshed in the same commit.
-3. [x] **(Claude + Kaeden) Amber first lap — the season sitting** — brief: [`20260702-190000_amber-first-lap-claude-brief.md`](20260702-190000_amber-first-lap-claude-brief.md); spec: [`context/specs/20260701-221512_amber-functional-spec.md`](../context/specs/20260701-221512_amber-functional-spec.md). **Landed `20260703.051812` — five rungs, parity **144**:**
-   - [x] **(1) Module home:** `amber/` at top level
+3. [x] **(Claude + Kaeden) Amber first lap — the season sitting** — brief: [`20260702-190000_amber-first-lap-claude-brief.md`](20260702-190000_amber-first-lap-claude-brief.md); spec: [`context/specs/20260701-221512_cellar-functional-spec.md`](../context/specs/20260701-221512_cellar-functional-spec.md). **Landed `20260703.051812` — five rungs, parity **144**:**
+   - [x] **(1) Module home:** `cellar/` at top level
    - [x] **(2) Fixture tree:** `tools/fixtures/amber_ring1_tree/`
    - [x] **(3) Oracle:** `openssl dgst -sha3-256`; golden `97e0d0cd…d96f` in [`tools/fixtures/amber_ring1_golden.txt`](../tools/fixtures/amber_ring1_golden.txt)
-   - [x] **(4) Witness:** [`tools/amber_first_ring.rish`](../tools/amber_first_ring.rish) — welcome + tampered resin fails
+   - [x] **(4) Witness:** [`tools/cellar_first_ring.rish`](../tools/cellar_first_ring.rish) — welcome + tampered resin fails
    - [x] **(5) Parity 144** wired in same season
 4. [x] **(Kaeden) SLC-2b nod → (Cursor) Dexter bench** — prompt: [`20260702-030112_cursor-slc-2b-keyboard-from-window.md`](../expanding-prompts/yonder/20260702-030112_cursor-slc-2b-keyboard-from-window.md). **Landed `20260703.132112` — parity **145**:**
    - [x] **Nod (Kaeden):** **`pond/apps/` extension** — counsel's recommended placement (`20260703.131812`); keyboard input grows from Lap 3's poll loop in [`pond/apps/drawn_terminal.rye`](../pond/apps/drawn_terminal.rye); Skate stays in `brushstroke/`.
@@ -1411,7 +1411,7 @@ Record: `session-logs/archive/20260629/20260629-204910_th7-width-gate-yonder-con
 - [x] **Tools/enrich safety net — complete (3/3)** — `align_session_logs`, `tame_usize_audit`, `enrich_strengthening_docs` witnesses GREEN; counsel [`193712`](../counsel/20260707-193712_claude-counsel-enrich-strengthening-docs-witness.md)
 - [x] **Tools `snake_case` season** — **0** camelCase `fn` in `tools/` (**114** cleared); counsel [`201912`](../counsel/20260707-201912_claude-counsel-enrich-migration-order.md)
 - [x] **`parseInt(` ratchet** — **0** application sites (**12** migrated after counsel `203612` seated the module); counsel [`203612`](../counsel/20260707-203612_claude-counsel-parse-int-and-season-close.md); `tame_style_check` ratchet **0**
-- [x] **Three module READMEs** — `comlink/README.md`, `caravan/README.md`, `tally/README.md`, matching `amber/README.md`'s shape; named as a gap since the synthesis sitting, closed this round.
+- [x] **Three module READMEs** — `comlink/README.md`, `caravan/README.md`, `tally/README.md`, matching `cellar/README.md`'s shape; named as a gap since the synthesis sitting, closed this round.
 - [ ] **TAME hygiene (as-you-touch)** — bare `print(...)` via `const print = std.debug.print` in older hosted `.rye`; address when each file is touched, not as a sweep.
 
 - [ ] **Content-centric Rishi messenger (horizon)** — smallest IRC-meets-Dojo CLI over sealed, content-named datagrams; from `expanding-prompts/yonder/20260618-212012_content-centric-messaging.md`; Aurora/Comlink carry the networking seeds today.

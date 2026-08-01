@@ -7,7 +7,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`) · **Lens:** TAME · TWO_ROOMS
 **Category:** External research — performance and preservation architecture; proposes no module names; seats nothing
 **Status:** Proposed
-**Companions:** [`context/specs/20260703-191112_resins-and-hash-tiers.md`](../context/specs/20260703-191112_resins-and-hash-tiers.md) · [`context/specs/20260701-221512_amber-functional-spec.md`](../context/specs/20260701-221512_amber-functional-spec.md) · [`20260703-201612_the-amphora-and-the-crossing.md`](20260703-201612_the-amphora-and-the-crossing.md) · [`20260702-035018_puddle-sandboxed-rye-containers.md`](20260702-035018_puddle-sandboxed-rye-containers.md) · [`20260704-002912_gates-arms-and-the-urbit-lineage.md`](20260704-002912_gates-arms-and-the-urbit-lineage.md) · [`../gratitude/TIGER_STYLE.md`](../gratitude/TIGER_STYLE.md) (Apache-2.0 · study only)
+**Companions:** [`context/specs/20260703-191112_resins-and-hash-tiers.md`](../context/specs/20260703-191112_resins-and-hash-tiers.md) · [`context/specs/20260701-221512_cellar-functional-spec.md`](../context/specs/20260701-221512_cellar-functional-spec.md) · [`20260703-201612_the-amphora-and-the-crossing.md`](20260703-201612_the-amphora-and-the-crossing.md) · [`20260702-035018_puddle-sandboxed-rye-containers.md`](20260702-035018_puddle-sandboxed-rye-containers.md) · [`20260704-002912_gates-arms-and-the-urbit-lineage.md`](20260704-002912_gates-arms-and-the-urbit-lineage.md) · [`../gratitude/TIGER_STYLE.md`](../gratitude/TIGER_STYLE.md) (Apache-2.0 · study only)
 
 *Written by Rio 3 for Kaeden.*
 
@@ -91,7 +91,7 @@ That is the **sovereign snapshot**. It is **not** yet green on metal; it is the 
 
 ## Part Four — Two Artifacts, Not One Blob
 
-Amber's functional spec already names **two artifact kinds** ([`amber-functional-spec`](../context/specs/20260701-221512_amber-functional-spec.md)):
+Amber's functional spec already names **two artifact kinds** ([`amber-functional-spec`](../context/specs/20260701-221512_cellar-functional-spec.md)):
 
 | Artifact | Duty | Urbit analogy | Boot shape |
 |----------|------|---------------|------------|
@@ -189,7 +189,7 @@ For a home snapshot of, say, 50–200 GiB working set:
 
 | Lap | Delivers | Witness idea |
 |-----|----------|--------------|
-| **1** | Single-directory Amber export (today's ring-1 tree) + manifest line shape | `amber_first_ring` — **144** ✅ |
+| **1** | Single-directory Amber export (today's ring-1 tree) + manifest line shape | `cellar_first_ring` — **144** ✅ |
 | **2** | Weave slice + Brix closure in manifest; import replay to HEAD on host (no bare metal yet) | New: `snapshot_replay_witness` — red then green |
 | **3** | Amphora vessel over Comlink; have-already + need-resin lanes | `amphora_comlink_resin_batch` |
 | **4** | Bootable Aurora image; microVM (Puddle host); double-boot refused | `aurora_snapshot_boot` |

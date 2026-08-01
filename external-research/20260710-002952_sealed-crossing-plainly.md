@@ -8,7 +8,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable-room research — explains **Landed** Amphora laps 1–3 + stamp + seal (module `amphora/`); commerce and packaging horizons remain open
 **Last updated:** 2026-07-10 (affirmed after Amber vessel seal `153745`)
-**Ground:** silo [`201612`](../active-designing/20260703-201612_the-sealed-crossing.md) · Amphora study [`201612`](20260703-201612_the-amphora-and-the-crossing.md) · crossing plainly [`145313`](20260710-145313_amphora-crossing-plainly.md) · resins plainly [`235931`](20260709-235931_resins-cellar-vessel-plainly.md) · amber seasons plainly [`002422`](20260710-002422_amber-seasons-plainly.md) · LEXICON Amphora · compass [`185112`](../foundations/20260706-185112_follow-our-compass.md)
+**Ground:** silo [`201612`](../active-designing/20260703-201612_the-sealed-crossing.md) · Amphora study [`201612`](20260703-201612_the-amphora-and-the-crossing.md) · crossing plainly [`145313`](20260710-145313_amphora-crossing-plainly.md) · resins plainly [`235931`](20260709-235931_resins-cellar-vessel-plainly.md) · amber seasons plainly [`002422`](20260710-002422_cellar-seasons-plainly.md) · LEXICON Amphora · compass [`185112`](../foundations/20260706-185112_follow-our-compass.md)
 
 *Written by Kaeden and Rio 3 (Grok). Creative climb inside the jail — oldest vessel duty, kitchen voice. Affirmed in place when metal landed.*
 
@@ -88,7 +88,7 @@ Bron = letter (one record). Amphora = crate (many). MUR = coin inside (was MALA)
 - Study: [`20260703-201612_the-amphora-and-the-crossing.md`](20260703-201612_the-amphora-and-the-crossing.md)
 - Crossing metal plainly: [`20260710-145313_amphora-crossing-plainly.md`](20260710-145313_amphora-crossing-plainly.md)
 - Resins / cellar / vessel: [`20260709-235931_resins-cellar-vessel-plainly.md`](20260709-235931_resins-cellar-vessel-plainly.md)
-- Amber seasons: [`20260710-002422_amber-seasons-plainly.md`](20260710-002422_amber-seasons-plainly.md)
+- Amber seasons: [`20260710-002422_cellar-seasons-plainly.md`](20260710-002422_cellar-seasons-plainly.md)
 - Graduation: [`20260709-231011_graduation-rule-plainly.md`](20260709-231011_graduation-rule-plainly.md)
 - Module: [`amphora/README.md`](../amphora/README.md)
 

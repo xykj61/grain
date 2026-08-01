@@ -23,9 +23,9 @@ Be creative inside the jail following our compass, focusing on our oldest artifa
 
 | File | Why |
 |------|-----|
-| `external-research/20260710-002422_amber-seasons-plainly.md` | Custody kitchen twin |
+| `external-research/20260710-002422_cellar-seasons-plainly.md` | Custody kitchen twin |
 | `external-research/20260710-002544_first-lap-goes-green-plainly.md` | Shipping-phrase kitchen twin |
-| `active-designing/20260703-071212_amber-seasons.md` | Affirm; LEXICON ask closed |
+| `active-designing/20260703-071212_cellar-seasons.md` | Affirm; LEXICON ask closed |
 | `external-research/20260703-033602_first-lap-goes-green.md` | Affirm; Amber pre-staged → landed |
 | `context/LEXICON.md` · compass · indexes / TASKS · session log | Hygiene |
 

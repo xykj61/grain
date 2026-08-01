@@ -11,7 +11,7 @@ Kaeden signaled a clean handoff: big arcs landed (RW-1 parity 147, bench/harvest
 
 - `HEAD` and `origin/main` both at `178d2fa` — RW-1 mirrored pair landed, parity 147.
 - Eleven paths dirty locally: eight modified, three untracked (resins spec + two session logs).
-- `amber/README.md` modified but not named in Kaeden's handoff list — flag for commit review.
+- `cellar/README.md` modified but not named in Kaeden's handoff list — flag for commit review.
 - TASKS and `ready-to-ask-claude.md` already record ratifications at `20260703.191312 UDT`.
 - Kaeden did not request commit/push in this turn; offered as optional one-shot or next-agent task.
 

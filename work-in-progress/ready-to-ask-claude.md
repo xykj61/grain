@@ -472,7 +472,7 @@ Graduation rule · Rio 3 · Happy zone · RW-3/RW-4 · Grain · Versioning · Br
 ## Hard bounds (Cursor loop)
 
 - **Never** touch boxes tagged **(Kaeden …)** — three doors, ratifications, nods, pastes
-- **`amber/`** first lap landed ✅ — parity **144**; further laps gated on spec
+- **`cellar/`** first lap landed ✅ — parity **144**; further laps gated on spec
 - **No new module/aspect names** — park candidates in RTAC
 - **Stop-and-park** on: Kaeden-tagged path · parity red twice · module-home/seam decision · keys/custody/amber/MUR (was MALA) · new names
 - **Journey's pause** — when the open itinerary has no further stops, stop and summarize rather than invent new work; a pause is a question for Kaeden, never permission to go off-route
@@ -489,7 +489,7 @@ Graduation rule · Rio 3 · Happy zone · RW-3/RW-4 · Grain · Versioning · Br
 
 ## Amber — pre-counsel CONFIRMED (`20260702.202612`)
 
-All five as written at `20260702.194512`: `amber/` module home · `tools/fixtures/amber_ring1_tree/` · `openssl dgst -sha3-256` oracle · welcome + tampered witness · parity **144** if Edit 5 wired else **143**. Sitting is formality after doors unless a door changes ground.
+All five as written at `20260702.194512`: `cellar/` module home · `tools/fixtures/amber_ring1_tree/` · `openssl dgst -sha3-256` oracle · welcome + tampered witness · parity **144** if Edit 5 wired else **143**. Sitting is formality after doors unless a door changes ground.
 
 ## Awaiting Kaeden paste
 
@@ -597,7 +597,7 @@ Prior tip: `999359e`
 
 | Item | Path |
 |------|------|
-| Season vocabulary | [`active-designing/20260703-071212_amber-seasons.md`](../active-designing/20260703-071212_amber-seasons.md) |
+| Season vocabulary | [`active-designing/20260703-071212_cellar-seasons.md`](../active-designing/20260703-071212_cellar-seasons.md) |
 | Placement counsel | [`session-logs/archive/20260703/20260703-071212_placement-counsel.md`](../session-logs/archive/20260703/20260703-071212_placement-counsel.md) — recommends `pond/apps` + Dexter graduation trigger; ratifications order; not-advice in ORGANIZING |
 
 **Cursor metal:** parity **144 GREEN** · chrono **148** after seat · Amber lap 1 held from tip `7395bd1`. LEXICON season/lap/green rows + spec scrub companion line seated with intake.

@@ -2,7 +2,7 @@
 //!
 //! Amphora is preservation in motion. It carries sealed resins across a
 //! crossing — wire, dock, or pocket — under the same resins law and Kumara
-//! stamp as Amber's cellar. Seal and stamp live inside pour; chunk lives
+//! stamp as the cellar. Seal and stamp live inside pour; chunk lives
 //! inside carry. The shoulder stays clear. Tamper must fail. Round-trip with
 //! pour and carry must close equal.
 //!
@@ -24,7 +24,7 @@
 //!   max_vessel_path_len · max_cargo_bytes · max_chunk_datagram
 //!   exit_ok · exit_misread
 //!   Shared vessel bounds stay in amphora/*.rye; agreement via
-//!   tools/amphora_bounds_agree.rish (path C · also alias value groups).
+//!   tools/amphora_bounds_agree.rish (path C · alias groups · couples markers).
 //!
 //! Errors (named for the fault — Q5 · CLI's own six; does not rename modules):
 //!   UnknownCommand · TooManyWords · MissingOperand · PathTooLong
@@ -69,11 +69,12 @@ const max_words: u32 = 4;
 const max_vessel_path_len: u16 = 4096;
 
 /// Sealed cargo / assembled resin ceiling in bytes.
-/// Why: matches max_resin_bytes / max_seal_plain (alias group · witness).
+/// couples: vessel_fetch_wire.max_resin_bytes
+/// couples: vessel_seal.max_seal_plain
 const max_cargo_bytes: u32 = 1024;
 
 /// One datagram payload ceiling on the crossing wire.
-/// Why: matches max_wire_payload (alias group · witness; width may differ).
+/// couples: vessel_fetch_wire.max_wire_payload
 const max_chunk_datagram: u16 = 340;
 
 /// Success exit — was a bare return 0.
@@ -125,6 +126,7 @@ pub fn main(init: std.process.Init) !u8 {
     // Invariants that can fail if bounds move wrongly — not const == literal.
     assert(max_words >= 2);
     assert(max_chunk_datagram <= max_cargo_bytes);
+    assert(max_vessel_path_len > max_words);
     assert(amphora_version.len == stamp_len);
     assert(amphora_version[stamp_dot_index] == '.');
 

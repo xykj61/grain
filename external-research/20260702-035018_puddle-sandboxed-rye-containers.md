@@ -7,7 +7,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Exploration — external research only; no implementation
 **Second pass:** `20260702.165412` UDT — searched ground and sources appended; rust-vmm corrected
-**Companions:** [`context/specs/20260701-221512_amber-functional-spec.md`](../context/specs/20260701-221512_amber-functional-spec.md) · [`active-designing/20260702-031312_modules-aspects-and-mailable-money.md`](../active-designing/20260702-031312_modules-aspects-and-mailable-money.md)
+**Companions:** [`context/specs/20260701-221512_cellar-functional-spec.md`](../context/specs/20260701-221512_cellar-functional-spec.md) · [`active-designing/20260702-031312_modules-aspects-and-mailable-money.md`](../active-designing/20260702-031312_modules-aspects-and-mailable-money.md)
 
 *Named by Kaeden (`2026-07-02`). Puddle is a small word for many bounded worlds — each whole, each shallow from the host's view, each deep to the agent inside.*
 

@@ -22,7 +22,7 @@ The blueprint supersedes an unverified draft from the same evening. The snapshot
 
 ## Edit 2 — Place the revised Amber functional specification
 
-Bridge the revised spec (provided; same stamp, its Status line naming the same-evening revision) to `context/specs/20260701-221512_amber-functional-spec.md` — the path proposed for it, honored. The revision seals four findings from the outside reading: verification lives as its own record kind, so the archive record is truly immutable once signed; the recovery custody of the unlock material is named, with the paper passphrase resting in the firebox and with the offsite rotation; the first ring signs through the host's OpenPGP tooling at a named seam, with Kumara as the sovereign horizon; and the scrub runs cold, the key warm only for the seconds of the batch signature. Register the spec in `ORGANIZING.md` and in the context home's map of what lives in `context/`.
+Bridge the revised spec (provided; same stamp, its Status line naming the same-evening revision) to `context/specs/20260701-221512_cellar-functional-spec.md` — the path proposed for it, honored. The revision seals four findings from the outside reading: verification lives as its own record kind, so the archive record is truly immutable once signed; the recovery custody of the unlock material is named, with the paper passphrase resting in the firebox and with the offsite rotation; the first ring signs through the host's OpenPGP tooling at a named seam, with Kumara as the sovereign horizon; and the scrub runs cold, the key warm only for the seconds of the batch signature. Register the spec in `ORGANIZING.md` and in the context home's map of what lives in `context/`.
 
 ## Edit 3 — Seat Amber in the family, seam-honest
 
@@ -65,7 +65,7 @@ The held prompt (`20260701-205712_cursor-slc-2a-ring-three.md`) rests on the ben
 ## Verify
 
 - The blueprint and its companion rest together in `external-research/`; the **Companion to** line carries the companion's true six-digit filename and resolves; the superseded draft's case (moved, or never present) is confirmed and noted; no dangling reference anywhere the round touched.
-- The revised Amber spec rests at `context/specs/20260701-221512_amber-functional-spec.md`; lexicon, stack record (light touch), context home, and `ORGANIZING.md` all registered and resolving.
+- The revised Amber spec rests at `context/specs/20260701-221512_cellar-functional-spec.md`; lexicon, stack record (light touch), context home, and `ORGANIZING.md` all registered and resolving.
 - TASKS carries the invocation ruling, the custody line, and the two horizons; Edit 5's case (recorded, or ruled against) is noted; the live rung is unchanged.
 - The held Ring 3 prompt carries all three amendments of Edit 6.
 - `rye build` and `tools/parity.rish` stay green on metal — this round is docs only, and nothing it touches is load-bearing for code.
@@ -87,7 +87,7 @@ End with one line: *"Recommend: run the amended Ring 3 prompt next — the drawn
 ## Definition of Done
 
 - [ ] Blueprint and companion placed together in `external-research/`; the Companion line corrected to the true six-digit name; superseded-draft case confirmed (moved with repoints, or never present); indexes registered
-- [ ] Revised Amber spec at `context/specs/20260701-221512_amber-functional-spec.md`; lexicon one-liner; stack record seated seam-honest with a light affirmation touch; context home and `ORGANIZING.md` truthful
+- [ ] Revised Amber spec at `context/specs/20260701-221512_cellar-functional-spec.md`; lexicon one-liner; stack record seated seam-honest with a light affirmation touch; context home and `ORGANIZING.md` truthful
 - [ ] TASKS carries the invocation ruling, the custody anchors, the Amber-build horizon (with its golden), and the hardware horizon; Edit 5's ruling honored either way; SLC-2a Ring 3 unchanged as the live rung
 - [ ] The held Ring 3 prompt carries the three amendments: the honest extraction with the four witnesses named, the polled loop, the witnessed ceiling
 - [ ] `rye build` and parity green on metal; gated propose-then-confirm honored; session log shipped; four remotes pushed; the amended Ring 3 recommended next

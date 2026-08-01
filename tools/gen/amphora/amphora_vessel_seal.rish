@@ -1,4 +1,4 @@
-# tools/gen/amphora/amphora_vessel_seal.rish — Amphora Amber AEAD vessel seal (seal_* on cargo).
+# tools/gen/amphora/amphora_vessel_seal.rish — Amphora cellar AEAD vessel seal (seal_* on cargo).
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/gen/amphora/amphora_vessel_seal.rish
@@ -25,4 +25,4 @@ assert witness.out contains "GREEN" else "Amphora vessel seal did not report GRE
 assert witness.out contains "SEAL ok" else "Amphora vessel seal missing SEAL ok"
 assert witness.out contains "TAMPER refused" else "Amphora vessel seal missing tamper refusal"
 
-say "GREEN: Amphora vessel seal — Amber AEAD on pour, opened on scrub."
+say "GREEN: Amphora vessel seal — cellar AEAD on pour, opened on scrub."

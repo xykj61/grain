@@ -88,11 +88,11 @@ echo "bench=honored"
 echo "apply2=honored"
 
 # APPLY 3 — amphora census 10 tracked · 9 rye
-AMBER_N=$(git ls-files 'amphora/*' | wc -l | tr -d ' ')
+CELLAR_N=$(git ls-files 'amphora/*' | wc -l | tr -d ' ')
 RYE_N=$(git ls-files 'amphora/*.rye' | wc -l | tr -d ' ')
-test "$AMBER_N" = "10" || {
+test "$CELLAR_N" = "10" || {
   echo "census=failed"
-  echo "detail=want_amphora_tracked_10_got_$AMBER_N"
+  echo "detail=want_amphora_tracked_10_got_$CELLAR_N"
   echo "verdict=misread"
   exit 1
 }

@@ -367,7 +367,7 @@ fn run_selftest(io: std.Io) !u8 {
     try parse_vessel(text, &fields);
     assert(std.mem.eql(u8, fields.format, "amphora-v1"));
     assert(std.mem.eql(u8, fields.stamp, "20260710.143500"));
-    assert(std.mem.eql(u8, fields.shoulder, "amber-ring1-season"));
+    assert(std.mem.eql(u8, fields.shoulder, "cellar-ring1-season"));
     assert(fields.parent.len == me.digest_hex_len);
     assert(fields.stamp_sig.len == stamp_sig_hex_len);
     assert(fields.cargo_count == 2);

@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 # lap_vocabulary_sweep.sh — word-boundary ring→lap on forward-facing prose only.
 # Thin-ring testing vocabulary becomes thin edge. Frozen witness path basenames stay
-# (slc2a_ring3_metal.rish, amber_first_ring.rish, additive-gate.rish).
+# (slc2a_ring3_metal.rish, cellar_first_ring.rish, additive-gate.rish).
 # Run from repo root via: rishi/bin/rishi run tools/lap_vocabulary_sweep.rish
 set -eu
 
@@ -81,8 +81,6 @@ sweep_file() {
     s/\bSLC Ring\b/SLC Lap/g;
     s/\bSLC-2a ring\b/SLC-2a lap/gi;
     s/\bSLC-2a Ring\b/SLC-2a Lap/g;
-    s/\bAmber ring\b/Amber lap/gi;
-    s/\bAmber Ring\b/Amber Lap/g;
     s/\bring-1\b/lap-1/gi;
     s/\bRing-1\b/Lap-1/g;
     s/\|\s*Ring\s*\|/| Lap |/g;
@@ -106,11 +104,11 @@ for f in \
   work-in-progress/*.md \
   active-designing/*.md active-designing/yonder/*.md \
   external-research/*.md \
-  amber/README.md pond/README.md rishi/README.md manual/*.md manual/reference/*.md \
+  cellar/README.md pond/README.md rishi/README.md manual/*.md manual/reference/*.md \
   linengrow/*.md linengrow/README.md \
   ORGANIZING.md CLAUDE.md SIMPLE_LOVABLE_COMPLETE.md \
   brushstroke/*.rye pond/apps/drawn_terminal.rye pond/apps/brushstroke/wayland_seed.rye \
-  tools/parity.rish tools/slc2a_ring*.rish tools/amber_first_ring.rish \
+  tools/parity.rish tools/slc2a_ring*.rish tools/cellar_first_ring.rish \
   tools/designed_not_built_witness.rish \
   .claude/rules/*.md .cursor/rules/*.mdc
 do

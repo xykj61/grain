@@ -21,7 +21,7 @@ Radiant pass `20260728.044925` — living rename-forward: **MUR** (was MALA); da
 | Condition | Evidence |
 |-----------|----------|
 | Edit 5 ruling landed | `designed_not_built_witness.rish` GREEN; parity **143** |
-| Amber first lap landed | `amber_first_ring.rish` GREEN; parity **144** |
+| Amber first lap landed | `cellar_first_ring.rish` GREEN; parity **144** |
 | Designed-not-built slot open | scan `count=0` at `182354` |
 
 MUR M0 token-fact shapes (was MALA) live in this document (below). M1 implementation waits on Kaeden's lap word.

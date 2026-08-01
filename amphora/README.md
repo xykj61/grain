@@ -2,11 +2,11 @@
 
 **Language:** EN
 **Stamp:** `20260710.161358`
-**Last updated:** `20260801.032014` (Q5 — CliError · refuse · alias bounds)
-**Status:** Landed — laps 1–3 + stamp + seal + chunk + purchase delivery; Pond customs gates scrub; forge view folds a live sealed pour · **CLI wave Q5** version + bounds + named errors (pour/carry/restore wait)
+**Last updated:** `20260801.033044` (e148 — couples · Cellar supersede)
+**Status:** Landed — laps 1–3 + stamp + seal + chunk + purchase delivery; Pond customs gates scrub; forge view folds a live sealed pour · **CLI wave e148** couples markers · Cellar supersede · Q5 errors held (pour/carry/restore wait)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 
-**Amphora** is **vessel software** — preservation **in motion**. It carries sealed resins across a crossing (wire, dock, or pocket) under the same resins law and Kumara stamp as Amber's cellar.
+**Amphora** is **vessel software** — preservation **in motion**. It carries sealed resins across a crossing (wire, dock, or pocket) under the same resins law and Kumara stamp as the cellar.
 
 ## CLI surface
 
@@ -19,15 +19,15 @@ Canonical roof: [`src/main.rye`](src/main.rye) — `//!` header + Q3 metal. HTML
 | `amphora carry <vessel> <dock>` | move to far dock · chunk inside carry |
 | `amphora restore <vessel>` | cold scrub · verify · restore |
 
-*Q3–Q5: version · bounds · CliError. Shared bounds agree via `tools/amphora_bounds_agree.rish` (path C · alias groups). Pour/carry/restore wait their quests. Nested wave lean: **the Crossing Season** (seat Keaton's).*
+*Q3–Q5 + e148: version · bounds · CliError · declared `couples:` markers. Shared bounds agree via `tools/amphora_bounds_agree.rish` (path C · alias · couples). Pour/carry/restore wait their quests. Nested wave lean: **the Crossing Season** (seat Keaton's).*
 
 | Lap | What |
 |-----|------|
 | **1 (landed)** | Manifest entry parse (wreck rule) + vessel `.bron` fields (format · stamp · shoulder · parent · cargo) |
-| **2 (landed)** | Pour Amber ring-1 season into vessel; carry to far dock; cold scrub + restore; 3-2-1 fixture scale |
+| **2 (landed)** | Pour Cellar ring-1 season into vessel; carry to far dock; cold scrub + restore; 3-2-1 fixture scale |
 | **3 (landed)** | Comlink hosted fetch-by-digest for vessel cargo (ports **38494**/**38495**); device-wire virtio lab (**15571**/**15572**) |
 | **Stamp (landed)** | Kumara `stamp_sig` on canonical vessel body; verify on pour + scrub |
-| **Seal (landed)** | Amber ChaCha20-Poly1305 on cargo (`seal_nonce` · `seal_tag` · `seal_cargo`); shoulder stays clear; seal then stamp |
+| **Seal (landed)** | Cellar ChaCha20-Poly1305 on cargo (`seal_nonce` · `seal_tag` · `seal_cargo`); shoulder stays clear; seal then stamp |
 | **Chunk (landed)** | Large resin beyond one datagram — kind **0x33** chunks + `ResinAssembler`; 400 B witness |
 | **Purchase delivery (landed)** | Commerce slip binds `vessel_parent` + `payment` under Kumara; Granary is the sharing surface; Mandi is the vessel market floor (seated `165634`) |
 
@@ -37,7 +37,7 @@ Canonical roof: [`src/main.rye`](src/main.rye) — `//!` header + Q3 metal. HTML
 
 **Witnesses:** `tools/amphora_lap1.rish` · `tools/amphora_lap2.rish` · `tools/amphora_lap3.rish` · `tools/amphora_device_wire.rish` · `tools/amphora_vessel_stamp.rish` · `tools/amphora_vessel_seal.rish` · `tools/amphora_resin_chunk.rish` · `tools/amphora_purchase_delivery.rish` · `tools/pond_customs.rish` · `tools/realidream_forge_view.rish` · elder path `tools/crossing_manifest_seed.rish`
 
-**Tensegral Arc I r3** (`20260728.000659`): lap 1 · lap 2 · lap 3 · vessel seal · resin chunk all **GREEN** this sitting — Arc I (Brix · Amber · Amphora) exits.
+**Tensegral Arc I r3** (`20260728.000659`): lap 1 · lap 2 · lap 3 · vessel seal · resin chunk all **GREEN** this sitting — Arc I (Brix · Cellar · Amphora) exits.
 
 **Resin homes (one job each — consolidated `20260728.003902`):**
 

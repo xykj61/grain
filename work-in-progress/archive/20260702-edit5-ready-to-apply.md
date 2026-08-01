@@ -3,7 +3,7 @@
 **Stamp:** `20260702.035920` · **Ruled:** *for* `20260703.032812` · **Parity:** **143**
 **Voice:** Rio 3
 **Counsel:** argues *for* the bound
-**Current tree:** **1** spec in flight — [`context/specs/20260701-221512_amber-functional-spec.md`](../../context/specs/20260701-221512_amber-functional-spec.md) — already within the bound
+**Current tree:** **1** spec in flight — [`context/specs/20260701-221512_cellar-functional-spec.md`](../../context/specs/20260701-221512_cellar-functional-spec.md) — already within the bound
 
 ---
 

@@ -142,7 +142,7 @@ fn run_selftest() !u8 {
     assert(verdict_for_mark("stranger-mark") == .refuse);
 
     const welcome =
-        \\format amber-ring1-v2-tilak
+        \\format cellar-ring1-v2-tilak
         \\entry plain-bytes cd416bd6cae889877c353fc9abe39daaff1668666049a8fd10974248d99d23ab hello.txt
         \\entry plain-bytes 7cab931ab9048ca077cd8005ec20ace63e4466340ff9d70cb8099c3d93e26308 nested/leaf.txt
     ;

@@ -1,3 +1,5 @@
+| `20260801.033044` | [`20260801-033044_e148-couples-cellar-supersede-green.bron`](20260801-033044_e148-couples-cellar-supersede-green.bron) | e148 couples · Cellar supersede · REDS 56 GREEN |
+
 - `20260801.032014` — [e147 Q5 named errors · alias bounds GREEN](20260801-032014_e147-q5-errors-green.bron) — CliError · refuse · REDS 54–55 · alias groups · 128 reserved
 - `20260801.031537` — [e146 path C bounds agree · Q4 accretion GREEN](20260801-031537_e146-bounds-agree-path-c-green.bron) — amphora_bounds_agree · REDS 53 · no rename · 128 reserved
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# amphora_pour.sh — pour an Amber ring-1 season into an Amphora vessel bundle.
+# amphora_pour.sh — pour a cellar ring-1 season into an Amphora vessel bundle.
 #
 # Layout (cellar + vessel at one dock):
 #   outdir/manifest.bron
@@ -9,21 +9,21 @@
 # Usage: amphora_pour.sh [source_tree] outdir [stamp]
 set -eu
 ROOT=$(CDPATH= cd "$(dirname "$0")/../.." && pwd)
-SRC=${1:-"$ROOT/tools/fixtures/amber_ring1_tree"}
+SRC=${1:-"$ROOT/tools/fixtures/cellar_ring1_tree"}
 OUT=${2:?usage: amphora_pour.sh [source] outdir [stamp]}
 STAMP=${3:-20260710.143726}
 
-sh "$ROOT/tools/fixtures/amber_ring1_export.sh" "$SRC" "$OUT" "$STAMP"
+sh "$ROOT/tools/fixtures/cellar_ring1_export.sh" "$SRC" "$OUT" "$STAMP"
 
 MANIFEST="$OUT/manifest.bron"
 VESSEL="$OUT/vessel.bron"
 PARENT=$(openssl dgst -sha3-256 -r "$MANIFEST" | awk '{print $1}')
 
 {
-  printf '%s\n' '# amphora vessel — Amber season poured for crossing'
+  printf '%s\n' '# amphora vessel — Cellar season poured for crossing'
   printf 'format amphora-v1\n'
   printf 'stamp %s\n' "$STAMP"
-  printf 'shoulder amber-ring1-season\n'
+  printf 'shoulder cellar-ring1-season\n'
   printf 'parent %s\n' "$PARENT"
   while read -r line; do
     case "$line" in
@@ -40,7 +40,7 @@ PARENT=$(openssl dgst -sha3-256 -r "$MANIFEST" | awk '{print $1}')
 cargo_count=$(grep -c '^cargo ' "$VESSEL" || true)
 test "$cargo_count" -ge 1 || { echo "FAIL pour produced no cargo"; exit 1; }
 
-# Kumara vessel stamp — Amber seal first, then sign canonical sealed body.
+# Kumara vessel stamp — Cellar seal first, then sign canonical sealed body.
 vessel_bin="$ROOT/amphora/bin/vessel-core"
 seal_bin="$ROOT/amphora/bin/vessel-seal"
 if ! test -x "$vessel_bin"; then

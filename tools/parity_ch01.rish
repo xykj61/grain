@@ -318,15 +318,15 @@ let edit5 = run ["sh" "tools/parity_time_one.sh" "edit5" "--" "rishi/bin/rishi" 
 assert edit5.ok else "designed-not-built witness failed"
 say "GREEN: designed-not-built spec bound witness passed."
 
-say "witness suite: amber first lap…"
-let amber1 = run ["sh" "tools/parity_time_one.sh" "amber1" "--" "rishi/bin/rishi" "run" "tools/amber_first_ring.rish"]
-assert amber1.ok else "amber first lap witness failed"
-say "GREEN: amber first lap witness passed."
+say "witness suite: cellar first lap…"
+let cellar1 = run ["sh" "tools/parity_time_one.sh" "cellar1" "--" "rishi/bin/rishi" "run" "tools/cellar_first_ring.rish"]
+assert cellar1.ok else "cellar first lap witness failed"
+say "GREEN: cellar first lap witness passed."
 
-say "witness suite: amber manifest Tilak hygiene (I6)…"
-let amber_i6 = run ["sh" "tools/parity_time_one.sh" "amber_i6" "--" "rishi/bin/rishi" "run" "tools/amber_manifest_tilak.rish"]
-assert amber_i6.ok else "amber manifest tilak witness failed"
-say "GREEN: amber manifest Tilak witness passed."
+say "witness suite: cellar manifest Tilak hygiene (I6)…"
+let cellar_i6 = run ["sh" "tools/parity_time_one.sh" "cellar_i6" "--" "rishi/bin/rishi" "run" "tools/cellar_manifest_tilak.rish"]
+assert cellar_i6.ok else "cellar manifest tilak witness failed"
+say "GREEN: cellar manifest Tilak witness passed."
 
 say "witness suite: SLC-2b keyboard from window…"
 let slc2b = run ["sh" "tools/parity_time_one.sh" "slc2b" "--" "rishi/bin/rishi" "run" "tools/slc2b_keyboard.rish"]
@@ -691,7 +691,7 @@ let query_unified_view = run ["sh" "tools/parity_time_one.sh" "query_unified_vie
 assert query_unified_view.ok else "Realidream query unified view witness failed"
 say "GREEN: Realidream query unified view witness passed."
 
-say "witness suite: Realidream forge view (Amber cellar → Skate)…"
+say "witness suite: Realidream forge view (the cellar → Skate)…"
 let forge_view = run ["sh" "tools/parity_time_one.sh" "forge_view" "--" "rishi/bin/rishi" "run" "tools/realidream_forge_view.rish"]
 assert forge_view.ok else "Realidream forge view witness failed"
 say "GREEN: Realidream forge view witness passed."
@@ -711,7 +711,7 @@ let amphora = run ["sh" "tools/parity_time_one.sh" "amphora" "--" "rishi/bin/ris
 assert amphora.ok else "Amphora lap 1 witness failed"
 say "GREEN: Amphora lap 1 witness passed."
 
-say "witness suite: Amphora lap 2 (pour Amber season → far scrub)…"
+say "witness suite: Amphora lap 2 (pour Cellar season → far scrub)…"
 let amphora2 = run ["sh" "tools/parity_time_one.sh" "amphora2" "--" "rishi/bin/rishi" "run" "tools/amphora_lap2.rish"]
 assert amphora2.ok else "Amphora lap 2 witness failed"
 say "GREEN: Amphora lap 2 witness passed."
@@ -731,7 +731,7 @@ let amphora_stamp = run ["sh" "tools/parity_time_one.sh" "amphora_stamp" "--" "r
 assert amphora_stamp.ok else "Amphora vessel stamp witness failed"
 say "GREEN: Amphora vessel stamp witness passed."
 
-say "witness suite: Amphora vessel seal (Amber AEAD)…"
+say "witness suite: Amphora vessel seal (cellar AEAD)…"
 let amphora_seal = run ["sh" "tools/parity_time_one.sh" "amphora_seal" "--" "rishi/bin/rishi" "run" "tools/amphora_vessel_seal.rish"]
 assert amphora_seal.ok else "Amphora vessel seal witness failed"
 say "GREEN: Amphora vessel seal witness passed."

@@ -9,7 +9,7 @@ Resumed the in-flight `20260702.205630` sitting after context handoff. Verified 
 
 Completed the manual lane: Caravan capability table and Tally gardens reference pages drawn only from `tools/caravan_capabilities.rish`, `tools/foundation_seeds.rish`, and std tests. Updated `rishi-language.md` §8 conditionals and §12 growing edge. Restored tutorial one line in TASKS; checked tutorial two, RW-2 contract on paper, partial manual horizons.
 
-Hard bounds held: no Kaeden boxes touched, no `amber/`, no Edit 5 wire, no new module names.
+Hard bounds held: no Kaeden boxes touched, no `cellar/`, no Edit 5 wire, no new module names.
 
 ## Observations
 

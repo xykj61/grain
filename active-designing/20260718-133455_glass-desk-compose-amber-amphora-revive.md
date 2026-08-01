@@ -5,7 +5,7 @@
 **Stamp:** `20260718.133455` (Eastern)  
 **Status:** Design — siloed; revives Amber seasons + sealed crossing + marked value beside Wired Glass (mixed: roles checkable · fusion decline seated · graduation horizon)  
 **Voice:** Quin  
-**Revives:** [`20260703-071212_amber-seasons.md`](20260703-071212_amber-seasons.md) · [`20260703-201612_the-sealed-crossing.md`](20260703-201612_the-sealed-crossing.md) · [`20260703-202312_the-marked-value.md`](20260703-202312_the-marked-value.md)  
+**Revives:** [`20260703-071212_cellar-seasons.md`](20260703-071212_cellar-seasons.md) · [`20260703-201612_the-sealed-crossing.md`](20260703-201612_the-sealed-crossing.md) · [`20260703-202312_the-marked-value.md`](20260703-202312_the-marked-value.md)  
 **Research:** [`../external-research/20260718-133455_glass-desk-amber-amphora-compose-not-fuse.md`](../external-research/20260718-133455_glass-desk-amber-amphora-compose-not-fuse.md)  
 **Companions:** [`20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md`](20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md) · compressors [`../docs/LULU.md`](../docs/LULU.md) · [`../docs/SETU.md`](../docs/SETU.md)
 

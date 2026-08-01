@@ -76,7 +76,7 @@ The drawn terminal's third lap added live session mirroring. Headless witness gr
 
 ### Amber — first lap green (landed)
 
-Amber's first room **stands**: `tools/amber_first_ring.rish` at parity **144** — export emits resins and manifest; the manifest digest matches the hand-pinned golden; restore then `diff -r` stays clean; one tampered resin makes verify **fail**. The functional spec's status graduated; the cathedral spec stays on the shelf for later seasons. Scrub seasons, drive docks, and cold-key ceremonies belong to later laps — they were never part of lap one's promise.
+Amber's first room **stands**: `tools/cellar_first_ring.rish` at parity **144** — export emits resins and manifest; the manifest digest matches the hand-pinned golden; restore then `diff -r` stays clean; one tampered resin makes verify **fail**. The functional spec's status graduated; the cathedral spec stays on the shelf for later seasons. Scrub seasons, drive docks, and cold-key ceremonies belong to later laps — they were never part of lap one's promise.
 
 ---
 

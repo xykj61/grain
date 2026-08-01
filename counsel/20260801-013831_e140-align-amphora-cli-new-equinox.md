@@ -18,7 +18,7 @@
 | Foundations / grain | Amphora vessel GREEN (laps 1–3 · seal · chunk · purchase); Amber cellar retired by accretion e138 — complements |
 | Briefs win | `TASKS.md` was stale (F COLD July); briefs + witnesses win — hygiene this stamp |
 | ROADMAP | Now points **Amphora Glow · Tend · TAME CLI** as finishing edge for the next constructive wave |
-| Witness before narrative | `amber_first_ring` GREEN · Amphora witnesses landed · **no Amphora user CLI yet** (entry = rish witnesses) |
+| Witness before narrative | `cellar_first_ring` GREEN · Amphora witnesses landed · **no Amphora user CLI yet** (entry = rish witnesses) |
 | Finishing edge | ch8 15/16 · seat **128 RESERVED** · shred RED · geode GATED · handback held |
 
 **One next step (this align):** seat the roadmap and the Claude commence package — do not invent the Amphora CLI on metal this stamp; do not open seat 128 on `kg`.

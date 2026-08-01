@@ -28,7 +28,7 @@ Open a sixteen-round **kg** season after The Sound. Theme: consolidate · tighte
 |------:|-------------------|----------------------|
 | 0 | **Bow** — measure shelves · standing Tally/Brix/Amber/Amphora · happy-zone vs metalsmoke honesty · prep receipt | r0 recursion prompt |
 | 1 | Brix — `.brix` / TH-4 honesty; name home question without seating workshop newborn | `width_check_th4.rish` |
-| 2 | Amber — cellar first ring reaffirmed; one tighten if red | `amber_first_ring.rish` |
+| 2 | Amber — cellar first ring reaffirmed; one tighten if red | `cellar_first_ring.rish` |
 | 3 | Amphora — vessel lap 1 (or next named lap if lap 1 already owned this week) | `amphora_lap1.rish` |
 | 4 | Resin — one content-addressed unit path | `resin_unit_witness.rish` (canon fold; chunk hand stays `amphora_resin_chunk.rish`) |
 | 5 | Glow — one language floor on-touch (no suite rewrite) | Glow witness on touched desk |

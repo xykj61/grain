@@ -1,0 +1,24 @@
+# tools/gen/season/equinox_e139_fuse_verify_cellar_witness.rish — e139 seat.
+#   rishi/bin/rishi run tools/gen/season/equinox_e139_fuse_verify_cellar_witness.rish
+say "e139-fuse-verify: Language EN — Cellar accretion already green; counsel measured an elder nib."
+say "e139-fuse-verify: Style Radiant — Silo template named; no second retirement; kg opens no 128."
+say "e139-fuse-verify: Lens TAME — e139 · verify · shred held · 128 reserved."
+
+let green = run ["sh" "tools/fixtures/equinox_e139_fuse_verify_cellar_scan.sh"]
+assert green.ok else "e139-fuse-verify: living scan must exit 0"
+assert green.out contains "elder_seat=e138" else "e139-fuse-verify: want elder e138"
+assert green.out contains "accretion=already_green" else "e139-fuse-verify: want already green"
+assert green.out contains "cellar_witness=honored" else "e139-fuse-verify: want cellar witness"
+assert green.out contains "silo_template=honored" else "e139-fuse-verify: want Silo template"
+assert green.out contains "no_second_retirement=honored" else "e139-fuse-verify: want no second retirement"
+assert green.out contains "kg_no_gate=honored" else "e139-fuse-verify: want kg no gate"
+assert green.out contains "shred=RED" else "e139-fuse-verify: want shred RED"
+assert green.out contains "seat_128=reserved_close_choir" else "e139-fuse-verify: want 128 reserved"
+assert green.out contains "queue=empty_for_counsel" else "e139-fuse-verify: want empty queue"
+assert green.out contains "verdict=ok" else "e139-fuse-verify: want verdict ok"
+
+let red = run ["sh" "tools/fixtures/equinox_e139_fuse_verify_cellar_scan.sh" "prove-red"]
+assert (red.ok == false) else "e139-fuse-verify: prove-red must refuse"
+assert red.out contains "RED_seat_128_opened_on_kg" else "e139-fuse-verify: prove-red want refuse"
+
+say "GREEN: e139-fuse-verify — e138 already green · Silo template · kg no 128 · shred RED · 128 reserved"

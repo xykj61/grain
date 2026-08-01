@@ -10,7 +10,7 @@ Kaeden **keep going** — first Q3 horizon from ruling `20260706.232812`: witnes
 
 ## Trace
 
-Renamed Amber ring-1 export directory from `stones/` to `resins/` in four fixture scripts and witness tamper path. Updated `amber/ring1_manifest_shape.bron`, `amber/README.md`, and ratified resins law spec. Golden manifest digest unchanged (`97e0d0cd…`). Amber first lap witness GREEN; full parity **167** GREEN.
+Renamed Amber ring-1 export directory from `stones/` to `resins/` in four fixture scripts and witness tamper path. Updated `amber/ring1_manifest_shape.bron`, `cellar/README.md`, and ratified resins law spec. Golden manifest digest unchanged (`97e0d0cd…`). Amber first lap witness GREEN; full parity **167** GREEN.
 
 ## Observations
 
@@ -22,7 +22,7 @@ Renamed Amber ring-1 export directory from `stones/` to `resins/` in four fixtur
 
 - `tools/fixtures/amber_ring1_{export,verify,restore,witness}.sh` — `resins/` paths
 - `amber/ring1_manifest_shape.bron` — comment
-- `amber/README.md` — path hygiene noted
+- `cellar/README.md` — path hygiene noted
 - `context/specs/20260703-191112_resins-and-hash-tiers.md` — path landed
 - `work-in-progress/TASKS.md` — checkbox + next climb → marks-on-read
 - `active-designing/20260706-023912_the-referential-namespace.md` — Status horizons

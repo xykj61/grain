@@ -7,7 +7,7 @@
 **Editor:** Cursor · **Model:** Grok 4.5
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable-room research — explains living practice; cites the Jul 3 essay
-**Ground:** essay [`033602`](20260703-033602_first-lap-goes-green.md) · SLC · Edit 5 / designed-not-built · metalsmoke plainly [`002017`](20260710-002017_metalsmoke-plainly.md) · amber seasons plainly [`002422`](20260710-002422_amber-seasons-plainly.md) · compass [`185112`](../foundations/20260706-185112_follow-our-compass.md)
+**Ground:** essay [`033602`](20260703-033602_first-lap-goes-green.md) · SLC · Edit 5 / designed-not-built · metalsmoke plainly [`002017`](20260710-002017_metalsmoke-plainly.md) · amber seasons plainly [`002422`](20260710-002422_cellar-seasons-plainly.md) · compass [`185112`](../foundations/20260706-185112_follow-our-compass.md)
 
 *Written by Kaeden and Rio 3 (Grok). Creative climb inside the jail — oldest shipping phrase, kitchen voice.*
 
@@ -68,7 +68,7 @@ Everything larger waits **after** that green — scrub seasons, live drives, new
 - Essay: [`20260703-033602_first-lap-goes-green.md`](20260703-033602_first-lap-goes-green.md)
 - What parity is: [`20260709-194437_what-parity-is.md`](20260709-194437_what-parity-is.md)
 - Metalsmoke plainly: [`20260710-002017_metalsmoke-plainly.md`](20260710-002017_metalsmoke-plainly.md)
-- Amber seasons plainly: [`20260710-002422_amber-seasons-plainly.md`](20260710-002422_amber-seasons-plainly.md)
+- Amber seasons plainly: [`20260710-002422_cellar-seasons-plainly.md`](20260710-002422_cellar-seasons-plainly.md)
 
 ---
 

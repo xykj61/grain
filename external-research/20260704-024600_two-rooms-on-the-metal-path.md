@@ -40,7 +40,7 @@ Read from the floor upward; each layer leans only on what is beneath it.
 | **Comlink** | `comlink/hosted_wire.rye` | localhost UDP sealed datagram |
 | **Mantra** | weave tests in parity | `mantra_weave_test`, TH-2b/3 width |
 | **Pond** | `pond/apps/drawn_terminal.rye` | sessiontest (happy zone) + metalsmoke (thin edge) |
-| **Amber** | `tools/amber_first_ring.rish` | openssl oracle + tampered resin |
+| **Amber** | `tools/cellar_first_ring.rish` | openssl oracle + tampered resin |
 | **Linengrow** | `linengrow/receipt.rye` | `tools/slcl1_receipt.rish` at parity **152** |
 
 **Weave, Tablecloth, Aurora freestanding, Maitreya, sovereign Brushstroke** — named in design, awaiting their hosted season. They live in the vision room until a witness opens the door.
