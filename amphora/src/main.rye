@@ -73,7 +73,7 @@ const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
 const Dir = std.Io.Dir;
 
 /// Amphora CLI version — YYYYMMDD.HHMMSS, America/New_York, later is larger.
-const amphora_version = "20260801.050219";
+const amphora_version = "20260801.050337";
 
 // -------------------------------------------------------------------------
 // § Bounds — named with their why (Q4 · Q7 · Q8 · Q9)
@@ -935,8 +935,20 @@ fn assemble_dock_vessel(io: std.Io, dock: []const u8, far_vessel: []const u8, so
     };
 }
 
-/// Q24 door: parse · walls · guard · plan · chunks · assemble byte-equal ·
-/// far walls — the crossing closes; manifest read waits Q25.
+/// Q25: the manifest crossed whole — the far vessel must list its cargo
+/// readably before anyone touches a seal. Byte-equality already implies it;
+/// this door says it aloud, so a dock reader's first promise is checked.
+fn verify_far_manifest(io: std.Io, far_vessel: []const u8) CliError!void {
+    assert(far_vessel.len > 0);
+    var buf: [max_vessel_len]u8 = undefined;
+    const text = Dir.cwd().readFile(io, far_vessel, &buf) catch
+        return error.ChunkTorn;
+    const has = std.mem.indexOf(u8, text, "\nmanifest ") != null or std.mem.startsWith(u8, text, "manifest ");
+    if (!has) return error.CrossingUnequal;
+}
+
+/// Q25 door: parse · walls · guard · plan · chunks · assemble byte-equal ·
+/// far walls · far manifest — the crossing speaks; witness waits Q26.
 fn cmd_carry(init: std.process.Init, args: []const []const u8) u8 {
     const parsed = parse_carry_args(args) catch |fault| {
         return switch (fault) {
@@ -1001,6 +1013,9 @@ fn cmd_carry(init: std.process.Init, args: []const []const u8) u8 {
             else => refuse(error.StampUnverified, far_vessel),
         };
     };
+    verify_far_manifest(init.io, far_vessel) catch
+        return refuse(error.CrossingUnequal, far_vessel);
+    print("amphora: far manifest readable\n", .{});
     print("amphora: carry complete chunks={d} far={s}\n", .{ chunk_count, far_vessel });
     return exit_ok;
 }
