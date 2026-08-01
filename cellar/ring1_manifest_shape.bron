@@ -3,7 +3,7 @@
 #
 # Legacy (v1): entry <relpath> <sha3-256-hex-64>
 # Tilak (v2, writer default since I6): entry plain-bytes <sha3-256-hex-64> <name>
-format cellar-ring1-v2-tilak
+format amber-ring1-v2-tilak
 stamp YYYYMMDD.HHMMSS
 source cellar_ring1_tree
 entry plain-bytes <sha3-256-hex-64> <name>

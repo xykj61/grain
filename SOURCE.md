@@ -4,7 +4,7 @@
 **Version:** `20260716.110152` (Glow warm-aura date atom — chronological, later-is-larger)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **By:** Riyo, in the radiant voice, with **Keaton Livermore** as coauthor (Identity Remake `20260729.141658`; standing writing voice restored to Riyo `20260729.205200`)
-**Status:** Living guide — last touched `20260730.161633` (SUNN15 — journey close · handback Equinox e50)
+**Status:** Living guide — last touched `20260801.033305` (e149 — personal sync · gitignore · Dropbox overlay)
 **Waymark:** **SUNN** — `source-pier-papers-identity-refresh`
 
 ---
@@ -15,7 +15,7 @@ This is the whole path, start to finish, for someone brand new to coding who wan
 
 You do not need prior experience. Each step says what to do, and why it matters, so the shape of the thing makes sense as you build it. Wherever you see a placeholder like `youruser` or `you@example.com` or an `EXAMPLE…` fingerprint, put your own value in its place.
 
-**Part One** ends with a working, jailed Cursor on your machine. **Part Two** builds the signed forge home. A warm letter for a friend starting out lives at [`manual/guides/apprentice-welcome.md`](manual/guides/apprentice-welcome.md). When you are ready to make the pier yours — find/replace map, first 256-round season, four equinoxes — walk [`manual/guides/first-season-personalize.md`](manual/guides/first-season-personalize.md) and copy [`tools/gen/season/personalize.template.brix`](tools/gen/season/personalize.template.brix) to gitignored `PERSONALIZE.brix`. This pier’s standing writing voice is **Riyo** ([`context/RIYO.md`](context/RIYO.md)); **Quin** keeps the fifth OS variant and the inference Q-vane ([`context/QUIN.md`](context/QUIN.md)).
+**Part One** ends with a working, jailed Cursor on your machine. **Part Two** builds the signed forge home. A warm letter for a friend starting out lives at [`manual/guides/apprentice-welcome.md`](manual/guides/apprentice-welcome.md). When you are ready to make the pier yours — find/replace map, first 256-round season, four equinoxes — walk [`manual/guides/first-season-personalize.md`](manual/guides/first-season-personalize.md) and copy [`tools/gen/season/personalize.template.brix`](tools/gen/season/personalize.template.brix) to gitignored `PERSONALIZE.brix`. Sync those gitignored identity files with Dropbox / Syncthing / iCloud / Nextcloud as a **personal overlay** (never put the whole git tree inside Dropbox) — see that guide’s § “Sync personal files without git” and the shipping index [`docs-geode/templates/README.md`](docs-geode/templates/README.md). This pier’s standing writing voice is **Riyo** ([`context/RIYO.md`](context/RIYO.md)); **Quin** keeps the fifth OS variant and the inference Q-vane ([`context/QUIN.md`](context/QUIN.md)).
 
 By the end you will have a repository that an AI agent can grow and **commit to, signed and verified, entirely from inside the sandbox** — nothing to sign by hand, nothing leaking out.
 

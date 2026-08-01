@@ -13,9 +13,10 @@
 # inherit a first 256-round season with four equinoxes from these fields.
 #
 # Seated 20260730.145124 · SUNN5 · voice Riyo
+# Refresh 20260801.033305 · e149 personal_sync overlay fields
 
 name personalize
-version 20260730.145124
+version 20260801.033305
 kind template
 audience acme
 voice Riyo
@@ -100,6 +101,15 @@ guide_path manual/guides/first-season-personalize.md
 profile_template GLOW_PROFILE.template.bron
 host_template GLOW_HOST.template.bron
 source_guide SOURCE.md
+personalize_guide manual/guides/first-season-personalize.md
+templates_index docs-geode/templates/README.md
+# Personal overlay sync (gitignored instances — not the git tree)
+# Recommend: Dropbox · Syncthing · iCloud Drive · Nextcloud — one tool.
+# Sync PERSONALIZE.brix · first_season_answers.brix · GLOW_*.bron · PUBKEYS.md
+# Never put the whole ~/grain working tree inside Dropbox as primary.
+personal_sync_tool dropbox
+personal_sync_folder ~/Dropbox/grain-personal
+personal_sync_note folder-sync-overlay-not-git
 compass foundations/20260706-185112_follow-our-compass.md
 universals_aspiring foundations/the-aspiring-radiance-universal.md
 universals_regenerative foundations/the-regenerative-experiment-universal.md

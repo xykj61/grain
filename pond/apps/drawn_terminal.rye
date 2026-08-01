@@ -1140,7 +1140,7 @@ fn compose_forge_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.Sk
 
     const format = field_value(text, "format") orelse return error.BadForgeFixture;
     const stamp = field_value(text, "stamp") orelse return error.BadForgeFixture;
-    if (!std.mem.eql(u8, format, "cellar-ring1-v2-tilak")) return error.BadForgeFixture;
+    if (!std.mem.eql(u8, format, "amber-ring1-v2-tilak")) return error.BadForgeFixture;
 
     var entry_count: u32 = 0;
     var hello_digest: ?[]const u8 = null;
@@ -1213,12 +1213,12 @@ fn run_forge_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     const golden = [_][]const u8{
         "realidream forge view",
         "cellar cellar",
-        "format cellar-ring1-v2-tilak",
+        "format amber-ring1-v2-tilak",
         "stamp 20260710.145313",
         "resins 2",
         "resin hello.txt cd416bd6cae8",
         "vessel amphora poured cargo 2",
-        "shoulder cellar-ring1-season",
+        "shoulder amber-ring1-season",
     };
     assert(lines_equal(&golden, frame));
 
@@ -1310,7 +1310,7 @@ fn compose_forge_unified_view_lines(garden: std.mem.Allocator, io: std.Io) ![]su
     const device = try cwd.readFile(io, amphora_device_fetch_hits_fixture, &device_buf);
 
     const format = field_value(man, "format") orelse return error.BadForgeFixture;
-    if (!std.mem.eql(u8, format, "cellar-ring1-v2-tilak")) return error.BadForgeFixture;
+    if (!std.mem.eql(u8, format, "amber-ring1-v2-tilak")) return error.BadForgeFixture;
     var hello_digest: ?[]const u8 = null;
     var entry_count: u32 = 0;
     var lines_iter = std.mem.splitScalar(u8, man, '\n');

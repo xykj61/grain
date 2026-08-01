@@ -3,8 +3,9 @@
 **Language:** EN  
 **Status:** Living guide — Acme / new-steward walk  
 **Voice:** Riyo  
-**Last updated:** `20260730.154230` · SUNN11  
-**Data:** [`tools/gen/season/personalize.template.brix`](../../tools/gen/season/personalize.template.brix) · [`first_season_journeys.brix`](../../tools/gen/season/first_season_journeys.brix) · [`first_season_questions.brix`](../../tools/gen/season/first_season_questions.brix)
+**Last updated:** `20260801.033305` · e149 personal sync · gitignore  
+**Data:** [`tools/gen/season/personalize.template.brix`](../../tools/gen/season/personalize.template.brix) · [`first_season_journeys.brix`](../../tools/gen/season/first_season_journeys.brix) · [`first_season_questions.brix`](../../tools/gen/season/first_season_questions.brix)  
+**Shipping index:** [`docs-geode/templates/README.md`](../../docs-geode/templates/README.md)
 
 ---
 
@@ -34,6 +35,32 @@ Grain’s shared tree still carries the source pier’s living face in places �
 5. Paste the large recursion prompt from [`expanding-prompts/20260730-144833_first-season-256-recursion-template.md`](../../expanding-prompts/20260730-144833_first-season-256-recursion-template.md), inheriting your Brix fields.  
 6. Walk journey 0 (personalize) until a signed Verified commit lands under your name.  
 7. Walk journey 1 one question at a time; store answers in `first_season_answers.brix` (never commit it).
+
+---
+
+## Sync personal files without git
+
+Root [`.gitignore`](../../.gitignore) is deny-all with an allow-list: filled identity files stay **local** and must not be committed. Sync them to the cloud with a **folder sync** tool, not by weakening gitignore.
+
+**Recommended set to sync** (copy these paths into Dropbox, Syncthing, iCloud Drive, Nextcloud, or equivalent — one tool, one folder):
+
+| File | Why |
+| --- | --- |
+| `PERSONALIZE.brix` | Your find/replace map and season inheritance |
+| `first_season_answers.brix` | Open-question answers |
+| `GLOW_PROFILE.bron` | Model · voice · timezone |
+| `GLOW_HOST.bron` | Host seam facts |
+| `PUBKEYS.md` | When you keep a local pubkeys sheet |
+| `tools/key-card.conf` | When present — treat as secret-adjacent |
+
+**How:**
+
+1. Keep the git clone at `~/grain` (or your `your_repo_dir`).  
+2. Create a sync folder (e.g. `~/Dropbox/grain-personal/` or a Syncthing folder).  
+3. Place **symlinks or copies** of only the gitignored instances above into that sync folder — or sync a small `~/grain-personal/` directory and symlink those files back into `~/grain`.  
+4. Never put the whole repository inside Dropbox as the primary git working tree — Dropbox and git both rewrite files; they fight. GitHub (or your forge) owns the tracked tree; Dropbox owns the small personal overlay.
+
+**Why not git for these:** they carry your name, email, model choices, and sometimes key paths. The deny-all gitignore is the fence; cloud folder sync is the backup and multi-machine carry for what the fence holds out.
 
 ---
 
