@@ -2,8 +2,8 @@
 
 **Language:** EN
 **Stamp:** `20260710.161358`
-**Last updated:** `20260801.031219` (Q4 — named bounds · bans instrument GREEN)
-**Status:** Landed — laps 1–3 + stamp + seal + chunk + purchase delivery; Pond customs gates scrub; forge view folds a live sealed pour · **CLI wave Q4** version + bounds (pour/carry/restore wait)
+**Last updated:** `20260801.031537` (Q4 complete · path C bounds-agree witness)
+**Status:** Landed — laps 1–3 + stamp + seal + chunk + purchase delivery; Pond customs gates scrub; forge view folds a live sealed pour · **CLI wave Q4** version + bounds · shared bounds witnessed (pour/carry/restore wait)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 
 **Amphora** is **vessel software** — preservation **in motion**. It carries sealed resins across a crossing (wire, dock, or pocket) under the same resins law and Kumara stamp as Amber's cellar.
@@ -19,7 +19,7 @@ Canonical roof: [`src/main.rye`](src/main.rye) — `//!` header + Q3 metal. HTML
 | `amphora carry <vessel> <dock>` | move to far dock · chunk inside carry |
 | `amphora restore <vessel>` | cold scrub · verify · restore |
 
-*Q3 lands `version`. Q4 names bounds (`max_words` · path · cargo · chunk). Pour/carry/restore wait their quests. Nested wave lean: **the Crossing Season** (seat Keaton's).*
+*Q3 lands `version`. Q4 names bounds. Shared vessel bounds agree via `tools/amphora_bounds_agree.rish` (path C · no rename). Pour/carry/restore wait their quests. Nested wave lean: **the Crossing Season** (seat Keaton's).*
 
 | Lap | What |
 |-----|------|
