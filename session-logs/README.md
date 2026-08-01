@@ -1,4 +1,6 @@
+- `20260801.032014` — [e147 Q5 named errors · alias bounds GREEN](20260801-032014_e147-q5-errors-green.bron) — CliError · refuse · REDS 54–55 · alias groups · 128 reserved
 - `20260801.031537` — [e146 path C bounds agree · Q4 accretion GREEN](20260801-031537_e146-bounds-agree-path-c-green.bron) — amphora_bounds_agree · REDS 53 · no rename · 128 reserved
+
 - `20260801.031219` — [e145 bans false positive · Q4 bounds GREEN](20260801-031219_e145-bans-q4-bounds-green.bron) — noncomment bans · planted pair · REDS 52 · Q4 max_* · 128 reserved
 
 - `20260801.030237` — [e144 Q3 version · J1 sixteen GREEN](20260801-030237_e144-q3-version-j1-green.bron) — stdout version · J1 Q4–Q16 in tree · opening-lines · 128 reserved
