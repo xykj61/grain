@@ -7,6 +7,10 @@
 | `20260801.044747` | [`20260801-044747_e158-q14-audit-green.bron`](20260801-044747_e158-q14-audit-green.bron) | e158 Q14 audits GREEN |
 | `20260801.044834` | [`20260801-044834_e159-q15-width-green.bron`](20260801-044834_e159-q15-width-green.bron) | e159 Q15 width GREEN |
 | `20260801.044859` | [`20260801-044859_e160-q16-journey-close-green.bron`](20260801-044859_e160-q16-journey-close-green.bron) | e160 Q16 Journey One closes GREEN 16/16 |
+| `20260801.045238` | [`20260801-045238_e161-q17-j2-charter-green.bron`](20260801-045238_e161-q17-j2-charter-green.bron) | e161 Q17 J2 Crossing charter seated |
+| `20260801.045307` | [`20260801-045307_e162-q18-doc-seed-green.bron`](20260801-045307_e162-q18-doc-seed-green.bron) | e162 Q18 § Carry doc seed GREEN |
+| `20260801.045349` | [`20260801-045349_e163-q19-carry-parse-green.bron`](20260801-045349_e163-q19-carry-parse-green.bron) | e163 Q19 carry parse GREEN |
+| `20260801.045438` | [`20260801-045438_e164-q20-walls-green.bron`](20260801-045438_e164-q20-walls-green.bron) | e164 Q20 walls before motion GREEN |
 | `20260801.000101` | [`20260801-000101_e151-q7-season-read-green.bron`](20260801-000101_e151-q7-season-read-green.bron) | e151 Q7 pour season read GREEN |
 | `20260801.035204` | [`20260801-035204_e150-q6-pour-parse-green.bron`](20260801-035204_e150-q6-pour-parse-green.bron) | e150 Q6 pour argument parse GREEN |
 | `20260801.033305` | [`20260801-033305_e149-class-w-park-docs-posix-green.bron`](20260801-033305_e149-class-w-park-docs-posix-green.bron) | e149 Class W park · docs-geode · Acme sync · REDS 57 |

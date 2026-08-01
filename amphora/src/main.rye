@@ -35,6 +35,7 @@
 //!   SeasonAbsent · SeasonEmpty · SeasonOverflow · SeasonUnreadable
 //!   CargoTooLarge · VesselUnwritable · SealToolAbsent · SealFailed
 //!   StampToolAbsent · StampFailed · IdentityFork · ManifestOverflow
+//!   StampUnverified · SealUnopened (Q20 carry walls)
 //!   Module split named, not swept: InvalidVessel vs BadVessel (G10).
 //!
 //! Architecture (four sections, one file for the seed):
@@ -71,7 +72,7 @@ const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
 const Dir = std.Io.Dir;
 
 /// Amphora CLI version — YYYYMMDD.HHMMSS, America/New_York, later is larger.
-const amphora_version = "20260801.045352";
+const amphora_version = "20260801.045432";
 
 // -------------------------------------------------------------------------
 // § Bounds — named with their why (Q4 · Q7 · Q8 · Q9)
@@ -151,7 +152,7 @@ const exit_ok: u8 = 0;
 const exit_misread: u8 = 2;
 
 // -------------------------------------------------------------------------
-// § Errors — named for the fault (Q5 · Q7 · Q8 · Q9 · Q10 · Q11)
+// § Errors — named for the fault (Q5 · Q7 · Q8 · Q9 · Q10 · Q11 · Q20)
 // -------------------------------------------------------------------------
 
 /// CLI faults only. Vessel modules keep InvalidVessel / BadVessel (G10).
@@ -174,6 +175,8 @@ const CliError = error{
     StampFailed,
     IdentityFork,
     ManifestOverflow,
+    StampUnverified,
+    SealUnopened,
 };
 
 /// One door for every CLI fault — switch on the name, never compare.
@@ -200,6 +203,8 @@ fn refuse(fault: CliError, detail: []const u8) u8 {
         error.StampFailed => print("amphora: stamp failed — '{s}'\n", .{detail}),
         error.IdentityFork => print("amphora: identity fork — '{s}'\n", .{detail}),
         error.ManifestOverflow => print("amphora: manifest overflow — '{s}'\n", .{detail}),
+        error.StampUnverified => print("amphora: stamp unverified — '{s}'\n", .{detail}),
+        error.SealUnopened => print("amphora: seal unopened — '{s}'\n", .{detail}),
     }
     return exit_misread;
 }
@@ -751,9 +756,68 @@ fn parse_carry_args(args: []const []const u8) CliError!CarryArgs {
     return .{ .vessel = vessel, .dock = dock };
 }
 
-/// Q19 door: parse; walls wait Q20.
+/// Q20 wall one: the Kumara stamp must verify before any motion.
+fn run_vessel_core_verify(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    core_bin: []const u8,
+    vessel_path: []const u8,
+) CliError!void {
+    assert(core_bin.len > 0);
+    assert(vessel_path.len > 0);
+    const argv = [_][]const u8{ core_bin, "verify", vessel_path };
+    const result = std.process.run(allocator, io, .{ .argv = &argv }) catch {
+        return error.StampUnverified;
+    };
+    const code: u8 = switch (result.term) {
+        .exited => |c| c,
+        else => return error.StampUnverified,
+    };
+    if (code != 0) return error.StampUnverified;
+}
+
+/// Q20 wall two: the seal must open before any motion.
+fn run_vessel_seal_open(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    seal_bin: []const u8,
+    vessel_path: []const u8,
+) CliError!void {
+    assert(seal_bin.len > 0);
+    assert(vessel_path.len > 0);
+    const argv = [_][]const u8{ seal_bin, "open-check", vessel_path };
+    const result = std.process.run(allocator, io, .{ .argv = &argv }) catch {
+        return error.SealUnopened;
+    };
+    const code: u8 = switch (result.term) {
+        .exited => |c| c,
+        else => return error.SealUnopened,
+    };
+    if (code != 0) return error.SealUnopened;
+}
+
+/// Q20: both walls verify before the first byte travels — stamp, then seal.
+fn carry_verify_walls(
+    init: std.process.Init,
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    argv0: []const u8,
+    vessel_path: []const u8,
+) CliError!void {
+    assert(argv0.len > 0);
+    assert(vessel_path.len > 0);
+    var core_path_buf: [max_vessel_path_len]u8 = undefined;
+    const core_bin = try resolve_core_bin(init, io, argv0, &core_path_buf);
+    try run_vessel_core_verify(allocator, io, core_bin, vessel_path);
+    var seal_path_buf: [max_vessel_path_len]u8 = undefined;
+    const seal_bin = resolve_seal_bin(init, io, argv0, &seal_path_buf) catch
+        return error.SealUnopened;
+    try run_vessel_seal_open(allocator, io, seal_bin, vessel_path);
+    print("amphora: carry walls verified rite=stamp-then-seal\n", .{});
+}
+
+/// Q20 door: parse · walls before motion; dock guard waits Q21.
 fn cmd_carry(init: std.process.Init, args: []const []const u8) u8 {
-    _ = init;
     const parsed = parse_carry_args(args) catch |fault| {
         return switch (fault) {
             error.MissingOperand => refuse(error.MissingOperand, "carry <vessel> <dock>"),
@@ -772,6 +836,15 @@ fn cmd_carry(init: std.process.Init, args: []const []const u8) u8 {
     };
     assert(parsed.vessel.len > 0);
     assert(parsed.dock.len > 0);
+
+    const allocator = init.arena.allocator();
+    carry_verify_walls(init, allocator, init.io, args[0], parsed.vessel) catch |fault| {
+        return switch (fault) {
+            error.StampToolAbsent => refuse(error.StampToolAbsent, default_core_bin),
+            error.SealUnopened => refuse(error.SealUnopened, parsed.vessel),
+            else => refuse(error.StampUnverified, parsed.vessel),
+        };
+    };
     return refuse(error.CommandNotGrown, "carry");
 }
 
