@@ -32,7 +32,7 @@
 //!   Module split named, not swept: InvalidVessel vs BadVessel (G10).
 //!
 //! Architecture (four sections, one file for the seed):
-//!   § Pour    — fill from season; seal then Kumara-stamp; no second pour
+//!   § Pour    — argument parse (Q6); season read · seal · stamp wait Q7+
 //!   § Carry   — move sealed vessel; kind 0x33 chunks; far dock verifies
 //!   § Restore — cold scrub; verify stamp+seal; restore byte-faithful
 //!   § Main    — CLI: pour / carry / restore / version
@@ -41,13 +41,15 @@
 //! Far side verifies stamp and seal before cargo is trusted again.
 //! Result on stdout; diagnostics on stderr — a result no caller can read
 //! is not a result (Amphora's half; family law awaits Keaton's word).
+//!
+//! Class W wire shoulder stays amber-ring1-season (e149 park) — not renamed here.
 
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
 /// Amphora CLI version — YYYYMMDD.HHMMSS, America/New_York, later is larger.
-const amphora_version = "20260731.230237";
+const amphora_version = "20260801.035204";
 
 // -------------------------------------------------------------------------
 // § Bounds — named with their why (Q4)
@@ -113,8 +115,58 @@ fn refuse(fault: CliError, detail: []const u8) u8 {
     return exit_misread;
 }
 
+// -------------------------------------------------------------------------
+// § Pour — argument parse (Q6); season read waits Q7
+// -------------------------------------------------------------------------
+
+/// Operands for `pour <season> <vessel>` after a successful parse.
+const PourArgs = struct {
+    season: []const u8,
+    vessel: []const u8,
+};
+
+/// Parse pour operands. Does not open the season or write a vessel (Q7+).
+/// Path C: no vessel-module import — only argv shape and named ceilings.
+fn parse_pour_args(args: []const []const u8) CliError!PourArgs {
+    assert(args.len >= 2);
+    assert(std.mem.eql(u8, args[1], "pour"));
+    if (args.len < 4) return error.MissingOperand;
+    if (args.len > max_words) return error.TooManyWords;
+    const season = args[2];
+    const vessel = args[3];
+    if (season.len == 0) return error.MissingOperand;
+    if (vessel.len == 0) return error.MissingOperand;
+    if (season.len > max_vessel_path_len) return error.PathTooLong;
+    if (vessel.len > max_vessel_path_len) return error.PathTooLong;
+    return .{ .season = season, .vessel = vessel };
+}
+
+/// Q6 door: parse, then wait — pour metal (read · seal · stamp) is Q7+.
+fn cmd_pour(args: []const []const u8) u8 {
+    const parsed = parse_pour_args(args) catch |fault| {
+        switch (fault) {
+            error.MissingOperand => return refuse(error.MissingOperand, "pour <season> <vessel>"),
+            error.PathTooLong => {
+                // Name which operand overran when present.
+                if (args.len >= 3 and args[2].len > max_vessel_path_len) {
+                    return refuse(error.PathTooLong, args[2]);
+                }
+                if (args.len >= 4 and args[3].len > max_vessel_path_len) {
+                    return refuse(error.PathTooLong, args[3]);
+                }
+                return refuse(error.PathTooLong, "pour");
+            },
+            error.TooManyWords => return refuse(error.TooManyWords, ""),
+            else => return refuse(error.CommandNotGrown, "pour"),
+        }
+    };
+    // Parsed season · vessel are held for Q7 — no import wall crossed yet.
+    _ = parsed;
+    return refuse(error.CommandNotGrown, "pour");
+}
+
 // =========================================================================
-// § Main — CLI (Q3 version · Q4 bounds · Q5 errors · pour waits)
+// § Main — CLI (Q3–Q6 · carry/restore wait · version)
 // =========================================================================
 
 pub fn main(init: std.process.Init) !u8 {
@@ -140,19 +192,14 @@ pub fn main(init: std.process.Init) !u8 {
     const cmd = args[1];
     if (std.mem.eql(u8, cmd, "version")) {
         return cmd_version(io);
-    } else if (std.mem.eql(u8, cmd, "pour") or
-        std.mem.eql(u8, cmd, "carry") or
-        std.mem.eql(u8, cmd, "restore"))
-    {
-        // Path operands (when present) must fit the named ceiling.
+    } else if (std.mem.eql(u8, cmd, "pour")) {
+        return cmd_pour(args);
+    } else if (std.mem.eql(u8, cmd, "carry") or std.mem.eql(u8, cmd, "restore")) {
         var i: u32 = 2;
         while (i < args.len) : (i += 1) {
             if (args[i].len > max_vessel_path_len) {
                 return refuse(error.PathTooLong, args[i]);
             }
-        }
-        if (std.mem.eql(u8, cmd, "pour") and args.len < 4) {
-            return refuse(error.MissingOperand, "pour <season> <vessel>");
         }
         if (std.mem.eql(u8, cmd, "carry") and args.len < 4) {
             return refuse(error.MissingOperand, "carry <vessel> <dock>");
