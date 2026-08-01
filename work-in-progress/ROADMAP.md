@@ -1,27 +1,27 @@
 # The Roadmap — living pin
 
 **Language:** EN  
-**Last updated:** `20260801.013831` · voice Riyo  
+**Last updated:** `20260801.024355` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Full season ledger:** [`archive/20260724-132812_roadmap-season-ledger.md`](archive/20260724-132812_roadmap-season-ledger.md)  
-**Align:** [`../foundations/20260706-185112_follow-our-compass.md`](../foundations/20260706-185112_follow-our-compass.md) · e140  
+**Align:** [`../foundations/20260706-185112_follow-our-compass.md`](../foundations/20260706-185112_follow-our-compass.md) · e140–e141  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md) · prefer **git nib** over tip
 
 ---
 
-## Now — Equinox (deca) · Amphora Glow/Tend/TAME CLI (`20260801.013831`)
+## Now — Amphora CLI wave Q1 · parent Equinox ch8 15/16 (`20260801.024355`)
 
 | Order | Lap | Status |
 |-------|-----|--------|
-| — | Equinox e0–e139 · ch1–ch7 FULL · ch8 15/16 · Amber accretion · fuse verify · REDS 48 · 128 reserved | landed |
-| **1** | **e140** align · ROADMAP → Amphora CLI · commence gated · Claude Opus 5 pack · REDS 49 | **this sitting** |
-| **2** | Claude charter Amphora Glow/Tend/TAME CLI nested equinox | check in (Claude) |
-| **3** | seat **128** close choir — opening word by name | Keaton alone |
-| **4** | SHRED lap — Class O opening word · **not** Amber preservation shred | Keaton alone |
-| **5** | Horizon: geode expedition begin (e254/e255 or Keaton begin) | GATED |
-| **6** | stack walk from sh — on-touch only, never a campaign | open when a file is |
+| — | Equinox e0–e140 · align Amphora CLI · Claude pack · REDS 49 · 128 reserved | landed |
+| **1** | **e141 / Q1** commence Amphora CLI wave · charter · REDS 50 · wave mode · name HELD | **this sitting** |
+| **2** | **Q2** doc comment only · zero code | next kg |
+| **3** | Keaton names season / handback | Keaton alone |
+| **4** | seat **128** close choir — opening word by name | Keaton alone |
+| **5** | SHRED lap — Class O · **not** Amber cellar | Keaton alone |
+| **6** | Horizon: geode · stack on-touch | GATED / on-touch |
 
-**Finishing edge (season):** Equinox OPEN · e141 next · ch7 FULL · ch8 OPEN 15/16 · **Amphora CLI horizon** · **commence GATED** · **fuse verify Amber GREEN** · **Amber retire by accretion GREEN** · **e137 breach withdrawn** · **Amber pause** · **MantraPod supersede GREEN** · **Class O word-scope** · **on-touch never campaign** · build stack · 128 reserved · fascia **88** i9 · saga **Seated**.  
+**Finishing edge (season):** Parent Equinox OPEN · nested **Amphora CLI wave OPEN** Q1/64 · name **HELD** · ch8 OPEN 15/16 · **REDS 50** · **wave bundle mode** · Amber accretion GREEN · 128 reserved · shred RED.  
 **Finishing edge (product horizon):** clone · bootstrap · one witness · one `rishi glow` line ≤ 30 minutes — still stands.
 
 **Build stack** (seated `20260731.230116`): sh → rish → glow·tend → docs-geode → Aurora·Caravan·Tally → Mantra·Weave — foundations first; not prioritizing an upper layer over the one beneath.  
@@ -40,6 +40,7 @@
 **Amber retire by accretion** (seated `20260801.012557`): lane closed for new work · module+witness whole · REDS 48 · no shred of Amber.
 **Fuse verify Amber accretion** (seated `20260801.013236`): counsel baton on elder e136 · living already e138 · Silo template named · kg does not open seat 128.
 **Align Amphora CLI** (seated `20260801.013831`): Glow/Tend/TAME CLI horizon · new equinox commence GATED · Claude Opus 5 handoff · REDS 49 · nib `aa89d19443`.
+**Commence Amphora CLI wave** (seated `20260801.024355`): Q1 charter · N=64 · name HELD · handback HELD · REDS 50 · `wave` bundle mode · amphora 10 tracked.
 
 **Shell ratchet** (seated `20260726.032231` · affirmed e127): `.sh` to Rishi on-touch only; never a campaign; advisory count each advise run; exemptions: `rye/bootstrap.sh`, external-interpreter seams, python-heredoc witness bodies until duty-8 verbs land, thin-delegate elders.
 
