@@ -1,0 +1,3 @@
+//! Plant — alias cargo_ceiling agree (negative control).
+pub const max_seal_plain: u32 = 1024;
+const max_cargo_bytes: u32 = 1024;

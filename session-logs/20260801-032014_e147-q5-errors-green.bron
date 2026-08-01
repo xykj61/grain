@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260801.032014
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Cursor Cloud — Eastern time convention · stamp UTC for one-clock continuity with e141+
+title e147 Q5 named errors · alias bounds GREEN
+prompt kg · fuse Claude Opus 5 Q5 CliError · G9 tautological · G7 alias · G10
+think counsel nib still e145 — living e146 already path C
+think Q5 CliError six · refuse switch · exit codes unchanged
+think G9 replace const==literal with max_words>=2 and datagram<=cargo
+think G7 widen bounds-agree alias cargo_ceiling and datagram
+think G10 InvalidVessel vs BadVessel named not swept
+think REDS 54 tautological assert · REDS 55 stuck-gate debt
+obs Q5 GREEN · Q6 pour parse next · path C holds at import wall
+file amphora/src/main.rye Q5 CliError refuse
+file tools/amphora_bounds_agree.rish alias groups
+file tools/fixtures/amphora_bounds_agree_scan.sh
+file work-in-progress/REDS.md rows 54 55
+recommend kg Q6 pour argument parse · path C unless Keaton renames
