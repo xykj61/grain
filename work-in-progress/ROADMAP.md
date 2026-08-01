@@ -1,7 +1,7 @@
 # The Roadmap — living pin
 
 **Language:** EN  
-**Last updated:** `20260801.012557` · voice Riyo  
+**Last updated:** `20260801.013236` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Full season ledger:** [`archive/20260724-132812_roadmap-season-ledger.md`](archive/20260724-132812_roadmap-season-ledger.md)  
 **Align:** [`20260726-050422_align-before-cursor-handoff.md`](archive/20260726-050422_align-before-cursor-handoff.md)  
@@ -9,18 +9,18 @@
 
 ---
 
-## Now — Equinox (deca) · Amber retire by accretion (`20260801.012557`)
+## Now — Equinox (deca) · fuse verify Amber accretion (`20260801.013236`)
 
 | Order | Lap | Status |
 |-------|-----|--------|
-| — | Equinox e0–e137 · ch1–ch7 FULL · ch8 15/16 · MantraPod supersede · e137 over-seat dated · REDS 47 · 128 reserved | landed |
-| **1** | **e138** Amber retire by accretion · e137 breach withdrawn · REDS 48 · amber kept whole | **this sitting** |
-| **2** | SHRED lap — Class O opening word · **not** Amber preservation shred | Keaton alone |
-| **3** | seat **128** close choir later | Keaton alone |
+| — | Equinox e0–e138 · ch1–ch7 FULL · ch8 15/16 · Amber retire by accretion · REDS 48 · 128 reserved | landed |
+| **1** | **e139** fuse verify Amber accretion already green · Silo template named · kg no seat 128 | **this sitting** |
+| **2** | seat **128** close choir — opening word by name | Keaton alone |
+| **3** | SHRED lap — Class O opening word · **not** Amber preservation shred | Keaton alone |
 | **4** | Horizon: geode expedition begin (e254/e255 or Keaton begin) | GATED |
 | **5** | stack walk from sh — on-touch only, never a campaign | open when a file is |
 
-**Finishing edge (season):** Equinox OPEN · e139 next · ch7 FULL · ch8 OPEN 15/16 · **Amber retire by accretion GREEN** · **e137 breach withdrawn** · **Amber pause** · **MantraPod supersede GREEN** · **affordable witness GREEN** · **surface six GREEN** · **suite 10/10** · **Class O word-scope** · **on-touch never campaign** · build stack · 128 reserved · fascia **88** i9 · saga **Seated**.  
+**Finishing edge (season):** Equinox OPEN · e140 next · ch7 FULL · ch8 OPEN 15/16 · **fuse verify Amber GREEN** · **Amber retire by accretion GREEN** · **e137 breach withdrawn** · **Amber pause** · **MantraPod supersede GREEN** · **affordable witness GREEN** · **surface six GREEN** · **suite 10/10** · **Class O word-scope** · **on-touch never campaign** · build stack · 128 reserved · fascia **88** i9 · saga **Seated**.  
 **Finishing edge (product horizon):** clone · bootstrap · one witness · one `rishi glow` line ≤ 30 minutes — still stands.
 
 **Build stack** (seated `20260731.230116`): sh → rish → glow·tend → docs-geode → Aurora·Caravan·Tally → Mantra·Weave — foundations first; not prioritizing an upper layer over the one beneath.  
@@ -37,6 +37,7 @@
 **MantraPod supersede** (seated `20260801.005853`): elder Vision restored · new dated pitch Grain · REDS 47 · dated_guard green.
 **Amber→Amphora unify** (seated `20260801.011942` · **withdrawn e138**): dated over-seat kept as testimony.
 **Amber retire by accretion** (seated `20260801.012557`): lane closed for new work · module+witness whole · REDS 48 · no shred of Amber.
+**Fuse verify Amber accretion** (seated `20260801.013236`): counsel baton on elder e136 · living already e138 · Silo template named · kg does not open seat 128.
 
 **Shell ratchet** (seated `20260726.032231` · affirmed e127): `.sh` to Rishi on-touch only; never a campaign; advisory count each advise run; exemptions: `rye/bootstrap.sh`, external-interpreter seams, python-heredoc witness bodies until duty-8 verbs land, thin-delegate elders.
 

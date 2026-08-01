@@ -1,7 +1,7 @@
 # Lexicon — Module Names and Their Meanings
 
 **Language:** EN
-**Last updated:** `20260801.012557` (**e138 GREEN** · Amber retire by accretion · e137 breach withdrawn)
+**Last updated:** `20260801.013236` (**e139 GREEN** · fuse verify Amber accretion · Silo template named)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---
@@ -175,7 +175,7 @@ Full loop bounds: [`work-in-progress/ready-to-ask-claude.md`](../work-in-progres
 | **mod-clock** | Collaboration library pairing **n mod 12** (zodiac houses) with **n mod 16** (slots) via joint clock **LCM=48** — not a false set-bijection of Z/12↔Z/16. [`../glow/mod_clock.rye`](../glow/mod_clock.rye). Seated `20260729.165912`. |
 | **Tablecloth** | Brix-facing application database and artifact store (horizon — not the namespace query) |
 | **Bron** | Immutable values at seams (`.bron` facts, policies, receipts); Brix composes wholes that bind Bron values — affirmed `174500` per [`counsel/20260707-222500`](../counsel/20260707-222500_claude-counsel-bron-beside-brix-first-proposal.md) |
-| **Amber** | **Cellar software** — preservation **in place** at home: signed, encrypted, bit-faithful resins on deep storage, append-only log, verified by folding; Mantra holds the living history, Amber seals the moment cold. **Lane closed for new work by accretion** (e138 `20260801.012557`) — module `amber/` and `tools/amber_first_ring.rish` kept whole and green; no redact · no shred. **Amber pause** kept. e137 unify-breach **withdrawn**. [`amber/README.md`](../amber/README.md) · [`specs/20260701-221512_amber-functional-spec.md`](specs/20260701-221512_amber-functional-spec.md) · counsel [`../counsel/20260801-012557_e138-amber-retire-by-accretion.md`](../counsel/20260801-012557_e138-amber-retire-by-accretion.md). |
+| **Amber** | **Cellar software** — preservation **in place** at home: signed, encrypted, bit-faithful resins on deep storage, append-only log, verified by folding; Mantra holds the living history, Amber seals the moment cold. **Lane closed for new work by accretion** (e138 `20260801.012557`) — **Silo template** (module name retired `174500`: name kept · lane closed · successor pointed · nothing destroyed); module `amber/` and `tools/amber_first_ring.rish` kept whole and green; no redact · no shred. **Amber pause** kept. e137 unify-breach **withdrawn**. Fuse-verify e139 `20260801.013236`. [`amber/README.md`](../amber/README.md) · [`specs/20260701-221512_amber-functional-spec.md`](specs/20260701-221512_amber-functional-spec.md) · counsel [`../counsel/20260801-012557_e138-amber-retire-by-accretion.md`](../counsel/20260801-012557_e138-amber-retire-by-accretion.md). |
 
 ## Archive and digest *(ratified `20260703.191312`)*
 
