@@ -36,6 +36,7 @@
 //!   CargoTooLarge · VesselUnwritable · SealToolAbsent · SealFailed
 //!   StampToolAbsent · StampFailed · IdentityFork · ManifestOverflow
 //!   StampUnverified · SealUnopened (Q20 carry walls)
+//!   DockUnwritable · ChunkTorn · CrossingUnequal (Q23–Q24 crossing)
 //!   Module split named, not swept: InvalidVessel vs BadVessel (G10).
 //!
 //! Architecture (four sections, one file for the seed):
@@ -72,7 +73,7 @@ const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
 const Dir = std.Io.Dir;
 
 /// Amphora CLI version — YYYYMMDD.HHMMSS, America/New_York, later is larger.
-const amphora_version = "20260801.050152";
+const amphora_version = "20260801.050219";
 
 // -------------------------------------------------------------------------
 // § Bounds — named with their why (Q4 · Q7 · Q8 · Q9)
@@ -186,6 +187,9 @@ const CliError = error{
     ManifestOverflow,
     StampUnverified,
     SealUnopened,
+    DockUnwritable,
+    ChunkTorn,
+    CrossingUnequal,
 };
 
 /// One door for every CLI fault — switch on the name, never compare.
@@ -214,6 +218,9 @@ fn refuse(fault: CliError, detail: []const u8) u8 {
         error.ManifestOverflow => print("amphora: manifest overflow — '{s}'\n", .{detail}),
         error.StampUnverified => print("amphora: stamp unverified — '{s}'\n", .{detail}),
         error.SealUnopened => print("amphora: seal unopened — '{s}'\n", .{detail}),
+        error.DockUnwritable => print("amphora: dock unwritable — '{s}'\n", .{detail}),
+        error.ChunkTorn => print("amphora: chunk torn — '{s}'\n", .{detail}),
+        error.CrossingUnequal => print("amphora: crossing unequal — '{s}'\n", .{detail}),
     }
     return exit_misread;
 }
@@ -868,7 +875,68 @@ fn plan_chunks(vessel_bytes: u32) u32 {
     return count;
 }
 
-/// Q22 door: parse · walls · guard · plan; chunk write waits Q23.
+/// One chunk's on-dock name: chunk-NNNN.bron (format vocabulary, park open).
+fn dock_chunk_path(dock: []const u8, index: u32, buf: []u8) CliError![]const u8 {
+    assert(dock.len > 0);
+    assert(index < max_carry_chunks);
+    return std.fmt.bufPrint(buf, "{s}/chunk-{d:0>4}.bron", .{ dock, index }) catch {
+        return error.PathTooLong;
+    };
+}
+
+/// Q23: cut the vessel into ceiling-sized chunks and write them at the dock.
+/// Effects come last in each step: the dock directory is made, then chunks
+/// land in index order, each a plain byte slice of the sealed vessel text.
+fn write_dock_chunks(io: std.Io, dock: []const u8, vessel_text: []const u8, chunk_count: u32) CliError!void {
+    assert(vessel_text.len > 0);
+    assert(chunk_count == plan_chunks(@intCast(vessel_text.len)));
+    const cwd = Dir.cwd();
+    cwd.createDirPath(io, dock) catch return error.DockUnwritable;
+    var i: u32 = 0;
+    while (i < chunk_count) : (i += 1) {
+        const start: u32 = i * max_chunk_datagram;
+        const remain: u32 = @intCast(vessel_text.len - start);
+        const take: u32 = if (remain < max_chunk_datagram) remain else max_chunk_datagram;
+        assert(take >= 1);
+        var path_buf: [max_vessel_path_len]u8 = undefined;
+        const cpath = try dock_chunk_path(dock, i, &path_buf);
+        cwd.writeFile(io, .{ .sub_path = cpath, .data = vessel_text[start .. start + take] }) catch {
+            return error.DockUnwritable;
+        };
+    }
+}
+
+/// Q24: reassemble the chunks in order and demand byte-equality with the
+/// source — a crossing is only believed when the far bytes are the near bytes.
+fn assemble_dock_vessel(io: std.Io, dock: []const u8, far_vessel: []const u8, source_text: []const u8, chunk_count: u32) CliError!void {
+    assert(source_text.len > 0);
+    assert(chunk_count >= 1);
+    const cwd = Dir.cwd();
+    var joined: [max_vessel_len]u8 = undefined;
+    var off: u32 = 0;
+    var i: u32 = 0;
+    while (i < chunk_count) : (i += 1) {
+        var path_buf: [max_vessel_path_len]u8 = undefined;
+        const cpath = try dock_chunk_path(dock, i, &path_buf);
+        var cbuf: [max_chunk_datagram]u8 = undefined;
+        const piece = cwd.readFile(io, cpath, &cbuf) catch return error.ChunkTorn;
+        if (piece.len == 0) return error.ChunkTorn;
+        if (off + piece.len > joined.len) return error.ChunkTorn;
+        var bi: u32 = 0;
+        while (bi < piece.len) : (bi += 1) {
+            joined[off + bi] = piece[bi];
+        }
+        off += @intCast(piece.len);
+    }
+    if (off != source_text.len) return error.CrossingUnequal;
+    if (!std.mem.eql(u8, joined[0..off], source_text)) return error.CrossingUnequal;
+    cwd.writeFile(io, .{ .sub_path = far_vessel, .data = joined[0..off] }) catch {
+        return error.DockUnwritable;
+    };
+}
+
+/// Q24 door: parse · walls · guard · plan · chunks · assemble byte-equal ·
+/// far walls — the crossing closes; manifest read waits Q25.
 fn cmd_carry(init: std.process.Init, args: []const []const u8) u8 {
     const parsed = parse_carry_args(args) catch |fault| {
         return switch (fault) {
@@ -913,7 +981,28 @@ fn cmd_carry(init: std.process.Init, args: []const []const u8) u8 {
     assert(vtext.len > 0);
     const chunk_count = plan_chunks(@intCast(vtext.len));
     print("amphora: carry plan chunks={d} ceiling={d} bytes={d}\n", .{ chunk_count, max_chunk_datagram, vtext.len });
-    return refuse(error.CommandNotGrown, "carry");
+
+    write_dock_chunks(init.io, parsed.dock, vtext, chunk_count) catch |fault| {
+        return switch (fault) {
+            error.PathTooLong => refuse(error.PathTooLong, parsed.dock),
+            else => refuse(error.DockUnwritable, parsed.dock),
+        };
+    };
+    assemble_dock_vessel(init.io, parsed.dock, far_vessel, vtext, chunk_count) catch |fault| {
+        return switch (fault) {
+            error.ChunkTorn => refuse(error.ChunkTorn, parsed.dock),
+            error.CrossingUnequal => refuse(error.CrossingUnequal, parsed.dock),
+            else => refuse(error.DockUnwritable, far_vessel),
+        };
+    };
+    carry_verify_walls(init, allocator, init.io, args[0], far_vessel) catch |fault| {
+        return switch (fault) {
+            error.SealUnopened => refuse(error.SealUnopened, far_vessel),
+            else => refuse(error.StampUnverified, far_vessel),
+        };
+    };
+    print("amphora: carry complete chunks={d} far={s}\n", .{ chunk_count, far_vessel });
+    return exit_ok;
 }
 
 // -------------------------------------------------------------------------
