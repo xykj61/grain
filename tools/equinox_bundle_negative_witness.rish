@@ -6,6 +6,7 @@
 # with clone/unbundle as the second: both are planted here.
 #   torn bundle    → sha3 mismatch vs manifest · clone refuses
 #   missing basis  → verify refuses in a repo without the prerequisites
+#   healthy span   → clones tip-equal (the affirmative face, e203)
 # Rishi note: shell brace expansions never appear inside strings here — the
 # rishi interpolator owns the dollar-brace shape (e194 red, owned and recut).
 #
@@ -30,5 +31,8 @@ assert (tclone.ok == false) else "bundle_neg: clone from torn must refuse"
 let basis = run ["sh" "-c" "R=$(pwd); b=$(ls -t bundles/rehearsal/rehearsal-span-*.bundle | head -1); rm -rf /tmp/ebnw_empty; git init -q /tmp/ebnw_empty; cd /tmp/ebnw_empty; git bundle verify $R/$b"]
 assert (basis.ok == false) else "bundle_neg: missing basis must refuse"
 
-say "plants: torn-sha3=refused torn-clone=refused missing-basis=refused"
+let healthy = run ["sh" "-c" "R=$(pwd); b=$(ls -t bundles/rehearsal/rehearsal-span-*.bundle | head -1); rm -rf /tmp/ebnw_ok; git clone -q $R/$b /tmp/ebnw_ok 2>/dev/null; cd /tmp/ebnw_ok; a=$(git rev-parse HEAD); cd $R; c=$(git rev-parse HEAD); test x$a = x$c"]
+assert healthy.ok else "bundle_neg: the healthy span must clone tip-equal"
+
+say "plants: torn-sha3=refused torn-clone=refused missing-basis=refused healthy=tip-equal"
 say "GREEN: equinox_bundle_negative — verify is necessary, the content address is the wall."
