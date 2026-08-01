@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260801.152620` · voice Riyo · e204 beta scoreboard (fascia DONE · gen 448 homed + 8 stragglers · alias witness = open leg · shred GATED · page PARKED) · queue refilled 6-7 · gates keep · SEA only · shred RED
+**Last refreshed:** `20260801.153144` · voice Riyo · e205 aliases proven (33 shims · leg 2 GREEN) · self-work queue EMPTY · gates keep: class-and-rooms · seat 128 · SEA only · shred RED
 **Pier at fusion:** `20260802.132104` · p191–p203 · Tend T1–T6·C1–C4·A1–A3·M1 · tip 33d77fe68c — counsel lane rebased atop, one file overlapped, union kept
 
 
