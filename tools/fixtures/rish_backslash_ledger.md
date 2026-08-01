@@ -44,3 +44,5 @@ escaped quote and works. Positive controls run where teeth were claimable.
   documenting the very gap this ledger enforces
 - fixtures/tame_style_long_fn:19 — intentional fixture shape
 - rishi_quote_safe_witness:9 — probe whose truth is insensitive (noted e206)
+
+**Stamp correction (`20260801.161042`):** header stamp drafted as 161444; measured clock at seal was 160732.
