@@ -50,14 +50,19 @@ test -f "$BUNDLE" || {
 MANIFEST="${BUNDLE}.manifest"
 BYTES=$(wc -c < "$BUNDLE" | tr -d '[:space:]')
 REFS=$(git bundle list-heads "$BUNDLE" 2>/dev/null | wc -l | tr -d '[:space:]')
-# Commit count for a span when start is a real hash; --all uses tip ancestry count.
-if test "$START" = "--all" || test "$START" = "all"; then
-  COMMITS=$(git rev-list --count "$END" 2>/dev/null | tr -d '[:space:]' || echo 0)
-  SPAN="--all..${END}"
+# Commit count for a span when start is a real hash; --all/all/root take the
+# tip's full ancestry. Exit status captured before any pipe (workshop law):
+# the elder form masked rev-list failures behind tr, printing blank not zero.
+if test "$START" = "--all" || test "$START" = "all" || test "$START" = "root"; then
+  COMMITS_RAW=$(git rev-list --count "$END" 2>/dev/null)
+  RC=$?
+  SPAN="root..${END}"
 else
-  COMMITS=$(git rev-list --count "${START}..${END}" 2>/dev/null | tr -d '[:space:]' || echo 0)
+  COMMITS_RAW=$(git rev-list --count "${START}..${END}" 2>/dev/null)
+  RC=$?
   SPAN="${START}..${END}"
 fi
+if test "$RC" -ne 0 || test -z "$COMMITS_RAW"; then COMMITS=0; else COMMITS=$(printf %s "$COMMITS_RAW" | tr -d '[:space:]'); fi
 
 REDS_ROWS=$(rg -c '^\| [0-9]+ \|' work-in-progress/REDS.md 2>/dev/null || echo 0)
 REMEMBER_BYTES=$(wc -c < work-in-progress/REMEMBER.md | tr -d '[:space:]')
@@ -81,6 +86,14 @@ SEAT_MAP_BYTES=$(wc -c < work-in-progress/EQUINOX_SEAT_MAP.md | tr -d '[:space:]
   echo "bound_bytes 268435456"
   echo "refs_listed ${REFS}"
   echo "commit_count ${COMMITS}"
+  # Content address of the bundle bytes (sha3-256 via openssl, POSIX seam).
+  SHA3_RAW=$(openssl dgst -sha3-256 "$BUNDLE" 2>/dev/null)
+  RC=$?
+  if test "$RC" -eq 0 && test -n "$SHA3_RAW"; then
+    echo "bundle_sha3 ${SHA3_RAW##*= }"
+  else
+    echo "bundle_sha3 unavailable"
+  fi
   echo "living_doc work-in-progress/REDS.md rows=${REDS_ROWS}"
   echo "living_doc work-in-progress/REMEMBER.md bytes=${REMEMBER_BYTES}"
   echo "living_doc context/LEXICON.md bytes=${LEXICON_BYTES}"
