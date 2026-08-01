@@ -11,8 +11,11 @@ assert glow_side.out contains "STOA241" else "glow side missing STOA241"
 
 let product = run ["rishi/bin/rishi" "run" "tools/glow_seva_b0_line_witness.rish"]
 assert product.ok else "glow_seva_b0_line_witness failed"
-assert product.out contains "STOA241" else "product side missing STOA241"
-assert product.out contains "face_lit product" else "product face_lit agree missing"
+# e209 drift accretion: the line witness superseded its marker to STOA243
+# (its say reads "…; STOA243." today). Each side carries its own current
+# marker; the agree-property, not the tag, is what this witness holds.
+assert product.out contains "STOA243" else "product side missing its current marker STOA243"
+assert product.out contains "face_lit" else "product face_lit agree missing"
 
 # Honesty: product names the stand-in and does not @import glow/face_lit.
 let named = run ["sh" "-c" "grep -q extract_face_lit_cord linengrow/glow_seva_b0_line.rye"]
