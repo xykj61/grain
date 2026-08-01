@@ -1,0 +1,22 @@
+# tools/gen/season/equinox_e138_amber_accretion_witness.rish — e138 seat.
+#   rishi/bin/rishi run tools/gen/season/equinox_e138_amber_accretion_witness.rish
+say "e138-accretion: Language EN — Amber retire by accretion · e137 breach withdrawn."
+say "e138-accretion: Style Radiant — complements stay; lane closes; module whole."
+say "e138-accretion: Lens TAME — e138 · amber witness green · shred RED · 128 reserved."
+
+let green = run ["sh" "tools/fixtures/equinox_e138_amber_accretion_scan.sh"]
+assert green.ok else "e138-accretion: living scan must exit 0"
+assert green.out contains "breach=withdrawn_to_accretion" else "e138-accretion: want breach withdrawn"
+assert green.out contains "retirement=by_accretion" else "e138-accretion: want accretion"
+assert green.out contains "amber_kept=honored" else "e138-accretion: want amber kept"
+assert green.out contains "amber_witness=honored" else "e138-accretion: want amber witness"
+assert green.out contains "reds_note=row_48_retire_by_accretion" else "e138-accretion: want REDS 48"
+assert green.out contains "shred=RED" else "e138-accretion: want shred RED"
+assert green.out contains "seat_128=reserved_close_choir" else "e138-accretion: want 128 reserved"
+assert green.out contains "verdict=ok" else "e138-accretion: want verdict ok"
+
+let red = run ["sh" "tools/fixtures/equinox_e138_amber_accretion_scan.sh" "prove-red"]
+assert (red.ok == false) else "e138-accretion: prove-red must refuse"
+assert red.out contains "RED_amber_shred_plan_still_living" else "e138-accretion: prove-red want refuse"
+
+say "GREEN: e138-accretion — breach withdrawn · Amber whole · witness green · shred RED · 128 reserved"

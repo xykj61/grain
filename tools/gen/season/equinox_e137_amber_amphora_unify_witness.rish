@@ -1,14 +1,13 @@
-# tools/gen/season/equinox_e137_amber_amphora_unify_witness.rish — e137 seat.
+# tools/gen/season/equinox_e137_amber_amphora_unify_witness.rish — e137 seat (corrected at e138).
 #   rishi/bin/rishi run tools/gen/season/equinox_e137_amber_amphora_unify_witness.rish
-say "e137-unify: Language EN — Amber→Amphora unify breach · Amber pause."
-say "e137-unify: Style Radiant — approve seats the gate; cut waits the opening word."
-say "e137-unify: Lens TAME — e137 · shred RED · amber kept · 128 reserved."
+say "e137-unify: Language EN — e137 dated seat · living edge is e138 accretion."
+say "e137-unify: Style Radiant — over-seat kept as testimony; breach withdrawn."
+say "e137-unify: Lens TAME — amber kept · shred RED · 128 reserved."
 
 let green = run ["sh" "tools/fixtures/equinox_e137_amber_amphora_unify_scan.sh"]
 assert green.ok else "e137-unify: living scan must exit 0"
-assert green.out contains "breach=approved_seated_gated" else "e137-unify: want breach seated"
-assert green.out contains "pause=amber_pause" else "e137-unify: want Amber pause"
-assert green.out contains "cut=none_this_stamp" else "e137-unify: want no cut"
+assert green.out contains "e137_counsel=dated_testimony_kept" else "e137-unify: want e137 counsel"
+assert green.out contains "breach=withdrawn_at_e138" else "e137-unify: want withdrawn"
 assert green.out contains "amber_kept=honored" else "e137-unify: want amber kept"
 assert green.out contains "shred=RED" else "e137-unify: want shred RED"
 assert green.out contains "seat_128=reserved_close_choir" else "e137-unify: want 128 reserved"
@@ -16,6 +15,6 @@ assert green.out contains "verdict=ok" else "e137-unify: want verdict ok"
 
 let red = run ["sh" "tools/fixtures/equinox_e137_amber_amphora_unify_scan.sh" "prove-red"]
 assert (red.ok == false) else "e137-unify: prove-red must refuse"
-assert red.out contains "RED_amber_cut_without_opening_word" else "e137-unify: prove-red want refuse"
+assert red.out contains "RED_e137_breach_still_living_cut_plan" else "e137-unify: prove-red want refuse"
 
-say "GREEN: e137-unify — breach gated · Amber pause · amber kept · shred RED · 128 reserved"
+say "GREEN: e137-unify — dated seat kept · e138 accretion living · amber kept · shred RED · 128 reserved"

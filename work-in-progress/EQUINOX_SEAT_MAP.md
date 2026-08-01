@@ -1,11 +1,11 @@
 # Equinox Seat Map — close path · Chapter Seven and Eight
 
 **Language:** EN  
-**Status:** Living pin — **Amber→Amphora unify breach APPROVED · GATED** · **Amber pause** · **MantraPod supersede GREEN** · **affordable witness** · **surface census six GREEN** · **suite 10/10** · **timing figure is a pin** · **manifest living-doc** · **seal-jam-cue desk GREEN** · **max_lines** enforced · **bundle send GREEN** · **Class O word-scope** · **on-touch never campaign** · **start rung** sh→rish · **build stack** seated · ch7 close **PERFORMED** · ch8 seat **128 RESERVED** · fork **EXTEND +128** · breach **closed unspent** · roofs **CLOSED** · close-seat **answered** · e92 park **lifted** · **roots ≠ Bench** · name the Bench · **living-pin guard** · emptied caught  
+**Status:** Living pin — **Amber retire by accretion** · **e137 breach withdrawn** · **Amber pause** · **MantraPod supersede GREEN** · **affordable witness** · **surface census six GREEN** · **suite 10/10** · **timing figure is a pin** · **manifest living-doc** · **seal-jam-cue desk GREEN** · **max_lines** enforced · **bundle send GREEN** · **Class O word-scope** · **on-touch never campaign** · **start rung** sh→rish · **build stack** seated · ch7 close **PERFORMED** · ch8 seat **128 RESERVED** · fork **EXTEND +128** · breach **closed unspent** · roofs **CLOSED** · close-seat **answered** · e92 park **lifted** · **roots ≠ Bench** · name the Bench · **living-pin guard** · emptied caught  
 **Voice:** Riyo  
-**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260801.011942` (e137 Amber→Amphora unify · Amber pause · 128 kept reserved)  
-**Seat:** Equinox e123 · almanac **127** · Chapter Eight **(15 of 16)** · e124–e137 no content seat  
-**Basis:** kg Amber→Amphora unify breach · Amber pause · MantraPod supersede · six living scans · suite 10/10 · **128 still reserved**  
+**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260801.012557` (e138 Amber accretion · breach withdrawn · 128 kept reserved)  
+**Seat:** Equinox e123 · almanac **127** · Chapter Eight **(15 of 16)** · e124–e138 no content seat  
+**Basis:** kg Amber retire by accretion · e137 breach withdrawn · Amber pause · MantraPod supersede · suite 10/10 · **128 still reserved**  
 
 *A chapter's sixteenth seat may carry check · test · prepare as a close choir. A duty is not a seat unless the almanac says so — only the close is a seat. A surface witness claims no seat of its own. **roots** are where the hand sits to send words; a **Bench** is where claims become evidence — different kinds. Name the **Bench** when a measurement is reported. **Build stack:** sh → rish → glow·tend → docs-geode → Aurora·Caravan·Tally → Mantra·Weave — foundations first; five refusals · layer order. **Start rung:** sh → rish seam — on-touch only. **Shell ratchet:** on-touch, never a campaign. **Class O word-scope:** authorizing word on class/rooms, not per-path. **Bundle send:** crossing mode — cut · verify · stamped manifest; first rehearsal e129. **max_lines:** Glow multi-bind ceiling 6 — refuses past it. When two roofs carry one name, either they agree or the name is doing two jobs. Approve-all · kg · approvals seat recommended leans; they circle no gate — including shred. Seat the suite; do not manufacture meters. Look for the thing, not for the name of the thing. On-disk is not in-the-tree. A witness must not depend on one bench's tools.*
 
@@ -96,7 +96,7 @@
 | MantraPod pitch | **superseded** e136 · living speech `20260801-005853` · elder `20260629-020012` kept whole |
 | affordable witness | **seated** e135 · REDS 46 · e115 not nested in casual seats |
 | dated Vision law | **seated** e136 · REDS 47 · claim rewrites supersede · never silent in-place |
-| Amber→Amphora | **breach APPROVED · GATED** e137 · **Amber pause** · redact/shred Amber planned · cut none this stamp |
+| Amber | **retire by accretion** e138 · e137 breach **withdrawn** · Amber pause · module+witness kept · no shred of Amber |
 | shred | **RED** · awaits opening word (`Class O yes` · room · circled shred yes) · kg does not open |
 | timing figure | pin · range or re-cut · desk tier not a constant (REDS 43) |
 | manifest living_doc | six limbs · restore verified rather than trusted · bundle untracked |
