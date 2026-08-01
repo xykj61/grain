@@ -1,7 +1,7 @@
 # Lexicon — Module Names and Their Meanings
 
 **Language:** EN
-**Last updated:** `20260801.003811` (**e134 GREEN** · surface census six through elder chain)
+**Last updated:** `20260801.005200` (**e135 GREEN** · MantraPod living · affordable witness)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---
@@ -19,6 +19,8 @@ Living vocabulary for the Grain family (Glow language · Grain umbrella). Each n
 | **timing figure** | A stopwatch reading of a desk or suite — a **pin**, not a constant. Desk tier varies with cache warmth (honest cuts: ~57s cold · ~5s · ~11s). Carry a range, or re-cut every round; never treat one figure — including a "correction" — as the tier. Seated e131 `20260801.000833` · REDS 43 · counsel [`../counsel/20260801-000833_e131-timing-pin-manifest-limb.md`](../counsel/20260801-000833_e131-timing-pin-manifest-limb.md). |
 | **compact Last updated** | Living-doc date dialect: `**Last updated:**` wrapped as `YYYYMMDD` **or** full one-clock `YYYYMMDD.HHMMSS` — both compact (**one roof**); hyphenated `YYYY-MM-DD` is the refused other dialect. Pattern `[0-9]{8}(\.[0-9]{6})?` (e132). Lexicon was the **first of eleven** law-library pages to stamp seconds. An instrument that hardcodes date-only ages when the tree moves to stamps. Seated e111 · widened e132 `20260801.001244` · named e133 `20260801.003457` · REDS 44 · counsel [`../counsel/20260801-001244_e132-date-dialect-timestamp.md`](../counsel/20260801-001244_e132-date-dialect-timestamp.md) · fuse [`../counsel/20260801-003457_e133-fuse-verify-dialect-green.md`](../counsel/20260801-003457_e133-fuse-verify-dialect-green.md). |
 | **surface census** | Count of `equinox_ch*_surface_witness.rish` limbs — living value **six** (ch2–ch7) after e119 seated ch5+ch6 as tools. Elder scans that hardcode four age the moment a chapter surface lands. Cleared through the chain e134 `20260801.003811` · REDS 45 · counsel [`../counsel/20260801-003811_e134-surface-count-six.md`](../counsel/20260801-003811_e134-surface-count-six.md). |
+| **affordable witness** | A witness fast enough that someone will actually run it. Speed is honesty, not a nicety — a witness nobody can afford to run is a witness that stops being run, and that is how stale counts ride for seats. Bench pin on Cursor Cloud (`20260801.005200`): e112 ~0.1s · e114 ~34s · e116 ~35s · e115 exit 124 past ~70s mid-suite. Timing remains a pin (REDS 43); do not campaign a mass rewrite. Seated e135 · REDS 46 · counsel [`../counsel/20260801-005200_e135-mantrapod-affordable-witness.md`](../counsel/20260801-005200_e135-mantrapod-affordable-witness.md). |
+| **Mantrapod** | Open-hardware pocket-computer venture pitch — reflective paper-like screen, memory that forgets, wired or offline, Grain on an open processor, made to open and mend. Living voice **Riyo** · coauthor **Keaton Livermore** · umbrella **Grain** (was dated Reya 2 / Kaeden / Rye OS speech). Foundations [`../foundations/20260629-020012_mantrapod-venture-pitch.md`](../foundations/20260629-020012_mantrapod-venture-pitch.md) · kin [`../foundations/20260628-133212_the-device-that-forgets.md`](../foundations/20260628-133212_the-device-that-forgets.md). Radiant pass e135 `20260801.005200`. |
 
 ## Cursor loop — gates and itinerary
 
