@@ -9,7 +9,7 @@ let file_lines = where all as l: l starts-with "file "
 let total = length file_lines
 assert total > 0 else "no file entries found in .brix"
 
-let check = run ["sh" "-c" "awk '$1 == \"file\" { print $2 }' .brix | while read -r p; do [ -f \"$p\" ] || echo \"$p\"; done"]
+let check = run ["sh" "-c" "awk '$1 == \"file\" { print $2 }' .brix | while read -r p; do [ -f $p ] || echo $p; done"]
 assert check.ok else "existence scan failed"
 let missing = trim check.out
 if missing != "" then say "MISSING bricks:"
