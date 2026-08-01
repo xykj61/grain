@@ -1,28 +1,32 @@
 # Tasks — living pin
 
 **Language:** EN  
-**Last updated:** `20260727.074039` (EDT) · voice Quin  
+**Last updated:** `20260801.013831` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Full season ledger:** [`archive/20260724-132812_tasks-season-ledger.md`](archive/20260724-132812_tasks-season-ledger.md)  
-**Align:** [`20260726-050422_align-before-cursor-handoff.md`](archive/20260726-050422_align-before-cursor-handoff.md)
+**Align:** [`20260706-185112_follow-our-compass.md`](../foundations/20260706-185112_follow-our-compass.md) · e140 `20260801.013831`  
+**Operator card:** [`REMEMBER.md`](REMEMBER.md) · prefer **git nib** over tip
 
 ---
 
-## Now — F COLD · then H · S-ladder (`20260726.050422`)
+## Now — Amphora Glow / Tend / TAME CLI (`20260801.013831`)
 
-**Finishing edge (seated):** in-flight **COLD** full parity reports → on GREEN, **H** Brix survey (reading only) → then S0 cost table from the *next* instrumented COLD before S2 / archive / S3 impl.
+**Finishing edge (seated e140):** align pointed the constructive wave at **Amphora CLI** climbing the build stack on-touch (glow · tend · TAME). New equinox commence is **GATED** — Claude Opus 5 charters; Keaton seats. Parent Equinox stays OPEN at ch8 15/16 · seat **128 RESERVED**.
 
 | Lap | Status |
 |-----|--------|
-| Breach T3–T4 · monocypher · MAP · U·V·I | **landed** |
-| Graph-is-not-a-vane · S0 instrument · S1a zig shelf · S1b design · S3 hammock | **landed** (`796da33146`) |
-| **F** COLD full parity (`/tmp/parity-f-rerun/parity.log`) | **in flight** — do not disturb |
-| **H** Brix survey | **held** on F GREEN |
-| S0 cost table (instrumented run) | **next** after F (or a fresh instrumented COLD) |
-| S2 packs · lane (b) archive · S3 receipts impl | **gated** on S0 table + Keaton word (S3) |
-| P-vane naming | **PARKED** — five entry checks on REMEMBER |
-| Newcomer ≤30 min green (clone · bootstrap · witness · `rishi glow`) | **horizon product edge** — not this campaign's finishing edge |
-| One CLOCK · Crockford · Mand ring-1 | **landed** (prior season) |
+| Equinox e0–e139 · Amber accretion · fuse verify · suite green | **landed** |
+| **e140** align · ROADMAP → Amphora CLI · Claude handoff package | **this sitting** |
+| Claude Opus 5 charter (name · N · handback · first desk · refusals) | **next** — paste counsel reply |
+| Amphora CLI metal (Glow/Tend desks wrapping pour·carry·scrub·fetch·seal) | **gated** on charter + Keaton seat |
+| seat **128** close choir | **Keaton alone** — `open the close` |
+| Class O shred lap | **Keaton alone** — not Amber cellar |
+| Geode expedition begin | **GATED** |
+| Stack walk from sh | on-touch only · never a campaign |
+
+**Stale retired (compass hygiene):** prior Now "F COLD · then H" (`20260726.050422`) is no longer the living finishing edge — briefs and green witnesses won. Elder S-ladder detail lives in the season ledger archive.
+
+**Horizon product edge (unchanged):** newcomer ≤30 min green (clone · bootstrap · witness · `rishi glow`).
 
 ---
 
@@ -30,15 +34,13 @@
 
 | Door | Kind |
 |------|------|
-| F result → H Brix survey | finishing edge |
-| S0 cost table → S2 packs | mechanical after measure |
-| S3 receipts impl | Keaton word after S0 |
-| Breach-two · Pond seven · xykj61 · Acme · lap-kinds · Brix ladder name · license badge · data-dignity · succession · Mand ring-3 | Keaton |
-| Mand ring-2 / Hands We Grow parks / `$:` `@u64` | check-in / later Glow |
-| Duty-8 shell migration | ratchet · on-touch |
-| Radiant pass | on-touch only |
-| Glow README · baked-sample Acme gloss | **landed** `20260727.074000` — fixture vs generator · Kumara personalization held as possible-not-proven |
+| Claude Amphora CLI charter | counsel · check in (Claude) |
+| Amphora CLI first desk | mechanical after charter |
+| seat 128 close choir | Keaton word |
+| Class O shred | Keaton word by name |
+| SAFE · geode BEGIN | Keaton |
+| Shell ratchet / Radiant pass | on-touch |
 
 ---
 
-*May every newcomer reach a green line before the half-hour bell — and may this sitting finish the COLD edge it already started.*
+*May the vessel earn its command line. May the close wait for its word. May stale Now lines not outrank a green brief.*
