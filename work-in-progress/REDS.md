@@ -1,7 +1,7 @@
 # REDS — the ledger of what we got wrong
 
 **Language:** EN
-**Stamp:** living ledger (born `20260729.222000`) · refreshed `20260801.005200` (Equinox e135 · row 46 affordable witness)
+**Stamp:** living ledger (born `20260729.222000`) · refreshed `20260801.005853` (Equinox e136 · row 47 dated Vision in-place)
 **Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
 **Voice:** Riyo
 **Status:** Living pin — one row per red, oldest first
@@ -87,8 +87,9 @@ A red enters this ledger when it is found. Rows are never edited or removed; a l
 | 44 | Date-dialect compact pattern required exactly eight digits; Lexicon's full one-clock stamp failed the witness while the tree was more precise than the instrument — and clearing it exposed elder suite limbs still requiring surface_count=4 after census six | counsel found red e132 `20260801.001244` · `want_compact_last_updated_LEXICON.md` · instrument suite pass 8 fail 1 then on-touch clear | An instrument that hardcodes a format ages when the format improves. Seat the suite; do not manufacture meters. |
 | 45 | After e132 cleared e111/e113 scans, six more living scans (and chained witnesses) still asserted surface_count=4 while the tree held six chapter surfaces — e113 witness went red via elder e112; a count ages faster than a format because the tree is supposed to grow | counsel fuse e134 `20260801.003811` · suite pass 9 fail 1 · six surface witnesses · chained elder | An instrument that hardcodes a count ages faster than one that hardcodes a format. Fix the chain, not one limb at a time. |
 | 46 | Counsel found e114 · e115 · e116 reaching no verdict inside a minute; Cloud re-cut showed e112 ~0.1s green while e115 exit 124 past ~70s mid-suite — the stale surface four rode because the scans holding it were too slow to sweep | counsel fuse e135 `20260801.005200` · e112 fast · e115 timeout pin · MantraPod living pass | A witness nobody can afford to run is a witness that stops being run. Speed keeps a witness honest. Seat the law; do not campaign a rewrite. |
+| 47 | e135 rewrote claims on dated Vision pitch `20260629-020012_mantrapod-venture-pitch.md` (and kin essay) under a Radiant-pass cover — Rye OS→Grain · Reya 2→Riyo — while the file declared neither living ledger nor freeze pointer; counsel measured dated_guard would catch the class of edit; supersede restores the elder and accretes a second pitch | counsel fuse e136 `20260801.005853` · living-vs-dated · dated_guard · elder restored · `20260801-005853_mantrapod-venture-pitch.md` | A dated Vision is testimony. Claim rewrites belong in a superseding artifact. Accrete-never-break so a better second draft costs the first one nothing. |
 
-**Rows: 46 · in the tree before the ledger: 6 · recovered by opening it: 14 · added under the reds-first law: 26**
+**Rows: 47 · in the tree before the ledger: 6 · recovered by opening it: 14 · added under the reds-first law: 27**
 
 **Reds-first accounting for v11:** two reds found, both fixed in-round with witnesses on metal, ledger closed. The remaining journey allocation is therefore **released** rather than booked — which is the law working, not the law skipped.
 
