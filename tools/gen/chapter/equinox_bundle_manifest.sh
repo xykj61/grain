@@ -83,6 +83,7 @@ SEAT_MAP_BYTES=$(wc -c < work-in-progress/EQUINOX_SEAT_MAP.md | tr -d '[:space:]
   echo "tip ${END}"
   echo "bundle_path ${BUNDLE}"
   echo "bundle_bytes ${BYTES}"
+  # couples: equinox_bundle_send.sh BOUND (one number, two speakers — keep in step)
   echo "bound_bytes 268435456"
   echo "refs_listed ${REFS}"
   echo "commit_count ${COMMITS}"

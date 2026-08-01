@@ -16,6 +16,7 @@ set -eu
 
 MODE=${1:-rehearsal}
 ARG2=${2:-}
+# couples: equinox_bundle_manifest.sh bound_bytes (one number, two speakers — keep in step)
 BOUND=268435456
 STAMP=$(date -u +%Y%m%d.%H%M%S)
 PIER=$(git remote get-url origin 2>/dev/null || echo unknown)
