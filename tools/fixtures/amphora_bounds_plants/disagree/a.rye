@@ -1,0 +1,2 @@
+//! Plant — disagreeing max_cargo (positive control for amphora_bounds_agree).
+pub const max_cargo: u32 = 16;
