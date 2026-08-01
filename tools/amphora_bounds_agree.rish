@@ -1,0 +1,41 @@
+# amphora_bounds_agree.rish — shared Amphora bounds agree across module roofs.
+#
+# Path C (e146): leave every home as it is; prove agreement with a witness,
+# never a comptime import across amphora/src → amphora/*.rye (module-path wall).
+#
+# Planted pair before totals are believed:
+#   positive — disagreeing plant MUST fail
+#   negative — agreeing plant MUST pass
+# Living amphora must discover and agree on max_vessel_len · max_cargo ·
+# digest_hex_len (declaration count is printed, never hardcoded).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/amphora_bounds_agree.rish
+
+let scan = "tools/fixtures/amphora_bounds_agree_scan.sh"
+let agree = "tools/fixtures/amphora_bounds_plants/agree"
+let disagree = "tools/fixtures/amphora_bounds_plants/disagree"
+
+# Positive: two roofs, two values — must RED.
+let pos = run ["env" "AMPHORA_BOUNDS_ROOT=${disagree}" "sh" scan]
+assert (pos.ok == false) else "amphora_bounds_agree: disagree plant must FAIL"
+assert pos.out contains "verdict=misread" else "amphora_bounds_agree: disagree missing misread"
+assert pos.out contains "bound_max_cargo_status=diverge" else "amphora_bounds_agree: disagree must name diverge"
+say "plant_positive=honored"
+
+# Negative: two roofs, one value — must GREEN.
+let neg = run ["env" "AMPHORA_BOUNDS_ROOT=${agree}" "sh" scan]
+assert neg.ok else "amphora_bounds_agree: agree plant must PASS"
+assert neg.out contains "verdict=ok" else "amphora_bounds_agree: agree missing ok"
+assert neg.out contains "bound_max_cargo_status=agree" else "amphora_bounds_agree: agree must name agree"
+say "plant_negative=honored"
+
+# Living tree — discover declarations; require agreement.
+let living = run ["sh" scan]
+assert living.ok else "amphora_bounds_agree: living amphora must agree"
+assert living.out contains "verdict=ok" else "amphora_bounds_agree: living missing ok"
+assert living.out contains "bound_max_vessel_len_status=agree" else "living max_vessel_len"
+assert living.out contains "bound_max_cargo_status=agree" else "living max_cargo"
+assert living.out contains "bound_digest_hex_len_status=agree" else "living digest_hex_len"
+say living.out
+say "GREEN: amphora_bounds_agree — planted pair · living roofs agree · no rename."
