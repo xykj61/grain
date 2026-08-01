@@ -1,9 +1,9 @@
 # Equinox Seat Map — close path · Chapter Seven and Eight
 
 **Language:** EN  
-**Status:** Living pin — **Amphora CLI wave e149 GREEN** · **CliError** · **alias bounds** · **path C** · **bans GREEN** · **named bounds** · **stdout version** · **J1 sixteen in tree** · **TAME roster sees amphora** · **Crossing lean** · **align Amphora CLI** · **Cellar supersede e148** · **Amber out of living code** · **e137 breach withdrawn** · **e138 keep-Amber withdrawn** · **Silo template named** · **MantraPod supersede GREEN** · **affordable witness** · **surface census six GREEN** · **suite 10/10** · **timing figure is a pin** · **manifest living-doc** · **seal-jam-cue desk GREEN** · **max_lines** enforced · **bundle send GREEN** · **wave mode** · **Class O word-scope** · **on-touch never campaign** · **start rung** sh→rish · **build stack** seated · ch7 close **PERFORMED** · ch8 seat **128 RESERVED** · fork **EXTEND +128** · breach **closed unspent** · roofs **CLOSED** · close-seat **answered** · e92 park **lifted** · **roots ≠ Bench** · name the Bench · **living-pin guard** · emptied caught  
+**Status:** Living pin — **Amphora CLI wave e150 GREEN** · **CliError** · **alias bounds** · **path C** · **bans GREEN** · **named bounds** · **stdout version** · **J1 sixteen in tree** · **TAME roster sees amphora** · **Crossing lean** · **align Amphora CLI** · **Cellar supersede e148** · **Amber out of living code** · **e137 breach withdrawn** · **e138 keep-Amber withdrawn** · **Silo template named** · **MantraPod supersede GREEN** · **affordable witness** · **surface census six GREEN** · **suite 10/10** · **timing figure is a pin** · **manifest living-doc** · **seal-jam-cue desk GREEN** · **max_lines** enforced · **bundle send GREEN** · **wave mode** · **Class O word-scope** · **on-touch never campaign** · **start rung** sh→rish · **build stack** seated · ch7 close **PERFORMED** · ch8 seat **128 RESERVED** · fork **EXTEND +128** · breach **closed unspent** · roofs **CLOSED** · close-seat **answered** · e92 park **lifted** · **roots ≠ Bench** · name the Bench · **living-pin guard** · emptied caught  
 **Voice:** Riyo  
-**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260801.033305` (e149 Class W park · docs · REDS 57 · 128 kept reserved)  
+**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260801.035204` (e150 Q6 pour parse · Class W parked · REDS 57 · 128 kept reserved)  
 **Seat:** Equinox e123 · almanac **127** · Chapter Eight **(15 of 16)** · e124–e148 no content seat · nested wave **e148/64**  
 **Basis:** kg e148 · Crossing lean offered · handback slot return_deca_128 · **128 still reserved** · kg circles no gate
 
@@ -98,7 +98,7 @@
 | dated Vision law | **seated** e136 · REDS 47 · claim rewrites supersede · never silent in-place |
 | Cellar | **e148 Class P** module `cellar/` · **e149 Class W parked** — wire shoulder `amber-ring1-season` restored · versioned shoulder waits |
 | fuse verify Amber | **GREEN** e139 · counsel elder e136 · living already e138 · kg does not open seat 128 |
-| Amphora CLI wave | **OPEN** e149/64 · Glow/Tend/TAME · lean ***Crossing Season*** (seat Keaton's) · slot `return_deca_128` · CliError · path C · couples **GREEN** · bans **GREEN** |
+| Amphora CLI wave | **OPEN** e150 Q6/64 · Glow/Tend/TAME · lean ***Crossing Season*** (seat Keaton's) · slot `return_deca_128` · CliError · path C · couples **GREEN** · bans **GREEN** |
 | stdout law | **proposed** e144 · Amphora's half landed · Mantra untouched · Keaton seats family law |
 | bans comment-skip | **seated** e145 · planted pair · REDS 52 · brush_parse teaching kept |
 | amphora bounds agree | **seated** e146–e148 path C · same-name + alias + `couples:` · REDS 53/56 · no rename |

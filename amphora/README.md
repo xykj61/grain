@@ -2,8 +2,8 @@
 
 **Language:** EN
 **Stamp:** `20260710.161358`
-**Last updated:** `20260801.033044` (e148 — couples · Cellar supersede)
-**Status:** Landed — laps 1–3 + stamp + seal + chunk + purchase delivery; Pond customs gates scrub; forge view folds a live sealed pour · **CLI wave e148** couples markers · Cellar supersede · Q5 errors held (pour/carry/restore wait)
+**Last updated:** `20260801.035204` (e148 — couples · Cellar supersede)
+**Status:** Landed — laps 1–3 + stamp + seal + chunk + purchase delivery; Pond customs gates scrub; forge view folds a live sealed pour · **CLI wave e150** Q6 pour parse · Class W parked · couples held (carry/restore wait)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 
 **Amphora** is **vessel software** — preservation **in motion**. It carries sealed resins across a crossing (wire, dock, or pocket) under the same resins law and Kumara stamp as the cellar.
@@ -19,7 +19,7 @@ Canonical roof: [`src/main.rye`](src/main.rye) — `//!` header + Q3 metal. HTML
 | `amphora carry <vessel> <dock>` | move to far dock · chunk inside carry |
 | `amphora restore <vessel>` | cold scrub · verify · restore |
 
-*Q3–Q5 + e148: version · bounds · CliError · declared `couples:` markers. Shared bounds agree via `tools/amphora_bounds_agree.rish` (path C · alias · couples). Pour/carry/restore wait their quests. Nested wave lean: **the Crossing Season** (seat Keaton's).*
+*Q3–Q6: version · bounds · CliError · couples · pour parse (`PourArgs`). Shared bounds agree via `tools/amphora_bounds_agree.rish` (path C · alias · couples). Pour/carry/restore wait their quests. Nested wave lean: **the Crossing Season** (seat Keaton's).*
 
 | Lap | What |
 |-----|------|
