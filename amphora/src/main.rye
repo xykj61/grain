@@ -73,7 +73,7 @@ const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
 const Dir = std.Io.Dir;
 
 /// Amphora CLI version — YYYYMMDD.HHMMSS, America/New_York, later is larger.
-const amphora_version = "20260801.050337";
+const amphora_version = "20260801.050712";
 
 // -------------------------------------------------------------------------
 // § Bounds — named with their why (Q4 · Q7 · Q8 · Q9)
@@ -994,12 +994,20 @@ fn cmd_carry(init: std.process.Init, args: []const []const u8) u8 {
     const chunk_count = plan_chunks(@intCast(vtext.len));
     print("amphora: carry plan chunks={d} ceiling={d} bytes={d}\n", .{ chunk_count, max_chunk_datagram, vtext.len });
 
-    write_dock_chunks(init.io, parsed.dock, vtext, chunk_count) catch |fault| {
-        return switch (fault) {
-            error.PathTooLong => refuse(error.PathTooLong, parsed.dock),
-            else => refuse(error.DockUnwritable, parsed.dock),
+    // Witness seam (Q27): with AMPHORA_CARRY_TRUST_DOCK set, assemble from
+    // the chunks already standing at the dock rather than cutting fresh —
+    // this is how planted torn / reordered / forged chunks become testable,
+    // since a production carry lawfully heals a dock by re-cutting. The env
+    // gate mirrors AMPHORA_VESSEL_SEAL / _CORE; production carries never set it.
+    const trust_dock = init.environ_map.get("AMPHORA_CARRY_TRUST_DOCK") != null;
+    if (!trust_dock) {
+        write_dock_chunks(init.io, parsed.dock, vtext, chunk_count) catch |fault| {
+            return switch (fault) {
+                error.PathTooLong => refuse(error.PathTooLong, parsed.dock),
+                else => refuse(error.DockUnwritable, parsed.dock),
+            };
         };
-    };
+    }
     assemble_dock_vessel(init.io, parsed.dock, far_vessel, vtext, chunk_count) catch |fault| {
         return switch (fault) {
             error.ChunkTorn => refuse(error.ChunkTorn, parsed.dock),
