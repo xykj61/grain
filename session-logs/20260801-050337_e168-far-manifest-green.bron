@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260801.050337
+editor Claude
+model Claude Fable 5 1M Max
+voice Riyo
+host Claude counsel container — Eastern (EDT) time convention
+title e168 Q25 far manifest readable GREEN
+prompt whole-crossing kg continues
+think say the promise, never infer it
+obs four manifest lines readable at the dock on a fresh crossing
+file amphora/src/main.rye Q25 verify_far_manifest
+file counsel/20260801-050337_e168-q25-far-manifest.md seat
+recommend keep-going Q26 round-trip witness
+product_nib Amphora CLI wave e168 Q25
+suite_nib far manifest GREEN
+git_nib 1951a9e0fe
