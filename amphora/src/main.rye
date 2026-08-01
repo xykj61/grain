@@ -947,9 +947,22 @@ fn verify_far_manifest(io: std.Io, far_vessel: []const u8) CliError!void {
     if (!has) return error.CrossingUnequal;
 }
 
-/// Q25 door: parse · walls · guard · plan · chunks · assemble byte-equal ·
-/// far walls · far manifest — the crossing speaks; witness waits Q26.
-fn cmd_carry(init: std.process.Init, args: []const []const u8) u8 {
+/// Names a carry check filled: the two operands and the far vessel path.
+const CarryFilled = struct {
+    vessel: []const u8,
+    dock: []const u8,
+    far_vessel: []const u8,
+};
+
+/// Carry front: parse · walls · traveling parent · far path · dock guard.
+/// Returns an exit code when a door refused, null when the check is whole.
+fn carry_check(
+    init: std.process.Init,
+    allocator: std.mem.Allocator,
+    args: []const []const u8,
+    far_path_buf: *[max_vessel_path_len]u8,
+    filled: *CarryFilled,
+) ?u8 {
     const parsed = parse_carry_args(args) catch |fault| {
         return switch (fault) {
             error.MissingOperand => refuse(error.MissingOperand, "carry <vessel> <dock>"),
@@ -969,7 +982,6 @@ fn cmd_carry(init: std.process.Init, args: []const []const u8) u8 {
     assert(parsed.vessel.len > 0);
     assert(parsed.dock.len > 0);
 
-    const allocator = init.arena.allocator();
     carry_verify_walls(init, allocator, init.io, args[0], parsed.vessel) catch |fault| {
         return switch (fault) {
             error.StampToolAbsent => refuse(error.StampToolAbsent, default_core_bin),
@@ -981,15 +993,26 @@ fn cmd_carry(init: std.process.Init, args: []const []const u8) u8 {
     var parent_hex: [digest_hex_len]u8 = undefined;
     read_vessel_parent(init.io, parsed.vessel, &parent_hex) catch
         return refuse(error.StampUnverified, parsed.vessel);
-    var far_path_buf: [max_vessel_path_len]u8 = undefined;
-    const far_vessel = dock_vessel_path(parsed.dock, &far_path_buf) catch
+    const far_vessel = dock_vessel_path(parsed.dock, far_path_buf) catch
         return refuse(error.PathTooLong, parsed.dock);
     guard_identity_fork(init.io, far_vessel, &parent_hex) catch
         return refuse(error.IdentityFork, far_vessel);
 
+    filled.* = .{ .vessel = parsed.vessel, .dock = parsed.dock, .far_vessel = far_vessel };
+    return null;
+}
+
+/// Carry cross: plan · chunks (unless the witness seam trusts the dock) ·
+/// assemble byte-equal · far walls · far manifest — completion spoken last.
+fn carry_cross(
+    init: std.process.Init,
+    allocator: std.mem.Allocator,
+    args: []const []const u8,
+    filled: *const CarryFilled,
+) u8 {
     var vbuf: [max_vessel_len]u8 = undefined;
-    const vtext = Dir.cwd().readFile(init.io, parsed.vessel, &vbuf) catch
-        return refuse(error.StampUnverified, parsed.vessel);
+    const vtext = Dir.cwd().readFile(init.io, filled.vessel, &vbuf) catch
+        return refuse(error.StampUnverified, filled.vessel);
     assert(vtext.len > 0);
     const chunk_count = plan_chunks(@intCast(vtext.len));
     print("amphora: carry plan chunks={d} ceiling={d} bytes={d}\n", .{ chunk_count, max_chunk_datagram, vtext.len });
@@ -1001,31 +1024,43 @@ fn cmd_carry(init: std.process.Init, args: []const []const u8) u8 {
     // gate mirrors AMPHORA_VESSEL_SEAL / _CORE; production carries never set it.
     const trust_dock = init.environ_map.get("AMPHORA_CARRY_TRUST_DOCK") != null;
     if (!trust_dock) {
-        write_dock_chunks(init.io, parsed.dock, vtext, chunk_count) catch |fault| {
+        write_dock_chunks(init.io, filled.dock, vtext, chunk_count) catch |fault| {
             return switch (fault) {
-                error.PathTooLong => refuse(error.PathTooLong, parsed.dock),
-                else => refuse(error.DockUnwritable, parsed.dock),
+                error.PathTooLong => refuse(error.PathTooLong, filled.dock),
+                else => refuse(error.DockUnwritable, filled.dock),
             };
         };
     }
-    assemble_dock_vessel(init.io, parsed.dock, far_vessel, vtext, chunk_count) catch |fault| {
+    assemble_dock_vessel(init.io, filled.dock, filled.far_vessel, vtext, chunk_count) catch |fault| {
         return switch (fault) {
-            error.ChunkTorn => refuse(error.ChunkTorn, parsed.dock),
-            error.CrossingUnequal => refuse(error.CrossingUnequal, parsed.dock),
-            else => refuse(error.DockUnwritable, far_vessel),
+            error.ChunkTorn => refuse(error.ChunkTorn, filled.dock),
+            error.CrossingUnequal => refuse(error.CrossingUnequal, filled.dock),
+            else => refuse(error.DockUnwritable, filled.far_vessel),
         };
     };
-    carry_verify_walls(init, allocator, init.io, args[0], far_vessel) catch |fault| {
+    carry_verify_walls(init, allocator, init.io, args[0], filled.far_vessel) catch |fault| {
         return switch (fault) {
-            error.SealUnopened => refuse(error.SealUnopened, far_vessel),
-            else => refuse(error.StampUnverified, far_vessel),
+            error.SealUnopened => refuse(error.SealUnopened, filled.far_vessel),
+            else => refuse(error.StampUnverified, filled.far_vessel),
         };
     };
-    verify_far_manifest(init.io, far_vessel) catch
-        return refuse(error.CrossingUnequal, far_vessel);
+    verify_far_manifest(init.io, filled.far_vessel) catch
+        return refuse(error.CrossingUnequal, filled.far_vessel);
     print("amphora: far manifest readable\n", .{});
-    print("amphora: carry complete chunks={d} far={s}\n", .{ chunk_count, far_vessel });
+    print("amphora: carry complete chunks={d} far={s}\n", .{ chunk_count, filled.far_vessel });
     return exit_ok;
+}
+
+/// Q27 door: check (parse · walls · guard) then cross (plan · chunks ·
+/// byte-equal · far walls · manifest) — sequencer, the pour split's mirror.
+fn cmd_carry(init: std.process.Init, args: []const []const u8) u8 {
+    const allocator = init.arena.allocator();
+    var far_path_buf: [max_vessel_path_len]u8 = undefined;
+    var filled: CarryFilled = undefined;
+    if (carry_check(init, allocator, args, &far_path_buf, &filled)) |code| {
+        return code;
+    }
+    return carry_cross(init, allocator, args, &filled);
 }
 
 // -------------------------------------------------------------------------
