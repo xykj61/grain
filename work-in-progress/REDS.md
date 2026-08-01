@@ -1,7 +1,7 @@
 # REDS — the ledger of what we got wrong
 
 **Language:** EN
-**Stamp:** living ledger (born `20260729.222000`) · refreshed `20260801.001244` (Equinox e132 · row 44 instrument format aged)
+**Stamp:** living ledger (born `20260729.222000`) · refreshed `20260801.003811` (Equinox e134 · row 45 hardcoded count ages)
 **Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
 **Voice:** Riyo
 **Status:** Living pin — one row per red, oldest first
@@ -85,8 +85,9 @@ A red enters this ledger when it is found. Rows are never edited or removed; a l
 | 42 | Counsel read the build-stack refusals as "climb higher," called living on sh a failure, and implied a rish-first campaign over the day's shell — the seated row says foundations first and shell ratchet on-touch never a campaign | counsel owned the backwards reading `20260731.231509` · Lexicon build stack · e127 on-touch seating | sh is where work correctly begins. Migrate on-touch only. Do not campaign the fat scans. |
 | 43 | Pinned desk-tier as ~57s, then "corrected" it to ~5s as if the second stopwatch were the truth — a third cut gave ~11s; three honest answers, none a constant | counsel fuse e131 `20260801.000833` · three cuts of `compose-bind-nest-seal-jam-cue` · Lexicon timing figure | A timing figure is a pin. Desk tier varies with cache warmth. Carry a range, or re-cut every round — including after a correction. |
 | 44 | Date-dialect compact pattern required exactly eight digits; Lexicon's full one-clock stamp failed the witness while the tree was more precise than the instrument — and clearing it exposed elder suite limbs still requiring surface_count=4 after census six | counsel found red e132 `20260801.001244` · `want_compact_last_updated_LEXICON.md` · instrument suite pass 8 fail 1 then on-touch clear | An instrument that hardcodes a format ages when the format improves. Seat the suite; do not manufacture meters. |
+| 45 | After e132 cleared e111/e113 scans, six more living scans (and chained witnesses) still asserted surface_count=4 while the tree held six chapter surfaces — e113 witness went red via elder e112; a count ages faster than a format because the tree is supposed to grow | counsel fuse e134 `20260801.003811` · suite pass 9 fail 1 · six surface witnesses · chained elder | An instrument that hardcodes a count ages faster than one that hardcodes a format. Fix the chain, not one limb at a time. |
 
-**Rows: 44 · in the tree before the ledger: 6 · recovered by opening it: 14 · added under the reds-first law: 24**
+**Rows: 45 · in the tree before the ledger: 6 · recovered by opening it: 14 · added under the reds-first law: 25**
 
 **Reds-first accounting for v11:** two reds found, both fixed in-round with witnesses on metal, ledger closed. The remaining journey allocation is therefore **released** rather than booked — which is the law working, not the law skipped.
 
