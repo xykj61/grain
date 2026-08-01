@@ -1,7 +1,7 @@
 # The Roadmap — living pin
 
 **Language:** EN  
-**Last updated:** `20260801.000833` · voice Riyo  
+**Last updated:** `20260801.001244` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Full season ledger:** [`archive/20260724-132812_roadmap-season-ledger.md`](archive/20260724-132812_roadmap-season-ledger.md)  
 **Align:** [`20260726-050422_align-before-cursor-handoff.md`](archive/20260726-050422_align-before-cursor-handoff.md)  
@@ -9,18 +9,18 @@
 
 ---
 
-## Now — Equinox (deca) · timing pin · manifest limb (`20260801.000833`)
+## Now — Equinox (deca) · dialect timestamp · suite green (`20260801.001244`)
 
 | Order | Lap | Status |
 |-------|-----|--------|
-| — | Equinox e0–e130 · ch1–ch7 FULL · ch8 15/16 · seal desk · bundle send · Class O word-scope · on-touch · start rung · build stack · living-pin guard · roots ≠ Bench · census six · park lifted · fork EXTEND · REDS 42→43 · 128 reserved | landed |
-| **1** | **e131** timing figure is a pin · manifest living-doc limb named · kg refuses shred open · no content seat | **this sitting** |
-| **2** | SHRED lap — opening word (`Class O yes` · room · circled shred yes) | Keaton alone |
+| — | Equinox e0–e131 · ch1–ch7 FULL · ch8 15/16 · timing pin · seal desk · bundle send · Class O word-scope · on-touch · start rung · build stack · living-pin guard · roots ≠ Bench · census six · park lifted · fork EXTEND · REDS 43→44 · 128 reserved | landed |
+| **1** | **e132** compact Last updated accepts stamps · suite pass=10 fail=0 · REDS 44 · SAFE empty load-bearing · no content seat | **this sitting** |
+| **2** | SHRED lap — opening word (`Class O yes` · room · circled shred yes) · oldness census opens it | Keaton alone |
 | **3** | seat **128** close choir later | Keaton alone |
 | **4** | Horizon: geode expedition begin (e254/e255 or Keaton begin) | GATED |
 | **5** | stack walk from sh — on-touch only, never a campaign | open when a file is |
 
-**Finishing edge (season):** Equinox OPEN · e132 next · ch7 FULL · ch8 OPEN 15/16 · **timing pin GREEN** · **manifest living-doc** · **seal desk GREEN** · **max_lines** 6 · **bundle send GREEN** · **Class O word-scope** · **on-touch never campaign** · **start rung** sh→rish · build stack · living-pin guard · **roots** four client surfaces · roots ≠ Bench · name the Bench · census **six** · park **lifted** · roofs **CLOSED** · fork **EXTEND +128** · breach **closed unspent** · handback nested not consumed · 128 reserved · fascia **88** i9 · saga **Seated**.  
+**Finishing edge (season):** Equinox OPEN · e133 next · ch7 FULL · ch8 OPEN 15/16 · **dialect stamp GREEN** · **suite 10/10** · **timing pin GREEN** · **manifest living-doc** · **seal desk GREEN** · **max_lines** 6 · **bundle send GREEN** · **Class O word-scope** · **on-touch never campaign** · **start rung** sh→rish · build stack · living-pin guard · **roots** four client surfaces · roots ≠ Bench · name the Bench · census **six** · park **lifted** · roofs **CLOSED** · fork **EXTEND +128** · breach **closed unspent** · handback nested not consumed · 128 reserved · fascia **88** i9 · saga **Seated**.  
 **Finishing edge (product horizon):** clone · bootstrap · one witness · one `rishi glow` line ≤ 30 minutes — still stands.
 
 **Build stack** (seated `20260731.230116`): sh → rish → glow·tend → docs-geode → Aurora·Caravan·Tally → Mantra·Weave — foundations first; not prioritizing an upper layer over the one beneath.  
@@ -29,7 +29,8 @@
 **Class O word-scope** (seated `20260731.232004`): authorizing word on class/rooms, not per-path; cut still RED until opening word.  
 **Bundle send** (seated `20260731.234032`): crossing mode · first full `--all` rehearsal cut · stamped manifest tracked.  
 **Seal desk / max_lines** (seated `20260731.234806`): counsel-authored Glow at ceiling 6 · bound refuses seven · glow rung on-touch.  
-**Timing pin / living-doc** (seated `20260801.000833`): desk tier not a constant · REDS 43 · manifest living_doc makes restore verified · kg does not open shred.
+**Timing pin / living-doc** (seated `20260801.000833`): desk tier not a constant · REDS 43 · manifest living_doc makes restore verified · kg does not open shred.  
+**Dialect stamp / suite** (seated `20260801.001244`): compact accepts date or stamp · REDS 44 · instrument suite 10/10 · SAFE 0/64 load-bearing.
 
 **Shell ratchet** (seated `20260726.032231` · affirmed e127): `.sh` to Rishi on-touch only; never a campaign; advisory count each advise run; exemptions: `rye/bootstrap.sh`, external-interpreter seams, python-heredoc witness bodies until duty-8 verbs land, thin-delegate elders.
 
