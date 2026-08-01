@@ -1,3 +1,4 @@
+- `20260801.031219` — [e145 bans false positive · Q4 bounds GREEN](20260801-031219_e145-bans-q4-bounds-green.bron) — noncomment bans · planted pair · REDS 52 · Q4 max_* · 128 reserved
 - `20260801.030237` — [e144 Q3 version · J1 sixteen GREEN](20260801-030237_e144-q3-version-j1-green.bron) — stdout version · J1 Q4–Q16 in tree · opening-lines · 128 reserved
 - `20260801.025844` — [e143 Q2 src seed · TAME roster baseline GREEN](20260801-025844_e143-q2-src-roster-green.bron) — amphora/src/main.rye · bans+advise see amphora · census · 128 reserved
 - `20260801.024840` — [e142 Q2 CLI doc · Crossing lean GREEN](20260801-024840_e142-q2-cli-doc-green.bron) — R51 · return_deca_128 · zero code · 128 reserved

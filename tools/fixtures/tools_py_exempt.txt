@@ -9,3 +9,7 @@
 # Add a legitimate future tools/*.py seam deliberately: path on its own line,
 # with a reason comment on the line above naming why the external interpreter
 # must live under tools/.
+
+# e116 — one dated definition (REDS 40). Shed census and fascia-health both
+# source this seam; the Python-at-seam law wants a named exempt, not deletion.
+tools/fixtures/dated_classify.py
