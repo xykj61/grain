@@ -1,0 +1,43 @@
+# tools/amphora_pour_negative_witness.rish — Q13: planted negatives must refuse.
+#
+# Three plants, each caught at its named wall:
+#   forged manifest line  → Kumara verify FAILS (stamp wall)
+#   forked-season re-pour → IdentityFork refuses, standing vessel untouched
+#   missing season        → SeasonAbsent refuses
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/amphora_pour_negative_witness.rish
+
+let season = "tools/fixtures/cellar_ring1_tree"
+let vessel = "/tmp/amphora_pour_neg_vessel.bron"
+
+let clean = run ["rm" "-f" vessel]
+assert clean.ok else "amphora_pour_neg: temp clean must pass"
+let seed = run ["amphora/bin/amphora" "pour" season vessel]
+assert seed.ok else "amphora_pour_neg: seed pour must pass"
+
+let forge = run ["sh" "-c" "printf 'manifest plain-bytes 0000000000000000000000000000000000000000000000000000000000000000 forged.txt\n' >> ${vessel}"]
+assert forge.ok else "amphora_pour_neg: forge append must land"
+let verify = run ["amphora/bin/vessel-core" "verify" vessel]
+assert (verify.ok == false) else "amphora_pour_neg: forged listing must FAIL verify"
+say "plant_forge=refused"
+
+let fresh = run ["rm" "-f" vessel]
+assert fresh.ok else "amphora_pour_neg: refresh must pass"
+let reseed = run ["amphora/bin/amphora" "pour" season vessel]
+assert reseed.ok else "amphora_pour_neg: reseed must pass"
+let forkprep = run ["sh" "-c" "rm -rf /tmp/amphora_neg_fork; cp -r ${season} /tmp/amphora_neg_fork; printf x >> /tmp/amphora_neg_fork/$(ls /tmp/amphora_neg_fork | head -1)"]
+assert forkprep.ok else "amphora_pour_neg: fork plant must prepare"
+let fork = run ["amphora/bin/amphora" "pour" "/tmp/amphora_neg_fork" vessel]
+assert (fork.ok == false) else "amphora_pour_neg: forked pour must refuse"
+assert fork.err contains "identity fork" else "amphora_pour_neg: fork must name its fault"
+let still = run ["amphora/bin/vessel-core" "verify" vessel]
+assert still.ok else "amphora_pour_neg: refused pour must clobber nothing"
+say "plant_fork=refused standing=untouched"
+
+let missing = run ["amphora/bin/amphora" "pour" "/tmp/amphora_neg_absent" "/tmp/amphora_neg_v2.bron"]
+assert (missing.ok == false) else "amphora_pour_neg: missing season must refuse"
+assert missing.err contains "season absent" else "amphora_pour_neg: absence must name its fault"
+say "plant_missing=refused"
+
+say "GREEN: amphora_pour_negative — forge · fork · absence, each refused at its wall."
