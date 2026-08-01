@@ -1,7 +1,7 @@
 # The Roadmap — living pin
 
 **Language:** EN  
-**Last updated:** `20260801.050920` · voice Riyo  
+**Last updated:** `20260801.051417` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Full season ledger:** [`archive/20260724-132812_roadmap-season-ledger.md`](archive/20260724-132812_roadmap-season-ledger.md)  
 **Align:** [`../foundations/20260706-185112_follow-our-compass.md`](../foundations/20260706-185112_follow-our-compass.md)  
@@ -9,14 +9,14 @@
 
 ---
 
-## Now — Amphora CLI wave · J1+J2 CLOSED · J3 waits (`20260801.050920`)
+## Now — Amphora CLI wave · J3 Q37 · the seal speaks (`20260801.051417`)
 
 | Order | Lap | Status |
 |-------|-----|--------|
 | — | e141–e151 Q1–Q7 · path C · Class W park · season read | landed |
-| — | **e152–e173** J1 CLOSED · **J2 CLOSED** · suite 10/10 | landed |
-| **1** | **Q33** J3 The Return — charter accretion | **next kg** |
-| **2** | **Q34+** restore per the sixteen cut at Q32 | kg by kg |
+| — | **e152–e177** J1+J2 CLOSED · J3 Q33–Q37 (charter · doctrine · parse · walls · **open**) | landed |
+| **1** | **Q38–Q42** catalog · out-home guard · files re-proven · same-parent · complete | **next kg** |
+| **2** | **Q43+** grand round witness · negatives · audits · J3 close | kg by kg |
 | **3** | Keaton seats Crossing / stdout law / handback / P7 / Class W | Keaton alone |
 | **4** | seat **128** close choir | Keaton alone |
 | **5** | Class O shred · geode · stack on-touch | gated / on-touch |

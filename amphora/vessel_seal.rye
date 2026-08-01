@@ -7,6 +7,7 @@
 //!   amphora/bin/vessel-seal selftest
 //!   amphora/bin/vessel-seal seal <path>
 //!   amphora/bin/vessel-seal open-check <path>
+//!   amphora/bin/vessel-seal open <path> <plain-out>   (Q37 — The Return's door)
 //!
 //! Scope: [`active-designing/20260703-201612_the-sealed-crossing.md`](../active-designing/20260703-201612_the-sealed-crossing.md)
 
@@ -18,7 +19,7 @@ const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
 const me = @import("manifest_entry.rye");
 const tally_copy = @import("tally_copy.rye");
 
-pub const amphora_seal_version = "20260710.153745";
+pub const amphora_seal_version = "20260801.051417";
 pub const max_vessel_len: u32 = 8192;
 /// couples: vessel_fetch_wire.max_resin_bytes
 pub const max_seal_plain: u32 = 1024;
@@ -254,6 +255,26 @@ pub fn open_cargo_plain(text: []const u8, plain: []u8) error{InvalidVessel, BadH
     return cipher_len;
 }
 
+/// Q37: the spoken open door — decrypt the sealed cargo and write the
+/// plaintext block to a file, so restore reaches it on path C. The
+/// open-check stays the verify-only door; this one yields the bytes.
+fn run_open_file(io: std.Io, path: []const u8, out_path: []const u8) !u8 {
+    assert(path.len > 0);
+    assert(out_path.len > 0);
+    const cwd = std.Io.Dir.cwd();
+    var buf: [max_vessel_len]u8 = undefined;
+    const text = try cwd.readFile(io, path, &buf);
+    var plain: [max_seal_plain]u8 = undefined;
+    const n = open_cargo_plain(text, &plain) catch |fault| {
+        print("amphora: vessel open refused\n", .{});
+        return fault;
+    };
+    assert(n >= 1);
+    try cwd.writeFile(io, .{ .sub_path = out_path, .data = plain[0..n] });
+    print("amphora: vessel opened plain_bytes={d}\n", .{n});
+    return 0;
+}
+
 fn run_open_check(io: std.Io, path: []const u8) !u8 {
     const cwd = std.Io.Dir.cwd();
     var buf: [max_vessel_len]u8 = undefined;
@@ -301,6 +322,9 @@ pub fn main(init: std.process.Init) !u8 {
     const args = try init.minimal.args.toSlice(garden);
     if (args.len >= 3 and std.mem.eql(u8, args[1], "seal")) {
         return run_seal_file(init.io, args[2]);
+    }
+    if (args.len >= 4 and std.mem.eql(u8, args[1], "open")) {
+        return run_open_file(init.io, args[2], args[3]);
     }
     if (args.len >= 3 and std.mem.eql(u8, args[1], "open-check")) {
         return run_open_check(init.io, args[2]);
