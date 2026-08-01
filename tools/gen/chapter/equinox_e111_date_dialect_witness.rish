@@ -34,9 +34,9 @@ assert scan.out contains "hyphenated_last_updated=0" else "e111-date-dialect: wa
 assert scan.out contains "dialect_status=17_of_17_compact" else "e111-date-dialect: want 17 of 17"
 assert scan.out contains "lint_dep=honored" else "e111-date-dialect: want lint dep"
 assert scan.out contains "seat_128=reserved_close_choir" else "e111-date-dialect: want 128 reserved"
-assert scan.out contains "surface_count=4" else "e111-date-dialect: want surface 4"
+assert scan.out contains "surface_count=6" else "e111-date-dialect: want surface 6"
 assert scan.out contains "fork_status=not_consumed" else "e111-date-dialect: want fork waiting"
 assert scan.out contains "e111_date_dialect=ok" else "e111-date-dialect: want e111 ok"
 assert scan.out contains "verdict=ok" else "e111-date-dialect: want verdict=ok"
 
-say "GREEN: e111-date-dialect — 11 compact · 17 of 17 · 128 reserved · census four · fork waiting · museum"
+say "GREEN: e111-date-dialect — 11 compact · 17 of 17 · 128 reserved · census six · fork waiting · museum"

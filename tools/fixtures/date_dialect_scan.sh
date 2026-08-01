@@ -19,7 +19,8 @@ C2=tools/fixtures/date_dialect_control_compact.md
 HYPHEN_RE='^\*\*Last updated:\*\* [0-9]{4}-[0-9]{2}-[0-9]{2}'
 LABEL_RE='^\*\*(Last updated|Seated|Stamp|Version):\*\*'
 BT=$(printf '\140')
-COMPACT_RE="^\\*\\*Last updated:\\*\\* ${BT}[0-9]{8}${BT}"
+# Compact: YYYYMMDD or YYYYMMDD.HHMMSS (e132 — date and full stamp both compact).
+COMPACT_RE="^\\*\\*Last updated:\\*\\* ${BT}[0-9]{8}(\\.[0-9]{6})?${BT}"
 
 # --- planted controls must be tracked ---
 for p in "$C1" "$C2"; do
