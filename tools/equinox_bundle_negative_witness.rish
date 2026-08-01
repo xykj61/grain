@@ -1,0 +1,34 @@
+# tools/equinox_bundle_negative_witness.rish — Q61: bundle plants must refuse.
+#
+# Finding this witness encodes (e191–e194): `git bundle verify` reads the
+# header, never the whole pack — a torn bundle can pass verify. The manifest's
+# content address (bundle_sha3 + bytes) is therefore the load-bearing wall,
+# with clone/unbundle as the second: both are planted here.
+#   torn bundle    → sha3 mismatch vs manifest · clone refuses
+#   missing basis  → verify refuses in a repo without the prerequisites
+# Rishi note: shell brace expansions never appear inside strings here — the
+# rishi interpolator owns the dollar-brace shape (e194 red, owned and recut).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/equinox_bundle_negative_witness.rish
+
+let cut = run ["sh" "tools/gen/season/equinox_bundle_send.sh" "rehearsal" "--span" "HEAD~3..HEAD"]
+assert cut.ok else "bundle_neg: span cut must pass"
+
+let man = run ["sh" "-c" "b=$(ls -t bundles/rehearsal/rehearsal-span-*.bundle | head -1); sh tools/gen/season/equinox_bundle_manifest.sh $b rehearsal-span counsel-bench HEAD~3 HEAD 00000000.000000 negative-witness"]
+assert man.ok else "bundle_neg: manifest written"
+
+let torn = run ["sh" "-c" "b=$(ls -t bundles/rehearsal/rehearsal-span-*.bundle | head -1); n=$(wc -c < $b); m=$((n - 64)); head -c $m $b > /tmp/ebnw_torn.bundle"]
+assert torn.ok else "bundle_neg: torn plant prepared"
+
+let same = run ["sh" "-c" "b=$(ls -t bundles/rehearsal/rehearsal-span-*.bundle | head -1); a=$(openssl dgst -sha3-256 /tmp/ebnw_torn.bundle | awk 'END{print $NF}'); c=$(grep bundle_sha3 $b.manifest | awk 'END{print $NF}'); test x$a = x$c"]
+assert (same.ok == false) else "bundle_neg: content address must refuse the torn bytes"
+
+let tclone = run ["sh" "-c" "rm -rf /tmp/ebnw_tc; git clone -q /tmp/ebnw_torn.bundle /tmp/ebnw_tc"]
+assert (tclone.ok == false) else "bundle_neg: clone from torn must refuse"
+
+let basis = run ["sh" "-c" "R=$(pwd); b=$(ls -t bundles/rehearsal/rehearsal-span-*.bundle | head -1); rm -rf /tmp/ebnw_empty; git init -q /tmp/ebnw_empty; cd /tmp/ebnw_empty; git bundle verify $R/$b"]
+assert (basis.ok == false) else "bundle_neg: missing basis must refuse"
+
+say "plants: torn-sha3=refused torn-clone=refused missing-basis=refused"
+say "GREEN: equinox_bundle_negative — verify is necessary, the content address is the wall."
