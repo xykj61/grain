@@ -1,0 +1,33 @@
+# tools/amphora_pour_witness.rish — Q12: the grown pour round path, measured.
+#
+# Proves on the ring-1 fixture: pour exits ok · manifest listing readable ·
+# Kumara stamp verifies · seal opens after stamp · same-season re-pour welcomes.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/amphora_pour_witness.rish
+
+let season = "tools/fixtures/cellar_ring1_tree"
+let vessel = "/tmp/amphora_pour_witness_vessel.bron"
+
+let clean = run ["rm" "-f" vessel]
+assert clean.ok else "amphora_pour: temp clean must pass"
+
+let pour = run ["amphora/bin/amphora" "pour" season vessel]
+assert pour.ok else "amphora_pour: grown round path must exit ok"
+
+let text = read-file vessel
+assert text contains "manifest plain-bytes " else "amphora_pour: readable manifest listing"
+assert text contains "seal_cargo " else "amphora_pour: sealed cargo present"
+assert text contains "stamp_sig " else "amphora_pour: stamp present"
+
+let verify = run ["amphora/bin/vessel-core" "verify" vessel]
+assert verify.ok else "amphora_pour: Kumara stamp must verify"
+
+let opened = run ["amphora/bin/vessel-seal" "open-check" vessel]
+assert opened.ok else "amphora_pour: seal must open after stamp"
+
+let again = run ["amphora/bin/amphora" "pour" season vessel]
+assert again.ok else "amphora_pour: same-identity re-pour must welcome"
+
+say "round=poured manifest=readable stamp=verified seal=opens repour=welcome"
+say "GREEN: amphora_pour — grown round path · listing · two walls · re-pour."
