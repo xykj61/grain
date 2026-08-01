@@ -29,16 +29,16 @@
 //!   Shared vessel bounds stay in amphora/*.rye; agreement via
 //!   tools/amphora_bounds_agree.rish (path C · alias groups · couples markers).
 //!
-//! Errors (named for the fault — Q5 · Q7 · Q8 · Q9 accreted):
+//! Errors (named for the fault — Q5 · Q7 · Q8 · Q9 · Q10 accreted):
 //!   UnknownCommand · TooManyWords · MissingOperand · PathTooLong
 //!   CommandNotGrown · ResultUnwritable
 //!   SeasonAbsent · SeasonEmpty · SeasonOverflow · SeasonUnreadable
 //!   CargoTooLarge · VesselUnwritable · SealToolAbsent · SealFailed
-//!   StampToolAbsent · StampFailed
+//!   StampToolAbsent · StampFailed · IdentityFork
 //!   Module split named, not swept: InvalidVessel vs BadVessel (G10).
 //!
 //! Architecture (four sections, one file for the seed):
-//!   § Pour    — parse (Q6) · season read (Q7) · seal (Q8) · stamp (Q9); write-guard waits Q10
+//!   § Pour    — parse (Q6) · season read (Q7) · seal (Q8) · stamp (Q9) · write-guard (Q10); manifest waits Q11
 //!   § Carry   — move sealed vessel; kind 0x33 chunks; far dock verifies
 //!   § Restore — cold scrub; verify stamp+seal; restore byte-faithful
 //!   § Main    — CLI: pour / carry / restore / version
@@ -54,6 +54,8 @@
 //! (subprocess · same AEAD roof · import wall held).
 //! Q9 stamps by running amphora/bin/vessel-core sign after the seal
 //! (subprocess · stamp_sig outside the sealed head · rite: seal, then stamp).
+//! Q10 guards the write: a second pour may repeat an identity, never fork
+//! it — an occupant with the same parent re-pours; any other occupant refuses.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -62,7 +64,7 @@ const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
 const Dir = std.Io.Dir;
 
 /// Amphora CLI version — YYYYMMDD.HHMMSS, America/New_York, later is larger.
-const amphora_version = "20260801.040828";
+const amphora_version = "20260801.042708";
 
 // -------------------------------------------------------------------------
 // § Bounds — named with their why (Q4 · Q7 · Q8 · Q9)
@@ -131,7 +133,7 @@ const exit_ok: u8 = 0;
 const exit_misread: u8 = 2;
 
 // -------------------------------------------------------------------------
-// § Errors — named for the fault (Q5 · Q7 · Q8 · Q9)
+// § Errors — named for the fault (Q5 · Q7 · Q8 · Q9 · Q10)
 // -------------------------------------------------------------------------
 
 /// CLI faults only. Vessel modules keep InvalidVessel / BadVessel (G10).
@@ -152,6 +154,7 @@ const CliError = error{
     SealFailed,
     StampToolAbsent,
     StampFailed,
+    IdentityFork,
 };
 
 /// One door for every CLI fault — switch on the name, never compare.
@@ -176,12 +179,13 @@ fn refuse(fault: CliError, detail: []const u8) u8 {
         error.SealFailed => print("amphora: seal failed — '{s}'\n", .{detail}),
         error.StampToolAbsent => print("amphora: stamp tool absent — '{s}'\n", .{detail}),
         error.StampFailed => print("amphora: stamp failed — '{s}'\n", .{detail}),
+        error.IdentityFork => print("amphora: identity fork — '{s}'\n", .{detail}),
     }
     return exit_misread;
 }
 
 // -------------------------------------------------------------------------
-// § Pour — parse (Q6) · season read (Q7) · seal (Q8) · stamp (Q9); write-guard waits Q10
+// § Pour — parse (Q6) · season read (Q7) · seal (Q8) · stamp (Q9) · write-guard (Q10); manifest waits Q11
 // -------------------------------------------------------------------------
 
 /// Operands for `pour <season> <vessel>` after a successful parse.
@@ -499,7 +503,40 @@ fn stamp_sealed_vessel(
     print("amphora: vessel stamped rite=seal-then-stamp\n", .{});
 }
 
-/// Q9 door: parse · read · write unsealed · seal · stamp; write-guard waits Q10.
+/// Parent identity of a pour: SHA3-256 over the sorted cargo plain, lower hex.
+fn parent_of_cargo(cargo: []const u8, parent_hex: *[digest_hex_len]u8) void {
+    assert(cargo.len > 0);
+    assert(parent_hex.len == digest_hex_len);
+    var parent_digest: [Sha3_256.digest_length]u8 = undefined;
+    Sha3_256.hash(cargo, &parent_digest, .{});
+    write_hex_lower(&parent_digest, parent_hex);
+}
+
+/// Q10 write-guard: a second pour may repeat an identity, never fork it.
+/// An occupant with the same parent is the same pour said again — welcome.
+/// Any other occupant (different parent, no parent, unreadable) refuses,
+/// so the path's identity stays single across every pour.
+fn guard_identity_fork(io: std.Io, vessel_path: []const u8, parent_hex: []const u8) CliError!void {
+    assert(vessel_path.len > 0);
+    assert(parent_hex.len == digest_hex_len);
+    var buf: [max_vessel_len]u8 = undefined;
+    const text = Dir.cwd().readFile(io, vessel_path, &buf) catch |fault| switch (fault) {
+        error.FileNotFound => return, // first pour — nothing to fork
+        else => return error.IdentityFork, // occupant unreadable: continuity unconfirmed
+    };
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    while (lines.next()) |raw| {
+        if (!std.mem.startsWith(u8, raw, "parent ")) continue;
+        const value = raw["parent ".len..];
+        if (std.mem.eql(u8, value, parent_hex)) {
+            return; // same identity — the re-pour is the same pour
+        }
+        return error.IdentityFork;
+    }
+    return error.IdentityFork; // occupant carries no parent — continuity unconfirmed
+}
+
+/// Q10 door: parse · read · guard · write · seal · stamp; manifest waits Q11.
 fn cmd_pour(init: std.process.Init, args: []const []const u8) u8 {
     const allocator = init.arena.allocator();
     const io = init.io;
@@ -538,10 +575,11 @@ fn cmd_pour(init: std.process.Init, args: []const []const u8) u8 {
     const cargo_len = build_cargo_plain(&catalog, &cargo) catch |fault| {
         return refuse(fault, parsed.season);
     };
-    var parent_digest: [Sha3_256.digest_length]u8 = undefined;
-    Sha3_256.hash(cargo[0..cargo_len], &parent_digest, .{});
     var parent_hex: [digest_hex_len]u8 = undefined;
-    write_hex_lower(&parent_digest, &parent_hex);
+    parent_of_cargo(cargo[0..cargo_len], &parent_hex);
+
+    guard_identity_fork(io, parsed.vessel, &parent_hex) catch
+        return refuse(error.IdentityFork, parsed.vessel);
 
     write_unsealed_vessel(io, parsed.vessel, &parent_hex, cargo[0..cargo_len]) catch |fault| {
         return refuse(fault, parsed.vessel);
@@ -571,7 +609,7 @@ fn cmd_pour(init: std.process.Init, args: []const []const u8) u8 {
 }
 
 // =========================================================================
-// § Main — CLI (Q3–Q9 · carry/restore wait · version)
+// § Main — CLI (Q3–Q10 · carry/restore wait · version)
 // =========================================================================
 
 pub fn main(init: std.process.Init) !u8 {
