@@ -31,7 +31,7 @@
 //!   Shared vessel bounds stay in amphora/*.rye; agreement via
 //!   tools/amphora_bounds_agree.rish (path C · alias groups · couples markers).
 //!
-//! Errors (named for the fault — Q5 · Q7 · Q8 · Q9 · Q10 · Q11 accreted):
+//! Errors (named for the fault — Q5–Q11 · Q20 · Q23–Q24 · Q46):
 //!   UnknownCommand · TooManyWords · MissingOperand · PathTooLong
 //!   CommandNotGrown · ResultUnwritable
 //!   SeasonAbsent · SeasonEmpty · SeasonOverflow · SeasonUnreadable
@@ -39,6 +39,7 @@
 //!   StampToolAbsent · StampFailed · IdentityFork · ManifestOverflow
 //!   StampUnverified · SealUnopened (Q20 carry walls)
 //!   DockUnwritable · ChunkTorn · CrossingUnequal (Q23–Q24 crossing)
+//!   ResinAbsent · CargoUnproven · RestoreUnwritable (Q46 return)
 //!   Module split named, not swept: InvalidVessel vs BadVessel (G10).
 //!
 //! Architecture (four sections, one file for the seed):
@@ -76,7 +77,7 @@ const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
 const Dir = std.Io.Dir;
 
 /// Amphora CLI version — YYYYMMDD.HHMMSS, America/New_York, later is larger.
-const amphora_version = "20260801.133857";
+const amphora_version = "20260801.134653";
 
 // -------------------------------------------------------------------------
 // § Bounds — named with their why (Q4 · Q7 · Q8 · Q9)
@@ -175,10 +176,11 @@ const exit_ok: u8 = 0;
 const exit_misread: u8 = 2;
 
 // -------------------------------------------------------------------------
-// § Errors — named for the fault (Q5 · Q7 · Q8 · Q9 · Q10 · Q11 · Q20)
+// § Errors — named for the fault (Q5–Q11 · Q20 · Q23–Q24 · Q46)
 // -------------------------------------------------------------------------
 
 /// CLI faults only. Vessel modules keep InvalidVessel / BadVessel (G10).
+/// Twenty-six doors — each fault has its own refuse arm; none swept.
 const CliError = error{
     UnknownCommand,
     TooManyWords,
@@ -205,6 +207,7 @@ const CliError = error{
     CrossingUnequal,
     ResinAbsent,
     CargoUnproven,
+    RestoreUnwritable,
 };
 
 /// One door for every CLI fault — switch on the name, never compare.
@@ -238,6 +241,7 @@ fn refuse(fault: CliError, detail: []const u8) u8 {
         error.CrossingUnequal => print("amphora: crossing unequal — '{s}'\n", .{detail}),
         error.ResinAbsent => print("amphora: resin absent — '{s}'\n", .{detail}),
         error.CargoUnproven => print("amphora: cargo unproven — '{s}'\n", .{detail}),
+        error.RestoreUnwritable => print("amphora: restore unwritable — '{s}'\n", .{detail}),
     }
     return exit_misread;
 }
@@ -1348,7 +1352,7 @@ fn restore_write_prove(
 ) CliError!void {
     assert(catalog.file_count >= 1);
     const cwd = Dir.cwd();
-    cwd.createDirPath(io, out_home) catch return error.VesselUnwritable;
+    cwd.createDirPath(io, out_home) catch return error.RestoreUnwritable;
     var i: u32 = 0;
     while (i < catalog.file_count) : (i += 1) {
         const e = catalog.entries[i];
@@ -1363,11 +1367,11 @@ fn restore_write_prove(
         };
         if (std.mem.lastIndexOfScalar(u8, dest, '/')) |slash| {
             if (slash > 0) {
-                cwd.createDirPath(io, dest[0..slash]) catch return error.VesselUnwritable;
+                cwd.createDirPath(io, dest[0..slash]) catch return error.RestoreUnwritable;
             }
         }
         cwd.writeFile(io, .{ .sub_path = dest, .data = data }) catch {
-            return error.VesselUnwritable;
+            return error.RestoreUnwritable;
         };
         var digest: [Sha3_256.digest_length]u8 = undefined;
         Sha3_256.hash(data, &digest, .{});
@@ -1462,6 +1466,13 @@ fn cmd_restore(init: std.process.Init, args: []const []const u8) u8 {
     restore_guard_out(io, allocator, vessel, out_home) catch |fault| {
         return switch (fault) {
             error.IdentityFork => refuse(error.IdentityFork, out_home),
+            error.StampUnverified => refuse(error.StampUnverified, vessel),
+            error.SeasonAbsent => refuse(error.SeasonAbsent, out_home),
+            error.SeasonEmpty => refuse(error.SeasonEmpty, out_home),
+            error.SeasonOverflow => refuse(error.SeasonOverflow, out_home),
+            error.SeasonUnreadable => refuse(error.SeasonUnreadable, out_home),
+            error.CargoTooLarge => refuse(error.CargoTooLarge, out_home),
+            error.PathTooLong => refuse(error.PathTooLong, out_home),
             else => refuse(error.StampUnverified, vessel),
         };
     };
@@ -1470,7 +1481,8 @@ fn cmd_restore(init: std.process.Init, args: []const []const u8) u8 {
             error.ResinAbsent => refuse(error.ResinAbsent, vessel),
             error.CargoUnproven => refuse(error.CargoUnproven, out_home),
             error.PathTooLong => refuse(error.PathTooLong, out_home),
-            else => refuse(error.VesselUnwritable, out_home),
+            error.RestoreUnwritable => refuse(error.RestoreUnwritable, out_home),
+            else => refuse(error.RestoreUnwritable, out_home),
         };
     };
     restore_same_parent(io, allocator, vessel, out_home) catch {
