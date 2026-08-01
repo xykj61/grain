@@ -1,0 +1,9 @@
+//! Intentional TAME ban plant — real `) == error.` in code. Fixture only.
+//! Never import in production. Positive control for noncomment bans grep.
+
+const std = @import("std");
+
+pub fn demo(err: anyerror) bool {
+    // plant: paren-close then == error. — the banned compare shape
+    return (err) == error.Demo;
+}

@@ -8,15 +8,20 @@
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/tame_style_scan_bans.rish
+#
+# ) == error. / ) != error. skip // comment lines (e145) — a /// that names the
+# ban is not a violation. Planted pair:
+#   tools/tame_style_ban_err_eq_comment_selftest.rish
 
 let find_rye = "find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src amphora glow/tokens.rye glow/lower_named_cast.rye -name '*.rye' ! -type l 2>/dev/null"
+let ban_nc = "tools/fixtures/tame_style_ban_noncomment_files.sh"
 
-let hits_err_eq = run ["sh" "-c" "grep -rlF ') == error.' $(${find_rye}) 2>/dev/null | head -8"]
+let hits_err_eq = run ["sh" "-c" "sh ${ban_nc} ') == error.' $(${find_rye}) | head -8"]
 if hits_err_eq.out != "" then say "BAN [) == error.]:"
 if hits_err_eq.out != "" then say hits_err_eq.out
 assert hits_err_eq.out == "" else "TAME ban: ) == error."
 
-let hits_err_ne = run ["sh" "-c" "grep -rlF ') != error.' $(${find_rye}) 2>/dev/null | head -8"]
+let hits_err_ne = run ["sh" "-c" "sh ${ban_nc} ') != error.' $(${find_rye}) | head -8"]
 if hits_err_ne.out != "" then say "BAN [) != error.]:"
 if hits_err_ne.out != "" then say hits_err_ne.out
 assert hits_err_ne.out == "" else "TAME ban: ) != error."
