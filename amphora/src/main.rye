@@ -29,16 +29,16 @@
 //!   Shared vessel bounds stay in amphora/*.rye; agreement via
 //!   tools/amphora_bounds_agree.rish (path C · alias groups · couples markers).
 //!
-//! Errors (named for the fault — Q5 · Q7 · Q8 · Q9 · Q10 accreted):
+//! Errors (named for the fault — Q5 · Q7 · Q8 · Q9 · Q10 · Q11 accreted):
 //!   UnknownCommand · TooManyWords · MissingOperand · PathTooLong
 //!   CommandNotGrown · ResultUnwritable
 //!   SeasonAbsent · SeasonEmpty · SeasonOverflow · SeasonUnreadable
 //!   CargoTooLarge · VesselUnwritable · SealToolAbsent · SealFailed
-//!   StampToolAbsent · StampFailed · IdentityFork
+//!   StampToolAbsent · StampFailed · IdentityFork · ManifestOverflow
 //!   Module split named, not swept: InvalidVessel vs BadVessel (G10).
 //!
 //! Architecture (four sections, one file for the seed):
-//!   § Pour    — parse (Q6) · season read (Q7) · seal (Q8) · stamp (Q9) · write-guard (Q10); manifest waits Q11
+//!   § Pour    — parse (Q6) · read (Q7) · seal (Q8) · stamp (Q9) · guard (Q10) · manifest (Q11): pour grown; witnesses wait Q12
 //!   § Carry   — move sealed vessel; kind 0x33 chunks; far dock verifies
 //!   § Restore — cold scrub; verify stamp+seal; restore byte-faithful
 //!   § Main    — CLI: pour / carry / restore / version
@@ -56,6 +56,12 @@
 //! (subprocess · stamp_sig outside the sealed head · rite: seal, then stamp).
 //! Q10 guards the write: a second pour may repeat an identity, never fork
 //! it — an occupant with the same parent re-pours; any other occupant refuses.
+//! Q11 writes readable manifest lines into the head — every enclosed thing
+//! named with its type-mark and digest (resins law) — stamp-covered, so the
+//! listing reads without opening and tampers fail Kumara verify (measured);
+//! the seal keeps guarding the cargo, and restore's law checks both walls.
+//! With the manifest, pour is grown: the round path exits ok; the stdout
+//! result family still awaits Keaton's word, so success speaks stderr only.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -64,7 +70,7 @@ const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
 const Dir = std.Io.Dir;
 
 /// Amphora CLI version — YYYYMMDD.HHMMSS, America/New_York, later is larger.
-const amphora_version = "20260801.042708";
+const amphora_version = "20260801.043522";
 
 // -------------------------------------------------------------------------
 // § Bounds — named with their why (Q4 · Q7 · Q8 · Q9)
@@ -123,6 +129,17 @@ const vessel_format = "amphora-v1";
 /// Default seal tool path when AMPHORA_VESSEL_SEAL is unset (repo layout).
 const default_seal_bin = "amphora/bin/vessel-seal";
 
+/// Cargo type-mark for season source files — one mark, both listings.
+const mark_plain_bytes = "plain-bytes";
+
+/// Manifest listing ceiling in bytes — same roof shape as sealed cargo.
+/// couples: max_cargo_bytes (one listing per cargo line, plus the key word)
+const max_manifest_bytes: u32 = 1024;
+
+/// One manifest name ceiling — a listed name must fit the entry contract.
+/// couples: manifest_entry.max_name_len
+const max_manifest_name_len: u32 = 200;
+
 /// Default stamp tool path when AMPHORA_VESSEL_CORE is unset (repo layout).
 const default_core_bin = "amphora/bin/vessel-core";
 
@@ -133,7 +150,7 @@ const exit_ok: u8 = 0;
 const exit_misread: u8 = 2;
 
 // -------------------------------------------------------------------------
-// § Errors — named for the fault (Q5 · Q7 · Q8 · Q9 · Q10)
+// § Errors — named for the fault (Q5 · Q7 · Q8 · Q9 · Q10 · Q11)
 // -------------------------------------------------------------------------
 
 /// CLI faults only. Vessel modules keep InvalidVessel / BadVessel (G10).
@@ -155,6 +172,7 @@ const CliError = error{
     StampToolAbsent,
     StampFailed,
     IdentityFork,
+    ManifestOverflow,
 };
 
 /// One door for every CLI fault — switch on the name, never compare.
@@ -180,12 +198,13 @@ fn refuse(fault: CliError, detail: []const u8) u8 {
         error.StampToolAbsent => print("amphora: stamp tool absent — '{s}'\n", .{detail}),
         error.StampFailed => print("amphora: stamp failed — '{s}'\n", .{detail}),
         error.IdentityFork => print("amphora: identity fork — '{s}'\n", .{detail}),
+        error.ManifestOverflow => print("amphora: manifest overflow — '{s}'\n", .{detail}),
     }
     return exit_misread;
 }
 
 // -------------------------------------------------------------------------
-// § Pour — parse (Q6) · season read (Q7) · seal (Q8) · stamp (Q9) · write-guard (Q10); manifest waits Q11
+// § Pour — parse (Q6) · read (Q7) · seal (Q8) · stamp (Q9) · guard (Q10) · manifest (Q11): pour grown
 // -------------------------------------------------------------------------
 
 /// Operands for `pour <season> <vessel>` after a successful parse.
@@ -316,7 +335,7 @@ fn build_cargo_plain(catalog: *const SeasonCatalog, out: []u8) CliError!u32 {
     while (i < catalog.file_count) : (i += 1) {
         const e = catalog.entries[i];
         const name = e.name[0..e.name_len];
-        const line = std.fmt.bufPrint(out[off..], "cargo plain-bytes {s} {s}\n", .{ e.digest_hex, name }) catch {
+        const line = std.fmt.bufPrint(out[off..], "cargo {s} {s} {s}\n", .{ mark_plain_bytes, e.digest_hex, name }) catch {
             return error.CargoTooLarge;
         };
         off += @intCast(line.len);
@@ -327,15 +346,40 @@ fn build_cargo_plain(catalog: *const SeasonCatalog, out: []u8) CliError!u32 {
     return off;
 }
 
-/// Write unsealed vessel text: format · stamp · shoulder · parent · cargo.
+/// Q11: readable manifest lines — every enclosed thing, mark · digest · name.
+/// Lives in the head, so the seal covers it (tamper-evident) yet it reads
+/// without opening — the resins-law listing the sealed-crossing anatomy names.
+fn build_manifest_lines(catalog: *const SeasonCatalog, out: []u8) CliError!u32 {
+    assert(catalog.file_count >= 1);
+    var off: u32 = 0;
+    var i: u32 = 0;
+    while (i < catalog.file_count) : (i += 1) {
+        const e = catalog.entries[i];
+        const name = e.name[0..e.name_len];
+        if (name.len > max_manifest_name_len) return error.ManifestOverflow;
+        const line = std.fmt.bufPrint(out[off..], "manifest {s} {s} {s}\n", .{ mark_plain_bytes, e.digest_hex, name }) catch {
+            return error.ManifestOverflow;
+        };
+        off += @intCast(line.len);
+        if (off > max_manifest_bytes) return error.ManifestOverflow;
+    }
+    assert(off > 0);
+    assert(off <= max_manifest_bytes);
+    return off;
+}
+
+/// Write unsealed vessel text: format · stamp · shoulder · parent · manifest · cargo.
 fn write_unsealed_vessel(
     io: std.Io,
     vessel_path: []const u8,
     parent_hex: *const [digest_hex_len]u8,
+    manifest: []const u8,
     cargo: []const u8,
 ) CliError!void {
     assert(cargo.len > 0);
     assert(cargo.len <= max_cargo_bytes);
+    assert(manifest.len > 0);
+    assert(manifest.len <= max_manifest_bytes);
     assert(std.mem.eql(u8, shoulder_ring1_wire, "amber-ring1-season"));
 
     var text: [max_vessel_len]u8 = undefined;
@@ -345,12 +389,16 @@ fn write_unsealed_vessel(
         shoulder_ring1_wire,
         parent_hex,
     }) catch return error.VesselUnwritable;
-    if (head.len + cargo.len > max_vessel_len) return error.CargoTooLarge;
+    if (head.len + manifest.len + cargo.len > max_vessel_len) return error.CargoTooLarge;
+    var mi: u32 = 0;
+    while (mi < manifest.len) : (mi += 1) {
+        text[head.len + mi] = manifest[mi];
+    }
     var ni: u32 = 0;
     while (ni < cargo.len) : (ni += 1) {
-        text[head.len + ni] = cargo[ni];
+        text[head.len + manifest.len + ni] = cargo[ni];
     }
-    const total = head.len + cargo.len;
+    const total = head.len + manifest.len + cargo.len;
     const cwd = Dir.cwd();
     cwd.writeFile(io, .{ .sub_path = vessel_path, .data = text[0..total] }) catch {
         return error.VesselUnwritable;
@@ -536,8 +584,24 @@ fn guard_identity_fork(io: std.Io, vessel_path: []const u8, parent_hex: []const 
     return error.IdentityFork; // occupant carries no parent — continuity unconfirmed
 }
 
-/// Q10 door: parse · read · guard · write · seal · stamp; manifest waits Q11.
-fn cmd_pour(init: std.process.Init, args: []const []const u8) u8 {
+/// Filled front half of a pour — names into argv, lengths into caller buffers.
+const PourFilled = struct {
+    season: []const u8,
+    vessel: []const u8,
+    cargo_len: u32,
+    manifest_len: u32,
+};
+
+/// Pour front: parse · read · sort · cargo · manifest · parent · guard.
+/// Returns an exit code when a door refused, null when the fill is whole.
+fn pour_fill(
+    init: std.process.Init,
+    args: []const []const u8,
+    cargo: *[max_cargo_bytes]u8,
+    manifest: *[max_manifest_bytes]u8,
+    parent_hex: *[digest_hex_len]u8,
+    filled: *PourFilled,
+) ?u8 {
     const allocator = init.arena.allocator();
     const io = init.io;
     const parsed = parse_pour_args(args) catch |fault| {
@@ -563,7 +627,6 @@ fn cmd_pour(init: std.process.Init, args: []const []const u8) u8 {
             error.SeasonAbsent => refuse(error.SeasonAbsent, parsed.season),
             error.SeasonEmpty => refuse(error.SeasonEmpty, parsed.season),
             error.SeasonOverflow => refuse(error.SeasonOverflow, parsed.season),
-            error.SeasonUnreadable => refuse(error.SeasonUnreadable, parsed.season),
             else => refuse(error.SeasonUnreadable, parsed.season),
         };
     };
@@ -571,18 +634,48 @@ fn cmd_pour(init: std.process.Init, args: []const []const u8) u8 {
     print("amphora: season read files={d} bytes={d}\n", .{ catalog.file_count, catalog.total_bytes });
 
     sort_season_by_name(&catalog);
-    var cargo: [max_cargo_bytes]u8 = undefined;
-    const cargo_len = build_cargo_plain(&catalog, &cargo) catch |fault| {
+    const cargo_len = build_cargo_plain(&catalog, cargo) catch |fault| {
         return refuse(fault, parsed.season);
     };
-    var parent_hex: [digest_hex_len]u8 = undefined;
-    parent_of_cargo(cargo[0..cargo_len], &parent_hex);
+    const manifest_len = build_manifest_lines(&catalog, manifest) catch |fault| {
+        return refuse(fault, parsed.season);
+    };
+    parent_of_cargo(cargo[0..cargo_len], parent_hex);
 
-    guard_identity_fork(io, parsed.vessel, &parent_hex) catch
+    guard_identity_fork(io, parsed.vessel, parent_hex) catch
         return refuse(error.IdentityFork, parsed.vessel);
 
-    write_unsealed_vessel(io, parsed.vessel, &parent_hex, cargo[0..cargo_len]) catch |fault| {
-        return refuse(fault, parsed.vessel);
+    filled.* = .{
+        .season = parsed.season,
+        .vessel = parsed.vessel,
+        .cargo_len = cargo_len,
+        .manifest_len = manifest_len,
+    };
+    return null;
+}
+
+/// Pour ship: write manifest+cargo · seal · stamp — the grown round path.
+fn pour_ship(
+    init: std.process.Init,
+    args: []const []const u8,
+    filled: *const PourFilled,
+    cargo: *const [max_cargo_bytes]u8,
+    manifest: *const [max_manifest_bytes]u8,
+    parent_hex: *const [digest_hex_len]u8,
+) u8 {
+    const allocator = init.arena.allocator();
+    const io = init.io;
+    assert(filled.cargo_len > 0);
+    assert(filled.manifest_len > 0);
+
+    write_unsealed_vessel(
+        io,
+        filled.vessel,
+        parent_hex,
+        manifest[0..filled.manifest_len],
+        cargo[0..filled.cargo_len],
+    ) catch |fault| {
+        return refuse(fault, filled.vessel);
     };
 
     var seal_path_buf: [max_vessel_path_len]u8 = undefined;
@@ -590,26 +683,41 @@ fn cmd_pour(init: std.process.Init, args: []const []const u8) u8 {
         // Detail names the default roof; AMPHORA_VESSEL_SEAL still gates resolve.
         return refuse(error.SealToolAbsent, default_seal_bin);
     };
-    run_vessel_seal(allocator, io, seal_bin, parsed.vessel) catch {
-        return refuse(error.SealFailed, parsed.vessel);
+    run_vessel_seal(allocator, io, seal_bin, filled.vessel) catch {
+        return refuse(error.SealFailed, filled.vessel);
     };
-    verify_seal_fields(io, parsed.vessel) catch {
-        return refuse(error.SealFailed, parsed.vessel);
+    verify_seal_fields(io, filled.vessel) catch {
+        return refuse(error.SealFailed, filled.vessel);
     };
-    print("amphora: vessel sealed cargo_bytes={d}\n", .{cargo_len});
+    print("amphora: vessel sealed cargo_bytes={d}\n", .{filled.cargo_len});
 
-    stamp_sealed_vessel(init, allocator, io, args[0], parsed.vessel) catch |fault| {
+    stamp_sealed_vessel(init, allocator, io, args[0], filled.vessel) catch |fault| {
         return switch (fault) {
             // Detail names the default roof; AMPHORA_VESSEL_CORE still gates resolve.
             error.StampToolAbsent => refuse(error.StampToolAbsent, default_core_bin),
-            else => refuse(error.StampFailed, parsed.vessel),
+            else => refuse(error.StampFailed, filled.vessel),
         };
     };
-    return refuse(error.CommandNotGrown, "pour");
+    print("amphora: pour complete manifest_lines_bytes={d}\n", .{filled.manifest_len});
+    return exit_ok;
+}
+
+/// Q11 door: parse · read · guard · write(manifest) · seal · stamp — pour
+/// grown; the round path exits ok. Witnesses wait Q12; stdout family waits
+/// Keaton's word, so success speaks on stderr only.
+fn cmd_pour(init: std.process.Init, args: []const []const u8) u8 {
+    var cargo: [max_cargo_bytes]u8 = undefined;
+    var manifest: [max_manifest_bytes]u8 = undefined;
+    var parent_hex: [digest_hex_len]u8 = undefined;
+    var filled: PourFilled = undefined;
+    if (pour_fill(init, args, &cargo, &manifest, &parent_hex, &filled)) |code| {
+        return code;
+    }
+    return pour_ship(init, args, &filled, &cargo, &manifest, &parent_hex);
 }
 
 // =========================================================================
-// § Main — CLI (Q3–Q10 · carry/restore wait · version)
+// § Main — CLI (Q3–Q11 · carry/restore wait · version)
 // =========================================================================
 
 pub fn main(init: std.process.Init) !u8 {

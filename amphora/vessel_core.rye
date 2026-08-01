@@ -1,5 +1,10 @@
 //! amphora/vessel_core.rye — Amphora vessel: parse, Kumara stamp_sig, verify.
 //!
+//! Accretion 20260801.043522 (Q11): readable `manifest` lines — each one a
+//! manifest_entry triple (mark · digest · name), validated by the same
+//! module, carried into canonical bytes so the stamp covers the listing.
+//! Elder vessels carry none and their canonical bytes are unchanged.
+//!
 //!   rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core
 //!   amphora/bin/vessel-core selftest
 //!   amphora/bin/vessel-core parse <path>
@@ -15,7 +20,7 @@ const me = @import("manifest_entry.rye");
 const kumara = @import("kumara.rye");
 const tally_copy = @import("tally_copy.rye");
 
-pub const amphora_vessel_version = "20260710.153745";
+pub const amphora_vessel_version = "20260801.043522";
 pub const max_vessel_len: u32 = 8192;
 pub const max_cargo: u32 = 16;
 pub const stamp_sig_hex_len: u32 = kumara.signature_length * 2;
@@ -107,6 +112,8 @@ const CanonicalParts = struct {
     seal_cargo: ?[]const u8,
     cargo_lines: [max_cargo][]const u8,
     cargo_count: u32,
+    manifest_lines: [max_cargo][]const u8, // roof couples cargo — one listing per line
+    manifest_count: u32,
     sealed: bool,
 };
 
@@ -141,6 +148,7 @@ fn scan_canonical_parts(text: []const u8, parts: *CanonicalParts) error{InvalidV
     parts.seal_tag = null;
     parts.seal_cargo = null;
     parts.cargo_count = 0;
+    parts.manifest_count = 0;
     parts.sealed = false;
 
     var lines = std.mem.splitScalar(u8, text, '\n');
@@ -148,6 +156,13 @@ fn scan_canonical_parts(text: []const u8, parts: *CanonicalParts) error{InvalidV
         const line = trim_line(raw);
         if (line.len == 0 or line[0] == '#') continue;
         if (std.mem.startsWith(u8, line, "stamp_sig ")) continue;
+        if (std.mem.startsWith(u8, line, "manifest ")) {
+            _ = me.parse_manifest_line(line["manifest ".len..]) catch return error.InvalidVessel;
+            if (parts.manifest_count >= max_cargo) return error.Overflow;
+            parts.manifest_lines[parts.manifest_count] = line;
+            parts.manifest_count += 1;
+            continue;
+        }
         if (std.mem.startsWith(u8, line, "cargo ")) {
             _ = me.parse_manifest_line(line["cargo ".len..]) catch return error.InvalidVessel;
             if (parts.cargo_count >= max_cargo) return error.Overflow;
@@ -181,6 +196,15 @@ pub fn write_canonical(text: []const u8, out: []u8) error{InvalidVessel, Overflo
     try append_kv(out, &off, "stamp", parts.stamp);
     try append_kv(out, &off, "shoulder", parts.shoulder);
     try append_kv(out, &off, "parent", parts.parent);
+    var mi: u32 = 0;
+    while (mi < parts.manifest_count) : (mi += 1) {
+        const m = parts.manifest_lines[mi];
+        if (off + m.len + 1 > out.len) return error.Overflow;
+        tally_copy.copy_disjoint(u8, out[off..][0..m.len], m);
+        off += @intCast(m.len);
+        out[off] = '\n';
+        off += 1;
+    }
     if (parts.sealed) {
         try append_kv(out, &off, "seal_nonce", parts.seal_nonce.?);
         try append_kv(out, &off, "seal_tag", parts.seal_tag.?);
@@ -199,6 +223,18 @@ pub fn write_canonical(text: []const u8, out: []u8) error{InvalidVessel, Overflo
     return off;
 }
 
+/// A listed line — `manifest` or `cargo` — is a manifest_entry triple under a
+/// bounded count; answers true when the line was of the given kind.
+fn take_listed_line(line: []const u8, kind: []const u8, count: *u32) error{InvalidVessel}!bool {
+    assert(line.len > 0);
+    assert(kind.len > 0);
+    if (!std.mem.startsWith(u8, line, kind)) return false;
+    _ = me.parse_manifest_line(line[kind.len..]) catch return error.InvalidVessel;
+    if (count.* >= max_cargo) return error.InvalidVessel;
+    count.* += 1;
+    return true;
+}
+
 pub fn parse_vessel(text: []const u8, out: *VesselFields) error{InvalidVessel}!void {
     var format_set = false;
     var stamp_set = false;
@@ -209,19 +245,15 @@ pub fn parse_vessel(text: []const u8, out: *VesselFields) error{InvalidVessel}!v
     var seal_tag_set = false;
     var seal_cargo_set = false;
     var cargo_count: u32 = 0;
+    var manifest_count: u32 = 0;
 
     var lines = std.mem.splitScalar(u8, text, '\n');
     while (lines.next()) |raw| {
         const line = trim_line(raw);
         if (line.len == 0) continue;
         if (line[0] == '#') continue;
-        if (std.mem.startsWith(u8, line, "cargo ")) {
-            const rest = line["cargo ".len..];
-            _ = me.parse_manifest_line(rest) catch return error.InvalidVessel;
-            if (cargo_count >= max_cargo) return error.InvalidVessel;
-            cargo_count += 1;
-            continue;
-        }
+        if (try take_listed_line(line, "manifest ", &manifest_count)) continue;
+        if (try take_listed_line(line, "cargo ", &cargo_count)) continue;
         const space = std.mem.indexOfScalar(u8, line, ' ') orelse return error.InvalidVessel;
         const key = line[0..space];
         const value = trim_line(line[space + 1 ..]);
