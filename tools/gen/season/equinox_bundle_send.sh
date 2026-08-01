@@ -5,10 +5,13 @@
 #   sh tools/gen/season/equinox_bundle_send.sh rehearsal
 #   sh tools/gen/season/equinox_bundle_send.sh rehearsal --span HEAD~20..HEAD
 #   sh tools/gen/season/equinox_bundle_send.sh closing e255
+#   sh tools/gen/season/equinox_bundle_send.sh wave q64
 #   sh tools/gen/season/equinox_bundle_send.sh prove-red
 #
 # Law: cut home-side, verify, write stamped manifest beside the bundle.
 # Law: kg does not open shred · geode · seat 128 — this is a crossing mode only.
+# Law (e141): closing's four rounds stay verbatim; wave carries the round name
+#   into the path; rehearsal no longer hardcodes e129 (instrument count ages).
 set -eu
 
 MODE=${1:-rehearsal}
@@ -25,7 +28,7 @@ if test "$MODE" = "prove-red"; then
   exit 1
 fi
 
-mkdir -p bundles/rehearsal
+mkdir -p bundles/rehearsal bundles/wave
 
 case "$MODE" in
   rehearsal)
@@ -37,7 +40,7 @@ case "$MODE" in
       START=$(git rev-parse "$START_REF")
       END=$(git rev-parse "$END_REF")
       END10=$(git rev-parse --short=10 "$END")
-      OUT="bundles/rehearsal/e129-rehearsal-span-${END10}.bundle"
+      OUT="bundles/rehearsal/rehearsal-span-${END10}.bundle"
       BASIS="span ${START}..${END}"
       echo "cutting span ${START_REF}..${END_REF} (${START}..${END})"
       # Name the tip as a ref so git bundle create accepts the thin span.
@@ -45,7 +48,7 @@ case "$MODE" in
     else
       # Full --all rehearsal — the overdue crossing rehearsal
       START=--all
-      OUT="bundles/rehearsal/e129-rehearsal-all-${END10}.bundle"
+      OUT="bundles/rehearsal/rehearsal-all-${END10}.bundle"
       BASIS="full --all cut at tip ${END}"
       echo "cutting --all at tip ${END}"
       git bundle create "$OUT" --all
@@ -68,8 +71,30 @@ case "$MODE" in
     mkdir -p bundles
     git bundle create "$OUT" --all
     ;;
+  wave)
+    # Nested-wave / quest cut — round name travels in the path (e141 accretion).
+    # Closing's four rounds stay untouched. Full-history root for --all bytes.
+    ROUND=${ARG2:?wave needs round label e.g. q64}
+    case "$ROUND" in
+      *[!A-Za-z0-9._-]*)
+        echo "detail=wave_round_label_refused"
+        echo "verdict=misread"
+        exit 1
+        ;;
+      '')
+        echo "detail=wave_round_label_empty"
+        echo "verdict=misread"
+        exit 1
+        ;;
+    esac
+    KIND=wave
+    START=--all
+    OUT="bundles/wave/${ROUND}-all-${END10}.bundle"
+    BASIS="wave round ${ROUND} full --all"
+    git bundle create "$OUT" --all
+    ;;
   *)
-    echo "usage: equinox_bundle_send.sh rehearsal [--span A..B] | closing <round> | prove-red"
+    echo "usage: equinox_bundle_send.sh rehearsal [--span A..B] | closing <round> | wave <round> | prove-red"
     exit 2
     ;;
 esac

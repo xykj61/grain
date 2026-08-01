@@ -1,0 +1,27 @@
+# tools/gen/season/equinox_e141_commence_amphora_witness.rish — e141 Q1.
+#   rishi/bin/rishi run tools/gen/season/equinox_e141_commence_amphora_witness.rish
+say "e141-commence: Language EN — Amphora CLI wave Q1 · commence OPEN · name HELD."
+say "e141-commence: Style Radiant — relay APPLY 1-5 · wave mode · timing pin law."
+say "e141-commence: Lens TAME — e141 · REDS 50 · shred RED · 128 reserved."
+
+let green = run ["sh" "tools/fixtures/equinox_e141_commence_amphora_scan.sh"]
+assert green.ok else "e141-commence: living scan must exit 0"
+assert green.out contains "apply1=honored" else "e141-commence: want APPLY 1"
+assert green.out contains "apply2=honored" else "e141-commence: want APPLY 2"
+assert green.out contains "apply3=honored" else "e141-commence: want APPLY 3"
+assert green.out contains "apply4=honored" else "e141-commence: want APPLY 4"
+assert green.out contains "apply5=honored" else "e141-commence: want APPLY 5"
+assert green.out contains "commence=open" else "e141-commence: want commence open"
+assert green.out contains "name=held" else "e141-commence: want name held"
+assert green.out contains "n=64" else "e141-commence: want N 64"
+assert green.out contains "amphora_tracked=10" else "e141-commence: want amphora 10"
+assert green.out contains "wave_mode=honored" else "e141-commence: want wave mode"
+assert green.out contains "shred=RED" else "e141-commence: want shred RED"
+assert green.out contains "seat_128=reserved_close_choir" else "e141-commence: want 128 reserved"
+assert green.out contains "verdict=ok" else "e141-commence: want verdict ok"
+
+let red = run ["sh" "tools/fixtures/equinox_e141_commence_amphora_scan.sh" "prove-red"]
+assert (red.ok == false) else "e141-commence: prove-red must refuse"
+assert red.out contains "RED_seat_128_opened_on_kg" else "e141-commence: prove-red want refuse"
+
+say "GREEN: e141-commence — Q1 charter · REDS 50 · wave mode · census 10 · 128 reserved"

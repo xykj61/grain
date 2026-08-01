@@ -5,7 +5,7 @@
 #   sh tools/gen/season/equinox_bundle_manifest.sh \
 #     <bundle-path> <kind> <pier> <start-hash> <end-hash> <stamp> <basis-note>
 #
-# kind: rehearsal | e63 | e127 | e191 | e255 | crossing
+# kind: rehearsal | wave | e63 | e127 | e191 | e255 | crossing
 set -eu
 
 BUNDLE=${1:?bundle path}

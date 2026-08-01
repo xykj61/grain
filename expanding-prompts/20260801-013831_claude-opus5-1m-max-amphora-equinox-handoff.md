@@ -56,7 +56,7 @@ verify: git rev-parse --short=10 HEAD
 | Nest | Equinox **deca** OPEN · true deepest · ch1–ch7 FULL · ch8 **15/16** |
 | Seat 128 | **RESERVED** close choir — kg circles no gate |
 | Amber | retired by accretion e138 · module+witness whole · pause kept · shred refused |
-| Amphora | vessel GREEN (laps 1–3 · seal · chunk · purchase) · **no user CLI yet** |
+| Amphora | vessel GREEN (laps 1–3 · seal · chunk · purchase) · **no user CLI yet** · tracked **10** files (9 `.rye` + README) — not ten `.rye` |
 | REDS | **49** (row 49: a breach can be withdrawn) |
 | Shred | **RED** · Class O word-scope · orphans 858 |
 | SAFE | 0/64 · Keaton alone |
