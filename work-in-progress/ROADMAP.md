@@ -1,7 +1,7 @@
 # The Roadmap — living pin
 
 **Language:** EN  
-**Last updated:** `20260801.044859` · voice Riyo  
+**Last updated:** `20260801.045438` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Full season ledger:** [`archive/20260724-132812_roadmap-season-ledger.md`](archive/20260724-132812_roadmap-season-ledger.md)  
 **Align:** [`../foundations/20260706-185112_follow-our-compass.md`](../foundations/20260706-185112_follow-our-compass.md)  
@@ -9,14 +9,14 @@
 
 ---
 
-## Now — Amphora CLI wave · J1 CLOSED · J2 waits (`20260801.044859`)
+## Now — Amphora CLI wave · J2 OPEN Q20 (`20260801.045438`)
 
 | Order | Lap | Status |
 |-------|-----|--------|
 | — | e141–e151 Q1–Q7 · path C · Class W park · season read | landed |
-| — | **e152–e160** Q8–Q16 · pour grown · witnesses · audits · J1 CLOSED | landed |
-| **1** | **Q17** J2 The Crossing — charter accretion | **next kg** |
-| **2** | **Q18+** carry per the sixteen cut at Q16 | kg by kg |
+| — | **e152–e164** J1 CLOSED · J2 Q17–Q20 (charter · doc · parse · walls) | landed |
+| **1** | **Q21** dock write-guard | **dock word + kg** |
+| **2** | **Q22+** chunk plan · write · reassembly per the sixteen | kg by kg |
 | **3** | Keaton seats Crossing / stdout law / handback / P7 / Class W | Keaton alone |
 | **4** | seat **128** close choir | Keaton alone |
 | **5** | Class O shred · geode · stack on-touch | gated / on-touch |

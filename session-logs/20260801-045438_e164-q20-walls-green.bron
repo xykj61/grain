@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260801.045438
+editor Claude
+model Claude Fable 5 1M Max
+voice Riyo
+host Claude counsel container — Eastern (EDT) time convention
+title e164 Q20 walls before motion GREEN
+prompt whole-equinox kg continues through J2
+think never move an unproven vessel; walls reuse pour's own resolvers on path C
+obs good vessel passes and waits · absent · false-verify · false-seal each refuse by name
+file amphora/src/main.rye Q20 run_vessel_core_verify run_vessel_seal_open carry_verify_walls cmd_carry
+file counsel/20260801-045438_e164-q20-walls-before-motion.md seat
+recommend Q21 on kg after the dock-layout word
+product_nib Amphora CLI wave e164 Q20
+suite_nib walls GREEN
+git_nib b833d65a9a
