@@ -24,6 +24,10 @@ assert src.ok else "glow_native_activity missing Glow embedded-desk fold wire / 
 
 # 4) Pack path still GREEN with the wired entry.
 let pack = run ["rishi/bin/rishi" "run" "tools/tube05_apk_pack_witness.rish"]
+# e209: surface the worker's own named reason before the red, so an
+# aapt-less bench reads its true cause on the last line, not "just above".
+if pack.err contains "missing aapt" then say "stoa198: bench lacks aapt — Android pack toolchain is pier/metal lane"
+if pack.out contains "missing aapt" then say "stoa198: bench lacks aapt — Android pack toolchain is pier/metal lane"
 assert pack.ok else "tube05_apk_pack_witness failed after fold wire"
 assert pack.out contains "GREEN" else "tube05_apk_pack_witness missing GREEN"
 
