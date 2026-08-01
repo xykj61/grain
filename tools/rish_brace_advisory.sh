@@ -14,4 +14,19 @@ for f in $(git ls-files '*.rish'); do
   fi
 done
 echo "rish_brace_advisory: $count shell-expansion shapes inside rishi strings (advisory only)"
+# Second check (e206, born of the e205 red): backslash escapes nothing in
+# rishi, so a \" inside a run-string reaches sh as a literal backslash-quote.
+# Worse than failing, a guard like: test -n \"$x\" passes VACUOUSLY — the
+# literal quote makes the string non-empty whatever $x holds. Name every site.
+bs=0
+for f in $(git ls-files '*.rish'); do
+  hits=$(grep -nF '\"' "$f" 2>/dev/null)
+  if [ -n "$hits" ]; then
+    echo "$f:"
+    echo "$hits" | sed 's/^/  /'
+    n=$(echo "$hits" | wc -l)
+    bs=$((bs+n))
+  fi
+done
+echo "rish_backslash_advisory: $bs backslash-quote shapes inside rishi strings (advisory only)"
 exit 0
