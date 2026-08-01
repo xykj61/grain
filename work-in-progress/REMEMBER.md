@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260801.172228` · voice Riyo · e212 retting timer ring1 GREEN (Io idiom) · e213 Trey frame · Djin RTAC (Keaton's subject line) · arc e191-e213 whole · gates keep: class-and-rooms · seat 128 · SEA only · shred RED
+**Last refreshed:** `20260801.172655` · voice Riyo · e214 wasm ring2 builds+runs (WASI dir seam named: no prestat in rye std) · LAW: no gate words on Recommend lines · Djin awaits Keaton's subject line · gates keep · SEA only · shred RED
 **Pier at fusion:** `20260802.132104` · p191–p203 · Tend T1–T6·C1–C4·A1–A3·M1 · tip 33d77fe68c — counsel lane rebased atop, one file overlapped, union kept
 
 
