@@ -45,9 +45,9 @@ assert scan.out contains "dialect_verdict=one_dialect" else "e112-date-dialect-w
 assert scan.out contains "dialect_prove_red=honored" else "e112-date-dialect-witness: want prove-red"
 assert scan.out contains "elder=honored" else "e112-date-dialect-witness: want elder"
 assert scan.out contains "seat_128=reserved_close_choir" else "e112-date-dialect-witness: want 128 reserved"
-assert scan.out contains "surface_count=4" else "e112-date-dialect-witness: want surface 4"
+assert scan.out contains "surface_count=6" else "e112-date-dialect-witness: want surface 6"
 assert scan.out contains "fork_status=not_consumed" else "e112-date-dialect-witness: want fork waiting"
 assert scan.out contains "e112_date_dialect_witness=ok" else "e112-date-dialect-witness: want e112 ok"
 assert scan.out contains "verdict=ok" else "e112-date-dialect-witness: want verdict=ok"
 
-say "GREEN: e112-date-dialect-witness — planted C1/C2 · one_dialect · elder e111 · 128 reserved · census four · fork waiting · museum"
+say "GREEN: e112-date-dialect-witness — planted C1/C2 · one_dialect · elder e111 · 128 reserved · census six · fork waiting · museum"
