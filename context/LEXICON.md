@@ -1,7 +1,7 @@
 # Lexicon — Module Names and Their Meanings
 
 **Language:** EN
-**Last updated:** `20260801.001244` (**e132 GREEN** · compact Last updated accepts full stamps · suite 10/10)
+**Last updated:** `20260801.003457` (**e133 GREEN** · fuse verify dialect · first of eleven named)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---
@@ -17,7 +17,7 @@ Living vocabulary for the Grain family (Glow language · Grain umbrella). Each n
 | **Glow** | The language — runes · desks · `glow/` — **code** side of the Glow/Brix pair (data = **Brix**, seated `20260729.165912`). Unchanged when the umbrella became Grain. |
 | **max_lines** | Named Glow multi-line bind ceiling — `glow/lower_multi.rye` `pub const max_lines: u32 = 6`; bind array sized to it; `glow_run` refuses past it with `too many Glow lines`. A bound that refuses its own author is the bound working. Desk at the ceiling: `glow/gen/compose-bind-nest-seal-jam-cue.glow` (e130) ties elder `compose-bind-nest-four-jam-cue`. Seated e130 `20260731.234806` · counsel [`../counsel/20260731-234806_e130-seal-jam-cue-desk.md`](../counsel/20260731-234806_e130-seal-jam-cue-desk.md). |
 | **timing figure** | A stopwatch reading of a desk or suite — a **pin**, not a constant. Desk tier varies with cache warmth (honest cuts: ~57s cold · ~5s · ~11s). Carry a range, or re-cut every round; never treat one figure — including a "correction" — as the tier. Seated e131 `20260801.000833` · REDS 43 · counsel [`../counsel/20260801-000833_e131-timing-pin-manifest-limb.md`](../counsel/20260801-000833_e131-timing-pin-manifest-limb.md). |
-| **compact Last updated** | Living-doc date dialect: `**Last updated:**` wrapped as `YYYYMMDD` **or** full one-clock `YYYYMMDD.HHMMSS` — both compact; hyphenated `YYYY-MM-DD` is the refused other dialect. Pattern `[0-9]{8}(\.[0-9]{6})?` (e132). An instrument that hardcodes date-only ages when the tree moves to stamps. Seated e111 · widened e132 `20260801.001244` · REDS 44 · counsel [`../counsel/20260801-001244_e132-date-dialect-timestamp.md`](../counsel/20260801-001244_e132-date-dialect-timestamp.md). |
+| **compact Last updated** | Living-doc date dialect: `**Last updated:**` wrapped as `YYYYMMDD` **or** full one-clock `YYYYMMDD.HHMMSS` — both compact (**one roof**); hyphenated `YYYY-MM-DD` is the refused other dialect. Pattern `[0-9]{8}(\.[0-9]{6})?` (e132). Lexicon was the **first of eleven** law-library pages to stamp seconds. An instrument that hardcodes date-only ages when the tree moves to stamps. Seated e111 · widened e132 `20260801.001244` · named e133 `20260801.003457` · REDS 44 · counsel [`../counsel/20260801-001244_e132-date-dialect-timestamp.md`](../counsel/20260801-001244_e132-date-dialect-timestamp.md) · fuse [`../counsel/20260801-003457_e133-fuse-verify-dialect-green.md`](../counsel/20260801-003457_e133-fuse-verify-dialect-green.md). |
 
 ## Cursor loop — gates and itinerary
 
