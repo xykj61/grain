@@ -1,0 +1,35 @@
+//! amphora/src/main.rye — Amphora: vessel software for a sealed crossing.
+//!
+//! Amphora is preservation in motion. It carries sealed resins across a
+//! crossing — wire, dock, or pocket — under the same resins law and Kumara
+//! stamp as Amber's cellar. Seal and stamp live inside pour; chunk lives
+//! inside carry. The shoulder stays clear. Tamper must fail. Round-trip with
+//! pour and carry must close equal.
+//!
+//! This is the seed: one file, three commands, one crossing.
+//!
+//! Commands:
+//!   amphora pour <season> <vessel>   Fill, seal, then stamp a vessel.
+//!   amphora carry <vessel> <dock>    Move sealed cargo; chunk inside carry.
+//!   amphora restore <vessel>         Cold scrub, verify, restore faithful.
+//!   amphora version                  Print the Amphora CLI version.
+//!
+//! Build:
+//!   mkdir -p amphora/bin
+//!   RYE_ZIG=$PWD/vendor/zig-toolchain/zig \
+//!   rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora
+//!
+//! Bounds (named; metal grows on-touch):
+//!   vessel path length · cargo size · chunk datagram · dock reach
+//!
+//! Errors (named for the fault):
+//!   season missing · vessel forked · stamp fail · seal fail · dock refuse
+//!
+//! Architecture (four sections, one file for the seed):
+//!   § Pour    — fill from season; seal then Kumara-stamp; no second pour
+//!   § Carry   — move sealed vessel; kind 0x33 chunks; far dock verifies
+//!   § Restore — cold scrub; verify stamp+seal; restore byte-faithful
+//!   § Main    — CLI: pour / carry / restore / version
+//!
+//! One loop · one crossing. Identity refuses a second pour that would fork.
+//! Far side verifies stamp and seal before cargo is trusted again.

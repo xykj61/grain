@@ -1,11 +1,11 @@
 # Equinox Seat Map — close path · Chapter Seven and Eight
 
 **Language:** EN  
-**Status:** Living pin — **Amphora CLI wave Q2 OPEN** · **Crossing lean** · **align Amphora CLI** · **fuse verify Amber GREEN** · **Amber retire by accretion** · **e137 breach withdrawn** · **Amber pause** · **Silo template named** · **MantraPod supersede GREEN** · **affordable witness** · **surface census six GREEN** · **suite 10/10** · **timing figure is a pin** · **manifest living-doc** · **seal-jam-cue desk GREEN** · **max_lines** enforced · **bundle send GREEN** · **wave mode** · **Class O word-scope** · **on-touch never campaign** · **start rung** sh→rish · **build stack** seated · ch7 close **PERFORMED** · ch8 seat **128 RESERVED** · fork **EXTEND +128** · breach **closed unspent** · roofs **CLOSED** · close-seat **answered** · e92 park **lifted** · **roots ≠ Bench** · name the Bench · **living-pin guard** · emptied caught  
+**Status:** Living pin — **Amphora CLI wave Q2 seed GREEN** · **TAME roster sees amphora** · **Crossing lean** · **align Amphora CLI** · **fuse verify Amber GREEN** · **Amber retire by accretion** · **e137 breach withdrawn** · **Amber pause** · **Silo template named** · **MantraPod supersede GREEN** · **affordable witness** · **surface census six GREEN** · **suite 10/10** · **timing figure is a pin** · **manifest living-doc** · **seal-jam-cue desk GREEN** · **max_lines** enforced · **bundle send GREEN** · **wave mode** · **Class O word-scope** · **on-touch never campaign** · **start rung** sh→rish · **build stack** seated · ch7 close **PERFORMED** · ch8 seat **128 RESERVED** · fork **EXTEND +128** · breach **closed unspent** · roofs **CLOSED** · close-seat **answered** · e92 park **lifted** · **roots ≠ Bench** · name the Bench · **living-pin guard** · emptied caught  
 **Voice:** Riyo  
-**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260801.024840` (e142 Q2 CLI doc · Crossing lean · REDS 51 · 128 kept reserved)  
-**Seat:** Equinox e123 · almanac **127** · Chapter Eight **(15 of 16)** · e124–e142 no content seat · nested wave **Q2/64**  
-**Basis:** kg Q2 · Crossing lean offered · handback slot return_deca_128 · **128 still reserved** · kg circles no gate
+**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260801.025844` (e143 Q2 src seed · roster baseline · REDS 51 · 128 kept reserved)  
+**Seat:** Equinox e123 · almanac **127** · Chapter Eight **(15 of 16)** · e124–e143 no content seat · nested wave **Q2/64**  
+**Basis:** kg e143 · Crossing lean offered · handback slot return_deca_128 · **128 still reserved** · kg circles no gate
 
 *A chapter's sixteenth seat may carry check · test · prepare as a close choir. A duty is not a seat unless the almanac says so — only the close is a seat. A surface witness claims no seat of its own. **roots** are where the hand sits to send words; a **Bench** is where claims become evidence — different kinds. Name the **Bench** when a measurement is reported. **Build stack:** sh → rish → glow·tend → docs-geode → Aurora·Caravan·Tally → Mantra·Weave — foundations first; five refusals · layer order. **Start rung:** sh → rish seam — on-touch only. **Shell ratchet:** on-touch, never a campaign. **Class O word-scope:** authorizing word on class/rooms, not per-path. **Bundle send:** crossing mode — cut · verify · stamped manifest; first rehearsal e129. **max_lines:** Glow multi-bind ceiling 6 — refuses past it. When two roofs carry one name, either they agree or the name is doing two jobs. Approve-all · kg · approvals seat recommended leans; they circle no gate — including shred. Seat the suite; do not manufacture meters. Look for the thing, not for the name of the thing. On-disk is not in-the-tree. A witness must not depend on one bench's tools.*
 
@@ -98,7 +98,7 @@
 | dated Vision law | **seated** e136 · REDS 47 · claim rewrites supersede · never silent in-place |
 | Amber | **retire by accretion** e138 · e137 breach **withdrawn** · Amber pause · module+witness kept · no shred of Amber · **Silo template** named e139 |
 | fuse verify Amber | **GREEN** e139 · counsel elder e136 · living already e138 · kg does not open seat 128 |
-| Amphora CLI wave | **OPEN** e142 Q2/64 · Glow/Tend/TAME · lean ***Crossing Season*** (seat Keaton's) · slot `return_deca_128` · amphora **10 tracked** · CLI doc only |
+| Amphora CLI wave | **OPEN** e143 Q2/64 · Glow/Tend/TAME · lean ***Crossing Season*** (seat Keaton's) · slot `return_deca_128` · amphora **11 tracked** · `src/main.rye` seed · TAME roster baseline |
 | breach withdrawn law | **REDS 49** · a breach can be withdrawn · proposing is not committing |
 | timing figure pin | **REDS 50** · amphora_resin_chunk claim withdrawn · range or re-cut |
 | bundle wave mode | **accreted** e141 · closing e63\|e127\|e191\|e255 kept · rehearsal drops e129 hardcode |

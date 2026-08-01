@@ -2,16 +2,17 @@
 
 **Language:** EN
 **Stamp:** `20260710.161358`
-**Last updated:** `20260801.024840` (Q2 — CLI surface as doc comment only · zero code)
-**Status:** Landed — laps 1–3 + stamp + seal + chunk + purchase delivery; Pond customs gates scrub; forge view folds a live sealed pour · **CLI wave Q2** doc surface (no binary yet)
+**Last updated:** `20260801.025844` (Q2 seed — `src/main.rye` all `//!` · zero code · TAME roster sees amphora)
+**Status:** Landed — laps 1–3 + stamp + seal + chunk + purchase delivery; Pond customs gates scrub; forge view folds a live sealed pour · **CLI wave Q2** Mantra-shaped seed (no binary yet)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 
 **Amphora** is **vessel software** — preservation **in motion**. It carries sealed resins across a crossing (wire, dock, or pocket) under the same resins law and Kumara stamp as Amber's cellar.
 
 <!--
-  Amphora CLI surface (Q2 doc comment only · zero code · e142).
+  Amphora CLI surface (README companion · e142). Canonical Q2 seed is
+  amphora/src/main.rye — all //! · zero code · Mantra shape (e143).
   One loop · one crossing. Seal+stamp live inside pour. Chunk lives inside carry.
-  No .rye CLI entry yet — metal waits Q3+.
+  Metal waits Q3+.
 
   amphora version
       Print the free Amphora CLI version string and exit 0.
@@ -30,7 +31,9 @@
       Tamper must fail. Round-trip with pour+carry must close equal.
 -->
 
-## CLI surface (documentation · Q2 · no binary)
+## CLI surface (documentation · Q2 seed · no binary)
+
+Canonical seed: [`src/main.rye`](src/main.rye) — thirty-five `//!` lines · zero code.
 
 | Command | Duty |
 |---------|------|
@@ -39,7 +42,7 @@
 | `amphora carry <vessel> <dock>` | move to far dock · chunk inside carry |
 | `amphora restore <vessel>` | cold scrub · verify · restore |
 
-*Q2 seats the words only. Q3+ may grow Glow/Tend metal on-touch. Nested wave lean: **the Crossing Season** (seat Keaton's).*
+*Q2 seats the words only (`src/main.rye` + this table). Q3+ may grow Glow/Tend metal on-touch. Nested wave lean: **the Crossing Season** (seat Keaton's).*
 
 | Lap | What |
 |-----|------|

@@ -9,7 +9,7 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/tame_style_scan_bans.rish
 
-let find_rye = "find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src glow/tokens.rye glow/lower_named_cast.rye -name '*.rye' ! -type l 2>/dev/null"
+let find_rye = "find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src amphora glow/tokens.rye glow/lower_named_cast.rye -name '*.rye' ! -type l 2>/dev/null"
 
 let hits_err_eq = run ["sh" "-c" "grep -rlF ') == error.' $(${find_rye}) 2>/dev/null | head -8"]
 if hits_err_eq.out != "" then say "BAN [) == error.]:"
