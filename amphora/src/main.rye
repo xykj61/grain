@@ -19,11 +19,13 @@
 //!   RYE_ZIG=$PWD/vendor/zig-toolchain/zig \
 //!   rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora
 //!
-//! Bounds (named; metal grows on-touch):
-//!   vessel path length · cargo size · chunk datagram · dock reach
-//!   argv words: at most four (program + command + two operands)
+//! Bounds (named constants — Q4; values align with vessel homes):
+//!   max_words            — argv ceiling (program + command + two operands)
+//!   max_vessel_path_len  — season / vessel / dock path text
+//!   max_cargo_bytes      — sealed cargo / resin ceiling (vessel_fetch_wire)
+//!   max_chunk_datagram   — one wire frame (kind 0x33 rides inside)
 //!
-//! Errors (named for the fault):
+//! Errors (named for the fault — Q5 will seat error set names):
 //!   season missing · vessel forked · stamp fail · seal fail · dock refuse
 //!   unknown command · too many words · quest waits
 //!
@@ -45,11 +47,27 @@ const print = std.debug.print;
 /// Amphora CLI version — YYYYMMDD.HHMMSS, America/New_York, later is larger.
 const amphora_version = "20260731.230237";
 
+// -------------------------------------------------------------------------
+// § Bounds — named with their why (Q4)
+// -------------------------------------------------------------------------
+
 /// At most four argv words: program · command · two operands (pour/carry).
-const max_words = 4;
+const max_words: u8 = 4;
+
+/// Path text ceiling for season · vessel · dock args (POSIX PATH_MAX lean).
+/// Why: refuse absurd paths before open; pour metal will enforce on read.
+const max_vessel_path_len: u16 = 4096;
+
+/// Sealed cargo / assembled resin ceiling in bytes.
+/// Why: matches vessel_fetch_wire.max_resin_bytes / vessel_seal.max_seal_plain.
+const max_cargo_bytes: u32 = 1024;
+
+/// One datagram payload ceiling on the crossing wire.
+/// Why: matches vessel_fetch_wire.max_wire_payload; chunk (0x33) stays inside.
+const max_chunk_datagram: u16 = 340;
 
 // =========================================================================
-// § Main — CLI (Q3: version lands; pour/carry/restore wait their quests)
+// § Main — CLI (Q3: version; Q4: bounds named; pour/carry/restore wait)
 // =========================================================================
 
 pub fn main(init: std.process.Init) !u8 {
@@ -60,6 +78,9 @@ pub fn main(init: std.process.Init) !u8 {
     assert(args.len >= 1);
     assert(max_words == 4);
     assert(amphora_version.len == 15);
+    assert(max_vessel_path_len == 4096);
+    assert(max_cargo_bytes == 1024);
+    assert(max_chunk_datagram == 340);
 
     if (args.len > max_words) {
         print("amphora: at most {d} words, {d} given\n", .{ max_words, args.len });

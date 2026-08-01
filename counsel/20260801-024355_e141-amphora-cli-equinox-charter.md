@@ -54,7 +54,7 @@ Gall's Law: J2–J4 quests are cut at each journey's sixteenth from measured gro
 | **Q1** | charter (this stamp) |
 | **Q2** | doc comment only · zero code — seed `amphora/src/main.rye` `//!` (e143) · README surface (e142) |
 | **Q3** | `amphora version` — free string on **stdout** · diagnostics on stderr · exit 0 (e144) |
-| **Q4** | bounds seated as named constants with their why (argv words · path · cargo · chunk · dock) |
+| **Q4** | bounds seated as named constants with their why — **GREEN** e145 (`max_words` · `max_vessel_path_len` · `max_cargo_bytes` · `max_chunk_datagram`) |
 | **Q5** | errors named for the fault (season missing · vessel forked · stamp fail · seal fail · dock refuse · unknown · too many words) |
 | **Q6** | pour — argument parse (`pour <season> <vessel>`) |
 | **Q7** | pour — season read (Amber ring-1 / season path) |

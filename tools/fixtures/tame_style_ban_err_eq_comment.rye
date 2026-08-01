@@ -1,0 +1,7 @@
+//! Intentional TAME ban plant — ban string only in a doc comment. Fixture only.
+//! Never import in production. Negative control: comment must NOT fire.
+
+const std = @import("std");
+
+/// Refuse by named error — call-seam capture, not `) == error.`.
+pub fn demo() void {}
