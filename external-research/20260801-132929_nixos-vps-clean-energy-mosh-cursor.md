@@ -1,11 +1,12 @@
 # A Clean-Energy NixOS Pier in the Cloud — Mosh and Cursor CLI from the Daylight DC-1
 
 **Language:** EN
-**Stamp:** `20260801.132929` (container one-clock; fused `20260801.133857`; Cursor-latency revise `20260801.135514`)
+**Stamp:** `20260801.132929` (fused `133857` · Cursor-latency note `135514` · plan ladder `135914`)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **Status:** Research for understanding — frames a pier shape for Cursor CLI + NixOS; recommends no purchase, no deploy, and no keys from this file. Every cloud step runs by Keaton's own hands.
 **Home:** `external-research/20260801-132929_nixos-vps-clean-energy-mosh-cursor.md`
 **Scope:** research guide — no keys, no purchases, no deploys happen from counsel; every step below runs by Keaton's own hands
+**Provider seat (Keaton):** Vultr — plan type is the open question; region is preference.
 
 *Written together by Keaton and Riyo.*
 
@@ -13,27 +14,39 @@
 
 ## The Recommendation, and Its Why
 
-### Primary (Cursor CLI · performance value) — Vultr New Jersey, High Frequency, shared
+### Provider — Vultr (seated)
 
-**Measured this seat (`20260801.135514`):** `api2.cursor.sh` resolves to AWS **Ashburn, Virginia** (`us-east-1`, `18.215.206.165`). Cursor's agent stream goes straight to that US-East path without a regional CDN edge for the long-lived connection. Seattle adds a coast-to-coast hop on every CLI round-trip; New Jersey / New York sits next to Ashburn.
+USA HQ (West Palm Beach). Keaton seats Vultr; this guide does not reopen the provider question.
 
-**Pick:** Vultr (USA HQ, West Palm Beach) · region **New Jersey (EWR)** or **New York** · plan **High Frequency Shared**, **2 GB RAM**, 1 vCPU. Shared is enough — Cursor CLI is latency- and single-core-bound more than noisy-neighbor-bound; dedicated is not the first dollar. High Frequency buys the clock speed that agent tooling feels. nixos-anywhere still wants ≥1.5 GB excluding swap, so 2 GB stays the floor.
+### Server type — what a bigger budget buys
 
-**USA-HQ value ladder for this job:** Vultr EWR/NYC HF shared 2 GB (first seat) · DigitalOcean NYC Premium AMD 2 GB (polished DX, higher $/GB) · Akamai Cloud Newark (USA HQ second). **Hetzner Ashburn** wins raw $/RAM if German HQ is acceptable — it literally sits in Ashburn — yet it steps off the USA-headquarters line this guide keeps unless Keaton softens that word.
+Skip **Regular** (older Intel / SATA). Within shared Cloud Compute the felt cockpit speed is local: clock, NVMe, and cores for builds beside mosh — Cursor's models still run cloud-side.
 
-### Alternate (clean energy · Wenatchee poetry) — Vultr Seattle
+| Shelf | Plan | Shape | ~$/mo | When |
+| --- | --- | --- | --- | --- |
+| Floor | High Frequency | 1 vCPU · 2 GB · NVMe | ~12 | Pure cockpit; Grain builds stay on the Framework |
+| **Value (seated)** | **High Performance AMD** | **2 vCPU · 4 GB · NVMe** | **~24** | **Bigger budget — agent builds + mosh breathe together** |
+| Soft up | High Performance AMD | 4 vCPU · 8 GB · NVMe | ~48 | Only if measured parallel compiles still queue |
+| Not yet | Optimized / VX1 dedicated | dedicated vCPU | ~28+ / ~44+ | Only after `vmstat 5` shows sustained steal (`st`) |
 
-When the Columbia River matters more than milliseconds to Cursor's API: Vultr **Seattle (SEA)** at Sabey SDC Columbia, East Wenatchee, Douglas County PUD hydro, PUE ~1.15. Washington's grid stays among the cleanest large grids in the nation. Same flake and disk shape; only the region label changes. Keep this as the second seat, not the Cursor-latency seat.
+**Answer to "do I benefit from upgrading the 2 GB HF pick?"** Yes — one shelf, to **High Performance AMD · 2 vCPU · 4 GB · shared**. That is where the per-dollar curve bends for this bench. Dedicated is still unearned until steal appears. A second jump to 4/8 is comfort, not necessity, until a real compile queue proves it.
+
+### Region — preference, not the server-type question
+
+- **Seattle (SEA)** — Sabey SDC Columbia, East Wenatchee, Douglas County PUD hydro, PUE ~1.15. River seat. Counsel's network note: CLI is thin; models are cloud-side; major US DCs are within noise for that leg.
+- **New Jersey (EWR) / New York** — nearer AWS Ashburn where `api2.cursor.sh` was measured (`20260801.135514`). Pick this if long-lived agent-stream RTT is the vote you want.
+
+Same High Performance AMD 2/4 SKU in either region. Choose region for river vs Ashburn; choose the **plan** for felt speed.
 
 ## The Instance Shape
 
-Create the smallest shape that carries the work comfortably:
+- **Plan (value seat):** High Performance AMD · **2 vCPU · 4 GB** · shared · NVMe.
+- **Plan (floor):** High Frequency · 1 vCPU · 2 GB — if the pier stays a thin cockpit.
+- **Region:** SEA (river) or EWR/NYC (Ashburn-near) — Keaton's preference on the same SKU.
+- **OS to start from:** stock Debian or Ubuntu — replaced by nixos-anywhere. SSH public key at creation.
+- **Disk:** Vultr KVM → `/dev/vda` (named in disko below).
 
-- **Plan:** **High Frequency Shared**, **2 GB RAM**, 1 vCPU (dedicated only if a later noisy-neighbor measurement asks).
-- **Region (primary):** New Jersey (EWR) or New York — nearest USA-HQ Vultr to Ashburn / `api2.cursor.sh`.
-- **Region (alternate):** Seattle (SEA) — clean-energy / Wenatchee seat.
-- **OS to start from:** any stock Debian or Ubuntu image — it exists only long enough to be replaced. Add your SSH public key at creation so root logs in by key from the first minute.
-- **Disk:** on Vultr's KVM the disk appears as `/dev/vda`; the disko file below names it.
+Leave IPv6 on. Skip marketplace apps; identity arrives from the flake.
 
 Leave IPv6 on. Skip the marketplace apps; the whole point is that the machine's true identity arrives from your flake.
 
@@ -217,7 +230,17 @@ Keys open every door and passwords open none. The firewall passes SSH and the Mo
 
 ## Costs, Held Lightly
 
-Cloud prices move; treat any number here as a season, not a stone. A 2 GB shared-CPU instance at a U.S. provider has recently lived in the ten-to-fifteen-dollars-a-month neighborhood. Check the current Seattle-region pricing on the provider's own page at purchase time, and let the clean-energy siting — not a dollar or two — be the deciding vote, since that was the whole point.
+Cloud prices move; treat any number here as a season, not a stone. Confirm on Vultr's checkout page. Automatic backups add ~20% of base; a stopped instance keeps billing until destroyed; monthly figures are hourly under a 672-hour cap. Let plan type (HP AMD 2/4) carry the performance dollar; let region carry river vs Ashburn.
+
+---
+
+## Addendum `20260801.135651` — Performance per Dollar (counsel)
+
+Counsel's fresh analysis (fused at the pier `20260801.135914`): network leg to Cursor is a non-differentiator among major U.S. DCs for a thin CLI; the dollar buys local clock, NVMe, and a second core. Value pick High Performance AMD 2 vCPU / 4 GB shared; dedicated waits on measured steal. Sources and wording live in the table above and the gratitude list below.
+
+## Addendum `20260801.135914` — Bigger Budget, Same Provider (pier)
+
+Keaton seats Vultr and asks whether upgrading the HF 2 GB pick helps. **Yes — one shelf to High Performance AMD 2/4.** Further shelves (4/8, dedicated) wait on measurement. Region remains SEA or EWR on that same SKU.
 
 ---
 
@@ -231,8 +254,11 @@ Cloud prices move; treat any number here as a season, not a stone. A 2 GB shared
 - Cursor Agent CLI packaged in nixpkgs (`cursor-cli`); FHS/nix-ld background: github.com/eisbaw/cursor-cli-nixified; mynixos.com/nixpkgs/package/cursor-cli
 - Mosh on Android — Termux upstream 1.4, Termius's own implementation: mosh.org; mailman.mit.edu mosh-users list; termius.com; blog.dan.drown.org
 - Termux from F-Droid rather than the frozen Play Store build: en.wikipedia.org/wiki/Termux
+- Vultr plan tiers and 2026 pricing (Regular · HF · High Performance · Optimized/VX1; backup and stopped-instance billing): betterstack.com Vultr review; vultr.com product pages; onedollarvps.com; costbench.com
+- Cursor CLI Node 18+ · cloud models over outbound HTTPS: cursor.com/blog/cli
+- `api2.cursor.sh` → AWS Ashburn measurement: pier seat `20260801.135514` (ipinfo / dig)
 - The DC-1 as a real terminal — Sol:OS on Android 13, Play Store, F-Droid, sideloading; the year-long Termux+SSH field report: sethforprivacy.com; liliputing.com; wickstrom.tech — "Programming in the Sun"
 
 ---
 
-*May the pier draw its power from the river and its identity from the flake. May every door open to a key and none to a guess. May the tablet in the sunlight and the server in Wenatchee hold one steady conversation, wherever the day carries you.*
+*May the dollar buy clock and NVMe, never insurance against a neighbor who never comes. May every door open to a key and none to a guess. May the tablet and the pier hold one steady conversation.*

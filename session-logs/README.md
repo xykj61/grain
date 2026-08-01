@@ -24,6 +24,7 @@
 | `20260801.051317` | [`20260801-051317_e175-doctrine-green.bron`](20260801-051317_e175-doctrine-green.bron) | e175 Q34 restore doctrine GREEN |
 | `20260801.051338` | [`20260801-051338_e176-parse-walls-green.bron`](20260801-051338_e176-parse-walls-green.bron) | e176 Q35+Q36 restore parse · walls GREEN |
 | `20260801.051417` | [`20260801-051417_e177-open-door-green.bron`](20260801-051417_e177-open-door-green.bron) | e177 Q37 seal open door GREEN |
+| `20260801.135914` | [`20260801-135914_e186-fuse-vps-q50-census-green.bron`](20260801-135914_e186-fuse-vps-q50-census-green.bron) | e186 VPS HP AMD 2/4 · Q50 tend census · orphans 921 · Q51 next |
 | `20260801.135514` | [`20260801-135514_e185-fuse-j3-j4-open-green.bron`](20260801-135514_e185-fuse-j3-j4-open-green.bron) | e185 fuse J3 close · Q49 J4 open · VPS EWR · Q50 next |
 | `20260801.134653` | [`20260801-134653_e182-q46-errors-named-green.bron`](20260801-134653_e182-q46-errors-named-green.bron) | e182 Q46 errors named GREEN · RestoreUnwritable · Q47 next |
 | `20260801.133857` | [`20260801-133857_e181-fuse-vps-q45-bounds-green.bron`](20260801-133857_e181-fuse-vps-q45-bounds-green.bron) | e181 fuse VPS research · Q45 bounds formula GREEN · Q46 next |
