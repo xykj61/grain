@@ -33,5 +33,7 @@ assert restore.err contains "restore complete" else "dogfood: restore speaks com
 let eq = run ["diff" "-qr" season out]
 assert eq.ok else "dogfood: restored season must equal counsel source"
 
-say "dogfood=poured stamp=ok seal=ok restore=byte-equal files=5"
+let count = run ["sh" "-c" "ls tools/fixtures/amphora_dogfood_counsel | wc -l | tr -d ' '"]
+assert count.ok else "dogfood: fixture count measured"
+say "dogfood=poured stamp=ok seal=ok restore=byte-equal files=${count.out}"
 say "GREEN: amphora_dogfood — a real counsel season crosses and returns whole."
