@@ -1,11 +1,11 @@
 #!/usr/bin/env sh
-# amphora_scrub_arrival.sh — cold scrub on arrival: verify vessel parent, Amber verify, restore.
+# amphora_scrub_arrival.sh — cold scrub on arrival: verify vessel parent, Cellar verify, restore.
 #
 # Usage: amphora_scrub_arrival.sh bundle_dir [source_tree_for_diff]
 set -eu
 ROOT=$(CDPATH= cd "$(dirname "$0")/../.." && pwd)
 BUNDLE=${1:?usage: amphora_scrub_arrival.sh bundle_dir [source_tree]}
-SRC=${2:-"$ROOT/tools/fixtures/amber_ring1_tree"}
+SRC=${2:-"$ROOT/tools/fixtures/cellar_ring1_tree"}
 
 VESSEL="$BUNDLE/vessel.bron"
 MANIFEST="$BUNDLE/manifest.bron"
@@ -36,9 +36,9 @@ if ! test -x "$seal_bin"; then
     "$ROOT/rye/bin/rye" build "$ROOT/amphora/vessel_seal.rye" -femit-bin="$seal_bin"
 fi
 "$seal_bin" open-check "$VESSEL" >/dev/null
-echo "SEAL ok Amber AEAD cargo opens"
+echo "SEAL ok cellar AEAD cargo opens"
 
-# Pond customs — policy at receipt before Amber place/restore.
+# Pond customs — policy at receipt before Cellar place/restore.
 customs_bin="$ROOT/pond/bin/customs"
 if ! test -x "$customs_bin"; then
   mkdir -p "$ROOT/pond/bin"
@@ -56,11 +56,11 @@ echo "$customs_out" | grep -q 'GREEN' || {
 }
 echo "CUSTOMS ok Pond admitted cargo for placement"
 
-sh "$ROOT/tools/fixtures/amber_ring1_verify.sh" "$BUNDLE"
+sh "$ROOT/tools/fixtures/cellar_ring1_verify.sh" "$BUNDLE"
 
 restore=$(mktemp -d)
 trap 'rm -rf "$restore"' EXIT
-sh "$ROOT/tools/fixtures/amber_ring1_restore.sh" "$BUNDLE" "$restore"
+sh "$ROOT/tools/fixtures/cellar_ring1_restore.sh" "$BUNDLE" "$restore"
 diff -r "$SRC" "$restore" >/dev/null
 
 echo "SCRUB ok arrival cold-verify + restore bit-faithful"

@@ -8,7 +8,7 @@ Old `tools/amphora_*.rish` paths are accrete shims.
 | Script | Role |
 |--------|------|
 | `amphora_lap1.rish` | Manifest entry + vessel parse |
-| `amphora_lap2.rish` | Amber season pour / carry / scrub |
+| `amphora_lap2.rish` | Cellar season pour / carry / scrub |
 | `amphora_lap3.rish` | Vessel cargo over Comlink |
 | `amphora_device_wire.rish` | Device wire |
 | `amphora_vessel_stamp.rish` | Vessel stamp |

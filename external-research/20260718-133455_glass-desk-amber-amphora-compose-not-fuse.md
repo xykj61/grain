@@ -6,7 +6,7 @@
 **Status:** Research — mixed rooms (ladder roles checkable · compose timing design)  
 **Voice:** Quin · Acme reader address  
 **Silo:** [`../active-designing/20260718-133455_glass-desk-compose-amber-amphora-revive.md`](../active-designing/20260718-133455_glass-desk-compose-amber-amphora-revive.md)  
-**Companions:** Wired Glass ER [`20260718-122145_pixel10a-resolution-mantrapod-floor-and-wired-glass-slc.md`](20260718-122145_pixel10a-resolution-mantrapod-floor-and-wired-glass-slc.md) · Amber seasons plainly [`20260710-002422_amber-seasons-plainly.md`](20260710-002422_amber-seasons-plainly.md) · Amphora crossing plainly [`20260710-145313_amphora-crossing-plainly.md`](20260710-145313_amphora-crossing-plainly.md) · resins cellar/vessel [`20260709-235931_resins-cellar-vessel-plainly.md`](20260709-235931_resins-cellar-vessel-plainly.md)
+**Companions:** Wired Glass ER [`20260718-122145_pixel10a-resolution-mantrapod-floor-and-wired-glass-slc.md`](20260718-122145_pixel10a-resolution-mantrapod-floor-and-wired-glass-slc.md) · Amber seasons plainly [`20260710-002422_cellar-seasons-plainly.md`](20260710-002422_cellar-seasons-plainly.md) · Amphora crossing plainly [`20260710-145313_amphora-crossing-plainly.md`](20260710-145313_amphora-crossing-plainly.md) · resins cellar/vessel [`20260709-235931_resins-cellar-vessel-plainly.md`](20260709-235931_resins-cellar-vessel-plainly.md)
 
 ---
 

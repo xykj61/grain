@@ -8,7 +8,7 @@
 
 ## Thinking trace
 
-Read TASKS next bench: MALA M1 after M0 gate check per counsel `152612`. Verified gate witnesses on metal — `designed_not_built_witness.rish` (Edit 5, count **0**) and `amber_first_ring.rish` both GREEN.
+Read TASKS next bench: MALA M1 after M0 gate check per counsel `152612`. Verified gate witnesses on metal — `designed_not_built_witness.rish` (Edit 5, count **0**) and `cellar_first_ring.rish` both GREEN.
 
 Drafted expanding-prompt [`182354`](../expanding-prompts/yonder/20260709-182354_mala-m1-one-issuer-one-holder.md) sized like SLC-L4's `031612`: M0 token-fact shapes (`mala:mint`, `mala:send` memo prefixes), M1 scope (one issuer, one holder, mint/send/fold/verify, four unwelcome paths), proposed names, zero new deps, parity-eligible witness when code lands. No implementation — waits Kaeden lap word.
 

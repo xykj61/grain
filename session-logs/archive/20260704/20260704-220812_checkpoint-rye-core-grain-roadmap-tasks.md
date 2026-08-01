@@ -146,7 +146,7 @@ Urbit's **subject-oriented programming** sharpened the silo as **explicit subjec
 | RW-3 run record | `run_record_witness.rish` | **141** | 20260702 |
 | RW-4 SLC failure paths | `rw4_slc_failure_paths.rish` | **142** | 20260702 |
 | Edit 5 designed-not-built | `designed_not_built_witness.rish` | **143** | 20260703.032812 |
-| Amber first lap | `amber_first_ring.rish` | **144** | 20260703.051812 |
+| Amber first lap | `cellar_first_ring.rish` | **144** | 20260703.051812 |
 | SLC-2b keyboard | `slc2b_keyboard.rish` | **145** | 20260703.132112 |
 | RW-1 mirrored pair | `rw1_shell_collab` + `rw1_history_contract` | **147** | 20260703.182612 |
 | Chrono version sweep | `chrono_version_sweep.rish` | **148** | 20260703.203212 |
@@ -174,7 +174,7 @@ From [`ROADMAP.md`](../work-in-progress/ROADMAP.md) — The Ground table, refres
 | **Pond** | `pond/apps/drawn_terminal.rye` | SLC-2a Laps 1–3 + SLC-2b **145**; Lap 3 metal-closed GNOME |
 | **Brix** | `.brix` descriptor, 10 bricks | Read by Mantra |
 | **Bron** | Data notation | Used by Brix |
-| **Amber** | `amber/` module home | First lap **144** — resin seal witness |
+| **Amber** | `cellar/` module home | First lap **144** — resin seal witness |
 | **Aurora** | Six-stage relay RISC-V | Freestanding |
 | **Linengrow** | `linengrow/receipt.rye` | SLC-L1 at **152** |
 
@@ -271,7 +271,7 @@ v1 used bash fixture with rishi `${}` interpolation bug — promoted to `.rye` p
 | Crossing manifest | `work-in-progress/…_crossing_manifest_seed.rye` | `crossing_manifest_seed.rish` | **151** | `<mark> <sha3-256-hex> <name>` parses; damaged line refused whole |
 | SLC-L1 receipt | `linengrow/receipt.rye` | `slcl1_receipt.rish` | **152** | Ed25519 sign; hex log append; SHA3-256 fold; verify; tamper rejected |
 | Session archive | `session_logs_archive.rye` | preview + fold + witness | parity hygiene | Prior days fold; links rewrite; preview/fold split |
-| Amber ring-1 | `amber/` export | `amber_first_ring.rish` | **144** | SHA3-256 oracle; welcome + tampered stone fails |
+| Amber ring-1 | `cellar/` export | `cellar_first_ring.rish` | **144** | SHA3-256 oracle; welcome + tampered stone fails |
 | SLC-2b keyboard | `pond/apps/window_input.rye` | `slc2b_keyboard.rish` | **145** | Wayland seat + xkbcommon; `keyboardtest` witness |
 | RW-1 | Rishi ↔ Mantra | `rw1_shell_collab` + `rw1_history_contract` | **147** | Mirrored pair per contract `200109` |
 | RW-2 | App ↔ Brushstroke | `rw2_app_collab` + `rw2_surface_contract` | **150** | `setFrame` seam per contract `205630` |

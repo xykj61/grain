@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
-# amphora_lap2_witness.sh — pour Amber season → carry far → cold scrub; 3-2-1 fixture scale.
+# amphora_lap2_witness.sh — pour Cellar season → carry far → cold scrub; 3-2-1 fixture scale.
 set -eu
 ROOT=$(CDPATH= cd "$(dirname "$0")/../.." && pwd)
-SRC="$ROOT/tools/fixtures/amber_ring1_tree"
+SRC="$ROOT/tools/fixtures/cellar_ring1_tree"
 STAMP=20260710.143726
 
 home=$(mktemp -d)
@@ -35,7 +35,7 @@ sh "$ROOT/tools/fixtures/amphora_scrub_arrival.sh" "$far" "$SRC"
 # Unwelcome — tampered resin on far copy refuses whole.
 first_resin=$(ls "$far/resins" | head -n1)
 printf 'X' >> "$far/resins/$first_resin"
-if sh "$ROOT/tools/fixtures/amber_ring1_verify.sh" "$far" 2>/dev/null; then
+if sh "$ROOT/tools/fixtures/cellar_ring1_verify.sh" "$far" 2>/dev/null; then
   echo "FAIL tampered far resin should not verify"
   exit 1
 fi

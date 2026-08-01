@@ -47,7 +47,7 @@ Three benches now agree on the same arithmetic from bare metal, which is the str
 propose-then-confirm shape can reach without Kaeden's hand. The chrono count is honestly
 bench-local — 142 before this proposal's two files, 144 after — and the guide pins the rule as
 *what your bench prints*. Nothing Kaeden-tagged was touched: no door, no gate, no ratification, no
-name, no seal; `amber/` and MALA rest exactly as found.
+name, no seal; `cellar/` and MALA rest exactly as found.
 
 ## Files
 

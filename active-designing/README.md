@@ -92,7 +92,7 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-slug.md` filenames; this README is the
 | `20260703-200712` | [What needs ordering](20260703-200712_what-needs-ordering.md) | Value-object ladder + compute choreography; silo companion to Pottery suite |
 | `20260703-140212` | [The bench — where claims become evidence](20260703-140212_the-bench.md) | Third in the metalsmoke/season family: metal, sitter, discipline; bench truth; harvest workflow economics absorbed |
 | `20260703-140212` | [The shape carries the bound](yonder/20260703-140212_the-shape-carries-the-bound.md) | Bounds woven into geometry; Tally lap region + framed grid named; TAME canon passage boxed for Kaeden's word |
-| `20260703-071212` | [Amber seasons](20260703-071212_amber-seasons.md) | Custody unit of time; **Reviewed and kept**; kitchen twin [`002422`](../external-research/20260710-002422_amber-seasons-plainly.md) |
+| `20260703-071212` | [Amber seasons](20260703-071212_cellar-seasons.md) | Custody unit of time; **Reviewed and kept**; kitchen twin [`002422`](../external-research/20260710-002422_cellar-seasons-plainly.md) |
 | `20260703-013412` | [Metalsmoke](20260703-013412_metalsmoke.md) | Thin edge's few honest checks; **Reviewed and kept**; kitchen twin [`002017`](../external-research/20260710-002017_metalsmoke-plainly.md) |
 | `20260702-195426` | [SLC-L1 — the verifiable receipt](20260702-195426_slcl1-verifiable-receipt.md) | Linengrow hammock — transaction fact, sign-append-fold-verify |
 | `20260706-013012` | [Open Asks — escrow hammock (OA-L3)](20260706-013012_open-asks-escrow-hammock.md) | Bounty escrow as hold-then-release on one log; **Nyasa** escrow account; **landed** parity **158** |

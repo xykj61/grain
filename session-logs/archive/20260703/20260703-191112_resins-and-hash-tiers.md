@@ -17,6 +17,6 @@ Law is **proposed** until archive verdict spoken *for*. Ring-1 `stones/` and ope
 |------|-----|
 | `context/specs/20260703-191112_resins-and-hash-tiers.md` | Proposed resin + SHA3 tier law |
 | `context/LEXICON.md` | Bench, resin, tier rows (proposed) |
-| `amber/README.md` | Points at resin spec |
+| `cellar/README.md` | Points at resin spec |
 | `session-logs/20260703-162212_five-ratifications-speakable-script.md` | Full speakable script with resins |
 | `session-logs/README.md` | Index row |

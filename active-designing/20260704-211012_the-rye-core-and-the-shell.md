@@ -89,7 +89,7 @@ Each lap **widens the subject** the next layer may assume, yet inner layers stay
 | Manifest line | `crossing_manifest_seed.rye` | `crossing_manifest_seed.rish` | **151** | Core parses three fields; shell runs seed; parity pins count |
 | Verifiable receipt | `linengrow/receipt.rye` | `slcl1_receipt.rish` | **152** | Core signs/verifies; shell orchestrates host OpenPGP seam |
 | Session archive fold | `session_logs_archive.rye` | `session_logs_archive_witness.rish` · `session_logs_archive_preview.rish` | parity (hygiene) | Core folds + rewrites links; `preview` reads only, `fold` mutates |
-| Amber ring-1 | `amber/` export path | `amber_first_ring.rish` | **144** | Core exports record; Pond enforces enclosure at receipt |
+| Amber ring-1 | `cellar/` export path | `cellar_first_ring.rish` | **144** | Core exports record; Pond enforces enclosure at receipt |
 | Comlink batch | counsel I1 (horizon) | `amphora_comlink_resin_batch` (designed) | — | Header verified once; stones prove by digest |
 
 ## Growth law for new laps

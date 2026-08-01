@@ -19,7 +19,7 @@ Prep **GREEN** reaffirmed. Keaton's correction this round: **Prin** not Prim. Br
 | Shelf | Files | Note |
 |------:|------:|------|
 | `saga/` | 2 | Seated Sound saga + README |
-| `amber/` | 2 | Cellar home thin |
+| `cellar/` | 2 | Cellar home thin |
 | `amphora/` | 13 | Vessel laps present |
 | `pond/` | 6 | Enclosure + customs |
 | `tally/` | 18 | Gardens + seeds |
@@ -33,7 +33,7 @@ No top-level `brix/` module home yet — workshop newborn stays untracked.
 | Witness | Result |
 |---------|--------|
 | `foundation_seeds.rish` | **GREEN** |
-| `amber_first_ring.rish` | **GREEN** |
+| `cellar_first_ring.rish` | **GREEN** |
 | `amphora_lap1.rish` | **GREEN** |
 | `width_check_th4.rish` | **GREEN** (after alias seat) |
 | `pond_customs.rish` | **GREEN** |

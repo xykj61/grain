@@ -1,4 +1,4 @@
-# tools/gen/amphora/amphora_lap2.rish — Amphora lap 2: pour Amber season, carry far, cold scrub.
+# tools/gen/amphora/amphora_lap2.rish — Amphora lap 2: pour Cellar season, carry far, cold scrub.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/gen/amphora/amphora_lap2.rish
@@ -18,4 +18,4 @@ assert witness.out contains "THREE_COPIES" else "Amphora lap 2 missing 3-2-1 ass
 assert witness.out contains "SCRUB ok" else "Amphora lap 2 missing cold scrub"
 assert witness.out contains "TAMPER refused" else "Amphora lap 2 missing tamper refusal"
 
-say "GREEN: Amphora lap 2 — Amber season poured, carried far, scrubbed cold."
+say "GREEN: Amphora lap 2 — Cellar season poured, carried far, scrubbed cold."

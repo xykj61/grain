@@ -83,7 +83,7 @@ Counsel `152612` names what changed and what was already designed:
 | Condition | Evidence |
 |-----------|----------|
 | Edit 5 | `designed_not_built_witness` GREEN; parity **143** |
-| Amber first lap | `amber_first_ring` GREEN; parity **144** |
+| Amber first lap | `cellar_first_ring` GREEN; parity **144** |
 | Slot open | designed-not-built count **0** |
 
 **M0 token-fact shapes (on paper):**

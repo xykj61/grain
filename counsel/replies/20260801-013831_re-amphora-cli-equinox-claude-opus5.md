@@ -67,8 +67,8 @@ READ (tier 0 · balanced):
   counsel/20260801-013831_opus-relevant-at-nib-aa89d19443.md
   counsel/20260801-013831_e140-align-amphora-cli-new-equinox.md
   work-in-progress/REMEMBER.md · ROADMAP.md · EQUINOX_SEAT_MAP.md
-  counsel/20260801-012557_e138-amber-retire-by-accretion.md
-  counsel/20260801-013236_e139-fuse-verify-amber-accretion.md
+  counsel/20260801-012557_e138-cellar-retire-by-accretion.md
+  counsel/20260801-013236_e139-fuse-verify-cellar-accretion.md
   counsel/20260731-230116_e125-build-stack.md
   amphora/README.md · active-designing/20260703-201612_the-sealed-crossing.md
   context/TAME_GUIDANCE.md · BREACH.md · LEXICON.md (Amber·Amphora·Silo)

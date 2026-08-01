@@ -27,7 +27,7 @@ Be creative inside the jail following our compass, focusing on our oldest artifa
 |------|-----|
 | `external-research/20260709-231011_graduation-rule-plainly.md` | Kitchen twin for Jul 2 canon |
 | `context/specs/20260702-035018_graduation-rule.md` | Companion link to kitchen twin |
-| `context/specs/20260701-221512_amber-functional-spec.md` | §10 matches first-lap green |
+| `context/specs/20260701-221512_cellar-functional-spec.md` | §10 matches first-lap green |
 | `context/README.md` | Amber status + plain-story link |
 | `external-research/README.md` | Newest rows; OWOG → specs |
 | `gratitude/README.md` · `IntegratedTestsAreAScam.md` | thin-ring → thin-edge |
