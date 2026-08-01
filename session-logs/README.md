@@ -24,6 +24,7 @@
 | `20260801.051317` | [`20260801-051317_e175-doctrine-green.bron`](20260801-051317_e175-doctrine-green.bron) | e175 Q34 restore doctrine GREEN |
 | `20260801.051338` | [`20260801-051338_e176-parse-walls-green.bron`](20260801-051338_e176-parse-walls-green.bron) | e176 Q35+Q36 restore parse · walls GREEN |
 | `20260801.051417` | [`20260801-051417_e177-open-door-green.bron`](20260801-051417_e177-open-door-green.bron) | e177 Q37 seal open door GREEN |
+| `20260801.132235` | [`20260801-132235_e178-q38-q42-restore-completes.bron`](20260801-132235_e178-q38-q42-restore-completes.bron) | e178 Q38–Q42 restore completes · resins ride · Q43 next |
 | `20260801.131825` | [`20260801-131825_fuse-land-e177-cursor-auto.bron`](20260801-131825_fuse-land-e177-cursor-auto.bron) | fuse land e153–e177 · Cursor Auto Mode · Q38–Q42 next |
 | `20260801.000101` | [`20260801-000101_e151-q7-season-read-green.bron`](20260801-000101_e151-q7-season-read-green.bron) | e151 Q7 pour season read GREEN |
 | `20260801.035204` | [`20260801-035204_e150-q6-pour-parse-green.bron`](20260801-035204_e150-q6-pour-parse-green.bron) | e150 Q6 pour argument parse GREEN |
