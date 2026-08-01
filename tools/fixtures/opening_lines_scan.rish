@@ -10,7 +10,7 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/fixtures/opening_lines_scan.rish
 
-let files = ["tally/seed.rye" "tally/gardens.rye" "caravan/seed.rye" "caravan/bounded.rye" "caravan/twin.rye" "caravan/chain.rye" "caravan/capabilities.rye" "mantra/src/main.rye" "mantra/src/store.rye" "mantra/src/weave.rye" "mantra/src/diff.rye" "rishi/src/main.rye" "brushstroke/seed.rye" "comlink/wire_format.rye" "comlink/hosted_wire.rye" "comlink/device_wire.rye" "pond/apps/drawn_terminal.rye" "lattice/approx_equal_test.rye" "brushstroke/east_pack_test.rye" "caravan/refusal_reason_test.rye" "tally/total_capacity_test.rye" "tally/divisions_test.rye" "glow/priority_fold_test.rye"]
+let files = ["tally/seed.rye" "tally/gardens.rye" "caravan/seed.rye" "caravan/bounded.rye" "caravan/twin.rye" "caravan/chain.rye" "caravan/capabilities.rye" "mantra/src/main.rye" "mantra/src/store.rye" "mantra/src/weave.rye" "mantra/src/diff.rye" "rishi/src/main.rye" "brushstroke/seed.rye" "comlink/wire_format.rye" "comlink/hosted_wire.rye" "comlink/device_wire.rye" "pond/apps/drawn_terminal.rye" "lattice/approx_equal_test.rye" "brushstroke/east_pack_test.rye" "caravan/refusal_reason_test.rye" "tally/total_capacity_test.rye" "tally/divisions_test.rye" "glow/priority_fold_test.rye" "amphora/src/main.rye"]
 
 let scans = map files as f: { path: f, bind_a: length (where (lines (read-file f)) as ln: ln contains "const assert = std.debug.assert;"), bind_p: length (where (lines (read-file f)) as ln: ln contains "const print = std.debug.print;"), qual_a: length (where (lines (read-file f)) as ln: ln contains "std.debug.assert("), qual_p: length (where (lines (read-file f)) as ln: ln contains "std.debug.print(") }
 
