@@ -1,0 +1,22 @@
+# tools/gen/season/equinox_e135_mantrapod_affordable_witness.rish — e135 seat.
+#   rishi/bin/rishi run tools/gen/season/equinox_e135_mantrapod_affordable_witness.rish
+say "e135-mantrapod: Language EN — MantraPod living · affordable witness law."
+say "e135-mantrapod: Style Radiant — a witness nobody can afford to run stops being run."
+say "e135-mantrapod: Lens TAME — e135 · foundations first · shred held · 128 reserved."
+
+let green = run ["sh" "tools/fixtures/equinox_e135_mantrapod_affordable_scan.sh"]
+assert green.ok else "e135-mantrapod: living scan must exit 0"
+assert green.out contains "pitch_living=riyo_keaton_grain" else "e135-mantrapod: want pitch living"
+assert green.out contains "kin=honored" else "e135-mantrapod: want kin"
+assert green.out contains "reds_note=row_46_affordable_witness" else "e135-mantrapod: want REDS 46"
+assert green.out contains "e112=honored" else "e135-mantrapod: want e112"
+assert green.out contains "e115=tracked_not_nested" else "e135-mantrapod: want e115 not nested"
+assert green.out contains "shred=RED" else "e135-mantrapod: want shred RED"
+assert green.out contains "seat_128=reserved_close_choir" else "e135-mantrapod: want 128 reserved"
+assert green.out contains "verdict=ok" else "e135-mantrapod: want verdict ok"
+
+let red = run ["sh" "tools/fixtures/equinox_e135_mantrapod_affordable_scan.sh" "prove-red"]
+assert (red.ok == false) else "e135-mantrapod: prove-red must refuse"
+assert red.out contains "RED_pitch_still_reya_kaeden_rye_os" else "e135-mantrapod: prove-red want refuse"
+
+say "GREEN: e135-mantrapod — pitch living · affordable witness · REDS 46 · shred RED · 128 reserved"
