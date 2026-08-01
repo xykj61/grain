@@ -26,6 +26,7 @@
 //!   max_season_files · digest_hex_len · max_season_name_len
 //!   max_season_file_bytes · max_vessel_len
 //!   max_manifest_bytes (= max_cargo_bytes by formula · Q45)
+//!   max_seal_plain_mirror (couples vessel_seal.max_seal_plain · Q47)
 //!   max_carry_chunks (vessel roof / datagram · Q28)
 //!   exit_ok · exit_misread
 //!   Shared vessel bounds stay in amphora/*.rye; agreement via
@@ -77,7 +78,7 @@ const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
 const Dir = std.Io.Dir;
 
 /// Amphora CLI version — YYYYMMDD.HHMMSS, America/New_York, later is larger.
-const amphora_version = "20260801.134653";
+const amphora_version = "20260801.135514";
 
 // -------------------------------------------------------------------------
 // § Bounds — named with their why (Q4 · Q7 · Q8 · Q9)
@@ -151,6 +152,11 @@ const max_manifest_name_len: u32 = 200;
 /// Most chunks one crossing may cut — the vessel roof over the datagram
 /// ceiling, rounded up. 8192 / 340 rounds to 25; the bound is exact.
 const max_carry_chunks: u32 = (max_vessel_len + max_chunk_datagram - 1) / max_chunk_datagram;
+
+/// Opened-cargo ceiling this side of the seam — the seal module's own roof.
+/// couples: vessel_seal.max_seal_plain
+/// (Q47 width fix — cargo-walk indices assert under this mirror.)
+const max_seal_plain_mirror: u32 = 1024;
 
 /// Restored season out-home, derived beside the vessel: `<vessel>.season`.
 /// Format vocabulary, not product vocabulary (Q35 lean; Class W precedent —
@@ -1278,9 +1284,10 @@ fn run_vessel_seal_open_file(
 /// Q38: parse cargo lines (`cargo mark digest name`) into a season catalog.
 fn catalog_from_cargo_plain(plain: []const u8, catalog: *SeasonCatalog) CliError!void {
     assert(plain.len > 0);
+    assert(plain.len <= max_seal_plain_mirror); // couples: vessel_seal.max_seal_plain
     catalog.file_count = 0;
     catalog.total_bytes = 0;
-    var start: usize = 0;
+    var start: u32 = 0;
     while (start < plain.len) {
         var end = start;
         while (end < plain.len and plain[end] != '\n') : (end += 1) {}
@@ -1295,7 +1302,7 @@ fn append_cargo_line(line: []const u8, catalog: *SeasonCatalog) CliError!void {
     const prefix = "cargo ";
     if (!std.mem.startsWith(u8, line, prefix)) return error.CargoUnproven;
     const rest = line[prefix.len..];
-    var sp1: usize = 0;
+    var sp1: u32 = 0;
     while (sp1 < rest.len and rest[sp1] != ' ') : (sp1 += 1) {}
     if (sp1 == 0 or sp1 >= rest.len) return error.CargoUnproven;
     const mark = rest[0..sp1];
@@ -1509,6 +1516,7 @@ pub fn main(init: std.process.Init) !u8 {
     assert(max_season_files >= 1);
     assert(max_vessel_len >= max_cargo_bytes);
     assert(max_manifest_bytes == max_cargo_bytes);
+    assert(max_seal_plain_mirror == max_cargo_bytes);
     assert(digest_hex_len == Sha3_256.digest_length * 2);
     assert(amphora_version.len == stamp_len);
     assert(amphora_version[stamp_dot_index] == '.');
