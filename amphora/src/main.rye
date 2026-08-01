@@ -74,7 +74,7 @@ const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
 const Dir = std.Io.Dir;
 
 /// Amphora CLI version — YYYYMMDD.HHMMSS, America/New_York, later is larger.
-const amphora_version = "20260801.051317";
+const amphora_version = "20260801.051338";
 
 // -------------------------------------------------------------------------
 // § Bounds — named with their why (Q4 · Q7 · Q8 · Q9)
@@ -147,6 +147,11 @@ const max_manifest_name_len: u32 = 200;
 /// Most chunks one crossing may cut — the vessel roof over the datagram
 /// ceiling, rounded up. 8192 / 340 rounds to 25; the bound is exact.
 const max_carry_chunks: u32 = (max_vessel_len + max_chunk_datagram - 1) / max_chunk_datagram;
+
+/// Restored season out-home, derived beside the vessel: `<vessel>.season`.
+/// Format vocabulary, not product vocabulary (Q35 lean; Class W precedent —
+/// Keaton's rename word replaces it whole, accrete-migrate on rename).
+const restore_out_suffix = ".season";
 
 /// Assembled far-side vessel name inside a dock directory.
 /// Format vocabulary, not product vocabulary (Q21 lean; Class W precedent —
@@ -1077,6 +1082,54 @@ fn cmd_carry(init: std.process.Init, args: []const []const u8) u8 {
 // fork law guards it exactly as it guards every other landing. Effects
 // come last; belief comes last of all.
 
+/// Build `<vessel>.season` — the out-home the fork law will guard.
+fn restore_out_path(vessel: []const u8, buf: []u8) CliError![]const u8 {
+    assert(vessel.len > 0);
+    assert(buf.len >= max_vessel_path_len);
+    return std.fmt.bufPrint(buf, "{s}{s}", .{ vessel, restore_out_suffix }) catch {
+        return error.PathTooLong;
+    };
+}
+
+/// Q35: restore argument parse — `restore <vessel>`, bounds named.
+fn parse_restore_args(args: []const []const u8) CliError![]const u8 {
+    assert(args.len >= 2);
+    assert(std.mem.eql(u8, args[1], "restore"));
+    if (args.len < 3) return error.MissingOperand;
+    if (args.len > 3) return error.TooManyWords;
+    const vessel = args[2];
+    if (vessel.len == 0) return error.MissingOperand;
+    if (vessel.len > max_vessel_path_len) return error.PathTooLong;
+    return vessel;
+}
+
+/// Q36 door: parse · walls before opening; open waits Q37's spoken door.
+fn cmd_restore(init: std.process.Init, args: []const []const u8) u8 {
+    const vessel = parse_restore_args(args) catch |fault| {
+        return switch (fault) {
+            error.MissingOperand => refuse(error.MissingOperand, "restore <vessel>"),
+            error.PathTooLong => refuse(error.PathTooLong, args[2]),
+            error.TooManyWords => refuse(error.TooManyWords, ""),
+            else => refuse(error.CommandNotGrown, "restore"),
+        };
+    };
+    assert(vessel.len > 0);
+
+    const allocator = init.arena.allocator();
+    carry_verify_walls(init, allocator, init.io, args[0], vessel) catch |fault| {
+        return switch (fault) {
+            error.StampToolAbsent => refuse(error.StampToolAbsent, default_core_bin),
+            error.SealUnopened => refuse(error.SealUnopened, vessel),
+            else => refuse(error.StampUnverified, vessel),
+        };
+    };
+    var out_buf: [max_vessel_path_len]u8 = undefined;
+    const out_home = restore_out_path(vessel, &out_buf) catch
+        return refuse(error.PathTooLong, vessel);
+    print("amphora: restore walls verified out={s}\n", .{out_home});
+    return refuse(error.CommandNotGrown, "restore");
+}
+
 // -------------------------------------------------------------------------
 // § Main — CLI (Q3–Q11 · carry Q19+ · restore Q35+ · version)
 // =========================================================================
@@ -1113,16 +1166,7 @@ pub fn main(init: std.process.Init) !u8 {
     } else if (std.mem.eql(u8, cmd, "carry")) {
         return cmd_carry(init, args);
     } else if (std.mem.eql(u8, cmd, "restore")) {
-        var i: u32 = 2;
-        while (i < args.len) : (i += 1) {
-            if (args[i].len > max_vessel_path_len) {
-                return refuse(error.PathTooLong, args[i]);
-            }
-        }
-        if (args.len < 3) {
-            return refuse(error.MissingOperand, "restore <vessel>");
-        }
-        return refuse(error.CommandNotGrown, cmd);
+        return cmd_restore(init, args);
     } else {
         return refuse(error.UnknownCommand, cmd);
     }
