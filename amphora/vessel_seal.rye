@@ -23,6 +23,10 @@ pub const max_vessel_len: u32 = 8192;
 /// couples: vessel_fetch_wire.max_resin_bytes
 pub const max_seal_plain: u32 = 1024;
 pub const max_cargo: u32 = 16;
+/// Class W wire shoulder — AEAD associated data, not product vocabulary.
+/// e148 renamed this; counsel parked; e149 restored. Versioned shoulder
+/// (open both · seal new) waits its own instrument before any rename.
+pub const shoulder_ring1_wire = "amber-ring1-season";
 pub const nonce_hex_len: u32 = ChaCha20Poly1305.nonce_length * 2;
 pub const tag_hex_len: u32 = ChaCha20Poly1305.tag_length * 2;
 
@@ -262,7 +266,7 @@ fn run_open_check(io: std.Io, path: []const u8) !u8 {
 
 fn run_selftest() !u8 {
     const plain = "cargo plain-bytes cd416bd6cae889877c353fc9abe39daaff1668666049a8fd10974248d99d23ab hello.txt\n";
-    const ad = "cellar-ring1-season";
+    const ad = shoulder_ring1_wire;
     const nonce = [_]u8{0x07} ** ChaCha20Poly1305.nonce_length;
     var cipher: [max_seal_plain]u8 = undefined;
     var tag: [ChaCha20Poly1305.tag_length]u8 = undefined;
@@ -271,6 +275,12 @@ fn run_selftest() !u8 {
     var opened: [max_seal_plain]u8 = undefined;
     try decrypt_cargo(cipher[0..plain.len], tag, ad, nonce, &opened);
     assert(std.mem.eql(u8, opened[0..plain.len], plain));
+
+    // Class W control: wrong associated data must refuse (counsel e148 park).
+    const wrong_ad = "cellar-ring1-season";
+    if (decrypt_cargo(cipher[0..plain.len], tag, wrong_ad, nonce, &opened)) |_| {
+        return error.UnwelcomePassed;
+    } else |_| {}
 
     var tampered = cipher;
     tampered[0] ^= 0x01;

@@ -13,7 +13,7 @@ MANIFEST="$OUT/manifest.bron"
 
 {
   printf '%s\n' '# cellar ring-1 export manifest'
-  printf 'format cellar-ring1-v2-tilak\n'
+  printf 'format amber-ring1-v2-tilak\n'
   printf 'stamp %s\n' "$STAMP"
   printf 'source %s\n' "$(basename "$SRC")"
 } > "$MANIFEST"
