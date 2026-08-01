@@ -25,6 +25,8 @@
 //!   max_vessel_path_len · max_cargo_bytes · max_chunk_datagram
 //!   max_season_files · digest_hex_len · max_season_name_len
 //!   max_season_file_bytes · max_vessel_len
+//!   max_manifest_bytes (= max_cargo_bytes by formula · Q45)
+//!   max_carry_chunks (vessel roof / datagram · Q28)
 //!   exit_ok · exit_misread
 //!   Shared vessel bounds stay in amphora/*.rye; agreement via
 //!   tools/amphora_bounds_agree.rish (path C · alias groups · couples markers).
@@ -74,7 +76,7 @@ const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
 const Dir = std.Io.Dir;
 
 /// Amphora CLI version — YYYYMMDD.HHMMSS, America/New_York, later is larger.
-const amphora_version = "20260801.132200";
+const amphora_version = "20260801.133857";
 
 // -------------------------------------------------------------------------
 // § Bounds — named with their why (Q4 · Q7 · Q8 · Q9)
@@ -136,9 +138,10 @@ const default_seal_bin = "amphora/bin/vessel-seal";
 /// Cargo type-mark for season source files — one mark, both listings.
 const mark_plain_bytes = "plain-bytes";
 
-/// Manifest listing ceiling in bytes — same roof shape as sealed cargo.
-/// couples: max_cargo_bytes (one listing per cargo line, plus the key word)
-const max_manifest_bytes: u32 = 1024;
+/// Manifest listing ceiling — same quantity as sealed cargo, joined by
+/// formula (Q45). Never a second home for 1024; the Return's plain-open
+/// buffer and the pour listing share one roof.
+const max_manifest_bytes: u32 = max_cargo_bytes;
 
 /// One manifest name ceiling — a listed name must fit the entry contract.
 /// couples: manifest_entry.max_name_len
@@ -1493,6 +1496,7 @@ pub fn main(init: std.process.Init) !u8 {
     assert(max_vessel_path_len > max_words);
     assert(max_season_files >= 1);
     assert(max_vessel_len >= max_cargo_bytes);
+    assert(max_manifest_bytes == max_cargo_bytes);
     assert(digest_hex_len == Sha3_256.digest_length * 2);
     assert(amphora_version.len == stamp_len);
     assert(amphora_version[stamp_dot_index] == '.');
