@@ -1,6 +1,6 @@
 #!/bin/sh
 # Q50 tend census — reach by mention: a room file is REACHED when its
-# Seated at Q52 (e188) — the Q50 counsel-method census as a standing instrument.
+# Seated at Q52 — the counsel reach-by-mention census as a standing instrument.
 # Output: one line per room "room tracked=N orphans=M", then a TOTAL line.
 # basename appears in at least one other tracked file; otherwise ORPHAN.
 set -e
