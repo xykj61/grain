@@ -46,9 +46,9 @@ assert scan.out contains "reds_row=honored" else "e113-fascia-health: want REDS 
 assert scan.out contains "reds_row_n=38" else "e113-fascia-health: want row 38"
 assert scan.out contains "reds_law=on_disk_is_not_in_the_tree" else "e113-fascia-health: want law"
 assert scan.out contains "seat_128=reserved_close_choir" else "e113-fascia-health: want 128 reserved"
-assert scan.out contains "surface_count=4" else "e113-fascia-health: want surface 4"
+assert scan.out contains "surface_count=6" else "e113-fascia-health: want surface 6"
 assert scan.out contains "fork_status=not_consumed" else "e113-fascia-health: want fork waiting"
 assert scan.out contains "e113_fascia_health=ok" else "e113-fascia-health: want e113 ok"
 assert scan.out contains "verdict=ok" else "e113-fascia-health: want verdict=ok"
 
-say "GREEN: e113-fascia-health — fascia-health v1 · REDS 38 · elder e112 · 128 reserved · census four · fork waiting · museum"
+say "GREEN: e113-fascia-health — fascia-health v1 · REDS 38 · elder e112 · 128 reserved · census six · fork waiting · museum"

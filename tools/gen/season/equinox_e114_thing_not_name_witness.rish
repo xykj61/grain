@@ -46,9 +46,9 @@ assert scan.out contains "reds_row=honored" else "e114-thing-not-name: want REDS
 assert scan.out contains "reds_row_n=39" else "e114-thing-not-name: want row 39"
 assert scan.out contains "reds_law=look_for_the_thing_not_the_name" else "e114-thing-not-name: want law"
 assert scan.out contains "seat_128=reserved_close_choir" else "e114-thing-not-name: want 128"
-assert scan.out contains "surface_count=4" else "e114-thing-not-name: want surface 4"
+assert scan.out contains "surface_count=6" else "e114-thing-not-name: want surface 6"
 assert scan.out contains "fork_status=not_consumed" else "e114-thing-not-name: want fork waiting"
 assert scan.out contains "e114_thing_not_name=ok" else "e114-thing-not-name: want e114 ok"
 assert scan.out contains "verdict=ok" else "e114-thing-not-name: want verdict=ok"
 
-say "GREEN: e114-thing-not-name — thing-not-name · REDS 39 · elder e113 · 128 reserved · census four · fork waiting · museum"
+say "GREEN: e114-thing-not-name — thing-not-name · REDS 39 · elder e113 · 128 reserved · census six · fork waiting · museum"

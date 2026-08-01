@@ -1,0 +1,24 @@
+# tools/gen/season/equinox_e134_surface_count_witness.rish — e134 seat.
+#   rishi/bin/rishi run tools/gen/season/equinox_e134_surface_count_witness.rish
+say "e134-surface-six: Language EN — surface census six through the elder chain."
+say "e134-surface-six: Style Radiant — a count ages faster than a format; the tree grows."
+say "e134-surface-six: Lens TAME — e134 · suite 10/10 · shred held · 128 reserved."
+
+let green = run ["sh" "tools/fixtures/equinox_e134_surface_count_scan.sh"]
+assert green.ok else "e134-surface-six: living scan must exit 0"
+assert green.out contains "surface_witnesses=6" else "e134-surface-six: want six witnesses"
+assert green.out contains "living_asserts=six" else "e134-surface-six: want living asserts"
+assert green.out contains "e112=honored" else "e134-surface-six: want e112"
+assert green.out contains "suite_pass=10" else "e134-surface-six: want suite 10"
+assert green.out contains "suite_fail=0" else "e134-surface-six: want fail 0"
+assert green.out contains "reds_note=row_45_hardcoded_count_ages" else "e134-surface-six: want REDS 45"
+assert green.out contains "e119_note=prove_red_prints_four_on_purpose" else "e134-surface-six: want e119 note"
+assert green.out contains "shred=RED" else "e134-surface-six: want shred RED"
+assert green.out contains "seat_128=reserved_close_choir" else "e134-surface-six: want 128 reserved"
+assert green.out contains "verdict=ok" else "e134-surface-six: want verdict ok"
+
+let red = run ["sh" "tools/fixtures/equinox_e134_surface_count_scan.sh" "prove-red"]
+assert (red.ok == false) else "e134-surface-six: prove-red must refuse"
+assert red.out contains "RED_surface_count_still_four" else "e134-surface-six: prove-red want refuse"
+
+say "GREEN: e134-surface-six — six witnesses · elder chain · suite 10/10 · shred RED · 128 reserved"

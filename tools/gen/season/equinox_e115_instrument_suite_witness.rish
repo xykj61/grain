@@ -46,9 +46,9 @@ assert scan.out contains "suite_pass=10" else "e115-instrument-suite: want suite
 assert scan.out contains "suite_prove_red=honored" else "e115-instrument-suite: want prove-red"
 assert scan.out contains "remaining=keaton_gated" else "e115-instrument-suite: want keaton_gated remainder"
 assert scan.out contains "seat_128=reserved_close_choir" else "e115-instrument-suite: want 128"
-assert scan.out contains "surface_count=4" else "e115-instrument-suite: want surface 4"
+assert scan.out contains "surface_count=6" else "e115-instrument-suite: want surface 6"
 assert scan.out contains "fork_status=not_consumed" else "e115-instrument-suite: want fork waiting"
 assert scan.out contains "e115_instrument_suite=ok" else "e115-instrument-suite: want e115 ok"
 assert scan.out contains "verdict=ok" else "e115-instrument-suite: want verdict=ok"
 
-say "GREEN: e115-instrument-suite — pass=10 · elder e114 · keaton-gated remainder · 128 reserved · census four · fork waiting · museum"
+say "GREEN: e115-instrument-suite — pass=10 · elder e114 · keaton-gated remainder · 128 reserved · census six · fork waiting · museum"

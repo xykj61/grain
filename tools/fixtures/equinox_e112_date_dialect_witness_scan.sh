@@ -102,15 +102,17 @@ fi
 echo "reserve_keep=honored"
 echo "seat_128=reserved_close_choir"
 
-# --- surface census still four ---
+# --- surface census six (e119 ch5+ch6 tools; elder four is historical) ---
 COUNT=$(git ls-files 'tools/gen/season/equinox_ch*_surface_witness.rish' | wc -l | tr -d ' ')
-if test "$COUNT" -ne 4; then
+if test "$COUNT" -ne 6; then
   echo "surface_keep=failed"
   echo "verdict=misread"
+  echo "detail=want_surface_count_6"
+  echo "surface_count=${COUNT}"
   exit 1
 fi
 echo "surface_keep=honored"
-echo "surface_count=4"
+echo "surface_count=6"
 
 # --- almanac: seat 115 present · ch8 heading ---
 rg -q '^### 115\.' "$ALMANAC" || {
@@ -156,6 +158,6 @@ echo "shelf=honored"
 echo "shelf_end=ep045"
 echo "shred=RED"
 
-echo "story=planted_date_dialect_witness>one_dialect>128_reserved_kept>census_four_kept>fork_waiting"
+echo "story=planted_date_dialect_witness>one_dialect>128_reserved_kept>census_six_kept>fork_waiting"
 echo "e112_date_dialect_witness=ok"
 echo "verdict=ok"

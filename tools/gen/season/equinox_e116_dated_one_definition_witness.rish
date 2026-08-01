@@ -56,9 +56,9 @@ assert scan.out contains "reds_row=honored" else "e116-dated-one-definition: wan
 assert scan.out contains "reds_row_n=40" else "e116-dated-one-definition: want row 40"
 assert scan.out contains "reds_law=when_two_roofs_carry_one_name_they_agree_or_the_name_does_two_jobs" else "e116-dated-one-definition: want law"
 assert scan.out contains "seat_128=reserved_close_choir" else "e116-dated-one-definition: want 128"
-assert scan.out contains "surface_count=4" else "e116-dated-one-definition: want surface 4"
+assert scan.out contains "surface_count=6" else "e116-dated-one-definition: want surface 6"
 assert scan.out contains "fork_status=not_consumed" else "e116-dated-one-definition: want fork waiting"
 assert scan.out contains "e116_dated_one_definition=ok" else "e116-dated-one-definition: want e116 ok"
 assert scan.out contains "verdict=ok" else "e116-dated-one-definition: want verdict=ok"
 
-say "GREEN: e116-dated-one-definition — one definition · roofs agree · REDS 40 · elder e115 · 128 reserved · census four · fork waiting · museum"
+say "GREEN: e116-dated-one-definition — one definition · roofs agree · REDS 40 · elder e115 · 128 reserved · census six · fork waiting · museum"
