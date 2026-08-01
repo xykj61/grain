@@ -71,7 +71,7 @@ const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
 const Dir = std.Io.Dir;
 
 /// Amphora CLI version — YYYYMMDD.HHMMSS, America/New_York, later is larger.
-const amphora_version = "20260801.045307";
+const amphora_version = "20260801.045352";
 
 // -------------------------------------------------------------------------
 // § Bounds — named with their why (Q4 · Q7 · Q8 · Q9)
@@ -730,6 +730,51 @@ fn cmd_pour(init: std.process.Init, args: []const []const u8) u8 {
 // readable at the dock before any seal is touched. Effects come last:
 // nothing lands at the dock until every check on the near side has passed.
 
+/// One carry's names — vessel to move, dock to receive it.
+const CarryArgs = struct {
+    vessel: []const u8,
+    dock: []const u8,
+};
+
+/// Q19: carry argument parse — `carry <vessel> <dock>`, bounds named.
+fn parse_carry_args(args: []const []const u8) CliError!CarryArgs {
+    assert(args.len >= 2);
+    assert(std.mem.eql(u8, args[1], "carry"));
+    if (args.len < 4) return error.MissingOperand;
+    if (args.len > max_words) return error.TooManyWords;
+    const vessel = args[2];
+    const dock = args[3];
+    if (vessel.len == 0) return error.MissingOperand;
+    if (dock.len == 0) return error.MissingOperand;
+    if (vessel.len > max_vessel_path_len) return error.PathTooLong;
+    if (dock.len > max_vessel_path_len) return error.PathTooLong;
+    return .{ .vessel = vessel, .dock = dock };
+}
+
+/// Q19 door: parse; walls wait Q20.
+fn cmd_carry(init: std.process.Init, args: []const []const u8) u8 {
+    _ = init;
+    const parsed = parse_carry_args(args) catch |fault| {
+        return switch (fault) {
+            error.MissingOperand => refuse(error.MissingOperand, "carry <vessel> <dock>"),
+            error.PathTooLong => blk: {
+                if (args.len >= 3 and args[2].len > max_vessel_path_len) {
+                    break :blk refuse(error.PathTooLong, args[2]);
+                }
+                if (args.len >= 4 and args[3].len > max_vessel_path_len) {
+                    break :blk refuse(error.PathTooLong, args[3]);
+                }
+                break :blk refuse(error.PathTooLong, "carry");
+            },
+            error.TooManyWords => refuse(error.TooManyWords, ""),
+            else => refuse(error.CommandNotGrown, "carry"),
+        };
+    };
+    assert(parsed.vessel.len > 0);
+    assert(parsed.dock.len > 0);
+    return refuse(error.CommandNotGrown, "carry");
+}
+
 // -------------------------------------------------------------------------
 // § Main — CLI (Q3–Q11 · carry Q19+ · restore waits · version)
 // =========================================================================
@@ -763,17 +808,16 @@ pub fn main(init: std.process.Init) !u8 {
         return cmd_version(io);
     } else if (std.mem.eql(u8, cmd, "pour")) {
         return cmd_pour(init, args);
-    } else if (std.mem.eql(u8, cmd, "carry") or std.mem.eql(u8, cmd, "restore")) {
+    } else if (std.mem.eql(u8, cmd, "carry")) {
+        return cmd_carry(init, args);
+    } else if (std.mem.eql(u8, cmd, "restore")) {
         var i: u32 = 2;
         while (i < args.len) : (i += 1) {
             if (args[i].len > max_vessel_path_len) {
                 return refuse(error.PathTooLong, args[i]);
             }
         }
-        if (std.mem.eql(u8, cmd, "carry") and args.len < 4) {
-            return refuse(error.MissingOperand, "carry <vessel> <dock>");
-        }
-        if (std.mem.eql(u8, cmd, "restore") and args.len < 3) {
+        if (args.len < 3) {
             return refuse(error.MissingOperand, "restore <vessel>");
         }
         return refuse(error.CommandNotGrown, cmd);
