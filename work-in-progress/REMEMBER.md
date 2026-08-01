@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260801.151629` · voice Riyo · self-work rounds e198–e201 (census v2 1,171/5,030 · kit guard · brace advisory · standing baton) · gates keep: Q53 class-and-rooms · Q64 seat 128 · SEA only · shred RED
+**Last refreshed:** `20260801.151854` · voice Riyo · e202 Q54 proof-machine banked (fixture GREEN) · queue 2-5 wait kg · gates keep: class-and-rooms · seat 128 · SEA only · shred RED
 **Pier at fusion:** `20260802.132104` · p191–p203 · Tend T1–T6·C1–C4·A1–A3·M1 · tip 33d77fe68c — counsel lane rebased atop, one file overlapped, union kept
 
 
