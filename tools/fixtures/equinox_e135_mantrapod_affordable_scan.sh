@@ -1,6 +1,8 @@
 #!/bin/sh
-# Equinox e135 — MantraPod living Radiant pass + affordable-witness law.
-# Exit 0 when pitch/kin speak living names, REDS 46 seats, e112 stays fast-green.
+# Equinox e135 — affordable-witness law (REDS 46).
+# Pitch claim rewrite was unlawful on a dated Vision artifact; e136 supersedes.
+# This scan keeps the speed law and leaves MantraPod speech to e136.
+# Exit 0 when REDS 46 seats, Lexicon names the law, e112 stays fast-green.
 # Does NOT run e115 (too slow for a casual seat — that is the law).
 # No backtick characters.
 #
@@ -18,15 +20,14 @@ LEXICON=context/LEXICON.md
 MAP=work-in-progress/EQUINOX_SEAT_MAP.md
 REMEMBER=work-in-progress/REMEMBER.md
 REDS=work-in-progress/REDS.md
-PITCH=foundations/20260629-020012_mantrapod-venture-pitch.md
-KIN=foundations/20260628-133212_the-device-that-forgets.md
 PRIN=tools/gen/season/prin_scope.rish
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 E112=tools/fixtures/equinox_e112_date_dialect_witness_scan.sh
 E115=tools/fixtures/equinox_e115_instrument_suite_scan.sh
+ELDER_PITCH=foundations/20260629-020012_mantrapod-venture-pitch.md
 
 if test "$MODE" = "prove-red"; then
-  echo "detail=RED_pitch_still_reya_kaeden_rye_os"
+  echo "detail=RED_affordable_witness_unseated"
   echo "verdict=misread"
   exit 1
 fi
@@ -44,8 +45,8 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-for p in "$COUNSEL" "$LEXICON" "$MAP" "$REMEMBER" "$REDS" "$PITCH" "$KIN" \
-  "$PRIN" "$E112" "$E115"; do
+for p in "$COUNSEL" "$LEXICON" "$MAP" "$REMEMBER" "$REDS" \
+  "$PRIN" "$E112" "$E115" "$ELDER_PITCH"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     echo "instrument=failed"
     echo "verdict=misread"
@@ -56,71 +57,38 @@ for p in "$COUNSEL" "$LEXICON" "$MAP" "$REMEMBER" "$REDS" "$PITCH" "$KIN" \
 done
 echo "instruments_tracked=honored"
 
-# Pitch living voice / coauthor / umbrella
-rg -q '^\*\*Voice:\*\* Riyo' "$PITCH" || {
-  echo "pitch=failed"
-  echo "detail=want_voice_riyo"
+# Elder pitch must remain dated testimony (Reya · Kaeden · Rye OS) — not rewritten
+rg -q '^\*\*Voice:\*\* Reya 2' "$ELDER_PITCH" || {
+  echo "elder_pitch=failed"
+  echo "detail=want_elder_voice_reya_2"
   echo "verdict=misread"
   exit 1
 }
-rg -q 'Keaton Livermore' "$PITCH" || {
-  echo "pitch=failed"
-  echo "detail=want_keaton_livermore"
+rg -q 'Kaeden Reyklah' "$ELDER_PITCH" || {
+  echo "elder_pitch=failed"
+  echo "detail=want_elder_kaeden"
   echo "verdict=misread"
   exit 1
 }
-rg -q 'siloed except for the Mantrapod and Grain names' "$PITCH" || {
-  echo "pitch=failed"
-  echo "detail=want_grain_silo_status"
+rg -q 'Rye OS' "$ELDER_PITCH" || {
+  echo "elder_pitch=failed"
+  echo "detail=want_elder_rye_os_testimony"
   echo "verdict=misread"
   exit 1
 }
-rg -q 'Reya 2|Kaeden Reyklah|Rye OS' "$PITCH" && {
-  echo "pitch=failed"
-  echo "detail=stale_reya_kaeden_rye_os_still_present"
+rg -q '^\*\*Voice:\*\* Riyo' "$ELDER_PITCH" && {
+  echo "elder_pitch=failed"
+  echo "detail=elder_must_not_carry_living_claim_rewrite"
   echo "verdict=misread"
   exit 1
 }
-rg -q 'runs Grain on an open processor' "$PITCH" || {
-  echo "pitch=failed"
-  echo "detail=want_grain_on_open_processor"
-  echo "verdict=misread"
-  exit 1
-}
-echo "pitch=honored"
-echo "pitch_living=riyo_keaton_grain"
+echo "elder_pitch=honored"
+echo "elder_pitch_note=dated_testimony_kept_whole"
 
-# Kin essay living voice
-rg -q '^\*\*Voice:\*\* Riyo' "$KIN" || {
-  echo "kin=failed"
-  echo "detail=want_voice_riyo"
-  echo "verdict=misread"
-  exit 1
-}
-rg -q 'Keaton Livermore' "$KIN" || {
-  echo "kin=failed"
-  echo "detail=want_keaton_livermore"
-  echo "verdict=misread"
-  exit 1
-}
-rg -q 'Reya 2|Kaeden Reyklah' "$KIN" && {
-  echo "kin=failed"
-  echo "detail=stale_reya_kaeden_still_present"
-  echo "verdict=misread"
-  exit 1
-}
-echo "kin=honored"
-
-# Lexicon seats
+# Lexicon seats affordable witness
 rg -qi 'affordable witness' "$LEXICON" || {
   echo "lexicon=failed"
   echo "detail=want_affordable_witness"
-  echo "verdict=misread"
-  exit 1
-}
-rg -qi 'Mantrapod' "$LEXICON" || {
-  echo "lexicon=failed"
-  echo "detail=want_mantrapod_entry"
   echo "verdict=misread"
   exit 1
 }
@@ -142,7 +110,6 @@ rg -qi 'afford to run|stops being run' "$REDS" || {
 echo "reds=honored"
 echo "reds_note=row_46_affordable_witness"
 
-# Counsel + living pins name the law
 rg -qi 'afford to run|affordable witness' "$COUNSEL" "$REMEMBER" || {
   echo "living=failed"
   echo "verdict=misread"
@@ -150,7 +117,6 @@ rg -qi 'afford to run|affordable witness' "$COUNSEL" "$REMEMBER" || {
 }
 echo "living=honored"
 
-# Fast elder still green — the scan that stayed honest because it is cheap
 E112_OUT=$(sh "$E112")
 echo "$E112_OUT" | rg -q '^verdict=ok$' || {
   echo "e112=failed"
@@ -160,7 +126,6 @@ echo "$E112_OUT" | rg -q '^verdict=ok$' || {
 echo "e112=honored"
 echo "e112_note=fast_elder_still_green"
 
-# e115 remains tracked; this seat refuses to nest it (law in action)
 echo "e115=tracked_not_nested"
 echo "e115_note=too_slow_for_casual_seat"
 
@@ -202,5 +167,5 @@ fi
 echo "fork=honored"
 echo "gates_kept=shred_safe_geode_128"
 
-echo "story=mantrapod_living>affordable_witness>reds_46>e112_fast>e115_not_nested>shred_held>128_reserved"
+echo "story=affordable_witness>reds_46>elder_pitch_kept>e112_fast>e115_not_nested>shred_held>128_reserved"
 echo "verdict=ok"

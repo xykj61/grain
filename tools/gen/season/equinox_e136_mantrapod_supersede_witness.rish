@@ -1,0 +1,23 @@
+# tools/gen/season/equinox_e136_mantrapod_supersede_witness.rish — e136 seat.
+#   rishi/bin/rishi run tools/gen/season/equinox_e136_mantrapod_supersede_witness.rish
+say "e136-supersede: Language EN — supersede MantraPod pitch · elder kept whole."
+say "e136-supersede: Style Radiant — a dated Vision is testimony; accrete a second draft."
+say "e136-supersede: Lens TAME — e136 · REDS 47 · dated_guard · shred held · 128 reserved."
+
+let green = run ["sh" "tools/fixtures/equinox_e136_mantrapod_supersede_scan.sh"]
+assert green.ok else "e136-supersede: living scan must exit 0"
+assert green.out contains "elder_note=dated_vision_kept_whole" else "e136-supersede: want elder kept"
+assert green.out contains "kin_note=dated_essay_kept_whole" else "e136-supersede: want kin kept"
+assert green.out contains "new_pitch_living=riyo_keaton_grain" else "e136-supersede: want new pitch"
+assert green.out contains "reds_note=row_47_dated_vision_in_place" else "e136-supersede: want REDS 47"
+assert green.out contains "dated_guard=honored" else "e136-supersede: want dated_guard"
+assert green.out contains "e135=honored" else "e136-supersede: want e135"
+assert green.out contains "shred=RED" else "e136-supersede: want shred RED"
+assert green.out contains "seat_128=reserved_close_choir" else "e136-supersede: want 128 reserved"
+assert green.out contains "verdict=ok" else "e136-supersede: want verdict ok"
+
+let red = run ["sh" "tools/fixtures/equinox_e136_mantrapod_supersede_scan.sh" "prove-red"]
+assert (red.ok == false) else "e136-supersede: prove-red must refuse"
+assert red.out contains "RED_dated_vision_claim_rewritten_in_place" else "e136-supersede: prove-red want refuse"
+
+say "GREEN: e136-supersede — new pitch · elder kept · REDS 47 · dated_guard · shred RED · 128 reserved"
