@@ -2,47 +2,24 @@
 
 **Language:** EN
 **Stamp:** `20260710.161358`
-**Last updated:** `20260801.025844` (Q2 seed — `src/main.rye` all `//!` · zero code · TAME roster sees amphora)
-**Status:** Landed — laps 1–3 + stamp + seal + chunk + purchase delivery; Pond customs gates scrub; forge view folds a live sealed pour · **CLI wave Q2** Mantra-shaped seed (no binary yet)
+**Last updated:** `20260801.030237` (Q3 — `amphora version` on stdout · J1 Q4–Q16 in charter)
+**Status:** Landed — laps 1–3 + stamp + seal + chunk + purchase delivery; Pond customs gates scrub; forge view folds a live sealed pour · **CLI wave Q3** version metal (pour/carry/restore wait)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 
 **Amphora** is **vessel software** — preservation **in motion**. It carries sealed resins across a crossing (wire, dock, or pocket) under the same resins law and Kumara stamp as Amber's cellar.
 
-<!--
-  Amphora CLI surface (README companion · e142). Canonical Q2 seed is
-  amphora/src/main.rye — all //! · zero code · Mantra shape (e143).
-  One loop · one crossing. Seal+stamp live inside pour. Chunk lives inside carry.
-  Metal waits Q3+.
+## CLI surface
 
-  amphora version
-      Print the free Amphora CLI version string and exit 0.
-
-  amphora pour <season> <vessel>
-      Fill <vessel> from <season> (Amber ring-1 / season path).
-      Seal cargo (ChaCha20-Poly1305) then Kumara-stamp the vessel body.
-      Shoulder stays clear. Refuse a second pour that would fork identity.
-
-  amphora carry <vessel> <dock>
-      Move sealed <vessel> to far <dock>. Large cargo chunks (kind 0x33)
-      inside carry — never a caller choice. Far side verifies stamp+seal.
-
-  amphora restore <vessel>
-      Cold scrub · verify stamp+seal · restore cargo byte-faithful.
-      Tamper must fail. Round-trip with pour+carry must close equal.
--->
-
-## CLI surface (documentation · Q2 seed · no binary)
-
-Canonical seed: [`src/main.rye`](src/main.rye) — thirty-five `//!` lines · zero code.
+Canonical roof: [`src/main.rye`](src/main.rye) — `//!` header + Q3 metal. HTML comment twin retired by accretion (e144). This table is the README surface roof.
 
 | Command | Duty |
 |---------|------|
-| `amphora version` | free version string · exit 0 |
+| `amphora version` | free version string on **stdout** · exit 0 |
 | `amphora pour <season> <vessel>` | fill vessel · seal then stamp inside pour |
 | `amphora carry <vessel> <dock>` | move to far dock · chunk inside carry |
 | `amphora restore <vessel>` | cold scrub · verify · restore |
 
-*Q2 seats the words only (`src/main.rye` + this table). Q3+ may grow Glow/Tend metal on-touch. Nested wave lean: **the Crossing Season** (seat Keaton's).*
+*Q3 lands `version`. Pour/carry/restore wait their quests. Nested wave lean: **the Crossing Season** (seat Keaton's).*
 
 | Lap | What |
 |-----|------|

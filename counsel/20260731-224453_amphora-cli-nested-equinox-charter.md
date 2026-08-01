@@ -65,10 +65,14 @@ seal + stamp inside pour · chunk inside carry · never a choice.
 
 | Journey | Quests | Duty |
 | --- | --- | --- |
-| J1 The Shape and the Pour | Q1–Q16 | cut fine · Q2 doc comment zero code |
+| J1 The Shape and the Pour | Q1–Q16 | cut fine in living bow — **all sixteen in tree** (e144) |
 | J2 The Crossing | Q17–Q32 | carry lands · cut at Q32 from ground |
 | J3 The Return | Q33–Q48 | round trip closes · cut at Q48 |
 | J4 Tend and the Final Bundle | Q49–Q64 | Q64 is the cut · `wave q64` |
+
+J1 fine cut (Q1–Q16) lives in
+[`20260801-024355_e141-amphora-cli-equinox-charter.md`](20260801-024355_e141-amphora-cli-equinox-charter.md)
+so a closed chat cannot be the only resin.
 
 ## Final bundle wall (named at commence)
 
