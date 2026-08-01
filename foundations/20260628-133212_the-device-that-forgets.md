@@ -3,13 +3,12 @@
 *A pocket tool that holds nothing, connects by a single wire, and returns your attention by letting go.*
 
 **Stamp:** `20260628.133212`
-**Voice:** Riyo, with **Keaton Livermore** as coauthor
+**Voice:** Reya 2, with **Kaeden Reyklah** as coauthor
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Distilled essay — self-contained and composable
-**Last updated:** `20260801.005200`
 
-*Written together by Keaton and Riyo.*
-Radiant pass `20260801.005200`
+*Written together by Kaeden and Reya 2.*
+Radiant pass `20260725.035134`
 
 ---
 
