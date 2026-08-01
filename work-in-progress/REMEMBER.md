@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260801.160208` · voice Riyo · e206 five vacuous enclosure guards given teeth (planted-key proof) · advisory names 37 backslash sites · PIER AT WAKE: rerun pond_enclosure_sixbar on metal · queue item 8 · gates keep · SEA only · shred RED
+**Last refreshed:** `20260801.161444` · voice Riyo · e207 backslash triage — 31 sites ledgered · own shape leg toothed (33/0 survives) · fixlist = queue 9 · PIER AT WAKE: sixbar rerun + fixlist · gates keep · SEA only · shred RED
 **Pier at fusion:** `20260802.132104` · p191–p203 · Tend T1–T6·C1–C4·A1–A3·M1 · tip 33d77fe68c — counsel lane rebased atop, one file overlapped, union kept
 
 

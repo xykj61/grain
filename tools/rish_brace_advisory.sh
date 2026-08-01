@@ -29,4 +29,7 @@ for f in $(git ls-files '*.rish'); do
   fi
 done
 echo "rish_backslash_advisory: $bs backslash-quote shapes inside rishi strings (advisory only)"
+if [ -f tools/fixtures/rish_backslash_ledger.md ]; then
+  echo "ledger=tools/fixtures/rish_backslash_ledger.md (every site classed with a reason)"
+fi
 exit 0

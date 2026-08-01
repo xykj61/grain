@@ -51,9 +51,9 @@ say "pond sixbar bar2: home and tmp reset…"
 # Either proves private tmp + Landlock present — same bar, either incumbent.
 let landlock = run ["sh" "-c" "test -e /tmp/.enclosure-landlock || test -e /tmp/.ai-jail-landlock"]
 assert landlock.ok else "bar2: missing enclosure Landlock marker (/tmp/.enclosure-landlock or /tmp/.ai-jail-landlock)"
-let no_docs = run ["sh" "-c" "test ! -d \"$HOME/Documents\""]
+let no_docs = run ["sh" "-c" "test ! -d $HOME/Documents"]
 assert no_docs.ok else "bar2: host Documents visible under HOME — private-home drift"
-let no_dl = run ["sh" "-c" "test ! -d \"$HOME/Downloads\""]
+let no_dl = run ["sh" "-c" "test ! -d $HOME/Downloads"]
 assert no_dl.ok else "bar2: host Downloads visible under HOME — private-home drift"
 let tmp_w = run ["sh" "-c" "echo ok > /tmp/pond-sixbar-tmp-probe && rm -f /tmp/pond-sixbar-tmp-probe"]
 assert tmp_w.ok else "bar2: /tmp not writable inside enclosure"
