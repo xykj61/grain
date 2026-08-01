@@ -19,7 +19,7 @@ let seed_bin = "brushstroke/bin/brushstroke-wayland-seed"
 let have = run ["test" "-x" seed_bin]
 assert have.ok else "surface-p56: build wayland_seed first — see p56 counsel"
 
-let display = run ["sh" "-c" "test -n \"$WAYLAND_DISPLAY\" && echo DISPLAY_OK"]
+let display = run ["sh" "-c" "test x$WAYLAND_DISPLAY != x && echo DISPLAY_OK"]
 assert display.ok else "surface-p56: WAYLAND_DISPLAY required for idletest"
 assert display.out contains "DISPLAY_OK" else "surface-p56: WAYLAND_DISPLAY empty"
 

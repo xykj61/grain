@@ -16,7 +16,7 @@ assert feed.ok else "wayland-from-frame: p49 feed counsel missing"
 let hosted_doc = run ["test" "-f" "counsel/20260729-135422_surface-season-p50-hosted-brush-choir.md"]
 assert hosted_doc.ok else "wayland-from-frame: p50 hosted counsel missing"
 
-let display = run ["sh" "-c" "test -n \"$WAYLAND_DISPLAY\""]
+let display = run ["sh" "-c" "test x$WAYLAND_DISPLAY != x"]
 assert display.ok else "wayland-from-frame: WAYLAND_DISPLAY unset — run on GNOME Wayland"
 
 say "wayland-from-frame: Glow connector hops..."

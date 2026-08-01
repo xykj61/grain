@@ -36,7 +36,7 @@ say "pond col2 probes: door env — measured=${bus_env} · required=empty"
 say "pond col2 probes: door socket — measured=${bus_sock} · required=absent"
 say "pond col2 probes: door netns — measured=${bus_net} · required=unshared"
 
-let verdict = run ["sh" "-c" "e=$(cat ${cache}/bus_env); s=$(cat ${cache}/bus_socket); n=$(cat ${cache}/bus_netns); ev=hold; sv=hold; nv=hold; [ \"$e\" = empty ] && ev=met; [ \"$s\" = absent ] && sv=met; [ \"$n\" = unshared ] && nv=met; echo env=$ev socket=$sv netns=$nv"]
+let verdict = run ["sh" "-c" "e=$(cat ${cache}/bus_env); s=$(cat ${cache}/bus_socket); n=$(cat ${cache}/bus_netns); ev=hold; sv=hold; nv=hold; [ x$e = xempty ] && ev=met; [ x$s = xabsent ] && sv=met; [ x$n = xunshared ] && nv=met; echo env=$ev socket=$sv netns=$nv"]
 assert verdict.ok
 say "pond col2 probes: ${verdict.out} (hold = not yet under Pond)"
 say "pond col2 probes: GPU lane customs — hold (grant/refuse pair not yet Pond policy)"

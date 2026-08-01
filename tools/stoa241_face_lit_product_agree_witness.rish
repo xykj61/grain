@@ -17,7 +17,9 @@ assert product.out contains "face_lit product" else "product face_lit agree miss
 # Honesty: product names the stand-in and does not @import glow/face_lit.
 let named = run ["sh" "-c" "grep -q extract_face_lit_cord linengrow/glow_seva_b0_line.rye"]
 assert named.ok else "missing extract_face_lit_cord"
-let no_import = run ["sh" "-c" "! grep -E '@import\\(\\\"(\\.\\./)?glow/face_lit\\\"\\)' linengrow/*.rye"]
+# e208: the elder -E double-escape failed its plant control; recut in
+# stoa198's proven shape (single-quoted pattern, backslash-quote to grep).
+let no_import = run ["sh" "-c" "! grep -q '@import(\"glow/face_lit\")' linengrow/*.rye && ! grep -q '@import(\"../glow/face_lit\")' linengrow/*.rye"]
 assert no_import.ok else "product must not @import glow/face_lit across module path"
 
 say "GREEN: STOA241 — product face_lit stand-in agrees Glow face_lit via seated pins."

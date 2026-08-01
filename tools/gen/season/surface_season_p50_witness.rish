@@ -11,7 +11,7 @@ say "surface-p50: Lens TAME — Surface Season p50."
 let counsel = run ["test" "-f" "counsel/20260729-135422_surface-season-p50-hosted-brush-choir.md"]
 assert counsel.ok else "surface-p50: p50 counsel missing"
 
-let display = run ["sh" "-c" "test -n \"$WAYLAND_DISPLAY\""]
+let display = run ["sh" "-c" "test x$WAYLAND_DISPLAY != x"]
 assert display.ok else "surface-p50: WAYLAND_DISPLAY unset — run on GNOME Wayland"
 
 let seed_bin = "brushstroke/bin/brushstroke-wayland-seed"

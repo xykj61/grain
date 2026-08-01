@@ -12,7 +12,7 @@ say "pond-frame: Language EN — Frame from values · Pond metalsmoke."
 say "pond-frame: Style Radiant — reuse seed; refuse invent stack."
 say "pond-frame: Lens TAME — Surface Season p6 · hardened p7."
 
-let wayland = run ["sh" "-c" "test -n \"$WAYLAND_DISPLAY\""]
+let wayland = run ["sh" "-c" "test x$WAYLAND_DISPLAY != x"]
 assert wayland.ok else "pond-frame: WAYLAND_DISPLAY unset — run on GNOME Wayland"
 
 let seed_bin = "brushstroke/bin/brushstroke-wayland-seed"

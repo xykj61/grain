@@ -38,7 +38,8 @@ assert made.ok else "equinox-bundle: could not prepare bundles/"
 let path = "bundles/equinox_${round}.bundle"
 assert path contains "bundles/" else "equinox-bundle: destination is not the durable project home"
 
-let durable = run ["sh" "-c" "case \"${path}\" in /tmp/*|/var/tmp/*) echo TMPFS ;; *) echo DURABLE ;; esac"]
+# e208: quoted form made /tmp read DURABLE (vacuous tmpfs refusal); paths carry no spaces.
+let durable = run ["sh" "-c" "case ${path} in /tmp/*|/var/tmp/*) echo TMPFS ;; *) echo DURABLE ;; esac"]
 assert durable.ok else "equinox-bundle: durability check failed"
 assert durable.out contains "DURABLE" else "equinox-bundle: refusing to cut a preservation artifact into tmpfs"
 
@@ -59,7 +60,7 @@ assert bound.ok else "equinox-bundle: bound check failed"
 assert bound.out contains "BOUND_OK" else "equinox-bundle: bundle exceeds equinox_bundle_max_bytes"
 
 # Stamped manifest beside the bundle (discipline 20260730.041405 · e129)
-let man = run ["sh" "-c" "sh tools/gen/season/equinox_bundle_manifest.sh ${path} ${round} \"$(git remote get-url origin)\" --all \"$(git rev-parse HEAD)\" \"$(date -u +%Y%m%d.%H%M%S)\" \"closing round ${round} full --all\""]
+let man = run ["sh" "-c" "sh tools/gen/season/equinox_bundle_manifest.sh ${path} ${round} $(git remote get-url origin) --all $(git rev-parse HEAD) $(date -u +%Y%m%d.%H%M%S) closing-round-${round}-full-all"]
 say man.out
 assert man.ok else "equinox-bundle: stamped manifest must write"
 assert man.out contains "verdict=ok" else "equinox-bundle: want manifest ok"

@@ -51,7 +51,7 @@ let heal2 = run ["sh" "-c" "cp /tmp/amphora_rneg_home/v.bron.full /tmp/amphora_r
 assert heal2.ok else "rneg: heal vessel after truncate"
 
 # --- plant 3: forge one resin body ---
-let forge_prep = run ["sh" "-c" "f=$(ls /tmp/amphora_rneg_home/resins | head -1); test -n \"$f\"; printf 'FORGED-BYTES-NOT-THE-SEASON\n' > /tmp/amphora_rneg_home/resins/$f"]
+let forge_prep = run ["sh" "-c" "f=$(ls /tmp/amphora_rneg_home/resins | head -1); test x$f != x; printf 'FORGED-BYTES-NOT-THE-SEASON\n' > /tmp/amphora_rneg_home/resins/$f"]
 assert forge_prep.ok else "rneg: forge resin plant must prepare"
 let forge = run ["amphora/bin/amphora" "restore" vessel]
 assert (forge.ok == false) else "rneg: forged resin must refuse"
