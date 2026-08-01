@@ -10,7 +10,7 @@
 let season = "tools/fixtures/cellar_ring1_tree"
 let home = "/tmp/amphora_rneg_home"
 let vessel = "/tmp/amphora_rneg_home/v.bron"
-let tamp_py = "tools/fixtures/amphora_tamper_seal_cargo.py"
+let tamp_sh = "tools/fixtures/amphora_tamper_seal_cargo.sh"
 
 let wipe = run ["rm" "-rf" home]
 assert wipe.ok else "rneg: home wipe"
@@ -23,7 +23,7 @@ assert pour.ok else "rneg: seed pour must pass"
 # --- plant 1: tamper seal_cargo, then re-stamp so the seal wall is the one that speaks ---
 let bak = run ["sh" "-c" "cp /tmp/amphora_rneg_home/v.bron /tmp/amphora_rneg_home/v.bron.bak"]
 assert bak.ok else "rneg: bak must land"
-let tamp_prep = run ["python3" tamp_py "/tmp/amphora_rneg_home/v.bron"]
+let tamp_prep = run ["sh" tamp_sh "/tmp/amphora_rneg_home/v.bron"]
 assert tamp_prep.ok else "rneg: tamper plant must prepare"
 let restamp = run ["amphora/bin/vessel-core" "sign" "/tmp/amphora_rneg_home/v.bron"]
 assert restamp.ok else "rneg: re-stamp after tamper must pass (isolates seal wall)"

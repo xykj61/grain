@@ -1,9 +1,9 @@
 # A Clean-Energy NixOS Pier in the Cloud — Mosh and Cursor CLI from the Daylight DC-1
 
 **Language:** EN
-**Stamp:** `20260801.132929` (container one-clock; fused to pier `20260801.133857`)
+**Stamp:** `20260801.132929` (container one-clock; fused `20260801.133857`; Cursor-latency revise `20260801.135514`)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
-**Status:** Research for understanding — frames a clean-energy pier shape; recommends no purchase, no deploy, and no keys from this file. Every cloud step runs by Keaton's own hands.
+**Status:** Research for understanding — frames a pier shape for Cursor CLI + NixOS; recommends no purchase, no deploy, and no keys from this file. Every cloud step runs by Keaton's own hands.
 **Home:** `external-research/20260801-132929_nixos-vps-clean-energy-mosh-cursor.md`
 **Scope:** research guide — no keys, no purchases, no deploys happen from counsel; every step below runs by Keaton's own hands
 
@@ -13,18 +13,25 @@
 
 ## The Recommendation, and Its Why
 
-**Vultr, in its Seattle (SEA) region.** Vultr is an American cloud company headquartered in West Palm Beach, Florida, which satisfies the USA-headquarters requirement plainly. And its "Seattle" region is the quiet gem of the clean-energy question: the servers live at Sabey Data Centers' SDC Columbia campus in **East Wenatchee, Washington**, fed hydropower through the Douglas County Public Utility District, in a facility with an annualized PUE of 1.15 — among the most efficiently and cleanly powered data centers in the United States.
+### Primary (Cursor CLI · performance value) — Vultr New Jersey, High Frequency, shared
 
-The grid behind it is the cleanest large grid in the country. Washington generates roughly 63 percent of its electricity from hydropower, with wind and nuclear lifting the low-carbon share to about 84 percent, and the state alone delivers about a quarter of all U.S. hydroelectric generation. A vessel poured onto this pier runs, quite literally, on the Columbia River — and it hums away in Wenatchee country, ground you already know.
+**Measured this seat (`20260801.135514`):** `api2.cursor.sh` resolves to AWS **Ashburn, Virginia** (`us-east-1`, `18.215.206.165`). Cursor's agent stream goes straight to that US-East path without a regional CDN edge for the long-lived connection. Seattle adds a coast-to-coast hop on every CLI round-trip; New Jersey / New York sits next to Ashburn.
 
-**A worthy second**, should Vultr ever fall short: Akamai Cloud (the former Linode, headquartered in Cambridge, Massachusetts) also operates a Seattle region. The guide below works on either; the disk device name is the one detail to re-check.
+**Pick:** Vultr (USA HQ, West Palm Beach) · region **New Jersey (EWR)** or **New York** · plan **High Frequency Shared**, **2 GB RAM**, 1 vCPU. Shared is enough — Cursor CLI is latency- and single-core-bound more than noisy-neighbor-bound; dedicated is not the first dollar. High Frequency buys the clock speed that agent tooling feels. nixos-anywhere still wants ≥1.5 GB excluding swap, so 2 GB stays the floor.
+
+**USA-HQ value ladder for this job:** Vultr EWR/NYC HF shared 2 GB (first seat) · DigitalOcean NYC Premium AMD 2 GB (polished DX, higher $/GB) · Akamai Cloud Newark (USA HQ second). **Hetzner Ashburn** wins raw $/RAM if German HQ is acceptable — it literally sits in Ashburn — yet it steps off the USA-headquarters line this guide keeps unless Keaton softens that word.
+
+### Alternate (clean energy · Wenatchee poetry) — Vultr Seattle
+
+When the Columbia River matters more than milliseconds to Cursor's API: Vultr **Seattle (SEA)** at Sabey SDC Columbia, East Wenatchee, Douglas County PUD hydro, PUE ~1.15. Washington's grid stays among the cleanest large grids in the nation. Same flake and disk shape; only the region label changes. Keep this as the second seat, not the Cursor-latency seat.
 
 ## The Instance Shape
 
 Create the smallest shape that carries the work comfortably:
 
-- **Plan:** Shared CPU (Regular or High Frequency), **2 GB RAM**, 1 vCPU. nixos-anywhere's kexec image needs at least 1.5 GB of RAM excluding swap, and Numtide's own worked Vultr example chose 2 GB for exactly this reason. One gigabyte can be made to work with tricks; two gigabytes just works.
-- **Region:** Seattle (SEA).
+- **Plan:** **High Frequency Shared**, **2 GB RAM**, 1 vCPU (dedicated only if a later noisy-neighbor measurement asks).
+- **Region (primary):** New Jersey (EWR) or New York — nearest USA-HQ Vultr to Ashburn / `api2.cursor.sh`.
+- **Region (alternate):** Seattle (SEA) — clean-energy / Wenatchee seat.
 - **OS to start from:** any stock Debian or Ubuntu image — it exists only long enough to be replaced. Add your SSH public key at creation so root logs in by key from the first minute.
 - **Disk:** on Vultr's KVM the disk appears as `/dev/vda`; the disko file below names it.
 
@@ -38,7 +45,7 @@ On the Framework (or any machine with Nix and flakes enabled), make a fresh dire
 
 ```nix
 {
-  description = "Clean-energy pier — NixOS on Vultr Seattle";
+  description = "Cursor-near pier — NixOS on Vultr (EWR/NYC primary; SEA alternate)";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
