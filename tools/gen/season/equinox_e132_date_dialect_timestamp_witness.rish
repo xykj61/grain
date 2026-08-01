@@ -1,0 +1,24 @@
+# tools/gen/season/equinox_e132_date_dialect_timestamp_witness.rish — e132 seat.
+#   rishi/bin/rishi run tools/gen/season/equinox_e132_date_dialect_timestamp_witness.rish
+say "e132-dialect-stamp: Language EN — compact Last updated accepts date or full stamp."
+say "e132-dialect-stamp: Style Radiant — the instrument aged; the Lexicon did not."
+say "e132-dialect-stamp: Lens TAME — e132 · suite 10/10 · shred held · 128 reserved."
+
+let green = run ["sh" "tools/fixtures/equinox_e132_date_dialect_timestamp_scan.sh"]
+assert green.ok else "e132-dialect-stamp: living scan must exit 0"
+assert green.out contains "pattern=honored" else "e132-dialect-stamp: want pattern"
+assert green.out contains "compact_accepts=date_or_stamp" else "e132-dialect-stamp: want date_or_stamp"
+assert green.out contains "e111=honored" else "e132-dialect-stamp: want e111"
+assert green.out contains "suite_pass=10" else "e132-dialect-stamp: want suite 10"
+assert green.out contains "suite_fail=0" else "e132-dialect-stamp: want fail 0"
+assert green.out contains "reds_note=row_44_instrument_format_aged" else "e132-dialect-stamp: want REDS 44"
+assert green.out contains "safe_note=empty_load_bearing_for_shred" else "e132-dialect-stamp: want SAFE"
+assert green.out contains "shred=RED" else "e132-dialect-stamp: want shred RED"
+assert green.out contains "seat_128=reserved_close_choir" else "e132-dialect-stamp: want 128 reserved"
+assert green.out contains "verdict=ok" else "e132-dialect-stamp: want verdict ok"
+
+let red = run ["sh" "tools/fixtures/equinox_e132_date_dialect_timestamp_scan.sh" "prove-red"]
+assert (red.ok == false) else "e132-dialect-stamp: prove-red must refuse"
+assert red.out contains "RED_compact_rejects_full_stamp" else "e132-dialect-stamp: prove-red want refuse"
+
+say "GREEN: e132-dialect-stamp — date or stamp · suite 10/10 · SAFE empty · shred RED · 128 reserved"

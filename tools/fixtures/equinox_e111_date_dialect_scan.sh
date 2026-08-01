@@ -30,10 +30,12 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 echo "control_gate=honored"
 
 # --- eleven transformed files present and compact ---
-# Compact date is eight digits wrapped in backticks — build pattern without a
-# literal backtick character in this source file (shell-pattern hard line).
+# Compact Last updated is YYYYMMDD or full one-clock YYYYMMDD.HHMMSS, wrapped
+# in backticks. Optional seconds keep a date and a timestamp both compact
+# (e132 · instrument aged when the tree moved to stamps). Build the pattern
+# without a literal backtick character in this source (shell-pattern hard line).
 BT=$(printf '\140')
-COMPACT_RE="^\\*\\*Last updated:\\*\\* ${BT}[0-9]{8}${BT}"
+COMPACT_RE="^\\*\\*Last updated:\\*\\* ${BT}[0-9]{8}(\\.[0-9]{6})?${BT}"
 HYPHEN_RE='^\*\*Last updated:\*\* [0-9]{4}-[0-9]{2}-[0-9]{2}'
 FILES='BREACH.md CIVIC_STYLE.md LEXICON.md PUBKEYS.md QUIN.md RADIANT_STYLE.md README.md SILO_TECHNIQUE.md SIMPLE_LOVABLE_COMPLETE.md TAME_GUIDANCE.md TWO_ROOMS.md'
 expect_n=11
@@ -128,15 +130,17 @@ fi
 echo "reserve_keep=honored"
 echo "seat_128=reserved_close_choir"
 
-# --- surface census still four ---
+# --- surface census six (e119 ch5+ch6 tools; e110's four is historical) ---
 COUNT=$(git ls-files 'tools/gen/season/equinox_ch*_surface_witness.rish' | wc -l | tr -d ' ')
-if test "$COUNT" -ne 4; then
+if test "$COUNT" -ne 6; then
   echo "surface_keep=failed"
   echo "verdict=misread"
+  echo "detail=want_surface_count_6"
+  echo "surface_count=${COUNT}"
   exit 1
 fi
 echo "surface_keep=honored"
-echo "surface_count=4"
+echo "surface_count=6"
 
 # --- almanac: seat 114 present · ch8 at least 2/16 ---
 rg -q '^### 114\.' "$ALMANAC" || {
@@ -182,6 +186,6 @@ echo "shelf=honored"
 echo "shelf_end=ep045"
 echo "shred=RED"
 
-echo "story=date_dialect_compact>17_of_17>128_reserved_kept>census_four_kept>fork_waiting"
+echo "story=date_dialect_compact>17_of_17>128_reserved_kept>census_six_kept>fork_waiting"
 echo "e111_date_dialect=ok"
 echo "verdict=ok"
