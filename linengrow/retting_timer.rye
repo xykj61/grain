@@ -1,0 +1,165 @@
+// linengrow/retting_timer.rye — the retting timer, ring one.
+//
+// Simple: two commands, one append-only log. Lovable: your fiber batches,
+// on your own machine, named and counted in days. Complete: start, status,
+// ready — the loop closes. Keaton named this the first shippable candidate;
+// ring two is the Wasm build of this same file (pier lane).
+//
+// State is a pure fold over an append-only log (house law): each `start`
+// appends one line `start <epoch> <days> <name>`; `status` folds the log.
+// Season home: RETTING_HOME env, else linengrow/.retting (durable — /tmp
+// clears with the enclosure; REDS row 8).
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const Io = std.Io;
+const Dir = std.Io.Dir;
+
+const max_batches: u32 = 64; // one wall of drying racks; refuse beyond
+const max_name_len: u32 = 32; // a batch name fits on a jar label
+const max_days: u32 = 365; // longer than any retting; catches typos
+const max_log_bytes: u32 = 16384; // 64 lines never near this; named anyway
+const seconds_per_day: u64 = 86400;
+
+const RettingError = error{ DaysOutOfBound, NameTooLong, LogFull, HomeUnavailable };
+
+// Parse 1-3 digit day counts; leading zero refused (truncation smell).
+// Routes to tally/parse_int at its second consumer (graduation rule).
+fn parse_days(text: []const u8) RettingError!u32 {
+    assert(text.len != 0);
+    assert(max_days < 1000); // three digits cover the bound
+    if (text.len > 3) return RettingError.DaysOutOfBound;
+    if (text.len > 1 and text[0] == '0') return RettingError.DaysOutOfBound;
+    var value: u32 = 0;
+    for (text) |c| {
+        if (c < '0' or c > '9') return RettingError.DaysOutOfBound;
+        value = value * 10 + (c - '0');
+    }
+    if (value == 0 or value > max_days) return RettingError.DaysOutOfBound;
+    assert(value >= 1);
+    assert(value <= max_days);
+    return value;
+}
+
+fn home_path(init: std.process.Init) []const u8 {
+    if (init.environ_map.get("RETTING_HOME")) |e| {
+        assert(e.len != 0);
+        return e;
+    }
+    return "linengrow/.retting";
+}
+
+fn count_lines(bytes: []const u8) u32 {
+    assert(bytes.len <= max_log_bytes);
+    var n: u32 = 0;
+    for (bytes) |c| {
+        if (c == '\n') n += 1;
+    }
+    assert(n <= max_batches * 2); // twice the wall still bounded
+    return n;
+}
+
+fn epoch_seconds(io: Io) u64 {
+    const ts = Io.Clock.now(.real, io);
+    const ns = ts.nanoseconds;
+    assert(ns > 0);
+    const s: u64 = @intCast(@divTrunc(ns, 1_000_000_000));
+    assert(s > 1_500_000_000); // after 2017 — a sane wall clock
+    return s;
+}
+
+fn run_start(io: Io, dir: Dir, name: []const u8, days_text: []const u8) !void {
+    assert(name.len != 0);
+    if (name.len > max_name_len) return RettingError.NameTooLong;
+    const days = try parse_days(days_text);
+    assert(days >= 1);
+    var buf: [max_log_bytes + 160]u8 = undefined;
+    const existing = dir.readFile(io, "log.txt", buf[0..max_log_bytes]) catch buf[0..0];
+    if (existing.len >= max_log_bytes) return RettingError.LogFull;
+    if (count_lines(existing) >= max_batches) return RettingError.LogFull;
+    const now = epoch_seconds(io);
+    const line = try std.fmt.bufPrint(buf[existing.len..], "start {d} {d} {s}\n", .{ now, days, name });
+    assert(line.len > 0);
+    const total = existing.len + line.len;
+    assert(total <= buf.len);
+    try dir.writeFile(io, .{ .sub_path = "log.txt", .data = buf[0..total] });
+    print("retting: {s} started for {d} days\n", .{ name, days });
+}
+
+fn status_line(now: u64, epoch: u64, days: u32, name: []const u8) void {
+    assert(days >= 1);
+    assert(name.len <= max_name_len);
+    const elapsed_days: u64 = if (now > epoch) (now - epoch) / seconds_per_day else 0;
+    const day_num: u64 = elapsed_days + 1;
+    if (elapsed_days >= days) {
+        print("retting: {s} READY (day {d} of {d})\n", .{ name, day_num, days });
+    } else {
+        print("retting: {s} day {d} of {d}\n", .{ name, day_num, days });
+    }
+}
+
+fn run_status(io: Io, dir: Dir) !void {
+    var buf: [max_log_bytes]u8 = undefined;
+    const bytes = dir.readFile(io, "log.txt", &buf) catch {
+        print("retting: no batches yet\n", .{});
+        return;
+    };
+    assert(bytes.len <= max_log_bytes);
+    const now = epoch_seconds(io);
+    var it = std.mem.splitScalar(u8, bytes, '\n');
+    var shown: u32 = 0;
+    while (it.next()) |line| {
+        if (line.len == 0) continue;
+        var parts = std.mem.splitScalar(u8, line, ' ');
+        const tag = parts.next() orelse continue;
+        if (!std.mem.eql(u8, tag, "start")) continue;
+        const epoch_s = parts.next() orelse continue;
+        const days_s = parts.next() orelse continue;
+        const name = parts.rest();
+        const epoch = std.fmt.parseInt(u64, epoch_s, 10) catch continue;
+        const days = std.fmt.parseInt(u32, days_s, 10) catch continue;
+        status_line(now, epoch, days, name);
+        shown += 1;
+        assert(shown <= max_batches * 2);
+    }
+    if (shown == 0) print("retting: no batches yet\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(allocator);
+    assert(args.len >= 1);
+    assert(max_days < 1000);
+    assert(max_name_len < max_log_bytes);
+    if (args.len < 2) {
+        print("usage: retting start <name> <days> | retting status\n", .{});
+        return 2;
+    }
+    const cmd = args[1];
+    const home = home_path(init);
+    // Ring-one scope, stated: the home directory is made once by hand or by
+    // the witness (mkdir -p); the program refuses by name when it is absent.
+    var dir = Dir.cwd().openDir(io, home, .{}) catch return refuse(RettingError.HomeUnavailable);
+    defer dir.close(io);
+    if (std.mem.eql(u8, cmd, "start")) {
+        if (args.len < 4) {
+            print("usage: retting start <name> <days>\n", .{});
+            return 2;
+        }
+        run_start(io, dir, args[2], args[3]) catch |err| return refuse(err);
+        return 0;
+    }
+    if (std.mem.eql(u8, cmd, "status")) {
+        run_status(io, dir) catch |err| return refuse(err);
+        return 0;
+    }
+    print("usage: retting start <name> <days> | retting status\n", .{});
+    return 2;
+}
+
+// Refusals speak the fault by name and exit nonzero — never a silent pass.
+fn refuse(err: anyerror) u8 {
+    print("retting: refused — {s}\n", .{@errorName(err)});
+    return 1;
+}
