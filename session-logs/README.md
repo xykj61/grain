@@ -24,6 +24,7 @@
 | `20260801.051317` | [`20260801-051317_e175-doctrine-green.bron`](20260801-051317_e175-doctrine-green.bron) | e175 Q34 restore doctrine GREEN |
 | `20260801.051338` | [`20260801-051338_e176-parse-walls-green.bron`](20260801-051338_e176-parse-walls-green.bron) | e176 Q35+Q36 restore parse · walls GREEN |
 | `20260801.051417` | [`20260801-051417_e177-open-door-green.bron`](20260801-051417_e177-open-door-green.bron) | e177 Q37 seal open door GREEN |
+| `20260801.141347` | [`20260801-141347_e190-q57-final-bundle-plan-green.bron`](20260801-141347_e190-q57-final-bundle-plan-green.bron) | e190 Q57 final-bundle plan · bound 256 MiB · Q58 next |
 | `20260801.141157` | [`20260801-141157_e189-fuse-recut-dogfood-green.bron`](20260801-141157_e189-fuse-recut-dogfood-green.bron) | e189 fuse re-cut · SEA only · Q56 dogfood GREEN · Q53 gated |
 | `20260801.140607` | [`20260801-140607_e187-e188-fuse-tend-resin-spec-green.bron`](20260801-140607_e187-e188-fuse-tend-resin-spec-green.bron) | e187–e188 fuse tend · SEA · resin-manifest-v1 · Q53 gated |
 | `20260801.135914` | [`20260801-135914_e186-fuse-vps-q50-census-green.bron`](20260801-135914_e186-fuse-vps-q50-census-green.bron) | e186 VPS HP AMD 2/4 · Q50 tend census · orphans 921 · Q51 next |
