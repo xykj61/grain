@@ -8,6 +8,7 @@
 
 let census = run ["sh" "tools/tend_reach_census.sh"]
 assert census.ok else "tend_reach: census must exit ok"
+assert census.out contains "method v2-self-mention-excluded" else "tend_reach: method named"
 assert census.out contains "session-logs tracked=" else "tend_reach: rooms speak"
 assert census.out contains "TOTAL rooms_files=" else "tend_reach: total speaks"
 assert census.out contains "orphans=" else "tend_reach: orphans named"
