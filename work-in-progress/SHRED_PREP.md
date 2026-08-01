@@ -1,12 +1,22 @@
 # SHRED_PREP — planning list toward first shred proof
 
 **Language:** EN  
-**Status:** Living pin — **shred RED** · Amphora cut not opened · list only  
+**Status:** Living pin — **shred RED** · Amphora cut not opened · Amber retirement prep · list only  
 **Voice:** Riyo  
-**Last refreshed:** `20260731.232004` · Class O **word-scope** seated (e128) · elder Quin seat held in history  
-**Seat:** Surface p36 Kiln · Equinox e128 word-scope · [`../counsel/20260731-232004_e128-class-o-word-scope.md`](../counsel/20260731-232004_e128-class-o-word-scope.md)
+**Last refreshed:** `20260801.011942` · e137 Amber→Amphora unify breach approved · gated · Amber pause · Class O word-scope held  
+**Seat:** Surface p36 Kiln · Equinox e137 unify breach · e128 word-scope · [`../counsel/20260801-011942_e137-amber-amphora-unify-breach.md`](../counsel/20260801-011942_e137-amber-amphora-unify-breach.md)
 
 *Accrete-never-break: fossils stay on disk until a circled shred proves parity. This list prepares the hand; it does not authorize a cut.*
+
+### Amber retirement (e137) — prep only · cut not opened
+
+| Field | Standing |
+| --- | --- |
+| Breach | Amber→Amphora unify **approved · seated · gated** |
+| Pause | **Amber pause** — no new Amber-named metal |
+| Plan | redact Amber living speech · shred `amber/` paths under Amphora parity |
+| Cut this stamp | **none** — `amber/` still tracked |
+| Opening word still required | `Class O yes` · circled `shred yes` · or Keaton **begin** on cut waves |
 
 ---
 

@@ -1,7 +1,7 @@
 # Lexicon — Module Names and Their Meanings
 
 **Language:** EN
-**Last updated:** `20260801.005853` (**e136 GREEN** · MantraPod supersede · dated Vision kept)
+**Last updated:** `20260801.011942` (**e137 GREEN** · Amber→Amphora unify breach · Amber pause)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---
@@ -175,13 +175,13 @@ Full loop bounds: [`work-in-progress/ready-to-ask-claude.md`](../work-in-progres
 | **mod-clock** | Collaboration library pairing **n mod 12** (zodiac houses) with **n mod 16** (slots) via joint clock **LCM=48** — not a false set-bijection of Z/12↔Z/16. [`../glow/mod_clock.rye`](../glow/mod_clock.rye). Seated `20260729.165912`. |
 | **Tablecloth** | Brix-facing application database and artifact store (horizon — not the namespace query) |
 | **Bron** | Immutable values at seams (`.bron` facts, policies, receipts); Brix composes wholes that bind Bron values — affirmed `174500` per [`counsel/20260707-222500`](../counsel/20260707-222500_claude-counsel-bron-beside-brix-first-proposal.md) |
-| **Amber** | **Cellar software** — preservation in place at home: signed, encrypted, bit-faithful **resins** on deep storage, append-only log, verified by folding; Mantra holds the living history, Amber seals the moment cold — [`amber/README.md`](../amber/README.md) · [`specs/20260701-221512_amber-functional-spec.md`](specs/20260701-221512_amber-functional-spec.md)
+| **Amber** | **RETIRED living module name** (e137 `20260801.011942`) — was cellar software (seal resins in place at home). Living speech moves under **Amphora**. Paths under `amber/` held until redact/shred waves; **Amber pause** — no new Amber-named metal. Elder spec kept as testimony: [`specs/20260701-221512_amber-functional-spec.md`](specs/20260701-221512_amber-functional-spec.md) · home [`../amber/README.md`](../amber/README.md). Breach [`../counsel/20260801-011942_e137-amber-amphora-unify-breach.md`](../counsel/20260801-011942_e137-amber-amphora-unify-breach.md). |
 
 ## Archive and digest *(ratified `20260703.191312`)*
 
 | Term | One line |
 |------|----------|
-| **Resin** | One content-addressed unit Amber seals — the stored bytes at a SHA3 name; the manifest catalogs, the digest proves; [`specs/20260703-191112_resins-and-hash-tiers.md`](specs/20260703-191112_resins-and-hash-tiers.md). Tensegral Arc II fold: [`../tools/resin_unit_witness.rish`](../tools/resin_unit_witness.rish) (`20260728.002049`) |
+| **Resin** | One content-addressed unit Amphora seals (cellar or vessel) — the stored bytes at a SHA3 name; the manifest catalogs, the digest proves; [`specs/20260703-191112_resins-and-hash-tiers.md`](specs/20260703-191112_resins-and-hash-tiers.md). Tensegral Arc II fold: [`../tools/resin_unit_witness.rish`](../tools/resin_unit_witness.rish) (`20260728.002049`). Elder speech said Amber; living speech says Amphora (e137). |
 | **SHA3-512 tier** | Canonical forever-names — weave states, sealed content identity, promises that must mean one thing for the life of the work |
 | **SHA3-256 tier** | Working-store names — resins, blob files, manifest entries where path size and external oracles matter |
 
@@ -205,15 +205,15 @@ Full loop bounds: [`work-in-progress/ready-to-ask-claude.md`](../work-in-progres
 | **Express** | A Tilak's duty — render this type as another (prose, text, lines) |
 | **Tend** | A Tilak's duty — care for this type's history in its own grain (diff, patch, merge) |
 | **Pottery** | The value-object tier — linear resources thrown while owned, fired when sealed; `.pott` the working extension; greenware · kiln · glaze name the aspect family; horizon until measured demand |
-| **Amphora** | **Vessel software** — preservation in motion across a crossing: the sealed traveling container (manifest, stamp, parent mark, shoulder line); laps 1–3 seated `amphora/` (parse · pour/scrub · Comlink hosted + device fetch); forge view folds a live pour — [`amphora/README.md`](../amphora/README.md) · crossing plainly [`../external-research/20260710-145313_amphora-crossing-plainly.md`](../external-research/20260710-145313_amphora-crossing-plainly.md) · study [`../external-research/20260703-201612_the-amphora-and-the-crossing.md`](../external-research/20260703-201612_the-amphora-and-the-crossing.md) · silo [`active-designing/20260703-201612_the-sealed-crossing.md`](../active-designing/20260703-201612_the-sealed-crossing.md) · sealed crossing plainly [`../external-research/20260710-002952_sealed-crossing-plainly.md`](../external-research/20260710-002952_sealed-crossing-plainly.md) |
+| **Amphora** | **Preservation software** — cellar **and** vessel under one living name (e137): seal resins in place at home **and** carry sealed containers in motion (manifest · stamp · parent · shoulder); laps 1–3 seated `amphora/`; forge view folds a live pour — [`amphora/README.md`](../amphora/README.md) · crossing plainly [`../external-research/20260710-145313_amphora-crossing-plainly.md`](../external-research/20260710-145313_amphora-crossing-plainly.md) · study [`../external-research/20260703-201612_the-amphora-and-the-crossing.md`](../external-research/20260703-201612_the-amphora-and-the-crossing.md) · silo [`active-designing/20260703-201612_the-sealed-crossing.md`](../active-designing/20260703-201612_the-sealed-crossing.md). Absorbs cellar from retired **Amber**. Breach [`../counsel/20260801-011942_e137-amber-amphora-unify-breach.md`](../counsel/20260801-011942_e137-amber-amphora-unify-breach.md). |
 
-## Preservation pair — cellar and vessel
+## Preservation — cellar and vessel (one home)
 
 | Term | One line |
 |------|----------|
-| **Cellar software** | Amber's duty — seal **resins** in place at home; the archive that stays on the dock |
-| **Vessel software** | Amphora's duty — carry many sealed things across wire, dock, or pocket; leaves the cellar, returns to it |
-| **The pair** | One preserves in place, the other preserves in motion; same resins law, same Kumara stamp; Comlink is the sea between docks |
+| **Cellar software** | Duty Amphora keeps — seal **resins** in place at home; the archive that stays on the dock (was Amber's living name · e137) |
+| **Vessel software** | Duty Amphora keeps — carry many sealed things across wire, dock, or pocket; leaves the cellar, returns to it |
+| **The pair** | **Unified under Amphora** (e137) — duties remain (in place · in motion); one living module roof; same resins law, same Kumara stamp; Comlink is the sea between docks. Elder pair speech kept in dated briefs. |
 
 ## Named tonight (`2026-06-30`)
 
@@ -276,7 +276,7 @@ Full loop bounds: [`work-in-progress/ready-to-ask-claude.md`](../work-in-progres
 | **wave** | Fascial name for a Grain **year** — **wave = year**. Fascial waves are the units that wash into **docs-geode** before **crush**. Seated `20260728.031722`. |
 | **crush** | Grain verb for **compile** — especially: **MUR** · **Tally** · weave rounds **crush** **docs-geode** into shipping canonical docs (Radiant · time-linted · happy-zoned · sameness-macroed · single-stranded · hammocked). Does not retire ordinary language “compile” for Zig/Rye toolchains; crush is the docs-geode / verse-shipping compile. Seated `20260728.031722`. |
 | **generators** | The default name for rishi scripts: they generate — witnesses, scans, relays — and live in `gen/` homes wherever one makes sense. Seated `20260728.011055`. |
-| **Amphora** | Amber's vessel-sibling: the module lane for shredding with parity — a resin records the jump from the last event before an undesired change to the proven completion of its shred. Seated `20260728.011055`. |
+| **Amphora** | Module lane for shredding with parity — a resin records the jump from the last event before an undesired change to the proven completion of its shred. (Elder speech: Amber's vessel-sibling.) Seated `20260728.011055` · cellar absorb e137. |
 | **Trey** | The documentary voice — Quin's memoirist sibling, the videographer of the creative process; Bashō-brief, Miller-frank, timenergy-aware. Seated `20260728.011055`. |
 | **Trya** | **Sixth OS variant** beside Reya · Riyo · Trey · Triz · Quin — earth-steady · craft-growing nested voice; rhymes with Trey without replacing him. Also the **Trya (fund)** name. Seated `20260728.024417` — [`TRYA.md`](TRYA.md) · counsel [`../counsel/20260728-024417_inner-scope-checkpoint-trya-ariana.md`](../counsel/20260728-024417_inner-scope-checkpoint-trya-ariana.md) |
 | **Murr (fund)** | **Aries · fire · seat 1** of the twelve — vane lean `%murr` · domain prep **murr.fund** (claim his). Was **Mala** / `%mala` / mala.fund (rename-forward `20260728.025220`). **Official maintainer of MUR** the module (was MALA); fund and module keep distinct hats. Leads the planned **n-of-12 multisig** (plan only). **Honor dedication** to **Kyler Murray** (kept). **Executive:** **Keaton Sealy Livermore** (moved from DJINN `20260730.150702` · POLE · Murr keeps its Aries seat). Prior executive DJINN moved to **Bozo (fund)**. Prep: `tools/gen_murr_fund_prep.rish`. Kamala Harris dedication on Mala remains **historical**. Charter [`../counsel/20260728-025220_the-mur-season-innermost-charter.md`](../counsel/20260728-025220_the-mur-season-innermost-charter.md) · POLE hats [`../counsel/20260730-150702_pole-bozo-djinn-murr-keaton.md`](../counsel/20260730-150702_pole-bozo-djinn-murr-keaton.md) |
