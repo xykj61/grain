@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260801.161715` · voice Riyo · e209 stoa reds settled (241 GREEN by drift accretion · 198 honest aapt red, cause surfaced) · counsel-side spent · item 10 + metal reruns = pier · gates keep · SEA only · shred RED
+**Last refreshed:** `20260801.163016` · voice Riyo · e211 exit suite 16/16 GREEN · arc e191-e211 whole · tree quiet (all registers closed or gated) · pier: land 22 + metal list · gates: class-and-rooms · seat 128 · SEA only · shred RED
 **Pier at fusion:** `20260802.132104` · p191–p203 · Tend T1–T6·C1–C4·A1–A3·M1 · tip 33d77fe68c — counsel lane rebased atop, one file overlapped, union kept
 
 
