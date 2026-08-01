@@ -16,9 +16,8 @@ for room in session-logs counsel waymarks expanding-prompts active-designing doc
   for f in $(git ls-files "$room"); do
     b=$(basename "$f")
     n=$(grep -cxF "$b" /tmp/mentions.txt || true)
-    # mentioned at least twice (itself may self-mention once) OR mentioned once
-    # by a file other than itself — approximate: count file self-mention
-    selfc=$(grep -cF "$b" "$f" 2>/dev/null || echo 0)
+    # Known limit, stated: a file whose only mention is its own body still
+    # counts reached; the stricter self-mention subtraction waits its own seat.
     if [ "$n" -eq 0 ]; then orphans=$((orphans+1)); fi
   done
   echo "$room tracked=$files orphans=$orphans"
