@@ -1,0 +1,37 @@
+# tools/amphora_dogfood_witness.rish — Q56: Amphora pours a real counsel season.
+#
+# Season source: tools/fixtures/amphora_dogfood_counsel (five J4 counsel seats).
+# Proves: pour · stamp · seal · restore · byte-equal out-home.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/amphora_dogfood_witness.rish
+
+let season = "tools/fixtures/amphora_dogfood_counsel"
+let home = "/tmp/amphora_dogfood_witness"
+let vessel = "/tmp/amphora_dogfood_witness/counsel.bron"
+let out = "/tmp/amphora_dogfood_witness/counsel.bron.season"
+
+let wipe = run ["rm" "-rf" home]
+assert wipe.ok else "dogfood: home wipe"
+let mk = run ["mkdir" "-p" home]
+assert mk.ok else "dogfood: home mkdir"
+
+let pour = run ["amphora/bin/amphora" "pour" season vessel]
+assert pour.ok else "dogfood: pour must exit ok"
+assert pour.err contains "pour complete" else "dogfood: pour speaks complete"
+
+let verify = run ["amphora/bin/vessel-core" "verify" vessel]
+assert verify.ok else "dogfood: stamp must verify"
+
+let seal = run ["amphora/bin/vessel-seal" "open-check" vessel]
+assert seal.ok else "dogfood: seal must open"
+
+let restore = run ["amphora/bin/amphora" "restore" vessel]
+assert restore.ok else "dogfood: restore must exit ok"
+assert restore.err contains "restore complete" else "dogfood: restore speaks complete"
+
+let eq = run ["diff" "-qr" season out]
+assert eq.ok else "dogfood: restored season must equal counsel source"
+
+say "dogfood=poured stamp=ok seal=ok restore=byte-equal files=5"
+say "GREEN: amphora_dogfood — a real counsel season crosses and returns whole."
