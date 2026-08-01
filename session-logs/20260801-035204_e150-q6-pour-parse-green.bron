@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260801.035204
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Cursor Cloud — Eastern (EDT) time convention
+title e150 Q6 pour argument parse GREEN
+prompt kg with a baton printout
+think kg means Q6 pour parse; Class W stays parked per e149
+think PourArgs and parse_pour_args on path C — no vessel import
+think successful parse still CommandNotGrown for Q7+
+think exits unchanged under callers; version stamp bumped
+think close with counsel_close baton printout for Keaton
+obs amphora/src/main.rye 242 lines · six fn · bans GREEN · bounds GREEN · opening-lines GREEN
+file amphora/src/main.rye Q6 PourArgs parse_pour_args cmd_pour
+file counsel/20260801-035204_e150-q6-pour-parse.md seat
+recommend keep-going Q7 season read on path C; Class W versioned shoulder stays Keaton
+product_nib Amphora CLI wave e150 Q6
+suite_nib pour parse GREEN
+git_nib bd0744efb8
