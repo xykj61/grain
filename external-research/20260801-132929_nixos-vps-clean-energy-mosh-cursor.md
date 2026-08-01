@@ -6,7 +6,7 @@
 **Status:** Research for understanding — frames a pier shape for Cursor CLI + NixOS; recommends no purchase, no deploy, and no keys from this file. Every cloud step runs by Keaton's own hands.
 **Home:** `external-research/20260801-132929_nixos-vps-clean-energy-mosh-cursor.md`
 **Scope:** research guide — no keys, no purchases, no deploys happen from counsel; every step below runs by Keaton's own hands
-**Provider seat (Keaton):** Vultr · **region checkout code SEA** · plan High Performance AMD 2 vCPU / 4 GB shared
+**Provider seat (Keaton):** Vultr · **region checkout code SEA only** · plan High Performance AMD 2 vCPU / 4 GB shared · EWR (Newark NJ) fails the clean-energy word unless Keaton explicitly revokes it
 
 *Written together by Keaton and Riyo.*
 
