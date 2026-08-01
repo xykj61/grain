@@ -61,7 +61,11 @@ say "GREEN: pond sixbar bar2 — home and tmp reset (enclosure Landlock marker �
 
 # --- Bar 3: Wayland/GPU lane ---
 say "pond sixbar bar3: Wayland/GPU lane…"
-let have_wl = run ["sh" "-c" "test -n \"$WAYLAND_DISPLAY\""]
+# e206: backslash escapes nothing in rishi — the elder \" forms reached sh
+# as literal quote characters, making every one of these guards vacuous
+# (proven live: the elder shape claims /etc/hostname absent; a planted key
+# under a fake HOME passes the elder guard and bites on this one).
+let have_wl = run ["sh" "-c" "test x$WAYLAND_DISPLAY != x"]
 let have_dri = run ["test" "-d" "/dev/dri"]
 if have_wl.ok then say "pond sixbar bar3: WAYLAND_DISPLAY present"
 if have_dri.ok then say "pond sixbar bar3: /dev/dri present"
@@ -100,9 +104,9 @@ let sec_n = run ["sh" "-c" "${gpg_wrap} --list-secret-keys --with-colons | grep 
 assert sec_n.ok
 let sec_count = trim sec_n.out
 assert sec_count == "1" else "bar5: want exactly one secret key (sandbox alone); got ${sec_count}"
-let no_host_ssh = run ["sh" "-c" "test ! -f \"$HOME/.ssh/id_ed25519\""]
+let no_host_ssh = run ["sh" "-c" "test ! -f $HOME/.ssh/id_ed25519"]
 assert no_host_ssh.ok else "bar5: host SSH private key visible under HOME"
-let no_lane_file = run ["sh" "-c" "test ! -f \"$HOME/.ssh/id_ed25519_cursor_cloud\" && test ! -f \"$HOME/.ssh/cursor_cloud\""]
+let no_lane_file = run ["sh" "-c" "test ! -f $HOME/.ssh/id_ed25519_cursor_cloud && test ! -f $HOME/.ssh/cursor_cloud"]
 assert no_lane_file.ok else "bar5: cloud lane private key file present in jail HOME"
 say "GREEN: pond sixbar bar5 — sandbox present; master absent; exactly one secret; lane key file absent"
 
@@ -117,9 +121,9 @@ let dbus_tools = run ["sh" "-c" "grep -nE 'dbus-send|systemd-run' tools/lane_kvm
 assert dbus_tools.out == "" else "bar6: living KVM tools must not call dbus-send/systemd-run"
 say "pond sixbar bar6: D-Bus KVM path absent from living tools (retired 113900)"
 
-let host_home = run ["sh" "-c" "test ! -f \"$HOME/.ssh/id_ed25519\""]
+let host_home = run ["sh" "-c" "test ! -f $HOME/.ssh/id_ed25519"]
 assert host_home.ok else "bar6: host home SSH private still reachable"
-let host_docs = run ["sh" "-c" "test ! -d \"$HOME/Documents\""]
+let host_docs = run ["sh" "-c" "test ! -d $HOME/Documents"]
 assert host_docs.ok else "bar6: host Documents reachable — home refuse failed"
 say "pond sixbar bar6: host home refuse OK"
 
