@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260801.000743
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Cursor Cloud — Eastern (EDT) time convention
+title e152 Q8 seal cargo inside pour GREEN
+prompt kg with e151 baton and fused Q6 counsel paste
+think living next from e151 baton is Q8 seal on path C; counsel paste ACK e150 is historical
+think path C forbids vessel import; seal via amphora/bin/vessel-seal subprocess
+think Class W amber-ring1-season literal in CLI; modules untouched
+think parent equals SHA3 of sorted cargo plain; stamp equals amphora_version
+think success still CommandNotGrown for Q9 Kumara stamp
+think close with counsel_close baton printout for Keaton
+obs amphora/src/main.rye 550 lines · fn under 70 · seal open-check GREEN · bans GREEN · bounds GREEN
+file amphora/src/main.rye Q8 write_unsealed run_vessel_seal cmd_pour
+file counsel/20260801-000743_e152-q8-seal-pour.md seat
+recommend keep-going Q9 Kumara stamp inside pour on path C; Class W stays Keaton
+product_nib Amphora CLI wave e152 Q8
+suite_nib seal inside pour GREEN
+git_nib 222680cf43

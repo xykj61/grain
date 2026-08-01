@@ -18,24 +18,26 @@
 //!   mkdir -p amphora/bin
 //!   RYE_ZIG=$PWD/vendor/zig-toolchain/zig \
 //!   rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora
+//!   rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal
 //!
 //! Bounds (named constants — Q4; CLI owns only what it uses):
 //!   stamp_len · stamp_dot_index · version_line_max · max_words
 //!   max_vessel_path_len · max_cargo_bytes · max_chunk_datagram
 //!   max_season_files · digest_hex_len · max_season_name_len
-//!   max_season_file_bytes
+//!   max_season_file_bytes · max_vessel_len
 //!   exit_ok · exit_misread
 //!   Shared vessel bounds stay in amphora/*.rye; agreement via
 //!   tools/amphora_bounds_agree.rish (path C · alias groups · couples markers).
 //!
-//! Errors (named for the fault — Q5 · Q7 season faults accreted):
+//! Errors (named for the fault — Q5 · Q7 · Q8 accreted):
 //!   UnknownCommand · TooManyWords · MissingOperand · PathTooLong
 //!   CommandNotGrown · ResultUnwritable
 //!   SeasonAbsent · SeasonEmpty · SeasonOverflow · SeasonUnreadable
+//!   CargoTooLarge · VesselUnwritable · SealToolAbsent · SealFailed
 //!   Module split named, not swept: InvalidVessel vs BadVessel (G10).
 //!
 //! Architecture (four sections, one file for the seed):
-//!   § Pour    — parse (Q6) · season read (Q7); seal · stamp wait Q8+
+//!   § Pour    — parse (Q6) · season read (Q7) · seal (Q8); stamp waits Q9
 //!   § Carry   — move sealed vessel; kind 0x33 chunks; far dock verifies
 //!   § Restore — cold scrub; verify stamp+seal; restore byte-faithful
 //!   § Main    — CLI: pour / carry / restore / version
@@ -47,6 +49,8 @@
 //!
 //! Class W wire shoulder stays amber-ring1-season (e149 park) — not renamed here.
 //! Path C: this file does not import amphora/vessel_*.rye.
+//! Q8 seals by writing an unsealed vessel then running amphora/bin/vessel-seal
+//! (subprocess · same AEAD roof · import wall held).
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -55,10 +59,10 @@ const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
 const Dir = std.Io.Dir;
 
 /// Amphora CLI version — YYYYMMDD.HHMMSS, America/New_York, later is larger.
-const amphora_version = "20260801.000101";
+const amphora_version = "20260801.000743";
 
 // -------------------------------------------------------------------------
-// § Bounds — named with their why (Q4 · Q7)
+// § Bounds — named with their why (Q4 · Q7 · Q8)
 // -------------------------------------------------------------------------
 
 /// A compact stamp is eight date digits, one dot, six time digits.
@@ -100,6 +104,20 @@ const max_season_name_len: u16 = 512;
 /// Distinct from max_cargo_bytes — that is assembled sealed cargo, not source size.
 const max_season_file_bytes: u32 = 128 * 1024;
 
+/// On-disk vessel text ceiling — same roof as vessel_seal / vessel_core.
+/// couples: vessel_seal.max_vessel_len
+/// couples: vessel_core.max_vessel_len
+const max_vessel_len: u32 = 8192;
+
+/// Class W AEAD associated data — format, not product vocabulary (e149 park).
+const shoulder_ring1_wire = "amber-ring1-season";
+
+/// Vessel format line value — amphora-v1 until a later format word.
+const vessel_format = "amphora-v1";
+
+/// Default seal tool path when AMPHORA_VESSEL_SEAL is unset (repo layout).
+const default_seal_bin = "amphora/bin/vessel-seal";
+
 /// Success exit — was a bare return 0.
 const exit_ok: u8 = 0;
 
@@ -107,7 +125,7 @@ const exit_ok: u8 = 0;
 const exit_misread: u8 = 2;
 
 // -------------------------------------------------------------------------
-// § Errors — named for the fault (Q5 · Q7)
+// § Errors — named for the fault (Q5 · Q7 · Q8)
 // -------------------------------------------------------------------------
 
 /// CLI faults only. Vessel modules keep InvalidVessel / BadVessel (G10).
@@ -122,6 +140,10 @@ const CliError = error{
     SeasonEmpty,
     SeasonOverflow,
     SeasonUnreadable,
+    CargoTooLarge,
+    VesselUnwritable,
+    SealToolAbsent,
+    SealFailed,
 };
 
 /// One door for every CLI fault — switch on the name, never compare.
@@ -140,12 +162,16 @@ fn refuse(fault: CliError, detail: []const u8) u8 {
         error.SeasonEmpty => print("amphora: season empty — '{s}'\n", .{detail}),
         error.SeasonOverflow => print("amphora: season overflow — '{s}'\n", .{detail}),
         error.SeasonUnreadable => print("amphora: season unreadable — '{s}'\n", .{detail}),
+        error.CargoTooLarge => print("amphora: cargo too large — '{s}'\n", .{detail}),
+        error.VesselUnwritable => print("amphora: vessel unwritable — '{s}'\n", .{detail}),
+        error.SealToolAbsent => print("amphora: seal tool absent — '{s}'\n", .{detail}),
+        error.SealFailed => print("amphora: seal failed — '{s}'\n", .{detail}),
     }
     return exit_misread;
 }
 
 // -------------------------------------------------------------------------
-// § Pour — argument parse (Q6) · season read (Q7); seal waits Q8
+// § Pour — parse (Q6) · season read (Q7) · seal (Q8); stamp waits Q9
 // -------------------------------------------------------------------------
 
 /// Operands for `pour <season> <vessel>` after a successful parse.
@@ -251,8 +277,139 @@ fn read_season(
     assert(catalog.file_count <= max_season_files);
 }
 
-/// Q7 door: parse · read season · wait for seal/stamp (Q8+).
-fn cmd_pour(allocator: std.mem.Allocator, io: std.Io, args: []const []const u8) u8 {
+/// Stable cargo order — parent / nonce must not depend on walk order.
+fn sort_season_by_name(catalog: *SeasonCatalog) void {
+    var i: u32 = 1;
+    while (i < catalog.file_count) : (i += 1) {
+        var j = i;
+        while (j > 0) {
+            const left = catalog.entries[j - 1].name[0..catalog.entries[j - 1].name_len];
+            const right = catalog.entries[j].name[0..catalog.entries[j].name_len];
+            if (std.mem.order(u8, left, right) != .gt) break;
+            const tmp = catalog.entries[j - 1];
+            catalog.entries[j - 1] = catalog.entries[j];
+            catalog.entries[j] = tmp;
+            j -= 1;
+        }
+    }
+}
+
+/// Build Tilak cargo lines from the catalog. Returns plaintext length.
+fn build_cargo_plain(catalog: *const SeasonCatalog, out: []u8) CliError!u32 {
+    assert(catalog.file_count >= 1);
+    var off: u32 = 0;
+    var i: u32 = 0;
+    while (i < catalog.file_count) : (i += 1) {
+        const e = catalog.entries[i];
+        const name = e.name[0..e.name_len];
+        const line = std.fmt.bufPrint(out[off..], "cargo plain-bytes {s} {s}\n", .{ e.digest_hex, name }) catch {
+            return error.CargoTooLarge;
+        };
+        off += @intCast(line.len);
+        if (off > max_cargo_bytes) return error.CargoTooLarge;
+    }
+    assert(off > 0);
+    assert(off <= max_cargo_bytes);
+    return off;
+}
+
+/// Write unsealed vessel text: format · stamp · shoulder · parent · cargo.
+fn write_unsealed_vessel(
+    io: std.Io,
+    vessel_path: []const u8,
+    parent_hex: *const [digest_hex_len]u8,
+    cargo: []const u8,
+) CliError!void {
+    assert(cargo.len > 0);
+    assert(cargo.len <= max_cargo_bytes);
+    assert(std.mem.eql(u8, shoulder_ring1_wire, "amber-ring1-season"));
+
+    var text: [max_vessel_len]u8 = undefined;
+    const head = std.fmt.bufPrint(&text, "# amphora vessel — season poured for crossing\nformat {s}\nstamp {s}\nshoulder {s}\nparent {s}\n", .{
+        vessel_format,
+        amphora_version,
+        shoulder_ring1_wire,
+        parent_hex,
+    }) catch return error.VesselUnwritable;
+    if (head.len + cargo.len > max_vessel_len) return error.CargoTooLarge;
+    var ni: u32 = 0;
+    while (ni < cargo.len) : (ni += 1) {
+        text[head.len + ni] = cargo[ni];
+    }
+    const total = head.len + cargo.len;
+    const cwd = Dir.cwd();
+    cwd.writeFile(io, .{ .sub_path = vessel_path, .data = text[0..total] }) catch {
+        return error.VesselUnwritable;
+    };
+}
+
+/// Resolve vessel-seal binary: env · sibling of argv0 · repo default.
+fn resolve_seal_bin(
+    init: std.process.Init,
+    io: std.Io,
+    argv0: []const u8,
+    path_buf: []u8,
+) CliError![]const u8 {
+    const cwd = Dir.cwd();
+    if (init.environ_map.get("AMPHORA_VESSEL_SEAL")) |p| {
+        if (p.len == 0) return error.SealToolAbsent;
+        if (cwd.access(io, p, .{})) |_| {
+            return p;
+        } else |_| {
+            return error.SealToolAbsent;
+        }
+    }
+    if (std.mem.lastIndexOfScalar(u8, argv0, '/')) |slash| {
+        const dir = argv0[0..slash];
+        const sibling = std.fmt.bufPrint(path_buf, "{s}/vessel-seal", .{dir}) catch {
+            return error.SealToolAbsent;
+        };
+        if (cwd.access(io, sibling, .{})) |_| {
+            return sibling;
+        } else |_| {}
+    }
+    if (cwd.access(io, default_seal_bin, .{})) |_| {
+        return default_seal_bin;
+    } else |_| {
+        return error.SealToolAbsent;
+    }
+}
+
+/// Path C: seal via vessel-seal subprocess — no comptime vessel import.
+fn run_vessel_seal(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    seal_bin: []const u8,
+    vessel_path: []const u8,
+) CliError!void {
+    assert(seal_bin.len > 0);
+    assert(vessel_path.len > 0);
+    const argv = [_][]const u8{ seal_bin, "seal", vessel_path };
+    const result = std.process.run(allocator, io, .{ .argv = &argv }) catch {
+        return error.SealFailed;
+    };
+    const code: u8 = switch (result.term) {
+        .exited => |c| c,
+        else => return error.SealFailed,
+    };
+    if (code != 0) return error.SealFailed;
+}
+
+/// Confirm seal fields landed — nonce and cargo hex must both be present.
+fn verify_seal_fields(io: std.Io, vessel_path: []const u8) CliError!void {
+    var buf: [max_vessel_len]u8 = undefined;
+    const text = Dir.cwd().readFile(io, vessel_path, &buf) catch {
+        return error.SealFailed;
+    };
+    const has_nonce = std.mem.indexOf(u8, text, "\nseal_nonce ") != null or std.mem.startsWith(u8, text, "seal_nonce ");
+    const has_cargo = std.mem.indexOf(u8, text, "\nseal_cargo ") != null;
+    if (!has_nonce or !has_cargo) return error.SealFailed;
+}
+
+/// Q8 door: parse · read · write unsealed · seal; stamp waits Q9.
+fn cmd_pour(init: std.process.Init, args: []const []const u8) u8 {
+    const allocator = init.arena.allocator();
+    const io = init.io;
     const parsed = parse_pour_args(args) catch |fault| {
         return switch (fault) {
             error.MissingOperand => refuse(error.MissingOperand, "pour <season> <vessel>"),
@@ -280,16 +437,40 @@ fn cmd_pour(allocator: std.mem.Allocator, io: std.Io, args: []const []const u8) 
             else => refuse(error.SeasonUnreadable, parsed.season),
         };
     };
-
-    // Season catalog held for Q8 seal — vessel path named, not written yet.
     assert(catalog.file_count >= 1);
     print("amphora: season read files={d} bytes={d}\n", .{ catalog.file_count, catalog.total_bytes });
-    _ = parsed.vessel;
+
+    sort_season_by_name(&catalog);
+    var cargo: [max_cargo_bytes]u8 = undefined;
+    const cargo_len = build_cargo_plain(&catalog, &cargo) catch |fault| {
+        return refuse(fault, parsed.season);
+    };
+    var parent_digest: [Sha3_256.digest_length]u8 = undefined;
+    Sha3_256.hash(cargo[0..cargo_len], &parent_digest, .{});
+    var parent_hex: [digest_hex_len]u8 = undefined;
+    write_hex_lower(&parent_digest, &parent_hex);
+
+    write_unsealed_vessel(io, parsed.vessel, &parent_hex, cargo[0..cargo_len]) catch |fault| {
+        return refuse(fault, parsed.vessel);
+    };
+
+    var seal_path_buf: [max_vessel_path_len]u8 = undefined;
+    const seal_bin = resolve_seal_bin(init, io, args[0], &seal_path_buf) catch {
+        // Detail names the default roof; AMPHORA_VESSEL_SEAL still gates resolve.
+        return refuse(error.SealToolAbsent, default_seal_bin);
+    };
+    run_vessel_seal(allocator, io, seal_bin, parsed.vessel) catch {
+        return refuse(error.SealFailed, parsed.vessel);
+    };
+    verify_seal_fields(io, parsed.vessel) catch {
+        return refuse(error.SealFailed, parsed.vessel);
+    };
+    print("amphora: vessel sealed cargo_bytes={d}\n", .{cargo_len});
     return refuse(error.CommandNotGrown, "pour");
 }
 
 // =========================================================================
-// § Main — CLI (Q3–Q7 · carry/restore wait · version)
+// § Main — CLI (Q3–Q8 · carry/restore wait · version)
 // =========================================================================
 
 pub fn main(init: std.process.Init) !u8 {
@@ -303,9 +484,11 @@ pub fn main(init: std.process.Init) !u8 {
     assert(max_chunk_datagram <= max_cargo_bytes);
     assert(max_vessel_path_len > max_words);
     assert(max_season_files >= 1);
+    assert(max_vessel_len >= max_cargo_bytes);
     assert(digest_hex_len == Sha3_256.digest_length * 2);
     assert(amphora_version.len == stamp_len);
     assert(amphora_version[stamp_dot_index] == '.');
+    assert(std.mem.eql(u8, shoulder_ring1_wire, "amber-ring1-season"));
 
     if (args.len > max_words) {
         return refuse(error.TooManyWords, "");
@@ -318,7 +501,7 @@ pub fn main(init: std.process.Init) !u8 {
     if (std.mem.eql(u8, cmd, "version")) {
         return cmd_version(io);
     } else if (std.mem.eql(u8, cmd, "pour")) {
-        return cmd_pour(allocator, io, args);
+        return cmd_pour(init, args);
     } else if (std.mem.eql(u8, cmd, "carry") or std.mem.eql(u8, cmd, "restore")) {
         var i: u32 = 2;
         while (i < args.len) : (i += 1) {
