@@ -1,4 +1,5 @@
-- `20260801.024355` — [e141 commence Amphora CLI wave Q1 GREEN](20260801-024355_e141-commence-amphora-cli-green.bron) — REDS 50 · wave mode · name HELD · APPLY 1–5 · 128 reserved
+- `20260801.024840` — [e142 Q2 CLI doc · Crossing lean GREEN](20260801-024840_e142-q2-cli-doc-green.bron) — R51 · return_deca_128 · zero code · 128 reserved
+- `20260801.024355` — [e141 commence Amphora CLI wave Q1 GREEN](20260801-024355_e141-commence-amphora-cli-green.bron) — REDS 50 · wave mode · APPLY 1–5 · 128 reserved
 - `20260801.013831` — [e140 align Amphora CLI · commence gated GREEN](20260801-013831_e140-align-amphora-cli-green.bron) — Claude Opus5 pack · REDS 49 · nib aa89d19443 · 128 reserved
 - `20260801.013236` — [e139 fuse verify Amber accretion already GREEN](20260801-013236_e139-fuse-verify-amber-accretion-green.bron) — elder baton · e138 already green · Silo template · 128 reserved
 - `20260801.012557` — [e138 Amber retire by accretion GREEN](20260801-012557_e138-amber-accretion-green.bron) — e137 breach withdrawn · REDS 48 · amber whole · 128 reserved

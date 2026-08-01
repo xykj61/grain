@@ -19,8 +19,8 @@
 | Nested wave | **OPEN** · Amphora CLI · Glow · Tend · TAME |
 | N | **64** (Keaton's word) = 4 journeys × 16 quests |
 | Round | **Q1** charter (this cell) · **63 remain** |
-| Name / nest label | **HELD** — Keaton alone (counsel proposes shapes, never names a season) |
-| Handback word | **HELD** — Keaton alone |
+| Name / nest label | **working lean** *the Crossing Season* (siblings Vessel · Pour) · **seat Keaton's** — see duty file |
+| Handback slot | `extend_or_return=return_deca_128` · **word Keaton's** |
 | Seat 128 / shred / Amber | **untouched** |
 
 ## CLI shape (from amphora/README.md lap 2)

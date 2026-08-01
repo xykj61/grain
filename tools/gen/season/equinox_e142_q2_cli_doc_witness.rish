@@ -1,0 +1,23 @@
+# tools/gen/season/equinox_e142_q2_cli_doc_witness.rish — e142 Q2.
+#   rishi/bin/rishi run tools/gen/season/equinox_e142_q2_cli_doc_witness.rish
+say "e142-q2: Language EN — CLI doc comment only · Crossing lean · R51."
+say "e142-q2: Style Radiant — zero code · handback slot · name seat Keaton's."
+say "e142-q2: Lens TAME — e142 · Q2 · shred RED · 128 reserved."
+
+let green = run ["sh" "tools/fixtures/equinox_e142_q2_cli_doc_scan.sh"]
+assert green.ok else "e142-q2: living scan must exit 0"
+assert green.out contains "reds_note=row_51_counsel_leans_never_seats" else "e142-q2: want R51"
+assert green.out contains "lean_note=crossing_season_offered" else "e142-q2: want Crossing lean"
+assert green.out contains "handback_slot=return_deca_128" else "e142-q2: want handback slot"
+assert green.out contains "q2_note=cli_doc_comment_only" else "e142-q2: want Q2 doc"
+assert green.out contains "zero_code=honored" else "e142-q2: want zero code"
+assert green.out contains "amphora_tracked=10" else "e142-q2: want amphora 10"
+assert green.out contains "shred=RED" else "e142-q2: want shred RED"
+assert green.out contains "seat_128=reserved_close_choir" else "e142-q2: want 128 reserved"
+assert green.out contains "verdict=ok" else "e142-q2: want verdict ok"
+
+let red = run ["sh" "tools/fixtures/equinox_e142_q2_cli_doc_scan.sh" "prove-red"]
+assert (red.ok == false) else "e142-q2: prove-red must refuse"
+assert red.out contains "RED_q2_grew_cli_code" else "e142-q2: prove-red want refuse"
+
+say "GREEN: e142-q2 — doc comment · R51 · Crossing lean · zero code · 128 reserved"
