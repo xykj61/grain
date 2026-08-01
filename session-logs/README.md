@@ -11,6 +11,11 @@
 | `20260801.045307` | [`20260801-045307_e162-q18-doc-seed-green.bron`](20260801-045307_e162-q18-doc-seed-green.bron) | e162 Q18 § Carry doc seed GREEN |
 | `20260801.045349` | [`20260801-045349_e163-q19-carry-parse-green.bron`](20260801-045349_e163-q19-carry-parse-green.bron) | e163 Q19 carry parse GREEN |
 | `20260801.045438` | [`20260801-045438_e164-q20-walls-green.bron`](20260801-045438_e164-q20-walls-green.bron) | e164 Q20 walls before motion GREEN |
+| `20260801.050056` | [`20260801-050056_e165-q21-dock-guard-green.bron`](20260801-050056_e165-q21-dock-guard-green.bron) | e165 Q21 dock guard GREEN |
+| `20260801.050152` | [`20260801-050152_e166-q22-plan-green.bron`](20260801-050152_e166-q22-plan-green.bron) | e166 Q22 chunk plan GREEN |
+| `20260801.050219` | [`20260801-050219_e167-crossing-green.bron`](20260801-050219_e167-crossing-green.bron) | e167 Q23+Q24 crossing closes GREEN |
+| `20260801.050337` | [`20260801-050337_e168-far-manifest-green.bron`](20260801-050337_e168-far-manifest-green.bron) | e168 Q25 far manifest GREEN |
+| `20260801.050413` | [`20260801-050413_e169-roundtrip-green.bron`](20260801-050413_e169-roundtrip-green.bron) | e169 Q26 round-trip witness GREEN |
 | `20260801.000101` | [`20260801-000101_e151-q7-season-read-green.bron`](20260801-000101_e151-q7-season-read-green.bron) | e151 Q7 pour season read GREEN |
 | `20260801.035204` | [`20260801-035204_e150-q6-pour-parse-green.bron`](20260801-035204_e150-q6-pour-parse-green.bron) | e150 Q6 pour argument parse GREEN |
 | `20260801.033305` | [`20260801-033305_e149-class-w-park-docs-posix-green.bron`](20260801-033305_e149-class-w-park-docs-posix-green.bron) | e149 Class W park · docs-geode · Acme sync · REDS 57 |
