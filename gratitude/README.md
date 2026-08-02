@@ -1,7 +1,7 @@
 # Gratitude
 
 **Language:** EN
-**Last updated:** 2026-07-30 (e21 · tigerbeetle golden rule · control/assert/void elders hold)
+**Last updated:** 2026-08-02 (e218 · openssh-portable + mosh study clones · gitignored nests)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 
 ---
@@ -73,6 +73,10 @@ When we adapt one of these works into Radiant Style, the rewrite lives elsewhere
 
 ### The networking and social study (`985`, `984`)
 
+- **`openssh-portable/`** — OpenSSH Portable (BSD-family). Study clone for authentication, channels, and dual-stack SSH — the world-trusted bootstrap beside Comlink's sealed datagram. Nested git · gitignored · unmodified. Clean-room silo: [`../active-designing/20260802-154516_comlink-remoting-happy-zone-ssh-mosh-ipv6.md`](../active-designing/20260802-154516_comlink-remoting-happy-zone-ssh-mosh-ipv6.md) · research: [`../external-research/20260802-154516_openssh-mosh-ipv6-beside-comlink.md`](../external-research/20260802-154516_openssh-mosh-ipv6-beside-comlink.md).
+  - Source: <https://github.com/openssh/openssh-portable>
+- **`mosh/`** — Mobile Shell (GPL-3.0). Study clone for roaming UDP sessions and speculative local echo. **Study only — never copy into product trees.** Nested git · gitignored · unmodified. Ideas siloed clean-room in the Comlink remoting brief above.
+  - Source: <https://github.com/mobile-shell/mosh> · <https://mosh.org>
 - **`urbit/`** — the Urbit project's clean-slate personal server. We study its networking above all: **Ames**, an encrypted-by-default peer-to-peer protocol where identity and address are one and the same, every packet sealed with AES-256-SIV under a Curve25519 Diffie–Hellman key; and **Jael**, the vane that keeps the keys (private keys held, peers' public keys, life and rift). Their essences — encryption at identity, and a clean continuity-breach failure — are adapted and weighed in `../external-research/yonder/20260618-195512_encrypted-networking-riscv.md`. Cloned shallow (depth 1), MIT.
   - Source: <https://github.com/urbit/urbit>
   - **A fuller companion lives at the repository root, not here**: [`../old/`](../old/PROPOSAL_NOTES.md) holds the *complete* `urbit/urbit` tree this repository's own `.git` history descends from, and [`../vere/old/`](../vere/old/PROPOSAL_NOTES.md) holds the complete `urbit/vere` runtime tree the same way — both kept whole, both confirmed byte-identical to their live upstream sources on `20260714.051016`. This shallow study clone and that full predecessor tree are two different things serving two different purposes: this one is for clean-room reading; `old/` is the actual ancestry this downstream repository grew from.
