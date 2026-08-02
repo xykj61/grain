@@ -30,9 +30,10 @@ STATE (refresh the needles from files every round):
     dec · tally-bound · caravan-bound · aurora-bound · mantra-gen-floor ·
     tally-name-len · caravan-caps. Grammar STOA331 (?: gth face lit lit).
   Amphora bundle lane DONE (sha3 wall · clone-proof · torn/basis negatives).
-  TWO LAPS (e223): PURE tools/glow_tend_era_suite.rish (a1 + R1 socketless, any host) ·
-    METAL tools/comlink_r1_dual_stack_witness.rish (bind both families).
-  R1 WHOLE — pier pedestal policy=1 · bind face · addr-width face · rival WITHDRAWN.
+  TWO LAPS: PURE tools/glow_tend_era_suite.rish (v20 — walls by seated wording ·
+    addr-width · lens 4 and 16 tracked; any host) · METAL comlink_r1_dual_stack_witness.
+  LAW: a seat is a photograph; the tree is the living pin — read names at use-hour.
+  R1 FINAL — pier policy=1 · bind face · addr-width · rival WITHDRAWN.
   R2–R4 = frame seam — word AND fresh check-in each. Ruling:
     counsel/20260802-163000_e219-comlink-module-seam-ruling.md
 
