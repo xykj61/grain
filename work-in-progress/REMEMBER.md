@@ -6,8 +6,8 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260802.140515` · voice Riyo · a0 LANDED on pier · p191-p203 + c191-c216 · e204 M2 GREEN · Tend T1-T6 C1-C4 A1-A3 M1 M2 · Ashvini a0 CLOSED · SEA only · shred RED
-**Pier at fusion:** `20260802.132104` · p191–p203 · Tend T1–T6·C1–C4·A1–A3·M1 · tip 33d77fe68c — counsel lane rebased atop, one file overlapped, union kept
+**Last refreshed:** `20260802.141933` · voice Riyo · a0 LANDED · v3 delta M3+M4 · Tend T1-T6 C1-C4 A1-A3 M1-M4 COMPLETE · Ashvini a0 CLOSED · a1 on kg · SEA only · shred RED
+**Pier at fusion:** `20260802.140515` · a0 landed tip b11326df5e · v3 patch 0031 only (pier had moved past 33d77fe68c) · union kept
 
 
 
