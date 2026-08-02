@@ -1,4 +1,5 @@
-| `20260802.192159` | [`20260802-192159_e242-v42-counsel-stops.bron`](20260802-192159_e242-v42-counsel-stops.bron) | e242 v42 · v41 withdrawn · pier pair · counsel silence on instruments |
+| `20260802.192854` | [`20260802-192854_e242-v43-rewrite.bron`](20260802-192854_e242-v43-rewrite.bron) | e242 v43 · pointer accepted · v42 discarded · instrument silence |
+| `20260802.192159` | [`20260802-192159_e242-v42-counsel-stops.bron`](20260802-192159_e242-v42-counsel-stops.bron) | e242 v42 · DISCARDED v43 |
 | `20260802.190937` | [`20260802-190937_e241-v41-pointer.bron`](20260802-190937_e241-v41-pointer.bron) | e241 v41 · pointer beats withdrawal · WITHDRAWN e242 |
 | `20260802.185800` | [`20260802-185800_e240-v40-landed-pair.bron`](20260802-185800_e240-v40-landed-pair.bron) | e240 v40 · pier pair stands · counsel duplicates withdrawn · 256/151/3/102 |
 | `20260802.185002` | [`20260802-185002_e239-v39-one-voice-auditor.bron`](20260802-185002_e239-v39-one-voice-auditor.bron) | e239 v39 · one-voice-on-law-shape · dated_amendment_audit · 451/182/269 |

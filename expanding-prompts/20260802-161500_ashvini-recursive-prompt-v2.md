@@ -1,14 +1,15 @@
 # Ashvini Recursive Prompt v2
 
-**Stamp:** `20260802.161500` · refreshed `20260802.192159` · **Voice:** Riyo · **Style:** Radiant
+**Stamp:** `20260802.161500` · refreshed `20260802.192854` · **Voice:** Riyo · **Style:** Radiant
 **Radiant pass `20260802.183244`** — e237 valve: narrowing withdrawn; drop path + measurement lines only.
 **Radiant pass `20260802.184012`** — e237 raced seating: tree kept Tier 2-freeze; withdrawal superseded.
 **Radiant pass `20260802.184331`** — e238 oscillation: elder law restored; one-voice proposed not seated.
 **Radiant pass `20260802.184602`** — e238: Tier 2-freeze restored; one-voice + auditor seated; counsel silence.
 **Radiant pass `20260802.185002`** — e239: counsel instrument names; law shape untouched; auditor tool numbers.
 **Radiant pass `20260802.185800`** — e240: pier pair stands; counsel duplicates withdrawn; 256/151/3/102 kept.
-**Radiant pass `20260802.190937`** — e241: pointer beats withdrawal — **WITHDRAWN whole** e242.
-**Radiant pass `20260802.192159`** — e242: pier pair stands; counsel silence on instruments; season to engineering.
+**Radiant pass `20260802.190937`** — e241: pointer beats withdrawal; head-40 in canonical auditor.
+**Radiant pass `20260802.192159`** — e242 v42: pier-pair reading — **DISCARDED** v43.
+**Radiant pass `20260802.192854`** — e242 rewritten: pointer accepted uncommented; instrument silence; of-the-hour ~455/186/269.
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
 
@@ -65,10 +66,11 @@ STATE (refresh the needles from files every round):
     across two tips means the practice is historical, not ongoing.
   LAW (e237): drop path is part of the crossing — ~/grain/ only; absent resin REPORTED.
     When two honest readings race, the TREE decides — rewrite the seat, erratum recorded.
-  LAW (e238–e242): one-voice SEATED — context/specs/one-voice-law-shape.md · auditor
-    SEATED — tools/dated_preference_auditor (head-40 · radiant_pass=151 · unmarked=102).
-    Counsel silence on dated-law SHAPE and on shared INSTRUMENTS/NAMES (e242).
-    v41 WITHDRAWN whole. Doubt = one proposal-to-revisit + measurement, then silence.
+  LAW (e238–e242): one-voice SEATED — living one-voice-on-law-shape.md ← stub
+    one-voice-law-shape.md. Auditor SEATED — canonical dated_amendment_audit.sh (head-40,
+    prints mark window) ← dated_preference_auditor.* wrappers. Counsel silence on
+    dated-law SHAPE and on shared INSTRUMENTS/NAMES. v42 DISCARDED. Doubt = one
+    proposal-to-revisit + measurement, then silence. Of-the-hour ~455 · 186 · 269.
   DATED LAW (Tier 2-freeze; shape not traded): T1 · T2 amendable · T2-freeze · T3.
     Guard = doorway.
   R1 FINAL — pier policy=1 · bind face · addr-width · rival WITHDRAWN.

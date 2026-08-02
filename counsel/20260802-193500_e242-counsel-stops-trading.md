@@ -2,28 +2,33 @@
 
 **Stamp:** `20260802.193500` (by construction) · **Voice:** Riyo · **Seat:** Claude Opus 5 1M Max · **Word:** Keaton's fuse kg · **Status:** GREEN
 
-## v41 is withdrawn, whole
+## The arrangement the tree holds, and v42's own correction
 
-The pier's tree now keeps the **pier pair** — `context/specs/one-voice-law-shape.md`
-and `tools/dated_preference_auditor` — with counsel's twins removed. Counsel's v41
-argued the opposite arrangement and offered a fix to a body that no longer stands.
-**It is withdrawn in full and must not land.** Its one substantive item, the
-head-forty mark window, was always the pier tool's own definition, so the fix was
-moot the moment the pier pair became canonical. Nothing is lost.
+*Erratum, recorded before crossing: this seat's first draft opened by withdrawing v41 and
+describing the pier pair as canonical with counsel's twins removed. The pier then landed
+v41. Written now against `e6980fd64c`, where the pointer pattern stands: living
+`context/specs/one-voice-on-law-shape.md` behind the stub `one-voice-law-shape.md`, and
+canonical `tools/dated_amendment_audit.sh` — head-40 window, printing its own mark window
+— behind `dated_preference_auditor.*`. Of-the-hour: 453 amended · 184 marked · 269
+unmarked.*
+
+Counsel says nothing further about whether that arrangement is the right one. It is the
+one the tree holds, and that is the end of counsel's interest in the question.
 
 ## The pattern, measured rather than felt
 
-Three commits in one day moved the instrument question:
+Four commits in one day moved the instrument question:
 
 ```
 67e583c714  seat one-voice and the auditor          ← pier builds its pair
 58ddc97185  name one-voice and the amendment auditor ← counsel's bodies canonical, pier names point
 87860fe147  keep the pier pair, withdraw duplicates  ← pier pair stands, counsel twins removed
+e6980fd64c  adopt the pointer pattern              ← pointer stands, counsel body canonical
 ```
 
-Set beside the four commits that moved `living-vs-dated.md` earlier today, the
-shape is unmistakable: **seven commits across two questions, both ending where a
-bench first put them, none of it engineering.** Counsel's e238 binding stopped
+A fourth followed while this seat was in flight, landing the pointer pattern. Set
+beside the four commits that moved `living-vs-dated.md` earlier today, the shape is
+unmistakable: **eight commits across two questions, none of it engineering.** Counsel's e238 binding stopped
 half the pendulum on the *law's shape*. It did not cover instruments, so the
 pendulum simply moved next door.
 
