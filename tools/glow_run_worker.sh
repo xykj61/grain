@@ -28,7 +28,7 @@ NARGS=$#
 
 fields_need() {
   case "$1" in
-  gate-pair-fields|gate-barket-pair-fields) echo 2 ;;
+  gate-pair-fields|gate-barket-pair-fields|gate-tally-fold-pair-sum) echo 2 ;;
   gate-triple-fields|gate-barket-triple-fields) echo 3 ;;
   gate-quad-fields|gate-barket-quad-fields) echo 4 ;;
   gate-penta-fields|gate-barket-penta-fields) echo 5 ;;
@@ -43,7 +43,7 @@ fields_need() {
 NEED_FIELDS=$(fields_need "$STEM")
 
 case "$STEM" in
-sample-u32|gate-sample-u32|gate-double-u32|gate-pleac-double-u32|gate-surface-double-u32|gate-surface-inc-u32|gate-tally-dec-u32|gate-tally-garden-bound-u32|gate-tally-fold-sumto-u32|gate-caravan-dependents-bound-u32|gate-aurora-wire-bound-u32|gate-mantra-gen-floor-u32|gate-tally-name-len-bound-u32|gate-caravan-caps-bound-u32|gate-comlink-dual-stack-bind-u32|gate-comlink-addr-width-u32|gate-rishi-env-bindings-bound-u32|gate-rishi-history-bound-u32|gate-say-u32|gate-inc-u32|gate-dec-u32|gate-amount-u32|gate-count-u32|gate-barket-sample-u32|gate-barket-double-u32|gate-barket-inc-u32|gate-barket-dec-u32|gate-barket-amount-u32|gate-barket-count-u32|gate-fold-sumto-missing-bound)
+sample-u32|gate-sample-u32|gate-double-u32|gate-pleac-double-u32|gate-surface-double-u32|gate-surface-inc-u32|gate-tally-dec-u32|gate-tally-garden-bound-u32|gate-tally-fold-sumto-u32|gate-caravan-dependents-bound-u32|gate-aurora-wire-bound-u32|gate-mantra-gen-floor-u32|gate-tally-name-len-bound-u32|gate-caravan-caps-bound-u32|gate-comlink-dual-stack-bind-u32|gate-comlink-addr-width-u32|gate-rishi-env-bindings-bound-u32|gate-rishi-history-bound-u32|gate-say-u32|gate-inc-u32|gate-dec-u32|gate-amount-u32|gate-count-u32|gate-barket-sample-u32|gate-barket-double-u32|gate-barket-inc-u32|gate-barket-dec-u32|gate-barket-amount-u32|gate-barket-count-u32|gate-fold-sumto-missing-bound|gate-fold-sum-on-u32)
   test "$NARGS" -eq 1 || {
     echo "FAIL: ${STEM}.glow needs exactly one @u32 sample decimal"
     exit 2

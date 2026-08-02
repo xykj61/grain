@@ -1,3 +1,4 @@
+| `20260802.194158` | [`20260802-194158_e244-rishi-walls-pair-fold.bron`](20260802-194158_e244-rishi-walls-pair-fold.bron) | e244 Rishi walls · pair-sum · era 5/5 · a2 suite |
 | `20260802.193605` | [`20260802-193605_e243-a2-first-fold.bron`](20260802-193605_e243-a2-first-fold.bron) | e243 a2 OPEN · STOA332 fold sumto GREEN |
 | `20260802.192854` | [`20260802-192854_e242-v43-rewrite.bron`](20260802-192854_e242-v43-rewrite.bron) | e242 v43 · pointer accepted · v42 discarded · instrument silence |
 | `20260802.192159` | [`20260802-192159_e242-v42-counsel-stops.bron`](20260802-192159_e242-v42-counsel-stops.bron) | e242 v42 · DISCARDED v43 |

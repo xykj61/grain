@@ -1,18 +1,28 @@
 # lib — Libraries
 
 **Language:** EN  
-**Last updated:** `20260802.193605` (Equinox e243 — Ashvini a2 first fold)
-**Status:** Living — room open; Tally Tend utilities · a1 deciding gates ×7 · a2 folding gate · Comlink R1 faces · pure + metal laps
+**Last updated:** `20260802.194158` (Equinox e244 — Rishi walls · a2 pair-sum)
+**Status:** Living — room open; a1 ×9 · a2 folds ×2 · Comlink R1 · pure + metal laps
 
 Shared gates and utility pedestals in Glow — the sameness many desks call and none should re-carve.
 
-## The a2 Folding Gate (STOA332)
+## The a2 Folding Gates (STOA332 · STOA333)
 
 | Gate | Fold | Sides |
 |------|------|-------|
 | `gate-tally-fold-sumto-u32` | sum 1..n within gardens=8; empty→0; past→0 | 0→0 · 3→6 · 8→36 · 9→0 |
+| `gate-tally-fold-pair-sum` | pair-shape fields → one `@u32` | 0 0→0 · 3 5→8 |
 
-Witness: `rishi/bin/rishi run tools/tally_glow_tend_a2_gate_fold_witness.rish`
+Suite: `rishi/bin/rishi run tools/glow_tend_a2_suite.rish`
+
+## The a1 Rishi Walls (elder-citing)
+
+| Gate | Wall | Sides |
+|------|------|-------|
+| `gate-rishi-env-bindings-bound-u32` | env bindings = 512 | 300→1 · 900→0 |
+| `gate-rishi-history-bound-u32` | history = 50 | 12→1 · 80→0 |
+
+Witness: `rishi/bin/rishi run tools/rishi_a1_gate_walls_witness.rish` (also era 5/5)
 
 ## The a1 Deciding Gates (STOA331)
 

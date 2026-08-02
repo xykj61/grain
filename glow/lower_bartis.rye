@@ -164,6 +164,7 @@ fn expect_for(spec: *const rb.GateSpec) LowerError!u32 {
         .call_one => try call_expect(rb.gate_slice(spec), bartis_demo_sample),
         .cond_gth => return error.SampleDoesNotNest,
         .fold_sumto => fold_sumto_expect(bartis_demo_sample, spec.fold_bound),
+        .fold_sum => bartis_pair_demo_from +% bartis_pair_demo_amount,
     };
 }
 
@@ -179,6 +180,55 @@ fn emit_fold_sumto_gate_fn(out: []u8, used: *u32, zface: []const u8, bound: u32,
     try append_print(out, used, "    return acc;\n", .{});
     try append_print(out, used, "}}\n\n", .{});
 }
+
+
+fn emit_fold_sum_pair_welcome(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
+    const expect: u32 = bartis_pair_demo_from +% bartis_pair_demo_amount;
+    var used: u32 = 0;
+    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
+    try append_print(out, &used, "pub const PairShape = struct {{\n", .{});
+    try append_print(out, &used, "    from: u32 = 0,\n", .{});
+    try append_print(out, &used, "    amount: u32 = 0,\n", .{});
+    try append_print(out, &used, "}};\n\n", .{});
+    try append_print(out, &used, "/// {s}\n", .{comment});
+    try append_print(out, &used, "fn bartis_gate({s}: PairShape) u32 {{\n", .{zface});
+    try append_print(out, &used, "    return {s}.from +% {s}.amount;\n", .{ zface, zface });
+    try append_print(out, &used, "}}\n\n", .{});
+    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, &used, "    const {s}: PairShape = .{{ .from = {d}, .amount = {d} }};\n", .{ zface, bartis_pair_demo_from, bartis_pair_demo_amount });
+    try append_print(out, &used, "    return if (bartis_gate({s}) == {d}) 0 else 1;\n", .{ zface, expect });
+    try append_print(out, &used, "}}\n", .{});
+    return used;
+}
+
+fn emit_fold_sum_pair_argv(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
+    var used: u32 = 0;
+    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
+    try append_print(out, &used, "pub const PairShape = struct {{\n", .{});
+    try append_print(out, &used, "    from: u32 = 0,\n", .{});
+    try append_print(out, &used, "    amount: u32 = 0,\n", .{});
+    try append_print(out, &used, "}};\n\n", .{});
+    try append_print(out, &used, "/// {s}\n", .{comment});
+    try append_print(out, &used, "fn bartis_gate({s}: PairShape) u32 {{\n", .{zface});
+    try append_print(out, &used, "    return {s}.from +% {s}.amount;\n", .{ zface, zface });
+    try append_print(out, &used, "}}\n\n", .{});
+    try append_print(out, &used, "pub fn main(init: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, &used, "    const alloc = init.arena.allocator();\n", .{});
+    try append_print(out, &used, "    const argv = try init.minimal.args.toSlice(alloc);\n", .{});
+    try append_print(out, &used, "    if (argv.len < 3) return 2;\n", .{});
+    try append_print(out, &used, "    const from = std.fmt.parseInt(u32, argv[1], 10) catch return 2;\n", .{});
+    try append_print(out, &used, "    const amount = std.fmt.parseInt(u32, argv[2], 10) catch return 2;\n", .{});
+    try append_print(out, &used, "    const {s}: PairShape = .{{ .from = from, .amount = amount }};\n", .{zface});
+    try append_print(out, &used, "    const answer: u32 = bartis_gate({s});\n", .{zface});
+    try append_print(out, &used, "    var buf: [12]u8 = undefined;\n", .{});
+    try append_print(out, &used, "    const line = std.fmt.bufPrint(&buf, \"{{d}}\\n\", .{{answer}}) catch return 2;\n", .{});
+    try append_print(out, &used, "    const io = init.io;\n", .{});
+    try append_print(out, &used, "    std.Io.File.stdout().writeStreamingAll(io, line) catch return 2;\n", .{});
+    try append_print(out, &used, "    return 0;\n", .{});
+    try append_print(out, &used, "}}\n", .{});
+    return used;
+}
+
 
 fn emit_prelude(out: []u8, used: *u32) LowerError!void {
     try append_print(out, used, "const std = @import(\"std\");\n\n", .{});
@@ -681,6 +731,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             },
             .cond_gth => return error.SampleDoesNotNest,
             .fold_sumto => return error.SampleDoesNotNest,
+            .fold_sum => return error.SampleDoesNotNest,
         }
     }
 
@@ -700,6 +751,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             },
             .cond_gth => return error.SampleDoesNotNest,
             .fold_sumto => return error.SampleDoesNotNest,
+            .fold_sum => return error.SampleDoesNotNest,
         }
     }
 
@@ -719,6 +771,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             },
             .cond_gth => return error.SampleDoesNotNest,
             .fold_sumto => return error.SampleDoesNotNest,
+            .fold_sum => return error.SampleDoesNotNest,
         }
     }
 
@@ -741,6 +794,12 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             },
             .cond_gth => return error.SampleDoesNotNest,
             .fold_sumto => return error.SampleDoesNotNest,
+            .fold_sum => {
+                if (n != 2) return error.SampleDoesNotNest;
+                var comment_buf: [192]u8 = undefined;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `|+  sum  {s}` — pair fold (STOA333).", .{ face, shape, face }) catch return error.Overflow;
+                return emit_fold_sum_pair_welcome(out, zface, comment);
+            },
         }
     }
 
@@ -782,6 +841,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             try emit_fold_sumto_gate_fn(out, &used, zface, spec.fold_bound, comment);
             try emit_welcome_main(out, &used, zface, expect);
         },
+        .fold_sum => return error.SampleDoesNotNest,
     }
     return used;
 }
@@ -805,6 +865,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .call_one => return error.SampleDoesNotNest,
             .cond_gth => return error.SampleDoesNotNest,
             .fold_sumto => return error.SampleDoesNotNest,
+            .fold_sum => return error.SampleDoesNotNest,
         }
     }
 
@@ -819,6 +880,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .call_one => return error.SampleDoesNotNest,
             .cond_gth => return error.SampleDoesNotNest,
             .fold_sumto => return error.SampleDoesNotNest,
+            .fold_sum => return error.SampleDoesNotNest,
         }
     }
 
@@ -833,6 +895,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .call_one => return error.SampleDoesNotNest,
             .cond_gth => return error.SampleDoesNotNest,
             .fold_sumto => return error.SampleDoesNotNest,
+            .fold_sum => return error.SampleDoesNotNest,
         }
     }
 
@@ -848,6 +911,12 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .call_one => return error.SampleDoesNotNest,
             .cond_gth => return error.SampleDoesNotNest,
             .fold_sumto => return error.SampleDoesNotNest,
+            .fold_sum => {
+                if (n != 2) return error.SampleDoesNotNest;
+                var comment_buf: [192]u8 = undefined;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `|+  sum  {s}` — pair fold argv (STOA333).", .{ face, shape, face }) catch return error.Overflow;
+                return emit_fold_sum_pair_argv(out, zface, comment);
+            },
         }
     }
 
@@ -897,6 +966,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             try emit_fold_sumto_gate_fn(out, &used, zface, spec.fold_bound, comment);
             try emit_argv_speaking_main(out, &used, zface);
         },
+        .fold_sum => return error.SampleDoesNotNest,
     }
     return used;
 }
