@@ -1,0 +1,12 @@
+::  name       tally fold sumto gate
+::  shape      n - int (@u32) -> sum - int (@u32)
+::  invariant  folds 1..n into one @u32 while n stays within gardens=8; empty n=0 answers 0; past the wall answers 0
+::  example    0 -> 0 · 3 -> 6 · 8 -> 36 · 9 -> 0
+::  readers    Tally · Glow Tend a2 · Ashvini
+::  nib        equinox-a2-tally-fold1-v0 · STOA332 landed: the lowerer speaks this body now (e243)
+::
+::  Ashvini a2 · gate one — the first Glow Tend gate that FOLDS.
+::  a1 decided within a wall; this gate carries a small bounded value forward:
+::  the triangular fold of the naturals up to n, asserted at the gardens wall.
+|=  sample=@u32
+|+  sumto  sample  8

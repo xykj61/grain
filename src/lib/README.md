@@ -1,10 +1,20 @@
 # lib — Libraries
 
 **Language:** EN  
-**Last updated:** `20260802.164721` (Equinox e224 — v20 pure lap re-cut against seated names)
-**Status:** Living — room open; Tally Tend utilities · a1 deciding gates ×7 · Comlink R1 faces · pure + metal laps
+**Last updated:** `20260802.193605` (Equinox e243 — Ashvini a2 first fold)
+**Status:** Living — room open; Tally Tend utilities · a1 deciding gates ×7 · a2 folding gate · Comlink R1 faces · pure + metal laps
 
-Shared gates and utility pedestals in Glow — the sameness many desks call and none should re-carve. ## The a1 Deciding Gates (STOA331)
+Shared gates and utility pedestals in Glow — the sameness many desks call and none should re-carve.
+
+## The a2 Folding Gate (STOA332)
+
+| Gate | Fold | Sides |
+|------|------|-------|
+| `gate-tally-fold-sumto-u32` | sum 1..n within gardens=8; empty→0; past→0 | 0→0 · 3→6 · 8→36 · 9→0 |
+
+Witness: `rishi/bin/rishi run tools/tally_glow_tend_a2_gate_fold_witness.rish`
+
+## The a1 Deciding Gates (STOA331)
 
 Seven gates, four families, both sides each — proven whole in one lap by `tools/glow_tend_a1_suite.rish`. The era also has two honestly separated laps:
 

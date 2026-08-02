@@ -1,3 +1,4 @@
+| `20260802.193605` | [`20260802-193605_e243-a2-first-fold.bron`](20260802-193605_e243-a2-first-fold.bron) | e243 a2 OPEN · STOA332 fold sumto GREEN |
 | `20260802.192854` | [`20260802-192854_e242-v43-rewrite.bron`](20260802-192854_e242-v43-rewrite.bron) | e242 v43 · pointer accepted · v42 discarded · instrument silence |
 | `20260802.192159` | [`20260802-192159_e242-v42-counsel-stops.bron`](20260802-192159_e242-v42-counsel-stops.bron) | e242 v42 · DISCARDED v43 |
 | `20260802.190937` | [`20260802-190937_e241-v41-pointer.bron`](20260802-190937_e241-v41-pointer.bron) | e241 v41 · pointer beats withdrawal · WITHDRAWN e242 |
