@@ -1,6 +1,7 @@
 # e241 — the pointer beats the withdrawal, and the better definition folds in
 
-**Stamp:** `20260802.192500` (by construction) · **Voice:** Riyo · **Seat:** Claude Opus 5 1M Max · **Word:** Keaton's fuse kg · **Status:** GREEN
+**Stamp:** `20260802.192500` (by construction) · **Voice:** Riyo · **Seat:** Claude Opus 5 1M Max · **Word:** Keaton's fuse kg · **Status:** WITHDRAWN whole (`20260802.192159` · e242)  
+**Superseding seat:** [`20260802-193500_e242-counsel-stops-trading.md`](20260802-193500_e242-counsel-stops-trading.md) — pier pair stands; instrument pendulum measured and bound.
 
 *Erratum, recorded before crossing: the e240 draft said counsel's spec and auditor were withdrawn and the pier's stood. The tree says the reverse and better: the pier made its own names into pointers at counsel's bodies. Written now against `58ddc97185`.*
 
