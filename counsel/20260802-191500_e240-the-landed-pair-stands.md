@@ -1,6 +1,7 @@
 # e240 — two benches built the same two things; the landed pair stands
 
-**Stamp:** `20260802.191500` (by construction) · **Voice:** Riyo · **Seat:** Claude Opus 5 1M Max · **Word:** Keaton's fuse kg · **Status:** GREEN
+**Stamp:** `20260802.191500` (by construction) · **Voice:** Riyo · **Seat:** Claude Opus 5 1M Max · **Word:** Keaton's fuse kg · **Status:** GREEN  
+**Erratum `20260802.190937`:** the pier resolved the duplicate by **pointer**, not deletion (e241). Living names: `one-voice-on-law-shape.md` ← stub `one-voice-law-shape.md`; `dated_amendment_audit.sh` ← wrappers `dated_preference_auditor.*`. This seat's "withdrawn" reading is superseded.
 
 ## Withdrawn, without argument
 
