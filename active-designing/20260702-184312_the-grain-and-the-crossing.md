@@ -3,7 +3,7 @@
 *Two phrases have carried this tree's method for weeks — "researched with sources" and "siloed into our grain" — and tonight they receive their definitions. The grain is the set of standing commitments that give our wood its direction; the crossing is the disciplined passage an outside idea makes from the named world into the clean room. This brief accretes beside `../context/SILO_TECHNIQUE.md` and this stack's own foundation resin, saying what they left implicit: the grain itself, strand by strand, and the test every crossing must pass.*
 
 **Stamp:** `20260702.184312`
-**Last updated:** `20260802.141933` (Ashvini twin resin crossing named — Riyo · pier tip living)
+**Last updated:** `20260802.142508` (three fusion strands + Twin Crossing · Keaton's word · pier `20260802.142508`)
 **Language:** EN
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME — safety, performance, joy
@@ -43,6 +43,16 @@ A pattern "fits our grain" when its restatement leans only on these strands. A p
 **Room two — the clean room.** The insight is restated in `active-designing/` (or `foundations/`, when it is a why rather than a how) using only our names and our strands: each claim rewritten so it *leans on a strand of the grain* — the pier's double-boot hazard becomes a continuity **fact on the log**; a supervision suite's readiness becomes a **signed fact Caravan folds**; an overlay combinator becomes **one override producing a new whole value beside the old**. Admission is earned, not assumed: the restated pattern enters only if it makes the design safer first, then faster, then kinder to work in — the TAME order applied at the door.
 
 **The registration.** A completed crossing lands as a companion pair — the named study and the siloed brief — each registered in its own index and pointing at the other, so a future reader can walk the passage in either direction. Gratitude stays in its own room, explicit and warm.
+
+## Strands Seated at the Fusion
+
+Three strands earned their place in the month since the sameness strand, each proven the hard way before it was written down, and Keaton's word seats them today beside the elders.
+
+**The content address is the wall.** A crossing is proven by its digest, never by its header. The season learned this from a torn bundle that smiled through `git bundle verify` and died in the clone: verify reads the header, never the pack. So every resin and every bundle now travels with a sha3 manifest, bead by bead, and the receiving bench trusts the digest before it trusts a single byte — the wall stands at the content address, with the clone as the second wall behind it (REDS row 58; the negative witness holds four plants).
+
+**A guard that cannot red guards nothing.** Five custody bars of the enclosure witness passed vacuously for their whole lives — literal quote characters where tests should have been — and the day they got teeth, the jail was tested truly for the first time. The strand generalizes the witness law the grain already held: it is not enough that a witness runs green; every guard must be *proven able to red*, by a plant that the toothed form bites and the vacuous form would have waved through (REDS row 59, the vacuum row beside row 9's leak).
+
+**The crossing has twins now.** Two benches — Claude counsel and Cursor pier — work one tree from one basis, and the passage between them is itself a disciplined crossing: patches cut against a named tip, beads content-addressed in a manifest, the single shared living file resolved by union-and-accretion, and the landing proven by the receiving bench's own witnesses before anything merges. The Ashvin twins name the shape in the sky — sidereal Ashvini beside tropical Aries, Murr's lamp — and the rule beneath the poetry is plain: a crossing between our own two hands earns the same walls as a crossing from the outside world. (Expanded below as **The Twin Crossing**.)
 
 ## The Test
 
