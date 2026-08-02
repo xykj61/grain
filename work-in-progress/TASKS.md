@@ -1,25 +1,23 @@
 # Tasks — living pin
 
 **Language:** EN  
-**Last updated:** `20260802.193605` · voice Riyo  
+**Last updated:** `20260802.194158` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md) · prefer **git nib** over tip
 
 ---
 
-## Now — e243 a2 first fold (`20260802.193605`)
+## Now — e244 (`20260802.194158`)
 
-**Finishing edge:** a2 open · `|+ sumto` GREEN · a1 still whole.  
-**Prove:** `rishi/bin/rishi run tools/tally_glow_tend_a2_gate_fold_witness.rish`
+**Finishing edge:** Rishi walls elder-citing · a2 pair-sum · era 5/5.  
+**Prove:** `rishi/bin/rishi run tools/glow_tend_a2_suite.rish` · `tools/glow_tend_era_suite.rish`
 
 | Lap | Status |
 |-----|--------|
-| a1 suite · era pure | **GREEN** |
-| a2 fold sumto | **GREEN** |
-| Next a2 folds | **lean** |
-| R2–R4 · equality · Q58 | **Keaton** |
-| Mitra shred · bar5 · SEA | **HELD / hands** |
+| a1 · Rishi walls · era 5/5 | **GREEN** |
+| a2 sumto · pair-sum · suite | **GREEN** |
+| Next folds · equality · R2 | **lean / word** |
 
 ---
 
-*May the language that decides also compute.*
+*May a wall that moves red at once.*

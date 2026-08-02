@@ -1,0 +1,18 @@
+# tools/glow_tend_a2_suite.rish — Ashvini a2 folding suite (e244).
+#
+#   rishi/bin/rishi run tools/glow_tend_a2_suite.rish
+
+say "a2-suite: Language EN — gates that fold, one lap."
+say "a2-suite: Lens TAME — sumto · pair-sum; plants refuse."
+
+say "a2-suite 1/2: sumto (STOA332)..."
+let sumto = run ["rishi/bin/rishi" "run" "tools/tally_glow_tend_a2_gate_fold_witness.rish"]
+assert sumto.ok else "a2-suite: sumto RED"
+say "a2-suite 1/2 GREEN."
+
+say "a2-suite 2/2: pair-sum (STOA333)..."
+let pair = run ["rishi/bin/rishi" "run" "tools/tally_glow_tend_a2_gate_pair_sum_witness.rish"]
+assert pair.ok else "a2-suite: pair-sum RED"
+say "a2-suite 2/2 GREEN."
+
+say "GREEN: a2 suite — two folding gates; the value model runs as a simple."

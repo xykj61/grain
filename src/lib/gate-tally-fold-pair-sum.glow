@@ -1,0 +1,11 @@
+::  name       tally fold pair-sum gate
+::  shape      pair-shape -> sum - int (@u32)
+::  invariant  folds the two pair fields into one @u32 by wrapping add; empty pair 0 0 answers 0
+::  example    3 5 -> 8 · 0 0 -> 0
+::  readers    Tally · Glow Tend a2 · Ashvini
+::  nib        equinox-a2-tally-fold2-v0 · STOA333 landed: list fold over a closed pair (e244)
+::
+::  Ashvini a2 · gate two — the first fold over a *list shape*, not a virtual range.
+::  Mantra's weave is a fold over a sequence; this is that shape spoken in Glow Tend.
+|=  xs=pair-shape
+|+  sum  xs
