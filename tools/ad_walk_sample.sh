@@ -19,10 +19,15 @@
 #   *recursion*.md — the season's per-round baton trail, 45 files, ~29 KB whole.
 #
 # DATED ARTIFACTS ONLY: the draw keeps names matching YYYYMMDD-HHMMSS_slug. Living
-# docs — README.md, steep.md, the hammocks — are indexes and standing name-seats, not
-# finished pages, and none of the four verdicts belongs to them. Their bare basenames
-# also break the count: README matched 703 files tree-wide, measuring the word rather
-# than the file (found live at e228; generalized at e229 when the draw produced steep).
+# docs — README.md, the hammocks, steep.md — are indexes, workbenches and standing
+# name-seats, not finished pages, and none of the four verdicts belongs to them. Their
+# bare basenames also break the count: README matched 703 files tree-wide, measuring the
+# word rather than the file (found live at e228; generalized at e229 when the draw
+# produced steep.md).
+#
+# AGE BESIDE THE COUNT (e230): each line prints the artifact's age in days from its own
+# stamp. A brief at inbound=0 written yesterday is young, not abandoned, and no verdict
+# past KEEP should ever rest on a low count without its age standing next to it.
 
 set -e
 COUNT="${1:-4}"
@@ -43,5 +48,7 @@ ls active-designing/*.md \
              | grep -v '^./expanding-prompts/' \
              | grep -v "^$f\$" \
              | wc -l | tr -d ' ')
-      printf '%s\tinbound=%s\n' "$base" "$refs"
+      stamp_day=$(echo "$base" | cut -c1-8)
+      age_days=$(( ( $(date +%s) - $(date -d "$stamp_day" +%s 2>/dev/null || echo "$(date +%s)") ) / 86400 ))
+      printf '%s\tinbound=%s\tage=%sd\n' "$base" "$refs" "$age_days"
     done
