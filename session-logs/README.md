@@ -1,3 +1,4 @@
+| `20260802.165207` | [`20260802-165207_e225-v21-class-censused.bron`](20260802-165207_e225-v21-class-censused.bron) | e225 v21 · recursion stubs KEEP · walk sampler |
 | `20260802.164721` | [`20260802-164721_e224-v20-pure-lap-recut.bron`](20260802-164721_e224-v20-pure-lap-recut.bron) | e224 v20 · pure lap re-cut against seated names · GREEN |
 | `20260802.163530` | [`20260802-163530_e223-v19-two-laps-fuse.bron`](20260802-163530_e223-v19-two-laps-fuse.bron) | e223 v19 · pure era suite + metal R1 · both GREEN |
 | `20260802.162917` | [`20260802-162917_e222-v18-collision-pier-wins.bron`](20260802-162917_e222-v18-collision-pier-wins.bron) | e222 collision · pier R1 pedestal wins · rival withdrawn |
