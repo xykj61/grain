@@ -5,6 +5,7 @@
 **Status:** Vision — a proposed convention with fixtures; it seats on Keaton's word and earns Checkable when its two-direction witness runs green
 **Voice:** Quin (workshop)
 **Companion:** [`runes.md`](runes.md) · [`00_inventory.md`](00_inventory.md)
+**current-as-of:** `20260802.182720` — cycle pick UPDATE (e237 leaf renew; convention still governs)
 
 ---
 

@@ -1,6 +1,6 @@
 # Ashvini Recursive Prompt v2
 
-**Stamp:** `20260802.161500` · **Voice:** Riyo · **Style:** Radiant
+**Stamp:** `20260802.161500` · refreshed `20260802.182720` · **Voice:** Riyo · **Style:** Radiant
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
 
@@ -54,7 +54,11 @@ STATE (refresh the needles from files every round):
     aging counts are of-the-hour, or live outside the dated seat.
   LAW (e236): a guard is honest about the hours it can watch — dated_guard is a staging-time
     doorway, not a past auditor; measure before calling a practice a fault; a steady count
-    across two tips means the practice is historical, not ongoing. Dated-law path open.
+    across two tips means the practice is historical, not ongoing.
+  LAW (e237): the drop path is part of the crossing — every prompt names ~/grain/ as the
+    landing place; an absent resin is REPORTED, never hunted. Dated-law SEATED: narrow
+    living-vs-dated to freeze classes (witness · golden · receipt · keys · fixtures);
+    amendable roofs are amendable until superseded. Auditor path not chosen.
   R1 FINAL — pier policy=1 · bind face · addr-width · rival WITHDRAWN.
   R2–R4 = frame seam — word AND fresh check-in each. Ruling:
     counsel/20260802-163000_e219-comlink-module-seam-ruling.md
@@ -79,6 +83,7 @@ FILE-WALKTHROUGH RITUAL — mechanical: `sh tools/ad_walk_sample.sh 5`.
 RESIN HYGIENE (Twin Crossing canon · e213): extract · verify beads vs manifest · land ·
   witness · dual-push · THEN rm the zip + extracted folder. /*.zip ignored at root.
   Never a shred pen — packaging is finished when the landing is proven.
+  DROP PATH (e237): ~/grain/ only — never ~/Downloads/ on this pier.
 
 CROSSING DISCIPLINE: receiving tip must equal the resin basis, else re-cut (no force-push).
   Living pins (REMEMBER · seat map) resolve by union — newest refresh rides, pier pointers

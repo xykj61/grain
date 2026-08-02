@@ -3,7 +3,7 @@
 *A durable guide to where work lives, how new writing earns its place, and how the tree stays honest over time.*
 
 **Language:** EN
-**Last updated:** 2026-07-30 (`20260730.160405` — SUNN13 root survey affirm)
+**Last updated:** 2026-08-02 (`20260802.182720` — e237 leaf renew · dated-law narrow · session-logs fold)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **Voice:** Riyo
 
