@@ -1,8 +1,7 @@
 # e240 — two benches built the same two things; the landed pair stands
 
 **Stamp:** `20260802.191500` (by construction) · **Voice:** Riyo · **Seat:** Claude Opus 5 1M Max · **Word:** Keaton's fuse kg · **Status:** GREEN  
-**Erratum `20260802.190937`:** (superseded e242) briefly claimed pointer arrangement.  
-**Living reading `20260802.192159`:** pier pair stands as this seat first named — `one-voice-law-shape.md` · `dated_preference_auditor.*`; counsel twins removed; v41 withdrawn whole.
+**Living reading `20260802.192854`:** pointer arrangement stands (e241 · e242 rewritten) — living `one-voice-on-law-shape.md` ← stub; canonical `dated_amendment_audit.sh` ← wrappers. This seat's first "withdrawn twins" reading is historical photograph.
 
 ## Withdrawn, without argument
 
