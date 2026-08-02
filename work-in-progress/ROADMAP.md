@@ -1,7 +1,7 @@
 # The Roadmap — living pin
 
 **Language:** EN  
-**Last updated:** `20260801.051417` · voice Riyo  
+**Last updated:** `20260802.005915` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Full season ledger:** [`archive/20260724-132812_roadmap-season-ledger.md`](archive/20260724-132812_roadmap-season-ledger.md)  
 **Align:** [`../foundations/20260706-185112_follow-our-compass.md`](../foundations/20260706-185112_follow-our-compass.md)  
@@ -9,20 +9,22 @@
 
 ---
 
-## Now — Amphora CLI wave · J3 Q37 · the seal speaks (`20260801.051417`)
+## Now — Equinox J4 · nest-only Ashvini · Glow Tend (`20260802.005915`)
 
 | Order | Lap | Status |
 |-------|-----|--------|
-| — | e141–e151 Q1–Q7 · path C · Class W park · season read | landed |
-| — | **e152–e177** J1+J2 CLOSED · J3 Q33–Q37 (charter · doctrine · parse · walls · **open**) | landed |
-| **1** | **Q38–Q42** catalog · out-home guard · files re-proven · same-parent · complete | **next kg** |
-| **2** | **Q43+** grand round witness · negatives · audits · J3 close | kg by kg |
-| **3** | Keaton seats Crossing / stdout law / handback / P7 / Class W | Keaton alone |
-| **4** | seat **128** close choir | Keaton alone |
-| **5** | Class O shred · geode · stack on-touch | gated / on-touch |
+| — | e141–e177 J1+J2 · J3 through seal open | landed |
+| — | e178–e184 restore · grand round · negatives · J3 close | landed |
+| — | e185–e190 J4 open · censuses · tend doctrine · resin-manifest · dogfood · **Q57 bundle plan** | landed |
+| **1** | **e191** Tally Glow Tend limb 1 · `max_gardens` pedestal | **this sitting GREEN** |
+| **2** | Tally limb 2 · `max_name_len` pedestal · then copy-law note | **next kg** |
+| **3** | Caravan then Aurora first Glow Tend pedestals | kg by kg |
+| **4** | Q58 bundle cut · verify (slot `return_equinox_q58`) | **parked** until Tend ladder word |
+| **5** | Q53 class-and-rooms · Q59–Q61 · Q64 seat 128 | gated / Keaton |
+| **6** | geode · Class W · Claude Max renew · VPS SEA order | gated / Keaton alone |
 
-**Finishing edge:** Nested Amphora CLI wave **OPEN Q8/64** · seal inside pour · path C · Class W **parked** · working lean ***the Crossing Season*** (seat Keaton's) · handback `return_deca_128` · parent Equinox ch8 15/16 · **128 RESERVED** · REDS **57** · shred RED · bans GREEN.
+**Finishing edge:** Equinox **deca OPEN** · J4 Tend and Final Bundle · **Ashvini nest-only** under Equinox B (Glow Tend) · Cursor-sole baton · Claude Max **PARKED** · Q58 → `return_equinox_q58` · bound **256 MiB** · SEA only · geode **GATED** · seat **128 RESERVED** · handback `return_surface_p59` not consumed.
 
 ---
 
-*May Q9 stamp a sealed pour. May Class W wait its instrument.*
+*May Tally's bound speak in Glow before the amphora ships alone.*

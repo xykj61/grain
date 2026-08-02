@@ -1,0 +1,48 @@
+# tools/tally_glow_tend_limb1_witness.rish — first Tally Glow Tend limb (e191).
+#
+# Proves the Glow pedestal names max_gardens in lockstep with tally/gardens.rye,
+# lowers cleanly, and that Caravan/Aurora Glow Tend limbs are still absent
+# (ladder honesty — Tally first).
+#
+#   rishi/bin/rishi run tools/tally_glow_tend_limb1_witness.rish
+
+say "tally-tend-1: Language EN — first Tally Glow Tend limb."
+say "tally-tend-1: Style Radiant — pedestal beside Rye; no allocator rewrite."
+say "tally-tend-1: Lens TAME — Equinox e191 · Ashvini nest-only · Equinox B."
+
+let zig = "vendor/zig-toolchain/zig"
+let desk = "src/lib/shape-tally-max-gardens.glow"
+
+say "tally-tend-1: placard..."
+let placard = run ["sh" "-c" "head -n 7 src/lib/shape-tally-max-gardens.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert placard.ok else "tally-tend-1: placard scan failed"
+let pcount = trim placard.out
+assert pcount == "6" else "tally-tend-1: placard missing six lines"
+
+say "tally-tend-1: example locks to rye max_gardens..."
+let g_example = run ["sh" "-c" "grep -q 'example    8' src/lib/shape-tally-max-gardens.glow"]
+assert g_example.ok else "tally-tend-1: example 8 missing on pedestal"
+let g_name = run ["sh" "-c" "grep -q 'max_gardens' src/lib/shape-tally-max-gardens.glow"]
+assert g_name.ok else "tally-tend-1: max_gardens name missing on pedestal"
+let g_elder = run ["sh" "-c" "grep -q 'tally/gardens.rye' src/lib/shape-tally-max-gardens.glow"]
+assert g_elder.ok else "tally-tend-1: gardens.rye citation missing"
+let g_rye = run ["sh" "-c" "grep -E '^pub const max_gardens: u32 = 8;$' tally/gardens.rye"]
+assert g_rye.ok else "tally-tend-1: rye max_gardens must remain 8"
+
+say "tally-tend-1: lower and run..."
+let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" desk]
+assert gate.ok else "tally-tend-1: shape lower/build/run failed"
+assert gate.out contains "EXIT:0" else "tally-tend-1: shape did not exit 0"
+
+say "tally-tend-1: ladder honesty — no caravan/aurora .glow yet..."
+let none = run ["sh" "-c" "rg -l 'caravan|aurora' src edu --glob '*.glow' 2>/dev/null | wc -l | tr -d ' '"]
+assert none.ok else "tally-tend-1: caravan/aurora glow scan failed"
+let nhits = trim none.out
+assert nhits == "0" else "tally-tend-1: caravan/aurora Glow Tend must wait their limbs"
+
+say "tally-tend-1: tally glow path present..."
+let has = run ["sh" "-c" "test -f src/lib/shape-tally-max-gardens.glow && rg -l 'tally' src --glob '*.glow' | grep -q shape-tally-max-gardens && echo TALLY_OK"]
+assert has.ok else "tally-tend-1: tally glow limb missing"
+assert has.out contains "TALLY_OK" else "tally-tend-1: tally glow limb not indexed"
+
+say "GREEN: tally Glow Tend limb 1 — max_gardens=8 pedestal; Caravan/Aurora still next."
