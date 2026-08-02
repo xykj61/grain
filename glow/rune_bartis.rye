@@ -47,6 +47,7 @@
 //! STOA146: closed allowlist adds nine-field `$:` `nona-mold` (identity lower).
 //! STOA147: closed call-body under nona-mold — `flip` (from↔amount · fee/nonce/memo/tag/to/via/ref stay).
 //! STOA331: closed cond-body under `@u32` (Ashvini a1 gate one; welcome bakes sample 5, argv speaks).
+//! STOA332: closed fold-body under `@u32` — `|+  sumto  <face>  <bound>` (Ashvini a2; empty=0; past wall=0).
 //! STOA330: GateSpec fields — `shape_name` · `shape_name_len` · `shape_name_slice` · `max_shape_len`.
 //! Nesting / gold · open `$:` beyond nona bartis samples held.
 //!
@@ -89,6 +90,7 @@ pub const BodyKind = enum {
     identity,
     call_one,
     cond_gth, // STOA331: the first body that decides
+    fold_sumto, // STOA332: the first body that folds (sum 1..n within bound)
 };
 
 /// A parsed thin bartis gate: sample face + optional named shape + body kind.
@@ -104,6 +106,7 @@ pub const GateSpec = struct {
     cond_rhs: u32 = 0, // STOA331: gth right-hand literal
     cond_then: u32 = 0, // STOA331: answer when sample > rhs
     cond_else: u32 = 0, // STOA331: answer otherwise
+    fold_bound: u32 = 0, // STOA332: sumto wall (inclusive max n)
 };
 
 pub fn face_slice(spec: *const GateSpec) []const u8 {
@@ -198,6 +201,24 @@ fn parse_body(src: []const u8, toks: []const tokens.Token, start: u32, face_text
         spec.cond_else = try parse_decimal_u32(tokens.slice_of(src, toks[@as(usize, @intCast(i))]));
         i += 1;
         spec.body = .cond_gth;
+        return i;
+    }
+    if (toks[@as(usize, @intCast(i))].kind == .rune2 and std.mem.eql(u8, tokens.slice_of(src, toks[@as(usize, @intCast(i))]), "|+")) {
+        // STOA332: `|+  sumto  <face>  <dec>` — closed fold body (sum 1..n; n=0 empty; n>bound → 0).
+        i += 1;
+        if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedBody;
+        if (!std.mem.eql(u8, tokens.slice_of(src, toks[@as(usize, @intCast(i))]), "sumto")) return error.MalformedBody;
+        i += 1;
+        if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedBody;
+        const fold_face = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
+        if (!std.mem.eql(u8, fold_face, face_text)) return error.BodySampleMismatch;
+        i += 1;
+        if (i >= n or toks[@as(usize, @intCast(i))].kind != .decimal) return error.MalformedBody;
+        const bound = try parse_decimal_u32(tokens.slice_of(src, toks[@as(usize, @intCast(i))]));
+        if (bound == 0) return error.MalformedBody;
+        i += 1;
+        spec.fold_bound = bound;
+        spec.body = .fold_sumto;
         return i;
     }
     return error.MalformedBody;

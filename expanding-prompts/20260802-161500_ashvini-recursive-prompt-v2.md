@@ -1,6 +1,6 @@
 # Ashvini Recursive Prompt v2
 
-**Stamp:** `20260802.161500` · refreshed `20260802.192854` · **Voice:** Riyo · **Style:** Radiant
+**Stamp:** `20260802.161500` · refreshed `20260802.193605` · **Voice:** Riyo · **Style:** Radiant
 **Radiant pass `20260802.183244`** — e237 valve: narrowing withdrawn; drop path + measurement lines only.
 **Radiant pass `20260802.184012`** — e237 raced seating: tree kept Tier 2-freeze; withdrawal superseded.
 **Radiant pass `20260802.184331`** — e238 oscillation: elder law restored; one-voice proposed not seated.
@@ -9,7 +9,8 @@
 **Radiant pass `20260802.185800`** — e240: pier pair stands; counsel duplicates withdrawn; 256/151/3/102 kept.
 **Radiant pass `20260802.190937`** — e241: pointer beats withdrawal; head-40 in canonical auditor.
 **Radiant pass `20260802.192159`** — e242 v42: pier-pair reading — **DISCARDED** v43.
-**Radiant pass `20260802.192854`** — e242 rewritten: pointer accepted uncommented; instrument silence; of-the-hour ~455/186/269.
+**Radiant pass `20260802.192854`** — e242 rewritten: instrument silence; arrangement not re-argued.
+**Radiant pass `20260802.193605`** — e243: a2 OPEN · STOA332 fold sumto · counsel no-describe instruments.
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
 
@@ -34,10 +35,12 @@ ONE CLOCK: TZ=America/New_York date '+%Y%m%d.%H%M%S' → into a shell var FIRST,
 
 STATE (refresh the needles from files every round):
   Glow Tend pedestals COMPLETE: T1–T6 · C1–C4 · A1–A4 · M1–M4.
-  Ashvini a1 LIVE — seven deciding gates, four families, one-lap suite:
+  Ashvini a1 COMPLETE — seven deciding gates, four families, one-lap suite:
     rishi/bin/rishi run tools/glow_tend_a1_suite.rish
-    dec · tally-bound · caravan-bound · aurora-bound · mantra-gen-floor ·
-    tally-name-len · caravan-caps. Grammar STOA331 (?: gth face lit lit).
+    Grammar STOA331 (?: gth face lit lit).
+  Ashvini a2 OPEN — first folding gate (STOA332 |+ sumto face bound):
+    rishi/bin/rishi run tools/tally_glow_tend_a2_gate_fold_witness.rish
+    src/lib/gate-tally-fold-sumto-u32.glow · empty·within·wall·past · plant refuses.
   Amphora bundle lane DONE (sha3 wall · clone-proof · torn/basis negatives).
   THREE LAPS: PURE glow_tend_era_suite — four legs (a1 · pedestal · width · bind policy
     face) · any host · in parity ch02 as glow_tend_era · METAL bind PROBE OUT of parity ·
@@ -66,11 +69,9 @@ STATE (refresh the needles from files every round):
     across two tips means the practice is historical, not ongoing.
   LAW (e237): drop path is part of the crossing — ~/grain/ only; absent resin REPORTED.
     When two honest readings race, the TREE decides — rewrite the seat, erratum recorded.
-  LAW (e238–e242): one-voice SEATED — living one-voice-on-law-shape.md ← stub
-    one-voice-law-shape.md. Auditor SEATED — canonical dated_amendment_audit.sh (head-40,
-    prints mark window) ← dated_preference_auditor.* wrappers. Counsel silence on
-    dated-law SHAPE and on shared INSTRUMENTS/NAMES. v42 DISCARDED. Doubt = one
-    proposal-to-revisit + measurement, then silence. Of-the-hour ~455 · 186 · 269.
+  LAW (e238–e242): counsel silence on dated-law SHAPE and on shared INSTRUMENTS/NAMES;
+    counsel will not DESCRIBE the instrument arrangement in a seat (tree + auditor speak).
+    Doubt = one proposal-to-revisit + measurement, then silence.
   DATED LAW (Tier 2-freeze; shape not traded): T1 · T2 amendable · T2-freeze · T3.
     Guard = doorway.
   R1 FINAL — pier policy=1 · bind face · addr-width · rival WITHDRAWN.
@@ -78,7 +79,7 @@ STATE (refresh the needles from files every round):
     counsel/20260802-163000_e219-comlink-module-seam-ruling.md
 
 VANE ROADMAP (proposed · active-designing/20260802-161500_the-vane-roadmap-…):
-  Vane 1 Glow Tend: a2 = gates that FOLD (value model as a running simple, not a fork) ·
+  Vane 1 Glow Tend: a2 OPEN — first fold sumto GREEN; more folds on lean ·
     later equality rune · compose rune · Nock seam only from a mature whole.
   Vane 2 Comlink: IPv6 dual-stack + roaming state-sync shell (research+silo landed;
     R1 WHOLE; R2–R4 build GATED). Study: external-research/…ssh-mosh-ipv6…

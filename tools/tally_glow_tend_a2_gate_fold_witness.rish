@@ -1,0 +1,45 @@
+# tools/tally_glow_tend_a2_gate_fold_witness.rish — Ashvini a2: the folding gate (e243).
+#
+#   rishi/bin/rishi run tools/tally_glow_tend_a2_gate_fold_witness.rish
+
+say "a2-fold: Language EN — the first folding Tend gate (STOA332)."
+say "a2-fold: Style Radiant — sumto within the garden wall of eight."
+say "a2-fold: Lens TAME — empty · within · past-wall · malformed plant."
+
+let zig = "vendor/zig-toolchain/zig"
+let desk = "src/lib/gate-tally-fold-sumto-u32.glow"
+
+say "a2-fold: empty (0) answers 0..."
+let empty = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" desk "0"]
+assert empty.ok else "a2-fold: empty side failed to run"
+assert empty.out contains "EXIT:0" else "a2-fold: empty side did not exit 0"
+assert empty.out contains "0" else "a2-fold: empty side did not speak 0"
+
+say "a2-fold: within the wall (3) answers 6..."
+let ok = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" desk "3"]
+assert ok.ok else "a2-fold: accept side failed to run"
+assert ok.out contains "EXIT:0" else "a2-fold: accept side did not exit 0"
+assert ok.out contains "6" else "a2-fold: accept side did not speak 6"
+
+say "a2-fold: at the wall (8) answers 36..."
+let wall = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" desk "8"]
+assert wall.ok else "a2-fold: wall side failed to run"
+assert wall.out contains "EXIT:0" else "a2-fold: wall side did not exit 0"
+assert wall.out contains "36" else "a2-fold: wall side did not speak 36"
+
+say "a2-fold: past the wall (9) answers 0..."
+let over = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" desk "9"]
+assert over.ok else "a2-fold: over side failed to run"
+assert over.out contains "EXIT:0" else "a2-fold: over side did not exit 0"
+assert over.out contains "0" else "a2-fold: over side did not speak 0"
+
+say "a2-fold: the missing-bound plant must refuse..."
+let plant = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" "tools/fixtures/gate-fold-sumto-missing-bound.glow" "3"]
+assert plant.err contains "MalformedBody" else "a2-fold: malformed plant was accepted — the grammar wall fell"
+
+say "a2-fold: a1 garden neighbor still green..."
+let a1 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" "src/lib/gate-tally-garden-bound-u32.glow" "3"]
+assert a1.ok else "a2-fold: a1 regression failed"
+assert a1.out contains "EXIT:0" else "a2-fold: a1 did not exit 0"
+
+say "GREEN: a2 fold gate — empty · within · wall · past; the plant refuses; a1 stands."
