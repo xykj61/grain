@@ -1,0 +1,37 @@
+# tools/ad_walk_sample_witness.rish — the sampler's own guard (e231).
+#
+#   rishi/bin/rishi run tools/ad_walk_sample_witness.rish
+#
+# The walkthrough sampler earned two fixes by luck of the draw: README surfaced
+# at e228, steep.md at e229. Luck is a poor guard. This witness makes the
+# properties deterministic — every drawn line is a dated artifact, and every
+# line carries both facts a verdict needs.
+
+say "walk-witness: Language EN — the sampler judged by its own laws."
+say "walk-witness: Lens TAME — deterministic where the draw is random."
+
+say "walk-witness: the sampler runs and speaks..."
+let drawn = run ["sh" "tools/ad_walk_sample.sh" "8"]
+assert drawn.ok else "walk-witness: the sampler failed to run"
+assert drawn.out contains "inbound=" else "walk-witness: no inbound count in the draw"
+assert drawn.out contains "age=" else "walk-witness: no age beside the count (e230 law)"
+
+say "walk-witness: every drawn line is a dated artifact..."
+let undated = run ["sh" "-c" "sh tools/ad_walk_sample.sh 8 | grep -cvE '^[0-9]{8}-[0-9]{6}_' || true"]
+assert undated.ok else "walk-witness: dated-pattern scan failed"
+let undated_n = trim undated.out
+assert undated_n == "0" else "walk-witness: a living doc reached the draw — dated artifacts only"
+
+say "walk-witness: the shelved class never surfaces..."
+let stubs = run ["sh" "-c" "sh tools/ad_walk_sample.sh 8 | grep -c 'recursion' || true"]
+assert stubs.ok else "walk-witness: shelf scan failed"
+let stubs_n = trim stubs.out
+assert stubs_n == "0" else "walk-witness: a shelved recursion stub was drawn"
+
+say "walk-witness: the guard can red — a living doc is refused by the same pattern..."
+let plant = run ["sh" "-c" "echo 'steep' | grep -cvE '^[0-9]{8}-[0-9]{6}_' || true"]
+assert plant.ok else "walk-witness: plant scan failed"
+let plant_n = trim plant.out
+assert plant_n == "1" else "walk-witness: the dated pattern accepted a living name — the guard is vacuous"
+
+say "GREEN: walk sampler — dated artifacts only, both facts present, shelf held, guard bites."
