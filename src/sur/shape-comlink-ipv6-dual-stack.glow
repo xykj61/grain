@@ -1,0 +1,16 @@
+::  name       comlink ipv6 dual stack
+::  shape      policy - int (@u32)
+::  invariant  when policy is 1, a host bind must offer both address families; this pedestal binds never dials; v4 and v6 address records stay sibling shapes (lens 4 and 16), never a union; any later family-choice wait is named and bounded (family_wait_ms=250)
+::  example    1
+::  readers    Comlink · Glow Tend · Sur museum · Ashvini nest-only
+::  nib        equinox-e220-comlink-r1-v0
+::
+::  Equinox e220 · Comlink R1 — dual-stack *policy* pedestal in src/sur/.
+::  Ruling: counsel/20260802-163000_e219-comlink-module-seam-ruling.md
+::  Pedestal only — no change to comlink/ wire semantics. Elder bind that
+::  already happens: comlink/hosted_wire.rye (AF_INET localhost UDP).
+::  Sibling address lengths (named, not braided): ipv4_addr_len=4 ·
+::  ipv6_addr_len=16. Happy-eyeballs family wait ceiling: 250 ms.
++$  comlink-ipv6-dual-stack-shape
+  $:  policy=@u32
+  ==

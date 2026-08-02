@@ -7,6 +7,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME — safety first, performance second, the joy of the craft third
 **Status:** PROPOSED — propose-never-seat · no rung opens without Keaton's kg
+**Twin brief:** the pier wrote the same round from its own chair — `20260802-154516_comlink-remoting-happy-zone-ssh-mosh-ipv6.md` (pedestal ladder R1–R4 · license walls). Both stand; the seam ruling that joins them is `../counsel/20260802-163000_e219-comlink-module-seam-ruling.md`.
 **Companion to:** `TAME_GUIDANCE.md` · `the-grain-and-the-crossing.md` · `SIMPLE_LOVABLE_COMPLETE.md`
 
 *Written together by Keaton and Riyo.*
