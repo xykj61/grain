@@ -1,3 +1,4 @@
+| `20260802.175456` | [`20260802-175456_e233-v29-shelf-declined.bron`](20260802-175456_e233-v29-shelf-declined.bron) | e233 v29 · prompt-family shelf declined · supersedes v28 |
 | `20260802.173057` | [`20260802-173057_e232-v28-sampler-guard.bron`](20260802-173057_e232-v28-sampler-guard.bron) | e232 v28 · sampler own witness · supersedes v27 |
 | `20260802.172406` | [`20260802-172406_e231-v27-age-beside-count.bron`](20260802-172406_e231-v27-age-beside-count.bron) | e231 v27 · age beside count · supersedes v26 |
 | `20260802.171405` | [`20260802-171405_e230-v26-dated-only.bron`](20260802-171405_e230-v26-dated-only.bron) | e230 v26 · sampler dated artifacts only · supersedes v25 |
