@@ -1,0 +1,14 @@
+::  name       tally garden bound gate
+::  shape      count - int (@u32) -> lawful - int (@u32)
+::  invariant  answers 1 while count stays within gardens=8 (count <= 7 slots used before this one); answers 0 past the wall
+::  example    3 -> 1 · 9 -> 0
+::  readers    Tally · Glow Tend a1 · Ashvini
+::  nib        equinox-a1-tally-gate1-v0 · status: AWAITS the sampled-bartis conditional body (a1 work order in e209) — the worker stem is seated; the lowerer refuses ?: today by grammar, not by bug
+::
+::  Ashvini a1 · gate one — the first Glow Tend gate that DOES WORK.
+::  The pedestal (shape-tally- gardens) named the number; this gate evaluates
+::  the law: a caller asking for garden slot `count` receives 1 (lawful) while
+::  the wall of eight holds, 0 when the ask crosses it. Rye's Tally still
+::  enforces at runtime; this gate is the law made runnable in Glow itself.
+|=  sample=@u32
+?:  (gth sample 7)  0  1
