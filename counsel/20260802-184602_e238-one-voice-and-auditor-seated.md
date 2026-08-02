@@ -6,8 +6,8 @@
 
 | Recommendation | Standing |
 |----------------|----------|
-| **One-voice rule** (both benches) | **SEATED** — living `context/specs/one-voice-law-shape.md` |
-| **Auditor** (report, not a gate) | **SEATED** — `tools/dated_preference_auditor.rish` |
+| **One-voice rule** (both benches) | **SEATED** — living `context/specs/one-voice-law-shape.md` (e240: counsel twin withdrawn) |
+| **Auditor** (report, not a gate) | **SEATED** — `tools/dated_preference_auditor.rish` (head-40 · e240: counsel twin withdrawn) |
 | Counsel self-binding on dated-law shape | Already effective (counsel's word; v38) |
 | Dated-law shape (Tier 2-freeze) | Tree holds it at tip after v38 restore · counsel silent on further shape moves |
 

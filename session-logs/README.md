@@ -1,3 +1,4 @@
+| `20260802.185800` | [`20260802-185800_e240-v40-landed-pair.bron`](20260802-185800_e240-v40-landed-pair.bron) | e240 v40 · pier pair stands · counsel duplicates withdrawn · 256/151/3/102 |
 | `20260802.185002` | [`20260802-185002_e239-v39-one-voice-auditor.bron`](20260802-185002_e239-v39-one-voice-auditor.bron) | e239 v39 · one-voice-on-law-shape · dated_amendment_audit · 451/182/269 |
 | `20260802.184602` | [`20260802-184602_e238-v38-one-voice-auditor.bron`](20260802-184602_e238-v38-one-voice-auditor.bron) | e238 v38 · one-voice+auditor seated · Tier 2-freeze · counsel silence |
 | `20260802.184331` | [`20260802-184331_e238-v37-oscillation.bron`](20260802-184331_e238-v37-oscillation.bron) | e238 v37 · oscillation named · elder law restored · one-voice proposed |
