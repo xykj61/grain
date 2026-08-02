@@ -1,3 +1,4 @@
+| `20260802.120624` | [`20260802-120624_e200-aurora-seed-length.bron`](20260802-120624_e200-aurora-seed-length.bron) | e200 Aurora A2 seed_length=32 in src/sur |
 | `20260802.012507` | [`20260802-012507_e199-tally-maybe-poles.bron`](20260802-012507_e199-tally-maybe-poles.bron) | e199 Tally T5 maybe two poles in src/lib |
 | `20260802.012348` | [`20260802-012348_e198-caravan-supervisor-exit.bron`](20260802-012348_e198-caravan-supervisor-exit.bron) | e198 Caravan C4 three exit meanings in src/sur |
 | `20260802.012113` | [`20260802-012113_e197-aurora-glow-tend-limb1.bron`](20260802-012113_e197-aurora-glow-tend-limb1.bron) | e197 Aurora A1 wire_capacity=512 in src/sur |
