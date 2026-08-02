@@ -45,6 +45,8 @@ STATE (refresh the needles from files every round):
     claim about a pattern, the line is the fact. Sampler: dated only · inbound · age.
   LAW (e231): guard the instrument too — luck-found fixes owe a witness that can red.
     Witness: tools/ad_walk_sample_witness.rish.
+  LAW (e232): a tempting rule meets its census first — "no" is as carefully earned as
+    "yes." Prompt-family shelf declined (4 · 19,432 B · two live).
   R1 FINAL — pier policy=1 · bind face · addr-width · rival WITHDRAWN.
   R2–R4 = frame seam — word AND fresh check-in each. Ruling:
     counsel/20260802-163000_e219-comlink-module-seam-ruling.md
@@ -62,6 +64,7 @@ FILE-WALKTHROUGH RITUAL — mechanical: `sh tools/ad_walk_sample.sh 5`.
   skipped. Each line: inbound=N age=Nd. Counts exclude counsel/ and expanding-prompts/.
   Verdicts: UPDATE · ARCHIVE · YONDER · QUEUE-FOR-MITRA (written only; Mitra never auto-deletes).
   SHELF: recursion stubs — 45 · ~29 KB · STANDING KEEP; e137/e147 queue WITHDRAWN.
+    No second shelf — prompt/baton family measured and declined (e232).
   LAW (e219): count inbound references BEFORE any verdict past KEEP — a file with many
     inbound pointers is load-bearing wherever it sits. Two verdicts withdrawn under it.
 
