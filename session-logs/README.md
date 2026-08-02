@@ -1,3 +1,4 @@
+| `20260802.150811` | [`20260802-150811_e212-three-walls-resin-rm.bron`](20260802-150811_e212-three-walls-resin-rm.bron) | e212 three walls a1×4 · resin rm cleanup seated |
 | `20260802.150022` | [`20260802-150022_e211-vultr-pubkeys-v8-fuse.bron`](20260802-150022_e211-vultr-pubkeys-v8-fuse.bron) | e211 Vultr PUBKEYS fourth · v8 fuse · a1 still LIVE |
 | `20260802.145642` | [`20260802-145642_e210-stoa331-v7-fuse.bron`](20260802-145642_e210-stoa331-v7-fuse.bron) | e210 STOA331 · a1 garden-bound GREEN · v7 fuse |
 | `20260802.144508` | [`20260802-144508_e209-v6-vultr-ssh-fuse.bron`](20260802-144508_e209-v6-vultr-ssh-fuse.bron) | e209 v6 fuse · garden-bound staged · Vultr ed25519 in .ssh |

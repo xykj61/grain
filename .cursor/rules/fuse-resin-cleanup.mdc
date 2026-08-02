@@ -1,0 +1,28 @@
+---
+description: After each counsel fusion zip lands, rm the consumed resin zip — attach on fuse kg / resin paste
+alwaysApply: false
+---
+
+# Fuse resin cleanup (seated `20260802.150731` — Keaton's word)
+
+Counsel fusion zips land under `~/grain/*.zip` (or a stamped path Keaton pastes). After a fuse round **proves green and dual-pushes**, clean the resin — do not leave a growing pile of elder zips on the pier root.
+
+## Pattern — `rm` after send (preferred)
+
+1. Extract to `/tmp/…` (or another ephemeral path). Verify beads (SHA3-256).
+2. Apply / hand-union metal. Prove witnesses GREEN.
+3. Commit · dual-push (`origin` + `xykj61`).
+4. **`rm` the consumed zip** from the pier root (and any zip the fusing prompt names as superseded / deletable).
+5. Leave `/tmp` extracts to the OS; do not re-home private resin trees into the repo.
+
+Prefer plain `rm` over a `to-be-shredded/` folder. The word **shred** is a hard-gated season verb; resin cleanup is ordinary delete, not shred.
+
+## Refuse
+
+- Staging or committing counsel zips into the tree.
+- Deleting a zip **before** the fuse that needs it has proven (keep it until GREEN + send).
+- Mass-deleting unrelated archives without Keaton naming them.
+
+## Habit line for batons
+
+Every fresh fusion baton carries: *resin cleanup — rm consumed zip after dual-push*.

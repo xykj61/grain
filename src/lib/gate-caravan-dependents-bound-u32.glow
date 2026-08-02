@@ -1,0 +1,12 @@
+::  name       caravan dependents bound gate
+::  shape      count - int (@u32) -> lawful - int (@u32)
+::  invariant  answers 1 while count stays within dependents=4 (count <= 3 seats used before this one); answers 0 past the wall
+::  example    2 -> 1 · 5 -> 0
+::  readers    Caravan · Glow Tend a1 · Ashvini
+::  nib        equinox-e212-caravan-gate1-v0
+::
+::  Ashvini a1 · second deciding wall, Caravan family — STOA331 grammar.
+::  The pedestal named dependents=4; this gate evaluates the law at the door.
+::  Rye's Caravan still enforces at runtime; the wall now also speaks Glow.
+|=  sample=@u32
+?:  (gth sample 3)  0  1
