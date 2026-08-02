@@ -1,0 +1,39 @@
+# tools/tally_glow_tend_limb4_witness.rish — Tally T4 parse_int laws in src/sur/ (e196).
+#
+#   rishi/bin/rishi run tools/tally_glow_tend_limb4_witness.rish
+
+say "tally-tend-4: Language EN — fourth Tally Glow Tend limb (sur museum)."
+say "tally-tend-4: Style Radiant — law count pedestal; Rye still parses."
+say "tally-tend-4: Lens TAME — Equinox e196 · Ashvini nest-only · Equinox B."
+
+let zig = "vendor/zig-toolchain/zig"
+let desk = "src/sur/shape-tally-parse-int-laws.glow"
+
+say "tally-tend-4: placard..."
+let placard = run ["sh" "-c" "head -n 7 src/sur/shape-tally-parse-int-laws.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert placard.ok else "tally-tend-4: placard scan failed"
+let pcount = trim placard.out
+assert pcount == "6" else "tally-tend-4: placard missing six lines"
+
+say "tally-tend-4: example locks to two laws..."
+let ex = run ["sh" "-c" "grep -q 'example    2' src/sur/shape-tally-parse-int-laws.glow"]
+assert ex.ok else "tally-tend-4: example 2 missing"
+let elder = run ["sh" "-c" "grep -q 'tally/parse_int.rye' src/sur/shape-tally-parse-int-laws.glow"]
+assert elder.ok else "tally-tend-4: parse_int.rye citation missing"
+
+say "tally-tend-4: rye still states refuse paths..."
+let rye = run ["sh" "-c" "test -f tally/parse_int.rye && rg -q 'LeadingZero' tally/parse_int.rye && rg -q 'InvalidCharacter' tally/parse_int.rye"]
+assert rye.ok else "tally-tend-4: parse_int.rye missing LeadingZero/InvalidCharacter"
+let placard_laws = run ["sh" "-c" "grep -q 'leading zero' src/sur/shape-tally-parse-int-laws.glow && grep -q 'invalid character' src/sur/shape-tally-parse-int-laws.glow"]
+assert placard_laws.ok else "tally-tend-4: placard must name both refuse paths"
+
+say "tally-tend-4: lower and run..."
+let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" desk]
+assert gate.ok else "tally-tend-4: shape lower/build/run failed"
+assert gate.out contains "EXIT:0" else "tally-tend-4: shape did not exit 0"
+
+say "tally-tend-4: T1–T3 still in lib..."
+let prior = run ["sh" "-c" "test -f src/lib/shape-tally-max-gardens.glow -a -f src/lib/shape-tally-copy-preconditions.glow"]
+assert prior.ok else "tally-tend-4: earlier Tally pedestals missing"
+
+say "GREEN: tally Glow Tend limb 4 — parse_int two laws in src/sur/; T1–T3 kept."

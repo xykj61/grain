@@ -1,10 +1,10 @@
 # sur — Structures
 
 **Language:** EN  
-**Last updated:** 2026-07-29 (Surface p45 — eleventh pedestal)  
-**Status:** Living — room open; eleven pedestals seated
+**Last updated:** `20260802.011821` (Equinox e196 — Caravan C3 · Tally T4 Tend in sur)  
+**Status:** Living — room open; Surface pedestals + Glow Tend structure pedestals
 
-The data-structure museum: every non-networked shape on its own pedestal, viewable in isolation, named once and composed elsewhere. House style: [`PLACARD.md`](PLACARD.md).
+The data-structure museum: every non-networked shape on its own pedestal, viewable in isolation, named once and composed elsewhere. House style: [`PLACARD.md`](PLACARD.md). Glow Tend **structures** accrete here; shared gates stay in [`../lib/`](../lib/README.md).
 
 ## Pedestals
 
@@ -21,20 +21,16 @@ The data-structure museum: every non-networked shape on its own pedestal, viewab
 | [`shape-brush-surface-field-count.glow`](shape-brush-surface-field-count.glow) | `BrushSurface` fields (fields = 4) | same |
 | [`shape-brush-frame-field-count.glow`](shape-brush-frame-field-count.glow) | `BrushFrame` fields (fields = 3) | same |
 | [`shape-brush-pin-key-count.glow`](shape-brush-pin-key-count.glow) | Required `.brush` pins (keys = 4) | same |
+| [`shape-caravan-max-name-len.glow`](shape-caravan-max-name-len.glow) | Caravan `max_name_len=48` (Tend C3) | `tools/caravan_glow_tend_limb3_witness.rish` |
+| [`shape-tally-parse-int-laws.glow`](shape-tally-parse-int-laws.glow) | Tally `parse_int` two refuse laws (Tend T4) | `tools/tally_glow_tend_limb4_witness.rish` |
 
 ```
 rishi/bin/rishi run tools/glow_run.rish src/sur/shape-surface-count.glow
-rishi/bin/rishi run tools/glow_run.rish src/sur/shape-frame-max-lines.glow
-rishi/bin/rishi run tools/glow_run.rish src/sur/shape-frame-seed-line-count.glow
-rishi/bin/rishi run tools/glow_run.rish src/sur/shape-brush-skate-cols.glow
-rishi/bin/rishi run tools/glow_run.rish src/sur/shape-brush-skate-rows.glow
-rishi/bin/rishi run tools/glow_run.rish src/sur/shape-brush-max-bytes.glow
-rishi/bin/rishi run tools/glow_run.rish src/sur/shape-brush-max-pin-bytes.glow
-rishi/bin/rishi run tools/glow_run.rish src/sur/shape-brush-parse-error-count.glow
-rishi/bin/rishi run tools/glow_run.rish src/sur/shape-brush-surface-field-count.glow
-rishi/bin/rishi run tools/glow_run.rish src/sur/shape-brush-frame-field-count.glow
-rishi/bin/rishi run tools/glow_run.rish src/sur/shape-brush-pin-key-count.glow
+rishi/bin/rishi run tools/glow_run.rish src/sur/shape-caravan-max-name-len.glow
+rishi/bin/rishi run tools/glow_run.rish src/sur/shape-tally-parse-int-laws.glow
+rishi/bin/rishi run tools/caravan_glow_tend_limb3_witness.rish
+rishi/bin/rishi run tools/tally_glow_tend_limb4_witness.rish
 rishi/bin/rishi run tools/gen/season/src_first_resident_witness.rish
 ```
 
-Further candidates: nest-type / truth-semantics / Glow Book shapes · other desks. Brush_parse museum lane (bounds · errors · structs · pins) through p45.
+Further candidates: `caravan/supervisor_exit` three-way · Aurora seed/sealed · Tally maybe/stack · Mantra weave field counts. Reify map: [`../../counsel/20260802-011821_q58-scope-and-tend-src-reify.md`](../../counsel/20260802-011821_q58-scope-and-tend-src-reify.md).

@@ -1,0 +1,41 @@
+# tools/caravan_glow_tend_limb3_witness.rish — Caravan C3 in src/sur/ (e196).
+#
+#   rishi/bin/rishi run tools/caravan_glow_tend_limb3_witness.rish
+
+say "caravan-tend-3: Language EN — third Caravan Glow Tend limb (sur museum)."
+say "caravan-tend-3: Style Radiant — structure pedestal; no supervisor rewrite."
+say "caravan-tend-3: Lens TAME — Equinox e196 · Ashvini nest-only · Equinox B."
+
+let zig = "vendor/zig-toolchain/zig"
+let desk = "src/sur/shape-caravan-max-name-len.glow"
+
+say "caravan-tend-3: placard..."
+let placard = run ["sh" "-c" "head -n 7 src/sur/shape-caravan-max-name-len.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert placard.ok else "caravan-tend-3: placard scan failed"
+let pcount = trim placard.out
+assert pcount == "6" else "caravan-tend-3: placard missing six lines"
+
+say "caravan-tend-3: example locks to rye max_name_len..."
+let ex = run ["sh" "-c" "grep -q 'example    48' src/sur/shape-caravan-max-name-len.glow"]
+assert ex.ok else "caravan-tend-3: example 48 missing"
+let elder = run ["sh" "-c" "grep -q 'caravan/capabilities.rye' src/sur/shape-caravan-max-name-len.glow"]
+assert elder.ok else "caravan-tend-3: capabilities.rye citation missing"
+let rye = run ["sh" "-c" "grep -E '^pub const max_name_len: u32 = 48;$' caravan/capabilities.rye"]
+assert rye.ok else "caravan-tend-3: rye max_name_len must remain 48"
+
+say "caravan-tend-3: lower and run..."
+let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" desk]
+assert gate.ok else "caravan-tend-3: shape lower/build/run failed"
+assert gate.out contains "EXIT:0" else "caravan-tend-3: shape did not exit 0"
+
+say "caravan-tend-3: C1–C2 still in lib..."
+let prior = run ["sh" "-c" "test -f src/lib/shape-caravan-max-dependents.glow -a -f src/lib/shape-caravan-max-caps-per-dependent.glow"]
+assert prior.ok else "caravan-tend-3: C1/C2 missing"
+
+say "caravan-tend-3: Aurora still absent..."
+let none = run ["sh" "-c" "rg -l 'aurora' src edu --glob '*.glow' 2>/dev/null | wc -l | tr -d ' '"]
+assert none.ok else "caravan-tend-3: aurora scan failed"
+let nhits = trim none.out
+assert nhits == "0" else "caravan-tend-3: Aurora must wait"
+
+say "GREEN: caravan Glow Tend limb 3 — max_name_len=48 in src/sur/; C1–C2 kept."
