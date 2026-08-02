@@ -1,3 +1,4 @@
+| `20260802.141933` | [`20260802-141933_v3-delta-m3-m4-crossing.bron`](20260802-141933_v3-delta-m3-m4-crossing.bron) | v3 delta M3+M4 · Twin Crossing accretion · Mantra tier COMPLETE |
 | `20260802.140515` | [`20260802-140515_a0-twins-fusion-landing.bron`](20260802-140515_a0-twins-fusion-landing.bron) | a0 twins fusion landing · e204 M2 verified on pier |
 | `20260802.132104` | [`20260802-132104_e203-mantra-line-field-count.bron`](20260802-132104_e203-mantra-line-field-count.bron) | e203 Mantra M1 Line three fields in src/sur |
 | `20260802.125205` | [`20260802-125205_e202-aurora-living-stages.bron`](20260802-125205_e202-aurora-living-stages.bron) | e202 Aurora A3 six living stages in src/sur |
