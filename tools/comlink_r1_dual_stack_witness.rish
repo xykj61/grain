@@ -1,60 +1,77 @@
-# tools/comlink_r1_dual_stack_witness.rish — Comlink R1 dual-stack pedestal (e220).
+# tools/comlink_r1_dual_stack_witness.rish — Ashvini R1: the dual-stack policy (e220/e221).
 #
 #   rishi/bin/rishi run tools/comlink_r1_dual_stack_witness.rish
 #
-# Pedestal + gate + host bind probe. No change to comlink/ wire semantics.
+# Two legs, deliberately separate:
+#   Leg A — the pedestal and its deciding face. Pure: lower, run, decide. No socket.
+#   Leg B — the metal probe. Binds a datagram socket in BOTH families on loopback.
+#           Bind, never dial. A host without the newer family reds here honestly:
+#           the policy says a lawful host offers two, and a witness that could not
+#           red would guard nothing. Counsel container: RED (no IPv6). Framework: GREEN.
 
-say "comlink-r1: Language EN — dual-stack policy pedestal (sur museum)."
-say "comlink-r1: Style Radiant — bind never dial; sibling address records; named wait."
-say "comlink-r1: Lens TAME — Equinox e220 · ruling e219 · Ashvini nest-only."
+say "r1: Language EN — the dual-stack policy, named and decided (Ashvini R1)."
+say "r1: Lens TAME — leg A pure · leg B binds only · no wire semantics touched."
 
 let zig = "vendor/zig-toolchain/zig"
 let desk = "src/sur/shape-comlink-ipv6-dual-stack.glow"
-let gate = "src/lib/gate-comlink-dual-stack-bind-u32.glow"
+let face = "src/lib/gate-comlink-addr-bytes-u32.glow"
+let policy = "src/lib/gate-comlink-dual-stack-bind-u32.glow"
 
-say "comlink-r1: placard..."
+say "r1 leg A: placard and example..."
 let placard = run ["sh" "-c" "head -n 7 src/sur/shape-comlink-ipv6-dual-stack.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
-assert placard.ok else "comlink-r1: placard scan failed"
+assert placard.ok else "r1: placard scan failed"
 let pcount = trim placard.out
-assert pcount == "6" else "comlink-r1: placard missing six lines"
-
-say "comlink-r1: example locks dual-stack policy on..."
-let ex = run ["sh" "-c" "grep -q 'example    1' src/sur/shape-comlink-ipv6-dual-stack.glow"]
-assert ex.ok else "comlink-r1: example 1 missing"
-let walls = run ["sh" "-c" "grep -q 'family_wait_ms=250' src/sur/shape-comlink-ipv6-dual-stack.glow && grep -q 'ipv4_addr_len=4' src/sur/shape-comlink-ipv6-dual-stack.glow && grep -q 'ipv6_addr_len=16' src/sur/shape-comlink-ipv6-dual-stack.glow"]
-assert walls.ok else "comlink-r1: three-wall names missing (wait · v4 len · v6 len)"
+assert pcount == "6" else "r1: placard missing six lines"
+let ex = run ["sh" "-c" "grep -q 'example    2' src/sur/shape-comlink-ipv6-dual-stack.glow"]
+assert ex.ok else "r1: example 2 missing"
 let elder = run ["sh" "-c" "grep -q 'comlink/hosted_wire.rye' src/sur/shape-comlink-ipv6-dual-stack.glow"]
-assert elder.ok else "comlink-r1: hosted_wire citation missing"
+assert elder.ok else "r1: elder citation missing"
+let walls = run ["sh" "-c" "grep -q 'family_wait_ms=250' src/sur/shape-comlink-ipv6-dual-stack.glow && grep -q 'ipv4_addr_len=4' src/sur/shape-comlink-ipv6-dual-stack.glow && grep -q 'ipv6_addr_len=16' src/sur/shape-comlink-ipv6-dual-stack.glow"]
+assert walls.ok else "r1: three-wall names missing (wait · v4 len · v6 len)"
 
-say "comlink-r1: elder wire semantics unchanged (IPv4 hosted path still present)..."
-let v4 = run ["sh" "-c" "grep -q 'const AF_INET: c_uint = 2;' comlink/hosted_wire.rye"]
-assert v4.ok else "comlink-r1: elder AF_INET bind missing"
+say "r1 leg A: elder wire semantics unchanged..."
+let v4wire = run ["sh" "-c" "grep -q 'const AF_INET: c_uint = 2;' comlink/hosted_wire.rye"]
+assert v4wire.ok else "r1: elder AF_INET bind missing"
 let no6 = run ["sh" "-c" "! grep -q 'AF_INET6' comlink/hosted_wire.rye"]
-assert no6.ok else "comlink-r1: AF_INET6 must not enter hosted_wire this seat (no wire-semantics change)"
+assert no6.ok else "r1: AF_INET6 must not enter hosted_wire this seat"
 
-say "comlink-r1: lower and run shape..."
-let shape_run = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" desk]
-assert shape_run.ok else "comlink-r1: shape lower/build/run failed"
-assert shape_run.out contains "EXIT:0" else "comlink-r1: shape did not exit 0"
+say "r1 leg A: the shape lowers and runs..."
+let shape = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" desk]
+assert shape.ok else "r1: shape lower/build/run failed"
+assert shape.out contains "EXIT:0" else "r1: shape did not exit 0"
 
-say "comlink-r1: deciding gate both sides..."
-let g1 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" gate "1"]
-assert g1.ok else "comlink-r1: gate sample 1 failed"
-assert g1.out contains "EXIT:0" else "comlink-r1: dual sample did not exit 0"
-assert g1.out contains "1" else "comlink-r1: dual sample must speak 1"
-let g0 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" gate "0"]
-assert g0.ok else "comlink-r1: gate sample 0 failed"
-assert g0.out contains "EXIT:0" else "comlink-r1: ipv4-only sample did not exit 0"
-assert g0.out contains "0" else "comlink-r1: ipv4-only sample must speak 0"
+say "r1 leg A: both lawful widths pass the wall, a wider one refuses..."
+let four = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" face "4"]
+assert four.ok else "r1: elder-family width failed"
+assert four.out contains "EXIT:0" else "r1: four-byte run did not exit 0"
+assert four.out contains "1" else "r1: four bytes did not speak 1"
+let sixteen = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" face "16"]
+assert sixteen.ok else "r1: newer-family width failed"
+assert sixteen.out contains "EXIT:0" else "r1: sixteen-byte run did not exit 0"
+assert sixteen.out contains "1" else "r1: sixteen bytes did not speak 1"
+let wide = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" face "20"]
+assert wide.ok else "r1: over-wide run failed"
+assert wide.out contains "EXIT:0" else "r1: twenty-byte run did not exit 0"
+assert wide.out contains "0" else "r1: twenty bytes did not speak 0"
 
-say "comlink-r1: host can bind both families on loopback (outside comlink/)..."
+say "r1 leg A: pier policy face still decides (dual vs ipv4-only sample)..."
+let p1 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" policy "1"]
+assert p1.ok else "r1: policy dual sample failed"
+assert p1.out contains "1" else "r1: policy dual did not speak 1"
+let p0 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" policy "0"]
+assert p0.ok else "r1: policy ipv4-only sample failed"
+assert p0.out contains "0" else "r1: policy ipv4-only did not speak 0"
+
+say "r1 leg A GREEN — policy named, widths decided, no socket touched."
+
+say "r1 leg B: metal probe — bind both families on loopback (bind, never dial)..."
 let bind = run ["python3" "tools/comlink_r1_dual_bind_probe.py"]
-assert bind.ok else "comlink-r1: host dual-stack bind probe failed"
-assert bind.out contains "dual-bind-ok" else "comlink-r1: dual-bind probe silent"
+assert bind.ok else "r1 leg B: host offers no newer family — dual-stack policy unmet on this host (RED correct when IPv6 absent)"
+assert bind.out contains "dual-bind-ok" else "r1 leg B: dual-bind probe silent"
 
-say "comlink-r1: a1 suite still whole..."
+say "r1: a1 suite still whole..."
 let a1 = run ["rishi/bin/rishi" "run" "tools/glow_tend_a1_suite.rish"]
-assert a1.ok else "comlink-r1: a1 suite red"
-assert a1.out contains "GREEN: a1 suite" else "comlink-r1: a1 suite green line missing"
+assert a1.ok else "r1: a1 suite red"
+assert a1.out contains "GREEN: a1 suite" else "r1: a1 suite green line missing"
 
-say "GREEN: comlink R1 — dual-stack policy in src/sur/; gate decides; host bind both families; wire semantics untouched."
+say "GREEN: r1 — dual-stack policy named and decided; both families bind on this host."

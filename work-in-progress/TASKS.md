@@ -1,30 +1,29 @@
 # Tasks — living pin
 
 **Language:** EN  
-**Last updated:** `20260802.160922` · voice Riyo  
+**Last updated:** `20260802.162116` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md) · prefer **git nib** over tip
 
 ---
 
-## Now — e220 v16 fuse · R1 cut (`20260802.160922`)
+## Now — e221 v17 fuse · R1 leg B GREEN (`20260802.162116`)
 
-**Finishing edge:** seam ruling seated · R1 pedestal + gate GREEN · `comlink/hosted_wire.rye` untouched.  
-**Full baton each round:** Ashvini Recursive Prompt v2 verbatim under `expanding-prompts/`.
+**Finishing edge:** counsel R1 cut fused · addr-width face 4·16·20 · Framework dual-bind GREEN · a2 held.  
+**Full baton each round:** Ashvini Recursive Prompt v2 under `expanding-prompts/`.
 
 | Lap | Status |
 |-----|--------|
 | a1 ×7 suite | **GREEN COMPLETE** |
-| v16 0005 seam ruling | **landed** |
-| R1 `shape-comlink-ipv6-dual-stack` | **GREEN** |
-| R1 `gate-comlink-dual-stack-bind-u32` | **GREEN** (both sides) |
-| Host dual-bind probe (outside comlink) | **GREEN** |
+| v17 0005 counsel R1 cut | **landed by union** |
+| R1 leg A (pure) | **GREEN** |
+| R1 leg B (metal) | **GREEN on Framework** · RED on counsel (no IPv6 — correct) |
 | a2 first folding gate | **await word `a2`** |
-| R2–R4 | **await fresh check-in + word** |
+| R2–R4 | **await word + fresh check-in** |
 | Equality · Q58 · bar5 · SEA | **Keaton** |
 
-**Walkthrough law:** count inbound refs before any verdict past KEEP (prior yonder/queue withdrawn).
+**Walkthrough (counsel e220):** four files · refs counted first · zero moves.
 
 ---
 
-*May never-break hold the day, and R2 meet the chair before the frame moves.*
+*May never-break hold the day, and the next gate open on a word.*

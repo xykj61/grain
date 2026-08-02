@@ -1,3 +1,4 @@
+| `20260802.162116` | [`20260802-162116_e221-v17-r1-leg-b-framework.bron`](20260802-162116_e221-v17-r1-leg-b-framework.bron) | e221 v17 fuse · R1 leg B GREEN on Framework |
 | `20260802.160922` | [`20260802-160922_e220-v16-seam-ruling-r1-cut.bron`](20260802-160922_e220-v16-seam-ruling-r1-cut.bron) | e220 v16 seam ruling · R1 dual-stack pedestal GREEN |
 | `20260802.160154` | [`20260802-160154_e219-v15-vane-roadmap-fuse.bron`](20260802-160154_e219-v15-vane-roadmap-fuse.bron) | e219 v15 fuse · vane roadmap · a2 lean · prompt v2 · suite GREEN |
 | `20260802.154516` | [`20260802-154516_e218-align-comlink-remoting.bron`](20260802-154516_e218-align-comlink-remoting.bron) | e218 align · Comlink remoting silo · AD walk · OpenSSH+Mosh |
