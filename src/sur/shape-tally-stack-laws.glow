@@ -1,0 +1,13 @@
+::  name       tally stack laws
+::  shape      laws - int (@u32)
+::  invariant  a bounded stack keeps three laws (bound at construction · push bites · empty is a value)
+::  example    3
+::  readers    Tally · Glow Tend · Sur museum · Ashvini nest-only
+::  nib        equinox-e201-tally-tend-v0
+::
+::  Equinox e201 · Tally T6 — structure pedestal in src/sur/ naming stack laws.
+::  Names the three honest laws from tally/stack.rye. Pedestal only; Rye still
+::  owns StackType and the comptime max.
++$  tally-stack-laws-shape
+  $:  laws=@u32
+  ==
