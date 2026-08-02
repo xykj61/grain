@@ -49,6 +49,7 @@
 //! STOA331: closed cond-body under `@u32` (Ashvini a1 gate one; welcome bakes sample 5, argv speaks).
 //! STOA332: closed fold-body under `@u32` — `|+  sumto  <face>  <bound>` (Ashvini a2; empty=0; past wall=0).
 //! STOA333: closed fold-body under `pair-shape` — `|+  sum  <face>` (Ashvini a2; list fold of two fields).
+//! STOA334: second range-fold verb — `|+  prodto  <face>  <bound>` (empty=1; bound >12 → FoldBoundTooLarge).
 //! STOA330: GateSpec fields — `shape_name` · `shape_name_len` · `shape_name_slice` · `max_shape_len`.
 //! Nesting / gold · open `$:` beyond nona bartis samples held.
 //!
@@ -72,6 +73,9 @@ pub const max_face_len: u32 = tokens.max_name_len;
 pub const max_gate_len: u32 = tokens.max_name_len;
 pub const max_shape_len: u32 = tokens.max_name_len;
 
+/// STOA334: largest prodto bound whose factorial still fits u32 (12! = 479_001_600).
+pub const max_prodto_bound: u32 = 12;
+
 pub const ParseError = error{
     EmptySource,
     NotABartis,
@@ -83,6 +87,7 @@ pub const ParseError = error{
     BodyGateNotYetLowered,
     BodySampleMismatch,
     MalformedBody,
+    FoldBoundTooLarge, // STOA334: prodto bound past 12 would leave u32
     TooManyTokens,
     BadToken,
 };
@@ -93,6 +98,7 @@ pub const BodyKind = enum {
     cond_gth, // STOA331: the first body that decides
     fold_sumto, // STOA332: fold naturals 1..n within bound
     fold_sum, // STOA333: fold-sum closed tuple fields (pair first)
+    fold_prodto, // STOA334: product 1..n within bound (verb is a name)
 };
 
 /// A parsed thin bartis gate: sample face + optional named shape + body kind.
@@ -206,7 +212,7 @@ fn parse_body(src: []const u8, toks: []const tokens.Token, start: u32, face_text
         return i;
     }
     if (toks[@as(usize, @intCast(i))].kind == .rune2 and std.mem.eql(u8, tokens.slice_of(src, toks[@as(usize, @intCast(i))]), "|+")) {
-        // STOA332/333: `|+  sumto  <face>  <dec>` · `|+  sum  <face>`
+        // STOA332/334: `|+  sumto|prodto  <face>  <dec>` · STOA333: `|+  sum  <face>`
         i += 1;
         if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedBody;
         const op = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
@@ -215,13 +221,14 @@ fn parse_body(src: []const u8, toks: []const tokens.Token, start: u32, face_text
         const fold_face = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
         if (!std.mem.eql(u8, fold_face, face_text)) return error.BodySampleMismatch;
         i += 1;
-        if (std.mem.eql(u8, op, "sumto")) {
+        if (std.mem.eql(u8, op, "sumto") or std.mem.eql(u8, op, "prodto")) {
             if (i >= n or toks[@as(usize, @intCast(i))].kind != .decimal) return error.MalformedBody;
             const bound = try parse_decimal_u32(tokens.slice_of(src, toks[@as(usize, @intCast(i))]));
             if (bound == 0) return error.MalformedBody;
+            if (std.mem.eql(u8, op, "prodto") and bound > max_prodto_bound) return error.FoldBoundTooLarge;
             i += 1;
             spec.fold_bound = bound;
-            spec.body = .fold_sumto;
+            spec.body = if (std.mem.eql(u8, op, "prodto")) .fold_prodto else .fold_sumto;
             return i;
         }
         if (std.mem.eql(u8, op, "sum")) {
@@ -325,9 +332,9 @@ pub fn parse_source(src: []const u8) ParseError!GateSpec {
         if (toks[@as(usize, @intCast(i))].kind != .newline) return error.MalformedBody;
     }
 
-    // STOA332: sumto only under bare `@u32`. STOA333: sum only under pair-shape (first list fold).
+    // STOA332/334: range folds only under bare `@u32`. STOA333: sum only under pair-shape.
     switch (spec.body) {
-        .fold_sumto => {
+        .fold_sumto, .fold_prodto => {
             if (spec.shape_name_len != 0) return error.SampleDoesNotNest;
         },
         .fold_sum => {
