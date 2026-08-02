@@ -1,7 +1,7 @@
 # sur — Structures
 
 **Language:** EN  
-**Last updated:** `20260802.160922` (Equinox e220 — Comlink R1 dual-stack policy)  
+**Last updated:** `20260802.162116` (Equinox e221 — Comlink R1 families=2 · Framework leg B GREEN)  
 **Status:** Living — room open; Surface pedestals + Glow Tend structure pedestals + Comlink R1
 
 The data-structure museum: every non-networked shape on its own pedestal, viewable in isolation, named once and composed elsewhere. House style: [`PLACARD.md`](PLACARD.md). Glow Tend **structures** accrete here; shared gates stay in [`../lib/`](../lib/README.md).
@@ -33,7 +33,7 @@ The data-structure museum: every non-networked shape on its own pedestal, viewab
 | [`shape-mantra-diff-field-count.glow`](shape-mantra-diff-field-count.glow) | Mantra Diff two fields (Tend M3) | `tools/mantra_glow_tend_limb3_witness.rish` |
 | [`shape-mantra-store-dir-count.glow`](shape-mantra-store-dir-count.glow) | Mantra Store three dirs (Tend M4) | `tools/mantra_glow_tend_limb4_witness.rish` |
 | [`shape-caravan-supervisor-exit-meanings.glow`](shape-caravan-supervisor-exit-meanings.glow) | Caravan three exit meanings (Tend C4) | `tools/caravan_glow_tend_limb4_witness.rish` |
-| [`shape-comlink-ipv6-dual-stack.glow`](shape-comlink-ipv6-dual-stack.glow) | Comlink dual-stack policy=1 (R1) | `tools/comlink_r1_dual_stack_witness.rish` |
+| [`shape-comlink-ipv6-dual-stack.glow`](shape-comlink-ipv6-dual-stack.glow) | Comlink dual-stack families=2 (R1) | `tools/comlink_r1_dual_stack_witness.rish` (leg A pure · leg B metal) |
 
 ```
 rishi/bin/rishi run tools/mantra_glow_tend_limb1_witness.rish
