@@ -1,7 +1,7 @@
 # sur — Structures
 
 **Language:** EN  
-**Last updated:** `20260802.132104` (Equinox e203 — Mantra M1 Line fields)  
+**Last updated:** `20260802.141933` (Equinox e206 — Mantra M4 Store dirs · pedestal tier complete)  
 **Status:** Living — room open; Surface pedestals + Glow Tend structure pedestals
 
 The data-structure museum: every non-networked shape on its own pedestal, viewable in isolation, named once and composed elsewhere. House style: [`PLACARD.md`](PLACARD.md). Glow Tend **structures** accrete here; shared gates stay in [`../lib/`](../lib/README.md).
@@ -28,6 +28,9 @@ The data-structure museum: every non-networked shape on its own pedestal, viewab
 | [`shape-aurora-seed-length.glow`](shape-aurora-seed-length.glow) | Aurora `seed_length=32` (Tend A2) | `tools/aurora_glow_tend_limb2_witness.rish` |
 | [`shape-aurora-living-stages.glow`](shape-aurora-living-stages.glow) | Aurora six living stages (Tend A3) | `tools/aurora_glow_tend_limb3_witness.rish` |
 | [`shape-mantra-line-field-count.glow`](shape-mantra-line-field-count.glow) | Mantra Line three fields (Tend M1) | `tools/mantra_glow_tend_limb1_witness.rish` |
+| [`shape-mantra-weave-field-count.glow`](shape-mantra-weave-field-count.glow) | Mantra Weave two fields (Tend M2) | `tools/mantra_glow_tend_limb2_witness.rish` |
+| [`shape-mantra-diff-field-count.glow`](shape-mantra-diff-field-count.glow) | Mantra Diff two fields (Tend M3) | `tools/mantra_glow_tend_limb3_witness.rish` |
+| [`shape-mantra-store-dir-count.glow`](shape-mantra-store-dir-count.glow) | Mantra Store three dirs (Tend M4) | `tools/mantra_glow_tend_limb4_witness.rish` |
 | [`shape-caravan-supervisor-exit-meanings.glow`](shape-caravan-supervisor-exit-meanings.glow) | Caravan three exit meanings (Tend C4) | `tools/caravan_glow_tend_limb4_witness.rish` |
 
 ```

@@ -3,13 +3,13 @@
 *Two phrases have carried this tree's method for weeks — "researched with sources" and "siloed into our grain" — and tonight they receive their definitions. The grain is the set of standing commitments that give our wood its direction; the crossing is the disciplined passage an outside idea makes from the named world into the clean room. This brief accretes beside `../context/SILO_TECHNIQUE.md` and this stack's own foundation resin, saying what they left implicit: the grain itself, strand by strand, and the test every crossing must pass.*
 
 **Stamp:** `20260702.184312`
-**Last updated:** 2026-07-04 (sameness strand seated — Kaeden `20260704.023400 UDT`)
+**Last updated:** `20260802.141933` (Ashvini twin resin crossing named — Riyo · pier tip living)
 **Language:** EN
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME — safety, performance, joy
-**Status:** Canon — vocabulary law beside the silo principle and the graduation rule
+**Status:** Canon — vocabulary law beside the silo principle and the graduation rule · living accretion
 
-*Written together by Kaeden and Rio 3.*
+*Written together by Kaeden and Rio 3. Twin-crossing accretion by Keaton and Riyo (`20260802.141933`).*
 
 ---
 
@@ -48,6 +48,20 @@ A pattern "fits our grain" when its restatement leans only on these strands. A p
 
 One question closes every crossing, inherited from the silo technique and sharpened here: **could a reader who never met the source understand this completely — and does every sentence of it cut with a named strand of the grain?** If a borrowed noun survives in room two, the separation is unfinished. If a sentence leans on no strand, the idea has not yet found its direction in our wood — and the honest verdict is that it does not belong, however admired its origin.
 
+## The Twin Crossing — counsel ↔ pier (Ashvini accretion `20260802.141933`)
+
+The two-room law above still holds for outside ideas. A second doorway now names how **two benches of the same tree** cross without tearing the grain — the Ashvini twins: counsel container and home pier, co-fused each round under the sidereal Ashvini sky and tropical Aries lamp.
+
+**Room one — the far bench's work.** Counsel (or pier) builds on a shared basis tip, measures needles from files, and packs a **resin** (`resin-manifest-v1`): SHA3-addressed beads, ordered `git am` patches, optional whole-tree files, and a `CURSOR_FUSING_PROMPT.md`. See [`../context/specs/20260801-140607_resin-manifest-v1.md`](../context/specs/20260801-140607_resin-manifest-v1.md).
+
+**The doorway — basis match and union.** The receiving tip must equal the resin's `basis`, or the far side re-cuts — never force-push. Living pins that both benches touch (chiefly `REMEMBER`) resolve by **union**: keep both truths, newest refresh rides, pier nib pointers stay until the landing amend. Narrative seat numbers that collide (p-lane vs c-lane) are mapped, not renamed; dated filenames never collide. Map: [`../counsel/20260802-132249_e216-two-lines-one-tree-ashvini-charter.md`](../counsel/20260802-132249_e216-two-lines-one-tree-ashvini-charter.md).
+
+**Room two — one tree again.** Patches land, witnesses run, metal gifts (environment reds) are owned out loud, dual-push to `origin` + `xykj61`. Ashvini **a0** is the fusion landing itself; **a1** (gates that do work beyond pedestals) opens only on Keaton's kg. Glow Tend structures still cut with the reify strand: structures → `src/sur/` · utility marks → `src/lib/` · language impl stays in `glow/`.
+
+**The twin test.** Could a reader who holds only the resin and the living tip reconstruct the landing — beads verify, patches apply or the delta is named, witnesses speak GREEN or gift, and the grain's hard lines (no force-push · no shred · no keys · SEA · geode GATED) stay uncut? If the answer is yes, the twins crossed with the grain.
+
+Landed proof at this accretion: a0 on tip after v2 (30 beads) · v3 delta M3+M4 when the pier had already moved — patch `0031` only, union on REMEMBER/seat map · Mantra pedestal tier **M1–M4 COMPLETE**.
+
 ---
 
-*May every idea we welcome find the direction our wood already runs. May the two rooms stay distinct and the doorway stay disciplined. And may the grain hold so true that a stranger, reading only the clean room, could rebuild the whole from our own words alone.*
+*May every idea we welcome find the direction our wood already runs. May the two rooms stay distinct and the doorway stay disciplined. May the twins cross by resin and union, not by force. And may the grain hold so true that a stranger, reading only the clean room, could rebuild the whole from our own words alone.*

@@ -1,25 +1,25 @@
 # The Roadmap — living pin
 
 **Language:** EN  
-**Last updated:** `20260802.140515` · voice Riyo  
+**Last updated:** `20260802.141933` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md) · prefer **git nib** over tip
 
 ---
 
-## Now — Equinox J4 · Ashvini a0 landed · Glow Tend (`20260802.140515`)
+## Now — Equinox J4 · Ashvini a0 · Mantra pedestal COMPLETE (`20260802.141933`)
 
 | Order | Lap | Status |
 |-------|-----|--------|
-| — | p191–p203 pier Glow Tend · c191–c216 counsel lane | **fused on main** |
-| — | **a0** twins fusion landing + **e204** Mantra M2 | **this sitting GREEN** |
-| **1** | Mantra M3 · Aurora A4 — Ashvini **a1** on kg | **next** |
-| **2** | Q58 un-park | **Keaton's word** (counsel proofs stand) |
-| **3** | Keaton gates · sixbar bar4 ai-jail pin | custody / metal |
+| — | a0 fusion + e204 M2 | landed |
+| — | **e205–e206** Mantra M3 Diff + M4 Store (v3 delta) | **this sitting GREEN** |
+| **1** | Aurora A4 `signature_length` | **next kg** |
+| **2** | Ashvini a1 — gates that do work | **Keaton's kg only** |
+| **3** | Q58 un-park · sixbar bar4 · Keaton gates | custody / metal |
 
-**Finishing edge:** Tend **T1–T6 · C1–C4 · A1–A3 · M1 · M2** GREEN · a0 CLOSED.  
-**Full baton:** [`../expanding-prompts/20260802-140515_equinox-a0-twins-fusion-baton.md`](../expanding-prompts/20260802-140515_equinox-a0-twins-fusion-baton.md)
+**Finishing edge:** Tend **T1–T6 · C1–C4 · A1–A3 · M1–M4** GREEN · Mantra pedestal tier COMPLETE.  
+**Full baton:** [`../expanding-prompts/20260802-141933_equinox-v3-m3-m4-fusion-baton.md`](../expanding-prompts/20260802-141933_equinox-v3-m3-m4-fusion-baton.md)
 
 ---
 
-*May a1 open only on kg, and Diff's two fields speak first.*
+*May Aurora's signature width speak next.*
