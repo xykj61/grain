@@ -1,0 +1,14 @@
+::  name       mantra gen floor gate
+::  shape      gen - int (@u32) -> lawful - int (@u32)
+::  invariant  answers 1 while gen stays at or above the floor of one (zero is reserved); answers 0 at zero
+::  example    1 -> 1 · 0 -> 0
+::  readers    Mantra · Glow Tend a1 · Ashvini
+::  nib        equinox-e214-mantra-gate1-v0
+::
+::  Ashvini a1 · Mantra's deciding face — STOA331 grammar.
+::  weave.rye states the invariant twice: gen >= 1, zero is reserved; every
+::  line starts at generation 1. This gate makes that floor runnable: the
+::  lawful generation speaks 1, the reserved zero speaks 0. Rye's Weave
+::  still enforces at runtime; the floor now also speaks Glow.
+|=  sample=@u32
+?:  (gth sample 0)  1  0
