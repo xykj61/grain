@@ -1,6 +1,7 @@
 # Ashvini Recursive Prompt v2
 
 **Stamp:** `20260802.161500` · refreshed `20260802.183244` · **Voice:** Riyo · **Style:** Radiant
+**Radiant pass `20260802.183244`** — e237 valve: narrowing withdrawn; drop path + measurement lines only.
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
 
