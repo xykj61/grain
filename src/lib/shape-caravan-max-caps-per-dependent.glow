@@ -1,0 +1,12 @@
+::  name       caravan max caps per dependent
+::  shape      caps - int (@u32)
+::  invariant  each dependent holds at most eight capabilities (max_caps_per_dependent)
+::  example    8
+::  readers    Caravan · Glow Tend · Tally · Amphora · Ashvini nest-only
+::  nib        equinox-e195-caravan-tend-v0
+::
+::  Equinox e195 · nest-only Ashvini under Equinox B — second Caravan Glow Tend limb.
+::  Names max_caps_per_dependent from caravan/capabilities.rye. Pedestal only.
++$  caravan-max-caps-per-dependent-shape
+  $:  caps=@u32
+  ==

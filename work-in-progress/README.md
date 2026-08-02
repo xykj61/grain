@@ -1,12 +1,12 @@
 # The Work-in-Progress Stack
 
 **Language:** EN
-**Last updated:** `20260802.010932` (EDT) · Equinox J4 · nest-only Ashvini · e194 Caravan Tend C1 · standing voice Riyo
+**Last updated:** `20260802.011503` (EDT) · Equinox J4 · nest-only Ashvini · e195 Caravan C2 · standing voice Riyo
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Riyo
 **Status:** Foundation — living workbench; prefer **git nib** · see [`REMEMBER.md`](REMEMBER.md) · [`ROADMAP.md`](ROADMAP.md) · [`TASKS.md`](TASKS.md)
 
-**Finishing edge now:** Equinox deca OPEN · Ashvini nest-only · Tally T1–T3 + Caravan C1 GREEN · next C2 · Q58 parked · Cursor-sole. Full need map: [`../counsel/20260802-010400_equinox-expanded-need-queue.md`](../counsel/20260802-010400_equinox-expanded-need-queue.md).
+**Finishing edge now:** Equinox deca OPEN · Ashvini nest-only · Tally T1–T3 + Caravan C1–C2 GREEN · ad-cycle select GREEN · WOVN/Mitra PROPOSED · next C3/Tally T4 · Q58 parked · Cursor-sole. Baton: [`../expanding-prompts/20260802-011503_equinox-e195-fusion-baton.md`](../expanding-prompts/20260802-011503_equinox-e195-fusion-baton.md).
 
 **Health (this sitting):** `ROADMAP`/`TASKS` current. `REMEMBER.md` ~56 KiB **over** `living_pin_max_bytes` (24576) — fold debt. `ready-to-ask-claude.md` ~57 KiB Claude-era — archive on word. Corpus-twin `.tsv` + dated baselines cold → `yonder/` on word. Hammock index below is **July-stale** — truth is REMEMBER + ROADMAP + TASKS + need queue.
 

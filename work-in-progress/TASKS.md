@@ -1,26 +1,27 @@
 # Tasks — living pin
 
 **Language:** EN  
-**Last updated:** `20260802.010932` · voice Riyo  
+**Last updated:** `20260802.011503` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md) · prefer **git nib** over tip  
-**Need queue:** [`../counsel/20260802-010400_equinox-expanded-need-queue.md`](../counsel/20260802-010400_equinox-expanded-need-queue.md)
+**Baton:** [`../expanding-prompts/20260802-011503_equinox-e195-fusion-baton.md`](../expanding-prompts/20260802-011503_equinox-e195-fusion-baton.md)
 
 ---
 
-## Now — Equinox e194 · Caravan Glow Tend limb 1 (`20260802.010932`)
+## Now — Equinox e195 · Caravan C2 + cycle + WOVN plan (`20260802.011503`)
 
-**Finishing edge:** Caravan C1 GREEN (`max_children=4`). Tally T1–T3 kept. Next = C2 `max_caps_per_child=8`. Aurora still absent. Q58 parked.
+**Finishing edge:** C2 GREEN · ad-cycle select GREEN · WOVN/Mitra PROPOSED. Next = C3 and/or Tally T4. Keep Tally Glow runes warm.
 
 | Lap | Status |
 |-----|--------|
 | e191–e193 Tally T1–T3 | **landed** |
-| **e194** C1 `shape-caravan-max-children.glow` | **this sitting** |
-| Caravan C2 · `max_caps_per_child=8` | **next** |
-| Aurora A1 | queued |
-| Q58 (`return_equinox_q58`) | **parked** |
-| Keaton gates (Q53 · VPS SEA · seat 128 · geode · Claude renew) | Keaton alone |
+| e194 C1 · **e195** C2 `max_caps_per_child=8` | **this sitting** |
+| u64 active-designing cycle + witness | **this sitting** |
+| Solana/WOVN/MUR synonym/Realidream plan | **PROPOSED** |
+| Mitra shred lean | **PROPOSED** (select only now) |
+| C3 `max_name_len=48` · Tally T4 | **next** |
+| Aurora A1 · Q58 parked · Keaton gates | queued / gated |
 
 ---
 
-*May eight caps per child follow four children.*
+*May the cycle point and Mitra wait.*
