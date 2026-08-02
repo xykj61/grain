@@ -3,13 +3,13 @@
 *Two phrases have carried this tree's method for weeks — "researched with sources" and "siloed into our grain" — and tonight they receive their definitions. The grain is the set of standing commitments that give our wood its direction; the crossing is the disciplined passage an outside idea makes from the named world into the clean room. This brief accretes beside `../context/SILO_TECHNIQUE.md` and this stack's own foundation resin, saying what they left implicit: the grain itself, strand by strand, and the test every crossing must pass.*
 
 **Stamp:** `20260702.184312`
-**Last updated:** `20260802.142508` (three fusion strands + Twin Crossing · Keaton's word · pier `20260802.142508`)
+**Last updated:** `20260802.152308` (resin hygiene seated · Keaton's word · e213 · pier)
 **Language:** EN
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME — safety, performance, joy
 **Status:** Canon — vocabulary law beside the silo principle and the graduation rule · living accretion
 
-*Written together by Kaeden and Rio 3. Twin-crossing accretion by Keaton and Riyo (`20260802.141933`).*
+*Written together by Kaeden and Rio 3. Twin-crossing accretion by Keaton and Riyo (`20260802.141933`). Resin-hygiene accretion by Keaton and Riyo (`20260802.150850`–`20260802.152308`).*
 
 ---
 
@@ -69,6 +69,8 @@ The two-room law above still holds for outside ideas. A second doorway now names
 **Room two — one tree again.** Patches land, witnesses run, metal gifts (environment reds) are owned out loud, dual-push to `origin` + `xykj61`. Ashvini **a0** is the fusion landing itself; **a1** (gates that do work beyond pedestals) opens only on Keaton's kg. Glow Tend structures still cut with the reify strand: structures → `src/sur/` · utility marks → `src/lib/` · language impl stays in `glow/`.
 
 **The twin test.** Could a reader who holds only the resin and the living tip reconstruct the landing — beads verify, patches apply or the delta is named, witnesses speak GREEN or gift, and the grain's hard lines (no force-push · no shred · no keys · SEA · geode GATED) stay uncut? If the answer is yes, the twins crossed with the grain.
+
+**Resin hygiene (seated by Keaton's word, e213).** A resin is packaging, and packaging is finished the moment its landing is proven. The pattern per round: extract, verify every bead against the manifest, land the patches, run the witnesses, dual-push — and then the landing hand removes the zip and its extracted folder with a plain `rm`. Two walls keep this honest: removal comes only *after* the dual-push shows the content living in the tree, and the tree's own `.gitignore` refuses root-level zips outright, so transport never becomes testimony by accident. We chose `rm` over a to-be-shredded pen deliberately — a holding folder would braid ordinary packaging into the gated shred instrument and grow a second queue for material that carries nothing the tree lacks; the seats and the manifest lines already remember everything the zip ever knew.
 
 Landed proof at this accretion: a0 on tip after v2 (30 beads) · v3 delta M3+M4 when the pier had already moved — patch `0031` only, union on REMEMBER/seat map · Mantra pedestal tier **M1–M4 COMPLETE**.
 
