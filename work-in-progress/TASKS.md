@@ -1,23 +1,23 @@
 # Tasks — living pin
 
 **Language:** EN  
-**Last updated:** `20260802.012113` · voice Riyo  
+**Last updated:** `20260802.012348` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md) · prefer **git nib** over tip
 
 ---
 
-## Now — Equinox e197 · Aurora A1 (`20260802.012113`)
+## Now — Equinox e198 · Caravan C4 (`20260802.012348`)
 
-**Finishing edge:** Aurora A1 GREEN (`wire_capacity=512` in `src/sur/`). Tend ladder T1–T4 · C1–C3 · A1. Next = supervisor_exit or A2 or maybe.
+**Finishing edge:** three supervisor-exit meanings GREEN. Next = Tally maybe or Aurora A2 or Mantra weave.
 
 | Lap | Status |
 |-----|--------|
-| e191–e196 Tend + Q58 scope | **landed** |
-| **e197** A1 `shape-aurora-wire-capacity.glow` | **this sitting** |
-| supervisor_exit · A2 · maybe | **next** |
+| e197 Aurora A1 | **landed** |
+| **e198** C4 supervisor-exit meanings | **this sitting** |
+| maybe · A2 · Mantra weave | **next** |
 | Q58 Amphora bundle | **parked** |
 
 ---
 
-*May Caravan's three exits join the museum.*
+*May eight stop and zero cycle.*
