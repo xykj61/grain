@@ -1,0 +1,13 @@
+::  name       comlink address width gate
+::  shape      bytes - int (@u32) -> lawful - int (@u32)
+::  invariant  answers 1 while an address width stays within sixteen bytes; answers 0 past the wall
+::  example    4 -> 1 · 16 -> 1 · 20 -> 0
+::  readers    Comlink · Glow Tend R1 · Ashvini
+::  nib        equinox-e222-comlink-addr-width-v0
+::
+::  Ashvini R1 · width face beside the pier policy pedestal — STOA331 grammar.
+::  The seated shape names ipv4_addr_len=4 and ipv6_addr_len=16; this face makes
+::  that pair runnable. Both lawful widths pass; twenty speaks 0. Sibling
+::  records, never a union; the wall decides, the wire carries nothing new.
+|=  sample=@u32
+?:  (gth sample 16)  0  1
