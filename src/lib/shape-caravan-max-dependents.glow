@@ -1,0 +1,13 @@
+::  name       caravan max dependents
+::  shape      dependents - int (@u32)
+::  invariant  the capability table holds at most four dependent slots (max_dependents)
+::  example    4
+::  readers    Caravan · Glow Tend · Tally · Amphora · Ashvini nest-only
+::  nib        equinox-e194-caravan-tend-v0
+::
+::  Equinox e194 · nest-only Ashvini under Equinox B — first Caravan Glow Tend limb.
+::  Names max_dependents from caravan/capabilities.rye. Pedestal only; Rye still
+::  owns supervision. Does not restart processes from Glow.
++$  caravan-max-dependents-shape
+  $:  dependents=@u32
+  ==

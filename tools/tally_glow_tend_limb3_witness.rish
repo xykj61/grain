@@ -43,10 +43,10 @@ say "tally-tend-3: T1 and T2 still present..."
 let t1 = run ["sh" "-c" "test -f src/lib/shape-tally-max-gardens.glow -a -f src/lib/shape-tally-max-name-len.glow"]
 assert t1.ok else "tally-tend-3: earlier Tally pedestals missing"
 
-say "tally-tend-3: ladder honesty — no caravan/aurora .glow yet..."
-let none = run ["sh" "-c" "rg -l 'caravan|aurora' src edu --glob '*.glow' 2>/dev/null | wc -l | tr -d ' '"]
-assert none.ok else "tally-tend-3: caravan/aurora glow scan failed"
+say "tally-tend-3: ladder honesty — Aurora Glow Tend still absent..."
+let none = run ["sh" "-c" "rg -l 'aurora' src edu --glob '*.glow' 2>/dev/null | wc -l | tr -d ' '"]
+assert none.ok else "tally-tend-3: aurora glow scan failed"
 let nhits = trim none.out
-assert nhits == "0" else "tally-tend-3: caravan/aurora Glow Tend must wait their limbs"
+assert nhits == "0" else "tally-tend-3: Aurora Glow Tend must wait its limb"
 
 say "GREEN: tally Glow Tend limb 3 — copy_disjoint two preconditions; T1+T2 kept."

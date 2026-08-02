@@ -37,10 +37,10 @@ say "tally-tend-2: limb 1 still present..."
 let limb1 = run ["sh" "-c" "test -f src/lib/shape-tally-max-gardens.glow"]
 assert limb1.ok else "tally-tend-2: limb 1 pedestal missing"
 
-say "tally-tend-2: ladder honesty — no caravan/aurora .glow yet..."
-let none = run ["sh" "-c" "rg -l 'caravan|aurora' src edu --glob '*.glow' 2>/dev/null | wc -l | tr -d ' '"]
-assert none.ok else "tally-tend-2: caravan/aurora glow scan failed"
+say "tally-tend-2: ladder honesty — Aurora Glow Tend still absent..."
+let none = run ["sh" "-c" "rg -l 'aurora' src edu --glob '*.glow' 2>/dev/null | wc -l | tr -d ' '"]
+assert none.ok else "tally-tend-2: aurora glow scan failed"
 let nhits = trim none.out
-assert nhits == "0" else "tally-tend-2: caravan/aurora Glow Tend must wait their limbs"
+assert nhits == "0" else "tally-tend-2: Aurora Glow Tend must wait its limb"
 
 say "GREEN: tally Glow Tend limb 2 — max_name_len=32 pedestal; limb 1 kept."
