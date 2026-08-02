@@ -1,4 +1,5 @@
 | `20260802.005915` | [`20260802-005915_e191-tally-glow-tend-limb1.bron`](20260802-005915_e191-tally-glow-tend-limb1.bron) | e191 Tally Glow Tend limb 1 GREEN · max_gardens pedestal |
+| `20260802.010400` | [`20260802-010400_e192-tally-glow-tend-limb2.bron`](20260802-010400_e192-tally-glow-tend-limb2.bron) | e192 Tally Tend T2 max_name_len=32 · expanded need queue |
 | `20260802.005015` | [`20260802-005015_equinox-ashvini-nest-align.bron`](20260802-005015_equinox-ashvini-nest-align.bron) | Equinox align · Ashvini nest-only · Q58 → return_equinox_q58 |
 | `20260802.004627` | [`20260802-004627_ashvini-claude-handoff-pause.bron`](20260802-004627_ashvini-claude-handoff-pause.bron) | Ashvini Claude handoff · Glow Tend gap pause · Q58 parked |
 | `20260801.000743` | [`20260801-000743_e152-q8-seal-pour-green.bron`](20260801-000743_e152-q8-seal-pour-green.bron) | e152 Q8 seal cargo inside pour GREEN |
