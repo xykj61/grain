@@ -1,0 +1,23 @@
+# tools/caravan_caps_a1_gate_bound_witness.rish — Ashvini a1 second wall (e215).
+#
+#   rishi/bin/rishi run tools/caravan_caps_a1_gate_bound_witness.rish
+
+say "a1-caravan_caps: Language EN — caravan caps wall of eight, decided in Glow (STOA331)."
+
+let zig = "vendor/zig-toolchain/zig"
+let desk = "src/lib/gate-caravan-caps-bound-u32.glow"
+
+let ok = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" desk "4"]
+assert ok.ok else "a1-caravan_caps: accept side failed"
+assert ok.out contains "EXIT:0" else "a1-caravan_caps: accept did not exit 0"
+assert ok.out contains "1" else "a1-caravan_caps: accept did not speak 1"
+
+let over = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" desk "9"]
+assert over.ok else "a1-caravan_caps: over side failed"
+assert over.out contains "EXIT:0" else "a1-caravan_caps: over did not exit 0"
+assert over.out contains "0" else "a1-caravan_caps: over did not speak 0"
+
+let first = run ["sh" "-c" "test -f src/lib/gate-mantra-gen-floor-u32.glow"]
+assert first.ok else "a1-caravan_caps: the mantra face is missing"
+
+say "GREEN: a1 caravan_caps second wall — decides on both sides."

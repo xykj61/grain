@@ -1,0 +1,11 @@
+::  name       caravan caps bound gate
+::  shape      caps - int (@u32) -> lawful - int (@u32)
+::  invariant  answers 1 while caps stays within caps-per-dependent=8 (caps <= 7 before this one); answers 0 past the wall
+::  example    4 -> 1 · 9 -> 0
+::  readers    Caravan · Glow Tend a1 · Ashvini
+::  nib        equinox-e215-caravan-gate2-v0
+::
+::  Ashvini a1 · Caravan's second wall — STOA331 grammar. The pedestal named
+::  caps/dependent=8; this gate evaluates it at the door. Rye still enforces.
+|=  sample=@u32
+?:  (gth sample 7)  0  1

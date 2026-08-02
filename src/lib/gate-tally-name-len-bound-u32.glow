@@ -1,0 +1,11 @@
+::  name       tally name length bound gate
+::  shape      len - int (@u32) -> lawful - int (@u32)
+::  invariant  answers 1 while len stays within name-len=32 (len <= 31 before the closing byte); answers 0 past the wall
+::  example    12 -> 1 · 40 -> 0
+::  readers    Tally · Glow Tend a1 · Ashvini
+::  nib        equinox-e215-tally-gate2-v0
+::
+::  Ashvini a1 · Tally's second wall — STOA331 grammar. The pedestal named
+::  name-len=32; this gate evaluates it at the door. Rye still enforces.
+|=  sample=@u32
+?:  (gth sample 31)  0  1
