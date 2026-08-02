@@ -1,24 +1,25 @@
 # Tasks — living pin
 
 **Language:** EN  
-**Last updated:** `20260802.170137` · voice Riyo  
+**Last updated:** `20260802.170717` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md) · prefer **git nib** over tip
 
 ---
 
-## Now — e227 in-flight law (`20260802.170137`)
+## Now — e228 face cover (`20260802.170717`)
 
-**Finishing edge:** `glow_tend_era` in tree · in-flight law seated · a2 held.  
-**Prove:** `grep -n glow_tend_era tools/parity_ch02.rish` · pure suite · walk sampler.
+**Finishing edge:** era lap four legs · bind policy face in pure cover · a2 held.  
+**Prove:** `rishi/bin/rishi run tools/glow_tend_era_suite.rish` → `era 4/4 GREEN`.
 
 | Lap | Status |
 |-----|--------|
-| Pure · metal · house | **GREEN / LANDED** |
-| Stub class | **KEEP** |
+| Pure · four legs | **GREEN** |
+| Metal probe | **out of parity** |
+| House · glow_tend_era | **LANDED** |
 | a2 · R2–R4 · equality · Q58 | **Keaton** |
 | bar5 · SEA | **Keaton's hands** |
 
 ---
 
-*May never-break hold the day, and a resin stay in flight until the fetch.*
+*May never-break hold the day, and every socketless face keep its place in the net.*

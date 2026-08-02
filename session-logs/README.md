@@ -1,3 +1,4 @@
+| `20260802.170717` | [`20260802-170717_e228-v24-face-cover.bron`](20260802-170717_e228-v24-face-cover.bron) | e228 v24 · bind policy face joins pure era lap |
 | `20260802.170137` | [`20260802-170137_e227-v23-in-flight-law.bron`](20260802-170137_e227-v23-in-flight-law.bron) | e227 v23 · in-flight law · parity already GREEN |
 | `20260802.165718` | [`20260802-165718_e226-v22-parity-era-lap.bron`](20260802-165718_e226-v22-parity-era-lap.bron) | e226 v22 · pure era lap joins parity ch02 |
 | `20260802.165207` | [`20260802-165207_e225-v21-class-censused.bron`](20260802-165207_e225-v21-class-censused.bron) | e225 v21 · recursion stubs KEEP · walk sampler |
