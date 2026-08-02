@@ -1,0 +1,52 @@
+# tools/tally_glow_tend_limb3_witness.rish — third Tally Glow Tend limb (e193).
+#
+# Proves the copy_disjoint law pedestal names two preconditions, cites
+# tally/copy.rye, lowers cleanly, and T1+T2 still sit beside it.
+#
+#   rishi/bin/rishi run tools/tally_glow_tend_limb3_witness.rish
+
+say "tally-tend-3: Language EN — third Tally Glow Tend limb."
+say "tally-tend-3: Style Radiant — law pedestal beside Rye; no memcpy rewrite."
+say "tally-tend-3: Lens TAME — Equinox e193 · Ashvini nest-only · Equinox B."
+
+let zig = "vendor/zig-toolchain/zig"
+let desk = "src/lib/shape-tally-copy-preconditions.glow"
+
+say "tally-tend-3: placard..."
+let placard = run ["sh" "-c" "head -n 7 src/lib/shape-tally-copy-preconditions.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert placard.ok else "tally-tend-3: placard scan failed"
+let pcount = trim placard.out
+assert pcount == "6" else "tally-tend-3: placard missing six lines"
+
+say "tally-tend-3: example locks to two preconditions..."
+let ex = run ["sh" "-c" "grep -q 'example    2' src/lib/shape-tally-copy-preconditions.glow"]
+assert ex.ok else "tally-tend-3: example 2 missing on pedestal"
+let law = run ["sh" "-c" "grep -q 'copy_disjoint' src/lib/shape-tally-copy-preconditions.glow"]
+assert law.ok else "tally-tend-3: copy_disjoint name missing on pedestal"
+let elder = run ["sh" "-c" "grep -q 'tally/copy.rye' src/lib/shape-tally-copy-preconditions.glow"]
+assert elder.ok else "tally-tend-3: copy.rye citation missing"
+
+say "tally-tend-3: rye still states both preconditions..."
+let len_law = run ["sh" "-c" "grep -q 'target.len == source.len' tally/copy.rye"]
+assert len_law.ok else "tally-tend-3: length precondition missing in rye"
+let dis_law = run ["sh" "-c" "grep -q 'regions are disjoint' tally/copy.rye"]
+assert dis_law.ok else "tally-tend-3: disjoint precondition missing in rye"
+let memcpy = run ["sh" "-c" "grep -q '@memcpy' tally/copy.rye"]
+assert memcpy.ok else "tally-tend-3: guarded memcpy missing in rye"
+
+say "tally-tend-3: lower and run..."
+let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" desk]
+assert gate.ok else "tally-tend-3: shape lower/build/run failed"
+assert gate.out contains "EXIT:0" else "tally-tend-3: shape did not exit 0"
+
+say "tally-tend-3: T1 and T2 still present..."
+let t1 = run ["sh" "-c" "test -f src/lib/shape-tally-max-gardens.glow -a -f src/lib/shape-tally-max-name-len.glow"]
+assert t1.ok else "tally-tend-3: earlier Tally pedestals missing"
+
+say "tally-tend-3: ladder honesty — no caravan/aurora .glow yet..."
+let none = run ["sh" "-c" "rg -l 'caravan|aurora' src edu --glob '*.glow' 2>/dev/null | wc -l | tr -d ' '"]
+assert none.ok else "tally-tend-3: caravan/aurora glow scan failed"
+let nhits = trim none.out
+assert nhits == "0" else "tally-tend-3: caravan/aurora Glow Tend must wait their limbs"
+
+say "GREEN: tally Glow Tend limb 3 — copy_disjoint two preconditions; T1+T2 kept."

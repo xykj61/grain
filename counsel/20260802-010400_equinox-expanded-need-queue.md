@@ -32,8 +32,8 @@
 | --- | --- | --- | --- |
 | T1 | Tally `max_gardens=8` | **GREEN e191** | `src/lib/shape-tally-max-gardens.glow` |
 | T2 | Tally `max_name_len=32` | **GREEN e192** | `src/lib/shape-tally-max-name-len.glow` |
-| T3 | Tally `copy_disjoint` law note | **next kg** | Glow placard · Rye `tally/copy.rye` implements |
-| C1 | Caravan first pedestal | queued | lean `max_children=4` (`caravan/capabilities.rye`) |
+| T3 | Tally `copy_disjoint` law note | **GREEN e193** | `src/lib/shape-tally-copy-preconditions.glow` |
+| C1 | Caravan first pedestal | **next kg** | lean `max_children=4` (`caravan/capabilities.rye`) |
 | C2 | Caravan caps / name bounds | queued | `max_caps_per_child=8` · `max_name_len=48` |
 | A1 | Aurora first pedestal | queued | boot/seed bound from `aurora/src/` |
 | G* | Glow rune languages | ongoing | bartis · barket · shape · PLEAC living; Tend = pedestals in `src/` |
@@ -45,7 +45,7 @@
 
 | Home | Rye / living | Glow Tend | Next need |
 | --- | --- | --- | --- |
-| **Tally** | gardens · copy · parse_int · marks GREEN | T1+T2 pedestals | T3 copy-law note |
+| **Tally** | gardens · copy · parse_int · marks GREEN | T1–T3 pedestals GREEN | Caravan next on Tend ladder |
 | **Caravan** | supervision · capabilities · chain | **none** | C1 pedestal |
 | **Aurora** | `aurora/src/*.rye` boot | **none** | A1 pedestal |
 | **Amphora** | vessel · restore · dogfood · J4 plan | N/A (Rye CLI wave) | Q58 when Tend word; Q53 gated |
@@ -89,9 +89,9 @@ Claude Max renew · Vultr SEA · class-and-rooms · token rite · seat 128 · ge
 
 ## Recommended kg order (Cursor-sole)
 
-1. T3 copy-law Glow note + witness  
+1. ~~T3 copy-law~~ **GREEN e193**  
 2. C1 Caravan `max_children` pedestal  
-3. A1 Aurora pedestal  
+3. C2 caps/name · A1 Aurora pedestal  
 4. Light: yonder corpus-twin tsvs · trim WIP hammock table (on word)  
 5. Tend ladder word → Q58 bundle cut  
 

@@ -1,0 +1,13 @@
+::  name       tally copy preconditions
+::  shape      preconditions - int (@u32)
+::  invariant  copy_disjoint asserts exactly two laws before memcpy (lengths · disjoint)
+::  example    2
+::  readers    Tally · Glow Tend · Caravan · Mantra · Amphora · Ashvini nest-only
+::  nib        equinox-e193-tally-tend-v0
+::
+::  Equinox e193 · nest-only Ashvini under Equinox B — third Tally Glow Tend limb.
+::  Names the copy_disjoint precondition count from tally/copy.rye. Rye still
+::  implements the mark; Glow Tend opens the law as a pedestal, not a rewrite.
++$  tally-copy-preconditions-shape
+  $:  preconditions=@u32
+  ==
