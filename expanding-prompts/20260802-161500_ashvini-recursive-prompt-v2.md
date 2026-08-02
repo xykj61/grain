@@ -36,6 +36,7 @@ STATE (refresh the needles from files every round):
   LAW (e223): a seat is a photograph; the tree is the living pin — read names at use-hour.
   LAW (e224): exclude counsel/ and expanding-prompts/ from inbound reference counts.
   LAW (e225): when the tip moves, re-cut; measure a cost before spending it.
+  LAW (e234): when the tip has NOT moved, the resin stands as cut — re-cutting is churn.
   LAW (e226): in flight is not landed — a resin handed over is only sent until a fetch
     shows it in the tree. Measure a suspicion before writing it.
   LAW (e227): sort a piece by what it NEEDS, not by the company its witness keeps.
@@ -47,6 +48,7 @@ STATE (refresh the needles from files every round):
     Witness: tools/ad_walk_sample_witness.rish.
   LAW (e232): a tempting rule meets its census first — "no" is as carefully earned as
     "yes." Prompt-family shelf declined (4 · 19,432 B · two live).
+  LAW (e233): a quiet round is reported as quiet — walkthrough yield is insight, not tidying.
   R1 FINAL — pier policy=1 · bind face · addr-width · rival WITHDRAWN.
   R2–R4 = frame seam — word AND fresh check-in each. Ruling:
     counsel/20260802-163000_e219-comlink-module-seam-ruling.md
