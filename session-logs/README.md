@@ -1,3 +1,4 @@
+| `20260802.173057` | [`20260802-173057_e232-v28-sampler-guard.bron`](20260802-173057_e232-v28-sampler-guard.bron) | e232 v28 · sampler own witness · supersedes v27 |
 | `20260802.172406` | [`20260802-172406_e231-v27-age-beside-count.bron`](20260802-172406_e231-v27-age-beside-count.bron) | e231 v27 · age beside count · supersedes v26 |
 | `20260802.171405` | [`20260802-171405_e230-v26-dated-only.bron`](20260802-171405_e230-v26-dated-only.bron) | e230 v26 · sampler dated artifacts only · supersedes v25 |
 | `20260802.171102` | [`20260802-171102_e229-v25-sampler-fix.bron`](20260802-171102_e229-v25-sampler-fix.bron) | e229 v25 · sampler README skip · supersedes v24 |
