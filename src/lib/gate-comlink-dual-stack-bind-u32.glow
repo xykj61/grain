@@ -1,0 +1,13 @@
+::  name       comlink dual-stack bind gate
+::  shape      families - int (@u32) -> lawful - int (@u32)
+::  invariant  answers 1 when the bind sample offers both families (sample > 0); answers 0 for an IPv4-only sample when dual-stack policy is on
+::  example    1 -> 1 · 0 -> 0
+::  readers    Comlink · Glow Tend · Ashvini
+::  nib        equinox-e220-comlink-r1-v0
+::
+::  Equinox e220 · Comlink R1 deciding wall beside the dual-stack pedestal.
+::  Sample 1 = dual-family bind offered; sample 0 = IPv4-only (refused).
+::  STOA331 grammar. Does not open a socket; the rish witness proves host
+::  dual-stack bind capability outside comlink/.
+|=  sample=@u32
+?:  (gth sample 0)  1  0

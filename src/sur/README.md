@@ -1,8 +1,8 @@
 # sur — Structures
 
 **Language:** EN  
-**Last updated:** `20260802.142508` (Equinox e208 — Aurora A4 signature_length)  
-**Status:** Living — room open; Surface pedestals + Glow Tend structure pedestals
+**Last updated:** `20260802.160922` (Equinox e220 — Comlink R1 dual-stack policy)  
+**Status:** Living — room open; Surface pedestals + Glow Tend structure pedestals + Comlink R1
 
 The data-structure museum: every non-networked shape on its own pedestal, viewable in isolation, named once and composed elsewhere. House style: [`PLACARD.md`](PLACARD.md). Glow Tend **structures** accrete here; shared gates stay in [`../lib/`](../lib/README.md).
 
@@ -33,6 +33,7 @@ The data-structure museum: every non-networked shape on its own pedestal, viewab
 | [`shape-mantra-diff-field-count.glow`](shape-mantra-diff-field-count.glow) | Mantra Diff two fields (Tend M3) | `tools/mantra_glow_tend_limb3_witness.rish` |
 | [`shape-mantra-store-dir-count.glow`](shape-mantra-store-dir-count.glow) | Mantra Store three dirs (Tend M4) | `tools/mantra_glow_tend_limb4_witness.rish` |
 | [`shape-caravan-supervisor-exit-meanings.glow`](shape-caravan-supervisor-exit-meanings.glow) | Caravan three exit meanings (Tend C4) | `tools/caravan_glow_tend_limb4_witness.rish` |
+| [`shape-comlink-ipv6-dual-stack.glow`](shape-comlink-ipv6-dual-stack.glow) | Comlink dual-stack policy=1 (R1) | `tools/comlink_r1_dual_stack_witness.rish` |
 
 ```
 rishi/bin/rishi run tools/mantra_glow_tend_limb1_witness.rish
@@ -42,6 +43,7 @@ rishi/bin/rishi run tools/mantra_glow_tend_limb4_witness.rish
 rishi/bin/rishi run tools/aurora_glow_tend_limb3_witness.rish
 rishi/bin/rishi run tools/tally_glow_tend_limb6_witness.rish
 rishi/bin/rishi run tools/caravan_glow_tend_limb4_witness.rish
+rishi/bin/rishi run tools/comlink_r1_dual_stack_witness.rish
 ```
 
-Further candidates: Ashvini a1 (gates that do work) on Keaton's kg. Pedestal tier named leaves COMPLETE — Aurora A1–A4 · Mantra M1–M4 · Tally/Caravan as seated. Reify map: [`../../counsel/20260802-011821_q58-scope-and-tend-src-reify.md`](../../counsel/20260802-011821_q58-scope-and-tend-src-reify.md).
+Tend pedestal tier COMPLETE — Aurora A1–A4 · Mantra M1–M4 · Tally/Caravan as seated · Comlink R1. a1 deciding gates + a2 fold lean wait elsewhere. Reify map: [`../../counsel/20260802-011821_q58-scope-and-tend-src-reify.md`](../../counsel/20260802-011821_q58-scope-and-tend-src-reify.md).
