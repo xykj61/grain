@@ -35,6 +35,8 @@ STATE (refresh the needles from files every round):
   LAW (e223): a seat is a photograph; the tree is the living pin — read names at use-hour.
   LAW (e224): exclude counsel/ and expanding-prompts/ from inbound reference counts.
   LAW (e225): when the tip moves, re-cut; measure a cost before spending it.
+  LAW (e226): in flight is not landed — a resin handed over is only sent until a fetch
+    shows it in the tree. Measure a suspicion before writing it.
   R1 FINAL — pier policy=1 · bind face · addr-width · rival WITHDRAWN.
   R2–R4 = frame seam — word AND fresh check-in each. Ruling:
     counsel/20260802-163000_e219-comlink-module-seam-ruling.md
