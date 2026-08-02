@@ -43,6 +43,8 @@ STATE (refresh the needles from files every round):
   LAW (e229): read the needle, not the report; fix the CLASS, not the instance.
   LAW (e230): age beside the count — no verdict past KEEP without age; a count is a
     claim about a pattern, the line is the fact. Sampler: dated only · inbound · age.
+  LAW (e231): guard the instrument too — luck-found fixes owe a witness that can red.
+    Witness: tools/ad_walk_sample_witness.rish.
   R1 FINAL — pier policy=1 · bind face · addr-width · rival WITHDRAWN.
   R2–R4 = frame seam — word AND fresh check-in each. Ruling:
     counsel/20260802-163000_e219-comlink-module-seam-ruling.md
