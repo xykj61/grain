@@ -1,0 +1,13 @@
+::  name       aurora living stages
+::  shape      stages - int (@u32)
+::  invariant  Aurora's freestanding ladder holds exactly six living stages (seed · relay · named · sealed · wire · posted)
+::  example    6
+::  readers    Aurora · Glow Tend · Sur museum · Ashvini nest-only
+::  nib        equinox-e202-aurora-tend-v0
+::
+::  Equinox e202 · Aurora A3 — third Aurora structure pedestal in src/sur/.
+::  Names the six runnable stages from aurora/README.md and aurora/run.sh.
+::  Pedestal only; kumara/deciding stay helpers; bare-metal boot stays in aurora/src.
++$  aurora-living-stages-shape
+  $:  stages=@u32
+  ==
