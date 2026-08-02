@@ -1,3 +1,4 @@
+| `20260802.005015` | [`20260802-005015_equinox-ashvini-nest-align.bron`](20260802-005015_equinox-ashvini-nest-align.bron) | Equinox align · Ashvini nest-only · Q58 → return_equinox_q58 |
 | `20260802.004627` | [`20260802-004627_ashvini-claude-handoff-pause.bron`](20260802-004627_ashvini-claude-handoff-pause.bron) | Ashvini Claude handoff · Glow Tend gap pause · Q58 parked |
 | `20260801.000743` | [`20260801-000743_e152-q8-seal-pour-green.bron`](20260801-000743_e152-q8-seal-pour-green.bron) | e152 Q8 seal cargo inside pour GREEN |
 | `20260801.040828` | [`20260801-040828_e153-q9-kumara-stamp-green.bron`](20260801-040828_e153-q9-kumara-stamp-green.bron) | e153 Q9 Kumara stamp inside pour GREEN |
