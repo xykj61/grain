@@ -1,0 +1,42 @@
+# tools/rishi_a1_gate_walls_witness.rish — Ashvini a1: the shell's own walls (e243).
+#
+#   rishi/bin/rishi run tools/rishi_a1_gate_walls_witness.rish
+#
+# Pure by construction: no socket, no network, no host state. Two walls that
+# rishi/src/main.rye already names in Rye — env bindings and kept history —
+# made answerable in Glow under the STOA331 grammar. Each leg checks the elder
+# still carries the number, so a moved constant reds here rather than drifting.
+
+say "rishi-walls: Language EN — the shell's own ceilings, decided in Glow."
+say "rishi-walls: Lens TAME — pure legs; Rye still enforces at runtime."
+
+let zig = "vendor/zig-toolchain/zig"
+let env_face = "src/lib/gate-rishi-env-bindings-bound-u32.glow"
+let hist_face = "src/lib/gate-rishi-history-bound-u32.glow"
+
+say "rishi-walls: env bindings — within 512 answers 1, past it answers 0..."
+let env_ok = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" env_face "300"]
+assert env_ok.ok else "rishi-walls: env within-wall failed to run"
+assert env_ok.out contains "EXIT:0" else "rishi-walls: env within-wall did not exit 0"
+assert env_ok.out contains "1" else "rishi-walls: 300 did not speak 1"
+let env_over = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" env_face "900"]
+assert env_over.ok else "rishi-walls: env past-wall failed to run"
+assert env_over.out contains "0" else "rishi-walls: 900 did not speak 0"
+let env_elder = run ["sh" "-c" "grep -q 'const max_env_bindings: u32 = 512' rishi/src/main.rye"]
+assert env_elder.ok else "rishi-walls: max_env_bindings moved in rishi/src/main.rye"
+
+say "rishi-walls: kept history — within 50 answers 1, past it answers 0..."
+let hist_ok = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" hist_face "12"]
+assert hist_ok.ok else "rishi-walls: history within-wall failed to run"
+assert hist_ok.out contains "1" else "rishi-walls: 12 did not speak 1"
+let hist_over = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" hist_face "80"]
+assert hist_over.ok else "rishi-walls: history past-wall failed to run"
+assert hist_over.out contains "0" else "rishi-walls: 80 did not speak 0"
+let hist_elder = run ["sh" "-c" "grep -q 'const max_history: u32 = 50' rishi/src/main.rye"]
+assert hist_elder.ok else "rishi-walls: max_history moved in rishi/src/main.rye"
+
+say "rishi-walls: the elder a1 gates still stand..."
+let prior = run ["sh" "-c" "test -f src/lib/gate-tally-garden-bound-u32.glow -a -f src/lib/gate-mantra-gen-floor-u32.glow"]
+assert prior.ok else "rishi-walls: an elder a1 gate is missing"
+
+say "GREEN: rishi a1 walls — env 512 and history 50 decide on both sides; elders cited live."
