@@ -1,8 +1,12 @@
-# dated_preference_auditor.rish — wrapper → dated_amendment_audit.sh (e239).
-# Canonical: sh tools/dated_amendment_audit.sh
+# dated_preference_auditor.rish — advisory report wrapper (e238).
+# Never reds. Body: tools/dated_preference_auditor.sh
+#
+#   rishi/bin/rishi run tools/dated_preference_auditor.rish
 
-say "dated-preference-auditor: forwarding to dated_amendment_audit (canonical e239)."
-let body = run ["sh" "tools/dated_amendment_audit.sh"]
+say "dated-preference-auditor: Language EN — preference report, not a gate."
+say "dated-preference-auditor: Lens TAME — measure the superseding-seat preference."
+
+let body = run ["sh" "tools/dated_preference_auditor.sh"]
 say body.out
-assert body.ok else "dated-amendment-audit: shell failed"
-say "GREEN: dated-amendment-audit — report printed; no gate."
+assert body.ok else "dated-preference-auditor: shell failed (instrument error, not a preference red)"
+say "GREEN: dated-preference-auditor — report printed; no gate."
