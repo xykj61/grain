@@ -1,13 +1,14 @@
 # The Work-in-Progress Stack
 
 **Language:** EN
-**Last updated:** `20260802.141933` (EDT) · Equinox J4 · Ashvini a0 · Mantra M1–M4 COMPLETE · standing voice Riyo
+**Last updated:** `20260802.142508` (EDT) · Equinox J4 · A1–A4 · M1–M4 COMPLETE · standing voice Riyo
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Riyo
 **Status:** Foundation — living workbench; prefer **git nib** · see [`REMEMBER.md`](REMEMBER.md) · [`ROADMAP.md`](ROADMAP.md) · [`TASKS.md`](TASKS.md)
 
-**Finishing edge now:** Tend T1–T6 · C1–C4 · A1–A3 · M1–M4 GREEN · next Aurora A4 · a1 gated · Q58 parked · Cursor-sole.
+**Finishing edge now:** Tend T1–T6 · C1–C4 · A1–A4 · M1–M4 GREEN · a1 gated on Keaton's kg · Q58 parked · Cursor-sole.
 **Habit:** full fusion baton each round → `expanding-prompts/`.
+**Ontology:** accrete-never-break along with accrete-sometimes-breach.
 
 **Health (this sitting):** `ROADMAP`/`TASKS` current. `REMEMBER.md` ~56 KiB **over** `living_pin_max_bytes` (24576) — fold debt. `ready-to-ask-claude.md` ~57 KiB Claude-era — archive on word. Corpus-twin `.tsv` + dated baselines cold → `yonder/` on word. Hammock index below is **July-stale** — truth is REMEMBER + ROADMAP + TASKS + need queue.
 
