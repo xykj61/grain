@@ -1,10 +1,28 @@
 # lib — Libraries
 
 **Language:** EN  
-**Last updated:** `20260802.012507` (Equinox e199 — Tally T5 maybe poles)  
-**Status:** Living — room open; Tally Tend utilities + Caravan C1–C2 bound pedestals
+**Last updated:** `20260802.153121` (Equinox e216 — a1 suite; seven deciding gates)
+**Status:** Living — room open; Tally Tend utilities · a1 deciding gates ×7 across four families (STOA331) · one-lap suite `tools/glow_tend_a1_suite.rish`
 
-Shared gates and utility pedestals in Glow — the sameness many desks call and none should re-carve. Structure museum pieces for Tend live under [`../sur/`](../sur/README.md).
+Shared gates and utility pedestals in Glow — the sameness many desks call and none should re-carve. ## The a1 Deciding Gates (STOA331)
+
+Seven gates, four families, both sides each — proven whole in one lap by `tools/glow_tend_a1_suite.rish`:
+
+```
+rishi/bin/rishi run tools/glow_tend_a1_suite.rish
+```
+
+| Gate | Wall | Sides |
+|------|------|-------|
+| `gate-tally-dec-u32` | predecessor (call body) | EXIT-proof |
+| `gate-tally-garden-bound-u32` | gardens = 8 | 3→1 · 9→0 |
+| `gate-caravan-dependents-bound-u32` | dependents = 4 | 2→1 · 5→0 |
+| `gate-aurora-wire-bound-u32` | wire = 512 | 128→1 · 600→0 |
+| `gate-mantra-gen-floor-u32` | gen ≥ 1 | 1→1 · 0→0 |
+| `gate-tally-name-len-bound-u32` | name-len = 32 | 12→1 · 40→0 |
+| `gate-caravan-caps-bound-u32` | caps/dependent = 8 | 4→1 · 9→0 |
+
+Structure museum pieces for Tend live under [`../sur/`](../sur/README.md).
 
 ## First residents
 
