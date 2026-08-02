@@ -1,0 +1,12 @@
+::  name       tally parse-int laws
+::  shape      laws - int (@u32)
+::  invariant  parse_int refuses two corruptions at the door (leading zero · invalid character)
+::  example    2
+::  readers    Tally · Glow Tend · Caravan · Sur museum · Ashvini nest-only
+::  nib        equinox-e196-tally-tend-v0
+::
+::  Equinox e196 · Tally T4 — structure pedestal in src/sur/ naming parse_int laws.
+::  Rye tally/parse_int.rye remains the implementer; Glow Tend names the refuse count.
++$  tally-parse-int-laws-shape
+  $:  laws=@u32
+  ==
