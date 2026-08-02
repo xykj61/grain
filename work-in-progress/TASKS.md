@@ -1,26 +1,26 @@
 # Tasks — living pin
 
 **Language:** EN  
-**Last updated:** `20260802.182720` · voice Riyo  
+**Last updated:** `20260802.183244` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md) · prefer **git nib** over tip
 
 ---
 
-## Now — e237 drop path · dated-law · leaf renew (`20260802.182720`)
+## Now — e237 valve · spend returned (`20260802.183244`)
 
-**Finishing edge:** dated-law narrowed · drop path `~/grain/` · 905 logs folded · three spent stubs yondered + Mitra-queued (written) · a2 held.  
-**Prove:** `rishi/bin/rishi run tools/dated_guard.rish` · amendable GREEN · Tier 1 RED · era suite GREEN.
+**Finishing edge:** narrowing withdrawn · three-tier law restored untouched · 77 unmarked (not 700) · drop path stands · Mitra shred held · a2 held.  
+**Prove:** valve seat present · silent dated staged mod RED · `living-vs-dated.md` matches tip `f96512ec4d` text.
 
 | Lap | Status |
 |-----|--------|
 | Pure · metal · house · walk · guard | **GREEN** |
-| Dated-law (2) · e237 drop path | **SEATED** |
-| Leaf renew · session-logs fold · Mitra queue | **DONE** |
+| Valve seat (v35) · spend returned | **SEATED** |
+| Auditor question | **Keaton** |
 | a2 · R2–R4 · equality · Q58 | **Keaton** |
-| Mitra shred execute · Class O | **GATED** |
+| Mitra shred execute | **HELD** |
 | bar5 · SEA | **Keaton's hands** |
 
 ---
 
-*May every prompt name ~/grain/. May a queue wait for its cut.*
+*May we read the whole law before proposing to improve it.*
