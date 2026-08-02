@@ -40,8 +40,9 @@ STATE (refresh the needles from files every round):
     shows it in the tree. Measure a suspicion before writing it.
   LAW (e227): sort a piece by what it NEEDS, not by the company its witness keeps.
   LAW (e228): run the instrument, never merely trust it.
-  LAW (e229): read the needle, not the report; fix the CLASS, not the instance; age
-    belongs beside the count. Sampler draws dated artifacts only.
+  LAW (e229): read the needle, not the report; fix the CLASS, not the instance.
+  LAW (e230): age beside the count — no verdict past KEEP without age; a count is a
+    claim about a pattern, the line is the fact. Sampler: dated only · inbound · age.
   R1 FINAL — pier policy=1 · bind face · addr-width · rival WITHDRAWN.
   R2–R4 = frame seam — word AND fresh check-in each. Ruling:
     counsel/20260802-163000_e219-comlink-module-seam-ruling.md
@@ -56,7 +57,7 @@ VANE ROADMAP (proposed · active-designing/20260802-161500_the-vane-roadmap-…)
 
 FILE-WALKTHROUGH RITUAL — mechanical: `sh tools/ad_walk_sample.sh 5`.
   Dated artifacts only (YYYYMMDD-HHMMSS_slug). Living docs never drawn. Shelved classes
-  skipped. Inbound counts exclude counsel/ and expanding-prompts/. Age belongs beside count.
+  skipped. Each line: inbound=N age=Nd. Counts exclude counsel/ and expanding-prompts/.
   Verdicts: UPDATE · ARCHIVE · YONDER · QUEUE-FOR-MITRA (written only; Mitra never auto-deletes).
   SHELF: recursion stubs — 45 · ~29 KB · STANDING KEEP; e137/e147 queue WITHDRAWN.
   LAW (e219): count inbound references BEFORE any verdict past KEEP — a file with many
