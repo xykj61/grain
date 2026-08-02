@@ -1,15 +1,17 @@
 # lib — Libraries
 
 **Language:** EN  
-**Last updated:** `20260802.162841` (Equinox e222 — R1 collision · addr-width face beside pier pedestal)
-**Status:** Living — room open; Tally Tend utilities · a1 deciding gates ×7 · Comlink R1 faces · suite `tools/glow_tend_a1_suite.rish`
+**Last updated:** `20260802.163500` (Equinox e223 — two laps: pure era suite + metal R1)
+**Status:** Living — room open; Tally Tend utilities · a1 deciding gates ×7 · Comlink R1 faces · pure + metal laps
 
 Shared gates and utility pedestals in Glow — the sameness many desks call and none should re-carve. ## The a1 Deciding Gates (STOA331)
 
-Seven gates, four families, both sides each — proven whole in one lap by `tools/glow_tend_a1_suite.rish`:
+Seven gates, four families, both sides each — proven whole in one lap by `tools/glow_tend_a1_suite.rish`. The era also has two honestly separated laps:
 
 ```
-rishi/bin/rishi run tools/glow_tend_a1_suite.rish
+rishi/bin/rishi run tools/glow_tend_era_suite.rish   # pure lap: a1 + R1 socketless (any host)
+rishi/bin/rishi run tools/comlink_r1_dual_stack_witness.rish  # metal lap: binds both families
+rishi/bin/rishi run tools/glow_tend_a1_suite.rish    # a1 alone
 ```
 
 | Gate | Wall | Sides |

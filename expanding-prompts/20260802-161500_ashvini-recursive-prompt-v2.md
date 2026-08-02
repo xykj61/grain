@@ -30,11 +30,10 @@ STATE (refresh the needles from files every round):
     dec · tally-bound · caravan-bound · aurora-bound · mantra-gen-floor ·
     tally-name-len · caravan-caps. Grammar STOA331 (?: gth face lit lit).
   Amphora bundle lane DONE (sha3 wall · clone-proof · torn/basis negatives).
-  Comlink remoting: R1 WHOLE — pier pedestal policy=1 (three walls inline) ·
-    bind face 1→1·0→0 · addr-width face 4→1·16→1·20→0 · rival WITHDRAWN (e222).
-    Leg A+B GREEN on Framework (counsel leg B RED without IPv6 is correct).
-    Witness: tools/comlink_r1_dual_stack_witness.rish. R2–R4 = frame seam —
-    word AND fresh check-in each. Ruling:
+  TWO LAPS (e223): PURE tools/glow_tend_era_suite.rish (a1 + R1 socketless, any host) ·
+    METAL tools/comlink_r1_dual_stack_witness.rish (bind both families).
+  R1 WHOLE — pier pedestal policy=1 · bind face · addr-width face · rival WITHDRAWN.
+  R2–R4 = frame seam — word AND fresh check-in each. Ruling:
     counsel/20260802-163000_e219-comlink-module-seam-ruling.md
 
 VANE ROADMAP (proposed · active-designing/20260802-161500_the-vane-roadmap-…):

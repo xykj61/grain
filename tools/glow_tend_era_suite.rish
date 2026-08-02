@@ -1,0 +1,52 @@
+# tools/glow_tend_era_suite.rish — the pure era lap: everything any host can prove (e222).
+#
+#   rishi/bin/rishi run tools/glow_tend_era_suite.rish
+#
+# Two laps now exist, honestly separated:
+#   THIS lap is PURE — the a1 suite plus R1's socketless legs. It runs on any
+#   host, including a bench with no IPv6 stack at all, and a red here is always
+#   a real red rather than a missing network family.
+#   The METAL lap is tools/comlink_r1_dual_stack_witness.rish, whose leg B binds
+#   both families and therefore answers only on a host that offers both.
+# Neither replaces the other: the pure lap proves the work, the metal lap proves
+# the host. Together they cover the era whole.
+
+say "era: Language EN — the pure lap (a1 seven gates + R1's socketless legs)."
+say "era: Lens TAME — no socket in this lap; the metal lap owns the bind probe."
+
+let zig = "vendor/zig-toolchain/zig"
+# Living tip after e222 collision: width face is addr-width (not the elder addr-bytes name).
+let face = "src/lib/gate-comlink-addr-width-u32.glow"
+let desk = "src/sur/shape-comlink-ipv6-dual-stack.glow"
+
+say "era 1/3: the a1 suite — seven deciding gates, both sides each..."
+let a1 = run ["rishi/bin/rishi" "run" "tools/glow_tend_a1_suite.rish"]
+assert a1.ok else "era: the a1 suite RED — read its own line for the failing gate"
+say "era 1/3 GREEN — a1 whole."
+
+say "era 2/3: R1's pedestal — placard, example, walls named in its own words..."
+let placard = run ["sh" "-c" "head -n 7 src/sur/shape-comlink-ipv6-dual-stack.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert placard.ok else "era: R1 placard scan failed"
+let pcount = trim placard.out
+assert pcount == "6" else "era: R1 placard missing six lines"
+# Pier pedestal speaks "binds never dials"; accept either phrasing of the ruled wall.
+let walls = run ["sh" "-c" "(grep -qE 'bind never dial|binds never dials' src/sur/shape-comlink-ipv6-dual-stack.glow) && grep -q 'family_wait_ms=250' src/sur/shape-comlink-ipv6-dual-stack.glow && grep -q 'ipv6_addr_len=16' src/sur/shape-comlink-ipv6-dual-stack.glow"]
+assert walls.ok else "era: R1's ruled walls left the pedestal's own words"
+let shape = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" desk]
+assert shape.ok else "era: R1 shape lower/build/run failed"
+assert shape.out contains "EXIT:0" else "era: R1 shape did not exit 0"
+say "era 2/3 GREEN — R1's policy stands and carries its walls."
+
+say "era 3/3: R1's width face — both lawful lengths pass, a wider one refuses..."
+let four = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" face "4"]
+assert four.ok else "era: four-byte width failed to run"
+assert four.out contains "1" else "era: four bytes did not speak 1"
+let sixteen = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" face "16"]
+assert sixteen.ok else "era: sixteen-byte width failed to run"
+assert sixteen.out contains "1" else "era: sixteen bytes did not speak 1"
+let wide = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" face "20"]
+assert wide.ok else "era: over-wide run failed"
+assert wide.out contains "0" else "era: twenty bytes did not speak 0"
+say "era 3/3 GREEN — the sibling lengths decide."
+
+say "GREEN: era pure lap — seven a1 gates and R1's socketless legs, provable on any host."
