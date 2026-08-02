@@ -1,3 +1,4 @@
+| `20260802.160154` | [`20260802-160154_e219-v15-vane-roadmap-fuse.bron`](20260802-160154_e219-v15-vane-roadmap-fuse.bron) | e219 v15 fuse · vane roadmap · a2 lean · prompt v2 · suite GREEN |
 | `20260802.154516` | [`20260802-154516_e218-align-comlink-remoting.bron`](20260802-154516_e218-align-comlink-remoting.bron) | e218 align · Comlink remoting silo · AD walk · OpenSSH+Mosh |
 | `20260802.153408` | [`20260802-153408_e216-a1-suite-v13-fuse.bron`](20260802-153408_e216-a1-suite-v13-fuse.bron) | e216 a1 suite one-lap GREEN · seven gates · v13 |
 | `20260802.152948` | [`20260802-152948_e215-seven-gates-v12-fuse.bron`](20260802-152948_e215-seven-gates-v12-fuse.bron) | e215 second walls · a1×7 · equality rune parked · v12 |
