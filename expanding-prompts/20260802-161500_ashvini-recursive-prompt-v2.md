@@ -1,7 +1,8 @@
 # Ashvini Recursive Prompt v2
 
-**Stamp:** `20260802.161500` · refreshed `20260802.183244` · **Voice:** Riyo · **Style:** Radiant
+**Stamp:** `20260802.161500` · refreshed `20260802.184012` · **Voice:** Riyo · **Style:** Radiant
 **Radiant pass `20260802.183244`** — e237 valve: narrowing withdrawn; drop path + measurement lines only.
+**Radiant pass `20260802.184012`** — e237 raced seating: tree kept Tier 2-freeze; withdrawal superseded.
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
 
@@ -57,10 +58,11 @@ STATE (refresh the needles from files every round):
     doorway, not a past auditor; measure before calling a practice a fault; a steady count
     across two tips means the practice is historical, not ongoing.
   LAW (e237): drop path is part of the crossing — ~/grain/ only; absent resin REPORTED.
-    Read the whole law before proposing to improve it — an unnecessary approval is
-    returned, not spent. Adjective gives way to a number. Dated law UNCHANGED: T1
-    absolute · T2 Radiant pass or erratum only · T3 free. Measured counsel mods:
-    255 → 159 Radiant · 19 erratum · 77 unmarked. Auditor question still open.
+    When two honest readings race, the TREE decides — rewrite the seat against the
+    world it lands in, erratum recorded. Dated law SEATED (pier shape): T1 absolute ·
+    T2-freeze names guarded classes (witness · golden · receipt · keys · fixtures) ·
+    T2 amendable with superseding seat preferred · T3 free. Measured: 255 → 159
+    Radiant · 19 erratum · 77 unmarked. Auditor (report) still open — more useful now.
   R1 FINAL — pier policy=1 · bind face · addr-width · rival WITHDRAWN.
   R2–R4 = frame seam — word AND fresh check-in each. Ruling:
     counsel/20260802-163000_e219-comlink-module-seam-ruling.md
