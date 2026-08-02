@@ -37,10 +37,8 @@ say "caravan-tend-1: Tally Tend T1–T3 still present..."
 let tally = run ["sh" "-c" "test -f src/lib/shape-tally-max-gardens.glow -a -f src/lib/shape-tally-max-name-len.glow -a -f src/lib/shape-tally-copy-preconditions.glow"]
 assert tally.ok else "caravan-tend-1: Tally pedestals missing"
 
-say "caravan-tend-1: ladder honesty — Aurora Glow Tend still absent..."
-let none = run ["sh" "-c" "rg -l 'aurora' src edu --glob '*.glow' 2>/dev/null | wc -l | tr -d ' '"]
-assert none.ok else "caravan-tend-1: aurora glow scan failed"
-let nhits = trim none.out
-assert nhits == "0" else "caravan-tend-1: Aurora Glow Tend must wait its limb"
+say "tend-ladder: Aurora A1 may be present..."
+let aurora = run ["sh" "-c" "test -f src/sur/shape-aurora-wire-capacity.glow"]
+assert aurora.ok else "tend-ladder: Aurora A1 pedestal missing after e197"
 
-say "GREEN: caravan Glow Tend limb 1 — max_dependents=4 pedestal; Aurora still next."
+say "GREEN: caravan Glow Tend limb 1 — max_dependents=4 pedestal; Tend ladder continues."
