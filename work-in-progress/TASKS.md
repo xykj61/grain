@@ -1,29 +1,27 @@
 # Tasks — living pin
 
 **Language:** EN  
-**Last updated:** `20260802.162116` · voice Riyo  
+**Last updated:** `20260802.162917` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md) · prefer **git nib** over tip
 
 ---
 
-## Now — e221 v17 fuse · R1 leg B GREEN (`20260802.162116`)
+## Now — e222 collision close (`20260802.162917`)
 
-**Finishing edge:** counsel R1 cut fused · addr-width face 4·16·20 · Framework dual-bind GREEN · a2 held.  
-**Full baton each round:** Ashvini Recursive Prompt v2 under `expanding-prompts/`.
+**Finishing edge:** pier R1 pedestal wins · `gate-comlink-addr-width-u32` beside policy face · a2 held.  
+**Zip note:** v18 resin not on disk; substance landed from counsel seat.
 
 | Lap | Status |
 |-----|--------|
 | a1 ×7 suite | **GREEN COMPLETE** |
-| v17 0005 counsel R1 cut | **landed by union** |
-| R1 leg A (pure) | **GREEN** |
-| R1 leg B (metal) | **GREEN on Framework** · RED on counsel (no IPv6 — correct) |
-| a2 first folding gate | **await word `a2`** |
-| R2–R4 | **await word + fresh check-in** |
-| Equality · Q58 · bar5 · SEA | **Keaton** |
-
-**Walkthrough (counsel e220):** four files · refs counted first · zero moves.
+| R1 pier pedestal policy=1 | **GREEN** |
+| R1 width face 4·16·20 | **GREEN** |
+| R1 leg B Framework | **GREEN** |
+| Rival families=2 pedestal | **WITHDRAWN** |
+| a2 · R2–R4 · equality · Q58 | **Keaton** |
+| bar5 · SEA | **Keaton's hands** |
 
 ---
 
-*May never-break hold the day, and the next gate open on a word.*
+*May never-break hold the day, and quiet be an honest result.*

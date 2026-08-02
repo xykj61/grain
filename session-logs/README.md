@@ -1,3 +1,4 @@
+| `20260802.162917` | [`20260802-162917_e222-v18-collision-pier-wins.bron`](20260802-162917_e222-v18-collision-pier-wins.bron) | e222 collision · pier R1 pedestal wins · rival withdrawn |
 | `20260802.162116` | [`20260802-162116_e221-v17-r1-leg-b-framework.bron`](20260802-162116_e221-v17-r1-leg-b-framework.bron) | e221 v17 fuse · R1 leg B GREEN on Framework |
 | `20260802.160922` | [`20260802-160922_e220-v16-seam-ruling-r1-cut.bron`](20260802-160922_e220-v16-seam-ruling-r1-cut.bron) | e220 v16 seam ruling · R1 dual-stack pedestal GREEN |
 | `20260802.160154` | [`20260802-160154_e219-v15-vane-roadmap-fuse.bron`](20260802-160154_e219-v15-vane-roadmap-fuse.bron) | e219 v15 fuse · vane roadmap · a2 lean · prompt v2 · suite GREEN |
