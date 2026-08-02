@@ -1,3 +1,4 @@
+| `20260802.184012` | [`20260802-184012_e237-v36-raced-seating.bron`](20260802-184012_e237-v36-raced-seating.bron) | e237 v36 · withdrawal raced seating · tree kept Tier 2-freeze |
 | `20260802.183244` | [`20260802-183244_e237-v35-valve.bron`](20260802-183244_e237-v35-valve.bron) | e237 v35 · valve already there · narrowing spend returned |
 | `20260802.182720` | [`20260802-182720_e237-dated-law-leaf-renew.bron`](20260802-182720_e237-dated-law-leaf-renew.bron) | e237 dated-law seated · drop path · leaf renew · Mitra queue |
 | `20260802.181628` | [`20260802-181628_e236-v34-doorway.bron`](20260802-181628_e236-v34-doorway.bron) | e236 v34 · doorway not auditor · supersedes v33 |
