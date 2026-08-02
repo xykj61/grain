@@ -34,8 +34,12 @@
 | T2 | Tally `max_name_len=32` | **GREEN e192** | `src/lib/shape-tally-max-name-len.glow` |
 | T3 | Tally `copy_disjoint` law note | **GREEN e193** | `src/lib/shape-tally-copy-preconditions.glow` |
 | C1 | Caravan first pedestal | **GREEN e194** | `src/lib/shape-caravan-max-children.glow` |
-| C2 | Caravan caps / name bounds | **next kg** | lean `max_caps_per_child=8` · then `max_name_len=48` |
+| C2 | Caravan caps per child | **GREEN e195** | `src/lib/shape-caravan-max-caps-per-child.glow` |
+| C3 | Caravan name bound | **next kg** | lean `max_name_len=48` |
+| T4 | Tally Glow rune continue | **next kg** | bartis/pedestal — keep Tally warm |
 | A1 | Aurora first pedestal | queued | boot/seed bound from `aurora/src/` |
+| cycle | u64 active-designing pick | **GREEN** | `tools/active_designing_cycle.rish` · Mitra GATED |
+| WOVN | Solana·MUR synonym·Realidream | **PROPOSED** | `counsel/20260802-011503_solana-wovn-mur-realidream-plan.md` |
 | G* | Glow rune languages | ongoing | bartis · barket · shape · PLEAC living; Tend = pedestals in `src/` |
 | — | Resume Q58 bundle | **parked** | `return_equinox_q58` · after Tend ladder word |
 
@@ -89,9 +93,9 @@ Claude Max renew · Vultr SEA · class-and-rooms · token rite · seat 128 · ge
 
 ## Recommended kg order (Cursor-sole)
 
-1. ~~T3 copy-law~~ **GREEN e193** · ~~C1~~ **GREEN e194**  
-2. C2 Caravan `max_caps_per_child` pedestal  
-3. A1 Aurora pedestal  
+1. ~~T3~~ · ~~C1~~ · ~~C2~~ **GREEN through e195** · ad-cycle **GREEN**  
+2. C3 Caravan `max_name_len=48` and/or Tally T4 Glow rune  
+3. A1 Aurora pedestal · seat or refuse WOVN/Mitra  
 4. Light: yonder corpus-twin tsvs · trim WIP hammock table (on word)  
 5. Tend ladder word → Q58 bundle cut  
 
