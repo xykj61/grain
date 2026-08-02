@@ -1,3 +1,4 @@
+| `20260802.181052` | [`20260802-181052_e236-v32-crossing-race.bron`](20260802-181052_e236-v32-crossing-race.bron) | e236 v32 · photograph not gauge · supersedes v31 |
 | `20260802.180811` | [`20260802-180811_e235-v31-quiet-tally-recut.bron`](20260802-180811_e235-v31-quiet-tally-recut.bron) | e235 v31 · quiet tally twelve · supersedes v30 |
 | `20260802.180457` | [`20260802-180457_e234-v30-quiet-tree.bron`](20260802-180457_e234-v30-quiet-tree.bron) | e234 v30 · quiet tree · tip had moved so re-cut · supersedes v29 |
 | `20260802.175456` | [`20260802-175456_e233-v29-shelf-declined.bron`](20260802-175456_e233-v29-shelf-declined.bron) | e233 v29 · prompt-family shelf declined · supersedes v28 |
