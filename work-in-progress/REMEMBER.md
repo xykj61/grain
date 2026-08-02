@@ -6,8 +6,8 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260802.193605` · voice Riyo · e243 a2 OPEN — STOA332 fold sumto GREEN · counsel no-describe instruments · no resin · a1 COMPLETE · Mitra HELD · drop ~/grain/
-**Pier at fusion:** a0 landed · v3–v43 · glow_tend_era in parity ch02 · a2 first fold · ai-jail 1.12.0 · `.ssh/id_ed25519_jail_vultr`
+**Last refreshed:** `20260802.194158` · voice Riyo · e243/e244 — a2 OPEN (sumto) · Rishi walls env-512 + history-50 elder-citing · Mitra HELD · drop ~/grain/
+**Pier at fusion:** a0 landed · v3–v44 · glow_tend_era in parity ch02 · a2 folds · ai-jail 1.12.0 · `.ssh/id_ed25519_jail_vultr`
 
 
 
