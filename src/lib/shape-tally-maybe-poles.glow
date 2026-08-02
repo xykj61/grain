@@ -1,0 +1,12 @@
+::  name       tally maybe poles
+::  shape      poles - int (@u32)
+::  invariant  maybe welcomes exactly two honest outcomes (true · false) and asserts neither
+::  example    2
+::  readers    Tally · Glow Tend · Caravan · Ashvini nest-only
+::  nib        equinox-e199-tally-tend-v0
+::
+::  Equinox e199 · Tally T5 — maybe as the dual of assert, in src/lib/.
+::  Names the two poles from tally/maybe.rye. Pedestal only; Rye still marks.
++$  tally-maybe-poles-shape
+  $:  poles=@u32
+  ==

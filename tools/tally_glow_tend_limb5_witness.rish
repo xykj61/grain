@@ -1,0 +1,41 @@
+# tools/tally_glow_tend_limb5_witness.rish — Tally T5 maybe poles (e199).
+#
+#   rishi/bin/rishi run tools/tally_glow_tend_limb5_witness.rish
+
+say "tally-tend-5: Language EN — fifth Tally Glow Tend limb (lib utility)."
+say "tally-tend-5: Style Radiant — dual of assert; searchable, not forcing."
+say "tally-tend-5: Lens TAME — Equinox e199 · Ashvini nest-only · Equinox B."
+
+let zig = "vendor/zig-toolchain/zig"
+let desk = "src/lib/shape-tally-maybe-poles.glow"
+
+say "tally-tend-5: placard..."
+let placard = run ["sh" "-c" "head -n 7 src/lib/shape-tally-maybe-poles.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert placard.ok else "tally-tend-5: placard scan failed"
+let pcount = trim placard.out
+assert pcount == "6" else "tally-tend-5: placard missing six lines"
+
+say "tally-tend-5: example locks to two poles..."
+let ex = run ["sh" "-c" "grep -q 'example    2' src/lib/shape-tally-maybe-poles.glow"]
+assert ex.ok else "tally-tend-5: example 2 missing"
+let poles = run ["sh" "-c" "grep -q 'true' src/lib/shape-tally-maybe-poles.glow && grep -q 'false' src/lib/shape-tally-maybe-poles.glow"]
+assert poles.ok else "tally-tend-5: placard must name true and false"
+let elder = run ["sh" "-c" "grep -q 'tally/maybe.rye' src/lib/shape-tally-maybe-poles.glow"]
+assert elder.ok else "tally-tend-5: maybe.rye citation missing"
+let dual = run ["sh" "-c" "grep -qi 'dual of assert' src/lib/shape-tally-maybe-poles.glow"]
+assert dual.ok else "tally-tend-5: dual-of-assert wording missing"
+
+say "tally-tend-5: rye still exports maybe..."
+let rye = run ["sh" "-c" "grep -q 'pub fn maybe' tally/maybe.rye"]
+assert rye.ok else "tally-tend-5: pub fn maybe missing in rye"
+
+say "tally-tend-5: lower and run..."
+let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" desk]
+assert gate.ok else "tally-tend-5: shape lower/build/run failed"
+assert gate.out contains "EXIT:0" else "tally-tend-5: shape did not exit 0"
+
+say "tally-tend-5: T1–T4 and C4 still present..."
+let prior = run ["sh" "-c" "test -f src/lib/shape-tally-max-gardens.glow -a -f src/sur/shape-tally-parse-int-laws.glow -a -f src/sur/shape-caravan-supervisor-exit-meanings.glow"]
+assert prior.ok else "tally-tend-5: earlier Tend pedestals missing"
+
+say "GREEN: tally Glow Tend limb 5 — maybe two poles in src/lib/; Tend ladder kept."
