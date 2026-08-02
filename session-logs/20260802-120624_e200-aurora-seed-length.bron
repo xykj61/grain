@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260802.120624
+editor Cursor
+model Cursor Auto Mode
+voice Riyo
+host Ubuntu GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title e200 Aurora A2 seed_length
+prompt kg Aurora A2 pedestal
+think seed_length=32 from kumara · posted packs ** 32 · sur museum
+obs A2 GREEN · Tend T1-T5 C1-C4 A1-A2
+file src/sur/shape-aurora-seed-length.glow A2 pedestal
+file tools/aurora_glow_tend_limb2_witness.rish A2 witness
+file counsel/20260802-120624_e200-aurora-seed-length.md seat note
+product_nib Equinox e200 Aurora A2
+git_nib pending
+recommend keep-going Tally stack in sur/
