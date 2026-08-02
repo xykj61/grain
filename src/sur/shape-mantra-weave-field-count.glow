@@ -1,0 +1,14 @@
+::  name       mantra weave field count
+::  shape      fields - int (@u32)
+::  invariant  a Weave carries exactly two fields (lines · next_pos)
+::  example    2
+::  readers    Mantra · Glow Tend · Sur museum · Ashvini nest-only
+::  nib        equinox-e204-mantra-tend-v0
+::
+::  Equinox e204 · Mantra M2 — second Mantra structure pedestal in src/sur/.
+::  Names Weave's field count from mantra/src/weave.rye: the append-only line
+::  roster and the next position cursor. Pedestal only; Rye still owns
+::  advance · current · Diff · Store.
++$  mantra-weave-field-count-shape
+  $:  fields=@u32
+  ==

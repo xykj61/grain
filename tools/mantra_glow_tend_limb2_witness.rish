@@ -1,0 +1,39 @@
+# tools/mantra_glow_tend_limb2_witness.rish — Mantra M2 in src/sur/ (e204).
+#
+#   rishi/bin/rishi run tools/mantra_glow_tend_limb2_witness.rish
+
+say "mantra-tend-2: Language EN — second Mantra Glow Tend limb (sur museum)."
+say "mantra-tend-2: Style Radiant — Weave field count; Rye still advances."
+say "mantra-tend-2: Lens TAME — Equinox e204 · Ashvini nest-only · Equinox B."
+
+let zig = "vendor/zig-toolchain/zig"
+let desk = "src/sur/shape-mantra-weave-field-count.glow"
+
+say "mantra-tend-2: placard..."
+let placard = run ["sh" "-c" "head -n 7 src/sur/shape-mantra-weave-field-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert placard.ok else "mantra-tend-2: placard scan failed"
+let pcount = trim placard.out
+assert pcount == "6" else "mantra-tend-2: placard missing six lines"
+
+say "mantra-tend-2: example locks to two fields..."
+let ex = run ["sh" "-c" "grep -q 'example    2' src/sur/shape-mantra-weave-field-count.glow"]
+assert ex.ok else "mantra-tend-2: example 2 missing"
+let names = run ["sh" "-c" "grep -q 'lines' src/sur/shape-mantra-weave-field-count.glow && grep -q 'next_pos' src/sur/shape-mantra-weave-field-count.glow"]
+assert names.ok else "mantra-tend-2: placard must name lines · next_pos"
+let elder = run ["sh" "-c" "grep -q 'mantra/src/weave.rye' src/sur/shape-mantra-weave-field-count.glow"]
+assert elder.ok else "mantra-tend-2: weave.rye citation missing"
+
+say "mantra-tend-2: rye still seats Weave with two fields..."
+let rye = run ["sh" "-c" "grep -q 'pub const Weave = struct' mantra/src/weave.rye && grep -Fq 'lines: std.ArrayListUnmanaged(Line),' mantra/src/weave.rye && grep -Fq 'next_pos: u32,' mantra/src/weave.rye"]
+assert rye.ok else "mantra-tend-2: Weave fields missing or reordered in weave.rye"
+
+say "mantra-tend-2: lower and run..."
+let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" desk]
+assert gate.ok else "mantra-tend-2: shape lower/build/run failed"
+assert gate.out contains "EXIT:0" else "mantra-tend-2: shape did not exit 0"
+
+say "mantra-tend-2: M1 and A3 still present..."
+let prior = run ["sh" "-c" "test -f src/sur/shape-mantra-line-field-count.glow -a -f src/sur/shape-aurora-living-stages.glow"]
+assert prior.ok else "mantra-tend-2: M1 or A3 missing"
+
+say "GREEN: mantra Glow Tend limb 2 — Weave two fields in src/sur/; Tend ladder kept."

@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**.*
 
-**Last refreshed:** `20260802.132250` · voice Riyo · e216 two-lines map (pier e3f202a021 Glow Tend pedestals vs counsel 28-commit lane) · ASHVINI SEASON chartered by word (dual-baton twins · Glow Tend implementations · a0=fusion · a1 on kg) · gates keep · SEA only · shred RED
+**Last refreshed:** `20260802.133249` · voice Riyo · FUSED TIP: p191-p203 + c191-c216 rebased (one union) · e204 M2 Weave fields GREEN (counsel-cut, pier verifies) · Tend T1-T6 C1-C4 A1-A3 M1 M2 · Ashvini a0 = landing · gates keep · SEA only · shred RED
 **Pier at fusion:** `20260802.132104` · p191–p203 · Tend T1–T6·C1–C4·A1–A3·M1 · tip 33d77fe68c — counsel lane rebased atop, one file overlapped, union kept
 
 
