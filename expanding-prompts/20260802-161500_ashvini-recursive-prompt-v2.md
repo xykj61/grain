@@ -50,6 +50,8 @@ STATE (refresh the needles from files every round):
     "yes." Prompt-family shelf declined (4 · 19,432 B · two live).
   LAW (e233): a quiet round is reported as quiet — walkthrough yield is insight, not tidying.
     A number in flight goes stale like any other needle — re-measure at the hour it crosses.
+  LAW (e235): a photograph is not a gauge — versions can race; corrections go FORWARD;
+    aging counts are of-the-hour, or live outside the dated seat.
   R1 FINAL — pier policy=1 · bind face · addr-width · rival WITHDRAWN.
   R2–R4 = frame seam — word AND fresh check-in each. Ruling:
     counsel/20260802-163000_e219-comlink-module-seam-ruling.md
