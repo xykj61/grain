@@ -1,0 +1,12 @@
+::  name       aurora wire bound gate
+::  shape      bytes - int (@u32) -> lawful - int (@u32)
+::  invariant  answers 1 while bytes stays within wire_capacity=512 (bytes <= 511 before this one); answers 0 past the wall
+::  example    128 -> 1 · 600 -> 0
+::  readers    Aurora · Glow Tend a1 · Ashvini
+::  nib        equinox-e212-aurora-gate1-v0
+::
+::  Ashvini a1 · third deciding wall, Aurora family — STOA331 grammar.
+::  The pedestal named wire_capacity=512; this gate evaluates the law at the
+::  seam. Rye's Aurora still enforces on the wire; the wall now speaks Glow.
+|=  sample=@u32
+?:  (gth sample 511)  0  1
