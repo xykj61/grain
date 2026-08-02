@@ -1,11 +1,11 @@
 # Equinox Seat Map — close path · Chapter Seven and Eight
 
 **Language:** EN  
-**Status:** Living pin — **e192 GREEN Tally Glow Tend limb 2** · **e191 T1 GREEN** · **Ashvini nest-only under Equinox B** · **Q58 → return_equinox_q58** · **e190 Q57 bundle plan GREEN** · **J3 CLOSED · J4 OPEN** · **Q53 gated** · ch7 close **PERFORMED** · ch8 seat **128 RESERVED** · geode **GATED** · **living-pin guard**  
+**Status:** Living pin — **e193 GREEN Tally Glow Tend T3** · **T1–T2 GREEN** · **Ashvini nest-only** · **next Caravan C1** · **Q58 → return_equinox_q58** · **J4 OPEN** · **Q53 gated** · seat **128 RESERVED** · geode **GATED**  
 **Voice:** Riyo  
-**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260802.010400` (e192 Tally Tend T2 · nest-only Ashvini · Cursor-sole · SEA only · 128 reserved)  
-**Seat:** Equinox e123 · almanac **127** · Chapter Eight **(15 of 16)** · nested wave **e192/64 — J4 Tend T2**  
-**Basis:** kg e192 · handback `return_equinox_q58` · `return_deca_128` · **128 still reserved**
+**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260802.010651` (e193 Tally Tend T3 · Cursor-sole · SEA only · 128 reserved)  
+**Seat:** Equinox e123 · almanac **127** · Chapter Eight **(15 of 16)** · nested wave **e193/64 — J4 Tend T3**  
+**Basis:** kg e193 · handback `return_equinox_q58` · `return_deca_128` · **128 still reserved**
 
 *A chapter's sixteenth seat may carry check · test · prepare as a close choir. A duty is not a seat unless the almanac says so — only the close is a seat. A surface witness claims no seat of its own. **roots** are where the hand sits to send words; a **Bench** is where claims become evidence — different kinds. Name the **Bench** when a measurement is reported. **Build stack:** sh → rish → glow·tend → docs-geode → Aurora·Caravan·Tally → Mantra·Weave — foundations first; five refusals · layer order. **Start rung:** sh → rish seam — on-touch only. **Shell ratchet:** on-touch, never a campaign. **Class O word-scope:** authorizing word on class/rooms, not per-path. **Bundle send:** crossing mode — cut · verify · stamped manifest; first rehearsal e129. **max_lines:** Glow multi-bind ceiling 6 — refuses past it. When two roofs carry one name, either they agree or the name is doing two jobs. Approve-all · kg · approvals seat recommended leans; they circle no gate — including shred. Seat the suite; do not manufacture meters. Look for the thing, not for the name of the thing. On-disk is not in-the-tree. A witness must not depend on one bench's tools.*
 
