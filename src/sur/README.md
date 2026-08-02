@@ -33,9 +33,11 @@ The data-structure museum: every non-networked shape on its own pedestal, viewab
 ```
 rishi/bin/rishi run tools/mantra_glow_tend_limb1_witness.rish
 rishi/bin/rishi run tools/mantra_glow_tend_limb2_witness.rish
+rishi/bin/rishi run tools/mantra_glow_tend_limb3_witness.rish
+rishi/bin/rishi run tools/mantra_glow_tend_limb4_witness.rish
 rishi/bin/rishi run tools/aurora_glow_tend_limb3_witness.rish
 rishi/bin/rishi run tools/tally_glow_tend_limb6_witness.rish
 rishi/bin/rishi run tools/caravan_glow_tend_limb4_witness.rish
 ```
 
-Further candidates: Mantra M3 (Diff fields=2 · Store dirs=3) · Aurora A4 `signature_length`. M2 (Weave fields=2) seated e204. Reify map: [`../../counsel/20260802-011821_q58-scope-and-tend-src-reify.md`](../../counsel/20260802-011821_q58-scope-and-tend-src-reify.md).
+Further candidates: Aurora A4 `signature_length` — Mantra pedestal tier COMPLETE (M1 Line=3 · M2 Weave=2 · M3 Diff=2 · M4 Store dirs=3, seats e204–e206). Reify map: [`../../counsel/20260802-011821_q58-scope-and-tend-src-reify.md`](../../counsel/20260802-011821_q58-scope-and-tend-src-reify.md).

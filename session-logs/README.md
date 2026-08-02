@@ -814,6 +814,7 @@ Living index for the append-only session stream. This table reads **newest first
 - `20260725.001741` — [Send redaction stance to main](20260725-001741_send-redaction-stance.bron) — FF merge · PR 91
 - `20260725.001710` — [Redaction stance living pin · OQ #1](20260725-001710_redaction-stance-seat.bron) — forget by key · Mand ring-3 PARK
 - `20260725.003013` — [REMEMBER git nib after Seva · Mand send](20260725-003013_remember-git-nib-seva-mand.bron) — pin 1ab2009bb0
+- `20260802.140629` — [e205+e206 Mantra M3 Diff and M4 Store](20260802-140629_e205-e206-mantra-diff-store.bron) — pedestal tier complete · counsel on fused tip
 - `20260802.133202` — [e204 Mantra M2 Weave field count](20260802-133202_e204-mantra-weave-field-count.bron) — counsel-cut on fused tip · limb2 GREEN · twins
 - `20260725.002955` — [Send Seva complete · Mand seated to main](20260725-002955_send-seva-complete-mand.bron) — FF merge · Sala historical · Mand · GREEN
 - `20260725.002400` — [Sala rename digest and fixture risk survey](20260725-002400_sala-rename-digest-fixture-risk.bron) — STOP memos/pins · SAFE names/paths
