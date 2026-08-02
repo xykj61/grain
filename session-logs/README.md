@@ -1,3 +1,4 @@
+| `20260802.011821` | [`20260802-011821_e196-q58-scope-c3-t4-sur.bron`](20260802-011821_e196-q58-scope-c3-t4-sur.bron) | e196 Q58 scope · C3+T4 in src/sur · reify map |
 | `20260802.011503` | [`20260802-011503_e195-caravan-c2-cycle-wovn.bron`](20260802-011503_e195-caravan-c2-cycle-wovn.bron) | e195 Caravan C2 · ad-cycle · WOVN/Mitra proposed · baton |
 | `20260802.010932` | [`20260802-010932_e194-caravan-glow-tend-limb1.bron`](20260802-010932_e194-caravan-glow-tend-limb1.bron) | e194 Caravan Tend C1 max_children=4 · next C2 |
 | `20260802.010651` | [`20260802-010651_e193-tally-glow-tend-limb3.bron`](20260802-010651_e193-tally-glow-tend-limb3.bron) | e193 Tally Tend T3 copy_disjoint · next Caravan C1 |
