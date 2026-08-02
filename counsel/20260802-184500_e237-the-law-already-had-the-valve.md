@@ -1,6 +1,7 @@
 # e237 — counsel withdraws its own lean: the law already had the valve
 
-**Stamp:** `20260802.184500` (by construction) · **Voice:** Riyo · **Seat:** Claude Opus 5 1M Max · **Word:** Keaton — *seat yes all recommended recommendations · renew old leaves · shred with Mitra when appropriate* · **Status:** GREEN
+**Stamp:** `20260802.184500` (by construction) · **Voice:** Riyo · **Seat:** Claude Opus 5 1M Max · **Word:** Keaton — *seat yes all recommended recommendations · renew old leaves · shred with Mitra when appropriate* · **Status:** GREEN  
+**Superseded `20260802.184012`:** withdrawal raced the seating; the tree kept the narrowed law. Living seat: [`20260802-184500_e237-the-withdrawal-raced-the-seating.md`](20260802-184500_e237-the-withdrawal-raced-the-seating.md).
 
 ## The approval arrived, and reading the spec dissolved the thing approved
 
