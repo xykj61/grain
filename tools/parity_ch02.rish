@@ -671,6 +671,11 @@ let signed_kumara = run ["sh" "tools/parity_time_one.sh" "signed_kumara" "--" "r
 assert signed_kumara.ok else "signed-Kumara parity witness failed"
 say "GREEN: signed-Kumara parity witness passed."
 
+say "witness suite: Glow Tend pure era lap (a1 seven gates + R1 socketless legs · e225)…"
+let era_lap = run ["sh" "tools/parity_time_one.sh" "glow_tend_era" "--" "rishi/bin/rishi" "run" "tools/glow_tend_era_suite.rish"]
+assert era_lap.ok else "Glow Tend pure era lap failed — read its own line for the failing leg"
+say "GREEN: Glow Tend pure era lap passed (measured ~63 s at seating)."
+
 say "witness suite: ch02 cost table…"
 let _parity_cost_table = run ["env" "PARITY_COST_CHAPTER=ch02" "PARITY_COST_LOG=tools/.cache/parity-cost/current.tsv" "sh" "tools/parity_cost_table.sh"]
 if _parity_cost_table.ok then say _parity_cost_table.out

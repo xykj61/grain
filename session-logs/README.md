@@ -1,3 +1,4 @@
+| `20260802.165718` | [`20260802-165718_e226-v22-parity-era-lap.bron`](20260802-165718_e226-v22-parity-era-lap.bron) | e226 v22 · pure era lap joins parity ch02 |
 | `20260802.165207` | [`20260802-165207_e225-v21-class-censused.bron`](20260802-165207_e225-v21-class-censused.bron) | e225 v21 · recursion stubs KEEP · walk sampler |
 | `20260802.164721` | [`20260802-164721_e224-v20-pure-lap-recut.bron`](20260802-164721_e224-v20-pure-lap-recut.bron) | e224 v20 · pure lap re-cut against seated names · GREEN |
 | `20260802.163530` | [`20260802-163530_e223-v19-two-laps-fuse.bron`](20260802-163530_e223-v19-two-laps-fuse.bron) | e223 v19 · pure era suite + metal R1 · both GREEN |
