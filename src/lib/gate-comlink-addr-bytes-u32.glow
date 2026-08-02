@@ -1,0 +1,13 @@
+::  name       comlink address width gate
+::  shape      bytes - int (@u32) -> lawful - int (@u32)
+::  invariant  answers 1 while an address width stays within sixteen bytes; answers 0 past the wall
+::  example    4 -> 1 · 16 -> 1 · 20 -> 0
+::  readers    Comlink · Glow Tend R1 · Ashvini
+::  nib        equinox-r1-comlink-addr-width-v0
+::
+::  Ashvini R1 · the policy's deciding face — STOA331 grammar. Both lawful
+::  families fit the wall: four bytes for the elder family, sixteen for the
+::  newer. A width past sixteen is no address we speak. Sibling records, never
+::  a union; the wall decides, the wire carries nothing new.
+|=  sample=@u32
+?:  (gth sample 16)  0  1

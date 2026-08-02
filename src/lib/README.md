@@ -1,8 +1,8 @@
 # lib — Libraries
 
 **Language:** EN  
-**Last updated:** `20260802.160922` (Equinox e220 — Comlink R1 dual-stack bind gate)
-**Status:** Living — room open; Tally Tend utilities · a1 deciding gates ×7 · Comlink R1 bind gate · suite `tools/glow_tend_a1_suite.rish`
+**Last updated:** `20260802.162116` (Equinox e221 — Comlink R1 addr-width face + two-leg witness)
+**Status:** Living — room open; Tally Tend utilities · a1 deciding gates ×7 · Comlink R1 faces · suite `tools/glow_tend_a1_suite.rish`
 
 Shared gates and utility pedestals in Glow — the sameness many desks call and none should re-carve. ## The a1 Deciding Gates (STOA331)
 
@@ -22,13 +22,14 @@ rishi/bin/rishi run tools/glow_tend_a1_suite.rish
 | `gate-tally-name-len-bound-u32` | name-len = 32 | 12→1 · 40→0 |
 | `gate-caravan-caps-bound-u32` | caps/dependent = 8 | 4→1 · 9→0 |
 
-## Comlink R1 (e220 · pedestal companion)
+## Comlink R1 (e220/e221 · pedestal companions)
 
 | Gate | Wall | Sides |
 |------|------|-------|
+| `gate-comlink-addr-bytes-u32` | addr width ≤ 16 | 4→1 · 16→1 · 20→0 |
 | `gate-comlink-dual-stack-bind-u32` | dual-stack policy on | 1→1 · 0→0 |
 
-Witness: `rishi/bin/rishi run tools/comlink_r1_dual_stack_witness.rish` — host bind probe outside `comlink/`; no wire-semantics change.
+Witness: `rishi/bin/rishi run tools/comlink_r1_dual_stack_witness.rish` — **leg A** pure · **leg B** host dual-bind (Framework GREEN; counsel RED without IPv6) · no wire-semantics change.
 
 Structure museum pieces for Tend live under [`../sur/`](../sur/README.md).
 
