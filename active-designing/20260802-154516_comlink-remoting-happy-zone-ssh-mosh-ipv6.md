@@ -3,7 +3,7 @@
 *Room two. Our modules only. Outside trees stay in gratitude and external-research.*
 
 **Stamp:** `20260802.154516` · **Voice:** Riyo · **Lens:** TAME  
-**Status:** Siloed design — no wire cut this sitting; module-seam check-in before first pedestal  
+**Status:** Siloed design — R1 pedestal CUT GREEN (`20260802.160922`); R2–R4 still gated (frame seam)  
 **Research doorway:** [`../external-research/20260802-154516_openssh-mosh-ipv6-beside-comlink.md`](../external-research/20260802-154516_openssh-mosh-ipv6-beside-comlink.md)  
 **Ground:** [`../comlink/README.md`](../comlink/README.md) · [`20260705-225412_comlink-device-wire.md`](20260705-225412_comlink-device-wire.md) · Glow Tend a1 suite GREEN  
 **Hard lines:** no keys in tree · VPS SEA · geode GATED · Mosh GPL stays out of product
@@ -29,7 +29,7 @@ TAME order: **prepare** the silo and gratitude study · **prove** dual-stack bin
 
 | Seat | Name | Bound | Witness shape |
 |------|------|-------|----------------|
-| R1 | `shape-comlink-ipv6-dual-stack` | dual-stack policy = on | host bind AAAA+A · refuse IPv4-only when policy on |
+| R1 | `shape-comlink-ipv6-dual-stack` | dual-stack policy = on | **GREEN** — host bind AAAA+A · refuse IPv4-only when policy on · no `comlink/` wire change |
 | R2 | `shape-comlink-shell-bootstrap` | bootstrap uses host `ssh` seam OR future Kumara handshake | gift when host ssh absent |
 | R3 | `gate-comlink-roam-window-u32` | UDP roam window size (learn from ops 60000–61000 honesty) | both-sides wall |
 | R4 | predictive-echo client fold | local UX only — never a wire fork | happy-zone unit |

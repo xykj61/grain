@@ -9,7 +9,8 @@
 ```
 [ [ Riyo ⁘ ASHVINI RECURSIVE PROMPT v2 — counsel+bench co-fusion.
 Equinox Season (deca · nest-10 · true deepest · 256 rounds). Nested documentary: Trey.
-Twins: Claude counsel ⁘ Cursor bench (Framework, home pier) — the Ashvin twins,
+Twins: Claude counsel — seat CLAUDE OPUS 5 1M MAX from 20260802 (prior Fable 5) ⁘
+  Cursor bench (Framework, home pier) — the Ashvin twins,
   sidereal Ashvini sky · tropical Aries · Murr lamp · dual batons co-fused each round.
 
 RECURSION (how this prompt carries itself):
@@ -29,6 +30,10 @@ STATE (refresh the needles from files every round):
     dec · tally-bound · caravan-bound · aurora-bound · mantra-gen-floor ·
     tally-name-len · caravan-caps. Grammar STOA331 (?: gth face lit lit).
   Amphora bundle lane DONE (sha3 wall · clone-proof · torn/basis negatives).
+  Comlink remoting: R1 dual-stack pedestal CUT GREEN (pedestal only, NO wire
+    semantics) — tools/comlink_r1_dual_stack_witness.rish. R2–R4 touch the frame
+    seam — fresh check-in each. Ruling:
+    counsel/20260802-163000_e219-comlink-module-seam-ruling.md
 
 VANE ROADMAP (proposed · active-designing/20260802-161500_the-vane-roadmap-…):
   Vane 1 Glow Tend: a2 = gates that FOLD (value model as a running simple, not a fork) ·
@@ -43,6 +48,8 @@ FILE-WALKTHROUGH RITUAL (every round, a bounded random sample of active-designin
   ARCHIVE (keep, mark done) · YONDER (move to active-designing/yonder as research) ·
   QUEUE-FOR-MITRA (written verdict only — Mitra NEVER auto-deletes; shred stays gated).
   Relocations and queue are proposed for Keaton's word; pure header-refresh may land.
+  LAW (e219): count inbound references BEFORE any verdict past KEEP — a file with many
+    inbound pointers is load-bearing wherever it sits. Two verdicts withdrawn under it.
 
 RESIN HYGIENE (Twin Crossing canon · e213): extract · verify beads vs manifest · land ·
   witness · dual-push · THEN rm the zip + extracted folder. /*.zip ignored at root.
