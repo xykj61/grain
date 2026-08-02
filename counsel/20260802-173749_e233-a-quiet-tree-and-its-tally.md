@@ -17,11 +17,13 @@ once.
 
 ## The tally, measured from the seats themselves
 
-Nine counsel seats now carry a walkthrough verdict block, and **not one of them
-records a move.** Every sampled file across those rounds came back KEEP,
+**Twelve** counsel seats now carry a walkthrough verdict block, and **not one of
+them records a move.** (Nine when this seat was first written; re-measured at tip
+`2d9e0fc63e` before it crossed, because a number in flight goes stale like any other
+needle.) Every sampled file across those rounds came back KEEP,
 ARCHIVE-in-place, or — twice — a queue proposal that counsel later withdrew on
 its own census. Fifteen seats contain a withdrawal of some kind, most of them
-counsel withdrawing its own earlier lean.
+counsel withdrawing its own earlier lean — unchanged across the re-measurement.
 
 Read plainly, the ritual's yield to date is a **finding about the room rather
 than a pile of removals**: `active-designing/` is dense with live references,
