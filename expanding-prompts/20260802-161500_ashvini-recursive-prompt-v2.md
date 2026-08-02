@@ -1,8 +1,9 @@
 # Ashvini Recursive Prompt v2
 
-**Stamp:** `20260802.161500` · refreshed `20260802.184012` · **Voice:** Riyo · **Style:** Radiant
+**Stamp:** `20260802.161500` · refreshed `20260802.184331` · **Voice:** Riyo · **Style:** Radiant
 **Radiant pass `20260802.183244`** — e237 valve: narrowing withdrawn; drop path + measurement lines only.
 **Radiant pass `20260802.184012`** — e237 raced seating: tree kept Tier 2-freeze; withdrawal superseded.
+**Radiant pass `20260802.184331`** — e238 oscillation: elder law restored; one-voice proposed not seated.
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
 
@@ -58,11 +59,13 @@ STATE (refresh the needles from files every round):
     doorway, not a past auditor; measure before calling a practice a fault; a steady count
     across two tips means the practice is historical, not ongoing.
   LAW (e237): drop path is part of the crossing — ~/grain/ only; absent resin REPORTED.
-    When two honest readings race, the TREE decides — rewrite the seat against the
-    world it lands in, erratum recorded. Dated law SEATED (pier shape): T1 absolute ·
-    T2-freeze names guarded classes (witness · golden · receipt · keys · fixtures) ·
-    T2 amendable with superseding seat preferred · T3 free. Measured: 255 → 159
-    Radiant · 19 erratum · 77 unmarked. Auditor (report) still open — more useful now.
+    When two honest readings race, the TREE decides — rewrite the seat, erratum recorded.
+  PROPOSED NOT SEATED (e238): one-voice rule — law-shape gets one proposal, one word,
+    then bench silence; a later change of mind is a PROPOSAL TO REVISIT, never an undo.
+    "Seat yes all recs" approves leans; withdrawal after approval is a new proposal.
+  DATED LAW (elder, restored · byte-identical f96512ec4d): T1 absolute · T2 Radiant
+    pass or erratum · T3 free. Guard = doorway. Measured: 255 · 159 · 19 · 77.
+    Oscillation cost: 6 seats · 3 sittings · net zero (+ pier returned v36 on fuse).
   R1 FINAL — pier policy=1 · bind face · addr-width · rival WITHDRAWN.
   R2–R4 = frame seam — word AND fresh check-in each. Ruling:
     counsel/20260802-163000_e219-comlink-module-seam-ruling.md
