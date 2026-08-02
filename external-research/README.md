@@ -1,7 +1,7 @@
 # The External-Research Stack
 
 **Language:** EN
-**Last updated:** 2026-08-02 (OpenSSH · Mosh · IPv6 beside Comlink `154516`)
+**Last updated:** 2026-08-02 (SSH · Mosh · IPv6 secure transport `161500`)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Foundation
 
@@ -47,7 +47,8 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-slug.md`; living documents (`REA
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
-| `20260802.154516` | [OpenSSH · Mosh · IPv6 beside Comlink](20260802-154516_openssh-mosh-ipv6-beside-comlink.md) | Dual-stack · bootstrap≠carriage · Mosh GPL study-only · gratitude clones · silo to Comlink remoting happy zone |
+| `20260802.161500` | [SSH · Mosh · IPv6 secure transport](20260802-161500_ssh-mosh-ipv6-secure-transport.md) | Three SSH layers · Mosh screen-as-value · Weave already holds sync · carrier only · silo Comlink IPv6+roam |
+| `20260802.154516` | [OpenSSH · Mosh · IPv6 beside Comlink](20260802-154516_openssh-mosh-ipv6-beside-comlink.md) | Dual-stack · bootstrap≠carriage · Mosh GPL study-only · gratitude clones · pier remoting silo companion |
 | `20260801.132929` | [Clean-energy NixOS pier — Vultr Seattle / Mosh / Cursor CLI](20260801-132929_nixos-vps-clean-energy-mosh-cursor.md) | Vultr SEA = Sabey SDC Columbia (East Wenatchee) hydro · 2 GB nixos-anywhere · cursor-cli + nix-ld · DC-1 Termux/Termius; research only — purchase by Keaton's hands |
 | `20260718.133455` | [Glass↔Desk Amber/Amphora — compose, do not fuse](20260718-133455_glass-desk-amber-amphora-compose-not-fuse.md) | Wired Glass vs cellar/vessel; TUBE3 precedent; Tilak→resin→Amphora graduation later |
 | `20260717.175220` | [Glow English QWERTY glass keyboard — iOS-inspired](20260717-175220_glow-english-qwerty-glass-keyboard-ios-inspired.md) | NativeActivity IME gap; own Skate OSK; public iOS layout notes; clean-room; K0–K5 |
