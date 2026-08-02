@@ -1,3 +1,4 @@
+| `20260802.150022` | [`20260802-150022_e211-vultr-pubkeys-v8-fuse.bron`](20260802-150022_e211-vultr-pubkeys-v8-fuse.bron) | e211 Vultr PUBKEYS fourth · v8 fuse · a1 still LIVE |
 | `20260802.145642` | [`20260802-145642_e210-stoa331-v7-fuse.bron`](20260802-145642_e210-stoa331-v7-fuse.bron) | e210 STOA331 · a1 garden-bound GREEN · v7 fuse |
 | `20260802.144508` | [`20260802-144508_e209-v6-vultr-ssh-fuse.bron`](20260802-144508_e209-v6-vultr-ssh-fuse.bron) | e209 v6 fuse · garden-bound staged · Vultr ed25519 in .ssh |
 | `20260802.143610` | [`20260802-143610_e209-ashvini-a1-breach-fuse.bron`](20260802-143610_e209-ashvini-a1-breach-fuse.bron) | e209 Ashvini a1 gate-tally-dec GREEN · ontology breach v0.1 |
