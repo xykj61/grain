@@ -34,15 +34,13 @@ let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" desk]
 assert gate.ok else "tally-tend-1: shape lower/build/run failed"
 assert gate.out contains "EXIT:0" else "tally-tend-1: shape did not exit 0"
 
-say "tally-tend-1: ladder honesty — Aurora Glow Tend still absent..."
-let none = run ["sh" "-c" "rg -l 'aurora' src edu --glob '*.glow' 2>/dev/null | wc -l | tr -d ' '"]
-assert none.ok else "tally-tend-1: aurora glow scan failed"
-let nhits = trim none.out
-assert nhits == "0" else "tally-tend-1: Aurora Glow Tend must wait its limb"
+say "tend-ladder: Aurora A1 may be present..."
+let aurora = run ["sh" "-c" "test -f src/sur/shape-aurora-wire-capacity.glow"]
+assert aurora.ok else "tend-ladder: Aurora A1 pedestal missing after e197"
 
 say "tally-tend-1: tally glow path present..."
 let has = run ["sh" "-c" "test -f src/lib/shape-tally-max-gardens.glow && rg -l 'tally' src --glob '*.glow' | grep -q shape-tally-max-gardens && echo TALLY_OK"]
 assert has.ok else "tally-tend-1: tally glow limb missing"
 assert has.out contains "TALLY_OK" else "tally-tend-1: tally glow limb not indexed"
 
-say "GREEN: tally Glow Tend limb 1 — max_gardens=8 pedestal; Aurora still next."
+say "GREEN: tally Glow Tend limb 1 — max_gardens=8 pedestal; Tend ladder continues."

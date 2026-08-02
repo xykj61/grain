@@ -1,7 +1,7 @@
 # sur — Structures
 
 **Language:** EN  
-**Last updated:** `20260802.011821` (Equinox e196 — Caravan C3 · Tally T4 Tend in sur)  
+**Last updated:** `20260802.012113` (Equinox e197 — Aurora A1 Tend in sur)  
 **Status:** Living — room open; Surface pedestals + Glow Tend structure pedestals
 
 The data-structure museum: every non-networked shape on its own pedestal, viewable in isolation, named once and composed elsewhere. House style: [`PLACARD.md`](PLACARD.md). Glow Tend **structures** accrete here; shared gates stay in [`../lib/`](../lib/README.md).
@@ -23,14 +23,14 @@ The data-structure museum: every non-networked shape on its own pedestal, viewab
 | [`shape-brush-pin-key-count.glow`](shape-brush-pin-key-count.glow) | Required `.brush` pins (keys = 4) | same |
 | [`shape-caravan-max-name-len.glow`](shape-caravan-max-name-len.glow) | Caravan `max_name_len=48` (Tend C3) | `tools/caravan_glow_tend_limb3_witness.rish` |
 | [`shape-tally-parse-int-laws.glow`](shape-tally-parse-int-laws.glow) | Tally `parse_int` two refuse laws (Tend T4) | `tools/tally_glow_tend_limb4_witness.rish` |
+| [`shape-aurora-wire-capacity.glow`](shape-aurora-wire-capacity.glow) | Aurora `wire_capacity=512` (Tend A1) | `tools/aurora_glow_tend_limb1_witness.rish` |
 
 ```
-rishi/bin/rishi run tools/glow_run.rish src/sur/shape-surface-count.glow
-rishi/bin/rishi run tools/glow_run.rish src/sur/shape-caravan-max-name-len.glow
-rishi/bin/rishi run tools/glow_run.rish src/sur/shape-tally-parse-int-laws.glow
+rishi/bin/rishi run tools/glow_run.rish src/sur/shape-aurora-wire-capacity.glow
+rishi/bin/rishi run tools/aurora_glow_tend_limb1_witness.rish
 rishi/bin/rishi run tools/caravan_glow_tend_limb3_witness.rish
 rishi/bin/rishi run tools/tally_glow_tend_limb4_witness.rish
 rishi/bin/rishi run tools/gen/season/src_first_resident_witness.rish
 ```
 
-Further candidates: `caravan/supervisor_exit` three-way · Aurora seed/sealed · Tally maybe/stack · Mantra weave field counts. Reify map: [`../../counsel/20260802-011821_q58-scope-and-tend-src-reify.md`](../../counsel/20260802-011821_q58-scope-and-tend-src-reify.md).
+Further candidates: `caravan/supervisor_exit` three-way · Aurora seed_length/stages · Tally maybe/stack · Mantra weave field counts. Reify map: [`../../counsel/20260802-011821_q58-scope-and-tend-src-reify.md`](../../counsel/20260802-011821_q58-scope-and-tend-src-reify.md).

@@ -1,3 +1,4 @@
+| `20260802.012113` | [`20260802-012113_e197-aurora-glow-tend-limb1.bron`](20260802-012113_e197-aurora-glow-tend-limb1.bron) | e197 Aurora A1 wire_capacity=512 in src/sur |
 | `20260802.011821` | [`20260802-011821_e196-q58-scope-c3-t4-sur.bron`](20260802-011821_e196-q58-scope-c3-t4-sur.bron) | e196 Q58 scope · C3+T4 in src/sur · reify map |
 | `20260802.011503` | [`20260802-011503_e195-caravan-c2-cycle-wovn.bron`](20260802-011503_e195-caravan-c2-cycle-wovn.bron) | e195 Caravan C2 · ad-cycle · WOVN/Mitra proposed · baton |
 | `20260802.010932` | [`20260802-010932_e194-caravan-glow-tend-limb1.bron`](20260802-010932_e194-caravan-glow-tend-limb1.bron) | e194 Caravan Tend C1 max_children=4 · next C2 |
