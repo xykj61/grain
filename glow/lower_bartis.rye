@@ -156,7 +156,8 @@ fn expect_for(spec: *const rb.GateSpec) LowerError!u32 {
     return switch (spec.body) {
         .identity => bartis_identity_expect,
         .call_one => try call_expect(rb.gate_slice(spec), bartis_demo_sample),
-    };
+        .cond_gth => return error.SampleDoesNotNest,
+        };
 }
 
 fn emit_prelude(out: []u8, used: *u32) LowerError!void {
@@ -658,6 +659,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
                 const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `%-  {s}  {s}` — KindShape call body (STOA127).", .{ face, shape, gate, face }) catch return error.Overflow;
                 return emit_kind_call_body(out, zface, gate, comment);
             },
+            .cond_gth => return error.SampleDoesNotNest,
         }
     }
 
@@ -675,6 +677,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
                 const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `%-  {s}  {s}` — XactShape call body (STOA128).", .{ face, shape, gate, face }) catch return error.Overflow;
                 return emit_xact_call_body(out, zface, gate, comment);
             },
+            .cond_gth => return error.SampleDoesNotNest,
         }
     }
 
@@ -692,6 +695,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
                 const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `%-  {s}  {s}` — XferShape call body (STOA129).", .{ face, shape, gate, face }) catch return error.Overflow;
                 return emit_xfer_call_body(out, zface, gate, comment);
             },
+            .cond_gth => return error.SampleDoesNotNest,
         }
     }
 
@@ -712,6 +716,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
                 const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `%-  {s}  {s}` — {s} call body (STOA326).", .{ face, shape, gate, face, zig_type }) catch return error.Overflow;
                 return emit_n_field_flip_call_body(out, n, zface, comment);
             },
+            .cond_gth => return error.SampleDoesNotNest,
         }
     }
 
@@ -737,6 +742,15 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             try emit_gate_fn(out, &used, face, zface, body_return, comment);
             try emit_welcome_main(out, &used, zface, expect);
         },
+        .cond_gth => {
+            // STOA331: welcome bakes sample 5; expected decided at lower time.
+            var body_buf: [96]u8 = undefined;
+            const body_return = std.fmt.bufPrint(&body_buf, "if ({s} > {d}) {d} else {d}", .{ zface, spec.cond_rhs, spec.cond_then, spec.cond_else }) catch return error.Overflow;
+            var comment_buf: [192]u8 = undefined;
+            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `?:  (gth {s} {d})  {d}  {d}` — cond body (STOA331).", .{ face, shape, face, spec.cond_rhs, spec.cond_then, spec.cond_else }) catch return error.Overflow;
+            try emit_gate_fn(out, &used, face, zface, body_return, comment);
+            try emit_welcome_main(out, &used, zface, expect);
+        },
     }
     return used;
 }
@@ -758,6 +772,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
                 return emit_kind_argv(out, zface, comment);
             },
             .call_one => return error.SampleDoesNotNest,
+            .cond_gth => return error.SampleDoesNotNest,
         }
     }
 
@@ -770,6 +785,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
                 return emit_xact_argv(out, zface, comment);
             },
             .call_one => return error.SampleDoesNotNest,
+            .cond_gth => return error.SampleDoesNotNest,
         }
     }
 
@@ -782,6 +798,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
                 return emit_xfer_argv(out, zface, comment);
             },
             .call_one => return error.SampleDoesNotNest,
+            .cond_gth => return error.SampleDoesNotNest,
         }
     }
 
@@ -795,6 +812,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
                 return emit_n_field_argv(out, n, zface, comment);
             },
             .call_one => return error.SampleDoesNotNest,
+            .cond_gth => return error.SampleDoesNotNest,
         }
     }
 
@@ -827,6 +845,15 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `%-  {s}  {s}` — argv call body (STOA103–104).", .{ face, shape, gate, face }) catch return error.Overflow;
             try emit_gate_fn(out, &used, face, zface, body_return, comment);
             try emit_argv_main(out, &used, zface, expect_expr);
+        },
+        .cond_gth => {
+            // STOA331: the deciding gate speaks its answer; EXIT:0 + the spoken digit prove it.
+            var body_buf: [96]u8 = undefined;
+            const body_return = std.fmt.bufPrint(&body_buf, "if ({s} > {d}) {d} else {d}", .{ zface, spec.cond_rhs, spec.cond_then, spec.cond_else }) catch return error.Overflow;
+            var comment_buf: [192]u8 = undefined;
+            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `?:  (gth {s} {d})  {d}  {d}` — cond argv body (STOA331).", .{ face, shape, face, spec.cond_rhs, spec.cond_then, spec.cond_else }) catch return error.Overflow;
+            try emit_gate_fn(out, &used, face, zface, body_return, comment);
+            try emit_argv_speaking_main(out, &used, zface);
         },
     }
     return used;
