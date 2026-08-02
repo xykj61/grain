@@ -1,3 +1,4 @@
+| `20260802.171405` | [`20260802-171405_e230-v26-dated-only.bron`](20260802-171405_e230-v26-dated-only.bron) | e230 v26 · sampler dated artifacts only · supersedes v25 |
 | `20260802.171102` | [`20260802-171102_e229-v25-sampler-fix.bron`](20260802-171102_e229-v25-sampler-fix.bron) | e229 v25 · sampler README skip · supersedes v24 |
 | `20260802.170717` | [`20260802-170717_e228-v24-face-cover.bron`](20260802-170717_e228-v24-face-cover.bron) | e228 v24 · bind policy face joins pure era lap |
 | `20260802.170137` | [`20260802-170137_e227-v23-in-flight-law.bron`](20260802-170137_e227-v23-in-flight-law.bron) | e227 v23 · in-flight law · parity already GREEN |

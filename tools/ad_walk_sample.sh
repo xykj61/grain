@@ -18,17 +18,19 @@
 # SHELVED CLASSES (ruled once, standing KEEP):
 #   *recursion*.md — the season's per-round baton trail, 45 files, ~29 KB whole.
 #
-# ALSO SKIPPED: README.md — a living index, not a dated artifact. Its bare basename
-# matches 703 files tree-wide, so counting its 'inbound references' measures the word
-# README rather than the file (found live, e228). Verdicts belong to dated artifacts.
+# DATED ARTIFACTS ONLY: the draw keeps names matching YYYYMMDD-HHMMSS_slug. Living
+# docs — README.md, steep.md, the hammocks — are indexes and standing name-seats, not
+# finished pages, and none of the four verdicts belongs to them. Their bare basenames
+# also break the count: README matched 703 files tree-wide, measuring the word rather
+# than the file (found live at e228; generalized at e229 when the draw produced steep).
 
 set -e
 COUNT="${1:-4}"
 cd "$(CDPATH= cd -- "$(dirname "$0")/.." && pwd)"
 
 ls active-designing/*.md \
+  | grep -E '/[0-9]{8}-[0-9]{6}_' \
   | grep -v 'recursion' \
-  | grep -v '/README.md$' \
   | awk 'BEGIN{srand()} {print rand() "\t" $0}' \
   | sort -n \
   | head -n "$COUNT" \
