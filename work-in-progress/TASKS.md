@@ -1,24 +1,24 @@
 # Tasks — living pin
 
 **Language:** EN  
-**Last updated:** `20260802.181052` · voice Riyo  
+**Last updated:** `20260802.181628` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md) · prefer **git nib** over tip
 
 ---
 
-## Now — e236 crossing race (`20260802.181052`)
+## Now — e236 doorway ≠ auditor (`20260802.181628`)
 
-**Finishing edge:** photograph-not-gauge seated · quiet seat Twelve · a2 held.  
-**Prove:** race seat present · `grep Twelve counsel/20260802-173749_e233-a-quiet-tree-and-its-tally.md`.
+**Finishing edge:** dated_guard named as doorway · of-the-hour 256/452 held steady · dated-law open · a2 held.  
+**Prove:** seat present · `rishi/bin/rishi run tools/dated_guard.rish` vacuous GREEN.
 
 | Lap | Status |
 |-----|--------|
-| Pure · metal · house · walk | **GREEN** |
-| Quiet tally / race law | **Twelve · FORWARD** |
-| a2 · R2–R4 · equality · Q58 | **Keaton** |
+| Pure · metal · house · walk · guard | **GREEN** |
+| Doorway finding (v34 · supersedes v33) | **SEATED** |
+| Dated-law path · a2 · R2–R4 · equality · Q58 | **Keaton** |
 | bar5 · SEA | **Keaton's hands** |
 
 ---
 
-*May never-break hold the day, and every correction go forward.*
+*May a guard be honest about the hours it can watch.*

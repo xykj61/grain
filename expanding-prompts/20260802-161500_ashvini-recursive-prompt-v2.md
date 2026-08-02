@@ -52,6 +52,9 @@ STATE (refresh the needles from files every round):
     A number in flight goes stale like any other needle — re-measure at the hour it crosses.
   LAW (e235): a photograph is not a gauge — versions can race; corrections go FORWARD;
     aging counts are of-the-hour, or live outside the dated seat.
+  LAW (e236): a guard is honest about the hours it can watch — dated_guard is a staging-time
+    doorway, not a past auditor; measure before calling a practice a fault; a steady count
+    across two tips means the practice is historical, not ongoing. Dated-law path open.
   R1 FINAL — pier policy=1 · bind face · addr-width · rival WITHDRAWN.
   R2–R4 = frame seam — word AND fresh check-in each. Ruling:
     counsel/20260802-163000_e219-comlink-module-seam-ruling.md
