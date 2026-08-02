@@ -1,0 +1,6 @@
+::  Ashvini a1 · Equinox e209 — first Tend gate that does work (beyond pedestals).
+::  Thin bartis: one @u32 sample from argv, answer with its predecessor (dec).
+::  Names the Tally Tend family in src/lib/; Rye lower still owns the math.
+::  Stem law: gate-*-u32 stems accept exactly one sample.
+|=  sample=@u32
+%-  dec  sample

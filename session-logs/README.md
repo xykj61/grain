@@ -1,3 +1,4 @@
+| `20260802.143610` | [`20260802-143610_e209-ashvini-a1-breach-fuse.bron`](20260802-143610_e209-ashvini-a1-breach-fuse.bron) | e209 Ashvini a1 gate-tally-dec GREEN · ontology breach v0.1 |
 | `20260802.142508` | [`20260802-142508_e207-e208-ontology-a4-bar4.bron`](20260802-142508_e207-e208-ontology-a4-bar4.bron) | e207 ontology pair · e208 A4 · sixbar bar4 GREEN |
 | `20260802.141933` | [`20260802-141933_v3-delta-m3-m4-crossing.bron`](20260802-141933_v3-delta-m3-m4-crossing.bron) | v3 delta M3+M4 · Twin Crossing accretion · Mantra tier COMPLETE |
 | `20260802.140515` | [`20260802-140515_a0-twins-fusion-landing.bron`](20260802-140515_a0-twins-fusion-landing.bron) | a0 twins fusion landing · e204 M2 verified on pier |
