@@ -30,9 +30,9 @@ STATE (refresh the needles from files every round):
     dec · tally-bound · caravan-bound · aurora-bound · mantra-gen-floor ·
     tally-name-len · caravan-caps. Grammar STOA331 (?: gth face lit lit).
   Amphora bundle lane DONE (sha3 wall · clone-proof · torn/basis negatives).
-  TWO LAPS: PURE tools/glow_tend_era_suite.rish (v20 — walls by seated wording ·
-    addr-width · lens 4 and 16 tracked; any host) · METAL comlink_r1_dual_stack_witness.
-  LAW: a seat is a photograph; the tree is the living pin — read names at use-hour.
+  TWO LAPS: PURE tools/glow_tend_era_suite.rish (any host) · METAL comlink_r1_dual_stack_witness.
+  LAW (e223): a seat is a photograph; the tree is the living pin — read names at use-hour.
+  LAW (e224): exclude counsel/ and expanding-prompts/ from inbound reference counts.
   R1 FINAL — pier policy=1 · bind face · addr-width · rival WITHDRAWN.
   R2–R4 = frame seam — word AND fresh check-in each. Ruling:
     counsel/20260802-163000_e219-comlink-module-seam-ruling.md
@@ -40,16 +40,15 @@ STATE (refresh the needles from files every round):
 VANE ROADMAP (proposed · active-designing/20260802-161500_the-vane-roadmap-…):
   Vane 1 Glow Tend: a2 = gates that FOLD (value model as a running simple, not a fork) ·
     later equality rune · compose rune · Nock seam only from a mature whole.
-  Vane 2 Comlink: IPv6 dual-stack + roaming state-sync shell (research+silo landed this
-    round; build GATED behind keys/deploy). Study: external-research/…ssh-mosh-ipv6…
+  Vane 2 Comlink: IPv6 dual-stack + roaming state-sync shell (research+silo landed;
+    R1 WHOLE; R2–R4 build GATED). Study: external-research/…ssh-mosh-ipv6…
   Waiting vanes: living-pin fold · Amphora Class W/stdout · shed/Class O · dual-pier auth ·
     season close (128 · geode · extend+128) · Mycelium/MUR (professionals before gas).
 
-FILE-WALKTHROUGH RITUAL (every round, a bounded random sample of active-designing):
-  Walk a few files; give each an honest verdict — UPDATE (refresh current-as-of header) ·
-  ARCHIVE (keep, mark done) · YONDER (move to active-designing/yonder as research) ·
-  QUEUE-FOR-MITRA (written verdict only — Mitra NEVER auto-deletes; shred stays gated).
-  Relocations and queue are proposed for Keaton's word; pure header-refresh may land.
+FILE-WALKTHROUGH RITUAL — mechanical: `sh tools/ad_walk_sample.sh 5`.
+  Shelved classes skipped. Inbound counts exclude counsel/ and expanding-prompts/.
+  Verdicts: UPDATE · ARCHIVE · YONDER · QUEUE-FOR-MITRA (written only; Mitra never auto-deletes).
+  SHELF: recursion stubs — 45 · ~29 KB · STANDING KEEP; e137/e147 queue WITHDRAWN.
   LAW (e219): count inbound references BEFORE any verdict past KEEP — a file with many
     inbound pointers is load-bearing wherever it sits. Two verdicts withdrawn under it.
 
