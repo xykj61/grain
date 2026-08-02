@@ -1,0 +1,19 @@
+# tools/active_designing_cycle_witness.rish
+#
+#   rishi/bin/rishi run tools/active_designing_cycle_witness.rish
+
+say "ad-cycle-w: Language EN — active-designing cycle witness."
+say "ad-cycle-w: Style Radiant — pick is deterministic for a fixed seed."
+say "ad-cycle-w: Lens TAME — select only; shred never."
+
+say "ad-cycle-w: seed 7 twice must agree..."
+let same = run ["sh" "-c" "A=$(rishi/bin/rishi run tools/active_designing_cycle.rish 7); echo \"$A\" | grep -q 'GREEN: active-designing cycle' || exit 2; echo \"$A\" | grep -q 'Mitra shred GATED' || exit 3; IA=$(echo \"$A\" | grep '^ad-cycle: index'); PA=$(echo \"$A\" | grep '^ad-cycle: path'); B=$(rishi/bin/rishi run tools/active_designing_cycle.rish 7); IB=$(echo \"$B\" | grep '^ad-cycle: index'); PB=$(echo \"$B\" | grep '^ad-cycle: path'); test \"$IA\" = \"$IB\" -a \"$PA\" = \"$PB\" && echo SAME"]
+assert same.ok else "ad-cycle-w: determinism or GREEN check failed"
+assert same.out contains "SAME" else "ad-cycle-w: index/path not stable for seed 7"
+
+say "ad-cycle-w: different seeds may differ (no crash)..."
+let other = run ["rishi/bin/rishi" "run" "tools/active_designing_cycle.rish" "99"]
+assert other.ok else "ad-cycle-w: seed 99 failed"
+assert other.out contains "GREEN: active-designing cycle" else "ad-cycle-w: seed 99 missing GREEN"
+
+say "GREEN: active-designing cycle witness — deterministic pick; shred refused."
