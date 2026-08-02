@@ -1,0 +1,13 @@
+::  name       tally max gardens
+::  shape      gardens - int (@u32)
+::  invariant  Gardens holds at most eight named regions (max_gardens)
+::  example    8
+::  readers    Tally · Glow Tend · Caravan · Amphora · Ashvini nest-only
+::  nib        equinox-e191-tally-tend-v0
+::
+::  Equinox e191 · nest-only Ashvini under Equinox B — first Tally Glow Tend limb.
+::  Names max_gardens from tally/gardens.rye. Does not reimplement the allocator
+::  in Glow; the pedestal opens the Tend so later limbs can grow beside Rye.
++$  tally-max-gardens-shape
+  $:  gardens=@u32
+  ==
