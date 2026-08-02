@@ -1,0 +1,46 @@
+# tools/tally_glow_tend_limb2_witness.rish — second Tally Glow Tend limb (e192).
+#
+# Proves max_name_len pedestal locks to tally/gardens.rye (=32), lowers cleanly,
+# and limb 1 still GREEN beside it.
+#
+#   rishi/bin/rishi run tools/tally_glow_tend_limb2_witness.rish
+
+say "tally-tend-2: Language EN — second Tally Glow Tend limb."
+say "tally-tend-2: Style Radiant — pedestal beside Rye; no allocator rewrite."
+say "tally-tend-2: Lens TAME — Equinox e192 · Ashvini nest-only · Equinox B."
+
+let zig = "vendor/zig-toolchain/zig"
+let desk = "src/lib/shape-tally-max-name-len.glow"
+
+say "tally-tend-2: placard..."
+let placard = run ["sh" "-c" "head -n 7 src/lib/shape-tally-max-name-len.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert placard.ok else "tally-tend-2: placard scan failed"
+let pcount = trim placard.out
+assert pcount == "6" else "tally-tend-2: placard missing six lines"
+
+say "tally-tend-2: example locks to rye max_name_len..."
+let n_example = run ["sh" "-c" "grep -q 'example    32' src/lib/shape-tally-max-name-len.glow"]
+assert n_example.ok else "tally-tend-2: example 32 missing on pedestal"
+let n_name = run ["sh" "-c" "grep -q 'max_name_len' src/lib/shape-tally-max-name-len.glow"]
+assert n_name.ok else "tally-tend-2: max_name_len name missing on pedestal"
+let n_elder = run ["sh" "-c" "grep -q 'tally/gardens.rye' src/lib/shape-tally-max-name-len.glow"]
+assert n_elder.ok else "tally-tend-2: gardens.rye citation missing"
+let n_rye = run ["sh" "-c" "grep -E '^pub const max_name_len: u32 = 32;$' tally/gardens.rye"]
+assert n_rye.ok else "tally-tend-2: rye max_name_len must remain 32"
+
+say "tally-tend-2: lower and run..."
+let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" desk]
+assert gate.ok else "tally-tend-2: shape lower/build/run failed"
+assert gate.out contains "EXIT:0" else "tally-tend-2: shape did not exit 0"
+
+say "tally-tend-2: limb 1 still present..."
+let limb1 = run ["sh" "-c" "test -f src/lib/shape-tally-max-gardens.glow"]
+assert limb1.ok else "tally-tend-2: limb 1 pedestal missing"
+
+say "tally-tend-2: ladder honesty — no caravan/aurora .glow yet..."
+let none = run ["sh" "-c" "rg -l 'caravan|aurora' src edu --glob '*.glow' 2>/dev/null | wc -l | tr -d ' '"]
+assert none.ok else "tally-tend-2: caravan/aurora glow scan failed"
+let nhits = trim none.out
+assert nhits == "0" else "tally-tend-2: caravan/aurora Glow Tend must wait their limbs"
+
+say "GREEN: tally Glow Tend limb 2 — max_name_len=32 pedestal; limb 1 kept."
