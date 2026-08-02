@@ -1,23 +1,23 @@
 # Tasks — living pin
 
 **Language:** EN  
-**Last updated:** `20260802.194158` · voice Riyo  
+**Last updated:** `20260802.195302` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md) · prefer **git nib** over tip
 
 ---
 
-## Now — e244 (`20260802.194158`)
+## Now — e245 prodto (`20260802.195302`)
 
-**Finishing edge:** Rishi walls elder-citing · a2 pair-sum · era 5/5.  
-**Prove:** `rishi/bin/rishi run tools/glow_tend_a2_suite.rish` · `tools/glow_tend_era_suite.rish`
+**Finishing edge:** fold verb is a name · `FoldBoundTooLarge` · a2 suite 3/3.  
+**Prove:** `rishi/bin/rishi run tools/tally_a2_fold_prodto_witness.rish`
 
 | Lap | Status |
 |-----|--------|
-| a1 · Rishi walls · era 5/5 | **GREEN** |
-| a2 sumto · pair-sum · suite | **GREEN** |
-| Next folds · equality · R2 | **lean / word** |
+| a2 sumto · pair-sum · prodto | **GREEN** |
+| Recovery law (no whole-file rescue) | **SEATED** |
+| Next list fold · equality · R2 | **lean / word** |
 
 ---
 
-*May a wall that moves red at once.*
+*May each reduction keep its own identity.*

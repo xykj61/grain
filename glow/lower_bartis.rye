@@ -158,6 +158,18 @@ fn fold_sumto_expect(n: u32, bound: u32) u32 {
     return (n *% (n +% 1)) / 2;
 }
 
+/// STOA334: product 1..n within bound; empty n=0 folds to the product identity, 1.
+fn fold_prodto_expect(n: u32, bound: u32) u32 {
+    if (n > bound) return 0;
+    if (n == 0) return 1;
+    var acc: u32 = 1;
+    var i: u32 = 2;
+    while (i <= n) : (i += 1) {
+        acc *%= i;
+    }
+    return acc;
+}
+
 fn expect_for(spec: *const rb.GateSpec) LowerError!u32 {
     return switch (spec.body) {
         .identity => bartis_identity_expect,
@@ -165,6 +177,7 @@ fn expect_for(spec: *const rb.GateSpec) LowerError!u32 {
         .cond_gth => return error.SampleDoesNotNest,
         .fold_sumto => fold_sumto_expect(bartis_demo_sample, spec.fold_bound),
         .fold_sum => bartis_pair_demo_from +% bartis_pair_demo_amount,
+        .fold_prodto => fold_prodto_expect(bartis_demo_sample, spec.fold_bound),
     };
 }
 
@@ -176,6 +189,21 @@ fn emit_fold_sumto_gate_fn(out: []u8, used: *u32, zface: []const u8, bound: u32,
     try append_print(out, used, "    var i: u32 = 1;\n", .{});
     try append_print(out, used, "    while (i <= {s}) : (i += 1) {{\n", .{zface});
     try append_print(out, used, "        acc +%= i;\n", .{});
+    try append_print(out, used, "    }}\n", .{});
+    try append_print(out, used, "    return acc;\n", .{});
+    try append_print(out, used, "}}\n\n", .{});
+}
+
+
+
+fn emit_fold_prodto_gate_fn(out: []u8, used: *u32, zface: []const u8, bound: u32, comment: []const u8) LowerError!void {
+    try append_print(out, used, "/// {s}\n", .{comment});
+    try append_print(out, used, "fn bartis_gate({s}: u32) u32 {{\n", .{zface});
+    try append_print(out, used, "    if ({s} > {d}) return 0;\n", .{ zface, bound });
+    try append_print(out, used, "    var acc: u32 = 1;\n", .{});
+    try append_print(out, used, "    var i: u32 = 2;\n", .{});
+    try append_print(out, used, "    while (i <= {s}) : (i += 1) {{\n", .{zface});
+    try append_print(out, used, "        acc *%= i;\n", .{});
     try append_print(out, used, "    }}\n", .{});
     try append_print(out, used, "    return acc;\n", .{});
     try append_print(out, used, "}}\n\n", .{});
@@ -732,6 +760,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .cond_gth => return error.SampleDoesNotNest,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
+            .fold_prodto => return error.SampleDoesNotNest,
         }
     }
 
@@ -752,6 +781,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .cond_gth => return error.SampleDoesNotNest,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
+            .fold_prodto => return error.SampleDoesNotNest,
         }
     }
 
@@ -772,6 +802,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .cond_gth => return error.SampleDoesNotNest,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
+            .fold_prodto => return error.SampleDoesNotNest,
         }
     }
 
@@ -800,6 +831,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
                 const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `|+  sum  {s}` — pair fold (STOA333).", .{ face, shape, face }) catch return error.Overflow;
                 return emit_fold_sum_pair_welcome(out, zface, comment);
             },
+            .fold_prodto => return error.SampleDoesNotNest,
         }
     }
 
@@ -841,6 +873,13 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             try emit_fold_sumto_gate_fn(out, &used, zface, spec.fold_bound, comment);
             try emit_welcome_main(out, &used, zface, expect);
         },
+        .fold_prodto => {
+            // STOA334: welcome bakes sample 5; product expect at lower time.
+            var comment_buf: [192]u8 = undefined;
+            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `|+  prodto  {s}  {d}` — fold body (STOA334).", .{ face, shape, face, spec.fold_bound }) catch return error.Overflow;
+            try emit_fold_prodto_gate_fn(out, &used, zface, spec.fold_bound, comment);
+            try emit_welcome_main(out, &used, zface, expect);
+        },
         .fold_sum => return error.SampleDoesNotNest,
     }
     return used;
@@ -866,6 +905,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .cond_gth => return error.SampleDoesNotNest,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
+            .fold_prodto => return error.SampleDoesNotNest,
         }
     }
 
@@ -881,6 +921,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .cond_gth => return error.SampleDoesNotNest,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
+            .fold_prodto => return error.SampleDoesNotNest,
         }
     }
 
@@ -896,6 +937,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .cond_gth => return error.SampleDoesNotNest,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
+            .fold_prodto => return error.SampleDoesNotNest,
         }
     }
 
@@ -917,6 +959,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
                 const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `|+  sum  {s}` — pair fold argv (STOA333).", .{ face, shape, face }) catch return error.Overflow;
                 return emit_fold_sum_pair_argv(out, zface, comment);
             },
+            .fold_prodto => return error.SampleDoesNotNest,
         }
     }
 
@@ -964,6 +1007,13 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             var comment_buf: [192]u8 = undefined;
             const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `|+  sumto  {s}  {d}` — fold argv body (STOA332).", .{ face, shape, face, spec.fold_bound }) catch return error.Overflow;
             try emit_fold_sumto_gate_fn(out, &used, zface, spec.fold_bound, comment);
+            try emit_argv_speaking_main(out, &used, zface);
+        },
+        .fold_prodto => {
+            // STOA334: the product fold speaks its accumulator; the identity is 1, not 0.
+            var comment_buf: [192]u8 = undefined;
+            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `|+  prodto  {s}  {d}` — fold argv body (STOA334).", .{ face, shape, face, spec.fold_bound }) catch return error.Overflow;
+            try emit_fold_prodto_gate_fn(out, &used, zface, spec.fold_bound, comment);
             try emit_argv_speaking_main(out, &used, zface);
         },
         .fold_sum => return error.SampleDoesNotNest,
