@@ -1,10 +1,14 @@
 # The Work-in-Progress Stack
 
 **Language:** EN
-**Last updated:** `20260731.134911` (EDT) · Equinox OPEN · Class A i7 · ch7 11/16 · standing voice Riyo
+**Last updated:** `20260802.005915` (EDT) · Equinox J4 · nest-only Ashvini · e191 Tally Tend · standing voice Riyo
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Riyo
-**Status:** Foundation — living workbench; prefer **git nib** · see [`REMEMBER.md`](REMEMBER.md) · [`ROADMAP.md`](ROADMAP.md)
+**Status:** Foundation — living workbench; prefer **git nib** · see [`REMEMBER.md`](REMEMBER.md) · [`ROADMAP.md`](ROADMAP.md) · [`TASKS.md`](TASKS.md)
+
+**Finishing edge now:** Equinox deca OPEN · Ashvini nest-only under Equinox B (Glow Tend) · Tally limb 1 GREEN · next `max_name_len` · Q58 parked · Cursor-sole. Expanded queue: [`../counsel/20260802-005915_equinox-what-we-need-queue.md`](../counsel/20260802-005915_equinox-what-we-need-queue.md).
+
+**Health (this sitting):** `ROADMAP`/`TASKS` re-pinned. `REMEMBER.md` ~56 KiB is **over** `living_pin_max_bytes` (24576) — known debt; do not swell further without a fold. `ready-to-ask-claude.md` ~57 KiB is Claude-era; archive on word. Corpus-twin `.tsv` cluster + dated baselines are cold — candidates for `yonder/` on word. Live hammock index below is **stale** (July Open Asks) — truth is REMEMBER + ROADMAP + TASKS.
 
 ---
 
