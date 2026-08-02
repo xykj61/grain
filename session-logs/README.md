@@ -1,3 +1,4 @@
+| `20260802.010932` | [`20260802-010932_e194-caravan-glow-tend-limb1.bron`](20260802-010932_e194-caravan-glow-tend-limb1.bron) | e194 Caravan Tend C1 max_children=4 · next C2 |
 | `20260802.010651` | [`20260802-010651_e193-tally-glow-tend-limb3.bron`](20260802-010651_e193-tally-glow-tend-limb3.bron) | e193 Tally Tend T3 copy_disjoint · next Caravan C1 |
 | `20260802.010400` | [`20260802-010400_e192-tally-glow-tend-limb2.bron`](20260802-010400_e192-tally-glow-tend-limb2.bron) | e192 Tally Tend T2 max_name_len=32 · expanded need queue |
 | `20260802.005915` | [`20260802-005915_e191-tally-glow-tend-limb1.bron`](20260802-005915_e191-tally-glow-tend-limb1.bron) | e191 Tally Glow Tend limb 1 GREEN · max_gardens pedestal |
