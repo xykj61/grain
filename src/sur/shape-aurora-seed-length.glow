@@ -1,0 +1,13 @@
+::  name       aurora seed length
+::  shape      length - int (@u32)
+::  invariant  an Ed25519 identity seed is exactly 32 bytes (seed_length)
+::  example    32
+::  readers    Aurora · Kumara · Glow Tend · Sur museum · Ashvini nest-only
+::  nib        equinox-e200-aurora-tend-v0
+::
+::  Equinox e200 · Aurora A2 — second Aurora structure pedestal in src/sur/.
+::  Names seed_length from aurora/src/kumara.rye (and the 32-byte seeds
+::  posted.rye already packs). Pedestal only; bare-metal boot stays in aurora/src.
++$  aurora-seed-length-shape
+  $:  length=@u32
+  ==

@@ -1,12 +1,12 @@
 # The Work-in-Progress Stack
 
 **Language:** EN
-**Last updated:** `20260802.012507` (EDT) · Equinox J4 · nest-only Ashvini · e199 Tally T5 · standing voice Riyo
+**Last updated:** `20260802.120624` (EDT) · Equinox J4 · nest-only Ashvini · e200 Aurora A2 · standing voice Riyo
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Riyo
 **Status:** Foundation — living workbench; prefer **git nib** · see [`REMEMBER.md`](REMEMBER.md) · [`ROADMAP.md`](ROADMAP.md) · [`TASKS.md`](TASKS.md)
 
-**Finishing edge now:** Tend T1–T5 · C1–C4 · A1 GREEN · next Aurora A2 or Tally stack · Q58 Amphora-parked · Cursor-sole.
+**Finishing edge now:** Tend T1–T5 · C1–C4 · A1–A2 GREEN · next Tally stack or A3 · Q58 Amphora-parked · Cursor-sole.
 
 **Health (this sitting):** `ROADMAP`/`TASKS` current. `REMEMBER.md` ~56 KiB **over** `living_pin_max_bytes` (24576) — fold debt. `ready-to-ask-claude.md` ~57 KiB Claude-era — archive on word. Corpus-twin `.tsv` + dated baselines cold → `yonder/` on word. Hammock index below is **July-stale** — truth is REMEMBER + ROADMAP + TASKS + need queue.
 
