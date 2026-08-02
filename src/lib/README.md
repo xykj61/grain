@@ -12,6 +12,7 @@ Shared gates and utility pedestals in Glow — the sameness many desks call and 
 |------|------|-------|
 | `gate-tally-fold-sumto-u32` | sum 1..n within gardens=8; empty→0; past→0 | 0→0 · 3→6 · 8→36 · 9→0 |
 | `gate-tally-fold-pair-sum` | pair-shape fields → one `@u32` | 0 0→0 · 3 5→8 |
+| `gate-tally-fold-prodto-u32` | product 1..n within 8; empty→**1**; past→0; bound>12 named refuse | 0→1 · 3→6 · 8→40320 · 9→0 |
 
 Suite: `rishi/bin/rishi run tools/glow_tend_a2_suite.rish`
 

@@ -1,0 +1,13 @@
+::  name       tally fold prodto gate
+::  shape      n - int (@u32) -> product - int (@u32)
+::  invariant  folds 1..n into one @u32 by product while n stays within 8; empty n=0 answers the identity 1; past the wall answers 0
+::  example    0 -> 1 · 3 -> 6 · 8 -> 40320 · 9 -> 0
+::  readers    Tally · Glow Tend a2 · Ashvini
+::  nib        equinox-a2-tally-fold-prodto-v0 · STOA334: the fold verb is a name
+::
+::  Ashvini a2 — the fold carries a verb rather than a hardcode.
+::  sumto folds by addition and answers 0 on the empty case; prodto folds by
+::  multiplication and answers 1, because each reduction keeps its own identity.
+::  The bound is refused above twelve by name, since 13! leaves u32.
+|=  sample=@u32
+|+  prodto  sample  8
