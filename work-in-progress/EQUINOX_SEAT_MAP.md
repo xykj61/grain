@@ -1,11 +1,11 @@
 # Equinox Seat Map — close path · Chapter Seven and Eight
 
 **Language:** EN  
-**Status:** Living pin — **e202 GREEN Aurora A3 living stages** · **Tend T1–T6 · C1–C4 · A1–A3** · **Q58 Amphora parked** · **Ashvini nest-only** · **J4 OPEN** · seat **128 RESERVED** · geode **GATED**  
+**Status:** Living pin — **e203 GREEN Mantra M1 Line fields** · **Tend T1–T6 · C1–C4 · A1–A3 · M1** · **Q58 Amphora parked** · **Ashvini nest-only** · **J4 OPEN** · seat **128 RESERVED** · geode **GATED**  
 **Voice:** Riyo  
-**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260802.125205` (e202 A3 · Cursor-sole · SEA only)  
-**Seat:** Equinox e123 · almanac **127** · Chapter Eight **(15 of 16)** · nested wave **e202/64 — J4 Aurora A3**  
-**Basis:** kg e202 · handback `return_equinox_q58` · `return_deca_128` · **128 still reserved**
+**Stamp:** living ledger (born `20260731.141857`) · refreshed `20260802.132104` (e203 M1 · Cursor-sole · SEA only)  
+**Seat:** Equinox e123 · almanac **127** · Chapter Eight **(15 of 16)** · nested wave **e203/64 — J4 Mantra M1**  
+**Basis:** kg e203 · handback `return_equinox_q58` · `return_deca_128` · **128 still reserved**
 
 *A chapter's sixteenth seat may carry check · test · prepare as a close choir. A duty is not a seat unless the almanac says so — only the close is a seat. A surface witness claims no seat of its own. **roots** are where the hand sits to send words; a **Bench** is where claims become evidence — different kinds. Name the **Bench** when a measurement is reported. **Build stack:** sh → rish → glow·tend → docs-geode → Aurora·Caravan·Tally → Mantra·Weave — foundations first; five refusals · layer order. **Start rung:** sh → rish seam — on-touch only. **Shell ratchet:** on-touch, never a campaign. **Class O word-scope:** authorizing word on class/rooms, not per-path. **Bundle send:** crossing mode — cut · verify · stamped manifest; first rehearsal e129. **max_lines:** Glow multi-bind ceiling 6 — refuses past it. When two roofs carry one name, either they agree or the name is doing two jobs. Approve-all · kg · approvals seat recommended leans; they circle no gate — including shred. Seat the suite; do not manufacture meters. Look for the thing, not for the name of the thing. On-disk is not in-the-tree. A witness must not depend on one bench's tools.*
 

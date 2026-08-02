@@ -1,7 +1,7 @@
 # sur — Structures
 
 **Language:** EN  
-**Last updated:** `20260802.125205` (Equinox e202 — Aurora A3 living stages)  
+**Last updated:** `20260802.132104` (Equinox e203 — Mantra M1 Line fields)  
 **Status:** Living — room open; Surface pedestals + Glow Tend structure pedestals
 
 The data-structure museum: every non-networked shape on its own pedestal, viewable in isolation, named once and composed elsewhere. House style: [`PLACARD.md`](PLACARD.md). Glow Tend **structures** accrete here; shared gates stay in [`../lib/`](../lib/README.md).
@@ -27,13 +27,14 @@ The data-structure museum: every non-networked shape on its own pedestal, viewab
 | [`shape-aurora-wire-capacity.glow`](shape-aurora-wire-capacity.glow) | Aurora `wire_capacity=512` (Tend A1) | `tools/aurora_glow_tend_limb1_witness.rish` |
 | [`shape-aurora-seed-length.glow`](shape-aurora-seed-length.glow) | Aurora `seed_length=32` (Tend A2) | `tools/aurora_glow_tend_limb2_witness.rish` |
 | [`shape-aurora-living-stages.glow`](shape-aurora-living-stages.glow) | Aurora six living stages (Tend A3) | `tools/aurora_glow_tend_limb3_witness.rish` |
+| [`shape-mantra-line-field-count.glow`](shape-mantra-line-field-count.glow) | Mantra Line three fields (Tend M1) | `tools/mantra_glow_tend_limb1_witness.rish` |
 | [`shape-caravan-supervisor-exit-meanings.glow`](shape-caravan-supervisor-exit-meanings.glow) | Caravan three exit meanings (Tend C4) | `tools/caravan_glow_tend_limb4_witness.rish` |
 
 ```
+rishi/bin/rishi run tools/mantra_glow_tend_limb1_witness.rish
 rishi/bin/rishi run tools/aurora_glow_tend_limb3_witness.rish
 rishi/bin/rishi run tools/tally_glow_tend_limb6_witness.rish
-rishi/bin/rishi run tools/aurora_glow_tend_limb2_witness.rish
 rishi/bin/rishi run tools/caravan_glow_tend_limb4_witness.rish
 ```
 
-Further candidates: Mantra weave field counts · Aurora A4 `signature_length`. Reify map: [`../../counsel/20260802-011821_q58-scope-and-tend-src-reify.md`](../../counsel/20260802-011821_q58-scope-and-tend-src-reify.md).
+Further candidates: Mantra M2 (Weave · Diff · Store) · Aurora A4 `signature_length`. Reify map: [`../../counsel/20260802-011821_q58-scope-and-tend-src-reify.md`](../../counsel/20260802-011821_q58-scope-and-tend-src-reify.md).
