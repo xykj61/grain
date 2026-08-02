@@ -25,3 +25,11 @@ accretes a ring-two build leg with a 4 MiB roof, so the Wasm target can
 never silently rot while the seam waits.
 
 **Djin page one** still waits your one line (which fund, which lesson).
+
+---
+
+**Migration note (`20260802.142103`, e207-tidy):** the two correction blocks below were appended on 20260801 to a stray literal-glob filename (`counsel/*e214-ring-two*.md`) — an unexpanded glob in the append chain, caught by the pier at a0 landing. Content migrates here whole; the stray is removed in the same commit.
+
+**Correction (`20260801.172719`):** the seat above says *zero* prestat mentions; the measured count is **one** — a single reference at the site the grep names, still short of a working preopen walk (three runtime shapes refused). The finding stands; the word "zero" was wrong and is corrected here the moment it was caught.
+
+**Ring two closes GREEN (`20260801.172801`):** the correction's own grep held the key — under WASI, cwd is fd 3, *the first preopen* (Dir.zig:91's comment). Preopen the season home first and set RETTING_HOME to `.`, and the module runs whole: start writes the log through WASI, status folds it — `wasmbatch day 1 of 7`, log line on disk written by the wasm itself. Harness shape recorded here for the pier; the 1.5 MB artifact stands ready for the Codeberg post by your hands. A wrong word owned in the hour it happened turned into the road home — the day's law, keeping itself.

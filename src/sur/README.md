@@ -1,7 +1,7 @@
 # sur — Structures
 
 **Language:** EN  
-**Last updated:** `20260802.141933` (Equinox e206 — Mantra M4 Store dirs · pedestal tier complete)  
+**Last updated:** `20260802.142508` (Equinox e208 — Aurora A4 signature_length)  
 **Status:** Living — room open; Surface pedestals + Glow Tend structure pedestals
 
 The data-structure museum: every non-networked shape on its own pedestal, viewable in isolation, named once and composed elsewhere. House style: [`PLACARD.md`](PLACARD.md). Glow Tend **structures** accrete here; shared gates stay in [`../lib/`](../lib/README.md).
@@ -27,6 +27,7 @@ The data-structure museum: every non-networked shape on its own pedestal, viewab
 | [`shape-aurora-wire-capacity.glow`](shape-aurora-wire-capacity.glow) | Aurora `wire_capacity=512` (Tend A1) | `tools/aurora_glow_tend_limb1_witness.rish` |
 | [`shape-aurora-seed-length.glow`](shape-aurora-seed-length.glow) | Aurora `seed_length=32` (Tend A2) | `tools/aurora_glow_tend_limb2_witness.rish` |
 | [`shape-aurora-living-stages.glow`](shape-aurora-living-stages.glow) | Aurora six living stages (Tend A3) | `tools/aurora_glow_tend_limb3_witness.rish` |
+| [`shape-aurora-signature-length.glow`](shape-aurora-signature-length.glow) | Aurora `signature_length=64` (Tend A4) | `tools/aurora_glow_tend_limb4_witness.rish` |
 | [`shape-mantra-line-field-count.glow`](shape-mantra-line-field-count.glow) | Mantra Line three fields (Tend M1) | `tools/mantra_glow_tend_limb1_witness.rish` |
 | [`shape-mantra-weave-field-count.glow`](shape-mantra-weave-field-count.glow) | Mantra Weave two fields (Tend M2) | `tools/mantra_glow_tend_limb2_witness.rish` |
 | [`shape-mantra-diff-field-count.glow`](shape-mantra-diff-field-count.glow) | Mantra Diff two fields (Tend M3) | `tools/mantra_glow_tend_limb3_witness.rish` |
@@ -43,4 +44,4 @@ rishi/bin/rishi run tools/tally_glow_tend_limb6_witness.rish
 rishi/bin/rishi run tools/caravan_glow_tend_limb4_witness.rish
 ```
 
-Further candidates: Aurora A4 `signature_length` — Mantra pedestal tier COMPLETE (M1 Line=3 · M2 Weave=2 · M3 Diff=2 · M4 Store dirs=3, seats e204–e206). Reify map: [`../../counsel/20260802-011821_q58-scope-and-tend-src-reify.md`](../../counsel/20260802-011821_q58-scope-and-tend-src-reify.md).
+Further candidates: Ashvini a1 (gates that do work) on Keaton's kg. Pedestal tier named leaves COMPLETE — Aurora A1–A4 · Mantra M1–M4 · Tally/Caravan as seated. Reify map: [`../../counsel/20260802-011821_q58-scope-and-tend-src-reify.md`](../../counsel/20260802-011821_q58-scope-and-tend-src-reify.md).
