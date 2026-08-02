@@ -39,6 +39,8 @@ STATE (refresh the needles from files every round):
   LAW (e226): in flight is not landed — a resin handed over is only sent until a fetch
     shows it in the tree. Measure a suspicion before writing it.
   LAW (e227): sort a piece by what it NEEDS, not by the company its witness keeps.
+  LAW (e228): run the instrument, never merely trust it; a living index is not a dated
+    artifact — the sampler skips README.
   R1 FINAL — pier policy=1 · bind face · addr-width · rival WITHDRAWN.
   R2–R4 = frame seam — word AND fresh check-in each. Ruling:
     counsel/20260802-163000_e219-comlink-module-seam-ruling.md
@@ -52,7 +54,7 @@ VANE ROADMAP (proposed · active-designing/20260802-161500_the-vane-roadmap-…)
     season close (128 · geode · extend+128) · Mycelium/MUR (professionals before gas).
 
 FILE-WALKTHROUGH RITUAL — mechanical: `sh tools/ad_walk_sample.sh 5`.
-  Shelved classes skipped. Inbound counts exclude counsel/ and expanding-prompts/.
+  Shelved classes and README skipped. Inbound counts exclude counsel/ and expanding-prompts/.
   Verdicts: UPDATE · ARCHIVE · YONDER · QUEUE-FOR-MITRA (written only; Mitra never auto-deletes).
   SHELF: recursion stubs — 45 · ~29 KB · STANDING KEEP; e137/e147 queue WITHDRAWN.
   LAW (e219): count inbound references BEFORE any verdict past KEEP — a file with many
