@@ -1,9 +1,10 @@
 # Ashvini Recursive Prompt v2
 
-**Stamp:** `20260802.161500` · refreshed `20260802.184331` · **Voice:** Riyo · **Style:** Radiant
+**Stamp:** `20260802.161500` · refreshed `20260802.184602` · **Voice:** Riyo · **Style:** Radiant
 **Radiant pass `20260802.183244`** — e237 valve: narrowing withdrawn; drop path + measurement lines only.
 **Radiant pass `20260802.184012`** — e237 raced seating: tree kept Tier 2-freeze; withdrawal superseded.
 **Radiant pass `20260802.184331`** — e238 oscillation: elder law restored; one-voice proposed not seated.
+**Radiant pass `20260802.184602`** — e238: Tier 2-freeze restored; one-voice + auditor seated; counsel silence.
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
 
@@ -60,12 +61,12 @@ STATE (refresh the needles from files every round):
     across two tips means the practice is historical, not ongoing.
   LAW (e237): drop path is part of the crossing — ~/grain/ only; absent resin REPORTED.
     When two honest readings race, the TREE decides — rewrite the seat, erratum recorded.
-  PROPOSED NOT SEATED (e238): one-voice rule — law-shape gets one proposal, one word,
-    then bench silence; a later change of mind is a PROPOSAL TO REVISIT, never an undo.
-    "Seat yes all recs" approves leans; withdrawal after approval is a new proposal.
-  DATED LAW (elder, restored · byte-identical f96512ec4d): T1 absolute · T2 Radiant
-    pass or erratum · T3 free. Guard = doorway. Measured: 255 · 159 · 19 · 77.
-    Oscillation cost: 6 seats · 3 sittings · net zero (+ pier returned v36 on fuse).
+  LAW (e238): one-voice SEATED — law-shape: one proposal, one word, silence; revisit =
+    one sentence then wait. Counsel self-binds on dated-law shape (no further shape moves).
+    Auditor SEATED — tools/dated_preference_auditor.rish (report, never a gate).
+  DATED LAW (Tier 2-freeze, tree at f7cb609391 shape): T1 absolute · T2 amendable,
+    superseding seat preferred · T2-freeze (witness · golden · receipt · keys · fixtures)
+    · T3 free. Guard = doorway. Auditor of-the-hour: 256 · 151 Radiant · 3 erratum · 102 unmarked.
   R1 FINAL — pier policy=1 · bind face · addr-width · rival WITHDRAWN.
   R2–R4 = frame seam — word AND fresh check-in each. Ruling:
     counsel/20260802-163000_e219-comlink-module-seam-ruling.md
