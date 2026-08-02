@@ -49,6 +49,7 @@ STATE (refresh the needles from files every round):
   LAW (e232): a tempting rule meets its census first — "no" is as carefully earned as
     "yes." Prompt-family shelf declined (4 · 19,432 B · two live).
   LAW (e233): a quiet round is reported as quiet — walkthrough yield is insight, not tidying.
+    A number in flight goes stale like any other needle — re-measure at the hour it crosses.
   R1 FINAL — pier policy=1 · bind face · addr-width · rival WITHDRAWN.
   R2–R4 = frame seam — word AND fresh check-in each. Ruling:
     counsel/20260802-163000_e219-comlink-module-seam-ruling.md
