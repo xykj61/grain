@@ -1,15 +1,15 @@
 # Tasks — living pin
 
 **Language:** EN  
-**Last updated:** `20260803.171120` · voice Riyo  
+**Last updated:** `20260803.173759` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md) · prefer **git nib** over tip
 
 ---
 
-## Now — e277 guide 2 · relational gate stands (`20260803.171120`)
+## Now — e278 guide 2 home · relational gate stands (`20260803.173759`)
 
-**Finishing edge:** STOA338 whole · `nixos-guide/` guides 0–2 written · live walks (1 then 2) are Keaton's hands · rune lane quiet until the next grant stone.  
+**Finishing edge:** STOA338 whole · `nixos-guide/` guides 0–2 home · live walks (1 then 2) are Keaton's hands · rune lane quiet until the next grant stone.  
 **Prove:** `rishi/bin/rishi run tools/glow_bartis_pair_metal_witness.rish`
 
 | Lap | Status |
