@@ -1,6 +1,6 @@
 # Ashvini Recursive Prompt v2
 
-**Stamp:** `20260802.161500` · refreshed `20260802.210712` · **Voice:** Riyo · **Style:** Radiant
+**Stamp:** `20260802.161500` · refreshed `20260802.211000` · **Voice:** Riyo · **Style:** Radiant
 **Radiant pass `20260802.183244`** — e237 valve: narrowing withdrawn; drop path + measurement lines only.
 **Radiant pass `20260802.184012`** — e237 raced seating: tree kept Tier 2-freeze; withdrawal superseded.
 **Radiant pass `20260802.184331`** — e238 oscillation: elder law restored; one-voice proposed not seated.
@@ -18,6 +18,7 @@
 **Radiant pass `20260802.205512`** — e248: STOA336 `|+ prod` · list reducer chosen · a2 suite 6/6.
 **Radiant pass `20260802.210213`** — e249: v49 recut seat · quiet tree · both sum desks.
 **Radiant pass `20260802.210712`** — e250: two doors measured · Nock interpreter found · nothing chosen.
+**Radiant pass `20260802.211000`** — e251: brief of-the-hour · rescue law held · counsel quiet.
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
 
