@@ -7,10 +7,10 @@
 
 ---
 
-## Now — e259 the equality arc closes (`20260802.221638`)
+## Now — e261 the Nock seam discuss (`20260802.223924`)
 
-**Finishing edge:** STOA337 `eq` · mantra four (3·2·2·3) · 8/8 CLOSED · tending in Rye.  
-**Prove:** `env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run tools/mantra_a1_store_dirs_eq_witness.rye`
+**Finishing edge:** Nock ground 4/4 GREEN · 1,097 held · discuss written · door words parked.  
+**Prove:** `env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run nock/nock_core_witness.rye`
 
 | Lap | Status |
 |-----|--------|
