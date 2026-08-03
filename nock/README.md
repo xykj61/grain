@@ -50,6 +50,10 @@ Per the runes-scoping study's own jet proposal, [`JET_DEC.md`](JET_DEC.md) names
 - No jet (acceleration) layer exists yet; every reduction runs the plain interpreter, unaccelerated.
 - This is not, and is never meant to become, Glow's execution floor — RISC-V already holds that role, proven at [`../tools/glow_riscv_target_witness.rish`](../tools/glow_riscv_target_witness.rish).
 
+## The First Crossing — a Glow Gate Mirrored (e263)
+
+The seam's first witness-backed pin: [`nock_glow_mirror_witness.rye`](nock_glow_mirror_witness.rye) runs the arc's firstborn desk (`gate-aurora-seed-length-eq-u32`) down the Glow floor and the hand-built fixture `[6 [5 [0 1] [1 32]] [1 1] [1 0]]` through this interpreter, and asserts one answer on 32, 31, and 33. The raw opcode-5 loobean is read beside the product on every sample, so the inversion the seam page bans is witnessed rather than argued. Two codec rows gain metal — integer→atom and the polarity law; strings, lists, and records stay Design. Home per the seam page's own ruling: formulas live here. Seven specimens wait behind the first.
+
 ---
 
 *May the primitive core stay small enough to read in one sitting, and may every opcode this interpreter ever grows keep the same bound its first twelve already prove: checked, bounded without recursion where a plain loop will do, and shown to reduce to what came before, not merely trusted.*
