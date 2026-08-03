@@ -1,0 +1,104 @@
+//! nock/nock_glow_mirror_witness.rye — the first crossing: a Glow gate and a
+//! Nock formula answer as one (STOA337 firstborn · seed 32).
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run nock/nock_glow_mirror_witness.rye
+//!
+//! Trust flows from the Glow floor outward: the second backend earns its keep
+//! by agreeing loudly. The hand-built fixture [6 [5 [0 1] [1 32]] [1 1] [1 0]]
+//! re-speaks Glow polarity in its branches, so products compare directly. The
+//! raw opcode-5 loobean is also read on every sample, and the inversion the
+//! seam doc bans is asserted rather than argued: loobean 0 (yes) pairs with
+//! the gate's 1 (lawful), always, on both sides of the boundary.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const nock = @import("nock_core.rye");
+
+const desk = "src/lib/gate-aurora-seed-length-eq-u32.glow";
+const exact: u64 = 32; // the arc's firstborn — Ed25519 seed length
+const max_worker_out_bytes: u32 = 4096; // one small answer plus an EXIT marker
+
+// Invariant: the worker exits cleanly for every lawful sample; its stdout
+// carries the gate's answer and an EXIT:<code> marker.
+fn run_gate(a: std.mem.Allocator, io: std.Io, sample: []const u8) ![]u8 {
+    assert(sample.len > 0);
+    assert(sample.len < 8); // a u32 sample in text stays short
+    const result = try std.process.run(a, io, .{
+        .argv = &.{ "env", "RYE_ZIG=vendor/zig-toolchain/zig", "sh", "tools/glow_run_worker.sh", desk, sample },
+        .stdout_limit = .limited(max_worker_out_bytes),
+    });
+    const code: u8 = switch (result.term) {
+        .exited => |c| c,
+        else => 255,
+    };
+    assert(code == 0); // invariant: the worker ran the desk to completion
+    assert(result.stdout.len > 0); // invariant: the gate spoke an answer
+    return result.stdout;
+}
+
+fn contains(hay: []const u8, needle: []const u8) bool {
+    return std.mem.indexOf(u8, hay, needle) != null;
+}
+
+// Invariant: a product of this fixture is always an atom; a cell here is a
+// programmer error, caught loudly.
+fn atom_of(n: nock.Noun) u64 {
+    assert(!nock.is_cell(n));
+    return n.atom;
+}
+
+// [5 [0 1] [1 32]] — the eq test alone, kept separate so its raw loobean
+// can be read beside the full formula's product.
+fn build_test(interp: *nock.Interp) !nock.Noun {
+    const t_addr = try interp.cons(nock.Noun.a(0), nock.Noun.a(1));
+    const t_const = try interp.cons(nock.Noun.a(1), nock.Noun.a(exact));
+    return try interp.cons(nock.Noun.a(5), try interp.cons(t_addr, t_const));
+}
+
+// [6 test [1 1] [1 0]] — opcode 6 branches on the loobean and re-speaks
+// Glow polarity in the branches; the inversion lives here, on purpose.
+fn build_formula(interp: *nock.Interp, test_n: nock.Noun) !nock.Noun {
+    const yes = try interp.cons(nock.Noun.a(1), nock.Noun.a(1));
+    const no = try interp.cons(nock.Noun.a(1), nock.Noun.a(0));
+    return try interp.cons(nock.Noun.a(6), try interp.cons(test_n, try interp.cons(yes, no)));
+}
+
+// One sample crosses the seam: worker green, products agree, loobean inverts.
+fn mirror_one(a: std.mem.Allocator, io: std.Io, interp: *nock.Interp, test_n: nock.Noun, formula: nock.Noun, sample_txt: []const u8, sample: u64) !void {
+    const out = try run_gate(a, io, sample_txt);
+    assert(contains(out, "EXIT:0"));
+    const glow_yes = contains(out, "1"); // the digit 1 appears only in a lawful answer
+    const glow_num: u64 = if (glow_yes) 1 else 0;
+
+    const subject = nock.Noun.a(sample);
+    const product = atom_of(try interp.eval(subject, formula, 0));
+    assert(product == 0 or product == 1); // postcondition: the fixture speaks a flag
+    assert(glow_num == product); // the crossing agrees, 1 to 1 and 0 to 0
+
+    const raw = atom_of(try interp.eval(subject, test_n, 0));
+    assert(raw == 0 or raw == 1); // postcondition: opcode 5 speaks a loobean
+    if (glow_yes) assert(raw == 0); // loobean yes is 0 — the inversion, witnessed
+    if (!glow_yes) assert(raw == 1); // loobean no is 1 — both spaces held
+
+    print("mirror: sample {s} — glow {d} · formula {d} · raw loobean {d} — one answer\n", .{ sample_txt, glow_num, product, raw });
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const a = init.arena.allocator();
+    const io = init.io;
+
+    print("mirror: Language EN — the first Glow-Nock crossing (STOA337 firstborn).\n", .{});
+    print("mirror: Lens TAME — agreement asserted, inversion asserted, nothing silent.\n", .{});
+
+    var interp = nock.Interp.init();
+    const test_n = try build_test(&interp);
+    const formula = try build_formula(&interp, test_n);
+
+    try mirror_one(a, io, &interp, test_n, formula, "32", 32);
+    try mirror_one(a, io, &interp, test_n, formula, "31", 31);
+    try mirror_one(a, io, &interp, test_n, formula, "33", 33);
+
+    print("GREEN: the mirror — desk and formula answer as one on 32, 31, 33; the loobean inverts loudly; seven specimens wait.\n", .{});
+    return 0;
+}

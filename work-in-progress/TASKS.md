@@ -7,10 +7,10 @@
 
 ---
 
-## Now — e262 check-in · the door's five words (`20260802.224759`)
+## Now — e263 the first crossing (`20260802.224949`)
 
-**Finishing edge:** seam DISCUSSED · check-in OPEN · O2 lean stands · nothing spent.  
-**Prove:** `env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run nock/nock_core_witness.rye`
+**Finishing edge:** mirror GREEN on 32·31·33 · integer→atom + polarity gain metal · seven specimens wait.  
+**Prove:** `env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run nock/nock_glow_mirror_witness.rye`
 
 | Lap | Status |
 |-----|--------|
