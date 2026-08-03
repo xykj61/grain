@@ -1,3 +1,4 @@
+| `20260803.165859` | [`20260803-165859_e276-v67-fuse-338b-and-guides.bron`](20260803-165859_e276-v67-fuse-338b-and-guides.bron) | e276 fuse · STOA338b metal · nixos-guide seated |
 | `20260803.163623` | [`20260803-163623_e274-stoa339-and-339b-woven.bron`](20260803-163623_e274-stoa339-and-339b-woven.bron) | e274 STOA339+339b GREEN · compose unary · 338b next |
 | `20260803.162233` | [`20260803-162233_e273-stoa338a-pair-faces-parse.bron`](20260803-162233_e273-stoa338a-pair-faces-parse.bron) | e273 STOA338a GREEN · pair-faces parse · PairNotYetLowered |
 | `20260803.161235` | [`20260803-161235_e271-e272-walls-charted-compose-opened.bron`](20260803-161235_e271-e272-walls-charted-compose-opened.bron) | e271 walls CHARTED · e272 compose OPEN · lean O1 |
