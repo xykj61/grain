@@ -1,0 +1,10 @@
+::  name       tally fold triple-sum gate
+::  shape      triple-shape -> sum - int (@u32)
+::  invariant  folds the three triple fields into one @u32 by wrapping add; zeros answer 0
+::  example    1 2 3 -> 6 · 0 0 0 -> 0
+::  readers    Tally · Glow Tend a2 · Ashvini
+::  nib        equinox-a2-tally-fold3-v0 · STOA335: list fold widens past pair (e246)
+::
+::  Ashvini a2 · the list fold past two fields — Mantra's Weave spoken at width three.
+|=  xs=triple-shape
+|+  sum  xs

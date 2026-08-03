@@ -1,18 +1,20 @@
 # lib — Libraries
 
 **Language:** EN  
-**Last updated:** `20260802.194158` (Equinox e244 — Rishi walls · a2 pair-sum)
-**Status:** Living — room open; a1 ×9 · a2 folds ×2 · Comlink R1 · pure + metal laps
+**Last updated:** `20260802.200530` (Equinox e246 — a2 N-sum widen)
+**Status:** Living — room open; a1 ×9 · a2 folds ×4 · Comlink R1 · pure + metal laps
 
 Shared gates and utility pedestals in Glow — the sameness many desks call and none should re-carve.
 
-## The a2 Folding Gates (STOA332 · STOA333)
+## The a2 Folding Gates (STOA332–335)
 
 | Gate | Fold | Sides |
 |------|------|-------|
 | `gate-tally-fold-sumto-u32` | sum 1..n within gardens=8; empty→0; past→0 | 0→0 · 3→6 · 8→36 · 9→0 |
 | `gate-tally-fold-pair-sum` | pair-shape fields → one `@u32` | 0 0→0 · 3 5→8 |
 | `gate-tally-fold-prodto-u32` | product 1..n within 8; empty→**1**; past→0; bound>12 named refuse | 0→1 · 3→6 · 8→40320 · 9→0 |
+| `gate-tally-fold-triple-sum` | triple-shape fields → one `@u32` (STOA335) | 0 0 0→0 · 1 2 3→6 |
+| `gate-tally-fold-quad-sum` | quad-shape fields → one `@u32` (emit N-wide) | 0…→0 · 1 1 1 1→4 |
 
 Suite: `rishi/bin/rishi run tools/glow_tend_a2_suite.rish`
 

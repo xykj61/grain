@@ -1,6 +1,6 @@
 # Ashvini Recursive Prompt v2
 
-**Stamp:** `20260802.161500` · refreshed `20260802.195302` · **Voice:** Riyo · **Style:** Radiant
+**Stamp:** `20260802.161500` · refreshed `20260802.200530` · **Voice:** Riyo · **Style:** Radiant
 **Radiant pass `20260802.183244`** — e237 valve: narrowing withdrawn; drop path + measurement lines only.
 **Radiant pass `20260802.184012`** — e237 raced seating: tree kept Tier 2-freeze; withdrawal superseded.
 **Radiant pass `20260802.184331`** — e238 oscillation: elder law restored; one-voice proposed not seated.
@@ -13,6 +13,7 @@
 **Radiant pass `20260802.193605`** — e243: a2 OPEN · STOA332 fold sumto · counsel no-describe instruments.
 **Radiant pass `20260802.194158`** — e244: Rishi walls · STOA333 pair-sum · era 5/5 · a2 suite.
 **Radiant pass `20260802.195302`** — e245: STOA334 prodto · FoldBoundTooLarge · recovery law · a2×3.
+**Radiant pass `20260802.200530`** — e246: STOA335 N-sum widen · triple+quad · a2×4 · v46 seat.
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
 
@@ -41,10 +42,13 @@ STATE (refresh the needles from files every round):
     rishi/bin/rishi run tools/glow_tend_a1_suite.rish
     rishi/bin/rishi run tools/rishi_a1_gate_walls_witness.rish  (elder-citing)
     Grammar STOA331. LAW: a gate cites its elder live.
-  Ashvini a2 OPEN — three folding faces (suite):
+  Ashvini a2 OPEN — four folding faces (suite):
     rishi/bin/rishi run tools/glow_tend_a2_suite.rish
-    STOA332 sumto · STOA333 pair-sum · STOA334 prodto (verb is a name; empty=1).
+    STOA332 sumto · STOA333 pair-sum · STOA334 prodto (empty=1) ·
+    STOA335 `|+ sum` across closed `$:` pair…nona (triple · quad proved).
   LAW (e244/e245): recover only files the tree does not already carry.
+  LAW (e245): a STOA number is a name — first landing keeps it.
+  LAW (e246): the list fold's bound is the closed shape allowlist.
   Era pure lap — five legs (a1 · R1 pedestal · width · policy · Rishi walls).
   Amphora bundle lane DONE (sha3 wall · clone-proof · torn/basis negatives).
   THREE LAPS: PURE glow_tend_era_suite — four legs (a1 · pedestal · width · bind policy
@@ -84,7 +88,7 @@ STATE (refresh the needles from files every round):
     counsel/20260802-163000_e219-comlink-module-seam-ruling.md
 
 VANE ROADMAP (proposed · active-designing/20260802-161500_the-vane-roadmap-…):
-  Vane 1 Glow Tend: a2 OPEN — sumto + pair-sum GREEN; more folds on lean ·
+  Vane 1 Glow Tend: a2 OPEN — sumto · pair · prodto · N-sum GREEN ·
     later equality rune · compose rune · Nock seam only from a mature whole.
   Vane 2 Comlink: IPv6 dual-stack + roaming state-sync shell (research+silo landed;
     R1 WHOLE; R2–R4 build GATED). Study: external-research/…ssh-mosh-ipv6…

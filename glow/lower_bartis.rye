@@ -176,9 +176,21 @@ fn expect_for(spec: *const rb.GateSpec) LowerError!u32 {
         .call_one => try call_expect(rb.gate_slice(spec), bartis_demo_sample),
         .cond_gth => return error.SampleDoesNotNest,
         .fold_sumto => fold_sumto_expect(bartis_demo_sample, spec.fold_bound),
-        .fold_sum => bartis_pair_demo_from +% bartis_pair_demo_amount,
+        .fold_sum => try fold_sum_n_expect(spec),
         .fold_prodto => fold_prodto_expect(bartis_demo_sample, spec.fold_bound),
     };
+}
+
+/// STOA333/335: welcome-path expect for `|+ sum` — sum of closed-tuple demos for the sample's N.
+fn fold_sum_n_expect(spec: *const rb.GateSpec) LowerError!u32 {
+    const sn = rb.shape_name_slice(spec);
+    const n = nest_type.closed_tuple_field_count(sn) orelse return error.SampleDoesNotNest;
+    var acc: u32 = 0;
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        acc +%= closed_tuple_demos[@as(usize, @intCast(i))];
+    }
+    return acc;
 }
 
 fn emit_fold_sumto_gate_fn(out: []u8, used: *u32, zface: []const u8, bound: u32, comment: []const u8) LowerError!void {
@@ -210,43 +222,94 @@ fn emit_fold_prodto_gate_fn(out: []u8, used: *u32, zface: []const u8, bound: u32
 }
 
 
-fn emit_fold_sum_pair_welcome(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
-    const expect: u32 = bartis_pair_demo_from +% bartis_pair_demo_amount;
+/// STOA333/335: `|+ sum` over closed `$:` pair…nona — welcome bakes demos; expect is their sum.
+fn emit_fold_sum_n_welcome(out: []u8, field_count: u32, zface: []const u8, comment: []const u8) LowerError!u32 {
+    assert(field_count >= 2);
+    assert(field_count <= 9);
+    const zig_type = closed_tuple_type_name(field_count);
+    var expect: u32 = 0;
+    var i: u32 = 0;
+    while (i < field_count) : (i += 1) {
+        expect +%= closed_tuple_demos[@as(usize, @intCast(i))];
+    }
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const PairShape = struct {{\n", .{});
-    try append_print(out, &used, "    from: u32 = 0,\n", .{});
-    try append_print(out, &used, "    amount: u32 = 0,\n", .{});
+    try append_print(out, &used, "pub const {s} = struct {{\n", .{zig_type});
+    i = 0;
+    while (i < field_count) : (i += 1) {
+        try append_print(out, &used, "    {s}: u32 = 0,\n", .{closed_tuple_faces[@as(usize, @intCast(i))]});
+    }
     try append_print(out, &used, "}};\n\n", .{});
     try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn bartis_gate({s}: PairShape) u32 {{\n", .{zface});
-    try append_print(out, &used, "    return {s}.from +% {s}.amount;\n", .{ zface, zface });
+    try append_print(out, &used, "fn bartis_gate({s}: {s}) u32 {{\n", .{ zface, zig_type });
+    try append_print(out, &used, "    return ", .{});
+    i = 0;
+    while (i < field_count) : (i += 1) {
+        if (i > 0) try append_print(out, &used, " +% ", .{});
+        try append_print(out, &used, "{s}.{s}", .{ zface, closed_tuple_faces[@as(usize, @intCast(i))] });
+    }
+    try append_print(out, &used, ";\n", .{});
     try append_print(out, &used, "}}\n\n", .{});
     try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, &used, "    const {s}: PairShape = .{{ .from = {d}, .amount = {d} }};\n", .{ zface, bartis_pair_demo_from, bartis_pair_demo_amount });
+    try append_print(out, &used, "    const {s}: {s} = .{{ ", .{ zface, zig_type });
+    i = 0;
+    while (i < field_count) : (i += 1) {
+        if (i > 0) try append_print(out, &used, ", ", .{});
+        try append_print(out, &used, ".{s} = {d}", .{
+            closed_tuple_faces[@as(usize, @intCast(i))],
+            closed_tuple_demos[@as(usize, @intCast(i))],
+        });
+    }
+    try append_print(out, &used, " }};\n", .{});
     try append_print(out, &used, "    return if (bartis_gate({s}) == {d}) 0 else 1;\n", .{ zface, expect });
     try append_print(out, &used, "}}\n", .{});
     return used;
 }
 
-fn emit_fold_sum_pair_argv(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
+/// STOA333/335: `|+ sum` argv — N field decimals folded into one spoken `@u32`.
+fn emit_fold_sum_n_argv(out: []u8, field_count: u32, zface: []const u8, comment: []const u8) LowerError!u32 {
+    assert(field_count >= 2);
+    assert(field_count <= 9);
+    const zig_type = closed_tuple_type_name(field_count);
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
-    try append_print(out, &used, "pub const PairShape = struct {{\n", .{});
-    try append_print(out, &used, "    from: u32 = 0,\n", .{});
-    try append_print(out, &used, "    amount: u32 = 0,\n", .{});
+    try append_print(out, &used, "pub const {s} = struct {{\n", .{zig_type});
+    var i: u32 = 0;
+    while (i < field_count) : (i += 1) {
+        try append_print(out, &used, "    {s}: u32 = 0,\n", .{closed_tuple_faces[@as(usize, @intCast(i))]});
+    }
     try append_print(out, &used, "}};\n\n", .{});
     try append_print(out, &used, "/// {s}\n", .{comment});
-    try append_print(out, &used, "fn bartis_gate({s}: PairShape) u32 {{\n", .{zface});
-    try append_print(out, &used, "    return {s}.from +% {s}.amount;\n", .{ zface, zface });
+    try append_print(out, &used, "fn bartis_gate({s}: {s}) u32 {{\n", .{ zface, zig_type });
+    try append_print(out, &used, "    return ", .{});
+    i = 0;
+    while (i < field_count) : (i += 1) {
+        if (i > 0) try append_print(out, &used, " +% ", .{});
+        try append_print(out, &used, "{s}.{s}", .{ zface, closed_tuple_faces[@as(usize, @intCast(i))] });
+    }
+    try append_print(out, &used, ";\n", .{});
     try append_print(out, &used, "}}\n\n", .{});
     try append_print(out, &used, "pub fn main(init: std.process.Init) !u8 {{\n", .{});
     try append_print(out, &used, "    const alloc = init.arena.allocator();\n", .{});
     try append_print(out, &used, "    const argv = try init.minimal.args.toSlice(alloc);\n", .{});
-    try append_print(out, &used, "    if (argv.len < 3) return 2;\n", .{});
-    try append_print(out, &used, "    const from = std.fmt.parseInt(u32, argv[1], 10) catch return 2;\n", .{});
-    try append_print(out, &used, "    const amount = std.fmt.parseInt(u32, argv[2], 10) catch return 2;\n", .{});
-    try append_print(out, &used, "    const {s}: PairShape = .{{ .from = from, .amount = amount }};\n", .{zface});
+    try append_print(out, &used, "    if (argv.len < {d}) return 2;\n", .{field_count + 1});
+    i = 0;
+    while (i < field_count) : (i += 1) {
+        try append_print(out, &used, "    const {s} = std.fmt.parseInt(u32, argv[{d}], 10) catch return 2;\n", .{
+            closed_tuple_faces[@as(usize, @intCast(i))],
+            i + 1,
+        });
+    }
+    try append_print(out, &used, "    const {s}: {s} = .{{ ", .{ zface, zig_type });
+    i = 0;
+    while (i < field_count) : (i += 1) {
+        if (i > 0) try append_print(out, &used, ", ", .{});
+        try append_print(out, &used, ".{s} = {s}", .{
+            closed_tuple_faces[@as(usize, @intCast(i))],
+            closed_tuple_faces[@as(usize, @intCast(i))],
+        });
+    }
+    try append_print(out, &used, " }};\n", .{});
     try append_print(out, &used, "    const answer: u32 = bartis_gate({s});\n", .{zface});
     try append_print(out, &used, "    var buf: [12]u8 = undefined;\n", .{});
     try append_print(out, &used, "    const line = std.fmt.bufPrint(&buf, \"{{d}}\\n\", .{{answer}}) catch return 2;\n", .{});
@@ -826,10 +889,9 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .cond_gth => return error.SampleDoesNotNest,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => {
-                if (n != 2) return error.SampleDoesNotNest;
                 var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `|+  sum  {s}` — pair fold (STOA333).", .{ face, shape, face }) catch return error.Overflow;
-                return emit_fold_sum_pair_welcome(out, zface, comment);
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `|+  sum  {s}` — N-field fold (STOA333/335).", .{ face, shape, face }) catch return error.Overflow;
+                return emit_fold_sum_n_welcome(out, n, zface, comment);
             },
             .fold_prodto => return error.SampleDoesNotNest,
         }
@@ -954,10 +1016,9 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .cond_gth => return error.SampleDoesNotNest,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => {
-                if (n != 2) return error.SampleDoesNotNest;
                 var comment_buf: [192]u8 = undefined;
-                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `|+  sum  {s}` — pair fold argv (STOA333).", .{ face, shape, face }) catch return error.Overflow;
-                return emit_fold_sum_pair_argv(out, zface, comment);
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `|+  sum  {s}` — N-field fold argv (STOA333/335).", .{ face, shape, face }) catch return error.Overflow;
+                return emit_fold_sum_n_argv(out, n, zface, comment);
             },
             .fold_prodto => return error.SampleDoesNotNest,
         }
