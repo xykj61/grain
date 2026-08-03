@@ -17,7 +17,8 @@
 | Equality arc 8/8 · Rye tend | **CLOSED** |
 | Nock ground 4/4 · 1,097 | **GREEN (twice-measured)** |
 | Nock seam discuss | **DISCUSSED · words parked** |
-| Door check-in (five words) | **OPEN — Keaton** |
+| First crossing O2 (seed 32) | **GREEN** |
+| Further specimens · codec rows · Pond/OS | **parked — your word** |
 
 ---
 
