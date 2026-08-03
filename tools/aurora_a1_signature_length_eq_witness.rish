@@ -1,0 +1,39 @@
+# tools/aurora_a1_signature_length_eq_witness.rish — Ashvini equality: exact 64 (STOA337).
+#
+#   rishi/bin/rishi run tools/aurora_a1_signature_length_eq_witness.rish
+#
+# gth speaks ceilings. eq speaks exactly. Aurora's signature_length=64 is the
+# second pedestal that could not decide until this rune — 64→1, neighbors→0.
+
+say "eq-sig: Language EN — the second exact deciding gate (STOA337)."
+say "eq-sig: Lens TAME — exact match; both sides; gth neighbor still stands."
+
+let zig = "vendor/zig-toolchain/zig"
+let desk = "src/lib/gate-aurora-signature-length-eq-u32.glow"
+
+say "eq-sig: exact 64 answers 1..."
+let ok = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" desk "64"]
+assert ok.ok else "eq-sig: exact case failed to run"
+assert ok.out contains "EXIT:0" else "eq-sig: exact case did not exit 0"
+assert ok.out contains "1" else "eq-sig: exact 64 did not speak 1"
+
+say "eq-sig: just under (63) answers 0..."
+let under = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" desk "63"]
+assert under.ok else "eq-sig: under case failed to run"
+assert under.out contains "0" else "eq-sig: 63 did not speak 0"
+
+say "eq-sig: just over (65) answers 0..."
+let over = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" desk "65"]
+assert over.ok else "eq-sig: over case failed to run"
+assert over.out contains "0" else "eq-sig: 65 did not speak 0"
+
+say "eq-sig: the desk names eq, not gth..."
+let verb = run ["sh" "-c" "grep -qE '^[?][:]  [(]eq ' src/lib/gate-aurora-signature-length-eq-u32.glow"]
+assert verb.ok else "eq-sig: the desk stopped naming eq"
+
+say "eq-sig: gth neighbor (aurora wire bound) still green..."
+let gth = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" "src/lib/gate-aurora-wire-bound-u32.glow" "128"]
+assert gth.ok else "eq-sig: gth neighbor failed"
+assert gth.out contains "1" else "eq-sig: gth neighbor did not speak 1"
+
+say "GREEN: equality second — signature_length=64 decides exactly; gth still stands."
