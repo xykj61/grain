@@ -14,7 +14,8 @@
 | — | a2 whole · Nock 4/4 · eq 8/8 | **GREEN** |
 | **1** | Equality — the eight pedestals | **CLOSED 8/8** |
 | **2** | Nock seam discuss | **DISCUSSED · words parked** |
-| **2a** | Nock door check-in (five words) | **OPEN — Keaton** |
+| **2a** | First crossing (O2 · seed 32) | **GREEN — opened by continue (e252)** |
+| **2b** | Further specimens · string/record · Pond/OS Now | **parked / your word** |
 | **3** | Comlink R2–R4 | **GATED** |
 | **4** | bar5 · SEA · Mitra shred · Class O · geode | **hands / HELD** |
 

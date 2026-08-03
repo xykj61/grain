@@ -1,3 +1,4 @@
+| `20260802.225636` | [`20260802-225636_e263-v58-first-crossing-compass.bron`](20260802-225636_e263-v58-first-crossing-compass.bron) | e263 first crossing GREEN · compass Nock≠Pond/OS |
 | `20260802.224759` | [`20260802-224759_e262-v57-quiet-checkin.bron`](20260802-224759_e262-v57-quiet-checkin.bron) | e262 v57 quiet · check-in five words · door waits |
 | `20260802.224420` | [`20260802-224420_e260-e261-v56-seam-discussed.bron`](20260802-224420_e260-e261-v56-seam-discussed.bron) | e260+e261 Nock ground · seam discuss · words parked |
 | `20260802.223739` | [`20260802-223739_e256-e259-v55-mantra-four-closes.bron`](20260802-223739_e256-e259-v55-mantra-four-closes.bron) | e256–e259 mantra four · eq 8/8 CLOSED · Rye tend |
