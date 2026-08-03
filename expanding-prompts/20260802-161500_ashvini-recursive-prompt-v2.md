@@ -1,6 +1,6 @@
 # Ashvini Recursive Prompt v2
 
-**Stamp:** `20260802.161500` · refreshed `20260802.210213` · **Voice:** Riyo · **Style:** Radiant
+**Stamp:** `20260802.161500` · refreshed `20260802.210712` · **Voice:** Riyo · **Style:** Radiant
 **Radiant pass `20260802.183244`** — e237 valve: narrowing withdrawn; drop path + measurement lines only.
 **Radiant pass `20260802.184012`** — e237 raced seating: tree kept Tier 2-freeze; withdrawal superseded.
 **Radiant pass `20260802.184331`** — e238 oscillation: elder law restored; one-voice proposed not seated.
@@ -17,6 +17,7 @@
 **Radiant pass `20260802.201409`** — e247: pair delegates · mantra triple 3 5 7→15 · a2 suite 5/5.
 **Radiant pass `20260802.205512`** — e248: STOA336 `|+ prod` · list reducer chosen · a2 suite 6/6.
 **Radiant pass `20260802.210213`** — e249: v49 recut seat · quiet tree · both sum desks.
+**Radiant pass `20260802.210712`** — e250: two doors measured · Nock interpreter found · nothing chosen.
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
 
@@ -54,6 +55,10 @@ STATE (refresh the needles from files every round):
   LAW (e246/e247): closed-shape allowlist bounds the list fold ·
     widen by delegating · assert the rune you mean.
   LAW (e248): list reducer chosen at the call — sum and prod differ in operator + identity.
+  LAW (e249/e250): measure the mountain before climbing — Nock interpreter already runs
+    (nock/ 1097 lines · four laps GREEN); open work is the SEAM, not the build.
+  TWO DOORS (brief active-designing/20260802-211500_two-doors-measured-…):
+    equality (8 pedestals) · Nock seam discuss — both Keaton's; counsel lean once: equality first.
   Era pure lap — five legs (a1 · R1 pedestal · width · policy · Rishi walls).
   Amphora bundle lane DONE (sha3 wall · clone-proof · torn/basis negatives).
   THREE LAPS: PURE glow_tend_era_suite — four legs (a1 · pedestal · width · bind policy
