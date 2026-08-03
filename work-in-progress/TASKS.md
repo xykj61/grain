@@ -7,10 +7,10 @@
 
 ---
 
-## Now — e255 equality fourth (`20260802.215804`)
+## Now — e259 the equality arc closes (`20260802.221638`)
 
-**Finishing edge:** STOA337 `eq` · stages=6 · exit meanings=3 · 4/8.  
-**Prove:** `rishi/bin/rishi run tools/caravan_c4_exit_meanings_eq_witness.rish`
+**Finishing edge:** STOA337 `eq` · mantra four (3·2·2·3) · 8/8 CLOSED · tending in Rye.  
+**Prove:** `env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run tools/mantra_a1_store_dirs_eq_witness.rye`
 
 | Lap | Status |
 |-----|--------|

@@ -1,0 +1,12 @@
+::  name       mantra store dirs equality gate
+::  shape      count - int (@u32) -> lawful - int (@u32)
+::  invariant  answers 1 exactly when count is store dirs=3; answers 0 otherwise
+::  example    3 -> 1 · 2 -> 0 · 4 -> 0
+::  readers    Mantra · Glow Tend a1 unfinished · Ashvini
+::  nib        equinox-e259-equality-eighth-v0 · STOA337
+::
+::  Ashvini equality · eighth pedestal gth cannot speak — the last. The sur
+::  shape names a Store's three directory handles (root · mantra · blobs);
+::  this gate decides *exactly*, not by a ceiling. The arc closes here.
+|=  sample=@u32
+?:  (eq sample 3)  1  0
