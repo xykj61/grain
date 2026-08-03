@@ -189,8 +189,8 @@ fn expect_for(spec: *const rb.GateSpec) LowerError!u32 {
         .call_one => try call_expect(rb.gate_slice(spec), bartis_demo_sample),
         .cond_gth => return error.SampleDoesNotNest,
         .cond_eq => return error.SampleDoesNotNest,
-        .cond_eq_faces => return error.PairNotYetLowered,
-        .cond_gth_faces => return error.PairNotYetLowered,
+        .cond_eq_faces => if (bartis_pair_demo_from == bartis_pair_demo_amount) spec.cond_then else spec.cond_else,
+        .cond_gth_faces => if (bartis_pair_demo_from > bartis_pair_demo_amount) spec.cond_then else spec.cond_else,
         .fold_sumto => fold_sumto_expect(bartis_demo_sample, spec.fold_bound),
         .fold_sum => try fold_sum_n_expect(spec),
         .fold_prodto => fold_prodto_expect(bartis_demo_sample, spec.fold_bound),
@@ -1136,8 +1136,15 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             try emit_gate_fn(out, &used, face, zface, body_return, comment);
             try emit_welcome_main(out, &used, zface, expect);
         },
-        .cond_eq_faces => return error.PairNotYetLowered,
-        .cond_gth_faces => return error.PairNotYetLowered,
+        .cond_eq_faces, .cond_gth_faces => {
+            var zb: [rb.max_face_len]u8 = undefined;
+            const bn = try zig_safe_ident(rb.face2_slice(spec), &zb);
+            const zfb = zb[0..bn];
+            const op: []const u8 = if (spec.body == .cond_eq_faces) "==" else ">";
+            try append_print(out, &used, "/// Lowered from Glow pair-faces cond — STOA338b.\n", .{});
+            try append_print(out, &used, "fn bartis_pair({s}: u32, {s}: u32) u32 {{\n    return if ({s} {s} {s}) {d} else {d};\n}}\n\n", .{ zface, zfb, zface, op, zfb, spec.cond_then, spec.cond_else });
+            try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n    return if (bartis_pair({d}, {d}) == {d}) 0 else 1;\n}}\n", .{ bartis_pair_demo_from, bartis_pair_demo_amount, expect });
+        },
         .fold_sumto => {
             // STOA332: welcome bakes sample 5; triangular expect at lower time.
             var comment_buf: [192]u8 = undefined;
@@ -1302,8 +1309,23 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             try emit_gate_fn(out, &used, face, zface, body_return, comment);
             try emit_argv_speaking_main(out, &used, zface);
         },
-        .cond_eq_faces => return error.PairNotYetLowered,
-        .cond_gth_faces => return error.PairNotYetLowered,
+        .cond_eq_faces, .cond_gth_faces => {
+            var zb: [rb.max_face_len]u8 = undefined;
+            const bn = try zig_safe_ident(rb.face2_slice(spec), &zb);
+            const zfb = zb[0..bn];
+            const op: []const u8 = if (spec.body == .cond_eq_faces) "==" else ">";
+            try append_print(out, &used, "/// Lowered from Glow pair-faces cond — STOA338b.\n", .{});
+            try append_print(out, &used, "fn bartis_pair({s}: u32, {s}: u32) u32 {{\n    return if ({s} {s} {s}) {d} else {d};\n}}\n\n", .{ zface, zfb, zface, op, zfb, spec.cond_then, spec.cond_else });
+            try append_print(out, &used, "pub fn main(init: std.process.Init) !u8 {{\n", .{});
+            try append_print(out, &used, "    const alloc = init.arena.allocator();\n", .{});
+            try append_print(out, &used, "    const argv = try init.minimal.args.toSlice(alloc);\n", .{});
+            try append_print(out, &used, "    if (argv.len < 3) return 2;\n", .{});
+            try append_print(out, &used, "    const {s} = std.fmt.parseInt(u32, argv[1], 10) catch return 2;\n", .{zface});
+            try append_print(out, &used, "    const {s} = std.fmt.parseInt(u32, argv[2], 10) catch return 2;\n", .{zfb});
+            try append_print(out, &used, "    const expect: u32 = if ({s} {s} {s}) {d} else {d};\n", .{ zface, op, zfb, spec.cond_then, spec.cond_else });
+            try append_print(out, &used, "    return if (bartis_pair({s}, {s}) == expect) 0 else 1;\n", .{ zface, zfb });
+            try append_print(out, &used, "}}\n", .{});
+        },
         .fold_sumto => {
             // STOA332: the folding gate speaks its accumulator; EXIT:0 + spoken answer prove it.
             var comment_buf: [192]u8 = undefined;
