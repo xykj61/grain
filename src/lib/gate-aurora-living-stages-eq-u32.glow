@@ -1,0 +1,12 @@
+::  name       aurora living stages equality gate
+::  shape      stages - int (@u32) -> lawful - int (@u32)
+::  invariant  answers 1 exactly when stages is living_stages=6; answers 0 otherwise
+::  example    6 -> 1 · 5 -> 0 · 7 -> 0
+::  readers    Aurora · Glow Tend a1 unfinished · Ashvini
+::  nib        equinox-e254-equality-third-v0 · STOA337
+::
+::  Ashvini equality · third pedestal gth cannot speak. The sur shape names
+::  six living stages (seed · relay · named · sealed · wire · posted); this
+::  gate decides *exactly*, not by a ceiling.
+|=  sample=@u32
+?:  (eq sample 6)  1  0
