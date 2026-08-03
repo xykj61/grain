@@ -7,7 +7,7 @@
 
 ---
 
-## Now — e262 · check-in OPEN · five words (`20260802.224759`)
+## Now — e263 · the first crossing GREEN (`20260802.224949`)
 
 | Order | Lap | Status |
 |-------|-----|--------|
