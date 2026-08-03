@@ -7,13 +7,14 @@
 
 ---
 
-## Now — e261 · Nock seam discussed · words parked (`20260802.223924`)
+## Now — e262 · check-in OPEN · five words (`20260802.224759`)
 
 | Order | Lap | Status |
 |-------|-----|--------|
-| — | a2 whole · Nock 4/4 · eq seed+sig | **GREEN** |
+| — | a2 whole · Nock 4/4 · eq 8/8 | **GREEN** |
 | **1** | Equality — the eight pedestals | **CLOSED 8/8** |
 | **2** | Nock seam discuss | **DISCUSSED · words parked** |
+| **2a** | Nock door check-in (five words) | **OPEN — Keaton** |
 | **3** | Comlink R2–R4 | **GATED** |
 | **4** | bar5 · SEA · Mitra shred · Class O · geode | **hands / HELD** |
 
