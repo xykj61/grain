@@ -16,6 +16,7 @@
 | **2** | Nock seam discuss | **DISCUSSED · words parked** |
 | **2a** | First crossing (O2 · seed 32) | **GREEN — opened by continue (e252)** |
 | **2b** | Further specimens · string/record · Pond/OS Now | **parked / your word** |
+| **2c** | Pond-and-metal brief (e264) — lean: one Pond ring on NixOS host | **MEASURED · Now word yours** |
 | **3** | Comlink R2–R4 | **GATED** |
 | **4** | bar5 · SEA · Mitra shred · Class O · geode | **hands / HELD** |
 

@@ -7,9 +7,9 @@
 
 ---
 
-## Now — e263 the first crossing (`20260802.224949`)
+## Now — e264 the rose answered (`20260802.225813`)
 
-**Finishing edge:** mirror GREEN on 32·31·33 · integer→atom + polarity gain metal · seven specimens wait.  
+**Finishing edge:** Pond-and-metal MEASURED · Nock rests sealed · lean offered once · Now word Keaton's.  
 **Prove:** `env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run nock/nock_glow_mirror_witness.rye`
 
 | Lap | Status |
