@@ -1,0 +1,40 @@
+# tools/pond_ring_dimeroll_witness.rish — the fourth Pond ring: customs
+# gates the Dimeroll cargo, end to end, on the same glass.
+#
+#   rishi/bin/rishi run tools/pond_ring_dimeroll_witness.rish
+#
+# One gate, many cargos. Dimeroll's manifest crosses customs at receipt;
+# place admits it and the books view lap runs on the shared glass; refuse
+# blocks whole, and the lap stays unrun.
+
+say "ring4: Language EN — the fourth Pond ring, Dimeroll under customs."
+say "ring4: Lens TAME — one gate, many cargos; refuse still blocks whole."
+
+let zig = "vendor/zig-toolchain/zig"
+
+say "ring4: customs stands (build)..."
+let bc = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "pond/customs.rye" "-femit-bin=pond/bin/customs"]
+assert bc.ok else "ring4: customs failed to build"
+
+say "ring4: the app stands (seated build fixture)..."
+let ba = run ["rishi/bin/rishi" "run" "tools/fixtures/pond_build_drawn_terminal.rish"]
+assert ba.ok else "ring4: drawn terminal failed to build"
+
+say "ring4: manifest crosses customs — place admits..."
+let ins = run ["pond/bin/customs" "inspect" "tools/fixtures/pond_ring_dimeroll_good.manifest"]
+assert ins.ok else "ring4: place manifest did not admit"
+assert ins.err contains "verdict=place" else "ring4: verdict was not place"
+assert ins.err contains "admitted for placement" else "ring4: admission line missing"
+
+say "ring4: admitted — the Dimeroll books view runs headless..."
+let app = run ["pond/bin/drawn-terminal" "booksviewtest"]
+assert app.ok else "ring4: admitted Dimeroll failed its lap"
+assert app.out contains "GREEN" else "ring4: the lap did not speak GREEN"
+
+say "ring4: a stranger mark crosses — refuse blocks whole..."
+let ref = run ["sh" "-c" "pond/bin/customs inspect tools/fixtures/pond_ring_dimeroll_refuse.manifest 2>&1; test $? -eq 2"]
+assert ref.ok else "ring4: refuse did not exit 2"
+assert ref.out contains "REFUSE" else "ring4: refuse line missing"
+assert ref.out contains "verdict=refuse" else "ring4: verdict was not refuse"
+
+say "GREEN: the fourth Pond ring — Dimeroll admitted and run, stranger refused whole; one gate holds."
