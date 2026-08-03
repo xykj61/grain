@@ -7,7 +7,7 @@
 
 ---
 
-## Now — e265 · the first Pond ring GREEN (`20260802.230432`)
+## Now — e266 · the ring widens — Lantern GREEN (`20260802.231544`)
 
 | Order | Lap | Status |
 |-------|-----|--------|
@@ -15,7 +15,8 @@
 | **1** | Equality — the eight pedestals | **CLOSED 8/8** |
 | **2** | Nock seam (instrument) | **RESTS sealed · one crossing** |
 | **2c** | Pond-and-metal brief | **MEASURED** |
-| **2d** | First Pond ring — drawn terminal under customs | **GREEN — opened by continue (e252)** |
+| **2d** | First Pond ring — drawn terminal under customs | **GREEN** |
+| **2e** | Second ring — Lantern cargo, same gate | **GREEN — four cargos wait** |
 | **3** | Comlink R2–R4 | **GATED** |
 | **4** | bar5 · SEA · Mitra shred · Class O · geode | **hands / HELD** |
 
