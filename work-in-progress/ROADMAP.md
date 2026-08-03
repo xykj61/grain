@@ -7,7 +7,7 @@
 
 ---
 
-## Now — e266 · the ring widens — Lantern GREEN (`20260802.231544`)
+## Now — e269 · the census closes — five cargos, one gate (`20260803.013054`)
 
 | Order | Lap | Status |
 |-------|-----|--------|
@@ -16,7 +16,9 @@
 | **2** | Nock seam (instrument) | **RESTS sealed · one crossing** |
 | **2c** | Pond-and-metal brief | **MEASURED** |
 | **2d** | First Pond ring — drawn terminal under customs | **GREEN** |
-| **2e** | Second ring — Lantern cargo, same gate | **GREEN — four cargos wait** |
+| **2e** | Second ring — Lantern cargo, same gate | **GREEN** |
+| **2f** | Rings 3·4·5 — Granary · Dimeroll · Linengrow | **GREEN — census CLOSED** |
+| **2g** | Brushstroke — the glass itself; frame wants live Wayland | **pier's lap** |
 | **3** | Comlink R2–R4 | **GATED** |
 | **4** | bar5 · SEA · Mitra shred · Class O · geode | **hands / HELD** |
 
