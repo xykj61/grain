@@ -17,7 +17,8 @@
 | **2c–2h** | Pond census · glass · walls charted | **CLOSED / EXPLICIT-only** |
 | **2i** | STOA339 Tend unary `sumto` on `%-` | **GREEN** |
 | **2i′** | STOA339b compose-after-inc desk | **GREEN** |
-| **2j** | STOA338 pair-faces | **338a GREEN · 338b OPEN** |
+| **2j** | STOA338 pair-faces — 338a parse (pier) · **338b metal GREEN (e274)**: eq+gth both ways, arity holds | **GREEN — the relational gate stands** |
+| **2k** | `nixos-guide/` — guide 0 (declared pier, DC-1/Termux proven) · guide 1 (steward + root hardening) | **SEATED (e275) · guide 2 horizon: gh PAT + Claude Code** |
 | **3** | Comlink R2–R4 | **GATED** |
 | **4** | bar5 · SEA · Mitra shred · Class O · geode | **hands / HELD** |
 
