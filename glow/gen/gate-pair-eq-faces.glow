@@ -1,0 +1,5 @@
+::  STOA338 — pair-faces relational gate (eq).
+::  Two runtime @u32 samples meet: equal → 1, else → 0.
+::  Round 338a seats parse; lower answers PairNotYetLowered until 338b.
+|=  [a=@u32 b=@u32]
+?:  (eq a b)  1  0

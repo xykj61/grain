@@ -53,18 +53,18 @@
 //! STOA335: `|+  sum  <face>` widens across closed `$:` pair…nona; pair path delegates to STOA333 emitters.
 //! STOA336: `|+  prod  <face>` — list fold by product over the same closed tuple; reducer chosen at the call.
 //! STOA337: closed cond-body under `@u32` — `?:  (eq <face> <dec>)  <dec>  <dec>` (exact match; a1 unfinished).
+//! STOA338a: pair-faces header `|=  [a=@u32 b=@u32]` · face-vs-face cond
+//!   `?:  (eq|gth a b)  <dec>  <dec>` — parse seats; lower answers `PairNotYetLowered` (338b emits).
 //! STOA330: GateSpec fields — `shape_name` · `shape_name_len` · `shape_name_slice` · `max_shape_len`.
 //! Nesting / gold · open `$:` beyond nona bartis samples held.
 //!
 //! Parse shape (token stream):
 //!   1. skip leading newlines
 //!   2. rune2 `|=`
-//!   3. ident (sample face name)
-//!   4. equals
-//!   5. aura `@u32` or ident amount/count/kind/xact/xfer/pair-mold (else SampleDoesNotNest)
-//!   6. newline(s) — end of first line
-//!   7. body — identity ident, or `%-` + gate ident + sample face
-//!   8. trailing newlines only
+//!   3a. single: ident · equals · aura/`-shape` · newline · body
+//!   3b. STOA338: `[` · ident · equals · `@u32` · ident · equals · `@u32` · `]` · newline · body
+//!   4. body — identity · `%-` call · `?:` cond (literal or face-vs-face) · `|+` fold
+//!   5. trailing newlines only
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -91,6 +91,7 @@ pub const ParseError = error{
     BodySampleMismatch,
     MalformedBody,
     FoldBoundTooLarge, // STOA334: prodto bound past 12 would leave u32
+    PairNotYetLowered, // STOA338a: pair-faces parse seats; lower waits for 338b
     TooManyTokens,
     BadToken,
 };
@@ -100,6 +101,8 @@ pub const BodyKind = enum {
     call_one,
     cond_gth, // STOA331: the first body that decides (ceiling)
     cond_eq, // STOA337: exact match — pedestals gth cannot speak
+    cond_eq_faces, // STOA338: exact match of two sample faces
+    cond_gth_faces, // STOA338: greater-than of two sample faces
     fold_sumto, // STOA332: fold naturals 1..n within bound
     fold_sum, // STOA333/335: fold-sum closed tuple fields (pair…nona)
     fold_prodto, // STOA334: product 1..n within bound (verb is a name)
@@ -108,9 +111,12 @@ pub const BodyKind = enum {
 
 /// A parsed thin bartis gate: sample face + optional named shape + body kind.
 /// `shape_name_len == 0` means sample shape is the aura `@u32`.
+/// STOA338: `face2_len > 0` means a pair-faces header `[a=@u32 b=@u32]`.
 pub const GateSpec = struct {
     face: [max_face_len]u8 = [_]u8{0} ** max_face_len,
     face_len: u32 = 0,
+    face2: [max_face_len]u8 = [_]u8{0} ** max_face_len,
+    face2_len: u32 = 0,
     shape_name: [max_shape_len]u8 = [_]u8{0} ** max_shape_len,
     shape_name_len: u32 = 0,
     body: BodyKind = .identity,
@@ -125,6 +131,11 @@ pub const GateSpec = struct {
 pub fn face_slice(spec: *const GateSpec) []const u8 {
     assert(spec.face_len <= max_face_len); // invariant: face fits in buffer
     return spec.face[0..spec.face_len];
+}
+
+pub fn face2_slice(spec: *const GateSpec) []const u8 {
+    assert(spec.face2_len <= max_face_len); // invariant: face2 fits in buffer
+    return spec.face2[0..spec.face2_len];
 }
 
 pub fn shape_name_slice(spec: *const GateSpec) []const u8 {
@@ -162,7 +173,7 @@ pub fn is_n_field_call_gate(gate: []const u8) bool {
     return std.mem.eql(u8, gate, "flip");
 }
 
-fn parse_body(src: []const u8, toks: []const tokens.Token, start: u32, face_text: []const u8, spec: *GateSpec) ParseError!u32 {
+fn parse_body(src: []const u8, toks: []const tokens.Token, start: u32, face_text: []const u8, face2_text: []const u8, spec: *GateSpec) ParseError!u32 {
     var i = start;
     const n: u32 = @intCast(toks.len);
     if (i >= n) return error.MalformedBody;
@@ -192,6 +203,7 @@ fn parse_body(src: []const u8, toks: []const tokens.Token, start: u32, face_text
     }
     if (toks[@as(usize, @intCast(i))].kind == .rune2 and std.mem.eql(u8, tokens.slice_of(src, toks[@as(usize, @intCast(i))]), "?:")) {
         // STOA331/337: `?:  (gth|eq <face> <dec>)  <dec>  <dec>` — ceiling or exact.
+        // STOA338: `?:  (gth|eq <face> <face2>)  <dec>  <dec>` — two runtime faces.
         i += 1;
         if (i >= n or toks[@as(usize, @intCast(i))].kind != .lparen) return error.MalformedBody;
         i += 1;
@@ -203,9 +215,28 @@ fn parse_body(src: []const u8, toks: []const tokens.Token, start: u32, face_text
         i += 1;
         if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedBody;
         const cond_face = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
-        if (!std.mem.eql(u8, cond_face, face_text)) return error.BodySampleMismatch;
+        if (!std.mem.eql(u8, cond_face, face_text)) return error.BodyFaceMismatch;
         i += 1;
-        if (i >= n or toks[@as(usize, @intCast(i))].kind != .decimal) return error.MalformedBody;
+        if (i >= n) return error.MalformedBody;
+        if (toks[@as(usize, @intCast(i))].kind == .ident) {
+            // STOA338 face-vs-face — requires a pair-faces header.
+            if (face2_text.len == 0) return error.MalformedBody;
+            const cond_face2 = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
+            if (!std.mem.eql(u8, cond_face2, face2_text)) return error.BodyFaceMismatch;
+            i += 1;
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .rparen) return error.MalformedBody;
+            i += 1;
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .decimal) return error.MalformedBody;
+            spec.cond_then = try parse_decimal_u32(tokens.slice_of(src, toks[@as(usize, @intCast(i))]));
+            i += 1;
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .decimal) return error.MalformedBody;
+            spec.cond_else = try parse_decimal_u32(tokens.slice_of(src, toks[@as(usize, @intCast(i))]));
+            i += 1;
+            spec.body = if (is_eq) .cond_eq_faces else .cond_gth_faces;
+            return i;
+        }
+        if (toks[@as(usize, @intCast(i))].kind != .decimal) return error.MalformedBody;
+        if (face2_text.len != 0) return error.MalformedBody; // pair header wants face-vs-face
         spec.cond_rhs = try parse_decimal_u32(tokens.slice_of(src, toks[@as(usize, @intCast(i))]));
         i += 1;
         if (i >= n or toks[@as(usize, @intCast(i))].kind != .rparen) return error.MalformedBody;
@@ -292,53 +323,95 @@ pub fn parse_source(src: []const u8) ParseError!GateSpec {
     if (!std.mem.eql(u8, tokens.slice_of(src, rune_tok), "|=")) return error.NotABartis;
     i += 1;
 
-    // Ident (sample face name).
-    if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MissingFace;
-    const face_text = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
-    if (face_text.len == 0 or face_text.len > max_face_len) return error.MissingFace;
-    i += 1;
-
-    // Equals.
-    if (i >= n or toks[@as(usize, @intCast(i))].kind != .equals) return error.MissingEquals;
-    i += 1;
-
-    // Sample shape — aura `@u32` or closed named living `-shape` / study `-mold`.
-    if (i >= n) return error.MissingAura;
-    const shape_tok = toks[@as(usize, @intCast(i))];
-    var named_shape: ?[]const u8 = null;
-    var sample_text: []const u8 = undefined;
-    var stated_shape: []const u8 = undefined;
-    if (shape_tok.kind == .aura) {
-        const aura_text = tokens.slice_of(src, shape_tok);
-        nest_type.assert_aura_nests(aura_text, "@u32") catch return error.SampleDoesNotNest;
-        sample_text = aura_text;
-        stated_shape = "@u32";
-    } else if (shape_tok.kind == .ident) {
-        const shape_text = tokens.slice_of(src, shape_tok);
-        if (shape_text.len == 0 or shape_text.len > max_shape_len) return error.MissingAura;
-        nest_type.assert_bartis_named_shape(shape_text) catch return error.SampleDoesNotNest;
-        named_shape = shape_text;
-        sample_text = shape_text;
-        stated_shape = shape_text;
-    } else return error.MissingAura;
-    // STOA120 / STOA130: nesting-nests API at expansion (stated no-op until nesting spelling).
-    nest_type.assert_sample_nesting_nests(false, sample_text, stated_shape) catch return error.SampleDoesNotNest;
-    i += 1;
-
-    // Newline(s) — end of first line.
-    if (i >= n or toks[@as(usize, @intCast(i))].kind != .newline) return error.MalformedBody;
-    while (i < n and toks[@as(usize, @intCast(i))].kind == .newline) : (i += 1) {}
-
     var spec: GateSpec = .{};
-    assert(face_text.len <= max_face_len); // precondition held by check above
-    tally_copy.copy_disjoint(u8, spec.face[0..face_text.len], face_text);
-    spec.face_len = @intCast(face_text.len);
-    if (named_shape) |sn| {
-        tally_copy.copy_disjoint(u8, spec.shape_name[0..sn.len], sn);
-        spec.shape_name_len = @intCast(sn.len);
+    var face_text: []const u8 = undefined;
+    var face2_text: []const u8 = &[_]u8{};
+
+    // STOA338: pair-faces header `|=  [a=@u32 b=@u32]`.
+    if (i < n and toks[@as(usize, @intCast(i))].kind == .lbracket) {
+        i += 1;
+        if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MissingFace;
+        face_text = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
+        if (face_text.len == 0 or face_text.len > max_face_len) return error.MissingFace;
+        i += 1;
+        if (i >= n or toks[@as(usize, @intCast(i))].kind != .equals) return error.MissingEquals;
+        i += 1;
+        if (i >= n or toks[@as(usize, @intCast(i))].kind != .aura) return error.MissingAura;
+        const aura1 = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
+        nest_type.assert_aura_nests(aura1, "@u32") catch return error.SampleDoesNotNest;
+        nest_type.assert_sample_nesting_nests(false, aura1, "@u32") catch return error.SampleDoesNotNest;
+        i += 1;
+        if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MissingFace;
+        face2_text = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
+        if (face2_text.len == 0 or face2_text.len > max_face_len) return error.MissingFace;
+        if (std.mem.eql(u8, face2_text, face_text)) return error.MalformedBody;
+        i += 1;
+        if (i >= n or toks[@as(usize, @intCast(i))].kind != .equals) return error.MissingEquals;
+        i += 1;
+        if (i >= n or toks[@as(usize, @intCast(i))].kind != .aura) return error.MissingAura;
+        const aura2 = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
+        nest_type.assert_aura_nests(aura2, "@u32") catch return error.SampleDoesNotNest;
+        nest_type.assert_sample_nesting_nests(false, aura2, "@u32") catch return error.SampleDoesNotNest;
+        i += 1;
+        if (i >= n or toks[@as(usize, @intCast(i))].kind != .rbracket) return error.MalformedBody;
+        i += 1;
+
+        // Newline(s) — end of first line.
+        if (i >= n or toks[@as(usize, @intCast(i))].kind != .newline) return error.MalformedBody;
+        while (i < n and toks[@as(usize, @intCast(i))].kind == .newline) : (i += 1) {}
+
+        tally_copy.copy_disjoint(u8, spec.face[0..face_text.len], face_text);
+        spec.face_len = @intCast(face_text.len);
+        tally_copy.copy_disjoint(u8, spec.face2[0..face2_text.len], face2_text);
+        spec.face2_len = @intCast(face2_text.len);
+    } else {
+        // Ident (sample face name).
+        if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MissingFace;
+        face_text = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
+        if (face_text.len == 0 or face_text.len > max_face_len) return error.MissingFace;
+        i += 1;
+
+        // Equals.
+        if (i >= n or toks[@as(usize, @intCast(i))].kind != .equals) return error.MissingEquals;
+        i += 1;
+
+        // Sample shape — aura `@u32` or closed named living `-shape` / study `-mold`.
+        if (i >= n) return error.MissingAura;
+        const shape_tok = toks[@as(usize, @intCast(i))];
+        var named_shape: ?[]const u8 = null;
+        var sample_text: []const u8 = undefined;
+        var stated_shape: []const u8 = undefined;
+        if (shape_tok.kind == .aura) {
+            const aura_text = tokens.slice_of(src, shape_tok);
+            nest_type.assert_aura_nests(aura_text, "@u32") catch return error.SampleDoesNotNest;
+            sample_text = aura_text;
+            stated_shape = "@u32";
+        } else if (shape_tok.kind == .ident) {
+            const shape_text = tokens.slice_of(src, shape_tok);
+            if (shape_text.len == 0 or shape_text.len > max_shape_len) return error.MissingAura;
+            nest_type.assert_bartis_named_shape(shape_text) catch return error.SampleDoesNotNest;
+            named_shape = shape_text;
+            sample_text = shape_text;
+            stated_shape = shape_text;
+        } else return error.MissingAura;
+        // STOA120 / STOA130: nesting-nests API at expansion (stated no-op until nesting spelling).
+        nest_type.assert_sample_nesting_nests(false, sample_text, stated_shape) catch return error.SampleDoesNotNest;
+        i += 1;
+
+        // Newline(s) — end of first line.
+        if (i >= n or toks[@as(usize, @intCast(i))].kind != .newline) return error.MalformedBody;
+        while (i < n and toks[@as(usize, @intCast(i))].kind == .newline) : (i += 1) {}
+
+        assert(face_text.len <= max_face_len); // precondition held by check above
+        tally_copy.copy_disjoint(u8, spec.face[0..face_text.len], face_text);
+        spec.face_len = @intCast(face_text.len);
+        if (named_shape) |sn| {
+            tally_copy.copy_disjoint(u8, spec.shape_name[0..sn.len], sn);
+            spec.shape_name_len = @intCast(sn.len);
+        }
     }
 
-    i = try parse_body(src, toks, i, face_text, &spec);
+    i = try parse_body(src, toks, i, face_text, face2_text, &spec);
 
     // Trailing newlines only — anything else is a malformed body.
     while (i < n) : (i += 1) {
@@ -347,16 +420,24 @@ pub fn parse_source(src: []const u8) ParseError!GateSpec {
 
     // STOA332/334: range folds only under bare `@u32`.
     // STOA333/335: sum under closed `$:` pair…nona (field count from the named shape).
+    // STOA338: pair-faces header only with face-vs-face cond bodies.
     switch (spec.body) {
         .fold_sumto, .fold_prodto => {
             if (spec.shape_name_len != 0) return error.SampleDoesNotNest;
+            if (spec.face2_len != 0) return error.SampleDoesNotNest;
         },
         .fold_sum, .fold_prod => {
             if (spec.shape_name_len == 0) return error.SampleDoesNotNest;
+            if (spec.face2_len != 0) return error.SampleDoesNotNest;
             const sn = shape_name_slice(&spec);
             _ = nest_type.closed_tuple_field_count(sn) orelse return error.SampleDoesNotNest;
         },
-        else => {},
+        .cond_eq_faces, .cond_gth_faces => {
+            if (spec.face2_len == 0) return error.MalformedBody;
+        },
+        else => {
+            if (spec.face2_len != 0) return error.MalformedBody;
+        },
     }
 
     return spec;
