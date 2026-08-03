@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260802.220328
+editor Cursor
+model Auto Mode
+voice Riyo
+title e254+e255 v54 — stages 6 · exits 3 · eq 4/8
+prompt fuse kg v54 — two patches on 87bafe5409 · living-stages + caravan-exits
+think Tip matched 87bafe5409. Beads GREEN for both patches + fusing prompt. git am --3way in order. REMEMBER hunk surgical (union).
+think Pedestals: stages eq sample 6 · exits eq sample 3 with caravan caps gth neighbor. Six-for-six lap GREEN on pier (twice-measured e250).
+think Sitting-close: bron · README · two-doors 4/8 · nib pin · dual-push · rm v54 resin. Mantra four remain. No new law.
+obs eq 4/8 · first eq beyond Aurora · Nock seam held · lanes met byte-identical before cut
+file src/lib/gate-aurora-living-stages-eq-u32.glow
+file tools/aurora_a1_living_stages_eq_witness.rish
+file src/lib/gate-caravan-exit-meanings-eq-u32.glow
+file tools/caravan_c4_exit_meanings_eq_witness.rish
+file counsel/20260802-214845_e254-equality-third-living-stages.md
+file counsel/20260802-215804_e255-equality-fourth-caravan-exits.md
+recommend kg — the mantra four (Line 3 · Weave 2 · Diff 2 · Store 3 dirs)
