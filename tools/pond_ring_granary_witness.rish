@@ -1,0 +1,40 @@
+# tools/pond_ring_granary_witness.rish — the third Pond ring: customs
+# gates the Granary cargo, end to end, on the same glass.
+#
+#   rishi/bin/rishi run tools/pond_ring_granary_witness.rish
+#
+# One gate, many cargos. Granary's manifest crosses customs at receipt;
+# place admits it and the weave view lap runs on the shared glass; refuse
+# blocks whole, and the lap stays unrun.
+
+say "ring3: Language EN — the third Pond ring, Granary under customs."
+say "ring3: Lens TAME — one gate, many cargos; refuse still blocks whole."
+
+let zig = "vendor/zig-toolchain/zig"
+
+say "ring3: customs stands (build)..."
+let bc = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "pond/customs.rye" "-femit-bin=pond/bin/customs"]
+assert bc.ok else "ring3: customs failed to build"
+
+say "ring3: the app stands (seated build fixture)..."
+let ba = run ["rishi/bin/rishi" "run" "tools/fixtures/pond_build_drawn_terminal.rish"]
+assert ba.ok else "ring3: drawn terminal failed to build"
+
+say "ring3: manifest crosses customs — place admits..."
+let ins = run ["pond/bin/customs" "inspect" "tools/fixtures/pond_ring_granary_good.manifest"]
+assert ins.ok else "ring3: place manifest did not admit"
+assert ins.err contains "verdict=place" else "ring3: verdict was not place"
+assert ins.err contains "admitted for placement" else "ring3: admission line missing"
+
+say "ring3: admitted — the Granary weave view runs headless..."
+let app = run ["pond/bin/drawn-terminal" "granaryviewtest"]
+assert app.ok else "ring3: admitted Granary failed its lap"
+assert app.out contains "GREEN" else "ring3: the lap did not speak GREEN"
+
+say "ring3: a stranger mark crosses — refuse blocks whole..."
+let ref = run ["sh" "-c" "pond/bin/customs inspect tools/fixtures/pond_ring_granary_refuse.manifest 2>&1; test $? -eq 2"]
+assert ref.ok else "ring3: refuse did not exit 2"
+assert ref.out contains "REFUSE" else "ring3: refuse line missing"
+assert ref.out contains "verdict=refuse" else "ring3: verdict was not refuse"
+
+say "GREEN: the third Pond ring — Granary admitted and run, stranger refused whole; one gate holds."
