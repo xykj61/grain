@@ -1,3 +1,4 @@
+| `20260802.231650` | [`20260802-231650_e265-v60-first-pond-ring.bron`](20260802-231650_e265-v60-first-pond-ring.bron) | e265 first Pond ring GREEN · drawn terminal under customs |
 | `20260802.230344` | [`20260802-230344_e264-v59-rose-pond-metal.bron`](20260802-230344_e264-v59-rose-pond-metal.bron) | e264 rose answered · Pond-and-metal MEASURED · lean |
 | `20260802.225636` | [`20260802-225636_e263-v58-first-crossing-compass.bron`](20260802-225636_e263-v58-first-crossing-compass.bron) | e263 first crossing GREEN · compass Nock≠Pond/OS |
 | `20260802.224759` | [`20260802-224759_e262-v57-quiet-checkin.bron`](20260802-224759_e262-v57-quiet-checkin.bron) | e262 v57 quiet · check-in five words · door waits |
