@@ -2,7 +2,7 @@
 
 *Keaton's word turns the focus to the Glow Tend rune core — the hardest solvable problems the vanes depend on — with recommendations pre-approved inside that lane. This claim seats the approved recommendation in the tree's own STOA shape: the simple-gate path today compares one face against a literal only, so every wall bakes its constant into its desk. The pair-faces gate lets two runtime values meet — `|=  [a=@u32 b=@u32]` with `?:  (eq a b)` or `?:  (gth a b)` — and every vane's relational question (count within cap · pos within len · gen above floor) becomes one desk away.*
 
-**Stamp:** `20260803.161041` · **Voice:** Riyo · **Status:** 338a GREEN `20260803.162233` — parse seated · lower `PairNotYetLowered`; 338b emit next
+**Stamp:** `20260803.161041` · **Voice:** Riyo · **Status:** 338a+338b GREEN `20260803.165859` — parse seated · metal emits; relational gate stands
 **Grant:** Keaton — Glow Tend rune lane · recommendations pre-approved; walls, keys, custody untouched.
 
 *Written together by Keaton and Riyo.*
