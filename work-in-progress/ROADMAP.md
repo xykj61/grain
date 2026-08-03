@@ -13,7 +13,7 @@
 |-------|-----|--------|
 | — | a2 whole · Nock 4/4 · eq seed+sig | **GREEN** |
 | **1** | Equality — the eight pedestals | **CLOSED 8/8** |
-| **2** | Nock seam discuss | **held** |
+| **2** | Nock seam discuss | **DISCUSSED · words parked** |
 | **3** | Comlink R2–R4 | **GATED** |
 | **4** | bar5 · SEA · Mitra shred · Class O · geode | **hands / HELD** |
 

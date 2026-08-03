@@ -1,3 +1,4 @@
+| `20260802.224420` | [`20260802-224420_e260-e261-v56-seam-discussed.bron`](20260802-224420_e260-e261-v56-seam-discussed.bron) | e260+e261 Nock ground · seam discuss · words parked |
 | `20260802.223739` | [`20260802-223739_e256-e259-v55-mantra-four-closes.bron`](20260802-223739_e256-e259-v55-mantra-four-closes.bron) | e256–e259 mantra four · eq 8/8 CLOSED · Rye tend |
 | `20260802.220328` | [`20260802-220328_e254-e255-v54-stages-exits.bron`](20260802-220328_e254-e255-v54-stages-exits.bron) | e254+e255 stages=6 · exits=3 · eq 4/8 · v54 fuse |
 | `20260802.214614` | [`20260802-214614_e253-signature-eq.bron`](20260802-214614_e253-signature-eq.bron) | e253 signature_length=64 · eq 2/8 · agent re-cut |
