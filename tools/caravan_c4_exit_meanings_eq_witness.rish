@@ -1,0 +1,40 @@
+# tools/caravan_c4_exit_meanings_eq_witness.rish — Ashvini equality: exact 3 (STOA337).
+#
+#   rishi/bin/rishi run tools/caravan_c4_exit_meanings_eq_witness.rish
+#
+# gth speaks ceilings. eq speaks exactly. Caravan's three exit meanings
+# (cycle_ok=0 · stop_requested=8 · fall) are the fourth pedestal that could
+# not decide until this rune — 3→1, neighbors→0. First eq gate outside Aurora.
+
+say "eq-exit: Language EN — the fourth exact deciding gate (STOA337)."
+say "eq-exit: Lens TAME — exact match; both sides; gth neighbor still stands."
+
+let zig = "vendor/zig-toolchain/zig"
+let desk = "src/lib/gate-caravan-exit-meanings-eq-u32.glow"
+
+say "eq-exit: exact 3 answers 1..."
+let ok = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" desk "3"]
+assert ok.ok else "eq-exit: exact case failed to run"
+assert ok.out contains "EXIT:0" else "eq-exit: exact case did not exit 0"
+assert ok.out contains "1" else "eq-exit: exact 3 did not speak 1"
+
+say "eq-exit: just under (2) answers 0..."
+let under = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" desk "2"]
+assert under.ok else "eq-exit: under case failed to run"
+assert under.out contains "0" else "eq-exit: 2 did not speak 0"
+
+say "eq-exit: just over (4) answers 0..."
+let over = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" desk "4"]
+assert over.ok else "eq-exit: over case failed to run"
+assert over.out contains "0" else "eq-exit: 4 did not speak 0"
+
+say "eq-exit: the desk names eq, not gth..."
+let verb = run ["sh" "-c" "grep -qE '^[?][:]  [(]eq ' src/lib/gate-caravan-exit-meanings-eq-u32.glow"]
+assert verb.ok else "eq-exit: the desk stopped naming eq"
+
+say "eq-exit: gth neighbor (caravan caps bound) still green..."
+let gth = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" "src/lib/gate-caravan-caps-bound-u32.glow" "4"]
+assert gth.ok else "eq-exit: gth neighbor failed"
+assert gth.out contains "1" else "eq-exit: gth neighbor did not speak 1"
+
+say "GREEN: equality fourth — exit meanings=3 decide exactly; gth still stands."

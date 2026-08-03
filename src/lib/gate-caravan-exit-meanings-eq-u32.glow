@@ -1,0 +1,12 @@
+::  name       caravan supervisor exit meanings equality gate
+::  shape      meanings - int (@u32) -> lawful - int (@u32)
+::  invariant  answers 1 exactly when meanings is exit meanings=3; answers 0 otherwise
+::  example    3 -> 1 · 2 -> 0 · 4 -> 0
+::  readers    Caravan · Glow Tend a1 unfinished · Ashvini
+::  nib        equinox-e255-equality-fourth-v0 · STOA337
+::
+::  Ashvini equality · fourth pedestal gth cannot speak. The sur shape names
+::  three exit meanings (cycle_ok=0 · stop_requested=8 · fall); this gate
+::  decides *exactly*, not by a ceiling.
+|=  sample=@u32
+?:  (eq sample 3)  1  0

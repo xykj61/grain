@@ -1,6 +1,6 @@
 # Ashvini Recursive Prompt v2
 
-**Stamp:** `20260802.161500` · refreshed `20260802.214614` · **Voice:** Riyo · **Style:** Radiant
+**Stamp:** `20260802.161500` · refreshed `20260802.215804` · **Voice:** Riyo · **Style:** Radiant
 **Radiant pass `20260802.183244`** — e237 valve: narrowing withdrawn; drop path + measurement lines only.
 **Radiant pass `20260802.184012`** — e237 raced seating: tree kept Tier 2-freeze; withdrawal superseded.
 **Radiant pass `20260802.184331`** — e238 oscillation: elder law restored; one-voice proposed not seated.
@@ -21,6 +21,7 @@
 **Radiant pass `20260802.211000`** — e251: brief of-the-hour · rescue law held · counsel quiet.
 **Radiant pass `20260802.211556`** — e252: STOA337 eq · equality open · seed_length=32 · 1/8.
 **Radiant pass `20260802.214614`** — e253: signature_length=64 · eq 2/8 · Fable 5 twins seat · agent brief.
+**Radiant pass `20260802.215804`** — e254+e255: living stages=6 · exit meanings=3 · eq 4/8 · lanes met byte-identical (e250).
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
 
@@ -61,8 +62,8 @@ STATE (refresh the needles from files every round):
   LAW (e249/e250): measure the mountain before climbing — Nock interpreter already runs
     (nock/ 1097 lines · four laps GREEN); open work is the SEAM, not the build.
   TWO DOORS (brief active-designing/20260802-211500_two-doors-measured-…):
-    equality OPEN — STOA337 `eq` · 2/8 (seed_length=32 · signature_length=64) ·
-    six remain · Nock seam discuss held.
+    equality OPEN — STOA337 `eq` · 4/8 (seed 32 · signature 64 · stages 6 · exits 3) ·
+    four remain (mantra ×4) · Nock seam discuss held.
   LAW (e250): a finding measured twice by different hands becomes a fact.
   LAW (e252): quiet lane + continue opens the measured lean (equality first).
   Era pure lap — five legs (a1 · R1 pedestal · width · policy · Rishi walls).
