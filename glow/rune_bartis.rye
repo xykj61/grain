@@ -51,6 +51,7 @@
 //! STOA333: closed fold-body under `pair-shape` — `|+  sum  <face>` (Ashvini a2; list fold of two fields).
 //! STOA334: second range-fold verb — `|+  prodto  <face>  <bound>` (empty=1; bound >12 → FoldBoundTooLarge).
 //! STOA335: `|+  sum  <face>` widens across closed `$:` pair…nona; pair path delegates to STOA333 emitters.
+//! STOA336: `|+  prod  <face>` — list fold by product over the same closed tuple; reducer chosen at the call.
 //! STOA330: GateSpec fields — `shape_name` · `shape_name_len` · `shape_name_slice` · `max_shape_len`.
 //! Nesting / gold · open `$:` beyond nona bartis samples held.
 //!
@@ -100,6 +101,7 @@ pub const BodyKind = enum {
     fold_sumto, // STOA332: fold naturals 1..n within bound
     fold_sum, // STOA333/335: fold-sum closed tuple fields (pair…nona)
     fold_prodto, // STOA334: product 1..n within bound (verb is a name)
+    fold_prod, // STOA336: list fold by product over any closed tuple
 };
 
 /// A parsed thin bartis gate: sample face + optional named shape + body kind.
@@ -213,7 +215,7 @@ fn parse_body(src: []const u8, toks: []const tokens.Token, start: u32, face_text
         return i;
     }
     if (toks[@as(usize, @intCast(i))].kind == .rune2 and std.mem.eql(u8, tokens.slice_of(src, toks[@as(usize, @intCast(i))]), "|+")) {
-        // STOA332/334: `|+  sumto|prodto  <face>  <dec>` · STOA333: `|+  sum  <face>`
+        // STOA332/334: `|+  sumto|prodto  <face>  <dec>` · STOA333/336: `|+  sum|prod  <face>`
         i += 1;
         if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedBody;
         const op = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
@@ -235,6 +237,11 @@ fn parse_body(src: []const u8, toks: []const tokens.Token, start: u32, face_text
         if (std.mem.eql(u8, op, "sum")) {
             // No bound literal — field fold; shape checked after header parse.
             spec.body = .fold_sum;
+            return i;
+        }
+        if (std.mem.eql(u8, op, "prod")) {
+            // STOA336: list fold by product — same shape wall as sum; reducer chosen at the call.
+            spec.body = .fold_prod;
             return i;
         }
         return error.MalformedBody;
@@ -339,7 +346,7 @@ pub fn parse_source(src: []const u8) ParseError!GateSpec {
         .fold_sumto, .fold_prodto => {
             if (spec.shape_name_len != 0) return error.SampleDoesNotNest;
         },
-        .fold_sum => {
+        .fold_sum, .fold_prod => {
             if (spec.shape_name_len == 0) return error.SampleDoesNotNest;
             const sn = shape_name_slice(&spec);
             _ = nest_type.closed_tuple_field_count(sn) orelse return error.SampleDoesNotNest;

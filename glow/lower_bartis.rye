@@ -178,6 +178,7 @@ fn expect_for(spec: *const rb.GateSpec) LowerError!u32 {
         .fold_sumto => fold_sumto_expect(bartis_demo_sample, spec.fold_bound),
         .fold_sum => try fold_sum_n_expect(spec),
         .fold_prodto => fold_prodto_expect(bartis_demo_sample, spec.fold_bound),
+        .fold_prod => try fold_prod_n_expect(spec),
     };
 }
 
@@ -189,6 +190,18 @@ fn fold_sum_n_expect(spec: *const rb.GateSpec) LowerError!u32 {
     var i: u32 = 0;
     while (i < n) : (i += 1) {
         acc +%= closed_tuple_demos[@as(usize, @intCast(i))];
+    }
+    return acc;
+}
+
+/// STOA336: product expect over the same demo fields — identity 1, not 0.
+fn fold_prod_n_expect(spec: *const rb.GateSpec) LowerError!u32 {
+    const sn = rb.shape_name_slice(spec);
+    const n = nest_type.closed_tuple_field_count(sn) orelse return error.SampleDoesNotNest;
+    var acc: u32 = 1;
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        acc *%= closed_tuple_demos[@as(usize, @intCast(i))];
     }
     return acc;
 }
@@ -223,6 +236,106 @@ fn emit_fold_prodto_gate_fn(out: []u8, used: *u32, zface: []const u8, bound: u32
 
 
 /// STOA333: pair list-fold welcome — seated elder bytes; STOA335 delegates here at n=2.
+
+/// STOA336: list fold by product — welcome path. Operator *%; identity of none is 1.
+fn emit_fold_prod_n_welcome(out: []u8, field_count: u32, zface: []const u8, comment: []const u8) LowerError!u32 {
+    assert(field_count >= 2);
+    assert(field_count <= 9);
+    const zig_type = closed_tuple_type_name(field_count);
+    var expect: u32 = 1;
+    var i: u32 = 0;
+    while (i < field_count) : (i += 1) {
+        expect *%= closed_tuple_demos[@as(usize, @intCast(i))];
+    }
+    var used: u32 = 0;
+    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
+    try append_print(out, &used, "pub const {s} = struct {{\n", .{zig_type});
+    i = 0;
+    while (i < field_count) : (i += 1) {
+        try append_print(out, &used, "    {s}: u32 = 0,\n", .{closed_tuple_faces[@as(usize, @intCast(i))]});
+    }
+    try append_print(out, &used, "}};\n\n", .{});
+    try append_print(out, &used, "/// {s}\n", .{comment});
+    try append_print(out, &used, "fn bartis_gate({s}: {s}) u32 {{\n", .{ zface, zig_type });
+    try append_print(out, &used, "    return ", .{});
+    i = 0;
+    while (i < field_count) : (i += 1) {
+        if (i > 0) try append_print(out, &used, " *% ", .{});
+        try append_print(out, &used, "{s}.{s}", .{ zface, closed_tuple_faces[@as(usize, @intCast(i))] });
+    }
+    try append_print(out, &used, ";\n", .{});
+    try append_print(out, &used, "}}\n\n", .{});
+    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, &used, "    const {s}: {s} = .{{ ", .{ zface, zig_type });
+    i = 0;
+    while (i < field_count) : (i += 1) {
+        if (i > 0) try append_print(out, &used, ", ", .{});
+        try append_print(out, &used, ".{s} = {d}", .{
+            closed_tuple_faces[@as(usize, @intCast(i))],
+            closed_tuple_demos[@as(usize, @intCast(i))],
+        });
+    }
+    try append_print(out, &used, " }};\n", .{});
+    try append_print(out, &used, "    return if (bartis_gate({s}) == {d}) 0 else 1;\n", .{ zface, expect });
+    try append_print(out, &used, "}}\n", .{});
+    return used;
+}
+
+/// STOA336: list fold by product — argv path; answer spoken; wraps with *%.
+fn emit_fold_prod_n_argv(out: []u8, field_count: u32, zface: []const u8, comment: []const u8) LowerError!u32 {
+    assert(field_count >= 2);
+    assert(field_count <= 9);
+    const zig_type = closed_tuple_type_name(field_count);
+    var used: u32 = 0;
+    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
+    try append_print(out, &used, "pub const {s} = struct {{\n", .{zig_type});
+    var i: u32 = 0;
+    while (i < field_count) : (i += 1) {
+        try append_print(out, &used, "    {s}: u32 = 0,\n", .{closed_tuple_faces[@as(usize, @intCast(i))]});
+    }
+    try append_print(out, &used, "}};\n\n", .{});
+    try append_print(out, &used, "/// {s}\n", .{comment});
+    try append_print(out, &used, "fn bartis_gate({s}: {s}) u32 {{\n", .{ zface, zig_type });
+    try append_print(out, &used, "    return ", .{});
+    i = 0;
+    while (i < field_count) : (i += 1) {
+        if (i > 0) try append_print(out, &used, " *% ", .{});
+        try append_print(out, &used, "{s}.{s}", .{ zface, closed_tuple_faces[@as(usize, @intCast(i))] });
+    }
+    try append_print(out, &used, ";\n", .{});
+    try append_print(out, &used, "}}\n\n", .{});
+    try append_print(out, &used, "pub fn main(init: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, &used, "    const alloc = init.arena.allocator();\n", .{});
+    try append_print(out, &used, "    const argv = try init.minimal.args.toSlice(alloc);\n", .{});
+    try append_print(out, &used, "    if (argv.len < {d}) return 2;\n", .{field_count + 1});
+    i = 0;
+    while (i < field_count) : (i += 1) {
+        try append_print(out, &used, "    const {s} = std.fmt.parseInt(u32, argv[{d}], 10) catch return 2;\n", .{
+            closed_tuple_faces[@as(usize, @intCast(i))],
+            i + 1,
+        });
+    }
+    try append_print(out, &used, "    const {s}: {s} = .{{ ", .{ zface, zig_type });
+    i = 0;
+    while (i < field_count) : (i += 1) {
+        if (i > 0) try append_print(out, &used, ", ", .{});
+        try append_print(out, &used, ".{s} = {s}", .{
+            closed_tuple_faces[@as(usize, @intCast(i))],
+            closed_tuple_faces[@as(usize, @intCast(i))],
+        });
+    }
+    try append_print(out, &used, " }};\n", .{});
+    try append_print(out, &used, "    const answer: u32 = bartis_gate({s});\n", .{zface});
+    try append_print(out, &used, "    var buf: [12]u8 = undefined;\n", .{});
+    try append_print(out, &used, "    const line = std.fmt.bufPrint(&buf, \"{{d}}\\n\", .{{answer}}) catch return 2;\n", .{});
+    try append_print(out, &used, "    const io = init.io;\n", .{});
+    try append_print(out, &used, "    std.Io.File.stdout().writeStreamingAll(io, line) catch return 2;\n", .{});
+    try append_print(out, &used, "    return 0;\n", .{});
+    try append_print(out, &used, "}}\n", .{});
+    return used;
+}
+
+
 fn emit_fold_sum_pair_welcome(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
     const expect: u32 = bartis_pair_demo_from +% bartis_pair_demo_amount;
     var used: u32 = 0;
@@ -875,6 +988,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
             .fold_prodto => return error.SampleDoesNotNest,
+            .fold_prod => return error.SampleDoesNotNest,
         }
     }
 
@@ -896,6 +1010,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
             .fold_prodto => return error.SampleDoesNotNest,
+            .fold_prod => return error.SampleDoesNotNest,
         }
     }
 
@@ -917,6 +1032,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
             .fold_prodto => return error.SampleDoesNotNest,
+            .fold_prod => return error.SampleDoesNotNest,
         }
     }
 
@@ -945,6 +1061,11 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
                 return emit_fold_sum_n_welcome(out, n, zface, comment);
             },
             .fold_prodto => return error.SampleDoesNotNest,
+            .fold_prod => {
+                var comment_buf: [192]u8 = undefined;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `|+  prod  {s}` — N-field fold (STOA336).", .{ face, shape, face }) catch return error.Overflow;
+                return emit_fold_prod_n_welcome(out, n, zface, comment);
+            },
         }
     }
 
@@ -994,6 +1115,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             try emit_welcome_main(out, &used, zface, expect);
         },
         .fold_sum => return error.SampleDoesNotNest,
+        .fold_prod => return error.SampleDoesNotNest,
     }
     return used;
 }
@@ -1019,6 +1141,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
             .fold_prodto => return error.SampleDoesNotNest,
+            .fold_prod => return error.SampleDoesNotNest,
         }
     }
 
@@ -1035,6 +1158,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
             .fold_prodto => return error.SampleDoesNotNest,
+            .fold_prod => return error.SampleDoesNotNest,
         }
     }
 
@@ -1051,6 +1175,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
             .fold_prodto => return error.SampleDoesNotNest,
+            .fold_prod => return error.SampleDoesNotNest,
         }
     }
 
@@ -1072,6 +1197,11 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
                 return emit_fold_sum_n_argv(out, n, zface, comment);
             },
             .fold_prodto => return error.SampleDoesNotNest,
+            .fold_prod => {
+                var comment_buf: [192]u8 = undefined;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `|+  prod  {s}` — N-field fold argv (STOA336).", .{ face, shape, face }) catch return error.Overflow;
+                return emit_fold_prod_n_argv(out, n, zface, comment);
+            },
         }
     }
 
@@ -1129,6 +1259,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             try emit_argv_speaking_main(out, &used, zface);
         },
         .fold_sum => return error.SampleDoesNotNest,
+        .fold_prod => return error.SampleDoesNotNest,
     }
     return used;
 }

@@ -1,0 +1,13 @@
+::  name       tally fold triple prod gate
+::  shape      triple-shape - three named fields -> product - int (@u32)
+::  invariant  folds every field of a closed triple into one @u32 by product; the reducer is chosen at the call, the shape sets the width
+::  example    3 5 7 -> 105 · 1 1 1 -> 1 · 0 4 9 -> 0
+::  readers    Tally · Glow Tend a2 · Ashvini
+::  nib        equinox-a2-list-reducer-chosen-v0 · STOA336
+::
+::  Ashvini a2 · the list fold's reducer becomes a choice. sum and prod fold the
+::  same closed tuple across the same fields; they differ only in operator and in
+::  identity — the sum of no fields is zero, the product of none is one. Widths
+::  wrap on purpose (*%), the way the seated sum wraps (+%).
+|=  sample=triple-shape
+|+  prod  sample

@@ -1,8 +1,8 @@
 # lib — Libraries
 
 **Language:** EN  
-**Last updated:** `20260802.201409` (Equinox e247 — pair delegates · mantra fold)
-**Status:** Living — room open; a1 ×9 · a2 folds · Comlink R1 · pure + metal laps
+**Last updated:** `20260802.205512` (Equinox e248 — list prod · reducer chosen)
+**Status:** Living — room open; a1 ×9 · a2 running whole · Comlink R1 · pure + metal laps
 
 Shared gates and utility pedestals in Glow — the sameness many desks call and none should re-carve.
 
@@ -16,6 +16,7 @@ Shared gates and utility pedestals in Glow — the sameness many desks call and 
 | `gate-tally-fold-triple-sum` | triple-shape fields → one `@u32` (STOA335) | 0 0 0→0 · 1 2 3→6 |
 | `gate-tally-fold-quad-sum` | quad-shape fields → one `@u32` (emit N-wide) | 0…→0 · 1 1 1 1→4 |
 | `gate-mantra-fold-triple-fields` | Mantra Weave desk — triple sum; pair path delegated | 3 5 7→15 · 0 0 0→0 |
+| `gate-tally-fold-triple-prod` | triple-shape product (STOA336 — reducer chosen) | 3 5 7→105 · 1 1 1→1 · 0 4 9→0 |
 
 Suite: `rishi/bin/rishi run tools/glow_tend_a2_suite.rish`
 
