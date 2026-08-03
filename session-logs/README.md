@@ -1,3 +1,4 @@
+| `20260803.014550` | [`20260803-014550_e267-e269-v62-census-closes.bron`](20260803-014550_e267-e269-v62-census-closes.bron) | e267–e269 census CLOSED · five cargos one glass |
 | `20260803.012657` | [`20260803-012657_e266-v61-second-ring-lantern.bron`](20260803-012657_e266-v61-second-ring-lantern.bron) | e266 second ring GREEN · Lantern under same gate |
 | `20260802.231650` | [`20260802-231650_e265-v60-first-pond-ring.bron`](20260802-231650_e265-v60-first-pond-ring.bron) | e265 first Pond ring GREEN · drawn terminal under customs |
 | `20260802.230344` | [`20260802-230344_e264-v59-rose-pond-metal.bron`](20260802-230344_e264-v59-rose-pond-metal.bron) | e264 rose answered · Pond-and-metal MEASURED · lean |

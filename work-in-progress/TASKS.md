@@ -7,18 +7,18 @@
 
 ---
 
-## Now — e266 the second ring (`20260802.231544`)
+## Now — e269 the census closes (`20260803.013054`)
 
-**Finishing edge:** RINGS ONE + TWO GREEN — one gate, two cargos · brushstroke·granary·dimeroll·linengrow wait.  
-**Prove:** `rishi/bin/rishi run tools/pond_ring_lantern_witness.rish`
+**Finishing edge:** CENSUS CLOSED — one gate · five cargos · one glass; brushstroke frame is the pier's live-Wayland lap.  
+**Prove:** `rishi/bin/rishi run tools/pond_ring_linengrow_witness.rish`
 
 | Lap | Status |
 |-----|--------|
 | Equality arc 8/8 · Rye tend | **CLOSED** |
 | First crossing O2 (seed 32) | **GREEN · Nock rests** |
-| First Pond ring (drawn terminal) | **GREEN** |
-| Second ring (Lantern) | **GREEN** |
-| Four cargos · manifest-file home | **parked — your word** |
+| Rings 1–5 (session · Lantern · Granary · Dimeroll · Linengrow) | **GREEN — census CLOSED** |
+| Brushstroke frame (live glass) | **pier's Wayland lap** |
+| Manifest-file graduation | **parked — your word** |
 
 ---
 
