@@ -1,3 +1,4 @@
+| `20260803.163623` | [`20260803-163623_e274-stoa339-and-339b-woven.bron`](20260803-163623_e274-stoa339-and-339b-woven.bron) | e274 STOA339+339b GREEN · compose unary · 338b next |
 | `20260803.162233` | [`20260803-162233_e273-stoa338a-pair-faces-parse.bron`](20260803-162233_e273-stoa338a-pair-faces-parse.bron) | e273 STOA338a GREEN · pair-faces parse · PairNotYetLowered |
 | `20260803.161235` | [`20260803-161235_e271-e272-walls-charted-compose-opened.bron`](20260803-161235_e271-e272-walls-charted-compose-opened.bron) | e271 walls CHARTED · e272 compose OPEN · lean O1 |
 | `20260803.160417` | [`20260803-160417_e270-v63-enclosure-measured.bron`](20260803-160417_e270-v63-enclosure-measured.bron) | e270 enclosure MEASURED · col2 GREEN · three words OPEN |
