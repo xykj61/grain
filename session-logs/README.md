@@ -1,3 +1,4 @@
+| `20260802.220328` | [`20260802-220328_e254-e255-v54-stages-exits.bron`](20260802-220328_e254-e255-v54-stages-exits.bron) | e254+e255 stages=6 · exits=3 · eq 4/8 · v54 fuse |
 | `20260802.214614` | [`20260802-214614_e253-signature-eq.bron`](20260802-214614_e253-signature-eq.bron) | e253 signature_length=64 · eq 2/8 · agent re-cut |
 | `20260802.211556` | [`20260802-211556_e252-equality-opens.bron`](20260802-211556_e252-equality-opens.bron) | e252 STOA337 eq · seed_length=32 · equality 1/8 |
 | `20260802.211000` | [`20260802-211000_e251-v51-quiet.bron`](20260802-211000_e251-v51-quiet.bron) | e251 v51 of-the-hour · quiet · both doors wait |
