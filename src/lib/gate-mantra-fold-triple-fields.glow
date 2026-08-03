@@ -1,0 +1,13 @@
+::  name       mantra fold triple fields gate
+::  shape      triple-shape - three named fields -> sum - int (@u32)
+::  invariant  folds every field of a closed triple into one @u32 by addition; the fold widens with the shape, not with the code
+::  example    3 5 7 -> 15 · 0 0 0 -> 0
+::  readers    Mantra · Glow Tend a2 · Ashvini
+::  nib        equinox-a2-list-fold-wider-v0 · STOA335: pair..nona, not the pair alone
+::
+::  Ashvini a2 · the list fold widens. STOA333 folded a pair's two fields;
+::  STOA335 folds every field of any closed tuple, pair through nona, which is
+::  Mantra's Weave shape one rung wider: a value reduced from a bounded
+::  sequence of named parts rather than from a range of naturals.
+|=  sample=triple-shape
+|+  sum  sample

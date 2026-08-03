@@ -1,0 +1,43 @@
+# tools/mantra_a2_list_fold_witness.rish — Ashvini a2: the list fold widens (e246).
+#
+#   rishi/bin/rishi run tools/mantra_a2_list_fold_witness.rish
+#
+# STOA333 folded a pair's two fields. STOA335 folds every field of any closed
+# tuple, pair through nona — the same rune, one rung wider, which is Mantra's
+# Weave shape: a value reduced from a bounded sequence of named parts.
+#
+# At two fields the widened emitter delegates to the pier's pair emitter, so the
+# seated bytes stay the authority there and this witness proves the delegation.
+
+say "a2-list: Language EN — the list fold widens past the pair."
+say "a2-list: Lens TAME — bounded by the shape; the pair path is delegated, not rewritten."
+
+let zig = "vendor/zig-toolchain/zig"
+let triple = "src/lib/gate-mantra-fold-triple-fields.glow"
+
+say "a2-list: three fields fold to their sum..."
+let three = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" triple "3" "5" "7"]
+assert three.ok else "a2-list: triple fold failed to run"
+assert three.out contains "EXIT:0" else "a2-list: triple fold did not exit 0"
+assert three.out contains "15" else "a2-list: 3 5 7 did not fold to 15"
+
+say "a2-list: an all-zero triple folds to zero..."
+let zero = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" triple "0" "0" "0"]
+assert zero.ok else "a2-list: zero triple failed to run"
+assert zero.out contains "0" else "a2-list: the empty-valued triple did not fold to 0"
+
+say "a2-list: the pair path still answers through the elder emitter..."
+let pair = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" "src/lib/gate-tally-fold-pair-sum.glow" "3" "5"]
+assert pair.ok else "a2-list: pair fold regression failed"
+assert pair.out contains "8" else "a2-list: pair 3 5 no longer folds to 8"
+
+say "a2-list: the shape still bounds the fold — a bare @u32 sample refuses sum..."
+let bare = run ["sh" "-c" "grep -q 'sample=triple-shape' src/lib/gate-mantra-fold-triple-fields.glow"]
+assert bare.ok else "a2-list: the desk stopped naming its shape"
+
+say "a2-list: the range folds still stand..."
+let sumto = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" "src/lib/gate-tally-fold-sumto-u32.glow" "3"]
+assert sumto.ok else "a2-list: sumto regression failed"
+assert sumto.out contains "6" else "a2-list: sumto 3 no longer folds to 6"
+
+say "GREEN: a2 list fold — pair..nona under one rune; the pair path delegated; ranges intact."
