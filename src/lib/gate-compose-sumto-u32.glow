@@ -1,0 +1,11 @@
+::  name       compose sumto after surface inc
+::  shape      n - int (@u32) -> sum - int (@u32)
+::  invariant  Tend unary sumto on the %- allowlist (STOA339); this desk is the
+::             compose brief's full sentence — vanes call it after surface-inc
+::  example    argv 4 -> 10 (inc of 3); welcome bakes 5 -> 15; past 65535 -> 0
+::  readers    Glow Tend compose · Ashvini · Tally
+::  nib        equinox-stoa339b-compose-sumto-v0
+::
+::  STOA339b — one desk, both sides: the fold as a call, after the surface's own inc.
+|=  sample=@u32
+%-  sumto  sample

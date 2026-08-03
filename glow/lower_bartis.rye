@@ -146,7 +146,19 @@ fn call_op_expr(gate: []const u8) LowerError![]const u8 {
     return error.BodyGateNotYetLowered;
 }
 
+pub const max_sumto_call: u32 = 65535; // STOA339: triangular fits u32; beyond folds to 0 (fold-family law)
+
+/// STOA339: full body expression for gates that reference the face more than once.
+fn call_body_expr(gate: []const u8, zface: []const u8, buf: []u8) LowerError![]const u8 {
+    if (std.mem.eql(u8, gate, "sumto")) {
+        return std.fmt.bufPrint(buf, "if ({s} > {d}) 0 else ({s} *% ({s} +% 1)) / 2", .{ zface, max_sumto_call, zface, zface }) catch return error.Overflow;
+    }
+    const op = try call_op_expr(gate);
+    return std.fmt.bufPrint(buf, "{s}{s}", .{ zface, op }) catch return error.Overflow;
+}
+
 fn call_expect(gate: []const u8, sample: u32) LowerError!u32 {
+    if (std.mem.eql(u8, gate, "sumto")) return fold_sumto_expect(sample, max_sumto_call);
     if (std.mem.eql(u8, gate, "double")) return sample *% 2;
     if (std.mem.eql(u8, gate, "inc")) return sample +% 1;
     if (std.mem.eql(u8, gate, "dec")) return sample -% 1;
@@ -1099,11 +1111,10 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
         .call_one => {
             const gate = rb.gate_slice(spec);
             assert(rb.is_closed_call_gate(gate)); // parse pin
-            const op = try call_op_expr(gate);
-            var body_buf: [96]u8 = undefined;
-            const body_return = std.fmt.bufPrint(&body_buf, "{s}{s}", .{ zface, op }) catch return error.Overflow;
+            var body_buf: [160]u8 = undefined;
+            const body_return = try call_body_expr(gate, zface, &body_buf);
             var comment_buf: [192]u8 = undefined;
-            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `%-  {s}  {s}` — call body (STOA103–104).", .{ face, shape, gate, face }) catch return error.Overflow;
+            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `%-  {s}  {s}` — call body (STOA103–104 · 339).", .{ face, shape, gate, face }) catch return error.Overflow;
             try emit_gate_fn(out, &used, face, zface, body_return, comment);
             try emit_welcome_main(out, &used, zface, expect);
         },
@@ -1264,13 +1275,12 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
                 try emit_argv_speaking_main(out, &used, zface);
                 return used;
             }
-            const op = try call_op_expr(gate);
-            var body_buf: [96]u8 = undefined;
-            const body_return = std.fmt.bufPrint(&body_buf, "{s}{s}", .{ zface, op }) catch return error.Overflow;
-            var expect_buf: [96]u8 = undefined;
-            const expect_expr = std.fmt.bufPrint(&expect_buf, "{s}{s}", .{ zface, op }) catch return error.Overflow;
+            var body_buf: [160]u8 = undefined;
+            const body_return = try call_body_expr(gate, zface, &body_buf);
+            var expect_buf: [160]u8 = undefined;
+            const expect_expr = try call_body_expr(gate, zface, &expect_buf);
             var comment_buf: [192]u8 = undefined;
-            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `%-  {s}  {s}` — argv call body (STOA103–104).", .{ face, shape, gate, face }) catch return error.Overflow;
+            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `%-  {s}  {s}` — argv call body (STOA103–104 · 339).", .{ face, shape, gate, face }) catch return error.Overflow;
             try emit_gate_fn(out, &used, face, zface, body_return, comment);
             try emit_argv_main(out, &used, zface, expect_expr);
         },
