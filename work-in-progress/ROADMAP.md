@@ -1,13 +1,13 @@
 # The Roadmap — living pin
 
 **Language:** EN  
-**Last updated:** `20260803.165859` · voice Riyo  
+**Last updated:** `20260803.171120` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md) · prefer **git nib** over tip
 
 ---
 
-## Now — e275 · nixos-guide seated · relational gate stands (`20260803.165859`)
+## Now — e277 · guide 2 seated · relational gate stands (`20260803.171120`)
 
 | Order | Lap | Status |
 |-------|-----|--------|
@@ -18,7 +18,7 @@
 | **2i** | STOA339 Tend unary `sumto` on `%-` | **GREEN** |
 | **2i′** | STOA339b compose-after-inc desk | **GREEN** |
 | **2j** | STOA338 pair-faces (338a+338b) | **GREEN — the relational gate stands** |
-| **2k** | `nixos-guide/` — guide 0 · guide 1 | **SEATED · guide 1 awaits live walk · guide 2 horizon** |
+| **2k** | `nixos-guide/` — guides 0 · 1 · 2 | **SEATED · guides 1–2 await live walks** |
 | **3** | Comlink R2–R4 | **GATED** |
 | **4** | bar5 · SEA · Mitra shred · Class O · geode | **hands / HELD** |
 
