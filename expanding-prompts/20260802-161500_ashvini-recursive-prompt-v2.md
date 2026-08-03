@@ -1,6 +1,6 @@
 # Ashvini Recursive Prompt v2
 
-**Stamp:** `20260802.161500` · refreshed `20260803.160417` · **Voice:** Riyo · **Style:** Radiant
+**Stamp:** `20260802.161500` · refreshed `20260803.161235` · **Voice:** Riyo · **Style:** Radiant
 **Radiant pass `20260802.183244`** — e237 valve: narrowing withdrawn; drop path + measurement lines only.
 **Radiant pass `20260802.184012`** — e237 raced seating: tree kept Tier 2-freeze; withdrawal superseded.
 **Radiant pass `20260802.184331`** — e238 oscillation: elder law restored; one-voice proposed not seated.
@@ -30,6 +30,7 @@
 **Radiant pass `20260802.231544`** — e266: the ring widens — Lantern cargo through the same gate, RW-5 lap GREEN first try · four cargos wait · manifest-file home still parked.
 **Radiant pass `20260803.013054`** — e267–e269: rings 3·4·5 GREEN first try · census CLOSED (one gate · five cargos · one glass) · brushstroke measured as the glass itself, its frame witness the pier's live-Wayland lap.
 **Radiant pass `20260803.160417`** — e270: enclosure ground MEASURED · col2 probes GREEN · sixbar/scorecard = living-jail laps · three words OPEN (graduation · live laps · supersede brief).
+**Radiant pass `20260803.161235`** — e271 walls CHARTED (climb explicit-only) · e272 Glow Tend **compose OPEN** · lean O1 `%-` Tend unary widen · a1/a2/era GREEN · Keaton pivot from Pond Now.
 **Radiant pass `20260802.224759`** — e262: v57 quiet on pier-ahead tip · check-in five words surfaced · redundant resin dropped.
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
@@ -74,7 +75,9 @@ STATE (refresh the needles from files every round):
     equality CLOSED — STOA337 `eq` · 8/8 (seed 32 · sig 64 · stages 6 · exits 3 ·
     line 3 · weave 2 · diff 2 · store 3) · Nock RESTS sealed at one crossing —
     first crossing GREEN (e263) · POND RINGS 1–5 GREEN (e265–e269) — census
-    CLOSED: one gate · five cargos · one glass · manifest-file home parked.
+    CLOSED: one gate · five cargos · one glass · manifest-file home parked ·
+    enclosure CHARTED (e271) climb EXPLICIT-only · Glow Tend compose OPEN (e272)
+    lean O1 `%-` Tend unary widen (STOA338-class).
   LAW (e250): a finding measured twice by different hands becomes a fact.
   LAW (e252): quiet lane + continue opens the measured lean (equality first).
   Era pure lap — five legs (a1 · R1 pedestal · width · policy · Rishi walls).
@@ -116,8 +119,8 @@ STATE (refresh the needles from files every round):
     counsel/20260802-163000_e219-comlink-module-seam-ruling.md
 
 VANE ROADMAP (proposed · active-designing/20260802-161500_the-vane-roadmap-…):
-  Vane 1 Glow Tend: a2 OPEN — sumto · pair · prodto · N-sum GREEN ·
-    later equality rune · compose rune · Nock seam only from a mature whole.
+  Vane 1 Glow Tend: a2 GREEN · equality CLOSED 8/8 · compose OPEN (e272) ·
+    lean O1 `%-` widen · Nock seam only from a mature whole (instrument RESTS).
   Vane 2 Comlink: IPv6 dual-stack + roaming state-sync shell (research+silo landed;
     R1 WHOLE; R2–R4 build GATED). Study: external-research/…ssh-mosh-ipv6…
   Waiting vanes: living-pin fold · Amphora Class W/stdout · shed/Class O · dual-pier auth ·
