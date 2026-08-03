@@ -1,23 +1,23 @@
 # Tasks — living pin
 
 **Language:** EN  
-**Last updated:** `20260802.195302` · voice Riyo  
+**Last updated:** `20260802.200530` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md) · prefer **git nib** over tip
 
 ---
 
-## Now — e245 prodto (`20260802.195302`)
+## Now — e246 N-sum widen (`20260802.200530`)
 
-**Finishing edge:** fold verb is a name · `FoldBoundTooLarge` · a2 suite 3/3.  
-**Prove:** `rishi/bin/rishi run tools/tally_a2_fold_prodto_witness.rish`
+**Finishing edge:** `|+ sum` across pair…nona · triple + quad proved · a2 suite 4/4.  
+**Prove:** `rishi/bin/rishi run tools/tally_a2_fold_n_sum_witness.rish`
 
 | Lap | Status |
 |-----|--------|
-| a2 sumto · pair-sum · prodto | **GREEN** |
-| Recovery law (no whole-file rescue) | **SEATED** |
-| Next list fold · equality · R2 | **lean / word** |
+| a2 sumto · pair · prodto · N-sum | **GREEN** |
+| v46 counsel collision seat | **LANDED** (engineering already on tip) |
+| Equality · R2 | **word / check-in** |
 
 ---
 
-*May each reduction keep its own identity.*
+*May the fold widen with the shape.*

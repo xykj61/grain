@@ -1,3 +1,4 @@
+| `20260802.200530` | [`20260802-200530_e246-v46-n-sum.bron`](20260802-200530_e246-v46-n-sum.bron) | e246 N-sum widen STOA335 · a2×4 · v46 counsel seat |
 | `20260802.195302` | [`20260802-195302_e245-v45-prodto.bron`](20260802-195302_e245-v45-prodto.bron) | e245 prodto STOA334 · FoldBoundTooLarge · a2×3 · recovery law |
 | `20260802.194158` | [`20260802-194158_e244-rishi-walls-pair-fold.bron`](20260802-194158_e244-rishi-walls-pair-fold.bron) | e244 Rishi walls · pair-sum · era 5/5 · a2 suite |
 | `20260802.193605` | [`20260802-193605_e243-a2-first-fold.bron`](20260802-193605_e243-a2-first-fold.bron) | e243 a2 OPEN · STOA332 fold sumto GREEN |
