@@ -1,0 +1,12 @@
+::  name       mantra line fields equality gate
+::  shape      count - int (@u32) -> lawful - int (@u32)
+::  invariant  answers 1 exactly when count is line fields=3; answers 0 otherwise
+::  example    3 -> 1 · 2 -> 0 · 4 -> 0
+::  readers    Mantra · Glow Tend a1 unfinished · Ashvini
+::  nib        equinox-e256-equality-fifth-v0 · STOA337
+::
+::  Ashvini equality · fifth pedestal gth cannot speak. The sur shape names
+::  a weave Line's three fields (text · gen · pos); this gate decides
+::  *exactly*, not by a ceiling.
+|=  sample=@u32
+?:  (eq sample 3)  1  0
