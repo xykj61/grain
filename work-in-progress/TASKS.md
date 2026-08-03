@@ -10,15 +10,14 @@
 ## Now — e264 the rose answered (`20260802.225813`)
 
 **Finishing edge:** Pond-and-metal MEASURED · Nock rests sealed · lean offered once · Now word Keaton's.  
-**Prove:** `env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run nock/nock_glow_mirror_witness.rye`
+**Prove:** `rishi/bin/rishi run tools/pond_customs.rish` · mirror still green on demand  
 
 | Lap | Status |
 |-----|--------|
 | Equality arc 8/8 · Rye tend | **CLOSED** |
-| Nock ground 4/4 · 1,097 | **GREEN (twice-measured)** |
-| Nock seam discuss | **DISCUSSED · words parked** |
-| First crossing O2 (seed 32) | **GREEN** |
-| Further specimens · codec rows · Pond/OS | **parked — your word** |
+| First crossing O2 (seed 32) | **GREEN · Nock rests** |
+| Pond apps · customs · drawn terminal | **MEASURED** |
+| Now re-point (one Pond ring · NixOS host) | **OPEN — Keaton** |
 
 ---
 
