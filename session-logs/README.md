@@ -1,3 +1,4 @@
+| `20260803.161235` | [`20260803-161235_e271-e272-walls-charted-compose-opened.bron`](20260803-161235_e271-e272-walls-charted-compose-opened.bron) | e271 walls CHARTED · e272 compose OPEN · lean O1 |
 | `20260803.160417` | [`20260803-160417_e270-v63-enclosure-measured.bron`](20260803-160417_e270-v63-enclosure-measured.bron) | e270 enclosure MEASURED · col2 GREEN · three words OPEN |
 | `20260803.014550` | [`20260803-014550_e267-e269-v62-census-closes.bron`](20260803-014550_e267-e269-v62-census-closes.bron) | e267–e269 census CLOSED · five cargos one glass |
 | `20260803.012657` | [`20260803-012657_e266-v61-second-ring-lantern.bron`](20260803-012657_e266-v61-second-ring-lantern.bron) | e266 second ring GREEN · Lantern under same gate |
