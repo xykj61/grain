@@ -1,24 +1,23 @@
 # Tasks — living pin
 
 **Language:** EN  
-**Last updated:** `20260803.162233` · voice Riyo  
+**Last updated:** `20260803.163623` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md) · prefer **git nib** over tip
 
 ---
 
-## Now — e273 STOA338a · 338b next (`20260803.162233`)
+## Now — e274 STOA339+339b · 338b next (`20260803.163623`)
 
-**Finishing edge:** pair-faces parse GREEN · lower `PairNotYetLowered` · next metal = 338b emit + argv `$3`. Walls stay explicit-word only. Rune grant covers 338b.  
-**Prove:** `rishi/bin/rishi run tools/glow_bartis_pair_faces_witness.rish`
+**Finishing edge:** Tend unary sumto GREEN · compose-after-inc desk GREEN · next metal = STOA338b emit under the rune grant.  
+**Prove:** `rishi/bin/rishi run tools/glow_compose_after_inc_witness.rish`
 
 | Lap | Status |
 |-----|--------|
-| Equality 8/8 · a2 · era · argv | **GREEN** |
-| STOA338a parse + PairNotYetLowered | **GREEN** |
-| STOA338b emit · driver · worker | **OPEN — next** |
-| String/record · run_gate · walls climb · R2–R4 | **parked / gated** |
+| STOA339 · 339b · 338a · a1 | **GREEN** |
+| STOA338b emit · argv `$3` · worker | **OPEN — next** |
+| Walls climb · string/record · R2–R4 | **gated / parked** |
 
 ---
 
-*May exactly mean exactly. May two faces meet before they lower.*
+*May compose after inc stay one desk. May pair-faces emit next.*
