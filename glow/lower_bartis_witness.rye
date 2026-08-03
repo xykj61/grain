@@ -859,8 +859,57 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(spec_cnt.body == .identity);
     print("lower: glow/gen/gate-count.glow carries count-shape -- GREEN\n", .{});
 
+    // STOA338a: pair-faces header + face-vs-face cond parse; lower refuses PairNotYetLowered.
+    const pair_eq_src = "|=  [a=@u32 b=@u32]\n?:  (eq a b)  1  0\n";
+    const pair_eq_spec = try rb.parse_source(pair_eq_src);
+    assert(std.mem.eql(u8, rb.face_slice(&pair_eq_spec), "a"));
+    assert(std.mem.eql(u8, rb.face2_slice(&pair_eq_spec), "b"));
+    assert(pair_eq_spec.body == .cond_eq_faces);
+    assert(pair_eq_spec.cond_then == 1);
+    assert(pair_eq_spec.cond_else == 0);
+    if (lower.lower_source_welcome(pair_eq_src, &buf)) |_| {
+        return error.PairFacesLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.PairNotYetLowered) return err;
+    }
+    print("lower: pair-faces eq parses; lower refuses PairNotYetLowered -- GREEN\n", .{});
+
+    const pair_gth_src = "|=  [a=@u32 b=@u32]\n?:  (gth a b)  1  0\n";
+    const pair_gth_spec = try rb.parse_source(pair_gth_src);
+    assert(pair_gth_spec.body == .cond_gth_faces);
+    if (lower.lower_source_welcome(pair_gth_src, &buf)) |_| {
+        return error.PairFacesGthLoweredTooSoon;
+    } else |err| {
+        if (err != lower.LowerError.PairNotYetLowered) return err;
+    }
+    print("lower: pair-faces gth parses; lower refuses PairNotYetLowered -- GREEN\n", .{});
+
+    if (rb.parse_source("|=  [a=@u32 b=@u32]\n?:  (eq a c)  1  0\n")) |_| {
+        return error.StrangerFaceAccepted;
+    } else |err| {
+        if (err != rb.ParseError.BodyFaceMismatch) return err;
+    }
+    print("lower: stranger face in pair cond refused BodyFaceMismatch -- GREEN\n", .{});
+
+    if (rb.parse_source("|=  [\n?:  (eq a b)  1  0\n")) |_| {
+        return error.LoneBracketAccepted;
+    } else |err| {
+        if (err != rb.ParseError.MissingFace and err != rb.ParseError.MalformedBody) return err;
+    }
+    print("lower: lone bracket pair header refused -- GREEN\n", .{});
+
+    const gen_pair_eq = try cwd.readFileAlloc(io, "glow/gen/gate-pair-eq-faces.glow", a, .limited(4096));
+    const spec_pair_eq = try rb.parse_source(gen_pair_eq);
+    assert(spec_pair_eq.body == .cond_eq_faces);
+    print("lower: glow/gen/gate-pair-eq-faces.glow parses pair-faces eq -- GREEN\n", .{});
+
+    const gen_pair_gth = try cwd.readFileAlloc(io, "glow/gen/gate-pair-gth-faces.glow", a, .limited(4096));
+    const spec_pair_gth = try rb.parse_source(gen_pair_gth);
+    assert(spec_pair_gth.body == .cond_gth_faces);
+    print("lower: glow/gen/gate-pair-gth-faces.glow parses pair-faces gth -- GREEN\n", .{});
+
     print("lower: version {s}\n", .{witness_version});
-    print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind argv · kind flip · xact-shape · xact argv · xact flip · xfer-shape · xfer argv · xfer flip · pair-shape · pair argv · pair flip · triple-shape · triple argv · triple flip · quad-shape · quad argv · quad flip · penta-shape · penta argv · penta flip · hexa-shape · hexa argv · hexa flip · hepta-shape · hepta argv · hepta flip · octa-shape · octa argv · octa flip · nona-shape · nona argv · nona flip · nesting-nests; STOA100–147 · STOA253 identity emit · STOA259 N-field flip · STOA293 tagged payload flip · STOA297 tagged unit flip · STOA300 kind argv · STOA303 xact argv · STOA305 xfer argv · STOA307–321 pair…nona argv · STOA324 `$:` argv sameness collapse.\n", .{});
+    print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind argv · kind flip · xact-shape · xact argv · xact flip · xfer-shape · xfer argv · xfer flip · pair-shape · pair argv · pair flip · triple-shape · triple argv · triple flip · quad-shape · quad argv · quad flip · penta-shape · penta argv · penta flip · hexa-shape · hexa argv · hexa flip · hepta-shape · hepta argv · hepta flip · octa-shape · octa argv · octa flip · nona-shape · nona argv · nona flip · nesting-nests · STOA338a pair-faces parse; STOA100–147 · STOA253 identity emit · STOA259 N-field flip · STOA293 tagged payload flip · STOA297 tagged unit flip · STOA300 kind argv · STOA303 xact argv · STOA305 xfer argv · STOA307–321 pair…nona argv · STOA324 `$:` argv sameness collapse.\n", .{});
     return 0;
 }
 

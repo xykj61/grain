@@ -46,6 +46,7 @@
 //! STOA324: `$:` argv dispatch collapses — shape → N → `emit_n_field_argv` (sameness).
 //! STOA326: `$:` welcome dispatch collapses — shape → N → identity / flip (sameness).
 //! STOA328: N-path reads `nest_type.closed_tuple_field_count`; living locals say shape.
+//! STOA338a: pair-faces parse seats; lower answers PairNotYetLowered until 338b.
 //! Gate function named `bartis_gate` to avoid collisions with the sample face.
 
 const std = @import("std");
@@ -176,6 +177,8 @@ fn expect_for(spec: *const rb.GateSpec) LowerError!u32 {
         .call_one => try call_expect(rb.gate_slice(spec), bartis_demo_sample),
         .cond_gth => return error.SampleDoesNotNest,
         .cond_eq => return error.SampleDoesNotNest,
+        .cond_eq_faces => return error.PairNotYetLowered,
+        .cond_gth_faces => return error.PairNotYetLowered,
         .fold_sumto => fold_sumto_expect(bartis_demo_sample, spec.fold_bound),
         .fold_sum => try fold_sum_n_expect(spec),
         .fold_prodto => fold_prodto_expect(bartis_demo_sample, spec.fold_bound),
@@ -987,6 +990,8 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             },
             .cond_gth => return error.SampleDoesNotNest,
             .cond_eq => return error.SampleDoesNotNest,
+            .cond_eq_faces => return error.PairNotYetLowered,
+            .cond_gth_faces => return error.PairNotYetLowered,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
             .fold_prodto => return error.SampleDoesNotNest,
@@ -1010,6 +1015,8 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             },
             .cond_gth => return error.SampleDoesNotNest,
             .cond_eq => return error.SampleDoesNotNest,
+            .cond_eq_faces => return error.PairNotYetLowered,
+            .cond_gth_faces => return error.PairNotYetLowered,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
             .fold_prodto => return error.SampleDoesNotNest,
@@ -1033,6 +1040,8 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             },
             .cond_gth => return error.SampleDoesNotNest,
             .cond_eq => return error.SampleDoesNotNest,
+            .cond_eq_faces => return error.PairNotYetLowered,
+            .cond_gth_faces => return error.PairNotYetLowered,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
             .fold_prodto => return error.SampleDoesNotNest,
@@ -1059,6 +1068,8 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             },
             .cond_gth => return error.SampleDoesNotNest,
             .cond_eq => return error.SampleDoesNotNest,
+            .cond_eq_faces => return error.PairNotYetLowered,
+            .cond_gth_faces => return error.PairNotYetLowered,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => {
                 var comment_buf: [192]u8 = undefined;
@@ -1114,6 +1125,8 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             try emit_gate_fn(out, &used, face, zface, body_return, comment);
             try emit_welcome_main(out, &used, zface, expect);
         },
+        .cond_eq_faces => return error.PairNotYetLowered,
+        .cond_gth_faces => return error.PairNotYetLowered,
         .fold_sumto => {
             // STOA332: welcome bakes sample 5; triangular expect at lower time.
             var comment_buf: [192]u8 = undefined;
@@ -1153,6 +1166,8 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .call_one => return error.SampleDoesNotNest,
             .cond_gth => return error.SampleDoesNotNest,
             .cond_eq => return error.SampleDoesNotNest,
+            .cond_eq_faces => return error.PairNotYetLowered,
+            .cond_gth_faces => return error.PairNotYetLowered,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
             .fold_prodto => return error.SampleDoesNotNest,
@@ -1171,6 +1186,8 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .call_one => return error.SampleDoesNotNest,
             .cond_gth => return error.SampleDoesNotNest,
             .cond_eq => return error.SampleDoesNotNest,
+            .cond_eq_faces => return error.PairNotYetLowered,
+            .cond_gth_faces => return error.PairNotYetLowered,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
             .fold_prodto => return error.SampleDoesNotNest,
@@ -1189,6 +1206,8 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .call_one => return error.SampleDoesNotNest,
             .cond_gth => return error.SampleDoesNotNest,
             .cond_eq => return error.SampleDoesNotNest,
+            .cond_eq_faces => return error.PairNotYetLowered,
+            .cond_gth_faces => return error.PairNotYetLowered,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
             .fold_prodto => return error.SampleDoesNotNest,
@@ -1208,6 +1227,8 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .call_one => return error.SampleDoesNotNest,
             .cond_gth => return error.SampleDoesNotNest,
             .cond_eq => return error.SampleDoesNotNest,
+            .cond_eq_faces => return error.PairNotYetLowered,
+            .cond_gth_faces => return error.PairNotYetLowered,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => {
                 var comment_buf: [192]u8 = undefined;
@@ -1271,6 +1292,8 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             try emit_gate_fn(out, &used, face, zface, body_return, comment);
             try emit_argv_speaking_main(out, &used, zface);
         },
+        .cond_eq_faces => return error.PairNotYetLowered,
+        .cond_gth_faces => return error.PairNotYetLowered,
         .fold_sumto => {
             // STOA332: the folding gate speaks its accumulator; EXIT:0 + spoken answer prove it.
             var comment_buf: [192]u8 = undefined;

@@ -6,7 +6,7 @@
 **Voice:** Riyo
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME — safety first, performance second, the joy of the craft third
-**Status:** Living — a2 GREEN · equality CLOSED 8/8 · compose OPEN `20260803.161235` (lean O1); Nock instrument RESTS; later codec rows await word
+**Status:** Living — a2 GREEN · equality CLOSED 8/8 · STOA338a GREEN `20260803.162233` (pair-faces parse); 338b emit next; Nock instrument RESTS
 **Twin brief:** the pier wrote the same round from its own chair — `20260802-154516_comlink-remoting-happy-zone-ssh-mosh-ipv6.md` (pedestal ladder R1–R4 · license walls). Both stand; the seam ruling that joins them is `../counsel/20260802-163000_e219-comlink-module-seam-ruling.md`.
 **Companion to:** `TAME_GUIDANCE.md` · `the-grain-and-the-crossing.md` · `SIMPLE_LOVABLE_COMPLETE.md`
 

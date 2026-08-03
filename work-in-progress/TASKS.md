@@ -1,24 +1,24 @@
 # Tasks — living pin
 
 **Language:** EN  
-**Last updated:** `20260803.161235` · voice Riyo  
+**Last updated:** `20260803.162233` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md) · prefer **git nib** over tip
 
 ---
 
-## Now — e272 Glow Tend compose (`20260803.161235`)
+## Now — e273 STOA338a · 338b next (`20260803.162233`)
 
-**Finishing edge:** compose OPEN · lean O1 (`%-` Tend unary widen) · first metal lap next. Walls charted e271, climb still explicit-word only.  
-**Prove:** `rishi/bin/rishi run tools/glow_tend_a2_suite.rish` · `glow_tend_a1_suite.rish` · `glow_tend_era_suite.rish`
+**Finishing edge:** pair-faces parse GREEN · lower `PairNotYetLowered` · next metal = 338b emit + argv `$3`. Walls stay explicit-word only. Rune grant covers 338b.  
+**Prove:** `rishi/bin/rishi run tools/glow_bartis_pair_faces_witness.rish`
 
 | Lap | Status |
 |-----|--------|
-| Equality 8/8 · a2 suite 6/6 · era 5/5 | **GREEN** |
-| Pond census · enclosure chart | **CLOSED / CHARTED** |
-| Compose O1 first Tend unary | **OPEN — next metal** |
-| String/record · run_gate grad · R2–R4 · walls climb | **parked / gated** |
+| Equality 8/8 · a2 · era · argv | **GREEN** |
+| STOA338a parse + PairNotYetLowered | **GREEN** |
+| STOA338b emit · driver · worker | **OPEN — next** |
+| String/record · run_gate · walls climb · R2–R4 | **parked / gated** |
 
 ---
 
-*May exactly mean exactly. May one gate call another by a witnessed name.*
+*May exactly mean exactly. May two faces meet before they lower.*
