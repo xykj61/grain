@@ -1,7 +1,7 @@
 # lib — Libraries
 
 **Language:** EN  
-**Last updated:** `20260802.214614` (Equinox e253 — equality · signature_length eq)
+**Last updated:** `20260802.223739` (Equinox e259 — equality arc closes 8/8 · Rye tend)
 **Status:** Living — room open; a1 ×9 · a2 whole · equality 8/8 closed · Comlink R1
 
 Shared gates and utility pedestals in Glow — the sameness many desks call and none should re-carve.
