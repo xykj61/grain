@@ -7,18 +7,17 @@
 
 ---
 
-## Now — e269 the census closes (`20260803.013054`)
+## Now — e270 enclosure ground (`20260803.160417`)
 
-**Finishing edge:** CENSUS CLOSED — one gate · five cargos · one glass; brushstroke frame is the pier's live-Wayland lap.  
-**Prove:** `rishi/bin/rishi run tools/pond_ring_linengrow_witness.rish`
+**Finishing edge:** enclosure MEASURED · col2 probes GREEN · sixbar/scorecard are pier living-jail laps · three words OPEN.  
+**Prove:** `rishi/bin/rishi run tools/pond_enclosure_col2_probes.rish`
 
 | Lap | Status |
 |-----|--------|
-| Equality arc 8/8 · Rye tend | **CLOSED** |
-| First crossing O2 (seed 32) | **GREEN · Nock rests** |
-| Rings 1–5 (session · Lantern · Granary · Dimeroll · Linengrow) | **GREEN — census CLOSED** |
-| Brushstroke frame (live glass) | **pier's Wayland lap** |
-| Manifest-file graduation | **parked — your word** |
+| Pond census (five cargos) | **CLOSED** |
+| col2 probes | **GREEN** (no supersede claim) |
+| sixbar / scorecard | **pier living-jail laps** (metal reds) |
+| Manifest graduation · live laps · supersede brief | **OPEN — Keaton** |
 
 ---
 
