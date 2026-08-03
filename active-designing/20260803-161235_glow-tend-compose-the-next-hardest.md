@@ -6,7 +6,7 @@
 **Voice:** Riyo
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME — safety first; Gall grows from a running whole
-**Status:** CHARTED · OPEN under Keaton's word (`fuse kg` · focus Glow Tend · approve recommendations)
+**Status:** 339 GREEN · 339b GREEN `20260803.163623` — Tend unary sumto + compose-after-inc desk; STOA338a seated; 338b next
 **Ground:** vane roadmap `20260802-161500` · bartis `%-` closed set · multi-line compose already green in `glow/` · a1×9 · a2 suite 6/6 · eq 8/8
 
 *Written together by Keaton and Riyo.*
