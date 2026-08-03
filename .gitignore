@@ -201,3 +201,7 @@ __pycache__/
 # Transport resins: counsel zips land at the root, prove their beads, and are
 # removed after the dual-push (crossing hygiene, e213). Never tracked.
 /*.zip
+
+# The guides home is source, not build output (e275)
+!nixos-guide/
+!nixos-guide/**
