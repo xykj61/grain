@@ -14,9 +14,9 @@
 
 | Lap | Status |
 |-----|--------|
-| Signature-length gate beside seed-length | **GREEN** |
-| Remaining 6 exact pedestals | **lean** |
-| Nock seam discuss | **held** |
+| Equality arc 8/8 · Rye tend | **CLOSED** |
+| Nock ground 4/4 · 1,097 | **GREEN (twice-measured)** |
+| Nock seam discuss | **DISCUSSED · words parked** |
 
 ---
 
