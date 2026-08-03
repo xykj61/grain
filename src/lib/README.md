@@ -2,7 +2,7 @@
 
 **Language:** EN  
 **Last updated:** `20260802.214614` (Equinox e253 — equality · signature_length eq)
-**Status:** Living — room open; a1 ×9 · a2 whole · equality 7/8 · Comlink R1
+**Status:** Living — room open; a1 ×9 · a2 whole · equality 8/8 closed · Comlink R1
 
 Shared gates and utility pedestals in Glow — the sameness many desks call and none should re-carve.
 
@@ -40,8 +40,9 @@ Witness: `rishi/bin/rishi run tools/rishi_a1_gate_walls_witness.rish` (also era 
 | `gate-mantra-line-fields-eq-u32` | line fields = 3 | 3→1 · 2→0 · 4→0 |
 | `gate-mantra-weave-fields-eq-u32` | weave fields = 2 | 2→1 · 1→0 · 3→0 |
 | `gate-mantra-diff-fields-eq-u32` | diff fields = 2 | 2→1 · 1→0 · 3→0 |
+| `gate-mantra-store-dirs-eq-u32` | store dirs = 3 | 3→1 · 2→0 · 4→0 |
 
-Witnesses: `tools/aurora_a1_seed_length_eq_witness.rish` · `tools/aurora_a1_signature_length_eq_witness.rish` · `tools/aurora_a1_living_stages_eq_witness.rish` · `tools/caravan_c4_exit_meanings_eq_witness.rish` · `tools/mantra_a1_line_fields_eq_witness.rye` · `tools/mantra_a1_weave_fields_eq_witness.rye` · `tools/mantra_a1_diff_fields_eq_witness.rye` · one pedestal remains (store).
+Witnesses: `tools/aurora_a1_seed_length_eq_witness.rish` · `tools/aurora_a1_signature_length_eq_witness.rish` · `tools/aurora_a1_living_stages_eq_witness.rish` · `tools/caravan_c4_exit_meanings_eq_witness.rish` · `tools/mantra_a1_line_fields_eq_witness.rye` · `tools/mantra_a1_weave_fields_eq_witness.rye` · `tools/mantra_a1_diff_fields_eq_witness.rye` · `tools/mantra_a1_store_dirs_eq_witness.rye` · the equality arc stands closed (8/8).
 
 ## The a1 Deciding Gates (STOA331)
 

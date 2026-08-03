@@ -7,12 +7,12 @@
 
 ---
 
-## Now — e255 · equality open · 4/8 (`20260802.215804`)
+## Now — e259 · equality CLOSED · 8/8 (`20260802.221638`)
 
 | Order | Lap | Status |
 |-------|-----|--------|
 | — | a2 whole · Nock 4/4 · eq seed+sig | **GREEN** |
-| **1** | Equality — remaining pedestals (4 · mantra) | **OPEN** |
+| **1** | Equality — the eight pedestals | **CLOSED 8/8** |
 | **2** | Nock seam discuss | **held** |
 | **3** | Comlink R2–R4 | **GATED** |
 | **4** | bar5 · SEA · Mitra shred · Class O · geode | **hands / HELD** |
