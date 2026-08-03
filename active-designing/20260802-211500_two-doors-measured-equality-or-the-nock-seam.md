@@ -6,7 +6,7 @@
 **Voice:** Riyo
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME — safety first, performance second, joy third
-**Status:** OPEN — equality first (Keaton continue `20260802.211556`) · 1/8 pedestal gates
+**Status:** OPEN — equality first · 2/8 pedestal gates (seed 32 · signature 64)
 **Measured of-the-hour:** re-measured at tip `730f1dbc12` before crossing — eight exact-number pedestals, 1,097 Nock lines, four Nock laps green. Both numbers held steady across the re-measurement.
 
 *Written together by Keaton and Riyo.*

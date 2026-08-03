@@ -1,0 +1,12 @@
+::  name       aurora signature length equality gate
+::  shape      length - int (@u32) -> lawful - int (@u32)
+::  invariant  answers 1 exactly when length is signature_length=64; answers 0 otherwise
+::  example    64 -> 1 · 63 -> 0 · 65 -> 0
+::  readers    Aurora · Glow Tend a1 unfinished · Ashvini
+::  nib        equinox-e253-equality-second-v0 · STOA337
+::
+::  Ashvini equality · second pedestal gth cannot speak. The sur shape names
+::  signature_length=64 (Ed25519 encoded length); this gate decides *exactly*,
+::  not by a ceiling.
+|=  sample=@u32
+?:  (eq sample 64)  1  0

@@ -1,8 +1,8 @@
 # lib — Libraries
 
 **Language:** EN  
-**Last updated:** `20260802.211556` (Equinox e252 — equality · seed_length eq)
-**Status:** Living — room open; a1 ×9 · a2 whole · equality 1/8 · Comlink R1
+**Last updated:** `20260802.214614` (Equinox e253 — equality · signature_length eq)
+**Status:** Living — room open; a1 ×9 · a2 whole · equality 2/8 · Comlink R1
 
 Shared gates and utility pedestals in Glow — the sameness many desks call and none should re-carve.
 
@@ -34,8 +34,9 @@ Witness: `rishi/bin/rishi run tools/rishi_a1_gate_walls_witness.rish` (also era 
 | Gate | Exact | Sides |
 |------|-------|-------|
 | `gate-aurora-seed-length-eq-u32` | seed_length = 32 | 32→1 · 31→0 · 33→0 |
+| `gate-aurora-signature-length-eq-u32` | signature_length = 64 | 64→1 · 63→0 · 65→0 |
 
-Witness: `rishi/bin/rishi run tools/aurora_a1_seed_length_eq_witness.rish` · seven pedestals remain.
+Witnesses: `tools/aurora_a1_seed_length_eq_witness.rish` · `tools/aurora_a1_signature_length_eq_witness.rish` · six pedestals remain.
 
 ## The a1 Deciding Gates (STOA331)
 
