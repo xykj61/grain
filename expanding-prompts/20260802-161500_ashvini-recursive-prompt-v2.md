@@ -1,6 +1,6 @@
 # Ashvini Recursive Prompt v2
 
-**Stamp:** `20260802.161500` · refreshed `20260802.230432` · **Voice:** Riyo · **Style:** Radiant
+**Stamp:** `20260802.161500` · refreshed `20260803.012600` · **Voice:** Riyo · **Style:** Radiant
 **Radiant pass `20260802.183244`** — e237 valve: narrowing withdrawn; drop path + measurement lines only.
 **Radiant pass `20260802.184012`** — e237 raced seating: tree kept Tier 2-freeze; withdrawal superseded.
 **Radiant pass `20260802.184331`** — e238 oscillation: elder law restored; one-voice proposed not seated.
@@ -27,6 +27,7 @@
 **Radiant pass `20260802.224949`** — e263: the continue opened the lean (e252 law) · first crossing GREEN · mirror in nock/ per the seam page's ruling · string·record rows stay Design.
 **Radiant pass `20260802.225813`** — e264: the rose answered · Nock rests sealed at one crossing · Pond-and-metal measured · lean: one Pond ring on NixOS host · Now word Keaton's.
 **Radiant pass `20260802.230432`** — e265: the continue opened the lean (third time) · FIRST POND RING GREEN — drawn terminal under customs · stderr stream law owned twice · rishi has no .status field (NoSuchField — sh-probe shape seated).
+**Radiant pass `20260802.231544`** — e266: the ring widens — Lantern cargo through the same gate, RW-5 lap GREEN first try · four cargos wait · manifest-file home still parked.
 **Radiant pass `20260802.224759`** — e262: v57 quiet on pier-ahead tip · check-in five words surfaced · redundant resin dropped.
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
@@ -70,8 +71,8 @@ STATE (refresh the needles from files every round):
   TWO DOORS (brief active-designing/20260802-211500_two-doors-measured-…):
     equality CLOSED — STOA337 `eq` · 8/8 (seed 32 · sig 64 · stages 6 · exits 3 ·
     line 3 · weave 2 · diff 2 · store 3) · Nock RESTS sealed at one crossing —
-    first crossing GREEN (e263) · POND RING ONE GREEN (e265) — drawn terminal
-    under customs on the host glass · manifest-file home parked · rows parked.
+    first crossing GREEN (e263) · POND RINGS ONE + TWO GREEN (e265·e266) —
+    drawn terminal and Lantern under one gate · four cargos wait · homes parked.
   LAW (e250): a finding measured twice by different hands becomes a fact.
   LAW (e252): quiet lane + continue opens the measured lean (equality first).
   Era pure lap — five legs (a1 · R1 pedestal · width · policy · Rishi walls).

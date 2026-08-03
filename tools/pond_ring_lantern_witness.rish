@@ -1,0 +1,40 @@
+# tools/pond_ring_lantern_witness.rish — the second Pond ring: customs
+# gates the Lantern cargo, end to end, on the same glass.
+#
+#   rishi/bin/rishi run tools/pond_ring_lantern_witness.rish
+#
+# The ring widens: a second cargo under the same gate. Lantern's manifest
+# crosses customs at receipt; place admits it and the collaboration lap runs
+# on the shared glass; refuse blocks whole, and the lap stays unrun.
+
+say "ring2: Language EN — the second Pond ring, Lantern under customs."
+say "ring2: Lens TAME — one gate, many cargos; refuse still blocks whole."
+
+let zig = "vendor/zig-toolchain/zig"
+
+say "ring2: customs stands (build)..."
+let bc = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "pond/customs.rye" "-femit-bin=pond/bin/customs"]
+assert bc.ok else "ring2: customs failed to build"
+
+say "ring2: the app stands (seated build fixture)..."
+let ba = run ["rishi/bin/rishi" "run" "tools/fixtures/pond_build_drawn_terminal.rish"]
+assert ba.ok else "ring2: drawn terminal failed to build"
+
+say "ring2: manifest crosses customs — place admits..."
+let ins = run ["pond/bin/customs" "inspect" "tools/fixtures/pond_ring_lantern_good.manifest"]
+assert ins.ok else "ring2: place manifest did not admit"
+assert ins.err contains "verdict=place" else "ring2: verdict was not place"
+assert ins.err contains "admitted for placement" else "ring2: admission line missing"
+
+say "ring2: admitted — the Lantern collaboration runs headless (RW-5)..."
+let app = run ["pond/bin/drawn-terminal" "rw5collabtest"]
+assert app.ok else "ring2: admitted Lantern failed its collaboration lap"
+assert app.out contains "GREEN" else "ring2: collaboration lap did not speak GREEN"
+
+say "ring2: a stranger mark crosses — refuse blocks whole..."
+let ref = run ["sh" "-c" "pond/bin/customs inspect tools/fixtures/pond_ring_lantern_refuse.manifest 2>&1; test $? -eq 2"]
+assert ref.ok else "ring2: refuse did not exit 2"
+assert ref.out contains "REFUSE" else "ring2: refuse line missing"
+assert ref.out contains "verdict=refuse" else "ring2: verdict was not refuse"
+
+say "GREEN: the second Pond ring — one gate, second cargo; Lantern admitted and run, stranger refused whole."

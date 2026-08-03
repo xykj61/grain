@@ -7,18 +7,18 @@
 
 ---
 
-## Now — e265 the first Pond ring (`20260802.230432`)
+## Now — e266 the second ring (`20260802.231544`)
 
-**Finishing edge:** RING ONE GREEN — customs gates · place runs · refuse blocks · manifest-file home parked.  
-**Prove:** `rishi/bin/rishi run tools/pond_ring_drawn_terminal_witness.rish`
+**Finishing edge:** RINGS ONE + TWO GREEN — one gate, two cargos · brushstroke·granary·dimeroll·linengrow wait.  
+**Prove:** `rishi/bin/rishi run tools/pond_ring_lantern_witness.rish`
 
 | Lap | Status |
 |-----|--------|
 | Equality arc 8/8 · Rye tend | **CLOSED** |
 | First crossing O2 (seed 32) | **GREEN · Nock rests** |
-| Pond-and-metal brief | **MEASURED** |
 | First Pond ring (drawn terminal) | **GREEN** |
-| Ring widen · manifest-file home | **parked — your word** |
+| Second ring (Lantern) | **GREEN** |
+| Four cargos · manifest-file home | **parked — your word** |
 
 ---
 
