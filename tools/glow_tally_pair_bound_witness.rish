@@ -1,0 +1,49 @@
+# tools/glow_tally_pair_bound_witness.rish — STOA340: Tally wall as pair-faces.
+#
+#   rishi/bin/rishi run tools/glow_tally_pair_bound_witness.rish
+#
+# The relational gate earns its first vane desk: count and cap meet at runtime.
+# Elder a1 lit wall and STOA338b metal stay green beside it.
+
+let desk = "src/lib/gate-tally-garden-pair-bound-u32.glow"
+let zig = "vendor/zig-toolchain/zig"
+
+say "340: welcome fixture — demo pair 5,3 crosses the wall (then=0)..."
+let fx = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" desk]
+assert fx.ok else "340: welcome fixture failed"
+assert fx.out contains "GREEN" else "340: welcome fixture not GREEN"
+
+say "340: argv within — 3 under cap 7..."
+let w = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" desk "3" "7"]
+assert w.ok else "340: within 3 7 failed"
+assert w.out contains "GREEN" else "340: within not GREEN"
+
+say "340: argv over — 9 past cap 7..."
+let o = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" desk "9" "7"]
+assert o.ok else "340: over 9 7 failed"
+assert o.out contains "GREEN" else "340: over not GREEN"
+
+say "340: argv equal — 7 at cap 7 stays lawful..."
+let e = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" desk "7" "7"]
+assert e.ok else "340: equal 7 7 failed"
+assert e.out contains "GREEN" else "340: equal not GREEN"
+
+say "340: lowered rye speaks count > cap → 0 else 1..."
+let law = run ["sh" "-c" "grep -q 'if (count > cap) 0 else 1' glow/.cache/gate-tally-garden-pair-bound-u32.rye"]
+assert law.ok else "340: vane law missing from lowered rye"
+
+say "340: arity — one sample refuses..."
+let ar = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" desk "3"]
+assert (ar.ok == false) else "340: one-arg pair must refuse"
+
+say "340: elder a1 lit wall still green..."
+let a1 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" "src/lib/gate-tally-garden-bound-u32.glow" "3"]
+assert a1.ok else "340: a1 regression failed"
+assert a1.out contains "EXIT:0" else "340: a1 did not exit 0"
+
+say "340: STOA338b metal still green beside the vane desk..."
+let m = run ["rishi/bin/rishi" "run" "tools/glow_bartis_pair_metal_witness.rish"]
+assert m.ok else "340: pair metal regression failed"
+assert m.out contains "GREEN: STOA338b" else "340: pair metal lost its GREEN line"
+
+say "GREEN: STOA340 — Tally garden wall asks count vs cap; elder a1 and 338b stand."

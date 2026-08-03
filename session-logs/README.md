@@ -1,3 +1,4 @@
+| `20260803.191630` | [`20260803-191630_e279-empty-lane-align-stoa340.bron`](20260803-191630_e279-empty-lane-align-stoa340.bron) | e279 empty lane · align · STOA340 Tally pair-bound GREEN |
 | `20260803.173759` | [`20260803-173759_e278-v69-quiet-guide-2-already-home.bron`](20260803-173759_e278-v69-quiet-guide-2-already-home.bron) | e278 v69 quiet · guide 2 home · pier red twice-measured |
 | `20260803.171120` | [`20260803-171120_e277-v68-guide-2-fuse.bron`](20260803-171120_e277-v68-guide-2-fuse.bron) | e277 v68 fuse · guide 2 · quiet tree · twice-measure |
 | `20260803.165859` | [`20260803-165859_e276-v67-fuse-338b-and-guides.bron`](20260803-165859_e276-v67-fuse-338b-and-guides.bron) | e276 fuse · STOA338b metal · nixos-guide seated |
