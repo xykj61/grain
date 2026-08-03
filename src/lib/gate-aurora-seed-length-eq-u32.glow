@@ -1,0 +1,11 @@
+::  name       aurora seed length equality gate
+::  shape      length - int (@u32) -> lawful - int (@u32)
+::  invariant  answers 1 exactly when length is seed_length=32; answers 0 otherwise
+::  example    32 -> 1 · 31 -> 0 · 33 -> 0
+::  readers    Aurora · Glow Tend a1 unfinished · Ashvini
+::  nib        equinox-e252-equality-first-v0 · STOA337
+::
+::  Ashvini equality · first pedestal gth cannot speak. The sur shape names
+::  seed_length=32; this gate decides *exactly*, not by a ceiling.
+|=  sample=@u32
+?:  (eq sample 32)  1  0
