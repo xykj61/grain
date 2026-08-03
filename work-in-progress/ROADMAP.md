@@ -7,7 +7,7 @@
 
 ---
 
-## Now — e259 · equality CLOSED · 8/8 (`20260802.221638`)
+## Now — e261 · Nock seam discussed · words parked (`20260802.223924`)
 
 | Order | Lap | Status |
 |-------|-----|--------|
