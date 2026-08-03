@@ -1,13 +1,13 @@
 # The Roadmap — living pin
 
 **Language:** EN  
-**Last updated:** `20260803.171120` · voice Riyo  
+**Last updated:** `20260803.173759` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md) · prefer **git nib** over tip
 
 ---
 
-## Now — e277 · guide 2 seated · relational gate stands (`20260803.171120`)
+## Now — e278 · guide 2 home (v69 quiet) · relational gate stands (`20260803.173759`)
 
 | Order | Lap | Status |
 |-------|-----|--------|
