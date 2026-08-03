@@ -1,0 +1,12 @@
+::  name       mantra diff fields equality gate
+::  shape      count - int (@u32) -> lawful - int (@u32)
+::  invariant  answers 1 exactly when count is diff fields=2; answers 0 otherwise
+::  example    2 -> 1 · 1 -> 0 · 3 -> 0
+::  readers    Mantra · Glow Tend a1 unfinished · Ashvini
+::  nib        equinox-e258-equality-seventh-v0 · STOA337
+::
+::  Ashvini equality · seventh pedestal gth cannot speak. The sur shape names
+::  a Diff's two fields (inserts · deletes); this gate decides *exactly*,
+::  not by a ceiling.
+|=  sample=@u32
+?:  (eq sample 2)  1  0
