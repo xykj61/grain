@@ -1,3 +1,4 @@
+| `20260803.171120` | [`20260803-171120_e277-v68-guide-2-fuse.bron`](20260803-171120_e277-v68-guide-2-fuse.bron) | e277 v68 fuse · guide 2 · quiet tree · twice-measure |
 | `20260803.165859` | [`20260803-165859_e276-v67-fuse-338b-and-guides.bron`](20260803-165859_e276-v67-fuse-338b-and-guides.bron) | e276 fuse · STOA338b metal · nixos-guide seated |
 | `20260803.163623` | [`20260803-163623_e274-stoa339-and-339b-woven.bron`](20260803-163623_e274-stoa339-and-339b-woven.bron) | e274 STOA339+339b GREEN · compose unary · 338b next |
 | `20260803.162233` | [`20260803-162233_e273-stoa338a-pair-faces-parse.bron`](20260803-162233_e273-stoa338a-pair-faces-parse.bron) | e273 STOA338a GREEN · pair-faces parse · PairNotYetLowered |
