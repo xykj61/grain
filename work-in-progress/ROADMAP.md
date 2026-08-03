@@ -7,18 +7,16 @@
 
 ---
 
-## Now — e269 · the census closes — five cargos, one gate (`20260803.013054`)
+## Now — e270 · enclosure ground MEASURED · check-in OPEN (`20260803.160417`)
 
 | Order | Lap | Status |
 |-------|-----|--------|
 | — | a2 whole · Nock 4/4 · eq 8/8 · first crossing | **GREEN** |
 | **1** | Equality — the eight pedestals | **CLOSED 8/8** |
 | **2** | Nock seam (instrument) | **RESTS sealed · one crossing** |
-| **2c** | Pond-and-metal brief | **MEASURED** |
-| **2d** | First Pond ring — drawn terminal under customs | **GREEN** |
-| **2e** | Second ring — Lantern cargo, same gate | **GREEN** |
-| **2f** | Rings 3·4·5 — Granary · Dimeroll · Linengrow | **GREEN — census CLOSED** |
-| **2g** | Brushstroke — the glass itself; frame wants live Wayland | **pier's lap** |
+| **2c–2f** | Pond census — five cargos, one glass | **CLOSED** |
+| **2g** | Brushstroke — the glass itself | **pier's live-Wayland lap** |
+| **2h** | Enclosure — col2 GREEN; sixbar/scorecard = living-jail laps; supersede = mountain | **MEASURED · words yours** |
 | **3** | Comlink R2–R4 | **GATED** |
 | **4** | bar5 · SEA · Mitra shred · Class O · geode | **hands / HELD** |
 

@@ -1,6 +1,6 @@
 # Ashvini Recursive Prompt v2
 
-**Stamp:** `20260802.161500` · refreshed `20260803.014550` · **Voice:** Riyo · **Style:** Radiant
+**Stamp:** `20260802.161500` · refreshed `20260803.160417` · **Voice:** Riyo · **Style:** Radiant
 **Radiant pass `20260802.183244`** — e237 valve: narrowing withdrawn; drop path + measurement lines only.
 **Radiant pass `20260802.184012`** — e237 raced seating: tree kept Tier 2-freeze; withdrawal superseded.
 **Radiant pass `20260802.184331`** — e238 oscillation: elder law restored; one-voice proposed not seated.
@@ -29,6 +29,7 @@
 **Radiant pass `20260802.230432`** — e265: the continue opened the lean (third time) · FIRST POND RING GREEN — drawn terminal under customs · stderr stream law owned twice · rishi has no .status field (NoSuchField — sh-probe shape seated).
 **Radiant pass `20260802.231544`** — e266: the ring widens — Lantern cargo through the same gate, RW-5 lap GREEN first try · four cargos wait · manifest-file home still parked.
 **Radiant pass `20260803.013054`** — e267–e269: rings 3·4·5 GREEN first try · census CLOSED (one gate · five cargos · one glass) · brushstroke measured as the glass itself, its frame witness the pier's live-Wayland lap.
+**Radiant pass `20260803.160417`** — e270: enclosure ground MEASURED · col2 probes GREEN · sixbar/scorecard = living-jail laps · three words OPEN (graduation · live laps · supersede brief).
 **Radiant pass `20260802.224759`** — e262: v57 quiet on pier-ahead tip · check-in five words surfaced · redundant resin dropped.
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
