@@ -1,0 +1,10 @@
+::  name       tally fold quad-sum gate
+::  shape      quad-shape -> sum - int (@u32)
+::  invariant  folds four closed-tuple fields into one @u32; proves emit is N-wide (STOA335)
+::  example    1 1 1 1 -> 4 · 0 0 0 0 -> 0
+::  readers    Tally · Glow Tend a2 · Ashvini
+::  nib        equinox-a2-tally-fold4-v0 · STOA335: n past triple (e246)
+::
+::  Same verb `sum`, wider closed shape — the bound is the allowlist, not a hardcoded 3.
+|=  xs=quad-shape
+|+  sum  xs

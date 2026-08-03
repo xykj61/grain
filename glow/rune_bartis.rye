@@ -50,6 +50,7 @@
 //! STOA332: closed fold-body under `@u32` — `|+  sumto  <face>  <bound>` (Ashvini a2; empty=0; past wall=0).
 //! STOA333: closed fold-body under `pair-shape` — `|+  sum  <face>` (Ashvini a2; list fold of two fields).
 //! STOA334: second range-fold verb — `|+  prodto  <face>  <bound>` (empty=1; bound >12 → FoldBoundTooLarge).
+//! STOA335: `|+  sum  <face>` widens across closed `$:` pair…nona (triple proven; emit is N-wide).
 //! STOA330: GateSpec fields — `shape_name` · `shape_name_len` · `shape_name_slice` · `max_shape_len`.
 //! Nesting / gold · open `$:` beyond nona bartis samples held.
 //!
@@ -97,7 +98,7 @@ pub const BodyKind = enum {
     call_one,
     cond_gth, // STOA331: the first body that decides
     fold_sumto, // STOA332: fold naturals 1..n within bound
-    fold_sum, // STOA333: fold-sum closed tuple fields (pair first)
+    fold_sum, // STOA333/335: fold-sum closed tuple fields (pair…nona)
     fold_prodto, // STOA334: product 1..n within bound (verb is a name)
 };
 
@@ -332,7 +333,8 @@ pub fn parse_source(src: []const u8) ParseError!GateSpec {
         if (toks[@as(usize, @intCast(i))].kind != .newline) return error.MalformedBody;
     }
 
-    // STOA332/334: range folds only under bare `@u32`. STOA333: sum only under pair-shape.
+    // STOA332/334: range folds only under bare `@u32`.
+    // STOA333/335: sum under closed `$:` pair…nona (field count from the named shape).
     switch (spec.body) {
         .fold_sumto, .fold_prodto => {
             if (spec.shape_name_len != 0) return error.SampleDoesNotNest;
@@ -340,8 +342,7 @@ pub fn parse_source(src: []const u8) ParseError!GateSpec {
         .fold_sum => {
             if (spec.shape_name_len == 0) return error.SampleDoesNotNest;
             const sn = shape_name_slice(&spec);
-            const fc = nest_type.closed_tuple_field_count(sn) orelse return error.SampleDoesNotNest;
-            if (fc != 2) return error.SampleDoesNotNest;
+            _ = nest_type.closed_tuple_field_count(sn) orelse return error.SampleDoesNotNest;
         },
         else => {},
     }
