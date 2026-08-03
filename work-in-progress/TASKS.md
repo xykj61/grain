@@ -7,10 +7,10 @@
 
 ---
 
-## Now — e253 equality second (`20260802.214614`)
+## Now — e255 equality fourth (`20260802.215804`)
 
-**Finishing edge:** STOA337 `eq` · signature_length=64 · 2/8.  
-**Prove:** `rishi/bin/rishi run tools/aurora_a1_signature_length_eq_witness.rish`
+**Finishing edge:** STOA337 `eq` · stages=6 · exit meanings=3 · 4/8.  
+**Prove:** `rishi/bin/rishi run tools/caravan_c4_exit_meanings_eq_witness.rish`
 
 | Lap | Status |
 |-----|--------|
