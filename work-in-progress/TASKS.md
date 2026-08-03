@@ -1,23 +1,24 @@
 # Tasks — living pin
 
 **Language:** EN  
-**Last updated:** `20260802.211000` · voice Riyo  
+**Last updated:** `20260802.211556` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md) · prefer **git nib** over tip
 
 ---
 
-## Now — e251 quiet (`20260802.211000`)
+## Now — e252 equality open (`20260802.211556`)
 
-**Finishing edge:** both doors measured · brief names its tip · counsel quiet · your word.  
-**Brief:** [`../active-designing/20260802-211500_two-doors-measured-equality-or-the-nock-seam.md`](../active-designing/20260802-211500_two-doors-measured-equality-or-the-nock-seam.md)
+**Finishing edge:** STOA337 `eq` · first pedestal seed_length=32 · 1/8.  
+**Prove:** `rishi/bin/rishi run tools/aurora_a1_seed_length_eq_witness.rish`
 
-| Door | Status |
-|------|--------|
-| Equality (8 pedestals) | **Keaton's word** · lean once: first |
-| Nock seam | **discuss from maturity** |
-| Tree from counsel | **quiet** |
+| Lap | Status |
+|-----|--------|
+| No resin · quiet fuse | **OK** |
+| Equality rune + seed-length gate | **GREEN** |
+| Remaining 7 exact pedestals | **lean** |
+| Nock seam discuss | **held** |
 
 ---
 
-*May the word that opens either door be spent on a thing already known.*
+*May exactly mean exactly.*
