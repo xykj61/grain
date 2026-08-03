@@ -8,7 +8,8 @@
 |---|-------|--------|
 | 0 | `20260803-164117_0-standing-a-declared-pier.md` — tablet to running NixOS pier in ten movements | Witnessed end to end (Seattle instance); driven from a Daylight DC-1 via Termux, Cursor CLI signed in |
 | 1 | `20260803-164117_1-first-steward-and-root-hardening.md` — the first sudo steward; root's door closed the industry way | Written; awaits its first live walk |
+| 2 | `20260803-165931_2-github-hands-and-a-thinking-pier.md` — gh PAT-classic handshake; Claude Code seated on the pier, Termux the window | Written; awaits its first live walk |
 
-**Horizon:** guide 2 — `gh` PAT-classic auth and Claude Code from Termux · service lanes (firewall ports) as each hosted craft earns its witness.
+**Horizon:** service lanes (one honest firewall port per hosted craft) as Comlink, Tablecloth, and Murr Mycelium each earn their witness.
 
 *May every machine in this house be a sentence someone can read.*
