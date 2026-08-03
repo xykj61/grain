@@ -50,7 +50,7 @@
 //! STOA332: closed fold-body under `@u32` — `|+  sumto  <face>  <bound>` (Ashvini a2; empty=0; past wall=0).
 //! STOA333: closed fold-body under `pair-shape` — `|+  sum  <face>` (Ashvini a2; list fold of two fields).
 //! STOA334: second range-fold verb — `|+  prodto  <face>  <bound>` (empty=1; bound >12 → FoldBoundTooLarge).
-//! STOA335: `|+  sum  <face>` widens across closed `$:` pair…nona (triple proven; emit is N-wide).
+//! STOA335: `|+  sum  <face>` widens across closed `$:` pair…nona; pair path delegates to STOA333 emitters.
 //! STOA330: GateSpec fields — `shape_name` · `shape_name_len` · `shape_name_slice` · `max_shape_len`.
 //! Nesting / gold · open `$:` beyond nona bartis samples held.
 //!

@@ -3,26 +3,31 @@
 #   rishi/bin/rishi run tools/glow_tend_a2_suite.rish
 
 say "a2-suite: Language EN — gates that fold, one lap."
-say "a2-suite: Lens TAME — sumto · pair · prodto · N-sum; plants refuse."
+say "a2-suite: Lens TAME — sumto · pair · prodto · N-sum · mantra; plants refuse."
 
-say "a2-suite 1/4: sumto (STOA332)..."
+say "a2-suite 1/5: sumto (STOA332)..."
 let sumto = run ["rishi/bin/rishi" "run" "tools/tally_glow_tend_a2_gate_fold_witness.rish"]
 assert sumto.ok else "a2-suite: sumto RED"
-say "a2-suite 1/4 GREEN."
+say "a2-suite 1/5 GREEN."
 
-say "a2-suite 2/4: pair-sum (STOA333)..."
+say "a2-suite 2/5: pair-sum (STOA333)..."
 let pair = run ["rishi/bin/rishi" "run" "tools/tally_glow_tend_a2_gate_pair_sum_witness.rish"]
 assert pair.ok else "a2-suite: pair-sum RED"
-say "a2-suite 2/4 GREEN."
+say "a2-suite 2/5 GREEN."
 
-say "a2-suite 3/4: prodto (STOA334 — verb is a name)..."
+say "a2-suite 3/5: prodto (STOA334 — verb is a name)..."
 let prod = run ["rishi/bin/rishi" "run" "tools/tally_a2_fold_prodto_witness.rish"]
 assert prod.ok else "a2-suite: prodto RED"
-say "a2-suite 3/4 GREEN."
+say "a2-suite 3/5 GREEN."
 
-say "a2-suite 4/4: N-sum widen (STOA335 — triple then n)..."
+say "a2-suite 4/5: N-sum widen (STOA335 — triple then n)..."
 let nsum = run ["rishi/bin/rishi" "run" "tools/tally_a2_fold_n_sum_witness.rish"]
 assert nsum.ok else "a2-suite: N-sum RED"
-say "a2-suite 4/4 GREEN."
+say "a2-suite 4/5 GREEN."
 
-say "GREEN: a2 suite — four folding faces; the list fold widens with the shape."
+say "a2-suite 5/5: mantra list-fold (STOA335 — pair delegated)..."
+let mantra = run ["rishi/bin/rishi" "run" "tools/mantra_a2_list_fold_witness.rish"]
+assert mantra.ok else "a2-suite: mantra list-fold RED"
+say "a2-suite 5/5 GREEN."
+
+say "GREEN: a2 suite — folds named and widened; the pair path delegates to what stands."
