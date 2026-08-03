@@ -1,6 +1,6 @@
 # Ashvini Recursive Prompt v2
 
-**Stamp:** `20260802.161500` · refreshed `20260803.163623` · **Voice:** Riyo · **Style:** Radiant
+**Stamp:** `20260802.161500` · refreshed `20260803.164117` · **Voice:** Riyo · **Style:** Radiant
 **Radiant pass `20260802.183244`** — e237 valve: narrowing withdrawn; drop path + measurement lines only.
 **Radiant pass `20260802.184012`** — e237 raced seating: tree kept Tier 2-freeze; withdrawal superseded.
 **Radiant pass `20260802.184331`** — e238 oscillation: elder law restored; one-voice proposed not seated.
@@ -34,6 +34,7 @@
 **Radiant pass `20260803.162233`** — e272 claim STOA338 pair-faces · e273 **338a GREEN** (parse · PairNotYetLowered) · counsel stone supersedes pier O1 unary lean as Now · 338b next · rune grant scoped.
 **Radiant pass `20260803.163623`** — e274 two-stones weave · STOA339+339b GREEN (sumto on %- · compose-after-inc desk) · 338a already seated · 338b next · pier floor led the fork.
 **Radiant pass `20260802.224759`** — e262: v57 quiet on pier-ahead tip · check-in five words surfaced · redundant resin dropped.
+**Radiant pass `20260803.164117`** — e274–e275: STOA338b metal GREEN (two faces meet · eq+gth both ways · arity holds the door) · nixos-guide/ risen by Keaton's word — guide 0 reworked (DC-1 · Termux · Cursor CLI proven), guide 1 written (first steward · root's door closed, lockout-safe ordering).
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
 
