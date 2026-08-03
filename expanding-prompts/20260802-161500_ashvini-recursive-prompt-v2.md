@@ -1,6 +1,6 @@
 # Ashvini Recursive Prompt v2
 
-**Stamp:** `20260802.161500` · refreshed `20260802.211000` · **Voice:** Riyo · **Style:** Radiant
+**Stamp:** `20260802.161500` · refreshed `20260802.211556` · **Voice:** Riyo · **Style:** Radiant
 **Radiant pass `20260802.183244`** — e237 valve: narrowing withdrawn; drop path + measurement lines only.
 **Radiant pass `20260802.184012`** — e237 raced seating: tree kept Tier 2-freeze; withdrawal superseded.
 **Radiant pass `20260802.184331`** — e238 oscillation: elder law restored; one-voice proposed not seated.
@@ -19,6 +19,7 @@
 **Radiant pass `20260802.210213`** — e249: v49 recut seat · quiet tree · both sum desks.
 **Radiant pass `20260802.210712`** — e250: two doors measured · Nock interpreter found · nothing chosen.
 **Radiant pass `20260802.211000`** — e251: brief of-the-hour · rescue law held · counsel quiet.
+**Radiant pass `20260802.211556`** — e252: STOA337 eq · equality open · seed_length=32 · 1/8.
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
 
@@ -59,7 +60,10 @@ STATE (refresh the needles from files every round):
   LAW (e249/e250): measure the mountain before climbing — Nock interpreter already runs
     (nock/ 1097 lines · four laps GREEN); open work is the SEAM, not the build.
   TWO DOORS (brief active-designing/20260802-211500_two-doors-measured-…):
-    equality (8 pedestals) · Nock seam discuss — both Keaton's; counsel lean once: equality first.
+    equality OPEN — STOA337 `eq` · 1/8 (seed_length=32) · seven remain ·
+    Nock seam discuss held.
+  LAW (e250): a finding measured twice by different hands becomes a fact.
+  LAW (e252): quiet lane + continue opens the measured lean (equality first).
   Era pure lap — five legs (a1 · R1 pedestal · width · policy · Rishi walls).
   Amphora bundle lane DONE (sha3 wall · clone-proof · torn/basis negatives).
   THREE LAPS: PURE glow_tend_era_suite — four legs (a1 · pedestal · width · bind policy
