@@ -29,7 +29,7 @@ NARGS=$#
 fields_need() {
   case "$1" in
   gate-pair-fields|gate-barket-pair-fields|gate-tally-fold-pair-sum) echo 2 ;;
-  gate-triple-fields|gate-barket-triple-fields|gate-tally-fold-triple-sum) echo 3 ;;
+  gate-triple-fields|gate-barket-triple-fields|gate-tally-fold-triple-sum|gate-mantra-fold-triple-fields) echo 3 ;;
   gate-quad-fields|gate-barket-quad-fields|gate-tally-fold-quad-sum) echo 4 ;;
   gate-penta-fields|gate-barket-penta-fields) echo 5 ;;
   gate-hexa-fields|gate-barket-hexa-fields) echo 6 ;;

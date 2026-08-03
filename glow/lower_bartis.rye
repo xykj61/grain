@@ -222,10 +222,60 @@ fn emit_fold_prodto_gate_fn(out: []u8, used: *u32, zface: []const u8, bound: u32
 }
 
 
-/// STOA333/335: `|+ sum` over closed `$:` pair…nona — welcome bakes demos; expect is their sum.
+/// STOA333: pair list-fold welcome — seated elder bytes; STOA335 delegates here at n=2.
+fn emit_fold_sum_pair_welcome(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
+    const expect: u32 = bartis_pair_demo_from +% bartis_pair_demo_amount;
+    var used: u32 = 0;
+    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
+    try append_print(out, &used, "pub const PairShape = struct {{\n", .{});
+    try append_print(out, &used, "    from: u32 = 0,\n", .{});
+    try append_print(out, &used, "    amount: u32 = 0,\n", .{});
+    try append_print(out, &used, "}};\n\n", .{});
+    try append_print(out, &used, "/// {s}\n", .{comment});
+    try append_print(out, &used, "fn bartis_gate({s}: PairShape) u32 {{\n", .{zface});
+    try append_print(out, &used, "    return {s}.from +% {s}.amount;\n", .{ zface, zface });
+    try append_print(out, &used, "}}\n\n", .{});
+    try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, &used, "    const {s}: PairShape = .{{ .from = {d}, .amount = {d} }};\n", .{ zface, bartis_pair_demo_from, bartis_pair_demo_amount });
+    try append_print(out, &used, "    return if (bartis_gate({s}) == {d}) 0 else 1;\n", .{ zface, expect });
+    try append_print(out, &used, "}}\n", .{});
+    return used;
+}
+
+/// STOA333: pair list-fold argv — seated elder bytes; STOA335 delegates here at n=2.
+fn emit_fold_sum_pair_argv(out: []u8, zface: []const u8, comment: []const u8) LowerError!u32 {
+    var used: u32 = 0;
+    try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
+    try append_print(out, &used, "pub const PairShape = struct {{\n", .{});
+    try append_print(out, &used, "    from: u32 = 0,\n", .{});
+    try append_print(out, &used, "    amount: u32 = 0,\n", .{});
+    try append_print(out, &used, "}};\n\n", .{});
+    try append_print(out, &used, "/// {s}\n", .{comment});
+    try append_print(out, &used, "fn bartis_gate({s}: PairShape) u32 {{\n", .{zface});
+    try append_print(out, &used, "    return {s}.from +% {s}.amount;\n", .{ zface, zface });
+    try append_print(out, &used, "}}\n\n", .{});
+    try append_print(out, &used, "pub fn main(init: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, &used, "    const alloc = init.arena.allocator();\n", .{});
+    try append_print(out, &used, "    const argv = try init.minimal.args.toSlice(alloc);\n", .{});
+    try append_print(out, &used, "    if (argv.len < 3) return 2;\n", .{});
+    try append_print(out, &used, "    const from = std.fmt.parseInt(u32, argv[1], 10) catch return 2;\n", .{});
+    try append_print(out, &used, "    const amount = std.fmt.parseInt(u32, argv[2], 10) catch return 2;\n", .{});
+    try append_print(out, &used, "    const {s}: PairShape = .{{ .from = from, .amount = amount }};\n", .{zface});
+    try append_print(out, &used, "    const answer: u32 = bartis_gate({s});\n", .{zface});
+    try append_print(out, &used, "    var buf: [12]u8 = undefined;\n", .{});
+    try append_print(out, &used, "    const line = std.fmt.bufPrint(&buf, \"{{d}}\\n\", .{{answer}}) catch return 2;\n", .{});
+    try append_print(out, &used, "    const io = init.io;\n", .{});
+    try append_print(out, &used, "    std.Io.File.stdout().writeStreamingAll(io, line) catch return 2;\n", .{});
+    try append_print(out, &used, "    return 0;\n", .{});
+    try append_print(out, &used, "}}\n", .{});
+    return used;
+}
+
+/// STOA335: `|+ sum` over closed `$:` pair…nona — at n=2 delegates to the elder pair emitter.
 fn emit_fold_sum_n_welcome(out: []u8, field_count: u32, zface: []const u8, comment: []const u8) LowerError!u32 {
     assert(field_count >= 2);
     assert(field_count <= 9);
+    if (field_count == 2) return emit_fold_sum_pair_welcome(out, zface, comment);
     const zig_type = closed_tuple_type_name(field_count);
     var expect: u32 = 0;
     var i: u32 = 0;
@@ -266,10 +316,11 @@ fn emit_fold_sum_n_welcome(out: []u8, field_count: u32, zface: []const u8, comme
     return used;
 }
 
-/// STOA333/335: `|+ sum` argv — N field decimals folded into one spoken `@u32`.
+/// STOA335: `|+ sum` argv — at n=2 delegates to the elder pair emitter.
 fn emit_fold_sum_n_argv(out: []u8, field_count: u32, zface: []const u8, comment: []const u8) LowerError!u32 {
     assert(field_count >= 2);
     assert(field_count <= 9);
+    if (field_count == 2) return emit_fold_sum_pair_argv(out, zface, comment);
     const zig_type = closed_tuple_type_name(field_count);
     var used: u32 = 0;
     try append_print(out, &used, "const std = @import(\"std\");\n\n", .{});
