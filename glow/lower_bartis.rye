@@ -181,6 +181,10 @@ fn call_body_expr(gate: []const u8, zface: []const u8, buf: []u8) LowerError![]c
     if (std.mem.eql(u8, gate, "prodto_lawful")) {
         return std.fmt.bufPrint(buf, "if ({s} <= {d}) 1 else 0", .{ zface, rb.max_prodto_bound }) catch return error.Overflow;
     }
+    if (std.mem.eql(u8, gate, "gardens_lawful")) {
+        // STOA344 · O3: the check reads the vane's own constant through the plant's import.
+        return std.fmt.bufPrint(buf, "if ({s} <= gardens.max_gardens) 1 else 0", .{zface}) catch return error.Overflow;
+    }
     const op = try call_op_expr(gate);
     return std.fmt.bufPrint(buf, "{s}{s}", .{ zface, op }) catch return error.Overflow;
 }
@@ -190,6 +194,7 @@ fn call_expect(gate: []const u8, sample: u32) LowerError!u32 {
     if (std.mem.eql(u8, gate, "prodto")) return fold_prodto_expect(sample, rb.max_prodto_bound);
     if (std.mem.eql(u8, gate, "sumto_lawful")) return if (sample <= max_sumto_call) 1 else 0;
     if (std.mem.eql(u8, gate, "prodto_lawful")) return if (sample <= rb.max_prodto_bound) 1 else 0;
+    if (std.mem.eql(u8, gate, "gardens_lawful")) return 0; // STOA344 · O3: expect lives in-plant beside the import
     if (std.mem.eql(u8, gate, "double")) return sample *% 2;
     if (std.mem.eql(u8, gate, "inc")) return sample +% 1;
     if (std.mem.eql(u8, gate, "dec")) return sample -% 1;
@@ -1142,12 +1147,23 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
         .call_one => {
             const gate = rb.gate_slice(spec);
             assert(rb.is_closed_call_gate(gate)); // parse pin
-            var body_buf: [160]u8 = undefined;
-            const body_return = try call_body_expr(gate, zface, &body_buf);
-            var comment_buf: [192]u8 = undefined;
-            const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `%-  {s}  {s}` — call body (STOA103–104 · 339).", .{ face, shape, gate, face }) catch return error.Overflow;
-            try emit_gate_fn(out, &used, face, zface, body_return, comment);
-            try emit_welcome_main(out, &used, zface, expect);
+            if (std.mem.eql(u8, gate, "gardens_lawful")) {
+                // STOA344 · O3: the plant imports the vane; the expect lives in-plant.
+                try append_print(out, &used, "const gardens = @import(\"tally_gardens.rye\");\n\n", .{});
+                var body_buf: [160]u8 = undefined;
+                const body_return = try call_body_expr(gate, zface, &body_buf);
+                var comment_buf: [192]u8 = undefined;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `%-  gardens_lawful  {s}` — vane decide through the import door (STOA344).", .{face}) catch return error.Overflow;
+                try emit_gate_fn(out, &used, face, zface, body_return, comment);
+                try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n    const d: u32 = {d};\n    return if (bartis_gate(d) == (if (d <= gardens.max_gardens) 1 else 0)) 0 else 1;\n}}\n", .{bartis_demo_sample});
+            } else {
+                var body_buf: [160]u8 = undefined;
+                const body_return = try call_body_expr(gate, zface, &body_buf);
+                var comment_buf: [192]u8 = undefined;
+                const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `%-  {s}  {s}` — call body (STOA103–104 · 339).", .{ face, shape, gate, face }) catch return error.Overflow;
+                try emit_gate_fn(out, &used, face, zface, body_return, comment);
+                try emit_welcome_main(out, &used, zface, expect);
+            }
         },
         .cond_gth => {
             // STOA331: welcome bakes sample 5; expected decided at lower time.
@@ -1316,6 +1332,10 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
                 try emit_gate_fn(out, &used, face, zface, zface, comment);
                 try emit_argv_speaking_main(out, &used, zface);
                 return used;
+            }
+            if (std.mem.eql(u8, gate, "gardens_lawful")) {
+                // STOA344 · O3: the argv plant imports the vane; body and expect share the one expression.
+                try append_print(out, &used, "const gardens = @import(\"tally_gardens.rye\");\n\n", .{});
             }
             var body_buf: [160]u8 = undefined;
             const body_return = try call_body_expr(gate, zface, &body_buf);
