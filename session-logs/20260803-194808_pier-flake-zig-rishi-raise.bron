@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260803.194808
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · mosh from Daylight DC-1 · Cursor CLI
+title pier flake home · zig raise · virt horizon
+prompt implement Pier flake home, templates, and virt horizon plan
+think restored living flake from nix store into /etc/nixos; dry-activate matched running system before package accretion
+think added nixos-guide/templates with placeholder keys; living config stays outside grain
+think declared gnupg bubblewrap s6 s6-rc; nixos-rebuild switch GREEN
+think checksum-fetched zig-x86_64-linux-0.16.0 sha256 70e49664… into vendor/zig-toolchain; rye bootstrap and rishi build GREEN; bricks_exist_witness GREEN
+think filled gitignored GLOW_HOST.bron with absolute pier paths; virt-horizon note names no nested KVM and parks SixOS/Genode TCG
+obs send blocked — gnupg package present yet no secret key and no git signing identity on this fresh root pier; unsigned commit refused by house law
+obs origin already points at https://github.com/xykj61/grain; no separate xykj61 remote name; no ~/.ssh keys on pier yet
+file /etc/nixos/configuration.nix living machine packages accreted
+file nixos-guide/templates/ tracked shape with REPLACE placeholders
+file nixos-guide/20260803-194743_virt-horizon-on-the-cloud-pier.md nested KVM absent · triple nest refused
+file GLOW_HOST.bron gitignored absolute rye_zig and rye_lib on this pier
+file vendor/zig-toolchain/ gitignored official 0.16.0 pin verified
+recommend check-in mint pier GPG plus git user for signed send; then guide 1 steward or push templates
+product_nib pier flake · zig · rishi raised
+suite_nib nixos-guide templates · virt horizon parked
+git_nib pending-signed-send

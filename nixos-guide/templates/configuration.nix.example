@@ -1,0 +1,44 @@
+# Template — copy to /etc/nixos/configuration.nix and replace every REPLACE line.
+# Living machine config stays outside grain (see nixos-guide/README.md).
+{ modulesPath, pkgs, ... }:
+{
+  imports = [
+    (modulesPath + "/profiles/qemu-guest.nix")
+  ];
+
+  boot.loader.grub = {
+    efiSupport = true;
+    efiInstallAsRemovable = true;
+  };
+
+  networking.hostName = "pier";
+  networking.useDHCP = true;
+
+  services.openssh.enable = true;
+  services.openssh.settings.PasswordAuthentication = false;
+  services.openssh.settings.PermitRootLogin = "prohibit-password";
+
+  users.users.root.openssh.authorizedKeys.keys = [
+    # REPLACE with every public key that should reach this machine.
+    "ssh-ed25519 AAAA…REPLACE… steward@tablet"
+  ];
+
+  programs.mosh.enable = true;
+
+  nixpkgs.config.allowUnfree = true;
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  # gnupg — signed commits · bubblewrap — enclosure study · s6 — supervision study
+  # (s6 packages do not replace systemd as PID 1 on this host)
+  environment.systemPackages = with pkgs; [
+    tmux
+    git
+    cursor-cli
+    gnupg
+    bubblewrap
+    s6
+    s6-rc
+  ];
+
+  system.stateVersion = "26.05";
+}
