@@ -1,6 +1,6 @@
 # Ashvini Recursive Prompt v2
 
-**Stamp:** `20260802.161500` · refreshed `20260803.191630` · **Voice:** Riyo · **Style:** Radiant
+**Stamp:** `20260802.161500` · refreshed `20260804.001433` · **Voice:** Riyo · **Style:** Radiant
 **Radiant pass `20260802.183244`** — e237 valve: narrowing withdrawn; drop path + measurement lines only.
 **Radiant pass `20260802.184012`** — e237 raced seating: tree kept Tier 2-freeze; withdrawal superseded.
 **Radiant pass `20260802.184331`** — e238 oscillation: elder law restored; one-voice proposed not seated.
@@ -38,6 +38,7 @@
 **Radiant pass `20260803.171120`** — e277 v68 fuse: quiet tree reported quiet · 338b+guides 0–1 skipped (already seated) · guide 2 WRITTEN (gh PAT · Claude Code on pier · Termux the window) · pair metal twice-measured · live walks next.
 **Radiant pass `20260803.173759`** — e278 v69 quiet: guide 2 already home byte-identical · pier-owned red twice-measured (faces+metal GREEN) · nothing new cut · walks remain Keaton's.
 **Radiant pass `20260803.191630`** — e279: empty lane named · compass align · Keaton opens hardest Glow Tend path · STOA340 Tally pair-bound GREEN · Caravan/Mantra mirrors next.
+**Radiant pass `20260804.001433`** — e280 v70 fuse: counsel V1 face-arms land as STOA341 (340 kept for Tally) · min/max GREEN · V2 next under grant.
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
 
@@ -83,10 +84,11 @@ STATE (refresh the needles from files every round):
     first crossing GREEN (e263) · POND RINGS 1–5 GREEN (e265–e269) — census
     CLOSED: one gate · five cargos · one glass · manifest-file home parked ·
     enclosure CHARTED (e271) climb EXPLICIT-only · STOA338 WHOLE · STOA339+339b GREEN ·
-    STOA340 Tally pair-bound GREEN · nixos-guide/ guides 0–2 HOME · live walks yours ·
-    rune grant OPEN (Keaton) · Caravan/Mantra pair-bound next ·
+    STOA340 Tally pair-bound GREEN · STOA341 face-valued arms GREEN (counsel V1) ·
+    nixos-guide/ guides 0–2 HOME · live walks yours · rune grant OPEN · V2 next ·
     LAW (e276–e278): quiet tree reported quiet · never re-cut landed metal ·
-    empty lane named empty · superseded zip retired without heir.
+    empty lane named empty · superseded zip retired without heir ·
+    LAW (e245/e280): a STOA number is a name — first landing keeps it.
   LAW (e250): a finding measured twice by different hands becomes a fact.
   LAW (e252): quiet lane + continue opens the measured lean (equality first).
   Era pure lap — five legs (a1 · R1 pedestal · width · policy · Rishi walls).
@@ -129,7 +131,7 @@ STATE (refresh the needles from files every round):
 
 VANE ROADMAP (proposed · active-designing/20260802-161500_the-vane-roadmap-…):
   Vane 1 Glow Tend: a2 GREEN · equality CLOSED 8/8 · STOA339+339b GREEN ·
-    STOA338 WHOLE · STOA340 Tally pair-bound GREEN · Caravan/Mantra mirrors next ·
+    STOA338 WHOLE · STOA340 Tally pair-bound · STOA341 face-arms · V2 next ·
     nixos-guide 0–2 home · Nock seam RESTS at one crossing.
   Vane 2 Comlink: IPv6 dual-stack + roaming state-sync shell (research+silo landed;
     R1 WHOLE; R2–R4 build GATED). Study: external-research/…ssh-mosh-ipv6…
