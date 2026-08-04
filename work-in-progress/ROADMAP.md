@@ -1,7 +1,7 @@
 # The Roadmap — living pin
 
 **Language:** EN  
-**Last updated:** `20260804.010951` · voice Riyo  
+**Last updated:** `20260804.011839` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md) · prefer **git nib** over tip  
 **Orient pin:** [`../active-designing/20260804-005634_the-close-down-map.md`](../active-designing/20260804-005634_the-close-down-map.md)  
@@ -9,20 +9,21 @@
 
 ---
 
-## Now — e289 · evidence ashore · pick still yours (`20260804.010951`)
+## Now — e290 · STOA345 GREEN · 2m mirrors next (`20260804.011839`)
 
-**Place:** Equinox OPEN · STOA338–344 GREEN · maps woven · **no stone**. Evidence **SAFE** at `~/grain-holds/`. Top THREADS row = **your breath**.
+**Place:** Equinox OPEN · pick walked · Caravan kin through the widened import door. **Top THREADS row:** 2m mirrors → season waypoint.
 
 | Order | Lap | Status |
 |-------|-----|--------|
 | — | STOA338–344 · a1 · a2 · eq · Nock | **GREEN / CLOSED / RESTS** |
-| **Maps** | Close-down + THREADS woven | **SEATED** |
-| **Evidence** | Quarantine shore · resin tarball sunset | **ASHORE · word open** |
-| **Pick** | H1 hands **or** `caps_lawful` | **OPEN — Keaton** |
-| **After** | Guide 2 · map refresh · kin → 2m → waypoint | **queued** |
+| **2t** | STOA345 `caps_lawful` · `children_lawful` · `vane_decide_import` · dir alias | **GREEN** |
+| **2u** | **2m mirrors** — Caravan · Mantra pair-bound | **NEXT** |
+| **2v** | Season waypoint proposal | **queued** |
+| **H** | Knock → guide 1 → guide 2 | **ready — hands** |
+| **Q** | Quarantine ashore | **SAFE · word open** |
 
-Prove: `cat work-in-progress/THREADS.md`
+Prove: `rishi/bin/rishi run tools/glow_compose_tend_unary_witness.rish`
 
 ---
 
-*May a fulfilled rescue sunset itself. May the pick stay one breath.*
+*May the mirrors close the application arc. May the waypoint let the season feel finished.*

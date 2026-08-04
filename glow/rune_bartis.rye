@@ -152,7 +152,7 @@ pub fn gate_slice(spec: *const GateSpec) []const u8 {
 
 /// True when `gate` is a closed demo one-arg gate accepted in a bartis call body.
 pub fn is_closed_call_gate(gate: []const u8) bool {
-    return std.mem.eql(u8, gate, "double") or std.mem.eql(u8, gate, "inc") or std.mem.eql(u8, gate, "dec") or std.mem.eql(u8, gate, "flip") or std.mem.eql(u8, gate, "say") or std.mem.eql(u8, gate, "sumto") or std.mem.eql(u8, gate, "prodto") or std.mem.eql(u8, gate, "sumto_lawful") or std.mem.eql(u8, gate, "prodto_lawful") or std.mem.eql(u8, gate, "gardens_lawful");
+    return std.mem.eql(u8, gate, "double") or std.mem.eql(u8, gate, "inc") or std.mem.eql(u8, gate, "dec") or std.mem.eql(u8, gate, "flip") or std.mem.eql(u8, gate, "say") or std.mem.eql(u8, gate, "sumto") or std.mem.eql(u8, gate, "prodto") or std.mem.eql(u8, gate, "sumto_lawful") or std.mem.eql(u8, gate, "prodto_lawful") or std.mem.eql(u8, gate, "gardens_lawful") or std.mem.eql(u8, gate, "caps_lawful") or std.mem.eql(u8, gate, "dependents_lawful");
 }
 
 /// True when `gate` is the closed kind-mold call-body gate (STOA127).
