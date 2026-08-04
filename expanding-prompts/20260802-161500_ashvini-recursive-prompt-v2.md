@@ -44,6 +44,7 @@
 **Radiant pass `20260804.003544`** — e284: STOA343 GREEN — decide family opens (sumto_lawful · prodto_lawful · one-source) · shape-reading seam named next.
 **Radiant pass `20260804.004127`** — e285: the seam measured and reframed (pedestals are shapes; the constant's one home is the vane) · three doors charted · lean O3, the import graph as the only registry · `gardens_lawful` named first metal.
 **Radiant pass `20260804.004658`** — e286: STOA344 GREEN — `gardens_lawful` through the import door (same-dir alias) · both edges · family witness includes the vane wall · close-down map seated at `20260804.005634`.
+**Radiant pass `20260804.005754`** — e287: Keaton's word — where are we, finish, track better · THREADS.md seated as the one open-thread ledger (refreshed every close; Recommend = its top row) · quarantine evidence preserved · finishing queue ranked.
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
 
@@ -90,7 +91,7 @@ STATE (refresh the needles from files every round):
     CLOSED: one gate · five cargos · one glass · manifest-file home parked ·
     enclosure CHARTED (e271) climb EXPLICIT-only · STOA338 WHOLE · STOA339+339b GREEN ·
     STOA340 Tally · STOA341 face-arms · STOA342 prodto · STOA343 decide GREEN ·
-    V2 OPEN · STOA344 gardens_lawful GREEN · close-down map · H1 hands or caps_lawful · nixos-guide 0–2 HOME ·
+    V2 OPEN · THREADS.md governs · STOA344 GREEN · top row Caravan kin · nixos-guide 0–2 HOME ·
     LAW (e276–e278): quiet tree reported quiet · never re-cut landed metal ·
     empty lane named empty · superseded zip retired without heir ·
     LAW (e245/e280): a STOA number is a name — first landing keeps it.
@@ -136,7 +137,7 @@ STATE (refresh the needles from files every round):
 
 VANE ROADMAP (proposed · active-designing/20260802-161500_the-vane-roadmap-…):
   Vane 1 Glow Tend: a2 GREEN · equality CLOSED 8/8 · STOA339+339b GREEN ·
-    STOA338 WHOLE · STOA340–344 GREEN · O3 door proven · close-down map SEATED ·
+    STOA338 WHOLE · STOA340–344 GREEN · O3 door proven · THREADS.md SEATED ·
     nixos-guide 0–2 home · Nock seam RESTS.
   Vane 2 Comlink: IPv6 dual-stack + roaming state-sync shell (research+silo landed;
     R1 WHOLE; R2–R4 build GATED). Study: external-research/…ssh-mosh-ipv6…
@@ -174,6 +175,9 @@ HARD LINES (verbatim): no force-push · no shred/deploy · no wallet/gas/keys ·
 VPS: Vultr HP AMD 2/4 · SEA only · Keaton's hands. Almanac ch1–ch7 FULL · ch8 15/16 ·
   seat 128 RESERVED. Handbacks: return_surface_p59 · return_deca_128 · return_equinox_q58.
   Funds design-only: Murr · Bozo · Keeh · Gren · POLE GREEN.
+
+THREADS LAW (e287): work-in-progress/THREADS.md refreshed at every counsel close;
+  the Recommend line names its top finishing row.
 
 REPLY SHAPE: prose story → ONE codeblock baton (this prompt, refreshed) → one Recommend
   line (non-gate items only). Own every red at its true cause in the seat. When the tree
