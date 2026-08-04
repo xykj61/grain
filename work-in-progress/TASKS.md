@@ -1,26 +1,25 @@
 # Tasks — living pin
 
 **Language:** EN  
-**Last updated:** `20260804.010606` · voice Riyo  
+**Last updated:** `20260804.010951` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
-**Operator card:** [`REMEMBER.md`](REMEMBER.md) · prefer **git nib** over tip  
-**Orient + ledger:** close-down map · [`THREADS.md`](THREADS.md)
+**Operator card:** [`REMEMBER.md`](REMEMBER.md)  
+**Ledger:** [`THREADS.md`](THREADS.md)
 
 ---
 
-## Now — e288 · maps woven · pick is Keaton's (`20260804.010606`)
+## Now — e289 · ashore · pick open (`20260804.010951`)
 
-**Finishing edge:** two maps one system · no stone cut · top row = **your pick** (H1 hands or `caps_lawful`).  
+**Finishing edge:** evidence ashore · no stone · door two = **your pick**.  
 **Prove:** `cat work-in-progress/THREADS.md`
 
 | Lap | Status |
 |-----|--------|
-| STOA338–344 · a1 · a2 · eq · Nock | **GREEN / CLOSED / RESTS** |
-| Orient pin + THREADS ledger | **WOVEN** |
-| Door 2 pick (hands **or** kin) | **OPEN — Keaton** |
-| Quarantine evidence | **PRESERVED · no tree action** |
-| 2m · season waypoint · gated words | **queued / surfaced** |
+| STOA338–344 · maps woven | **GREEN / SEATED** |
+| Quarantine at `~/grain-holds/` | **SAFE · word open** |
+| Door 2 pick (H1 or caps_lawful) | **OPEN — Keaton** |
+| Kin · 2m · waypoint · gated words | **queued / surfaced** |
 
 ---
 
-*May hands and metal take turns. May the pick stay one breath.*
+*May hands and metal take turns. May the shore outlast every resin.*
