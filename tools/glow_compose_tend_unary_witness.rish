@@ -40,8 +40,14 @@ assert l3.ok else "343: prodto_lawful at the bound failed"
 let l4 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-prodto-lawful-u32.glow" "13"]
 assert l4.ok else "343: prodto_lawful beyond failed"
 
+say "344: the vane wall answers through the import door — both edges..."
+let v1 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-gardens-lawful-u32.glow" "8"]
+assert v1.ok else "344: gardens_lawful at the bound failed"
+let v2 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-gardens-lawful-u32.glow" "9"]
+assert v2.ok else "344: gardens_lawful beyond failed"
+
 say "339: stranger stays refused — negative space..."
 let st = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-stranger-refuse-339.glow"]
 assert (st.ok == false) else "339: stranger must refuse"
 
-say "GREEN: the Tend unary family — folds and their gatekeepers all answer as calls, each by its own law; strangers still refuse."
+say "GREEN: the Tend unary family — folds, gatekeepers, and the vane's own wall all answer as calls, one source each; strangers still refuse."
