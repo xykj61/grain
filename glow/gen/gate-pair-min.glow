@@ -1,0 +1,3 @@
+::  STOA341 — the smaller face answers (min as one desk).
+|=  [a=@u32 b=@u32]
+?:  (gth a b)  b  a

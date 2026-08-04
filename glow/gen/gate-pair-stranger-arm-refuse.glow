@@ -1,0 +1,3 @@
+::  Refuse — a stranger arm names no face (STOA341 negative space).
+|=  [a=@u32 b=@u32]
+?:  (gth a b)  c  0
