@@ -2,9 +2,9 @@
 
 *Keaton asked for directing: the e-series felt lost against open waymarks, seasons, and hands. This map seats one reading of the living tree so finishing beats inventing. The e-numbers are nested Equinox counsel laps under Ashvini (nest-10) — not a second season and not a waymark. STOA numbers are the language door's landing names; they stick. Hands threads and paused seasons sit beside the metal, never under it.*
 
-**Stamp:** `20260804.005634` · **Voice:** Riyo · **Status:** SEATED — layer map (A–D)  
-**Superseded as queue by:** [`work-in-progress/THREADS.md`](../work-in-progress/THREADS.md) (e287) — keep this page for the four-layer reading; THREADS owns the ranked finishing rows  
-**Tip at seat:** living HEAD after e286 fuse · prefer git nib
+**Stamp:** `20260804.005634` · **Voice:** Riyo · **Status:** SEATED — **orient pin** (four layers A–D · twelve doors)  
+**Ledger that walks it:** [`work-in-progress/THREADS.md`](../work-in-progress/THREADS.md) (e287 seated · e288 woven) — refreshed every close; Recommend = its top row  
+**Tip at seat:** prefer git nib · e288 two-maps-one-system
 
 *Written together by Keaton and Riyo.*
 
