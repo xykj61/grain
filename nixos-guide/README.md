@@ -12,4 +12,18 @@
 
 **Horizon:** service lanes (one honest firewall port per hosted craft) as Comlink, Tablecloth, and Murr Mycelium each earn their witness.
 
+## Living flake vs tracked templates
+
+| Layer | Path | In grain? |
+|-------|------|-----------|
+| **Tracked templates** | [`templates/`](templates/) | Yes — placeholder keys only |
+| **Living machine config** | `/etc/nixos/` | No — what `nixos-rebuild switch --flake /etc/nixos#pier` reads |
+| **Optional private mirror** | separate `pier-flake` repo | No — rebuild-from-nothing off-machine without mixing pier identity into public grain |
+
+Copy from `templates/` (see [`templates/README.md`](templates/README.md)), fill keys, keep the living files outside this tree. Same house law as `GLOW_HOST.template.bron` → gitignored `GLOW_HOST.bron`.
+
+## Virt horizon on the cloud pier
+
+See [`20260803-194743_virt-horizon-on-the-cloud-pier.md`](20260803-194743_virt-horizon-on-the-cloud-pier.md) — no nested KVM on this Vultr guest; s6 packages for study; SixOS / Genode QEMU TCG parked; Framework owns proven-seat KVM.
+
 *May every machine in this house be a sentence someone can read.*
