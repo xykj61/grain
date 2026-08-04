@@ -1,3 +1,4 @@
+| `20260804.003544` | [`20260804-003544_e284-stoa343-decide-fuse.bron`](20260804-003544_e284-stoa343-decide-fuse.bron) | e284 STOA343 decide family · gatekeepers · seam named |
 | `20260804.002841` | [`20260804-002841_e283-stoa342-prodto-fuse.bron`](20260804-002841_e283-stoa342-prodto-fuse.bron) | e283 STOA342 prodto on %- · family unary witness GREEN |
 | `20260804.002140` | [`20260804-002140_e282-v71-knock-and-model.bron`](20260804-002140_e282-v71-knock-and-model.bron) | e282 v71 · personal knock home · model Grok · 341 warm |
 | `20260804.001433` | [`20260804-001433_e280-v70-compass-stoa341-fuse.bron`](20260804-001433_e280-v70-compass-stoa341-fuse.bron) | e280 v70 fuse · STOA341 face-arms · number collision owned |

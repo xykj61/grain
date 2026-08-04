@@ -30,8 +30,18 @@ assert p2.ok else "342: prodto 4 failed"
 let p3 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-prodto-u32.glow" "13"]
 assert p3.ok else "342: prodto beyond-bound lap failed"
 
+say "343: the gatekeepers — each fold's own bound answers 1 or 0 at the exact edge..."
+let l1 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-sumto-lawful-u32.glow" "65535"]
+assert l1.ok else "343: sumto_lawful at the bound failed"
+let l2 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-sumto-lawful-u32.glow" "65536"]
+assert l2.ok else "343: sumto_lawful beyond failed"
+let l3 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-prodto-lawful-u32.glow" "12"]
+assert l3.ok else "343: prodto_lawful at the bound failed"
+let l4 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-prodto-lawful-u32.glow" "13"]
+assert l4.ok else "343: prodto_lawful beyond failed"
+
 say "339: stranger stays refused — negative space..."
 let st = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-stranger-refuse-339.glow"]
 assert (st.ok == false) else "339: stranger must refuse"
 
-say "GREEN: the Tend unary family — sumto and prodto both answer as calls, each by its own law; strangers still refuse."
+say "GREEN: the Tend unary family — folds and their gatekeepers all answer as calls, each by its own law; strangers still refuse."
