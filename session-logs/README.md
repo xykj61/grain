@@ -1,3 +1,4 @@
+| `20260804.010239` | [`20260804-010239_e287-threads-ledger-fuse.bron`](20260804-010239_e287-threads-ledger-fuse.bron) | e287 THREADS ledger seated · quarantine evidence preserved |
 | `20260804.005634` | [`20260804-005634_e286-stoa344-and-close-down.bron`](20260804-005634_e286-stoa344-and-close-down.bron) | e286 STOA344 gardens_lawful · close-down map seated |
 | `20260804.004611` | [`20260804-004611_e285-seam-charted-shapes.bron`](20260804-004611_e285-seam-charted-shapes.bron) | e285 seam CHARTED · shapes not molds · O3 · gardens_lawful next |
 | `20260804.003544` | [`20260804-003544_e284-stoa343-decide-fuse.bron`](20260804-003544_e284-stoa343-decide-fuse.bron) | e284 STOA343 decide family · gatekeepers · seam named |
