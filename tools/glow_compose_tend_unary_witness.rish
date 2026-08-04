@@ -19,8 +19,19 @@ say "339: fold-law beyond the bound — 65536 folds to 0, both sides agree..."
 let by = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-sumto-u32.glow" "65536"]
 assert by.ok else "339: beyond-bound lap failed"
 
+say "342: prodto fixture — the product fold answers its baked welcome..."
+let p1 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-prodto.glow"]
+assert p1.ok else "342: prodto fixture failed"
+assert p1.out contains "GREEN" else "342: prodto fixture not GREEN"
+
+say "342: prodto argv — 4 through the worker; 13 folds to 0 by its own law..."
+let p2 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-prodto-u32.glow" "4"]
+assert p2.ok else "342: prodto 4 failed"
+let p3 = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-prodto-u32.glow" "13"]
+assert p3.ok else "342: prodto beyond-bound lap failed"
+
 say "339: stranger stays refused — negative space..."
 let st = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/gate-stranger-refuse-339.glow"]
 assert (st.ok == false) else "339: stranger must refuse"
 
-say "GREEN: STOA339 — the fold answers as a call; strangers still refuse; the allowlist grew by one Tend unary."
+say "GREEN: the Tend unary family — sumto and prodto both answer as calls, each by its own law; strangers still refuse."
