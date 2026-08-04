@@ -1,34 +1,31 @@
 # The Roadmap — living pin
 
 **Language:** EN  
-**Last updated:** `20260804.005634` · voice Riyo  
+**Last updated:** `20260804.010239` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md) · prefer **git nib** over tip  
-**Orient:** [`active-designing/20260804-005634_the-close-down-map.md`](../active-designing/20260804-005634_the-close-down-map.md)
+**Open-thread ledger:** [`THREADS.md`](THREADS.md) — **governs the Recommend line**
 
 ---
 
-## Now — e286 · STOA344 GREEN · close-down begins (`20260804.005634`)
+## Now — e287 · THREADS governs · finishing queue (`20260804.010239`)
 
-**Place:** Equinox OPEN · Ashvini nest · Glow Tend V2 under grant. **e286 ≠ a season** — it is the counsel lap that landed STOA344 (`gardens_lawful` through the O3 import door).
+**Place:** Equinox OPEN · Ashvini nest · Glow Tend V2 under grant. **e-numbers name sittings**, not seasons. **Top finishing row:** Caravan kin (`caps_lawful` · `children_lawful`).
 
-| Order | Lap | Status | Who |
-|-------|-----|--------|-----|
-| — | a1×9 · a2 6/6 · eq 8/8 · Nock RESTS | **GREEN / CLOSED / RESTS** | — |
-| **2i–2q** | STOA338–343 (pairs · folds · decide) | **GREEN** | — |
-| **2s** | STOA344 `gardens_lawful` · O3 import door · alias | **GREEN** | — |
-| **2t** | Caravan kin `caps_lawful` · `children_lawful` | **queued (grant)** | Cursor kg |
-| **H1** | First `ssh pier` knock · guide 1 live walk | **OPEN — hands** | Keaton |
-| **H2** | Guide 2 live walk (PAT · Claude · Termux) | **OPEN — hands** | Keaton |
-| **2n′** | Mantra / 2m pair mirrors (after O3 kin or beside) | **queued** | Cursor kg |
-| **W1** | V3 string/record · R2–R4 · walls climb | **word-gated** | Keaton + Claude |
-| **P1** | Paused seasons (Voice · Fascia · Surface · …) | **PAUSED — findable** | Word to reopen |
-| **G1** | Geode · shred · seat 128 · LICENSE · Mitra · MUR gas | **GATED / HELD** | Keaton |
+| Order | Lap | Status |
+|-------|-----|--------|
+| — | a1×9 · a2 6/6 · eq 8/8 · Nock RESTS | **GREEN / CLOSED / RESTS** |
+| **2i–2s** | STOA338–344 (pairs · folds · decide · import door) | **GREEN** |
+| **2t** | Caravan kin through O3 (`caps_lawful` · `children_lawful`) | **NEXT — THREADS #2** |
+| **2u** | 2m mirrors — Caravan · Mantra pair-bound | **queued — THREADS #3** |
+| **2v** | Season waypoint (STOA338 app arc close) | **proposed — THREADS #4** |
+| **H1–H3** | Knock → guide 1 → guide 2 | **ready — hands · THREADS #5** |
+| **Q** | Quarantine 8-file evidence | **PRESERVED — word · THREADS #6** |
+| **W** | Seventeen gated words (one breath) | **surfaced · THREADS #7** |
 
-Prove: `rishi/bin/rishi run tools/glow_compose_tend_unary_witness.rish`
-
-**Close-down lean:** after this GREEN, prefer **one hands sitting (H1)** before stacking more vane kin — unless Keaton says kg on `caps_lawful` first.
+Prove: `rishi/bin/rishi run tools/glow_compose_tend_unary_witness.rish`  
+Orient: `cat work-in-progress/THREADS.md`
 
 ---
 
-*May metal and hands take turns. May the close-down map keep every paused scope findable.*
+*May THREADS answer where we are. May finishing outrank opening. May the quarantine wait on its word alone.*
