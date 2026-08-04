@@ -124,6 +124,8 @@ pub const GateSpec = struct {
     gate_len: u32 = 0,
     cond_rhs: u32 = 0, // STOA331: gth right-hand literal
     cond_then: u32 = 0, // STOA331: answer when sample > rhs
+    then_face: u8 = 0, // STOA341: 0=literal · 1=first face · 2=second face
+    else_face: u8 = 0, // STOA341: the arm selects a face instead of a literal
     cond_else: u32 = 0, // STOA331: answer otherwise
     fold_bound: u32 = 0, // STOA332: sumto wall (inclusive max n)
 };
@@ -226,11 +228,29 @@ fn parse_body(src: []const u8, toks: []const tokens.Token, start: u32, face_text
             i += 1;
             if (i >= n or toks[@as(usize, @intCast(i))].kind != .rparen) return error.MalformedBody;
             i += 1;
-            if (i >= n or toks[@as(usize, @intCast(i))].kind != .decimal) return error.MalformedBody;
-            spec.cond_then = try parse_decimal_u32(tokens.slice_of(src, toks[@as(usize, @intCast(i))]));
+            if (i >= n) return error.MalformedBody;
+            if (toks[@as(usize, @intCast(i))].kind == .decimal) {
+                spec.cond_then = try parse_decimal_u32(tokens.slice_of(src, toks[@as(usize, @intCast(i))]));
+            } else if (toks[@as(usize, @intCast(i))].kind == .ident) {
+                const arm_then = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
+                if (std.mem.eql(u8, arm_then, face_text)) {
+                    spec.then_face = 1;
+                } else if (std.mem.eql(u8, arm_then, face2_text)) {
+                    spec.then_face = 2;
+                } else return error.BodyFaceMismatch;
+            } else return error.MalformedBody;
             i += 1;
-            if (i >= n or toks[@as(usize, @intCast(i))].kind != .decimal) return error.MalformedBody;
-            spec.cond_else = try parse_decimal_u32(tokens.slice_of(src, toks[@as(usize, @intCast(i))]));
+            if (i >= n) return error.MalformedBody;
+            if (toks[@as(usize, @intCast(i))].kind == .decimal) {
+                spec.cond_else = try parse_decimal_u32(tokens.slice_of(src, toks[@as(usize, @intCast(i))]));
+            } else if (toks[@as(usize, @intCast(i))].kind == .ident) {
+                const arm_else = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
+                if (std.mem.eql(u8, arm_else, face_text)) {
+                    spec.else_face = 1;
+                } else if (std.mem.eql(u8, arm_else, face2_text)) {
+                    spec.else_face = 2;
+                } else return error.BodyFaceMismatch;
+            } else return error.MalformedBody;
             i += 1;
             spec.body = if (is_eq) .cond_eq_faces else .cond_gth_faces;
             return i;

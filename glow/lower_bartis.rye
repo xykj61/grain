@@ -148,6 +148,25 @@ fn call_op_expr(gate: []const u8) LowerError![]const u8 {
 
 pub const max_sumto_call: u32 = 65535; // STOA339: triangular fits u32; beyond folds to 0 (fold-family law)
 
+/// STOA341: an arm is a literal, the first face, or the second face.
+fn pair_arm_value(spec: *const rb.GateSpec, hit: bool) u32 {
+    const sel = if (hit) spec.then_face else spec.else_face;
+    const val = if (hit) spec.cond_then else spec.cond_else;
+    return switch (sel) {
+        1 => bartis_pair_demo_from,
+        2 => bartis_pair_demo_amount,
+        else => val,
+    };
+}
+
+fn pair_arm_expr(sel: u8, value: u32, zfa: []const u8, zfb: []const u8, buf: []u8) LowerError![]const u8 {
+    return switch (sel) {
+        1 => zfa,
+        2 => zfb,
+        else => std.fmt.bufPrint(buf, "{d}", .{value}) catch return error.Overflow,
+    };
+}
+
 /// STOA339: full body expression for gates that reference the face more than once.
 fn call_body_expr(gate: []const u8, zface: []const u8, buf: []u8) LowerError![]const u8 {
     if (std.mem.eql(u8, gate, "sumto")) {
@@ -189,8 +208,8 @@ fn expect_for(spec: *const rb.GateSpec) LowerError!u32 {
         .call_one => try call_expect(rb.gate_slice(spec), bartis_demo_sample),
         .cond_gth => return error.SampleDoesNotNest,
         .cond_eq => return error.SampleDoesNotNest,
-        .cond_eq_faces => if (bartis_pair_demo_from == bartis_pair_demo_amount) spec.cond_then else spec.cond_else,
-        .cond_gth_faces => if (bartis_pair_demo_from > bartis_pair_demo_amount) spec.cond_then else spec.cond_else,
+        .cond_eq_faces => pair_arm_value(spec, bartis_pair_demo_from == bartis_pair_demo_amount),
+        .cond_gth_faces => pair_arm_value(spec, bartis_pair_demo_from > bartis_pair_demo_amount),
         .fold_sumto => fold_sumto_expect(bartis_demo_sample, spec.fold_bound),
         .fold_sum => try fold_sum_n_expect(spec),
         .fold_prodto => fold_prodto_expect(bartis_demo_sample, spec.fold_bound),
@@ -1141,8 +1160,12 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             const bn = try zig_safe_ident(rb.face2_slice(spec), &zb);
             const zfb = zb[0..bn];
             const op: []const u8 = if (spec.body == .cond_eq_faces) "==" else ">";
+            var tb: [rb.max_face_len + 12]u8 = undefined;
+            var eb: [rb.max_face_len + 12]u8 = undefined;
+            const then_expr = try pair_arm_expr(spec.then_face, spec.cond_then, zface, zfb, &tb);
+            const else_expr = try pair_arm_expr(spec.else_face, spec.cond_else, zface, zfb, &eb);
             try append_print(out, &used, "/// Lowered from Glow pair-faces cond — STOA338b.\n", .{});
-            try append_print(out, &used, "fn bartis_pair({s}: u32, {s}: u32) u32 {{\n    return if ({s} {s} {s}) {d} else {d};\n}}\n\n", .{ zface, zfb, zface, op, zfb, spec.cond_then, spec.cond_else });
+            try append_print(out, &used, "fn bartis_pair({s}: u32, {s}: u32) u32 {{\n    return if ({s} {s} {s}) {s} else {s};\n}}\n\n", .{ zface, zfb, zface, op, zfb, then_expr, else_expr });
             try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n    return if (bartis_pair({d}, {d}) == {d}) 0 else 1;\n}}\n", .{ bartis_pair_demo_from, bartis_pair_demo_amount, expect });
         },
         .fold_sumto => {
@@ -1314,15 +1337,19 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             const bn = try zig_safe_ident(rb.face2_slice(spec), &zb);
             const zfb = zb[0..bn];
             const op: []const u8 = if (spec.body == .cond_eq_faces) "==" else ">";
+            var tb: [rb.max_face_len + 12]u8 = undefined;
+            var eb: [rb.max_face_len + 12]u8 = undefined;
+            const then_expr = try pair_arm_expr(spec.then_face, spec.cond_then, zface, zfb, &tb);
+            const else_expr = try pair_arm_expr(spec.else_face, spec.cond_else, zface, zfb, &eb);
             try append_print(out, &used, "/// Lowered from Glow pair-faces cond — STOA338b.\n", .{});
-            try append_print(out, &used, "fn bartis_pair({s}: u32, {s}: u32) u32 {{\n    return if ({s} {s} {s}) {d} else {d};\n}}\n\n", .{ zface, zfb, zface, op, zfb, spec.cond_then, spec.cond_else });
+            try append_print(out, &used, "fn bartis_pair({s}: u32, {s}: u32) u32 {{\n    return if ({s} {s} {s}) {s} else {s};\n}}\n\n", .{ zface, zfb, zface, op, zfb, then_expr, else_expr });
             try append_print(out, &used, "pub fn main(init: std.process.Init) !u8 {{\n", .{});
             try append_print(out, &used, "    const alloc = init.arena.allocator();\n", .{});
             try append_print(out, &used, "    const argv = try init.minimal.args.toSlice(alloc);\n", .{});
             try append_print(out, &used, "    if (argv.len < 3) return 2;\n", .{});
             try append_print(out, &used, "    const {s} = std.fmt.parseInt(u32, argv[1], 10) catch return 2;\n", .{zface});
             try append_print(out, &used, "    const {s} = std.fmt.parseInt(u32, argv[2], 10) catch return 2;\n", .{zfb});
-            try append_print(out, &used, "    const expect: u32 = if ({s} {s} {s}) {d} else {d};\n", .{ zface, op, zfb, spec.cond_then, spec.cond_else });
+            try append_print(out, &used, "    const expect: u32 = if ({s} {s} {s}) {s} else {s};\n", .{ zface, op, zfb, then_expr, else_expr });
             try append_print(out, &used, "    return if (bartis_pair({s}, {s}) == expect) 0 else 1;\n", .{ zface, zfb });
             try append_print(out, &used, "}}\n", .{});
         },
