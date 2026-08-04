@@ -175,6 +175,12 @@ fn call_body_expr(gate: []const u8, zface: []const u8, buf: []u8) LowerError![]c
     if (std.mem.eql(u8, gate, "prodto")) {
         return std.fmt.bufPrint(buf, "if ({s} > {d}) 0 else if ({s} == 0) 1 else blk: {{ var acc: u32 = 1; var i: u32 = 2; while (i <= {s}) : (i += 1) acc *%= i; break :blk acc; }}", .{ zface, rb.max_prodto_bound, zface, zface }) catch return error.Overflow;
     }
+    if (std.mem.eql(u8, gate, "sumto_lawful")) {
+        return std.fmt.bufPrint(buf, "if ({s} <= {d}) 1 else 0", .{ zface, max_sumto_call }) catch return error.Overflow;
+    }
+    if (std.mem.eql(u8, gate, "prodto_lawful")) {
+        return std.fmt.bufPrint(buf, "if ({s} <= {d}) 1 else 0", .{ zface, rb.max_prodto_bound }) catch return error.Overflow;
+    }
     const op = try call_op_expr(gate);
     return std.fmt.bufPrint(buf, "{s}{s}", .{ zface, op }) catch return error.Overflow;
 }
@@ -182,6 +188,8 @@ fn call_body_expr(gate: []const u8, zface: []const u8, buf: []u8) LowerError![]c
 fn call_expect(gate: []const u8, sample: u32) LowerError!u32 {
     if (std.mem.eql(u8, gate, "sumto")) return fold_sumto_expect(sample, max_sumto_call);
     if (std.mem.eql(u8, gate, "prodto")) return fold_prodto_expect(sample, rb.max_prodto_bound);
+    if (std.mem.eql(u8, gate, "sumto_lawful")) return if (sample <= max_sumto_call) 1 else 0;
+    if (std.mem.eql(u8, gate, "prodto_lawful")) return if (sample <= rb.max_prodto_bound) 1 else 0;
     if (std.mem.eql(u8, gate, "double")) return sample *% 2;
     if (std.mem.eql(u8, gate, "inc")) return sample +% 1;
     if (std.mem.eql(u8, gate, "dec")) return sample -% 1;

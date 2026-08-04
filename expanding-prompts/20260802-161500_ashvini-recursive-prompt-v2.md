@@ -1,6 +1,6 @@
 # Ashvini Recursive Prompt v2
 
-**Stamp:** `20260802.161500` · refreshed `20260804.002841` · **Voice:** Riyo · **Style:** Radiant
+**Stamp:** `20260802.161500` · refreshed `20260804.003544` · **Voice:** Riyo · **Style:** Radiant
 **Radiant pass `20260802.183244`** — e237 valve: narrowing withdrawn; drop path + measurement lines only.
 **Radiant pass `20260802.184012`** — e237 raced seating: tree kept Tier 2-freeze; withdrawal superseded.
 **Radiant pass `20260802.184331`** — e238 oscillation: elder law restored; one-voice proposed not seated.
@@ -41,6 +41,7 @@
 **Radiant pass `20260804.001433`** — e280 v70 fuse: counsel V1 face-arms land as STOA341 (340 kept for Tally) · min/max GREEN · V2 next under grant.
 **Radiant pass `20260804.002140`** — e282 v71: personal knock home (/.ssh/ ignored) · model Cursor Grok seated · 341 twice-measured · first ssh pier = hands.
 **Radiant pass `20260804.002841`** — e283: STOA342 GREEN — prodto joins the door by its own law (block-expression emit, first breath) · the family witness speaks for both unaries · V2 open, decide-family next.
+**Radiant pass `20260804.003544`** — e284: STOA343 GREEN — decide family opens (sumto_lawful · prodto_lawful · one-source) · shape-reading seam named next.
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
 
@@ -86,9 +87,8 @@ STATE (refresh the needles from files every round):
     first crossing GREEN (e263) · POND RINGS 1–5 GREEN (e265–e269) — census
     CLOSED: one gate · five cargos · one glass · manifest-file home parked ·
     enclosure CHARTED (e271) climb EXPLICIT-only · STOA338 WHOLE · STOA339+339b GREEN ·
-    STOA340 Tally pair-bound GREEN · STOA341 face-valued arms GREEN ·
-    STOA342 prodto on %- GREEN · V2 OPEN · decide-family next ·
-    nixos-guide/ guides 0–2 HOME · live walks yours · knock in hands ·
+    STOA340 Tally · STOA341 face-arms · STOA342 prodto · STOA343 decide GREEN ·
+    V2 OPEN · shape-reading seam next · nixos-guide 0–2 HOME · knock in hands ·
     LAW (e276–e278): quiet tree reported quiet · never re-cut landed metal ·
     empty lane named empty · superseded zip retired without heir ·
     LAW (e245/e280): a STOA number is a name — first landing keeps it.
@@ -134,8 +134,8 @@ STATE (refresh the needles from files every round):
 
 VANE ROADMAP (proposed · active-designing/20260802-161500_the-vane-roadmap-…):
   Vane 1 Glow Tend: a2 GREEN · equality CLOSED 8/8 · STOA339+339b GREEN ·
-    STOA338 WHOLE · STOA340 Tally · STOA341 face-arms · STOA342 prodto ·
-    V2 decide-family next · nixos-guide 0–2 home · Nock seam RESTS.
+    STOA338 WHOLE · STOA340–343 GREEN · V2 shape-reading seam next ·
+    nixos-guide 0–2 home · Nock seam RESTS.
   Vane 2 Comlink: IPv6 dual-stack + roaming state-sync shell (research+silo landed;
     R1 WHOLE; R2–R4 build GATED). Study: external-research/…ssh-mosh-ipv6…
   Waiting vanes: living-pin fold · Amphora Class W/stdout · shed/Class O · dual-pier auth ·
