@@ -1,24 +1,24 @@
 # Tasks — living pin
 
 **Language:** EN  
-**Last updated:** `20260804.002140` · voice Riyo  
+**Last updated:** `20260804.002841` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md) · prefer **git nib** over tip
 
 ---
 
-## Now — e282 personal knock · STOA341 (`20260804.002140`)
+## Now — e283 STOA342 · V2 open (`20260804.002841`)
 
-**Finishing edge:** personal knock seated (addresses ignored) · first `ssh pier` + guide 1 live walk = Keaton's hands · V2 / 2m mirrors wait under the grant.  
-**Prove:** `rishi/bin/rishi run tools/glow_bartis_pair_select_witness.rish` · `ssh -F ~/grain/.ssh/config pier`
+**Finishing edge:** STOA342 `prodto` on `%-` GREEN · next kg = V2 decide-family census (which vane walls earn callable form) · knock + guide walks = Keaton's hands.  
+**Prove:** `rishi/bin/rishi run tools/glow_compose_tend_unary_witness.rish`
 
 | Lap | Status |
 |-----|--------|
-| STOA338 · 339 · 340 Tally · 341 face-arms · a1 · a2 | **GREEN** |
-| nixos-guide 0–2 · personal knock home | **HOME · walks + first knock = Keaton's hands** |
-| V2 vane unaries · Caravan/Mantra pair-bound | **NEXT / queued (grant)** |
+| STOA338 · 339 · 340 · 341 · 342 · a1 · a2 | **GREEN** |
+| nixos-guide 0–2 · personal knock | **HOME · hands** |
+| V2 decide-family · Caravan/Mantra pair-bound | **NEXT / queued** |
 | V3 string/record · walls · R2–R4 · Mycelium gas · Realidream | **gated / Design / HELD** |
 
 ---
 
-*May the knock be one word. May every wall answer with what it holds.*
+*May each unary answer by its own law. May the next callable name a real wall.*
