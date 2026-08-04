@@ -46,6 +46,7 @@
 **Radiant pass `20260804.004658`** — e286: STOA344 GREEN — `gardens_lawful` through the import door (same-dir alias) · both edges · family witness includes the vane wall · close-down map seated at `20260804.005634`.
 **Radiant pass `20260804.005754`** — e287: Keaton's word — where are we, finish, track better · THREADS.md seated as the one open-thread ledger (refreshed every close; Recommend = its top row) · quarantine evidence preserved · finishing queue ranked.
 **Radiant pass `20260804.010314`** — e288: two maps one system — close-down map leads as orient pin · THREADS walks it · the pick (H1 hands or caps_lawful) left to Keaton · no stone cut.
+**Radiant pass `20260804.010641`** — e289: evidence ASHORE at ~/grain-holds (sha3-verified) · tarball sunset from resin · pick still Keaton's · no stone cut.
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
 
@@ -177,9 +178,10 @@ VPS: Vultr HP AMD 2/4 · SEA only · Keaton's hands. Almanac ch1–ch7 FULL · c
   seat 128 RESERVED. Handbacks: return_surface_p59 · return_deca_128 · return_equinox_q58.
   Funds design-only: Murr · Bozo · Keeh · Gren · POLE GREEN.
 
-THREADS LAW (e287/e288): work-in-progress/THREADS.md refreshed at every counsel close;
+THREADS LAW (e287–e289): work-in-progress/THREADS.md refreshed at every counsel close;
   the Recommend line names its top finishing row · close-down map leads as orient pin ·
-  the pick between hands and metal is never made for Keaton.
+  the pick between hands and metal is never made for Keaton · rescued evidence retires
+  from the resin once its shore copy verifies.
 
 REPLY SHAPE: prose story → ONE codeblock baton (this prompt, refreshed) → one Recommend
   line (non-gate items only). Own every red at its true cause in the seat. When the tree
