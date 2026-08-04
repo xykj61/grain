@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260804.002140
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title e282 v71 fuse — personal knock and model seat
+prompt fuse kg v71 · save pull · ssh pier config · model Auto to Grok · templates untouched
+think Remotes already at 958d787bd5 — save/pull quiet. Beads matched.
+think Skipped 0001 STOA341 metal already aboard; landed 0002 e281 README + counsel.
+think Wrote ~/grain/.ssh/config with pier IPs — check-ignore /.ssh/; never staged.
+think Seated GLOW_PROFILE model Grok + checked stamp (root-ignored). REMEMBER drops Auto Mode.
+think One red: parallel select+tally raced glow_run — owned; select GREEN alone; tally GREEN.
+obs Guide 0 HostName placeholders untouched; flake templates untouched; patch address-free.
+file .ssh/config personal knock ignored
+file counsel/20260804-001428_e281-the-personal-knock.md counsel seat
+file counsel/20260804-002140_e282-v71-knock-and-model.md pier fuse
+file nixos-guide/README.md personal knock home line
+file GLOW_PROFILE.bron model seat ignored
+recommend check-in first ssh pier then guide 1 live walk; V2 and 2m wait warm
+product_nib Grain Equinox
+suite_nib personal-knock STOA341
+git_nib 5538e1388f

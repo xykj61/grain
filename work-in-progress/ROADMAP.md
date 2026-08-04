@@ -1,13 +1,13 @@
 # The Roadmap — living pin
 
 **Language:** EN  
-**Last updated:** `20260804.001433` · voice Riyo  
+**Last updated:** `20260804.002140` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md) · prefer **git nib** over tip
 
 ---
 
-## Now — e280 · STOA341 face-arms · vane compass set (`20260804.001433`)
+## Now — e282 · personal knock home · STOA341 stands (`20260804.002140`)
 
 | Order | Lap | Status |
 |-------|-----|--------|
@@ -19,7 +19,8 @@
 | **2k** | `nixos-guide/` guides 0–2 | **HOME · live walks = Keaton's hands** |
 | **2l** | STOA340 Tally pair-bound wall | **GREEN** |
 | **2l′** | STOA341 face-valued arms (counsel V1) | **GREEN — min/max one desk each** |
-| **2m** | V2 — vane unaries beside `sumto` on `%-` | **NEXT** |
+| **2o** | Personal knock (`.ssh/config` ignored) | **HOME — first `ssh pier` = Keaton's hands** |
+| **2m** | V2 — vane unaries beside `sumto` on `%-` | **NEXT (grant)** |
 | **2n** | Caravan · Mantra pair-bound mirrors | **queued** |
 | **3** | Comlink R2–R4 · V3 string/record | **GATED / word** |
 | **4** | Mycelium/MUR gas · bar5 · SEA · geode | **hands / HELD** |

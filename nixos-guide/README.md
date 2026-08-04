@@ -10,6 +10,8 @@
 | 1 | `20260803-164117_1-first-steward-and-root-hardening.md` — the first sudo steward; root's door closed the industry way | Written; awaits its first live walk |
 | 2 | `20260803-165931_2-github-hands-and-a-thinking-pier.md` — gh PAT-classic handshake; Claude Code seated on the pier, Termux the window | Written; awaits its first live walk |
 
+**Personal knock:** a real-address `ssh` config lives at `.ssh/config` inside this folder — ignored by design (`.gitignore` carries `/.ssh/`), so addresses and identities stay off every remote while the form itself remains in guide 0, placeholders only.
+
 **Horizon:** service lanes (one honest firewall port per hosted craft) as Comlink, Tablecloth, and Murr Mycelium each earn their witness.
 
 ## Living flake vs tracked templates

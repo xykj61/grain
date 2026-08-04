@@ -1,6 +1,6 @@
 # Ashvini Recursive Prompt v2
 
-**Stamp:** `20260802.161500` · refreshed `20260804.001433` · **Voice:** Riyo · **Style:** Radiant
+**Stamp:** `20260802.161500` · refreshed `20260804.002140` · **Voice:** Riyo · **Style:** Radiant
 **Radiant pass `20260802.183244`** — e237 valve: narrowing withdrawn; drop path + measurement lines only.
 **Radiant pass `20260802.184012`** — e237 raced seating: tree kept Tier 2-freeze; withdrawal superseded.
 **Radiant pass `20260802.184331`** — e238 oscillation: elder law restored; one-voice proposed not seated.
@@ -39,6 +39,7 @@
 **Radiant pass `20260803.173759`** — e278 v69 quiet: guide 2 already home byte-identical · pier-owned red twice-measured (faces+metal GREEN) · nothing new cut · walks remain Keaton's.
 **Radiant pass `20260803.191630`** — e279: empty lane named · compass align · Keaton opens hardest Glow Tend path · STOA340 Tally pair-bound GREEN · Caravan/Mantra mirrors next.
 **Radiant pass `20260804.001433`** — e280 v70 fuse: counsel V1 face-arms land as STOA341 (340 kept for Tally) · min/max GREEN · V2 next under grant.
+**Radiant pass `20260804.002140`** — e282 v71: personal knock home (/.ssh/ ignored) · model Cursor Grok seated · 341 twice-measured · first ssh pier = hands.
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
 
