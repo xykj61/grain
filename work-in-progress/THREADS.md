@@ -1,7 +1,7 @@
 # Threads — the one living ledger of everything open
 
 **Language:** EN  
-**Last refreshed:** `20260804.235036` · voice Riyo · pier **e301** quiet fuse of counsel v89 — Nona named-word Waypoint · **one rung per fuse** cadence · ladder already home · 6a parked · Keeh CLOSED · Identity PAUSED (6b)  
+**Last refreshed:** `20260804.235325` · voice Riyo · walk complete at the season-row grammar · **6b: Identity Remake PAUSED (k6/k7 · return_surface_p55) — your word only** (name · keys · history rewrite live in its charter) · 6a parked · open: hands · quarantine · row six · 6a · 6b · next name
 **Companion (orient pin):** [`../active-designing/20260804-005634_the-close-down-map.md`](../active-designing/20260804-005634_the-close-down-map.md)  
 **Season summary:** [`../counsel/20260804-230650_the-equinox-season-summary.md`](../counsel/20260804-230650_the-equinox-season-summary.md)  
 **Ladder seat:** [`../counsel/20260804-233206_e299-the-ladder-rests.md`](../counsel/20260804-233206_e299-the-ladder-rests.md)  
@@ -19,7 +19,7 @@ Pier **e301** (counsel Nona seat stamped e300; pier e300 already ladder sweep). 
 
 | # | Door | Thread | State | Owner |
 |---|------|--------|-------|-------|
-| 1 | — | Resin v88 (sweep) · v89 (Nona cadence) | **LANDED** · quiet | — |
+| 1 | — | Resin v89 (the confirmation seat) | IN FLIGHT | bench |
 | 2 | 3–4 | Hands: knock → guide 1 → guide 2 | ready, your pace | Keaton |
 | 5 | 8 | **Quarantine** ASHORE | SAFE · word open | Keaton |
 | 6 | 6–7 · 10–12 | Word-gated · return words · next name | surfaced, unpressed | Keaton (+ counsel) |

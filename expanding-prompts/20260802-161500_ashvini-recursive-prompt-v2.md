@@ -1,6 +1,6 @@
 # Ashvini Recursive Prompt v2
 
-**Stamp:** `20260802.161500` · refreshed `20260804.003544` · **Voice:** Riyo · **Style:** Radiant
+**Stamp:** `20260802.161500` · refreshed `20260804.235325` · **Voice:** Riyo · **Style:** Radiant
 **Radiant pass `20260802.183244`** — e237 valve: narrowing withdrawn; drop path + measurement lines only.
 **Radiant pass `20260802.184012`** — e237 raced seating: tree kept Tier 2-freeze; withdrawal superseded.
 **Radiant pass `20260802.184331`** — e238 oscillation: elder law restored; one-voice proposed not seated.
@@ -58,6 +58,8 @@
 **Radiant pass `20260804.232721`** — e298 (counsel e297 fascia): Fascia Equinox **RESTED** · exit bar MET kept · expanding-prompts audit — paused progress intact · next Voice.
 **Radiant pass `20260804.233134`** — e299: lookback audit CLEAN · Voice + undeca **RESTED** (J4 pointers kept) · 6a Wheel-frame parked · next Nona.
 **Radiant pass `20260804.234505`** — e300: homeward sweep · Nona→Constellation RESTED append-only · ladder home · Keeh verify CLOSED / Identity PAUSED.
+**Radiant pass `20260804.235124`** — e300: Nona confirmed dual-stamped; the walk home complete and verified — no row paused without its rest; Keeh resolved CLOSED; the ladder whole, every bookmark inside its row.
+**Radiant pass `20260804.235325`** — e301: the refinement owned — Identity Remake (k6/k7, row 326) stands PAUSED outside the sweep's grammar; the walk is complete at the season-row grammar, and 6b waits on Keaton's word alone, its charter touching name, keys, and history.
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
 
