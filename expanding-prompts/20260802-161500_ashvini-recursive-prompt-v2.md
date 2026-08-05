@@ -49,6 +49,7 @@
 **Radiant pass `20260804.010641`** — e289: evidence ASHORE at ~/grain-holds (sha3-verified) · tarball sunset from resin · pick still Keaton's · no stone cut.
 **Radiant pass `20260804.011026`** — e290: STOA345 GREEN — pick walked · caps_lawful · children_lawful · vane_decide_import · directory alias · 2m mirrors next.
 **Radiant pass `20260804.225021`** — e291: quiet fuse — v79 re-drop already home (e234) · unary warm · 2m mirrors still next.
+**Radiant pass `20260804.225053`** — e292 (counsel e291): STOA346 GREEN — 2m mirrors · 338 arc CLOSED · waypoint PROPOSED · fold word Keaton's.
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
 
@@ -95,7 +96,7 @@ STATE (refresh the needles from files every round):
     CLOSED: one gate · five cargos · one glass · manifest-file home parked ·
     enclosure CHARTED (e271) climb EXPLICIT-only · STOA338 WHOLE · STOA339+339b GREEN ·
     STOA340 Tally · STOA341 face-arms · STOA342 prodto · STOA343 decide GREEN ·
-    V2 OPEN · STOA345 GREEN · top row = 2m mirrors → season waypoint · nixos-guide 0–2 HOME ·
+    V2 OPEN · STOA346 GREEN · 338 arc CLOSED · top row = fold word · nixos-guide 0–2 HOME ·
     LAW (e276–e278): quiet tree reported quiet · never re-cut landed metal ·
     empty lane named empty · superseded zip retired without heir ·
     LAW (e245/e280): a STOA number is a name — first landing keeps it.
@@ -141,7 +142,7 @@ STATE (refresh the needles from files every round):
 
 VANE ROADMAP (proposed · active-designing/20260802-161500_the-vane-roadmap-…):
   Vane 1 Glow Tend: a2 GREEN · equality CLOSED 8/8 · STOA339+339b GREEN ·
-    STOA338 WHOLE · STOA340–345 GREEN · import door widened · THREADS woven ·
+    STOA338 WHOLE · STOA340–346 GREEN · 338 arc CLOSED · waypoint PROPOSED ·
     nixos-guide 0–2 home · Nock seam RESTS.
   Vane 2 Comlink: IPv6 dual-stack + roaming state-sync shell (research+silo landed;
     R1 WHOLE; R2–R4 build GATED). Study: external-research/…ssh-mosh-ipv6…
@@ -180,11 +181,12 @@ VPS: Vultr HP AMD 2/4 · SEA only · Keaton's hands. Almanac ch1–ch7 FULL · c
   seat 128 RESERVED. Handbacks: return_surface_p59 · return_deca_128 · return_equinox_q58.
   Funds design-only: Murr · Bozo · Keeh · Gren · POLE GREEN.
 
-THREADS LAW (e287–e290): work-in-progress/THREADS.md refreshed at every counsel close;
+THREADS LAW (e287–e292): work-in-progress/THREADS.md refreshed at every counsel close;
   the Recommend line names its top finishing row · close-down map leads as orient pin ·
   the pick between hands and metal is never made for Keaton — and a kg against a
   recommend that names kg as a branch IS the pick · rescued evidence retires from
-  resin once shore verifies · doors mature under load (generalized fork · dir alias).
+  resin once shore verifies · doors mature under load · mirrors copy pattern not
+  constants · cond operands bind in header order (honored in the desk).
 
 REPLY SHAPE: prose story → ONE codeblock baton (this prompt, refreshed) → one Recommend
   line (non-gate items only). Own every red at its true cause in the seat. When the tree
