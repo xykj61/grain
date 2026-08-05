@@ -50,6 +50,7 @@
 **Radiant pass `20260804.011026`** — e290: STOA345 GREEN — pick walked · caps_lawful · children_lawful · vane_decide_import · directory alias · 2m mirrors next.
 **Radiant pass `20260804.225021`** — e291: quiet fuse — v79 re-drop already home (e234) · unary warm · 2m mirrors still next.
 **Radiant pass `20260804.225053`** — e292 (counsel e291): STOA346 GREEN — 2m mirrors · 338 arc CLOSED · waypoint PROPOSED · fold word Keaton's.
+**Radiant pass `20260804.230143`** — e293 (counsel e292): Equinox season summary DRAFTED whole · rest costs one fold word · lean arc.
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
 
@@ -96,7 +97,7 @@ STATE (refresh the needles from files every round):
     CLOSED: one gate · five cargos · one glass · manifest-file home parked ·
     enclosure CHARTED (e271) climb EXPLICIT-only · STOA338 WHOLE · STOA339+339b GREEN ·
     STOA340 Tally · STOA341 face-arms · STOA342 prodto · STOA343 decide GREEN ·
-    V2 OPEN · STOA346 GREEN · 338 arc CLOSED · top row = fold word · nixos-guide 0–2 HOME ·
+    V2 OPEN · STOA346 GREEN · 338 arc CLOSED · summary DRAFTED · top row = fold word (lean arc) ·
     LAW (e276–e278): quiet tree reported quiet · never re-cut landed metal ·
     empty lane named empty · superseded zip retired without heir ·
     LAW (e245/e280): a STOA number is a name — first landing keeps it.
