@@ -1,25 +1,26 @@
 # Tasks — living pin
 
 **Language:** EN  
-**Last updated:** `20260804.232721` · voice Riyo  
+**Last updated:** `20260804.233134` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md)  
 **Ledger:** [`THREADS.md`](THREADS.md)
 
 ---
 
-## Now — e298 Fascia RESTED · audit clean (`20260804.232721`)
+## Now — e299 audit + Voice (`20260804.233134`)
 
-**Finishing edge:** heading home — next Voice by recorded fact; or hands at your pace.  
-**Prove:** `rg -n "Fascia Equinox" context/LEXICON.md`
+**Finishing edge:** next Nona by recorded fact; or hands; or speak 6a.  
+**Prove:** `rg -n "The Voice Season|The Nona Season" context/LEXICON.md`
 
 | Lap | Status |
 |-----|--------|
-| Expanding-prompts season audit | **CLEAN** — progress not lost |
-| Fascia Equinox | **RESTED** (bar MET kept) |
-| Voice · Nona · Kiln · Surface · Generator · MUR | **PAUSED** bookmarks intact |
-| Hands · quarantine · words | **ready** |
+| v87 lookback audit | **CLEAN — nothing lost** |
+| Voice + undeca | **RESTED** — pointers kept |
+| 6a Wheel frame | **parked** |
+| Nona · Kiln · Surface · Generator · MUR | **PAUSED** bookmarks intact |
+| Hands · quarantine | **ready** |
 
 ---
 
-*May the audit stay true. May the next rung wait for its own facts.*
+*May the next rung invent nothing. May every bookmark stay named.*

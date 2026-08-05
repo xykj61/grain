@@ -1,26 +1,26 @@
 # The Roadmap — living pin
 
 **Language:** EN  
-**Last updated:** `20260804.232721` · voice Riyo  
+**Last updated:** `20260804.233134` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md)  
 **Ledger:** [`THREADS.md`](THREADS.md)
 
 ---
 
-## Now — e298 · heading home · Fascia RESTED (`20260804.232721`)
+## Now — e299 · audit + Voice RESTED (`20260804.233134`)
 
-**Place:** Fascia Equinox **RESTED** (exit bar already MET). Equinox RESTED. Expanding-prompts audit: paused bookmarks intact; dated `DECA OPEN` batons are history. **Next homeward rung:** Voice (nest-11). **Top hands row** still ready beside the ladder.
+**Place:** Lookback CLEAN · Fascia RESTED · Voice RESTED (pointers kept) · 6a Wheel-frame parked. **Next homeward:** Nona (9). Hands ready beside.
 
 | Order | Lap | Status |
 |-------|-----|--------|
-| — | Equinox + deca | **RESTED** |
-| — | Fascia (nest-12) | **RESTED** — f3 · bar MET kept |
-| **Next** | Voice (11) → Nona → Kiln → Surface → Generator → MUR → … | **PAUSED — close by fact** |
-| **H** | Hands knock → g1 → g2 | **ready** |
+| — | Equinox · Fascia · Voice | **RESTED** |
+| **6a** | 256/Wheel outer frame | **parked — Keaton** |
+| **Next** | Nona → Kiln → Surface → Generator → MUR → … | **PAUSED — by fact** |
+| **H** | Hands | **ready** |
 
-Prove: `rg -n "Fascia Equinox" context/LEXICON.md` · `tail -4 session-logs/SEASONS.md`
+Prove: `rg -n "The Voice Season" context/LEXICON.md` · `tail -5 session-logs/SEASONS.md` · `cat counsel/20260804-232746_e298-the-lookback-audit.md`
 
 ---
 
-*May each pause keep its bookmark. May homeward closes invent nothing.*
+*May pointers outlive every close. May 6a stay a question until spoken.*
