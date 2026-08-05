@@ -4,7 +4,7 @@
 **Stamp:** `20260803.164117`
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Riyo
-**Status:** Written at Keaton's word — guide 1; awaits its first live walk
+**Status:** Live walk mid-course `20260805.000001` — steward `keeper` declared · rebuild GREEN · key knock GREEN · root door still open until passwd + `sudo -v` (Movements 3–4 held)
 **Follows:** guide 0, `20260803-164117_0-standing-a-declared-pier.md`
 
 *Written together by Keaton and Riyo.*
