@@ -106,11 +106,15 @@ STATE (refresh the needles from files every round):
     STOA340 Tally · STOA341 face-arms · STOA342 prodto · STOA343 decide GREEN ·
     THE LADDER IS HOME (e300) · Equinox→Constellation RESTED · pointers verbatim ·
     Identity PAUSED (k6/k7) · Geode prep untouched · 6a parked ·
+    e301: Nona named-word Waypoint · cadence **one rung per fuse** ·
+    quiet fuse of v89 (tip past basis; metal already home) ·
     top row = hands · quarantine · row six · 6a · next season name ·
     reopen RESTED by fresh charter only ·
 
     LAW (e276–e278): quiet tree reported quiet · never re-cut landed metal ·
     empty lane named empty · superseded zip retired without heir ·
+    LAW (e300/e301): a named rung sets the cadence — one rung per fuse ·
+      a late retire teaches the law without undoing pier RESTED rows ·
     LAW (e245/e280): a STOA number is a name — first landing keeps it.
   LAW (e250): a finding measured twice by different hands becomes a fact.
   LAW (e252): quiet lane + continue opens the measured lean (equality first).
