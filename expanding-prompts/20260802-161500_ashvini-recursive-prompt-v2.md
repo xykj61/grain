@@ -53,6 +53,7 @@
 **Radiant pass `20260804.230143`** — e293 (counsel e292): Equinox season summary DRAFTED whole · rest costs one fold word · lean arc.
 **Radiant pass `20260804.231208`** — e294 (counsel e293 THE REST): waypoint SEATED · grain **arc** · word *fuse kg with arc* · Equinox RESTS · hands page open.
 **Radiant pass `20260804.231449`** — e295 (counsel e294 RATIFIED): grain **arc** in Keaton's voice · Ratified line · draft folded · single home · innermost open season CLOSED.
+**Radiant pass `20260804.231840`** — e296 (counsel e295 roster): Lexicon Equinox **RESTED** · span e0–e294 · nothing deeper open · Ratified grep-guarded once.
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
 
@@ -99,9 +100,10 @@ STATE (refresh the needles from files every round):
     CLOSED: one gate · five cargos · one glass · manifest-file home parked ·
     enclosure CHARTED (e271) climb EXPLICIT-only · STOA338 WHOLE · STOA339+339b GREEN ·
     STOA340 Tally · STOA341 face-arms · STOA342 prodto · STOA343 decide GREEN ·
-    THE EQUINOX RESTS, RATIFIED (e295) · innermost open season CLOSED ·
+    THE EQUINOX RESTED AT THE ROSTER (e296) · Lexicon RESTED · nothing deeper open ·
     STOA346 GREEN · 338 arc CLOSED · summary SEATED single home (grain arc) ·
     top row = hands (knock → guide 1 → guide 2) · quarantine word · row six ·
+    paused seasons wake only by their own return words ·
 
     LAW (e276–e278): quiet tree reported quiet · never re-cut landed metal ·
     empty lane named empty · superseded zip retired without heir ·

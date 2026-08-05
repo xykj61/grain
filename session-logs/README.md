@@ -1,3 +1,4 @@
+| `20260804.231840` | [`20260804-231840_e296-equinox-roster-rested.bron`](20260804-231840_e296-equinox-roster-rested.bron) | e296 Equinox RESTED at Lexicon roster · nothing deeper open |
 | `20260804.231449` | [`20260804-231449_e295-equinox-rest-ratified-closed.bron`](20260804-231449_e295-equinox-rest-ratified-closed.bron) | e295 Equinox RESTS ratified · innermost season CLOSED |
 | `20260804.231208` | [`20260804-231208_e294-the-equinox-rests-arc.bron`](20260804-231208_e294-the-equinox-rests-arc.bron) | e294 Equinox RESTS · grain arc · waypoint seated |
 | `20260804.230543` | [`20260804-230543_e293-season-summary-drafted.bron`](20260804-230543_e293-season-summary-drafted.bron) | e293 Equinox summary drafted · fold word lean arc |
