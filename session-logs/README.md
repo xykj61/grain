@@ -1,3 +1,4 @@
+| `20260804.232721` | [`20260804-232721_e298-heading-home-fascia-audit.bron`](20260804-232721_e298-heading-home-fascia-audit.bron) | e298 Fascia RESTED · season-progress audit clean |
 | `20260804.232230` | [`20260804-232230_e297-quiet-deca-nest-rested.bron`](20260804-232230_e297-quiet-deca-nest-rested.bron) | e297 quiet · deca nest RESTED · no OPEN seasons |
 | `20260804.231840` | [`20260804-231840_e296-equinox-roster-rested.bron`](20260804-231840_e296-equinox-roster-rested.bron) | e296 Equinox RESTED at Lexicon roster · nothing deeper open |
 | `20260804.231449` | [`20260804-231449_e295-equinox-rest-ratified-closed.bron`](20260804-231449_e295-equinox-rest-ratified-closed.bron) | e295 Equinox RESTS ratified · innermost season CLOSED |

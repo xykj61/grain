@@ -1,34 +1,33 @@
 # Threads — the one living ledger of everything open
 
 **Language:** EN  
-**Last refreshed:** `20260804.232230` · voice Riyo · **quiet fuse** · **deca nest RESTED** · Lexicon bold-OPEN seasons: **none** · ladder PAUSED around · open: hands · quarantine · row-6 · return words · next name  
+**Last refreshed:** `20260804.232721` · voice Riyo · **heading home** · Fascia Equinox **RESTED** · Equinox RESTED · paused progress audited intact · next rung: Voice (11)  
 **Companion (orient pin):** [`../active-designing/20260804-005634_the-close-down-map.md`](../active-designing/20260804-005634_the-close-down-map.md)  
 **Season summary:** [`../counsel/20260804-230650_the-equinox-season-summary.md`](../counsel/20260804-230650_the-equinox-season-summary.md)  
-**Roster seat:** [`../counsel/20260804-231531_e295-the-roster-close.md`](../counsel/20260804-231531_e295-the-roster-close.md)  
-**Quiet+deca seat:** [`../counsel/20260804-232230_e296-quiet-and-deca-nest-rested.md`](../counsel/20260804-232230_e296-quiet-and-deca-nest-rested.md)  
-**Law:** refreshed at every counsel close · Recommend = top finishing row · a season closes at its Lexicon row · a nest label rests with its season · restorations grep-guarded once · paused seasons wake only by their own return words · quiet tree → say so · no claim of completion survives unverified
+**Fascia seat:** [`../counsel/20260804-232258_e297-heading-home-fascia-rests.md`](../counsel/20260804-232258_e297-heading-home-fascia-rests.md)  
+**Law:** refreshed at every counsel close · Recommend = top finishing row · heading home closes paused rungs deepest-outward by recorded fact only · reopen by fresh charter only · paused progress bookmarks must survive every close · dated prompts are history · quiet tree → say so
 
 ---
 
 ## How the names nest
 
-The e-series stands at **e297** on the pier (counsel quiet e296; pier e296 already named roster close — floor wins). **STOA346**. Equinox season + **deca** nest **RESTED**. Voice/Fascia PAUSED beneath · Nona PAUSED above · **no OPEN season rows**.
+Pier **e298** (counsel stamped fascia e297; pier e297 already named quiet+deca — floor wins). Homeward order remaining: **Voice (11) · Nona (9) · Kiln (8) · Surface (7) · Generator (6) · MUR (3) · Constellation/Inner Scope**.
 
 ## Open threads — the finishing walk
 
 | # | Door | Thread | State | Owner |
 |---|------|--------|-------|-------|
-| 1 | — | Resin v85 (quiet · already home) | **LANDED / QUIET** | — |
-| 2 | 3–4 | Hands: first `ssh pier` knock → guide 1 → guide 2 | ready, your pace | Keaton |
-| 3 | 5 | Map refresh after hands | after 2 | grant |
-| 5 | 8 | **Quarantine** — evidence ASHORE | SAFE · word open | Keaton |
-| 6 | 6–7 · 10–12 | Word-gated + paused-season **return words** | surfaced, unpressed | Keaton (+ counsel) |
-| 7 | 9 | Housekeeping: old root zips · `quin-workshop/` · nib lag | recurring | both |
+| 1 | — | Resin v86 (Fascia rests) | **LANDED** | — |
+| 2 | — | Homeward ladder — next: Voice nest-11 | ready by recorded fact | counsel+bench |
+| 3 | 3–4 | Hands: knock → guide 1 → guide 2 | ready, your pace | Keaton |
+| 5 | 8 | **Quarantine** ASHORE | SAFE · word open | Keaton |
+| 6 | 6–7 · 10–12 | Word-gated · return words · next name | surfaced, unpressed | Keaton (+ counsel) |
+| 7 | 9 | Housekeeping | recurring | both |
 
 ## Closed and safe
 
-Equality 8/8 · Nock RESTS · STOA338–**346** GREEN · Equinox **RESTED** (season + deca nest) · Waypoint + Ratified once · summary single home · **no Lexicon bold-OPEN seasons** · paused ladder around · guides 0–2 HOME.
+Equinox RESTED · **Fascia RESTED** (f3 · bar MET · handback kept) · Waypoint×2 · Ratified×1 · STOA338–346 GREEN · equality 8/8 · Nock RESTS · paused bookmarks audited intact · guides 0–2 HOME.
 
 ---
 
-*May quiet be named when it is true. May the next open season be one you name, or a pause you return.*
+*May nothing finished be forgotten when a rung rests. May the next close read only what the season already wrote.*

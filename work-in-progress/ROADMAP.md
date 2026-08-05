@@ -1,27 +1,26 @@
 # The Roadmap — living pin
 
 **Language:** EN  
-**Last updated:** `20260804.232230` · voice Riyo  
+**Last updated:** `20260804.232721` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md)  
-**Ledger:** [`THREADS.md`](THREADS.md)  
-**Season summary:** [`../counsel/20260804-230650_the-equinox-season-summary.md`](../counsel/20260804-230650_the-equinox-season-summary.md)
+**Ledger:** [`THREADS.md`](THREADS.md)
 
 ---
 
-## Now — e297 · quiet · deca nest RESTED (`20260804.232230`)
+## Now — e298 · heading home · Fascia RESTED (`20260804.232721`)
 
-**Place:** v85 quiet (roster already home) · **deca** nest label **RESTED** with Equinox · Lexicon bold-OPEN seasons: **none**. **Top row:** hands.
+**Place:** Fascia Equinox **RESTED** (exit bar already MET). Equinox RESTED. Expanding-prompts audit: paused bookmarks intact; dated `DECA OPEN` batons are history. **Next homeward rung:** Voice (nest-11). **Top hands row** still ready beside the ladder.
 
 | Order | Lap | Status |
 |-------|-----|--------|
-| — | Equinox season + deca nest | **RESTED** |
-| — | Voice / Fascia / Nona / … | **PAUSED** (return words) |
-| **H** | Knock → guide 1 → guide 2 | **ready — hands** |
-| **Q / W** | Quarantine · row six · next name | **SAFE / surfaced** |
+| — | Equinox + deca | **RESTED** |
+| — | Fascia (nest-12) | **RESTED** — f3 · bar MET kept |
+| **Next** | Voice (11) → Nona → Kiln → Surface → Generator → MUR → … | **PAUSED — close by fact** |
+| **H** | Hands knock → g1 → g2 | **ready** |
 
-Prove: `rg -n '^\| \*\*deca\*\*|The Equinox Season' context/LEXICON.md` · `rg -n '\*\*OPEN\*\*' context/LEXICON.md || echo none`
+Prove: `rg -n "Fascia Equinox" context/LEXICON.md` · `tail -4 session-logs/SEASONS.md`
 
 ---
 
-*May the nest and the season agree. May the next open door be named by you.*
+*May each pause keep its bookmark. May homeward closes invent nothing.*
