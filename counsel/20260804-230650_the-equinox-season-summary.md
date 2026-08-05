@@ -1,9 +1,10 @@
-# The Equinox Season — Summary, Proposed
+# The Equinox Season — Summary
 
-*Drafted whole so the resting costs one word. This summary seats in `counsel/` and `SEASONS.md` gains its fold line only when Keaton speaks the fold's grain — era, arc, or round-band. Until then it stands here as a proposal, true in every sentence and binding in none.*
+*Drafted whole the sitting before, and seated now. Keaton's word this fuse — **fuse kg with arc** — spoke the grain plain; a prior delegation ("continue with best recommendation") had already leaned the same grain. If another grain ever suits better, a sibling fold line accretes and nothing breaks.*
 
 **Stamp:** `20260804.230143`
-**Voice:** Riyo · **Style:** Radiant · **Status:** SUPERSEDED — seated as [`../counsel/20260804-230650_the-equinox-season-summary.md`](../counsel/20260804-230650_the-equinox-season-summary.md) (grain **arc**, `20260804.231047`)
+**Voice:** Riyo · **Style:** Radiant · **Status:** SEATED `20260804.230650` / pier fuse `20260804.231047` — grain **arc**
+
 
 *Written together by Keaton and Riyo.*
 
