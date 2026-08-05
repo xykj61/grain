@@ -1,26 +1,25 @@
 # Tasks — living pin
 
 **Language:** EN  
-**Last updated:** `20260804.233134` · voice Riyo  
+**Last updated:** `20260804.234505` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md)  
 **Ledger:** [`THREADS.md`](THREADS.md)
 
 ---
 
-## Now — e299 audit + Voice (`20260804.233134`)
+## Now — e300 ladder home (`20260804.234505`)
 
-**Finishing edge:** next Nona by recorded fact; or hands; or speak 6a.  
-**Prove:** `rg -n "The Voice Season|The Nona Season" context/LEXICON.md`
+**Finishing edge:** no deeper open season. Next = hands, 6a, Identity word, or a new season’s name.  
+**Prove:** `rg -n "\*\*PAUSED\*\*" context/LEXICON.md | rg -i 'Season' || echo 'season PAUSED lines may still name facts beside RESTED'`
 
 | Lap | Status |
 |-----|--------|
-| v87 lookback audit | **CLEAN — nothing lost** |
-| Voice + undeca | **RESTED** — pointers kept |
-| 6a Wheel frame | **parked** |
-| Nona · Kiln · Surface · Generator · MUR | **PAUSED** bookmarks intact |
+| Nona → Constellation sweep | **RESTED** — pointers verbatim |
+| Keeh one-look | **CLOSED already** · k6/k7 = Identity |
+| 6a · Geode · Identity | **parked / untouched / PAUSED** |
 | Hands · quarantine | **ready** |
 
 ---
 
-*May the next rung invent nothing. May every bookmark stay named.*
+*May rest be the ground of the next name.*

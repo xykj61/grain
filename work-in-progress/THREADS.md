@@ -1,35 +1,35 @@
 # Threads — the one living ledger of everything open
 
 **Language:** EN  
-**Last refreshed:** `20260804.233134` · voice Riyo · **AUDIT CLEAN** · Fascia + Voice **RESTED** · 6a Wheel-frame parked · next Nona · pointers intact  
+**Last refreshed:** `20260804.234505` · voice Riyo · **THE LADDER IS HOME** — Nona→Constellation RESTED append-only · pointers verbatim · 6a parked · Keeh verify done (CLOSED; k6/k7 = Identity)  
 **Companion (orient pin):** [`../active-designing/20260804-005634_the-close-down-map.md`](../active-designing/20260804-005634_the-close-down-map.md)  
 **Season summary:** [`../counsel/20260804-230650_the-equinox-season-summary.md`](../counsel/20260804-230650_the-equinox-season-summary.md)  
+**Ladder seat:** [`../counsel/20260804-233206_e299-the-ladder-rests.md`](../counsel/20260804-233206_e299-the-ladder-rests.md)  
 **Audit seat:** [`../counsel/20260804-232746_e298-the-lookback-audit.md`](../counsel/20260804-232746_e298-the-lookback-audit.md)  
-**Voice seat:** [`../counsel/20260804-233134_e299-heading-home-voice-rests.md`](../counsel/20260804-233134_e299-heading-home-voice-rests.md)  
-**Law:** heading home closes paused rungs deepest-outward by recorded fact · reopen RESTED by fresh charter only · paused bookmarks must survive every close · dated prompts are history · true questions park rather than invent · pier floor wins e-collisions
+**Law:** closes are append-only — PAUSED facts stay verbatim beside RESTED · anything the sweep cannot verify by row grammar is flagged by name · Geode prep and 6a stay untouched · pier floor wins e-collisions
 
 ---
 
 ## How the names nest
 
-Pier **e299** — audit + Voice rung (counsel audit e298; Fascia was pier e298). **STOA346**. Homeward remaining: **Nona (9) · Kiln (8) · Surface (7) · Generator (6) · MUR (3) · Constellation/Inner Scope**.
+Pier **e300** (counsel sweep e299; pier e299 already Voice). Nested ladder **home**. Open work is hands · words · next name — not a deeper season.
 
 ## Open threads — the finishing walk
 
 | # | Door | Thread | State | Owner |
 |---|------|--------|-------|-------|
-| 1 | — | Resin v87 (Fascia re-cut + lookback audit) | **LANDED** | — |
-| 2 | — | Homeward ladder — next: **Nona** nest-9 | ready by recorded fact | counsel+bench |
-| 3 | 3–4 | Hands: knock → guide 1 → guide 2 | ready, your pace | Keaton |
+| 1 | — | Resin v88 (audit re-cut + homeward sweep) | **LANDED** | — |
+| 2 | 3–4 | Hands: knock → guide 1 → guide 2 | ready, your pace | Keaton |
 | 5 | 8 | **Quarantine** ASHORE | SAFE · word open | Keaton |
 | 6 | 6–7 · 10–12 | Word-gated · return words · next name | surfaced, unpressed | Keaton (+ counsel) |
-| 6a | — | **256/Wheel outer frame** — run-sheet + template exist, no roster row; does the rested Equinox complete it? | parked question | Keaton |
+| 6a | — | **256/Wheel outer frame** — does rested Equinox complete it? | parked | Keaton |
+| 6b | — | **Identity Remake** still PAUSED (k6/k7) — not Keeh; reopen by return/fresh charter | flagged · unpressed | Keaton |
 | 7 | 9 | Housekeeping | recurring | both |
 
 ## Closed and safe
 
-Equinox RESTED · Fascia RESTED (f3 · bar MET) · **Voice RESTED** (J4 · doors 8–15 · almanac 16/16 · handback) · Waypoint×3 · Ratified×1 · lookback audit CLEAN · nothing lost · guides 0–2 HOME · STOA338–346 GREEN.
+Equinox · Fascia · Voice · **Nona · Kiln · Surface · Generator · MUR · Inner Scope · Constellation** RESTED (pointers inside rows) · Keeh quint already CLOSED · Geode prep untouched · Waypoints Equinox+Fascia+Voice+sweep · Ratified×1 · STOA338–346 GREEN · guides 0–2 HOME · **THE LADDER IS HOME**.
 
 ---
 
-*May the archive prove the roster. May 6a wait for your word. May Nona close only by its own facts.*
+*May home hold every bookmark. May 6a and Identity wait for your word. May the next season begin from rest.*

@@ -1,26 +1,28 @@
 # The Roadmap — living pin
 
 **Language:** EN  
-**Last updated:** `20260804.233134` · voice Riyo  
+**Last updated:** `20260804.234505` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md)  
 **Ledger:** [`THREADS.md`](THREADS.md)
 
 ---
 
-## Now — e299 · audit + Voice RESTED (`20260804.233134`)
+## Now — e300 · the ladder is home (`20260804.234505`)
 
-**Place:** Lookback CLEAN · Fascia RESTED · Voice RESTED (pointers kept) · 6a Wheel-frame parked. **Next homeward:** Nona (9). Hands ready beside.
+**Place:** Nested seasons RESTED append-only (Nona named first in this fuse’s remaining sweep). **Open:** hands · quarantine · row six · **6a** · Identity (k6/k7) if you wish · next season’s name.
 
 | Order | Lap | Status |
 |-------|-----|--------|
-| — | Equinox · Fascia · Voice | **RESTED** |
-| **6a** | 256/Wheel outer frame | **parked — Keaton** |
-| **Next** | Nona → Kiln → Surface → Generator → MUR → … | **PAUSED — by fact** |
+| — | Equinox → Constellation nested ladder | **HOME — RESTED** |
+| — | Keeh quint | **CLOSED** (already) |
+| — | Identity Remake k6/k7 | **PAUSED** — flagged, not swept |
+| — | Geode prep | **untouched** |
+| **6a** | 256/Wheel frame | **parked — Keaton** |
 | **H** | Hands | **ready** |
 
-Prove: `rg -n "The Voice Season" context/LEXICON.md` · `tail -5 session-logs/SEASONS.md` · `cat counsel/20260804-232746_e298-the-lookback-audit.md`
+Prove: `rg -n "The Nona Season" context/LEXICON.md` · `tail -5 session-logs/SEASONS.md` · `rg -c '\*\*RESTED\*\*' context/LEXICON.md`
 
 ---
 
-*May pointers outlive every close. May 6a stay a question until spoken.*
+*May the ladder stay home. May every next door be a word you choose.*
