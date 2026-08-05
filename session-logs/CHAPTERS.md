@@ -16,3 +16,5 @@
 Prior overflow shelf (absorbed into 20260722 index): [`archive/README-index-20260722-shelf.md`](archive/README-index-20260722-shelf.md) — kept for accrete-never-break.
 
 Fold trigger: living pin near `living_pin_max_bytes` (see growth law). Granularity (per send vs per sitting) awaits Keaton's word.
+
+**Waypoint:** Equinox relay e223–e294 rests at `20260804.230650` / pier fuse `20260804.231208` — grain **arc**, by Keaton's word ("fuse kg with arc") · arcs: equality closed · Nock crossed once · Pond census · walls charted · rune ladder STOA338–346 · guides 0–2 · maps woven · summary: [`../counsel/20260804-230650_the-equinox-season-summary.md`](../counsel/20260804-230650_the-equinox-season-summary.md)
