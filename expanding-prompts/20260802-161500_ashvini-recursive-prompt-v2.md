@@ -109,14 +109,17 @@ STATE (refresh the needles from files every round):
     THE LADDER IS HOME (e300) · Equinox→Constellation RESTED · pointers verbatim ·
     Identity PAUSED (k6/k7) · Geode prep untouched · 6a parked ·
     e301: Nona named-word Waypoint · cadence **one rung per fuse** ·
-    quiet fuse of v89 (tip past basis; metal already home) ·
-    top row = hands · quarantine · row six · 6a · next season name ·
+    e302: v90 walk refined · 6b word-only owned · first knock GREEN ·
+      steward keeper key-door GREEN · guide 1 waits on passwd before root close ·
+    top row = passwd/sudo-v · then close root · quarantine · row six · 6a · 6b · next name ·
     reopen RESTED by fresh charter only ·
 
     LAW (e276–e278): quiet tree reported quiet · never re-cut landed metal ·
     empty lane named empty · superseded zip retired without heir ·
     LAW (e300/e301): a named rung sets the cadence — one rung per fuse ·
       a late retire teaches the law without undoing pier RESTED rows ·
+    LAW (e301/e302): name/keys/history seasons are word-only — never swept ·
+      a finer grammar's find refines the claim on the record ·
     LAW (e245/e280): a STOA number is a name — first landing keeps it.
   LAW (e250): a finding measured twice by different hands becomes a fact.
   LAW (e252): quiet lane + continue opens the measured lean (equality first).
