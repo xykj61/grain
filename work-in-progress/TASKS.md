@@ -1,25 +1,25 @@
 # Tasks — living pin
 
 **Language:** EN  
-**Last updated:** `20260804.231840` · voice Riyo  
+**Last updated:** `20260804.232230` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md)  
 **Ledger:** [`THREADS.md`](THREADS.md)
 
 ---
 
-## Now — e296 Equinox RESTED at the roster (`20260804.231840`)
+## Now — e297 quiet · deca RESTED (`20260804.232230`)
 
-**Finishing edge:** Equinox **RESTED** in the Lexicon roster. Next = hands, quarantine word, a paused season's return word, or the next season's name.  
-**Prove:** `rg -n "The Equinox Season" context/LEXICON.md`
+**Finishing edge:** no OPEN season rows. Next = hands, quarantine, a paused return word, or a new season's name.  
+**Prove:** `rg '\*\*OPEN\*\*' context/LEXICON.md || echo none`
 
 | Lap | Status |
 |-----|--------|
-| Equinox waypoint · ratification · single home | **DONE** |
-| Lexicon Equinox row | **RESTED** |
-| Nothing deeper open | **TRUE** |
-| Hands · quarantine · gated / return words | **ready / SAFE / surfaced** |
+| v85 quiet fuse | **QUIET — already home** |
+| Equinox + deca nest | **RESTED** |
+| Lexicon bold-OPEN seasons | **none** |
+| Hands · quarantine · return / next name | **ready** |
 
 ---
 
-*May the roster and the tree agree. May every open door wait at your pace.*
+*May quiet stay quiet. May every next door wait at your pace.*
