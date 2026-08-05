@@ -1,25 +1,25 @@
 # Tasks — living pin
 
 **Language:** EN  
-**Last updated:** `20260804.232230` · voice Riyo  
+**Last updated:** `20260804.232721` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md)  
 **Ledger:** [`THREADS.md`](THREADS.md)
 
 ---
 
-## Now — e297 quiet · deca RESTED (`20260804.232230`)
+## Now — e298 Fascia RESTED · audit clean (`20260804.232721`)
 
-**Finishing edge:** no OPEN season rows. Next = hands, quarantine, a paused return word, or a new season's name.  
-**Prove:** `rg '\*\*OPEN\*\*' context/LEXICON.md || echo none`
+**Finishing edge:** heading home — next Voice by recorded fact; or hands at your pace.  
+**Prove:** `rg -n "Fascia Equinox" context/LEXICON.md`
 
 | Lap | Status |
 |-----|--------|
-| v85 quiet fuse | **QUIET — already home** |
-| Equinox + deca nest | **RESTED** |
-| Lexicon bold-OPEN seasons | **none** |
-| Hands · quarantine · return / next name | **ready** |
+| Expanding-prompts season audit | **CLEAN** — progress not lost |
+| Fascia Equinox | **RESTED** (bar MET kept) |
+| Voice · Nona · Kiln · Surface · Generator · MUR | **PAUSED** bookmarks intact |
+| Hands · quarantine · words | **ready** |
 
 ---
 
-*May quiet stay quiet. May every next door wait at your pace.*
+*May the audit stay true. May the next rung wait for its own facts.*

@@ -55,6 +55,7 @@
 **Radiant pass `20260804.231449`** — e295 (counsel e294 RATIFIED): grain **arc** in Keaton's voice · Ratified line · draft folded · single home · innermost open season CLOSED.
 **Radiant pass `20260804.231840`** — e296 (counsel e295 roster): Lexicon Equinox **RESTED** · span e0–e294 · nothing deeper open · Ratified grep-guarded once.
 **Radiant pass `20260804.232230`** — e297 (counsel e296 quiet): v85 already home · **deca** nest RESTED · Lexicon bold-OPEN seasons: none.
+**Radiant pass `20260804.232721`** — e298 (counsel e297 fascia): Fascia Equinox **RESTED** · exit bar MET kept · expanding-prompts audit — paused progress intact · next Voice.
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
 
@@ -101,10 +102,11 @@ STATE (refresh the needles from files every round):
     CLOSED: one gate · five cargos · one glass · manifest-file home parked ·
     enclosure CHARTED (e271) climb EXPLICIT-only · STOA338 WHOLE · STOA339+339b GREEN ·
     STOA340 Tally · STOA341 face-arms · STOA342 prodto · STOA343 decide GREEN ·
-    EQUINOX + DECA RESTED (e297) · Lexicon bold-OPEN seasons: none ·
+    EQUINOX + DECA RESTED · FASCIA RESTED (e298) · heading home · next Voice (11) ·
     STOA346 GREEN · 338 arc CLOSED · summary SEATED single home (grain arc) ·
-    top row = hands (knock → guide 1 → guide 2) · quarantine word · row six ·
-    paused seasons wake only by their own return words ·
+    paused bookmarks intact (Voice J4 · Nona n3/n4 · Surface p58/p59 · …) ·
+    top row = homeward Voice by fact · or hands (knock → guide 1 → guide 2) ·
+    paused seasons wake only by their own return words · reopen RESTED by fresh charter ·
 
     LAW (e276–e278): quiet tree reported quiet · never re-cut landed metal ·
     empty lane named empty · superseded zip retired without heir ·
@@ -151,8 +153,8 @@ STATE (refresh the needles from files every round):
 
 VANE ROADMAP (proposed · active-designing/20260802-161500_the-vane-roadmap-…):
   Vane 1 Glow Tend: a2 GREEN · equality CLOSED 8/8 · STOA339+339b GREEN ·
-    STOA338 WHOLE · STOA340–346 GREEN · 338 arc CLOSED · waypoint PROPOSED ·
-    nixos-guide 0–2 home · Nock seam RESTS.
+    STOA338 WHOLE · STOA340–346 GREEN · 338 arc CLOSED · Equinox waypoint SEATED ·
+    Fascia RESTED · nixos-guide 0–2 home · Nock seam RESTS.
   Vane 2 Comlink: IPv6 dual-stack + roaming state-sync shell (research+silo landed;
     R1 WHOLE; R2–R4 build GATED). Study: external-research/…ssh-mosh-ipv6…
   Waiting vanes: living-pin fold · Amphora Class W/stdout · shed/Class O · dual-pier auth ·
