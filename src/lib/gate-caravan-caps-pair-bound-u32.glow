@@ -1,0 +1,11 @@
+::  name       caravan caps pair-bound gate
+::  shape      [count=@u32 cap=@u32] -> lawful - int (@u32)
+::  invariant  answers 1 while count stays at or under cap; answers 0 when count exceeds cap
+::  example    3 8 -> 1 · 9 8 -> 0 · 8 8 -> 1
+::  readers    Caravan · Glow Tend · Ashvini · STOA346
+::  nib        equinox-stoa346-caravan-pair-bound-v0
+::
+::  STOA346 — 2m mirror one. The a1 wall memorized caps-per-dependent; this desk
+::  asks the same question with two runtime faces, Tally's pattern mirrored true.
+|=  [count=@u32 cap=@u32]
+?:  (gth count cap)  0  1

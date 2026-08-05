@@ -1,0 +1,12 @@
+::  name       mantra gen-floor pair gate
+::  shape      [floor=@u32 gen=@u32] -> lawful - int (@u32)
+::  invariant  answers 1 while gen stays at or above floor; answers 0 when gen falls below
+::  example    3 5 -> 1 · 3 2 -> 0 · 3 3 -> 1
+::  readers    Mantra · Glow Tend · Ashvini · STOA346
+::  nib        equinox-stoa346-mantra-pair-floor-v1
+::
+::  STOA346 — 2m mirror two. The a1 wall memorized the floor; here floor and
+::  gen meet at runtime. The cond speaks in header order by the seated
+::  grammar's law, so the floor stands first at the door.
+|=  [floor=@u32 gen=@u32]
+?:  (gth floor gen)  0  1

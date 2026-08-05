@@ -1,7 +1,7 @@
 # The Roadmap — living pin
 
 **Language:** EN  
-**Last updated:** `20260804.011839` · voice Riyo  
+**Last updated:** `20260804.230122` · voice Riyo  
 **Living pin bound:** `living_pin_max_bytes = 24576`  
 **Operator card:** [`REMEMBER.md`](REMEMBER.md) · prefer **git nib** over tip  
 **Orient pin:** [`../active-designing/20260804-005634_the-close-down-map.md`](../active-designing/20260804-005634_the-close-down-map.md)  
@@ -9,21 +9,21 @@
 
 ---
 
-## Now — e290 · STOA345 GREEN · 2m mirrors next (`20260804.011839`)
+## Now — e292 · STOA346 GREEN · waypoint PROPOSED (`20260804.230122`)
 
-**Place:** Equinox OPEN · pick walked · Caravan kin through the widened import door. **Top THREADS row:** 2m mirrors → season waypoint.
+**Place:** Equinox OPEN · **STOA338 application arc CLOSED** (Tally · Caravan · Mantra). **Top THREADS row:** the fold word (era · arc · round-band).
 
 | Order | Lap | Status |
 |-------|-----|--------|
-| — | STOA338–344 · a1 · a2 · eq · Nock | **GREEN / CLOSED / RESTS** |
-| **2t** | STOA345 `caps_lawful` · `children_lawful` · `vane_decide_import` · dir alias | **GREEN** |
-| **2u** | **2m mirrors** — Caravan · Mantra pair-bound | **NEXT** |
-| **2v** | Season waypoint proposal | **queued** |
+| — | STOA338–345 · a1 · a2 · eq · Nock | **GREEN / CLOSED / RESTS** |
+| **2u** | STOA346 2m mirrors — caravan caps · mantra floor-first | **GREEN** |
+| **2v** | Equinox waypoint — season summary · SEASONS fold · THREADS #4 retire | **PROPOSED — fold word** |
 | **H** | Knock → guide 1 → guide 2 | **ready — hands** |
 | **Q** | Quarantine ashore | **SAFE · word open** |
 
-Prove: `rishi/bin/rishi run tools/glow_compose_tend_unary_witness.rish`
+Prove: `rishi/bin/rishi run tools/glow_vane_pair_mirrors_witness.rish`  
+Waypoint: [`active-designing/20260804-225053_the-equinox-waypoint-proposal.md`](../active-designing/20260804-225053_the-equinox-waypoint-proposal.md)
 
 ---
 
-*May the mirrors close the application arc. May the waypoint let the season feel finished.*
+*May one fold word rest the season. May silence keep everything findable and green.*
