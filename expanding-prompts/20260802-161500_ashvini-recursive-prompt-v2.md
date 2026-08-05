@@ -57,6 +57,7 @@
 **Radiant pass `20260804.232230`** — e297 (counsel e296 quiet): v85 already home · **deca** nest RESTED · Lexicon bold-OPEN seasons: none.
 **Radiant pass `20260804.232721`** — e298 (counsel e297 fascia): Fascia Equinox **RESTED** · exit bar MET kept · expanding-prompts audit — paused progress intact · next Voice.
 **Radiant pass `20260804.233134`** — e299: lookback audit CLEAN · Voice + undeca **RESTED** (J4 pointers kept) · 6a Wheel-frame parked · next Nona.
+**Radiant pass `20260804.234505`** — e300: homeward sweep · Nona→Constellation RESTED append-only · ladder home · Keeh verify CLOSED / Identity PAUSED.
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
 
@@ -103,11 +104,10 @@ STATE (refresh the needles from files every round):
     CLOSED: one gate · five cargos · one glass · manifest-file home parked ·
     enclosure CHARTED (e271) climb EXPLICIT-only · STOA338 WHOLE · STOA339+339b GREEN ·
     STOA340 Tally · STOA341 face-arms · STOA342 prodto · STOA343 decide GREEN ·
-    EQUINOX · FASCIA · VOICE RESTED (e299) · audit CLEAN · next Nona (9) ·
-    STOA346 GREEN · 338 arc CLOSED · summary SEATED single home (grain arc) ·
-    paused bookmarks intact (Nona n3/n4 · Surface p58/p59 · Generator s8/s9 · …) ·
-    6a Wheel-frame parked · top row = homeward Nona by fact · or hands ·
-    paused seasons wake only by their own return words · reopen RESTED by fresh charter ·
+    THE LADDER IS HOME (e300) · Equinox→Constellation RESTED · pointers verbatim ·
+    Identity PAUSED (k6/k7) · Geode prep untouched · 6a parked ·
+    top row = hands · quarantine · row six · 6a · next season name ·
+    reopen RESTED by fresh charter only ·
 
     LAW (e276–e278): quiet tree reported quiet · never re-cut landed metal ·
     empty lane named empty · superseded zip retired without heir ·
