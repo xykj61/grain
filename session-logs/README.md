@@ -1,3 +1,4 @@
+| `20260804.230543` | [`20260804-230543_e293-season-summary-drafted.bron`](20260804-230543_e293-season-summary-drafted.bron) | e293 Equinox summary drafted · fold word lean arc |
 | `20260804.230122` | [`20260804-230122_e292-stoa346-mirrors-waypoint.bron`](20260804-230122_e292-stoa346-mirrors-waypoint.bron) | e292 STOA346 mirrors · 338 arc CLOSED · waypoint proposed |
 | `20260804.225021` | [`20260804-225021_e291-v79-quiet-already-home.bron`](20260804-225021_e291-v79-quiet-already-home.bron) | e291 quiet · v79 re-drop already home · 2m next |
 | `20260804.011839` | [`20260804-011839_e290-stoa345-caravan-kin-fuse.bron`](20260804-011839_e290-stoa345-caravan-kin-fuse.bron) | e290 STOA345 Caravan kin · pick walked · 2m next |
