@@ -3,14 +3,16 @@
 *Keaton asked for directing: the e-series felt lost against open waymarks, seasons, and hands. This map seats one reading of the living tree so finishing beats inventing. The e-numbers are nested Equinox counsel laps under Ashvini (nest-10) — not a second season and not a waymark. STOA numbers are the language door's landing names; they stick. Hands threads and paused seasons sit beside the metal, never under it.*
 
 **Stamp:** `20260804.005634` · **Voice:** Riyo · **Status:** SEATED — **orient pin** (four layers A–D · twelve doors)  
+**Last refreshed:** `20260804.231449` — Equinox **RESTS / CLOSED** (grain **arc**, ratified) · top door = hands  
 **Ledger that walks it:** [`work-in-progress/THREADS.md`](../work-in-progress/THREADS.md) (e287 seated · e288 woven) — refreshed every close; Recommend = its top row  
-**Tip at seat:** prefer git nib · e288 two-maps-one-system
+**Season summary:** [`../counsel/20260804-230650_the-equinox-season-summary.md`](../counsel/20260804-230650_the-equinox-season-summary.md)  
+**Tip at seat:** prefer git nib · e295 rest ratified
 
 *Written together by Keaton and Riyo.*
 
 ## One sentence of place
 
-**Equinox Season (deca) is OPEN.** Inside it, Ashvini recursive prompt v2 is the counsel+bench nest. Inside that nest, Glow Tend compose (V2 under the rune grant) is the finishing edge. **e286 = STOA344** — the first vane wall through the O3 import door (`gardens_lawful`). It does not close Equinox, consume seat 128, authorize MUR gas, or retire paused seasons.
+**Equinox Season (deca) RESTS — CLOSED on the record** (`20260804.231449`, grain **arc**). Ashvini recursive prompt v2 remains the counsel+bench nest for whatever season comes next. Glow Tend compose (V2 under the rune grant) and STOA338–346 GREEN stand as finished metal under the rest. Seat 128 · MUR gas · geode · paused-season returns stay word-gated.
 
 ## Four layers (finish in this order of attention)
 
@@ -44,7 +46,7 @@
 | **STOA###** | Landed language rung (keeps its number on first GREEN) |
 | **V2 / V3** | Glow Tend compose families — V2 = unary/decide/import under grant; V3 = string/record, word-gated |
 | **Waymark** | HAWM · TUBE · ZETA · JABS · LULU · STOA · SETU — product/language ladders; most closed or horizon |
-| **Season** | Equinox OPEN; Voice/Fascia/Surface/… PAUSED — handbacks live until consumed |
+| **Season** | Equinox RESTS/CLOSED; Voice/Fascia/Surface/… PAUSED — handbacks live until consumed |
 
 ## Held so nothing critical drops
 
