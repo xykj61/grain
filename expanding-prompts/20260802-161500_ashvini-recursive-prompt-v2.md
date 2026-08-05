@@ -48,6 +48,7 @@
 **Radiant pass `20260804.010314`** — e288: two maps one system — close-down map leads as orient pin · THREADS walks it · the pick (H1 hands or caps_lawful) left to Keaton · no stone cut.
 **Radiant pass `20260804.010641`** — e289: evidence ASHORE at ~/grain-holds (sha3-verified) · tarball sunset from resin · pick still Keaton's · no stone cut.
 **Radiant pass `20260804.011026`** — e290: STOA345 GREEN — pick walked · caps_lawful · children_lawful · vane_decide_import · directory alias · 2m mirrors next.
+**Radiant pass `20260804.225021`** — e291: quiet fuse — v79 re-drop already home (e234) · unary warm · 2m mirrors still next.
 **Role:** the season's living compass — printed fresh each round as the baton's tail, pasted back atop the pier nib.
 **Companion:** `../active-designing/20260802-161500_the-vane-roadmap-and-the-recursive-prompt.md` (the roadmap this prompt carries).
 

@@ -1,7 +1,7 @@
 # Threads — the one living ledger of everything open
 
 **Language:** EN  
-**Last refreshed:** `20260804.011839` · voice Riyo · e290 — **the pick is MADE and walked** — kg chose the kin lap; STOA345 GREEN  
+**Last refreshed:** `20260804.225021` · voice Riyo · e291 quiet — v79 re-drop already home · e290 pick MADE · STOA345 GREEN · top row still 2m mirrors  
 **Companion (orient pin):** [`../active-designing/20260804-005634_the-close-down-map.md`](../active-designing/20260804-005634_the-close-down-map.md) — four layers A–D · twelve doors · paused seasons named  
 **Law:** refreshed at every counsel close, beside REMEMBER · the Recommend line always names the top finishing row · one row per open thread, deleted only when its close is seated · the pick between hands and metal is never made for Keaton — and a kg sent against a recommend that names kg as a branch **is** the pick · rescued evidence retires from resin once shore verifies (e289)
 
