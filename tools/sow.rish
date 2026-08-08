@@ -1,0 +1,20 @@
+# sow.rish — sow the public seed from the standing field.
+#
+# Reads template-manifest.bron and writes the identity-clean template subset
+# into seed/ (gitignored; the fresh Option-B public repo that becomes
+# grain-os/grain). personal and sub_exclude paths never enter; name-bearing
+# files are withheld for the M3 scrub pass, so the seed is clean by
+# construction. The heavy file work is a POSIX seam in
+# tools/fixtures/sow_project.sh; this script is the thin Rishi driver.
+#
+# Plans: external-research/20260808-045124 (Movement I, the mechanism) and
+# 20260808-183336 (the compact root). Layout: 20260808-183636 (field + seed).
+# Safety is proven separately by tools/sow_witness.rish.
+#
+#   rishi/bin/rishi run tools/sow.rish
+
+let proj = run ["sh" "tools/fixtures/sow_project.sh"]
+say proj.out
+assert proj.ok else "sow projection failed to run"
+assert (proj.out contains "SOW_OK") else "sow projection did not complete cleanly"
+say "sow: seed/ projected — run tools/sow_witness.rish to prove it clean"
