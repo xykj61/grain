@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260808.193357
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title withhold the 18 foundations maintainer-specifics
+prompt (AskUserQuestion) which gray-zone foundations essays to withhold — Keaton chose: withhold all 18
+obs added 18 file-granular sub_excludes — 9 essays naming real public figures, 7 venture/fund pitches, 2 personal narratives; the same designed mechanism, no breach, no file moved
+obs witness GREEN — all 22 foundations exclusions (4 bio + 18 specifics) absent from the seed; 34 of 56 foundations files ship, the transferable doctrine + universal visions only; zero gray-zone remaining
+obs the public template now carries the why without naming a real person or a private venture — the cleanest read for a stranger who clones it
+obs read the stamp from the live EDT clock (193357)
+file template-manifest.bron 18 more file-granular sub_excludes under foundations
+file session-logs/20260808-193357_withhold-18-foundations-maintainer-specifics.bron this record
+git_nib 8630a64b0a
+recommend check-in (Claude) foundations is settled — doctrine shared, bio + maintainer-specifics withheld; the seed is ready for Keaton's human read before M4 (git init seed + push grain-os)
