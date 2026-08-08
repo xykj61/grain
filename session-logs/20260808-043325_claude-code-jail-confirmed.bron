@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260808.043325
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title claude-code jail confirmed live beside cursor-agent
+prompt i think our ai jail tool for claude code is working on our pier, and so is our cursor cli jail tool
+think this Claude Code session reports host ai-sandbox · HOME /home/keeper · AI_AGENT claude-code_2-1-187_agent · BWRAP_BIN in nix store — living proof it runs jailed
+think .claude-state warm right now 08:28-08:33 (this session's own project jsonl) · .cursor-agent-state warm 08:24-08:32 — both agents ran jailed, both mapping auth to project-local state
+think host witness agent_jail_witness.sh goes RED from inside the jail — nested private-home has no .nix-profile, so ai-jail resolves to the tools/.cache/bin release tarball and hits NixOS stub-ld
+obs the RED is the expected nesting artifact the prior Cursor log named, not a regression — the witness is host-side by design (its own header says run from an ordinary host shell, not from inside a jail)
+obs to bank a GREEN measure someone runs bash tools/agent_jail_witness.sh from a plain host shell on the pier, outside any jail — I cannot reach that from in here
+file tools/agent-jail.sh elder launcher for both claude and cursor-agent
+file tools/launch-claude.rish rish entry that shells agent-jail.sh claude
+file session-logs/20260808-042438_pier-cursor-agent-jail-confirmed.bron prior Cursor confirmation
+git_nib 7b0d4edc71
+recommend check-in (either) run the host-shell witness on the pier for a GREEN measure · or send the pending logs on word
