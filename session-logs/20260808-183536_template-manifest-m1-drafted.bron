@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260808.183536
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title template-manifest M1 drafted · grain-os org made
+prompt Keaton made the grain-os organization under the same github user account; what now
+think same account removes the cross-account push-auth risk I flagged earlier — the REMOTE_ROSTER 403 seam does not apply here
+think the org is an empty container, not a green light — pushing the working tree now would publish keys, the maintainer name across 955 files, and the whole personal history; Option B exists precisely to prevent that
+think the pre-authorized next keystone is M1 — the classification manifest, the single source of truth the projection tool and the safety witness both read; pure private-field work, zero publish risk
+think enumerated every tracked root path via git ls-files first-segment; classified fail-safe (uncertain -> personal, withhold)
+obs drafted template-manifest.bron at root (status proposal) — 78 paths, exactly one verdict each; ran the M1 self-check: tree paths == manifest paths, no missing, no extra
+obs verdict tally 40 template · 21 scrub · 17 personal — matches the ~four-fifths-shareable estimate from the two-grain plan
+obs added a sub_exclude section — scrub dirs (foundations bio essays, linengrow venture specifics, context identity overrides) that carry personal files the projection must withhold by sub-path
+obs held the breach gated — no push to grain-os/grain until tools/sow.rish and its witness prove no personal path, key, or name survives into the seed
+file template-manifest.bron the M1 artifact — root-path boundary, fail-safe toward privacy, witness obligations named
+file session-logs/20260808-183536_template-manifest-m1-drafted.bron this record
+git_nib 07a71cfee1
+recommend check-in (Claude) M1 manifest is a proposal awaiting Keaton's review of the verdicts; M2 (build tools/sow.rish + witness) and the publish moment stay gated on his word and on a GREEN projection witness
