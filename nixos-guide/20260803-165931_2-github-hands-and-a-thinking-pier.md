@@ -4,7 +4,7 @@
 **Stamp:** `20260803.165931`
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Riyo
-**Status:** Live walk mid-course `20260808.035130` — `gh` + `claude-code` declared · rebuild GREEN · awaits PAT handshake (Movements 2–3) then Claude sign-in + tmux counsel (4–5)
+**Status:** Witnessed end to end `20260808.040720` — `gh` as `xykj61` · Claude Code on pier (`claude.ai` · ping GREEN) · standing tmux session `pier` holds the long thought
 **Follows:** guide 1, `20260803-164117_1-first-steward-and-root-hardening.md`
 
 *Written together by Keaton and Riyo.*
