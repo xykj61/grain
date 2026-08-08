@@ -1,3 +1,16 @@
+| `20260808.033705` | [`20260808-033705_guide1-root-door-closed.bron`](20260808-033705_guide1-root-door-closed.bron) | guide 1 CLOSED · root door closed · grain to keeper |
+| `20260808.033500` | [`20260808-033500_sshd-declared-green-chown-open.bron`](20260808-033500_sshd-declared-green-chown-open.bron) | sshd declared GREEN · chown still open |
+| `20260808.033330` | [`20260808-033330_root-close-rebuild-green.bron`](20260808-033330_root-close-rebuild-green.bron) | root close rebuild GREEN · chown stranded |
+| `20260808.033100` | [`20260808-033100_root-harden-staged.bron`](20260808-033100_root-harden-staged.bron) | root harden staged · sudo apply waiting |
+| `20260808.031629` | [`20260808-031629_keeper-sudo-proven.bron`](20260808-031629_keeper-sudo-proven.bron) | keeper sudo proven · Movement 3 next |
+| `20260808.031421` | [`20260808-031421_explain-keeper-ssh-sudo.bron`](20260808-031421_explain-keeper-ssh-sudo.bron) | explain ssh keeper · sudo -v |
+| `20260808.031007` | [`20260808-031007_keeper-name-chosen.bron`](20260808-031007_keeper-name-chosen.bron) | steward name chosen · keeper |
+| `20260808.030844` | [`20260808-030844_steward-name-leans.bron`](20260808-030844_steward-name-leans.bron) | steward-name leans · keep or rename |
+| `20260808.030733` | [`20260808-030733_keeper-name-source.bron`](20260808-030733_keeper-name-source.bron) | keeper = guide example · already declared |
+| `20260808.030549` | [`20260808-030549_keeper-importance.bron`](20260808-030549_keeper-importance.bron) | keeper = first steward · hinge for root close |
+| `20260808.030455` | [`20260808-030455_hands-then-words-explained.bron`](20260808-030455_hands-then-words-explained.bron) | hands then words · layer B before D |
+| `20260808.030225` | [`20260808-030225_passover-evaluation-counsel.bron`](20260808-030225_passover-evaluation-counsel.bron) | passover evaluation counsel · draft unseated |
+| `20260807.055227` | [`20260807-055227_pull-and-place-hands-midwalk.bron`](20260807-055227_pull-and-place-hands-midwalk.bron) | pull · place hands mid-walk · demote vs Mitra |
 | `20260805.000001` | [`20260805-000001_e302-v90-knock-steward-door.bron`](20260805-000001_e302-v90-knock-steward-door.bron) | e302 v90 · first knock · keeper key-door |
 | `20260804.235147` | [`20260804-235147_e301-quiet-v89-nona-cadence.bron`](20260804-235147_e301-quiet-v89-nona-cadence.bron) | e301 quiet v89 · Nona Waypoint · one rung per fuse |
 | `20260804.234505` | [`20260804-234505_e300-ladder-home-nona-sweep.bron`](20260804-234505_e300-ladder-home-nona-sweep.bron) | e300 ladder home · Nona→Constellation RESTED |

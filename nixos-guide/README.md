@@ -7,7 +7,7 @@
 | # | Guide | Status |
 |---|-------|--------|
 | 0 | `20260803-164117_0-standing-a-declared-pier.md` — tablet to running NixOS pier in ten movements | Witnessed end to end (Seattle instance); driven from a Daylight DC-1 via Termux, Cursor CLI signed in |
-| 1 | `20260803-164117_1-first-steward-and-root-hardening.md` — the first sudo steward; root's door closed the industry way | **Live walk mid-course** `20260805.000001` — steward `keeper` declared · rebuild GREEN · key knock GREEN · root still open until `passwd` + `sudo -v` |
+| 1 | `20260803-164117_1-first-steward-and-root-hardening.md` — the first sudo steward; root's door closed the industry way | **Witnessed end to end** `20260808.033555` — steward `keeper` · root network door closed · `sshd -T` GREEN · root SSH refused |
 | 2 | `20260803-165931_2-github-hands-and-a-thinking-pier.md` — gh PAT-classic handshake; Claude Code seated on the pier, Termux the window | Written; awaits its first live walk |
 
 **Personal knock:** a real-address `ssh` config lives at `.ssh/config` inside this folder — ignored by design (`.gitignore` carries `/.ssh/`), so addresses and identities stay off every remote while the form itself remains in guide 0, placeholders only. **First Framework knock GREEN** `20260805.000001` (`ssh pier` → hostname `pier`).

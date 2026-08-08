@@ -4,7 +4,7 @@
 **Stamp:** `20260803.164117`
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Riyo
-**Status:** Live walk mid-course `20260805.000001` — steward `keeper` declared · rebuild GREEN · key knock GREEN · root door still open until passwd + `sudo -v` (Movements 3–4 held)
+**Status:** Witnessed end to end `20260808.033555` — steward `keeper` · passwd + `sudo -v` GREEN · `PermitRootLogin no` · root hash locked · `sshd -T` GREEN · root SSH refused · `~/grain` owned by `keeper`
 **Follows:** guide 0, `20260803-164117_0-standing-a-declared-pier.md`
 
 *Written together by Keaton and Riyo.*
