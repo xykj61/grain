@@ -124,11 +124,11 @@ say "GREEN: Rhyz/Kumara's Ed25519 identity seam runs on emulated RISC-V, byte-fo
 
 # --- Nock core: Glow's second backend, opcodes 0-5 ---------------------------
 
-let src_nock = "nock/nock_core_witness.rye"
-let bin_nock_native = "nock/bin/nock_core_witness_native"
-let bin_nock_riscv = "nock/bin/nock_core_witness_riscv64"
+let src_nock = "glow/nock/nock_core_witness.rye"
+let bin_nock_native = "glow/nock/bin/nock_core_witness_native"
+let bin_nock_riscv = "glow/nock/bin/nock_core_witness_riscv64"
 
-let build_nock_native = run ["sh" "-c" "mkdir -p nock/bin && env RYE_ZIG=${zig} rye/bin/rye build ${src_nock} -femit-bin=${bin_nock_native}"]
+let build_nock_native = run ["sh" "-c" "mkdir -p glow/nock/bin && env RYE_ZIG=${zig} rye/bin/rye build ${src_nock} -femit-bin=${bin_nock_native}"]
 assert build_nock_native.ok else "Nock core native build failed"
 let native_nock = run ["sh" "-c" "${bin_nock_native} 2>&1"]
 assert native_nock.ok else "Nock core native run failed"
@@ -144,9 +144,9 @@ assert emu_nock.ok else "Nock core riscv64 witness failed under QEMU"
 assert emu_nock.out == native_nock.out else "Nock core riscv64 output diverges from native -- not byte-identical"
 say "GREEN: the Nock core (Glow's second backend) runs on emulated RISC-V, byte-for-byte identical to native."
 
-let src_nock2 = "nock/nock_lap2_witness.rye"
-let bin_nock2_native = "nock/bin/nock_lap2_witness_native"
-let bin_nock2_riscv = "nock/bin/nock_lap2_witness_riscv64"
+let src_nock2 = "glow/nock/nock_lap2_witness.rye"
+let bin_nock2_native = "glow/nock/bin/nock_lap2_witness_native"
+let bin_nock2_riscv = "glow/nock/bin/nock_lap2_witness_riscv64"
 
 let build_nock2_native = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${src_nock2} -femit-bin=${bin_nock2_native}"]
 assert build_nock2_native.ok else "Nock lap 2 native build failed"
@@ -164,9 +164,9 @@ assert emu_nock2.ok else "Nock lap 2 riscv64 witness failed under QEMU"
 assert emu_nock2.out == native_nock2.out else "Nock lap 2 riscv64 output diverges from native -- not byte-identical"
 say "GREEN: Nock's macro layer (lap 2) runs on emulated RISC-V, byte-for-byte identical to native."
 
-let src_nock3 = "nock/nock_lap3_witness.rye"
-let bin_nock3_native = "nock/bin/nock_lap3_witness_native"
-let bin_nock3_riscv = "nock/bin/nock_lap3_witness_riscv64"
+let src_nock3 = "glow/nock/nock_lap3_witness.rye"
+let bin_nock3_native = "glow/nock/bin/nock_lap3_witness_native"
+let bin_nock3_riscv = "glow/nock/bin/nock_lap3_witness_riscv64"
 
 let build_nock3_native = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${src_nock3} -femit-bin=${bin_nock3_native}"]
 assert build_nock3_native.ok else "Nock lap 3 native build failed"
@@ -184,9 +184,9 @@ assert emu_nock3.ok else "Nock lap 3 riscv64 witness failed under QEMU"
 assert emu_nock3.out == native_nock3.out else "Nock lap 3 riscv64 output diverges from native -- not byte-identical"
 say "GREEN: Nock's edit primitive and opcode 10 (lap 3) run on emulated RISC-V, byte-for-byte identical to native."
 
-let src_jet = "nock/nock_jet_dec_witness.rye"
-let bin_jet_native = "nock/bin/nock_jet_dec_witness_native"
-let bin_jet_riscv = "nock/bin/nock_jet_dec_witness_riscv64"
+let src_jet = "glow/nock/nock_jet_dec_witness.rye"
+let bin_jet_native = "glow/nock/bin/nock_jet_dec_witness_native"
+let bin_jet_riscv = "glow/nock/bin/nock_jet_dec_witness_riscv64"
 
 let build_jet_native = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${src_jet} -femit-bin=${bin_jet_native}"]
 assert build_jet_native.ok else "Nock dec jet native build failed"

@@ -1,3 +1,11 @@
+| `20260808.183936` | [`20260808-183936_nock-into-glow-breach-green.bron`](20260808-183936_nock-into-glow-breach-green.bron) | nock into glow · breach GREEN both sides · 9 files renamed · witnesses + sow green |
+| `20260808.183836` | [`20260808-183836_sow-m3-scrub-two-reds-green.bron`](20260808-183836_sow-m3-scrub-two-reds-green.bron) | sow M3 scrub · name→role · two key-material reds caught (PUBKEYS + embedded pubkeys) · GREEN |
+| `20260808.183736` | [`20260808-183736_sow-m2-projection-witness-green.bron`](20260808-183736_sow-m2-projection-witness-green.bron) | sow M2 GREEN · seed projected clean · 2578 copied/138 withheld · IDENT_CLEAN · NO_PERSONAL |
+| `20260808.183636` | [`20260808-183636_seed-folder-layout-counsel.bron`](20260808-183636_seed-folder-layout-counsel.bron) | seed folder layout · field + generated ~/grain/seed/ · not two hand-edited halves · gated |
+| `20260808.183536` | [`20260808-183536_template-manifest-m1-drafted.bron`](20260808-183536_template-manifest-m1-drafted.bron) | template-manifest M1 drafted · 78 paths · 40 template/21 scrub/17 personal · grain-os org made |
+| `20260808.183436` | [`20260808-183436_public-template-name-grainos-org.bron`](20260808-183436_public-template-name-grainos-org.bron) | public template name · recommend grain-os + grainos.org anchor · social sweep offered |
+| `20260808.183336` | [`20260808-183336_compact-root-nesting-public-seed.bron`](20260808-183336_compact-root-nesting-public-seed.bron) | compact root · seven-room map · nock→glow/nock · module gather refused · gated on word |
+| `20260808.183236` | [`20260808-183236_nock-need-and-template-org-counsel.bron`](20260808-183236_nock-need-and-template-org-counsel.bron) | do we need nock (keep, not load-bearing) · grainos/grain for the public template |
 | `20260808.062123` | [`20260808-062123_agent-jail-auth-persist-green.bron`](20260808-062123_agent-jail-auth-persist-green.bron) | Keaton: jailed cursor-agent auth persist GREEN |
 | `20260808.061959` | [`20260808-061959_agent-jail-persist-cursor-auth.bron`](20260808-061959_agent-jail-persist-cursor-auth.bron) | agent-jail maps ~/.config/cursor auth.json durable |
 | `20260808.061505` | [`20260808-061505_agent-jail-resume-flag.bron`](20260808-061505_agent-jail-resume-flag.bron) | agent-jail --resume / --continue forward to cursor-agent |

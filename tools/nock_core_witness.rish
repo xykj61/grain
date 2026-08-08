@@ -1,7 +1,7 @@
 # nock_core_witness.rish — Nock's primitive core, lap 1, proves its own rules.
 #
 # Per external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md's
-# phased plan and nock/nock_core.rye: a Bron-adjacent noun, tree addressing,
+# phased plan and glow/nock/nock_core.rye: a Bron-adjacent noun, tree addressing,
 # opcodes 0-5, and the autocons rule -- Glow's second backend, for Urbit
 # interop and verification, never the execution floor (that is RISC-V, per
 # active-reviving/20260715-213500_glow-revives-hoon-runes-targets-riscv.md).
@@ -10,9 +10,9 @@
 #   rishi/bin/rishi run tools/nock_core_witness.rish
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "nock/bin/nock_core_witness"
+let bin = "glow/nock/bin/nock_core_witness"
 
-let build = run ["sh" "-c" "mkdir -p nock/bin && env RYE_ZIG=${zig} rye/bin/rye build nock/nock_core_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p glow/nock/bin && env RYE_ZIG=${zig} rye/bin/rye build glow/nock/nock_core_witness.rye -femit-bin=${bin}"]
 assert build.ok else "Nock core witness build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]

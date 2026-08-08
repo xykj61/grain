@@ -10,9 +10,9 @@
 #   rishi/bin/rishi run tools/nock_jet_dec_witness.rish
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "nock/bin/nock_jet_dec_witness"
+let bin = "glow/nock/bin/nock_jet_dec_witness"
 
-let build = run ["sh" "-c" "mkdir -p nock/bin && env RYE_ZIG=${zig} rye/bin/rye build nock/nock_jet_dec_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p glow/nock/bin && env RYE_ZIG=${zig} rye/bin/rye build glow/nock/nock_jet_dec_witness.rye -femit-bin=${bin}"]
 assert build.ok else "Nock dec jet witness build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]

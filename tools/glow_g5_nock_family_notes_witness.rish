@@ -8,7 +8,7 @@
 let tame = "context/TAME_GUIDANCE.md"
 let brief = "active-designing/20260720-033200_stoa98-g5-nock-second-backend-family-notes.md"
 let truth = "glow/truth_semantics.rye"
-let nock_readme = "nock/README.md"
+let nock_readme = "glow/nock/README.md"
 
 let tame_g5 = run ["sh" "-c" "grep -F 'Nock second-backend notes beside truth families (G5, STOA98)' ${tame}"]
 assert tame_g5.ok else "TAME missing G5 STOA98 heading"
@@ -30,7 +30,7 @@ let truth_mod = run ["sh" "-c" "grep -F 'loob_to_bool' ${truth} && grep -F 'bool
 assert truth_mod.ok else "truth_semantics missing loobean converters"
 
 let nock_second = run ["sh" "-c" "grep -F 'second backend' ${nock_readme}"]
-assert nock_second.ok else "nock/README must name second backend"
+assert nock_second.ok else "glow/nock/README must name second backend"
 
 # Keep the living truth witness GREEN beside the pin.
 let truth_wit = run ["sh" "-c" "rishi/bin/rishi run tools/glow_truth_semantics_witness.rish"]
