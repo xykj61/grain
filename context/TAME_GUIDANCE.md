@@ -80,11 +80,11 @@ Full per-rune rows (meaning · RISC-V/TAME note) live in the G1 closed table. Th
 
 ### Glow — Nock second-backend notes beside truth families (G5, STOA98)
 
-Primary path stays Glow→Rye→Zig→**RISC-V**. **Nock** is the second backend for Urbit interop and verification only ([`../nock/README.md`](../nock/README.md)) — never RISC-V→Nock. Ambient truth ruling: [`specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md`](specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md) · seam module [`../glow/truth_semantics.rye`](../glow/truth_semantics.rye).
+Primary path stays Glow→Rye→Zig→**RISC-V**. **Nock** is the second backend for Urbit interop and verification only ([`../glow/nock/README.md`](../glow/nock/README.md)) — never RISC-V→Nock. Ambient truth ruling: [`specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md`](specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md) · seam module [`../glow/truth_semantics.rye`](../glow/truth_semantics.rye).
 
 | Family | Touches | Nock second-backend note |
 |--------|---------|---------------------------|
-| **wut** | truth (`?:` · `?-` · `?~` · `?>` · `?<`) | Zig `bool` / Rye `assert` / POSIX exits ambient; loobean 0=yes only inside `nock/` and at `truth_semantics` conversion. Future Nock emit of wut heads converts at that seam. |
+| **wut** | truth (`?:` · `?-` · `?~` · `?>` · `?<`) | Zig `bool` / Rye `assert` / POSIX exits ambient; loobean 0=yes only inside `glow/nock/` and at `truth_semantics` conversion. Future Nock emit of wut heads converts at that seam. |
 | *(none yet)* | jets | No GREEN Glow family is jet-touching until a Glow→Nock emit or jet table seats; add the family row here that lap. |
 
 G5 brief: [`../active-designing/20260720-033200_stoa98-g5-nock-second-backend-family-notes.md`](../active-designing/yonder/20260720-033200_stoa98-g5-nock-second-backend-family-notes.md). Witness: `tools/glow_g5_nock_family_notes_witness.rish`.
