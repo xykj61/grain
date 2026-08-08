@@ -7,11 +7,7 @@
 #
 # Ordered longest-first so compound names resolve before their parts.
 #
-# DELIBERATELY ABSENT: the functional handles (xykj61, autoproject96) and the
-# real Azimuth ship names (bandun, pacpet-solreb). Those are identifiers and
-# code literals, not prose — blind replacement could change behavior, so any
-# file still carrying them after this pass is WITHHELD for human judgment, not
-# silently rewritten.
+# Names -> role.
 s/Keaton Livermore/the maintainer/g
 s/Kaeden Reyklah/the maintainer/g
 s/Keaton's/the maintainer's/g
@@ -20,3 +16,16 @@ s/Keaton/the maintainer/g
 s/Kaeden/the maintainer/g
 s/Livermore/the maintainer/g
 s/Reyklah/the maintainer/g
+
+# Forge handles -> owner placeholder (Keaton's ruling 20260808).
+# The field keeps its real handles; only the projected seed gets the placeholder,
+# which a forker replaces with their own account. Swapping in the seed cannot
+# break the field's live scripts, and a template push like `git push acme-owner`
+# is exactly the placeholder a newcomer expects to fill in.
+s/xykj61/acme-owner/g
+s/autoproject96/acme-owner/g
+
+# STILL DELIBERATELY ABSENT: the real Azimuth ship names (bandun, pacpet-solreb).
+# Those are code literals whose value is behavior, not prose — swapping them is a
+# code change with test implications, out of scope for a name/handle scrub. Any
+# file still carrying them after this pass stays WITHHELD for human judgment.
