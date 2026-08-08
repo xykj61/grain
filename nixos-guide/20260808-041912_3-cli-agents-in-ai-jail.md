@@ -4,7 +4,7 @@
 **Stamp:** `20260808.041912`  
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
 **Voice:** Riyo  
-**Status:** Witnessed on the Vultr SEA pier `20260808.041912` — `./tools/agent_jail_witness.sh` GREEN · jailed `claude -p pong` GREEN  
+**Status:** Witnessed on the Vultr SEA pier `20260808.041912` — `./tools/agent_jail_witness.sh` GREEN · jailed `claude -p pong` GREEN · auth persist GREEN `20260808.062123` (`~/.config/cursor` → `.cursor-agent-state/xdg-config/`)  
 **Follows:** guide 2, `20260803-165931_2-github-hands-and-a-thinking-pier.md`
 
 *Written together by Keaton and Riyo.*

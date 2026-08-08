@@ -1,3 +1,4 @@
+| `20260808.062123` | [`20260808-062123_agent-jail-auth-persist-green.bron`](20260808-062123_agent-jail-auth-persist-green.bron) | Keaton: jailed cursor-agent auth persist GREEN |
 | `20260808.061959` | [`20260808-061959_agent-jail-persist-cursor-auth.bron`](20260808-061959_agent-jail-persist-cursor-auth.bron) | agent-jail maps ~/.config/cursor auth.json durable |
 | `20260808.061505` | [`20260808-061505_agent-jail-resume-flag.bron`](20260808-061505_agent-jail-resume-flag.bron) | agent-jail --resume / --continue forward to cursor-agent |
 | `20260808.060835` | [`20260808-060835_editors-cursor-cli-bump-witnessed.bron`](20260808-060835_editors-cursor-cli-bump-witnessed.bron) | editors + Aug cursor-cli WITNESSED on pier |
