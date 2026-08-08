@@ -1,3 +1,7 @@
+| `20260808.040720` | [`20260808-040720_guide2-closed-claude-on-pier.bron`](20260808-040720_guide2-closed-claude-on-pier.bron) | guide 2 CLOSED · Claude on pier |
+| `20260808.040100` | [`20260808-040100_claude-doctor-probe-hung.bron`](20260808-040100_claude-doctor-probe-hung.bron) | claude doctor probe hung · killed |
+| `20260808.040026` | [`20260808-040026_guide2-gh-auth-green.bron`](20260808-040026_guide2-gh-auth-green.bron) | guide 2 M3 GREEN · gh as xykj61 |
+| `20260808.035340` | [`20260808-035340_guide2-rebuild-task-ack.bron`](20260808-035340_guide2-rebuild-task-ack.bron) | guide2 rebuild task ack · already GREEN |
 | `20260808.035127` | [`20260808-035127_guide2-m1-rebuild-green.bron`](20260808-035127_guide2-m1-rebuild-green.bron) | guide 2 M1 rebuild GREEN · gh + claude |
 | `20260808.034536` | [`20260808-034536_secure-password-dev-server-2026.bron`](20260808-034536_secure-password-dev-server-2026.bron) | secure password lean · steward sudo 2026 |
 | `20260808.034400` | [`20260808-034400_sudo-askpass-paste-newline.bron`](20260808-034400_sudo-askpass-paste-newline.bron) | sudo askpass · paste newline lean |
