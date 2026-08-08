@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260808.183236
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail, after a 97% vCPU crash + Vultr restart
+title do we need nock · which org for the public template
+prompt after a vCPU crash from running claude + cursor-agent together and a Vultr restart, revisit the two-grain research: do we really need nock; should the public template live under grainos/seed, grainos/grain, autoproject96, groupproject36, or xykj61; what would you do
+think re-read the two-grain plan (20260808-045124) and its session log (045331) to ground the answer rather than speak from memory
+think grepped the tree: zero code imports of nock/ from outside the module — only its own witnesses in tools/ reference it; 8 files, ~77KB, self-contained
+think read nock/README.md — it states plainly Nock is Glow's second backend, never its execution floor; exists only for Urbit-world interop and verification; RISC-V holds the floor
+think fanned one Explore agent to confirm the design rationale in context/external-research/active-designing/foundations
+obs Nock verdict — not load-bearing; removable as a clean one-directory cut because nothing imports it; yet cheap to carry and the concrete proof behind the Urbit-adjacency / Azimuth galaxy-pitch thesis; the plan already lists it as an already-clean TAME exemplar to finish second — recommend keep, demoted to optional interop backend
+obs org verdict — grainos reads as a project name; autoproject96/groupproject36/xykj61 read as throwaway handles; a public template's trust rides on the name; recommend grainos/grain (discoverable flagship = the seed) over grainos/seed (reserve for a future starter)
+obs private field stays autoproject96/grain (origin) + xykj61 mirror per REMOTE_ROSTER; grainos is on another account, so cross-account push auth is the real risk — same 403 seam as Option-2 pier ruling; honest fallback is name-well under the credentialed account if cross-account auth turns painful
+obs nothing moves — stays a designed unbegun breach per BREACH.md, waiting on Keaton's word
+file session-logs/20260808-183236_nock-need-and-template-org-counsel.bron this counsel record
+git_nib 07a71cfee1
+recommend check-in (Claude) nock keep/cut and the org choice (grainos cross-account auth) are seams that wait for Keaton's word before the breach or any expanding-prompt runs
