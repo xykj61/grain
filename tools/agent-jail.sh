@@ -8,6 +8,9 @@
 #   ./tools/agent-jail.sh claude
 #   ./tools/agent-jail.sh cursor-agent -p "…"
 #   ./tools/agent-jail.sh agent --help          # alias → cursor-agent
+#   ./tools/agent-jail.sh agent --resume=CHAT_ID
+#   ./tools/agent-jail.sh --resume=CHAT_ID agent
+#   ./tools/agent-jail.sh --continue agent
 #   ./tools/agent-jail.sh --dry-run claude --version
 #
 # Keeper pier / Linux: ai-jail --private-home; auth under project-local state
@@ -20,16 +23,29 @@ REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$REPO_ROOT"
 
 DRY_RUN=false
+# Forwarded to the agent binary (before trailing args). Lets --resume sit
+# before the command name without looking like an unknown jail option.
+AGENT_FORWARD=()
 
 usage() {
   cat <<'EOF'
-Usage: ./tools/agent-jail.sh [--dry-run] <claude|cursor-agent|agent> [args…]
+Usage: ./tools/agent-jail.sh [jail-opts] <claude|cursor-agent|agent> [agent-args…]
 
   claude           Anthropic Claude Code CLI
   cursor-agent     Cursor Agent CLI (nixpkgs cursor-cli / agent)
   agent            Alias for cursor-agent
-  --dry-run        Pass --dry-run to ai-jail (print bwrap plan; do not exec)
-  -h, --help       Show this help
+
+Jail options (before the command name):
+  --dry-run              Pass --dry-run to ai-jail (print bwrap plan; do not exec)
+  --resume[=CHAT_ID]     Forward to the agent (resume a chat; bare --resume lists)
+  --resume CHAT_ID       Same, space-separated form
+  --continue             Forward to the agent (continue previous session)
+  -h, --help             Show this help
+
+Agent args after the command name pass through unchanged, so these are equal:
+
+  ./tools/agent-jail.sh agent --resume=83513e3f-ec89-4924-a12b-f11189b04927
+  ./tools/agent-jail.sh --resume=83513e3f-ec89-4924-a12b-f11189b04927 agent
 
 Project-local state (gitignored, survives private-home tmpfs):
   .claude-state/          → $HOME/.claude inside the jail
@@ -41,6 +57,8 @@ Examples:
   ./tools/agent-jail.sh claude
   ./tools/agent-jail.sh claude -p 'reply with exactly: pong'
   ./tools/agent-jail.sh cursor-agent -p "what is the hostname"
+  ./tools/agent-jail.sh agent --resume=83513e3f-ec89-4924-a12b-f11189b04927
+  ./tools/agent-jail.sh --continue cursor-agent
 EOF
 }
 
@@ -53,6 +71,24 @@ while [ $# -gt 0 ]; do
     --dry-run)
       DRY_RUN=true
       shift
+      ;;
+    --continue)
+      AGENT_FORWARD+=(--continue)
+      shift
+      ;;
+    --resume=*)
+      AGENT_FORWARD+=("$1")
+      shift
+      ;;
+    --resume)
+      # Bare --resume (picker) or --resume CHAT_ID
+      if [ $# -ge 2 ] && [[ "$2" != -* ]]; then
+        AGENT_FORWARD+=(--resume "$2")
+        shift 2
+      else
+        AGENT_FORWARD+=(--resume)
+        shift
+      fi
       ;;
     --)
       shift
@@ -205,4 +241,4 @@ JAIL_PATH="/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:${HOST_H
 # --no-save-config: do not merge this run into .ai-jail
 # shellcheck disable=SC2086
 exec "$AIJAIL_ABS" --no-save-config $AIJAIL_FLAGS "${DRY_ARGS[@]}" "${MAP_ARGS[@]}" -- \
-  env "GH_CONFIG_DIR=$GH_STATE" "PATH=$JAIL_PATH" "$AGENT_BIN" "$@"
+  env "GH_CONFIG_DIR=$GH_STATE" "PATH=$JAIL_PATH" "$AGENT_BIN" "${AGENT_FORWARD[@]}" "$@"
