@@ -1,7 +1,7 @@
 # Threads — the one living ledger of everything open
 
 **Language:** EN  
-**Last refreshed:** `20260805.000001` · voice Riyo · pier **e302** · v90 LANDED · walk complete at season-row grammar · **6b word-only** · first knock GREEN · steward `keeper` key-door GREEN · guide 1 waits on passwd  
+**Last refreshed:** `20260808.033555` · voice Riyo · pier **e302** · v90 LANDED · **guide 1 CLOSED** · steward `keeper` owns the pier · root network door closed  
 **Companion (orient pin):** [`../active-designing/20260804-005634_the-close-down-map.md`](../active-designing/20260804-005634_the-close-down-map.md)  
 **Season summary:** [`../counsel/20260804-230650_the-equinox-season-summary.md`](../counsel/20260804-230650_the-equinox-season-summary.md)  
 **Ladder seat:** [`../counsel/20260804-233206_e299-the-ladder-rests.md`](../counsel/20260804-233206_e299-the-ladder-rests.md)  
@@ -15,14 +15,14 @@
 
 ## How the names nest
 
-Pier **e302** (counsel v90 stamped e301; pier e301 already Nona cadence). Nested ladder **home** at the season-row grammar. Open work is hands mid-walk · words · next name.
+Pier **e302** (counsel v90 stamped e301; pier e301 already Nona cadence). Nested ladder **home** at the season-row grammar. Hands (guide 1) **CLOSED**. Open work is words · next name · guide 2 horizon.
 
 ## Open threads — the finishing walk
 
 | # | Door | Thread | State | Owner |
 |---|------|--------|-------|-------|
 | 1 | — | Resin v90 (walk refined · 6b owned) | **LANDED** | — |
-| 2 | 3–4 | Hands: knock **GREEN** · steward `keeper` key-door **GREEN** · **passwd → sudo -v → close root** | mid-walk | Keaton (+ bench) |
+| 2 | 3–4 | Hands / guide 1 — steward `keeper` · root closed · `sshd -T` GREEN · root SSH refused · grain owned by keeper | **CLOSED** `20260808.033555` | — |
 | 5 | 8 | **Quarantine** ASHORE | SAFE · word open | Keaton |
 | 6 | 6–7 · 10–12 | Word-gated · return words · next name | surfaced, unpressed | Keaton (+ counsel) |
 | 6a | — | **256/Wheel outer frame** — does rested Equinox complete it? | parked | Keaton |
@@ -31,8 +31,8 @@ Pier **e302** (counsel v90 stamped e301; pier e301 already Nona cadence). Nested
 
 ## Closed and safe
 
-Equinox · Fascia · Voice · **Nona · Kiln · Surface · Generator · MUR · Inner Scope · Constellation** RESTED (pointers inside rows) · Keeh quint already CLOSED · Geode prep untouched · Waypoints Equinox+Fascia+Voice+Nona+sweep · Ratified×1 · STOA338–346 GREEN · guides 0–2 docs HOME · first knock proven · **THE LADDER IS HOME** (season-row grammar).
+Equinox · Fascia · Voice · **Nona · Kiln · Surface · Generator · MUR · Inner Scope · Constellation** RESTED (pointers inside rows) · Keeh quint already CLOSED · Geode prep untouched · Waypoints Equinox+Fascia+Voice+Nona+sweep · Ratified×1 · STOA338–346 GREEN · guides 0–1 walked · guide 2 docs HOME · first knock proven · guide 1 root door closed · **THE LADDER IS HOME** (season-row grammar).
 
 ---
 
-*May home hold every bookmark. May the steward's password open the next door. May 6a and 6b wait for your word.*
+*May home hold every bookmark. May the steward's key be the only knock. May 6a and 6b wait for your word.*
