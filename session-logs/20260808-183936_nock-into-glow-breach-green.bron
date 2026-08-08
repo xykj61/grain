@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260808.183936
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title nock into glow — the breach, GREEN both sides
+prompt nock into glow, then the seven-room map
+think a breach per context/BREACH.md — declared, every byte preserved, every reference turned in the same motion, red before and green after
+think baseline green captured first — nock_core_witness GREEN at the old path before the move
+obs git mv nock -> glow/nock moved all nine files as renames (history preserved); the .rye internal @import lines are relative, so they survived the move untouched
+obs repointed every living reference in one motion — six tool witness scripts (nock_*_witness.rish, glow_riscv_target_witness, glow_g5_nock_family_notes), the radiant_pass_ledger fixture, the moved README's own six relative links (../ -> ../../, ../glow/ -> ../), and the canonical living docs (LEXICON, TAME_GUIDANCE, nock-interop-seam, MAP)
+obs dated artifacts left readable per accrete-never-break — session-logs, archives, dated specs that say nock/ stay as testimony
+obs manifest follows the move — dropped the nock root line (no longer a root path; glow covers it) and added template-manifest.bron's own self-classify line so M1 stays whole
+obs .gitignore turned — /nock/bin/ -> /glow/nock/bin/, and the stale !/nock/ allowlist entry removed since the path is gone
+obs green-after on metal — nock_core + nock_lap2 witnesses GREEN at glow/nock/; sow_witness GREEN (M1 covers all root paths, seed still clean); zero living reference to the old nock/ path remains
+obs the far side is simpler — one fewer root door, and the architecture now reads true: Nock sits inside the language it serves, as its own README always said (second backend, never the floor)
+file glow/nock/ the moved interop backend — nine files, witnesses GREEN at the new home
+file template-manifest.bron nock line dropped; self-classify line added
+file .gitignore /glow/nock/bin/; stale !/nock/ removed
+file MAP.md nock link repointed (fuller seven-room rewrite follows)
+file session-logs/20260808-183936_nock-into-glow-breach-green.bron this record
+git_nib 07a71cfee1
+recommend keep-going the seven-room map is the next requested step — a documentation compaction (MAP/README/llms.txt), zero reference churn
