@@ -40,21 +40,31 @@ mkdir -p "$SEED"
 find "$SEED" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} + 2>/dev/null || true
 : > "$SEED/.sow-withheld.log"
 : > "$SEED/.sow-scrubbed.log"
+: > "$SEED/.sow-excluded.log"
 
-# Whole paths withheld even though their verdict is scrub.
+# sub_exclude entries: either a whole path (e.g. linengrow) or a single file
+# inside a scrub directory (e.g. a foundations biography essay). A file is
+# excluded when it equals a sub_exclude entry or lives under one.
 SUBEX=$(grep -E '^sub_exclude ' "$MANIFEST" | awk '{print $2}' || true)
 # Candidate paths: template + scrub verdicts, minus the two submodules.
 PATHS=$(grep -E '^(template|scrub) ' "$MANIFEST" | awk '{print $2}' | grep -vxE 'gratitude|vendor' || true)
 
-skip_path() {
-  for x in $SUBEX; do [ "$1" = "$x" ] && return 0; done
+is_subex() {
+  for x in $SUBEX; do
+    case "$1" in "$x"|"$x"/*) return 0;; esac
+  done
   return 1
 }
 
 for p in $PATHS; do
-  skip_path "$p" && continue
+  is_subex "$p" && continue   # whole-path exclusion (e.g. linengrow)
   for f in $(git ls-files -- "$p"); do
     [ -f "$f" ] || continue
+    # File-granular exclusion — deliberate personal withhold inside a shared dir
+    # (a foundations biography essay); the doctrine beside it still ships.
+    if is_subex "$f"; then
+      printf '%s\n' "$f" >> "$SEED/.sow-excluded.log"; continue
+    fi
     dest="$SEED/$f"
     # Key-material guard — refuse anything shaped like a key or a fingerprint
     # roster, whatever its verdict. context/PUBKEYS.md is the canonical committed
