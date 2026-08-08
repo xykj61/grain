@@ -16,7 +16,13 @@ grep -q 'tmpfs /home/keeper' /tmp/agent-jail-dry-claude.txt \
 grep -q '.claude-state' /tmp/agent-jail-dry-claude.txt
 "$AJ" --dry-run cursor-agent --version >/tmp/agent-jail-dry-agent.txt
 grep -q '.cursor-agent-state' /tmp/agent-jail-dry-agent.txt
-echo "PASS: dry-run maps private-home + project state"
+"$AJ" --dry-run --resume=83513e3f-ec89-4924-a12b-f11189b04927 agent \
+  >/tmp/agent-jail-dry-resume.txt
+grep -q -- '--resume=83513e3f-ec89-4924-a12b-f11189b04927' /tmp/agent-jail-dry-resume.txt
+"$AJ" --dry-run agent --resume=83513e3f-ec89-4924-a12b-f11189b04927 \
+  >/tmp/agent-jail-dry-resume-tail.txt
+grep -q -- '--resume=83513e3f-ec89-4924-a12b-f11189b04927' /tmp/agent-jail-dry-resume-tail.txt
+echo "PASS: dry-run maps private-home + project state + resume forward"
 
 echo "== state dirs =="
 test -d "$REPO_ROOT/.claude-state"
