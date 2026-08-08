@@ -3,13 +3,15 @@
 **Language:** EN  
 **Style:** Radiant (see [`context/RADIANT_STYLE.md`](context/RADIANT_STYLE.md)) · **Voice:** Riyo  
 **Status:** Living — the front door to the repository; each claim below marks what runs today versus what is named and scoped  
-**Last updated:** `20260731.142025` (Equinox e107 · seat map · ch7 15/16 · git nib living)
+**Last updated:** `20260808.184036` (seven rooms in MAP · nock nested in glow · two-grain seed projecting)
 
 ---
 
 Welcome. This repository is **Grain** — a body of work developed in the open as a **proposal to [Urbit](https://urbit.org)**, exploring what Urbit could become when its ideas are rebuilt in **Glow**, a language that keeps Hoon's runes over bounded, asserted, statically-disciplined semantics. It descends from `urbit/urbit` as a downstream research repository, and its intent is collaborative: to grow ideas here, prove them with witnesses, and offer the ones that earn their place back upstream as contributions — an infinite game played *with* Urbit, rather than against it. If you are an Acme Corporation employee opening this tree for the first time, this page is the one calm read that orients you — what Grain is, the five variants you can choose between, what actually boots today, and where to go next.
 
 **Who tends this pier.** The standing writing voice is **Riyo** ([`context/RIYO.md`](context/RIYO.md)). The living coauthor name is **Keaton Livermore**. The beginner clone is [`xykj61/grain`](https://github.com/xykj61/grain); dual remotes and the home pier story live in [`context/REMOTE_ROSTER.md`](context/REMOTE_ROSTER.md). The full first-day path is [`SOURCE.md`](SOURCE.md).
+
+**Finding your way.** The whole tree groups into **seven rooms** — the front door, the law, the why, the language and its machines, the teaching, the workrooms, and the reading room — laid out in [`MAP.md`](MAP.md). This grown field is one person's season; the public template **grain-os/grain** is *projected* from it along a boundary named path by path in [`template-manifest.bron`](template-manifest.bron) and proven clean by [`tools/sow_witness.rish`](tools/sow_witness.rish), so no name or key ever crosses into the seed.
 
 Grain is one body of work with **one language, one value model, and one law** ([`context/TAME_GUIDANCE.md`](context/TAME_GUIDANCE.md)) — offered to you as a template in which you pick a variant and build. Its stance is a **collaborative, ethical accelerationism**: build ambitiously and in the open, measure honestly, and offer the work upstream as a gift rather than hold it apart ([`gratitude/TechnoOptimistManifesto.md`](gratitude/TechnoOptimistManifesto.md)).
 
