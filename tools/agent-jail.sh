@@ -48,9 +48,10 @@ Agent args after the command name pass through unchanged, so these are equal:
   ./tools/agent-jail.sh --resume=83513e3f-ec89-4924-a12b-f11189b04927 agent
 
 Project-local state (gitignored, survives private-home tmpfs):
-  .claude-state/          → $HOME/.claude inside the jail
-  .cursor-agent-state/    → $HOME/.cursor inside the jail
-  .gh/                    → GH_CONFIG_DIR for gh(1)
+  .claude-state/                        → $HOME/.claude inside the jail
+  .cursor-agent-state/                  → $HOME/.cursor inside the jail
+  .cursor-agent-state/xdg-config/       → $HOME/.config/cursor (auth.json)
+  .gh/                                  → GH_CONFIG_DIR for gh(1)
 
 Examples:
 
@@ -131,6 +132,8 @@ fi
 REPO="${REPO:-$REPO_ROOT}"
 CLAUDE_STATE="${CLAUDE_STATE:-$REPO/.claude-state}"
 CURSOR_AGENT_STATE="${CURSOR_AGENT_STATE:-$REPO/.cursor-agent-state}"
+# cursor-agent writes OAuth to ~/.config/cursor/auth.json (not ~/.cursor/).
+CURSOR_CONFIG_STATE="${CURSOR_CONFIG_STATE:-$CURSOR_AGENT_STATE/xdg-config}"
 GH_STATE="${GH_STATE:-$REPO/.gh}"
 AIJAIL_FLAGS="${AIJAIL_FLAGS:---private-home --no-docker --no-gpu}"
 ENCLOSURE="${ENCLOSURE:-ai-jail}"
@@ -147,9 +150,14 @@ fi
 
 resolve_aijail() {
   local c
-  if [ -n "${AIJAIL_BIN:-}" ] && [ -f "$AIJAIL_BIN" ] && [ -x "$AIJAIL_BIN" ]; then
-    echo "$AIJAIL_BIN"
-    return 0
+  if [ -n "${AIJAIL_BIN:-}" ]; then
+    if [ -f "$AIJAIL_BIN" ] && [ -x "$AIJAIL_BIN" ]; then
+      echo "$AIJAIL_BIN"
+      return 0
+    fi
+    echo "agent-jail: AIJAIL_BIN is set but missing or not executable: $AIJAIL_BIN" >&2
+    echo "agent-jail: on NixOS prefer: nix profile add github:akitaonrails/ai-jail" >&2
+    return 1
   fi
   if c="$(command -v ai-jail 2>/dev/null)" && [ -f "$c" ] && [ -x "$c" ]; then
     echo "$c"
@@ -211,13 +219,21 @@ if [ ! -x "$AGENT_BIN" ]; then
   exit 1
 fi
 
-mkdir -p "$CLAUDE_STATE" "$CURSOR_AGENT_STATE" "$GH_STATE"
+mkdir -p "$CLAUDE_STATE" "$CURSOR_AGENT_STATE" "$CURSOR_CONFIG_STATE" "$GH_STATE"
 
 # Host HOME path is the jail HOME path under --private-home (tmpfs + our binds).
 HOST_HOME="${HOME}"
+
+# One-time seed: host browser login lands in ~/.config/cursor; private-home
+# would drop it unless we keep a durable copy under the repo state tree.
+if [ ! -f "${CURSOR_CONFIG_STATE}/auth.json" ] && [ -f "${HOST_HOME}/.config/cursor/auth.json" ]; then
+  cp -a "${HOST_HOME}/.config/cursor/." "${CURSOR_CONFIG_STATE}/"
+fi
+
 MAP_ARGS=(
   --rw-map "${CLAUDE_STATE}:${HOST_HOME}/.claude"
   --rw-map "${CURSOR_AGENT_STATE}:${HOST_HOME}/.cursor"
+  --rw-map "${CURSOR_CONFIG_STATE}:${HOST_HOME}/.config/cursor"
 )
 
 # Claude Code also reads $HOME/.claude.json (beside ~/.claude/).

@@ -20,6 +20,8 @@ ZED_STATE="$REPO/.zed-state"
 # CLI agents (tools/agent-jail.sh) — gitignored; survive --private-home tmpfs HOME
 CLAUDE_STATE="$REPO/.claude-state"
 CURSOR_AGENT_STATE="$REPO/.cursor-agent-state"
+# cursor-agent OAuth (auth.json) — defaults to $CURSOR_AGENT_STATE/xdg-config
+# CURSOR_CONFIG_STATE="$REPO/.cursor-agent-state/xdg-config"
 GH_STATE="$REPO/.gh"
 # Optional: copy host ~/.claude.json to $CLAUDE_STATE/dot-claude.json for quieter Claude starts
 

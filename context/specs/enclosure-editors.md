@@ -235,7 +235,7 @@ ai-jail --dry-run --private-home --no-docker -- zed --version
 
 ## Launch — CLI agents in ai-jail (keeper pier / Linux)
 
-Headless CLIs use the same `--private-home` law without an AppImage. Tracked elder: [`tools/agent-jail.sh`](../../tools/agent-jail.sh). Rish entries: [`tools/launch-claude.rish`](../../tools/launch-claude.rish) · [`tools/launch-cursor-agent.rish`](../../tools/launch-cursor-agent.rish). Witness: [`tools/agent_jail_witness.rish`](../../tools/agent_jail_witness.rish). Auth persists under gitignored `.claude-state/` · `.cursor-agent-state/` · `.gh/`. On NixOS, install ai-jail via `nix profile install github:akitaonrails/ai-jail` (release tarballs hit stub-ld). Full pier walk: [`nixos-guide/20260808-041912_3-cli-agents-in-ai-jail.md`](../../nixos-guide/20260808-041912_3-cli-agents-in-ai-jail.md).
+Headless CLIs use the same `--private-home` law without an AppImage. Tracked elder: [`tools/agent-jail.sh`](../../tools/agent-jail.sh). Rish entries: [`tools/launch-claude.rish`](../../tools/launch-claude.rish) · [`tools/launch-cursor-agent.rish`](../../tools/launch-cursor-agent.rish). Witness: [`tools/agent_jail_witness.rish`](../../tools/agent_jail_witness.rish). Auth persists under gitignored `.claude-state/` · `.cursor-agent-state/` (including `xdg-config/` → `~/.config/cursor` for OAuth `auth.json`) · `.gh/`. On NixOS, install ai-jail via `nix profile install github:akitaonrails/ai-jail` (release tarballs hit stub-ld). Full pier walk: [`nixos-guide/20260808-041912_3-cli-agents-in-ai-jail.md`](../../nixos-guide/20260808-041912_3-cli-agents-in-ai-jail.md).
 
 ```bash
 ./tools/agent-jail.sh claude

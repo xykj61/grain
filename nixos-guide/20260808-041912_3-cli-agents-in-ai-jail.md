@@ -58,9 +58,12 @@ Witness (ordinary host shell, not already jailed):
 | `~/.claude` | `.claude-state/` |
 | `~/.claude.json` | `.claude-state/dot-claude.json` (optional seed) |
 | `~/.cursor` | `.cursor-agent-state/` |
+| `~/.config/cursor` (OAuth `auth.json`) | `.cursor-agent-state/xdg-config/` |
 | `GH_CONFIG_DIR` | `.gh/` |
 
-First jailed session may need `/login` again unless you seed those dirs from the steward host by hand (never commit them). Jail-local git identity stays under `.ssh/` and `.gnupg-rye/` — already inside the project mount.
+**Browser login every launch is not the steady state.** `cursor-agent` keeps the session token in `~/.config/cursor/auth.json`. Under `--private-home` that path is tmpfs unless mapped — the launcher maps it to `.cursor-agent-state/xdg-config/` and, when that store is empty, seeds once from the host’s `~/.config/cursor/` if present. After one successful login (jailed or host-seeded), later `./tools/agent-jail.sh agent` / `--resume=…` starts should stay signed in. Never commit those state dirs.
+
+Jail-local git identity stays under `.ssh/` and `.gnupg-rye/` — already inside the project mount.
 
 ## NixOS path note
 
