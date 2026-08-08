@@ -1,6 +1,7 @@
 # Apply editors + Cursor CLI bump — host tmux only
 
 **Stamp:** `20260808.060050`  
+**Status:** **Witnessed** `20260808.060835` — `nixos-rebuild switch` → `/nix/store/…-nixos-system-pier-26.05.20260803.531670d` · `cursor-agent` `2026.08.04-aaa8809` from store · vim 9.2 · nvim v0.12.4 · kak v2026.04.12  
 **Why host:** ai-jail sets `no new privileges`, so `sudo` / `nixos-rebuild` cannot escalate from inside the agent sandbox.
 
 ## What this seats
@@ -25,6 +26,8 @@ kak -version
 cursor-agent --version
 # expect: 2026.08.04-aaa8809 (or matching Aug stamp)
 ```
+
+**Host paste GREEN** `20260808.060835` — rebuild Done · `cursor-agent --version` → `2026.08.04-aaa8809` · PATH resolves under `/nix/store/…-cursor-cli-0-unstable-2026-08-04/…` (not the stub-ld-blocked `~/.local` copy).
 
 ## Notes
 
