@@ -4,7 +4,7 @@
 **Stamp:** `20260803.165931`
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Riyo
-**Status:** Written at Keaton's word — guide 2; awaits its first live walk
+**Status:** Live walk mid-course `20260808.035130` — `gh` + `claude-code` declared · rebuild GREEN · awaits PAT handshake (Movements 2–3) then Claude sign-in + tmux counsel (4–5)
 **Follows:** guide 1, `20260803-164117_1-first-steward-and-root-hardening.md`
 
 *Written together by Keaton and Riyo.*

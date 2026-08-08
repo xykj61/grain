@@ -1,7 +1,7 @@
 # Threads — the one living ledger of everything open
 
 **Language:** EN  
-**Last refreshed:** `20260808.033555` · voice Riyo · pier **e302** · v90 LANDED · **guide 1 CLOSED** · steward `keeper` owns the pier · root network door closed  
+**Last refreshed:** `20260808.035127` · voice Riyo · pier **e302** · v90 LANDED · guide 1 CLOSED · **guide 2 mid-walk** · `gh` + `claude-code` GREEN · PAT next  
 **Companion (orient pin):** [`../active-designing/20260804-005634_the-close-down-map.md`](../active-designing/20260804-005634_the-close-down-map.md)  
 **Season summary:** [`../counsel/20260804-230650_the-equinox-season-summary.md`](../counsel/20260804-230650_the-equinox-season-summary.md)  
 **Ladder seat:** [`../counsel/20260804-233206_e299-the-ladder-rests.md`](../counsel/20260804-233206_e299-the-ladder-rests.md)  
@@ -15,7 +15,7 @@
 
 ## How the names nest
 
-Pier **e302** (counsel v90 stamped e301; pier e301 already Nona cadence). Nested ladder **home** at the season-row grammar. Hands (guide 1) **CLOSED**. Open work is words · next name · guide 2 horizon.
+Pier **e302** (counsel v90 stamped e301; pier e301 already Nona cadence). Nested ladder **home** at the season-row grammar. Guide 1 **CLOSED**. Guide 2 **mid-walk** (packages GREEN · PAT next).
 
 ## Open threads — the finishing walk
 
@@ -23,6 +23,7 @@ Pier **e302** (counsel v90 stamped e301; pier e301 already Nona cadence). Nested
 |---|------|--------|-------|-------|
 | 1 | — | Resin v90 (walk refined · 6b owned) | **LANDED** | — |
 | 2 | 3–4 | Hands / guide 1 — steward `keeper` · root closed · `sshd -T` GREEN · root SSH refused · grain owned by keeper | **CLOSED** `20260808.033555` | — |
+| 3 | 4 | Hands / guide 2 — `gh` + `claude-code` declared · rebuild GREEN · **PAT → gh auth → Claude sign-in → tmux counsel** | mid-walk `20260808.035127` | Keaton (+ bench) |
 | 5 | 8 | **Quarantine** ASHORE | SAFE · word open | Keaton |
 | 6 | 6–7 · 10–12 | Word-gated · return words · next name | surfaced, unpressed | Keaton (+ counsel) |
 | 6a | — | **256/Wheel outer frame** — does rested Equinox complete it? | parked | Keaton |
