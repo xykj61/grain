@@ -1,3 +1,4 @@
+| `20260808.193357` | [`20260808-193357_withhold-18-foundations-maintainer-specifics.bron`](20260808-193357_withhold-18-foundations-maintainer-specifics.bron) | withhold 18 foundations specifics (real-people + venture + narrative) · 34/56 doctrine ships |
 | `20260808.192655` | [`20260808-192655_foundations-file-granular-subexclude.bron`](20260808-192655_foundations-file-granular-subexclude.bron) | foundations doctrine ships · 4 bio withheld file-granular · no breach · 18 gray-zone flagged |
 | `20260808.191218` | [`20260808-191218_handle-scrub-acme-owner-residue-23.bron`](20260808-191218_handle-scrub-acme-owner-residue-23.bron) | handle scrub · xykj61/autoproject96 → acme-owner · residue 275→23 · witness GREEN |
 | `20260808.190313` | [`20260808-190313_seat-molt-command-word.bron`](20260808-190313_seat-molt-command-word.bron) | seat molt — prep pass for living mutants/fossils · Lexicon + both rule benches |

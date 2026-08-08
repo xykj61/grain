@@ -127,6 +127,29 @@ sub_exclude foundations/20260730-022147_personal-ontology.md               # per
 sub_exclude foundations/20260730-022147_cover-letter-co-authored.md        # a cover letter
 sub_exclude foundations/20260729-220100_the-names-we-did-not-use.md        # personal naming history
 
+# foundations maintainer-specifics (Keaton's word 20260808 — withhold all 18):
+# essays naming real public figures as project-naming rationale
+sub_exclude foundations/20260728-020607_mala-and-kamala-harris.md
+sub_exclude foundations/20260728-021252_gwoh-and-sarah-guo.md
+sub_exclude foundations/20260728-021508_eyva-and-avanti.md
+sub_exclude foundations/20260728-024417_trya-and-ariana-grande.md
+sub_exclude foundations/20260728-025220_murr-and-kyler-murray.md
+sub_exclude foundations/20260728-032134_keeh-and-kia.md
+sub_exclude foundations/20260728-033404_shyu-and-wayne-hsiung.md
+sub_exclude foundations/20260728-033820_shyu-and-hyundai.md
+sub_exclude foundations/20260728-035025_linn-and-helen-atthowe.md
+# venture / fund / treasury specifics
+sub_exclude foundations/20260629-014512_money-that-stays-close-to-home.md
+sub_exclude foundations/20260629-020012_mantrapod-venture-pitch.md
+sub_exclude foundations/20260629-063512_the-wafer-and-the-sovereign-coin.md
+sub_exclude foundations/20260727-113304_the-merit-ledger.md
+sub_exclude foundations/20260727-144447_seva-the-vane-the-fund-and-the-daily-service.md
+sub_exclude foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md
+sub_exclude foundations/20260801-005853_mantrapod-venture-pitch.md
+# personal narrative
+sub_exclude foundations/20260702-202612_a-conversation-with-serena.md
+sub_exclude foundations/20260729-231416_the-application-that-received-no-answer.md
+
 # ---- witness obligations (M1/M2) ----
 # M1 GREEN: every tracked root path above has exactly one verdict, and the set
 #           of paths equals `git ls-files | first-segment | unique`.
