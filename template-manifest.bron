@@ -86,7 +86,7 @@ scrub     active-designing                # design corpus names the maintainer a
 scrub     active-reviving                 # revival corpus, same
 scrub     expanding-prompts               # runnable plans; name-heavy per the audit
 scrub     waymarks                        # claim shelf; name-heavy per the audit
-scrub     foundations                     # the why (template) — yet holds personal bio/resume essays; see sub-exclude
+scrub     foundations                     # the why — doctrine ships (scrubbed); bio withheld file-granular (see sub-exclude)
 scrub     linengrow                       # civic-app pattern (template) — yet holds venture specifics; see sub-exclude
 
 # ---- teaching and study ----
@@ -110,16 +110,22 @@ personal  classical-vedic-astrology       # a personal-life study library, priva
 personal  rye-learning-process            # a personal learning almanac
 personal  keys                            # identity QR cards and key material
 
-# ---- sub-exclude: whole paths withheld even though their verdict is scrub ----
-# These carry personal content that survives a name->role scrub (biography,
-# venture specifics), so the projection withholds the whole path this lap. A
-# later pass may enumerate the exact keeper files and share the doctrine while
-# still withholding the biography. Conservative by design: under-share, never
-# leak. `context` is NOT here — its gitignored personal overrides (a real
-# PUBKEYS.md, a filled GLOW_*.bron) are already untracked, so git ls-files
-# never offers them, and the disciplines the template needs flow through scrub.
-sub_exclude foundations   # resume, personal-ontology, and name-announcement essays (biography)
+# ---- sub-exclude: paths withheld even though their verdict is scrub ----
+# An entry is either a whole path or a single file inside a scrub directory.
+# A file is withheld when it equals an entry or lives under one. This lets the
+# foundations DOCTRINE ship (scrubbed) while the biography beside it stays home
+# (Keaton's word 20260808 — share the doctrine, withhold only the bio).
+# `context` is NOT here — its gitignored personal overrides (a real PUBKEYS.md,
+# a filled GLOW_*.bron) are already untracked, so git ls-files never offers them.
+
+# whole-path:
 sub_exclude linengrow     # civic-app venture/treasury specifics tied to one person
+
+# foundations biography (file-granular) — the doctrine beside these ships:
+sub_exclude foundations/20260730-022147_keaton-livermore-resume-draft.md   # a resume
+sub_exclude foundations/20260730-022147_personal-ontology.md               # personal ontology
+sub_exclude foundations/20260730-022147_cover-letter-co-authored.md        # a cover letter
+sub_exclude foundations/20260729-220100_the-names-we-did-not-use.md        # personal naming history
 
 # ---- witness obligations (M1/M2) ----
 # M1 GREEN: every tracked root path above has exactly one verdict, and the set
