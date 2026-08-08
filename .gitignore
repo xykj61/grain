@@ -150,13 +150,17 @@ Icon
 /tools/secrets.env
 /tools/launch-cursor.sh
 /tools/launch-zed.sh
-# Tracked launchers (not gitignored): tools/cursor-jail.sh, tools/launch-cursor.rish
+# Tracked launchers (not gitignored): tools/cursor-jail.sh, tools/launch-cursor.rish,
+# tools/agent-jail.sh, tools/launch-claude.rish, tools/launch-cursor-agent.rish
 /tools/.build/
 /tools/bin/
 
 # --- Editor state inside the project (ai-jail durable ground) ---------------
 /.cursor-state/
 /.zed-state/
+/.claude-state/                              # Claude Code CLI auth under agent-jail
+/.cursor-agent-state/                        # Cursor Agent CLI auth under agent-jail
+
 /squashfs-root/                              # extracted Cursor AppImage — binary, not source
 /Cursor-*.AppImage                           # downloaded AppImages at repo root
 

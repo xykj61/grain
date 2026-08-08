@@ -1,3 +1,4 @@
+| `20260808.042021` | [`20260808-042021_agent-jail-pier-landed.bron`](20260808-042021_agent-jail-pier-landed.bron) | agent-jail landed · witness + pong GREEN |
 | `20260808.040720` | [`20260808-040720_guide2-closed-claude-on-pier.bron`](20260808-040720_guide2-closed-claude-on-pier.bron) | guide 2 CLOSED · Claude on pier |
 | `20260808.040100` | [`20260808-040100_claude-doctor-probe-hung.bron`](20260808-040100_claude-doctor-probe-hung.bron) | claude doctor probe hung · killed |
 | `20260808.040026` | [`20260808-040026_guide2-gh-auth-green.bron`](20260808-040026_guide2-gh-auth-green.bron) | guide 2 M3 GREEN · gh as xykj61 |

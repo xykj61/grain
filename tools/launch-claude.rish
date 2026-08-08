@@ -1,0 +1,15 @@
+# launch-claude.rish — start Claude Code inside ai-jail from the repository root.
+#
+# Primary Rish entry. Bash elder: tools/agent-jail.sh claude …
+# Keeper pier / Linux: --private-home; auth under .claude-state/.
+#
+#   rishi/bin/rishi run tools/launch-claude.rish
+#   rishi/bin/rishi run tools/launch-claude.rish -- -p "reply with exactly: pong"
+#
+# Args after the script name forward to claude (use -- to stop flag parse if needed).
+# Shell equivalent: ./tools/agent-jail.sh claude …
+# See: nixos-guide CLI-agents note · context/specs/enclosure-editors.md
+
+let result = run ["bash" "tools/agent-jail.sh" "claude"]
+say "launch-claude: agent-jail finished — ok=${result.ok}"
+assert result.ok else "agent-jail failed to start claude"

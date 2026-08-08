@@ -17,9 +17,16 @@ ZED_BIN="zed"                              # optional hint; script also checks ~
 # Project-local state (kept inside ai-jail's durable tree)
 CURSOR_STATE="$REPO/.cursor-state"
 ZED_STATE="$REPO/.zed-state"
+# CLI agents (tools/agent-jail.sh) — gitignored; survive --private-home tmpfs HOME
+CLAUDE_STATE="$REPO/.claude-state"
+CURSOR_AGENT_STATE="$REPO/.cursor-agent-state"
+GH_STATE="$REPO/.gh"
+# Optional: copy host ~/.claude.json to $CLAUDE_STATE/dot-claude.json for quieter Claude starts
 
 # ai-jail flags (space-separated; default matches SOURCE.md)
 AIJAIL_FLAGS="--private-home --no-docker"
+# Headless pier / CLI agents: add --no-gpu
+# AIJAIL_FLAGS="--private-home --no-docker --no-gpu"
 # AIJAIL_BIN="/home/youruser/.local/bin/ai-jail"  # optional; avoids ./ai-jail source dir on PATH
 # Preferred pin (gitignored cache — survives jail $HOME reset):
 #   mkdir -p tools/.cache/bin && cd tools/.cache/bin
@@ -27,8 +34,13 @@ AIJAIL_FLAGS="--private-home --no-docker"
 #   echo "91458f153c7b0a87d79aae9014b558a0cfc4b160b7e390008a00c1adfc3edc21  ai-jail-linux-x86_64.tar.gz" | sha256sum -c -
 #   tar -xzf ai-jail-linux-x86_64.tar.gz && rm ai-jail-linux-x86_64.tar.gz
 # AIJAIL_BIN="$REPO/tools/.cache/bin/ai-jail"   # seated v1.12.0 · Claude pin 20260712.131200
+# NixOS: release tarballs hit stub-ld — prefer:
+#   nix profile install github:akitaonrails/ai-jail
+#   AIJAIL_BIN="$HOME/.nix-profile/bin/ai-jail"
+# Also keep empty /opt (bwrap ro-bind): systemd.tmpfiles.rules = [ "d /opt 0755 root root -" ];
 
 # Zed on GNOME Wayland needs GPU passthrough (/dev/dri). Cursor can stay false.
+# Keeper pier (headless): USE_GPU=false
 USE_GPU=true
 
 # KVM device lane (counsel 20260712.090512 A-narrow). Off by default.
