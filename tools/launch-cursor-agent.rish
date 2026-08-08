@@ -4,7 +4,13 @@
 # Keeper pier / Linux: --private-home; auth under .cursor-agent-state/.
 #
 #   rishi/bin/rishi run tools/launch-cursor-agent.rish
-#   rishi/bin/rishi run tools/launch-cursor-agent.rish -- -p "what is the hostname"
+#
+# Resume / print / other agent flags: use the bash elder (Rish does not yet
+# forward script argv into this launcher):
+#   ./tools/agent-jail.sh agent --resume=CHAT_ID
+#   ./tools/agent-jail.sh --resume=CHAT_ID agent
+#   ./tools/agent-jail.sh --continue agent
+#   ./tools/agent-jail.sh cursor-agent -p "what is the hostname"
 #
 # Shell equivalent: ./tools/agent-jail.sh cursor-agent …
 # See: nixos-guide CLI-agents note · context/specs/enclosure-editors.md

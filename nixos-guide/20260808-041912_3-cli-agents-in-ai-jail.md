@@ -36,6 +36,10 @@ From `~/grain`:
 ```bash
 ./tools/agent-jail.sh claude
 ./tools/agent-jail.sh cursor-agent
+# Resume a Cursor Agent chat (either flag seat works):
+./tools/agent-jail.sh agent --resume=83513e3f-ec89-4924-a12b-f11189b04927
+./tools/agent-jail.sh --resume=83513e3f-ec89-4924-a12b-f11189b04927 agent
+./tools/agent-jail.sh --continue agent
 # or:
 rishi/bin/rishi run tools/launch-claude.rish
 rishi/bin/rishi run tools/launch-cursor-agent.rish

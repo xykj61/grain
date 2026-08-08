@@ -1,3 +1,4 @@
+| `20260808.061505` | [`20260808-061505_agent-jail-resume-flag.bron`](20260808-061505_agent-jail-resume-flag.bron) | agent-jail --resume / --continue forward to cursor-agent |
 | `20260808.060835` | [`20260808-060835_editors-cursor-cli-bump-witnessed.bron`](20260808-060835_editors-cursor-cli-bump-witnessed.bron) | editors + Aug cursor-cli WITNESSED on pier |
 | `20260808.060340` | [`20260808-060340_editors-cursor-cli-bump-staged.bron`](20260808-060340_editors-cursor-cli-bump-staged.bron) | vim/nvim/kak + Aug cursor-cli staged · host apply |
 | `20260808.055822` | [`20260808-055822_tmux-pier-already-standing.bron`](20260808-055822_tmux-pier-already-standing.bron) | tmux pier already standing · jail could not see it |
