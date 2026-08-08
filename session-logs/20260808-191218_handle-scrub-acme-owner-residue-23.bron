@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260808.191218
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title handle scrub — xykj61/autoproject96 -> acme-owner · residue 23
+prompt swap the handles for acme-owner placeholder
+think Keaton's ruling unblocks the M3 residue — the forge handles were the reason 201 expanding-prompts files were withheld
+obs added two lines to tools/fixtures/sow_scrub.sed — xykj61 -> acme-owner, autoproject96 -> acme-owner; the field keeps its real handles, only the projected seed gets the placeholder a forker replaces
+obs kept the real Azimuth ship names (bandun, pacpet-solreb) out of scope — those are code literals whose value is behavior, not prose; files carrying them stay withheld
+obs witness GREEN — withheld dropped 275 -> 23; acme-owner now in 255 seed files; zero stray xykj61/autoproject96 in the seed
+obs the 23 residue is the honest floor — 11 embedded-key files (PUBKEYS.md, .pub.asc signing keys, keys README, NixOS authorized_keys configs; must never publish) and 12 ship-literal files (mycelium code, the Azimuth/placeholder rules that teach ship names, and the sow tooling itself, which names the points in order to catch them)
+obs further shrink needs decisions not machinery — placeholder-key swaps in the NixOS guides, or ~acme ship-name edits in the rules; both careful, both optional
+obs read the seat/log stamps from the live EDT clock (191218) per the standing lesson — no fabrication
+file tools/fixtures/sow_scrub.sed the two handle mappings + scope note
+file session-logs/20260808-191218_handle-scrub-acme-owner-residue-23.bron this record
+git_nib 9a9237eba0
+recommend check-in (Claude) M3 mechanical scope is essentially done (residue 23 is the real-key + ship-literal floor); next gate is Keaton's human read of seed/ before M4 (git init seed + push grain-os)
