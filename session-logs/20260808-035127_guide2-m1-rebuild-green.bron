@@ -1,0 +1,15 @@
+format session-log-v1
+stamp 20260808.035127
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · mosh from Daylight DC-1 · Cursor CLI
+title guide 2 M1 rebuild GREEN — gh and claude on PATH
+prompt passwd changed
+think new steward password unlocked Cursor askpass · guide2-m1.sh ran as sudo -A
+obs rebuild Done store 6vz7490l7484pi8yxfd3kvs542xlrza5 · gh 2.97.0 · claude-code 2.1.187
+obs Movements 2-3 PAT mint and gh auth login stay Keaton hands · token never enters grain
+file nixos-guide/20260803-165931_2-github-hands-and-a-thinking-pier.md mid-course status
+file /etc/nixos/configuration.nix living · gh · claude-code
+git_nib 3e961e06ad
+recommend check-in (Cursor) mint PAT classic repo then gh auth login --with-token

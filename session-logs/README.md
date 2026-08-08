@@ -1,3 +1,9 @@
+| `20260808.035127` | [`20260808-035127_guide2-m1-rebuild-green.bron`](20260808-035127_guide2-m1-rebuild-green.bron) | guide 2 M1 rebuild GREEN · gh + claude |
+| `20260808.034536` | [`20260808-034536_secure-password-dev-server-2026.bron`](20260808-034536_secure-password-dev-server-2026.bron) | secure password lean · steward sudo 2026 |
+| `20260808.034400` | [`20260808-034400_sudo-askpass-paste-newline.bron`](20260808-034400_sudo-askpass-paste-newline.bron) | sudo askpass · paste newline lean |
+| `20260808.034220` | [`20260808-034220_guide2-rebuild-askpass-denied.bron`](20260808-034220_guide2-rebuild-askpass-denied.bron) | guide 2 rebuild · askpass denied |
+| `20260808.033954` | [`20260808-033954_guide2-walk-opens.bron`](20260808-033954_guide2-walk-opens.bron) | guide 2 walk opens · gh + claude-code staged |
+| `20260808.033842` | [`20260808-033842_next-door-lean-guide2.bron`](20260808-033842_next-door-lean-guide2.bron) | next-door lean · guide 2 over 6a/6b |
 | `20260808.033705` | [`20260808-033705_guide1-root-door-closed.bron`](20260808-033705_guide1-root-door-closed.bron) | guide 1 CLOSED · root door closed · grain to keeper |
 | `20260808.033500` | [`20260808-033500_sshd-declared-green-chown-open.bron`](20260808-033500_sshd-declared-green-chown-open.bron) | sshd declared GREEN · chown still open |
 | `20260808.033330` | [`20260808-033330_root-close-rebuild-green.bron`](20260808-033330_root-close-rebuild-green.bron) | root close rebuild GREEN · chown stranded |
