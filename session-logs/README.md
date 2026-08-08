@@ -1,3 +1,5 @@
+| `20260808.055655` | [`20260808-055655_mosh-crash-vultr-hard-restart.bron`](20260808-055655_mosh-crash-vultr-hard-restart.bron) | mosh crash · Vultr hard restart · panel vGPU ~97% |
+| `20260808.045331` | [`20260808-045331_two-grains-template-breach-plan.bron`](20260808-045331_two-grains-template-breach-plan.bron) | two grains · template breach + code distillation plan · gated on word |
 | `20260808.043325` | [`20260808-043325_claude-code-jail-confirmed.bron`](20260808-043325_claude-code-jail-confirmed.bron) | claude-code jail confirmed live · this session in ai-sandbox |
 | `20260808.042438` | [`20260808-042438_pier-cursor-agent-jail-confirmed.bron`](20260808-042438_pier-cursor-agent-jail-confirmed.bron) | pier cursor-agent jail confirmed live · ai-sandbox |
 | `20260808.042930` | [`20260808-042930_agent-jail-witness-from-host.bron`](20260808-042930_agent-jail-witness-from-host.bron) | witness from host · not inside jail |

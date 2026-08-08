@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260808.055655
+editor Cursor
+model Cursor Grok 4.5 300k High Fast
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · mosh from Daylight DC-1 · Cursor CLI inside ai-sandbox
+title mosh crash · Vultr hard restart · vGPU 97
+prompt agent mosh session crashed · hard restart via Vultr web UI · vGPU was at 97 percent
+think Keaton reports escape hatch used — mosh dead · Vultr panel hard restart · panel showed vGPU near full
+think Witness pier after reboot — up about seven minutes · Mem 3.8Gi with about 2.7Gi available · Swap zero · no nvidia-smi · no /dev/dri · no pci display lines
+think Guest has no GPU device — 97 percent vGPU is a Vultr panel or host meter · not a local CUDA lane · guide already seats USE_GPU=false for this pier
+think tmux pier session absent after reboot — standing desk wants re-raise · RAM quiet now · load average calm
+obs Hard restart was the right escape when the roaming shell died. Shared 2vCPU/4GB pier can wedge under agent weight · panel GPU meter pegged before the freeze · no guest GPU to query after reboot.
+obs Prevention leans stay ungated words — keep USE_GPU false · prefer CLI agents over GPU Zed on this box · optional swap or plan step-up · re-raise tmux pier before deep work.
+file session-logs/20260808-055655_mosh-crash-vultr-hard-restart.bron incident witness
+file session-logs/README.md newest-first index row
+file work-in-progress/REMEMBER.md tmux truth + git nib after hard restart
+recommend check-in (Cursor) re-raise tmux pier · then decide whether to add swap or keep the lean as USE_GPU false only
