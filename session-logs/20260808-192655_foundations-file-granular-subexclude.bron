@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260808.192655
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title foundations — share doctrine, withhold bio (file-granular sub_exclude)
+prompt share the foundations doctrine, withhold only the bio; can you seat a breach to molt the bio into a separate gitignored folder, or suggest a better recommendation
+think Keaton proposed a breach (relocate bio to a new folder) and used "molt" for it — clarified molt is the version-prep word (living mutant + fossil), and relocation is a breach; recommended neither
+obs better recommendation seated — file-granular sub_exclude, no breach: personal-ontology is cited by 5 files and the resume by 1, so relocating breaks citations for no gain; the seed is projected, not gitignore-filtered, so the withhold lives in the manifest; and bio woven into a doctrine file is name-scrubbed in place, which relocation cannot do
+obs implemented the designed mechanism — sow_project.sh is_subex now matches a whole path OR a file under it; manifest lists four foundations bio files file-granular (resume, personal-ontology, cover-letter, names-we-did-not-use); foundations verdict stays scrub so the doctrine ships
+obs strengthened the witness — sow_personal_scan now checks no sub_exclude path (whole or file) appears in the seed
+obs GREEN — 52 of 56 foundations files now ship (the-breach, reds-first, five-pillars, custody-first, four-promises, follow-our-compass...); the 4 bio withheld and confirmed absent
+red-flag (not a code red) — "only the bio" leaves 18 maintainer-specific essays shipping that likely do not belong in a public template: 9 naming real public figures (Kamala Harris, Ariana Grande, Sarah Guo, Wayne Hsiung, Helen Atthowe, Kyler Murray, ...), 7 venture/fund pitches (mantrapod x2, seva-fund, wafer-sovereign-coin, money-close-to-home, merit-ledger), 2 personal narratives (conversation-with-serena, received-no-answer)
+obs did not withhold the 18 unilaterally — that exceeds the literal instruction; surfaced them for Keaton's ruling since a public template naming real people and specific ventures is a real exposure
+obs read the stamp from the live EDT clock (192655) per the standing lesson
+file tools/fixtures/sow_project.sh file-granular sub_exclude via is_subex
+file tools/fixtures/sow_personal_scan.sh witness now verifies no sub_exclude path leaks
+file template-manifest.bron foundations scrub + four file-granular bio excludes
+file session-logs/20260808-192655_foundations-file-granular-subexclude.bron this record
+git_nib a9eccdb858
+recommend check-in (Claude) doctrine now ships and bio is withheld; the open ruling is whether to also withhold the 18 real-people-naming + venture + narrative essays before the seed publishes
