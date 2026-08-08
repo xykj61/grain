@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20260808.183736
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title sow M2 — projection tool + witness GREEN
+prompt go ahead with the field + seed layout, option b confirmed
+think Keaton confirmed the field + seed layout and Option B — the word to wire the layout and build M2 (still private-field, nothing published)
+think documented seed/ in .gitignore — the allowlist /* already withholds it, so the line is explicit intent, not a new rule
+think pre-checked whether template-verdict paths are identity-clean before writing a tool that assumes verbatim copy — they are NOT: tools/ 85 files, edu 13, nixos-guide 7, plus one-off .rye headers carry Keaton/Kaeden/xykj61
+obs that pre-check reshaped M2 safely — sow.rish copies a template file ONLY if it is identity-clean; any name-bearing file is withheld and logged for the M3 scrub pass, so the seed is clean by construction, not by trust
+obs built the machinery as a POSIX seam (tools/fixtures/sow_project.sh via git ls-files, so only tracked files move and gitignored bin/.cache junk never reaches the seed) driven by thin Rishi (tools/sow.rish) and proven by tools/sow_witness.rish
+obs witness GREEN on metal — M1_OK (manifest covers all 78 root paths) · SOW_OK copied=2578 withheld=138 · IDENT_CLEAN (no maintainer name in seed) · NO_PERSONAL (no personal path or key) · seed 15M
+obs the 138 withheld files are the M3 scrub work-list; not booked as a red — the names are legitimate in the field and the witness withholds them safely; this is a ratchet that turns down as scrub lands
+obs gratitude/ and vendor/ submodules withheld from the copy by design — the seed re-adds them via .gitmodules rather than vendoring gigabytes
+file .gitignore seed/ documented as the projected public repo, never tracked by the field
+file template-manifest.bron the M1 source of truth the projection reads
+file tools/fixtures/sow_project.sh the projection POSIX seam — identity-clean tracked files only
+file tools/fixtures/sow_manifest_cover.sh M1 completeness scan
+file tools/fixtures/sow_leak_scan.sh the negative that matters — no identity in seed
+file tools/fixtures/sow_personal_scan.sh no personal path or key in seed
+file tools/sow.rish thin Rishi driver for the projection
+file tools/sow_witness.rish proves the seed clean — four duties, GREEN
+file session-logs/20260808-183736_sow-m2-projection-witness-green.bron this record
+git_nib 07a71cfee1
+recommend check-in (Claude) M2 GREEN; next gates are Keaton's review of the manifest verdicts (informed by the 138-file withheld set) and the send word; then M3 scrub, then M4 git init seed + push grain-os — publish still waits for a GREEN seed he has seen

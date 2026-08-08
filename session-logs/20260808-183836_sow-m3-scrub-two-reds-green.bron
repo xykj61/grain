@@ -1,0 +1,26 @@
+format session-log-v1
+stamp 20260808.183836
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title sow M3 lap 1 — name-scrub + two key-material reds caught, GREEN
+prompt go in the best path you recommend
+think investigated the 138 withheld files before choosing scrub vs nock nest — the identity strings are overwhelmingly prose decision-authority ("on Keaton's word", "held for Keaton"), exactly what the Acme-voice rule converts to a role
+think a handful are functional, not prose — the xykj61/autoproject96 handles and real ship names (bandun) used as code literals — which must NOT be blind-replaced
+obs chose the best path — extend the projection with a name->role scrub (tools/fixtures/sow_scrub.sed) covering both template and scrub verdicts; keep a scrubbed file only if it comes out fully identity-clean, else withhold; functional handles are never in the sed, so their files stay withheld by construction
+obs refined sub_exclude to whole-path withholds (foundations biography, linengrow venture) and dropped context — its gitignored personal overrides are already untracked, and the disciplines the template needs flow through scrub
+red 61 — the projection copied context/PUBKEYS.md (canonical committed fingerprints) into the seed; a name-scrub cannot catch a fingerprint; caught by sow_witness duty 4 (PERSONAL_BAD) before any push; fixed with a basename key-material guard at the projection edge
+red 62 — six ordinary docs (keys README, NixOS guides) embedded real ssh-ed25519 pubkey lines; caught after adding a content guard to the witness; fixed by adding the same embedded-key content guard to the projection
+obs both reds recorded in work-in-progress/REDS.md rows 61-62 with all three fields; both fixed in-round with the witness GREEN on metal after; allocation released — the witness held the line where it was built to
+obs final witness GREEN — M1_OK · copied=4289 scrubbed=943 withheld=275 · IDENT_CLEAN · NO_PERSONAL (names + key files + embedded key blocks) · seed ~5232 files
+obs honesty boundary named in the tool + witness — the mechanism proves no identity STRING and no key; it does not prove a full editorial privacy review, which is the human read that gates M4 (publish), never this mechanism alone
+file tools/fixtures/sow_scrub.sed the name->role map; functional handles deliberately absent
+file tools/fixtures/sow_project.sh unified template+scrub pipeline · basename + embedded-key guards · sub_exclude honored
+file tools/fixtures/sow_personal_scan.sh strengthened — key files + embedded key-block content scan
+file tools/fixtures/sow_leak_scan.sh excludes both projection logs
+file template-manifest.bron sub_exclude refined to foundations + linengrow; context dropped
+file work-in-progress/REDS.md rows 61-62 — the two key-material reds the seed witness caught
+file session-logs/20260808-183836_sow-m3-scrub-two-reds-green.bron this record
+git_nib 07a71cfee1
+recommend check-in (Claude) M3 lap 1 GREEN; the 275 residue (201 in expanding-prompts — functional handles) is the next scrub target; then the human read of seed/ and M4 (git init + push grain-os); send word still opens the field commit

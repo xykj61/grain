@@ -1,0 +1,128 @@
+format template-manifest-v1
+stamp 20260808.183536
+voice Riyo
+status proposal
+# The single source of truth for the two-grain boundary.
+# Companion plan: external-research/20260808-045124_two-grains-template-breach-and-code-distillation-plan.md
+# Root-nesting plan:  external-research/20260808-183336_the-compact-root-nesting-for-a-public-seed.md
+#
+# Every tracked root path carries exactly one verdict:
+#   template — copied verbatim into the public seed (grain-os/grain)
+#   scrub    — copied only after the name->role / Acme-voice transform (.claude/rules/acme-employee-voice.md)
+#   personal — never copied; lives only in the private field
+#
+# FAIL-SAFE: when a path's contents are uncertain, it is personal (withhold).
+# A privacy boundary built additively cannot leak what it never received.
+#
+# A `scrub` directory may still hold individual `personal` files that the
+# projection must exclude by sub-path; those are named in the sub-exclude
+# section at the foot. The projection tool (proposed tools/sow.rish) reads
+# this file and its witness proves: no personal path, no real key, no real
+# name ever appears in the projected seed.
+
+# ---- dotfiles and root config ----
+template  .brix                          # root Brix descriptor
+template  .cursorignore                  # editor ignore posture
+template  .gitattributes                 # attribute rules
+template  .gitignore                     # allowlist posture — exactly what a template wants
+template  .gitmodules                    # gratitude/ and vendor/ submodule pins only
+template  .vscode                        # editor settings, no personal data
+template  template-manifest.bron         # this file — the boundary's own definition (withheld anyway: lists keys_xykj61_* names)
+scrub     .claude                        # rules name the maintainer as decision authority (session-logs, collaboration, riyo)
+scrub     .cursor                        # Cursor twins of the same rules
+
+# ---- root files ----
+scrub     README.md                      # names the living identity in its foot
+scrub     MAP.md                          # identity line + Keaton by name
+scrub     SOURCE.md                       # onboarding guide; names the maintainer
+scrub     CLAUDE.md                       # project instructions; heavy identity + voice
+scrub     CONTRIBUTING.md                 # may name; commit-shape guidance
+scrub     ORGANIZING.md                   # names the keeper throughout
+scrub     bibliography.md                 # source gathering; scrub any naming
+scrub     llms.txt                        # model-facing map; scrub identity
+scrub     LICENSE-APACHE                  # copyright holder is a real name
+scrub     LICENSE-MIT                     # copyright holder is a real name
+scrub     LICENSE-CC-BY                   # copyright holder is a real name
+template  GLOW_HOST.template.bron          # the withheld-fill-in template itself
+template  GLOW_PROFILE.template.bron       # the withheld-fill-in template itself
+template  PUBKEYS.template.md              # the withheld-fill-in template itself
+personal  PUBKEYS.md                       # real SSH + OpenPGP fingerprints
+personal  SAFE.md                          # custody by real name
+personal  STEWARDS.md                      # steward mapping by real name
+personal  keys_menlo_xykj61_landscape.png  # real identity key card
+personal  keys_menlo_xykj61_portrait.png   # real identity key card
+personal  keys_xykj61_contact_email.svg    # real contact card
+personal  keys_xykj61_openpgp.svg          # real key card
+personal  keys_xykj61_ssh_github.svg       # real key card
+
+# ---- language and system code (the template's heart) ----
+template  amphora                         # module
+template  aurora                          # boot
+template  brushstroke                     # drawing
+template  caravan                         # supervision
+template  cellar                          # module
+template  comlink                         # device wire
+template  glow                            # the Glow language implementation (nock nests here per the compact-root plan)
+template  granary                         # module
+template  dimeroll                      # module
+template  lantern                         # inference lantern
+template  lattice                         # module
+template  mand                            # authority
+template  mandi                           # module
+template  mantra                          # versions
+template  mycelium                        # module
+template  kiln                            # module
+template  pond                            # enclosure
+template  rishi                           # the shell language
+template  rye                             # the systems language
+template  scribble                        # module
+template  src                             # Glow userland (five rooms)
+template  tally                           # bounded allocation
+template  tools                           # witnesses and gates; gitignored secrets never enter; scrub any name on touch
+
+# ---- disciplines and design corpus (scrub: technical, yet name-bearing) ----
+scrub     context                         # disciplines + specs + identity (RIYO/QUIN) — scrub identity, keep law
+scrub     active-designing                # design corpus names the maintainer as decision authority
+scrub     active-reviving                 # revival corpus, same
+scrub     expanding-prompts               # runnable plans; name-heavy per the audit
+scrub     waymarks                        # claim shelf; name-heavy per the audit
+scrub     foundations                     # the why (template) — yet holds personal bio/resume essays; see sub-exclude
+scrub     linengrow                       # civic-app pattern (template) — yet holds venture specifics; see sub-exclude
+
+# ---- teaching and study ----
+template  docs                            # compressor pages; cite witnesses
+template  docs-geode                      # teaching
+template  edu                             # the learning floor
+template  manual                          # the four teaching rooms
+template  nixos-guide                     # host setup guide
+scrub     external-research               # study of the world; name-bearing memos — scrub identity
+template  gratitude                       # third-party, held whole and unmodified
+template  vendor                          # third-party build source, unmodified
+
+# ---- personal record (never copied) ----
+personal  session-logs                    # years of reasoning traces that name the maintainer by design
+personal  counsel                         # decision records — "on the maintainer's word"
+personal  bron-resins                     # compressed personal reasoning trails
+personal  work-in-progress                # the live operator cards of one maintainer
+personal  press                           # personal announcements — name change, fund, ventures
+personal  saga                            # season-close narratives, one steward's arc
+personal  classical-vedic-astrology       # a personal-life study library, privacy-gated
+personal  rye-learning-process            # a personal learning almanac
+personal  keys                            # identity QR cards and key material
+
+# ---- sub-exclude: whole paths withheld even though their verdict is scrub ----
+# These carry personal content that survives a name->role scrub (biography,
+# venture specifics), so the projection withholds the whole path this lap. A
+# later pass may enumerate the exact keeper files and share the doctrine while
+# still withholding the biography. Conservative by design: under-share, never
+# leak. `context` is NOT here — its gitignored personal overrides (a real
+# PUBKEYS.md, a filled GLOW_*.bron) are already untracked, so git ls-files
+# never offers them, and the disciplines the template needs flow through scrub.
+sub_exclude foundations   # resume, personal-ontology, and name-announcement essays (biography)
+sub_exclude linengrow     # civic-app venture/treasury specifics tied to one person
+
+# ---- witness obligations (M1/M2) ----
+# M1 GREEN: every tracked root path above has exactly one verdict, and the set
+#           of paths equals `git ls-files | first-segment | unique`.
+# M2 GREEN: the projected seed contains no `personal` path, no `sub_exclude`
+#           path, no real key fingerprint, and no maintainer name.
