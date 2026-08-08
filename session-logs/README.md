@@ -1,3 +1,4 @@
+| `20260808.190313` | [`20260808-190313_seat-molt-command-word.bron`](20260808-190313_seat-molt-command-word.bron) | seat molt — prep pass for living mutants/fossils · Lexicon + both rule benches |
 | `20260808.185432` | [`20260808-185432_stamp-correction-and-map-molt-proposal.bron`](20260808-185432_stamp-correction-and-map-molt-proposal.bron) | stamp correction (9 fabricated→live EDT, force-pushed) · seven-room map · molt proposed |
 | `20260808.183936` | [`20260808-183936_nock-into-glow-breach-green.bron`](20260808-183936_nock-into-glow-breach-green.bron) | nock into glow · breach GREEN both sides · 9 files renamed · witnesses + sow green |
 | `20260808.183836` | [`20260808-183836_sow-m3-scrub-two-reds-green.bron`](20260808-183836_sow-m3-scrub-two-reds-green.bron) | sow M3 scrub · name→role · two key-material reds caught (PUBKEYS + embedded pubkeys) · GREEN |
