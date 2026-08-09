@@ -13,7 +13,7 @@
 
 ## What this is
 
-**docs-geode** is the repo-root **prod** shelf for canonical documentation that ships. It is not `docs/` (compression / waymark guides) and not dated counsel. Fascial **waves** (= Grain **years**) feed it; **MUR** · **Tally** · weave rounds **crush** (compile) the geode into professional, Radiant-linted, happy-zoned, sameness-macroed, single-stranded, hammocked surfaces.
+**docs-geode** is the repo-root **prod** shelf for canonical documentation that ships. It holds shipping docs, rather than `docs/` (compression / waymark guides) or dated counsel. Fascial **waves** (= Grain **years**) feed it, and **MUR** · **Tally** · weave rounds **crush** (compile) the geode into professional, Radiant-linted, happy-zoned, sameness-macroed, single-stranded, hammocked surfaces.
 
 | Room | Role | Living content |
 |------|------|----------------|

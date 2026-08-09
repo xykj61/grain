@@ -65,7 +65,7 @@ The full vision — a public benefit corporation, a computational data market, s
 | **Dimeroll** | **Centralized books** — moved to own root [`../dimeroll/`](../dimeroll/); witnesses **207**–**209** | hammock [`../active-designing/20260710-125953_dimeroll-hammock.md`](../active-designing/20260710-125953_dimeroll-hammock.md) |
 | **Horizon** | The data market, premium tiers, state-currency circulation, the PBC and its rounds | the business model, below |
 
-The first lap needs no ledger and no currency — only the foundations Rye OS already grows. A sanctuary receiving donations with cryptographic receipts is a complete, lovable, honest beginning, and everything larger grows from it.
+The first lap needs no ledger and no currency — only the foundations Rye OS already grows. A sanctuary receiving donations with cryptographic receipts is a complete, lovable, honest beginning, and everything larger grows from there.
 
 ---
 

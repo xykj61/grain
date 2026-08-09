@@ -11,7 +11,7 @@
 
 ## What a Baton Is
 
-A baton is state that crosses a boundary whole. A meter reads the present where it stands; a baton carries the present across a seam — session to session, counsel to bench, journey to season, agent to successor — so that the far side opens already knowing where it stands. The word was seated by Keaton's word this session, and the museum gathers every shape the practice has grown, because a concept earns its module at its second outside consumer, and the baton found its eleventh long before it found its name.
+A baton is state that crosses a boundary whole. A meter reads the present where it stands; a baton carries the present across a seam — session to session, counsel to bench, journey to season, agent to successor — so that the far side opens already knowing where it stands. Keaton's word seated the term this session, and the museum gathers every shape the practice has grown, because a concept earns its module at its second outside consumer — and the baton found its eleventh long before it found its name.
 
 ## The Thirteen Halls
 

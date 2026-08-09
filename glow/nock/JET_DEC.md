@@ -22,7 +22,7 @@ A jet is a faster spelling of an already-proven answer, never a second, independ
 
 ## The Honest Limit, Named Rather Than Hidden
 
-This interpreter's own `max_depth` (64, tuned for laps 1–3's shallow fixtures) comfortably computes the slow `dec` core through roughly `n=10` before the bound catches it. This is not a defect to quietly work around — it is exactly what a bounded interpreter should do with a real, deeper computation: refuse cleanly rather than trust an unbounded call stack. A production interpreter wanting deeper chains would reach for either a larger bound or genuine tail-call elimination (the slow `dec` core's own recursive step is a true tail call, needing no growing stack at all in principle) — neither built here, and named honestly as future work rather than claimed.
+This interpreter's own `max_depth` (64, tuned for laps 1–3's shallow fixtures) comfortably computes the slow `dec` core through roughly `n=10` before the bound catches it. This is exactly what a bounded interpreter should do with a real, deeper computation — refuse cleanly rather than trust an unbounded call stack, a design choice rather than a defect to quietly work around. A production interpreter wanting deeper chains would reach for either a larger bound or genuine tail-call elimination (the slow `dec` core's own recursive step is a true tail call, needing no growing stack at all in principle) — future work named honestly here, rather than built and claimed.
 
 ## What This Does Not Claim
 

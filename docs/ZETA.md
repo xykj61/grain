@@ -12,7 +12,7 @@
 
 ## Thesis — paint the hand
 
-Bare NativeActivity does not attach Graphene/AOSP soft IME reliably. **ZETA** is Glow’s own English QWERTY on Skate: layout tables → paint → tap → Dexter `Action`. iOS-inspired modes from public notes; clean-room.
+**ZETA** is Glow’s own English QWERTY on Skate: layout tables → paint → tap → Dexter `Action` — Glow paints the hand itself, rather than leaning on the Graphene/AOSP soft IME, which bare NativeActivity does not attach reliably. iOS-inspired modes from public notes; clean-room.
 
 **Waymark draw:** input `glow-english-qwerty-glass-keyboard-3` · SHA3-512 · flw.txt → **ZETA** (`tools/waymark_derive.rish`, `20260717.180025`).
 

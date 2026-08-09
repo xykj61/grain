@@ -17,7 +17,7 @@
 
 Three pegs. A tower of rings on the first, each smaller than the one beneath. Move the whole tower to the third peg, one ring at a time, never resting a larger ring on a smaller. The classic teaching solves it recursively: *move n−1 aside, move the base, move n−1 back on top* — three lines of self-call, and the machine's hidden call stack does the bookkeeping.
 
-Our root law reads differently: **control flow stays simple and explicit; recursion stays out.** Not because the recursive telling is wrong — it is lovely — but because a hidden stack has an unnamed depth, and an unnamed depth is a bound nobody wrote down. TAME asks: *how large can this grow?* stated up front. So our tower keeps the same three-part insight and moves the bookkeeping into the open.
+Our root law reads differently: **control flow stays simple and explicit; recursion stays out.** The recursive telling is lovely, yet a hidden stack carries an unnamed depth, and an unnamed depth is a bound nobody wrote down. TAME asks *how large can this grow?* and asks it up front. So our tower keeps the same three-part insight and moves the bookkeeping into the open.
 
 ## The bound, named before the machine runs
 
@@ -30,7 +30,7 @@ const max_frames: u32 = 2 * max_rings - 1; // invariant: the frame stack never e
 
 ## The frame, and the stack that carries it
 
-A recursive call is just a record the machine was keeping for you. We keep it ourselves, in a fixed array — no allocator, no hidden growth:
+A recursive call is a record the machine keeps for you. We keep it ourselves, in a fixed array — no allocator, no hidden growth:
 
 ```zig
 // Invariant: a Task is either a move of `count` rings through the pegs,

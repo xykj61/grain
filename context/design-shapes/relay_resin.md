@@ -11,7 +11,7 @@
 
 ## Why This Shape Exists
 
-Amphora reached its second consumer and became a pattern, so the pattern earns a design shape in the wing — the same courtesy the wing already extends to build bounds and tend hygiene. And a shape written down invites the question a shape in the head avoids: what are its bounds? The resin limb introduced last pass had none, which the house forbids. Naming the bound here closes that fault before it costs anything.
+Amphora reached its second consumer and became a pattern, so the pattern earns a design shape in the wing — the same courtesy the wing already extends to build bounds and tend hygiene. A shape written down invites the question a shape in the head avoids: what are its bounds? The resin limb introduced last pass had none, which the house forbids. Naming the bound here closes that fault before it costs anything.
 
 ## The Bound, With Its Why
 

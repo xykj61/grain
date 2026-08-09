@@ -15,7 +15,7 @@
 
 ## 1. Assets
 
-**OpenPGP master (cold).** The identity signing root. Documented at root [`PUBKEYS.md`](../PUBKEYS.md) and, for the retired identity lane, at [`PUBKEYS.md`](PUBKEYS.md) · [`../keys/`](../keys/). It certifies subordinate keys. Day-to-day commits are designed not to expose it — jail-local and sandbox keys exist so the master stays cold. Who reaches it: the operator on a host that holds the private half; the sandbox and the forge do not.
+**OpenPGP master (cold).** The identity signing root. Documented at root [`PUBKEYS.md`](../PUBKEYS.md) and, for the retired identity lane, at [`PUBKEYS.md`](PUBKEYS.md) · [`../keys/`](../keys/). It certifies subordinate keys. Day-to-day commits are designed to leave it untouched — jail-local and sandbox keys exist so the master stays cold. Who reaches it: the operator on a host that holds the private half, and that operator alone; the sandbox and the forge never do.
 
 **OpenPGP sandbox / jail-local key (revocable).** The key the jail and agent lanes sign with. Paths include `keys/jail_signing_linux_*.pub.asc` (current) and `keys/rye_signing_*.pub.asc` (retired lane). Who reaches it: processes inside the enclosure that hold its private half; compromise is contained by revocation and by keeping the master offline.
 
@@ -23,7 +23,7 @@
 
 **Append-only log of signed facts.** Weave — `mantra/src/weave.rye` — is the permanence substrate: an append-only DAG of immutable signed facts. Mantra projects history over it. Who reaches it: code paths that append and verify under the seated identity keys; readers of the pier who can see the history store.
 
-**Digest roots and seated fixture bytes (integrity, not secrecy).** These prove sameness. They are not secrets. Named today: the HAWM1 demo root `99b3ae96…e4c5fe` pinned in `linengrow/seva_b0_fold.rye` (and asserted by rename and product witnesses); the FLW corpus pin over `tools/fixtures/flw-four-letter.txt` (count and SHA3-512 in `tools/waymark_derive.rish`); seated waymark draws (HAWM · TUBE · ZETA · JABS · LULU · STOA · SETU · SEVA). Who reaches them: every clone of the pier; changing them breaks witnesses by design.
+**Digest roots and seated fixture bytes (integrity, not secrecy).** These prove sameness rather than guard secrets. Named today: the HAWM1 demo root `99b3ae96…e4c5fe` pinned in `linengrow/seva_b0_fold.rye` (and asserted by rename and product witnesses); the FLW corpus pin over `tools/fixtures/flw-four-letter.txt` (count and SHA3-512 in `tools/waymark_derive.rish`); seated waymark draws (HAWM · TUBE · ZETA · JABS · LULU · STOA · SETU · SEVA). Who reaches them: every clone of the pier; changing them breaks witnesses by design.
 
 **The pier across remotes.** Canonical count and names live in [`REMOTE_ROSTER.md`](REMOTE_ROSTER.md). This cloud pier carries only `origin` today. Who reaches a remote: whoever holds forge credentials for that remote. Dated prose that says *five remotes* carries an erratum pointing at that roster — the wrong belief stays visible (Tier 2).
 

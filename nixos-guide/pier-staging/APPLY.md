@@ -2,7 +2,7 @@
 
 **Stamp:** `20260808.060050`  
 **Status:** **Witnessed** `20260808.060835` — `nixos-rebuild switch` → `/nix/store/…-nixos-system-pier-26.05.20260803.531670d` · `cursor-agent` `2026.08.04-aaa8809` from store · vim 9.2 · nvim v0.12.4 · kak v2026.04.12  
-**Why host:** ai-jail sets `no new privileges`, so `sudo` / `nixos-rebuild` cannot escalate from inside the agent sandbox.
+**Why host:** ai-jail sets `no new privileges`, so `sudo` / `nixos-rebuild` escalates only from a host tmux, rather than from inside the agent sandbox.
 
 ## What this seats
 
@@ -31,5 +31,5 @@ cursor-agent --version
 
 ## Notes
 
-- `cursor-agent update` already downloaded Aug into `~/.local`, yet NixOS stub-ld blocks that binary. Prefer the overlay above; ignore or remove the `~/.local` copy later if it confuses PATH.
+- `cursor-agent update` already downloaded Aug into `~/.local`, yet NixOS stub-ld blocks that binary. Prefer the overlay above; ignore or remove the `~/.local` copy later where it confuses PATH.
 - nixpkgs **unstable** carries July 23; website latest is Aug 4 — overlay tracks the website tarball.

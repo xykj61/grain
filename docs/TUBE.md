@@ -12,7 +12,7 @@
 
 ## Thesis — emission, not transpilation
 
-A Glow app declares itself with a **TUBE0** manifest (name, version, capabilities, iteration bound). Android packaging does not rewrite Glow into Kotlin. It **emits** permission lines from a closed table and wraps the Glow-built `.so` in Android's own `NativeActivity` (`hasCode=false`). Every rune, bound, and assertion stays native.
+A Glow app declares itself with a **TUBE0** manifest (name, version, capabilities, iteration bound). Android packaging **emits** permission lines from a closed table and wraps the Glow-built `.so` in Android's own `NativeActivity` (`hasCode=false`), rather than rewriting Glow into Kotlin. Every rune, bound, and assertion stays native.
 
 Language path and device path meet here: Glow's fold (language) becomes an installable APK on GrapheneOS (HAWM).
 

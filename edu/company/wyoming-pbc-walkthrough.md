@@ -12,7 +12,7 @@
 
 ## Why a Worked Example, and Why This Name
 
-A walkthrough teaches best when its example is real enough to file and fictional enough to copy. Ours is **Bashō PBC** — named in gratitude for **Matsuo Bashō**, the seventeenth-century master of haiku, whose originals rest in the public domain and whose art teaches exactly what a filing needs: the fewest words that are completely true. Three of his haiku walk with us, rendered fresh in this house's own hand (translators' published translations carry their own copyrights; pre-1930 public-domain translations — Aston, Chamberlain, Page, Noguchi — are the lawful quoting lane when verbatim beauty is wanted):
+A walkthrough teaches best when its example is real enough to file and fictional enough to copy. Ours is **Bashō PBC** — named in gratitude for **Matsuo Bashō**, the seventeenth-century master of haiku, whose originals rest in the public domain and whose art teaches exactly what a filing needs: the fewest words that are completely true. Three of his haiku walk with us, rendered fresh in this house's own hand (translators' published translations carry their own copyrights; pre-1930 public-domain translations — Aston, Chamberlain, Page, Noguchi — offer the lawful quoting lane when verbatim beauty is wanted):
 
 > *The old pond, still —*
 > *a frog enters the water:*
@@ -22,7 +22,7 @@ A walkthrough teaches best when its example is real enough to file and fictional
 
 **One — the name.** Search availability at wyobiz.wyo.gov's search tool (W.S. 17-16-401 governs names). Bashō PBC searches "Basho"; the real filings search "Siya Fund" and "Grain Energy." One state quirk, noted with a smile: entity names beginning with the letter **A** must paper-file for manual review — none of ours do. The name may carry "PBC" or spell the designation the statute asks; confirm the exact required suffix on the current state form (*verify*).
 
-**Two — the registered agent.** Wyoming requires one with a Wyoming street address and a **signed consent to appointment** filed with the articles. A commercial registered agent (modest yearly fee) keeps home addresses out of public record — the same instinct as the whois privacy already switched on for the domains. **Never a home address here.**
+**Two — the registered agent.** Wyoming requires one with a Wyoming street address and a **signed consent to appointment** filed with the articles. A commercial registered agent (modest yearly fee) keeps home addresses out of the public record — the same instinct as the whois privacy already switched on for the domains. **Never a home address here.**
 
 **Three — the public benefit statement.** The heart of a PBC's articles under Chapter 31: name the specific public benefit plainly. Bashō PBC's template line: *"the specific public benefit of supporting open, contemplative, and ecological literary education."* Siya Fund's real line names patient capital for regenerative, open-source, service-first technology; Grain Energy's names open computing built and licensed for every hand. One sentence each, radiant, exact.
 
@@ -38,7 +38,7 @@ A walkthrough teaches best when its example is real enough to file and fictional
 
 **Seven — the annual rhythm.** Wyoming's **annual report** with its license tax (minimum around **$60**, asset-scaled; *verify*) is due the first day of the anniversary month, filed online. The PBC's **benefit report** rides the cadence Chapter 31 sets. Calendar both the day the articles come back stamped.
 
-**Eight — the investment step, separately and carefully.** When Siya Fund leads Grain Energy's seed, that is a securities transaction between related parties: instrument choice (priced stock or a simple agreement), board approvals on both sides, disclosures, and any exemption filings are the **attorney's and CPA's confirmed territory** — this walkthrough stops at the door and says so in bold.
+**Eight — the investment step, separately and carefully.** When Siya Fund leads Grain Energy's seed, that is a securities transaction between related parties: instrument choice (priced stock or a simple agreement), board approvals on both sides, disclosures, and any exemption filings all belong to the **attorney's and CPA's confirmed territory** — this walkthrough stops at the door and says so in bold.
 
 > *Summer grasses now —*
 > *all that remains of the great*

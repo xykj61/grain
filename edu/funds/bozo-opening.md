@@ -33,6 +33,6 @@ Civic Style governs. Design seat only until his hand claims the domain and any c
 
 ## Grow lean
 
-This page opens prep so the fund can grow under witnesses. Helen's dedication stays; DJINN steers as executive.
+This page opens prep so the fund grows under witnesses. Helen's dedication stays; DJINN steers as executive.
 
 witness:bozo-open GREEN — seat · Helen dedication · DJINN executive · vane · hard lines

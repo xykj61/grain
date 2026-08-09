@@ -14,7 +14,7 @@
 
 ---
 
-This is the **workbench** — the live edges of the work. Where the external-research stack studies the world and the active-designing stack decides our design, this folder holds the threads still in motion. The questions waiting on a decision. The tasks chosen and not yet done, or offered and not yet taken. The housekeeping left ajar. We keep them here, in writing, so nothing slips between sessions, and so anyone returning to the work — a future us, or an agent picking it back up — can see at a glance exactly where we stand and what comes next.
+This is the **workbench** — the live edges of the work. Where the external-research stack studies the world and the active-designing stack decides our design, this folder holds the threads still in motion: the questions waiting on a decision, the tasks chosen yet not yet done or offered yet not yet taken, the housekeeping left ajar. We keep them here, in writing, so nothing slips between sessions, and so anyone returning to the work — a future us, or an agent picking it back up — sees at a glance exactly where we stand and what comes next.
 
 The granular task list lives in [`TASKS.md`](TASKS.md) (filename stays stable; **workbench** is the warmer conversational name for the same file).
 
@@ -26,11 +26,11 @@ It is a kindness to our future selves: memory for the *work*, the way Mantra is 
 
 Dated artifacts carry `YYYYMMDD-HHMMSS_short-slug.md`; this README is the living foundation. The reverse-chronological index below reads newest first. Full naming law: [`../context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
-Each stock-taking once wrote a new **open-threads** snapshot stamped at the time of writing. Older snapshots graduate to [`archive/`](archive/) — out of the live folder, yet kept whole as an honest record of what was open, and when. The accreted `20260623-033012` snapshot archived `2026-06-29`; a redirect stub at the old path points to the archive. **Going forward:** open questions live in [`TASKS.md`](TASKS.md); history accretes in [`../session-logs/`](../session-logs/).
+Each stock-taking once wrote a new **open-threads** snapshot stamped at the time of writing. Older snapshots graduate to [`archive/`](archive/) — out of the live folder, yet kept whole as an honest record of what was open, and when. The accreted `20260623-033012` snapshot archived `2026-06-29`, and a redirect stub at the old path points to the archive. **Going forward:** open questions live in [`TASKS.md`](TASKS.md); history accretes in [`../session-logs/`](../session-logs/).
 
 The standing roadmap lives in [`ROADMAP.md`](ROADMAP.md) — living, unstamped. The granular task list lives in [`TASKS.md`](TASKS.md) — edited in place; history accretes in `../session-logs/`.
 
-A snapshot is a faithful gathering, not a contract. An item leaves the next snapshot when it is **done**, **decided**, or **set down on purpose** — and that next snapshot says which, so even closure is remembered rather than merely vanishing.
+A snapshot is a faithful gathering rather than a contract. An item leaves the next snapshot when it is **done**, **decided**, or **set down on purpose** — and that next snapshot says which, so even closure is remembered rather than merely vanishing.
 
 ---
 

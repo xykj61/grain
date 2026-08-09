@@ -7,7 +7,7 @@
 
 ---
 
-This proposal keeps the strictness of the `CONTRIBUTING.md` it inherited from `urbit/urbit` — now resting, unaltered, in the elder lane at [`xykj61/urbit`](https://github.com/xykj61/urbit) — the `old/` archive stayed behind when Grain began clean — and grows its own voice on top of it. Read both; the older document's rules still bind, and this one names what this proposal adds. Grain is developed downstream as a contribution offered back to Urbit, so its own discipline deliberately mirrors Urbit's, keeping any eventual upstream pull request small, legible, and in the house style.
+This proposal keeps the strictness of the `CONTRIBUTING.md` it inherited from `urbit/urbit` — now resting, unaltered, in the elder lane at [`xykj61/urbit`](https://github.com/xykj61/urbit), where the `old/` archive stayed behind when Grain began clean — and grows its own voice on top of it. Read both: the older document's rules still bind, and this one names what this proposal adds. Grain grows downstream as a contribution offered back to Urbit, so its own discipline deliberately mirrors Urbit's, keeping any eventual upstream pull request small, legible, and in the house style.
 
 ## Where Things Live
 

@@ -16,7 +16,7 @@ Pick a browser you are willing to keep updated. **Brave** is a fine choice many 
 
 ## A real password manager
 
-Use a **password manager you trust** — a paid monthly plan such as **1Password** is one solid path; other reputable managers work. Save the accounts *you* rely on before you need them for billing or forge work. Vault material **never** enters this git tree — not in commits, not in session logs, not in screenshots you paste into the pier.
+Use a **password manager you trust** — a paid monthly plan such as **1Password** is one solid path; other reputable managers work well too. Save the accounts *you* rely on before you need them for billing or forge work. Vault material **never** enters this git tree — keep it out of commits, out of session logs, and out of any screenshot you paste into the pier.
 
 ## Apps this pier recommends (optional, paid)
 

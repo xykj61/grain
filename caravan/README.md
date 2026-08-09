@@ -7,7 +7,7 @@
 
 **Caravan supervises.** It watches a dependent process, restarts it when it falls, and grows — one accretion at a time — toward the fuller shape a real service needs: bounded memory per dependent, more than one dependent, ordered startup, a named capability table, and a real exit-code vocabulary that tells restart-on-fall apart from an ordinary cycle and a deliberate stop.
 
-Every ring here composes over the one before it. Nothing is rewritten to make room for the next proof; a later ring imports an earlier one, or restates its shape one step further out.
+Every ring here composes over the one before it. A later ring imports an earlier one, or restates its shape one step further out — nothing is rewritten to make room for the next proof.
 
 ## The Ladder
 
@@ -26,7 +26,7 @@ Every ring here composes over the one before it. Nothing is rewritten to make ro
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
-A supervisor that only knows "zero means done, anything else means retry" stalls a poller — an ordinary, successful cycle would look identical to a finished job, and the supervisor would stop exactly when it should keep going. `supervisor_exit.rye` names the third answer: zero is *ordinary*, rather than *finished* — restart regardless. A reserved code, `stop_requested`, is the only thing that halts the loop, and it means the same thing whether a human created a sentinel file by hand or `supervisor_signal.rye`'s handler created it from a real signal. Counsel: [`counsel/20260707-014212_claude-counsel-graceful-stop-reframed.md`](../counsel/20260707-014212_claude-counsel-graceful-stop-reframed.md), [`counsel/20260707-021012_claude-counsel-ring4-signal-handler.md`](../counsel/20260707-021012_claude-counsel-ring4-signal-handler.md).
+A supervisor that only knows "zero means done, anything else means retry" stalls a poller — an ordinary, successful cycle looks identical to a finished job, and the supervisor stops exactly when it should keep going. `supervisor_exit.rye` names the third answer: zero is *ordinary*, rather than *finished* — restart regardless. A reserved code, `stop_requested`, alone halts the loop, and it means the same thing whether a human created a sentinel file by hand or `supervisor_signal.rye`'s handler created it from a real signal. Counsel: [`counsel/20260707-014212_claude-counsel-graceful-stop-reframed.md`](../counsel/20260707-014212_claude-counsel-graceful-stop-reframed.md), [`counsel/20260707-021012_claude-counsel-ring4-signal-handler.md`](../counsel/20260707-021012_claude-counsel-ring4-signal-handler.md).
 
 ## Held
 

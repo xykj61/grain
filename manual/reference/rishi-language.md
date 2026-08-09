@@ -21,11 +21,11 @@ rishi run <script> [args]  execute a .rish script with optional arguments
 rishi help | --help        print usage
 ```
 
-A script that completes exits `0`. A failed assertion or a runtime error ends the script immediately with a nonzero exit and a plain message on standard error.
+A script that completes exits `0`. A failed assertion or a runtime error ends the script at once with a nonzero exit and a plain message on standard error.
 
 ## 2. Lexical Shape
 
-A script is a sequence of statements, one per line. `#` opens a comment to end of line. Whitespace separates tokens. There are no semicolons and no line continuations; a statement *must* fit its line.
+A script is a sequence of statements, one per line. `#` opens a comment to end of line. Whitespace separates tokens. Semicolons and line continuations stay absent by design; a statement *must* fit its line.
 
 **Strings** are double-quoted and interpolate with `${name}` — bindings and record fields alike: `"${bin} metalsmoke 2>&1"`. **Lists** are square-bracketed and whitespace-separated, with no commas: `["a" "b" "c"]`. **Booleans** are `true` and `false`. Integers appear as values (exit codes, lengths) and compare with `==` and `!=`.
 

@@ -29,15 +29,15 @@
 
 ## Why Five Variants
 
-The five variants are not five different systems — they are **one design, built more than once, on purpose.** Four form **two diverse-redundant pairs** — Riyo/Reya and Trey/Triz — where each pair is the same intent implemented independently, so a single implementation mistake cannot take down the only copy. **Quin** is the fifth bootable image, **intentionally unpaired** (`20260717.162620`) — five total, settled. This is safety-first, TAME's own first value, expressed at the whole-OS scale. Registry: [`../../context/specs/20260713-235600_names-awaiting-confirmation.md`](../../context/specs/20260713-235600_names-awaiting-confirmation.md).
+The five variants are **one design, built more than once, on purpose** — rather than five different systems. Four form **two diverse-redundant pairs** — Riyo/Reya and Trey/Triz — where each pair implements the same intent independently, so a single implementation mistake can never take down the only copy. **Quin** is the fifth bootable image, **intentionally unpaired** (`20260717.162620`) — five total, settled. This is safety-first, TAME's own first value, expressed at the whole-OS scale. Registry: [`../../context/specs/20260713-235600_names-awaiting-confirmation.md`](../../context/specs/20260713-235600_names-awaiting-confirmation.md).
 
 ## Glow, the Language Beneath
 
-Glow keeps Hoon's rune tradition as *surface syntax* while compiling to TAME-bounded semantics underneath — so a reader gets Hoon's directness without inheriting Hoon's unbounded-recursion habit. Its type surface (auras, cold and warm atoms, structs as molds over nouns) and its linting are scoped in the Glow supplement ([`../../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md`](../../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md)).
+Glow keeps Hoon's rune tradition as *surface syntax* while compiling to TAME-bounded semantics underneath — so a reader gets Hoon's directness while leaving Hoon's unbounded-recursion habit behind. Its type surface (auras, cold and warm atoms, structs as molds over nouns) and its linting are scoped in the Glow supplement ([`../../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md`](../../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md)).
 
 ## Honest Status
 
-Most of what runs today runs under the prior name (Rye OS) and is being carried forward into Grain by decision, not yet by mass rename. The language desk already emits; the Nock interpreter and the five variants are **named and scoped, not yet bootable as whole OS images.** These docs describe the direction plainly and mark, per page, what is real. Nothing here claims a feature the witnesses do not show.
+Most of what runs today runs under the prior name (Rye OS), carried forward into Grain by decision rather than by mass rename. The language desk already emits; the Nock interpreter and the five variants stand **named and scoped, still short of bootable as whole OS images.** These docs describe the direction plainly and mark, per page, what is real. Nothing here claims a feature the witnesses do not show.
 
 ---
 

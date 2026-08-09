@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260809.115123
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title Radiant Style pass — tranche 1, living reader-facing docs
+prompt (Keaton) do a radiant style pass recursively through all folders, living + dated recorded pass, multi-agent workflow
+think the true scope is 4208 in-scope .md (682 living, 3526 dated) plus 2070 frozen .bron — too large for one sweep, so I structured it as tranches and scoped tranche 1 to 152 living reader-facing docs
+think held 49 files from the auto-pass — .claude/rules (behavior-defining), CLAUDE.md, canonical refs (LEXICON, RADIANT_STYLE, TAME_GUIDANCE), security/custody (PUBKEYS, SAFE, STEWARDS), living pins — these want deliberate human-reviewed edits, not automation
+think ran a 31-agent workflow over the 152; each agent did a style-only Radiant pass with a strict guardrail — preserve every fact, path, link, code block, and claim; freshen voice only; no recorded-pass header on living docs
+obs 80 of 152 changed, 72 left as-is; agents correctly left witness fixtures untouched (claim_preserve, link_witness, markdown_structure, radiant_lint planted-but, reds_ledger) — good judgment
+obs the diff is textbook style-only — 170 insertions, 168 deletions, net +2 across 80 files; sentences restructured, not content added or removed
+obs verified claim-safety three ways — an independent number/stamp/hex/path token check showed zero drift across all 80; the claim_preserve witness (extractor de-Pythoned to perl to run at all) flagged only PROPER-noun captures, every one a common sentence-opener (If, No, Do, Leave, Keep, Never…); spot-checks of the two multi-word shifts (Do→Leave Doors, Leave Second) confirmed meaning held exactly
+obs did not tune the canonical claim_preserve witness to green my own pass — its PROPER class cannot tell restructuring from a real name change, so it stays honest and I verified by the hard-claim classes plus review
+obs two agents wrote their own session logs from the inherited rule; consolidated them into this one and reverted their README rows
+obs living_docs_lint GREEN — no links or status lines broke
+file (80 living reader-facing .md) Radiant Style pass — module READMEs, foundations, context prose, docs/edu/manual/guides
+file session-logs/20260809-115123_radiant-style-tranche1-living-docs.bron this record
+recommend check-in Claude — tranche 1 is claim-safe and shipped; confirm the quality, then decide tranche 2 (remaining living docs) and whether the 3526 dated recorded-passes proceed; also Keaton just asked to molt all perl and sh to Rishi — a SOON language campaign that first needs Rishi to grow regex, functions, and loop accumulation

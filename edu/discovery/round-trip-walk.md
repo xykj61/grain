@@ -17,7 +17,7 @@ That composition is the **round-trip shape**: find neighbors, carry values, arri
 
 ## What this walk does not claim
 
-The elder **wire both-sides** round-trip — two lanes across a real spawn/wait-for wire, tables converging from each side independently — is not metal on this page. That lab stays queued (Build queue seat 6). This walk teaches the parts that already print GREEN. Honesty first; theater never.
+The elder **wire both-sides** round-trip — two lanes across a real spawn/wait-for wire, tables converging from each side independently — is not yet metal on this page. That lab stays queued (Build queue seat 6). This walk teaches the parts that already print GREEN. Honesty first; theater never.
 
 ## Before you start
 

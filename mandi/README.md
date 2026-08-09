@@ -11,7 +11,7 @@
 
 ## What this room is
 
-Mandi names the offer: a signed `vessel-listing-v1` binds `vessel_parent` + MALA price under Kumara (seed `0x67`). The receipt is a digest of the canonical body — quiet about buyer and seller. A sale closes with `vessel-settle-v1` (seed `0x68`) binding that receipt to a payment digest of MALA send + WOV transfer. Amphora purchase delivery remains the carriage rite.
+Mandi names the offer: a signed `vessel-listing-v1` binds `vessel_parent` + MALA price under Kumara (seed `0x67`). The receipt is a digest of the canonical body — quiet about buyer and seller. A sale closes with `vessel-settle-v1` (seed `0x68`) binding that receipt to a payment digest of MALA send + WOV transfer. Amphora purchase delivery rides the carriage rite.
 
 **Sister room:** Granary holds the weave-sharing four doors. Mela and Haat stay parked as warm siblings.
 

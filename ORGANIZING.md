@@ -15,7 +15,7 @@
 
 This repository holds an operating system, a civic application built upon it, the research and design that feed both, and the disciplines that govern how we write code, prose, product, and public benefit. The tree is large on purpose. This guide names its shape so a person or an agent arriving fresh can orient in one calm read — without memorizing countdown conventions, count-up exceptions, or season-specific snapshots that go stale the moment they are written.
 
-Read the sections below when you wonder where a new file belongs. When a season's placements are settled, record them in `session-logs/`; this guide stays evergreen.
+Read the sections below whenever you wonder where a new file belongs. When a season's placements settle, record them in `session-logs/`; this guide stays evergreen.
 
 ---
 
@@ -126,7 +126,7 @@ Three tiers, each with a clear purpose:
 - **`yonder/`** (two levels deep) — points *forward*; kept because the idea is alive and may return.
 - **`archive/`** (two levels deep) — points *backward*; done or retired, kept only for the honest record.
 
-The distinction matters: `yonder/` is a horizon, not a graveyard. A truly finished or dead file goes to `archive/` rather than `yonder/`.
+The distinction matters: `yonder/` is a horizon, rather than a graveyard. A truly finished or dead file goes to `archive/` rather than `yonder/`.
 
 **The active test:** a document stays one level deep while it drives present implementation; it moves to `yonder/` when it becomes future, dormant, consumed, or realized-as-code. Move by `git mv` so history stays whole, and update any reference that points at the old path.
 
@@ -138,7 +138,7 @@ The distinction matters: `yonder/` is a horizon, not a graveyard. A truly finish
 
 **Affirm-in-place titling:** when affirming, also strip the number prefix and align the H1 with the slug's concept — all in the same touch, still with no rename and no reference change.
 
-A re-stamp that bubbles a file to the bottom suits an *ordinary, lightly-cited* document, where the sort cue helps and the few references are cheap to move. A *canonical reference* — one many files cite — keeps its stable name and is affirmed in place: its `Last updated` and a short affirmation line carry the signal, and its citation density already tells anyone it is load-bearing. Renaming what a hundred files depend on, to gain a sort cue nobody needed, trades a real promise for a small convenience.
+A re-stamp that bubbles a file to the bottom suits an *ordinary, lightly-cited* document, where the sort cue helps and the few references are cheap to move. A *canonical reference* — one many files cite — keeps its stable name and is affirmed in place: its `Last updated` and a short affirmation line carry the signal, and its citation density already tells anyone it is load-bearing. Renaming what a hundred files depend on, to gain a sort cue nobody needed, trades a real promise away for a small convenience.
 
 ### Reviewed and kept (`2026-06-29`)
 

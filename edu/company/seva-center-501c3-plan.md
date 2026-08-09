@@ -13,13 +13,13 @@
 
 ## What the Foundation Is For
 
-Seva Center Foundation is the family's charitable vessel beside its two public benefit companies: the Fund invests, the Company builds, and **the Foundation gives** — education, open knowledge, and service programs that a 501(c)(3)'s rules fit naturally. Keeping the three vessels distinct keeps every dollar's story simple, which is the kindest gift anyone can give their future CPA.
+Seva Center Foundation stands as the family's charitable vessel beside its two public benefit companies: the Fund invests, the Company builds, and **the Foundation gives** — education, open knowledge, and service programs that a 501(c)(3)'s rules fit naturally. Keeping the three vessels distinct keeps every dollar's story simple, which is the kindest gift anyone can hand their future CPA.
 
 ## The Stations
 
 **One — the Wyoming shell.** Articles of incorporation under Chapter 19 filed online at wyobiz.wyo.gov, electing **public benefit corporation** classification (17-19-1804), with a registered agent's signed consent, **no home address anywhere**, and the two clauses federal recognition will later demand written in from birth: a **charitable purpose clause** in 501(c)(3)'s own language, and a **dissolution clause** sending assets to another exempt purpose if the Foundation ever closes. Fee approximately $25–$50 for nonprofits (*verify*). Days, not months.
 
-**Two — the board and the papers.** Three directors is the healthy floor (*verify Wyoming's minimum*; three also reads well to the IRS), bylaws from a nonprofit skeleton the attorney blesses, and a **conflict-of-interest policy adopted on day one** — the family relationship between the Foundation, the Fund, and the Company makes this policy the single most important page in the binder, and the professionals' hour spent here repays itself forever.
+**Two — the board and the papers.** Three directors makes the healthy floor (*verify Wyoming's minimum*; three also reads well to the IRS), bylaws grow from a nonprofit skeleton the attorney blesses, and a **conflict-of-interest policy adopted on day one** stands at the center — the family relationship between the Foundation, the Fund, and the Company makes this policy the single most important page in the binder, and the professionals' hour spent here repays itself forever.
 
 **Three — the federal minute.** An **EIN** from the IRS, online, free, the founders' own hands.
 

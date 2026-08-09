@@ -9,7 +9,7 @@
 
 ## What This Decides
 
-Rye is its own language. It begins on the exact Zig 0.16.0 ground, and from there it grows into something separate — a language with its own standard library, and in time its own syntax and semantics, shaped by its own principles. Rye is no longer a dialect held forever close to its parent. It is a language of its own, and its north star is clear: to become, by the measures we hold, better than the ground it grew from — where "better" is named precisely, by the principles of TAME Guidance and of RISC-V.
+Rye is its own language. It begins on the exact Zig 0.16.0 ground, and from there it grows into something separate — a language with its own standard library, and in time its own syntax and semantics, shaped by its own principles. Rye stands as a language of its own rather than a dialect held forever close to its parent, and its north star is clear: to become, by the measures we hold, better than the ground it grew from — where "better" is named precisely, by the principles of TAME Guidance and of RISC-V.
 
 ---
 
@@ -17,13 +17,13 @@ Rye is its own language. It begins on the exact Zig 0.16.0 ground, and from ther
 
 We honor Zig as our ground and our teacher. It gave Rye a mature compiler, a complete standard library, and a design sensibility we admire — and we keep its source close, in gratitude, as the foundation every first step rests upon. Beginning there was the safe and right choice; raising a language from nothing is rarely the wise path.
 
-A dialect, though, is bound to its parent's choices. It inherits what it is given and waits for permission to differ. A separate language is free — free to keep what serves, to set down what does not, and to surpass where it can. We choose that freedom, earned slowly and carefully, never seized in a careless rewrite.
+A dialect, though, stays bound to its parent's choices. It inherits what it is given and waits for permission to differ. A separate language is free — free to keep what serves, to set down what does not, and to surpass where it can. We choose that freedom, earned slowly and carefully, rather than seized in a careless rewrite.
 
 ---
 
 ## What "Better" Means, Named Precisely
 
-"Better," left unbounded, is only a boast. We bind it to principles, so the aspiration is one we can test and earn rather than merely declare. Rye aims to surpass its ground along these stated axes:
+"Better," left unbounded, is only a boast. We bind it to principles, so the aspiration becomes one we can test and earn rather than merely declare. Rye aims to surpass its ground along these stated axes:
 
 - **Safety, first and structural.** Where convention is asked to carry safety, Rye builds it into the grain: assertions as a first-class discipline; the positive, negative, and variable spaces each named (`assert`, `maybe`); bounds on everything; zero technical debt. This is TAME's first value, made native to the language.
 - **Growth without breakage.** Accretion over revision, enduring names, chronological versioning, a runtime kept honest. Rye never takes away what it has given.

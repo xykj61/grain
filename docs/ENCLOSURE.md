@@ -12,7 +12,7 @@
 
 ## Thesis — custody split
 
-An enclosure with an unnamed hole is thinner than either a jail with one named device lane or a finished Pond. The house disposition is **A-narrow interim → B supersede-by-witness**:
+A jail with one named device lane, or a finished Pond, holds more than an enclosure with an unnamed hole. The house disposition runs **A-narrow interim → B supersede-by-witness**:
 
 | Phase | Meaning |
 |-------|---------|
@@ -45,7 +45,7 @@ Wrappers honor `ENCLOSURE` before launch. `ENCLOSURE=pond` **refuses** unless ex
 
 ## `lane_kvm` — refuse / permit pair
 
-**Off by default.** When off, the gate refuses QEMU runs that need KVM. When on (one-shot or conf), grants **`/dev/kvm` only** — no D-Bus, no systemd host escapes, no session buses.
+**Off by default.** When off, the gate refuses QEMU runs that need KVM. When on (one-shot or conf), it grants **`/dev/kvm` only** — no D-Bus, no systemd host escapes, no session buses.
 
 | Witness | When |
 |---------|------|
@@ -82,7 +82,7 @@ Column one **incumbent-measured** (ai-jail today) freezes honest baseline. Colum
 | Socket | `$XDG_RUNTIME_DIR/bus` absent or present | **Absent** |
 | Netns | Shared (host links visible) | **Unshared** |
 
-**Policy law:** unreachable is the floor. A refusing broker is a **door** (named custom + paired witness), never ambient absence dressed as a daemon.
+**Policy law:** unreachable is the floor. A refusing broker is a **door** (named custom + paired witness), rather than ambient absence dressed as a daemon.
 
 Full table: [`20260712-210800` scorecard](../active-designing/20260712-210800_pond-enclosure-scorecard-two-column.md).
 
@@ -141,7 +141,7 @@ Full card: [`20260712-210800` exit criteria](../active-designing/20260712-210800
 
 ## Master seal and ceremony
 
-**Presence alone does not open the season.** An agent inside the jail could write and sandbox-sign the sentinel. Exit bron **counts only when master-signed** — detached `.asc` verifies against master fingerprint proved in `tools/pond_exit_bron_master_seal.sh` (isolated keyring holding only `context/keys/gpg_signing_06462132.pub.asc`).
+**Presence alone does not open the season.** An agent inside the jail could write and sandbox-sign the sentinel, so exit bron **counts only when master-signed** — a detached `.asc` verifies against the master fingerprint proved in `tools/pond_exit_bron_master_seal.sh` (isolated keyring holding only `context/keys/gpg_signing_06462132.pub.asc`).
 
 **Season states:**
 

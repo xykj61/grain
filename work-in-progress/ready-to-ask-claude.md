@@ -209,7 +209,7 @@
 
 ### Four Seam studies — **complete** (`20260712.054521`)
 
-Understanding filed; CapTP formal decline · Door 3 · component compile · proven-seat G0–G3 · giving T0–T2 · Spritely ally all await Kaeden’s word. Green product nib **430** untouched.
+Understanding filed. CapTP formal decline · Door 3 · component compile · proven-seat G0–G3 · giving T0–T2 · Spritely ally all await Kaeden’s word. Green product nib **430** stands untouched.
 
 ### Two parked rulings (await post-study word)
 
@@ -228,9 +228,9 @@ Private payer · transparent payee — [`foundations/20260629-014512_money-that-
 
 ### Encrypt-to-future-identity — **horizon park** (`20260712.114600`)
 
-**Keep:** seal a payload to a name / pass / ask *before* that party has a keypair — a third face beside Kumara access and signature truth (Open Asks · giving lane · Door 3 sturdyref-shaped grant extended to decryption).
+**Keep:** seal a payload to a name / pass / ask *before* that party holds a keypair — a third face beside Kumara access and signature truth (Open Asks · giving lane · Door 3 sturdyref-shaped grant extended to decryption).
 
-**Decline:** live threshold key-derivation quorum (ICP VetKeys packaging · chain-node coupling) — fights custody law; same refusal shape as Azimuth.
+**Decline:** live threshold key-derivation quorum (ICP VetKeys packaging · chain-node coupling) — it fights custody law, the same refusal shape as Azimuth.
 
 **Season:** beside **T3** (ZK / private-by-proof) and **OCapN** consumer-edge — study IBE / threshold-IBE as crypto when that morning opens; DFINITY vocabulary stays in gratitude if a teacher note is ever siloed. **No current lap.**
 
@@ -338,7 +338,7 @@ Prior tip: `2eb346b` · zip 40 @ `4ab032d` replaced
 
 ## Zip 41 — Amphora exchange (Cursor → Claude) · `20260704.031200` — **answered**
 
-**Cut discipline:** full-tree zip at **`git rev-parse HEAD`** on `main` after pull (substantive body `3e7bf9c`). Prior zip 40 @ `4ab032d` · prior Cursor tip `71e84be`. Recipe v5 mandatory: [`expanding-prompts/yonder/20260703-205212_bench-raise-recipe-v5-accretion.md`](../expanding-prompts/yonder/20260703-205212_bench-raise-recipe-v5-accretion.md).
+**Cut discipline:** full-tree zip at **`git rev-parse HEAD`** on `main` after pull (substantive body `3e7bf9c`). Prior zip 40 @ `4ab032d` · prior Cursor tip `71e84be`. Recipe v5 is mandatory: [`expanding-prompts/yonder/20260703-205212_bench-raise-recipe-v5-accretion.md`](../expanding-prompts/yonder/20260703-205212_bench-raise-recipe-v5-accretion.md).
 
 **Cursor metal before zip:** parity **152 GREEN** (full `tools/parity.rish` re-run on host; SLC-L1 + crossing seed + RW-2 witnesses all green).
 
@@ -421,7 +421,7 @@ Broad forward-facing sweep: lap/toll/itinerary vocabulary across active-designin
 
 ### Claude — explicit asks (advice + implementation)
 
-**Bounds:** propose and argue; Cursor implements on Kaeden approval after counsel lands. Do **not** reopen Doors 1–3 or Edit 5. Do **not** seat new module names without Kaeden.
+**Bounds:** propose and argue; Cursor implements on Kaeden approval after counsel lands. Leave Doors 1–3 and Edit 5 closed. Seat no new module names without Kaeden.
 
 | # | Ask | Granularity wanted |
 |---|-----|-------------------|
@@ -475,7 +475,7 @@ Graduation rule · Rio 3 · Happy zone · RW-3/RW-4 · Grain · Versioning · Br
 - **`cellar/`** first lap landed ✅ — parity **144**; further laps gated on spec
 - **No new module/aspect names** — park candidates in RTAC
 - **Stop-and-park** on: Kaeden-tagged path · parity red twice · module-home/seam decision · keys/custody/amber/MUR (was MALA) · new names
-- **Journey's pause** — when the open itinerary has no further stops, stop and summarize rather than invent new work; a pause is a question for Kaeden, never permission to go off-route
+- **Journey's pause** — when the open itinerary has no further stops, stop and summarize rather than invent new work; a pause is a question for Kaeden rather than permission to go off-route
 
 ## Kaeden — three doors before Claude
 
@@ -568,7 +568,7 @@ Law: [`active-designing/20260703-202312_the-marked-value.md`](../active-designin
 | Seed (witnessed) | [`work-in-progress/20260703-202312_crossing_manifest_seed.rye`](20260703-202312_crossing_manifest_seed.rye) · `tools/crossing_manifest_seed.rish` |
 | Log | [`session-logs/archive/20260703/20260703-202312_the-marked-value-round.md`](../session-logs/archive/20260703/20260703-202312_the-marked-value-round.md) |
 
-Working-tier manifest digests verified against packet as-cut; path hygiene (`../context/`) applied post-verify. **Tilak**, **Pottery**, **Amphora** seated `20260703.203712 UDT`. Crossing manifest seed witness landed `20260704.020800` — parity **151**.
+Working-tier manifest digests verified against packet as-cut; path hygiene (`../context/`) applied post-verify. **Tilak**, **Pottery**, **Amphora** seated `20260703.203712 UDT`. The crossing manifest seed witness landed `20260704.020800` — parity **151**.
 
 Prior tip: `ecb6a0b`
 

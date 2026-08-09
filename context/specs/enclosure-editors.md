@@ -36,7 +36,7 @@ nix profile install github:akitaonrails/ai-jail
 
 ## The Concurrency Model
 
-Two editors can share one repository if each keeps **its own state directory** inside the project. The project tree itself is the durable ground ai-jail preserves; host `$HOME`, `/tmp`, and parent paths reset when a jail exits.
+Two editors share one repository as long as each keeps **its own state directory** inside the project. The project tree itself is the durable ground ai-jail preserves; host `$HOME`, `/tmp`, and parent paths reset when a jail exits.
 
 | Setup | Cursor | Zed | Notes |
 |--------|--------|-----|--------|
@@ -44,7 +44,7 @@ Two editors can share one repository if each keeps **its own state directory** i
 | **B — both enclosed** | ai-jail + `.cursor-state/` | ai-jail + `.zed-state/` | Strongest symmetry; two terminal tabs, two ai-jail processes. |
 | **C — Cursor enclosed only** | ai-jail | Host Zed | Rare; use when Zed needs full desktop integration. |
 
-**API billing is separate.** Cursor Pro/Ultra covers Cursor's agent. Zed's **Claude Agent** (ACP) uses **Anthropic API** credentials — an `ANTHROPIC_API_KEY`, or login via `/login` in a Claude thread. One key does not configure the other.
+**API billing stays separate.** Cursor Pro/Ultra covers Cursor's agent. Zed's **Claude Agent** (ACP) uses **Anthropic API** credentials — an `ANTHROPIC_API_KEY`, or login via `/login` in a Claude thread. Each key configures its own editor; one never stands in for the other.
 
 **Git courtesy:** two agents committing at once can contend for `.git/index.lock`. Let one editor own pushes, or serialize commits.
 
@@ -141,7 +141,7 @@ chmod 600 tools/secrets.env
 
 Create a key at [console.anthropic.com/settings/keys](https://console.anthropic.com/settings/keys) → **Create Key** → copy the `sk-ant-...` value once.
 
-**Shell export does not persist** across new terminals or Zed relaunches unless you put it in `tools/secrets.env` or your shell profile. A one-time `export` in yesterday's terminal is gone today.
+**Shell export persists only where you write it down.** Put the key in `tools/secrets.env` or your shell profile, and it carries across new terminals and Zed relaunches; a one-time `export` in yesterday's terminal is gone today.
 
 **Alternative:** `/login` in a Claude Agent thread (OAuth). Tokens land under `.zed-state/` (also gitignored). If `/login` loops or fails, stale OAuth can conflict with an empty API key — try `/logout`, then either log in again or use `tools/secrets.env` only (not both at once until auth is clean).
 
@@ -191,7 +191,7 @@ Zed offers two different Claude experiences:
 3. New thread: `Ctrl+N` in the panel, or `Ctrl+Alt+Shift+N` for the new-thread menu.
 4. Optional keybinding: `agent: new external agent thread` for Claude specifically.
 
-**Terminal Threads** remain useful for one-off CLI work; they are not the same UI as the Agent Panel. If both are open, use the panel for the agent feed and close or hide the terminal thread when it is redundant.
+**Terminal Threads** remain useful for one-off CLI work; they carry a different UI than the Agent Panel. When both are open, keep the panel for the agent feed and close or hide the terminal thread once it turns redundant.
 
 Expanded prompt: `expanding-prompts/yonder/20260619-090512_zed-claude-rules-and-agent-panel.md`.
 
@@ -311,7 +311,7 @@ User namespaces and bwrap behave as expected on NixOS; skip the Ubuntu AppArmor 
 
 ### Cursor on NixOS — extracted AppRun in ai-jail
 
-The tracked launcher runs **`squashfs-root/AppRun`** after extract, not the raw `.AppImage` — so FUSE is not in the jail path. System config still benefits from:
+The tracked launcher runs **`squashfs-root/AppRun`** after extract, rather than the raw `.AppImage` — so FUSE stays out of the jail path. System config still benefits from:
 
 ```nix
 programs.appimage.enable = true;

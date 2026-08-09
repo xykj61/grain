@@ -12,7 +12,7 @@
 
 ## What this is
 
-Glow’s thin `(jam a b)` packs two `@u32` demo atoms as `(hi << 16) | lo`. `(cue …)` reads the low 16 bits of that pack (or the mix result when the subject nests mix). This is a **Hoon-parallel face**, not Vere’s jam/cue bit layout.
+Glow’s thin `(jam a b)` packs two `@u32` demo atoms as `(hi << 16) | lo`. `(cue …)` reads the low 16 bits of that pack — or the mix result when the subject nests mix. This is a **Hoon-parallel face**, a demo of the shape rather than Vere’s jam/cue bit layout.
 
 ## Vectors
 
@@ -27,7 +27,7 @@ Demo atoms: left `5`, right `3`; `mix = 5 ^ 3 = 6`.
 
 ## Strategy
 
-The outward gift is real mat/rub-layout jam and cue in Glow — a future season. These in-tree vectors pin the thin cell-pack demo face only.
+The outward gift — real mat/rub-layout jam and cue in Glow — waits for a future season. These in-tree vectors pin the thin cell-pack demo face, and only that.
 
 ---
 

@@ -33,6 +33,6 @@ Civic Style governs. Design seat only until his hand claims the domain and any c
 
 ## Grow lean
 
-This page opens prep so the fund can grow under witnesses. Sponsor and executive hats accrete when he names them.
+This page opens prep so the fund grows under witnesses. Sponsor and executive hats accrete when he names them.
 
 witness:linn-open GREEN — seat · Helen dedication · vane · hard lines

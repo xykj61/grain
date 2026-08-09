@@ -24,7 +24,7 @@ Two images at the repository root, one landscape and one portrait, sharing the s
 
 They default to a **plain palette** — white background, black text and QR — which prints cleanly on any printer and scans reliably under any light. If you want a themed card, you can override the colors; the plain default is what most people want.
 
-The three living slots are **SSH · GitHub**, **SSH · Second**, and **OpenPGP · sign**. Fill GitHub + OpenPGP for a single-forge pier; use Second for a second GitHub key (dual remotes) or another forge. Leave Second as the example placeholder and skip its audit path when you do not need it.
+The three living slots are **SSH · GitHub**, **SSH · Second**, and **OpenPGP · sign**. Fill GitHub + OpenPGP for a single-forge pier; use Second for a second GitHub key (dual remotes) or another forge. When you do not need Second, leave it as the example placeholder and skip its audit path.
 
 ## Before You Start
 
@@ -71,7 +71,7 @@ This builds its QR encoder from the vendored `gratitude/libqrencode` submodule i
 
 ### Standalone SVG QR codes, alongside the PNG card
 
-The composited card above stays PNG — the diamond, the raster QR tiles, and the burned-in captions are ImageMagick's own compositing work, and rebuilding all of that as one hand-built vector document is a real project of its own, not covered here. What is quick: `qrencode` already emits SVG directly, so each of the three QR codes can also exist as a small, fully textual file — no binary blob, diffable, greppable, the same way this tree already prefers text for everything else it keeps:
+The composited card above stays PNG — the diamond, the raster QR tiles, and the burned-in captions are ImageMagick's own compositing work, and rebuilding all of that as one hand-built vector document is a real project of its own, beyond this guide. What is quick: `qrencode` already emits SVG directly, so each of the three QR codes can also exist as a small, fully textual file — no binary blob, diffable, greppable, the same way this tree already prefers text for everything else it keeps:
 
 ```bash
 rishi/bin/rishi run tools/make_key_qr_svg.rish

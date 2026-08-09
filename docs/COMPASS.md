@@ -12,7 +12,7 @@
 
 ## Thesis — meet the rose before the cathedral
 
-Grain keeps why-briefs in `foundations/` and living law in `context/`. Those shelves stay. When time or context is short, start here, then open one pointed source. A Bron pointer twin lives at [`compass_card.bron`](compass_card.bron).
+Grain keeps why-briefs in `foundations/` and living law in `context/`. Those shelves stay whole. When time or context runs short, start here, then open one pointed source. A Bron pointer twin lives at [`compass_card.bron`](compass_card.bron).
 
 ## The rose (oldest conviction → newest lap)
 
@@ -63,7 +63,7 @@ Full table: [`context/LEXICON.md`](../context/LEXICON.md) § Cursor loop.
 
 - Archiving foundations into `archive/` for token budget.
 - Rewriting dated essays into Bron.
-- Claiming GREEN for visionary why — Status here is checkable *as a compressor* (links + reading order), not as a product witness.
+- Claiming GREEN for visionary why — Status here is checkable *as a compressor* (links + reading order), rather than as a product witness.
 
 ## Hands-on
 

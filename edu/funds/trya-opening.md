@@ -30,6 +30,6 @@ Civic Style governs. Design seat only until his hand claims the domain and any c
 
 ## Grow lean
 
-This page opens prep so the fund can grow under witnesses. Fuller edu-series steps (four-letter walk, phone book, refuse-walk) may accrete later; Gren's six-step page remains the edu gift for creating one of the twelve.
+This page opens prep so the fund grows under witnesses. Fuller edu-series steps — four-letter walk, phone book, refuse-walk — accrete later; Gren's six-step page remains the edu gift for creating one of the twelve.
 
 witness:trya-open GREEN — seat named · dedication named · hard lines named
