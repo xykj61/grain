@@ -80,7 +80,7 @@ Add a row **every time** a living mutant seats and the prior stamp becomes fossi
 | `counsel/20260728-232415_anvil-forge-to-kiln-name-lean.md` | LEXICON **Ember** entry | molt `20260808.220423` | anvil→kiln naming counsel · superseded by Ember rename |
 | `counsel/20260728-234419_the-kiln-season-oct-charter.md` | LEXICON **Ember** entry | molt `20260808.220423` | Kiln Season charter · season keeps its name as history · Ember is the living module |
 
-**Ember supersession (molt `20260808.220423`).** The living forge module renamed `anvil/` → `kiln/` → **`ember/`** (Keaton's word). Kiln/anvil naming writings above are prepped as Class H fossils; the rested **Kiln Season** keeps its name as history and is not touched. The **[debrided] tribute is shred** — withdrawn on Keaton's word `20260808.221942` (LEXICON *Anvil (retired)*): the living tree carries no [debrided] honor, the planned Magazine tribute suite is cancelled, and dated counsel that once planned it stays as history, superseded. Molt remains prep only; the Class H shred of the naming fossils stays RED.
+**Ember supersession (molt `20260808.220423`).** The living forge module renamed `anvil/` → `kiln/` → **`ember/`** (Keaton's word). Kiln/anvil naming writings above are prepped as Class H fossils; the rested **Kiln Season** keeps its name as history and is not touched. Any tribute framing once attached to the Anvil name is **debrided** `20260809.012200` — removed from the living tree and stripped from history, not archived. Molt remains prep only; the Class H shred of the kiln/anvil naming fossils stays RED.
 
 Grep helpers: `living mutant` · `fossil — living path` · paths in this table.
 
