@@ -1,0 +1,29 @@
+# dated_classify.rish — shared dated/live classifier, one definition for every roof.
+#
+# The living mutant of the elder tools/fixtures/dated_classify.py (Python → Rishi molt,
+# seated 20260809.030635). Rishi owns the interface — arg dispatch and output — over a
+# POSIX-sh regex seam (dated_classify_seam.sh) that holds the two ripgrep patterns Rishi
+# has no native regex for, exactly as the Python delegated to `re`. One definition, one
+# caller, so no two roofs drift (REDS 40). Removing Python matters here: python3 is not
+# even on this pier's PATH, so the elder .py could not run at all.
+#
+# Canon: context/specs/living-vs-dated.md
+#   A tracked path is dated testimony when its path carries a stamp segment
+#   (^|/)YYYYMMDD-HHMMSS_ and it does NOT declare a living-ledger header
+#   (**Stamp:** living ledger | living ledger (born), case-insensitive, first 8000 bytes).
+#   Everything else is live surface.
+#
+#   rishi/bin/rishi run tools/fixtures/dated_classify.rish classify <path>
+#   rishi/bin/rishi run tools/fixtures/dated_classify.rish census
+
+let argc = length args
+assert argc >= 1 else "usage: dated_classify.rish classify <path> | census"
+
+let cmd = args[0]
+
+# `classify <path>` — print 'dated' or 'live' for one tracked path. The seam prints a
+# usage error and exits non-zero when the path is missing, so no nested guard is needed.
+if cmd == "classify" then say trim (run ["sh" "tools/fixtures/dated_classify_seam.sh" "classify" args[1]]).out
+
+# `census` — print the tree-wide tally and the definition, matching the elder .py lines.
+if cmd == "census" then say trim (run ["sh" "tools/fixtures/dated_classify_seam.sh" "census"]).out

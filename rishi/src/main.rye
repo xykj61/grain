@@ -811,6 +811,7 @@ const EvalError = error{
     FlagNotFound,
     FlagNeedsValue,
     TrimNeedsString,
+    LowerNeedsString,
     SliceNeedsString,
     SliceNeedsInt,
     SliceOutOfRange,
@@ -1004,6 +1005,9 @@ fn eval_expr(allocator: std.mem.Allocator, io: std.Io, env: *Env, text: []const 
     }
     if (std.mem.startsWith(u8, trimmed, "trim ")) {
         return do_trim(allocator, io, env, trimmed[5..]);
+    }
+    if (std.mem.startsWith(u8, trimmed, "lower ")) {
+        return do_lower(allocator, io, env, trimmed[6..]);
     }
     if (std.mem.startsWith(u8, trimmed, "slice ")) {
         return do_slice(allocator, io, env, trimmed[6..]);
@@ -1502,6 +1506,30 @@ fn do_trim(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []const u8)
     return .{ .string = out };
 }
 
+/// `lower <text>` — ASCII-lowercase a string, so a case-insensitive compare is a plain
+/// `lower a == lower b`. Only A–Z shift; every other byte passes through untouched, so
+/// the length is preserved and no multi-byte sequence is mangled.
+fn do_lower(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []const u8) EvalError!Value {
+    const value = try eval_expr(allocator, io, env, arg);
+    const text = switch (value) {
+        .string => |s| s,
+        else => return error.LowerNeedsString,
+    };
+    const out = allocator.dupe(u8, text) catch return error.OutOfMemory;
+    // invariant: lowering copies every byte, so the length never changes.
+    assert(out.len == text.len);
+    for (out) |*c| {
+        const is_upper = c.* >= 'A' and c.* <= 'Z';
+        if (is_upper) c.* = c.* + 32; // ASCII 'a' - 'A' == 32
+    }
+    for (out) |c| {
+        // invariant: no uppercase ASCII letter survives a lowering.
+        const survived_upper = c >= 'A' and c <= 'Z';
+        assert(!survived_upper);
+    }
+    return .{ .string = out };
+}
+
 /// `slice <text> <start> <end>` — bounded substring; indices are half-open [start, end).
 fn do_slice(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8) EvalError!Value {
     var tok = TokenIter{ .text = rest };
@@ -1939,6 +1967,9 @@ fn eval_operand(allocator: std.mem.Allocator, io: std.Io, env: *Env, raw: []cons
     }
     if (std.mem.startsWith(u8, s, "trim ")) {
         return do_trim(allocator, io, env, s[5..]);
+    }
+    if (std.mem.startsWith(u8, s, "lower ")) {
+        return do_lower(allocator, io, env, s[6..]);
     }
     if (std.mem.startsWith(u8, s, "slice ")) {
         return do_slice(allocator, io, env, s[6..]);

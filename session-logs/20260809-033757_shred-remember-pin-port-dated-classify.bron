@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20260809.033757
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title shred remember_pin · port dated_classify to Rishi
+prompt shred remember_pin, then port dated_classify
+think shredded remember_pin_habit_count.py — working-tree git rm (not a debride; git history keeps it, so no cairn); it was regex-gated and a solved-problem one-shot the remember-git-nib rule already retired
+think porting dated_classify meant reading it fully — it uses regex too (a fixed-shape dated-name and a case-insensitive header), and its census loops all 9353 tracked files; Rishi cannot express that natively (for-each does not accumulate, no user functions, no regex)
+think the faithful shape for a shell is Rishi-as-conductor — dated_classify.rish owns arg dispatch and output over a POSIX-sh seam (dated_classify_seam.sh) holding the two rg patterns, the same delegation the Python made to re; one definition, one caller, so no roof drift (REDS 40)
+think proved parity before trusting it — captured the Python census as ground truth (total 9353 dated 5660 live 3693 health 39) via the nix-store python3, reduced the census to bulk git+rg+awk in shell and matched it exactly, then the rish census came back byte-identical and classify agreed on every tested path
+think added a Rishi lower builtin for case-insensitive compare (witnessed); split its per-byte postcondition off a compound assert the style ban caught; main.rye is style-clean but for the pre-existing REDS 64 py fossil
+obs python3 is not on this pier's PATH at all — so the elder .py could not even run here; removing Python is a real capability gain, not only tidiness
+obs repointed dated_pattern_scan.sh py→rish; the calls are proven correct, yet the scan's full green is gated by a pre-existing census_control_scan red (that subsystem is itself mid-port to Rishi), confirmed by stashing my edits and seeing the unmodified scan also exit 1
+obs kept dated_classify.py on disk as fossil-pending — two runpy consumers (shed_census, fascia_health) still import it in-process and are themselves python-embedded scans; de-Pythoning them + the divergence roof is the next lap, and fascia_health is a load-bearing meter wanting a careful round
+file rishi/src/main.rye lower builtin (do_lower + dispatch + LowerNeedsString)
+file tools/rish_lower_witness.rish lower proven GREEN
+file tools/fixtures/dated_classify.rish the living mutant — arg dispatch + output
+file tools/fixtures/dated_classify_seam.sh the rg regex seam (classify · census)
+file tools/dated_classify_witness.rish classifier witness — controls + census, no python
+file tools/fixtures/dated_pattern_scan.sh repointed py→rish (one consumer migrated)
+file active-designing/20260809-030635_python-to-rishi-molt-seating.md outcome + the Rishi language gap the port surfaced
+file work-in-progress/SHRED_PREP.md verdicts updated — remember_pin shredded · dated_classify ported
+file work-in-progress/TASKS.md molt lap status — porting
+file session-logs/20260809-033757_shred-remember-pin-port-dated-classify.bron this record
+recommend check-in Claude — the mutant is proven and one consumer migrated; the next lap de-Pythons the two runpy census scans (shed_census · fascia_health, load-bearing) and the divergence roof, then fossilizes dated_classify.py — a careful round touching a health meter, worth a ruling before it starts

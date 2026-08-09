@@ -11,7 +11,9 @@
 set -eu
 
 MODE=${1:-}
-CLASSIFY=tools/fixtures/dated_classify.py
+# Living mutant: the classifier now speaks Rishi (Python → Rishi molt 20260809).
+CLASSIFY=tools/fixtures/dated_classify.rish
+RISH="rishi/bin/rishi run"
 LAW=context/specs/living-vs-dated.md
 LIVE=tools/fixtures/fascia_health_live_control.md
 DATED=tools/fixtures/20260731-150648_fascia_health_dated_control.md
@@ -62,8 +64,8 @@ if test "$MODE" = "prove-red"; then
   exit 1
 fi
 
-C_LIVE=$(python3 "$CLASSIFY" classify "$LIVE")
-C_DATED=$(python3 "$CLASSIFY" classify "$DATED")
+C_LIVE=$($RISH "$CLASSIFY" classify "$LIVE")
+C_DATED=$($RISH "$CLASSIFY" classify "$DATED")
 echo "C_live=${C_LIVE}"
 echo "C_dated=${C_DATED}"
 
@@ -98,7 +100,7 @@ rg -q 'YYYYMMDD-HHMMSS' "$LAW" || {
 echo "law=honored"
 echo "law_path=${LAW}"
 
-CENSUS=$(python3 "$CLASSIFY" census)
+CENSUS=$($RISH "$CLASSIFY" census)
 echo "$CENSUS" | sed 's/^/shared_/'
 echo "$CENSUS" | rg -q '^verdict=ok$' || {
   echo "census=failed"
