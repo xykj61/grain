@@ -3,11 +3,11 @@
 **Language:** EN  
 **Style:** Radiant (see [`context/RADIANT_STYLE.md`](context/RADIANT_STYLE.md)) · **Voice:** Riyo  
 **Status:** Living — the front door to the repository; each claim below marks what runs today versus what is named and scoped  
-**Last updated:** `20260808.184036` (seven rooms in MAP · nock nested in glow · two-grain seed projecting)
+**Last updated:** `20260808.205404` (Urbit reframe: thanks not dependence · Comlink tendency seated)
 
 ---
 
-Welcome. This repository is **Grain** — a body of work developed in the open as a **proposal to [Urbit](https://urbit.org)**, exploring what Urbit could become when its ideas are rebuilt in **Glow**, a language that keeps Hoon's runes over bounded, asserted, statically-disciplined semantics. It descends from `urbit/urbit` as a downstream research repository, and its intent is collaborative: to grow ideas here, prove them with witnesses, and offer the ones that earn their place back upstream as contributions — an infinite game played *with* Urbit, rather than against it. If you are an Acme Corporation employee opening this tree for the first time, this page is the one calm read that orients you — what Grain is, the five variants you can choose between, what actually boots today, and where to go next.
+Welcome. This repository is **Grain** — an operating system and a civic application built in the open, written in **Glow**, a language that keeps Hoon's runes over bounded, asserted, statically-disciplined semantics and lowers them through Rye toward RISC-V. It descends honestly from [`urbit/urbit`](https://urbit.org) and can meet the Nock world through `glow/nock/` — Grain thanks that ancestor and keeps the bridge, **yet its worth stands on its own users and values**: the promise to whoever runs the software that it will not overflow, will not silently allocate, and will never hand their words to a distant miner. Ideas that earn their place here can be offered upstream as a gift; success is measured by the people Grain is for, not by any one community's reception. If you are an Acme Corporation employee opening this tree for the first time, this page is the one calm read that orients you — what Grain is, the five variants you can choose between, what actually boots today, and where to go next.
 
 **Who tends this pier.** The standing writing voice is **Riyo** ([`context/RIYO.md`](context/RIYO.md)). The living coauthor name is **Keaton Livermore**. The beginner clone is [`xykj61/grain`](https://github.com/xykj61/grain); dual remotes and the home pier story live in [`context/REMOTE_ROSTER.md`](context/REMOTE_ROSTER.md). The full first-day path is [`SOURCE.md`](SOURCE.md).
 
