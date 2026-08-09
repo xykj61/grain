@@ -1,0 +1,57 @@
+# claim_preserve_modality.rish — per-file modality counts for Radiant passes.
+#
+# The living mutant of claim_preserve_modality.sh (Python → Rishi molt 20260809):
+# Rishi's own find/length, no python. Emits `term=count` for each modal term, in a
+# fixed order, over a normalized body (Radiant-pass / erratum / living-pointer header
+# lines dropped). The scan counts before and after and reds on any drift — a Radiant
+# pass that turned "may" into "must" would show here.
+#
+#   rishi/bin/rishi run tools/fixtures/claim_preserve_modality.rish count <file>
+
+let text = read-file args[1]
+
+# Drop the header lines a Radiant pass adds, then join with a space — a word
+# boundary, so every `\bterm\b` count matches a per-line count.
+let kept = where (lines text) as l: (?! (?| [(l matches "(?i)radiant pass") (l matches "(?i)erratum") (l matches "(?i)living pointer")]))
+let norm = join kept " "
+
+# Each count is the length of its match list; case-insensitive. "must not" is a
+# phrase (no boundary); every other term is whole-word. Precomputed into a let so
+# no pattern literal nests inside an interpolation.
+let c_must_not = length (find norm "(?i)must not")
+let c_must = length (find norm "(?i)\bmust\b")
+let c_shall = length (find norm "(?i)\bshall\b")
+let c_should = length (find norm "(?i)\bshould\b")
+let c_may = length (find norm "(?i)\bmay\b")
+let c_never = length (find norm "(?i)\bnever\b")
+let c_always = length (find norm "(?i)\balways\b")
+let c_every = length (find norm "(?i)\bevery\b")
+let c_none = length (find norm "(?i)\bnone\b")
+let c_require = length (find norm "(?i)\brequire\b")
+let c_recommend = length (find norm "(?i)\brecommend\b")
+let c_propose = length (find norm "(?i)\bpropose\b")
+let c_seated = length (find norm "(?i)\bseated\b")
+let c_seat = length (find norm "(?i)\bseat\b")
+let c_held = length (find norm "(?i)\bheld\b")
+let c_hold = length (find norm "(?i)\bhold\b")
+let c_parked = length (find norm "(?i)\bparked\b")
+let c_all = length (find norm "(?i)\ball\b")
+
+say "must not=${c_must_not}"
+say "must=${c_must}"
+say "shall=${c_shall}"
+say "should=${c_should}"
+say "may=${c_may}"
+say "never=${c_never}"
+say "always=${c_always}"
+say "every=${c_every}"
+say "none=${c_none}"
+say "require=${c_require}"
+say "recommend=${c_recommend}"
+say "propose=${c_propose}"
+say "seated=${c_seated}"
+say "seat=${c_seat}"
+say "held=${c_held}"
+say "hold=${c_hold}"
+say "parked=${c_parked}"
+say "all=${c_all}"

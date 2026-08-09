@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260809.150209
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title grow sort/unique, fold claim_preserve to native Rishi
+prompt (Keaton) grow sort and unique next, then fold claim_preserve
+think grew sort (ascending; strings lexicographic, ints numeric, via std.mem.sort), unique (first-seen distinct via values_equal), and upper (mirror of lower) — the pieces claim_preserve needs to emit sorted-unique tokens
+think folding claim_preserve surfaced three more gaps and I closed each — a single-char-class lookbehind (?<!X) for the PATH class (zero-width, checks one prior byte; general lookaround stays out), list + concatenation to combine the six token classes (Rishi strings keep \n literal, so no newline-join trick), and the do_pipeline list cap raised by heap-allocating the result at the input length (a map over a big find no longer truncates at 1024)
+think caught two extractor bugs against the reference — I dropped the \b word boundaries every class but PATH uses, and the FP interpolation nested a pattern literal inside a string (Rishi's lexer closed the outer string early); fixed the \b and switched the prefixes to + concatenation
+obs the fold is validated 40/41 real files byte-identical to the elder perl extractor; the one diff is a single PROPER token on LEXICON — Python's \b is Unicode-aware (Bashō is one word), an ASCII engine sees the byte boundary — on a file the gate never runs, and the gate compares a file's before vs after with the same extractor, so consistency not Python-parity is what it needs
+obs folded the sibling claim_preserve_modality too (modal-word counts via length (find …)), byte-identical to Python; the whole claim_preserve gate now runs GREEN and python-free on this pier for the first time — python3 was absent, so it had been silently red
+obs tame_style_check clean on main.rye and match.rye; all rune/match/sort-unique witnesses GREEN; module selftest 69 cases
+obs the last blocker for the census seams (dated_classify census/health/shed, census_control H1) is loop accumulation — for-each can't accumulate; that is the next SOON lap
+file rishi/src/match.rye single-char-class lookbehind (?<! / ?<=) — parse_single_class, lb_neg/lb_pos ops and VM
+file rishi/src/main.rye do_sort · do_unique · do_upper · value_less · list/string + concatenation · do_pipeline heap result
+file tools/fixtures/claim_preserve_extract.rish the native extractor — six token classes, sorted-unique
+file tools/fixtures/claim_preserve_modality.rish the native modal-word counter
+file tools/fixtures/claim_preserve_scan.sh EXTRACT and modality repointed to the .rish
+file tools/rish_sort_unique_witness.rish · tools/rish_match_witness.rish sort/unique/upper and lookbehind witnessed
+file active-designing/20260809-030635_python-to-rishi-molt-seating.md first complete seam fold recorded; loop accumulation named as the last census blocker
+file work-in-progress/SHRED_PREP.md · REMEMBER.md · TASKS.md · context/LEXICON.md claim_preserve folded on the SOON edge; .sh seams fossiled
+file session-logs/20260809-150209_sort-unique-fold-claim-preserve.bron this record
+recommend keep-going claim_preserve is folded and its gate GREEN + python-free; the next language lap is loop accumulation, which unblocks folding the census seams (dated_classify, census_control) and finishes the dated subsystem's move into native Rishi
