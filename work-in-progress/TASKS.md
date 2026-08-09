@@ -20,7 +20,8 @@
 | Rishi `sort` · `unique` · `upper` · list `+` · lookbehind | SOON | **LANDED** |
 | **Fold `claim_preserve` to native Rishi** — extractor + modality, gate GREEN + python-free | SOON | **LANDED** — first complete seam fold (40/41 byte-identical) |
 | Rishi **`?:` conditional rune** (wutcol) — value-returning if; with `fold` folds census seams natively (proven on H1 count) | SOON | **LANDED** — accumulation solved (`fold` already threaded state) |
-| Fold census duty bodies native vs keep bulk-`rg` seams (dated_classify · census_control) | SOON | **design call** — no language gap; Keaton's word |
+| Rishi **user functions** (`fn name p: body`, recursion, calls in folds) | SOON | **LANDED** |
+| Fold census seams — `census_control` H1 folded native; `dated_classify` census proven native (3.9s) yet keeps bulk-`rg` (20×); `shed` mention scan bulk by measure | SOON | **census_control DONE** · dated_classify perf-kept |
 | Molt Python → Rishi — `dated_classify` fully ported (census·classify·health·shed, all byte-identical) · `census_control` de-Pythoned · runpy scans (`shed_census`·`fascia_health`) + divergence GREEN · `remember_pin` shredded · `lower` builtin | SOON | **dated subsystem Python-free** · ~10 more `.sh` embed python3 (next laps) |
 | `mold → shape` debride (82 files / 753) | SOON | proposed · own pass |
 | TAME core/shelf compression | SOON | proposed |
