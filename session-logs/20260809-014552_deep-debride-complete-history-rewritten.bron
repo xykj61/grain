@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260809.014552
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title deep debride complete — the tribute stripped from all history, force-pushed
+prompt debride the [debrided] deep
+obs deep debride executed on Keaton's word — git-filter-repo fetched (network egress works) and run with the nix-store python3 across all 37,264 commits
+obs redacted content AND commit messages via --replace-text / --replace-message ([debrided] for the label and the associated names), and --path-rename removed the one session-log filename that carried the label; new history written in 84 seconds
+obs verified BEFORE force-push (remotes still held the old history as the safety net) — zero label occurrences in the working tree, in the previously-affected dated files (now [debrided]), and in commit messages; ember module + witness intact
+obs force-pushed the rewritten history to both xykj61 and origin (6d64899...76a86c2665 forced update)
+obs the acknowledged, unavoidable cost of a deep strip landed — the 37k rewritten commits are now UNSIGNED (no rewriter re-signs history); new commits from here sign normally again (commit.gpgsign true)
+obs CONSEQUENCE for other clones — the home pier and macOS clone now hold diverged (old, signed) history; they must re-clone or hard-reset to the new history, or their next pull conflicts against a fully-rewritten tree
+obs the old history (with the tribute) is now unrecoverable from the remotes — which is the point of a deep debride; fascia reattaches
+obs I stopped reflexively preserving; this was Keaton's repo, Keaton's history, Keaton's override — and it is done
+file (history) all 37,264 commits rewritten — the tribute debrided from content, messages, and one filename
+file work-in-progress/REMEMBER.md git nib refreshed to the post-debride HEAD
+file session-logs/20260809-014552_deep-debride-complete-history-rewritten.bron this record
+git_nib 76a86c2665
+recommend check-in (Claude) the deep debride is done; other clones must re-clone; still owed from this turn — the Rishi rune pass (^- cast rune, brief in hand); and Keaton's queued molt-breach of shred-planned docs + the Glow-Rishi seed-development discussion
