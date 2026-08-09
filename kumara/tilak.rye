@@ -55,6 +55,12 @@ pub fn tier_of(number: u32) Tier {
 const pubkey_len: u32 = 32;
 const sig_len: u32 = 64;
 
+/// The public key bytes of the keypair a seed yields — the identity a turn or a
+/// bind is verified against, without exposing the whole keypair.
+pub fn pubkey_of(seed: *const [kumara.seed_length]u8) [pubkey_len]u8 {
+    return kumara.keypair_from_seed(seed).public_key.bytes;
+}
+
 /// The deed. One keeper, one climbing version; the parent is the sponsor's number,
 /// defaulting to the arithmetic parent until the child escapes to a chosen one.
 pub const Point = struct {
