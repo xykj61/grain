@@ -120,6 +120,128 @@ pub fn verify_bind(b: *const Bind) bool {
     return true;
 }
 
+// Little-endian integer bytes, so a signed message is the same on every target.
+fn u32_le(out: *[4]u8, v: u32) void {
+    std.mem.writeInt(u32, out, v, .little);
+}
+
+fn u64_le(out: *[8]u8, v: u64) void {
+    std.mem.writeInt(u64, out, v, .little);
+}
+
+/// The rotation record — the networking key Comlink reads on every handshake, with
+/// two counters that only ever climb: `key_counter` on an ordinary rotation,
+/// `reset_counter` when continuity must start over (which zeroes the key counter).
+/// The identity key signs the record, so a rotation is authentic, not forged.
+pub const Turn = struct {
+    net_pubkey: [pubkey_len]u8,
+    key_counter: u64,
+    reset_counter: u64,
+    sig: [sig_len]u8, // identity key signs net_pubkey ++ key_counter ++ reset_counter
+
+    fn message(self: *const Turn, out: *[48]u8) void {
+        for (self.net_pubkey, 0..) |b, i| out[i] = b;
+        u64_le(out[32..40], self.key_counter);
+        u64_le(out[40..48], self.reset_counter);
+    }
+};
+
+pub fn make_turn(key_seed: *const [kumara.seed_length]u8, net_seed: *const [kumara.seed_length]u8, key_counter: u64, reset_counter: u64) Turn {
+    const kp = kumara.keypair_from_seed(key_seed);
+    const net_kp = kumara.keypair_from_seed(net_seed);
+    var t = Turn{ .net_pubkey = net_kp.public_key.bytes, .key_counter = key_counter, .reset_counter = reset_counter, .sig = undefined };
+    var msg: [48]u8 = undefined;
+    t.message(&msg);
+    t.sig = kumara.sign(&msg, kp, null).toBytes();
+    // invariant: a turn keeps the counters it was asked to carry.
+    assert(t.key_counter == key_counter);
+    assert(t.reset_counter == reset_counter);
+    return t;
+}
+
+pub fn verify_turn(t: *const Turn, identity_pubkey: [pubkey_len]u8) bool {
+    const pub_key = kumara.PublicKey.fromBytes(identity_pubkey) catch return false;
+    var msg: [48]u8 = undefined;
+    t.message(&msg);
+    kumara.verify_bytes(&msg, &t.sig, pub_key) catch return false;
+    return true;
+}
+
+// The three lendable powers: management (tend), spawn (sow), transfer (hand).
+pub const Power = enum(u8) { tend = 1, sow = 2, hand = 3 };
+
+/// A capability record — one power over one point, in exactly one holder's hand at a
+/// time. The keeper signs the grant, so the holder's claim traces back to the keeper;
+/// a capability moves by a fresh signed grant, never by copying an old one.
+pub const Cap = struct {
+    point_number: u32,
+    power: Power,
+    holder: [pubkey_len]u8,
+    sig: [sig_len]u8, // keeper signs point_number ++ power ++ holder
+    version: u32,
+
+    fn message(self: *const Cap, out: *[37]u8) void {
+        u32_le(out[0..4], self.point_number);
+        out[4] = @intFromEnum(self.power);
+        for (self.holder, 0..) |b, i| out[5 + i] = b;
+    }
+};
+
+pub fn make_cap(keeper_seed: *const [kumara.seed_length]u8, point_number: u32, power: Power, holder: [pubkey_len]u8) Cap {
+    const keeper_kp = kumara.keypair_from_seed(keeper_seed);
+    var c = Cap{ .point_number = point_number, .power = power, .holder = holder, .sig = undefined, .version = 1 };
+    var msg: [37]u8 = undefined;
+    c.message(&msg);
+    c.sig = kumara.sign(&msg, keeper_kp, null).toBytes();
+    // invariant: a fresh capability grant begins at version one.
+    assert(c.version == 1);
+    return c;
+}
+
+pub fn verify_cap(c: *const Cap, keeper_pubkey: [pubkey_len]u8) bool {
+    const pub_key = kumara.PublicKey.fromBytes(keeper_pubkey) catch return false;
+    var msg: [37]u8 = undefined;
+    c.message(&msg);
+    kumara.verify_bytes(&msg, &c.sig, pub_key) catch return false;
+    return true;
+}
+
+/// The parent link — sponsorship. Every point has an arithmetic default parent; a
+/// child may escape to a chosen one, and that escape is the child's word alone, so
+/// the child's identity key signs the chosen parent. `chosen == default` means no
+/// escape yet.
+pub const Sponsor = struct {
+    point_number: u32,
+    default_parent: u32,
+    chosen_parent: u32,
+    sig: [sig_len]u8, // child's identity key signs point_number ++ chosen_parent
+    version: u32,
+
+    fn message(self: *const Sponsor, out: *[8]u8) void {
+        u32_le(out[0..4], self.point_number);
+        u32_le(out[4..8], self.chosen_parent);
+    }
+};
+
+pub fn make_sponsor(child_key_seed: *const [kumara.seed_length]u8, point_number: u32, default_parent: u32, chosen_parent: u32) Sponsor {
+    const child_kp = kumara.keypair_from_seed(child_key_seed);
+    var s = Sponsor{ .point_number = point_number, .default_parent = default_parent, .chosen_parent = chosen_parent, .sig = undefined, .version = 1 };
+    var msg: [8]u8 = undefined;
+    s.message(&msg);
+    s.sig = kumara.sign(&msg, child_kp, null).toBytes();
+    // invariant: a sponsor link names one point and one chosen parent.
+    assert(s.version == 1);
+    return s;
+}
+
+pub fn verify_sponsor(s: *const Sponsor, child_pubkey: [pubkey_len]u8) bool {
+    const pub_key = kumara.PublicKey.fromBytes(child_pubkey) catch return false;
+    var msg: [8]u8 = undefined;
+    s.message(&msg);
+    kumara.verify_bytes(&msg, &s.sig, pub_key) catch return false;
+    return true;
+}
+
 // --- Bron serialization -------------------------------------------------
 
 const hex_digits = "0123456789abcdef";
@@ -183,40 +305,132 @@ pub fn emit_bind(io: std.Io, b: *const Bind) void {
     put_line(io, "version {d}\n", .{b.version});
 }
 
+fn power_name(p: Power) []const u8 {
+    return switch (p) {
+        .tend => "tend",
+        .sow => "sow",
+        .hand => "hand",
+    };
+}
+
+/// Emit a rotation record as a Bron fact.
+pub fn emit_turn(io: std.Io, t: *const Turn) void {
+    var net_hex: [pubkey_len * 2]u8 = undefined;
+    var sig_hex: [sig_len * 2]u8 = undefined;
+    to_hex(&t.net_pubkey, &net_hex);
+    to_hex(&t.sig, &sig_hex);
+    put_line(io, "format kumara-turn-v1\n", .{});
+    put_line(io, "net_pubkey {s}\n", .{net_hex});
+    put_line(io, "key_counter {d}\n", .{t.key_counter});
+    put_line(io, "reset_counter {d}\n", .{t.reset_counter});
+    put_line(io, "sig {s}\n", .{sig_hex});
+}
+
+/// Emit a capability record as a Bron fact.
+pub fn emit_cap(io: std.Io, c: *const Cap) void {
+    var holder_hex: [pubkey_len * 2]u8 = undefined;
+    var sig_hex: [sig_len * 2]u8 = undefined;
+    to_hex(&c.holder, &holder_hex);
+    to_hex(&c.sig, &sig_hex);
+    put_line(io, "format kumara-cap-v1\n", .{});
+    put_line(io, "point {d}\n", .{c.point_number});
+    put_line(io, "power {s}\n", .{power_name(c.power)});
+    put_line(io, "holder {s}\n", .{holder_hex});
+    put_line(io, "sig {s}\n", .{sig_hex});
+    put_line(io, "version {d}\n", .{c.version});
+}
+
+/// Emit a sponsor link as a Bron fact.
+pub fn emit_sponsor(io: std.Io, s: *const Sponsor) void {
+    var sig_hex: [sig_len * 2]u8 = undefined;
+    to_hex(&s.sig, &sig_hex);
+    put_line(io, "format kumara-sponsor-v1\n", .{});
+    put_line(io, "point {d}\n", .{s.point_number});
+    put_line(io, "default_parent {d}\n", .{s.default_parent});
+    put_line(io, "chosen_parent {d}\n", .{s.chosen_parent});
+    put_line(io, "sig {s}\n", .{sig_hex});
+    put_line(io, "version {d}\n", .{s.version});
+}
+
 // --- selftest and example instance --------------------------------------
 
-// Two example seeds — plainly not a real pilot's key, so no identity is invented.
+// Example seeds — plainly not a real pilot's key, so no identity is invented.
 const example_key_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
 const example_keeper_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
+const example_net_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
 const example_number: u32 = 0x0100; // 256 — the first star
+const example_chosen_parent: u32 = 0x0002; // an escape from the arithmetic default
+
+// The whole example instance — every tilak, from the example seeds.
+const Instance = struct { b: Bind, p: Point, t: Turn, tend: Cap, sow: Cap, hand: Cap, s: Sponsor };
+
+fn example_instance() Instance {
+    const b = make_bind(&example_key_seed, &example_keeper_seed);
+    const p = Point.seat(example_number, b.keeper_pubkey);
+    const t = make_turn(&example_key_seed, &example_net_seed, 0, 0);
+    // The keeper grants each power; here all three rest with the identity key.
+    const tend = make_cap(&example_keeper_seed, example_number, .tend, b.kumara_pubkey);
+    const sow = make_cap(&example_keeper_seed, example_number, .sow, b.kumara_pubkey);
+    const hand = make_cap(&example_keeper_seed, example_number, .hand, b.kumara_pubkey);
+    const s = make_sponsor(&example_key_seed, example_number, p.parent, example_chosen_parent);
+    return .{ .b = b, .p = p, .t = t, .tend = tend, .sow = sow, .hand = hand, .s = s };
+}
 
 fn run_selftest() !u8 {
-    // A bind round-trips: made, then verified both ways.
-    const b = make_bind(&example_key_seed, &example_keeper_seed);
-    if (!verify_bind(&b)) return error.BindDidNotVerify;
+    const inst = example_instance();
 
-    // A tampered bind refuses: flip one byte of the key's signature.
-    var tampered = b;
-    tampered.sig_by_key[0] ^= 0x01;
-    if (verify_bind(&tampered)) return error.TamperedBindVerified;
+    // The point seats at version one and names its tier.
+    if (inst.p.version != 1) return error.PointVersionWrong;
+    if (tier_of(inst.p.number) != .star) return error.TierWrong;
 
-    // A point seats at version one and names its tier.
-    const p = Point.seat(example_number, b.keeper_pubkey);
-    if (p.version != 1) return error.PointVersionWrong;
-    if (tier_of(p.number) != .star) return error.TierWrong;
+    // The bind verifies both ways; a tampered bind refuses.
+    if (!verify_bind(&inst.b)) return error.BindDidNotVerify;
+    var bad_bind = inst.b;
+    bad_bind.sig_by_key[0] ^= 0x01;
+    if (verify_bind(&bad_bind)) return error.TamperedBindVerified;
 
-    print("kumara tilak: bind verifies both ways; tampered bind refused; point seats at v1 in tier star.\n", .{});
+    // The turn verifies under the identity key; a bumped counter breaks the signature.
+    if (!verify_turn(&inst.t, inst.b.kumara_pubkey)) return error.TurnDidNotVerify;
+    var bad_turn = inst.t;
+    bad_turn.key_counter += 1;
+    if (verify_turn(&bad_turn, inst.b.kumara_pubkey)) return error.TamperedTurnVerified;
+
+    // Each capability verifies under the keeper who granted it; a swapped power refuses.
+    if (!verify_cap(&inst.tend, inst.b.keeper_pubkey)) return error.CapDidNotVerify;
+    if (!verify_cap(&inst.sow, inst.b.keeper_pubkey)) return error.CapDidNotVerify;
+    if (!verify_cap(&inst.hand, inst.b.keeper_pubkey)) return error.CapDidNotVerify;
+    var bad_cap = inst.tend;
+    bad_cap.power = .hand;
+    if (verify_cap(&bad_cap, inst.b.keeper_pubkey)) return error.TamperedCapVerified;
+
+    // The sponsor escape verifies under the child's key; a changed parent refuses.
+    if (!verify_sponsor(&inst.s, inst.b.kumara_pubkey)) return error.SponsorDidNotVerify;
+    if (inst.s.chosen_parent == inst.s.default_parent) return error.EscapeNotRecorded;
+    var bad_sponsor = inst.s;
+    bad_sponsor.chosen_parent += 1;
+    if (verify_sponsor(&bad_sponsor, inst.b.kumara_pubkey)) return error.TamperedSponsorVerified;
+
+    print("kumara tilak: five tilaks — point, bind, turn, three caps, sponsor — each made, signed by its authorizing party, verified, refused on tamper.\n", .{});
     print("kumara tilak: version {s}\n", .{tilak_version});
-    print("GREEN: kumara tilak — point and bind, made, signed both ways, verified, refused on tamper.\n", .{});
+    print("GREEN: kumara tilak — the whole identity template holds; every claim traces to a signature, every tamper refuses.\n", .{});
     return 0;
 }
 
 fn run_emit(io: std.Io) !u8 {
-    const b = make_bind(&example_key_seed, &example_keeper_seed);
-    const p = Point.seat(example_number, b.keeper_pubkey);
-    emit_point(io, &p);
+    const inst = example_instance();
+    emit_point(io, &inst.p);
     put_line(io, "\n", .{});
-    emit_bind(io, &b);
+    emit_bind(io, &inst.b);
+    put_line(io, "\n", .{});
+    emit_turn(io, &inst.t);
+    put_line(io, "\n", .{});
+    emit_cap(io, &inst.tend);
+    put_line(io, "\n", .{});
+    emit_cap(io, &inst.sow);
+    put_line(io, "\n", .{});
+    emit_cap(io, &inst.hand);
+    put_line(io, "\n", .{});
+    emit_sponsor(io, &inst.s);
     return 0;
 }
 

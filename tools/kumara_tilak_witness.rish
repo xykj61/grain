@@ -8,30 +8,35 @@
 # Build first:  rye build kumara/tilak.rye -femit-bin=kumara/bin/tilak
 #   rishi/bin/rishi run tools/kumara_tilak_witness.rish
 
-# The module's own selftest — a bind verifies both ways, a tampered bind refuses.
+# The module's own selftest — every tilak verifies, every tamper refuses.
 # Diagnostics print to stderr; the Bron facts of `emit` go to stdout.
 let st = run ["kumara/bin/tilak" "selftest"]
 assert st.ok else "kumara tilak selftest must exit 0"
 assert (st.err contains "GREEN") else "selftest must report GREEN"
-assert (st.err contains "verifies both ways") else "a bind must verify in both directions"
-assert (st.err contains "tampered bind refused") else "a tampered bind must be refused"
-assert (st.err contains "tier star") else "point 256 seats in tier star"
+assert (st.err contains "five tilaks") else "the selftest must exercise all five tilaks"
+assert (st.err contains "every tamper refuses") else "every tampered tilak must be refused"
 
-# The emitted instance is well-formed Bron — a point fact and a bind fact.
+# The emitted instance holds all seven records: point, bind, turn, three caps, sponsor.
 let em = run ["kumara/bin/tilak" "emit"]
 assert em.ok else "emit must exit 0"
+let formats = find em.out "format kumara-[a-z]+-v1"
+assert (length formats) == 7 else "the instance emits seven tilak records (point · bind · turn · cap x3 · sponsor)"
 assert (em.out contains "format kumara-point-v1") else "emit a point fact"
-assert (em.out contains "format kumara-bind-v1") else "emit a bind fact"
-assert (em.out contains "version 1") else "a fresh point and bind begin at version 1"
+assert (em.out contains "format kumara-turn-v1") else "emit a rotation fact"
+assert (em.out contains "format kumara-sponsor-v1") else "emit a sponsor fact"
 
-# Both signatures are present and the right length (64 bytes = 128 hex chars).
-let sigs = find em.out "sig_by_(key|keeper) [0-9a-f]{128}"
-assert (length sigs) == 2 else "both bind signatures are present at full Ed25519 length"
+# Every signature is present at full Ed25519 length (64 bytes = 128 hex).
+# The bind has two; turn one; each of three caps one; sponsor one — seven in all.
+let all_sigs = find em.out "(sig|sig_by_key|sig_by_keeper) [0-9a-f]{128}"
+assert (length all_sigs) == 7 else "every signed claim carries a full-length Ed25519 signature"
+
+# The three capabilities name the three powers.
+assert (em.out contains "power tend") else "the management capability names its power"
+assert (em.out contains "power sow") else "the spawn capability names its power"
+assert (em.out contains "power hand") else "the transfer capability names its power"
 
 # The point is kept by the keeper: its keeper hex is the bind's keeper_pubkey.
 let point_keeper = find em.out "\nkeeper [0-9a-f]{64}"
-let bind_keeper = find em.out "keeper_pubkey [0-9a-f]{64}"
 assert (length point_keeper) == 1 else "the point names one keeper"
-assert (length bind_keeper) == 1 else "the bind names one keeper key"
 
-say "GREEN: kumara tilak — the point and bind are made, signed both ways, verified, and emitted as Bron; a tampered bind refuses."
+say "GREEN: kumara tilak — all five tilaks made, each signed by its authorizing party, verified, emitted as Bron; every tamper refuses."

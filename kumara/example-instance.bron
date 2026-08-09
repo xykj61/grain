@@ -1,7 +1,8 @@
 # Kumara example instance — NOT a real identity.
-# Generated deterministically from example seeds (0x11.., 0x22..) by kumara/bin/tilak emit.
-# The maintainer's real instance is filled by his own hand from his own seed; this file
-# only proves the template shape and that both bind signatures verify.
+# Generated deterministically from example seeds (0x11.., 0x22.., 0x33..) by kumara/bin/tilak emit.
+# The maintainer's real instance is filled by his own hand from his own seed; this file only
+# proves the template shape and that every tilak's signature verifies. All five tilaks:
+# point (deed) · bind (marriage) · turn (rotation) · cap x3 (tend/sow/hand) · sponsor (parent).
 
 format kumara-point-v1
 number 256
@@ -15,4 +16,38 @@ kumara_pubkey d04ab232742bb4ab3a1368bd4615e4e6d0224ab71a016baf8520a332c9778737
 keeper_pubkey a09aa5f47a6759802ff955f8dc2d2a14a5c99d23be97f864127ff9383455a4f0
 sig_by_key 81e53d1c1e57f69d8ea6875968d8199ee9a081eae168de6be0a9fe4b3d59838d3c637b5586125812dbd87ef7fab4504a9bf54cc848ce1cc3777270f8adc3720f
 sig_by_keeper 6d389915ae2f643546843ee024550cb951117a2758921c7f082645c5fa1ec443bf4ade66b75f1544594ff39cfe362ec8af2ecc79e37e64fc3a229fc65a7df107
+version 1
+
+format kumara-turn-v1
+net_pubkey 17cb79fb2b4120f2b1ec65e4198d6e08b28e813feb01e4a400839b85e18080ce
+key_counter 0
+reset_counter 0
+sig 0baab292cd748eb4ae2e39d2205b549450f7fdb81f8564a49477c4aa92ab2c35677667bc6ccfd6a0384528584f5b00f5ade56ca67de1440bd777157365af330f
+
+format kumara-cap-v1
+point 256
+power tend
+holder d04ab232742bb4ab3a1368bd4615e4e6d0224ab71a016baf8520a332c9778737
+sig 02454ac49fed292591a31de1b557d417c8bc0c4daf2248bff25e487db47a3b3cafdfb68da418f66d75062746747a6537364b9e8662d2797b8836182e56c93b06
+version 1
+
+format kumara-cap-v1
+point 256
+power sow
+holder d04ab232742bb4ab3a1368bd4615e4e6d0224ab71a016baf8520a332c9778737
+sig 8abbe6c59f4557204543409d0c75588bfa97ceda2fa1da6e7779474f7cf84de1941bb7dbe326df0b8b05833186731b44ea9154523529872a2560232893f52703
+version 1
+
+format kumara-cap-v1
+point 256
+power hand
+holder d04ab232742bb4ab3a1368bd4615e4e6d0224ab71a016baf8520a332c9778737
+sig 1278b730ba9019db0dff39596385f8bbfa933187221f0c7d032ebfc45b6b6537b38db6c823e2caf7a63534f0a70fa43e7177fb4934ebd1dc0a68c07fcfc0d60c
+version 1
+
+format kumara-sponsor-v1
+point 256
+default_parent 1
+chosen_parent 2
+sig 1ad212a663df134079c9cedbaf86f439dcaab482a7232b2221873d27b79cbebf194f1859ff5a402214ddb47bd5bb6b1c28f92c20a01aeee6f9d057e8449e210e
 version 1

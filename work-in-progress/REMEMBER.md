@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` — the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `3f9b8c8257` · Grain · cloud pier
+**Git nib:** `9979cfde82` · Grain · cloud pier
 **Host:** Framework · EDT (`America/New_York`) · Vultr SEA VPS (HP AMD 2vCPU/4GB shared · never EWR) · this session in ai-jail
 
 ---
@@ -18,11 +18,11 @@
 | Equinox | Waymark | Holds |
 |---|---|---|
 | The Language | **SOON** | Glow runes (`^-` · `?!` · `?&` · `?|`) · **`matches` primitive landed** (bounded regex, 812/812 vs Python re) · `lower` · scripts→Rishi molt · `mold→shape` · TAME core/shelf · Brix-infuse · PLEAC · Aurora |
-| Identity & Network | **JARL** | **Kumara identity template — point + bind tilaks landed** (`kumara/tilak.rye`, signed both ways, witnessed) · rotation/capability/sponsor tilaks next · d12/d60 · Comlink · Sui settlement |
+| Identity & Network | **JARL** | **Kumara identity template — all five tilaks landed** (`kumara/tilak.rye`: point · bind · turn · cap×3 · sponsor, each signed by its authorizing party, witnessed) · settlement ledger · d12/d60 · Comlink next |
 | Surface & Intelligence | **BUHR** | Realidream DAG surface · Quin's four voices (Lattice · Scribble · Lantern · Ember) · MCP-in-Bron · Tablecloth |
 | The World | **TACT** | Ship-Pilot pitch · publishing · Grainphone · commerce · CONTRIBUTING four-doors · Grain Energy PBC |
 
-**Now at JARL j1 — the Kumara identity template.** Coords **s1 · JARL e2 · j1**. SOON's language spine is complete (runes `^- ?! ?& ?| ?:` · regex `matches`/`find` · `sort`/`unique` · `fold` · user functions; `claim_preserve` + `census_control` folded native). JARL journey 1 **started**: `kumara/tilak.rye` seats the **point** and **bind** tilaks — an Ed25519 identity, signed both ways (key signs keeper, keeper signs key), Azimuth-tiered (galaxy/star/planet), emitted as Bron, witnessed GREEN. Next JARL tilaks: rotation · capabilities · sponsor; then Comlink routing · d12/d60 · Sui settlement. Baton: [`../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md`](../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md).
+**Now at JARL j1 — the Kumara identity template, all five tilaks seated.** Coords **s1 · JARL e2 · j1**. SOON's language spine is complete. `kumara/tilak.rye` seats the whole identity: **point** (deed, Azimuth-tiered) · **bind** (marriage, signed both ways) · **turn** (rotation, two climbing counters) · **cap ×3** (tend/sow/hand, keeper-granted) · **sponsor** (parent, child-escaped). Each carries a signature by its authorizing party; every tamper refuses. Emitted as a 53-line Bron example instance, witnessed GREEN. Held for Keaton: the settlement ledger (Sui or Grain-native), the final scarcity tiering, the human-name custody. Then Comlink routing · d12/d60. Baton: [`../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md`](../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md).
 
 ---
 
