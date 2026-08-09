@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260809.154649
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title shift to JARL — the Kumara identity template (point + bind)
+prompt (Keaton) shift to JARL, start the Kumara identity template; wait for the survey, then build
+think Kumara is heavily developed (494 files) so I ran an Explore survey first rather than build blind — it found the crypto seam (tally/kumara.rye, Ed25519 keypair/sign/verify) exists but the ledger record shapes (tilaks) do not; the load-bearing pair is point + bind
+think built kumara/tilak.rye on the seam — the point tilak (a number in an Azimuth-tiered scarcity shape galaxy/star/planet, its keeper, a version that climbs by one) and the bind tilak (key married to keeper, signed both ways: the key signs the keeper's pubkey, the keeper signs the key's pubkey; neither alone is the identity, the mutual signature is)
+think TAME throughout — Rye structs with explicit u32 widths, named ceilings (galaxy_ceiling 2^8, star_ceiling 2^16), contract asserts on seat/version/parent; the crypto reaches through the one seam
+think a template is the shape, an instance one filled quintet; the module builds+verifies an instance from two seeds and emits Bron facts, never inventing a real pilot's key — the example uses plain seeds 0x11../0x22.., the maintainer fills his own by hand
+obs caught two bugs — the point's keeper was the identity key not the keeper key (fixed to keeper_pubkey), and emit wrote data to stderr; refactored emit to stdout via std.Io.File.stdout writeStreamingAll (mirroring Rishi's say), diagnostics stay on stderr
+obs witnessed GREEN — selftest proves the bind verifies both ways and a tampered bind refuses; the Rishi witness drives the built module and checks the Bron facts using the new find primitive (both 64-byte sigs present, point keeper matches bind keeper)
+obs tame_style_check clean on kumara/tilak.rye; the example instance is 18 lines of valid Bron (point fact + bind fact)
+obs held for Keaton's word — the settlement ledger (Sui or Grain-native), the final scarcity tiering, the rotation/capability/sponsor tilaks, and the human-name custody park are the JARL journeys past this one
+file kumara/tilak.rye the point and bind tilaks — Rye shapes, make_bind/verify_bind, Bron emit, selftest
+file kumara/kumara.rye symlink to tally/kumara.rye (the Ed25519 seam), mirroring comlink/aurora/amphora
+file kumara/example-instance.bron a witnessed example instance — point + bind, both signatures, NOT a real identity
+file kumara/README.md the module one-pager — identity from a key to a deed
+file tools/kumara_tilak_witness.rish drives the module, checks the proof and the emitted Bron facts
+file work-in-progress/REMEMBER.md · TASKS.md · context/LEXICON.md JARL j1 opened, Kumara template seated
+file session-logs/20260809-154649_jarl-kumara-identity-template-point-bind.bron this record
+recommend check-in Claude — JARL journey 1's load-bearing pair (point + bind) is seated, signed both ways, and witnessed; the next tilaks (rotation · capability · sponsor) and the settlement-ledger choice (Sui or Grain-native) and the final scarcity tiering want Keaton's word before I build further into the identity or the network it lives on

@@ -1,0 +1,227 @@
+//! kumara/tilak.rye — the Kumara identity template: the point and the bind.
+//!
+//! Kumara names the keypair that signs a fact before it enters the log
+//! (`tally/kumara.rye`). A Kumara *identity* is more than a key: it is a small
+//! family of type-marked records — tilaks — that say who a key is, who keeps it,
+//! and how it may move. This file seats the two load-bearing tilaks every other
+//! hangs from:
+//!
+//!   * **point** — the deed: a number within a scarcity shape, its keeper, and a
+//!     version that climbs by exactly one on every change.
+//!   * **bind** — the marriage of a keypair to its keeper, signed *both* ways:
+//!     the key signs the keeper, and the keeper signs the key. Neither alone is
+//!     the identity; the mutual signature is.
+//!
+//! A "template" is this shape; an "instance" is one filled quintet of tilaks for
+//! a real pilot. This module builds and verifies an instance from two seeds and
+//! serializes it to Bron facts — the first identity template plus a witnessed
+//! example instance. The pilot's own instance is filled by his hand, from his own
+//! seed kept in his own jail; this file never invents a real pilot's key.
+//!
+//! Scarcity honors Azimuth's shape without borrowing its ledger: a point number
+//! below 2^8 is a galaxy, below 2^16 a star, otherwise a planet — legible tiers
+//! over keypairs that are what actually trust, rather than a hierarchy of power.
+//!
+//! Held for Keaton's word (JARL journeys past this one): the settlement ledger
+//! (Sui or Grain-native), the final scarcity tiering, the rotation/capability
+//! tilaks (turn · tend · sow · hand · sponsor), and the human-name custody park.
+//!
+//!   rye build kumara/tilak.rye -femit-bin=kumara/bin/tilak
+//!   kumara/bin/tilak selftest      # prove make + verify + tamper-reject
+//!   kumara/bin/tilak emit          # print an example instance as Bron facts
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const kumara = @import("kumara.rye");
+
+pub const tilak_version = "20260809.154500";
+
+// A byte below this point number is a galaxy; below the next a star; else a planet.
+// The Azimuth parallel, named so a reader places a number at a glance. u32 is the
+// widest a point number goes; the final tiering is Keaton's word.
+pub const galaxy_ceiling: u32 = 256; // 2^8
+pub const star_ceiling: u32 = 65536; // 2^16
+
+pub const Tier = enum { galaxy, star, planet };
+
+/// The tier a point number falls in — address legibility, not a rank of power.
+pub fn tier_of(number: u32) Tier {
+    if (number < galaxy_ceiling) return .galaxy;
+    if (number < star_ceiling) return .star;
+    return .planet;
+}
+
+const pubkey_len: u32 = 32;
+const sig_len: u32 = 64;
+
+/// The deed. One keeper, one climbing version; the parent is the sponsor's number,
+/// defaulting to the arithmetic parent until the child escapes to a chosen one.
+pub const Point = struct {
+    number: u32,
+    keeper: [pubkey_len]u8, // the keeper's public key
+    parent: u32, // sponsor point number
+    version: u32, // climbs by exactly one per change
+
+    /// A fresh point at version 1, parented to its arithmetic default.
+    pub fn seat(number: u32, keeper: [pubkey_len]u8) Point {
+        // invariant: the arithmetic-default parent is the number shifted one tier
+        // down (a planet's default sponsor is its star), or itself for a galaxy.
+        const default_parent: u32 = if (number < galaxy_ceiling) number else number / galaxy_ceiling;
+        const p = Point{ .number = number, .keeper = keeper, .parent = default_parent, .version = 1 };
+        // invariant: a seated point begins at version one.
+        assert(p.version == 1);
+        // invariant: a point's default parent never exceeds the point itself.
+        assert(p.parent <= p.number);
+        return p;
+    }
+};
+
+/// The marriage of a keypair to its keeper, signed both ways. `sig_by_key` is the
+/// identity key's signature over the keeper's public key; `sig_by_keeper` is the
+/// keeper's signature over the identity's public key. Both must verify.
+pub const Bind = struct {
+    kumara_pubkey: [pubkey_len]u8,
+    keeper_pubkey: [pubkey_len]u8,
+    sig_by_key: [sig_len]u8,
+    sig_by_keeper: [sig_len]u8,
+    version: u32,
+};
+
+/// Build a bind from an identity seed and a keeper seed. Each side signs the
+/// other's public key, so the record proves a mutual claim rather than one side's.
+pub fn make_bind(key_seed: *const [kumara.seed_length]u8, keeper_seed: *const [kumara.seed_length]u8) Bind {
+    const kp = kumara.keypair_from_seed(key_seed);
+    const keeper_kp = kumara.keypair_from_seed(keeper_seed);
+    const key_pub = kp.public_key.bytes;
+    const keeper_pub = keeper_kp.public_key.bytes;
+    // The key signs the keeper; the keeper signs the key. Order fixed so verify agrees.
+    const sig_key = kumara.sign(&keeper_pub, kp, null).toBytes();
+    const sig_keeper = kumara.sign(&key_pub, keeper_kp, null).toBytes();
+    const b = Bind{
+        .kumara_pubkey = key_pub,
+        .keeper_pubkey = keeper_pub,
+        .sig_by_key = sig_key,
+        .sig_by_keeper = sig_keeper,
+        .version = 1,
+    };
+    // invariant: a bind names exactly one key and one keeper, distinct or not.
+    assert(b.version == 1);
+    return b;
+}
+
+/// A bind holds when both directions verify: the key really signed the keeper,
+/// and the keeper really signed the key. Either failing rejects the whole bind.
+pub fn verify_bind(b: *const Bind) bool {
+    const key_pub = kumara.PublicKey.fromBytes(b.kumara_pubkey) catch return false;
+    const keeper_pub = kumara.PublicKey.fromBytes(b.keeper_pubkey) catch return false;
+    kumara.verify_bytes(&b.keeper_pubkey, &b.sig_by_key, key_pub) catch return false;
+    kumara.verify_bytes(&b.kumara_pubkey, &b.sig_by_keeper, keeper_pub) catch return false;
+    return true;
+}
+
+// --- Bron serialization -------------------------------------------------
+
+const hex_digits = "0123456789abcdef";
+
+/// Write `bytes` as lowercase hex into `out` (which must be twice as long).
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the hex output is exactly two characters per byte.
+    assert(out.len == bytes.len * 2);
+    for (bytes, 0..) |b, i| {
+        out[i * 2] = hex_digits[b >> 4];
+        out[i * 2 + 1] = hex_digits[b & 0x0f];
+    }
+}
+
+fn tier_name(t: Tier) []const u8 {
+    return switch (t) {
+        .galaxy => "galaxy",
+        .star => "star",
+        .planet => "planet",
+    };
+}
+
+// The Bron facts are data, so they go to stdout (diagnostics use stderr `print`).
+// A line is short — a hex field is at most 128 characters — so a stack buffer holds it.
+const max_bron_line: u32 = 256;
+
+fn put_line(io: std.Io, comptime fmt: []const u8, args: anytype) void {
+    var buf: [max_bron_line]u8 = undefined;
+    const line = std.fmt.bufPrint(&buf, fmt, args) catch return;
+    const out = std.Io.File.stdout();
+    out.writeStreamingAll(io, line) catch {};
+}
+
+/// Emit a point as a Bron fact — one field per line, immutable at the seam.
+pub fn emit_point(io: std.Io, p: *const Point) void {
+    var keeper_hex: [pubkey_len * 2]u8 = undefined;
+    to_hex(&p.keeper, &keeper_hex);
+    put_line(io, "format kumara-point-v1\n", .{});
+    put_line(io, "number {d}\n", .{p.number});
+    put_line(io, "tier {s}\n", .{tier_name(tier_of(p.number))});
+    put_line(io, "keeper {s}\n", .{keeper_hex});
+    put_line(io, "parent {d}\n", .{p.parent});
+    put_line(io, "version {d}\n", .{p.version});
+}
+
+/// Emit a bind as a Bron fact.
+pub fn emit_bind(io: std.Io, b: *const Bind) void {
+    var kpub: [pubkey_len * 2]u8 = undefined;
+    var keeper: [pubkey_len * 2]u8 = undefined;
+    var s_key: [sig_len * 2]u8 = undefined;
+    var s_keeper: [sig_len * 2]u8 = undefined;
+    to_hex(&b.kumara_pubkey, &kpub);
+    to_hex(&b.keeper_pubkey, &keeper);
+    to_hex(&b.sig_by_key, &s_key);
+    to_hex(&b.sig_by_keeper, &s_keeper);
+    put_line(io, "format kumara-bind-v1\n", .{});
+    put_line(io, "kumara_pubkey {s}\n", .{kpub});
+    put_line(io, "keeper_pubkey {s}\n", .{keeper});
+    put_line(io, "sig_by_key {s}\n", .{s_key});
+    put_line(io, "sig_by_keeper {s}\n", .{s_keeper});
+    put_line(io, "version {d}\n", .{b.version});
+}
+
+// --- selftest and example instance --------------------------------------
+
+// Two example seeds — plainly not a real pilot's key, so no identity is invented.
+const example_key_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
+const example_keeper_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
+const example_number: u32 = 0x0100; // 256 — the first star
+
+fn run_selftest() !u8 {
+    // A bind round-trips: made, then verified both ways.
+    const b = make_bind(&example_key_seed, &example_keeper_seed);
+    if (!verify_bind(&b)) return error.BindDidNotVerify;
+
+    // A tampered bind refuses: flip one byte of the key's signature.
+    var tampered = b;
+    tampered.sig_by_key[0] ^= 0x01;
+    if (verify_bind(&tampered)) return error.TamperedBindVerified;
+
+    // A point seats at version one and names its tier.
+    const p = Point.seat(example_number, b.keeper_pubkey);
+    if (p.version != 1) return error.PointVersionWrong;
+    if (tier_of(p.number) != .star) return error.TierWrong;
+
+    print("kumara tilak: bind verifies both ways; tampered bind refused; point seats at v1 in tier star.\n", .{});
+    print("kumara tilak: version {s}\n", .{tilak_version});
+    print("GREEN: kumara tilak — point and bind, made, signed both ways, verified, refused on tamper.\n", .{});
+    return 0;
+}
+
+fn run_emit(io: std.Io) !u8 {
+    const b = make_bind(&example_key_seed, &example_keeper_seed);
+    const p = Point.seat(example_number, b.keeper_pubkey);
+    emit_point(io, &p);
+    put_line(io, "\n", .{});
+    emit_bind(io, &b);
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "emit")) return run_emit(init.io);
+    return run_selftest();
+}

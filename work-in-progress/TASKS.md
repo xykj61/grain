@@ -8,13 +8,15 @@
 
 ---
 
-## Now — The Compass Season · SOON q1 (`20260809.024320`)
+## Now — The Compass Season · JARL j1 (`20260809.154500`)
 
-**Finishing edge:** SOON q1 — the language. Rishi's `^-` cast, `?!` not, `?&` and, `?|` or rune heads landed GREEN; continue the rune heads. Debrided to the Compass Season — the elder e-number ladder rests in the code and the dated counsel.
-**Prove:** `rishi/bin/rishi run tools/rish_rune_connective_witness.rish` (+ cast, not witnesses)
+**Finishing edge:** JARL j1 — the Kumara identity template. SOON's language spine complete; now at Identity & Network. `kumara/tilak.rye` seats the **point** and **bind** tilaks (Ed25519, signed both ways, Azimuth-tiered, Bron-emitted, witnessed).
+**Prove:** `rishi/bin/rishi run tools/kumara_tilak_witness.rish`
 
 | Lap | Equinox | Status |
 |-----|---------|--------|
+| **Kumara identity template** — point + bind tilaks, signed both ways, Bron facts, example instance | JARL | **STARTED** — load-bearing pair landed |
+| Kumara rotation · capability · sponsor tilaks · settlement ledger | JARL | next journeys |
 | Rishi rune heads — `^-` · `?!` · `?&` · `?|` landed | SOON | **LANDED** (four heads) |
 | Rishi **`matches`** + **`find`** pattern primitives — bounded NFA, `{n,m}` · `\b`, linear-time, 600+ cases vs Python re | SOON | **LANDED** — boolean-test and extract seams both unlocked |
 | Rishi `sort` · `unique` · `upper` · list `+` · lookbehind | SOON | **LANDED** |

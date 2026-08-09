@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` — the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `3806ebe0f7` · Grain · cloud pier
+**Git nib:** `3f9b8c8257` · Grain · cloud pier
 **Host:** Framework · EDT (`America/New_York`) · Vultr SEA VPS (HP AMD 2vCPU/4GB shared · never EWR) · this session in ai-jail
 
 ---
@@ -18,11 +18,11 @@
 | Equinox | Waymark | Holds |
 |---|---|---|
 | The Language | **SOON** | Glow runes (`^-` · `?!` · `?&` · `?|`) · **`matches` primitive landed** (bounded regex, 812/812 vs Python re) · `lower` · scripts→Rishi molt · `mold→shape` · TAME core/shelf · Brix-infuse · PLEAC · Aurora |
-| Identity & Network | **JARL** | Kumara · d12/d60 fractal topology · Comlink · Sui constellation · settlement |
+| Identity & Network | **JARL** | **Kumara identity template — point + bind tilaks landed** (`kumara/tilak.rye`, signed both ways, witnessed) · rotation/capability/sponsor tilaks next · d12/d60 · Comlink · Sui settlement |
 | Surface & Intelligence | **BUHR** | Realidream DAG surface · Quin's four voices (Lattice · Scribble · Lantern · Ember) · MCP-in-Bron · Tablecloth |
 | The World | **TACT** | Ship-Pilot pitch · publishing · Grainphone · commerce · CONTRIBUTING four-doors · Grain Energy PBC |
 
-**Finishing edge: SOON q1** — Rishi's language spine is complete: runes (`^- ?! ?& ?| ?:`) · regex `matches`/`find` · `sort`/`unique`/`upper` · list `+` · `fold` · **user functions** (`fn name p: body`, recursion). **`claim_preserve` + `census_control` H1 folded native** (seams → `.rish`, gates green). `dated_classify` census folds too (proven, 3.9s) yet keeps bulk-`rg` for 20× speed; `shed`'s mention scan stays bulk by honest measure. No language gap remains. Next: other SOON tracks (mold→shape · Brix-infuse · PLEAC) or shift equinox. Baton: [`../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md`](../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md).
+**Now at JARL j1 — the Kumara identity template.** Coords **s1 · JARL e2 · j1**. SOON's language spine is complete (runes `^- ?! ?& ?| ?:` · regex `matches`/`find` · `sort`/`unique` · `fold` · user functions; `claim_preserve` + `census_control` folded native). JARL journey 1 **started**: `kumara/tilak.rye` seats the **point** and **bind** tilaks — an Ed25519 identity, signed both ways (key signs keeper, keeper signs key), Azimuth-tiered (galaxy/star/planet), emitted as Bron, witnessed GREEN. Next JARL tilaks: rotation · capabilities · sponsor; then Comlink routing · d12/d60 · Sui settlement. Baton: [`../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md`](../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md).
 
 ---
 

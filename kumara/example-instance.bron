@@ -1,0 +1,18 @@
+# Kumara example instance — NOT a real identity.
+# Generated deterministically from example seeds (0x11.., 0x22..) by kumara/bin/tilak emit.
+# The maintainer's real instance is filled by his own hand from his own seed; this file
+# only proves the template shape and that both bind signatures verify.
+
+format kumara-point-v1
+number 256
+tier star
+keeper a09aa5f47a6759802ff955f8dc2d2a14a5c99d23be97f864127ff9383455a4f0
+parent 1
+version 1
+
+format kumara-bind-v1
+kumara_pubkey d04ab232742bb4ab3a1368bd4615e4e6d0224ab71a016baf8520a332c9778737
+keeper_pubkey a09aa5f47a6759802ff955f8dc2d2a14a5c99d23be97f864127ff9383455a4f0
+sig_by_key 81e53d1c1e57f69d8ea6875968d8199ee9a081eae168de6be0a9fe4b3d59838d3c637b5586125812dbd87ef7fab4504a9bf54cc848ce1cc3777270f8adc3720f
+sig_by_keeper 6d389915ae2f643546843ee024550cb951117a2758921c7f082645c5fa1ec443bf4ade66b75f1544594ff39cfe362ec8af2ecc79e37e64fc3a229fc65a7df107
+version 1
