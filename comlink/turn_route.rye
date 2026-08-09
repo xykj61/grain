@@ -1,0 +1,130 @@
+//! comlink/turn_route.rye — routing reads the turn tilak.
+//!
+//! Comlink carries a sealed datagram, and every seal needs a key. A peer's
+//! networking key is not fixed: it rotates. The key that is live *now* lives in
+//! that peer's **turn** tilak (`kumara/tilak.rye`) — the rotation record with two
+//! counters that only ever climb, `key_counter` on an ordinary rotation and
+//! `reset_counter` when continuity must start over. This file is the seam where
+//! identity's rotation meets the network's routing: given a peer's turn, it
+//! verifies the rotation is authentic, decides whether it supersedes the turn we
+//! already knew, and hands back the networking key to seal the wire with.
+//!
+//! Two rules, both from the tilak's own law:
+//!   * **Authentic before routed.** A turn is trusted only when the peer's
+//!     identity key signed it. A forged or tampered turn is refused, and routing
+//!     keeps the last key it trusted rather than following a lie.
+//!   * **Fresher wins, and freshness only climbs.** A reset outranks any key
+//!     rotation (its `reset_counter` is higher); within one reset era, the higher
+//!     `key_counter` wins. A turn that is not strictly newer never supersedes —
+//!     a replayed old rotation cannot roll a peer's key backward.
+//!
+//!   rye build comlink/turn_route.rye -femit-bin=comlink/bin/turn-route
+//!   comlink/bin/turn-route selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const tilak = @import("kumara_tilak.rye");
+
+pub const turn_route_version = "20260809.160500";
+
+const pubkey_len: u32 = 32;
+
+pub const Reason = enum { verified_first, verified_fresher, stale_kept, forged_refused };
+
+/// The outcome of reading a peer's turn: whether the incoming rotation was taken,
+/// the networking key to seal the wire with, and why.
+pub const RouteDecision = struct {
+    accepted: bool,
+    route_key: [pubkey_len]u8,
+    reason: Reason,
+};
+
+/// True when `a` is strictly newer than `b` — a later reset era, or the same era
+/// with a higher key counter. Counters never descend, so newer means larger.
+pub fn turn_newer(a: *const tilak.Turn, b: *const tilak.Turn) bool {
+    if (a.reset_counter != b.reset_counter) return a.reset_counter > b.reset_counter;
+    return a.key_counter > b.key_counter;
+}
+
+/// The freshest of two turns — `a` on a tie, so a known turn is never displaced
+/// by an equal one. The freshness rule is total: (reset_counter, key_counter).
+pub fn freshest(a: *const tilak.Turn, b: *const tilak.Turn) *const tilak.Turn {
+    if (turn_newer(b, a)) return b;
+    return a;
+}
+
+/// Read a peer's incoming turn against the turn we already knew (if any), under
+/// the peer's identity key. This is the whole routing decision:
+///   * an unauthentic turn is refused, and the last trusted key is kept;
+///   * the first authentic turn is taken;
+///   * an authentic turn strictly newer than the known one supersedes it;
+///   * an authentic turn that is not newer is kept out, so no replay rolls back.
+pub fn read_turn(known: ?*const tilak.Turn, incoming: *const tilak.Turn, identity_pubkey: [pubkey_len]u8) RouteDecision {
+    if (!tilak.verify_turn(incoming, identity_pubkey)) {
+        // Refused — keep the last trusted key, or zeros when there is none yet.
+        const kept: [pubkey_len]u8 = if (known) |k| k.net_pubkey else [_]u8{0} ** pubkey_len;
+        return .{ .accepted = false, .route_key = kept, .reason = .forged_refused };
+    }
+    if (known == null) {
+        return .{ .accepted = true, .route_key = incoming.net_pubkey, .reason = .verified_first };
+    }
+    const prior = known.?;
+    if (turn_newer(incoming, prior)) {
+        return .{ .accepted = true, .route_key = incoming.net_pubkey, .reason = .verified_fresher };
+    }
+    // Authentic yet not newer — a replayed or equal rotation. Keep the known key.
+    return .{ .accepted = false, .route_key = prior.net_pubkey, .reason = .stale_kept };
+}
+
+// --- selftest -----------------------------------------------------------
+
+const key_seed: [32]u8 = .{0x11} ** 32;
+const net_seed_a: [32]u8 = .{0x33} ** 32;
+const net_seed_b: [32]u8 = .{0x44} ** 32;
+const other_key_seed: [32]u8 = .{0x55} ** 32;
+
+fn bytes_eq(a: [pubkey_len]u8, b: [pubkey_len]u8) bool {
+    return std.mem.eql(u8, &a, &b);
+}
+
+fn run_selftest() !u8 {
+    const identity = tilak.pubkey_of(&key_seed);
+
+    // A first authentic turn is taken; its net key becomes the route key.
+    const t0 = tilak.make_turn(&key_seed, &net_seed_a, 0, 0);
+    const first = read_turn(null, &t0, identity);
+    if (!first.accepted or first.reason != .verified_first) return error.FirstTurnNotTaken;
+    if (!bytes_eq(first.route_key, t0.net_pubkey)) return error.FirstKeyWrong;
+
+    // A newer turn (higher key_counter) supersedes; the route key rotates.
+    const t1 = tilak.make_turn(&key_seed, &net_seed_b, 1, 0);
+    const fresher = read_turn(&t0, &t1, identity);
+    if (!fresher.accepted or fresher.reason != .verified_fresher) return error.FresherNotTaken;
+    if (!bytes_eq(fresher.route_key, t1.net_pubkey)) return error.FresherKeyWrong;
+
+    // A reset outranks any key rotation, even with key_counter back at zero.
+    const t_reset = tilak.make_turn(&key_seed, &net_seed_a, 0, 1);
+    if (!turn_newer(&t_reset, &t1)) return error.ResetNotNewer;
+
+    // A replayed old turn does not roll the key backward — it is kept out.
+    const stale = read_turn(&t1, &t0, identity);
+    if (stale.accepted or stale.reason != .stale_kept) return error.StaleTookOver;
+    if (!bytes_eq(stale.route_key, t1.net_pubkey)) return error.StaleKeyChanged;
+
+    // A forged turn — one signed by another key, or byte-tampered — is refused.
+    const forged = tilak.make_turn(&other_key_seed, &net_seed_b, 9, 9);
+    const refused = read_turn(&t1, &forged, identity);
+    if (refused.accepted or refused.reason != .forged_refused) return error.ForgedAccepted;
+    if (!bytes_eq(refused.route_key, t1.net_pubkey)) return error.ForgedChangedKey;
+
+    print("comlink turn-route: first turn taken; fresher supersedes; reset outranks; replay kept out; forged refused.\n", .{});
+    print("comlink turn-route: version {s}\n", .{turn_route_version});
+    print("GREEN: comlink turn-route — routing reads a verified turn, rotates to the freshest key, and never rolls back or follows a forgery.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

@@ -15,6 +15,7 @@
 | [`hosted_wire.rye`](hosted_wire.rye) | the same sealed datagram crosses a real localhost UDP socket |
 | [`virtio_net.rye`](virtio_net.rye) | virtio-net MMIO types and the freestanding driver seed — shared by hosted descriptor validation and real guests on QEMU virt |
 | [`device_wire.rye`](device_wire.rye) | descriptor algebra proven on a fixture, then the same crossing proven on a real virtio link between two guests |
+| [`turn_route.rye`](turn_route.rye) | routing reads the **turn** tilak (`../kumara/tilak.rye`): a peer's rotation record is verified, the freshest supersedes, a replay is kept out, a forgery refused — the seam that hands the wire the networking key to seal with |
 
 `device_wire.rye`'s hosted selftest is the fast path — no QEMU, and it is where `virtio_net.rye`'s five hand-designed wire structures (`VirtioNetHdr`, `VqDesc`, `VqAvail`, `VqUsedElem`, `VqUsed`) get proved padding-free at compile time via Tally's `no_padding`, before anything freestanding ever runs. A stale camelCase-era call site (`negotiateFeatures` where `virtio_net.rye` had already migrated to `negotiate_features`) sat undetected here for one full season, because nothing in the parity suite ever built this file's own hosted binary — only the freestanding lab downstream of it. Both the rename and the gap now stand closed: [`counsel/20260707-053212_tigerbeetle-alignment-study.md`](../external-research/20260707-053212_tigerbeetle-alignment-study.md) named the discipline, and this season's bench found where it had not yet reached.
 
