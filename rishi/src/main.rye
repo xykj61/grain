@@ -98,6 +98,20 @@ fn write_value_to(value: Value, io: std.Io, file: std.Io.File) void {
 
 const Binding = struct { name: []const u8, value: Value };
 
+// User-defined functions. A function is not a value — it lives in its own small
+// table beside the bindings, so the value model stays five plain kinds. Its name,
+// parameter names, and body all point into the script source, which outlives it.
+const max_funcs: u32 = 128; // distinct user functions
+const max_params: u32 = 8; // parameters per function
+const max_call_depth: u32 = 128; // deepest chain of user-function calls — a recursion wall
+
+const Func = struct {
+    name: []const u8,
+    param_names: [max_params][]const u8 = undefined,
+    param_count: u32 = 0,
+    body: []const u8,
+};
+
 const max_spawn_handles: u32 = 8;
 
 const SpawnSlot = struct {
@@ -141,6 +155,12 @@ const ExitSlot = struct {
 pub const Env = struct {
     items: [max_env_bindings]Binding = undefined,
     count: u32 = 0,
+    /// User functions, by pointer — a child scope copies the small pointer array,
+    /// never the bodies, so calls and folds stay cheap.
+    funcs: [max_funcs]*const Func = undefined,
+    func_count: u32 = 0,
+    /// Depth of the current user-function call chain — a bounded recursion wall.
+    call_depth: u32 = 0,
     /// Process environment for the `env` builtin — set at REPL and script entry.
     host_environ: ?*std.process.Environ.Map = null,
     /// When set, an `exit` statement stores the script's chosen code here.
@@ -165,6 +185,24 @@ pub const Env = struct {
         while (i > 0) {
             i -= 1;
             if (std.mem.eql(u8, self.items[@intCast(i)].name, name)) return self.items[@intCast(i)].value;
+        }
+        return null;
+    }
+
+    fn define_func(self: *Env, func: *const Func) !void {
+        // invariant: the function table never exceeds its capacity.
+        assert(self.func_count <= self.funcs.len);
+        if (self.func_count == self.funcs.len) return error.TooManyFuncs;
+        self.funcs[@intCast(self.func_count)] = func;
+        self.func_count += 1;
+    }
+
+    /// Look up a user function by name, most-recent definition first.
+    fn lookup_func(self: *const Env, name: []const u8) ?*const Func {
+        var i = self.func_count;
+        while (i > 0) {
+            i -= 1;
+            if (std.mem.eql(u8, self.funcs[@intCast(i)].name, name)) return self.funcs[@intCast(i)];
         }
         return null;
     }
@@ -759,6 +797,8 @@ fn eval_statement(allocator: std.mem.Allocator, io: std.Io, env: *Env, line: []c
         try do_if(allocator, io, env, std.mem.trim(u8, line[3..], " \t"));
     } else if (std.mem.startsWith(u8, line, "for-each ")) {
         try do_for_each(allocator, io, env, std.mem.trim(u8, line[9..], " \t"));
+    } else if (std.mem.startsWith(u8, line, "fn ")) {
+        try do_define_fn(allocator, env, std.mem.trim(u8, line[3..], " \t"));
     } else if (std.mem.startsWith(u8, line, "exit ")) {
         try do_exit(allocator, io, env, std.mem.trim(u8, line[5..], " \t"));
     } else {
@@ -848,6 +888,12 @@ const EvalError = error{
     OrNeedsBoolean,
     MatchNeedsString,
     MatchBadPattern,
+    TooManyFuncs,
+    TooManyParams,
+    FuncNeedsColon,
+    FuncNeedsName,
+    FuncArgCount,
+    RecursionTooDeep,
     SortNeedsList,
     SortNotComparable,
     UniqueNeedsList,
@@ -1061,6 +1107,15 @@ fn eval_expr(allocator: std.mem.Allocator, io: std.Io, env: *Env, text: []const 
     }
     if (std.mem.startsWith(u8, trimmed, "find ")) {
         return do_find(allocator, io, env, trimmed[5..]);
+    }
+    // A user-function call `name arg…` — recognised only when no top-level
+    // arithmetic operator is present, so a call inside arithmetic wears
+    // parentheses and is reached through eval_operand's grouping instead.
+    if (find_last_arith_add(text) == null and find_last_arith_mul(text) == null) {
+        const first_end = std.mem.indexOfAny(u8, trimmed, " \t") orelse trimmed.len;
+        if (env.lookup_func(trimmed[0..first_end])) |func| {
+            return call_func(allocator, io, env, func, trimmed[first_end..]);
+        }
     }
     return eval_add_sub(allocator, io, env, text);
 }
@@ -2125,6 +2180,50 @@ fn do_cond(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8
     // Evaluate only the chosen branch — the untaken side never runs.
     if (holds) return eval_operand(allocator, io, env, then_token);
     return eval_operand(allocator, io, env, else_token);
+}
+
+/// `fn <name> <p1> <p2> …: <body>` — define a user function whose body is one
+/// expression. Its name, parameter names, and body point into the script source,
+/// which outlives the run, so only the small Func record is allocated.
+fn do_define_fn(allocator: std.mem.Allocator, env: *Env, rest: []const u8) EvalError!void {
+    const colon = find_top_level(rest, ':') orelse return error.FuncNeedsColon;
+    const head = std.mem.trim(u8, rest[0..@intCast(colon)], " \t");
+    const body = std.mem.trim(u8, rest[@intCast(colon + 1)..], " \t");
+    if (head.len == 0 or body.len == 0) return error.FuncNeedsName;
+
+    const func = allocator.create(Func) catch return error.OutOfMemory;
+    var tok = TokenIter{ .text = head };
+    const name_tok = tok.next() orelse return error.FuncNeedsName;
+    func.name = name_tok;
+    func.body = body;
+    var pc: u32 = 0;
+    while (tok.next()) |p| {
+        if (pc >= max_params) return error.TooManyParams;
+        func.param_names[@intCast(pc)] = p;
+        pc += 1;
+    }
+    func.param_count = pc;
+    try env.define_func(func);
+}
+
+/// Call a user function: evaluate each argument in the caller's scope, bind it to
+/// the matching parameter in a child scope that inherits the caller's bindings and
+/// functions (so a body may recurse or call a sibling), then evaluate the body.
+/// A bounded call depth is the recursion wall.
+fn call_func(allocator: std.mem.Allocator, io: std.Io, env: *Env, func: *const Func, args_text: []const u8) EvalError!Value {
+    if (env.call_depth >= max_call_depth) return error.RecursionTooDeep;
+    var child = env.*;
+    child.call_depth = env.call_depth + 1;
+    var tok = TokenIter{ .text = args_text };
+    var i: u32 = 0;
+    while (i < func.param_count) : (i += 1) {
+        const arg_tok = tok.next() orelse return error.FuncArgCount;
+        const arg_val = try eval_operand(allocator, io, env, arg_tok);
+        try child.bind(func.param_names[@intCast(i)], arg_val);
+    }
+    // invariant: a call passes exactly as many arguments as the function names.
+    if (tok.next() != null) return error.FuncArgCount;
+    return eval_expr(allocator, io, &child, func.body);
 }
 
 /// Evaluate one operand: a double-quoted string, a boolean, a base-ten integer,

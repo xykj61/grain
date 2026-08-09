@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` — the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `2c7eddfe46` · Grain · cloud pier
+**Git nib:** `3806ebe0f7` · Grain · cloud pier
 **Host:** Framework · EDT (`America/New_York`) · Vultr SEA VPS (HP AMD 2vCPU/4GB shared · never EWR) · this session in ai-jail
 
 ---
@@ -22,7 +22,7 @@
 | Surface & Intelligence | **BUHR** | Realidream DAG surface · Quin's four voices (Lattice · Scribble · Lantern · Ember) · MCP-in-Bron · Tablecloth |
 | The World | **TACT** | Ship-Pilot pitch · publishing · Grainphone · commerce · CONTRIBUTING four-doors · Grain Energy PBC |
 
-**Finishing edge: SOON q1** — Rishi grew `matches` · `find` · `sort` · `unique` · `upper` · list `+` · **`?:` conditional rune** (wutcol, completing `?!`·`?&`·`?|`·`?:`). **`claim_preserve` folded native** (first complete seam). Accumulation solved: **`fold` + `?:`** fold census seams natively (proven on the H1 count). No language gap remains — folding the census duty bodies vs keeping fast bulk-`rg` seams is a design call. Next: user functions (convenience), or apply the fold pattern. Baton: [`../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md`](../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md).
+**Finishing edge: SOON q1** — Rishi's language spine is complete: runes (`^- ?! ?& ?| ?:`) · regex `matches`/`find` · `sort`/`unique`/`upper` · list `+` · `fold` · **user functions** (`fn name p: body`, recursion). **`claim_preserve` + `census_control` H1 folded native** (seams → `.rish`, gates green). `dated_classify` census folds too (proven, 3.9s) yet keeps bulk-`rg` for 20× speed; `shed`'s mention scan stays bulk by honest measure. No language gap remains. Next: other SOON tracks (mold→shape · Brix-infuse · PLEAC) or shift equinox. Baton: [`../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md`](../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md).
 
 ---
 

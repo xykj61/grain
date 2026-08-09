@@ -94,6 +94,7 @@ The `claim_preserve` subsystem folded to native Rishi (match/find/sort/unique). 
 | --- | --- | --- |
 | `tools/fixtures/claim_preserve_extract.sh` (perl) | `claim_preserve_extract.rish` | 40/41 files byte-identical; one non-ASCII edge |
 | `tools/fixtures/claim_preserve_modality.sh` (python) | `claim_preserve_modality.rish` | modal-word counts byte-identical |
+| `tools/fixtures/census_control_h1_seam.sh` (awk) | `census_control_h1_seam.rish` | fence-count via `fold` + `?:` record accumulator; `true=1 naive=4` identical |
 
 ## Python → Rishi molt (seated `20260809.030635` · prep only)
 

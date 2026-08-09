@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260809.153016
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title grow user functions, fold the census seams
+prompt (Keaton) grow user functions next, then fold the census seams
+think user functions: a function is not a value (the value model stays five kinds) but lives in a small pointer table beside the bindings; its name, params, and body point into the source; a child scope copies the pointer array cheaply
+think fn name p1 p2: body defines a single-expression function; call is `name arg…`, recognised only when there is no top-level arithmetic operator so a call inside arithmetic wears parentheses, like the runes; args evaluate in the caller scope, bind into a child that inherits bindings and functions for recursion; a bounded call depth is the recursion wall
+think proved it — double, add, a classify built from ?: and matches, classify called per element in a fold, and a recursive factorial all hold
+think folded census_control's H1 fence-count to native Rishi — a fold with a record accumulator carries the fence state, true=1 naive=4 identical to the awk seam; repointed census_control_scan.rish to the .rish seam; gate green, prove-red still fails, downstream dated_pattern green
+obs measured the dated_classify census natively — a fold calling a native classify over 9370 files returns dated=5667, matching the bulk seam exactly, in 3.9s vs 0.18s for bulk rg; the census can be native but keeping bulk rg is a 20x perf choice, not a gap
+obs shed's mention scan is O(dated×files) whole-tree content search — rg's Aho-Corasick does it in one pass and a native fold cannot approach it; that seam stays bulk by honest measure
+obs Rishi's language spine is now complete — runes, regex, list ops, fold, ?:, functions; no language gap remains for the molt
+obs tame_style_check clean on main.rye; user-function witness and all regressions GREEN
+file rishi/src/main.rye Func table on Env · do_define_fn · call_func · `fn` statement · call check · six named errors
+file tools/rish_fn_witness.rish functions proven — params, fold calls, recursion
+file tools/fixtures/census_control_h1_seam.rish native fence-count via fold + ?: record accumulator
+file tools/fixtures/census_control_scan.rish repointed duty 1 to the native .rish seam
+file tools/rish_count_selftest.rish (earlier) fold accumulates
+file active-designing/20260809-030635_python-to-rishi-molt-seating.md census seams fold; the perf-honest split (native where it fits, bulk rg where it must)
+file work-in-progress/SHRED_PREP.md · REMEMBER.md · TASKS.md · context/LEXICON.md user functions + census_control fold on the SOON edge
+file session-logs/20260809-153016_rishi-user-functions-fold-census-control.bron this record
+recommend check-in Claude — Rishi is a complete language now (runes · regex · list ops · fold · ?: · functions) and the census_control seam is folded native; the remaining dated_classify census/shed keep bulk rg by honest perf measure, not a gap; the open direction is other SOON tracks (mold→shape debride, Brix-infuse, PLEAC stdlib) or a shift to another equinox (JARL identity, BUHR surface, TACT world)
