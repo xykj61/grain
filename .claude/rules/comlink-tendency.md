@@ -4,7 +4,7 @@
 
 Canon: `external-research/20260808-204505_the-best-name-period-vanes-ancestry-and-our-own-merit.md` (Movement I).
 
-When a **new module, aspect, or concept** is named in this tree, reach first for the **clearest, most fun, safest word** — at whatever length that word wants to be. Named after the favorite that wears it plainest (Comlink), and read from the maintainer's own list — Comlink, Mantra, Caravan, Tally, Pond, Tablecloth, Skate, Nib, Rye, Rishi — none of which is a forced four-letter coinage, and each of which is a plain word or a clear metaphor a newcomer grasps at once.
+When a **new module, aspect, or concept** is named in this tree, reach first for the **clearest, most fun, safest word** — at whatever length that word wants to be. Named after the favorite that wears it plainest (Comlink), and read from the maintainer's own list — Comlink, Mantra, Caravan, Tally, Pond, Tablecloth, Skate, Nib, Rye, Rishi, Brushstroke, Amphora, and resins — none of which is a forced four-letter coinage, and each of which is a plain word or a clear metaphor a newcomer grasps at once.
 
 ## The three tests a name passes
 
