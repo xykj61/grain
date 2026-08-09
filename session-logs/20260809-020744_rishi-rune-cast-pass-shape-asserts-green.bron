@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260809.020744
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title Rishi rune pass — the ^- cast rune, spoken in shape, GREEN
+prompt do the Rishi rune pass; we seated shape not mold — use shape; skeptical about asserts (TAME); TAME_GUIDANCE too large for context — suggest a lossless-compressed living core
+think fanned an Explore agent to map the Rishi interpreter (rishi/src/main.rye, Rye, eval_expr dispatch) and Glow's rune table (glow/tokens.rye match_rune2); ^- (kethep) is the cleanest first rune
+obs implemented ^- as first-class Rishi syntax — a prefix in eval_expr dispatching to do_cast; it evaluates the body as a full expression then gates the value against the named shape and its explicit width, passing through when it fits and refusing (CastMismatch / CastOutOfRange) otherwise
+obs Keaton's correction applied — the tree seated SHAPE, not Hoon's mold; do_cast, its comments, and the witness all speak shape; the unknown-shape error is CastUnknownShape
+obs TAME addressed — main.rye already asserts heavily (const assert seated, 45 assert() calls with invariants); my earlier draft was the gap, so do_cast now carries three contract asserts (shape non-empty, @ head, and the post-cast window invariant)
+obs shapes supported this lap — @t (text), @i64 (any int), @ud/@u64 (non-negative), @u32 (0..2^32-1 width-bounded); a cast in Rishi is TAME's explicit width spoken as a rune
+obs GREEN — rishi rebuilt (rye build), tools/rish_rune_cast_witness.rish passes (pass-through, nested body, text shape, negative i64, and two child fixtures proving refusal); rishi_a1_gate_walls_witness still GREEN after the rebuild
+obs scoped the broader mold->shape debride — 82 living files, 753 occurrences; a major breach (bigger than Ember) recommended as its own careful pass, not folded here
+obs measured TAME_GUIDANCE.md — 673 lines, ~20k tokens; a decomposition proposal follows (compressed living core + preserved full detail)
+file rishi/src/main.rye do_cast + the ^- dispatch + four new EvalError cases
+file tools/rish_rune_cast_witness.rish the witness — pass-through, nest, refuse
+file tools/fixtures/rune_cast_bad_type.rish · rune_cast_out_of_range.rish refusal children
+file session-logs/20260809-020744_rishi-rune-cast-pass-shape-asserts-green.bron this record
+git_nib 36ffaebb80
+recommend check-in (Claude) Rishi speaks its first rune; next the mold->shape debride (82 files) and the TAME_GUIDANCE decomposition are proposals awaiting Keaton's word; the new-baton synthesis is studied and ready
