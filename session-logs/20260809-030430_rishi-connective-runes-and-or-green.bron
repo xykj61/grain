@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260809.030430
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title Rishi connective runes — ?& wutpam and ?| wutbar GREEN
+prompt kg (then: seat molting all python scripts to rishi, then continue)
+think continued the SOON rune heads after ^- cast and ?! not; added the logical connective pair ?& (wutpam, and) and ?| (wutbar, or) as one symmetric lap — they mirror each other and complete the boolean family not/and/or
+think chose a list-operand shape — ?& <list> — because parse_list evaluates each element via eval_operand, which recurses into eval_expr for (…) groups, so a parenthesized comparison stays a whole clause; this matches Hoon's list-of-subexpressions form and reuses bounded list parsing
+think do_and folds to true only when true_count == items.len; do_or to true when true_count > 0; each carries a bounds assert (items.len <= max_list_items) and a genuine postcondition tying the result to the counter; empty folds return their identity (and true, or false)
+obs both connectives sit before the comparison scan so a (a == b) element is not split at the top level; dispatch order is ?! then ?& then ?|
+obs witnesses GREEN on metal — connective (nine truths incl. empty identity, comparison clauses, composition with ?!, and two refusing children) plus not and cast as regression
+obs tame_style_check on the touched main.rye is clean of new bans; the only remaining red is the pre-existing REDS 64 comlink R1 python fossil — which Keaton just asked to molt, so it becomes the first fossil of the python-to-rishi molt seated next
+file rishi/src/main.rye ?& / ?| dispatch + do_and / do_or + four named errors
+file tools/rish_rune_connective_witness.rish new witness — fold, nest, identity, refuse
+file tools/fixtures/rune_and_bad_type.rish · rune_or_bad_type.rish refusal children
+file context/LEXICON.md SOON entry lists all four rune heads
+file work-in-progress/REMEMBER.md · TASKS.md finishing edge names four heads; TASKS seats the python molt lap
+file session-logs/20260809-030430_rishi-connective-runes-and-or-green.bron this record
+recommend keep-going four rune heads speak; next is to seat the python-to-rishi molt Keaton asked for, then continue the rune heads or the molt's first port

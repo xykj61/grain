@@ -10,12 +10,13 @@
 
 ## Now — The Compass Season · SOON q1 (`20260809.024320`)
 
-**Finishing edge:** SOON q1 — the language. Rishi's `^-` cast and `?!` wutzap-not rune heads landed GREEN; continue the rune heads. Debrided to the Compass Season — the elder e-number ladder rests in the code and the dated counsel.
-**Prove:** `rishi/bin/rishi run tools/rish_rune_cast_witness.rish` · `rishi/bin/rishi run tools/rish_rune_not_witness.rish`
+**Finishing edge:** SOON q1 — the language. Rishi's `^-` cast, `?!` not, `?&` and, `?|` or rune heads landed GREEN; continue the rune heads. Debrided to the Compass Season — the elder e-number ladder rests in the code and the dated counsel.
+**Prove:** `rishi/bin/rishi run tools/rish_rune_connective_witness.rish` (+ cast, not witnesses)
 
 | Lap | Equinox | Status |
 |-----|---------|--------|
-| Rishi rune heads — `^-` cast · `?!` not landed · continue | SOON | **LANDED** (`^-` · `?!`) · more heads next |
+| Rishi rune heads — `^-` · `?!` · `?&` · `?|` landed · continue | SOON | **LANDED** (four heads) · more next |
+| Molt all Python scripts → Rishi (seated `20260809`) | SOON | **seated** · REDS 64 the first fossil |
 | `mold → shape` debride (82 files / 753) | SOON | proposed · own pass |
 | TAME core/shelf compression | SOON | proposed |
 | Brix + Brix-infuse | SOON j2 | proposed |
