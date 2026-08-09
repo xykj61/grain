@@ -1,16 +1,16 @@
-//! kiln/kiln.rye — Kiln corpus selftest (catalog · query · lap-2 filters · overflow).
+//! ember/ember.rye — Kiln corpus selftest (catalog · query · lap-2 filters · overflow).
 //!
-//!   rye build kiln/kiln.rye -femit-bin=kiln/bin/kiln
-//!   kiln/bin/kiln selftest
+//!   rye build ember/ember.rye -femit-bin=ember/bin/ember
+//!   ember/bin/ember selftest
 
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const Dir = std.Io.Dir;
-const ac = @import("oven_core.rye");
+const ac = @import("ember_core.rye");
 
-const oven_version = "20260710.225320";
-pub const fixture_path = "kiln/fixtures/rye_corpus.bron";
+const ember_version = "20260710.225320";
+pub const fixture_path = "ember/fixtures/rye_corpus.bron";
 
 fn load_fixture(io: std.Io) !ac.Catalog {
     const cwd = Dir.cwd();
@@ -26,7 +26,7 @@ fn welcome_catalog(io: std.Io) !void {
     assert(cat.count == 3);
     assert(cat.count_kind(.rye) == 2);
     assert(cat.count_kind(.rish) == 1);
-    print("kiln: corpus catalog — chunks={d} rye={d} rish={d}\n", .{
+    print("ember: corpus catalog — chunks={d} rye={d} rish={d}\n", .{
         cat.count,
         cat.count_kind(.rye),
         cat.count_kind(.rish),
@@ -52,7 +52,7 @@ fn welcome_query(io: std.Io) !void {
     const n_none = try ac.query_corpus(&cat, .{ .path_prefix = "gratitude/" }, hits[0..]);
     assert(n_none == 0);
 
-    print("kiln: corpus query — rye={d} rish={d} pond_prefix={d}\n", .{ n_rye, n_rish, n_prefix });
+    print("ember: corpus query — rye={d} rish={d} pond_prefix={d}\n", .{ n_rye, n_rish, n_prefix });
 }
 
 fn welcome_min_lines(io: std.Io) !void {
@@ -69,7 +69,7 @@ fn welcome_min_lines(io: std.Io) !void {
     const n_none = try ac.query_corpus(&cat, .{ .min_lines = 900 }, hits[0..]);
     assert(n_none == 0);
 
-    print("kiln: min_lines filter — hi={d} mid={d}\n", .{ n_hi, n_mid });
+    print("ember: min_lines filter — hi={d} mid={d}\n", .{ n_hi, n_mid });
 }
 
 fn welcome_max_lines(io: std.Io) !void {
@@ -86,7 +86,7 @@ fn welcome_max_lines(io: std.Io) !void {
     const n_none = try ac.query_corpus(&cat, .{ .max_lines = 100 }, hits[0..]);
     assert(n_none == 0);
 
-    print("kiln: max_lines filter — lo={d} mid={d}\n", .{ n_lo, n_mid });
+    print("ember: max_lines filter — lo={d} mid={d}\n", .{ n_lo, n_mid });
 }
 
 fn welcome_path_suffix(io: std.Io) !void {
@@ -106,7 +106,7 @@ fn welcome_path_suffix(io: std.Io) !void {
     const n_none = try ac.query_corpus(&cat, .{ .path_suffix = ".bron" }, hits[0..]);
     assert(n_none == 0);
 
-    print("kiln: path_suffix filter — rye={d} rish={d}\n", .{ n_rye, n_rish });
+    print("ember: path_suffix filter — rye={d} rish={d}\n", .{ n_rye, n_rish });
 }
 
 fn welcome_sum_lines(io: std.Io) !void {
@@ -124,7 +124,7 @@ fn welcome_sum_lines(io: std.Io) !void {
     const sum_suffix = ac.sum_lines(&cat, .{ .path_suffix = ".rish" });
     assert(sum_suffix == 518);
 
-    print("kiln: sum_lines fold — all={d} rye={d} min500={d}\n", .{ sum_all, sum_rye, sum_min });
+    print("ember: sum_lines fold — all={d} rye={d} min500={d}\n", .{ sum_all, sum_rye, sum_min });
 }
 
 fn unwelcome_query_overflow(io: std.Io) !void {
@@ -135,7 +135,7 @@ fn unwelcome_query_overflow(io: std.Io) !void {
     } else |err| {
         assert(err == error.ResultOverflow);
     }
-    print("kiln: query overflow refused\n", .{});
+    print("ember: query overflow refused\n", .{});
 }
 
 fn unwelcome_bad_chunk() !void {
@@ -151,7 +151,7 @@ fn unwelcome_bad_chunk() !void {
     } else |err| {
         assert(err == error.BadChunk);
     }
-    print("kiln: incomplete chunk refused\n", .{});
+    print("ember: incomplete chunk refused\n", .{});
 }
 
 pub fn main(init: std.process.Init) !u8 {
@@ -167,9 +167,9 @@ pub fn main(init: std.process.Init) !u8 {
         try welcome_sum_lines(io);
         try unwelcome_query_overflow(io);
         try unwelcome_bad_chunk();
-        print("kiln corpus lap2: version {s} — GREEN\n", .{oven_version});
+        print("ember corpus lap2: version {s} — GREEN\n", .{ember_version});
         return 0;
     }
-    print("usage: kiln selftest\n", .{});
+    print("usage: ember selftest\n", .{});
     return 1;
 }

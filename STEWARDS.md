@@ -8,7 +8,7 @@
 **Bound:** keep under `living_pin_max_bytes`  
 **Counsel:** [`counsel/20260724-141612_names-maps-and-open-questions.md`](counsel/20260724-141612_names-maps-and-open-questions.md)
 
-*Standing writing voice is **Riyo**; **Quin** still stewards the Q-vane faculties (`kiln/` · `lantern/` · `lattice/` · `scribble/`) below.*
+*Standing writing voice is **Riyo**; **Quin** still stewards the Q-vane faculties (`ember/` · `lantern/` · `lattice/` · `scribble/`) below.*
 
 *What kind is each root thing, and who stewards it?* Not every artifact is a vane.
 
@@ -27,7 +27,7 @@
 | `brushstroke/` | Design system | **Seva** |
 | `comlink/` | Wires | **Neth** · **Pool** jointly |
 | `cellar/` | Archival module | Mantra / Weave |
-| `kiln/` · `lantern/` · `lattice/` · `scribble/` | Faculties | **Quin** |
+| `ember/` · `lantern/` · `lattice/` · `scribble/` | Faculties | **Quin** |
 | `keys/` and key art | Identity custody | Kumara today; **Rhyz** at proven supersede |
 | `pond/` | Isolation stratum | non-vane, as seated |
 
