@@ -1,0 +1,51 @@
+# rish_rune_connective_witness.rish — the ?& and ?| rune heads (wutpam and wutbar),
+# Rishi's logical-and and logical-or, the third and fourth Glow runes Rishi speaks.
+#
+# Proves Rishi folds a list of booleans: `?&` holds only when every element is true,
+# `?|` when any is. Both evaluate their list body as a full expression, so a
+# parenthesized comparison stays a whole clause, and both refuse a non-boolean element
+# rather than coercing it. Empty folds return their identity — `?& []` true, `?| []`
+# false — so a fold over no clauses never surprises.
+#
+#   rishi/bin/rishi run tools/rish_rune_connective_witness.rish
+
+# AND — every element true holds; one false breaks it.
+let a = ?& [true true true]
+assert a == true else "?& of all-true should be true"
+
+let b = ?& [true false true]
+assert b == false else "?& with a false element should be false"
+
+# OR — any element true holds; all false breaks it.
+let c = ?| [false false true]
+assert c == true else "?| with any true element should be true"
+
+let d = ?| [false false false]
+assert d == false else "?| of all-false should be false"
+
+# The list body evaluates as a full expression — parenthesized comparisons are clauses.
+let e = ?& [(1 == 1) (2 == 2)]
+assert e == true else "?& should evaluate each parenthesized comparison to a boolean"
+
+let f = ?| [(1 == 2) (3 == 3)]
+assert f == true else "?| should hold when one comparison is true"
+
+# The connectives compose with the ?! negation rune.
+let g = ?& [true (?! false)]
+assert g == true else "?& should fold a negated element"
+
+# Empty folds return their identity.
+let h = ?& []
+assert h == true else "?& [] is the identity of and — true"
+
+let i = ?| []
+assert i == false else "?| [] is the identity of or — false"
+
+# A non-boolean element refuses — a child that ands an integer exits non-zero.
+let bad_and = run ["rishi/bin/rishi" "run" "tools/fixtures/rune_and_bad_type.rish"]
+assert bad_and.ok == false else "?& over a non-boolean must refuse (child should exit non-zero)"
+
+let bad_or = run ["rishi/bin/rishi" "run" "tools/fixtures/rune_or_bad_type.rish"]
+assert bad_or.ok == false else "?| over a non-boolean must refuse (child should exit non-zero)"
+
+say "GREEN: Rishi rune-connective — ?& and ?| fold a bounded list of booleans, nest over comparisons, honor the empty identity, and refuse non-booleans."
