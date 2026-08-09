@@ -18,7 +18,10 @@ ROOT=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)
 cd "$ROOT"
 
 BASE=${CLAIM_PRESERVE_BASE:-HEAD}
-EXTRACT="sh tools/fixtures/claim_preserve_extract.sh"
+# The extractor now speaks Rishi (Python → perl → Rishi molt 20260809): its own
+# match/find/sort/unique, no shell or perl. Before and after use the same extractor,
+# so the claim comparison holds regardless of the ASCII/Unicode edge on rare non-ASCII.
+EXTRACT="rishi/bin/rishi run tools/fixtures/claim_preserve_extract.rish"
 TMP=$(mktemp -d "${TMPDIR:-/tmp}/claim-preserve.XXXXXX")
 trap 'rm -rf "$TMP"' EXIT
 
@@ -65,8 +68,14 @@ while IFS= read -r path; do
     echo "OK   claim tokens identical: ${path}"
   fi
   # Modality — per-file obligation counts must hold (recommend→require is red).
+  # The counter now speaks Rishi (Python → Rishi molt 20260809): compare its
+  # before/after counts, each file normalized inside the counter.
   git show "${BASE}:${path}" >"$TMP/before_mod_raw"
-  if ! sh tools/fixtures/claim_preserve_modality.sh compare "$TMP/before_mod_raw" "$path"; then
+  rishi/bin/rishi run tools/fixtures/claim_preserve_modality.rish count "$TMP/before_mod_raw" >"$TMP/mod_before" 2>/dev/null
+  rishi/bin/rishi run tools/fixtures/claim_preserve_modality.rish count "$path" >"$TMP/mod_after" 2>/dev/null
+  if ! cmp -s "$TMP/mod_before" "$TMP/mod_after"; then
+    echo "FAIL modality drift: ${path}"
+    diff "$TMP/mod_before" "$TMP/mod_after" | grep '^[<>]' | head
     reds=$((reds + 1))
   fi
   # Wrong beliefs stay visible — silent five→four rewrites are red.

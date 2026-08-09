@@ -86,6 +86,15 @@ Grep helpers: `living mutant` · `fossil — living path` · paths in this table
 
 ---
 
+## Seam fossils — folded to native Rishi (`20260809`)
+
+The `claim_preserve` subsystem folded to native Rishi (match/find/sort/unique). Their elder seams are fossils, kept until a circled shred:
+
+| Fossil | Living mutant | Notes |
+| --- | --- | --- |
+| `tools/fixtures/claim_preserve_extract.sh` (perl) | `claim_preserve_extract.rish` | 40/41 files byte-identical; one non-ASCII edge |
+| `tools/fixtures/claim_preserve_modality.sh` (python) | `claim_preserve_modality.rish` | modal-word counts byte-identical |
+
 ## Python → Rishi molt (seated `20260809.030635` · prep only)
 
 All authored Python molts to **Rishi**. Census and order: [`../active-designing/20260809-030635_python-to-rishi-molt-seating.md`](../active-designing/20260809-030635_python-to-rishi-molt-seating.md). Each `.py` becomes a Class H fossil row **only once its Rishi mutant runs green** — no rows yet, since this seats the intent and opens no cut.

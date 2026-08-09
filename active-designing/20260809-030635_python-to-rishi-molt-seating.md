@@ -94,13 +94,16 @@ This closes the regex gap for the **boolean-test** half of the seams — `is_dat
 
 The extract half is here too. Rishi speaks **`find <text> <pattern>`** → the list of every non-overlapping leftmost-longest match, the companion to `matches` and the primitive a script reaches for where it used to shell to `grep -o` / `rg -o`. It runs in linear time — a non-matching start position fails as soon as its threads die, so `find` stays O(n·m), not quadratic. Alongside it, the engine grew **counted repetition** `{n}` `{n,}` `{n,m}` (expanded inline, `m` bounded) and the **word boundaries** `\b` `\B` — exactly what `claim_preserve`'s token patterns need (`\b(?:0x)?[0-9a-fA-F]{8,}\b`). Validated against Python's `re`: 396 `matches` cases (with the new syntax) and 210 `find` cases, all agreeing. The one documented boundary is order-sensitive alternation, where `find` is leftmost-longest (POSIX) — the greedy seam patterns never hit it.
 
-What still stands between a seam and a fully native `.rish`:
+### sort, unique, upper, list `+`, and lookbehind landed — claim_preserve folded (`20260809`)
 
-- **Sort / unique** — `claim_preserve` emits sorted-unique tokens, and the shed census dedupes; Rishi has `find` now, yet no `sort`/`unique`. A small pair of primitives (or a `sort`/`unique` builtin) is the next match-adjacent lap.
-- **Loop accumulation** — a census counter still cannot live in a `for-each`.
-- **User functions** — to share one `classify` body between commands.
+The first **complete** seam fold. Growing `sort` (ascending, strings or integers), `unique` (first-seen distinct), `upper`, list `+` concatenation, and a single-char-class **lookbehind** `(?<!X)` closed the last gaps, and `claim_preserve_extract` moved from perl to **native Rishi** — its own `find`/`matches`/`sort`/`unique`, no shell or perl. Validated **40 of 41 real files byte-identical** to the elder extractor; the one difference is a single `PROPER` token on `LEXICON.md`, an honest ASCII-vs-Unicode edge (Python's `\b` treats "Bashō" as one word, an ASCII engine sees the byte boundary) — on a file the gate never runs, and irrelevant to the gate's before-vs-after job. Its sibling `claim_preserve_modality` (a modal-word counter) folded too — `length (find …)` per term, byte-identical to Python. The whole `claim_preserve` gate now runs **GREEN and python-free** on this pier for the first time; python3 was absent, so it had been silently red.
 
-So the de-Python laps (**c**) can now fold both the boolean-test *and* the extract seams into native Rishi, and each remaining gap above is a small, named SOON lap that retires more seam when it lands.
+What still stands between the *census* seams and a fully native `.rish`:
+
+- **Loop accumulation** — a census counter still cannot live in a `for-each` (`rish_count_selftest.rish`). This is the last real blocker for folding `dated_classify`'s census/health/shed and `census_control`'s H1 fence-count.
+- **User functions** — to share one `classify` body between commands; a convenience, not a blocker.
+
+So the de-Python laps (**c**) now fold every *token/extract* seam natively (claim_preserve proves it end to end); the remaining census seams wait on loop accumulation, the next SOON language lap.
 
 ## What the molt keeps
 

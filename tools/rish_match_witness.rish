@@ -69,4 +69,9 @@ assert (find "no digits here" "\d+") == [] else "find returns an empty list on n
 let words = find "Foo and Bar Baz" "[A-Z][a-z]+"
 assert (join words " ") == "Foo Bar Baz" else "find composes with join"
 
+# Single-char-class lookbehind — the shape claim_preserve's PATH class needs.
+let path_pat = "(?<![A-Za-z0-9_])(?:\.\./)?(context|tools)/[A-Za-z0-9_./+-]+"
+let paths = find "see context/RIYO.md and mycontext/x and ../tools/foo.rish" path_pat
+assert (join paths "~") == "context/RIYO.md~../tools/foo.rish" else "lookbehind matches a root at a boundary, skips one mid-identifier"
+
 say "GREEN: Rishi match — `matches` tests a bounded regex in linear time and `find` extracts every match; both reproduce the seam patterns and compose with the value model."

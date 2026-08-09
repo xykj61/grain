@@ -846,6 +846,9 @@ const EvalError = error{
     OrNeedsBoolean,
     MatchNeedsString,
     MatchBadPattern,
+    SortNeedsList,
+    SortNotComparable,
+    UniqueNeedsList,
 };
 
 /// Evaluate an expression: an operand, two operands compared with `==`/`!=`, or a
@@ -1029,6 +1032,15 @@ fn eval_expr(allocator: std.mem.Allocator, io: std.Io, env: *Env, text: []const 
     if (std.mem.startsWith(u8, trimmed, "lower ")) {
         return do_lower(allocator, io, env, trimmed[6..]);
     }
+    if (std.mem.startsWith(u8, trimmed, "upper ")) {
+        return do_upper(allocator, io, env, trimmed[6..]);
+    }
+    if (std.mem.startsWith(u8, trimmed, "sort ")) {
+        return do_sort(allocator, io, env, trimmed[5..]);
+    }
+    if (std.mem.startsWith(u8, trimmed, "unique ")) {
+        return do_unique(allocator, io, env, trimmed[7..]);
+    }
     if (std.mem.startsWith(u8, trimmed, "slice ")) {
         return do_slice(allocator, io, env, trimmed[6..]);
     }
@@ -1116,6 +1128,31 @@ fn eval_add_sub(allocator: std.mem.Allocator, io: std.Io, env: *Env, text: []con
         const op = text[@intCast(idx)];
         const left = try eval_add_sub(allocator, io, env, text[0..@intCast(idx)]);
         const right = try eval_mul_div(allocator, io, env, text[@intCast(idx + 1)..]);
+        // `+` also joins two lists or two strings end to end — the value model's
+        // one concatenation, so a script can gather results without a builtin.
+        if (op == '+') {
+            const lk = @as(std.meta.Tag(Value), left);
+            const rk = @as(std.meta.Tag(Value), right);
+            if (lk == .list and rk == .list) {
+                const xs = left.list;
+                const ys = right.list;
+                const out = allocator.alloc(Value, xs.len + ys.len) catch return error.OutOfMemory;
+                // invariant: the joined length is exactly the two lengths summed.
+                assert(out.len == xs.len + ys.len);
+                for (xs, 0..) |v, i| out[i] = v;
+                for (ys, 0..) |v, i| out[xs.len + i] = v;
+                return .{ .list = out };
+            }
+            if (lk == .string and rk == .string) {
+                const xs = left.string;
+                const ys = right.string;
+                const out = allocator.alloc(u8, xs.len + ys.len) catch return error.OutOfMemory;
+                assert(out.len == xs.len + ys.len);
+                for (xs, 0..) |b, i| out[i] = b;
+                for (ys, 0..) |b, i| out[xs.len + i] = b;
+                return .{ .string = out };
+            }
+        }
         const a = switch (left) {
             .int => |x| x,
             else => return error.ArithNeedsInt,
@@ -1553,6 +1590,98 @@ fn do_lower(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []const u8
     return .{ .string = out };
 }
 
+/// `upper <text>` — ASCII-uppercase a string; the mirror of `lower`. Only a–z
+/// shift; every other byte passes through, so length is preserved.
+fn do_upper(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []const u8) EvalError!Value {
+    const value = try eval_expr(allocator, io, env, arg);
+    const text = switch (value) {
+        .string => |s| s,
+        else => return error.LowerNeedsString,
+    };
+    const out = allocator.dupe(u8, text) catch return error.OutOfMemory;
+    // invariant: uppercasing copies every byte, so the length never changes.
+    assert(out.len == text.len);
+    for (out) |*c| {
+        const is_lower = c.* >= 'a' and c.* <= 'z';
+        if (is_lower) c.* = c.* - 32; // ASCII 'A' - 'a' == -32
+    }
+    for (out) |c| {
+        // invariant: no lowercase ASCII letter survives an uppercasing.
+        const survived_lower = c >= 'a' and c <= 'z';
+        assert(!survived_lower);
+    }
+    return .{ .string = out };
+}
+
+/// True when `a` orders before `b`, for a list `sort` proves homogeneous first:
+/// strings by byte order, integers by value, booleans false-before-true. Any
+/// other kind is refused by `do_sort` before this is ever reached.
+fn value_less(_: void, a: Value, b: Value) bool {
+    return switch (a) {
+        .string => |x| std.mem.order(u8, x, b.string) == .lt,
+        .int => |x| x < b.int,
+        .boolean => |x| (!x) and b.boolean,
+        else => false,
+    };
+}
+
+/// `sort <list>` — a new list ordered ascending. The list must be homogeneous
+/// and its elements orderable (strings, integers, or booleans); a mixed or
+/// nested list is refused rather than given a meaningless order.
+fn do_sort(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []const u8) EvalError!Value {
+    const value = try eval_expr(allocator, io, env, arg);
+    const items = switch (value) {
+        .list => |xs| xs,
+        else => return error.SortNeedsList,
+    };
+    const out = allocator.dupe(Value, items) catch return error.OutOfMemory;
+    if (out.len <= 1) return .{ .list = out };
+
+    // Every element must share the first's kind, and that kind must be orderable.
+    const kind = @as(std.meta.Tag(Value), out[0]);
+    if (kind != .string and kind != .int and kind != .boolean) return error.SortNotComparable;
+    for (out) |item| {
+        if (@as(std.meta.Tag(Value), item) != kind) return error.SortNotComparable;
+    }
+    std.mem.sort(Value, out, {}, value_less);
+    // invariant: a sorted list never runs backwards at any adjacent pair.
+    var i: u32 = 1;
+    while (i < @as(u32, @intCast(out.len))) : (i += 1) {
+        assert(!value_less({}, out[@intCast(i)], out[@intCast(i - 1)]));
+    }
+    return .{ .list = out };
+}
+
+/// `unique <list>` — a new list with duplicates removed, keeping the first of
+/// each distinct value in the order it was seen. Works on any element kind,
+/// since equality is the value model's own. `unique (sort xs)` is sorted-distinct.
+fn do_unique(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []const u8) EvalError!Value {
+    const value = try eval_expr(allocator, io, env, arg);
+    const items = switch (value) {
+        .list => |xs| xs,
+        else => return error.UniqueNeedsList,
+    };
+    const buf = allocator.alloc(Value, items.len) catch return error.OutOfMemory;
+    var count: u32 = 0;
+    for (items) |item| {
+        var seen = false;
+        var j: u32 = 0;
+        while (j < count) : (j += 1) {
+            if (values_equal(buf[@intCast(j)], item)) {
+                seen = true;
+                break;
+            }
+        }
+        if (!seen) {
+            buf[@intCast(count)] = item;
+            count += 1;
+        }
+    }
+    // invariant: the distinct set never exceeds the input it was drawn from.
+    assert(count <= items.len);
+    return .{ .list = buf[0..@intCast(count)] };
+}
+
 /// `slice <text> <start> <end>` — bounded substring; indices are half-open [start, end).
 fn do_slice(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8) EvalError!Value {
     var tok = TokenIter{ .text = rest };
@@ -1744,7 +1873,10 @@ fn do_pipeline(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []cons
         else => return error.PipelineNeedsList,
     };
 
-    var results: [max_list_items]Value = undefined;
+    // The result is at most as long as the input (a filter keeps a subset, a
+    // transform maps one-to-one), so it is bounded by the list itself rather
+    // than a fixed ceiling — a map over a large `find` result is not truncated.
+    const results = allocator.alloc(Value, items.len) catch return error.OutOfMemory;
     var count: u32 = 0;
     for (items) |item| {
         // Each element is evaluated in a child scope carrying the loop binding.
@@ -1753,7 +1885,6 @@ fn do_pipeline(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []cons
         const value = try eval_expr(allocator, io, &child, body);
         switch (mode) {
             .transform => {
-                if (count == results.len) return error.ListTooLong;
                 results[@intCast(count)] = value;
                 count += 1;
             },
@@ -1763,15 +1894,15 @@ fn do_pipeline(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []cons
                     else => return error.WhereNeedsBool,
                 };
                 if (holds) {
-                    if (count == results.len) return error.ListTooLong;
                     results[@intCast(count)] = item;
                     count += 1;
                 }
             },
         }
     }
-    const out = try allocator.dupe(Value, results[0..@intCast(count)]);
-    return .{ .list = out };
+    // invariant: neither a map nor a filter ever grows the list.
+    assert(count <= items.len);
+    return .{ .list = results[0..@intCast(count)] };
 }
 
 /// `fold <list> from <init> as <acc> <item>: <expr>` — accumulate over a list.
@@ -2026,6 +2157,15 @@ fn eval_operand(allocator: std.mem.Allocator, io: std.Io, env: *Env, raw: []cons
     }
     if (std.mem.startsWith(u8, s, "lower ")) {
         return do_lower(allocator, io, env, s[6..]);
+    }
+    if (std.mem.startsWith(u8, s, "upper ")) {
+        return do_upper(allocator, io, env, s[6..]);
+    }
+    if (std.mem.startsWith(u8, s, "sort ")) {
+        return do_sort(allocator, io, env, s[5..]);
+    }
+    if (std.mem.startsWith(u8, s, "unique ")) {
+        return do_unique(allocator, io, env, s[7..]);
     }
     if (std.mem.startsWith(u8, s, "slice ")) {
         return do_slice(allocator, io, env, s[6..]);

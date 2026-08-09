@@ -1,0 +1,50 @@
+# claim_preserve_extract.rish — emit sorted-unique claim tokens from a file.
+#
+# The living mutant of tools/fixtures/claim_preserve_extract.sh (Python → perl →
+# Rishi molt, 20260809). No shell, no perl — Rishi's own match/find/sort/unique.
+# Output matches the elder extractor token-for-token.
+#
+# Token classes (each prefixed CLASS:):
+#   STAMP  — YYYYMMDD.HHMMSS and YYYYMMDD-HHMMSS
+#   HEX    — 8+ hex chars, not a pure 14-digit stamp; lowercased
+#   FP     — OpenPGP-style 4-hex groups; whitespace collapsed, uppercased
+#   NUM    — integers and decimals, not an 8-digit stamp fragment
+#   PATH   — repo-relative paths at a known root, not mid-identifier
+#   PROPER — capitalized noun runs, minus common sentence openers
+#
+#   rishi/bin/rishi run tools/fixtures/claim_preserve_extract.rish <path>
+
+let text = read-file args[0]
+
+# STAMP — both one-clock forms. Prefixes join with `+` rather than string
+# interpolation, so a nested pattern literal never closes the outer string early.
+let stamp_dot = map (find text "\b\d{8}\.\d{6}\b") as t: "STAMP:" + t
+let stamp_dash = map (find text "\b\d{8}-\d{6}\b") as t: "STAMP:" + t
+
+# HEX — 8+ hex, dropping a bare 14-digit stamp; lowercased.
+let hex_raw = find text "\b(?:0x)?[0-9a-fA-F]{8,}\b"
+let hex_kept = where hex_raw as h: (?! (h matches "^\d{14}$"))
+let hexes = map hex_kept as h: "HEX:" + (lower h)
+
+# FP — fingerprint clumps; collapse whitespace to one space, uppercase.
+let fp_raw = find text "\b(?:[0-9A-F]{4}\s+){3,}[0-9A-F]{4}\b"
+let fps = map fp_raw as f: "FP:" + (upper (join (find f "\S+") " "))
+
+# NUM — numbers, dropping an 8-digit stamp fragment.
+let num_raw = find text "\b\d+(?:\.\d+)?\b"
+let num_kept = where num_raw as n: (?! (n matches "^\d{8}$"))
+let nums = map num_kept as n: "NUM:" + n
+
+# PATH — a repo root, optionally one ../ ahead, never mid-identifier.
+let path_pat = "(?<![A-Za-z0-9_])(?:\.\./)?(context|tools|counsel|foundations|waymarks|linengrow|session-logs|work-in-progress|docs|glow|rye|rishi|keys|vendor|gratitude|active-designing|external-research)/[A-Za-z0-9_./+*-]+"
+let paths = map (find text path_pat) as p: "PATH:" + p
+
+# PROPER — capitalized noun runs, minus the common sentence openers.
+let skip = ["Language" "Status" "Stamp" "Voice" "Style" "Bound" "Room" "Counsel" "Related" "Ground" "May" "And" "The" "This" "That" "With" "From" "Into" "Over" "Under" "After" "Before" "Every" "Each" "When" "Where" "What" "How" "Why" "For" "Our" "Your"]
+let proper_raw = find text "\b[A-Z][a-z]{1,}(?:\s+[A-Z][a-z]{1,}){0,3}\b"
+let proper_kept = where proper_raw as g: (?! (skip contains g))
+let propers = map proper_kept as g: "PROPER:" + g
+
+let all = stamp_dot + stamp_dash + hexes + fps + nums + paths + propers
+let final = unique (sort all)
+for-each final as line do say line
