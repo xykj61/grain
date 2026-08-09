@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` — the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `ab4a37d6f6` · Grain · cloud pier
+**Git nib:** `6f5d7dda93` · Grain · cloud pier
 **Host:** Framework · EDT (`America/New_York`) · Vultr SEA VPS (HP AMD 2vCPU/4GB shared · never EWR) · this session in ai-jail
 
 ---
@@ -49,7 +49,7 @@ The private field is `~/grain`; the public template **grain-os/grain** is *proje
 
 ## Shred-prep
 
-[`SHRED_PREP.md`](SHRED_PREP.md) — Class H fossils · Class O rooms (propose-never-seat) · shred stays **RED** until circled. **debride** is the stronger word (removes dead history, deep on Keaton's word).
+[`SHRED_PREP.md`](SHRED_PREP.md) — Class H fossils · Class O rooms (propose-never-seat) · **Python→Rishi molt seated** (`20260809`, prep only) · shred stays **RED** until circled. **debride** is the stronger word (removes dead history, deep on Keaton's word).
 
 ---
 

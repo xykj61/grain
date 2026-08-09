@@ -86,6 +86,20 @@ Grep helpers: `living mutant` · `fossil — living path` · paths in this table
 
 ---
 
+## Python → Rishi molt (seated `20260809.030635` · prep only)
+
+All authored Python molts to **Rishi**. Census and order: [`../active-designing/20260809-030635_python-to-rishi-molt-seating.md`](../active-designing/20260809-030635_python-to-rishi-molt-seating.md). Each `.py` becomes a Class H fossil row **only once its Rishi mutant runs green** — no rows yet, since this seats the intent and opens no cut.
+
+| `.py` file | Verdict | Waits on |
+| --- | --- | --- |
+| `expanding-prompts/yonder/remember_pin_habit_count.py` | **port** | a kg lap — first showcase |
+| `tools/fixtures/dated_classify.py` | **port, with care** | every consumer staying green |
+| `classical-vedic-astrology/cast_a_chart.py` | **seam-gated** | a Rye/Zig Swiss-Ephemeris binding |
+| `tools/comlink_r1_dual_bind_probe.py` | **shred, not port** (REDS 64) | a circled shred word — R1 is cut |
+| `context/fixtures/tools_py_ban_tree/tools/planted.py` | **keep as fixture** | never — the ban needs it |
+
+---
+
 ## Habit (before every living mutant)
 
 Ford-shaped **transitive writing crawl** — same spirit as elder Ford Fusion research: follow the graph until no new edges appear.
