@@ -27,3 +27,9 @@ if cmd == "classify" then say trim (run ["sh" "tools/fixtures/dated_classify_sea
 
 # `census` — print the tree-wide tally and the definition, matching the elder .py lines.
 if cmd == "census" then say trim (run ["sh" "tools/fixtures/dated_classify_seam.sh" "census"]).out
+
+# `health <live> <dated>` — the per-room fascia-health report over the two planted controls.
+if cmd == "health" then say trim (run ["sh" "tools/fixtures/dated_classify_seam.sh" "health" args[1] args[2]]).out
+
+# `shed <cited> <orphan> <citer>` — the orphan-floor census behind the C1/C2 controls.
+if cmd == "shed" then say trim (run ["sh" "tools/fixtures/dated_classify_seam.sh" "shed" args[1] args[2] args[3]]).out

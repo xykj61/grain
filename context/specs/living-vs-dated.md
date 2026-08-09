@@ -61,7 +61,7 @@ Plain spoken names (`README.md`, `ROADMAP.md`, `ready-to-ask-claude.md`, `seam-s
 
 ## Machine gate
 
-**Shared classifier (e116):** `tools/fixtures/dated_classify.py` — one code definition of dated/live for every roof. Dated name is path-anchored `(^|/)\d{8}-\d{6}_`; living header is `**Stamp:** living ledger` or `living ledger (born`. Shed census and fascia-health both source this module. Divergence witness `tools/fixtures/dated_roof_divergence_scan.sh` goes RED while `dated_testimony` differs across roofs. Law: when two roofs carry one name, either they agree or the name is doing two jobs.
+**Shared classifier (e116 · ported to Rishi `20260809`):** `tools/fixtures/dated_classify.rish` — one definition of dated/live for every roof, Rishi owning the interface over a POSIX-sh `rg` seam (elder `dated_classify.py` kept as a fossil until the last consumer migrates). Dated name is a path-anchored stamp segment `YYYYMMDD-HHMMSS_`, matched as `(^|/)\d{8}-\d{6}_`; living header is `**Stamp:** living ledger` or `living ledger (born`. Shed census and fascia-health both source this definition. Divergence witness `tools/fixtures/dated_roof_divergence_scan.sh` goes RED while `dated_testimony` differs across roofs. Law: when two roofs carry one name, either they agree or the name is doing two jobs.
 
 `tools/dated_guard.rish` — **a doorway, not an auditor** (e236). It inspects *staged* MODIFIED paths only.
 

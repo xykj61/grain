@@ -16,7 +16,7 @@
 | Lap | Equinox | Status |
 |-----|---------|--------|
 | Rishi rune heads — `^-` · `?!` · `?&` · `?|` landed · continue | SOON | **LANDED** (four heads) · more next |
-| Molt Python → Rishi — `dated_classify` ported (mutant GREEN, census byte-identical) · `remember_pin` shredded · `lower` builtin added | SOON | **porting** · runpy consumers (`shed_census`·`fascia_health`) next lap |
+| Molt Python → Rishi — `dated_classify` fully ported (census·classify·health·shed, all byte-identical) · `census_control` de-Pythoned · runpy scans (`shed_census`·`fascia_health`) + divergence GREEN · `remember_pin` shredded · `lower` builtin | SOON | **dated subsystem Python-free** · ~10 more `.sh` embed python3 (next laps) |
 | `mold → shape` debride (82 files / 753) | SOON | proposed · own pass |
 | TAME core/shelf compression | SOON | proposed |
 | Brix + Brix-infuse | SOON j2 | proposed |

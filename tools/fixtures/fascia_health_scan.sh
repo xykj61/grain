@@ -91,83 +91,10 @@ if test "$MODE" = "prove-red"; then
 fi
 
 # --- classify planted controls before library totals (shared dated_classify) ---
-REPORT=$(LIVE="$LIVE" DATED="$DATED" python3 <<'PY'
-import os, runpy, subprocess
-from collections import defaultdict
-
-live_ctrl = os.environ["LIVE"]
-dated_ctrl = os.environ["DATED"]
-
-# One dated definition — shared with shed census and divergence roofs.
-dc = runpy.run_path("tools/fixtures/dated_classify.py")
-classify = dc["classify"]
-
-c_live = classify(live_ctrl)
-c_dated = classify(dated_ctrl)
-print(f"C_live={c_live}")
-print(f"C_dated={c_dated}")
-
-if c_live != "live":
-    print("controls_honored=0")
-    print("verdict=misread")
-    print("detail=RED_live-control")
-    print("detail=too_harsh")
-    print("census=withheld")
-    raise SystemExit(0)
-if c_dated != "dated":
-    print("controls_honored=0")
-    print("verdict=misread")
-    print("detail=RED_dated-control")
-    print("detail=too_generous")
-    print("census=withheld")
-    raise SystemExit(0)
-
-print("controls_honored=2")
-print("controls: 2 of 2 honored - ratio released")
-
-files = [
-    f for f in subprocess.check_output(["git", "ls-files", "-z"], text=True).split("\0")
-    if f
-]
-rooms = defaultdict(lambda: {"total": 0, "dated": 0, "live": 0})
-live_n = 0
-dated_n = 0
-for f in files:
-    room = f.split("/", 1)[0] if "/" in f else "(root)"
-    rooms[room]["total"] += 1
-    cls = classify(f)
-    if cls == "live":
-        live_n += 1
-        rooms[room]["live"] += 1
-    else:
-        dated_n += 1
-        rooms[room]["dated"] += 1
-
-total = len(files)
-health = int(round(100.0 * live_n / total)) if total else 0
-print(f"tracked_total={total}")
-print(f"dated_testimony={dated_n}")
-print(f"dated_definition=living-vs-dated")
-print(f"live_surface={live_n}")
-print(f"fascia_health={health}")
-print("shred=RED")
-
-rows = []
-for room, d in rooms.items():
-    pct = (100.0 * d["live"] / d["total"]) if d["total"] else 0.0
-    rows.append((pct, d["live"], d["dated"], d["total"], room))
-rows.sort(key=lambda r: (r[0], r[4]))
-for pct, lv, dd, tot, room in rows:
-    # name shed targets: rooms with dated testimony
-    if dd > 0:
-        print(f"room_{room}_live_pct={pct:.1f}")
-        print(f"room_{room}_live={lv}")
-        print(f"room_{room}_dated={dd}")
-        print(f"room_{room}_total={tot}")
-
-print("verdict=ok")
-PY
-)
+# The classifier now speaks Rishi (Python → Rishi molt 20260809): Rishi owns the
+# interface, a POSIX-sh rg seam holds the regex. Output matches the elder Python
+# byte-for-byte; python3 is not on this pier's PATH.
+REPORT=$(rishi/bin/rishi run tools/fixtures/dated_classify.rish health "$LIVE" "$DATED")
 
 echo "$REPORT"
 

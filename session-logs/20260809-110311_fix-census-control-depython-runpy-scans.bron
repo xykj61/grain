@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20260809.110311
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title fix census_control red · de-Python the runpy scans
+prompt fix the census_control red first, then de-python the runpy scans
+think the census_control red was a python3 heredoc in census_control_h1_seam.sh counting H1 headings outside code fences; ported it to awk (fence-state toggle, ^#\s count) — GREEN again, prove-red still fails, true=1 naive=4 preserved
+think fixing that gate let dated_pattern_scan run further and expose a second pre-existing red — its law check greps the spec for the literal YYYYMMDD-HHMMSS while the spec taught only the regex form; updated the spec to name the Rishi mutant (docs-sync) and teach both notations, so the witness passes without loosening
+think the two runpy scans embed python that calls classify() in-process via runpy; reproduced each as a seam command — health (per-room fascia report) and shed (orphan-floor census) — and proved both byte-identical to the elder python captured via the nix-store interpreter
+think a real bug surfaced in the shed proving — my orphan dated set first omitted the living-header rescue, so a .bron log that merely quotes living ledger was miscounted as dated; applying the same rescue classify uses made the orphan list identical (1015)
+think the mention count is tree-state sensitive, so parity had to be compared at the same instant; the earlier 1015-vs-1016 was a stale ground truth, not a masking artifact
+think performance — the per-file head-c-8000 header loop over 5662 files, run in three roofs, timed the divergence scan out at 2 minutes; a header_files helper bulk-narrows with rg -l then confirms the byte bound per candidate, keeping 8000-byte semantics exact and bringing divergence back to ~36s
+obs every living consumer of dated_classify now speaks Rishi — dated_pattern, fascia_health, shed_census, divergence all call the rish; all roofs agree and the divergence witness is GREEN
+obs the .py is kept only because dated equinox witnesses e116/e117/e118 assert its existence — an accrete-never-break pin, not a live dependency
+obs the molt frontier is named — roughly ten more .sh witnesses embed python3 heredocs, each its own small port, each already silently red on this pier
+file tools/fixtures/census_control_h1_seam.sh python3 heredoc → awk H1-outside-fence count
+file tools/fixtures/dated_classify_seam.sh new health and shed commands + header_files bulk helper
+file tools/fixtures/dated_classify.rish health and shed dispatch
+file tools/fixtures/fascia_health_scan.sh runpy block → rish health call
+file tools/fixtures/shed_census_scan.sh runpy block → rish shed call
+file tools/fixtures/dated_roof_divergence_scan.sh census roof → rish census
+file context/specs/living-vs-dated.md classifier citation → rish · teach both stamp notations
+file work-in-progress/SHRED_PREP.md dated_classify all living consumers migrated
+file work-in-progress/TASKS.md dated subsystem Python-free · ~10 .sh remain
+file active-designing/20260809-030635_python-to-rishi-molt-seating.md outcome + molt frontier
+file session-logs/20260809-110311_fix-census-control-depython-runpy-scans.bron this record
+recommend keep-going the dated subsystem is Python-free and green; next is the Radiant Style pass Keaton queued (scoped by tier — living freshened, dated a recorded pass) then the remaining ~10 python-embedded .sh witnesses as convenient laps
