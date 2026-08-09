@@ -1,6 +1,8 @@
 # Azimuth-Galaxy-Proposal Format
 
-**Always on** for any commit, `CONTRIBUTING.md` change, or `expanding-prompts/` grant proposal substantial enough to be worth pitching outside this fork — to one or more of Urbit's real Azimuth galaxy holders.
+**Optional — a drawer courtesy, not the spine** (reframed `20260808.205404` on Keaton's word · `urbit-reframe.md`). This format is available for the **rare** change that genuinely wants a real Azimuth galaxy holder's eye. It is no longer "always on," and it is never the mirror in which the work checks whether it is worthy — Grain's worth stands on its own users and values. Reach for it only when an outward pitch is truly wanted; most commits carry no Galaxy Pitch block at all.
+
+When it *is* used — for a commit, `CONTRIBUTING.md` change, or `expanding-prompts/` grant proposal substantial enough to pitch outside this fork — it takes the shape below.
 
 ## The Real Ownership This Names
 

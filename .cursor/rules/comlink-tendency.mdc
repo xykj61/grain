@@ -1,0 +1,24 @@
+---
+description: The Comlink tendency — name new modules/aspects for clarity, fun, and safety at any length; the four-letter-vane scheme is released
+alwaysApply: true
+---
+
+# The Comlink Tendency
+
+When naming a **new module, aspect, or concept**, reach first for the **clearest, most fun, safest word**, at whatever length it wants. Read from the maintainer's own favorites — Comlink, Mantra, Caravan, Tally, Pond, Tablecloth, Skate, Nib, Rye, Rishi — none a forced four-letter coinage, each a plain word or clear metaphor.
+
+Seated `20260808.205404` on Keaton's word. Canon: `external-research/20260808-204505_the-best-name-period-vanes-ancestry-and-our-own-merit.md` (Movement I). Zed twin: `.claude/rules/comlink-tendency.md`.
+
+## Three tests
+
+- **Clear** — a newcomer grasps it, or grasps it the instant its plain function is named on first use.
+- **Fun** — a pleasure to say and type; a name lived with for years should be warm.
+- **Safe** — collides with nothing seated (grep first), borrows no sacred word, never parses as a real `@p` (`placeholder-ship-names.mdc`).
+
+Uniform length is not a test. The four-letter-vane scheme (from Urbit's vanes and the `@p` syllables) is released; an abstract coinage is now the exception that must justify itself.
+
+## Boundaries
+
+- **Waymark ladders** (`waymark-ladders.mdc`) still govern **ladder rung names** by SHA3 four-letter draw. The Comlink tendency governs **module/aspect/concept names**, not rungs.
+- **Reviving replaces renaming** — a new name is born beside the elder (`active-reviving/`), never mass-renamed in. The tendency picks the born name; it licenses no churn.
+- **Accrete-never-break** — sweeps nothing already loved; governs what is born from here forward.
