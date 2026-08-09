@@ -832,6 +832,10 @@ const EvalError = error{
     ExitOutOfRange,
     TooManySpawnHandles,
     WaitForUnknownHandle,
+    CastNeedsBody,
+    CastUnknownShape,
+    CastMismatch,
+    CastOutOfRange,
 };
 
 /// Evaluate an expression: an operand, two operands compared with `==`/`!=`, or a
@@ -865,6 +869,12 @@ fn eval_expr(allocator: std.mem.Allocator, io: std.Io, env: *Env, text: []const 
     }
     if (std.mem.startsWith(u8, trimmed, "lines-bounded ")) {
         return do_lines_bounded(allocator, io, env, trimmed[14..]);
+    }
+    // `^- <mold> <expr>` — the cast rune (kethep), the first Glow rune Rishi speaks.
+    // It evaluates the body, then gates it against the mold's type and named width;
+    // the value passes through unchanged when it fits, and refuses otherwise.
+    if (std.mem.startsWith(u8, trimmed, "^- ")) {
+        return do_cast(allocator, io, env, trimmed[3..]);
     }
     // `map <list> as <name>: <expr>` transforms each element; `where … ` keeps the
     // elements whose predicate holds. Checked before the operators below, so a
@@ -1720,6 +1730,60 @@ fn do_lines_bounded(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: [
         i += 1;
     }
     return .{ .list = items };
+}
+
+/// `^- <shape> <expr>` — the cast rune, Glow's kethep, the first Glow rune Rishi speaks.
+/// It evaluates the body as a full expression, then gates the value against the named
+/// **shape** (this tree's word, not Hoon's "mold"): a type check for `@t` (text), and a
+/// type-plus-explicit-width check for the integer shapes. The value passes through
+/// unchanged when it fits, and refuses otherwise — so a cast in Rishi enforces TAME's
+/// explicit width the way an `assert` gates a pipeline.
+fn do_cast(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8) EvalError!Value {
+    const trimmed = std.mem.trim(u8, rest, " \t");
+    // A cast names a shape, then a body; both are required (user error, not a bug).
+    const sep = std.mem.indexOfAny(u8, trimmed, " \t") orelse return error.CastNeedsBody;
+    const shape = trimmed[0..sep];
+    const body_text = std.mem.trim(u8, trimmed[sep..], " \t");
+    if (body_text.len == 0) return error.CastNeedsBody;
+    // invariant: a shape name is non-empty once a separator was found before it.
+    assert(shape.len > 0);
+    // invariant: the shape carries the `@` head every Glow shape name wears.
+    assert(shape[0] == '@');
+
+    const value = try eval_expr(allocator, io, env, body_text);
+
+    // Text shape — the value must already be a string.
+    if (std.mem.eql(u8, shape, "@t")) {
+        return switch (value) {
+            .string => value,
+            else => error.CastMismatch,
+        };
+    }
+
+    // Integer shapes — the value must be an int; the unsigned and width shapes add a
+    // bound, and a value outside it refuses rather than silently truncating.
+    const x = switch (value) {
+        .int => |n| n,
+        else => return error.CastMismatch,
+    };
+    // @i64 holds any signed 64-bit value — no further bound.
+    if (std.mem.eql(u8, shape, "@i64")) return value;
+    // @ud / @u64 refuse a negative value.
+    if (std.mem.eql(u8, shape, "@ud") or std.mem.eql(u8, shape, "@u64")) {
+        if (x < 0) return error.CastOutOfRange;
+        // invariant: a value that passed an unsigned shape is non-negative.
+        assert(x >= 0);
+        return value;
+    }
+    // @u32 holds exactly 0 .. 2^32 - 1; outside that, refuse.
+    if (std.mem.eql(u8, shape, "@u32")) {
+        const u32_max: i64 = 4294967295; // 2^32 - 1, the named u32 ceiling
+        if (x < 0 or x > u32_max) return error.CastOutOfRange;
+        // invariant: a value that passed @u32 sits inside the u32 window.
+        assert(x >= 0 and x <= u32_max);
+        return value;
+    }
+    return error.CastUnknownShape;
 }
 
 /// Evaluate one operand: a double-quoted string, a boolean, a base-ten integer,
