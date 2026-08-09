@@ -17,6 +17,7 @@ When Keaton says **"debride,"** deliberately **break accrete-never-break**: **re
 
 ## Discipline
 
+- **Leave a cairn first.** Before a debride rewrites a living card, record a walk-back **cairn** — the git nib and stamp of HEAD before the debride's commit — in `work-in-progress/CAIRNS.md`, so the departing card stays one `git show` away. Mandatory before a deep debride, whose walk-back is otherwise lost with the rewrite. Rule: [`cairn.md`](cairn.md).
 - **Named target, explicit word.** debride is destructive by design and runs only on Keaton's word naming *what* to remove. Never a default; never a sweep beyond the named target.
 - **Deep debride force-pushes.** After the rewrite, both remotes are force-updated; the living REMEMBER git nib and any git-nib citations are refreshed after.
 - **Fascia is the point.** debride raises **fascia health** and **reattaches fascia** — the tree's connective references heal once the dead tissue is gone.
