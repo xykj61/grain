@@ -16,56 +16,21 @@ set -eu
 path=${1:?"usage: claim_preserve_extract.sh <path>"}
 [ -f "$path" ] || { echo "missing $path" >&2; exit 1; }
 
-python3 - "$path" <<'PY'
-import re, sys
-from pathlib import Path
-text = Path(sys.argv[1]).read_text(encoding="utf-8", errors="replace")
-# Strip fenced code lightly? Keep code — digests often live there.
-tokens = set()
-
-for m in re.finditer(r"\b\d{8}\.\d{6}\b", text):
-    tokens.add(f"STAMP:{m.group(0)}")
-for m in re.finditer(r"\b\d{8}-\d{6}\b", text):
-    tokens.add(f"STAMP:{m.group(0)}")
-
-for m in re.finditer(r"\b(?:0x)?[0-9a-fA-F]{8,}\b", text):
-    g = m.group(0)
-    # skip pure stamps already classified
-    if re.fullmatch(r"\d{8}\d{6}", g.replace(".", "").replace("-", "")):
-        continue
-    tokens.add(f"HEX:{g.lower()}")
-
-# fingerprint-like: groups of 4 hex separated by space
-for m in re.finditer(r"\b(?:[0-9A-F]{4}\s+){3,}[0-9A-F]{4}\b", text):
-    tokens.add(f"FP:{re.sub(r'\s+', ' ', m.group(0).upper())}")
-
-for m in re.finditer(r"\b\d+(?:\.\d+)?\b", text):
-    g = m.group(0)
-    # skip stamp fragments
-    if len(g) == 8 and g.isdigit():
-        continue
-    tokens.add(f"NUM:{g}")
-
-# paths: word with / and a dot segment or known roots
-for m in re.finditer(
-    r"(?<![A-Za-z0-9_])(?:\.\./)?(?:context|tools|counsel|foundations|waymarks|linengrow|session-logs|work-in-progress|docs|glow|rye|rishi|keys|vendor|gratitude|active-designing|external-research)/[A-Za-z0-9_./+*-]+",
-    text,
-):
-    tokens.add(f"PATH:{m.group(0)}")
-
-# Capitalized proper nouns — sequences of Cap words
-for m in re.finditer(r"\b[A-Z][a-z]{1,}(?:\s+[A-Z][a-z]{1,}){0,3}\b", text):
-    g = m.group(0)
-    # skip month-like noise and Language/Status labels alone
-    if g in {
-        "Language", "Status", "Stamp", "Voice", "Style", "Bound", "Room",
-        "Counsel", "Related", "Ground", "May", "And", "The", "This", "That",
-        "With", "From", "Into", "Over", "Under", "After", "Before", "Every",
-        "Each", "When", "Where", "What", "How", "Why", "For", "Our", "Your",
-    }:
-        continue
-    tokens.add(f"PROPER:{g}")
-
-for t in sorted(tokens):
-    print(t)
-PY
+# perl, not python — this pier has no python3 on PATH (Python → Rishi molt 20260809).
+# Perl's regex engine matches the elder Python `re` semantics token-for-token here.
+perl -CSD -0777 -ne '
+    my %t;
+    while (/\b\d{8}\.\d{6}\b/g) { $t{"STAMP:$&"}=1 }
+    while (/\b\d{8}-\d{6}\b/g)  { $t{"STAMP:$&"}=1 }
+    while (/\b(?:0x)?[0-9a-fA-F]{8,}\b/g) {
+        my $g=$&; (my $s=$g)=~s/[.-]//g;
+        next if $s=~/^\d{8}\d{6}$/;
+        $t{"HEX:".lc($g)}=1;
+    }
+    while (/\b(?:[0-9A-F]{4}\s+){3,}[0-9A-F]{4}\b/g) { my $g=$&; $g=~s/\s+/ /g; $t{"FP:".uc($g)}=1 }
+    while (/\b\d+(?:\.\d+)?\b/g) { my $g=$&; next if (length($g)==8 && $g=~/^\d+$/); $t{"NUM:$g"}=1 }
+    while (/(?<![A-Za-z0-9_])(?:\.\.\/)?(?:context|tools|counsel|foundations|waymarks|linengrow|session-logs|work-in-progress|docs|glow|rye|rishi|keys|vendor|gratitude|active-designing|external-research)\/[A-Za-z0-9_.\/+*-]+/g) { $t{"PATH:$&"}=1 }
+    my %skip = map {$_=>1} qw(Language Status Stamp Voice Style Bound Room Counsel Related Ground May And The This That With From Into Over Under After Before Every Each When Where What How Why For Our Your);
+    while (/\b[A-Z][a-z]{1,}(?:\s+[A-Z][a-z]{1,}){0,3}\b/g) { my $g=$&; next if $skip{$g}; $t{"PROPER:$g"}=1 }
+    print "$_\n" for sort keys %t;
+' "$path"
