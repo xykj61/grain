@@ -840,6 +840,8 @@ const EvalError = error{
     CastOutOfRange,
     NotNeedsBody,
     NotNeedsBoolean,
+    CondNeedsThree,
+    CondNeedsBoolean,
     AndNeedsList,
     AndNeedsBoolean,
     OrNeedsList,
@@ -904,6 +906,13 @@ fn eval_expr(allocator: std.mem.Allocator, io: std.Io, env: *Env, text: []const 
     }
     if (std.mem.startsWith(u8, trimmed, "?| ")) {
         return do_or(allocator, io, env, trimmed[3..]);
+    }
+    // `?: <cond> <then> <else>` — the conditional rune (wutcol). It returns a value,
+    // not an effect, so it fits where a statement `if` cannot: inside a record field,
+    // a fold body, any expression. Only the taken branch is evaluated. Operands are
+    // three whitespace-separated tokens, so a compound branch wears parentheses.
+    if (std.mem.startsWith(u8, trimmed, "?: ")) {
+        return do_cond(allocator, io, env, trimmed[3..]);
     }
     // `map <list> as <name>: <expr>` transforms each element; `where … ` keeps the
     // elements whose predicate holds. Checked before the operators below, so a
@@ -2094,6 +2103,28 @@ fn do_or(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8) 
     // invariant: or holds exactly when at least one element was true.
     assert(any_true == (true_count > 0));
     return .{ .boolean = any_true };
+}
+
+/// `?: <cond> <then> <else>` — the conditional rune (wutcol). Three whitespace-
+/// separated operands: a boolean condition, then a value for each branch. Only the
+/// taken branch is evaluated, so `?: (x == 0) (0) (10 / x)` never divides by zero.
+fn do_cond(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8) EvalError!Value {
+    var tok = TokenIter{ .text = rest };
+    const cond_token = tok.next() orelse return error.CondNeedsThree;
+    const then_token = tok.next() orelse return error.CondNeedsThree;
+    const else_token = tok.next() orelse return error.CondNeedsThree;
+    // invariant: each branch is a non-empty operand token.
+    assert(then_token.len > 0);
+    assert(else_token.len > 0);
+
+    const cond_value = try eval_operand(allocator, io, env, cond_token);
+    const holds = switch (cond_value) {
+        .boolean => |b| b,
+        else => return error.CondNeedsBoolean,
+    };
+    // Evaluate only the chosen branch — the untaken side never runs.
+    if (holds) return eval_operand(allocator, io, env, then_token);
+    return eval_operand(allocator, io, env, else_token);
 }
 
 /// Evaluate one operand: a double-quoted string, a boolean, a base-ten integer,

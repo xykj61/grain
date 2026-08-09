@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260809.151523
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title Rishi ?: conditional rune — loop accumulation solved
+prompt kg
+think the finishing edge named loop accumulation as the last census blocker; before building I checked and found fold ALREADY accumulates (fold xs from 0 as acc n: acc + n = 15) — so accumulation was never the blocker
+think what a census fold actually lacked was a conditional that returns a VALUE — Rishi's if/then/else is a statement and a fold body is one expression; so I grew the ?: conditional rune (wutcol), completing the boolean rune family ?! ?& ?| ?:
+think ?: takes three whitespace-separated operands via TokenIter (a compound branch wears parentheses) and evaluates only the taken branch, so ?: (true) (42) (10 / 0) never divides by zero
+obs proved the census-fold pattern end to end — a fold with a record accumulator and ?: reproduced census_control's H1-outside-fences count (true=1 naive=4) in pure Rishi, identical to the awk seam
+obs corrected rish_count_selftest — it claimed accumulation needs map+join+sh; it now records that fold accumulates natively and ?: counts under a condition
+obs did not repoint the census seams — census_control deliberately keeps duty bodies in POSIX seams; folding them native vs keeping the fast bulk-rg/awk seams is a design call for Keaton, not a language gap; dated_classify's 9353-file census is genuinely faster as bulk rg
+obs tame_style_check clean on main.rye; all rune/match/sort-unique/cond witnesses GREEN; claim_preserve gate still green
+obs no language gap remains for folding token/extract seams (done) or census seams (foldable); the only convenience left is user functions
+file rishi/src/main.rye do_cond + `?:` dispatch + CondNeedsThree/CondNeedsBoolean errors
+file tools/rish_rune_cond_witness.rish ?: proven — branches, laziness, fold subset count, record accumulator
+file tools/rish_count_selftest.rish corrected — fold accumulates natively; ?: counts under a condition
+file active-designing/20260809-030635_python-to-rishi-molt-seating.md accumulation solved (fold + ?:); census fold vs POSIX-seam is a design call
+file context/LEXICON.md · work-in-progress/REMEMBER.md · TASKS.md ?: wutcol on the SOON finishing edge
+file session-logs/20260809-151523_rishi-wutcol-conditional-rune-fold-accumulation.bron this record
+recommend keep-going Rishi is now a capable language — runes ?! ?& ?| ?: · regex matches/find · sort/unique · fold accumulation; the token/extract seams fold native (claim_preserve proves it) and the census seams are foldable; the open call is whether to fold the census duty bodies or keep the fast bulk seams, and whether to grow user functions
