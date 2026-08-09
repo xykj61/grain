@@ -16,7 +16,7 @@
 
 ## Two paths that meet
 
-Grain documentation has two front doors that share one house. Pick the door that matches what you came to do; both lead to packaging when you are ready to put a Glow fold on a phone.
+Grain documentation opens two front doors that share one house. Pick the door that matches what you came to do; both lead to packaging once you are ready to put a Glow fold on a phone.
 
 | Path | Start here | Compressor |
 |------|------------|------------|
@@ -55,7 +55,7 @@ rishi/bin/rishi run tools/hawm0_boot_onpath_host.rish   # if no device yet
 rishi/bin/rishi run tools/tube05_install_proof_onpath_host.rish
 ```
 
-The APK uses Android's own `NativeActivity` and a Glow-built `libglowapp.so` — no Kotlin transpile. `ANativeActivity_onCreate` runs the JABS0 Seva fold demo (module `seva_b0_fold`) and writes `files/seva_root.txt`; the witness checks that root via `run-as`. Ai-jail has neither KVM nor USB.
+The APK uses Android's own `NativeActivity` and a Glow-built `libglowapp.so`, rather than a Kotlin transpile. `ANativeActivity_onCreate` runs the JABS0 Seva fold demo (module `seva_b0_fold`) and writes `files/seva_root.txt`; the witness checks that root via `run-as`. Ai-jail carries neither KVM nor USB.
 
 ### Enclosure (checkable)
 
@@ -68,9 +68,9 @@ The APK uses Android's own `NativeActivity` and a Glow-built `libglowapp.so` —
 
 These keep the Urbit-shaped "get on the network" outline, marked plainly as proposed:
 
-1. **Choose a variant** — Reya, Riyo, Trey, Triz, or Quin ([`variants/README.md`](variants/README.md)). Named, not yet bootable.
-2. **Get an identity** — Kumara (Ed25519) runs today; Azimuth integration is open. Docs use invalid placeholders like `~acme-corp-test-ship`, never a real `@p`.
-3. **Boot the variant** — fake/local boot path not yet built.
+1. **Choose a variant** — Reya, Riyo, Trey, Triz, or Quin ([`variants/README.md`](variants/README.md)). Named today, bootable ahead.
+2. **Get an identity** — Kumara (Ed25519) runs today; Azimuth integration stays open. Docs use invalid placeholders like `~acme-corp-test-ship`, never a real `@p`.
+3. **Boot the variant** — the fake/local boot path waits ahead.
 4. **Join the network** — Comlink/Azimuth join remains design.
 
 ---

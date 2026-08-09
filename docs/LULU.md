@@ -12,7 +12,7 @@
 
 ## Thesis — one Skate budget, one short home
 
-Declare where home is (`kd`) and how dense the glass is (closed presets), so used Pixels without a cellular plan and future Mantrapod e-ink share the same fold. **Brix declares · Bron carries · Tablecloth/Mantra hold · Skate applies**.
+Declare where home is (`kd`) and how dense the glass is (closed presets), so used Pixels without a cellular plan and future Mantrapod e-ink share one fold. **Brix declares · Bron carries · Tablecloth/Mantra hold · Skate applies**.
 
 **Waymark draw:** input `glow-glass-hearth-display-and-wired-sync` · SHA3-512 · flw.txt → **LULU** (`20260718.122145`).
 

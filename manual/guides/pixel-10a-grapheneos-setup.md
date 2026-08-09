@@ -60,7 +60,7 @@ The installer page has an "Unlock bootloader" button. Press it, then **confirm o
 
 Back in the browser: press **"Download release"** and let it fetch (it downloads the current, signed GrapheneOS factory image for the Pixel 10a specifically — the page detects your exact model automatically). Once downloaded, press **"Flash release."**
 
-This step handles everything itself — flashing the latest firmware, rebooting into the bootloader, flashing the OS — and takes a few minutes. **Don't touch the phone or unplug the cable while it's running.** Let it finish completely before doing anything else.
+This step handles everything itself — flashing the latest firmware, rebooting into the bootloader, flashing the OS — and takes a few minutes. **Leave the phone and cable alone while it's running.** Let it finish completely before doing anything else.
 
 ## Step 6 — Lock the Bootloader (Wipes the Phone Again)
 
@@ -85,7 +85,7 @@ Pixel 10a verified-boot key hash:
 d8f879d10419eddc9fcda6280718be763f6bf12299e1f72df3ea8ad8a8eb7f80
 ```
 
-If it matches character for character, the chain of trust from the SoC's own factory-burned fuses, through this exact install, is real. If it doesn't match — stop, and don't trust the device with anything sensitive until you've worked out why with the official GrapheneOS chat channels linked from their own site.
+If it matches character for character, the chain of trust from the SoC's own factory-burned fuses, through this exact install, is real. If it doesn't match — stop, and hold the device clear of anything sensitive until you've worked out why with the official GrapheneOS chat channels linked from their own site.
 
 ## What This Doesn't Cover Yet
 

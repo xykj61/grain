@@ -18,9 +18,9 @@ Shipping genre: **templates**. Bidirectional relative links · Radiant lint · G
 | [`../../GLOW_HOST.template.bron`](../../GLOW_HOST.template.bron) | `GLOW_HOST.bron` | host seam (`uname` · paths) |
 | [`../../PUBKEYS.template.md`](../../PUBKEYS.template.md) | `PUBKEYS.md` when used | Part Two keys |
 
-**Root `.gitignore`** denies everything at the pier root, then allow-lists project trees. Personal identity files stay **out of git** by design — copy from the tracked templates; never commit the filled instances.
+**Root `.gitignore`** denies everything at the pier root, then allow-lists project trees. Personal identity files stay **out of git** by design — copy from the tracked templates, and never commit the filled instances.
 
-**Cloud sync of gitignored personal files** (recommended): sync the *instance* files with a folder sync tool (Dropbox, Syncthing, iCloud Drive, Nextcloud — pick one you already trust), **not** by forcing them into git. See the personalize guide § “Sync personal files without git.” The repository itself stays on GitHub (`xykj61/grain` beginner clone); Dropbox is for the small set of pier-local Bron/Brix identity files that gitignore holds back.
+**Cloud sync of gitignored personal files** (recommended): sync the *instance* files with a folder sync tool (Dropbox, Syncthing, iCloud Drive, Nextcloud — pick one you already trust), rather than forcing them into git. See the personalize guide § “Sync personal files without git.” The repository itself lives on GitHub (`xykj61/grain` beginner clone); Dropbox carries the small set of pier-local Bron/Brix identity files that gitignore holds back.
 
 ## Brix law (reminder)
 

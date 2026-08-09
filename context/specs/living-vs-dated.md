@@ -13,7 +13,7 @@
 
 ## The disease this cures
 
-The seam-season hammock and the T1 field map took careful post-merge diffs while still carrying dated filenames. The *content* was exemplary; the *shape* repeated the same drift the RTAC ledger recovered from — a dated artifact edited after it had merged without naming the kind of edit. Ticks and status belong on living surfaces (`TASKS.md`, plain-named twins). A second disease arrived later: a law written narrower than its practice, counting hundreds of quiet amendments as if they were faults. e236 measured the record; e237 seats the honest width.
+The seam-season hammock and the T1 field map took careful post-merge diffs while still carrying dated filenames. The *content* was exemplary; the *shape* repeated the same drift the RTAC ledger recovered from — a dated artifact edited after it had merged, without naming the kind of edit. Ticks and status belong on living surfaces (`TASKS.md`, plain-named twins). A second disease arrived later: a law written narrower than its practice, counting hundreds of quiet amendments as if they were faults. e236 measured the record; e237 seats the honest width.
 
 ## Three tiers (accrete-never-break)
 

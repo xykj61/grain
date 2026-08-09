@@ -26,7 +26,7 @@ You should see:
 GREEN: RW-3 — run record pins .ok, .code, .out, and .err for both outcomes.
 ```
 
-If the line appears, the witness passed. If an `assert` fails, Rishi stops with a plain message on standard error and a nonzero exit.
+When the line appears, the witness passed. Should an `assert` fail, Rishi stops with a plain message on standard error and a nonzero exit.
 
 ## Step 2 — Read what it does
 
@@ -67,7 +67,7 @@ Run it:
 rishi/bin/rishi run tools/fixtures/my_first_witness.rish
 ```
 
-When it passes, you have the whole pattern: **run, assert, say GREEN**. Negative space works the same way — assert that something *fails*, as in `tools/rs1_args.rish` and `tools/rw4_slc_failure_paths.rish`.
+When it passes, you hold the whole pattern: **run, assert, say GREEN**. Negative space works the same way — assert that something *fails*, as in `tools/rs1_args.rish` and `tools/rw4_slc_failure_paths.rish`.
 
 ## Step 5 — Where to go next
 

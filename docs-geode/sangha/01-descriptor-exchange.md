@@ -9,12 +9,12 @@
 
 ## Context
 
-A peer that wants neighbors must say who it is without saying too much. The **descriptor exchange** is how Glow peers announce themselves and learn each other: a bounded self-description travels, fans out under a named ceiling, lands in a bounded table, ages out on the one clock, and may arrive through a star introducer at a named hop depth. Mycelium is untouched — discovery finds peers and never orders them.
+A peer that wants neighbors says who it is without saying too much. The **descriptor exchange** — how Glow peers announce themselves and learn each other — carries a bounded self-description that travels, fans out under a named ceiling, lands in a bounded table, ages out on the one clock, and may arrive through a star introducer at a named hop depth. Mycelium stays untouched: discovery finds peers rather than ordering them.
 
 ## Forces
 
 - **Welcome vs refuse.** A payload that fits the bound is welcome; one that does not is refused whole — never trimmed quiet.
-- **Travel vs clutch.** Gossip carries values across the table; it does not invent peers or stretch past fan-out.
+- **Travel vs clutch.** Gossip carries values across the table rather than inventing peers or stretching past fan-out.
 - **Arrival vs stranger.** Introduce checks identity at the kumara seam; negative space is as loud as welcome.
 - **Claim vs reach.** Every claimed peer slot is reachable, and every reach matches a claim — both ways, or the table is lying.
 

@@ -53,7 +53,7 @@ Full spike record: [`20260712-195339`](../active-designing/20260712-195339_prove
 
 ## Seam-C law — when C is the thinnest plank
 
-Rye already runs freestanding on bare metal (Aurora). A Genode component **links a runtime** — there is no language-agnostic syscall door. Zig has no `genode` target; the proven-seat ladder therefore uses the teacher's **C + patched GCC** entry shape for the guest ABI gap.
+Rye already runs freestanding on bare metal (Aurora). A Genode component **links a runtime** — no language-agnostic syscall door exists. Zig has no `genode` target; the proven-seat ladder therefore reaches for the teacher's **C + patched GCC** entry shape across the guest ABI gap.
 
 **Seam C is not the model.** Kumara signs; Rye generates fixtures; Rishi orchestrates; the guest C layer carries two `crypto_ed25519_check` calls across the ABI. Same law as `sh` at POSIX seams.
 
@@ -108,7 +108,7 @@ rishi/bin/rishi run tools/proven_seat_g1.rish
 
 Crossing sanity: `rishi/bin/rishi run tools/proven_seat_g1_crossing_probe.rish`.
 
-Guest sources: `tools/proven_seat_g1_guest/`. Grade **digest-grade** — verify-content rides as passenger; name the grade on the Status line so no reader over-reads.
+Guest sources: `tools/proven_seat_g1_guest/`. Grade **digest-grade** — verify-content rides as passenger; name the grade on the Status line so every reader reads it exactly.
 
 ### signed-Kumara — verify + refuse pair (jail-runnable · no KVM)
 

@@ -80,7 +80,7 @@ supporting:
 
 ## Interactive REPL (`rishi` / `rishi repl`)
 
-Start the loop with bare `rishi` or `rishi repl`. Each ordinary line is evaluated
+Start the loop with bare `rishi` or `rishi repl`. Each ordinary line evaluates
 in-process; bindings carry forward. Meta-commands begin with `:` (or `!` for recall shorthand):
 
 | Command | What it does |
@@ -91,7 +91,7 @@ in-process; bindings carry forward. Meta-commands begin with `:` (or `!` for rec
 | `:recall <n>` | Re-run history entry *n* as if freshly typed |
 | `!<n>` | Shorthand for `:recall <n>` |
 
-The history lap holds the last 50 input lines (meta-commands are not stored).
+The history lap holds the last 50 input lines; meta-commands stay out of it.
 `RISHI_MANTRA` overrides the Mantra binary; default is `mantra` on `PATH`.
 
 A short example, `tests/hello.rish`:

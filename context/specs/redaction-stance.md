@@ -29,13 +29,13 @@
 
 Personal content rests as ciphertext under a **per-subject key**. The log holds a reference to that key, rather than the key itself. Erasure destroys the key. Ciphertext stays where it was, byte for byte, and becomes noise. Hashes still verify. Signatures still check. Weave's DAG is untouched. Digest roots covering those bytes stay true, because the bytes never moved.
 
-**Cost named openly.** Key management is load-bearing. A leaked key was never truly erasable. An accidental destroy erases content nobody asked to lose. Key custody inherits [`../THREATS.md`](../THREATS.md). Succession ([`../OPEN_QUESTIONS.md`](../OPEN_QUESTIONS.md) #2) carries a named dependency: a per-subject key reachable by one hand makes a person's erasability rest on one person's availability.
+**Cost named openly.** Key management is load-bearing. A leaked key was never truly erasable, and an accidental destroy erases content nobody asked to lose. Key custody inherits [`../THREATS.md`](../THREATS.md). Succession ([`../OPEN_QUESTIONS.md`](../OPEN_QUESTIONS.md) #2) carries a named dependency: a per-subject key reachable by one hand makes a person's erasability rest on one person's availability.
 
 ## The removal is itself a fact
 
 Erasure **adds** a removal fact rather than editing the past. The fact names the subject reference, the authority (the person's request · a legal order · a schedule reaching its end), the stamp, and the identity of the key destroyed. It never names the content.
 
-A reader meeting unreadable ciphertext learns *why*, and can tell honest erasure from corruption. Readable tombstones are declined — they trust every future reader to honor a mark; crypto-shredding needs no such trust.
+A reader meeting unreadable ciphertext learns *why*, and can tell honest erasure from corruption. We decline readable tombstones — they trust every future reader to honor a mark, where crypto-shredding needs no such trust.
 
 ## What never gets erased
 
@@ -45,7 +45,7 @@ A reader meeting unreadable ciphertext learns *why*, and can tell honest erasure
 | **The shape of the record** | That an event occurred, when, and under whose signature |
 | **The removal facts themselves** | A record of erasure that could itself be erased offers nothing |
 
-The mechanism can render content unreadable and cannot rewrite what happened. Those two capabilities must never live in one hand.
+The mechanism can render content unreadable, yet it can never rewrite what happened. Those two capabilities must never live in one hand.
 
 ## Horizon — Mand ring-3
 

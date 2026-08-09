@@ -50,7 +50,7 @@ Every pin lives in **two banks** that must agree:
 | **Witness assert** | `tools/*_fetch.rish` (or scorecard) | Machine gate — `HEAD == pinned` or sha256 match |
 | **META shelf** | `tools/.cache/<lap>/*-meta.txt` | Human audit trail written on GREEN — same fields, same bytes |
 
-Drift between banks is a visible failure. Living `docs/` pages name the witness path, not the pin string.
+Drift between banks is a visible failure. Living `docs/` pages name the witness path rather than the pin string.
 
 **G1 META trio example:** toolchain · sources · ground — separate fetch witnesses write `g1-toolchain-meta.txt` and `g1-sources-meta.txt`. Crossing pin: [`20260712-195339`](../active-designing/20260712-195339_proven-seat-g1-crossing-pin.md).
 

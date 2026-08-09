@@ -20,7 +20,7 @@ You are on macOS, and [`SOURCE.md`](../../SOURCE.md)'s Step 6 describes ai-jail.
 ## What You Get, Plainly
 
 - **Writes are fenced** to this project's own directory, plus `/tmp` and its usual macOS relatives. Anywhere else on disk, a write is denied by the kernel itself — not by convention, not by a linter, by Seatbelt.
-- **Reads stay open everywhere.** This is a deliberate, named trade-off (see the study above): enumerating every path your toolchain needs to read from is a maintenance trap no serious sandbox-exec-based tool takes on. The write fence is the real boundary.
+- **Reads stay open everywhere.** This is a deliberate, named trade-off (see the study above): enumerating every path your toolchain needs to read from is a maintenance trap no serious sandbox-exec-based tool takes on. The write fence is the real boundary here.
 - **Network is allowed by default**, and can be denied outright with one flag. There is no partial, per-host filtering at this layer — that would need a proxy in front, a separate later step.
 - **A full macOS `--private-home` exists now, alongside `--harden-home`.** `--harden-home` denies reads specifically to the named credential stores (`~/.ssh`, `~/.gnupg`, `~/.aws`, and the rest — see "Denying the Real Credential Stores" below); `--private-home` goes further, denying every top-level entry under the real `$HOME` except this project's own directory. Combine them freely — `--harden-home`'s named list becomes harmlessly redundant once `--private-home` covers the same ground, and each still works fine alone.
 - **The jailed Cursor opens signed out on first run.** Your normal login lives in `~/Library/Application Support/Cursor` — the default profile, *outside* the fence — so the jail boots from its own fresh `.cursor-state/` instead. That is the isolation working, not a bug. Sign in once inside the jail; the state persists in `.cursor-state/` (gitignored), inside the fence.
@@ -97,7 +97,7 @@ This is a real, named limit, not a convenience note: proven directly on this hos
 
 `--harden-home` denies `~/.config/gh`, so the `gh` CLI cannot even start from inside — it reads that config directory before anything else and gets `operation not permitted` rather than a clean "not found," so it hard-fails. That is the fence doing its job: `~/.config/gh` holds a broad-scope account token, exactly the kind of credential the hardening exists to keep out.
 
-You do not lose `gh`, though — you point it at jail-local state and a **scoped** token instead of your real one:
+You keep `gh`, though — you point it at jail-local state and a **scoped** token in place of your real one:
 
 ```bash
 export GH_CONFIG_DIR="$PWD/.gh"                  # gitignored; a fresh dir gh owns
@@ -108,7 +108,7 @@ gh pr create --fill        # PRs, issues, CI checks, releases — all work
 
 `GH_TOKEN` provides auth directly, so `gh` never touches the denied real config; `GH_CONFIG_DIR` gives it a jail-local place to keep its own settings. Create the token as a **fine-grained personal access token scoped to this one repository** with only the permissions the task needs (Contents and Administration read/write covers key uploads, pushes, and PRs), store it in the gitignored `tools/gh-token.secret`, and revoke it when the work is done. This keeps everything `--harden-home` bought: a compromised jail sees a single-repo, revocable token, never your whole GitHub account. Copying `~/.config/gh` wholesale still works, yet it drags your real broad token inside the fence — the scoped `GH_TOKEN` is the better trade.
 
-What you genuinely lose by *not* setting this up at all: `gh`'s conveniences — opening PRs, triaging issues, watching CI runs, cutting releases, managing keys — all from the terminal. None of it is irreplaceable (the web UI and plain `git` cover the essentials, and key uploads are a one-time paste), so whether the scoped-token setup is worth it depends on how much of your workflow runs through `gh`. For a mostly-`git` workflow, manual key pastes and the web UI are enough; for heavy PR/issue work, the scoped token pays for itself quickly.
+What the scoped-token setup buys, when you skip it entirely: `gh`'s conveniences — opening PRs, triaging issues, watching CI runs, cutting releases, managing keys — all from the terminal. None of it is irreplaceable (the web UI and plain `git` cover the essentials, and key uploads are a one-time paste), so whether the scoped-token setup is worth it depends on how much of your workflow runs through `gh`. For a mostly-`git` workflow, manual key pastes and the web UI are enough; for heavy PR/issue work, the scoped token pays for itself quickly.
 
 ## A Full Private-`$HOME` (`--private-home`)
 

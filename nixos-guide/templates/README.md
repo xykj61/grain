@@ -2,7 +2,7 @@
 
 **Language:** EN · **Style:** Radiant · **Voice:** Riyo
 
-Tracked shape for a declared pier. Copy into the living machine directory, fill keys, rebuild.
+The tracked shape for a declared pier. Copy into the living machine directory, fill the keys, and rebuild.
 
 | File | Role |
 |------|------|
@@ -26,6 +26,6 @@ sudo cp nixos-guide/templates/configuration.nix.example /etc/nixos/configuration
 sudo nixos-rebuild switch --flake /etc/nixos#pier
 ```
 
-Never commit a living `/etc/nixos/configuration.nix` with real keys into public grain. Public keys may live in a private pier-flake mirror; product identity still goes through `PUBKEYS.md` when deliberate.
+Keep a living `/etc/nixos/configuration.nix` with real keys out of public grain. Public keys may live in a private pier-flake mirror; product identity still goes through `PUBKEYS.md` when deliberate.
 
 *May the template stay lean and the living file stay the machine's own sentence.*

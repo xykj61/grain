@@ -44,7 +44,7 @@ off — the shape every later stage will take.
 
 ## The Third Stage — Naming on the Bare Hart
 
-The relay carried a value; this stage proves the boot can *name* one — with cryptography, on the bare metal. In `src/named.rye`, a freestanding hart hashes a message with SHA3-512, the very function we strengthened first, and speaks the content-name over the console. There is no operating system beneath the hash and no allocator either; the strengthened `std` crypto runs on the bare hart exactly as it does in a hosted test. This is where Aurora's bare-metal reach meets Mantra's content-addressing — and the proof that unlocks the rest: if the hash runs freestanding, so will the key agreement, the seal, and the signature that compose an encrypted, content-named datagram (`../external-research/yonder/20260618-195512_encrypted-networking-riscv.md`, `/982`).
+The relay carried a value; this stage proves the boot can *name* one — with cryptography, on the bare metal. In `src/named.rye`, a freestanding hart hashes a message with SHA3-512, the very function we strengthened first, and speaks the content-name over the console. No operating system sits beneath the hash, and no allocator either; the strengthened `std` crypto runs on the bare hart exactly as it does in a hosted test. This is where Aurora's bare-metal reach meets Mantra's content-addressing — and the proof that unlocks the rest: if the hash runs freestanding, so will the key agreement, the seal, and the signature that compose an encrypted, content-named datagram (`../external-research/yonder/20260618-195512_encrypted-networking-riscv.md`, `/982`).
 
 ## The Fourth Stage — the Sealed Datagram
 

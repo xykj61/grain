@@ -7,7 +7,7 @@
 
 ---
 
-Dimeroll is Linengrow's **centralized books**: one steward's chart of accounts, journal entries as facts, balances as a pure fold, reports as projections, and Skate views so the books can be *seen*. It complements **MUR** (mailable money; was MALA) and keeps each role clear.
+Dimeroll is Linengrow's **centralized books**: one steward's chart of accounts, journal entries as facts, balances as a pure fold, reports as projections, and Skate views so the books can be *seen*. It complements **MUR** (mailable money; was MALA), holding each role clear.
 Radiant pass `20260728.050004` — living L1 rename-forward: **MUR** (was MALA)
 
 | Lap | Claim | Witness |

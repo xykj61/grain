@@ -17,7 +17,7 @@ Create a [GitHub](https://github.com) account (ideally the same username you wan
 
 I also recommend a **paid Claude subscription**, plus the **Claude iOS** and **Cursor iOS** apps from the App Store. Cursor Android is not supported yet.
 
-If I were you, I would try and back up everything you have and install either **Ubuntu 26.04 LTS** Linux or **NixOS 26.05** Linux on your computer. You might need one or two USB flash drives in order to install Linux. You will have a way better time than Windows. NixOS will give you the best experience though.
+If I were you, I would back up everything you have and install either **Ubuntu 26.04 LTS** Linux or **NixOS 26.05** Linux on your computer. You might need one or two USB flash drives to install Linux. You will have a way better time than Windows — and NixOS will give you the best experience of all.
 
 You can ask your AI assistant to explain to you in plain English what all of these things in Grain are.
 

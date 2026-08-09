@@ -8,9 +8,9 @@
 
 ---
 
-This folder holds **sagas**: the lasting close narratives of a season — validator reports and end-of-arc arithmetic that must survive being read aloud. Counsel proposes; **saga/** keeps what the season names as its close. One shelf at the repository root so every later season finds the same door.
+This folder holds **sagas** — the lasting close narratives of a season, the validator reports and end-of-arc arithmetic that must survive being read aloud. Counsel proposes; **saga/** keeps what the season names as its close. One shelf at the repository root, so every later season finds the same door.
 
-A saga is not a check-in and not a waymark. It carries panes (parity · keys · bounds · parks) and a seating status. Private halves never enter here.
+A saga stands apart from a check-in and a waymark. It carries panes (parity · keys · bounds · parks) and a seating status. Private halves stay outside; they never enter here.
 
 ## What Lives Here
 
@@ -23,7 +23,7 @@ A saga is not a check-in and not a waymark. It carries panes (parity · keys · 
 
 ## Infusion — Tally (bounds) and who calls it
 
-Sagas that speak personal-server or identity truth lean on **Tally** — where bounds and small marks live — and on the modules that import those marks. Measured this sitting (`20260727.234128`):
+Sagas that speak personal-server or identity truth lean on **Tally** — the home where bounds and small marks live — and on the modules that import those marks. Measured this sitting (`20260727.234128`):
 
 ### Tally itself (canon `../tally/`)
 
@@ -47,7 +47,7 @@ Living law: [`../tally/README.md`](../tally/README.md) · TAME copy/garden rows 
 
 ## Placement
 
-New sagas land here as `YYYYMMDD-HHMMSS_short-slug.md`. Point the season bookmark at this shelf. Leave a short stub in `counsel/` only when an older counsel path must keep resolving.
+New sagas land here as `YYYYMMDD-HHMMSS_short-slug.md`. Point the season bookmark at this shelf. Leave a short stub in `counsel/` only where an older counsel path must keep resolving.
 
 ---
 
