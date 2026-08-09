@@ -14,26 +14,19 @@ if ! test -f "$H1_FIXTURE"; then
   exit 1
 fi
 
-COUNTS=$(python3 - "$H1_FIXTURE" <<'PY'
-import re, sys
-from pathlib import Path
-text = Path(sys.argv[1]).read_text()
-lines = text.splitlines()
-naive = sum(1 for ln in lines if re.match(r"^#\s", ln))
-true = 0
-in_fence = False
-for ln in lines:
-    if re.match(r"^\s*```", ln):
-        in_fence = not in_fence
-        continue
-    if in_fence:
-        continue
-    if re.match(r"^#\s", ln):
-        true += 1
-print(f"true={true}")
-print(f"naive={naive}")
-PY
-)
+# Count H1 headings (^#\s) two ways: naive over every line, true only outside fenced
+# code blocks. Fence state toggles on a ``` delimiter line, which is itself skipped.
+# awk, not python — this pier has no python3 on PATH (Python → Rishi molt 20260809).
+COUNTS=$(awk '
+  {
+    is_fence = ($0 ~ /^[[:space:]]*```/)
+    if (is_fence) { infence = !infence }
+    is_h1 = ($0 ~ /^#[[:space:]]/)
+    if (is_h1) n++
+    if (is_h1 && !infence && !is_fence) t++
+  }
+  END { print "true=" t+0; print "naive=" n+0 }
+' "$H1_FIXTURE")
 TRUE=$(printf '%s\n' "$COUNTS" | sed -n 's/^true=//p' | head -1)
 NAIVE=$(printf '%s\n' "$COUNTS" | sed -n 's/^naive=//p' | head -1)
 
