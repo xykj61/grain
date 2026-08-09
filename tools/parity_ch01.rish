@@ -591,15 +591,15 @@ let lantern_lap3 = run ["sh" "tools/parity_time_one.sh" "lantern_lap3" "--" "ris
 assert lantern_lap3.ok else "Lantern lap 3 witness failed"
 say "GREEN: Lantern lap 3 witness passed."
 
-say "witness suite: Kiln corpus lap 0 (rye catalog)…"
-let oven_corpus = run ["sh" "tools/parity_time_one.sh" "oven_corpus" "--" "rishi/bin/rishi" "run" "tools/oven_corpus_lap1.rish"]
-assert oven_corpus.ok else "Kiln corpus lap 0 witness failed"
-say "GREEN: Kiln corpus lap 0 witness passed."
+say "witness suite: Ember corpus lap 0 (rye catalog)…"
+let ember_corpus = run ["sh" "tools/parity_time_one.sh" "ember_corpus" "--" "rishi/bin/rishi" "run" "tools/ember_corpus_lap1.rish"]
+assert ember_corpus.ok else "Ember corpus lap 0 witness failed"
+say "GREEN: Ember corpus lap 0 witness passed."
 
-say "witness suite: Kiln corpus lap 1 (query filter)…"
-let oven_query = run ["sh" "tools/parity_time_one.sh" "oven_query" "--" "rishi/bin/rishi" "run" "tools/oven_corpus_lap2.rish"]
-assert oven_query.ok else "Kiln corpus lap 1 witness failed"
-say "GREEN: Kiln corpus lap 1 witness passed."
+say "witness suite: Ember corpus lap 1 (query filter)…"
+let ember_query = run ["sh" "tools/parity_time_one.sh" "ember_query" "--" "rishi/bin/rishi" "run" "tools/ember_corpus_lap2.rish"]
+assert ember_query.ok else "Ember corpus lap 1 witness failed"
+say "GREEN: Ember corpus lap 1 witness passed."
 
 say "witness suite: Lattice lap 1 (elementwise add)…"
 let lattice_lap2 = run ["sh" "tools/parity_time_one.sh" "lattice_lap2" "--" "rishi/bin/rishi" "run" "tools/lattice_lap2.rish"]
@@ -836,20 +836,20 @@ let forge_query_unified = run ["sh" "tools/parity_time_one.sh" "forge_query_unif
 assert forge_query_unified.ok else "Realidream forge query unified view witness failed"
 say "GREEN: Realidream forge query unified view witness passed."
 
-say "witness suite: Kiln corpus view (query hits → Skate)…"
-let oven_corpus_view = run ["sh" "tools/parity_time_one.sh" "oven_corpus_view" "--" "rishi/bin/rishi" "run" "tools/inference_oven_corpus_view.rish"]
-assert oven_corpus_view.ok else "Kiln corpus view witness failed"
-say "GREEN: Kiln corpus view witness passed."
+say "witness suite: Ember corpus view (query hits → Skate)…"
+let ember_corpus_view = run ["sh" "tools/parity_time_one.sh" "ember_corpus_view" "--" "rishi/bin/rishi" "run" "tools/inference_ember_corpus_view.rish"]
+assert ember_corpus_view.ok else "Ember corpus view witness failed"
+say "GREEN: Ember corpus view witness passed."
 
 say "witness suite: Scribble outline view (headings → Skate)…"
 let scribble_view = run ["sh" "tools/parity_time_one.sh" "scribble_view" "--" "rishi/bin/rishi" "run" "tools/inference_scribble_view.rish"]
 assert scribble_view.ok else "Scribble outline view witness failed"
 say "GREEN: Scribble outline view witness passed."
 
-say "witness suite: Kiln corpus prefix view (path_prefix → Skate)…"
-let oven_prefix_view = run ["sh" "tools/parity_time_one.sh" "oven_prefix_view" "--" "rishi/bin/rishi" "run" "tools/inference_oven_corpus_prefix_view.rish"]
-assert oven_prefix_view.ok else "Kiln corpus prefix view witness failed"
-say "GREEN: Kiln corpus prefix view witness passed."
+say "witness suite: Ember corpus prefix view (path_prefix → Skate)…"
+let ember_prefix_view = run ["sh" "tools/parity_time_one.sh" "ember_prefix_view" "--" "rishi/bin/rishi" "run" "tools/inference_ember_corpus_prefix_view.rish"]
+assert ember_prefix_view.ok else "Ember corpus prefix view witness failed"
+say "GREEN: Ember corpus prefix view witness passed."
 
 say "witness suite: Dimeroll exception view (refused drafts → Skate)…"
 let exception_view = run ["sh" "tools/parity_time_one.sh" "exception_view" "--" "rishi/bin/rishi" "run" "tools/dimeroll_exception_view.rish"]
@@ -861,10 +861,10 @@ let lattice_lap6 = run ["sh" "tools/parity_time_one.sh" "lattice_lap6" "--" "ris
 assert lattice_lap6.ok else "Lattice lap 5 witness failed"
 say "GREEN: Lattice lap 5 witness passed."
 
-say "witness suite: Kiln corpus rish view (kind rish → Skate)…"
-let oven_rish_view = run ["sh" "tools/parity_time_one.sh" "oven_rish_view" "--" "rishi/bin/rishi" "run" "tools/inference_oven_corpus_rish_view.rish"]
-assert oven_rish_view.ok else "Kiln corpus rish view witness failed"
-say "GREEN: Kiln corpus rish view witness passed."
+say "witness suite: Ember corpus rish view (kind rish → Skate)…"
+let ember_rish_view = run ["sh" "tools/parity_time_one.sh" "ember_rish_view" "--" "rishi/bin/rishi" "run" "tools/inference_ember_corpus_rish_view.rish"]
+assert ember_rish_view.ok else "Ember corpus rish view witness failed"
+say "GREEN: Ember corpus rish view witness passed."
 
 say "witness suite: Scribble lap 4 (paragraph extract)…"
 let scribble_lap5 = run ["sh" "tools/parity_time_one.sh" "scribble_lap5" "--" "rishi/bin/rishi" "run" "tools/scribble_lap5.rish"]
@@ -921,10 +921,10 @@ let lattice_lap9 = run ["sh" "tools/parity_time_one.sh" "lattice_lap9" "--" "ris
 assert lattice_lap9.ok else "Lattice lap 8 witness failed"
 say "GREEN: Lattice lap 8 witness passed."
 
-say "witness suite: Kiln corpus rye prefix view (rye + pond/ → Skate)…"
-let rye_prefix_view = run ["sh" "tools/parity_time_one.sh" "rye_prefix_view" "--" "rishi/bin/rishi" "run" "tools/inference_oven_corpus_rye_prefix_view.rish"]
-assert rye_prefix_view.ok else "Kiln corpus rye prefix view witness failed"
-say "GREEN: Kiln corpus rye prefix view witness passed."
+say "witness suite: Ember corpus rye prefix view (rye + pond/ → Skate)…"
+let rye_prefix_view = run ["sh" "tools/parity_time_one.sh" "rye_prefix_view" "--" "rishi/bin/rishi" "run" "tools/inference_ember_corpus_rye_prefix_view.rish"]
+assert rye_prefix_view.ok else "Ember corpus rye prefix view witness failed"
+say "GREEN: Ember corpus rye prefix view witness passed."
 
 say "witness suite: Scribble lap 6 (plain snippets)…"
 let scribble_lap7 = run ["sh" "tools/parity_time_one.sh" "scribble_lap7" "--" "rishi/bin/rishi" "run" "tools/scribble_lap7.rish"]
@@ -981,10 +981,10 @@ let chart_view = run ["sh" "tools/parity_time_one.sh" "chart_view" "--" "rishi/b
 assert chart_view.ok else "Dimeroll chart view witness failed"
 say "GREEN: Dimeroll chart view witness passed."
 
-say "witness suite: Kiln corpus tools prefix view (tools/ → Skate)…"
-let tools_prefix_view = run ["sh" "tools/parity_time_one.sh" "tools_prefix_view" "--" "rishi/bin/rishi" "run" "tools/inference_oven_corpus_tools_prefix_view.rish"]
-assert tools_prefix_view.ok else "Kiln corpus tools prefix view witness failed"
-say "GREEN: Kiln corpus tools prefix view witness passed."
+say "witness suite: Ember corpus tools prefix view (tools/ → Skate)…"
+let tools_prefix_view = run ["sh" "tools/parity_time_one.sh" "tools_prefix_view" "--" "rishi/bin/rishi" "run" "tools/inference_ember_corpus_tools_prefix_view.rish"]
+assert tools_prefix_view.ok else "Ember corpus tools prefix view witness failed"
+say "GREEN: Ember corpus tools prefix view witness passed."
 
 say "witness suite: Lantern lap 8 (prompt pin)…"
 let lantern_lap8 = run ["sh" "tools/parity_time_one.sh" "lantern_lap8" "--" "rishi/bin/rishi" "run" "tools/lantern_lap8.rish"]
@@ -1001,10 +1001,10 @@ let scribble_rye_view = run ["sh" "tools/parity_time_one.sh" "scribble_rye_view"
 assert scribble_rye_view.ok else "Scribble rye snippets view witness failed"
 say "GREEN: Scribble rye snippets view witness passed."
 
-say "witness suite: Kiln corpus dimeroll prefix view (dimeroll/ → Skate)…"
-let dimeroll_prefix_view = run ["sh" "tools/parity_time_one.sh" "dimeroll_prefix_view" "--" "rishi/bin/rishi" "run" "tools/inference_oven_corpus_dimeroll_prefix_view.rish"]
-assert dimeroll_prefix_view.ok else "Kiln corpus dimeroll prefix view witness failed"
-say "GREEN: Kiln corpus dimeroll prefix view witness passed."
+say "witness suite: Ember corpus dimeroll prefix view (dimeroll/ → Skate)…"
+let dimeroll_prefix_view = run ["sh" "tools/parity_time_one.sh" "dimeroll_prefix_view" "--" "rishi/bin/rishi" "run" "tools/inference_ember_corpus_dimeroll_prefix_view.rish"]
+assert dimeroll_prefix_view.ok else "Ember corpus dimeroll prefix view witness failed"
+say "GREEN: Ember corpus dimeroll prefix view witness passed."
 
 say "witness suite: Lantern lap 9 (max_tokens pin)…"
 let lantern_lap9 = run ["sh" "tools/parity_time_one.sh" "lantern_lap9" "--" "rishi/bin/rishi" "run" "tools/lantern_lap9.rish"]
