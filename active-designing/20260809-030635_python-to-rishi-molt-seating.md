@@ -35,6 +35,17 @@ The census excludes third-party source under `vendor/`, `gratitude/`, and `old/`
 
 Two of the five, then, are not ports: one shred candidate (`remember_pin_habit_count.py`) joins the two already named for shred or seam. The single clean, living port to take first is `dated_classify.py` — and if a Rishi **match / regex primitive** is ever wanted, that is its own SOON rune-or-builtin decision, named here so the gap is on the record.
 
+## What landed (`20260809.031114` → progress)
+
+- **`remember_pin_habit_count.py` — shredded** on the circled word. Gone from the tree, kept in git history; a solved-problem one-shot the `remember-git-nib` rule already retired.
+- **`dated_classify.py` — ported.** The living mutant `tools/fixtures/dated_classify.rish` seats the interface in Rishi over a POSIX-sh regex seam (`dated_classify_seam.sh`) holding the two `rg` patterns Rishi has no native regex for — the same delegation the Python made to `re`, now without the Python runtime (`python3` is not even on this pier's PATH). Proven: the `census` output is **byte-identical** to the elder `.py`, and `classify` agrees on every tested path. Witness `tools/dated_classify_witness.rish` GREEN. A new Rishi `lower` builtin (case-insensitive compare) landed alongside, witnessed.
+- **One consumer repointed** — `dated_pattern_scan.sh` now calls the Rishi mutant instead of `python3`. Its calls are proven correct; the scan's *full* green is gated by a pre-existing, unrelated `census_control_scan` red on this pier (that subsystem is itself mid-port to Rishi), not by this change.
+- **`dated_classify.py` stays on disk** as fossil-pending. Two consumers still import it in-process via `runpy` — `shed_census_scan.sh` and `fascia_health_scan.sh` — and those are themselves Python-embedded shell scans, part of this same molt. De-Pythoning them (and the divergence roof) is the **next lap**; only when every consumer is off the `.py` does it become a Class H fossil. Touching `fascia_health` — a load-bearing health meter — wants its own careful round.
+
+## The Rishi language gap this port surfaced
+
+Building the port proved that Rishi, today, cannot express a per-file census natively: `for-each` does not accumulate (proven in `rish_count_selftest.rish`), there are no user functions to share `classify` between commands, and there is no regex. The faithful shape is therefore Rishi-as-conductor over `git`/`rg`/`awk` seams — legitimate for a shell, and a real improvement (no Python), yet a marker that **loop accumulation, user functions, and a match primitive** are the SOON language features that would let a future classifier live natively in Rishi's own value model rather than in a seam.
+
 ## What the molt keeps
 
 - **Prep, never cut.** This seating opens no shred. Each port lands with its own witness; each fossil joins `SHRED_PREP.md` only once its Rishi mutant is green, and the shred itself stays RED until circled.

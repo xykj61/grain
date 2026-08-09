@@ -90,10 +90,10 @@ Grep helpers: `living mutant` · `fossil — living path` · paths in this table
 
 All authored Python molts to **Rishi**. Census and order: [`../active-designing/20260809-030635_python-to-rishi-molt-seating.md`](../active-designing/20260809-030635_python-to-rishi-molt-seating.md). Each `.py` becomes a Class H fossil row **only once its Rishi mutant runs green** — no rows yet, since this seats the intent and opens no cut.
 
-| `.py` file | Verdict | Waits on |
+| `.py` file | Verdict | Standing |
 | --- | --- | --- |
-| `tools/fixtures/dated_classify.py` | **port, with care** (first true port) | a focused round · every consumer staying green |
-| `expanding-prompts/yonder/remember_pin_habit_count.py` | **shred candidate** (regex-gated · solved-problem one-shot) | a circled word · or a Rishi match primitive |
+| `tools/fixtures/dated_classify.py` | **ported** — Rishi mutant `dated_classify.rish` seated `20260809`, census byte-identical, witness GREEN | **py kept** until the two `runpy` consumers (`shed_census`, `fascia_health`) de-Python — then Class H fossil |
+| `expanding-prompts/yonder/remember_pin_habit_count.py` | **shredded** `20260809` (circled) — regex-gated · solved-problem one-shot | gone from tree · kept in git history |
 | `classical-vedic-astrology/cast_a_chart.py` | **seam-gated** | a Rye/Zig Swiss-Ephemeris binding |
 | `tools/comlink_r1_dual_bind_probe.py` | **shred, not port** (REDS 64) | a circled shred word — R1 is cut |
 | `context/fixtures/tools_py_ban_tree/tools/planted.py` | **keep as fixture** | never — the ban needs it |
