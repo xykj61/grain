@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260809.161523
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title Comlink routing reads the turn tilak
+prompt (Keaton) move to Comlink routing that reads the turn tilak
+think surveyed Comlink first — the sealed datagram wire plus a discovery subsystem (descriptor = key·transport·freshness·lineage, a bounded peer table); nothing read a rotation yet, and the turn tilak I just built is exactly that freshness+key
+think built comlink/turn_route.rye — the seam where identity's rotation meets the network's routing; it imports the Turn shape and verify_turn from kumara/tilak.rye via a symlink (comlink/kumara_tilak.rye), whose own nested import of the seam resolves to comlink/kumara.rye
+think two rules, both from the tilak's own law — authentic before routed (a turn is trusted only when the peer's identity key signed it; a forgery keeps the last trusted key) and fresher wins with freshness only climbing (a reset outranks any key rotation by its higher reset_counter; within an era the higher key_counter wins; a non-newer turn never supersedes, so no replay rolls a peer's key backward)
+think read_turn returns a RouteDecision — accepted, the route_key to seal the wire with, and a reason (verified_first · verified_fresher · stale_kept · forged_refused)
+think added a small pubkey_of helper to the tilak so a caller gets an identity's public key without the whole keypair; kumara regressions stayed GREEN
+obs the selftest proves the whole decision — first turn taken, a fresher turn rotates the key, a reset outranks even with key_counter back at zero, a replayed old turn is kept out, a forged turn (signed by another key) is refused and the key unchanged
+obs tame_style_check clean on turn_route.rye; the Rishi witness drives the built binary and checks each branch
+obs comlink/bin is already gitignored and comlink/ whitelisted, so the module and its symlink track cleanly
+file comlink/turn_route.rye routing reads the turn — turn_newer · freshest · read_turn · RouteDecision · selftest
+file comlink/kumara_tilak.rye symlink to ../kumara/tilak.rye so routing reads the Turn shape
+file kumara/tilak.rye pubkey_of helper — an identity's public key from a seed
+file tools/comlink_turn_route_witness.rish drives the module, checks every routing branch
+file comlink/README.md turn_route added to The Core
+file work-in-progress/REMEMBER.md · TASKS.md JARL j2 — Comlink reads the turn
+file session-logs/20260809-161523_comlink-turn-route-reads-the-turn-tilak.bron this record
+recommend check-in Claude — Comlink now reads the turn tilak (verify · freshest-wins · replay/forgery refused) and hands the wire the networking key; the next JARL moves are wiring turn-route into the live handshake, the d12/d60 topology, or the settlement-ledger and scarcity design calls that are Keaton's word
