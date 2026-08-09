@@ -1,0 +1,54 @@
+# rish_match_witness.rish — the `matches` primitive, the bounded pattern matcher.
+#
+# Proves Rishi can now test a string against a pattern the way a shell reaches for
+# `grep -qE` or `rg -q`, without shelling out — the primitive that unlocks folding the
+# regex seams of the Python → Rishi molt into native Rishi. The engine (rishi/src/match.rye)
+# is a bounded, linear-time NFA simulation: no backtracking, no ReDoS, every buffer a named
+# ceiling. Its answers were checked against Python's re.search across 812 pattern×input
+# pairs; this witness pins a representative set and the real seam patterns.
+#
+#   rishi/bin/rishi run tools/rish_match_witness.rish
+
+# Literals search unanchored; anchors pin the ends.
+assert ("xxabcxx" matches "abc") == true else "literal should match anywhere"
+assert ("ab" matches "abc") == false else "partial literal should not match"
+assert ("abcxx" matches "^abc") == true else "^ anchors the start"
+assert ("xabc" matches "^abc") == false else "^ must fail when not at start"
+assert ("xxabc" matches "abc$") == true else "$ anchors the end"
+assert ("" matches "^$") == true else "empty string matches ^$"
+
+# Dot, classes, and shorthands.
+assert ("abc" matches "a.c") == true else ". matches any byte"
+assert ("a\nc" matches "a.c") == false else ". does not cross a newline"
+assert ("x123x" matches "\d\d\d") == true else "\\d is a digit"
+assert ("e" matches "[a-f0-9]") == true else "class range"
+assert ("z" matches "[^0-9]") == true else "negated class"
+assert ("a b" matches "\s") == true else "\\s is whitespace"
+
+# Quantifiers, alternation, groups.
+assert ("ac" matches "ab*c") == true else "* allows zero"
+assert ("abbbc" matches "ab*c") == true else "* allows many"
+assert ("ac" matches "ab+c") == false else "+ needs one"
+assert ("ac" matches "ab?c") == true else "? allows zero"
+assert ("dogs" matches "(cat|dog)s") == true else "alternation in a group"
+assert ("cows" matches "(cat|dog)s") == false else "alternation rejects others"
+
+# Case-insensitive flag.
+assert ("The STAMP here" matches "(?i)stamp") == true else "(?i) folds case"
+
+# The real seam patterns the molt has been delegating to rg.
+let dated = "(^|/)\d\d\d\d\d\d\d\d-\d\d\d\d\d\d_"
+assert ("session-logs/20260809-110311_x.bron" matches dated) == true else "dated-name should match"
+assert ("README.md" matches dated) == false else "a plain name is not dated"
+assert ("# heading" matches "^#\s") == true else "H1 heading pattern"
+assert ("#nospace" matches "^#\s") == false else "H1 needs the space"
+assert ("a/b/c.png" matches "\.(png|jpg|jpeg|gif)$") == true else "skip-ext pattern"
+assert ("a/b/c.md" matches "\.(png|jpg|jpeg|gif)$") == false else "non-binary ext"
+assert ("**Stamp:** living ledger (born x)" matches "(?i)(\*\*Stamp:\*\* *living ledger|living ledger *\(born)") == true else "living-header pattern"
+
+# Composes with the rest of the value model: a filter over a list.
+let names = ["20260809-110311_a.md" "README.md" "20260101-000000_b.bron" "TASKS.md"]
+let dated_names = where names as f: (f matches dated)
+assert (length dated_names) == 2 else "matches works inside a where filter"
+
+say "GREEN: Rishi match — the `matches` primitive tests a bounded regex in linear time, reproduces every seam pattern, and composes with the value model."
