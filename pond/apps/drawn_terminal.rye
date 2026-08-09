@@ -29,13 +29,13 @@
 //!   pond/bin/drawn-terminal forgequeryviewtest # Forge Tablecloth-query hits → Skate
 //!   pond/bin/drawn-terminal forgequerydeviceviewtest # Forge query device-wire hits → Skate
 //!   pond/bin/drawn-terminal forgequeryunifiedviewtest # Hosted + device forge query hits
-//!   pond/bin/drawn-terminal corpusviewtest # Kiln corpus query hits → Skate
-//!   pond/bin/drawn-terminal corpusprefixviewtest # Kiln path_prefix query → Skate
-//!   pond/bin/drawn-terminal corpusrishviewtest # Kiln rish-kind query → Skate
-//!   pond/bin/drawn-terminal corpusryeprefixviewtest # Kiln rye + pond/ → Skate
-//!   pond/bin/drawn-terminal corpustoolsprefixviewtest # Kiln tools/ prefix → Skate
-//!   pond/bin/drawn-terminal corpuscandyprefixviewtest # Kiln dimeroll/ prefix → Skate
-//!   pond/bin/drawn-terminal corpusappsprefixviewtest # Kiln pond/apps/ prefix → Skate
+//!   pond/bin/drawn-terminal corpusviewtest # Ember corpus query hits → Skate
+//!   pond/bin/drawn-terminal corpusprefixviewtest # Ember path_prefix query → Skate
+//!   pond/bin/drawn-terminal corpusrishviewtest # Ember rish-kind query → Skate
+//!   pond/bin/drawn-terminal corpusryeprefixviewtest # Ember rye + pond/ → Skate
+//!   pond/bin/drawn-terminal corpustoolsprefixviewtest # Ember tools/ prefix → Skate
+//!   pond/bin/drawn-terminal corpuscandyprefixviewtest # Ember dimeroll/ prefix → Skate
+//!   pond/bin/drawn-terminal corpusappsprefixviewtest # Ember pond/apps/ prefix → Skate
 //!   pond/bin/drawn-terminal scribbleviewtest # Scribble outline headings → Skate
 //!   pond/bin/drawn-terminal scribbleparaviewtest # Scribble paragraphs → Skate
 //!   pond/bin/drawn-terminal scribblefenceviewtest # Scribble fence kinds → Skate
@@ -56,13 +56,13 @@
 //!   pond/bin/drawn-terminal scribbleh3blocksviewtest # Scribble h3+blocks combo → Skate
 //!   pond/bin/drawn-terminal scribbleryeblocksviewtest # Scribble rye+blocks combo → Skate
 //!   pond/bin/drawn-terminal scribblerishblocksviewtest # Scribble rish+blocks combo → Skate
-//!   pond/bin/drawn-terminal corpusryecandyprefixviewtest # Kiln rye + dimeroll/ → Skate
-//!   pond/bin/drawn-terminal corpusrishtoolsprefixviewtest # Kiln rish + tools/ → Skate
-//!   pond/bin/drawn-terminal corpusryeappsprefixviewtest # Kiln rye + pond/apps/ → Skate
-//!   pond/bin/drawn-terminal corpusminlinesviewtest # Kiln min_lines filter → Skate
-//!   pond/bin/drawn-terminal corpusmaxlinesviewtest # Kiln max_lines filter → Skate
-//!   pond/bin/drawn-terminal corpuspathsuffixviewtest # Kiln path_suffix filter → Skate
-//!   pond/bin/drawn-terminal corpussumlinesviewtest # Kiln sum_lines fold → Skate
+//!   pond/bin/drawn-terminal corpusryecandyprefixviewtest # Ember rye + dimeroll/ → Skate
+//!   pond/bin/drawn-terminal corpusrishtoolsprefixviewtest # Ember rish + tools/ → Skate
+//!   pond/bin/drawn-terminal corpusryeappsprefixviewtest # Ember rye + pond/apps/ → Skate
+//!   pond/bin/drawn-terminal corpusminlinesviewtest # Ember min_lines filter → Skate
+//!   pond/bin/drawn-terminal corpusmaxlinesviewtest # Ember max_lines filter → Skate
+//!   pond/bin/drawn-terminal corpuspathsuffixviewtest # Ember path_suffix filter → Skate
+//!   pond/bin/drawn-terminal corpussumlinesviewtest # Ember sum_lines fold → Skate
 //!   pond/bin/drawn-terminal exceptionviewtest # Dimeroll exception queue → Skate
 //!   pond/bin/drawn-terminal pnlviewtest # Dimeroll P&L income statement → Skate
 //!   pond/bin/drawn-terminal bsviewtest # Dimeroll balance sheet → Skate
@@ -107,7 +107,7 @@ const murr = @import("mandi/murr_core.rye");
 const wov_core = @import("mandi/wov_core.rye");
 const rc = @import("mandi/receipt_core.rye");
 const kumara = @import("mandi/kumara.rye");
-const kiln = @import("kiln/oven_core.rye");
+const ember = @import("ember/ember_core.rye");
 const scribble = @import("scribble/scribble_core.rye");
 const dimeroll = @import("dimeroll/dimeroll_core.rye");
 const lc = @import("lantern/lantern_core.rye");
@@ -190,7 +190,7 @@ const open_asks_civic_sight_view_max_lines: u32 = 8;
 const murr_mint_fixture = "tools/fixtures/murr_m1_mint.bron";
 const wov_bundle_fixture = "tools/fixtures/wov_exit_bundle_v1.bron";
 const dimeroll_journal_fixture = "dimeroll/fixtures/journal.bron";
-const oven_corpus_fixture = "kiln/fixtures/rye_corpus.bron";
+const ember_corpus_fixture = "ember/fixtures/rye_corpus.bron";
 const lantern_completion_fixture = "lantern/fixtures/completion.bron";
 const lantern_echo_fixture = "lantern/fixtures/completion_echo.bron";
 const lantern_user_fixture = "lantern/fixtures/completion_user.bron";
@@ -605,7 +605,7 @@ fn count_corpus_kinds(text: []const u8) struct { rye: u32, rish: u32 } {
     return .{ .rye = rye, .rish = rish };
 }
 
-/// Inference assist — Kiln corpus + Scribble snippets + Lantern + journal on one Skate frame.
+/// Inference assist — Ember corpus + Scribble snippets + Lantern + journal on one Skate frame.
 fn count_scribble_fence_kinds(text: []const u8) struct { rye: u32, rish: u32 } {
     var rye: u32 = 0;
     var rish: u32 = 0;
@@ -743,7 +743,7 @@ fn format_assist_journal_books_line(garden: std.mem.Allocator, journal: []const 
 fn compose_assist_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var corpus_buf: [4096]u8 = undefined;
-    const corpus = try cwd.readFile(io, oven_corpus_fixture, &corpus_buf);
+    const corpus = try cwd.readFile(io, ember_corpus_fixture, &corpus_buf);
     var journal_buf: [2048]u8 = undefined;
     const journal = try cwd.readFile(io, dimeroll_journal_fixture, &journal_buf);
     var snippets_buf: [4096]u8 = undefined;
@@ -817,7 +817,7 @@ fn compose_assist_sight_view_lines(garden: std.mem.Allocator, io: std.Io) ![]sur
     var wov_buf: [1024]u8 = undefined;
     const wov = try cwd.readFile(io, wov_bundle_fixture, &wov_buf);
     var corpus_buf: [4096]u8 = undefined;
-    const corpus = try cwd.readFile(io, oven_corpus_fixture, &corpus_buf);
+    const corpus = try cwd.readFile(io, ember_corpus_fixture, &corpus_buf);
     var journal_buf: [2048]u8 = undefined;
     const journal = try cwd.readFile(io, dimeroll_journal_fixture, &journal_buf);
     var snippets_buf: [4096]u8 = undefined;
@@ -2235,19 +2235,19 @@ fn run_sum_amounts_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Kiln corpus view — query filter hits folded onto a Skate frame.
+/// Ember corpus view — query filter hits folded onto a Skate frame.
 fn compose_corpus_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
-    const text = try cwd.readFile(io, oven_corpus_fixture, &buf);
-    var cat: kiln.Catalog = .{};
-    try kiln.parse_catalog(text, &cat);
-    var hits: [kiln.max_chunks]u32 = undefined;
-    const n = try kiln.query_corpus(&cat, .{ .kind = .rye }, hits[0..]);
+    const text = try cwd.readFile(io, ember_corpus_fixture, &buf);
+    var cat: ember.Catalog = .{};
+    try ember.parse_catalog(text, &cat);
+    var hits: [ember.max_chunks]u32 = undefined;
+    const n = try ember.query_corpus(&cat, .{ .kind = .rye }, hits[0..]);
     if (n != 2) return error.BadCorpusFixture;
 
     const lines = try garden.alloc(surface.SkateLine, corpus_view_max_lines);
-    lines[0] = .{ .text = try garden.dupe(u8, "kiln corpus view") };
+    lines[0] = .{ .text = try garden.dupe(u8, "ember corpus view") };
     lines[1] = .{ .text = try garden.dupe(u8, "filter kind rye") };
     lines[2] = .{ .text = try std.fmt.allocPrint(garden, "hits {d}", .{n}) };
     lines[3] = .{ .text = try std.fmt.allocPrint(garden, "hit {s}", .{cat.chunks[hits[0]].path_slice()}) };
@@ -2272,7 +2272,7 @@ fn run_corpus_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     assert(sig != sig_empty);
 
     const golden = [_][]const u8{
-        "kiln corpus view",
+        "ember corpus view",
         "filter kind rye",
         "hits 2",
         "hit dimeroll/dimeroll_core.rye",
@@ -2370,19 +2370,19 @@ fn run_forge_query_unified_view_witness(garden: std.mem.Allocator, io: std.Io) !
     return 0;
 }
 
-/// Kiln corpus path-prefix view — pond/ filter hits on Skate.
+/// Ember corpus path-prefix view — pond/ filter hits on Skate.
 fn compose_corpus_prefix_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
-    const text = try cwd.readFile(io, oven_corpus_fixture, &buf);
-    var cat: kiln.Catalog = .{};
-    try kiln.parse_catalog(text, &cat);
-    var hits: [kiln.max_chunks]u32 = undefined;
-    const n = try kiln.query_corpus(&cat, .{ .path_prefix = "pond/" }, hits[0..]);
+    const text = try cwd.readFile(io, ember_corpus_fixture, &buf);
+    var cat: ember.Catalog = .{};
+    try ember.parse_catalog(text, &cat);
+    var hits: [ember.max_chunks]u32 = undefined;
+    const n = try ember.query_corpus(&cat, .{ .path_prefix = "pond/" }, hits[0..]);
     if (n != 1) return error.BadCorpusFixture;
 
     const lines = try garden.alloc(surface.SkateLine, corpus_prefix_view_max_lines);
-    lines[0] = .{ .text = try garden.dupe(u8, "kiln corpus prefix view") };
+    lines[0] = .{ .text = try garden.dupe(u8, "ember corpus prefix view") };
     lines[1] = .{ .text = try garden.dupe(u8, "filter path_prefix pond/") };
     lines[2] = .{ .text = try std.fmt.allocPrint(garden, "hits {d}", .{n}) };
     lines[3] = .{ .text = try std.fmt.allocPrint(garden, "hit {s}", .{cat.chunks[hits[0]].path_slice()}) };
@@ -2406,7 +2406,7 @@ fn run_corpus_prefix_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     assert(sig != sig_empty);
 
     const golden = [_][]const u8{
-        "kiln corpus prefix view",
+        "ember corpus prefix view",
         "filter path_prefix pond/",
         "hits 1",
         "hit pond/apps/drawn_terminal.rye",
@@ -2424,19 +2424,19 @@ fn run_corpus_prefix_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Kiln corpus tools-prefix view — tools/ filter hits on Skate.
+/// Ember corpus tools-prefix view — tools/ filter hits on Skate.
 fn compose_corpus_tools_prefix_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
-    const text = try cwd.readFile(io, oven_corpus_fixture, &buf);
-    var cat: kiln.Catalog = .{};
-    try kiln.parse_catalog(text, &cat);
-    var hits: [kiln.max_chunks]u32 = undefined;
-    const n = try kiln.query_corpus(&cat, .{ .path_prefix = "tools/" }, hits[0..]);
+    const text = try cwd.readFile(io, ember_corpus_fixture, &buf);
+    var cat: ember.Catalog = .{};
+    try ember.parse_catalog(text, &cat);
+    var hits: [ember.max_chunks]u32 = undefined;
+    const n = try ember.query_corpus(&cat, .{ .path_prefix = "tools/" }, hits[0..]);
     if (n != 1) return error.BadCorpusFixture;
 
     const lines = try garden.alloc(surface.SkateLine, corpus_tools_prefix_view_max_lines);
-    lines[0] = .{ .text = try garden.dupe(u8, "kiln corpus tools prefix view") };
+    lines[0] = .{ .text = try garden.dupe(u8, "ember corpus tools prefix view") };
     lines[1] = .{ .text = try garden.dupe(u8, "filter path_prefix tools/") };
     lines[2] = .{ .text = try std.fmt.allocPrint(garden, "hits {d}", .{n}) };
     lines[3] = .{ .text = try std.fmt.allocPrint(garden, "hit {s}", .{cat.chunks[hits[0]].path_slice()}) };
@@ -2460,7 +2460,7 @@ fn run_corpus_tools_prefix_view_witness(garden: std.mem.Allocator, io: std.Io) !
     assert(sig != sig_empty);
 
     const golden = [_][]const u8{
-        "kiln corpus tools prefix view",
+        "ember corpus tools prefix view",
         "filter path_prefix tools/",
         "hits 1",
         "hit tools/parity.rish",
@@ -2478,19 +2478,19 @@ fn run_corpus_tools_prefix_view_witness(garden: std.mem.Allocator, io: std.Io) !
     return 0;
 }
 
-/// Kiln corpus dimeroll-prefix view — dimeroll/ filter hits on Skate.
+/// Ember corpus dimeroll-prefix view — dimeroll/ filter hits on Skate.
 fn compose_corpus_dimeroll_prefix_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
-    const text = try cwd.readFile(io, oven_corpus_fixture, &buf);
-    var cat: kiln.Catalog = .{};
-    try kiln.parse_catalog(text, &cat);
-    var hits: [kiln.max_chunks]u32 = undefined;
-    const n = try kiln.query_corpus(&cat, .{ .path_prefix = "dimeroll/" }, hits[0..]);
+    const text = try cwd.readFile(io, ember_corpus_fixture, &buf);
+    var cat: ember.Catalog = .{};
+    try ember.parse_catalog(text, &cat);
+    var hits: [ember.max_chunks]u32 = undefined;
+    const n = try ember.query_corpus(&cat, .{ .path_prefix = "dimeroll/" }, hits[0..]);
     if (n != 1) return error.BadCorpusFixture;
 
     const lines = try garden.alloc(surface.SkateLine, corpus_dimeroll_prefix_view_max_lines);
-    lines[0] = .{ .text = try garden.dupe(u8, "kiln corpus dimeroll prefix view") };
+    lines[0] = .{ .text = try garden.dupe(u8, "ember corpus dimeroll prefix view") };
     lines[1] = .{ .text = try garden.dupe(u8, "filter path_prefix dimeroll/") };
     lines[2] = .{ .text = try std.fmt.allocPrint(garden, "hits {d}", .{n}) };
     lines[3] = .{ .text = try std.fmt.allocPrint(garden, "hit {s}", .{cat.chunks[hits[0]].path_slice()}) };
@@ -2514,7 +2514,7 @@ fn run_corpus_dimeroll_prefix_view_witness(garden: std.mem.Allocator, io: std.Io
     assert(sig != sig_empty);
 
     const golden = [_][]const u8{
-        "kiln corpus dimeroll prefix view",
+        "ember corpus dimeroll prefix view",
         "filter path_prefix dimeroll/",
         "hits 1",
         "hit dimeroll/dimeroll_core.rye",
@@ -2532,19 +2532,19 @@ fn run_corpus_dimeroll_prefix_view_witness(garden: std.mem.Allocator, io: std.Io
     return 0;
 }
 
-/// Kiln corpus pond/apps-prefix view — pond/apps/ filter hits on Skate.
+/// Ember corpus pond/apps-prefix view — pond/apps/ filter hits on Skate.
 fn compose_corpus_apps_prefix_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
-    const text = try cwd.readFile(io, oven_corpus_fixture, &buf);
-    var cat: kiln.Catalog = .{};
-    try kiln.parse_catalog(text, &cat);
-    var hits: [kiln.max_chunks]u32 = undefined;
-    const n = try kiln.query_corpus(&cat, .{ .path_prefix = "pond/apps/" }, hits[0..]);
+    const text = try cwd.readFile(io, ember_corpus_fixture, &buf);
+    var cat: ember.Catalog = .{};
+    try ember.parse_catalog(text, &cat);
+    var hits: [ember.max_chunks]u32 = undefined;
+    const n = try ember.query_corpus(&cat, .{ .path_prefix = "pond/apps/" }, hits[0..]);
     if (n != 1) return error.BadCorpusFixture;
 
     const lines = try garden.alloc(surface.SkateLine, corpus_apps_prefix_view_max_lines);
-    lines[0] = .{ .text = try garden.dupe(u8, "kiln corpus apps prefix view") };
+    lines[0] = .{ .text = try garden.dupe(u8, "ember corpus apps prefix view") };
     lines[1] = .{ .text = try garden.dupe(u8, "filter path_prefix pond/apps/") };
     lines[2] = .{ .text = try std.fmt.allocPrint(garden, "hits {d}", .{n}) };
     lines[3] = .{ .text = try std.fmt.allocPrint(garden, "hit {s}", .{cat.chunks[hits[0]].path_slice()}) };
@@ -2568,7 +2568,7 @@ fn run_corpus_apps_prefix_view_witness(garden: std.mem.Allocator, io: std.Io) !u
     assert(sig != sig_empty);
 
     const golden = [_][]const u8{
-        "kiln corpus apps prefix view",
+        "ember corpus apps prefix view",
         "filter path_prefix pond/apps/",
         "hits 1",
         "hit pond/apps/drawn_terminal.rye",
@@ -2684,19 +2684,19 @@ fn run_exception_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Kiln corpus rish-kind view — rish query hits on Skate.
+/// Ember corpus rish-kind view — rish query hits on Skate.
 fn compose_corpus_rish_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
-    const text = try cwd.readFile(io, oven_corpus_fixture, &buf);
-    var cat: kiln.Catalog = .{};
-    try kiln.parse_catalog(text, &cat);
-    var hits: [kiln.max_chunks]u32 = undefined;
-    const n = try kiln.query_corpus(&cat, .{ .kind = .rish }, hits[0..]);
+    const text = try cwd.readFile(io, ember_corpus_fixture, &buf);
+    var cat: ember.Catalog = .{};
+    try ember.parse_catalog(text, &cat);
+    var hits: [ember.max_chunks]u32 = undefined;
+    const n = try ember.query_corpus(&cat, .{ .kind = .rish }, hits[0..]);
     if (n != 1) return error.BadCorpusFixture;
 
     const lines = try garden.alloc(surface.SkateLine, corpus_rish_view_max_lines);
-    lines[0] = .{ .text = try garden.dupe(u8, "kiln corpus rish view") };
+    lines[0] = .{ .text = try garden.dupe(u8, "ember corpus rish view") };
     lines[1] = .{ .text = try garden.dupe(u8, "filter kind rish") };
     lines[2] = .{ .text = try std.fmt.allocPrint(garden, "hits {d}", .{n}) };
     lines[3] = .{ .text = try std.fmt.allocPrint(garden, "hit {s}", .{cat.chunks[hits[0]].path_slice()}) };
@@ -2720,7 +2720,7 @@ fn run_corpus_rish_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     assert(sig != sig_empty);
 
     const golden = [_][]const u8{
-        "kiln corpus rish view",
+        "ember corpus rish view",
         "filter kind rish",
         "hits 1",
         "hit tools/parity.rish",
@@ -2738,19 +2738,19 @@ fn run_corpus_rish_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Kiln corpus rye + path-prefix view — kind rye under pond/ on Skate.
+/// Ember corpus rye + path-prefix view — kind rye under pond/ on Skate.
 fn compose_corpus_rye_prefix_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
-    const text = try cwd.readFile(io, oven_corpus_fixture, &buf);
-    var cat: kiln.Catalog = .{};
-    try kiln.parse_catalog(text, &cat);
-    var hits: [kiln.max_chunks]u32 = undefined;
-    const n = try kiln.query_corpus(&cat, .{ .kind = .rye, .path_prefix = "pond/" }, hits[0..]);
+    const text = try cwd.readFile(io, ember_corpus_fixture, &buf);
+    var cat: ember.Catalog = .{};
+    try ember.parse_catalog(text, &cat);
+    var hits: [ember.max_chunks]u32 = undefined;
+    const n = try ember.query_corpus(&cat, .{ .kind = .rye, .path_prefix = "pond/" }, hits[0..]);
     if (n != 1) return error.BadCorpusFixture;
 
     const lines = try garden.alloc(surface.SkateLine, corpus_rye_prefix_view_max_lines);
-    lines[0] = .{ .text = try garden.dupe(u8, "kiln corpus rye prefix view") };
+    lines[0] = .{ .text = try garden.dupe(u8, "ember corpus rye prefix view") };
     lines[1] = .{ .text = try garden.dupe(u8, "filter kind rye path_prefix pond/") };
     lines[2] = .{ .text = try std.fmt.allocPrint(garden, "hits {d}", .{n}) };
     lines[3] = .{ .text = try std.fmt.allocPrint(garden, "hit {s}", .{cat.chunks[hits[0]].path_slice()}) };
@@ -2774,7 +2774,7 @@ fn run_corpus_rye_prefix_view_witness(garden: std.mem.Allocator, io: std.Io) !u8
     assert(sig != sig_empty);
 
     const golden = [_][]const u8{
-        "kiln corpus rye prefix view",
+        "ember corpus rye prefix view",
         "filter kind rye path_prefix pond/",
         "hits 1",
         "hit pond/apps/drawn_terminal.rye",
@@ -3062,19 +3062,19 @@ fn run_scribble_h3_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Kiln corpus rye + dimeroll/ prefix view — kind rye under dimeroll/ on Skate.
+/// Ember corpus rye + dimeroll/ prefix view — kind rye under dimeroll/ on Skate.
 fn compose_corpus_rye_dimeroll_prefix_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
-    const text = try cwd.readFile(io, oven_corpus_fixture, &buf);
-    var cat: kiln.Catalog = .{};
-    try kiln.parse_catalog(text, &cat);
-    var hits: [kiln.max_chunks]u32 = undefined;
-    const n = try kiln.query_corpus(&cat, .{ .kind = .rye, .path_prefix = "dimeroll/" }, hits[0..]);
+    const text = try cwd.readFile(io, ember_corpus_fixture, &buf);
+    var cat: ember.Catalog = .{};
+    try ember.parse_catalog(text, &cat);
+    var hits: [ember.max_chunks]u32 = undefined;
+    const n = try ember.query_corpus(&cat, .{ .kind = .rye, .path_prefix = "dimeroll/" }, hits[0..]);
     if (n != 1) return error.BadCorpusFixture;
 
     const lines = try garden.alloc(surface.SkateLine, corpus_rye_dimeroll_prefix_view_max_lines);
-    lines[0] = .{ .text = try garden.dupe(u8, "kiln corpus rye dimeroll prefix view") };
+    lines[0] = .{ .text = try garden.dupe(u8, "ember corpus rye dimeroll prefix view") };
     lines[1] = .{ .text = try garden.dupe(u8, "filter kind rye path_prefix dimeroll/") };
     lines[2] = .{ .text = try std.fmt.allocPrint(garden, "hits {d}", .{n}) };
     lines[3] = .{ .text = try std.fmt.allocPrint(garden, "hit {s}", .{cat.chunks[hits[0]].path_slice()}) };
@@ -3098,7 +3098,7 @@ fn run_corpus_rye_dimeroll_prefix_view_witness(garden: std.mem.Allocator, io: st
     assert(sig != sig_empty);
 
     const golden = [_][]const u8{
-        "kiln corpus rye dimeroll prefix view",
+        "ember corpus rye dimeroll prefix view",
         "filter kind rye path_prefix dimeroll/",
         "hits 1",
         "hit dimeroll/dimeroll_core.rye",
@@ -3116,19 +3116,19 @@ fn run_corpus_rye_dimeroll_prefix_view_witness(garden: std.mem.Allocator, io: st
     return 0;
 }
 
-/// Kiln corpus rish + tools/ prefix view — kind rish under tools/ on Skate.
+/// Ember corpus rish + tools/ prefix view — kind rish under tools/ on Skate.
 fn compose_corpus_rish_tools_prefix_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
-    const text = try cwd.readFile(io, oven_corpus_fixture, &buf);
-    var cat: kiln.Catalog = .{};
-    try kiln.parse_catalog(text, &cat);
-    var hits: [kiln.max_chunks]u32 = undefined;
-    const n = try kiln.query_corpus(&cat, .{ .kind = .rish, .path_prefix = "tools/" }, hits[0..]);
+    const text = try cwd.readFile(io, ember_corpus_fixture, &buf);
+    var cat: ember.Catalog = .{};
+    try ember.parse_catalog(text, &cat);
+    var hits: [ember.max_chunks]u32 = undefined;
+    const n = try ember.query_corpus(&cat, .{ .kind = .rish, .path_prefix = "tools/" }, hits[0..]);
     if (n != 1) return error.BadCorpusFixture;
 
     const lines = try garden.alloc(surface.SkateLine, corpus_rish_tools_prefix_view_max_lines);
-    lines[0] = .{ .text = try garden.dupe(u8, "kiln corpus rish tools prefix view") };
+    lines[0] = .{ .text = try garden.dupe(u8, "ember corpus rish tools prefix view") };
     lines[1] = .{ .text = try garden.dupe(u8, "filter kind rish path_prefix tools/") };
     lines[2] = .{ .text = try std.fmt.allocPrint(garden, "hits {d}", .{n}) };
     lines[3] = .{ .text = try std.fmt.allocPrint(garden, "hit {s}", .{cat.chunks[hits[0]].path_slice()}) };
@@ -3152,7 +3152,7 @@ fn run_corpus_rish_tools_prefix_view_witness(garden: std.mem.Allocator, io: std.
     assert(sig != sig_empty);
 
     const golden = [_][]const u8{
-        "kiln corpus rish tools prefix view",
+        "ember corpus rish tools prefix view",
         "filter kind rish path_prefix tools/",
         "hits 1",
         "hit tools/parity.rish",
@@ -3226,19 +3226,19 @@ fn run_scribble_depth_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     return 0;
 }
 
-/// Kiln corpus rye + pond/apps/ prefix view — kind rye under pond/apps/ on Skate.
+/// Ember corpus rye + pond/apps/ prefix view — kind rye under pond/apps/ on Skate.
 fn compose_corpus_rye_apps_prefix_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
-    const text = try cwd.readFile(io, oven_corpus_fixture, &buf);
-    var cat: kiln.Catalog = .{};
-    try kiln.parse_catalog(text, &cat);
-    var hits: [kiln.max_chunks]u32 = undefined;
-    const n = try kiln.query_corpus(&cat, .{ .kind = .rye, .path_prefix = "pond/apps/" }, hits[0..]);
+    const text = try cwd.readFile(io, ember_corpus_fixture, &buf);
+    var cat: ember.Catalog = .{};
+    try ember.parse_catalog(text, &cat);
+    var hits: [ember.max_chunks]u32 = undefined;
+    const n = try ember.query_corpus(&cat, .{ .kind = .rye, .path_prefix = "pond/apps/" }, hits[0..]);
     if (n != 1) return error.BadCorpusFixture;
 
     const lines = try garden.alloc(surface.SkateLine, corpus_rye_apps_prefix_view_max_lines);
-    lines[0] = .{ .text = try garden.dupe(u8, "kiln corpus rye apps prefix view") };
+    lines[0] = .{ .text = try garden.dupe(u8, "ember corpus rye apps prefix view") };
     lines[1] = .{ .text = try garden.dupe(u8, "filter kind rye path_prefix pond/apps/") };
     lines[2] = .{ .text = try std.fmt.allocPrint(garden, "hits {d}", .{n}) };
     lines[3] = .{ .text = try std.fmt.allocPrint(garden, "hit {s}", .{cat.chunks[hits[0]].path_slice()}) };
@@ -3262,7 +3262,7 @@ fn run_corpus_rye_apps_prefix_view_witness(garden: std.mem.Allocator, io: std.Io
     assert(sig != sig_empty);
 
     const golden = [_][]const u8{
-        "kiln corpus rye apps prefix view",
+        "ember corpus rye apps prefix view",
         "filter kind rye path_prefix pond/apps/",
         "hits 1",
         "hit pond/apps/drawn_terminal.rye",
@@ -3280,19 +3280,19 @@ fn run_corpus_rye_apps_prefix_view_witness(garden: std.mem.Allocator, io: std.Io
     return 0;
 }
 
-/// Kiln corpus min_lines view — chunks with lines >= 600 on Skate.
+/// Ember corpus min_lines view — chunks with lines >= 600 on Skate.
 fn compose_corpus_min_lines_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
-    const text = try cwd.readFile(io, oven_corpus_fixture, &buf);
-    var cat: kiln.Catalog = .{};
-    try kiln.parse_catalog(text, &cat);
-    var hits: [kiln.max_chunks]u32 = undefined;
-    const n = try kiln.query_corpus(&cat, .{ .min_lines = 600 }, hits[0..]);
+    const text = try cwd.readFile(io, ember_corpus_fixture, &buf);
+    var cat: ember.Catalog = .{};
+    try ember.parse_catalog(text, &cat);
+    var hits: [ember.max_chunks]u32 = undefined;
+    const n = try ember.query_corpus(&cat, .{ .min_lines = 600 }, hits[0..]);
     if (n != 1) return error.BadCorpusFixture;
 
     const lines = try garden.alloc(surface.SkateLine, corpus_min_lines_view_max_lines);
-    lines[0] = .{ .text = try garden.dupe(u8, "kiln corpus min lines view") };
+    lines[0] = .{ .text = try garden.dupe(u8, "ember corpus min lines view") };
     lines[1] = .{ .text = try garden.dupe(u8, "filter min_lines 600") };
     lines[2] = .{ .text = try std.fmt.allocPrint(garden, "hits {d}", .{n}) };
     lines[3] = .{ .text = try std.fmt.allocPrint(garden, "hit {s}", .{cat.chunks[hits[0]].path_slice()}) };
@@ -3316,7 +3316,7 @@ fn run_corpus_min_lines_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 
     assert(sig != sig_empty);
 
     const golden = [_][]const u8{
-        "kiln corpus min lines view",
+        "ember corpus min lines view",
         "filter min_lines 600",
         "hits 1",
         "hit pond/apps/drawn_terminal.rye",
@@ -3334,19 +3334,19 @@ fn run_corpus_min_lines_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 
     return 0;
 }
 
-/// Kiln corpus max_lines view — chunks with lines <= 300 on Skate.
+/// Ember corpus max_lines view — chunks with lines <= 300 on Skate.
 fn compose_corpus_max_lines_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
-    const text = try cwd.readFile(io, oven_corpus_fixture, &buf);
-    var cat: kiln.Catalog = .{};
-    try kiln.parse_catalog(text, &cat);
-    var hits: [kiln.max_chunks]u32 = undefined;
-    const n = try kiln.query_corpus(&cat, .{ .max_lines = 300 }, hits[0..]);
+    const text = try cwd.readFile(io, ember_corpus_fixture, &buf);
+    var cat: ember.Catalog = .{};
+    try ember.parse_catalog(text, &cat);
+    var hits: [ember.max_chunks]u32 = undefined;
+    const n = try ember.query_corpus(&cat, .{ .max_lines = 300 }, hits[0..]);
     if (n != 1) return error.BadCorpusFixture;
 
     const lines = try garden.alloc(surface.SkateLine, corpus_max_lines_view_max_lines);
-    lines[0] = .{ .text = try garden.dupe(u8, "kiln corpus max lines view") };
+    lines[0] = .{ .text = try garden.dupe(u8, "ember corpus max lines view") };
     lines[1] = .{ .text = try garden.dupe(u8, "filter max_lines 300") };
     lines[2] = .{ .text = try std.fmt.allocPrint(garden, "hits {d}", .{n}) };
     lines[3] = .{ .text = try std.fmt.allocPrint(garden, "hit {s}", .{cat.chunks[hits[0]].path_slice()}) };
@@ -3370,7 +3370,7 @@ fn run_corpus_max_lines_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 
     assert(sig != sig_empty);
 
     const golden = [_][]const u8{
-        "kiln corpus max lines view",
+        "ember corpus max lines view",
         "filter max_lines 300",
         "hits 1",
         "hit dimeroll/dimeroll_core.rye",
@@ -3388,19 +3388,19 @@ fn run_corpus_max_lines_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 
     return 0;
 }
 
-/// Kiln corpus path_suffix view — .rish chunks on Skate.
+/// Ember corpus path_suffix view — .rish chunks on Skate.
 fn compose_corpus_path_suffix_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
-    const text = try cwd.readFile(io, oven_corpus_fixture, &buf);
-    var cat: kiln.Catalog = .{};
-    try kiln.parse_catalog(text, &cat);
-    var hits: [kiln.max_chunks]u32 = undefined;
-    const n = try kiln.query_corpus(&cat, .{ .path_suffix = ".rish" }, hits[0..]);
+    const text = try cwd.readFile(io, ember_corpus_fixture, &buf);
+    var cat: ember.Catalog = .{};
+    try ember.parse_catalog(text, &cat);
+    var hits: [ember.max_chunks]u32 = undefined;
+    const n = try ember.query_corpus(&cat, .{ .path_suffix = ".rish" }, hits[0..]);
     if (n != 1) return error.BadCorpusFixture;
 
     const lines = try garden.alloc(surface.SkateLine, corpus_path_suffix_view_max_lines);
-    lines[0] = .{ .text = try garden.dupe(u8, "kiln corpus path suffix view") };
+    lines[0] = .{ .text = try garden.dupe(u8, "ember corpus path suffix view") };
     lines[1] = .{ .text = try garden.dupe(u8, "filter path_suffix .rish") };
     lines[2] = .{ .text = try std.fmt.allocPrint(garden, "hits {d}", .{n}) };
     lines[3] = .{ .text = try std.fmt.allocPrint(garden, "hit {s}", .{cat.chunks[hits[0]].path_slice()}) };
@@ -3424,7 +3424,7 @@ fn run_corpus_path_suffix_view_witness(garden: std.mem.Allocator, io: std.Io) !u
     assert(sig != sig_empty);
 
     const golden = [_][]const u8{
-        "kiln corpus path suffix view",
+        "ember corpus path suffix view",
         "filter path_suffix .rish",
         "hits 1",
         "hit tools/parity.rish",
@@ -3442,21 +3442,21 @@ fn run_corpus_path_suffix_view_witness(garden: std.mem.Allocator, io: std.Io) !u
     return 0;
 }
 
-/// Kiln corpus sum_lines view — rye line total on Skate.
+/// Ember corpus sum_lines view — rye line total on Skate.
 fn compose_corpus_sum_lines_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [4096]u8 = undefined;
-    const text = try cwd.readFile(io, oven_corpus_fixture, &buf);
-    var cat: kiln.Catalog = .{};
-    try kiln.parse_catalog(text, &cat);
-    var hits: [kiln.max_chunks]u32 = undefined;
-    const n = try kiln.query_corpus(&cat, .{ .kind = .rye }, hits[0..]);
+    const text = try cwd.readFile(io, ember_corpus_fixture, &buf);
+    var cat: ember.Catalog = .{};
+    try ember.parse_catalog(text, &cat);
+    var hits: [ember.max_chunks]u32 = undefined;
+    const n = try ember.query_corpus(&cat, .{ .kind = .rye }, hits[0..]);
     if (n != 2) return error.BadCorpusFixture;
-    const sum = kiln.sum_lines(&cat, .{ .kind = .rye });
+    const sum = ember.sum_lines(&cat, .{ .kind = .rye });
     if (sum != 1004) return error.BadCorpusFixture;
 
     const lines = try garden.alloc(surface.SkateLine, corpus_sum_lines_view_max_lines);
-    lines[0] = .{ .text = try garden.dupe(u8, "kiln corpus sum lines view") };
+    lines[0] = .{ .text = try garden.dupe(u8, "ember corpus sum lines view") };
     lines[1] = .{ .text = try garden.dupe(u8, "filter kind rye") };
     lines[2] = .{ .text = try std.fmt.allocPrint(garden, "hits {d}", .{n}) };
     lines[3] = .{ .text = try std.fmt.allocPrint(garden, "sum_lines {d}", .{sum}) };
@@ -3480,7 +3480,7 @@ fn run_corpus_sum_lines_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 
     assert(sig != sig_empty);
 
     const golden = [_][]const u8{
-        "kiln corpus sum lines view",
+        "ember corpus sum lines view",
         "filter kind rye",
         "hits 2",
         "sum_lines 1004",

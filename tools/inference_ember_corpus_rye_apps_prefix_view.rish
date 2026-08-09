@@ -5,7 +5,7 @@
 
 let bin = "pond/bin/drawn-terminal"
 
-say "build: Kiln corpus rye apps prefix view — drawn-terminal compile"
+say "build: Ember corpus rye apps prefix view — drawn-terminal compile"
 let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
 assert build.ok else "drawn_terminal build failed for rye apps prefix view"
 assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
@@ -16,4 +16,4 @@ assert corpus.out contains "rye apps prefix view" else "rye apps prefix view mis
 assert corpus.out contains "GREEN" else "Anvil rye apps prefix view not GREEN"
 assert corpus.out contains "lines=5" else "rye apps prefix view missing five-line frame"
 
-say "GREEN: Kiln corpus rye apps prefix view — rye under pond/apps/ on Skate."
+say "GREEN: Ember corpus rye apps prefix view — rye under pond/apps/ on Skate."

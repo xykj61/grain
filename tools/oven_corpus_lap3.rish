@@ -1,5 +1,0 @@
-# tools/oven_corpus_lap3.rish — shim → tools/gen/kiln/oven_corpus_lap3.rish (Kiln Season o1)
-if length args == 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/kiln/oven_corpus_lap3.rish"]
-if length args != 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/kiln/oven_corpus_lap3.rish" args[0]]
-if r.out != "" then say r.out
-exit r.code

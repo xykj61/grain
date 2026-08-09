@@ -77,6 +77,10 @@ Add a row **every time** a living mutant seats and the prior stamp becomes fossi
 | `foundations/20260629-063512_lantern-lattice-anvil.md` | `foundations/20260728-232511_lantern-lattice-kiln.md` | p31→p36 Kiln | invent held · name Kiln |
 | `foundations/20260728-221253_lantern-lattice-anvil.md` | `foundations/20260728-232511_lantern-lattice-kiln.md` | p36 `20260728.232511` | Kiln seat · Anvil essay fossil |
 | `foundations/20260629-063512_the-wafer-and-the-sovereign-coin.md` | `foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md` | p33 `20260728.225239` | invent held |
+| `counsel/20260728-232415_anvil-forge-to-kiln-name-lean.md` | LEXICON **Ember** entry | molt `20260808.220423` | anvil→kiln naming counsel · superseded by Ember rename |
+| `counsel/20260728-234419_the-kiln-season-oct-charter.md` | LEXICON **Ember** entry | molt `20260808.220423` | Kiln Season charter · season keeps its name as history · Ember is the living module |
+
+**Ember supersession (molt `20260808.220423`).** The living forge module renamed `anvil/` → `kiln/` → **`ember/`** (Keaton's word). Kiln/anvil naming writings above are prepped as Class H fossils; the rested **Kiln Season** keeps its name as history and is not touched. The **[debrided] Anvil tribute** (LEXICON *Anvil (retired)*) is **kept with honor** — prep-marked here for the record, never a cut candidate; a tribute is honored, not shed. Molt is prep only; shred stays RED.
 
 Grep helpers: `living mutant` · `fossil — living path` · paths in this table.
 
@@ -103,7 +107,7 @@ Transitive `foundations/` graph from living wafer — **9 nodes** · closed (no 
 living wafer
   ├─ money-that-stays-close-to-home          [dated · leaf in foundations]
   │     └─ (outside) taler-giving-lane · giving-lane-t1 field map
-  ├─ living Kiln (was Anvil) ⇄ living Realidream ⇄ living graph ⇄ living wafer
+  ├─ living Ember (was Kiln, was Anvil) ⇄ living Realidream ⇄ living graph ⇄ living wafer
   ├─ the-device-that-forgets                 [dated]
   │     └─ mantrapod-venture-pitch          [dated · leaf]
   └─ mantrapod-venture-pitch                [dated · leaf]

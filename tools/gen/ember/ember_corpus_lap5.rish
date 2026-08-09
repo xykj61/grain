@@ -1,0 +1,17 @@
+# tools/gen/ember/ember_corpus_lap5.rish — Ember corpus lap 2 sum_lines fold witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/gen/ember/ember_corpus_lap5.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "ember/bin/ember"
+
+let build = run ["sh" "-c" "mkdir -p ember/bin && env RYE_ZIG=${zig} rye/bin/rye build ember/ember.rye -femit-bin=${bin}"]
+assert build.ok else "Ember corpus lap 5 build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Kiln selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Kiln selftest not GREEN"
+assert selftest.out contains "sum_lines fold" else "Kiln missing sum_lines welcome"
+
+say "GREEN: Ember corpus lap 5 — sum_lines fold over matching chunks."

@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20260808.221348
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title the Ember pass — Kiln forge renamed, molt seated, GREEN
+prompt do the Ember pass
+think the dedicated, focused breach the earlier revert called for — I had the full map this time (module + second copy + 14 views + season testimony + proven-seat traps)
+obs Phase A — root module kiln/ -> ember/, inner files renamed (ember.rye · ember_core.rye · ember.peal), internal refs fixed (import · fixture_path · print strings · comments)
+obs Phase B — pond/apps/kiln is a SYMLINK dir (oven_core.rye -> ../../../kiln/oven_core.rye); moved to pond/apps/ember, retargeted the symlink to ../../../ember/ember_core.rye; repointed drawn_terminal.rye's import, fixture const, fixture path, the kiln const and its usages
+obs Phase C — tools/gen/kiln -> tools/gen/ember, oven_corpus_lap* -> ember_corpus_lap*, build paths repointed; corpus shims renamed; anvil_corpus elder shims kept their name, delegation repointed to gen/ember
+obs Phase D — 14 inference_oven_corpus_*_view -> inference_ember_corpus_* (only name+comment, no code paths); 14 inference_anvil elder shims kept their name, delegation repointed to inference_ember
+obs Phase E — surgical living-doc edits (LEXICON Ember entry + Kiln/Anvil pointer rows + Quin faculty + .peal + Anvil-retired; MAP module ring; STEWARDS faculties; foundations/README seat; REMEMBER + SHRED_PREP living lines); compass_rose · .gitignore · manifest repointed. ALL history left intact — the rested Kiln Season, its charter, the anvil->kiln lineage, dated filenames
+obs the dormant Kiln-Season cut witnesses (assert kiln/ exists) are confirmed NOT in any live suite/parity runner — left as closed-season testimony (they witnessed the anvil->kiln cut; kiln->ember supersedes)
+obs GREEN — ember corpus witness (CLI) GREEN, sow_witness M1_OK + GREEN (ember is a root path, kiln gone), INFERENCE_OK resolves with ember, ember/ tracked, ember/bin ignored; no living kiln/ code path remains; drawn_terminal GUI build fails only on libxkbcommon (headless-pier Wayland lib, pre-existing environment, not the rename)
+obs molt seated — kiln/anvil naming counsels prepped as SHRED_PREP Class H fossils (living mutant = LEXICON Ember); the [debrided] Anvil tribute kept with honor (prep-marked, never a cut candidate); molt is prep only, shred stays RED
+obs 30 git renames (history preserved), 61 total changes, one motion — a declared breach that turned every living reference and left every dated testimony
+obs read the rename stamp (220423) and log stamp (221348) from the live EDT clock
+file ember/ the renamed forge module (was kiln/, was anvil/)
+file pond/apps/ember/ember_core.rye retargeted symlink · drawn_terminal import repointed
+file tools/gen/ember/ · tools/ember_corpus_lap* · tools/inference_ember_corpus_* the living witnesses
+file context/LEXICON.md Ember seated · Kiln/Anvil pointers · history intact
+file work-in-progress/SHRED_PREP.md molt — kiln/anvil fossils Class H · [debrided] tribute kept with honor
+file session-logs/20260808-221348_ember-pass-rename-and-molt-green.bron this record
+git_nib 1ac4076901
+recommend check-in (Claude) the Ember pass is complete and GREEN; Ember is the living forge, the Kiln Season stays history, the tribute is honored; open doors remain Glow-keep-or-change, Rishi-runes, and the Tend fleet-language horizon
