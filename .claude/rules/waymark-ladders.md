@@ -24,6 +24,10 @@ Before the first rung is written as `X0` / `X1` / … in TASKS, ROADMAP, compres
 | **SETU** | *(hand-seated; not a corpus draw — absent from flw)* | USB hearth carry Glass↔Desk |
 | **SUNN** | `source-pier-papers-identity-refresh` | SOURCE.md identity · remotes · apps · onboarding refresh |
 | **POLE** | `djinn-bozo-exec-keaton-murr-hats` | DJINN → Bozo exec · Keaton → Murr exec · Linn→Bozo Capricorn 10 |
+| **SOON** | `glow-language-runes-stdlib-and-pipeline` | Compass Season Equinox 1 — The Language (Glow runes · stdlib/PLEAC · Brix-infuse · pipeline) |
+| **JARL** | `kumara-identity-comlink-and-fractal-network` | Compass Season Equinox 2 — Identity & Network (Kumara · d12/d60 topology · Comlink · settlement) |
+| **BUHR** | `realidream-surface-and-quin-inference-and-mcp-2` | Compass Season Equinox 3 — Surface & Intelligence (Realidream · Quin voices · MCP-in-Bron) |
+| **TACT** | `ship-pilot-publishing-grainphone-and-commerce` | Compass Season Equinox 4 — The World (Ship-Pilot · publishing · Grainphone · commerce) |
 
 **Hand-seated names on the exclude roster** (not waymark draws): **SEVA** (viewer; absent from flw), **MAND** (M vane; in flw), **MONA** (prior name of Mand — one season). **SALA** retired from exclude with the Sala→Seva alias close.
 
