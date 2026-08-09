@@ -11,6 +11,6 @@ Quin remains live in two hats, and neither moved:
 - **Fifth OS variant** — intentionally unpaired, beside Reya · Riyo · Trey ·
   Triz · Trya.
 - **Inference Q-vane** — the host gathering **Lattice · Scribble · Lantern ·
-  Kiln** under one name.
+  Ember** under one name.
 
 Home for both: `context/QUIN.md`.

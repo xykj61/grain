@@ -17,10 +17,10 @@ let preflight = run ["sh" "tools/parity_time_one.sh" "preflight" "--" "sh" "tool
 assert preflight.ok else "wasmtime preflight script failed"
 if (preflight.out != "") then say preflight.out
 
-say "witness suite: Kiln corpus apps prefix view (pond/apps/ → Skate)…"
-let apps_prefix_view = run ["sh" "tools/parity_time_one.sh" "apps_prefix_view" "--" "rishi/bin/rishi" "run" "tools/inference_oven_corpus_apps_prefix_view.rish"]
-assert apps_prefix_view.ok else "Kiln corpus apps prefix view witness failed"
-say "GREEN: Kiln corpus apps prefix view witness passed."
+say "witness suite: Ember corpus apps prefix view (pond/apps/ → Skate)…"
+let apps_prefix_view = run ["sh" "tools/parity_time_one.sh" "apps_prefix_view" "--" "rishi/bin/rishi" "run" "tools/inference_ember_corpus_apps_prefix_view.rish"]
+assert apps_prefix_view.ok else "Ember corpus apps prefix view witness failed"
+say "GREEN: Ember corpus apps prefix view witness passed."
 
 say "witness suite: Inference assist sight lap 4 (chart on carriage)…"
 let assist_sight_lap4 = run ["sh" "tools/parity_time_one.sh" "assist_sight_lap4" "--" "rishi/bin/rishi" "run" "tools/inference_assist_sight_lap4.rish"]
@@ -84,8 +84,8 @@ let scribble_h3_view = run ["sh" "tools/parity_time_one.sh" "scribble_h3_view" "
 assert scribble_h3_view.ok else "Scribble h3 view witness failed"
 say "GREEN: Scribble h3 view witness passed."
 
-say "witness suite: Kiln corpus rye dimeroll prefix view…"
-let rye_candy_prefix = run ["sh" "tools/parity_time_one.sh" "rye_candy_prefix" "--" "rishi/bin/rishi" "run" "tools/inference_oven_corpus_rye_dimeroll_prefix_view.rish"]
+say "witness suite: Ember corpus rye dimeroll prefix view…"
+let rye_candy_prefix = run ["sh" "tools/parity_time_one.sh" "rye_candy_prefix" "--" "rishi/bin/rishi" "run" "tools/inference_ember_corpus_rye_dimeroll_prefix_view.rish"]
 assert rye_candy_prefix.ok else "Anvil rye dimeroll prefix view witness failed"
 say "GREEN: Anvil rye dimeroll prefix view witness passed."
 
@@ -99,8 +99,8 @@ let lattice_lap18 = run ["sh" "tools/parity_time_one.sh" "lattice_lap18" "--" "r
 assert lattice_lap18.ok else "Lattice lap 17 witness failed"
 say "GREEN: Lattice lap 17 witness passed."
 
-say "witness suite: Kiln corpus rish tools prefix view…"
-let rish_tools_prefix = run ["sh" "tools/parity_time_one.sh" "rish_tools_prefix" "--" "rishi/bin/rishi" "run" "tools/inference_oven_corpus_rish_tools_prefix_view.rish"]
+say "witness suite: Ember corpus rish tools prefix view…"
+let rish_tools_prefix = run ["sh" "tools/parity_time_one.sh" "rish_tools_prefix" "--" "rishi/bin/rishi" "run" "tools/inference_ember_corpus_rish_tools_prefix_view.rish"]
 assert rish_tools_prefix.ok else "Anvil rish tools prefix view witness failed"
 say "GREEN: Anvil rish tools prefix view witness passed."
 
@@ -139,8 +139,8 @@ let lattice_lap20 = run ["sh" "tools/parity_time_one.sh" "lattice_lap20" "--" "r
 assert lattice_lap20.ok else "Lattice lap 19 witness failed"
 say "GREEN: Lattice lap 19 witness passed."
 
-say "witness suite: Kiln corpus rye apps prefix view…"
-let rye_apps_prefix = run ["sh" "tools/parity_time_one.sh" "rye_apps_prefix" "--" "rishi/bin/rishi" "run" "tools/inference_oven_corpus_rye_apps_prefix_view.rish"]
+say "witness suite: Ember corpus rye apps prefix view…"
+let rye_apps_prefix = run ["sh" "tools/parity_time_one.sh" "rye_apps_prefix" "--" "rishi/bin/rishi" "run" "tools/inference_ember_corpus_rye_apps_prefix_view.rish"]
 assert rye_apps_prefix.ok else "Anvil rye apps prefix view witness failed"
 say "GREEN: Anvil rye apps prefix view witness passed."
 
@@ -394,45 +394,45 @@ let lantern_lap29 = run ["sh" "tools/parity_time_one.sh" "lantern_lap29" "--" "r
 assert lantern_lap29.ok else "Lantern lap 29 witness failed"
 say "GREEN: Lantern lap 29 witness passed."
 
-say "witness suite: Kiln corpus lap 2 (min_lines)…"
-let oven_corpus_lap2 = run ["sh" "tools/parity_time_one.sh" "oven_corpus_lap2" "--" "rishi/bin/rishi" "run" "tools/oven_corpus_lap2.rish"]
-assert oven_corpus_lap2.ok else "Kiln corpus lap 2 witness failed"
-say "GREEN: Kiln corpus lap 2 witness passed."
+say "witness suite: Ember corpus lap 2 (min_lines)…"
+let ember_corpus_lap2 = run ["sh" "tools/parity_time_one.sh" "ember_corpus_lap2" "--" "rishi/bin/rishi" "run" "tools/ember_corpus_lap2.rish"]
+assert ember_corpus_lap2.ok else "Ember corpus lap 2 witness failed"
+say "GREEN: Ember corpus lap 2 witness passed."
 
-say "witness suite: Kiln corpus lap 3 (max_lines)…"
-let oven_corpus_lap3 = run ["sh" "tools/parity_time_one.sh" "oven_corpus_lap3" "--" "rishi/bin/rishi" "run" "tools/oven_corpus_lap3.rish"]
-assert oven_corpus_lap3.ok else "Kiln corpus lap 3 witness failed"
-say "GREEN: Kiln corpus lap 3 witness passed."
+say "witness suite: Ember corpus lap 3 (max_lines)…"
+let ember_corpus_lap3 = run ["sh" "tools/parity_time_one.sh" "ember_corpus_lap3" "--" "rishi/bin/rishi" "run" "tools/ember_corpus_lap3.rish"]
+assert ember_corpus_lap3.ok else "Ember corpus lap 3 witness failed"
+say "GREEN: Ember corpus lap 3 witness passed."
 
-say "witness suite: Kiln corpus lap 4 (path_suffix)…"
-let oven_corpus_lap4 = run ["sh" "tools/parity_time_one.sh" "oven_corpus_lap4" "--" "rishi/bin/rishi" "run" "tools/oven_corpus_lap4.rish"]
-assert oven_corpus_lap4.ok else "Kiln corpus lap 4 witness failed"
-say "GREEN: Kiln corpus lap 4 witness passed."
+say "witness suite: Ember corpus lap 4 (path_suffix)…"
+let ember_corpus_lap4 = run ["sh" "tools/parity_time_one.sh" "ember_corpus_lap4" "--" "rishi/bin/rishi" "run" "tools/ember_corpus_lap4.rish"]
+assert ember_corpus_lap4.ok else "Ember corpus lap 4 witness failed"
+say "GREEN: Ember corpus lap 4 witness passed."
 
-say "witness suite: Kiln corpus lap 5 (sum_lines)…"
-let oven_corpus_lap5 = run ["sh" "tools/parity_time_one.sh" "oven_corpus_lap5" "--" "rishi/bin/rishi" "run" "tools/oven_corpus_lap5.rish"]
-assert oven_corpus_lap5.ok else "Kiln corpus lap 5 witness failed"
-say "GREEN: Kiln corpus lap 5 witness passed."
+say "witness suite: Ember corpus lap 5 (sum_lines)…"
+let ember_corpus_lap5 = run ["sh" "tools/parity_time_one.sh" "ember_corpus_lap5" "--" "rishi/bin/rishi" "run" "tools/ember_corpus_lap5.rish"]
+assert ember_corpus_lap5.ok else "Ember corpus lap 5 witness failed"
+say "GREEN: Ember corpus lap 5 witness passed."
 
-say "witness suite: Kiln corpus min_lines view…"
-let oven_min_lines_view = run ["sh" "tools/parity_time_one.sh" "oven_min_lines_view" "--" "rishi/bin/rishi" "run" "tools/inference_oven_corpus_min_lines_view.rish"]
-assert oven_min_lines_view.ok else "Kiln corpus min_lines view witness failed"
-say "GREEN: Kiln corpus min_lines view witness passed."
+say "witness suite: Ember corpus min_lines view…"
+let ember_min_lines_view = run ["sh" "tools/parity_time_one.sh" "ember_min_lines_view" "--" "rishi/bin/rishi" "run" "tools/inference_ember_corpus_min_lines_view.rish"]
+assert ember_min_lines_view.ok else "Ember corpus min_lines view witness failed"
+say "GREEN: Ember corpus min_lines view witness passed."
 
-say "witness suite: Kiln corpus max_lines view…"
-let oven_max_lines_view = run ["sh" "tools/parity_time_one.sh" "oven_max_lines_view" "--" "rishi/bin/rishi" "run" "tools/inference_oven_corpus_max_lines_view.rish"]
-assert oven_max_lines_view.ok else "Kiln corpus max_lines view witness failed"
-say "GREEN: Kiln corpus max_lines view witness passed."
+say "witness suite: Ember corpus max_lines view…"
+let ember_max_lines_view = run ["sh" "tools/parity_time_one.sh" "ember_max_lines_view" "--" "rishi/bin/rishi" "run" "tools/inference_ember_corpus_max_lines_view.rish"]
+assert ember_max_lines_view.ok else "Ember corpus max_lines view witness failed"
+say "GREEN: Ember corpus max_lines view witness passed."
 
-say "witness suite: Kiln corpus path_suffix view…"
-let oven_path_suffix_view = run ["sh" "tools/parity_time_one.sh" "oven_path_suffix_view" "--" "rishi/bin/rishi" "run" "tools/inference_oven_corpus_path_suffix_view.rish"]
-assert oven_path_suffix_view.ok else "Kiln corpus path_suffix view witness failed"
-say "GREEN: Kiln corpus path_suffix view witness passed."
+say "witness suite: Ember corpus path_suffix view…"
+let ember_path_suffix_view = run ["sh" "tools/parity_time_one.sh" "ember_path_suffix_view" "--" "rishi/bin/rishi" "run" "tools/inference_ember_corpus_path_suffix_view.rish"]
+assert ember_path_suffix_view.ok else "Ember corpus path_suffix view witness failed"
+say "GREEN: Ember corpus path_suffix view witness passed."
 
-say "witness suite: Kiln corpus sum_lines view…"
-let oven_sum_lines_view = run ["sh" "tools/parity_time_one.sh" "oven_sum_lines_view" "--" "rishi/bin/rishi" "run" "tools/inference_oven_corpus_sum_lines_view.rish"]
-assert oven_sum_lines_view.ok else "Kiln corpus sum_lines view witness failed"
-say "GREEN: Kiln corpus sum_lines view witness passed."
+say "witness suite: Ember corpus sum_lines view…"
+let ember_sum_lines_view = run ["sh" "tools/parity_time_one.sh" "ember_sum_lines_view" "--" "rishi/bin/rishi" "run" "tools/inference_ember_corpus_sum_lines_view.rish"]
+assert ember_sum_lines_view.ok else "Ember corpus sum_lines view witness failed"
+say "GREEN: Ember corpus sum_lines view witness passed."
 
 say "witness suite: Dimeroll lap 4 (account filter)…"
 let dimeroll_lap4 = run ["sh" "tools/parity_time_one.sh" "dimeroll_lap4" "--" "rishi/bin/rishi" "run" "tools/dimeroll_lap4.rish"]
