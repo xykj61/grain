@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260809.132505
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title grow the Rishi match primitive — bounded linear-time NFA
+prompt (Keaton) d then c — grow the match primitive first
+think the match primitive is the SOON unlock that turns rg/awk/perl seams into native Rishi; it had to be correct because 130+ scripts will lean on it, so I chose the Tiger-correct shape — a bounded, linear-time NFA (Thompson/Pike), never a backtracking engine that could ReDoS
+think designed it stack-allocated with named ceilings (max_pattern, max_nodes, max_prog, max_depth) so nothing allocates per call and a match in a 9000-file loop leaks nothing; the whole matcher lives in one struct on the stack
+think first cut used an n-ary seq_pool shared by concat and alternation; a traced failure ((cat|dog)s) revealed the pool interleaves a group's own concat children with the alternation's child list, so branch indices read wrong — rewrote to binary concat/alt nodes, concat compiled iteratively down its left spine so a long literal never deepens the stack
+think verified three ways — 47 hand cases in the module selftest, then wired matches into main.rye as an infix operator and ran 812 pattern×input pairs against Python re.search (all agreed), then a committed witness pinning the real seam patterns
+obs an early differential mismatch on ^$ vs empty input was rg's line-orientation (empty input = zero lines), not an engine bug; Python re.search is the right whole-string oracle and agreed on all 812
+obs supports literals, . , \d\D\s\S\w\W, [..] ranges and negation, ^ $, * + ?, alternation, grouping, and a leading (?i); {n,m} and \b are named honest errors (v2), not silent mismatches
+obs tame_style_check clean on main.rye and match.rye (only the pre-existing REDS 64 py fossil remains); rune and lower witnesses still GREEN
+obs the primitive closes the regex gap for the boolean-test half of the seams; find-all/extract, loop accumulation, and user functions remain the named SOON laps before a seam is fully native
+file rishi/src/match.rye the bounded NFA matcher — parse, compile, Pike VM, pub matches + selftest
+file rishi/src/main.rye @import match.rye · `matches` infix operator · MatchNeedsString/MatchBadPattern errors
+file tools/rish_match_witness.rish representative cases + real seam patterns + a where-filter compose
+file active-designing/20260809-030635_python-to-rishi-molt-seating.md match landed, remaining gaps named
+file context/LEXICON.md · work-in-progress/REMEMBER.md · TASKS.md matches primitive seated on the SOON finishing edge
+file session-logs/20260809-132505_rishi-match-primitive-bounded-nfa.bron this record
+recommend keep-going the match primitive is landed and validated; next is (c) the de-Python laps folding the boolean-test seams into native Rishi with matches, then a find/extract primitive for claim_preserve and the mention scan
