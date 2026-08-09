@@ -1,25 +1,27 @@
 # Tasks — living pin
 
-**Language:** EN  
-**Last updated:** `20260804.234505` · voice Riyo  
-**Living pin bound:** `living_pin_max_bytes = 24576`  
-**Operator card:** [`REMEMBER.md`](REMEMBER.md)  
+**Language:** EN
+**Last updated:** `20260809.024320` · voice Riyo
+**Living pin bound:** `living_pin_max_bytes = 24576`
+**Operator card:** [`REMEMBER.md`](REMEMBER.md)
 **Ledger:** [`THREADS.md`](THREADS.md)
 
 ---
 
-## Now — e300 ladder home (`20260804.234505`)
+## Now — The Compass Season · SOON q1 (`20260809.024320`)
 
-**Finishing edge:** no deeper open season. Next = hands, 6a, Identity word, or a new season’s name.  
-**Prove:** `rg -n "\*\*PAUSED\*\*" context/LEXICON.md | rg -i 'Season' || echo 'season PAUSED lines may still name facts beside RESTED'`
+**Finishing edge:** SOON q1 r1 — the language. Rishi's `^-` cast rune landed GREEN; continue the rune heads. Debrided to the Compass Season — the elder e-number ladder rests in the code and the dated counsel.
+**Prove:** `rishi/bin/rishi run tools/rish_rune_cast_witness.rish`
 
-| Lap | Status |
-|-----|--------|
-| Nona → Constellation sweep | **RESTED** — pointers verbatim |
-| Keeh one-look | **CLOSED already** · k6/k7 = Identity |
-| 6a · Geode · Identity | **parked / untouched / PAUSED** |
-| Hands · quarantine | **ready** |
+| Lap | Equinox | Status |
+|-----|---------|--------|
+| Rishi `^-` cast rune · continue rune heads | SOON | **LANDED** (`^-`) · heads next |
+| `mold → shape` debride (82 files / 753) | SOON | proposed · own pass |
+| TAME core/shelf compression | SOON | proposed |
+| Brix + Brix-infuse | SOON j2 | proposed |
+| Two-grain seed publish to grain-os | SOON/TACT | awaiting Keaton's read of `seed/` |
+| Identity · Surface · World doors | JARL/BUHR/TACT | word-gated |
 
 ---
 
-*May rest be the ground of the next name.*
+*May the first rune be the ground of the next.*

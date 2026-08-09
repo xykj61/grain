@@ -1,39 +1,34 @@
 # Threads — the one living ledger of everything open
 
-**Language:** EN  
-**Last refreshed:** `20260808.040720` · voice Riyo · pier **e302** · v90 LANDED · guide 1 CLOSED · **guide 2 CLOSED** · `gh` + Claude on pier · words / 6a·6b next  
-**Companion (orient pin):** [`../active-designing/20260804-005634_the-close-down-map.md`](../active-designing/20260804-005634_the-close-down-map.md)  
-**Season summary:** [`../counsel/20260804-230650_the-equinox-season-summary.md`](../counsel/20260804-230650_the-equinox-season-summary.md)  
-**Ladder seat:** [`../counsel/20260804-233206_e299-the-ladder-rests.md`](../counsel/20260804-233206_e299-the-ladder-rests.md)  
-**Nona cadence seat:** [`../counsel/20260804-234508_e300-nona-rests.md`](../counsel/20260804-234508_e300-nona-rests.md)  
-**Walk refined seat:** [`../counsel/20260804-235124_e300-nona-confirmed-the-walk-complete.md`](../counsel/20260804-235124_e300-nona-confirmed-the-walk-complete.md)  
-**Hands seat:** [`../counsel/20260805-000001_e302-walk-refined-and-first-knock.md`](../counsel/20260805-000001_e302-walk-refined-and-first-knock.md)  
-**Audit seat:** [`../counsel/20260804-232746_e298-the-lookback-audit.md`](../counsel/20260804-232746_e298-the-lookback-audit.md)  
-**Law:** closes are append-only — PAUSED facts stay verbatim beside RESTED · **one named rung per fuse** · name/keys/history seasons are word-only, never swept · Geode prep and 6a stay untouched · pier floor wins e-collisions · RESTED reopens by fresh charter only
+**Language:** EN
+**Last refreshed:** `20260809.024320` · voice Riyo · **The Compass Season OPEN** · pier `~/grain` · guides 0–2 CLOSED · agent-jail GREEN
+**Companion (orient pin):** [`REMEMBER.md`](REMEMBER.md) · [`../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md`](../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md)
+**Law:** closes are append-only — living *Now* lines sweep, dated counsel and session logs never do · one named rung per fuse · name/keys/history seasons are word-only · RESTED reopens by fresh charter only. Debrided to the Compass Season `20260809.024320` — the twelve old nested seasons' e-number ledger is gone from this living card; every green it tracked lives on in the code and in the dated counsel.
 
 ---
 
-## How the names nest
+## How the season nests
 
-Pier **e302** (counsel v90 stamped e301; pier e301 already Nona cadence). Nested ladder **home** at the season-row grammar. Guides 0–2 **walked**. Open work is words · next name.
+**The Compass Season** is open on Keaton's word (`20260809.021829`). Coords **s1 · SOON e1 · j1 · q1 · r1**. 256 rounds; four equinoxes = four compass directions; nesting **Round · Quest 4 · Journey 16 · Equinox 64 · Season 256**. Finishing edge: **SOON q1** — the language, where Rishi's `^-` cast rune already landed GREEN.
 
-## Open threads — the finishing walk
+## Open threads
 
-| # | Door | Thread | State | Owner |
-|---|------|--------|-------|-------|
-| 1 | — | Resin v90 (walk refined · 6b owned) | **LANDED** | — |
-| 2 | 3–4 | Hands / guide 1 — steward `keeper` · root closed · `sshd -T` GREEN · root SSH refused · grain owned by keeper | **CLOSED** `20260808.033555` | — |
-| 3 | 4 | Hands / guide 2 — `gh` as `xykj61` · Claude on pier · tmux `pier` standing | **CLOSED** `20260808.040720` | — |
-| 5 | 8 | **Quarantine** ASHORE | SAFE · word open | Keaton |
-| 6 | 6–7 · 10–12 | Word-gated · return words · next name | surfaced, unpressed | Keaton (+ counsel) |
-| 6a | — | **256/Wheel outer frame** — does rested Equinox complete it? | parked | Keaton |
-| 6b | — | **Identity Remake** still PAUSED (k6/k7) — word-only; never swept | flagged · unpressed | Keaton |
-| 7 | 9 | Housekeeping | recurring | both |
+| # | Thread | Equinox | State | Owner |
+|---|--------|---------|-------|-------|
+| 1 | Rishi rune heads — `^-` cast landed; continue the head set | SOON | **LANDED** (`^-`) · rune heads next | — |
+| 2 | `mold → shape` debride — 82 files / 753 occurrences | SOON | proposed · own careful pass | Keaton |
+| 3 | TAME core/shelf — lossless-compressed living law over a preserved shelf | SOON | proposed | Keaton |
+| 4 | Brix + Brix-infuse — deep merge/override (kin to infuse.nix) | SOON j2 | proposed | Keaton |
+| 5 | Two-grain seed publish to **grain-os/grain** | SOON/TACT | awaiting Keaton's read of `seed/` | Keaton |
+| 6 | Identity Remake / Kumara — first template + Keaton's instance | JARL | word-gated | Keaton |
+| 7 | Realidream surface · Quin's four voices · MCP-in-Bron | BUHR | word-gated | Keaton |
+| 8 | Ship-Pilot pitch · publishing · Grainphone · commerce · four-doors | TACT | word-gated | Keaton |
+| 9 | Housekeeping · fascia health · shred-prep circling | — | recurring | both |
 
 ## Closed and safe
 
-Equinox · Fascia · Voice · **Nona · Kiln · Surface · Generator · MUR · Inner Scope · Constellation** RESTED (pointers inside rows) · Keeh quint already CLOSED · Geode prep untouched · Waypoints Equinox+Fascia+Voice+Nona+sweep · Ratified×1 · STOA338–346 GREEN · guides 0–2 walked · first knock proven · guide 1 root door closed · guide 2 GitHub + Claude on pier · **THE LADDER IS HOME** (season-row grammar).
+The elder nested seasons — Equinox · Fascia · Voice · Nona · Kiln (now Ember) · Surface · Generator · MUR · Inner Scope · Constellation · Keeh — all **RESTED**, their greens standing in the code and their record in the dated counsel and session logs. Guides 0–2 walked · steward `keeper` · root SSH refused · `gh` as `xykj61` · Claude on pier · agent-jail GREEN. The Haunted Mound tribute is **debrided** from history (deep, on Keaton's word). Geode prep untouched · word-gated doors wait for Keaton.
 
 ---
 
-*May home hold every bookmark. May the steward's key be the only knock. May 6a and 6b wait for your word.*
+*May home hold every bookmark. May the season stay clean, and the fascia hold.*
