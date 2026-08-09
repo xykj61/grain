@@ -58,6 +58,28 @@ Every living consumer of `dated_classify` now speaks Rishi. The `.py` is kept on
 
 Roughly ten more `.sh` witnesses still embed `python3` heredocs — `claim_preserve_*`, `date_dialect_scan`, `living_docs_lint_scan`, `markdown_structure_scan`, `oldness_census_scan`, `radiant_h1_fence_scan`, and several dated `equinox_*` scans. Each is its own small port (awk or a Rishi seam), and each is already silently red on this pier. They are the continuing molt, to be taken as convenient laps — the dated `equinox_*` ones only where a recorded pass is warranted, since they are Tier-2 testimony.
 
+## The molt widens: every script speaks Rishi (`20260809.115123`, Keaton's word)
+
+The intent grows from *Python → Rishi* to **all scripts → Rishi**: perl and POSIX sh join Python as languages the tree molts away from, until Rishi — the self-hosted shell — is the one language its scripts speak. The tree already leans this way: **1110 `.rish`** stand against **420 authored `.sh`**, so Rishi is already the majority tongue.
+
+The survey, honestly:
+
+| Surface | Count | Standing |
+|---|---:|---|
+| `.rish` (the destination) | 1110 | already Rishi |
+| authored `.sh` | 420 | to molt |
+| — of those, embedding `python3` | 133 | **broken on this pier** (python3 absent) — the urgent subset |
+| — embedding `awk` | 49 | works, yet not Rishi |
+| — embedding `perl` | 3 | works, yet not Rishi (one is the fresh `claim_preserve_extract` interim) |
+| standalone `.pl` | 0 | none |
+
+This is a two-phase truth, not one sweep:
+
+1. **Make them run (near-term).** The 133 `python3`-embedded `.sh` are dead where python3 is absent. Replacing each heredoc with `awk`/`perl`/`rg` — as `census_control`, `fascia_health`, and `shed_census` already were — makes them live again. This keeps a POSIX seam, yet it removes the broken dependency and is a clean, mechanical lap per script.
+2. **Make them Rishi (the destination).** A `.sh` that only orchestrates `git`/`rg`/`awk` becomes a `.rish` once Rishi can express what the seam does natively. Today it cannot: Rishi has **no regex/match primitive, no user functions, and no loop accumulation** (proven in `rish_count_selftest`). These three are the real unlock, and they are **SOON-equinox language work** — grow the primitives first, then the seams fold into Rishi's own value model rather than shelling out.
+
+So the honest order is: de-Python the broken `.sh` as convenient laps now (they simply do not work otherwise), and grow Rishi's `match`, functions, and accumulation under SOON — each of which retires a whole class of seam at once. A blanket `.sh → .rish` rewrite before those primitives exist would only reproduce the seams in a different file extension, not truly molt them.
+
 ## The Rishi language gap this port surfaced
 
 Building the port proved that Rishi, today, cannot express a per-file census natively: `for-each` does not accumulate (proven in `rish_count_selftest.rish`), there are no user functions to share `classify` between commands, and there is no regex. The faithful shape is therefore Rishi-as-conductor over `git`/`rg`/`awk` seams — legitimate for a shell, and a real improvement (no Python), yet a marker that **loop accumulation, user functions, and a match primitive** are the SOON language features that would let a future classifier live natively in Rishi's own value model rather than in a seam.
