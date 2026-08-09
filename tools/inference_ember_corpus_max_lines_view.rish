@@ -5,7 +5,7 @@
 
 let bin = "pond/bin/drawn-terminal"
 
-say "build: Kiln corpus max_lines view — drawn-terminal compile"
+say "build: Ember corpus max_lines view — drawn-terminal compile"
 let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
 assert build.ok else "drawn_terminal build failed for max_lines view"
 assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
@@ -16,4 +16,4 @@ assert corpus.out contains "max lines view" else "max lines view missing expecte
 assert corpus.out contains "GREEN" else "Anvil max lines view not GREEN"
 assert corpus.out contains "lines=5" else "max lines view missing five-line frame"
 
-say "GREEN: Kiln corpus max_lines view — small chunks on Skate."
+say "GREEN: Ember corpus max_lines view — small chunks on Skate."
