@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260809.135730
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title grow the Rishi find primitive — extract, {n,m}, word boundary
+prompt (Keaton) c2, grow find next
+think find is the extract companion to matches; building it revealed its real consumer (claim_preserve) also needs counted repetition {n,m} and word boundary \b — its token patterns are \b(?:0x)?[0-9a-fA-F]{8,}\b — so the cohesive extract capability wants all three, and I added them together
+think find returns every non-overlapping leftmost-longest match; implemented via search_anchored (longest match starting exactly at a position) looped left to right — a non-matching start fails as soon as its threads die, so find stays O(n·m) linear rather than quadratic
+think {n,m} is expanded inline in the parser into required copies plus optional copies or a trailing star, so the NFA stays a plain program with no counting state; m is bounded so a huge count meets a clear error
+think \b/\B are zero-width assertions checked against neighbouring bytes; threaded input through add_thread so the VM can see the boundary
+think two-pass find (count, allocate exact, fill) so nothing is over-allocated; the matches boolean keeps its own single-pass path
+obs validated against Python re — 69 module selftest cases, 396 matches cases with the new syntax vs re.search, 210 find cases vs re.finditer; all agree
+obs the one documented semantic boundary — order-sensitive alternation — is leftmost-longest (POSIX, what an NFA gives): find returns abc for ab|abc where Python leftmost-first returns ab; every greedy seam pattern agrees, and for boolean matches it never shows
+obs tame_style_check clean on main.rye and match.rye (only the pre-existing REDS 64 py fossil); rune and lower witnesses still GREEN
+obs the regex gap is now closed for both halves; what remains before a seam is fully native is sort/unique (claim_preserve emits sorted-unique), loop accumulation, and user functions — sort/unique is the next small lap
+file rishi/src/match.rye find_all + search_anchored + find + Span · {n,m} parse_count · \b/\B ops and word_boundary_at · leftmost-longest note
+file rishi/src/main.rye do_find + `find` prefix builtin in eval_expr and eval_operand
+file tools/rish_match_witness.rish find, {n,m}, and \b cases added
+file active-designing/20260809-030635_python-to-rishi-molt-seating.md find landed, remaining gaps (sort/unique) named
+file context/LEXICON.md · work-in-progress/REMEMBER.md · TASKS.md matches + find on the SOON finishing edge
+file session-logs/20260809-135730_rishi-find-extract-counted-rep-wordb.bron this record
+recommend keep-going find + {n,m} + \b landed and validated; next is a sort/unique primitive so claim_preserve can fold fully, then the de-Python laps fold both boolean-test and extract seams into native Rishi

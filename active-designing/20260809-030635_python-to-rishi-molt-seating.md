@@ -90,14 +90,17 @@ The first of those three is now real. Rishi speaks **`<string> matches <pattern>
 
 This closes the regex gap for the **boolean-test** half of the seams — `is_dated_name`, `has_header`, the H1 and fence checks, skip-extension tests. A Rishi script can now ask `path matches "(^|/)\d\d\d\d\d\d\d\d-\d\d\d\d\d\d_"` where it used to shell to `rg -q`.
 
+### find, `{n,m}`, and `\b` landed (`20260809`, Keaton's word — "c2, grow find next")
+
+The extract half is here too. Rishi speaks **`find <text> <pattern>`** → the list of every non-overlapping leftmost-longest match, the companion to `matches` and the primitive a script reaches for where it used to shell to `grep -o` / `rg -o`. It runs in linear time — a non-matching start position fails as soon as its threads die, so `find` stays O(n·m), not quadratic. Alongside it, the engine grew **counted repetition** `{n}` `{n,}` `{n,m}` (expanded inline, `m` bounded) and the **word boundaries** `\b` `\B` — exactly what `claim_preserve`'s token patterns need (`\b(?:0x)?[0-9a-fA-F]{8,}\b`). Validated against Python's `re`: 396 `matches` cases (with the new syntax) and 210 `find` cases, all agreeing. The one documented boundary is order-sensitive alternation, where `find` is leftmost-longest (POSIX) — the greedy seam patterns never hit it.
+
 What still stands between a seam and a fully native `.rish`:
 
-- **Find-all / extract** — `claim_preserve` and the mention scan need *all* matches, not a yes/no. A `find` primitive (matches → list of substrings) is the natural next match lap.
+- **Sort / unique** — `claim_preserve` emits sorted-unique tokens, and the shed census dedupes; Rishi has `find` now, yet no `sort`/`unique`. A small pair of primitives (or a `sort`/`unique` builtin) is the next match-adjacent lap.
 - **Loop accumulation** — a census counter still cannot live in a `for-each`.
 - **User functions** — to share one `classify` body between commands.
-- **Counted repetition `{n,m}` and `\b`** — named horizons in `match.rye`; today, expand (`\d\d\d\d\d\d\d\d`) or add them next.
 
-So the de-Python laps (**c**) can now begin folding the boolean-test seams into native Rishi, and each remaining gap above is a small, named SOON lap that retires more seam when it lands.
+So the de-Python laps (**c**) can now fold both the boolean-test *and* the extract seams into native Rishi, and each remaining gap above is a small, named SOON lap that retires more seam when it lands.
 
 ## What the molt keeps
 
