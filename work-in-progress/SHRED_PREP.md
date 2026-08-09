@@ -92,8 +92,8 @@ All authored Python molts to **Rishi**. Census and order: [`../active-designing/
 
 | `.py` file | Verdict | Waits on |
 | --- | --- | --- |
-| `expanding-prompts/yonder/remember_pin_habit_count.py` | **port** | a kg lap — first showcase |
-| `tools/fixtures/dated_classify.py` | **port, with care** | every consumer staying green |
+| `tools/fixtures/dated_classify.py` | **port, with care** (first true port) | a focused round · every consumer staying green |
+| `expanding-prompts/yonder/remember_pin_habit_count.py` | **shred candidate** (regex-gated · solved-problem one-shot) | a circled word · or a Rishi match primitive |
 | `classical-vedic-astrology/cast_a_chart.py` | **seam-gated** | a Rye/Zig Swiss-Ephemeris binding |
 | `tools/comlink_r1_dual_bind_probe.py` | **shred, not port** (REDS 64) | a circled shred word — R1 is cut |
 | `context/fixtures/tools_py_ban_tree/tools/planted.py` | **keep as fixture** | never — the ban needs it |

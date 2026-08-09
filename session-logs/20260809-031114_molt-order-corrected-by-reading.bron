@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260809.031114
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title correct the python molt order by reading the first port
+prompt (continuing) then continue — start the first port
+think before porting remember_pin_habit_count.py I read it fully rather than trusting the seating's own claim that it was the clean first port
+think it fails as a clean port on two counts — two of four is_habit rules use re.match with \s+ (Rishi has no regex primitive), and it is a one-shot counter over a fixed f291d96a74..HEAD range measuring the pin-habit the seated remember-git-nib rule now prevents; its finding already lives in policy
+think docs-implementation-sync — the seating doc asserted a behavioral claim (this file is the clean first port) that reading disproved, so I corrected the doc in the same turn rather than leave a stale claim; revised the census verdict and the order note with the 031114 stamp
+obs reclassified remember_pin as a shred candidate (regex-gated, solved-problem), promoted dated_classify.py to first true port (pure path/header logic, no regex, genuinely living), and named the Rishi match/regex primitive gap on the record as its own SOON decision
+obs this is a check-in, not a kg — a port→shred reclassification touches the shred RED discipline, which needs Keaton's circled word; and dated_classify is 134 lines and load-bearing, a focused round rather than a tail-of-session lap
+file active-designing/20260809-030635_python-to-rishi-molt-seating.md census verdict + order revised after reading
+file work-in-progress/SHRED_PREP.md verdict table reordered — dated_classify first, remember_pin shred candidate
+file session-logs/20260809-031114_molt-order-corrected-by-reading.bron this record
+recommend check-in Keaton — rule on (a) shredding remember_pin_habit_count.py as a solved-problem fossil, and (b) whether to take the dated_classify.py port as the next focused round or hold; the reading, not the plan, set this fork
