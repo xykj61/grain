@@ -1038,6 +1038,9 @@ fn eval_expr(allocator: std.mem.Allocator, io: std.Io, env: *Env, text: []const 
     if (std.mem.startsWith(u8, trimmed, "split ")) {
         return do_split(allocator, io, env, trimmed[6..]);
     }
+    if (std.mem.startsWith(u8, trimmed, "find ")) {
+        return do_find(allocator, io, env, trimmed[5..]);
+    }
     return eval_add_sub(allocator, io, env, text);
 }
 
@@ -1689,6 +1692,39 @@ fn do_split(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u
     return .{ .list = items };
 }
 
+/// `find <text> <pattern>` — every non-overlapping leftmost-longest match of the
+/// bounded regex `pattern` (see match.rye) in `text`, as a list of the matched
+/// substrings. The extract companion to `matches`; the primitive that lets a
+/// Rishi script gather tokens the way a shell reaches for `grep -o` or `rg -o`.
+fn do_find(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8) EvalError!Value {
+    var tok = TokenIter{ .text = rest };
+    const text_token = tok.next() orelse return error.MatchNeedsString;
+    const pat_token = tok.next() orelse return error.MatchNeedsString;
+
+    const text_value = try eval_operand(allocator, io, env, text_token);
+    const text = switch (text_value) {
+        .string => |s| s,
+        else => return error.MatchNeedsString,
+    };
+    const pat_value = try eval_operand(allocator, io, env, pat_token);
+    const pattern = switch (pat_value) {
+        .string => |s| s,
+        else => return error.MatchNeedsString,
+    };
+
+    const spans = rishi_match.find(allocator, pattern, text) catch return error.MatchBadPattern;
+    const items = allocator.alloc(Value, spans.len) catch return error.OutOfMemory;
+    // invariant: one list element per match span.
+    assert(items.len == spans.len);
+    for (spans, 0..) |sp, i| {
+        // invariant: a span sits inside the text it was found in.
+        assert(sp.end <= text.len);
+        const piece = allocator.dupe(u8, text[@intCast(sp.start)..@intCast(sp.end)]) catch return error.OutOfMemory;
+        items[i] = .{ .string = piece };
+    }
+    return .{ .list = items };
+}
+
 /// `map <list> as <name>: <expr>` evaluates <expr> for each element with <name>
 /// bound to it, collecting the results into a new list. `where <list> as <name>:
 /// <pred>` keeps the elements whose boolean <pred> holds. The element binding
@@ -1999,6 +2035,9 @@ fn eval_operand(allocator: std.mem.Allocator, io: std.Io, env: *Env, raw: []cons
     }
     if (std.mem.startsWith(u8, s, "split ")) {
         return do_split(allocator, io, env, s[6..]);
+    }
+    if (std.mem.startsWith(u8, s, "find ")) {
+        return do_find(allocator, io, env, s[5..]);
     }
     if (std.mem.startsWith(u8, s, "env ")) {
         return do_env(allocator, io, env, s[4..]);
