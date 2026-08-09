@@ -1,0 +1,35 @@
+# rish_sort_unique_witness.rish — the sort, unique, and upper primitives.
+#
+# Proves Rishi can order a list, remove duplicates keeping first-seen order, and
+# ASCII-uppercase a string — the pieces (with find) that let claim_preserve emit
+# sorted-unique tokens natively, no perl.
+#
+#   rishi/bin/rishi run tools/rish_sort_unique_witness.rish
+
+# sort — strings lexicographic, integers numeric.
+let s = sort ["banana" "apple" "cherry" "apple"]
+assert (s[0]) == "apple" else "sort orders strings ascending"
+assert (s[3]) == "cherry" else "sort keeps duplicates (sort is not unique)"
+let ints = sort [3 1 2 10]
+assert (join (map ints as n: "${n}") ",") == "1,2,3,10" else "sort orders integers by value, not lexically"
+
+# unique — first-seen order, any element kind.
+let u = unique ["a" "b" "a" "c" "b"]
+assert (join u ",") == "a,b,c" else "unique keeps the first of each distinct value in order"
+
+# sorted-distinct is the claim_preserve shape.
+let sd = unique (sort ["x" "a" "x" "m" "a"])
+assert (join sd ",") == "a,m,x" else "unique of sort is sorted distinct"
+
+# upper — the mirror of lower.
+assert (upper "Stamp-2026: ok!") == "STAMP-2026: OK!" else "upper shifts only a-z"
+assert (upper (lower "MixedCase")) == "MIXEDCASE" else "upper and lower compose"
+
+# The whole claim_preserve idiom: gather, prefix, sort, unique.
+let text = "see 2026 and 2026 and 42"
+let nums = find text "\d+"
+let tagged = map nums as n: "NUM:${n}"
+let out = unique (sort tagged)
+assert (join out " ") == "NUM:2026 NUM:42" else "gather-prefix-sort-unique yields sorted distinct tokens"
+
+say "GREEN: Rishi sort · unique · upper — order a list, drop duplicates in first-seen order, uppercase; together with find they emit sorted-unique tokens natively."

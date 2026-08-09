@@ -17,7 +17,9 @@
 |-----|---------|--------|
 | Rishi rune heads — `^-` · `?!` · `?&` · `?|` landed | SOON | **LANDED** (four heads) |
 | Rishi **`matches`** + **`find`** pattern primitives — bounded NFA, `{n,m}` · `\b`, linear-time, 600+ cases vs Python re | SOON | **LANDED** — boolean-test and extract seams both unlocked |
-| Rishi `sort` / `unique` primitives (claim_preserve · shed dedupe need them) | SOON | next before folding claim_preserve |
+| Rishi `sort` · `unique` · `upper` · list `+` · lookbehind | SOON | **LANDED** |
+| **Fold `claim_preserve` to native Rishi** — extractor + modality, gate GREEN + python-free | SOON | **LANDED** — first complete seam fold (40/41 byte-identical) |
+| Rishi **loop accumulation** — the last blocker for census seams (dated_classify · census_control) | SOON | next language lap |
 | Molt Python → Rishi — `dated_classify` fully ported (census·classify·health·shed, all byte-identical) · `census_control` de-Pythoned · runpy scans (`shed_census`·`fascia_health`) + divergence GREEN · `remember_pin` shredded · `lower` builtin | SOON | **dated subsystem Python-free** · ~10 more `.sh` embed python3 (next laps) |
 | `mold → shape` debride (82 files / 753) | SOON | proposed · own pass |
 | TAME core/shelf compression | SOON | proposed |

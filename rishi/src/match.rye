@@ -22,9 +22,12 @@
 //! negation `[^…]`; anchors `^` and `$` (start and end of the whole input); the
 //! word boundaries `\b` and `\B`; the quantifiers `*` `+` `?`; counted
 //! repetition `{n}` `{n,}` `{n,m}` (expanded inline, `m` bounded); alternation
-//! `|`; and grouping `(…)` / `(?:…)`. Search is unanchored — the pattern may
-//! match anywhere — unless `^`/`$` pin it. Backreferences and lookaround are
-//! outside the regular languages this engine promises and are never added.
+//! `|`; grouping `(…)` / `(?:…)`; and a **single-character-class lookbehind**
+//! `(?<!X)` / `(?<=X)`, where `X` is one char, shorthand, or bracket class — a
+//! zero-width look at the one prior byte, which stays regular (unlike general
+//! lookaround, which is never added). Search is unanchored — the pattern may
+//! match anywhere — unless `^`/`$` pin it. Backreferences and variable-width
+//! lookaround are outside the regular languages this engine promises.
 //!
 //! Two primitives: `matches(pattern, input)` answers yes/no; `find` returns
 //! every non-overlapping match as spans. Both are **leftmost-longest** (POSIX),
@@ -67,6 +70,7 @@ pub const MatchError = error{
     TrailingEscape,
     UnbalancedParen,
     BadCount,
+    BadLookbehind,
     UnsupportedEscape,
 };
 
@@ -89,7 +93,7 @@ fn class_has(set: *const Class, byte: u8) bool {
     return (set[byte >> 3] & (@as(u8, 1) << @as(u3, @intCast(byte & 7)))) != 0;
 }
 
-const NodeKind = enum(u8) { empty, lit, any, class, bol, eol, wordb, nwordb, concat, alt, star, plus, quest };
+const NodeKind = enum(u8) { empty, lit, any, class, bol, eol, wordb, nwordb, lb_neg, lb_pos, concat, alt, star, plus, quest };
 
 // A parse-tree node. `concat` and `alt` are binary — `a` is the left child node
 // index, `b` the right; `star`/`plus`/`quest` name one child in `a`. Binary
@@ -104,7 +108,7 @@ const Node = struct {
     b: u32 = 0,
 };
 
-const Op = enum(u8) { char, any, class, match, jmp, split, bol, eol, wordb, nwordb };
+const Op = enum(u8) { char, any, class, match, jmp, split, bol, eol, wordb, nwordb, lb_neg, lb_pos };
 
 // One NFA instruction. `char`/`any`/`class`/`match` consume or accept; `jmp`
 // and `split` and `bol`/`eol` are zero-width and resolved during closure.
@@ -258,16 +262,73 @@ const Matcher = struct {
         return self.new_node(.{ .kind = .class, .set = ci, .neg = negated });
     }
 
+    // One character class for a lookbehind: a bracket class, a shorthand, or a
+    // single (possibly escaped) literal — reduced to a positive-membership set,
+    // negations folded in, so the VM asks a plain "is the prior byte in this set".
+    fn parse_single_class(self: *Matcher) MatchError!u32 {
+        const c = self.peek();
+        if (c == '[') {
+            self.pos += 1;
+            const node_idx = try self.parse_class();
+            const n = self.nodes[@intCast(node_idx)];
+            if (!n.neg) return n.set;
+            const ci = try self.new_class();
+            var b: u32 = 0;
+            while (b < 256) : (b += 1) {
+                if (!class_has(&self.classes[@intCast(n.set)], @intCast(b))) class_add(&self.classes[@intCast(ci)], @intCast(b));
+            }
+            return ci;
+        }
+        if (c == '\\') {
+            self.pos += 1;
+            if (self.at_end()) return error.TrailingEscape;
+            const e = self.peek();
+            self.pos += 1;
+            const ci = try self.new_class();
+            switch (e) {
+                'd', 's', 'w' => merge_shorthand(&self.classes[@intCast(ci)], e),
+                'D', 'S', 'W' => {
+                    var tmp = std.mem.zeroes(Class);
+                    merge_shorthand(&tmp, e);
+                    var b: u32 = 0;
+                    while (b < 256) : (b += 1) {
+                        if (!class_has(&tmp, @intCast(b))) class_add(&self.classes[@intCast(ci)], @intCast(b));
+                    }
+                },
+                'n' => class_add(&self.classes[@intCast(ci)], '\n'),
+                't' => class_add(&self.classes[@intCast(ci)], '\t'),
+                'r' => class_add(&self.classes[@intCast(ci)], '\r'),
+                else => class_add(&self.classes[@intCast(ci)], e),
+            }
+            return ci;
+        }
+        if (c == 0 and self.at_end()) return error.BadLookbehind;
+        self.pos += 1;
+        const ci = try self.new_class();
+        class_add(&self.classes[@intCast(ci)], c);
+        return ci;
+    }
+
     fn parse_atom(self: *Matcher, depth: u32) MatchError!u32 {
         if (depth >= max_depth) return error.TooDeep;
         const c = self.peek();
         switch (c) {
             '(' => {
                 self.pos += 1;
-                // Non-capturing group prefix (?:  — and only that; we do not
-                // capture, so (?: and ( mean the same shape here.
-                if (self.peek() == '?' and self.pos + 1 < self.pat.len and self.pat[@intCast(self.pos + 1)] == ':') {
-                    self.pos += 2;
+                if (self.peek() == '?' and self.pos + 1 < self.pat.len) {
+                    const c1 = self.pat[@intCast(self.pos + 1)];
+                    if (c1 == ':') {
+                        // Non-capturing group: we never capture, so (?: is just (.
+                        self.pos += 2;
+                    } else if (c1 == '<' and self.pos + 2 < self.pat.len and (self.pat[@intCast(self.pos + 2)] == '!' or self.pat[@intCast(self.pos + 2)] == '=')) {
+                        // (?<!X) / (?<=X): a single-char-class lookbehind.
+                        const negated = self.pat[@intCast(self.pos + 2)] == '!';
+                        self.pos += 3;
+                        const set_idx = try self.parse_single_class();
+                        if (self.peek() != ')') return error.BadLookbehind;
+                        self.pos += 1;
+                        return self.new_node(.{ .kind = if (negated) .lb_neg else .lb_pos, .set = set_idx });
+                    }
                 }
                 const inner = try self.parse_alt(depth + 1);
                 if (self.peek() != ')') return error.UnbalancedParen;
@@ -435,6 +496,12 @@ const Matcher = struct {
             .nwordb => {
                 _ = try self.emit(.{ .op = .nwordb });
             },
+            .lb_neg => {
+                _ = try self.emit(.{ .op = .lb_neg, .set = n.set });
+            },
+            .lb_pos => {
+                _ = try self.emit(.{ .op = .lb_pos, .set = n.set });
+            },
             .concat => {
                 // Walk the left-leaning concat spine into a stack, then compile
                 // leftmost-first — iterative, so a thousand-atom literal compiles
@@ -554,6 +621,22 @@ const Matcher = struct {
                 },
                 .nwordb => {
                     if (!word_boundary_at(input, sp)) {
+                        eps_stack[@intCast(top)] = pc + 1;
+                        top += 1;
+                    }
+                },
+                .lb_neg => {
+                    // Holds when the prior byte is NOT in the set (or there is none).
+                    const prior_in = sp > 0 and class_has(&self.classes[@intCast(inst.set)], input[@intCast(sp - 1)]);
+                    if (!prior_in) {
+                        eps_stack[@intCast(top)] = pc + 1;
+                        top += 1;
+                    }
+                },
+                .lb_pos => {
+                    // Holds when the prior byte IS in the set.
+                    const prior_in = sp > 0 and class_has(&self.classes[@intCast(inst.set)], input[@intCast(sp - 1)]);
+                    if (prior_in) {
                         eps_stack[@intCast(top)] = pc + 1;
                         top += 1;
                     }
