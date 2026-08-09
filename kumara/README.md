@@ -13,7 +13,11 @@ Kumara is Grain's identity. It begins where trust actually begins — a keypair 
 - **The point** — the deed. A number within a scarcity shape, its keeper, and a version that climbs by exactly one on every change. A point number below 2⁸ is a **galaxy**, below 2¹⁶ a **star**, otherwise a **planet** — Azimuth's legible tiers, honored as address grammar rather than a hierarchy of power.
 - **The bind** — the marriage of the key to its keeper, signed **both ways**: the key signs the keeper, and the keeper signs the key. Neither signature alone is the identity; the mutual claim is. A bind that verifies in only one direction is refused whole.
 
-The other three tilaks — **rotation** (the networking key with its two never-descending counters), the **capabilities** (management · spawn · transfer, lendable but never copied), and the **parent link** (sponsorship with an arithmetic default and a child's escape) — are named for the JARL journeys past this one, held for Keaton's word.
+- **The rotation** (turn) — the networking key Comlink reads on every handshake, with two counters that only ever climb: one on an ordinary rotation, one on a reset (which zeroes the first). The identity key signs it, so a rotation is authentic.
+- **The capabilities** (tend · sow · hand) — the three lendable powers, management · spawn · transfer, each a keeper-signed grant naming exactly one holder. A capability moves by a fresh signed grant, never by copying an old one.
+- **The parent link** (sponsor) — every point has an arithmetic default parent; a child may escape to a chosen one, and that escape is the child's word alone, signed by the child's own key.
+
+All five tilaks are seated, and each carries a signature by its authorizing party: the bind's mutual pair, the turn under the identity key, each capability under the keeper, the sponsor escape under the child. Every claim traces to a signature; every tamper refuses.
 
 ## Template and instance
 
@@ -32,7 +36,7 @@ The example instance lives at [`example-instance.bron`](example-instance.bron) �
 
 ## Held for Keaton's word
 
-The settlement ledger (Sui or Grain-native), the final scarcity tiering, the rotation and capability and sponsor tilaks, and the human-name custody park are the JARL journeys past this one. This module lands the deed and the marriage; the rest of the identity, and the network it lives on, follow.
+The **settlement ledger** (Sui or Grain-native), the **final scarcity tiering** (keep Azimuth's 2⁸/2¹⁶/2³², or reshape), and the **human-name custody park** are the JARL journeys past this one. This module lands the whole tilak shape — the identity in hand, signed and witnessed; where it settles, and how a number becomes a spoken name, follow.
 
 ---
 

@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260809.155657
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title build the remaining Kumara tilaks — turn, caps, sponsor
+prompt (Keaton) build the remaining tilaks on the pattern
+think extended kumara/tilak.rye with the three remaining tilaks on the point+bind pattern — turn (rotation), the three capabilities (tend/sow/hand), and sponsor (parent link); each is a Rye struct with explicit widths, named bounds, and a signature by its authorizing party
+think turn carries the networking key and two counters that only ever climb — key_counter on ordinary rotation, reset_counter on reset; the identity key signs net_pubkey ++ both counters, so a rotation is authentic and a bumped counter breaks the signature
+think a capability is one power (tend management · sow spawn · hand transfer) over one point in one holder's hand; the keeper signs point ++ power ++ holder, so the holder's claim traces to the keeper and a swapped power refuses; a capability moves by a fresh signed grant, never a copy
+think sponsor records the arithmetic default parent and a chosen parent; the escape is the child's word alone, so the child's identity key signs point ++ chosen_parent
+think signed messages use little-endian integer bytes (std.mem.writeInt) so a signature is the same on every target; message builders copy the pubkey with a bounded loop rather than a banned @memcpy
+obs the selftest proves all five tilaks — each made, signed by its authorizing party, verified, and refused on tamper (bad bind sig, bumped turn counter, swapped cap power, changed sponsor parent all refuse)
+obs the emit produces a 53-line Bron example instance with seven records (point · bind · turn · cap x3 · sponsor); the witness counts seven signed claims at full Ed25519 length and the three named powers
+obs tame_style_check clean on kumara/tilak.rye; the whole identity template now holds in one module
+obs held for Keaton — the settlement ledger (Sui or Grain-native), the final scarcity tiering, and the human-name custody park are the JARL journeys past this one
+file kumara/tilak.rye the remaining tilaks — Turn/Cap/Power/Sponsor structs, make/verify each, Bron emit, full-quintet selftest and emit
+file kumara/example-instance.bron regenerated — all seven records, every signature verifying
+file kumara/README.md all five tilaks seated; held = ledger · scarcity · custody
+file tools/kumara_tilak_witness.rish checks seven tilak records, seven signatures, three named powers
+file work-in-progress/REMEMBER.md · TASKS.md · context/LEXICON.md the whole tilak shape landed at JARL j1
+file session-logs/20260809-155657_kumara-remaining-tilaks-turn-cap-sponsor.bron this record
+recommend check-in Claude — the whole Kumara identity template holds (all five tilaks, signed and witnessed); the next JARL moves are Keaton's design calls — the settlement ledger (Sui or Grain-native), the final scarcity tiering, and whether to generate his own real instance — or Comlink routing that reads the turn tilak on every handshake
