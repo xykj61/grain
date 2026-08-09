@@ -42,6 +42,7 @@
 const std = @import("std");
 const tally_copy = @import("tally_copy.rye");
 const tally_parse_int = @import("parse_int.rye");
+const rishi_match = @import("match.rye");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
@@ -843,6 +844,8 @@ const EvalError = error{
     AndNeedsBoolean,
     OrNeedsList,
     OrNeedsBoolean,
+    MatchNeedsString,
+    MatchBadPattern,
 };
 
 /// Evaluate an expression: an operand, two operands compared with `==`/`!=`, or a
@@ -956,6 +959,23 @@ fn eval_expr(allocator: std.mem.Allocator, io: std.Io, env: *Env, text: []const 
             else => return error.EndsWithNeedsString,
         };
         return .{ .boolean = std.mem.endsWith(u8, str, suffix) };
+    }
+    // `<string> matches <pattern>` — true when the bounded regex `pattern` (see
+    // match.rye) matches anywhere in the string. The one primitive that lets a
+    // Rishi script test a pattern without shelling out to `grep`/`rg`.
+    if (find_word_op(text, " matches ")) |idx| {
+        const haystack = try eval_expr(allocator, io, env, text[0..@intCast(idx)]);
+        const needle = try eval_expr(allocator, io, env, text[@intCast(idx + 9)..]);
+        const str = switch (haystack) {
+            .string => |s| s,
+            else => return error.MatchNeedsString,
+        };
+        const pattern = switch (needle) {
+            .string => |s| s,
+            else => return error.MatchNeedsString,
+        };
+        const hit = rishi_match.matches(pattern, str) catch return error.MatchBadPattern;
+        return .{ .boolean = hit };
     }
     // `<string> index-of <needle>` — first byte index, or -1 when absent.
     if (find_word_op(text, " index-of ")) |idx| {

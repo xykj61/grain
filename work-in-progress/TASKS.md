@@ -15,7 +15,8 @@
 
 | Lap | Equinox | Status |
 |-----|---------|--------|
-| Rishi rune heads — `^-` · `?!` · `?&` · `?|` landed · continue | SOON | **LANDED** (four heads) · more next |
+| Rishi rune heads — `^-` · `?!` · `?&` · `?|` landed | SOON | **LANDED** (four heads) |
+| Rishi **`matches`** pattern primitive — bounded NFA, linear-time, 812/812 vs Python re | SOON | **LANDED** — unlocks the boolean-test seams |
 | Molt Python → Rishi — `dated_classify` fully ported (census·classify·health·shed, all byte-identical) · `census_control` de-Pythoned · runpy scans (`shed_census`·`fascia_health`) + divergence GREEN · `remember_pin` shredded · `lower` builtin | SOON | **dated subsystem Python-free** · ~10 more `.sh` embed python3 (next laps) |
 | `mold → shape` debride (82 files / 753) | SOON | proposed · own pass |
 | TAME core/shelf compression | SOON | proposed |

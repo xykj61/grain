@@ -84,6 +84,21 @@ So the honest order is: de-Python the broken `.sh` as convenient laps now (they 
 
 Building the port proved that Rishi, today, cannot express a per-file census natively: `for-each` does not accumulate (proven in `rish_count_selftest.rish`), there are no user functions to share `classify` between commands, and there is no regex. The faithful shape is therefore Rishi-as-conductor over `git`/`rg`/`awk` seams — legitimate for a shell, and a real improvement (no Python), yet a marker that **loop accumulation, user functions, and a match primitive** are the SOON language features that would let a future classifier live natively in Rishi's own value model rather than in a seam.
 
+### The match primitive landed (`20260809`, Keaton's word — "grow the match primitive first")
+
+The first of those three is now real. Rishi speaks **`<string> matches <pattern>`** → boolean, a bounded, linear-time NFA matcher (`rishi/src/match.rye`, Thompson/Pike — no backtracking, no ReDoS, every buffer a named ceiling, nothing allocated per call). It supports literals, `.`, the shorthand classes `\d \D \s \S \w \W`, bracket classes and ranges, anchors `^ $`, the quantifiers `* + ?`, alternation `|`, grouping, and a leading `(?i)` fold — the subset that is provably regular and therefore linear. Its answers were checked against Python's `re.search` across **812 pattern×input pairs**, all agreeing; witness `tools/rish_match_witness.rish`.
+
+This closes the regex gap for the **boolean-test** half of the seams — `is_dated_name`, `has_header`, the H1 and fence checks, skip-extension tests. A Rishi script can now ask `path matches "(^|/)\d\d\d\d\d\d\d\d-\d\d\d\d\d\d_"` where it used to shell to `rg -q`.
+
+What still stands between a seam and a fully native `.rish`:
+
+- **Find-all / extract** — `claim_preserve` and the mention scan need *all* matches, not a yes/no. A `find` primitive (matches → list of substrings) is the natural next match lap.
+- **Loop accumulation** — a census counter still cannot live in a `for-each`.
+- **User functions** — to share one `classify` body between commands.
+- **Counted repetition `{n,m}` and `\b`** — named horizons in `match.rye`; today, expand (`\d\d\d\d\d\d\d\d`) or add them next.
+
+So the de-Python laps (**c**) can now begin folding the boolean-test seams into native Rishi, and each remaining gap above is a small, named SOON lap that retires more seam when it lands.
+
 ## What the molt keeps
 
 - **Prep, never cut.** This seating opens no shred. Each port lands with its own witness; each fossil joins `SHRED_PREP.md` only once its Rishi mutant is green, and the shred itself stays RED until circled.

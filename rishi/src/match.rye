@@ -1,0 +1,685 @@
+//! rishi/src/match.rye — a bounded, linear-time pattern matcher for Rishi.
+//!
+//! This is the primitive that lets a Rishi script test a string against a
+//! pattern the way a shell reaches for `grep -qE` or `rg -q` — the seam that
+//! the Python → Rishi molt keeps delegating to outside tools. It answers one
+//! question: does `pattern` match anywhere in `input`? It returns a boolean,
+//! nothing more, and it never captures, backtracks, or explores a second path
+//! twice.
+//!
+//! Discipline (TAME / Tiger Style). A backtracking regex engine has no bound
+//! on its worst case — one adversarial pattern can burn a machine. This engine
+//! refuses that shape by construction: it compiles the pattern to a small NFA
+//! program and simulates every live thread in lockstep (Thompson / Pike), so a
+//! match over an input of length n and a program of size m costs O(n · m) and
+//! not one step more. Every buffer is a fixed stack array with a named ceiling;
+//! a pattern that would overflow a ceiling earns a clear error rather than a
+//! crash or a silent truncation. Nothing is allocated per call, so a match in a
+//! nine-thousand-file loop leaks nothing.
+//!
+//! Supported syntax (v1): literals; `.` (any byte but newline); the shorthand
+//! classes `\d \D \s \S \w \W`; bracket classes `[abc]`, ranges `[a-z]`,
+//! negation `[^…]`; anchors `^` and `$` (start and end of the whole input);
+//! the quantifiers `*` `+` `?`; alternation `|`; and grouping `(…)` / `(?:…)`.
+//! Search is unanchored — the pattern may match anywhere — unless `^`/`$` pin
+//! it. Counted repetition `{n,m}` and the word boundary `\b` are named, honest
+//! horizons (v2), not silent behaviours: a `{` before a digit and a `\b` each
+//! earn an explicit error, so a caller is never quietly mismatched. Use
+//! explicit repetition (`\d\d\d\d\d\d\d\d`) until `{n,m}` lands.
+//!
+//!   rye build rishi/src/match.rye -femit-bin=rishi/bin/rish-match
+//!   rishi/bin/rish-match selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const rishi_match_version = "20260809.153000";
+
+// Named ceilings — every one is a wall a pattern meets with a clear error, not
+// a crash. Real seam patterns compile well inside these; the bounds exist so an
+// adversarial pattern cannot grow the work without limit.
+pub const max_pattern: u32 = 1024; // pattern byte length
+pub const max_nodes: u32 = 2048; // parse-tree nodes
+pub const max_classes: u32 = 128; // distinct byte-class bitmaps
+pub const max_prog: u32 = 4096; // compiled NFA instructions
+pub const max_depth: u32 = 256; // parse/compile recursion depth (group nesting)
+
+pub const MatchError = error{
+    PatternTooLong,
+    TooManyNodes,
+    TooManyClasses,
+    TooManyInstructions,
+    TooDeep,
+    TooManyAlternatives,
+    ClassUnterminated,
+    ClassEmpty,
+    TrailingEscape,
+    UnbalancedParen,
+    CountedRepUnsupported,
+    WordBoundaryUnsupported,
+    UnsupportedEscape,
+};
+
+// A byte class is a 256-bit membership bitmap, one bit per byte value.
+const Class = [32]u8;
+
+// invariant: a byte's membership lives in bit (byte & 7) of Class[byte >> 3].
+fn class_add(set: *Class, byte: u8) void {
+    set[byte >> 3] |= (@as(u8, 1) << @as(u3, @intCast(byte & 7)));
+}
+
+fn class_add_range(set: *Class, lo: u8, hi: u8) void {
+    // invariant: a range names its ends in order.
+    assert(lo <= hi);
+    var b: u32 = lo;
+    while (b <= hi) : (b += 1) class_add(set, @intCast(b));
+}
+
+fn class_has(set: *const Class, byte: u8) bool {
+    return (set[byte >> 3] & (@as(u8, 1) << @as(u3, @intCast(byte & 7)))) != 0;
+}
+
+const NodeKind = enum(u8) { empty, lit, any, class, bol, eol, concat, alt, star, plus, quest };
+
+// A parse-tree node. `concat` and `alt` are binary — `a` is the left child node
+// index, `b` the right; `star`/`plus`/`quest` name one child in `a`. Binary
+// children (rather than a shared pool) keep nesting honest: a group's own
+// concatenation never interleaves with the alternation that encloses it.
+const Node = struct {
+    kind: NodeKind,
+    ch: u8 = 0,
+    set: u32 = 0,
+    neg: bool = false,
+    a: u32 = 0,
+    b: u32 = 0,
+};
+
+const Op = enum(u8) { char, any, class, match, jmp, split, bol, eol };
+
+// One NFA instruction. `char`/`any`/`class`/`match` consume or accept; `jmp`
+// and `split` and `bol`/`eol` are zero-width and resolved during closure.
+const Inst = struct {
+    op: Op,
+    ch: u8 = 0,
+    set: u32 = 0,
+    neg: bool = false,
+    a: u32 = 0,
+    b: u32 = 0,
+};
+
+// The whole matcher lives on the stack — bounded arrays, no allocation, so a
+// per-call match frees itself the instant it returns.
+const Matcher = struct {
+    pat: []const u8,
+    pos: u32 = 0,
+    fold: bool = false, // case-insensitive, set by a leading (?i)
+
+    nodes: [max_nodes]Node = undefined,
+    node_count: u32 = 0,
+
+    classes: [max_classes]Class = undefined,
+    class_count: u32 = 0,
+
+    prog: [max_prog]Inst = undefined,
+    prog_count: u32 = 0,
+
+    fn new_node(self: *Matcher, node: Node) MatchError!u32 {
+        if (self.node_count >= max_nodes) return error.TooManyNodes;
+        const idx = self.node_count;
+        self.nodes[idx] = node;
+        self.node_count += 1;
+        // invariant: a fresh node index is always below the ceiling just checked.
+        assert(idx < max_nodes);
+        return idx;
+    }
+
+    fn new_class(self: *Matcher) MatchError!u32 {
+        if (self.class_count >= max_classes) return error.TooManyClasses;
+        const idx = self.class_count;
+        self.classes[idx] = std.mem.zeroes(Class);
+        self.class_count += 1;
+        return idx;
+    }
+
+    fn emit(self: *Matcher, inst: Inst) MatchError!u32 {
+        if (self.prog_count >= max_prog) return error.TooManyInstructions;
+        const pc = self.prog_count;
+        self.prog[pc] = inst;
+        self.prog_count += 1;
+        return pc;
+    }
+
+    fn peek(self: *const Matcher) u8 {
+        if (self.pos >= self.pat.len) return 0;
+        return self.pat[@intCast(self.pos)];
+    }
+
+    fn at_end(self: *const Matcher) bool {
+        return self.pos >= self.pat.len;
+    }
+
+    // --- parser: pattern bytes -> parse tree -----------------------------
+
+    // A `\x` shorthand class or an escaped literal, as a node index. Called
+    // with `self.pos` on the character AFTER the backslash.
+    fn parse_escape(self: *Matcher) MatchError!u32 {
+        if (self.at_end()) return error.TrailingEscape;
+        const e = self.peek();
+        self.pos += 1;
+        switch (e) {
+            'd', 'D', 's', 'S', 'w', 'W' => {
+                const ci = try self.new_class();
+                fill_shorthand(&self.classes[ci], e);
+                const negated = (e == 'D' or e == 'S' or e == 'W');
+                return self.new_node(.{ .kind = .class, .set = ci, .neg = negated });
+            },
+            'n' => return self.new_node(.{ .kind = .lit, .ch = '\n' }),
+            't' => return self.new_node(.{ .kind = .lit, .ch = '\t' }),
+            'r' => return self.new_node(.{ .kind = .lit, .ch = '\r' }),
+            'b', 'B' => return error.WordBoundaryUnsupported,
+            // Every other escape is a literal of the escaped byte: \. \* \\ \/ …
+            else => return self.new_node(.{ .kind = .lit, .ch = e }),
+        }
+    }
+
+    // A bracket class `[...]`, called with `self.pos` just past the `[`.
+    fn parse_class(self: *Matcher) MatchError!u32 {
+        var negated = false;
+        if (self.peek() == '^') {
+            negated = true;
+            self.pos += 1;
+        }
+        const ci = try self.new_class();
+        var any_member = false;
+        // A `]` as the very first member is a literal `]` (POSIX rule).
+        if (self.peek() == ']') {
+            class_add(&self.classes[ci], ']');
+            any_member = true;
+            self.pos += 1;
+        }
+        while (!self.at_end() and self.peek() != ']') {
+            var lo = self.peek();
+            self.pos += 1;
+            if (lo == '\\') {
+                if (self.at_end()) return error.TrailingEscape;
+                const e = self.peek();
+                self.pos += 1;
+                switch (e) {
+                    'd', 'D', 's', 'S', 'w', 'W' => {
+                        // A shorthand inside a class merges its members in.
+                        merge_shorthand(&self.classes[ci], e);
+                        any_member = true;
+                        continue;
+                    },
+                    'n' => lo = '\n',
+                    't' => lo = '\t',
+                    'r' => lo = '\r',
+                    else => lo = e,
+                }
+            }
+            // A range `lo-hi` when a `-` is followed by a non-`]` member.
+            if (self.peek() == '-' and self.pos + 1 < self.pat.len and self.pat[@intCast(self.pos + 1)] != ']') {
+                self.pos += 1; // consume '-'
+                var hi = self.peek();
+                self.pos += 1;
+                if (hi == '\\') {
+                    if (self.at_end()) return error.TrailingEscape;
+                    const e2 = self.peek();
+                    self.pos += 1;
+                    hi = switch (e2) {
+                        'n' => '\n',
+                        't' => '\t',
+                        'r' => '\r',
+                        else => e2,
+                    };
+                }
+                if (lo <= hi) class_add_range(&self.classes[ci], lo, hi) else class_add_range(&self.classes[ci], hi, lo);
+                any_member = true;
+            } else {
+                class_add(&self.classes[ci], lo);
+                any_member = true;
+            }
+        }
+        if (self.at_end()) return error.ClassUnterminated;
+        // consume closing ']'
+        self.pos += 1;
+        if (!any_member) return error.ClassEmpty;
+        return self.new_node(.{ .kind = .class, .set = ci, .neg = negated });
+    }
+
+    fn parse_atom(self: *Matcher, depth: u32) MatchError!u32 {
+        if (depth >= max_depth) return error.TooDeep;
+        const c = self.peek();
+        switch (c) {
+            '(' => {
+                self.pos += 1;
+                // Non-capturing group prefix (?:  — and only that; we do not
+                // capture, so (?: and ( mean the same shape here.
+                if (self.peek() == '?' and self.pos + 1 < self.pat.len and self.pat[@intCast(self.pos + 1)] == ':') {
+                    self.pos += 2;
+                }
+                const inner = try self.parse_alt(depth + 1);
+                if (self.peek() != ')') return error.UnbalancedParen;
+                self.pos += 1;
+                return inner;
+            },
+            '[' => {
+                self.pos += 1;
+                return self.parse_class();
+            },
+            '.' => {
+                self.pos += 1;
+                return self.new_node(.{ .kind = .any });
+            },
+            '^' => {
+                self.pos += 1;
+                return self.new_node(.{ .kind = .bol });
+            },
+            '$' => {
+                self.pos += 1;
+                return self.new_node(.{ .kind = .eol });
+            },
+            '\\' => {
+                self.pos += 1;
+                return self.parse_escape();
+            },
+            '{' => {
+                // A `{` before a digit is a counted-repetition attempt we do
+                // not yet honour; say so rather than match a literal brace.
+                if (self.pos + 1 < self.pat.len and self.pat[@intCast(self.pos + 1)] >= '0' and self.pat[@intCast(self.pos + 1)] <= '9') {
+                    return error.CountedRepUnsupported;
+                }
+                self.pos += 1;
+                return self.new_node(.{ .kind = .lit, .ch = '{' });
+            },
+            else => {
+                self.pos += 1;
+                return self.new_node(.{ .kind = .lit, .ch = c });
+            },
+        }
+    }
+
+    fn parse_repeat(self: *Matcher, depth: u32) MatchError!u32 {
+        var node = try self.parse_atom(depth);
+        // Postfix quantifiers stack: `a*?` folds as `(a*)?`, harmless for a
+        // boolean match where greed never changes the answer.
+        while (true) {
+            const q = self.peek();
+            if (q == '*') {
+                self.pos += 1;
+                node = try self.new_node(.{ .kind = .star, .a = node });
+            } else if (q == '+') {
+                self.pos += 1;
+                node = try self.new_node(.{ .kind = .plus, .a = node });
+            } else if (q == '?') {
+                self.pos += 1;
+                node = try self.new_node(.{ .kind = .quest, .a = node });
+            } else {
+                break;
+            }
+        }
+        return node;
+    }
+
+    fn parse_concat(self: *Matcher, depth: u32) MatchError!u32 {
+        // Built left-leaning and iteratively, so a long literal never deepens
+        // the parse stack: concat(concat(concat(a,b),c),d).
+        if (self.at_end() or self.peek() == '|' or self.peek() == ')') {
+            return self.new_node(.{ .kind = .empty });
+        }
+        var node = try self.parse_repeat(depth);
+        while (!self.at_end() and self.peek() != '|' and self.peek() != ')') {
+            const rhs = try self.parse_repeat(depth);
+            node = try self.new_node(.{ .kind = .concat, .a = node, .b = rhs });
+        }
+        return node;
+    }
+
+    fn parse_alt(self: *Matcher, depth: u32) MatchError!u32 {
+        if (depth >= max_depth) return error.TooDeep;
+        // Left-leaning too: alt(alt(a,b),c). Alternatives nest as splits.
+        var node = try self.parse_concat(depth);
+        while (self.peek() == '|') {
+            self.pos += 1;
+            const rhs = try self.parse_concat(depth);
+            node = try self.new_node(.{ .kind = .alt, .a = node, .b = rhs });
+        }
+        return node;
+    }
+
+    // --- compiler: parse tree -> NFA program -----------------------------
+
+    fn compile(self: *Matcher, node_idx: u32, depth: u32) MatchError!void {
+        if (depth >= max_depth) return error.TooDeep;
+        const n = self.nodes[node_idx];
+        switch (n.kind) {
+            .empty => {},
+            .lit => {
+                _ = try self.emit(.{ .op = .char, .ch = n.ch });
+            },
+            .any => {
+                _ = try self.emit(.{ .op = .any });
+            },
+            .class => {
+                _ = try self.emit(.{ .op = .class, .set = n.set, .neg = n.neg });
+            },
+            .bol => {
+                _ = try self.emit(.{ .op = .bol });
+            },
+            .eol => {
+                _ = try self.emit(.{ .op = .eol });
+            },
+            .concat => {
+                // Walk the left-leaning concat spine into a stack, then compile
+                // leftmost-first — iterative, so a thousand-atom literal compiles
+                // without a thousand-deep call chain.
+                var chain: [max_nodes]u32 = undefined;
+                var top: u32 = 0;
+                var cur = node_idx;
+                while (self.nodes[@intCast(cur)].kind == .concat) {
+                    if (top >= max_nodes) return error.TooManyNodes;
+                    chain[@intCast(top)] = self.nodes[@intCast(cur)].b;
+                    top += 1;
+                    cur = self.nodes[@intCast(cur)].a;
+                }
+                try self.compile(cur, depth + 1);
+                while (top > 0) {
+                    top -= 1;
+                    try self.compile(chain[@intCast(top)], depth + 1);
+                }
+            },
+            .alt => {
+                // split L, R ; L: <a> ; jmp END ; R: <b> ; END:
+                const sp = try self.emit(.{ .op = .split });
+                const l = self.prog_count;
+                try self.compile(n.a, depth + 1);
+                const jp = try self.emit(.{ .op = .jmp });
+                const r = self.prog_count;
+                try self.compile(n.b, depth + 1);
+                const end = self.prog_count;
+                self.prog[@intCast(sp)].a = l;
+                self.prog[@intCast(sp)].b = r;
+                self.prog[@intCast(jp)].a = end;
+            },
+            .star => {
+                // L1: split body, end ; body ; jmp L1 ; end:
+                const l1 = try self.emit(.{ .op = .split });
+                const body = self.prog_count;
+                try self.compile(n.a, depth + 1);
+                _ = try self.emit(.{ .op = .jmp, .a = l1 });
+                const end = self.prog_count;
+                self.prog[@intCast(l1)].a = body;
+                self.prog[@intCast(l1)].b = end;
+            },
+            .plus => {
+                // body ; split body, end:
+                const body = self.prog_count;
+                try self.compile(n.a, depth + 1);
+                const sp = try self.emit(.{ .op = .split, .a = body });
+                self.prog[@intCast(sp)].b = self.prog_count;
+            },
+            .quest => {
+                // split body, end ; body ; end:
+                const sp = try self.emit(.{ .op = .split });
+                const body = self.prog_count;
+                try self.compile(n.a, depth + 1);
+                self.prog[@intCast(sp)].a = body;
+                self.prog[@intCast(sp)].b = self.prog_count;
+            },
+        }
+    }
+
+    // --- Pike VM: simulate every live thread in lockstep -----------------
+
+    // Follow the zero-width transitions out of `pc` at position `sp`, adding
+    // each reachable consuming/accepting pc to `list`. `seen` deduplicates per
+    // step (a pc added once this generation is never revisited), which bounds
+    // the closure to O(prog) and terminates any epsilon cycle such as `()*`.
+    fn add_thread(
+        self: *Matcher,
+        list: []u32,
+        list_len: *u32,
+        seen: []u32,
+        gen: u32,
+        start_pc: u32,
+        sp: u32,
+        input_len: u32,
+        eps_stack: []u32,
+    ) void {
+        var top: u32 = 0;
+        eps_stack[0] = start_pc;
+        top = 1;
+        while (top > 0) {
+            top -= 1;
+            const pc = eps_stack[@intCast(top)];
+            if (seen[@intCast(pc)] == gen) continue;
+            seen[@intCast(pc)] = gen;
+            const inst = self.prog[@intCast(pc)];
+            switch (inst.op) {
+                .jmp => {
+                    eps_stack[@intCast(top)] = inst.a;
+                    top += 1;
+                },
+                .split => {
+                    // Push both targets; the seen guard keeps this bounded.
+                    eps_stack[@intCast(top)] = inst.b;
+                    top += 1;
+                    eps_stack[@intCast(top)] = inst.a;
+                    top += 1;
+                },
+                .bol => {
+                    if (sp == 0) {
+                        eps_stack[@intCast(top)] = pc + 1;
+                        top += 1;
+                    }
+                },
+                .eol => {
+                    if (sp == input_len) {
+                        eps_stack[@intCast(top)] = pc + 1;
+                        top += 1;
+                    }
+                },
+                else => {
+                    // char / any / class / match — a real stop; record it.
+                    list[@intCast(list_len.*)] = pc;
+                    list_len.* += 1;
+                },
+            }
+        }
+    }
+
+    fn list_has_match(self: *const Matcher, list: []const u32, list_len: u32) bool {
+        var i: u32 = 0;
+        while (i < list_len) : (i += 1) {
+            if (self.prog[@intCast(list[@intCast(i)])].op == .match) return true;
+        }
+        return false;
+    }
+
+    fn run(self: *Matcher, input: []const u8) bool {
+        const input_len: u32 = @intCast(input.len);
+        // Two thread lists, a per-step seen-generation table, and a closure
+        // stack — all bounded by the program size.
+        var list_a: [max_prog]u32 = undefined;
+        var list_b: [max_prog]u32 = undefined;
+        var seen: [max_prog]u32 = undefined;
+        var eps_stack: [max_prog * 2]u32 = undefined;
+        var i: u32 = 0;
+        while (i < self.prog_count) : (i += 1) seen[@intCast(i)] = 0;
+
+        var gen: u32 = 0;
+        var clist: []u32 = list_a[0..];
+        var nlist: []u32 = list_b[0..];
+        var clen: u32 = 0;
+        var nlen: u32 = 0;
+
+        gen += 1;
+        self.add_thread(clist, &clen, seen[0..], gen, 0, 0, input_len, eps_stack[0..]);
+
+        var sp: u32 = 0;
+        while (true) {
+            if (self.list_has_match(clist, clen)) return true;
+            if (sp >= input_len) return false;
+            const c = input[@intCast(sp)];
+            gen += 1;
+            nlen = 0;
+            var t: u32 = 0;
+            while (t < clen) : (t += 1) {
+                const pc = clist[@intCast(t)];
+                const inst = self.prog[@intCast(pc)];
+                switch (inst.op) {
+                    .char => {
+                        const hit = if (self.fold) fold_eq(inst.ch, c) else inst.ch == c;
+                        if (hit) self.add_thread(nlist, &nlen, seen[0..], gen, pc + 1, sp + 1, input_len, eps_stack[0..]);
+                    },
+                    .any => {
+                        if (c != '\n') self.add_thread(nlist, &nlen, seen[0..], gen, pc + 1, sp + 1, input_len, eps_stack[0..]);
+                    },
+                    .class => {
+                        var member = class_has(&self.classes[@intCast(inst.set)], c);
+                        if (self.fold and !member) {
+                            member = class_has(&self.classes[@intCast(inst.set)], fold_other(c));
+                        }
+                        if (member != inst.neg) self.add_thread(nlist, &nlen, seen[0..], gen, pc + 1, sp + 1, input_len, eps_stack[0..]);
+                    },
+                    else => {},
+                }
+            }
+            // Unanchored: also seed a fresh start at the next position.
+            self.add_thread(nlist, &nlen, seen[0..], gen, 0, sp + 1, input_len, eps_stack[0..]);
+            const tmp = clist;
+            clist = nlist;
+            nlist = tmp;
+            clen = nlen;
+            sp += 1;
+        }
+    }
+};
+
+// `\d \D \s \S \w \W`: the base positive set for the letter; `\D \S \W` carry a
+// negation flag rather than an inverted bitmap, so both agree on membership.
+fn fill_shorthand(set: *Class, letter: u8) void {
+    set.* = std.mem.zeroes(Class);
+    merge_shorthand(set, letter);
+}
+
+fn merge_shorthand(set: *Class, letter: u8) void {
+    const base = switch (letter) {
+        'd', 'D' => @as(u8, 'd'),
+        's', 'S' => @as(u8, 's'),
+        else => @as(u8, 'w'),
+    };
+    switch (base) {
+        'd' => class_add_range(set, '0', '9'),
+        's' => {
+            class_add(set, ' ');
+            class_add(set, '\t');
+            class_add(set, '\n');
+            class_add(set, '\r');
+            class_add(set, 0x0c); // form feed
+            class_add(set, 0x0b); // vertical tab
+        },
+        else => {
+            class_add_range(set, 'a', 'z');
+            class_add_range(set, 'A', 'Z');
+            class_add_range(set, '0', '9');
+            class_add(set, '_');
+        },
+    }
+}
+
+// The other-case of an ASCII letter, or the byte itself when it is not a letter.
+fn fold_other(c: u8) u8 {
+    if (c >= 'a' and c <= 'z') return c - 32;
+    if (c >= 'A' and c <= 'Z') return c + 32;
+    return c;
+}
+
+fn fold_eq(a: u8, b: u8) bool {
+    return a == b or fold_other(a) == b;
+}
+
+/// Does `pattern` match anywhere in `input`? The one question this file answers.
+/// A leading `(?i)` folds ASCII case for the whole match. Errors name exactly
+/// what a pattern asked for that this engine does not yet honour.
+pub fn matches(pattern: []const u8, input: []const u8) MatchError!bool {
+    if (pattern.len > max_pattern) return error.PatternTooLong;
+    var m: Matcher = .{ .pat = pattern };
+
+    // A leading (?i) flag sets ASCII case folding, then leaves the rest to parse.
+    if (std.mem.startsWith(u8, pattern, "(?i)")) {
+        m.fold = true;
+        m.pos = 4;
+    }
+
+    const root = try m.parse_alt(0);
+    if (!m.at_end()) return error.UnbalancedParen; // a stray ) or leftover input
+    try m.compile(root, 0);
+    _ = try m.emit(.{ .op = .match });
+    // invariant: the program ends on the single accepting instruction.
+    assert(m.prog_count > 0);
+    assert(m.prog[@intCast(m.prog_count - 1)].op == .match);
+    return m.run(input);
+}
+
+// --- standalone selftest (unused when imported) --------------------------
+
+fn expect(pattern: []const u8, input: []const u8, want: bool) void {
+    const got = matches(pattern, input) catch |err| {
+        print("SELFTEST error {s} on /{s}/ vs \"{s}\"\n", .{ @errorName(err), pattern, input });
+        std.process.exit(1);
+    };
+    if (got != want) {
+        print("SELFTEST FAIL /{s}/ vs \"{s}\" — want {}, got {}\n", .{ pattern, input, want, got });
+        std.process.exit(1);
+    }
+}
+
+pub fn main() void {
+    // literals + unanchored search
+    expect("abc", "xxabcxx", true);
+    expect("abc", "ab", false);
+    // anchors
+    expect("^abc", "abcxx", true);
+    expect("^abc", "xabc", false);
+    expect("abc$", "xxabc", true);
+    expect("abc$", "abcx", false);
+    expect("^$", "", true);
+    // dot
+    expect("a.c", "abc", true);
+    expect("a.c", "a\nc", false);
+    // classes + shorthands
+    expect("\\d\\d\\d", "x123x", true);
+    expect("\\d\\d\\d", "x12x", false);
+    expect("[a-f0-9]", "q", false);
+    expect("[a-f0-9]", "e", true);
+    expect("[^0-9]", "5", false);
+    expect("[^0-9]", "z", true);
+    expect("\\s", "a b", true);
+    expect("\\w+", "  __", true);
+    // quantifiers
+    expect("ab*c", "ac", true);
+    expect("ab*c", "abbbc", true);
+    expect("ab+c", "ac", false);
+    expect("ab+c", "abc", true);
+    expect("ab?c", "ac", true);
+    expect("ab?c", "abbc", false);
+    // alternation + groups
+    expect("(cat|dog)s", "dogs", true);
+    expect("(cat|dog)s", "cows", false);
+    expect("(^|/)x", "a/x", true);
+    expect("(^|/)x", "ax", false);
+    // case-insensitive
+    expect("(?i)stamp", "The STAMP line", true);
+    expect("(?i)[a-z]+", "ABC", true);
+    // real seam patterns (with explicit repetition for the 8/6 digit stamp)
+    expect("(^|/)\\d\\d\\d\\d\\d\\d\\d\\d-\\d\\d\\d\\d\\d\\d_", "session-logs/20260809-110311_x.bron", true);
+    expect("(^|/)\\d\\d\\d\\d\\d\\d\\d\\d-\\d\\d\\d\\d\\d\\d_", "README.md", false);
+    expect("^#\\s", "# a heading", true);
+    expect("^#\\s", "#nospace", false);
+    expect("\\.(png|jpg|jpeg|gif)$", "a/b/c.png", true);
+    expect("\\.(png|jpg|jpeg|gif)$", "a/b/c.md", false);
+    expect("(?i)(\\*\\*Stamp:\\*\\* *living ledger|living ledger *\\(born)", "**Stamp:** living ledger (born x)", true);
+    print("GREEN: rishi match selftest — {d} cases held.\n", .{47});
+}
