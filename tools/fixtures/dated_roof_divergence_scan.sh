@@ -14,7 +14,7 @@ MODE=${1:-}
 SHED=tools/fixtures/shed_census_scan.sh
 HEALTH=tools/fixtures/fascia_health_scan.sh
 PATTERN=tools/fixtures/dated_pattern_scan.sh
-CLASSIFY=tools/fixtures/dated_classify.py
+CLASSIFY=tools/fixtures/dated_classify.rish
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
 
 if ! test -f "$CONTROL_SCAN"; then
@@ -65,7 +65,7 @@ fi
 
 SHED_OUT=$(sh "$SHED")
 HEALTH_OUT=$(sh "$HEALTH")
-SHARED_OUT=$(python3 "$CLASSIFY" census)
+SHARED_OUT=$(rishi/bin/rishi run "$CLASSIFY" census)
 
 SHED_D=$(printf '%s\n' "$SHED_OUT" | sed -n 's/^dated_testimony=//p' | head -1)
 HEALTH_D=$(printf '%s\n' "$HEALTH_OUT" | sed -n 's/^dated_testimony=//p' | head -1)

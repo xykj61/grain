@@ -92,7 +92,7 @@ All authored Python molts to **Rishi**. Census and order: [`../active-designing/
 
 | `.py` file | Verdict | Standing |
 | --- | --- | --- |
-| `tools/fixtures/dated_classify.py` | **ported** — Rishi mutant `dated_classify.rish` seated `20260809`, census byte-identical, witness GREEN | **py kept** until the two `runpy` consumers (`shed_census`, `fascia_health`) de-Python — then Class H fossil |
+| `tools/fixtures/dated_classify.py` | **ported** — Rishi mutant `dated_classify.rish` seated `20260809` with `census`·`classify`·`health`·`shed` commands, all byte-identical, witness GREEN | **all living consumers migrated** (`dated_pattern`·`fascia_health`·`shed_census`·`divergence` now call the rish) · py kept only for dated equinox e116/e117/e118 existence checks |
 | `expanding-prompts/yonder/remember_pin_habit_count.py` | **shredded** `20260809` (circled) — regex-gated · solved-problem one-shot | gone from tree · kept in git history |
 | `classical-vedic-astrology/cast_a_chart.py` | **seam-gated** | a Rye/Zig Swiss-Ephemeris binding |
 | `tools/comlink_r1_dual_bind_probe.py` | **shred, not port** (REDS 64) | a circled shred word — R1 is cut |

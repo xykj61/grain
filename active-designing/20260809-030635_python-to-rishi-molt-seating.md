@@ -42,6 +42,22 @@ Two of the five, then, are not ports: one shred candidate (`remember_pin_habit_c
 - **One consumer repointed** — `dated_pattern_scan.sh` now calls the Rishi mutant instead of `python3`. Its calls are proven correct; the scan's *full* green is gated by a pre-existing, unrelated `census_control_scan` red on this pier (that subsystem is itself mid-port to Rishi), not by this change.
 - **`dated_classify.py` stays on disk** as fossil-pending. Two consumers still import it in-process via `runpy` — `shed_census_scan.sh` and `fascia_health_scan.sh` — and those are themselves Python-embedded shell scans, part of this same molt. De-Pythoning them (and the divergence roof) is the **next lap**; only when every consumer is off the `.py` does it become a Class H fossil. Touching `fascia_health` — a load-bearing health meter — wants its own careful round.
 
+## What landed (`20260809.041500` → the dated subsystem is Python-free)
+
+The whole dated-classification subsystem now runs without Python, and it had to, because `python3` is absent from this pier's PATH — the elder witnesses were silently red:
+
+- **`census_control` fixed first.** Its `census_control_h1_seam.sh` embedded a `python3` heredoc counting H1 headings outside code fences; ported to `awk` (fence-state toggle, `^#\s` count). GREEN again, prove-red still fails.
+- **`fascia_health_scan.sh` de-Pythoned.** Its `runpy` block became one call to a new seam `health` command reproducing the whole per-room report — controls, global tally, and every room with dated testimony sorted by live-percentage — **byte-identical** to the elder Python.
+- **`shed_census_scan.sh` de-Pythoned.** Its `runpy` block became a seam `shed` command reproducing the orphan-floor census — the C1/C2 mention controls, the whole-tree basename mention scan, per-room orphan counts in `Counter.most_common` order, and the health-sketch formulas — **byte-identical**. A real bug surfaced and was fixed in the proving: the orphan set must apply the living-header rescue, exactly as `classify` does, or a `.bron` log that merely quotes "living ledger" is miscounted.
+- **`dated_pattern_scan.sh` and `dated_roof_divergence_scan.sh`** repointed to the Rishi mutant; all three roofs now agree (`dated_testimony` identical by construction) and the divergence witness is GREEN.
+- **Performance held.** A `header_files` helper collapses thousands of per-file `head | rg` spawns into one bulk `rg -l` narrowed by a handful of byte-bound confirmations, keeping the 8000-byte semantics exact while bringing the divergence roof back from a 2-minute timeout to ~36 seconds.
+
+Every living consumer of `dated_classify` now speaks Rishi. The `.py` is kept only because dated equinox witnesses (e116/e117/e118) assert its existence — an accrete-never-break pin, not a live dependency.
+
+## The molt frontier that remains
+
+Roughly ten more `.sh` witnesses still embed `python3` heredocs — `claim_preserve_*`, `date_dialect_scan`, `living_docs_lint_scan`, `markdown_structure_scan`, `oldness_census_scan`, `radiant_h1_fence_scan`, and several dated `equinox_*` scans. Each is its own small port (awk or a Rishi seam), and each is already silently red on this pier. They are the continuing molt, to be taken as convenient laps — the dated `equinox_*` ones only where a recorded pass is warranted, since they are Tier-2 testimony.
+
 ## The Rishi language gap this port surfaced
 
 Building the port proved that Rishi, today, cannot express a per-file census natively: `for-each` does not accumulate (proven in `rish_count_selftest.rish`), there are no user functions to share `classify` between commands, and there is no regex. The faithful shape is therefore Rishi-as-conductor over `git`/`rg`/`awk` seams — legitimate for a shell, and a real improvement (no Python), yet a marker that **loop accumulation, user functions, and a match primitive** are the SOON language features that would let a future classifier live natively in Rishi's own value model rather than in a seam.
