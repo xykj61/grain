@@ -1,16 +1,29 @@
-# rish_count_selftest.rish — accumulation idiom: map+join+sh sum, not for-each.
+# rish_count_selftest.rish — accumulation in Rishi: fold threads state; for-each does not.
 #
-# Run from the repository root:
+# `for-each` binds its loop variable in a fresh child scope each pass, so a running
+# total written there never reaches the outer binding. `fold` is Rishi's accumulator:
+# it carries the accumulator forward across every element. With the `?:` rune a fold
+# body can accumulate under a per-item condition, and a record accumulator carries
+# several values at once — the shape a census counter wants, no shell needed.
+#
 #   rishi/bin/rishi run tools/rish_count_selftest.rish
 
 let items = [1 2 3]
+
+# for-each still cannot accumulate — its body's binding stays in the child scope.
 let total = 0
 for-each items as i do let total = total + i
 assert total == 0 else "for-each does not accumulate (expected 0, proved)"
 
-let per_str = map items as n: "${n}"
-let expr = join per_str " + "
-let sum = run ["sh" "-c" "echo $((${expr}))"]
-assert trim sum.out == "6" else "map+join+sh sum idiom failed"
+# fold does — the accumulator is threaded through each element.
+let sum = fold items from 0 as acc n: acc + n
+assert sum == 6 else "fold accumulates a sum natively"
 
-say "GREEN: Rishi count idiom — for-each cannot accumulate; map+join+sh sum can."
+let count = fold items from 0 as acc n: acc + 1
+assert count == 3 else "fold counts natively"
+
+# fold with the ?: conditional counts a subset without a shell.
+let odds = fold [1 2 3 4 5] from 0 as acc n: acc + (?: ((n / 2) * 2 == n) (0) (1))
+assert odds == 3 else "fold + ?: counts a subset"
+
+say "GREEN: Rishi accumulation — for-each cannot accumulate; fold does, natively, and with ?: it counts under a condition."

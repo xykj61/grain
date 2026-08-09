@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` — the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `1b6da59141` · Grain · cloud pier
+**Git nib:** `2c7eddfe46` · Grain · cloud pier
 **Host:** Framework · EDT (`America/New_York`) · Vultr SEA VPS (HP AMD 2vCPU/4GB shared · never EWR) · this session in ai-jail
 
 ---
@@ -22,7 +22,7 @@
 | Surface & Intelligence | **BUHR** | Realidream DAG surface · Quin's four voices (Lattice · Scribble · Lantern · Ember) · MCP-in-Bron · Tablecloth |
 | The World | **TACT** | Ship-Pilot pitch · publishing · Grainphone · commerce · CONTRIBUTING four-doors · Grain Energy PBC |
 
-**Finishing edge: SOON q1** — Rishi grew `matches` · `find` (bounded NFA · `{n,m}` · `\b` · lookbehind) · `sort` · `unique` · `upper` · list `+`. **`claim_preserve` folded to native Rishi** (first complete seam, 40/41 byte-identical, gate GREEN + python-free). Next: **loop accumulation** — the last blocker for the census seams (dated_classify · census_control). Baton: [`../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md`](../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md).
+**Finishing edge: SOON q1** — Rishi grew `matches` · `find` · `sort` · `unique` · `upper` · list `+` · **`?:` conditional rune** (wutcol, completing `?!`·`?&`·`?|`·`?:`). **`claim_preserve` folded native** (first complete seam). Accumulation solved: **`fold` + `?:`** fold census seams natively (proven on the H1 count). No language gap remains — folding the census duty bodies vs keeping fast bulk-`rg` seams is a design call. Next: user functions (convenience), or apply the fold pattern. Baton: [`../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md`](../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md).
 
 ---
 

@@ -98,12 +98,13 @@ The extract half is here too. Rishi speaks **`find <text> <pattern>`** → the l
 
 The first **complete** seam fold. Growing `sort` (ascending, strings or integers), `unique` (first-seen distinct), `upper`, list `+` concatenation, and a single-char-class **lookbehind** `(?<!X)` closed the last gaps, and `claim_preserve_extract` moved from perl to **native Rishi** — its own `find`/`matches`/`sort`/`unique`, no shell or perl. Validated **40 of 41 real files byte-identical** to the elder extractor; the one difference is a single `PROPER` token on `LEXICON.md`, an honest ASCII-vs-Unicode edge (Python's `\b` treats "Bashō" as one word, an ASCII engine sees the byte boundary) — on a file the gate never runs, and irrelevant to the gate's before-vs-after job. Its sibling `claim_preserve_modality` (a modal-word counter) folded too — `length (find …)` per term, byte-identical to Python. The whole `claim_preserve` gate now runs **GREEN and python-free** on this pier for the first time; python3 was absent, so it had been silently red.
 
-What still stands between the *census* seams and a fully native `.rish`:
+### The accumulation "blocker" was already solved — `fold` + `?:` (`20260809`)
 
-- **Loop accumulation** — a census counter still cannot live in a `for-each` (`rish_count_selftest.rish`). This is the last real blocker for folding `dated_classify`'s census/health/shed and `census_control`'s H1 fence-count.
-- **User functions** — to share one `classify` body between commands; a convenience, not a blocker.
+Reaching for loop accumulation, the tree already had it: **`fold`** threads an accumulator across a list (`fold xs from 0 as acc n: acc + n`). What a census fold also needed was a conditional that returns a *value* — Rishi's `if/then/else` is a statement, and a fold body is one expression. So the **`?:` conditional rune** (wutcol) landed, completing the boolean rune family (`?!` · `?&` · `?|` · `?:`): `?: <cond> <then> <else>`, lazy in its branches. With `fold` + `?:` + a record accumulator, a stateful line scan lives in pure Rishi — proven by reproducing `census_control`'s H1-outside-fences count (`true=1 naive=4`) natively, identical to the awk seam. `rish_count_selftest.rish` now records that `fold` accumulates (the old map+join+sh workaround is retired).
 
-So the de-Python laps (**c**) now fold every *token/extract* seam natively (claim_preserve proves it end to end); the remaining census seams wait on loop accumulation, the next SOON language lap.
+So the census seams are now **foldable** — no language gap remains. What's left is a **design choice, not a blocker**: `census_control` deliberately keeps its duty bodies in POSIX seams ("POSIX seams keep the duty bodies; the `.rish` sequences them"), while the wider molt aims for all-native Rishi. Whether to fold the census duty bodies (H1, dated census/health/shed) into native Rishi `fold`s or keep the fast bulk-`rg`/`awk` seams is Keaton's call — the seams are green and python-free either way, and the native fold is now proven possible. `dated_classify`'s big census over 9353 files is the one case where the bulk-`rg` seam is genuinely faster than reading every file in a fold; there, orchestration-over-seams is the honest choice even with accumulation in hand.
+
+The only remaining language convenience is **user functions**, to share one `classify` body between commands — not a blocker for anything.
 
 ## What the molt keeps
 
