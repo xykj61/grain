@@ -11,7 +11,7 @@
 
 ## What This Tutorial Is
 
-A single reading order: foundations → rules → first witness → session log → send. It does not teach the full Glow language (that waits on a general parser). It teaches how this project *steers*.
+One reading order carries the whole first day: foundations → rules → first witness → session log → send. It teaches how this project *steers*, rather than the full Glow language — that waits on a general parser.
 
 ## 1. Why We Build
 
@@ -56,11 +56,11 @@ rishi/bin/rishi run tools/glow_expr_witness.rish
 rishi/bin/rishi run tools/dexter_glass_witness.rish
 ```
 
-When it prints GREEN, you have stood inside the witness habitat.
+When it prints GREEN, you stand inside the witness habitat.
 
 ## 6. Log, Then Send
 
-Every turn ends with a Bron session log (`session-logs/YYYYMMDD-HHMMSS_slug.bron`) and a newest-first row in `session-logs/README.md`. When work is ready for the pier, **send** (commit · push · merge) — Cursor’s one word for shipping to your own history.
+Every turn closes with a Bron session log (`session-logs/YYYYMMDD-HHMMSS_slug.bron`) and a newest-first row in `session-logs/README.md`. Once work is ready for the pier, **send** (commit · push · merge) — Cursor’s one word for shipping to your own history.
 
 ## 7. Markup Pipeline (orientation only)
 

@@ -10,7 +10,7 @@
 
 ## What Reviving Is
 
-Reviving is how Grain grows: not by renaming what exists, but by **re-growing an existing working thing into the Glow direction as a new artifact beside the elder.** A revival takes something real — an Urbit vane resting in `old/`, a Rye OS module already running, a retired seam like the WOV-TigerBeetle pin — and rewrites its proven essence in Glow, under TAME, born with its Glow-direction name. The elder keeps its name and its green witnesses and keeps running. The revival supersedes it only once it is proven, and never before.
+Reviving is how Grain grows: rather than renaming what exists, it **re-grows an existing working thing into the Glow direction as a new artifact beside the elder.** A revival takes something real — an Urbit vane resting in `old/`, a Rye OS module already running, a retired seam like the WOV-TigerBeetle pin — and rewrites its proven essence in Glow, under TAME, born with its Glow-direction name. The elder keeps its name and its green witnesses, and keeps running. The revival supersedes it once it is proven, and never before.
 
 This resolves the rename tension at its root. We were weighing whether to rename our modules to Urbit's vane names (huge reference churn, un-reviewable diffs) or keep our own (less legible to Urbit). Reviving dissolves the choice: **we never rename.** A revived module is a new thing, so it is simply *born* with whichever name fits the Glow direction — while the elder it grew from stays exactly as it was until the revival earns the right to replace it.
 
@@ -21,16 +21,16 @@ This resolves the rename tension at its root. We were weighing whether to rename
 - **`active-designing/`** plans something **new** — a module, a lap, a surface that did not exist. Forward-looking; no required ancestor.
 - **`active-reviving/`** re-grows something that **already exists** — it always names its elder (the `old/` vane, the running module, the retired seam) and carries that elder's working essence forward into Glow. Backward-rooted, forward-growing.
 
-If a brief has no ancestor it is reviving from, it belongs in `active-designing/`. If it is rewriting a real, working thing into Glow, it belongs here.
+A brief with no ancestor to revive from belongs in `active-designing/`. A brief that rewrites a real, working thing into Glow belongs here.
 
 ## The Discipline of a Revival
 
 Every revival keeps five rules, each drawn from a law this project already lives by:
 
-1. **Name the elder.** A revival states exactly what it re-grows — a path in `old/`, a module, a retired seam. No named source means it is designing, not reviving.
+1. **Name the elder.** A revival states exactly what it re-grows — a path in `old/`, a module, a retired seam. A source left unnamed means the work is designing rather than reviving.
 2. **Grow beside; never break** (accrete-never-break). The elder keeps its name, its home, and its green witnesses, and keeps running throughout. The revival grows here as design, then lands as a new artifact in its own home when ready.
-3. **Born with its Glow name.** Because a revival is a new artifact, it carries its Glow-direction name from birth. This is the whole point: renaming is replaced by naming-at-birth, so no reference ever churns.
-4. **Supersede only when proven** (the Pond-supersedes-ai-jail pattern). The revival replaces the elder only after passing the elder's own witnesses, with an explicit supersede word. Until then, both coexist honestly.
+3. **Born with its Glow name.** Because a revival is a new artifact, it carries its Glow-direction name from birth. This is the whole point: naming-at-birth replaces renaming, so no reference ever churns.
+4. **Supersede only when proven** (the Pond-supersedes-ai-jail pattern). The revival replaces the elder after passing the elder's own witnesses, with an explicit supersede word. Until then, both coexist honestly.
 5. **May shelter in Maze.** A revival still earning its shape may live in the Maze nursery until it graduates to a canonical name and home.
 
 ## The Clock a Revival Keeps

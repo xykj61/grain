@@ -48,7 +48,7 @@ A release that stays modest forever is still a good and finished thing. A grand 
 
 ## How Rye OS Grows by This Method
 
-each lap of Rye OS is a simple, lovable, complete thing, grown from the running seed before it. This weaves directly with Gall's Law: the working whole grows from a smaller working whole, never from a grand design imposed at once.
+Each lap of Rye OS is a simple, lovable, complete thing, grown from the running seed before it. This weaves directly with Gall's Law: the working whole grows from a smaller working whole, rather than from a grand design imposed at once.
 
 The first such whole is the Rishi-and-Mantra shell — a place to type a command, watch it run, keep its history, and call it back. Simple, for it is one loop. Lovable, for it is yours, on your own metal, and it already works. Complete, for the circle closes: type, run, version, recall. The Pond GUI is the next lap, grown from that one when Skate and the window stand ready. Lap by lap, the whole machine arrives by degrees.
 

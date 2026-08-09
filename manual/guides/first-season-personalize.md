@@ -11,7 +11,7 @@
 
 ## What this is
 
-Grain’s shared tree still carries the source pier’s living face in places — names, handles, clone URLs. The living beginner clone is [`xykj61/grain`](https://github.com/xykj61/grain); the agentic lane `autoproject96` stays named in [`REMOTE_ROSTER.md`](../../context/REMOTE_ROSTER.md). This walk gives you a **Brix template** whose filled, **gitignored** instance holds *your* identity and a find/replace map, plus a **first 256-round season** shape: four equinoxes of 64, sixteen journeys of 16.
+Grain’s shared tree still carries the source pier’s living face in places — names, handles, clone URLs. The living beginner clone is [`xykj61/grain`](https://github.com/xykj61/grain); the agentic lane `autoproject96` stays named in [`REMOTE_ROSTER.md`](../../context/REMOTE_ROSTER.md). This walk hands you a **Brix template** whose filled, **gitignored** instance holds *your* identity and a find/replace map, plus a **first 256-round season** shape: four equinoxes of 64, sixteen journeys of 16.
 
 **Equinox A** opens with two journeys:
 
@@ -40,7 +40,7 @@ Grain’s shared tree still carries the source pier’s living face in places �
 
 ## Sync personal files without git
 
-Root [`.gitignore`](../../.gitignore) is deny-all with an allow-list: filled identity files stay **local** and must not be committed. Sync them to the cloud with a **folder sync** tool, not by weakening gitignore.
+Root [`.gitignore`](../../.gitignore) is deny-all with an allow-list: filled identity files stay **local**, out of every commit. Sync them to the cloud with a **folder sync** tool, rather than by weakening gitignore.
 
 **Recommended set to sync** (copy these paths into Dropbox, Syncthing, iCloud Drive, Nextcloud, or equivalent — one tool, one folder):
 
@@ -58,9 +58,9 @@ Root [`.gitignore`](../../.gitignore) is deny-all with an allow-list: filled ide
 1. Keep the git clone at `~/grain` (or your `your_repo_dir`).  
 2. Create a sync folder (e.g. `~/Dropbox/grain-personal/` or a Syncthing folder).  
 3. Place **symlinks or copies** of only the gitignored instances above into that sync folder — or sync a small `~/grain-personal/` directory and symlink those files back into `~/grain`.  
-4. Never put the whole repository inside Dropbox as the primary git working tree — Dropbox and git both rewrite files; they fight. GitHub (or your forge) owns the tracked tree; Dropbox owns the small personal overlay.
+4. Keep the whole repository out of Dropbox as the primary git working tree — Dropbox and git both rewrite files; they fight. GitHub (or your forge) owns the tracked tree; Dropbox owns the small personal overlay.
 
-**Why not git for these:** they carry your name, email, model choices, and sometimes key paths. The deny-all gitignore is the fence; cloud folder sync is the backup and multi-machine carry for what the fence holds out.
+**Why cloud sync rather than git for these:** they carry your name, email, model choices, and sometimes key paths. The deny-all gitignore is the fence; cloud folder sync is the backup and multi-machine carry for what the fence holds out.
 
 ---
 

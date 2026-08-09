@@ -15,13 +15,13 @@ Kaeden wanted the Zig 0.16.0 stable source on hand, cloned from the Ziglang proj
 
 The ai-jail wrapper keeps a single promise about persistence: the current project directory stays, and everything else resets. Parent directories, the home directory, and `/tmp` all live in tmpfs, so they vanish the moment ai-jail exits. The session that hosts this work mounts `~/veganreyklah2` read-write and maps `~/py-out` read-write as well.
 
-This makes the answer clear and affirmative: anything we want to keep belongs inside `~/veganreyklah2`. A clone placed in the home directory or a sibling folder would look writable from inside the sandbox, yet it would disappear on exit. The project directory is the durable ground.
+This makes the answer clear and affirmative: anything we want to keep belongs inside `~/veganreyklah2`. A clone in the home directory or a sibling folder would look writable from inside the sandbox, yet vanish on exit. The project directory is the durable ground.
 
 ## The Decision
 
 We keep the Zig source inside the workspace, under `vendor/`. The name `vendor/` marks it plainly as third-party code we hold locally and leave unmodified — a familiar convention that separates outside source from our own work. Zig itself rests at `vendor/zig`.
 
-We cloned the exact stable tag rather than the full history. A shallow clone at `0.16.0` gives the precise released source, lean and ready, while keeping the footprint small. The history can deepen later with a single fetch if a need arises.
+We cloned the exact stable tag rather than the full history. A shallow clone at `0.16.0` gives the precise released source, lean and ready, and keeps the footprint small. A single fetch can deepen the history later, whenever a need arises.
 
 ## How We Did It
 

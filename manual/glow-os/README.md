@@ -20,7 +20,7 @@
 
 **Names in code, roles in the pitch.** Grain keeps its own module names in the code (Mantra, Brix, Rish/Rishi, Brushstroke, Realidream, Skate, Comlink, and the rest) and speaks Urbit's vane names as *roles* when pitching to the Urbit community (Mantra is our Clay, Brix our Ford, Rish/Rishi our Dojo, Realidream our Landscape, Comlink our Ames). The full role map is in [`../../context/specs/20260714-002123_naming-decisions-and-role-nesting.md`](../../context/specs/20260714-002123_naming-decisions-and-role-nesting.md). The shell is **Rish** in this reference-manual register and **Rishi** in tutorials.
 
-These docs deliberately mirror the shape of Urbit's own documentation — an overview, a getting-started path, and per-variant reference — adapted to Grain's new direction. Where Urbit's docs teach one system, ours teach one system with five interchangeable variants, so the per-variant pages are generated from a single shared template.
+These docs deliberately mirror the shape of Urbit's own documentation — an overview, a getting-started path, and per-variant reference — adapted to Grain's new direction. Where Urbit's docs teach one system, ours teach one system with five interchangeable variants, so a single shared template generates all five per-variant pages.
 
 ## The Rooms
 
@@ -30,11 +30,11 @@ These docs deliberately mirror the shape of Urbit's own documentation — an ove
 
 ## How This Relates to the Existing Manual
 
-This sits inside the existing four-room manual (`../README.md`) as the Grain onboarding surface. It does not replace the reference specs (Rishi language, Caravan capabilities, Tally gardens); it is the front door a newcomer to Grain reads first. In time, the doc pipeline that *builds* these pages is the Scribble/Brix/Mantra fusion designed in [`../../external-research/20260713-235700_glow-doc-fusion-scribble-brix-mantra.md`](../../external-research/20260713-235700_glow-doc-fusion-scribble-brix-mantra.md).
+This sits inside the existing four-room manual (`../README.md`) as the Grain onboarding surface. It stands beside the reference specs (Rishi language, Caravan capabilities, Tally gardens) rather than replacing them; it is the front door a newcomer to Grain reads first. In time, the Scribble/Brix/Mantra fusion designed in [`../../external-research/20260713-235700_glow-doc-fusion-scribble-brix-mantra.md`](../../external-research/20260713-235700_glow-doc-fusion-scribble-brix-mantra.md) will *build* these pages.
 
 ## A Note on Examples
 
-Every ship-name example in these docs is a deliberately invalid placeholder (never a real `@p`), per the placeholder-ship-names rule — so no command a newcomer copies can ever reach a real point on the live network.
+Every ship-name example in these docs is a deliberately invalid placeholder (never a real `@p`), per the placeholder-ship-names rule — so any command a newcomer copies stays safely short of a real point on the live network.
 
 ---
 

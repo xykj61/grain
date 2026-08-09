@@ -29,7 +29,7 @@ Beside the allocator itself, Tally holds a second kind of thing: small, universa
 | [`bud.rye`](bud.rye) | Pedersen commitment mark (Bud) | Disclosure / SLCL4 family |
 | [`pedersen.rye`](pedersen.rye) | Deprecated re-export → `bud.rye` | Name kept for elder import paths |
 
-`no_padding`'s realest use today lives outside Tally itself, at `comlink/device_wire.rye`'s hosted selftest, which asserts it against every hand-designed virtio wire structure in `comlink/virtio_net.rye` — five structures a real device reads byte for byte, where a silent padding byte would leave a guest mute to its host rather than a style question.
+`no_padding`'s realest use today lives outside Tally itself, at `comlink/device_wire.rye`'s hosted selftest, which asserts it against every hand-designed virtio wire structure in `comlink/virtio_net.rye` — five structures a real device reads byte for byte, where a silent padding byte would leave a guest mute to its host. That is a correctness stake, well beyond style.
 
 ## Who calls Tally
 

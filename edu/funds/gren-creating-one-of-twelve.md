@@ -37,7 +37,7 @@ How a new fund joins the constellation wheel: a **four-letter** name, a **`.fund
 
 ## Step 1 — four-letter name (Civic Style)
 
-A fund name on this wheel is **exactly four ASCII letters**, lowercase in vane form (`%gren`), title case in prose (**Gren**). The shape matches the house habit of short, speakable names (vanes, waymarks, modules) without borrowing a waymark draw for the fund itself.
+A fund name on this wheel carries **exactly four ASCII letters**, lowercase in vane form (`%gren`), title case in prose (**Gren**). The shape matches the house habit of short, speakable names (vanes, waymarks, modules), yet borrows no waymark draw for the fund itself.
 
 **Worked example — Gren:**
 
@@ -54,7 +54,7 @@ A fund name on this wheel is **exactly four ASCII letters**, lowercase in vane f
 
 ## Step 2 — `.fund` DNS anchor
 
-Elder anchoring rule: a wheel entrant holds a **`.fund`** domain so the old world's name system vouches for the new seat. The domain is **prep until claimed**; counsel never purchases it.
+Elder anchoring rule: a wheel entrant holds a **`.fund`** domain so the old world's name system vouches for the new seat. The domain stays **prep until claimed**; counsel never purchases it.
 
 **Worked example — gren.fund:**
 
@@ -89,7 +89,7 @@ Murr (Aries · index 0; was Mala) leads; Gren steadies; Siya (Gemini · index 2)
 
 ## Step 4 — read the phone book
 
-The constellation contract is a **phone book**, not a mint. Version one holds seats; it **mints nothing** and moves no value. Read before you seat.
+The constellation contract is a **phone book** rather than a mint. Version one holds seats; it **mints nothing** and moves no value. Read before you seat.
 
 | Artifact | Role |
 |----------|------|
@@ -121,7 +121,7 @@ Every constellation prep generator knocks **Comlink** before any seating byte. T
 
 ## Step 6 — the refuse-walk
 
-A tutorial that can deploy is a tutorial that lies. Step six is the practiced **RED**: name the forbidden verbs and prove the generator exits rather than pretending.
+A tutorial that can deploy is a tutorial that lies. Step six holds the practiced **RED**: name the forbidden verbs and prove the generator exits rather than pretends.
 
 | Verb | Who may run it | Tutorial / gen-gren |
 |------|----------------|---------------------|

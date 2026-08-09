@@ -16,7 +16,7 @@
 
 ## What a page owes
 
-Every pattern page carries four parts, in order. **Context** — the situation, plainly, for a reader who has never met this tree. **Forces** — what pulls against what; the tension that makes the pattern worth naming. **The fold** — the composition itself, as the pure fold it is: which facts enter, what anyone can recompute. **The witness** — the path to the code that proved it, with the stamp it ran at. A page missing its witness is a design note that wandered into the wrong room, and the shelf refuses it.
+Every pattern page carries four parts, in order. **Context** — the situation, plainly, for a reader who has never met this tree. **Forces** — what pulls against what; the tension that makes the pattern worth naming. **The fold** — the composition itself, as the pure fold it is: which facts enter, what anyone can recompute. **The witness** — the path to the code that proved it, with the stamp it ran at. A page missing its witness is a design note that wandered into the wrong room, and the shelf refuses it rather than shelving it.
 
 ## Page one — landed
 

@@ -10,7 +10,7 @@
 
 ---
 
-Tutorial one introduced the witness shape. This room goes deeper into the **run record** — the four fields every gate trusts — and the **failure paths** RW-4 pins beside success.
+Tutorial one introduced the witness shape. This room reaches deeper — into the **run record**, the four fields every gate trusts, and the **failure paths** RW-4 pins beside success.
 
 ## Step 1 — The four fields
 
@@ -46,7 +46,7 @@ On failure, flip the expectations: `(fail_run.ok == false)`, match `.code`, asse
 
 ## Step 3 — Friendly failures in the shell (RW-4)
 
-Shell meta-commands and CLI mistakes must **survive** — the session continues, stderr names the problem kindly:
+Shell meta-commands and CLI mistakes **survive** — the session continues, and stderr names the problem kindly:
 
 ```bash
 rishi/bin/rishi run tools/rw4_slc_failure_paths.rish

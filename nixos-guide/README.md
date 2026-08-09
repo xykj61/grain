@@ -13,7 +13,7 @@
 
 **Personal knock:** a real-address `ssh` config lives at `.ssh/config` inside this folder — ignored by design (`.gitignore` carries `/.ssh/`), so addresses and identities stay off every remote while the form itself remains in guide 0, placeholders only. **First Framework knock GREEN** `20260805.000001` (`ssh pier` → hostname `pier`).
 
-**Horizon:** service lanes (one honest firewall port per hosted craft) as Comlink, Tablecloth, and Murr Mycelium each earn their witness.
+**Horizon:** service lanes — one honest firewall port per hosted craft — open as Comlink, Tablecloth, and Murr Mycelium each earn their witness.
 
 ## Living flake vs tracked templates
 
@@ -23,7 +23,7 @@
 | **Living machine config** | `/etc/nixos/` | No — what `nixos-rebuild switch --flake /etc/nixos#pier` reads |
 | **Optional private mirror** | separate `pier-flake` repo | No — rebuild-from-nothing off-machine without mixing pier identity into public grain |
 
-Copy from `templates/` (see [`templates/README.md`](templates/README.md)), fill keys, keep the living files outside this tree. Same house law as `GLOW_HOST.template.bron` → gitignored `GLOW_HOST.bron`.
+Copy from `templates/` (see [`templates/README.md`](templates/README.md)), fill keys, and keep the living files outside this tree. Same house law as `GLOW_HOST.template.bron` → gitignored `GLOW_HOST.bron`.
 
 ## Virt horizon on the cloud pier
 

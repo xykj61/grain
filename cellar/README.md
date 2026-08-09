@@ -6,7 +6,7 @@
 **Last updated:** `20260801.033305` (e149 — Class W wire tokens parked; module name Cellar)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 
-**Cellar is cellar software** (product lane). Ring-1 **wire** format tokens (`amber-ring1-v2-tilak` · AEAD shoulder season) stay as format — Class W parked e149. — preservation **in place** at home. It seals bit-faithful snapshots as content-addressed **resins** and a signed manifest, then sets them on deep storage that disconnects from every running system. Mantra holds the living history; Cellar seals the moment cold.
+**Cellar is cellar software** (product lane) — preservation **in place** at home. It seals bit-faithful snapshots as content-addressed **resins** and a signed manifest, then sets them on deep storage that disconnects from every running system. Mantra holds the living history; Cellar seals the moment cold. Ring-1 **wire** format tokens (`amber-ring1-v2-tilak` · AEAD shoulder season) stay as format — Class W parked e149.
 
 **Amphora** is the traveling sibling — **vessel software** for preservation **in motion** across a crossing. Lap two pours a cellar season into a vessel and carries it to a second dock; the cellar and the vessel share the resins law and Kumara's stamp.
 

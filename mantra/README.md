@@ -9,7 +9,7 @@
 
 Mantra is where names live. A name is **peer / bolt / revision / path**, and **recall** of a name returns the same bytes for all time — referential transparency held as a law, verified by digest on every read. Content is a **resin** at a SHA3-256 address; history accretes and never rewrites; a **Tilak** marks each leaf's layout. The full why rests in the namespace brief at [`../active-designing/20260706-023912_the-referential-namespace.md`](../active-designing/20260706-023912_the-referential-namespace.md); the normative surface rests in the reference spec at [`../context/specs/20260707-011412_mantra-referential-namespace-reference.md`](../context/specs/20260707-011412_mantra-referential-namespace-reference.md).
 
-The module grew as one foundation and a family of compositions. `recall_lap1.rye` holds the catalog and its laws; every file after it **imports that foundation and edits nothing beneath itself** — the pattern held across the entire arc, parity 159 through 185.
+The module grew as one foundation and a family of compositions. `recall_lap1.rye` holds the catalog and its laws; every file after it **imports that foundation and edits nothing beneath itself** — a pattern that held across the entire arc, parity 159 through 185.
 
 ## The Family
 

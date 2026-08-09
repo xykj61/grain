@@ -7,7 +7,7 @@
 
 ---
 
-Pond holds **applications** that compose Rye OS modules above the kernel and compositor — the first lap where isolation policy meets a running whole a person can use. The `apps/` floor keeps enclosure code and application code apart.
+Pond holds **applications** that compose Rye OS modules above the kernel and compositor — the first lap where isolation policy meets a running whole a person can use. The `apps/` floor keeps enclosure code and application code each in its own place.
 
 **Pond clause:** Pond's enclosure aspect runs what Brix composes under policy.
 
@@ -29,13 +29,13 @@ Rye resolves modules from the compile directory. Under `pond/apps/`:
 | `brushstroke` | `../../brushstroke` |
 | `granary/` | `../../../granary` core + Kumara / Tally / Scribble seams |
 
-These symlinks are required for `drawn_terminal.rye` to import `rishi/main.rye` and `brushstroke/wayland_seed.rye`.
+These symlinks let `drawn_terminal.rye` import `rishi/main.rye` and `brushstroke/wayland_seed.rye`.
 
 ---
 
 ## Build and run — drawn terminal
 
-**Prefer `rishi run` for every hosted step** — build, witnesses, preflight, and parity slices. Rishi carries staged TAME output and asserts GREEN before the step completes. Run binaries directly only for **live** interactive mode on GNOME Wayland.
+**Prefer `rishi run` for every hosted step** — build, witnesses, preflight, and parity slices. Rishi carries staged TAME output and asserts GREEN before the step completes. Run binaries directly for **live** interactive mode on GNOME Wayland alone.
 
 From the repository root:
 

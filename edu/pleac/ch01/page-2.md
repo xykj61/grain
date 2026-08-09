@@ -9,7 +9,7 @@
 
 ---
 
-**The task.** Recipe 1.1 discovered that a built gate answers by exiting clean — the value never reached stdout, so no witness could assert what a gate computed. This recipe closes that gap: a gate whose answer is spoken aloud, so from today every witness in the tree may assert a value, not just an exit.
+**The task.** Recipe 1.1 discovered that a built gate answers by exiting clean — the value stayed inside the exit code rather than reaching stdout, so no witness could assert what a gate computed. This recipe gives the gate a voice: an answer spoken aloud, so from today every witness in the tree may assert a value rather than only an exit.
 
 **The desk, four lines.** The same bartis shape, one new body word: `%-  say  sample`. In Glow, `say` is now a closed call gate; the lowerer answers it with a **speaking main** — the sample is parsed, the gate runs, and the answer streams to stdout through the exact idiom the shell's own `do_say` uses: `std.Io.File.stdout()` with the two-argument `writeStreamingAll(io, line)`. `say` is argv-only by design; the fixture road refuses it honestly.
 
