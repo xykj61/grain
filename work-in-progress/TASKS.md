@@ -10,12 +10,12 @@
 
 ## Now — The Compass Season · SOON q1 (`20260809.024320`)
 
-**Finishing edge:** SOON q1 r1 — the language. Rishi's `^-` cast rune landed GREEN; continue the rune heads. Debrided to the Compass Season — the elder e-number ladder rests in the code and the dated counsel.
-**Prove:** `rishi/bin/rishi run tools/rish_rune_cast_witness.rish`
+**Finishing edge:** SOON q1 — the language. Rishi's `^-` cast and `?!` wutzap-not rune heads landed GREEN; continue the rune heads. Debrided to the Compass Season — the elder e-number ladder rests in the code and the dated counsel.
+**Prove:** `rishi/bin/rishi run tools/rish_rune_cast_witness.rish` · `rishi/bin/rishi run tools/rish_rune_not_witness.rish`
 
 | Lap | Equinox | Status |
 |-----|---------|--------|
-| Rishi `^-` cast rune · continue rune heads | SOON | **LANDED** (`^-`) · heads next |
+| Rishi rune heads — `^-` cast · `?!` not landed · continue | SOON | **LANDED** (`^-` · `?!`) · more heads next |
 | `mold → shape` debride (82 files / 753) | SOON | proposed · own pass |
 | TAME core/shelf compression | SOON | proposed |
 | Brix + Brix-infuse | SOON j2 | proposed |

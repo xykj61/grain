@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260809.025958
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title Rishi second rune head — ?! wutzap logical-not GREEN
+prompt kg
+think finishing edge is SOON q1 — continue the rune heads after the ^- cast landed; picked ?! (wutzap, logical not) as the cleanest next head — unary, mirrors do_cast's shape exactly, fully width-safe since it works only on booleans
+think placed the ?! dispatch before the comparison scan so ?! (a == b) keeps the whole parenthesized predicate as its body; confirmed find_comparison respects paren depth, so the inner == is not read as the top-level one
+think do_not evaluates the body, requires a boolean, returns the negation; refuses a non-boolean rather than coercing — the value model stays honest, only a bool negates. Two asserts: non-empty body precondition, and negated != b postcondition
+obs SLC Definition of Done — ran tame_style_check on the touched main.rye; it flagged a pre-existing compound assert in do_cast (assert(x >= 0 and x <= u32_max)), split it into two named asserts (floor, ceiling) on touch
+obs after that fix, tame_style_check surfaces an ambient red — TOOLS_PY_BAD on tools/comlink_r1_dual_bind_probe.py, an authored Python fossil dated Aug 3 left after Comlink R1 was cut; unrelated to the rune, booked as REDS 64, remediation is molt/shred on Keaton's word not a rune-lap patch
+obs both rune witnesses GREEN on metal after rebuild — rish_rune_not_witness (five truths incl. double-negation and a refusing child) and the ^- cast witness as regression
+file rishi/src/main.rye ?! dispatch + do_not fn + NotNeedsBody/NotNeedsBoolean errors + split do_cast @u32 assert
+file tools/rish_rune_not_witness.rish new witness — ?! negates, nests, refuses non-boolean
+file tools/fixtures/rune_not_bad_type.rish refusal child — ?! 5 must exit non-zero
+file context/LEXICON.md SOON entry notes ?! wutzap landed second
+file work-in-progress/REMEMBER.md · TASKS.md finishing edge names both rune heads
+file work-in-progress/REDS.md row 64 — the comlink R1 python fossil the style gate found
+file session-logs/20260809-025958_rishi-wutzap-not-rune-green.bron this record
+recommend keep-going two rune heads speak now; the next mechanical lap is another rune head (an if-then-else ?: or a logical-and ?&), or the molt/shred of the comlink R1 python fossil booked as REDS 64 on Keaton's word

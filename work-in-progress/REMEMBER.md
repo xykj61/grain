@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` — the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `3c5ddbfbf2` · Grain · cloud pier
+**Git nib:** `0c4d059652` · Grain · cloud pier
 **Host:** Framework · EDT (`America/New_York`) · Vultr SEA VPS (HP AMD 2vCPU/4GB shared · never EWR) · this session in ai-jail
 
 ---
@@ -17,12 +17,12 @@
 
 | Equinox | Waymark | Holds |
 |---|---|---|
-| The Language | **SOON** | Glow runes (Rishi `^-` cast landed first) · `mold→shape` debride · TAME core/shelf · Brix + Brix-infuse · PLEAC stdlib · the pipeline · Aurora |
+| The Language | **SOON** | Glow runes (Rishi `^-` cast · `?!` wutzap-not landed) · `mold→shape` debride · TAME core/shelf · Brix + Brix-infuse · PLEAC stdlib · the pipeline · Aurora |
 | Identity & Network | **JARL** | Kumara · d12/d60 fractal topology · Comlink · Sui constellation · settlement |
 | Surface & Intelligence | **BUHR** | Realidream DAG surface · Quin's four voices (Lattice · Scribble · Lantern · Ember) · MCP-in-Bron · Tablecloth |
 | The World | **TACT** | Ship-Pilot pitch · publishing · Grainphone · commerce · CONTRIBUTING four-doors · Grain Energy PBC |
 
-**Finishing edge: SOON q1 r1** — the first rune landed (Rishi `^-`, GREEN); continue the rune heads → Brix-infuse → `mold→shape` debride. Baton: [`../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md`](../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md).
+**Finishing edge: SOON q1** — two rune heads landed (Rishi `^-` cast, `?!` wutzap-not, both GREEN); continue the rune heads → Brix-infuse → `mold→shape` debride. Baton: [`../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md`](../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md).
 
 ---
 

@@ -836,6 +836,8 @@ const EvalError = error{
     CastUnknownShape,
     CastMismatch,
     CastOutOfRange,
+    NotNeedsBody,
+    NotNeedsBoolean,
 };
 
 /// Evaluate an expression: an operand, two operands compared with `==`/`!=`, or a
@@ -875,6 +877,12 @@ fn eval_expr(allocator: std.mem.Allocator, io: std.Io, env: *Env, text: []const 
     // the value passes through unchanged when it fits, and refuses otherwise.
     if (std.mem.startsWith(u8, trimmed, "^- ")) {
         return do_cast(allocator, io, env, trimmed[3..]);
+    }
+    // `?! <expr>` — the logical-not rune (wutzap), the second Glow rune Rishi speaks.
+    // It evaluates the body, requires a boolean, and hands back its negation. Placed
+    // before the comparison scan so `?! (a == b)` keeps the whole predicate as its body.
+    if (std.mem.startsWith(u8, trimmed, "?! ")) {
+        return do_not(allocator, io, env, trimmed[3..]);
     }
     // `map <list> as <name>: <expr>` transforms each element; `where … ` keeps the
     // elements whose predicate holds. Checked before the operators below, so a
@@ -1779,11 +1787,34 @@ fn do_cast(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8
     if (std.mem.eql(u8, shape, "@u32")) {
         const u32_max: i64 = 4294967295; // 2^32 - 1, the named u32 ceiling
         if (x < 0 or x > u32_max) return error.CastOutOfRange;
-        // invariant: a value that passed @u32 sits inside the u32 window.
-        assert(x >= 0 and x <= u32_max);
+        // invariant: a value that passed @u32 is at or above the floor.
+        assert(x >= 0);
+        // invariant: a value that passed @u32 is at or below the named ceiling.
+        assert(x <= u32_max);
         return value;
     }
     return error.CastUnknownShape;
+}
+
+/// `?! <expr>` — the logical-not rune (wutzap). Evaluate the body, require a
+/// boolean, and return its negation. A non-boolean body refuses rather than
+/// coercing, keeping the value model honest: only a bool can be negated.
+fn do_not(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8) EvalError!Value {
+    const body_text = std.mem.trim(u8, rest, " \t");
+    // A negation needs something to negate; an empty body is user error, not a bug.
+    if (body_text.len == 0) return error.NotNeedsBody;
+    // invariant: the body is non-empty once the empty case is refused above.
+    assert(body_text.len > 0);
+
+    const value = try eval_expr(allocator, io, env, body_text);
+    const b = switch (value) {
+        .boolean => |flag| flag,
+        else => return error.NotNeedsBoolean,
+    };
+    const negated = !b;
+    // invariant: the result is the opposite of the boolean the body produced.
+    assert(negated != b);
+    return .{ .boolean = negated };
 }
 
 /// Evaluate one operand: a double-quoted string, a boolean, a base-ten integer,
