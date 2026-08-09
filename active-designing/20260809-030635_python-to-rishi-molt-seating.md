@@ -104,7 +104,15 @@ Reaching for loop accumulation, the tree already had it: **`fold`** threads an a
 
 So the census seams are now **foldable** — no language gap remains. What's left is a **design choice, not a blocker**: `census_control` deliberately keeps its duty bodies in POSIX seams ("POSIX seams keep the duty bodies; the `.rish` sequences them"), while the wider molt aims for all-native Rishi. Whether to fold the census duty bodies (H1, dated census/health/shed) into native Rishi `fold`s or keep the fast bulk-`rg`/`awk` seams is Keaton's call — the seams are green and python-free either way, and the native fold is now proven possible. `dated_classify`'s big census over 9353 files is the one case where the bulk-`rg` seam is genuinely faster than reading every file in a fold; there, orchestration-over-seams is the honest choice even with accumulation in hand.
 
-The only remaining language convenience is **user functions**, to share one `classify` body between commands — not a blocker for anything.
+### User functions landed — census seams fold (`20260809`, Keaton's word)
+
+The last convenience arrived: **`fn <name> <params>: <body>`** defines a user function whose body is one expression; it takes named parameters, calls other functions or itself (a bounded recursion wall), and a call inside arithmetic wears parentheses. So `classify` lives in one place and a `fold` calls it per element. With functions, `fold`, `?:`, and the primitives, **every census seam is now foldable**.
+
+- **`census_control`'s H1 fence-count folded native** — `census_control_h1_seam.rish` carries the fence state in a record accumulator across a `fold`, `true=1 naive=4` identical to the awk seam; the gate stays green. The first census duty body in native Rishi.
+- **`dated_classify`'s census folds too, and it is proven correct** — a `fold` calling a native `classify` function over all 9370 tracked files returns `dated=5667`, matching the bulk seam exactly. It runs in ~3.9s versus ~0.18s for bulk `rg` (Rishi reads each dated-named file whole where `rg` scans in one pass). So the census *can* be native; whether to trade 20× on a gate that runs occasionally is Keaton's call.
+- **`shed`'s mention scan stays bulk** — it asks, for every dated basename, whether it appears anywhere in the tree's content: an O(dated × files) whole-tree search that `rg`'s Aho-Corasick does in one pass and a native fold cannot approach. Orchestration-over-`rg` is the honest choice there, even with every primitive in hand.
+
+So the molt's language spine is complete: runes, regex, list ops, `fold`, `?:`, and functions. Token and extract seams fold native (`claim_preserve` end to end); census duty bodies fold native where performance allows (`census_control` done), and the one genuinely bulk operation (`shed`'s mention scan) keeps its `rg` seam by honest measure, not by any missing primitive.
 
 ## What the molt keeps
 

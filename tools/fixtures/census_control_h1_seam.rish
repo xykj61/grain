@@ -1,0 +1,18 @@
+# census_control_h1_seam.rish — H1 fence-count duty, native Rishi.
+#
+# The living mutant of census_control_h1_seam.sh (python → awk → Rishi molt 20260809):
+# Rishi's own fold/matches/?:, no shell tool. Counts markdown H1 headings two ways —
+# naive over every line, true only outside fenced code — with the fence state carried
+# in a record accumulator across the fold. Emits the two counts the orchestrator asserts.
+#
+#   rishi/bin/rishi run tools/fixtures/census_control_h1_seam.rish
+
+let text = read-file "tools/fixtures/census_control_h1_fenced.md"
+
+# One fold, one record accumulator: infence toggles on a ``` line; n counts every H1;
+# t counts an H1 only while outside a fence. A fence delimiter is never itself an H1,
+# so the true count reads the fence state the same line it stands on.
+let final = fold (lines text) from {infence: false, t: 0, n: 0} as acc line: {infence: (?: (line matches "^\s*```") (?! acc.infence) (acc.infence)), n: (?: (line matches "^#\s") (acc.n + 1) (acc.n)), t: (?: (?& [(line matches "^#\s") (?! acc.infence)]) (acc.t + 1) (acc.t))}
+
+say "duty1_h1_true=${final.t}"
+say "duty1_h1_naive=${final.n}"

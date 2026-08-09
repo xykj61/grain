@@ -1,0 +1,36 @@
+# rish_fn_witness.rish — user-defined functions.
+#
+# Proves Rishi can name a computation once and call it — the last convenience the
+# scripts→Rishi molt wanted, so a body like `classify` lives in one place instead of
+# being repeated per command. A function's body is one expression; it takes named
+# parameters, may call other functions or itself (a bounded recursion wall), and its
+# arguments evaluate in the caller's scope. A call used inside arithmetic wears
+# parentheses, like the runes.
+#
+#   rishi/bin/rishi run tools/rish_fn_witness.rish
+
+# One parameter, one expression.
+fn double x: x + x
+assert (double 21) == 42 else "a one-parameter function returns its body"
+
+# Several parameters.
+fn add a b: a + b
+assert (add 3 4) == 7 else "a two-parameter function binds each argument"
+
+# A function composes the runes — classify by shape, the census's own predicate.
+fn classify path: ?: (?! (path matches "\d{8}-\d{6}")) ("live") (?: (path matches "\.png$") ("dated-bin") ("dated"))
+assert (classify "README.md") == "live" else "classify: a plain name is live"
+assert (classify "20260809-110311_x.bron") == "dated" else "classify: a dated name is dated"
+assert (classify "20260809-110311_x.png") == "dated-bin" else "classify: a dated image is a binary"
+
+# The point: call a function per element inside a fold — accumulation over a computed
+# predicate, no shell.
+let files = ["a.md" "20260809-110311_b.bron" "c.md" "20260101-000000_d.md"]
+let dated = fold files from 0 as acc f: acc + (?: ((classify f) == "live") (0) (1))
+assert dated == 2 else "a fold counts by calling a function per element"
+
+# A function may recurse, to a bounded depth.
+fn fact n: ?: (n == 0) (1) (n * (fact (n - 1)))
+assert (fact 5) == 120 else "a function may call itself"
+
+say "GREEN: Rishi functions — name a body once, call it with arguments, in a fold or by recursion; the last piece a seam needs to live fully native."
