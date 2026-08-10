@@ -32,3 +32,20 @@ name laye
 name atel
 name siya     (elder: the Fund — multi-role)
 name wovn
+name queyquinqkri  (galaxy — water element, dual mode; benevolent parent of the kyri/kyli voices)
+
+# --- galaxy casts: element · mode — seated 20260810.145033 on Keaton's word ---
+# TAME-disciplined key-value, one field per line. The maintainer's own galaxy
+# (space element, fixed mode) is PRIVATE — its cast lives in /personal/, never here,
+# since the name is a seed-scrub identity term.
+galaxy queyquinqkri
+element water
+mode dual
+care benevolent
+chosen our-galaxy  (Qkri — seated 20260810.145743; the dual-1 of 3 duals yet to configure; voice context/QKRI_VOICE.md)
+
+# --- voice + format nesting under queyquinqkri's benevolent care ---
+# The kyri voice/notation and the kyli sibling rest under queyquinqkri rather than
+# being molted or debrided away (debride retracted 20260810 on Keaton's word).
+nest kyri under queyquinqkri  (the standing voice + the .kyri notation)
+nest kyli under queyquinqkri  (sibling voice / format)
