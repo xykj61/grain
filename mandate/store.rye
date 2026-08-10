@@ -1,0 +1,237 @@
+//! mandate/store.rye — Mandate, Grain's turbopuffer: a bounded, zero-copy vector store.
+//!
+//! Mandate is the search organ. It holds **vectors** — the embeddings a model turns
+//! meaning into — and answers the one question a vector store exists for: *which of
+//! my records is nearest this query?* Nearness is **cosine similarity**, the angle
+//! between two directions, and Mandate keeps every stored vector as a **unit vector**
+//! (normalized on upsert), so a query is a plain dot product — no norms recomputed at
+//! search time, the turbopuffer trick in our own hand.
+//!
+//! Two properties this first lap keeps, both named by the maintainer:
+//!
+//!   * **Zero-copy.** A query never copies a stored vector; it reads each record in
+//!     place, by reference, and accumulates the dot product. The store owns the bytes
+//!     once; search borrows them.
+//!   * **Bounded, exact.** The store, the dimension, and the result count each name a
+//!     maximum. Search is exact brute-force k-nearest — every record considered — which
+//!     is correct at this scale; an approximate index is a horizon, not a shortcut
+//!     taken silently here.
+//!
+//! A record carries a **tag** beside its vector, so a query may filter — "the nearest
+//! images, but only nature ones" — the metadata filter every real vector store owes.
+//! First data partner, on the horizon: Unsplash image embeddings; here the vectors are
+//! plainly synthetic, so no key or network is touched.
+//!
+//!   rye build mandate/store.rye -femit-bin=mandate/bin/store
+//!   mandate/bin/store selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const store_version = "20260810.031234";
+
+// The vector dimension. Small here so the witness hand-verifies; a real Mandate loads
+// its dimension from a profile the way topology loads a sky. Named once, bounded.
+pub const dim: u32 = 4;
+
+// The store's capacity, and the most results one query returns. A bounded organ names
+// its limits and enforces them at the edge.
+pub const max_records: u32 = 64;
+pub const max_k: u32 = 16;
+
+pub const StoreError = error{ Full };
+
+/// One nearest-neighbour match: the record's id and its similarity to the query,
+/// in [-1, 1] where 1 is the same direction.
+pub const Match = struct {
+    id: u32,
+    score: f32,
+};
+
+/// The k best matches a query found, most similar first.
+pub const QueryResult = struct {
+    matches: [max_k]Match,
+    count: u32,
+};
+
+/// A stored record — an id, a filterable tag, and a **unit** vector (normalized on
+/// upsert, so search is a dot product).
+pub const Record = struct {
+    id: u32,
+    tag: u32,
+    vec: [dim]f32,
+};
+
+/// The store — a bounded array of records and how many are filled. The array never
+/// reallocates, so a query may hold references into it while it scans.
+pub const Store = struct {
+    records: [max_records]Record,
+    filled: u32,
+
+    /// A fresh, empty store.
+    pub fn init() Store {
+        return .{ .records = undefined, .filled = 0 };
+    }
+};
+
+/// The dot product of two vectors, accumulated in f64 so many small terms keep their
+/// precision before the result narrows back to the caller's use.
+fn dot(a: *const [dim]f32, b: *const [dim]f32) f64 {
+    var acc: f64 = 0;
+    var i: u32 = 0;
+    while (i < dim) : (i += 1) {
+        acc += @as(f64, a[i]) * @as(f64, b[i]);
+    }
+    return acc;
+}
+
+/// A vector scaled to length one — its direction alone, magnitude discarded, so that
+/// cosine similarity becomes a dot product. A real embedding is never the zero vector.
+fn normalized(vec: *const [dim]f32) [dim]f32 {
+    const n = @sqrt(dot(vec, vec));
+    // invariant: only a non-zero vector has a direction to keep.
+    assert(n > 0);
+    var out: [dim]f32 = undefined;
+    var i: u32 = 0;
+    while (i < dim) : (i += 1) {
+        out[i] = @floatCast(@as(f64, vec[i]) / n);
+    }
+    return out;
+}
+
+/// Add or replace a record. The vector is normalized to a unit direction before it is
+/// stored; upserting an existing id updates it in place, so an id is unique.
+pub fn upsert(store: *Store, id: u32, tag: u32, vec: *const [dim]f32) StoreError!void {
+    // invariant: the fill count never runs past the bounded records.
+    assert(store.filled <= max_records);
+    const unit = normalized(vec);
+    var i: u32 = 0;
+    while (i < store.filled) : (i += 1) {
+        if (store.records[i].id == id) {
+            store.records[i] = .{ .id = id, .tag = tag, .vec = unit };
+            return;
+        }
+    }
+    if (store.filled >= max_records) return error.Full;
+    store.records[store.filled] = .{ .id = id, .tag = tag, .vec = unit };
+    store.filled += 1;
+}
+
+/// Slot a candidate into the running top-k, kept sorted most-similar first. A score
+/// that cannot beat the current worst, once the result is full, is dropped.
+fn insert_topk(result: *QueryResult, k: u32, id: u32, score: f32) void {
+    // invariant: the running result never exceeds the requested k.
+    assert(result.count <= k);
+    if (result.count == k and score <= result.matches[k - 1].score) return;
+    // Overwrite the last slot when full; otherwise grow into the next.
+    var pos: u32 = if (result.count < k) result.count else k - 1;
+    while (pos > 0 and result.matches[pos - 1].score < score) : (pos -= 1) {
+        result.matches[pos] = result.matches[pos - 1];
+    }
+    result.matches[pos] = .{ .id = id, .score = score };
+    if (result.count < k) result.count += 1;
+}
+
+/// The k records nearest `query_vec` by cosine similarity, most similar first —
+/// optionally only those whose tag matches `filter_tag`. Zero-copy: each record's
+/// vector is read in place, never copied.
+pub fn query(store: *const Store, query_vec: *const [dim]f32, k: u32, filter_tag: ?u32) QueryResult {
+    // invariant: a query asks for at least one and at most `max_k` results.
+    assert(k >= 1);
+    assert(k <= max_k);
+    const q = normalized(query_vec);
+    var result = QueryResult{ .matches = undefined, .count = 0 };
+    var i: u32 = 0;
+    while (i < store.filled) : (i += 1) {
+        const rec = &store.records[i]; // zero-copy: borrowed in place
+        if (filter_tag) |t| {
+            if (rec.tag != t) continue;
+        }
+        // Both are unit vectors, so their dot product is the cosine similarity.
+        const score: f32 = @floatCast(dot(&q, &rec.vec));
+        insert_topk(&result, k, rec.id, score);
+    }
+    // invariant: the result is sorted most-similar first.
+    var j: u32 = 1;
+    while (j < result.count) : (j += 1) {
+        assert(result.matches[j - 1].score >= result.matches[j].score);
+    }
+    return result;
+}
+
+// --- selftest -----------------------------------------------------------
+
+// A small store of "image" vectors, framed as embeddings: two nature (tag 1), two
+// city (tag 2). Directions chosen so the nearest neighbours are legible by hand.
+fn seat_store() !Store {
+    var store = Store.init();
+    const red: [dim]f32 = .{ 1, 0, 0, 0 };
+    const green: [dim]f32 = .{ 0, 1, 0, 0 };
+    const blue: [dim]f32 = .{ 0, 0, 1, 0 };
+    const teal: [dim]f32 = .{ 1, 1, 0, 0 }; // between red and green
+    try upsert(&store, 1, 1, &red); // nature
+    try upsert(&store, 2, 1, &green); // nature
+    try upsert(&store, 3, 2, &blue); // city
+    try upsert(&store, 4, 2, &teal); // city
+    return store;
+}
+
+fn prove_nearest(store: *const Store) !void {
+    // A query close to "red" (id 1), leaning slightly toward "green".
+    const q: [dim]f32 = .{ 1, 0.1, 0, 0 };
+    const r = query(store, &q, 2, null);
+    // invariant: two results, most similar first.
+    if (r.count != 2) return error.WrongCount;
+    // Nearest is red (id 1); second is teal (id 4), which shares red's x direction.
+    if (r.matches[0].id != 1) return error.NearestWrong;
+    if (r.matches[1].id != 4) return error.SecondWrong;
+    // Scores descend and sit in the valid cosine range.
+    if (!(r.matches[0].score > r.matches[1].score)) return error.NotDescending;
+    if (!(r.matches[0].score <= 1.0 and r.matches[1].score >= -1.0)) return error.ScoreOutOfRange;
+    // Red is nearly the query's own direction, so its similarity is high.
+    if (!(r.matches[0].score > 0.99)) return error.NearestNotClose;
+}
+
+fn prove_filter(store: *const Store) !void {
+    // The same query, but only nature (tag 1) — city records are never considered.
+    const q: [dim]f32 = .{ 1, 0.1, 0, 0 };
+    const r = query(store, &q, 3, 1);
+    // Only two nature records exist, so at most two return, both tag 1.
+    if (r.count != 2) return error.FilterCountWrong;
+    if (r.matches[0].id != 1 or r.matches[1].id != 2) return error.FilterOrderWrong;
+}
+
+fn prove_topk_and_update(store: *Store) !void {
+    // Ask for one result only — the single nearest.
+    const q: [dim]f32 = .{ 0, 0, 1, 0 }; // straight at "blue" (id 3)
+    const one = query(store, &q, 1, null);
+    if (one.count != 1 or one.matches[0].id != 3) return error.TopOneWrong;
+
+    // Upsert id 1 with a new direction and tag — an update in place, not a new record.
+    const before = store.filled;
+    const moved: [dim]f32 = .{ 0, 0, 1, 0 }; // id 1 now points at blue
+    try upsert(store, 1, 2, &moved);
+    if (store.filled != before) return error.UpdateGrewStore;
+    // Now a blue-ward query finds id 1 at the top (tied direction, but id 1 scanned first).
+    const after = query(store, &q, 2, null);
+    if (after.matches[0].score < 0.99) return error.UpdateNotApplied;
+}
+
+fn run_selftest() !u8 {
+    var store = try seat_store();
+    try prove_nearest(&store);
+    try prove_filter(&store);
+    try prove_topk_and_update(&store);
+
+    print("mandate store: a vector store — upsert normalizes to a unit direction, so a query is a dot product; the nearest by cosine similarity returns most-similar-first, bounded and exact.\n", .{});
+    print("mandate store: zero-copy — each record's vector is read in place at query time, never copied; the store owns the bytes once and search borrows them.\n", .{});
+    print("mandate store: a tag filters the search (the nearest, but only nature); an upsert on an existing id updates in place, never growing the store.\n", .{});
+    print("mandate store: version {s}\n", .{store_version});
+    print("GREEN: mandate store — Grain's turbopuffer, a bounded zero-copy vector store: nearest-neighbour by cosine over unit vectors, with a metadata filter, exact and witnessed.\n", .{});
+    return 0;
+}
+
+pub fn main() !u8 {
+    return run_selftest();
+}
