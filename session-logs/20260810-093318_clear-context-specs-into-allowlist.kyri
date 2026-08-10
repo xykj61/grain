@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260810.093318
+editor Zed + Claude Agent
+model claude-opus-4-8
+voice Riyo
+host Vultr cloud pier (ai-jail) — Eastern (EDT) time convention
+title clear the technical specs into the allowlist
+prompt kg keep clearing vetted prose
+think Continued the allowlist growth: cleared context/specs — the project's own technical specifications (the one-clock naming law, the cellar spec, the granary/mandi name seatings, snapshot-export laps, the width rulings). 69 candidates, the identity/provenance ones already withheld.
+think Verified the same three ways as the doctrine, and the location grep earned its keep: it flagged six files naming the host laptop (Framework 16) or the timezone (Pacific), which the project's OWN hardware-anonymization spec says to remove. Scrubbed Framework 16 -> a laptop and Pacific Time -> the local time zone so the specs ship generic rather than withheld.
+think Two files still flagged after scrubbing — the scrub-without-IDENT gap again: Nevada and lowercase Pacific time in files with no other IDENT term never triggered the scrub. Closed it: added Pacific Time to both IDENT nets (so any file with it scrubs), added a Nevada scrub rule, and withheld the one file that IS the pier's location-convention doc (pacific-time-local-clone-convention.md — Nevada plus its whole subject is the maintainer's own timezone).
+obs Result: 67 of 69 context/specs ship, IDENT_CLEAN, location/hardware CLEAN, SOW_WITNESS_GREEN. The public seed now carries 35 doctrine essays and 67 technical specs — a visitor to grain-os/grain meets the values AND the engineering laws, all provably clean.
+obs The pattern holds: the allowlist grows by clearing vetted files in, each verified before it ships, and the scrub-without-IDENT gap is closed one more class at a time. The location grep is now a standing part of the clearance net alongside IDENT and the narrative grep.
+file template-manifest.bron allow context/specs; withhold the location-convention doc
+file tools/fixtures/sow_scrub.sed Framework 16 / Pacific / Nevada locators scrubbed
+file tools/fixtures/sow_leak_scan.sh Pacific Time added to the IDENT net
+recommend keep-going 102 prose files cleared and clean; next clear select active-designing / waymarks the same way, or the push stays Keaton's hand whenever he runs it

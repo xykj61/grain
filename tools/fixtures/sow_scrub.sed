@@ -209,3 +209,11 @@ s/\bsabin\b/a-friend/g
 s/\bsealy\b/the-maintainer/g
 s/\bzendex\b/a-family-enterprise/g
 s/mayacama/a-club/g
+
+# -- host hardware + timezone locators (the project's own anonymization discipline
+#    says remove these; scrub so the spec ships generic rather than withheld). --
+s/Framework 16/a laptop/g
+s/Pacific Time/the local time zone/g
+s/Pacific time/the local time zone/g
+s/Pacific coast/the local region/g
+s/Nevada/a state/g
