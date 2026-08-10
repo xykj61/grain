@@ -46,8 +46,12 @@ find "$SEED" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} + 2>/dev/null 
 # inside a scrub directory (e.g. a foundations biography essay). A file is
 # excluded when it equals a sub_exclude entry or lives under one.
 SUBEX=$(grep -E '^sub_exclude ' "$MANIFEST" | awk '{print $2}' || true)
-# Candidate paths: template + scrub verdicts, minus the two submodules.
-PATHS=$(grep -E '^(template|scrub) ' "$MANIFEST" | awk '{print $2}' | grep -vxE 'gratitude|vendor' || true)
+# ALLOWLIST posture (Keaton's word 20260810): ship ONLY explicitly-cleared `allow`
+# paths; everything else in the tree is withheld by default. This flips the seed from
+# a denylist (scrub-everything) to an allowlist after five audit passes each found new
+# private data. Allowed paths are STILL scrubbed and IDENT-checked below (defense in
+# depth), and sub_exclude still withholds files inside an allowed dir.
+PATHS=$(grep -E '^allow ' "$MANIFEST" | awk '{print $2}' | grep -vxE 'gratitude|vendor' || true)
 
 is_subex() {
   for x in $SUBEX; do

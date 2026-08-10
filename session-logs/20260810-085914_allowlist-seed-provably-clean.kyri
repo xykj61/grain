@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260810.085914
+editor Zed + Claude Agent
+model claude-opus-4-8
+voice Riyo
+host Vultr cloud pier (ai-jail) — Eastern (EDT) time convention
+title the seed flips to an allowlist — provably clean
+prompt allowlist, keep recursing
+think Keaton chose the allowlist over more scrubbing. Flipped the projection from a denylist (ship every template/scrub path) to an allowlist (ship ONLY explicitly-cleared `allow` paths; everything else withheld by default) — the same posture as .gitignore's own /* + !/path, and the honest answer to five audit passes each finding new private data.
+think Implemented in three parts: (1) sow_project.sh now selects PATHS from `^allow` rather than `^(template|scrub)`, while still scrubbing + IDENT-checking every allowed file (defense in depth) and honoring sub_exclude within allowed dirs; (2) a 70-entry allowlist in template-manifest.bron — the code modules, the teaching (manual/docs/edu/nixos-guide), the disciplines (context granular: LEXICON, TAME_GUIDANCE, RADIANT_STYLE, TWO_ROOMS, and kin — identity/specs/keys withheld), and the root files; (3) the personal-heavy dirs (foundations, most of context, external-research, active-designing, expanding-prompts, waymarks, linengrow) simply are not on the list, so they are withheld until cleared file-by-file.
+think First projection withheld context/LEXICON.md — a case mismatch: the scrub is case-sensitive (Keaton->placeholder) but the leak scan is case-insensitive, so lowercase `keaton`/`djinn` in waymark input-names and counsel path-slugs survived the scrub yet tripped the scan. Added lowercase name-slug rules (keaton, kaeden, livermore, dunsford, djinn, sealy, zendex, mayacama -> hyphenated placeholders). LEXICON ships now.
+think M1 caught that `basin` had an `allow` line but no template/scrub/personal verdict; added `template basin` so every root path is classified exactly once.
+obs Result: SOW_OK copied=2824 (down from 4565), scrubbed 200, withheld 17 — and the seed witness is GREEN: IDENT_CLEAN, NO_PERSONAL, SOW_WITNESS_GREEN. The 17 withholds are correct defense-in-depth: the scrub scripts themselves (they LIST the real names), real host configs, and the ship-name rule files deliberately kept unscrubbed.
+obs The allowlist inverts the audit's job: instead of hunting leaks (and always finding more), the seed now grows by CLEARING files into the list as each is proven clean. A future round can clear vetted foundations/design prose file-by-file. Publish still waits on the repo (grain-os/grain does not exist) — but the privacy architecture is now sound rather than hopeful.
+file tools/fixtures/sow_project.sh allowlist driver: ship only `allow` paths, still scrubbed + IDENT-checked
+file template-manifest.bron 70-entry allowlist + `template basin` verdict
+file tools/fixtures/sow_scrub.sed lowercase name-slug rules (case-insensitive coverage)
+recommend keep-going the allowlist seed is provably clean; next recurse to Scribe's dashboard, then clear vetted prose into the allowlist; publish awaits only the repo
