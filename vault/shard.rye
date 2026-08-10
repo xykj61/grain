@@ -1,0 +1,394 @@
+//! vault/shard.rye — Vault, the keeper of secrets: Shamir sharding, custody first.
+//!
+//! Kumara names *who* a key is; Vault names *how* a person keeps the secret behind it
+//! alive — through fire, hurricane, tsunami, a decade, and a forgetting mind. It
+//! molt-supersedes the elder Urbit Jael on our own ground.
+//!
+//! This first lap is the disaster arithmetic: a secret splits **Shamir-style** over
+//! GF(256) into `n` shares such that any `t` recombine it exactly, yet any `t-1`
+//! reveal nothing. Each share is a signed **shard tilak** carrying a **location-class**
+//! — a home air-gapped machine, kin on other continents, cold paper or steel, a relic
+//! hardware wallet, and one **brain** share a pilot carries in his own head — so a
+//! keeping survives the loss of any single place, and the pilot who loses every object
+//! still walks one share out of the fire.
+//!
+//! Custody first, structurally: the tree holds only a **fake** seed (`0x11…`); a real
+//! key, share, or brain phrase never enters it, and a real keeping is filled by a
+//! pilot's own hand in his own jail. And the word is **main key** — as git chose
+//! main over the older default word, we choose main over it too.
+//!
+//!   rye build vault/shard.rye -femit-bin=vault/bin/shard
+//!   vault/bin/shard selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const kumara = @import("kumara.rye");
+
+const Sha256 = std.crypto.hash.sha2.Sha256;
+
+pub const shard_version = "20260810.062047";
+
+const pubkey_len: u32 = 32;
+const sig_len: u32 = 64;
+const digest_len: u32 = 32;
+
+// The keeping's bounds: the longest secret, the most shares, named once. A real seed
+// is 32 bytes; the ceiling holds a passphrase-length secret with headroom.
+pub const max_secret_len: u32 = 64;
+pub const max_shares: u32 = 16;
+
+pub const VaultError = error{
+    TooFewShares,
+    TooManyShares,
+    SecretTooLong,
+    DuplicateShare,
+    BadShard,
+};
+
+// --- GF(256), the field the sharing lives in --------------------------------
+// Addition is XOR; multiplication is the AES field (reducing polynomial 0x11b).
+// Pure functions, no tables, no state — the field is arithmetic, not memory.
+
+fn gf_add(a: u8, b: u8) u8 {
+    return a ^ b;
+}
+
+// Multiply by x (0x02), reducing by 0x11b when the high bit carries out.
+fn xtime(a: u8) u8 {
+    const shifted: u16 = @as(u16, a) << 1;
+    var r: u8 = @truncate(shifted);
+    if (a & 0x80 != 0) r ^= 0x1b;
+    return r;
+}
+
+// Russian-peasant multiply in GF(256).
+fn gf_mul(a: u8, b: u8) u8 {
+    var result: u8 = 0;
+    var aa: u8 = a;
+    var bb: u8 = b;
+    var i: u32 = 0;
+    while (i < 8) : (i += 1) {
+        if (bb & 1 != 0) result = result ^ aa;
+        aa = xtime(aa);
+        bb >>= 1;
+    }
+    return result;
+}
+
+fn gf_pow(a: u8, n: u32) u8 {
+    var result: u8 = 1;
+    var base: u8 = a;
+    var e: u32 = n;
+    while (e > 0) {
+        if (e & 1 != 0) result = gf_mul(result, base);
+        base = gf_mul(base, base);
+        e >>= 1;
+    }
+    return result;
+}
+
+fn gf_inv(a: u8) u8 {
+    // invariant: zero has no inverse in the field.
+    assert(a != 0);
+    // a^254 = a^-1, since every non-zero element satisfies a^255 = 1.
+    return gf_pow(a, 254);
+}
+
+fn gf_div(a: u8, b: u8) u8 {
+    // invariant: division by zero is undefined in the field.
+    assert(b != 0);
+    if (a == 0) return 0;
+    return gf_mul(a, gf_inv(b));
+}
+
+// --- the split and the join -------------------------------------------------
+
+/// The `n` shares of one secret: each share `i` holds the polynomial evaluated at
+/// `x = i+1`, byte by byte. The x-coordinates are held implicitly (share i is at i+1).
+pub const Shares = struct {
+    y: [max_shares][max_secret_len]u8,
+    n: u32,
+    len: u32,
+};
+
+// One polynomial coefficient for byte `b`, degree `k`, derived from the coefficient
+// seed — deterministic (so a witness reproduces it) yet varied per position. A real
+// split passes a cryptographically random seed; the witness passes a fixed one.
+fn coeff(coeff_seed: *const [32]u8, b: u32, k: u32) u8 {
+    var msg: [40]u8 = undefined;
+    for (coeff_seed, 0..) |c, i| msg[i] = c;
+    std.mem.writeInt(u32, msg[32..36], b, .little);
+    std.mem.writeInt(u32, msg[36..40], k, .little);
+    var out: [digest_len]u8 = undefined;
+    Sha256.hash(&msg, &out, .{});
+    return out[0];
+}
+
+/// Split a secret into `n` shares of which any `t` reconstruct it. For each secret
+/// byte a degree `t-1` polynomial is built with the byte as its constant term; share
+/// `i` is that polynomial evaluated at `x = i+1`. Any `t-1` shares reveal nothing.
+pub fn split(secret: []const u8, n: u32, t: u32, coeff_seed: *const [32]u8) VaultError!Shares {
+    // invariant: the threshold is at least two and at most the share count.
+    if (t < 2) return error.TooFewShares;
+    if (n < t) return error.TooFewShares;
+    if (n > max_shares) return error.TooManyShares;
+    if (secret.len > max_secret_len) return error.SecretTooLong;
+    const len: u32 = @intCast(secret.len);
+    var shares = Shares{ .y = undefined, .n = n, .len = len };
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const x: u8 = @intCast(i + 1); // x = 1..n; never zero (zero is the secret)
+        var b: u32 = 0;
+        while (b < len) : (b += 1) {
+            // Horner from the top coefficient down to the constant (the secret byte).
+            var acc: u8 = 0;
+            var k: u32 = t;
+            while (k > 0) {
+                k -= 1;
+                const ck = if (k == 0) secret[b] else coeff(coeff_seed, b, k);
+                acc = gf_add(gf_mul(acc, x), ck);
+            }
+            shares.y[i][b] = acc;
+        }
+    }
+    return shares;
+}
+
+/// Reconstruct the secret from `t` shares at the given x-coordinates by Lagrange
+/// interpolation at x = 0. The x-coordinates must be distinct; the result fills `out`.
+pub fn join(xs: []const u8, ys: []const [max_secret_len]u8, len: u32, out: []u8) VaultError!void {
+    const t: u32 = @intCast(xs.len);
+    // invariant: at least two shares, and no more than the whole fan.
+    if (t < 2) return error.TooFewShares;
+    if (t > max_shares) return error.TooManyShares;
+    // invariant: the x-coordinates are distinct, or a denominator would be zero.
+    var a: u32 = 0;
+    while (a < t) : (a += 1) {
+        var c: u32 = a + 1;
+        while (c < t) : (c += 1) {
+            if (xs[a] == xs[c]) return error.DuplicateShare;
+        }
+    }
+    var b: u32 = 0;
+    while (b < len) : (b += 1) {
+        var secret_b: u8 = 0;
+        var j: u32 = 0;
+        while (j < t) : (j += 1) {
+            // The Lagrange basis at zero: product over m != j of x[m] / (x[m] - x[j]).
+            var num: u8 = 1;
+            var den: u8 = 1;
+            var m: u32 = 0;
+            while (m < t) : (m += 1) {
+                if (m == j) continue;
+                num = gf_mul(num, xs[m]);
+                den = gf_mul(den, gf_add(xs[m], xs[j])); // subtraction is XOR here
+            }
+            const lj = gf_div(num, den);
+            secret_b = gf_add(secret_b, gf_mul(ys[j][b], lj));
+        }
+        out[b] = secret_b;
+    }
+}
+
+// --- the shard tilak: a share, in a location, signed by the keeper -----------
+
+/// Where a share lives — the location-class that makes a keeping survive a disaster.
+pub const Location = enum(u8) { home = 1, kin = 2, cold = 3, relic = 4, brain = 5 };
+
+/// A signed share: its x-coordinate, its location, its bytes, and the keeper's
+/// signature over all of it — so a tampered share never verifies, and a share traces
+/// to the hand that made the keeping.
+pub const Shard = struct {
+    x: u8,
+    location: Location,
+    len: u32,
+    bytes: [max_secret_len]u8,
+    sig: [sig_len]u8,
+    version: u32,
+};
+
+// The 34-byte message a keeper signs: the x-coordinate, the location, and a digest of
+// the share bytes (so length and content are bound, whatever the secret's size).
+const shard_msg_len: u32 = 1 + 1 + digest_len; // 34
+
+fn shard_message(out: *[shard_msg_len]u8, x: u8, location: Location, bytes: []const u8) void {
+    out[0] = x;
+    out[1] = @intFromEnum(location);
+    var lenb: [4]u8 = undefined;
+    std.mem.writeInt(u32, &lenb, @intCast(bytes.len), .little);
+    var h = Sha256.init(.{});
+    h.update(&lenb);
+    h.update(bytes);
+    var d: [digest_len]u8 = undefined;
+    h.final(&d);
+    for (d, 0..) |c, i| out[2 + i] = c;
+}
+
+/// Seat a signed shard from a share, its location, and the keeper's seed.
+pub fn make_shard(keeper_seed: *const [kumara.seed_length]u8, x: u8, location: Location, bytes: []const u8) Shard {
+    // invariant: a share sits inside the secret bound and off the zero x-coordinate.
+    assert(bytes.len <= max_secret_len);
+    assert(x != 0);
+    const kp = kumara.keypair_from_seed(keeper_seed);
+    var msg: [shard_msg_len]u8 = undefined;
+    shard_message(&msg, x, location, bytes);
+    var shard = Shard{ .x = x, .location = location, .len = @intCast(bytes.len), .bytes = undefined, .sig = kp_sign(kp, &msg), .version = 1 };
+    for (bytes, 0..) |c, i| shard.bytes[i] = c;
+    return shard;
+}
+
+fn kp_sign(kp: anytype, msg: []const u8) [sig_len]u8 {
+    return kumara.sign(msg, kp, null).toBytes();
+}
+
+/// A shard holds when the keeper really signed this exact share in this location.
+pub fn verify_shard(shard: *const Shard, keeper_pubkey: [pubkey_len]u8) bool {
+    const pub_key = kumara.PublicKey.fromBytes(keeper_pubkey) catch return false;
+    var msg: [shard_msg_len]u8 = undefined;
+    shard_message(&msg, shard.x, shard.location, shard.bytes[0..shard.len]);
+    kumara.verify_bytes(&msg, &shard.sig, pub_key) catch return false;
+    return true;
+}
+
+// --- Bron emission ----------------------------------------------------------
+
+const hex_digits = "0123456789abcdef";
+
+fn to_hex(bytes: []const u8, out: []u8) void {
+    assert(out.len == bytes.len * 2);
+    for (bytes, 0..) |b, i| {
+        out[i * 2] = hex_digits[b >> 4];
+        out[i * 2 + 1] = hex_digits[b & 0x0f];
+    }
+}
+
+fn location_name(l: Location) []const u8 {
+    return switch (l) {
+        .home => "home",
+        .kin => "kin",
+        .cold => "cold",
+        .relic => "relic",
+        .brain => "brain",
+    };
+}
+
+const max_line: u32 = 256;
+
+fn put_line(io: std.Io, comptime fmt: []const u8, args: anytype) void {
+    var buf: [max_line]u8 = undefined;
+    const line = std.fmt.bufPrint(&buf, fmt, args) catch return;
+    std.Io.File.stdout().writeStreamingAll(io, line) catch {};
+}
+
+/// Emit a shard as a Bron fact — one field per line, immutable at the seam.
+pub fn emit_shard(io: std.Io, shard: *const Shard) void {
+    var byte_hex: [max_secret_len * 2]u8 = undefined;
+    var sig_hex: [sig_len * 2]u8 = undefined;
+    to_hex(shard.bytes[0..shard.len], byte_hex[0 .. shard.len * 2]);
+    to_hex(&shard.sig, &sig_hex);
+    put_line(io, "format vault-shard-v1\n", .{});
+    put_line(io, "x {d}\n", .{shard.x});
+    put_line(io, "location {s}\n", .{location_name(shard.location)});
+    put_line(io, "len {d}\n", .{shard.len});
+    put_line(io, "share {s}\n", .{byte_hex[0 .. shard.len * 2]});
+    put_line(io, "sig {s}\n", .{sig_hex});
+    put_line(io, "version {d}\n", .{shard.version});
+}
+
+// --- selftest ---------------------------------------------------------------
+
+// A fake secret and a fake keeper — plainly not a real key, so no keeping is invented.
+const fake_secret: [32]u8 = .{0x11} ** 32;
+const demo_keeper_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
+const demo_coeff_seed: [32]u8 = .{0x33} ** 32;
+
+const locations = [_]Location{ .home, .kin, .cold, .relic, .brain };
+
+fn prove_split_join(shares: *const Shares) !void {
+    // Three distinct t-subsets each reconstruct the fake secret byte-for-byte.
+    const subsets = [_][3]u8{ .{ 1, 2, 3 }, .{ 2, 4, 5 }, .{ 1, 3, 5 } };
+    for (subsets) |sub| {
+        var xs: [3]u8 = undefined;
+        var ys: [3][max_secret_len]u8 = undefined;
+        for (sub, 0..) |x, i| {
+            xs[i] = x;
+            ys[i] = shares.y[x - 1];
+        }
+        var out: [32]u8 = undefined;
+        try join(&xs, &ys, shares.len, &out);
+        if (!std.mem.eql(u8, &out, &fake_secret)) return error.RecombineWrong;
+    }
+}
+
+fn prove_secrecy(shares: *const Shares) !void {
+    // Any t-1 (two) shares reconstruct something, but never the secret.
+    var xs: [2]u8 = .{ 1, 2 };
+    var ys: [2][max_secret_len]u8 = .{ shares.y[0], shares.y[1] };
+    var out: [32]u8 = undefined;
+    try join(&xs, &ys, shares.len, &out);
+    if (std.mem.eql(u8, &out, &fake_secret)) return error.TwoRevealedSecret;
+}
+
+fn prove_survives_lost_location(shares: *const Shares) !void {
+    // Lose the relic entirely (share 4); the remaining home/kin/cold/brain still hold
+    // t=3, so the keeping survives.
+    var xs: [3]u8 = .{ 1, 2, 5 }; // home, kin, brain — relic (4) and cold (3) not needed
+    var ys: [3][max_secret_len]u8 = .{ shares.y[0], shares.y[1], shares.y[4] };
+    var out: [32]u8 = undefined;
+    try join(&xs, &ys, shares.len, &out);
+    if (!std.mem.eql(u8, &out, &fake_secret)) return error.LostLocationBrokeKeeping;
+}
+
+fn prove_shards() !void {
+    const keeper = kumara.keypair_from_seed(&demo_keeper_seed).public_key.bytes;
+    const shares = try split(&fake_secret, 5, 3, &demo_coeff_seed);
+    // Wrap each share in a signed shard, each in its own location.
+    var shard1 = make_shard(&demo_keeper_seed, 1, locations[0], shares.y[0][0..shares.len]);
+    // A real shard verifies under the keeper.
+    if (!verify_shard(&shard1, keeper)) return error.ShardDidNotVerify;
+    // A tampered share refuses — flip one byte and the signature no longer holds.
+    shard1.bytes[0] ^= 0x01;
+    if (verify_shard(&shard1, keeper)) return error.TamperedShardVerified;
+    // A shard from a share still recombines when gathered with its kin.
+    const s2 = make_shard(&demo_keeper_seed, 2, locations[1], shares.y[1][0..shares.len]);
+    const s3 = make_shard(&demo_keeper_seed, 3, locations[2], shares.y[2][0..shares.len]);
+    if (!verify_shard(&s2, keeper) or !verify_shard(&s3, keeper)) return error.KinDidNotVerify;
+    var xs: [3]u8 = .{ s2.x, s3.x, 4 };
+    var ys: [3][max_secret_len]u8 = .{ s2.bytes, s3.bytes, shares.y[3] };
+    var out: [32]u8 = undefined;
+    try join(&xs, &ys, shares.len, &out);
+    if (!std.mem.eql(u8, &out, &fake_secret)) return error.ShardRecombineWrong;
+}
+
+fn run_selftest() !u8 {
+    const shares = try split(&fake_secret, 5, 3, &demo_coeff_seed);
+    if (shares.n != 5 or shares.len != 32) return error.SplitShapeWrong;
+    try prove_split_join(&shares);
+    try prove_secrecy(&shares);
+    try prove_survives_lost_location(&shares);
+    try prove_shards();
+
+    print("vault shard: a secret splits Shamir-style over GF(256) into five shares at a threshold of three — any three recombine it byte-for-byte, any two reveal nothing, and a lost location survives while three remain.\n", .{});
+    print("vault shard: each share is a signed shard tilak in a location-class (home, kin, cold, relic, brain); a tampered share never verifies, and the word is main key, as git preferred main over the older word.\n", .{});
+    print("vault shard: custody first — only a fake 0x11 seed lives in the tree; a real keeping is a pilot's own hand. version {s}\n", .{shard_version});
+    print("GREEN: vault shard — the keeper of secrets holds the disaster arithmetic: split, recombine, refuse two, refuse a tamper, survive a lost place, all on a fake key.\n", .{});
+    return 0;
+}
+
+fn run_emit(io: std.Io) !u8 {
+    const shares = try split(&fake_secret, 5, 3, &demo_coeff_seed);
+    var i: u32 = 0;
+    while (i < 5) : (i += 1) {
+        const shard = make_shard(&demo_keeper_seed, @intCast(i + 1), locations[i], shares.y[i][0..shares.len]);
+        emit_shard(io, &shard);
+        put_line(io, "\n", .{});
+    }
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "emit")) return run_emit(init.io);
+    return run_selftest();
+}

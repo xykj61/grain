@@ -78,6 +78,7 @@ template  rishi                           # the shell language
 template  rye                             # the systems language
 template  scribble                        # module
 template  scribe                          # the Kyri reader — clean code, no name
+template  vault                           # keeper of secrets (Shamir sharding) — clean code, fake 0x11 seed only
 template  src                             # Glow userland (five rooms)
 template  tally                           # bounded allocation
 template  tools                           # witnesses and gates; gitignored secrets never enter; scrub any name on touch
