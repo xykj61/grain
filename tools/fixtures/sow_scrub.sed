@@ -17,6 +17,24 @@ s/Kaeden/the maintainer/g
 s/Livermore/the maintainer/g
 s/Reyklah/the maintainer/g
 
+# Family and prior-name surnames -> role / a family member (20260810 — private).
+# Longest-first: a family member's full name before the bare surname.
+s/Michael Dunsford/a family member/g
+s/Keaton Dunsford/the maintainer/g
+s/Dunsford/the maintainer/g
+s/Mayacama Golf Club/a club/g
+s/Mayacama/a club/g
+
+# Personal handles and contact identifiers -> owner placeholder (20260810 — private).
+# Longest-first so a compound handle resolves before any bare fragment.
+s/veganreyklah[A-Za-z0-9._-]*/acme-owner/g
+s/cherry996[A-Za-z0-9._-]*/acme-owner/g
+s/vegankeatonsiya[A-Za-z0-9._-]*/acme-owner/g
+s/keatonsiya/acme-owner/g
+s/xnkg30/acme-owner/g
+s/reyklah/acme-owner/g
+s/npub1[a-z0-9]\{58\}/acme-owner-npub/g
+
 # Forge handles -> owner placeholder (Keaton's ruling 20260808).
 # The field keeps its real handles; only the projected seed gets the placeholder,
 # which a forker replaces with their own account. Swapping in the seed cannot

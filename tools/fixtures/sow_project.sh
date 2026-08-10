@@ -30,7 +30,7 @@ SEED="seed"
 SCRUB="tools/fixtures/sow_scrub.sed"
 # Maintainer identity: real names, the retired copyright name, the forge
 # handles, and the real Azimuth points. One place; the witness reuses it.
-IDENT='Keaton|Kaeden|Livermore|Reyklah|xykj61|autoproject96|bandun|pacpet-solreb'
+IDENT='Keaton|Kaeden|Livermore|Reyklah|Dunsford|Mayacama|xykj61|autoproject96|bandun|pacpet-solreb|keatonsiya|xnkg30|veganreyklah|cherry996|415.?915.?6666|npub1[a-z0-9]{40}'
 
 [ -f "$MANIFEST" ] || { echo "sow: $MANIFEST missing" >&2; exit 1; }
 [ -f "$SCRUB" ]    || { echo "sow: $SCRUB missing" >&2; exit 1; }
@@ -80,10 +80,10 @@ for p in $PATHS; do
     if grep -IqE 'ssh-(ed25519|rsa) AAAA|BEGIN (OPENSSH|PGP|RSA|EC) (PRIVATE|PUBLIC) KEY' "$f" 2>/dev/null; then
       printf '%s\n' "$f" >> "$SEED/.sow-withheld.log"; continue
     fi
-    if grep -Iq -E "$IDENT" "$f" 2>/dev/null; then
+    if grep -Iqi -E "$IDENT" "$f" 2>/dev/null; then
       mkdir -p "$(dirname "$dest")"
       sed -f "$SCRUB" "$f" > "$dest"
-      if grep -Iq -E "$IDENT" "$dest" 2>/dev/null; then
+      if grep -Iqi -E "$IDENT" "$dest" 2>/dev/null; then
         rm -f "$dest"
         printf '%s\n' "$f" >> "$SEED/.sow-withheld.log"
       else
