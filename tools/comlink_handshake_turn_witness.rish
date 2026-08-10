@@ -17,5 +17,6 @@ assert (st.err contains "admitted by a signed introduction") else "the introduct
 assert (st.err contains "keyed to its freshest verified turn") else "the wire is keyed to the freshest verified turn"
 assert (st.err contains "rotation taken") else "a newer turn rotates the wire key"
 assert (st.err contains "forged turn refused") else "a forged turn is refused while the peer stays admitted"
+assert (st.err contains "carried on the descriptor round-trips") else "a turn carried on the descriptor is recovered and keys the wire"
 
-say "GREEN: comlink handshake-turn — identity and rotation gate independently; a peer is admitted by its signed introduction and the wire seals to its freshest verified turn."
+say "GREEN: comlink handshake-turn — identity and rotation gate independently; a peer is admitted by its signed introduction and the wire seals to the freshest verified turn it carries on its descriptor."

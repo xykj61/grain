@@ -173,6 +173,32 @@ pub fn verify_turn(t: *const Turn, identity_pubkey: [pubkey_len]u8) bool {
     return true;
 }
 
+// A turn on the wire: net_pubkey ++ key_counter ++ reset_counter ++ signature,
+// a fixed 112 bytes, so a descriptor can carry a peer's whole rotation as bytes
+// and a reader recovers the same Turn to verify.
+pub const turn_wire_len: u32 = pubkey_len + 8 + 8 + sig_len; // 112
+
+pub fn turn_to_bytes(t: *const Turn) [turn_wire_len]u8 {
+    var out: [turn_wire_len]u8 = undefined;
+    for (t.net_pubkey, 0..) |b, i| out[i] = b;
+    u64_le(out[32..40], t.key_counter);
+    u64_le(out[40..48], t.reset_counter);
+    for (t.sig, 0..) |b, i| out[48 + i] = b;
+    return out;
+}
+
+/// Recover a turn from its wire bytes, or null when the slice is too short. The
+/// signature still has to verify; this only parses the shape, never trusts it.
+pub fn turn_from_bytes(bytes: []const u8) ?Turn {
+    if (bytes.len < turn_wire_len) return null;
+    var t: Turn = undefined;
+    for (0..pubkey_len) |i| t.net_pubkey[@intCast(i)] = bytes[i];
+    t.key_counter = std.mem.readInt(u64, bytes[32..40], .little);
+    t.reset_counter = std.mem.readInt(u64, bytes[40..48], .little);
+    for (0..sig_len) |i| t.sig[@intCast(i)] = bytes[48 + i];
+    return t;
+}
+
 // The three lendable powers: management (tend), spawn (sow), transfer (hand).
 pub const Power = enum(u8) { tend = 1, sow = 2, hand = 3 };
 
