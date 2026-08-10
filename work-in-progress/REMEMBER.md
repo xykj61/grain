@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` — the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `0dc7c009d3` · Grain · cloud pier
+**Git nib:** `0ba2d805f4` · Grain · cloud pier
 **Host:** Framework · EDT (`America/New_York`) · Vultr SEA VPS (HP AMD 2vCPU/4GB shared · never EWR) · this session in ai-jail
 
 ---
@@ -61,7 +61,7 @@ The private field is `~/grain`; the public template **grain-os/grain** is *proje
 |------|------|
 | **Next JARL step** — **escape** (a child re-parenting, from the sponsor tilak) · shrink the shared surface to a membership commitment · or the scarcity design call | live |
 | **Breach OPEN `20260810`** — Pond = application module (Pool retired) · **skies lap 1** · **topology inclusive** (galaxy is star is planet, 720/universe, sponsor by mod, **outfit** roles; 6 witnesses GREEN) · **Kyri** the notation (was Bron) · **Skate** = the social network | breach · live |
-| **HANDOFF BATON `20260810`** — full vision on disk for a context reset: [`expanding-prompts/20260810-025942_the-handoff-baton-vision-checkpoint.md`](../expanding-prompts/20260810-025942_the-handoff-baton-vision-checkpoint.md). Proposed modules: **Mandate** (turbopuffer, next build) · **Scribe** (Kyri home + settings) · **Starseeding** · **Unsplash** · **`.myc`/Mycelium** (Sui reimpl) · **Mala** revival. Roster: `context/inspirations.kyri` (tribute, consent-gated). **Mandate lap 1 LANDED** `20260810` (`mandate/store.rye` — zero-copy vector store, cosine k-NN, tag filter, witnessed). Next Mandate: Unsplash data · profile `dim` · approximate index. Then Scribe. | checkpoint |
+| **HANDOFF BATON `20260810`** — full vision on disk for a context reset: [`expanding-prompts/20260810-025942_the-handoff-baton-vision-checkpoint.md`](../expanding-prompts/20260810-025942_the-handoff-baton-vision-checkpoint.md). Proposed modules: **Mandate** (turbopuffer, next build) · **Scribe** (Kyri home + settings) · **Starseeding** · **Unsplash** · **`.myc`/Mycelium** (Sui reimpl) · **Mala** revival. Roster: `context/inspirations.kyri` (tribute, consent-gated). **Mandate LANDED** `20260810` — `store.rye` (zero-copy vector store, cosine k-NN, tag filter) + `keyed.rye` (**Kumara-keyed**: a vector belongs to a settled point, owner-signed, `place_of`→fractal place). Next: Unsplash data · profile `dim` · approximate index · **Scribe**. | checkpoint |
 | **Keaton's own Kumara instance** — generate from his real seed + keeper, by his hand alone | JARL · when ready |
 | **mold→shape debride** — 82 files / 753 occurrences; its own careful pass | proposed |
 | **TAME core/shelf** — lossless-compressed living law over a preserved shelf | proposed |
