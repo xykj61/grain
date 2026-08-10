@@ -40,9 +40,21 @@ settlement/bin/constellation selftest
 rishi/bin/rishi run tools/settlement_constellation_witness.rish
 ```
 
-## Held for Keaton's word
+## The spoken name
 
-The **scarcity** a settled number carries is the **d12·d60 fractal** — the elder Azimuth ranks are retired, and the Point tilak now reads its tier straight from the topology (Keaton's word `20260810`). The **shared-surface shrink** is landed: the constellation holds only 56-byte commitments, the owned Deeds riding the fast path. **Escape** is landed too, the fifth transition. What remains for his hand: the **human-name custody park** — how a number becomes a spoken name.
+A number is legible to a machine; a **name** is legible to a person. [`names.rye`](names.rye) is how a settled number comes to wear one — "alice" resolving to a point, and the point resolving back. Names are the one surface that genuinely needs **consensus**: a point's keys are its own business on the fast path, yet a *name* must be globally unique, so everyone agrees who "alice" is. The `NameRegistry` is that small, bounded shared surface.
+
+It is custody, not mere registration. A keeper who **owns** the point (its Deed verifies against the constellation) and **signs** the exact name **claims** it; the same hand **releases** it. One name maps to one point; one point wears one name; resolution runs both ways. A name is a short lowercase DNS-like label — never confusable with an address. The refusals: a taken name, an already-named point, a non-owner, a forged signature, a wrongful release, and any malformed name.
+
+```
+rye build settlement/names.rye -femit-bin=settlement/bin/names
+settlement/bin/names selftest
+rishi/bin/rishi run tools/settlement_names_witness.rish
+```
+
+## JARL, settled
+
+Every settlement door now stands, each witnessed GREEN: the five transitions, the scarcity unified on the **d12·d60 fractal** (Azimuth ranks retired, `20260810`), the **shared-surface shrink** (56-byte commitments over owned Deeds), and now **human-name custody**. What follows — the loadable *skies*, Pond, Kyri — opens with the next-season breach, after JARL, by Keaton's word.
 
 ---
 
