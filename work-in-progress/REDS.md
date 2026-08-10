@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** living ledger (born `20260729.222000`) · refreshed `20260801.162056` (self-work arc · rows 58–60 accreted)
 **Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
-**Voice:** Riyo
+**Voice:** Kyri
 **Status:** Living pin — one row per red, oldest first
 **Bound:** under `living_pin_max_bytes` (24576)
 **Room:** Checkable — every row names where it was caught

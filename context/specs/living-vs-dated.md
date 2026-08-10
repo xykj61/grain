@@ -6,7 +6,7 @@
 **Language:** EN
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Status:** Living
-**Voice:** Riyo
+**Voice:** Kyri
 **Ground:** one-clock naming [`20260627-102012_one-clock-naming-law.md`](20260627-102012_one-clock-naming-law.md) · TAME root §4 [`../TAME_GUIDANCE.md`](../TAME_GUIDANCE.md) · RTAC [`../../work-in-progress/ready-to-ask-claude.md`](../../work-in-progress/ready-to-ask-claude.md) · doorway finding [`../../counsel/20260802-182500_e236-the-guard-is-a-doorway.md`](../../counsel/20260802-182500_e236-the-guard-is-a-doorway.md)
 
 ---

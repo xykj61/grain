@@ -5,7 +5,7 @@
 **Language:** EN
 **Last updated:** 2026-07-29 (written between journeys 1 and 2 of the Voice Season)
 **Style:** Radiant (see `../../context/RADIANT_STYLE.md`)
-**Voice:** Riyo
+**Voice:** Kyri
 **Status:** Living guide · **Acme hand** — every house term is named in plain words at first use
 **Kin:** `RADIANT_STYLE.md` (the sentences) · `counsel_flow.brix` (the checkable contract) · `context/specs/20260729-215600_scan-seam-convention.md` (the machine's half of the dialogue)
 

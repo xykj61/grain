@@ -1,7 +1,7 @@
 # Video Script — "Build Your First Module" (Walkthrough, ~3:20)
 
 **Purpose:** the second video. A newcomer, fresh clone in hand, builds a module and watches it go green — the whole heartbeat of Grain in one sitting.
-**Voice:** Riyo — warm, plain, radiant civic. Second person ("you"), never a named person.
+**Voice:** Kyri — warm, plain, radiant civic. Second person ("you"), never a named person.
 **Render notes:** built for **Remotion** (code-driven terminal captures) or **HeyGen** (narration over the same captures). Each scene gives `[VISUAL]`, `[ON-SCREEN]`, `[VOICEOVER]`. Every command is real and runs green against a fresh clone — record the captures live so the GREEN banner is genuine.
 **License:** original script, this project's own. No third-party footage, music, or text.
 

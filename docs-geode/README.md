@@ -3,7 +3,7 @@
 **Language:** EN  
 **Stamp:** `20260728.031722`  
 **Last refreshed:** `20260801.033305` · e149 hygiene (halls · voice · rooms honest)  
-**Voice:** Riyo  
+**Voice:** Kyri  
 **Kind:** root prod folder — most-inner crystallized canonical docs for live / real-time shipping  
 **Status:** Living crystal — Sangha pages + Glow tutorial seated; remaining genre rooms still crush-empty · Geode Season crush gated
 

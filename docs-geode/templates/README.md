@@ -4,7 +4,7 @@
 **Last refreshed:** `20260801.033305` · e149 Acme personalize pointer crush  
 **Status:** Room living — source templates stay in `tools/gen/season/` and repo root; this page is the shipping index.  
 **Parent:** [`../README.md`](../README.md)  
-**Voice:** Riyo
+**Voice:** Kyri
 
 Shipping genre: **templates**. Bidirectional relative links · Radiant lint · Geode Season rounds.
 

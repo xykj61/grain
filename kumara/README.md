@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living — the identity template, first tilaks seated `20260809.154500`
-**Voice:** Riyo
+**Voice:** Kyri
 **Equinox:** JARL (Identity & Network) · Journey 1
 
 Kumara is Grain's identity. It begins where trust actually begins — a keypair — and grows into a small family of type-marked records, **tilaks**, that say who a key is, who keeps it, and how it may move. This module seats the first two, the pair every other hangs from.

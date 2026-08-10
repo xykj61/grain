@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living ledger — append-only
-**Voice:** Riyo
+**Voice:** Kyri
 **Rule:** [`../.claude/rules/cairn.md`](../.claude/rules/cairn.md) · [`../.cursor/rules/cairn.mdc`](../.cursor/rules/cairn.mdc)
 **Kin:** **debride** removes; a **cairn** marks the way back before it does.
 

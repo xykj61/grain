@@ -2,7 +2,7 @@
 
 **Language:** EN  
 **Status:** Living guide — Acme / new-steward walk  
-**Voice:** Riyo  
+**Voice:** Kyri  
 **Last updated:** `20260801.033305` · e149 personal sync · gitignore  
 **Data:** [`tools/gen/season/personalize.template.brix`](../../tools/gen/season/personalize.template.brix) · [`first_season_journeys.brix`](../../tools/gen/season/first_season_journeys.brix) · [`first_season_questions.brix`](../../tools/gen/season/first_season_questions.brix)  
 **Shipping index:** [`docs-geode/templates/README.md`](../../docs-geode/templates/README.md)

@@ -3,7 +3,7 @@
 **Language:** EN
 **Last updated:** 2026-07-30 (`20260730.125750` — living twin points at GLOW_ALMANAC · ch1 16/16 · ch2 16/16 FULL · e26)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Voice:** Riyo
+**Voice:** Kyri
 **Status:** Foundation
 
 ---

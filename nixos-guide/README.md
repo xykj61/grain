@@ -2,7 +2,7 @@
 
 *A home for the cloud pier's documentation, seated by Keaton's word. Each guide is one witnessed road, numbered in walking order and stamped like every dated artifact. The pier these guides stand is the horizon home for Comlink, Tablecloth, Murr Mycelium, and whatever networked craft follows — so the series begins with the machine itself and hardens it before anything listens on it.*
 
-**Language:** EN · **Style:** Radiant · **Voice:** Riyo
+**Language:** EN · **Style:** Radiant · **Voice:** Kyri
 
 | # | Guide | Status |
 |---|-------|--------|
