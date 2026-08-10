@@ -1,0 +1,153 @@
+//! sundial/sundial.rye — the health face: the tree's health at a glance.
+//!
+//! A sundial tells the time of day by a shadow; this one tells the HEALTH of the day.
+//! It gathers a set of module readings — each module and whether its witness stands
+//! green — and shows them as one face: which modules hold, how many are green, the
+//! health percent, and the tree's fascia (connective-reference) metric.
+//!
+//! It is the rendering of a **Ledgerworks** roll-up (the bat fleet's portfolio
+//! archetype): many modules gathered under one head. Its `emit` prints exactly that —
+//! a `format baton-v1` · `archetype ledgerworks` document the Scribe reader validates.
+//!
+//! The old `sundial` fixture made fund dedications and was rightly withheld; this
+//! Sundial's dharma is honest — a status face anyone can read in a glance, and a
+//! health line the recursion batons can carry.
+//!
+//!   rye build sundial/sundial.rye -femit-bin=sundial/bin/sundial
+//!   sundial/bin/sundial selftest    # prove the counts, the percent, the all-green
+//!   sundial/bin/sundial emit        # render a Ledgerworks health roll-up
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const sundial_version = "20260810.104500";
+
+// A sundial holds at most this many module readings — the tree is bounded, named once.
+pub const max_modules: u32 = 256;
+
+/// One reading: a module's name and whether its witness stands green.
+pub const Reading = struct {
+    name: []const u8,
+    green: bool,
+};
+
+/// The health face: a bounded set of readings and the tree's fascia metric.
+pub const Sundial = struct {
+    readings: [max_modules]Reading,
+    count: u32,
+    fascia: u32, // the tree's connective-health metric, a percent set by the caller
+
+    /// A fresh sundial with a fascia reading and no modules yet.
+    pub fn init(fascia: u32) Sundial {
+        // invariant: fascia is a percent.
+        assert(fascia <= 100);
+        return .{ .readings = undefined, .count = 0, .fascia = fascia };
+    }
+
+    /// Record one module's witness status. Bounded by max_modules.
+    pub fn add(self: *Sundial, name: []const u8, green: bool) void {
+        // invariant: the face never holds more readings than its bound.
+        assert(self.count < max_modules);
+        self.readings[self.count] = .{ .name = name, .green = green };
+        self.count += 1;
+        // invariant: the count climbed by one and stays within the bound.
+        assert(self.count <= max_modules);
+    }
+
+    /// How many modules stand green.
+    pub fn green_count(self: *const Sundial) u32 {
+        // invariant: the scan stays inside the filled readings.
+        assert(self.count <= max_modules);
+        var n: u32 = 0;
+        var i: u32 = 0;
+        while (i < self.count) : (i += 1) {
+            if (self.readings[i].green) n += 1;
+        }
+        return n;
+    }
+
+    /// Whether every module reads green.
+    pub fn all_green(self: *const Sundial) bool {
+        return self.green_count() == self.count;
+    }
+
+    /// The health of the day as a percent (green of total); zero when nothing is read.
+    pub fn health_percent(self: *const Sundial) u32 {
+        if (self.count == 0) return 0;
+        // green_count <= count <= max_modules (256), so green*100 fits a u32 with room.
+        return (self.green_count() * 100) / self.count;
+    }
+};
+
+fn run_selftest() !u8 {
+    var s = Sundial.init(41); // a fascia reading of 41
+    s.add("kumara", true);
+    s.add("vault", true);
+    s.add("basin", true);
+    s.add("mandate", false); // one witness red
+
+    if (s.count != 4) return error.CountWrong;
+    if (s.green_count() != 3) return error.GreenCountWrong;
+    if (s.all_green()) return error.WronglyAllGreen;
+    // Three of four green is 75 percent, exactly.
+    if (s.health_percent() != 75) return error.PercentWrong;
+
+    // An empty sundial reads zero, never divides by zero.
+    var empty = Sundial.init(0);
+    if (empty.health_percent() != 0) return error.EmptyNotZero;
+
+    // A fully-green sundial reads all-green and 100 percent.
+    var whole = Sundial.init(100);
+    whole.add("scribe", true);
+    whole.add("sundial", true);
+    if (!whole.all_green()) return error.NotAllGreen;
+    if (whole.health_percent() != 100) return error.WholeNotFull;
+
+    print("sundial: four modules read — three green, one red; the face shows 3 of 4 green, health 75%, fascia 41.\n", .{});
+    print("sundial: an empty face divides by zero never (reads 0), a whole face reads all-green at 100%.\n", .{});
+    print("sundial: version {s}\n", .{sundial_version});
+    print("GREEN: sundial — the health of the day at a glance: green of total, the health percent, the fascia, and an honest all-green.\n", .{});
+    return 0;
+}
+
+// Kyri facts and the health face are data, so they go to stdout (diagnostics use stderr).
+const max_line: u32 = 128;
+
+fn put_line(io: std.Io, comptime fmt: []const u8, args: anytype) void {
+    var buf: [max_line]u8 = undefined;
+    const line = std.fmt.bufPrint(&buf, fmt, args) catch return;
+    const out = std.Io.File.stdout();
+    out.writeStreamingAll(io, line) catch {};
+}
+
+fn status(green: bool) []const u8 {
+    return if (green) "green" else "red";
+}
+
+/// Emit the health face as a Ledgerworks roll-up baton the Scribe reader validates.
+fn run_emit(io: std.Io) !u8 {
+    var s = Sundial.init(41);
+    s.add("kumara", true);
+    s.add("vault", true);
+    s.add("basin", true);
+    s.add("scribe", true);
+    s.add("mandate", false);
+    put_line(io, "format baton-v1\n", .{});
+    put_line(io, "archetype ledgerworks\n", .{});
+    put_line(io, "stamp {s}\n", .{sundial_version});
+    var i: u32 = 0;
+    while (i < s.count) : (i += 1) {
+        put_line(io, "member {s} {s}\n", .{ s.readings[i].name, status(s.readings[i].green) });
+    }
+    put_line(io, "roll {d} of {d} green\n", .{ s.green_count(), s.count });
+    put_line(io, "health {d}% fascia {d}\n", .{ s.health_percent(), s.fascia });
+    put_line(io, "next keep watch\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "emit")) return run_emit(init.io);
+    return run_selftest();
+}
