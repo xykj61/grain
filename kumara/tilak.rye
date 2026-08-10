@@ -18,13 +18,16 @@
 //! example instance. The pilot's own instance is filled by his hand, from his own
 //! seed kept in his own jail; this file never invents a real pilot's key.
 //!
-//! Scarcity honors Azimuth's shape without borrowing its ledger: a point number
-//! below 2^8 is a galaxy, below 2^16 a star, otherwise a planet — legible tiers
-//! over keypairs that are what actually trust, rather than a hierarchy of power.
+//! Scarcity is the d12·d60 fractal (`../comlink/topology.rye`): a point number
+//! decodes to a place — a galaxy, a star within it, a planet within that — and the
+//! place is the tier. The elder Azimuth ranks (2^8 · 2^16 · 2^32) are retired
+//! (Keaton's word `20260810`); the tiers stay legible over keypairs that are what
+//! actually trust, rather than a hierarchy of power.
 //!
-//! Held for Keaton's word (JARL journeys past this one): the settlement ledger
-//! (Sui or Grain-native), the final scarcity tiering, the rotation/capability
-//! tilaks (turn · tend · sow · hand · sponsor), and the human-name custody park.
+//! Settled since (JARL): the ledger is built on Sui (`../settlement/constellation.rye`),
+//! the scarcity is the d12·d60 fractal, and the rotation and capability tilaks
+//! (turn · tend · sow · hand · sponsor) all stand below. Held still: the human-name
+//! custody park, and how small the shared surface can shrink.
 //!
 //!   rye build kumara/tilak.rye -femit-bin=kumara/bin/tilak
 //!   kumara/bin/tilak selftest      # prove make + verify + tamper-reject
@@ -34,22 +37,21 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const kumara = @import("kumara.rye");
+const topology = @import("topology.rye");
 
-pub const tilak_version = "20260809.154500";
+pub const tilak_version = "20260810.002400";
 
-// A byte below this point number is a galaxy; below the next a star; else a planet.
-// The Azimuth parallel, named so a reader places a number at a glance. u32 is the
-// widest a point number goes; the final tiering is Keaton's word.
-pub const galaxy_ceiling: u32 = 256; // 2^8
-pub const star_ceiling: u32 = 65536; // 2^16
+// A point number's tier is its place in the d12·d60 fractal. Topology is the one
+// source of scarcity, so the tilak keeps no ceilings of its own; the elder Azimuth
+// ranks are retired (Keaton's word `20260810`).
+pub const Tier = topology.Tier;
 
-pub const Tier = enum { galaxy, star, planet };
-
-/// The tier a point number falls in — address legibility, not a rank of power.
+/// The tier a point number falls in — its place in the fractal, address legibility
+/// rather than a rank of power. A number past the universe has no place.
 pub fn tier_of(number: u32) Tier {
-    if (number < galaxy_ceiling) return .galaxy;
-    if (number < star_ceiling) return .star;
-    return .planet;
+    // invariant: a point number sits inside the d12·d60 universe.
+    assert(number < topology.universe_points);
+    return topology.decode(number).?.tier;
 }
 
 const pubkey_len: u32 = 32;
@@ -69,11 +71,13 @@ pub const Point = struct {
     parent: u32, // sponsor point number
     version: u32, // climbs by exactly one per change
 
-    /// A fresh point at version 1, parented to its arithmetic default.
+    /// A fresh point at version 1, parented to its topology default sponsor.
     pub fn seat(number: u32, keeper: [pubkey_len]u8) Point {
-        // invariant: the arithmetic-default parent is the number shifted one tier
-        // down (a planet's default sponsor is its star), or itself for a galaxy.
-        const default_parent: u32 = if (number < galaxy_ceiling) number else number / galaxy_ceiling;
+        // invariant: a point number sits inside the d12·d60 universe.
+        assert(number < topology.universe_points);
+        // invariant: the default parent is the topology sponsor — a planet's star, a
+        // star's galaxy, a galaxy itself — the same parent link the fractal names.
+        const default_parent: u32 = topology.encode(topology.decode(number).?.parent());
         const p = Point{ .number = number, .keeper = keeper, .parent = default_parent, .version = 1 };
         // invariant: a seated point begins at version one.
         assert(p.version == 1);
@@ -390,8 +394,8 @@ pub fn emit_sponsor(io: std.Io, s: *const Sponsor) void {
 const example_key_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
 const example_keeper_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
 const example_net_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
-const example_number: u32 = 0x0100; // 256 — the first star
-const example_chosen_parent: u32 = 0x0002; // an escape from the arithmetic default
+const example_number: u32 = 29; // a star in the d12·d60 fractal — of_star(3,2)
+const example_chosen_parent: u32 = 5; // an escape to a different galaxy
 
 // The whole example instance — every tilak, from the example seeds.
 const Instance = struct { b: Bind, p: Point, t: Turn, tend: Cap, sow: Cap, hand: Cap, s: Sponsor };
