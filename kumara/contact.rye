@@ -1,0 +1,198 @@
+//! kumara/contact.rye — the contact card, the live descendant key, and redirects.
+//!
+//! A Kumara point (`tilak.rye`) says who a key is. A *contact* says how to reach
+//! that point in the world: which live key signs for it today, and where its
+//! domains point. Two load-bearing pieces:
+//!
+//!   * **delegation** — a galaxy MAIN key certifies a live DESCENDANT key, so the
+//!     main key can rest cold (a Vault shard, a hardware key, an air gap) while the
+//!     descendant does day-to-day signing. The main key signs the descendant's
+//!     public key; a delegation is *live* exactly when that signature verifies.
+//!     Rotating the live key is minting a new descendant, never touching the main.
+//!
+//!   * **redirects** — a bounded map from a domain id to a target id: the owned
+//!     domains that resolve to this contact. The map is data; the mechanism is here.
+//!
+//! Custody first: this file signs only with demo seeds (0x51 / 0x52). A real main
+//! key is the pilot's own hand, sharded by the Vault; the real domain->target map is
+//! the pilot's private record, loaded by his hand, never the tree.
+//!
+//!   rye build kumara/contact.rye -femit-bin=kumara/bin/contact
+//!   kumara/bin/contact selftest    # prove delegate + live + rotate + resolve + tamper
+//!   kumara/bin/contact emit        # print an example contact as Kyri facts
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const kumara = @import("kumara.rye");
+const topology = @import("topology.rye");
+
+pub const contact_version = "20260810.075500";
+
+const pubkey_len: u32 = 32;
+const sig_len: u32 = 64;
+
+// A bounded domain portfolio. Named here, asserted at every edge — a redirect map
+// never grows past what a contact card can hold.
+pub const max_redirects: u32 = 64;
+
+/// A delegation: the main key certifies one live descendant key.
+pub const Delegation = struct {
+    main_pub: [pubkey_len]u8,
+    descendant_pub: [pubkey_len]u8,
+    sig: [sig_len]u8, // main key's signature over descendant_pub
+};
+
+/// Derive a live descendant delegation from a main seed and a descendant seed.
+/// The main key signs the descendant's public key; the descendant then signs live.
+pub fn delegate(main_seed: *const [kumara.seed_length]u8,
+                descendant_seed: *const [kumara.seed_length]u8) Delegation {
+    const main_kp = kumara.keypair_from_seed(main_seed);
+    const desc = kumara.keypair_from_seed(descendant_seed);
+    // invariant: a delegation binds two distinct keys — a key never delegates to itself.
+    assert(!std.mem.eql(u8, &main_kp.public_key.bytes, &desc.public_key.bytes));
+    const sig = kumara.sign(&desc.public_key.bytes, main_kp, null).toBytes();
+    // invariant: the signature is exactly one Ed25519 signature wide.
+    assert(sig.len == sig_len);
+    return .{ .main_pub = main_kp.public_key.bytes, .descendant_pub = desc.public_key.bytes, .sig = sig };
+}
+
+/// A delegation is live when the main key's signature over the descendant key verifies.
+pub fn delegation_live(d: *const Delegation) bool {
+    // invariant: the stored signature is a full Ed25519 signature.
+    assert(d.sig.len == sig_len);
+    const main_pub = kumara.PublicKey.fromBytes(d.main_pub) catch return false;
+    kumara.verify_bytes(&d.descendant_pub, &d.sig, main_pub) catch return false;
+    return true;
+}
+
+/// The contact card: a point (planet within star within galaxy), its live key, and
+/// a bounded redirect map. Planet/star/galaxy are point numbers in the d12·d60
+/// fractal; the human names that wear them live in the pilot's private record.
+pub const Contact = struct {
+    planet: u32,
+    star: u32,
+    galaxy: u32,
+    live: Delegation,
+    count: u32,
+    domains: [max_redirects]u32,
+    targets: [max_redirects]u32,
+
+    /// A fresh contact for a point with a live delegation and an empty portfolio.
+    pub fn init(planet: u32, star: u32, galaxy: u32, live: Delegation) Contact {
+        // invariant: the planet sits inside the d12·d60 universe (a real place).
+        assert(planet < topology.universe_points);
+        // invariant: the live delegation is actually live at construction.
+        assert(delegation_live(&live));
+        return .{
+            .planet = planet,
+            .star = star,
+            .galaxy = galaxy,
+            .live = live,
+            .count = 0,
+            .domains = [_]u32{0} ** max_redirects,
+            .targets = [_]u32{0} ** max_redirects,
+        };
+    }
+
+    /// Add a redirect domain->target. Bounded by max_redirects.
+    pub fn add_redirect(self: *Contact, domain: u32, target: u32) void {
+        // invariant: the portfolio never exceeds its named bound.
+        assert(self.count < max_redirects);
+        self.domains[self.count] = domain;
+        self.targets[self.count] = target;
+        self.count += 1;
+        // invariant: count climbs by exactly one and stays within bounds.
+        assert(self.count <= max_redirects);
+    }
+
+    /// Resolve a domain to its target; null when the domain is not held here.
+    pub fn resolve(self: *const Contact, domain: u32) ?u32 {
+        // invariant: the filled portion never exceeds the bound.
+        assert(self.count <= max_redirects);
+        var i: u32 = 0;
+        while (i < self.count) : (i += 1) {
+            if (self.domains[i] == domain) return self.targets[i];
+        }
+        return null;
+    }
+
+    /// Rotate the live key: mint a new descendant under the SAME main key. The old
+    /// descendant is retired; the main key never moved.
+    pub fn rotate(self: *Contact, main_seed: *const [kumara.seed_length]u8,
+                  new_descendant_seed: *const [kumara.seed_length]u8) void {
+        const next = delegate(main_seed, new_descendant_seed);
+        // invariant: rotation keeps the same main key — only the descendant changes.
+        assert(std.mem.eql(u8, &next.main_pub, &self.live.main_pub));
+        assert(!std.mem.eql(u8, &next.descendant_pub, &self.live.descendant_pub));
+        self.live = next;
+    }
+};
+
+fn run_selftest() !u8 {
+    const main_seed: [kumara.seed_length]u8 = .{0x51} ** kumara.seed_length;
+    const desc_seed: [kumara.seed_length]u8 = .{0x52} ** kumara.seed_length;
+
+    // Delegate a live descendant under the main key.
+    const d = delegate(&main_seed, &desc_seed);
+    if (!delegation_live(&d)) return error.DelegationNotLive;
+
+    // A tampered descendant key breaks the delegation.
+    var bad = d;
+    bad.descendant_pub[0] ^= 0x01;
+    if (delegation_live(&bad)) return error.TamperVerified;
+
+    // Build a contact for an example point and a small redirect portfolio.
+    // Example numbers (galaxy 3, star 27, planet 267) — never the pilot's real names.
+    var c = Contact.init(267, 27, 3, d);
+    c.add_redirect(1, 100); // two domains fold to one target — one landing page
+    c.add_redirect(2, 100);
+    c.add_redirect(3, 200);
+    if (c.resolve(2).? != 100) return error.ResolveWrong;
+    if (c.resolve(3).? != 200) return error.ResolveWrong;
+    if (c.resolve(999) != null) return error.ResolveGhost;
+    // invariant: the portfolio holds exactly what we added.
+    assert(c.count == 3);
+
+    // Rotate the live key; the main key holds, the descendant changes, still live.
+    const desc2_seed: [kumara.seed_length]u8 = .{0x53} ** kumara.seed_length;
+    c.rotate(&main_seed, &desc2_seed);
+    if (!delegation_live(&c.live)) return error.RotatedNotLive;
+
+    print("kumara contact: delegate + live + tamper-refused + resolve + rotate — all held\n", .{});
+    print("kumara contact: version {s}\n", .{contact_version});
+    print("GREEN: kumara contact — live descendant key, cold main key, bounded redirects.\n", .{});
+    return 0;
+}
+
+// Kyri facts are data, so they go to stdout (diagnostics use stderr `print`).
+// A fact line is short, so a stack buffer holds it — bounded, no allocation.
+const max_line: u32 = 128;
+
+fn put_line(io: std.Io, comptime fmt: []const u8, args: anytype) void {
+    var buf: [max_line]u8 = undefined;
+    const line = std.fmt.bufPrint(&buf, fmt, args) catch return;
+    const out = std.Io.File.stdout();
+    out.writeStreamingAll(io, line) catch {};
+}
+
+fn run_emit(io: std.Io) !u8 {
+    const main_seed: [kumara.seed_length]u8 = .{0x51} ** kumara.seed_length;
+    const desc_seed: [kumara.seed_length]u8 = .{0x52} ** kumara.seed_length;
+    var c = Contact.init(267, 27, 3, delegate(&main_seed, &desc_seed));
+    c.add_redirect(1, 100);
+    c.add_redirect(2, 100);
+    put_line(io, "format contact-v1\n", .{});
+    put_line(io, "planet {d}\n", .{c.planet});
+    put_line(io, "star {d}\n", .{c.star});
+    put_line(io, "galaxy {d}\n", .{c.galaxy});
+    put_line(io, "redirects {d}\n", .{c.count});
+    put_line(io, "live_key_live {}\n", .{delegation_live(&c.live)});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "emit")) return run_emit(init.io);
+    return run_selftest();
+}
