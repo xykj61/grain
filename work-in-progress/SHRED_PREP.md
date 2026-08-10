@@ -82,6 +82,16 @@ Add a row **every time** a living mutant seats and the prior stamp becomes fossi
 
 **Ember supersession (molt `20260808.220423`).** The living forge module renamed `anvil/` → `kiln/` → **`ember/`** (Keaton's word). Kiln/anvil naming writings above are prepped as Class H fossils; the rested **Kiln Season** keeps its name as history and is not touched. Any tribute framing once attached to the Anvil name is **debrided** `20260809.012200` — removed from the living tree and stripped from history, not archived. Molt remains prep only; the Class H shred of the kiln/anvil naming fossils stays RED.
 
+### Pending molt — Pool → Pond (tight scope, opens after JARL)
+
+**Decision (`20260809`, Keaton's word):** the **breach opens after JARL closes**, and the **molt sweep stays tight** — the Pool study and its direct kin only, **not** a broad archive-and-yonder pass. No fossil row is seated yet, because the living **Pond** mutant that supersedes Pool seats at the breach; this note records the scope so the sweep is ready and bounded when the word comes.
+
+| Molt target (pending) | Becomes | When | Scope |
+| --- | --- | --- | --- |
+| `external-research/20260714-035600_pool-p-vane-content-data-market.md` | a living **Pond** application-module mutant | at the breach, after JARL | tight — this paper + its direct Pool-as-P-vane kin only |
+
+Plan: `../active-designing/20260809-234413_loadable-topologies-and-pond-silo-brief.md`. Until the mutant seats, this stays a **pending note**, not a Class H fossil row, and opens no cut.
+
 Grep helpers: `living mutant` · `fossil — living path` · paths in this table.
 
 ---
