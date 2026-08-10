@@ -90,6 +90,8 @@ allow context/THREATS.md
 allow context/equinox_map.brix
 allow context/equinox_foundations.brix
 allow context/specs   # the project's own technical specs; identity/provenance sub_excluded
+allow active-designing
+allow waymarks
 # -- root files (identity-bearing ones scrubbed) --
 allow README.md
 allow MAP.md
@@ -303,6 +305,26 @@ sub_exclude tools/pond_exit_bron_master_seal.sh
 sub_exclude waymarks/20260730-150702_pole0-3-bozo-murr-hats.md
 sub_exclude context/specs/20260713-201910_pacific-time-local-clone-convention.md
 
+# design/waymark clearance (20260810 . wnlsgtnxe) — 19 files agent-flagged for personal content
+sub_exclude waymarks/20260725-112615_radiant-wave36.md
+sub_exclude active-designing/20260730-072710_weave-dependencies-djinn-bitscape-murr.md
+sub_exclude active-designing/20260810-055147_plan-3x39-kumara-passports-divider-grammar.md
+sub_exclude active-designing/yonder/20260715-194500_the-slc-product-glow-on-capable-hardware.md
+sub_exclude active-designing/20260810-055147_plan-name-consolidation-debride.md
+sub_exclude waymarks/20260725-111005_radiant-wave21.md
+sub_exclude active-designing/20260630-001812_the-stack-and-the-surface.md
+sub_exclude active-designing/20260810-055147_plan-scribes-dashboard-and-the-bat-fleet.md
+sub_exclude waymarks/20260725-111120_radiant-wave22.md
+sub_exclude waymarks/20260725-111235_radiant-wave23.md
+sub_exclude waymarks/20260725-035453_radiant-wave6.md
+sub_exclude waymarks/20260725-111515_radiant-wave25.md
+sub_exclude waymarks/README.md
+sub_exclude active-designing/yonder/20260712-130300_lane-inward-route-probe.md
+sub_exclude active-designing/20260727-142516_the-constellation-and-the-twelve-funds.md
+sub_exclude waymarks/20260725-112415_radiant-wave34.md
+sub_exclude active-designing/yonder/20260722-153358_stoa279-hawm-emulator-serial-pin.md
+sub_exclude active-designing/yonder/20260714-184500_macos-full-private-home-design.md
+sub_exclude waymarks/20260725-112515_radiant-wave35.md
 # ---- witness obligations (M1/M2) ----
 # M1 GREEN: every tracked root path above has exactly one verdict, and the set
 #           of paths equals `git ls-files | first-segment | unique`.
