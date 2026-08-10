@@ -1,7 +1,7 @@
 # Bozo Fund — Opening (Capricorn · earth · seat 10 · was Linn)
 
 **Stamp:** `20260730.150702` (POLE · DJINN executive) · Helen dedication `20260728.035025` · Linn seat `20260728.034317`  
-**Voice:** Riyo  
+**Voice:** Kyri  
 **Kind:** fund-prep page one — grow the seat; no deploy  
 **Generator:** `tools/gen_bozo_fund_prep.rish`
 

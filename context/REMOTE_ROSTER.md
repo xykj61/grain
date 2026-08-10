@@ -2,7 +2,7 @@
 
 **Language:** EN  
 **Seated:** `20260724.222620` · living refresh `20260730.034136`  
-**Voice:** Riyo  
+**Voice:** Kyri  
 **Status:** Living pin — single home for the pier's remote count  
 **Bound:** keep thin  
 

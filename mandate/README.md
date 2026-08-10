@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living — the vector store, lap 1 seated `20260810.031234`
-**Voice:** Riyo
+**Voice:** Kyri
 **Kin:** the first build of the breach's new arc (`../expanding-prompts/20260810-025942_the-handoff-baton-vision-checkpoint.md`)
 
 Mandate is Grain's search organ — a **vector store**, its own answer to turbopuffer. It holds the embeddings a model turns meaning into, and answers the one question a vector store exists for: *which of my records is nearest this query?*

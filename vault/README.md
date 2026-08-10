@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living — the shard, lap 1 seated `20260810.062047`
-**Voice:** Riyo
+**Voice:** Kyri
 **Kin:** molt-supersedes elder Urbit **Jael**; design brief `../active-designing/20260810-055147_plan-vault-keeper-of-secrets.md`
 
 Kumara names *who* a key is. **Vault** names *how* a person keeps the secret behind it alive — through fire, hurricane, tsunami, a decade, and a forgetting mind. It is the keeper of secrets, on our own ground.

@@ -2,7 +2,7 @@
 
 **Language:** EN  
 **Status:** Living pin — **e208 GREEN Aurora A4 signature_length** · **Tend T1–T6 · C1–C4 · A1–A4 · M1–M4** · **Q58 Amphora parked** · **Ashvini a0 CLOSED** · **J4 OPEN** · seat **128 RESERVED** · geode **GATED**  
-**Voice:** Riyo  
+**Voice:** Kyri  
 **Stamp:** living ledger (born `20260731.141857`) · refreshed `20260802.142508` (e208 A4 · ontology pair · bar4 GREEN · SEA only)  
 **Seat:** Equinox e123 · almanac **127** · Chapter Eight **(15 of 16)** · nested wave **e208/64 — J4 Aurora A4**  
 **Basis:** fuse kg e207–e208 · handback `return_equinox_q58` · `return_deca_128` · **128 still reserved**

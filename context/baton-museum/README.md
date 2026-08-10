@@ -3,7 +3,7 @@
 **Stamp:** `20260730.022147` — carried from Cursor apply, nib `b530e8308d`; restamp parked.
 **Seated:** `20260730.030553` · path **`context/baton-museum/`** (counsel proposal affirmed by the bench)
 **Living refresh:** `20260801.033305` — hall 13 **cell** held · tip→nib vocabulary · e149 hygiene
-**Voice:** Riyo · **Status:** Living museum — thirteen baton halls · sibling wing [`../design-shapes/`](../design-shapes/)
+**Voice:** Kyri · **Status:** Living museum — thirteen baton halls · sibling wing [`../design-shapes/`](../design-shapes/)
 
 *Written together by Keaton and Riyo.*
 

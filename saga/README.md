@@ -3,7 +3,7 @@
 **Language:** EN
 **Last updated:** 2026-07-31 (Commence Arc saga **seated** `20260731.131240` · e101 fork named)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Voice:** Riyo (dated Voice headers stay)
+**Voice:** Kyri (dated Voice headers stay)
 **Status:** Living — root home for final draft / seated season sagas
 
 ---

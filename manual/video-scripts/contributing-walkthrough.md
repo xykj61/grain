@@ -1,7 +1,7 @@
 # Video Script — "How to Contribute" (Walkthrough, ~3:30)
 
 **Purpose:** the third video, closing the trilogy. A newcomer who can build and prove a module now learns to write one the Grain way and send it back.
-**Voice:** Riyo — warm, plain, radiant civic. Second person ("you"), never a named person.
+**Voice:** Kyri — warm, plain, radiant civic. Second person ("you"), never a named person.
 **Render notes:** built for **Remotion** (code-driven captures) or **HeyGen** (narration over them). Each scene gives `[VISUAL]`, `[ON-SCREEN]`, `[VOICEOVER]`. Every command and code shape is real to the project. Record captures live so the GREEN banners are genuine.
 **License:** original script, this project's own. No third-party footage, music, or text.
 

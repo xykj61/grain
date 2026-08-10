@@ -1,6 +1,6 @@
 # Sangha — Page Zero
 
-**Language:** EN · **Voice:** Riyo · **Style:** Radiant
+**Language:** EN · **Voice:** Kyri · **Style:** Radiant
 **Chartered:** `20260730.021218` (Voice v29 · slot 13 · radiant) — expanding the `20260730.014817` seat
 **Home:** `docs-geode/sangha/` — a shelf inside the prod crystal, no new root door
 
