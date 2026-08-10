@@ -66,6 +66,37 @@ pub fn handshake(
     return .{ .admitted = true, .route = route };
 }
 
+/// The same handshake, closing the loop: the peer's turn arrives *on the wire*,
+/// carried in the introduction's descriptor bytes rather than passed apart. The
+/// descriptor is a turn's wire form (`kumara/tilak.rye` `turn_to_bytes`); its
+/// integrity is doubly held — the introducer signed the whole introduction over
+/// the descriptor, and the turn inside carries the peer's own signature. A
+/// descriptor too short to hold a turn refuses at the rotation gate.
+pub fn handshake_wire(
+    table: *table_mod.PeerTable,
+    intro: introduce.Introduction,
+    known_turn: ?*const tilak.Turn,
+    now: u64,
+) !HandshakeOutcome {
+    try introduce.accept(table, intro, now);
+
+    const id_slice = intro.introduced.as_slice();
+    if (id_slice.len < pubkey_len) return error.IdentityRefused;
+    var identity: [pubkey_len]u8 = undefined;
+    for (0..pubkey_len) |i| identity[i] = id_slice[i];
+
+    // Recover the turn from the descriptor bytes. A malformed descriptor is a
+    // refusal, not a crash — routing keeps the last trusted key.
+    const parsed = tilak.turn_from_bytes(intro.descriptor.as_slice());
+    if (parsed == null) {
+        const kept: [pubkey_len]u8 = if (known_turn) |k| k.net_pubkey else [_]u8{0} ** pubkey_len;
+        return .{ .admitted = true, .route = .{ .accepted = false, .route_key = kept, .reason = .forged_refused } };
+    }
+    var incoming = parsed.?;
+    const route = turn_route.read_turn(known_turn, &incoming, identity);
+    return .{ .admitted = true, .route = route };
+}
+
 // --- selftest -----------------------------------------------------------
 
 const star_seed: [32]u8 = .{0x01} ** 32;
@@ -114,7 +145,19 @@ fn run_selftest() !u8 {
     if (out2.route.accepted or out2.route.reason != .forged_refused) return error.ForgedTurnTaken;
     if (!bytes_eq(out2.route.route_key, t1.net_pubkey)) return error.ForgedRolledKey;
 
-    print("comlink handshake-turn: peer admitted by a signed introduction; wire keyed to its freshest verified turn; rotation taken; forged turn refused, key kept.\n", .{});
+    // Close the loop: carry the turn ON the wire, in the descriptor bytes. The
+    // reader recovers the same turn and keys the wire to it.
+    const t0_bytes = tilak.turn_to_bytes(&t0);
+    const wire_desc = desc.Descriptor.from_slice(&t0_bytes) orelse return error.WireDescriptorFailed;
+    const wire_intro = introduce.Introduction.mint(star_kp, peer_id, wire_desc, 1, .star) orelse return error.WireIntroFailed;
+    var wire_backing: [16384]u8 = undefined;
+    var wire_table = table_mod.PeerTable.init(wire_backing[0..]);
+    const wire_out = try handshake_wire(&wire_table, wire_intro, null, 400);
+    if (!wire_out.admitted) return error.WirePeerNotAdmitted;
+    if (!wire_out.route.accepted or wire_out.route.reason != .verified_first) return error.WireTurnNotTaken;
+    if (!bytes_eq(wire_out.route.route_key, t0.net_pubkey)) return error.WireKeyRoundtripWrong;
+
+    print("comlink handshake-turn: peer admitted by a signed introduction; wire keyed to its freshest verified turn; rotation taken; forged turn refused, key kept; turn carried on the descriptor round-trips.\n", .{});
     print("comlink handshake-turn: version {s}\n", .{handshake_turn_version});
     print("GREEN: comlink handshake-turn — the live handshake asks who-are-you and which-key in one breath; identity and rotation gate independently.\n", .{});
     return 0;
