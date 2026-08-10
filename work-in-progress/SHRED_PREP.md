@@ -100,6 +100,16 @@ Plan: `../active-designing/20260809-234413_loadable-topologies-and-pond-silo-bri
 | --- | --- | --- | --- |
 | `context/RIYO.md` | `context/KYRI.md` | molt `20260810.125841` | standing voice Riyo → Kyri; body kept whole, banner points to living Kyri; Quin keeps OS-5 + Q-vane |
 
+### Molt seated — root `.brix` descriptor (`20260810.145743`)
+
+**Seated (`20260810.145743`, Keaton's word — for fascia health).** The root `.brix` course descriptor was molted **in place**: name `veganreyklah2` → `grain`, version June → `20260810.145743`, and the modules grown since June added as bricks (Q-vane family, Kumara, Comlink, Sundial). The elder descriptor lives **whole in git history** rather than a new tracked fossil — deliberately, so the old identity-flavored name (`veganreyklah2`, a seed-scrub term) does not get re-introduced as a new file. Witnesses GREEN after the molt (`bricks_exist` 19 entries · `brix_alias_resolve` Prim→Prin).
+
+| Fossil (elder) | Living mutant | Seated | Notes |
+| --- | --- | --- | --- |
+| `.brix` @ pre-molt git nib (`146854ce76`) | `.brix` (name `grain`, v`20260810.145743`) | molt `20260810.145743` | in-place refresh; elder in git history; no tracked fossil (avoids re-introducing the `veganreyklah2` scrub term) |
+
+The eventual "shedding" of the elder descriptor would be a **deep git-history debride** — it stays **RED** and word-gated, needs a **cairn** first, and is not opened here. Molt is prep only.
+
 ### Pending molt — Bron → Kyri (by molt, not rewrite · opens after JARL)
 
 **Decision (`20260810`, Keaton's word):** the session-log notation **Bron** re-grows under the favorite word **Kyri**. Measured scale: **2,163** `.bron` files, **378** living references. This is a **molt, never a rewrite** — the **2,163 existing `.bron` files are never renamed** (one-clock law / accrete-never-break protect every dated artifact); **new** logs are born `.kyri`; the notation spec grows a Kyri mutant while the Bron spec stays a readable fossil; the 378 references update forward and tools read **both** extensions. No history rewrite, no unsigning, no force-push.
