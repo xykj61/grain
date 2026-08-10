@@ -1,0 +1,9 @@
+format baton-v1
+archetype barque
+stamp 20260810.094500
+state mid-round — several doors open, none yet closed
+gap a door still open
+gap another door still open
+witness GREEN
+next close the first door
+note original coinage; no named ship or company
