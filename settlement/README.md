@@ -18,12 +18,12 @@ A galaxy leads a **d60** — its five stars and their sixty planets. Those, with
 | A point is a single-keeper record | `Settled` carries one keeper; its `version` climbs by exactly one per change, like a Sui object's |
 | Powers are capability records | `mint` needs a `sow` cap, `transfer` a `hand` cap, `rotate` a `tend` cap — the tilak powers, each signed by the keeper who grants it, each exercised by a holder who signs the specific act |
 | Keys rotate on their own counters | `rotate` sets a new networking key from a signed turn; a reset outranks a key bump; the keeper's key never moves while the wire heals |
-| Sponsorship is topology's default | a child settles only under its real fractal parent (`topology.parent`), and every member chains back to the galaxy |
+| Sponsorship is a default, never a cage | a child settles under its real fractal parent (`topology.parent`), yet `escape` may re-parent it to another settled sponsor one tier up — by the child's own word (the `sponsor` tilak) and the new sponsor's adoption; the old sponsor keeps no veto, and the child's number never moves |
 | The ledger accretes | a number settles once — a re-mint refuses; versions only climb |
 
 ## The refusals it owes
 
-A ledger is only as strong as what it turns away. `constellation.rye`'s selftest proves each refusal: an orphan whose sponsor never settled, a child claiming the wrong sponsor, a forged spawn capability, a valid capability wielded without the holder's signature, a re-mint, a stale rotation replayed, and a turn signed by the wrong key.
+A ledger is only as strong as what it turns away. `constellation.rye`'s selftest proves each refusal: an orphan whose sponsor never settled, a child claiming the wrong sponsor, a forged spawn capability, a valid capability wielded without the holder's signature, a re-mint, a stale rotation replayed, a turn signed by the wrong key, a galaxy trying to escape its own root, a forged escape request, and an escape without the new sponsor's adoption.
 
 ```
 rye build settlement/constellation.rye -femit-bin=settlement/bin/constellation
