@@ -1,5 +1,7 @@
 # Pool — a Gall-Expanded P-Vane for a Content-Creation Computational Data Market
 
+> **Writing fossil (molt `20260810`).** Pool has retired into **Pond**, Grain's application module — the "P-vane" framing was a vane-grid vestige the reframe released. Living path: [`../foundations/20260810-011514_pond-the-application-module.md`](../foundations/20260810-011514_pond-the-application-module.md). This study is kept readable, its good thinking preserved (the market surfaces it named — Granary, Mandi, Open Asks, MUR, Neth — now run as apps in Pond); nothing here is a living claim. Accrete-never-break: the body below is unchanged.
+
 **Language:** EN
 **Version:** `20260714.040518` (Pacific)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)

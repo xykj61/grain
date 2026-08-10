@@ -1,13 +1,15 @@
-# Pond — The Enclosure and Its Applications
+# Pond — the Application Module
 
 **Language:** EN
-**Last updated:** 2026-07-10 (Radiant pass `182821`; Granary weave view `163557`; customs first policy lap `161125`)
+**Last updated:** `20260810.011514` (seated as Grain's full application module — breach opened, Pool retired in); prior: 2026-07-10 (Radiant pass `182821`; Granary weave view `163557`; customs first policy lap `161125`)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Checkable — enclosure applications floor
+**Status:** Living — Grain's application module. Charter: [`../foundations/20260810-011514_pond-the-application-module.md`](../foundations/20260810-011514_pond-the-application-module.md)
 
 ---
 
-Pond holds **applications** that compose Rye OS modules above the kernel and compositor — the first lap where isolation policy meets a running whole a person can use. The `apps/` floor keeps enclosure code and application code each in its own place.
+**Pond is Grain's application module** — the floor where the OS modules below compose into a running whole a person opens, holds their work in, and trusts. It carries the applications-host role the tree once framed as "Pool the P-vane" (retired here `20260810`, the vane grid released), on our own ground, with the sandbox/VM isolation lineage thanked in the charter. The full declaration lives in [`../foundations/20260810-011514_pond-the-application-module.md`](../foundations/20260810-011514_pond-the-application-module.md); this page is the floor's own checkable record.
+
+Pond holds **applications** that compose Rye OS modules above the kernel and compositor — where isolation policy meets a running whole a person can use. The `apps/` floor keeps enclosure code and application code each in its own place.
 
 **Pond clause:** Pond's enclosure aspect runs what Brix composes under policy.
 

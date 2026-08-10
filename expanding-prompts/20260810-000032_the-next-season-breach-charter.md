@@ -4,8 +4,8 @@
 **Stamp:** `20260810.000032`
 **Voice:** Riyo (until Kyri seats — see move three)
 **Style:** Radiant · a decision record and a runnable plan; the maintainer's seat-approvals named plainly
-**Status:** Seat-approved, held — every move here carries the maintainer's word (`20260809`–`20260810`) and **opens only after JARL closes**. Nothing here renames, cuts, purchases, or rewrites; it is the charter the breach will follow. Accrete-never-break: this paper adds.
-**Opens:** after the Compass Season's JARL equinox completes. **Kin:** `../active-designing/20260809-234413_loadable-topologies-and-pond-silo-brief.md` · `../work-in-progress/SHRED_PREP.md`.
+**Status:** **OPEN `20260810`** — the breach is opened on Keaton's word ("open the breach, start with Pond"), JARL's settlement doors all standing. **Move One (Pond) begun:** Pond seated as the application module, Pool retired into it by molt (`../foundations/20260810-011514_pond-the-application-module.md`). Moves two through four (Bron→Kyri, Kyri the voice, and the loadable skies that finish move one) follow as their own rounds. Accrete-never-break: this charter and its moves add; the molt keeps every fossil readable.
+**Opened:** `20260810`, after JARL's settlement completed. **Kin:** `../active-designing/20260809-234413_loadable-topologies-and-pond-silo-brief.md` · `../foundations/20260810-011514_pond-the-application-module.md` · `../work-in-progress/SHRED_PREP.md`.
 
 ---
 
