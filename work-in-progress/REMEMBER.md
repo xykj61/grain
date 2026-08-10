@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` — the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `a4369730ad` · Grain · cloud pier
+**Git nib:** `364f439150` · Grain · cloud pier
 **Host:** Framework · EDT (`America/New_York`) · Vultr SEA VPS (HP AMD 2vCPU/4GB shared · never EWR) · this session in ai-jail
 
 ---
@@ -22,7 +22,7 @@
 | Surface & Intelligence | **BUHR** | Realidream DAG surface · Quin's four voices (Lattice · Scribble · Lantern · Ember) · MCP-in-Bron · Tablecloth |
 | The World | **TACT** | Ship-Pilot pitch · publishing · Grainphone · commerce · CONTRIBUTING four-doors · Grain Energy PBC |
 
-**Now at JARL j2 — the live handshake, with rotation.** Coords **s1 · JARL e2 · j2**. The identity template stands (`kumara/tilak.rye`: point · bind · turn · cap×3 · sponsor, each signed, every tamper refuses). The network now reads it: **`comlink/handshake_turn.rye`** asks a crossing two questions in one breath — *who are you* (the signed introduction admits the peer to the table) and *which key do I seal to* (`turn_route.rye` verifies the peer's turn, takes the freshest by its two counters — a reset outranks any key rotation — and refuses a replay or a forgery). The two gates hold **independently**: a valid introduction still routes only to a verified, freshest key. All witnessed GREEN. Held for Keaton: the settlement ledger (Sui or Grain-native), the final scarcity tiering, human-name custody. Then the d12/d60 topology. Baton: [`../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md`](../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md).
+**Now at JARL j2 — the live handshake, loop closed.** Coords **s1 · JARL e2 · j2**. The identity template stands (`kumara/tilak.rye`: point · bind · turn · cap×3 · sponsor, each signed, every tamper refuses). The network reads it end to end: **`comlink/handshake_turn.rye`** asks a crossing two questions in one breath — *who are you* (the signed introduction admits the peer) and *which key do I seal to* (`turn_route.rye` verifies the peer's turn, takes the freshest — a reset outranks any key rotation — refuses replay and forgery). **The loop is closed**: `handshake_wire` recovers the turn from the descriptor bytes it arrived in (`turn_to_bytes` · 112 bytes), doubly held — the introducer signed the descriptor, the turn carries the peer's own signature. Identity and rotation gate **independently**. All witnessed GREEN. Held for Keaton: settlement ledger (Sui or Grain-native), final scarcity tiering, human-name custody. Then the d12/d60 topology. Baton: [`../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md`](../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md).
 
 ---
 

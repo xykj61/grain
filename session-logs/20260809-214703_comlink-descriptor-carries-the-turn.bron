@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260809.214703
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title Comlink descriptor carries the turn — the loop closes
+prompt (Keaton) proceed — wire the descriptor to carry the turn; produce the complete radiant TAME-guided compass each round with a new path recommendation
+think closed the loop from wire bytes to route key — a turn now has a wire form (kumara/tilak.rye turn_to_bytes / turn_from_bytes: net_pubkey ++ key_counter ++ reset_counter ++ signature, a fixed 112 bytes), so a peer's whole rotation rides in a descriptor and a reader recovers the same Turn
+think added handshake_wire to comlink/handshake_turn.rye — the same handshake, but the peer's turn arrives in the introduction's descriptor rather than passed apart; its integrity is doubly held, the introducer signing the whole introduction over the descriptor and the turn inside carrying the peer's own signature
+think a malformed descriptor (too short to hold a turn) refuses at the rotation gate rather than crashing — routing keeps the last trusted key; turn_from_bytes parses shape only and never trusts, the signature still has to verify
+obs the selftest now proves the wire round-trip — the peer's turn serialized into a descriptor, minted into a signed introduction, recovered by handshake_wire, and the wire keyed to the same net_pubkey it started from
+obs tame_style_check clean on the touched files; the handshake, turn-route, and kumara tilak witnesses all GREEN; the version pin reads the live EDT clock
+obs produced the complete refreshed compass this round — JARL finishing edge now reads loop-closed, the descriptor-carries-the-turn lap marked landed in TASKS, the LEXICON Comlink entry extended
+file kumara/tilak.rye turn_to_bytes / turn_from_bytes · turn_wire_len — a turn's 112-byte wire form
+file comlink/handshake_turn.rye handshake_wire — recover the turn from the descriptor, close the loop; selftest round-trip
+file tools/comlink_handshake_turn_witness.rish checks the descriptor round-trip branch
+file comlink/README.md handshake_turn row notes the closed loop
+file work-in-progress/REMEMBER.md · TASKS.md · context/LEXICON.md loop closed at JARL j2
+file session-logs/20260809-214703_comlink-descriptor-carries-the-turn.bron this record
+recommend check-in Claude — the identity-and-network spine of JARL is whole end to end: a Kumara identity is minted and signed, its rotation carried on the wire in a descriptor, verified and freshest-selected at the handshake, and the wire sealed to the right key; the next new path is the d12/d60 fractal topology (how points discover their peers by number) — or a design call Keaton holds: the settlement ledger (Sui or Grain-native) and the final scarcity tiering
