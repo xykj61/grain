@@ -1,24 +1,35 @@
 //! settlement/constellation.rye — the Sui settlement constellation.
 //!
-//! A galaxy and its d60 — five stars, sixty planets — settle as a constellation:
-//! a small circle of owned records, each a Kumara point whose version climbs by
-//! one on every change, exactly as a Sui object's version increments on every
-//! mutation. Where `../comlink/topology.rye` is the geometry (which number sits
-//! where) and `../kumara/tilak.rye` is the deed (who holds a number, and how it
-//! moves), this file is the **ledger**: who has actually settled, in what order,
-//! under whose authority.
+//! A galaxy and its d60 — five stars, sixty planets — settle as a constellation.
+//! Where `../comlink/topology.rye` is the geometry (which number sits where) and
+//! `../kumara/tilak.rye` is the deed (who holds a number, and how it moves), this
+//! file is the **ledger**: who has settled, in what order, under whose authority.
+//!
+//! It models Sui's own split between owned and shared, faithfully:
+//!
+//!   * A **Deed** is the owned object — a point's identity, keeper, networking key,
+//!     and counters. It rides the fast path in the owner's own hand; the network
+//!     never needs it to agree, so it is never held on the shared surface.
+//!   * A **Commitment** is the shared surface — the *only* thing the whole network
+//!     reads together: a member's point, tier, sponsor, version, and a **digest**
+//!     that binds its owned Deed. Small by design; no key ever sits here.
+//!
+//! The Constellation holds Commitments alone. Any transition that needs a member's
+//! private facts (a parent's keeper to authorize a spawn, a sponsor's keeper to
+//! adopt) requires that member's **Deed** to be presented and verified against its
+//! commitment by digest — so the shared surface stays minimal, and private facts
+//! are proven on demand rather than stored for all to read.
 //!
 //! It keeps the five commitments of the ledger shape, in our own words:
 //!
-//!   * A point is a single-keeper record — the fast path Sui gives an
-//!     address-owned object, no global ordering spent on one owner's affairs.
-//!   * Powers are capability records — a `sow` cap spawns children, a `hand` cap
-//!     transfers, a `tend` cap rotates keys; the elder's proxies, our own tilaks.
+//!   * A point is a single-keeper record — the fast path, no global ordering spent
+//!     on one owner's affairs.
+//!   * Powers are capability records — a `sow` cap spawns, a `hand` cap transfers, a
+//!     `tend` cap rotates keys; the elder's proxies, our own tilaks.
 //!   * Networking keys rotate on their own counters — a reset outranks a key bump,
 //!     and the keeper's key never moves while the wire heals.
-//!   * Sponsorship is a default, never a cage — a child settles under its real
-//!     place in the fractal, never a claimed one, yet may escape to another settled
-//!     sponsor one tier up, by its own word and the new sponsor's adoption.
+//!   * Sponsorship is a default, never a cage — a child settles under its real place
+//!     in the fractal, yet may escape one tier up, by its word and the sponsor's.
 //!   * The ledger accretes — a point settles once, and its version only climbs.
 //!
 //! This is the Rye-side model of what a Sui contract would enforce; no Move, no
@@ -35,14 +46,17 @@ const kumara = @import("kumara.rye");
 const tilak = @import("kumara_tilak.rye");
 const topology = @import("topology.rye");
 
-pub const constellation_version = "20260809.231219";
+const Sha256 = std.crypto.hash.sha2.Sha256;
+
+pub const constellation_version = "20260810.004547";
 
 const pubkey_len: u32 = 32;
 const sig_len: u32 = 64;
+const digest_len: u32 = 32;
 
 // A galaxy crowns its own circle: itself, its five stars, and their sixty planets.
-// Sixty-six records at most — the d60 of prosperity plus the six that lead it. The
-// shared surface a constellation ever holds is bounded here, once, by name.
+// Sixty-six commitments at most — the d60 of prosperity plus the six that lead it.
+// The shared surface a constellation ever holds is bounded here, once, by name.
 pub const constellation_max: u32 = 1 + topology.stars_per_galaxy + topology.d60; // 66
 
 // The unconfigured networking key: all zeros is not a valid Ed25519 point, so it
@@ -54,6 +68,7 @@ pub const SettleError = error{
     AlreadySettled,
     ParentNotSettled,
     NotSettled,
+    StaleDeed,
     WrongSponsor,
     BadBind,
     BadAuthority,
@@ -67,34 +82,99 @@ pub const SettleError = error{
     BadSponsor,
 };
 
-/// A settled point — the deed as it rests on the ledger. The identity key signs its
-/// turns; the keeper owns it and grants its powers; the version climbs by exactly
-/// one on every change. Both keys are recorded because they play different roles:
-/// the bind married them, and the ledger keeps both halves.
-pub const Settled = struct {
+/// The owned object — the fast path. A point's identity signs its turns; the keeper
+/// owns it and grants its powers; the networking key and counters heal the wire. All
+/// of this is the owner's own business; the network never needs it to agree, so it
+/// lives in the owner's hand, never on the shared surface. The version climbs by
+/// exactly one on every change, like a Sui object's version.
+pub const Deed = struct {
     point: u32,
     tier: topology.Tier,
     identity_key: [pubkey_len]u8, // signs turns — the bind's key side
     keeper: [pubkey_len]u8, // owns the point, grants caps — the bind's keeper side
-    sponsor: u32, // the parent point — topology's default place in the fractal
+    sponsor: u32, // the parent point in the fractal
     net_key: [pubkey_len]u8, // current networking key; `no_net_key` until first rotation
     key_counter: u64, // climbs on an ordinary rotation
     reset_counter: u64, // climbs when continuity starts over
-    version: u64, // climbs by exactly one per change, like a Sui object's version
+    version: u64, // climbs by exactly one per change
 };
 
-/// The whole settled circle of one galaxy — a bounded array of members and how many
-/// are filled. The array never reallocates, so a pointer into it stays valid across
-/// a later settlement; the bound is `constellation_max`, enforced at every mint.
+// The Deed on the wire, a fixed 129 bytes, so its digest is the same on every
+// target. Point, tier, both keys, sponsor, networking key, both counters, version —
+// the whole owned state, canonically ordered.
+const deed_wire_len: u32 = 4 + 1 + pubkey_len + pubkey_len + 4 + pubkey_len + 8 + 8 + 8; // 129
+
+fn deed_to_bytes(deed: *const Deed) [deed_wire_len]u8 {
+    var out: [deed_wire_len]u8 = undefined;
+    std.mem.writeInt(u32, out[0..4], deed.point, .little);
+    out[4] = @intFromEnum(deed.tier);
+    for (deed.identity_key, 0..) |b, i| out[5 + i] = b;
+    for (deed.keeper, 0..) |b, i| out[37 + i] = b;
+    std.mem.writeInt(u32, out[69..73], deed.sponsor, .little);
+    for (deed.net_key, 0..) |b, i| out[73 + i] = b;
+    std.mem.writeInt(u64, out[105..113], deed.key_counter, .little);
+    std.mem.writeInt(u64, out[113..121], deed.reset_counter, .little);
+    std.mem.writeInt(u64, out[121..129], deed.version, .little);
+    return out;
+}
+
+/// The digest that the shared surface commits to — a hash of the whole owned Deed,
+/// so a presented Deed can be proven to be the committed one without the surface
+/// ever holding a key.
+fn deed_digest(deed: *const Deed) [digest_len]u8 {
+    const bytes = deed_to_bytes(deed);
+    var out: [digest_len]u8 = undefined;
+    Sha256.hash(&bytes, &out, .{});
+    return out;
+}
+
+/// The shared surface — the only record the whole network reads together. A member's
+/// place and freshness, and a digest binding its owned Deed. It carries no key, no
+/// counter; those ride the fast path in the Deed.
+pub const Commitment = struct {
+    point: u32,
+    tier: topology.Tier,
+    sponsor: u32,
+    version: u64,
+    digest: [digest_len]u8, // binds the full owned Deed at this version
+};
+
+comptime {
+    // invariant: the shared surface is strictly smaller than the owned deed — the
+    // whole point of the shrink, proven at compile time.
+    assert(@sizeOf(Commitment) < @sizeOf(Deed));
+}
+
+/// Commit a Deed to its shared record. The structural facts are copied for reading;
+/// the digest binds every field, including the keys the Commitment does not hold.
+fn commit(deed: *const Deed) Commitment {
+    return .{
+        .point = deed.point,
+        .tier = deed.tier,
+        .sponsor = deed.sponsor,
+        .version = deed.version,
+        .digest = deed_digest(deed),
+    };
+}
+
+/// Whether a Deed is the one a Commitment binds — same point, same version, same
+/// digest. The digest covers the whole owned state, so a tampered key fails here.
+fn commitment_matches(c: *const Commitment, deed: *const Deed) bool {
+    if (c.point != deed.point) return false;
+    if (c.version != deed.version) return false;
+    return std.mem.eql(u8, &c.digest, &deed_digest(deed));
+}
+
+/// The whole settled circle of one galaxy — a bounded array of commitments and how
+/// many are filled. The array never reallocates, so a pointer into it stays valid
+/// across a later settlement; the bound is `constellation_max`, enforced at mint.
 pub const Constellation = struct {
     galaxy: u8,
-    slots: [constellation_max]Settled,
+    slots: [constellation_max]Commitment,
     filled: u32,
 
-    /// Find a settled member by point number, or null. This is the shared-surface
-    /// read: a peer asks "is this a real member, and at what version?" and learns
-    /// only that, never the owner's affairs.
-    pub fn member(self: *const Constellation, point: u32) ?*const Settled {
+    /// Find a member's commitment by point number, or null — the shared-surface read.
+    pub fn member(self: *const Constellation, point: u32) ?*const Commitment {
         // invariant: the fill count never runs past the bounded slots.
         assert(self.filled <= constellation_max);
         var i: u32 = 0;
@@ -109,8 +189,8 @@ pub const Constellation = struct {
         return self.member(point) != null;
     }
 
-    // A mutable slot, for the transitions that climb a member's version in place.
-    fn slot_of(self: *Constellation, point: u32) ?*Settled {
+    // A mutable commitment, for the transitions that climb a member's version.
+    fn slot_of(self: *Constellation, point: u32) ?*Commitment {
         // invariant: the fill count never runs past the bounded slots.
         assert(self.filled <= constellation_max);
         var i: u32 = 0;
@@ -120,6 +200,15 @@ pub const Constellation = struct {
         return null;
     }
 };
+
+/// The shared surface proves a presented Deed is the current member it claims to be:
+/// the point is a member, and its Deed matches the commitment by version and digest.
+/// This is the whole value of the split — anyone can verify an owned Deed against the
+/// small shared record, with no key ever leaving the owner's hand.
+pub fn verify(con: *const Constellation, deed: *const Deed) bool {
+    const c = con.member(deed.point) orelse return false;
+    return commitment_matches(c, deed);
+}
 
 // The authority message a power-holder signs to exercise a capability over a point:
 // the point number, little-endian, then the 32-byte subject the act concerns (a
@@ -143,28 +232,30 @@ fn verify_authority(holder: [pubkey_len]u8, number: u32, subject: *const [pubkey
     return true;
 }
 
-/// A turn is fresher than a settled point's current state when its reset counter
-/// climbs, or — resets equal — its key counter climbs. The very first key (from
-/// `no_net_key`) is fresher than nothing. This is the wire's own `turn_route` rule,
-/// so the ledger and the network agree on which rotation supersedes.
-fn turn_is_fresher(t: *const tilak.Turn, s: *const Settled) bool {
+/// A turn is fresher than a deed's current state when its reset counter climbs, or —
+/// resets equal — its key counter climbs. The very first key (from `no_net_key`) is
+/// fresher than nothing. This is the wire's own `turn_route` rule, so the ledger and
+/// the network agree on which rotation supersedes.
+fn turn_is_fresher(t: *const tilak.Turn, deed: *const Deed) bool {
     // invariant: an unconfigured point admits its first verified turn as baseline.
-    if (std.mem.eql(u8, &s.net_key, &no_net_key)) return true;
-    if (t.reset_counter != s.reset_counter) return t.reset_counter > s.reset_counter;
-    return t.key_counter > s.key_counter;
+    if (std.mem.eql(u8, &deed.net_key, &no_net_key)) return true;
+    if (t.reset_counter != deed.reset_counter) return t.reset_counter > deed.reset_counter;
+    return t.key_counter > deed.key_counter;
 }
 
-/// Open a constellation on a galaxy — the genesis settlement. A galaxy is the root
-/// of its own tree (topology has it sponsor itself), so no spawn capability
-/// authorizes it; its own bind is the whole warrant. Every later member chains here.
-pub fn open(galaxy_number: u32, galaxy_bind: *const tilak.Bind) SettleError!Constellation {
+/// Open a constellation on a galaxy — the genesis settlement. A galaxy is the root of
+/// its own tree, so no spawn capability authorizes it; its own bind is the whole
+/// warrant. Returns the constellation with the galaxy's commitment, and the galaxy's
+/// own Deed for the owner to keep. Every later member chains here.
+pub const Opened = struct { con: Constellation, deed: Deed };
+
+pub fn open(galaxy_number: u32, galaxy_bind: *const tilak.Bind) SettleError!Opened {
     const addr = topology.decode(galaxy_number) orelse return error.NumberOutOfUniverse;
     // invariant: a constellation is crowned by a galaxy, never a star or a planet.
     if (addr.tier != .galaxy) return error.NotGenesis;
     // invariant: the genesis bind must truly marry its keys, or the root is a forgery.
     if (!tilak.verify_bind(galaxy_bind)) return error.BadBind;
-    var con = Constellation{ .galaxy = addr.galaxy, .slots = undefined, .filled = 0 };
-    con.slots[0] = Settled{
+    const deed = Deed{
         .point = galaxy_number,
         .tier = .galaxy,
         .identity_key = galaxy_bind.kumara_pubkey,
@@ -175,121 +266,138 @@ pub fn open(galaxy_number: u32, galaxy_bind: *const tilak.Bind) SettleError!Cons
         .reset_counter = 0,
         .version = 1,
     };
+    var con = Constellation{ .galaxy = addr.galaxy, .slots = undefined, .filled = 0 };
+    con.slots[0] = commit(&deed);
     con.filled = 1;
-    // invariant: genesis seats exactly the galaxy, at version one.
+    // invariant: genesis seats exactly the galaxy, at version one, and its deed
+    // verifies against the fresh commitment.
     assert(con.filled == 1);
     assert(con.slots[0].version == 1);
-    return con;
+    assert(verify(&con, &deed));
+    return .{ .con = con, .deed = deed };
 }
 
-/// Settle a child under a parent already in the constellation. The parent's keeper
-/// must have granted a spawn (`sow`) capability, and its holder must sign this exact
-/// child into being; the child's own bind proves its keys; topology fixes its
-/// sponsor. Scarcity by capability — the elder's spawn proxy, in our own hand.
+/// Settle a child under a parent already in the constellation. The parent's own Deed
+/// is presented — verified against its commitment, so a forged parent cannot spawn —
+/// and its keeper's spawn (`sow`) capability, signed for this exact child, authorizes
+/// the birth. The child's own bind proves its keys; topology fixes its sponsor.
+/// Returns the child's Deed for the new owner to keep.
 pub fn mint(
     con: *Constellation,
-    parent_point: u32,
+    parent_deed: *const Deed,
     child_number: u32,
     child_bind: *const tilak.Bind,
     sow_cap: *const tilak.Cap,
     spawn_sig: *const [sig_len]u8,
-) SettleError!void {
+) SettleError!Deed {
     // invariant: the bounded circle never overflows its slots.
     if (con.filled >= constellation_max) return error.Full;
-    const parent = con.member(parent_point) orelse return error.ParentNotSettled;
-    const parent_keeper = parent.keeper;
+    // invariant: the presented parent must be the real current parent — its deed
+    // matches its commitment on the shared surface.
+    if (!verify(con, parent_deed)) return error.ParentNotSettled;
     // invariant: a point settles once — the ledger accretes, never re-mints.
     if (con.is_settled(child_number)) return error.AlreadySettled;
     const child_addr = topology.decode(child_number) orelse return error.NumberOutOfUniverse;
     // invariant: the child's topology sponsor is exactly the parent presented — a
     // point settles under its real place in the fractal, never a claimed one.
-    if (topology.encode(child_addr.parent()) != parent_point) return error.WrongSponsor;
+    if (topology.encode(child_addr.parent()) != parent_deed.point) return error.WrongSponsor;
     // invariant: the child's bind must verify, or its identity and keeper are unproven.
     if (!tilak.verify_bind(child_bind)) return error.BadBind;
     // invariant: the cap must be a real `sow` grant over the parent, signed by the
     // parent's own keeper — the only hand that may spawn beneath it.
     if (sow_cap.power != .sow) return error.WrongPower;
-    if (sow_cap.point_number != parent_point) return error.BadAuthority;
-    if (!tilak.verify_cap(sow_cap, parent_keeper)) return error.BadAuthority;
+    if (sow_cap.point_number != parent_deed.point) return error.BadAuthority;
+    if (!tilak.verify_cap(sow_cap, parent_deed.keeper)) return error.BadAuthority;
     // invariant: the cap's holder must sign this specific child, so a public cap
     // record alone can never spawn — the holder's key is the true authority.
     if (!verify_authority(sow_cap.holder, child_number, &child_bind.kumara_pubkey, spawn_sig)) return error.BadAuthority;
 
-    con.slots[con.filled] = Settled{
+    const deed = Deed{
         .point = child_number,
         .tier = child_addr.tier,
         .identity_key = child_bind.kumara_pubkey,
         .keeper = child_bind.keeper_pubkey,
-        .sponsor = parent_point,
+        .sponsor = parent_deed.point,
         .net_key = no_net_key,
         .key_counter = 0,
         .reset_counter = 0,
         .version = 1,
     };
+    con.slots[con.filled] = commit(&deed);
     con.filled += 1;
-    // invariant: a fresh settlement seats at version one and reads back as a member.
+    // invariant: a fresh settlement seats at version one, reads back as a member, and
+    // its returned deed verifies against the shared surface.
     assert(con.slots[con.filled - 1].version == 1);
     assert(con.is_settled(child_number));
+    assert(verify(con, &deed));
+    return deed;
 }
 
-/// Hand a settled point to a new keeper. The current keeper's transfer (`hand`)
-/// capability authorizes it, and its holder signs the new keeper into place;
-/// ownership moves, the version climbs, and the new keeper re-grants the point's
-/// powers from a key the old owner never held.
+/// Hand a settled point to a new keeper. The point's current Deed is presented and
+/// checked against the shared surface; its keeper's transfer (`hand`) capability,
+/// signed for this exact new keeper, authorizes the move. Returns the new Deed; the
+/// shared surface climbs to its digest.
 pub fn transfer(
     con: *Constellation,
-    point: u32,
+    deed: *const Deed,
     new_keeper: [pubkey_len]u8,
     hand_cap: *const tilak.Cap,
     transfer_sig: *const [sig_len]u8,
-) SettleError!void {
-    const s = con.slot_of(point) orelse return error.NotSettled;
+) SettleError!Deed {
+    const c = con.member(deed.point) orelse return error.NotSettled;
+    // invariant: the presented deed must be the current one — no stale deed transfers.
+    if (!commitment_matches(c, deed)) return error.StaleDeed;
     // invariant: only a real `hand` grant over this point, signed by its current
     // keeper, moves it — the elder's transfer proxy, our own record.
     if (hand_cap.power != .hand) return error.WrongPower;
-    if (hand_cap.point_number != point) return error.BadAuthority;
-    if (!tilak.verify_cap(hand_cap, s.keeper)) return error.BadAuthority;
+    if (hand_cap.point_number != deed.point) return error.BadAuthority;
+    if (!tilak.verify_cap(hand_cap, deed.keeper)) return error.BadAuthority;
     // invariant: the holder must sign this exact new keeper, so the handoff is
     // deliberate — never a replay of an old grant.
-    if (!verify_authority(hand_cap.holder, point, &new_keeper, transfer_sig)) return error.BadAuthority;
-    const before = s.version;
-    s.keeper = new_keeper;
-    s.version += 1;
-    // invariant: a transfer climbs the version by exactly one.
-    assert(s.version == before + 1);
+    if (!verify_authority(hand_cap.holder, deed.point, &new_keeper, transfer_sig)) return error.BadAuthority;
+    var next = deed.*;
+    next.keeper = new_keeper;
+    next.version = deed.version + 1;
+    con.slot_of(deed.point).?.* = commit(&next);
+    // invariant: a transfer climbs the version by one, and the new deed verifies.
+    assert(next.version == deed.version + 1);
+    assert(verify(con, &next));
+    return next;
 }
 
-/// Rotate a settled point's networking key. The keeper's management (`tend`)
-/// capability authorizes it, and the new key arrives as a signed turn the point's
-/// identity key vouches for. The keeper never moves — a compromised ship heals its
-/// wire while its deed sits cold, the elder's sharpest lesson, kept.
+/// Rotate a settled point's networking key. The point's current Deed is presented and
+/// checked; its keeper's management (`tend`) capability authorizes, and the new key
+/// arrives as a signed turn the point's identity key vouches for. The keeper never
+/// moves — a compromised ship heals its wire while its deed sits cold. Returns the new
+/// Deed; the shared surface climbs.
 pub fn rotate(
     con: *Constellation,
-    point: u32,
+    deed: *const Deed,
     new_turn: *const tilak.Turn,
     tend_cap: *const tilak.Cap,
-) SettleError!void {
-    const s = con.slot_of(point) orelse return error.NotSettled;
-    // invariant: only a real `tend` grant over this point, signed by its keeper,
-    // may rotate it.
+) SettleError!Deed {
+    const c = con.member(deed.point) orelse return error.NotSettled;
+    // invariant: the presented deed must be the current one — no stale deed rotates.
+    if (!commitment_matches(c, deed)) return error.StaleDeed;
+    // invariant: only a real `tend` grant over this point, signed by its keeper, rotates.
     if (tend_cap.power != .tend) return error.WrongPower;
-    if (tend_cap.point_number != point) return error.BadAuthority;
-    if (!tilak.verify_cap(tend_cap, s.keeper)) return error.BadAuthority;
-    // invariant: the turn must verify under the point's own identity key — a
-    // rotation is authentic, never a key someone else pushed.
-    if (!tilak.verify_turn(new_turn, s.identity_key)) return error.BadTurn;
+    if (tend_cap.point_number != deed.point) return error.BadAuthority;
+    if (!tilak.verify_cap(tend_cap, deed.keeper)) return error.BadAuthority;
+    // invariant: the turn must verify under the point's own identity key — a rotation
+    // is authentic, never a key someone else pushed.
+    if (!tilak.verify_turn(new_turn, deed.identity_key)) return error.BadTurn;
     // invariant: the turn must be strictly fresher, so a replay can never re-key.
-    if (!turn_is_fresher(new_turn, s)) return error.StaleTurn;
-    const keeper_before = s.keeper;
-    const before = s.version;
-    s.net_key = new_turn.net_pubkey;
-    s.key_counter = new_turn.key_counter;
-    s.reset_counter = new_turn.reset_counter;
-    s.version += 1;
-    // invariant: rotation never moves the keeper — the deed sits cold.
-    assert(std.mem.eql(u8, &s.keeper, &keeper_before));
-    // invariant: a rotation climbs the version by exactly one.
-    assert(s.version == before + 1);
+    if (!turn_is_fresher(new_turn, deed)) return error.StaleTurn;
+    var next = deed.*;
+    next.net_key = new_turn.net_pubkey;
+    next.key_counter = new_turn.key_counter;
+    next.reset_counter = new_turn.reset_counter;
+    next.version = deed.version + 1;
+    con.slot_of(deed.point).?.* = commit(&next);
+    // invariant: rotation never moves the keeper, and climbs the version by one.
+    assert(std.mem.eql(u8, &next.keeper, &deed.keeper));
+    assert(next.version == deed.version + 1);
+    return next;
 }
 
 // The tier a child's sponsor must hold — one step up the fractal. A galaxy is the
@@ -302,44 +410,47 @@ fn sponsor_tier(child: topology.Tier) ?topology.Tier {
     };
 }
 
-/// Escape — a child re-parents to a chosen sponsor. Sponsorship is a default, never
-/// a cage: the arithmetic parent comes free, yet a child may leave it for another
-/// settled sponsor one tier up. The move takes two words and refuses without either
-/// — the child's own identity signs the request (the `sponsor` tilak), and the new
-/// sponsor's keeper signs its adoption. The old sponsor keeps no veto; a child is
-/// never held. The point's number, and so its place in the fractal, never moves —
-/// only whom it answers to.
+/// Escape — a child re-parents to a chosen sponsor. Sponsorship is a default, never a
+/// cage. The move takes two words: the child's own identity signs the request (the
+/// `sponsor` tilak), and the new sponsor's keeper signs its adoption — and because the
+/// keeper lives only in the sponsor's Deed, the sponsor presents that Deed, verified
+/// against its commitment. The old sponsor keeps no veto; the child's number never
+/// moves, only whom it answers to. Returns the new Deed.
 pub fn escape(
     con: *Constellation,
-    point: u32,
-    new_sponsor: u32,
+    deed: *const Deed,
+    new_sponsor_deed: *const Deed,
     request: *const tilak.Sponsor,
     adopt_sig: *const [sig_len]u8,
-) SettleError!void {
-    const s = con.slot_of(point) orelse return error.NotSettled;
-    const child_addr = topology.decode(point) orelse return error.NumberOutOfUniverse;
+) SettleError!Deed {
+    const c = con.member(deed.point) orelse return error.NotSettled;
+    // invariant: the presented child deed must be the current one.
+    if (!commitment_matches(c, deed)) return error.StaleDeed;
+    const child_addr = topology.decode(deed.point) orelse return error.NumberOutOfUniverse;
     // invariant: a galaxy is a root — it has no sponsor to escape to.
     const want_tier = sponsor_tier(child_addr.tier) orelse return error.CannotEscape;
     // invariant: an escape actually moves — re-parenting to the current sponsor is none.
-    if (new_sponsor == s.sponsor) return error.NotAnEscape;
-    const new_sp = con.member(new_sponsor) orelse return error.NotSettled;
-    const new_keeper = new_sp.keeper;
-    // invariant: a child escapes to a sponsor exactly one tier up — a planet to a
-    // star, a star to a galaxy, never sideways or down.
-    if (new_sp.tier != want_tier) return error.WrongSponsor;
-    // invariant: the request is the child's own word — its identity key signs the
-    // chosen parent, over this very point.
-    if (!tilak.verify_sponsor(request, s.identity_key)) return error.BadSponsor;
-    if (request.point_number != point or request.chosen_parent != new_sponsor) return error.BadSponsor;
+    if (new_sponsor_deed.point == deed.sponsor) return error.NotAnEscape;
+    // invariant: the new sponsor must be a real current member — its deed matches its
+    // commitment, which is also how we come to hold its keeper honestly.
+    if (!verify(con, new_sponsor_deed)) return error.NotSettled;
+    // invariant: a child escapes to a sponsor exactly one tier up.
+    if (new_sponsor_deed.tier != want_tier) return error.WrongSponsor;
+    // invariant: the request is the child's own word — its identity signs the chosen
+    // parent over this very point.
+    if (!tilak.verify_sponsor(request, deed.identity_key)) return error.BadSponsor;
+    if (request.point_number != deed.point or request.chosen_parent != new_sponsor_deed.point) return error.BadSponsor;
     // invariant: the new sponsor consents — its keeper signs the adoption of this
     // child, so no point can hang itself off an unwilling sponsor.
-    if (!verify_authority(new_keeper, point, &s.identity_key, adopt_sig)) return error.BadAuthority;
-    const before = s.version;
-    s.sponsor = new_sponsor;
-    s.version += 1;
+    if (!verify_authority(new_sponsor_deed.keeper, deed.point, &deed.identity_key, adopt_sig)) return error.BadAuthority;
+    var next = deed.*;
+    next.sponsor = new_sponsor_deed.point;
+    next.version = deed.version + 1;
+    con.slot_of(deed.point).?.* = commit(&next);
     // invariant: an escape climbs the version by one, and the sponsor really moved.
-    assert(s.version == before + 1);
-    assert(s.sponsor == new_sponsor);
+    assert(next.version == deed.version + 1);
+    assert(next.sponsor == new_sponsor_deed.point);
+    return next;
 }
 
 // --- selftest -----------------------------------------------------------
@@ -394,6 +505,14 @@ fn seat_fixture() Fixture {
     };
 }
 
+// The owner-held Deeds the selftest threads — each transition returns the next one.
+const Deeds = struct {
+    galaxy: Deed,
+    star: Deed,
+    star2: Deed,
+    planet: Deed,
+};
+
 // A holder's authority signature over (number, subject), signed by `signer_seed`.
 fn make_authority(signer_seed: *const [kumara.seed_length]u8, number: u32, subject: *const [pubkey_len]u8) [sig_len]u8 {
     const kp = kumara.keypair_from_seed(signer_seed);
@@ -402,23 +521,39 @@ fn make_authority(signer_seed: *const [kumara.seed_length]u8, number: u32, subje
     return kumara.sign(&msg, kp, null).toBytes();
 }
 
-// Grow the constellation: genesis galaxy, a star beneath it, a planet beneath that.
-fn prove_grow(con: *Constellation, fx: *const Fixture) !void {
-    con.* = try open(galaxy_num, &fx.g_bind);
+// A plausible but unsettled deed for a non-member point — used to prove refusals.
+fn unsettled_deed(point: u32) Deed {
+    const addr = topology.decode(point).?;
+    return .{
+        .point = point,
+        .tier = addr.tier,
+        .identity_key = no_net_key,
+        .keeper = no_net_key,
+        .sponsor = topology.encode(addr.parent()),
+        .net_key = no_net_key,
+        .key_counter = 0,
+        .reset_counter = 0,
+        .version = 1,
+    };
+}
+
+// Grow the constellation: the genesis galaxy is already open in d.galaxy; spawn a
+// star beneath it, then a planet beneath that.
+fn prove_grow(con: *Constellation, fx: *const Fixture, d: *Deeds) !void {
     // invariant: the galaxy is settled, at version one, sponsoring itself.
     if (!con.is_settled(galaxy_num)) return error.GalaxyNotSettled;
     const g = con.member(galaxy_num).?;
     if (g.version != 1 or g.sponsor != galaxy_num or g.tier != .galaxy) return error.GenesisWrong;
 
-    // The galaxy's key, holding its own sow cap, spawns the star.
+    // The galaxy's own deed, holding its sow cap, spawns the star.
     const spawn_star = make_authority(&g_key, star_num, &fx.s_bind.kumara_pubkey);
-    try mint(con, galaxy_num, star_num, &fx.s_bind, &fx.g_sow, &spawn_star);
+    d.star = try mint(con, &d.galaxy, star_num, &fx.s_bind, &fx.g_sow, &spawn_star);
     const st = con.member(star_num).?;
     if (st.sponsor != galaxy_num or st.tier != .star or st.version != 1) return error.StarSettleWrong;
 
-    // The star's key, holding its own sow cap, spawns the planet.
+    // The star's own deed, holding its sow cap, spawns the planet.
     const spawn_planet = make_authority(&s_key, planet_num, &fx.p_bind.kumara_pubkey);
-    try mint(con, star_num, planet_num, &fx.p_bind, &fx.s_sow, &spawn_planet);
+    d.planet = try mint(con, &d.star, planet_num, &fx.p_bind, &fx.s_sow, &spawn_planet);
     const pl = con.member(planet_num).?;
     if (pl.sponsor != star_num or pl.tier != .planet) return error.PlanetSettleWrong;
     // invariant: three members now — every one chains back to the galaxy.
@@ -430,137 +565,122 @@ fn prove_grow(con: *Constellation, fx: *const Fixture) !void {
 }
 
 // Rotate the planet's key while its keeper still holds it — the keeper stays cold,
-// the version climbs, and a reset outranks a key bump.
-fn prove_rotate(con: *Constellation, fx: *const Fixture) !void {
-    const keeper_before = con.member(planet_num).?.keeper;
+// the version climbs on both the deed and the shared surface, and a reset outranks.
+fn prove_rotate(con: *Constellation, fx: *const Fixture, d: *Deeds) !void {
+    const keeper_before = d.planet.keeper;
     const turn1 = tilak.make_turn(&p_key, &p_net, 1, 0);
-    try rotate(con, planet_num, &turn1, &fx.p_tend);
-    const after_rot = con.member(planet_num).?;
-    if (!std.mem.eql(u8, &after_rot.net_key, &turn1.net_pubkey)) return error.RotateDidNotSetKey;
-    if (!std.mem.eql(u8, &after_rot.keeper, &keeper_before)) return error.RotateMovedKeeper;
-    if (after_rot.version != 2 or after_rot.key_counter != 1) return error.RotateVersionWrong;
+    d.planet = try rotate(con, &d.planet, &turn1, &fx.p_tend);
+    if (!std.mem.eql(u8, &d.planet.net_key, &turn1.net_pubkey)) return error.RotateDidNotSetKey;
+    if (!std.mem.eql(u8, &d.planet.keeper, &keeper_before)) return error.RotateMovedKeeper;
+    if (d.planet.version != 2 or d.planet.key_counter != 1) return error.RotateVersionWrong;
+    if (con.member(planet_num).?.version != 2) return error.SurfaceVersionWrong;
 
     // A reset outranks a key bump — reset_counter 1 supersedes key_counter 1.
     const turn_reset = tilak.make_turn(&p_key, &p_net_reset, 0, 1);
-    try rotate(con, planet_num, &turn_reset, &fx.p_tend);
-    const after_reset = con.member(planet_num).?;
-    if (after_reset.reset_counter != 1 or after_reset.version != 3) return error.ResetWrong;
+    d.planet = try rotate(con, &d.planet, &turn_reset, &fx.p_tend);
+    if (d.planet.reset_counter != 1 or d.planet.version != 3) return error.ResetWrong;
 }
 
-// Escape — settle a sibling star under the galaxy, then let the planet re-parent to
-// it from its default star. The child's word and the new sponsor's adoption both sign;
-// the planet's number never moves, only whom it answers to.
-fn prove_escape(con: *Constellation, fx: *const Fixture) !void {
+// Escape — settle a sibling star, then let the planet re-parent to it. Both the
+// child's word and the new sponsor's Deed-and-adoption sign; the number never moves.
+fn prove_escape(con: *Constellation, fx: *const Fixture, d: *Deeds) !void {
     const s2_bind = tilak.make_bind(&s2_key, &s2_keeper);
     const spawn_s2 = make_authority(&g_key, star2_num, &s2_bind.kumara_pubkey);
-    try mint(con, galaxy_num, star2_num, &s2_bind, &fx.g_sow, &spawn_s2);
+    d.star2 = try mint(con, &d.galaxy, star2_num, &s2_bind, &fx.g_sow, &spawn_s2);
 
-    // The planet's default sponsor is star 29; it escapes to the sibling star 27.
-    if (con.member(planet_num).?.sponsor != star_num) return error.EscapeStartWrong;
+    if (d.planet.sponsor != star_num) return error.EscapeStartWrong;
     const request = tilak.make_sponsor(&p_key, planet_num, star_num, star2_num);
     const adopt = make_authority(&s2_keeper, planet_num, &fx.p_bind.kumara_pubkey);
-    try escape(con, planet_num, star2_num, &request, &adopt);
-    const after = con.member(planet_num).?;
-    if (after.sponsor != star2_num or after.version != 4) return error.EscapeWrong;
+    d.planet = try escape(con, &d.planet, &d.star2, &request, &adopt);
+    if (d.planet.sponsor != star2_num or d.planet.version != 4) return error.EscapeWrong;
     // invariant: the arithmetic default is unmoved — the planet still sits under star
-    // 29 in the fractal, yet now answers to star 27; the default is a cage no longer.
+    // 29 in the fractal, yet answers to star 27; the default is a cage no longer.
     const default_parent = topology.encode(topology.decode(planet_num).?.parent());
     if (default_parent != star_num) return error.DefaultMoved;
-    if (after.sponsor == default_parent) return error.EscapeNotRecorded;
+    if (d.planet.sponsor == default_parent) return error.EscapeNotRecorded;
 }
 
 // Every refusal escape owes: a galaxy has no sponsor to leave; the target must be
 // settled, one tier up, and different; the request and the adoption must both be real.
-fn prove_escape_refusals(con: *Constellation, fx: *const Fixture) !void {
+fn prove_escape_refusals(con: *Constellation, d: *Deeds) !void {
     const zero_sig: [sig_len]u8 = .{0} ** sig_len;
 
     // A galaxy is the root of its own tree — it cannot escape.
     const g_req = tilak.make_sponsor(&g_key, galaxy_num, galaxy_num, star_num);
-    if (escape(con, galaxy_num, star_num, &g_req, &zero_sig)) |_| return error.GalaxyEscaped else |e| {
+    if (escape(con, &d.galaxy, &d.star, &g_req, &zero_sig)) |_| return error.GalaxyEscaped else |e| {
         if (e != error.CannotEscape) return error.GalaxyEscapeWrongError;
     }
     // The planet already answers to star 27; re-parenting to 27 is no escape.
     const same = tilak.make_sponsor(&p_key, planet_num, star_num, star2_num);
-    if (escape(con, planet_num, star2_num, &same, &zero_sig)) |_| return error.NoOpEscaped else |e| {
+    if (escape(con, &d.planet, &d.star2, &same, &zero_sig)) |_| return error.NoOpEscaped else |e| {
         if (e != error.NotAnEscape) return error.NoOpWrongError;
     }
-    // A sponsor that never settled cannot adopt — star 30 is absent.
-    const absent = tilak.make_sponsor(&p_key, planet_num, star_num, 30);
-    if (escape(con, planet_num, 30, &absent, &zero_sig)) |_| return error.AbsentAdopted else |e| {
+    // A sponsor that never settled cannot adopt — an unsettled star-30 deed.
+    const absent_deed = unsettled_deed(30);
+    const absent = tilak.make_sponsor(&p_key, planet_num, star2_num, 30);
+    if (escape(con, &d.planet, &absent_deed, &absent, &zero_sig)) |_| return error.AbsentAdopted else |e| {
         if (e != error.NotSettled) return error.AbsentWrongError;
     }
     // The galaxy is settled, yet a planet's sponsor must be a star, never a galaxy.
-    const wrong_tier = tilak.make_sponsor(&p_key, planet_num, star_num, galaxy_num);
-    if (escape(con, planet_num, galaxy_num, &wrong_tier, &zero_sig)) |_| return error.WrongTierAdopted else |e| {
+    const wrong_tier = tilak.make_sponsor(&p_key, planet_num, star2_num, galaxy_num);
+    if (escape(con, &d.planet, &d.galaxy, &wrong_tier, &zero_sig)) |_| return error.WrongTierAdopted else |e| {
         if (e != error.WrongSponsor) return error.WrongTierWrongError;
     }
     // A forged request — the identity never signed it — refuses before any adoption.
     var forged = tilak.make_sponsor(&p_key, planet_num, star2_num, star_num);
     forged.sig[0] ^= 0x01;
-    if (escape(con, planet_num, star_num, &forged, &zero_sig)) |_| return error.ForgedRequestAdopted else |e| {
+    if (escape(con, &d.planet, &d.star, &forged, &zero_sig)) |_| return error.ForgedRequestAdopted else |e| {
         if (e != error.BadSponsor) return error.ForgedRequestWrongError;
     }
     // A genuine request with a forged adoption refuses — the sponsor never consented.
     const genuine = tilak.make_sponsor(&p_key, planet_num, star2_num, star_num);
-    if (escape(con, planet_num, star_num, &genuine, &zero_sig)) |_| return error.ForgedAdoptAccepted else |e| {
+    if (escape(con, &d.planet, &d.star, &genuine, &zero_sig)) |_| return error.ForgedAdoptAccepted else |e| {
         if (e != error.BadAuthority) return error.ForgedAdoptWrongError;
     }
-    _ = fx;
-}
-
-// Hand the planet to a new keeper — the last act the old keeper's cap authorizes.
-// Afterward the point answers to a key the old owner never held.
-fn prove_transfer(con: *Constellation, fx: *const Fixture) !void {
-    const new_keeper = tilak.pubkey_of(&new_owner);
-    const xfer = make_authority(&p_key, planet_num, &new_keeper);
-    try transfer(con, planet_num, new_keeper, &fx.p_hand, &xfer);
-    const after_xfer = con.member(planet_num).?;
-    if (!std.mem.eql(u8, &after_xfer.keeper, &new_keeper)) return error.TransferKeptOldKeeper;
-    // invariant: rotate, reset, and escape each climbed the version once, then transfer.
-    if (after_xfer.version != 5) return error.TransferVersionWrong;
 }
 
 // Every refusal the ledger owes: orphan parent, wrong sponsor, forged cap, forged
 // spawn signature, a re-mint, a stale rotation, and a turn signed by the wrong key.
-fn prove_refusals(con: *Constellation, fx: *const Fixture) !void {
+fn prove_refusals(con: *Constellation, fx: *const Fixture, d: *Deeds) !void {
     const other_bind = tilak.make_bind(&new_owner, &new_owner);
     const zero_sig: [sig_len]u8 = .{0} ** sig_len;
 
-    // A planet whose star was never settled cannot mint — the sponsor is absent.
-    // Star (3,3) = 30; its planet (3,3,0) = 288. Star 30 is not a member.
-    if (mint(con, 30, 288, &other_bind, &fx.s_sow, &zero_sig)) |_| return error.OrphanAccepted else |e| {
+    // A planet whose star (30) was never settled cannot mint — present an unsettled
+    // parent deed; the shared surface has no commitment for it.
+    const orphan_parent = unsettled_deed(30);
+    if (mint(con, &orphan_parent, 288, &other_bind, &fx.s_sow, &zero_sig)) |_| return error.OrphanAccepted else |e| {
         if (e != error.ParentNotSettled) return error.OrphanWrongError;
     }
-    // Claiming the wrong sponsor: planet (3,2,8) = 284 belongs under star 29, not
-    // the galaxy — presenting the galaxy as its parent refuses.
-    if (mint(con, galaxy_num, 284, &other_bind, &fx.g_sow, &zero_sig)) |_| return error.WrongSponsorAccepted else |e| {
+    // Claiming the wrong sponsor: planet (3,2,8) = 284 belongs under star 29, not the
+    // galaxy — presenting the galaxy's deed as its parent refuses.
+    if (mint(con, &d.galaxy, 284, &other_bind, &fx.g_sow, &zero_sig)) |_| return error.WrongSponsorAccepted else |e| {
         if (e != error.WrongSponsor) return error.WrongSponsorWrongError;
     }
     // A forged spawn cap (flipped signature) refuses — the keeper never signed it.
     var bad_sow = fx.s_sow;
     bad_sow.sig[0] ^= 0x01;
     const spawn284 = make_authority(&s_key, 284, &other_bind.kumara_pubkey);
-    if (mint(con, star_num, 284, &other_bind, &bad_sow, &spawn284)) |_| return error.ForgedCapAccepted else |e| {
+    if (mint(con, &d.star, 284, &other_bind, &bad_sow, &spawn284)) |_| return error.ForgedCapAccepted else |e| {
         if (e != error.BadAuthority) return error.ForgedCapWrongError;
     }
-    // A valid cap with a forged holder signature refuses — possessing the public
-    // cap record is never enough; the holder's key must sign this child.
-    if (mint(con, star_num, 284, &other_bind, &fx.s_sow, &zero_sig)) |_| return error.ForgedSpawnAccepted else |e| {
+    // A valid cap with a forged holder signature refuses — the public cap record is
+    // never enough; the holder's key must sign this child.
+    if (mint(con, &d.star, 284, &other_bind, &fx.s_sow, &zero_sig)) |_| return error.ForgedSpawnAccepted else |e| {
         if (e != error.BadAuthority) return error.ForgedSpawnWrongError;
     }
     // A point settles once — re-minting the planet refuses.
     const respawn = make_authority(&s_key, planet_num, &fx.p_bind.kumara_pubkey);
-    if (mint(con, star_num, planet_num, &fx.p_bind, &fx.s_sow, &respawn)) |_| return error.RemintAccepted else |e| {
+    if (mint(con, &d.star, planet_num, &fx.p_bind, &fx.s_sow, &respawn)) |_| return error.RemintAccepted else |e| {
         if (e != error.AlreadySettled) return error.RemintWrongError;
     }
     // A stale rotation refuses — replaying the first turn cannot re-key.
-    const stale = tilak.make_turn(&p_key, &p_net, 1, 0); // counters below the current reset
-    if (rotate(con, planet_num, &stale, &fx.p_tend)) |_| return error.StaleAccepted else |e| {
+    const stale = tilak.make_turn(&p_key, &p_net, 1, 0);
+    if (rotate(con, &d.planet, &stale, &fx.p_tend)) |_| return error.StaleAccepted else |e| {
         if (e != error.StaleTurn) return error.StaleWrongError;
     }
     // A turn signed by the wrong identity refuses — only the point's own key rotates it.
-    const forged_turn = tilak.make_turn(&g_key, &p_net, 9, 9); // galaxy key, not the planet's
-    if (rotate(con, planet_num, &forged_turn, &fx.p_tend)) |_| return error.ForgedTurnAccepted else |e| {
+    const forged_turn = tilak.make_turn(&g_key, &p_net, 9, 9);
+    if (rotate(con, &d.planet, &forged_turn, &fx.p_tend)) |_| return error.ForgedTurnAccepted else |e| {
         if (e != error.BadTurn) return error.ForgedTurnWrongError;
     }
     // Membership reads true for the settled, false for the absent.
@@ -568,21 +688,61 @@ fn prove_refusals(con: *Constellation, fx: *const Fixture) !void {
     if (con.is_settled(500)) return error.PhantomMember;
 }
 
+// Hand the planet to a new keeper — the last act the old keeper's cap authorizes.
+fn prove_transfer(con: *Constellation, fx: *const Fixture, d: *Deeds) !void {
+    const new_keeper = tilak.pubkey_of(&new_owner);
+    const xfer = make_authority(&p_key, planet_num, &new_keeper);
+    d.planet = try transfer(con, &d.planet, new_keeper, &fx.p_hand, &xfer);
+    if (!std.mem.eql(u8, &d.planet.keeper, &new_keeper)) return error.TransferKeptOldKeeper;
+    // invariant: rotate, reset, and escape each climbed the version once, then transfer.
+    if (d.planet.version != 5) return error.TransferVersionWrong;
+}
+
+// The shared surface itself: it verifies the current owned deed and refuses a stale
+// one, a tampered one, and a ghost — the digest binds the whole owned state, and the
+// keys never sit on the surface.
+fn prove_shared_surface(con: *Constellation, d: *Deeds) !void {
+    // The current deed verifies against its commitment.
+    if (!verify(con, &d.planet)) return error.CurrentDeedRejected;
+
+    // A stale deed — an older version the owner has rotated past — is refused.
+    var stale = d.planet;
+    stale.version = d.planet.version - 1;
+    if (verify(con, &stale)) return error.StaleDeedAccepted;
+
+    // A tampered deed — same version, a changed keeper — is refused; the digest binds
+    // the whole owned state, not merely its version.
+    var tampered = d.planet;
+    tampered.keeper[0] ^= 0x01;
+    if (verify(con, &tampered)) return error.TamperedDeedAccepted;
+
+    // A deed for a point that never settled is refused.
+    const ghost = unsettled_deed(500);
+    if (verify(con, &ghost)) return error.GhostDeedAccepted;
+}
+
 fn run_selftest() !u8 {
     const fx = seat_fixture();
-    var con: Constellation = undefined;
-    try prove_grow(&con, &fx);
-    try prove_rotate(&con, &fx);
-    try prove_escape(&con, &fx);
-    try prove_escape_refusals(&con, &fx);
-    try prove_refusals(&con, &fx);
-    try prove_transfer(&con, &fx);
+    const opened = try open(galaxy_num, &fx.g_bind);
+    var con = opened.con;
+    var d: Deeds = undefined;
+    d.galaxy = opened.deed;
 
-    print("settlement constellation: a galaxy and its d60 settle as owned records — genesis, spawn by capability, transfer, rotation with a keeper that never moves, and a reset that outranks a key bump.\n", .{});
+    try prove_grow(&con, &fx, &d);
+    try prove_rotate(&con, &fx, &d);
+    try prove_escape(&con, &fx, &d);
+    try prove_escape_refusals(&con, &d);
+    try prove_refusals(&con, &fx, &d);
+    try prove_transfer(&con, &fx, &d);
+    try prove_shared_surface(&con, &d);
+
+    print("settlement constellation: a galaxy and its d60 settle across five transitions — genesis, spawn by capability, transfer, rotation with a keeper that never moves, and a reset that outranks a key bump.\n", .{});
     print("settlement constellation: sponsorship is a default, never a cage — a planet escapes to a sibling star by its own word and the new sponsor's adoption, its number unmoved.\n", .{});
+    print("settlement constellation: the shared surface is a small commitment — point, tier, sponsor, version, and a digest binding the owned deed; the keys ride the fast path in the deed, never on the surface.\n", .{});
+    print("settlement constellation: the surface verifies a current deed and refuses a stale one, a tampered one, and a ghost — the digest binds the whole owned state.\n", .{});
     print("settlement constellation: every refusal holds — orphan parent, wrong sponsor, forged cap, forged spawn signature, a re-mint, a stale rotation, a turn signed by the wrong key, a galaxy that cannot escape, a forged request, a forged adoption.\n", .{});
     print("settlement constellation: version {s}\n", .{constellation_version});
-    print("GREEN: settlement constellation — a number settles once under its rightful sponsor, powers move by signed capability, keys rotate while the deed sits cold, and a child escapes its default sponsor without ever leaving its place.\n", .{});
+    print("GREEN: settlement constellation — a small shared commitment binds each owned deed; a number settles once under its rightful sponsor, powers move by signed capability, keys rotate while the deed sits cold, and a child escapes without ever leaving its place.\n", .{});
     return 0;
 }
 

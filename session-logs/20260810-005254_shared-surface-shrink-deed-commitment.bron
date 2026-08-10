@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260810.005254
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title shared-surface shrink — Deed and Commitment
+prompt (Keaton) kg the shared-surface shrink with your design
+think the shrink models Sui's own owned/shared split — the Deed is the owned object (identity, keeper, net key, counters) riding the fast path in the owner's hand; the Commitment is the shared surface, the only thing the whole network reads together (point, tier, sponsor, version, digest)
+think the digest is the hinge — a SHA-256 of the whole owned Deed, so a presented Deed can be proven the committed one without the surface ever holding a key; verify(con, deed) is the whole value of the split
+think the honest consequence — since the Constellation now holds no keepers, any transition needing a member's private facts must present that member's Deed and verify it: mint takes the parent's Deed (for its keeper), escape takes the new sponsor's Deed (for its adopting keeper); the operations return the next Deed and re-commit the digest
+think the selftest threads owner-held Deeds through a Deeds struct — each transition returns the next deed; the refusals present unsettled or stale deeds to prove the surface turns them away
+obs GREEN on the first build; the compile-time assert @sizeOf(Commitment) < @sizeOf(Deed) passed, and measured the shrink — Commitment 56 bytes, Deed 136 bytes; the 96 bytes of keys now ride the fast path off the shared surface
+obs added a new prover, prove_shared_surface — a current deed verifies, a stale deed (older version) refuses, a tampered deed (same version, changed key) refuses because the digest binds the whole state, a ghost deed (never settled) refuses
+obs all five JARL witnesses run GREEN together; tame_style_check clean on constellation.rye (only the pre-existing REDS 64 python fossil flags); the witness now asserts the shared-surface claims
+obs docs synced — settlement/README gained the Deed/Commitment split and the surface refusals, and the held note narrows to the one remaining JARL door; REMEMBER and TASKS mark the shrink LANDED
+file settlement/constellation.rye the Deed/Commitment split — deed_to_bytes + SHA-256 digest, commit/verify, all five transitions rewritten to present-and-verify Deeds, prove_shared_surface; version 20260810.004547
+file tools/settlement_constellation_witness.rish asserts the small-commitment surface and its stale/tampered/ghost refusals
+file settlement/README.md the owned-deed / shared-commitment split, the surface refusals, the last held door
+file work-in-progress/REMEMBER.md · TASKS.md shared-surface shrink LANDED; human-name custody the last open JARL door
+file session-logs/20260810-005254_shared-surface-shrink-deed-commitment.bron this record
+recommend check-in Claude — JARL now stands nearly whole: identity, network, topology, settlement with five transitions, scarcity unified on d12·d60, and the shared surface shrunk to a small commitment that binds each owned deed; the one remaining JARL door is human-name custody, a design shape (how a number becomes a spoken name) worth Keaton's word before code, and the loadable-sky/Kyri/Pond work still opens after JARL as set
