@@ -52,7 +52,7 @@ check() {
 
 check "Keaton Livermore" "livermore"
 check "git clone https://github.com/xykj61/grain.git" "xykj61 clone"
-check "standing writing voice is **Riyo**" "riyo writing"
+check "standing writing voice is **Kyri**" "kyri writing"
 check "dual-push" "dual-push"
 check "**Waymark:** **SUNN**" "sunn waymark"
 check "fifth OS variant" "quin os hat"
