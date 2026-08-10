@@ -217,3 +217,9 @@ s/Pacific Time/the local time zone/g
 s/Pacific time/the local time zone/g
 s/Pacific coast/the local region/g
 s/Nevada/a state/g
+
+# -- identifiers the agent-read clearance surfaced (20260810 . wnlsgtnxe) --
+s/66041JEA306288/[redacted-serial]/g
+s/bhagavan851c05a/acme-user/g
+s/\bkae3g\b/acme-owner/g
+s/\bBrooke\b/a friend/g
