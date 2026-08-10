@@ -72,6 +72,7 @@ allow docs
 allow docs-geode
 allow edu
 allow nixos-guide
+allow foundations   # the doctrine "why"; bio/dedications sub_excluded, residuals withheld
 # -- the disciplines (context, granular — identity/specs/keys withheld) --
 allow context/LEXICON.md
 allow context/TAME_GUIDANCE.md
