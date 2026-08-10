@@ -7,7 +7,7 @@ say "sunn10: Style Radiant — Livermore · Riyo · xykj61 · dated Dunsford sta
 say "sunn10: Lens TAME — SUNN10 · keys/README · glow-os/overview."
 
 let k = read-file "keys/README.md"
-assert k contains "Voice:** Riyo" else "sunn10: keys want Voice Riyo"
+assert k contains "Voice:** Kyri" else "sunn10: keys want Voice Riyo"
 assert k contains "Keaton Livermore" else "sunn10: keys want Keaton Livermore"
 assert k contains "xykj61" else "sunn10: keys want xykj61"
 assert k contains "SUNN10" else "sunn10: keys want SUNN10 stamp"
@@ -15,12 +15,12 @@ assert k contains "Keaton Dunsford" else "sunn10: keys want dated Dunsford testi
 assert (k contains "current identity** (`xykj61` / Keaton Dunsford") == false else "sunn10: keys must not keep Dunsford as current identity"
 
 let o = read-file "manual/glow-os/overview.md"
-assert o contains "Voice:** Riyo" else "sunn10: overview want Voice Riyo"
+assert o contains "Voice:** Kyri" else "sunn10: overview want Voice Riyo"
 assert o contains "Keaton Livermore" else "sunn10: overview want Keaton Livermore"
 assert o contains "SUNN10" else "sunn10: overview want SUNN10 stamp"
 assert o contains "xykj61" else "sunn10: overview want xykj61"
 assert o contains "intentionally unpaired" else "sunn10: overview want Quin unpaired"
-assert o contains "context/RIYO.md" else "sunn10: overview want RIYO.md"
+assert o contains "context/KYRI.md" else "sunn10: overview want RIYO.md"
 assert o contains "context/QUIN.md" else "sunn10: overview want QUIN.md"
 assert o contains "Dunsford" else "sunn10: overview want dated Dunsford note"
 

@@ -4,7 +4,7 @@
 **Version:** `20260717.162114` (Eastern)  
 **Last updated:** `20260730.153549` (SUNN10 — Livermore living face)  
 **Style:** Radiant (see `../../context/RADIANT_STYLE.md`)  
-**Voice:** Riyo  
+**Voice:** Kyri  
 **Status:** Scaffold — conceptual overview; implementation status noted per claim
 
 ---
@@ -25,7 +25,7 @@
 | Kernel spine | state as a pure fold over an append-only log of signed facts | the transition-function model | already this fork's stated spine |
 | Modules | Rishi, Mantra, Comlink, Caravan, Tally, Brix, Bron, Aurora, Pond, Scribble, and the rest | the running seeds | many green today under the prior name |
 
-**Names, plainly.** The standing writing voice is **Riyo** ([`../../context/RIYO.md`](../../context/RIYO.md)). **Quin** remains the fifth OS variant and the inference Q-vane ([`../../context/QUIN.md`](../../context/QUIN.md)) — the OS-variant name **Riyo** in the table above is a boot image, not the writing companion.
+**Names, plainly.** The standing writing voice is **Kyri** ([`../../context/KYRI.md`](../../context/KYRI.md), molted from Riyo `20260810`). **Quin** remains the fifth OS variant and the inference Q-vane ([`../../context/QUIN.md`](../../context/QUIN.md)) — the OS-variant name **Riyo** in the table above is a boot image, not the writing companion.
 
 ## Why Five Variants
 

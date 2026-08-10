@@ -4,7 +4,7 @@
 **Version:** `20260730.145920` (EDT) · SUNN7  
 **Last updated:** `20260730.145920`  
 **Style:** Radiant (see `../RADIANT_STYLE.md`)  
-**Voice:** Riyo  
+**Voice:** Kyri  
 **Status:** Living guide  
 **Builds on:** `../../SOURCE.md`, `../../gratitude/ai-jail/README.md`, `../../tools/enclosure.conf.example`  
 **Sibling:** [`macos-ai-jail-setup.md`](../../manual/guides/macos-ai-jail-setup.md)
@@ -165,9 +165,9 @@ Two editors, two rule surfaces, one **`context/`** home.
 
 - `.cursor/rules/` — Riyo (standing voice), Radiant Style, TAME Guidance, session logs (for Cursor).
 - `.claude/rules/` — same disciplines for Claude Code (Zed).
-- `CLAUDE.md` + `.claude/rules/` — the same themes for Claude in Zed; standing voice **Riyo** (`context/RIYO.md`).
+- `CLAUDE.md` + `.claude/rules/` — the same themes for Claude in Zed; standing voice **Kyri** (`context/KYRI.md`, molted from Riyo `20260810`).
 
-Keep long-form guidance in `context/` (`RIYO.md`, `QUIN.md` for OS variant + Q-vane, `RADIANT_STYLE.md`, specs). Editor rule files stay thin pointers so Cursor and Zed stay aligned.
+Keep long-form guidance in `context/` (`KYRI.md`, `QUIN.md` for OS variant + Q-vane, `RADIANT_STYLE.md`, specs). Editor rule files stay thin pointers so Cursor and Zed stay aligned.
 
 **Inside ai-jail:** `CLAUDE.md` and `.claude/` live in the project mount and persist. Host `~/.claude` is tmpfs under `--private-home`; API keys via `ANTHROPIC_API_KEY` (or Zed `/login` state under `.zed-state/`) are the durable auth paths.
 

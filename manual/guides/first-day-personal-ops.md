@@ -2,7 +2,7 @@
 
 **Language:** EN  
 **Status:** Living guide — generic hygiene beside SOURCE’s First Day  
-**Voice:** Riyo  
+**Voice:** Kyri  
 **Last updated:** `20260730.145723` (EDT) · SUNN6  
 **Sibling:** [`SOURCE.md`](../../SOURCE.md) · [`apprentice-welcome.md`](apprentice-welcome.md) · [`first-season-personalize.md`](first-season-personalize.md)
 

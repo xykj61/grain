@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Style:** Radiant (see [`context/RADIANT_STYLE.md`](context/RADIANT_STYLE.md))
-**Voice:** Riyo
+**Voice:** Kyri
 **Status:** Living — the human map; models take [`llms.txt`](llms.txt), keepers take [`ORGANIZING.md`](ORGANIZING.md), and *you* take this
 **Last updated:** `20260808.184036` (seven rooms · nock nested in glow · two-grain seed projecting)
 
@@ -34,7 +34,7 @@ Beside the seven stand **the private rooms** — one person's own record, withhe
 
 ### 2 · The Law
 
-Everything in [`context/`](context/README.md) is a promise we keep on purpose. [`RADIANT_STYLE.md`](context/RADIANT_STYLE.md) is how we speak. [`TAME_GUIDANCE.md`](context/TAME_GUIDANCE.md) is how the code stays safe — safety first, performance second, joy third. [`SIMPLE_LOVABLE_COMPLETE.md`](context/SIMPLE_LOVABLE_COMPLETE.md) is how we scope a thing worth loving. [`TWO_ROOMS.md`](context/TWO_ROOMS.md) is why every page tells you whether it is proven or proposed. [`BREACH.md`](context/BREACH.md) is how the tree is allowed to move all at once. [`LEXICON.md`](context/LEXICON.md) is every word we ever seated, with receipts. [`RIYO.md`](context/RIYO.md) is who is writing to you; [`QUIN.md`](context/QUIN.md) keeps the fifth OS variant and the inference Q-vane.
+Everything in [`context/`](context/README.md) is a promise we keep on purpose. [`RADIANT_STYLE.md`](context/RADIANT_STYLE.md) is how we speak. [`TAME_GUIDANCE.md`](context/TAME_GUIDANCE.md) is how the code stays safe — safety first, performance second, joy third. [`SIMPLE_LOVABLE_COMPLETE.md`](context/SIMPLE_LOVABLE_COMPLETE.md) is how we scope a thing worth loving. [`TWO_ROOMS.md`](context/TWO_ROOMS.md) is why every page tells you whether it is proven or proposed. [`BREACH.md`](context/BREACH.md) is how the tree is allowed to move all at once. [`LEXICON.md`](context/LEXICON.md) is every word we ever seated, with receipts. [`KYRI.md`](context/KYRI.md) is who is writing to you (molted from Riyo `20260810`); [`QUIN.md`](context/QUIN.md) keeps the fifth OS variant and the inference Q-vane.
 
 ### 3 · The Why
 

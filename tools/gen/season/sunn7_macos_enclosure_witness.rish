@@ -13,7 +13,7 @@ let e = run ["test" "-f" "context/specs/enclosure-editors.md"]
 assert e.ok else "sunn7: enclosure-editors.md ABSENT"
 
 let mac = read-file "manual/guides/macos-ai-jail-setup.md"
-assert mac contains "Voice:** Riyo" else "sunn7: macos want Voice Riyo"
+assert mac contains "Voice:** Kyri" else "sunn7: macos want Voice Riyo"
 assert mac contains "cd ~/grain" else "sunn7: macos want ~/grain"
 assert mac contains "SOURCE.md" else "sunn7: macos want SOURCE cite"
 assert mac contains "ssh_config_grain" else "sunn7: macos want living ssh_config_grain example"
@@ -21,11 +21,11 @@ assert (mac contains "cd ~/urbit") == false else "sunn7: macos must not launch f
 assert (mac contains "Voice:** Rio 3") == false else "sunn7: macos must not keep Rio 3 voice"
 
 let enc = read-file "context/specs/enclosure-editors.md"
-assert enc contains "Voice:** Riyo" else "sunn7: enclosure want Voice Riyo"
+assert enc contains "Voice:** Kyri" else "sunn7: enclosure want Voice Riyo"
 assert enc contains "Ubuntu 26.04" else "sunn7: enclosure want Ubuntu 26.04"
 assert enc contains "NixOS" else "sunn7: enclosure want NixOS"
 assert enc contains "xykj61/grain" else "sunn7: enclosure want xykj61 clone"
-assert enc contains "RIYO.md" else "sunn7: enclosure want RIYO.md"
+assert enc contains "KYRI.md" else "sunn7: enclosure want RIYO.md"
 assert (enc contains "Reya 2") == false else "sunn7: enclosure must not keep Reya 2 as living rules voice"
 
 let src = read-file "SOURCE.md"
