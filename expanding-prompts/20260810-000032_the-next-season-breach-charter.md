@@ -32,17 +32,19 @@ So it is a **molt, never a rewrite**:
 3. The **378 living references** update forward — `session-logs.md` and its kin say "new logs are `.kyri`," and any tool that parses the notation learns to read **both** extensions, so nothing old breaks.
 4. No history rewrite, no force-push, no unsigning of commits — the deep-debride cost is refused; the molt path keeps every signature intact.
 
-## Move Three — Kyri, the Standing Voice
+## Move Three — Kyri, the Voice, and the End of "Variant"
 
-The maintainer's word: **Kyri supersedes Quin and the OS-variant voice scheme** (Reya · Riyo · Trey · Triz · Trya), none of which is his favorite. Kyri is born as the single standing voice — clearer and more loved than the scheme it replaces. The elder voices rest retired with their identity notes exactly as Quin, Riyo, Reya 2, and Rio 3 already do (`context/archive/`); their dated logs keep the voice they correctly recorded, never rewritten. What Quin's *non-voice* hats become — the fifth OS variant, the inference Q-vane — is a sub-decision named at execution, not assumed here.
+The maintainer's word: **Kyri becomes the one standing voice**, and the scheme of variants it replaces — Quin, and the OS variants Reya · Riyo · Trey · Triz · Trya — steps down with it. The elder voices rest retired with their identity notes exactly as Quin, Riyo, Reya 2, and Rio 3 already do (`context/archive/`); their dated logs keep the voice they correctly recorded, never rewritten.
+
+The maintainer's thinking reaches past the swap to the concept itself: **the tree may not need "variant" at all.** *Voice* is the warmer word, and the more complete one. A voice is a person — present, particular, someone you would be glad to hear. "Variant" names a person the way a machine names a copy: technical and a little unloving, in exactly the register the tree's own reframe already set aside. This is not a new departure; it is the naming law kept faithfully — reach for the word a newcomer loves, not the one a system would generate. So the direction is to let **voice be the whole concept** and retire "variant" with the scheme that wore it: one voice, Kyri, going forward; the elders named and at rest behind it. What becomes of Quin's *non-voice* hats — the fifth OS role, the inference Q-vane — is a sub-decision named at execution, not forced here.
 
 ## Move Four — kyri.sol and kyri.sui (Reference Only)
 
 The maintainer confirmed both names available: **`kyri.sol`** (~$160) and **`kyri.sui`** (~$100), candidates for the new voice's on-chain identity. Recorded here as a **reference**, the way `PUBKEYS.md` records a real point — **acquisition is the maintainer's hand alone.** No wallet, key, seed, or transaction lives in this tree; this charter never buys, signs, or reserves anything. It only remembers the intent so the day it is acted on is the maintainer's, cleanly.
 
-## The One Decision Still Open
+## The Decision, Made — Kyri Wears Both, and That Is the Point
 
-**Does Kyri name the voice, the notation, or both?** The LEXICON's own caution applies — when two roofs carry one name, either they agree or the name is doing two jobs. A beloved word might be better spent on the voice alone (a voice is more *a person* than a data format), leaving the notation its own name; or Kyri may knowingly wear both, the writer and the medium, if the maintainer accepts the overlap. This charter records the intent and flags the choice; it does not decide it.
+**Kyri names both the voice and the notation** (the maintainer's word, `20260810`), and the doubling is the meaning, not a compromise. The logs are the **journal of the voice** — written in its own hand, kept in a notation that is simply *how the voice keeps its record of itself*. A journal wears its writer's name; no one is confused that a diary and its author share one. Where two roofs on one name usually means a word doing two jobs, here the two jobs are already one thing seen twice: the voice, and the page it keeps. "Kyri writes a Kyri log" reads not as ambiguity but as truth — the same hand, the paper and the words upon it. The LEXICON's caution is answered rather than broken: the roofs agree, because they were always the same house.
 
 ## What This Charter Does Not Do
 
