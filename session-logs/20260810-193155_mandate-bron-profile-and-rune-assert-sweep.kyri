@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260810.193155
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host cloud pier sandbox — Eastern (EDT) time convention
+title Mandate lap 4 (Bron profile) + rune assert sweep audit
+prompt read dim from a real Bron profile, send, kg baton prin recur; and seat a rune assert sweep audit added
+think Mandate lap 4 — read dim from a real Bron profile: wrote dim_from_profile(bron) (skips # comments + blanks, first dim line wins, bounds 1..=max_dim else error), init_from_profile, embedded a real mandate/dim.profile.bron via @embedFile, and made seat_store open through it so the store's dimension truly comes from a file
+obs build caught a var-never-mutated (const store) — TAME strictness working; fixed; store selftest GREEN (prove_profile_read parses the real file + rejects malformed/out-of-bound/missing), store + keyed witnesses GREEN
+think seated the rune assert sweep audit — tools/rune_assert_sweep.rish + fixtures/rune_assert_sweep_scan.sh: sweeps authored Rye, counts fns/asserts/// invariant per file, gates on no zero-assert function-bearing file, reports density
+red the audit earned its keep immediately — caught keyed.rye at 12 functions and ZERO assert() calls (it stated invariants only in prose + error-returns); added 5 genuine layout/crypto contract asserts (byte-length, digest 32, message layout, pubkey 32 / sig 64), keyed witness re-GREEN
+obs after the fix: store.rye 18 fns / 12 asserts, keyed.rye 12 fns / 5 asserts, verdict=ok; both files TAME-ban clean
+file mandate/dim.profile.bron real Bron dimension profile (dim 4)
+file mandate/store.rye dim_from_profile + init_from_profile + @embedFile; seat_store reads the profile; prove_profile_read
+file mandate/keyed.rye store.dim->max_dim lockstep already; +5 contract asserts the audit demanded
+file tools/rune_assert_sweep.rish + tools/fixtures/rune_assert_sweep_scan.sh the seated assert-coverage audit
+recommend keep-going — Mandate reads its dim from a real Bron profile (GREEN), and the rune assert sweep audit is seated and already caught and drove a real fix; next Mandate laps (approximate index, object-storage backing, Comlink serving) on Keaton's word

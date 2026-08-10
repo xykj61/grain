@@ -42,6 +42,11 @@ pub const max_k: u32 = 16;
 
 pub const StoreError = error{ Full };
 pub const DimError = error{ BadDim };
+pub const ProfileError = error{ NoDimField, BadDimValue };
+
+// A real Bron dimension profile, embedded at build time. The store reads its active
+// dimension from this file the way topology loads a sky — data, not a constant.
+const profile_bron = @embedFile("dim.profile.bron");
 
 /// One nearest-neighbour match: the record's id and its similarity to the query,
 /// in [-1, 1] where 1 is the same direction.
@@ -80,6 +85,31 @@ pub const Store = struct {
         return .{ .records = undefined, .filled = 0, .dim = dim };
     }
 };
+
+/// Read the active dimension from a Bron profile's `dim` field. Bron is plain
+/// key-value, one field per line; `#` comments and blank lines are skipped, and the
+/// first `dim <n>` line wins. The value is bounded to 1..=max_dim, refused otherwise.
+pub fn dim_from_profile(bron: []const u8) ProfileError!u32 {
+    var lines = std.mem.splitScalar(u8, bron, '\n');
+    while (lines.next()) |raw| {
+        const line = std.mem.trim(u8, raw, " \t\r");
+        if (line.len == 0 or line[0] == '#') continue;
+        var toks = std.mem.tokenizeScalar(u8, line, ' ');
+        const key = toks.next() orelse continue;
+        if (!std.mem.eql(u8, key, "dim")) continue;
+        const val = toks.next() orelse return error.BadDimValue;
+        const d = std.fmt.parseInt(u32, val, 10) catch return error.BadDimValue;
+        // invariant: the profile's dimension stays within the storage bound.
+        if (d < 1 or d > max_dim) return error.BadDimValue;
+        return d;
+    }
+    return error.NoDimField;
+}
+
+/// A fresh, empty store whose active dimension is read from a Bron profile.
+pub fn init_from_profile(bron: []const u8) !Store {
+    return try Store.init(try dim_from_profile(bron));
+}
 
 /// The dot product over the first `dim` components, accumulated in f64 so many small
 /// terms keep their precision before the result narrows back to the caller's use.
@@ -197,7 +227,8 @@ pub fn query(store: *const Store, query_vec: *const [max_dim]f32, k: u32, filter
 // city (tag 2), at active dimension 4. Directions legible by hand; vectors are sized
 // to max_dim, the unused tail zero.
 fn seat_store() !Store {
-    var store = try Store.init(4);
+    // The active dimension comes from the real embedded Bron profile (dim 4).
+    var store = try init_from_profile(profile_bron);
     const red: [max_dim]f32 = .{ 1, 0, 0, 0, 0, 0, 0, 0 };
     const green: [max_dim]f32 = .{ 0, 1, 0, 0, 0, 0, 0, 0 };
     const blue: [max_dim]f32 = .{ 0, 0, 1, 0, 0, 0, 0, 0 };
@@ -288,6 +319,21 @@ fn prove_profile_dim() !void {
     if (Store.init(max_dim + 1)) |_| return error.OverDimAccepted else |_| {}
 }
 
+fn prove_profile_read() !void {
+    // The dimension comes from a REAL embedded Bron profile file (dim.profile.bron).
+    const d = try dim_from_profile(profile_bron);
+    if (d != 4) return error.ProfileDimWrong;
+    const store = try init_from_profile(profile_bron);
+    if (store.dim != 4) return error.ProfileInitWrong;
+    // Bron discipline: comments and blank lines skipped, first dim line wins.
+    if ((try dim_from_profile("# a comment\n\ndim 3\ndim 7\n")) != 3) return error.CommentOrFirstWinWrong;
+    // Malformed, out-of-bound, or missing dim are refused — never clamped.
+    if (dim_from_profile("format x\ndim 0\n")) |_| return error.ZeroProfileAccepted else |_| {}
+    if (dim_from_profile("format x\ndim 999\n")) |_| return error.OverProfileAccepted else |_| {}
+    if (dim_from_profile("format x\ndim notanumber\n")) |_| return error.BadValueAccepted else |_| {}
+    if (dim_from_profile("format x\nname foo\n")) |_| return error.NoDimAccepted else |_| {}
+}
+
 fn run_selftest() !u8 {
     var store = try seat_store();
     try prove_nearest(&store);
@@ -295,12 +341,14 @@ fn run_selftest() !u8 {
     try prove_topk_and_update(&store);
     try prove_remove(&store);
     try prove_profile_dim();
+    try prove_profile_read();
 
     print("mandate store: a vector store — upsert normalizes to a unit direction, so a query is a dot product; the nearest by cosine similarity returns most-similar-first, bounded and exact.\n", .{});
     print("mandate store: zero-copy — each record's vector is read in place at query time, never copied; the store owns the bytes once and search borrows them.\n", .{});
     print("mandate store: a tag filters the search (the nearest, but only nature); an upsert on an existing id updates in place, never growing the store.\n", .{});
     print("mandate store: remove drops a record by id (swap-remove, no realloc, no hole); a missing id changes nothing — create, read, update, delete all bounded.\n", .{});
     print("mandate store: the dimension is data — set at init from a profile, bounded by max_dim; one binary serves any dim 1..=max_dim, and an out-of-bound dim is refused.\n", .{});
+    print("mandate store: the dimension is read from a real Bron profile (mandate/dim.profile.bron) — comments and blanks skipped, first dim line wins, malformed or out-of-bound refused.\n", .{});
     print("mandate store: version {s}\n", .{store_version});
     print("GREEN: mandate store — Grain's turbopuffer, a bounded zero-copy vector store: nearest-neighbour by cosine over unit vectors, with a metadata filter, exact and witnessed.\n", .{});
     return 0;

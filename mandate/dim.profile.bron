@@ -1,0 +1,7 @@
+# mandate/dim.profile.bron — Mandate's dimension profile.
+#
+# The active vector dimension, read at store init the way topology loads a sky.
+# Bron notation: plain key-value, one field per line; '#' comments and blank
+# lines are skipped. The value is bounded to 1..=max_dim by the store.
+format mandate-profile-v1
+dim 4

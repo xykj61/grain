@@ -39,6 +39,8 @@ pub const KeyError = error{ NotOwner, BadSignature, StoreFull };
 const vec_bytes_len: u32 = store.max_dim * 4;
 
 fn vec_to_bytes(vec: *const [store.max_dim]f32) [vec_bytes_len]u8 {
+    // invariant: the byte buffer holds exactly four bytes per component.
+    assert(vec_bytes_len == store.max_dim * 4);
     var out: [vec_bytes_len]u8 = undefined;
     var i: u32 = 0;
     while (i < store.max_dim) : (i += 1) {
@@ -49,6 +51,8 @@ fn vec_to_bytes(vec: *const [store.max_dim]f32) [vec_bytes_len]u8 {
 }
 
 fn vec_digest(vec: *const [store.max_dim]f32) [digest_len]u8 {
+    // invariant: the digest is a SHA-256, thirty-two bytes wide.
+    assert(digest_len == 32);
     const bytes = vec_to_bytes(vec);
     var out: [digest_len]u8 = undefined;
     Sha256.hash(&bytes, &out, .{});
@@ -60,6 +64,8 @@ fn vec_digest(vec: *const [store.max_dim]f32) [digest_len]u8 {
 const auth_msg_len: u32 = 4 + 4 + digest_len; // 40
 
 fn auth_message(out: *[auth_msg_len]u8, point: u32, tag: u32, vec: *const [store.max_dim]f32) void {
+    // invariant: the signed message is point (4) + tag (4) + the vector digest.
+    assert(auth_msg_len == 4 + 4 + digest_len);
     std.mem.writeInt(u32, out[0..4], point, .little);
     std.mem.writeInt(u32, out[4..8], tag, .little);
     const d = vec_digest(vec);
@@ -76,6 +82,9 @@ pub fn sign_record(keeper_seed: *const [kumara.seed_length]u8, point: u32, tag: 
 }
 
 fn verify_record(keeper: [pubkey_len]u8, point: u32, tag: u32, vec: *const [store.max_dim]f32, sig: *const [sig_len]u8) bool {
+    // invariant: an Ed25519 public key is 32 bytes and a signature 64.
+    assert(pubkey_len == 32);
+    assert(sig_len == 64);
     const pub_key = kumara.PublicKey.fromBytes(keeper) catch return false;
     var msg: [auth_msg_len]u8 = undefined;
     auth_message(&msg, point, tag, vec);
