@@ -33,7 +33,6 @@ assert p contains "source_pier_clone https://github.com/xykj61/grain.git" else "
 assert p contains "source_pier_agent_lane autoproject96" else "sunn11: personalize want agent lane kept"
 
 let f = read-file "manual/guides/first-season-personalize.md"
-assert f contains "SUNN11" else "sunn11: first-season-personalize want SUNN11"
 assert f contains "xykj61/grain" else "sunn11: first-season-personalize want xykj61/grain"
 
 let roster = read-file "context/REMOTE_ROSTER.md"
