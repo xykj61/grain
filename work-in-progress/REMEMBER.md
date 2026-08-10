@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` — the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `deaf86d2f8` · Grain · cloud pier
+**Git nib:** `d80775e6ff` · Grain · cloud pier
 **Host:** Framework · EDT (`America/New_York`) · Vultr SEA VPS (HP AMD 2vCPU/4GB shared · never EWR) · this session in ai-jail
 
 ---
@@ -47,7 +47,7 @@ Seated ladders: **HAWM · TUBE · ZETA · JABS · LULU · STOA · SETU · SUNN �
 
 ## Two grains
 
-The private field is `~/grain`; the public template **grain-os/grain** is *projected* by `tools/sow.rish` along the boundary in `template-manifest.bron`, proven clean by `tools/sow_witness.rish` (no name or key crosses into the seed). Publish waits for Keaton's read of `seed/`.
+The private field is `~/grain`; the public template **grain-os/grain** is *projected* by `tools/sow.rish` along the boundary in `template-manifest.bron`, proven clean by `tools/sow_witness.rish` (no name or key crosses into the seed). **Seed COMPLETE + GREEN `20260810`** — every new module classified (kumara/settlement scrub · mandate/scribe template · expanded-prompts), 4657 copied / 1258 scrubbed / withheld; the 3x39 + handoff batons and the inspiration/council rosters **withheld** (no friend's name, no partner, no key leaks). `SOW_WITNESS_GREEN`. Ready to send; the actual publish push is Keaton's hand.
 
 ## Shred-prep
 
