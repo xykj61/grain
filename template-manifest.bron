@@ -88,6 +88,7 @@ allow context/SIMPLE_LOVABLE_COMPLETE.md
 allow context/THREATS.md
 allow context/equinox_map.brix
 allow context/equinox_foundations.brix
+allow context/specs   # the project's own technical specs; identity/provenance sub_excluded
 # -- root files (identity-bearing ones scrubbed) --
 allow README.md
 allow MAP.md
@@ -298,6 +299,8 @@ sub_exclude tools/gen/fund
 sub_exclude tools/pond_enclosure_sixbar.rish
 sub_exclude tools/pond_exit_bron_master_seal.sh
 sub_exclude waymarks/20260730-150702_pole0-3-bozo-murr-hats.md
+sub_exclude context/specs/20260713-201910_pacific-time-local-clone-convention.md
+
 # ---- witness obligations (M1/M2) ----
 # M1 GREEN: every tracked root path above has exactly one verdict, and the set
 #           of paths equals `git ls-files | first-segment | unique`.
