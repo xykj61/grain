@@ -1,7 +1,7 @@
 # Grain
 
 **Language:** EN
-**Style:** Radiant (see [`context/RADIANT_STYLE.md`](context/RADIANT_STYLE.md)) · **Voice:** Riyo
+**Style:** Radiant (see [`context/RADIANT_STYLE.md`](context/RADIANT_STYLE.md)) · **Voice:** Kyri
 **Status:** Living — the front door; every claim marks what runs today versus what is named and scoped
 **Last updated:** `20260808.215503` (first-principles rewrite · runes explained plainly · built with joy)
 
@@ -11,7 +11,7 @@ Welcome — and I mean that warmly. This is **Grain**: an operating system and a
 
 Grain rests on one bright promise to whoever runs it: **the software will not overflow, will not silently allocate, and will never hand your words to a distant miner.** Every allocation names its bound. Every invariant is asserted *before* the code that leans on it. And every "it works" is a **witness that ran green on a real machine** — a fact a computer spoke first, not a sentence someone hoped was true. That is the whole feeling of this place: build ambitiously, measure honestly, keep custody of what is yours, and let the machine catch what the mind would miss.
 
-**Who tends this pier.** The standing writing voice is **Riyo** ([`context/RIYO.md`](context/RIYO.md)); the living coauthor is **Keaton Livermore**. Your first-day path is [`SOURCE.md`](SOURCE.md) — from nothing to a signed, sandboxed home.
+**Who tends this pier.** The standing writing voice is **Kyri** ([`context/KYRI.md`](context/KYRI.md), molted from Riyo `20260810`); the living coauthor is **Keaton Livermore**, and the living clone is **`xykj61/grain`**. Your first-day path is [`SOURCE.md`](SOURCE.md) — from nothing to a signed, sandboxed home. **Quin** keeps the fifth OS variant and the inference Q-vane ([`context/QUIN.md`](context/QUIN.md)); the standing voice **Kyri** is also the session-log profile default.
 
 **Finding your way.** The whole tree groups into **seven friendly rooms** — the front door, the law, the why, the language and its machines, the teaching, the workrooms, and the reading room — laid out in [`MAP.md`](MAP.md). This grown field is one maker's season; a clean public template, **grain-os/grain**, is *projected* from it along a boundary drawn path by path in [`template-manifest.bron`](template-manifest.bron) and proven clean by [`tools/sow_witness.rish`](tools/sow_witness.rish), so no private name or key ever crosses into the seed.
 

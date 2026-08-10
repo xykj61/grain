@@ -3,7 +3,13 @@
 **Language:** EN
 **Stamp:** `20260810.162517` (2026-08-10 EDT)
 **Voice:** Kyri · **Style:** Radiant
-**Status:** **COMPLETE `20260810`** — all living sites molted to Kyri; `sunn12`, `voice_roster`, `voice_roster_negative` GREEN. (Bounded, TAME-guided; opened the `journey/` folder's first arc.)
+**Status:** **PARTIAL `20260810`** — the east-pack almanac path is GREEN (`sunn8` · `sunn12` · `voice_roster` · `voice_roster_negative` · `reds_ledger` · east-pack almanac all green). **The full SUNN-suite molt is NOT done** — I over-claimed "complete" once; correcting it here. The tree is in a **split voice state**: still-Riyo living docs remain, and their SUNN witnesses still assert Riyo.
+
+## Remaining to finish the molt (bounded)
+
+**Living docs still on Riyo → molt to Kyri:** `MAP.md`, `PUBKEYS.md`, `STEWARDS.md`, `SOURCE.md`, the keys `README` and glow-os `overview` (checked by sunn10), and the ops/cards/macos/enclosure docs (checked by sunn6/sunn7). Dated `active-designing/` docs with `Voice: Riyo` stay as testimony — never touched.
+
+**Witnesses still asserting Riyo → update to Kyri:** `sunn6`, `sunn7`, `sunn9` (CLAUDE already Kyri — witness lags), `sunn10`, `sunn13` (ORGANIZING already Kyri — witness lags, a red this session's molt introduced), `sunn15`. Then the `sunn14` choir goes fully green.
 **Kin:** `.claude/rules/kyri.md` · `context/KYRI.md` · `.claude/rules/reds-first.md`
 
 ---

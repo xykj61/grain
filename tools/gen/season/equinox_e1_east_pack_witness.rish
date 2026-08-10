@@ -150,7 +150,7 @@ assert ab.out contains "GREEN" else "voice-v11: almanac breach not GREEN"
 let ol = run ["sh" "-c" "rishi/bin/rishi run tools/opening_lines_witness.rish 2>&1"]
 assert ol.ok else "voice-v12: opening lines RED"
 assert ol.out contains "GREEN" else "voice-v12: opening lines not GREEN"
-assert ol.out contains "all 24 hosted files" else "voice-v12: the roster lost files"
+assert ol.out contains "all 25 hosted files" else "voice-v12: the roster lost files"
 
 # v23: tally/stack graduated on Keaton's word — its witness rides from day one.
 let ts = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run tally/stack_test.rye 2>&1"]
