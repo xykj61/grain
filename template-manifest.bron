@@ -180,6 +180,32 @@ sub_exclude edu/company
 sub_exclude edu/funds
 sub_exclude context/keys
 
+# convergence audit (20260810 . wgn0745jf) — family-history, dedication, and key-script files withheld whole
+sub_exclude context/specs/20260630-004512_module-name-provenance.md
+sub_exclude context/specs/20260713-235455_keaton-name-and-glow-os-umbrella.md
+sub_exclude expanding-prompts/20260730-150702_pole-bozo-murr-hats-charter.md
+sub_exclude expanding-prompts/20260730-150702_pole-recursion-prompt.md
+sub_exclude expanding-prompts/20260730-152953_sunn-recursion-prompt.md
+sub_exclude expanding-prompts/20260730-153327_sunn-recursion-prompt.md
+sub_exclude expanding-prompts/20260730-153642_sunn-recursion-prompt.md
+sub_exclude expanding-prompts/20260730-154230_sunn-recursion-prompt.md
+sub_exclude expanding-prompts/20260730-154600_sunn-recursion-prompt.md
+sub_exclude expanding-prompts/20260730-160405_sunn-recursion-prompt.md
+sub_exclude expanding-prompts/20260730-161004_sunn-recursion-prompt.md
+sub_exclude expanding-prompts/yonder/20260630-004512_cursor-complete-round.md
+sub_exclude mycelium/constellation/SPEC.md
+sub_exclude tools/fixtures/gen_bozo_fund_prep.sh
+sub_exclude tools/fixtures/gen_gren_fund_prep.sh
+sub_exclude tools/fixtures/gen_keeh_fund_prep.sh
+sub_exclude tools/fixtures/gen_linn_fund_prep.sh
+sub_exclude tools/fixtures/gen_murr_fund_prep.sh
+sub_exclude tools/fixtures/gen_shyu_fund_prep.sh
+sub_exclude tools/fixtures/gen_trya_fund_prep.sh
+sub_exclude tools/fixtures/sundial.sh
+sub_exclude tools/gen/fund
+sub_exclude tools/pond_enclosure_sixbar.rish
+sub_exclude tools/pond_exit_bron_master_seal.sh
+sub_exclude waymarks/20260730-150702_pole0-3-bozo-murr-hats.md
 # ---- witness obligations (M1/M2) ----
 # M1 GREEN: every tracked root path above has exactly one verdict, and the set
 #           of paths equals `git ls-files | first-segment | unique`.
