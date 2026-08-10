@@ -30,7 +30,7 @@ SEED="seed"
 SCRUB="tools/fixtures/sow_scrub.sed"
 # Maintainer identity: real names, the retired copyright name, the forge
 # handles, and the real Azimuth points. One place; the witness reuses it.
-IDENT='Keaton|Kaeden|Livermore|Reyklah|Dunsford|Mayacama|xykj61|autoproject96|bandun|pacpet-solreb|keatonsiya|xnkg30|veganreyklah|cherry996|415.?915.?6666|npub1[a-z0-9]{40}|6Rb5E|AHs34|siyafund|bitscape|thebittradingcompany|xykj61atgmail|xykld2|xy96gen-z'
+IDENT='Keaton|Kaeden|Livermore|Reyklah|Dunsford|Mayacama|xykj61|autoproject96|bandun|pacpet-solreb|keatonsiya|xnkg30|veganreyklah|cherry996|415.?915.?6666|npub1[a-z0-9]{40}|6Rb5E|AHs34|siyafund|bitscape|thebittradingcompany|xykj61atgmail|xykld2|xy96gen-z|DJINN|DJINN'
 
 [ -f "$MANIFEST" ] || { echo "sow: $MANIFEST missing" >&2; exit 1; }
 [ -f "$SCRUB" ]    || { echo "sow: $SCRUB missing" >&2; exit 1; }
