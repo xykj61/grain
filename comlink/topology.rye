@@ -230,6 +230,22 @@ pub const Sky = struct {
             .planet => true,
         };
     }
+
+    /// A point's **outfit seat** — its place within its galaxy's prosperity circle, from
+    /// `0` to `prosperity() - 1`. For the council sky (a **d27**) this is the seat among
+    /// twenty-seven, and a private roster names each seat (the nakshatra outfit); the
+    /// topology gives only the seat index, never a name. Each galaxy's points wear all
+    /// `prosperity()` seats exactly once. Null past the universe.
+    pub fn outfit_seat(self: Sky, number: u32) ?u32 {
+        self.assert_bounds();
+        if (number >= self.planet_count()) return null;
+        const addr = self.decode(number).?;
+        // The seat flattens (star, planet) within the galaxy's circle.
+        const seat = @as(u32, addr.star) * self.planets + @as(u32, addr.planet);
+        // invariant: the seat sits inside the galaxy's prosperity circle.
+        assert(seat < self.prosperity());
+        return seat;
+    }
 };
 
 /// The seated d12·d60 shape as a sky — twelve galaxies, five stars each, twelve
@@ -302,6 +318,7 @@ fn run_selftest() !u8 {
     print("comlink topology: d12·d60 shape (12·5·12, d60=60); the spaces nest inclusively like Azimuth, so 720/universe (60 stars hold 12 galaxies, 720 planets hold 60 stars); sponsor by mod; routing by number within a galaxy and one bridge across.\n", .{});
     print("comlink topology: inclusion is the outfit — a galaxy wears star and planet roles as d60 aspects of itself; decode gives the primary role, plays asks which a number may wear.\n", .{});
     print("comlink topology: the geometry is a loadable sky — the seated d12·d60 is compass_sky, and a second council_sky (15·3·9, a d27 of 27, 405/universe inclusive) round-trips on its own universe by the same law.\n", .{});
+    print("comlink topology: a point wears an outfit seat in its galaxy's circle — the council d27's twenty-seven seats, each worn by exactly one point per galaxy; a private roster names them (the nakshatra outfit).\n", .{});
     print("comlink topology: version {s}\n", .{topology_version});
     print("GREEN: comlink topology — an inclusive fractal address space: a number names a place and wears every lower role, a sponsor a place has by mod, a route two places share, and a shape a community may load like a sky.\n", .{});
     return 0;
@@ -347,6 +364,23 @@ fn prove_skies() !void {
     const cs = cp.parent();
     if (cs.tier != .star) return error.CouncilPlanetParent;
     if (cs.parent().tier != .galaxy) return error.CouncilStarParent;
+
+    // A point's outfit seat is its place in its galaxy's d27 circle. Galaxy 0's
+    // twenty-seven points wear all twenty-seven seats exactly once — a bijection —
+    // so every nakshatra outfit is worn by exactly one point per galaxy.
+    if (council_sky.outfit_seat(0).? != 0) return error.CouncilSeatZero;
+    if (council_sky.outfit_seat(council_sky.universe_points() - 1).? != 26) return error.CouncilSeatLast;
+    if (council_sky.outfit_seat(council_sky.universe_points()) != null) return error.CouncilSeatPast;
+    var seen = [_]bool{false} ** 27;
+    var k: u32 = 0;
+    while (k < 27) : (k += 1) {
+        const seat = council_sky.outfit_seat(k * council_sky.galaxies).?; // galaxy-0 points
+        if (seen[seat]) return error.CouncilSeatRepeat;
+        seen[seat] = true;
+    }
+    for (seen) |worn| {
+        if (!worn) return error.CouncilSeatMissing;
+    }
 }
 
 pub fn main() !u8 {
