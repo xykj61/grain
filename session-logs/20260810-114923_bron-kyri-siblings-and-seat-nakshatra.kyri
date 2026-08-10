@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260810.114923
+editor Zed + Claude Agent
+model claude-opus-4-8
+voice Riyo
+host Vultr cloud pier (ai-jail) — Eastern (EDT) time convention
+title Bron and Kyri as siblings; the private seat to nakshatra tool
+prompt kg build the private seat to nakshatra tool; and let Bron and Kyri be sibling aliases, Scribe-recorded extensions
+think Bron and Kyri as SIBLINGS, not a succession. Added is_scribe_extension to scribe/reader.rye — a filename ends in .kyri or its sibling .bron, and Scribe records both as one notation, one format family. The notation molted from Bron to Kyri on the maintainer's word, yet neither extension is a fossil the reader turns away; a .bron log and a .kyri log are the same shape by different names. Proved in the selftest (a .kyri name and a .bron name recognized, a .md name and a bare word refused); reader GREEN, dashboard still builds. This ships in the seed (scribe allowlisted).
+think Built the private seat -> nakshatra tool: classical-vedic-astrology/seat_nakshatra.rye. It maps a point's PUBLIC d27 outfit seat (topology.council_sky.outfit_seat) to its NAKSHATRA name from the roster (public facts, ASCII). The seat is public geometry; naming it is this study's own application. Selftest proves point 0 -> Ashvini, point 404 -> Revati, past-universe none, and the example point 267 -> seat 23 -> Shatabhishak (Varuna, a water seat). Witnessed GREEN.
+think Kept the silo honest: the tool and its witness live in classical-vedic-astrology/ (personal in the manifest, withheld from the public seed), so the OS template never carries a chart and no broken witness ships. Cross-module import via a symlink (classical-vedic-astrology/topology.rye -> ../comlink/topology.rye), the tree's own pattern. A pilot runs the tool on their own point to learn its outfit — a private reading recorded in their own hand.
+obs The loop is closed end to end: the topology gives the seat (public), the roster names it (public facts), this tool joins them (siloed), and a pilot's own reading stays private. Sundial's public health face and this tool's nakshatra face are two readings of one indicator idea.
+file scribe/reader.rye is_scribe_extension — .kyri and .bron are sibling recorded extensions
+file classical-vedic-astrology/seat_nakshatra.rye the seat -> nakshatra tool (withheld from the seed)
+file classical-vedic-astrology/seat_nakshatra_witness.rish co-located witness, never ships broken
+recommend keep-going both green; the siblings reach the live seed on the next publish (bash ~/grain/publish-seed.sh); your own nakshatra is yours to run and record
