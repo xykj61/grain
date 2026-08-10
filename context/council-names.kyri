@@ -34,7 +34,7 @@ name siya     (elder: the Fund — multi-role)
 name wovn
 name queyquinqkri  (galaxy — water element, dual mode; benevolent parent of the kyri/kyli voices)
 name sunlsiyasuhn  (galaxy — water element, fixed mode; sunl · siya · suhn — deep-blue water, held steady)
-name novanethnoel  (galaxy — earth element, dual mode; nova · neth · noel — new ground, gladly given)
+name novanethnoel  (galaxy — earth element, dual mode; the BRIDGE galaxy: nova=Glow↔Sui/Move · neth=Glow↔Ethereum · noel=Glow↔Solana — all PROPOSED horizon, counsel-gated)
 
 # --- galaxy casts: element · mode — seated 20260810.145033 on Keaton's word ---
 # TAME-disciplined key-value, one field per line. The maintainer's own galaxy
@@ -61,8 +61,16 @@ element water
 mode fixed
 
 # --- galaxy cast: novanethnoel — seated 20260810 on Keaton's word ---
-# Dual earth: new ground (nova), the Neth market surface, gladly given (noel).
+# The BRIDGE galaxy: dual earth, three cross-chain bridges from Glow ---
+#   nova  = Glow <-> Sui (Move) bridge
+#   neth  = Glow <-> Ethereum bridge (same/similar shape)
+#   noel  = Glow <-> Solana bridge
+# All three are PROPOSED horizon — any on-chain bridge waits on licensed
+# counsel first (securities / money-transmission / custody), per reds-first.
 # Earth element, dual mode — the earth line's first dual.
 galaxy novanethnoel
 element earth
 mode dual
+bridge nova Glow-Sui-Move (proposed)
+bridge neth Glow-Ethereum (proposed)
+bridge noel Glow-Solana (proposed)
