@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260810.162517` (2026-08-10 EDT)
 **Voice:** Kyri · **Style:** Radiant
-**Status:** Quest charter — bounded, TAME-guided; opens the `journey/` folder's first arc
+**Status:** **COMPLETE `20260810`** — all living sites molted to Kyri; `sunn12`, `voice_roster`, `voice_roster_negative` GREEN. (Bounded, TAME-guided; opened the `journey/` folder's first arc.)
 **Kin:** `.claude/rules/kyri.md` · `context/KYRI.md` · `.claude/rules/reds-first.md`
 
 ---
