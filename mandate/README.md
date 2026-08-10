@@ -24,12 +24,16 @@ rishi/bin/rishi run tools/mandate_store_witness.rish
 
 The selftest frames its vectors as image embeddings (nature and city tags) so the nearest neighbours are legible by hand; the vectors are plainly synthetic, so no key or network is touched.
 
+## Kumara-keyed records (`keyed.rye`, landed `20260810`)
+
+A bare store keys a vector by any `u32`. [`keyed.rye`](keyed.rye) makes the key an **identity**: a record belongs to a settled Kumara **point**, and only that point's owner may store its vector. The gate mirrors the name registry — the owner presents the point's **Deed**, verified against the constellation's shared surface, and **signs** the exact vector (its SHA-256 digest, with the point and tag). So a stolen id cannot poison another identity's search, and a query returns *who*, not merely *which number*: `place_of` resolves each match to its galaxy, star, or planet. Refusals proven: a non-owner, a forged signature, a tampered vector.
+
 ## Horizons
 
 - **Unsplash** as the first real data source — image embeddings, IRL ROC camera (consent-gated partnership).
 - A **profile-loaded dimension** (the way topology loads a sky), so `dim` is data rather than a constant.
 - An **approximate index** for scale, and **object-storage backing** so the store is serverless like its inspiration.
-- Records keyed by a **Kumara point** (`../settlement/`), so a vector belongs to a settled identity; served over **Comlink**, rendered on **Skate**.
+- Served over **Comlink**, rendered on **Skate**; resolved to a spoken name via `../settlement/names.rye`.
 
 ---
 
