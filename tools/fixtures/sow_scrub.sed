@@ -132,3 +132,33 @@ s/0646 2132 D3E6 3B83 4F97 6E03 A81D 720B 9235 FA7A/[redacted-fingerprint]/g
 s/DBF8 5343 7A93 7B4E 36B9 3611 D949 807A C26B 2B99/[redacted-fingerprint]/g
 s/06462132D3E63B834F976E03A81D720B9235FA7A/[redacted-fingerprint]/g
 s/DBF853437A937B4E36B93611D949807AC26B2B99/[redacted-fingerprint]/g
+
+# ============================================================
+# Contact & holdings scrub (20260810) — emails, personal handles,
+# and owned domains named for the private redirects record. The
+# generic gmail catch closes the class the fingerprint audit missed.
+# ============================================================
+
+# -- ANY gmail address -> a generic placeholder (every current + future one) --
+s/[A-Za-z0-9._%+-]\+@gmail\.com/acme-owner@example.com/g
+
+# -- prior-name + personal handles -> owner placeholder (longest-first) --
+s/keatonlivermore/acme-owner/g
+s/keatondun/acme-owner/g
+s/teamcarry11/acme-owner/g
+s/xwb122m/acme-owner/g
+s/b122mnet/acme-owner/g
+s/xnflor3/acme-owner/g
+s/kaexvx9/acme-owner/g
+s/kj3x39/acme-owner/g
+s/\bb122m\b/acme-co/g
+
+# -- owned professional-service + venture domains -> example placeholders --
+s/vegancpa\.\(net\|org\|com\)/acme-cpa.example/g
+s/veganaccountant\.\(net\|org\|com\)/acme-accountant.example/g
+s/veganarchitect\.\(net\|org\|com\)/acme-architect.example/g
+s/veganbookkeeper\.\(net\|org\|com\)/acme-bookkeeper.example/g
+s/vegan\.financial/acme.example/g
+s/vegan\.work/acme.example/g
+s/construction3x39\.\(com\|sol\)/acme-construction.example/g
+s/\bconstruction3x39\b/acme-construction/g
