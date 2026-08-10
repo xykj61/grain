@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260810.060909
+editor Zed
+model claude-opus-4-8
+voice Riyo
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Next-season build plan — synthesis of six design briefs
+prompt Read six design briefs (JSON) and write a consolidated, sequenced build-plan baton to expanding-prompts/undefined_next-season-build-plan.md in Radiant Style, then return the structured summary.
+think Read all six briefs in full — Vault, Loom, Bat-Fleet+Dashboard, Starseeding, Passport, name-consolidation debride.
+think Verified facts on metal before synthesizing: all dependency modules present (kumara/tilak, tally/kumara+copy+seed, scribe/reader, comlink/topology, settlement/constellation+names, aurora/deciding, caravan); all named witness harnesses present; vault/ loom/ bat/ starseeding/ dirs all free; passport+starseed grep-clean in code; Loom name confirmed encumbered (reds-first, REMEMBER, TASKS, research); sunn13 assert-hold lines confirmed at 8/25/36/38/40 with waiting comment line 5; LICENSE copyright lines confirmed Kaeden Reyklah at MIT:3 APACHE:156 CC-BY:3.
+think Dependency analysis: the shared soft coupling is scribe/reader.rye — Vault/Starseeding/Loom re-read emitted Bron but need only existing parse/dispatch, NOT the Bat-Fleet's new predicates, so reader-extension and composing modules must not share a commit. Passport and Starseeding are pure compositions of GREEN modules (lowest risk). Vault is the one genuinely-new crypto (Shamir GF256, highest stakes). Loom blocked on name. Debride independent, gated on send, coupled witness must flip in same commit.
+think Ordered by readiness×leverage×risk: (1) Passport surest, (2) Starseeding second pure-compose pinning the topology outfit edge, (3) Bat+Dashboard extend the shared reader on proven ground, (4) Vault highest-stakes after the groove, (5) Loom last and name-gated, and the debride threaded beside on its own consent clock.
+obs Critical path is short (reader → Bat-extension and → Vault-reread), but the true pacing constraint is risk sequencing plus two human gates (Loom naming, debride send) — neither belongs on the mechanical critical path.
+obs Hard ordering rule surfaced: Lexicon-before-code for every new-name module (Vault six marks, Fleet six archetypes + dashboard/inventory), and never let the reader-extension share a commit with a reader-consuming compose.
+file expanding-prompts/undefined_next-season-build-plan.md the synthesis baton — frame, dependency map, ordered sequence, critical path, first three, open questions and consent gates
+file session-logs/20260810-060909_next-season-build-plan-synthesis.bron this record
+recommend check-in Claude/Keaton — plan is written and all facts verified on metal; the two live gates (Loom's name, the debride send) want Keaton's word before any of that code or cut moves, and the first three module laps (Passport, Starseeding, Bat+Dashboard) are ready to begin on his go
