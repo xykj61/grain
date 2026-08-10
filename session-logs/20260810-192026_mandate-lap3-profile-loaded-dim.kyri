@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260810.192026
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host cloud pier sandbox — Eastern (EDT) time convention
+title build Mandate — lap 3 profile-loaded dim
+prompt build the profile-loaded dim lap, send, kg baton prin recur
+think turned the compile-time dim constant into runtime data — introduced a comptime max_dim bound (8) and carried the ACTIVE dim as a Store field, set at init(dim) from a profile the way topology loads a sky
+obs Store.init(dim) asserts/returns error.BadDim outside 1..=max_dim (refused, never clamped); vectors store at max_dim width, only the leading dim components meaningful (tail zero); dot/normalized/query operate over store.dim; TAME // invariant asserts throughout
+think the change touches store.rye's API, and keyed.rye builds on it — refactored keyed in lockstep: store.dim (comptime array sizes, byte lengths, hash loops) -> store.max_dim; init() -> init(4); selftest vectors padded to max_dim
+obs proved on metal — store builds, selftest GREEN (prove_profile_dim: a second store at dim=2 in the SAME binary, out-of-bound dims refused), mandate_store_witness GREEN, mandate_keyed_witness GREEN; both files clean of TAME bans
+file mandate/store.rye dim is now runtime data bounded by max_dim; init(dim); vectors [max_dim]f32; prove_profile_dim added
+file mandate/keyed.rye refactored store.dim -> store.max_dim in lockstep; init(4); witness GREEN
+file mandate/README.md lap 3 documented; profile-loaded dim horizon marked landed
+recommend keep-going — Mandate CRUD + profile-loaded dim complete and GREEN on metal; remaining laps: read dim from an actual Bron profile file, approximate index, object-storage backing, served over Comlink — each on Keaton's word
