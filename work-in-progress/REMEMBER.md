@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` — the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `4e6686ee72` · Grain · cloud pier
+**Git nib:** `5ad5261687` · Grain · cloud pier
 **Host:** Framework · EDT (`America/New_York`) · Vultr SEA VPS (HP AMD 2vCPU/4GB shared · never EWR) · this session in ai-jail
 
 ---
@@ -18,11 +18,11 @@
 | Equinox | Waymark | Holds |
 |---|---|---|
 | The Language | **SOON** ✓ | **Rishi language spine complete** — runes `^- ?! ?& ?| ?:` · regex `matches`/`find` (`{n,m}` · `\b` · lookbehind) · `sort`/`unique`/`upper` · list `+` · `fold` · user functions `fn`. Seams folded native: `claim_preserve` · `census_control`. Open: `mold→shape` · TAME core/shelf · Brix-infuse · PLEAC · Aurora |
-| Identity & Network | **JARL** | **Kumara** (5 tilaks) · **Comlink** turn-route + live handshake (loop closed) · **d12·d60 fractal topology** landed (`comlink/topology.rye`: 12·5·12, sponsor chain, routing by number) · settlement ledger · Sui next |
+| Identity & Network | **JARL** | **Kumara** (5 tilaks) · **Comlink** turn-route + live handshake (loop closed) · **d12·d60 topology** · **settlement constellation** landed (`settlement/constellation.rye`: a galaxy's d60 settles as owned records — spawn by capability, transfer, keys rotate while the deed sits cold, every refusal held) · scarcity reconcile · escape next |
 | Surface & Intelligence | **BUHR** | Realidream DAG surface · Quin's four voices (Lattice · Scribble · Lantern · Ember) · MCP-in-Bron · Tablecloth |
 | The World | **TACT** | Ship-Pilot pitch · publishing · Grainphone · commerce · CONTRIBUTING four-doors · Grain Energy PBC |
 
-**Now at JARL — identity, network, and the fractal address space.** Coords **s1 · JARL e2 · j2**. Three seats stand, each witnessed GREEN: **(1) Identity** — `kumara/tilak.rye` seats five signed tilaks (point · bind · turn · cap×3 · sponsor), every tamper refusing. **(2) Network** — `comlink/handshake_turn.rye` reads a peer's rotation end to end: a signed introduction admits the peer, `turn_route.rye` takes the freshest verified turn (a reset outranks any key rotation; replay and forgery refused), and `handshake_wire` recovers that turn from the 112 descriptor bytes it rode in — the loop closed from wire to route key. **(3) Topology** — `comlink/topology.rye` seats the **d12·d60 fractal address space**: twelve galaxies to a universe, five stars to a galaxy (its d5), twelve planets to a star (its d12), a galaxy leading a d60 of sixty; a point number decodes to a place, a place's sponsor climbs planet→star→galaxy (grounding the sponsor tilak), and two places share a route by number — within a galaxy, one bridge across. Held for Keaton: the settlement ledger (Sui or Grain-native), whether to keep the d12·d60 scarcity or the elder Azimuth tiering on the Point, human-name custody. Then Sui settlement. Baton: [`../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md`](../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md).
+**Now at JARL — identity, network, address space, and the settled ledger.** Coords **s1 · JARL e2 · j4**. Four seats stand, each witnessed GREEN: **(1) Identity** — `kumara/tilak.rye` seats five signed tilaks (point · bind · turn · cap×3 · sponsor), every tamper refusing. **(2) Network** — `comlink/handshake_turn.rye` reads a peer's rotation end to end: a signed introduction admits the peer, `turn_route.rye` takes the freshest verified turn (a reset outranks any key rotation), and `handshake_wire` recovers that turn from the 112 descriptor bytes it rode in — the loop closed from wire to route key. **(3) Topology** — `comlink/topology.rye` seats the **d12·d60 fractal address space**: twelve galaxies, five stars each, twelve planets each, a galaxy leading a d60 of sixty; a number decodes to a place, a place's sponsor climbs planet→star→galaxy, two places share a route by number. **(4) Settlement** — `settlement/constellation.rye` is the ledger, chosen on **Sui's** ground: a galaxy and its d60 settle as owned records whose versions climb on every change. A galaxy opens the constellation from its own bind; a **sow** capability spawns a star beneath it and a planet beneath that, each under its rightful topology sponsor; a **hand** capability transfers ownership; a **tend** capability rotates the networking key while the keeper's key sits cold; a reset outranks a key bump. Every refusal holds — orphan parent, wrong sponsor, forged cap, forged spawn signature, a re-mint, a stale rotation, a turn signed by the wrong key. Held for Keaton: whether a settled number keeps the elder Azimuth tiering or the d12·d60 scarcity, how small the shared surface should shrink, human-name custody. Then **escape** — a child re-parenting from the sponsor tilak. Baton: [`../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md`](../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md).
 
 ---
 
@@ -57,8 +57,8 @@ The private field is `~/grain`; the public template **grain-os/grain** is *proje
 
 | Door | Kind |
 |------|------|
-| **Next JARL step** — wire the descriptor to carry the turn · d12/d60 topology · or settle the ledger/scarcity design calls | live |
-| **Settlement ledger** — Sui constellation or Grain-native; the final scarcity tiering (keep Azimuth 2⁸/2¹⁶/2³² or reshape) | JARL · Keaton's word |
+| **Next JARL step** — **escape** (a child re-parenting, from the sponsor tilak) · shrink the shared surface to a membership commitment · or the scarcity design call | live |
+| **Scarcity reconcile** — a settled number keeps the elder Azimuth 2⁸/2¹⁶/2³² the Point tilak names, or the d12·d60 shape the constellation settles by | JARL · Keaton's word |
 | **Keaton's own Kumara instance** — generate from his real seed + keeper, by his hand alone | JARL · when ready |
 | **mold→shape debride** — 82 files / 753 occurrences; its own careful pass | proposed |
 | **TAME core/shelf** — lossless-compressed living law over a preserved shelf | proposed |

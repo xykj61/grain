@@ -8,10 +8,10 @@
 
 ---
 
-## Now — The Compass Season · JARL j1 (`20260809.154500`)
+## Now — The Compass Season · JARL j4 (`20260809.224715`)
 
-**Finishing edge:** JARL j1 — the Kumara identity template. SOON's language spine complete; now at Identity & Network. `kumara/tilak.rye` seats the **point** and **bind** tilaks (Ed25519, signed both ways, Azimuth-tiered, Bron-emitted, witnessed).
-**Prove:** `rishi/bin/rishi run tools/kumara_tilak_witness.rish`
+**Finishing edge:** JARL j4 — **the settlement constellation, on Sui**. Identity, network, and the fractal address space all stand; now the ledger. `settlement/constellation.rye` seats a galaxy and its d60 as owned records whose versions climb — spawn by `sow` capability, transfer by `hand`, keys rotate by `tend` while the keeper sits cold, a reset outranking a key bump, and every refusal held. The whole JARL spine (five witnesses) runs GREEN together.
+**Prove:** `rishi/bin/rishi run tools/settlement_constellation_witness.rish`
 
 | Lap | Equinox | Status |
 |-----|---------|--------|
@@ -21,8 +21,10 @@
 | **Comlink live handshake** — introduction gate admits + rotation gate keys the wire, independently | JARL | **LANDED** (`comlink/handshake_turn.rye`) |
 | **Descriptor carries the turn on the wire** — `handshake_wire` recovers it from 112 descriptor bytes (`turn_to_bytes`), loop closed | JARL | **LANDED** |
 | **d12·d60 fractal topology** — the address space (12·5·12, d60=60, 792/universe), sponsor chain, routing by number | JARL | **LANDED** (`comlink/topology.rye`) |
+| **Settlement constellation on Sui** — a galaxy's d60 as owned records; spawn/transfer/rotate by capability, versions climb, keys rotate cold, every refusal held | JARL | **LANDED** (`settlement/constellation.rye`) |
 | Reconcile the Point's tier (elder Azimuth 2⁸/2¹⁶/2³²) with the topology's d12·d60 scarcity | JARL | Keaton's word |
-| Settlement — the constellation on Sui | JARL | next journey · word-gated |
+| **Escape** — a child re-parenting to a chosen sponsor, the constellation reading the `sponsor` tilak | JARL | next lap |
+| Shrink the shared surface — hold a membership commitment, let point-objects ride the fast path | JARL | horizon |
 | Rishi rune heads — `^-` · `?!` · `?&` · `?|` landed | SOON | **LANDED** (four heads) |
 | Rishi **`matches`** + **`find`** pattern primitives — bounded NFA, `{n,m}` · `\b`, linear-time, 600+ cases vs Python re | SOON | **LANDED** — boolean-test and extract seams both unlocked |
 | Rishi `sort` · `unique` · `upper` · list `+` · lookbehind | SOON | **LANDED** |

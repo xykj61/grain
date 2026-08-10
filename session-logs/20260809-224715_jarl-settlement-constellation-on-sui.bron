@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260809.224715
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title build the Sui settlement constellation
+prompt (Keaton) kg build the Sui settlement constellation; produce the complete radiant TAME-guided compass each round with a new path recommendation
+think surveyed first — the design ground already stood: the Kumara Ledger Shape (active-reviving) reviving from the Azimuth-and-Sui study (external-research), five commitments and a translation table. Sui's gift is the object: a globally unique id, an owner, a version that climbs on every change; an address-owned object rides a fast path spending no global ordering on one owner's affairs
+think chose the home — a new settlement/ dir, whitelisted in .gitignore beside kumara, with import symlinks mirroring comlink's pattern (topology.rye, kumara_tilak.rye, kumara.rye) so the module composes the geometry and the deed without copying them
+think modeled a Settled point as the Sui object: both keys (identity signs turns, keeper owns and grants caps), sponsor, net key, two counters, and a version that climbs by exactly one per transition; the Constellation is a galaxy's d60 held in a bounded 66-slot array that never reallocates
+think the transitions ARE the five commitments — open (genesis galaxy, its own bind the warrant), mint (a sow cap spawns a child under its rightful topology sponsor), transfer (a hand cap moves ownership), rotate (a tend cap sets a new signed turn while the keeper sits cold, a reset outranking a key bump)
+think safety-first hardening — a public cap record alone must never authorize; the holder signs the specific act (child identity for mint, new keeper for transfer), verified under the cap's holder, closing the replay gap a bare cap would open
+obs the first run went RED, correctly — I had transferred the planet before rotating, so the old keeper's tend cap was already void; the ledger refused it. reordered: rotate while the keeper still holds, transfer as the last act its caps authorize
+obs the selftest proves the whole arc GREEN — genesis, two mints down the tiers, a transfer, a rotation with a keeper that never moves, a reset that outranks; and seven refusals: orphan parent, wrong sponsor, forged cap, forged spawn signature, a re-mint, a stale rotation, a turn signed by the wrong key
+obs tame_style_check clean on constellation.rye (only the pre-existing REDS 64 python fossil flags); all five JARL witnesses run GREEN together — kumara_tilak, turn_route, handshake_turn, topology, settlement_constellation
+obs held honestly for Keaton — the scarcity a settled number carries (elder Azimuth ranks vs the d12·d60 shape), how far the shared surface can shrink to a membership commitment, human-name custody; and escape (a child re-parenting) is the next transition, from the sponsor tilak already built
+file settlement/constellation.rye the ledger — Settled · Constellation · open/mint/transfer/rotate · signed authority · selftest proving the arc and every refusal
+file tools/settlement_constellation_witness.rish drives the selftest, asserts the GREEN claims
+file settlement/README.md the home doc — the five commitments, the refusals, what waits for Keaton's word
+file settlement/topology.rye · settlement/kumara_tilak.rye · settlement/kumara.rye import symlinks composing geometry, deed, and crypto
+file .gitignore whitelist settlement/ and exclude settlement/bin/
+file work-in-progress/REMEMBER.md · TASKS.md · context/LEXICON.md · comlink/README.md JARL journey 4 landed; the compass refreshed to four seats
+file session-logs/20260809-224715_jarl-settlement-constellation-on-sui.bron this record
+recommend check-in Claude — the JARL spine now stands whole through four journeys: an identity minted and signed, its rotation verified at the handshake, its place named in the fractal, and its ownership settled on a ledger. The next new paths fork on a design call that is Keaton's: escape (mechanical, ready, from the sponsor tilak) can land now, but the scarcity reconcile — does a settled number keep the elder Azimuth tiering or the d12·d60 shape — shapes what escape and the shared surface mean, so it wants his word before I build further into the ledger

@@ -1,0 +1,24 @@
+# settlement_constellation_witness.rish — the Sui settlement constellation.
+#
+# Proves JARL journey four: a galaxy and its d60 settle as owned records whose
+# versions climb. A galaxy opens the constellation from its own bind; a spawn
+# capability settles a star beneath it and a planet beneath that, each under its
+# rightful topology sponsor; a transfer moves ownership; a rotation heals the wire
+# while the keeper's key sits cold; a reset outranks a key bump. Every refusal the
+# ledger owes holds — orphan parent, wrong sponsor, forged cap, forged spawn
+# signature, a re-mint, a stale rotation, a turn signed by the wrong key.
+#
+# Build first:  rye build settlement/constellation.rye -femit-bin=settlement/bin/constellation
+#   rishi/bin/rishi run tools/settlement_constellation_witness.rish
+
+let st = run ["settlement/bin/constellation" "selftest"]
+assert st.ok else "settlement constellation selftest must exit 0"
+assert (st.err contains "GREEN") else "settlement constellation must report GREEN"
+assert (st.err contains "settle as owned records") else "a galaxy and its d60 settle as owned records"
+assert (st.err contains "spawn by capability") else "children settle by a signed spawn capability"
+assert (st.err contains "keeper that never moves") else "rotation heals the wire while the keeper sits cold"
+assert (st.err contains "reset that outranks a key bump") else "a reset outranks a key rotation"
+assert (st.err contains "every refusal holds") else "the ledger owes its refusals"
+assert (st.err contains "settles once under its rightful sponsor") else "a number settles once, under its real place in the fractal"
+
+say "GREEN: settlement constellation — a galaxy and its d60 settle as owned records; a number settles once under its rightful sponsor, powers move by signed capability, and keys rotate while the deed sits cold."
