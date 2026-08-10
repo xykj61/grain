@@ -60,6 +60,7 @@ pub const Row = struct {
     stamp: []const u8,
     title: []const u8, // the log/inventory `title`, or the baton's `state`
     one_line: []const u8, // the log's `recommend`, or the baton's `next`
+    archetype: []const u8, // a baton's fleet archetype (galleon/cutter/…), or empty
 };
 
 /// Lay a parsed document into a row — pure lens: the fields are the document's own, and
@@ -77,7 +78,9 @@ pub fn row_of(doc: *const reader.Document) Row {
         .batons => doc.get("next") orelse empty,
         else => empty,
     };
-    return .{ .shelf = shelf, .stamp = stamp, .title = title, .one_line = one_line };
+    // A baton's archetype labels its shape on the Batons shelf; other shelves have none.
+    const archetype = if (shelf == .batons) (reader.archetype_of(doc) orelse empty) else empty;
+    return .{ .shelf = shelf, .stamp = stamp, .title = title, .one_line = one_line, .archetype = archetype };
 }
 
 /// The reading room: a bounded set of rows over the documents read this pass.
@@ -122,6 +125,7 @@ fn run_selftest() !u8 {
     ;
     const sample_baton =
         \\format baton-v1
+        \\archetype galleon
         \\stamp 20260810.044453
         \\state six witnesses green
         \\next build scribe
@@ -175,6 +179,8 @@ fn run_selftest() !u8 {
     const baton_row = idx.rows[1];
     if (!std.mem.eql(u8, baton_row.title, "six witnesses green")) return error.BatonStateWrong;
     if (!std.mem.eql(u8, baton_row.one_line, "build scribe")) return error.BatonNextWrong;
+    // The Batons shelf labels each baton by its fleet archetype.
+    if (!std.mem.eql(u8, baton_row.archetype, "galleon")) return error.BatonArchetypeWrong;
 
     print("scribe dashboard: a drawer of {d} documents reads by format onto four shelves — Logs, Batons, Inventory, and an honest Unread for any unrecognized format.\n", .{idx.count});
     print("scribe dashboard: the lens shows only what each document says — a row's stamp, title/state, and one line are the reader's own zero-copy slices, never copied, never invented.\n", .{});
@@ -204,7 +210,12 @@ fn render(io: std.Io, idx: *const Index) void {
         while (i < idx.count) : (i += 1) {
             const r = idx.rows[i];
             if (r.shelf != shelf) continue;
-            put_line(io, "  row {s} {s}\n", .{ r.stamp, r.title });
+            // A baton row wears its archetype label; other shelves show stamp + title alone.
+            if (r.shelf == .batons and r.archetype.len > 0) {
+                put_line(io, "  row {s} {s} [{s}]\n", .{ r.stamp, r.title, r.archetype });
+            } else {
+                put_line(io, "  row {s} {s}\n", .{ r.stamp, r.title });
+            }
         }
     }
 }
@@ -218,6 +229,7 @@ fn run_emit(io: std.Io) !u8 {
     ;
     const sample_baton =
         \\format baton-v1
+        \\archetype galleon
         \\stamp 20260810.044453
         \\state six witnesses green
         \\next build scribe
