@@ -127,6 +127,65 @@ pub fn is_inventory(doc: *const Document) bool {
     return doc.get("stamp") != null;
 }
 
+// --- the bat fleet: baton archetypes -----------------------------------
+// A baton (`format baton-v1`) may declare an `archetype` — a named shape, one of
+// the fleet, telling a reader which fields to expect. Every name is a plain common
+// noun (a galleon, a cutter) no one owns — original coinages, never a named ship or
+// company. One predicate per shape, in the pattern of `is_session_log`: it IS a
+// baton, its archetype names the shape, and the shape's required fields are present.
+
+/// The archetype a baton declares — the value of its `archetype` field, or null.
+pub fn archetype_of(doc: *const Document) ?[]const u8 {
+    return doc.get("archetype");
+}
+
+fn is_archetype(doc: *const Document, name: []const u8) bool {
+    if (!is_baton(doc)) return false;
+    const a = archetype_of(doc) orelse return false;
+    return std.mem.eql(u8, a, name);
+}
+
+/// A **Galleon** — the full vision handoff: everything to disk so history may clear.
+pub fn validates_galleon(doc: *const Document) bool {
+    if (!is_archetype(doc, "galleon")) return false;
+    return doc.get("manifest") != null and doc.get("seated") != null and
+        doc.get("aspiration") != null and doc.get("next") != null and doc.count_key("gap") >= 1;
+}
+
+/// A **Cutter** — the one-keystone lap: a single mechanical step, small on purpose.
+pub fn validates_cutter(doc: *const Document) bool {
+    if (!is_archetype(doc, "cutter")) return false;
+    return doc.get("state") != null and doc.get("next") != null;
+}
+
+/// A **Barque** — the round in progress: several doors open, none yet closed.
+pub fn validates_barque(doc: *const Document) bool {
+    if (!is_archetype(doc, "barque")) return false;
+    return doc.get("state") != null and doc.get("next") != null and
+        doc.get("witness") != null and doc.count_key("gap") >= 1;
+}
+
+/// A **Holdfast** — the checkpoint: a named stop-before-cross gate and the hand to confirm it.
+pub fn validates_holdfast(doc: *const Document) bool {
+    if (!is_archetype(doc, "holdfast")) return false;
+    return doc.get("state") != null and doc.get("gate") != null and
+        doc.get("hand") != null and doc.get("next") != null;
+}
+
+/// A **Corsair** — the audit sweep: each edge probed, each that held, each that fell.
+pub fn validates_corsair(doc: *const Document) bool {
+    if (!is_archetype(doc, "corsair")) return false;
+    return doc.get("state") != null and doc.get("next") != null and
+        doc.count_key("probe") >= 1 and doc.count_key("held") >= 1;
+}
+
+/// A **Ledgerworks** — the portfolio roll-up: many modules gathered under one head.
+pub fn validates_ledgerworks(doc: *const Document) bool {
+    if (!is_archetype(doc, "ledgerworks")) return false;
+    return doc.get("roll") != null and doc.get("stamp") != null and
+        doc.get("next") != null and doc.count_key("member") >= 1;
+}
+
 // --- selftest -----------------------------------------------------------
 
 const sample_log =
@@ -190,13 +249,72 @@ fn prove_dispatch() !void {
     if (!std.mem.eql(u8, baton.get("next").?, "build scribe")) return error.BatonFieldWrong;
 }
 
+fn prove_fleet() !void {
+    // A Galleon carries the full handoff; the reader reads its archetype and shape.
+    const galleon =
+        \\format baton-v1
+        \\archetype galleon
+        \\stamp 20260810.094500
+        \\manifest the whole cargo in one line
+        \\seated three modules landed green
+        \\aspiration the north star, consent-gated
+        \\gap the first open door
+        \\gap the second open door
+        \\gap the third open door
+        \\next open the first door
+    ;
+    const g = parse(galleon);
+    if (!is_baton(&g)) return error.GalleonNotBaton;
+    if (is_session_log(&g)) return error.GalleonSeenAsLog;
+    const arch = archetype_of(&g) orelse return error.NoArchetype;
+    if (!std.mem.eql(u8, arch, "galleon")) return error.ArchetypeWrong;
+    if (!validates_galleon(&g)) return error.GalleonInvalid;
+    if (g.count_key("gap") != 3) return error.GapCountWrong;
+
+    // A short Galleon — manifest removed — fails, exactly as a log missing stamp fails.
+    const short_galleon =
+        \\format baton-v1
+        \\archetype galleon
+        \\stamp 20260810.094500
+        \\seated one module
+        \\aspiration a star
+        \\gap one door
+        \\next go
+    ;
+    const sg = parse(short_galleon);
+    if (validates_galleon(&sg)) return error.ShortGalleonAccepted;
+
+    // The other five shapes each validate their own required fields.
+    const cutter = "format baton-v1\narchetype cutter\nstamp 20260810.094500\nstate one lap open\nnext do the lap\n";
+    if (!validates_cutter(&parse(cutter))) return error.CutterInvalid;
+
+    const barque = "format baton-v1\narchetype barque\nstamp 20260810.094500\nstate mid-round\ngap a door\nwitness GREEN\nnext close the door\n";
+    if (!validates_barque(&parse(barque))) return error.BarqueInvalid;
+
+    const holdfast = "format baton-v1\narchetype holdfast\nstamp 20260810.094500\nstate at a gate\ngate confirm the seam\nhand Claude\nnext wait for the ruling\n";
+    if (!validates_holdfast(&parse(holdfast))) return error.HoldfastInvalid;
+
+    const corsair = "format baton-v1\narchetype corsair\nstamp 20260810.094500\nstate audit done\nprobe the width seam\nprobe the name net\nheld the width seam\nheld the name net\nred none\nnext ship the fixes\n";
+    if (!validates_corsair(&parse(corsair))) return error.CorsairInvalid;
+
+    const ledgerworks = "format baton-v1\narchetype ledgerworks\nstamp 20260810.094500\nmember vault green\nmember basin green\nroll all green\nnext keep watch\n";
+    if (!validates_ledgerworks(&parse(ledgerworks))) return error.LedgerworksInvalid;
+
+    // A baton with a nonsense archetype validates as none of the six.
+    const stray = "format baton-v1\narchetype schooner\nstamp 20260810.094500\nstate adrift\nnext name it or drop it\n";
+    const st = parse(stray);
+    if (validates_galleon(&st) or validates_cutter(&st)) return error.StrayValidated;
+}
+
 fn run_selftest() !u8 {
     try prove_parse();
     try prove_zero_copy();
     try prove_dispatch();
+    try prove_fleet();
 
     print("scribe reader: a Kyri document parses into key-value fields, zero-copy — each field slices into the source, never copied; a repeatable key keeps every occurrence.\n", .{});
     print("scribe reader: Scribe reads by format — a session-log-v1 and a baton-v1 are told apart and read by one honest reader, the counsel's one-notation-many-formats made real.\n", .{});
+    print("scribe reader: the bat fleet — a baton may declare an archetype (galleon·cutter·barque·holdfast·corsair·ledgerworks), and the reader validates each shape's required fields, refusing a short one.\n", .{});
     print("scribe reader: version {s}\n", .{reader_version});
     print("GREEN: scribe reader — the Kyri voice's home reads its own records: parse a document, dispatch by its format, get a field, count a repeated key — bounded and zero-copy.\n", .{});
     return 0;
