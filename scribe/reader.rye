@@ -118,6 +118,15 @@ pub fn is_baton(doc: *const Document) bool {
     return std.mem.eql(u8, fmt, "baton-v1");
 }
 
+/// Whether a document is an **inventory** — `format inventory-v1` with its load-bearing
+/// `stamp` present. The dashboard's third shelf, in the exact shape of the two above:
+/// one honest reader, one more format, no sprawl.
+pub fn is_inventory(doc: *const Document) bool {
+    const fmt = doc.format() orelse return false;
+    if (!std.mem.eql(u8, fmt, "inventory-v1")) return false;
+    return doc.get("stamp") != null;
+}
+
 // --- selftest -----------------------------------------------------------
 
 const sample_log =

@@ -1,0 +1,238 @@
+//! scribe/dashboard.rye — Scribe's reading room: read a drawer of Kyri documents and
+//! lay them out by format.
+//!
+//! Where `reader.rye` reads ONE document, the dashboard reads MANY: point it at a drawer
+//! of `.kyri` documents, and it parses each, dispatches by its `format` line, and lays it
+//! on the right shelf — session logs on Logs, batons on Batons, inventory on Inventory,
+//! anything unrecognized honestly on Unread. It is a **lens**, never an author: every
+//! field a row shows is the reader's own zero-copy slice into that document's source, so
+//! the dashboard copies nothing and invents nothing.
+//!
+//! Bounded: a drawer holds at most `max_drawer_docs` documents; the count is asserted at
+//! every fill and render. Each document stays within the reader's own bounds — the
+//! dashboard borrows them, adding no new source limit of its own.
+//!
+//! Zero-copy discipline: a Row's `stamp`/`title`/`one_line` are slices into each
+//! document's source. A row is valid only while its source document's bytes live; the
+//! caller keeps every document alive across the dashboard's read, exactly as `Field` asks.
+//!
+//!   rye build scribe/dashboard.rye -femit-bin=scribe/bin/dashboard
+//!   scribe/bin/dashboard selftest    # prove three shelves fill and Unread is honest
+//!   scribe/bin/dashboard emit        # render a sample drawer's index as text
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const reader = @import("reader.rye");
+
+pub const dashboard_version = "20260810.090000";
+
+// The most documents one dashboard reads in a pass. A voice's drawer is not infinite;
+// name the bound once, assert it at every edge.
+pub const max_drawer_docs: u32 = 256;
+
+/// The shelves a document can land on, chosen by its format. Unread is the honest
+/// fall-through — an unrecognized format is shown, never silently dropped.
+pub const Shelf = enum { logs, batons, inventory, unread };
+
+/// The shelf a document belongs on, by the reader's own format dispatch.
+pub fn shelf_of(doc: *const reader.Document) Shelf {
+    if (reader.is_session_log(doc)) return .logs;
+    if (reader.is_baton(doc)) return .batons;
+    if (reader.is_inventory(doc)) return .inventory;
+    return .unread;
+}
+
+/// A shelf's plain name, for rendering.
+pub fn shelf_name(s: Shelf) []const u8 {
+    return switch (s) {
+        .logs => "Logs",
+        .batons => "Batons",
+        .inventory => "Inventory",
+        .unread => "Unread",
+    };
+}
+
+/// One laid-out document: its shelf, and three fields the reader already returns. Every
+/// slice borrows the document's source — the dashboard copies nothing.
+pub const Row = struct {
+    shelf: Shelf,
+    stamp: []const u8,
+    title: []const u8, // the log/inventory `title`, or the baton's `state`
+    one_line: []const u8, // the log's `recommend`, or the baton's `next`
+};
+
+/// Lay a parsed document into a row — pure lens: the fields are the document's own, and
+/// an absent field is an empty slice, never invented text.
+pub fn row_of(doc: *const reader.Document) Row {
+    const empty: []const u8 = "";
+    const shelf = shelf_of(doc);
+    const stamp = doc.get("stamp") orelse empty;
+    const title = switch (shelf) {
+        .batons => doc.get("state") orelse empty,
+        else => doc.get("title") orelse empty,
+    };
+    const one_line = switch (shelf) {
+        .logs => doc.get("recommend") orelse empty,
+        .batons => doc.get("next") orelse empty,
+        else => empty,
+    };
+    return .{ .shelf = shelf, .stamp = stamp, .title = title, .one_line = one_line };
+}
+
+/// The reading room: a bounded set of rows over the documents read this pass.
+pub const Index = struct {
+    rows: [max_drawer_docs]Row,
+    count: u32,
+
+    /// An empty index — no documents read yet.
+    pub fn init() Index {
+        return .{ .rows = undefined, .count = 0 };
+    }
+
+    /// Read one document into the index: dispatch it to a shelf and add its row.
+    pub fn add(self: *Index, doc: *const reader.Document) void {
+        // invariant: the drawer never overflows its bounded rows.
+        assert(self.count < max_drawer_docs);
+        self.rows[self.count] = row_of(doc);
+        self.count += 1;
+        // invariant: the count climbed by one and stays within the bound.
+        assert(self.count <= max_drawer_docs);
+    }
+
+    /// How many rows landed on a given shelf.
+    pub fn shelf_count(self: *const Index, shelf: Shelf) u32 {
+        // invariant: the scan stays inside the filled rows.
+        assert(self.count <= max_drawer_docs);
+        var n: u32 = 0;
+        var i: u32 = 0;
+        while (i < self.count) : (i += 1) {
+            if (self.rows[i].shelf == shelf) n += 1;
+        }
+        return n;
+    }
+};
+
+fn run_selftest() !u8 {
+    const sample_log =
+        \\format session-log-v1
+        \\stamp 20260810.041230
+        \\title a scribe reader test
+        \\recommend keep-going build the dashboard next
+    ;
+    const sample_baton =
+        \\format baton-v1
+        \\stamp 20260810.044453
+        \\state six witnesses green
+        \\next build scribe
+    ;
+    const sample_inventory =
+        \\format inventory-v1
+        \\stamp 20260810.085914
+        \\title the module inventory
+        \\item kumara
+        \\item vault
+        \\item basin
+    ;
+    const sample_nonsense =
+        \\format nonsense-v9
+        \\stamp 20260810.090000
+        \\title an unknown shape
+    ;
+
+    const log = reader.parse(sample_log);
+    const baton = reader.parse(sample_baton);
+    const inv = reader.parse(sample_inventory);
+    const odd = reader.parse(sample_nonsense);
+
+    // Each known format lands on its own shelf.
+    if (shelf_of(&log) != .logs) return error.LogMisplaced;
+    if (shelf_of(&baton) != .batons) return error.BatonMisplaced;
+    if (shelf_of(&inv) != .inventory) return error.InventoryMisplaced;
+    if (shelf_of(&odd) != .unread) return error.OddNotUnread;
+
+    // A drawer of the three known documents fills three shelves, Unread empty.
+    var idx = Index.init();
+    idx.add(&log);
+    idx.add(&baton);
+    idx.add(&inv);
+    if (idx.count != 3) return error.CountWrong;
+    if (idx.shelf_count(.logs) != 1) return error.LogsShelfWrong;
+    if (idx.shelf_count(.batons) != 1) return error.BatonsShelfWrong;
+    if (idx.shelf_count(.inventory) != 1) return error.InventoryShelfWrong;
+    if (idx.shelf_count(.unread) != 0) return error.UnreadNotEmpty;
+
+    // The fall-through is honest: a nonsense format lands on Unread, not silently dropped.
+    idx.add(&odd);
+    if (idx.shelf_count(.unread) != 1) return error.OddNotShelved;
+
+    // The lens shows each document's OWN fields — the log's stamp/title/recommend.
+    const log_row = idx.rows[0];
+    if (!std.mem.eql(u8, log_row.stamp, "20260810.041230")) return error.LensStampWrong;
+    if (!std.mem.eql(u8, log_row.title, "a scribe reader test")) return error.LensTitleWrong;
+    if (!std.mem.eql(u8, log_row.one_line, "keep-going build the dashboard next")) return error.LensLineWrong;
+    // The baton row shows its `state` as title and its `next` as the one line.
+    const baton_row = idx.rows[1];
+    if (!std.mem.eql(u8, baton_row.title, "six witnesses green")) return error.BatonStateWrong;
+    if (!std.mem.eql(u8, baton_row.one_line, "build scribe")) return error.BatonNextWrong;
+
+    print("scribe dashboard: a drawer of {d} documents reads by format onto four shelves — Logs, Batons, Inventory, and an honest Unread for any unrecognized format.\n", .{idx.count});
+    print("scribe dashboard: the lens shows only what each document says — a row's stamp, title/state, and one line are the reader's own zero-copy slices, never copied, never invented.\n", .{});
+    print("scribe dashboard: version {s}\n", .{dashboard_version});
+    print("GREEN: scribe dashboard — read many Kyri documents, dispatch each to its shelf, lay out only what the document says, bounded and zero-copy.\n", .{});
+    return 0;
+}
+
+// Kyri facts are data, so they go to stdout (diagnostics use stderr `print`).
+const max_line: u32 = 256;
+
+fn put_line(io: std.Io, comptime fmt: []const u8, args: anytype) void {
+    var buf: [max_line]u8 = undefined;
+    const line = std.fmt.bufPrint(&buf, fmt, args) catch return;
+    const out = std.Io.File.stdout();
+    out.writeStreamingAll(io, line) catch {};
+}
+
+/// Render an index to text — one legible line per document, grouped by shelf.
+fn render(io: std.Io, idx: *const Index) void {
+    put_line(io, "format dashboard-v1\n", .{});
+    put_line(io, "documents {d}\n", .{idx.count});
+    const shelves = [_]Shelf{ .logs, .batons, .inventory, .unread };
+    for (shelves) |shelf| {
+        put_line(io, "shelf {s} {d}\n", .{ shelf_name(shelf), idx.shelf_count(shelf) });
+        var i: u32 = 0;
+        while (i < idx.count) : (i += 1) {
+            const r = idx.rows[i];
+            if (r.shelf != shelf) continue;
+            put_line(io, "  row {s} {s}\n", .{ r.stamp, r.title });
+        }
+    }
+}
+
+fn run_emit(io: std.Io) !u8 {
+    const sample_log =
+        \\format session-log-v1
+        \\stamp 20260810.041230
+        \\title a scribe reader test
+        \\recommend keep-going
+    ;
+    const sample_baton =
+        \\format baton-v1
+        \\stamp 20260810.044453
+        \\state six witnesses green
+        \\next build scribe
+    ;
+    const log = reader.parse(sample_log);
+    const baton = reader.parse(sample_baton);
+    var idx = Index.init();
+    idx.add(&log);
+    idx.add(&baton);
+    render(io, &idx);
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "emit")) return run_emit(init.io);
+    return run_selftest();
+}
