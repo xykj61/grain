@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` — the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `86787457d2` · Grain · cloud pier
+**Git nib:** `b756416662` · Grain · cloud pier
 **Host:** Framework · EDT (`America/New_York`) · Vultr SEA VPS (HP AMD 2vCPU/4GB shared · never EWR) · this session in ai-jail
 
 ---
@@ -60,7 +60,7 @@ The private field is `~/grain`; the public template **grain-os/grain** is *proje
 | Door | Kind |
 |------|------|
 | **Next JARL step** — **escape** (a child re-parenting, from the sponsor tilak) · shrink the shared surface to a membership commitment · or the scarcity design call | live |
-| **Breach OPEN `20260810`** — Move 1 (Pond) begun: Pond = the application module, Pool retired in. Next: loadable skies · Bron→Kyri molt · Kyri the voice | breach · live |
+| **Breach OPEN `20260810`** — Pond = the application module (Pool retired in) · **loadable skies lap 1 landed** (`topology.rye` `Sky` struct + `compass_sky`/`council_sky`, six witnesses GREEN). Next: `constellation_max` sky-bound · sky Bron descriptor · role tilak · Bron→Kyri · Kyri the voice | breach · live |
 | **Keaton's own Kumara instance** — generate from his real seed + keeper, by his hand alone | JARL · when ready |
 | **mold→shape debride** — 82 files / 753 occurrences; its own careful pass | proposed |
 | **TAME core/shelf** — lossless-compressed living law over a preserved shelf | proposed |

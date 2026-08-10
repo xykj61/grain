@@ -58,13 +58,13 @@ A role worn is an **outfit**, and if we draw the figure, the cloth is honest: he
 
 ## Sequence, and What Waits
 
-The build order, once opened:
+The build order (breach opened `20260810`):
 
-1. Seat `sky` (after its collision grep) — the Bron/Brix descriptor and one hand-written sky beside the d12·d60 one.
-2. Parameterize `topology.rye`; grow the witness to two skies.
-3. Move `constellation_max` to a sky-computed bound; re-run the settlement witness on both skies.
+1. Seat `sky` — **landed `20260810`** as a Rye `Sky` struct + two seated skies (`compass_sky`, `council_sky`); the Bron/Brix *descriptor* form (a sky as a data file Pond reads) is still ahead.
+2. Parameterize `topology.rye`; grow the witness to two skies — **landed `20260810`**: `Sky.decode`/`encode` read a sky's own counts, the free `decode`/`encode` delegate to `compass_sky`, and `council_sky` (15·3·9, d27, 465) round-trips every point. All six JARL witnesses stay GREEN.
+3. Move `constellation_max` to a sky-computed bound; re-run the settlement witness on both skies. *(next)*
 4. Add the **role** tilak to Kumara; witness the mode and the three role-dimensions signing and refusing.
-5. Teach Pond to load a sky; retire Pool into Pond by molt.
+5. Teach Pond to load a sky (`customs` admits a sky as it admits a policy); **Pool retired into Pond by molt — done at the breach `20260810`**.
 
 **Decisions already made** (a maintainer's word): the **breach opens after JARL closes**, not before (`20260809`); the **molt sweep stays tight** — the Pool study and its direct kin only (`20260809`); and the **base scarcity is the d12·d60 fractal**, the elder Azimuth ranks retired (`20260810`) — the Point tilak now reads its tier straight from the topology. **Held still:** the exact counts a *given* sky names for its own tiers (a per-profile choice), and how small the shared surface can shrink.
 
