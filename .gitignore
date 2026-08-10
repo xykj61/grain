@@ -226,3 +226,6 @@ __pycache__/
 # allow-list above already withholds it, and this line says so on purpose.
 # Two grains, one pier (20260808.183636 — Keaton's word: field + seed layout).
 /seed/
+
+# Local-only private vault-interim (never tracked; the Vault module is the real home)
+/personal/
