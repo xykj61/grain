@@ -41,6 +41,7 @@ allow amphora
 allow aurora
 allow basin
 allow bat
+allow sundial
 allow brushstroke
 allow caravan
 allow cellar
@@ -154,6 +155,7 @@ personal  keys_xykj61_ssh_github.svg       # real key card
 template  amphora                         # module
 template  aurora                          # boot
 template  basin                           # the activity basin (circular buffer, not a ring)
+template  sundial                          # the health face (Ledgerworks roll-up render)
 template  bat                             # the baton archetype fleet (fake-data exemplars)
 template  brushstroke                     # drawing
 template  caravan                         # supervision
