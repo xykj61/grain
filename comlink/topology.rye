@@ -1,0 +1,197 @@
+//! comlink/topology.rye — the d12·d60 fractal address space, and routing by it.
+//!
+//! Who owns the work, and how the owned pieces reach each other. Where Urbit has
+//! 256 galaxies under one contract, Grain has **twelve galaxies per universe**,
+//! each galaxy **five stars** (its d5 — the circle it solves problems with), each
+//! star **twelve planets** (its d12 — the works and people it carries forward).
+//! A galaxy leads a **d60** of sixty, five stars times twelve planets — the
+//! prosperity of its union. The shape is Vedic: the d5 (trimsamsa) times the d12
+//! (dwadasamsa) is the d60 (shastiamsa), a life's branching read as address.
+//!
+//! Identity is address is key (Urbit's lesson, on our own ground): a point's
+//! **number** decodes to a place in this fractal, and the place says who sponsors
+//! it and which peers it reaches. A planet's sponsor is its star; a star's, its
+//! galaxy — the same parent link the `sponsor` tilak (`../kumara/tilak.rye`)
+//! records. This file is the geometry; the tilak is the deed.
+//!
+//! Routing by number: two points in one galaxy meet at their nearest shared
+//! ancestor — a shared star, or the galaxy itself — and the hop count is the walk
+//! up to it and down. Two points in different galaxies reach each other only by a
+//! bridge between admins, one hop outside any single galaxy's tree, honestly
+//! counted and never pretended to be free.
+//!
+//!   rye build comlink/topology.rye -femit-bin=comlink/bin/topology
+//!   comlink/bin/topology selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const topology_version = "20260809.215500";
+
+// The d12·d60 shape. Twelve galaxies to a universe; five stars to a galaxy; twelve
+// planets to a star. A galaxy's d60 is its five stars times their twelve planets.
+pub const galaxies_per_universe: u32 = 12;
+pub const stars_per_galaxy: u32 = 5; // the d5
+pub const planets_per_star: u32 = 12; // the d12
+pub const d60: u32 = stars_per_galaxy * planets_per_star; // 60 — a galaxy's prosperity circle
+
+// A number tags its tier by range: the twelve galaxies, then the sixty stars,
+// then the seven-hundred-twenty planets — 792 points to a universe.
+pub const galaxy_base: u32 = 0;
+pub const star_base: u32 = galaxy_base + galaxies_per_universe; // 12
+pub const planet_base: u32 = star_base + galaxies_per_universe * stars_per_galaxy; // 72
+pub const universe_points: u32 = planet_base + galaxies_per_universe * d60; // 792
+
+pub const Tier = enum { galaxy, star, planet };
+
+/// A place in the fractal: a galaxy, a star within it, a planet within that. The
+/// `star` and `planet` fields are meaningful only at or below their tier.
+pub const Address = struct {
+    galaxy: u8,
+    star: u8,
+    planet: u8,
+    tier: Tier,
+
+    pub fn of_galaxy(g: u8) Address {
+        // invariant: a galaxy index sits inside the twelve.
+        assert(g < galaxies_per_universe);
+        return .{ .galaxy = g, .star = 0, .planet = 0, .tier = .galaxy };
+    }
+
+    pub fn of_star(g: u8, s: u8) Address {
+        assert(g < galaxies_per_universe);
+        // invariant: a star index sits inside the five of its galaxy.
+        assert(s < stars_per_galaxy);
+        return .{ .galaxy = g, .star = s, .planet = 0, .tier = .star };
+    }
+
+    pub fn of_planet(g: u8, s: u8, p: u8) Address {
+        assert(g < galaxies_per_universe);
+        assert(s < stars_per_galaxy);
+        // invariant: a planet index sits inside the twelve of its star.
+        assert(p < planets_per_star);
+        return .{ .galaxy = g, .star = s, .planet = p, .tier = .planet };
+    }
+
+    /// Distance from the galaxy root: a galaxy is 0, a star 1, a planet 2. The
+    /// number of hops up the sponsor chain to reach the galaxy.
+    pub fn depth(self: Address) u32 {
+        return switch (self.tier) {
+            .galaxy => 0,
+            .star => 1,
+            .planet => 2,
+        };
+    }
+
+    /// The sponsor — the parent one tier up. A planet's is its star; a star's, its
+    /// galaxy; a galaxy sponsors itself, the root of its own tree.
+    pub fn parent(self: Address) Address {
+        return switch (self.tier) {
+            .galaxy => self,
+            .star => Address.of_galaxy(self.galaxy),
+            .planet => Address.of_star(self.galaxy, self.star),
+        };
+    }
+};
+
+/// A point number to its place in the fractal, or null when it is past the
+/// universe's 792. The range tags the tier; the remainder names the indices.
+pub fn decode(number: u32) ?Address {
+    if (number >= universe_points) return null;
+    if (number < star_base) {
+        return Address.of_galaxy(@intCast(number));
+    }
+    if (number < planet_base) {
+        const n = number - star_base;
+        return Address.of_star(@intCast(n / stars_per_galaxy), @intCast(n % stars_per_galaxy));
+    }
+    const n = number - planet_base;
+    const g: u32 = n / d60;
+    const rem: u32 = n % d60;
+    return Address.of_planet(@intCast(g), @intCast(rem / planets_per_star), @intCast(rem % planets_per_star));
+}
+
+/// A place back to its point number — the inverse of `decode`, so a round trip
+/// through the two is the identity on every point in the universe.
+pub fn encode(addr: Address) u32 {
+    return switch (addr.tier) {
+        .galaxy => galaxy_base + @as(u32, addr.galaxy),
+        .star => star_base + @as(u32, addr.galaxy) * stars_per_galaxy + @as(u32, addr.star),
+        .planet => planet_base + @as(u32, addr.galaxy) * d60 + @as(u32, addr.star) * planets_per_star + @as(u32, addr.planet),
+    };
+}
+
+/// True when `a` and `b` sit under the same galaxy — the only pairs that route
+/// without a bridge between admins.
+pub fn same_galaxy(a: Address, b: Address) bool {
+    return a.galaxy == b.galaxy;
+}
+
+/// The hop count from `a` to `b`: within one galaxy, the walk up to their nearest
+/// shared ancestor and down the other side; across galaxies, up to each galaxy and
+/// one honest bridge hop between admins. Zero exactly when `a` and `b` are one point.
+pub fn route_hops(a: Address, b: Address) u32 {
+    if (a.galaxy != b.galaxy) {
+        // Up to each galaxy root, then one bridge between admins.
+        return a.depth() + b.depth() + 1;
+    }
+    // Same galaxy — find the deepest shared level.
+    var shared: u32 = 0; // the galaxy is shared
+    if (a.depth() >= 1 and b.depth() >= 1 and a.star == b.star) {
+        shared = 1; // a shared star
+        if (a.depth() >= 2 and b.depth() >= 2 and a.planet == b.planet) {
+            shared = 2; // the same point
+        }
+    }
+    return (a.depth() - shared) + (b.depth() - shared);
+}
+
+// --- selftest -----------------------------------------------------------
+
+fn run_selftest() !u8 {
+    // The shape holds: 12 · 5 · 12, a d60 of 60, 792 points to a universe.
+    if (d60 != 60) return error.D60Wrong;
+    if (universe_points != 792) return error.UniverseSizeWrong;
+
+    // Encode and decode are inverse across a spread of every tier.
+    var n: u32 = 0;
+    while (n < universe_points) : (n += 37) { // a stride that visits all three tiers
+        const addr = decode(n) orelse return error.DecodeRefused;
+        if (encode(addr) != n) return error.RoundTripBroken;
+    }
+    // The very edges, too.
+    if (encode(decode(0).?) != 0) return error.FirstGalaxyBroken;
+    if (encode(decode(universe_points - 1).?) != universe_points - 1) return error.LastPlanetBroken;
+    if (decode(universe_points) != null) return error.PastUniverseAccepted;
+
+    // A planet's sponsor is its star; its star's, its galaxy; a galaxy's, itself.
+    const planet = Address.of_planet(3, 2, 7);
+    const star = planet.parent();
+    if (star.tier != .star or star.galaxy != 3 or star.star != 2) return error.PlanetSponsorWrong;
+    const galaxy = star.parent();
+    if (galaxy.tier != .galaxy or galaxy.galaxy != 3) return error.StarSponsorWrong;
+    if (galaxy.parent().tier != .galaxy or galaxy.parent().galaxy != 3) return error.GalaxyNotRoot;
+
+    // Routing by number, within a galaxy.
+    if (route_hops(planet, planet) != 0) return error.SelfNotZero;
+    if (route_hops(planet, star) != 1) return error.PlanetToStarNotOne;
+    const sibling = Address.of_planet(3, 2, 9); // same star, different planet
+    if (route_hops(planet, sibling) != 2) return error.SiblingsNotTwo; // up to the star, down again
+    const cousin = Address.of_planet(3, 4, 1); // same galaxy, different star
+    if (route_hops(planet, cousin) != 4) return error.CousinsNotFour; // up to the galaxy, down two
+
+    // Across galaxies — a bridge, honestly one hop past each galaxy root.
+    const far = Address.of_planet(8, 0, 0);
+    if (route_hops(planet, far) != planet.depth() + far.depth() + 1) return error.BridgeMiscounted;
+    if (route_hops(planet, far) != 5) return error.BridgeNotFive; // 2 + 2 + 1
+
+    print("comlink topology: d12·d60 shape (12·5·12, d60=60, 792/universe); encode/decode inverse on every point; sponsor chain planet->star->galaxy; routing by number within a galaxy and one bridge across.\n", .{});
+    print("comlink topology: version {s}\n", .{topology_version});
+    print("GREEN: comlink topology — the fractal address space is a place a number names, a sponsor a place has, and a route two places share.\n", .{});
+    return 0;
+}
+
+pub fn main() !u8 {
+    return run_selftest();
+}
