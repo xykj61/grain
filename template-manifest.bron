@@ -100,9 +100,9 @@ scrub     linengrow                       # civic-app pattern (template) — yet
 # ---- teaching and study ----
 template  docs                            # compressor pages; cite witnesses
 template  docs-geode                      # teaching
-template  edu                             # the learning floor
+scrub     edu                             # the learning floor
 template  manual                          # the four teaching rooms
-template  nixos-guide                     # host setup guide
+scrub     nixos-guide                     # host setup guide
 scrub     external-research               # study of the world; name-bearing memos — scrub identity
 template  gratitude                       # third-party, held whole and unmodified
 template  vendor                          # third-party build source, unmodified
@@ -164,6 +164,21 @@ sub_exclude expanding-prompts/20260810-044453_the-3x39-baton-passports-dividers-
 sub_exclude context/inspirations.kyri
 sub_exclude context/council-names.kyri
 sub_exclude expanding-prompts/20260810-055147_next-season-build-plan.md
+sub_exclude expanding-prompts/20260810-065359_the-conflict-free-union-mantra-weave.md
+sub_exclude expanding-prompts/20260810-065116_the-recursive-next-kg-baton.md
+
+# name-audit remediation (20260810 . w34sfmeai) - files/subtrees withheld whole
+sub_exclude expanding-prompts/yonder/20260727-131234_the-firehose-head-and-tail.md
+sub_exclude expanding-prompts/20260728-025220_mur-season-u0-recursion-prompt.md
+sub_exclude expanding-prompts/yonder/20260728-025634_gren-season-g0-recursion-prompt.md
+sub_exclude expanding-prompts/yonder/20260728-015541_inner-scope-season-i0-recursion-prompt.md
+sub_exclude expanding-prompts/yonder/20260728-030310_keeh-season-q0-recursion-prompt.md
+sub_exclude waymarks/20260730-154230_sunn11-xykj61-onboarding.md
+sub_exclude tools/gen/season/sunn11_xykj61_onboarding_witness.rish
+sub_exclude expanding-prompts/20260730-154230_sunn11-xykj61-onboarding-charter.md
+sub_exclude edu/company
+sub_exclude edu/funds
+sub_exclude context/keys
 
 # ---- witness obligations (M1/M2) ----
 # M1 GREEN: every tracked root path above has exactly one verdict, and the set

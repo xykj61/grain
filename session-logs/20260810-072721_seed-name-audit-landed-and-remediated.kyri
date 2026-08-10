@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260810.072721
+editor Zed + Claude Agent
+model claude-opus-4-8
+voice Riyo
+host Vultr cloud pier (ai-jail) — Eastern (EDT) time convention
+title the name-audit landed; 46 findings closed, seed GREEN
+prompt kg the name audit and name the ecosystem
+think The 8-agent audit (w34sfmeai) returned 46 findings, deduped to 42 scrub terms + 5 files to withhold whole, verdict publishable only after applying them. The audit earned its cost — the known-name scrub had real gaps.
+think The critical catches: two LIVE OpenPGP fingerprints (keyserver-resolvable straight back to the real identity), a THIRD org handle groupproject36 (half-scrubbed as groupproject36/acme-owner), xykj61 surviving in three FILENAMES (content-scrub cannot reach a path), the pier's real region (Vultr/Seattle/Wenatchee/Sabey/Washoe), a co-founder's first name Sara (revealed by the artifact "Sara the maintainer"), and the fund-dedication public figures.
+think The sharpest lesson: some leaks sat in TEMPLATE dirs that ship verbatim (nixos-guide, edu) — the scrub never touched them. A leak is not only a scrub miss; it can be a wrong verdict. Reclassified nixos-guide and edu to scrub so the transform reaches them.
+think Applied the whole remediation: 42 new scrub rules in sow_scrub.sed (longest-first, \b on short risky words Kia/Sara/Roger/Wiggy/Avanti, a protect->scrub->restore dance that keeps public "Serena Williams"/"Serena Ventures" while scrubbing the private mother-figure Serena, both fingerprint forms redacted); reclassified nixos-guide+edu template->scrub; sub_excluded the 5 structurally-personal season-ledgers (u0/g0/i0/q0 + the firehose), the 3 xykj61-named files, edu/company, edu/funds, and context/keys (the identity key-cards whose very filenames embed the fingerprints); edited mandate/README to drop the ROC (Rochester) hint; widened both IDENT leak-scan nets.
+think Re-projected: copied 4565, scrubbed 1205, withheld 101. The projector is self-healing — any file still matching the widened IDENT after scrub is withheld whole, so a missed form fails safe rather than leaking.
+obs Verified GREEN four ways: content leak scan IDENT_CLEAN; filename scan clean (no xykj61/grain_energy/serena/sara/fingerprint in any path); public-figure dedications scrubbed clean outside the legitimate gratitude tributes; the 5 ledgers + edu/company + edu/funds + context/keys confirmed absent. Serena resolved perfectly: only the public VC "Serena Williams/Ventures" survives.
+obs Publish stays Keaton's hand. The seed is now audit-clean and publish-ready, yet the push to grain-os/grain waits behind the recursive seasons per his standing word. This send ships the remediation to the private field only.
+obs The named ecosystem is Sheaf (proposed, this turn's other half) — a grain-bundle bound into one, and Grothendieck's word for gluing local into global. Awaits Keaton's yes.
+file tools/fixtures/sow_scrub.sed 42 name-audit scrub rules; protect-restore keeps public Serena; fingerprints redacted
+file template-manifest.bron nixos-guide+edu reclassified to scrub; 5 ledgers + xykj61 files + edu/company + edu/funds + context/keys withheld
+file tools/fixtures/sow_leak_scan.sh widened IDENT net (groupproject36, grain.energy, Vultr, Wenatchee, Sabey, fingerprints)
+file tools/fixtures/sow_project.sh same widened IDENT for the projector's own withhold gate
+file mandate/README.md dropped the IRL ROC camera location hint
+file context/LEXICON.md Sheaf seated as the proposed ecosystem name
+recommend check-in Seed is audit-GREEN and remediated; Sheaf awaits your yes; the publish push stays your hand after the recursive seasons — I am sending the remediation to the private field now
