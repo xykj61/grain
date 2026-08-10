@@ -24,6 +24,12 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260810.160511` — Expanding-prompts archive-fold (Option B, safe subset)
+
+**Walk-back nib:** `663b778b38`
+**Swept:** moved the **67 zero-inbound-reference** spent recursion-prompts and fusion-batons from `expanding-prompts/` (top level) into `expanding-prompts/archive/`. This is an **accrete-safe move, not a debride** — every byte stays in the tree and in git history; nothing is deleted. Only files with zero external citations moved, so no dated testimony's links break and no dated file is edited. The 169 still-referenced spent files stay in place (their citations are load-bearing history).
+**What waits there, worth recalling:** the moved files are per-round recursion-prompts and closed-arc fusion-batons — spent working prompts, superseded by their rounds' landed work and session logs. Walk back with `git show 663b778b38:expanding-prompts/<name>` or read them at the new `archive/` path.
+
 ### `20260809.024851` — The Compass Season living-card debride
 
 **Walk-back nib:** `bc90f7fdb0`
