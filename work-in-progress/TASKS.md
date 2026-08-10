@@ -18,7 +18,8 @@
 | **Kumara identity template** — all five tilaks (point · bind · turn · cap×3 · sponsor), each signed by its authorizing party, Bron instance, witnessed | JARL | **LANDED** — the whole tilak shape |
 | Kumara settlement ledger (Sui or Grain-native) · final scarcity tiering · human-name custody | JARL | word-gated — Keaton's call |
 | **Comlink turn-route** — routing reads the turn tilak (verify · freshest-wins · replay/forgery refused), hands the wire the networking key | JARL | **LANDED** (`comlink/turn_route.rye`) |
-| Comlink wires turn-route into the live handshake · d12/d60 topology | JARL | next journeys |
+| **Comlink live handshake** — introduction gate admits + rotation gate keys the wire, independently | JARL | **LANDED** (`comlink/handshake_turn.rye`) |
+| Wire the descriptor to carry the turn · d12/d60 topology | JARL | next journeys |
 | Rishi rune heads — `^-` · `?!` · `?&` · `?|` landed | SOON | **LANDED** (four heads) |
 | Rishi **`matches`** + **`find`** pattern primitives — bounded NFA, `{n,m}` · `\b`, linear-time, 600+ cases vs Python re | SOON | **LANDED** — boolean-test and extract seams both unlocked |
 | Rishi `sort` · `unique` · `upper` · list `+` · lookbehind | SOON | **LANDED** |

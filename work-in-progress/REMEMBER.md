@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` — the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `4b26464048` · Grain · cloud pier
+**Git nib:** `a4369730ad` · Grain · cloud pier
 **Host:** Framework · EDT (`America/New_York`) · Vultr SEA VPS (HP AMD 2vCPU/4GB shared · never EWR) · this session in ai-jail
 
 ---
@@ -17,12 +17,12 @@
 
 | Equinox | Waymark | Holds |
 |---|---|---|
-| The Language | **SOON** | Glow runes (`^-` · `?!` · `?&` · `?|`) · **`matches` primitive landed** (bounded regex, 812/812 vs Python re) · `lower` · scripts→Rishi molt · `mold→shape` · TAME core/shelf · Brix-infuse · PLEAC · Aurora |
-| Identity & Network | **JARL** | **Kumara template (5 tilaks)** + **Comlink turn-route** landed (`comlink/turn_route.rye` reads the turn tilak: verify · freshest-wins · replay-refused · forgery-refused) · settlement ledger · d12/d60 next |
+| The Language | **SOON** ✓ | **Rishi language spine complete** — runes `^- ?! ?& ?| ?:` · regex `matches`/`find` (`{n,m}` · `\b` · lookbehind) · `sort`/`unique`/`upper` · list `+` · `fold` · user functions `fn`. Seams folded native: `claim_preserve` · `census_control`. Open: `mold→shape` · TAME core/shelf · Brix-infuse · PLEAC · Aurora |
+| Identity & Network | **JARL** | **Kumara template (5 tilaks)** + **Comlink turn-route** + **live handshake** landed (`comlink/handshake_turn.rye`: introduction gate admits · rotation gate keys the wire, independently) · settlement ledger · d12/d60 next |
 | Surface & Intelligence | **BUHR** | Realidream DAG surface · Quin's four voices (Lattice · Scribble · Lantern · Ember) · MCP-in-Bron · Tablecloth |
 | The World | **TACT** | Ship-Pilot pitch · publishing · Grainphone · commerce · CONTRIBUTING four-doors · Grain Energy PBC |
 
-**Now at JARL j1–j2 — Kumara identity + Comlink routing.** Coords **s1 · JARL e2 · j2**. `kumara/tilak.rye` seats the whole identity (point · bind · turn · cap×3 · sponsor, each signed, every tamper refuses; 53-line Bron instance). **Comlink now reads the turn** — `comlink/turn_route.rye` is the seam where rotation meets the wire: it verifies a peer's turn under its identity key, takes the freshest by the two counters (a reset outranks any key rotation), refuses a replay (no key rollback) and a forgery (keeps the last trusted key), and hands the wire the networking key to seal with. Both witnessed GREEN. Held for Keaton: the settlement ledger (Sui or Grain-native), the final scarcity tiering, human-name custody. Then d12/d60 topology. Baton: [`../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md`](../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md).
+**Now at JARL j2 — the live handshake, with rotation.** Coords **s1 · JARL e2 · j2**. The identity template stands (`kumara/tilak.rye`: point · bind · turn · cap×3 · sponsor, each signed, every tamper refuses). The network now reads it: **`comlink/handshake_turn.rye`** asks a crossing two questions in one breath — *who are you* (the signed introduction admits the peer to the table) and *which key do I seal to* (`turn_route.rye` verifies the peer's turn, takes the freshest by its two counters — a reset outranks any key rotation — and refuses a replay or a forgery). The two gates hold **independently**: a valid introduction still routes only to a verified, freshest key. All witnessed GREEN. Held for Keaton: the settlement ledger (Sui or Grain-native), the final scarcity tiering, human-name custody. Then the d12/d60 topology. Baton: [`../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md`](../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md).
 
 ---
 
@@ -57,7 +57,9 @@ The private field is `~/grain`; the public template **grain-os/grain** is *proje
 
 | Door | Kind |
 |------|------|
-| **Confirm** — the Compass Season is open; the finishing edge is SOON q1 | live |
+| **Next JARL step** — wire the descriptor to carry the turn · d12/d60 topology · or settle the ledger/scarcity design calls | live |
+| **Settlement ledger** — Sui constellation or Grain-native; the final scarcity tiering (keep Azimuth 2⁸/2¹⁶/2³² or reshape) | JARL · Keaton's word |
+| **Keaton's own Kumara instance** — generate from his real seed + keeper, by his hand alone | JARL · when ready |
 | **mold→shape debride** — 82 files / 753 occurrences; its own careful pass | proposed |
 | **TAME core/shelf** — lossless-compressed living law over a preserved shelf | proposed |
 | **Brix-infuse** — deep merge/override for Brix descriptors (kin to infuse.nix) | proposed (SOON j2) |

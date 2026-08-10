@@ -1,0 +1,125 @@
+//! comlink/handshake_turn.rye — the live handshake, with rotation.
+//!
+//! A crossing on Comlink asks two questions of a peer, and this file asks them
+//! in one breath. First, *who are you?* — the existing introduction gate
+//! (`discovery/introduce.rye`): a peer is admitted to the table only by an
+//! introduction its introducer signed. Second, *which key do I seal to?* — the
+//! rotation gate (`turn_route.rye`): the wire is sealed to the networking key in
+//! the peer's freshest verified **turn** tilak, never a forged or replayed one.
+//!
+//! The two gates are independent, and deliberately so. A peer admitted by a
+//! valid introduction still routes only to a verified, freshest key; a forged or
+//! stale turn is refused at the rotation gate while the peer stays known. So an
+//! attacker who replays an old introduction cannot roll a peer's live key
+//! backward, and one who forges a turn cannot borrow a peer's admitted identity.
+//!
+//! A peer's identity is the first 32 bytes of its peer id — its Kumara public
+//! key — which is what verifies the turn it presents.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye build comlink/handshake_turn.rye -femit-bin=comlink/bin/handshake-turn
+//!   comlink/bin/handshake-turn selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const introduce = @import("discovery/introduce.rye");
+const table_mod = @import("discovery/table.rye");
+const desc = @import("discovery/descriptor.rye");
+const turn_route = @import("turn_route.rye");
+const tilak = @import("kumara_tilak.rye");
+const kumara = @import("kumara.rye");
+
+pub const handshake_turn_version = "20260809.213619";
+
+const pubkey_len: u32 = 32;
+
+/// The outcome of a full handshake: the peer was admitted by its introduction,
+/// and the rotation gate's decision names the key to seal the wire with.
+pub const HandshakeOutcome = struct {
+    admitted: bool,
+    route: turn_route.RouteDecision,
+};
+
+/// Admit a peer by its signed introduction, then read its turn to choose the
+/// networking key. The introduction gate may refuse (its own errors propagate);
+/// once admitted, the rotation gate decides the key and never rolls it back.
+pub fn handshake(
+    table: *table_mod.PeerTable,
+    intro: introduce.Introduction,
+    incoming_turn: *const tilak.Turn,
+    known_turn: ?*const tilak.Turn,
+    now: u64,
+) !HandshakeOutcome {
+    // Identity gate — the existing introduction accept.
+    try introduce.accept(table, intro, now);
+
+    // The introduced peer's identity is the first 32 bytes of its peer id.
+    const id_slice = intro.introduced.as_slice();
+    if (id_slice.len < pubkey_len) return error.IdentityRefused;
+    var identity: [pubkey_len]u8 = undefined;
+    for (0..pubkey_len) |i| identity[i] = id_slice[i];
+
+    // Rotation gate — verify + freshest-wins, from turn_route.
+    const route = turn_route.read_turn(known_turn, incoming_turn, identity);
+    // invariant: a handshake that reaches here admitted the peer.
+    assert(id_slice.len >= pubkey_len);
+    return .{ .admitted = true, .route = route };
+}
+
+// --- selftest -----------------------------------------------------------
+
+const star_seed: [32]u8 = .{0x01} ** 32;
+const peer_seed: [32]u8 = .{0x02} ** 32;
+const net_seed_a: [32]u8 = .{0x03} ** 32;
+const net_seed_b: [32]u8 = .{0x04} ** 32;
+const forger_seed: [32]u8 = .{0x05} ** 32;
+
+fn bytes_eq(a: [pubkey_len]u8, b: [pubkey_len]u8) bool {
+    return std.mem.eql(u8, &a, &b);
+}
+
+fn run_selftest() !u8 {
+    // The peer's identity — its peer id carries its Kumara public key.
+    const peer_pub = tilak.pubkey_of(&peer_seed);
+    const peer_id = table_mod.PeerId.from_slice(&peer_pub) orelse return error.PeerIdRefused;
+
+    // A star mints a signed introduction of the peer (hop 1).
+    const star_kp = kumara.keypair_from_seed(&star_seed);
+    const descriptor = desc.Descriptor.from_slice("peer-descriptor: key transport freshness lineage") orelse return error.DescriptorRefused;
+    const intro = introduce.Introduction.mint(star_kp, peer_id, descriptor, 1, .star) orelse return error.IntroductionMintFailed;
+
+    // A fresh table (a backing buffer holds descriptor bodies), and the peer's
+    // current turn signed by its own identity.
+    var backing: [16384]u8 = undefined;
+    var table = table_mod.PeerTable.init(backing[0..]);
+    const t0 = tilak.make_turn(&peer_seed, &net_seed_a, 0, 0);
+
+    // A valid introduction plus a valid turn: peer admitted, wire keyed to the turn.
+    const out0 = try handshake(&table, intro, &t0, null, 100);
+    if (!out0.admitted) return error.PeerNotAdmitted;
+    if (!out0.route.accepted or out0.route.reason != .verified_first) return error.TurnNotTaken;
+    if (!bytes_eq(out0.route.route_key, t0.net_pubkey)) return error.WireKeyWrong;
+
+    // A newer turn rotates the wire key on the next crossing.
+    const t1 = tilak.make_turn(&peer_seed, &net_seed_b, 1, 0);
+    const out1 = try handshake(&table, intro, &t1, &t0, 200);
+    if (!out1.route.accepted or out1.route.reason != .verified_fresher) return error.RotationNotTaken;
+    if (!bytes_eq(out1.route.route_key, t1.net_pubkey)) return error.RotatedKeyWrong;
+
+    // A forged turn (signed by another key) is refused; the peer stays admitted,
+    // the wire keeps its last trusted key.
+    const forged = tilak.make_turn(&forger_seed, &net_seed_a, 9, 9);
+    const out2 = try handshake(&table, intro, &forged, &t1, 300);
+    if (!out2.admitted) return error.PeerDroppedOnForgedTurn;
+    if (out2.route.accepted or out2.route.reason != .forged_refused) return error.ForgedTurnTaken;
+    if (!bytes_eq(out2.route.route_key, t1.net_pubkey)) return error.ForgedRolledKey;
+
+    print("comlink handshake-turn: peer admitted by a signed introduction; wire keyed to its freshest verified turn; rotation taken; forged turn refused, key kept.\n", .{});
+    print("comlink handshake-turn: version {s}\n", .{handshake_turn_version});
+    print("GREEN: comlink handshake-turn — the live handshake asks who-are-you and which-key in one breath; identity and rotation gate independently.\n", .{});
+    return 0;
+}
+
+pub fn main() !u8 {
+    return run_selftest();
+}
