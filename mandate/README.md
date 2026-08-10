@@ -1,7 +1,7 @@
 # Mandate — Grain's turbopuffer
 
 **Language:** EN
-**Status:** Living — the vector store, lap 1 seated `20260810.031234`
+**Status:** Living — the vector store · lap 1 seated `20260810.031234` · lap 2 (**remove** — full CRUD) `20260810`
 **Voice:** Kyri
 **Kin:** the first build of the breach's new arc (`../expanding-prompts/20260810-025942_the-handoff-baton-vision-checkpoint.md`)
 
@@ -13,6 +13,7 @@ Mandate is Grain's search organ — a **vector store**, its own answer to turbop
 - **Zero-copy.** A query never copies a stored vector; it reads each record **in place**, by reference, and accumulates the dot product. The store owns the bytes once; search borrows them.
 - **Bounded, exact.** The store (`max_records`), the dimension (`dim`), and the result count (`max_k`) each name a maximum, enforced at the edge. Search is exact brute-force k-nearest — every record considered — which is correct at this scale. An approximate index (for scale past a single node) is a named horizon, not a shortcut taken silently.
 - **A metadata filter.** Each record carries a **tag** beside its vector, so a query may filter — *the nearest images, but only nature ones* — the filter every real vector store owes.
+- **Full CRUD (lap 2, `20260810`).** `remove(id)` drops a record by a **swap-remove** — the last filled record fills the gap — so the store never grows a hole and never reallocates; a missing id changes nothing and returns `false`. With `upsert` (create/update) and `query` (read), the store now closes create · read · update · delete, each bounded. Order does not matter, since a query re-sorts by score. Proven by `prove_remove` in the selftest: a removed record leaves the store and never returns in a search.
 
 ## Build and prove
 
