@@ -118,6 +118,27 @@ pub fn upsert(store: *Store, id: u32, tag: u32, vec: *const [dim]f32) StoreError
     store.filled += 1;
 }
 
+/// Remove the record with `id`, if present; returns whether one was removed. A
+/// swap-remove — the last filled record fills the gap — so the store never grows a
+/// hole and never reallocates. Order does not matter: a query re-sorts by score.
+pub fn remove(store: *Store, id: u32) bool {
+    // invariant: the fill count never runs past the bounded records.
+    assert(store.filled <= max_records);
+    var i: u32 = 0;
+    while (i < store.filled) : (i += 1) {
+        if (store.records[i].id == id) {
+            store.records[i] = store.records[store.filled - 1];
+            store.filled -= 1;
+            // invariant: a successful removal drops the fill, so the store now has room.
+            assert(store.filled < max_records);
+            return true;
+        }
+    }
+    // invariant: a missing id leaves the fill untouched.
+    assert(store.filled <= max_records);
+    return false;
+}
+
 /// Slot a candidate into the running top-k, kept sorted most-similar first. A score
 /// that cannot beat the current worst, once the result is full, is dropped.
 fn insert_topk(result: *QueryResult, k: u32, id: u32, score: f32) void {
@@ -218,15 +239,38 @@ fn prove_topk_and_update(store: *Store) !void {
     if (after.matches[0].score < 0.99) return error.UpdateNotApplied;
 }
 
+fn prove_remove(store: *Store) !void {
+    // Remove a record that exists (id 3), and confirm the store shrank by one.
+    const before = store.filled;
+    // invariant: the fixture seated four records, so id 3 is present to remove.
+    assert(before >= 1);
+    const hit = remove(store, 3);
+    if (!hit) return error.RemoveMissedExisting;
+    if (store.filled != before - 1) return error.RemoveDidNotShrink;
+    // A query no longer returns id 3 anywhere in its results.
+    const q: [dim]f32 = .{ 0, 0, 1, 0 };
+    const r = query(store, &q, max_k, null);
+    var j: u32 = 0;
+    while (j < r.count) : (j += 1) {
+        if (r.matches[j].id == 3) return error.RemovedStillFound;
+    }
+    // Removing an id that is not present returns false and changes nothing.
+    const before_miss = store.filled;
+    if (remove(store, 999)) return error.RemoveClaimedMissing;
+    if (store.filled != before_miss) return error.MissingRemoveChangedStore;
+}
+
 fn run_selftest() !u8 {
     var store = try seat_store();
     try prove_nearest(&store);
     try prove_filter(&store);
     try prove_topk_and_update(&store);
+    try prove_remove(&store);
 
     print("mandate store: a vector store — upsert normalizes to a unit direction, so a query is a dot product; the nearest by cosine similarity returns most-similar-first, bounded and exact.\n", .{});
     print("mandate store: zero-copy — each record's vector is read in place at query time, never copied; the store owns the bytes once and search borrows them.\n", .{});
     print("mandate store: a tag filters the search (the nearest, but only nature); an upsert on an existing id updates in place, never growing the store.\n", .{});
+    print("mandate store: remove drops a record by id (swap-remove, no realloc, no hole); a missing id changes nothing — create, read, update, delete all bounded.\n", .{});
     print("mandate store: version {s}\n", .{store_version});
     print("GREEN: mandate store — Grain's turbopuffer, a bounded zero-copy vector store: nearest-neighbour by cosine over unit vectors, with a metadata filter, exact and witnessed.\n", .{});
     return 0;
