@@ -223,3 +223,10 @@ s/66041JEA306288/[redacted-serial]/g
 s/bhagavan851c05a/acme-user/g
 s/\bkae3g\b/acme-owner/g
 s/\bBrooke\b/a friend/g
+
+# -- external-research clearance surfaced (20260810 . w50krsfnv) --
+s/Alexandra Livermore/a family member/g
+s/Smart Access/a company/g
+s/0646 2132/[redacted-keyid]/g
+s/DBF8 5343/[redacted-keyid]/g
+s/maicmalamurr/a council galaxy/g

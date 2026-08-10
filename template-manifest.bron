@@ -91,6 +91,7 @@ allow context/THREATS.md
 allow context/equinox_map.brix
 allow context/equinox_foundations.brix
 allow context/specs   # the project's own technical specs; identity/provenance sub_excluded
+allow external-research
 allow active-designing
 allow waymarks
 # -- root files (identity-bearing ones scrubbed) --
@@ -327,6 +328,41 @@ sub_exclude waymarks/20260725-112415_radiant-wave34.md
 sub_exclude active-designing/yonder/20260722-153358_stoa279-hawm-emulator-serial-pin.md
 sub_exclude active-designing/yonder/20260714-184500_macos-full-private-home-design.md
 sub_exclude waymarks/20260725-112515_radiant-wave35.md
+# external-research dual-gate clearance (20260810 . w50krsfnv) — 13 copyright + 21 personal
+sub_exclude external-research/20260701-213412_deep-archive-and-sovereign-host-blueprint.md
+sub_exclude external-research/20260704-185412_ends-first-map-orientation.md
+sub_exclude external-research/20260706-002612_the-settlement-seat-under-three-lights.md
+sub_exclude external-research/20260706-005512_settlement-seat-verification-and-verdict.md
+sub_exclude external-research/20260707-222500_settlement-seat-refresh-and-slcl3-witness-proposal.md
+sub_exclude external-research/20260708-211637_ios-session-claude-review-brief.md
+sub_exclude external-research/20260708-223327_sui-zk-primitives-for-donor-amount-privacy.md
+sub_exclude external-research/20260709-183326_claude-review-brief-jul9-evening-close.md
+sub_exclude external-research/20260709-200022_pedersen-and-sigma-plainly.md
+sub_exclude external-research/20260712-053324_ocapn-beside-comlink.md
+sub_exclude external-research/20260712-054521_taler-giving-lane-asymmetry.md
+sub_exclude external-research/20260714-001017_neth-mala-settlement-l1-l2-design.md
+sub_exclude external-research/20260714-012125_neth-vps-cost-and-cluster-plan.md
+sub_exclude external-research/20260715-135200_zero-to-one-rhizome-market-position.md
+sub_exclude external-research/20260717-144200_openvm-pairing-hint-soundness-lessons.md
+sub_exclude external-research/20260728-033404_vegan-venture-firms-ahimsa-stray-dog-and-kin.md
+sub_exclude external-research/20260729-165912_cooperative-houses-direction-archetypes.md
+sub_exclude external-research/20260730-014500_the-standard-behind-it.md
+sub_exclude external-research/20260808-045124_two-grains-template-breach-and-code-distillation-plan.md
+sub_exclude external-research/20260809-232015_loadable-topologies-and-pond-the-application-module.md
+sub_exclude external-research/yonder/strengthening-compiler/README.md
+sub_exclude external-research/yonder/strengthening-compiler/9902_mem_is_aligned.md
+sub_exclude external-research/yonder/strengthening-compiler/9912_mem_find_min_max.md
+sub_exclude external-research/yonder/strengthening-compiler/9920_mem_reverse_iterator.md
+sub_exclude external-research/yonder/strengthening-compiler/9930_mem_trim.md
+sub_exclude external-research/yonder/strengthening-compiler/9936_keccak_sponge_memcpy.md
+sub_exclude external-research/yonder/strengthening-compiler/9938_mem_ends_with.md
+sub_exclude external-research/yonder/strengthening-compiler/9948_semantic_version_order.md
+sub_exclude external-research/yonder/strengthening-compiler/9953_mem_order.md
+sub_exclude external-research/yonder/strengthening-compiler/9956_tokenize_next.md
+sub_exclude external-research/yonder/strengthening-compiler/9966_find_last_any.md
+sub_exclude external-research/yonder/strengthening-compiler/9971_find_pos.md
+sub_exclude external-research/yonder/strengthening-compiler/9974_find_scalar_pos.md
+sub_exclude external-research/yonder/strengthening-compiler/9984_read_file_alloc.md
 # ---- witness obligations (M1/M2) ----
 # M1 GREEN: every tracked root path above has exactly one verdict, and the set
 #           of paths equals `git ls-files | first-segment | unique`.
