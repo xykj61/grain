@@ -10,7 +10,7 @@
 
 ## Now — The Compass Season · JARL j4 (`20260809.224715`)
 
-**Finishing edge:** JARL j4 — **the settlement constellation, on Sui**. Identity, network, and the fractal address space all stand; now the ledger. `settlement/constellation.rye` seats a galaxy and its d60 as owned records whose versions climb — spawn by `sow` capability, transfer by `hand`, keys rotate by `tend` while the keeper sits cold, a reset outranking a key bump, and every refusal held. The whole JARL spine (five witnesses) runs GREEN together.
+**Finishing edge:** JARL j4 — **the settlement constellation, on Sui, all five transitions**. Identity, network, and the fractal address space all stand; the ledger now moves. `settlement/constellation.rye` seats a galaxy and its d60 as owned records whose versions climb — **genesis** opens from a bind, **mint** spawns by `sow` capability, **transfer** by `hand`, **rotate** by `tend` while the keeper sits cold, and **escape** re-parents a child by its own word and the new sponsor's adoption (the number never moving). Every refusal held; the whole JARL spine (five witnesses) runs GREEN together.
 **Prove:** `rishi/bin/rishi run tools/settlement_constellation_witness.rish`
 
 | Lap | Equinox | Status |
@@ -22,9 +22,11 @@
 | **Descriptor carries the turn on the wire** — `handshake_wire` recovers it from 112 descriptor bytes (`turn_to_bytes`), loop closed | JARL | **LANDED** |
 | **d12·d60 fractal topology** — the address space (12·5·12, d60=60, 792/universe), sponsor chain, routing by number | JARL | **LANDED** (`comlink/topology.rye`) |
 | **Settlement constellation on Sui** — a galaxy's d60 as owned records; spawn/transfer/rotate by capability, versions climb, keys rotate cold, every refusal held | JARL | **LANDED** (`settlement/constellation.rye`) |
+| **Escape** — a child re-parents to a settled sponsor one tier up, by its own word + the new sponsor's adoption; number never moves; galaxy-root refused, forged request/adoption refused | JARL | **LANDED** (`settlement/constellation.rye`) |
 | Reconcile the Point's tier (elder Azimuth 2⁸/2¹⁶/2³²) with the topology's d12·d60 scarcity | JARL | Keaton's word |
-| **Escape** — a child re-parenting to a chosen sponsor, the constellation reading the `sponsor` tilak | JARL | next lap |
 | Shrink the shared surface — hold a membership commitment, let point-objects ride the fast path | JARL | horizon |
+| **Generalize the constellation to loadable topologies** — odd voting groups (base-3), 5 elements/15 galaxies, fractal management 3·9·15·27, nakshatra roles + social "outfits", Pond-loaded like games | JARL/BUHR | research seated · Keaton's word |
+| **Pool→Pond breach** — retire Pool (past the vane concept), Pond as the full application module (Gall-inspired, sandbox/VM lineage), next-season plan + molt sweep of superseded docs | next season | research seated · Keaton's word |
 | Rishi rune heads — `^-` · `?!` · `?&` · `?|` landed | SOON | **LANDED** (four heads) |
 | Rishi **`matches`** + **`find`** pattern primitives — bounded NFA, `{n,m}` · `\b`, linear-time, 600+ cases vs Python re | SOON | **LANDED** — boolean-test and extract seams both unlocked |
 | Rishi `sort` · `unique` · `upper` · list `+` · lookbehind | SOON | **LANDED** |

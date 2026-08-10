@@ -16,8 +16,9 @@
 //!     transfers, a `tend` cap rotates keys; the elder's proxies, our own tilaks.
 //!   * Networking keys rotate on their own counters — a reset outranks a key bump,
 //!     and the keeper's key never moves while the wire heals.
-//!   * Sponsorship is topology's default — a child settles under its real place in
-//!     the fractal, never a claimed one; every member chains back to the galaxy.
+//!   * Sponsorship is a default, never a cage — a child settles under its real
+//!     place in the fractal, never a claimed one, yet may escape to another settled
+//!     sponsor one tier up, by its own word and the new sponsor's adoption.
 //!   * The ledger accretes — a point settles once, and its version only climbs.
 //!
 //! This is the Rye-side model of what a Sui contract would enforce; no Move, no
@@ -34,7 +35,7 @@ const kumara = @import("kumara.rye");
 const tilak = @import("kumara_tilak.rye");
 const topology = @import("topology.rye");
 
-pub const constellation_version = "20260809.224715";
+pub const constellation_version = "20260809.231219";
 
 const pubkey_len: u32 = 32;
 const sig_len: u32 = 64;
@@ -61,6 +62,9 @@ pub const SettleError = error{
     StaleTurn,
     NumberOutOfUniverse,
     NotGenesis,
+    CannotEscape,
+    NotAnEscape,
+    BadSponsor,
 };
 
 /// A settled point — the deed as it rests on the ledger. The identity key signs its
@@ -288,6 +292,56 @@ pub fn rotate(
     assert(s.version == before + 1);
 }
 
+// The tier a child's sponsor must hold — one step up the fractal. A galaxy is the
+// root of its own tree and has no sponsor, so it can never escape.
+fn sponsor_tier(child: topology.Tier) ?topology.Tier {
+    return switch (child) {
+        .galaxy => null,
+        .star => .galaxy,
+        .planet => .star,
+    };
+}
+
+/// Escape — a child re-parents to a chosen sponsor. Sponsorship is a default, never
+/// a cage: the arithmetic parent comes free, yet a child may leave it for another
+/// settled sponsor one tier up. The move takes two words and refuses without either
+/// — the child's own identity signs the request (the `sponsor` tilak), and the new
+/// sponsor's keeper signs its adoption. The old sponsor keeps no veto; a child is
+/// never held. The point's number, and so its place in the fractal, never moves —
+/// only whom it answers to.
+pub fn escape(
+    con: *Constellation,
+    point: u32,
+    new_sponsor: u32,
+    request: *const tilak.Sponsor,
+    adopt_sig: *const [sig_len]u8,
+) SettleError!void {
+    const s = con.slot_of(point) orelse return error.NotSettled;
+    const child_addr = topology.decode(point) orelse return error.NumberOutOfUniverse;
+    // invariant: a galaxy is a root — it has no sponsor to escape to.
+    const want_tier = sponsor_tier(child_addr.tier) orelse return error.CannotEscape;
+    // invariant: an escape actually moves — re-parenting to the current sponsor is none.
+    if (new_sponsor == s.sponsor) return error.NotAnEscape;
+    const new_sp = con.member(new_sponsor) orelse return error.NotSettled;
+    const new_keeper = new_sp.keeper;
+    // invariant: a child escapes to a sponsor exactly one tier up — a planet to a
+    // star, a star to a galaxy, never sideways or down.
+    if (new_sp.tier != want_tier) return error.WrongSponsor;
+    // invariant: the request is the child's own word — its identity key signs the
+    // chosen parent, over this very point.
+    if (!tilak.verify_sponsor(request, s.identity_key)) return error.BadSponsor;
+    if (request.point_number != point or request.chosen_parent != new_sponsor) return error.BadSponsor;
+    // invariant: the new sponsor consents — its keeper signs the adoption of this
+    // child, so no point can hang itself off an unwilling sponsor.
+    if (!verify_authority(new_keeper, point, &s.identity_key, adopt_sig)) return error.BadAuthority;
+    const before = s.version;
+    s.sponsor = new_sponsor;
+    s.version += 1;
+    // invariant: an escape climbs the version by one, and the sponsor really moved.
+    assert(s.version == before + 1);
+    assert(s.sponsor == new_sponsor);
+}
+
 // --- selftest -----------------------------------------------------------
 
 // Example seeds — plainly not a real pilot's key, so no identity is invented.
@@ -300,6 +354,11 @@ const p_keeper: [kumara.seed_length]u8 = .{0x88} ** kumara.seed_length;
 const p_net: [kumara.seed_length]u8 = .{0x99} ** kumara.seed_length;
 const p_net_reset: [kumara.seed_length]u8 = .{0xbb} ** kumara.seed_length;
 const new_owner: [kumara.seed_length]u8 = .{0xaa} ** kumara.seed_length;
+const s2_key: [kumara.seed_length]u8 = .{0xcc} ** kumara.seed_length;
+const s2_keeper: [kumara.seed_length]u8 = .{0xdd} ** kumara.seed_length;
+
+// A sibling star under galaxy 3, for the planet to escape to: encode(of_star(3,0)) = 27.
+const star2_num: u32 = 27;
 
 // Topology numbers, checked against the fractal: galaxy 3, its star (3,2), its
 // planet (3,2,7). encode(of_star(3,2)) = 29; encode(of_planet(3,2,7)) = 283.
@@ -388,6 +447,67 @@ fn prove_rotate(con: *Constellation, fx: *const Fixture) !void {
     if (after_reset.reset_counter != 1 or after_reset.version != 3) return error.ResetWrong;
 }
 
+// Escape — settle a sibling star under the galaxy, then let the planet re-parent to
+// it from its default star. The child's word and the new sponsor's adoption both sign;
+// the planet's number never moves, only whom it answers to.
+fn prove_escape(con: *Constellation, fx: *const Fixture) !void {
+    const s2_bind = tilak.make_bind(&s2_key, &s2_keeper);
+    const spawn_s2 = make_authority(&g_key, star2_num, &s2_bind.kumara_pubkey);
+    try mint(con, galaxy_num, star2_num, &s2_bind, &fx.g_sow, &spawn_s2);
+
+    // The planet's default sponsor is star 29; it escapes to the sibling star 27.
+    if (con.member(planet_num).?.sponsor != star_num) return error.EscapeStartWrong;
+    const request = tilak.make_sponsor(&p_key, planet_num, star_num, star2_num);
+    const adopt = make_authority(&s2_keeper, planet_num, &fx.p_bind.kumara_pubkey);
+    try escape(con, planet_num, star2_num, &request, &adopt);
+    const after = con.member(planet_num).?;
+    if (after.sponsor != star2_num or after.version != 4) return error.EscapeWrong;
+    // invariant: the arithmetic default is unmoved — the planet still sits under star
+    // 29 in the fractal, yet now answers to star 27; the default is a cage no longer.
+    const default_parent = topology.encode(topology.decode(planet_num).?.parent());
+    if (default_parent != star_num) return error.DefaultMoved;
+    if (after.sponsor == default_parent) return error.EscapeNotRecorded;
+}
+
+// Every refusal escape owes: a galaxy has no sponsor to leave; the target must be
+// settled, one tier up, and different; the request and the adoption must both be real.
+fn prove_escape_refusals(con: *Constellation, fx: *const Fixture) !void {
+    const zero_sig: [sig_len]u8 = .{0} ** sig_len;
+
+    // A galaxy is the root of its own tree — it cannot escape.
+    const g_req = tilak.make_sponsor(&g_key, galaxy_num, galaxy_num, star_num);
+    if (escape(con, galaxy_num, star_num, &g_req, &zero_sig)) |_| return error.GalaxyEscaped else |e| {
+        if (e != error.CannotEscape) return error.GalaxyEscapeWrongError;
+    }
+    // The planet already answers to star 27; re-parenting to 27 is no escape.
+    const same = tilak.make_sponsor(&p_key, planet_num, star_num, star2_num);
+    if (escape(con, planet_num, star2_num, &same, &zero_sig)) |_| return error.NoOpEscaped else |e| {
+        if (e != error.NotAnEscape) return error.NoOpWrongError;
+    }
+    // A sponsor that never settled cannot adopt — star 30 is absent.
+    const absent = tilak.make_sponsor(&p_key, planet_num, star_num, 30);
+    if (escape(con, planet_num, 30, &absent, &zero_sig)) |_| return error.AbsentAdopted else |e| {
+        if (e != error.NotSettled) return error.AbsentWrongError;
+    }
+    // The galaxy is settled, yet a planet's sponsor must be a star, never a galaxy.
+    const wrong_tier = tilak.make_sponsor(&p_key, planet_num, star_num, galaxy_num);
+    if (escape(con, planet_num, galaxy_num, &wrong_tier, &zero_sig)) |_| return error.WrongTierAdopted else |e| {
+        if (e != error.WrongSponsor) return error.WrongTierWrongError;
+    }
+    // A forged request — the identity never signed it — refuses before any adoption.
+    var forged = tilak.make_sponsor(&p_key, planet_num, star2_num, star_num);
+    forged.sig[0] ^= 0x01;
+    if (escape(con, planet_num, star_num, &forged, &zero_sig)) |_| return error.ForgedRequestAdopted else |e| {
+        if (e != error.BadSponsor) return error.ForgedRequestWrongError;
+    }
+    // A genuine request with a forged adoption refuses — the sponsor never consented.
+    const genuine = tilak.make_sponsor(&p_key, planet_num, star2_num, star_num);
+    if (escape(con, planet_num, star_num, &genuine, &zero_sig)) |_| return error.ForgedAdoptAccepted else |e| {
+        if (e != error.BadAuthority) return error.ForgedAdoptWrongError;
+    }
+    _ = fx;
+}
+
 // Hand the planet to a new keeper — the last act the old keeper's cap authorizes.
 // Afterward the point answers to a key the old owner never held.
 fn prove_transfer(con: *Constellation, fx: *const Fixture) !void {
@@ -396,8 +516,8 @@ fn prove_transfer(con: *Constellation, fx: *const Fixture) !void {
     try transfer(con, planet_num, new_keeper, &fx.p_hand, &xfer);
     const after_xfer = con.member(planet_num).?;
     if (!std.mem.eql(u8, &after_xfer.keeper, &new_keeper)) return error.TransferKeptOldKeeper;
-    // invariant: rotation and reset each climbed the version once, then the transfer.
-    if (after_xfer.version != 4) return error.TransferVersionWrong;
+    // invariant: rotate, reset, and escape each climbed the version once, then transfer.
+    if (after_xfer.version != 5) return error.TransferVersionWrong;
 }
 
 // Every refusal the ledger owes: orphan parent, wrong sponsor, forged cap, forged
@@ -453,13 +573,16 @@ fn run_selftest() !u8 {
     var con: Constellation = undefined;
     try prove_grow(&con, &fx);
     try prove_rotate(&con, &fx);
+    try prove_escape(&con, &fx);
+    try prove_escape_refusals(&con, &fx);
     try prove_refusals(&con, &fx);
     try prove_transfer(&con, &fx);
 
     print("settlement constellation: a galaxy and its d60 settle as owned records — genesis, spawn by capability, transfer, rotation with a keeper that never moves, and a reset that outranks a key bump.\n", .{});
-    print("settlement constellation: every refusal holds — orphan parent, wrong sponsor, forged cap, forged spawn signature, a re-mint, a stale rotation, a turn signed by the wrong key.\n", .{});
+    print("settlement constellation: sponsorship is a default, never a cage — a planet escapes to a sibling star by its own word and the new sponsor's adoption, its number unmoved.\n", .{});
+    print("settlement constellation: every refusal holds — orphan parent, wrong sponsor, forged cap, forged spawn signature, a re-mint, a stale rotation, a turn signed by the wrong key, a galaxy that cannot escape, a forged request, a forged adoption.\n", .{});
     print("settlement constellation: version {s}\n", .{constellation_version});
-    print("GREEN: settlement constellation — a number settles once under its rightful sponsor, powers move by signed capability, and keys rotate while the deed sits cold.\n", .{});
+    print("GREEN: settlement constellation — a number settles once under its rightful sponsor, powers move by signed capability, keys rotate while the deed sits cold, and a child escapes its default sponsor without ever leaving its place.\n", .{});
     return 0;
 }
 

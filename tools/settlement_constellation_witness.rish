@@ -6,7 +6,9 @@
 # rightful topology sponsor; a transfer moves ownership; a rotation heals the wire
 # while the keeper's key sits cold; a reset outranks a key bump. Every refusal the
 # ledger owes holds — orphan parent, wrong sponsor, forged cap, forged spawn
-# signature, a re-mint, a stale rotation, a turn signed by the wrong key.
+# signature, a re-mint, a stale rotation, a turn signed by the wrong key. A child
+# escapes its default sponsor to a sibling star by its own word and the new sponsor's
+# adoption, its number unmoved; a galaxy, being root, cannot escape.
 #
 # Build first:  rye build settlement/constellation.rye -femit-bin=settlement/bin/constellation
 #   rishi/bin/rishi run tools/settlement_constellation_witness.rish
@@ -18,7 +20,11 @@ assert (st.err contains "settle as owned records") else "a galaxy and its d60 se
 assert (st.err contains "spawn by capability") else "children settle by a signed spawn capability"
 assert (st.err contains "keeper that never moves") else "rotation heals the wire while the keeper sits cold"
 assert (st.err contains "reset that outranks a key bump") else "a reset outranks a key rotation"
+assert (st.err contains "sponsorship is a default, never a cage") else "a child may escape its default sponsor"
+assert (st.err contains "escapes to a sibling star") else "escape re-parents to a settled sponsor one tier up"
 assert (st.err contains "every refusal holds") else "the ledger owes its refusals"
+assert (st.err contains "a galaxy that cannot escape") else "a galaxy is root and cannot escape"
 assert (st.err contains "settles once under its rightful sponsor") else "a number settles once, under its real place in the fractal"
+assert (st.err contains "escapes its default sponsor without ever leaving its place") else "escape moves the sponsor, never the number"
 
-say "GREEN: settlement constellation — a galaxy and its d60 settle as owned records; a number settles once under its rightful sponsor, powers move by signed capability, and keys rotate while the deed sits cold."
+say "GREEN: settlement constellation — a galaxy and its d60 settle as owned records; a number settles once under its rightful sponsor, powers move by signed capability, keys rotate while the deed sits cold, and a child escapes its default sponsor without ever leaving its place."
