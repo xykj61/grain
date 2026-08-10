@@ -47,7 +47,7 @@ Seated ladders: **HAWM · TUBE · ZETA · JABS · LULU · STOA · SETU · SUNN �
 
 ## Two grains
 
-The private field is `~/grain`; the public template **grain-os/grain** is *projected* by `tools/sow.rish` along the boundary in `template-manifest.bron`, proven clean by `tools/sow_witness.rish` (no name or key crosses into the seed). **Seed COMPLETE + GREEN `20260810`** — every new module classified (kumara/settlement scrub · mandate/scribe template · expanded-prompts), 4657 copied / 1258 scrubbed / withheld; the 3x39 + handoff batons and the inspiration/council rosters **withheld** (no friend's name, no partner, no key leaks). `SOW_WITNESS_GREEN`. Ready to send; the actual publish push is Keaton's hand.
+The private field is `~/grain`; the public template **grain-os/grain** is *projected* by `tools/sow.rish` along the boundary in `template-manifest.bron`, proven clean by `tools/sow_witness.rish` (no name or key crosses into the seed). **Seed COMPLETE + privacy-fixed `20260810`** — every new module classified. **Leak found + closed:** the scrub/scanner only knew the maintainer name + keys, so the family surname (**Dunsford**), prior name, and personal handles were leaking into the public seed; expanded the scrub + IDENT net to every family/handle/contact form, made the withhold case-insensitive (privacy over completeness — leaking files are withheld whole). `IDENT_CLEAN` confirmed; the vision batons + rosters + raw contacts held out. Raw PII **not persisted** in-tree — held for the **Vault** (custody-first, Keaton's hand). Publish push is Keaton's hand.
 
 ## Shred-prep
 
