@@ -1,17 +1,22 @@
-# .brix — veganreyklah2
+# .brix — Grain
 # Course descriptor: name, version, and the bricks (source files) Mantra tracks.
 # Format: one key-value pair per line, space-separated. Lines starting with
 # '#' are comments; blank lines are ignored.
+#
+# Molted 20260810.145743 from the elder "veganreyklah2" descriptor
+# (version 20260629.004912) for fascia health: current name (Grain), current
+# version, and the modules grown since June added as bricks. The elder
+# descriptor lives whole in git history (accrete-never-break); the old
+# identity-flavored name leaves the living tree.
 #
 # Keys:
 #   name     — the project name (one value)
 #   version  — descriptor version (Rye chronological stamp)
 #   file     — one tracked brick/source file (multiple, in order)
-#   alias    — typo resolution (from to); Mantra's elder reader ignores unknown
-#              keys today; newborns keep them as entries. Seated 20260727.235754.
+#   alias    — typo resolution (from to). Seated 20260727.235754.
 
-name veganreyklah2
-version 20260629.004912
+name grain
+version 20260810.145743
 
 # Typo resolution (Brix) — Prim was a mis-hear of Prin
 alias Prim Prin
@@ -37,6 +42,19 @@ file mantra/src/main.rye
 
 # Gate trio — Rishi only (tools/*.rish)
 file tools/parity.rish
+
+# Q-vane inference family (Lattice · Scribble · Lantern · Ember)
+file lattice/lattice_core.rye
+file scribble/scribble_core.rye
+file lantern/lantern_core.rye
+file ember/ember_core.rye
+
+# Identity and topology (Kumara · Comlink)
+file kumara/kumara.rye
+file comlink/topology.rye
+
+# Sundial — the health face
+file sundial/sundial.rye
 
 # Living documentation
 file work-in-progress/ROADMAP.md
