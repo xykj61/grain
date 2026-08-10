@@ -1,0 +1,150 @@
+//! basin/basin.rye — the bounded activity basin: a circular buffer that overflows.
+//!
+//! Basin is the Scribe×Tally monitor's holding pool (the module once sketched as
+//! "Loom"). Named for a watershed basin: samples — a process event, an activity
+//! tick, a memory reading — flow in, and when the basin is full the OLDEST sample
+//! overflows the rim. So the basin holds only the most recent `capacity` samples,
+//! at a fixed, bounded cost that never grows no matter how long it runs.
+//!
+//! WORD DISCIPLINE — this is a **circular buffer**, deliberately NOT called a *ring*.
+//! In mathematics a *ring* is a precise algebraic structure (a set with `+` and `×`
+//! obeying the ring axioms); the tree reserves the word for that meaning, where it
+//! is used correctly — `vault/shard.rye` computes over GF(256), a finite *field*,
+//! and every field is a ring. A circular byte pool is a geometric circle, not an
+//! algebraic ring, so it earns a geometric word. See the ring/sheaf study:
+//! `../external-research/20260810-080654_ring-sheaf-and-the-sacred-mathematical-words.md`.
+//!
+//! This first lap is the buffer itself, on SYNTHETIC samples only — reds-first: prove
+//! the self-stopping line (filled saturates, the head wraps, the sequence stays
+//! monotonic across the wrap, the oldest falls off the tail) before ever pointing
+//! the basin at a real /proc. A later lap fills it from the live system.
+//!
+//!   rye build basin/basin.rye -femit-bin=basin/bin/basin
+//!   basin/bin/basin selftest    # prove empty, fill, wrap, saturate, overflow
+//!   basin/bin/basin emit        # print the basin's state as Kyri facts
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const basin_version = "20260810.080654";
+
+// The basin holds a bounded number of recent samples; when full, the oldest
+// overflows the rim. The one cost bound, named once and asserted at every edge.
+pub const capacity: u32 = 256;
+
+/// One reading the basin holds: a monotonic sequence number that never wraps (so a
+/// reader can always order and detect a gap), a small kind tag, and the value read.
+pub const Sample = struct {
+    seq: u64,
+    kind: u32,
+    value: u64,
+};
+
+/// The bounded circular buffer. `head` is where the next push writes and wraps mod
+/// capacity; `filled` counts real samples and saturates at capacity; `next_seq` is
+/// the seq the next push will carry.
+pub const Basin = struct {
+    slots: [capacity]Sample,
+    head: u32,
+    filled: u32,
+    next_seq: u64,
+
+    /// An empty basin — no samples, the sequence about to begin at zero.
+    pub fn init() Basin {
+        return .{ .slots = undefined, .head = 0, .filled = 0, .next_seq = 0 };
+    }
+
+    /// Push a sample. When the basin is full, this overwrites the oldest — it
+    /// overflows the rim — so the cost is fixed forever.
+    pub fn push(self: *Basin, kind: u32, value: u64) void {
+        // invariant: head is always a valid slot index before a write.
+        assert(self.head < capacity);
+        self.slots[self.head] = .{ .seq = self.next_seq, .kind = kind, .value = value };
+        self.head = (self.head + 1) % capacity;
+        if (self.filled < capacity) self.filled += 1; // saturates; a full basin overflows the oldest
+        self.next_seq += 1;
+        // invariant: the basin never holds more than its bound, and seq climbed by one.
+        assert(self.filled <= capacity);
+    }
+
+    /// The newest sample still held, or null when the basin is empty.
+    pub fn newest(self: *const Basin) ?Sample {
+        if (self.filled == 0) return null;
+        // head points one past the newest; step back one, wrapping.
+        const i = (self.head + capacity - 1) % capacity;
+        return self.slots[i];
+    }
+
+    /// The oldest sample still held, or null when empty. When full, the oldest sits
+    /// exactly where the next push will land (the rim); otherwise at slot zero.
+    pub fn oldest(self: *const Basin) ?Sample {
+        if (self.filled == 0) return null;
+        const i = if (self.filled == capacity) self.head else 0;
+        return self.slots[i];
+    }
+};
+
+fn run_selftest() !u8 {
+    var b = Basin.init();
+    // Empty: no newest, no oldest.
+    if (b.newest() != null) return error.EmptyHasNewest;
+    if (b.oldest() != null) return error.EmptyHasOldest;
+
+    // Push past capacity so the buffer wraps and the oldest overflows.
+    const pushes: u64 = capacity + 44; // 300 for a 256 basin — K=44 fall off the tail
+    var n: u64 = 0;
+    while (n < pushes) : (n += 1) {
+        b.push(1, n * 10); // synthetic: kind 1, a rising value
+    }
+
+    // Saturated: exactly capacity samples held.
+    if (b.filled != capacity) return error.NotSaturated;
+    // Head wrapped to pushes mod capacity.
+    if (b.head != @as(u32, @intCast(pushes % capacity))) return error.HeadNotWrapped;
+    // Sequence stayed monotonic across the wrap: newest is the last seq pushed.
+    const newest = b.newest() orelse return error.NoNewest;
+    if (newest.seq != pushes - 1) return error.NewestSeqWrong;
+    // The oldest fell off the tail: the first (pushes - capacity) samples overflowed,
+    // so the oldest still held carries seq == pushes - capacity.
+    const oldest = b.oldest() orelse return error.NoOldest;
+    if (oldest.seq != pushes - capacity) return error.OldestSeqWrong;
+    // invariant: newest and oldest span exactly capacity - 1 sequence numbers.
+    assert(newest.seq - oldest.seq == capacity - 1);
+
+    print("basin: empty gives no sample; {d} pushes into a {d} basin saturate filled, wrap the head to {d}, keep seq monotonic (newest {d}), and overflow the oldest to seq {d}.\n", .{ pushes, capacity, b.head, newest.seq, oldest.seq });
+    print("basin: version {s}\n", .{basin_version});
+    print("GREEN: basin — a bounded basin fills, saturates, wraps, and overflows the oldest at fixed cost.\n", .{});
+    return 0;
+}
+
+// Kyri facts are data, so they go to stdout (diagnostics use stderr `print`).
+const max_line: u32 = 128;
+
+fn put_line(io: std.Io, comptime fmt: []const u8, args: anytype) void {
+    var buf: [max_line]u8 = undefined;
+    const line = std.fmt.bufPrint(&buf, fmt, args) catch return;
+    const out = std.Io.File.stdout();
+    out.writeStreamingAll(io, line) catch {};
+}
+
+fn run_emit(io: std.Io) !u8 {
+    var b = Basin.init();
+    var n: u64 = 0;
+    while (n < capacity + 44) : (n += 1) b.push(1, n * 10);
+    const newest = b.newest() orelse Sample{ .seq = 0, .kind = 0, .value = 0 };
+    const oldest = b.oldest() orelse Sample{ .seq = 0, .kind = 0, .value = 0 };
+    put_line(io, "format basin-v1\n", .{});
+    put_line(io, "capacity {d}\n", .{capacity});
+    put_line(io, "filled {d}\n", .{b.filled});
+    put_line(io, "head {d}\n", .{b.head});
+    put_line(io, "newest_seq {d}\n", .{newest.seq});
+    put_line(io, "oldest_seq {d}\n", .{oldest.seq});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "emit")) return run_emit(init.io);
+    return run_selftest();
+}
