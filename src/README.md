@@ -11,7 +11,7 @@ Six rooms, one language. Everything beneath this door is Glow — the userland t
 
 - [`til/`](til/README.md) — **tilaks**, the type-marks networked values wear at every seam.
 - [`sur/`](sur/README.md) — **structures**, the data-shape museum: each shape in isolation, in beauty.
-- [`app/`](app/README.md) — **Pool agents**, the applications.
+- [`app/`](app/README.md) — **Pond agents**, the applications (Pond, was Pool).
 - [`gen/`](gen/README.md) — **generators**, the runnable demonstrations (desks arrive here from `glow/gen/` when O3 speaks).
 - [`lib/`](lib/README.md) — **libraries**, the shared gates.
 - [`sec/`](sec/README.md) — **security** room (Surface Season p0 · p21–p22) — grant-family-count · mand-ring-count.

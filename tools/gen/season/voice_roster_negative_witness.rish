@@ -20,7 +20,9 @@ assert absent.ok == false else "voice-roster-negative: refusal did not set a fai
 assert absent.out contains "detail: drifted" else "voice-roster-negative: no site was named as drifting"
 
 # The standing voice still passes, so the guard discriminates rather than refusing all.
-let standing = run ["sh" "tools/fixtures/voice_roster_scan.sh" "Riyo"]
+# Standing voice molted Riyo → Kyri on 20260810 (Keaton's word); Riyo is now a
+# fossil voice and no longer carried at the living declaration sites.
+let standing = run ["sh" "tools/fixtures/voice_roster_scan.sh" "Kyri"]
 assert standing.ok else "voice-roster-negative: standing-voice call did not succeed"
 assert standing.out contains "verdict=ok" else "voice-roster-negative: standing voice no longer passes"
 

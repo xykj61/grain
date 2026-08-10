@@ -11,7 +11,7 @@ say "voice-roster: Language EN — one standing voice, declared once everywhere.
 say "voice-roster: Style Radiant — name the sites; leave testimony alone."
 say "voice-roster: Lens TAME — six sites bounded and named up front."
 
-let want = "Riyo"
+let want = "Kyri"
 if length args != 0 then let want = args[0]
 
 let scan = run ["sh" "tools/fixtures/voice_roster_scan.sh" want]

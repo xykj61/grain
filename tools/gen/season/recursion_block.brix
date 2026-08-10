@@ -909,7 +909,7 @@ editor_continue_prior Claude Fable 5 1m Max (Keaton's word 20260729.231500 throu
 editor_continue_elder2 Claude Opus 5 1m Max (20260729.203719 through 20260729.231500)
 editor_continue_elder Claude Fable 5 1m Max (through 20260729.185725)
 editor_pause Cursor
-voice Riyo
+voice Kyri
 # Model seat roster — accrete rows; never rewrite a dated stretch (dated_guard)
 # shape: voice · model · from · prior
 voice_seat Riyo · Claude Opus 5 1m Max · from 20260730 · prior Claude Fable 5 1m Max

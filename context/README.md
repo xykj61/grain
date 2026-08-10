@@ -3,7 +3,7 @@
 **Language:** EN
 **Last updated:** `20260717` (TWO_ROOMS Quin refresh · five OS variants named in the tree map)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
-**Voice:** Riyo
+**Voice:** Kyri
 
 ---
 
