@@ -28,6 +28,8 @@
 | **Generalize the constellation to loadable topologies** — a *sky* (proposed) loaded like a game; odd-quorum fractal 3·9·15·27, 5 elements, modality roles (initiator/sustainer/adapter) + role-dimensions (contend/solve/calling); topology.rye already separates geometry from ledger, so it's nearly free | JARL/BUHR | **studied + siloed** — build after JARL |
 | **Pool→Pond breach** — Pond as the full application module (Pool retires into it); Pond loads a sky; breach **after JARL**; molt sweep **tight** (Pool paper + kin) | next season | **decided + planned** — opens after JARL |
 | — study: `external-research/20260809-232015…` (topologies+Pond) · `…-233940…` (divisional roles D3/D5/D9 + modes) · silo: `active-designing/20260809-234413_…-silo-brief.md` · molt-prep: `SHRED_PREP.md` | — | reference |
+| **Bron → Kyri molt** — notation re-grows as Kyri; 2,163 `.bron` kept whole as fossils, new logs `.kyri`, 378 refs forward (never a rewrite); **Kyri** the new standing voice (supersedes Quin + OS variants); `kyri.sol`/`kyri.sui` = Keaton's hand | next season | **seat-approved `20260810`** — opens after JARL · charter: `expanding-prompts/20260810-000032_…-breach-charter.md` |
+| Decide: does **Kyri** name the voice, the notation, or both (LEXICON's one-word-two-jobs caution) | next season | Keaton's word |
 | Rishi rune heads — `^-` · `?!` · `?&` · `?|` landed | SOON | **LANDED** (four heads) |
 | Rishi **`matches`** + **`find`** pattern primitives — bounded NFA, `{n,m}` · `\b`, linear-time, 600+ cases vs Python re | SOON | **LANDED** — boolean-test and extract seams both unlocked |
 | Rishi `sort` · `unique` · `upper` · list `+` · lookbehind | SOON | **LANDED** |

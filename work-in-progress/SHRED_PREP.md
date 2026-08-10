@@ -92,6 +92,16 @@ Add a row **every time** a living mutant seats and the prior stamp becomes fossi
 
 Plan: `../active-designing/20260809-234413_loadable-topologies-and-pond-silo-brief.md`. Until the mutant seats, this stays a **pending note**, not a Class H fossil row, and opens no cut.
 
+### Pending molt — Bron → Kyri (by molt, not rewrite · opens after JARL)
+
+**Decision (`20260810`, Keaton's word):** the session-log notation **Bron** re-grows under the favorite word **Kyri**. Measured scale: **2,163** `.bron` files, **378** living references. This is a **molt, never a rewrite** — the **2,163 existing `.bron` files are never renamed** (one-clock law / accrete-never-break protect every dated artifact); **new** logs are born `.kyri`; the notation spec grows a Kyri mutant while the Bron spec stays a readable fossil; the 378 references update forward and tools read **both** extensions. No history rewrite, no unsigning, no force-push.
+
+| Molt target (pending) | Becomes | When | Scope |
+| --- | --- | --- | --- |
+| `active-designing/yonder/20260621-063912_bron-notation.md` (spec) | a living **Kyri** notation mutant | at the breach, after JARL | spec + forward references; existing `.bron` files kept whole as fossils |
+
+Charter: `../expanding-prompts/20260810-000032_the-next-season-breach-charter.md`. Open decision recorded there: does **Kyri** name the voice, the notation, or both. Pending note only — no fossil row until the Kyri spec mutant seats; opens no cut.
+
 Grep helpers: `living mutant` · `fossil — living path` · paths in this table.
 
 ---
