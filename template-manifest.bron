@@ -20,6 +20,96 @@ status proposal
 # this file and its witness proves: no personal path, no real key, no real
 # name ever appears in the projected seed.
 
+# ============================================================
+# ALLOWLIST — the SHIP DRIVER (seated 20260810 on Keaton's word).
+# The projection ships ONLY these `allow` paths; everything else in
+# the tree is withheld by default. This flips the seed from a
+# denylist (scrub everything, hope the net is complete) to an
+# allowlist (ship only what is explicitly cleared) — after five
+# audit passes each found new private data. Same posture as
+# .gitignore's own `/*` + `!/path`. Allowed paths are STILL scrubbed
+# and IDENT-checked (defense in depth), and `sub_exclude` still
+# withholds a file inside an allowed dir. Prose is cleared file-by-
+# file into this list as it is proven clean; the personal-heavy dirs
+# (foundations, context/specs, external-research, active-designing,
+# expanding-prompts, waymarks, linengrow) stay withheld until each
+# file earns its place here. The template/scrub/personal lines below
+# are retained as intent documentation; `allow` alone drives the ship.
+#
+# -- code + system (clean; comments scrubbed) --
+allow amphora
+allow aurora
+allow basin
+allow brushstroke
+allow caravan
+allow cellar
+allow comlink
+allow ember
+allow glow
+allow granary
+allow dimeroll
+allow kumara
+allow lantern
+allow lattice
+allow mand
+allow mandate
+allow mandi
+allow mantra
+allow mycelium
+allow pond
+allow rishi
+allow rye
+allow scribble
+allow scribe
+allow settlement
+allow src
+allow tally
+allow tools
+allow vault
+# -- teaching (clean-authored; personal sub-parts sub_excluded) --
+allow manual
+allow docs
+allow docs-geode
+allow edu
+allow nixos-guide
+# -- the disciplines (context, granular — identity/specs/keys withheld) --
+allow context/LEXICON.md
+allow context/TAME_GUIDANCE.md
+allow context/RADIANT_STYLE.md
+allow context/TWO_ROOMS.md
+allow context/APARIGRAHA.md
+allow context/BREACH.md
+allow context/CIVIC_STYLE.md
+allow context/OPEN_QUESTIONS.md
+allow context/README.md
+allow context/SILO_TECHNIQUE.md
+allow context/SIMPLE_LOVABLE_COMPLETE.md
+allow context/THREATS.md
+allow context/equinox_map.brix
+allow context/equinox_foundations.brix
+# -- root files (identity-bearing ones scrubbed) --
+allow README.md
+allow MAP.md
+allow SOURCE.md
+allow CLAUDE.md
+allow CONTRIBUTING.md
+allow ORGANIZING.md
+allow bibliography.md
+allow llms.txt
+allow LICENSE-MIT
+allow LICENSE-APACHE
+allow LICENSE-CC-BY
+allow .brix
+allow .gitignore
+allow .gitattributes
+allow .gitmodules
+allow .cursorignore
+allow .vscode
+allow .claude
+allow .cursor
+allow GLOW_HOST.template.bron
+allow GLOW_PROFILE.template.bron
+allow PUBKEYS.template.md
 # ---- dotfiles and root config ----
 template  .brix                          # root Brix descriptor
 template  .cursorignore                  # editor ignore posture
@@ -58,6 +148,7 @@ personal  keys_xykj61_ssh_github.svg       # real key card
 # ---- language and system code (the template's heart) ----
 template  amphora                         # module
 template  aurora                          # boot
+template  basin                           # the activity basin (circular buffer, not a ring)
 template  brushstroke                     # drawing
 template  caravan                         # supervision
 template  cellar                          # module
