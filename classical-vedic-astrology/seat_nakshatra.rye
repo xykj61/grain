@@ -1,0 +1,90 @@
+//! classical-vedic-astrology/seat_nakshatra.rye — the seat → nakshatra tool.
+//!
+//! Maps a point's **d27 outfit seat** (from the public topology, `outfit_seat`) to its
+//! **nakshatra name** (the Taittirīya Brāhmaṇa roster — public facts, ASCII here). The
+//! seat is public geometry; naming it is this study's own application. Run it on your
+//! own point to learn its outfit — a private reading you record in your own hand.
+//!
+//! This lives in the astrology silo: `classical-vedic-astrology/` is `personal` in the
+//! manifest, withheld from the public seed, so the OS template never carries a chart.
+//!
+//!   rye build classical-vedic-astrology/seat_nakshatra.rye -femit-bin=classical-vedic-astrology/bin/seat_nakshatra
+//!   classical-vedic-astrology/bin/seat_nakshatra 267    # the nakshatra of point 267
+//!   classical-vedic-astrology/bin/seat_nakshatra        # selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const topology = @import("topology.rye");
+
+pub const seat_nakshatra_version = "20260810.113900";
+
+// The twenty-seven lunar mansions, in seat order (public facts; ASCII transliteration).
+// The council d27's twenty-seven seats name these; seat i wears nakshatra i.
+pub const nakshatras = [_][]const u8{
+    "Ashvini",         "Bharani",          "Krittika",
+    "Rohini",          "Mrigashira",       "Ardra",
+    "Punarvasu",       "Pushya",           "Ashlesha",
+    "Magha",           "Purva Phalguni",   "Uttara Phalguni",
+    "Hasta",           "Chitra",           "Swati",
+    "Vishakha",        "Anuradha",         "Jyeshtha",
+    "Mula",            "Purva Ashadha",    "Uttara Ashadha",
+    "Shravana",        "Dhanishta",        "Shatabhishak",
+    "Purva Bhadrapada", "Uttara Bhadrapada", "Revati",
+};
+
+/// The nakshatra a point wears as its council-d27 outfit, or null past the universe.
+pub fn nakshatra_of(point: u32) ?[]const u8 {
+    const seat = topology.council_sky.outfit_seat(point) orelse return null;
+    // invariant: the roster names exactly the council's twenty-seven seats.
+    assert(nakshatras.len == topology.council_sky.prosperity());
+    assert(seat < nakshatras.len);
+    return nakshatras[seat];
+}
+
+fn run_selftest() !u8 {
+    // invariant: the roster is exactly the council d27.
+    if (nakshatras.len != 27) return error.RosterWrong;
+    // The first point wears the first mansion, the last wears the last.
+    const first = nakshatra_of(0) orelse return error.NoFirst;
+    if (!std.mem.eql(u8, first, "Ashvini")) return error.FirstWrong;
+    const last = nakshatra_of(topology.council_sky.universe_points() - 1) orelse return error.NoLast;
+    if (!std.mem.eql(u8, last, "Revati")) return error.LastWrong;
+    // Past the universe, a point wears no outfit.
+    if (nakshatra_of(topology.council_sky.universe_points()) != null) return error.PastWorn;
+    // The example point 267 wears Shatabhishak (Varuna, a water seat) — seat 23.
+    const ex = nakshatra_of(267) orelse return error.NoExample;
+    if (!std.mem.eql(u8, ex, "Shatabhishak")) return error.ExampleWrong;
+
+    print("seat nakshatra: point 0 wears {s}, point 404 wears {s}, point 267 wears {s}; past the universe, none.\n", .{ first, last, ex });
+    print("seat nakshatra: version {s}\n", .{seat_nakshatra_version});
+    print("GREEN: seat nakshatra — a point's public d27 seat named as its nakshatra outfit from the roster.\n", .{});
+    return 0;
+}
+
+const max_line: u32 = 128;
+
+fn put_line(io: std.Io, comptime fmt: []const u8, args: anytype) void {
+    var buf: [max_line]u8 = undefined;
+    const line = std.fmt.bufPrint(&buf, fmt, args) catch return;
+    const out = std.Io.File.stdout();
+    out.writeStreamingAll(io, line) catch {};
+}
+
+fn run_point(io: std.Io, point: u32) !u8 {
+    const seat = topology.council_sky.outfit_seat(point) orelse {
+        put_line(io, "point {d} is past the council universe (405) — no outfit\n", .{point});
+        return 0;
+    };
+    put_line(io, "point {d} · seat {d} · nakshatra {s}\n", .{ point, seat, nakshatras[seat] });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2) {
+        const n = std.fmt.parseInt(u32, args[1], 10) catch return run_selftest();
+        return run_point(init.io, n);
+    }
+    return run_selftest();
+}
