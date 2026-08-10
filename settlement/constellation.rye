@@ -54,10 +54,22 @@ const pubkey_len: u32 = 32;
 const sig_len: u32 = 64;
 const digest_len: u32 = 32;
 
-// A galaxy crowns its own circle: itself, its five stars, and their sixty planets.
-// Sixty-six commitments at most — the d60 of prosperity plus the six that lead it.
-// The shared surface a constellation ever holds is bounded here, once, by name.
-pub const constellation_max: u32 = 1 + topology.stars_per_galaxy + topology.d60; // 66
+/// The commitments a galaxy's whole circle needs under a given sky: the galaxy
+/// itself, its stars, and their planets (the sky's prosperity). The compass sky
+/// yields 66; a smaller sky (council_sky's 1 + 3 + 27) fits the same slots at 31.
+/// The bound follows the loaded geometry rather than a hand-copied number.
+pub fn max_for(sky: topology.Sky) u32 {
+    // invariant: a circle holds at least the galaxy that leads it.
+    assert(sky.stars >= 1);
+    return 1 + sky.stars + sky.prosperity();
+}
+
+// A galaxy crowns its own circle: itself, its five stars, and their sixty planets —
+// the sky's prosperity (a compass galaxy's d60 of 60) plus the star-and-galaxy that
+// lead it. The shared surface a constellation ever holds is bounded here, once, by
+// the SKY: sky-computed from `compass_sky`, so the number can never drift from the
+// geometry it settles by.
+pub const constellation_max: u32 = max_for(topology.compass_sky); // 66 under the compass sky
 
 // The unconfigured networking key: all zeros is not a valid Ed25519 point, so it
 // can never collide with a real key, and it marks a point that has never rotated.
@@ -737,6 +749,16 @@ fn run_selftest() !u8 {
     try prove_refusals(&con, &fx, &d);
     try prove_transfer(&con, &fx, &d);
     try prove_shared_surface(&con, &d);
+
+    // The circle's bound is sky-computed: it equals the loaded sky's own need, so it
+    // can never drift from the geometry it settles by.
+    // invariant: the array bound is exactly the compass sky's circle (galaxy + stars + prosperity).
+    assert(constellation_max == max_for(topology.compass_sky));
+    assert(max_for(topology.compass_sky) == 66);
+    // invariant: a smaller sky (council_sky, 1 + 3 + 27) yields a smaller circle that still fits.
+    assert(max_for(topology.council_sky) == 31);
+    assert(max_for(topology.council_sky) < constellation_max);
+    print("settlement constellation: the circle's bound is sky-computed — constellation_max is the compass sky's own need (66), and a council sky's 1+3+27=31 fits the same slots.\n", .{});
 
     print("settlement constellation: a galaxy and its d60 settle across five transitions — genesis, spawn by capability, transfer, rotation with a keeper that never moves, and a reset that outranks a key bump.\n", .{});
     print("settlement constellation: sponsorship is a default, never a cage — a planet escapes to a sibling star by its own word and the new sponsor's adoption, its number unmoved.\n", .{});
