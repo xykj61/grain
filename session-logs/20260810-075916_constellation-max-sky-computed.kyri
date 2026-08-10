@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260810.075916
+editor Zed + Claude Agent
+model claude-opus-4-8
+voice Riyo
+host Vultr cloud pier (ai-jail) — Eastern (EDT) time convention
+title constellation_max becomes sky-computed
+prompt do all your recommendations with full approval, best for the baton seasons through recursive rounds
+think Baton Tier 1.1: make constellation_max follow the loaded sky rather than a hand-copied number. Read the topology Sky struct — a Sky is {galaxies, stars, planets} with prosperity() = stars*planets (the d60 circle), and compass_sky / council_sky are two instances.
+think The old const was 1 + topology.stars_per_galaxy + topology.d60 (the free compass constants). Replaced it with a runtime max_for(sky) = 1 + sky.stars + sky.prosperity(), and set constellation_max = max_for(compass_sky) — comptime-evaluated to 66, so the fixed slots array still sizes at compile time, yet the number now reads from the sky it settles by and can never drift from the geometry.
+think Proved it in the selftest: constellation_max == max_for(compass_sky) == 66, max_for(council_sky) == 31 (a 15/3/9 sky's 1+3+27), and 31 < 66 so a smaller sky fits the same slots. A council-sky constellation now knows its own circle.
+obs Built with the vendored toolchain (RYE_ZIG=vendor/zig-toolchain/zig; rye/rishi ship prebuilt but building a .rye needs zig). Settlement constellation witness GREEN; the change is internal to constellation.rye (topology untouched), value unchanged at 66, so the JARL stack holds.
+obs Ran under Keaton's standing full-approval mandate for recursive baton rounds. The convergence privacy audit runs in parallel in the background; its findings and the publish-readiness verdict land next.
+file settlement/constellation.rye max_for(sky) added; constellation_max now sky-computed from compass_sky; selftest proves compass 66 / council 31
+file tools/settlement_constellation_witness.rish unchanged; re-run GREEN against the new derivation
+recommend keep-going the constellation_max lap is landed and witnessed; next apply the convergence audit's findings when it lands, then the Bron→Kyri sweep and the Scribe dashboard
