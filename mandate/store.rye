@@ -7,20 +7,19 @@
 //! (normalized on upsert), so a query is a plain dot product — no norms recomputed at
 //! search time, the turbopuffer trick in our own hand.
 //!
-//! Two properties this first lap keeps, both named by the maintainer:
+//! Properties this store keeps, each named by the maintainer:
 //!
 //!   * **Zero-copy.** A query never copies a stored vector; it reads each record in
-//!     place, by reference, and accumulates the dot product. The store owns the bytes
-//!     once; search borrows them.
+//!     place, by reference, and accumulates the dot product.
 //!   * **Bounded, exact.** The store, the dimension, and the result count each name a
-//!     maximum. Search is exact brute-force k-nearest — every record considered — which
-//!     is correct at this scale; an approximate index is a horizon, not a shortcut
-//!     taken silently here.
+//!     maximum. Search is exact brute-force k-nearest.
+//!   * **Full CRUD.** upsert (create/update), query (read), remove (delete) — all bounded.
+//!   * **Profile-loaded dimension.** The active dimension is **data**, carried on the
+//!     Store and set at `init` (the way topology loads a sky), bounded by a comptime
+//!     `max_dim`. One binary serves any dimension from 1 to max_dim.
 //!
 //! A record carries a **tag** beside its vector, so a query may filter — "the nearest
 //! images, but only nature ones" — the metadata filter every real vector store owes.
-//! First data partner, on the horizon: Unsplash image embeddings; here the vectors are
-//! plainly synthetic, so no key or network is touched.
 //!
 //!   rye build mandate/store.rye -femit-bin=mandate/bin/store
 //!   mandate/bin/store selftest
@@ -31,9 +30,10 @@ const print = std.debug.print;
 
 pub const store_version = "20260810.031234";
 
-// The vector dimension. Small here so the witness hand-verifies; a real Mandate loads
-// its dimension from a profile the way topology loads a sky. Named once, bounded.
-pub const dim: u32 = 4;
+// The maximum vector dimension — the comptime bound every record's storage is sized to.
+// The ACTIVE dimension is data, carried on the Store and set at init from a profile the
+// way topology loads a sky; only the leading `store.dim` components carry meaning.
+pub const max_dim: u32 = 8;
 
 // The store's capacity, and the most results one query returns. A bounded organ names
 // its limits and enforces them at the edge.
@@ -41,6 +41,7 @@ pub const max_records: u32 = 64;
 pub const max_k: u32 = 16;
 
 pub const StoreError = error{ Full };
+pub const DimError = error{ BadDim };
 
 /// One nearest-neighbour match: the record's id and its similarity to the query,
 /// in [-1, 1] where 1 is the same direction.
@@ -55,29 +56,37 @@ pub const QueryResult = struct {
     count: u32,
 };
 
-/// A stored record — an id, a filterable tag, and a **unit** vector (normalized on
-/// upsert, so search is a dot product).
+/// A stored record — an id, a filterable tag, and a **unit** vector. The vector is
+/// sized to `max_dim`; only the store's active `dim` leading components carry meaning,
+/// the rest are zero.
 pub const Record = struct {
     id: u32,
     tag: u32,
-    vec: [dim]f32,
+    vec: [max_dim]f32,
 };
 
-/// The store — a bounded array of records and how many are filled. The array never
-/// reallocates, so a query may hold references into it while it scans.
+/// The store — a bounded array of records, how many are filled, and the active
+/// dimension. The array never reallocates, so a query may hold references into it.
 pub const Store = struct {
     records: [max_records]Record,
     filled: u32,
+    dim: u32,
 
-    /// A fresh, empty store.
-    pub fn init() Store {
-        return .{ .records = undefined, .filled = 0 };
+    /// A fresh, empty store of active dimension `dim` — the profile's value, bounded
+    /// by max_dim. A dimension outside 1..=max_dim is refused rather than clamped.
+    pub fn init(dim: u32) DimError!Store {
+        // invariant: a real embedding has at least one component and never exceeds the bound.
+        if (dim < 1 or dim > max_dim) return error.BadDim;
+        return .{ .records = undefined, .filled = 0, .dim = dim };
     }
 };
 
-/// The dot product of two vectors, accumulated in f64 so many small terms keep their
-/// precision before the result narrows back to the caller's use.
-fn dot(a: *const [dim]f32, b: *const [dim]f32) f64 {
+/// The dot product over the first `dim` components, accumulated in f64 so many small
+/// terms keep their precision before the result narrows back to the caller's use.
+fn dot(a: *const [max_dim]f32, b: *const [max_dim]f32, dim: u32) f64 {
+    // invariant: the active dimension stays within the storage bound.
+    assert(dim >= 1);
+    assert(dim <= max_dim);
     var acc: f64 = 0;
     var i: u32 = 0;
     while (i < dim) : (i += 1) {
@@ -86,13 +95,13 @@ fn dot(a: *const [dim]f32, b: *const [dim]f32) f64 {
     return acc;
 }
 
-/// A vector scaled to length one — its direction alone, magnitude discarded, so that
-/// cosine similarity becomes a dot product. A real embedding is never the zero vector.
-fn normalized(vec: *const [dim]f32) [dim]f32 {
-    const n = @sqrt(dot(vec, vec));
+/// A vector scaled to length one over its active `dim` components — its direction
+/// alone, so cosine similarity becomes a dot product. The unused tail stays zero.
+fn normalized(vec: *const [max_dim]f32, dim: u32) [max_dim]f32 {
+    const n = @sqrt(dot(vec, vec, dim));
     // invariant: only a non-zero vector has a direction to keep.
     assert(n > 0);
-    var out: [dim]f32 = undefined;
+    var out = [_]f32{0} ** max_dim;
     var i: u32 = 0;
     while (i < dim) : (i += 1) {
         out[i] = @floatCast(@as(f64, vec[i]) / n);
@@ -100,12 +109,13 @@ fn normalized(vec: *const [dim]f32) [dim]f32 {
     return out;
 }
 
-/// Add or replace a record. The vector is normalized to a unit direction before it is
-/// stored; upserting an existing id updates it in place, so an id is unique.
-pub fn upsert(store: *Store, id: u32, tag: u32, vec: *const [dim]f32) StoreError!void {
+/// Add or replace a record. The vector is normalized to a unit direction (over the
+/// store's active dimension) before it is stored; upserting an existing id updates it
+/// in place, so an id is unique.
+pub fn upsert(store: *Store, id: u32, tag: u32, vec: *const [max_dim]f32) StoreError!void {
     // invariant: the fill count never runs past the bounded records.
     assert(store.filled <= max_records);
-    const unit = normalized(vec);
+    const unit = normalized(vec, store.dim);
     var i: u32 = 0;
     while (i < store.filled) : (i += 1) {
         if (store.records[i].id == id) {
@@ -156,12 +166,12 @@ fn insert_topk(result: *QueryResult, k: u32, id: u32, score: f32) void {
 
 /// The k records nearest `query_vec` by cosine similarity, most similar first —
 /// optionally only those whose tag matches `filter_tag`. Zero-copy: each record's
-/// vector is read in place, never copied.
-pub fn query(store: *const Store, query_vec: *const [dim]f32, k: u32, filter_tag: ?u32) QueryResult {
+/// vector is read in place, never copied. Similarity is over the store's active dim.
+pub fn query(store: *const Store, query_vec: *const [max_dim]f32, k: u32, filter_tag: ?u32) QueryResult {
     // invariant: a query asks for at least one and at most `max_k` results.
     assert(k >= 1);
     assert(k <= max_k);
-    const q = normalized(query_vec);
+    const q = normalized(query_vec, store.dim);
     var result = QueryResult{ .matches = undefined, .count = 0 };
     var i: u32 = 0;
     while (i < store.filled) : (i += 1) {
@@ -170,7 +180,7 @@ pub fn query(store: *const Store, query_vec: *const [dim]f32, k: u32, filter_tag
             if (rec.tag != t) continue;
         }
         // Both are unit vectors, so their dot product is the cosine similarity.
-        const score: f32 = @floatCast(dot(&q, &rec.vec));
+        const score: f32 = @floatCast(dot(&q, &rec.vec, store.dim));
         insert_topk(&result, k, rec.id, score);
     }
     // invariant: the result is sorted most-similar first.
@@ -184,13 +194,14 @@ pub fn query(store: *const Store, query_vec: *const [dim]f32, k: u32, filter_tag
 // --- selftest -----------------------------------------------------------
 
 // A small store of "image" vectors, framed as embeddings: two nature (tag 1), two
-// city (tag 2). Directions chosen so the nearest neighbours are legible by hand.
+// city (tag 2), at active dimension 4. Directions legible by hand; vectors are sized
+// to max_dim, the unused tail zero.
 fn seat_store() !Store {
-    var store = Store.init();
-    const red: [dim]f32 = .{ 1, 0, 0, 0 };
-    const green: [dim]f32 = .{ 0, 1, 0, 0 };
-    const blue: [dim]f32 = .{ 0, 0, 1, 0 };
-    const teal: [dim]f32 = .{ 1, 1, 0, 0 }; // between red and green
+    var store = try Store.init(4);
+    const red: [max_dim]f32 = .{ 1, 0, 0, 0, 0, 0, 0, 0 };
+    const green: [max_dim]f32 = .{ 0, 1, 0, 0, 0, 0, 0, 0 };
+    const blue: [max_dim]f32 = .{ 0, 0, 1, 0, 0, 0, 0, 0 };
+    const teal: [max_dim]f32 = .{ 1, 1, 0, 0, 0, 0, 0, 0 }; // between red and green
     try upsert(&store, 1, 1, &red); // nature
     try upsert(&store, 2, 1, &green); // nature
     try upsert(&store, 3, 2, &blue); // city
@@ -200,7 +211,7 @@ fn seat_store() !Store {
 
 fn prove_nearest(store: *const Store) !void {
     // A query close to "red" (id 1), leaning slightly toward "green".
-    const q: [dim]f32 = .{ 1, 0.1, 0, 0 };
+    const q: [max_dim]f32 = .{ 1, 0.1, 0, 0, 0, 0, 0, 0 };
     const r = query(store, &q, 2, null);
     // invariant: two results, most similar first.
     if (r.count != 2) return error.WrongCount;
@@ -216,7 +227,7 @@ fn prove_nearest(store: *const Store) !void {
 
 fn prove_filter(store: *const Store) !void {
     // The same query, but only nature (tag 1) — city records are never considered.
-    const q: [dim]f32 = .{ 1, 0.1, 0, 0 };
+    const q: [max_dim]f32 = .{ 1, 0.1, 0, 0, 0, 0, 0, 0 };
     const r = query(store, &q, 3, 1);
     // Only two nature records exist, so at most two return, both tag 1.
     if (r.count != 2) return error.FilterCountWrong;
@@ -225,13 +236,13 @@ fn prove_filter(store: *const Store) !void {
 
 fn prove_topk_and_update(store: *Store) !void {
     // Ask for one result only — the single nearest.
-    const q: [dim]f32 = .{ 0, 0, 1, 0 }; // straight at "blue" (id 3)
+    const q: [max_dim]f32 = .{ 0, 0, 1, 0, 0, 0, 0, 0 }; // straight at "blue" (id 3)
     const one = query(store, &q, 1, null);
     if (one.count != 1 or one.matches[0].id != 3) return error.TopOneWrong;
 
     // Upsert id 1 with a new direction and tag — an update in place, not a new record.
     const before = store.filled;
-    const moved: [dim]f32 = .{ 0, 0, 1, 0 }; // id 1 now points at blue
+    const moved: [max_dim]f32 = .{ 0, 0, 1, 0, 0, 0, 0, 0 }; // id 1 now points at blue
     try upsert(store, 1, 2, &moved);
     if (store.filled != before) return error.UpdateGrewStore;
     // Now a blue-ward query finds id 1 at the top (tied direction, but id 1 scanned first).
@@ -248,7 +259,7 @@ fn prove_remove(store: *Store) !void {
     if (!hit) return error.RemoveMissedExisting;
     if (store.filled != before - 1) return error.RemoveDidNotShrink;
     // A query no longer returns id 3 anywhere in its results.
-    const q: [dim]f32 = .{ 0, 0, 1, 0 };
+    const q: [max_dim]f32 = .{ 0, 0, 1, 0, 0, 0, 0, 0 };
     const r = query(store, &q, max_k, null);
     var j: u32 = 0;
     while (j < r.count) : (j += 1) {
@@ -260,17 +271,36 @@ fn prove_remove(store: *Store) !void {
     if (store.filled != before_miss) return error.MissingRemoveChangedStore;
 }
 
+fn prove_profile_dim() !void {
+    // The dimension is DATA: a second store in the SAME binary runs a different
+    // active dimension (2) — no recompile, the profile's value alone.
+    var store = try Store.init(2);
+    const x: [max_dim]f32 = .{ 1, 0, 0, 0, 0, 0, 0, 0 };
+    const y: [max_dim]f32 = .{ 0, 1, 0, 0, 0, 0, 0, 0 };
+    try upsert(&store, 10, 0, &x);
+    try upsert(&store, 11, 0, &y);
+    const q: [max_dim]f32 = .{ 1, 0.2, 0, 0, 0, 0, 0, 0 }; // leans toward x (id 10)
+    const r = query(&store, &q, 2, null);
+    if (r.count != 2) return error.ProfileDimCount;
+    if (r.matches[0].id != 10) return error.ProfileDimNearest;
+    // A dimension outside 1..=max_dim is refused, never clamped.
+    if (Store.init(0)) |_| return error.ZeroDimAccepted else |_| {}
+    if (Store.init(max_dim + 1)) |_| return error.OverDimAccepted else |_| {}
+}
+
 fn run_selftest() !u8 {
     var store = try seat_store();
     try prove_nearest(&store);
     try prove_filter(&store);
     try prove_topk_and_update(&store);
     try prove_remove(&store);
+    try prove_profile_dim();
 
     print("mandate store: a vector store — upsert normalizes to a unit direction, so a query is a dot product; the nearest by cosine similarity returns most-similar-first, bounded and exact.\n", .{});
     print("mandate store: zero-copy — each record's vector is read in place at query time, never copied; the store owns the bytes once and search borrows them.\n", .{});
     print("mandate store: a tag filters the search (the nearest, but only nature); an upsert on an existing id updates in place, never growing the store.\n", .{});
     print("mandate store: remove drops a record by id (swap-remove, no realloc, no hole); a missing id changes nothing — create, read, update, delete all bounded.\n", .{});
+    print("mandate store: the dimension is data — set at init from a profile, bounded by max_dim; one binary serves any dim 1..=max_dim, and an out-of-bound dim is refused.\n", .{});
     print("mandate store: version {s}\n", .{store_version});
     print("GREEN: mandate store — Grain's turbopuffer, a bounded zero-copy vector store: nearest-neighbour by cosine over unit vectors, with a metadata filter, exact and witnessed.\n", .{});
     return 0;

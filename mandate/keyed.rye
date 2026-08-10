@@ -36,19 +36,19 @@ pub const KeyError = error{ NotOwner, BadSignature, StoreFull };
 
 // A vector on the wire: each f32's IEEE-754 bit pattern, little-endian, so its digest
 // is the same on every target. dim components, four bytes each.
-const vec_bytes_len: u32 = store.dim * 4;
+const vec_bytes_len: u32 = store.max_dim * 4;
 
-fn vec_to_bytes(vec: *const [store.dim]f32) [vec_bytes_len]u8 {
+fn vec_to_bytes(vec: *const [store.max_dim]f32) [vec_bytes_len]u8 {
     var out: [vec_bytes_len]u8 = undefined;
     var i: u32 = 0;
-    while (i < store.dim) : (i += 1) {
+    while (i < store.max_dim) : (i += 1) {
         const bits: u32 = @bitCast(vec[i]);
         std.mem.writeInt(u32, out[i * 4 ..][0..4], bits, .little);
     }
     return out;
 }
 
-fn vec_digest(vec: *const [store.dim]f32) [digest_len]u8 {
+fn vec_digest(vec: *const [store.max_dim]f32) [digest_len]u8 {
     const bytes = vec_to_bytes(vec);
     var out: [digest_len]u8 = undefined;
     Sha256.hash(&bytes, &out, .{});
@@ -59,7 +59,7 @@ fn vec_digest(vec: *const [store.dim]f32) [digest_len]u8 {
 // digest — 40 bytes, fixed, so possessing an id is never enough to write for it.
 const auth_msg_len: u32 = 4 + 4 + digest_len; // 40
 
-fn auth_message(out: *[auth_msg_len]u8, point: u32, tag: u32, vec: *const [store.dim]f32) void {
+fn auth_message(out: *[auth_msg_len]u8, point: u32, tag: u32, vec: *const [store.max_dim]f32) void {
     std.mem.writeInt(u32, out[0..4], point, .little);
     std.mem.writeInt(u32, out[4..8], tag, .little);
     const d = vec_digest(vec);
@@ -68,14 +68,14 @@ fn auth_message(out: *[auth_msg_len]u8, point: u32, tag: u32, vec: *const [store
 
 /// Sign a record — the owner's word that this exact vector, with this tag, belongs to
 /// this point. Signed under the keeper seed.
-pub fn sign_record(keeper_seed: *const [kumara.seed_length]u8, point: u32, tag: u32, vec: *const [store.dim]f32) [sig_len]u8 {
+pub fn sign_record(keeper_seed: *const [kumara.seed_length]u8, point: u32, tag: u32, vec: *const [store.max_dim]f32) [sig_len]u8 {
     const kp = kumara.keypair_from_seed(keeper_seed);
     var msg: [auth_msg_len]u8 = undefined;
     auth_message(&msg, point, tag, vec);
     return kumara.sign(&msg, kp, null).toBytes();
 }
 
-fn verify_record(keeper: [pubkey_len]u8, point: u32, tag: u32, vec: *const [store.dim]f32, sig: *const [sig_len]u8) bool {
+fn verify_record(keeper: [pubkey_len]u8, point: u32, tag: u32, vec: *const [store.max_dim]f32, sig: *const [sig_len]u8) bool {
     const pub_key = kumara.PublicKey.fromBytes(keeper) catch return false;
     var msg: [auth_msg_len]u8 = undefined;
     auth_message(&msg, point, tag, vec);
@@ -92,7 +92,7 @@ pub fn upsert_owned(
     con: *const settlement.Constellation,
     deed: *const settlement.Deed,
     tag: u32,
-    vec: *const [store.dim]f32,
+    vec: *const [store.max_dim]f32,
     keeper_sig: *const [sig_len]u8,
 ) KeyError!void {
     // invariant: the caller owns the point — its deed is the current member.
@@ -175,20 +175,20 @@ fn ghost_deed(point: u32) settlement.Deed {
 
 fn run_selftest() !u8 {
     const w = try seat_world();
-    var vstore = store.Store.init();
+    var vstore = try store.Store.init(4);
 
     // The planet's owner stores a vector for its point, signed by its keeper.
-    const pv: [store.dim]f32 = .{ 1, 0, 0, 0 };
+    const pv: [store.max_dim]f32 = .{ 1, 0, 0, 0, 0, 0, 0, 0 };
     const psig = sign_record(&p_keeper, planet_num, 1, &pv);
     try upsert_owned(&vstore, &w.con, &w.planet, 1, &pv, &psig);
 
     // The star's owner stores its own vector.
-    const sv: [store.dim]f32 = .{ 0, 1, 0, 0 };
+    const sv: [store.max_dim]f32 = .{ 0, 1, 0, 0, 0, 0, 0, 0 };
     const ssig = sign_record(&s_keeper, star_num, 2, &sv);
     try upsert_owned(&vstore, &w.con, &w.star, 2, &sv, &ssig);
 
     // A search returns point numbers, and each resolves to its place in the fractal.
-    const q: [store.dim]f32 = .{ 1, 0.1, 0, 0 };
+    const q: [store.max_dim]f32 = .{ 1, 0.1, 0, 0, 0, 0, 0, 0 };
     const r = store.query(&vstore, &q, 2, null);
     if (r.count != 2) return error.WrongCount;
     if (r.matches[0].id != planet_num) return error.NearestNotPlanet;
@@ -199,7 +199,7 @@ fn run_selftest() !u8 {
 
     // A non-owner cannot write — a ghost deed for a point that never settled refuses.
     const ghost = ghost_deed(500);
-    const gv: [store.dim]f32 = .{ 0, 0, 1, 0 };
+    const gv: [store.max_dim]f32 = .{ 0, 0, 1, 0, 0, 0, 0, 0 };
     const gsig = sign_record(&p_keeper, 500, 1, &gv);
     if (upsert_owned(&vstore, &w.con, &ghost, 1, &gv, &gsig)) |_| return error.GhostWrote else |e| {
         if (e != error.NotOwner) return error.GhostWrongError;
@@ -212,13 +212,13 @@ fn run_selftest() !u8 {
     }
 
     // A tampered vector refuses — the signature is over the exact vector's digest.
-    const tampered: [store.dim]f32 = .{ 1, 0, 0, 0.5 };
+    const tampered: [store.max_dim]f32 = .{ 1, 0, 0, 0.5, 0, 0, 0, 0 };
     if (upsert_owned(&vstore, &w.con, &w.planet, 1, &tampered, &psig)) |_| return error.TamperedWrote else |e| {
         if (e != error.BadSignature) return error.TamperedWrongError;
     }
 
     // Ownership updates in place: the planet's owner re-signs a new vector, same point.
-    const pv2: [store.dim]f32 = .{ 0, 0, 1, 0 };
+    const pv2: [store.max_dim]f32 = .{ 0, 0, 1, 0, 0, 0, 0, 0 };
     const psig2 = sign_record(&p_keeper, planet_num, 1, &pv2);
     const before = vstore.filled;
     try upsert_owned(&vstore, &w.con, &w.planet, 1, &pv2, &psig2);
