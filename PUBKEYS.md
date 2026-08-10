@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
-**Voice:** Riyo
+**Voice:** Kyri
 **Since:** `20260713.201910` (this fork's first commit)
 **Last updated:** `20260730.160405` (SUNN13 — affirm Livermore · GitHub dual)
 

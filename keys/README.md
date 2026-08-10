@@ -1,7 +1,7 @@
 # Keys in This Folder
 
 **Language:** EN  
-**Voice:** Riyo  
+**Voice:** Kyri  
 **Last updated:** `20260730.153549` (SUNN10 — living identity face)  
 **Living identity:** `xykj61` / **Keaton Livermore** (see `../PUBKEYS.md`)  
 **Dated filing:** first file in this folder named the `xykj61` / Keaton Dunsford identity (`20260716.115927`) — that stamp stays; the living name is Livermore.

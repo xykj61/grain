@@ -16,12 +16,12 @@ let ex = run ["test" "-f" "tools/key-card.conf.example"]
 assert ex.ok else "sunn6: key-card.conf.example ABSENT"
 
 let ops_body = read-file "manual/guides/first-day-personal-ops.md"
-assert ops_body contains "Voice:** Riyo" else "sunn6: ops want Voice Riyo"
+assert ops_body contains "Voice:** Kyri" else "sunn6: ops want Voice Riyo"
 assert ops_body contains "SOURCE.md" else "sunn6: ops want SOURCE cite"
 assert ops_body contains "Claude iOS" else "sunn6: ops want Claude iOS note"
 
 let cards_body = read-file "manual/guides/key-cards-setup.md"
-assert cards_body contains "Voice:** Riyo" else "sunn6: cards want Voice Riyo"
+assert cards_body contains "Voice:** Kyri" else "sunn6: cards want Voice Riyo"
 assert cards_body contains "FP_SSH_SECOND" else "sunn6: cards want FP_SSH_SECOND"
 assert cards_body contains "ssh_second.svg" else "sunn6: cards want ssh_second.svg"
 assert cards_body contains "SOURCE.md" else "sunn6: cards want SOURCE cite"
