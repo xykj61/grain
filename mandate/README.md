@@ -1,7 +1,7 @@
 # Mandate — Grain's turbopuffer
 
 **Language:** EN
-**Status:** Living — the vector store · lap 1 seated `20260810.031234` · lap 2 (**remove** — full CRUD) `20260810`
+**Status:** Living — the vector store · lap 1 seated `20260810.031234` · lap 2 (**remove** — full CRUD) `20260810` · lap 3 (**profile-loaded dim**) `20260810`
 **Voice:** Kyri
 **Kin:** the first build of the breach's new arc (`../expanding-prompts/20260810-025942_the-handoff-baton-vision-checkpoint.md`)
 
@@ -11,7 +11,8 @@ Mandate is Grain's search organ — a **vector store**, its own answer to turbop
 
 - **Cosine similarity, via unit vectors.** Nearness is the angle between two directions. Mandate normalizes every vector to length one **on upsert**, so a query is a plain **dot product** — no norms recomputed at search time. That is the turbopuffer trick, in our own hand.
 - **Zero-copy.** A query never copies a stored vector; it reads each record **in place**, by reference, and accumulates the dot product. The store owns the bytes once; search borrows them.
-- **Bounded, exact.** The store (`max_records`), the dimension (`dim`), and the result count (`max_k`) each name a maximum, enforced at the edge. Search is exact brute-force k-nearest — every record considered — which is correct at this scale. An approximate index (for scale past a single node) is a named horizon, not a shortcut taken silently.
+- **Bounded, exact.** The store (`max_records`), the dimension (`max_dim`), and the result count (`max_k`) each name a maximum, enforced at the edge. Search is exact brute-force k-nearest — every record considered — which is correct at this scale. An approximate index (for scale past a single node) is a named horizon, not a shortcut taken silently.
+- **Profile-loaded dimension (lap 3, `20260810`).** The active dimension is **data**, carried on the `Store` and set at `init(dim)` — the way topology loads a sky — bounded by the comptime `max_dim`. One compiled binary serves any dimension from 1 to `max_dim`; a dimension outside that range is **refused (`error.BadDim`), never clamped**. Vectors are stored at `max_dim` width with only the leading `dim` components meaningful (the tail zero). Proven by `prove_profile_dim`: a second store at a different dimension runs in the same binary, and out-of-bound dims are rejected. Reading `dim` from an actual Bron profile file is the next micro-lap.
 - **A metadata filter.** Each record carries a **tag** beside its vector, so a query may filter — *the nearest images, but only nature ones* — the filter every real vector store owes.
 - **Full CRUD (lap 2, `20260810`).** `remove(id)` drops a record by a **swap-remove** — the last filled record fills the gap — so the store never grows a hole and never reallocates; a missing id changes nothing and returns `false`. With `upsert` (create/update) and `query` (read), the store now closes create · read · update · delete, each bounded. Order does not matter, since a query re-sorts by score. Proven by `prove_remove` in the selftest: a removed record leaves the store and never returns in a search.
 
@@ -32,7 +33,7 @@ A bare store keys a vector by any `u32`. [`keyed.rye`](keyed.rye) makes the key 
 ## Horizons
 
 - **Unsplash** as the first real data source — image embeddings, and a real-world camera feed (consent-gated partnership).
-- A **profile-loaded dimension** (the way topology loads a sky), so `dim` is data rather than a constant.
+- A **profile-loaded dimension** — **landed lap 3 `20260810`** (`dim` is data, bounded by `max_dim`); reading it from an actual Bron profile file is the remaining micro-lap.
 - An **approximate index** for scale, and **object-storage backing** so the store is serverless like its inspiration.
 - Served over **Comlink**, rendered on **Skate**; resolved to a spoken name via `../settlement/names.rye`.
 
