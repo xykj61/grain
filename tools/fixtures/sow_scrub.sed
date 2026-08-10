@@ -47,3 +47,15 @@ s/autoproject96/acme-owner/g
 # Those are code literals whose value is behavior, not prose — swapping them is a
 # code change with test implications, out of scope for a name/handle scrub. Any
 # file still carrying them after this pass stays WITHHELD for human judgment.
+
+# Wallet, fund, and company identifiers -> placeholders (20260810 — private, financial).
+s/6Rb5E[A-Za-z0-9]*/acme-owner-wallet/g
+s/AHs34/acme-owner-wallet/g
+s/xykj61atgmail/acme-owner/g
+s/siyafundllc/acme-fund/g
+s/siyafund/acme-fund/g
+s/thebittradingcompany/acme-co/g
+s/bitscape/acme-co/g
+s/xy96gen-z/acme-owner/g
+s/xykld2/acme-owner/g
+s/xnkg3/acme-owner/g
