@@ -54,11 +54,12 @@ timezone_label Eastern (EDT in summer · EST in winter)
 # The session-logs rule reads these as the default editor/model/voice for logs
 # written from this clone. Record the model that actually produces each log;
 # update this field when the clone switches models. Standing writing voice is
-# Riyo (20260729.205200). Quin keeps OS variant + Q-vane. Reya 2 · Rio 3 ·
-# first Riyo season rest in context/archive/. Dated Voice headers stay testimony.
+# Kyri (molted from Riyo 20260810; Riyo seated 20260729.205200). Quin keeps OS
+# variant + Q-vane. Reya 2 · Rio 3 · Riyo seasons rest in context/archive/.
+# Dated Voice headers stay testimony, never rewritten.
 editor Cursor
 model Cursor Grok 4.5 300k High Fast
-voice Riyo
+voice Kyri
 
 # --- Placeholder identities for examples ------------------------------------
 # Structurally-invalid @p placeholders for docs and commands (never a real
