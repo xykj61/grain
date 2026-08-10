@@ -2,21 +2,29 @@
 #
 #   rishi/bin/rishi run tools/rune_assert_sweep.rish
 #
-# Sweeps authored Rye for assert coverage — the TAME "say your invariants" floor:
-# every function-bearing file must carry at least one assert. Per-file density
-# (asserts per function) and missing `// invariant:` comments are reported as
-# advisory. Seated 20260810 on Keaton's word; scoped to the Mandate module first,
-# widening as more modules opt in.
+# Sweeps authored Rye for assert coverage — the TAME "say your invariants" floor.
+# Two tiers, matching TAME's own gate-vs-ratchet split:
+#   * GATE (fails RED): core module files that carry asserts must keep them — a
+#     regression guard. A gated file dropping to zero asserts fails the audit.
+#   * ADVISE (prints, never fails): the wider sweep names zero-assert modules as
+#     migrate-on-touch candidates, without gating.
+# Seated 20260810 on Keaton's word; widened across modules from the Mandate seed.
 
 say "rune-assert-sweep: Language EN — audit assert coverage across authored Rye."
-say "rune-assert-sweep: Style Radiant — name each file's asserts; refuse a zero-assert module."
-say "rune-assert-sweep: Lens TAME — every function-bearing file says at least one invariant."
+say "rune-assert-sweep: Style Radiant — gate the asserting cores; advise the rest."
+say "rune-assert-sweep: Lens TAME — a gated module says its invariants; a ratchet names the gaps."
 
-let scan = run ["sh" "tools/fixtures/rune_assert_sweep_scan.sh" "mandate/store.rye" "mandate/keyed.rye"]
-say scan.out
-# values_apart: the scan's status and its verdict key must agree, so a typo'd
-# sentinel cannot pass quietly.
-assert scan.out contains "verdict=ok" else "rune-assert-sweep: a function-bearing file carries zero asserts"
-assert scan.ok else "rune-assert-sweep: the verdict reads ok while the status fails — they must agree"
+# --- GATE: core modules that carry asserts today (regression guard) ---
+let gate = run ["sh" "tools/fixtures/rune_assert_sweep_scan.sh" "mandate/store.rye" "mandate/keyed.rye" "tally/seed.rye" "tally/gardens.rye" "caravan/seed.rye" "caravan/bounded.rye" "comlink/topology.rye" "kumara/tilak.rye" "settlement/constellation.rye" "sundial/sundial.rye"]
+say gate.out
+# values_apart: the verdict key and the exit status must agree.
+assert gate.out contains "verdict=ok" else "rune-assert-sweep: a gated core module dropped to zero asserts"
+assert gate.ok else "rune-assert-sweep: the verdict reads ok while the status fails — they must agree"
 
-say "GREEN: rune-assert-sweep — every audited Rye file says its invariants; assert coverage swept"
+# --- ADVISE: the wider sweep names zero-assert modules, never gates ---
+let advise = run ["sh" "tools/fixtures/rune_assert_sweep_scan.sh" "advise" "tally/kumara.rye" "glow/expr.rye"]
+say advise.out
+assert advise.out contains "verdict=advise" else "rune-assert-sweep: advise pass lost its verdict"
+assert advise.ok else "rune-assert-sweep: advise pass must never fail"
+
+say "GREEN: rune-assert-sweep — ten gated cores keep their asserts; the wider sweep names its ratchet gaps"
