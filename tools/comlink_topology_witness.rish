@@ -1,0 +1,22 @@
+# comlink_topology_witness.rish — the d12·d60 fractal address space.
+#
+# Proves the JARL topology: twelve galaxies to a universe, five stars to a galaxy
+# (its d5), twelve planets to a star (its d12), a galaxy leading a d60 of sixty.
+# A point number decodes to a place, a place has a sponsor (planet→star→galaxy,
+# the sponsor tilak's own parent link), and two places share a route counted in
+# honest hops — within a galaxy, and one bridge across.
+#
+# Build first:  rye build comlink/topology.rye -femit-bin=comlink/bin/topology
+#   rishi/bin/rishi run tools/comlink_topology_witness.rish
+
+let st = run ["comlink/bin/topology" "selftest"]
+assert st.ok else "comlink topology selftest must exit 0"
+assert (st.err contains "GREEN") else "topology must report GREEN"
+assert (st.err contains "12·5·12") else "the d12·d60 shape must hold"
+assert (st.err contains "d60=60") else "a galaxy leads a d60 of sixty"
+assert (st.err contains "792/universe") else "a universe holds 792 points"
+assert (st.err contains "encode/decode inverse on every point") else "a number and its place round-trip"
+assert (st.err contains "sponsor chain planet->star->galaxy") else "the sponsor chain climbs the tiers"
+assert (st.err contains "routing by number") else "two places share a route by number"
+
+say "GREEN: comlink topology — the d12·d60 fractal address space: a number names a place, a place has a sponsor, and two places share a route."

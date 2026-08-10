@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` — the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `364f439150` · Grain · cloud pier
+**Git nib:** `4e6686ee72` · Grain · cloud pier
 **Host:** Framework · EDT (`America/New_York`) · Vultr SEA VPS (HP AMD 2vCPU/4GB shared · never EWR) · this session in ai-jail
 
 ---
@@ -18,11 +18,11 @@
 | Equinox | Waymark | Holds |
 |---|---|---|
 | The Language | **SOON** ✓ | **Rishi language spine complete** — runes `^- ?! ?& ?| ?:` · regex `matches`/`find` (`{n,m}` · `\b` · lookbehind) · `sort`/`unique`/`upper` · list `+` · `fold` · user functions `fn`. Seams folded native: `claim_preserve` · `census_control`. Open: `mold→shape` · TAME core/shelf · Brix-infuse · PLEAC · Aurora |
-| Identity & Network | **JARL** | **Kumara template (5 tilaks)** + **Comlink turn-route** + **live handshake** landed (`comlink/handshake_turn.rye`: introduction gate admits · rotation gate keys the wire, independently) · settlement ledger · d12/d60 next |
+| Identity & Network | **JARL** | **Kumara** (5 tilaks) · **Comlink** turn-route + live handshake (loop closed) · **d12·d60 fractal topology** landed (`comlink/topology.rye`: 12·5·12, sponsor chain, routing by number) · settlement ledger · Sui next |
 | Surface & Intelligence | **BUHR** | Realidream DAG surface · Quin's four voices (Lattice · Scribble · Lantern · Ember) · MCP-in-Bron · Tablecloth |
 | The World | **TACT** | Ship-Pilot pitch · publishing · Grainphone · commerce · CONTRIBUTING four-doors · Grain Energy PBC |
 
-**Now at JARL j2 — the live handshake, loop closed.** Coords **s1 · JARL e2 · j2**. The identity template stands (`kumara/tilak.rye`: point · bind · turn · cap×3 · sponsor, each signed, every tamper refuses). The network reads it end to end: **`comlink/handshake_turn.rye`** asks a crossing two questions in one breath — *who are you* (the signed introduction admits the peer) and *which key do I seal to* (`turn_route.rye` verifies the peer's turn, takes the freshest — a reset outranks any key rotation — refuses replay and forgery). **The loop is closed**: `handshake_wire` recovers the turn from the descriptor bytes it arrived in (`turn_to_bytes` · 112 bytes), doubly held — the introducer signed the descriptor, the turn carries the peer's own signature. Identity and rotation gate **independently**. All witnessed GREEN. Held for Keaton: settlement ledger (Sui or Grain-native), final scarcity tiering, human-name custody. Then the d12/d60 topology. Baton: [`../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md`](../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md).
+**Now at JARL — identity, network, and the fractal address space.** Coords **s1 · JARL e2 · j2**. Three seats stand, each witnessed GREEN: **(1) Identity** — `kumara/tilak.rye` seats five signed tilaks (point · bind · turn · cap×3 · sponsor), every tamper refusing. **(2) Network** — `comlink/handshake_turn.rye` reads a peer's rotation end to end: a signed introduction admits the peer, `turn_route.rye` takes the freshest verified turn (a reset outranks any key rotation; replay and forgery refused), and `handshake_wire` recovers that turn from the 112 descriptor bytes it rode in — the loop closed from wire to route key. **(3) Topology** — `comlink/topology.rye` seats the **d12·d60 fractal address space**: twelve galaxies to a universe, five stars to a galaxy (its d5), twelve planets to a star (its d12), a galaxy leading a d60 of sixty; a point number decodes to a place, a place's sponsor climbs planet→star→galaxy (grounding the sponsor tilak), and two places share a route by number — within a galaxy, one bridge across. Held for Keaton: the settlement ledger (Sui or Grain-native), whether to keep the d12·d60 scarcity or the elder Azimuth tiering on the Point, human-name custody. Then Sui settlement. Baton: [`../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md`](../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md).
 
 ---
 

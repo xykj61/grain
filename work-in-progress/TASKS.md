@@ -20,7 +20,9 @@
 | **Comlink turn-route** — routing reads the turn tilak (verify · freshest-wins · replay/forgery refused), hands the wire the networking key | JARL | **LANDED** (`comlink/turn_route.rye`) |
 | **Comlink live handshake** — introduction gate admits + rotation gate keys the wire, independently | JARL | **LANDED** (`comlink/handshake_turn.rye`) |
 | **Descriptor carries the turn on the wire** — `handshake_wire` recovers it from 112 descriptor bytes (`turn_to_bytes`), loop closed | JARL | **LANDED** |
-| d12/d60 topology — how points find their peers | JARL | next journey |
+| **d12·d60 fractal topology** — the address space (12·5·12, d60=60, 792/universe), sponsor chain, routing by number | JARL | **LANDED** (`comlink/topology.rye`) |
+| Reconcile the Point's tier (elder Azimuth 2⁸/2¹⁶/2³²) with the topology's d12·d60 scarcity | JARL | Keaton's word |
+| Settlement — the constellation on Sui | JARL | next journey · word-gated |
 | Rishi rune heads — `^-` · `?!` · `?&` · `?|` landed | SOON | **LANDED** (four heads) |
 | Rishi **`matches`** + **`find`** pattern primitives — bounded NFA, `{n,m}` · `\b`, linear-time, 600+ cases vs Python re | SOON | **LANDED** — boolean-test and extract seams both unlocked |
 | Rishi `sort` · `unique` · `upper` · list `+` · lookbehind | SOON | **LANDED** |
