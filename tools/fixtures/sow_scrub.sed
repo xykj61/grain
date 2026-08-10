@@ -162,3 +162,38 @@ s/vegan\.financial/acme.example/g
 s/vegan\.work/acme.example/g
 s/construction3x39\.\(com\|sol\)/acme-construction.example/g
 s/\bconstruction3x39\b/acme-construction/g
+
+# ============================================================
+# Convergence audit (20260810 · wgn0745jf) — a 5th pass found a family-history
+# layer, a third key fingerprint, and name-in-path leaks. Collapse the broken
+# double-scrub FIRST, then the bare surname; scrub the family enterprise, the org,
+# the third fingerprint, the leaked path slugs, and the region codes.
+# ============================================================
+s/the maintainer Sealy the maintainer/the maintainer/g
+s/Bob the maintainer/the maintainer/g
+s/Robert Sealy/a family member/g
+s/\bSealy\b/the maintainer/g
+s/\bZendex\b/a family enterprise/g
+s/Direct Action Everywhere/an advocacy organization/g
+s/\bDxE\b/an advocacy organization/g
+s/\bKyler\b/a public figure/g
+
+# -- a third live GPG fingerprint (sandbox) + the master short-id and its filename --
+s/CC8BA67125E202E1DB0CBFD70E632656F07DD30B/[redacted-fingerprint]/g
+s/\bCC8BA671\b/[redacted-fingerprint]/g
+s/gpg_signing_06462132/gpg_signing_redacted/g
+s/\b06462132\b/[redacted-keyid]/g
+
+# -- names surviving in link/fixture PATH slugs (prose already scrubbed) --
+s/wayne-hsiung/a-public-figure/g
+s/helen-atthowe/a-public-figure/g
+s/sarah-guo/a-public-figure/g
+s/kyler-murray/a-public-figure/g
+s/ariana-grande/a-public-figure/g
+s/kamala-harris/a-public-figure/g
+s/-ariana\b/-a-public-figure/g
+s/-avanti\b/-a-public-figure/g
+
+# -- VPS region codes that pin the pier's geography (provider already scrubbed) --
+s/SEA only/one region only/g
+s/never EWR/never a second region/g
