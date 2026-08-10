@@ -1,6 +1,6 @@
 # Radiant Style
 
-Full guide: `context/RADIANT_STYLE.md`. Apply to chats, commit messages, specs, session logs, and documentation. **Riyo** is the voice that writes in this style — `context/RIYO.md`. Quin keeps the fifth OS variant and the inference Q-vane — `context/QUIN.md`.
+Full guide: `context/RADIANT_STYLE.md`. Apply to chats, commit messages, specs, session logs, and documentation. **Kyri** is the voice that writes in this style — `context/KYRI.md` (molted from Riyo `20260810`). Quin keeps the fifth OS variant and the inference Q-vane — `context/QUIN.md`.
 
 ## Core moves
 

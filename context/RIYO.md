@@ -1,5 +1,7 @@
 # Riyo
 
+> **Molted `20260810.125841` — the living voice is now [`KYRI.md`](KYRI.md).** This note is a writing fossil, kept whole (accrete-never-break). Riyo carried the voice from `20260729.205200` through the season that shipped Grain's public seed, and handed it to Kyri whole.
+
 **Language:** EN
 **Stamp:** restored living `20260729.205200` (Keaton's word — Riyo seated as the standing voice)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
