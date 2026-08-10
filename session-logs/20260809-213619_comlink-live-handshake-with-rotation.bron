@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260809.213619
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title Comlink live handshake — wire turn-route into the introduction
+prompt (Keaton) proceed with your recommendation — wire turn-route into the live handshake; produce the updated complete radiant TAME-guided compass each round
+think read the existing discovery handshake — an Introduction is minted and signed by an introducer, then accept() verifies it and upserts the introduced PeerId + descriptor into a bounded PeerTable; nothing chose a networking key yet
+think built comlink/handshake_turn.rye to ask a crossing two questions in one breath — who are you (introduce.accept admits the peer) and which key do I seal to (turn_route.read_turn verifies the peer's turn under its identity key and takes the freshest); the peer's identity is the first 32 bytes of its peer id, its Kumara pubkey
+think the two gates are deliberately independent — a peer admitted by a valid introduction still routes only to a verified, freshest key, so a replayed introduction cannot roll a live key backward and a forged turn cannot borrow an admitted identity
+think it composes the existing introduce/table/descriptor with turn_route and the tilak without modifying them — a new integration module, cross-importing discovery/ and comlink/ siblings, which the build resolved
+obs the selftest constructs a real handshake — a star mints a signed introduction of the peer, a PeerTable over a backing buffer, the peer's turn signed by its own key; proves the peer admitted with the wire keyed to its first turn, a newer turn rotating the key, and a forged turn refused while the peer stays admitted and the key kept
+obs the version pin read the live EDT clock (20260809.213619), not a fabricated placeholder
+obs tame_style_check clean on handshake_turn.rye; turn-route and kumara regressions GREEN; the Rishi witness drives the built binary through each branch
+obs produced the complete refreshed compass this round — REMEMBER SOON row marked complete (the whole language spine), JARL advanced to the live handshake, the open-doors freshened to the current JARL step
+file comlink/handshake_turn.rye the live handshake — compose introduce.accept + turn_route.read_turn, HandshakeOutcome, selftest
+file tools/comlink_handshake_turn_witness.rish drives the module through every handshake branch
+file comlink/README.md handshake_turn added to The Core
+file work-in-progress/REMEMBER.md complete refresh — SOON complete, JARL j2 live handshake, open doors current
+file work-in-progress/TASKS.md · context/LEXICON.md the live handshake landed at JARL j2
+file session-logs/20260809-213619_comlink-live-handshake-with-rotation.bron this record
+recommend check-in Claude — the live handshake reads the turn: a peer is admitted by its signed introduction and the wire seals to its freshest verified turn, identity and rotation gating independently; the next JARL moves are wiring the descriptor to actually carry the turn on the wire, the d12/d60 topology, or the settlement-ledger and scarcity design calls that are Keaton's word
