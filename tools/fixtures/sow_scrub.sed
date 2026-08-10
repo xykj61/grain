@@ -197,3 +197,15 @@ s/-avanti\b/-a-public-figure/g
 # -- VPS region codes that pin the pier's geography (provider already scrubbed) --
 s/SEA only/one region only/g
 s/never EWR/never a second region/g
+
+# -- lowercase name forms in slugs / waymark input-names / link paths. The leak scan
+#    is case-insensitive while these rules are case-sensitive, so a doc with a
+#    lowercase name in a path was withheld though its prose scrubbed clean. Close it. --
+s/keaton/the-maintainer/g
+s/kaeden/the-maintainer/g
+s/livermore/the-maintainer/g
+s/dunsford/the-maintainer/g
+s/\bsabin\b/a-friend/g
+s/\bsealy\b/the-maintainer/g
+s/\bzendex\b/a-family-enterprise/g
+s/mayacama/a-club/g
