@@ -62,3 +62,73 @@ s/xnkg3/acme-owner/g
 s/DJINN/a friend/g
 s/DJINN/a friend/g
 s/DJINN/a friend/g
+
+# ============================================================
+# Name-audit remediation (20260810) — the 8-agent seed audit
+# (w34sfmeai) found 42 real identifiers surviving the scrub.
+# Ordered longest-first; \b guards short risky words; a
+# protect->scrub->restore dance keeps public "Serena Williams"
+# and the OS name "Grain" while scrubbing the private senses.
+# ============================================================
+
+# -- protect the public VC figure before any bare-Serena scrub --
+s/Serena Williams/PROTECT_SERENA_WILLIAMS/g
+s/Serena Ventures/PROTECT_SERENA_VENTURES/g
+
+# -- ventures / domains / handles (real accounts and filings) --
+s/Grain Energy PBC/a public benefit company/g
+s/Grain_Energy_PBC/a_public_benefit_company/g
+s/Grain Energy/a civic venture/g
+s/grain\.energy/acme.example/g
+s/grain_energy/acme-owner/g
+s/groupproject36/acme-owner/g
+s/Siya Fund PBC/a fund/g
+s/Siya Fund/a fund/g
+s/Facebook Marketplace/an online marketplace/g
+s/Tlon Corporation/a real workplace/g
+s/The Ecological Farm/an ecological farm/g
+
+# -- places / infrastructure (the pier's real location) --
+s/Reno, NV/a region/g
+s/Washoe County/a county/g
+s/Vultr SEA/a cloud region/g
+s/Vultr Seattle/a cloud region/g
+s/Sabey SDC Columbia/a datacenter/g
+s/East Wenatchee/a region/g
+s/\bWenatchee\b/a region/g
+s/\bVultr\b/a cloud provider/g
+s/\bSeattle\b/a coastal city/g
+s/Daylight DC-1/a tablet/g
+
+# -- public figures named as fund / voice dedications --
+s/Ariana Grande/a public figure/g
+s/Kyler Murray/a public figure/g
+s/Kamala Harris/a public figure/g
+s/Sarah Guo/a public figure/g
+s/Wayne Hsiung/a public figure/g
+s/Helen Atthowe/a public figure/g
+s/Ido Portal/a movement teacher/g
+s/Chong Xie/an architect/g
+s/\bHyperarch\b/an architecture practice/g
+s/Parisa Yazdi/a designer/g
+s/\bAvanti\b/a public figure/g
+s/\bKia\b/an automaker/g
+s/\bHyundai\b/an automaker/g
+
+# -- private individuals (real people in the maintainer's life) --
+s/Sara the maintainer/a co-founder/g
+s/\bSara\b/a co-founder/g
+s/Nate aka Wiggy/a videographer/g
+s/\bWiggy\b/a videographer/g
+s/\bRoger\b/a manager/g
+s/Serena/a family member/g
+
+# -- restore the protected public references --
+s/PROTECT_SERENA_WILLIAMS/Serena Williams/g
+s/PROTECT_SERENA_VENTURES/Serena Ventures/g
+
+# -- live OpenPGP key fingerprints (keyserver-resolvable to the real identity) --
+s/0646 2132 D3E6 3B83 4F97 6E03 A81D 720B 9235 FA7A/[redacted-fingerprint]/g
+s/DBF8 5343 7A93 7B4E 36B9 3611 D949 807A C26B 2B99/[redacted-fingerprint]/g
+s/06462132D3E63B834F976E03A81D720B9235FA7A/[redacted-fingerprint]/g
+s/DBF853437A937B4E36B93611D949807AC26B2B99/[redacted-fingerprint]/g

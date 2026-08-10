@@ -30,7 +30,7 @@ A bare store keys a vector by any `u32`. [`keyed.rye`](keyed.rye) makes the key 
 
 ## Horizons
 
-- **Unsplash** as the first real data source — image embeddings, IRL ROC camera (consent-gated partnership).
+- **Unsplash** as the first real data source — image embeddings, and a real-world camera feed (consent-gated partnership).
 - A **profile-loaded dimension** (the way topology loads a sky), so `dim` is data rather than a constant.
 - An **approximate index** for scale, and **object-storage backing** so the store is serverless like its inspiration.
 - Served over **Comlink**, rendered on **Skate**; resolved to a spoken name via `../settlement/names.rye`.
