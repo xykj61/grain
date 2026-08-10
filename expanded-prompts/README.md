@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living — seated `20260810` (Keaton's word)
-**Voice:** Riyo
+**Voice:** Kyri
 
 This folder holds **cold** prompts: intents that were expanded and have come to rest — past records, kept for the memory of how the work grew. Its warm twin, [`../expanding-prompts/`](../expanding-prompts/), holds the **hot** ones: plans still active and live, in motion now.
 

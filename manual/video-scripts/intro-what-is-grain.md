@@ -1,7 +1,7 @@
 # Video Script — "What Is Grain OS?" (Intro, ~2:40)
 
 **Purpose:** the first video a newcomer watches. Zero prior knowledge assumed.
-**Voice:** Riyo — warm, plain, radiant civic. Second person ("you"), never a named person.
+**Voice:** Kyri — warm, plain, radiant civic. Second person ("you"), never a named person.
 **Render notes:** built for **Remotion** (code-driven, on-brand terminal captures) or **HeyGen** (talking-head narration over the same captures). Each scene gives `[VISUAL]`, `[ON-SCREEN]` text, and `[VOICEOVER]`. Timings are targets. Every command shown is real and runs green in the template.
 **License:** original script, this project's own. No third-party footage, music, or text.
 

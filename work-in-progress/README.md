@@ -3,7 +3,7 @@
 **Language:** EN
 **Last updated:** `20260802.142508` (EDT) · Equinox J4 · A1–A4 · M1–M4 COMPLETE · standing voice Riyo
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Voice:** Riyo
+**Voice:** Kyri
 **Status:** Foundation — living workbench; prefer **git nib** · see [`REMEMBER.md`](REMEMBER.md) · [`ROADMAP.md`](ROADMAP.md) · [`TASKS.md`](TASKS.md)
 
 **Finishing edge now:** Tend T1–T6 · C1–C4 · A1–A4 · M1–M4 GREEN · a1 gated on Keaton's kg · Q58 parked · Cursor-sole.

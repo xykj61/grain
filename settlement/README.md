@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living — settlement constellation seated `20260809.224715`; shared-surface shrink (Deed/Commitment split) `20260810.004547`
-**Voice:** Riyo
+**Voice:** Kyri
 **Equinox:** JARL (Identity & Network) · Journey 4
 
 Settlement is the ledger. Where `../comlink/topology.rye` is the geometry — which number sits where in the d12·d60 fractal — and `../kumara/tilak.rye` is the deed — who holds a number, and how it moves — this module is the record of who has actually **settled**: in what order, under whose authority, at what version.

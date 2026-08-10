@@ -1,6 +1,6 @@
 # The Glow Almanac
 
-**Language:** EN · **Voice:** Riyo · **Status:** Living reference — chartered empty on purpose
+**Language:** EN · **Voice:** Kyri · **Status:** Living reference — chartered empty on purpose
 **Chartered:** `20260730.021034` (Voice v28 · slot 12 · opening_lines_and_silo) · home movable on Keaton's word
 **Elder:** [`archive/ALMANAC.md`](archive/ALMANAC.md) — the Rye almanac, 310 lines, every one earned; this book inherits its law and none of its text
 

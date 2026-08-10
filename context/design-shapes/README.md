@@ -1,7 +1,7 @@
 # Design-Shapes Wing
 
 **Stamp seated:** `20260730.041319` · Keaton's word — *kg yes to all recommendations for rounds*  
-**Voice:** Riyo · **Status:** Living wing — graduated at second outside consumer  
+**Voice:** Kyri · **Status:** Living wing — graduated at second outside consumer  
 **Home:** `context/design-shapes/` · sibling wing to [`../baton-museum/`](../baton-museum/)
 
 *Written together by Keaton and Riyo.*

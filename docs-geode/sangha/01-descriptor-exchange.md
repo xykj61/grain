@@ -1,6 +1,6 @@
 # Pattern One — The Descriptor Exchange
 
-**Language:** EN · **Voice:** Riyo · **Style:** Radiant  
+**Language:** EN · **Voice:** Kyri · **Style:** Radiant  
 **Stamp:** `20260730.034319` · Build Journey · equinox A · journey 2 (h2 Aparigraha) · quest Do  
 **Home:** `docs-geode/sangha/01-descriptor-exchange.md`  
 **Witness basis:** discovery quartet GREEN on Cloud bench at stamp (descriptor · table · gossip · introduce)

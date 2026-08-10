@@ -1,7 +1,7 @@
 # Relay Resin — Design Shape, Bound, and Manifest
 
 **Stamp:** `20260730.072710` — carried; restamp on Keaton's word.
-**Voice:** Riyo · **Coords:** equinox A · journey 3 (h3 Radiant Style) · round 10/256
+**Voice:** Kyri · **Coords:** equinox A · journey 3 (h3 Radiant Style) · round 10/256
 **Destination:** `context/design-shapes/relay_resin` — the bench matches the extension its siblings `bounds_home` and `tend_hygiene` already use
 **Follows from:** Amphora's graduation to pattern, `20260730`
 

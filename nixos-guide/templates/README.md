@@ -1,6 +1,6 @@
 # Pier flake templates
 
-**Language:** EN · **Style:** Radiant · **Voice:** Riyo
+**Language:** EN · **Style:** Radiant · **Voice:** Kyri
 
 The tracked shape for a declared pier. Copy into the living machine directory, fill the keys, and rebuild.
 
