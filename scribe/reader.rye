@@ -186,6 +186,17 @@ pub fn validates_ledgerworks(doc: *const Document) bool {
         doc.get("next") != null and doc.count_key("member") >= 1;
 }
 
+// --- sibling extensions: .kyri and .bron -------------------------------
+// The notation molted from **Bron** to **Kyri** on the maintainer's word, yet the two
+// extensions are **siblings, not a succession**: Scribe reads and records both as one
+// notation, one format family. A `.bron` session log and a `.kyri` session log are the
+// same shape by different names; neither is a fossil the reader turns away.
+
+/// Whether a filename carries a Scribe-recorded extension — `.kyri` or its sibling `.bron`.
+pub fn is_scribe_extension(name: []const u8) bool {
+    return std.mem.endsWith(u8, name, ".kyri") or std.mem.endsWith(u8, name, ".bron");
+}
+
 // --- selftest -----------------------------------------------------------
 
 const sample_log =
@@ -306,15 +317,26 @@ fn prove_fleet() !void {
     if (validates_galleon(&st) or validates_cutter(&st)) return error.StrayValidated;
 }
 
+fn prove_siblings() !void {
+    // .kyri and .bron are sibling extensions — Scribe records both as one notation.
+    if (!is_scribe_extension("session-logs/20260810-113354_a-log.kyri")) return error.KyriNotRecognized;
+    if (!is_scribe_extension("session-logs/archive/20260713-201910_old.bron")) return error.BronNotRecognized;
+    // A different extension is not Scribe's to record.
+    if (is_scribe_extension("README.md")) return error.MdWronglyRecognized;
+    if (is_scribe_extension("bron")) return error.BareWordWronglyRecognized;
+}
+
 fn run_selftest() !u8 {
     try prove_parse();
     try prove_zero_copy();
     try prove_dispatch();
     try prove_fleet();
+    try prove_siblings();
 
     print("scribe reader: a Kyri document parses into key-value fields, zero-copy — each field slices into the source, never copied; a repeatable key keeps every occurrence.\n", .{});
     print("scribe reader: Scribe reads by format — a session-log-v1 and a baton-v1 are told apart and read by one honest reader, the counsel's one-notation-many-formats made real.\n", .{});
     print("scribe reader: the bat fleet — a baton may declare an archetype (galleon·cutter·barque·holdfast·corsair·ledgerworks), and the reader validates each shape's required fields, refusing a short one.\n", .{});
+    print("scribe reader: .kyri and .bron are sibling extensions — the notation molted from Bron to Kyri, yet Scribe records both as one format family, neither a fossil.\n", .{});
     print("scribe reader: version {s}\n", .{reader_version});
     print("GREEN: scribe reader — the Kyri voice's home reads its own records: parse a document, dispatch by its format, get a field, count a repeated key — bounded and zero-copy.\n", .{});
     return 0;
