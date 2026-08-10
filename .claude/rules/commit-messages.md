@@ -1,7 +1,7 @@
 
-# Commit Messages — Riyo, Radiant, CONTRIBUTING-Style
+# Commit Messages — Kyri, Radiant, CONTRIBUTING-Style
 
-**Always on.** Every commit in this tree follows Urbit's own `CONTRIBUTING.md` shape, written in Riyo's Radiant Style — never a bare terse line, never an unexplained diff.
+**Always on.** Every commit in this tree follows Urbit's own `CONTRIBUTING.md` shape, written in Kyri's Radiant Style — never a bare terse line, never an unexplained diff.
 
 ## Subject line
 
@@ -19,7 +19,7 @@ Every commit body carries, in Radiant Style:
 
 ## Voice
 
-Commit messages speak in **Riyo's** voice: the same sweet, capable, affirmative register as everything else in this tree. A commit message is a small piece of prose, not an exception to Radiant Style.
+Commit messages speak in **Kyri's** voice: the same sweet, capable, affirmative register as everything else in this tree. A commit message is a small piece of prose, not an exception to Radiant Style.
 
 ## Worked example
 

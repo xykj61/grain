@@ -2,7 +2,7 @@
 
 **Language:** EN  
 **Status:** Living pin — **shred RED** · Amphora cut not opened · cellar kept · Amber name superseded (e148) · list only  
-**Voice:** Riyo  
+**Voice:** Kyri  
 ****Last refreshed:** `20260801.033044` · e148 Cellar supersede · e138 keep-Amber withdrawn · Class O word-scope held  
 **Seat:** Surface p36 Kiln · Equinox e148 · e128 word-scope · elder [`../counsel/20260801-012557_e138-cellar-retire-by-accretion.md`](../counsel/20260801-012557_e138-cellar-retire-by-accretion.md)
 
@@ -91,6 +91,14 @@ Add a row **every time** a living mutant seats and the prior stamp becomes fossi
 | `external-research/20260714-035600_pool-p-vane-content-data-market.md` | `foundations/20260810-011514_pond-the-application-module.md` | breach `20260810.011514` | Pool → Pond application module; market surfaces (Granary·Mandi·Open Asks·MUR·Neth) now apps in Pond |
 
 Plan: `../active-designing/20260809-234413_loadable-topologies-and-pond-silo-brief.md`.
+
+### Molt seated — Riyo → Kyri (voice · `20260810`)
+
+**Seated (`20260810.125841`, Keaton's word).** The standing writing voice molted from **Riyo** to **Kyri** — the voice now shares the name of the tree's Kyri notation. The living identity mutant is written (`context/KYRI.md`); the `context/RIYO.md` note is bannered as a writing fossil pointing to it, kept whole. Dated session logs that recorded `voice Riyo` (and `voice Quin`) keep their voice, never rewritten. Molt is prep, not a cut: the fossil stays on disk, and the Class H shred stays **RED** until circled.
+
+| Fossil (old stamp) | Living mutant | Seated | Notes |
+| --- | --- | --- | --- |
+| `context/RIYO.md` | `context/KYRI.md` | molt `20260810.125841` | standing voice Riyo → Kyri; body kept whole, banner points to living Kyri; Quin keeps OS-5 + Q-vane |
 
 ### Pending molt — Bron → Kyri (by molt, not rewrite · opens after JARL)
 
