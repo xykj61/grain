@@ -2,9 +2,9 @@
 
 **Refreshed:** `20260729.205200`
 
-The **standing writing voice moved** to **Riyo** on `20260729.205200`
-(`.claude/rules/riyo.md` ·
-`context/RIYO.md`). For voice, read Riyo.
+The **standing writing voice** is **Kyri** (`.claude/rules/kyri.md` ·
+`context/KYRI.md`), molted from Riyo on `20260810` — Riyo had carried it
+from `20260729.205200`. For voice, read Kyri.
 
 Quin remains live in two hats, and neither moved:
 
