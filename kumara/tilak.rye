@@ -394,8 +394,8 @@ pub fn emit_sponsor(io: std.Io, s: *const Sponsor) void {
 const example_key_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
 const example_keeper_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
 const example_net_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
-const example_number: u32 = 29; // a star in the d12·d60 fractal — of_star(3,2)
-const example_chosen_parent: u32 = 5; // an escape to a different galaxy
+const example_number: u32 = 27; // a star in the inclusive fractal — of_star(3,2), galaxy 3
+const example_chosen_parent: u32 = 7; // an escape to a different galaxy (default is 3)
 
 // The whole example instance — every tilak, from the example seeds.
 const Instance = struct { b: Bind, p: Point, t: Turn, tend: Cap, sow: Cap, hand: Cap, s: Sponsor };

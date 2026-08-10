@@ -2,9 +2,9 @@
 
 At the end of **every** response — before finishing the turn — write a session log to `session-logs/`. The log captures the step-by-step reasoning followed before and during any prose writing, repository update, or code implementation, together with the changes made. It is a record kept for years.
 
-## Format — Bron (living law)
+## Format — Kyri (living law; molted from Bron `20260810`)
 
-**New logs are `.bron`**, not Markdown. Bron carries immutable values at seams (key-value, one field per line, `#` comments, no quotes, no braces). See `active-designing/yonder/20260621-063912_bron-notation.md` and counsel `20260707-222500`.
+**New logs are `.kyri`** — the notation formerly named **Bron**, molted to Kyri on Keaton's word (`20260810`): the same immutable-value format (key-value, one field per line, `#` comments, no quotes, no braces), a warmer name from the favorites list. Spec: `active-designing/yonder/20260621-063912_bron-notation.md` (bannered as the Kyri notation; kept readable) and counsel `20260707-222500`. The **2,163 existing `.bron` logs are never renamed** — the one-clock law and accrete-never-break protect every dated artifact, and tools read both extensions. A full sweep of the remaining living Bron references to Kyri, and teaching the fold/align tools `.kyri`, follow as their own rounds.
 
 Historical Markdown logs live under `session-logs/archive/YYYYMMDD/` (folded by day). Do not create new `.md` session logs.
 

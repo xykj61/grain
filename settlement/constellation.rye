@@ -468,14 +468,15 @@ const new_owner: [kumara.seed_length]u8 = .{0xaa} ** kumara.seed_length;
 const s2_key: [kumara.seed_length]u8 = .{0xcc} ** kumara.seed_length;
 const s2_keeper: [kumara.seed_length]u8 = .{0xdd} ** kumara.seed_length;
 
-// A sibling star under galaxy 3, for the planet to escape to: encode(of_star(3,0)) = 27.
-const star2_num: u32 = 27;
+// A sibling star under galaxy 3, for the planet to escape to: of_star(3,1) = 15.
+const star2_num: u32 = 15;
 
-// Topology numbers, checked against the fractal: galaxy 3, its star (3,2), its
-// planet (3,2,7). encode(of_star(3,2)) = 29; encode(of_planet(3,2,7)) = 283.
+// Topology numbers in the inclusive fractal: galaxy 3, its star (3,2) = 3 + 2·12 = 27,
+// its planet (3,2,4) = 27 + 4·60 = 267. Sponsorship is by modulus: 267 mod 60 = 27,
+// 27 mod 12 = 3.
 const galaxy_num: u32 = 3;
-const star_num: u32 = 29;
-const planet_num: u32 = 283;
+const star_num: u32 = 27;
+const planet_num: u32 = 267;
 
 // The binds and caps the selftest settles from, seated once.
 const Fixture = struct {
@@ -610,14 +611,14 @@ fn prove_escape_refusals(con: *Constellation, d: *Deeds) !void {
     if (escape(con, &d.galaxy, &d.star, &g_req, &zero_sig)) |_| return error.GalaxyEscaped else |e| {
         if (e != error.CannotEscape) return error.GalaxyEscapeWrongError;
     }
-    // The planet already answers to star 27; re-parenting to 27 is no escape.
+    // The planet already answers to its escaped sponsor, star 15; re-parenting there is none.
     const same = tilak.make_sponsor(&p_key, planet_num, star_num, star2_num);
     if (escape(con, &d.planet, &d.star2, &same, &zero_sig)) |_| return error.NoOpEscaped else |e| {
         if (e != error.NotAnEscape) return error.NoOpWrongError;
     }
-    // A sponsor that never settled cannot adopt — an unsettled star-30 deed.
-    const absent_deed = unsettled_deed(30);
-    const absent = tilak.make_sponsor(&p_key, planet_num, star2_num, 30);
+    // A sponsor that never settled cannot adopt — an unsettled star-39 deed (of_star(3,3)).
+    const absent_deed = unsettled_deed(39);
+    const absent = tilak.make_sponsor(&p_key, planet_num, star2_num, 39);
     if (escape(con, &d.planet, &absent_deed, &absent, &zero_sig)) |_| return error.AbsentAdopted else |e| {
         if (e != error.NotSettled) return error.AbsentWrongError;
     }
@@ -645,27 +646,28 @@ fn prove_refusals(con: *Constellation, fx: *const Fixture, d: *Deeds) !void {
     const other_bind = tilak.make_bind(&new_owner, &new_owner);
     const zero_sig: [sig_len]u8 = .{0} ** sig_len;
 
-    // A planet whose star (30) was never settled cannot mint — present an unsettled
-    // parent deed; the shared surface has no commitment for it.
-    const orphan_parent = unsettled_deed(30);
-    if (mint(con, &orphan_parent, 288, &other_bind, &fx.s_sow, &zero_sig)) |_| return error.OrphanAccepted else |e| {
+    // A planet whose star (39) was never settled cannot mint — present an unsettled
+    // parent deed; the shared surface has no commitment for it. Planet 99 = of_planet(3,3,1).
+    const orphan_parent = unsettled_deed(39);
+    if (mint(con, &orphan_parent, 99, &other_bind, &fx.s_sow, &zero_sig)) |_| return error.OrphanAccepted else |e| {
         if (e != error.ParentNotSettled) return error.OrphanWrongError;
     }
-    // Claiming the wrong sponsor: planet (3,2,8) = 284 belongs under star 29, not the
-    // galaxy — presenting the galaxy's deed as its parent refuses.
-    if (mint(con, &d.galaxy, 284, &other_bind, &fx.g_sow, &zero_sig)) |_| return error.WrongSponsorAccepted else |e| {
+    // Claiming the wrong sponsor: planet 327 = of_planet(3,2,5) belongs under star 27,
+    // not the galaxy — presenting the galaxy's deed as its parent refuses (327 mod 60 = 27).
+    if (mint(con, &d.galaxy, 327, &other_bind, &fx.g_sow, &zero_sig)) |_| return error.WrongSponsorAccepted else |e| {
         if (e != error.WrongSponsor) return error.WrongSponsorWrongError;
     }
     // A forged spawn cap (flipped signature) refuses — the keeper never signed it.
+    // Planet 387 = of_planet(3,2,6), a genuine child of star 27.
     var bad_sow = fx.s_sow;
     bad_sow.sig[0] ^= 0x01;
-    const spawn284 = make_authority(&s_key, 284, &other_bind.kumara_pubkey);
-    if (mint(con, &d.star, 284, &other_bind, &bad_sow, &spawn284)) |_| return error.ForgedCapAccepted else |e| {
+    const spawn387 = make_authority(&s_key, 387, &other_bind.kumara_pubkey);
+    if (mint(con, &d.star, 387, &other_bind, &bad_sow, &spawn387)) |_| return error.ForgedCapAccepted else |e| {
         if (e != error.BadAuthority) return error.ForgedCapWrongError;
     }
     // A valid cap with a forged holder signature refuses — the public cap record is
     // never enough; the holder's key must sign this child.
-    if (mint(con, &d.star, 284, &other_bind, &fx.s_sow, &zero_sig)) |_| return error.ForgedSpawnAccepted else |e| {
+    if (mint(con, &d.star, 387, &other_bind, &fx.s_sow, &zero_sig)) |_| return error.ForgedSpawnAccepted else |e| {
         if (e != error.BadAuthority) return error.ForgedSpawnWrongError;
     }
     // A point settles once — re-minting the planet refuses.

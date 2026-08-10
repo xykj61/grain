@@ -61,7 +61,7 @@ A role worn is an **outfit**, and if we draw the figure, the cloth is honest: he
 The build order (breach opened `20260810`):
 
 1. Seat `sky` — **landed `20260810`** as a Rye `Sky` struct + two seated skies (`compass_sky`, `council_sky`); the Bron/Brix *descriptor* form (a sky as a data file Pond reads) is still ahead.
-2. Parameterize `topology.rye`; grow the witness to two skies — **landed `20260810`**: `Sky.decode`/`encode` read a sky's own counts, the free `decode`/`encode` delegate to `compass_sky`, and `council_sky` (15·3·9, d27, 465) round-trips every point. All six JARL witnesses stay GREEN.
+2. Parameterize `topology.rye`; grow the witness to two skies — **landed `20260810`**: `Sky.decode`/`encode` read a sky's own counts, the free `decode`/`encode` delegate to `compass_sky`, and `council_sky` (15·3·9, d27, 405 inclusive) round-trips every point. All six JARL witnesses stay GREEN.
 3. Move `constellation_max` to a sky-computed bound; re-run the settlement witness on both skies. *(next)*
 4. Add the **role** tilak to Kumara; witness the mode and the three role-dimensions signing and refusing.
 5. Teach Pond to load a sky (`customs` admits a sky as it admits a policy); **Pool retired into Pond by molt — done at the breach `20260810`**.

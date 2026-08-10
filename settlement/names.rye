@@ -232,10 +232,11 @@ const s_keeper: [kumara.seed_length]u8 = .{0x55} ** kumara.seed_length;
 const p_key: [kumara.seed_length]u8 = .{0x77} ** kumara.seed_length;
 const p_keeper: [kumara.seed_length]u8 = .{0x88} ** kumara.seed_length;
 
-// Topology numbers: galaxy 3, its star (3,2) = 29, its planet (3,2,7) = 283.
+// Topology numbers, inclusive fractal: galaxy 3, its star (3,2) = 27, its planet
+// (3,2,4) = 267. Sponsorship by modulus (267 mod 60 = 27, 27 mod 12 = 3).
 const galaxy_num: u32 = 3;
-const star_num: u32 = 29;
-const planet_num: u32 = 283;
+const star_num: u32 = 27;
+const planet_num: u32 = 267;
 
 // The authority a sow-cap holder signs to spawn a specific child: the child number
 // then the child's identity key — the same 36-byte shape the settlement mint checks.
