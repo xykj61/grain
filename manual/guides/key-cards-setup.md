@@ -3,7 +3,7 @@
 **Language:** EN  
 **Version:** `20260730.145723` (EDT)  
 **Style:** Radiant (see `../../context/RADIANT_STYLE.md`)  
-**Voice:** Riyo  
+**Voice:** Kyri  
 **Status:** Guide for the task — the macOS path is witnessed end to end on this host; the Linux path is the inherited script  
 **Sibling:** [`SOURCE.md`](../../SOURCE.md) Step 4 · [`first-day-personal-ops.md`](first-day-personal-ops.md)
 
