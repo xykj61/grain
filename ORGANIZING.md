@@ -5,7 +5,7 @@
 **Language:** EN
 **Last updated:** 2026-08-02 (`20260802.183244` — e237 valve · narrowing spend returned · session-logs fold stands)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
-**Voice:** Riyo
+**Voice:** Kyri
 
 *The root gathering of sources now lives at [`bibliography.md`](bibliography.md). The baton museum and its design-shapes sibling wing live under [`context/baton-museum/`](context/baton-museum/) and [`context/design-shapes/`](context/design-shapes/).*
 
@@ -21,7 +21,7 @@ Read the sections below whenever you wonder where a new file belongs. When a sea
 
 ## The Shape of the Tree
 
-**`context/`** — memory and compass. The disciplines we keep across every track: Tiger and TAME for code rigor, Radiant for prose, Simple-Lovable-Complete for product scope, and Civic for designing public benefit so the reward points at the good. Identity (`RIYO.md`, the standing writing voice; `QUIN.md` for the fifth OS variant beside Reya · Riyo · Trey · Triz · Trya and the inference Q-vane; Reya 2, Rio 3, and the first Riyo writing season rest in `archive/`), and `specs/` for plain-English decisions that deserve a durable home.
+**`context/`** — memory and compass. The disciplines we keep across every track: Tiger and TAME for code rigor, Radiant for prose, Simple-Lovable-Complete for product scope, and Civic for designing public benefit so the reward points at the good. Identity (`KYRI.md`, the standing writing voice, molted from Riyo `20260810`; `QUIN.md` for the fifth OS variant beside Reya · Riyo · Trey · Triz · Trya and the inference Q-vane; Reya 2, Rio 3, and the Riyo writing seasons rest in `archive/`), and `specs/` for plain-English decisions that deserve a durable home.
 
 **`foundations/`** — the why beneath the work: foundation briefs, the distilled essays and the weave that composes them, and the civic visions. Dated artifacts rest beneath a living README.
 
