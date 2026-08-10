@@ -1,0 +1,401 @@
+//! settlement/names.rye — human-name custody, the SuiNS-analog.
+//!
+//! A point number is legible to a machine; a **name** is legible to a person. This
+//! module is how a settled number comes to wear a spoken name — "alice" resolving to
+//! a point, and the point resolving back — the last of JARL's settlement doors.
+//!
+//! Names are the one surface that genuinely needs **consensus**. A point's keys and
+//! custody are its owner's own business, held on the fast path in a `Deed`
+//! (`constellation.rye`); but a *name* must be globally unique, so everyone agrees
+//! who "alice" is — and that agreement is a shared registry the whole network reads
+//! together. This module is that registry, kept small and bounded.
+//!
+//! Custody, not mere registration: a name is **claimed** by the point's keeper (who
+//! must own the point and sign the exact name), and **released** by the same hand.
+//! One name maps to one point; one point wears at most one name (its primary), the
+//! policy for this first lap. Resolution runs both ways.
+//!
+//! No Move, no wallet, no key, no chain touched; the example seeds are plainly not a
+//! real pilot's, and the example names are plain words, never a real address.
+//!
+//!   rye build settlement/names.rye -femit-bin=settlement/bin/names
+//!   settlement/bin/names selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const kumara = @import("kumara.rye");
+const tilak = @import("kumara_tilak.rye");
+const topology = @import("topology.rye");
+const settlement = @import("constellation.rye");
+
+const Sha256 = std.crypto.hash.sha2.Sha256;
+
+pub const names_version = "20260810.005752";
+
+const pubkey_len: u32 = 32;
+const sig_len: u32 = 64;
+
+// A name is a short, lowercase, DNS-like label — letters, digits, and inner hyphens.
+// Bounded so a registry entry is fixed-size and a name is always legible at a glance.
+pub const max_name_len: u32 = 32;
+
+// The bounded registry: one name per point, so a universe's worth of names fits with
+// headroom. A shared surface pays for its size in consensus, so it is bounded, named.
+pub const max_names: u32 = 128;
+
+pub const NameError = error{
+    Full,
+    NotOwner,
+    BadClaim,
+    NameTaken,
+    AlreadyNamed,
+    NotNamed,
+};
+
+/// A validated human name — bounded bytes and a length. Only `make_name` builds one,
+/// so a `Name` in hand is always well-formed.
+pub const Name = struct {
+    bytes: [max_name_len]u8,
+    len: u32,
+
+    pub fn as_slice(self: *const Name) []const u8 {
+        // invariant: the length never runs past the bounded bytes.
+        assert(self.len <= max_name_len);
+        return self.bytes[0..self.len];
+    }
+};
+
+fn valid_char(c: u8) bool {
+    return (c >= 'a' and c <= 'z') or (c >= '0' and c <= '9') or c == '-';
+}
+
+/// Build a name from text, or null when the text is not a well-formed label: it must
+/// be 1..32 bytes of lowercase letters, digits, and hyphens, with no leading or
+/// trailing hyphen. Uppercase, spaces, and punctuation are refused, so a name can
+/// never be mistaken for anything but a name.
+pub fn make_name(text: []const u8) ?Name {
+    if (text.len == 0 or text.len > max_name_len) return null;
+    if (text[0] == '-' or text[text.len - 1] == '-') return null;
+    var name = Name{ .bytes = .{0} ** max_name_len, .len = @intCast(text.len) };
+    for (text, 0..) |c, i| {
+        if (!valid_char(c)) return null;
+        name.bytes[i] = c;
+    }
+    return name;
+}
+
+fn names_equal(a: *const Name, b: *const Name) bool {
+    return std.mem.eql(u8, a.as_slice(), b.as_slice());
+}
+
+// The message a keeper signs to hold or free a name: a tag (so a claim signature can
+// never be replayed as a release), the name's digest, and the point. 37 bytes, fixed.
+const name_msg_len: u32 = 1 + 32 + 4;
+const tag_claim: u8 = 1;
+const tag_release: u8 = 2;
+
+fn name_message(out: *[name_msg_len]u8, tag: u8, name: *const Name, point: u32) void {
+    out[0] = tag;
+    var nd: [32]u8 = undefined;
+    Sha256.hash(name.as_slice(), &nd, .{});
+    for (nd, 0..) |b, i| out[1 + i] = b;
+    std.mem.writeInt(u32, out[33..37], point, .little);
+}
+
+/// Sign a name claim or release under a keeper seed — the owner's word that this
+/// exact name belongs to (or leaves) this point. `tag_claim` or `tag_release`.
+pub fn sign_name(keeper_seed: *const [kumara.seed_length]u8, tag: u8, name: *const Name, point: u32) [sig_len]u8 {
+    const kp = kumara.keypair_from_seed(keeper_seed);
+    var msg: [name_msg_len]u8 = undefined;
+    name_message(&msg, tag, name, point);
+    return kumara.sign(&msg, kp, null).toBytes();
+}
+
+fn verify_name_sig(keeper: [pubkey_len]u8, tag: u8, name: *const Name, point: u32, sig: *const [sig_len]u8) bool {
+    const pub_key = kumara.PublicKey.fromBytes(keeper) catch return false;
+    var msg: [name_msg_len]u8 = undefined;
+    name_message(&msg, tag, name, point);
+    kumara.verify_bytes(&msg, sig, pub_key) catch return false;
+    return true;
+}
+
+const NameEntry = struct {
+    name: Name,
+    point: u32,
+};
+
+/// The shared name registry — the consensus surface that maps names to points, one
+/// name to one point and one point to one name. Bounded, and read both ways.
+pub const NameRegistry = struct {
+    entries: [max_names]NameEntry,
+    filled: u32,
+
+    /// A fresh, empty registry.
+    pub fn init() NameRegistry {
+        return .{ .entries = undefined, .filled = 0 };
+    }
+
+    /// Resolve a name to its point, or null — the forward read the whole world shares.
+    pub fn resolve(self: *const NameRegistry, text: []const u8) ?u32 {
+        // invariant: the fill count never runs past the bounded entries.
+        assert(self.filled <= max_names);
+        var i: u32 = 0;
+        while (i < self.filled) : (i += 1) {
+            if (std.mem.eql(u8, self.entries[i].name.as_slice(), text)) return self.entries[i].point;
+        }
+        return null;
+    }
+
+    /// Resolve a point back to its name, or null — the reverse read.
+    pub fn reverse(self: *const NameRegistry, point: u32) ?*const Name {
+        // invariant: the fill count never runs past the bounded entries.
+        assert(self.filled <= max_names);
+        var i: u32 = 0;
+        while (i < self.filled) : (i += 1) {
+            if (self.entries[i].point == point) return &self.entries[i].name;
+        }
+        return null;
+    }
+
+    fn index_of(self: *const NameRegistry, name: *const Name) ?u32 {
+        var i: u32 = 0;
+        while (i < self.filled) : (i += 1) {
+            if (names_equal(&self.entries[i].name, name)) return i;
+        }
+        return null;
+    }
+};
+
+/// Claim a name for a settled point. The claimant must own the point — its Deed
+/// verifies against the shared surface — and the point's keeper must sign this exact
+/// name. A name is globally unique (one name, one point), and a point wears at most
+/// one (its primary). This is custody's first half: taking a name into one's hand.
+pub fn claim(
+    registry: *NameRegistry,
+    con: *const settlement.Constellation,
+    deed: *const settlement.Deed,
+    name: *const Name,
+    keeper_sig: *const [sig_len]u8,
+) NameError!void {
+    // invariant: the bounded registry never overflows.
+    if (registry.filled >= max_names) return error.Full;
+    // invariant: the claimant owns the point — its deed is the current member.
+    if (!settlement.verify(con, deed)) return error.NotOwner;
+    // invariant: the point's keeper signed this exact name — a name is the owner's word.
+    if (!verify_name_sig(deed.keeper, tag_claim, name, deed.point, keeper_sig)) return error.BadClaim;
+    // invariant: a name is globally unique — one name resolves to one point.
+    if (registry.index_of(name) != null) return error.NameTaken;
+    // invariant: one point wears one name — the primary-name policy for this lap.
+    if (registry.reverse(deed.point) != null) return error.AlreadyNamed;
+
+    registry.entries[registry.filled] = .{ .name = name.*, .point = deed.point };
+    registry.filled += 1;
+    // invariant: the name now resolves to the point, and the point back to the name.
+    assert(registry.resolve(name.as_slice()).? == deed.point);
+    assert(registry.reverse(deed.point) != null);
+}
+
+/// Release a name held by a settled point, freeing it for anyone. The same hand that
+/// claimed it must sign the release — custody's second half: letting a name go. The
+/// name must exist and belong to this very point.
+pub fn release(
+    registry: *NameRegistry,
+    con: *const settlement.Constellation,
+    deed: *const settlement.Deed,
+    name: *const Name,
+    keeper_sig: *const [sig_len]u8,
+) NameError!void {
+    // invariant: the releaser owns the point.
+    if (!settlement.verify(con, deed)) return error.NotOwner;
+    // invariant: the keeper signed this exact release — never a replayed claim.
+    if (!verify_name_sig(deed.keeper, tag_release, name, deed.point, keeper_sig)) return error.BadClaim;
+    const idx = registry.index_of(name) orelse return error.NotNamed;
+    // invariant: a name is freed only by the point that actually holds it.
+    if (registry.entries[idx].point != deed.point) return error.NotOwner;
+
+    // Remove by swapping the last entry into the freed slot — the array stays packed.
+    registry.entries[idx] = registry.entries[registry.filled - 1];
+    registry.filled -= 1;
+    // invariant: the name resolves to nothing now, and the point is unnamed.
+    assert(registry.resolve(name.as_slice()) == null);
+    assert(registry.reverse(deed.point) == null);
+}
+
+// --- selftest -----------------------------------------------------------
+
+// Example seeds — plainly not a real pilot's key, so no identity is invented.
+const g_key: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
+const g_keeper: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
+const s_key: [kumara.seed_length]u8 = .{0x44} ** kumara.seed_length;
+const s_keeper: [kumara.seed_length]u8 = .{0x55} ** kumara.seed_length;
+const p_key: [kumara.seed_length]u8 = .{0x77} ** kumara.seed_length;
+const p_keeper: [kumara.seed_length]u8 = .{0x88} ** kumara.seed_length;
+
+// Topology numbers: galaxy 3, its star (3,2) = 29, its planet (3,2,7) = 283.
+const galaxy_num: u32 = 3;
+const star_num: u32 = 29;
+const planet_num: u32 = 283;
+
+// The authority a sow-cap holder signs to spawn a specific child: the child number
+// then the child's identity key — the same 36-byte shape the settlement mint checks.
+fn spawn_authority(signer_seed: *const [kumara.seed_length]u8, child_number: u32, child_identity: *const [pubkey_len]u8) [sig_len]u8 {
+    const kp = kumara.keypair_from_seed(signer_seed);
+    var msg: [4 + pubkey_len]u8 = undefined;
+    std.mem.writeInt(u32, msg[0..4], child_number, .little);
+    for (child_identity, 0..) |b, i| msg[4 + i] = b;
+    return kumara.sign(&msg, kp, null).toBytes();
+}
+
+// A settled world to name into: a galaxy, a star, and a planet, with the two deeds
+// the selftest names.
+const World = struct {
+    con: settlement.Constellation,
+    star: settlement.Deed,
+    planet: settlement.Deed,
+};
+
+fn seat_world() !World {
+    const g_bind = tilak.make_bind(&g_key, &g_keeper);
+    const s_bind = tilak.make_bind(&s_key, &s_keeper);
+    const p_bind = tilak.make_bind(&p_key, &p_keeper);
+    const opened = try settlement.open(galaxy_num, &g_bind);
+    var con = opened.con;
+    const galaxy_deed = opened.deed;
+
+    const g_sow = tilak.make_cap(&g_keeper, galaxy_num, .sow, g_bind.kumara_pubkey);
+    const spawn_star = spawn_authority(&g_key, star_num, &s_bind.kumara_pubkey);
+    const star = try settlement.mint(&con, &galaxy_deed, star_num, &s_bind, &g_sow, &spawn_star);
+
+    const s_sow = tilak.make_cap(&s_keeper, star_num, .sow, s_bind.kumara_pubkey);
+    const spawn_planet = spawn_authority(&s_key, planet_num, &p_bind.kumara_pubkey);
+    const planet = try settlement.mint(&con, &star, planet_num, &p_bind, &s_sow, &spawn_planet);
+
+    return .{ .con = con, .star = star, .planet = planet };
+}
+
+fn name_of(text: []const u8) Name {
+    return make_name(text).?;
+}
+
+// A name is claimed by its owner and resolves both ways; released, it frees.
+fn prove_claim_and_release(w: *const World, reg: *NameRegistry) !void {
+    const alice = name_of("alice");
+    const sig = sign_name(&p_keeper, tag_claim, &alice, planet_num);
+    try claim(reg, &w.con, &w.planet, &alice, &sig);
+    // The name resolves to the planet, and the planet back to the name.
+    if (reg.resolve("alice") != planet_num) return error.ResolveWrong;
+    const back = reg.reverse(planet_num) orelse return error.ReverseMissing;
+    if (!std.mem.eql(u8, back.as_slice(), "alice")) return error.ReverseWrong;
+
+    // The star claims its own name; two names live side by side.
+    const bob = name_of("bob");
+    const sig_bob = sign_name(&s_keeper, tag_claim, &bob, star_num);
+    try claim(reg, &w.con, &w.star, &bob, &sig_bob);
+    if (reg.resolve("bob") != star_num) return error.SecondResolveWrong;
+    if (reg.filled != 2) return error.FillWrong;
+
+    // The planet releases "alice" — it resolves to nothing, and the planet is unnamed.
+    const rel = sign_name(&p_keeper, tag_release, &alice, planet_num);
+    try release(reg, &w.con, &w.planet, &alice, &rel);
+    if (reg.resolve("alice") != null) return error.ReleaseLeftName;
+    if (reg.reverse(planet_num) != null) return error.ReleaseLeftPoint;
+    // "bob" is untouched; the packed array kept it.
+    if (reg.resolve("bob") != star_num) return error.ReleaseDisturbedOther;
+    if (reg.filled != 1) return error.ReleaseFillWrong;
+}
+
+// Every refusal name custody owes: a taken name, an already-named point, a
+// non-owner, a forged signature, and releasing a name one does not hold.
+fn prove_refusals(w: *const World, reg: *NameRegistry) !void {
+    const zero_sig: [sig_len]u8 = .{0} ** sig_len;
+
+    // "bob" is taken by the star; the planet cannot claim it.
+    const bob = name_of("bob");
+    const sig = sign_name(&p_keeper, tag_claim, &bob, planet_num);
+    if (claim(reg, &w.con, &w.planet, &bob, &sig)) |_| return error.TakenAccepted else |e| {
+        if (e != error.NameTaken) return error.TakenWrongError;
+    }
+    // The planet claims "alice" first, then a second name — one point, one name.
+    const alice = name_of("alice");
+    const sig_a = sign_name(&p_keeper, tag_claim, &alice, planet_num);
+    try claim(reg, &w.con, &w.planet, &alice, &sig_a);
+    const carol = name_of("carol");
+    const sig_c = sign_name(&p_keeper, tag_claim, &carol, planet_num);
+    if (claim(reg, &w.con, &w.planet, &carol, &sig_c)) |_| return error.SecondNameAccepted else |e| {
+        if (e != error.AlreadyNamed) return error.SecondNameWrongError;
+    }
+    // A non-owner cannot claim — a ghost deed for a point that never settled.
+    const ghost = unsettled_deed(500);
+    const dave = name_of("dave");
+    const sig_d = sign_name(&p_keeper, tag_claim, &dave, 500);
+    if (claim(reg, &w.con, &ghost, &dave, &sig_d)) |_| return error.GhostClaimed else |e| {
+        if (e != error.NotOwner) return error.GhostWrongError;
+    }
+    // A forged signature refuses — the keeper never signed this name.
+    const erin = name_of("erin");
+    if (claim(reg, &w.con, &w.star, &erin, &zero_sig)) |_| return error.ForgedClaimed else |e| {
+        if (e != error.BadClaim) return error.ForgedWrongError;
+    }
+    // Releasing a name one does not hold refuses — the star cannot free "alice".
+    const rel = sign_name(&s_keeper, tag_release, &alice, star_num);
+    if (release(reg, &w.con, &w.star, &alice, &rel)) |_| return error.WrongReleaseAccepted else |e| {
+        if (e != error.NotOwner) return error.WrongReleaseWrongError;
+    }
+}
+
+// A ghost deed for a point that never settled — used to prove the non-owner refusal.
+fn unsettled_deed(point: u32) settlement.Deed {
+    const addr = topology.decode(point).?;
+    const zero: [pubkey_len]u8 = .{0} ** pubkey_len;
+    return .{
+        .point = point,
+        .tier = addr.tier,
+        .identity_key = zero,
+        .keeper = zero,
+        .sponsor = topology.encode(addr.parent()),
+        .net_key = zero,
+        .key_counter = 0,
+        .reset_counter = 0,
+        .version = 1,
+    };
+}
+
+// Names are validated: a well-formed label is accepted, and the malformed refused.
+fn prove_name_validation() !void {
+    if (make_name("alice") == null) return error.GoodNameRefused;
+    if (make_name("planet-7") == null) return error.HyphenNameRefused;
+    if (make_name("a1") == null) return error.AlnumNameRefused;
+    if (make_name("") != null) return error.EmptyAccepted;
+    if (make_name("Alice") != null) return error.UppercaseAccepted;
+    if (make_name("with space") != null) return error.SpaceAccepted;
+    if (make_name("-lead") != null) return error.LeadingHyphenAccepted;
+    if (make_name("trail-") != null) return error.TrailingHyphenAccepted;
+    const too_long = "a" ** (max_name_len + 1);
+    if (make_name(too_long) != null) return error.TooLongAccepted;
+}
+
+fn run_selftest() !u8 {
+    try prove_name_validation();
+    const w = try seat_world();
+    var reg = NameRegistry.init();
+    try prove_claim_and_release(&w, &reg);
+
+    // A fresh registry for the refusals, so their state is clean.
+    var reg2 = NameRegistry.init();
+    const bob = name_of("bob");
+    const sig_bob = sign_name(&s_keeper, tag_claim, &bob, star_num);
+    try claim(&reg2, &w.con, &w.star, &bob, &sig_bob);
+    try prove_refusals(&w, &reg2);
+
+    print("settlement names: a point number wears a spoken name — a keeper who owns the point claims it, and it resolves both ways, name to point and point to name.\n", .{});
+    print("settlement names: names are the shared consensus surface — globally unique, one name to one point, bounded and read together; custody means claim and release, both the owner's own signed word.\n", .{});
+    print("settlement names: every refusal holds — a taken name, an already-named point, a non-owner, a forged signature, a wrongful release; and malformed names never parse.\n", .{});
+    print("settlement names: version {s}\n", .{names_version});
+    print("GREEN: settlement names — a settled number comes to wear a name it can hold and let go, unique across a shared registry, resolvable both ways, and never claimable by a hand that does not own the point.\n", .{});
+    return 0;
+}
+
+pub fn main() !u8 {
+    return run_selftest();
+}

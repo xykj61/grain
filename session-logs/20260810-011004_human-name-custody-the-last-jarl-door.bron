@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260810.011004
+editor Claude Code
+model claude-fable-5
+voice Riyo
+host NixOS 26.05 x86_64 cloud pier (Vultr SEA) — Eastern (EDT) time convention · this Claude Code session inside ai-jail
+title human-name custody — the last JARL door
+prompt (Keaton) kg build human-name custody with your design
+think my design instinct held — a name is a signed claim by the point's keeper, unique in a small shared registry, resolvable both ways; and I built it as real custody (claim and release), not mere registration
+think the deep point — names are the one surface that genuinely needs consensus; a point's keys ride the fast path in its Deed, but a name must be globally unique so everyone agrees who alice is, so the NameRegistry is honestly a shared/consensus structure, distinct from the owned Deeds
+think authority is two-fold — to claim a name the caller must own the point (its Deed verifies against the constellation via the shrink's own verify) and the point's keeper must sign the exact name; a tag byte distinguishes a claim signature from a release, so one can never be replayed as the other
+think validated names as short lowercase DNS-like labels (letters, digits, inner hyphens, 1..32) so a name can never be mistaken for an address or carry junk; the example names are plain words
+obs GREEN on the first build; composed settlement.open/mint/verify and the tilak signing; resolve both ways works, and every refusal holds — a taken name, an already-named point, a non-owner ghost deed, a forged signature, a wrongful release, and malformed names that never parse
+obs the names selftest reproduces the 36-byte spawn-authority signing locally (settlement's is private) to settle a small world through the real open/mint path, since a valid Constellation can only be built by them
+obs all six JARL witnesses now run GREEN together; tame_style_check clean on names.rye (only the pre-existing REDS 64 python fossil flags)
+obs docs synced — settlement/README gained the spoken-name section and a "JARL, settled" close; the LEXICON Kumara entry, REMEMBER, and TASKS mark human-name custody landed and JARL's settlement doors all standing
+obs JARL's settlement is complete — identity, network, topology, five transitions, scarcity on d12·d60, the shared-surface shrink, and now names; by Keaton's own timing the next-season breach (Pond, skies, Kyri) is unblocked and opens on his word
+file settlement/names.rye human-name custody — validated Name, tag-signed claim/release, NameRegistry (resolve + reverse), composing the constellation's verify; version 20260810.005752
+file tools/settlement_names_witness.rish asserts the both-way resolution, the consensus surface, and every refusal
+file settlement/README.md the spoken-name section, the refusals, the "JARL, settled" close
+file context/LEXICON.md · work-in-progress/REMEMBER.md · TASKS.md human-name custody landed; JARL settlement complete; breach unblocked
+file session-logs/20260810-011004_human-name-custody-the-last-jarl-door.bron this record
+recommend check-in Claude — JARL's settlement now stands whole, six witnesses GREEN, and the last door is closed; the honest next move is Keaton's word — either open the next-season breach (Pond · Bron→Kyri molt · Kyri the voice · loadable skies, all seat-approved and charter-ready) or name another direction; the build bench is clean and green
