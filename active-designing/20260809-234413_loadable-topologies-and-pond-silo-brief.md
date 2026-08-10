@@ -66,7 +66,7 @@ The build order, once opened:
 4. Add the **role** tilak to Kumara; witness the mode and the three role-dimensions signing and refusing.
 5. Teach Pond to load a sky; retire Pool into Pond by molt.
 
-**Two decisions are already made** (a maintainer's word, `20260809`): the **breach into the next season is seated to open after JARL closes**, not before — the current equinox finishes its rounds first; and the **molt sweep stays tight** — the Pool study and its direct kin only, not a broad archive-and-yonder pass. **Held still:** the scarcity numbers each sky allows, and whether any sky keeps the elder ranks.
+**Decisions already made** (a maintainer's word): the **breach opens after JARL closes**, not before (`20260809`); the **molt sweep stays tight** — the Pool study and its direct kin only (`20260809`); and the **base scarcity is the d12·d60 fractal**, the elder Azimuth ranks retired (`20260810`) — the Point tilak now reads its tier straight from the topology. **Held still:** the exact counts a *given* sky names for its own tiers (a per-profile choice), and how small the shared surface can shrink.
 
 ---
 

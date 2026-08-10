@@ -10,7 +10,7 @@
 
 ## Now — The Compass Season · JARL j4 (`20260809.224715`)
 
-**Finishing edge:** JARL j4 — **the settlement constellation, on Sui, all five transitions**. Identity, network, and the fractal address space all stand; the ledger now moves. `settlement/constellation.rye` seats a galaxy and its d60 as owned records whose versions climb — **genesis** opens from a bind, **mint** spawns by `sow` capability, **transfer** by `hand`, **rotate** by `tend` while the keeper sits cold, and **escape** re-parents a child by its own word and the new sponsor's adoption (the number never moving). Every refusal held; the whole JARL spine (five witnesses) runs GREEN together.
+**Finishing edge:** JARL j4 — **the settlement constellation, on Sui, all five transitions**. Identity, network, and the fractal address space all stand; the ledger now moves. `settlement/constellation.rye` seats a galaxy and its d60 as owned records whose versions climb — **genesis** opens from a bind, **mint** spawns by `sow` capability, **transfer** by `hand`, **rotate** by `tend` while the keeper sits cold, and **escape** re-parents a child by its own word and the new sponsor's adoption (the number never moving). Every refusal held; the whole JARL spine (five witnesses) runs GREEN together. **Scarcity reconciled `20260810`** — the d12·d60 fractal is the one source of tiers; `kumara/tilak.rye` reads its tier from `comlink/topology.rye`, the elder Azimuth ceilings retired, all five witnesses still GREEN.
 **Prove:** `rishi/bin/rishi run tools/settlement_constellation_witness.rish`
 
 | Lap | Equinox | Status |
@@ -23,7 +23,7 @@
 | **d12·d60 fractal topology** — the address space (12·5·12, d60=60, 792/universe), sponsor chain, routing by number | JARL | **LANDED** (`comlink/topology.rye`) |
 | **Settlement constellation on Sui** — a galaxy's d60 as owned records; spawn/transfer/rotate by capability, versions climb, keys rotate cold, every refusal held | JARL | **LANDED** (`settlement/constellation.rye`) |
 | **Escape** — a child re-parents to a settled sponsor one tier up, by its own word + the new sponsor's adoption; number never moves; galaxy-root refused, forged request/adoption refused | JARL | **LANDED** (`settlement/constellation.rye`) |
-| Reconcile the Point's tier (elder Azimuth 2⁸/2¹⁶/2³²) with the topology's d12·d60 scarcity | JARL | Keaton's word |
+| **Scarcity reconcile** — keep d12·d60, retire the Azimuth ranks; `kumara/tilak.rye` reads its tier from `comlink/topology.rye` (no more `galaxy_ceiling`/`star_ceiling`), all five JARL witnesses GREEN | JARL | **LANDED** `20260810` (Keaton's call) |
 | Shrink the shared surface — hold a membership commitment, let point-objects ride the fast path | JARL | horizon |
 | **Generalize the constellation to loadable topologies** — a *sky* (proposed) loaded like a game; odd-quorum fractal 3·9·15·27, 5 elements, modality roles (initiator/sustainer/adapter) + role-dimensions (contend/solve/calling); topology.rye already separates geometry from ledger, so it's nearly free | JARL/BUHR | **studied + siloed** — build after JARL |
 | **Pool→Pond breach** — Pond as the full application module (Pool retires into it); Pond loads a sky; breach **after JARL**; molt sweep **tight** (Pool paper + kin) | next season | **decided + planned** — opens after JARL |

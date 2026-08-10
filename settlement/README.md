@@ -33,7 +33,7 @@ rishi/bin/rishi run tools/settlement_constellation_witness.rish
 
 ## Held for Keaton's word
 
-The **scarcity** a settled number carries — the elder Azimuth ranks of 2⁸ · 2¹⁶ · 2³² that the Point tilak still names, or the d12·d60 shape the topology settles by — is one decision, weighed by his hand. The **shared surface** can shrink further still: today the constellation holds whole records, where a Sui contract would keep only a small membership commitment and let the point-objects ride the fast path. And **escape** — a child re-parenting to a chosen sponsor — is the next transition the constellation will read, from the `sponsor` tilak already built.
+The **scarcity** a settled number carries is the **d12·d60 fractal** — the elder Azimuth ranks are retired, and the Point tilak now reads its tier straight from the topology (Keaton's word `20260810`). What remains for his hand: the **shared surface** can shrink further still — today the constellation holds whole records, where a Sui contract would keep only a small membership commitment and let the point-objects ride the fast path; and the **human-name custody park**, how a number becomes a spoken name. **Escape** — a child re-parenting to a chosen sponsor — is landed, the constellation's fifth transition.
 
 ---
 
