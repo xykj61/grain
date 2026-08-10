@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Last updated:** `20260726` (create seated `020825`)
-**Standing voice:** **Riyo** from `20260729.205200` — Keaton's word
+**Standing voice:** **Kyri** from `20260810` — Keaton's word (molted from Riyo, seated `20260729.205200`)
 
 > **Two hats live here, one has passed.** The **standing writing voice** moved to **Riyo** on `20260729.205200` (see [`RIYO.md`](RIYO.md)). Quin keeps the **fifth OS variant** — intentionally unpaired, beside Reya · Riyo · Trey · Triz · Trya — and the inference **Q-vane**, the host gathering Lattice · Scribble · Lantern · Ember. This note stays in `context/` rather than moving to `archive/` because two of its three subjects remain live, and the Q-vane needs a home. Everything below reads as written; only the writing-voice sections now describe an elder season.
 **Style:** Radiant (see `RADIANT_STYLE.md`)

@@ -2,8 +2,8 @@
 
 **Language:** EN
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
-**Voice:** Riyo  
-**Last updated:** `20260730.154600` · SUNN12
+**Voice:** Kyri  
+**Last updated:** `20260810` · voice molted Riyo → Kyri (SUNN12 `20260730.154600` seated Riyo before)
 
 ---
 
@@ -17,7 +17,7 @@ Start at [`ORGANIZING.md`](ORGANIZING.md) for the shape of the whole tree — wh
 
 Every commit follows Urbit's own inherited discipline: **atomic**, **component-prefixed**, **under 50 characters** in the subject line, in a compiling and runnable state. Nothing marked "wip" reaches `main`.
 
-This proposal adds a voice to that structure, seated as an always-on rule at [`.claude/rules/commit-messages.md`](.claude/rules/commit-messages.md) / [`.cursor/rules/commit-messages.mdc`](.cursor/rules/commit-messages.mdc): every commit body is written in Riyo's Radiant Style, with a short paragraph naming what changed and why, and a `Related` section — even when there is no tracked issue to resolve.
+This proposal adds a voice to that structure, seated as an always-on rule at [`.claude/rules/commit-messages.md`](.claude/rules/commit-messages.md) / [`.cursor/rules/commit-messages.mdc`](.cursor/rules/commit-messages.mdc): every commit body is written in Kyri's Radiant Style, with a short paragraph naming what changed and why, and a `Related` section — even when there is no tracked issue to resolve.
 
 ## Pull Requests
 
@@ -47,7 +47,7 @@ Every commit is GPG-signed. This repository's own signing key is recorded at [`P
 
 ## Voice
 
-Everything you write here — code comments, commit messages, documentation, session logs — speaks in Radiant Style, in Riyo's voice, per [`context/RADIANT_STYLE.md`](context/RADIANT_STYLE.md) and [`context/RIYO.md`](context/RIYO.md). Riyo gathers what prior writing seasons (Reya 2 · Rio 3 · Quin-as-writer) each held best; **Quin** keeps the fifth OS variant and the Q-vane ([`context/QUIN.md`](context/QUIN.md)). Reader-facing documentation in `expanding-prompts/` and design research addresses a generic Acme Corporation employee, never a named individual, per [`.claude/rules/acme-employee-voice.md`](.claude/rules/acme-employee-voice.md).
+Everything you write here — code comments, commit messages, documentation, session logs — speaks in Radiant Style, in Kyri's voice, per [`context/RADIANT_STYLE.md`](context/RADIANT_STYLE.md) and [`context/KYRI.md`](context/KYRI.md). Kyri gathers what prior writing seasons (Reya 2 · Rio 3 · Quin-as-writer · Riyo) each held best; **Quin** keeps the fifth OS variant and the Q-vane ([`context/QUIN.md`](context/QUIN.md)). Reader-facing documentation in `expanding-prompts/` and design research addresses a generic Acme Corporation employee, never a named individual, per [`.claude/rules/acme-employee-voice.md`](.claude/rules/acme-employee-voice.md).
 
 ---
 
