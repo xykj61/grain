@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` — the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `226f0f1e70` · Grain · cloud pier
+**Git nib:** `1bb1fd7ce9` · Grain · cloud pier
 **Host:** Framework · EDT (`America/New_York`) · Vultr SEA VPS (HP AMD 2vCPU/4GB shared · never EWR) · this session in ai-jail
 
 ---
@@ -60,7 +60,8 @@ The private field is `~/grain`; the public template **grain-os/grain** is *proje
 | Door | Kind |
 |------|------|
 | **Next JARL step** — **escape** (a child re-parenting, from the sponsor tilak) · shrink the shared surface to a membership commitment · or the scarcity design call | live |
-| **Breach OPEN `20260810`** — Pond = application module (Pool retired) · **skies lap 1** (`Sky` struct, 2 skies) · **topology now inclusive** like Azimuth (galaxy is star is planet, 720/universe, sponsor by mod, **outfit** roles; consumers remapped, 6 witnesses GREEN) · **Kyri seated as the notation** (was Bron; new logs `.kyri`, 2,163 `.bron` fossils kept) · **Skate** decided = the general social network (outfits). Next: sky Bron descriptor · `constellation_max` sky-bound · role tilak · full Bron→Kyri ref sweep · Kyri the voice | breach · live |
+| **Breach OPEN `20260810`** — Pond = application module (Pool retired) · **skies lap 1** · **topology inclusive** (galaxy is star is planet, 720/universe, sponsor by mod, **outfit** roles; 6 witnesses GREEN) · **Kyri** the notation (was Bron) · **Skate** = the social network | breach · live |
+| **HANDOFF BATON `20260810`** — full vision on disk for a context reset: [`expanding-prompts/20260810-025942_the-handoff-baton-vision-checkpoint.md`](../expanding-prompts/20260810-025942_the-handoff-baton-vision-checkpoint.md). Proposed modules: **Mandate** (turbopuffer, next build) · **Scribe** (Kyri home + settings) · **Starseeding** · **Unsplash** · **`.myc`/Mycelium** (Sui reimpl) · **Mala** revival. Roster: `context/inspirations.kyri` (tribute, consent-gated). **Next build: Mandate.** | checkpoint |
 | **Keaton's own Kumara instance** — generate from his real seed + keeper, by his hand alone | JARL · when ready |
 | **mold→shape debride** — 82 files / 753 occurrences; its own careful pass | proposed |
 | **TAME core/shelf** — lossless-compressed living law over a preserved shelf | proposed |
