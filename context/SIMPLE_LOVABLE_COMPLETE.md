@@ -1,8 +1,8 @@
 # Simple, Lovable, Complete
 
 **Language:** EN
-**Last updated:** `20260628`
-**Style:** Radiant (see `RADIANT_STYLE.md`)
+**Last updated:** `20260810` (Radiant Kyri refresh · reviewed and kept)
+**Style:** Radiant (see `RADIANT_STYLE.md`) · **Voice:** Kyri
 
 **Purpose:** Name how we ship — so that every release, at every size, is something a person can use today and genuinely love.
 
@@ -12,7 +12,7 @@
 
 Simple, Lovable, Complete. Three words name a way to release work into the world. We build something small in scope, delightful to use, and whole within the bounds it sets for itself — and we offer that at every step, from the first running thing to the full machine.
 
-This method comes to us from Jason Cohen, who named it as the warmer sibling of the minimum-viable habit. The source essay rests in our `gratitude/` directory, among the teachers we keep close. Here we silo the idea in our own voice and bind it to how Rye OS grows.
+This method comes to us from Jason Cohen, who named it as the warmer sibling of the minimum-viable habit. The source essay rests in our `gratitude/` directory, among the teachers we keep close. Here we silo the idea in our own voice and bind it to how Grain grows.
 
 ---
 
@@ -46,9 +46,9 @@ A release that stays modest forever is still a good and finished thing. A grand 
 
 ---
 
-## How Rye OS Grows by This Method
+## How Grain Grows by This Method
 
-Each lap of Rye OS is a simple, lovable, complete thing, grown from the running seed before it. This weaves directly with Gall's Law: the working whole grows from a smaller working whole, rather than from a grand design imposed at once.
+Each lap of Grain is a simple, lovable, complete thing, grown from the running seed before it. This weaves directly with Gall's Law: the working whole grows from a smaller working whole, rather than from a grand design imposed at once.
 
 The first such whole is the Rishi-and-Mantra shell — a place to type a command, watch it run, keep its history, and call it back. Simple, for it is one loop. Lovable, for it is yours, on your own metal, and it already works. Complete, for the circle closes: type, run, version, recall. The Pond GUI is the next lap, grown from that one when Skate and the window stand ready. Lap by lap, the whole machine arrives by degrees.
 
