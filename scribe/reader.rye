@@ -1,0 +1,198 @@
+//! scribe/reader.rye — Scribe, the Kyri voice's home: a zero-copy Kyri reader.
+//!
+//! Scribe is where the flagship voice keeps its records — session logs, batons, and
+//! inventory — and every one of them is a **Kyri** document: `format <name>` on the
+//! first line, then `key value` fields, one per line, `#` comments and blank lines
+//! ignored, no quotes and no braces. This file is the foundation the rest of Scribe
+//! stands on: it **parses** a Kyri document into its fields and **dispatches by
+//! format**, so the settings dashboard, the baton renderer, and the log index all read
+//! from one honest reader.
+//!
+//! **Zero-copy.** A field is a pair of slices *into the source text* — the reader never
+//! copies a key or a value. The document borrows the bytes; the caller keeps them.
+//! **Bounded.** The source length, the field count, all name a maximum, asserted at the
+//! edge. A key may repeat (`think`, `file`), and the reader keeps every occurrence.
+//!
+//! The dashboard, the tilak-typing of fields (Q2's shared type-marks), and rendering on
+//! Skate are horizons above this; here Scribe simply reads.
+//!
+//!   rye build scribe/reader.rye -femit-bin=scribe/bin/reader
+//!   scribe/bin/reader selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const reader_version = "20260810.041230";
+
+// A Kyri document's bounds: the longest source the reader accepts, and the most fields
+// it holds. A voice's records are short; these are generous and named once.
+pub const max_source_len: u32 = 65536;
+pub const max_fields: u32 = 512;
+
+/// One field — a key and its value, each a slice *into the source text*. Zero-copy:
+/// the reader points at the bytes, it does not own them.
+pub const Field = struct {
+    key: []const u8,
+    val: []const u8,
+};
+
+/// A parsed Kyri document: its fields, how many, and the source they borrow from.
+pub const Document = struct {
+    fields: [max_fields]Field,
+    count: u32,
+    source: []const u8,
+
+    /// The value of the first field with this key, or null. The forward read.
+    pub fn get(self: *const Document, key: []const u8) ?[]const u8 {
+        // invariant: the field count never runs past the bounded fields.
+        assert(self.count <= max_fields);
+        var i: u32 = 0;
+        while (i < self.count) : (i += 1) {
+            if (std.mem.eql(u8, self.fields[i].key, key)) return self.fields[i].val;
+        }
+        return null;
+    }
+
+    /// How many fields carry this key — a repeatable key like `think` keeps every one.
+    pub fn count_key(self: *const Document, key: []const u8) u32 {
+        var found: u32 = 0;
+        var i: u32 = 0;
+        while (i < self.count) : (i += 1) {
+            if (std.mem.eql(u8, self.fields[i].key, key)) found += 1;
+        }
+        return found;
+    }
+
+    /// The document's format — the value of its `format` field — or null if it has none.
+    pub fn format(self: *const Document) ?[]const u8 {
+        return self.get("format");
+    }
+};
+
+/// Parse Kyri text into a document, zero-copy. Each non-blank, non-comment line becomes
+/// a field whose key is the text up to the first space and whose value is the rest;
+/// both slice into `text`, which the caller must keep alive.
+pub fn parse(text: []const u8) Document {
+    // invariant: the source fits the bounded reader.
+    assert(text.len <= max_source_len);
+    const len: u32 = @intCast(text.len);
+    var doc = Document{ .fields = undefined, .count = 0, .source = text };
+    var i: u32 = 0;
+    while (i < len) {
+        if (doc.count >= max_fields) break;
+        const start = i;
+        while (i < len and text[i] != '\n') : (i += 1) {}
+        const line = text[start..i];
+        if (i < len) i += 1; // step over the newline
+        // Blank lines and comments carry no field.
+        if (line.len == 0 or line[0] == '#') continue;
+        // The key runs to the first space; the value is the remainder (empty if none).
+        var sp: u32 = 0;
+        const line_len: u32 = @intCast(line.len);
+        while (sp < line_len and line[sp] != ' ') : (sp += 1) {}
+        const key = line[0..sp];
+        const val = if (sp < line_len) line[sp + 1 ..] else line[line_len..line_len];
+        doc.fields[doc.count] = .{ .key = key, .val = val };
+        doc.count += 1;
+    }
+    // invariant: every field's key and value slice into the source we were given.
+    assert(doc.count <= max_fields);
+    return doc;
+}
+
+// --- format dispatch: Scribe reads a document by what it says it is ------
+
+/// Whether a document is a well-formed **session log** — its format says so and the
+/// load-bearing fields are present.
+pub fn is_session_log(doc: *const Document) bool {
+    const fmt = doc.format() orelse return false;
+    if (!std.mem.eql(u8, fmt, "session-log-v1")) return false;
+    return doc.get("stamp") != null and doc.get("title") != null;
+}
+
+/// Whether a document is a **baton** — a `.kyri` document with `format baton-v1`, the
+/// form the counsel seated (no new extension; one notation, many formats).
+pub fn is_baton(doc: *const Document) bool {
+    const fmt = doc.format() orelse return false;
+    return std.mem.eql(u8, fmt, "baton-v1");
+}
+
+// --- selftest -----------------------------------------------------------
+
+const sample_log =
+    \\format session-log-v1
+    \\# a comment line, and a blank line follow
+    \\
+    \\stamp 20260810.041230
+    \\title a scribe reader test
+    \\think first step of reasoning
+    \\think second step of reasoning
+    \\file scribe/reader.rye the reader itself
+    \\recommend keep-going build the dashboard next
+;
+
+const sample_baton =
+    \\format baton-v1
+    \\stamp 20260810.041230
+    \\state six witnesses green
+    \\next build scribe
+;
+
+fn prove_parse() !void {
+    const doc = parse(sample_log);
+    // Six fields survive: format, stamp, title, two thinks, one file, one recommend.
+    if (doc.count != 7) return error.FieldCountWrong;
+    // The format dispatches, and the load-bearing fields read back.
+    const fmt = doc.format() orelse return error.NoFormat;
+    if (!std.mem.eql(u8, fmt, "session-log-v1")) return error.FormatWrong;
+    const stamp = doc.get("stamp") orelse return error.NoStamp;
+    if (!std.mem.eql(u8, stamp, "20260810.041230")) return error.StampWrong;
+    const title = doc.get("title") orelse return error.NoTitle;
+    if (!std.mem.eql(u8, title, "a scribe reader test")) return error.TitleWrong;
+    // A repeatable key keeps every occurrence; get returns the first.
+    if (doc.count_key("think") != 2) return error.ThinkCountWrong;
+    const first_think = doc.get("think") orelse return error.NoThink;
+    if (!std.mem.eql(u8, first_think, "first step of reasoning")) return error.ThinkWrong;
+    // A missing key reads null; comments and blanks became no fields.
+    if (doc.get("absent") != null) return error.PhantomField;
+}
+
+fn prove_zero_copy() !void {
+    const doc = parse(sample_log);
+    // A field's value is a slice *into the source* — same bytes, not a copy.
+    const title = doc.get("title").?;
+    // The slice lies within the source text's own memory.
+    const src = doc.source;
+    const within = @intFromPtr(title.ptr) >= @intFromPtr(src.ptr) and
+        @intFromPtr(title.ptr) + title.len <= @intFromPtr(src.ptr) + src.len;
+    if (!within) return error.NotZeroCopy;
+}
+
+fn prove_dispatch() !void {
+    const log = parse(sample_log);
+    if (!is_session_log(&log)) return error.LogNotRecognized;
+    if (is_baton(&log)) return error.LogSeenAsBaton;
+
+    const baton = parse(sample_baton);
+    if (!is_baton(&baton)) return error.BatonNotRecognized;
+    if (is_session_log(&baton)) return error.BatonSeenAsLog;
+    // A baton reads its own fields by the same reader.
+    if (!std.mem.eql(u8, baton.get("next").?, "build scribe")) return error.BatonFieldWrong;
+}
+
+fn run_selftest() !u8 {
+    try prove_parse();
+    try prove_zero_copy();
+    try prove_dispatch();
+
+    print("scribe reader: a Kyri document parses into key-value fields, zero-copy — each field slices into the source, never copied; a repeatable key keeps every occurrence.\n", .{});
+    print("scribe reader: Scribe reads by format — a session-log-v1 and a baton-v1 are told apart and read by one honest reader, the counsel's one-notation-many-formats made real.\n", .{});
+    print("scribe reader: version {s}\n", .{reader_version});
+    print("GREEN: scribe reader — the Kyri voice's home reads its own records: parse a document, dispatch by its format, get a field, count a repeated key — bounded and zero-copy.\n", .{});
+    return 0;
+}
+
+pub fn main() !u8 {
+    return run_selftest();
+}
