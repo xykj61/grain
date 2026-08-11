@@ -1,4 +1,4 @@
-//! granary/exchange_listing.rye — Granary lap 5: Exchange listing (weave priced in MALA).
+//! granary/exchange_listing.rye — Granary — Exchange listing (weave priced in MALA).
 //!
 //! Binds person/weave + resin digest + MALA price under Kumara. Receipt is a digest
 //! of the listing body — no buyer/seller identities. Weave settle landed; live TB waits.

@@ -1,4 +1,4 @@
-//! granary/weave_settle.rye — Granary lap 6 selftest (settle weave listing).
+//! granary/weave_settle.rye — Granary — settle weave listing (selftest).
 //!
 //!   rye build granary/weave_settle.rye -femit-bin=granary/bin/weave-settle
 //!   granary/bin/weave-settle selftest
@@ -17,7 +17,7 @@ const rc = @import("receipt_core.rye");
 fn run_selftest(io: std.Io) !u8 {
     _ = io;
 
-    // 1. Exchange listing at 100 murr (same fixture as lap 5).
+    // 1. Exchange listing at 100 murr (same fixture as the exchange listing).
     var store = gc.ResinStore.empty();
     const digest = try gc.put_resin(&store, "# priced weave\n\nfor sale in murr.\n");
     var fact: [gc.max_fact_len]u8 = undefined;
