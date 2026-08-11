@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260811.185527
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host cloud pier sandbox — Eastern (EDT) time convention
+title Brix-infuse (SOON j2) — deep merge/override for Brix descriptors
+prompt kg brix-infuse SOON j2, baton prin recur
+think surveyed first: Brix descriptors are flat Bron (key value per line, # comments, repeatable keys like the field list); there is no Brix evaluator in code yet, so I built a self-contained module; studied infuse.nix clean-room (MIT, gratitude) and wrote our own
+think in a flat namespace infuse.nix's deep recursive merge reduces to a per-key override: the override's value(s) replace the base's for a key, base-only keys pass through in place, override-only keys append in override order; a nested-descriptor deep merge waits on Brix growing nesting (named a horizon)
+obs built brix/infuse.rye — parse (zero-copy slices into the source), key_in, emit (bounded, refuses OutTooSmall), infuse (base walk with override-replace at the first base slot + append override-only keys); opening triad, named bounds (max_pairs/max_key/max_line/max_out), invariant asserts, no @memcpy (byte loops)
+obs GREEN on metal: build exit 0; selftest proves a scalar overridden (kind baton→cell), a base-only key kept (name), a repeated list replaced (field alpha,beta→gamma), an override-only key appended (carrier), an empty override an identity, and a too-small output refused; tame_style_check clean on brix/infuse.rye; rune-assert-sweep unaffected
+obs added the brix/ gitignore allowlist (new top-level module); build output to the gitignored tools/.build; wrote brix/README.md and the witness; marked SOON j2 LANDED on the operator card (SOON open list + open-door resolved)
+loom witness=brix_infuse_witness build=GREEN selftest=GREEN
+file brix/infuse.rye the infuse module — per-key override over flat Bron, zero-copy, bounded
+file tools/brix_infuse_witness.rish builds + proves the GREEN lines
+file brix/README.md the composition layer + infuse doc
+file .gitignore allowlist /brix/
+file work-in-progress/REMEMBER.md SOON j2 marked landed (open list + open-door)
+recommend check-in (Keaton) — Brix-infuse (SOON j2) is landed and witnessed; the SOON equinox still holds TAME core/shelf · PLEAC · Aurora as open language laps, each Keaton's word on the slice. Other doors (Skate · the Shuttle · a fresh module) remain his to name
