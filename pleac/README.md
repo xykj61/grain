@@ -53,9 +53,13 @@ tools/.build/pleac_numbers selftest
 rishi/bin/rishi run tools/pleac_numbers_witness.rish
 ```
 
+## Wired into the interpreter
+
+The cookbook primitives also live as **Rishi builtins**, so a `.rish` script calls them directly beside `sort`/`unique`/`upper`. First wired `20260811.192204`: **`clamp <x> <lo> <hi>`** (`rishi/src/main.rye` `do_clamp`; test `rishi/tests/clamp.rish`, full suite 21/21 GREEN). The remaining verbs (`chunk` · `window` · `flatten` · `parse` · `to_str`) wire the same way, one at a time, each with a suite test and a full-suite rebuild.
+
 ## Horizon
 
-Wiring these cookbook primitives into the Rishi interpreter as builtins beside `sort`/`unique`/`upper` is the follow-on; further chapters grow one witnessed primitive at a time.
+Further chapters grow one witnessed primitive at a time; each cookbook function reaches the interpreter as a builtin once its suite test is green.
 
 ---
 
