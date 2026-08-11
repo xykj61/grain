@@ -1,7 +1,7 @@
 # Mandate — Grain's turbopuffer
 
 **Language:** EN
-**Status:** Living — the vector store · lap 1 seated `20260810.031234` · lap 2 (**remove** — full CRUD) `20260810` · lap 3 (**profile-loaded dim**) `20260810` · lap 4 (**dim from a real Bron profile**) `20260810` · lap 5 (**approximate index**) `20260810` · lap 6 (**object-storage backing**) `20260811` · lap 7 (**named-object bucket**) `20260811`
+**Status:** Living — the vector store · lap 1 seated `20260810.031234` · lap 2 (**remove** — full CRUD) `20260810` · lap 3 (**profile-loaded dim**) `20260810` · lap 4 (**dim from a real Bron profile**) `20260810` · lap 5 (**approximate index**) `20260810` · lap 6 (**object-storage backing**) `20260811` · lap 7 (**named-object bucket**) `20260811` · lap 8 (**write-ahead log**) `20260811`
 **Voice:** Kyri
 **Kin:** the first build of the breach's new arc (`../expanding-prompts/20260810-025942_the-handoff-baton-vision-checkpoint.md`)
 
@@ -37,12 +37,17 @@ A bare store keys a vector by any `u32`. [`keyed.rye`](keyed.rye) makes the key 
 
 Where `store.rye` snapshots **one** store to one blob, [`bucket.rye`](bucket.rye) names **many** — an S3-style key→object map, `name → <store snapshot>`, kept as files in a bucket directory. `put(dir, name, store)` writes a store as the object `<dir>/<name>.blob`; `get(dir, name)` restores the store stored under `name`. Each object is a whole Mandate store, so a bucket holds a family of them side by side — the images index, the text index — each round-tripping independently. Every object **name is validated path-safe first** (1..=`max_name` bytes of `[a-zA-Z0-9_-]`, no slash, no dot, no separator), so a `put` or `get` addresses exactly one file inside the bucket and an object can never climb out of the directory. A missing object is refused, never a phantom store. Proven by `prove_bucket`: two named objects at different dimensions round-trip independently, the restored object answers a query identically, each bad name (empty · slash · dot · `..` · too long) is refused, and a get of an unwritten name errors.
 
+## Write-ahead log (`wal.rye`, landed `20260811`)
+
+A snapshot captures the whole store at a moment; a **write-ahead log** ([`wal.rye`](wal.rye)) captures every mutation *since* that moment, so a crash between snapshots loses nothing. Each entry is one bounded, fixed-width record — a kind (`upsert` / `remove`), an id, a tag, and the raw vector — appended in life, replayed in order at recovery. `recover(snapshot_bytes, wal_bytes)` restores the snapshot then replays the log; replay calls the **same** `store.upsert` / `store.remove` the live path used, so a recovered store is **identical** to the one that was lost — ordering (an upsert then a later remove of the same id) resolves exactly as it did live — not an approximation. The log is bounded (`max_entries`) and serializes to bytes (`magic · version · count · entries`). Proven by `prove_wal`: a base snapshot plus three logged mutations recovers a store equal to the live one (the removed id gone, the added ids present, query-identity held); the log round-trips through bytes; a full log refuses another record; and a bad magic or unknown kind is refused. Proven **on metal** too — the base snapshot and the log written to real files and replayed back.
+
 ## Horizons
 
 - **Unsplash** as the first real data source — image embeddings, and a real-world camera feed (consent-gated partnership).
 - A **profile-loaded dimension** — **landed lap 3 `20260810`** (`dim` is data, bounded by `max_dim`), read from a **real Bron profile file** — **landed lap 4 `20260810`** (`dim.profile.bron`, `@embedFile`).
 - An **approximate index** for scale — **landed lap 5 `20260810`** (SimHash LSH, `query_approx`); a multi-probe / larger-signature refinement for real scale is the remaining horizon.
-- **Object-storage backing** so the store is serverless like its inspiration — **landed lap 6 `20260811`** (`snapshot`/`restore`, one portable blob, file round-trip on metal), and a **named-object bucket** — **landed lap 7 `20260811`** (`bucket.rye`, S3-style put/get keyed by a path-safe name). A real cloud-bucket driver (an actual S3/GCS backend behind the same put/get) and a write-ahead log for durability between snapshots are the remaining horizons.
+- **Object-storage backing** so the store is serverless like its inspiration — **landed lap 6 `20260811`** (`snapshot`/`restore`, one portable blob, file round-trip on metal), and a **named-object bucket** — **landed lap 7 `20260811`** (`bucket.rye`, S3-style put/get keyed by a path-safe name). A real cloud-bucket driver (an actual S3/GCS backend behind the same put/get) is the remaining storage horizon.
+- **A write-ahead log** for durability between snapshots — **landed lap 8 `20260811`** (`wal.rye`, record · encode/decode · replay for crash recovery, proven on metal); a log-compaction pass that folds a full log into a fresh snapshot is the remaining refinement.
 - Served over **Comlink**, rendered on **Skate**; resolved to a spoken name via `../settlement/names.rye`.
 
 ---
