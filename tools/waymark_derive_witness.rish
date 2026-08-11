@@ -25,7 +25,11 @@ assert count_run.ok else "corpus count failed"
 let corpus_size = trim count_run.out
 assert corpus_size == corpus_count_pin else "corpus count pin failed"
 
-let digest_run = run ["sh" "-c" "openssl dgst -sha3-512 ${corpus_path} | awk '{print $NF}'"]
+# Resolve the openssl oracle robustly (Rishi's shell may not carry it on PATH).
+let ossl_run = run ["sh" "-c" "command -v openssl || ls /run/current-system/sw/bin/openssl 2>/dev/null || ls /nix/store/*-openssl-*/bin/openssl 2>/dev/null | head -1"]
+let ossl = trim ossl_run.out
+assert (ossl != "") else "openssl not found on PATH, the system profile, or the nix store — the waymark oracle needs it"
+let digest_run = run ["sh" "-c" "${ossl} dgst -sha3-512 ${corpus_path} | awk '{print $NF}'"]
 assert digest_run.ok else "corpus digest failed"
 assert (trim digest_run.out) == corpus_digest else "corpus digest pin failed"
 
