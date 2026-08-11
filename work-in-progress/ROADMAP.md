@@ -10,7 +10,7 @@
 
 ## Now — The Compass Chapter · four equinoxes (`20260809.024320`)
 
-**Place:** The Compass Chapter is open (`20260809.021829`). Coords **s1 · SOON e1 · j1 · q1 · r1** · nesting Round · Quest 4 · Journey 16 · Equinox 64 · Chapter 256. The elder nested seasons (Equinox → Constellation) rest RESTED, their greens in the code. Debrided to the Compass Chapter — the e-number order-list is gone from this living card.
+**Place:** The Compass Chapter is open (`20260809.021829`). Coords **Compass Chapter · SOON · j1 · q1 · r1** · nesting Round · Quest 4 · Journey 16 · Equinox 64 · Chapter 256. The elder nested seasons (Equinox → Constellation) rest RESTED, their greens in the code. Debrided to the Compass Chapter — the e-number order-list is gone from this living card.
 
 | Order | Equinox | Lap | Status |
 |-------|---------|-----|--------|
