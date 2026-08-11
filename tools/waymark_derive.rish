@@ -57,7 +57,15 @@ assert count_run.ok else "could not count the corpus"
 let corpus_size = trim count_run.out
 assert corpus_size == corpus_count_pin else "corpus count drifted from naming-grade pin 5526"
 
-let digest_run = run ["sh" "-c" "openssl dgst -sha3-512 ${corpus_path} | awk '{print $NF}'"]
+# Resolve the openssl oracle robustly. Rishi's shell may not carry openssl on PATH
+# (a nix host keeps it in the store or the system profile), and an empty digest must
+# never masquerade as corpus drift — so find it, or refuse loudly and truthfully.
+let ossl_run = run ["sh" "-c" "command -v openssl || ls /run/current-system/sw/bin/openssl 2>/dev/null || ls /nix/store/*-openssl-*/bin/openssl 2>/dev/null | head -1"]
+let ossl = trim ossl_run.out
+assert (ossl != "") else "openssl not found on PATH, the system profile, or the nix store — the waymark SHA3-512 oracle needs it (context/specs/20260703-191112_resins-and-hash-tiers.md)"
+say "openssl oracle: ${ossl}"
+
+let digest_run = run ["sh" "-c" "${ossl} dgst -sha3-512 ${corpus_path} | awk '{print $NF}'"]
 assert digest_run.ok else "openssl dgst -sha3-512 on corpus failed"
 let digest_val = trim digest_run.out
 assert digest_val == corpus_digest else "corpus SHA3-512 drifted from naming-grade pin — fixture body or extract changed"
@@ -95,7 +103,7 @@ say "corpus sha3-512: ${digest_val}"
 # Placeholder below is the most recent seat (SUNN); change it when drawing the next.
 let input_name = "djinn-bozo-exec-keaton-murr-hats"
 
-let hash_run = run ["sh" "-c" "printf '%s' '${input_name}' | openssl dgst -sha3-512 | awk '{print $NF}' | cut -c1-8"]
+let hash_run = run ["sh" "-c" "printf '%s' '${input_name}' | ${ossl} dgst -sha3-512 | awk '{print $NF}' | cut -c1-8"]
 assert hash_run.ok else "openssl dgst -sha3-512 failed"
 let hash8 = trim hash_run.out
 
