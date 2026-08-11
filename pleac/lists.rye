@@ -1,0 +1,139 @@
+//! pleac/lists.rye — the list cookbook: chunk, window, flatten (PLEAC stdlib).
+//!
+//! The lists chapter's canonical grouping trio, over a bounded list of `u32`:
+//!
+//!   * **chunk(xs, size)** — cut into consecutive, non-overlapping groups of `size`
+//!     (the last may be shorter). `flatten(chunk(xs, n)) == xs`.
+//!   * **window(xs, size)** — every overlapping run of `size` in order; count is
+//!     `len - size + 1`, or none when the list is shorter than a window.
+//!   * **flatten(lists)** — concatenate a list of lists into one.
+//!
+//! Zero-copy on the cut — `chunk` and `window` return slices into the source; only
+//! `flatten` writes fresh. Bounded throughout.
+//!
+//!   rye build pleac/lists.rye -femit-bin=tools/.build/pleac_lists
+//!   tools/.build/pleac_lists selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const lists_version = "20260811.190458";
+
+// Cookbook bounds, each named once and enforced at the edge.
+pub const max_groups: u32 = 256; // most chunks or windows a cut yields
+pub const max_flat: u32 = 4096; // bounded flattened length
+
+pub const ListError = error{ ZeroSize, TooManyGroups, OutTooSmall };
+
+/// Cut `xs` into consecutive groups of `size` (slices into `xs`, zero-copy); the last
+/// group may be shorter. Return the group count. A zero size is refused.
+pub fn chunk(xs: []const u32, size: u32, out: *[max_groups][]const u32) ListError!u32 {
+    // invariant: a zero size would never advance — refuse it.
+    if (size == 0) return error.ZeroSize;
+    const sz: usize = size; // seam: slice arithmetic is usize
+    var n: u32 = 0;
+    var start: usize = 0;
+    while (start < xs.len) {
+        // invariant: the group count stays within the bound.
+        if (n >= max_groups) return error.TooManyGroups;
+        var end: usize = start + sz;
+        if (end > xs.len) end = xs.len;
+        out[n] = xs[start..end];
+        n += 1;
+        start = end;
+    }
+    // invariant: an empty input yields no group; otherwise at least one.
+    assert(n <= max_groups);
+    return n;
+}
+
+/// Every overlapping run of `size` in `xs`, in order (slices into `xs`, zero-copy).
+/// Return the window count — `len - size + 1`, or 0 when `xs` is shorter than a
+/// window. A zero size is refused.
+pub fn window(xs: []const u32, size: u32, out: *[max_groups][]const u32) ListError!u32 {
+    // invariant: a zero-width window is meaningless — refuse it.
+    if (size == 0) return error.ZeroSize;
+    const sz: usize = size; // seam: slice arithmetic is usize
+    if (xs.len < sz) return 0;
+    var n: u32 = 0;
+    var i: usize = 0;
+    while (i + sz <= xs.len) : (i += 1) {
+        // invariant: the window count stays within the bound.
+        if (n >= max_groups) return error.TooManyGroups;
+        out[n] = xs[i .. i + sz];
+        n += 1;
+    }
+    // invariant: the count is exactly len - size + 1 for a fitting window.
+    assert(@as(usize, n) == xs.len - sz + 1);
+    return n;
+}
+
+/// Concatenate `lists` into `out`; return the flattened length. Refuses to overflow
+/// the bounded output rather than truncating.
+pub fn flatten(lists: []const []const u32, out: []u32) ListError!u32 {
+    var pos: usize = 0; // seam: slice index at the write edge
+    var i: usize = 0;
+    while (i < lists.len) : (i += 1) {
+        const part = lists[i];
+        // invariant: the run fits before it is written.
+        if (pos + part.len > out.len) return error.OutTooSmall;
+        var j: usize = 0;
+        while (j < part.len) : (j += 1) {
+            out[pos] = part[j];
+            pos += 1;
+        }
+    }
+    // invariant: the flattened list stays within the bound.
+    assert(pos <= max_flat);
+    return @intCast(pos);
+}
+
+// --- selftest -----------------------------------------------------------
+
+fn prove_lists() !void {
+    const xs = [_]u32{ 1, 2, 3, 4, 5 };
+    var groups: [max_groups][]const u32 = undefined;
+
+    // chunk into groups of two — {1,2} {3,4} {5}; the last is short.
+    const cn = try chunk(&xs, 2, &groups);
+    if (cn != 3) return error.ChunkCount;
+    if (groups[0].len != 2 or groups[0][0] != 1 or groups[0][1] != 2) return error.ChunkFirst;
+    if (groups[2].len != 1 or groups[2][0] != 5) return error.ChunkLastShort;
+
+    // flatten(chunk(xs)) == xs — the grouping is lossless.
+    var flat: [max_flat]u32 = undefined;
+    const fn_ = try flatten(groups[0..cn], &flat);
+    if (!std.mem.eql(u32, flat[0..fn_], &xs)) return error.RoundTripWrong;
+
+    // window of three — {1,2,3} {2,3,4} {3,4,5}; count is len - size + 1 = 3.
+    const wn = try window(&xs, 3, &groups);
+    if (wn != 3) return error.WindowCount;
+    if (groups[0][0] != 1 or groups[0][2] != 3) return error.WindowFirst;
+    if (groups[2][0] != 3 or groups[2][2] != 5) return error.WindowLast;
+
+    // a list shorter than a window yields none.
+    const short = [_]u32{ 7, 8 };
+    if ((try window(&short, 3, &groups)) != 0) return error.ShortWindowNotEmpty;
+
+    // refusals: a zero size (chunk and window), and a too-small flatten output.
+    if (chunk(&xs, 0, &groups)) |_| return error.ZeroChunkAccepted else |_| {}
+    if (window(&xs, 0, &groups)) |_| return error.ZeroWindowAccepted else |_| {}
+    const cn2 = try chunk(&xs, 2, &groups);
+    var tiny: [2]u32 = undefined;
+    if (flatten(groups[0..cn2], &tiny)) |_| return error.TinyFlattenAccepted else |_| {}
+}
+
+fn run_selftest() !u8 {
+    try prove_lists();
+    print("pleac lists: chunk cuts a list into consecutive groups of a size (the last may be shorter); window yields every overlapping run of a size, in order — both zero-copy slices into the source.\n", .{});
+    print("pleac lists: flatten(chunk(xs, n)) == xs — grouping is lossless; a window count is len - size + 1, and a list shorter than a window yields none.\n", .{});
+    print("pleac lists: bounded — a zero size is refused for chunk and window, and a too-small flatten output is refused rather than truncated.\n", .{});
+    print("pleac lists: version {s}\n", .{lists_version});
+    print("GREEN: pleac lists — chunk, window, flatten: grouping lossless and bounded, zero-copy on the cut, witnessed.\n", .{});
+    return 0;
+}
+
+pub fn main() !u8 {
+    return run_selftest();
+}
