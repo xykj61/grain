@@ -43,6 +43,8 @@ Build the designed experience exactly to the four contracts above — onboarding
 
 **Lap 4 landed `20260811.181841`** — the operations contract's checklist runs as one green suite: `tools/operations_conformance_witness.rish` builds the Mandate binaries and proves all five operations stand — run (`mandate_store_witness`), serve (`mandate_serve_witness`), serve-sealed (`mandate_comlink_serve_witness`), persist (`mandate_bucket_witness`), recover (`mandate_wal_witness`), and observe (the `loom` field seated in the session-log rule). **This completes the enforcement arc: all four design contracts are now guarded by green witnesses**, so the whole Acme developer arc — cold clone through operating a module — is not only designed but *checked*.
 
+**The whole arc in one command `20260811.182320`** — `tools/acme_dx_witness.rish` runs all four conformance witnesses together; a single GREEN means a newcomer's entire arc holds end to end. The design season and its enforcement now answer to one gate.
+
 ## Definition of done for the design season
 
 - Each equinox produces **one checkable artifact** — a contract a future witness can be built against, not prose that merely describes an intention.
