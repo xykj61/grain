@@ -23,7 +23,7 @@ The plan below is deterministic — four equinoxes, each producing one checkable
 
 ## Season One — Design (four equinoxes)
 
-**Equinox 1 — The onboarding path.** Design the road from a cold `git clone` of the public seed to a developer's first **green witness** on their own machine, inside one afternoon. Deliverable: a written path (each step, each expected output, each place it can go wrong) and the acceptance test that path must later pass. The question it answers: *what does "I got Grain running" mean, exactly?*
+**Equinox 1 — The onboarding path.** Design the road from a cold `git clone` of the public seed to a developer's first **green witness** on their own machine, inside one afternoon. Deliverable: a written path (each step, each expected output, each place it can go wrong) and the acceptance test that path must later pass. The question it answers: *what does "I got Grain running" mean, exactly?* — **contract landed `20260811.150221`** at [`../active-designing/20260811-150221_acme-dx-onboarding-path-contract.md`](../active-designing/20260811-150221_acme-dx-onboarding-path-contract.md): five steps (clone · bootstrap rye · build rishi · run witness · read GREEN), one measured acceptance line, validated on metal.
 
 **Equinox 2 — The first-hour witness.** Design a "hello, Grain" a newcomer completes in an hour: build one tiny module, run its witness, read GREEN. Deliverable: the shape of that starter module and its witness (what it proves, in one screen), written so the development season only has to type it. The question it answers: *what is the smallest real thing a developer builds first?*
 
