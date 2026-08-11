@@ -1,0 +1,128 @@
+//! pleac/strings.rye — the string cookbook: join and split (PLEAC stdlib).
+//!
+//! PLEAC ("programming-language examples alike cookbook") is the stdlib grown by the
+//! common tasks every language owes. This is the strings chapter's canonical pair:
+//!
+//!   * **join(parts, sep)** — glue a list of pieces into one string with a separator.
+//!   * **split(src, sep)** — cut a string on a separator into a list of pieces.
+//!
+//! They are inverses when no piece contains the separator: `split(join(xs, s), s) == xs`.
+//! Zero-copy on the way in — `split`'s pieces are slices into the source; only `join`
+//! writes a fresh string. Bounded throughout.
+//!
+//! A first cookbook module in Rye, the implementation layer; wiring these into the
+//! Rishi interpreter as builtins beside `sort`/`unique`/`upper` is a named follow-on.
+//!
+//!   rye build pleac/strings.rye -femit-bin=tools/.build/pleac_strings
+//!   tools/.build/pleac_strings selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const strings_version = "20260811.190026";
+
+// Cookbook bounds, each named once and enforced at the edge.
+pub const max_parts: u32 = 64; // most pieces a split yields or a join takes
+pub const max_out: u32 = 8192; // bounded joined-string length
+
+pub const StringError = error{ EmptySep, TooManyParts, OutTooSmall };
+
+/// Glue `parts` into `out` with `sep` between them; return the byte length. A separator
+/// is written between pieces, never trailing. Refuses to overflow the bounded output.
+pub fn join(parts: []const []const u8, sep: []const u8, out: []u8) StringError!u32 {
+    // invariant: a join never exceeds the bounded piece count.
+    if (parts.len > max_parts) return error.TooManyParts;
+    var pos: usize = 0; // seam: slice index at the write edge
+    var i: usize = 0;
+    while (i < parts.len) : (i += 1) {
+        if (i > 0) {
+            // invariant: the separator fits before it is written.
+            if (pos + sep.len > out.len) return error.OutTooSmall;
+            for (sep) |c| {
+                out[pos] = c;
+                pos += 1;
+            }
+        }
+        const part = parts[i];
+        // invariant: the piece fits before it is written.
+        if (pos + part.len > out.len) return error.OutTooSmall;
+        for (part) |c| {
+            out[pos] = c;
+            pos += 1;
+        }
+    }
+    // invariant: the joined string stays within the bound.
+    assert(pos <= max_out);
+    return @intCast(pos);
+}
+
+/// Cut `src` on `sep` into `out` pieces (slices into `src`, zero-copy); return the
+/// count. An empty separator is refused. A source with no separator yields one piece
+/// (the whole source); `count = occurrences(sep) + 1`.
+pub fn split(src: []const u8, sep: []const u8, out: *[max_parts][]const u8) StringError!u32 {
+    // invariant: a separator has at least one byte, so progress is guaranteed.
+    if (sep.len == 0) return error.EmptySep;
+    var n: u32 = 0;
+    var it = std.mem.splitSequence(u8, src, sep);
+    while (it.next()) |piece| {
+        // invariant: a split never exceeds the bounded piece count.
+        if (n >= max_parts) return error.TooManyParts;
+        out[n] = piece;
+        n += 1;
+    }
+    return n;
+}
+
+// --- selftest -----------------------------------------------------------
+
+fn prove_strings() !void {
+    var out: [max_out]u8 = undefined;
+    var parts: [max_parts][]const u8 = undefined;
+
+    // join glues with the separator between pieces, none trailing.
+    const three = [_][]const u8{ "rye", "grows", "here" };
+    const jn = try join(&three, " · ", &out);
+    if (!std.mem.eql(u8, out[0..jn], "rye · grows · here")) return error.JoinWrong;
+
+    // split cuts on the separator into the right pieces, zero-copy.
+    const sn = try split("a,b,c", ",", &parts);
+    if (sn != 3) return error.SplitCount;
+    if (!std.mem.eql(u8, parts[0], "a")) return error.SplitFirst;
+    if (!std.mem.eql(u8, parts[2], "c")) return error.SplitLast;
+
+    // no separator → one piece (the whole source).
+    const one = try split("whole", ",", &parts);
+    if (one != 1 or !std.mem.eql(u8, parts[0], "whole")) return error.SplitWhole;
+
+    // round-trip: split(join(xs, s), s) == xs, when no piece holds the separator.
+    const xs = [_][]const u8{ "alpha", "beta", "gamma" };
+    const rj = try join(&xs, "|", &out);
+    // out[0..rj] slices the caller buffer; split it back.
+    var back: [max_parts][]const u8 = undefined;
+    const rn = try split(out[0..rj], "|", &back);
+    if (rn != xs.len) return error.RoundTripCount;
+    var i: u32 = 0;
+    while (i < rn) : (i += 1) {
+        if (!std.mem.eql(u8, back[i], xs[i])) return error.RoundTripPiece;
+    }
+
+    // refusals: an empty separator, and a too-small join output.
+    if (split("x", "", &parts)) |_| return error.EmptySepAccepted else |_| {}
+    var tiny: [4]u8 = undefined;
+    if (join(&three, " · ", &tiny)) |_| return error.TinyOutAccepted else |_| {}
+}
+
+fn run_selftest() !u8 {
+    try prove_strings();
+    print("pleac strings: join glues a list with a separator between pieces (never trailing); split cuts a string on a separator into pieces, zero-copy (each piece slices the source).\n", .{});
+    print("pleac strings: split(join(xs, sep), sep) == xs when no piece holds the separator — the cookbook pair are inverses; a source with no separator yields one whole piece.\n", .{});
+    print("pleac strings: bounded — an empty separator is refused, and a too-small join output is refused rather than truncated.\n", .{});
+    print("pleac strings: version {s}\n", .{strings_version});
+    print("GREEN: pleac strings — join and split, inverse and bounded, zero-copy on the cut, witnessed.\n", .{});
+    return 0;
+}
+
+pub fn main() !u8 {
+    return run_selftest();
+}
