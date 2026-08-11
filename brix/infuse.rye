@@ -1,0 +1,201 @@
+//! brix/infuse.rye — deep merge/override for Brix descriptors (kin to infuse.nix).
+//!
+//! Brix descriptors are flat Bron: `key value` per line, `#` comments and blank lines
+//! skipped, keys may repeat (e.g. a `field` list). infuse.nix's deep recursive merge
+//! reduces, in a flat namespace, to a **per-key override**: the override's value(s)
+//! for a key replace the base's, base-only keys pass through **in place**, and
+//! override-only keys append after in override order. (A nested-descriptor deep merge
+//! waits on Brix growing nesting — a named horizon, not this lap.)
+//!
+//! Studied clean-room from infuse.nix (MIT, `gratitude/`); the code here is our own.
+//! Zero-copy: parsed keys and values are slices into the two source buffers; only the
+//! merged output is written fresh.
+//!
+//!   rye build brix/infuse.rye -femit-bin=tools/.build/brix_infuse
+//!   tools/.build/brix_infuse selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const infuse_version = "20260811.185148";
+
+// A descriptor's bounds, each named once and enforced at the edge.
+pub const max_pairs: u32 = 64; // most key-value lines one descriptor holds
+pub const max_key: u32 = 48; // longest key
+pub const max_line: u32 = 512; // longest line
+pub const max_out: u32 = 8192; // bounded merged output
+
+pub const InfuseError = error{ TooManyPairs, LineTooLong, KeyTooLong, OutTooSmall };
+
+/// One parsed field — key and value as slices into the source (zero-copy).
+const Pair = struct {
+    key: []const u8,
+    val: []const u8,
+};
+
+/// Parse a Bron/Brix source into `out` pairs (slices into `src`); return the count.
+/// `#` comments and blank lines are skipped; the key is the first space-delimited
+/// token, the value the trimmed remainder (which may be empty).
+fn parse(src: []const u8, out: *[max_pairs]Pair) InfuseError!u32 {
+    var n: u32 = 0;
+    var lines = std.mem.splitScalar(u8, src, '\n');
+    while (lines.next()) |raw| {
+        const line = std.mem.trim(u8, raw, " \t\r");
+        if (line.len == 0 or line[0] == '#') continue;
+        // invariant: a descriptor stays within its bounded field count.
+        if (n >= max_pairs) return error.TooManyPairs;
+        // invariant: a line stays within the bounded length.
+        if (line.len > max_line) return error.LineTooLong;
+        var sp: usize = 0; // seam: slice index over a std source
+        while (sp < line.len and line[sp] != ' ') : (sp += 1) {}
+        const key = line[0..sp];
+        // invariant: a key stays within the bounded length.
+        if (key.len > max_key) return error.KeyTooLong;
+        const val = std.mem.trim(u8, line[sp..], " \t");
+        out[n] = .{ .key = key, .val = val };
+        n += 1;
+    }
+    return n;
+}
+
+/// Whether any of the first `count` pairs carries `key`.
+fn key_in(pairs: *const [max_pairs]Pair, count: u32, key: []const u8) bool {
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        if (std.mem.eql(u8, pairs[i].key, key)) return true;
+    }
+    return false;
+}
+
+/// Append one `key val\n` line to `out` at `pos`; return the new pos. Refuses to
+/// overflow the bounded output rather than truncating.
+fn emit(out: []u8, pos: u32, key: []const u8, val: []const u8) InfuseError!u32 {
+    const need = key.len + 1 + val.len + 1; // key, space, val, newline
+    // invariant: the merged output stays within its bound.
+    if (@as(usize, pos) + need > out.len) return error.OutTooSmall;
+    var p: usize = @intCast(pos); // seam: slice index at the write edge
+    for (key) |c| {
+        out[p] = c;
+        p += 1;
+    }
+    out[p] = ' ';
+    p += 1;
+    for (val) |c| {
+        out[p] = c;
+        p += 1;
+    }
+    out[p] = '\n';
+    p += 1;
+    return @intCast(p);
+}
+
+/// Merge `over` onto `base` by per-key override into `out`; return the byte length.
+/// Base keys keep their place — an overridden key's value(s) sit at the base key's
+/// first slot; override-only keys append after, in override order.
+pub fn infuse(base_src: []const u8, over_src: []const u8, out: []u8) InfuseError!u32 {
+    var base: [max_pairs]Pair = undefined;
+    var over: [max_pairs]Pair = undefined;
+    const nb = try parse(base_src, &base);
+    const no = try parse(over_src, &over);
+
+    var over_emitted: [max_pairs]bool = [_]bool{false} ** max_pairs;
+    var pos: u32 = 0;
+
+    // Walk base in order. A base key the override defines is replaced (all the
+    // override's values for that key, emitted once at the first base slot); a base
+    // key the override leaves alone passes through; a later base repeat of an
+    // overridden key is dropped.
+    var i: u32 = 0;
+    while (i < nb) : (i += 1) {
+        const bk = base[i].key;
+        if (!key_in(&over, no, bk)) {
+            pos = try emit(out, pos, base[i].key, base[i].val);
+            continue;
+        }
+        var already = false;
+        var j: u32 = 0;
+        while (j < no) : (j += 1) {
+            if (std.mem.eql(u8, over[j].key, bk) and over_emitted[j]) {
+                already = true;
+                break;
+            }
+        }
+        if (already) continue;
+        j = 0;
+        while (j < no) : (j += 1) {
+            if (std.mem.eql(u8, over[j].key, bk)) {
+                pos = try emit(out, pos, over[j].key, over[j].val);
+                over_emitted[j] = true;
+            }
+        }
+    }
+
+    // Append override-only keys (never present in base), in override order, once each.
+    var k: u32 = 0;
+    while (k < no) : (k += 1) {
+        if (over_emitted[k]) continue;
+        var m: u32 = k;
+        while (m < no) : (m += 1) {
+            if (std.mem.eql(u8, over[m].key, over[k].key)) {
+                pos = try emit(out, pos, over[m].key, over[m].val);
+                over_emitted[m] = true;
+            }
+        }
+    }
+
+    // invariant: the merged output is bounded.
+    assert(pos <= max_out);
+    return pos;
+}
+
+// --- selftest -----------------------------------------------------------
+
+fn prove_infuse() !void {
+    const base =
+        "# a base descriptor\n" ++
+        "kind baton\n" ++
+        "name agent_cover\n" ++
+        "field alpha\n" ++
+        "field beta\n";
+    const over =
+        "# an override\n" ++
+        "kind cell\n" ++
+        "field gamma\n" ++
+        "carrier relay\n";
+    // kind overridden · name kept in place · field list replaced · carrier appended.
+    const want = "kind cell\nname agent_cover\nfield gamma\ncarrier relay\n";
+
+    var out: [max_out]u8 = undefined;
+    const n = try infuse(base, over, &out);
+    if (!std.mem.eql(u8, out[0..n], want)) return error.MergeWrong;
+
+    // Override-only key genuinely appends; a base-only key genuinely survives.
+    if (std.mem.indexOf(u8, out[0..n], "carrier relay") == null) return error.OverrideOnlyLost;
+    if (std.mem.indexOf(u8, out[0..n], "name agent_cover") == null) return error.BaseOnlyLost;
+    // The overridden scalar's old value is gone; the replaced list's old values gone.
+    if (std.mem.indexOf(u8, out[0..n], "kind baton") != null) return error.OldScalarKept;
+    if (std.mem.indexOf(u8, out[0..n], "field alpha") != null) return error.OldListKept;
+
+    // Empty override is identity over base (comments dropped, fields preserved in order).
+    const id = try infuse(base, "# nothing\n", &out);
+    if (std.mem.indexOf(u8, out[0..id], "kind baton") == null) return error.EmptyOverrideChangedBase;
+
+    // A too-small output is refused, never truncated.
+    var tiny: [8]u8 = undefined;
+    if (infuse(base, over, &tiny)) |_| return error.TinyOutAccepted else |_| {}
+}
+
+fn run_selftest() !u8 {
+    try prove_infuse();
+    print("brix infuse: a flat-Bron per-key override — the override's value(s) replace the base's for a key, base-only keys pass through in place, override-only keys append in override order.\n", .{});
+    print("brix infuse: zero-copy — parsed keys and values slice the source buffers; only the merged descriptor is written fresh, bounded by max_out.\n", .{});
+    print("brix infuse: a scalar is overridden, a base-only key survives, a repeated list is replaced, an empty override is identity, and a too-small output is refused.\n", .{});
+    print("brix infuse: version {s}\n", .{infuse_version});
+    print("GREEN: brix infuse — deep merge/override for Brix descriptors: per-key override over flat Bron, zero-copy, bounded, witnessed.\n", .{});
+    return 0;
+}
+
+pub fn main() !u8 {
+    return run_selftest();
+}
