@@ -1,7 +1,7 @@
 # Mandate — Grain's turbopuffer
 
 **Language:** EN
-**Status:** Living — the vector store · lap 1 seated `20260810.031234` · lap 2 (**remove** — full CRUD) `20260810` · lap 3 (**profile-loaded dim**) `20260810` · lap 4 (**dim from a real Bron profile**) `20260810` · lap 5 (**approximate index**) `20260810` · lap 6 (**object-storage backing**) `20260811` · lap 7 (**named-object bucket**) `20260811` · lap 8 (**write-ahead log**) `20260811` · lap 9 (**serve protocol**) `20260811` · lap 10 (**named serve — matches resolved to spoken names**) `20260811`
+**Status:** Living — the vector store · lap 1 seated `20260810.031234` · lap 2 (**remove** — full CRUD) `20260810` · lap 3 (**profile-loaded dim**) `20260810` · lap 4 (**dim from a real Bron profile**) `20260810` · lap 5 (**approximate index**) `20260810` · lap 6 (**object-storage backing**) `20260811` · lap 7 (**named-object bucket**) `20260811` · lap 8 (**write-ahead log**) `20260811` · lap 9 (**serve protocol**) `20260811` · lap 10 (**named serve — matches resolved to spoken names**) `20260811` · lap 11 (**served over Comlink, sealed**) `20260811`
 **Voice:** Kyri
 **Kin:** the first build of the breach's new arc (`../expanding-prompts/20260810-025942_the-handoff-baton-vision-checkpoint.md`)
 
@@ -49,6 +49,10 @@ A store answers questions from elsewhere. [`serve.rye`](serve.rye) is the **wire
 
 A bare query answers with point numbers; a **named** query answers with **who**. [`named_serve.rye`](named_serve.rye) resolves each match through the shared name registry to the spoken name its point wears, or marks it honestly **unnamed** when it wears none — never a fabricated name. This closes the resolution half of "served over Comlink, resolved to a spoken name," now that `names.rye` offers a public `sign_claim` (added the same day) so a name can be claimed from outside that module. Proven by `prove_named_serve`: a settled galaxy is claimed the name `polaris` through `sign_claim`, a store keyed by point numbers is queried, the nearest match resolves to `polaris`, an unnamed point resolves `named = false`, and the registry reads both ways (name→point, point→name).
 
+## Served over Comlink, sealed (`comlink_serve.rye`, landed `20260811`)
+
+Lap 9 gave the wire *shape* of a query; [`comlink_serve.rye`](comlink_serve.rye) rides it on Comlink's actual transport. A `QueryRequest`'s bytes become the plaintext of a **sealed datagram** (`wire_format.seal_message` — X25519 key agreement, ChaCha20-Poly1305, a Sha3 name, a kumara signature), opened on the far side by `open_datagram`, so a query crosses Comlink **encrypted, signed, and name-checked end to end**, and the answer returns the same way. `serve_sealed(store, request_frame, response_frame)` is the host side: open the sealed request, answer it against the store, seal the response. A compile-time assert proves both serve messages fit the sealed-message budget (340 bytes), so a query and its answer each ride one datagram — no fragmentation. Proven by `prove_comlink_serve`: a query served over a sealed round-trip returns exactly what a direct in-process query would (same nearest, same order), and a single flipped ciphertext byte fails to open — a forged or tampered datagram never reaches the store. The remaining transport horizon is a **live NIC** (a real `virtio_net` socket carrying these datagrams).
+
 ## Horizons
 
 - **Unsplash** as the first real data source — image embeddings, and a real-world camera feed (consent-gated partnership).
@@ -56,7 +60,7 @@ A bare query answers with point numbers; a **named** query answers with **who**.
 - An **approximate index** for scale — **landed lap 5 `20260810`** (SimHash LSH, `query_approx`); a multi-probe / larger-signature refinement for real scale is the remaining horizon.
 - **Object-storage backing** so the store is serverless like its inspiration — **landed lap 6 `20260811`** (`snapshot`/`restore`, one portable blob, file round-trip on metal), and a **named-object bucket** — **landed lap 7 `20260811`** (`bucket.rye`, S3-style put/get keyed by a path-safe name). A real cloud-bucket driver (an actual S3/GCS backend behind the same put/get) is the remaining storage horizon.
 - **A write-ahead log** for durability between snapshots — **landed lap 8 `20260811`** (`wal.rye`, record · encode/decode · replay for crash recovery, proven on metal); a log-compaction pass that folds a full log into a fresh snapshot is the remaining refinement.
-- Served over **Comlink** — **the protocol landed lap 9 `20260811`** (`serve.rye`, request/response bytes, one-call serve); wiring those messages onto an actual Comlink socket, and rendering on **Skate**, remain the horizons.
+- Served over **Comlink** — **the protocol landed lap 9 `20260811`** (`serve.rye`), and **sealed onto Comlink's transport lap 11 `20260811`** (`comlink_serve.rye`, sealed/signed/name-checked datagrams); a **live NIC** (real `virtio_net` socket) and rendering on **Skate** remain the horizons.
 - Resolved to a spoken name via `../settlement/names.rye` — **landed lap 10 `20260811`** (`named_serve.rye`, `names.rye` gained a public `sign_claim`). A match now resolves to **who** (spoken name) and can resolve to **where** (`keyed.place_of`, fractal place) side by side.
 
 ---
