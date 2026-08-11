@@ -1,7 +1,7 @@
 # Lexicon — Module Names and Their Meanings
 
 **Language:** EN
-**Last updated:** `20260801.024840` (**e142 GREEN** · Q2 CLI doc · Crossing lean · R51)
+**Last updated:** `20260801.024840` (CLI-doc + Crossing-lean pass, during the rested Equinox season)
 **Style:** Radiant (see `RADIANT_STYLE.md`)
 
 ---
@@ -341,7 +341,7 @@ Full loop bounds: [`work-in-progress/ready-to-ask-claude.md`](../work-in-progres
 | **core** | **Retired living depth word** `20260729.125911` → use **quad** for nest 4. Dated counsel may keep the word. |
 | **quint** | Nest **5** — here the **Keeh Season** q0–q15 lean-16 **CLOSED**. Seated `20260728.030310`. |
 | **sext** | Nest **6** — here the **Generator Season** s0–s63. **PAUSED** at s8/s9. Seated `20260728.183510`. |
-| **sept** | Nest **7** — here the **Surface Season** p0–p63. **PAUSED** · p58 complete / p59 next · handed into Equinox/deca `20260729.165912`. Seated `20260728.193914`. |
+| **sept** | Nest **7** — here the **Surface Season** (rested history; its p-count is that season's own record). **RESTED**, handed into the Equinox season `20260729.165912`. Seated `20260728.193914`. |
 | **oct** | Nest **8** — here the **Kiln Season** o0–o63. **PAUSED** at o3/o4 (handed back earlier). Seated `20260728.234419`. |
 | **nona** | Nest **9** — here the **Nona Season** rounds **n0–n63**. **PAUSED** · n3 complete / n4 next · handed back `return_surface_p41` `20260729.131327`. Seated `20260729.125911` · [`../counsel/20260729-125911_the-nona-season-charter.md`](../counsel/20260729-125911_the-nona-season-charter.md). |
 | **undeca** | Nest **11** — here the **Voice Season** (256 living · journeys). **RESTED** `20260804.233134` with its season row — Journey 4 doors 8–15 GREEN · Build queue CLOSED · tend three DONE · almanac 16/16 · handback `return_equinox_e7` CONSUMED. Label **canon** `20260730.014817`. Charter [`../counsel/20260729-205642_the-voice-season-undeca-charter.md`](../counsel/20260729-205642_the-voice-season-undeca-charter.md) · handback [`../counsel/20260730-111804_voice-handback-return-equinox-e7.md`](../counsel/20260730-111804_voice-handback-return-equinox-e7.md).
