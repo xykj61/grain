@@ -55,7 +55,12 @@ rishi/bin/rishi run tools/pleac_numbers_witness.rish
 
 ## Wired into the interpreter
 
-The cookbook primitives also live as **Rishi builtins**, so a `.rish` script calls them directly beside `sort`/`unique`/`upper`. First wired `20260811.192204`: **`clamp <x> <lo> <hi>`** (`rishi/src/main.rye` `do_clamp`; test `rishi/tests/clamp.rish`, full suite 21/21 GREEN). The remaining verbs (`chunk` · `window` · `flatten` · `parse` · `to_str`) wire the same way, one at a time, each with a suite test and a full-suite rebuild.
+The cookbook primitives also live as **Rishi builtins**, so a `.rish` script calls them directly beside `sort`/`unique`/`upper`:
+
+- **`clamp <x> <lo> <hi>`** — `20260811.192204` (`do_clamp`; test `rishi/tests/clamp.rish`).
+- **`chunk <list> <size>`** / **`window <list> <size>`** / **`flatten <list>`** — `20260811.193451` (`do_chunk`/`do_window`/`do_flatten`, list-of-lists zero-copy; test `rishi/tests/chunk.rish`). Rishi indexes one level at a time, so a `.rish` binds an inner list (`let g = cs[0]`) before indexing it.
+
+Full suite 22/22 GREEN. The remaining verbs (`parse` · `to_str`) wire the same way, one at a time, each with a suite test and a full-suite rebuild.
 
 ## Horizon
 
