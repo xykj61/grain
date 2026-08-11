@@ -12,6 +12,7 @@
 
 const std = @import("std");
 const assert = std.debug.assert;
+const tally_copy = @import("tally_copy.rye");
 
 pub const max_name_len: u32 = 64;
 
@@ -247,7 +248,7 @@ fn parse_paren(rest: []const u8) ParseError!Prefix {
         const after = try parse_ident(rest[lent_prefix.len..]);
         if (after.rest.len == 0 or after.rest[0] != ')') return error.MalformedExpr;
         var e: Expr = .{ .kind = .lent_of, .face_len = after.ident.len };
-        @memcpy(e.face[0..after.ident.len], after.ident);
+        tally_copy.copy_disjoint(u8, e.face[0..after.ident.len], after.ident);
         return .{ .expr = e, .rest = std.mem.trimStart(u8, after.rest[1..], " \t") };
     }
 
@@ -259,8 +260,8 @@ fn parse_paren(rest: []const u8) ParseError!Prefix {
         const right = try parse_ident(mid);
         if (right.rest.len == 0 or right.rest[0] != ')') return error.MalformedExpr;
         var e: Expr = .{ .kind = .mix_of, .face_len = left.ident.len, .face2_len = right.ident.len };
-        @memcpy(e.face[0..left.ident.len], left.ident);
-        @memcpy(e.face2[0..right.ident.len], right.ident);
+        tally_copy.copy_disjoint(u8, e.face[0..left.ident.len], left.ident);
+        tally_copy.copy_disjoint(u8, e.face2[0..right.ident.len], right.ident);
         return .{ .expr = e, .rest = std.mem.trimStart(u8, right.rest[1..], " \t") };
     }
 
@@ -284,10 +285,10 @@ fn parse_paren(rest: []const u8) ParseError!Prefix {
                 .face3_len = right.face.len,
                 .face4_len = right.face2.len,
             };
-            @memcpy(e.face[0..left.face.len], left.face);
-            @memcpy(e.face2[0..left.face2.len], left.face2);
-            @memcpy(e.face3[0..right.face.len], right.face);
-            @memcpy(e.face4[0..right.face2.len], right.face2);
+            tally_copy.copy_disjoint(u8, e.face[0..left.face.len], left.face);
+            tally_copy.copy_disjoint(u8, e.face2[0..left.face2.len], left.face2);
+            tally_copy.copy_disjoint(u8, e.face3[0..right.face.len], right.face);
+            tally_copy.copy_disjoint(u8, e.face4[0..right.face2.len], right.face2);
             return .{ .expr = e, .rest = std.mem.trimStart(u8, right.rest[1..], " \t") };
         }
         if (left.kind == .mix_of and right.kind == .face) {
@@ -299,9 +300,9 @@ fn parse_paren(rest: []const u8) ParseError!Prefix {
                 .face2_len = left.face2.len,
                 .face3_len = right.face.len,
             };
-            @memcpy(e.face[0..left.face.len], left.face);
-            @memcpy(e.face2[0..left.face2.len], left.face2);
-            @memcpy(e.face3[0..right.face.len], right.face);
+            tally_copy.copy_disjoint(u8, e.face[0..left.face.len], left.face);
+            tally_copy.copy_disjoint(u8, e.face2[0..left.face2.len], left.face2);
+            tally_copy.copy_disjoint(u8, e.face3[0..right.face.len], right.face);
             return .{ .expr = e, .rest = std.mem.trimStart(u8, right.rest[1..], " \t") };
         }
         if (left.kind == .face and right.kind == .mix_of) {
@@ -313,15 +314,15 @@ fn parse_paren(rest: []const u8) ParseError!Prefix {
                 .face2_len = right.face.len,
                 .face3_len = right.face2.len,
             };
-            @memcpy(e.face[0..left.face.len], left.face);
-            @memcpy(e.face2[0..right.face.len], right.face);
-            @memcpy(e.face3[0..right.face2.len], right.face2);
+            tally_copy.copy_disjoint(u8, e.face[0..left.face.len], left.face);
+            tally_copy.copy_disjoint(u8, e.face2[0..right.face.len], right.face);
+            tally_copy.copy_disjoint(u8, e.face3[0..right.face2.len], right.face2);
             return .{ .expr = e, .rest = std.mem.trimStart(u8, right.rest[1..], " \t") };
         }
         if (left.kind != .face or right.kind != .face) return error.ExprNotYetLowered;
         var e: Expr = .{ .kind = .jam_of, .face_len = left.face.len, .face2_len = right.face.len };
-        @memcpy(e.face[0..left.face.len], left.face);
-        @memcpy(e.face2[0..right.face.len], right.face);
+        tally_copy.copy_disjoint(u8, e.face[0..left.face.len], left.face);
+        tally_copy.copy_disjoint(u8, e.face2[0..right.face.len], right.face);
         return .{ .expr = e, .rest = std.mem.trimStart(u8, right.rest[1..], " \t") };
     }
 
@@ -350,10 +351,10 @@ fn parse_paren(rest: []const u8) ParseError!Prefix {
                     .face3_len = right.face.len,
                     .face4_len = right.face2.len,
                 };
-                @memcpy(e.face[0..left.face.len], left.face);
-                @memcpy(e.face2[0..left.face2.len], left.face2);
-                @memcpy(e.face3[0..right.face.len], right.face);
-                @memcpy(e.face4[0..right.face2.len], right.face2);
+                tally_copy.copy_disjoint(u8, e.face[0..left.face.len], left.face);
+                tally_copy.copy_disjoint(u8, e.face2[0..left.face2.len], left.face2);
+                tally_copy.copy_disjoint(u8, e.face3[0..right.face.len], right.face);
+                tally_copy.copy_disjoint(u8, e.face4[0..right.face2.len], right.face2);
                 return .{ .expr = e, .rest = std.mem.trimStart(u8, after_jam[1..], " \t") };
             }
             if (left.kind == .mix_of and right.kind == .face) {
@@ -366,9 +367,9 @@ fn parse_paren(rest: []const u8) ParseError!Prefix {
                     .face2_len = left.face2.len,
                     .face3_len = right.face.len,
                 };
-                @memcpy(e.face[0..left.face.len], left.face);
-                @memcpy(e.face2[0..left.face2.len], left.face2);
-                @memcpy(e.face3[0..right.face.len], right.face);
+                tally_copy.copy_disjoint(u8, e.face[0..left.face.len], left.face);
+                tally_copy.copy_disjoint(u8, e.face2[0..left.face2.len], left.face2);
+                tally_copy.copy_disjoint(u8, e.face3[0..right.face.len], right.face);
                 return .{ .expr = e, .rest = std.mem.trimStart(u8, after_jam[1..], " \t") };
             }
             if (left.kind == .face and right.kind == .mix_of) {
@@ -381,9 +382,9 @@ fn parse_paren(rest: []const u8) ParseError!Prefix {
                     .face2_len = right.face.len,
                     .face3_len = right.face2.len,
                 };
-                @memcpy(e.face[0..left.face.len], left.face);
-                @memcpy(e.face2[0..right.face.len], right.face);
-                @memcpy(e.face3[0..right.face2.len], right.face2);
+                tally_copy.copy_disjoint(u8, e.face[0..left.face.len], left.face);
+                tally_copy.copy_disjoint(u8, e.face2[0..right.face.len], right.face);
+                tally_copy.copy_disjoint(u8, e.face3[0..right.face2.len], right.face2);
                 return .{ .expr = e, .rest = std.mem.trimStart(u8, after_jam[1..], " \t") };
             }
             if (left.kind == .face and right.kind == .face) {
@@ -393,8 +394,8 @@ fn parse_paren(rest: []const u8) ParseError!Prefix {
                     .face_len = left.face.len,
                     .face2_len = right.face.len,
                 };
-                @memcpy(e.face[0..left.face.len], left.face);
-                @memcpy(e.face2[0..right.face.len], right.face);
+                tally_copy.copy_disjoint(u8, e.face[0..left.face.len], left.face);
+                tally_copy.copy_disjoint(u8, e.face2[0..right.face.len], right.face);
                 return .{ .expr = e, .rest = std.mem.trimStart(u8, after_jam[1..], " \t") };
             }
             return error.ExprNotYetLowered;
@@ -403,7 +404,7 @@ fn parse_paren(rest: []const u8) ParseError!Prefix {
         const after = try parse_ident(after_cue);
         if (after.rest.len == 0 or after.rest[0] != ')') return error.MalformedExpr;
         var e: Expr = .{ .kind = .cue_of, .face_len = after.ident.len };
-        @memcpy(e.face[0..after.ident.len], after.ident);
+        tally_copy.copy_disjoint(u8, e.face[0..after.ident.len], after.ident);
         return .{ .expr = e, .rest = std.mem.trimStart(u8, after.rest[1..], " \t") };
     }
 
@@ -432,7 +433,7 @@ pub fn parse_prefix(rest_in: []const u8) ParseError!Prefix {
         const after_mold = std.mem.trimStart(u8, after_rune[mold_end..], " \t");
         const parsed = try parse_decimal_prefix(after_mold);
         var e: Expr = .{ .kind = .cast_literal, .lit = parsed.lit, .mold_len = mold.len };
-        @memcpy(e.mold[0..mold.len], mold);
+        tally_copy.copy_disjoint(u8, e.mold[0..mold.len], mold);
         return .{ .expr = e, .rest = parsed.rest };
     }
 
@@ -443,7 +444,7 @@ pub fn parse_prefix(rest_in: []const u8) ParseError!Prefix {
     if (face[0] >= '0' and face[0] <= '9') return error.BadIdent;
     if (face.len > max_name_len) return error.BadIdent;
     var e: Expr = .{ .kind = .face, .face_len = face.len };
-    @memcpy(e.face[0..face.len], face);
+    tally_copy.copy_disjoint(u8, e.face[0..face.len], face);
     return .{ .expr = e, .rest = std.mem.trimStart(u8, rest[end..], " \t") };
 }
 
