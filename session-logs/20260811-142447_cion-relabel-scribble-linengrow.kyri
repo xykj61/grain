@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260811.142447
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host cloud pier sandbox — Eastern (EDT) time convention
+title CION relabel — scribble + linengrow prose; SLC-2a Lap + two prints deferred
+prompt kg relabel scribble linengrow
+think first safety check: pond_brushstroke_frame_witness asserts "GREEN: SLC-2a Lap 3" — I edited pond/drawn_terminal.rye two rounds back, so I verified that asserted string lives in the slc2a witness .rish say lines (untouched), not in drawn_terminal.rye (its metalsmoke prints a different line). No regression from the pond round
+think surveyed both modules: scribble is clean prose (scribble_core "(lap 7)", scribble.rye "Scribble lap 7", README "Inference lap 1"); linengrow is mixed — bare prose (WOV lap 1, Neth lap 1, SLC-L4 lap 1, "as lap 1"), structured codes (WOV lap 2b, OA-L3), two lap-ordinal PRINT strings, and the witness-asserted SLC-2a Lap 1/2 examples
+think honored red #66: checked every edit target with ls -L first — all eight regular files, no symlink; sed with a typechange guard after
+obs relabeled the comment/prose bare ordinals: scribble_core, scribble.rye, scribble/README (Inference close), linengrow/README (WOV — exit honesty), wov_core, neth_sim, disclosure_core (SLC-L4 kept), wov_tb_host:136 (as exit honesty). WOV lap 2b stays — a structured code the refined guard ignores
+obs deferred to their own rebuild-verified round, NOT half-swept: linengrow's two lap-ordinal PRINT strings (neth_sim_witness.rye:164, open_asks_escrow_delivery.rye:194 — editing a print wants a rebuild + witness co-check) and the SLC-2a Lap scheme (wayland_seed.rye + pond slc2a witnesses assert "SLC-2a Lap 3") — a coupled cross-cutting scheme like comlink's sub-lap
+obs guard extended to the swept files; seven modules now (mandate · scribe · vault · pond · granary · scribble · linengrow), negative bites, PASS fixture stays quiet, living_docs_lint GREEN; all edits comment/prose so no rebuild needed
+loom witness=cion_module_labeling_witness wall_ms=167 modules=7 negative=bites pass=quiet
+file scribble/scribble_core.rye + scribble/scribble.rye + scribble/README.md prose relabeled
+file linengrow/README.md + wov_core.rye + neth_sim.rye + disclosure_core.rye + wov_tb_host.rye prose relabeled (WOV lap 2b + OA-L3 codes kept)
+file tools/gen/season/cion_module_labeling_witness.rish scans scribble + linengrow swept files; closing line names seven modules
+file context/specs/20260810-222755_chronological-semantic-labeling-and-the-cion-meta-season.md addendum swept-set = seven; deferred prints + SLC-2a scheme named
+recommend check-in (Claude) — seven modules read by meaning now. What remains is coupled/word-gated: the SLC-2a Lap scheme (linengrow + pond, witness-asserted) and comlink's sub-lap, plus two linengrow print strings wanting a rebuild-verified touch. The REDS fold (24132/24576) is still due. Keaton's word on which. Rest is his to take

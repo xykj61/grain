@@ -1,4 +1,4 @@
-//! scribble/scribble_core.rye — Markdown subset → value blocks (lap 7).
+//! scribble/scribble_core.rye — Markdown subset → value blocks.
 //!
 //! Headings, paragraphs, fenced code (rye / rish / plain). Heading, paragraph, fence-kind, plain-snippet extract, and heading-depth filter for views.
 

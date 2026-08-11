@@ -8,9 +8,10 @@
 # swept so far: mandate (20260811.132333), scribe + vault (20260811.133322), pond
 # (20260811.133845), granary's OWN .rye prose (20260811.134946 — filenames kept: the
 # tools/granary_lap*.rish witness handles stay as stable identifiers per Keaton's
-# "prose-only" ruling; granary/scribble_core.rye and granary/wov_core.rye are symlinks
-# into scribble/ and linengrow/ and belong to those modules' own rounds, not scanned
-# here). Dated
+# "prose-only" ruling), and scribble + linengrow prose (20260811.142447). Deferred to
+# their own rebuild-verified round: linengrow's two lap-ordinal PRINT strings
+# (neth_sim_witness.rye, open_asks_escrow_delivery.rye) and the witness-asserted
+# "SLC-2a Lap" scheme (linengrow/wayland_seed.rye + pond/slc2a witnesses). Dated
 # session logs and specs keep the ordinals they recorded (testimony is never
 # rewritten). Law addendum 20260811.130827:
 # context/specs/20260810-222755_chronological-semantic-labeling-and-the-cion-meta-season.md
@@ -20,7 +21,7 @@ say "cion-module: Style Radiant — a capability's name is its semantic label + 
 say "cion-module: Lens TAME — guard the living module surfaces; a planted lap ordinal must bite."
 
 # The swept modules name no capability by a bare lap ordinal.
-let scan = run ["sh" "tools/fixtures/labeling_module_scan.sh" "mandate/README.md" "mandate/store.rye" "mandate/keyed.rye" "mandate/bucket.rye" "mandate/wal.rye" "mandate/serve.rye" "mandate/named_serve.rye" "mandate/comlink_serve.rye" "scribe/README.md" "scribe/reader.rye" "vault/README.md" "vault/shard.rye" "pond/README.md" "pond/apps/drawn_terminal.rye" "granary/README.md" "granary/exchange_listing.rye" "granary/resin_serve_delivery.rye" "granary/weave_settle.rye" "granary/weave_settle_core.rye"]
+let scan = run ["sh" "tools/fixtures/labeling_module_scan.sh" "mandate/README.md" "mandate/store.rye" "mandate/keyed.rye" "mandate/bucket.rye" "mandate/wal.rye" "mandate/serve.rye" "mandate/named_serve.rye" "mandate/comlink_serve.rye" "scribe/README.md" "scribe/reader.rye" "vault/README.md" "vault/shard.rye" "pond/README.md" "pond/apps/drawn_terminal.rye" "granary/README.md" "granary/exchange_listing.rye" "granary/resin_serve_delivery.rye" "granary/weave_settle.rye" "granary/weave_settle_core.rye" "scribble/README.md" "scribble/scribble.rye" "scribble/scribble_core.rye" "linengrow/README.md" "linengrow/wov_core.rye" "linengrow/neth_sim.rye" "linengrow/disclosure_core.rye" "linengrow/wov_tb_host.rye"]
 say scan.out
 assert scan.out contains "verdict=ok" else "cion-module: a swept-module surface names a capability by a bare lap ordinal"
 # values_apart: the verdict key and the exit status must agree.
@@ -40,4 +41,4 @@ say pass.out
 assert pass.out contains "verdict=ok" else "cion-module: the guard false-positived on a meaningful code or sub-lap"
 assert pass.ok else "cion-module: pass-fixture verdict and status disagree"
 
-say "GREEN: cion-module — the swept modules (mandate · scribe · vault · pond · granary) name every capability by semantic label + stamp, no bare lap ordinal; the guard bites a planted one"
+say "GREEN: cion-module — the swept modules (mandate · scribe · vault · pond · granary · scribble · linengrow) name every capability by semantic label + stamp, no bare lap ordinal; the guard bites a planted one and stays quiet on meaningful codes"

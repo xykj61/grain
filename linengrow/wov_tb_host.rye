@@ -133,7 +133,7 @@ fn run_from_book(io: std.Io, book: *wov.Book) !u8 {
     assert(proof_a.balance == 700);
     print("wov-tb-host: holder A balance {d} proven from TB projection — GREEN welcome\n", .{proof_a.balance});
 
-    // Same golden grammar as lap 1.
+    // Same golden grammar as exit honesty.
     const cwd = Dir.cwd();
     var golden_buf: [wov.max_bundle_len]u8 = undefined;
     const golden = try cwd.readFile(io, "tools/fixtures/wov_exit_bundle_v1.bron", &golden_buf);

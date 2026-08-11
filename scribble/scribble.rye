@@ -1,4 +1,4 @@
-//! scribble/scribble.rye — Scribble lap 7 selftest (parse · rye/rish/plain · headings · depth filter · paragraphs · fence kinds).
+//! scribble/scribble.rye — Scribble — parse selftest (parse · rye/rish/plain · headings · depth filter · paragraphs · fence kinds).
 //!
 //!   rye build scribble/scribble.rye -femit-bin=scribble/bin/scribble
 //!   scribble/bin/scribble selftest

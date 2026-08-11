@@ -1,7 +1,7 @@
 # Scribble — Markdown as Values
 
 **Language:** EN
-**Last updated:** 2026-07-10 (h1+blocks view `224805`; parity **372** — Inference lap 1 close)
+**Last updated:** 2026-07-10 (h1+blocks view `224805`; parity **372** — Inference close)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable-room module — laps 0–7 green (parse · rye/rish/plain snippets · headings · depth filter · paragraphs · fence kinds); rye/rish/plain/fence/paragraph/outline/h1/h2/h3/depth-tally/tally/blocks/fence+heading/tally+blocks/para+blocks/h1+blocks views on Skate
 
