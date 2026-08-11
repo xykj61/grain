@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260811.133322
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host cloud pier sandbox — Eastern (EDT) time convention
+title CION relabel lap 2 — sweep scribe + vault, widen the guard to three modules
+prompt kg relabel — next module on the labeling ratchet
+think surveyed bare lap-N across module living surfaces: comlink 40 (across ~27 guest protocol files), glow 19, granary 7, pond 4, vault 2, scribe 1
+think chose scribe + vault this round — the mandate-sibling breach builds, README-only, the same clean "the X, lap 1 seated STAMP" pattern, no witness coupling; left comlink (large) and granary/pond (lap-N inside witness strings, witness-coupled) for their own rounds so the sweep stays low-risk and honest
+think relabel rule held: a capability's living name is its semantic label + stamp, never a bare ordinal — dropped "lap 1", kept "seated STAMP"
+obs relabeled scribe/README.md (Status), vault/README.md (Status + the shard section head); extended cion_module_labeling_witness to scan scribe + vault surfaces beside mandate (twelve files now); GREEN, guard still bites the planted negative
+obs caught myself fabricating a stamp — I wrote "20260811.140000" in the witness comment before reading the clock; corrected to the real 20260811.133322 (one-clock law: read, never invent), the same class as red #63
+obs README-only edits (no .rye touched in scribe/vault), so no rebuild needed; living_docs_lint GREEN; grad_seal untouched; the swept set is now mandate · scribe · vault
+loom witness=cion_module_labeling_witness wall_ms=74 modules=3 surfaces=12 drift=0
+file scribe/README.md Status relabeled — the Kyri reader · seated STAMP
+file vault/README.md Status + shard section head relabeled — no bare lap ordinal
+file tools/gen/season/cion_module_labeling_witness.rish scans mandate + scribe + vault; closing line names all three
+file context/specs/20260810-222755_chronological-semantic-labeling-and-the-cion-meta-season.md addendum swept-set updated; comlink/granary/pond named as their own rounds
+recommend keep-going — the ratchet holds three modules now (mandate · scribe · vault); the next rounds take comlink (large, guest protocol laps), then granary + pond (witness-coupled lap strings), then glow, until the living corpus reads by meaning. Rest is Keaton's to take
