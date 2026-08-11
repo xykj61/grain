@@ -40,6 +40,21 @@ pub const max_dim: u32 = 8;
 pub const max_records: u32 = 64;
 pub const max_k: u32 = 16;
 
+// Approximate index — SimHash / random-hyperplane LSH. A record's signature is the
+// sign of its dot with each fixed hyperplane; near directions share a signature, so an
+// approximate query scores only candidates within a bounded Hamming radius of the
+// query's signature — fewer records touched at scale, at the honest cost of missing a
+// neighbour that fell in a distant bucket. The planes are FIXED (deterministic — no
+// runtime randomness): the first four Hadamard rows over the active dims, padded to
+// max_dim. Signature width is bounded; the exact path (query) stays the default.
+pub const sig_bits: u32 = 4;
+const planes: [sig_bits][max_dim]f32 = .{
+    .{ 1, 1, 1, 1, 0, 0, 0, 0 },
+    .{ 1, -1, 1, -1, 0, 0, 0, 0 },
+    .{ 1, 1, -1, -1, 0, 0, 0, 0 },
+    .{ 1, -1, -1, 1, 0, 0, 0, 0 },
+};
+
 pub const StoreError = error{ Full };
 pub const DimError = error{ BadDim };
 pub const ProfileError = error{ NoDimField, BadDimValue };
@@ -68,6 +83,8 @@ pub const Record = struct {
     id: u32,
     tag: u32,
     vec: [max_dim]f32,
+    /// LSH signature of the unit vector — set on upsert, used by the approximate query.
+    sig: u32 = 0,
 };
 
 /// The store — a bounded array of records, how many are filled, and the active
@@ -139,6 +156,23 @@ fn normalized(vec: *const [max_dim]f32, dim: u32) [max_dim]f32 {
     return out;
 }
 
+/// A vector's LSH signature: bit i is set when the vector lies on the positive side of
+/// plane i. Near directions land on the same side of every plane, so they share a
+/// signature — the bucketing an approximate query leans on.
+fn signature(vec: *const [max_dim]f32, dim: u32) u32 {
+    // invariant: the signature fits inside a u32.
+    assert(sig_bits <= 32);
+    var sig: u32 = 0;
+    var i: u32 = 0;
+    while (i < sig_bits) : (i += 1) {
+        if (dot(vec, &planes[i], dim) >= 0) {
+            const shift: u5 = @intCast(i);
+            sig |= @as(u32, 1) << shift;
+        }
+    }
+    return sig;
+}
+
 /// Add or replace a record. The vector is normalized to a unit direction (over the
 /// store's active dimension) before it is stored; upserting an existing id updates it
 /// in place, so an id is unique.
@@ -146,15 +180,16 @@ pub fn upsert(store: *Store, id: u32, tag: u32, vec: *const [max_dim]f32) StoreE
     // invariant: the fill count never runs past the bounded records.
     assert(store.filled <= max_records);
     const unit = normalized(vec, store.dim);
+    const sig = signature(&unit, store.dim);
     var i: u32 = 0;
     while (i < store.filled) : (i += 1) {
         if (store.records[i].id == id) {
-            store.records[i] = .{ .id = id, .tag = tag, .vec = unit };
+            store.records[i] = .{ .id = id, .tag = tag, .vec = unit, .sig = sig };
             return;
         }
     }
     if (store.filled >= max_records) return error.Full;
-    store.records[store.filled] = .{ .id = id, .tag = tag, .vec = unit };
+    store.records[store.filled] = .{ .id = id, .tag = tag, .vec = unit, .sig = sig };
     store.filled += 1;
 }
 
@@ -210,6 +245,39 @@ pub fn query(store: *const Store, query_vec: *const [max_dim]f32, k: u32, filter
             if (rec.tag != t) continue;
         }
         // Both are unit vectors, so their dot product is the cosine similarity.
+        const score: f32 = @floatCast(dot(&q, &rec.vec, store.dim));
+        insert_topk(&result, k, rec.id, score);
+    }
+    // invariant: the result is sorted most-similar first.
+    var j: u32 = 1;
+    while (j < result.count) : (j += 1) {
+        assert(result.matches[j - 1].score >= result.matches[j].score);
+    }
+    return result;
+}
+
+/// Approximate k-nearest: score only the records whose LSH signature is within
+/// `max_hamming` bits of the query's, then rank those exactly. A bounded candidate
+/// scan — at scale it touches a fraction of the store, at the honest cost of missing a
+/// neighbour that fell in a distant bucket. `max_hamming == sig_bits` degrades to the
+/// exact path; `0` is same-bucket only. Zero-copy over the candidates.
+pub fn query_approx(store: *const Store, query_vec: *const [max_dim]f32, k: u32, filter_tag: ?u32, max_hamming: u32) QueryResult {
+    // invariant: a query asks for at least one and at most `max_k` results.
+    assert(k >= 1);
+    assert(k <= max_k);
+    // invariant: the Hamming radius never exceeds the signature width.
+    assert(max_hamming <= sig_bits);
+    const q = normalized(query_vec, store.dim);
+    const qsig = signature(&q, store.dim);
+    var result = QueryResult{ .matches = undefined, .count = 0 };
+    var i: u32 = 0;
+    while (i < store.filled) : (i += 1) {
+        const rec = &store.records[i]; // zero-copy: borrowed in place
+        if (filter_tag) |t| {
+            if (rec.tag != t) continue;
+        }
+        const ham: u32 = @popCount(rec.sig ^ qsig);
+        if (ham > max_hamming) continue; // outside the query's bucket radius
         const score: f32 = @floatCast(dot(&q, &rec.vec, store.dim));
         insert_topk(&result, k, rec.id, score);
     }
@@ -334,6 +402,44 @@ fn prove_profile_read() !void {
     if (dim_from_profile("format x\nname foo\n")) |_| return error.NoDimAccepted else |_| {}
 }
 
+fn prove_approx() !void {
+    // A fresh store so the proof does not depend on earlier mutations.
+    var store = try Store.init(4);
+    const red: [max_dim]f32 = .{ 1, 0, 0, 0, 0, 0, 0, 0 };
+    const green: [max_dim]f32 = .{ 0, 1, 0, 0, 0, 0, 0, 0 };
+    const blue: [max_dim]f32 = .{ 0, 0, 1, 0, 0, 0, 0, 0 };
+    const teal: [max_dim]f32 = .{ 1, 1, 0, 0, 0, 0, 0, 0 };
+    try upsert(&store, 1, 1, &red);
+    try upsert(&store, 2, 1, &green);
+    try upsert(&store, 3, 2, &blue);
+    try upsert(&store, 4, 2, &teal);
+
+    // Recall: a red-ward query finds red (id 1) even at radius 0 — near vectors share
+    // a signature, so the approximate nearest matches the exact nearest.
+    const q: [max_dim]f32 = .{ 1, 0.1, 0, 0, 0, 0, 0, 0 };
+    const exact = query(&store, &q, 1, null);
+    const approx = query_approx(&store, &q, 1, null, 0);
+    if (approx.count < 1) return error.ApproxEmpty;
+    if (approx.matches[0].id != exact.matches[0].id) return error.ApproxMissedNearest;
+
+    // Deterministic: the same query twice yields the same nearest.
+    const again = query_approx(&store, &q, 1, null, 0);
+    if (again.matches[0].id != approx.matches[0].id) return error.ApproxNotDeterministic;
+
+    // Bounded candidate set: a green-ward query at radius 0 buckets to green alone, so
+    // its approximate top-2 returns fewer than the exact top-2 — the approximation's
+    // honest cost (a distant-bucket neighbour skipped), with the true nearest still first.
+    const gq: [max_dim]f32 = .{ 0, 1, 0, 0, 0, 0, 0, 0 };
+    const gexact = query(&store, &gq, 2, null);
+    const gapprox = query_approx(&store, &gq, 2, null, 0);
+    if (!(gapprox.count < gexact.count)) return error.ApproxNotReduced;
+    if (gapprox.matches[0].id != 2) return error.ApproxGreenNearestWrong;
+
+    // Full radius degrades to exact: every record is a candidate, same nearest.
+    const full = query_approx(&store, &q, 1, null, sig_bits);
+    if (full.matches[0].id != exact.matches[0].id) return error.ApproxFullWrongNearest;
+}
+
 fn run_selftest() !u8 {
     var store = try seat_store();
     try prove_nearest(&store);
@@ -342,6 +448,7 @@ fn run_selftest() !u8 {
     try prove_remove(&store);
     try prove_profile_dim();
     try prove_profile_read();
+    try prove_approx();
 
     print("mandate store: a vector store — upsert normalizes to a unit direction, so a query is a dot product; the nearest by cosine similarity returns most-similar-first, bounded and exact.\n", .{});
     print("mandate store: zero-copy — each record's vector is read in place at query time, never copied; the store owns the bytes once and search borrows them.\n", .{});
@@ -349,6 +456,7 @@ fn run_selftest() !u8 {
     print("mandate store: remove drops a record by id (swap-remove, no realloc, no hole); a missing id changes nothing — create, read, update, delete all bounded.\n", .{});
     print("mandate store: the dimension is data — set at init from a profile, bounded by max_dim; one binary serves any dim 1..=max_dim, and an out-of-bound dim is refused.\n", .{});
     print("mandate store: the dimension is read from a real Bron profile (mandate/dim.profile.bron) — comments and blanks skipped, first dim line wins, malformed or out-of-bound refused.\n", .{});
+    print("mandate store: an approximate index (SimHash LSH over fixed hyperplanes) scores only candidates within a bounded Hamming radius of the query's signature — same-bucket recall, fewer records touched; full radius degrades to exact.\n", .{});
     print("mandate store: version {s}\n", .{store_version});
     print("GREEN: mandate store — Grain's turbopuffer, a bounded zero-copy vector store: nearest-neighbour by cosine over unit vectors, with a metadata filter, exact and witnessed.\n", .{});
     return 0;
