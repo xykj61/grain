@@ -1,7 +1,7 @@
 # Scribe — the Kyri voice's home
 
 **Language:** EN
-**Status:** Living — the Kyri reader, lap 1 seated `20260810.041230`
+**Status:** Living — the Kyri reader · seated `20260810.041230`
 **Voice:** Kyri (Kyri, coming)
 **Kin:** counsel [`../active-designing/20260810-035305_scribe-shape-and-the-structure-mapping.md`](../active-designing/20260810-035305_scribe-shape-and-the-structure-mapping.md)
 
