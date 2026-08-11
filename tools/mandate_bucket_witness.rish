@@ -1,0 +1,23 @@
+# mandate_bucket_witness.rish — Mandate's named-object bucket.
+#
+# Proves the bucket adapter over Mandate stores: put(name, store) snapshots a whole
+# store as the object <dir>/<name>.blob; get(name) restores it; many named objects
+# live in one bucket, each round-tripping independently; every object name is
+# validated path-safe so it can never escape the bucket directory; a missing object
+# is refused.
+#
+# Build first:  rye build mandate/bucket.rye -femit-bin=mandate/bin/bucket
+#   rishi/bin/rishi run tools/mandate_bucket_witness.rish
+
+let st = run ["mandate/bin/bucket" "selftest"]
+assert st.ok else "mandate bucket selftest must exit 0"
+assert (st.err contains "GREEN") else "mandate bucket must report GREEN"
+assert (st.err contains "named-object bucket") else "the bucket is a named-object map over stores"
+assert (st.err contains "put(name, store) snapshots a whole store") else "put snapshots a whole store as the object"
+assert (st.err contains "get(name) restores it") else "get restores the store stored under a name"
+assert (st.err contains "round-trip independently") else "many named objects round-trip independently"
+assert (st.err contains "validated path-safe") else "object names are validated path-safe"
+assert (st.err contains "never escape the bucket directory") else "a name can never climb out of the bucket"
+assert (st.err contains "missing object is refused") else "a missing object is refused, never a phantom store"
+
+say "GREEN: mandate bucket — a bounded named-object bucket over Mandate stores: put/get keyed by a path-safe name, each object a whole store snapshot, witnessed."
