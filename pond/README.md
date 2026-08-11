@@ -15,7 +15,7 @@ Pond holds **applications** that compose Rye OS modules above the kernel and com
 
 **Customs (landed `20260710.161125`):** [`customs.rye`](customs.rye) — first policy concept. At receipt, each Tilak mark earns **place**, **hold**, or **refuse**. Root allow-list: `plain-bytes` may be placed; `await-word` waits for a human word; unknown marks refuse whole. Amphora cold scrub calls `customs inspect` on the cellar manifest before restore. Witness: `tools/pond_customs.rish` (parity **230**).
 
-**First application:** [`apps/drawn_terminal.rye`](apps/drawn_terminal.rye) — SLC-2a Lap 3, the drawn terminal (Rishi session mirrored in a Brushstroke/Skate window). Granary weave view (`granaryviewtest`) folds resolve + Scribble onto Skate (parity **233**). Inference and commerce folds share that same glass.
+**First application:** [`apps/drawn_terminal.rye`](apps/drawn_terminal.rye) — SLC-2a, the drawn terminal (Rishi session mirrored in a Brushstroke/Skate window). Granary weave view (`granaryviewtest`) folds resolve + Scribble onto Skate (parity **233**). Inference and commerce folds share that same glass.
 
 Policy-as-value horizon: `rishi/examples/pond.rish` and `external-research/20260618-180812_pond-foundation.md`.
 
@@ -49,7 +49,7 @@ rishi/bin/rishi run tools/fixtures/pond_build_drawn_terminal.rish
 | Step | Command | Purpose |
 |------|---------|---------|
 | **Build** | `rishi/bin/rishi run tools/fixtures/pond_build_drawn_terminal.rish` | Staged compile; asserts prepare/compile/prove/GREEN |
-| **Witness (Lap 3)** | `rishi/bin/rishi run tools/slc2a_ring3_session.rish` | Headless session mirror (build + `sessiontest`) |
+| **Witness (session mirror)** | `rishi/bin/rishi run tools/slc2a_ring3_session.rish` | Headless session mirror (build + `sessiontest`) |
 | **Witness (SLC-2b)** | `rishi/bin/rishi run tools/slc2b_keyboard.rish` | Dexter keyboard path (build + `keyboardtest`) — parity **145** |
 | **Metalsmoke** | `rishi/bin/rishi run tools/slc2a_ring3_metal.rish` | Thin-lap Wayland slice (needs `WAYLAND_DISPLAY`) |
 | **Live** | `pond/bin/drawn-terminal` | Keyboard in the window; stdin still works for dev |

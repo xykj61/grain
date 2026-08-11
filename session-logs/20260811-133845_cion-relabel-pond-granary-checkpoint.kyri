@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260811.133845
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host cloud pier sandbox — Eastern (EDT) time convention
+title CION relabel lap 3 — sweep pond; granary held as a checkpoint
+prompt kg relabel — next module on the labeling ratchet (I had named granary + pond)
+think surveyed granary before touching it: its lap-N lives in .rye headers/prints AND in witness FILENAMES (tools/granary_lap1.rish … granary_lap3.rish) that parity_ch01.rish (heavily-cited suite) references by name, and each lap is a meaningful build step (registry · write-gate · Sharing · Comlink-serve · exchange · settle)
+think that makes granary a reference-repoint, not a prose relabel — renaming granary_lapN.rish and editing the parity suite is a references-are-promises operation that wants a ruling; held it as a checkpoint rather than sweeping blind
+think pond is clean by contrast — its witnesses assert "session witness" / "metalsmoke", never "Lap 3", and no witness file is named lapN — so relabeling pond's README + drawn_terminal.rye touches no asserted string and no filename
+obs relabeled pond: drawn_terminal.rye header (SLC-2a Lap 3 → SLC-2a drawn terminal) and its sessiontest comment (headless Lap 3 → headless session), pond/README first-application line (dropped "Lap 3") and the witness-table row (Witness (Lap 3) → Witness (session mirror)); all comment/prose, no rebuild
+obs extended the guard to pond (README + apps/drawn_terminal.rye); the swept set is now mandate · scribe · vault · pond, twelve→fourteen surfaces, GREEN, and still bites the planted negative
+obs granary/README itself is already clean (0 lap-N — it uses a numbered landed-table, not "lap N" identity); granary's drift is in .rye prints and the tools witness filenames — booked to the checkpoint, not this round
+loom witness=cion_module_labeling_witness wall_ms=75 modules=4 surfaces=14 drift=0
+file pond/apps/drawn_terminal.rye header + sessiontest comment relabeled (comment-only)
+file pond/README.md first-application line + witness-table row relabeled
+file tools/gen/season/cion_module_labeling_witness.rish scans pond too; closing line names four modules
+recommend check-in (Claude) — pond is swept and the guard holds four modules; granary is a real checkpoint (rename tools/granary_lapN.rish + repoint parity_ch01, or relabel only prose and keep filenames?), and comlink (~40 refs, possible meaningful protocol-revision identity) wants its own survey ruling. Keaton's word on granary's scope. Rest is his to take
