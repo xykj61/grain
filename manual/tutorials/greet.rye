@@ -1,0 +1,59 @@
+//! manual/tutorials/greet.rye — your first Grain module: a bounded greeting.
+//!
+//! The first-hour reference (Acme DX design season, Equinox 2 contract
+//! `../../active-designing/20260811-163927_acme-dx-first-hour-witness-contract.md`).
+//! It teaches the whole TAME discipline at its smallest: an opening triad, a named
+//! bound, an invariant assert at each edge, a selftest that proves by comparison, and
+//! a GREEN line a witness reads.
+//!
+//!   rye build manual/tutorials/greet.rye -femit-bin=tools/.build/greet
+//!   tools/.build/greet selftest
+//!   rishi/bin/rishi run tools/first_hour_witness.rish
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+// The longest name the greeting will hold — a bound named once, enforced at the edge.
+pub const max_name: u32 = 32;
+
+/// Write "hello, <name>!" into `buf`, returning its byte length. The name is bounded,
+/// and the greeting is proven to fit the buffer before a byte is written.
+pub fn greet(name: []const u8, buf: []u8) u32 {
+    // invariant: a name never exceeds the bound.
+    assert(name.len <= max_name);
+    const prefix = "hello, ";
+    const needed = prefix.len + name.len + 1; // +1 for "!"
+    // invariant: the greeting fits the caller's buffer.
+    assert(needed <= buf.len);
+    var n: usize = 0; // seam: a buffer write cursor indexes a std slice
+    for (prefix) |c| {
+        buf[n] = c;
+        n += 1;
+    }
+    for (name) |c| {
+        buf[n] = c;
+        n += 1;
+    }
+    buf[n] = '!';
+    n += 1;
+    return @intCast(n);
+}
+
+fn prove_greet() !void {
+    var buf: [64]u8 = undefined;
+    const n = greet("grain", &buf);
+    // The greeting reads exactly as promised.
+    if (!std.mem.eql(u8, buf[0..n], "hello, grain!")) return error.WrongGreeting;
+}
+
+fn run_selftest() !u8 {
+    try prove_greet();
+    print("greet: hello, <name>! — a bounded greeting, name <= max_name, proven to fit its buffer.\n", .{});
+    print("GREEN: greet — your first Grain module builds, bounds its input, and greets by proof.\n", .{});
+    return 0;
+}
+
+pub fn main() !u8 {
+    return run_selftest();
+}
