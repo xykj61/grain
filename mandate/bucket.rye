@@ -1,0 +1,159 @@
+//! mandate/bucket.rye — a named-object bucket over Mandate stores.
+//!
+//! Where `store.rye` snapshots ONE store to one blob, a **bucket** names many: an
+//! S3-style key→object map, `name → <store snapshot>`, kept as files in a bucket
+//! directory. `put` writes a store as the object `name`; `get` restores the store
+//! stored under `name`. This is the serverless shape one step out — not a single
+//! object, but a bucket of named objects, each a whole Mandate store.
+//!
+//! Every object name is validated first (bounded, path-safe: no slash, no dot, no
+//! separator), so an object can never climb out of the bucket directory — a put or get
+//! addresses exactly one file inside `dir`, never a path above it.
+//!
+//!   rye build mandate/bucket.rye -femit-bin=mandate/bin/bucket
+//!   mandate/bin/bucket selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const store = @import("store.rye");
+
+pub const bucket_version = "20260811.020442";
+
+// The longest object name a bucket accepts — bounded like every Mandate surface.
+pub const max_name: u32 = 64;
+
+pub const NameError = error{ Empty, TooLong, BadChar };
+
+/// A path-safe object name: 1..=max_name bytes of `[a-zA-Z0-9_-]` only. No slash, no
+/// dot, no path separator — so the name can never escape the bucket directory.
+fn check_name(name: []const u8) NameError!void {
+    // invariant: an object name is never empty.
+    if (name.len == 0) return error.Empty;
+    // invariant: an object name stays within the bound.
+    if (name.len > max_name) return error.TooLong;
+    var i: usize = 0; // seam: iterating a std slice
+    while (i < name.len) : (i += 1) {
+        const c = name[i];
+        const lower = c >= 'a' and c <= 'z';
+        const upper = c >= 'A' and c <= 'Z';
+        const digit = c >= '0' and c <= '9';
+        const mark = c == '_' or c == '-';
+        if (!(lower or upper or digit or mark)) return error.BadChar;
+    }
+}
+
+/// Compose `<dir>/<name>.blob` into `buf`, returning the path slice. The caller's dir
+/// and the validated name are both bounded, so the composed path fits a small buffer.
+fn object_path(buf: []u8, dir: []const u8, name: []const u8) []const u8 {
+    const suffix = ".blob";
+    // invariant: the composed path fits the buffer.
+    assert(dir.len + 1 + name.len + suffix.len <= buf.len);
+    var n: usize = 0;
+    var i: usize = 0;
+    while (i < dir.len) : (i += 1) {
+        buf[n] = dir[i];
+        n += 1;
+    }
+    buf[n] = '/';
+    n += 1;
+    i = 0;
+    while (i < name.len) : (i += 1) {
+        buf[n] = name[i];
+        n += 1;
+    }
+    i = 0;
+    while (i < suffix.len) : (i += 1) {
+        buf[n] = suffix[i];
+        n += 1;
+    }
+    return buf[0..n];
+}
+
+/// Write `st` into the bucket as the object `name` — a store snapshot to
+/// `<dir>/<name>.blob`. The name is validated before any path is touched.
+pub fn put(init: std.process.Init, dir: []const u8, name: []const u8, st: *const store.Store) !void {
+    try check_name(name);
+    // invariant: the store is well-formed before it becomes an object.
+    assert(st.filled <= store.max_records);
+    const io = init.io;
+    const cwd = std.Io.Dir.cwd();
+    try cwd.createDirPath(io, dir);
+    var blob: [store.max_blob_bytes]u8 = undefined;
+    const n = try store.snapshot(st, &blob);
+    var pbuf: [512]u8 = undefined;
+    const path = object_path(&pbuf, dir, name);
+    try cwd.writeFile(io, .{ .sub_path = path, .data = blob[0..n] });
+}
+
+/// Restore the store stored as the object `name`. A missing object or a bad name is
+/// refused, never a partial store.
+pub fn get(init: std.process.Init, dir: []const u8, name: []const u8) !store.Store {
+    try check_name(name);
+    const io = init.io;
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    var pbuf: [512]u8 = undefined;
+    const path = object_path(&pbuf, dir, name);
+    const bytes = try cwd.readFileAlloc(io, path, a, .limited(store.max_blob_bytes));
+    return try store.restore(bytes);
+}
+
+// --- selftest -----------------------------------------------------------
+
+fn prove_bucket(init: std.process.Init) !void {
+    const dir = "mandate/bin/bucket_objects";
+
+    // Two distinct stores — different dimensions and contents — as two named objects.
+    var images = try store.Store.init(4);
+    const red: [store.max_dim]f32 = .{ 1, 0, 0, 0, 0, 0, 0, 0 };
+    const teal: [store.max_dim]f32 = .{ 1, 1, 0, 0, 0, 0, 0, 0 };
+    try store.upsert(&images, 1, 1, &red);
+    try store.upsert(&images, 2, 1, &teal);
+
+    var text = try store.Store.init(2);
+    const x: [store.max_dim]f32 = .{ 1, 0, 0, 0, 0, 0, 0, 0 };
+    const y: [store.max_dim]f32 = .{ 0, 1, 0, 0, 0, 0, 0, 0 };
+    try store.upsert(&text, 10, 0, &x);
+    try store.upsert(&text, 11, 0, &y);
+
+    try put(init, dir, "images", &images);
+    try put(init, dir, "text", &text);
+
+    // Each named object round-trips independently.
+    const gi = try get(init, dir, "images");
+    if (gi.filled != images.filled) return error.ImagesFilledWrong;
+    if (gi.dim != images.dim) return error.ImagesDimWrong;
+    const gt = try get(init, dir, "text");
+    if (gt.filled != text.filled) return error.TextFilledWrong;
+    if (gt.dim != text.dim) return error.TextDimWrong;
+
+    // The restored images object answers a query identically — the object is the store.
+    const q: [store.max_dim]f32 = .{ 1, 0.1, 0, 0, 0, 0, 0, 0 };
+    if (store.query(&images, &q, 1, null).matches[0].id != store.query(&gi, &q, 1, null).matches[0].id) return error.BucketQueryDrift;
+
+    // A bad name is refused before any path is touched — empty, slash, dot, and too long.
+    if (check_name("")) |_| return error.EmptyNameAccepted else |_| {}
+    if (check_name("a/b")) |_| return error.SlashAccepted else |_| {}
+    if (check_name("a.b")) |_| return error.DotAccepted else |_| {}
+    if (check_name("..")) |_| return error.DotDotAccepted else |_| {}
+    const toolong = [_]u8{'a'} ** (max_name + 1);
+    if (check_name(&toolong)) |_| return error.TooLongAccepted else |_| {}
+
+    // Getting an object that was never put is refused, not a phantom store.
+    if (get(init, dir, "nope")) |_| return error.MissingObjectAccepted else |_| {}
+}
+
+fn run_selftest(init: std.process.Init) !u8 {
+    try prove_bucket(init);
+    print("mandate bucket: a named-object bucket over stores — put(name, store) snapshots a whole store as the object <dir>/<name>.blob, get(name) restores it; an S3-style key to object map, bounded.\n", .{});
+    print("mandate bucket: two named objects (images at dim 4, text at dim 2) each round-trip independently from the same bucket, and the restored object answers a query identically.\n", .{});
+    print("mandate bucket: every object name is validated path-safe (no slash, no dot, no separator, bounded to max_name) so an object can never escape the bucket directory; a missing object is refused, never a phantom store.\n", .{});
+    print("mandate bucket: version {s}\n", .{bucket_version});
+    print("GREEN: mandate bucket — a bounded named-object bucket over Mandate stores: put/get keyed by a path-safe name, each object a whole store snapshot, witnessed.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}
