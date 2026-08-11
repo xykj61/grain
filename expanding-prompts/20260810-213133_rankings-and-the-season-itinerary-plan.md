@@ -57,6 +57,15 @@ responsibilities(r) = { tend ranking(r); advance the equinox theme }
 
 A responsibility is *done* only when its witness is GREEN or its edit is shipped; anything else rolls forward into `r`. So the itinerary is pregenerated **and** self-healing — an unfinished round is never dropped, it becomes the next round's named debt. This mirrors reds-first: a red found books the remainder of the journey before new work opens.
 
+## Round-open wiring
+
+The ranking is surfaced **at round-open** through `prin`, the orientation printer:
+
+- **`prin ranking`** (alias `prin rota`) prints the 27-slot rota — the one living thing each round tends — so opening a round shows the emphasis without hunting for it.
+- **`rishi/bin/rishi run tools/gen/season/itinerary.rish <r>`** gives a specific round's whole day (coords · theme · ranking · carry).
+
+So the round-open ritual now carries the rankings: print `prin ranking` (or the round's `itinerary.rish`), tend the named slot, and let the carry-over fold the prior round's unfinished work in.
+
 ## Season 1 — the Compass Season (the four directions)
 
 The four equinoxes are already seated as waymarks (`.claude/rules/waymark-ladders.md`):
