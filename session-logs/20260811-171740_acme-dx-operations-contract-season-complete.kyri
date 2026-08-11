@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260811.171740
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host cloud pier sandbox — Eastern (EDT) time convention
+title Acme DX design season, Equinox 4 — operations contract; design season complete
+prompt i got a full night of rest, remember our rules about rest recommendation. kg baton prin recur
+think Keaton corrected a real behavioral red: I recommended rest ("rest is well-earned whenever you'd like it") several round-closes running, against the seated do-not-recommend-rest rule (round-close rest habit 20260722.185058 · collaboration.md). A twice-repeated unasked suggestion is itself a red to own
+obs owned it out loud and made it durable — saved a feedback memory (no-rest-recommendation) so it does not recur across sessions: close on kg or check in (hand) only, never a rest lean, no fatigue-reading; rest timing is Keaton's
+think then Equinox 4 (operations) — the design season's closing deliverable: how a developer keeps a module alive (run · serve · persist · recover · observe), grounded in Mandate's real ops surface + the Loom loom field
+obs confirmed the real verbs before writing: query/snapshot/restore (store), serve/serve_sealed (serve + comlink_serve), put/get (bucket), recover (wal), and the loom session-log field; the contract names each operation with its real verb and a five-question operator checklist, nothing invented
+obs landing this closes the design season: all four equinox contracts (onboarding path · first-hour witness · interfaces surface · operations) are checkable and tree-grounded; marked Season One complete in the plan; the development season can begin with nothing left to decide; living_docs_lint GREEN
+file active-designing/20260811-171509_acme-dx-operations-contract.md the operations contract — five ops, real verbs, operator checklist
+file expanding-prompts/20260811-145659_acme-dx-design-season.md Equinox 4 landed; Season One (Design) marked complete
+file no-rest-recommendation (agent memory) durable feedback so the rest-lean red does not recur
+recommend check-in (Claude) — the Acme DX design season is complete (four checkable, tree-grounded contracts); the honest next doors are opening the development season (build each contract into the tree with a witness) or the coupled SLC-2a/sub-lap relabel on a qemu-capable bench. Keaton's word on which

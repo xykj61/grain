@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Stamp:** `20260811.145659`
-**Status:** Plan — the `pexpand` of the yonder two-season note into runnable rounds. Design work, not code.
+**Status:** Plan — the `pexpand` of the yonder two-season note into runnable rounds. Design work, not code. **Season One (Design) complete `20260811.171509`** — all four equinox contracts landed (onboarding path · first-hour witness · interfaces surface · operations), each checkable and tree-grounded; Season Two (Development) can begin with nothing left to decide.
 **Voice:** Kyri · **Style:** Radiant · a design-season plan, not an implementation
 **Discipline:** TAME · Radiant · custody-first · accrete-never-break · chronological-semantic labeling
 **Reads-from:** [`../research-silo/yonder/20260811-020442_acme-dx-two-seasons-and-the-long-return.md`](../research-silo/yonder/20260811-020442_acme-dx-two-seasons-and-the-long-return.md) · [`../research-silo/README.md`](../research-silo/README.md) · [`../context/SIMPLE_LOVABLE_COMPLETE.md`](../context/SIMPLE_LOVABLE_COMPLETE.md)
@@ -29,7 +29,7 @@ The plan below is deterministic — four equinoxes, each producing one checkable
 
 **Equinox 3 — The interfaces surface.** Design how a developer builds their *own* first module — the API, the CLI verbs, the desk/witness shape they compose against. Deliverable: the interface contract (names, bounds, the TAME shape a module must keep) and worked examples. The question it answers: *what does building on Grain feel like on day two?* — **contract landed `20260811.170901`** at [`../active-designing/20260811-170901_acme-dx-interfaces-surface-contract.md`](../active-designing/20260811-170901_acme-dx-interfaces-surface-contract.md): three surfaces (API · CLI · witness), each with a worked reference in the tree and the live checker that already enforces it.
 
-**Equinox 4 — Operations.** Design how a developer runs, serves, and observes what they built — the operations surface (start, serve, snapshot, recover, read the metrics). Deliverable: the operations contract and its checklist, drawing on the modules already standing (Mandate's serve and object-storage, the Loom metrics). The question it answers: *what does running Grain in earnest look like?*
+**Equinox 4 — Operations.** Design how a developer runs, serves, and observes what they built — the operations surface (start, serve, snapshot, recover, read the metrics). Deliverable: the operations contract and its checklist, drawing on the modules already standing (Mandate's serve and object-storage, the Loom metrics). The question it answers: *what does running Grain in earnest look like?* — **contract landed `20260811.171509`** at [`../active-designing/20260811-171509_acme-dx-operations-contract.md`](../active-designing/20260811-171509_acme-dx-operations-contract.md): five operations (run · serve · persist · recover · observe), each a real verb, and a five-question operator checklist. **This closes the design season — all four equinoxes are checkable, tree-grounded contracts.**
 
 ## Season Two — Development
 
