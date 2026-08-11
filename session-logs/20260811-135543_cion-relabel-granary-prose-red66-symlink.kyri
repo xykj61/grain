@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260811.135543
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host cloud pier sandbox — Eastern (EDT) time convention
+title CION relabel lap 4 — granary prose (Keaton's ruling); red #66 sed clobbered two symlinks
+prompt granary prose — relabel granary's .rye/README prose to semantic + stamp, keep the witness filenames as stable handles
+think confirmed first that no witness asserts a "Granary lap N" string — they assert "GREEN" and semantic phrases (guest equals host, bad seal refused) — so relabeling the .rye headers and the two prints (keeping "GREEN:") breaks no assertion
+think relabeled granary's own .rye: exchange_listing, resin_serve_delivery (header + two prints), weave_settle (header + "same fixture as lap 5" → "as the exchange listing"), weave_settle_core; each lap named by its capability, the ordinal dropped, the granary_lap*.rish witness filenames kept as Keaton's prose-only ruling directs
+obs red #66: my sed -i ran across granary/*.rye, and granary/scribble_core.rye + granary/wov_core.rye are SYMLINKS into scribble/ and linengrow/ — sed -i replaced each link with a regular-file copy (git status showed T, typechange). Reverted both with git checkout, dropped them from the granary scan (they belong to scribble/ and linengrow/ rounds), booked the red
+obs lesson booked: never sed -i a path that might be a symlink; scope a module sweep to that module's own files; a symlink into another module is that module's round; a T in git status is the tell
+obs rebuilt + ran granary_resin_wire.rish after the print relabel — GREEN (the .rye still prints "GREEN" and "guest equals host"); the guard now holds five modules (mandate · scribe · vault · pond · granary), all their own files clean
+loom witness=cion_module_labeling_witness wall_ms=102 modules=5 drift=0
+loom witness=granary_resin_wire selftest=GREEN demo=GREEN
+file granary/exchange_listing.rye header relabeled — Granary — Exchange listing
+file granary/resin_serve_delivery.rye header + two GREEN prints relabeled (asserts intact)
+file granary/weave_settle.rye header + fixture cross-ref relabeled
+file granary/weave_settle_core.rye header relabeled
+file tools/gen/season/cion_module_labeling_witness.rish granary own files added; symlink note; closing line names five modules
+file work-in-progress/REDS.md row 66 booked (sed -i clobbered two symlinks)
+recommend check-in (Claude) — five modules swept clean; granary's prose done per the ruling. comlink still wants its survey (meaningful protocol-revision identity vs bare ordinal, ~40 refs), and scribble/linengrow carry their own lap-N now surfaced by the symlink slip. REDS is near its 24576 bound (24132) — a fold may be due. Keaton's word on comlink scope. Rest is his to take

@@ -1,4 +1,4 @@
-//! granary/weave_settle_core.rye — Granary lap 6: settle a weave listing (in-process).
+//! granary/weave_settle_core.rye — Granary — settle a weave listing (in-process).
 //!
 //! Binds listing_receipt + payment digest under Kumara seed 0x69.
 //! Payment digests MUR send + WOV transfer proofs — no buyer/seller identities.

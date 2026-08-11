@@ -6,7 +6,11 @@
 # living surfaces — a module's README and its authored .rye doc-comments — carry no
 # bare "lap N" capability identity. The scanned set grows one module per CION round;
 # swept so far: mandate (20260811.132333), scribe + vault (20260811.133322), pond
-# (20260811.133845). Dated
+# (20260811.133845), granary's OWN .rye prose (20260811.134946 — filenames kept: the
+# tools/granary_lap*.rish witness handles stay as stable identifiers per Keaton's
+# "prose-only" ruling; granary/scribble_core.rye and granary/wov_core.rye are symlinks
+# into scribble/ and linengrow/ and belong to those modules' own rounds, not scanned
+# here). Dated
 # session logs and specs keep the ordinals they recorded (testimony is never
 # rewritten). Law addendum 20260811.130827:
 # context/specs/20260810-222755_chronological-semantic-labeling-and-the-cion-meta-season.md
@@ -16,7 +20,7 @@ say "cion-module: Style Radiant — a capability's name is its semantic label + 
 say "cion-module: Lens TAME — guard the living module surfaces; a planted lap ordinal must bite."
 
 # The swept modules name no capability by a bare lap ordinal.
-let scan = run ["sh" "tools/fixtures/labeling_module_scan.sh" "mandate/README.md" "mandate/store.rye" "mandate/keyed.rye" "mandate/bucket.rye" "mandate/wal.rye" "mandate/serve.rye" "mandate/named_serve.rye" "mandate/comlink_serve.rye" "scribe/README.md" "scribe/reader.rye" "vault/README.md" "vault/shard.rye" "pond/README.md" "pond/apps/drawn_terminal.rye"]
+let scan = run ["sh" "tools/fixtures/labeling_module_scan.sh" "mandate/README.md" "mandate/store.rye" "mandate/keyed.rye" "mandate/bucket.rye" "mandate/wal.rye" "mandate/serve.rye" "mandate/named_serve.rye" "mandate/comlink_serve.rye" "scribe/README.md" "scribe/reader.rye" "vault/README.md" "vault/shard.rye" "pond/README.md" "pond/apps/drawn_terminal.rye" "granary/README.md" "granary/exchange_listing.rye" "granary/resin_serve_delivery.rye" "granary/weave_settle.rye" "granary/weave_settle_core.rye"]
 say scan.out
 assert scan.out contains "verdict=ok" else "cion-module: a swept-module surface names a capability by a bare lap ordinal"
 # values_apart: the verdict key and the exit status must agree.
@@ -28,4 +32,4 @@ say neg.out
 assert neg.out contains "verdict=drift" else "cion-module: planted lap ordinal was not flagged"
 assert (neg.ok == false) else "cion-module: the guard failed to bite the planted negative"
 
-say "GREEN: cion-module — the swept modules (mandate · scribe · vault · pond) name every capability by semantic label + stamp, no bare lap ordinal; the guard bites a planted one"
+say "GREEN: cion-module — the swept modules (mandate · scribe · vault · pond · granary) name every capability by semantic label + stamp, no bare lap ordinal; the guard bites a planted one"
