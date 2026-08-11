@@ -1,0 +1,29 @@
+# tools/gen/season/grad_seal_witness.rish — CION Equinox 4 (GRAD · Seal).
+#
+#   rishi/bin/rishi run tools/gen/season/grad_seal_witness.rish
+#
+# The seal of the chronological-semantic labeling law: the living operator pins carry
+# no bare count-up-from-0 identity (a season ordinal or a waymark-redundant equinox
+# number), and the guard is proven to bite a planted one. Dated testimony and
+# rested-history docs keep the ordinals they recorded (the law governs living
+# now-lines); this seal guards the living pins. Law:
+# context/specs/20260810-222755_chronological-semantic-labeling-and-the-cion-meta-season.md
+
+say "grad-seal: Language EN — the labeling law, sealed on the living pins."
+say "grad-seal: Style Radiant — semantic identity above, coords beneath; no bare ordinal names."
+say "grad-seal: Lens TAME — guard the living now-lines; a planted count-up must bite."
+
+# The living operator pins carry no bare count-up-from-0 identity.
+let pins = run ["sh" "tools/fixtures/labeling_law_scan.sh" "work-in-progress/REMEMBER.md" "work-in-progress/ROADMAP.md" "work-in-progress/THREADS.md"]
+say pins.out
+assert pins.out contains "verdict=ok" else "grad-seal: a living pin carries a bare count-up-from-0 identity"
+# values_apart: the verdict key and the exit status must agree.
+assert pins.ok else "grad-seal: pin verdict and status disagree"
+
+# The guard bites — a planted count-up identity is caught on every run.
+let neg = run ["sh" "tools/fixtures/labeling_law_scan.sh" "tools/fixtures/labeling_law_negative.md"]
+say neg.out
+assert neg.out contains "verdict=drift" else "grad-seal: planted count-up identity was not flagged"
+assert (neg.ok == false) else "grad-seal: the guard failed to bite the planted negative"
+
+say "GREEN: grad-seal — living pins carry no bare count-up identity; the guard bites a planted one"

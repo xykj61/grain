@@ -36,7 +36,7 @@ CION runs its own four equinoxes under the calendar like any season, and it obey
 | 3 | **OFFY** | Debride — word-gated cuts of dead count-up tissue, a cairn first |
 | 4 | **GRAD** | Seal — witness the conversion · seat the labeling-law guard |
 
-The opening lap already ran under **VOLS** (survey) and did the first of **LOWE** (the living pins + the elder seat map swept to semantic / rested-history); the wider LOWE relabel, any OFFY cut, and the GRAD seal are CION's remaining rounds.
+The opening lap already ran under **VOLS** (survey) and did the first of **LOWE** (the living pins + the elder seat map swept to semantic / rested-history), and **GRAD is sealed** — `tools/gen/season/grad_seal_witness.rish` is GREEN, proving the living operator pins carry no bare count-up-from-0 identity and that the guard bites a planted one (`tools/fixtures/labeling_law_scan.sh` · `labeling_law_negative.md`). The wider LOWE relabel across the rest of the living corpus and any OFFY cut (word-gated, cairn first) are CION's remaining rounds; the GRAD guard now stands watch so no bare ordinal identity returns to the pins.
 
 ## Discipline this keeps
 
