@@ -1,4 +1,4 @@
-//! linengrow/disclosure_core.rye — SLC-L4 lap 1: fixed-tier mudra (inherited name: Sigma protocol).
+//! linengrow/disclosure_core.rye — SLC-L4 — fixed-tier mudra (inherited name: Sigma protocol).
 //!
 //!   rye build linengrow/disclosure_core.rye -femit-bin=linengrow/bin/disclosure
 //!   linengrow/bin/disclosure selftest

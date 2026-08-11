@@ -1,4 +1,4 @@
-//! linengrow/wov_core.rye — WOV lap 1 exit honesty + dual-monarch D1.
+//! linengrow/wov_core.rye — WOV — exit honesty + dual-monarch D1.
 //!
 //!   rye build linengrow/wov_core.rye -femit-bin=linengrow/bin/wov
 //!   linengrow/bin/wov selftest
