@@ -28,7 +28,7 @@
 
 | Equinox | Waymark | Holds |
 |---|---|---|
-| The Language | **SOON** ✓ | **Rishi language spine complete** — runes `^- ?! ?& ?| ?:` · regex `matches`/`find` (`{n,m}` · `\b` · lookbehind) · `sort`/`unique`/`upper` · list `+` · `fold` · user functions `fn`. Seams folded native: `claim_preserve` · `census_control`. Open: `mold→shape` · TAME core/shelf · Brix-infuse · PLEAC · Aurora |
+| The Language | **SOON** ✓ | **Rishi language spine complete** — runes `^- ?! ?& ?| ?:` · regex `matches`/`find` (`{n,m}` · `\b` · lookbehind) · `sort`/`unique`/`upper` · list `+` · `fold` · user functions `fn`. Seams folded native: `claim_preserve` · `census_control`. **Brix-infuse LANDED** `20260811` (`brix/infuse.rye`). Open: TAME core/shelf · PLEAC · Aurora (`mold→shape` CLOSED — residue left) |
 | Identity & Network | **JARL** | **Kumara** (5 tilaks) · **Comlink** turn-route + live handshake (loop closed) · **d12·d60 topology** · **settlement constellation** landed (`settlement/constellation.rye`: five transitions — genesis · mint · transfer · rotate · **escape** — a galaxy's d60 as owned records, every refusal held) · scarcity reconcile held · **generalized topologies + Pond** horizon |
 | Surface & Intelligence | **BUHR** | Realidream DAG surface · Quin's four voices (Lattice · Scribble · Lantern · Ember) · MCP-in-Bron · Tablecloth |
 | The World | **TACT** | Ship-Pilot pitch · publishing · Grainphone · commerce · CONTRIBUTING four-doors · Grain Energy PBC |
@@ -77,7 +77,7 @@ The private field is `~/grain`; the public template **grain-os/grain** is *proje
 | **Keaton's own Kumara instance** — generate from his real seed + keeper, by his hand alone | JARL · when ready |
 | **mold→shape debride** — **CLOSED `20260811`** (Keaton: *leave the residue*): primary rename landed `20260720`; the residue is testimony · retirement-explanation · deliberately-kept study twins. Optional horizon only: an atomic Glow-identifier refactor (`mold_slice` ~23 files) on the language bench. Survey: `active-designing/20260811-184002_mold-shape-debride-survey-and-plan.md` | resolved |
 | **TAME core/shelf** — lossless-compressed living law over a preserved shelf | proposed |
-| **Brix-infuse** — deep merge/override for Brix descriptors (kin to infuse.nix) | proposed (SOON j2) |
+| **Brix-infuse** — **LANDED `20260811`** (SOON j2): `brix/infuse.rye` — per-key override over flat Bron (override wins per key, base-only kept in place, override-only appended), zero-copy, bounded; witness `tools/brix_infuse_witness.rish` GREEN. Horizon: nested-descriptor deep merge when Brix grows nesting | resolved |
 | **Identity Remake / Kumara** — the first identity template + Keaton's instance | JARL |
 | **Geode / Genode-on-NixOS** — proven-seat parallel | GATED |
 | **Grainphone · Realidream · Pond seven · data-dignity · succession · Mand ring-3 · O3 gen-home** | awaiting Keaton |
