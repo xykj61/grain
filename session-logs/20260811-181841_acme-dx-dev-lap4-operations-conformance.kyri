@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260811.181841
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host cloud pier sandbox — Eastern (EDT) time convention
+title Acme DX development season, lap 4 — operations conformance; enforcement arc complete
+prompt kg baton prin recur
+think dev-season lap 4 enforces the operations contract; its five operations each map to a real Mandate verb already witnessed, so the honest lap is a suite that runs those witnesses together and proves the operator's checklist is green as a whole, not claimed
+obs wrote tools/operations_conformance_witness.rish: builds the five Mandate binaries (store·serve·bucket·wal·comlink_serve), then runs mandate_store (run), mandate_serve (serve), mandate_comlink_serve (serve-sealed), mandate_bucket (persist), mandate_wal (recover), and greps the session-log rule for the loom field (observe); GREEN on metal
+obs kept the rishi→sh nesting simple: a for-loop build in one sh -c with ${zig} interpolated by rishi and $m left to the shell; each sub-witness run via rishi/bin/rishi run and checked for .ok + GREEN in .out
+obs this completes the enforcement arc — all four design contracts now guarded by green witnesses: onboarding (onboarding_path_witness), first-hour (first_hour_witness), interfaces (interfaces_conformance_witness), operations (operations_conformance_witness); the whole Acme developer arc from cold clone to operating a module is designed AND checked
+obs marked dev-season lap 4 landed + the arc complete in the plan; seated the suite pointer in the operations contract; living_docs_lint GREEN
+file tools/operations_conformance_witness.rish the operations checklist as one green suite (run·serve·serve-sealed·persist·recover·observe)
+file expanding-prompts/20260811-145659_acme-dx-design-season.md dev-season lap 4 landed; enforcement arc complete
+file active-designing/20260811-171509_acme-dx-operations-contract.md definition-of-done: witnessed as one suite
+recommend check-in (Claude) — the Acme DX arc is now designed and fully enforced (four contracts, four green witnesses); a natural close for the development season's enforcement phase. The pier mosh confirm + Vultr panel remain Keaton's open steps; next grain door (Season Two build-out beyond enforcement, or a fresh domain) is Keaton's
