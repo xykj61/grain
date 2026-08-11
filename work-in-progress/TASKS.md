@@ -1,7 +1,7 @@
 # Tasks — living pin
 
 **Language:** EN
-**Last updated:** `20260809.024320` · voice Riyo
+**Last updated:** `20260811.012115` · voice Kyri
 **Living pin bound:** `living_pin_max_bytes = 24576`
 **Operator card:** [`REMEMBER.md`](REMEMBER.md)
 **Ledger:** [`THREADS.md`](THREADS.md)
@@ -36,7 +36,11 @@
 | **Skate → the general social network** — Instagram/TikTok of Grain; CLI + GUI; fuses Linengrow (a flavor) + Kumara; **outfits** (many profiles/genres/themes). Study + silo + build = own rounds | breach/next season | **decided** `20260810` (charter Move 5) |
 | **Mandate — the vector store, lap 1** — Grain's turbopuffer (`mandate/store.rye`): upsert normalizes to unit vectors (query = dot product), k-nearest by cosine most-similar-first, **zero-copy**, tag filter, bounded + exact; witnessed | breach | **LANDED** `20260810` (`mandate/store.rye`) |
 | **Mandate — Kumara-keyed records** — `mandate/keyed.rye`: a vector belongs to a settled point; owner presents its Deed (verified) + signs the exact vector; search returns *who* (`place_of`→fractal place); non-owner/forged/tampered refused | breach | **LANDED** `20260810` (`mandate/keyed.rye`) |
-| Mandate next laps: Unsplash data source (consent) · profile-loaded `dim` · approximate index · object-storage backing · served over Comlink / resolved to a name | breach | own rounds |
+| **Mandate — profile-loaded dim (lap 3), dim from a real Bron profile (lap 4), approximate index (lap 5), object-storage backing (lap 6)** — `snapshot`/`restore` serialize the whole store to one portable blob (a bucket-backed, serverless shape), proven on metal by a real file round-trip; corruption refused | breach | **LANDED** `20260810`–`20260811` (`mandate/store.rye`) |
+| Mandate next laps: Unsplash data source (consent) · a real bucket adapter (S3-style put/get) + write-ahead log · served over Comlink / resolved to a name | breach | own rounds |
+| **Twilight Style** — an alternate register of Radiant (calm · dark · gentle; aim-then-dissolve pendulum); palette is **the nine**, doubling as nine navamsa (D9) groups of three over the 27 nakshatras / council d27 | breach | **SEATED** `20260811` (`context/TWILIGHT_STYLE.md` + rules + Lexicon) |
+| **Kyri log — Loom metrics** — session-log rule + Cursor twin gain an optional `loom` field; auto-add performance metrics whenever a round produces a measurement | breach | **SEATED** `20260811` |
+| **Research silo — starseeding + the standing approval** — `research-silo/README.md`: the season's standing yes (seat every rec to completion, custody gates honored), the starseeding vision, the nine-over-27 navamsa calendar, and the itinerary | breach | **SEATED** `20260811` |
 | **Scribe — the Kyri reader, lap 1** — `scribe/reader.rye`: zero-copy `.kyri` parse (fields slice the source), dispatch by format (session-log-v1 vs baton-v1), get/count_key; bounded; witnessed | breach | **LANDED** `20260810` (`scribe/reader.rye`) |
 | Scribe next: settings/preferences dashboard · tilak-typed fields (own sitting) · `bat/` baton archetypes (original names, copyright-honoring) | breach | own rounds |
 | **Seated `20260810`**: baton (favorite word · `.kyri format baton-v1`) · "thank you everyone" (end-marker) · expanded-prompts/ (cold) vs expanding-prompts (hot) · council-names roster (`context/council-names.kyri`, proposed) | breach | seated |
