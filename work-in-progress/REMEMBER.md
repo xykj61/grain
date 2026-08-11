@@ -6,8 +6,19 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` — the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `fc6a0b4190` · Grain · cloud pier
+**Git nib:** `843f30d0e3` · Grain · cloud pier
 **Host:** Framework · EDT (`America/New_York`) · Vultr SEA VPS (HP AMD 2vCPU/4GB shared · never EWR) · this session in ai-jail
+
+---
+
+## Today `20260811` — a full arc (accreted; the season table below stands)
+
+- **Mandate is a complete named vector store** — eleven capabilities, each witnessed on metal: CRUD · profile dim · Bron-profile dim · approximate index · object-storage backing · named bucket · write-ahead log · serve protocol · named serve · served-over-Comlink-sealed. (`mandate/`, `tools/mandate_*_witness.rish`.)
+- **Acme DX design season COMPLETE and enforced** — four contracts (onboarding path · first hour · interfaces · operations), each guarded by a green witness; the whole developer arc proves in one command: `rishi/bin/rishi run tools/acme_dx_witness.rish`. Dev-season lap 1 placed the first-hour reference `manual/tutorials/greet.rye`. Plan: `expanding-prompts/20260811-145659_acme-dx-design-season.md`.
+- **CION labeling ratchet** — seven modules relabelled to *semantic label + stamp* (no bare `lap N`); a refined guard (`tools/gen/season/cion_module_labeling_witness.rish`) that bites a bare ordinal yet spares structured codes (`OA-L3`, `sub-lap`); the REDS ledger folded (rows 25–57 → archive) and its monotone witness made fold-aware. Reds **#65–67** caught and fixed. Law: `context/specs/20260810-222755_…`.
+- **Twilight Style** + the nine-over-27 **navamsa calendar** seated (`context/TWILIGHT_STYLE.md`); the **`loom`** performance-metrics field seated in the session-log rule; the **research silo** + yonder plan seated (`research-silo/`).
+- **Pier mosh CLOSED** — the SEA pier's UDP roam window opened (`tools/pier_mosh_udp_open.sh`, additive/guarded/atomic); mosh confirmed working from the MacBook.
+- **Deferred, its own round (needs a qemu-capable bench):** the coupled **`SLC-2a Lap` / comlink `sub-lap`** relabel (witness-asserted RISC-V guests). **Open door for Keaton's word:** the **SOON** equinox — the Glow **language** (STOA ladder ~346), the compass's open finishing edge.
 
 ---
 
