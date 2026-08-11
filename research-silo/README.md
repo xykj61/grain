@@ -48,6 +48,7 @@ The two water nakshatras already pinned to **Basin** land inside the two water t
 
 The recommended order of the build, taken on the standing yes, custody gates honored:
 
+0. **The labeling ratchet (CION, widened)** — a **major focus of this or the next season, whatever the sweep costs** (Keaton's word `20260811`, red #65). The chronological-semantic labeling law seated `20260810` is being violated one level down: module capabilities named `lap N` are bare count-up-from-zero ordinals in the identity slot. Widen `grad_seal`'s guard past the three living pins to module READMEs, `.rye` doc-comments, and new logs; sweep living `lap N` → semantic label + stamp. See `../context/specs/20260810-222755_chronological-semantic-labeling-and-the-cion-meta-season.md` (addendum `20260811.130827`).
 1. **Interfaces, infrastructure, operations** — the next kg: the surfaces and plumbing that let the modules stand as a running whole. *(Keaton's named next door.)*
 2. **Mandate horizons** — a real bucket adapter (S3-style put/get keyed by name) atop the seated `snapshot`/`restore`; a write-ahead log for durability between snapshots; then served over **Comlink**, resolved to a spoken name.
 3. **The Shuttle** — Mandate's and the ledger's io_uring-equivalent for Caravan · Tally · Loom; performance now recorded as it happens via the session-log **`loom`** metric field.
