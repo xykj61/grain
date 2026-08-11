@@ -1,0 +1,248 @@
+//! mandate/serve.rye — a query request/response protocol for serving a store.
+//!
+//! A vector store is only useful when something can ask it a question from elsewhere.
+//! This is the **wire shape** of that question and its answer: a `QueryRequest`
+//! (how many, an optional tag filter, and the query vector) and a `QueryResponse` (the
+//! matches, id and score). Both serialize to bounded, little-endian bytes — the
+//! messages a Comlink transport carries, independent of the socket underneath.
+//!
+//! `serve(store, request_bytes, out)` is the one-call server: decode a request, answer
+//! it against the store, encode the response. Bytes in, bytes out — so the same store
+//! answers a caller in the same process or across a wire, by the same path.
+//!
+//!   rye build mandate/serve.rye -femit-bin=mandate/bin/serve
+//!   mandate/bin/serve selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const store = @import("store.rye");
+
+pub const serve_version = "20260811.123928";
+
+pub const ServeError = error{ BufferTooSmall, BadMagic, BadVersion, BadRequest, Truncated };
+
+/// A query asked from elsewhere: k results, an optional tag filter (present flag plus
+/// value), and the query vector.
+pub const QueryRequest = struct {
+    k: u32,
+    has_filter: u32,
+    filter_tag: u32,
+    vec: [store.max_dim]f32,
+};
+
+const req_magic = "MANDREQ\x01"; // 8 bytes
+const res_magic = "MANDRES\x01"; // 8 bytes
+pub const proto_version: u32 = 1;
+
+const rq_ver: u32 = 8;
+const rq_k: u32 = 12;
+const rq_has: u32 = 16;
+const rq_tag: u32 = 20;
+const rq_vec: u32 = 24;
+pub const max_request_bytes: u32 = rq_vec + store.max_dim * 4;
+
+const rs_ver: u32 = 8;
+const rs_count: u32 = 12;
+const rs_matches: u32 = 16;
+const match_bytes: u32 = 4 + 4; // id, score
+pub const max_response_bytes: u32 = rs_matches + store.max_k * match_bytes;
+
+fn put_u32(buf: []u8, off: u32, v: u32) void {
+    // invariant: the write stays inside the buffer.
+    assert(@as(usize, off) + 4 <= buf.len);
+    const o: usize = @intCast(off); // seam: slice index is usize at the std edge
+    std.mem.writeInt(u32, buf[o..][0..4], v, .little);
+}
+
+fn get_u32(bytes: []const u8, off: u32) u32 {
+    // invariant: the read stays inside the bytes.
+    assert(@as(usize, off) + 4 <= bytes.len);
+    const o: usize = @intCast(off); // seam: slice index is usize at the std edge
+    return std.mem.readInt(u32, bytes[o..][0..4], .little);
+}
+
+fn put_f32(buf: []u8, off: u32, v: f32) void {
+    put_u32(buf, off, @bitCast(v));
+}
+
+fn get_f32(bytes: []const u8, off: u32) f32 {
+    return @bitCast(get_u32(bytes, off));
+}
+
+fn put_magic(buf: []u8, magic: []const u8) void {
+    var m: u32 = 0;
+    while (m < 8) : (m += 1) {
+        const mo: usize = @intCast(m);
+        buf[mo] = magic[mo];
+    }
+}
+
+fn magic_ok(bytes: []const u8, magic: []const u8) bool {
+    var m: u32 = 0;
+    while (m < 8) : (m += 1) {
+        const mo: usize = @intCast(m);
+        if (bytes[mo] != magic[mo]) return false;
+    }
+    return true;
+}
+
+/// Serialize a request into `buf`, returning its byte length.
+pub fn encode_request(req: *const QueryRequest, buf: []u8) ServeError!u32 {
+    // invariant: a request asks for a valid, bounded number of results.
+    assert(req.k >= 1);
+    assert(req.k <= store.max_k);
+    if (buf.len < max_request_bytes) return error.BufferTooSmall;
+    put_magic(buf, req_magic);
+    put_u32(buf, rq_ver, proto_version);
+    put_u32(buf, rq_k, req.k);
+    put_u32(buf, rq_has, req.has_filter);
+    put_u32(buf, rq_tag, req.filter_tag);
+    var d: u32 = 0;
+    while (d < store.max_dim) : (d += 1) {
+        put_f32(buf, rq_vec + d * 4, req.vec[d]);
+    }
+    return max_request_bytes;
+}
+
+/// Rebuild a request from bytes. A bad magic, wrong version, truncation, or an
+/// out-of-range k is refused — the store's own bounds are enforced at the door.
+pub fn decode_request(bytes: []const u8) ServeError!QueryRequest {
+    if (bytes.len < max_request_bytes) return error.Truncated;
+    if (!magic_ok(bytes, req_magic)) return error.BadMagic;
+    if (get_u32(bytes, rq_ver) != proto_version) return error.BadVersion;
+    const k = get_u32(bytes, rq_k);
+    // invariant: k stays in the store's answerable range, refused rather than clamped.
+    if (k < 1 or k > store.max_k) return error.BadRequest;
+    var req = QueryRequest{ .k = k, .has_filter = get_u32(bytes, rq_has), .filter_tag = get_u32(bytes, rq_tag), .vec = undefined };
+    var d: u32 = 0;
+    while (d < store.max_dim) : (d += 1) {
+        req.vec[d] = get_f32(bytes, rq_vec + d * 4);
+    }
+    return req;
+}
+
+/// Answer a decoded request against the store — the query the wire asked for.
+pub fn answer(st: *const store.Store, req: *const QueryRequest) store.QueryResult {
+    const filter: ?u32 = if (req.has_filter != 0) req.filter_tag else null;
+    return store.query(st, &req.vec, req.k, filter);
+}
+
+/// Serialize a response into `buf`, returning its byte length.
+pub fn encode_response(res: *const store.QueryResult, buf: []u8) ServeError!u32 {
+    // invariant: a response never carries more than the bounded results.
+    assert(res.count <= store.max_k);
+    const needed: u32 = rs_matches + res.count * match_bytes;
+    if (buf.len < needed) return error.BufferTooSmall;
+    put_magic(buf, res_magic);
+    put_u32(buf, rs_ver, proto_version);
+    put_u32(buf, rs_count, res.count);
+    var i: u32 = 0;
+    while (i < res.count) : (i += 1) {
+        const base: u32 = rs_matches + i * match_bytes;
+        put_u32(buf, base + 0, res.matches[i].id);
+        put_f32(buf, base + 4, res.matches[i].score);
+    }
+    // invariant: the written response never runs past the bound.
+    assert(needed <= max_response_bytes);
+    return needed;
+}
+
+/// Rebuild a response from bytes. A bad magic, wrong version, over-count, or truncation
+/// is refused.
+pub fn decode_response(bytes: []const u8) ServeError!store.QueryResult {
+    if (bytes.len < rs_matches) return error.Truncated;
+    if (!magic_ok(bytes, res_magic)) return error.BadMagic;
+    if (get_u32(bytes, rs_ver) != proto_version) return error.BadVersion;
+    const count = get_u32(bytes, rs_count);
+    // invariant: a response never carries more than the bounded results.
+    if (count > store.max_k) return error.BadRequest;
+    const needed: u32 = rs_matches + count * match_bytes;
+    if (bytes.len < needed) return error.Truncated;
+    var res = store.QueryResult{ .matches = undefined, .count = 0 };
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        const base: u32 = rs_matches + i * match_bytes;
+        res.matches[i] = .{ .id = get_u32(bytes, base + 0), .score = get_f32(bytes, base + 4) };
+    }
+    res.count = count;
+    return res;
+}
+
+/// The one-call server: decode a request, answer it against `st`, encode the response
+/// into `out`, and return the response's byte length. Bytes in, bytes out.
+pub fn serve(st: *const store.Store, request_bytes: []const u8, out: []u8) ServeError!u32 {
+    const req = try decode_request(request_bytes);
+    const res = answer(st, &req);
+    return try encode_response(&res, out);
+}
+
+// --- selftest -----------------------------------------------------------
+
+fn seat_store() !store.Store {
+    var st = try store.Store.init(4);
+    const red: [store.max_dim]f32 = .{ 1, 0, 0, 0, 0, 0, 0, 0 };
+    const green: [store.max_dim]f32 = .{ 0, 1, 0, 0, 0, 0, 0, 0 };
+    const blue: [store.max_dim]f32 = .{ 0, 0, 1, 0, 0, 0, 0, 0 };
+    const teal: [store.max_dim]f32 = .{ 1, 1, 0, 0, 0, 0, 0, 0 };
+    try store.upsert(&st, 1, 1, &red); // nature
+    try store.upsert(&st, 2, 1, &green); // nature
+    try store.upsert(&st, 3, 2, &blue); // city
+    try store.upsert(&st, 4, 2, &teal); // city
+    return st;
+}
+
+fn prove_serve() !void {
+    const st = try seat_store();
+
+    // A request round-trips through bytes unchanged.
+    var req = QueryRequest{ .k = 2, .has_filter = 0, .filter_tag = 0, .vec = .{ 1, 0.1, 0, 0, 0, 0, 0, 0 } };
+    var req_buf: [max_request_bytes]u8 = undefined;
+    const rn = try encode_request(&req, &req_buf);
+    const back_req = try decode_request(req_buf[0..rn]);
+    if (back_req.k != req.k) return error.RequestKDrift;
+    if (back_req.vec[1] != req.vec[1]) return error.RequestVecDrift;
+
+    // serve() answers over the wire exactly as a direct in-process query would.
+    var res_buf: [max_response_bytes]u8 = undefined;
+    const sn = try serve(&st, req_buf[0..rn], &res_buf);
+    const wire = try decode_response(res_buf[0..sn]);
+    const direct = store.query(&st, &req.vec, 2, null);
+    if (wire.count != direct.count) return error.ResponseCountDrift;
+    if (wire.matches[0].id != direct.matches[0].id) return error.ResponseNearestDrift;
+    if (wire.matches[1].id != direct.matches[1].id) return error.ResponseSecondDrift;
+
+    // A filtered request narrows the answer to one tag — nature only.
+    var freq = QueryRequest{ .k = 3, .has_filter = 1, .filter_tag = 1, .vec = .{ 1, 0.1, 0, 0, 0, 0, 0, 0 } };
+    var fbuf: [max_request_bytes]u8 = undefined;
+    const fn_ = try encode_request(&freq, &fbuf);
+    var fres: [max_response_bytes]u8 = undefined;
+    const fsn = try serve(&st, fbuf[0..fn_], &fres);
+    const fwire = try decode_response(fres[0..fsn]);
+    if (fwire.count != 2) return error.FilterCountWrong; // only two nature records
+    if (fwire.matches[0].id != 1 or fwire.matches[1].id != 2) return error.FilterOrderWrong;
+
+    // Corruption and out-of-range are refused at the door.
+    var bad = req_buf;
+    bad[0] = 'X';
+    if (decode_request(bad[0..rn])) |_| return error.BadMagicAccepted else |_| {}
+    var badk = req_buf;
+    put_u32(&badk, rq_k, store.max_k + 1);
+    if (decode_request(badk[0..rn])) |_| return error.OverKAccepted else |_| {}
+    var tiny: [8]u8 = undefined;
+    if (serve(&st, req_buf[0..rn], &tiny)) |_| return error.TinyOutAccepted else |_| {}
+}
+
+fn run_selftest() !u8 {
+    try prove_serve();
+    print("mandate serve: a query request/response protocol — QueryRequest (k, optional tag filter, vector) and QueryResponse (matches) serialize to bounded little-endian bytes, the messages a Comlink transport carries.\n", .{});
+    print("mandate serve: serve(store, request_bytes, out) is the one-call server — decode, answer against the store, encode — so the same store answers in-process or across a wire by the same path, bytes in and bytes out.\n", .{});
+    print("mandate serve: a served query answers exactly as a direct in-process query (same nearest, same order), a tag filter narrows it, and a bad magic, wrong version, over-range k, or too-small buffer is refused at the door.\n", .{});
+    print("mandate serve: version {s}\n", .{serve_version});
+    print("GREEN: mandate serve — a bounded query request/response protocol over a Mandate store: encode/decode, answer, one-call serve, witnessed.\n", .{});
+    return 0;
+}
+
+pub fn main() !u8 {
+    return run_selftest();
+}
