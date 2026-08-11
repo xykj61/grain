@@ -63,6 +63,23 @@ pub const ProfileError = error{ NoDimField, BadDimValue };
 // dimension from this file the way topology loads a sky — data, not a constant.
 const profile_bron = @embedFile("dim.profile.bron");
 
+// Object-storage backing (lap 6). The whole store serializes to ONE portable blob —
+// the "object" a bucket would hold — so a fresh node hydrates the entire store from a
+// single get, the serverless shape turbopuffer takes. Layout is little-endian and
+// bounded: magic[8] "MANDATE\x01" · version u32 · dim u32 · filled u32 · then `filled`
+// records, each id u32 · tag u32 · sig u32 · vec[max_dim] f32. A fixed record width
+// keeps the blob bounded and every offset a named constant.
+const blob_magic = "MANDATE\x01"; // 8 bytes; the trailing byte carries the on-wire schema epoch
+pub const blob_version: u32 = 1;
+const off_version: u32 = 8;
+const off_dim: u32 = 12;
+const off_filled: u32 = 16;
+const off_records: u32 = 20;
+const record_bytes: u32 = 4 + 4 + 4 + max_dim * 4; // id, tag, sig, then the vector
+pub const max_blob_bytes: u32 = off_records + max_records * record_bytes;
+
+pub const BlobError = error{ BufferTooSmall, BadMagic, BadVersion, BadDimValue, TooManyRecords, Truncated };
+
 /// One nearest-neighbour match: the record's id and its similarity to the query,
 /// in [-1, 1] where 1 is the same direction.
 pub const Match = struct {
@@ -289,6 +306,112 @@ pub fn query_approx(store: *const Store, query_vec: *const [max_dim]f32, k: u32,
     return result;
 }
 
+// --- object-storage backing ---------------------------------------------
+
+/// Write a little-endian u32 at `off`. The slice index narrows to usize only at the
+/// std seam; the bound is asserted in u32 first.
+fn put_u32(buf: []u8, off: u32, v: u32) void {
+    // invariant: the write stays inside the buffer.
+    assert(@as(usize, off) + 4 <= buf.len);
+    const o: usize = @intCast(off); // seam: slice index is usize at the std edge
+    std.mem.writeInt(u32, buf[o..][0..4], v, .little);
+}
+
+/// Read a little-endian u32 at `off`.
+fn get_u32(bytes: []const u8, off: u32) u32 {
+    // invariant: the read stays inside the bytes.
+    assert(@as(usize, off) + 4 <= bytes.len);
+    const o: usize = @intCast(off); // seam: slice index is usize at the std edge
+    return std.mem.readInt(u32, bytes[o..][0..4], .little);
+}
+
+/// A float rides the wire as its own bit pattern, so a restored vector is exact.
+fn put_f32(buf: []u8, off: u32, v: f32) void {
+    put_u32(buf, off, @bitCast(v));
+}
+
+fn get_f32(bytes: []const u8, off: u32) f32 {
+    return @bitCast(get_u32(bytes, off));
+}
+
+/// Serialize the whole store into `buf` as one portable blob — the object a bucket
+/// holds — and return its byte length. The store's entire state travels in this single
+/// object, so a fresh node restores it with one read (the serverless shape). A buffer
+/// too small is refused before any byte is written, never a partial object.
+pub fn snapshot(store: *const Store, buf: []u8) BlobError!u32 {
+    // invariant: the store is well-formed before it is written out.
+    assert(store.filled <= max_records);
+    assert(store.dim >= 1);
+    assert(store.dim <= max_dim);
+    const needed: u32 = off_records + store.filled * record_bytes;
+    if (buf.len < needed) return error.BufferTooSmall;
+    var m: u32 = 0;
+    while (m < 8) : (m += 1) {
+        const mo: usize = @intCast(m);
+        buf[mo] = blob_magic[mo];
+    }
+    put_u32(buf, off_version, blob_version);
+    put_u32(buf, off_dim, store.dim);
+    put_u32(buf, off_filled, store.filled);
+    var i: u32 = 0;
+    while (i < store.filled) : (i += 1) {
+        const base: u32 = off_records + i * record_bytes;
+        const rec = &store.records[i];
+        put_u32(buf, base + 0, rec.id);
+        put_u32(buf, base + 4, rec.tag);
+        put_u32(buf, base + 8, rec.sig);
+        var d: u32 = 0;
+        while (d < max_dim) : (d += 1) {
+            put_f32(buf, base + 12 + d * 4, rec.vec[d]);
+        }
+    }
+    // invariant: the written blob never runs past the bounded object size.
+    assert(needed <= max_blob_bytes);
+    return needed;
+}
+
+/// Rebuild a store from a blob produced by `snapshot` — a fresh node hydrating the
+/// whole store from one object. Every field is validated against the store's bounds; a
+/// malformed or out-of-bound blob is refused rather than trusted.
+pub fn restore(bytes: []const u8) BlobError!Store {
+    if (bytes.len < off_records) return error.Truncated;
+    var m: u32 = 0;
+    while (m < 8) : (m += 1) {
+        const mo: usize = @intCast(m);
+        if (bytes[mo] != blob_magic[mo]) return error.BadMagic;
+    }
+    if (get_u32(bytes, off_version) != blob_version) return error.BadVersion;
+    const dim = get_u32(bytes, off_dim);
+    // invariant: the stored dimension stays within the storage bound.
+    if (dim < 1 or dim > max_dim) return error.BadDimValue;
+    const filled = get_u32(bytes, off_filled);
+    // invariant: the stored fill never exceeds capacity.
+    if (filled > max_records) return error.TooManyRecords;
+    const needed: u32 = off_records + filled * record_bytes;
+    if (bytes.len < needed) return error.Truncated;
+    var store = Store{ .records = undefined, .filled = 0, .dim = dim };
+    var i: u32 = 0;
+    while (i < filled) : (i += 1) {
+        const base: u32 = off_records + i * record_bytes;
+        var rec = Record{
+            .id = get_u32(bytes, base + 0),
+            .tag = get_u32(bytes, base + 4),
+            .vec = undefined,
+            .sig = get_u32(bytes, base + 8),
+        };
+        var d: u32 = 0;
+        while (d < max_dim) : (d += 1) {
+            rec.vec[d] = get_f32(bytes, base + 12 + d * 4);
+        }
+        store.records[i] = rec;
+    }
+    store.filled = filled;
+    // invariant: the rebuilt store is well-formed.
+    assert(store.filled <= max_records);
+    assert(store.dim >= 1);
+    return store;
+}
+
 // --- selftest -----------------------------------------------------------
 
 // A small store of "image" vectors, framed as embeddings: two nature (tag 1), two
@@ -440,7 +563,83 @@ fn prove_approx() !void {
     if (full.matches[0].id != exact.matches[0].id) return error.ApproxFullWrongNearest;
 }
 
-fn run_selftest() !u8 {
+fn prove_snapshot() !void {
+    // A fresh store so the proof does not depend on earlier mutations.
+    var store = try Store.init(4);
+    const red: [max_dim]f32 = .{ 1, 0, 0, 0, 0, 0, 0, 0 };
+    const green: [max_dim]f32 = .{ 0, 1, 0, 0, 0, 0, 0, 0 };
+    const blue: [max_dim]f32 = .{ 0, 0, 1, 0, 0, 0, 0, 0 };
+    const teal: [max_dim]f32 = .{ 1, 1, 0, 0, 0, 0, 0, 0 };
+    try upsert(&store, 1, 1, &red);
+    try upsert(&store, 2, 1, &green);
+    try upsert(&store, 3, 2, &blue);
+    try upsert(&store, 4, 2, &teal);
+
+    var buf: [max_blob_bytes]u8 = undefined;
+    const n = try snapshot(&store, &buf);
+    if (n < off_records) return error.SnapshotTooSmall;
+
+    // The object round-trips: a store hydrated from the blob is byte-for-byte identical.
+    const back = try restore(buf[0..n]);
+    if (back.dim != store.dim) return error.RestoreDimWrong;
+    if (back.filled != store.filled) return error.RestoreFilledWrong;
+    var i: u32 = 0;
+    while (i < store.filled) : (i += 1) {
+        const a = &store.records[i];
+        const b = &back.records[i];
+        if (a.id != b.id) return error.RestoreIdWrong;
+        if (a.tag != b.tag) return error.RestoreTagWrong;
+        if (a.sig != b.sig) return error.RestoreSigWrong;
+        var d: u32 = 0;
+        while (d < max_dim) : (d += 1) {
+            if (a.vec[d] != b.vec[d]) return error.RestoreVecWrong;
+        }
+    }
+    // The restored store answers a query identically — the object IS the store.
+    const q: [max_dim]f32 = .{ 1, 0.1, 0, 0, 0, 0, 0, 0 };
+    const e = query(&store, &q, 1, null);
+    const r = query(&back, &q, 1, null);
+    if (e.matches[0].id != r.matches[0].id) return error.RestoreQueryDrift;
+
+    // A too-small buffer is refused before any byte is written — never a partial object.
+    var tiny: [8]u8 = undefined;
+    if (snapshot(&store, &tiny)) |_| return error.TinyBufferAccepted else |_| {}
+
+    // Corruption is refused: bad magic, short header, out-of-bound dim, over-count.
+    var bad = buf;
+    bad[0] = 'X';
+    if (restore(bad[0..n])) |_| return error.BadMagicAccepted else |_| {}
+    if (restore(buf[0 .. off_records - 1])) |_| return error.ShortHeaderAccepted else |_| {}
+    var badd = buf;
+    put_u32(&badd, off_dim, max_dim + 1);
+    if (restore(badd[0..n])) |_| return error.BadDimAccepted else |_| {}
+    var badc = buf;
+    put_u32(&badc, off_filled, max_records + 1);
+    if (restore(badc[0..n])) |_| return error.OverCountAccepted else |_| {}
+}
+
+fn prove_file_backing(init: std.process.Init) !void {
+    // The blob written to a real file, then read back into a fresh store — a new node
+    // hydrating from object storage. mandate/bin is gitignored build output, so the
+    // object never enters the tree.
+    const io = init.io;
+    const a = init.arena.allocator();
+    var store = try seat_store();
+    var buf: [max_blob_bytes]u8 = undefined;
+    const n = try snapshot(&store, &buf);
+    const path = "mandate/bin/store.blob";
+    const cwd = std.Io.Dir.cwd();
+    try cwd.writeFile(io, .{ .sub_path = path, .data = buf[0..n] });
+    const read_back = try cwd.readFileAlloc(io, path, a, .limited(max_blob_bytes));
+    const back = try restore(read_back);
+    if (back.filled != store.filled) return error.FileFilledWrong;
+    if (back.dim != store.dim) return error.FileDimWrong;
+    const q: [max_dim]f32 = .{ 1, 0.1, 0, 0, 0, 0, 0, 0 };
+    if (query(&store, &q, 1, null).matches[0].id != query(&back, &q, 1, null).matches[0].id) return error.FileQueryDrift;
+    print("mandate store: object-storage backing — the whole store serialized to a {d}-byte blob written to {s} and a fresh store hydrated back from it, identical; the store's entire state is one portable object (a bucket-backed, serverless shape).\n", .{ read_back.len, path });
+}
+
+fn run_selftest(init: std.process.Init) !u8 {
     var store = try seat_store();
     try prove_nearest(&store);
     try prove_filter(&store);
@@ -449,6 +648,8 @@ fn run_selftest() !u8 {
     try prove_profile_dim();
     try prove_profile_read();
     try prove_approx();
+    try prove_snapshot();
+    try prove_file_backing(init);
 
     print("mandate store: a vector store — upsert normalizes to a unit direction, so a query is a dot product; the nearest by cosine similarity returns most-similar-first, bounded and exact.\n", .{});
     print("mandate store: zero-copy — each record's vector is read in place at query time, never copied; the store owns the bytes once and search borrows them.\n", .{});
@@ -457,11 +658,12 @@ fn run_selftest() !u8 {
     print("mandate store: the dimension is data — set at init from a profile, bounded by max_dim; one binary serves any dim 1..=max_dim, and an out-of-bound dim is refused.\n", .{});
     print("mandate store: the dimension is read from a real Bron profile (mandate/dim.profile.bron) — comments and blanks skipped, first dim line wins, malformed or out-of-bound refused.\n", .{});
     print("mandate store: an approximate index (SimHash LSH over fixed hyperplanes) scores only candidates within a bounded Hamming radius of the query's signature — same-bucket recall, fewer records touched; full radius degrades to exact.\n", .{});
+    print("mandate store: object-storage backing — the whole store serializes to one portable blob (magic·version·dim·records), so a fresh node hydrates the entire store from a single object; snapshot/restore round-trips and corruption is refused.\n", .{});
     print("mandate store: version {s}\n", .{store_version});
     print("GREEN: mandate store — Grain's turbopuffer, a bounded zero-copy vector store: nearest-neighbour by cosine over unit vectors, with a metadata filter, exact and witnessed.\n", .{});
     return 0;
 }
 
-pub fn main() !u8 {
-    return run_selftest();
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
 }

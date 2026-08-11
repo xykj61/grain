@@ -22,5 +22,7 @@ assert (st.err contains "read in place at query time") else "the store owns the 
 assert (st.err contains "a tag filters the search") else "a metadata tag filters the search"
 assert (st.err contains "updates in place, never growing the store") else "an upsert on an existing id updates in place"
 assert (st.err contains "turbopuffer") else "Mandate is Grain's turbopuffer"
+assert (st.err contains "object-storage backing") else "the whole store serializes to one portable object"
+assert (st.err contains "hydrated back from it, identical") else "a fresh node round-trips the store from the blob (object-storage backing)"
 
-say "GREEN: mandate store — Grain's turbopuffer: a bounded, zero-copy vector store; nearest-neighbour by cosine over unit vectors, a metadata filter, exact and witnessed."
+say "GREEN: mandate store — Grain's turbopuffer: a bounded, zero-copy vector store; nearest-neighbour by cosine over unit vectors, a metadata filter, an approximate index, object-storage backing, exact and witnessed."
