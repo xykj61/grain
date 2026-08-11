@@ -50,15 +50,24 @@ while IFS= read -r stamp; do
   fi
 done <"$tmp"
 
-# Erratum integrity: each listed stamp must still exist as a living file.
+# Erratum integrity: each listed stamp must still exist in the tree — as a living
+# file, or (accrete-never-break) as a folded log under session-logs/archive/, since a
+# day's logs fold there by stamp and leave the top-level living glob unchanged in name.
 while IFS= read -r line; do
   case "$line" in
     ''|\#*) continue ;;
   esac
-  if ! grep -qx "$line" "$tmp"; then
-    echo "MONO_BAD erratum stamp missing from living set: $line"
-    bad=1
+  if grep -qx "$line" "$tmp"; then
+    continue
   fi
+  d="${line%.*}"
+  t="${line#*.}"
+  if find session-logs/archive -name "${d}-${t}_*" 2>/dev/null | grep -q .; then
+    echo "ERRATUM_ARCHIVED $line"
+    continue
+  fi
+  echo "MONO_BAD erratum stamp missing from the tree (living or archived): $line"
+  bad=1
 done <"$erratum"
 
 if test "$bad" = "0"; then
