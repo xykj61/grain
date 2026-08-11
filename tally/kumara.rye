@@ -24,11 +24,15 @@ pub const signature_length = Ed25519.Signature.encoded_length;
 
 /// Deterministic keypair from a 32-byte seed — the same seed yields the same keys.
 pub fn keypair_from_seed(seed: *const [seed_length]u8) KeyPair {
+    // invariant: an Ed25519 seed is thirty-two bytes — the format this seam assumes.
+    assert(seed_length == 32);
     return KeyPair.generateDeterministic(seed.*) catch unreachable;
 }
 
 /// Sign canonical message bytes. Optional `noise` buffer follows upstream Ed25519.
 pub fn sign(message: []const u8, kp: KeyPair, noise: ?[Ed25519.noise_length]u8) Signature {
+    // invariant: an Ed25519 signature encodes to sixty-four bytes.
+    assert(signature_length == 64);
     return kp.sign(message, noise) catch unreachable;
 }
 
@@ -39,6 +43,8 @@ pub fn verify(message: []const u8, sig: Signature, pubkey: PublicKey) error{Veri
 
 /// Verify raw signature bytes (64 octets) over message bytes.
 pub fn verify_bytes(message: []const u8, sig_bytes: []const u8, pubkey: PublicKey) error{VerifyFailed}!void {
+    // invariant: the fixed read below needs the full encoded signature length.
+    assert(signature_length == 64);
     if (sig_bytes.len < signature_length) return error.VerifyFailed;
     const sig = Signature.fromBytes(sig_bytes[0..signature_length].*);
     return verify(message, sig, pubkey);
