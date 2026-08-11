@@ -9,7 +9,7 @@
 
 ## How the season nests
 
-**The Compass Season** is open on Keaton's word (`20260809.021829`). Coords **s1 · SOON e1 · j1 · q1 · r1**. 256 rounds; four equinoxes = four compass directions; nesting **Round · Quest 4 · Journey 16 · Equinox 64 · Season 256**. Finishing edge: **SOON q1** — the language, where Rishi's `^-` cast rune already landed GREEN.
+**The Compass Season** is open on Keaton's word (`20260809.021829`). Coords **Compass Season · SOON · j1 · q1 · r1**. 256 rounds; four equinoxes = four compass directions; nesting **Round · Quest 4 · Journey 16 · Equinox 64 · Season 256**. Finishing edge: **SOON q1** — the language, where Rishi's `^-` cast rune already landed GREEN.
 
 ## Open threads
 
