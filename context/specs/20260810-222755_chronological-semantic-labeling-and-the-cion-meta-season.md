@@ -27,7 +27,16 @@ Every calendar identifier — season, equinox, journey, quest, round — and eve
 - **debride** — where an ordinal label is genuinely dead tissue (a superseded `eNN` ladder no living work cites), remove it on Keaton's circled word, a cairn dropped first (`.claude/rules/debride.md` · `.claude/rules/cairn.md`). Never a blind sweep; every cut named.
 - **sweep** — the systematic pass across `context/`, `foundations/`, `active-designing/`, `work-in-progress/`, and the itinerary, relabeling living *now*-lines while dated testimony keeps the ordinals it correctly recorded (accrete-never-break).
 
-CION runs its own four equinoxes under the calendar like any season, and it obeys the very law it installs — its own equinoxes are waymarks, not `e0..e3`.
+CION runs its own four equinoxes under the calendar like any season, and it obeys the very law it installs — its own equinoxes are waymarks, not `e0..e3`. The four are drawn (`20260810.225345`, canonical against the corpus pin):
+
+| Equinox | Waymark | Work |
+|---|---|---|
+| 1 | **VOLS** | Survey — name every living count-up ID (site · gap) |
+| 2 | **LOWE** | Molt — relabel living now-lines chronological/semantic (living mutants) |
+| 3 | **OFFY** | Debride — word-gated cuts of dead count-up tissue, a cairn first |
+| 4 | **GRAD** | Seal — witness the conversion · seat the labeling-law guard |
+
+The opening lap already ran under **VOLS** (survey) and did the first of **LOWE** (the living pins + the elder seat map swept to semantic / rested-history); the wider LOWE relabel, any OFFY cut, and the GRAD seal are CION's remaining rounds.
 
 ## Discipline this keeps
 
