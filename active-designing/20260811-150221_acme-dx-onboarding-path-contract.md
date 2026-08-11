@@ -44,7 +44,7 @@ This exact line was produced on metal at `20260811.150221` by step 4 on this tre
 
 - The path is **five named steps**, each with a stated expected output — no hidden setup.
 - The acceptance is **one exact line**, validated on metal (done, `20260811.150221`).
-- The development season can seat a **bootstrap-and-first-green witness** straight from this contract, with nothing left to decide about *what* onboarding means.
+- The development season can seat a **bootstrap-and-first-green witness** straight from this contract, with nothing left to decide about *what* onboarding means. **Seated `20260811.175905`** — `tools/onboarding_path_witness.rish` proves the cold-start step exists and that the first-green witness still prints this exact acceptance line, so drift reds a machine, not a newcomer.
 
 The next design equinox — the **first-hour witness** — begins where this one ends: the newcomer has GREEN from an existing witness; next they build a tiny module of their own and witness it.
 
