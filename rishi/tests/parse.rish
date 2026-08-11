@@ -1,0 +1,23 @@
+# parse.rish — tests for the `parse` and `str` number-conversion builtins.
+#
+# Wired from the PLEAC numbers cookbook (spec: pleac/numbers.rye). parse reads a
+# decimal string to an integer; str renders an integer to its decimal string. The
+# `^-` cast validates a kind; parse/str convert between the two.
+
+# parse reads a decimal to an integer.
+assert (parse "42") == 42 else "parse: basic failed"
+assert (parse "0") == 0 else "parse: zero failed"
+assert (parse "-5") == -5 else "parse: negative failed"
+
+# str renders an integer to its decimal string.
+assert (str 42) == "42" else "str: basic failed"
+assert (str 0) == "0" else "str: zero failed"
+
+# parse and str are inverses at the value level.
+assert (parse (str 123)) == 123 else "parse/str: round-trip failed"
+
+# str yields a string value usable in a list, then joinable.
+let parts = [ (str 1) (str 2) (str 3) ]
+assert (join parts ",") == "1,2,3" else "str+join compose failed"
+
+say "GREEN: parse/str — decimal string to integer and back, inverse at the value level."
