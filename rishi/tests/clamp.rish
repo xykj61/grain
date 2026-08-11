@@ -1,0 +1,26 @@
+# clamp.rish — tests for the `clamp` integer builtin.
+#
+# `clamp <x> <lo> <hi>` bounds x to [lo, hi]. Wired from the PLEAC numbers cookbook
+# (spec: pleac/numbers.rye). The interpreter reimplements the cookbook primitive.
+
+# in range — unchanged
+assert (clamp 5 1 10) == 5 else "clamp: in-range failed"
+
+# below the floor — pulled up to lo
+assert (clamp 0 1 10) == 1 else "clamp: below floor failed"
+
+# above the ceiling — pulled down to hi
+assert (clamp 99 1 10) == 10 else "clamp: above ceiling failed"
+
+# at the edges — kept
+assert (clamp 1 1 10) == 1 else "clamp: at floor failed"
+assert (clamp 10 1 10) == 10 else "clamp: at ceiling failed"
+
+# a degenerate bound (lo == hi) pins to that one value
+assert (clamp 7 3 3) == 3 else "clamp: degenerate bound failed"
+
+# composes with arithmetic — the bound and value can be expressions
+let n = 12
+assert (clamp (n + 1) 0 10) == 10 else "clamp: composed expression failed"
+
+say "GREEN: clamp — bounds an integer to [lo, hi], pulling out-of-range to the near edge."
