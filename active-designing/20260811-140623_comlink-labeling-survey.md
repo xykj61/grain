@@ -24,7 +24,7 @@ The current guard matches `\blap [0-9]+`, which false-positives on this module t
 
 ## Recommended doors, in order
 
-1. **Refine the guard** to distinguish a bare `lap N` from a structured code (`*-L3`, `3w-3b`, `4b`) and from `sub-lap N`, so it can eventually scan comlink without false positives.
+1. **Refine the guard** to distinguish a bare `lap N` from a structured code (`*-L3`, `3w-3b`, `4b`) and from `sub-lap N`, so it can eventually scan comlink without false positives. **Landed `20260811.141358`** — PCRE lookaround `(?<![-\w])lap [0-9]+(?![-\w])`, proven by a PASS fixture beside the negative. comlink is now scannable without false positives.
 2. **Relabel `sub-lap 1/2/3`** as its own word-gated round — semantic stage names (e.g. *hosted seal/open · freestanding link · sealed datagram*), guest strings and both witnesses co-updated, RISC-V guests rebuilt GREEN.
 3. **Let the cross-module tags ride** with each source module's relabel; polish the structured `lap 3w-*` tokens only if a cleaner word is wanted, as low-priority tidy.
 

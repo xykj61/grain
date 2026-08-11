@@ -9,17 +9,25 @@
 # lap ordinal.
 #
 # NOT scanned here, on purpose: session logs and dated specs are testimony and keep
-# the ordinals they recorded (the law governs living surfaces, never history). An
-# ordinal used as a computed coordinate elsewhere is also fine; this guard matches
-# only the specific "lap <N>" identity pattern.
+# the ordinals they recorded (the law governs living surfaces, never history).
+#
+# Refined 20260811.140623 (the comlink survey): the pattern matches only a BARE lap
+# ordinal, and deliberately NOT the meaningful schemes the law permits —
+#   * a structured code, where the digit continues into the identifier: "lap 3w-3b",
+#     "lap 3w-4", "lap 4b" (a level/revision, the R2/R3 case) — a word char or hyphen
+#     right after the digits, so the negative lookahead (?![-\w]) skips it;
+#   * "sub-lap N", a hyphen-joined compound, skipped by the negative lookbehind
+#     (?<![-\w]).
+# A genuine bare "lap 2" riding beside a code ("OA-L3 lap 2") IS still flagged — the
+# code is meaningful, the bare ordinal beside it is not. Needs PCRE (grep -P).
 #
 # Output convention: context/specs/20260729-215600_scan-seam-convention.md.
 set -eu
-ordinal='\b[Ll]ap [0-9]+'
+ordinal='(?<![-\w])lap [0-9]+(?![-\w])'
 fail=0
 for f in "$@"; do
   if [ ! -f "$f" ]; then echo "detail: absent ($f)"; fail=$((fail + 1)); continue; fi
-  h=$(grep -cE "$ordinal" "$f" 2>/dev/null || true)
+  h=$(grep -cPi "$ordinal" "$f" 2>/dev/null || true)
   echo "file=$f lap_ordinal=$h"
   if [ "$h" -gt 0 ]; then
     echo "detail: drifted ($f) names a capability by a bare lap ordinal"

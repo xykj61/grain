@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260811.141358
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host cloud pier sandbox — Eastern (EDT) time convention
+title Refine the labeling guard — bare lap N vs structured code vs sub-lap
+prompt refine guard — teach it a bare lap ordinal from a structured code and from sub-lap, so comlink can eventually be scanned
+think the survey found the guard's \blap [0-9]+ false-positives on lap 3 inside lap 3w-3b and lap 2 inside sub-lap 2 — it would RED on comlink's meaningful codes, so it must learn the difference before comlink joins the scan
+think refined to PCRE lookaround (?<![-\w])lap [0-9]+(?![-\w]): the negative lookbehind skips sub-lap (hyphen before lap), the negative lookahead skips a digit that continues into a code (lap 3w-3b, lap 3w-4, lap 4b); a genuine bare lap 2 beside a code (OA-L3 lap 2) still flags — the code is meaningful, the bare ordinal beside it is not
+think a blocking guard earns a known-good fixture beside its known-bad one (Radiant pass playbook), so added labeling_module_pass.md — structured codes + sub-lap + overlap — that must pass clean, and asserted it in the witness alongside the biting negative
+obs verified three ways on metal: the five swept modules stay verdict=ok (0 lap-N of any kind), the negative (lap 6) bites verdict=drift, and the pass fixture (OA-L3 · NS-L3 · lap 3w-3b · lap 4b · sub-lap 1/2/3 · overlap 3) stays verdict=ok — no false positive; living_docs_lint GREEN
+obs the guard is now comlink-ready pattern-wise; door 2 (the sub-lap relabel round) and the cross-module tag coordination remain, each word-gated
+loom witness=cion_module_labeling_witness wall_ms=110 modules=5 negative=bites pass=quiet
+file tools/fixtures/labeling_module_scan.sh refined to PCRE lookaround; comment explains bare-vs-code-vs-sublap
+file tools/fixtures/labeling_module_pass.md new known-good fixture (structured codes + sub-lap + overlap) that must pass clean
+file tools/gen/season/cion_module_labeling_witness.rish asserts the pass fixture stays quiet beside the biting negative
+file context/specs/20260810-222755_chronological-semantic-labeling-and-the-cion-meta-season.md addendum marks the refine landed
+file active-designing/20260811-140623_comlink-labeling-survey.md door 1 marked landed
+recommend check-in (Claude) — the guard now tells a bare ordinal from a meaningful code and stays honest with a PASS fixture; comlink is scannable when its sub-lap round opens (word-gated, RISC-V guests + two witnesses). The REDS fold (24132/24576) is still due. Keaton's word on the sub-lap round vs the fold vs the design season. Rest is his to take

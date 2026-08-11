@@ -26,10 +26,18 @@ assert scan.out contains "verdict=ok" else "cion-module: a swept-module surface 
 # values_apart: the verdict key and the exit status must agree.
 assert scan.ok else "cion-module: mandate verdict and status disagree"
 
-# The guard bites — a planted lap ordinal is caught on every run.
+# The guard bites — a planted bare lap ordinal is caught on every run.
 let neg = run ["sh" "tools/fixtures/labeling_module_scan.sh" "tools/fixtures/labeling_module_negative.md"]
 say neg.out
 assert neg.out contains "verdict=drift" else "cion-module: planted lap ordinal was not flagged"
 assert (neg.ok == false) else "cion-module: the guard failed to bite the planted negative"
+
+# The guard stays quiet on the meaningful schemes the law permits — a structured code
+# (lap 3w-3b, lap 4b, OA-L3, NS-L3) and a sub-lap compound must NOT trip it. A blocking
+# guard earns a known-good fixture beside its known-bad one (refined 20260811.140623).
+let pass = run ["sh" "tools/fixtures/labeling_module_scan.sh" "tools/fixtures/labeling_module_pass.md"]
+say pass.out
+assert pass.out contains "verdict=ok" else "cion-module: the guard false-positived on a meaningful code or sub-lap"
+assert pass.ok else "cion-module: pass-fixture verdict and status disagree"
 
 say "GREEN: cion-module — the swept modules (mandate · scribe · vault · pond · granary) name every capability by semantic label + stamp, no bare lap ordinal; the guard bites a planted one"
