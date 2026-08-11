@@ -41,4 +41,15 @@ A debride is destructive by design and runs on a named target with the fascia he
 
 ---
 
-*A debride heals the fascia; it never tears it. The looking pass that finds most of the tissue healthy is the first act of care, not a delay of it.*
+## Resolution `20260811.184434` — leave the residue (Keaton's word)
+
+Keaton's word: **leave the residue.** The debride closes here. The primary rename already landed at `20260720`; what remains is the record and the teaching, not drift:
+
+- **Kept, as correct:** the dated testimony, the LEXICON/TAME entries that teach the mold→shape distinction by naming both words, and the deliberately-kept Hoon-study twins (`"amount-mold"`, `"count-mold"`, and kin).
+- **Parked, not owed:** the atomic Grain-sense identifier refactor inside the Glow compiler (`mold_slice` · `zig_type_for_mold` · `Expr.mold`, ~23 files). It is an **optional horizon**, not a live debt — the study parallel it partly carries is legitimate, and the seated Shape decision already leads every citizen surface with `shape`. Should it ever run, it runs atomically on the language bench with a cairn and a full `glow/*_witness` rewitness, per the plan above.
+
+The debride is therefore **effectively done**: the tree speaks `shape` where it should, keeps `mold` where the word still earns its place, and no cut was taken that would have torn healthy tissue.
+
+---
+
+*A debride heals the fascia; it never tears it. The looking pass that finds most of the tissue healthy is the first act of care, not a delay of it — and here, the care was to leave the healthy tissue alone.*
