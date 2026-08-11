@@ -37,6 +37,8 @@ Build the designed experience exactly to the four contracts above — onboarding
 
 **Lap 1 landed `20260811.173653`** — the first-hour reference is now in the tree: `manual/tutorials/greet.rye` (the bounded greeting) and `tools/first_hour_witness.rish`, building to the gitignored `tools/.build/`, GREEN on metal and free of TAME bans. The onboarding path (bootstrap → build → run a witness) and the first-hour contract are now both *runnable*, not only designed — a newcomer can follow them to a green line they produced.
 
+**Lap 2 landed `20260811.175905`** — the onboarding-path acceptance line is now enforced by a witness: `tools/onboarding_path_witness.rish` proves the cold-start step (`rye/bootstrap.sh`) exists and that the first-green witness still prints the contract's exact acceptance line (`GREEN: RW-3 …`), so drift in the onboarding path reds a machine, not a newcomer.
+
 ## Definition of done for the design season
 
 - Each equinox produces **one checkable artifact** — a contract a future witness can be built against, not prose that merely describes an intention.
