@@ -1,7 +1,7 @@
 # PLEAC — the cookbook stdlib
 
 **Language:** EN
-**Status:** Living — strings chapter opened `20260811.190026` (SOON)
+**Status:** Living — strings chapter opened `20260811.190026`, lists chapter `20260811.190458` (SOON)
 **Voice:** Kyri
 
 PLEAC ("programming-language examples alike cookbook") is the standard library grown by the **common tasks every language owes** — strings, lists, numbers — each a bounded, witnessed primitive. This home holds Grain's cookbook, in Rye (the implementation layer); wiring the primitives into the Rishi interpreter as builtins beside `sort` / `unique` / `upper` is the follow-on.
@@ -21,9 +21,25 @@ tools/.build/pleac_strings selftest
 rishi/bin/rishi run tools/pleac_strings_witness.rish
 ```
 
+## Lists (`lists.rye`, landed `20260811`)
+
+The grouping trio over a bounded list of `u32`:
+
+- **`chunk(xs, size, out)`** — consecutive, non-overlapping groups of `size` (the last may be shorter), zero-copy slices into `xs`.
+- **`window(xs, size, out)`** — every overlapping run of `size`, in order; count `len - size + 1`, or none when shorter than a window.
+- **`flatten(lists, out)`** — concatenate a list of lists into one; refuses a too-small output.
+
+`flatten(chunk(xs, n)) == xs` (grouping is lossless), proven by `prove_lists`, with the window count, the short-list-yields-none case, and the zero-size / too-small refusals. Bounded by `max_groups` and `max_flat`.
+
+```
+rye build pleac/lists.rye -femit-bin=tools/.build/pleac_lists
+tools/.build/pleac_lists selftest
+rishi/bin/rishi run tools/pleac_lists_witness.rish
+```
+
 ## Horizon
 
-Further chapters — lists (chunk · window · flatten), numbers (clamp · parse), and wiring these into the interpreter as builtins — grow one witnessed primitive at a time.
+Further chapters — numbers (clamp · parse), and wiring these primitives into the Rishi interpreter as builtins beside `sort`/`unique`/`upper` — grow one witnessed primitive at a time.
 
 ---
 
