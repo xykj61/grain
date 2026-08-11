@@ -1,4 +1,4 @@
-//! linengrow/open_asks_escrow_delivery.rye — OA-L3 lap 2: escrow hold + release under Comlink seal.
+//! linengrow/open_asks_escrow_delivery.rye — OA-L3 — escrow hold + release under Comlink seal.
 //!
 //!   rye build linengrow/open_asks_escrow_delivery.rye -lc -femit-bin=linengrow/bin/open-asks-escrow-delivery
 //!   linengrow/bin/open-asks-escrow-delivery selftest
@@ -191,7 +191,7 @@ fn run_selftest(_: std.Io) !u8 {
 
     print("oal3l2: selftest GREEN — seal, open, verify hold and release in one process\n", .{});
     print("oal3l2: version {s} wire_format {s}\n", .{ oa3l2_version, wf.wire_format_version });
-    print("GREEN: OA-L3 lap 2 — escrow hold and release under Comlink seal.\n", .{});
+    print("GREEN: OA-L3 — escrow hold and release under Comlink seal.\n", .{});
     return 0;
 }
 

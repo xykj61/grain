@@ -1,4 +1,4 @@
-//! linengrow/neth_sim_witness.rye — proves Neth's deterministic simulation, lap 1.
+//! linengrow/neth_sim_witness.rye — proves Neth's deterministic simulation.
 //!
 //!   rye build linengrow/neth_sim_witness.rye -femit-bin=linengrow/bin/neth_sim_witness
 //!   linengrow/bin/neth_sim_witness
@@ -161,7 +161,7 @@ fn run_selftest() !u8 {
     try claim_zero_fault_convergence(records[0..], &issuer_hex, &holder_hex, issuer_kp.public_key, holder_kp.public_key, &replica_a.final_root);
 
     print("neth-sim: version {s}\n", .{witness_version});
-    print("GREEN: Neth deterministic simulation lap 1 -- seeded delivery replays byte-for-byte, faults change timing, never the outcome.\n", .{});
+    print("GREEN: Neth deterministic simulation -- seeded delivery replays byte-for-byte, faults change timing, never the outcome.\n", .{});
     return 0;
 }
 
