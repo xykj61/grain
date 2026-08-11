@@ -1,0 +1,289 @@
+//! mandate/wal.rye — a write-ahead log for durability between snapshots.
+//!
+//! A snapshot (`store.rye`) captures the whole store at a moment; a **write-ahead log**
+//! captures every mutation *since* that moment, so a crash between snapshots loses
+//! nothing. Recovery is: restore the last snapshot, then **replay the log in order** —
+//! the store returns to its live state exactly.
+//!
+//! Each entry is one bounded, fixed-width record: a kind (upsert or remove), an id, a
+//! tag, and the raw vector. Replay calls the same `store.upsert` / `store.remove` the
+//! live path used, so a recovered store is identical to the one that was lost, not an
+//! approximation of it.
+//!
+//!   rye build mandate/wal.rye -femit-bin=mandate/bin/wal
+//!   mandate/bin/wal selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const store = @import("store.rye");
+
+pub const wal_version = "20260811.123400";
+
+// The most mutations one log holds before it must be folded into a fresh snapshot —
+// bounded like every Mandate surface.
+pub const max_entries: u32 = 256;
+
+pub const op_upsert: u32 = 1;
+pub const op_remove: u32 = 2;
+
+pub const WalError = error{ Full };
+pub const WalBlobError = error{ BufferTooSmall, BadMagic, BadVersion, TooManyEntries, Truncated, BadKind };
+
+/// One logged mutation. A remove leaves tag and vec zero; only the kind and id matter
+/// for it, yet the width stays fixed so the log is bounded and every offset a constant.
+pub const Entry = struct {
+    kind: u32,
+    id: u32,
+    tag: u32,
+    vec: [store.max_dim]f32,
+};
+
+/// The log — a bounded array of entries and how many are filled. Append-only in life;
+/// replayed in order at recovery.
+pub const Wal = struct {
+    entries: [max_entries]Entry,
+    count: u32,
+
+    pub fn init() Wal {
+        return .{ .entries = undefined, .count = 0 };
+    }
+};
+
+/// Record an upsert. The raw vector is logged; replay normalizes it exactly as the live
+/// upsert did, so the recovered unit vector matches.
+pub fn record_upsert(wal: *Wal, id: u32, tag: u32, vec: *const [store.max_dim]f32) WalError!void {
+    // invariant: the log never runs past its bound.
+    assert(wal.count <= max_entries);
+    if (wal.count >= max_entries) return error.Full;
+    wal.entries[wal.count] = .{ .kind = op_upsert, .id = id, .tag = tag, .vec = vec.* };
+    wal.count += 1;
+}
+
+/// Record a remove — id alone; tag and vec stay zero.
+pub fn record_remove(wal: *Wal, id: u32) WalError!void {
+    // invariant: the log never runs past its bound.
+    assert(wal.count <= max_entries);
+    if (wal.count >= max_entries) return error.Full;
+    wal.entries[wal.count] = .{ .kind = op_remove, .id = id, .tag = 0, .vec = [_]f32{0} ** store.max_dim };
+    wal.count += 1;
+}
+
+/// Replay the whole log onto `st` in order — the recovery step. Each entry calls the
+/// same store mutation the live path used, so ordering (an upsert then a later remove
+/// of the same id) resolves exactly as it did live.
+pub fn apply(wal: *const Wal, st: *store.Store) !void {
+    // invariant: the log is well-formed before it is replayed.
+    assert(wal.count <= max_entries);
+    var i: u32 = 0;
+    while (i < wal.count) : (i += 1) {
+        const e = &wal.entries[i];
+        if (e.kind == op_upsert) {
+            try store.upsert(st, e.id, e.tag, &e.vec);
+        } else if (e.kind == op_remove) {
+            _ = store.remove(st, e.id);
+        } else {
+            return WalBlobError.BadKind;
+        }
+    }
+}
+
+// --- durability: the log as bytes ---------------------------------------
+
+const wal_magic = "MANDWAL\x01"; // 8 bytes; the trailing byte carries the on-wire schema epoch
+pub const wal_blob_version: u32 = 1;
+const woff_version: u32 = 8;
+const woff_count: u32 = 12;
+const woff_entries: u32 = 16;
+const entry_bytes: u32 = 4 + 4 + 4 + store.max_dim * 4; // kind, id, tag, then the vector
+pub const max_wal_bytes: u32 = woff_entries + max_entries * entry_bytes;
+
+fn put_u32(buf: []u8, off: u32, v: u32) void {
+    // invariant: the write stays inside the buffer.
+    assert(@as(usize, off) + 4 <= buf.len);
+    const o: usize = @intCast(off); // seam: slice index is usize at the std edge
+    std.mem.writeInt(u32, buf[o..][0..4], v, .little);
+}
+
+fn get_u32(bytes: []const u8, off: u32) u32 {
+    // invariant: the read stays inside the bytes.
+    assert(@as(usize, off) + 4 <= bytes.len);
+    const o: usize = @intCast(off); // seam: slice index is usize at the std edge
+    return std.mem.readInt(u32, bytes[o..][0..4], .little);
+}
+
+fn put_f32(buf: []u8, off: u32, v: f32) void {
+    put_u32(buf, off, @bitCast(v));
+}
+
+fn get_f32(bytes: []const u8, off: u32) f32 {
+    return @bitCast(get_u32(bytes, off));
+}
+
+/// Serialize the log to `buf` (little-endian: magic · version · count · entries) and
+/// return its byte length. A buffer too small is refused before any byte is written.
+pub fn encode(wal: *const Wal, buf: []u8) WalBlobError!u32 {
+    // invariant: the log is well-formed before it is written out.
+    assert(wal.count <= max_entries);
+    const needed: u32 = woff_entries + wal.count * entry_bytes;
+    if (buf.len < needed) return error.BufferTooSmall;
+    var m: u32 = 0;
+    while (m < 8) : (m += 1) {
+        const mo: usize = @intCast(m);
+        buf[mo] = wal_magic[mo];
+    }
+    put_u32(buf, woff_version, wal_blob_version);
+    put_u32(buf, woff_count, wal.count);
+    var i: u32 = 0;
+    while (i < wal.count) : (i += 1) {
+        const base: u32 = woff_entries + i * entry_bytes;
+        const e = &wal.entries[i];
+        put_u32(buf, base + 0, e.kind);
+        put_u32(buf, base + 4, e.id);
+        put_u32(buf, base + 8, e.tag);
+        var d: u32 = 0;
+        while (d < store.max_dim) : (d += 1) {
+            put_f32(buf, base + 12 + d * 4, e.vec[d]);
+        }
+    }
+    // invariant: the written log never runs past the bound.
+    assert(needed <= max_wal_bytes);
+    return needed;
+}
+
+/// Rebuild a log from bytes produced by `encode`. Every field is validated; a bad
+/// magic, wrong version, over-count, truncation, or unknown kind is refused.
+pub fn decode(bytes: []const u8) WalBlobError!Wal {
+    if (bytes.len < woff_entries) return error.Truncated;
+    var m: u32 = 0;
+    while (m < 8) : (m += 1) {
+        const mo: usize = @intCast(m);
+        if (bytes[mo] != wal_magic[mo]) return error.BadMagic;
+    }
+    if (get_u32(bytes, woff_version) != wal_blob_version) return error.BadVersion;
+    const count = get_u32(bytes, woff_count);
+    // invariant: the logged count never exceeds the bound.
+    if (count > max_entries) return error.TooManyEntries;
+    const needed: u32 = woff_entries + count * entry_bytes;
+    if (bytes.len < needed) return error.Truncated;
+    var wal = Wal.init();
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        const base: u32 = woff_entries + i * entry_bytes;
+        const kind = get_u32(bytes, base + 0);
+        // invariant: every logged kind is a known mutation.
+        if (kind != op_upsert and kind != op_remove) return error.BadKind;
+        var e = Entry{ .kind = kind, .id = get_u32(bytes, base + 4), .tag = get_u32(bytes, base + 8), .vec = undefined };
+        var d: u32 = 0;
+        while (d < store.max_dim) : (d += 1) {
+            e.vec[d] = get_f32(bytes, base + 12 + d * 4);
+        }
+        wal.entries[i] = e;
+    }
+    wal.count = count;
+    // invariant: the rebuilt log is well-formed.
+    assert(wal.count <= max_entries);
+    return wal;
+}
+
+/// Recover the live store: restore the snapshot, then replay the log over it.
+pub fn recover(snapshot_bytes: []const u8, wal_bytes: []const u8) !store.Store {
+    var st = try store.restore(snapshot_bytes);
+    const wal = try decode(wal_bytes);
+    try apply(&wal, &st);
+    return st;
+}
+
+// --- selftest -----------------------------------------------------------
+
+fn contains_id(st: *const store.Store, id: u32) bool {
+    var i: u32 = 0;
+    while (i < st.filled) : (i += 1) {
+        if (st.records[i].id == id) return true;
+    }
+    return false;
+}
+
+fn prove_wal(init: std.process.Init) !void {
+    // The durable base: a store snapshotted at a moment.
+    var base = try store.Store.init(4);
+    const red: [store.max_dim]f32 = .{ 1, 0, 0, 0, 0, 0, 0, 0 };
+    const green: [store.max_dim]f32 = .{ 0, 1, 0, 0, 0, 0, 0, 0 };
+    try store.upsert(&base, 1, 1, &red);
+    try store.upsert(&base, 2, 1, &green);
+    var base_blob: [store.max_blob_bytes]u8 = undefined;
+    const bn = try store.snapshot(&base, &base_blob);
+
+    // The live store: the base, then three mutations after the snapshot, each logged.
+    var live = base;
+    var wal = Wal.init();
+    const blue: [store.max_dim]f32 = .{ 0, 0, 1, 0, 0, 0, 0, 0 };
+    const teal: [store.max_dim]f32 = .{ 1, 1, 0, 0, 0, 0, 0, 0 };
+    try store.upsert(&live, 3, 2, &blue);
+    try record_upsert(&wal, 3, 2, &blue);
+    try store.upsert(&live, 4, 2, &teal);
+    try record_upsert(&wal, 4, 2, &teal);
+    _ = store.remove(&live, 2); // drop green after the snapshot
+    try record_remove(&wal, 2);
+
+    // Crash recovery in memory: snapshot + replayed log equals the live store.
+    var wal_blob: [max_wal_bytes]u8 = undefined;
+    const wn = try encode(&wal, &wal_blob);
+    const recovered = try recover(base_blob[0..bn], wal_blob[0..wn]);
+    if (recovered.filled != live.filled) return error.RecoverFilledWrong;
+    if (recovered.dim != live.dim) return error.RecoverDimWrong;
+    // The removed id is gone from both; the added ids are present in both.
+    if (contains_id(&recovered, 2)) return error.RemovedIdRecovered;
+    if (contains_id(&live, 2)) return error.RemovedIdStillLive;
+    if (!contains_id(&recovered, 3) or !contains_id(&recovered, 4)) return error.AddedIdMissing;
+    // Query-identity: the recovered store answers the same nearest as the live one.
+    const q: [store.max_dim]f32 = .{ 0, 0, 1, 0, 0, 0, 0, 0 };
+    if (store.query(&live, &q, 1, null).matches[0].id != store.query(&recovered, &q, 1, null).matches[0].id) return error.RecoverQueryDrift;
+
+    // The log round-trips through bytes.
+    const back = try decode(wal_blob[0..wn]);
+    if (back.count != wal.count) return error.WalDecodeCount;
+
+    // Bounds and corruption: a full log refuses another record; bad bytes are refused.
+    var full = Wal.init();
+    var k: u32 = 0;
+    while (k < max_entries) : (k += 1) {
+        try record_remove(&full, k);
+    }
+    if (record_remove(&full, 999)) |_| return error.FullLogAccepted else |_| {}
+    var bad = wal_blob;
+    bad[0] = 'X';
+    if (decode(bad[0..wn])) |_| return error.BadMagicAccepted else |_| {}
+    var badkind = wal_blob;
+    put_u32(&badkind, woff_entries + 0, 99); // corrupt the first entry's kind
+    if (decode(badkind[0..wn])) |_| return error.BadKindAccepted else |_| {}
+
+    // Durability on metal: base snapshot and log written to real files, recovered back.
+    const io = init.io;
+    const a = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    const dir = "mandate/bin/wal_recover";
+    try cwd.createDirPath(io, dir);
+    try cwd.writeFile(io, .{ .sub_path = "mandate/bin/wal_recover/base.blob", .data = base_blob[0..bn] });
+    try cwd.writeFile(io, .{ .sub_path = "mandate/bin/wal_recover/log.wal", .data = wal_blob[0..wn] });
+    const rb = try cwd.readFileAlloc(io, "mandate/bin/wal_recover/base.blob", a, .limited(store.max_blob_bytes));
+    const rw = try cwd.readFileAlloc(io, "mandate/bin/wal_recover/log.wal", a, .limited(max_wal_bytes));
+    const from_disk = try recover(rb, rw);
+    if (from_disk.filled != live.filled) return error.DiskRecoverFilledWrong;
+    if (contains_id(&from_disk, 2)) return error.DiskRemovedIdRecovered;
+    print("mandate wal: durability on metal — base snapshot ({d} B) + write-ahead log ({d} B) written to files and replayed into a store identical to the live one after a crash.\n", .{ bn, wn });
+}
+
+fn run_selftest(init: std.process.Init) !u8 {
+    try prove_wal(init);
+    print("mandate wal: a write-ahead log records every mutation since the last snapshot (upsert · remove), so a crash between snapshots loses nothing — recovery restores the snapshot then replays the log in order.\n", .{});
+    print("mandate wal: replay calls the same store.upsert / store.remove the live path used, so a recovered store is identical to the one that was lost (ordering resolves exactly), not an approximation.\n", .{});
+    print("mandate wal: the log is bounded (max_entries) and serializes to bytes (magic · version · count · entries); a full log, bad magic, wrong version, over-count, truncation, or unknown kind is refused.\n", .{});
+    print("mandate wal: version {s}\n", .{wal_version});
+    print("GREEN: mandate wal — a bounded write-ahead log over Mandate stores: record mutations, encode/decode, replay for crash recovery, witnessed on metal.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    return run_selftest(init);
+}
