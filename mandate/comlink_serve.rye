@@ -1,0 +1,105 @@
+//! mandate/comlink_serve.rye — serve a Mandate query over Comlink, sealed.
+//!
+//! Lap 9 gave the wire *shape* of a query (`serve.rye`); this rides it on Comlink's
+//! actual transport. A `QueryRequest`'s bytes become the plaintext of a **sealed
+//! datagram** (`wire_format.seal_message` — X25519 key agreement, ChaCha20-Poly1305,
+//! a Sha3 name, a kumara signature), opened on the far side by `open_datagram`. So a
+//! query crosses Comlink **encrypted, signed, and name-checked end to end**, and the
+//! answer returns the same way.
+//!
+//! `serve_sealed(store, request_frame, response_frame)` is the host side: open the
+//! sealed request, answer it against the store, seal the response for the return trip.
+//!
+//!   rye build mandate/comlink_serve.rye -femit-bin=mandate/bin/comlink_serve
+//!   mandate/bin/comlink_serve selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const store = @import("store.rye");
+const serve = @import("serve.rye");
+const wf = @import("wire_format.rye");
+
+pub const comlink_serve_version = "20260811.125432";
+
+// A compile-time proof that both serve messages fit Comlink's sealed-message budget,
+// so a query and its answer each ride in a single datagram — no fragmentation.
+comptime {
+    assert(serve.max_request_bytes <= wf.max_message);
+    assert(serve.max_response_bytes <= wf.max_message);
+}
+
+/// The host side: open a sealed datagram carrying a serve request, answer it against
+/// the store, and seal the response into `response_frame`, returning its length. The
+/// request is decrypted and its signature and name verified before the store is
+/// touched — a forged or tampered datagram never reaches the query.
+pub fn serve_sealed(st: *const store.Store, request_frame: []const u8, response_frame: *[@intCast(wf.wire_capacity)]u8) !u64 {
+    var opened: [wf.max_message]u8 = undefined;
+    const req_len = try wf.open_datagram(request_frame, &opened);
+    var res_bytes: [serve.max_response_bytes]u8 = undefined;
+    const res_len = try serve.serve(st, opened[0..@intCast(req_len)], &res_bytes);
+    return try wf.seal_message(res_bytes[0..res_len], response_frame);
+}
+
+// --- selftest -----------------------------------------------------------
+
+fn seat_store() !store.Store {
+    var st = try store.Store.init(4);
+    const red: [store.max_dim]f32 = .{ 1, 0, 0, 0, 0, 0, 0, 0 };
+    const green: [store.max_dim]f32 = .{ 0, 1, 0, 0, 0, 0, 0, 0 };
+    const blue: [store.max_dim]f32 = .{ 0, 0, 1, 0, 0, 0, 0, 0 };
+    const teal: [store.max_dim]f32 = .{ 1, 1, 0, 0, 0, 0, 0, 0 };
+    try store.upsert(&st, 1, 1, &red);
+    try store.upsert(&st, 2, 1, &green);
+    try store.upsert(&st, 3, 2, &blue);
+    try store.upsert(&st, 4, 2, &teal);
+    return st;
+}
+
+fn prove_comlink_serve() !void {
+    const st = try seat_store();
+
+    // Client: build a request and seal it into a Comlink datagram.
+    var req = serve.QueryRequest{ .k = 2, .has_filter = 0, .filter_tag = 0, .vec = .{ 1, 0.1, 0, 0, 0, 0, 0, 0 } };
+    var req_bytes: [serve.max_request_bytes]u8 = undefined;
+    const rn = try serve.encode_request(&req, &req_bytes);
+    var req_frame: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const rfl = try wf.seal_message(req_bytes[0..rn], &req_frame);
+
+    // Host: open the sealed request, serve it, seal the response.
+    var res_frame: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const rsl = try serve_sealed(&st, req_frame[0..@intCast(rfl)], &res_frame);
+
+    // Client: open the response datagram and decode it.
+    var opened: [wf.max_message]u8 = undefined;
+    const ol = try wf.open_datagram(res_frame[0..@intCast(rsl)], &opened);
+    const wire = try serve.decode_response(opened[0..@intCast(ol)]);
+
+    // The Comlink-served result equals a direct in-process query.
+    const direct = store.query(&st, &req.vec, 2, null);
+    if (wire.count != direct.count) return error.CountDrift;
+    if (wire.matches[0].id != direct.matches[0].id) return error.NearestDrift;
+    if (wire.matches[1].id != direct.matches[1].id) return error.SecondDrift;
+
+    // A tampered datagram is refused — a single flipped ciphertext byte fails to open,
+    // so a query never rides a forged frame into the store.
+    var tampered = req_frame;
+    const ci: usize = @intCast(wf.off_cipher);
+    tampered[ci] = tampered[ci] ^ 0xFF;
+    if (wf.open_datagram(tampered[0..@intCast(rfl)], &opened)) |_| return error.TamperAccepted else |_| {}
+}
+
+fn run_selftest() !u8 {
+    try prove_comlink_serve();
+    print("mandate comlink_serve: a Mandate query crosses Comlink as a sealed datagram — serve request/response bytes become the plaintext of wire_format.seal_message (X25519 · ChaCha20-Poly1305 · Sha3 name · kumara signature), opened on the far side.\n", .{});
+    print("mandate comlink_serve: a query served over Comlink returns exactly what a direct in-process query would (same nearest, same order) — the transport changes, the answer does not.\n", .{});
+    print("mandate comlink_serve: the request is decrypted and its signature and name verified before the store is touched, so a forged or tampered datagram never reaches the query — a flipped byte fails to open.\n", .{});
+    print("mandate comlink_serve: both serve messages fit the sealed-message budget at compile time, so a query and its answer each ride one datagram, no fragmentation.\n", .{});
+    print("mandate comlink_serve: version {s}\n", .{comlink_serve_version});
+    print("GREEN: mandate comlink_serve — a Mandate query served over Comlink as a sealed, signed, name-checked datagram; the answer equals a direct query, and a tampered frame is refused, witnessed.\n", .{});
+    return 0;
+}
+
+pub fn main() !u8 {
+    return run_selftest();
+}
