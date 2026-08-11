@@ -897,6 +897,8 @@ const EvalError = error{
     SortNeedsList,
     SortNotComparable,
     UniqueNeedsList,
+    ClampNeedsInt,
+    ClampBadBound,
 };
 
 /// Evaluate an expression: an operand, two operands compared with `==`/`!=`, or a
@@ -1095,6 +1097,9 @@ fn eval_expr(allocator: std.mem.Allocator, io: std.Io, env: *Env, text: []const 
     }
     if (std.mem.startsWith(u8, trimmed, "unique ")) {
         return do_unique(allocator, io, env, trimmed[7..]);
+    }
+    if (std.mem.startsWith(u8, trimmed, "clamp ")) {
+        return do_clamp(allocator, io, env, trimmed[6..]);
     }
     if (std.mem.startsWith(u8, trimmed, "slice ")) {
         return do_slice(allocator, io, env, trimmed[6..]);
@@ -1777,6 +1782,39 @@ fn do_slice(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u
     return .{ .string = out };
 }
 
+/// `clamp <x> <lo> <hi>` — bound an integer to `[lo, hi]`; the bound must be
+/// well-ordered. The cookbook's numbers-chapter `clamp`, wired as a builtin (spec:
+/// `pleac/numbers.rye`). Out-of-range pulls to the near edge.
+fn do_clamp(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8) EvalError!Value {
+    var tok = TokenIter{ .text = rest };
+    const x_token = tok.next() orelse return error.ClampNeedsInt;
+    const lo_token = tok.next() orelse return error.ClampNeedsInt;
+    const hi_token = tok.next() orelse return error.ClampNeedsInt;
+
+    const x = switch (try eval_operand(allocator, io, env, x_token)) {
+        .int => |v| v,
+        else => return error.ClampNeedsInt,
+    };
+    const lo = switch (try eval_operand(allocator, io, env, lo_token)) {
+        .int => |v| v,
+        else => return error.ClampNeedsInt,
+    };
+    const hi = switch (try eval_operand(allocator, io, env, hi_token)) {
+        .int => |v| v,
+        else => return error.ClampNeedsInt,
+    };
+
+    // invariant: the bound is well-ordered.
+    if (lo > hi) return error.ClampBadBound;
+    var r = x;
+    if (r < lo) r = lo;
+    if (r > hi) r = hi;
+    // invariant: the result lands inside the bound.
+    assert(r >= lo);
+    assert(r <= hi);
+    return .{ .int = r };
+}
+
 /// `join <list> <sep>` — compose list elements into one string, separated by `sep`.
 fn do_join(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8) EvalError!Value {
     var tok = TokenIter{ .text = rest };
@@ -2296,6 +2334,9 @@ fn eval_operand(allocator: std.mem.Allocator, io: std.Io, env: *Env, raw: []cons
     }
     if (std.mem.startsWith(u8, s, "unique ")) {
         return do_unique(allocator, io, env, s[7..]);
+    }
+    if (std.mem.startsWith(u8, s, "clamp ")) {
+        return do_clamp(allocator, io, env, s[6..]);
     }
     if (std.mem.startsWith(u8, s, "slice ")) {
         return do_slice(allocator, io, env, s[6..]);
