@@ -112,6 +112,19 @@ pub fn sign_name(keeper_seed: *const [kumara.seed_length]u8, tag: u8, name: *con
     return kumara.sign(&msg, kp, null).toBytes();
 }
 
+/// Sign a **claim** — the owner's word that this name belongs to this point. A caller
+/// outside this module signs a valid claim through here, without needing the private
+/// claim tag; the signature is exactly what `claim` verifies.
+pub fn sign_claim(keeper_seed: *const [kumara.seed_length]u8, name: *const Name, point: u32) [sig_len]u8 {
+    return sign_name(keeper_seed, tag_claim, name, point);
+}
+
+/// Sign a **release** — the owner's word that this name leaves this point. The mirror
+/// of `sign_claim`, and exactly what `release` verifies.
+pub fn sign_release(keeper_seed: *const [kumara.seed_length]u8, name: *const Name, point: u32) [sig_len]u8 {
+    return sign_name(keeper_seed, tag_release, name, point);
+}
+
 fn verify_name_sig(keeper: [pubkey_len]u8, tag: u8, name: *const Name, point: u32, sig: *const [sig_len]u8) bool {
     const pub_key = kumara.PublicKey.fromBytes(keeper) catch return false;
     var msg: [name_msg_len]u8 = undefined;

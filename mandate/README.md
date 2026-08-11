@@ -1,7 +1,7 @@
 # Mandate — Grain's turbopuffer
 
 **Language:** EN
-**Status:** Living — the vector store · lap 1 seated `20260810.031234` · lap 2 (**remove** — full CRUD) `20260810` · lap 3 (**profile-loaded dim**) `20260810` · lap 4 (**dim from a real Bron profile**) `20260810` · lap 5 (**approximate index**) `20260810` · lap 6 (**object-storage backing**) `20260811` · lap 7 (**named-object bucket**) `20260811` · lap 8 (**write-ahead log**) `20260811` · lap 9 (**serve protocol**) `20260811`
+**Status:** Living — the vector store · lap 1 seated `20260810.031234` · lap 2 (**remove** — full CRUD) `20260810` · lap 3 (**profile-loaded dim**) `20260810` · lap 4 (**dim from a real Bron profile**) `20260810` · lap 5 (**approximate index**) `20260810` · lap 6 (**object-storage backing**) `20260811` · lap 7 (**named-object bucket**) `20260811` · lap 8 (**write-ahead log**) `20260811` · lap 9 (**serve protocol**) `20260811` · lap 10 (**named serve — matches resolved to spoken names**) `20260811`
 **Voice:** Kyri
 **Kin:** the first build of the breach's new arc (`../expanding-prompts/20260810-025942_the-handoff-baton-vision-checkpoint.md`)
 
@@ -45,6 +45,10 @@ A snapshot captures the whole store at a moment; a **write-ahead log** ([`wal.ry
 
 A store answers questions from elsewhere. [`serve.rye`](serve.rye) is the **wire shape** of a query and its answer: a `QueryRequest` (how many, an optional tag filter, and the query vector) and a `QueryResponse` (the matches, id and score), each serialized to bounded little-endian bytes — the messages a **Comlink** transport carries, independent of the socket underneath. `serve(store, request_bytes, out)` is the one-call server: decode a request, answer it against the store, encode the response — **bytes in, bytes out** — so the same store answers a caller in the same process or across a wire, by the same path. Proven by `prove_serve`: a request round-trips through bytes; a served query answers exactly as a direct in-process query (same nearest, same order); a tag filter narrows the answer; and a bad magic, wrong version, out-of-range k, or too-small buffer is refused at the door.
 
+## Named serve — who, not just which number (`named_serve.rye`, landed `20260811`)
+
+A bare query answers with point numbers; a **named** query answers with **who**. [`named_serve.rye`](named_serve.rye) resolves each match through the shared name registry to the spoken name its point wears, or marks it honestly **unnamed** when it wears none — never a fabricated name. This closes the resolution half of "served over Comlink, resolved to a spoken name," now that `names.rye` offers a public `sign_claim` (added the same day) so a name can be claimed from outside that module. Proven by `prove_named_serve`: a settled galaxy is claimed the name `polaris` through `sign_claim`, a store keyed by point numbers is queried, the nearest match resolves to `polaris`, an unnamed point resolves `named = false`, and the registry reads both ways (name→point, point→name).
+
 ## Horizons
 
 - **Unsplash** as the first real data source — image embeddings, and a real-world camera feed (consent-gated partnership).
@@ -53,7 +57,7 @@ A store answers questions from elsewhere. [`serve.rye`](serve.rye) is the **wire
 - **Object-storage backing** so the store is serverless like its inspiration — **landed lap 6 `20260811`** (`snapshot`/`restore`, one portable blob, file round-trip on metal), and a **named-object bucket** — **landed lap 7 `20260811`** (`bucket.rye`, S3-style put/get keyed by a path-safe name). A real cloud-bucket driver (an actual S3/GCS backend behind the same put/get) is the remaining storage horizon.
 - **A write-ahead log** for durability between snapshots — **landed lap 8 `20260811`** (`wal.rye`, record · encode/decode · replay for crash recovery, proven on metal); a log-compaction pass that folds a full log into a fresh snapshot is the remaining refinement.
 - Served over **Comlink** — **the protocol landed lap 9 `20260811`** (`serve.rye`, request/response bytes, one-call serve); wiring those messages onto an actual Comlink socket, and rendering on **Skate**, remain the horizons.
-- Resolved to a spoken name via `../settlement/names.rye` — still a horizon: seating a `NameRegistry` from outside `names.rye` needs its `tag_claim` exposed (today private to the module's own selftest), so the serve layer resolves ids to a **place** (`keyed.place_of`) today and to a **spoken name** once `names.rye` offers a claim helper or a public tag.
+- Resolved to a spoken name via `../settlement/names.rye` — **landed lap 10 `20260811`** (`named_serve.rye`, `names.rye` gained a public `sign_claim`). A match now resolves to **who** (spoken name) and can resolve to **where** (`keyed.place_of`, fractal place) side by side.
 
 ---
 

@@ -1,0 +1,120 @@
+//! mandate/named_serve.rye — resolve a query's matches to spoken names.
+//!
+//! A bare query answers with point numbers. A *named* query answers with **who**: each
+//! match resolved through the shared name registry to the spoken name its point wears,
+//! or honestly marked unnamed when it wears none. This is the last step of "served over
+//! Comlink, resolved to a spoken name" — the resolution half, now that `names.rye`
+//! offers a public `sign_claim` so a name can be claimed from here.
+//!
+//! A point with no name resolves `named = false`, never a fabricated name — the search
+//! tells the truth about who it found.
+//!
+//!   rye build mandate/named_serve.rye -femit-bin=mandate/bin/named_serve
+//!   mandate/bin/named_serve selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const store = @import("store.rye");
+const names = @import("names.rye");
+const settlement = @import("constellation.rye");
+const tilak = @import("kumara_tilak.rye");
+const kumara = @import("kumara.rye");
+
+pub const named_serve_version = "20260811.124417";
+
+/// A match resolved to who it is — the point, its score, and its spoken name when the
+/// point wears one.
+pub const NamedMatch = struct {
+    point: u32,
+    score: f32,
+    named: bool,
+    name: names.Name,
+};
+
+/// The named matches of a query, most similar first.
+pub const NamedResult = struct {
+    matches: [store.max_k]NamedMatch,
+    count: u32,
+};
+
+/// Resolve each match in a query result to its spoken name via the shared registry, so
+/// a search returns who, not merely which number. A point with no name resolves
+/// `named = false`, never a fabricated name.
+pub fn name_matches(res: *const store.QueryResult, registry: *const names.NameRegistry, out: *NamedResult) void {
+    // invariant: a result never carries more than the bounded matches.
+    assert(res.count <= store.max_k);
+    out.count = res.count;
+    var i: u32 = 0;
+    while (i < res.count) : (i += 1) {
+        const m = res.matches[i];
+        const found = registry.reverse(m.id);
+        if (found) |nm| {
+            out.matches[i] = .{ .point = m.id, .score = m.score, .named = true, .name = nm.* };
+        } else {
+            out.matches[i] = .{ .point = m.id, .score = m.score, .named = false, .name = undefined };
+        }
+    }
+    // invariant: the named result carries exactly the query's matches.
+    assert(out.count == res.count);
+}
+
+// --- selftest -----------------------------------------------------------
+
+fn prove_named_serve() !void {
+    // Seat a settled galaxy and claim a spoken name for it — through names.rye's public
+    // sign_claim, the helper that unblocks claiming a name from outside that module.
+    const g_key: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
+    const g_keeper: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
+    const galaxy_num: u32 = 3;
+    const g_bind = tilak.make_bind(&g_key, &g_keeper);
+    const opened = try settlement.open(galaxy_num, &g_bind);
+    const con = opened.con;
+    const deed = opened.deed;
+
+    var registry = names.NameRegistry.init();
+    const nm = names.make_name("polaris") orelse return error.BadName;
+    const sig = names.sign_claim(&g_keeper, &nm, deed.point);
+    try names.claim(&registry, &con, &deed, &nm, &sig);
+
+    // A store whose record ids ARE point numbers: the named galaxy (3) and an unnamed
+    // point (99).
+    var st = try store.Store.init(4);
+    const near: [store.max_dim]f32 = .{ 1, 0, 0, 0, 0, 0, 0, 0 };
+    const far: [store.max_dim]f32 = .{ 0, 1, 0, 0, 0, 0, 0, 0 };
+    try store.upsert(&st, deed.point, 1, &near);
+    try store.upsert(&st, 99, 1, &far);
+
+    const q: [store.max_dim]f32 = .{ 1, 0.05, 0, 0, 0, 0, 0, 0 };
+    const res = store.query(&st, &q, 2, null);
+    var named: NamedResult = undefined;
+    name_matches(&res, &registry, &named);
+    if (named.count != 2) return error.NamedCountWrong;
+
+    // The nearest is the named galaxy point, resolved to "polaris".
+    if (named.matches[0].point != deed.point) return error.NearestPointWrong;
+    if (!named.matches[0].named) return error.NearestUnnamed;
+    if (!std.mem.eql(u8, named.matches[0].name.as_slice(), "polaris")) return error.NameTextWrong;
+
+    // The other point wears no name — resolved honestly as unnamed, never fabricated.
+    if (named.matches[1].point != 99) return error.SecondPointWrong;
+    if (named.matches[1].named) return error.UnnamedClaimedNamed;
+
+    // The shared registry resolves both ways: name to point, and point to name.
+    if (registry.resolve("polaris").? != deed.point) return error.ForwardResolveWrong;
+    if (registry.reverse(99) != null) return error.PhantomReverse;
+}
+
+fn run_selftest() !u8 {
+    try prove_named_serve();
+    print("mandate named_serve: a named query resolves each match to WHO — the spoken name its point wears via the shared registry — so a search returns a name, not merely a number.\n", .{});
+    print("mandate named_serve: a point with no name resolves named=false, never a fabricated name; the search tells the truth about who it found.\n", .{});
+    print("mandate named_serve: names are claimed from here through names.rye's public sign_claim, and the registry resolves both ways (name to point, point to name).\n", .{});
+    print("mandate named_serve: version {s}\n", .{named_serve_version});
+    print("GREEN: mandate named_serve — a query's matches resolved to spoken names over the shared registry: who, not just which number, witnessed.\n", .{});
+    return 0;
+}
+
+pub fn main() !u8 {
+    return run_selftest();
+}
