@@ -15,16 +15,14 @@ say "rune-assert-sweep: Style Radiant — gate the asserting cores; advise the r
 say "rune-assert-sweep: Lens TAME — a gated module says its invariants; a ratchet names the gaps."
 
 # --- GATE: core modules that carry asserts today (regression guard) ---
-let gate = run ["sh" "tools/fixtures/rune_assert_sweep_scan.sh" "mandate/store.rye" "mandate/keyed.rye" "tally/seed.rye" "tally/gardens.rye" "tally/kumara.rye" "caravan/seed.rye" "caravan/bounded.rye" "comlink/topology.rye" "kumara/tilak.rye" "settlement/constellation.rye" "sundial/sundial.rye"]
+let gate = run ["sh" "tools/fixtures/rune_assert_sweep_scan.sh" "mandate/store.rye" "mandate/keyed.rye" "tally/seed.rye" "tally/gardens.rye" "tally/kumara.rye" "caravan/seed.rye" "caravan/bounded.rye" "comlink/topology.rye" "kumara/tilak.rye" "settlement/constellation.rye" "sundial/sundial.rye" "glow/expr.rye"]
 say gate.out
 # values_apart: the verdict key and the exit status must agree.
 assert gate.out contains "verdict=ok" else "rune-assert-sweep: a gated core module dropped to zero asserts"
 assert gate.ok else "rune-assert-sweep: the verdict reads ok while the status fails — they must agree"
 
-# --- ADVISE: the wider sweep names zero-assert modules, never gates ---
-let advise = run ["sh" "tools/fixtures/rune_assert_sweep_scan.sh" "advise" "glow/expr.rye"]
-say advise.out
-assert advise.out contains "verdict=advise" else "rune-assert-sweep: advise pass lost its verdict"
-assert advise.ok else "rune-assert-sweep: advise pass must never fail"
+# The advise tier is empty for now — every surveyed module carries asserts and is
+# gated. The scan keeps its `advise` mode for the next module that opts in before it
+# has earned its asserts.
 
-say "GREEN: rune-assert-sweep — eleven gated cores keep their asserts; the wider sweep names its ratchet gaps"
+say "GREEN: rune-assert-sweep — twelve gated cores keep their asserts; the advise tier is empty"
