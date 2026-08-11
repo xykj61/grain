@@ -1,0 +1,50 @@
+format rankings-v1
+# rankings — the 27-slot emphasis rota over Grain's living corpus.
+#
+# Round N tends rankings[N mod 27]: one living target gets emphasis attention that
+# round (freshen it, run its witness, apply its discipline, note its drift). One full
+# revolution is 27 rounds. Generalizes the elder 16-slot priority cycle
+# (tools/gen/season/recursion_block.brix) from practices to the living documents, and
+# counts 27 to rhyme with the d27 council (the outfit-seats / nakshatras).
+#
+# 256 rounds per season mod 27 completes ~9.48 revolutions, so the emphasis drifts
+# across the calendar rather than aligning to journey/equinox edges — every ranking
+# is tended regardless of where it falls. Four areas, balanced.
+stamp 20260810.213133
+seat Keaton's word 20260810
+cycle 27
+
+# --- context/ — the disciplines and memory (8) ---
+rank 0  context TAME_GUIDANCE.md        code discipline — safety · performance · joy
+rank 1  context RADIANT_STYLE.md        the prose voice (Kyri)
+rank 2  context SIMPLE_LOVABLE_COMPLETE.md  product scope — ship whole, small
+rank 3  context TWO_ROOMS.md            proven vs proposed
+rank 4  context LEXICON.md              the seated vocabulary, with receipts
+rank 5  context KYRI.md                 the standing writing voice
+rank 6  context specs/                  plain-English decisions with a durable home
+rank 7  context APARIGRAHA.md           carry only what you use
+
+# --- foundations/ — the why beneath the work (6) ---
+rank 8  foundations README.md           the compass root
+rank 9  foundations ecological-root      Varuna waters restored · ecological food (the prayer)
+rank 10 foundations grain-and-crossing   the grain and the crossing
+rank 11 foundations custody-first        build nothing that destroys
+rank 12 foundations galls-law            grow from working simples
+rank 13 foundations civic                designing public benefit so the reward points at the good
+
+# --- active-designing/ — design in motion (7) ---
+rank 14 active-designing language        Glow runes · stdlib · the language SLC (SOON front)
+rank 15 active-designing identity        Kumara · Comlink · d12·d60 topology (JARL front)
+rank 16 active-designing surface         Realidream · Quin voices · MCP-in-Bron (BUHR front)
+rank 17 active-designing world           Ship-Pilot · publishing · commerce (TACT front)
+rank 18 active-designing search          Mandate — the bounded zero-copy vector store
+rank 19 active-designing shuttle         the io_uring horizon — Caravan · Tally · Loom
+rank 20 active-designing calendar        the 3/4 time signature and this rankings rota
+
+# --- work-in-progress/ — the workbench (6) ---
+rank 21 work-in-progress ROADMAP.md      the order
+rank 22 work-in-progress TASKS.md        the now
+rank 23 work-in-progress REDS.md         the ledger of what we got wrong
+rank 24 work-in-progress THREADS.md      open threads
+rank 25 work-in-progress SHRED_PREP.md   the shred-prep list
+rank 26 work-in-progress CAIRNS.md       the walk-back markers before every debride

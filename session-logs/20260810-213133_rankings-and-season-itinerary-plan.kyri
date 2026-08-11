@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260810.213133
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host cloud pier sandbox — Eastern (EDT) time convention
+title rankings (n mod 27) + deterministic season itinerary plan
+prompt take up the rankings and season itinerary plan
+think looked back into baton history as asked — the elder emphasis was recursion_block.brix's priority cycle: 12 base practices + 4 double-weighted = 16 slots, one journey per revolution, min-gap 6; that is the n-mod-12/16 the maintainer remembered
+think generalized it to rankings — a 27-slot emphasis rota over the living corpus (context · foundations · active-designing · work-in-progress), 27 to rhyme with the d27 council; round N tends rankings[N mod 27]
+obs seated the 27 roster in context/rankings.kyri (8 context · 6 foundations · 7 active-designing · 6 wip) and a rankings Lexicon term beside calendar
+think wrote the deterministic itinerary as a formula, not 256 hand entries — equinox=r/64 · journey=r/16 · quest=r/4 · round_in_quest=r%4 · ranking=rankings[r%27]; 256 mod 27 != 0 so the emphasis drifts across the calendar (every ranking tended wherever it falls)
+think carry-over rule — responsibilities(r) = own emphasis + equinox theme + any unfinished responsibility of r-1; done only on a GREEN witness or a shipped edit, else it rolls forward (self-healing, mirrors reds-first)
+obs planned Season 1 = the Compass Season (SOON·JARL·BUHR·TACT, already-seated waymarks) fully by formula, and sketched Season 2 = the Harvest Season (Yield·Trade·Commons·Rest, waymarks drawn when it opens); named the itinerary.rish generator + witness as the build lap, not opened here
+file context/rankings.kyri the 27-slot emphasis roster
+file context/LEXICON.md rankings term seated beside calendar
+file expanding-prompts/20260810-213133_rankings-and-the-season-itinerary-plan.md the deterministic itinerary formula · two seasons · carry-over
+recommend check-in (Claude) — rankings seated and the season itinerary planned deterministically (formula + carry-over + two seasons); the itinerary.rish generator that prints any round from the formula is the next build lap on Keaton's word
