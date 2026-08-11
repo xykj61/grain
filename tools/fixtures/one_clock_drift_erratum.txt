@@ -4,4 +4,6 @@
 20260724.221013
 20260725.002400
 20260725.002955
-20260725.003013
+# 20260725.003013 — retired 20260811: its log no longer exists in the tree (living or
+# archived); a whitelist entry for an absent file gates nothing. The UTC-window drift it
+# recorded stays in REDS/history. Added 3e1da26bff, retired here to unghost the check.
