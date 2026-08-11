@@ -11,6 +11,7 @@
 //! Other parenthesized forms refuse. Full desk token stream: `tokens.rye` (STOA83).
 
 const std = @import("std");
+const assert = std.debug.assert;
 
 pub const max_name_len: u32 = 64;
 
@@ -71,22 +72,32 @@ pub const Prefix = struct {
 };
 
 pub fn face_slice(e: *const Expr) []const u8 {
+    // invariant: a face length never runs past its fixed buffer.
+    assert(e.face_len <= @as(usize, max_name_len));
     return e.face[0..e.face_len];
 }
 
 pub fn face2_slice(e: *const Expr) []const u8 {
+    // invariant: a face length never runs past its fixed buffer.
+    assert(e.face2_len <= @as(usize, max_name_len));
     return e.face2[0..e.face2_len];
 }
 
 pub fn face3_slice(e: *const Expr) []const u8 {
+    // invariant: a face length never runs past its fixed buffer.
+    assert(e.face3_len <= @as(usize, max_name_len));
     return e.face3[0..e.face3_len];
 }
 
 pub fn face4_slice(e: *const Expr) []const u8 {
+    // invariant: a face length never runs past its fixed buffer.
+    assert(e.face4_len <= @as(usize, max_name_len));
     return e.face4[0..e.face4_len];
 }
 
 pub fn mold_slice(e: *const Expr) []const u8 {
+    // invariant: a mold length never runs past its fixed buffer.
+    assert(e.mold_len <= @as(usize, max_name_len));
     return e.mold[0..e.mold_len];
 }
 
@@ -169,10 +180,14 @@ fn is_ident_char(c: u8) bool {
 fn parse_ident(rest: []const u8) ParseError!struct { ident: []const u8, rest: []const u8 } {
     var end: usize = 0;
     while (end < rest.len and is_ident_char(rest[end])) end += 1;
+    // invariant: the scan never reads past the input.
+    assert(end <= rest.len);
     if (end == 0) return error.MalformedExpr;
     const ident = rest[0..end];
     if (ident[0] >= '0' and ident[0] <= '9') return error.BadIdent;
     if (ident.len > max_name_len) return error.BadIdent;
+    // invariant: past the guard, the ident fits any fixed name buffer it is copied into.
+    assert(ident.len <= @as(usize, max_name_len));
     return .{ .ident = ident, .rest = rest[end..] };
 }
 
