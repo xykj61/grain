@@ -60,7 +60,9 @@ The cookbook primitives also live as **Rishi builtins**, so a `.rish` script cal
 - **`clamp <x> <lo> <hi>`** — `20260811.192204` (`do_clamp`; test `rishi/tests/clamp.rish`).
 - **`chunk <list> <size>`** / **`window <list> <size>`** / **`flatten <list>`** — `20260811.193451` (`do_chunk`/`do_window`/`do_flatten`, list-of-lists zero-copy; test `rishi/tests/chunk.rish`). Rishi indexes one level at a time, so a `.rish` binds an inner list (`let g = cs[0]`) before indexing it.
 
-Full suite 22/22 GREEN. The remaining verbs (`parse` · `to_str`) wire the same way, one at a time, each with a suite test and a full-suite rebuild.
+- **`parse <string>`** (string → int) / **`str <int>`** (int → string) — `20260811.195012` (`do_parse`/`do_str`; test `rishi/tests/parse.rish`). The `^-` cast validates a kind; `parse`/`str` convert between the two, inverse at the value level (`parse (str n) == n`). `str` yields a string *value* (usable in a list, then `join`ed), where interpolation `"${n}"` only renders inside a literal.
+
+Full suite 23/23 GREEN — the whole cookbook (strings · lists · numbers) now reaches the interpreter as builtins.
 
 ## Horizon
 
