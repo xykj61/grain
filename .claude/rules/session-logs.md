@@ -40,6 +40,7 @@ prompt what Keaton asked
 think step of reasoning
 think another step
 obs observation or trade-off
+loom metric=value … — optional; Loom / performance metrics for the round (see below)
 file path why-one-line
 recommend keep-going|check-in what and why
 ```
@@ -48,6 +49,7 @@ recommend keep-going|check-in what and why
 - **host** — optional; names the editor/OS/chip combination for this specific machine, anonymized (no serial, hardware UUID, hostname, or username — see `context/specs/20260713-211800_local-host-system-hardware-anonymized.md` for what stays out and why). Omit on hosts where this has never mattered; add it wherever a log's meaning depends on knowing which machine produced it (a sandbox-adaptation session, a hardware-specific witness).
 - **think** — repeatable; step-by-step reasoning.
 - **obs** — decisions and trade-offs.
+- **loom** — optional, repeatable; **Loom / performance metrics** captured when the round touched a measured path — **Loom**, **Caravan**, **Tally**, the **Shuttle** (the io_uring horizon), a witness whose wall-time matters, or any hot loop where throughput or allocation is load-bearing. **Auto-add it whenever the round produced a measurement**, so performance is recorded as it happens rather than reconstructed later. Write plain `key=value` pairs, one metric family per `loom` line, from real measurement (never guessed): e.g. `loom witness=mandate_store_witness wall_ms=42 records=64 blob_bytes=196`, or `loom caravan=subscribe_poll ops=1000 wall_ms=310 allocs=0`. Bound each number to what was actually run; when nothing was measured this round, omit the field entirely (measurement beats memory — an absent `loom` is honest, a fabricated one is a red). The metric names are free-form yet stable within a module, so a future Loom-aware reader can trend them across logs.
 - **file** — repeatable; `path` then why.
 - **recommend** — one close line: `keep-going …` when mechanical and policy-written; `check-in …` when seams, Rishi/value-model, unruled design, or horizon facts.
 
