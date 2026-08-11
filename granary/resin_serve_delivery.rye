@@ -1,4 +1,4 @@
-//! granary/resin_serve_delivery.rye — Granary lap 4: Comlink resin serve for Sharing.
+//! granary/resin_serve_delivery.rye — Granary — Comlink resin serve for Sharing.
 //!
 //! Reuses Amphora fetch-by-digest wire (0x31/0x32). Hosted ports: guest 38496 · host 38497.
 //! Device wire: ports 15573/15574 (virtio lab). Name-facts stay local; only resin bytes cross.
@@ -197,7 +197,7 @@ fn run_selftest(io: std.Io) !u8 {
     print("rsd: unpublished digest refused — GREEN unwelcome\n", .{});
 
     print("rsd: version {s} granary {s} wire {s}\n", .{ rsd_version, gc.granary_version, vfw.vessel_fetch_wire_version });
-    print("GREEN: Granary lap 4 — resin serve under Comlink seal.\n", .{});
+    print("GREEN: Granary — resin serve under Comlink seal.\n", .{});
     return 0;
 }
 
@@ -284,7 +284,7 @@ fn run_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8
 
     print("rsd: demo GREEN — resin crossed localhost under Comlink seal\n", .{});
     print("rsd: version {s} ports {d}/{d}\n", .{ rsd_version, guest_port, host_port });
-    print("GREEN: Granary lap 4 demo — Sharing over Comlink.\n", .{});
+    print("GREEN: Granary — Sharing over Comlink demo.\n", .{});
     return 0;
 }
 
