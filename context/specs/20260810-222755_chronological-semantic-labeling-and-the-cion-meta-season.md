@@ -44,6 +44,14 @@ The opening lap already ran under **VOLS** (survey) and did the first of **LOWE*
 - **The itinerary formula stays.** `equinox(r)=r/64` etc. remain the *computation*; CION changes what a round is *called and cited by* (its stamp + its equinox waymark), not how the generator computes position.
 - **Word-gated cuts.** Every debride in CION waits on Keaton's explicit named target and a cairn. This spec plans CION; it opens no cut.
 
+## Addendum `20260811.130827` — module capability ordinals are in scope
+
+The law's first survey named calendar identifiers (season · equinox · journey · quest · round) and ladder rungs. Practice found the same failure one level down: **module capability ordinals** — `lap 1 … lap 11`, `move N`, `R1/R2/R3` — used as the *name* a reader cites for a built capability. A capability named `lap 9` is a bare count-up-from-zero integer in the identity slot exactly as `e92` was; it tells a newcomer nothing about what the capability *is*. Red #65 (`../../work-in-progress/REDS.md`) booked eleven such labels across `mandate/`, written the day after this very spec.
+
+**The rule, extended:** a capability's living name is its **semantic label** (what it does) plus its **chronological stamp** (when it landed) — *"object-storage backing · `20260811`"*, *"served over Comlink, sealed · `20260811`"* — never a bare `lap N`. An ordinal may still index a list or compute a position; it may never be the thing named and cited. Dated session logs that already wrote `lap 6` keep those words (testimony is never rewritten); living module READMEs, `.rye` doc-comments, and TASKS rows are the living surfaces CION converts.
+
+**The guard must widen.** `grad_seal_witness` proves only the three living pins carry no bare count-up identity; module READMEs and code comments slipped it entirely, so a human caught red #65, not a witness. Growing the `labeling_law_scan` surface to cover `*/README.md`, authored `.rye` doc-comments, and new `.kyri` logs is a named CION target — **a major focus of this or the next season, whatever the sweep costs**, so the law holds everywhere and not only where a witness happens to look.
+
 ---
 
 *A label should tell the truth about when a thing happened or what it means — a stamp read from the one clock, or a name drawn to be unique — so that no reader ever meets a bare number standing where a meaning should be.*
