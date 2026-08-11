@@ -39,6 +39,8 @@ Build the designed experience exactly to the four contracts above — onboarding
 
 **Lap 2 landed `20260811.175905`** — the onboarding-path acceptance line is now enforced by a witness: `tools/onboarding_path_witness.rish` proves the cold-start step (`rye/bootstrap.sh`) exists and that the first-green witness still prints the contract's exact acceptance line (`GREEN: RW-3 …`), so drift in the onboarding path reds a machine, not a newcomer.
 
+**Lap 3 landed `20260811.180851`** — the interfaces contract is enforced against the reference: `tools/interfaces_conformance_witness.rish` proves `manual/tutorials/greet.rye` keeps the shape the contract names — opening triad, a named `max_` bound, ≥2 invariant asserts, a snake_case verb, a `selftest` that greens, and its own witness — so the exemplar a newcomer copies cannot drift from what the contract teaches.
+
 ## Definition of done for the design season
 
 - Each equinox produces **one checkable artifact** — a contract a future witness can be built against, not prose that merely describes an intention.

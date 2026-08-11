@@ -74,6 +74,7 @@ A developer whose day-two module reads like `store.rye` — four-kind public API
 - The three surfaces (API · CLI · witness) are each named with a **worked reference in the tree** (`store.rye`, `kumara.rye`'s dispatch, `mandate_store_witness.rish`), not invented here.
 - Every rule cites the **checker that already enforces it**, so the contract is a map of live gates, not a wish.
 - A developer can read this and know exactly what shape their own module owes before they write its first line.
+- **Conformance witnessed `20260811.180851`** — `tools/interfaces_conformance_witness.rish` proves the reference module (`manual/tutorials/greet.rye`) keeps this shape, so the exemplar a newcomer copies cannot drift from the contract.
 
 The final design equinox — **operations** — begins where this ends: the developer can build a module the tree accepts; next they learn to run, serve, and observe it in earnest.
 
