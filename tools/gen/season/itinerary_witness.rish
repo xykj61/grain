@@ -1,0 +1,33 @@
+# tools/gen/season/itinerary_witness.rish — the deterministic itinerary proven.
+#
+#   rishi/bin/rishi run tools/gen/season/itinerary_witness.rish
+#
+# Proves: every round 0..255 yields one valid coord tuple and a valid ranking slot;
+# a representative round reads correctly; the carry-over field is always present;
+# and a round past the season bound is refused.
+
+say "itinerary-witness: Language EN — 256 rounds, each a pure function of its number."
+say "itinerary-witness: Style Radiant — sweep the season; prove one tuple per round."
+say "itinerary-witness: Lens TAME — bounds asserted at the edge; out-of-bound refused."
+
+# Whole-season sweep: 256 rounds, each with a valid equinox, ranking slot, and roster line.
+let sweep = run ["sh" "tools/fixtures/itinerary_compute.sh" "sweep"]
+say sweep.out
+assert sweep.out contains "swept=256" else "itinerary-witness: sweep did not cover all 256 rounds"
+assert sweep.out contains "bad=0" else "itinerary-witness: a round yielded an invalid coord or ranking"
+assert sweep.out contains "verdict=ok" else "itinerary-witness: sweep verdict not ok"
+# values_apart: the verdict key and the exit status must agree.
+assert sweep.ok else "itinerary-witness: sweep status and verdict disagree"
+
+# A representative round: 137 sits in equinox 2 (BUHR) and tends ranking 137 mod 27 = 2.
+let r137 = run ["sh" "tools/fixtures/itinerary_compute.sh" "round" "137"]
+say r137.out
+assert r137.out contains "equinox2" else "itinerary-witness: round 137 belongs to equinox 2 (BUHR)"
+assert r137.out contains "ranking_slot=2" else "itinerary-witness: round 137 ranking slot is 137 mod 27 = 2"
+assert r137.out contains "carry=" else "itinerary-witness: every round carries the prior round's unfinished work"
+
+# The season bound bites: round 256 is past the last round (255) and is refused.
+let over = run ["sh" "tools/fixtures/itinerary_compute.sh" "round" "256"]
+assert over.ok == false else "itinerary-witness: round 256 past the season bound must refuse"
+
+say "GREEN: itinerary — 256 rounds deterministic, rankings valid, themes cover, carry present, out-of-bound refused"

@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260810.214503
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host cloud pier sandbox — Eastern (EDT) time convention
+title build the itinerary.rish generator
+prompt build the itinerary.rish generator, kg baton prin recur
+think built the deterministic per-round itinerary generator from the plan's formula; Rishi has no integer division/modulo, so the arithmetic (r/64 · r/16 · r/4 · r%4 · r%27) lives in a sh fixture and the .rish prints + gates the bound (the established scan pattern)
+obs itinerary.rish <r> prints a round's whole day — coords (season·equinox·journey·quest·round-in-quest), equinox waymark+holds, the ranking tended (rankings[r%27] read from context/rankings.kyri), and the carry-over from r-1
+obs proved GREEN — round 137 lands in equinox2 (BUHR), journey8, quest34, riq1, ranking_slot 2 (SIMPLE_LOVABLE_COMPLETE); round 0 in SOON tending TAME_GUIDANCE; witness sweep swept=256 bad=0, out-of-bound round 256 refused
+think the carry-over field is emitted every round (r-1's unfinished, done only on GREEN witness or shipped edit) — the itinerary is pregenerated AND self-healing, exactly the plan's rule
+file tools/fixtures/itinerary_compute.sh the deterministic arithmetic + roster read (round + sweep modes)
+file tools/gen/season/itinerary.rish the generator — prints any round's itinerary, gates 0..255
+file tools/gen/season/itinerary_witness.rish GREEN — 256 rounds valid, representative round, carry present, out-of-bound refused
+file expanding-prompts/20260810-213133_rankings-and-the-season-itinerary-plan.md generator marked landed
+recommend keep-going — the season itinerary is now runnable (itinerary.rish <r>) and witnessed; draw Season 2's waymarks, wire rankings into the actual round-open ritual, or another door on Keaton's word

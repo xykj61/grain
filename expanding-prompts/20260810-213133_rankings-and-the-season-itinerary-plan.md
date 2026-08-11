@@ -83,9 +83,9 @@ Where the Compass Season *builds* the world, the Harvest Season *tends and gives
 
 The same formula, rankings rota, and carry-over rule apply unchanged; only the four equinox themes differ.
 
-## How this becomes runnable (the next lap, not now)
+## How this becomes runnable — **landed `20260810.213133`**
 
-A small deterministic generator — `tools/gen/season/itinerary.rish round <r>` — would print any round's full itinerary from the formula above, reading `context/rankings.kyri` and the equinox table, with a witness proving: (1) every `r` in 0–255 yields exactly one coord tuple, (2) `ranking(r)` is a valid roster slot, (3) the four equinox themes cover the four journeys, (4) the carry-over field is present. That generator is the build lap; this document is the plan it implements.
+The deterministic generator is built: **`rishi/bin/rishi run tools/gen/season/itinerary.rish <r>`** prints any round's full itinerary from the formula above — coords, equinox theme, the ranking tended (`rankings[r%27]`, read from `context/rankings.kyri`), and the carry-over. Arithmetic lives in `tools/fixtures/itinerary_compute.sh` (Rishi has no integer division/modulo, so the sh fixture computes and the `.rish` prints and gates the bound). The witness `tools/gen/season/itinerary_witness.rish` is **GREEN**, proving: (1) all 256 rounds yield a valid coord tuple (`swept=256 bad=0`), (2) `ranking(r)` is a valid roster slot for every `r`, (3) a representative round reads correctly (137 → equinox 2 / BUHR, ranking slot 2), (4) the carry-over field is always present, (5) a round past 255 is refused.
 
 ---
 

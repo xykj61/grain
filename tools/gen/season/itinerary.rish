@@ -1,0 +1,21 @@
+# tools/gen/season/itinerary.rish — print a round's deterministic itinerary.
+#
+#   rishi/bin/rishi run tools/gen/season/itinerary.rish 137
+#
+# A round's whole day from its number alone: coords (season · equinox · journey ·
+# quest · round-in-quest), the equinox theme, the ranking it tends (rankings[r%27],
+# context/rankings.kyri), and the carry-over from the round before. Arithmetic lives
+# in tools/fixtures/itinerary_compute.sh; this prints it and gates the bound.
+# Plan: expanding-prompts/20260810-213133_rankings-and-the-season-itinerary-plan.md.
+
+say "itinerary: Language EN — a round's whole day from its number."
+say "itinerary: Style Radiant — place · theme · the one living thing tended · the carry."
+say "itinerary: Lens TAME — r in 0..255; equinox r/64 · journey r/16 · quest r/4 · ranking r%27."
+
+let r = "0"
+if length args != 0 then let r = args[0]
+
+let out = run ["sh" "tools/fixtures/itinerary_compute.sh" "round" r]
+say out.out
+assert out.out contains "verdict=ok" else "itinerary: round out of season bounds (0..255) or malformed"
+exit out.code
