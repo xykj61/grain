@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260811.143928
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host cloud pier sandbox — Eastern (EDT) time convention
+title Fold REDS rows 25–57; fold-aware the monotone witness; book red #67
+prompt fold reds — the living pin was near its 24576 bound (24132)
+think a fold moves, it does not destroy — so no cairn is needed; every byte of rows 25–57 is kept in a new archive file, the same discipline as the earlier 1–24 fold
+think folded the dense Voice-Season counsel arc (rows 25–57, 20260730–20260801.033305) to work-in-progress/archive/REDS-voice-season-rows-25-57.md; the living pin keeps rows 58–67 and points to both archives
+obs an off-by-one on the first delete (sed 35,74d removed rows 25–56, leaving row 57 duplicated in living + archive); caught it by grepping row 57 in both, removed the lingering living copy so living starts cleanly at 58 — no duplication
+obs the fold surfaced a LATENT red: running reds_ledger_monotone_witness went red, and git show HEAD:REDS.md through the scan reproduced "expected row 1, found 25" — the witness had been red since the 1–24 fold on 20260810, because its scan read the living pin alone and expected it to start at row 1. Booked as red #67
+think the fix makes the monotone scan fold-aware: it now unions row indices across all passed files (both archives + the living pin) and proves the union is 1..N; the witness passes the three files. Union = 1..67, GREEN
+obs four reds witnesses GREEN after the fold — monotone (1..67 union), negative (catches fixture, passes living), ledger (three fields), first (one law, three citers); living_docs_lint GREEN (the new archive link resolves)
+obs living REDS fell from 24132 to 10691 bytes — well under the 24576 bound, room to grow again; the accounting line updated to 67 rows (added-under-reds-first 47), the fold note names both archives
+loom witness=reds_ledger_monotone_witness rows=67 verdict=ok reds_bytes_before=24132 reds_bytes_after=10691
+file work-in-progress/archive/REDS-voice-season-rows-25-57.md new fold archive — rows 25–57 verbatim, every byte kept
+file work-in-progress/REDS.md rows 25–57 removed (kept 58–67); two-fold note; count updated; red #67 booked
+file tools/fixtures/reds_ledger_monotone_scan.sh fold-aware — unions row indices across all passed files
+file tools/gen/season/reds_ledger_monotone_witness.rish passes both archives + the living pin; proves union 1..N
+recommend check-in (Claude) — the ledger is folded (10691/24576) and its monotone spine is repaired and now fold-aware, four reds witnesses GREEN; the remaining CION doors are the coupled Lap-scheme rounds (SLC-2a Lap, comlink sub-lap) and the two linengrow print strings, all word-gated. The Acme DX design season is the other open door. Rest is Keaton's to take
