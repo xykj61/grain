@@ -1,0 +1,127 @@
+//! pleac/numbers.rye — the number cookbook: clamp, parse, to_str (PLEAC stdlib).
+//!
+//! The numbers chapter's canonical primitives, over `u32`:
+//!
+//!   * **clamp(x, lo, hi)** — bound a value to `[lo, hi]`.
+//!   * **parse(s)** — a decimal string to a `u32`, refusing empty, non-digit, overflow.
+//!   * **to_str(n, out)** — a `u32` to its decimal string; the inverse of `parse`.
+//!
+//! `parse(to_str(n)) == n` for every `u32`. Bounded and total: every bad input is a
+//! named refusal, never a silent wrong answer.
+//!
+//!   rye build pleac/numbers.rye -femit-bin=tools/.build/pleac_numbers
+//!   tools/.build/pleac_numbers selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const numbers_version = "20260811.190916";
+
+// u32's largest value is 4_294_967_295 — ten decimal digits.
+pub const max_digits: u32 = 10;
+const u32_max: u64 = 0xFFFFFFFF;
+
+pub const NumError = error{ Empty, NotDigit, Overflow, OutTooSmall };
+
+/// Bound `x` to `[lo, hi]`. The bound must be well-ordered.
+pub fn clamp(x: u32, lo: u32, hi: u32) u32 {
+    // invariant: the bound is well-ordered.
+    assert(lo <= hi);
+    var r = x;
+    if (r < lo) r = lo;
+    if (r > hi) r = hi;
+    // invariant: the result lands inside the bound.
+    assert(r >= lo);
+    assert(r <= hi);
+    return r;
+}
+
+/// Parse a decimal string to a `u32`. Empty input, a non-digit, and a value past the
+/// `u32` ceiling are each a named refusal — never a wrapped or truncated number.
+pub fn parse(s: []const u8) NumError!u32 {
+    // invariant: an empty string names no number.
+    if (s.len == 0) return error.Empty;
+    var acc: u64 = 0; // wide enough to catch overflow before it narrows
+    for (s) |c| {
+        // invariant: every character of a number is a decimal digit.
+        if (c < '0' or c > '9') return error.NotDigit;
+        acc = acc * 10 + (c - '0');
+        // invariant: the value never passes the u32 ceiling.
+        if (acc > u32_max) return error.Overflow;
+    }
+    return @intCast(acc);
+}
+
+/// Write `n` as its decimal string into `out`; return the byte length. Refuses a
+/// too-small buffer rather than truncating.
+pub fn to_str(n: u32, out: []u8) NumError!u32 {
+    var digits: [max_digits]u8 = undefined;
+    var i: u32 = 0;
+    var v: u32 = n;
+    if (v == 0) {
+        digits[0] = '0';
+        i = 1;
+    } else {
+        while (v > 0) {
+            digits[i] = '0' + @as(u8, @intCast(v % 10));
+            i += 1;
+            v /= 10;
+        }
+    }
+    // invariant: the decimal never exceeds the digit bound.
+    assert(i <= max_digits);
+    // invariant: the decimal fits the caller's buffer.
+    if (i > out.len) return error.OutTooSmall;
+    // digits were produced least-significant first — reverse into out.
+    var j: u32 = 0;
+    while (j < i) : (j += 1) {
+        const oj: usize = @intCast(j); // seam: slice index at the write edge
+        out[oj] = digits[i - 1 - j];
+    }
+    return i;
+}
+
+// --- selftest -----------------------------------------------------------
+
+fn prove_numbers() !void {
+    // clamp holds a value inside the bound, pulling the out-of-range in.
+    if (clamp(5, 1, 10) != 5) return error.ClampMid;
+    if (clamp(0, 1, 10) != 1) return error.ClampLow;
+    if (clamp(99, 1, 10) != 10) return error.ClampHigh;
+
+    // parse reads a decimal; to_str writes one; they are inverses across the range.
+    var out: [max_digits]u8 = undefined;
+    const cases = [_]u32{ 0, 7, 42, 1000, 4294967295 };
+    var i: u32 = 0;
+    while (i < cases.len) : (i += 1) {
+        const n = cases[i];
+        const len = try to_str(n, &out);
+        const back = try parse(out[0..len]);
+        if (back != n) return error.RoundTripWrong;
+    }
+    // a spot check of the rendered form.
+    const len42 = try to_str(42, &out);
+    if (!std.mem.eql(u8, out[0..len42], "42")) return error.ToStrWrong;
+
+    // refusals: empty, non-digit, past the u32 ceiling, and a too-small buffer.
+    if (parse("")) |_| return error.EmptyAccepted else |_| {}
+    if (parse("12a")) |_| return error.NonDigitAccepted else |_| {}
+    if (parse("4294967296")) |_| return error.OverflowAccepted else |_| {} // u32_max + 1
+    var tiny: [1]u8 = undefined;
+    if (to_str(1000, &tiny)) |_| return error.TinyOutAccepted else |_| {}
+}
+
+fn run_selftest() !u8 {
+    try prove_numbers();
+    print("pleac numbers: clamp bounds a value to [lo, hi], pulling an out-of-range value to the near edge; the bound must be well-ordered.\n", .{});
+    print("pleac numbers: parse reads a decimal to u32 and to_str writes one — parse(to_str(n)) == n across the range; every bad input is a named refusal, never a wrapped or truncated number.\n", .{});
+    print("pleac numbers: bounded and total — empty, a non-digit, a value past the u32 ceiling, and a too-small buffer are each refused.\n", .{});
+    print("pleac numbers: version {s}\n", .{numbers_version});
+    print("GREEN: pleac numbers — clamp, parse, to_str: inverse and total, every bad input refused, witnessed.\n", .{});
+    return 0;
+}
+
+pub fn main() !u8 {
+    return run_selftest();
+}

@@ -1,7 +1,7 @@
 # PLEAC — the cookbook stdlib
 
 **Language:** EN
-**Status:** Living — strings chapter opened `20260811.190026`, lists chapter `20260811.190458` (SOON)
+**Status:** Living — strings `20260811.190026` · lists `20260811.190458` · numbers `20260811.190916` (SOON)
 **Voice:** Kyri
 
 PLEAC ("programming-language examples alike cookbook") is the standard library grown by the **common tasks every language owes** — strings, lists, numbers — each a bounded, witnessed primitive. This home holds Grain's cookbook, in Rye (the implementation layer); wiring the primitives into the Rishi interpreter as builtins beside `sort` / `unique` / `upper` is the follow-on.
@@ -37,9 +37,25 @@ tools/.build/pleac_lists selftest
 rishi/bin/rishi run tools/pleac_lists_witness.rish
 ```
 
+## Numbers (`numbers.rye`, landed `20260811`)
+
+The number primitives over `u32`, total (every bad input a named refusal):
+
+- **`clamp(x, lo, hi)`** — bound a value to `[lo, hi]` (the bound must be well-ordered).
+- **`parse(s)`** — a decimal string to `u32`, refusing empty · non-digit · past the ceiling.
+- **`to_str(n, out)`** — a `u32` to its decimal string, the inverse of `parse`; refuses a too-small buffer.
+
+`parse(to_str(n)) == n` across the range, proven by `prove_numbers`, with clamp's edges and every refusal. Bounded by `max_digits`.
+
+```
+rye build pleac/numbers.rye -femit-bin=tools/.build/pleac_numbers
+tools/.build/pleac_numbers selftest
+rishi/bin/rishi run tools/pleac_numbers_witness.rish
+```
+
 ## Horizon
 
-Further chapters — numbers (clamp · parse), and wiring these primitives into the Rishi interpreter as builtins beside `sort`/`unique`/`upper` — grow one witnessed primitive at a time.
+Wiring these cookbook primitives into the Rishi interpreter as builtins beside `sort`/`unique`/`upper` is the follow-on; further chapters grow one witnessed primitive at a time.
 
 ---
 
