@@ -1,6 +1,6 @@
 //! mandate/comlink_serve.rye — serve a Mandate query over Comlink, sealed.
 //!
-//! Lap 9 gave the wire *shape* of a query (`serve.rye`); this rides it on Comlink's
+//! The serve protocol gave the wire *shape* of a query (`serve.rye`); this rides it on Comlink's
 //! actual transport. A `QueryRequest`'s bytes become the plaintext of a **sealed
 //! datagram** (`wire_format.seal_message` — X25519 key agreement, ChaCha20-Poly1305,
 //! a Sha3 name, a kumara signature), opened on the far side by `open_datagram`. So a
