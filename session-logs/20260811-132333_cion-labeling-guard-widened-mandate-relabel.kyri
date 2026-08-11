@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260811.132333
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host cloud pier sandbox — Eastern (EDT) time convention
+title CION relabel lap 1 — widen the labeling guard past the three pins, relabel mandate
+prompt kg relabel — open the labeling ratchet: grow the guard so a bare lap ordinal never slips a human again, then relabel mandate as the first sweep
+think reds-first closes a fix with a witness on metal, so I built the guard first, watched it RED on the real drift (mandate README 13 · store.rye 1 · comlink_serve.rye 1), then relabeled until GREEN — the honest loop
+think the guard: labeling_module_scan.sh matches the bare "lap N" identity pattern in given module living surfaces; cion_module_labeling_witness.rish runs it over mandate/ (README + all authored .rye) and proves it bites a planted negative (labeling_module_negative.md). Scoped to mandate/ now — the first swept module — and grows one module per CION round
+think relabel rule applied: a capability's living name is its semantic label + stamp (object-storage backing · 20260811), never a bare lap N; the ordinal is dropped, the meaning and the date kept
+obs relabeled mandate/README.md (Status line + five design bullets + six horizon lines + one section head), mandate/store.rye (one doc-comment), mandate/comlink_serve.rye (one doc-comment), and the two Mandate rows in TASKS (living pin) — narrow scope: other modules' lap-N (Pond/Scribe/Vault, Move N) wait for CION's own rounds, not scope-crept here
+obs the two touched .rye are comment-only edits — rebuilt both (exit 0), mandate_store_witness + mandate_comlink_serve_witness stay GREEN; grad_seal stays GREEN (no regression); living_docs_lint GREEN
+obs dated session logs that wrote lap 6 keep those words (testimony never rewritten); the guard never scans them — the law governs living surfaces only
+loom witness=cion_module_labeling_witness wall_ms=70 mandate_surfaces=8 drift_before=15 drift_after=0
+file tools/fixtures/labeling_module_scan.sh the guard scan — bare lap-N identity in module living surfaces
+file tools/fixtures/labeling_module_negative.md the planted negative proving the guard bites
+file tools/gen/season/cion_module_labeling_witness.rish runs the scan over mandate/, proves the bite; GREEN
+file mandate/README.md relabeled — semantic label + stamp throughout, no bare lap ordinal
+file mandate/store.rye object-storage doc-comment relabeled (comment-only)
+file mandate/comlink_serve.rye header doc-comment relabeled (comment-only)
+file work-in-progress/TASKS.md the two Mandate rows relabeled (living pin)
+file context/specs/20260810-222755_chronological-semantic-labeling-and-the-cion-meta-season.md addendum notes the first guard cut landed for mandate/
+recommend keep-going — CION's widened guard is landed and mandate/ is the first swept module, GREEN on metal; the next relabel rounds take one further module each (Pond/Scribe/Vault laps, the breach Move-N, then the wider living corpus) until the whole tree reads by meaning. Rest is Keaton's to take

@@ -63,7 +63,7 @@ pub const ProfileError = error{ NoDimField, BadDimValue };
 // dimension from this file the way topology loads a sky — data, not a constant.
 const profile_bron = @embedFile("dim.profile.bron");
 
-// Object-storage backing (lap 6). The whole store serializes to ONE portable blob —
+// Object-storage backing. The whole store serializes to ONE portable blob —
 // the "object" a bucket would hold — so a fresh node hydrates the entire store from a
 // single get, the serverless shape turbopuffer takes. Layout is little-endian and
 // bounded: magic[8] "MANDATE\x01" · version u32 · dim u32 · filled u32 · then `filled`
