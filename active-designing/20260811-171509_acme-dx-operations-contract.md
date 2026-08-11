@@ -33,7 +33,7 @@ A developer operating their own module runs down this list, each step a real ver
 ## Definition of done for this equinox — and for the design season
 
 - Each operation names a **real verb in the tree** (`selftest`, `serve`/`serve_sealed`, `snapshot`/`put`/`get`, `restore`/`recover`, the `loom` field) — nothing invented here.
-- The checklist is **five checkable questions**, each answerable by running an existing witness or a real command.
+- The checklist is **five checkable questions**, each answerable by running an existing witness or a real command. **Witnessed as one suite `20260811.181841`** — `tools/operations_conformance_witness.rish` runs all five (plus observe) green together.
 - With this contract, **all four design equinoxes are checkable and tree-grounded** — onboarding path, first-hour witness, interfaces surface, operations. The **design season is complete**: a developer's whole first arc, from cold clone to operating their own module, is designed against real references and live gates. The **development season** can now begin with nothing left to decide — only to build each contract into the tree with a green witness.
 
 ---
