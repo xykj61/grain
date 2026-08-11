@@ -35,6 +35,8 @@ The plan below is deterministic — four equinoxes, each producing one checkable
 
 Build the designed experience exactly to the four contracts above — onboarding path, first-hour witness, interfaces, operations — each landed with a green witness, nothing designed anew. Because the design season already answered the questions, the development season only ships. Its own itinerary is a straight read of the four contracts, one buildable lap at a time.
 
+**Lap 1 landed `20260811.173653`** — the first-hour reference is now in the tree: `manual/tutorials/greet.rye` (the bounded greeting) and `tools/first_hour_witness.rish`, building to the gitignored `tools/.build/`, GREEN on metal and free of TAME bans. The onboarding path (bootstrap → build → run a witness) and the first-hour contract are now both *runnable*, not only designed — a newcomer can follow them to a green line they produced.
+
 ## Definition of done for the design season
 
 - Each equinox produces **one checkable artifact** — a contract a future witness can be built against, not prose that merely describes an intention.

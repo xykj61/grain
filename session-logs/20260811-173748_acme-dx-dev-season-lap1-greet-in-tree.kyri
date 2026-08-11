@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260811.173748
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host cloud pier sandbox — Eastern (EDT) time convention
+title Acme DX development season, lap 1 — place greet.rye + first-hour witness in the tree
+prompt kg baton prin recur
+think Season One (design) is complete, so Season Two (development) begins by building the contracts into the tree with green witnesses — starting with the first-hour reference validated in scratch last round
+think placed manual/tutorials/greet.rye (the bounded greeting, beside first-witness.md) and tools/first_hour_witness.rish; the witness builds greet.rye to tools/.build/ — a gitignored path (checked git check-ignore) so the binary never tracks
+obs GREEN on metal: first_hour_witness builds + runs greet selftest, asserts .ok + err contains GREEN + the bound claim; greet.rye triggers no tame_style_check ban (byte loops not @memcpy, split asserts, opening triad, a // seam note on the one usize buffer cursor); living_docs_lint GREEN
+obs marked development-season lap 1 landed in the design-season plan — the onboarding path and first-hour contract are now runnable, not only designed; a newcomer can follow them to a green line they produced
+file manual/tutorials/greet.rye the first-hour reference module, now in the tree
+file tools/first_hour_witness.rish builds greet to the gitignored .build, asserts GREEN + a named claim
+file expanding-prompts/20260811-145659_acme-dx-design-season.md Season Two lap 1 landed note
+recommend check-in (Claude) — development-season lap 1 is landed and GREEN; a firewall/mosh prompt for the Vultr SEA pier arrived and needs a ruling before any sudo nixos-rebuild, since this bench is the cloud sandbox, not that pier. Next door is Keaton's
