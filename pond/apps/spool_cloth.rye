@@ -144,6 +144,15 @@ pub fn fetch_large(
     return spool.unspool(store, &cat.entries[i].spool, out);
 }
 
+/// The catalog index a name occupies, or null if unknown. The keyed layer
+/// (spool_keyed.rye) reads the owning point recorded alongside this index, so an
+/// owner-signed large artifact resolves not only to its bytes but to whose it is.
+pub fn index_of(cat: *const LargeCatalog, name: []const u8) ?u32 {
+    // invariant: the lookup stays within the catalog bound
+    assert(cat.count <= max_large_artifacts);
+    return cat.find(name);
+}
+
 /// The whole length of the artifact a name pins. Refuses an unknown name.
 pub fn large_len(cat: *const LargeCatalog, name: []const u8) ClothError!u32 {
     // invariant: the search stays within the catalog bound
