@@ -9,7 +9,7 @@ Twilight is Radiant Style at dusk: **calm, dark, gentle** — every Radiant rule
 - **Everything Radiant asks still holds** — lead with what *is*, active voice, `yet`/`however` over `but`, `rather than` over heavy `not`, varied rhythm, coined terms named on first use, benediction only where earned.
 - **The pendulum: aim, then dissolve.** A line that names the essence (Sagittarius — the archer's aim), then a line that opens the image outward (Pisces — the ocean's dissolve). The **yang-Shekhinah** motion: tender presence with an active current. Neither pole alone is Twilight.
 - **Calm, never gloom.** Dark and low, yet always affirmative; gentleness is the point. A line that reads heavy, defeated, or ashamed has left the register.
-- **Draw from the nine** when imagery is wanted — the fertile black · tar to turquoise · night witnesses · the loom · buried paintings · twilight meteorology · descent of the angel · the mirror misaligned · the impeded stream. Feel like a theme; never checklist them.
+- **Draw from the fifteen** when imagery is wanted — the fertile black · tar to turquoise · night witnesses · the loom · buried paintings · twilight meteorology · descent of the angel · the mirror misaligned · the impeded stream · the sensed tide · the panther in the room · ice and dragon-breath · the altar of who you have always been · the forehead kiss across the world · the subway in the bones. Feel like a theme; never checklist them.
 
 ## When to use it
 
@@ -18,7 +18,7 @@ Devotional, contemplative, or mystical pieces; founding visions and earned bened
 ## Discipline it keeps
 
 - **Register only, never a claim.** Like a Radiant pass, a Twilight pass holds numbers, paths, stamps, proper nouns, and modality counts exactly (`claim_preserve_witness`).
-- **The nine themes are archetype in-tree.** Their private source lives outside the tree (`/personal/`, gitignored); tracked prose names no person and reproduces no personal art.
-- **Nine over twenty-seven.** The nine double as nine navamsa (D9) groups of three across the 27 nakshatras / council d27 — dharma-essence per group; the calendar tie is in `context/TWILIGHT_STYLE.md`.
+- **The fifteen themes are archetype in-tree.** Their private source — the author's poems — lives in the withheld `twilight/` silo (verdict `personal`, never in the public seed); tracked seed-bound prose names no person and reproduces no personal art.
+- **Fifteen across the sky; nine over twenty-seven.** The palette grew nine → fifteen (`20260811`, Keaton's word) to match the **sky fractal `3·9·15·27`**; the original nine still double as nine navamsa (D9) groups of three across the 27 nakshatras / council d27 — dharma-essence per group. Calendar tie: `context/TWILIGHT_STYLE.md`.
 
 Canonical Cursor twin: `.cursor/rules/twilight-style.mdc`.
