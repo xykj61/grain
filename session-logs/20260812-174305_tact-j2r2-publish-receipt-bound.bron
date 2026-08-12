@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260812.174305
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title TACT-J2r2 — the receipt bound to the ledger
+prompt continue the road Lindy-first crux-first; keep agent-doable work moving; send each increment; stop at custody gates
+think r1 proved a receipt's signature offline against a supplied key (is this authentic?). r2 answers the deeper question — authentic by whom, and are they still a real keeper? — by binding the receipt to the settled ledger.
+think verify_bound holds three checks: settlement.verify(con, deed) proves the Deed is the constellation's current member (not stale or forged); receipt.point == deed.point ties the receipt to that proven identity; verify_offline(receipt, deed.keeper) proves the signature is by that Deed's own keeper. Only then does topology.decode resolve the publisher's place.
+think Four cases: a current member's receipt binds and resolves a galaxy place; a tampered Deed (version bumped) refuses NotMember; a receipt whose point disagrees with the Deed refuses NotMember; a signature by a non-keeper refuses BadSignature. So a recipient learns not just that a signature checks out, but that it belongs to a settled, current keeper at a named place.
+obs Composed over r1 (offline receipt) + the settlement ledger's public verify + decode; r1 re-runs its own GREEN binary. Green first build.
+obs Demo keeper seeds only, in-process, no network — the serve transport stays the Comlink-served custody gate (r4).
+loom witness=tact_publish_receipt_bound_witness result=GREEN cases=4 checks=3
+file pond/apps/publish_receipt_bound.rye binds a receipt to the constellation (current member · same point · keeper signature) → resolves place
+file tools/tact_publish_receipt_bound_witness.rish witness — GREEN (4 cases + r1 re-run)
+recommend keep-going TACT-J2r3 renders the receipt to portable Bron (round-trip), so it can travel; then r4 (serve) reaches the Comlink-served custody gate — Keaton's hand
