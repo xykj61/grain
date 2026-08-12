@@ -290,6 +290,35 @@ pub fn dress_grid(grid: *skate.Grid, row: u32, text: []const u8, sheet: []const 
     return paint;
 }
 
+/// Paint a run of cells `[col_start, col_end)` in `row` with one resolved sheet
+/// token's color — the WADE1 styled run. The token's hex resolves to a Skate
+/// Color, seats into the grid's palette at `palette_index`, and marks the run
+/// to wear it. Cells outside the run keep the grid's default fg, so a styled run
+/// is strictly additive over `dress_grid`'s single-color lowering.
+pub fn dress_run(
+    grid: *skate.Grid,
+    row: u32,
+    col_start: u32,
+    col_end: u32,
+    sheet: []const u8,
+    key: []const u8,
+    palette_index: u8,
+) !skate.Color {
+    // invariant: the row sits inside the grid's bounded height.
+    assert(row < grid.rows);
+    // invariant: a run covers at least one cell.
+    assert(col_end > col_start);
+    // invariant: a real run wears a real palette slot, never the fg sentinel.
+    assert(palette_index != skate.fg_default_index);
+    // invariant: the slot sits inside Skate's bounded run palette.
+    assert(palette_index < skate.max_palette);
+    const argb = try assert_warm_low_blue(try token_argb(sheet, key));
+    const color = to_color(argb);
+    grid.set_palette(palette_index, color);
+    grid.put_color_run(row, col_start, col_end, palette_index);
+    return color;
+}
+
 // --- selftest ------------------------------------------------------------
 
 fn prove_palette() !void {
@@ -370,10 +399,37 @@ fn prove_lowering() !void {
     assert(lit > 100);
 }
 
+fn prove_styled_run() !void {
+    const allocator = std.heap.page_allocator;
+    const cols: u32 = 24;
+    const rows: u32 = 2;
+    var grid = try skate.Grid.init(allocator, cols, rows);
+
+    // A base sheet lowers Flax paper / Bark ink; paint a run in each token.
+    grid.put_line(0, "styled run over the cloth");
+    // ink is Bark (warm, low-blue); paint cells [0,6) in it at slot 1.
+    const ink_color = try dress_run(&grid, 0, 0, 6, base_sheet, "ink", 1);
+    // edge is the warm rule; paint cells [6,12) in it at slot 2.
+    const edge_color = try dress_run(&grid, 0, 6, 12, base_sheet, "edge", 2);
+
+    // invariant: the two runs resolve to two genuinely different colors.
+    assert(ink_color.r != edge_color.r or ink_color.g != edge_color.g or ink_color.b != edge_color.b);
+    // invariant: the runs seated the grid's palette at their named slots.
+    assert(grid.palette[1].r == ink_color.r);
+    assert(grid.palette[1].b == ink_color.b);
+    assert(grid.palette[2].r == edge_color.r);
+    assert(grid.palette[2].b == edge_color.b);
+    // invariant: painted cells wear their slot; unpainted cells keep the default.
+    assert(grid.fg_index[0] == 1);
+    assert(grid.fg_index[6] == 2);
+    assert(grid.fg_index[12] == skate.fg_default_index);
+}
+
 fn run_selftest() !u8 {
     try prove_palette();
     try prove_cascade();
     try prove_lowering();
+    try prove_styled_run();
     print("brushstroke tokens: Flax/Bark/Oat/Walnut ARGB8888 honor warm-hue, low-blue, gentle-lightness, and paper-hierarchy invariants.\n", .{});
     print("brushstroke tokens: the cascade is per-key infuse — override tokens win, inherited tokens stay in place, new tokens append.\n", .{});
     print("brushstroke tokens: a resolved sheet dresses a Skate grid — paper/ink lower to Colors and rasterize to ARGB8888 pixels.\n", .{});
