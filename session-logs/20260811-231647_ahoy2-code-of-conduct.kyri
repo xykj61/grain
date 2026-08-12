@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260811.231647
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title AHOY2 — CODE_OF_CONDUCT.md in the tree's own voice
+prompt Keaton: kg all seasons autonomously (AHOY2 legitimacy layer continues)
+think Third community-health file. The plan warns against admitting anything that only performs legitimacy, so I wrote a genuine conduct in the tree's civic voice rather than pasting a boilerplate Covenant — the standard names the values the tree already lives (be kind and assume kindness, be honest and say why, prefer yet to but, protect the newcomer, respect custody and consent).
+think Kept it honest about the single-maintainer phase: reporting goes to the quiet channels (private advisory / maintainer contact), handling is proportional, and the fuller enforcement process is named as growing with the project (OPEN_QUESTIONS succession), not claimed as already built. That honesty is what makes it pass TAME and the two rooms rather than perform.
+think Thanked the Contributor Covenant as prior art with a link (gratitude discipline) while keeping our own voice; ended on an earned radiant wish.
+obs Seed-plumbed: allowlisted in .gitignore, allow + scrub in the manifest. living_docs_lint GREEN (all six context/ + CONTRIBUTING links resolve). sow_witness SOW_WITNESS_GREEN, IDENT_CLEAN, NO_PERSONAL.
+loom witness=sow_witness result=GREEN files=CODE_OF_CONDUCT.md
+file CODE_OF_CONDUCT.md new — civic conduct; standard · scope · reporting · handling · thanks + wish
+file .gitignore allowlist CODE_OF_CONDUCT.md
+file template-manifest.bron allow + scrub CODE_OF_CONDUCT.md
+recommend keep-going AHOY2 nearly complete — the three core community-health files stand (LICENSE · SECURITY · CODE_OF_CONDUCT); next the changelog-is-session-index note and the honest badges review, then AHOY3 (docs↔code · seed, Keaton's hand)
