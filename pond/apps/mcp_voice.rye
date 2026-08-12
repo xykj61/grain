@@ -1,0 +1,260 @@
+//! pond/apps/mcp_voice.rye - BUHR Journey 9, Rung 1: the intelligence, served as an MCP tool.
+//!
+//! Journey 3 spoke MCP in Bron - the owned `format mcp-call-v1` / `mcp-result-v1` shape,
+//! a JSON host bridge, the whole tools/list envelope. Journey 8 gathered the five voices
+//! (Lattice, Scribble, Ember, the living graph, a named Tablecloth artifact) under one
+//! bounded Q-vane host. Those two halves never met: the MCP host's tools/call dispatched
+//! only to Journey 3's toy `add`/`join`. This rung joins them - an MCP call naming the
+//! intelligence tool crosses into a Lantern request, dispatches through
+//! `quin_host_artifact.dispatch` (which routes by prompt to whichever voice recognizes
+//! it), and the Lantern response crosses back into a `format mcp-result-v1` envelope a
+//! caller reads with Journey 3's own `parse_result`. Every refusal the host owns - a
+//! disallowed model, a prompt no voice knows, an artifact name the store lacks - crosses
+//! back as a *named* MCP error, never a fabricated result. The artifact voice's integrity
+//! guarantee travels with it: its answers still rest on bytes that proved themselves.
+//!
+//! Additive by construction: it imports mcp_bron (the shape) and quin_host_artifact (the
+//! voices) and calls only their public functions. Neither contract changes; both stay
+//! their own green binaries. It reads no network - the real fetch and the Comlink-served
+//! transport stay the held custody/serve gates.
+//!
+//!   rye build pond/apps/mcp_voice.rye -femit-bin=pond/bin/mcp-voice
+//!   pond/bin/mcp-voice selftest
+//!
+//! Scope: active-designing/20260812-150600_buhr-journey9-intelligence-served-as-mcp-tools-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lc = @import("lantern/lantern_core.rye");
+const mcp = @import("mcp_bron.rye");
+const qha = @import("quin_host_artifact.rye"); // the five-voice Q-vane host
+
+const mcp_voice_version = "20260812.150600";
+
+/// The MCP tool name a caller invokes to reach the whole intelligence. One tool over the
+/// gathered host; a later rung advertises each voice as its own tool.
+pub const voice_tool = "ask";
+
+// The default token budget when a call omits max_tokens - Lantern still meters it.
+const default_budget: u32 = 64;
+
+// A rendered result envelope stays within the shape's own bound.
+const max_out: u32 = mcp.max_result;
+
+/// Render a `format mcp-result-v1` success envelope carrying `text` for request `id`.
+/// The result value is the rest of the line, so a multi-word answer ("19 22 43 50")
+/// crosses whole.
+fn render_ok(id: u32, text: []const u8, out: []u8) mcp.McpError![]const u8 {
+    // invariant: the caller's buffer respects the result bound
+    assert(out.len <= max_out);
+    // invariant: a rendered answer carries at least a header
+    assert(out.len > 0);
+    const s = std.fmt.bufPrint(out, "format mcp-result-v1\nid {d}\nresult {s}\n", .{ id, text }) catch return error.ResultTooLong;
+    // seam: bufPrint returns usize; it never exceeds the slice it wrote into
+    assert(s.len <= out.len);
+    return s;
+}
+
+/// Render a `format mcp-result-v1` error envelope naming `err_name` for request `id`.
+fn render_error(id: u32, err_name: []const u8, out: []u8) mcp.McpError![]const u8 {
+    // invariant: the caller's buffer respects the result bound
+    assert(out.len <= max_out);
+    // invariant: a named error is present, never an empty error line
+    assert(err_name.len > 0);
+    const s = std.fmt.bufPrint(out, "format mcp-result-v1\nid {d}\nerror {s}\n", .{ id, err_name }) catch return error.ResultTooLong;
+    assert(s.len <= out.len);
+    return s;
+}
+
+/// Map a host refusal to its named MCP error. Every voice refusal the gathered host owns
+/// crosses back under a stable name a caller can branch on, never a fabricated result.
+fn error_name(err: anyerror) []const u8 {
+    return switch (err) {
+        error.ModelNotAllowed => "model_not_allowed",
+        error.UnknownOp => "unknown_op",
+        error.UnknownArtifact => "unknown_artifact",
+        error.BudgetExceeded => "budget_exceeded",
+        error.PromptTooLong => "prompt_too_long",
+        else => "voice_error",
+    };
+}
+
+/// Serve one parsed MCP call over the gathered voice host, rendering a `format
+/// mcp-result-v1` envelope into `out`. The call's tool must be the intelligence tool
+/// (`ask`); its `model` and `prompt` args are required, `max_tokens` optional. A tool
+/// that is not `ask` answers `unknown_tool`; a missing arg answers `bad_args`; a bad
+/// budget answers `bad_int`; any voice refusal answers under its named MCP error. The
+/// bridge never invents a result - a fault always renders an error envelope.
+pub fn serve(call: *const mcp.Call, allow_text: []const u8, out: []u8) mcp.McpError![]const u8 {
+    // invariant: the caller's buffer respects the result bound
+    assert(out.len <= max_out);
+    // invariant: the call carries a bounded argument set
+    assert(call.arg_count <= mcp.max_args);
+
+    if (!std.mem.eql(u8, call.tool, voice_tool)) return render_error(call.id, "unknown_tool", out);
+
+    const model_hash = call.arg_val("model") orelse return render_error(call.id, "bad_args", out);
+    const prompt = call.arg_val("prompt") orelse return render_error(call.id, "bad_args", out);
+    var budget: u32 = default_budget;
+    if (call.arg_val("max_tokens")) |b| {
+        budget = std.fmt.parseInt(u32, b, 10) catch return render_error(call.id, "bad_int", out);
+    }
+
+    const req = lc.Request{ .model_hash = model_hash, .prompt = prompt, .max_tokens = budget };
+
+    // The gathered host answers over its own scratch; the answer is then rendered into the
+    // MCP result shape. A host refusal renders a named error rather than propagating.
+    var scratch: [lc.max_completion_len]u8 = undefined;
+    if (qha.dispatch(req, allow_text, scratch[0..])) |served| {
+        // invariant: a served answer honors Lantern's completion bound
+        assert(served.response.text.len <= lc.max_completion_len);
+        return render_ok(call.id, served.response.text, out);
+    } else |err| {
+        return render_error(call.id, error_name(err), out);
+    }
+}
+
+// --- selftest -----------------------------------------------------------
+
+const allow =
+    \\model_hash sha3-256-rye-forge-lap0
+;
+const model = "sha3-256-rye-forge-lap0";
+
+/// Build a `format mcp-call-v1` envelope for the `ask` tool with the given prompt and an
+/// allowed model, into `buf`. Returns the envelope slice.
+fn ask_envelope(prompt: []const u8, buf: []u8) []const u8 {
+    return std.fmt.bufPrint(buf, "format mcp-call-v1\nid 7\ntool ask\narg model {s}\narg prompt {s}\n", .{ model, prompt }) catch unreachable;
+}
+
+/// Serve a prompt end to end and read the rendered result back with Journey 3's own
+/// parse_result - the round-trip a caller performs. The caller owns `out` so the parsed
+/// Result's slices (which point into the rendered envelope) outlive this call.
+fn serve_and_read(prompt: []const u8, out: []u8, res: *mcp.Result) !void {
+    var call_buf: [256]u8 = undefined;
+    const env = ask_envelope(prompt, call_buf[0..]);
+    var call: mcp.Call = undefined;
+    try mcp.parse_call(env, &call);
+    const rendered = try serve(&call, allow, out);
+    try mcp.parse_result(rendered, res);
+}
+
+fn welcome_ask_routes_to_lattice() !void {
+    var out: [max_out]u8 = undefined;
+    var res: mcp.Result = undefined;
+    try serve_and_read("matmul the pair", out[0..], &res);
+    // invariant: the MCP call reached the arithmetic voice and its answer crossed whole.
+    assert(!res.is_error);
+    assert(res.id == 7);
+    assert(std.mem.eql(u8, res.value, "19 22 43 50"));
+    print("mcp_voice: ask -> Lattice - result '{s}' (round-tripped through parse_result)\n", .{res.value});
+}
+
+fn welcome_ask_routes_to_artifact() !void {
+    var out: [max_out]u8 = undefined;
+    var res: mcp.Result = undefined;
+    try serve_and_read("words notes.txt", out[0..], &res);
+    assert(!res.is_error);
+    // notes.txt's verified content is sixteen words - the artifact voice, over MCP.
+    assert(std.mem.eql(u8, res.value, "16"));
+    print("mcp_voice: ask -> artifact voice - notes.txt has {s} words, read only through the verified fetch\n", .{res.value});
+}
+
+fn welcome_ask_routes_to_graph() !void {
+    var out: [max_out]u8 = undefined;
+    var res: mcp.Result = undefined;
+    try serve_and_read("lane_count the graph", out[0..], &res);
+    assert(!res.is_error);
+    assert(std.mem.eql(u8, res.value, "3"));
+    print("mcp_voice: ask -> graph voice - lane_count {s}\n", .{res.value});
+}
+
+fn welcome_unknown_tool_named_error() !void {
+    // A tool that is not the intelligence tool crosses back as a named error, not a fault.
+    var call_buf: [256]u8 = undefined;
+    const env = std.fmt.bufPrint(call_buf[0..], "format mcp-call-v1\nid 3\ntool frobnicate\narg model {s}\narg prompt matmul the pair\n", .{model}) catch unreachable;
+    var call: mcp.Call = undefined;
+    try mcp.parse_call(env, &call);
+    var out: [max_out]u8 = undefined;
+    const rendered = try serve(&call, allow, out[0..]);
+    var res: mcp.Result = undefined;
+    try mcp.parse_result(rendered, &res);
+    assert(res.is_error);
+    assert(std.mem.eql(u8, res.err_name, "unknown_tool"));
+    print("mcp_voice: unknown tool -> named MCP error '{s}'\n", .{res.err_name});
+}
+
+fn welcome_model_not_allowed_named_error() !void {
+    var call_buf: [256]u8 = undefined;
+    const env = std.fmt.bufPrint(call_buf[0..], "format mcp-call-v1\nid 4\ntool ask\narg model sha3-256-not-on-list\narg prompt matmul the pair\n", .{}) catch unreachable;
+    var call: mcp.Call = undefined;
+    try mcp.parse_call(env, &call);
+    var out: [max_out]u8 = undefined;
+    const rendered = try serve(&call, allow, out[0..]);
+    var res: mcp.Result = undefined;
+    try mcp.parse_result(rendered, &res);
+    assert(res.is_error);
+    assert(std.mem.eql(u8, res.err_name, "model_not_allowed"));
+    print("mcp_voice: disallowed model -> named MCP error '{s}'\n", .{res.err_name});
+}
+
+fn welcome_no_voice_named_error() !void {
+    var out: [max_out]u8 = undefined;
+    var res: mcp.Result = undefined;
+    try serve_and_read("translate this poem", out[0..], &res);
+    // A prompt no voice recognizes refuses under a named error - never a fabricated result.
+    assert(res.is_error);
+    assert(std.mem.eql(u8, res.err_name, "unknown_op"));
+    print("mcp_voice: no voice knows the prompt -> named MCP error '{s}'\n", .{res.err_name});
+}
+
+fn welcome_unknown_artifact_named_error() !void {
+    var out: [max_out]u8 = undefined;
+    var res: mcp.Result = undefined;
+    try serve_and_read("words absent.txt", out[0..], &res);
+    assert(res.is_error);
+    assert(std.mem.eql(u8, res.err_name, "unknown_artifact"));
+    print("mcp_voice: artifact the store lacks -> named MCP error '{s}'\n", .{res.err_name});
+}
+
+fn welcome_missing_prompt_named_error() !void {
+    var call_buf: [256]u8 = undefined;
+    const env = std.fmt.bufPrint(call_buf[0..], "format mcp-call-v1\nid 6\ntool ask\narg model {s}\n", .{model}) catch unreachable;
+    var call: mcp.Call = undefined;
+    try mcp.parse_call(env, &call);
+    var out: [max_out]u8 = undefined;
+    const rendered = try serve(&call, allow, out[0..]);
+    var res: mcp.Result = undefined;
+    try mcp.parse_result(rendered, &res);
+    assert(res.is_error);
+    assert(std.mem.eql(u8, res.err_name, "bad_args"));
+    print("mcp_voice: missing prompt arg -> named MCP error '{s}'\n", .{res.err_name});
+}
+
+fn run_selftest() !u8 {
+    try welcome_ask_routes_to_lattice();
+    try welcome_ask_routes_to_artifact();
+    try welcome_ask_routes_to_graph();
+    try welcome_unknown_tool_named_error();
+    try welcome_model_not_allowed_named_error();
+    try welcome_no_voice_named_error();
+    try welcome_unknown_artifact_named_error();
+    try welcome_missing_prompt_named_error();
+
+    print("mcp_voice: the gathered intelligence answers over the owned MCP shape - a call crosses to a real voice and back\n", .{});
+    print("mcp_voice: every voice refusal crosses back as a named MCP error; the bridge never invents a result\n", .{});
+    print("mcp_voice: version {s}\n", .{mcp_voice_version});
+    print("GREEN: BUHR-J9r1 mcp_voice - the intelligence is reachable as an MCP tool, bounded and honest about every refusal.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "voice")) {
+            return run_selftest();
+        }
+    }
+    return run_selftest();
+}
