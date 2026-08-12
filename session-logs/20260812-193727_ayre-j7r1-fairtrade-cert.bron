@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260812.193727
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title AYRE-J7r1 — a fair-trade certificate a cooperative record satisfies (Journey 7 opens)
+prompt Continue the autonomous loop after spool r4 landed; take the next agent-doable lap Lindy-first crux-first; approve own design rounds; double-seat visions for calendar blind spots; send often
+think With the spool arc complete, the next Lindy-first crux on the whole 1024-round road is Season 2 Journey 7 (Fair-trade, AYRE) — the harvest's second promise beyond stands-on-real-data: trades fairly
+think The itinerary names Journey 7's crux precisely — a certificate a store satisfies, the Brix-declaration pattern (BUHR-J7r3) carried to a real cooperative record; AYRE is already seated in waymark-ladders.md
+think Self-approved the exploration design round (four rounds: r1 satisfied · r2 signed · r3 travels · r4 tied-to-a-fair-trade); r1 is the pure declaration-satisfaction spine the later rungs wire identity and books into, known correct first
+think Grounded r1 in tablecloth_brix's own format-decl-v1 / require idiom — no new abstraction; the certificate is the same every-required-name-is-held join tablecloth_brix proved for artifacts, carried to fair-trade criteria against a record of attestations
+obs pond/apps/fairtrade_cert.rye — a `format fairtrade-cert-v1` certificate (require <criterion> lines) evaluated against a bounded cooperative Record of held attestations; satisfied yields a Certified naming exactly the met criteria in declared order
+obs the crux checkable: a required criterion the record does not hold refuses the whole certification (Unsatisfied) — never a certified gap; a satisfied Certified exists only when every criterion was held, so its existence is the proof
+obs malformed refusals real — wrong header · bad tag · empty certificate · two names on one require line each refuse BadCertificate; overlong name NameTooLong; past-bound TooManyCriteria
+obs pure declaration-satisfaction — no signing, no books this rung (r2 signs each attestation mirroring commerce_trade_signed, r4 books fairly in Dimeroll mirroring commerce_trade); facts only, custody gate #3 untouched, demo attestations only
+obs GREEN first pass; TAME style bans clean (exit 0), width-check clean (exit 0)
+loom witness=ayre_j7_fairtrade_cert_witness selftest_green=1 criteria_satisfied=3 refusals=5
+file active-designing/20260812-193727_ayre-journey7-fair-trade-exploration.md self-approved exploration opening Season 2 Journey 7 under the seated AYRE waymark; names the crux and the four rounds
+file pond/apps/fairtrade_cert.rye AYRE-J7r1 — a fair-trade certificate a cooperative record satisfies, the Brix-declaration pattern carried from artifacts to fair-trade criteria
+file tools/ayre_j7_fairtrade_cert_witness.rish witness GREEN — satisfied-in-order · gap refusal · malformed refusals
+recommend keep-going AYRE-J7r2 — the certificate signed: each criterion's attestation signed by the attesting party (mirroring commerce_trade_signed), a satisfied certificate requiring every signature to verify
