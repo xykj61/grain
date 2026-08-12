@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260812.122354
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu ai-jail (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR-J2r6 — a .brush mode theme recolors the whole reading ground
+prompt Autonomous loop — take the next agent-doable BUHR lap Lindy-first crux-first, approve own design rounds, send each finished increment, STOP at custody gates
+think Read REMEMBER — the named next agent-doable crux is a .brush theme carried onto rung two's full painted graph (the reading ground), where rung four themed only the head accent. Lindy-first: the durable artifact is a themeable reading surface; crux-first: prove the whole ground flips, not just the accent.
+think Studied the pattern — rung two mantra_browser_view.rye paints the full graph via tokens.dress_grid (paper/ink); rung four mantra_browser_theme.rye reads a .brush through parse_brush + collect_brush_style, infuses via tokens.resolve, paints via heads.paint_heads. The mode fixture dark-mode.brush already sets paper/ink only — the right theme for a ground recolor.
+think Wrote pond/apps/mantra_browser_view_theme.rye — resolve_theme requires the theme name the paper token (ThemeMissingGround), infuses over base_sheet, and paints with rung two's unchanged view.paint_graph. Fully additive: imports mantra_browser, mantra_browser_view, tokens, skate_grid, brush_parse — public API only.
+think First proof cut mirrored rung four (zero default-ground pixels) and panicked: the dark theme's ink IS Flax, the same color as the base sheet's paper, so counting Flax caught the ink glyphs — never zero. The two sheets swap paper/ink between the ground and ink roles.
+think Reframed the proof honestly around roles, not a false zero — painted the same graph twice (light base, dark theme) and proved which color plays the majority ground vs the minority ink: under base, Flax is the ground and Bark only the ink; under the theme, Bark is the ground and Flax only the ink. The ground flipped wholesale.
+obs Recolor proofs must respect color collisions — a paper↔ink swap means neither color reaches zero; the truthful measure is the ground/ink majority inversion, which is both airtight and honest.
+obs Rung four themes the accent (head), rung six themes the ground (paper/ink); together they show both sides of the sheet are authorable from a plain .brush file, never Skate or Rye.
+loom witness=buhr_mantra_browser_view_theme_witness cases=5 rung2_rerun=green tame=clean width=rc0
+file pond/apps/mantra_browser_view_theme.rye BUHR-J2r6 — a .brush mode theme's paper/ink override recolors the whole reading ground via rung two's unchanged paint_graph
+file tools/buhr_mantra_browser_view_theme_witness.rish witness — builds, runs selftest (5 welcomes), re-runs rung two GREEN
+recommend keep-going next BUHR-J2 crux: a .brush theme onto the heads view's ground+accent at once, or open a new BUHR journey; custody gates untouched
