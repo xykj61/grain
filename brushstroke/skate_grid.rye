@@ -24,6 +24,15 @@ fn buf_len_u32(buf: []const u8) u32 {
 pub const cell_w: u32 = 8;
 pub const cell_h: u32 = 16;
 
+/// Bound on the styled-run palette a grid may carry. Slot 0 is the sentinel
+/// "use the fg passed to rasterize"; slots 1..max_palette-1 hold real colors.
+/// Named small on purpose — a token sheet paints a handful of runs, not a rainbow.
+pub const max_palette: u32 = 8;
+
+/// The palette slot that means "wear the fg argument rasterize is given." A cell
+/// whose fg_index is this value renders byte-identically to the pre-palette grid.
+pub const fg_default_index: u8 = 0;
+
 pub const Color = struct {
     r: u8,
     g: u8,
@@ -34,6 +43,12 @@ pub const Grid = struct {
     cols: u32,
     rows: u32,
     cells: []u8,
+    /// Per-cell foreground palette index, one byte per cell, parallel to `cells`.
+    /// Slot 0 (the default for every cell) means "use rasterize's fg argument."
+    fg_index: []u8,
+    /// The bounded run palette. Entry 0 is a sentinel never read as a color;
+    /// entries 1..max_palette-1 are the colors `put_color_run` selects.
+    palette: [max_palette]Color,
 
     pub fn init(allocator: std.mem.Allocator, cols: u32, rows: u32) !Grid {
         assert(cols > 0);
@@ -42,7 +57,53 @@ pub const Grid = struct {
         const cells = try allocator.alloc(u8, cell_count);
         assert(cells.len == cell_count);
         @memset(cells, ' ');
-        return .{ .cols = cols, .rows = rows, .cells = cells };
+        const fg_index = try allocator.alloc(u8, cell_count);
+        // invariant: one fg index per cell, exactly parallel to `cells`.
+        assert(fg_index.len == cells.len);
+        @memset(fg_index, fg_default_index);
+        // invariant: every cell starts on the sentinel — no run painted yet.
+        assert(fg_index[0] == fg_default_index);
+        return .{
+            .cols = cols,
+            .rows = rows,
+            .cells = cells,
+            .fg_index = fg_index,
+            .palette = [_]Color{.{ .r = 0, .g = 0, .b = 0 }} ** max_palette,
+        };
+    }
+
+    /// Set one palette slot to a color. Slot 0 is the reserved sentinel and is
+    /// refused — a run painted with index 0 would be indistinguishable from the
+    /// default, so a caller must pick a real slot to change a cell's color.
+    pub fn set_palette(self: *Grid, index: u8, color: Color) void {
+        // invariant: slot 0 stays the "use fg argument" sentinel, never a color.
+        assert(index != fg_default_index);
+        // invariant: the slot sits inside the bounded palette.
+        assert(index < max_palette);
+        self.palette[index] = color;
+    }
+
+    /// Mark cells `[col_start, col_end)` in `row` to wear palette slot
+    /// `palette_index`. A no-op when the row is out of range, mirroring
+    /// `put_line`'s own tolerance. `col_end` clamps to the grid width, so a run
+    /// past the edge paints only the cells that exist.
+    pub fn put_color_run(self: *Grid, row: u32, col_start: u32, col_end: u32, palette_index: u8) void {
+        // invariant: a real run wears a real palette slot, never the sentinel.
+        assert(palette_index != fg_default_index);
+        // invariant: the slot sits inside the bounded palette.
+        assert(palette_index < max_palette);
+        if (row >= self.rows) return;
+        if (col_start >= col_end) return;
+        const end: u32 = @min(col_end, self.cols);
+        if (col_start >= end) return;
+        const base: usize = @intCast(row * self.cols);
+        // invariant: the run's last cell sits inside the fg-index buffer.
+        assert(base + @as(usize, @intCast(end)) <= self.fg_index.len);
+        var col: u32 = col_start;
+        // Bounded by `end`, itself bounded by `self.cols` — a named grid width.
+        while (col < end) : (col += 1) {
+            self.fg_index[base + @as(usize, @intCast(col))] = palette_index;
+        }
     }
 
     pub fn put_line(self: *Grid, row: u32, text: []const u8) void {
@@ -109,6 +170,8 @@ pub const Grid = struct {
         const height_u: u32 = @intCast(height);
         assert(stride >= width_u * 4);
         assert(self.cells.len == @as(usize, @intCast(self.cols * self.rows)));
+        // invariant: the fg-index buffer stays exactly parallel to the cells.
+        assert(self.fg_index.len == self.cells.len);
 
         const stride_usize: usize = @intCast(stride);
         var y: u32 = 0;
@@ -129,7 +192,13 @@ pub const Grid = struct {
         while (grid_row < self.rows) : (grid_row += 1) {
             var col: u32 = 0;
             while (col < self.cols) : (col += 1) {
-                const ch = self.cells[@as(usize, @intCast(grid_row * self.cols + col))];
+                const cell_i: usize = @intCast(grid_row * self.cols + col);
+                const ch = self.cells[cell_i];
+                // Slot 0 (the default) wears the fg argument exactly — so a grid
+                // with no runs painted rasterizes byte-identically to before the
+                // palette existed. Only a non-zero index picks a palette color.
+                const idx = self.fg_index[cell_i];
+                const cell_fg = if (idx == fg_default_index) fg else self.palette[idx];
                 draw_glyph(
                     pixels,
                     stride,
@@ -138,7 +207,7 @@ pub const Grid = struct {
                     @intCast(col * cell_pw),
                     @intCast(grid_row * cell_ph),
                     ch,
-                    fg,
+                    cell_fg,
                     scale,
                 );
             }
