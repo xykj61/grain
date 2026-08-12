@@ -1,0 +1,336 @@
+//! pond/apps/tablecloth_keyed.rye - BUHR Journey 7, Rung 4: the owner-signed catalog.
+//!
+//! Rung one bound a human name to a content address, so fetch-by-name returns exactly
+//! the bytes whose digest the name pins. This rung adds the provenance the artifact
+//! store's crux was always reaching for: a name does not merely pin bytes - a settled
+//! Kumara **identity** vouches for which bytes, and only that identity may publish under
+//! the catalog. The gate mirrors mandate/keyed.rye's (and the name registry's): the owner
+//! presents the point's **Deed**, verified against the constellation's shared surface,
+//! and **signs** the exact publication - the point, the name, the length, and the
+//! content's digest - so a stolen id cannot publish for another identity, a forged
+//! signature cannot publish at all, and a tampered artifact refuses before it is stored.
+//!
+//! An owned publication resolves not only to its bytes but to *whose* it is: owner_of
+//! returns the publishing point, and place_of resolves that number to its place in the
+//! d12 d60 fractal - the galaxy, star, or planet the identity settled as. The naming
+//! layer (rung one) stays exactly what it was; this file only decides whose hand may
+//! publish, and records who did.
+//!
+//! It invents no storage and no signing - it composes rung one's Catalog over the same
+//! shared BeadStore with the identity surface (kumara, tilak, topology, constellation)
+//! the settlement already witnessed. Demo keeper seeds only; no real key, no custody.
+//!
+//!   rye build pond/apps/tablecloth_keyed.rye -femit-bin=pond/bin/tablecloth-keyed
+//!   pond/bin/tablecloth-keyed selftest
+//!
+//! Scope: active-designing/20260812-142132_buhr-journey7-tablecloth-artifact-store-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const beading = @import("mantra/beading.rye");
+const tablecloth = @import("tablecloth.rye");
+const kumara = @import("kumara.rye");
+const tilak = @import("kumara_tilak.rye");
+const topology = @import("topology.rye");
+const settlement = @import("constellation.rye");
+
+const Sha256 = std.crypto.hash.sha2.Sha256;
+
+pub const tablecloth_keyed_version = "20260812.144508";
+
+const pubkey_len: u32 = 32;
+const sig_len: u32 = 64;
+const digest_len: u32 = 32;
+
+pub const KeyError = error{ NotOwner, BadSignature };
+
+// The message a keeper signs to publish an artifact: the point, the whole length, the
+// name (with its length, so no two names collide by padding), and a SHA-256 of the
+// exact content. Possessing an id is never enough to publish - the content is bound in.
+const max_msg_len: u32 = 4 + 4 + 4 + tablecloth.max_name + digest_len; // 92
+
+fn content_digest(content: []const u8) [digest_len]u8 {
+    // invariant: the content digest is a SHA-256, thirty-two bytes wide.
+    assert(digest_len == 32);
+    var out: [digest_len]u8 = undefined;
+    Sha256.hash(content, &out, .{});
+    return out;
+}
+
+// Fill out[0..len] with the signed message and return len. Bounded by max_msg_len.
+fn auth_message(out: *[max_msg_len]u8, point: u32, name: []const u8, whole_len: u32, cdigest: *const [digest_len]u8) u32 {
+    // invariant: the name fits the catalog's name budget, so the message fits its buffer.
+    assert(name.len <= tablecloth.max_name);
+    std.mem.writeInt(u32, out[0..4], point, .little);
+    std.mem.writeInt(u32, out[4..8], whole_len, .little);
+    std.mem.writeInt(u32, out[8..12], @intCast(name.len), .little);
+    var off: u32 = 12;
+    for (name) |b| {
+        out[off] = b;
+        off += 1;
+    }
+    for (cdigest) |b| {
+        out[off] = b;
+        off += 1;
+    }
+    // invariant: the assembled message never exceeds its bound.
+    assert(off <= max_msg_len);
+    return off;
+}
+
+/// Sign a publication - the owner's word that this exact content, under this name, with
+/// this length, is published by this point. Signed under the keeper seed. The witness
+/// (and any real publisher) signs with the point's keeper before store_owned.
+pub fn sign_publication(
+    keeper_seed: *const [kumara.seed_length]u8,
+    point: u32,
+    name: []const u8,
+    content: []const u8,
+) [sig_len]u8 {
+    // invariant: a signable name fits the catalog's name budget.
+    assert(name.len <= tablecloth.max_name);
+    const kp = kumara.keypair_from_seed(keeper_seed);
+    const cd = content_digest(content);
+    var msg: [max_msg_len]u8 = undefined;
+    const len = auth_message(&msg, point, name, @intCast(content.len), &cd);
+    return kumara.sign(msg[0..len], kp, null).toBytes();
+}
+
+fn verify_publication(
+    keeper: [pubkey_len]u8,
+    point: u32,
+    name: []const u8,
+    content: []const u8,
+    sig: *const [sig_len]u8,
+) bool {
+    // invariant: an Ed25519 public key is 32 bytes and a signature 64.
+    assert(pubkey_len == 32);
+    assert(sig_len == 64);
+    const pub_key = kumara.PublicKey.fromBytes(keeper) catch return false;
+    const cd = content_digest(content);
+    var msg: [max_msg_len]u8 = undefined;
+    const len = auth_message(&msg, point, name, @intCast(content.len), &cd);
+    kumara.verify_bytes(msg[0..len], sig, pub_key) catch return false;
+    return true;
+}
+
+/// A catalog whose every publication belongs to a settled Kumara point. It wraps rung
+/// one's Catalog unchanged (one source of truth for names and addresses) and records the
+/// owning point alongside each entry, aligned by catalog index.
+// Invariant: cat.count is the number of live owners; owners[i] holds entry i's point.
+pub const KeyedCatalog = struct {
+    cat: tablecloth.Catalog,
+    owners: [tablecloth.max_artifacts]u32,
+
+    pub fn empty() KeyedCatalog {
+        return .{ .cat = tablecloth.Catalog.empty(), .owners = undefined };
+    }
+};
+
+/// Publish an artifact owned by a settled point. The owner presents the point's Deed -
+/// verified against the constellation, so it is the current member - and signs the exact
+/// publication. Only then is the content beaded and named (rung one's store_artifact),
+/// and the owning point recorded. A non-owner refuses (NotOwner), a forged or content-
+/// mismatched signature refuses (BadSignature) before any byte is stored, and rung one's
+/// own refusals (NameTaken, CatalogFull, oversized content) still hold.
+pub fn store_owned(
+    kc: *KeyedCatalog,
+    store: *beading.BeadStore,
+    con: *const settlement.Constellation,
+    deed: *const settlement.Deed,
+    name: []const u8,
+    content: []const u8,
+    keeper_sig: *const [sig_len]u8,
+) (beading.BeadError || tablecloth.ClothError || KeyError)!beading.BeadReport {
+    // invariant: the caller owns the point - its deed is the current member.
+    if (!settlement.verify(con, deed)) return error.NotOwner;
+    // invariant: the keeper signed this exact content under this name for this point.
+    if (!verify_publication(deed.keeper, deed.point, name, content, keeper_sig)) return error.BadSignature;
+    const before = kc.cat.count;
+    const report = try tablecloth.store_artifact(&kc.cat, store, name, content);
+    // invariant: a successful publish grew the catalog by exactly one entry.
+    assert(kc.cat.count == before + 1);
+    kc.owners[before] = deed.point;
+    return report;
+}
+
+/// Fetch an owned artifact by name - exactly rung one's fetch over the wrapped catalog,
+/// every bead proven by digest and the whole against its recorded address.
+pub fn fetch_owned(
+    kc: *const KeyedCatalog,
+    store: *const beading.BeadStore,
+    name: []const u8,
+    out: []u8,
+) (beading.BeadError || tablecloth.ClothError)!u32 {
+    return tablecloth.fetch_artifact(&kc.cat, store, name, out);
+}
+
+/// The point that published a name, or null if the name is unknown. A publication
+/// resolves to *whose* it is, not merely to its bytes.
+pub fn owner_of(kc: *const KeyedCatalog, name: []const u8) ?u32 {
+    const i = tablecloth.index_of(&kc.cat, name) orelse return null;
+    // invariant: a found index is within the live catalog.
+    assert(i < kc.cat.count);
+    return kc.owners[i];
+}
+
+/// Resolve a publishing point to its place in the d12 d60 fractal - the galaxy, star, or
+/// planet the owner settled as - or null if the number has no place.
+pub fn place_of(point: u32) ?topology.Address {
+    return topology.decode(point);
+}
+
+// --- selftest -----------------------------------------------------------
+
+const g_key: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
+const g_keeper: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
+const s_key: [kumara.seed_length]u8 = .{0x44} ** kumara.seed_length;
+const s_keeper: [kumara.seed_length]u8 = .{0x55} ** kumara.seed_length;
+const p_key: [kumara.seed_length]u8 = .{0x77} ** kumara.seed_length;
+const p_keeper: [kumara.seed_length]u8 = .{0x88} ** kumara.seed_length;
+
+// The inclusive fractal: galaxy 3, its star (3,2) = 27, its planet (3,2,4) = 267.
+const galaxy_num: u32 = 3;
+const star_num: u32 = 27;
+const planet_num: u32 = 267;
+
+// The 36-byte spawn authority the settlement mint checks (child number ++ identity).
+fn spawn_authority(signer_seed: *const [kumara.seed_length]u8, child: u32, child_identity: *const [pubkey_len]u8) [sig_len]u8 {
+    const kp = kumara.keypair_from_seed(signer_seed);
+    var msg: [4 + pubkey_len]u8 = undefined;
+    std.mem.writeInt(u32, msg[0..4], child, .little);
+    for (child_identity, 0..) |b, i| msg[4 + i] = b;
+    return kumara.sign(&msg, kp, null).toBytes();
+}
+
+const World = struct {
+    con: settlement.Constellation,
+    star: settlement.Deed,
+    planet: settlement.Deed,
+};
+
+fn seat_world() !World {
+    const g_bind = tilak.make_bind(&g_key, &g_keeper);
+    const s_bind = tilak.make_bind(&s_key, &s_keeper);
+    const p_bind = tilak.make_bind(&p_key, &p_keeper);
+    const opened = try settlement.open(galaxy_num, &g_bind);
+    var con = opened.con;
+    const galaxy_deed = opened.deed;
+
+    const g_sow = tilak.make_cap(&g_keeper, galaxy_num, .sow, g_bind.kumara_pubkey);
+    const spawn_star = spawn_authority(&g_key, star_num, &s_bind.kumara_pubkey);
+    const star = try settlement.mint(&con, &galaxy_deed, star_num, &s_bind, &g_sow, &spawn_star);
+
+    const s_sow = tilak.make_cap(&s_keeper, star_num, .sow, s_bind.kumara_pubkey);
+    const spawn_planet = spawn_authority(&s_key, planet_num, &p_bind.kumara_pubkey);
+    const planet = try settlement.mint(&con, &star, planet_num, &p_bind, &s_sow, &spawn_planet);
+
+    return .{ .con = con, .star = star, .planet = planet };
+}
+
+// An unsettled deed for a point that never settled - used to prove the non-owner refusal.
+fn ghost_deed(point: u32) settlement.Deed {
+    const addr = topology.decode(point).?;
+    const zero: [pubkey_len]u8 = .{0} ** pubkey_len;
+    return .{
+        .point = point,
+        .tier = addr.tier,
+        .identity_key = zero,
+        .keeper = zero,
+        .sponsor = topology.encode(addr.parent()),
+        .net_key = zero,
+        .key_counter = 0,
+        .reset_counter = 0,
+        .version = 1,
+    };
+}
+
+const doc_planet = "linen holds the warp, hemp the weft - a cloth over the planet's table.";
+const doc_star = "ramie brightens the border where the star's light lands, plain and glad.";
+
+fn run_keyed_selftest() !u8 {
+    const w = try seat_world();
+    var store: beading.BeadStore = .empty();
+    var kc: KeyedCatalog = .empty();
+
+    // The planet's owner publishes an artifact, signed by its keeper.
+    const psig = sign_publication(&p_keeper, planet_num, "planet-notes.txt", doc_planet);
+    _ = try store_owned(&kc, &store, &w.con, &w.planet, "planet-notes.txt", doc_planet, &psig);
+
+    // The star's owner publishes its own.
+    const ssig = sign_publication(&s_keeper, star_num, "star-brief.txt", doc_star);
+    _ = try store_owned(&kc, &store, &w.con, &w.star, "star-brief.txt", doc_star, &ssig);
+    assert(kc.cat.count == 2);
+
+    // Fetch each by name and prove the bytes returned are exactly the bytes published.
+    var out: [tablecloth.max_content_bytes]u8 = undefined;
+    const np = try fetch_owned(&kc, &store, "planet-notes.txt", out[0..]);
+    assert(std.mem.eql(u8, out[0..np], doc_planet));
+    const ns = try fetch_owned(&kc, &store, "star-brief.txt", out[0..]);
+    assert(std.mem.eql(u8, out[0..ns], doc_star));
+
+    // A publication resolves to whose it is, and the owner resolves to its place.
+    const owner = owner_of(&kc, "planet-notes.txt") orelse return error.NoOwner;
+    if (owner != planet_num) return error.WrongOwner;
+    const place = place_of(owner) orelse return error.NoPlace;
+    if (place.tier != .planet) return error.PlaceNotPlanet;
+    const star_owner = owner_of(&kc, "star-brief.txt") orelse return error.NoStarOwner;
+    const star_place = place_of(star_owner) orelse return error.NoStarPlace;
+    if (star_place.tier != .star) return error.PlaceNotStar;
+    if (owner_of(&kc, "absent.txt") != null) return error.GhostOwner;
+
+    // Unwelcome: a non-owner cannot publish - a ghost deed for a point that never
+    // settled refuses, and no byte is stored.
+    const ghost = ghost_deed(500);
+    const gsig = sign_publication(&p_keeper, 500, "ghost.txt", doc_planet);
+    const before_ghost = kc.cat.count;
+    if (store_owned(&kc, &store, &w.con, &ghost, "ghost.txt", doc_planet, &gsig)) |_| {
+        return error.GhostPublished;
+    } else |err| {
+        assert(err == error.NotOwner);
+    }
+    assert(kc.cat.count == before_ghost); // the refusal stored nothing
+
+    // Unwelcome: a forged signature refuses - the keeper never signed this publication.
+    const zero_sig: [sig_len]u8 = .{0} ** sig_len;
+    if (store_owned(&kc, &store, &w.con, &w.planet, "forged.txt", doc_planet, &zero_sig)) |_| {
+        return error.ForgedPublished;
+    } else |err| {
+        assert(err == error.BadSignature);
+    }
+
+    // Unwelcome: a signature over other content refuses - the digest is bound in, so a
+    // tampered artifact cannot ride a real signature.
+    const tsig = sign_publication(&p_keeper, planet_num, "tamper.txt", doc_planet);
+    if (store_owned(&kc, &store, &w.con, &w.planet, "tamper.txt", doc_star, &tsig)) |_| {
+        return error.TamperedPublished;
+    } else |err| {
+        assert(err == error.BadSignature);
+    }
+
+    // Unwelcome: rung one's own refusals still hold - a taken name refuses.
+    const psig2 = sign_publication(&p_keeper, planet_num, "planet-notes.txt", doc_star);
+    if (store_owned(&kc, &store, &w.con, &w.planet, "planet-notes.txt", doc_star, &psig2)) |_| {
+        return error.NameTaken;
+    } else |err| {
+        assert(err == error.NameTaken);
+    }
+
+    print("tablecloth keyed: an artifact belongs to a settled Kumara point - the owner presents the point's Deed (verified on the shared surface) and signs the exact publication, so a stolen id cannot publish for another identity.\n", .{});
+    print("tablecloth keyed: a publication resolves to whose it is - owner_of returns the point, and place_of resolves it to its place in the fractal - the galaxy, star, or planet the identity settled as.\n", .{});
+    print("tablecloth keyed: every refusal holds - a non-owner, a forged signature, a content-mismatched signature; and a taken name refuses, no byte stored.\n", .{});
+    print("tablecloth keyed: version {s}\n", .{tablecloth_keyed_version});
+    print("GREEN: BUHR-J7r4 tablecloth keyed - the artifact store is owner-signed: a name pins bytes, and a settled identity vouches for which bytes only it may publish.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "keyed")) {
+            return run_keyed_selftest();
+        }
+    }
+    return run_keyed_selftest();
+}

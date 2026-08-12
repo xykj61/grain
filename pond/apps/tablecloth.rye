@@ -173,6 +173,16 @@ pub fn address_hex(cat: *const Catalog, name: []const u8, out: []u8) ClothError!
     write_hex_lower(cat.entries[i].whole_digest[0..], out[0..digest_hex_len]);
 }
 
+/// The catalog index a name occupies, or null if the name is unknown. The keyed layer
+/// (tablecloth_keyed.rye) reads the owning point recorded alongside this index, so a
+/// published artifact resolves not only to its bytes but to the identity that vouched
+/// for them.
+pub fn index_of(cat: *const Catalog, name: []const u8) ?u32 {
+    // invariant: the lookup stays within the catalog bound
+    assert(cat.count <= max_artifacts);
+    return cat.find(name);
+}
+
 /// The whole length of the artifact a name pins. Refuses an unknown name.
 pub fn artifact_len(cat: *const Catalog, name: []const u8) ClothError!u32 {
     // invariant: the search stays within the catalog bound
