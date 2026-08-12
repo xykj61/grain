@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260812.121544
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention · ai-jail
+title BUHR-J2r4 — a .brush theme recolors the living edge
+prompt take the next agent-doable lap Lindy-first crux-first, approve own design rounds, send often, stop at custody gates
+think REMEMBER named the next crux plainly — carry a head-token override through a .brush authoring file (a theme recoloring the living edge), the continuous Lindy move that completes rung three's design-system token story
+think read mantra_browser_heads (paint_heads · head_token · head_slot), brush_parse (parse_brush · collect_brush_style · style block), tokens (base_sheet · resolve/infuse · token_color · dress) to seat the seam on witnessed ground
+think authored pond/apps/hot-edge.brush — a real .brush file whose style block overrides head to terracotta 0xFFB4502D (warm/low-blue so it passes the palette law), plus paper/ink for a full dark theme
+think wrote pond/apps/mantra_browser_theme.rye — resolve_theme reads the file through the actual authoring loop (parse_brush validates · collect_brush_style reassembles), infuses over base_sheet via tokens.resolve, paints with rung three's unchanged paint_heads
+think proved the recolor two ways — the themed head resolves to the authored terracotta, and the default ochre leaves zero pixels on the themed canvas (recolor never addition); warm/low-blue holds through the theme; glyphs byte-unchanged; a style-less .brush refuses ThemeMissingHead
+obs first witness GREEN but tame_style_check bit three compound `assert(a and b)` — split each into single-channel asserts (the failing half named), rebuilt GREEN, TAME + width clean
+obs additive by construction — imports mantra_browser, mantra_browser_heads, tokens, skate_grid, brush_parse and calls only public fns; rungs 1-3 stay their own green binaries (rung three re-run inside the witness)
+obs custody gates untouched — code, fixture, witness, doc are agent-doable; no push/provision/key/history act crossed
+loom witness=buhr_mantra_browser_theme_witness selftests=5 themed_head=0xFFB4502D default_head_pixels=0 rungs_rerun=1
+file pond/apps/hot-edge.brush the .brush authoring file whose style block recolors the head token
+file pond/apps/mantra_browser_theme.rye BUHR-J2r4 — reads the theme, infuses over base_sheet, paints each lane's living edge in the authored color
+file tools/buhr_mantra_browser_theme_witness.rish builds, selftests, and re-runs rung three GREEN
+file work-in-progress/REMEMBER.md BUHR-J2r4 landing note + next crux; git nib refreshed in the work commit
+recommend keep-going next agent-doable crux is BUHR Journey 4 or a multi-token theme cascade via resolve_stack — mechanical, single-module, policy written
