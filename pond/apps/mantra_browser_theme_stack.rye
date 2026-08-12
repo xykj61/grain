@@ -1,0 +1,224 @@
+//! pond/apps/mantra_browser_theme_stack.rye — BUHR Journey 2, Rung 5: two .brush
+//! layers compose into one themed surface.
+//!
+//! Rung four proved a single `.brush` theme recolors the living edge. This rung
+//! proves the deeper design-system property: two *independent* `.brush` layers —
+//! a **mode** layer that sets only the ground (paper/ink) and an **accent** layer
+//! that sets only the living-edge `head` — compose cleanly through the WADE1
+//! cascade, the top layer winning per token, the base sheet's untouched tokens
+//! inheriting beneath both. A person themes the surface by stacking small, focused
+//! `.brush` files, exactly as a component styleguide stacks a mode over a base and
+//! an accent over the mode — never one monolithic sheet.
+//!
+//! It stays on witnessed ground end to end. Each layer is read through the real
+//! authoring loop (`brush_parse.parse_brush` validates, `collect_brush_style`
+//! reassembles the flat Bron), the layers compose through `tokens.resolve_stack`
+//! (the ping-pong per-key `brix/infuse` cascade, already witnessed in tokens.rye),
+//! and the paint is rung three's unchanged `paint_heads`. The composition is proven
+//! by reading back three sources at once: the ground comes from the mode layer, the
+//! living edge from the accent layer, and the edge rule from the base sheet neither
+//! layer named — three authors, one resolved surface.
+//!
+//! Additive by construction: it imports mantra_browser, mantra_browser_heads,
+//! brushstroke/tokens, brushstroke/skate_grid, and brushstroke/brush_parse, calling
+//! only their public functions. No file beneath it changes; rungs one through four
+//! stay their own green binaries.
+//!
+//!   rye build pond/apps/mantra_browser_theme_stack.rye -femit-bin=pond/bin/mantra-browser-theme-stack
+//!   pond/bin/mantra-browser-theme-stack selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const mb = @import("mantra_browser.rye");
+const heads = @import("mantra_browser_heads.rye");
+const tokens = @import("brushstroke/tokens.rye");
+const skate = @import("brushstroke/skate_grid.rye");
+const bp = @import("brushstroke/brush_parse.rye");
+
+const mantra_browser_theme_stack_version = "20260812.140500";
+
+// The two layer fixtures — real `.brush` authoring files, each focused on one
+// concern: the mode sets the ground, the accent sets the living edge.
+const mode_path = "pond/apps/dark-mode.brush";
+const accent_path = "pond/apps/warm-accent.brush";
+
+// The accent layer's head — a warm honey (R217 > G164 > B65), warm/low-blue so it
+// passes the palette law, distinct from both the base ochre and rung four's
+// terracotta, so a stacked accent unmistakably wins the top of the cascade.
+const accent_head_argb: u32 = 0xFF_D9_A4_41;
+
+pub const StackError = error{
+    LayerEmpty,
+};
+
+/// Read one `.brush` layer's style block into a flat Bron sheet, validated through
+/// the real authoring loop. Returns the collected byte length in `out`. A layer
+/// that declares no style block is refused — a cascade layer must carry tokens.
+fn read_layer(io: std.Io, path: []const u8, out: []u8) !u32 {
+    // invariant: a real layer path names a file to read.
+    assert(path.len > 0);
+    // invariant: the collected sheet fits the style-sheet bound.
+    assert(out.len <= bp.max_style_bytes);
+    const garden = std.heap.page_allocator;
+    const cwd = std.Io.Dir.cwd();
+    const src = try cwd.readFileAlloc(io, path, garden, .limited(bp.max_brush_bytes));
+    // invariant: the source stays inside the brush read budget.
+    assert(src.len <= bp.max_brush_bytes);
+    defer garden.free(src);
+
+    const surface = try bp.parse_brush(src);
+    // invariant: a cascade layer carries at least one style token.
+    if (surface.style_count == 0) return error.LayerEmpty;
+    const n = try bp.collect_brush_style(src, out);
+    // invariant: a declared style block collects a non-empty sheet.
+    assert(n > 0);
+    return n;
+}
+
+/// Compose the base sheet, a mode layer, and an accent layer into one resolved
+/// sheet through `resolve_stack`. The accent (top) wins the head; the mode wins the
+/// ground; the base's untouched tokens inherit beneath both. Returns the resolved
+/// byte length in `out`.
+pub fn resolve_stacked(io: std.Io, out: []u8) !u32 {
+    // invariant: the resolved sheet fits the token-sheet bound.
+    assert(out.len <= tokens.max_sheet_bytes);
+
+    var mode_buf: [bp.max_style_bytes]u8 = undefined;
+    const mode_len = try read_layer(io, mode_path, &mode_buf);
+    var accent_buf: [bp.max_style_bytes]u8 = undefined;
+    const accent_len = try read_layer(io, accent_path, &accent_buf);
+
+    // Base first, then the mode, then the accent on top — the cascade order.
+    const layers = [_][]const u8{ tokens.base_sheet, mode_buf[0..mode_len], accent_buf[0..accent_len] };
+    var scratch: [tokens.max_sheet_bytes]u8 = undefined;
+    const n = try tokens.resolve_stack(&layers, out, &scratch);
+    // invariant: a resolved cascade is non-empty and bounded.
+    assert(n > 0);
+    assert(n <= out.len);
+    return n;
+}
+
+/// Count pixels whose visible color exactly matches `c` (ignoring alpha) — a
+/// witness helper proving a token color reached (or never reached) the canvas.
+fn count_pixels_of_color(pixels: []const u8, stride: u32, width: u32, height: u32, c: skate.Color) u32 {
+    // invariant: the stride holds a full row of ARGB8888 pixels.
+    assert(stride >= width * 4);
+    // invariant: a real canvas has width.
+    assert(width > 0);
+    // invariant: a real canvas has height.
+    assert(height > 0);
+    const stride_usize: usize = @intCast(stride);
+    var count: u32 = 0;
+    var y: u32 = 0;
+    while (y < height) : (y += 1) {
+        const y_usize: usize = @intCast(y);
+        const rowbytes = pixels[y_usize * stride_usize ..][0 .. @as(usize, @intCast(width)) * 4];
+        var x: u32 = 0;
+        while (x < width) : (x += 1) {
+            const px: usize = @intCast(x * 4);
+            if (rowbytes[px + 0] == c.b and rowbytes[px + 1] == c.g and rowbytes[px + 2] == c.r) {
+                count += 1;
+            }
+        }
+    }
+    return count;
+}
+
+fn welcome_layers_compose(io: std.Io) !void {
+    var sheet_buf: [tokens.max_sheet_bytes]u8 = undefined;
+    const n = try resolve_stacked(io, &sheet_buf);
+    const sheet = sheet_buf[0..n];
+
+    // Three authors, one surface. The ground came from the mode layer:
+    const paper = try tokens.token_color(sheet, "paper");
+    const ink = try tokens.token_color(sheet, "ink");
+    assert(paper.r == 0x2B); // Bark — the mode's dark page
+    assert(ink.r == 0xF2); // Flax — the mode's light ink
+
+    // The living edge came from the accent layer (top of the cascade):
+    const head = try tokens.token_color(sheet, "head");
+    assert(head.r == 0xD9);
+    assert(head.g == 0xA4);
+    assert(head.b == 0x41);
+
+    // The edge rule came from the base sheet, which neither layer named:
+    const edge = try tokens.token_color(sheet, "edge");
+    assert(edge.r == 0x8A); // edge_warm — inherited beneath both layers
+    print("mantra_browser_theme_stack: ground from the mode, head from the accent, edge from the base — three authors, one surface\n", .{});
+}
+
+fn welcome_accent_wins_over_base(io: std.Io) !void {
+    // The stacked head is the accent's honey, not the base sheet's ochre nor rung
+    // four's terracotta — the top layer wins the token it names.
+    var sheet_buf: [tokens.max_sheet_bytes]u8 = undefined;
+    const n = try resolve_stacked(io, &sheet_buf);
+    const head = try tokens.token_color(sheet_buf[0..n], "head");
+    const base_head = try tokens.token_color(tokens.base_sheet, "head");
+    assert(head.r != base_head.r or head.g != base_head.g or head.b != base_head.b);
+    const want = skate.Color{
+        .r = @intCast((accent_head_argb >> 16) & 0xFF),
+        .g = @intCast((accent_head_argb >> 8) & 0xFF),
+        .b = @intCast(accent_head_argb & 0xFF),
+    };
+    assert(head.r == want.r);
+    assert(head.g == want.g);
+    assert(head.b == want.b);
+    print("mantra_browser_theme_stack: the accent layer wins the head at the top of the cascade\n", .{});
+}
+
+fn welcome_stacked_paint_reaches_canvas(allocator: std.mem.Allocator, io: std.Io) !void {
+    var sheet_buf: [tokens.max_sheet_bytes]u8 = undefined;
+    const n = try resolve_stacked(io, &sheet_buf);
+    const sheet = sheet_buf[0..n];
+
+    var catalog = try mb.demo_catalog();
+    var grid = try skate.Grid.init(allocator, heads.view_cols, heads.view_rows);
+    const rows = try heads.paint_heads(&catalog, &grid, sheet);
+    assert(rows == 6);
+
+    const paint = try tokens.dress(sheet);
+    const head = try tokens.token_color(sheet, "head");
+    const width: i32 = @intCast(heads.view_cols * skate.cell_w);
+    const height: i32 = @intCast(heads.view_rows * skate.cell_h);
+    const stride: u32 = heads.view_cols * skate.cell_w * 4;
+    const pixel_count: usize = @intCast(stride * @as(u32, @intCast(height)));
+    const pixels = try allocator.alloc(u8, pixel_count);
+    grid.rasterize(pixels, stride, width, height, paint.paper, paint.ink, 1);
+
+    const w_u: u32 = @intCast(width);
+    const h_u: u32 = @intCast(height);
+    const head_pixels = count_pixels_of_color(pixels, stride, w_u, h_u, head);
+    // The stacked accent's honey head reached the canvas — the composition painted.
+    assert(head_pixels > 0);
+    print("mantra_browser_theme_stack: {d} stacked-accent head pixels on the canvas — the cascade painted\n", .{head_pixels});
+}
+
+fn welcome_stack_refuses_styleless(io: std.Io) !void {
+    // read_layer refuses a `.brush` with no style block — a cascade layer must
+    // carry tokens. The seed fixture declares none.
+    var out: [bp.max_style_bytes]u8 = undefined;
+    if (read_layer(io, "brushstroke/seed-frame.brush", &out)) |_| {
+        unreachable;
+    } else |err| {
+        // invariant: a style-less layer refuses by the named error.
+        assert(err == error.LayerEmpty);
+    }
+    print("mantra_browser_theme_stack: a style-less layer refuses — LayerEmpty\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_layers_compose(io);
+        try welcome_accent_wins_over_base(io);
+        try welcome_stacked_paint_reaches_canvas(garden, io);
+        try welcome_stack_refuses_styleless(io);
+        print("mantra_browser_theme_stack {s} — GREEN\n", .{mantra_browser_theme_stack_version});
+        return 0;
+    }
+    print("usage: mantra-browser-theme-stack selftest\n", .{});
+    return 1;
+}
