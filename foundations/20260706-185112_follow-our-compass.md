@@ -10,6 +10,7 @@
 *Written by Rio 3 for Kaeden.*
 Radiant pass `20260725.035453`
 Radiant pass `20260727.213740` — Voice/Radiant named on the day-one rose (`docs/COMPASS.md`); claims unchanged
+AHOY1 weave `20260811.214423` — kin block added; the return read now orders by **Lindy-first, crux-first**; claims unchanged
 
 ---
 
@@ -51,6 +52,15 @@ If TASKS and ROADMAP disagree with a seated brief, **the brief and green witness
 - Retire **follow our grain** only in *new* conversational prose where compass reads clearer; do not chase every historical "grain" mention in archive or gratitude.
 - Meet **Radiant** on the day-one rose (`docs/COMPASS.md` Voice step · `context/RADIANT_STYLE.md`) — how dated pages speak; lint and pass ledger keep the surface honest.
 - Loop words **kg** · **check-in** · **checkpoint** · **bookmark** · **send** · **remember** · **align** live in [`context/LEXICON.md`](../context/LEXICON.md); closing lines always name `kg` or a typed `check in (…)` per collaboration rhythm.
+
+## Kin in the weave
+
+The compass is one of two canonical hubs every leaf foundation routes through; naming its neighbours keeps the tree wiki-connected rather than star-shaped.
+
+- **The front door** — the root [`../README.md`](../README.md) opens onto the whole tree and points here for the return habit.
+- **The room** — the [`foundations/README.md`](README.md) indexes the *why*; this brief is its navigation habit.
+- **The sibling hub** — [The Grain and the Crossing](../active-designing/20260702-184312_the-grain-and-the-crossing.md) defines the ten strands the compass returns you *to*; the compass says *where to look*, the grain says *does this cut clean*.
+- **The order of the read** — the newest-first walk now follows [**Lindy-first, crux-first**](../.claude/rules/lindy-first-crux.md): among what direction offers, take the longest-lived work first, and within a tier the *crux* — the hardest solvable problem. Grounded in [the Lindy effect](20260811-211431_the-lindy-effect-and-the-long-return.md).
 
 ---
 
