@@ -1,0 +1,166 @@
+//! pond/apps/mantra_editor_view.rye — BUHR Journey 4, Rung 2: an edit moves the
+//! living edge forward, visibly.
+//!
+//! Rung one proved an edit is an append the browser graph already knows how to show —
+//! the render grows by exactly the new node. This rung carries that growth onto the
+//! styled Skate surface: after a commit, the same `heads.paint_heads` lowering lights
+//! the *new* revision as the living edge. Rung three (Journey 2) lit each lane's head
+//! — the newest node in its chain — in the design system's `head` token; an edit adds
+//! a newer node, so the living edge on the edited lane moves forward to it. Editor and
+//! view stay one graph: the paint lights whatever the append-only log now holds.
+//!
+//! The proof is at the grid-cell level, deterministic and exact: on the edited lane's
+//! row, the head-token cells (marked with `heads.head_slot`) sit further to the right
+//! after the edit than before — the living edge advanced from `r1` to the appended
+//! `r2` — and the lit head now covers the new node's span, not the old one. The other
+//! lanes' rows paint byte-for-byte unchanged, so the edit lit only what it grew.
+//!
+//! Additive by construction: it imports mantra_browser, mantra_editor,
+//! mantra_browser_heads, brushstroke/tokens, and brushstroke/skate_grid, calling only
+//! their public functions. No file beneath it changes; rungs one (editor) and three
+//! (heads) stay their own green binaries.
+//!
+//!   rye build pond/apps/mantra_editor_view.rye -femit-bin=pond/bin/mantra-editor-view
+//!   pond/bin/mantra-editor-view selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const mb = @import("mantra_browser.rye");
+const editor = @import("mantra_editor.rye");
+const heads = @import("mantra_browser_heads.rye");
+const tokens = @import("brushstroke/tokens.rye");
+const skate = @import("brushstroke/skate_grid.rye");
+
+const mantra_editor_view_version = "20260812.124400";
+
+/// The grid row whose text contains `marker`, or null — a witness helper so a lane's
+/// painted row can be found before and after an edit.
+fn find_row(grid: *const skate.Grid, marker: []const u8) ?u32 {
+    // invariant: a real marker has bytes to find.
+    assert(marker.len > 0);
+    var row: u32 = 0;
+    // invariant: the scan stays inside the grid's bounded height.
+    while (row < grid.rows) : (row += 1) {
+        const cells = grid.row_cells(row);
+        if (std.mem.indexOf(u8, cells, marker) != null) return row;
+    }
+    return null;
+}
+
+/// The rightmost column on `row` painted in the head token (`heads.head_slot`), or
+/// null when the row carries no head cell — the position of the lane's living edge.
+fn head_edge_col(grid: *const skate.Grid, row: u32) ?u32 {
+    // invariant: the row sits inside the grid's bounded height.
+    assert(row < grid.rows);
+    const base: usize = @intCast(row * grid.cols);
+    var edge: ?u32 = null;
+    var col: u32 = 0;
+    while (col < grid.cols) : (col += 1) {
+        if (grid.fg_index[base + @as(usize, @intCast(col))] == heads.head_slot) edge = col;
+    }
+    return edge;
+}
+
+/// Count the head-token cells on `row` — how many cells the living edge covers.
+fn head_cell_count(grid: *const skate.Grid, row: u32) u32 {
+    // invariant: the row sits inside the grid's bounded height.
+    assert(row < grid.rows);
+    const base: usize = @intCast(row * grid.cols);
+    var count: u32 = 0;
+    var col: u32 = 0;
+    while (col < grid.cols) : (col += 1) {
+        if (grid.fg_index[base + @as(usize, @intCast(col))] == heads.head_slot) count += 1;
+    }
+    return count;
+}
+
+fn welcome_edit_moves_living_edge(allocator: std.mem.Allocator) !void {
+    // Paint the graph before the edit — b.txt stands at r1, its only node the head.
+    var catalog = try mb.demo_catalog();
+    var before = try skate.Grid.init(allocator, heads.view_cols, heads.view_rows);
+    _ = try heads.paint_heads(&catalog, &before, tokens.base_sheet);
+    const b_before = find_row(&before, "b.txt:").?;
+    const edge_before = head_edge_col(&before, b_before).?;
+    // The lane's living edge lights r1 and nothing newer yet.
+    assert(std.mem.indexOf(u8, before.row_cells(b_before), "r1[") != null);
+    assert(std.mem.indexOf(u8, before.row_cells(b_before), "r2[") == null);
+    assert(head_cell_count(&before, b_before) > 0);
+
+    // Commit an edit — append r2 to b.txt — and paint the grown graph afresh.
+    const rev = try editor.commit(&catalog, "local", "notes", "b.txt", "beta-two", "leaf");
+    assert(rev == 2);
+    var after = try skate.Grid.init(allocator, heads.view_cols, heads.view_rows);
+    _ = try heads.paint_heads(&catalog, &after, tokens.base_sheet);
+    const b_after = find_row(&after, "b.txt:").?;
+    const edge_after = head_edge_col(&after, b_after).?;
+
+    // The living edge advanced: the head token now lights cells further to the right,
+    // over the appended r2 node — the newest revision is the new living edge.
+    assert(edge_after > edge_before);
+    assert(std.mem.indexOf(u8, after.row_cells(b_after), "r2[") != null);
+    // And the lit head covers exactly the r2 node's span (rung three's head finder).
+    const span = heads.head_span(after.row_cells(b_after)).?;
+    assert(edge_after >= span.start);
+    assert(edge_after < span.end);
+    print("mantra_editor_view: the edit appended r{d}; the living edge moved from col {d} to col {d} — the new node is lit\n", .{ rev, edge_before, edge_after });
+}
+
+fn welcome_edit_lights_only_its_lane(allocator: std.mem.Allocator) !void {
+    // The edit lights only the lane it grew — every other lane's row paints
+    // byte-for-byte unchanged, head cell for head cell.
+    var catalog = try mb.demo_catalog();
+    var before = try skate.Grid.init(allocator, heads.view_cols, heads.view_rows);
+    _ = try heads.paint_heads(&catalog, &before, tokens.base_sheet);
+    const a_before = find_row(&before, "a.txt:").?;
+    const a_before_edge = head_edge_col(&before, a_before).?;
+
+    _ = try editor.commit(&catalog, "local", "notes", "b.txt", "beta-two", "leaf");
+    var after = try skate.Grid.init(allocator, heads.view_cols, heads.view_rows);
+    _ = try heads.paint_heads(&catalog, &after, tokens.base_sheet);
+    const a_after = find_row(&after, "a.txt:").?;
+    const a_after_edge = head_edge_col(&after, a_after).?;
+
+    // The a.txt lane's text and its living edge are untouched by the b.txt edit.
+    assert(std.mem.eql(u8, before.row_cells(a_before), after.row_cells(a_after)));
+    assert(a_before_edge == a_after_edge);
+    print("mantra_editor_view: the edit lit only its own lane — a.txt paints unchanged, its living edge stays put\n", .{});
+}
+
+fn welcome_second_edit_advances_again(allocator: std.mem.Allocator) !void {
+    // A second edit advances the living edge once more — r2 to r3 — proving the paint
+    // tracks the append-only head at every step, not just the first. A three-node
+    // chain is wider than the demo viewport, so this rung paints on a wider grid —
+    // the paint's own ViewTooNarrow bound is why a longer chain wants more columns.
+    const wide_cols: u32 = 72;
+    var catalog = try mb.demo_catalog();
+    _ = try editor.commit(&catalog, "local", "notes", "b.txt", "beta-two", "leaf");
+    var g2 = try skate.Grid.init(allocator, wide_cols, heads.view_rows);
+    _ = try heads.paint_heads(&catalog, &g2, tokens.base_sheet);
+    const edge2 = head_edge_col(&g2, find_row(&g2, "b.txt:").?).?;
+
+    const rev3 = try editor.commit(&catalog, "local", "notes", "b.txt", "beta-three", "leaf");
+    assert(rev3 == 3);
+    var g3 = try skate.Grid.init(allocator, wide_cols, heads.view_rows);
+    _ = try heads.paint_heads(&catalog, &g3, tokens.base_sheet);
+    const b3 = find_row(&g3, "b.txt:").?;
+    const edge3 = head_edge_col(&g3, b3).?;
+
+    assert(edge3 > edge2);
+    assert(std.mem.indexOf(u8, g3.row_cells(b3), "r3[") != null);
+    print("mantra_editor_view: a second edit advanced the living edge again — the paint tracks the append-only head\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_edit_moves_living_edge(garden);
+        try welcome_edit_lights_only_its_lane(garden);
+        try welcome_second_edit_advances_again(garden);
+        print("mantra_editor_view {s} — GREEN\n", .{mantra_editor_view_version});
+        return 0;
+    }
+    print("usage: mantra-editor-view selftest\n", .{});
+    return 1;
+}
