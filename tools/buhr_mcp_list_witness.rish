@@ -1,0 +1,36 @@
+# tools/buhr_mcp_list_witness.rish — BUHR Journey 3, Rung 4.
+#
+# The tools/list envelope, proven on metal: a JSON MCP host learns every Grain tool
+# a server offers in one exchange. A bounded Bron catalog of manifests renders to a
+# JSON-RPC `tools/list` response -- an id and a `result` carrying a `tools` array of
+# descriptors -- and reads back into an equal catalog, tool for tool, argument for
+# argument. A list past the catalog bound is refused (never silently truncated), and
+# an unknown field beside the tools array is refused rather than dropped. Rung three
+# discovered one tool; this rung discovers them all.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/buhr_mcp_list_witness.rish
+
+say "buhr-j3r4: Language EN — a Grain server's whole tool catalog tiled to JSON tools/list and back."
+say "buhr-j3r4: Lens TAME — bounded, round-trippable over many tools, over-count and unknown fields refused."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/mcp-list"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mcp_list.rye -femit-bin=${bin}"]
+assert build.ok else "buhr-j3r4: mcp_list build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "buhr-j3r4: mcp_list selftest exited non-zero"
+assert selftest.out contains "GREEN" else "buhr-j3r4: selftest did not speak GREEN"
+assert selftest.out contains "two-tool list — Bron catalog -> JSON tools/list -> Bron catalog, equal" else "buhr-j3r4: two-tool list round-trip missing"
+assert selftest.out contains "empty list — a server offering no tools round-trips" else "buhr-j3r4: empty list round-trip missing"
+assert selftest.out contains "a list past the catalog bound is refused" else "buhr-j3r4: over-count refusal missing"
+assert selftest.out contains "an unknown field beside the tools array is refused" else "buhr-j3r4: unknown-field refusal missing"
+
+# The tile is additive: rung three (the single-descriptor manifest) stays its own GREEN binary.
+let rung3 = run ["sh" "-c" "rishi/bin/rishi run tools/buhr_mcp_manifest_witness.rish 2>&1"]
+assert rung3.ok else "buhr-j3r4: rung three witness regressed"
+assert rung3.out contains "GREEN: BUHR-J3r3" else "buhr-j3r4: rung three green line missing"
+
+say "GREEN: BUHR-J3r4 — the tools/list envelope discovers a whole Grain catalog for a JSON host; call + discovery + listing complete."
