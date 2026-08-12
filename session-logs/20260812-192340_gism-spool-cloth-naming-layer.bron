@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260812.192340
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention · ai-jail
+title Spool r2 — the naming layer over the spool (Tablecloth's sibling for large artifacts)
+prompt Autonomous loop: continue Lindy-first crux-first after closing red #73; self-approve, send each finished increment as its own signed round, stop at custody gates.
+think With red #73 closed by mantra/spool.rye, the next Lindy-first crux is the layer provenance and Tablecloth actually need: a name over a large artifact. Tablecloth names one-resin artifacts; the spool handles large ones; nothing yet bound a human name to a whole spool.
+think Confirmed the import path: Zig's lazy analysis means spool.rye's selftest @embedFile decls are not analyzed when only its pub functions/consts are referenced, so pond/apps/spool_cloth.rye imports mantra/spool.rye cleanly (symlinked pond/apps/mantra/spool.rye) without needing corpora symlinks in that dir — verified with a throwaway probe.
+think Designed spool_cloth.rye as Tablecloth's sibling: a LargeCatalog binds a name to a whole spool (its ordered resin recipe), store_large winds via spool.spool_content, fetch_large unspools by name. Bounded max_large_artifacts small (4) on purpose — each entry owns a ~33 KB spool, so the catalog is heavy by design; four named large artifacts is ample for the naming crux and the memory cost is named in the source.
+obs GREEN first pass. Two real docs named and fetched byte-for-byte (2689/2689/6079); the same content under two names shares every bead (full dedup — security-copy deposited 0, deduped 11); format spool-cloth-v1 manifest round-trips name/address/length/resin-count; tampered bead, unknown/taken/empty name, bad manifest header all refuse.
+obs Composes the spool's public API only — the spool re-runs GREEN, additive. No custody crosses; demo/real embedded bytes only. This is the layer a signed large document will sit on (spool r3 owner-signs over the spool whole digest).
+loom witness=gism_spool_cloth_witness spool_cloth_security_bytes=2689 spool_cloth_two_rooms_bytes=6079 spool_cloth_dedup_deposited=0 spool_cloth_dedup_deduped=11 spool_cloth_manifest_len=299
+file pond/apps/spool_cloth.rye the naming layer over the spool — a human name bound to a whole large artifact, fetch-by-name whole
+file pond/apps/mantra/spool.rye symlink so pond/apps can import the spool
+file tools/gism_spool_cloth_witness.rish GREEN — real docs named/fetched · dedup · manifest round-trip · refusals · on-disk cross-check · spool re-run
+file work-in-progress/REMEMBER.md naming-layer landing recorded on the red #73 arc
+recommend keep-going next Lindy-first crux — owner-sign a large artifact (compose tablecloth_keyed's Kumara signing over the spool whole digest so a signed real large document travels, spool r3), or open Season 2 Journey 7 (Fair-trade, AYRE)

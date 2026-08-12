@@ -1,0 +1,364 @@
+//! pond/apps/spool_cloth.rye — GISM red #73 follow: the naming layer over the spool.
+//!
+//! Season 2, Yield. `mantra/spool.rye` closed red #73 by winding a large artifact
+//! across ordered resins; yet a spool alone is a recipe, not a name. Tablecloth
+//! (pond/apps/tablecloth.rye) is the naming layer over one-resin beading — a human name
+//! bound to a content address, fetch-by-name returning exactly the bytes whose digest
+//! the name pins. This is Tablecloth's sibling for large artifacts: a human name bound
+//! to a whole spool, so a real front-door document — too large for one resin — is
+//! stored under a name and fetched back byte-for-byte. It is the layer provenance needs
+//! to carry a *signed* real large document (a later rung), exactly as the small
+//! owner-signed catalog needed Tablecloth beneath it.
+//!
+//! It invents no storage: the beads live in the shared BeadStore the spool wound them
+//! into; the catalog holds each artifact's spool (its ordered resin recipe) and its
+//! name. Asking by name unspools — every bead proving itself by digest, every resin
+//! against its recorded whole-digest, the whole against the spool's content address —
+//! so a tampered byte anywhere refuses before a single byte is trusted. The Brix-facing
+//! face is a `format spool-cloth-v1` manifest: one `large <name> <whole-hex> <len>
+//! <resins>` line per artifact, render and parse round-tripping name, address, length,
+//! and resin count.
+//!
+//!   rye build pond/apps/spool_cloth.rye -femit-bin=pond/bin/spool-cloth
+//!   pond/bin/spool-cloth selftest
+//!
+//! Scope: active-designing/20260812-191206_gism-red73-spool-chunking-storage-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const beading = @import("mantra/beading.rye");
+const spool = @import("mantra/spool.rye");
+const tally_copy = @import("tally_copy.rye");
+const parse_int = @import("parse_int.rye");
+
+pub const spool_cloth_version = "20260812.192400";
+
+// A large artifact's human name. Short and plain, so a manifest line stays readable.
+pub const max_name: u32 = 48;
+// How many large artifacts one cloth holds. Bounded small on purpose: each entry owns a
+// whole spool (its ordered resin recipe, ~33 KB), so the catalog is heavy by design —
+// four named large artifacts is ample for the naming crux and keeps the store legible.
+pub const max_large_artifacts: u32 = 4;
+
+const digest_raw_len: u32 = 32;
+const digest_hex_len: u32 = digest_raw_len * 2;
+
+pub const ClothError = error{
+    NameEmpty,
+    NameTooLong,
+    NameTaken,
+    UnknownArtifact,
+    CatalogFull,
+    Overflow,
+    BadManifest,
+};
+
+// One named large artifact: its name and the whole spool that reassembles it.
+// Invariant: name_len <= max_name; the spool honors the Spool invariant.
+const LargeEntry = struct {
+    name: [max_name]u8,
+    name_len: u32,
+    spool: spool.Spool,
+};
+
+/// A bounded catalog binding names to spooled large artifacts over a shared BeadStore.
+// Invariant: count <= max_large_artifacts; every live entry honors LargeEntry.
+pub const LargeCatalog = struct {
+    entries: [max_large_artifacts]LargeEntry,
+    count: u32,
+
+    pub fn empty() LargeCatalog {
+        return .{ .entries = undefined, .count = 0 };
+    }
+
+    fn find(self: *const LargeCatalog, name: []const u8) ?u32 {
+        // invariant: the search stays within the live count
+        assert(self.count <= max_large_artifacts);
+        var i: u32 = 0;
+        while (i < self.count) : (i += 1) {
+            const e = &self.entries[i];
+            if (std.mem.eql(u8, e.name[0..e.name_len], name)) return i;
+        }
+        // invariant: a miss scanned every live entry
+        assert(i == self.count);
+        return null;
+    }
+};
+
+fn write_hex_lower(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds two hex chars per input byte
+    assert(out.len >= bytes.len * 2);
+    const digits = "0123456789abcdef";
+    var i: u32 = 0;
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = digits[bytes[i] >> 4];
+        out[i * 2 + 1] = digits[bytes[i] & 0x0F];
+    }
+    // invariant: every input byte produced its two hex chars
+    assert(i == bytes.len);
+}
+
+/// Store a large artifact under a name. The content is wound across ordered resins into
+/// the shared store (dedup earned across artifacts that share resins), and the catalog
+/// records the name and the whole spool. Refuses an empty/overlong/taken name, a full
+/// catalog, and (through the spool) content past the spool ceiling (ContentTooLarge).
+pub fn store_large(
+    cat: *LargeCatalog,
+    store: *beading.BeadStore,
+    name: []const u8,
+    content: []const u8,
+) (beading.BeadError || spool.SpoolError || ClothError)!spool.SpoolReport {
+    if (name.len == 0) return error.NameEmpty; // a name carries at least one byte
+    if (name.len > max_name) return error.NameTooLong; // a name fits its budget
+    if (cat.find(name) != null) return error.NameTaken; // names are unique in a cloth
+    if (cat.count >= max_large_artifacts) return error.CatalogFull; // the catalog is bounded
+    // invariant: room remains for exactly this entry
+    assert(cat.count < max_large_artifacts);
+
+    var e = &cat.entries[cat.count];
+    e.spool = spool.Spool.empty();
+    const rep = try spool.spool_content(store, content, &e.spool);
+    tally_copy.copy_disjoint(u8, e.name[0..name.len], name);
+    e.name_len = @intCast(name.len);
+    cat.count += 1;
+
+    // invariant: the catalog grew and stays within its bound
+    assert(cat.count <= max_large_artifacts);
+    return rep;
+}
+
+/// Fetch a large artifact by name into out, returning its length. Reassembly proves
+/// every bead against its digest, every resin against its whole-digest, and the whole
+/// against the spool's content address, so a tampered bead or recipe refuses; an unknown
+/// name refuses (UnknownArtifact).
+pub fn fetch_large(
+    cat: *const LargeCatalog,
+    store: *const beading.BeadStore,
+    name: []const u8,
+    out: []u8,
+) (beading.BeadError || spool.SpoolError || ClothError)!u32 {
+    const i = cat.find(name) orelse return error.UnknownArtifact;
+    // invariant: a found index is within the live catalog
+    assert(i < cat.count);
+    return spool.unspool(store, &cat.entries[i].spool, out);
+}
+
+/// The whole length of the artifact a name pins. Refuses an unknown name.
+pub fn large_len(cat: *const LargeCatalog, name: []const u8) ClothError!u32 {
+    // invariant: the search stays within the catalog bound
+    assert(cat.count <= max_large_artifacts);
+    const i = cat.find(name) orelse return error.UnknownArtifact;
+    // invariant: a found index is within the live catalog
+    assert(i < cat.count);
+    return cat.entries[i].spool.whole_len;
+}
+
+/// Render the catalog as its `format spool-cloth-v1` manifest, returning its length. One
+/// `large <name> <whole-hex> <len> <resins>` line per artifact, in held order.
+pub fn render_manifest(cat: *const LargeCatalog, out: []u8) ClothError!u32 {
+    // invariant: a manifest names at most the catalog bound
+    assert(cat.count <= max_large_artifacts);
+    const header = "format spool-cloth-v1\n";
+    if (header.len > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[0..header.len], header);
+    var off: u32 = @intCast(header.len);
+
+    var i: u32 = 0;
+    while (i < cat.count) : (i += 1) {
+        const e = &cat.entries[i];
+        var hex: [digest_hex_len]u8 = undefined;
+        write_hex_lower(e.spool.whole_digest[0..], hex[0..]);
+        const line = std.fmt.bufPrint(out[off..], "large {s} {s} {d} {d}\n", .{
+            e.name[0..e.name_len], hex[0..], e.spool.whole_len, e.spool.resin_count,
+        }) catch return error.Overflow;
+        off += @intCast(line.len);
+    }
+    // invariant: the rendered manifest stays within the buffer
+    assert(off <= out.len);
+    return off;
+}
+
+// A parsed manifest entry: the published name, address (hex), length, and resin count.
+pub const ManifestEntry = struct {
+    name: [max_name]u8,
+    name_len: u32,
+    digest_hex: [digest_hex_len]u8,
+    whole_len: u32,
+    resin_count: u32,
+};
+
+/// The Brix-facing manifest read back: names, addresses, lengths, resin counts.
+// Invariant: count <= max_large_artifacts.
+pub const Manifest = struct {
+    entries: [max_large_artifacts]ManifestEntry,
+    count: u32,
+};
+
+/// Parse a `format spool-cloth-v1` manifest. An unknown header, a malformed line, or an
+/// out-of-range field refuses (BadManifest); more artifacts than the bound (CatalogFull).
+pub fn parse_manifest(text: []const u8, man: *Manifest) ClothError!void {
+    man.count = 0;
+    // invariant: parsing starts from an empty manifest
+    assert(man.count == 0);
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const first = lines.next() orelse return error.BadManifest;
+    if (!std.mem.eql(u8, first, "format spool-cloth-v1")) return error.BadManifest;
+
+    while (lines.next()) |line| {
+        if (line.len == 0) continue; // a trailing newline yields an empty final piece
+        if (man.count >= max_large_artifacts) return error.CatalogFull;
+
+        var parts = std.mem.tokenizeScalar(u8, line, ' ');
+        const tag = parts.next() orelse return error.BadManifest;
+        if (!std.mem.eql(u8, tag, "large")) return error.BadManifest;
+        const name = parts.next() orelse return error.BadManifest;
+        const hex = parts.next() orelse return error.BadManifest;
+        const len_tok = parts.next() orelse return error.BadManifest;
+        const resins_tok = parts.next() orelse return error.BadManifest;
+        if (parts.next() != null) return error.BadManifest; // no slack past the fields
+        if (name.len == 0) return error.BadManifest;
+        if (name.len > max_name) return error.BadManifest;
+        if (hex.len != digest_hex_len) return error.BadManifest;
+        const whole_len = parse_int.parse_int(u32, len_tok, .{}) catch return error.BadManifest;
+        const resin_count = parse_int.parse_int(u32, resins_tok, .{}) catch return error.BadManifest;
+        if (resin_count > spool.max_resins) return error.BadManifest;
+
+        var e = &man.entries[man.count];
+        tally_copy.copy_disjoint(u8, e.name[0..name.len], name);
+        e.name_len = @intCast(name.len);
+        tally_copy.copy_disjoint(u8, e.digest_hex[0..], hex);
+        e.whole_len = whole_len;
+        e.resin_count = resin_count;
+        man.count += 1;
+    }
+    // invariant: a parsed manifest holds no more than the bound
+    assert(man.count <= max_large_artifacts);
+}
+
+// Two real front-door documents, embedded at compile time through the corpora symlinks
+// (the @embedFile idiom Yield lives with: real bytes a keeper reads, no network).
+const doc_security = @embedFile("corpora/security.md");
+const doc_two_rooms = @embedFile("corpora/two_rooms.md");
+
+fn run_spool_cloth_selftest() !u8 {
+    var store: beading.BeadStore = .empty();
+    var cat: LargeCatalog = .empty();
+    var out: [spool.max_content_bytes]u8 = undefined;
+
+    // invariant: both real documents genuinely exceed one resin — the naming layer earns
+    // its keep only on artifacts the small Tablecloth could not hold
+    assert(doc_security.len > beading.max_resin_bytes);
+    assert(doc_two_rooms.len > beading.max_resin_bytes);
+
+    // Store two real documents under names, and one of them under a second name.
+    const rep_s = try store_large(&cat, &store, "security.md", doc_security);
+    assert(rep_s.beads_deposited >= 1); // a fresh large artifact deposits its beads
+    const rep_copy = try store_large(&cat, &store, "security-copy.md", doc_security);
+    assert(rep_copy.beads_deposited == 0); // identical content: every resin already held
+    assert(rep_copy.beads_deduped == rep_copy.bead_count); // full dedup across the name
+    const rep_t = try store_large(&cat, &store, "two_rooms.md", doc_two_rooms);
+    assert(rep_t.beads_deposited >= 1);
+    assert(cat.count == 3);
+
+    // Fetch each by name and prove the bytes returned are exactly the real document's.
+    const n1 = try fetch_large(&cat, &store, "security.md", out[0..]);
+    assert(n1 == doc_security.len);
+    assert(std.mem.eql(u8, out[0..n1], doc_security));
+    const n2 = try fetch_large(&cat, &store, "security-copy.md", out[0..]);
+    assert(std.mem.eql(u8, out[0..n2], doc_security)); // one storage, two true names
+    const n3 = try fetch_large(&cat, &store, "two_rooms.md", out[0..]);
+    assert(std.mem.eql(u8, out[0..n3], doc_two_rooms));
+
+    // The Brix-facing manifest round-trips: render then parse recovers name, address,
+    // length, and resin count for every entry, field for field.
+    var man_bytes: [1024]u8 = undefined;
+    const man_len = try render_manifest(&cat, man_bytes[0..]);
+    var man: Manifest = undefined;
+    try parse_manifest(man_bytes[0..man_len], &man);
+    assert(man.count == cat.count);
+    {
+        var i: u32 = 0;
+        while (i < man.count) : (i += 1) {
+            const ce = &cat.entries[i];
+            const me = &man.entries[i];
+            assert(std.mem.eql(u8, me.name[0..me.name_len], ce.name[0..ce.name_len]));
+            assert(me.whole_len == ce.spool.whole_len);
+            assert(me.resin_count == ce.spool.resin_count);
+            var hex: [digest_hex_len]u8 = undefined;
+            write_hex_lower(ce.spool.whole_digest[0..], hex[0..]);
+            assert(std.mem.eql(u8, me.digest_hex[0..], hex[0..]));
+        }
+    }
+
+    // Unwelcome: a tampered bead refuses the fetch by digest, in a fresh store so the
+    // rest of the selftest is untouched.
+    {
+        var store_t: beading.BeadStore = .empty();
+        var cat_t: LargeCatalog = .empty();
+        _ = try store_large(&cat_t, &store_t, "brief.md", doc_two_rooms);
+        store_t.beads[0].bytes[0] +%= 1; // flip one byte of a held bead
+        if (fetch_large(&cat_t, &store_t, "brief.md", out[0..])) |_| {
+            return error.DigestMismatch;
+        } else |err| {
+            assert(err == error.DigestMismatch);
+        }
+    }
+
+    // Unwelcome: an unknown name refuses.
+    if (fetch_large(&cat, &store, "absent.md", out[0..])) |_| {
+        return error.UnknownArtifact;
+    } else |err| {
+        assert(err == error.UnknownArtifact);
+    }
+
+    // Unwelcome: a name already taken refuses.
+    if (store_large(&cat, &store, "security.md", doc_two_rooms)) |_| {
+        return error.NameTaken;
+    } else |err| {
+        assert(err == error.NameTaken);
+    }
+
+    // Unwelcome: an empty name refuses.
+    if (store_large(&cat, &store, "", doc_security)) |_| {
+        return error.NameEmpty;
+    } else |err| {
+        assert(err == error.NameEmpty);
+    }
+
+    // Unwelcome: a manifest with the wrong header refuses.
+    {
+        var bad: Manifest = undefined;
+        if (parse_manifest("format not-a-cloth\nlarge a ff 1 1\n", &bad)) |_| {
+            return error.BadManifest;
+        } else |err| {
+            assert(err == error.BadManifest);
+        }
+    }
+
+    print("spool_cloth: stored 3 names over 2 real documents; one document stored once, named twice\n", .{});
+    print("spool_cloth: dedup dividend — security-copy deposited {d} beads, deduped {d}\n", .{
+        rep_copy.beads_deposited, rep_copy.beads_deduped,
+    });
+    print("spool_cloth: fetch by name returned {d}/{d}/{d} real bytes, each byte-for-byte\n", .{
+        n1, n2, n3,
+    });
+    print("spool_cloth: format spool-cloth-v1 manifest round-tripped {d} artifacts, len {d}\n", .{
+        man.count, man_len,
+    });
+    print("spool_cloth: tampered bead, unknown name, taken name, empty name, bad manifest refused GREEN\n", .{});
+    print("spool_cloth: version {s}\n", .{spool_cloth_version});
+    print("GREEN: a large real document gets a name; fetch returns the true bytes, whole.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "spool-cloth")) {
+            return run_spool_cloth_selftest();
+        }
+    }
+    return run_spool_cloth_selftest();
+}

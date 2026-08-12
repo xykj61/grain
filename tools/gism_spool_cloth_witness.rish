@@ -1,0 +1,50 @@
+# tools/gism_spool_cloth_witness.rish — GISM red #73 follow: naming over the spool.
+#
+# Season 2, Yield. mantra/spool.rye closed red #73 by winding a large artifact across
+# ordered resins; this rung is its naming layer — Tablecloth's sibling for large
+# artifacts. pond/apps/spool_cloth.rye binds a human name to a whole spool, so a real
+# front-door document too large for one resin is stored under a name and fetched back
+# byte-for-byte. It is the layer provenance needs to carry a signed real large document.
+# This witness proves it on metal: two real documents named and fetched whole, the
+# dedup dividend across a second name, the format spool-cloth-v1 manifest round-tripped,
+# and every refusal (tampered bead, unknown/taken/empty name, bad manifest header).
+# It re-runs the spool untouched — spool_cloth composes its public API only.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/gism_spool_cloth_witness.rish
+
+say "gism-red73-name: Language EN — a large real document gets a name; fetch returns the true bytes, whole."
+say "gism-red73-name: Lens TAME — a name over ordered resins, content-addressed; every tamper refused; the spool stays GREEN."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/spool-cloth"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/spool_cloth.rye -femit-bin=${bin}"]
+assert build.ok else "gism-red73-name: spool_cloth build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "gism-red73-name: spool_cloth selftest exited non-zero"
+assert selftest.out contains "GREEN" else "gism-red73-name: selftest did not speak GREEN"
+assert selftest.out contains "stored 3 names over 2 real documents" else "gism-red73-name: real-document naming missing"
+assert selftest.out contains "security-copy deposited 0 beads, deduped 11" else "gism-red73-name: dedup dividend missing"
+assert selftest.out contains "fetch by name returned 2689/2689/6079 real bytes, each byte-for-byte" else "gism-red73-name: byte-for-byte fetch missing"
+assert selftest.out contains "format spool-cloth-v1 manifest round-tripped 3 artifacts" else "gism-red73-name: manifest round-trip missing"
+assert selftest.out contains "tampered bead, unknown name, taken name, empty name, bad manifest refused GREEN" else "gism-red73-name: refusals missing"
+
+# Cross-check the real document sizes against the files on disk — two tools, one answer.
+let sec_bytes = run ["sh" "-c" "wc -c < SECURITY.md | tr -d ' '"]
+assert sec_bytes.ok else "gism-red73-name: could not measure SECURITY.md"
+assert sec_bytes.out contains "2689" else "gism-red73-name: SECURITY.md is not 2689 B on disk"
+let tr_bytes = run ["sh" "-c" "wc -c < context/TWO_ROOMS.md | tr -d ' '"]
+assert tr_bytes.ok else "gism-red73-name: could not measure context/TWO_ROOMS.md"
+assert tr_bytes.out contains "6079" else "gism-red73-name: context/TWO_ROOMS.md is not 6079 B on disk"
+
+# The spool is re-run untouched — the naming layer composes its public API only.
+let spool_bin = "mantra/bin/spool"
+let spool_build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/spool.rye -femit-bin=${spool_bin}"]
+assert spool_build.ok else "gism-red73-name: spool rebuild failed"
+let spool_selftest = run ["sh" "-c" "${spool_bin} selftest 2>&1"]
+assert spool_selftest.ok else "gism-red73-name: spool selftest regressed"
+assert spool_selftest.out contains "GREEN" else "gism-red73-name: spool did not speak GREEN"
+
+say "GREEN: GISM red #73 naming — a large real document gets a name over ordered resins; the spool stays GREEN."
