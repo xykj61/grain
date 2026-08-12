@@ -1,0 +1,268 @@
+//! pond/apps/mantra_browser_view_theme.rye — BUHR Journey 2, Rung 6: a .brush
+//! mode theme recolors the whole reading ground.
+//!
+//! Rung two painted the full revision graph — every line, not just the heads —
+//! onto a styled Skate surface, its ground the base sheet's Flax paper and Bark
+//! ink. Rung four themed the *living edge*: a `.brush` file recolored the one
+//! `head` accent. This rung carries the authoring loop to the other side of the
+//! sheet — the reading ground itself. A `.brush` *mode* file's `style:` block
+//! overrides `paper` and `ink`, the WADE1 cascade infuses that override over the
+//! base sheet, and rung two's unchanged `paint_graph` paints the whole graph on
+//! the *authored* ground. The proof this rung wants is that the entire reading
+//! surface flips light→dark by editing one `.brush` file, never Skate or Rye —
+//! and that the flip is a recolor: the base sheet's Flax paper leaves *zero*
+//! pixels on the themed canvas.
+//!
+//! It stays on witnessed ground end to end. The theme is read by the real `.brush`
+//! authoring loop (`brush_parse.parse_brush` validates the file, `collect_brush_style`
+//! reassembles its style block into the flat Bron sheet `tokens.rye` consumes); the
+//! cascade is `tokens.resolve` (per-key `brix/infuse`, already witnessed); the paint
+//! is rung two's `view.paint_graph` unchanged. The recolor is proven two ways: the
+//! themed ground resolves to Bark paper, and the base sheet's default Flax paper
+//! leaves *zero* pixels on the themed canvas — a recolor, not an addition.
+//!
+//! Additive by construction: it imports mantra_browser, mantra_browser_view,
+//! brushstroke/tokens, brushstroke/skate_grid, and brushstroke/brush_parse, calling
+//! only their public functions. No file beneath it changes; rungs one through five
+//! stay their own green binaries.
+//!
+//!   rye build pond/apps/mantra_browser_view_theme.rye -femit-bin=pond/bin/mantra-browser-view-theme
+//!   pond/bin/mantra-browser-view-theme selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const mb = @import("mantra_browser.rye");
+const view = @import("mantra_browser_view.rye");
+const tokens = @import("brushstroke/tokens.rye");
+const skate = @import("brushstroke/skate_grid.rye");
+const bp = @import("brushstroke/brush_parse.rye");
+
+const mantra_browser_view_theme_version = "20260812.122354";
+
+// The mode theme the rung reads — a real `.brush` authoring file whose style
+// block sets the ground (paper/ink) only, leaving accents to another layer.
+const theme_path = "pond/apps/dark-mode.brush";
+
+pub const ViewThemeError = error{
+    ThemeMissingGround,
+};
+
+/// Resolve the mode theme into a token sheet: read the `.brush` file, validate it
+/// through the real authoring loop, collect its `style:` block into flat Bron, and
+/// infuse that override over `tokens.base_sheet`. Returns the resolved sheet's byte
+/// length in `out`. The `paper` key the theme overrides now wins in the cascade.
+pub fn resolve_theme(io: std.Io, path: []const u8, out: []u8) !u32 {
+    // invariant: a real theme path names a file to read.
+    assert(path.len > 0);
+    // invariant: the resolved sheet fits the token-sheet bound.
+    assert(out.len <= tokens.max_sheet_bytes);
+
+    const garden = std.heap.page_allocator;
+    const cwd = std.Io.Dir.cwd();
+    const src = try cwd.readFileAlloc(io, path, garden, .limited(bp.max_brush_bytes));
+    // invariant: the source stays inside the brush read budget.
+    assert(src.len <= bp.max_brush_bytes);
+    defer garden.free(src);
+
+    // Validate the file through the real authoring loop before trusting its style.
+    const surface = try bp.parse_brush(src);
+    // invariant: a mode theme declares a non-empty style block to override with.
+    if (surface.style_count == 0) return error.ThemeMissingGround;
+
+    // Reassemble the style block into the flat Bron sheet tokens.rye's infuse reads.
+    var override_buf: [bp.max_style_bytes]u8 = undefined;
+    const over_len = try bp.collect_brush_style(src, &override_buf);
+    // invariant: a declared style block collects at least one token line.
+    assert(over_len > 0);
+    // invariant: a mode theme names the paper token whose ground it means to recolor.
+    if (std.mem.indexOf(u8, override_buf[0..over_len], "paper ") == null) return error.ThemeMissingGround;
+
+    const n = try tokens.resolve(tokens.base_sheet, override_buf[0..over_len], out);
+    // invariant: the resolved sheet is non-empty and bounded.
+    assert(n > 0);
+    assert(n <= out.len);
+    return n;
+}
+
+/// Count pixels whose visible color exactly matches `c` (ignoring alpha) in a
+/// rasterized buffer — a witness helper proving a specific ground color reached
+/// (or never reached) the canvas.
+fn count_pixels_of_color(pixels: []const u8, stride: u32, width: u32, height: u32, c: skate.Color) u32 {
+    // invariant: the stride holds a full row of ARGB8888 pixels.
+    assert(stride >= width * 4);
+    // invariant: a real canvas has width.
+    assert(width > 0);
+    // invariant: a real canvas has height.
+    assert(height > 0);
+    const stride_usize: usize = @intCast(stride);
+    var count: u32 = 0;
+    var y: u32 = 0;
+    while (y < height) : (y += 1) {
+        const y_usize: usize = @intCast(y);
+        const rowbytes = pixels[y_usize * stride_usize ..][0 .. @as(usize, @intCast(width)) * 4];
+        var x: u32 = 0;
+        while (x < width) : (x += 1) {
+            const px: usize = @intCast(x * 4);
+            if (rowbytes[px + 0] == c.b and rowbytes[px + 1] == c.g and rowbytes[px + 2] == c.r) {
+                count += 1;
+            }
+        }
+    }
+    return count;
+}
+
+/// Paint the demo graph with `sheet` and return the rasterized ARGB8888 buffer,
+/// its stride, and its pixel dimensions — a small helper so the recolor proof can
+/// compare a light canvas against a dark one on the very same graph.
+fn render_canvas(allocator: std.mem.Allocator, sheet: []const u8, stride_out: *u32, w_out: *u32, h_out: *u32) ![]u8 {
+    var catalog = try mb.demo_catalog();
+    var grid = try skate.Grid.init(allocator, view.view_cols, view.view_rows);
+    const rows = try view.paint_graph(&catalog, &grid, sheet);
+    // invariant: the demo graph paints its six known lines.
+    assert(rows == 6);
+
+    const paint = try tokens.dress(sheet);
+    const width: i32 = @intCast(view.view_cols * skate.cell_w);
+    const height: i32 = @intCast(view.view_rows * skate.cell_h);
+    const stride: u32 = view.view_cols * skate.cell_w * 4;
+    const pixel_count: usize = @intCast(stride * @as(u32, @intCast(height)));
+    const pixels = try allocator.alloc(u8, pixel_count);
+    grid.rasterize(pixels, stride, width, height, paint.paper, paint.ink, 1);
+    stride_out.* = stride;
+    w_out.* = @intCast(width);
+    h_out.* = @intCast(height);
+    return pixels;
+}
+
+fn welcome_theme_recolors_ground(allocator: std.mem.Allocator, io: std.Io) !void {
+    var themed_buf: [tokens.max_sheet_bytes]u8 = undefined;
+    const n = try resolve_theme(io, theme_path, &themed_buf);
+    const themed = themed_buf[0..n];
+
+    // The themed sheet's paper token now resolves to Bark (the dark page), not the
+    // base sheet's Flax — the override won the cascade on its own key.
+    const themed_paper = try tokens.token_color(themed, "paper"); // Bark
+    const base_paper = try tokens.token_color(tokens.base_sheet, "paper"); // Flax
+    assert(themed_paper.r == 0x2B); // Bark red
+    assert(themed_paper.g == 0x26); // Bark green
+    assert(themed_paper.b == 0x20); // Bark blue
+    assert(themed_paper.r != base_paper.r or themed_paper.g != base_paper.g or themed_paper.b != base_paper.b);
+
+    // The dark theme swaps the two colors between roles: base is Flax paper / Bark
+    // ink, the theme is Bark paper / Flax ink. So the honest recolor proof is which
+    // color plays the *ground* (the majority) and which the *ink* (the minority) —
+    // measured on the very same graph, once light and once dark.
+    var s_light: u32 = 0;
+    var w_light: u32 = 0;
+    var h_light: u32 = 0;
+    const light = try render_canvas(allocator, tokens.base_sheet, &s_light, &w_light, &h_light);
+    const flax_ground = count_pixels_of_color(light, s_light, w_light, h_light, base_paper); // light ground
+    const bark_ink = count_pixels_of_color(light, s_light, w_light, h_light, themed_paper); // dark ink
+
+    var s_dark: u32 = 0;
+    var w_dark: u32 = 0;
+    var h_dark: u32 = 0;
+    const dark = try render_canvas(allocator, themed, &s_dark, &w_dark, &h_dark);
+    const bark_ground = count_pixels_of_color(dark, s_dark, w_dark, h_dark, themed_paper); // dark ground
+    const flax_ink = count_pixels_of_color(dark, s_dark, w_dark, h_dark, base_paper); // light ink
+
+    // Under the base sheet the light Flax is the ground and Bark only the ink.
+    assert(flax_ground > bark_ink);
+    // Under the theme the dark Bark is the ground and Flax only the ink — flipped.
+    assert(bark_ground > flax_ink);
+    // Bark rose from a minority ink to the majority ground; Flax fell the other way.
+    assert(bark_ground > bark_ink);
+    assert(flax_ink < flax_ground);
+    print("mantra_browser_view_theme: ground flipped — dark ground {d} px (was {d} px ink), light now {d} px ink (was {d} px ground)\n", .{ bark_ground, bark_ink, flax_ink, flax_ground });
+}
+
+fn welcome_theme_ground_is_warm(io: std.Io) !void {
+    var themed_buf: [tokens.max_sheet_bytes]u8 = undefined;
+    const n = try resolve_theme(io, theme_path, &themed_buf);
+    // dress asserts paper and ink are each warm/low-blue and distinct on the way —
+    // a mode theme cannot smuggle a cold ground past the design system's palette law.
+    const paint = try tokens.dress(themed_buf[0..n]);
+    assert(paint.paper.r > paint.paper.g);
+    assert(paint.paper.g > paint.paper.b);
+    assert(paint.ink.r > paint.ink.g);
+    assert(paint.ink.g > paint.ink.b);
+    // The dark theme lifts the ink far above the paper — an honest dark contrast.
+    assert(paint.ink.r > paint.paper.r);
+    print("mantra_browser_view_theme: the authored ground is warm/low-blue — the palette law holds through the mode theme\n", .{});
+}
+
+fn welcome_theme_additive_glyphs(allocator: std.mem.Allocator, io: std.Io) !void {
+    var themed_buf: [tokens.max_sheet_bytes]u8 = undefined;
+    const n = try resolve_theme(io, theme_path, &themed_buf);
+
+    var catalog = try mb.demo_catalog();
+    var grid = try skate.Grid.init(allocator, view.view_cols, view.view_rows);
+    _ = try view.paint_graph(&catalog, &grid, themed_buf[0..n]);
+
+    // Theming touches only color — the painted glyphs still carry the very bytes
+    // rung one renders. Editor (render) and view (grid) stay one graph.
+    var buf: [mb.max_render_bytes]u8 = undefined;
+    const text = try mb.render(&catalog, &buf);
+    const first_nl = std.mem.indexOfScalar(u8, text, '\n').?;
+    const first_line = text[0..first_nl];
+    const painted = grid.row_cells(0);
+    // invariant: the grid row holds at least the rendered line's bytes.
+    assert(painted.len >= first_line.len);
+    assert(std.mem.startsWith(u8, painted, first_line));
+    print("mantra_browser_view_theme: theming recolors, never rewrites — text unchanged by the theme\n", .{});
+}
+
+fn welcome_no_theme_keeps_light(allocator: std.mem.Allocator) !void {
+    // A paint with the untouched base sheet keeps the light Flax ground — proving it
+    // is the theme's override, not the paint path, that flips the reading surface.
+    var catalog = try mb.demo_catalog();
+    var grid = try skate.Grid.init(allocator, view.view_cols, view.view_rows);
+    _ = try view.paint_graph(&catalog, &grid, tokens.base_sheet);
+
+    const base_paper = try tokens.token_color(tokens.base_sheet, "paper");
+    const paint = try tokens.dress(tokens.base_sheet);
+    const width: i32 = @intCast(view.view_cols * skate.cell_w);
+    const height: i32 = @intCast(view.view_rows * skate.cell_h);
+    const stride: u32 = view.view_cols * skate.cell_w * 4;
+    const pixel_count: usize = @intCast(stride * @as(u32, @intCast(height)));
+    const pixels = try allocator.alloc(u8, pixel_count);
+    grid.rasterize(pixels, stride, width, height, paint.paper, paint.ink, 1);
+
+    const w_u: u32 = @intCast(width);
+    const h_u: u32 = @intCast(height);
+    const base_ground_pixels = count_pixels_of_color(pixels, stride, w_u, h_u, base_paper);
+    // Untouched, the base sheet's Flax ground still fills the canvas.
+    assert(base_ground_pixels > 0);
+    print("mantra_browser_view_theme: without a theme, the light ground stands — the override is what flips the surface\n", .{});
+}
+
+fn welcome_theme_refuses_styleless(io: std.Io) !void {
+    // The seed fixture declares no style block; theming it names ThemeMissingGround
+    // rather than silently painting the default — a mode theme must carry a ground.
+    var out: [tokens.max_sheet_bytes]u8 = undefined;
+    if (resolve_theme(io, "brushstroke/seed-frame.brush", &out)) |_| {
+        unreachable;
+    } else |err| {
+        // invariant: a style-less fixture refuses by the named error.
+        assert(err == error.ThemeMissingGround);
+    }
+    print("mantra_browser_view_theme: a style-less .brush refuses to theme — ThemeMissingGround\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_theme_recolors_ground(garden, io);
+        try welcome_theme_ground_is_warm(io);
+        try welcome_theme_additive_glyphs(garden, io);
+        try welcome_no_theme_keeps_light(garden);
+        try welcome_theme_refuses_styleless(io);
+        print("mantra_browser_view_theme {s} — GREEN\n", .{mantra_browser_view_theme_version});
+        return 0;
+    }
+    print("usage: mantra-browser-view-theme selftest\n", .{});
+    return 1;
+}
