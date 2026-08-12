@@ -36,7 +36,35 @@ const mantra_editor_version = "20260812.123509";
 
 pub const EditError = error{
     LaneUnknown,
+    LaneExists,
 };
+
+/// Open a new lane: append the first revision on a fresh path that has no leaf yet,
+/// carrying `content` under `tilak`. Returns the first revision, always one. Where
+/// `commit` continues an existing lane, `open_lane` forks a new one — the editor's
+/// "new file" to `commit`'s "edit". Refuses a lane that already exists (there is a
+/// chain to continue, not a new one to open) with a named error, and lets Mantra's
+/// own `append_leaf` refuse an over-long field or a full catalog.
+pub fn open_lane(
+    catalog: *mn.BoltCatalog,
+    peer: []const u8,
+    bolt: []const u8,
+    path: []const u8,
+    content: []const u8,
+    tilak: []const u8,
+) !u32 {
+    // invariant: a real lane names all three of its coordinates.
+    assert(peer.len > 0);
+    assert(bolt.len > 0);
+    assert(path.len > 0);
+    // invariant: a fresh lane has no head to continue — else this is a commit.
+    if (mb.head_revision(catalog, peer, bolt, path)) |_| return error.LaneExists;
+
+    try catalog.append_leaf(peer, bolt, 1, path, content, tilak);
+    // invariant: the new lane opened at exactly revision one.
+    assert(mb.head_revision(catalog, peer, bolt, path).? == 1);
+    return 1;
+}
 
 /// Commit one edit to a lane: append the next revision after the lane's current head,
 /// carrying `content` under `tilak`. Returns the new revision number. A commit is an
