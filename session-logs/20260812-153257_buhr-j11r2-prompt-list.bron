@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260812.153257
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR-J11r2 — prompts/list, the honest prompt index
+prompt Keep going Lindy-first crux-first; send each finished increment as its own signed round.
+think Rung one served prompts/get (fill a known template). This rung serves prompts/list — the discovery mirror of tools/list (J9) and resources/list (J10r2).
+think Wrote pond/apps/mcp_prompt_list.rye: a PromptBook (bounded array of rung one's PromptDesc, add(src) parses into the next slot), render_list → format mcp-prompt-list-v1 (one `prompt <name> <argc>` line), parse_list → entries {name, argc}, verify_list → the honesty proof.
+think Honest index for prompts = every listed name truly names a held descriptor whose declared arg_count equals the advertised arity; a disagreeing arity or an absent name → NotHonest. Mirrors resource_list's read-at-published-length, adapted to the template surface (arity, not byte length).
+obs Built GREEN first run (2 welcomes + 4 unwelcomes: round-trip · honest index; wrong-arity · absent-prompt · unknown-field · bad-format). Reused the header copy_disjoint idiom; TAME + width clean. Rung one (prompts/get) stays its own green binary under the witness. Reads no network.
+loom witness=buhr_mcp_prompt_list_witness prompts=3 welcomes=2 unwelcomes=4 result=GREEN
+file pond/apps/mcp_prompt_list.rye the prompt list — book · render · parse · honest-index verify
+file tools/buhr_mcp_prompt_list_witness.rish the witness: build · selftest GREEN · honesty and refusals asserted · rung one re-run
+file work-in-progress/REMEMBER.md bumped the Git nib
+recommend keep-going J11r3 (a filled prompt routes to a voice) joins J9's tools with J11's prompts — the equinox's two halves meet; then check-in on the Comlink-served held gate
