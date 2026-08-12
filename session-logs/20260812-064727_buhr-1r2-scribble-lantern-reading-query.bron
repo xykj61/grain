@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260812.064727
+editor Zed
+model Fable 5
+voice Kyri
+title BUHR-1r2 — compose Scribble and Lantern into a bounded reading query
+prompt Read REMEMBER; take the next agent-doable lap Lindy-first crux-first; send each round to origin and xykj61; STOP at custody gates; if only gates remain print GATES-ONLY. baton prin recur
+think REMEMBER + the BUHR exploration name Journey 1 the crux — compose Quin's four witnessed voices; rung 1 (Lattice + Lantern) landed, the ordered next is Scribble
+think Read the landed inference_query.rye + its witness as the pattern; read scribble_core.rye public API (parse_markdown, extract_headings, extract_headings_at_depth, count_fence_kinds) and Lantern's Request/Response contract
+think Ran the r1 witness first for a clean baseline green, so any red would be mine
+think Authored pond/apps/reading_query.rye additively — imports lantern_core + scribble_core, calls only public fns; a pinned deterministic markdown doc plays the role r1's fixed operands played; three ops (outline · headings2 · fences) route to real Scribble calls; unknown op refuses, no fake answer
+think Kept every Lantern discipline r1 kept — validate_request, model allow-list, word-count token metering, length-stop truncation when the real reading outruns max_tokens
+obs Fixed one always-true unsigned assert (prompt.len >= 0) to r1's phrasing before build; no @memcpy — a bounded byte-by-byte append helper writes results, TAME bans stay clean
+obs Additive by construction: r1 witness re-run GREEN unchanged; the new file is not in the zero-assert ratchet list
+loom witness=buhr_reading_query_witness ops=7 result=GREEN
+loom witness=buhr_inference_query_witness result=GREEN_unchanged
+file pond/apps/reading_query.rye BUHR-1r2 app — Scribble + Lantern composed as one bounded reading query
+file tools/buhr_reading_query_witness.rish proves the request-to-reading path GREEN on metal
+file work-in-progress/REMEMBER.md seat the rung; refresh git nib in the same work commit
+recommend keep-going BUHR-1r3 (Ember corpus query) is the next compose over green ground; still agent-doable, no custody gate
