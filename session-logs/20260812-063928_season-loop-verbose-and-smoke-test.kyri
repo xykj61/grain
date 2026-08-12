@@ -1,0 +1,14 @@
+format session-log-v1
+stamp 20260812.063928
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Season-loop recipe — add --verbose + smoke test (the "hang" was headless silence)
+prompt Keaton: the continuous loop hangs at the jail banner; no Claude Code interface comes up
+think Diagnosed without the jail (I'm in-session): read agent-jail.sh (forwards --dangerously-skip-permissions and trailing args to claude) and .claude-state — dot-claude.json (39K, onboarding done) + .credentials.json present, so auth/onboarding persist across jail resets; not a login hang.
+think The real cause: -p (print) mode is HEADLESS by design — no TUI — and without --verbose it emits nothing to stdout until the whole lap finishes (read REMEMBER → do the lap → commit → push = minutes). Piped through `tee | grep`, that reads as a hang though claude is working. The keeper likely saw the jail banner then silence and stopped.
+think Fix: added a step-0 smoke test (`claude -p 'reply with exactly: pong'`) to confirm -p runs in seconds, a plain note that -p is headless and silence is the lap working, and `--verbose` on both the single-lap and loop commands so progress streams live (tee shows it, grep still catches GATES-ONLY). bash -n GREEN with --verbose added.
+obs Not a code bug — an operator-visibility gap in the recipe. The .claude/settings.local.json has an allow-list but no defaultMode: bypassPermissions; --dangerously-skip-permissions on the CLI covers the unattended case regardless.
+file tools/launch-claude-season.rish add smoke test + headless note + --verbose on lap and loop
+recommend check-in Keaton — run the pong smoke test to confirm -p works in seconds, then the --verbose loop so you can watch each lap; if pong itself hangs, clear onboarding with one interactive `./tools/agent-jail.sh --dangerously-skip-permissions claude` then retry
