@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260812.173106
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title TACT-J1r3 — the customs step, wired real
+prompt continue the road Lindy-first crux-first; send each finished increment; stop at custody gates
+think r2 wired identity to a real genesis. r3 wires the customs step to Pond's own first policy (pond/customs.rye) — the keeper's first mark meets receipt.
+think customs_admits maps a mark through customs.verdict_for_mark; only a place verdict advances the pilot. customs_verdict surfaces the full verdict so a hold (await-word) is distinct from a refuse (unknown mark). pilot_through_customs walks identity (real) -> place (supplied, its topology wiring lands in r4) -> customs (real verdict).
+think Three distinct outcomes proven: plain-bytes -> place -> advance to app; await-word -> hold -> the pilot surfaces a wait (not a rejection) and stands at customs; an unknown mark -> refuse -> holds whole. The hold vs refuse distinction is the custody-first posture — a wait for a human word is never auto-crossed.
+obs Added the pond/apps/customs.rye symlink (-> ../customs.rye), mirroring how constellation/tilak/topology are symlinked into pond/apps for compile resolution.
+loom witness=tact_ship_pilot_customs_witness result=GREEN cases=3 verdicts=place,hold,refuse
+file pond/apps/ship_pilot_customs.rye the customs step wired to pond/customs.verdict_for_mark; place advances, hold and refuse hold
+file pond/apps/customs.rye symlink to ../customs.rye for compile resolution
+file tools/tact_ship_pilot_customs_witness.rish witness — GREEN; place/hold/refuse each distinct; r2 identity re-runs GREEN
+recommend keep-going TACT-J1r4 composes the ready-to-run report — identity settled, place assigned, customs placing, the app named; the whole arc green end to end
