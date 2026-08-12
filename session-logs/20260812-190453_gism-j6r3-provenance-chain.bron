@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260812.190453
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title GISM-J6r3 — custody lengthens into a verifiable chain
+prompt Autonomous loop — take the next agent-doable lap Lindy-first crux-first; approve own design rounds; make progress before checking in; send each finished increment; STOP only at custody gates
+think GISM-J6r1 (real artifact provenance + red #73) and J6r2 (receipt travels) landed and sent; the J6 exploration named r3 as the chain lengthening — a real artifact handed under a second settled identity, each step signed
+think r3 opens a real design seam (how a custody chain re-verifies given settlement's shrunk shared surface, where the constellation holds Commitment digests, not keeper pubkeys); the prompt authorizes self-approving design and reserves stopping for custody gates, so I designed and built it rather than pausing
+obs Design chosen: a custody link is self-describing (from/to points, seq, from-keeper pubkey, signature over the constant artifact digest ++ from ++ to ++ seq); the chain is tamper-evident on its own, yet trust is grounded by re-presenting each holder's Deed at verify_chain — each presented Deed must be a current constellation member whose keeper matches the link, so a self-signed forgery that never settled cannot pass
+obs Built pond/apps/provenance_chain.rye over the real embedded waymark green-claim: open_chain (origin settled) → transfer (only the current holder, settled, signs) → verify_chain (contiguous line, valid signatures, constant digest, presented Deeds are current members) → head holder; the real artifact handed 267→27→3, re-verified from cold, head resolves to the galaxy
+obs Every tamper refuses: a non-holder transfer (NotHolder, nothing appended), a forged link, a swapped artifact digest, a wrong presented holder Deed (each BadTransfer). No fresh Yield red — the real bytes fit; composed over tablecloth_keyed's digest/verify primitives, which re-run GREEN
+loom witness=gism_j6_provenance_chain_witness cases=5 handoffs=2 head_point=3 max_links=8
+file pond/apps/provenance_chain.rye the settled-ledger-grounded custody chain over a real artifact (GISM-J6r3)
+file tools/gism_j6_provenance_chain_witness.rish witness — real handoff chain verifies + four tamper refusals + tablecloth_keyed re-run GREEN
+recommend check-in (Claude) GISM-J6r4 closes Journey 6 (provenance true to the bytes — an independent measurement binding the signed facts to the real file a keeper can open and hash); three rounds landed and sent this turn — a good place to confirm the custody-chain design seam before the closing rung
