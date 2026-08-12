@@ -45,7 +45,7 @@ const max_out: u32 = mcp.max_result;
 /// Render a `format mcp-result-v1` success envelope carrying `text` for request `id`.
 /// The result value is the rest of the line, so a multi-word answer ("19 22 43 50")
 /// crosses whole.
-fn render_ok(id: u32, text: []const u8, out: []u8) mcp.McpError![]const u8 {
+pub fn render_ok(id: u32, text: []const u8, out: []u8) mcp.McpError![]const u8 {
     // invariant: the caller's buffer respects the result bound
     assert(out.len <= max_out);
     // invariant: a rendered answer carries at least a header
@@ -57,7 +57,7 @@ fn render_ok(id: u32, text: []const u8, out: []u8) mcp.McpError![]const u8 {
 }
 
 /// Render a `format mcp-result-v1` error envelope naming `err_name` for request `id`.
-fn render_error(id: u32, err_name: []const u8, out: []u8) mcp.McpError![]const u8 {
+pub fn render_error(id: u32, err_name: []const u8, out: []u8) mcp.McpError![]const u8 {
     // invariant: the caller's buffer respects the result bound
     assert(out.len <= max_out);
     // invariant: a named error is present, never an empty error line
@@ -69,7 +69,7 @@ fn render_error(id: u32, err_name: []const u8, out: []u8) mcp.McpError![]const u
 
 /// Map a host refusal to its named MCP error. Every voice refusal the gathered host owns
 /// crosses back under a stable name a caller can branch on, never a fabricated result.
-fn error_name(err: anyerror) []const u8 {
+pub fn error_name(err: anyerror) []const u8 {
     return switch (err) {
         error.ModelNotAllowed => "model_not_allowed",
         error.UnknownOp => "unknown_op",
