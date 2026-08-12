@@ -38,6 +38,7 @@ Before the first rung is written as `X0` / `X1` / … in TASKS, ROADMAP, compres
 | **OFFY** | `cion-meta-season-equinox-3-debride` | CION Equinox 3 — Debride (word-gated cuts of dead count-up tissue, cairns first) |
 | **GRAD** | `cion-meta-season-equinox-4-seal` | CION Equinox 4 — Seal (witness the conversion · seat the labeling-law guard) |
 | **AHOY** | `root-readme-lindy-foundation-weave-and-seed-legitimacy` | Front-door season — root README rewrite (Lindy-durable, favorite words) · Lindy foundation silo · fascia crosslink weave · seed legitimacy + final depersonalized push |
+| **WADE** | `bit-design-system-surface-takeover-and-dimeroll-entities` | Double-seated beside AHOY — DJINN's Bit Design System over the Skate·Realidream·Brushstroke surface (DVUI/Zig 0.16 in a Swift macOS Dock shell, Glow·Rishi·Rye·.brush impl) · Pond onboarding · Vultr SEA IaC · Dimeroll expansion for Siya Fund + Linengrow PBC HR & accounting |
 
 **Hand-seated names on the exclude roster** (not waymark draws): **SEVA** (viewer; absent from flw), **MAND** (M vane; in flw), **MONA** (prior name of Mand — one season). **SALA** retired from exclude with the Sala→Seva alias close.
 
