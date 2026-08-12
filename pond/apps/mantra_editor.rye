@@ -1,0 +1,188 @@
+//! pond/apps/mantra_editor.rye — BUHR Journey 4, Rung 1: an edit is an append the
+//! graph already knows how to show.
+//!
+//! Journey 2 built the reading half of Realidream's promise — the append-only log
+//! rendered as a readable, themeable revision graph. This rung opens the writing
+//! half. Realidream promises reading the web and writing the program on *one* graph
+//! (foundations/20260728-220203_realidream.md); the crux of the editor is that an
+//! edit is not a buffer beside the log to be reconciled — an edit *is* a new
+//! revision appended to the Mantra catalog, and the very same `mantra_browser.render`
+//! paints the grown graph. The surface holds no state the history does not: that is
+//! referential transparency carried into an editor.
+//!
+//! `commit` reads the lane's head revision through the browser's own accessor (so it
+//! continues exactly the chain the painted view shows), appends the next revision to
+//! the catalog by Mantra's public `append_leaf` (which enforces the append-only order
+//! and immutability laws), and returns the new revision. The proof this rung wants:
+//! render the graph before and after, and the after-graph carries exactly one new
+//! `r<n>` node on the edited lane — its chain link intact — every other lane byte for
+//! byte unchanged.
+//!
+//! Additive by construction: it imports mantra_browser and mantra/recall_lap1,
+//! calling only their public functions (one new public accessor, `head_revision`,
+//! added to the browser where head-finding already lives). No file beneath it
+//! changes; Journey 2 stays its own green binary.
+//!
+//!   rye build pond/apps/mantra_editor.rye -femit-bin=pond/bin/mantra-editor
+//!   pond/bin/mantra-editor selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const mb = @import("mantra_browser.rye");
+const mn = @import("mantra/recall_lap1.rye");
+
+const mantra_editor_version = "20260812.123509";
+
+pub const EditError = error{
+    LaneUnknown,
+};
+
+/// Commit one edit to a lane: append the next revision after the lane's current head,
+/// carrying `content` under `tilak`. Returns the new revision number. A commit is an
+/// append — never a rewrite — so an editor built on it inherits the tree's
+/// accrete-never-break discipline by construction. Refuses an edit to a lane that has
+/// no leaf yet (there is nothing to continue) with a named error, and lets Mantra's
+/// own `append_leaf` refuse an over-long field or a full catalog.
+pub fn commit(
+    catalog: *mn.BoltCatalog,
+    peer: []const u8,
+    bolt: []const u8,
+    path: []const u8,
+    content: []const u8,
+    tilak: []const u8,
+) !u32 {
+    // invariant: a real lane names all three of its coordinates.
+    assert(peer.len > 0);
+    assert(bolt.len > 0);
+    assert(path.len > 0);
+
+    const head = mb.head_revision(catalog, peer, bolt, path) orelse return error.LaneUnknown;
+    // invariant: the head is a real revision counting from one.
+    assert(head >= 1);
+    const next = head + 1;
+    // invariant: the append continues the chain by exactly one revision.
+    assert(next == head + 1);
+
+    try catalog.append_leaf(peer, bolt, next, path, content, tilak);
+    // invariant: the append moved the lane's head forward to the new revision.
+    assert(mb.head_revision(catalog, peer, bolt, path).? == next);
+    return next;
+}
+
+/// Count how many times `needle` occurs in `haystack`, bounded by the haystack's own
+/// length — a witness helper proving a node marker appears exactly once (or not at
+/// all) in a rendered graph.
+fn count_occurrences(haystack: []const u8, needle: []const u8) u32 {
+    // invariant: a real needle has bytes to match.
+    assert(needle.len > 0);
+    var count: u32 = 0;
+    var i: usize = 0; // seam: slice index over a std search
+    while (i + needle.len <= haystack.len) {
+        if (std.mem.eql(u8, haystack[i .. i + needle.len], needle)) {
+            count += 1;
+            i += needle.len;
+        } else {
+            i += 1;
+        }
+    }
+    return count;
+}
+
+fn welcome_edit_grows_the_graph() !void {
+    var catalog = try mb.demo_catalog();
+
+    // The demo lane local/notes/b.txt stands at head revision 1 — one node, no chain.
+    const head_before = mb.head_revision(&catalog, "local", "notes", "b.txt").?;
+    assert(head_before == 1);
+
+    var before_buf: [mb.max_render_bytes]u8 = undefined;
+    const before = try mb.render(&catalog, &before_buf);
+    // Before the edit, b.txt carries one revision and no chain arrow on its line.
+    assert(count_occurrences(before, "r2[") == 1); // a.txt already has an r2
+    // The b.txt lane shows exactly one node before the edit.
+    const b_line_before = line_with(before, "b.txt:");
+    assert(count_occurrences(b_line_before, "->") == 0);
+
+    // Commit an edit — append revision 2 to b.txt.
+    const rev = try commit(&catalog, "local", "notes", "b.txt", "beta-two", "leaf");
+    assert(rev == 2);
+
+    var after_buf: [mb.max_render_bytes]u8 = undefined;
+    const after = try mb.render(&catalog, &after_buf);
+
+    // The edited lane now chains r1 -> r2 — the graph grew by exactly that node.
+    const b_line_after = line_with(after, "b.txt:");
+    assert(count_occurrences(b_line_after, "->") == 1);
+    assert(count_occurrences(b_line_after, "r1[") == 1);
+    assert(count_occurrences(b_line_after, "r2[") == 1);
+
+    // Every other lane is byte-for-byte unchanged — the edit touched only its lane.
+    const a_before = line_with(before, "a.txt:");
+    const a_after = line_with(after, "a.txt:");
+    assert(std.mem.eql(u8, a_before, a_after));
+    const idx_before = line_with(before, "index:");
+    const idx_after = line_with(after, "index:");
+    assert(std.mem.eql(u8, idx_before, idx_after));
+
+    print("mantra_editor: an edit appended revision {d}; the b.txt lane grew r1 -> r2, every other lane unchanged\n", .{rev});
+}
+
+fn welcome_edit_is_append_only() !void {
+    // A second edit continues the chain to r3 — the earlier revisions still stand,
+    // untouched, in the same graph. An edit only ever adds; it never rewrites.
+    var catalog = try mb.demo_catalog();
+    _ = try commit(&catalog, "local", "notes", "b.txt", "beta-two", "leaf");
+    const rev3 = try commit(&catalog, "local", "notes", "b.txt", "beta-three", "leaf");
+    assert(rev3 == 3);
+
+    var buf: [mb.max_render_bytes]u8 = undefined;
+    const after = try mb.render(&catalog, &buf);
+    const b_line = line_with(after, "b.txt:");
+    // The whole chain r1 -> r2 -> r3 stands; the two arrows prove three nodes linked.
+    assert(count_occurrences(b_line, "->") == 2);
+    assert(count_occurrences(b_line, "r1[") == 1);
+    assert(count_occurrences(b_line, "r2[") == 1);
+    assert(count_occurrences(b_line, "r3[") == 1);
+    print("mantra_editor: two edits chained r1 -> r2 -> r3; every earlier revision still stands (append-only)\n", .{});
+}
+
+fn welcome_refuses_unknown_lane() !void {
+    // A commit to a lane with no leaf yet has nothing to continue — it refuses rather
+    // than inventing a first revision, keeping the append-only order law honest.
+    var catalog = try mb.demo_catalog();
+    if (commit(&catalog, "local", "notes", "never.txt", "ghost", "leaf")) |_| {
+        unreachable;
+    } else |err| {
+        // invariant: an unknown lane refuses by the named error.
+        assert(err == error.LaneUnknown);
+    }
+    print("mantra_editor: a commit to an unknown lane refuses — LaneUnknown\n", .{});
+}
+
+/// Return the rendered line that contains `marker`, without its trailing newline —
+/// a witness helper so a lane can be compared before and after an edit.
+fn line_with(text: []const u8, marker: []const u8) []const u8 {
+    // invariant: a real marker has bytes to find.
+    assert(marker.len > 0);
+    const at = std.mem.indexOf(u8, text, marker) orelse return text[0..0];
+    var start = at;
+    while (start > 0 and text[start - 1] != '\n') start -= 1;
+    var end = at;
+    while (end < text.len and text[end] != '\n') end += 1;
+    return text[start..end];
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_edit_grows_the_graph();
+        try welcome_edit_is_append_only();
+        try welcome_refuses_unknown_lane();
+        print("mantra_editor {s} — GREEN\n", .{mantra_editor_version});
+        return 0;
+    }
+    print("usage: mantra-editor selftest\n", .{});
+    return 1;
+}
