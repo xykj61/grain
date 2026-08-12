@@ -41,6 +41,15 @@ For a great graph to feel instant, its working set must live in fast memory held
 
 The result is faster, because only what changed recomputes. It is more correct, because the same events always reach the same state. It is more unified, because code, content, and screen share one model. And it is more honest, because the state is explicit and the history is a chain of signed facts anyone can replay. This is the shape we keep everywhere — a key in a hand, a signed event, an append-only log, a pure fold into a view — carried now into the surface a person looks at all day. [Realidream](20260728-220203_realidream.md) stands on this graph; Skate, the paint target Pond aims at, draws from it too.
 
+## Kin in the weave
+
+The graph is the model beneath the surface; the weave routes it up to the hubs that name its spine.
+
+- **The front door** — the root [`../README.md`](../README.md) names the kernel spine this generalizes: *state as a pure fold over an append-only log of signed facts*.
+- **The room** — indexed in [`foundations/README.md`](README.md).
+- **The hubs** — that spine is the first grain strand in [The Grain and the Crossing](../active-designing/20260702-184312_the-grain-and-the-crossing.md); [Follow Our Compass](20260706-185112_follow-our-compass.md) returns you to it.
+- **In build** — the surface this graph feeds (Skate · Realidream) is the [WADE plan](../expanding-prompts/20260811-220402_wade-bit-design-system-and-dimeroll-entities.md)'s domain.
+
 ---
 
 *May the graph hold only what it can carry, and remember all that it has held. May each change travel just as far as it must, and the same story always tell the same way. May the surface above it stay quick, and the truth beneath it stay plain enough for anyone to check.*

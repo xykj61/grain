@@ -41,6 +41,15 @@ Intelligence here keeps the same discipline as everything beneath it. Every stru
 
 Lattice's answers flow into [Realidream](20260728-220203_realidream.md)'s surface, the quiet help in the editor and the browser. Lantern's tokens settle on the ledger beside the local currency, so a person's use of the model circulates value the same way their other exchanges do. Kiln bakes on the same green wafer-scale compute [the wafer and the sovereign coin](20260728-225239_the-wafer-and-the-sovereign-coin.md) describes, so the model and the machine share one foundation. And all three keep the four promises we ask of any tool: they do no harm to the person they serve, they tell the truth in records anyone can read, they hold lightly and leave every door open, and they stay kind by default. The model is a guest in the commons, never a landlord over it.
 
+## Kin in the weave
+
+The open model is a guest on the surface; the weave routes this horizon up to the hubs and to the promises it keeps.
+
+- **The front door** — the root [`../README.md`](../README.md) names **Lantern** and **Lattice** among the module seeds.
+- **The room** — indexed in [`foundations/README.md`](README.md), in the far-horizon stack.
+- **The hubs** — the four promises it keeps ([four promises a tool can keep](20260628-133212_four-promises-a-tool-can-keep.md)) are grain the model must be cut to fit ([The Grain and the Crossing](../active-designing/20260702-184312_the-grain-and-the-crossing.md)); [Follow Our Compass](20260706-185112_follow-our-compass.md) returns you here.
+- **Its foundation** — Kiln bakes on [the wafer and the sovereign coin](20260728-225239_the-wafer-and-the-sovereign-coin.md); its help flows into [Realidream](20260728-220203_realidream.md)'s surface, the [WADE plan](../expanding-prompts/20260811-220402_wade-bit-design-system-and-dimeroll-entities.md)'s domain.
+
 ---
 
 *May the model we bake be given freely, and the giving be its own reward. May every answer come quickly and honestly, and every token spent be counted in plain sight. May the intelligence we build serve the person before it, hold lightly to what it learns, and leave the commons richer than it found it.*
