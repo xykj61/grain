@@ -1,0 +1,171 @@
+//! pond/apps/artifact_query_publish.rye - BUHR Journey 8, Rung 2: the reading tracks a live publish.
+//!
+//! Rung one proved a voice can read a named Tablecloth artifact, and only bytes that
+//! proved themselves against their content address. This rung proves the *living* in a
+//! living store: when a new artifact is published, the voice's answer moves with it.
+//! It composes Journey 8's `artifact_query.answer_over` with Journey 7's
+//! `tablecloth.store_artifact` over one catalog and one store - ask a name that the store
+//! does not yet hold (UnknownArtifact refuses, no invented answer), publish it, ask again,
+//! and watch the true reading appear. Nothing is mutated behind the reader: a publish is
+//! an append (one content beaded once, a name bound over it), so the earlier refusal was
+//! honest when given and the new reading is honest now. Names already published stand
+//! unchanged across a later publish - accrete-never-break carried from the store into the
+//! intelligence that reads it.
+//!
+//! Additive by construction: it imports artifact_query, tablecloth, and beading and calls
+//! only their public functions. Neither contract changes; rung one and Journey 7's store
+//! stay their own green binaries.
+//!
+//!   rye build pond/apps/artifact_query_publish.rye -femit-bin=pond/bin/artifact-query-publish
+//!   pond/bin/artifact-query-publish selftest
+//!
+//! Scope: active-designing/20260812-144916_buhr-journey8-voice-reads-artifact-store-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lc = @import("lantern/lantern_core.rye");
+const tc = @import("tablecloth.rye");
+const beading = @import("mantra/beading.rye");
+const aq = @import("artifact_query.rye");
+
+const artifact_query_publish_version = "20260812.145600";
+
+const max_result_text: u32 = lc.max_completion_len;
+
+// The demo corpus: one artifact seated before the run, one published live during it.
+const doc_notes = "linen holds the warp then hemp the weft";
+const doc_brief = "a cloth over the table, plain and glad, and true";
+
+const allow =
+    \\model_hash sha3-256-rye-forge-lap0
+;
+const model = "sha3-256-rye-forge-lap0";
+
+/// Seat a fresh catalog and store holding exactly one artifact - the ground a live
+/// publish grows from. The same verified store every other reader uses.
+fn seat_one(cat: *tc.Catalog, store: *beading.BeadStore) (tc.ClothError || beading.BeadError)!void {
+    cat.* = tc.Catalog.empty();
+    store.* = .empty();
+    _ = try tc.store_artifact(cat, store, "notes.txt", doc_notes);
+}
+
+fn make_req(prompt: []const u8) lc.Request {
+    return .{ .model_hash = model, .prompt = prompt, .max_tokens = 64 };
+}
+
+fn welcome_publish_makes_name_answerable() !void {
+    var cat: tc.Catalog = undefined;
+    var store: beading.BeadStore = undefined;
+    try seat_one(&cat, &store);
+    var buf: [max_result_text]u8 = undefined;
+    const req = make_req("words brief.txt");
+
+    // Before the publish the store does not hold brief.txt: the voice refuses rather than
+    // inventing an answer over an artifact it cannot name.
+    if (aq.answer_over(req, allow, &cat, &store, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.UnknownArtifact);
+    }
+    print("artifact_query_publish: before publish - brief.txt refuses (UnknownArtifact), no invented answer\n", .{});
+
+    // Publish brief.txt live: one content beaded, a name bound over its address.
+    _ = try tc.store_artifact(&cat, &store, "brief.txt", doc_brief);
+
+    // Ask again over the same catalog - the voice now reads the freshly published bytes,
+    // a true count of the verified content, not a pinned constant.
+    var buf2: [max_result_text]u8 = undefined;
+    const after = try aq.answer_over(req, allow, &cat, &store, &buf2);
+    var expect: [8]u8 = undefined;
+    const want = std.fmt.bufPrint(&expect, "{d}", .{aq.count_words(doc_brief)}) catch unreachable;
+    // invariant: the reading tracks the live publish - the new name reads its true words.
+    assert(std.mem.eql(u8, after.text, want));
+    assert(after.stopped_reason == .eos);
+    print("artifact_query_publish: after publish - brief.txt reads {s} words eos (the reading tracks the publish)\n", .{after.text});
+}
+
+fn welcome_existing_name_stable_across_publish() !void {
+    var cat: tc.Catalog = undefined;
+    var store: beading.BeadStore = undefined;
+    try seat_one(&cat, &store);
+    var buf: [max_result_text]u8 = undefined;
+    const notes_req = make_req("bytes notes.txt");
+
+    // The already-published name reads its true length.
+    const before = try aq.answer_over(notes_req, allow, &cat, &store, &buf);
+    var expect: [8]u8 = undefined;
+    const notes_len = std.fmt.bufPrint(&expect, "{d}", .{doc_notes.len}) catch unreachable;
+    assert(std.mem.eql(u8, before.text, notes_len));
+
+    // Publish a second, unrelated artifact.
+    _ = try tc.store_artifact(&cat, &store, "brief.txt", doc_brief);
+
+    // The earlier name still reads exactly its own bytes - a publish is an append, so no
+    // held name is disturbed by a later one.
+    var buf2: [max_result_text]u8 = undefined;
+    const after = try aq.answer_over(notes_req, allow, &cat, &store, &buf2);
+    // invariant: an existing artifact's reading is stable across a later publish.
+    assert(std.mem.eql(u8, after.text, notes_len));
+
+    // And the freshly published name reads its own true length beside it.
+    var buf3: [max_result_text]u8 = undefined;
+    const brief = try aq.answer_over(make_req("bytes brief.txt"), allow, &cat, &store, &buf3);
+    var expect_b: [8]u8 = undefined;
+    const brief_len = std.fmt.bufPrint(&expect_b, "{d}", .{doc_brief.len}) catch unreachable;
+    assert(std.mem.eql(u8, brief.text, brief_len));
+    print("artifact_query_publish: notes.txt reads {s} bytes before and after; brief.txt reads {s} - accrete-never-break\n", .{ after.text, brief.text });
+}
+
+fn welcome_reading_is_read_only() !void {
+    // A publish grows the store it is made into and no other. Prove it by asking two
+    // independent catalogs - one published-into, one pristine - and seeing each answer its
+    // own truth: the published store reads brief.txt, the pristine store refuses it. The
+    // query itself publishes nothing.
+    var pub_cat: tc.Catalog = undefined;
+    var pub_store: beading.BeadStore = undefined;
+    try seat_one(&pub_cat, &pub_store);
+    var pristine_cat: tc.Catalog = undefined;
+    var pristine_store: beading.BeadStore = undefined;
+    try seat_one(&pristine_cat, &pristine_store);
+
+    _ = try tc.store_artifact(&pub_cat, &pub_store, "brief.txt", doc_brief);
+
+    const req = make_req("words brief.txt");
+    var buf_a: [max_result_text]u8 = undefined;
+    const published = try aq.answer_over(req, allow, &pub_cat, &pub_store, &buf_a);
+    var expect: [8]u8 = undefined;
+    const want = std.fmt.bufPrint(&expect, "{d}", .{aq.count_words(doc_brief)}) catch unreachable;
+    assert(std.mem.eql(u8, published.text, want));
+
+    var buf_b: [max_result_text]u8 = undefined;
+    if (aq.answer_over(req, allow, &pristine_cat, &pristine_store, &buf_b)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        // invariant: the query never published brief.txt into the pristine store.
+        assert(err == error.UnknownArtifact);
+    }
+    print("artifact_query_publish: published store reads {s} words; pristine store refuses - the reading is read-only\n", .{published.text});
+}
+
+fn run_selftest() !u8 {
+    try welcome_publish_makes_name_answerable();
+    try welcome_existing_name_stable_across_publish();
+    try welcome_reading_is_read_only();
+
+    print("artifact_query_publish: a voice's reading tracks a live publish - a refused name becomes a true reading once the store holds it\n", .{});
+    print("artifact_query_publish: a publish is an append - held names stand unchanged, and the query never writes\n", .{});
+    print("artifact_query_publish: version {s}\n", .{artifact_query_publish_version});
+    print("GREEN: BUHR-J8r2 artifact_query_publish - the reading tracks a live publish, and only bytes that proved themselves.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "publish")) {
+            return run_selftest();
+        }
+    }
+    return run_selftest();
+}
