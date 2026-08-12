@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260812.194622
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title AYRE-J7r2 — the fair-trade certificate signed
+prompt read REMEMBER + the 1024-round itinerary; take the next agent-doable lap Lindy-first crux-first; approve own design rounds; send each finished increment; stop at custody gates
+think REMEMBER names the next agent-doable crux plainly — AYRE-J7r2, the certificate signed; r1 (fairtrade_cert) fixed the join, r2 binds each attestation to a Kumara identity so a steward cannot certify a criterion no party vouched for
+think studied the two grounds — fairtrade_cert.rye (r1 join over a Record of held names) and commerce_trade_signed.rye (the exact signing layout: point/fact message, sign_trade, verify_trade, both_agree, caller supplies expected keys); mirrored that layout for attestations
+think wrote pond/apps/fairtrade_cert_signed.rye — attest_message signs (attester point + criterion name); SignedRecord carries name+point+sig per attestation; Keyring maps point->keeper key (the caller's statement of whose word to trust, as commerce passes seller/buyer keys); verify_held proves held + known-attester + verifying-sig, refusing Unsatisfied / UnknownAttester / BadAttestation by exact reason; evaluate_signed reuses r1's parse and cert.Certified, adding the signed join
+think honesty crux mirrors price-tamper — a steward relabels a price-floor attestation to living-wage but reuses the signature; verification is over living-wage which no one signed, so BadAttestation; also proved forged-sig, unknown-attester, unheld, and malformed refusals
+obs additive — composes fairtrade_cert + kumara over public API, invents no new signing or join; r1 re-runs GREEN under the witness; demo keeper seeds only, no real key, custody gate #3 untouched
+obs constructed cert.Certified directly since its fields are public; kept the parse loop rather than threading a predicate through r1 (Zig has no easy closure), matching how commerce_trade_signed composed r1's record_trade
+loom witness=ayre_j7_fairtrade_cert_signed_witness cases=6 rung_one_rerun=green tame=clean width=clean
+file pond/apps/fairtrade_cert_signed.rye AYRE-J7r2 — a certificate satisfied only when every criterion carries a known party's verifying signature
+file tools/ayre_j7_fairtrade_cert_signed_witness.rish witness — builds r1+r2, asserts GREEN and each named refusal
+file work-in-progress/REMEMBER.md living card — AYRE-J7r2 landed row + git nib refresh
+recommend keep-going AYRE-J7r3 — the certificate travels (render to Bron, parse back byte-for-byte, still satisfied), mirroring the receipt-travel rungs
