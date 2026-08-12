@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` — the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `391a38a1d5` · Grain · cloud pier · **public seed `grain-os/grain` @ `26cae5b` (single-commit; force-push refresh)**
+**Git nib:** `cb0e6af723` · Grain · cloud pier · **public seed `grain-os/grain` @ `26cae5b` (single-commit; force-push refresh)**
 **Host:** Framework · EDT (`America/New_York`) · Vultr SEA VPS (HP AMD 2vCPU/4GB shared · never EWR) · this session in ai-jail
 
 ---

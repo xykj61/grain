@@ -1,0 +1,15 @@
+format session-log-v1
+stamp 20260812.110446
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Loop runs until 23:00 EDT today, then stops
+prompt Keaton: update the sleep time to till 2300 new today date now run
+think Read the ask as a wall-clock deadline on the loop's while, not the 20s inter-lap sleep: run laps until 23:00 America/New_York today, then stop.
+think Computed the deadline TZ-forced so it holds even though the sandbox host reads UTC: D=$(TZ=America/New_York date -d 'today 23:00' +%s); the while condition is [ $(date +%s) -lt $D ]. Verified: now 11:02 EDT, deadline 23:00 EDT, ~11 h remaining, comparison true.
+think Kept it Rishi-say-safe by using UNQUOTED integer comparison — [ $(date +%s) -lt $D ] — because double quotes would terminate the say-string, and date +%s is a single integer so word-splitting is not a risk. Rishi prints $ and $(...) literally, so the recipe emits the command verbatim for the outer terminal.
+think The loop now stops on whichever comes first: the .loop-gates-only custody sentinel or the 23:00 deadline; it echoes when and why it ended. The 'today 23:00' is one edit away from re-aiming.
+obs Verified: recipe prints GREEN, the printed loop line bash -n parses, living_docs_lint GREEN. The loop itself runs in the OUTER terminal — I cannot launch a host jail from inside this jail, so I hand Keaton the ready command rather than run it here.
+file tools/launch-claude-season.rish loop while-condition is now a 23:00-EDT wall-clock deadline (or the gate sentinel), with an end echo + note
+recommend check-in Keaton — paste the printed loop in the outer terminal to run it now; it will work laps until 23:00 EDT (or GATES-ONLY), streaming readable via jq and sending each increment to GitHub
