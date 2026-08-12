@@ -100,13 +100,22 @@ fn append(out_buf: []u8, written: *u32, src: []const u8) QueryError!void {
 /// result, and format it into `out_buf`. Returns the written slice — the true
 /// reading of the corpus, never a guess.
 pub fn compute(op: Op, out_buf: []u8) (ec.CorpusError || QueryError || error{NoSpaceLeft})![]const u8 {
+    // The demo reading is the real reading over the pinned catalog — one code path.
+    return compute_over(op, pinned_catalog, out_buf);
+}
+
+/// The corpus reading, over an explicit catalog rather than the pinned demo literal.
+/// GISM Journey 5 (Real corpora) reads a catalog derived at compile time from real
+/// embedded tree files through this same code path, so a real corpus and the demo
+/// literal share one bounded reader.
+pub fn compute_over(op: Op, catalog_text: []const u8, out_buf: []u8) (ec.CorpusError || QueryError || error{NoSpaceLeft})![]const u8 {
     // invariant: the caller's buffer respects Lantern's completion bound
     assert(out_buf.len <= max_result_text);
     // invariant: there is room for at least one byte
     assert(out_buf.len > 0);
 
     var catalog: ec.Catalog = .{};
-    try ec.parse_catalog(pinned_catalog, &catalog);
+    try ec.parse_catalog(catalog_text, &catalog);
     // invariant: the parse stays inside Ember's chunk budget
     assert(catalog.count <= ec.max_chunks);
 
@@ -174,6 +183,13 @@ pub fn count_words(text: []const u8) u32 {
 /// corpus reading, and return a Lantern Response bounded by max_tokens (length
 /// stop when the budget bites). The model is never trusted before the list clears.
 pub fn answer(req: lc.Request, allow_text: []const u8, out_buf: []u8) (lc.LanternError || ec.CorpusError || QueryError || error{NoSpaceLeft})!lc.Response {
+    // The demo answer is the real answer over the pinned catalog — one code path.
+    return answer_over(req, pinned_catalog, allow_text, out_buf);
+}
+
+/// The Q-vane host, over an explicit catalog. The demo `answer` delegates here over
+/// `pinned_catalog`; GISM Journey 5 delegates here over a real embedded corpus.
+pub fn answer_over(req: lc.Request, catalog_text: []const u8, allow_text: []const u8, out_buf: []u8) (lc.LanternError || ec.CorpusError || QueryError || error{NoSpaceLeft})!lc.Response {
     // invariant: the caller's buffer honors Lantern's completion bound
     assert(out_buf.len <= max_result_text);
     // invariant: the buffer can hold at least one token
@@ -183,7 +199,7 @@ pub fn answer(req: lc.Request, allow_text: []const u8, out_buf: []u8) (lc.Lanter
     if (!lc.model_allowed(req.model_hash, allow_text)) return error.ModelNotAllowed;
 
     const op = try route_op(req.prompt);
-    const text = try compute(op, out_buf);
+    const text = try compute_over(op, catalog_text, out_buf);
 
     const tokens_in = count_words(req.prompt);
     var tokens_out = count_words(text);
