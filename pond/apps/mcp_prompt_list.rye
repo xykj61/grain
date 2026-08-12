@@ -1,0 +1,325 @@
+//! pond/apps/mcp_prompt_list.rye — BUHR Journey 11, Rung 2: the prompt list.
+//!
+//! Rung one served `prompts/get` — a caller who already knows a prompt names it and receives
+//! the filled text. This rung serves `prompts/list` — a caller *discovers* every prompt a
+//! server offers, and its arity, the template half's mirror of Journey 3's `tools/list` (J9)
+//! and Journey 10's `resources/list`. A bounded prompt book projects to a
+//! `format mcp-prompt-list-v1` envelope, one `prompt <name> <argc>` line per template, in held
+//! order; a reader parses it back, name and argument count for each.
+//!
+//! The list is more than a printout: it is proven an *honest index* of the book it names. For
+//! every listed prompt, the book truly holds a descriptor of that name whose declared argument
+//! count equals the advertised arity — so a caller handed the list can trust that every prompt
+//! it names exists, taking exactly the arguments it promised, before spending a `prompts/get`.
+//! It composes over rung one's public API only: it holds real `mcp_prompt.PromptDesc` values,
+//! renders its own envelope, and reads each descriptor through rung one, which stays its own
+//! green binary. It reads no network — the Comlink-served transport stays the held serve gate.
+//!
+//!   rye build pond/apps/mcp_prompt_list.rye -femit-bin=pond/bin/mcp-prompt-list
+//!   pond/bin/mcp-prompt-list selftest
+//!
+//! Scope: active-designing/20260812-153255_buhr-journey11-mcp-prompts-surface-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const mp = @import("mcp_prompt.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const mcp_prompt_list_version = "20260812.153255";
+
+// The list's bounds, each named once and enforced at the edge.
+pub const max_prompts: u32 = 16; // templates one book offers
+pub const max_line: u32 = mp.max_name + 32; // "prompt " + name + " " + an arity + newline
+// A rendered list envelope: a header plus one bounded line per prompt.
+pub const max_list_env: u32 = 64 + max_prompts * max_line;
+
+pub const ListError = error{
+    BadFormat,
+    MissingField,
+    UnknownField,
+    TooManyPrompts,
+    LineTooLong,
+    BadInt,
+    ListTooLong,
+    NotHonest,
+};
+
+/// A bounded book of prompt descriptors — the templates a server offers.
+// Invariant: count <= max_prompts.
+pub const PromptBook = struct {
+    descs: [max_prompts]mp.PromptDesc,
+    count: u32,
+
+    pub fn empty() PromptBook {
+        return .{ .descs = undefined, .count = 0 };
+    }
+
+    /// Parse a descriptor source into the book's next slot. Refuses a full book.
+    pub fn add(self: *PromptBook, src: []const u8) !void {
+        // invariant: the book honors its bound before adding
+        assert(self.count <= max_prompts);
+        if (self.count >= max_prompts) return error.TooManyPrompts;
+        try mp.parse_desc(src, &self.descs[self.count]);
+        self.count += 1;
+        // invariant: the book still honors its bound after adding
+        assert(self.count <= max_prompts);
+    }
+};
+
+/// One listed prompt: its name (a slice into the source, zero-copy) and declared arity.
+pub const PromptEntry = struct {
+    name: []const u8,
+    argc: u32,
+};
+
+/// A parsed prompt list — the prompts a server advertises, in held order.
+// Invariant: count <= max_prompts.
+pub const PromptList = struct {
+    entries: [max_prompts]PromptEntry,
+    count: u32,
+};
+
+/// Render a prompt book as its `format mcp-prompt-list-v1` envelope, returning its length.
+/// One `prompt <name> <argc>` line per template, in held order.
+pub fn render_list(book: *const PromptBook, out: []u8) ListError!u32 {
+    // invariant: a list names at most the book bound
+    assert(book.count <= max_prompts);
+    const header = "format mcp-prompt-list-v1\n";
+    if (header.len > out.len) return error.ListTooLong;
+    var off: usize = 0; // seam: slice offset over a std buffer
+    tally_copy.copy_disjoint(u8, out[0..header.len], header);
+    off += header.len;
+
+    var i: u32 = 0;
+    while (i < book.count) : (i += 1) {
+        const d = &book.descs[i];
+        const line = std.fmt.bufPrint(out[off..], "prompt {s} {d}\n", .{
+            d.name_slice(), d.arg_count,
+        }) catch return error.ListTooLong;
+        off += line.len;
+    }
+    // invariant: the rendered list stays within the buffer
+    assert(off <= out.len);
+    return @intCast(off);
+}
+
+/// Split a line into its first space-delimited token and the trimmed remainder.
+fn first_token(line: []const u8) struct { head: []const u8, rest: []const u8 } {
+    // invariant: the line respects the bounded length
+    assert(line.len <= max_line);
+    var sp: usize = 0; // seam: slice index over a std source
+    while (sp < line.len and line[sp] != ' ') : (sp += 1) {}
+    const head = line[0..sp];
+    const rest = std.mem.trim(u8, line[sp..], " \t");
+    return .{ .head = head, .rest = rest };
+}
+
+/// Parse a `format mcp-prompt-list-v1` envelope into a bounded PromptList. The header must name
+/// the format exactly; each `prompt` line carries a name then an arity; any other field key is
+/// refused rather than dropped.
+pub fn parse_list(src: []const u8, list: *PromptList) ListError!void {
+    // invariant: an envelope carries at least a header line
+    assert(src.len > 0);
+    // invariant: the source respects the list envelope bound
+    assert(src.len <= max_list_env);
+
+    list.count = 0;
+    var have_header = false;
+
+    var lines = std.mem.splitScalar(u8, src, '\n');
+    while (lines.next()) |raw| {
+        const line = std.mem.trim(u8, raw, " \t\r");
+        if (line.len == 0 or line[0] == '#') continue;
+        if (line.len > max_line) return error.LineTooLong;
+        const kv = first_token(line);
+        if (std.mem.eql(u8, kv.head, "format")) {
+            if (!std.mem.eql(u8, kv.rest, "mcp-prompt-list-v1")) return error.BadFormat;
+            have_header = true;
+        } else if (std.mem.eql(u8, kv.head, "prompt")) {
+            if (list.count >= max_prompts) return error.TooManyPrompts;
+            const inner = first_token(kv.rest);
+            if (inner.head.len == 0 or inner.head.len > mp.max_name) return error.LineTooLong;
+            const argc = std.fmt.parseInt(u32, inner.rest, 10) catch return error.BadInt;
+            list.entries[list.count] = .{ .name = inner.head, .argc = argc };
+            list.count += 1;
+        } else {
+            return error.UnknownField;
+        }
+    }
+    if (!have_header) return error.BadFormat;
+    // invariant: a parsed list stays within the bound
+    assert(list.count <= max_prompts);
+}
+
+/// The descriptor a book holds under `name`, or null when it holds none.
+fn held_desc(book: *const PromptBook, name: []const u8) ?*const mp.PromptDesc {
+    // invariant: the book honors its bound
+    assert(book.count <= max_prompts);
+    var i: u32 = 0;
+    while (i < book.count) : (i += 1) {
+        if (std.mem.eql(u8, book.descs[i].name_slice(), name)) return &book.descs[i];
+    }
+    return null;
+}
+
+/// Prove a parsed list is an honest index of a live book: every listed prompt names a
+/// descriptor the book truly holds, whose declared argument count equals the advertised arity.
+/// A name the book lacks, or an arity that disagrees, refuses `NotHonest` — so a caller can
+/// trust the list before spending a `prompts/get`.
+pub fn verify_list(list: *const PromptList, book: *const PromptBook) ListError!void {
+    // invariant: the list stays within the prompt bound
+    assert(list.count <= max_prompts);
+    var i: u32 = 0;
+    while (i < list.count) : (i += 1) {
+        const e = &list.entries[i];
+        const d = held_desc(book, e.name) orelse return error.NotHonest;
+        // A listed prompt must take exactly the number of arguments it advertised.
+        if (d.arg_count != e.argc) return error.NotHonest;
+    }
+    // invariant: every listed prompt was checked
+    assert(i == list.count);
+}
+
+const greet_src =
+    \\format mcp-prompt-v1
+    \\prompt greet
+    \\summary greet a named guest in a named place
+    \\arg name
+    \\arg place
+    \\template Welcome, {name}. The {place} is glad you came.
+;
+const echo_src =
+    \\format mcp-prompt-v1
+    \\prompt echo
+    \\arg word
+    \\template {word} {word}
+;
+const still_src =
+    \\format mcp-prompt-v1
+    \\prompt still
+    \\summary a prompt with no arguments at all
+    \\template the loom holds steady.
+;
+
+fn seed(book: *PromptBook) !void {
+    try book.add(greet_src);
+    try book.add(echo_src);
+    try book.add(still_src);
+}
+
+fn welcome_list_round_trips() !void {
+    var book: PromptBook = .empty();
+    try seed(&book);
+
+    var buf: [max_list_env]u8 = undefined;
+    const n = try render_list(&book, buf[0..]);
+    var list: PromptList = undefined;
+    try parse_list(buf[0..n], &list);
+    assert(list.count == 3);
+    assert(std.mem.eql(u8, list.entries[0].name, "greet"));
+    assert(list.entries[0].argc == 2);
+    assert(std.mem.eql(u8, list.entries[1].name, "echo"));
+    assert(list.entries[1].argc == 1);
+    assert(std.mem.eql(u8, list.entries[2].name, "still"));
+    assert(list.entries[2].argc == 0);
+    print("mcp_prompt_list: prompts/list round-trips — 3 templates advertised by name and arity\n", .{});
+}
+
+fn welcome_list_is_honest_index() !void {
+    var book: PromptBook = .empty();
+    try seed(&book);
+    var buf: [max_list_env]u8 = undefined;
+    const n = try render_list(&book, buf[0..]);
+    var list: PromptList = undefined;
+    try parse_list(buf[0..n], &list);
+    // Every advertised name truly names a held descriptor, at the arity it promised.
+    try verify_list(&list, &book);
+    print("mcp_prompt_list: every listed prompt is held, at exactly its advertised arity\n", .{});
+}
+
+fn unwelcome_wrong_arity_breaks_honesty() !void {
+    // A list whose arity disagrees with the book breaks its honesty rather than passing.
+    var book: PromptBook = .empty();
+    try seed(&book);
+    const src =
+        \\format mcp-prompt-list-v1
+        \\prompt greet 3
+    ;
+    var list: PromptList = undefined;
+    try parse_list(src, &list);
+    if (verify_list(&list, &book)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.NotHonest);
+    }
+    print("mcp_prompt_list: an arity that disagrees with the book breaks honesty (NotHonest)\n", .{});
+}
+
+fn unwelcome_absent_prompt_breaks_honesty() !void {
+    var book: PromptBook = .empty();
+    try seed(&book);
+    const src =
+        \\format mcp-prompt-list-v1
+        \\prompt farewell 0
+    ;
+    var list: PromptList = undefined;
+    try parse_list(src, &list);
+    if (verify_list(&list, &book)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.NotHonest);
+    }
+    print("mcp_prompt_list: a name the book does not hold breaks honesty (NotHonest)\n", .{});
+}
+
+fn unwelcome_unknown_field_refuses() !void {
+    const src =
+        \\format mcp-prompt-list-v1
+        \\prompt greet 2
+        \\color red
+    ;
+    var list: PromptList = undefined;
+    if (parse_list(src, &list)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.UnknownField);
+    }
+    print("mcp_prompt_list: an unknown list field refused (not silently ignored)\n", .{});
+}
+
+fn unwelcome_bad_format_refuses() !void {
+    const src =
+        \\format mcp-prompt-list-v2
+        \\prompt greet 2
+    ;
+    var list: PromptList = undefined;
+    if (parse_list(src, &list)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.BadFormat);
+    }
+    print("mcp_prompt_list: a wrong list format header refused\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_list_round_trips();
+    try welcome_list_is_honest_index();
+    try unwelcome_wrong_arity_breaks_honesty();
+    try unwelcome_absent_prompt_breaks_honesty();
+    try unwelcome_unknown_field_refuses();
+    try unwelcome_bad_format_refuses();
+    print("mcp_prompt_list {s} — GREEN\n", .{mcp_prompt_list_version});
+    print("GREEN: BUHR-J11r2 mcp_prompt_list; the prompt book advertised as an honest MCP prompt list.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest();
+    }
+    print("usage: mcp-prompt-list selftest\n", .{});
+    return 1;
+}
