@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260812.135725
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR-J5r10 — two .brush accent layers compose both fused-edge ends
+prompt Autonomous loop: continue agent-doable laps Lindy-first crux-first, harmony-of-styles, approve own design rounds, send each increment, stop at custody gates.
+think After J5r9 made the derived node themeable on its own flow key (symmetric to r6's read origin), the card's next option was to compose the read + flow accents at once, symmetric to J5r7's mode+read compose. Lindy-first crux-first: this closes the fused-edge theming symmetry — both ends themeable individually AND composable together.
+think Mirrored J5r7 (view_theme_stack) for the two disjoint accents — read-source.brush (read token) + flow-source.brush (flow token) stacked over base_sheet through tokens.resolve_stack, each accent winning the one token it names, ground/head/edge inheriting from base. Painted with r8's paint_flow unchanged.
+think Proven: three authors on one sheet (read amber from the read accent, flow honey from the flow accent, head Ochre from the base neither named); both accents distinct; on the canvas both ends land (162 read + 267 flow + inherited head pixels); a style-less layer refuses LayerEmpty.
+obs Reds-first caught one: an early compound assert(a and b and c) tripped the TAME ban; split into three single asserts, rebuilt GREEN. The build itself was correct first try — the red was style, caught by tame_style_check before commit exactly as intended.
+obs Fully additive — no file beneath changed; J5r9 and J5r7 both re-run GREEN inside the witness. The Realidream fused-edge theming arc is now symmetric and complete: each end themeable on its own key (r6 read, r9 flow) and both composable together (r7 read+mode, r10 read+flow).
+loom witness=buhr_realidream_view_derived_theme_stack_witness read_pixels=162 flow_pixels=267 head_pixels=1377 rows=9
+file pond/apps/realidream_view_derived_theme_stack.rye the rung — resolve_stacked composes the two accents; four welcomes prove three authors on one surface
+file tools/buhr_realidream_view_derived_theme_stack_witness.rish witness — selftest GREEN + additive re-runs of J5r9 and J5r7
+recommend keep-going the Realidream fused-edge arc (paint · theme · compose, both ends) is complete; next agent-doable option is a fresh BUHR journey or another surface; the real network fetch stays Keaton's held seam
