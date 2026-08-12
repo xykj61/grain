@@ -43,8 +43,9 @@ pub const ToolList = struct {
 
 /// Append `s` into the larger list envelope at cursor `n`, bounded by the caller's
 /// buffer. Kin to `mj.append`, sized for the list envelope rather than one descriptor
-/// — byte by byte within a named bound, no @memcpy.
-fn append(out: []u8, n: *u32, s: []const u8) ListError!void {
+/// — byte by byte within a named bound, no @memcpy. The host bridge (rung five) reuses
+/// it to place a small call response into its larger response buffer.
+pub fn append(out: []u8, n: *u32, s: []const u8) ListError!void {
     // invariant: the buffer respects the list envelope bound
     assert(out.len <= max_list_json);
     // invariant: the cursor never sits past the buffer

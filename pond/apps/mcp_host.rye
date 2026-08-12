@@ -1,0 +1,288 @@
+//! pond/apps/mcp_host.rye — BUHR Journey 3, Rung 5: the JSON host bridge.
+//!
+//! Rungs one through four fixed the pieces: the owned Bron shape (r1), the call and
+//! result tiles (r2), the manifest tile (r3), and the tools/list envelope (r4). This
+//! rung joins them into one entry — a JSON MCP host's whole conversation, served over
+//! the owned shapes end to end. A JSON-RPC request arrives; `serve` reads its method
+//! and routes it: a `tools/list` request answers with the server's whole catalog (r4);
+//! a `tools/call` request crosses into a Bron `Call` (r2), dispatches to the real
+//! Grain tool (r1's `dispatch` — `add` over integers, `join` over strings), and
+//! crosses the Bron result back to a JSON-RPC response (r2). An unknown method answers
+//! with a JSON-RPC error, never a fabricated result.
+//!
+//! The whole bridge is composition: it adds no transport and no parser of its own but
+//! a small bounded JSON value-skipper used only to read a request's method regardless
+//! of field order. Every collection stays bounded, every refusal stays named, and the
+//! two worlds — a JSON host and a Grain server — hold one honest conversation.
+//!
+//!   rye build pond/apps/mcp_host.rye -femit-bin=pond/bin/mcp-host
+//!   pond/bin/mcp-host selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const mcp = @import("mcp_bron.rye");
+const mj = @import("mcp_json.rye");
+const man = @import("mcp_manifest.rye");
+const lst = @import("mcp_list.rye");
+
+const mcp_host_version = "20260812.120500";
+
+// The bridge's bounds, each named once and enforced at the edge.
+pub const max_request: u32 = mj.max_json; // a bounded JSON-RPC request
+pub const max_response: u32 = lst.max_list_json; // the largest response is a full tools/list
+
+pub const HostError = mj.JsonError || mcp.McpError || lst.ListError;
+
+/// The server's own tool catalog, in Bron — the two demonstration tools rungs one
+/// through four already prove. A real server would grow this list; the bridge treats
+/// it as data, rendering whatever manifests it holds.
+const add_manifest =
+    \\format mcp-tool-v1
+    \\tool add
+    \\summary sum two integers
+    \\arg a int
+    \\arg b int
+    \\result int
+;
+
+const join_manifest =
+    \\format mcp-tool-v1
+    \\tool join
+    \\summary join two strings
+    \\arg a str
+    \\arg b str
+    \\result str
+;
+
+/// Skip one JSON value at the cursor — a string, object, array, number, or literal —
+/// bounded by the source length. Used only to pass over a top-level field the method
+/// reader does not need, so field order never forces a particular request layout.
+fn skip_value(p: *mj.Parser) HostError!void {
+    // invariant: the cursor sits within the source
+    assert(p.pos <= p.src.len);
+    const c = try p.at();
+    if (c == '"') {
+        _ = try p.raw_string();
+        return;
+    }
+    if (c == '{' or c == '[') {
+        const close: u8 = if (c == '{') '}' else ']';
+        p.pos += 1;
+        if ((try p.at()) == close) {
+            p.pos += 1;
+            return; // an empty object or array
+        }
+        while (true) {
+            if (c == '{') {
+                _ = try p.raw_string(); // the member key
+                try p.expect(':');
+            }
+            try skip_value(p); // the value (or the array element)
+            const sep = try p.at();
+            if (sep == ',') {
+                p.pos += 1;
+                continue;
+            }
+            if (sep == close) {
+                p.pos += 1;
+                break;
+            }
+            return error.BadJson;
+        }
+        return;
+    }
+    // a bare scalar — number or literal (true/false/null); consume its run
+    p.skip_ws();
+    const start = p.pos;
+    while (p.pos < p.src.len) : (p.pos += 1) {
+        const b = p.src[p.pos];
+        if (b == ',' or b == '}' or b == ']' or b == ' ' or b == '\t' or b == '\n' or b == '\r') break;
+    }
+    if (p.pos == start) return error.BadJson;
+    // invariant: the cursor advanced within the source
+    assert(p.pos <= p.src.len);
+}
+
+/// Read a JSON-RPC request's `method` and `id`, skipping every other top-level field.
+/// The bridge reads the method first so it can route without committing to one shape.
+fn read_method(src: []const u8, id: *u32) HostError![]const u8 {
+    // invariant: a request carries at least an opening byte
+    assert(src.len > 0);
+    // invariant: the source respects the request bound
+    assert(src.len <= max_request);
+    var p = mj.Parser{ .src = src, .pos = 0 };
+    try p.expect('{');
+    var method: []const u8 = "";
+    var have_method = false;
+    var have_id = false;
+    while (true) {
+        const key = try p.raw_string();
+        try p.expect(':');
+        if (std.mem.eql(u8, key, "method")) {
+            method = try p.raw_string();
+            have_method = true;
+        } else if (std.mem.eql(u8, key, "id")) {
+            id.* = try p.read_uint();
+            have_id = true;
+        } else {
+            try skip_value(&p);
+        }
+        const sep = try p.at();
+        if (sep == ',') {
+            p.pos += 1;
+            continue;
+        }
+        if (sep == '}') {
+            p.pos += 1;
+            break;
+        }
+        return error.BadJson;
+    }
+    if (!have_method or !have_id) return error.BadJson;
+    // invariant: the cursor stayed within the source
+    assert(p.pos <= p.src.len);
+    return method;
+}
+
+/// Build the server's tool catalog into a bounded ToolList — every manifest it offers.
+fn build_catalog(list: *lst.ToolList) HostError!void {
+    list.count = 0;
+    try man.parse_manifest(add_manifest, &list.tools[0]);
+    try man.parse_manifest(join_manifest, &list.tools[1]);
+    list.count = 2;
+    // invariant: the catalog stays within the list bound
+    assert(list.count <= lst.max_tools);
+}
+
+/// Answer a `tools/call` request: cross the JSON request into a Bron Call, dispatch it
+/// to the real Grain tool, and cross the Bron result back into a JSON-RPC response.
+fn serve_call(src: []const u8, out: []u8) HostError![]const u8 {
+    // invariant: the response buffer respects the bridge bound
+    assert(out.len <= max_response);
+    var scratch: [mj.max_scratch]u8 = undefined;
+    var call: mcp.Call = undefined;
+    try mj.call_from_json(src, &scratch, &call);
+
+    var rbuf: [mcp.max_result]u8 = undefined;
+    const rendered = try mcp.dispatch(&call, &rbuf);
+    var res: mcp.Result = undefined;
+    try mcp.parse_result(rendered, &res);
+
+    var jbuf: [mj.max_json]u8 = undefined;
+    const json = try mj.result_to_json(&res, &jbuf);
+    var n: u32 = 0;
+    try lst.append(out, &n, json); // the call response fits a descriptor buffer; place it into ours
+    // invariant: the response stayed within the buffer
+    assert(n <= out.len);
+    return out[0..n];
+}
+
+/// Render a JSON-RPC error response naming an unrecognized method for request `id`.
+fn serve_unknown_method(id: u32, out: []u8) HostError![]const u8 {
+    // invariant: the response buffer respects the bridge bound
+    assert(out.len <= max_response);
+    var res: mcp.Result = undefined;
+    res.id = id;
+    res.value = "";
+    res.err_name = "method_not_found";
+    res.is_error = true;
+    var jbuf: [mj.max_json]u8 = undefined;
+    const json = try mj.result_to_json(&res, &jbuf);
+    var n: u32 = 0;
+    try lst.append(out, &n, json);
+    // invariant: the response stayed within the buffer
+    assert(n <= out.len);
+    return out[0..n];
+}
+
+/// Serve one JSON-RPC request: read its method, route it to listing or calling, and
+/// return the JSON-RPC response. An unknown method answers with a named error.
+pub fn serve(src: []const u8, out: []u8) HostError![]const u8 {
+    // invariant: a request carries at least an opening byte
+    assert(src.len > 0);
+    // invariant: the response buffer respects the bridge bound
+    assert(out.len <= max_response);
+    var id: u32 = 0;
+    const method = try read_method(src, &id);
+    if (std.mem.eql(u8, method, "tools/list")) {
+        var list: lst.ToolList = undefined;
+        try build_catalog(&list);
+        return lst.list_to_json(&list, id, out);
+    }
+    if (std.mem.eql(u8, method, "tools/call")) {
+        return serve_call(src, out);
+    }
+    return serve_unknown_method(id, out);
+}
+
+// --- witnesses -------------------------------------------------------------
+
+fn welcome_serves_a_tools_list() !void {
+    const request = "{\"jsonrpc\":\"2.0\",\"id\":4,\"method\":\"tools/list\"}";
+    var out: [max_response]u8 = undefined;
+    const response = try serve(request, &out);
+
+    // The response reads back into the server's real catalog — two tools, add and join.
+    var scratch: [lst.max_list_scratch]u8 = undefined;
+    var list: lst.ToolList = undefined;
+    try lst.list_from_json(response, &scratch, &list);
+    assert(list.count == 2);
+    assert(std.mem.eql(u8, list.tools[0].tool, "add"));
+    assert(std.mem.eql(u8, list.tools[1].tool, "join"));
+    print("mcp_host: serve — a JSON tools/list request answers with the whole catalog (add, join)\n", .{});
+}
+
+fn welcome_serves_a_tools_call() !void {
+    const request = "{\"jsonrpc\":\"2.0\",\"id\":8,\"method\":\"tools/call\",\"params\":{\"name\":\"add\",\"arguments\":{\"a\":\"2\",\"b\":\"3\"}}}";
+    var out: [max_response]u8 = undefined;
+    const response = try serve(request, &out);
+    const want = "{\"jsonrpc\":\"2.0\",\"id\":8,\"result\":{\"content\":[{\"type\":\"text\",\"text\":\"5\"}]}}";
+    assert(std.mem.eql(u8, response, want));
+    print("mcp_host: serve — a JSON tools/call add(2,3) dispatches to the real tool and answers 5\n", .{});
+}
+
+fn welcome_call_field_order() !void {
+    // The method reader passes over params regardless of order, so a params-first
+    // request still routes correctly.
+    const request = "{\"params\":{\"name\":\"join\",\"arguments\":{\"a\":\"hi\",\"b\":\"there\"}},\"jsonrpc\":\"2.0\",\"id\":2,\"method\":\"tools/call\"}";
+    var out: [max_response]u8 = undefined;
+    const response = try serve(request, &out);
+    const want = "{\"jsonrpc\":\"2.0\",\"id\":2,\"result\":{\"content\":[{\"type\":\"text\",\"text\":\"hi there\"}]}}";
+    assert(std.mem.eql(u8, response, want));
+    print("mcp_host: serve — a params-first request still routes by method (join -> 'hi there')\n", .{});
+}
+
+fn welcome_unknown_tool_is_an_error() !void {
+    const request = "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/call\",\"params\":{\"name\":\"weigh\",\"arguments\":{}}}";
+    var out: [max_response]u8 = undefined;
+    const response = try serve(request, &out);
+    const want = "{\"jsonrpc\":\"2.0\",\"id\":1,\"error\":{\"code\":-32000,\"message\":\"unknown_tool\"}}";
+    assert(std.mem.eql(u8, response, want));
+    print("mcp_host: serve — a call to an unknown tool answers a JSON-RPC error, never a fake result\n", .{});
+}
+
+fn welcome_unknown_method_is_an_error() !void {
+    const request = "{\"jsonrpc\":\"2.0\",\"id\":5,\"method\":\"resources/read\"}";
+    var out: [max_response]u8 = undefined;
+    const response = try serve(request, &out);
+    const want = "{\"jsonrpc\":\"2.0\",\"id\":5,\"error\":{\"code\":-32000,\"message\":\"method_not_found\"}}";
+    assert(std.mem.eql(u8, response, want));
+    print("mcp_host: serve — an unrecognized method answers method_not_found, never a guess\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_serves_a_tools_list();
+        try welcome_serves_a_tools_call();
+        try welcome_call_field_order();
+        try welcome_unknown_tool_is_an_error();
+        try welcome_unknown_method_is_an_error();
+        print("mcp_host {s} — GREEN\n", .{mcp_host_version});
+        return 0;
+    }
+    print("usage: mcp-host selftest\n", .{});
+    return 1;
+}

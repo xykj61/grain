@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260812.115317
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR-J3r5 — the JSON host bridge (Journey 3 whole)
+prompt keep taking the next agent-doable lap Lindy-first crux-first; approve own design rounds; send each finished increment as its own signed round; stop at custody gates
+think after r4 (tools/list) landed and sent, the named next crux was a live JSON host bridge — the Lindy capstone that joins r1..r4 into one end-to-end MCP conversation over the owned shapes, in-process (no networking gate)
+think designed serve(request_json, out): read the request's method + id, route — tools/list -> build the server catalog and render via r4's list_to_json; tools/call -> r2 call_from_json -> r1 dispatch -> r1 parse_result -> r2 result_to_json; unknown method -> a named JSON-RPC error
+think wrote a small bounded skip_value over mj.Parser so read_method passes over any field (including params) regardless of order — a params-first request still routes correctly
+obs pure composition — no new transport, no new parser but the value-skipper; reused r4's bounded envelope append (made pub) to place the 512-byte call response into the 8192 response buffer, so no third copy of append is written
+obs refusals stay real end to end — a call to an unknown tool answers a JSON-RPC error (unknown_tool, never a fake result), an unrecognized method answers method_not_found; five selftest cases GREEN, built first try
+loom witness=buhr_mcp_host_witness build=green selftest_cases=5 request_bound=512 response_bound=8192
+file pond/apps/mcp_host.rye the bridge — serve routes tools/list + tools/call over the owned shapes
+file pond/apps/mcp_list.rye made the bounded envelope append pub for the bridge to reuse
+file tools/buhr_mcp_host_witness.rish the r5 witness — build + 5 selftest cases + additive r4 re-run
+file work-in-progress/REMEMBER.md BUHR narrative (J3 whole) + git nib
+recommend keep-going — BUHR J3 complete (shape · tiles · manifest · list · bridge); next agent-doable crux is deepening J2 with dress_run-colored revision nodes
