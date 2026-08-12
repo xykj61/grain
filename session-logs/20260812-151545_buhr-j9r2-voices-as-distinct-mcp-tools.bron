@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260812.151545
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR-J9r2 the voices as distinct MCP tools
+prompt Keep going Lindy-first crux-first; send each increment; stop at custody gates; GATES-ONLY only if only gates remain
+think J9r1 made the whole intelligence reachable as one `ask` tool; the named next lap J9r2 gives each voice its own name at the protocol surface — discovery plus per-voice invocation
+think Reused J9r1's render_ok/render_error/error_name by making them pub (additive; J9r1's witness re-runs GREEN unchanged), and J3r4's tools/list envelope (mcp_list) for discovery, rather than duplicating
+think Wrote pond/apps/mcp_voice_tools.rye: five voice-tool manifests gathered into a ToolList and round-tripped through list_to_json/list_from_json; serve_voice maps a tool name to a required voice, dispatches, and cross-checks served.voice == the named voice
+obs The tool name is a typed assertion — a `words` prompt under the `lattice` tool routes to the artifact voice, so the cross-check refuses `wrong_voice` rather than letting the protocol claim Lattice answered; unknown tool, disallowed model each refuse under named errors
+obs One red caught by the witness: the artifact tool's summary (67 chars) exceeded the JSON field bound (64) on read-back (FieldTooLong); shortened it — a real bound the round-trip enforces
+loom witness=buhr_mcp_voice_tools_witness result=GREEN welcomes=6 r1_rerun=GREEN list_rerun=GREEN
+file pond/apps/mcp_voice_tools.rye BUHR-J9r2 five voices, each a named MCP tool, discovered by tools/list and cross-checked on invoke
+file pond/apps/mcp_voice.rye render_ok/render_error/error_name made pub for reuse (additive)
+file tools/buhr_mcp_voice_tools_witness.rish witnesses discovery, named routing, the wrong_voice cross-check, and J9r1 + J3r4 re-runs
+recommend check-in (Keaton) BUHR's intelligence is now discoverable and addressable voice by voice over the owned MCP shape; remaining BUHR doors (owner-signed corpus, Comlink-served) are the custody/serve gates that are Keaton's hand
