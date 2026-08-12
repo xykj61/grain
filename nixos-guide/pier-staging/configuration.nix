@@ -77,6 +77,7 @@
     bubblewrap
     s6
     s6-rc
+    jq       # JSON — live stream-json rendering for the season loop (agent visibility)
   ];
 
   system.stateVersion = "26.05";
