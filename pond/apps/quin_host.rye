@@ -1,0 +1,218 @@
+//! pond/apps/quin_host.rye — BUHR Journey 1, Rung 4: the Q-vane host, realized.
+//!
+//! Quin is a role, not a module — the Q-vane that gathers the four voices. Rungs
+//! one through three composed each built voice with Lantern's contract as its own
+//! Pond app: Lattice (inference_query), Scribble (reading_query), Ember
+//! (corpus_query). This rung gathers those three under one bounded entry: a single
+//! Lantern-shaped request is dispatched to whichever voice recognizes the prompt,
+//! and the same Lantern-contract-bounded Response returns — no matter which voice
+//! answered.
+//!
+//! Additive by construction: it imports the three apps and calls only their public
+//! `answer` functions. No voice contract changes; each rung stays its own green
+//! binary. The dispatcher tries each voice in turn, falling through only on
+//! UnknownOp — a genuine request error (bad budget, model not allowed) surfaces at
+//! once rather than being retried against a voice that could never serve it.
+//!
+//!   rye build pond/apps/quin_host.rye -femit-bin=pond/bin/quin-host
+//!   pond/bin/quin-host selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lc = @import("lantern/lantern_core.rye");
+const iq = @import("inference_query.rye"); // Lattice voice — arithmetic
+const rq = @import("reading_query.rye"); // Scribble voice — reading
+const cq = @import("corpus_query.rye"); // Ember voice — corpus craft
+
+const quin_host_version = "20260812.140000";
+
+const max_result_text: u32 = lc.max_completion_len; // never exceed Lantern's completion bound
+
+/// Which voice served a dispatched request — for the host's own accounting.
+pub const Voice = enum(u8) {
+    lattice,
+    scribble,
+    ember,
+};
+
+/// A dispatched answer: the Lantern Response plus which voice produced it.
+pub const Served = struct {
+    voice: Voice,
+    response: lc.Response,
+};
+
+/// The Q-vane host: dispatch one bounded request to whichever voice recognizes the
+/// prompt, and return its Lantern-contract Response tagged with the serving voice.
+/// Each voice's own `answer` validates the request, gates the model, routes, and
+/// meters — the host adds only the routing between them, never a second contract.
+/// Fall through only on UnknownOp; any other error is a real request fault and
+/// surfaces immediately rather than being retried against another voice.
+pub fn dispatch(req: lc.Request, allow_text: []const u8, out_buf: []u8) !Served {
+    // invariant: the caller's buffer honors Lantern's completion bound
+    assert(out_buf.len <= max_result_text);
+    // invariant: the buffer can hold at least one token
+    assert(out_buf.len > 0);
+
+    if (iq.answer(req, allow_text, out_buf)) |resp| {
+        return .{ .voice = .lattice, .response = resp };
+    } else |err| {
+        if (err != error.UnknownOp) return err;
+    }
+    if (rq.answer(req, allow_text, out_buf)) |resp| {
+        return .{ .voice = .scribble, .response = resp };
+    } else |err| {
+        if (err != error.UnknownOp) return err;
+    }
+    // The Ember voice is last: an UnknownOp here means no voice recognized the
+    // prompt, and the host refuses rather than inventing an answer.
+    const resp = try cq.answer(req, allow_text, out_buf);
+    return .{ .voice = .ember, .response = resp };
+}
+
+fn welcome_lattice_route() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "matmul the pair",
+        .max_tokens = 64,
+    };
+    const served = try dispatch(req, allow, &buf);
+    // invariant: the arithmetic prompt reached the Lattice voice
+    assert(served.voice == .lattice);
+    assert(std.mem.eql(u8, served.response.text, "19 22 43 50"));
+    assert(served.response.stopped_reason == .eos);
+    print("quin_host: matmul dispatched to Lattice — text '{s}'\n", .{served.response.text});
+}
+
+fn welcome_scribble_route() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "outline the doc",
+        .max_tokens = 64,
+    };
+    const served = try dispatch(req, allow, &buf);
+    // invariant: the reading prompt reached the Scribble voice
+    assert(served.voice == .scribble);
+    assert(std.mem.eql(u8, served.response.text, "Grain Voices Detail"));
+    assert(served.response.stopped_reason == .eos);
+    print("quin_host: outline dispatched to Scribble — text '{s}'\n", .{served.response.text});
+}
+
+fn welcome_ember_route() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "sum_lines the corpus",
+        .max_tokens = 64,
+    };
+    const served = try dispatch(req, allow, &buf);
+    // invariant: the corpus prompt reached the Ember voice
+    assert(served.voice == .ember);
+    assert(std.mem.eql(u8, served.response.text, "160"));
+    assert(served.response.stopped_reason == .eos);
+    print("quin_host: sum_lines dispatched to Ember — text '{s}'\n", .{served.response.text});
+}
+
+fn welcome_length_carries_through() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "paths_rye the corpus",
+        .max_tokens = 2,
+    };
+    const served = try dispatch(req, allow, &buf);
+    // The serving voice's own metering carries through the host unchanged.
+    assert(served.voice == .ember);
+    assert(served.response.tokens_out == 2);
+    assert(served.response.stopped_reason == .length);
+    print("quin_host: length stop carried through from Ember — tokens {d}\n", .{served.response.tokens_out});
+}
+
+fn unwelcome_model_not_allowed() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-not-on-list",
+        .prompt = "matmul the pair",
+        .max_tokens = 64,
+    };
+    // A disallowed model is a real request fault: it must surface at the first
+    // voice, never fall through to be retried against another.
+    if (dispatch(req, allow, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ModelNotAllowed);
+    }
+    print("quin_host: disallowed model refused at once (no fall-through)\n", .{});
+}
+
+fn unwelcome_no_voice() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "translate this poem",
+        .max_tokens = 64,
+    };
+    if (dispatch(req, allow, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.UnknownOp);
+    }
+    print("quin_host: no voice recognized the prompt — refused (no fake answer)\n", .{});
+}
+
+fn unwelcome_zero_budget() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "outline the doc",
+        .max_tokens = 0,
+    };
+    // A zero budget is a Lantern contract fault; it must surface, not fall through.
+    if (dispatch(req, allow, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.BudgetExceeded);
+    }
+    print("quin_host: zero budget refused by the Lantern contract\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_lattice_route();
+        try welcome_scribble_route();
+        try welcome_ember_route();
+        try welcome_length_carries_through();
+        try unwelcome_model_not_allowed();
+        try unwelcome_no_voice();
+        try unwelcome_zero_budget();
+        print("quin_host {s} — GREEN\n", .{quin_host_version});
+        return 0;
+    }
+    print("usage: quin-host selftest\n", .{});
+    return 1;
+}
