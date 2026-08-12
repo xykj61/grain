@@ -1,0 +1,323 @@
+//! pond/apps/realidream_view.rye — BUHR Journey 5, Rung 5: the read, program, and
+//! fused lanes painted together on one styled surface — origin made visible.
+//!
+//! Rungs one through four built Realidream's fused edge in the log: a read source and
+//! a written program are two lanes on one append-only graph (r1), a re-read is an
+//! append (r2), one read feeds one program node (r3), and two reads fuse into one (r4).
+//! Journey 2 taught the graph how to paint itself onto WADE1's styled Skate surface.
+//! This rung joins the two halves: it paints the whole fused scene — read lanes,
+//! program lanes, and the fused program node — onto one styled canvas, and marks each
+//! *read origin* in its own semantic token so a reader tells a fetched source from a
+//! written program at a glance.
+//!
+//! The crux is that origin is a property of the very bytes rung one renders: a read
+//! lane names itself under a `read/` path, so `read_label_span` finds the read origin
+//! on a rendered line exactly where the readable text shows it — the painted color can
+//! never point at an origin the text does not carry. The read label lands through
+//! WADE1's own `dress_run` wearing the sheet's warm `read` (Madder) token; the living
+//! edge of every lane keeps Journey 2's `head` (Ochre) token, reused unchanged. So one
+//! surface carries three readings at once: the body ink, the read origins in Madder,
+//! and each lane's living edge in Ochre — every color additive over the glyphs, which
+//! stay byte-for-byte the text a reader sees.
+//!
+//! This rung reads no network: the read content is supplied in-process, exactly as
+//! rungs one through four supply theirs. A real web fetch is a genuine outward act and
+//! stays a named seam behind a bounded reader — its own later rung, surfacing for
+//! Keaton's word.
+//!
+//! Additive by construction: it imports realidream_reader, realidream_fuse,
+//! mantra_browser, mantra_browser_heads, brushstroke/tokens, and brushstroke/skate_grid,
+//! calling only their public functions. No file beneath it changes; rungs one through
+//! four and Journey 2 stay their own green binaries.
+//!
+//!   rye build pond/apps/realidream_view.rye -femit-bin=pond/bin/realidream-view
+//!   pond/bin/realidream-view selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const mb = @import("mantra_browser.rye");
+const mn = @import("mantra/recall_lap1.rye");
+const reader = @import("realidream_reader.rye");
+const fuse = @import("realidream_fuse.rye");
+const heads = @import("mantra_browser_heads.rye");
+const tokens = @import("brushstroke/tokens.rye");
+const skate = @import("brushstroke/skate_grid.rye");
+
+const realidream_view_version = "20260812.132451";
+
+// A bounded viewport, wide enough for a lane line and tall enough for the fused
+// scene's ten lines — the same discipline Journey 2's view rungs keep.
+pub const view_cols: u32 = 48;
+pub const view_rows: u32 = 16;
+
+// The read origin names itself under this path prefix, exactly as rungs one through
+// four require — so the painted mark reads off the readable text, never a side channel.
+const read_prefix = "read/";
+
+// The token a read origin wears — the sheet's own `read` accent (Madder), a semantic
+// token named for exactly this mark, so a `.brush` theme recolors the read origin on
+// its own key without touching the ink, the edge rule, or the living edge.
+const read_token = "read";
+
+// The palette slot the read origin wears. A real slot (never the fg sentinel), inside
+// Skate's bounded run palette, distinct from Journey 2's head slot (3) so the read
+// origin and the living edge seat their two colors side by side without collision.
+pub const read_slot: u8 = 4;
+
+pub const ViewError = error{
+    ViewTooNarrow,
+};
+
+/// The column span of a read origin's path label on a rendered line, or null when the
+/// line is not a read lane (the graph title, a bolt header, a program lane, a blank
+/// line). A read lane's line is a run of leading spaces, then a `read/` path, then a
+/// `:` — the label span is `[first-non-space, colon]` inclusive of the colon, read
+/// straight from the bytes rung one wrote. So the painted origin mark can never point
+/// at a lane the readable text does not name a read.
+pub fn read_label_span(line: []const u8) ?struct { start: u32, end: u32 } {
+    // invariant: a rendered line stays within the render budget, so its length fits u32.
+    assert(line.len <= mb.max_render_bytes);
+    if (line.len == 0) return null;
+    const n: u32 = @intCast(line.len);
+
+    // Walk over the leading indent to the start of the path.
+    var p: u32 = 0;
+    while (p < n and line[p] == ' ') : (p += 1) {}
+    // A read origin names itself under the read/ path — nothing else is a read lane.
+    if (!std.mem.startsWith(u8, line[p..], read_prefix)) return null;
+
+    // The path label ends at the first ':' — a lane line always carries one.
+    var c: u32 = p;
+    while (c < n and line[c] != ':') : (c += 1) {}
+    if (c == n) return null; // no colon — not a lane line
+
+    // invariant: the label span is a well-ordered, in-bounds run that includes the colon.
+    assert(p < c + 1);
+    assert(c + 1 <= n);
+    return .{ .start = p, .end = c + 1 };
+}
+
+/// Paint the whole fused scene onto a styled Skate grid: each rendered line lands on the
+/// next grid row dressed by `sheet` (paper/ink); where a line names a read origin, its
+/// path label is repainted in the sheet's `read` token; where a line carries a revision
+/// chain, its head node is repainted in the sheet's `head` token (Journey 2's living
+/// edge, reused unchanged). Returns the number of rows painted. The graph, the read
+/// origins, and the heads all come straight from `mantra_browser.render`, so the painted
+/// view and the readable text are one reading — never two.
+pub fn paint_origins(catalog: *const mn.BoltCatalog, grid: *skate.Grid, sheet: []const u8) !u32 {
+    // invariant: the grid is at least one row tall.
+    assert(grid.rows >= 1);
+    // invariant: the sheet carries at least a paper token to lower from.
+    assert(sheet.len > 0);
+
+    var buf: [mb.max_render_bytes]u8 = undefined;
+    const text = try mb.render(catalog, &buf);
+    // invariant: the render honors its own budget.
+    assert(text.len <= mb.max_render_bytes);
+
+    var row: u32 = 0;
+    var start: u32 = 0;
+    var i: u32 = 0;
+    while (i < text.len) : (i += 1) {
+        if (text[i] != '\n') continue;
+        const line = text[start..i];
+        start = i + 1;
+        if (line.len == 0) continue;
+        if (row >= grid.rows) break; // bounded: never paint past the viewport
+        if (line.len > grid.cols) return error.ViewTooNarrow;
+        _ = try tokens.dress_grid(grid, row, line, sheet);
+        // The read origin — a fetched source — wears the read token on its path label.
+        if (read_label_span(line)) |span| {
+            _ = try tokens.dress_run(grid, row, span.start, span.end, sheet, read_token, read_slot);
+        }
+        // The living edge of the lane — its head node — keeps Journey 2's head token.
+        if (heads.head_span(line)) |span| {
+            _ = try tokens.dress_run(grid, row, span.start, span.end, sheet, "head", heads.head_slot);
+        }
+        row += 1;
+    }
+    // invariant: painted rows never exceed the grid's bounded height.
+    assert(row <= grid.rows);
+    return row;
+}
+
+/// Build the fused scene: a demo catalog of program lanes, two pinned read lanes, and a
+/// program lane fused from both reads — so one render carries read origins, program
+/// lanes, and a fused node together. A witness helper so every welcome starts from the
+/// same three-origin graph.
+fn fused_scene() !mn.BoltCatalog {
+    var catalog = try mb.demo_catalog();
+    _ = try reader.pin_read(&catalog, "local", "web", "read/left", "abcd", "leaf");
+    _ = try reader.pin_read(&catalog, "local", "web", "read/right", "xy", "leaf");
+    _ = try fuse.derive_from_two_reads(&catalog, "local", "web", "read/left", "read/right", "fused", "leaf");
+    return catalog;
+}
+
+/// Count pixels whose visible color exactly matches `c` (ignoring alpha) in a rasterized
+/// buffer. A witness helper: it proves a specific token color reached the canvas, which
+/// `lit_pixel_count` (any non-background pixel) cannot.
+fn count_pixels_of_color(pixels: []const u8, stride: u32, width: u32, height: u32, c: skate.Color) u32 {
+    // invariant: the stride holds a full row of ARGB8888 pixels.
+    assert(stride >= width * 4);
+    // invariant: a real canvas has width.
+    assert(width > 0);
+    // invariant: a real canvas has height.
+    assert(height > 0);
+    const stride_usize: usize = @intCast(stride);
+    var count: u32 = 0;
+    var y: u32 = 0;
+    while (y < height) : (y += 1) {
+        const y_usize: usize = @intCast(y);
+        const rowbytes = pixels[y_usize * stride_usize ..][0 .. @as(usize, @intCast(width)) * 4];
+        var x: u32 = 0;
+        while (x < width) : (x += 1) {
+            const px: usize = @intCast(x * 4);
+            if (rowbytes[px + 0] == c.b and rowbytes[px + 1] == c.g and rowbytes[px + 2] == c.r) {
+                count += 1;
+            }
+        }
+    }
+    return count;
+}
+
+fn welcome_three_origins_painted(allocator: std.mem.Allocator) !void {
+    // The fused scene carries three origins — read lanes, program lanes, and a fused
+    // program node — and one paint lands them all on one styled canvas.
+    var catalog = try fused_scene();
+    var grid = try skate.Grid.init(allocator, view_cols, view_rows);
+    const rows = try paint_origins(&catalog, &grid, tokens.base_sheet);
+    // Six demo lines (title · two bolt headers · a.txt · b.txt · index) plus the read
+    // bolt header and the three local/web lanes (read/left · read/right · fused) = 10.
+    assert(rows == 10);
+
+    // The very bytes the reader would read carry all three origins on one graph.
+    var buf: [mb.max_render_bytes]u8 = undefined;
+    const text = try mb.render(&catalog, &buf);
+    assert(std.mem.indexOf(u8, text, "read/left: r1[") != null); // a read origin
+    assert(std.mem.indexOf(u8, text, "read/right: r1[") != null); // a read origin
+    assert(std.mem.indexOf(u8, text, "fused: r1[") != null); // the fused program node
+    assert(std.mem.indexOf(u8, text, "a.txt: r1[") != null); // a plain program lane
+    print("realidream_view: read, program, and fused lanes painted onto {d} styled rows\n", .{rows});
+}
+
+fn welcome_read_origins_marked(allocator: std.mem.Allocator) !void {
+    // Exactly the two read lanes wear the read token on their path labels; the fused
+    // node and every plain program lane keep the reading ink — origin made visible.
+    var catalog = try fused_scene();
+    var grid = try skate.Grid.init(allocator, view_cols, view_rows);
+    _ = try paint_origins(&catalog, &grid, tokens.base_sheet);
+
+    // invariant: the fg-index buffer is exactly parallel to the cells.
+    assert(grid.fg_index.len == grid.cells.len);
+    var read_cells: u32 = 0;
+    var read_rows: u32 = 0;
+    var row: u32 = 0;
+    while (row < grid.rows) : (row += 1) {
+        var row_read: u32 = 0;
+        var col: u32 = 0;
+        while (col < grid.cols) : (col += 1) {
+            if (grid.fg_index[row * grid.cols + col] == read_slot) row_read += 1;
+        }
+        if (row_read > 0) read_rows += 1;
+        read_cells += row_read;
+    }
+    // Two read lanes carry a read-token run; no other line does.
+    assert(read_rows == 2);
+    // The two labels — `read/left:` (10) and `read/right:` (11) — are 21 tinted cells,
+    // the path text without its leading indent.
+    assert(read_cells == 21);
+    print("realidream_view: {d} read-origin cells across exactly {d} read lanes — program lanes clean\n", .{ read_cells, read_rows });
+}
+
+fn welcome_three_colors_reach_canvas(allocator: std.mem.Allocator) !void {
+    // The crux, proven on metal: three token colors share the canvas at once — the body
+    // ink, the read origins in Madder, and each lane's living edge in Ochre.
+    var catalog = try fused_scene();
+    var grid = try skate.Grid.init(allocator, view_cols, view_rows);
+    _ = try paint_origins(&catalog, &grid, tokens.base_sheet);
+
+    const paint = try tokens.dress(tokens.base_sheet);
+    const read_color = try tokens.token_color(tokens.base_sheet, read_token);
+    const head_color = try tokens.token_color(tokens.base_sheet, "head");
+    // invariant: the read origin and the living edge are two genuinely distinct marks.
+    assert(read_color.r != head_color.r or read_color.g != head_color.g or read_color.b != head_color.b);
+
+    const width: i32 = @intCast(view_cols * skate.cell_w);
+    const height: i32 = @intCast(view_rows * skate.cell_h);
+    const stride: u32 = view_cols * skate.cell_w * 4;
+    const pixel_count: usize = @intCast(stride * @as(u32, @intCast(height)));
+    const pixels = try allocator.alloc(u8, pixel_count);
+    grid.rasterize(pixels, stride, width, height, paint.paper, paint.ink, 1);
+
+    const w_u: u32 = @intCast(width);
+    const h_u: u32 = @intCast(height);
+    const ink_pixels = count_pixels_of_color(pixels, stride, w_u, h_u, paint.ink);
+    const read_pixels = count_pixels_of_color(pixels, stride, w_u, h_u, read_color);
+    const head_pixels = count_pixels_of_color(pixels, stride, w_u, h_u, head_color);
+    assert(ink_pixels > 0);
+    assert(read_pixels > 0);
+    assert(head_pixels > 0);
+    print("realidream_view: {d} ink, {d} read-origin, and {d} living-edge pixels share the canvas\n", .{ ink_pixels, read_pixels, head_pixels });
+}
+
+fn welcome_shared_graph(allocator: std.mem.Allocator) !void {
+    // Marking the origins is additive over the glyphs: the painted row still carries the
+    // very bytes rung one renders. Editor (render) and view (grid) are one graph.
+    var catalog = try fused_scene();
+    var grid = try skate.Grid.init(allocator, view_cols, view_rows);
+    _ = try paint_origins(&catalog, &grid, tokens.base_sheet);
+
+    var buf: [mb.max_render_bytes]u8 = undefined;
+    const text = try mb.render(&catalog, &buf);
+    const first_nl = std.mem.indexOfScalar(u8, text, '\n').?;
+    const first_line = text[0..first_nl];
+    const painted = grid.row_cells(0);
+    // invariant: the grid row holds at least the rendered line's bytes.
+    assert(painted.len >= first_line.len);
+    assert(std.mem.startsWith(u8, painted, first_line));
+    print("realidream_view: editor and view share one graph — text unchanged by the origin paint\n", .{});
+}
+
+fn welcome_read_label_span_reads_true() !void {
+    // A read lane names itself under read/; its label span opens at the path and closes
+    // on the colon. A program lane, a bolt header, and the title carry no read origin.
+    const read_line = "  read/left: r1[abcd1234] -> r2[ef567890]";
+    const span = read_label_span(read_line).?;
+    assert(read_line[span.start] == 'r');
+    assert(std.mem.startsWith(u8, read_line[span.start..], "read/left:"));
+    assert(read_line[span.end - 1] == ':');
+    // A plain program lane is not a read origin.
+    assert(read_label_span("  a.txt: r1[alpha123]") == null);
+    // A bolt header and the title carry no lane, so no read origin.
+    assert(read_label_span("local/web") == null);
+    assert(read_label_span("mantra log — append-only graph") == null);
+    print("realidream_view: read_label_span finds the read origin, refuses program lanes and headers\n", .{});
+}
+
+fn welcome_bounded_viewport(allocator: std.mem.Allocator) !void {
+    // A grid shorter than the scene paints only what fits — bounded, never an overflow,
+    // and the origin paint respects the same viewport bound.
+    var catalog = try fused_scene();
+    var grid = try skate.Grid.init(allocator, view_cols, 4);
+    const rows = try paint_origins(&catalog, &grid, tokens.base_sheet);
+    assert(rows == 4);
+    print("realidream_view: short viewport bounded to {d} rows (no overflow)\n", .{rows});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_three_origins_painted(garden);
+        try welcome_read_origins_marked(garden);
+        try welcome_three_colors_reach_canvas(garden);
+        try welcome_shared_graph(garden);
+        try welcome_read_label_span_reads_true();
+        try welcome_bounded_viewport(garden);
+        print("realidream_view {s} — GREEN\n", .{realidream_view_version});
+        return 0;
+    }
+    print("usage: realidream-view selftest\n", .{});
+    return 1;
+}
