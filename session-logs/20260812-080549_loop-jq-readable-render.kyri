@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260812.080549
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Loop renders readable now that jq is installed
+prompt Keaton pasted the successful pier_jq_install.sh run — jq-1.8.2 now on the pier after nixos-rebuild
+think jq install landed clean (backup · edit · rebuild OK · jq-1.8.2 on PATH). Now the loop can actually use it. Wired jq rendering into the loop so the stream is readable, not raw NDJSON.
+think Constraint that shaped the design: a jq filter has double quotes, which would terminate the Rishi say-string that prints the recipe. Solution — keep the filter in its own file, tools/stream_render.jq, and reference it with jq -Rrj -f; the recipe line stays quote-clean.
+think The filter is defensive: -R + fromjson? ignores any non-JSON line rather than crashing; it renders assistant text and [tool: …] markers, and rules off each lap. tee saves the raw stream to /tmp/claude_lap.jsonl first, so even if a future Claude Code changes the event shape and the filter renders nothing, the whole run is on disk and the loop still works (the gate is a file sentinel, commits still land). I could not test the filter against live claude output (jq is on the host but not in this pre-rebuild jail), so the graceful raw-log fallback is deliberate.
+obs Verified: the recipe prints GREEN, the readable loop line bash -n parses, tools/stream_render.jq is in place, living_docs_lint GREEN (README links to the jq filter + install script resolve). No-jq fallback documented (drop the | jq segment).
+file tools/stream_render.jq new — defensive jq filter: assistant text + tool markers, raw-line tolerant
+file tools/launch-claude-season.rish loop renders through jq -f tools/stream_render.jq; readable/fallback note
+file recursion-prompts/README.md Watching-a-run-live points at the filter file + the always-saved raw log
+recommend check-in Keaton — restart the loop; you should now see readable assistant text and [tool: …] markers stream live. If the filter shows nothing on your claude version, /tmp/claude_lap.jsonl holds the raw run and tools/stream_render.jq's paths can be tuned; the GitHub per-increment commits remain the surest signal

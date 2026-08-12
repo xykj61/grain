@@ -61,12 +61,14 @@ Census witness: [`../tools/recursion_prompts_census_witness.rish`](../tools/recu
 
 ## Watching a run live
 
-Plain `--verbose` does **not** stream through a pipe ([claude-code #733](https://github.com/anthropics/claude-code/issues/733)); the streaming format is **`--output-format stream-json --verbose`**, which emits one JSON event per line as they happen. On a pier without `jq` the raw NDJSON scrolls live — ugly, yet honest proof the lap is working. For readable output, install `jq` on the pier once — `sudo sh tools/pier_jq_install.sh` (guarded, reversible; infuses `jq` into the NixOS config and rebuilds) — or a throwaway `nix-shell -p jq`, then pipe the stream through it:
+Plain `--verbose` does **not** stream through a pipe ([claude-code #733](https://github.com/anthropics/claude-code/issues/733)); the streaming format is **`--output-format stream-json --verbose`**, which emits one JSON event per line as they happen. `jq` is installed on the pier by [`../tools/pier_jq_install.sh`](../tools/pier_jq_install.sh) (guarded, reversible; infuses `jq` into the NixOS config and rebuilds), so the loop renders the stream readable through a filter kept in its own file — [`../tools/stream_render.jq`](../tools/stream_render.jq):
 
 ```sh
 … claude --output-format stream-json --verbose -p '…' \
-  | jq -rj 'select(.type=="stream_event" and .event.delta.type?=="text_delta") | .event.delta.text'
+  | tee /tmp/claude_lap.jsonl | jq -Rrj -f tools/stream_render.jq
 ```
+
+It shows assistant text and `[tool: …]` markers as they land. The raw stream is always saved to `/tmp/claude_lap.jsonl`, so if a future Claude Code version changes the event shape and the filter shows nothing, the whole run is still there to inspect and the filter's paths can be adjusted. No-jq fallback: drop the `| jq …` segment and the raw NDJSON scrolls instead.
 
 **The loop stops on a file sentinel, not a grep.** Because stream-json echoes the prompt — which contains the words `GATES-ONLY` — a grep on the stream would false-match and stop after one lap. So the prompt tells the agent to `touch .loop-gates-only` when only custody gates remain, and the outer loop checks for that file (`[ -f .loop-gates-only ]`), leaving the stream purely for the operator's eyes. The exact loop lives in [`../tools/launch-claude-season.rish`](../tools/launch-claude-season.rish). The cleanest progress signal of all is the **per-increment commits on GitHub** — the loop pushes each finished file, witness, and doc as its own round.
 
