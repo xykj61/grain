@@ -1,0 +1,15 @@
+format session-log-v1
+stamp 20260812.073419
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Loop sends per increment — followable on GitHub
+prompt Keaton: the loop isn't running now; I want the sends more frequent so I can follow on GitHub
+think First, reconciled a surprise: the recursion-prompts cellar the prior message asked for was ALREADY built — by Keaton's own autonomous loop, which ran four laps after the --verbose fix (BUHR-1r2 Scribble, 1r3 Ember, 1r4 the Q-vane host realized, and the recursion-prompts cellar + tools update), all committed and pushed, HEAD==origin. Removed my two duplicate drafts; verified the loop's work sound (census witness GREEN, buhr_quin_host witness GREEN, living_docs_lint GREEN, manifest scrub + gitignore allow present). The loop is not running now (only my interactive --continue session is live; no -p lap, no until-loop).
+think The new ask: more frequent sends. The lever is the prompt, not the outer cadence — changed "send each round" (once per rung) to "send often — push each finished increment (a new file, a passing witness, a doc) as its own signed round," in both the seed (recursion-prompts/seed/autonomous-loop.seed.md — the quote + a new cadence bullet) and the live recipe (tools/launch-claude-season.rish, both the lap and loop -p prompts).
+think Held the honesty rails while loosening the batching: each increment is still atomic, component-scoped, signed, and carries a green witness or an honest note; still no pin-only commit (the tidy anti-pattern stays banned). Followability is bought with more real commits, not with noise.
+obs Verified: census witness still GREEN (gate clause preserved in every seed), the loop one-liner still bash -n parses with the longer prompt (no stray apostrophes), send-often present in both printed commands, living_docs_lint GREEN.
+file recursion-prompts/seed/autonomous-loop.seed.md send-often in the prompt quote + a cadence bullet under Remotes
+file tools/launch-claude-season.rish both -p prompts now say send per finished increment for GitHub followability
+recommend keep-going restart the loop when ready — it now pushes each file/witness/doc as its own round, so GitHub updates far more often through a rung; the four BUHR laps + the cellar the loop already landed stand green
