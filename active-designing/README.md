@@ -51,6 +51,7 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-slug.md` filenames; this README is the
 
 | Stamp | Brief | Meaning |
 |-------|-------|---------|
+| `20260812.000456` | [WADE1 — the `.brush` surface-bridge seam](20260812-000456_wade1-brush-surface-bridge-seam.md) | the styling cascade a design system targets over Brushstroke·Skate·Realidream, in the owned tongue — token sheet · **infuse as cascade** (`brix/infuse` reused) · lowering to Skate grid; never a CSS rail; `tokens.rye` awaits the word |
 | `20260718.201232` | [SETU6 — device-wire lab harness](yonder/20260718-201232_setu6-device-wire-lab.md) | Lab card · stand-in/armed; live TX = SETU6.5 |
 | `20260718.185147` | [Desk Hearth Hold — season open](yonder/20260718-185147_desk-hearth-hold-season.md) | HOLD0–HOLD1 · HOLD-W closed on eyes; SETU6 opened after |
 | `20260718.133455` | [Glass↔Desk compose Amber/Amphora — revive](20260718-133455_glass-desk-compose-amber-amphora-revive.md) | Compose later, do not fuse; SETU/LULU stay warm wire; Tilak→resin→Amphora graduation horizon |
