@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260812.130822
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR-J5r2 — a re-read is an append
+prompt Autonomous loop — take the next agent-doable lap Lindy-first crux-first, send each finished increment, stop at custody gates.
+think Read REMEMBER; latest landed BUHR-J5r1 (read lane fused on one graph). The named next agent-doable crux: a read lane refreshed as a new revision — a re-read is an append, as an edit is.
+think Studied realidream_reader.rye (pin_read over editor.open_lane, read/ prefix guard) and mantra_editor.rye (commit continues a lane's head via head_revision + append_leaf; refuses LaneUnknown). A refresh is commit scoped to a read/ path.
+think Authored pond/apps/realidream_reread.rye — refresh_read guards the read/ prefix (NotAReadPath) then delegates to editor.commit, so an unpinned read lane refuses LaneUnknown honestly. Three welcomes: grows the read lane r1 -> r2 with every program lane byte-identical; the earlier read still recalls its bytes (r1 first-read, r2 second-read) proving append-not-overwrite; refuses non-read and unpinned.
+obs A re-read and a program edit are the same motion — an append the graph already knows how to show — so the read half inherits accrete-never-break by the same construction the editor did. No new abstraction; imports only public functions. Reads no network — refreshed content in-process; the real fetch stays the held seam.
+obs Witness GREEN (3 welcomes + rung-one re-run additive); tame_style_check bans clean and new file carries asserts (not in zero-assert ratchet); width-check clean.
+loom witness=buhr_realidream_reread_witness welcomes=3 rung1_rerun=green network_reads=0
+file pond/apps/realidream_reread.rye the re-read app — refresh_read appends the next revision to an existing read/ lane
+file tools/buhr_realidream_reread_witness.rish the witness proving r1 -> r2 growth, earlier-read recall, and the two refusals
+file work-in-progress/REMEMBER.md BUHR-J5r2 landing accreted; next-crux note advanced to the downstream-dependency door
+recommend keep-going next agent-doable crux is a program node depending on a read node (the fused edge); the real network fetch stays the held seam for Keaton's word

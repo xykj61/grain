@@ -1,0 +1,193 @@
+//! pond/apps/realidream_reread.rye — BUHR Journey 5, Rung 2: a re-read is an append,
+//! exactly as an edit is.
+//!
+//! Rung 1 fused a read lane and a program lane on one graph: a read source pinned
+//! under a `read/` path is a lane like any other, and the same `mantra_browser.render`
+//! paints it beside the program the person writes. This rung carries the graph's own
+//! law across the read/write seam: when the outside source is read again, the newer
+//! content is not an overwrite of the old — it is one more revision appended to the read
+//! lane's chain. A program edit and a re-read are the same motion — an append the graph
+//! already knows how to show — so the read half inherits accrete-never-break by the same
+//! construction the editor did (foundations/20260728-220203_realidream.md).
+//!
+//! `refresh_read` continues a read lane: it appends the next revision to an existing
+//! `read/` lane, carrying the freshly-read content. It refuses a path that does not name
+//! itself a read (`NotAReadPath`), and lets the editor's own `commit` refuse a read lane
+//! that was never pinned (`LaneUnknown`) — a re-read continues a chain, it does not open
+//! one; `pin_read` opens. The proof: pin a read lane at r1, refresh it, and the read
+//! lane chains r1 -> r2 while every program lane stands byte-for-byte unchanged; and the
+//! earlier read revision still recalls its original bytes after the refresh — the old
+//! read stands, readable, never rewritten.
+//!
+//! This rung reads no network: the refreshed content is supplied in-process, exactly as
+//! rung one's pinned content is. A real web fetch is a genuine outward act and stays a
+//! named seam behind a bounded reader — its own later rung, surfacing for Keaton's word.
+//!
+//! Additive by construction: it imports realidream_reader, mantra_editor, mantra_browser
+//! and mantra/recall_lap1, calling only their public functions. No file beneath it
+//! changes; Journeys 2, 4 and rung one stay their own green binaries.
+//!
+//!   rye build pond/apps/realidream_reread.rye -femit-bin=pond/bin/realidream-reread
+//!   pond/bin/realidream-reread selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const mb = @import("mantra_browser.rye");
+const reader = @import("realidream_reader.rye");
+const editor = @import("mantra_editor.rye");
+const mn = @import("mantra/recall_lap1.rye");
+
+const realidream_reread_version = "20260812.130500";
+
+const read_prefix = "read/";
+
+/// Refresh a read lane: append the next revision to an existing `read/` lane, carrying
+/// the freshly-read `content`. A re-read is an append, exactly as a program edit is —
+/// the newer content never overwrites the old, it chains after it, so the read half
+/// inherits accrete-never-break by construction. Returns the new revision number.
+/// Refuses a path that does not name itself a read (`NotAReadPath`); lets the editor's
+/// own `commit` refuse a read lane that was never pinned (`LaneUnknown`) — a re-read
+/// continues a chain rather than opening one — and lets Mantra's `append_leaf` refuse
+/// an over-long field or a full catalog.
+pub fn refresh_read(
+    catalog: *mn.BoltCatalog,
+    peer: []const u8,
+    bolt: []const u8,
+    path: []const u8,
+    content: []const u8,
+    tilak: []const u8,
+) !u32 {
+    // invariant: a real lane names all three of its coordinates.
+    assert(peer.len > 0);
+    assert(bolt.len > 0);
+    assert(path.len > 0);
+    // invariant: a read lane names its origin under the read/ path, so a re-read stays
+    // on the read side of the graph and never masquerades as a program edit.
+    if (!std.mem.startsWith(u8, path, read_prefix)) return error.NotAReadPath;
+
+    const next = try editor.commit(catalog, peer, bolt, path, content, tilak);
+    // invariant: a re-read continues the chain — the second read is at least revision two.
+    assert(next >= 2);
+    return next;
+}
+
+/// Count how many times `needle` occurs in `haystack`, bounded by the haystack's own
+/// length — a witness helper proving a chain arrow appears an expected number of times.
+fn count_occurrences(haystack: []const u8, needle: []const u8) u32 {
+    // invariant: a real needle has bytes to match.
+    assert(needle.len > 0);
+    var count: u32 = 0;
+    var i: usize = 0; // seam: slice index over a std search
+    while (i + needle.len <= haystack.len) {
+        if (std.mem.eql(u8, haystack[i .. i + needle.len], needle)) {
+            count += 1;
+            i += needle.len;
+        } else {
+            i += 1;
+        }
+    }
+    return count;
+}
+
+/// Return the rendered line that contains `marker`, without its trailing newline —
+/// a witness helper so a lane can be compared before and after a re-read.
+fn line_with(text: []const u8, marker: []const u8) []const u8 {
+    // invariant: a real marker has bytes to find.
+    assert(marker.len > 0);
+    const at = std.mem.indexOf(u8, text, marker) orelse return text[0..0];
+    var start = at;
+    while (start > 0 and text[start - 1] != '\n') start -= 1;
+    var end = at;
+    while (end < text.len and text[end] != '\n') end += 1;
+    return text[start..end];
+}
+
+fn welcome_reread_grows_read_lane() !void {
+    // Pin a read lane at r1, then read the source again — the read lane chains r1 -> r2,
+    // and every program lane stands byte-for-byte unchanged. A re-read is an append.
+    var catalog = try mb.demo_catalog();
+    _ = try reader.pin_read(&catalog, "local", "web", "read/home", "<h1>hello world</h1>", "leaf");
+
+    var before_buf: [mb.max_render_bytes]u8 = undefined;
+    const before = try mb.render(&catalog, &before_buf);
+    const read_before = line_with(before, "read/home:");
+    // Before the re-read, the read lane carries one node and no chain arrow.
+    assert(count_occurrences(read_before, "->") == 0);
+    const a_before = line_with(before, "a.txt:");
+    const b_before = line_with(before, "b.txt:");
+
+    const rev = try refresh_read(&catalog, "local", "web", "read/home", "<h1>hello again</h1>", "leaf");
+    assert(rev == 2);
+
+    var after_buf: [mb.max_render_bytes]u8 = undefined;
+    const after = try mb.render(&catalog, &after_buf);
+    // The read lane grew by exactly one node — r1 -> r2, the chain arrow proving it.
+    const read_after = line_with(after, "read/home:");
+    assert(count_occurrences(read_after, "->") == 1);
+    assert(count_occurrences(read_after, "r1[") == 1);
+    assert(count_occurrences(read_after, "r2[") == 1);
+
+    // Every program lane is byte-for-byte unchanged — a re-read touched only the read.
+    const a_after = line_with(after, "a.txt:");
+    const b_after = line_with(after, "b.txt:");
+    assert(std.mem.eql(u8, a_before, a_after));
+    assert(std.mem.eql(u8, b_before, b_after));
+    print("realidream_reread: a re-read appended revision {d}; the read lane grew r1 -> r2, every program lane unchanged\n", .{rev});
+}
+
+fn welcome_earlier_read_still_stands() !void {
+    // The old read is never rewritten: after a refresh, the first read revision still
+    // recalls its original bytes, while the head carries the fresh content. Both stand.
+    var catalog = try mb.demo_catalog();
+    _ = try reader.pin_read(&catalog, "local", "web", "read/home", "first-read", "leaf");
+    const rev = try refresh_read(&catalog, "local", "web", "read/home", "second-read", "leaf");
+    assert(rev == 2);
+
+    var buf: [mn.max_resin_bytes]u8 = undefined;
+    // Revision one still recalls the bytes it was pinned with — the earlier read stands.
+    const r1 = try catalog.recall(.{ .peer = "local", .bolt = "web", .revision = 1, .path = "read/home" }, &buf);
+    assert(r1.outcome == .here);
+    assert(std.mem.eql(u8, buf[0..r1.len], "first-read"));
+
+    var buf2: [mn.max_resin_bytes]u8 = undefined;
+    // Revision two carries the freshly-read content — the head moved forward.
+    const r2 = try catalog.recall(.{ .peer = "local", .bolt = "web", .revision = 2, .path = "read/home" }, &buf2);
+    assert(r2.outcome == .here);
+    assert(std.mem.eql(u8, buf2[0..r2.len], "second-read"));
+    print("realidream_reread: after the re-read, r1 still recalls 'first-read' while r2 carries 'second-read' — the old read stands\n", .{});
+}
+
+fn welcome_refuses_non_read_and_unknown() !void {
+    // A re-read on a path that does not name itself a read refuses NotAReadPath; a
+    // re-read of a read lane that was never pinned refuses LaneUnknown — there is no
+    // chain to continue. A re-read continues; pin_read opens.
+    var catalog = try mb.demo_catalog();
+    if (refresh_read(&catalog, "local", "notes", "b.txt", "not-a-read", "leaf")) |_| {
+        unreachable;
+    } else |err| {
+        // invariant: a non-read path refuses by the named error.
+        assert(err == error.NotAReadPath);
+    }
+    if (refresh_read(&catalog, "local", "web", "read/never", "ghost-read", "leaf")) |_| {
+        unreachable;
+    } else |err| {
+        // invariant: an unpinned read lane refuses by the editor's own named error.
+        assert(err == error.LaneUnknown);
+    }
+    print("realidream_reread: a non-read path refuses NotAReadPath; an unpinned read lane refuses LaneUnknown\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_reread_grows_read_lane();
+        try welcome_earlier_read_still_stands();
+        try welcome_refuses_non_read_and_unknown();
+        print("realidream_reread {s} — GREEN\n", .{realidream_reread_version});
+        return 0;
+    }
+    print("usage: realidream-reread selftest\n", .{});
+    return 1;
+}
