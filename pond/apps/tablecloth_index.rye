@@ -1,0 +1,145 @@
+//! pond/apps/tablecloth_index.rye - BUHR Journey 7, Rung 2: the manifest as the true index.
+//!
+//! Rung one round-tripped the Brix-facing `format tablecloth-v1` manifest through render
+//! and parse. This rung proves the manifest is an *honest index of a live store*: given a
+//! parsed manifest and the Catalog + BeadStore it claims to describe, every published name
+//! is actually held, reassembles, and hashes to exactly the address the manifest names.
+//! So a person handed a manifest can check the store satisfies it, artifact for artifact.
+//!
+//! The check chains three proofs already earned: fetch_artifact reassembles the named
+//! artifact (each bead proving itself by digest, the whole against the recorded address),
+//! its length must equal the published length, and the store's recorded address must equal
+//! the published address (tablecloth.address_hex). A name in the manifest the store does
+//! not hold refuses; a published length or address that disagrees with the store refuses.
+//!
+//! This is the reader's side of accrete-never-break: the manifest names content addresses,
+//! and an address either resolves to the very bytes it promised or it refuses - never a
+//! silent substitution.
+//!
+//!   rye build pond/apps/tablecloth_index.rye -femit-bin=pond/bin/tablecloth-index
+//!   pond/bin/tablecloth-index selftest
+//!
+//! Scope: active-designing/20260812-142132_buhr-journey7-tablecloth-artifact-store-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const tc = @import("tablecloth.rye");
+const beading = @import("mantra/beading.rye");
+
+pub const tablecloth_index_version = "20260812.143200";
+
+pub const IndexError = error{
+    LengthMismatch,
+    AddressMismatch,
+};
+
+/// Verify a parsed manifest against the store it claims to describe. Every published
+/// artifact must be held, reassemble, and match its published length and address.
+/// Returns the number of artifacts verified. A missing name, a length disagreement, or
+/// an address disagreement refuses the whole verification before it is trusted.
+pub fn verify_against_store(
+    man: *const tc.Manifest,
+    cat: *const tc.Catalog,
+    store: *const beading.BeadStore,
+    scratch: []u8,
+) (beading.BeadError || tc.ClothError || IndexError)!u32 {
+    // invariant: a manifest names at most the catalog bound
+    assert(man.count <= tc.max_artifacts);
+    var verified: u32 = 0;
+    var i: u32 = 0;
+    while (i < man.count) : (i += 1) {
+        const me = &man.entries[i];
+        const name = me.name[0..me.name_len];
+
+        // The name must be held and reassemble - fetch proves the beads by digest and
+        // the whole against the store's recorded address. An unknown name refuses here.
+        const got = try tc.fetch_artifact(cat, store, name, scratch);
+        if (got != me.whole_len) return error.LengthMismatch; // published length must hold
+
+        // The store's recorded address must equal the address the manifest published.
+        var store_hex: [tc.address_hex_width]u8 = undefined;
+        try tc.address_hex(cat, name, store_hex[0..]);
+        if (!std.mem.eql(u8, store_hex[0..], me.digest_hex[0..])) return error.AddressMismatch;
+
+        verified += 1;
+    }
+    // invariant: every named artifact was verified against the store
+    assert(verified == man.count);
+    return verified;
+}
+
+const doc_a = "linen holds the warp, hemp the weft - a cloth over the table, plain and glad.";
+const doc_b = "ramie brightens the border where the light lands, and the table keeps its word.";
+
+fn run_index_selftest() !u8 {
+    // Build a live store of two artifacts, publish its manifest, parse it back.
+    var store: beading.BeadStore = .empty();
+    var cat: tc.Catalog = .empty();
+    _ = try tc.store_artifact(&cat, &store, "notes.txt", doc_a);
+    _ = try tc.store_artifact(&cat, &store, "site.md", doc_b);
+
+    var man_bytes: [1024]u8 = undefined;
+    const man_len = try tc.render_manifest(&cat, man_bytes[0..]);
+    var man: tc.Manifest = undefined;
+    try tc.parse_manifest(man_bytes[0..man_len], &man);
+
+    var scratch: [tc.max_content_bytes]u8 = undefined;
+
+    // The manifest is an honest index: every published name is held and matches.
+    const verified = try verify_against_store(&man, &cat, &store, scratch[0..]);
+    assert(verified == 2);
+
+    // Unwelcome: a manifest naming an artifact the store does not hold refuses. Build a
+    // manifest over a two-artifact catalog, then verify it against a store missing one.
+    {
+        var store_one: beading.BeadStore = .empty();
+        var cat_one: tc.Catalog = .empty();
+        _ = try tc.store_artifact(&cat_one, &store_one, "notes.txt", doc_a);
+        if (verify_against_store(&man, &cat_one, &store_one, scratch[0..])) |_| {
+            return error.UnknownArtifact;
+        } else |err| {
+            assert(err == error.UnknownArtifact);
+        }
+    }
+
+    // Unwelcome: a published length that disagrees with the store refuses.
+    {
+        var man_bad = man;
+        man_bad.entries[0].whole_len += 1; // claim one more byte than the store holds
+        if (verify_against_store(&man_bad, &cat, &store, scratch[0..])) |_| {
+            return error.LengthMismatch;
+        } else |err| {
+            assert(err == error.LengthMismatch);
+        }
+    }
+
+    // Unwelcome: a published address that disagrees with the store refuses.
+    {
+        var man_bad = man;
+        // Flip one hex nibble of the first published address to a different digit.
+        const c = man_bad.entries[0].digest_hex[0];
+        man_bad.entries[0].digest_hex[0] = if (c == 'a') 'b' else 'a';
+        if (verify_against_store(&man_bad, &cat, &store, scratch[0..])) |_| {
+            return error.AddressMismatch;
+        } else |err| {
+            assert(err == error.AddressMismatch);
+        }
+    }
+
+    print("tablecloth-index: verified {d} published artifacts against the live store\n", .{verified});
+    print("tablecloth-index: a name the store lacks, a wrong length, a wrong address each refused GREEN\n", .{});
+    print("tablecloth-index: version {s}\n", .{tablecloth_index_version});
+    print("GREEN: BUHR-J7r2 tablecloth-index; the manifest is an honest index of the live store.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "tablecloth-index")) {
+            return run_index_selftest();
+        }
+    }
+    return run_index_selftest();
+}
