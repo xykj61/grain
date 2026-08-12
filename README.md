@@ -7,7 +7,7 @@
 <p align="center"><em>An operating system and a civic application, built in the open, from first principles, with genuine joy.</em></p>
 
 <p align="center">
-  <a href="LICENSE-APACHE"><img alt="Code license: Apache-2.0 OR MIT" src="https://img.shields.io/badge/code-Apache--2.0%20OR%20MIT-c8992f"></a>
+  <a href="LICENSE"><img alt="Code license: Apache-2.0 OR MIT" src="https://img.shields.io/badge/code-Apache--2.0%20OR%20MIT-c8992f"></a>
   <a href="LICENSE-CC-BY"><img alt="Docs license: CC-BY-4.0" src="https://img.shields.io/badge/docs-CC--BY--4.0-9a6f22"></a>
   <a href="context/RADIANT_STYLE.md"><img alt="Prose: Radiant Style" src="https://img.shields.io/badge/prose-Radiant-d9b45a"></a>
   <a href="context/TAME_GUIDANCE.md"><img alt="Code: TAME discipline" src="https://img.shields.io/badge/code-TAME-9a6f22"></a>
@@ -135,9 +135,11 @@ Grain is built in gratitude to the makers who came before. We study their ideas 
 
 ---
 
-## License
+## License and community
 
-Code is offered under **[Apache-2.0](LICENSE-APACHE) OR [MIT](LICENSE-MIT)** (your choice, the permissive convention); prose and documentation under **[CC-BY-4.0](LICENSE-CC-BY)**. Contribute the way the tree already moves — small, signed, component-prefixed, in Radiant voice — per [`CONTRIBUTING.md`](CONTRIBUTING.md). Every commit is GPG-signed; the history proves who wrote it.
+A single top-level **[LICENSE](LICENSE)** indexes the terms: code under **[Apache-2.0](LICENSE-APACHE) OR [MIT](LICENSE-MIT)** (your choice, the permissive convention); prose and documentation under **[CC-BY-4.0](LICENSE-CC-BY)**. Contribute the way the tree already moves — small, signed, component-prefixed, in Radiant voice — per [`CONTRIBUTING.md`](CONTRIBUTING.md). Every commit is GPG-signed; the history proves who wrote it.
+
+The community-health files a trusted project carries stand at the front door: how we treat each other ([`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)), how to report a weakness privately ([`SECURITY.md`](SECURITY.md)), and where the change record lives ([`CHANGELOG.md`](CHANGELOG.md)).
 
 ---
 
