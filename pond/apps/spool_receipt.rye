@@ -1,0 +1,253 @@
+//! pond/apps/spool_receipt.rye — GISM red #73 follow: the large-artifact portable receipt.
+//!
+//! Season 2, Yield. The spool arc closed red #73 and stood on three rungs — chunking
+//! (mantra/spool.rye), naming (spool_cloth.rye), owner-signed (spool_keyed.rye). This is
+//! the arc's finishing rung: a **portable receipt** for a large owner-signed document, the
+//! large-artifact sibling of TACT-J2's publish_receipt / publish_receipt_bron and of
+//! GISM-J6r2's provenance_receipt (which travelled a receipt for a document small enough
+//! to fit one resin). Here the receipt vouches for a document too large for one resin —
+//! wound across many — and proves the signed word detaches from the spool and travels.
+//!
+//! The receipt is content-length-independent by design: it holds only point · name ·
+//! whole length · SHA-256 of the whole content · signature — the same signed word
+//! spool_keyed binds when it winds the document. So one Publication vouches for a document
+//! whether it lives in one resin or sixty. The crux this rung proves: a large document
+//! winds across resins under an owner's signature, a portable receipt travels as a
+//! `format publication-v1` Bron record and returns byte-for-byte, still verifies offline
+//! (no store, no spool, no network), and the bytes **reassembled from the resins** match
+//! the digest the receipt bound — provenance for a large document outlives the store it
+//! was born in. The detached receipt carries the identical signature spool_keyed stored,
+//! proven equal byte-for-byte, so the two are one word.
+//!
+//! Every tamper refuses: reassembled bytes with one byte flipped fail the content half
+//! (matches_content), a wrong keeper key fails the signature half, an unknown record field
+//! refuses the travel. Composes spool_keyed / publish_receipt / publish_receipt_bron public
+//! API over demo keeper seeds only; those selftests stay their own GREEN binaries. No
+//! custody crosses (the real key and the serve transport are held gates).
+//!
+//!   rye build pond/apps/spool_receipt.rye -femit-bin=pond/bin/spool-receipt
+//!   pond/bin/spool-receipt selftest
+//!
+//! Scope: active-designing/20260812-191206_gism-red73-spool-chunking-storage-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const beading = @import("mantra/beading.rye");
+const spool = @import("mantra/spool.rye");
+const skeyed = @import("spool_keyed.rye");
+const receipt_mod = @import("publish_receipt.rye");
+const receipt_bron = @import("publish_receipt_bron.rye");
+const keyed = @import("tablecloth_keyed.rye");
+const kumara = @import("kumara.rye");
+const tilak = @import("kumara_tilak.rye");
+const topology = @import("topology.rye");
+const settlement = @import("constellation.rye");
+
+pub const spool_receipt_version = "20260812.200000";
+
+const pubkey_len: u32 = 32;
+const sig_len: u32 = 64;
+
+// A large real front-door document, far too large for one resin, embedded at compile time
+// through the corpora symlink — the receipt vouches for exactly these real bytes.
+const real_doc = @embedFile("corpora/security.md");
+const doc_name = "security.md";
+const hex_digits = "0123456789abcdef";
+
+// Demo keeper seeds and the settled fractal — no real key, no custody (gate #4 untouched).
+const g_key: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
+const g_keeper: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
+const s_key: [kumara.seed_length]u8 = .{0x44} ** kumara.seed_length;
+const s_keeper: [kumara.seed_length]u8 = .{0x55} ** kumara.seed_length;
+const p_key: [kumara.seed_length]u8 = .{0x77} ** kumara.seed_length;
+const p_keeper: [kumara.seed_length]u8 = .{0x88} ** kumara.seed_length;
+const other_keeper: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
+
+// The inclusive fractal: galaxy 3, its star (3,2) = 27, its planet (3,2,4) = 267.
+const galaxy_num: u32 = 3;
+const star_num: u32 = 27;
+const planet_num: u32 = 267;
+
+fn pubkey_of(seed: *const [kumara.seed_length]u8) [pubkey_len]u8 {
+    return kumara.keypair_from_seed(seed).public_key.bytes;
+}
+
+// The 36-byte spawn authority the settlement mint checks (child number ++ identity).
+fn spawn_authority(signer_seed: *const [kumara.seed_length]u8, child: u32, child_identity: *const [pubkey_len]u8) [sig_len]u8 {
+    const kp = kumara.keypair_from_seed(signer_seed);
+    var msg: [4 + pubkey_len]u8 = undefined;
+    std.mem.writeInt(u32, msg[0..4], child, .little);
+    for (child_identity, 0..) |b, i| msg[4 + i] = b;
+    return kumara.sign(&msg, kp, null).toBytes();
+}
+
+const World = struct {
+    con: settlement.Constellation,
+    planet: settlement.Deed,
+};
+
+/// Seat a galaxy, mint a star beneath it, mint a planet beneath the star — the demo
+/// constellation the owner publishes from. Every seat is a demo seed; no real identity.
+fn seat_world() !World {
+    const g_bind = tilak.make_bind(&g_key, &g_keeper);
+    const s_bind = tilak.make_bind(&s_key, &s_keeper);
+    const p_bind = tilak.make_bind(&p_key, &p_keeper);
+    const opened = try settlement.open(galaxy_num, &g_bind);
+    var con = opened.con;
+    const galaxy_deed = opened.deed;
+
+    const g_sow = tilak.make_cap(&g_keeper, galaxy_num, .sow, g_bind.kumara_pubkey);
+    const spawn_star = spawn_authority(&g_key, star_num, &s_bind.kumara_pubkey);
+    const star = try settlement.mint(&con, &galaxy_deed, star_num, &s_bind, &g_sow, &spawn_star);
+
+    const s_sow = tilak.make_cap(&s_keeper, star_num, .sow, s_bind.kumara_pubkey);
+    const spawn_planet = spawn_authority(&s_key, planet_num, &p_bind.kumara_pubkey);
+    const planet = try settlement.mint(&con, &star, planet_num, &p_bind, &s_sow, &spawn_planet);
+
+    // invariant: the planet settled at exactly the point it will publish under
+    assert(planet.point == planet_num);
+    // invariant: the planet is a current member of the constellation it will vouch on
+    assert(settlement.verify(&con, &planet));
+    return .{ .con = con, .planet = planet };
+}
+
+/// The owner winds the large document across resins under its signature, and a detached
+/// receipt is made for the same bytes. The receipt carries the identical signed word the
+/// spool stored — proven by the equal signature — so the two are one provenance.
+fn welcome_large_receipt_binds_to_spool(w: *const World, store: *beading.BeadStore, kc: *skeyed.KeyedLargeCatalog) !receipt_mod.Publication {
+    // invariant: the document genuinely exceeds one resin — the receipt earns its keep
+    // only on an artifact the small owner-signed catalog could not hold
+    assert(real_doc.len > beading.max_resin_bytes);
+    const keeper_sig = keyed.sign_publication(&p_keeper, planet_num, doc_name, real_doc);
+    const report = try skeyed.store_owned_large(kc, store, &w.con, &w.planet, doc_name, real_doc, &keeper_sig);
+    // invariant: a large document winds into more than one resin
+    assert(report.resin_count > 1);
+
+    const receipt = try receipt_mod.make_publication(&p_keeper, planet_num, doc_name, real_doc);
+    // invariant: the detached receipt signs the exact whole length the spool wound
+    assert(receipt.whole_len == real_doc.len);
+    // invariant: the detached receipt carries the identical signature the spool stored
+    assert(std.mem.eql(u8, &receipt.sig, &keeper_sig));
+    print("spool_receipt: {d} B wound across {d} resins under the owner's signature; the detached receipt carries the identical signed word.\n", .{ real_doc.len, report.resin_count });
+    return receipt;
+}
+
+/// A receipt for the large document verifies offline, and the bytes reassembled *from the
+/// resins* match the bound digest — both halves of trust green, the content read back out
+/// of the spool rather than held whole. The bound digest is printed as hex for the witness
+/// to cross-check against an independent sha256sum of the same file.
+fn welcome_reassembled_matches_receipt(w: *const World, store: *const beading.BeadStore, kc: *const skeyed.KeyedLargeCatalog, receipt: *const receipt_mod.Publication) !void {
+    _ = w;
+    // invariant: the signature verifies offline against the publisher's key, no content
+    assert(receipt_mod.verify_offline(receipt, pubkey_of(&p_keeper)));
+
+    var out: [spool.max_content_bytes]u8 = undefined;
+    const n = try skeyed.fetch_owned_large(kc, store, doc_name, out[0..]);
+    // invariant: the spool returned exactly the whole length the receipt bound
+    assert(n == receipt.whole_len);
+    // invariant: the bytes reassembled from the resins match the receipt's digest
+    assert(receipt_mod.matches_content(receipt, out[0..n]));
+
+    var hex: [receipt_mod.digest_len * 2]u8 = undefined;
+    var i: u32 = 0;
+    // invariant: the hex walk stays inside the digest's byte width
+    assert(receipt.digest.len == receipt_mod.digest_len);
+    while (i < receipt_mod.digest_len) : (i += 1) {
+        hex[i * 2] = hex_digits[receipt.digest[i] >> 4];
+        hex[i * 2 + 1] = hex_digits[receipt.digest[i] & 0x0F];
+    }
+    print("spool_receipt: reassembled {d} B from the resins; sha256 {s} matched the receipt, verified offline.\n", .{ n, hex });
+}
+
+/// The receipt for the large document travels as Bron and returns byte-for-byte, still
+/// verifying offline and still matching the reassembled spool bytes — provenance for a
+/// large document outlives the store it was born in.
+fn welcome_large_receipt_travels(store: *const beading.BeadStore, kc: *const skeyed.KeyedLargeCatalog, receipt: *const receipt_mod.Publication) !void {
+    var buf: [receipt_bron.max_record]u8 = undefined;
+    const written = try receipt_bron.render(receipt, &buf);
+    const back = try receipt_bron.parse(buf[0..written]);
+    // invariant: the round-tripped receipt equals the original, field for field
+    assert(receipts_equal(receipt, &back));
+    // invariant: the recovered receipt still verifies offline
+    assert(receipt_mod.verify_offline(&back, pubkey_of(&p_keeper)));
+
+    var out: [spool.max_content_bytes]u8 = undefined;
+    const n = try skeyed.fetch_owned_large(kc, store, doc_name, out[0..]);
+    // invariant: the travelled receipt still matches the bytes read from the resins
+    assert(receipt_mod.matches_content(&back, out[0..n]));
+    print("spool_receipt: the large-document receipt travelled through Bron ({d} bytes) and returned whole, still matching the reassembled bytes.\n", .{written});
+}
+
+/// Reassembled bytes with one byte flipped fail the content half even under an authentic
+/// receipt — a valid receipt is never license to swap the large bytes.
+fn unwelcome_tampered_reassembly(receipt: *const receipt_mod.Publication) !void {
+    // invariant: the receipt's signature is authentic before the content test
+    assert(receipt_mod.verify_offline(receipt, pubkey_of(&p_keeper)));
+    var tampered: [real_doc.len]u8 = real_doc.*;
+    tampered[0] +%= 1;
+    // invariant: a single flipped byte fails the digest half of trust
+    assert(!receipt_mod.matches_content(receipt, &tampered));
+    print("spool_receipt: tampered reassembled content refused (the whole digest is bound in).\n", .{});
+}
+
+/// A different keeper's key refuses the signature half — the receipt names exactly who
+/// published the large document.
+fn unwelcome_wrong_keeper(receipt: *const receipt_mod.Publication) !void {
+    // invariant: a key that never signed these facts refuses
+    assert(!receipt_mod.verify_offline(receipt, pubkey_of(&other_keeper)));
+    // invariant: the true key still verifies, so the refusal is the key's, not the receipt's
+    assert(receipt_mod.verify_offline(receipt, pubkey_of(&p_keeper)));
+    print("spool_receipt: a wrong keeper key refused; the receipt names who published the large document.\n", .{});
+}
+
+/// An unknown field in the travelled record refuses — never silently dropped.
+fn unwelcome_unknown_field(receipt: *const receipt_mod.Publication) !void {
+    var buf: [receipt_bron.max_record]u8 = undefined;
+    const written = try receipt_bron.render(receipt, &buf);
+    const stray = "surprise yes\n";
+    // invariant: the record plus the stray line stays inside the buffer
+    assert(written + stray.len <= receipt_bron.max_record);
+    var i: u32 = 0;
+    while (i < stray.len) : (i += 1) buf[written + i] = stray[i];
+    if (receipt_bron.parse(buf[0 .. written + stray.len])) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        // invariant: an unknown field refuses rather than drop silently
+        assert(err == error.UnknownField);
+    }
+    print("spool_receipt: unknown record field refused (UnknownField).\n", .{});
+}
+
+fn receipts_equal(a: *const receipt_mod.Publication, b: *const receipt_mod.Publication) bool {
+    return a.point == b.point and a.whole_len == b.whole_len and
+        std.mem.eql(u8, a.name(), b.name()) and
+        std.mem.eql(u8, &a.digest, &b.digest) and std.mem.eql(u8, &a.sig, &b.sig);
+}
+
+fn run_spool_receipt_selftest() !u8 {
+    const w = try seat_world();
+    var store: beading.BeadStore = .empty();
+    var kc: skeyed.KeyedLargeCatalog = .empty();
+
+    const receipt = try welcome_large_receipt_binds_to_spool(&w, &store, &kc);
+    try welcome_reassembled_matches_receipt(&w, &store, &kc, &receipt);
+    try welcome_large_receipt_travels(&store, &kc, &receipt);
+    try unwelcome_tampered_reassembly(&receipt);
+    try unwelcome_wrong_keeper(&receipt);
+    try unwelcome_unknown_field(&receipt);
+
+    print("spool_receipt: version {s}\n", .{spool_receipt_version});
+    print("GREEN: a portable receipt for a large owner-signed document travels as Bron and returns whole, still matching the bytes reassembled from the resins — the spool arc's finishing rung.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "spool-receipt")) {
+            return run_spool_receipt_selftest();
+        }
+    }
+    return run_spool_receipt_selftest();
+}

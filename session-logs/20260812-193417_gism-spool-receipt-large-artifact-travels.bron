@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260812.193417
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title GISM spool r4 — a large owner-signed document's receipt travels as Bron
+prompt Read REMEMBER + the 1024-round itinerary; take the next agent-doable lap Lindy-first crux-first, harmony-of-styles; approve own design rounds; send often; STOP at custody gates
+think REMEMBER named the next agent-doable crux plainly — the spool arc stood at r3 (chunking · naming · owner-signed), and the finishing rung is a portable Bron receipt for a large owner-signed document, mirroring publish_receipt_bron / provenance_receipt
+think Finishing-edge discipline (ship one real thing before naming the next) pointed at completing the spool arc's fourth rung over opening a fresh journey (AYRE); Lindy-first, the durable payoff is provenance-for-large-documents standing whole
+think Read the machinery: publish_receipt.Publication is content-length-independent and signs with keyed.sign_publication — the same signed word spool_keyed binds when it winds; so one receipt vouches for a document whether it lives in one resin or sixty
+think The distinct value over provenance_receipt (small artifact) is tying the receipt to spool_keyed's actual reassembled-from-resins bytes — the receipt matches bytes read back out of the resins, not a whole-held copy
+obs pond/apps/spool_receipt.rye composes spool_keyed + publish_receipt + publish_receipt_bron public API only; demo keeper seeds, no real key, no custody (gate #4 untouched); the detached receipt carries the identical signature the spool stored, proven byte-for-byte
+obs crux checkable: SECURITY.md (2689 B → 6 resins) winds under the owner's signature, the receipt travels Bron (263 B) and returns byte-for-byte, still verifies offline, and the reassembled bytes match the bound sha256
+obs the bound digest 5d34cc8b…571c cross-checks against an independent sha256sum of SECURITY.md — two tools, one answer
+obs every tamper refuses — flipped reassembled byte fails matches_content, wrong keeper key fails verify_offline, an unknown Bron field refuses the travel
+obs no fresh Yield red — the 2689 B artifact winds and reassembles with headroom; TAME style bans clean, width-check exit 0
+loom witness=gism_spool_receipt_witness selftest_green=1 doc_bytes=2689 resins=6 bron_bytes=263 refusals=3 reruns=3
+file pond/apps/spool_receipt.rye the spool arc's finishing rung — a large owner-signed document's portable Bron receipt, matching bytes reassembled from the resins
+file tools/gism_spool_receipt_witness.rish witness GREEN — winding-under-signature · reassembly · Bron travel · sha256 cross-check · three refusals · re-runs spool_keyed + publish_receipt + publish_receipt_bron untouched
+recommend keep-going the spool arc (chunking · naming · owner-signed · receipt-travels) stands complete; next agent-doable crux is Season 2 Journey 7 (Fair-trade, AYRE), Lindy-first
