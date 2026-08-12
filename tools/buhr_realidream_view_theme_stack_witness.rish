@@ -1,0 +1,41 @@
+# tools/buhr_realidream_view_theme_stack_witness.rish — BUHR Journey 5, Rung 7.
+#
+# Two .brush layers compose the Realidream surface — a mode ground and a read-origin
+# accent. Rung six proved a single .brush theme recolors the read origin; this rung
+# proves the deeper design-system property: two independent .brush layers — a mode layer
+# (dark-mode.brush, ground only) and a read-source accent layer (read-source.brush, read
+# token only) — compose through the WADE1 cascade (tokens.resolve_stack), the top layer
+# winning per token, the base sheet's untouched tokens (the living-edge head, the edge
+# rule) inheriting beneath both. Proven by reading back three sources at once: the ground
+# from the mode layer, the read origin from the accent layer, the living-edge head from
+# the base sheet neither layer named. Each layer read through the real authoring loop
+# (parse_brush, collect_brush_style); the stacked amber read origin (391 px) and the
+# inherited Ochre head (1604 px) both reach the canvas through rung five's own
+# paint_origins; a style-less .brush refuses LayerEmpty.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/buhr_realidream_view_theme_stack_witness.rish
+
+say "buhr-j5r7: Language EN — two .brush layers compose the Realidream surface; the mode sets the ground, the read-source accent sets the read origin, the base's head inherits."
+say "buhr-j5r7: Lens TAME — proven on metal; three authors read back from one resolved sheet, the stacked amber read and the inherited Ochre head both reach the canvas. No network read."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/realidream-view-theme-stack"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/realidream_view_theme_stack.rye -femit-bin=${bin}"]
+assert build.ok else "buhr-j5r7: realidream_view_theme_stack build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "buhr-j5r7: realidream_view_theme_stack selftest exited non-zero"
+assert selftest.out contains "GREEN" else "buhr-j5r7: selftest did not speak GREEN"
+assert selftest.out contains "three authors, one surface" else "buhr-j5r7: the compose proof is missing"
+assert selftest.out contains "wins the read origin at the top of the cascade" else "buhr-j5r7: the accent-wins proof is missing"
+assert selftest.out contains "the cascade painted" else "buhr-j5r7: the stacked-paint-on-canvas proof is missing"
+assert selftest.out contains "LayerEmpty" else "buhr-j5r7: the style-less refuse proof is missing"
+
+# Rung 6 (theme the read origin) stays its own green binary — additive.
+let rung6 = run ["sh" "-c" "rishi/bin/rishi run tools/buhr_realidream_view_theme_witness.rish 2>&1"]
+assert rung6.ok else "buhr-j5r7: the theme (J5r6) witness regressed"
+assert rung6.out contains "GREEN: BUHR-J5r6" else "buhr-j5r7: rung six lost its green"
+
+say "GREEN: BUHR-J5r7 — two .brush layers compose the Realidream surface; the mode ground, the read-source accent, and the inherited head land as three authors on one canvas."
