@@ -36,6 +36,15 @@ A sovereign-scale public investment — large in itself, yet modest beside the b
 
 This wafer is where the open model is baked and from which it is served — the foundation beneath [Lantern, Lattice, and Kiln](20260728-232511_lantern-lattice-kiln.md). Open weights rest on open silicon; the answers come fast, and green, and close; and every token is metered honestly in the local currency on the shared ledger. The whole stack, model and machine together, is held in common, priced at its real cost, and owned by no one in particular — which is to say, owned by everyone who tends it. At a pocket scale, the same kinship lives in [the device that forgets](20260628-133212_the-device-that-forgets.md) and the [Mantrapod venture pitch](20260629-020012_mantrapod-venture-pitch.md).
 
+## Kin in the weave
+
+The wafer is the shared compute beneath the open model; the weave routes this far horizon up to the hubs and to its economic kin.
+
+- **The front door** — the root [`../README.md`](../README.md) names RISC-V, the open hardware floor this horizon extends to wafer scale.
+- **The room** — indexed in [`foundations/README.md`](README.md), in the far-horizon stack.
+- **The hubs** — cut by the *bounded everything* and *held in common* strands in [The Grain and the Crossing](../active-designing/20260702-184312_the-grain-and-the-crossing.md); returned to by [Follow Our Compass](20260706-185112_follow-our-compass.md).
+- **Economic kin** — the coin it names settles through [money that stays close to home](20260629-014512_money-that-stays-close-to-home.md), custody-gated per [custody-first](20260724-200912_nothing-to-give-custody-first-principle.md).
+
 ---
 
 *May the work be held close to where it happens, in silicon as in our common life. May we build what is real with the real resources we already hold, and ask first what we can make rather than only what we can afford. May the machines we raise be green, and open, and shared — and may they serve the long, patient labor of a world held closer to home.*
