@@ -18,4 +18,13 @@ Plain text travels in a way that polished surfaces rarely do. The same calm work
 
 This is less-is-more made practical. A small set of sharp tools, learned well and composed together, outdoes a sprawl of features you never master. The plainness is the point: a workspace spare enough to disappear, leaving only you and the thing you are making.
 
+## Kin in the weave
+
+A home in plain text is the Rishi shell's reason for being; the weave routes it up to the hubs and to the compression principle it embodies.
+
+- **The front door** — the root [`../README.md`](../README.md) names **Rishi**, the faithful shell — the hand that runs the tree.
+- **The room** — indexed in [`foundations/README.md`](README.md).
+- **The hubs** — few-sharp-tools is [sameness is the macro](20260703-182612_sameness-is-the-macro.md) at the workspace; both are cut by [The Grain and the Crossing](../active-designing/20260702-184312_the-grain-and-the-crossing.md) and returned to by [Follow Our Compass](20260706-185112_follow-our-compass.md).
+- **The module** — [`rishi/README.md`](../rishi/README.md), the shell this home is made of.
+
 *May the places we work stay calm and portable, and the tools we keep there be few, sharp, and truly ours.*

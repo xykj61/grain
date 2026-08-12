@@ -6,10 +6,17 @@
 #   rishi/bin/rishi run tools/launch-claude.rish
 #   rishi/bin/rishi run tools/launch-claude.rish -- -p "reply with exactly: pong"
 #
-# Args after the script name forward to claude (use -- to stop flag parse if needed).
-# Shell equivalent: ./tools/agent-jail.sh claude …
+# Args after the script name forward to the jail elder (and on to claude); pass
+# them after a `--` so Rishi stops parsing its own flags first, e.g.:
+#   rishi/bin/rishi run tools/launch-claude.rish -- --continue
+# For the full flag recipe (resume ids, --dangerously-skip-permissions) the
+# clearest homes are the elder's help and the season entry:
+#   ./tools/agent-jail.sh --help
+#   rishi/bin/rishi run tools/launch-claude-season.rish   # prints the unattended recipe
 # See: nixos-guide CLI-agents note · context/specs/enclosure-editors.md
 
-let result = run ["bash" "tools/agent-jail.sh" "claude"]
+# invariant: forward every arg the caller passed, so the doc above stays true
+# (docs and implementation stay synced — TAME root rule 9).
+let result = run (["bash" "tools/agent-jail.sh" "claude"] + args)
 say "launch-claude: agent-jail finished — ok=${result.ok}"
 assert result.ok else "agent-jail failed to start claude"

@@ -23,6 +23,7 @@ REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$REPO_ROOT"
 
 DRY_RUN=false
+SKIP_PERMS=false
 # Forwarded to the agent binary (before trailing args). Lets --resume sit
 # before the command name without looking like an unknown jail option.
 AGENT_FORWARD=()
@@ -40,6 +41,13 @@ Jail options (before the command name):
   --resume[=CHAT_ID]     Forward to the agent (resume a chat; bare --resume lists)
   --resume CHAT_ID       Same, space-separated form
   --continue             Forward to the agent (continue previous session)
+  --dangerously-skip-permissions
+                         Forward to claude: skip every "Do you want to proceed?"
+                         prompt for unattended runs. Safe inside ai-jail (the
+                         sandbox this flag is for). Must run as a NON-ROOT user
+                         (claude refuses it as root). Standing-config twin:
+                         .claude/settings.local.json { "permissions":
+                         { "defaultMode": "bypassPermissions" } } (gitignored).
   -h, --help             Show this help
 
 Agent args after the command name pass through unchanged, so these are equal:
@@ -60,6 +68,15 @@ Examples:
   ./tools/agent-jail.sh cursor-agent -p "what is the hostname"
   ./tools/agent-jail.sh agent --resume=83513e3f-ec89-4924-a12b-f11189b04927
   ./tools/agent-jail.sh --continue cursor-agent
+
+Unattended season run (resume + skip permissions):
+
+  ./tools/agent-jail.sh --resume=RESUME_SESSION_ID --dangerously-skip-permissions claude
+  ./tools/agent-jail.sh --continue --dangerously-skip-permissions claude
+  ./tools/agent-jail.sh --dangerously-skip-permissions claude \
+    -p 'Read work-in-progress/REMEMBER.md, then continue AHOY and WADE per Lindy-first, crux-first. kg the next rung, send each round, recur.'
+
+  Rish preferred entry: rishi/bin/rishi run tools/launch-claude-season.rish
 EOF
 }
 
@@ -75,6 +92,14 @@ while [ $# -gt 0 ]; do
       ;;
     --continue)
       AGENT_FORWARD+=(--continue)
+      shift
+      ;;
+    --dangerously-skip-permissions)
+      # Forward to the agent (claude): skip every permission prompt. Safe here
+      # because ai-jail is the sandbox this flag is meant for. Claude refuses
+      # this flag as root, so the jail must run the agent as a non-root user.
+      AGENT_FORWARD+=(--dangerously-skip-permissions)
+      SKIP_PERMS=true
       shift
       ;;
     --resume=*)
@@ -197,6 +222,10 @@ case "$AGENT_KIND" in
     if ! AGENT_BIN="$(command -v claude 2>/dev/null)"; then
       echo "agent-jail: claude not on PATH" >&2
       exit 1
+    fi
+    if [ "$SKIP_PERMS" = true ] && [ "$(id -u)" = "0" ]; then
+      echo "agent-jail: NOTE — --dangerously-skip-permissions is running as root (uid 0)." >&2
+      echo "agent-jail: claude refuses this flag as root; run the jail as a non-root user." >&2
     fi
     ;;
   cursor-agent)

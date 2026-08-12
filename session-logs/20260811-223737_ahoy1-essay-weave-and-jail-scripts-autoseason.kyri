@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260811.223737
+editor Zed + Claude Agent
+model Opus 4.8
+voice Kyri
+host cloud pier sandbox — Eastern (EDT) time convention
+title AHOY1 distilled-essay weave; jail scripts updated for the unattended season run (TAME·Radiant·civic·Lindy·Rishi)
+prompt kg AHOY1 the weave and update our tools jail scripts for all of the above and print the new commands with resume session id placeholder and all flags; also update all these scripts to tame radiant civic lindy rishi. ty every1. baton prin recur
+think two arms: continue the AHOY1 weave at the distilled-essay tier (Lindy-first), and encode the unattended-season launch into the jail scripts under the disciplines
+obs weave: the four distilled essays (the-key-you-hold · four-promises · a-home-in-plain-text · the-device-that-forgets) each gained a Kin in the weave block routing up to the front door, the room, and both hubs — key->keypair primitive, four-promises->grain any tool is cut to fit (+ Lantern-Lattice-Kiln keeps them), plain-text->Rishi module + sameness kin, device-forgets->custody-first + wafer kin. No body rewrite; wishes preserved; lint GREEN
+think jail scripts: kept agent-jail.sh as the sanctioned BASH ELDER (it orchestrates ai-jail/bwrap with arrays + exec + source; witnessed by agent_jail_witness; a Rishi rewrite would be a risky, low-value churn against slower-to-go-faster). Made the new season ENTRY a proper Rishi script, matching the tree's Rish-preferred-entry pattern
+obs agent-jail.sh (bash elder): added --dangerously-skip-permissions as a first-class jail-opt that forwards to claude (so it can sit before the command like --resume), a non-root NOTE when it is used as uid 0 (claude refuses the flag as root), a usage entry documenting the flag + the settings.local.json standing twin, and an Unattended-season examples block with the RESUME_SESSION_ID placeholder + all flags. bash -n clean; --help renders the JSON with real quotes
+obs launch-claude-season.rish (NEW, Rishi): prints the unattended recipe (non-root requirement · settings.local.json bypass · resume/continue/headless commands with RESUME_SESSION_ID · /loop + cron · custody note that AHOY3 seed force-push stays manual). Print-only by design — the jail launch belongs in the outer terminal (as remember keeps install lines there), so running it has no side effects. Two invariant asserts (repo root · elder present). GREEN
+obs launch-claude.rish (Rishi): fixed a docs-implementation drift (TAME root rule 9) — it documented arg forwarding it did not do; now forwards with run (["bash" "tools/agent-jail.sh" "claude"] + args), verified Rishi accepts list+args; freshened the note to point at the elder help + the season entry for the flag recipe
+obs disciplines applied: Rishi (season entry is Rish, asserts, run.ok checked) · TAME (invariants, bounded, docs-sync fix, named) · Radiant (warm honest comments) · civic (custody note; irreversible rung stays manual) · Lindy (durable memory is the repo, not a session id; the elder stays because it works and is witnessed)
+file foundations/20260628-133212_the-key-you-hold.md kin block — keypair primitive at human scale
+file foundations/20260628-133212_four-promises-a-tool-can-keep.md kin block — the character the tree keeps
+file foundations/20260628-133212_a-home-in-plain-text.md kin block — Rishi shell + sameness kin
+file foundations/20260628-133212_the-device-that-forgets.md kin block — custody-first + wafer kin
+file tools/agent-jail.sh --dangerously-skip-permissions first-class + non-root note + season usage/examples
+file tools/launch-claude-season.rish NEW Rish entry — prints the unattended season recipe, print-only, disciplined
+file tools/launch-claude.rish forwards args now (docs-sync fix) + points to elder help / season entry
+recommend keep-going — AHOY1's distilled-essay tier is woven and the jail scripts now carry the unattended-season recipe under the disciplines (elder documents it, Rishi entry prints it). Remaining AHOY1: the workflow-law (season-driven-development) and any last leaf tier, then AHOY2 legitimacy. AHOY3 seed seal (and the seed force-push) stays last and manual, your word

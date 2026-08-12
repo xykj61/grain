@@ -18,4 +18,13 @@ This forgetting is a kindness rather than a loss. A tool that keeps nothing cann
 
 The body of the tool is made to last as long as your care for it. Screens rest on soft mounts rather than rigid glue, so they bend instead of breaking. Seals close with screws and gaskets, so the thing can be opened, cleaned, and mended. Memory slides in and out like a book returned to a shelf. A device built this way becomes a companion across years, rather than a purchase repeated every season. The fuller pitch for that device — the Mantrapod — lives in [`20260629-020012_mantrapod-venture-pitch.md`](20260629-020012_mantrapod-venture-pitch.md).
 
+## Kin in the weave
+
+A device that holds nothing is custody-first made physical; the weave routes it up to the hubs and to its kin.
+
+- **The front door** — the root [`../README.md`](../README.md) names the promise that your words stay in your own hands; this is that promise in hardware.
+- **The room** — indexed in [`foundations/README.md`](README.md).
+- **The hubs** — cut by the strands in [The Grain and the Crossing](../active-designing/20260702-184312_the-grain-and-the-crossing.md); returned to by [Follow Our Compass](20260706-185112_follow-our-compass.md).
+- **Kin** — [custody-first](20260724-200912_nothing-to-give-custody-first-principle.md) is its principle; [the wafer and the sovereign coin](20260728-225239_the-wafer-and-the-sovereign-coin.md) is the same *held-close* at compute scale.
+
 *May the tools we carry hold lightly, protect quietly, and give our attention back to us, whole.*
