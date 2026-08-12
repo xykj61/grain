@@ -1,0 +1,377 @@
+//! mantra/spool.rye — GISM red #73: large artifacts across ordered resins.
+//!
+//! Season 2, Yield: every module stands on real bytes. Beading (mantra/beading.rye)
+//! carries a whole up to one 512-byte resin — a bead-index must itself be a valid
+//! resin, so `max_resin_bytes` is structurally capped and cannot rise. A real
+//! front-door document (SECURITY.md, 2689 B; context/TWO_ROOMS.md, 6079 B) exceeds it,
+//! and Tablecloth's owner-signed catalog refused it `ContentTooLarge` the moment
+//! provenance met a real file (red #73). The honest fix is not a bound-bump but a
+//! storage layer above beading: a large artifact wound across ordered resins.
+//!
+//! A spool winds ordered lengths of thread into one body. Here it is an ordered
+//! sequence of resins over one shared BeadStore: the content is split into resins each
+//! <= max_resin_bytes, each resin beaded (fixed-size, two predictable beads per full
+//! resin), each resin's bead-index recorded inline in order. The spool's own content
+//! address is a SHA3-256 over the whole content — unchanged by chunking, exactly as a
+//! resin's digest is unchanged by beading, so a reader recalls a large artifact by one
+//! name. Reassembly walks the resins in order, reassembles each through beading's own
+//! reassemble (every bead proving itself by digest, every resin against its recorded
+//! whole-digest), concatenates in order, and proves the concatenation against the
+//! spool's whole digest. A tampered bead, a tampered resin index, a reordered or
+//! truncated spool each refuse before a byte is trusted.
+//!
+//!   rye build mantra/spool.rye -femit-bin=mantra/bin/spool
+//!   mantra/bin/spool selftest
+//!
+//! Scope: active-designing/20260812-191206_gism-red73-spool-chunking-storage-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
+const beading = @import("beading.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const spool_version = "20260812.191206";
+
+// How many resins one spool winds. 64 resins at one 512-byte resin each carry a 32 KB
+// artifact — real front-door documents fit with headroom (SECURITY 2689 B -> 6 resins;
+// TWO_ROOMS 6079 B -> 12 resins), the ceiling named far above any real document.
+pub const max_resins: u32 = 64;
+
+// A large artifact's whole byte budget: the resins wound together. Bounded by what a
+// spool can address, itself bounded by the shared store's bead capacity.
+pub const max_content_bytes: u32 = max_resins * beading.max_resin_bytes;
+
+// The fixed bead size the spool beads each resin at: two predictable beads per full
+// 512-byte resin, so the store bound stays legible (max_resins * 2 <= max_store_beads).
+const spool_bead_size: u32 = beading.max_bead_bytes; // 256
+
+// A bead-index is itself a resin, so its bytes fit one resin budget. Each resin's index
+// is recorded inline in the spool at this stride.
+const max_resin_index_bytes: u32 = beading.max_resin_bytes;
+
+const digest_raw_len: u32 = 32; // SHA3-256, raw
+
+pub const SpoolError = error{
+    ContentTooLarge,
+    TooManyResins,
+    Overflow,
+    DigestMismatch,
+    LengthMismatch,
+};
+
+/// A report of what winding an artifact cost the shared store, summed across resins.
+pub const SpoolReport = struct {
+    whole_len: u32,
+    resin_count: u32,
+    bead_count: u32,
+    beads_deposited: u32, // beads newly stored this winding
+    beads_deduped: u32, // beads already held, not re-stored
+};
+
+/// A large artifact wound across ordered resins over one shared BeadStore.
+// Invariant: resin_count <= max_resins; every live resin honors its index/length bound;
+// whole_len == sum of resin_lens; whole_digest == SHA3-256(the whole content).
+pub const Spool = struct {
+    whole_digest: [32]u8,
+    whole_len: u32,
+    resin_count: u32,
+    indexes: [max_resins][max_resin_index_bytes]u8,
+    index_lens: [max_resins]u32,
+    resin_lens: [max_resins]u32,
+
+    pub fn empty() Spool {
+        return .{
+            .whole_digest = undefined,
+            .whole_len = 0,
+            .resin_count = 0,
+            .indexes = undefined,
+            .index_lens = undefined,
+            .resin_lens = undefined,
+        };
+    }
+};
+
+fn digest_raw(content: []const u8, out: *[32]u8) void {
+    Sha3_256.hash(content, out, .{});
+}
+
+/// Wind content across ordered resins into a spool, beading each resin into the shared
+/// store. The whole digest is the artifact's content address, unchanged by chunking.
+/// Refuses content past max_content_bytes (ContentTooLarge) — the honest ceiling that
+/// replaces beading's single-resin refusal, far above any real document.
+pub fn spool_content(
+    store: *beading.BeadStore,
+    content: []const u8,
+    sp: *Spool,
+) (beading.BeadError || SpoolError)!SpoolReport {
+    if (content.len > max_content_bytes) return error.ContentTooLarge; // fits the spool
+    // invariant: a content that fits the spool fits its resin count too
+    assert(content.len <= max_resins * beading.max_resin_bytes);
+
+    const whole_len: u32 = @intCast(content.len);
+    digest_raw(content, &sp.whole_digest);
+    sp.whole_len = whole_len;
+
+    var report: SpoolReport = .{
+        .whole_len = whole_len,
+        .resin_count = 0,
+        .bead_count = 0,
+        .beads_deposited = 0,
+        .beads_deduped = 0,
+    };
+
+    var resin_count: u32 = 0;
+    var start: u32 = 0;
+    // An empty artifact winds into no resins; unspool returns zero bytes for it.
+    while (start < whole_len) {
+        if (resin_count >= max_resins) return error.TooManyResins;
+        var end: u32 = start + beading.max_resin_bytes;
+        if (end > whole_len) end = whole_len;
+        const resin = content[start..end];
+
+        const b = try beading.bead(store, resin, spool_bead_size, sp.indexes[resin_count][0..]);
+        sp.index_lens[resin_count] = b.len;
+        sp.resin_lens[resin_count] = @intCast(resin.len);
+        report.bead_count += b.report.bead_count;
+        report.beads_deposited += b.report.beads_deposited;
+        report.beads_deduped += b.report.beads_deduped;
+
+        resin_count += 1;
+        start = end;
+    }
+    // invariant: winding consumed exactly the whole content
+    assert(start == whole_len);
+
+    sp.resin_count = resin_count;
+    report.resin_count = resin_count;
+    // invariant: the spool holds no more resins than its bound
+    assert(sp.resin_count <= max_resins);
+    return report;
+}
+
+/// Reassemble a spooled artifact from its ordered resins and the shared store into out,
+/// returning its length. Every resin reassembles through beading's own reassemble (each
+/// bead by digest, the resin against its recorded whole-digest); the concatenation then
+/// proves against the spool's whole digest, so a tampered bead, a tampered resin index,
+/// or a truncated spool each refuse the whole reassembly.
+pub fn unspool(
+    store: *const beading.BeadStore,
+    sp: *const Spool,
+    out: []u8,
+) (beading.BeadError || SpoolError)!u32 {
+    if (sp.whole_len > out.len) return error.Overflow; // out holds the whole artifact
+    // invariant: the spool honors its resin bound before any read
+    assert(sp.resin_count <= max_resins);
+
+    var total: u32 = 0;
+    var i: u32 = 0;
+    while (i < sp.resin_count) : (i += 1) {
+        const re = try beading.reassemble(
+            store,
+            beading.tilak_bead_index,
+            sp.indexes[i][0..sp.index_lens[i]],
+            out[total..],
+        );
+        // invariant: a resin reassembles to exactly the length the spool recorded
+        if (re.len != sp.resin_lens[i]) return error.LengthMismatch;
+        total += re.len;
+    }
+    // invariant: the resins concatenated to exactly the whole length
+    if (total != sp.whole_len) return error.LengthMismatch;
+
+    var whole_check: [32]u8 = undefined;
+    digest_raw(out[0..total], &whole_check); // the whole proof, over the concatenation
+    if (!std.mem.eql(u8, whole_check[0..], sp.whole_digest[0..])) return error.DigestMismatch;
+    // invariant: the reassembled whole matches the spool's content address
+    assert(std.mem.eql(u8, whole_check[0..], sp.whole_digest[0..]));
+    return total;
+}
+
+/// The width, in bytes, of a rendered content address (lowercase hex digest).
+pub const address_hex_width: u32 = digest_raw_len * 2;
+
+/// Write the spool's content address as lowercase hex into out. A large artifact carries
+/// one name a keeper can compare against an independent hash of the same bytes.
+pub fn whole_hex(sp: *const Spool, out: []u8) SpoolError!void {
+    // invariant: the output holds a whole rendered address
+    if (out.len < address_hex_width) return error.Overflow;
+    const digits = "0123456789abcdef";
+    var i: u32 = 0;
+    while (i < digest_raw_len) : (i += 1) {
+        out[i * 2] = digits[sp.whole_digest[i] >> 4];
+        out[i * 2 + 1] = digits[sp.whole_digest[i] & 0x0F];
+    }
+    // invariant: every digest byte produced its two hex chars
+    assert(i == digest_raw_len);
+}
+
+// Two real front-door documents, embedded at compile time (the @embedFile idiom Yield
+// lives with: real bytes, a demo's determinism, no network). Symlinked into corpora/ so
+// the bytes wound are the bytes a keeper reads.
+const doc_security = @embedFile("corpora/security.md");
+const doc_two_rooms = @embedFile("corpora/two_rooms.md");
+
+fn fill(buf: []u8, byte: u8) void {
+    var i: u32 = 0;
+    while (i < buf.len) : (i += 1) buf[i] = byte;
+}
+
+/// A real document winds across ordered resins and unwinds byte-for-byte — the very
+/// refusal red #73 booked now runs GREEN.
+fn welcome_real(store: *beading.BeadStore, content: []const u8, out: []u8, label: []const u8) !SpoolReport {
+    var sp: Spool = .empty();
+    const rep = try spool_content(store, content, &sp);
+    // invariant: a real document past one resin winds into more than one resin
+    assert(sp.resin_count >= 1);
+    const n = try unspool(store, &sp, out);
+    // invariant: unspool returns exactly the artifact length
+    assert(n == content.len);
+    // invariant: the unwound bytes are byte-for-byte the real document
+    assert(std.mem.eql(u8, out[0..n], content));
+    print("spool: {s} — {d} B across {d} resins ({d} beads), unwound byte-for-byte\n", .{
+        label, n, sp.resin_count, rep.bead_count,
+    });
+    return rep;
+}
+
+fn run_spool_selftest() !u8 {
+    var out: [max_content_bytes]u8 = undefined;
+
+    // SECURITY.md and TWO_ROOMS.md — real documents that never fit one resin — wind and
+    // unwind whole. The larger a document, the more resins carry it.
+    var store: beading.BeadStore = .empty();
+    // invariant: both real documents genuinely exceed one resin — the red is real
+    assert(doc_security.len > beading.max_resin_bytes);
+    assert(doc_two_rooms.len > beading.max_resin_bytes);
+    const rep_s = try welcome_real(&store, doc_security, out[0..], "security.md");
+    const rep_t = try welcome_real(&store, doc_two_rooms, out[0..], "two_rooms.md");
+    assert(rep_t.resin_count > rep_s.resin_count); // the larger doc took more resins
+
+    // The whole digest is a stable content address: winding the same bytes twice yields
+    // the identical name (a pure fold, nothing held between windings).
+    {
+        var store_a: beading.BeadStore = .empty();
+        var store_b: beading.BeadStore = .empty();
+        var sp_a: Spool = .empty();
+        var sp_b: Spool = .empty();
+        _ = try spool_content(&store_a, doc_security, &sp_a);
+        _ = try spool_content(&store_b, doc_security, &sp_b);
+        assert(std.mem.eql(u8, sp_a.whole_digest[0..], sp_b.whole_digest[0..]));
+    }
+
+    // Dedup dividend across resins: two artifacts sharing a leading resin share its
+    // beads, so the store deposits the shared span once. Build B as A with a changed tail.
+    {
+        var store_d: beading.BeadStore = .empty();
+        var a: [1024]u8 = undefined;
+        fill(a[0..512], 'A'); // resin 0
+        fill(a[512..1024], 'B'); // resin 1
+        var b: [1024]u8 = undefined;
+        fill(b[0..512], 'A'); // resin 0 — identical to a's resin 0
+        fill(b[512..1024], 'C'); // resin 1 — differs
+        var sp_a: Spool = .empty();
+        var sp_b: Spool = .empty();
+        _ = try spool_content(&store_d, a[0..], &sp_a);
+        const rb = try spool_content(&store_d, b[0..], &sp_b);
+        // b's leading resin is already held, so at least one bead deduped
+        assert(rb.beads_deduped >= 1);
+        var out_b: [1024]u8 = undefined;
+        const nb = try unspool(&store_d, &sp_b, out_b[0..]);
+        assert(std.mem.eql(u8, out_b[0..nb], b[0..])); // still whole after dedup
+    }
+
+    // The ceiling is honest, not merely named: a large artifact filling most of the
+    // spool actually winds into the shared store and unwinds whole. Build a distinct
+    // pattern per byte so no two beads dedup — the store bound is exercised in full.
+    {
+        var store_c: beading.BeadStore = .empty();
+        var wide: [max_content_bytes]u8 = undefined;
+        var k: u32 = 0;
+        while (k < wide.len) : (k += 1) wide[k] = @intCast(k & 0xFF);
+        var sp: Spool = .empty();
+        const rep_c = try spool_content(&store_c, wide[0..], &sp);
+        assert(sp.resin_count == max_resins); // a ceiling artifact fills every resin
+        const nc = try unspool(&store_c, &sp, out[0..]);
+        assert(nc == wide.len);
+        assert(std.mem.eql(u8, out[0..nc], wide[0..])); // the whole ceiling recalls whole
+        print("spool: ceiling — {d} B across {d} resins ({d} beads) wound and unwound whole\n", .{
+            nc, sp.resin_count, rep_c.bead_count,
+        });
+    }
+
+    // Unwelcome: a flipped bead in any resin refuses the whole reassembly by digest.
+    {
+        var store_t: beading.BeadStore = .empty();
+        var sp: Spool = .empty();
+        _ = try spool_content(&store_t, doc_two_rooms, &sp);
+        store_t.beads[0].bytes[0] +%= 1; // corrupt a stored bead
+        if (unspool(&store_t, &sp, out[0..])) |_| {
+            return error.DigestMismatch;
+        } else |err| {
+            assert(err == error.DigestMismatch);
+        }
+    }
+
+    // Unwelcome: a corrupted resin index (its recorded whole-digest) refuses.
+    {
+        var store_i: beading.BeadStore = .empty();
+        var sp: Spool = .empty();
+        _ = try spool_content(&store_i, doc_security, &sp);
+        sp.indexes[0][0] +%= 1; // flip a byte of resin 0's recorded whole digest
+        if (unspool(&store_i, &sp, out[0..])) |_| {
+            return error.DigestMismatch;
+        } else |err| {
+            assert(err == error.DigestMismatch);
+        }
+    }
+
+    // Unwelcome: a truncated spool (a resin dropped from the tail) refuses — the whole
+    // digest no longer matches the shortened concatenation.
+    {
+        var store_r: beading.BeadStore = .empty();
+        var sp: Spool = .empty();
+        _ = try spool_content(&store_r, doc_two_rooms, &sp);
+        assert(sp.resin_count >= 2);
+        sp.resin_count -= 1; // drop the last resin
+        if (unspool(&store_r, &sp, out[0..])) |_| {
+            return error.LengthMismatch;
+        } else |err| {
+            // a short concatenation refuses on length before the whole-digest check
+            assert(err == error.LengthMismatch);
+        }
+    }
+
+    // Unwelcome: an artifact past the spool bound refuses ContentTooLarge — the new
+    // honest ceiling, far above any real document.
+    {
+        var store_z: beading.BeadStore = .empty();
+        var sp: Spool = .empty();
+        var big: [max_content_bytes + 1]u8 = undefined;
+        fill(big[0..], 'z');
+        if (spool_content(&store_z, big[0..], &sp)) |_| {
+            return error.ContentTooLarge;
+        } else |err| {
+            assert(err == error.ContentTooLarge);
+        }
+    }
+
+    print("spool: same bytes wound twice share one content address (stable name)\n", .{});
+    print("spool: dedup dividend — a shared leading resin deposited its beads once\n", .{});
+    print("spool: tampered bead, tampered resin index, truncated spool refused whole GREEN\n", .{});
+    print("spool: an artifact past {d} B refused ContentTooLarge (the honest ceiling)\n", .{max_content_bytes});
+    print("spool: version {s}\n", .{spool_version});
+    print("GREEN: GISM red #73 spool; a large artifact winds across ordered resins and recalls the same bytes.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "spool")) {
+            return run_spool_selftest();
+        }
+    }
+    return run_spool_selftest();
+}

@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260812.191807
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention · ai-jail
+title GISM red #73 — the spool (chunking storage over ordered resins)
+prompt Autonomous loop: read REMEMBER + the 1,024-round itinerary, take the next agent-doable lap Lindy-first crux-first, self-approve design rounds, send each finished increment as its own signed round, stop at custody gates. baton prin recur
+think REMEMBER named the next durable crux as either Season 2 Journey 7 (Fair-trade, AYRE) or the booked red #73 chunking-storage rung. Reds-first governs: a booked red is fixed before the next durable round, so #73 preempts Journey 7 — and it is the higher-Lindy crux, since every module storing real bytes inherits the raised ceiling.
+think Studied the storage stack: beading (mantra/beading.rye) carries a whole up to one 512-byte resin because a bead-index must itself be a valid resin, so max_resin_bytes is structurally capped (max_beads × max_bead_bytes). Confirmed the fix cannot be a bound-bump; it must be a layer above beading — a large artifact wound across ordered resins.
+think Named the module spool (Comlink tendency — clear/warm/safe; free in the tree and Lexicon): content → beads → bead-index → resin → spool. A Spool is an ordered list of resins over one shared BeadStore, each resin beaded fixed-size at 256 B (two predictable beads per full resin, a legible store bound), the whole proving against a SHA3-256 content address unchanged by chunking. unspool walks resins in order, reassembles each through beading's own reassemble, concatenates, proves the whole.
+think Bounds: max_resins 64 → max_content_bytes 32768 (32 KB), covering real front-door docs with headroom. Found the shared BeadStore capacity (max_store_beads 64) too small for a full-size spool (64 resins × 2 = 128 beads), so the 32 KB ceiling would have hit StoreFull before ContentTooLarge — a dishonest bound. Raised max_store_beads 64 → 256 additively (capacity only; every existing witness uses far fewer and stays GREEN), and added a ceiling test proving a full 32768-B artifact actually winds and unwinds whole (128 beads).
+obs Self-approved the design round (active-designing/20260812-191206_…) per the loop's mandate; no custody crossed — demo/constructed bytes and real embedded tree docs only, gate #4 untouched.
+obs Yield's honest-adversary discipline kept: the witness cross-checks the wound doc sizes (2689, 6079) against wc -c on disk — two tools, one answer. Three tamper refusals proven (flipped bead → DigestMismatch, corrupted resin index → DigestMismatch, truncated spool → LengthMismatch).
+obs REDS row 73 is append-only (never edited); recorded the closure as a new reds-first accounting paragraph — allocation released, the honest fix landed rather than a raise pretended.
+loom witness=gism_spool_witness wall_ms=n/a spool_security_bytes=2689 spool_security_resins=6 spool_two_rooms_bytes=6079 spool_two_rooms_resins=12 spool_ceiling_bytes=32768 spool_ceiling_resins=64 spool_ceiling_beads=128
+file mantra/spool.rye the chunking-storage layer — a large artifact wound across ordered resins, whole proving against its content address
+file mantra/beading.rye max_store_beads raised 64 → 256 additively so the spool ceiling is real
+file mantra/corpora/security.md · mantra/corpora/two_rooms.md real-doc symlinks for the @embedFile crux
+file tools/gism_spool_witness.rish GREEN — real docs · ceiling · dedup · three tamper refusals · on-disk size cross-check · beading re-run
+file active-designing/20260812-191206_gism-red73-spool-chunking-storage-exploration.md self-approved design round
+file work-in-progress/REDS.md #73 CLOSED accounting appended; row 73 untouched
+file work-in-progress/REMEMBER.md spool landing recorded in the GISM/Yield arc
+recommend keep-going next Lindy-first crux — rebind Tablecloth's naming layer + tablecloth_keyed's owner-signing to the spool so a signed real large document travels (spool r2/r3), or open Season 2 Journey 7 (Fair-trade, AYRE)
