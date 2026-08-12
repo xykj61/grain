@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260812.065040
+editor Zed
+model Fable 5
+voice Kyri
+title BUHR-1r3 — compose Ember and Lantern into a bounded corpus query
+prompt Read REMEMBER; take the next agent-doable lap Lindy-first crux-first; send each round to origin and xykj61; STOP at custody gates; if only gates remain print GATES-ONLY. baton prin recur (recurring after r2)
+think After r2 (Scribble) landed and sent, the ordered next voice in Journey 1 is Ember — the craft/corpus voice, the third of the four already witnessed GREEN
+think Read ember_core.rye public API: parse_catalog (Bron corpus), count_kind, sum_lines, query_corpus (filter to held-order indices); the Catalog struct carries a fixed chunk array
+think Authored pond/apps/corpus_query.rye on the same additive template as r1/r2 — a pinned deterministic Bron catalog (three rye chunks + one rish) plays the fixed-operand role; three ops (count_rye · sum_lines · paths_rye) route to real Ember calls; unknown op refuses
+think Kept every Lantern discipline — validate_request, model allow-list, word-count metering, length-stop truncation; a bounded byte-append helper (no @memcpy) writes the path list
+obs paths_rye returns held-order indices from query_corpus; a budget of two truncates the three-path result with a length stop, exactly as the contract governs
+obs All three built voices — Lattice (r1), Scribble (r2), Ember (r3) — now compose through the same Q-vane host, each over public APIs only; the three apps share no state, so each rung stays independently GREEN
+loom witness=buhr_corpus_query_witness ops=7 result=GREEN
+file pond/apps/corpus_query.rye BUHR-1r3 app — Ember + Lantern composed as one bounded corpus query
+file tools/buhr_corpus_query_witness.rish proves the request-to-corpus-reading path GREEN on metal
+file work-in-progress/REMEMBER.md seat the rung; refresh git nib in the same work commit
+recommend keep-going BUHR-1r4 (Skate views over these bounded results) is the next compose over green ground; still agent-doable, no custody gate
