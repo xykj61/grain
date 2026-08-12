@@ -1,0 +1,137 @@
+//! pond/apps/ship_pilot_customs.rye — TACT Journey 1, Rung 3: the customs step, wired real.
+//!
+//! Rung two wired the first step, identity, to a real Kumara genesis. This rung wires the third
+//! step, customs, to Pond's own first policy — `pond/customs.rye`. When a keeper's first mark
+//! reaches the pilot, customs reads it and returns one of three verdicts: **place** (the mark is
+//! on Pond's allow-list — the step passes), **hold** (an `await-word` mark — the step holds and
+//! surfaces for a human word, never auto-crossing), or **refuse** (an unknown mark — the step
+//! holds whole). Only a `place` verdict advances the pilot; a hold or a refuse leaves it standing
+//! at customs, so a keeper whose first cargo is not admitted cannot be walked past receipt.
+//!
+//! The hold verdict is the important distinction: an `await-word` mark is not a refusal, it is a
+//! wait for a human word — the pilot surfaces it rather than crossing it silently, exactly the
+//! custody-first posture the whole tree keeps. This rung composes over the spine (r1) and the
+//! real identity (r2); the `place` step's own topology wiring lands with the ready report (r4),
+//! supplied here as a proven signal so this rung stays about customs alone. It reads no network.
+//!
+//!   rye build pond/apps/ship_pilot_customs.rye -femit-bin=pond/bin/ship-pilot-customs
+//!   pond/bin/ship-pilot-customs selftest
+//!
+//! Scope: active-designing/20260812-172129_tact-journey1-ship-pilot-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const pilot = @import("ship_pilot.rye");
+const identity = @import("ship_pilot_identity.rye");
+const customs = @import("customs.rye");
+
+pub const ship_pilot_customs_version = "20260812.172129";
+
+/// The keeper's first mark is admitted only when Pond's customs places it. A hold or a refuse
+/// is not admission — the caller reads the full verdict below to tell a wait from a rejection.
+pub fn customs_admits(mark: []const u8) bool {
+    const v = customs.verdict_for_mark(mark);
+    // invariant: admission is exactly the place verdict, never a hold or a refuse
+    const admitted = v == .place;
+    assert(admitted == (v == .place));
+    return admitted;
+}
+
+/// Read Pond's customs verdict for a mark, so the pilot can surface a hold distinctly from a
+/// refusal — a wait for a human word is not a rejection.
+pub fn customs_verdict(mark: []const u8) customs.Verdict {
+    return customs.verdict_for_mark(mark);
+}
+
+/// Walk the pilot through identity (real, r2), place (supplied — its topology wiring lands in
+/// r4), and customs (real, this rung). The customs step advances only when the mark is placed;
+/// a hold or a refuse leaves the pilot standing at customs.
+pub fn pilot_through_customs(id: *const identity.Identity, mark: []const u8) pilot.PilotError!pilot.Pilot {
+    var p = pilot.Pilot.begin();
+    if (!id.settled) {
+        _ = p.attempt(.identity, false) catch {};
+        // invariant: an unsettled identity never reaches the customs step
+        assert(p.current().? == .identity);
+        return p;
+    }
+    try p.attempt(.identity, true);
+    try p.attempt(.place, true);
+    // invariant: the pilot now stands exactly at the customs step
+    assert(p.current().? == .customs);
+    const admitted = customs_admits(mark);
+    if (!admitted) {
+        _ = p.attempt(.customs, false) catch {};
+        // invariant: an unadmitted mark holds the pilot at customs
+        assert(p.current().? == .customs);
+        return p;
+    }
+    try p.attempt(.customs, true);
+    // invariant: a placed mark advances the pilot past customs
+    assert(p.current().? == .app);
+    return p;
+}
+
+// ---- witnesses ----
+
+const demo_key: [32]u8 = .{0x11} ** 32;
+const demo_keeper: [32]u8 = .{0x22} ** 32;
+const demo_galaxy: u32 = 3;
+
+fn settled_demo() identity.Identity {
+    return identity.settle_identity(&demo_key, &demo_keeper, demo_galaxy);
+}
+
+/// A placed mark advances the pilot past customs to the app step.
+fn welcome_placed_mark_advances() !void {
+    const id = settled_demo();
+    assert(id.settled);
+    var p = try pilot_through_customs(&id, "plain-bytes");
+    assert(customs_verdict("plain-bytes") == .place);
+    assert(p.current().? == .app);
+    assert(p.passed[2]);
+    print("ship_pilot_customs: a placed mark (plain-bytes) advanced the pilot past customs.\n", .{});
+}
+
+/// An `await-word` mark holds the pilot at customs and surfaces for a human word — a wait, not
+/// a rejection.
+fn unwelcome_await_word_holds_and_surfaces() !void {
+    const id = settled_demo();
+    var p = try pilot_through_customs(&id, "await-word");
+    // the verdict is a hold, distinct from a refuse — the pilot surfaces it
+    assert(customs_verdict("await-word") == .hold);
+    assert(p.current().? == .customs);
+    assert(!p.is_ready());
+    assert(!p.passed[2]);
+    print("ship_pilot_customs: an await-word mark held at customs and surfaced (a wait, not a rejection).\n", .{});
+}
+
+/// An unknown mark is refused whole, and the pilot holds at customs.
+fn unwelcome_unknown_mark_refuses() !void {
+    const id = settled_demo();
+    var p = try pilot_through_customs(&id, "trojan-cargo");
+    assert(customs_verdict("trojan-cargo") == .refuse);
+    assert(p.current().? == .customs);
+    assert(!p.passed[2]);
+    print("ship_pilot_customs: an unknown mark refused whole; the pilot held at customs.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_placed_mark_advances();
+    try unwelcome_await_word_holds_and_surfaces();
+    try unwelcome_unknown_mark_refuses();
+    print("ship_pilot_customs {s} — GREEN\n", .{ship_pilot_customs_version});
+    print("GREEN: TACT-J1r3 ship_pilot_customs; the customs step advances only on a placed mark, holding a wait or a refusal.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest();
+    }
+    print("usage: ship-pilot-customs selftest\n", .{});
+    return 1;
+}
