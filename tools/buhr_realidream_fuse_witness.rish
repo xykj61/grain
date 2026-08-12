@@ -1,0 +1,41 @@
+# tools/buhr_realidream_fuse_witness.rish — BUHR Journey 5, Rung 4.
+#
+# Two read sources feed one program node — the fusion whole. Rung 3 drew the fused edge
+# with a single upstream; the Realidream foundation names the motion in the plural — two
+# sources can feed one node — and this rung draws it whole. derive_from_two_reads reads
+# the head content of two distinct read/ lanes and appends a fused summary (a=<la> b=<lb>)
+# to a program lane, its content a pure function of both current heads. Because the fused
+# node is a pure function of both reads, refreshing either source flows downstream
+# independently on the next derive: re-read the first and its component moves (a=8 b=2),
+# re-read the second and its component moves (a=8 b=3), while every earlier fused node
+# still recalls the pair it derived from (a=4 b=2). Refuses a non-read source
+# (NotAReadPath), a read destination (NotAProgramPath), the same lane named twice
+# (SameSource), and an unpinned read (LaneUnknown). This rung reads no network — both
+# reads' content is supplied in-process; a real web fetch stays a named seam behind a
+# bounded reader (its own later rung, surfacing for Keaton's word).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/buhr_realidream_fuse_witness.rish
+
+say "buhr-j5r4: Language EN — two read sources feed one program node; refreshing either source flows downstream independently."
+say "buhr-j5r4: Lens TAME — proven by recall; a=4 b=2 fused from two reads, then a=8 b=2 and a=8 b=3 as each is re-read, the first fused node standing. No network read."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/realidream-fuse"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/realidream_fuse.rye -femit-bin=${bin}"]
+assert build.ok else "buhr-j5r4: realidream_fuse build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "buhr-j5r4: realidream_fuse selftest exited non-zero"
+assert selftest.out contains "GREEN" else "buhr-j5r4: selftest did not speak GREEN"
+assert selftest.out contains "both sources at once" else "buhr-j5r4: the two-reads-feed-one proof is missing"
+assert selftest.out contains "each re-read flowed independently" else "buhr-j5r4: the independent-flow proof is missing"
+assert selftest.out contains "the two-input edge holds" else "buhr-j5r4: the wrong-edge refuse proof is missing"
+
+# Rung 3 (single-source derive) stays its own green binary — additive.
+let rung3 = run ["sh" "-c" "rishi/bin/rishi run tools/buhr_realidream_derive_witness.rish 2>&1"]
+assert rung3.ok else "buhr-j5r4: the derive (J5r3) witness regressed"
+assert rung3.out contains "GREEN: BUHR-J5r3" else "buhr-j5r4: rung three lost its green"
+
+say "GREEN: BUHR-J5r4 — two read sources fuse into one program node; each re-read flows downstream independently, every earlier fused node standing."
