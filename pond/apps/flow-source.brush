@@ -1,0 +1,24 @@
+::  name       flow-source layer
+::  shape      a style: layer that sets the derived-node accent (flow) only
+::  invariant  the flow token stays warm/low-blue; ground, head, and read are other layers' to set
+::  example    a deep honey derived node, composable over any mode or accent layer
+::  readers    brush_parse.rye → tokens.resolve → realidream_view_derived_theme
+::  nib        surface-wade1-derived-node-v0
+::
+::  A .brush *accent* layer for Realidream's derived node — the downstream end of the
+::  fused edge: it names only the `flow` token — a deep honey that sets a computed
+::  program node apart from the read origin it consumes — and leaves the ground
+::  (paper/ink), the read origin (read), and the living edge (head) for other layers to
+::  set. Infused over tokens.rye's base sheet, it proves the derived node is themeable on
+::  its own key, without touching the ink, the edge rule, the read origin, or the
+::  living-edge accent. The cascade is per-key infuse (Bron over Bron), never a CSS rail.
+::  Tongue: Glow · Bron · TAME · Radiant. Never JS · HTML · CSS · JSON.
+::
+::  at-nib:     realidream-derived-node
+::  present:    Frame
+::  max-lines:  8
+::  style:
+::    flow 0xFFD2882A
+::  lines:
+::    realidream view, derived-node theme
+::  refuse:     src/web · Wasm/Web backend · CSS rail · a { } stylesheet
