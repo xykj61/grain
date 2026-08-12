@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260812.142833
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR-J7r1 — Tablecloth, the named artifact store
+prompt Land BUHR-J7r1 as its own signed round after opening Journey 7; approve own design rounds; send often; stop at custody gates
+think The exploration named the crux (a name bound to a content address) and the substrate (mantra/beading.rye's BeadStore). The rung is the naming layer over that store — invent no storage.
+think Wrote pond/apps/tablecloth.rye: a bounded Catalog binds a name to the whole digest + bead-index recipe; store_artifact beads content into the shared BeadStore (dedup for free), fetch_artifact reassembles by name with every bead proving itself by digest.
+think Added a Brix-facing render_manifest / parse_manifest for the format tablecloth-v1 flat-Bron catalog — the Bron a Brix descriptor evaluates to; round-tripped name, address, length field for field.
+think Symlinked the substrate into pond/apps/mantra/beading.rye and pond/apps/parse_int.rye (matching the existing tally_copy.rye and recall_lap1.rye symlink convention) so the imports resolve at build.
+obs Built GREEN on the first try. Dedup dividend proven honestly: storing doc_a under two names deposits 0 new beads the second time (beads_deduped == bead_count). Tamper, unknown name, taken name, empty/overlong name, oversized content, and a bad manifest header all refuse.
+obs Honored the migrate-on-touch ratchet: replaced the one std.fmt.parseInt site with tally/parse_int.rye's strict parse_int (leading-zero footgun refused by default), lowering the tree's parseInt ratchet 9→8.
+obs Additive — beading.rye stays its own GREEN binary; the witness re-runs it. TAME bans clean, width-check clean.
+loom witness=buhr_tablecloth_witness artifacts=3 contents=2 dedup_new_beads=0 manifest_bytes=285 fetch_bytes=77/77/79
+file pond/apps/tablecloth.rye the named artifact store — Catalog over BeadStore, store/fetch by name, Brix-facing manifest render/parse
+file tools/buhr_tablecloth_witness.rish the witness — round-trip, dedup dividend, tamper/unknown/taken/size refusals, bad-manifest refusal, beading re-run
+file pond/apps/mantra/beading.rye symlink to the content-addressed substrate Tablecloth names over
+file pond/apps/parse_int.rye symlink to tally/parse_int.rye — the strict parser the manifest length uses
+file work-in-progress/REMEMBER.md BUHR line refreshed with the Journey 7 opening and J7r1 landing; git nib
+recommend keep-going land BUHR-J7r2 — the manifest as the true index (a parsed manifest verifies against the live store)
