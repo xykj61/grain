@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260812.140813
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR Journey 6, Rung 2 — the query tracks a live edit
+prompt Autonomous recur: continue Lindy-first crux-first after J6r1; send each increment; STOP at custody gates
+think J6r1 proved a voice reads the living graph (the head it reports is the head the browser paints). The deeper property — the crux of the journey — is that the answer *tracks a live edit*: the "living" in living graph. Took it next crux-first (ahead of the Scribble-fold rung the exploration listed first, since the edited-graph proof is the harder, more decisive move).
+think graph_query.answer built its own demo_catalog internally, so it could only ask over a fixed graph. Refactored additively: extracted answer_over(req, allow, catalog, out_buf) taking an explicit catalog, and left answer() as a convenience that builds demo_catalog and delegates. answer keeps its signature and behavior — rung one witness re-runs GREEN unchanged.
+think Authored graph_query_edit.rye composing graph_query.answer_over with mantra_editor.commit/open_lane over one catalog: ask head (r2) → commit → ask head (r3, advanced by exactly one); ask lane_count (3) → open_lane → lane_count (4); and prove the query is read-only by asking an edited catalog (r3) beside a pristine one (r2), each its own true head.
+obs Because an edit is an append, nothing mutates behind the reader — the earlier answer was true when given, the new answer true now. The read-only proof (two independent catalogs, two true heads) shows the query never disturbs the surface it reads.
+obs TAME kept: additive refactor (no contract change), ≥2 asserts/fn with positive invariants, snake_case, named errors, no @memcpy, bounded buffers. Rung one, the editor, and the browser all re-run GREEN.
+loom witness=buhr_graph_query_edit_witness green=1 welcomes=3 r1_rerun=1
+file pond/apps/graph_query.rye refactored additively — answer_over over an explicit catalog; answer delegates over the demo graph
+file pond/apps/graph_query_edit.rye the rung — compose the query with the editor; the reported head advances on a commit
+file tools/buhr_graph_query_edit_witness.rish proves head r2->r3 on edit, lane_count 3->4 on fork, query read-only; rung one re-runs GREEN
+file work-in-progress/REMEMBER.md BUHR-J6r2 landed note + git nib in the same work commit
+recommend keep-going BUHR-J6r3 (the Scribble fold of the rendered graph text) or serve the graph query through the Q-vane host dispatch — both agent-doable over witnessed ground
