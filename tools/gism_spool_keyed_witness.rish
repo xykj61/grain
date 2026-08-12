@@ -1,0 +1,57 @@
+# tools/gism_spool_keyed_witness.rish — GISM red #73 payoff: owner-signed large artifact.
+#
+# Season 2, Yield. The spool closed red #73; spool_cloth named a large artifact; this
+# rung is the payoff — provenance on a large real document. pond/apps/spool_keyed.rye is
+# tablecloth_keyed's sibling for large artifacts: a settled Kumara identity presents its
+# Deed and signs the exact whole content, so only that identity may publish a real
+# front-door document too large for one resin, and a tampered document cannot ride a real
+# signature. This witness proves it on metal: two real documents owner-signed, wound
+# across resins, fetched byte-for-byte, resolving to planet and star; every refusal
+# holds (non-owner, forged signature, content-mismatched signature, tampered bead). It
+# re-runs spool_cloth and tablecloth_keyed untouched — spool_keyed composes their public
+# API only.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/gism_spool_keyed_witness.rish
+
+say "gism-red73-owned: Language EN — a large real document is owner-signed and fetched whole."
+say "gism-red73-owned: Lens TAME — a settled identity vouches for a document too large for one resin; every tamper refused."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/spool-keyed"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/spool_keyed.rye -femit-bin=${bin}"]
+assert build.ok else "gism-red73-owned: spool_keyed build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "gism-red73-owned: spool_keyed selftest exited non-zero"
+assert selftest.out contains "GREEN" else "gism-red73-owned: selftest did not speak GREEN"
+assert selftest.out contains "belongs to a settled Kumara point" else "gism-red73-owned: identity vouching missing"
+assert selftest.out contains "SECURITY.md (2689 B) and TWO_ROOMS.md (6079 B) wound across resins, owner-signed, fetched byte-for-byte, resolving to planet and star" else "gism-red73-owned: owner-signed large fetch missing"
+assert selftest.out contains "every refusal holds — a non-owner (no resin wound), a forged signature, a content-mismatched signature, and a tampered bead" else "gism-red73-owned: refusals missing"
+
+# Cross-check the real document sizes against the files on disk — two tools, one answer.
+let sec_bytes = run ["sh" "-c" "wc -c < SECURITY.md | tr -d ' '"]
+assert sec_bytes.ok else "gism-red73-owned: could not measure SECURITY.md"
+assert sec_bytes.out contains "2689" else "gism-red73-owned: SECURITY.md is not 2689 B on disk"
+let tr_bytes = run ["sh" "-c" "wc -c < context/TWO_ROOMS.md | tr -d ' '"]
+assert tr_bytes.ok else "gism-red73-owned: could not measure context/TWO_ROOMS.md"
+assert tr_bytes.out contains "6079" else "gism-red73-owned: context/TWO_ROOMS.md is not 6079 B on disk"
+
+# The naming layer and the small owner-signed catalog are re-run untouched — the large
+# owner-signed store composes their public API only.
+let cloth_bin = "pond/bin/spool-cloth"
+let cloth_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/spool_cloth.rye -femit-bin=${cloth_bin}"]
+assert cloth_build.ok else "gism-red73-owned: spool_cloth rebuild failed"
+let cloth_selftest = run ["sh" "-c" "${cloth_bin} selftest 2>&1"]
+assert cloth_selftest.ok else "gism-red73-owned: spool_cloth selftest regressed"
+assert cloth_selftest.out contains "GREEN" else "gism-red73-owned: spool_cloth did not speak GREEN"
+
+let keyed_bin = "pond/bin/tablecloth-keyed"
+let keyed_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/tablecloth_keyed.rye -femit-bin=${keyed_bin}"]
+assert keyed_build.ok else "gism-red73-owned: tablecloth_keyed rebuild failed"
+let keyed_selftest = run ["sh" "-c" "${keyed_bin} selftest 2>&1"]
+assert keyed_selftest.ok else "gism-red73-owned: tablecloth_keyed selftest regressed"
+assert keyed_selftest.out contains "GREEN" else "gism-red73-owned: tablecloth_keyed did not speak GREEN"
+
+say "GREEN: GISM red #73 payoff — a large real document is owner-signed and fetched whole; spool_cloth and tablecloth_keyed stay GREEN."

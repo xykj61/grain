@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260812.192805
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention · ai-jail
+title Spool r3 — owner-signed large-artifact store (the payoff red #73 was reaching for)
+prompt Autonomous loop: continue Lindy-first crux-first after the spool + naming layer; self-approve, send each finished increment as its own signed round, stop at custody gates.
+think red #73 mattered because provenance (GISM Journey 6) could not stand on a real large document. r1 closed the storage bound, r2 gave it a name; r3 is the true payoff — a settled Kumara identity vouching for a large real document, tablecloth_keyed's sibling for artifacts too big for one resin.
+think The signing already binds a SHA-256 of the whole content (tablecloth_keyed.sign_publication / verify_receipt over point · whole_len · name · digest), so I composed the public helpers directly — no new signing. verify with keyed.verify_receipt over keyed.digest_of(content), matching sign_publication's layout exactly.
+think Added one additive pub — spool_cloth.index_of — so owner_of can resolve a name to the owning point recorded alongside it, mirroring tablecloth.index_of. spool_cloth re-runs GREEN.
+obs GREEN first pass. Two real docs owner-signed and wound: SECURITY.md 2689 B → planet, TWO_ROOMS.md 6079 B → star; fetched byte-for-byte; owner_of/place_of resolve to planet and star. Every refusal holds — ghost Deed → NotOwner (no resin wound), forged sig → BadSignature, content-mismatched sig → BadSignature (whole digest bound in), tampered bead after honest publish → DigestMismatch.
+obs Demo keeper seeds only — no real key, no custody; gate #4 (Keaton's real Kumara instance) untouched, exactly as tablecloth_keyed and provenance_real. Composes public API only; tablecloth_keyed re-runs GREEN.
+loom witness=gism_spool_keyed_witness spool_keyed_security_bytes=2689 spool_keyed_security_owner=267 spool_keyed_two_rooms_bytes=6079 spool_keyed_two_rooms_owner=27
+file pond/apps/spool_keyed.rye owner-signed large-artifact store — a settled identity vouches for a document too large for one resin
+file pond/apps/spool_cloth.rye grew a pub index_of so owner_of resolves a name to its owning point (additive)
+file tools/gism_spool_keyed_witness.rish GREEN — real docs owner-signed/fetched · owner/place resolve · four refusals · on-disk cross-check · spool_cloth + tablecloth_keyed re-runs
+file work-in-progress/REMEMBER.md owner-signed landing recorded; the spool arc (chunking · naming · owner-signed) named
+recommend keep-going next Lindy-first crux — a portable receipt for a large owner-signed document (Bron format travel, spool r4, mirroring publish_receipt_bron), or open Season 2 Journey 7 (Fair-trade, AYRE)
