@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260812.150322
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR-J8r3 the artifact voice, gathered under the host
+prompt Keep going Lindy-first crux-first on the next agent-doable BUHR lap; send each finished increment; stop at custody gates
+think After J8r2 landed and sent, J8r3 (gather the artifact voice under the Q-vane host) was the last named agent-doable BUHR rung; took it crux-first
+think Studied the J6r3 precedent quin_host_graph — it wraps quin_host.dispatch unchanged and falls through to the graph voice only on UnknownOp; mirrored that shape exactly for a fifth voice
+think Wrote pond/apps/quin_host_artifact.rye wrapping quin_host_graph.dispatch (four voices) and falling through to artifact_query.answer on UnknownOp, tagging an artifact voice
+obs First run panicked on the words assert — I had assumed J8r1's demo notes.txt was one line (8 words); it is two lines (16 words, 88 bytes). The line op and the length-budget stop were already correct; fixed the words count to 16
+obs Prior voices' routing confirmed disjoint — Lattice matmul/add/reduce_sum, Scribble outline/headings2/fences, Ember count_rye/sum_lines/paths_rye, graph lane_count/bolt_count/head/summary — so bytes/words/line fall cleanly through to the artifact voice
+loom witness=buhr_quin_host_artifact_witness result=GREEN welcomes=5 unwelcomes=3 host_rerun=GREEN
+file pond/apps/quin_host_artifact.rye BUHR-J8r3 the fifth voice — a named Tablecloth artifact — gathered under one bounded dispatch
+file tools/buhr_quin_host_artifact_witness.rish witnesses five voices routing, three refusals, and the J6r3 four-voice host re-run
+recommend check-in (Keaton) BUHR's agent-doable rungs are complete through J8r3; the remaining BUHR doors (owner-signed corpus, Comlink-served) reach the custody/serve gates that are Keaton's hand
