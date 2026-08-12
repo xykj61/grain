@@ -183,6 +183,18 @@ pub fn index_of(cat: *const Catalog, name: []const u8) ?u32 {
     return cat.find(name);
 }
 
+/// The human name held at catalog index `i`, as a slice into the catalog's own storage.
+/// A resource-list rung walks 0..count to project every held name as a resource URI,
+/// reading only through this accessor rather than reaching into an entry's internals.
+pub fn artifact_name(cat: *const Catalog, i: u32) []const u8 {
+    // invariant: the index names a live entry
+    assert(i < cat.count);
+    const e = &cat.entries[i];
+    // invariant: the held name honors its length bound
+    assert(e.name_len <= max_name);
+    return e.name[0..e.name_len];
+}
+
 /// The whole length of the artifact a name pins. Refuses an unknown name.
 pub fn artifact_len(cat: *const Catalog, name: []const u8) ClothError!u32 {
     // invariant: the search stays within the catalog bound

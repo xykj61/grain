@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260812.153230
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR-J10r2 — the catalog advertised as an honest MCP resource list
+prompt recur BUHR Lindy-first crux-first; approve own design rounds; send each increment as its own signed round; stop at custody gates
+think Rung one served resources/read (a caller who knows a URI reads it); this rung serves resources/list — a caller discovers every readable artifact by URI, the noun half's mirror of Journey 3's tools/list.
+think pond/apps/mcp_resource_list.rye renders a Tablecloth catalog to a bounded format mcp-resource-list-v1 envelope, one `resource tablecloth:<name> <len>` line per artifact, and parses it back — uri and length for each, unknown field refused, bad header refused.
+think Made the list more than a printout: verify_list proves it an honest index — for every listed resource, rung one's read_resource returns a resource envelope (not an error) whose body length equals the published length. A store tampered after publication breaks that honesty (NotHonest) rather than passing silently — the crux integrity carries up to the discovery surface.
+think Composed over public API only. Grew tablecloth.rye one additive pub accessor, artifact_name(cat, i), so the render walks 0..count without reaching into an entry's internals — mirroring how earlier rungs grew tablecloth (index_of, artifact_len, address_hex).
+obs Caught a TAME @memcpy ban in render_list before commit and switched the header copy to tally_copy.copy_disjoint. Built GREEN (2 welcomes + 3 unwelcomes); tablecloth re-builds GREEN with the accessor; TAME bans clean, width-check exit 0.
+obs Additive — mcp_resource (J10r1) and tablecloth (J7r1) stay their own green binaries under the witness. Reads no network; the Comlink-served resource transport stays the held serve gate.
+loom witness=buhr_mcp_resource_list_witness cases=5 listed_resources=3 honest_index=verified
+file pond/apps/mcp_resource_list.rye resources/list over the catalog, proven an honest index via rung one
+file pond/apps/tablecloth.rye grew one additive pub accessor artifact_name(cat, i)
+file tools/buhr_mcp_resource_list_witness.rish the J10r2 witness — 5 cases + r1 & tablecloth re-runs, GREEN
+recommend keep-going BUHR-J10 both MCP surfaces now owned (tools J9 · resources J10); the remaining resource door — Comlink-served transport — reaches the serve gate that is Keaton's hand; next agent-doable blind spot surfaces from the itinerary

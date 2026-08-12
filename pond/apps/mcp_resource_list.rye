@@ -1,0 +1,273 @@
+//! pond/apps/mcp_resource_list.rye — BUHR Journey 10, Rung 2: the resource list.
+//!
+//! Rung one served `resources/read` — a caller who already knows a URI reads its bytes.
+//! This rung serves `resources/list` — a caller *discovers* every readable artifact by
+//! URI, the noun half's mirror of Journey 3's `tools/list`. A Tablecloth catalog projects
+//! to a bounded `format mcp-resource-list-v1` envelope, one `resource <uri> <len>` line
+//! per artifact, in held order; a reader parses it back, uri and length for each.
+//!
+//! The list is more than a printout: it is proven an *honest index* of the store it names.
+//! For every listed resource, rung one's `read_resource` returns exactly the published
+//! length of verified bytes — so a caller handed the list can trust that every URI it
+//! advertises truly reads, and reads the size it promised. It composes over public API
+//! only: it walks the catalog through Tablecloth's `artifact_name` accessor, renders its
+//! own envelope, and reads each resource through rung one, which stays its own green
+//! binary. It reads no network — the Comlink-served transport stays the held serve gate.
+//!
+//!   rye build pond/apps/mcp_resource_list.rye -femit-bin=pond/bin/mcp-resource-list
+//!   pond/bin/mcp-resource-list selftest
+//!
+//! Scope: active-designing/20260812-151959_buhr-journey10-artifacts-served-as-mcp-resources-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const tc = @import("tablecloth.rye");
+const beading = @import("mantra/beading.rye");
+const mr = @import("mcp_resource.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const mcp_resource_list_version = "20260812.151959";
+
+const uri_scheme = "tablecloth:";
+
+// The list's bounds, each named once and enforced at the edge.
+pub const max_resources: u32 = tc.max_artifacts; // one entry per held artifact
+pub const max_line: u32 = mr.max_uri + 32; // "resource " + uri + " " + a length + newline
+// A rendered list envelope: a header plus one bounded line per resource.
+pub const max_list_env: u32 = 64 + max_resources * max_line;
+
+pub const ListError = error{
+    BadFormat,
+    MissingField,
+    UnknownField,
+    TooManyResources,
+    LineTooLong,
+    BadInt,
+    ListTooLong,
+    NotHonest,
+};
+
+/// One listed resource: its URI (a slice into the source, zero-copy) and byte length.
+pub const ResourceEntry = struct {
+    uri: []const u8,
+    len: u32,
+};
+
+/// A parsed resource list — the resources a store advertises, in held order.
+// Invariant: count <= max_resources.
+pub const ResourceList = struct {
+    entries: [max_resources]ResourceEntry,
+    count: u32,
+};
+
+/// Render a Tablecloth catalog as its `format mcp-resource-list-v1` envelope, returning
+/// its length. One `resource tablecloth:<name> <len>` line per artifact, in held order.
+pub fn render_list(cat: *const tc.Catalog, out: []u8) ListError!u32 {
+    // invariant: a list names at most the catalog bound
+    assert(cat.count <= max_resources);
+    const header = "format mcp-resource-list-v1\n";
+    if (header.len > out.len) return error.ListTooLong;
+    var off: usize = 0; // seam: slice offset over a std buffer
+    tally_copy.copy_disjoint(u8, out[0..header.len], header);
+    off += header.len;
+
+    var i: u32 = 0;
+    while (i < cat.count) : (i += 1) {
+        const name = tc.artifact_name(cat, i);
+        const len = tc.artifact_len(cat, name) catch return error.NotHonest;
+        const line = std.fmt.bufPrint(out[off..], "resource {s}{s} {d}\n", .{
+            uri_scheme, name, len,
+        }) catch return error.ListTooLong;
+        off += line.len;
+    }
+    // invariant: the rendered list stays within the buffer
+    assert(off <= out.len);
+    return @intCast(off);
+}
+
+/// Split a line into its first space-delimited token and the trimmed remainder.
+fn first_token(line: []const u8) struct { head: []const u8, rest: []const u8 } {
+    // invariant: the line respects the bounded length
+    assert(line.len <= max_line);
+    var sp: usize = 0; // seam: slice index over a std source
+    while (sp < line.len and line[sp] != ' ') : (sp += 1) {}
+    const head = line[0..sp];
+    const rest = std.mem.trim(u8, line[sp..], " \t");
+    return .{ .head = head, .rest = rest };
+}
+
+/// Parse a `format mcp-resource-list-v1` envelope into a bounded ResourceList. The header
+/// must name the format exactly; each `resource` line carries a URI then a length; any
+/// other field key is refused rather than dropped.
+pub fn parse_list(src: []const u8, list: *ResourceList) ListError!void {
+    // invariant: an envelope carries at least a header line
+    assert(src.len > 0);
+    // invariant: the source respects the list envelope bound
+    assert(src.len <= max_list_env);
+
+    list.count = 0;
+    var have_header = false;
+
+    var lines = std.mem.splitScalar(u8, src, '\n');
+    while (lines.next()) |raw| {
+        const line = std.mem.trim(u8, raw, " \t\r");
+        if (line.len == 0 or line[0] == '#') continue;
+        if (line.len > max_line) return error.LineTooLong;
+        const kv = first_token(line);
+        if (std.mem.eql(u8, kv.head, "format")) {
+            if (!std.mem.eql(u8, kv.rest, "mcp-resource-list-v1")) return error.BadFormat;
+            have_header = true;
+        } else if (std.mem.eql(u8, kv.head, "resource")) {
+            if (list.count >= max_resources) return error.TooManyResources;
+            const inner = first_token(kv.rest);
+            if (inner.head.len == 0 or inner.head.len > mr.max_uri) return error.LineTooLong;
+            const len = std.fmt.parseInt(u32, inner.rest, 10) catch return error.BadInt;
+            list.entries[list.count] = .{ .uri = inner.head, .len = len };
+            list.count += 1;
+        } else {
+            return error.UnknownField;
+        }
+    }
+    if (!have_header) return error.BadFormat;
+    // invariant: a parsed list stays within the bound
+    assert(list.count <= max_resources);
+}
+
+/// Prove a parsed list is an honest index of a live store: for every listed resource,
+/// rung one's `read_resource` returns a resource envelope (not an error) whose body length
+/// equals the published length. A URI the store cannot read, or a length that disagrees,
+/// refuses `NotHonest` — so a caller can trust the list before spending a read.
+pub fn verify_list(
+    list: *const ResourceList,
+    cat: *const tc.Catalog,
+    store: *const beading.BeadStore,
+) ListError!void {
+    // invariant: the list stays within the resource bound
+    assert(list.count <= max_resources);
+    var i: u32 = 0;
+    while (i < list.count) : (i += 1) {
+        const e = &list.entries[i];
+        var req: mr.ReadRequest = .{ .id = i, .uri = e.uri };
+        var buf: [mr.max_env]u8 = undefined;
+        const rendered = mr.read_resource(cat, store, &req, buf[0..]) catch return error.NotHonest;
+        var res: mr.ResourceResult = undefined;
+        mr.parse_result(rendered, &res) catch return error.NotHonest;
+        // A listed resource must actually read, and read the length it advertised.
+        if (res.is_error) return error.NotHonest;
+        if (res.body.len != e.len) return error.NotHonest;
+    }
+    // invariant: every listed resource was checked
+    assert(i == list.count);
+}
+
+const doc_one = "linen holds the warp, hemp the weft.";
+const doc_two = "ramie brightens the border\nwhere the light lands.";
+const doc_three = "a cloth over the table, plain and glad.";
+
+fn seed(cat: *tc.Catalog, store: *beading.BeadStore) !void {
+    _ = try tc.store_artifact(cat, store, "notes.txt", doc_one);
+    _ = try tc.store_artifact(cat, store, "site.md", doc_two);
+    _ = try tc.store_artifact(cat, store, "readme", doc_three);
+}
+
+fn welcome_list_round_trips() !void {
+    var store: beading.BeadStore = .empty();
+    var cat: tc.Catalog = .empty();
+    try seed(&cat, &store);
+
+    var buf: [max_list_env]u8 = undefined;
+    const n = try render_list(&cat, buf[0..]);
+    var list: ResourceList = undefined;
+    try parse_list(buf[0..n], &list);
+    assert(list.count == 3);
+    assert(std.mem.eql(u8, list.entries[0].uri, "tablecloth:notes.txt"));
+    assert(list.entries[0].len == doc_one.len);
+    assert(std.mem.eql(u8, list.entries[1].uri, "tablecloth:site.md"));
+    assert(list.entries[1].len == doc_two.len);
+    assert(std.mem.eql(u8, list.entries[2].uri, "tablecloth:readme"));
+    assert(list.entries[2].len == doc_three.len);
+    print("mcp_resource_list: resources/list round-trips — 3 artifacts advertised by URI\n", .{});
+}
+
+fn welcome_list_is_honest_index() !void {
+    var store: beading.BeadStore = .empty();
+    var cat: tc.Catalog = .empty();
+    try seed(&cat, &store);
+    var buf: [max_list_env]u8 = undefined;
+    const n = try render_list(&cat, buf[0..]);
+    var list: ResourceList = undefined;
+    try parse_list(buf[0..n], &list);
+    // Every advertised URI truly reads through rung one, at the length it promised.
+    try verify_list(&list, &cat, &store);
+    print("mcp_resource_list: every listed URI reads through resources/read at its published length\n", .{});
+}
+
+fn unwelcome_tampered_store_breaks_honesty() !void {
+    // If the store is tampered after the list is published, verify catches it — a URI that
+    // no longer reads breaks the list's honesty rather than passing silently.
+    var store: beading.BeadStore = .empty();
+    var cat: tc.Catalog = .empty();
+    try seed(&cat, &store);
+    var buf: [max_list_env]u8 = undefined;
+    const n = try render_list(&cat, buf[0..]);
+    var list: ResourceList = undefined;
+    try parse_list(buf[0..n], &list);
+    store.beads[0].bytes[0] +%= 1; // flip one byte of a held bead
+    if (verify_list(&list, &cat, &store)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.NotHonest);
+    }
+    print("mcp_resource_list: a tampered store breaks the list's honesty (NotHonest)\n", .{});
+}
+
+fn unwelcome_unknown_field_refuses() !void {
+    const src =
+        \\format mcp-resource-list-v1
+        \\resource tablecloth:notes.txt 36
+        \\color red
+    ;
+    var list: ResourceList = undefined;
+    if (parse_list(src, &list)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.UnknownField);
+    }
+    print("mcp_resource_list: an unknown list field refused (not silently ignored)\n", .{});
+}
+
+fn unwelcome_bad_format_refuses() !void {
+    const src =
+        \\format mcp-resource-list-v2
+        \\resource tablecloth:notes.txt 36
+    ;
+    var list: ResourceList = undefined;
+    if (parse_list(src, &list)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.BadFormat);
+    }
+    print("mcp_resource_list: a wrong list format header refused\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_list_round_trips();
+    try welcome_list_is_honest_index();
+    try unwelcome_tampered_store_breaks_honesty();
+    try unwelcome_unknown_field_refuses();
+    try unwelcome_bad_format_refuses();
+    print("mcp_resource_list {s} — GREEN\n", .{mcp_resource_list_version});
+    print("GREEN: BUHR-J10r2 mcp_resource_list; the catalog advertised as an honest MCP resource list.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest();
+    }
+    print("usage: mcp-resource-list selftest\n", .{});
+    return 1;
+}
