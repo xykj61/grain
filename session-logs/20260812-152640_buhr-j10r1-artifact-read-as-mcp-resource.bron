@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260812.152640
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR-J10r1 — a Tablecloth artifact read as an MCP resource
+prompt recur BUHR Lindy-first crux-first; approve own design rounds; send each increment as its own signed round; stop at custody gates
+think J10's crux, taken first: an MCP resources/read returns exactly the bytes whose digest the URI pins, a tampered store refusing.
+think Wrote pond/apps/mcp_resource.rye over public APIs only — tablecloth.fetch_artifact (verified) + tc.address_hex, plus mantra/beading only to tamper a bead in the selftest. Envelope idiom mirrors mcp_bron.rye (flat-Bron key value, unknown field refused, bounded).
+think A resource body may hold newlines, so the result shape is length-delimited: head fields parse line by line, the body is read exactly after the `\ncontent ` marker and checked against the published `len` — a body that belies its len refuses BodyLenMismatch. Proven by a two-line demo doc surviving the crossing with its interior newline.
+think The three named refusals ride the verified fetch: UnknownArtifact→resource_not_found, DigestMismatch→resource_tampered (the crux refusal — no corruption served), a non-tablecloth URI→bad_uri. Each a named MCP error, never a fabricated body.
+obs Built GREEN first try, all nine cases (3 welcomes + 6 unwelcomes). tame_style_check bans clean, width-check exit 0. Witness tools/buhr_mcp_resource_witness.rish GREEN and re-runs tablecloth (J7r1) as its own green binary.
+obs Additive by construction — no existing file changed; tablecloth stays untouched. Reads no network; the Comlink-served resource transport stays the held serve gate (Keaton's hand).
+loom witness=buhr_mcp_resource_witness cases=9 body_round_trip_bytes=36 multiline_body_bytes=49 digest_hex_width=64
+file pond/apps/mcp_resource.rye the resources/read bridge over Tablecloth's verified fetch
+file tools/buhr_mcp_resource_witness.rish the J10r1 witness — 9 cases + tablecloth re-run, GREEN
+recommend keep-going BUHR-J10r2 (horizon) — resources/list: the whole catalog as a bounded mcp-resource-list-v1 envelope, one resource line per artifact, round-tripped; mirrors tools/list for the noun half

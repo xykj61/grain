@@ -1,0 +1,463 @@
+//! pond/apps/mcp_resource.rye — BUHR Journey 10, Rung 1: artifacts served as MCP resources.
+//!
+//! The Model Context Protocol names two first-class surfaces. Journey 9 served the
+//! intelligence as the verb half — `tools/call` and `tools/list`. This rung serves the
+//! noun half — a resource a caller *reads*. A resource is named content addressed by a
+//! URI; `resources/read` returns its bytes. And the noun already has its module:
+//! Tablecloth (Journey 7) is a store of named, content-addressed artifacts, where a
+//! catalog is a resource list and an artifact is a resource.
+//!
+//! This bridge joins them. A `format mcp-resource-read-v1` request names a
+//! `tablecloth:<name>` URI; the read resolves through Tablecloth's own `fetch_artifact`,
+//! so it inherits the store's guarantee for free — every bead proves itself against its
+//! digest and the whole against its recorded content address before a byte is served.
+//! The crux: `resources/read` returns exactly the bytes whose digest the URI pins, and a
+//! tampered store refuses. Every refusal crosses the surface as a *named* MCP error, never
+//! a fabricated body — an unknown name is `resource_not_found`, a non-`tablecloth` URI is
+//! `bad_uri`, a tampered bead is `resource_tampered`. A `format mcp-resource-v1` result
+//! carries uri · digest · length · content, and a round-trip reader recovers uri and body.
+//!
+//! It invents no storage and no transport: it reads a URI, fetches through the verified
+//! path, and renders in an owned Bron shape kin to mcp_bron.rye. It reads no network — the
+//! real network fetch and the Comlink-served transport stay the held custody/serve gates.
+//!
+//!   rye build pond/apps/mcp_resource.rye -femit-bin=pond/bin/mcp-resource
+//!   pond/bin/mcp-resource selftest
+//!
+//! Scope: active-designing/20260812-151959_buhr-journey10-artifacts-served-as-mcp-resources-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const tc = @import("tablecloth.rye");
+const beading = @import("mantra/beading.rye");
+
+pub const mcp_resource_version = "20260812.151959";
+
+// The scheme every Tablecloth resource URI carries, named once.
+const uri_scheme = "tablecloth:";
+
+// The protocol's bounds, each named once and enforced at the edge.
+pub const max_uri: u32 = 64; // "tablecloth:" (11) + a name bounded by tc.max_name (48)
+pub const max_line: u32 = 128; // longest head line (a hex digest line is the widest)
+pub const max_content: u32 = tc.max_content_bytes; // an artifact's whole byte budget (512)
+// A rendered result envelope: the content body plus a bounded head (header, id, uri,
+// digest, len, and the `content ` marker never exceed 256 bytes together).
+pub const max_env: u32 = max_content + 256;
+
+pub const ResourceError = error{
+    BadFormat,
+    MissingField,
+    UnknownField,
+    UriTooLong,
+    LineTooLong,
+    BadInt,
+    BodyLenMismatch,
+    EnvTooLong,
+};
+
+/// A parsed read request: the request id and the resource URI it names.
+pub const ReadRequest = struct {
+    id: u32,
+    uri: []const u8,
+};
+
+/// Split a line into its first space-delimited token (the key) and the trimmed
+/// remainder (the value). The flat-Bron `key value` idiom the whole tree shares.
+fn key_val(line: []const u8) struct { key: []const u8, val: []const u8 } {
+    // invariant: the line respects the bounded head length
+    assert(line.len <= max_line);
+    var sp: usize = 0; // seam: slice index over a std source
+    while (sp < line.len and line[sp] != ' ') : (sp += 1) {}
+    const key = line[0..sp];
+    const val = std.mem.trim(u8, line[sp..], " \t");
+    return .{ .key = key, .val = val };
+}
+
+/// Parse a `format mcp-resource-read-v1` request into a bounded ReadRequest. The header
+/// must name the format exactly; `id` and `uri` are required; any other field key is
+/// refused rather than silently dropped.
+pub fn parse_read(src: []const u8, req: *ReadRequest) ResourceError!void {
+    // invariant: a request carries at least a header line
+    assert(src.len > 0);
+    // invariant: a request stays within a bounded envelope
+    assert(src.len <= max_line * 4);
+
+    var have_header = false;
+    var have_id = false;
+    var have_uri = false;
+
+    var lines = std.mem.splitScalar(u8, src, '\n');
+    while (lines.next()) |raw| {
+        const line = std.mem.trim(u8, raw, " \t\r");
+        if (line.len == 0 or line[0] == '#') continue;
+        if (line.len > max_line) return error.LineTooLong;
+        const kv = key_val(line);
+        if (std.mem.eql(u8, kv.key, "format")) {
+            if (!std.mem.eql(u8, kv.val, "mcp-resource-read-v1")) return error.BadFormat;
+            have_header = true;
+        } else if (std.mem.eql(u8, kv.key, "id")) {
+            req.id = std.fmt.parseInt(u32, kv.val, 10) catch return error.BadInt;
+            have_id = true;
+        } else if (std.mem.eql(u8, kv.key, "uri")) {
+            if (kv.val.len == 0 or kv.val.len > max_uri) return error.UriTooLong;
+            req.uri = kv.val;
+            have_uri = true;
+        } else {
+            // An unknown field is a protocol fault, never quietly ignored.
+            return error.UnknownField;
+        }
+    }
+    if (!have_header) return error.BadFormat;
+    if (!have_id) return error.MissingField;
+    if (!have_uri) return error.MissingField;
+}
+
+/// A parsed resource result — the id it answers and either a resource body or a named
+/// error, exactly one of the two. Proving parse(render(x)) recovers x is the crux
+/// property: the owned resource shape round-trips, content and all.
+pub const ResourceResult = struct {
+    id: u32,
+    uri: []const u8, // the resource URI, or empty when this is an error
+    digest: []const u8, // the content address (lowercase hex), or empty on error
+    body: []const u8, // the resource bytes, or empty on error
+    err_name: []const u8, // the named error, or empty when this is a resource
+    is_error: bool,
+};
+
+/// Render an error result envelope naming `err_name` for request `id`.
+fn render_error(id: u32, err_name: []const u8, out: []u8) ResourceError![]const u8 {
+    // invariant: the caller's buffer respects the envelope bound
+    assert(out.len <= max_env);
+    // invariant: a named error is present
+    assert(err_name.len > 0);
+    const s = std.fmt.bufPrint(out, "format mcp-resource-v1\nid {d}\nerror {s}\n", .{ id, err_name }) catch return error.EnvTooLong;
+    // seam: bufPrint returns a slice into out; it never exceeds the slice it wrote
+    assert(s.len <= out.len);
+    return s;
+}
+
+/// Read a resource by URI from a Tablecloth catalog+store and render the result envelope
+/// into `out`. A `tablecloth:<name>` URI resolves through the verified `fetch_artifact`,
+/// so a tampered bead answers `resource_tampered` (never corruption), an unknown name
+/// `resource_not_found`, and a URI outside the scheme `bad_uri` — each a named error, the
+/// bridge never inventing a body. On success the envelope carries uri · digest · len ·
+/// content, the content being exactly the verified bytes the address pins.
+pub fn read_resource(
+    cat: *const tc.Catalog,
+    store: *const beading.BeadStore,
+    req: *const ReadRequest,
+    out: []u8,
+) ResourceError![]const u8 {
+    // invariant: the caller's buffer respects the envelope bound
+    assert(out.len <= max_env);
+    // invariant: the request carries a bounded URI
+    assert(req.uri.len <= max_uri);
+
+    // A URI outside the tablecloth scheme is not a resource this store serves.
+    if (req.uri.len <= uri_scheme.len or !std.mem.startsWith(u8, req.uri, uri_scheme)) {
+        return render_error(req.id, "bad_uri", out);
+    }
+    const name = req.uri[uri_scheme.len..];
+
+    // Fetch through the verified path. Its refusals become named MCP errors.
+    var content: [max_content]u8 = undefined;
+    const n = tc.fetch_artifact(cat, store, name, content[0..]) catch |err| switch (err) {
+        error.UnknownArtifact => return render_error(req.id, "resource_not_found", out),
+        error.DigestMismatch => return render_error(req.id, "resource_tampered", out),
+        else => return render_error(req.id, "read_failed", out),
+    };
+    // invariant: a verified fetch returns within the content bound
+    assert(n <= max_content);
+
+    var hex: [tc.address_hex_width]u8 = undefined;
+    tc.address_hex(cat, name, hex[0..]) catch return render_error(req.id, "resource_not_found", out);
+
+    const s = std.fmt.bufPrint(out, "format mcp-resource-v1\nid {d}\nuri {s}\ndigest {s}\nlen {d}\ncontent {s}", .{
+        req.id, req.uri, hex[0..], n, content[0..n],
+    }) catch return error.EnvTooLong;
+    // invariant: the rendered envelope stays within the buffer
+    assert(s.len <= out.len);
+    return s;
+}
+
+/// Parse a `format mcp-resource-v1` envelope back into a ResourceResult — the reading
+/// sibling of `read_resource`, so a caller recovers uri and body from the wire bytes. The
+/// content is length-delimited by the `len` field (a resource body may hold newlines), so
+/// the head fields parse line by line and the body is read exactly after the `content `
+/// marker and checked against the published length.
+pub fn parse_result(src: []const u8, out: *ResourceResult) ResourceError!void {
+    // invariant: a result envelope carries at least a header
+    assert(src.len > 0);
+    // invariant: the source respects the envelope bound
+    assert(src.len <= max_env);
+
+    out.uri = "";
+    out.digest = "";
+    out.body = "";
+    out.err_name = "";
+    out.is_error = false;
+
+    const marker = "\ncontent ";
+    // The head is everything before the content marker (or the whole source on an error
+    // envelope, which carries no content). Split there so the body may hold newlines.
+    const split = std.mem.indexOf(u8, src, marker);
+    const head = if (split) |at| src[0..at] else src;
+
+    var have_header = false;
+    var have_id = false;
+    var have_body = false;
+    var published_len: u32 = 0;
+    var have_len = false;
+
+    var lines = std.mem.splitScalar(u8, head, '\n');
+    while (lines.next()) |raw| {
+        const line = std.mem.trim(u8, raw, " \t\r");
+        if (line.len == 0 or line[0] == '#') continue;
+        if (line.len > max_line) return error.LineTooLong;
+        const kv = key_val(line);
+        if (std.mem.eql(u8, kv.key, "format")) {
+            if (!std.mem.eql(u8, kv.val, "mcp-resource-v1")) return error.BadFormat;
+            have_header = true;
+        } else if (std.mem.eql(u8, kv.key, "id")) {
+            out.id = std.fmt.parseInt(u32, kv.val, 10) catch return error.BadInt;
+            have_id = true;
+        } else if (std.mem.eql(u8, kv.key, "uri")) {
+            out.uri = kv.val;
+        } else if (std.mem.eql(u8, kv.key, "digest")) {
+            out.digest = kv.val;
+        } else if (std.mem.eql(u8, kv.key, "len")) {
+            published_len = std.fmt.parseInt(u32, kv.val, 10) catch return error.BadInt;
+            have_len = true;
+        } else if (std.mem.eql(u8, kv.key, "error")) {
+            out.err_name = kv.val;
+            out.is_error = true;
+            have_body = true;
+        } else {
+            return error.UnknownField;
+        }
+    }
+
+    if (split) |at| {
+        // A resource envelope: the body is exactly the bytes after the marker, and its
+        // length must equal the published len — the read cannot claim a length it did not
+        // serve, so a truncated or padded body refuses.
+        if (!have_len) return error.MissingField;
+        const body = src[at + marker.len ..];
+        if (body.len != published_len) return error.BodyLenMismatch;
+        out.body = body;
+        out.is_error = false;
+        have_body = true;
+    }
+
+    if (!have_header) return error.BadFormat;
+    if (!have_id) return error.MissingField;
+    if (!have_body) return error.MissingField;
+}
+
+// Two demonstration artifacts — plain, single-line and multi-line, so the round-trip
+// proves a body with an interior newline survives the length-delimited crossing.
+const doc_one = "linen holds the warp, hemp the weft.";
+const doc_two = "ramie brightens the border\nwhere the light lands.";
+
+fn seed(cat: *tc.Catalog, store: *beading.BeadStore) !void {
+    _ = try tc.store_artifact(cat, store, "notes.txt", doc_one);
+    _ = try tc.store_artifact(cat, store, "site.md", doc_two);
+}
+
+fn welcome_read_round_trips() !void {
+    var store: beading.BeadStore = .empty();
+    var cat: tc.Catalog = .empty();
+    try seed(&cat, &store);
+
+    const req_src =
+        \\format mcp-resource-read-v1
+        \\id 7
+        \\uri tablecloth:notes.txt
+    ;
+    var req: ReadRequest = undefined;
+    try parse_read(req_src, &req);
+    assert(req.id == 7);
+
+    var buf: [max_env]u8 = undefined;
+    const rendered = try read_resource(&cat, &store, &req, &buf);
+
+    // The crux property — parse the rendered result back and recover uri and body.
+    var res: ResourceResult = undefined;
+    try parse_result(rendered, &res);
+    assert(res.id == 7);
+    assert(!res.is_error);
+    assert(std.mem.eql(u8, res.uri, "tablecloth:notes.txt"));
+    assert(std.mem.eql(u8, res.body, doc_one));
+    assert(res.digest.len == tc.address_hex_width);
+    print("mcp_resource: resources/read round-trips — tablecloth:notes.txt -> {d} bytes recovered\n", .{res.body.len});
+}
+
+fn welcome_multiline_body_survives() !void {
+    var store: beading.BeadStore = .empty();
+    var cat: tc.Catalog = .empty();
+    try seed(&cat, &store);
+
+    const req_src =
+        \\format mcp-resource-read-v1
+        \\id 8
+        \\uri tablecloth:site.md
+    ;
+    var req: ReadRequest = undefined;
+    try parse_read(req_src, &req);
+    var buf: [max_env]u8 = undefined;
+    const rendered = try read_resource(&cat, &store, &req, &buf);
+    var res: ResourceResult = undefined;
+    try parse_result(rendered, &res);
+    // The length-delimited body keeps its interior newline across the crossing.
+    assert(std.mem.eql(u8, res.body, doc_two));
+    assert(std.mem.indexOfScalar(u8, res.body, '\n') != null);
+    print("mcp_resource: a multi-line resource body survives the length-delimited crossing\n", .{});
+}
+
+fn welcome_digest_pins_the_bytes() !void {
+    var store: beading.BeadStore = .empty();
+    var cat: tc.Catalog = .empty();
+    try seed(&cat, &store);
+    const req_src =
+        \\format mcp-resource-read-v1
+        \\id 9
+        \\uri tablecloth:notes.txt
+    ;
+    var req: ReadRequest = undefined;
+    try parse_read(req_src, &req);
+    var buf: [max_env]u8 = undefined;
+    const rendered = try read_resource(&cat, &store, &req, &buf);
+    var res: ResourceResult = undefined;
+    try parse_result(rendered, &res);
+    // The digest the envelope publishes is exactly the address Tablecloth recorded.
+    var hex: [tc.address_hex_width]u8 = undefined;
+    try tc.address_hex(&cat, "notes.txt", hex[0..]);
+    assert(std.mem.eql(u8, res.digest, hex[0..]));
+    print("mcp_resource: the published digest equals the address the store recorded\n", .{});
+}
+
+fn unwelcome_tampered_store_refuses() !void {
+    // The crux refusal — a tampered bead crosses back as resource_tampered, the read
+    // answering nothing rather than serving corruption.
+    var store: beading.BeadStore = .empty();
+    var cat: tc.Catalog = .empty();
+    _ = try tc.store_artifact(&cat, &store, "notes.txt", doc_one);
+    store.beads[0].bytes[0] +%= 1; // flip one byte of a held bead
+
+    const req_src =
+        \\format mcp-resource-read-v1
+        \\id 1
+        \\uri tablecloth:notes.txt
+    ;
+    var req: ReadRequest = undefined;
+    try parse_read(req_src, &req);
+    var buf: [max_env]u8 = undefined;
+    const rendered = try read_resource(&cat, &store, &req, &buf);
+    assert(std.mem.eql(u8, rendered, "format mcp-resource-v1\nid 1\nerror resource_tampered\n"));
+    print("mcp_resource: a tampered store answered resource_tampered (no corruption served)\n", .{});
+}
+
+fn unwelcome_unknown_name_refuses() !void {
+    var store: beading.BeadStore = .empty();
+    var cat: tc.Catalog = .empty();
+    try seed(&cat, &store);
+    const req_src =
+        \\format mcp-resource-read-v1
+        \\id 2
+        \\uri tablecloth:absent.txt
+    ;
+    var req: ReadRequest = undefined;
+    try parse_read(req_src, &req);
+    var buf: [max_env]u8 = undefined;
+    const rendered = try read_resource(&cat, &store, &req, &buf);
+    assert(std.mem.eql(u8, rendered, "format mcp-resource-v1\nid 2\nerror resource_not_found\n"));
+    print("mcp_resource: an unknown resource name answered resource_not_found\n", .{});
+}
+
+fn unwelcome_bad_uri_refuses() !void {
+    var store: beading.BeadStore = .empty();
+    var cat: tc.Catalog = .empty();
+    try seed(&cat, &store);
+    const req_src =
+        \\format mcp-resource-read-v1
+        \\id 3
+        \\uri https://example/notes.txt
+    ;
+    var req: ReadRequest = undefined;
+    try parse_read(req_src, &req);
+    var buf: [max_env]u8 = undefined;
+    const rendered = try read_resource(&cat, &store, &req, &buf);
+    // A URI outside the store's own scheme is not a resource it serves.
+    assert(std.mem.eql(u8, rendered, "format mcp-resource-v1\nid 3\nerror bad_uri\n"));
+    print("mcp_resource: a non-tablecloth URI answered bad_uri\n", .{});
+}
+
+fn unwelcome_unknown_field_refuses() !void {
+    const src =
+        \\format mcp-resource-read-v1
+        \\id 4
+        \\uri tablecloth:notes.txt
+        \\color red
+    ;
+    var req: ReadRequest = undefined;
+    if (parse_read(src, &req)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.UnknownField);
+    }
+    print("mcp_resource: an unknown request field refused (not silently ignored)\n", .{});
+}
+
+fn unwelcome_bad_format_refuses() !void {
+    const src =
+        \\format mcp-resource-read-v2
+        \\id 5
+        \\uri tablecloth:notes.txt
+    ;
+    var req: ReadRequest = undefined;
+    if (parse_read(src, &req)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.BadFormat);
+    }
+    print("mcp_resource: a wrong request format header refused\n", .{});
+}
+
+fn unwelcome_body_len_mismatch_refuses() !void {
+    // A result claiming a length its body does not match refuses — the read cannot
+    // publish a length it did not serve.
+    const src = "format mcp-resource-v1\nid 6\nuri tablecloth:x\ndigest ff\nlen 99\ncontent short";
+    var res: ResourceResult = undefined;
+    if (parse_result(src, &res)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.BodyLenMismatch);
+    }
+    print("mcp_resource: a body whose length belies its len field refused\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_read_round_trips();
+    try welcome_multiline_body_survives();
+    try welcome_digest_pins_the_bytes();
+    try unwelcome_tampered_store_refuses();
+    try unwelcome_unknown_name_refuses();
+    try unwelcome_bad_uri_refuses();
+    try unwelcome_unknown_field_refuses();
+    try unwelcome_bad_format_refuses();
+    try unwelcome_body_len_mismatch_refuses();
+    print("mcp_resource {s} — GREEN\n", .{mcp_resource_version});
+    print("GREEN: BUHR-J10r1 mcp_resource; resources/read returns the bytes the URI pins, a tampered store refusing.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest();
+    }
+    print("usage: mcp-resource selftest\n", .{});
+    return 1;
+}

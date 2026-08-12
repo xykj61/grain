@@ -1,0 +1,46 @@
+# tools/buhr_mcp_resource_witness.rish — BUHR Journey 10, Rung 1: artifacts served as MCP resources.
+#
+# The Model Context Protocol names two first-class surfaces: tools — a verb a caller invokes
+# (Journey 9) — and resources — a noun a caller reads. This rung serves the noun half over
+# Tablecloth, the store of named content-addressed artifacts. A `format mcp-resource-read-v1`
+# request naming a `tablecloth:<name>` URI resolves through Tablecloth's own verified
+# `fetch_artifact`, so the crux holds for free: resources/read returns exactly the bytes whose
+# digest the URI pins, and a tampered store crosses back as a named MCP error (resource_tampered)
+# rather than serving corruption. An unknown name answers resource_not_found, a non-tablecloth
+# URI bad_uri, a round-trip reader recovers uri and a length-delimited (possibly multi-line)
+# body. It reads no network — the real fetch and the Comlink-served transport stay the gates.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/buhr_mcp_resource_witness.rish
+
+say "buhr10r1: Language EN — Tablecloth artifacts served as MCP resources; resources/read over the verified fetch."
+say "buhr10r1: Lens TAME — content-address integrity travels onto the resource surface; a tampered store refuses."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/mcp-resource"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mcp_resource.rye -femit-bin=${bin}"]
+assert build.ok else "buhr10r1: mcp_resource build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "buhr10r1: mcp_resource selftest exited non-zero"
+assert selftest.out contains "GREEN" else "buhr10r1: selftest did not speak GREEN"
+assert selftest.out contains "resources/read round-trips" else "buhr10r1: the read round-trip is missing"
+assert selftest.out contains "multi-line resource body survives" else "buhr10r1: the length-delimited body proof is missing"
+assert selftest.out contains "published digest equals the address the store recorded" else "buhr10r1: the digest-pins-bytes proof is missing"
+assert selftest.out contains "resource_tampered" else "buhr10r1: the crux tamper refusal is missing"
+assert selftest.out contains "resource_not_found" else "buhr10r1: the unknown-name refusal is missing"
+assert selftest.out contains "bad_uri" else "buhr10r1: the bad-uri refusal is missing"
+assert selftest.out contains "unknown request field refused" else "buhr10r1: the unknown-field refusal is missing"
+assert selftest.out contains "body whose length belies its len field refused" else "buhr10r1: the body-length refusal is missing"
+
+# Tablecloth (J7r1) — the store this rung reads through — stays its own green binary; this rung
+# calls only its public API (fetch_artifact, address_hex, store_artifact).
+let tcl_bin = "pond/bin/tablecloth"
+let tcl_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/tablecloth.rye -femit-bin=${tcl_bin}"]
+assert tcl_build.ok else "buhr10r1: tablecloth (J7r1) re-build failed"
+let tcl_selftest = run ["sh" "-c" "${tcl_bin} selftest 2>&1"]
+assert tcl_selftest.ok else "buhr10r1: tablecloth (J7r1) selftest exited non-zero"
+assert tcl_selftest.out contains "GREEN" else "buhr10r1: tablecloth (J7r1) did not speak GREEN"
+
+say "buhr10r1: GREEN — a Tablecloth artifact reads as an MCP resource; the URI's digest pins the bytes, a tampered store refusing."
