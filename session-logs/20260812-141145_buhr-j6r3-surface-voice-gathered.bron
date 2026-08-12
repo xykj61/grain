@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260812.141145
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR Journey 6, Rung 3 — the surface voice, gathered under the Q-vane host
+prompt Autonomous recur: continue Lindy-first crux-first after J6r2; send each increment; STOP at custody gates
+think After J6r1 (read the graph) and J6r2 (track a live edit), the highest-Lindy remaining move is to gather the surface-reading voice into the Q-vane host itself — so arithmetic, reading, corpus, and the living graph all answer under one bounded dispatch. That is the equinox thesis (Surface & Intelligence) realized at the host level.
+think Weighed the Scribble-fold rung (outline the rendered graph text) — Scribble parses markdown and the browser's render is not markdown, so a faithful fold would need a new markdown render on the browser; more surface, less clean. Deferred it as a later rung. The dispatch integration is cleaner, higher-Lindy, and additive over existing public APIs.
+think Kept the tree's rung discipline: created a NEW app (quin_host_graph.rye) that WRAPS quin_host.dispatch unchanged rather than editing Journey 1's landed host. dispatch tries the three-voice host first; on UnknownOp falls through to graph_query.answer, tagging the graph voice; any other error surfaces at once. A `lift` maps the three-voice host's Voice into the wider four-voice set.
+obs Additive proof carried by the witness: the three voices still route (Lattice/Scribble/Ember unchanged), the graph voice joins (lane_count->3, head->r2, summary length-metered), a disallowed model surfaces at once (no fall-through), an unknown prompt refuses. quin_host stays its own green binary.
+obs TAME kept: opening triad, ≥2 asserts/fn with positive invariants, snake_case, named errors, no @memcpy, bounded buffers, exhaustive switch in `lift`. BUHR Journey 6's core arc (read · track-a-live-edit · gathered-under-host) now stands.
+loom witness=buhr_quin_host_graph_witness green=1 welcomes=6 unwelcomes=2 host_rerun=1
+file pond/apps/quin_host_graph.rye the rung — wraps quin_host, adds the graph voice as the fourth dispatched voice
+file tools/buhr_quin_host_graph_witness.rish proves four-voice dispatch, the three still route, graph joins, faults surface; quin_host re-runs GREEN
+file work-in-progress/REMEMBER.md BUHR-J6r3 landed note + git nib in the same work commit
+recommend keep-going a Scribble fold of a markdown render of the graph (own rung), a fresh BUHR journey/surface, or check-in if Keaton wants to steer the equinox
