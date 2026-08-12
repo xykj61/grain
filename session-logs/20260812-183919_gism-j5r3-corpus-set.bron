@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260812.183919
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title GISM-J5r3 — the reading voice reads a real corpus set
+prompt Read REMEMBER + the 1024-round itinerary; take the next agent-doable lap Lindy-first crux-first, approve own design rounds, double-seat visions, send each increment, STOP at custody gates
+think REMEMBER named the next agent-doable crux plainly — GISM-J5r3, a corpus set (a manifest of embedded corpora), bounds proven against the largest real member — the first journey of Season 2 (Yield) already open, r1/r2 landed.
+think Studied the two landed rungs: corpus_real.rye (Scribble over one embedded TAME_CORE.md, red #72 raised max_block_text 512 to 2048) and corpus_real_ember.rye (Ember over a derived catalog, sum cross-checked by wc), plus reading_query's public answer_over as the shared bounded reader.
+think Chose the set as the tree's own writing as a body — five real front-door / discipline docs each under Scribble's 8192-byte whole-document bound: TAME_CORE, TWO_ROOMS, CODE_OF_CONDUCT, SECURITY, CHANGELOG. Measured headings (all <=7) and largest blocks (max ~1327 B) before writing — every raised bound holds with headroom, so no fresh Yield red this round (like r2).
+think Wrote corpus_set.rye: measure(doc) folds each member against every Scribble bound; set_extremes() takes the max on each axis; the crux welcome proves the extreme fits every bound and that the set's largest block exceeds the old 512-byte bound (a real body, not a toy). Each member reads its own outline anchored to its real first heading, so no member borrows another's answer.
+think Reused reading_query.answer_over over each embedded member and Scribble's parse_markdown/extract_headings — additive, the demo over pinned_doc stays its own GREEN binary.
+obs Rishi's run-string handling bit twice: it interpolates bare $name (so awk $2 threw UndefinedName) and keeps '\\' literal (so sed backrefs \\2 emitted literal text). Closed by having the app print a machine line 'largest_wc <bytes> <path>' in wc -c's native order and comparing with a backref-free, var-free sed — the largest-by-bytes member (TWO_ROOMS.md 6079 B) cross-checks against an independent wc -c.
+loom witness=gism_j5_corpus_set_witness members=5 largest_bytes=6079 max_block_text=1327 max_headings=7 reds=0
+file pond/apps/corpus_set.rye the corpus-set reader — five real embedded docs, every Scribble bound proven against the largest member
+file tools/gism_j5_corpus_set_witness.rish witness — five member readings GREEN, bounds-against-largest crux, wc -c cross-check, demo reading still GREEN
+file pond/apps/corpora/two_rooms.md symlink to context/TWO_ROOMS.md — real corpus member
+file pond/apps/corpora/code_of_conduct.md symlink to CODE_OF_CONDUCT.md — real corpus member
+file pond/apps/corpora/security.md symlink to SECURITY.md — real corpus member
+file pond/apps/corpora/changelog.md symlink to CHANGELOG.md — real corpus member
+file work-in-progress/REMEMBER.md living card — GISM-J5r3 landed row + git nib
+recommend keep-going GISM-J5r4 — the reading is true to the bytes (a witness that a voice's reported outline/counts match the real document), the journey's closing crux

@@ -1,0 +1,263 @@
+//! pond/apps/corpus_set.rye — GISM Journey 5 (Real corpora), Rung 3.
+//!
+//! Season 2, Yield: every module the tree built stands on real data. Rung one read
+//! one real document; this rung reads a **set** — the tree's own writing as a body,
+//! not one lucky file. Five real front-door / discipline documents stand as the
+//! corpus, each embedded at compile time through a symlink in pond/apps/corpora/
+//! (no network, no runtime filesystem — the @embedFile idiom already lived-with):
+//! context/TAME_CORE.md · context/TWO_ROOMS.md · CODE_OF_CONDUCT.md · SECURITY.md ·
+//! CHANGELOG.md. The reading voice (Scribble, through reading_query's Lantern
+//! contract) reads each member's outline for real — the same code path rung one ran
+//! over a single file, now run over the whole body.
+//!
+//! The crux is **the bounds proven against the largest real member**. Each Scribble
+//! bound (whole-document bytes · block count · block text · heading count) is stressed
+//! most by whichever member is extreme on that axis; the set is proven by proving its
+//! extreme. The set's largest single block measures ~1312 B — past the 512-byte bound
+//! the demo literals were tuned to fit, and inside the 2048-byte bound Yield red #72
+//! raised in rung one — so this set genuinely exercises the raised bound, not a toy.
+//!
+//! No Yield red surfaced this round: every real member fits every raised bound with
+//! headroom (like rung two). Had any member exceeded a bound, parse_markdown would
+//! refuse (BlockOverflow / BlockTooLarge) and the build would red — the honest Yield
+//! signal that the bound needs raising, booked before the next durable round.
+//!
+//! Additive by construction: it reuses reading_query's public answer_over over each
+//! embedded member and Scribble's public parse_markdown / extract_headings to measure
+//! them; reading_query's demo over pinned_doc stays its own GREEN binary.
+//!
+//!   rye build pond/apps/corpus_set.rye -femit-bin=pond/bin/corpus-set
+//!   pond/bin/corpus-set selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lc = @import("lantern/lantern_core.rye");
+const sc = @import("scribble/scribble_core.rye");
+const rq = @import("reading_query.rye");
+
+const corpus_set_version = "20260812.183500";
+
+// The real corpus set — symlinks to living tree documents. Compile-time embedding
+// gives real bytes with a demo's determinism: the same body every build.
+const f_tame = @embedFile("corpora/tame_core.md");
+const f_rooms = @embedFile("corpora/two_rooms.md");
+const f_coc = @embedFile("corpora/code_of_conduct.md");
+const f_sec = @embedFile("corpora/security.md");
+const f_log = @embedFile("corpora/changelog.md");
+
+// A set member: the real tree path, the embedded bytes, and the leading text of the
+// document's first heading — the anchor that binds this member's reading to its own
+// real content (never a shared literal).
+const Doc = struct {
+    path: []const u8,
+    bytes: []const u8,
+    lead: []const u8,
+};
+
+const set = [_]Doc{
+    .{ .path = "context/TAME_CORE.md", .bytes = f_tame, .lead = "TAME Core" },
+    .{ .path = "context/TWO_ROOMS.md", .bytes = f_rooms, .lead = "Two Rooms" },
+    .{ .path = "CODE_OF_CONDUCT.md", .bytes = f_coc, .lead = "Code of Conduct" },
+    .{ .path = "SECURITY.md", .bytes = f_sec, .lead = "Security" },
+    .{ .path = "CHANGELOG.md", .bytes = f_log, .lead = "Changelog" },
+};
+
+// The corpus set never exceeds this — a bounded body, far inside a reader's budget.
+const max_set: u32 = 8;
+
+// The old block-text bound the demo literals were tuned to fit, before Yield red #72
+// raised it in rung one. Named only to prove the set's extreme exceeds it (a real
+// body, not a toy) — never a live limit.
+const old_max_block_text: u32 = 512;
+
+const allow_line = "model_hash sha3-256-rye-forge-lap0";
+
+// What a single real member costs against each Scribble bound.
+const Stats = struct {
+    doc_bytes: u32,
+    blocks: u32,
+    largest_block: u32,
+    headings: u32,
+};
+
+/// Measure one real member against every Scribble bound. A member that overran a
+/// bound would refuse here (the Yield red the journey exists to surface); a member
+/// that fits returns its honest cost.
+fn measure(doc: []const u8) sc.ParseError!Stats {
+    // invariant: the member fits Scribble's whole-document bound before we parse it
+    assert(doc.len <= sc.max_doc_bytes);
+    // invariant: a real corpus member carries at least one byte
+    assert(doc.len > 0);
+
+    var blocks: [sc.max_blocks]sc.Block = undefined;
+    const block_count = try sc.parse_markdown(doc, &blocks);
+    // invariant: the parse stays inside Scribble's block budget
+    assert(block_count <= sc.max_blocks);
+
+    var largest: u32 = 0;
+    var i: u32 = 0;
+    // invariant: the scan walks no further than the parsed blocks
+    assert(block_count <= sc.max_blocks);
+    while (i < block_count) : (i += 1) {
+        const len: u32 = @intCast(blocks[i].text_slice().len);
+        if (len > largest) largest = len;
+    }
+
+    var headings: [sc.max_headings]sc.Heading = undefined;
+    const heading_count = try sc.extract_headings(blocks[0..block_count], &headings);
+    // invariant: the outline stays inside Scribble's heading budget
+    assert(heading_count <= sc.max_headings);
+
+    return .{
+        .doc_bytes = @intCast(doc.len),
+        .blocks = block_count,
+        .largest_block = largest,
+        .headings = heading_count,
+    };
+}
+
+/// The extreme cost across the whole set — the largest member on each axis. Proving
+/// the extreme fits every bound proves every member does.
+const Extremes = struct {
+    max_bytes: u32,
+    max_bytes_path: []const u8,
+    max_blocks: u32,
+    max_block_text: u32,
+    max_headings: u32,
+};
+
+/// Fold every member's cost into the set's extreme on each bound.
+fn set_extremes() sc.ParseError!Extremes {
+    // invariant: the set is a body, not one lucky file
+    assert(set.len > 1);
+    // invariant: the set honors its own bounded size
+    assert(set.len <= max_set);
+
+    var ex = Extremes{
+        .max_bytes = 0,
+        .max_bytes_path = set[0].path,
+        .max_blocks = 0,
+        .max_block_text = 0,
+        .max_headings = 0,
+    };
+    var m: u32 = 0;
+    // invariant: the fold is bounded by the fixed set size
+    assert(set.len <= max_set);
+    while (m < set.len) : (m += 1) {
+        const s = try measure(set[m].bytes);
+        if (s.doc_bytes > ex.max_bytes) {
+            ex.max_bytes = s.doc_bytes;
+            ex.max_bytes_path = set[m].path;
+        }
+        if (s.blocks > ex.max_blocks) ex.max_blocks = s.blocks;
+        if (s.largest_block > ex.max_block_text) ex.max_block_text = s.largest_block;
+        if (s.headings > ex.max_headings) ex.max_headings = s.headings;
+    }
+    return ex;
+}
+
+/// Every member reads its own outline — the whole body read, not one file. Each
+/// member's reading is anchored to its real first heading, so no member borrows
+/// another's answer.
+fn welcome_every_member_reads() !void {
+    var m: u32 = 0;
+    // invariant: the loop is bounded by the fixed set size
+    assert(set.len <= max_set);
+    // invariant: a body of more than one document
+    assert(set.len > 1);
+    while (m < set.len) : (m += 1) {
+        const member = set[m];
+        var buf: [lc.max_completion_len]u8 = undefined;
+        const req = lc.Request{
+            .model_hash = "sha3-256-rye-forge-lap0",
+            .prompt = "outline the corpus",
+            .max_tokens = 64,
+        };
+        const resp = try rq.answer_over(req, member.bytes, allow_line, &buf);
+        // invariant: the member's outline opens on its own real first heading
+        assert(std.mem.startsWith(u8, resp.text, member.lead));
+        // invariant: a real document's outline names at least one heading
+        assert(resp.tokens_out > 0);
+        assert(resp.stopped_reason == .eos);
+        print("corpus_set: {s} — outline '{s}' eos\n", .{ member.path, resp.text });
+    }
+}
+
+/// The crux: every Scribble bound proven against the largest real member of the set.
+/// The extreme on each axis fits with headroom, and the set's largest single block
+/// exceeds the old 512-byte bound — so the body genuinely exercises the raised bound.
+fn welcome_bounds_hold_against_largest() !void {
+    const ex = try set_extremes();
+
+    // invariant: the largest member fits Scribble's whole-document bound
+    assert(ex.max_bytes <= sc.max_doc_bytes);
+    assert(ex.max_bytes > 0);
+    // invariant: the block-heaviest member fits Scribble's block budget
+    assert(ex.max_blocks <= sc.max_blocks);
+    // invariant: the largest single block fits the raised block-text bound
+    assert(ex.max_block_text <= sc.max_block_text);
+    // invariant: the outline-heaviest member fits Scribble's heading budget
+    assert(ex.max_headings <= sc.max_headings);
+    // invariant: the set's extreme block exceeds the old bound — a real body, not a toy
+    assert(ex.max_block_text > old_max_block_text);
+
+    print("corpus_set: bounds hold — largest by bytes {s} {d}/{d}, blocks {d}/{d}, block_text {d}/{d} (old {d}), headings {d}/{d}\n", .{
+        ex.max_bytes_path,   ex.max_bytes,       sc.max_doc_bytes,
+        ex.max_blocks,       sc.max_blocks,      ex.max_block_text,
+        sc.max_block_text,   old_max_block_text, ex.max_headings,
+        sc.max_headings,
+    });
+    // A machine line in `wc -c`'s own native order (bytes then path), so an
+    // independent `wc -c` over the real files can be compared to it as-is.
+    print("corpus_set: largest_wc {d} {s}\n", .{ ex.max_bytes, ex.max_bytes_path });
+}
+
+/// The allow-list gates the model over the set exactly as over one file.
+fn unwelcome_model_not_allowed() !void {
+    var buf: [lc.max_completion_len]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-not-on-list",
+        .prompt = "outline the corpus",
+        .max_tokens = 64,
+    };
+    if (rq.answer_over(req, set[0].bytes, allow_line, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        // invariant: an off-list model is refused before any reading
+        assert(err == error.ModelNotAllowed);
+    }
+    print("corpus_set: model not allowed refused\n", .{});
+}
+
+/// An unrecognized operation refuses over the set — no fake answer.
+fn unwelcome_unknown_op() !void {
+    var buf: [lc.max_completion_len]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "rank the corpus",
+        .max_tokens = 64,
+    };
+    if (rq.answer_over(req, set[0].bytes, allow_line, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        // invariant: an unknown op refuses rather than inventing a reading
+        assert(err == error.UnknownOp);
+    }
+    print("corpus_set: unknown op refused (no fake answer)\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_every_member_reads();
+        try welcome_bounds_hold_against_largest();
+        try unwelcome_model_not_allowed();
+        try unwelcome_unknown_op();
+        print("corpus_set {s} — GREEN\n", .{corpus_set_version});
+        return 0;
+    }
+    print("usage: corpus-set selftest\n", .{});
+    return 1;
+}
