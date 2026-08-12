@@ -1,0 +1,361 @@
+//! pond/apps/mantra_browser.rye — BUHR Journey 2, Rung 1: the first Realidream app.
+//!
+//! Realidream is the unified editor-browser surface where a person reads history and
+//! writes the program over one graph. Its face is far horizon; its substrate is real
+//! and landed this season — Mantra for the append-only namespace, Tally for bounds,
+//! Skate for paint. This rung authors the first Realidream-branded Pond app: a
+//! Mantra *browser* that reads a BoltCatalog and renders its append-only log as a
+//! readable revision graph. No new abstraction — it composes over Mantra's public
+//! catalog API only, exactly as Journey 1 composed the voices over their contracts.
+//!
+//! The graph is the append-only truth made legible: under each peer/bolt, each path
+//! is a lane, and each lane's revisions chain r1 -> r2 -> r3, every node carrying a
+//! short content digest. History accretes and never rewrites, so the graph is
+//! deterministic — the same catalog renders the same bytes for all time.
+//!
+//! The styled Skate surface (WADE1's token cascade over this same graph) is the named
+//! horizon for a later rung; this rung proves the reading is true and bounded first.
+//!
+//!   rye build pond/apps/mantra_browser.rye -femit-bin=pond/bin/mantra-browser
+//!   pond/bin/mantra-browser selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const mn = @import("mantra/recall_lap1.rye");
+
+const mantra_browser_version = "20260812.150800";
+
+// The rendered graph is bounded like everything else in the tree. A catalog holds
+// at most mn.max_bindings leaves, each contributing a lane header and a revision
+// node; this budget comfortably holds the whole append-only log rendered readable.
+pub const max_render_bytes: u32 = 4096;
+
+// A short digest prefix per node — enough to recognize a resin at a glance without
+// spending the lane's whole width on 64 hex characters.
+const digest_prefix_len: u32 = 8;
+
+pub const RenderError = error{
+    RenderTooLong,
+};
+
+/// The peer/bolt/path slices of a leaf, read from its fixed arrays. A view only —
+/// it borrows the leaf's own bytes and never copies them.
+fn leaf_peer(leaf: *const mn.LeafBinding) []const u8 {
+    // invariant: the recorded length never exceeds the peer array
+    assert(leaf.peer_len <= leaf.peer.len);
+    // invariant: a bound peer names at least one byte
+    assert(leaf.peer_len > 0);
+    return leaf.peer[0..leaf.peer_len];
+}
+
+fn leaf_bolt(leaf: *const mn.LeafBinding) []const u8 {
+    // invariant: the recorded length never exceeds the bolt array
+    assert(leaf.bolt_len <= leaf.bolt.len);
+    // invariant: a bound bolt names at least one byte
+    assert(leaf.bolt_len > 0);
+    return leaf.bolt[0..leaf.bolt_len];
+}
+
+fn leaf_path(leaf: *const mn.LeafBinding) []const u8 {
+    // invariant: the recorded length never exceeds the path array
+    assert(leaf.path_len <= leaf.path.len);
+    // invariant: a bound path names at least one byte
+    assert(leaf.path_len > 0);
+    return leaf.path[0..leaf.path_len];
+}
+
+/// True when two leaves sit under the same peer/bolt — the coarse grouping of the
+/// graph, one header per distinct bolt.
+fn same_bolt(a: *const mn.LeafBinding, b: *const mn.LeafBinding) bool {
+    // invariant: both leaves carry a bound peer
+    assert(a.peer_len > 0);
+    assert(b.peer_len > 0);
+    // invariant: both leaves carry a bound bolt
+    assert(a.bolt_len > 0);
+    assert(b.bolt_len > 0);
+    return std.mem.eql(u8, leaf_peer(a), leaf_peer(b)) and std.mem.eql(u8, leaf_bolt(a), leaf_bolt(b));
+}
+
+/// True when two leaves sit on the same lane — the same peer/bolt *and* path, the
+/// revisions of which chain together in the graph.
+fn same_lane(a: *const mn.LeafBinding, b: *const mn.LeafBinding) bool {
+    // invariant: same-lane is a refinement of same-bolt
+    assert(a.path_len > 0);
+    assert(b.path_len > 0);
+    // invariant: both leaves carry a bound path
+    assert(a.path_len <= a.path.len);
+    assert(b.path_len <= b.path.len);
+    return same_bolt(a, b) and std.mem.eql(u8, leaf_path(a), leaf_path(b));
+}
+
+/// Count distinct peer/bolt groups in the catalog — one header per bolt in the
+/// rendered graph. A leaf counts when no earlier leaf shares its bolt.
+pub fn bolt_count(catalog: *const mn.BoltCatalog) u32 {
+    // invariant: the catalog respects Mantra's binding budget
+    assert(catalog.leaf_count <= mn.max_bindings);
+    var count: u32 = 0;
+    var i: u32 = 0;
+    while (i < catalog.leaf_count) : (i += 1) {
+        var seen = false;
+        var j: u32 = 0;
+        // invariant: the back-scan never passes the current leaf
+        assert(i <= catalog.leaf_count);
+        while (j < i) : (j += 1) {
+            if (same_bolt(&catalog.leaves[i], &catalog.leaves[j])) {
+                seen = true;
+                break;
+            }
+        }
+        if (!seen) count += 1;
+    }
+    // invariant: distinct bolts never outnumber leaves
+    assert(count <= catalog.leaf_count);
+    return count;
+}
+
+/// Count distinct lanes (peer/bolt/path) in the catalog — one lane line per path.
+pub fn lane_count(catalog: *const mn.BoltCatalog) u32 {
+    // invariant: the catalog respects Mantra's binding budget
+    assert(catalog.leaf_count <= mn.max_bindings);
+    var count: u32 = 0;
+    var i: u32 = 0;
+    while (i < catalog.leaf_count) : (i += 1) {
+        var seen = false;
+        var j: u32 = 0;
+        // invariant: the back-scan never passes the current leaf
+        assert(i <= catalog.leaf_count);
+        while (j < i) : (j += 1) {
+            if (same_lane(&catalog.leaves[i], &catalog.leaves[j])) {
+                seen = true;
+                break;
+            }
+        }
+        if (!seen) count += 1;
+    }
+    // invariant: distinct lanes never outnumber leaves, and cover every bolt
+    assert(count <= catalog.leaf_count);
+    return count;
+}
+
+/// Find the leaf on a given lane at a given revision, or null. The append-only log
+/// holds at most one leaf per (peer,bolt,path,revision), so this is the node lookup.
+fn find_rev(catalog: *const mn.BoltCatalog, anchor: *const mn.LeafBinding, revision: u32) ?*const mn.LeafBinding {
+    // invariant: the catalog respects Mantra's binding budget
+    assert(catalog.leaf_count <= mn.max_bindings);
+    // invariant: revisions count from one
+    assert(revision >= 1);
+    var i: u32 = 0;
+    while (i < catalog.leaf_count) : (i += 1) {
+        const leaf = &catalog.leaves[i];
+        if (same_lane(leaf, anchor) and leaf.revision == revision) return leaf;
+    }
+    return null;
+}
+
+/// Append `src` into `out` at `written`, bounded by the caller's buffer. Byte by
+/// byte within a named bound — no @memcpy, no unbounded copy.
+fn append(out: []u8, written: *u32, src: []const u8) RenderError!void {
+    // invariant: the render buffer honors its own budget
+    assert(out.len <= max_render_bytes);
+    // invariant: the write cursor never sits past the buffer
+    assert(written.* <= out.len);
+    if (src.len > out.len - written.*) return error.RenderTooLong;
+    var i: u32 = 0;
+    // seam: src.len is usize; the check above kept it inside our u32 budget
+    const n: u32 = @intCast(src.len);
+    while (i < n) : (i += 1) {
+        out[written.* + i] = src[i];
+    }
+    written.* += n;
+    // invariant: we never wrote past the caller's buffer
+    assert(written.* <= out.len);
+}
+
+/// Render the whole append-only log as a readable revision graph into `out`.
+/// Returns the written slice. Deterministic: the same catalog renders the same
+/// bytes, because Mantra's history accretes in a fixed order and never rewrites.
+pub fn render(catalog: *const mn.BoltCatalog, out: []u8) RenderError![]const u8 {
+    // invariant: the caller's buffer respects the render budget
+    assert(out.len <= max_render_bytes);
+    // invariant: there is room for at least the header
+    assert(out.len > 0);
+
+    var written: u32 = 0;
+    try append(out, &written, "mantra log — append-only graph\n");
+
+    if (catalog.leaf_count == 0) {
+        try append(out, &written, "(empty log)\n");
+        // invariant: an empty log still renders a bounded, non-empty view
+        assert(written <= out.len);
+        return out[0..written];
+    }
+
+    // Walk bolt anchors — the first leaf of each distinct peer/bolt — in append
+    // order, so the graph reads in the order history was written.
+    var bi: u32 = 0;
+    while (bi < catalog.leaf_count) : (bi += 1) {
+        const bolt_anchor = &catalog.leaves[bi];
+        var bolt_seen = false;
+        var bj: u32 = 0;
+        while (bj < bi) : (bj += 1) {
+            if (same_bolt(bolt_anchor, &catalog.leaves[bj])) {
+                bolt_seen = true;
+                break;
+            }
+        }
+        if (bolt_seen) continue;
+
+        try append(out, &written, leaf_peer(bolt_anchor));
+        try append(out, &written, "/");
+        try append(out, &written, leaf_bolt(bolt_anchor));
+        try append(out, &written, "\n");
+
+        // Walk lane anchors within this bolt — the first leaf of each distinct path.
+        var li: u32 = 0;
+        while (li < catalog.leaf_count) : (li += 1) {
+            const lane_anchor = &catalog.leaves[li];
+            if (!same_bolt(lane_anchor, bolt_anchor)) continue;
+            var lane_seen = false;
+            var lj: u32 = 0;
+            while (lj < li) : (lj += 1) {
+                if (same_lane(lane_anchor, &catalog.leaves[lj])) {
+                    lane_seen = true;
+                    break;
+                }
+            }
+            if (lane_seen) continue;
+
+            try append(out, &written, "  ");
+            try append(out, &written, leaf_path(lane_anchor));
+            try append(out, &written, ": ");
+
+            // Chain the lane's revisions from one upward. The append-only order law
+            // (a new revision must be exactly prev+1) means the chain is dense: the
+            // first gap ends the lane.
+            var rev: u32 = 1;
+            var nodes: u32 = 0;
+            // invariant: a lane's revision chain is bounded by the whole catalog
+            while (rev <= catalog.leaf_count) : (rev += 1) {
+                const node = find_rev(catalog, lane_anchor, rev) orelse break;
+                if (nodes > 0) try append(out, &written, " -> ");
+                var num_buf: [12]u8 = undefined;
+                const num = std.fmt.bufPrint(&num_buf, "r{d}[", .{node.revision}) catch return error.RenderTooLong;
+                // seam: bufPrint returns usize; it never exceeds the slice it wrote
+                assert(num.len <= num_buf.len);
+                try append(out, &written, num);
+                try append(out, &written, node.digest_hex[0..digest_prefix_len]);
+                try append(out, &written, "]");
+                nodes += 1;
+            }
+            try append(out, &written, "\n");
+            // invariant: every lane rendered at least its first node
+            assert(nodes >= 1);
+        }
+    }
+
+    // invariant: the render never exceeds the caller's buffer
+    assert(written <= out.len);
+    return out[0..written];
+}
+
+/// A small deterministic catalog for the selftest: two bolts under one peer, one
+/// lane carrying two revisions, proving the chain and the grouping both render.
+fn demo_catalog() !mn.BoltCatalog {
+    var catalog = mn.BoltCatalog.empty();
+    try catalog.append_leaf("local", "notes", 1, "a.txt", "alpha", "leaf");
+    try catalog.append_leaf("local", "notes", 2, "a.txt", "alpha-two", "leaf");
+    try catalog.append_leaf("local", "notes", 1, "b.txt", "beta", "leaf");
+    try catalog.append_leaf("local", "site", 1, "index", "home", "leaf");
+    return catalog;
+}
+
+fn welcome_graph_renders() !void {
+    var catalog = try demo_catalog();
+    var buf: [max_render_bytes]u8 = undefined;
+    const text = try render(&catalog, &buf);
+    // Two bolts, three lanes: the grouping counts match the catalog's shape.
+    assert(bolt_count(&catalog) == 2);
+    assert(lane_count(&catalog) == 3);
+    // The bolt headers name peer/bolt.
+    assert(std.mem.indexOf(u8, text, "local/notes\n") != null);
+    assert(std.mem.indexOf(u8, text, "local/site\n") != null);
+    // The a.txt lane chains two revisions; b.txt and index each carry one.
+    assert(std.mem.indexOf(u8, text, "  a.txt: r1[") != null);
+    assert(std.mem.indexOf(u8, text, "] -> r2[") != null);
+    assert(std.mem.indexOf(u8, text, "  b.txt: r1[") != null);
+    assert(std.mem.indexOf(u8, text, "  index: r1[") != null);
+    print("mantra_browser: graph rendered — 2 bolts, 3 lanes, a.txt chains r1 -> r2\n", .{});
+}
+
+fn welcome_chain_is_dense() !void {
+    var catalog = mn.BoltCatalog.empty();
+    try catalog.append_leaf("local", "log", 1, "day", "one", "leaf");
+    try catalog.append_leaf("local", "log", 2, "day", "two", "leaf");
+    try catalog.append_leaf("local", "log", 3, "day", "three", "leaf");
+    var buf: [max_render_bytes]u8 = undefined;
+    const text = try render(&catalog, &buf);
+    // The append-only law makes a single dense chain: r1 -> r2 -> r3.
+    assert(std.mem.indexOf(u8, text, "] -> r2[") != null);
+    assert(std.mem.indexOf(u8, text, "] -> r3[") != null);
+    assert(lane_count(&catalog) == 1);
+    print("mantra_browser: dense chain r1 -> r2 -> r3 rendered on one lane\n", .{});
+}
+
+fn welcome_empty_log() !void {
+    var catalog = mn.BoltCatalog.empty();
+    var buf: [max_render_bytes]u8 = undefined;
+    const text = try render(&catalog, &buf);
+    // An empty catalog renders a stable, bounded, honest view — never a crash.
+    assert(std.mem.indexOf(u8, text, "(empty log)") != null);
+    assert(bolt_count(&catalog) == 0);
+    assert(lane_count(&catalog) == 0);
+    print("mantra_browser: empty log renders '(empty log)'\n", .{});
+}
+
+fn welcome_deterministic() !void {
+    var catalog = try demo_catalog();
+    var buf_a: [max_render_bytes]u8 = undefined;
+    var buf_b: [max_render_bytes]u8 = undefined;
+    const a = try render(&catalog, &buf_a);
+    const b = try render(&catalog, &buf_b);
+    // The same catalog renders the same bytes — Mantra's referential transparency,
+    // carried into the view.
+    assert(std.mem.eql(u8, a, b));
+    print("mantra_browser: render is deterministic — same catalog, same bytes\n", .{});
+}
+
+fn unwelcome_buffer_too_small() !void {
+    var catalog = try demo_catalog();
+    var tiny: [8]u8 = undefined;
+    // A buffer too small to hold even the header refuses rather than overrunning.
+    if (render(&catalog, &tiny)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.RenderTooLong);
+    }
+    print("mantra_browser: undersized buffer refused (RenderTooLong, no overrun)\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_graph_renders();
+        try welcome_chain_is_dense();
+        try welcome_empty_log();
+        try welcome_deterministic();
+        try unwelcome_buffer_too_small();
+        print("mantra_browser {s} — GREEN\n", .{mantra_browser_version});
+        return 0;
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "show")) {
+        var catalog = try demo_catalog();
+        var buf: [max_render_bytes]u8 = undefined;
+        const text = try render(&catalog, &buf);
+        print("{s}", .{text});
+        return 0;
+    }
+    print("usage: mantra-browser selftest | show\n", .{});
+    return 1;
+}
