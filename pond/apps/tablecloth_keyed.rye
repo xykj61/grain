@@ -115,6 +115,37 @@ fn verify_publication(
     return true;
 }
 
+/// The SHA-256 a publication binds - exposed so a detached receipt can carry the digest and a
+/// recipient can confirm held content matches it, without recomputing the layout by hand.
+pub fn digest_of(content: []const u8) [digest_len]u8 {
+    return content_digest(content);
+}
+
+/// Verify a publication receipt entirely offline, from the bound digest rather than the content.
+/// A recipient holding only the receipt (point, name, length, digest, signature) confirms the
+/// publisher's keeper signed exactly these facts - no store, no network, and no content needed.
+/// A recipient who also holds the content checks `digest_of(content)` against the bound digest
+/// separately, so the two halves of trust stay distinct.
+pub fn verify_receipt(
+    keeper: [pubkey_len]u8,
+    point: u32,
+    name: []const u8,
+    whole_len: u32,
+    digest: *const [digest_len]u8,
+    sig: *const [sig_len]u8,
+) bool {
+    // invariant: an Ed25519 public key is 32 bytes and a signature 64.
+    assert(pubkey_len == 32);
+    assert(sig_len == 64);
+    // invariant: a receipt's name honors the catalog's name budget.
+    assert(name.len <= tablecloth.max_name);
+    const pub_key = kumara.PublicKey.fromBytes(keeper) catch return false;
+    var msg: [max_msg_len]u8 = undefined;
+    const len = auth_message(&msg, point, name, whole_len, digest);
+    kumara.verify_bytes(msg[0..len], sig, pub_key) catch return false;
+    return true;
+}
+
 /// A catalog whose every publication belongs to a settled Kumara point. It wraps rung
 /// one's Catalog unchanged (one source of truth for names and addresses) and records the
 /// owning point alongside each entry, aligned by catalog index.

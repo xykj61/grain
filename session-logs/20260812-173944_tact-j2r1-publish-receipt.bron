@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260812.173944
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title TACT-J2r1 — the offline-verifiable publication receipt
+prompt continue the road Lindy-first crux-first; keep agent-doable work moving; send each increment; stop at custody gates
+think Journey 1 (Ship-Pilot) complete end to end. Opened Journey 2 (Publishing) with a self-approved design round. Its crux is the detached, portable receipt a recipient verifies offline; the serve rung reaching the Comlink-served custody gate is r4 (Keaton's hand).
+think r1 carries BUHR-J7r4's signed word out of the store into a Publication receipt (point, name, whole_len, digest, sig). Verification is offline in two honest halves: the signature over the bound facts by the keeper key (no content needed), and — when content is held — the SHA-256 matching the bound digest.
+think Exposed two additive pub functions in tablecloth_keyed.rye (BUHR-J7r4): digest_of (the content digest) and verify_receipt (verify from the bound digest, no content, no store) — reusing the exact auth_message layout so a detached receipt and a stored publication carry the identical signed word. The BUHR keyed witness re-runs GREEN.
+think Five cases proven: a real receipt verifies offline + content matches; a forged signature refuses; a wrong keeper key refuses (names exactly who published); an authentic receipt still refuses swapped content (the digest is bound in); an overlong name refuses NameTooLong rather than truncate the signed word.
+obs One shadow fix: the witness helper keeper_pubkey shadowed the verify_offline parameter of the same name → renamed the helper pubkey_of.
+obs Demo keeper seeds only, signing/verifying in-process, no store handle, no network. The serve transport stays the Comlink-served custody gate.
+loom witness=tact_publish_receipt_witness result=GREEN cases=5 halves=2
+file pond/apps/publish_receipt.rye the detached publication receipt; offline two-half verify, forgery/wrong-key/tamper refused
+file pond/apps/tablecloth_keyed.rye additive pub digest_of + verify_receipt (offline verify from the bound digest); BUHR witness re-runs GREEN
+file tools/tact_publish_receipt_witness.rish witness — GREEN (5 cases + keyed re-run)
+recommend check-in (Claude) TACT Journey 2 r1 lands the publishing crux; r2 (constellation-bound) is agent-doable, but the journey's serve rung (r4) reaches the Comlink-served custody gate — good moment to confirm direction, or keep climbing r2/r3
