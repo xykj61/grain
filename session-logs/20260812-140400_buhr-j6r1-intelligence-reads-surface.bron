@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260812.140400
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR Journey 6, Rung 1 — the intelligence reads the surface
+prompt Autonomous recur: take the next agent-doable lap Lindy-first crux-first, harmony-of-styles; double-seat visions for calendar blind spots; send each increment; STOP at custody gates
+think Read REMEMBER — the BUHR J5 fused-edge arc (r1–r10) is complete; the one remaining door is the held real-network-fetch seam, which is Keaton's word (custody gate 1 addendum). Next agent-doable option named: a fresh BUHR journey or a new surface.
+think Lindy-first crux-first: BUHR is Surface & Intelligence. Journey 1 built the intelligence (Q-vane voices, each over a pinned corpus); Journeys 2–5 built the surface (Realidream Mantra graph). No rung has yet let the intelligence read the surface — every voice answers over a pinned corpus, never the living graph. That fusion is the equinox's own name and its highest-Lindy, still-tractable crux — a blind spot the itinerary left open.
+think Grounded the design in real code: quin_host.dispatch, corpus_query (the voice-app shape), mantra_browser public readers (lane_count, bolt_count, head_revision, demo_catalog), lantern_core Request/Response/StoppedReason contract. All witnessed, all public API — no new abstraction needed.
+think Double-seated the vision first: active-designing/20260812-140058_buhr-journey6-…-exploration.md names the crux (a voice whose corpus is the live graph) and orders the journey (count readings → fold the rendered graph → query an edited graph → serve through the Q-vane host).
+think Authored pond/apps/graph_query.rye mirroring corpus_query exactly: Lantern gate (validate_request · model_allowed · token/stop metering), route_op over lane_count/bolt_count/head/summary, compute reading the real demo_catalog through mantra_browser's public readers. The summary op gives a two-token output so the length-budget stop is provable; head reports r2 on a.txt — the same head the browser paints and the editor continues.
+obs The crux property holds honestly: the number the voice returns is a reading of the actual BoltCatalog, not a pinned constant — so intelligence and surface share one graph, as editor and view already do. Refusals real: UnknownOp (no fake answer), ModelNotAllowed, BudgetExceeded, LaneUnknown.
+obs TAME discipline kept: opening triad, ≥2 asserts/fn with positive // invariant comments, snake_case, named errors with try, seam-only usize @intCast at bufPrint edges, no @memcpy, every op bounded by Lantern's max_completion_len.
+loom witness=buhr_graph_query_witness green=1 cases=8 browser_reruns=1
+file active-designing/20260812-140058_buhr-journey6-intelligence-reads-the-surface-exploration.md the double-seated vision naming the crux and ordering the journey
+file pond/apps/graph_query.rye the app — a Lantern-bounded query whose corpus is the live Mantra graph
+file tools/buhr_graph_query_witness.rish proves the request-to-graph-reading path GREEN on metal, browser re-runs GREEN
+file work-in-progress/REMEMBER.md BUHR-J6r1 landed note + git nib in the same work commit
+recommend keep-going BUHR-J6r2 (a Scribble fold of the rendered graph text) or J6r3 (query an edited graph) — both agent-doable over witnessed ground
