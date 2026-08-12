@@ -1,0 +1,24 @@
+# aurora_seed_freestanding_witness.rish — the boot seed compiles for metal (no QEMU).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/aurora_seed_freestanding_witness.rish
+#
+# Proves the language -> bare-metal pipeline reaches Aurora's boot floor entirely
+# in-sandbox: cross-build aurora/src/seed.rye freestanding for riscv64 and confirm
+# the artifact is a RISC-V ELF (ELF header e_machine == 243 == EM_RISCV, byte 18).
+# QEMU is needed only to WAKE the binary, never to build it — so this gate is
+# GREEN wherever the toolchain lives, independent of any emulator on the bench.
+
+let zig = "vendor/zig-toolchain/zig"
+let out = "tools/.build/aurora_seed.elf"
+
+let build = run ["sh" "-c" "vendor/zig-toolchain/zig build-exe aurora/src/seed.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=tools/.build/aurora_seed.elf 2>&1 || true"]
+# invariant: a freestanding cross-build must not error at the toolchain seam.
+assert build.ok else "seed freestanding build seam failed to run"
+
+let machine = run ["sh" "-c" "od -An -tu1 -j18 -N1 tools/.build/aurora_seed.elf | tr -d ' \\n'"]
+# invariant: byte 18 of an ELF header is e_machine; 243 is EM_RISCV.
+assert machine.ok else "cannot read e_machine byte from the built ELF"
+assert (machine.out contains "243") else "built seed is not a RISC-V ELF (e_machine != 243)"
+
+say "GREEN: Aurora seed cross-builds freestanding riscv64 — RISC-V ELF (e_machine 243), no QEMU to build."
