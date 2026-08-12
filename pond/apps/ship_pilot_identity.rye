@@ -1,0 +1,140 @@
+//! pond/apps/ship_pilot_identity.rye — TACT Journey 1, Rung 2: the identity step, wired real.
+//!
+//! Rung one fixed the pilot spine — the ordered, enforced first-run arc — with each step's
+//! precondition supplied as a signal, so the enforcement was proven pure. This rung wires the
+//! first step, `identity`, to a real settlement: the step passes only when a genuine Kumara
+//! genesis opens and its Deed verifies against the fresh constellation. From zero — a forged
+//! bind that never married its keys — no identity settles, so the pilot holds at `identity`
+//! and never advances. Onboarding cannot walk past a keeper who has no real identity.
+//!
+//! It generates only a *demo* keeper from example seeds (plainly not a real pilot's key, so no
+//! identity is invented and no key is held). Generating the maintainer's own Kumara instance
+//! from a real seed stays custody gate #4 — the maintainer's hand alone. This rung reads no
+//! network and holds no key beyond an in-process demo seed.
+//!
+//!   rye build pond/apps/ship_pilot_identity.rye -femit-bin=pond/bin/ship-pilot-identity
+//!   pond/bin/ship-pilot-identity selftest
+//!
+//! Scope: active-designing/20260812-172129_tact-journey1-ship-pilot-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const pilot = @import("ship_pilot.rye");
+const settlement = @import("constellation.rye");
+const tilak = @import("kumara_tilak.rye");
+const kumara = @import("kumara.rye");
+
+pub const ship_pilot_identity_version = "20260812.172129";
+
+/// A settled identity: whether the genesis opened and verified, and the galaxy point it seated.
+pub const Identity = struct {
+    settled: bool,
+    point: u32,
+};
+
+/// Attempt a real genesis on a galaxy from a keeper's seeds. The bind must truly marry its
+/// keys, the number must decode to a galaxy, and the opened Deed must verify against the fresh
+/// constellation — only then does the identity settle. Any failure returns an unsettled
+/// identity, so the pilot holds at the identity step rather than advancing on a forgery.
+pub fn settle_identity(
+    key_seed: *const [kumara.seed_length]u8,
+    keeper_seed: *const [kumara.seed_length]u8,
+    galaxy_number: u32,
+) Identity {
+    const bind = tilak.make_bind(key_seed, keeper_seed);
+    const opened = settlement.open(galaxy_number, &bind) catch {
+        return Identity{ .settled = false, .point = 0 };
+    };
+    // The opened Deed must verify against its own constellation — the identity is proven,
+    // not merely returned.
+    const ok = settlement.verify(&opened.con, &opened.deed);
+    // invariant: a genesis seats its galaxy at the number it was opened on
+    assert(opened.deed.point == galaxy_number);
+    return Identity{ .settled = ok, .point = opened.deed.point };
+}
+
+/// Walk the pilot's first step against a real settlement. Returns the pilot after the identity
+/// step has been attempted with the true settled/unsettled signal — advanced when the identity
+/// is real, held when it is not.
+pub fn pilot_with_identity(id: *const Identity) pilot.PilotError!pilot.Pilot {
+    var p = pilot.Pilot.begin();
+    // invariant: a fresh pilot stands before the identity step
+    assert(p.current().? == .identity);
+    if (!id.settled) {
+        const held = p.attempt(.identity, false);
+        // invariant: an unsettled identity holds the pilot exactly at the identity step
+        assert(held == error.StepNotReady);
+        assert(p.current().? == .identity);
+        return p;
+    }
+    try p.attempt(.identity, true);
+    // invariant: a settled identity advances the pilot past the first step
+    assert(p.current().? == .place);
+    return p;
+}
+
+// ---- witnesses ----
+
+// Example seeds — plainly not a real pilot's key, so no identity is invented.
+const demo_key: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
+const demo_keeper: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
+const demo_galaxy: u32 = 3; // a number that decodes to a galaxy under the compass sky
+
+/// A real demo genesis settles identity, and the pilot advances past the identity step.
+fn welcome_real_genesis_advances() !void {
+    const id = settle_identity(&demo_key, &demo_keeper, demo_galaxy);
+    assert(id.settled);
+    assert(id.point == demo_galaxy);
+    var p = try pilot_with_identity(&id);
+    assert(p.current().? == .place);
+    assert(p.passed[0]);
+    print("ship_pilot_identity: a real demo genesis settled and the pilot advanced past identity.\n", .{});
+}
+
+/// A forged bind never settles, so the pilot holds at the identity step — onboarding cannot
+/// walk past a keeper with no real identity.
+fn unwelcome_forged_bind_holds() !void {
+    var bind = tilak.make_bind(&demo_key, &demo_keeper);
+    bind.sig_by_key[0] ^= 0xFF; // break the key's signature over the keeper
+    const opened = settlement.open(demo_galaxy, &bind);
+    assert(opened == error.BadBind);
+    // the identity is unsettled, and the pilot holds at the identity step
+    const id = Identity{ .settled = false, .point = 0 };
+    var p = try pilot_with_identity(&id);
+    assert(p.current().? == .identity);
+    assert(!p.is_ready());
+    assert(!p.passed[0]);
+    print("ship_pilot_identity: a forged bind never settled; the pilot held at identity.\n", .{});
+}
+
+/// A number that decodes to no galaxy (a star or a planet) refuses genesis, so no identity
+/// settles — the root of a constellation is a galaxy or it is nothing.
+fn unwelcome_non_galaxy_number_refuses() !void {
+    // point 27 decodes to a star, not a galaxy — genesis refuses NotGenesis.
+    const id = settle_identity(&demo_key, &demo_keeper, 27);
+    assert(!id.settled);
+    var p = try pilot_with_identity(&id);
+    assert(p.current().? == .identity);
+    print("ship_pilot_identity: a non-galaxy number refused genesis; the pilot held at identity.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_real_genesis_advances();
+    try unwelcome_forged_bind_holds();
+    try unwelcome_non_galaxy_number_refuses();
+    print("ship_pilot_identity {s} — GREEN\n", .{ship_pilot_identity_version});
+    print("GREEN: TACT-J1r2 ship_pilot_identity; the identity step passes only on a real, verified genesis.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest();
+    }
+    print("usage: ship-pilot-identity selftest\n", .{});
+    return 1;
+}
