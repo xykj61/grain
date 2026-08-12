@@ -1,0 +1,232 @@
+//! pond/apps/provenance_real.rye — GISM Journey 6 (Provenance), Rung 1.
+//!
+//! Season 2, Yield: every module the tree built stands on real data, not a demo
+//! literal. BUHR Journey 7 built Tablecloth's owner-signed catalog — a settled
+//! Kumara identity presents its Deed, signs the exact publication (point · name ·
+//! length · a SHA-256 of the content), and only then may the store bead and name
+//! the bytes — yet every one of those proofs ran over a hand-written demo sentence
+//! (`doc_planet`, `doc_star`) tuned to sit inside the store. This rung carries the
+//! chain of custody onto a **real tree document**: a landed-edge waymark green-claim
+//! — genuine testimony of what actually landed at an edge — embedded at compile time
+//! through a symlink (the @embedFile idiom GISM Journey 5 lived with; no network, no
+//! runtime filesystem, the same bytes a keeper reads).
+//!
+//! The chain of custody stands on real bytes: a settled planet identity signs the
+//! exact real content, `store_owned` beads and names it, `fetch_owned` returns
+//! exactly those bytes, `owner_of` resolves to the publishing point and `place_of`
+//! to its planet in the d12·d60 fractal. Every tamper along the chain refuses — a
+//! flipped byte in the store (`DigestMismatch`), a forged signature (`BadSignature`),
+//! and a signature over other content (`BadSignature`, the real digest is bound in).
+//!
+//! The real bytes surface one Yield red (#73): a real front-door document
+//! (`SECURITY.md`, 2689 B) refuses `ContentTooLarge` — it does not fit one 512-byte
+//! resin. Unlike red #72's block bound, the fix is not a one-line raise:
+//! `max_resin_bytes` cannot rise past `max_beads × max_bead_bytes` without breaking
+//! beading's invariant that a bead-index is itself a valid resin. So this round books
+//! the red and names the chunking horizon (large artifacts across ordered resins, its
+//! own later rung), and proves the refusal on metal here.
+//!
+//! Additive by construction: it composes tablecloth_keyed's public API over demo
+//! keeper seeds only; no real key, no custody (gate #4 untouched). The demo selftest
+//! over doc_planet/doc_star stays its own GREEN binary.
+//!
+//!   rye build pond/apps/provenance_real.rye -femit-bin=pond/bin/provenance-real
+//!   pond/bin/provenance-real selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const beading = @import("mantra/beading.rye");
+const tablecloth = @import("tablecloth.rye");
+const keyed = @import("tablecloth_keyed.rye");
+const kumara = @import("kumara.rye");
+const tilak = @import("kumara_tilak.rye");
+const topology = @import("topology.rye");
+const settlement = @import("constellation.rye");
+
+const provenance_real_version = "20260812.185056";
+
+// The real artifact — a symlink to a living waymark green-claim, landed-edge
+// testimony a keeper can open and read. Compile-time embedding gives real bytes with
+// a demo's determinism: the same publication every build, no network.
+const real_doc = @embedFile("corpora/waymark_green.md");
+
+// A real front-door document that will NOT fit one resin — bound at compile time to
+// prove Yield red #73 on metal (a real document exceeds the 512-byte artifact bound).
+const big_doc = @embedFile("corpora/security.md");
+
+const sig_len: u32 = 64;
+
+// Demo keeper seeds — no real key, no custody. Mirrors tablecloth_keyed's selftest.
+const g_key: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
+const g_keeper: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
+const s_key: [kumara.seed_length]u8 = .{0x44} ** kumara.seed_length;
+const s_keeper: [kumara.seed_length]u8 = .{0x55} ** kumara.seed_length;
+const p_key: [kumara.seed_length]u8 = .{0x77} ** kumara.seed_length;
+const p_keeper: [kumara.seed_length]u8 = .{0x88} ** kumara.seed_length;
+
+// The inclusive fractal: galaxy 3, its star (3,2) = 27, its planet (3,2,4) = 267.
+const galaxy_num: u32 = 3;
+const star_num: u32 = 27;
+const planet_num: u32 = 267;
+
+const pubkey_len: u32 = 32;
+
+// The 36-byte spawn authority the settlement mint checks (child number ++ identity).
+fn spawn_authority(signer_seed: *const [kumara.seed_length]u8, child: u32, child_identity: *const [pubkey_len]u8) [sig_len]u8 {
+    const kp = kumara.keypair_from_seed(signer_seed);
+    var msg: [4 + pubkey_len]u8 = undefined;
+    std.mem.writeInt(u32, msg[0..4], child, .little);
+    for (child_identity, 0..) |b, i| msg[4 + i] = b;
+    return kumara.sign(&msg, kp, null).toBytes();
+}
+
+const World = struct {
+    con: settlement.Constellation,
+    planet: settlement.Deed,
+};
+
+/// Seat a demo galaxy → star → planet, so a settled planet identity may publish.
+fn seat_world() !World {
+    const g_bind = tilak.make_bind(&g_key, &g_keeper);
+    const s_bind = tilak.make_bind(&s_key, &s_keeper);
+    const p_bind = tilak.make_bind(&p_key, &p_keeper);
+    const opened = try settlement.open(galaxy_num, &g_bind);
+    var con = opened.con;
+    const galaxy_deed = opened.deed;
+
+    const g_sow = tilak.make_cap(&g_keeper, galaxy_num, .sow, g_bind.kumara_pubkey);
+    const spawn_star = spawn_authority(&g_key, star_num, &s_bind.kumara_pubkey);
+    const star = try settlement.mint(&con, &galaxy_deed, star_num, &s_bind, &g_sow, &spawn_star);
+
+    const s_sow = tilak.make_cap(&s_keeper, star_num, .sow, s_bind.kumara_pubkey);
+    const spawn_planet = spawn_authority(&s_key, planet_num, &p_bind.kumara_pubkey);
+    const planet = try settlement.mint(&con, &star, planet_num, &p_bind, &s_sow, &spawn_planet);
+
+    return .{ .con = con, .planet = planet };
+}
+
+const doc_name = "waymark-e182-green.md";
+
+/// The chain of custody stands on real bytes: a settled planet signs the exact real
+/// document, the store beads and names it, and fetch returns exactly those bytes,
+/// resolving to whose it is.
+fn welcome_real_provenance() !void {
+    const w = try seat_world();
+    var store: beading.BeadStore = .empty();
+    var kc: keyed.KeyedCatalog = .empty();
+
+    // The planet's owner signs the exact real content and publishes it.
+    const sig = keyed.sign_publication(&p_keeper, planet_num, doc_name, real_doc);
+    _ = try keyed.store_owned(&kc, &store, &w.con, &w.planet, doc_name, real_doc, &sig);
+    // invariant: a successful publish grew the keyed catalog by exactly one entry
+    assert(kc.cat.count == 1);
+
+    // Fetch by name and prove the bytes returned are exactly the real document's.
+    var out: [tablecloth.max_content_bytes]u8 = undefined;
+    const n = try keyed.fetch_owned(&kc, &store, doc_name, out[0..]);
+    // invariant: fetch returns exactly as many bytes as the real document holds
+    assert(n == real_doc.len);
+    // invariant: the fetched bytes are byte-for-byte the real embedded document
+    assert(std.mem.eql(u8, out[0..n], real_doc));
+
+    // The publication resolves to whose it is, and the owner to its place.
+    const owner = keyed.owner_of(&kc, doc_name) orelse return error.NoOwner;
+    // invariant: the real artifact is owned by the planet that signed it
+    assert(owner == planet_num);
+    const place = keyed.place_of(owner) orelse return error.NoPlace;
+    // invariant: the owner resolves to a planet in the d12·d60 fractal
+    assert(place.tier == .planet);
+    print("provenance_real: real artifact — {d} bytes, owner {d} (planet), fetched byte-for-byte\n", .{ n, owner });
+}
+
+/// A flipped byte in the store refuses the fetch by digest — content-addressed
+/// storage makes tamper detection free for the chain of custody.
+fn unwelcome_store_tamper() !void {
+    const w = try seat_world();
+    var store: beading.BeadStore = .empty();
+    var kc: keyed.KeyedCatalog = .empty();
+    const sig = keyed.sign_publication(&p_keeper, planet_num, doc_name, real_doc);
+    _ = try keyed.store_owned(&kc, &store, &w.con, &w.planet, doc_name, real_doc, &sig);
+
+    store.beads[0].bytes[0] +%= 1; // flip one byte of a held bead
+    var out: [tablecloth.max_content_bytes]u8 = undefined;
+    if (keyed.fetch_owned(&kc, &store, doc_name, out[0..])) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        // invariant: a tampered bead refuses the fetch by digest
+        assert(err == error.DigestMismatch);
+    }
+    print("provenance_real: store tamper refused (DigestMismatch)\n", .{});
+}
+
+/// A forged signature refuses before any byte is stored — the keeper never signed.
+fn unwelcome_forged_signature() !void {
+    const w = try seat_world();
+    var store: beading.BeadStore = .empty();
+    var kc: keyed.KeyedCatalog = .empty();
+    const zero_sig: [sig_len]u8 = .{0} ** sig_len;
+    const before = kc.cat.count;
+    if (keyed.store_owned(&kc, &store, &w.con, &w.planet, doc_name, real_doc, &zero_sig)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        // invariant: a forged signature refuses to publish
+        assert(err == error.BadSignature);
+    }
+    // invariant: the refusal stored nothing
+    assert(kc.cat.count == before);
+    print("provenance_real: forged signature refused (BadSignature), nothing stored\n", .{});
+}
+
+/// A signature over other content refuses — the real digest is bound into the signed
+/// message, so a tampered artifact cannot ride a real signature.
+fn unwelcome_content_mismatch() !void {
+    const w = try seat_world();
+    var store: beading.BeadStore = .empty();
+    var kc: keyed.KeyedCatalog = .empty();
+    // Sign over a different sentence, then try to publish the real document under it.
+    const other = "a sentence the keeper signed instead of the real document.";
+    const sig = keyed.sign_publication(&p_keeper, planet_num, doc_name, other);
+    if (keyed.store_owned(&kc, &store, &w.con, &w.planet, doc_name, real_doc, &sig)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        // invariant: a signature bound to other content refuses this publication
+        assert(err == error.BadSignature);
+    }
+    print("provenance_real: content-mismatched signature refused (BadSignature)\n", .{});
+}
+
+/// Yield red #73, proven on metal: a real front-door document does not fit one resin.
+/// The signature is valid (the owner really signed these real bytes); the store
+/// refuses `ContentTooLarge` because 2689 bytes exceed the 512-byte resin bound.
+fn red_real_document_too_large() !void {
+    const w = try seat_world();
+    var store: beading.BeadStore = .empty();
+    var kc: keyed.KeyedCatalog = .empty();
+    // invariant: the real front-door document genuinely exceeds one resin — the red is real
+    assert(big_doc.len > tablecloth.max_content_bytes);
+    const sig = keyed.sign_publication(&p_keeper, planet_num, "security.md", big_doc);
+    if (keyed.store_owned(&kc, &store, &w.con, &w.planet, "security.md", big_doc, &sig)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        // invariant: a document past one resin refuses ContentTooLarge, valid signature and all
+        assert(err == error.ContentTooLarge);
+    }
+    print("provenance_real: red #73 — real doc {d} B > {d} B resin refuses ContentTooLarge (chunking horizon)\n", .{ big_doc.len, tablecloth.max_content_bytes });
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_real_provenance();
+        try unwelcome_store_tamper();
+        try unwelcome_forged_signature();
+        try unwelcome_content_mismatch();
+        try red_real_document_too_large();
+        print("provenance_real {s} — GREEN\n", .{provenance_real_version});
+        return 0;
+    }
+    print("usage: provenance-real selftest\n", .{});
+    return 1;
+}
