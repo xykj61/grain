@@ -95,13 +95,23 @@ fn append(out_buf: []u8, written: *u32, src: []const u8) QueryError!void {
 /// real result, and format it into `out_buf` as space-separated words. Returns the
 /// written slice — the true reading, never a guess.
 pub fn compute(op: Op, out_buf: []u8) (sc.ParseError || QueryError || error{NoSpaceLeft})![]const u8 {
+    // The demo reading is the real reading over the pinned document — one code path.
+    return compute_over(op, pinned_doc, out_buf);
+}
+
+/// The reading, over an explicit document rather than the pinned demo literal.
+/// GISM Journey 5 (Real corpora) reads a real embedded tree document through this
+/// same code path, so a real corpus and the demo literal share one bounded reader.
+pub fn compute_over(op: Op, doc: []const u8, out_buf: []u8) (sc.ParseError || QueryError || error{NoSpaceLeft})![]const u8 {
     // invariant: the caller's buffer respects Lantern's completion bound
     assert(out_buf.len <= max_result_text);
     // invariant: there is room for at least one byte
     assert(out_buf.len > 0);
+    // invariant: the document respects Scribble's whole-document bound
+    assert(doc.len <= sc.max_doc_bytes);
 
     var blocks: [sc.max_blocks]sc.Block = undefined;
-    const block_count = try sc.parse_markdown(pinned_doc, &blocks);
+    const block_count = try sc.parse_markdown(doc, &blocks);
     // invariant: the parse stays inside Scribble's block budget
     assert(block_count <= sc.max_blocks);
 
@@ -174,6 +184,13 @@ pub fn count_words(text: []const u8) u32 {
 /// reading, and return a Lantern Response bounded by max_tokens (length stop when
 /// the budget bites). The model is never trusted before the allow-list clears.
 pub fn answer(req: lc.Request, allow_text: []const u8, out_buf: []u8) (lc.LanternError || sc.ParseError || QueryError || error{NoSpaceLeft})!lc.Response {
+    // The demo answer is the real answer over the pinned document — one code path.
+    return answer_over(req, pinned_doc, allow_text, out_buf);
+}
+
+/// The Q-vane host, over an explicit document. The demo `answer` delegates here
+/// over `pinned_doc`; GISM Journey 5 delegates here over a real embedded corpus.
+pub fn answer_over(req: lc.Request, doc: []const u8, allow_text: []const u8, out_buf: []u8) (lc.LanternError || sc.ParseError || QueryError || error{NoSpaceLeft})!lc.Response {
     // invariant: the caller's buffer honors Lantern's completion bound
     assert(out_buf.len <= max_result_text);
     // invariant: the buffer can hold at least one token
@@ -183,7 +200,7 @@ pub fn answer(req: lc.Request, allow_text: []const u8, out_buf: []u8) (lc.Lanter
     if (!lc.model_allowed(req.model_hash, allow_text)) return error.ModelNotAllowed;
 
     const op = try route_op(req.prompt);
-    const text = try compute(op, out_buf);
+    const text = try compute_over(op, doc, out_buf);
 
     const tokens_in = count_words(req.prompt);
     var tokens_out = count_words(text);
