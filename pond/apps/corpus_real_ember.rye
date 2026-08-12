@@ -1,0 +1,218 @@
+//! pond/apps/corpus_real_ember.rye — GISM Journey 5 (Real corpora), Rung 2.
+//!
+//! Rung one carried the reading voice (Scribble) onto a real tree document. This
+//! rung carries the **craft voice** (Ember) onto a real corpus: a Bron catalog of
+//! chunks (path · kind · line count). Ember's demo read a hand-written catalog whose
+//! line counts were invented numbers; this catalog is **derived at compile time from
+//! real embedded tree files**, so every line count is provably the real file's own —
+//! it cannot drift into a fiction, because the count is computed from the very bytes
+//! the build embeds (the @embedFile idiom, through symlinks in pond/apps/corpora/).
+//!
+//! Three real files stand as the corpus: manual/tutorials/greet.rye (the first-hour
+//! reference), tally/stack.rye (a real module), tools/one_clock_witness.rish (a real
+//! witness). count_rye reads 2 rye chunks; sum_lines totals the real line counts;
+//! paths_rye lists the real rye paths. The witness cross-checks sum_lines against an
+//! independent `wc -l` of the same real files, so Ember's arithmetic is bound to the
+//! tree by a second tool, and a real file's growth flows through both together.
+//!
+//! Additive by construction: it reuses corpus_query's public answer_over /
+//! compute_over over the derived catalog; the demo answer over pinned_catalog stays
+//! its own GREEN binary.
+//!
+//!   rye build pond/apps/corpus_real_ember.rye -femit-bin=pond/bin/corpus-real-ember
+//!   pond/bin/corpus-real-ember selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lc = @import("lantern/lantern_core.rye");
+const ec = @import("ember/ember_core.rye");
+const cq = @import("corpus_query.rye");
+
+const corpus_real_ember_version = "20260812.182600";
+
+// The real corpus — symlinks to living tree files. Compile-time embedding gives real
+// bytes with a demo's determinism: the same corpus every build, no network.
+const f_greet = @embedFile("corpora/greet.rye");
+const f_stack = @embedFile("corpora/stack.rye");
+const f_clock = @embedFile("corpora/one_clock.rish");
+
+// A corpus member: the real tree path, Ember's kind word, and the embedded bytes
+// whose line count the build measures. One catalog chunk per member.
+const Member = struct {
+    path: []const u8,
+    kind: []const u8,
+    bytes: []const u8,
+};
+
+const members = [_]Member{
+    .{ .path = "manual/tutorials/greet.rye", .kind = "rye", .bytes = f_greet },
+    .{ .path = "tally/stack.rye", .kind = "rye", .bytes = f_stack },
+    .{ .path = "tools/one_clock_witness.rish", .kind = "rish", .bytes = f_clock },
+};
+
+// The generated catalog never exceeds this — three chunks of a bounded shape, far
+// inside Ember's own max_chunks (64). Named so the builder's buffer is bounded.
+const max_catalog_bytes: u32 = 1024;
+
+const allow_line = "model_hash sha3-256-rye-forge-lap0";
+
+/// Count newlines in a real file's bytes — the same line sense `wc -l` uses, so the
+/// derived count matches the witness's independent cross-check exactly.
+fn count_lines(bytes: []const u8) u32 {
+    // invariant: the corpus member fits Scribble's whole-document bound
+    assert(bytes.len <= 8192);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    // invariant: the scan walks no further than the file
+    assert(bytes.len <= 8192);
+    while (i < bytes.len) : (i += 1) {
+        if (bytes[i] == '\n') n += 1;
+    }
+    return n;
+}
+
+/// Build a real Bron catalog from the embedded members, each line count measured
+/// from the real bytes. Returns the written slice — a corpus derived from the tree,
+/// never a hand-written fiction.
+fn build_catalog(out_buf: []u8) error{ResultTooLong}![]const u8 {
+    // invariant: the builder's buffer honors the catalog bound
+    assert(out_buf.len <= max_catalog_bytes);
+    // invariant: there is room to write
+    assert(out_buf.len > 0);
+
+    var written: u32 = 0;
+    var m: u32 = 0;
+    // invariant: the loop is bounded by the fixed member count
+    assert(members.len <= ec.max_chunks);
+    while (m < members.len) : (m += 1) {
+        const member = members[m];
+        const lines = count_lines(member.bytes);
+        const rest = out_buf[written..];
+        const chunk = std.fmt.bufPrint(rest, "chunk\npath {s}\nkind {s}\nlines {d}\n\n", .{ member.path, member.kind, lines }) catch return error.ResultTooLong;
+        // seam: bufPrint returns usize; it never exceeds the slice it wrote into
+        assert(chunk.len <= rest.len);
+        written += @intCast(chunk.len);
+    }
+    // invariant: we never wrote past the caller's buffer
+    assert(written <= out_buf.len);
+    return out_buf[0..written];
+}
+
+/// The craft voice reads the real corpus and counts its rye members — two real rye
+/// files, the third a rish witness.
+fn welcome_real_count_rye() !void {
+    var cat_buf: [max_catalog_bytes]u8 = undefined;
+    const catalog = try build_catalog(&cat_buf);
+    var buf: [lc.max_completion_len]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "count_rye the corpus",
+        .max_tokens = 64,
+    };
+    const resp = try cq.answer_over(req, catalog, allow_line, &buf);
+    // invariant: two of the three real members are rye files
+    assert(std.mem.eql(u8, resp.text, "2"));
+    assert(resp.stopped_reason == .eos);
+    print("corpus_real_ember: real count_rye — '{s}' eos\n", .{resp.text});
+}
+
+/// The craft voice sums the real corpus's line counts — each measured from real
+/// bytes, so the total is the tree's own.
+fn welcome_real_sum_lines() !void {
+    var cat_buf: [max_catalog_bytes]u8 = undefined;
+    const catalog = try build_catalog(&cat_buf);
+
+    // The independently-summed truth, from the same embedded bytes.
+    var truth: u32 = 0;
+    var m: u32 = 0;
+    // invariant: the loop is bounded by the fixed member count
+    assert(members.len <= ec.max_chunks);
+    while (m < members.len) : (m += 1) truth += count_lines(members[m].bytes);
+
+    var buf: [lc.max_completion_len]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "sum_lines the corpus",
+        .max_tokens = 64,
+    };
+    const resp = try cq.answer_over(req, catalog, allow_line, &buf);
+
+    var expect_buf: [16]u8 = undefined;
+    const expect = try std.fmt.bufPrint(&expect_buf, "{d}", .{truth});
+    // invariant: Ember's sum equals the line total measured directly from the bytes
+    assert(std.mem.eql(u8, resp.text, expect));
+    assert(resp.stopped_reason == .eos);
+    print("corpus_real_ember: real sum_lines — '{s}' eos (truth {d})\n", .{ resp.text, truth });
+}
+
+/// The craft voice lists the real corpus's rye paths — the real tree paths, in order.
+fn welcome_real_paths_rye() !void {
+    var cat_buf: [max_catalog_bytes]u8 = undefined;
+    const catalog = try build_catalog(&cat_buf);
+    var buf: [lc.max_completion_len]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "paths_rye the corpus",
+        .max_tokens = 64,
+    };
+    const resp = try cq.answer_over(req, catalog, allow_line, &buf);
+    // invariant: the two real rye paths, in corpus order
+    assert(std.mem.eql(u8, resp.text, "manual/tutorials/greet.rye tally/stack.rye"));
+    assert(resp.stopped_reason == .eos);
+    print("corpus_real_ember: real paths_rye — '{s}' eos\n", .{resp.text});
+}
+
+/// The allow-list gates the model over the real corpus, exactly as over the demo.
+fn unwelcome_model_not_allowed() !void {
+    var cat_buf: [max_catalog_bytes]u8 = undefined;
+    const catalog = try build_catalog(&cat_buf);
+    var buf: [lc.max_completion_len]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-not-on-list",
+        .prompt = "sum_lines the corpus",
+        .max_tokens = 64,
+    };
+    if (cq.answer_over(req, catalog, allow_line, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        // invariant: an off-list model is refused before any reading
+        assert(err == error.ModelNotAllowed);
+    }
+    print("corpus_real_ember: model not allowed refused\n", .{});
+}
+
+/// An unrecognized operation refuses over the real corpus — no fake answer.
+fn unwelcome_unknown_op() !void {
+    var cat_buf: [max_catalog_bytes]u8 = undefined;
+    const catalog = try build_catalog(&cat_buf);
+    var buf: [lc.max_completion_len]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "rank the corpus",
+        .max_tokens = 64,
+    };
+    if (cq.answer_over(req, catalog, allow_line, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        // invariant: an unknown op refuses rather than inventing a reading
+        assert(err == error.UnknownOp);
+    }
+    print("corpus_real_ember: unknown op refused (no fake answer)\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_real_count_rye();
+        try welcome_real_sum_lines();
+        try welcome_real_paths_rye();
+        try unwelcome_model_not_allowed();
+        try unwelcome_unknown_op();
+        print("corpus_real_ember {s} — GREEN\n", .{corpus_real_ember_version});
+        return 0;
+    }
+    print("usage: corpus-real-ember selftest\n", .{});
+    return 1;
+}

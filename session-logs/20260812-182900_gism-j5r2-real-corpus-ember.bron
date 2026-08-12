@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260812.182900
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title GISM-J5r2 — the craft voice reads a real corpus (Ember on real files)
+prompt keep climbing the road Lindy-first crux-first; approve own design rounds; send each finished increment to both remotes; stop at custody gates
+think r1 carried the reading voice (Scribble) onto a real tree document. J5's next round carries the craft voice (Ember) onto a real corpus — the design doc's r2 — so every reading voice that answered over a demo now answers over real bytes.
+think Ember reads a Bron catalog of chunks (path · kind · line count). Its demo catalog's line counts were invented numbers. The honest real corpus: derive the catalog at compile time from real embedded tree files, so every count is provably the real file's own and cannot drift into a fiction — the count is computed from the very bytes the build embeds.
+think Corpus = three real files via symlinks in pond/apps/corpora/: manual/tutorials/greet.rye (rye, first-hour reference), tally/stack.rye (rye, a real module), tools/one_clock_witness.rish (rish, a real witness). count_rye reads 2; sum_lines totals the real counts; paths_rye lists the real rye paths in order.
+think Additive refactor mirroring r1: corpus_query gains pub compute_over/answer_over over an explicit catalog; the demo compute/answer delegate over pinned_catalog. corpus_real_ember.rye builds the catalog in-code (count_lines counts '\n' per member, bufPrint into a bounded 1024-byte buffer) and reads it through answer_over — one code path for demo and real.
+think The witness cross-checks Ember's sum_lines against an independent line total (awk END NR across all three files) — two tools, one answer (151) — so the Rye reading is bound to the tree by a second tool, and a real file's growth flows through both together (no false red). The demo reading (corpus_query) is rebuilt and re-run GREEN.
+think Rishi taught two lessons through the cross-check: rishi interpolates any ${name} AND bare $name inside a run string, so a shell variable errors UndefinedName — avoid $ entirely; and a sed backreference (\\1) did not survive rishi's escaping (empty capture), so extraction uses grep -oE twice, no backreference. Both are honest tooling reds owned in the moment, not tree reds.
+obs No Yield red surfaced this round — the three real files fit every Ember bound (3 chunks < max_chunks 64, longest path 28 < max_path_len 128, catalog well under 1024). Honest: r1's bound-raise was the real corpus's collision; r2's real files simply fit, so no allocation is booked.
+obs Witness tools/gism_j5_corpus_real_ember_witness.rish GREEN — real count_rye '2', real paths_rye 'manual/tutorials/greet.rye tally/stack.rye', real sum_lines '151' cross-checked by awk NR, allow-list + unknown-op refusals; the demo reading (corpus_query) re-run GREEN. TAME bans clean, width-check exit 0.
+loom witness=gism_j5_corpus_real_ember_witness result=GREEN cases=5 members=3 rye=2 sum_lines=151 catalog_bytes<1024 crosscheck=awk-NR
+file pond/apps/corpus_query.rye additive answer_over/compute_over over an explicit catalog; demo answer/compute delegate over pinned_catalog (untouched behavior)
+file pond/apps/corpus_real_ember.rye GISM-J5r2 — derives a real Bron catalog from three embedded tree files (real line counts), reads it through Ember; refusals hold
+file pond/apps/corpora/greet.rye symlink to manual/tutorials/greet.rye (corpus member, rye)
+file pond/apps/corpora/stack.rye symlink to tally/stack.rye (corpus member, rye)
+file pond/apps/corpora/one_clock.rish symlink to tools/one_clock_witness.rish (corpus member, rish)
+file tools/gism_j5_corpus_real_ember_witness.rish witness — GREEN (5 cases + demo re-run + awk-NR cross-check)
+recommend keep-going GISM-J5r3 — a corpus SET (a manifest of embedded corpora) so the voices read the tree's writing as a body, bounds proven against the largest real member; agent-doable, no gate reached
