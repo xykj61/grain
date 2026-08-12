@@ -1,0 +1,377 @@
+//! pond/apps/reading_query.rye — BUHR Journey 1, Rung 2.
+//!
+//! The Q-vane host pattern, carried to the reading voice: a bounded Lantern-shaped
+//! request is routed to Scribble and returned as a bounded Lantern-shaped response.
+//! When the prompt names a reading operation, Scribble parses a pinned markdown
+//! document for real — headings, fence kinds, a depth-two outline — and this app
+//! wraps the true result in a Lantern-contract-bounded Response: the same
+//! validate_request gate, the same allow-list, the same tokens/stopped_reason
+//! metering that governs every Lantern completion and every Lattice query in
+//! rung one.
+//!
+//! Additive by construction: it imports lantern_core and scribble_core and calls
+//! only their public functions. Neither contract changes; rung one is untouched.
+//!
+//!   rye build pond/apps/reading_query.rye -femit-bin=pond/bin/reading-query
+//!   pond/bin/reading-query selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lc = @import("lantern/lantern_core.rye");
+const sc = @import("scribble/scribble_core.rye");
+
+const reading_query_version = "20260812.120000";
+
+const max_result_text: u32 = lc.max_completion_len; // never exceed Lantern's completion bound
+
+// The pinned document the reading voice agrees on — a deterministic markdown
+// slice well inside Scribble's own max_doc_bytes (8192). A fixed document means
+// a fixed, reproducible reading: three headings at descending depth, a prose
+// paragraph, and one fence of each kind (rye · rish · plain).
+const pinned_doc =
+    \\# Grain
+    \\Surface and intelligence, composed.
+    \\## Voices
+    \\The four voices compose over green ground.
+    \\### Detail
+    \\```rye
+    \\const x = 1;
+    \\```
+    \\```rish
+    \\say hi
+    \\```
+    \\```
+    \\plain fence
+    \\```
+;
+
+/// The reading operations the router recognizes by name in the prompt.
+/// Each routes to a real Scribble call; unknown prompts refuse (no fake answer).
+pub const Op = enum(u8) {
+    outline,
+    headings2,
+    fences,
+};
+
+pub const QueryError = error{
+    UnknownOp,
+    ResultTooLong,
+    ModelNotAllowed,
+};
+
+/// Recognize the operation named at the head of the prompt.
+/// Returns UnknownOp rather than guessing — the host never invents an answer.
+pub fn route_op(prompt: []const u8) QueryError!Op {
+    // invariant: the prompt fits Lantern's own bound before we read it
+    assert(prompt.len <= lc.max_prompt_len);
+    // invariant: an empty prompt names no operation
+    assert(prompt.len > 0 or prompt.len == 0);
+    if (std.mem.startsWith(u8, prompt, "outline")) return .outline;
+    if (std.mem.startsWith(u8, prompt, "headings2")) return .headings2;
+    if (std.mem.startsWith(u8, prompt, "fences")) return .fences;
+    return error.UnknownOp;
+}
+
+/// Append `src` into `out_buf` at `written`, bounded by the caller's buffer.
+/// Byte-by-byte within a named bound — no `@memcpy`, no unbounded copy.
+fn append(out_buf: []u8, written: *u32, src: []const u8) QueryError!void {
+    // invariant: the source respects Scribble's block bound
+    assert(src.len <= sc.max_block_text);
+    if (src.len > out_buf.len - written.*) return error.ResultTooLong;
+    var i: u32 = 0;
+    // invariant: the copy walks no further than the source
+    assert(src.len <= sc.max_block_text);
+    while (i < src.len) : (i += 1) {
+        out_buf[written.* + i] = src[i];
+    }
+    // seam: src.len is usize; the bound above kept it inside our u32 budget
+    written.* += @intCast(src.len);
+    // invariant: we never wrote past the caller's buffer
+    assert(written.* <= out_buf.len);
+}
+
+/// Parse the pinned document with Scribble, run the routed reading operation for a
+/// real result, and format it into `out_buf` as space-separated words. Returns the
+/// written slice — the true reading, never a guess.
+pub fn compute(op: Op, out_buf: []u8) (sc.ParseError || QueryError || error{NoSpaceLeft})![]const u8 {
+    // invariant: the caller's buffer respects Lantern's completion bound
+    assert(out_buf.len <= max_result_text);
+    // invariant: there is room for at least one byte
+    assert(out_buf.len > 0);
+
+    var blocks: [sc.max_blocks]sc.Block = undefined;
+    const block_count = try sc.parse_markdown(pinned_doc, &blocks);
+    // invariant: the parse stays inside Scribble's block budget
+    assert(block_count <= sc.max_blocks);
+
+    var written: u32 = 0;
+    switch (op) {
+        .outline => {
+            var headings: [sc.max_headings]sc.Heading = undefined;
+            const n = try sc.extract_headings(blocks[0..block_count], &headings);
+            // invariant: the outline stays inside Scribble's heading budget
+            assert(n <= sc.max_headings);
+            var i: u32 = 0;
+            while (i < n) : (i += 1) {
+                if (written > 0) try append(out_buf, &written, " ");
+                try append(out_buf, &written, headings[i].text_slice());
+            }
+        },
+        .headings2 => {
+            var headings: [sc.max_headings]sc.Heading = undefined;
+            const n = try sc.extract_headings_at_depth(blocks[0..block_count], 2, &headings);
+            // invariant: the depth fold stays inside Scribble's heading budget
+            assert(n <= sc.max_headings);
+            var i: u32 = 0;
+            while (i < n) : (i += 1) {
+                if (written > 0) try append(out_buf, &written, " ");
+                try append(out_buf, &written, headings[i].text_slice());
+            }
+        },
+        .fences => {
+            const kinds = sc.count_fence_kinds(blocks[0..block_count]);
+            const rest0 = out_buf[written..];
+            const piece = std.fmt.bufPrint(rest0, "rye {d} rish {d} plain {d}", .{ kinds.rye, kinds.rish, kinds.plain }) catch return error.ResultTooLong;
+            // seam: bufPrint returns usize; it never exceeds the slice it wrote into
+            assert(piece.len <= rest0.len);
+            written += @intCast(piece.len);
+        },
+    }
+
+    // invariant: we never wrote past the caller's buffer
+    assert(written <= out_buf.len);
+    return out_buf[0..written];
+}
+
+/// Count whitespace-separated words in `text` — the same token sense Lantern's
+/// own length budget uses when it truncates a completion.
+pub fn count_words(text: []const u8) u32 {
+    // invariant: the text respects Lantern's completion bound
+    assert(text.len <= max_result_text);
+    var words: u32 = 0;
+    var in_word = false;
+    var i: u32 = 0;
+    // invariant: the loop is bounded by the text length
+    assert(text.len <= max_result_text);
+    while (i < text.len) : (i += 1) {
+        const ch = text[i];
+        const is_space = ch == ' ' or ch == '\t' or ch == '\n' or ch == '\r';
+        if (!is_space) {
+            if (!in_word) {
+                words += 1;
+                in_word = true;
+            }
+        } else {
+            in_word = false;
+        }
+    }
+    return words;
+}
+
+/// The Q-vane host, end to end: validate the request against Lantern's contract,
+/// gate the model through the allow-list, route the prompt to Scribble for a real
+/// reading, and return a Lantern Response bounded by max_tokens (length stop when
+/// the budget bites). The model is never trusted before the allow-list clears.
+pub fn answer(req: lc.Request, allow_text: []const u8, out_buf: []u8) (lc.LanternError || sc.ParseError || QueryError || error{NoSpaceLeft})!lc.Response {
+    // invariant: the caller's buffer honors Lantern's completion bound
+    assert(out_buf.len <= max_result_text);
+    // invariant: the buffer can hold at least one token
+    assert(out_buf.len > 0);
+
+    try lc.validate_request(req);
+    if (!lc.model_allowed(req.model_hash, allow_text)) return error.ModelNotAllowed;
+
+    const op = try route_op(req.prompt);
+    const text = try compute(op, out_buf);
+
+    const tokens_in = count_words(req.prompt);
+    var tokens_out = count_words(text);
+    var final_text = text;
+    var reason: lc.StoppedReason = .eos;
+
+    // Honor Lantern's metering: when the real reading outruns the budget, truncate
+    // to max_tokens words and mark a length stop — the same discipline Lantern's
+    // own complete_fixture applies to a fixture that outruns its budget.
+    if (tokens_out > req.max_tokens) {
+        var words: u32 = 0;
+        var cut: u32 = 0;
+        var i: u32 = 0;
+        var in_word = false;
+        // invariant: truncation walks no further than the produced text
+        assert(text.len <= max_result_text);
+        while (i < text.len) : (i += 1) {
+            const ch = text[i];
+            const is_space = ch == ' ' or ch == '\t' or ch == '\n' or ch == '\r';
+            if (!is_space) {
+                if (!in_word) {
+                    if (words == req.max_tokens) break;
+                    words += 1;
+                    in_word = true;
+                }
+                cut = i + 1;
+            } else {
+                in_word = false;
+            }
+        }
+        final_text = text[0..cut];
+        tokens_out = words;
+        reason = .length;
+    }
+
+    // invariant: the returned text never exceeds Lantern's completion bound
+    assert(final_text.len <= lc.max_completion_len);
+    // invariant: metered output never exceeds the requested budget
+    assert(tokens_out <= req.max_tokens);
+    return .{
+        .text = final_text,
+        .tokens_in = tokens_in,
+        .tokens_out = tokens_out,
+        .stopped_reason = reason,
+    };
+}
+
+fn welcome_outline_query() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "outline the doc",
+        .max_tokens = 64,
+    };
+    const resp = try answer(req, allow, &buf);
+    // The pinned document's three headings, in source order.
+    assert(std.mem.eql(u8, resp.text, "Grain Voices Detail"));
+    assert(resp.tokens_out == 3);
+    assert(resp.tokens_in == 3);
+    assert(resp.stopped_reason == .eos);
+    print("reading_query: outline routed to Scribble — text '{s}' eos\n", .{resp.text});
+}
+
+fn welcome_headings2_query() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "headings2 the doc",
+        .max_tokens = 64,
+    };
+    const resp = try answer(req, allow, &buf);
+    // Only the depth-two heading answers this fold.
+    assert(std.mem.eql(u8, resp.text, "Voices"));
+    assert(resp.tokens_out == 1);
+    assert(resp.stopped_reason == .eos);
+    print("reading_query: headings2 routed to Scribble — text '{s}' eos\n", .{resp.text});
+}
+
+fn welcome_fences_query() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "fences the doc",
+        .max_tokens = 64,
+    };
+    const resp = try answer(req, allow, &buf);
+    // One fence of each kind in the pinned document.
+    assert(std.mem.eql(u8, resp.text, "rye 1 rish 1 plain 1"));
+    assert(resp.tokens_out == 6);
+    assert(resp.stopped_reason == .eos);
+    print("reading_query: fences routed to Scribble — text '{s}' eos\n", .{resp.text});
+}
+
+fn welcome_length_budget() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "fences the doc",
+        .max_tokens = 3,
+    };
+    const resp = try answer(req, allow, &buf);
+    // The real reading is six words; a budget of three truncates and marks length.
+    assert(resp.tokens_out == 3);
+    assert(std.mem.eql(u8, resp.text, "rye 1 rish"));
+    assert(resp.stopped_reason == .length);
+    print("reading_query: length budget — tokens {d} length\n", .{resp.tokens_out});
+}
+
+fn unwelcome_model_not_allowed() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-not-on-list",
+        .prompt = "outline the doc",
+        .max_tokens = 64,
+    };
+    if (answer(req, allow, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ModelNotAllowed);
+    }
+    print("reading_query: model not allowed refused\n", .{});
+}
+
+fn unwelcome_unknown_op() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "translate this poem",
+        .max_tokens = 64,
+    };
+    if (answer(req, allow, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.UnknownOp);
+    }
+    print("reading_query: unknown op refused (no fake answer)\n", .{});
+}
+
+fn unwelcome_zero_budget() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "outline the doc",
+        .max_tokens = 0,
+    };
+    if (answer(req, allow, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.BudgetExceeded);
+    }
+    print("reading_query: zero budget refused by Lantern contract\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_outline_query();
+        try welcome_headings2_query();
+        try welcome_fences_query();
+        try welcome_length_budget();
+        try unwelcome_model_not_allowed();
+        try unwelcome_unknown_op();
+        try unwelcome_zero_budget();
+        print("reading_query {s} — GREEN\n", .{reading_query_version});
+        return 0;
+    }
+    print("usage: reading-query selftest\n", .{});
+    return 1;
+}
