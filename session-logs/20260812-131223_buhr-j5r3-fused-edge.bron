@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260812.131223
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR-J5r3 — the fused edge, read upstream of program
+prompt Autonomous loop — take the next agent-doable lap Lindy-first crux-first, send each finished increment, stop at custody gates.
+think Rungs 1 and 2 left the read lane and program lane independent (fused on one graph, each re-read an append). The named next crux: a program node that depends on a read node so a re-read flows downstream — the Realidream foundation's two-sources-feed-one-node edge.
+think Designed derive_from_read: read the head content of a read/ lane, compute a pure summary (read-len=<n>, bounded to max_summary_bytes via bufPrint into a stack buffer), append it as a program lane — open on the first derive, commit on each later one. The read is upstream of the program because the program content is a named function of the read content.
+think Proved the downstream flow honestly: refresh the read to 10 bytes, re-derive, the new program node reads read-len=10 while the earlier program node still recalls read-len=4 — referential transparency across the edge, the change flowing only on a fresh derive, never a silent mutation. Three refusals guard the edge direction: NotAReadPath (source), NotAProgramPath (destination), LaneUnknown (unpinned read).
+obs No new abstraction — imports realidream_reader (pin), realidream_reread (refresh), mantra_editor (open/commit), recall_lap1 (recall); calls only public functions. Reads no network — read content in-process, the real fetch held as its own seam.
+obs Witness GREEN (3 welcomes + rung-two re-run additive); tame_style_check bans clean, width-check clean on the new file (the summary.len vs u32 bound is a std bufPrint seam comparison).
+loom witness=buhr_realidream_derive_witness welcomes=3 rung2_rerun=green network_reads=0 summary_bound_bytes=24
+file pond/apps/realidream_derive.rye derive_from_read — a program node derived from a read node's head content
+file tools/buhr_realidream_derive_witness.rish the witness proving derive reflects read, downstream flow, and the three edge refusals
+file work-in-progress/REMEMBER.md BUHR-J5r3 landing accreted; next-crux advanced to the two-source fusion + held network seam
+recommend keep-going next crux is two read sources feeding one program node (the foundation's fusion whole); the real network fetch stays the held seam for Keaton's word
