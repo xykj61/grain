@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260812.184524
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title GISM-J5r4 — the reading is true to the bytes (Journey 5 closes)
+prompt Continue the loop past J5r3 to the next agent-doable crux, Lindy-first crux-first, sending each increment; stop only at custody gates
+think J5r4 is the journey's closing crux named in the exploration and REMEMBER — a witness that a voice's reported reading matches what the real document actually contains, so a voice can never drift from a corpus a keeper can open and check.
+think Chose manual/tutorials/first-witness.md as the corpus: a real tutorial with the honest adversary built in — line 57 `# my_first_witness.rish` sits INSIDE a ```rish fence, so a naive `grep -cE '^#'` counts seven headings while a fence-aware reading reports the true six. The doc proves the fence-aware reading genuinely corrects a line-blind count, not a doc without the trap.
+think Wrote tools/fixtures/md_truth.awk — an independent, fence-aware measurement (headings / rye / rish / plain / words), the awk program in a fixture file so no shell $ var trips Rishi's ${} interpolation. It reports headings 6 rye 0 rish 1 plain 4 words 45.
+think corpus_true.rye reads the same bytes through Scribble (the engine the voice uses) and the reading_query voice: extract_headings gives 6, count_fence_kinds gives rye 0 rish 1 plain 4, the outline word count gives 45 — printed in awk's exact field order. Two in-app depth checks: every reported heading is verbatim in the doc bytes (no invented heading), and none is the fenced pseudo-heading (respects the code fence). A welcome proves the naive line-prefix count is 7 (the adversary is real).
+obs Three tools converge on one measurement — Scribble's fence-aware reading, the reading_query voice over it, and the independent awk — which is exactly what "true to the bytes" should mean: a reading a keeper can reproduce with a second tool. No fresh Yield red; first-witness.md fits every raised bound. Built and went GREEN first pass; TAME style clean.
+loom witness=gism_j5_corpus_true_witness corpus=first-witness.md headings=6 rish=1 plain=4 words=45 naive_headings=7 reds=0
+file pond/apps/corpus_true.rye the reading-truth reader — voice vs bytes, fence-aware, cross-checked by awk
+file tools/gism_j5_corpus_true_witness.rish witness — GREEN + naive-overcount + awk field-for-field cross-check + demo re-run
+file tools/fixtures/md_truth.awk independent fence-aware markdown measurement (headings/rye/rish/plain/words)
+file pond/apps/corpora/first_witness.md symlink to manual/tutorials/first-witness.md — the real corpus with the fenced-heading adversary
+file work-in-progress/REMEMBER.md living card — GISM-J5r4 landed row (Journey 5 closes) + git nib
+recommend keep-going GISM Journey 6 (Provenance) or Journey 5 wrap — the next Yield crux is a real document carrying a Kumara-signed, content-addressed chain of custody (Tablecloth-keyed on real artifacts), Lindy-first on the whole 1,024-round road
