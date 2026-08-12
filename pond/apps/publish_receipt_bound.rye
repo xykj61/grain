@@ -1,0 +1,135 @@
+//! pond/apps/publish_receipt_bound.rye — TACT Journey 2, Rung 2: the receipt bound to the ledger.
+//!
+//! Rung one proved a receipt's signature offline against a supplied keeper key. That answers "is
+//! this signature authentic?" but not "authentic *by whom*, and are they still a real keeper?"
+//! This rung binds the receipt to the settled ledger: the publisher's Deed verifies against the
+//! constellation commitment (the current member, not a stale or forged claim), the receipt's
+//! point is exactly the Deed's point, and the signature verifies by that Deed's own keeper key.
+//! Only when all three hold does the receipt resolve to a place — the publisher's galaxy under
+//! the topology.
+//!
+//! So a recipient learns not merely that a signature checks out, but that it belongs to a
+//! settled, current keeper at a named place in the fractal. A Deed the constellation does not
+//! hold refuses NotMember; a receipt whose point disagrees with the Deed refuses NotMember; a
+//! signature the Deed's keeper never made refuses BadSignature.
+//!
+//! Composed over rung one (the offline receipt) and the settlement ledger's public verify +
+//! place_of. Demo keeper seeds only, in-process, no network — the serve transport stays the
+//! Comlink-served custody gate (r4).
+//!
+//!   rye build pond/apps/publish_receipt_bound.rye -femit-bin=pond/bin/publish-receipt-bound
+//!   pond/bin/publish-receipt-bound selftest
+//!
+//! Scope: active-designing/20260812-173656_tact-journey2-publishing-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const receipt_mod = @import("publish_receipt.rye");
+const settlement = @import("constellation.rye");
+const topology = @import("topology.rye");
+const tilak = @import("kumara_tilak.rye");
+const kumara = @import("kumara.rye");
+
+pub const publish_receipt_bound_version = "20260812.173656";
+
+pub const BoundError = error{
+    NotMember, // the Deed is not the constellation's current member, or the point disagrees
+    BadSignature, // the Deed's keeper never signed this publication
+};
+
+/// Bind a receipt to the settled ledger. The Deed must verify against the constellation (the
+/// current member), the receipt's point must be exactly the Deed's, and the signature must
+/// verify by the Deed's keeper. On success the receipt resolves to the publisher's place.
+pub fn verify_bound(
+    receipt: *const receipt_mod.Publication,
+    con: *const settlement.Constellation,
+    deed: *const settlement.Deed,
+) BoundError!topology.Address {
+    // invariant: a bound check reads a real point inside the universe
+    assert(deed.point < topology.universe_points);
+    if (!settlement.verify(con, deed)) return error.NotMember;
+    if (receipt.point != deed.point) return error.NotMember;
+    if (!receipt_mod.verify_offline(receipt, deed.keeper)) return error.BadSignature;
+    const place = topology.decode(deed.point) orelse return error.NotMember;
+    // invariant: a verified, current member resolves to a real place
+    assert(place.tier == .galaxy or place.tier == .star or place.tier == .planet);
+    return place;
+}
+
+// ---- witnesses ----
+
+// Example seeds — plainly not a real keeper's key, so no identity is invented.
+const key_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
+const keeper_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
+const other_keeper: [kumara.seed_length]u8 = .{0x55} ** kumara.seed_length;
+const demo_galaxy: u32 = 3;
+
+fn open_demo() settlement.Opened {
+    const bind = tilak.make_bind(&key_seed, &keeper_seed);
+    return settlement.open(demo_galaxy, &bind) catch unreachable;
+}
+
+/// A receipt signed by the galaxy's keeper, over the galaxy's own point, binds to the ledger and
+/// resolves to the publisher's galaxy place.
+fn welcome_bound_receipt_resolves_place() !void {
+    const opened = open_demo();
+    const receipt = try receipt_mod.make_publication(&keeper_seed, demo_galaxy, "charter.txt", "the founding charter");
+    const place = try verify_bound(&receipt, &opened.con, &opened.deed);
+    assert(place.tier == .galaxy);
+    print("publish_receipt_bound: a current member's receipt bound to the ledger and resolved a galaxy place.\n", .{});
+}
+
+/// A Deed the constellation does not hold refuses NotMember — a tampered Deed is no longer the
+/// committed member.
+fn unwelcome_non_member_refuses() !void {
+    var opened = open_demo();
+    const receipt = try receipt_mod.make_publication(&keeper_seed, demo_galaxy, "charter.txt", "the founding charter");
+    opened.deed.version += 1; // the Deed no longer matches its commitment
+    const bound = verify_bound(&receipt, &opened.con, &opened.deed);
+    assert(bound == error.NotMember);
+    print("publish_receipt_bound: a tampered Deed refused NotMember; it is no longer the committed member.\n", .{});
+}
+
+/// A receipt whose point disagrees with the Deed refuses NotMember — the receipt and the proven
+/// identity must name the same point.
+fn unwelcome_point_disagreement_refuses() !void {
+    const opened = open_demo();
+    // a receipt claiming a different point, even signed authentically by this keeper
+    const receipt = try receipt_mod.make_publication(&keeper_seed, 4, "charter.txt", "the founding charter");
+    const bound = verify_bound(&receipt, &opened.con, &opened.deed);
+    assert(bound == error.NotMember);
+    print("publish_receipt_bound: a receipt whose point disagrees with the Deed refused NotMember.\n", .{});
+}
+
+/// A signature the Deed's keeper never made refuses BadSignature — even a current member's Deed
+/// cannot vouch for a signature it did not make.
+fn unwelcome_wrong_signer_refuses() !void {
+    const opened = open_demo();
+    // signed by a keeper that is not the Deed's keeper
+    const receipt = try receipt_mod.make_publication(&other_keeper, demo_galaxy, "charter.txt", "the founding charter");
+    const bound = verify_bound(&receipt, &opened.con, &opened.deed);
+    assert(bound == error.BadSignature);
+    print("publish_receipt_bound: a signature the Deed's keeper never made refused BadSignature.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_bound_receipt_resolves_place();
+    try unwelcome_non_member_refuses();
+    try unwelcome_point_disagreement_refuses();
+    try unwelcome_wrong_signer_refuses();
+    print("publish_receipt_bound {s} — GREEN\n", .{publish_receipt_bound_version});
+    print("GREEN: TACT-J2r2 publish_receipt_bound; a receipt binds only to a current member at its own point.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest();
+    }
+    print("usage: publish-receipt-bound selftest\n", .{});
+    return 1;
+}
