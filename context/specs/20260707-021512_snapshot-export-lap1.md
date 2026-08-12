@@ -7,6 +7,7 @@
 
 *Written by Kaeden and Rio 3.*
 Radiant pass `20260725.035645`
+Correction pass `20260811.233044` — `applyBatch` citation aligned to the landed snake_case `resin_batch.apply_batch`. Behavior unchanged; a citation fix.
 
 ---
 
@@ -26,7 +27,7 @@ The snapshot is a **concatenation of proven resin-batch frames** (`kind 0x03`, s
 | `batch_count` | Number of following batches |
 | `batch[i]` | `u32 len` + `len` bytes of one signed resin-batch |
 
-Import applies each batch with `resin_batch.applyBatch`; any refusal leaves the destination empty.
+Import applies each batch with `resin_batch.apply_batch`; any refusal leaves the destination empty.
 
 ## Implementation
 
