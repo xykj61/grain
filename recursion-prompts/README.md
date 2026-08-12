@@ -61,7 +61,7 @@ Census witness: [`../tools/recursion_prompts_census_witness.rish`](../tools/recu
 
 ## Watching a run live
 
-Plain `--verbose` does **not** stream through a pipe ([claude-code #733](https://github.com/anthropics/claude-code/issues/733)); the streaming format is **`--output-format stream-json --verbose`**, which emits one JSON event per line as they happen. On a pier without `jq` the raw NDJSON scrolls live — ugly, yet honest proof the lap is working. For readable output, add `jq` (`nix-shell -p jq`) and pipe the stream through it:
+Plain `--verbose` does **not** stream through a pipe ([claude-code #733](https://github.com/anthropics/claude-code/issues/733)); the streaming format is **`--output-format stream-json --verbose`**, which emits one JSON event per line as they happen. On a pier without `jq` the raw NDJSON scrolls live — ugly, yet honest proof the lap is working. For readable output, install `jq` on the pier once — `sudo sh tools/pier_jq_install.sh` (guarded, reversible; infuses `jq` into the NixOS config and rebuilds) — or a throwaway `nix-shell -p jq`, then pipe the stream through it:
 
 ```sh
 … claude --output-format stream-json --verbose -p '…' \
