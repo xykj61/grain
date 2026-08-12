@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260812.195056
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title AYRE-J7r3 — the fair-trade certificate travels
+prompt continue the 1024-round road Lindy-first crux-first; take the next agent-doable lap, send each finished increment; stop only at custody gates
+think REMEMBER (refreshed by r2 this session) names the next crux — AYRE-J7r3, the certificate travels: render the satisfied signed attestations to Bron, parse back byte-for-byte, still satisfied and checkable offline
+think studied commerce_trade_bron.rye for the tree's Bron render/parse idiom — flat key/value lines, to_hex/from_hex/nibble, a PortableTrade owning its buffers so views never point into freed text, unknown field refused not dropped
+think wrote pond/apps/fairtrade_cert_bron.rye — format fairtrade-signed-v1, one `attest <name> <point> <sig-hex>` line per certified criterion; PortableCert owns names/points/sigs; as_record rebuilds a SignedRecord so rung two's verify_held / evaluate_signed re-check the traveled bundle; render refuses NotCertified rather than emit a lying line; parse refuses UnknownField/BadLine/BadInt/BadHex/NameTooLong/TooManyCriteria
+think proved still-satisfied two ways — still_satisfied re-verifies each traveled attestation via r2's join, and re-running evaluate_signed over the traveled bundle yields the identical Certified; a flipped traveled signature refuses BadAttestation offline
+obs additive — composes fairtrade_cert + fairtrade_cert_signed + kumara over public API (r2 re-runs GREEN under the witness); reads no network, the serve transport stays the Comlink-served gate; demo keeper seeds only, custody gate #3 untouched
+obs the traveled bundle is self-contained for the signature check; trust that a point owns its keeper key stays the recipient's keyring (as publish_receipt lets the recipient supply the key), the settled-ledger binding a deeper rung
+loom witness=ayre_j7_fairtrade_cert_bron_witness cases=3 rung_two_rerun=green tame=clean width=clean
+file pond/apps/fairtrade_cert_bron.rye AYRE-J7r3 — a satisfied signed certificate renders to Bron and parses back still satisfied
+file tools/ayre_j7_fairtrade_cert_bron_witness.rish witness — builds r2+r3, asserts GREEN, round-trip preservation, tamper + malformed refusals
+file work-in-progress/REMEMBER.md living card — AYRE-J7r3 landed row + git nib refresh
+recommend keep-going AYRE-J7r4 — the certificate tied to a fair trade (book the certified cooperative's trade fairly in Dimeroll, mirroring commerce_trade; facts only, disbursement custody gate #3)
