@@ -1,0 +1,86 @@
+//! pond/apps/provenance_true.rye — GISM Journey 6 (Provenance), Rung 4 (closes the journey).
+//!
+//! Season 2, Yield: a signature is only as honest as its tie to the real bytes. Rungs
+//! one through three bound a real artifact to a settled identity, carried the signed word
+//! out of the store as a receipt, and lengthened custody into a verifiable chain — each
+//! over the same real embedded document. This closing rung proves the property the whole
+//! journey rests on: the facts a publication **signs** (the whole length and the content
+//! digest) are **true to the real file a keeper can open and hash**, so a signature can
+//! never vouch for bytes the corpus does not contain.
+//!
+//! Mirroring GISM-J5r4 (the reading true to the bytes), the tie is proven by an
+//! independent second tool: the app prints the signed length and the signed SHA-256; the
+//! witness cross-checks both against `wc -c` and `sha256sum` of the same real file on
+//! disk — two tools, one answer. In-app the binding is shown tight: the signed digest
+//! matches the real content, and a single-byte-different copy does **not** match, so the
+//! digest pins these exact bytes and no neighbor.
+//!
+//! Composed over publish_receipt (TACT-J2) public API over the real embedded artifact;
+//! demo keeper seeds only, no custody crosses. This closes GISM Journey 6.
+//!
+//!   rye build pond/apps/provenance_true.rye -femit-bin=pond/bin/provenance-true
+//!   pond/bin/provenance-true selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const receipt_mod = @import("publish_receipt.rye");
+const kumara = @import("kumara.rye");
+
+const provenance_true_version = "20260812.191000";
+
+// The same real artifact rungs one through three carried — the file a keeper can open.
+const real_doc = @embedFile("corpora/waymark_green.md");
+
+const p_keeper: [kumara.seed_length]u8 = .{0x88} ** kumara.seed_length;
+const planet_num: u32 = 267;
+const doc_name = "waymark-e182-green.md";
+const hex_digits = "0123456789abcdef";
+
+fn pubkey_of(seed: *const [kumara.seed_length]u8) [receipt_mod.pubkey_len]u8 {
+    return kumara.keypair_from_seed(seed).public_key.bytes;
+}
+
+/// The signed facts are true to the real file: the receipt's whole length equals the
+/// real byte count, its digest matches the real content, and a one-byte-different copy
+/// does not — the digest pins these exact bytes. The length and digest are printed for
+/// the witness to cross-check against wc -c and sha256sum.
+fn welcome_signed_facts_true() !void {
+    const receipt = try receipt_mod.make_publication(&p_keeper, planet_num, doc_name, real_doc);
+    // invariant: the signed length is exactly the real file's byte count
+    assert(receipt.whole_len == real_doc.len);
+    // invariant: the signature verifies offline against the publisher's key
+    assert(receipt_mod.verify_offline(&receipt, pubkey_of(&p_keeper)));
+    // invariant: the signed digest is true to the real content
+    assert(receipt_mod.matches_content(&receipt, real_doc));
+
+    // The binding is tight: a single byte flipped no longer matches the signed digest.
+    var neighbor: [real_doc.len]u8 = real_doc.*;
+    neighbor[real_doc.len - 1] +%= 1;
+    // invariant: the digest pins these exact bytes and no neighbor
+    assert(!receipt_mod.matches_content(&receipt, &neighbor));
+
+    var hex: [receipt_mod.digest_len * 2]u8 = undefined;
+    var i: u32 = 0;
+    // invariant: the hex walk stays inside the digest's byte width
+    assert(receipt.digest.len == receipt_mod.digest_len);
+    while (i < receipt_mod.digest_len) : (i += 1) {
+        hex[i * 2] = hex_digits[receipt.digest[i] >> 4];
+        hex[i * 2 + 1] = hex_digits[receipt.digest[i] & 0x0F];
+    }
+    print("provenance_true: signed_len {d}\n", .{receipt.whole_len});
+    print("provenance_true: signed_sha256 {s}\n", .{hex});
+    print("provenance_true: the signed facts are true to the real bytes (a neighbor refuses)\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_signed_facts_true();
+        print("provenance_true {s} — GREEN\n", .{provenance_true_version});
+        return 0;
+    }
+    print("usage: provenance-true selftest\n", .{});
+    return 1;
+}

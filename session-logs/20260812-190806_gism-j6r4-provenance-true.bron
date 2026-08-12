@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260812.190806
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title GISM-J6r4 — provenance true to the bytes (Journey 6 closes)
+prompt Autonomous loop — take the next agent-doable lap Lindy-first crux-first; approve own design rounds; make progress before checking in; send each finished increment; STOP only at custody gates
+think GISM-J6 r1–r3 landed and sent this turn (real artifact owner-signed + red #73 · receipt travels · custody chain); the exploration named r4 as the journey close — provenance true to the bytes, mirroring J5r4 (reading true to the bytes)
+think The crux: a signature is only as honest as its tie to the real bytes; prove the signed facts (whole length, content digest) equal an independent measurement of the real file a keeper can open and hash
+obs Built pond/apps/provenance_true.rye over the real embedded waymark green-claim: the receipt's signed length equals real_doc.len, the signed digest matches the real content, and a single-byte-different neighbor does NOT match (the digest pins these exact bytes); prints signed_len 213 and signed_sha256 2010d160…0a6d
+obs Witness cross-checks both signed facts against an independent wc -c (213) and sha256sum (2010d160…0a6d) of the same file on disk — two tools, one answer — so a signature can never vouch for bytes the corpus does not contain
+obs No fresh Yield red — the real bytes fit; composed over publish_receipt public API; GREEN first pass; demo seeds only, no custody crosses
+obs GISM Journey 6 (Provenance) now stands complete end to end: r1 real artifact owner-signed (+ red #73) · r2 receipt travels · r3 custody chain · r4 true to the bytes
+loom witness=gism_j6_provenance_true_witness cases=1 signed_len=213 wc_bytes=213 sha256_crosscheck=match
+file pond/apps/provenance_true.rye the closing rung — signed facts true to the real file (GISM-J6r4)
+file tools/gism_j6_provenance_true_witness.rish witness — signed length/digest vs wc -c + sha256sum, journey close
+recommend check-in (Claude) GISM Journey 6 complete (four rounds landed and sent this turn); next durable crux is Journey 7 (Fair-trade, AYRE) or the red #73 chunking-storage rung — worth confirming the Lindy-first order before opening the next journey
