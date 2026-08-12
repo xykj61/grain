@@ -1,0 +1,156 @@
+//! pond/apps/provenance_receipt.rye — GISM Journey 6 (Provenance), Rung 2.
+//!
+//! Season 2, Yield: provenance that outlives the store it was born in. Rung one bound
+//! a real tree document to a settled identity inside the owner-signed catalog; this
+//! rung carries that signed word *out of the store* as a portable **receipt** for the
+//! same real bytes, and proves it travels as text and returns whole.
+//!
+//! TACT Journey 2 built the receipt machinery (publish_receipt · publish_receipt_bron)
+//! and proved it over a hand-written demo sentence. Here the receipt vouches for a
+//! **real** tree document — the same landed-edge waymark green-claim rung one carried,
+//! embedded at compile time through a symlink. The whole chain is proven over real
+//! bytes: a receipt for the real content verifies offline against the publisher's key
+//! (no store, no network), renders to a `format publication-v1` Bron record, parses
+//! back byte-for-byte, still verifies, and the held **real** content matches the bound
+//! digest. The digest the receipt signs is cross-checked in the witness against an
+//! independent `sha256sum` of the same real file — two tools, one answer — so the
+//! signed provenance can never drift from what a keeper computes by hand.
+//!
+//! Every tamper refuses: a flipped real byte fails the content half (matches_content),
+//! a wrong keeper key fails the signature half, an unknown record field refuses.
+//!
+//! Additive by construction: it composes publish_receipt / publish_receipt_bron public
+//! API over demo keeper seeds only; those demo selftests stay their own GREEN binaries.
+//! No custody crosses (the real key and the serve transport are held gates).
+//!
+//!   rye build pond/apps/provenance_receipt.rye -femit-bin=pond/bin/provenance-receipt
+//!   pond/bin/provenance-receipt selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const receipt_mod = @import("publish_receipt.rye");
+const receipt_bron = @import("publish_receipt_bron.rye");
+const kumara = @import("kumara.rye");
+
+const provenance_receipt_version = "20260812.190000";
+
+// The real artifact — the same living waymark green-claim rung one carried, embedded
+// at compile time. The receipt vouches for exactly these real bytes.
+const real_doc = @embedFile("corpora/waymark_green.md");
+
+// Demo keeper seed and its settled planet point — no real key, no custody.
+const p_keeper: [kumara.seed_length]u8 = .{0x88} ** kumara.seed_length;
+const other_keeper: [kumara.seed_length]u8 = .{0x55} ** kumara.seed_length;
+const planet_num: u32 = 267;
+
+const doc_name = "waymark-e182-green.md";
+const hex_digits = "0123456789abcdef";
+
+fn pubkey_of(seed: *const [kumara.seed_length]u8) [receipt_mod.pubkey_len]u8 {
+    return kumara.keypair_from_seed(seed).public_key.bytes;
+}
+
+fn receipts_equal(a: *const receipt_mod.Publication, b: *const receipt_mod.Publication) bool {
+    return a.point == b.point and a.whole_len == b.whole_len and
+        std.mem.eql(u8, a.name(), b.name()) and
+        std.mem.eql(u8, &a.digest, &b.digest) and std.mem.eql(u8, &a.sig, &b.sig);
+}
+
+/// A receipt for the real document verifies offline and its real content matches the
+/// bound digest — both halves of trust green, over real bytes, with no store. The
+/// bound digest is printed as hex for the witness to cross-check against sha256sum.
+fn welcome_real_receipt_verifies() !void {
+    const receipt = try receipt_mod.make_publication(&p_keeper, planet_num, doc_name, real_doc);
+    // invariant: the receipt records the exact real length it signed
+    assert(receipt.whole_len == real_doc.len);
+    // invariant: the signature verifies offline against the publisher's key
+    assert(receipt_mod.verify_offline(&receipt, pubkey_of(&p_keeper)));
+    // invariant: the held real content matches the bound digest
+    assert(receipt_mod.matches_content(&receipt, real_doc));
+
+    var hex: [receipt_mod.digest_len * 2]u8 = undefined;
+    var i: u32 = 0;
+    // invariant: the hex walk stays inside the digest's byte width
+    assert(receipt.digest.len == receipt_mod.digest_len);
+    while (i < receipt_mod.digest_len) : (i += 1) {
+        hex[i * 2] = hex_digits[receipt.digest[i] >> 4];
+        hex[i * 2 + 1] = hex_digits[receipt.digest[i] & 0x0F];
+    }
+    print("provenance_receipt: real receipt — {d} bytes, sha256 {s}, verified offline\n", .{ receipt.whole_len, hex });
+}
+
+/// The receipt for the real document travels as Bron and returns byte-for-byte, still
+/// verifying offline and still matching the real content — provenance outlives the store.
+fn welcome_real_receipt_travels() !void {
+    var buf: [receipt_bron.max_record]u8 = undefined;
+    const receipt = try receipt_mod.make_publication(&p_keeper, planet_num, doc_name, real_doc);
+    const n = try receipt_bron.render(&receipt, &buf);
+    const back = try receipt_bron.parse(buf[0..n]);
+    // invariant: the round-tripped receipt equals the original, field for field
+    assert(receipts_equal(&receipt, &back));
+    // invariant: the recovered receipt still verifies offline
+    assert(receipt_mod.verify_offline(&back, pubkey_of(&p_keeper)));
+    // invariant: and still matches the real content it vouches for
+    assert(receipt_mod.matches_content(&back, real_doc));
+    print("provenance_receipt: real receipt travelled through Bron ({d} bytes) and returned whole, still verifying\n", .{n});
+}
+
+/// A single flipped real byte fails the content half even under an authentic signature —
+/// possessing a valid receipt is never license to swap the real bytes.
+fn unwelcome_tampered_real_content() !void {
+    const receipt = try receipt_mod.make_publication(&p_keeper, planet_num, doc_name, real_doc);
+    // the signature is authentic...
+    assert(receipt_mod.verify_offline(&receipt, pubkey_of(&p_keeper)));
+    // ...yet a real document with one byte flipped fails the digest half.
+    var tampered: [real_doc.len]u8 = real_doc.*;
+    tampered[0] +%= 1;
+    // invariant: tampered real content refuses against an authentic receipt
+    assert(!receipt_mod.matches_content(&receipt, &tampered));
+    print("provenance_receipt: tampered real content refused (the digest is bound in)\n", .{});
+}
+
+/// A different keeper's key refuses the signature half — the receipt names exactly who
+/// published the real document.
+fn unwelcome_wrong_keeper() !void {
+    const receipt = try receipt_mod.make_publication(&p_keeper, planet_num, doc_name, real_doc);
+    // invariant: a key that never signed these facts refuses
+    assert(!receipt_mod.verify_offline(&receipt, pubkey_of(&other_keeper)));
+    print("provenance_receipt: wrong keeper key refused; the receipt names who published\n", .{});
+}
+
+/// An unknown field in the travelled record refuses — never silently dropped.
+fn unwelcome_unknown_field() !void {
+    var buf: [receipt_bron.max_record]u8 = undefined;
+    const receipt = try receipt_mod.make_publication(&p_keeper, planet_num, doc_name, real_doc);
+    const n = try receipt_bron.render(&receipt, &buf);
+    // Append a stray field line to the otherwise-valid record.
+    const stray = "surprise yes\n";
+    // invariant: the record plus the stray line stays inside the buffer
+    assert(n + stray.len <= receipt_bron.max_record);
+    var i: u32 = 0;
+    while (i < stray.len) : (i += 1) buf[n + i] = stray[i];
+    if (receipt_bron.parse(buf[0 .. n + stray.len])) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        // invariant: an unknown field refuses rather than drop silently
+        assert(err == error.UnknownField);
+    }
+    print("provenance_receipt: unknown record field refused (UnknownField)\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_real_receipt_verifies();
+        try welcome_real_receipt_travels();
+        try unwelcome_tampered_real_content();
+        try unwelcome_wrong_keeper();
+        try unwelcome_unknown_field();
+        print("provenance_receipt {s} — GREEN\n", .{provenance_receipt_version});
+        return 0;
+    }
+    print("usage: provenance-receipt selftest\n", .{});
+    return 1;
+}

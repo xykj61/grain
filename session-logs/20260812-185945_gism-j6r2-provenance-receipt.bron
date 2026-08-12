@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260812.185945
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title GISM-J6r2 — the real publication's receipt travels
+prompt Autonomous loop — take the next agent-doable lap Lindy-first crux-first; make progress before checking in; send each finished increment as its own signed round
+think GISM-J6r1 landed and sent (provenance stands on a real artifact); the exploration named J6r2 as the receipt travelling — an offline portable proof of a real publication
+think Found TACT Journey 2 already built the receipt machinery (publish_receipt Publication/make/verify_offline/matches_content; publish_receipt_bron render/parse) proven only over a demo sentence; J6r2's Yield work is to carry it onto the real embedded artifact end to end
+obs Composed publish_receipt + publish_receipt_bron over the real waymark green-claim: a receipt for the real bytes verifies offline (no store), renders to Bron, parses back byte-for-byte, still verifies, and matches the held real content; every tamper refuses (real byte flip, wrong keeper, unknown field)
+obs Added the GISM two-tools cross-check: the SHA-256 the receipt signs (2010d160…0a6d) equals an independent sha256sum of the same real file — signed provenance cannot drift from what a keeper computes by hand
+obs No fresh Yield red — the real 213-byte artifact fits the receipt/Bron machinery with headroom (like J5r2); the size horizon stays red #73's chunking work, not re-tripped here
+obs Additive — demo publish_receipt and publish_receipt_bron selftests re-run GREEN; demo keeper seeds only, no custody crosses
+loom witness=gism_j6_provenance_receipt_witness cases=5 real_bytes=213 record_bytes=272 sha256_crosscheck=match
+file pond/apps/provenance_receipt.rye the real-artifact portable receipt app (GISM-J6r2)
+file tools/gism_j6_provenance_receipt_witness.rish witness — real receipt offline + travels + sha256sum cross-check, demo receipts re-run GREEN
+recommend check-in (Claude) GISM-J6r3 (the chain lengthens — a real artifact handed under a second settled identity, each step signed) crosses a design seam worth a ruling; two rounds landed and sent this session
