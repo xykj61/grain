@@ -277,6 +277,19 @@ pub fn dress(sheet: []const u8) !Paint {
     return .{ .paper = to_color(paper), .ink = to_color(ink) };
 }
 
+/// Lower one named token of a resolved sheet to a Skate Color, proving it warm
+/// and low-blue on the way. The reading sibling of `dress_run`'s inline lookup —
+/// a caller that wants a run color (or an assertion color) without seating a grid
+/// palette reaches here. Refuses a missing or non-warm token rather than guessing.
+pub fn token_color(sheet: []const u8, key: []const u8) !skate.Color {
+    // invariant: a sheet long enough to carry the named token.
+    assert(sheet.len > 0);
+    // invariant: a key is present to match.
+    assert(key.len > 0);
+    const argb = try assert_warm_low_blue(try token_argb(sheet, key));
+    return to_color(argb);
+}
+
 /// Apply a resolved sheet to a Skate grid: write one line of text, then return
 /// the paint pair so the caller rasterizes with the sheet's own paper/ink.
 /// The grid holds the glyphs; the sheet holds the colors — drawn, never retained.
@@ -423,6 +436,12 @@ fn prove_styled_run() !void {
     assert(grid.fg_index[0] == 1);
     assert(grid.fg_index[6] == 2);
     assert(grid.fg_index[12] == skate.fg_default_index);
+
+    // token_color reads the same edge color dress_run seated, without a grid.
+    const edge_direct = try token_color(base_sheet, "edge");
+    assert(edge_direct.r == edge_color.r);
+    assert(edge_direct.g == edge_color.g);
+    assert(edge_direct.b == edge_color.b);
 }
 
 fn run_selftest() !u8 {
