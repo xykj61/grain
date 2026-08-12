@@ -24,7 +24,7 @@ const print = std.debug.print;
 const mcp = @import("mcp_bron.rye");
 const mj = @import("mcp_json.rye");
 
-const mcp_manifest_version = "20260812.164500";
+const mcp_manifest_version = "20260812.180000";
 
 // The manifest's bounds, each named once and enforced at the edge.
 pub const max_line: u32 = 128; // longest manifest line
@@ -284,32 +284,32 @@ fn parse_output_schema(p: *mj.Parser) ManifestError![]const u8 {
     return bt;
 }
 
-/// Read a JSON tool descriptor back into a bounded Manifest, interning its strings
-/// into `scratch`. An unknown field or an unknown type is refused with a named error.
-pub fn manifest_from_json(src: []const u8, scratch: []u8, m: *Manifest) ManifestError!void {
-    // invariant: a descriptor carries at least an opening byte
-    assert(src.len > 0);
-    // invariant: the source respects the bounded envelope
-    assert(src.len <= mj.max_json);
+/// Read one JSON tool descriptor object from a shared cursor into a bounded Manifest,
+/// interning its strings into `sc`. The `tools/list` tile (rung four) loops this over
+/// a descriptor array; `manifest_from_json` calls it over a single envelope. An
+/// unknown field or an unknown type is refused with a named error.
+pub fn read_manifest(p: *mj.Parser, sc: *mj.Scratch, m: *Manifest) ManifestError!void {
+    // invariant: the cursor sits within the source
+    assert(p.pos <= p.src.len);
+    // invariant: the scratch arena has room on entry
+    assert(sc.used <= sc.buf.len);
     m.arg_count = 0;
     m.summary = "";
     m.result_ty = "";
-    var p = mj.Parser{ .src = src, .pos = 0 };
-    var sc = mj.Scratch{ .buf = scratch, .used = 0 };
     try p.expect('{');
     var have_name = false;
     while (true) {
         const key = try p.raw_string();
         try p.expect(':');
         if (std.mem.eql(u8, key, "name")) {
-            m.tool = try mj.intern(&sc, try p.raw_string());
+            m.tool = try mj.intern(sc, try p.raw_string());
             have_name = true;
         } else if (std.mem.eql(u8, key, "description")) {
-            m.summary = try mj.intern(&sc, try p.raw_string());
+            m.summary = try mj.intern(sc, try p.raw_string());
         } else if (std.mem.eql(u8, key, "inputSchema")) {
-            try parse_input_schema(&p, &sc, m);
+            try parse_input_schema(p, sc, m);
         } else if (std.mem.eql(u8, key, "outputSchema")) {
-            m.result_ty = try parse_output_schema(&p);
+            m.result_ty = try parse_output_schema(p);
         } else {
             return error.UnknownField;
         }
@@ -326,6 +326,21 @@ pub fn manifest_from_json(src: []const u8, scratch: []u8, m: *Manifest) Manifest
     }
     if (!have_name) return error.MissingField;
     if (m.result_ty.len == 0) return error.MissingField;
+    // invariant: the parsed manifest stays within the argument bound
+    assert(m.arg_count <= mcp.max_args);
+}
+
+/// Read a JSON tool descriptor envelope back into a bounded Manifest, interning its
+/// strings into `scratch`. An unknown field or an unknown type is refused with a
+/// named error.
+pub fn manifest_from_json(src: []const u8, scratch: []u8, m: *Manifest) ManifestError!void {
+    // invariant: a descriptor carries at least an opening byte
+    assert(src.len > 0);
+    // invariant: the source respects the bounded envelope
+    assert(src.len <= mj.max_json);
+    var p = mj.Parser{ .src = src, .pos = 0 };
+    var sc = mj.Scratch{ .buf = scratch, .used = 0 };
+    try read_manifest(&p, &sc, m);
     // invariant: the parsed manifest stays within the argument bound
     assert(m.arg_count <= mcp.max_args);
 }

@@ -1,0 +1,299 @@
+//! pond/apps/mcp_list.rye — BUHR Journey 3, Rung 4: the tools/list envelope.
+//!
+//! Rung three tiled one tool's manifest to the JSON descriptor a `tools/list`
+//! response carries — a single tool discovered. This rung carries that discovery to
+//! its real shape: the whole `tools/list` response, a bounded array of descriptors,
+//! so a JSON MCP host learns every Grain tool a server offers in one exchange. A
+//! bounded Bron catalog of manifests renders to a `format tools/list` JSON-RPC
+//! response (`{...,"result":{"tools":[<descriptor>,...]}}`), and that response reads
+//! back into an equal catalog.
+//!
+//! The crux property carries once more, now over many: parse(render(x)) recovers x,
+//! the array reproduced tool for tool, argument for argument, byte-for-byte. It reuses
+//! rung three's single-descriptor writer and reader (`mcp_manifest.rye`) — each tool
+//! rendered by the same `manifest_to_json`, each read by the same `read_manifest` over
+//! one shared cursor — and the bounded JSON append the tiles already trust. No new
+//! transport: the list is the descriptor, many times, inside one envelope.
+//!
+//!   rye build pond/apps/mcp_list.rye -femit-bin=pond/bin/mcp-list
+//!   pond/bin/mcp-list selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const mj = @import("mcp_json.rye");
+const man = @import("mcp_manifest.rye");
+
+const mcp_list_version = "20260812.180500";
+
+// The catalog's bounds, each named once and enforced at the edge.
+pub const max_tools: u32 = 16; // most tools one server advertises in a list
+pub const max_list_json: u32 = 8192; // a bounded tools/list response envelope
+// The reader interns decoded strings through rung two's `mj.intern`, so the whole
+// catalog shares that tile's scratch bound; a catalog past it is refused, not truncated.
+pub const max_list_scratch: u32 = mj.max_scratch;
+
+pub const ListError = man.ManifestError || error{ ListTooLong, TooManyTools };
+
+/// A bounded catalog of tool manifests — the payload of a `tools/list` response.
+pub const ToolList = struct {
+    tools: [max_tools]man.Manifest,
+    count: u32,
+};
+
+/// Append `s` into the larger list envelope at cursor `n`, bounded by the caller's
+/// buffer. Kin to `mj.append`, sized for the list envelope rather than one descriptor
+/// — byte by byte within a named bound, no @memcpy.
+fn append(out: []u8, n: *u32, s: []const u8) ListError!void {
+    // invariant: the buffer respects the list envelope bound
+    assert(out.len <= max_list_json);
+    // invariant: the cursor never sits past the buffer
+    assert(n.* <= out.len);
+    if (s.len > out.len - n.*) return error.ListTooLong;
+    var i: u32 = 0;
+    // seam: s.len is usize; the guard above kept it inside our u32 budget
+    const m: u32 = @intCast(s.len);
+    while (i < m) : (i += 1) out[n.* + i] = s[i];
+    n.* += m;
+    // invariant: we never wrote past the caller's buffer
+    assert(n.* <= out.len);
+}
+
+/// Append an unsigned id as decimal digits into the list envelope.
+fn append_uint(out: []u8, n: *u32, v: u32) ListError!void {
+    // invariant: the cursor stays within the buffer
+    assert(n.* <= out.len);
+    var tmp: [10]u8 = undefined; // a u32 is at most ten decimal digits
+    const s = std.fmt.bufPrint(&tmp, "{d}", .{v}) catch return error.ListTooLong;
+    try append(out, n, s);
+    // invariant: the cursor advanced within bound
+    assert(n.* <= out.len);
+}
+
+/// Render a bounded catalog to a JSON-RPC `tools/list` response. Each descriptor is
+/// rendered by rung three's own `manifest_to_json` into a per-tool buffer (so every
+/// tool honors its own envelope bound) and appended into the larger list envelope.
+pub fn list_to_json(list: *const ToolList, id: u32, out: []u8) ListError![]const u8 {
+    // invariant: the caller's buffer respects the list envelope bound
+    assert(out.len <= max_list_json);
+    // invariant: the catalog carries a bounded tool set
+    assert(list.count <= max_tools);
+    var n: u32 = 0;
+    try append(out, &n, "{\"jsonrpc\":\"2.0\",\"id\":");
+    try append_uint(out, &n, id);
+    try append(out, &n, ",\"result\":{\"tools\":[");
+    var i: u32 = 0;
+    while (i < list.count) : (i += 1) {
+        if (i > 0) try append(out, &n, ",");
+        var one: [mj.max_json]u8 = undefined; // one descriptor, bounded by rung three's own limit
+        const desc = try man.manifest_to_json(&list.tools[i], &one);
+        try append(out, &n, desc);
+    }
+    try append(out, &n, "]}}");
+    // invariant: the rendered response stayed within the buffer
+    assert(n <= out.len);
+    return out[0..n];
+}
+
+/// Read the `result` object of a `tools/list` response — its `tools` array — looping
+/// rung three's `read_manifest` over a shared cursor, one descriptor per element.
+fn read_tools(p: *mj.Parser, sc: *mj.Scratch, list: *ToolList) ListError!void {
+    // invariant: the cursor sits within the source
+    assert(p.pos <= p.src.len);
+    try p.expect('{');
+    const key = try p.raw_string();
+    if (!std.mem.eql(u8, key, "tools")) return error.UnknownField;
+    try p.expect(':');
+    try p.expect('[');
+    if ((try p.at()) == ']') {
+        p.pos += 1;
+        try p.expect('}');
+        return; // a server that offers no tools is well-formed
+    }
+    while (true) {
+        if (list.count >= max_tools) return error.TooManyTools;
+        try man.read_manifest(p, sc, &list.tools[list.count]);
+        list.count += 1;
+        const sep = try p.at();
+        if (sep == ',') {
+            p.pos += 1;
+            continue;
+        }
+        if (sep == ']') {
+            p.pos += 1;
+            break;
+        }
+        return error.BadJson;
+    }
+    try p.expect('}');
+    // invariant: the parsed catalog stayed within the tool bound
+    assert(list.count <= max_tools);
+}
+
+/// Read a JSON-RPC `tools/list` response back into a bounded catalog, interning its
+/// strings into `scratch`. An unknown field, an unknown type, or too many tools is
+/// refused with a named error — the tile never guesses and never truncates silently.
+pub fn list_from_json(src: []const u8, scratch: []u8, list: *ToolList) ListError!void {
+    // invariant: a response carries at least an opening byte
+    assert(src.len > 0);
+    // invariant: the source respects the bounded envelope
+    assert(src.len <= max_list_json);
+    list.count = 0;
+    var p = mj.Parser{ .src = src, .pos = 0 };
+    var sc = mj.Scratch{ .buf = scratch, .used = 0 };
+    try p.expect('{');
+    var have_result = false;
+    while (true) {
+        const key = try p.raw_string();
+        try p.expect(':');
+        if (std.mem.eql(u8, key, "jsonrpc")) {
+            _ = try p.raw_string();
+        } else if (std.mem.eql(u8, key, "id")) {
+            _ = try p.read_uint();
+        } else if (std.mem.eql(u8, key, "result")) {
+            try read_tools(&p, &sc, list);
+            have_result = true;
+        } else {
+            return error.UnknownField;
+        }
+        const sep = try p.at();
+        if (sep == ',') {
+            p.pos += 1;
+            continue;
+        }
+        if (sep == '}') {
+            p.pos += 1;
+            break;
+        }
+        return error.BadJson;
+    }
+    if (!have_result) return error.MissingField;
+    // invariant: the parsed catalog stays within the tool bound
+    assert(list.count <= max_tools);
+}
+
+// --- witnesses -------------------------------------------------------------
+
+const add_manifest =
+    \\format mcp-tool-v1
+    \\tool add
+    \\summary sum two integers
+    \\arg a int
+    \\arg b int
+    \\result int
+;
+
+const join_manifest =
+    \\format mcp-tool-v1
+    \\tool join
+    \\summary join two strings
+    \\arg a str
+    \\arg b str
+    \\result str
+;
+
+fn manifests_equal(x: *const man.Manifest, y: *const man.Manifest) bool {
+    if (!std.mem.eql(u8, x.tool, y.tool)) return false;
+    if (!std.mem.eql(u8, x.summary, y.summary)) return false;
+    if (!std.mem.eql(u8, x.result_ty, y.result_ty)) return false;
+    if (x.arg_count != y.arg_count) return false;
+    var i: u32 = 0;
+    while (i < x.arg_count) : (i += 1) {
+        if (!std.mem.eql(u8, x.args[i].name, y.args[i].name)) return false;
+        if (!std.mem.eql(u8, x.args[i].ty, y.args[i].ty)) return false;
+    }
+    return true;
+}
+
+fn welcome_two_tool_list_round_trips() !void {
+    var list: ToolList = undefined;
+    list.count = 2;
+    try man.parse_manifest(add_manifest, &list.tools[0]);
+    try man.parse_manifest(join_manifest, &list.tools[1]);
+
+    var jbuf: [max_list_json]u8 = undefined;
+    const json = try list_to_json(&list, 9, &jbuf);
+    const want = "{\"jsonrpc\":\"2.0\",\"id\":9,\"result\":{\"tools\":[" ++
+        "{\"name\":\"add\",\"description\":\"sum two integers\",\"inputSchema\":{\"type\":\"object\",\"properties\":{\"a\":{\"type\":\"integer\"},\"b\":{\"type\":\"integer\"}},\"required\":[\"a\",\"b\"]},\"outputSchema\":{\"type\":\"integer\"}}," ++
+        "{\"name\":\"join\",\"description\":\"join two strings\",\"inputSchema\":{\"type\":\"object\",\"properties\":{\"a\":{\"type\":\"string\"},\"b\":{\"type\":\"string\"}},\"required\":[\"a\",\"b\"]},\"outputSchema\":{\"type\":\"string\"}}" ++
+        "]}}";
+    assert(std.mem.eql(u8, json, want));
+
+    var scratch: [max_list_scratch]u8 = undefined;
+    var back: ToolList = undefined;
+    try list_from_json(json, &scratch, &back);
+    assert(back.count == 2);
+    assert(manifests_equal(&list.tools[0], &back.tools[0]));
+    assert(manifests_equal(&list.tools[1], &back.tools[1]));
+    assert(std.mem.eql(u8, back.tools[0].tool, "add"));
+    assert(std.mem.eql(u8, back.tools[1].tool, "join"));
+    print("mcp_list: two-tool list — Bron catalog -> JSON tools/list -> Bron catalog, equal\n", .{});
+}
+
+fn welcome_empty_list_round_trips() !void {
+    var list: ToolList = undefined;
+    list.count = 0;
+    var jbuf: [max_list_json]u8 = undefined;
+    const json = try list_to_json(&list, 1, &jbuf);
+    const want = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":{\"tools\":[]}}";
+    assert(std.mem.eql(u8, json, want));
+
+    var scratch: [max_list_scratch]u8 = undefined;
+    var back: ToolList = undefined;
+    try list_from_json(json, &scratch, &back);
+    assert(back.count == 0);
+    print("mcp_list: empty list — a server offering no tools round-trips as an empty array\n", .{});
+}
+
+fn unwelcome_too_many_tools() !void {
+    // A response advertising more tools than the catalog bounds is refused, never truncated.
+    var n: u32 = 0;
+    var buf: [max_list_json]u8 = undefined;
+    try append(&buf, &n, "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":{\"tools\":[");
+    var one: man.Manifest = undefined;
+    try man.parse_manifest(add_manifest, &one);
+    var i: u32 = 0;
+    while (i < max_tools + 1) : (i += 1) {
+        if (i > 0) try append(&buf, &n, ",");
+        var d: [mj.max_json]u8 = undefined;
+        const desc = try man.manifest_to_json(&one, &d);
+        try append(&buf, &n, desc);
+    }
+    try append(&buf, &n, "]}}");
+
+    var scratch: [max_list_scratch]u8 = undefined;
+    var back: ToolList = undefined;
+    if (list_from_json(buf[0..n], &scratch, &back)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.TooManyTools);
+    }
+    print("mcp_list: a list past the catalog bound is refused, never silently truncated\n", .{});
+}
+
+fn unwelcome_unknown_result_field() !void {
+    const json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":{\"cursor\":\"abc\",\"tools\":[]}}";
+    var scratch: [max_list_scratch]u8 = undefined;
+    var back: ToolList = undefined;
+    if (list_from_json(json, &scratch, &back)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.UnknownField);
+    }
+    print("mcp_list: an unknown field beside the tools array is refused (not silently dropped)\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_two_tool_list_round_trips();
+        try welcome_empty_list_round_trips();
+        try unwelcome_too_many_tools();
+        try unwelcome_unknown_result_field();
+        print("mcp_list {s} — GREEN\n", .{mcp_list_version});
+        return 0;
+    }
+    print("usage: mcp-list selftest\n", .{});
+    return 1;
+}

@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260812.114808
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR-J3r4 — the tools/list envelope over many tools
+prompt take the next agent-doable lap Lindy-first crux-first from REMEMBER; approve own design rounds; send often as signed rounds; stop at custody gates
+think REMEMBER named BUHR Journey 3 (MCP-in-Bron) r1..r3 landed; the named next crux was a full tools/list envelope over many tools — Lindy-durable interop, crux over the easy horizons (J2 recolor / live bridge)
+think read mcp_manifest.rye (r3 single-descriptor tile) and mcp_json.rye (r2 tiles) to find reusable helpers; the honest move is one descriptor reader shared over the array, not a duplicated brace-scanner
+think refactored r3 additively — exposed read_manifest(p, sc, m) over a shared cursor; manifest_from_json now delegates to it; behavior identical, r3 witness re-runs GREEN
+think wrote pond/apps/mcp_list.rye — ToolList catalog, list_to_json renders each descriptor via r3's manifest_to_json into a per-tool buffer then appends into the larger envelope, list_from_json loops read_manifest over the tools array
+obs caught two bounds mismatches before shipping — mj.append asserts buffer <= max_json (512) so the 8192 list envelope needed a local append; mj.intern/json_unescape assert scratch <= max_scratch (512) so the catalog inherits mj's 512-byte scratch bound (a catalog past it is refused, not truncated)
+obs crux property holds over many: parse(render(x)) recovers the catalog tool-for-tool, argument-for-argument, byte-for-byte; refusals real — over-count -> TooManyTools, unknown result field -> UnknownField
+loom witness=buhr_mcp_list_witness build=green selftest_cases=4 tools_bound=16
+file pond/apps/mcp_list.rye the tools/list envelope — bounded catalog, JSON round-trip, refusals
+file pond/apps/mcp_manifest.rye additive refactor — read_manifest over a shared cursor, manifest_from_json delegates
+file tools/buhr_mcp_list_witness.rish the r4 witness — build + selftest + additive r3 re-run
+file work-in-progress/REMEMBER.md BUHR narrative + git nib
+recommend keep-going — BUHR J3 call+discovery+listing complete; next crux a live JSON host bridge or J2 dress_run-colored nodes, both agent-doable
