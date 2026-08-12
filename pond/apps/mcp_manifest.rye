@@ -1,0 +1,442 @@
+//! pond/apps/mcp_manifest.rye — BUHR Journey 3, Rung 3: the manifest tile.
+//!
+//! The call tile (rung two) let a Grain tool *answer* a JSON MCP host. This rung lets
+//! a JSON host *discover* one: it tiles a Bron `format mcp-tool-v1` manifest to the
+//! JSON tool descriptor a `tools/list` response carries — a name, a description, an
+//! `inputSchema` (an object of typed properties with a required list), and an
+//! `outputSchema` — and reads that descriptor back into the same manifest. Discovery
+//! and call together complete the interop story: a JSON host can find a Grain tool
+//! and then invoke it, both crossings faithful.
+//!
+//! The crux property carries again: parse(render(x)) recovers x. A Bron manifest
+//! renders to a JSON descriptor and reads back into an equal manifest, the value
+//! model mapped honestly across the border — Grain's `int`/`str`/`bool` to JSON
+//! Schema's `integer`/`string`/`boolean` and back, an unknown type refused rather
+//! than guessed. It reuses rung two's JSON writer and reader (`mcp_json.rye`) and
+//! rung one's argument bound (`mcp_bron.rye`) — additive, no new transport.
+//!
+//!   rye build pond/apps/mcp_manifest.rye -femit-bin=pond/bin/mcp-manifest
+//!   pond/bin/mcp-manifest selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const mcp = @import("mcp_bron.rye");
+const mj = @import("mcp_json.rye");
+
+const mcp_manifest_version = "20260812.164500";
+
+// The manifest's bounds, each named once and enforced at the edge.
+pub const max_line: u32 = 128; // longest manifest line
+
+pub const ManifestError = mj.JsonError || error{ BadType, MissingField, BadFormat };
+
+/// One declared argument in a tool manifest — its name and its Grain value type.
+pub const ToolArg = struct {
+    name: []const u8,
+    ty: []const u8, // one of "int", "str", "bool"
+};
+
+/// A parsed `format mcp-tool-v1` manifest — how a tool describes itself.
+pub const Manifest = struct {
+    tool: []const u8,
+    summary: []const u8,
+    result_ty: []const u8,
+    args: [mcp.max_args]ToolArg,
+    arg_count: u32,
+};
+
+/// Split a flat-Bron line into its first token (key) and the trimmed remainder
+/// (value). The one `key value` field per line the whole tree shares.
+fn key_val(line: []const u8) struct { key: []const u8, val: []const u8 } {
+    // invariant: a real line is being split
+    assert(line.len > 0);
+    // invariant: the line respects the manifest's bounded length
+    assert(line.len <= max_line);
+    var sp: usize = 0; // seam: index over a std source slice
+    while (sp < line.len and line[sp] != ' ') : (sp += 1) {}
+    return .{ .key = line[0..sp], .val = std.mem.trim(u8, line[sp..], " \t") };
+}
+
+/// Map a Grain value type to its JSON Schema name. An unknown type is refused.
+fn json_type(bron_ty: []const u8) ManifestError![]const u8 {
+    // invariant: a real type name is being mapped
+    assert(bron_ty.len > 0);
+    // invariant: the type name respects the field bound
+    assert(bron_ty.len <= mcp.max_field);
+    if (std.mem.eql(u8, bron_ty, "int")) return "integer";
+    if (std.mem.eql(u8, bron_ty, "str")) return "string";
+    if (std.mem.eql(u8, bron_ty, "bool")) return "boolean";
+    return error.BadType;
+}
+
+/// Map a JSON Schema type name back to its Grain value type. Refuses the unknown.
+fn bron_type(json_ty: []const u8) ManifestError![]const u8 {
+    // invariant: a real type name is being mapped
+    assert(json_ty.len > 0);
+    // invariant: the type name respects the field bound
+    assert(json_ty.len <= mcp.max_field);
+    if (std.mem.eql(u8, json_ty, "integer")) return "int";
+    if (std.mem.eql(u8, json_ty, "string")) return "str";
+    if (std.mem.eql(u8, json_ty, "boolean")) return "bool";
+    return error.BadType;
+}
+
+/// Parse a flat-Bron `format mcp-tool-v1` manifest into a bounded Manifest. The
+/// header must name the format; `tool` is required; each `arg` line carries a name
+/// then a Grain type; any other field key is refused rather than dropped.
+pub fn parse_manifest(src: []const u8, m: *Manifest) ManifestError!void {
+    // invariant: a manifest carries at least a header line
+    assert(src.len > 0);
+    // invariant: the source respects a bounded manifest size
+    assert(src.len <= max_line * (mcp.max_args + 6));
+    m.arg_count = 0;
+    m.summary = "";
+    m.result_ty = "";
+    var have_header = false;
+    var have_tool = false;
+
+    var lines = std.mem.splitScalar(u8, src, '\n');
+    while (lines.next()) |raw| {
+        const line = std.mem.trim(u8, raw, " \t\r");
+        if (line.len == 0 or line[0] == '#') continue;
+        if (line.len > max_line) return error.JsonTooLong;
+        const kv = key_val(line);
+        if (std.mem.eql(u8, kv.key, "format")) {
+            if (!std.mem.eql(u8, kv.val, "mcp-tool-v1")) return error.BadFormat;
+            have_header = true;
+        } else if (std.mem.eql(u8, kv.key, "tool")) {
+            if (kv.val.len == 0 or kv.val.len > mcp.max_field) return error.FieldTooLong;
+            m.tool = kv.val;
+            have_tool = true;
+        } else if (std.mem.eql(u8, kv.key, "summary")) {
+            m.summary = kv.val;
+        } else if (std.mem.eql(u8, kv.key, "arg")) {
+            if (m.arg_count >= mcp.max_args) return error.TooManyArgs;
+            const inner = key_val(kv.val);
+            if (inner.key.len == 0 or inner.key.len > mcp.max_field) return error.FieldTooLong;
+            m.args[m.arg_count] = .{ .name = inner.key, .ty = inner.val };
+            m.arg_count += 1;
+        } else if (std.mem.eql(u8, kv.key, "result")) {
+            m.result_ty = kv.val;
+        } else {
+            return error.UnknownField;
+        }
+    }
+    if (!have_header) return error.BadFormat;
+    if (!have_tool) return error.MissingField;
+    // invariant: the parsed manifest stays within the argument bound
+    assert(m.arg_count <= mcp.max_args);
+}
+
+/// Render a Manifest to the JSON tool descriptor a `tools/list` response carries.
+pub fn manifest_to_json(m: *const Manifest, out: []u8) ManifestError![]const u8 {
+    // invariant: the caller's buffer respects the JSON envelope bound
+    assert(out.len <= mj.max_json);
+    // invariant: the manifest carries a bounded argument set
+    assert(m.arg_count <= mcp.max_args);
+    var n: u32 = 0;
+    try mj.append(out, &n, "{\"name\":\"");
+    try mj.append_escaped(out, &n, m.tool);
+    try mj.append(out, &n, "\",\"description\":\"");
+    try mj.append_escaped(out, &n, m.summary);
+    try mj.append(out, &n, "\",\"inputSchema\":{\"type\":\"object\",\"properties\":{");
+    var i: u32 = 0;
+    while (i < m.arg_count) : (i += 1) {
+        if (i > 0) try mj.append(out, &n, ",");
+        try mj.append(out, &n, "\"");
+        try mj.append_escaped(out, &n, m.args[i].name);
+        try mj.append(out, &n, "\":{\"type\":\"");
+        try mj.append(out, &n, try json_type(m.args[i].ty));
+        try mj.append(out, &n, "\"}");
+    }
+    try mj.append(out, &n, "},\"required\":[");
+    i = 0;
+    while (i < m.arg_count) : (i += 1) {
+        if (i > 0) try mj.append(out, &n, ",");
+        try mj.append(out, &n, "\"");
+        try mj.append_escaped(out, &n, m.args[i].name);
+        try mj.append(out, &n, "\"");
+    }
+    try mj.append(out, &n, "]},\"outputSchema\":{\"type\":\"");
+    try mj.append(out, &n, try json_type(m.result_ty));
+    try mj.append(out, &n, "\"}}");
+    // invariant: the rendered descriptor stayed within the buffer
+    assert(n <= out.len);
+    return out[0..n];
+}
+
+/// Parse the `properties` object — each member a named typed argument — into the
+/// Manifest, mapping each JSON type back to its Grain value type.
+fn parse_properties(p: *mj.Parser, sc: *mj.Scratch, m: *Manifest) ManifestError!void {
+    // invariant: the cursor sits within the source
+    assert(p.pos <= p.src.len);
+    // invariant: the manifest carries a bounded argument set on entry
+    assert(m.arg_count <= mcp.max_args);
+    try p.expect('{');
+    if ((try p.at()) == '}') {
+        p.pos += 1;
+        return; // a tool with no arguments is well-formed
+    }
+    while (true) {
+        const name = try mj.intern(sc, try p.raw_string());
+        try p.expect(':');
+        try p.expect('{');
+        const tk = try p.raw_string();
+        if (!std.mem.eql(u8, tk, "type")) return error.UnknownField;
+        try p.expect(':');
+        const jt = try p.raw_string();
+        const bt = try bron_type(jt);
+        try p.expect('}');
+        if (m.arg_count >= mcp.max_args) return error.TooManyArgs;
+        m.args[m.arg_count] = .{ .name = name, .ty = bt };
+        m.arg_count += 1;
+        const sep = try p.at();
+        if (sep == ',') {
+            p.pos += 1;
+            continue;
+        }
+        if (sep == '}') {
+            p.pos += 1;
+            break;
+        }
+        return error.BadJson;
+    }
+    // invariant: the parsed arguments stayed within the bound
+    assert(m.arg_count <= mcp.max_args);
+}
+
+/// Read and consume a JSON string array (the `required` list this tile does not
+/// re-derive — every argument is required by construction).
+fn skip_string_array(p: *mj.Parser) ManifestError!void {
+    // invariant: the cursor sits within the source
+    assert(p.pos <= p.src.len);
+    try p.expect('[');
+    if ((try p.at()) == ']') {
+        p.pos += 1;
+        return;
+    }
+    while (true) {
+        _ = try p.raw_string();
+        const sep = try p.at();
+        if (sep == ',') {
+            p.pos += 1;
+            continue;
+        }
+        if (sep == ']') {
+            p.pos += 1;
+            break;
+        }
+        return error.BadJson;
+    }
+    // invariant: the cursor stayed within the source
+    assert(p.pos <= p.src.len);
+}
+
+/// Parse the `inputSchema` object — its type, properties, and required list.
+fn parse_input_schema(p: *mj.Parser, sc: *mj.Scratch, m: *Manifest) ManifestError!void {
+    // invariant: the cursor sits within the source
+    assert(p.pos <= p.src.len);
+    // invariant: the manifest carries a bounded argument set on entry
+    assert(m.arg_count <= mcp.max_args);
+    try p.expect('{');
+    while (true) {
+        const key = try p.raw_string();
+        try p.expect(':');
+        if (std.mem.eql(u8, key, "type")) {
+            const v = try p.raw_string();
+            if (!std.mem.eql(u8, v, "object")) return error.BadJson; // MCP input is an object
+        } else if (std.mem.eql(u8, key, "properties")) {
+            try parse_properties(p, sc, m);
+        } else if (std.mem.eql(u8, key, "required")) {
+            try skip_string_array(p);
+        } else {
+            return error.UnknownField;
+        }
+        const sep = try p.at();
+        if (sep == ',') {
+            p.pos += 1;
+            continue;
+        }
+        if (sep == '}') {
+            p.pos += 1;
+            break;
+        }
+        return error.BadJson;
+    }
+    // invariant: the cursor stayed within the source
+    assert(p.pos <= p.src.len);
+}
+
+/// Parse the `outputSchema` object — its single type — returning the Grain type.
+fn parse_output_schema(p: *mj.Parser) ManifestError![]const u8 {
+    // invariant: the cursor sits within the source
+    assert(p.pos <= p.src.len);
+    try p.expect('{');
+    const k = try p.raw_string();
+    if (!std.mem.eql(u8, k, "type")) return error.UnknownField;
+    try p.expect(':');
+    const jt = try p.raw_string();
+    const bt = try bron_type(jt);
+    try p.expect('}');
+    // invariant: the cursor stayed within the source
+    assert(p.pos <= p.src.len);
+    return bt;
+}
+
+/// Read a JSON tool descriptor back into a bounded Manifest, interning its strings
+/// into `scratch`. An unknown field or an unknown type is refused with a named error.
+pub fn manifest_from_json(src: []const u8, scratch: []u8, m: *Manifest) ManifestError!void {
+    // invariant: a descriptor carries at least an opening byte
+    assert(src.len > 0);
+    // invariant: the source respects the bounded envelope
+    assert(src.len <= mj.max_json);
+    m.arg_count = 0;
+    m.summary = "";
+    m.result_ty = "";
+    var p = mj.Parser{ .src = src, .pos = 0 };
+    var sc = mj.Scratch{ .buf = scratch, .used = 0 };
+    try p.expect('{');
+    var have_name = false;
+    while (true) {
+        const key = try p.raw_string();
+        try p.expect(':');
+        if (std.mem.eql(u8, key, "name")) {
+            m.tool = try mj.intern(&sc, try p.raw_string());
+            have_name = true;
+        } else if (std.mem.eql(u8, key, "description")) {
+            m.summary = try mj.intern(&sc, try p.raw_string());
+        } else if (std.mem.eql(u8, key, "inputSchema")) {
+            try parse_input_schema(&p, &sc, m);
+        } else if (std.mem.eql(u8, key, "outputSchema")) {
+            m.result_ty = try parse_output_schema(&p);
+        } else {
+            return error.UnknownField;
+        }
+        const sep = try p.at();
+        if (sep == ',') {
+            p.pos += 1;
+            continue;
+        }
+        if (sep == '}') {
+            p.pos += 1;
+            break;
+        }
+        return error.BadJson;
+    }
+    if (!have_name) return error.MissingField;
+    if (m.result_ty.len == 0) return error.MissingField;
+    // invariant: the parsed manifest stays within the argument bound
+    assert(m.arg_count <= mcp.max_args);
+}
+
+// --- witnesses -------------------------------------------------------------
+
+const add_manifest =
+    \\format mcp-tool-v1
+    \\tool add
+    \\summary sum two integers
+    \\arg a int
+    \\arg b int
+    \\result int
+;
+
+const join_manifest =
+    \\format mcp-tool-v1
+    \\tool join
+    \\summary join two strings
+    \\arg a str
+    \\arg b str
+    \\result str
+;
+
+fn manifests_equal(x: *const Manifest, y: *const Manifest) bool {
+    if (!std.mem.eql(u8, x.tool, y.tool)) return false;
+    if (!std.mem.eql(u8, x.summary, y.summary)) return false;
+    if (!std.mem.eql(u8, x.result_ty, y.result_ty)) return false;
+    if (x.arg_count != y.arg_count) return false;
+    var i: u32 = 0;
+    while (i < x.arg_count) : (i += 1) {
+        if (!std.mem.eql(u8, x.args[i].name, y.args[i].name)) return false;
+        if (!std.mem.eql(u8, x.args[i].ty, y.args[i].ty)) return false;
+    }
+    return true;
+}
+
+fn welcome_int_manifest_round_trips() !void {
+    var m1: Manifest = undefined;
+    try parse_manifest(add_manifest, &m1);
+    assert(std.mem.eql(u8, m1.tool, "add"));
+    assert(m1.arg_count == 2);
+
+    var jbuf: [mj.max_json]u8 = undefined;
+    const json = try manifest_to_json(&m1, &jbuf);
+    const want = "{\"name\":\"add\",\"description\":\"sum two integers\",\"inputSchema\":{\"type\":\"object\",\"properties\":{\"a\":{\"type\":\"integer\"},\"b\":{\"type\":\"integer\"}},\"required\":[\"a\",\"b\"]},\"outputSchema\":{\"type\":\"integer\"}}";
+    assert(std.mem.eql(u8, json, want));
+
+    var scratch: [mj.max_scratch]u8 = undefined;
+    var m2: Manifest = undefined;
+    try manifest_from_json(json, &scratch, &m2);
+    assert(manifests_equal(&m1, &m2));
+    assert(std.mem.eql(u8, m2.args[0].ty, "int"));
+    print("mcp_manifest: int manifest — Bron mcp-tool-v1 -> JSON tools/list schema -> Bron, equal\n", .{});
+}
+
+fn welcome_str_manifest_round_trips() !void {
+    var m1: Manifest = undefined;
+    try parse_manifest(join_manifest, &m1);
+    var jbuf: [mj.max_json]u8 = undefined;
+    const json = try manifest_to_json(&m1, &jbuf);
+    var scratch: [mj.max_scratch]u8 = undefined;
+    var m2: Manifest = undefined;
+    try manifest_from_json(json, &scratch, &m2);
+    assert(manifests_equal(&m1, &m2));
+    assert(std.mem.eql(u8, m2.args[0].ty, "str"));
+    assert(std.mem.eql(u8, m2.result_ty, "str"));
+    print("mcp_manifest: str manifest — join's string schema round-trips, types mapped\n", .{});
+}
+
+fn unwelcome_bad_type() !void {
+    const bad =
+        \\format mcp-tool-v1
+        \\tool weigh
+        \\arg a float
+        \\result int
+    ;
+    var m: Manifest = undefined;
+    try parse_manifest(bad, &m); // the manifest parses; the type is caught at the border
+    var jbuf: [mj.max_json]u8 = undefined;
+    if (manifest_to_json(&m, &jbuf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.BadType);
+    }
+    print("mcp_manifest: an unmappable value type is refused at the JSON border\n", .{});
+}
+
+fn unwelcome_unknown_json_field() !void {
+    const json = "{\"name\":\"add\",\"title\":\"Add\",\"inputSchema\":{\"type\":\"object\",\"properties\":{}},\"outputSchema\":{\"type\":\"integer\"}}";
+    var scratch: [mj.max_scratch]u8 = undefined;
+    var m: Manifest = undefined;
+    if (manifest_from_json(json, &scratch, &m)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.UnknownField);
+    }
+    print("mcp_manifest: an unknown descriptor field is refused (not silently dropped)\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_int_manifest_round_trips();
+        try welcome_str_manifest_round_trips();
+        try unwelcome_bad_type();
+        try unwelcome_unknown_json_field();
+        print("mcp_manifest {s} — GREEN\n", .{mcp_manifest_version});
+        return 0;
+    }
+    print("usage: mcp-manifest selftest\n", .{});
+    return 1;
+}

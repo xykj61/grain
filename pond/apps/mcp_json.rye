@@ -44,7 +44,7 @@ pub const JsonError = error{
 
 /// Append `s` into `out` at cursor `n`, bounded by the caller's buffer. Byte by
 /// byte within a named bound — the tree's trusted append, no @memcpy.
-fn append(out: []u8, n: *u32, s: []const u8) JsonError!void {
+pub fn append(out: []u8, n: *u32, s: []const u8) JsonError!void {
     // invariant: the buffer respects the JSON envelope bound
     assert(out.len <= max_json);
     // invariant: the cursor never sits past the buffer
@@ -60,7 +60,7 @@ fn append(out: []u8, n: *u32, s: []const u8) JsonError!void {
 }
 
 /// Append an unsigned id as decimal digits.
-fn append_uint(out: []u8, n: *u32, v: u32) JsonError!void {
+pub fn append_uint(out: []u8, n: *u32, v: u32) JsonError!void {
     // invariant: the cursor stays within the buffer
     assert(n.* <= out.len);
     var tmp: [10]u8 = undefined; // a u32 is at most ten decimal digits
@@ -73,7 +73,7 @@ fn append_uint(out: []u8, n: *u32, v: u32) JsonError!void {
 /// Append `s` as a JSON string body (the bytes between the quotes), escaping the
 /// two characters a JSON string must escape. A control byte is refused rather than
 /// mis-emitted — honest about the subset this tile speaks.
-fn append_escaped(out: []u8, n: *u32, s: []const u8) JsonError!void {
+pub fn append_escaped(out: []u8, n: *u32, s: []const u8) JsonError!void {
     // invariant: the cursor stays within the buffer
     assert(n.* <= out.len);
     // invariant: the bounded envelope holds this scalar
@@ -151,14 +151,14 @@ pub fn result_to_json(res: *const mcp.Result, out: []u8) JsonError![]const u8 {
 
 /// A bounded scratch arena the reader interns decoded strings into, so a Call's or
 /// Result's slices outlive the source bytes they came from.
-const Scratch = struct {
+pub const Scratch = struct {
     buf: []u8,
     used: u32,
 };
 
 /// Decode a raw JSON string span (escapes intact) into `out`, resolving the escapes
 /// this tile speaks. An unknown escape is refused rather than guessed.
-fn json_unescape(s: []const u8, out: []u8) JsonError![]const u8 {
+pub fn json_unescape(s: []const u8, out: []u8) JsonError![]const u8 {
     // invariant: the destination respects a bounded envelope
     assert(out.len <= max_scratch);
     var n: usize = 0; // seam: index over the caller buffer
@@ -185,7 +185,7 @@ fn json_unescape(s: []const u8, out: []u8) JsonError![]const u8 {
 }
 
 /// Intern a raw JSON string span into the scratch arena, returning the decoded slice.
-fn intern(sc: *Scratch, raw: []const u8) JsonError![]const u8 {
+pub fn intern(sc: *Scratch, raw: []const u8) JsonError![]const u8 {
     // invariant: the arena never overflows
     assert(sc.used <= sc.buf.len);
     const dst = sc.buf[sc.used..];
@@ -200,31 +200,31 @@ fn intern(sc: *Scratch, raw: []const u8) JsonError![]const u8 {
 
 /// A bounded cursor over JSON source. Purpose-built for the MCP `tools/call` shape:
 /// objects, strings, and unsigned ids, with whitespace skipped between tokens.
-const Parser = struct {
+pub const Parser = struct {
     src: []const u8,
     pos: usize, // seam: index over a std source slice
 
-    fn skip_ws(self: *Parser) void {
+    pub fn skip_ws(self: *Parser) void {
         while (self.pos < self.src.len) : (self.pos += 1) {
             const c = self.src[self.pos];
             if (c != ' ' and c != '\t' and c != '\n' and c != '\r') break;
         }
     }
 
-    fn at(self: *Parser) JsonError!u8 {
+    pub fn at(self: *Parser) JsonError!u8 {
         self.skip_ws();
         if (self.pos >= self.src.len) return error.Unterminated;
         return self.src[self.pos];
     }
 
-    fn expect(self: *Parser, c: u8) JsonError!void {
+    pub fn expect(self: *Parser, c: u8) JsonError!void {
         const got = try self.at();
         if (got != c) return error.BadJson;
         self.pos += 1;
     }
 
     /// The raw span of a JSON string (escapes left intact), consuming both quotes.
-    fn raw_string(self: *Parser) JsonError![]const u8 {
+    pub fn raw_string(self: *Parser) JsonError![]const u8 {
         try self.expect('"');
         const start = self.pos;
         while (self.pos < self.src.len) : (self.pos += 1) {
@@ -242,7 +242,7 @@ const Parser = struct {
         return error.Unterminated;
     }
 
-    fn read_uint(self: *Parser) JsonError!u32 {
+    pub fn read_uint(self: *Parser) JsonError!u32 {
         self.skip_ws();
         const start = self.pos;
         while (self.pos < self.src.len and self.src[self.pos] >= '0' and self.src[self.pos] <= '9') : (self.pos += 1) {}
