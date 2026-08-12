@@ -29,6 +29,8 @@
 
 ---
 
+- **recursion-prompts/ cellar SEATED `20260812`** (autonomous run, Keaton asleep to ~1400 EDT) — a new root-level folder between the baton-museum *shape* (`recursion_prompt.brix`) and the bron-resins *instances*: living fillable **seed** templates (autonomous-loop · counsel-to-bench · context-reset-handoff) + dated filled **versions** (this run's expanded prompt kept whole). Charter weaves the balance compass (Radiant · Twilight · TAME · CIVIC · compass rose · Lindy-first crux-first · reds-first). Census witness `tools/recursion_prompts_census_witness.rish` GREEN; `tools/launch-claude-season.rish` loop one-liners updated to the expanded prompt (approve own design rounds · double-seat visions · harmony-of-styles · GATES-ONLY) and pointed at the cellar.
+
 ## The Compass Season — OPEN `20260809.021829` (Keaton's word)
 
 **256 rounds · four equinoxes = four compass directions.** Coords **Compass Season · SOON · j1 · q1 · r1**. Nesting: **Round · Quest 4 · Journey 16 · Equinox 64 · Season 256**.
