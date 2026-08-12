@@ -1,0 +1,224 @@
+//! pond/apps/commerce_trade.rye — TACT Journey 4, Rung 1: a fair-value trade, booked on both sides.
+//!
+//! Journey 1 piloted a keeper to a running Pond; Journey 2 let that keeper publish a signed,
+//! offline-verifiable receipt. Journey 4 lets two keepers trade — and records the trade honestly.
+//!
+//! Dimeroll already keeps books of record: journal entries as append-only facts, a trial-balance
+//! fold whose conservation holds when the sum of debit-positive nets is zero (`dimeroll_core`).
+//! The entity-books design names the strand this rung needs — a value crosses between parties only
+//! as an explicit fact recorded on both sides, never a silent shared balance.
+//!
+//! The crux: a fair-value trade is *one* agreed price booked identically on both parties' books.
+//! Fair value is the structure, not a claim over it — a Trade carries a single price, and that one
+//! price becomes the seller's cash inflow and the buyer's cash outflow at once, so the value the
+//! buyer parts with equals the value the seller receives by construction. Two conservation laws
+//! hold together: each book nets to zero (Dimeroll's own law), and the pair conserves across the
+//! cash line (the buyer's cash falls by the price, the seller's rises by it, summing to zero) — the
+//! trade creates and destroys no value.
+//!
+//! Boundary (custody-first): this records the *facts* of a trade; it holds and moves nothing. A
+//! Booked pair is a pure fold of facts — recording the same trade twice yields identical books, so
+//! there is no hidden cash state to disburse. Actually settling a trade reaches custody gate #3
+//! (moving funds / a payment rail) and waits on licensed counsel — surfaced there, never crossed.
+//!
+//!   rye build pond/apps/commerce_trade.rye -femit-bin=pond/bin/commerce-trade
+//!   pond/bin/commerce-trade selftest
+//!
+//! Scope: active-designing/20260812-175228_tact-journey4-commerce-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const gc = @import("dimeroll/dimeroll_core.rye");
+
+pub const commerce_trade_version = "20260812.175228";
+
+/// An item name rides in the journal memo, so it honors Dimeroll's memo budget.
+pub const max_item_len: u32 = gc.max_memo_len;
+
+/// The debit-positive net index for the cash account, read the way the core reads it.
+const cash_ix: u32 = @intFromEnum(gc.Account.cash);
+
+pub const TradeError = error{ SelfTrade, ItemTooLong };
+
+/// Every way a trade can fail to book — its own refusals plus the core posting laws it inherits.
+pub const BookError = TradeError || error{ Unbalanced, BadAmount, SameAccount };
+
+/// A fair-value trade: two parties, one item, one agreed price. The single `price` is what makes
+/// the trade fair by construction — it becomes both parties' cash movement, so neither side can
+/// book a number the other did not agree to.
+pub const Trade = struct {
+    seller: u32,
+    buyer: u32,
+    item: []const u8,
+    price: i64,
+    stamp: []const u8,
+};
+
+/// The trade booked — each party's own trial-balance fold, kept apart, never braided.
+pub const Booked = struct {
+    seller_book: gc.TrialBalance,
+    buyer_book: gc.TrialBalance,
+
+    /// Cash the seller received (debit-positive net on cash rises when cash is debited).
+    pub fn seller_cash_in(self: *const Booked) i64 {
+        return self.seller_book.nets[cash_ix];
+    }
+
+    /// Cash the buyer parted with (the buyer credits cash, lowering the debit-positive net).
+    pub fn buyer_cash_out(self: *const Booked) i64 {
+        return -self.buyer_book.nets[cash_ix];
+    }
+};
+
+/// The seller's side: cash comes in, revenue is earned. One debit, one credit, of the price.
+pub fn seller_entry(trade: *const Trade) gc.Entry {
+    return .{
+        .debit = .cash,
+        .credit = .revenue,
+        .amount = trade.price,
+        .memo = trade.item,
+        .stamp = trade.stamp,
+    };
+}
+
+/// The buyer's side: an expense is incurred, cash goes out. One debit, one credit, of the price.
+pub fn buyer_entry(trade: *const Trade) gc.Entry {
+    return .{
+        .debit = .expense,
+        .credit = .cash,
+        .amount = trade.price,
+        .memo = trade.item,
+        .stamp = trade.stamp,
+    };
+}
+
+/// Refuse a trade that cannot be fair before any book is touched: a party trading with itself, or
+/// an item name past the journal's memo budget. A non-positive price refuses later, at posting.
+pub fn validate(trade: *const Trade) TradeError!void {
+    if (trade.seller == trade.buyer) return error.SelfTrade;
+    if (trade.item.len > max_item_len) return error.ItemTooLong;
+}
+
+/// Book a fair-value trade onto both parties' books. Each side posts its own single entry to its
+/// own fresh trial balance, so the two books are kept apart; the one price feeds both, so the
+/// seller's inflow and the buyer's outflow are the same number by construction. Records only —
+/// holds and moves nothing.
+pub fn record_trade(trade: *const Trade) BookError!Booked {
+    try validate(trade);
+    var booked = Booked{ .seller_book = .{}, .buyer_book = .{} };
+    try gc.post_entry(&booked.seller_book, seller_entry(trade));
+    try gc.post_entry(&booked.buyer_book, buyer_entry(trade));
+    // invariant: each party's book conserves on its own (Dimeroll's own law).
+    assert(booked.seller_book.conservation() == 0);
+    assert(booked.buyer_book.conservation() == 0);
+    // invariant: the pair conserves across the cash line — no value created or destroyed.
+    assert(booked.seller_cash_in() + (-booked.buyer_cash_out()) == 0);
+    return booked;
+}
+
+/// The crux property, made a single checkable answer: each book conserves, and the one agreed price
+/// is exactly what the seller received and the buyer parted with — fair value proven, not asserted.
+pub fn fair_value_holds(booked: *const Booked, price: i64) bool {
+    if (booked.seller_book.conservation() != 0) return false;
+    if (booked.buyer_book.conservation() != 0) return false;
+    if (booked.seller_cash_in() != price) return false;
+    if (booked.buyer_cash_out() != price) return false;
+    // The two cash movements sum to zero across the pair: +price on the seller, -price on the buyer.
+    return booked.seller_cash_in() - booked.buyer_cash_out() == 0;
+}
+
+// ---- witnesses ----
+
+// Demo party numbers — plainly stand-ins, no real settled keeper.
+const demo_seller: u32 = 7;
+const demo_buyer: u32 = 12;
+
+fn demo_trade(price: i64) Trade {
+    return .{
+        .seller = demo_seller,
+        .buyer = demo_buyer,
+        .item = "hemp bolt",
+        .price = price,
+        .stamp = "20260812.175228",
+    };
+}
+
+/// A real trade books on both sides at one price: each book conserves, the seller's cash inflow and
+/// the buyer's cash outflow are the identical agreed price, and the pair conserves across the cash
+/// line — fair value by construction.
+fn welcome_trade_books_both_sides() !void {
+    const trade = demo_trade(1000);
+    const booked = try record_trade(&trade);
+    assert(booked.seller_book.conservation() == 0);
+    assert(booked.buyer_book.conservation() == 0);
+    assert(booked.seller_cash_in() == 1000);
+    assert(booked.buyer_cash_out() == 1000);
+    assert(booked.seller_cash_in() == booked.buyer_cash_out());
+    assert(fair_value_holds(&booked, 1000));
+    print("commerce_trade: a trade booked on both sides at one price; seller in == buyer out == 1000, each book conserves.\n", .{});
+}
+
+/// Recording is a pure fold of the facts — the same trade booked twice yields identical books, so
+/// there is no hidden cash state held between recordings. Facts only.
+fn welcome_recording_is_pure() !void {
+    const trade = demo_trade(250);
+    const first = try record_trade(&trade);
+    const second = try record_trade(&trade);
+    var i: u32 = 0;
+    while (i < gc.account_count) : (i += 1) {
+        assert(first.seller_book.nets[i] == second.seller_book.nets[i]);
+        assert(first.buyer_book.nets[i] == second.buyer_book.nets[i]);
+    }
+    print("commerce_trade: recording the same trade twice yielded identical books — a pure fold, nothing held.\n", .{});
+}
+
+/// A non-positive price refuses at posting — a trade with no agreed value is not a fair trade.
+fn unwelcome_nonpositive_price_refuses() !void {
+    const trade = demo_trade(0);
+    const booked = record_trade(&trade);
+    assert(booked == error.BadAmount);
+    print("commerce_trade: a zero price refused BadAmount — no fair value, no booking.\n", .{});
+}
+
+/// A party trading with itself refuses — commerce is between two hands, and self-dealing at "fair
+/// value" is not a trade the books will pretend to.
+fn unwelcome_self_trade_refuses() !void {
+    var trade = demo_trade(500);
+    trade.buyer = trade.seller;
+    const booked = record_trade(&trade);
+    assert(booked == error.SelfTrade);
+    print("commerce_trade: a self-trade (seller == buyer) refused SelfTrade.\n", .{});
+}
+
+/// An item name past the memo budget refuses rather than truncate what the journal records.
+fn unwelcome_overlong_item_refuses() !void {
+    var trade = demo_trade(500);
+    const long_item = "x" ** (max_item_len + 1);
+    trade.item = long_item;
+    const booked = record_trade(&trade);
+    assert(booked == error.ItemTooLong);
+    print("commerce_trade: an overlong item name refused ItemTooLong rather than truncate the record.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_trade_books_both_sides();
+    try welcome_recording_is_pure();
+    try unwelcome_nonpositive_price_refuses();
+    try unwelcome_self_trade_refuses();
+    try unwelcome_overlong_item_refuses();
+    print("commerce_trade {s} — GREEN\n", .{commerce_trade_version});
+    print("GREEN: TACT-J4r1 commerce_trade; a fair-value trade books on both sides at one price, each book conserving, the pair conserving across cash.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest();
+    }
+    print("usage: commerce-trade selftest\n", .{});
+    return 1;
+}

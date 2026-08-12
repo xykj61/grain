@@ -1,0 +1,37 @@
+# tools/tact_commerce_trade_witness.rish — TACT Journey 4, Rung 1: a fair-value trade, booked on both sides.
+#
+# Journey 1 piloted a keeper to a running Pond; Journey 2 published a signed, offline-verifiable
+# receipt. Journey 4 lets two keepers trade and records the trade honestly. Dimeroll already keeps
+# books of record (journal entries as facts, a trial-balance fold that conserves when the sum of
+# debit-positive nets is zero). This rung books a fair-value trade on both parties' books at one
+# agreed price: the seller debits cash and credits revenue, the buyer debits expense and credits
+# cash, each book conserving on its own and the pair conserving across the cash line (seller inflow
+# == buyer outflow == price). A non-positive price, a self-trade, and an overlong item name each
+# refuse. It records the facts only — it holds and moves nothing (custody gate #3 stays the gate).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/tact_commerce_trade_witness.rish
+
+say "tact4: Language EN — a fair-value trade is one agreed price booked identically on both parties' books."
+say "tact4: Lens TAME — each book conserves and the pair conserves across cash; zero price, self-trade, overlong item each refuse."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/commerce-trade"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/commerce_trade.rye -femit-bin=${bin}"]
+assert build.ok else "tact4: commerce_trade build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "tact4: commerce_trade selftest exited non-zero"
+assert selftest.out contains "GREEN" else "tact4: selftest did not speak GREEN"
+assert selftest.out contains "a trade booked on both sides at one price; seller in == buyer out == 1000, each book conserves" else "tact4: both-sides claim missing"
+assert selftest.out contains "recording the same trade twice yielded identical books" else "tact4: pure-fold claim missing"
+assert selftest.out contains "a zero price refused BadAmount" else "tact4: zero-price refusal missing"
+assert selftest.out contains "a self-trade (seller == buyer) refused SelfTrade" else "tact4: self-trade refusal missing"
+assert selftest.out contains "an overlong item name refused ItemTooLong" else "tact4: overlong-item refusal missing"
+assert selftest.out contains "a fair-value trade books on both sides at one price" else "tact4: crux claim missing"
+
+# The books of record this trade posts onto compile as the app's own dependency — a green build
+# above already proves dimeroll_core stands under it.
+
+say "tact4: GREEN — a fair-value trade booked on both sides at one price; each book conserves, the pair conserves across cash."

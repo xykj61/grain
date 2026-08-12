@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260812.175228
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title TACT-J4r1 — a fair-value trade booked on both sides
+prompt read the itinerary; take the next agent-doable lap Lindy-first crux-first; approve own design rounds; send each finished increment to both remotes; stop at custody gates
+think TACT Journey 1 (Ship-Pilot) complete; Journey 2 (Publishing) agent-doable arc done (r1 offline, r2 bound, r3 portable) with r4 at the Comlink-served custody gate. The next agent-doable candidates on the road are TACT Journey 3 (Grainphone) and Journey 4 (Commerce).
+think Journey 3's crux — the glass surface reading a *served* Pond — depends on a serve transport that reaches the Comlink-served custody gate and on GrapheneOS hardware (install stays the operator desk), so it cannot be proven green on this bench. Journey 4 (Commerce) records a fair-value trade facts-only in Dimeroll, fully witnessable on metal and never crossing custody gate #3 (funds/disbursement) — the next agent-doable crux, Lindy-first.
+think Surveyed the tree: Dimeroll already runs (dimeroll/dimeroll_core.rye — chart, journal, trial-balance fold, reports), and the entity-books design (seed/active-designing/20260811-220402) names the strand this journey needs — a value crosses between parties only as an explicit fact recorded on both sides, never a silent shared balance.
+think Opened Journey 4 with a self-approved design round. The crux: a fair-value trade is one agreed price booked identically on both parties' books. Fair value is the structure, not a claim over it — a Trade carries one price, and that price becomes both the seller's cash inflow and the buyer's cash outflow, so the two are equal by construction.
+think r1 (pond/apps/commerce_trade.rye) renders a Trade to a pair of Dimeroll entries: seller debits cash / credits revenue, buyer debits expense / credits cash, amount = the one price. record_trade posts each to its own fresh TrialBalance. Two conservation laws hold together: each book nets to zero (Dimeroll's own law), and the pair conserves across cash (seller +price, buyer -price, sum 0). fair_value_holds folds the crux to one checkable answer.
+think Facts-only boundary made checkable: recording the same trade twice yields identical books (a pure fold, nothing held) — there is no hidden cash state to disburse. Refusals: a non-positive price (BadAmount from post_entry), a self-trade (seller == buyer → SelfTrade), an overlong item name (ItemTooLong rather than truncate the record).
+obs Imported dimeroll_core through the pond/apps/dimeroll/ symlink (dimeroll/dimeroll_core.rye), which resolves parse_int.rye alongside it — the app compiles the core as its dependency, so a green build proves the core stands under it.
+obs Built and ran GREEN first pass (2 welcomes + 3 refusals). TAME style bans clean (the file carries asserts — not on the zero-assert ratchet), width-check exit 0.
+obs Demo party numbers only — no settled keeper, no key, no funds. Settling a booked trade reaches custody gate #3 and waits on licensed counsel; r2 (both parties sign) and r3 (portable Bron) stay agent-doable.
+loom witness=tact_commerce_trade_witness result=GREEN cases=5 conservations=2
+file active-designing/20260812-175228_tact-journey4-commerce-exploration.md self-approved design round opening TACT Journey 4 (Commerce), crux + four-round order
+file pond/apps/commerce_trade.rye the two-sided fair-value trade; each book conserves, the pair conserves across cash; zero-price/self-trade/overlong-item refused
+file tools/tact_commerce_trade_witness.rish witness — GREEN (5 cases, build + selftest claims)
+recommend keep-going TACT-J4r1 lands the commerce crux facts-only; r2 (both parties sign) and r3 (portable Bron) are agent-doable next; settling reaches custody gate #3
