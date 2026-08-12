@@ -209,6 +209,7 @@ scrub     active-designing                # design corpus names the maintainer a
 scrub     active-reviving                 # revival corpus, same
 scrub     expanded-prompts                # cold records (past); name-heavy like expanding-prompts; batons sub-excluded personal
 scrub     expanding-prompts               # runnable plans; name-heavy per the audit
+scrub     recursion-prompts               # recursion-prompt cellar; seeds are generic, versions name the maintainer — scrub like expanding-prompts
 scrub     waymarks                        # claim shelf; name-heavy per the audit
 scrub     foundations                     # the why — doctrine ships (scrubbed); bio withheld file-granular (see sub-exclude)
 scrub     linengrow                       # civic-app pattern (template) — yet holds venture specifics; see sub-exclude
