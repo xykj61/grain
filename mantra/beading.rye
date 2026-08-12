@@ -48,7 +48,10 @@ pub const max_bead_bytes: u32 = 256;
 // 4-byte header make a 292-byte index, itself a valid resin (<= max_resin_bytes).
 pub const max_beads: u32 = 8;
 // A content-addressed bead store holds beads from many resins for the dedup dividend.
-pub const max_store_beads: u32 = 64;
+// Raised 64 -> 256 for the spool (mantra/spool.rye): a large artifact wound across
+// max_resins (64) resins at two 256-byte beads each is 128 beads, so the store must
+// hold at least that many, with headroom for a second artifact sharing the store.
+pub const max_store_beads: u32 = 256;
 
 const digest_raw_len: u32 = 32; // SHA3-256 digest, raw
 const index_header_len: u32 = 36; // 32 whole_digest + 2 whole_len + 2 bead_count
