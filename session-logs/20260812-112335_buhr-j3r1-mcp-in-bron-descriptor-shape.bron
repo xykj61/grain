@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260812.112335
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention — this session in ai-jail
+title BUHR Journey 3 Rung 1 — MCP-in-Bron, the descriptor shape fixed and round-tripped
+prompt recur BUHR crux-first, approve own design rounds and make progress before checking in, send each increment, stop at custody gates
+think Having seated the J3 exploration, I approved my own design round (per the loop directive) and built the first door — the descriptor shape — since it is agent-doable and not a custody gate.
+think Matched the tree's flat-Bron idiom (brix/infuse.rye parse: first token key, trimmed remainder value, # and blank skipped) and the bounded request/response discipline (mandate/serve.rye). No new transport, no new abstraction.
+think Fixed three formats: format mcp-call-v1 (id · tool · repeated arg name value), its paired format mcp-result-v1 (id · result | error), and a format mcp-tool-v1 manifest a minimal reader reads (tool name + declared arg count). Two demonstration tools prove the arg grammar spans value models — add over integers, join over strings.
+think Crux property proven: parse(render(call)) recovers the answer — parse_result reads the rendered envelope back (id + result/error), so the owned shape round-trips deterministically, asserted byte-for-byte.
+obs Refusals are real, not decorative: unknown tool -> error unknown_tool (named, never a guess), unknown field -> error.UnknownField (refused, not silently dropped), wrong header -> BadFormat, missing tool -> MissingField, missing required arg -> error bad_args. Eight witnessed cases, GREEN on first build, TAME bans clean.
+loom witness=buhr_mcp_bron_witness result=GREEN cases=8 formats=3 tools=2 max_args=8 max_result_bytes=512
+file pond/apps/mcp_bron.rye the MCP-in-Bron reader — call/result/manifest formats, bounded parse, two tools, named refusals, round-trip
+file tools/buhr_mcp_bron_witness.rish proves the shape on metal — round-trip, both value models, manifest read, five refusals
+recommend check-in (Claude) BUHR Journey 3 rung 1 (descriptor shape) is GREEN; the named horizon — Bron↔JSON tiles so a Grain tool meets a JSON MCP host — is the next crux and a good place to confirm the shape before bridging outward
