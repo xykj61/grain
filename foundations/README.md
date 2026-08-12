@@ -1,12 +1,12 @@
 # Foundations
 
 **Language:** EN
-**Last updated:** 2026-07-26 (the breach · output over activity)
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)
+**Last updated:** `20260811.214023` (AHOY1 weave · the long return · Lindy-first, crux-first) — reviewed and kept; crosslinks expanded, no renames.
+**Style:** Radiant (see `../context/RADIANT_STYLE.md`) · **Voice:** Kyri
 
 ---
 
-This folder holds the why beneath the work — the reasons the building means something, at two scales. The foundation briefs name why the daily craft is an offering and a service. The vision documents name the larger civic horizon the work ultimately serves.
+This folder holds the why beneath the work — the reasons the building means something, at two scales. The foundation briefs name why the daily craft is an offering and a service. The vision documents name the larger civic horizon the work ultimately serves. The front door that opens onto all of it is the root [`../README.md`](../README.md); the habit that returns you here is [**follow our compass**](20260706-185112_follow-our-compass.md).
 
 These rest beneath the specifications. The specs say what to build and how; these say what it is for.
 
@@ -14,8 +14,11 @@ These rest beneath the specifications. The specs say what to build and how; thes
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260811.211431` | [The Lindy Effect and the Long Return](20260811-211431_the-lindy-effect-and-the-long-return.md) | the longer a non-perishable thing has lasted, the longer it will — why we write the front door for the reader three years on, in plain durable words |
 | `20260726.020537` | [The Breach](20260726-020537_the-breach.md) | accrete by default · breach by declaration · expiry at first outside consumer |
 | `20260726.020607` | [Output over Activity](20260726-020607_output-over-activity.md) | measure whole-pier output · leverage · counted simplification |
+
+**The long return** — the [Lindy foundation](20260811-211431_the-lindy-effect-and-the-long-return.md) names why front doors and foundations are the highest-leverage prose we own, and it grounds the standing order [**Lindy-first, crux-first**](../.claude/rules/lindy-first-crux.md): do the longest-lived work first, and within a tier take the *crux* — the hardest solvable problem. The **AHOY** front-door season ([`../expanding-prompts/20260811-211431_ahoy-front-door-season.md`](../expanding-prompts/20260811-211431_ahoy-front-door-season.md)) runs this room's weave.
 
 **The grain** — ten standing strands and the crossing test live in [`../active-designing/20260702-184312_the-grain-and-the-crossing.md`](../active-designing/20260702-184312_the-grain-and-the-crossing.md); companion to [`../context/SILO_TECHNIQUE.md`](../context/SILO_TECHNIQUE.md). Strand briefs that silo here point back to that index; the index points to each brief.
 
