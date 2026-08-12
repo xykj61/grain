@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260812.065412
+editor Zed
+model Fable 5
+voice Kyri
+title BUHR-1r4 — the Q-vane host, realized: dispatch across three voices
+prompt Read REMEMBER; take the next agent-doable lap Lindy-first crux-first; send each round to origin and xykj61; STOP at custody gates; if only gates remain print GATES-ONLY. baton prin recur (recurring after r3)
+think After r1-r3 composed each built voice (Lattice, Scribble, Ember) with Lantern's contract, the crux-first capstone for Journey 1 is the host the equinox names only in words — Quin the Q-vane that gathers them
+think Highest-Lindy next move: realize the dispatcher rather than start Skate views (which lean toward DJINN's surface-lead domain, a check-in seam). The dispatcher is pure compose over the three apps' public answer functions — no custody, no new voice module
+think Authored pond/apps/quin_host.rye — dispatch tries each voice's answer in turn, falling through only on UnknownOp; any other error (bad budget, model not allowed) is a real request fault and surfaces at once. Returns a Served{voice, response}
+think First build failed: @import resolves relative to the importing file, so pond/apps/pond/apps/... was wrong; fixed to same-dir relative (inference_query.rye etc). The voice dirs resolve through the existing pond/apps symlinks
+obs The fall-through discipline is the design's spine: a disallowed model must not be retried against another voice (each would reject it identically, and retrying hides the real fault). Only UnknownOp — genuinely-not-this-voice — falls through
+obs Journey 1's crux is complete: all four named voices now compose (three content voices under Lantern's asking-voice contract, gathered by one host), each over public APIs only, every rung independently GREEN
+loom witness=buhr_quin_host_witness ops=7 result=GREEN
+file pond/apps/quin_host.rye BUHR-1r4 — the Q-vane host: dispatch a bounded request across three voices
+file tools/buhr_quin_host_witness.rish proves dispatch, fault-surfacing, and no-voice refusal GREEN on metal
+file work-in-progress/REMEMBER.md seat the rung, mark Journey 1 complete; refresh git nib in the same work commit
+recommend check-in Journey 1 (the crux) is complete; Journey 2 (Realidream — a Mantra browser Pond app) leans into the styled Skate surface (DJINN's surface-lead domain), so name the seam before crossing. Journey 3 (MCP-in-Bron) is greenfield and agent-doable if kg is preferred
