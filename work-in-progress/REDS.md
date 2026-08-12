@@ -53,6 +53,8 @@ A red enters this ledger when it is found. Rows are never edited or removed; a l
 
 **Reds-first accounting for the two-grain projection (`20260808.183836`):** two reds (61, 62), both real key-material leaks the seed witness caught before any public push, both fixed in-round by hardening the projection guard to match the witness, GREEN on metal after. Allocation **released** — the witness held the line exactly where it was built to.
 
+**Reds-first accounting for AHOY2 (`20260811.225629`):** REDS #69 — a pre-existing seed-boundary coverage gap (five root dirs unclassified since recent seasons) surfaced while adding the top-level `LICENSE`. Classified on Keaton's word — `assets`·`brix`·`pleac` allowed (template, clean code + logo), `journey`·`research-silo` withheld (personal) — and `sow_witness` returns **SOW_WITNESS_GREEN** (M1_OK · IDENT_CLEAN · NO_PERSONAL, copied 4092 · scrubbed 780 · withheld 22). Closed with a witness on metal, same arc. Allocation **released**.
+
 ---
 
 ## What the pattern says

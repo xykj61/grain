@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260811.230436
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Close REDS #69 — classify the five drifted root dirs
+prompt Keaton: allow assets/brix/pleac, withhold journey and research-silo, kg all seasons autonomously
+think REDS #69 (booked last round) was a pre-existing seed-boundary coverage gap: five root dirs unclassified in template-manifest.bron, sow_witness M1_BAD for a day.
+think Classified on Keaton's word. Learned the manifest shape: each root path takes one verdict (template/scrub/personal); public dirs also get an allow line to ship. assets/brix/pleac → allow + template (clean logo + code, no name). journey/research-silo → personal (withheld), no allow line.
+think Ran sow_witness: M1_OK · SOW_OK (copied 4092 · scrubbed 780 · withheld 22) · IDENT_CLEAN · NO_PERSONAL · SOW_WITNESS_GREEN. The seed now projects clean with the top-level LICENSE included and the two identity dirs held back.
+obs Reds-first honored: #69 closed with a witness on metal, same arc it was booked; accounting line added, allocation released. The seed boundary again covers the whole tree, unblocking AHOY3's projection (the force-push itself stays Keaton's hand).
+obs journey and research-silo stay in the private field only — season/quest narratives and research trails name the maintainer by design, so withhold over scrub is the fail-safe the manifest header already prefers ("when uncertain, personal").
+loom witness=sow_witness copied=4092 scrubbed=780 withheld=22 result=GREEN
+file template-manifest.bron classify the five drifted dirs — 3 allow+template, 2 personal
+file work-in-progress/REDS.md #69 accounting — closed GREEN on metal, allocation released
+recommend keep-going AHOY2 next mechanical file — SECURITY.md (custody-and-disclosure), then CODE_OF_CONDUCT.md; kg all seasons autonomously per Keaton's word
