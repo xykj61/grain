@@ -261,7 +261,8 @@ pub fn render(catalog: *const mn.BoltCatalog, out: []u8) RenderError![]const u8 
 
 /// A small deterministic catalog for the selftest: two bolts under one peer, one
 /// lane carrying two revisions, proving the chain and the grouping both render.
-fn demo_catalog() !mn.BoltCatalog {
+/// Public so a view rung paints the very same graph this browser renders.
+pub fn demo_catalog() !mn.BoltCatalog {
     var catalog = mn.BoltCatalog.empty();
     try catalog.append_leaf("local", "notes", 1, "a.txt", "alpha", "leaf");
     try catalog.append_leaf("local", "notes", 2, "a.txt", "alpha-two", "leaf");
