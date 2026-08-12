@@ -50,6 +50,15 @@ These principles fit together into one posture. The record is sovereign; the wir
 
 These lessons were drawn from studying teachers who solved carriage before us: the Urbit runtime and its Ames networking, whose event-log discipline and whose union of identity with address showed how carriage and selfhood can be one thing, and the reactor library beneath that runtime, whose long-proven event loop taught mechanical sympathy at the socket. The study that names them plainly rests in `external-research`, and their originals rest whole in gratitude. We keep the lessons in our own words, and keep the thanks explicit.
 
+## Kin in the weave
+
+Carriage serves the record; naming this brief's neighbours keeps that truth reachable from the tree's hubs.
+
+- **The front door** — the root [`../README.md`](../README.md) names **Comlink** as the device wire that moves sealed octets with meaning kept whole.
+- **The room** — indexed in [`foundations/README.md`](README.md).
+- **The hubs** — the *append-only log of signed facts* and *bounded everything* strands live in [The Grain and the Crossing](../active-designing/20260702-184312_the-grain-and-the-crossing.md); [Follow Our Compass](20260706-185112_follow-our-compass.md) is the return habit. This brief is why the wire stays humble beneath them.
+- **The module** — [`comlink/README.md`](../comlink/README.md), the carriage this principle governs.
+
 ---
 
 *May the record stay sovereign and the wire stay glad to serve it. May every fact cross whole and every budget be named before the crossing. And may the carriage we grow be quiet, bounded, and true, season after season.*
