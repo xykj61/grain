@@ -1,0 +1,23 @@
+::  name       read-source layer
+::  shape      a style: layer that sets the read-origin accent (read) only
+::  invariant  the read token stays warm/low-blue; ground and head are other layers' to set
+::  example    a warm amber read origin, composable over any mode or accent layer
+::  readers    brush_parse.rye → tokens.resolve → realidream_view_theme
+::  nib        surface-wade1-read-origin-v0
+::
+::  A .brush *accent* layer for Realidream's read origin: it names only the `read`
+::  token — a warm amber that sets a fetched source apart from a written program — and
+::  leaves the ground (paper/ink) and the living edge (head) for other layers to set.
+::  Infused over tokens.rye's base sheet, it proves the read origin is themeable on its
+::  own key, without touching the ink, the edge rule, or the living-edge accent. The
+::  cascade is per-key infuse (Bron over Bron), never a CSS rail.
+::  Tongue: Glow · Bron · TAME · Radiant. Never JS · HTML · CSS · JSON.
+::
+::  at-nib:     realidream-read-origin
+::  present:    Frame
+::  max-lines:  8
+::  style:
+::    read 0xFFCC7A33
+::  lines:
+::    realidream view, read-origin theme
+::  refuse:     src/web · Wasm/Web backend · CSS rail · a { } stylesheet
