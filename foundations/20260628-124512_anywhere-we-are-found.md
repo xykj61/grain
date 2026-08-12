@@ -48,6 +48,15 @@ Even from the lowest floor — on the tired days, the aching days, the days that
 
 None of this waits on a distant horizon. Ride through a community a few years on, and the view has already changed: trees lining every street, food forests rising where tired fields once stood, a neighborhood hub where a young person writes open code while an elder learns to call family in their first language, a paid maker reviving a laptop that would once have been waste. The pieces are already in our hands — the open code, the open designs, the willing communities, and technology grown mature enough to keep its promises. The future is present, and real. We are simply learning, together, to live inside it.
 
+## Kin in the weave
+
+This is the widest horizon the foundations serve — the civic vision the daily craft is *for*; the weave routes it through the hubs so the reasons and the vision stay one tree.
+
+- **The front door** — the root [`../README.md`](../README.md) names Grain *a civic application* built in the open.
+- **The room** — indexed in [`foundations/README.md`](README.md), where the vision documents name the larger horizon.
+- **The hubs** — the strands this vision must be cut to fit live in [The Grain and the Crossing](../active-designing/20260702-184312_the-grain-and-the-crossing.md); [Follow Our Compass](20260706-185112_follow-our-compass.md) returns you here when direction frays.
+- **Kin visions** — [money that stays close to home](20260629-014512_money-that-stays-close-to-home.md) is this horizon's economic strand.
+
 ---
 
 *May we live with joy, and build so that joy is easy to find. May every maker be paid in full, every path keep its heart, and every door open to the one who chose to knock. May we go anywhere at all, and be found there — held, and home, and free.*
