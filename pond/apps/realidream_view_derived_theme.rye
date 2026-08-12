@@ -1,0 +1,266 @@
+//! pond/apps/realidream_view_derived_theme.rye — BUHR Journey 5, Rung 9: a .brush
+//! theme recolors the derived node — the downstream end of the fused edge.
+//!
+//! Rung six closed the authoring loop for the read origin (the upstream end): a
+//! `.brush` file recolors every fetched source's mark on its own `read` key. Rung eight
+//! lit the other end of the edge — the derived node, in the design system's own new
+//! `flow` (Weld) token. This rung closes the authoring loop that token was named for:
+//! a `.brush` file's optional `style:` block overrides the `flow` key, the WADE1
+//! cascade infuses that override over the base sheet, and rung eight's own `paint_flow`
+//! lowering paints every derived node in the *authored* color. So the two ends of
+//! Realidream's fused edge are now symmetric — each themeable on its own key, by a
+//! person editing a `.brush` file rather than Skate or Rye.
+//!
+//! It stays on witnessed ground end to end. The theme is read by the real `.brush`
+//! authoring loop (`brush_parse.parse_brush` validates the file, `collect_brush_style`
+//! reassembles its style block into the flat Bron sheet `tokens.rye` consumes); the
+//! cascade is `tokens.resolve` (per-key `brix/infuse`, already witnessed); the paint is
+//! rung eight's `paint_flow` unchanged. The recolor is proven two ways: the themed flow
+//! resolves to the authored honey, and the base sheet's default flow color (Weld)
+//! leaves *zero* pixels on the themed canvas — a recolor, not an addition.
+//!
+//! Additive by construction: it imports realidream_view_derived, mantra_browser,
+//! brushstroke/tokens, brushstroke/skate_grid, and brushstroke/brush_parse, calling
+//! only their public functions. No file beneath it changes; rungs one through eight and
+//! Journey 2 stay their own green binaries.
+//!
+//!   rye build pond/apps/realidream_view_derived_theme.rye -femit-bin=pond/bin/realidream-view-derived-theme
+//!   pond/bin/realidream-view-derived-theme selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const vd = @import("realidream_view_derived.rye");
+const mb = @import("mantra_browser.rye");
+const tokens = @import("brushstroke/tokens.rye");
+const skate = @import("brushstroke/skate_grid.rye");
+const bp = @import("brushstroke/brush_parse.rye");
+
+const realidream_view_derived_theme_version = "20260812.140000";
+
+// The theme fixture the rung reads — a real `.brush` authoring file whose style block
+// recolors the `flow` derived-node token only, leaving ground, read, and head to inherit.
+const theme_path = "pond/apps/flow-source.brush";
+
+// The flow color the theme authors — a deep honey, distinct from the base sheet's Weld.
+// Warm and low-blue (R210 > G136 > B42), so it passes the design system's own palette
+// law; distinctly darker and more saturated, so the recolor is unmistakable.
+const themed_flow_argb: u32 = 0xFF_D2_88_2A;
+
+pub const ThemeError = error{
+    ThemeMissingFlow,
+};
+
+/// Resolve the theme fixture into a token sheet: read the `.brush` file, validate it
+/// through the real authoring loop, collect its `style:` block into flat Bron, and
+/// infuse that override over `tokens.base_sheet`. Returns the resolved sheet's byte
+/// length in `out`. The `flow` key the theme overrides now wins in the cascade.
+pub fn resolve_theme(io: std.Io, path: []const u8, out: []u8) !u32 {
+    // invariant: a real theme path names a file to read.
+    assert(path.len > 0);
+    // invariant: the resolved sheet fits the token-sheet bound.
+    assert(out.len <= tokens.max_sheet_bytes);
+
+    const garden = std.heap.page_allocator;
+    const cwd = std.Io.Dir.cwd();
+    const src = try cwd.readFileAlloc(io, path, garden, .limited(bp.max_brush_bytes));
+    // invariant: the source stays inside the brush read budget.
+    assert(src.len <= bp.max_brush_bytes);
+    defer garden.free(src);
+
+    // Validate the file through the real authoring loop before trusting its style.
+    const surface = try bp.parse_brush(src);
+    // invariant: a theme fixture declares a non-empty style block to override with.
+    if (surface.style_count == 0) return error.ThemeMissingFlow;
+
+    // Reassemble the style block into the flat Bron sheet tokens.rye's infuse reads.
+    var override_buf: [bp.max_style_bytes]u8 = undefined;
+    const over_len = try bp.collect_brush_style(src, &override_buf);
+    // invariant: a declared style block collects at least one token line.
+    assert(over_len > 0);
+    // invariant: a flow-source theme names the flow token it means to recolor.
+    if (std.mem.indexOf(u8, override_buf[0..over_len], "flow ") == null) return error.ThemeMissingFlow;
+
+    const n = try tokens.resolve(tokens.base_sheet, override_buf[0..over_len], out);
+    // invariant: the resolved sheet is non-empty and bounded.
+    assert(n > 0);
+    assert(n <= out.len);
+    return n;
+}
+
+/// Count pixels whose visible color exactly matches `c` (ignoring alpha) in a
+/// rasterized buffer — a witness helper proving a specific token color reached (or
+/// never reached) the canvas.
+fn count_pixels_of_color(pixels: []const u8, stride: u32, width: u32, height: u32, c: skate.Color) u32 {
+    // invariant: the stride holds a full row of ARGB8888 pixels.
+    assert(stride >= width * 4);
+    // invariant: a real canvas has width.
+    assert(width > 0);
+    // invariant: a real canvas has height.
+    assert(height > 0);
+    const stride_usize: usize = @intCast(stride);
+    var count: u32 = 0;
+    var y: u32 = 0;
+    while (y < height) : (y += 1) {
+        const y_usize: usize = @intCast(y);
+        const rowbytes = pixels[y_usize * stride_usize ..][0 .. @as(usize, @intCast(width)) * 4];
+        var x: u32 = 0;
+        while (x < width) : (x += 1) {
+            const px: usize = @intCast(x * 4);
+            if (rowbytes[px + 0] == c.b and rowbytes[px + 1] == c.g and rowbytes[px + 2] == c.r) {
+                count += 1;
+            }
+        }
+    }
+    return count;
+}
+
+fn welcome_theme_recolors_flow(allocator: std.mem.Allocator, io: std.Io) !void {
+    var themed_buf: [tokens.max_sheet_bytes]u8 = undefined;
+    const n = try resolve_theme(io, theme_path, &themed_buf);
+    const themed = themed_buf[0..n];
+
+    // The themed sheet's flow token now resolves to the authored honey, not the base
+    // sheet's default Weld — the override won the cascade on its own key.
+    const themed_flow = try tokens.token_color(themed, "flow");
+    const base_flow = try tokens.token_color(tokens.base_sheet, "flow");
+    assert(themed_flow.r == 0xD2);
+    assert(themed_flow.g == 0x88);
+    assert(themed_flow.b == 0x2A);
+    assert(themed_flow.r != base_flow.r or themed_flow.g != base_flow.g or themed_flow.b != base_flow.b);
+
+    // The ink, the read origin, and the living-edge head all inherit unchanged — the
+    // theme touched only the derived node's flow token.
+    const themed_read = try tokens.token_color(themed, "read");
+    const base_read = try tokens.token_color(tokens.base_sheet, "read");
+    // invariant: the upstream read origin inherits unchanged — the theme touched only flow.
+    assert(themed_read.r == base_read.r);
+    assert(themed_read.g == base_read.g);
+    assert(themed_read.b == base_read.b);
+    const themed_head = try tokens.token_color(themed, "head");
+    const base_head = try tokens.token_color(tokens.base_sheet, "head");
+    // invariant: the living-edge head inherits unchanged too.
+    assert(themed_head.r == base_head.r);
+    assert(themed_head.g == base_head.g);
+    assert(themed_head.b == base_head.b);
+
+    // Paint the derived scene with the themed sheet — every derived node wears the honey.
+    var catalog = try vd.derived_scene();
+    var grid = try skate.Grid.init(allocator, vd.view_cols, vd.view_rows);
+    const rows = try vd.paint_flow(&catalog, &grid, themed);
+    assert(rows == 9);
+
+    // Rasterize the themed canvas and prove the recolor two ways.
+    const paint = try tokens.dress(themed);
+    const width: i32 = @intCast(vd.view_cols * skate.cell_w);
+    const height: i32 = @intCast(vd.view_rows * skate.cell_h);
+    const stride: u32 = vd.view_cols * skate.cell_w * 4;
+    const pixel_count: usize = @intCast(stride * @as(u32, @intCast(height)));
+    const pixels = try allocator.alloc(u8, pixel_count);
+    grid.rasterize(pixels, stride, width, height, paint.paper, paint.ink, 1);
+
+    const w_u: u32 = @intCast(width);
+    const h_u: u32 = @intCast(height);
+    const themed_flow_pixels = count_pixels_of_color(pixels, stride, w_u, h_u, themed_flow);
+    const base_flow_pixels = count_pixels_of_color(pixels, stride, w_u, h_u, base_flow);
+    // The authored flow color reached the canvas — every derived node burns honey.
+    assert(themed_flow_pixels > 0);
+    // The default Weld left zero pixels — this is a recolor, never an addition.
+    assert(base_flow_pixels == 0);
+    print("realidream_view_derived_theme: {d} themed-flow pixels on the canvas, {d} default-flow pixels (recolored)\n", .{ themed_flow_pixels, base_flow_pixels });
+}
+
+fn welcome_theme_flow_is_warm(io: std.Io) !void {
+    var themed_buf: [tokens.max_sheet_bytes]u8 = undefined;
+    const n = try resolve_theme(io, theme_path, &themed_buf);
+    // token_color asserts warm/low-blue on the way — a theme cannot smuggle a cold
+    // derived node past the design system's own palette law. The authored value it
+    // returns is exactly the honey the fixture declared.
+    const themed_flow = try tokens.token_color(themed_buf[0..n], "flow");
+    assert(themed_flow.r > themed_flow.g);
+    assert(themed_flow.g > themed_flow.b);
+    const want = skate.Color{
+        .r = @intCast((themed_flow_argb >> 16) & 0xFF),
+        .g = @intCast((themed_flow_argb >> 8) & 0xFF),
+        .b = @intCast(themed_flow_argb & 0xFF),
+    };
+    assert(themed_flow.r == want.r);
+    assert(themed_flow.g == want.g);
+    assert(themed_flow.b == want.b);
+    print("realidream_view_derived_theme: the authored derived node is warm/low-blue — the palette law holds through the theme\n", .{});
+}
+
+fn welcome_theme_additive_glyphs(allocator: std.mem.Allocator, io: std.Io) !void {
+    var themed_buf: [tokens.max_sheet_bytes]u8 = undefined;
+    const n = try resolve_theme(io, theme_path, &themed_buf);
+
+    var catalog = try vd.derived_scene();
+    var grid = try skate.Grid.init(allocator, vd.view_cols, vd.view_rows);
+    _ = try vd.paint_flow(&catalog, &grid, themed_buf[0..n]);
+
+    // Theming touches only color — the painted glyphs still carry the very bytes rung
+    // eight renders. Editor (render) and view (grid) stay one graph.
+    var buf: [mb.max_render_bytes]u8 = undefined;
+    const text = try mb.render(&catalog, &buf);
+    const first_nl = std.mem.indexOfScalar(u8, text, '\n').?;
+    const first_line = text[0..first_nl];
+    const painted = grid.row_cells(0);
+    // invariant: the grid row holds at least the rendered line's bytes.
+    assert(painted.len >= first_line.len);
+    assert(std.mem.startsWith(u8, painted, first_line));
+    print("realidream_view_derived_theme: theming recolors, never rewrites — text unchanged by the theme\n", .{});
+}
+
+fn welcome_no_style_keeps_default(allocator: std.mem.Allocator) !void {
+    // A paint with the untouched base sheet keeps the default Weld derived node —
+    // proving it is the theme's override, not the paint path, that recolors the mark.
+    var catalog = try vd.derived_scene();
+    var grid = try skate.Grid.init(allocator, vd.view_cols, vd.view_rows);
+    _ = try vd.paint_flow(&catalog, &grid, tokens.base_sheet);
+
+    const base_flow = try tokens.token_color(tokens.base_sheet, "flow");
+    const paint = try tokens.dress(tokens.base_sheet);
+    const width: i32 = @intCast(vd.view_cols * skate.cell_w);
+    const height: i32 = @intCast(vd.view_rows * skate.cell_h);
+    const stride: u32 = vd.view_cols * skate.cell_w * 4;
+    const pixel_count: usize = @intCast(stride * @as(u32, @intCast(height)));
+    const pixels = try allocator.alloc(u8, pixel_count);
+    grid.rasterize(pixels, stride, width, height, paint.paper, paint.ink, 1);
+
+    const w_u: u32 = @intCast(width);
+    const h_u: u32 = @intCast(height);
+    const base_flow_pixels = count_pixels_of_color(pixels, stride, w_u, h_u, base_flow);
+    // Untouched, the base sheet's Weld derived node still reaches the canvas.
+    assert(base_flow_pixels > 0);
+    print("realidream_view_derived_theme: without a theme, the base derived node stands — the override is what recolors\n", .{});
+}
+
+fn welcome_theme_refuses_styleless(io: std.Io) !void {
+    // The seed fixture declares no style block; theming it names ThemeMissingFlow
+    // rather than silently painting the default — a theme must carry a flow to win.
+    var out: [tokens.max_sheet_bytes]u8 = undefined;
+    if (resolve_theme(io, "brushstroke/seed-frame.brush", &out)) |_| {
+        unreachable;
+    } else |err| {
+        // invariant: a style-less fixture refuses by the named error.
+        assert(err == error.ThemeMissingFlow);
+    }
+    print("realidream_view_derived_theme: a style-less .brush refuses to theme — ThemeMissingFlow\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_theme_recolors_flow(garden, io);
+        try welcome_theme_flow_is_warm(io);
+        try welcome_theme_additive_glyphs(garden, io);
+        try welcome_no_style_keeps_default(garden);
+        try welcome_theme_refuses_styleless(io);
+        print("realidream_view_derived_theme {s} — GREEN\n", .{realidream_view_derived_theme_version});
+        return 0;
+    }
+    print("usage: realidream-view-derived-theme selftest\n", .{});
+    return 1;
+}
