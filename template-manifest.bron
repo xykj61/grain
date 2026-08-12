@@ -104,6 +104,7 @@ allow MAP.md
 allow SOURCE.md
 allow SECURITY.md
 allow CODE_OF_CONDUCT.md
+allow CHANGELOG.md
 allow CLAUDE.md
 allow CONTRIBUTING.md
 allow ORGANIZING.md
@@ -141,6 +142,7 @@ scrub     MAP.md                          # identity line + Keaton by name
 scrub     SOURCE.md                       # onboarding guide; names the maintainer
 scrub     SECURITY.md                     # disclosure note; points to the threat model that names the maintainer
 scrub     CODE_OF_CONDUCT.md              # civic conduct; reporting points to the maintainer
+scrub     CHANGELOG.md                    # points to git log + the private session-log record (no link into withheld dirs)
 scrub     CLAUDE.md                       # project instructions; heavy identity + voice
 scrub     CONTRIBUTING.md                 # may name; commit-shape guidance
 scrub     ORGANIZING.md                   # names the keeper throughout
