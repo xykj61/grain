@@ -139,23 +139,37 @@ pub fn count_words(text: []const u8) u32 {
     return words;
 }
 
-/// The Q-vane query, end to end: validate the request against Lantern's contract,
-/// gate the model through the allow-list, read the live Mantra graph for a true
-/// answer, and return a Lantern Response bounded by max_tokens (length stop when the
-/// budget bites). The model is never trusted before the list clears; the graph is
-/// never guessed at.
+/// The Q-vane query over the demo graph — the catalog the reading journeys render.
+/// A convenience over `answer_over`, so a caller with no catalog of its own still asks
+/// against the same living graph the browser paints.
 pub fn answer(req: lc.Request, allow_text: []const u8, out_buf: []u8) (lc.LanternError || QueryError)!lc.Response {
     // invariant: the caller's buffer honors Lantern's completion bound
     assert(out_buf.len <= max_result_text);
     // invariant: the buffer can hold at least one token
     assert(out_buf.len > 0);
+    var catalog = mb.demo_catalog() catch return error.LaneUnknown;
+    return answer_over(req, allow_text, &catalog, out_buf);
+}
+
+/// The Q-vane query over an explicit catalog: validate the request against Lantern's
+/// contract, gate the model through the allow-list, read the *given* Mantra graph for
+/// a true answer, and return a Lantern Response bounded by max_tokens (length stop
+/// when the budget bites). The model is never trusted before the list clears; the
+/// graph is never guessed at. Taking the catalog explicitly lets a caller ask over an
+/// *edited* graph, so the answer tracks the living surface rather than a fixed demo.
+pub fn answer_over(req: lc.Request, allow_text: []const u8, catalog: *const mn.BoltCatalog, out_buf: []u8) (lc.LanternError || QueryError)!lc.Response {
+    // invariant: the caller's buffer honors Lantern's completion bound
+    assert(out_buf.len <= max_result_text);
+    // invariant: the buffer can hold at least one token
+    assert(out_buf.len > 0);
+    // invariant: the graph respects Mantra's binding budget before we read it
+    assert(catalog.leaf_count <= mn.max_bindings);
 
     try lc.validate_request(req);
     if (!lc.model_allowed(req.model_hash, allow_text)) return error.ModelNotAllowed;
 
     const op = try route_op(req.prompt);
-    var catalog = mb.demo_catalog() catch return error.LaneUnknown;
-    const text = try compute(op, &catalog, out_buf);
+    const text = try compute(op, catalog, out_buf);
 
     const tokens_in = count_words(req.prompt);
     var tokens_out = count_words(text);
