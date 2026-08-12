@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260812.131542
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR-J5r4 — two read sources feed one program node
+prompt Autonomous loop — take the next agent-doable lap Lindy-first crux-first, send each finished increment, stop at custody gates.
+think Rung 3 drew the fused edge with one upstream. The foundation names the motion in the plural — two sources can feed one node — so the fusion whole is a program node derived from two distinct read/ lanes at once.
+think Designed derive_from_two_reads over a small read_head_len helper (leaned on twice): both source paths must be read/ (NotAReadPath), the destination must not be (NotAProgramPath), the two sources must differ (SameSource — a fusion wants two inputs, not one twice), unpinned refuses LaneUnknown. Fused content = "a=<la> b=<lb>", a pure function of both heads, bounded to max_summary_bytes via bufPrint.
+think Proved independence: refresh source A → a=8 b=2 (only the first moved), refresh source B → a=8 b=3 (only the second moved), while the first fused node still recalls a=4 b=2 — referential transparency across a two-input edge, nothing mutating downstream.
+obs The J5 fused-edge arc now stands whole: r1 two lanes on one graph · r2 a re-read is an append · r3 one read feeds one program node · r4 two reads fuse into one. The real network fetch remains the one held seam (Keaton's word) — the genuine outward act.
+obs Witness GREEN (3 welcomes + rung-three re-run additive); tame_style_check bans clean, width-check clean on the new file.
+loom witness=buhr_realidream_fuse_witness welcomes=3 rung3_rerun=green network_reads=0 summary_bound_bytes=32
+file pond/apps/realidream_fuse.rye derive_from_two_reads — a program node fused from two read lanes' heads
+file tools/buhr_realidream_fuse_witness.rish the witness proving the fuse, independent downstream flow, and four edge refusals
+file work-in-progress/REMEMBER.md BUHR-J5r4 landing accreted; the fused-edge arc marked whole, held network seam named, a view-rung option noted
+recommend keep-going the fused-edge arc is whole; a view rung (paint read + program + fused lanes together) is agent-doable, while the real network fetch stays the held seam for Keaton's word
