@@ -1,0 +1,197 @@
+//! pond/apps/corpus_true.rye — GISM Journey 5 (Real corpora), Rung 4 — the journey's close.
+//!
+//! Season 2, Yield: rungs 1–3 proved the voices read real bytes and stay inside their
+//! bounds. This closing rung proves the harder thing — **the reading is true to the
+//! bytes**: what a voice reports (the outline, the fence kinds, the word count) matches
+//! what the real document actually contains, cross-checked by a second, independent
+//! fence-aware tool (tools/fixtures/md_truth.awk). A voice a reader cannot check is a
+//! voice that can quietly drift; this rung binds the reading to a corpus a keeper can
+//! open and count for themselves.
+//!
+//! The corpus is manual/tutorials/first-witness.md — a real tutorial a person wrote,
+//! embedded at compile time through a symlink in pond/apps/corpora/. It carries the
+//! honest adversary: line 57, `# my_first_witness.rish`, sits INSIDE a ```rish code
+//! fence. A naive `grep -cE '^#'` counts it and reports seven headings; a reading that
+//! understands fences reports the true six. Scribble understands fences, so the voice
+//! is truer to the bytes than a line prefix — and this witness proves it, three tools
+//! converging: Scribble's fence-aware reading, the reading_query voice over it, and an
+//! independent awk that also respects fences.
+//!
+//! Additive by construction: it reuses reading_query's public answer_over and
+//! Scribble's public parse_markdown / extract_headings / count_fence_kinds; nothing
+//! beneath changes.
+//!
+//!   rye build pond/apps/corpus_true.rye -femit-bin=pond/bin/corpus-true
+//!   pond/bin/corpus-true selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lc = @import("lantern/lantern_core.rye");
+const sc = @import("scribble/scribble_core.rye");
+const rq = @import("reading_query.rye");
+
+const corpus_true_version = "20260812.184600";
+
+// The real corpus — a symlink to the living manual/tutorials/first-witness.md. Real
+// tutorial bytes, embedded at compile time: the same reading every build, no network.
+const real_doc = @embedFile("corpora/first_witness.md");
+
+// The fenced pseudo-heading the honest adversary hides: a '#' line inside a ```rish
+// fence. A reading true to the bytes never reports it as a heading.
+const fenced_pseudo_heading = "my_first_witness";
+
+const allow_line = "model_hash sha3-256-rye-forge-lap0";
+
+/// The whole measured reading of the document, in the exact shape md_truth.awk prints,
+/// so an independent fence-aware tool can be compared to the voice field for field.
+const Reading = struct {
+    headings: u32,
+    rye: u32,
+    rish: u32,
+    plain: u32,
+    words: u32,
+};
+
+/// Read the real document through the same engine the voice uses (Scribble), and
+/// gather the counts a reader can check against the raw bytes. This is the voice's
+/// structural reading — headings and fence kinds are fence-aware, so a '#' inside a
+/// code fence is code, never a heading.
+fn measure_reading(doc: []const u8, out_buf: []u8) !Reading {
+    // invariant: the document respects Scribble's whole-document bound
+    assert(doc.len <= sc.max_doc_bytes);
+    // invariant: the outline buffer honors Lantern's completion bound
+    assert(out_buf.len <= lc.max_completion_len);
+
+    var blocks: [sc.max_blocks]sc.Block = undefined;
+    const block_count = try sc.parse_markdown(doc, &blocks);
+    // invariant: the parse stays inside Scribble's block budget
+    assert(block_count <= sc.max_blocks);
+
+    var headings: [sc.max_headings]sc.Heading = undefined;
+    const heading_count = try sc.extract_headings(blocks[0..block_count], &headings);
+    // invariant: the outline stays inside Scribble's heading budget
+    assert(heading_count <= sc.max_headings);
+
+    // Every reported heading is verbatim in the raw bytes (no invented heading), and
+    // none is the fenced pseudo-heading (the reading respects the code fence).
+    var i: u32 = 0;
+    // invariant: the check walks no further than the extracted headings
+    assert(heading_count <= sc.max_headings);
+    while (i < heading_count) : (i += 1) {
+        const text = headings[i].text_slice();
+        // invariant: the reported heading is present verbatim in the document
+        assert(std.mem.indexOf(u8, doc, text) != null);
+        // invariant: the fenced '#' line is code, not a heading — never reported
+        assert(std.mem.indexOf(u8, text, fenced_pseudo_heading) == null);
+    }
+
+    const kinds = sc.count_fence_kinds(blocks[0..block_count]);
+
+    // The voice's outline, through the Lantern contract — its word count is a real
+    // reader's own tally of the heading words.
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "outline the corpus",
+        .max_tokens = 64,
+    };
+    const resp = try rq.answer_over(req, doc, allow_line, out_buf);
+    // invariant: the outline read to its natural end, not a length cut
+    assert(resp.stopped_reason == .eos);
+    const words = rq.count_words(resp.text);
+
+    return .{
+        .headings = heading_count,
+        .rye = kinds.rye,
+        .rish = kinds.rish,
+        .plain = kinds.plain,
+        .words = words,
+    };
+}
+
+/// The crux: the voice's reading is true to the bytes, confirmed against an independent
+/// fence-aware measurement. The witness runs md_truth.awk over the same real file and
+/// compares this line field for field — Scribble, the voice, and awk all agree.
+fn welcome_reading_is_true() !void {
+    var buf: [lc.max_completion_len]u8 = undefined;
+    const r = try measure_reading(real_doc, &buf);
+
+    // invariant: the fence-aware reading reports six headings, not the naive seven
+    assert(r.headings == 6);
+    // invariant: the one ```rish fence and no ```rye fence
+    assert(r.rye == 0);
+    assert(r.rish == 1);
+    // invariant: every other fenced block reads as plain
+    assert(r.plain == 4);
+    // invariant: the outline carries the real heading words a reader can count
+    assert(r.words == 45);
+
+    // Printed in md_truth.awk's exact field order, so the witness compares as-is.
+    print("corpus_true: truth headings {d} rye {d} rish {d} plain {d} words {d}\n", .{ r.headings, r.rye, r.rish, r.plain, r.words });
+}
+
+/// The naive line-prefix count would report seven — proving the honest adversary is
+/// real and the fence-aware reading genuinely corrects it (not a doc without the trap).
+fn welcome_naive_overcounts() !void {
+    var naive: u32 = 0;
+    var line_start: u32 = 0;
+    var i: u32 = 0;
+    // invariant: the scan walks no further than the document
+    assert(real_doc.len <= sc.max_doc_bytes);
+    while (i < real_doc.len) : (i += 1) {
+        if (i == line_start and real_doc[i] == '#') naive += 1;
+        if (real_doc[i] == '\n') line_start = i + 1;
+    }
+    // invariant: a fence-blind count over-reports — the fenced '#' inflates it to seven
+    assert(naive == 7);
+    print("corpus_true: naive line-prefix count {d} (fence-blind over-count)\n", .{naive});
+}
+
+/// The allow-list gates the model over the real corpus, exactly as elsewhere.
+fn unwelcome_model_not_allowed() !void {
+    var buf: [lc.max_completion_len]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-not-on-list",
+        .prompt = "outline the corpus",
+        .max_tokens = 64,
+    };
+    if (rq.answer_over(req, real_doc, allow_line, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        // invariant: an off-list model is refused before any reading
+        assert(err == error.ModelNotAllowed);
+    }
+    print("corpus_true: model not allowed refused\n", .{});
+}
+
+/// An unrecognized operation refuses over the real corpus — no fake answer.
+fn unwelcome_unknown_op() !void {
+    var buf: [lc.max_completion_len]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "paraphrase the corpus",
+        .max_tokens = 64,
+    };
+    if (rq.answer_over(req, real_doc, allow_line, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        // invariant: an unknown op refuses rather than inventing a reading
+        assert(err == error.UnknownOp);
+    }
+    print("corpus_true: unknown op refused (no fake answer)\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_reading_is_true();
+        try welcome_naive_overcounts();
+        try unwelcome_model_not_allowed();
+        try unwelcome_unknown_op();
+        print("corpus_true {s} — GREEN\n", .{corpus_true_version});
+        return 0;
+    }
+    print("usage: corpus-true selftest\n", .{});
+    return 1;
+}

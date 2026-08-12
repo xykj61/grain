@@ -1,0 +1,51 @@
+# tools/gism_j5_corpus_true_witness.rish — GISM Journey 5 (Real corpora), Rung 4 — close.
+#
+# Season 2, Yield: the reading is true to the bytes. The voice reports an outline,
+# fence kinds, and a word count over a real tutorial (manual/tutorials/first-witness.md);
+# an independent, fence-aware awk (tools/fixtures/md_truth.awk) measures the same real
+# file. The two must agree field for field — Scribble's reading, the reading_query
+# voice over it, and awk all converging on the same numbers, so a voice can never drift
+# from a corpus a keeper can open and count.
+#
+# The real doc carries the honest adversary: a '#' line inside a ```rish fence. A naive
+# `grep -cE '^#'` counts it (seven); the fence-aware reading reports the true six. The
+# app proves the naive over-count is real, then proves it reads the truth.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/gism_j5_corpus_true_witness.rish
+
+say "gism-j5r4: Language EN — the reading is true to the bytes, cross-checked by a second fence-aware tool."
+say "gism-j5r4: Lens TAME — Scribble, the voice, and awk converge on one measurement of the real document."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/corpus-true"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/corpus_true.rye -femit-bin=${bin}"]
+assert build.ok else "gism-j5r4: corpus_true build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "gism-j5r4: corpus_true selftest exited non-zero"
+assert selftest.out contains "GREEN" else "gism-j5r4: selftest did not speak GREEN"
+assert selftest.out contains "naive line-prefix count 7" else "gism-j5r4: naive over-count demonstration missing"
+assert selftest.out contains "model not allowed refused" else "gism-j5r4: allow-list gate missing"
+assert selftest.out contains "unknown op refused" else "gism-j5r4: unknown-op refusal missing (would be a fake answer)"
+
+# The crux cross-check: an independent fence-aware awk over the SAME real file must
+# report the identical measurement the voice does. The awk script lives in a fixture
+# file (no shell $ vars, so Rishi's ${} interpolation is not tripped). Both sides
+# reduce to 'headings <h> rye <r> rish <s> plain <p> words <w>', compared as-is.
+let awk_truth = run ["sh" "-c" "awk -f tools/fixtures/md_truth.awk manual/tutorials/first-witness.md"]
+assert awk_truth.ok else "gism-j5r4: md_truth.awk cross-check failed to run"
+let app_truth = run ["sh" "-c" "${bin} selftest 2>&1 | grep -oE 'headings [0-9]+ rye [0-9]+ rish [0-9]+ plain [0-9]+ words [0-9]+'"]
+assert app_truth.ok else "gism-j5r4: could not extract the app's measured reading"
+assert app_truth.out == awk_truth.out else "gism-j5r4: the voice's reading disagrees with the independent fence-aware awk"
+
+# The demo reading over pinned_doc stays GREEN — corpus_true is additive.
+let demo_bin = "pond/bin/reading-query"
+let demo_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/reading_query.rye -femit-bin=${demo_bin}"]
+assert demo_build.ok else "gism-j5r4: reading_query (demo) rebuild failed"
+let demo_selftest = run ["sh" "-c" "${demo_bin} selftest 2>&1"]
+assert demo_selftest.ok else "gism-j5r4: reading_query (demo) selftest regressed"
+assert demo_selftest.out contains "GREEN" else "gism-j5r4: reading_query (demo) did not speak GREEN"
+
+say "GREEN: GISM-J5r4 — the voice's reading matches an independent fence-aware measurement of the real document; Journey 5 closes."
