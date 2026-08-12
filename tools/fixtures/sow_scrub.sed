@@ -8,7 +8,11 @@
 # Ordered longest-first so compound names resolve before their parts.
 #
 # Names -> role.
+s/Sara Sealy Livermore/a co-founder/g
+s/Robert Sealy Livermore/a family member/g
+s/Alexandra Livermore/a family member/g
 s/Keaton Livermore/the maintainer/g
+s/Keaton Dunsford/the maintainer/g
 s/Kaeden Reyklah/the maintainer/g
 s/Keaton's/the maintainer's/g
 s/Kaeden's/the maintainer's/g
