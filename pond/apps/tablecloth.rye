@@ -173,6 +173,16 @@ pub fn address_hex(cat: *const Catalog, name: []const u8, out: []u8) ClothError!
     write_hex_lower(cat.entries[i].whole_digest[0..], out[0..digest_hex_len]);
 }
 
+/// The whole length of the artifact a name pins. Refuses an unknown name.
+pub fn artifact_len(cat: *const Catalog, name: []const u8) ClothError!u32 {
+    // invariant: the search stays within the catalog bound
+    assert(cat.count <= max_artifacts);
+    const i = cat.find(name) orelse return error.UnknownArtifact;
+    // invariant: a found index is within the live catalog
+    assert(i < cat.count);
+    return cat.entries[i].whole_len;
+}
+
 /// Render the catalog as its Brix-facing `format tablecloth-v1` manifest, returning its
 /// length. One `artifact <name> <digest> <len>` line per entry, in held order.
 pub fn render_manifest(cat: *const Catalog, out: []u8) ClothError!u32 {
