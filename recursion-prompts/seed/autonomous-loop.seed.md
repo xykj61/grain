@@ -6,7 +6,7 @@
 
 ## The one line (paste form)
 
-> Read `work-in-progress/REMEMBER.md`; take the next agent-doable lap Lindy-first crux-first; send each round to `origin` and `xykj61`; approve your own design rounds and trust yourself before checking in; keep double-seating new visions that address calendar-itinerary blind spots; STOP at the custody gates in REMEMBER; if only those gates remain print exactly `GATES-ONLY` and stop. baton prin recur
+> Read `work-in-progress/REMEMBER.md`; take the next agent-doable lap Lindy-first crux-first; send often — push each finished increment (a new file, a passing witness, a doc) to `origin` and `xykj61` as its own signed round so progress is followable on GitHub; approve your own design rounds and trust yourself before checking in; keep double-seating new visions that address calendar-itinerary blind spots; STOP at the custody gates in REMEMBER; if only those gates remain print exactly `GATES-ONLY` and stop. baton prin recur
 
 ## 1 — The lenses, loaded by reference
 
@@ -49,6 +49,7 @@ A tripwire is not a stop — it is a design round you **approve for yourself** a
 - **Clock:** `TZ=America/New_York date +%Y%m%d.%H%M%S`, never fabricated. One clock, not one hand.
 - **Commits:** CONTRIBUTING style — component-prefixed subject under 50 chars, Radiant body, `Related` section. The session log rides in the same commit.
 - **Remotes:** push both `origin` and `xykj61` every send (ls-remote guard first; `origin` may 403 from the cloud — name it, the home pier closes the gap).
+- **Cadence — send often:** push each *finished increment* as its own atomic signed round — a new file, a passing witness, a landed doc — rather than batching a whole rung, so progress is followable on GitHub in near-real-time. More granular than one-send-per-rung, yet still no pin-only commit: every send carries a green witness or an honest note, and each subject stays component-scoped.
 - **Signing:** GPG-signing stays on; never `--no-gpg-sign`, never `--no-verify`.
 - **REMEMBER git nib** updates in the same work commit; amend at most once; never a pin-only follow-up.
 
