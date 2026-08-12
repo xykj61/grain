@@ -1,9 +1,21 @@
 # TAME Guidance — Code
 
 **Canon:** `external-research/TAME_GUIDANCE.md` (voiced Tiger Style) · **Source:** `gratitude/TIGER_STYLE.md`
-**Operational supplement:** `context/TAME_GUIDANCE.md`. Apply when writing or reviewing Rye source (`.rye`), Brix descriptors (`.brix`), Bron notation (`.bron`), and Rishi scripts (`.rish`).
+**Operational supplement (the shelf):** `context/TAME_GUIDANCE.md`. **Compressed core (read first):** `context/TAME_CORE.md`. Apply when writing or reviewing Rye (`.rye`), Rishi (`.rish`), Brix (`.brix`), Bron (`.bron`), Kyri (`.kyri`), Glow, Brush (Brushstroke), and Mycelium (`.myc`) code.
 
 Full checkable surface: supplement section **What We Check, and When**.
+
+## TAME Core — the reflexes (always, every code write)
+
+The highest points, token-dense; the full form is [`context/TAME_CORE.md`](../../context/TAME_CORE.md) (core) and `context/TAME_GUIDANCE.md` (shelf).
+
+- **Safety > performance > joy** — safety structural, performance measured, joy is clarity + saying why.
+- **Bound everything** — every allocation/collection/loop names a max; check at the edge; fail with a **named error**. No unbounded recursion.
+- **Assert invariants first** — construction · mutation · postcondition, **≥2 per fn**, each `// invariant:`, stated **positively**.
+- **Explicit widths** — `u32` in-memory · `u64` wire · `usize` **seam-only** (assert bound, `@intCast` at edge). **Say why.** Accrete by tier. One value model (string·int·bool·list·record).
+- **Rye reflexes** — opening triad (`std`·`assert`·`print`) · `snake_case` · short fns · named errors with `try` · `copy_disjoint` not bare `@memcpy` · unqualified `assert` (never `std.debug.assert(`) · no compound `assert(a and b)` · `garden` arena, never raw `ArenaAllocator`.
+- **Rishi** — `run` → `{ ok, out, code }`, check before trusting `out`; no integer div/mod; `run [ … ]` args on one line.
+- **Reds-first** — a red books the allocation; a fix closes on a **witness on metal**, never a claim.
 
 ## When this rule is active
 
