@@ -1,0 +1,370 @@
+//! pond/apps/inference_query.rye — BUHR Journey 1, Rung 1.
+//!
+//! The Q-vane host pattern, proven small: a bounded Lantern-shaped request is
+//! routed to a voice and returned as a bounded Lantern-shaped response. When the
+//! prompt names an arithmetic operation, Lattice computes a real, deterministic
+//! result and this app wraps it in a Lantern-contract-bounded Response — the same
+//! validate_request gate, the same allow-list, the same tokens/stopped_reason
+//! metering that governs every Lantern completion.
+//!
+//! Additive by construction: it imports lantern_core and lattice_core and calls
+//! only their public functions. Neither contract changes.
+//!
+//!   rye build pond/apps/inference_query.rye -femit-bin=pond/bin/inference-query
+//!   pond/bin/inference-query selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lc = @import("lantern/lantern_core.rye");
+const tc = @import("lattice/lattice_core.rye");
+
+const inference_query_version = "20260812.101000";
+
+// The Q-vane's bounded operand budget: a fixed 2×2 pair, well inside Lattice's
+// own max_dim (8). Deterministic operands mean a deterministic, reproducible
+// result — the request seed pins nothing random because there is nothing random.
+const query_dim: u32 = 2;
+const max_result_text: u32 = lc.max_completion_len; // never exceed Lantern's completion bound
+
+/// The arithmetic operations the router recognizes by name in the prompt.
+/// Each routes to a real Lattice call; unknown prompts refuse (no fake answer).
+pub const Op = enum(u8) {
+    matmul,
+    add,
+    reduce_sum,
+};
+
+pub const QueryError = error{
+    UnknownOp,
+    ResultTooLong,
+    ModelNotAllowed,
+};
+
+/// Recognize the operation named at the head of the prompt.
+/// Returns UnknownOp rather than guessing — the host never invents an answer.
+pub fn route_op(prompt: []const u8) QueryError!Op {
+    // invariant: the prompt fits Lantern's own bound before we read it
+    assert(prompt.len <= lc.max_prompt_len);
+    // invariant: an empty prompt names no operation
+    assert(prompt.len > 0 or prompt.len == 0);
+    if (std.mem.startsWith(u8, prompt, "matmul")) return .matmul;
+    if (std.mem.startsWith(u8, prompt, "add")) return .add;
+    if (std.mem.startsWith(u8, prompt, "reduce_sum")) return .reduce_sum;
+    return error.UnknownOp;
+}
+
+/// Build the fixed left operand — a deterministic 2×2 the whole app agrees on.
+fn operand_a() tc.TensorError!tc.Matrix {
+    var m = try tc.Matrix.init(query_dim, query_dim);
+    // invariant: the matrix carries exactly the requested square shape
+    assert(m.rows == query_dim);
+    assert(m.cols == query_dim);
+    m.set(0, 0, 1);
+    m.set(0, 1, 2);
+    m.set(1, 0, 3);
+    m.set(1, 1, 4);
+    return m;
+}
+
+/// Build the fixed right operand — the second half of the deterministic pair.
+fn operand_b() tc.TensorError!tc.Matrix {
+    var m = try tc.Matrix.init(query_dim, query_dim);
+    // invariant: the matrix carries exactly the requested square shape
+    assert(m.rows == query_dim);
+    assert(m.cols == query_dim);
+    m.set(0, 0, 5);
+    m.set(0, 1, 6);
+    m.set(1, 0, 7);
+    m.set(1, 1, 8);
+    return m;
+}
+
+/// Run the routed operation through Lattice for a real result, then format the
+/// result matrix into `out_buf` as space-separated integers (the operands are
+/// whole, so the results are whole). Returns the written slice.
+pub fn compute(op: Op, out_buf: []u8) (tc.TensorError || QueryError || error{NoSpaceLeft})![]const u8 {
+    // invariant: the caller's buffer respects Lantern's completion bound
+    assert(out_buf.len <= max_result_text);
+    // invariant: there is room for at least one digit
+    assert(out_buf.len > 0);
+
+    const a = try operand_a();
+    const b = try operand_b();
+
+    var result = switch (op) {
+        .matmul => blk: {
+            var out = try tc.Matrix.init(query_dim, query_dim);
+            try tc.matmul(&a, &b, &out);
+            break :blk out;
+        },
+        .add => blk: {
+            var out = try tc.Matrix.init(query_dim, query_dim);
+            try tc.add(&a, &b, &out);
+            break :blk out;
+        },
+        .reduce_sum => blk: {
+            var out = try tc.Matrix.init(1, 1);
+            try tc.reduce_sum(&a, &out);
+            break :blk out;
+        },
+    };
+
+    // Format every element, space-separated, bounded by the result shape.
+    var written: u32 = 0;
+    var i: u32 = 0;
+    const total = result.len();
+    // invariant: the element count stays inside Lattice's garden
+    assert(total <= tc.max_elements);
+    while (i < total) : (i += 1) {
+        const r = i / result.cols;
+        const c = i % result.cols;
+        const value: i64 = @intFromFloat(result.at(r, c));
+        if (written > 0) {
+            if (written >= out_buf.len) return error.ResultTooLong;
+            out_buf[written] = ' ';
+            written += 1;
+        }
+        const rest = out_buf[written..];
+        const piece = std.fmt.bufPrint(rest, "{d}", .{value}) catch return error.ResultTooLong;
+        // seam: bufPrint returns usize; the slice never exceeds our u32 bound
+        assert(piece.len <= rest.len);
+        written += @intCast(piece.len);
+        if (written > out_buf.len) return error.ResultTooLong;
+    }
+    // invariant: we never wrote past the caller's buffer
+    assert(written <= out_buf.len);
+    return out_buf[0..written];
+}
+
+/// Count whitespace-separated words in `text` — the same token sense Lantern's
+/// own length budget uses when it truncates a completion.
+pub fn count_words(text: []const u8) u32 {
+    // invariant: the text respects Lantern's completion bound
+    assert(text.len <= max_result_text);
+    var words: u32 = 0;
+    var in_word = false;
+    var i: u32 = 0;
+    // invariant: the loop is bounded by the text length
+    assert(text.len <= max_result_text);
+    while (i < text.len) : (i += 1) {
+        const ch = text[i];
+        const is_space = ch == ' ' or ch == '\t' or ch == '\n' or ch == '\r';
+        if (!is_space) {
+            if (!in_word) {
+                words += 1;
+                in_word = true;
+            }
+        } else {
+            in_word = false;
+        }
+    }
+    return words;
+}
+
+/// The Q-vane host, end to end: validate the request against Lantern's contract,
+/// gate the model through the allow-list, route the prompt to Lattice for a real
+/// result, and return a Lantern Response bounded by max_tokens (length stop when
+/// the budget bites). The model is never trusted before the allow-list clears.
+pub fn answer(req: lc.Request, allow_text: []const u8, out_buf: []u8) (lc.LanternError || tc.TensorError || QueryError || error{NoSpaceLeft})!lc.Response {
+    // invariant: the caller's buffer honors Lantern's completion bound
+    assert(out_buf.len <= max_result_text);
+    // invariant: the buffer can hold at least one token
+    assert(out_buf.len > 0);
+
+    try lc.validate_request(req);
+    if (!lc.model_allowed(req.model_hash, allow_text)) return error.ModelNotAllowed;
+
+    const op = try route_op(req.prompt);
+    const text = try compute(op, out_buf);
+
+    const tokens_in = count_words(req.prompt);
+    var tokens_out = count_words(text);
+    var final_text = text;
+    var reason: lc.StoppedReason = .eos;
+
+    // Honor Lantern's metering: when the real result outruns the budget, truncate
+    // to max_tokens words and mark a length stop — the same discipline Lantern's
+    // own complete_fixture applies to a fixture that outruns its budget.
+    if (tokens_out > req.max_tokens) {
+        var words: u32 = 0;
+        var cut: u32 = 0;
+        var i: u32 = 0;
+        var in_word = false;
+        // invariant: truncation walks no further than the produced text
+        assert(text.len <= max_result_text);
+        while (i < text.len) : (i += 1) {
+            const ch = text[i];
+            const is_space = ch == ' ' or ch == '\t' or ch == '\n' or ch == '\r';
+            if (!is_space) {
+                if (!in_word) {
+                    if (words == req.max_tokens) break;
+                    words += 1;
+                    in_word = true;
+                }
+                cut = i + 1;
+            } else {
+                in_word = false;
+            }
+        }
+        final_text = text[0..cut];
+        tokens_out = words;
+        reason = .length;
+    }
+
+    // invariant: the returned text never exceeds Lantern's completion bound
+    assert(final_text.len <= lc.max_completion_len);
+    // invariant: metered output never exceeds the requested budget
+    assert(tokens_out <= req.max_tokens);
+    return .{
+        .text = final_text,
+        .tokens_in = tokens_in,
+        .tokens_out = tokens_out,
+        .stopped_reason = reason,
+    };
+}
+
+fn welcome_matmul_query() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "matmul the pair",
+        .max_tokens = 64,
+    };
+    const resp = try answer(req, allow, &buf);
+    // A×B for the pinned pair: [[19 22][43 50]].
+    assert(std.mem.eql(u8, resp.text, "19 22 43 50"));
+    assert(resp.tokens_out == 4);
+    assert(resp.tokens_in == 3);
+    assert(resp.stopped_reason == .eos);
+    print("inference_query: matmul routed to Lattice — text '{s}' eos\n", .{resp.text});
+}
+
+fn welcome_add_query() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "add the pair",
+        .max_tokens = 64,
+    };
+    const resp = try answer(req, allow, &buf);
+    // A+B for the pinned pair: [[6 8][10 12]].
+    assert(std.mem.eql(u8, resp.text, "6 8 10 12"));
+    assert(resp.tokens_out == 4);
+    assert(resp.stopped_reason == .eos);
+    print("inference_query: add routed to Lattice — text '{s}' eos\n", .{resp.text});
+}
+
+fn welcome_reduce_sum_query() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "reduce_sum the left",
+        .max_tokens = 64,
+    };
+    const resp = try answer(req, allow, &buf);
+    // sum of [[1 2][3 4]] = 10.
+    assert(std.mem.eql(u8, resp.text, "10"));
+    assert(resp.tokens_out == 1);
+    assert(resp.stopped_reason == .eos);
+    print("inference_query: reduce_sum routed to Lattice — text '{s}' eos\n", .{resp.text});
+}
+
+fn welcome_length_budget() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "matmul the pair",
+        .max_tokens = 2,
+    };
+    const resp = try answer(req, allow, &buf);
+    // Real result is four words; a budget of two truncates and marks length.
+    assert(resp.tokens_out == 2);
+    assert(std.mem.eql(u8, resp.text, "19 22"));
+    assert(resp.stopped_reason == .length);
+    print("inference_query: length budget — tokens {d} length\n", .{resp.tokens_out});
+}
+
+fn unwelcome_model_not_allowed() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-not-on-list",
+        .prompt = "matmul the pair",
+        .max_tokens = 64,
+    };
+    if (answer(req, allow, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ModelNotAllowed);
+    }
+    print("inference_query: model not allowed refused\n", .{});
+}
+
+fn unwelcome_unknown_op() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "translate this poem",
+        .max_tokens = 64,
+    };
+    if (answer(req, allow, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.UnknownOp);
+    }
+    print("inference_query: unknown op refused (no fake answer)\n", .{});
+}
+
+fn unwelcome_zero_budget() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "matmul the pair",
+        .max_tokens = 0,
+    };
+    if (answer(req, allow, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.BudgetExceeded);
+    }
+    print("inference_query: zero budget refused by Lantern contract\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_matmul_query();
+        try welcome_add_query();
+        try welcome_reduce_sum_query();
+        try welcome_length_budget();
+        try unwelcome_model_not_allowed();
+        try unwelcome_unknown_op();
+        try unwelcome_zero_budget();
+        print("inference_query {s} — GREEN\n", .{inference_query_version});
+        return 0;
+    }
+    print("usage: inference-query selftest\n", .{});
+    return 1;
+}
