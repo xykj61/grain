@@ -1,0 +1,32 @@
+# tools/buhr_inference_query_witness.rish — BUHR Journey 1, Rung 1.
+#
+# The Q-vane host pattern, proven end to end: a bounded Lantern-shaped request
+# routes through Lattice for a real, deterministic result and returns a
+# Lantern-contract-bounded response. Lattice's math is genuine (matmul of a
+# pinned pair), the allow-list gates the model, and the length budget truncates
+# with a length stop exactly as Lantern's own contract does.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/buhr_inference_query_witness.rish
+
+say "buhr1: Language EN — Lattice + Lantern composed as one bounded inference query."
+say "buhr1: Lens TAME — real math, bounded request, bounded response; unknown op refused."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/inference-query"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/inference_query.rye -femit-bin=${bin}"]
+assert build.ok else "buhr1: inference_query build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "buhr1: inference_query selftest exited non-zero"
+assert selftest.out contains "GREEN" else "buhr1: selftest did not speak GREEN"
+assert selftest.out contains "matmul routed to Lattice — text '19 22 43 50'" else "buhr1: real matmul result missing"
+assert selftest.out contains "add routed to Lattice — text '6 8 10 12'" else "buhr1: real add result missing"
+assert selftest.out contains "reduce_sum routed to Lattice — text '10'" else "buhr1: real reduce_sum result missing"
+assert selftest.out contains "length budget — tokens 2 length" else "buhr1: length-budget stop missing"
+assert selftest.out contains "model not allowed refused" else "buhr1: allow-list gate missing"
+assert selftest.out contains "unknown op refused" else "buhr1: unknown-op refusal missing (would be a fake answer)"
+assert selftest.out contains "zero budget refused by Lantern contract" else "buhr1: Lantern budget gate missing"
+
+say "GREEN: BUHR1 — Lattice + Lantern composed; real math routed and returned bounded by the contract."
