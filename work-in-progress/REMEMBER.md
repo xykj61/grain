@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` — the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `072898a65a` · Grain · cloud pier · **public seed `grain-os/grain` @ `26cae5b` (single-commit; force-push refresh)**
+**Git nib:** `5e33d42b05` · Grain · cloud pier · **public seed `grain-os/grain` @ `26cae5b` (single-commit; force-push refresh)**
 **Host:** Framework · EDT (`America/New_York`) · Vultr SEA VPS (HP AMD 2vCPU/4GB shared · never EWR) · this session in ai-jail
 
 ---
@@ -30,6 +30,8 @@
 ---
 
 - **recursion-prompts/ cellar SEATED `20260812`** (autonomous run, Keaton asleep to ~1400 EDT) — a new root-level folder between the baton-museum *shape* (`recursion_prompt.brix`) and the bron-resins *instances*: living fillable **seed** templates (autonomous-loop · counsel-to-bench · context-reset-handoff) + dated filled **versions** (this run's expanded prompt kept whole). Charter weaves the balance compass (Radiant · Twilight · TAME · CIVIC · compass rose · Lindy-first crux-first · reds-first). Census witness `tools/recursion_prompts_census_witness.rish` GREEN; `tools/launch-claude-season.rish` loop one-liners updated to the expanded prompt (approve own design rounds · double-seat visions · harmony-of-styles · GATES-ONLY) and pointed at the cellar.
+
+- **BUHR MCP surface arc — all three primitives owned `20260812`** (accreting past the J9r2 detail in custody-gate item 1): **J10 (resources)** served Tablecloth artifacts as MCP resources — `pond/apps/mcp_resource.rye` `resources/read` returns exactly the bytes the `tablecloth:<name>` URI's digest pins (a tampered store → `resource_tampered`), and `mcp_resource_list.rye` `resources/list` advertises the catalog as an **honest index** (every listed URI reads at its published length; tamper → `NotHonest`). **J11 (prompts) OPENED** — the third MCP surface, named templates a server offers; self-approved design round `active-designing/20260812-153255_…`. **J11r1 LANDED** — `pond/apps/mcp_prompt.rye` `prompts/get` fills a `format mcp-prompt-v1` template with a request's `arg` bindings into a `format mcp-prompt-result-v1` body holding **no live placeholder** (round-trips; multi-line + repeated-placeholder proven); four named refusals — `prompt_not_found` · `unknown_argument` · `missing_argument` · `unbound_placeholder`. Self-contained owned Bron shapes; witness `tools/buhr_mcp_prompt_witness.rish` GREEN, TAME + width clean. Horizons: J11r2 prompts/list · J11r3 a filled prompt routes to a voice (joins J9+J11); Comlink-served stays the held serve gate.
 
 ## The Compass Season — OPEN `20260809.021829` (Keaton's word)
 

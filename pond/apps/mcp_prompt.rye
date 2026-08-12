@@ -1,0 +1,701 @@
+//! pond/apps/mcp_prompt.rye — BUHR Journey 11, Rung 1: the MCP prompts surface.
+//!
+//! The Model Context Protocol names three first-class surfaces. Journey 9 served the verb
+//! half — `tools/call`, a voice a caller invokes. Journey 10 served the noun half —
+//! `resources/read`, an artifact a caller reads. This rung serves the third — `prompts`, a
+//! named reusable template a server *offers*: a caller names a prompt, supplies its
+//! arguments, and receives finished text (`prompts/get`).
+//!
+//! A `format mcp-prompt-v1` descriptor declares a prompt — a name, a one-line summary, one
+//! `arg <name>` line per argument, and a length-delimited `template` body carrying `{name}`
+//! placeholders. A `format mcp-prompt-get-v1` request names the prompt and binds each
+//! argument (`arg <name> <value>`). The fill substitutes every `{name}` with its bound value
+//! and answers a `format mcp-prompt-result-v1` envelope whose body is the finished text; a
+//! round-trip reader recovers the body.
+//!
+//! The crux: a `prompts/get` returns exactly the template's text with every declared argument
+//! filled and every placeholder resolved — nothing left half-substituted. The result body
+//! holds no `{…}` at all, exactly the declared arguments were supplied, and the envelope
+//! round-trips byte-for-byte. Every refusal crosses the surface as a *named* MCP error, never
+//! a half-filled body: an unknown prompt name is `prompt_not_found`, an argument the
+//! descriptor never declared is `unknown_argument`, a declared argument left unbound is
+//! `missing_argument`, and a `{name}` naming no declared argument is `unbound_placeholder`.
+//!
+//! It invents no storage and no transport: it reads a descriptor and a request in owned Bron
+//! shapes kin to mcp_bron.rye, fills bounded text, and renders an owned result. It reads no
+//! network — the real fetch and the Comlink-served transport stay the held custody/serve
+//! gates.
+//!
+//!   rye build pond/apps/mcp_prompt.rye -femit-bin=pond/bin/mcp-prompt
+//!   pond/bin/mcp-prompt selftest
+//!
+//! Scope: active-designing/20260812-153255_buhr-journey11-mcp-prompts-surface-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const mcp_prompt_version = "20260812.153255";
+
+// The protocol's bounds, each named once and enforced at the edge.
+pub const max_name: u32 = 48; // a prompt name or an argument name
+pub const max_summary: u32 = 128; // a one-line summary
+pub const max_value: u32 = 128; // a bound argument value
+pub const max_args: u32 = 8; // arguments one prompt declares or a request binds
+pub const max_template: u32 = 512; // the template body's byte budget
+pub const max_line: u32 = 256; // longest head line (a template line is read as a body, not here)
+// A filled body: the template plus every placeholder expanded to a bound value. A placeholder
+// is at least three bytes (`{x}`); an expansion adds at most max_value per occurrence, and the
+// template bounds the occurrences, so this budget holds every honest fill.
+pub const max_filled: u32 = max_template + max_args * max_value;
+// A rendered result envelope: the filled body plus a bounded head (header, id, prompt, len,
+// and the `body ` marker never exceed 128 bytes together).
+pub const max_env: u32 = max_filled + 128;
+
+pub const PromptError = error{
+    BadFormat,
+    MissingField,
+    UnknownField,
+    NameTooLong,
+    SummaryTooLong,
+    ValueTooLong,
+    TooManyArgs,
+    LineTooLong,
+    TemplateTooLong,
+    BadInt,
+    BodyLenMismatch,
+    UnboundPlaceholder,
+    FilledTooLong,
+    EnvTooLong,
+};
+
+/// One declared argument name, held in a bounded, owned buffer.
+const ArgName = struct {
+    bytes: [max_name]u8,
+    len: u32,
+};
+
+/// A parsed prompt descriptor: its name, summary, declared argument names, and template body.
+// Invariant: arg_count <= max_args; name/summary/template within their budgets.
+pub const PromptDesc = struct {
+    name: [max_name]u8,
+    name_len: u32,
+    summary: [max_summary]u8,
+    summary_len: u32,
+    args: [max_args]ArgName,
+    arg_count: u32,
+    template: [max_template]u8,
+    template_len: u32,
+
+    pub fn name_slice(self: *const PromptDesc) []const u8 {
+        // invariant: the held name honors its bound
+        assert(self.name_len <= max_name);
+        // invariant: a declared prompt carries a name
+        assert(self.name_len > 0);
+        return self.name[0..self.name_len];
+    }
+
+    pub fn arg_slice(self: *const PromptDesc, i: u32) []const u8 {
+        // invariant: the index names a declared argument
+        assert(i < self.arg_count);
+        // invariant: the declared-argument count honors its bound
+        assert(self.arg_count <= max_args);
+        return self.args[i].bytes[0..self.args[i].len];
+    }
+};
+
+/// One argument binding a request supplies: an argument name and the value bound to it,
+/// both zero-copy slices into the request source.
+pub const Binding = struct {
+    name: []const u8,
+    value: []const u8,
+};
+
+/// A parsed `prompts/get` request: the id, the prompt it names, and its argument bindings.
+// Invariant: binding_count <= max_args.
+pub const GetRequest = struct {
+    id: u32,
+    prompt: []const u8,
+    bindings: [max_args]Binding,
+    binding_count: u32,
+};
+
+/// Split a line into its first space-delimited token (the key) and the trimmed remainder
+/// (the value). The flat-Bron `key value` idiom the whole tree shares.
+fn key_val(line: []const u8) struct { key: []const u8, val: []const u8 } {
+    // invariant: the line respects the bounded head length
+    assert(line.len <= max_line);
+    var sp: usize = 0; // seam: slice index over a std source
+    while (sp < line.len and line[sp] != ' ') : (sp += 1) {}
+    const key = line[0..sp];
+    const val = std.mem.trim(u8, line[sp..], " \t");
+    return .{ .key = key, .val = val };
+}
+
+/// Copy a bounded token into an owned buffer, returning its length. Refuses when the token
+/// exceeds the buffer — a name or value is never silently truncated.
+fn store_token(dst: []u8, tok: []const u8, comptime cap: u32) PromptError!u32 {
+    // invariant: the destination buffer is exactly the declared cap
+    assert(dst.len == cap);
+    if (tok.len > cap) return error.NameTooLong;
+    var i: usize = 0; // seam: index over a std buffer
+    while (i < tok.len) : (i += 1) dst[i] = tok[i];
+    // invariant: the stored length honors the cap
+    assert(i <= cap);
+    return @intCast(i);
+}
+
+/// Parse a `format mcp-prompt-v1` descriptor into a bounded PromptDesc. The header must name
+/// the format exactly; `prompt` (name) and `template` (body) are required; each `arg` line
+/// declares one argument; any other field key is refused rather than silently dropped. The
+/// template is length-delimited (it may hold newlines): the head fields parse line by line and
+/// the body is everything after the `template ` marker.
+pub fn parse_desc(src: []const u8, desc: *PromptDesc) PromptError!void {
+    // invariant: a descriptor carries at least a header line
+    assert(src.len > 0);
+    // invariant: the source respects the descriptor bound
+    assert(src.len <= max_line * max_args + max_template + 128);
+
+    desc.name_len = 0;
+    desc.summary_len = 0;
+    desc.arg_count = 0;
+    desc.template_len = 0;
+
+    const marker = "\ntemplate ";
+    const split = std.mem.indexOf(u8, src, marker);
+    const head = if (split) |at| src[0..at] else src;
+
+    var have_header = false;
+    var have_name = false;
+
+    var lines = std.mem.splitScalar(u8, head, '\n');
+    while (lines.next()) |raw| {
+        const line = std.mem.trim(u8, raw, " \t\r");
+        if (line.len == 0 or line[0] == '#') continue;
+        if (line.len > max_line) return error.LineTooLong;
+        const kv = key_val(line);
+        if (std.mem.eql(u8, kv.key, "format")) {
+            if (!std.mem.eql(u8, kv.val, "mcp-prompt-v1")) return error.BadFormat;
+            have_header = true;
+        } else if (std.mem.eql(u8, kv.key, "prompt")) {
+            if (kv.val.len == 0) return error.MissingField;
+            desc.name_len = try store_token(desc.name[0..], kv.val, max_name);
+            have_name = true;
+        } else if (std.mem.eql(u8, kv.key, "summary")) {
+            if (kv.val.len > max_summary) return error.SummaryTooLong;
+            desc.summary_len = try store_token(desc.summary[0..], kv.val, max_summary);
+        } else if (std.mem.eql(u8, kv.key, "arg")) {
+            if (desc.arg_count >= max_args) return error.TooManyArgs;
+            if (kv.val.len == 0) return error.MissingField;
+            const n = try store_token(desc.args[desc.arg_count].bytes[0..], kv.val, max_name);
+            desc.args[desc.arg_count].len = n;
+            desc.arg_count += 1;
+        } else {
+            // An unknown field is a protocol fault, never quietly ignored.
+            return error.UnknownField;
+        }
+    }
+
+    if (split) |at| {
+        const body = src[at + marker.len ..];
+        if (body.len > max_template) return error.TemplateTooLong;
+        desc.template_len = try store_token(desc.template[0..], body, max_template);
+    }
+
+    if (!have_header) return error.BadFormat;
+    if (!have_name) return error.MissingField;
+    // invariant: the descriptor's argument count honors its bound
+    assert(desc.arg_count <= max_args);
+}
+
+/// Parse a `format mcp-prompt-get-v1` request into a bounded GetRequest. The header must name
+/// the format exactly; `id` and `prompt` are required; each `arg <name> <value>` line binds
+/// one argument; any other field key is refused.
+pub fn parse_get(src: []const u8, req: *GetRequest) PromptError!void {
+    // invariant: a request carries at least a header line
+    assert(src.len > 0);
+    // invariant: the source respects a bounded request envelope
+    assert(src.len <= max_line * (max_args + 4));
+
+    req.binding_count = 0;
+    var have_header = false;
+    var have_id = false;
+    var have_prompt = false;
+
+    var lines = std.mem.splitScalar(u8, src, '\n');
+    while (lines.next()) |raw| {
+        const line = std.mem.trim(u8, raw, " \t\r");
+        if (line.len == 0 or line[0] == '#') continue;
+        if (line.len > max_line) return error.LineTooLong;
+        const kv = key_val(line);
+        if (std.mem.eql(u8, kv.key, "format")) {
+            if (!std.mem.eql(u8, kv.val, "mcp-prompt-get-v1")) return error.BadFormat;
+            have_header = true;
+        } else if (std.mem.eql(u8, kv.key, "id")) {
+            req.id = std.fmt.parseInt(u32, kv.val, 10) catch return error.BadInt;
+            have_id = true;
+        } else if (std.mem.eql(u8, kv.key, "prompt")) {
+            if (kv.val.len == 0 or kv.val.len > max_name) return error.NameTooLong;
+            req.prompt = kv.val;
+            have_prompt = true;
+        } else if (std.mem.eql(u8, kv.key, "arg")) {
+            if (req.binding_count >= max_args) return error.TooManyArgs;
+            // An `arg` line binds a name to a value: the first token is the name, the trimmed
+            // remainder the value (which may be empty — a bound-to-empty argument is honest).
+            const inner = key_val(kv.val);
+            if (inner.key.len == 0 or inner.key.len > max_name) return error.NameTooLong;
+            if (inner.val.len > max_value) return error.ValueTooLong;
+            req.bindings[req.binding_count] = .{ .name = inner.key, .value = inner.val };
+            req.binding_count += 1;
+        } else {
+            return error.UnknownField;
+        }
+    }
+    if (!have_header) return error.BadFormat;
+    if (!have_id) return error.MissingField;
+    if (!have_prompt) return error.MissingField;
+    // invariant: the request's binding count honors its bound
+    assert(req.binding_count <= max_args);
+}
+
+/// Is `name` one of the descriptor's declared arguments?
+fn is_declared(desc: *const PromptDesc, name: []const u8) bool {
+    // invariant: the declared-argument count honors its bound
+    assert(desc.arg_count <= max_args);
+    var i: u32 = 0;
+    while (i < desc.arg_count) : (i += 1) {
+        if (std.mem.eql(u8, desc.arg_slice(i), name)) return true;
+    }
+    return false;
+}
+
+/// The value a request bound to `name`, or null when it bound none.
+fn bound_value(req: *const GetRequest, name: []const u8) ?[]const u8 {
+    // invariant: the binding count honors its bound
+    assert(req.binding_count <= max_args);
+    var i: u32 = 0;
+    while (i < req.binding_count) : (i += 1) {
+        if (std.mem.eql(u8, req.bindings[i].name, name)) return req.bindings[i].value;
+    }
+    return null;
+}
+
+/// Render an error result envelope naming `err_name` for request `id`.
+fn render_error(id: u32, err_name: []const u8, out: []u8) PromptError![]const u8 {
+    // invariant: the caller's buffer respects the envelope bound
+    assert(out.len <= max_env);
+    // invariant: a named error is present
+    assert(err_name.len > 0);
+    const s = std.fmt.bufPrint(out, "format mcp-prompt-result-v1\nid {d}\nerror {s}\n", .{ id, err_name }) catch return error.EnvTooLong;
+    // seam: bufPrint returns a slice into out; it never exceeds the slice it wrote
+    assert(s.len <= out.len);
+    return s;
+}
+
+/// Fill a template into `filled`, substituting each `{name}` with the value the request bound
+/// to it. Returns the filled length. A `{name}` naming no bound argument refuses
+/// `unbound_placeholder` (the fill never leaves a live brace in the body); an over-long fill
+/// refuses `FilledTooLong`. A bare `{` with no closing `}` is treated as a literal byte, so a
+/// template may hold an unpaired brace as ordinary text.
+fn fill_template(desc: *const PromptDesc, req: *const GetRequest, filled: []u8) PromptError!u32 {
+    // invariant: the fill buffer respects the filled bound
+    assert(filled.len <= max_filled);
+    const tmpl = desc.template[0..desc.template_len];
+    var off: usize = 0; // seam: write offset over a std buffer
+    var i: usize = 0; // seam: read index over the template
+    while (i < tmpl.len) {
+        if (tmpl[i] == '{') {
+            const close = std.mem.indexOfScalarPos(u8, tmpl, i + 1, '}');
+            if (close) |c| {
+                const name = tmpl[i + 1 .. c];
+                const val = bound_value(req, name) orelse return error.UnboundPlaceholder;
+                if (off + val.len > filled.len) return error.FilledTooLong;
+                var j: usize = 0; // seam: copy index over a std slice
+                while (j < val.len) : (j += 1) filled[off + j] = val[j];
+                off += val.len;
+                i = c + 1;
+                continue;
+            }
+        }
+        if (off + 1 > filled.len) return error.FilledTooLong;
+        filled[off] = tmpl[i];
+        off += 1;
+        i += 1;
+    }
+    // invariant: the filled body honors the buffer bound
+    assert(off <= filled.len);
+    return @intCast(off);
+}
+
+/// Fill a prompt by request and render the result envelope into `out`. The request's prompt
+/// name must match the descriptor (`prompt_not_found`); every binding must name a declared
+/// argument (`unknown_argument`, never dropped); every declared argument must be bound
+/// (`missing_argument`); every `{name}` in the template must resolve (`unbound_placeholder`).
+/// On success the envelope carries prompt · len · the finished body, holding no `{…}`.
+pub fn get_prompt(desc: *const PromptDesc, req: *const GetRequest, out: []u8) PromptError![]const u8 {
+    // invariant: the caller's buffer respects the envelope bound
+    assert(out.len <= max_env);
+    // invariant: the descriptor and request honor their argument bounds
+    assert(desc.arg_count <= max_args);
+    assert(req.binding_count <= max_args);
+
+    if (!std.mem.eql(u8, req.prompt, desc.name_slice())) {
+        return render_error(req.id, "prompt_not_found", out);
+    }
+
+    // No binding may name an argument the descriptor never declared.
+    var b: u32 = 0;
+    while (b < req.binding_count) : (b += 1) {
+        if (!is_declared(desc, req.bindings[b].name)) {
+            return render_error(req.id, "unknown_argument", out);
+        }
+    }
+    // Every declared argument must be bound.
+    var a: u32 = 0;
+    while (a < desc.arg_count) : (a += 1) {
+        if (bound_value(req, desc.arg_slice(a)) == null) {
+            return render_error(req.id, "missing_argument", out);
+        }
+    }
+
+    var filled: [max_filled]u8 = undefined;
+    const n = fill_template(desc, req, filled[0..]) catch |err| switch (err) {
+        error.UnboundPlaceholder => return render_error(req.id, "unbound_placeholder", out),
+        error.FilledTooLong => return render_error(req.id, "filled_too_long", out),
+        else => return err,
+    };
+    // invariant: the filled body honors the filled bound
+    assert(n <= max_filled);
+
+    const s = std.fmt.bufPrint(out, "format mcp-prompt-result-v1\nid {d}\nprompt {s}\nlen {d}\nbody {s}", .{
+        req.id, req.prompt, n, filled[0..n],
+    }) catch return error.EnvTooLong;
+    // invariant: the rendered envelope stays within the buffer
+    assert(s.len <= out.len);
+    return s;
+}
+
+/// A parsed prompt result — the id it answers and either a filled body or a named error,
+/// exactly one of the two. Proving parse(render(x)) recovers x is the crux property.
+pub const PromptResult = struct {
+    id: u32,
+    prompt: []const u8, // the prompt name, or empty on error
+    body: []const u8, // the filled bytes, or empty on error
+    err_name: []const u8, // the named error, or empty when this is a fill
+    is_error: bool,
+};
+
+/// Parse a `format mcp-prompt-result-v1` envelope back into a PromptResult — the reading
+/// sibling of `get_prompt`. The body is length-delimited by the `len` field (a filled body may
+/// hold newlines): the head fields parse line by line and the body is read exactly after the
+/// `body ` marker and checked against the published length.
+pub fn parse_result(src: []const u8, out: *PromptResult) PromptError!void {
+    // invariant: a result envelope carries at least a header
+    assert(src.len > 0);
+    // invariant: the source respects the envelope bound
+    assert(src.len <= max_env);
+
+    out.prompt = "";
+    out.body = "";
+    out.err_name = "";
+    out.is_error = false;
+
+    const marker = "\nbody ";
+    const split = std.mem.indexOf(u8, src, marker);
+    const head = if (split) |at| src[0..at] else src;
+
+    var have_header = false;
+    var have_id = false;
+    var have_body = false;
+    var published_len: u32 = 0;
+    var have_len = false;
+
+    var lines = std.mem.splitScalar(u8, head, '\n');
+    while (lines.next()) |raw| {
+        const line = std.mem.trim(u8, raw, " \t\r");
+        if (line.len == 0 or line[0] == '#') continue;
+        if (line.len > max_line) return error.LineTooLong;
+        const kv = key_val(line);
+        if (std.mem.eql(u8, kv.key, "format")) {
+            if (!std.mem.eql(u8, kv.val, "mcp-prompt-result-v1")) return error.BadFormat;
+            have_header = true;
+        } else if (std.mem.eql(u8, kv.key, "id")) {
+            out.id = std.fmt.parseInt(u32, kv.val, 10) catch return error.BadInt;
+            have_id = true;
+        } else if (std.mem.eql(u8, kv.key, "prompt")) {
+            out.prompt = kv.val;
+        } else if (std.mem.eql(u8, kv.key, "len")) {
+            published_len = std.fmt.parseInt(u32, kv.val, 10) catch return error.BadInt;
+            have_len = true;
+        } else if (std.mem.eql(u8, kv.key, "error")) {
+            out.err_name = kv.val;
+            out.is_error = true;
+            have_body = true;
+        } else {
+            return error.UnknownField;
+        }
+    }
+
+    if (split) |at| {
+        // A fill envelope: the body is exactly the bytes after the marker, and its length must
+        // equal the published len — the fill cannot claim a length it did not produce.
+        if (!have_len) return error.MissingField;
+        const body = src[at + marker.len ..];
+        if (body.len != published_len) return error.BodyLenMismatch;
+        out.body = body;
+        out.is_error = false;
+        have_body = true;
+    }
+
+    if (!have_header) return error.BadFormat;
+    if (!have_id) return error.MissingField;
+    if (!have_body) return error.MissingField;
+}
+
+// A demonstration prompt — a greeting template with two arguments and an interior newline, so
+// the round-trip proves a multi-line filled body survives the length-delimited crossing.
+const desc_src =
+    \\format mcp-prompt-v1
+    \\prompt greet
+    \\summary greet a named guest in a named place
+    \\arg name
+    \\arg place
+    \\template Welcome, {name}.
+    \\The {place} is glad you came.
+;
+
+fn parse_demo(desc: *PromptDesc) !void {
+    try parse_desc(desc_src, desc);
+    assert(std.mem.eql(u8, desc.name_slice(), "greet"));
+    assert(desc.arg_count == 2);
+}
+
+fn welcome_get_round_trips() !void {
+    var desc: PromptDesc = undefined;
+    try parse_demo(&desc);
+
+    const req_src =
+        \\format mcp-prompt-get-v1
+        \\id 7
+        \\prompt greet
+        \\arg name Maren
+        \\arg place hall
+    ;
+    var req: GetRequest = undefined;
+    try parse_get(req_src, &req);
+    assert(req.id == 7);
+    assert(req.binding_count == 2);
+
+    var buf: [max_env]u8 = undefined;
+    const rendered = try get_prompt(&desc, &req, &buf);
+
+    // The crux property — parse the rendered result back and recover the filled body.
+    var res: PromptResult = undefined;
+    try parse_result(rendered, &res);
+    assert(res.id == 7);
+    assert(!res.is_error);
+    assert(std.mem.eql(u8, res.prompt, "greet"));
+    const want = "Welcome, Maren.\nThe hall is glad you came.";
+    assert(std.mem.eql(u8, res.body, want));
+    // The crux: the finished body holds no live placeholder.
+    assert(std.mem.indexOfScalar(u8, res.body, '{') == null);
+    print("mcp_prompt: prompts/get round-trips — greet filled to {d} bytes, no placeholder left\n", .{res.body.len});
+}
+
+fn welcome_multiline_body_survives() !void {
+    var desc: PromptDesc = undefined;
+    try parse_demo(&desc);
+    const req_src =
+        \\format mcp-prompt-get-v1
+        \\id 8
+        \\prompt greet
+        \\arg name Ivo
+        \\arg place garden
+    ;
+    var req: GetRequest = undefined;
+    try parse_get(req_src, &req);
+    var buf: [max_env]u8 = undefined;
+    const rendered = try get_prompt(&desc, &req, &buf);
+    var res: PromptResult = undefined;
+    try parse_result(rendered, &res);
+    // The length-delimited body keeps its interior newline across the crossing.
+    assert(std.mem.indexOfScalar(u8, res.body, '\n') != null);
+    assert(std.mem.eql(u8, res.body, "Welcome, Ivo.\nThe garden is glad you came."));
+    print("mcp_prompt: a multi-line filled body survives the length-delimited crossing\n", .{});
+}
+
+fn welcome_repeated_placeholder_fills() !void {
+    // A placeholder may appear more than once; each occurrence resolves to the same value.
+    const src =
+        \\format mcp-prompt-v1
+        \\prompt echo
+        \\arg word
+        \\template {word} {word} {word}
+    ;
+    var desc: PromptDesc = undefined;
+    try parse_desc(src, &desc);
+    const req_src =
+        \\format mcp-prompt-get-v1
+        \\id 9
+        \\prompt echo
+        \\arg word ramie
+    ;
+    var req: GetRequest = undefined;
+    try parse_get(req_src, &req);
+    var buf: [max_env]u8 = undefined;
+    const rendered = try get_prompt(&desc, &req, &buf);
+    var res: PromptResult = undefined;
+    try parse_result(rendered, &res);
+    assert(std.mem.eql(u8, res.body, "ramie ramie ramie"));
+    print("mcp_prompt: a repeated placeholder fills every occurrence\n", .{});
+}
+
+fn unwelcome_unknown_prompt_refuses() !void {
+    var desc: PromptDesc = undefined;
+    try parse_demo(&desc);
+    const req_src =
+        \\format mcp-prompt-get-v1
+        \\id 1
+        \\prompt farewell
+        \\arg name Maren
+        \\arg place hall
+    ;
+    var req: GetRequest = undefined;
+    try parse_get(req_src, &req);
+    var buf: [max_env]u8 = undefined;
+    const rendered = try get_prompt(&desc, &req, &buf);
+    assert(std.mem.eql(u8, rendered, "format mcp-prompt-result-v1\nid 1\nerror prompt_not_found\n"));
+    print("mcp_prompt: an unknown prompt name answered prompt_not_found\n", .{});
+}
+
+fn unwelcome_unknown_argument_refuses() !void {
+    var desc: PromptDesc = undefined;
+    try parse_demo(&desc);
+    const req_src =
+        \\format mcp-prompt-get-v1
+        \\id 2
+        \\prompt greet
+        \\arg name Maren
+        \\arg place hall
+        \\arg color red
+    ;
+    var req: GetRequest = undefined;
+    try parse_get(req_src, &req);
+    var buf: [max_env]u8 = undefined;
+    const rendered = try get_prompt(&desc, &req, &buf);
+    // An argument the descriptor never declared is refused, never silently dropped.
+    assert(std.mem.eql(u8, rendered, "format mcp-prompt-result-v1\nid 2\nerror unknown_argument\n"));
+    print("mcp_prompt: an undeclared argument answered unknown_argument\n", .{});
+}
+
+fn unwelcome_missing_argument_refuses() !void {
+    var desc: PromptDesc = undefined;
+    try parse_demo(&desc);
+    const req_src =
+        \\format mcp-prompt-get-v1
+        \\id 3
+        \\prompt greet
+        \\arg name Maren
+    ;
+    var req: GetRequest = undefined;
+    try parse_get(req_src, &req);
+    var buf: [max_env]u8 = undefined;
+    const rendered = try get_prompt(&desc, &req, &buf);
+    // `place` was declared yet left unbound.
+    assert(std.mem.eql(u8, rendered, "format mcp-prompt-result-v1\nid 3\nerror missing_argument\n"));
+    print("mcp_prompt: a declared-yet-unbound argument answered missing_argument\n", .{});
+}
+
+fn unwelcome_unbound_placeholder_refuses() !void {
+    // The crux refusal — a template placeholder naming no declared argument refuses rather
+    // than leaving a live brace in the body.
+    const src =
+        \\format mcp-prompt-v1
+        \\prompt leak
+        \\arg name
+        \\template Welcome, {name}, from {city}.
+    ;
+    var desc: PromptDesc = undefined;
+    try parse_desc(src, &desc);
+    const req_src =
+        \\format mcp-prompt-get-v1
+        \\id 4
+        \\prompt leak
+        \\arg name Maren
+    ;
+    var req: GetRequest = undefined;
+    try parse_get(req_src, &req);
+    var buf: [max_env]u8 = undefined;
+    const rendered = try get_prompt(&desc, &req, &buf);
+    assert(std.mem.eql(u8, rendered, "format mcp-prompt-result-v1\nid 4\nerror unbound_placeholder\n"));
+    print("mcp_prompt: a placeholder naming no declared argument answered unbound_placeholder\n", .{});
+}
+
+fn unwelcome_unknown_field_refuses() !void {
+    const src =
+        \\format mcp-prompt-get-v1
+        \\id 5
+        \\prompt greet
+        \\color red
+    ;
+    var req: GetRequest = undefined;
+    if (parse_get(src, &req)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.UnknownField);
+    }
+    print("mcp_prompt: an unknown request field refused (not silently ignored)\n", .{});
+}
+
+fn unwelcome_bad_format_refuses() !void {
+    const src =
+        \\format mcp-prompt-get-v2
+        \\id 6
+        \\prompt greet
+    ;
+    var req: GetRequest = undefined;
+    if (parse_get(src, &req)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.BadFormat);
+    }
+    print("mcp_prompt: a wrong request format header refused\n", .{});
+}
+
+fn unwelcome_body_len_mismatch_refuses() !void {
+    // A result claiming a length its body does not match refuses.
+    const src = "format mcp-prompt-result-v1\nid 6\nprompt x\nlen 99\nbody short";
+    var res: PromptResult = undefined;
+    if (parse_result(src, &res)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.BodyLenMismatch);
+    }
+    print("mcp_prompt: a body whose length belies its len field refused\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_get_round_trips();
+    try welcome_multiline_body_survives();
+    try welcome_repeated_placeholder_fills();
+    try unwelcome_unknown_prompt_refuses();
+    try unwelcome_unknown_argument_refuses();
+    try unwelcome_missing_argument_refuses();
+    try unwelcome_unbound_placeholder_refuses();
+    try unwelcome_unknown_field_refuses();
+    try unwelcome_bad_format_refuses();
+    try unwelcome_body_len_mismatch_refuses();
+    print("mcp_prompt {s} — GREEN\n", .{mcp_prompt_version});
+    print("GREEN: BUHR-J11r1 mcp_prompt; prompts/get fills every placeholder or names its refusal.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest();
+    }
+    print("usage: mcp-prompt selftest\n", .{});
+    return 1;
+}
