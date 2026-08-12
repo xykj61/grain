@@ -1,0 +1,217 @@
+//! pond/apps/quin_host_artifact.rye - BUHR Journey 8, Rung 3: the artifact voice, gathered.
+//!
+//! Journey 1's Q-vane host gathered three voices (Lattice, Scribble, Ember); Journey 6
+//! gathered a fourth whose corpus is the living Mantra graph. This rung gathers a fifth,
+//! the voice whose corpus is a named Tablecloth artifact (`artifact_query`) - so a single
+//! Lantern-shaped request routes to whichever voice recognizes the prompt: arithmetic,
+//! reading, corpus, the living graph, *or a stored artifact*. The whole of Surface &
+//! Intelligence - every module the equinox names - now answers under one bounded entry,
+//! and the artifact voice brings its own integrity guarantee with it: its answers rest on
+//! bytes that proved themselves against their content address, a tampered bead refusing
+//! before the host returns a word.
+//!
+//! Additive by construction: it wraps `quin_host_graph.dispatch` unchanged (trying the
+//! four voices first) and falls through to `artifact_query` only on UnknownOp - a real
+//! request fault (bad budget, model not allowed) surfaces at once. The four-voice host and
+//! the artifact query stay their own green binaries; no contract changes.
+//!
+//!   rye build pond/apps/quin_host_artifact.rye -femit-bin=pond/bin/quin-host-artifact
+//!   pond/bin/quin-host-artifact selftest
+//!
+//! Scope: active-designing/20260812-144916_buhr-journey8-voice-reads-artifact-store-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lc = @import("lantern/lantern_core.rye");
+const qhg = @import("quin_host_graph.rye"); // the four-voice host: Lattice, Scribble, Ember, graph
+const aq = @import("artifact_query.rye"); // the artifact voice - reads a named Tablecloth artifact
+
+const quin_host_artifact_version = "20260812.150200";
+
+const max_result_text: u32 = lc.max_completion_len;
+
+/// Which voice served a dispatched request - the four-voice host's voices, plus the
+/// artifact voice this rung gathers.
+pub const Voice = enum(u8) {
+    lattice,
+    scribble,
+    ember,
+    graph,
+    artifact,
+};
+
+/// A dispatched answer: the Lantern Response plus which voice produced it.
+pub const Served = struct {
+    voice: Voice,
+    response: lc.Response,
+};
+
+/// Lift a four-voice-host verdict into this host's wider voice set.
+fn lift(voice: qhg.Voice) Voice {
+    // invariant: every four-voice-host voice maps to exactly one wider voice.
+    return switch (voice) {
+        .lattice => .lattice,
+        .scribble => .scribble,
+        .ember => .ember,
+        .graph => .graph,
+    };
+}
+
+/// The gathered Q-vane host: dispatch one bounded request across five voices. Try the
+/// four-voice host first (Lattice, Scribble, Ember, graph); on UnknownOp, try the artifact
+/// voice; any other error is a real request fault and surfaces at once rather than being
+/// retried. The artifact voice is last, so a prompt no voice recognizes refuses UnknownOp
+/// rather than inventing an answer over an artifact it cannot name.
+pub fn dispatch(req: lc.Request, allow_text: []const u8, out_buf: []u8) !Served {
+    // invariant: the caller's buffer honors Lantern's completion bound
+    assert(out_buf.len <= max_result_text);
+    // invariant: the buffer can hold at least one token
+    assert(out_buf.len > 0);
+
+    if (qhg.dispatch(req, allow_text, out_buf)) |served| {
+        return .{ .voice = lift(served.voice), .response = served.response };
+    } else |err| {
+        if (err != error.UnknownOp) return err;
+    }
+    // The artifact voice is last: an UnknownOp here means no voice recognized the prompt,
+    // and the host refuses rather than inventing an answer over an artifact it cannot read.
+    const resp = try aq.answer(req, allow_text, out_buf);
+    return .{ .voice = .artifact, .response = resp };
+}
+
+fn welcome_arithmetic_still_routes() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{ .model_hash = "sha3-256-rye-forge-lap0", .prompt = "matmul the pair", .max_tokens = 64 };
+    const served = try dispatch(req, allow, &buf);
+    // invariant: gathering the artifact voice never displaces the four that came before.
+    assert(served.voice == .lattice);
+    assert(std.mem.eql(u8, served.response.text, "19 22 43 50"));
+    print("quin_host_artifact: matmul still routes to Lattice - text '{s}'\n", .{served.response.text});
+}
+
+fn welcome_graph_still_routes() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{ .model_hash = "sha3-256-rye-forge-lap0", .prompt = "lane_count the graph", .max_tokens = 64 };
+    const served = try dispatch(req, allow, &buf);
+    // invariant: the fourth voice (the living graph) still answers under the wider host.
+    assert(served.voice == .graph);
+    assert(std.mem.eql(u8, served.response.text, "3"));
+    print("quin_host_artifact: lane_count still routes to the graph voice - text '{s}'\n", .{served.response.text});
+}
+
+fn welcome_artifact_words_routes() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{ .model_hash = "sha3-256-rye-forge-lap0", .prompt = "words notes.txt", .max_tokens = 64 };
+    const served = try dispatch(req, allow, &buf);
+    // invariant: the artifact prompt reached the fifth voice - the store joins the host.
+    assert(served.voice == .artifact);
+    // notes.txt's verified content is sixteen words, the reading artifact_query witnesses.
+    assert(std.mem.eql(u8, served.response.text, "16"));
+    assert(served.response.stopped_reason == .eos);
+    print("quin_host_artifact: words dispatched to the artifact voice - notes.txt has {s} words\n", .{served.response.text});
+}
+
+fn welcome_artifact_line_routes() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{ .model_hash = "sha3-256-rye-forge-lap0", .prompt = "line notes.txt", .max_tokens = 64 };
+    const served = try dispatch(req, allow, &buf);
+    assert(served.voice == .artifact);
+    // The first line of the verified content - read only through the content-addressed fetch.
+    assert(std.mem.eql(u8, served.response.text, "linen holds the warp then hemp the weft"));
+    print("quin_host_artifact: line dispatched to the artifact voice - '{s}'\n", .{served.response.text});
+}
+
+fn welcome_artifact_length_carries_through() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    // The first line is eight words; a budget of three truncates with a length stop, and
+    // the artifact voice's own metering carries through the gathered host unchanged.
+    const req = lc.Request{ .model_hash = "sha3-256-rye-forge-lap0", .prompt = "line notes.txt", .max_tokens = 3 };
+    const served = try dispatch(req, allow, &buf);
+    assert(served.voice == .artifact);
+    assert(served.response.tokens_out == 3);
+    assert(served.response.stopped_reason == .length);
+    print("quin_host_artifact: length stop carried through from the artifact voice - tokens {d}\n", .{served.response.tokens_out});
+}
+
+fn unwelcome_model_not_allowed() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{ .model_hash = "sha3-256-not-on-list", .prompt = "words notes.txt", .max_tokens = 64 };
+    // A disallowed model is a real request fault: it must surface at the first voice,
+    // never fall through to be retried against the artifact voice.
+    if (dispatch(req, allow, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ModelNotAllowed);
+    }
+    print("quin_host_artifact: disallowed model refused at once (no fall-through)\n", .{});
+}
+
+fn unwelcome_unknown_artifact_name() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    // A recognized artifact op over a name the store lacks reaches the artifact voice and
+    // is refused there - the host never invents bytes for a name it cannot fetch.
+    const req = lc.Request{ .model_hash = "sha3-256-rye-forge-lap0", .prompt = "words absent.txt", .max_tokens = 64 };
+    if (dispatch(req, allow, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.UnknownArtifact);
+    }
+    print("quin_host_artifact: unknown artifact name refused - the host reads no artifact it cannot name\n", .{});
+}
+
+fn unwelcome_no_voice() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{ .model_hash = "sha3-256-rye-forge-lap0", .prompt = "translate this poem", .max_tokens = 64 };
+    if (dispatch(req, allow, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.UnknownOp);
+    }
+    print("quin_host_artifact: no voice recognized the prompt - refused (no fake answer)\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_arithmetic_still_routes();
+        try welcome_graph_still_routes();
+        try welcome_artifact_words_routes();
+        try welcome_artifact_line_routes();
+        try welcome_artifact_length_carries_through();
+        try unwelcome_model_not_allowed();
+        try unwelcome_unknown_artifact_name();
+        try unwelcome_no_voice();
+        print("quin_host_artifact: five voices under one bounded entry - arithmetic, reading, corpus, graph, artifact\n", .{});
+        print("quin_host_artifact: version {s}\n", .{quin_host_artifact_version});
+        print("GREEN: BUHR-J8r3 quin_host_artifact - the whole of Surface and Intelligence answers under one host.\n", .{});
+        return 0;
+    }
+    print("usage: quin-host-artifact selftest\n", .{});
+    return 1;
+}
