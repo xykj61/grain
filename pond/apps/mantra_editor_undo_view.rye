@@ -1,0 +1,179 @@
+//! pond/apps/mantra_editor_undo_view.rye — BUHR Journey 4, Rung 5: undo advances the
+//! living edge, yet the newest node shows the restored content — the visible signature
+//! of append-only undo.
+//!
+//! Rung two painted a commit's advance: the living edge (each lane's head, lit in the
+//! design system's `head` token) moved forward to the appended node. Rung four made
+//! undo itself an append — `revert` recalls an earlier revision's bytes and commits
+//! them as the lane's next revision. This rung carries undo onto the styled Skate
+//! surface and shows the property that makes append-only undo honest to the eye: the
+//! living edge *advances* (undo is a commit like any other, so the head moves right to
+//! the new node), yet the newest node's rendered digest equals the reverted-to node's
+//! digest — because Mantra derives each node's digest from its content, and undo
+//! brought the old content back. So a reader sees the edge move forward while the head
+//! wears the old text's fingerprint: history grew, and the content returned, at once.
+//!
+//! The proof is at the cell level, deterministic and exact: on the edited lane's row,
+//! after reverting r2 back to r1, the head-token edge sits further right than before
+//! (the edge advanced to r3), the row carries `r3[`, and the digest between r3's
+//! brackets is byte-for-byte the digest between r1's — while r2's digest differs (the
+//! undone edit had its own content). Every other lane's row paints unchanged.
+//!
+//! Additive by construction: it imports mantra_browser, mantra_editor,
+//! mantra_browser_heads, brushstroke/tokens, and brushstroke/skate_grid, calling only
+//! their public functions. No file beneath it changes; rungs two (view) and four (undo)
+//! stay their own green binaries.
+//!
+//!   rye build pond/apps/mantra_editor_undo_view.rye -femit-bin=pond/bin/mantra-editor-undo-view
+//!   pond/bin/mantra-editor-undo-view selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const mb = @import("mantra_browser.rye");
+const editor = @import("mantra_editor.rye");
+const heads = @import("mantra_browser_heads.rye");
+const tokens = @import("brushstroke/tokens.rye");
+const skate = @import("brushstroke/skate_grid.rye");
+
+const mantra_editor_undo_view_version = "20260812.125247";
+
+// A three-node chain (r1 -> r2 -> r3) is wider than the demo viewport, so this rung
+// paints on a wider grid — the paint's own ViewTooNarrow bound is why a longer chain
+// wants more columns.
+const wide_cols: u32 = 72;
+
+/// The grid row whose text contains `marker`, or null — a witness helper so a lane's
+/// painted row can be found after an undo.
+fn find_row(grid: *const skate.Grid, marker: []const u8) ?u32 {
+    // invariant: a real marker has bytes to find.
+    assert(marker.len > 0);
+    var row: u32 = 0;
+    // invariant: the scan stays inside the grid's bounded height.
+    while (row < grid.rows) : (row += 1) {
+        const cells = grid.row_cells(row);
+        if (std.mem.indexOf(u8, cells, marker) != null) return row;
+    }
+    return null;
+}
+
+/// The rightmost column on `row` painted in the head token (`heads.head_slot`), or
+/// null when the row carries no head cell — the position of the lane's living edge.
+fn head_edge_col(grid: *const skate.Grid, row: u32) ?u32 {
+    // invariant: the row sits inside the grid's bounded height.
+    assert(row < grid.rows);
+    const base: usize = @intCast(row * grid.cols);
+    var edge: ?u32 = null;
+    var col: u32 = 0;
+    while (col < grid.cols) : (col += 1) {
+        if (grid.fg_index[base + @as(usize, @intCast(col))] == heads.head_slot) edge = col;
+    }
+    return edge;
+}
+
+/// The digest bytes between the brackets of the node `marker` (e.g. "r3[") in a
+/// rendered row — a witness helper so two nodes' content fingerprints can be compared.
+fn node_digest(row: []const u8, marker: []const u8) []const u8 {
+    // invariant: a real node marker has bytes to find.
+    assert(marker.len > 0);
+    const at = std.mem.indexOf(u8, row, marker) orelse return row[0..0];
+    const open = at + marker.len;
+    // invariant: the marker's open bracket leaves room for a digest.
+    assert(open <= row.len);
+    const rest = row[open..];
+    const close = std.mem.indexOfScalar(u8, rest, ']') orelse return row[0..0];
+    return rest[0..close];
+}
+
+fn welcome_undo_advances_edge_restores_content(allocator: std.mem.Allocator) !void {
+    // b.txt stands at r1 "beta"; commit r2 "beta-two" so there is an edit to undo.
+    var catalog = try mb.demo_catalog();
+    _ = try editor.commit(&catalog, "local", "notes", "b.txt", "beta-two", "leaf");
+
+    var before = try skate.Grid.init(allocator, wide_cols, heads.view_rows);
+    _ = try heads.paint_heads(&catalog, &before, tokens.base_sheet);
+    const b_before = find_row(&before, "b.txt:").?;
+    const edge_before = head_edge_col(&before, b_before).?;
+
+    // Undo the edit — revert to r1 — and paint the grown graph afresh.
+    const rev = try editor.revert(&catalog, "local", "notes", "b.txt", 1, "leaf");
+    assert(rev == 3);
+    var after = try skate.Grid.init(allocator, wide_cols, heads.view_rows);
+    _ = try heads.paint_heads(&catalog, &after, tokens.base_sheet);
+    const b_after = find_row(&after, "b.txt:").?;
+    const edge_after = head_edge_col(&after, b_after).?;
+    const row = after.row_cells(b_after);
+
+    // The living edge advanced — undo is an append, so the head moved right to r3.
+    assert(edge_after > edge_before);
+    assert(std.mem.indexOf(u8, row, "r3[") != null);
+
+    // Yet the newest node wears the reverted-to node's fingerprint: r3's digest equals
+    // r1's, because Mantra derives each digest from its content and undo brought the
+    // r1 content back. The undone edit r2 kept its own, different digest.
+    const d1 = node_digest(row, "r1[");
+    const d2 = node_digest(row, "r2[");
+    const d3 = node_digest(row, "r3[");
+    // invariant: all three nodes rendered a real digest to compare.
+    assert(d1.len > 0);
+    assert(d2.len > 0);
+    assert(d3.len > 0);
+    assert(std.mem.eql(u8, d3, d1));
+    assert(!std.mem.eql(u8, d3, d2));
+
+    print("mantra_editor_undo_view: undo advanced the living edge from col {d} to col {d}; the r3 head wears r1's digest — history grew, the content returned\n", .{ edge_before, edge_after });
+}
+
+fn welcome_undo_lights_only_its_lane(allocator: std.mem.Allocator) !void {
+    // The undo lights only the lane it grew — every other lane's row paints
+    // byte-for-byte unchanged, its living edge unmoved.
+    var catalog = try mb.demo_catalog();
+    _ = try editor.commit(&catalog, "local", "notes", "b.txt", "beta-two", "leaf");
+    var before = try skate.Grid.init(allocator, wide_cols, heads.view_rows);
+    _ = try heads.paint_heads(&catalog, &before, tokens.base_sheet);
+    const a_before = find_row(&before, "a.txt:").?;
+    const a_before_edge = head_edge_col(&before, a_before).?;
+
+    _ = try editor.revert(&catalog, "local", "notes", "b.txt", 1, "leaf");
+    var after = try skate.Grid.init(allocator, wide_cols, heads.view_rows);
+    _ = try heads.paint_heads(&catalog, &after, tokens.base_sheet);
+    const a_after = find_row(&after, "a.txt:").?;
+    const a_after_edge = head_edge_col(&after, a_after).?;
+
+    assert(std.mem.eql(u8, before.row_cells(a_before), after.row_cells(a_after)));
+    assert(a_before_edge == a_after_edge);
+    print("mantra_editor_undo_view: the undo lit only its own lane — a.txt paints unchanged, its living edge stays put\n", .{});
+}
+
+fn welcome_head_lit_over_restored_node(allocator: std.mem.Allocator) !void {
+    // The lit head covers exactly the restored r3 node's span — the living edge really
+    // is the newest node, and it is the one wearing the reverted content.
+    var catalog = try mb.demo_catalog();
+    _ = try editor.commit(&catalog, "local", "notes", "b.txt", "beta-two", "leaf");
+    _ = try editor.revert(&catalog, "local", "notes", "b.txt", 1, "leaf");
+    var grid = try skate.Grid.init(allocator, wide_cols, heads.view_rows);
+    _ = try heads.paint_heads(&catalog, &grid, tokens.base_sheet);
+    const b_row = find_row(&grid, "b.txt:").?;
+    const edge = head_edge_col(&grid, b_row).?;
+    const span = heads.head_span(grid.row_cells(b_row)).?;
+
+    // The living edge sits inside the rightmost node's span — the head is lit over r3.
+    assert(edge >= span.start);
+    assert(edge < span.end);
+    assert(std.mem.indexOf(u8, grid.row_cells(b_row)[span.start..span.end], "r3[") != null);
+    print("mantra_editor_undo_view: the lit head covers the restored r3 node — the living edge is the newest node\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_undo_advances_edge_restores_content(garden);
+        try welcome_undo_lights_only_its_lane(garden);
+        try welcome_head_lit_over_restored_node(garden);
+        print("mantra_editor_undo_view {s} — GREEN\n", .{mantra_editor_undo_view_version});
+        return 0;
+    }
+    print("usage: mantra-editor-undo-view selftest\n", .{});
+    return 1;
+}
