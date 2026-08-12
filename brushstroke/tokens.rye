@@ -83,6 +83,15 @@ pub const head_ochre: u32 = 0xFF_C8_9B_5A;
 /// reader tells a read origin from a written program at a glance.
 pub const read_madder: u32 = 0xFF_A6_5C_46;
 
+/// Weld — the derived node. A bright plant-leaf-dye gold for the downstream end of
+/// Realidream's fused edge: a *program* node whose content is a pure function of the
+/// reads upstream of it, set apart from both the read origin (Madder) it consumes and
+/// the ordinary program a person writes. Brighter than the ochre living edge, the same
+/// plant-fiber family, blue still lowest. R224 > G196 > B88 — an honest step apart from
+/// ink, edge, head, and read alike, so a reader sees where a read flows downstream into
+/// a computed node at a glance.
+pub const flow_weld: u32 = 0xFF_E0_C4_58;
+
 // --- channel helpers — one value model, explicit widths ------------------
 
 /// The red channel of an ARGB8888 word. In-memory count → u32.
@@ -143,6 +152,7 @@ pub const base_sheet =
     "edge 0xFF8A7A66\n" ++ // warm rule
     "head 0xFFC89B5A\n" ++ // Ochre — the living edge accent
     "read 0xFFA65C46\n" ++ // Madder — the read origin accent
+    "flow 0xFFE0C458\n" ++ // Weld — the derived (downstream) node accent
     "weight regular\n" ++
     "space 4\n" ++ // thread_px — invariant 4, 4px chosen
     "elevate flat\n";
@@ -359,6 +369,7 @@ fn prove_palette() !void {
     _ = try assert_warm_low_blue(edge_warm);
     _ = try assert_warm_low_blue(head_ochre);
     _ = try assert_warm_low_blue(read_madder);
+    _ = try assert_warm_low_blue(flow_weld);
 
     // The living-edge accent stands apart from both the ink and the edge rule —
     // brighter than the edge, so the head draws the eye first.
@@ -369,6 +380,14 @@ fn prove_palette() !void {
     // distinct warm mark, so a read origin never reads as a head node or as body ink.
     if (!(red_of(read_madder) != red_of(head_ochre))) return error.ChannelOutOfRange;
     if (!(red_of(read_madder) > red_of(bark))) return error.ChannelOutOfRange;
+
+    // The derived-node accent stands apart from the read origin, the living edge, and
+    // the ink — the downstream end of the fused edge reads as neither its upstream read
+    // nor an ordinary head. Brightest of the three warm accents, so a computed node
+    // draws the eye where a read flows into it.
+    if (!(red_of(flow_weld) != red_of(read_madder))) return error.ChannelOutOfRange;
+    if (!(red_of(flow_weld) != red_of(head_ochre))) return error.ChannelOutOfRange;
+    if (!(red_of(flow_weld) > red_of(bark))) return error.ChannelOutOfRange;
 
     // Invariant 1 — gentle lightness spread: the light page reads far brighter
     // than the dark page, by a wide, honest margin (roughly the ~66-point L

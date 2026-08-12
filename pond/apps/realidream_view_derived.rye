@@ -1,0 +1,338 @@
+//! pond/apps/realidream_view_derived.rye — BUHR Journey 5, Rung 8: the fused
+//! downstream edge, painted — a derived node lit where its read upstream sits.
+//!
+//! Rung 5 painted the whole fused scene onto one styled canvas and marked each *read
+//! origin* — the upstream end of Realidream's fused edge — in the sheet's `read`
+//! (Madder) token. The upstream was lit; the downstream was not. A reader could see
+//! where content entered the graph from an outside source, yet not where that source
+//! flowed into a computed node. This rung lights the other end: a *derived* program
+//! node — one whose content is a pure function of the reads upstream of it — wears the
+//! sheet's own `flow` (Weld) token, so one canvas now carries the whole edge at once:
+//! the read origin upstream in Madder, the derived node downstream in Weld, and every
+//! lane's living edge in Ochre (Journey 2's head token, reused unchanged).
+//!
+//! The crux is the same discipline every view rung keeps: the mark reads off the very
+//! bytes rung one renders, never a side channel. A read origin names itself under a
+//! `read/` path; symmetric to it, a derived node names itself under a `prog/` path, so
+//! `derived_label_span` finds the downstream node on a rendered line exactly where the
+//! readable text shows it — the painted color can never point at a computed node the
+//! text does not name. The demo scene derives `prog/summary` from `read/src` through
+//! rung three's own `derive_from_read`, so the painted downstream node is a real
+//! derived node in the log, not a label pinned on for the picture.
+//!
+//! This rung reads no network: the read content is supplied in-process, exactly as
+//! rungs one through seven supply theirs. A real web fetch is a genuine outward act and
+//! stays a named seam behind a bounded reader — its own later rung, surfacing for
+//! Keaton's word.
+//!
+//! Additive by construction: it imports realidream_reader, realidream_derive,
+//! realidream_view, mantra_browser, mantra_browser_heads, brushstroke/tokens, and
+//! brushstroke/skate_grid, calling only their public functions. No file beneath it
+//! changes; rungs one through seven and Journey 2 stay their own green binaries.
+//!
+//!   rye build pond/apps/realidream_view_derived.rye -femit-bin=pond/bin/realidream-view-derived
+//!   pond/bin/realidream-view-derived selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const mb = @import("mantra_browser.rye");
+const mn = @import("mantra/recall_lap1.rye");
+const reader = @import("realidream_reader.rye");
+const derive = @import("realidream_derive.rye");
+const view = @import("realidream_view.rye");
+const heads = @import("mantra_browser_heads.rye");
+const tokens = @import("brushstroke/tokens.rye");
+const skate = @import("brushstroke/skate_grid.rye");
+
+const realidream_view_derived_version = "20260812.140000";
+
+// A bounded viewport, wide enough for a lane line and tall enough for the derived
+// scene's lines — the same discipline every view rung keeps.
+pub const view_cols: u32 = 48;
+pub const view_rows: u32 = 16;
+
+// A derived node names itself under this path prefix — symmetric to the read origin's
+// `read/`, so the downstream mark reads off the readable text, never a side channel.
+const prog_prefix = "prog/";
+
+// The token the upstream read origin wears — the sheet's own `read` accent (Madder),
+// reused from rung five so both ends of the fused edge lower from the one base sheet.
+const read_token = "read";
+
+// The token a derived node wears — the sheet's own `flow` accent (Weld), a semantic
+// token named for exactly this mark, so a `.brush` theme recolors the derived node on
+// its own key without touching the ink, the read origin, the edge rule, or the head.
+const flow_token = "flow";
+
+// The palette slot the derived node wears. A real slot (never the fg sentinel), inside
+// Skate's bounded run palette, distinct from the read origin's slot (4) and Journey 2's
+// head slot (3) so all three accents seat their colors side by side without collision.
+pub const flow_slot: u8 = 5;
+
+/// The column span of a derived node's path label on a rendered line, or null when the
+/// line is not a derived program lane. Symmetric to `realidream_view.read_label_span`: a
+/// derived lane's line is a run of leading spaces, then a `prog/` path, then a `:` — the
+/// label span is `[first-non-space, colon]` inclusive of the colon, read straight from
+/// the bytes rung one wrote. So the painted downstream mark can never point at a lane the
+/// readable text does not name a derived node.
+pub fn derived_label_span(line: []const u8) ?struct { start: u32, end: u32 } {
+    // invariant: a rendered line stays within the render budget, so its length fits u32.
+    assert(line.len <= mb.max_render_bytes);
+    if (line.len == 0) return null;
+    const n: u32 = @intCast(line.len);
+
+    // Walk over the leading indent to the start of the path.
+    var p: u32 = 0;
+    while (p < n and line[p] == ' ') : (p += 1) {}
+    // A derived node names itself under the prog/ path — nothing else is a derived lane.
+    if (!std.mem.startsWith(u8, line[p..], prog_prefix)) return null;
+
+    // The path label ends at the first ':' — a lane line always carries one.
+    var c: u32 = p;
+    while (c < n and line[c] != ':') : (c += 1) {}
+    if (c == n) return null; // no colon — not a lane line
+
+    // invariant: the label span is a well-ordered, in-bounds run that includes the colon.
+    assert(p < c + 1);
+    assert(c + 1 <= n);
+    return .{ .start = p, .end = c + 1 };
+}
+
+/// Paint the whole fused scene onto a styled Skate grid, lighting both ends of the edge:
+/// each rendered line lands on the next grid row dressed by `sheet` (paper/ink); where a
+/// line names a read origin, its path label is repainted in the sheet's `read` token
+/// (upstream); where a line names a derived node, its path label is repainted in the
+/// sheet's `flow` token (downstream); where a line carries a revision chain, its head
+/// node is repainted in the sheet's `head` token (Journey 2's living edge, unchanged).
+/// Returns the number of rows painted. Every mark comes straight from the bytes
+/// `mantra_browser.render` writes, so the painted view and the readable text are one
+/// reading — never two.
+pub fn paint_flow(catalog: *const mn.BoltCatalog, grid: *skate.Grid, sheet: []const u8) !u32 {
+    // invariant: the grid is at least one row tall.
+    assert(grid.rows >= 1);
+    // invariant: the sheet carries at least a paper token to lower from.
+    assert(sheet.len > 0);
+
+    var buf: [mb.max_render_bytes]u8 = undefined;
+    const text = try mb.render(catalog, &buf);
+    // invariant: the render honors its own budget.
+    assert(text.len <= mb.max_render_bytes);
+
+    var row: u32 = 0;
+    var start: u32 = 0;
+    var i: u32 = 0;
+    while (i < text.len) : (i += 1) {
+        if (text[i] != '\n') continue;
+        const line = text[start..i];
+        start = i + 1;
+        if (line.len == 0) continue;
+        if (row >= grid.rows) break; // bounded: never paint past the viewport
+        if (line.len > grid.cols) return error.ViewTooNarrow;
+        _ = try tokens.dress_grid(grid, row, line, sheet);
+        // The read origin — a fetched source — wears the read token (the upstream end).
+        if (view.read_label_span(line)) |span| {
+            _ = try tokens.dress_run(grid, row, span.start, span.end, sheet, read_token, view.read_slot);
+        }
+        // The derived node — a computed program node — wears the flow token (downstream).
+        if (derived_label_span(line)) |span| {
+            _ = try tokens.dress_run(grid, row, span.start, span.end, sheet, flow_token, flow_slot);
+        }
+        // The living edge of the lane — its head node — keeps Journey 2's head token.
+        if (heads.head_span(line)) |span| {
+            _ = try tokens.dress_run(grid, row, span.start, span.end, sheet, "head", heads.head_slot);
+        }
+        row += 1;
+    }
+    // invariant: painted rows never exceed the grid's bounded height.
+    assert(row <= grid.rows);
+    return row;
+}
+
+/// Build the derived scene: a demo catalog, one pinned read lane, and a program lane
+/// derived from it through rung three's own `derive_from_read` — so one render carries
+/// the whole fused edge, upstream read origin and downstream derived node together.
+pub fn derived_scene() !mn.BoltCatalog {
+    var catalog = try mb.demo_catalog();
+    _ = try reader.pin_read(&catalog, "local", "web", "read/src", "abcdefgh", "leaf");
+    _ = try derive.derive_from_read(&catalog, "local", "web", "read/src", "prog/summary", "leaf");
+    return catalog;
+}
+
+/// Count pixels whose visible color exactly matches `c` (ignoring alpha) in a rasterized
+/// buffer. A witness helper: it proves a specific token color reached the canvas, which
+/// `lit_pixel_count` (any non-background pixel) cannot.
+fn count_pixels_of_color(pixels: []const u8, stride: u32, width: u32, height: u32, c: skate.Color) u32 {
+    // invariant: the stride holds a full row of ARGB8888 pixels.
+    assert(stride >= width * 4);
+    // invariant: a real canvas has width.
+    assert(width > 0);
+    // invariant: a real canvas has height.
+    assert(height > 0);
+    const stride_usize: usize = @intCast(stride);
+    var count: u32 = 0;
+    var y: u32 = 0;
+    while (y < height) : (y += 1) {
+        const y_usize: usize = @intCast(y);
+        const rowbytes = pixels[y_usize * stride_usize ..][0 .. @as(usize, @intCast(width)) * 4];
+        var x: u32 = 0;
+        while (x < width) : (x += 1) {
+            const px: usize = @intCast(x * 4);
+            if (rowbytes[px + 0] == c.b and rowbytes[px + 1] == c.g and rowbytes[px + 2] == c.r) {
+                count += 1;
+            }
+        }
+    }
+    return count;
+}
+
+fn welcome_both_ends_present(allocator: std.mem.Allocator) !void {
+    // The derived scene carries the whole fused edge — an upstream read origin and a
+    // downstream derived node — and one paint lands both on one styled canvas.
+    var catalog = try derived_scene();
+    var grid = try skate.Grid.init(allocator, view_cols, view_rows);
+    const rows = try paint_flow(&catalog, &grid, tokens.base_sheet);
+    // Six demo lines plus the read bolt header and its two local/web lanes
+    // (read/src · prog/summary) = 9 rows.
+    assert(rows == 9);
+
+    // The very bytes the reader would read carry both ends of the edge on one graph.
+    var buf: [mb.max_render_bytes]u8 = undefined;
+    const text = try mb.render(&catalog, &buf);
+    assert(std.mem.indexOf(u8, text, "read/src: r1[") != null); // the upstream read origin
+    assert(std.mem.indexOf(u8, text, "prog/summary: r1[") != null); // the downstream derived node
+    assert(std.mem.indexOf(u8, text, "a.txt: r1[") != null); // a plain program lane, neither end
+    print("realidream_view_derived: the read origin and the derived node painted onto {d} styled rows\n", .{rows});
+}
+
+fn welcome_derived_node_marked(allocator: std.mem.Allocator) !void {
+    // Exactly the one derived lane wears the flow token on its path label; the read lane,
+    // the fused node's absence, and every plain program lane keep their own marks — the
+    // downstream end made visible on its own token.
+    var catalog = try derived_scene();
+    var grid = try skate.Grid.init(allocator, view_cols, view_rows);
+    _ = try paint_flow(&catalog, &grid, tokens.base_sheet);
+
+    // invariant: the fg-index buffer is exactly parallel to the cells.
+    assert(grid.fg_index.len == grid.cells.len);
+    var flow_cells: u32 = 0;
+    var flow_rows: u32 = 0;
+    var read_rows: u32 = 0;
+    var row: u32 = 0;
+    while (row < grid.rows) : (row += 1) {
+        var row_flow: u32 = 0;
+        var row_read: u32 = 0;
+        var col: u32 = 0;
+        while (col < grid.cols) : (col += 1) {
+            const slot = grid.fg_index[row * grid.cols + col];
+            if (slot == flow_slot) row_flow += 1;
+            if (slot == view.read_slot) row_read += 1;
+        }
+        if (row_flow > 0) flow_rows += 1;
+        if (row_read > 0) read_rows += 1;
+        flow_cells += row_flow;
+    }
+    // One derived lane carries a flow-token run; no other line does.
+    assert(flow_rows == 1);
+    // The label `prog/summary:` is 13 cells — the path text without its leading indent.
+    assert(flow_cells == 13);
+    // The upstream read origin is still marked in its own token, on its own one lane.
+    assert(read_rows == 1);
+    print("realidream_view_derived: {d} derived-node cells on exactly {d} derived lane; the read origin keeps its own {d} lane\n", .{ flow_cells, flow_rows, read_rows });
+}
+
+fn welcome_three_colors_reach_canvas(allocator: std.mem.Allocator) !void {
+    // The crux, proven on metal: both ends of the fused edge reach the canvas in their
+    // own colors at once — the read origin in Madder (upstream) and the derived node in
+    // Weld (downstream), each an honest step apart from the other and from the ink.
+    var catalog = try derived_scene();
+    var grid = try skate.Grid.init(allocator, view_cols, view_rows);
+    _ = try paint_flow(&catalog, &grid, tokens.base_sheet);
+
+    const paint = try tokens.dress(tokens.base_sheet);
+    const read_color = try tokens.token_color(tokens.base_sheet, read_token);
+    const flow_color = try tokens.token_color(tokens.base_sheet, flow_token);
+    // invariant: upstream and downstream are two genuinely distinct marks.
+    assert(read_color.r != flow_color.r or read_color.g != flow_color.g or read_color.b != flow_color.b);
+
+    const width: i32 = @intCast(view_cols * skate.cell_w);
+    const height: i32 = @intCast(view_rows * skate.cell_h);
+    const stride: u32 = view_cols * skate.cell_w * 4;
+    const pixel_count: usize = @intCast(stride * @as(u32, @intCast(height)));
+    const pixels = try allocator.alloc(u8, pixel_count);
+    grid.rasterize(pixels, stride, width, height, paint.paper, paint.ink, 1);
+
+    const w_u: u32 = @intCast(width);
+    const h_u: u32 = @intCast(height);
+    const ink_pixels = count_pixels_of_color(pixels, stride, w_u, h_u, paint.ink);
+    const read_pixels = count_pixels_of_color(pixels, stride, w_u, h_u, read_color);
+    const flow_pixels = count_pixels_of_color(pixels, stride, w_u, h_u, flow_color);
+    assert(ink_pixels > 0);
+    assert(read_pixels > 0);
+    assert(flow_pixels > 0);
+    print("realidream_view_derived: {d} ink, {d} read-origin, and {d} derived-node pixels share the canvas\n", .{ ink_pixels, read_pixels, flow_pixels });
+}
+
+fn welcome_shared_graph(allocator: std.mem.Allocator) !void {
+    // Marking the downstream node is additive over the glyphs: the painted row still
+    // carries the very bytes rung one renders. Editor (render) and view (grid) are one.
+    var catalog = try derived_scene();
+    var grid = try skate.Grid.init(allocator, view_cols, view_rows);
+    _ = try paint_flow(&catalog, &grid, tokens.base_sheet);
+
+    var buf: [mb.max_render_bytes]u8 = undefined;
+    const text = try mb.render(&catalog, &buf);
+    const first_nl = std.mem.indexOfScalar(u8, text, '\n').?;
+    const first_line = text[0..first_nl];
+    const painted = grid.row_cells(0);
+    // invariant: the grid row holds at least the rendered line's bytes.
+    assert(painted.len >= first_line.len);
+    assert(std.mem.startsWith(u8, painted, first_line));
+    print("realidream_view_derived: editor and view share one graph — text unchanged by the downstream paint\n", .{});
+}
+
+fn welcome_derived_label_span_reads_true() !void {
+    // A derived node names itself under prog/; its label span opens at the path and closes
+    // on the colon. A read lane, a program lane, a bolt header, and the title carry no
+    // derived origin — the downstream mark refuses everything the text does not name one.
+    const prog_line = "  prog/summary: r1[abcd1234] -> r2[ef567890]";
+    const span = derived_label_span(prog_line).?;
+    assert(prog_line[span.start] == 'p');
+    assert(std.mem.startsWith(u8, prog_line[span.start..], "prog/summary:"));
+    assert(prog_line[span.end - 1] == ':');
+    // A read lane is the upstream end, never the downstream one.
+    assert(derived_label_span("  read/src: r1[alpha123]") == null);
+    // A plain program lane is not a derived node.
+    assert(derived_label_span("  a.txt: r1[alpha123]") == null);
+    // A bolt header and the title carry no lane, so no derived node.
+    assert(derived_label_span("local/web") == null);
+    assert(derived_label_span("mantra log — append-only graph") == null);
+    print("realidream_view_derived: derived_label_span finds the derived node, refuses read lanes, program lanes, and headers\n", .{});
+}
+
+fn welcome_bounded_viewport(allocator: std.mem.Allocator) !void {
+    // A grid shorter than the scene paints only what fits — bounded, never an overflow,
+    // and the downstream paint respects the same viewport bound.
+    var catalog = try derived_scene();
+    var grid = try skate.Grid.init(allocator, view_cols, 4);
+    const rows = try paint_flow(&catalog, &grid, tokens.base_sheet);
+    assert(rows == 4);
+    print("realidream_view_derived: short viewport bounded to {d} rows (no overflow)\n", .{rows});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_both_ends_present(garden);
+        try welcome_derived_node_marked(garden);
+        try welcome_three_colors_reach_canvas(garden);
+        try welcome_shared_graph(garden);
+        try welcome_derived_label_span_reads_true();
+        try welcome_bounded_viewport(garden);
+        print("realidream_view_derived {s} — GREEN\n", .{realidream_view_derived_version});
+        return 0;
+    }
+    print("usage: realidream-view-derived selftest\n", .{});
+    return 1;
+}
