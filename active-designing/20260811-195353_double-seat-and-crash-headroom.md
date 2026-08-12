@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260811.195353`
 **Voice:** Kyri · **Style:** Radiant
-**Status:** Silo — a proposed technique and its clean-room study; two Lexicon terms proposed for Keaton's word, and a TAME-guidance audit seated as a power-of-two quest.
+**Status:** Silo — a technique and its clean-room study; both Lexicon terms **seated `20260811` on Keaton's word** (double-seat · crash headroom), and a TAME-guidance audit seated as a power-of-two quest.
 **Studies (with gratitude, clean-room):** TigerBeetle **TIGER_STYLE** (`gratitude/TIGER_STYLE.md`) — static allocation and fail-fast. Our own technique in our own words.
 **Kin:** the calendar (`context/rankings.kyri`, `tools/gen/season/itinerary.rish`), TAME Guidance (`context/TAME_GUIDANCE.md` §2, "Bounds on everything").
 
@@ -64,14 +64,14 @@ The audit **finds reds; that is its work** — so it is a survey, not a pass/fai
 
 **Placement, by the itinerary's own rule.** The current itinerary (Compass Season, **SOON** open, the PLEAC cookbook just wired into the interpreter) is fixed and mid-flight. So the audit **double-seats**: it does not shove between SOON's rounds; it takes the fresh upper half a doubling opens, cadenced as **one audit quest per equinox** — four rounds of discipline for every sixty-four of build, a clean 1:16 ratchet that never disturbs the promised plan. When the season doubles for its next high-priority block, the audit quest rides the new half.
 
-## Proposed for the Lexicon (Keaton's word)
+## Seated in the Lexicon `20260811` (Keaton's word)
 
 | Term | Meaning |
 |---|---|
 | **double-seat** | To seat a fresh high-priority group into a fixed itinerary by doubling the largest allocation and seating in the upper half — the promise kept, the room made. An expansion of `seat`. |
 | **crash headroom** | The reserved doubling of the durable write's capacity — pre-committed up front (TigerBeetle static allocation), so a double-seat always has room and a fail-fast crash always lands cleanly, never an OOM. Evocative sibling: *computational easing*. |
 
-Neither is seated until Keaton says the word; this silo proposes them and shows the technique they name.
+Both are now seated in `context/LEXICON.md`; this silo holds the technique they name and its study.
 
 ---
 
