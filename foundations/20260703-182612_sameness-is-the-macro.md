@@ -28,6 +28,15 @@ Read our own tree and compression is everywhere — and none of it is macro-shap
 
 **Count the whole cost of a line saved.** A line removed by sameness is free forever; a line removed by cleverness is a loan against every reader to come.
 
+## Kin in the weave
+
+Sameness is why the tree stays small enough to last; naming its neighbours keeps the compression principle reachable from the hubs.
+
+- **The front door** — the root [`../README.md`](../README.md) leans on plain, durable words for exactly this reason.
+- **The room** — indexed in [`foundations/README.md`](README.md).
+- **The hubs** — a seated grain strand in [The Grain and the Crossing](../active-designing/20260702-184312_the-grain-and-the-crossing.md); returned to by [Follow Our Compass](20260706-185112_follow-our-compass.md).
+- **The long return** — sameness and [the Lindy effect](20260811-211431_the-lindy-effect-and-the-long-return.md) are one argument seen twice: what is plain and public ages well, what is clever and private ages badly. Both ground [**Lindy-first, crux-first**](../.claude/rules/lindy-first-crux.md).
+
 ---
 
 *May the system stay small by being the same, and honest by being plain. And may every word we add cost a page, never a dialect.*

@@ -60,6 +60,15 @@ No new vane. The split is the custody principle applied to the settings screen.
 
 **Capability-scoped disclosure** — proving a fact without revealing the data beneath it (*over eighteen*, rather than a birthdate) — is a named future season. Linengrow's zero-knowledge receipt generalizes into that house style when the season opens.
 
+## Kin in the weave
+
+Custody-first is the ethical spine every other foundation leans on; the reference weave routes it through the two canonical hubs so no reader meets it in isolation.
+
+- **The front door** — the root [`../README.md`](../README.md) states this promise plainly (*keeps your words in your own hands*).
+- **The room** — indexed in [`foundations/README.md`](README.md); the reasons the building means something.
+- **The hubs** — cut by [The Grain and the Crossing](../active-designing/20260702-184312_the-grain-and-the-crossing.md) (the *values apart, bounded* strands custody rests on), returned to by [Follow Our Compass](20260706-185112_follow-our-compass.md).
+- **In practice** — the [Dimeroll entity-books design](../active-designing/20260811-220402_dimeroll-entity-books-siya-and-linengrow.md) keeps this boundary: the books record, they never disburse or hold keys.
+
 ---
 
 *May we build nothing that a frightened person must destroy to stay safe. May every setting be free where it is safe to be free, and careful exactly where care is owed. May the published schedule stay ordinary until a hold arrives.*
