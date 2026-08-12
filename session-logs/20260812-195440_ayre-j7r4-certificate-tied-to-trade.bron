@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260812.195440
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title AYRE-J7r4 — the certificate tied to a fair trade (Journey 7 closes)
+prompt continue the 1024-round road Lindy-first crux-first; take the next agent-doable lap, send each finished increment; stop only at custody gates
+think REMEMBER names the closing crux — AYRE-J7r4, tie the certificate to a fair trade: the certified cooperative's trade books fairly in Dimeroll, no uncertified cooperative's trade books as fair-trade
+think studied commerce_trade.rye — record_trade books one agreed price on both parties' books (seller cash-in == buyer cash-out), fair_value_holds folds conservation to one answer; the tie gates record_trade behind a satisfied certificate
+think wrote pond/apps/fairtrade_cert_trade.rye — record_certified_trade gates commerce.record_trade behind two proofs in order, both before any book is touched: the trade's seller must be one of the cooperative's own attesters (SellerNotCertified, so the certificate can't float free of the trade), and the certificate must be satisfied against the signed record (r2's evaluate_signed); fair_trade_holds folds certified.count>=1 AND commerce.fair_value_holds
+think witness proves the welcome (certified cooperative books fairly) and four refusals — uncertified record (Unsatisfied, no book), non-attester seller (SellerNotCertified), forged attestation (BadAttestation), and unfair trade after cert passes (SelfTrade / BadAmount from commerce's own laws)
+obs additive — composes fairtrade_cert_signed (r2) + commerce_trade (TACT-J4r1) + kumara over public API; both re-run GREEN under the witness; facts only, holds and moves nothing, settling reaches custody gate #3 (licensed counsel); demo seeds only
+obs AYRE Journey 7 (Fair-trade) stands complete end to end — r1 satisfied · r2 signed · r3 travels · r4 tied-to-a-fair-trade
+loom witness=ayre_j7_fairtrade_cert_trade_witness cases=5 rung_two_rerun=green commerce_rerun=green tame=clean width=clean
+file pond/apps/fairtrade_cert_trade.rye AYRE-J7r4 — a fair-trade certificate bound to an honestly-booked fair-value trade
+file tools/ayre_j7_fairtrade_cert_trade_witness.rish witness — builds r2 + commerce + r4, asserts GREEN, fair booking + four refusals
+file work-in-progress/REMEMBER.md living card — AYRE-J7r4 landed row, Journey 7 closed + git nib refresh
+recommend keep-going Season 2 Journey 8 (Cash-first) or a fresh Yield crux — the next Lindy-first crux on the whole 1024-round road, self-approved design round first

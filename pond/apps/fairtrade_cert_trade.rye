@@ -1,0 +1,231 @@
+//! pond/apps/fairtrade_cert_trade.rye — AYRE Journey 7 (Fair-trade), Rung 4: a certificate tied to a fair trade (Journey 7 closes).
+//!
+//! Rungs one through three fixed a fair-trade certificate's meaning as a join, bound each attestation
+//! to a settled Kumara identity, and let the satisfied certificate travel and re-verify offline. Yet
+//! a certificate that never touches a trade is only a claim about a cooperative in the abstract. This
+//! closing rung binds the two halves the journey named: a fair-trade certificate and a fair-value
+//! trade, so a certified cooperative's trade **books fairly in Dimeroll** and no uncertified
+//! cooperative's trade books as fair-trade at all.
+//!
+//! The crux is the tie: a trade books as fair-trade only when the **selling cooperative holds a
+//! satisfied, signed certificate**. `record_certified_trade` gates `commerce.record_trade` behind
+//! two proofs, in order — the trade's seller point must be one of the cooperative's own attesters
+//! (`SellerNotCertified` otherwise), and the certificate must be satisfied against the signed record
+//! (rung two's `evaluate_signed`, refusing `Unsatisfied` / `UnknownAttester` / `BadAttestation`). Only
+//! then does the trade book on both parties' books at one agreed price, fair value by construction —
+//! each book nets to zero, the pair conserves across the cash line (`commerce.fair_value_holds`).
+//!
+//! It composes rung two (`fairtrade_cert_signed`) and TACT-J4r1 (`commerce_trade`) over public API,
+//! inventing no new signing, join, or booking. Facts only: it records the *facts* of a certified
+//! trade and holds nothing — settling a trade reaches custody gate #3 (moving funds / a payment
+//! rail) and waits on licensed counsel. Demo keeper seeds and party numbers only.
+//!
+//!   rye build pond/apps/fairtrade_cert_trade.rye -femit-bin=pond/bin/fairtrade-cert-trade
+//!   pond/bin/fairtrade-cert-trade selftest
+//!
+//! Scope: active-designing/20260812-193727_ayre-journey7-fair-trade-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const cert = @import("fairtrade_cert.rye");
+const signed = @import("fairtrade_cert_signed.rye");
+const commerce = @import("commerce_trade.rye");
+const kumara = @import("kumara.rye");
+
+pub const fairtrade_cert_trade_version = "20260812.195258";
+
+pub const TieError = error{
+    SellerNotCertified, // the trade's seller is not one of the certificate's own attesters — no cooperative to certify
+};
+
+/// Every way a certified trade can refuse — the tie's own refusal, plus the certificate join it
+/// gates on (rung two) and the booking laws it inherits (commerce).
+pub const CertTradeError = TieError || cert.CertError || signed.SignError || commerce.BookError;
+
+/// A certified trade: the satisfied certificate that qualified the cooperative, and the fair-value
+/// trade it booked. Both exist together only when the tie held, so the pair is the proof.
+pub const CertifiedTrade = struct {
+    certified: cert.Certified,
+    booked: commerce.Booked,
+};
+
+/// Whether the trade's seller point is one of the cooperative's own attesters — the certified party
+/// selling. Without this the certificate would float free of the trade it certifies.
+fn seller_is_attester(record: *const signed.SignedRecord, seller: u32) bool {
+    // invariant: the scan stays within the live record.
+    assert(record.count <= cert.max_attestations);
+    var i: u32 = 0;
+    while (i < record.count) : (i += 1) {
+        if (record.points[i] == seller) return true;
+    }
+    return false;
+}
+
+/// Book a fair-value trade only when the selling cooperative holds a satisfied, signed certificate.
+/// The gate fires in order and *before any book is touched*: the seller must be one of the record's
+/// attesters (SellerNotCertified), and the certificate must be satisfied against the signed record
+/// (rung two's exact refusals). Only then does the trade book fairly on both sides. So the books
+/// record a fair-trade trade only for a cooperative that actually earned the certificate.
+pub fn record_certified_trade(
+    cert_text: []const u8,
+    record: *const signed.SignedRecord,
+    keyring: *const signed.Keyring,
+    trade: *const commerce.Trade,
+) CertTradeError!CertifiedTrade {
+    if (!seller_is_attester(record, trade.seller)) return error.SellerNotCertified;
+    const certified = try signed.evaluate_signed(cert_text, record, keyring);
+    const booked = try commerce.record_trade(trade);
+    // invariant: a certified trade names at least one criterion and its books conserve.
+    assert(certified.count >= 1);
+    assert(booked.seller_book.conservation() == 0);
+    assert(booked.buyer_book.conservation() == 0);
+    return .{ .certified = certified, .booked = booked };
+}
+
+/// The whole rung's property, folded to a single answer: the certificate is satisfied (at least one
+/// criterion certified) and the trade is fair value at the agreed price — fair-trade proven, not
+/// asserted.
+pub fn fair_trade_holds(ct: *const CertifiedTrade, price: i64) bool {
+    if (ct.certified.count == 0) return false;
+    return commerce.fair_value_holds(&ct.booked, price);
+}
+
+// --- selftest -----------------------------------------------------------
+
+const producer_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
+const steward_seed: [kumara.seed_length]u8 = .{0x66} ** kumara.seed_length;
+
+// The cooperative sells as its producer point; the steward co-attests. Plainly demo numbers.
+const producer_point: u32 = 7;
+const steward_point: u32 = 12;
+const buyer_point: u32 = 20;
+
+fn pubkey_of(seed: *const [kumara.seed_length]u8) [signed.pubkey_len]u8 {
+    return kumara.keypair_from_seed(seed).public_key.bytes;
+}
+
+fn seat_signed_record() !signed.SignedRecord {
+    var r = signed.SignedRecord.empty();
+    try r.attest_signed(&producer_seed, producer_point, "price-floor");
+    try r.attest_signed(&producer_seed, producer_point, "cooperative-member");
+    try r.attest_signed(&steward_seed, steward_point, "producer-signed");
+    return r;
+}
+
+fn seat_keyring() !signed.Keyring {
+    var kr = signed.Keyring.empty();
+    try kr.enroll(producer_point, pubkey_of(&producer_seed));
+    try kr.enroll(steward_point, pubkey_of(&steward_seed));
+    return kr;
+}
+
+const demo_cert = "format fairtrade-cert-v1\nrequire cooperative-member\nrequire price-floor\nrequire producer-signed\n";
+
+fn demo_trade(price: i64) commerce.Trade {
+    return .{ .seller = producer_point, .buyer = buyer_point, .item = "hemp bolt", .price = price, .stamp = "20260812.195258" };
+}
+
+/// A certified cooperative's trade books fairly: the seller is an attester, the certificate is
+/// satisfied, and the trade conserves on both books at the one agreed price.
+fn welcome_certified_trade_books() !void {
+    const record = try seat_signed_record();
+    const keyring = try seat_keyring();
+    const trade = demo_trade(1000);
+    const ct = try record_certified_trade(demo_cert, &record, &keyring, &trade);
+    assert(ct.certified.count == 3);
+    assert(ct.booked.seller_cash_in() == 1000);
+    assert(ct.booked.buyer_cash_out() == 1000);
+    assert(fair_trade_holds(&ct, 1000));
+    print("fairtrade_cert_trade: a certified cooperative's trade booked fairly; seller in == buyer out == 1000, certificate satisfied.\n", .{});
+}
+
+/// A cooperative whose record does not hold a required criterion cannot book a fair-trade trade —
+/// the certificate refuses Unsatisfied before any book is touched.
+fn unwelcome_uncertified_record_refuses() !void {
+    const keyring = try seat_keyring();
+    // A record missing "producer-signed" — the cooperative has not earned the certificate.
+    var record = signed.SignedRecord.empty();
+    try record.attest_signed(&producer_seed, producer_point, "price-floor");
+    try record.attest_signed(&producer_seed, producer_point, "cooperative-member");
+    const trade = demo_trade(1000);
+    if (record_certified_trade(demo_cert, &record, &keyring, &trade)) |_| {
+        return error.UncertifiedBooked;
+    } else |err| {
+        assert(err == error.Unsatisfied);
+    }
+    print("fairtrade_cert_trade: an uncertified cooperative's trade refused Unsatisfied — no book touched.\n", .{});
+}
+
+/// A trade whose seller is not one of the cooperative's attesters refuses SellerNotCertified — a
+/// certificate cannot float free of the trade it certifies.
+fn unwelcome_seller_not_attester_refuses() !void {
+    const record = try seat_signed_record();
+    const keyring = try seat_keyring();
+    var trade = demo_trade(1000);
+    trade.seller = 40; // a party who never attested — not the certified cooperative
+    trade.buyer = buyer_point;
+    if (record_certified_trade(demo_cert, &record, &keyring, &trade)) |_| {
+        return error.StrangerBooked;
+    } else |err| {
+        assert(err == error.SellerNotCertified);
+    }
+    print("fairtrade_cert_trade: a seller who never attested refused SellerNotCertified.\n", .{});
+}
+
+/// A forged attestation refuses BadAttestation — the tie inherits rung two's signing honesty, so a
+/// certificate no party actually signed cannot qualify a trade.
+fn unwelcome_forged_attestation_refuses() !void {
+    var record = try seat_signed_record();
+    const keyring = try seat_keyring();
+    record.sigs[0][0] ^= 0xFF; // flip the price-floor signature
+    const trade = demo_trade(1000);
+    if (record_certified_trade(demo_cert, &record, &keyring, &trade)) |_| {
+        return error.ForgedBooked;
+    } else |err| {
+        assert(err == error.BadAttestation);
+    }
+    print("fairtrade_cert_trade: a forged attestation refused BadAttestation — no fair-trade booking on an unsigned criterion.\n", .{});
+}
+
+/// Even a certified cooperative cannot book an unfair trade: a self-trade and a zero price each
+/// refuse at commerce's own laws, after the certificate passed.
+fn unwelcome_unfair_trade_refuses() !void {
+    const record = try seat_signed_record();
+    const keyring = try seat_keyring();
+    var self_trade = demo_trade(1000);
+    self_trade.buyer = self_trade.seller;
+    if (record_certified_trade(demo_cert, &record, &keyring, &self_trade)) |_| {
+        return error.SelfBooked;
+    } else |err| {
+        assert(err == error.SelfTrade);
+    }
+    const zero_trade = demo_trade(0);
+    if (record_certified_trade(demo_cert, &record, &keyring, &zero_trade)) |_| {
+        return error.ZeroBooked;
+    } else |err| {
+        assert(err == error.BadAmount);
+    }
+    print("fairtrade_cert_trade: a certified cooperative's self-trade refused SelfTrade and a zero price refused BadAmount.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_certified_trade_books();
+    try unwelcome_uncertified_record_refuses();
+    try unwelcome_seller_not_attester_refuses();
+    try unwelcome_forged_attestation_refuses();
+    try unwelcome_unfair_trade_refuses();
+    print("fairtrade_cert_trade: version {s}\n", .{fairtrade_cert_trade_version});
+    print("GREEN: AYRE-J7r4 fairtrade_cert_trade; a fair-trade certificate is bound to an honestly-booked fair-value trade — only a certified cooperative's fair trade books.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "fairtrade-cert-trade"))) {
+        return run_selftest();
+    }
+    return run_selftest();
+}

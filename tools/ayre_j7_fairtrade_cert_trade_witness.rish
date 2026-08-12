@@ -1,0 +1,49 @@
+# tools/ayre_j7_fairtrade_cert_trade_witness.rish — AYRE Journey 7 (Fair-trade), Rung 4 (closes Journey 7).
+#
+# Season 2, Yield — trades fairly. Rungs one through three fixed a certificate's meaning as a join,
+# bound each attestation to a settled Kumara identity, and let the satisfied certificate travel and
+# re-verify offline. pond/apps/fairtrade_cert_trade.rye ties the two halves the journey named: a
+# certified cooperative's trade books fairly in Dimeroll, and no uncertified cooperative's trade
+# books as fair-trade. record_certified_trade gates commerce.record_trade behind the seller being one
+# of the cooperative's own attesters (SellerNotCertified) and the certificate being satisfied against
+# the signed record (rung two's Unsatisfied / UnknownAttester / BadAttestation) — only then does the
+# trade book fairly on both sides (each book nets to zero, the pair conserves across cash). Composes
+# rung two and TACT-J4r1 over public API; facts only, custody gate #3 untouched; demo seeds only.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ayre_j7_fairtrade_cert_trade_witness.rish
+
+say "ayre-j7r4: Language EN — a fair-trade certificate is bound to an honestly-booked fair-value trade; only a certified cooperative's fair trade books."
+say "ayre-j7r4: Lens TAME — the gate fires before any book: an uncertified record, a non-attester seller, a forged attestation, and an unfair trade each refuse."
+
+let zig = "vendor/zig-toolchain/zig"
+
+# Rung two and TACT-J4r1 stay GREEN beneath the tie — additive.
+let bin2 = "pond/bin/fairtrade-cert-signed"
+let build2 = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/fairtrade_cert_signed.rye -femit-bin=${bin2}"]
+assert build2.ok else "ayre-j7r4: rung-two fairtrade_cert_signed build failed"
+let self2 = run ["sh" "-c" "${bin2} selftest 2>&1"]
+assert self2.ok else "ayre-j7r4: rung-two selftest exited non-zero"
+assert self2.out contains "GREEN" else "ayre-j7r4: rung-two did not speak GREEN"
+
+let binc = "pond/bin/commerce-trade"
+let buildc = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/commerce_trade.rye -femit-bin=${binc}"]
+assert buildc.ok else "ayre-j7r4: commerce_trade build failed"
+let selfc = run ["sh" "-c" "${binc} selftest 2>&1"]
+assert selfc.ok else "ayre-j7r4: commerce_trade selftest exited non-zero"
+assert selfc.out contains "GREEN" else "ayre-j7r4: commerce_trade did not speak GREEN"
+
+let bin = "pond/bin/fairtrade-cert-trade"
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/fairtrade_cert_trade.rye -femit-bin=${bin}"]
+assert build.ok else "ayre-j7r4: fairtrade_cert_trade build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "ayre-j7r4: fairtrade_cert_trade selftest exited non-zero"
+assert selftest.out contains "GREEN" else "ayre-j7r4: selftest did not speak GREEN"
+assert selftest.out contains "booked fairly; seller in == buyer out == 1000" else "ayre-j7r4: fair booking missing"
+assert selftest.out contains "refused Unsatisfied — no book touched" else "ayre-j7r4: uncertified refusal missing"
+assert selftest.out contains "refused SellerNotCertified" else "ayre-j7r4: non-attester refusal missing"
+assert selftest.out contains "refused BadAttestation" else "ayre-j7r4: forged refusal missing"
+assert selftest.out contains "refused SelfTrade and a zero price refused BadAmount" else "ayre-j7r4: unfair-trade refusals missing"
+
+say "GREEN: AYRE-J7r4 fairtrade_cert_trade — a fair-trade certificate is bound to an honestly-booked fair-value trade; Journey 7 (Fair-trade, AYRE) closes."
