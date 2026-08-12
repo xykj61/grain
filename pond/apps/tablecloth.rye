@@ -158,6 +158,21 @@ pub fn fetch_artifact(
     return re.len;
 }
 
+/// The width, in bytes, of a rendered content address (lowercase hex digest).
+pub const address_hex_width: u32 = digest_hex_len;
+
+/// Write the content address a name pins, as lowercase hex, into out. Refuses an
+/// unknown name (UnknownArtifact). This is the store's side of an index check: the
+/// address a manifest publishes must match the address the store actually recorded.
+pub fn address_hex(cat: *const Catalog, name: []const u8, out: []u8) ClothError!void {
+    // invariant: the output holds a whole rendered address
+    assert(out.len >= digest_hex_len);
+    const i = cat.find(name) orelse return error.UnknownArtifact;
+    // invariant: a found index is within the live catalog
+    assert(i < cat.count);
+    write_hex_lower(cat.entries[i].whole_digest[0..], out[0..digest_hex_len]);
+}
+
 /// Render the catalog as its Brix-facing `format tablecloth-v1` manifest, returning its
 /// length. One `artifact <name> <digest> <len>` line per entry, in held order.
 pub fn render_manifest(cat: *const Catalog, out: []u8) ClothError!u32 {
@@ -185,7 +200,7 @@ pub fn render_manifest(cat: *const Catalog, out: []u8) ClothError!u32 {
 
 // A parsed manifest entry: the published name, address (hex), and length. The recipe to
 // reassemble lives in the store's Catalog, not in the manifest a Brix descriptor holds.
-const ManifestEntry = struct {
+pub const ManifestEntry = struct {
     name: [max_name]u8,
     name_len: u32,
     digest_hex: [digest_hex_len]u8,
