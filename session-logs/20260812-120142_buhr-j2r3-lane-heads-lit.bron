@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260812.120142
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention · this session in ai-jail
+title BUHR-J2r3 — the living edge, lit
+prompt read REMEMBER, take the next agent-doable lap Lindy-first crux-first, approve own design rounds, send often, stop at custody gates
+think REMEMBER named the next agent-doable crux at BUHR gate 1: deepen J2 with dress_run-colored revision nodes, or open Journey 4. J2 is Realidream — the highest-Lindy brand — so deepening its surface outranks opening a new journey (Lindy-first); per-cell semantic color is the crux move that proves the styled surface carries meaning, not decoration.
+think Read the rung-1 render (mantra_browser.rye) and rung-2 view (mantra_browser_view.rye) and the WADE1 token module. dress_run already paints a run of cells in a palette slot; the missing piece is finding the head node's column span in the rendered bytes.
+think Chose to light each lane's head revision — the rightmost r<n>[digest] on a lane line — read straight from render's own output, so the color can never point at a node the text does not show. head_span walks back from the last ']' to the opening 'r', refusing lines with no node (title, bolt headers).
+think Added a small reusable public helper tokens.token_color (sheet-token → Skate Color) so the witness can name the head and ink colors without seating a grid; asserted it against dress_run's return in the tokens selftest.
+think TAME caught a compound assert (width>0 and height>0) — split it into two named invariants. width-check and tame_style_check both GREEN after.
+obs The crux proof is welcome_both_colors_reach_canvas: count_pixels_of_color proves 1468 ink and 826 head pixels share the rasterized canvas at once — semantic per-cell color is real on metal, not just an fg_index bookkeeping fact. lit_pixel_count alone (any non-bg pixel) could not have shown this.
+obs Strictly additive: rung two's binary and witness stay GREEN (re-run inside the new witness); the painted glyphs and the reader's text are byte-for-byte unchanged, coloring rides only on fg_index.
+loom witness=buhr_mantra_browser_heads_witness welcomes=6 head_cells=36 ink_pixels=1468 head_pixels=826 rung2_rerun=green
+file pond/apps/mantra_browser_heads.rye BUHR-J2r3 app — paints each lane's head revision in the sheet's edge token via dress_run
+file pond/apps/brushstroke/tokens.rye added public token_color helper + selftest assertion
+file tools/buhr_mantra_browser_heads_witness.rish witness — 6 welcomes on metal + rung-two regression guard, GREEN
+file work-in-progress/REMEMBER.md logged the J2r3 landing and the next agent-doable crux
+recommend keep-going carry the head color into a .brush authoring loop (a sheet's own head token overriding edge), or open BUHR Journey 4 — both agent-doable on witnessed ground
