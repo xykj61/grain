@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260812.145853
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR-J8r2 the reading tracks a live publish
+prompt Take the next agent-doable BUHR lap Lindy-first crux-first; approve own design rounds; send each finished increment; stop at custody gates
+think REMEMBER named J8r2 (reading tracks a live publish) and J8r3 as the next agent-doable rungs; J8r2 is the crux, mirroring J6r2's live-edit tracking, so I took it first
+think Studied artifact_query.answer_over (explicit cat+store), tablecloth.store_artifact (publish = bead once, bind a name), and the J6r2 precedent graph_query_edit for the compose-and-re-ask shape
+think Wrote pond/apps/artifact_query_publish.rye composing aq.answer_over with tc.store_artifact over one catalog+store — a name refuses (UnknownArtifact) before the publish and reads its true bytes after
+obs Three welcomes: publish makes a refused name answerable (the crux); an existing name is byte-stable across a later publish (a publish is an append); reading is read-only (published store reads the new name, pristine store still refuses it)
+obs Additive by construction — imports only public API; J8r1 artifact_query stays its own GREEN binary and re-runs in the witness
+loom witness=buhr_artifact_query_publish_witness result=GREEN welcomes=3 r1_rerun=GREEN
+file pond/apps/artifact_query_publish.rye BUHR-J8r2 the voice's reading tracks a live publish over one catalog+store
+file tools/buhr_artifact_query_publish_witness.rish witnesses the build, the three welcomes, and the J8r1 re-run
+recommend keep-going J8r3 (gather the artifact voice under the Q-vane host) is the next agent-doable rung; owner-signed corpus + Comlink-served stay custody/serve gates
