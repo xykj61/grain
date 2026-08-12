@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260811.231142
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title AHOY2 — SECURITY.md, the disclosure front door
+prompt Keaton: kg all seasons autonomously (AHOY2 legitimacy layer continues)
+think AHOY2 next community-health file: a SECURITY.md. Wrote it as the short front-door companion to the rich existing threat model (context/THREATS.md), not a duplicate.
+think Passed the three lenses before admitting it: Radiant (affirmative, leads with what the project does not hold), civic (custody-first, protects the reader — no funds, no keys, counsel-gated rails), TAME (honest — points at THREATS.md's named single-point-of-failure rather than performing safety).
+think Disclosure channel is GitHub private security advisories (the repo's Security tab), not a personal email — seed-safe, and the scrub pass covers the maintainer reference the threat model carries.
+think Seed plumbing: allowlisted SECURITY.md in .gitignore, classified allow + scrub in template-manifest.bron.
+obs living_docs_lint GREEN (SECURITY.md's relative links into context/ all resolve). sow_witness SOW_WITNESS_GREEN — copied 4093 (SECURITY.md now ships), IDENT_CLEAN, NO_PERSONAL.
+obs Kept the round tight to one keystone — CODE_OF_CONDUCT.md is the next community-health file. No README link added; GitHub surfaces SECURITY.md in its own tab and the file is valid standalone.
+loom witness=sow_witness copied=4093 scrubbed=780 withheld=22 result=GREEN
+file SECURITY.md new — reporting a vulnerability · what the project holds · supported versions · pointer to THREATS.md
+file .gitignore allowlist SECURITY.md
+file template-manifest.bron allow + scrub SECURITY.md
+recommend keep-going AHOY2 next — CODE_OF_CONDUCT.md (civic conduct), then the changelog-is-session-index note; kg all seasons autonomously

@@ -102,6 +102,7 @@ allow waymarks
 allow README.md
 allow MAP.md
 allow SOURCE.md
+allow SECURITY.md
 allow CLAUDE.md
 allow CONTRIBUTING.md
 allow ORGANIZING.md
@@ -137,6 +138,7 @@ scrub     .cursor                        # Cursor twins of the same rules
 scrub     README.md                      # names the living identity in its foot
 scrub     MAP.md                          # identity line + Keaton by name
 scrub     SOURCE.md                       # onboarding guide; names the maintainer
+scrub     SECURITY.md                     # disclosure note; points to the threat model that names the maintainer
 scrub     CLAUDE.md                       # project instructions; heavy identity + voice
 scrub     CONTRIBUTING.md                 # may name; commit-shape guidance
 scrub     ORGANIZING.md                   # names the keeper throughout
