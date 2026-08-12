@@ -119,7 +119,7 @@ Then read, in order: **[`SOURCE.md`](SOURCE.md)** (clone · keys · enclosure) �
 - **[`context/SIMPLE_LOVABLE_COMPLETE.md`](context/SIMPLE_LOVABLE_COMPLETE.md)** — how a thing is scoped so it is worth loving.
 - **[`context/TWO_ROOMS.md`](context/TWO_ROOMS.md)** — why every page tells you whether it is proven or proposed.
 
-The reasons beneath these live in [`foundations/`](foundations/README.md) — among them [the custody-first principle](foundations/20260724-200912_nothing-to-give-custody-first-principle.md) (*build nothing that destroys*), [the wire serves the fold](foundations/20260706-022912_the-wire-serves-the-fold.md), [sameness is the macro](foundations/20260703-182612_sameness-is-the-macro.md), and [the Lindy effect and the long return](foundations/20260811-211431_the-lindy-effect-and-the-long-return.md).
+The reasons beneath these live in [`foundations/`](foundations/README.md) — among them [the custody-first principle](foundations/20260724-200912_nothing-to-give-custody-first-principle.md) (*build nothing that destroys*), [the wire serves the fold](foundations/20260706-022912_the-wire-serves-the-fold.md), [sameness is the macro](foundations/20260703-182612_sameness-is-the-macro.md), [the Lindy effect and the long return](foundations/20260811-211431_the-lindy-effect-and-the-long-return.md), and [The Singularity](foundations/20260811-233509_the-singularity.md) (the night the tool began to tend itself — within every bound it names).
 
 ---
 
