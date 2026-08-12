@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260812.113310
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR J3r2 — the Bron<->JSON tiles
+prompt Autonomous loop: take the next agent-doable lap Lindy-first crux-first, harmony-of-styles balance compass, approve own design rounds, send often, stop at custody gates.
+think Read REMEMBER: BUHR Journey 3 Rung 1 (MCP-in-Bron descriptor shape) landed; the named horizon and crux is the Bron<->JSON tiles so a Grain tool meets a JSON MCP host.
+think Lindy-first crux-first says the tile is the durable interop artifact — a manifest and its envelopes are read far more than any one call runs, and meeting the world's JSON is the hard tractable move that unblocks every later tool.
+think Confirmed green ground first: buhr_mcp_bron_witness GREEN before extending. Read mcp_bron.rye shapes (Call, Arg, Result) and the byte-by-byte bounded append idiom in mantra_browser.rye (no @memcpy).
+think Wrote pond/apps/mcp_json.rye: call_to_json / call_from_json render and read a real JSON-RPC tools/call request; result_to_json / result_from_json carry a Result to the response shape (content text item on success, code/message on error) and back. A purpose-built bounded reader (objects, strings, unsigned ids), not a general JSON parser — unknown field refused, every collection bounded, escapes faithful.
+obs Built and passed selftest first try; the crux property (parse(render(x)) recovers x) holds both directions, a quoted+backslashed value survives the crossing, and bad-method / unknown-field / truncated envelopes each refuse with a named error.
+obs Additive by construction: imports rung one's mcp_bron shapes and calls only their public API; rung one stays its own GREEN binary (witness re-runs it). TAME bans clean, width-check clean, new files carry ≥2 asserts per fn.
+loom witness=buhr_mcp_json_witness result=GREEN cases=7 rung1_regression=none
+file pond/apps/mcp_json.rye the Bron<->JSON tiles — MCP-in-Bron meets JSON-RPC tools/call, round-trips both ways
+file tools/buhr_mcp_json_witness.rish witness proving the tile on metal and rung one still GREEN
+recommend keep-going BUHR J3 deepens — next horizon is a JSON tool-manifest tile (mcp-tool-v1 <-> tools/list) or J2 dress_run-colored revision nodes; all agent-doable, no custody gate
