@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260812.124326
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu ai-jail (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR-J4r2 — an edit moves the living edge forward, visibly
+prompt Autonomous loop — keep taking agent-doable BUHR laps Lindy-first crux-first, send each increment, STOP at custody gates
+think Rung one proved an edit is an append the render already shows. The named next crux was to carry that growth onto the styled Skate surface: after a commit, the same heads.paint_heads should light the new revision as the living edge (rung three lights each lane's head — the newest node).
+think Wrote pond/apps/mantra_editor_view.rye composing editor.commit + heads.paint_heads, proving at the grid-cell level (fg_index marked with heads.head_slot) that the edited lane's head-token cells sit further right after the edit — the living edge advanced from r1 to the appended r2 — and that the lit head covers the new node's span (heads.head_span), while every other lane's row paints byte-for-byte unchanged.
+think First run panicked on the third welcome (two edits) with ViewTooNarrow — a three-node chain r1 -> r2 -> r3 is wider than the demo's 48-col viewport. Widened that welcome's grid to 72 cols and named why in a comment (the paint's own ViewTooNarrow bound is exactly why a longer chain wants more columns) — honest, not a workaround.
+obs Working at the grid-cell level (fg_index + row_cells) rather than rasterizing kept the proof deterministic and exact — the living edge's column is a number, so its advance is an inequality, not a pixel-count heuristic.
+obs Four rounds this session, all build-heavy and green — the design-over-build ratio stays healthy; the editor now reads (r1), grows (J4r1), and shows its growth lit (J4r2).
+loom witness=buhr_mantra_editor_view_witness cases=3 editor_rerun=green heads_rerun=green tame=clean width=rc0
+file pond/apps/mantra_editor_view.rye BUHR-J4r2 — after a commit the styled paint lights the appended revision as the living edge
+file tools/buhr_mantra_editor_view_witness.rish witness — builds, runs selftest (3 welcomes), re-runs the editor (J4r1) and heads (J2r3) GREEN
+recommend keep-going next BUHR-J4 rung: an edit that forks a new lane (a first revision on a fresh path), or undo as reading an earlier revision
