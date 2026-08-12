@@ -1,0 +1,203 @@
+//! pond/apps/commerce_trade_signed.rye — TACT Journey 4, Rung 2: a trade both parties signed.
+//!
+//! Rung one booked a fair-value trade on both parties' books at one agreed price — fair value by
+//! construction. Yet a booking alone does not prove *agreement*: a steward could write a number
+//! one side never accepted. This rung binds the trade to two settled Kumara identities — the seller
+//! and the buyer each sign the exact same facts (their two points, the item, the one price), and a
+//! trade is booked only when *both* signatures verify over the identical facts.
+//!
+//! The crux: a recorded trade is one both hands agreed to. The signed message carries the two
+//! parties and the single price, so a signature is a promise about that exact number — change the
+//! price after signing and both signatures fall, because the agreement was to the old price, not
+//! the new one. A forged signature, a wrong keeper key, or a tampered fact each refuses, and an
+//! unagreed trade never reaches the books.
+//!
+//! It composes rung one's `record_trade` over the Kumara signing the settlement already witnessed
+//! (`kumara.rye`, the same layout `tablecloth_keyed` signs publications with) — inventing no new
+//! signing and no new booking. Demo keeper seeds only; no real key, no funds, no custody. Settling
+//! a booked trade reaches custody gate #3 (moving funds / a payment rail) and waits on counsel.
+//!
+//!   rye build pond/apps/commerce_trade_signed.rye -femit-bin=pond/bin/commerce-trade-signed
+//!   pond/bin/commerce-trade-signed selftest
+//!
+//! Scope: active-designing/20260812-175228_tact-journey4-commerce-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const commerce = @import("commerce_trade.rye");
+const kumara = @import("kumara.rye");
+
+pub const commerce_trade_signed_version = "20260812.175822";
+
+pub const pubkey_len: u32 = 32;
+pub const sig_len: u32 = 64;
+
+pub const AgreeError = error{NotAgreed};
+
+/// The exact bytes each party signs: the two points, the one price, and the item (with its length,
+/// so no two items collide by padding). Both parties sign this identical message.
+pub const max_msg_len: u32 = 4 + 4 + 8 + 4 + commerce.max_item_len; // seller, buyer, price(i64), item_len, item
+
+fn auth_message(out: *[max_msg_len]u8, trade: *const commerce.Trade) u32 {
+    // invariant: the item fits the trade's item budget, so the message fits its buffer.
+    assert(trade.item.len <= commerce.max_item_len);
+    std.mem.writeInt(u32, out[0..4], trade.seller, .little);
+    std.mem.writeInt(u32, out[4..8], trade.buyer, .little);
+    std.mem.writeInt(i64, out[8..16], trade.price, .little);
+    std.mem.writeInt(u32, out[16..20], @intCast(trade.item.len), .little);
+    var off: u32 = 20;
+    for (trade.item) |b| {
+        out[off] = b;
+        off += 1;
+    }
+    // invariant: the assembled message never exceeds its bound.
+    assert(off <= max_msg_len);
+    return off;
+}
+
+/// One party's signature over the exact trade facts — the seller's word, or the buyer's, that this
+/// item at this price between these two points is a trade they accept.
+pub fn sign_trade(keeper_seed: *const [kumara.seed_length]u8, trade: *const commerce.Trade) [sig_len]u8 {
+    const kp = kumara.keypair_from_seed(keeper_seed);
+    var msg: [max_msg_len]u8 = undefined;
+    const len = auth_message(&msg, trade);
+    return kumara.sign(msg[0..len], kp, null).toBytes();
+}
+
+/// Verify one party's signature over the trade facts against their keeper public key. A forged
+/// signature, a wrong key, or a fact changed since signing each refuses (returns false).
+pub fn verify_trade(keeper: [pubkey_len]u8, trade: *const commerce.Trade, sig: *const [sig_len]u8) bool {
+    // invariant: an Ed25519 public key is 32 bytes and a signature 64.
+    assert(pubkey_len == 32);
+    assert(sig_len == 64);
+    const pub_key = kumara.PublicKey.fromBytes(keeper) catch return false;
+    var msg: [max_msg_len]u8 = undefined;
+    const len = auth_message(&msg, trade);
+    kumara.verify_bytes(msg[0..len], sig, pub_key) catch return false;
+    return true;
+}
+
+/// A trade carrying both parties' signatures — the durable artifact of an agreed trade.
+pub const SignedTrade = struct {
+    trade: commerce.Trade,
+    seller_sig: [sig_len]u8,
+    buyer_sig: [sig_len]u8,
+};
+
+/// Both parties agreed: the seller's signature and the buyer's signature each verify over the
+/// identical facts. Neither side alone is enough — a trade one party never signed is not agreed.
+pub fn both_agree(signed: *const SignedTrade, seller_key: [pubkey_len]u8, buyer_key: [pubkey_len]u8) bool {
+    if (!verify_trade(seller_key, &signed.trade, &signed.seller_sig)) return false;
+    if (!verify_trade(buyer_key, &signed.trade, &signed.buyer_sig)) return false;
+    return true;
+}
+
+/// Book a trade only when both parties signed it. An unagreed trade refuses `NotAgreed` before any
+/// book is touched; an agreed one books through rung one's `record_trade` (fair value by
+/// construction). So the books record only trades both hands accepted.
+pub fn record_signed(
+    signed: *const SignedTrade,
+    seller_key: [pubkey_len]u8,
+    buyer_key: [pubkey_len]u8,
+) (AgreeError || commerce.BookError)!commerce.Booked {
+    if (!both_agree(signed, seller_key, buyer_key)) return error.NotAgreed;
+    return commerce.record_trade(&signed.trade);
+}
+
+// ---- witnesses ----
+
+// Demo keeper seeds — plainly not real keys, so no identity is invented.
+const seller_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
+const buyer_seed: [kumara.seed_length]u8 = .{0x66} ** kumara.seed_length;
+
+fn pubkey_of(seed: *const [kumara.seed_length]u8) [pubkey_len]u8 {
+    return kumara.keypair_from_seed(seed).public_key.bytes;
+}
+
+fn demo_trade(price: i64) commerce.Trade {
+    return .{ .seller = 7, .buyer = 12, .item = "hemp bolt", .price = price, .stamp = "20260812.175822" };
+}
+
+fn sign_both(trade: *const commerce.Trade) SignedTrade {
+    return .{
+        .trade = trade.*,
+        .seller_sig = sign_trade(&seller_seed, trade),
+        .buyer_sig = sign_trade(&buyer_seed, trade),
+    };
+}
+
+/// A trade both parties signed verifies and books — both signatures check over the identical facts,
+/// and the booked pair still holds fair value by construction.
+fn welcome_both_agree_and_books() !void {
+    const trade = demo_trade(1000);
+    const signed = sign_both(&trade);
+    assert(both_agree(&signed, pubkey_of(&seller_seed), pubkey_of(&buyer_seed)));
+    const booked = try record_signed(&signed, pubkey_of(&seller_seed), pubkey_of(&buyer_seed));
+    assert(commerce.fair_value_holds(&booked, 1000));
+    print("commerce_trade_signed: a trade both parties signed verified and booked; fair value held at 1000.\n", .{});
+}
+
+/// A forged seller signature refuses — one flipped byte breaks the seller's promise, and the trade
+/// never reaches the books.
+fn unwelcome_forged_seller_refuses() !void {
+    const trade = demo_trade(1000);
+    var signed = sign_both(&trade);
+    signed.seller_sig[0] ^= 0xFF;
+    assert(!both_agree(&signed, pubkey_of(&seller_seed), pubkey_of(&buyer_seed)));
+    const booked = record_signed(&signed, pubkey_of(&seller_seed), pubkey_of(&buyer_seed));
+    assert(booked == error.NotAgreed);
+    print("commerce_trade_signed: a forged seller signature refused NotAgreed; the trade never booked.\n", .{});
+}
+
+/// A forged buyer signature refuses just the same — both hands must have signed.
+fn unwelcome_forged_buyer_refuses() !void {
+    const trade = demo_trade(1000);
+    var signed = sign_both(&trade);
+    signed.buyer_sig[63] ^= 0x01;
+    assert(!both_agree(&signed, pubkey_of(&seller_seed), pubkey_of(&buyer_seed)));
+    print("commerce_trade_signed: a forged buyer signature refused; both hands must have signed.\n", .{});
+}
+
+/// A wrong keeper key refuses — the signatures name exactly which two keepers agreed.
+fn unwelcome_wrong_key_refuses() !void {
+    const trade = demo_trade(1000);
+    const signed = sign_both(&trade);
+    // The buyer's key stands in for the seller's — the seller's signature is not by this key.
+    assert(!both_agree(&signed, pubkey_of(&buyer_seed), pubkey_of(&buyer_seed)));
+    print("commerce_trade_signed: a wrong keeper key refused; the signatures name exactly who agreed.\n", .{});
+}
+
+/// The honesty crux: change the price after both signed, and both signatures fall — the agreement
+/// was to the old price, so a steward cannot quietly rebook the trade at a number neither accepted.
+fn unwelcome_price_tamper_refuses() !void {
+    const trade = demo_trade(1000);
+    var signed = sign_both(&trade);
+    signed.trade.price = 900;
+    assert(!both_agree(&signed, pubkey_of(&seller_seed), pubkey_of(&buyer_seed)));
+    const booked = record_signed(&signed, pubkey_of(&seller_seed), pubkey_of(&buyer_seed));
+    assert(booked == error.NotAgreed);
+    print("commerce_trade_signed: a price changed after signing refused NotAgreed; the agreement was to the signed price.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_both_agree_and_books();
+    try unwelcome_forged_seller_refuses();
+    try unwelcome_forged_buyer_refuses();
+    try unwelcome_wrong_key_refuses();
+    try unwelcome_price_tamper_refuses();
+    print("commerce_trade_signed {s} — GREEN\n", .{commerce_trade_signed_version});
+    print("GREEN: TACT-J4r2 commerce_trade_signed; a trade books only when both parties signed the identical facts, forgery and tamper refused.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest();
+    }
+    print("usage: commerce-trade-signed selftest\n", .{});
+    return 1;
+}
