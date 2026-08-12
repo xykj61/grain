@@ -1,0 +1,343 @@
+//! pond/apps/fairtrade_cert_bron.rye — AYRE Journey 7 (Fair-trade), Rung 3: the certificate travels.
+//!
+//! Rung one fixed a fair-trade certificate's meaning as a join; rung two bound each attestation to a
+//! settled Kumara identity so a satisfied certificate carries every party's verifying signature. A
+//! certificate is only useful, though, if a recipient can carry the identical proof — written to a
+//! file, pinned in Tablecloth, or handed to a buyer — and check it **offline**, with no store and no
+//! network. This rung renders the certified, signed attestations to a `format fairtrade-signed-v1`
+//! Bron record and parses them back byte-for-byte, so the proof survives becoming text.
+//!
+//! The crux is preservation: `parse(render(record, certified))` recovers an equal bundle of
+//! attestations — each criterion's name, attester point, and signature — and the recovered bundle is
+//! **still satisfied**: every traveled attestation re-verifies against the recipient's keyring
+//! through rung two's own `verify_held`, and re-running rung two's `evaluate_signed` over the
+//! traveled bundle yields the identical `Certified`. Nothing about the signed certification was lost
+//! in the crossing. The reader is a purpose-built bounded Bron reader (the tree's flat `key value`
+//! idiom), never a general parser: an unknown field refuses (never dropped), a malformed line
+//! refuses, a wrong header refuses, and bad hex refuses rather than decode to garbage.
+//!
+//! It composes rungs one and two — a recovered bundle rebuilds a `SignedRecord` re-checked by
+//! `verify_held` / `evaluate_signed` — inventing no new signing and no new join. It reads no network:
+//! the serve transport that would carry this record across the wire is the Comlink-served custody
+//! gate (Keaton's hand). Demo keeper seeds only; facts only (custody gate #3 untouched).
+//!
+//!   rye build pond/apps/fairtrade_cert_bron.rye -femit-bin=pond/bin/fairtrade-cert-bron
+//!   pond/bin/fairtrade-cert-bron selftest
+//!
+//! Scope: active-designing/20260812-193727_ayre-journey7-fair-trade-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const cert = @import("fairtrade_cert.rye");
+const signed = @import("fairtrade_cert_signed.rye");
+const kumara = @import("kumara.rye");
+const parse_int = @import("parse_int.rye");
+
+pub const fairtrade_cert_bron_version = "20260812.194901";
+
+pub const sig_len: u32 = 64;
+
+/// Up to this many certified criteria travel in one bundle — the certificate's own bound.
+pub const max_certified: u32 = cert.max_criteria;
+
+/// The rendered record: a header plus one `attest` line per criterion, the widest field a
+/// 128-hex signature. Bounded generously over the worst case (16 criteria × ~196 bytes).
+pub const max_record: u32 = 4096;
+
+pub const BronError = error{
+    BadFormat, // the header line is not `format fairtrade-signed-v1`
+    UnknownField, // a line names a field the record does not define
+    BadLine, // an `attest` line is missing a token or carries a trailing one
+    BadInt, // the attester point did not parse
+    BadHex, // a signature field was the wrong length or held a non-hex byte
+    NameTooLong, // a criterion name exceeds max_criterion_len
+    TooManyCriteria, // the record carries past max_certified attestations
+    RecordTooLong, // the render exceeded its bounded buffer
+    NotCertified, // a rendered name is not among the record's held attestations
+};
+
+const hex_digits = "0123456789abcdef";
+
+/// Write `bytes` as lowercase hex into `out` (out.len must be twice bytes.len).
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex chars per byte.
+    assert(out.len == bytes.len * 2);
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0F];
+    }
+}
+
+/// Decode one hex nibble, or refuse.
+fn nibble(c: u8) BronError!u8 {
+    return switch (c) {
+        '0'...'9' => c - '0',
+        'a'...'f' => c - 'a' + 10,
+        'A'...'F' => c - 'A' + 10,
+        else => error.BadHex,
+    };
+}
+
+/// Decode `text` (exactly out.len*2 hex chars) into `out`, refusing wrong length or non-hex.
+fn from_hex(text: []const u8, out: []u8) BronError!void {
+    if (text.len != out.len * 2) return error.BadHex;
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < out.len) : (i += 1) {
+        const hi = try nibble(text[i * 2]);
+        const lo = try nibble(text[i * 2 + 1]);
+        out[i] = (hi << 4) | lo;
+    }
+}
+
+/// Find the record's attestation index for a held criterion name, or null when unheld.
+fn attestation_index(record: *const signed.SignedRecord, name: []const u8) ?u32 {
+    // invariant: the scan stays within the live record.
+    assert(record.count <= cert.max_attestations);
+    var i: u32 = 0;
+    while (i < record.count) : (i += 1) {
+        if (std.mem.eql(u8, record.names[i][0..record.lens[i]], name)) return i;
+    }
+    return null;
+}
+
+/// A parsed bundle of certified attestations that owns its variable-length fields, so the
+/// `SignedRecord` view it rebuilds points into its own buffers, never into freed text.
+// Invariant: count <= max_certified; every held name honors max_criterion_len.
+pub const PortableCert = struct {
+    names: [max_certified][cert.max_criterion_len]u8,
+    lens: [max_certified]u32,
+    points: [max_certified]u32,
+    sigs: [max_certified][sig_len]u8,
+    count: u32,
+
+    pub fn name(self: *const PortableCert, i: u32) []const u8 {
+        // invariant: the index names a traveled attestation, within the criterion width.
+        assert(i < self.count);
+        assert(self.lens[i] <= cert.max_criterion_len);
+        return self.names[i][0..self.lens[i]];
+    }
+
+    /// Rebuild a `SignedRecord` from the traveled attestations, so rung two's join re-checks them.
+    pub fn as_record(self: *const PortableCert) signed.SignedRecord {
+        var r = signed.SignedRecord.empty();
+        // invariant: the bundle never carries past the record's attestation bound.
+        assert(self.count <= cert.max_attestations);
+        var i: u32 = 0;
+        while (i < self.count) : (i += 1) {
+            var k: u32 = 0;
+            while (k < self.lens[i]) : (k += 1) r.names[i][k] = self.names[i][k];
+            r.lens[i] = self.lens[i];
+            r.points[i] = self.points[i];
+            r.sigs[i] = self.sigs[i];
+        }
+        r.count = self.count;
+        return r;
+    }
+
+    /// The traveled certificate is still satisfied: every carried attestation re-verifies against
+    /// the recipient's keyring through rung two's own join. An unknown attester or an unverifying
+    /// signature refuses by rung two's exact reason, so a tampered bundle cannot pass offline.
+    pub fn still_satisfied(self: *const PortableCert, keyring: *const signed.Keyring) (cert.CertError || signed.SignError)!void {
+        const record = self.as_record();
+        // invariant: a satisfied bundle carries at least one attestation.
+        assert(self.count >= 1);
+        var i: u32 = 0;
+        while (i < self.count) : (i += 1) {
+            try record.verify_held(self.name(i), keyring);
+        }
+    }
+};
+
+/// Render the certified criteria (in declared order) with their attester points and signatures to a
+/// `format fairtrade-signed-v1` record. Refuses a criterion the record does not hold (NotCertified)
+/// and an overflow (RecordTooLong) rather than emit a partial or lying record.
+pub fn render(record: *const signed.SignedRecord, certified: *const cert.Certified, out: []u8) BronError!u32 {
+    // invariant: the render buffer honors its bound.
+    assert(out.len >= max_record);
+    const head = "format fairtrade-signed-v1\n";
+    if (head.len > out.len) return error.RecordTooLong;
+    var off: u32 = 0;
+    var h: u32 = 0;
+    while (h < head.len) : (h += 1) {
+        out[off] = head[h];
+        off += 1;
+    }
+    var c: u32 = 0;
+    while (c < certified.count) : (c += 1) {
+        const cname = certified.criterion(c);
+        const j = attestation_index(record, cname) orelse return error.NotCertified;
+        var sig_hex: [sig_len * 2]u8 = undefined;
+        to_hex(&record.sigs[j], &sig_hex);
+        const line = std.fmt.bufPrint(out[off..], "attest {s} {d} {s}\n", .{ cname, record.points[j], sig_hex }) catch return error.RecordTooLong;
+        off += @intCast(line.len);
+    }
+    // invariant: the rendered record never exceeds its bound.
+    assert(off <= max_record);
+    return off;
+}
+
+/// Parse a `format fairtrade-signed-v1` record into a PortableCert, refusing an unknown field, a
+/// malformed `attest` line, a bad point, an overlong name, malformed hex, or a past-bound record.
+pub fn parse(text: []const u8) BronError!PortableCert {
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const header = lines.next() orelse return error.BadFormat;
+    if (!std.mem.eql(u8, header, "format fairtrade-signed-v1")) return error.BadFormat;
+
+    var pc = PortableCert{ .names = undefined, .lens = undefined, .points = undefined, .sigs = undefined, .count = 0 };
+    while (lines.next()) |line| {
+        if (line.len == 0) continue; // a trailing newline yields an empty final piece
+        if (pc.count >= max_certified) return error.TooManyCriteria;
+
+        var parts = std.mem.tokenizeScalar(u8, line, ' ');
+        const tag = parts.next() orelse return error.BadLine;
+        if (!std.mem.eql(u8, tag, "attest")) return error.UnknownField;
+        const cname = parts.next() orelse return error.BadLine;
+        const point_text = parts.next() orelse return error.BadLine;
+        const sig_text = parts.next() orelse return error.BadLine;
+        if (parts.next() != null) return error.BadLine; // one attestation per line
+        if (cname.len == 0) return error.BadLine;
+        if (cname.len > cert.max_criterion_len) return error.NameTooLong;
+
+        const i = pc.count;
+        var k: u32 = 0;
+        while (k < cname.len) : (k += 1) pc.names[i][k] = cname[k];
+        pc.lens[i] = @intCast(cname.len);
+        pc.points[i] = parse_int.parse_int(u32, point_text, .{}) catch return error.BadInt;
+        try from_hex(sig_text, &pc.sigs[i]);
+        pc.count += 1;
+    }
+
+    if (pc.count == 0) return error.BadFormat; // a signed certificate carries at least one attestation
+    // invariant: a parsed bundle honors its criterion bound.
+    assert(pc.count <= max_certified);
+    return pc;
+}
+
+// --- selftest -----------------------------------------------------------
+
+const producer_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
+const steward_seed: [kumara.seed_length]u8 = .{0x66} ** kumara.seed_length;
+
+const producer_point: u32 = 7;
+const steward_point: u32 = 12;
+
+fn pubkey_of(seed: *const [kumara.seed_length]u8) [signed.pubkey_len]u8 {
+    return kumara.keypair_from_seed(seed).public_key.bytes;
+}
+
+fn seat_signed_record() !signed.SignedRecord {
+    var r = signed.SignedRecord.empty();
+    try r.attest_signed(&producer_seed, producer_point, "price-floor");
+    try r.attest_signed(&producer_seed, producer_point, "cooperative-member");
+    try r.attest_signed(&steward_seed, steward_point, "producer-signed");
+    return r;
+}
+
+fn seat_keyring() !signed.Keyring {
+    var kr = signed.Keyring.empty();
+    try kr.enroll(producer_point, pubkey_of(&producer_seed));
+    try kr.enroll(steward_point, pubkey_of(&steward_seed));
+    return kr;
+}
+
+const demo_cert = "format fairtrade-cert-v1\nrequire cooperative-member\nrequire price-floor\nrequire producer-signed\n";
+
+fn certs_equal(a: *const cert.Certified, b: *const cert.Certified) bool {
+    if (a.count != b.count) return false;
+    var i: u32 = 0;
+    while (i < a.count) : (i += 1) {
+        if (!std.mem.eql(u8, a.criterion(i), b.criterion(i))) return false;
+    }
+    return true;
+}
+
+/// A satisfied signed certificate renders to Bron and parses back byte-for-byte, and the recovered
+/// bundle is still satisfied — every traveled attestation re-verifies, and re-running rung two's
+/// evaluate_signed over the traveled bundle yields the identical Certified.
+fn welcome_round_trip_preserves() !void {
+    const record = try seat_signed_record();
+    const keyring = try seat_keyring();
+    const before = try signed.evaluate_signed(demo_cert, &record, &keyring);
+
+    var buf: [max_record]u8 = undefined;
+    const n = try render(&record, &before, &buf);
+    const pc = try parse(buf[0..n]);
+    assert(pc.count == before.count);
+
+    // The traveled bundle re-verifies each attestation offline against the recipient's keyring.
+    try pc.still_satisfied(&keyring);
+
+    // And re-running rung two's join over the traveled bundle yields the identical Certified.
+    const traveled_record = pc.as_record();
+    const after = try signed.evaluate_signed(demo_cert, &traveled_record, &keyring);
+    assert(certs_equal(&before, &after));
+    assert(std.mem.eql(u8, after.criterion(0), "cooperative-member"));
+    print("fairtrade_cert_bron: a satisfied signed certificate round-tripped through Bron byte-for-byte and stayed satisfied.\n", .{});
+}
+
+/// A tampered traveled signature refuses offline (BadAttestation) — the crossing preserves the
+/// signature exactly, so a flipped byte breaks the party's promise on the far side too.
+fn unwelcome_tampered_signature_refuses() !void {
+    const record = try seat_signed_record();
+    const keyring = try seat_keyring();
+    const before = try signed.evaluate_signed(demo_cert, &record, &keyring);
+    var buf: [max_record]u8 = undefined;
+    const n = try render(&record, &before, &buf);
+    var pc = try parse(buf[0..n]);
+    pc.sigs[0][0] ^= 0xFF;
+    if (pc.still_satisfied(&keyring)) |_| {
+        return error.TamperPassed;
+    } else |err| {
+        assert(err == error.BadAttestation);
+    }
+    print("fairtrade_cert_bron: a traveled signature flipped after the crossing refused BadAttestation offline.\n", .{});
+}
+
+/// An unknown field, a wrong header, a malformed attest line, and bad hex each refuse — the reader
+/// never drops a field or decodes garbage.
+fn unwelcome_malformed_refuses() !void {
+    const good_sig = "0" ** 128;
+    const unknown = "format fairtrade-signed-v1\nattest price-floor 7 " ++ good_sig ++ "\nsurprise yes\n";
+    if (parse(unknown)) |_| {
+        return error.UnknownPassed;
+    } else |err| {
+        assert(err == error.UnknownField);
+    }
+    if (parse("format other-v1\nattest price-floor 7 " ++ good_sig ++ "\n")) |_| {
+        return error.HeaderPassed;
+    } else |err| {
+        assert(err == error.BadFormat);
+    }
+    if (parse("format fairtrade-signed-v1\nattest price-floor 7\n")) |_| {
+        return error.BadLinePassed;
+    } else |err| {
+        assert(err == error.BadLine);
+    }
+    if (parse("format fairtrade-signed-v1\nattest price-floor 7 abcd\n")) |_| {
+        return error.BadHexPassed;
+    } else |err| {
+        assert(err == error.BadHex);
+    }
+    print("fairtrade_cert_bron: an unknown field, a wrong header, a malformed line, and bad hex each refused.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_round_trip_preserves();
+    try unwelcome_tampered_signature_refuses();
+    try unwelcome_malformed_refuses();
+    print("fairtrade_cert_bron: version {s}\n", .{fairtrade_cert_bron_version});
+    print("GREEN: AYRE-J7r3 fairtrade_cert_bron; a satisfied signed certificate travels as Bron and returns still satisfied, or names its refusal.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "fairtrade-cert-bron"))) {
+        return run_selftest();
+    }
+    return run_selftest();
+}

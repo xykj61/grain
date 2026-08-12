@@ -1,0 +1,41 @@
+# tools/ayre_j7_fairtrade_cert_bron_witness.rish — AYRE Journey 7 (Fair-trade), Rung 3.
+#
+# Season 2, Yield — trades fairly. Rung one fixed a certificate's meaning as a join; rung two bound
+# each attestation to a settled Kumara identity so a satisfied certificate carries every party's
+# verifying signature. pond/apps/fairtrade_cert_bron.rye makes the satisfied, signed certificate
+# travel: the certified attestations render to a `format fairtrade-signed-v1` Bron record and parse
+# back byte-for-byte, still satisfied — every traveled attestation re-verifies against the
+# recipient's keyring through rung two's own join, and re-running evaluate_signed over the traveled
+# bundle yields the identical Certified. A tampered traveled signature refuses offline
+# (BadAttestation); an unknown field, a wrong header, a malformed line, and bad hex each refuse.
+# Composes rungs one and two; reads no network (the serve transport is the Comlink-served gate,
+# Keaton's hand). Facts only; demo keeper seeds only (custody gate #3 untouched).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ayre_j7_fairtrade_cert_bron_witness.rish
+
+say "ayre-j7r3: Language EN — a satisfied, signed fair-trade certificate travels as Bron and returns still satisfied, checkable offline."
+say "ayre-j7r3: Lens TAME — the round trip is byte-for-byte; a tampered traveled signature and every malformed record refuse."
+
+let zig = "vendor/zig-toolchain/zig"
+
+# Rungs one and two stay GREEN beneath the travel layer — additive.
+let bin2 = "pond/bin/fairtrade-cert-signed"
+let build2 = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/fairtrade_cert_signed.rye -femit-bin=${bin2}"]
+assert build2.ok else "ayre-j7r3: rung-two fairtrade_cert_signed build failed"
+let self2 = run ["sh" "-c" "${bin2} selftest 2>&1"]
+assert self2.ok else "ayre-j7r3: rung-two selftest exited non-zero"
+assert self2.out contains "GREEN" else "ayre-j7r3: rung-two did not speak GREEN"
+
+let bin = "pond/bin/fairtrade-cert-bron"
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/fairtrade_cert_bron.rye -femit-bin=${bin}"]
+assert build.ok else "ayre-j7r3: fairtrade_cert_bron build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "ayre-j7r3: fairtrade_cert_bron selftest exited non-zero"
+assert selftest.out contains "GREEN" else "ayre-j7r3: selftest did not speak GREEN"
+assert selftest.out contains "byte-for-byte and stayed satisfied" else "ayre-j7r3: round-trip preservation missing"
+assert selftest.out contains "refused BadAttestation offline" else "ayre-j7r3: tamper refusal missing"
+assert selftest.out contains "each refused" else "ayre-j7r3: malformed refusals missing"
+
+say "GREEN: AYRE-J7r3 fairtrade_cert_bron — a satisfied signed certificate travels as Bron and returns still satisfied; tamper and malformed records refuse offline."
