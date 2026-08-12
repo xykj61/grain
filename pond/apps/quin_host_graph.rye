@@ -1,0 +1,235 @@
+//! pond/apps/quin_host_graph.rye — BUHR Journey 6, Rung 3: the surface voice, gathered.
+//!
+//! Journey 1's Q-vane host (`quin_host`) gathers three voices under one bounded entry:
+//! Lattice for arithmetic, Scribble for reading, Ember for corpus craft. Journey 6
+//! grew a fourth kind of voice — one whose corpus is the living Mantra graph itself
+//! (`graph_query`). This rung gathers that surface-reading voice beside the other
+//! three, so a single Lantern-shaped request routes to whichever voice recognizes the
+//! prompt — arithmetic, reading, corpus, *or the graph* — and the same
+//! Lantern-contract Response returns, tagged with the serving voice. Surface and
+//! Intelligence, the two halves the equinox is named for, now answer under one entry.
+//!
+//! Additive by construction: it wraps `quin_host.dispatch` unchanged (trying the three
+//! voices first) and falls through to `graph_query` only on UnknownOp — a real request
+//! fault (bad budget, model not allowed) surfaces at once. The three-voice host and
+//! the graph query stay their own green binaries; no contract changes.
+//!
+//!   rye build pond/apps/quin_host_graph.rye -femit-bin=pond/bin/quin-host-graph
+//!   pond/bin/quin-host-graph selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lc = @import("lantern/lantern_core.rye");
+const qh = @import("quin_host.rye"); // the three-voice host: Lattice, Scribble, Ember
+const gq = @import("graph_query.rye"); // the surface voice — reads the living graph
+
+const quin_host_graph_version = "20260812.140813";
+
+const max_result_text: u32 = lc.max_completion_len;
+
+/// Which voice served a dispatched request — the three-voice host's voices, plus the
+/// graph voice this rung gathers.
+pub const Voice = enum(u8) {
+    lattice,
+    scribble,
+    ember,
+    graph,
+};
+
+/// A dispatched answer: the Lantern Response plus which voice produced it.
+pub const Served = struct {
+    voice: Voice,
+    response: lc.Response,
+};
+
+/// Lift a three-voice-host verdict into this host's wider voice set.
+fn lift(voice: qh.Voice) Voice {
+    // invariant: every three-voice-host voice maps to exactly one wider voice.
+    return switch (voice) {
+        .lattice => .lattice,
+        .scribble => .scribble,
+        .ember => .ember,
+    };
+}
+
+/// The gathered Q-vane host: dispatch one bounded request across four voices. Try the
+/// three-voice host first (Lattice, Scribble, Ember); on UnknownOp, try the graph
+/// voice; any other error is a real request fault and surfaces at once rather than
+/// being retried. The graph voice is last, so a prompt no voice recognizes refuses
+/// UnknownOp rather than inventing an answer.
+pub fn dispatch(req: lc.Request, allow_text: []const u8, out_buf: []u8) !Served {
+    // invariant: the caller's buffer honors Lantern's completion bound
+    assert(out_buf.len <= max_result_text);
+    // invariant: the buffer can hold at least one token
+    assert(out_buf.len > 0);
+
+    if (qh.dispatch(req, allow_text, out_buf)) |served| {
+        return .{ .voice = lift(served.voice), .response = served.response };
+    } else |err| {
+        if (err != error.UnknownOp) return err;
+    }
+    // The graph voice is last: an UnknownOp here means no voice recognized the prompt,
+    // and the host refuses rather than inventing an answer over a graph it cannot read.
+    const resp = try gq.answer(req, allow_text, out_buf);
+    return .{ .voice = .graph, .response = resp };
+}
+
+fn welcome_arithmetic_still_routes() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "matmul the pair",
+        .max_tokens = 64,
+    };
+    const served = try dispatch(req, allow, &buf);
+    // invariant: gathering the graph voice never displaces the three that came before.
+    assert(served.voice == .lattice);
+    assert(std.mem.eql(u8, served.response.text, "19 22 43 50"));
+    print("quin_host_graph: matmul still routes to Lattice — text '{s}'\n", .{served.response.text});
+}
+
+fn welcome_reading_still_routes() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "outline the doc",
+        .max_tokens = 64,
+    };
+    const served = try dispatch(req, allow, &buf);
+    assert(served.voice == .scribble);
+    assert(std.mem.eql(u8, served.response.text, "Grain Voices Detail"));
+    print("quin_host_graph: outline still routes to Scribble — text '{s}'\n", .{served.response.text});
+}
+
+fn welcome_corpus_still_routes() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "sum_lines the corpus",
+        .max_tokens = 64,
+    };
+    const served = try dispatch(req, allow, &buf);
+    assert(served.voice == .ember);
+    assert(std.mem.eql(u8, served.response.text, "160"));
+    print("quin_host_graph: sum_lines still routes to Ember — text '{s}'\n", .{served.response.text});
+}
+
+fn welcome_graph_routes() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "lane_count the graph",
+        .max_tokens = 64,
+    };
+    const served = try dispatch(req, allow, &buf);
+    // invariant: the graph prompt reached the surface voice — Surface joins Intelligence.
+    assert(served.voice == .graph);
+    assert(std.mem.eql(u8, served.response.text, "3"));
+    assert(served.response.stopped_reason == .eos);
+    print("quin_host_graph: lane_count dispatched to the graph voice — text '{s}'\n", .{served.response.text});
+}
+
+fn welcome_graph_head_routes() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "head the a.txt lane",
+        .max_tokens = 64,
+    };
+    const served = try dispatch(req, allow, &buf);
+    assert(served.voice == .graph);
+    // The demo graph's a.txt lane stands at r2 — the head the browser paints.
+    assert(std.mem.eql(u8, served.response.text, "2"));
+    print("quin_host_graph: head dispatched to the graph voice — a.txt at r{s}\n", .{served.response.text});
+}
+
+fn welcome_graph_length_carries_through() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "summary the graph",
+        .max_tokens = 1,
+    };
+    const served = try dispatch(req, allow, &buf);
+    // The graph voice's own metering carries through the gathered host unchanged.
+    assert(served.voice == .graph);
+    assert(served.response.tokens_out == 1);
+    assert(served.response.stopped_reason == .length);
+    print("quin_host_graph: length stop carried through from the graph voice — tokens {d}\n", .{served.response.tokens_out});
+}
+
+fn unwelcome_model_not_allowed() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-not-on-list",
+        .prompt = "lane_count the graph",
+        .max_tokens = 64,
+    };
+    // A disallowed model is a real request fault: it must surface at the first voice,
+    // never fall through to be retried against the graph voice.
+    if (dispatch(req, allow, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ModelNotAllowed);
+    }
+    print("quin_host_graph: disallowed model refused at once (no fall-through)\n", .{});
+}
+
+fn unwelcome_no_voice() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "translate this poem",
+        .max_tokens = 64,
+    };
+    if (dispatch(req, allow, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.UnknownOp);
+    }
+    print("quin_host_graph: no voice recognized the prompt — refused (no fake answer)\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_arithmetic_still_routes();
+        try welcome_reading_still_routes();
+        try welcome_corpus_still_routes();
+        try welcome_graph_routes();
+        try welcome_graph_head_routes();
+        try welcome_graph_length_carries_through();
+        try unwelcome_model_not_allowed();
+        try unwelcome_no_voice();
+        print("quin_host_graph {s} — GREEN\n", .{quin_host_graph_version});
+        return 0;
+    }
+    print("usage: quin-host-graph selftest\n", .{});
+    return 1;
+}
