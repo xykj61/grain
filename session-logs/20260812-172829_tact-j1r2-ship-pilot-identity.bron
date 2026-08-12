@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260812.172829
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title TACT-J1r2 — the identity step, wired real
+prompt continue the road Lindy-first crux-first; send each finished increment; stop at custody gates
+think r1 proved the pilot spine pure. r2 wires the first step, identity, to a real settlement so the enforcement meets a real module.
+think settle_identity builds a demo bind (tilak.make_bind from example seeds), opens a constellation genesis (settlement.open at a galaxy number), and verifies the opened Deed against the fresh constellation — the identity settles only when all three hold. pilot_with_identity feeds that true signal into the spine's attempt(.identity, met).
+think Two refusals from zero: a forged bind (a flipped signature byte → BadBind) and a non-galaxy number (star 27 → NotGenesis) each leave identity unsettled, so the pilot holds at identity and never advances — onboarding cannot walk past a keeper with no real identity.
+obs Caught one wrong assumption on metal: point 0 decodes to a galaxy under the compass sky, so the non-galaxy refusal false-panicked; switched to the constellation fixture's own star_num (27), which genuinely refuses NotGenesis. Measurement over memory.
+obs Demo keeper seeds only (0x11/0x22), plainly not a real key — no identity invented, no key held. The maintainer's own Kumara instance stays custody gate #4.
+loom witness=tact_ship_pilot_identity_witness result=GREEN cases=3 galaxy=3 star=27
+file pond/apps/ship_pilot_identity.rye the identity step wired to settlement.open + verify; holds on a forgery or a non-galaxy number
+file tools/tact_ship_pilot_identity_witness.rish witness — GREEN; real genesis advances, forged bind and non-galaxy each hold; spine re-runs GREEN
+recommend keep-going TACT-J1r3 wires the customs step to pond/customs.rye — the keeper's first mark placed (place), held (await-word, surfaces), or refused (unknown)
