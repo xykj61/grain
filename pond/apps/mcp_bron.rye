@@ -1,0 +1,431 @@
+//! pond/apps/mcp_bron.rye — BUHR Journey 3, Rung 1: MCP-in-Bron, the descriptor shape.
+//!
+//! The Model Context Protocol, spoken in Bron rather than JSON. A tool describes
+//! itself with a `format mcp-tool-v1` manifest; a caller sends a `format mcp-call-v1`
+//! envelope naming a tool and its arguments; the tool answers with a paired
+//! `format mcp-result-v1` — a result record or a named error. This rung fixes that
+//! shape: flat Bron, one `key value` field per line, every value a string or an
+//! integer, every collection bounded, an unknown field refused rather than ignored.
+//!
+//! It reuses the tree's own flat-Bron parsing idiom (kin to brix/infuse.rye) and the
+//! bounded request/response discipline (kin to mandate/serve.rye) — no new transport,
+//! no new abstraction. Two demonstration tools (`add` over integers, `join` over
+//! strings) prove the manifest's argument grammar generalizes across value models.
+//! The Bron<->JSON tiles are the named horizon; this rung proves the owned shape
+//! round-trips deterministically first.
+//!
+//!   rye build pond/apps/mcp_bron.rye -femit-bin=pond/bin/mcp-bron
+//!   pond/bin/mcp-bron selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const mcp_bron_version = "20260812.152000";
+
+// The protocol's bounds, each named once and enforced at the edge.
+pub const max_args: u32 = 8; // most arguments one call carries
+pub const max_field: u32 = 64; // longest tool name, argument name, or scalar value
+pub const max_line: u32 = 256; // longest envelope line
+pub const max_result: u32 = 512; // bounded rendered result envelope
+
+pub const McpError = error{
+    BadFormat,
+    MissingField,
+    UnknownField,
+    TooManyArgs,
+    LineTooLong,
+    FieldTooLong,
+    BadInt,
+    ResultTooLong,
+};
+
+/// One named argument in a call — name and value as slices into the source (zero-copy).
+pub const Arg = struct {
+    name: []const u8,
+    val: []const u8,
+};
+
+/// A parsed call envelope: a request id, a tool name, and its bounded arguments.
+pub const Call = struct {
+    id: u32,
+    tool: []const u8,
+    args: [max_args]Arg,
+    arg_count: u32,
+
+    /// The value of the named argument, or null when the call omits it.
+    pub fn arg_val(self: *const Call, name: []const u8) ?[]const u8 {
+        // invariant: the argument count stays within the bound
+        assert(self.arg_count <= max_args);
+        // invariant: a real name is being sought
+        assert(name.len > 0);
+        var i: u32 = 0;
+        while (i < self.arg_count) : (i += 1) {
+            if (std.mem.eql(u8, self.args[i].name, name)) return self.args[i].val;
+        }
+        return null;
+    }
+};
+
+/// Split a line into its first space-delimited token (the key) and the trimmed
+/// remainder (the value, which may be empty). The flat-Bron reading the whole tree
+/// shares — one `key value` field per line.
+fn key_val(line: []const u8) struct { key: []const u8, val: []const u8 } {
+    // invariant: the line respects the envelope's bounded length
+    assert(line.len <= max_line);
+    var sp: usize = 0; // seam: slice index over a std source
+    while (sp < line.len and line[sp] != ' ') : (sp += 1) {}
+    const key = line[0..sp];
+    const val = std.mem.trim(u8, line[sp..], " \t");
+    return .{ .key = key, .val = val };
+}
+
+/// Parse a `format mcp-call-v1` envelope into a bounded Call. The header must name
+/// the format exactly; `id` and `tool` are required; each `arg` line carries a name
+/// then a value; any other field key is refused rather than silently dropped.
+pub fn parse_call(src: []const u8, call: *Call) McpError!void {
+    // invariant: an envelope carries at least a header line
+    assert(src.len > 0);
+    // invariant: the source respects a bounded envelope size
+    assert(src.len <= max_line * (max_args + 4));
+
+    call.arg_count = 0;
+    var have_id = false;
+    var have_tool = false;
+    var have_header = false;
+
+    var lines = std.mem.splitScalar(u8, src, '\n');
+    while (lines.next()) |raw| {
+        const line = std.mem.trim(u8, raw, " \t\r");
+        if (line.len == 0 or line[0] == '#') continue;
+        // invariant: a line stays within the bounded length
+        if (line.len > max_line) return error.LineTooLong;
+        const kv = key_val(line);
+
+        if (std.mem.eql(u8, kv.key, "format")) {
+            if (!std.mem.eql(u8, kv.val, "mcp-call-v1")) return error.BadFormat;
+            have_header = true;
+        } else if (std.mem.eql(u8, kv.key, "id")) {
+            if (kv.val.len > max_field) return error.FieldTooLong;
+            call.id = std.fmt.parseInt(u32, kv.val, 10) catch return error.BadInt;
+            have_id = true;
+        } else if (std.mem.eql(u8, kv.key, "tool")) {
+            if (kv.val.len == 0 or kv.val.len > max_field) return error.FieldTooLong;
+            call.tool = kv.val;
+            have_tool = true;
+        } else if (std.mem.eql(u8, kv.key, "arg")) {
+            if (call.arg_count >= max_args) return error.TooManyArgs;
+            const inner = key_val(kv.val);
+            if (inner.key.len == 0 or inner.key.len > max_field) return error.FieldTooLong;
+            if (inner.val.len > max_field) return error.FieldTooLong;
+            call.args[call.arg_count] = .{ .name = inner.key, .val = inner.val };
+            call.arg_count += 1;
+        } else {
+            // An unknown field is a protocol fault, never quietly ignored.
+            return error.UnknownField;
+        }
+    }
+
+    if (!have_header) return error.BadFormat;
+    if (!have_id) return error.MissingField;
+    if (!have_tool) return error.MissingField;
+    // invariant: a parsed call never exceeds the argument bound
+    assert(call.arg_count <= max_args);
+}
+
+/// A parsed result envelope — the id it answers and either a result value or a named
+/// error, exactly one of the two. Proving parse(render(x)) recovers x is the crux
+/// property: the owned shape round-trips.
+pub const Result = struct {
+    id: u32,
+    value: []const u8, // the `result` payload, or empty when this is an error
+    err_name: []const u8, // the `error` name, or empty when this is a result
+    is_error: bool,
+};
+
+/// Parse a `format mcp-result-v1` envelope back into a Result — the reading sibling
+/// of `dispatch`, so a caller can recover the answer from the wire bytes.
+pub fn parse_result(src: []const u8, out: *Result) McpError!void {
+    // invariant: a result envelope carries at least a header
+    assert(src.len > 0);
+    // invariant: the source respects a bounded envelope size
+    assert(src.len <= max_result);
+
+    out.value = "";
+    out.err_name = "";
+    out.is_error = false;
+    var have_id = false;
+    var have_header = false;
+    var have_body = false;
+
+    var lines = std.mem.splitScalar(u8, src, '\n');
+    while (lines.next()) |raw| {
+        const line = std.mem.trim(u8, raw, " \t\r");
+        if (line.len == 0 or line[0] == '#') continue;
+        if (line.len > max_line) return error.LineTooLong;
+        const kv = key_val(line);
+        if (std.mem.eql(u8, kv.key, "format")) {
+            if (!std.mem.eql(u8, kv.val, "mcp-result-v1")) return error.BadFormat;
+            have_header = true;
+        } else if (std.mem.eql(u8, kv.key, "id")) {
+            out.id = std.fmt.parseInt(u32, kv.val, 10) catch return error.BadInt;
+            have_id = true;
+        } else if (std.mem.eql(u8, kv.key, "result")) {
+            out.value = kv.val;
+            out.is_error = false;
+            have_body = true;
+        } else if (std.mem.eql(u8, kv.key, "error")) {
+            out.err_name = kv.val;
+            out.is_error = true;
+            have_body = true;
+        } else {
+            return error.UnknownField;
+        }
+    }
+    if (!have_header) return error.BadFormat;
+    if (!have_id) return error.MissingField;
+    if (!have_body) return error.MissingField;
+}
+
+/// Render an error result envelope naming `err_name` for request `id`.
+fn render_error(id: u32, err_name: []const u8, out: []u8) McpError![]const u8 {
+    // invariant: the caller's buffer respects the result bound
+    assert(out.len <= max_result);
+    // invariant: a named error is present
+    assert(err_name.len > 0);
+    const s = std.fmt.bufPrint(out, "format mcp-result-v1\nid {d}\nerror {s}\n", .{ id, err_name }) catch return error.ResultTooLong;
+    // seam: bufPrint returns usize; it never exceeds the slice it wrote
+    assert(s.len <= out.len);
+    return s;
+}
+
+/// Dispatch a parsed call to its tool and render the result envelope into `out`.
+/// `add` sums two integer arguments; `join` concatenates two string arguments. An
+/// unknown tool or a missing argument answers with a named error rather than a
+/// fabricated result — the protocol never invents an answer.
+pub fn dispatch(call: *const Call, out: []u8) McpError![]const u8 {
+    // invariant: the caller's buffer respects the result bound
+    assert(out.len <= max_result);
+    // invariant: the call carries a bounded argument set
+    assert(call.arg_count <= max_args);
+
+    if (std.mem.eql(u8, call.tool, "add")) {
+        const a_s = call.arg_val("a") orelse return render_error(call.id, "bad_args", out);
+        const b_s = call.arg_val("b") orelse return render_error(call.id, "bad_args", out);
+        const a = std.fmt.parseInt(u32, a_s, 10) catch return render_error(call.id, "bad_int", out);
+        const b = std.fmt.parseInt(u32, b_s, 10) catch return render_error(call.id, "bad_int", out);
+        const sum = a + b;
+        const s = std.fmt.bufPrint(out, "format mcp-result-v1\nid {d}\nresult {d}\n", .{ call.id, sum }) catch return error.ResultTooLong;
+        assert(s.len <= out.len);
+        return s;
+    }
+    if (std.mem.eql(u8, call.tool, "join")) {
+        const a_s = call.arg_val("a") orelse return render_error(call.id, "bad_args", out);
+        const b_s = call.arg_val("b") orelse return render_error(call.id, "bad_args", out);
+        const s = std.fmt.bufPrint(out, "format mcp-result-v1\nid {d}\nresult {s} {s}\n", .{ call.id, a_s, b_s }) catch return error.ResultTooLong;
+        assert(s.len <= out.len);
+        return s;
+    }
+    return render_error(call.id, "unknown_tool", out);
+}
+
+// A pinned `format mcp-tool-v1` manifest — how the `add` tool describes itself. The
+// reader proves it can read a manifest's shape (tool name, argument grammar, result
+// type); a future rung serves this to a JSON MCP host through the Bron<->JSON tiles.
+const add_manifest =
+    \\format mcp-tool-v1
+    \\tool add
+    \\summary sum two integers
+    \\arg a int
+    \\arg b int
+    \\result int
+;
+
+/// Read a `format mcp-tool-v1` manifest's tool name and count its declared arguments.
+/// A minimal manifest reader — enough to prove the shape parses; the full type-check
+/// against a call is a later rung.
+pub fn manifest_tool(src: []const u8, arg_count: *u32) McpError![]const u8 {
+    // invariant: a manifest carries at least a header
+    assert(src.len > 0);
+    // invariant: the manifest respects a bounded size
+    assert(src.len <= max_line * (max_args + 4));
+    var tool: []const u8 = "";
+    var have_header = false;
+    var count: u32 = 0;
+    var lines = std.mem.splitScalar(u8, src, '\n');
+    while (lines.next()) |raw| {
+        const line = std.mem.trim(u8, raw, " \t\r");
+        if (line.len == 0 or line[0] == '#') continue;
+        if (line.len > max_line) return error.LineTooLong;
+        const kv = key_val(line);
+        if (std.mem.eql(u8, kv.key, "format")) {
+            if (!std.mem.eql(u8, kv.val, "mcp-tool-v1")) return error.BadFormat;
+            have_header = true;
+        } else if (std.mem.eql(u8, kv.key, "tool")) {
+            tool = kv.val;
+        } else if (std.mem.eql(u8, kv.key, "arg")) {
+            if (count >= max_args) return error.TooManyArgs;
+            count += 1;
+        }
+        // summary and result lines are read-through for this minimal reader.
+    }
+    if (!have_header) return error.BadFormat;
+    if (tool.len == 0) return error.MissingField;
+    arg_count.* = count;
+    // invariant: a manifest's arguments stay within the bound
+    assert(count <= max_args);
+    return tool;
+}
+
+fn welcome_add_round_trips() !void {
+    const src =
+        \\format mcp-call-v1
+        \\id 7
+        \\tool add
+        \\arg a 2
+        \\arg b 3
+    ;
+    var call: Call = undefined;
+    try parse_call(src, &call);
+    assert(call.id == 7);
+    assert(std.mem.eql(u8, call.tool, "add"));
+    assert(call.arg_count == 2);
+
+    var buf: [max_result]u8 = undefined;
+    const rendered = try dispatch(&call, &buf);
+    assert(std.mem.eql(u8, rendered, "format mcp-result-v1\nid 7\nresult 5\n"));
+
+    // The crux property — parse the rendered result back and recover the answer.
+    var res: Result = undefined;
+    try parse_result(rendered, &res);
+    assert(res.id == 7);
+    assert(!res.is_error);
+    assert(std.mem.eql(u8, res.value, "5"));
+    print("mcp_bron: add round-trips — call -> result 5 -> parsed back\n", .{});
+}
+
+fn welcome_join_string_args() !void {
+    const src =
+        \\format mcp-call-v1
+        \\id 9
+        \\tool join
+        \\arg a hello
+        \\arg b world
+    ;
+    var call: Call = undefined;
+    try parse_call(src, &call);
+    var buf: [max_result]u8 = undefined;
+    const rendered = try dispatch(&call, &buf);
+    assert(std.mem.eql(u8, rendered, "format mcp-result-v1\nid 9\nresult hello world\n"));
+    var res: Result = undefined;
+    try parse_result(rendered, &res);
+    assert(std.mem.eql(u8, res.value, "hello world"));
+    print("mcp_bron: join composes string args — 'hello world'\n", .{});
+}
+
+fn welcome_manifest_reads() !void {
+    var arg_count: u32 = 0;
+    const tool = try manifest_tool(add_manifest, &arg_count);
+    assert(std.mem.eql(u8, tool, "add"));
+    assert(arg_count == 2);
+    print("mcp_bron: manifest reads — tool 'add', 2 args declared\n", .{});
+}
+
+fn unwelcome_unknown_tool() !void {
+    const src =
+        \\format mcp-call-v1
+        \\id 1
+        \\tool multiply
+        \\arg a 2
+        \\arg b 3
+    ;
+    var call: Call = undefined;
+    try parse_call(src, &call);
+    var buf: [max_result]u8 = undefined;
+    const rendered = try dispatch(&call, &buf);
+    // An unknown tool is named as an error, never answered with a guess.
+    assert(std.mem.eql(u8, rendered, "format mcp-result-v1\nid 1\nerror unknown_tool\n"));
+    print("mcp_bron: unknown tool answered with error (no fabricated result)\n", .{});
+}
+
+fn unwelcome_unknown_field() !void {
+    const src =
+        \\format mcp-call-v1
+        \\id 2
+        \\tool add
+        \\color red
+    ;
+    var call: Call = undefined;
+    // An unrecognized field is refused rather than silently dropped.
+    if (parse_call(src, &call)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.UnknownField);
+    }
+    print("mcp_bron: unknown field refused (not silently ignored)\n", .{});
+}
+
+fn unwelcome_bad_format() !void {
+    const src =
+        \\format mcp-call-v2
+        \\id 3
+        \\tool add
+    ;
+    var call: Call = undefined;
+    if (parse_call(src, &call)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.BadFormat);
+    }
+    print("mcp_bron: wrong format header refused\n", .{});
+}
+
+fn unwelcome_missing_tool() !void {
+    const src =
+        \\format mcp-call-v1
+        \\id 4
+        \\arg a 1
+    ;
+    var call: Call = undefined;
+    if (parse_call(src, &call)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.MissingField);
+    }
+    print("mcp_bron: a call missing its tool is refused\n", .{});
+}
+
+fn unwelcome_missing_args() !void {
+    const src =
+        \\format mcp-call-v1
+        \\id 5
+        \\tool add
+        \\arg a 2
+    ;
+    var call: Call = undefined;
+    try parse_call(src, &call);
+    var buf: [max_result]u8 = undefined;
+    const rendered = try dispatch(&call, &buf);
+    // A tool called without its required argument answers bad_args, not a wrong sum.
+    assert(std.mem.eql(u8, rendered, "format mcp-result-v1\nid 5\nerror bad_args\n"));
+    print("mcp_bron: add missing an argument answered bad_args\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_add_round_trips();
+        try welcome_join_string_args();
+        try welcome_manifest_reads();
+        try unwelcome_unknown_tool();
+        try unwelcome_unknown_field();
+        try unwelcome_bad_format();
+        try unwelcome_missing_tool();
+        try unwelcome_missing_args();
+        print("mcp_bron {s} — GREEN\n", .{mcp_bron_version});
+        return 0;
+    }
+    print("usage: mcp-bron selftest\n", .{});
+    return 1;
+}
