@@ -83,6 +83,7 @@ allow foundations   # the doctrine "why"; bio/dedications sub_excluded, residual
 allow context/LEXICON.md
 allow context/TAME_GUIDANCE.md
 allow context/RADIANT_STYLE.md
+allow context/TWILIGHT_STYLE.md
 allow context/TWO_ROOMS.md
 allow context/APARIGRAHA.md
 allow context/BREACH.md
