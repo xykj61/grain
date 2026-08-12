@@ -1,0 +1,261 @@
+//! pond/apps/mantra_browser_full_theme.rye — BUHR Journey 2, Rung 7: one .brush
+//! file re-skins the whole component — ground and accent at once.
+//!
+//! Rung four themed the living edge (the `head` accent) on the heads view; rung
+//! six themed the reading ground (`paper`/`ink`) on the plain view. Each proved one
+//! axis. This rung proves the property a design system actually promises: a single
+//! `.brush` file re-skins a whole component on *both* axes at once. A real theme
+//! (`pond/apps/hot-edge.brush`) sets all three tokens — a dark page, a light ink,
+//! and a terracotta head — and the same `heads.paint_heads` lowering paints the
+//! heads view on the *authored* ground with the *authored* accent. A person edits
+//! one file and the whole component re-skins: the reading surface flips to dark and
+//! every lane's living edge burns terracotta, together, in one reading.
+//!
+//! It stays on witnessed ground end to end — the theme read by the real `.brush`
+//! authoring loop (`parse_brush` + `collect_brush_style`), the cascade `tokens.resolve`
+//! (per-key `brix/infuse`), the paint rung three's unchanged `paint_heads`. The two
+//! axes are proven by their own honest measures: the ground by role inversion (the
+//! dark theme swaps Flax and Bark between ground and ink, so the ground flips from
+//! the light majority to the dark majority), and the accent by a clean zero (the
+//! terracotta head is distinct from both grounds, so it leaves *zero* pixels on the
+//! untouched base canvas — a recolor, not an addition).
+//!
+//! Additive by construction: it imports mantra_browser, mantra_browser_heads,
+//! brushstroke/tokens, brushstroke/skate_grid, and brushstroke/brush_parse, calling
+//! only their public functions. No file beneath it changes; rungs one through six
+//! stay their own green binaries.
+//!
+//!   rye build pond/apps/mantra_browser_full_theme.rye -femit-bin=pond/bin/mantra-browser-full-theme
+//!   pond/bin/mantra-browser-full-theme selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const mb = @import("mantra_browser.rye");
+const heads = @import("mantra_browser_heads.rye");
+const tokens = @import("brushstroke/tokens.rye");
+const skate = @import("brushstroke/skate_grid.rye");
+const bp = @import("brushstroke/brush_parse.rye");
+
+const mantra_browser_full_theme_version = "20260812.123018";
+
+// The full theme the rung reads — a real `.brush` file whose style block sets all
+// three tokens: a dark ground (paper/ink) and a terracotta living-edge accent (head).
+const theme_path = "pond/apps/hot-edge.brush";
+
+pub const FullThemeError = error{
+    ThemeIncomplete,
+};
+
+/// Resolve the full theme into a token sheet: read the `.brush` file, validate it
+/// through the real authoring loop, collect its `style:` block into flat Bron, and
+/// infuse that override over `tokens.base_sheet`. A full theme must name all three
+/// re-skin tokens — `paper`, `ink`, and `head` — or it refuses ThemeIncomplete.
+pub fn resolve_full_theme(io: std.Io, path: []const u8, out: []u8) !u32 {
+    // invariant: a real theme path names a file to read.
+    assert(path.len > 0);
+    // invariant: the resolved sheet fits the token-sheet bound.
+    assert(out.len <= tokens.max_sheet_bytes);
+
+    const garden = std.heap.page_allocator;
+    const cwd = std.Io.Dir.cwd();
+    const src = try cwd.readFileAlloc(io, path, garden, .limited(bp.max_brush_bytes));
+    // invariant: the source stays inside the brush read budget.
+    assert(src.len <= bp.max_brush_bytes);
+    defer garden.free(src);
+
+    // Validate the file through the real authoring loop before trusting its style.
+    const surface = try bp.parse_brush(src);
+    // invariant: a full theme declares a non-empty style block to override with.
+    if (surface.style_count == 0) return error.ThemeIncomplete;
+
+    // Reassemble the style block into the flat Bron sheet tokens.rye's infuse reads.
+    var override_buf: [bp.max_style_bytes]u8 = undefined;
+    const over_len = try bp.collect_brush_style(src, &override_buf);
+    // invariant: a declared style block collects at least one token line.
+    assert(over_len > 0);
+    const style = override_buf[0..over_len];
+    // invariant: a full theme names both ground tokens and the accent it re-skins.
+    if (std.mem.indexOf(u8, style, "paper ") == null) return error.ThemeIncomplete;
+    if (std.mem.indexOf(u8, style, "ink ") == null) return error.ThemeIncomplete;
+    if (std.mem.indexOf(u8, style, "head ") == null) return error.ThemeIncomplete;
+
+    const n = try tokens.resolve(tokens.base_sheet, style, out);
+    // invariant: the resolved sheet is non-empty and bounded.
+    assert(n > 0);
+    assert(n <= out.len);
+    return n;
+}
+
+/// Count pixels whose visible color exactly matches `c` (ignoring alpha) in a
+/// rasterized buffer — a witness helper proving a specific token color reached (or
+/// never reached) the canvas.
+fn count_pixels_of_color(pixels: []const u8, stride: u32, width: u32, height: u32, c: skate.Color) u32 {
+    // invariant: the stride holds a full row of ARGB8888 pixels.
+    assert(stride >= width * 4);
+    // invariant: a real canvas has width.
+    assert(width > 0);
+    // invariant: a real canvas has height.
+    assert(height > 0);
+    const stride_usize: usize = @intCast(stride);
+    var count: u32 = 0;
+    var y: u32 = 0;
+    while (y < height) : (y += 1) {
+        const y_usize: usize = @intCast(y);
+        const rowbytes = pixels[y_usize * stride_usize ..][0 .. @as(usize, @intCast(width)) * 4];
+        var x: u32 = 0;
+        while (x < width) : (x += 1) {
+            const px: usize = @intCast(x * 4);
+            if (rowbytes[px + 0] == c.b and rowbytes[px + 1] == c.g and rowbytes[px + 2] == c.r) {
+                count += 1;
+            }
+        }
+    }
+    return count;
+}
+
+/// Paint the demo graph's heads view with `sheet` and return the rasterized
+/// ARGB8888 buffer plus its stride and pixel dimensions — a small helper so the
+/// re-skin proof can compare the base canvas against the themed one, same graph.
+fn render_heads_canvas(allocator: std.mem.Allocator, sheet: []const u8, stride_out: *u32, w_out: *u32, h_out: *u32) ![]u8 {
+    var catalog = try mb.demo_catalog();
+    var grid = try skate.Grid.init(allocator, heads.view_cols, heads.view_rows);
+    const rows = try heads.paint_heads(&catalog, &grid, sheet);
+    // invariant: the demo graph paints its six known lines.
+    assert(rows == 6);
+
+    const paint = try tokens.dress(sheet);
+    const width: i32 = @intCast(heads.view_cols * skate.cell_w);
+    const height: i32 = @intCast(heads.view_rows * skate.cell_h);
+    const stride: u32 = heads.view_cols * skate.cell_w * 4;
+    const pixel_count: usize = @intCast(stride * @as(u32, @intCast(height)));
+    const pixels = try allocator.alloc(u8, pixel_count);
+    grid.rasterize(pixels, stride, width, height, paint.paper, paint.ink, 1);
+    stride_out.* = stride;
+    w_out.* = @intCast(width);
+    h_out.* = @intCast(height);
+    return pixels;
+}
+
+fn welcome_full_reskin(allocator: std.mem.Allocator, io: std.Io) !void {
+    var themed_buf: [tokens.max_sheet_bytes]u8 = undefined;
+    const n = try resolve_full_theme(io, theme_path, &themed_buf);
+    const themed = themed_buf[0..n];
+
+    // The themed sheet resolves all three tokens to the authored values: Bark ground,
+    // Flax ink, terracotta head — the override won the cascade on each of its keys.
+    const themed_paper = try tokens.token_color(themed, "paper"); // Bark
+    const base_paper = try tokens.token_color(tokens.base_sheet, "paper"); // Flax
+    const themed_head = try tokens.token_color(themed, "head"); // terracotta
+    const base_head = try tokens.token_color(tokens.base_sheet, "head"); // ochre
+    // invariant: the ground override resolved to Bark (dark page), channel by channel.
+    assert(themed_paper.r == 0x2B); // Bark red
+    assert(themed_paper.g == 0x26); // Bark green
+    assert(themed_paper.b == 0x20); // Bark blue
+    // invariant: the accent override resolved to the authored terracotta.
+    assert(themed_head.r == 0xB4); // terracotta red
+    assert(themed_head.g == 0x50); // terracotta green
+    assert(themed_head.b == 0x2D); // terracotta blue
+    assert(themed_head.r != base_head.r or themed_head.g != base_head.g or themed_head.b != base_head.b);
+
+    // Paint the same heads graph twice — once on the base sheet, once on the theme.
+    var s_l: u32 = 0;
+    var w_l: u32 = 0;
+    var h_l: u32 = 0;
+    const light = try render_heads_canvas(allocator, tokens.base_sheet, &s_l, &w_l, &h_l);
+    var s_d: u32 = 0;
+    var w_d: u32 = 0;
+    var h_d: u32 = 0;
+    const dark = try render_heads_canvas(allocator, themed, &s_d, &w_d, &h_d);
+
+    // Axis one — the ground. The dark theme swaps Flax and Bark between the ground
+    // and ink roles, so the honest proof is the majority inversion: Flax rules the
+    // base canvas, Bark rules the themed one.
+    const flax_ground = count_pixels_of_color(light, s_l, w_l, h_l, base_paper);
+    const bark_ink = count_pixels_of_color(light, s_l, w_l, h_l, themed_paper);
+    const bark_ground = count_pixels_of_color(dark, s_d, w_d, h_d, themed_paper);
+    const flax_ink = count_pixels_of_color(dark, s_d, w_d, h_d, base_paper);
+    assert(flax_ground > bark_ink); // base: light ground rules
+    assert(bark_ground > flax_ink); // themed: dark ground rules — flipped
+    assert(bark_ground > bark_ink); // Bark rose from a minority ink to the majority ground
+
+    // Axis two — the accent. The terracotta head is distinct from both grounds, so
+    // it leaves a clean zero on the base canvas — a recolor, not an addition.
+    const terracotta_themed = count_pixels_of_color(dark, s_d, w_d, h_d, themed_head);
+    const terracotta_base = count_pixels_of_color(light, s_l, w_l, h_l, themed_head);
+    assert(terracotta_themed > 0); // the authored accent reached the themed canvas
+    assert(terracotta_base == 0); // and never appears without the theme
+
+    print("mantra_browser_full_theme: one file re-skins both axes — dark ground {d} px (base {d}), terracotta head {d} px (base {d})\n", .{ bark_ground, bark_ink, terracotta_themed, terracotta_base });
+}
+
+fn welcome_all_tokens_warm(io: std.Io) !void {
+    var themed_buf: [tokens.max_sheet_bytes]u8 = undefined;
+    const n = try resolve_full_theme(io, theme_path, &themed_buf);
+    const themed = themed_buf[0..n];
+    // dress asserts paper and ink warm/low-blue and distinct; token_color asserts the
+    // head warm on the way — no axis of a full theme can smuggle a cold color past
+    // the design system's palette law.
+    const paint = try tokens.dress(themed);
+    const head = try tokens.token_color(themed, "head");
+    // invariant: the paper stays a warm plant-fiber family — red leads, blue trails.
+    assert(paint.paper.r > paint.paper.g);
+    assert(paint.paper.g > paint.paper.b);
+    // invariant: the ink stays warm/low-blue through the theme.
+    assert(paint.ink.r > paint.ink.g);
+    assert(paint.ink.g > paint.ink.b);
+    // invariant: the accent stays warm/low-blue through the theme.
+    assert(head.r > head.g);
+    assert(head.g > head.b);
+    print("mantra_browser_full_theme: every axis stays warm/low-blue — the palette law holds across the whole re-skin\n", .{});
+}
+
+fn welcome_additive_glyphs(allocator: std.mem.Allocator, io: std.Io) !void {
+    var themed_buf: [tokens.max_sheet_bytes]u8 = undefined;
+    const n = try resolve_full_theme(io, theme_path, &themed_buf);
+
+    var catalog = try mb.demo_catalog();
+    var grid = try skate.Grid.init(allocator, heads.view_cols, heads.view_rows);
+    _ = try heads.paint_heads(&catalog, &grid, themed_buf[0..n]);
+
+    // A full re-skin touches only color — the painted glyphs still carry the very
+    // bytes rung one renders. Editor (render) and view (grid) stay one graph.
+    var buf: [mb.max_render_bytes]u8 = undefined;
+    const text = try mb.render(&catalog, &buf);
+    const first_nl = std.mem.indexOfScalar(u8, text, '\n').?;
+    const first_line = text[0..first_nl];
+    const painted = grid.row_cells(0);
+    // invariant: the grid row holds at least the rendered line's bytes.
+    assert(painted.len >= first_line.len);
+    assert(std.mem.startsWith(u8, painted, first_line));
+    print("mantra_browser_full_theme: a full re-skin recolors, never rewrites — text unchanged by the theme\n", .{});
+}
+
+fn welcome_refuses_incomplete(io: std.Io) !void {
+    // The dark-mode fixture names a ground but no accent — a full re-skin must carry
+    // all three tokens, so theming it names ThemeIncomplete rather than half-skinning.
+    var out: [tokens.max_sheet_bytes]u8 = undefined;
+    if (resolve_full_theme(io, "pond/apps/dark-mode.brush", &out)) |_| {
+        unreachable;
+    } else |err| {
+        // invariant: a ground-only theme refuses by the named error.
+        assert(err == error.ThemeIncomplete);
+    }
+    print("mantra_browser_full_theme: a ground-only .brush refuses a full re-skin — ThemeIncomplete\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_full_reskin(garden, io);
+        try welcome_all_tokens_warm(io);
+        try welcome_additive_glyphs(garden, io);
+        try welcome_refuses_incomplete(io);
+        print("mantra_browser_full_theme {s} — GREEN\n", .{mantra_browser_full_theme_version});
+        return 0;
+    }
+    print("usage: mantra-browser-full-theme selftest\n", .{});
+    return 1;
+}
