@@ -103,6 +103,7 @@ allow CONTRIBUTING.md
 allow ORGANIZING.md
 allow bibliography.md
 allow llms.txt
+allow LICENSE
 allow LICENSE-MIT
 allow LICENSE-APACHE
 allow LICENSE-CC-BY
@@ -137,6 +138,7 @@ scrub     CONTRIBUTING.md                 # may name; commit-shape guidance
 scrub     ORGANIZING.md                   # names the keeper throughout
 scrub     bibliography.md                 # source gathering; scrub any naming
 scrub     llms.txt                        # model-facing map; scrub identity
+scrub     LICENSE                         # top-level index; copyright holder is a real name
 scrub     LICENSE-APACHE                  # copyright holder is a real name
 scrub     LICENSE-MIT                     # copyright holder is a real name
 scrub     LICENSE-CC-BY                   # copyright holder is a real name
