@@ -1,0 +1,190 @@
+//! pond/apps/publish_receipt.rye — TACT Journey 2, Rung 1: the offline-verifiable receipt.
+//!
+//! Journey 1 piloted a keeper to a running Pond; this journey lets that keeper publish — offer an
+//! owned artifact to another keeper, signed so the receiver can trust it. BUHR-J7r4 bound a stored
+//! artifact to a settled Kumara identity (a Deed presented, the exact publication signed, only
+//! then stored). This rung carries that same signed word *out of the store* into a portable
+//! receipt a recipient verifies entirely on their own.
+//!
+//! A Publication receipt carries the point that published, the name, the whole length, the
+//! content digest, and the signature — nothing else. Verification is offline and in two honest
+//! halves. The signature verifies over the bound facts by the publisher's keeper key (a forged or
+//! wrong-key signature refuses) — this needs no content at all, only the receipt. And a recipient
+//! who holds the content confirms its SHA-256 matches the bound digest (a tampered artifact
+//! refuses). Neither half touches a store or a network.
+//!
+//! It reuses BUHR-J7r4's own signed-message layout (`sign_publication` · `verify_receipt` ·
+//! `digest_of`), so a detached receipt and a stored publication carry the identical signed word.
+//! It reads no network — the serve transport that carries a receipt across the wire is the
+//! Comlink-served custody gate (r4), surfaced there, never crossed. Demo keeper seeds only.
+//!
+//!   rye build pond/apps/publish_receipt.rye -femit-bin=pond/bin/publish-receipt
+//!   pond/bin/publish-receipt selftest
+//!
+//! Scope: active-designing/20260812-173656_tact-journey2-publishing-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const tablecloth = @import("tablecloth.rye");
+const keyed = @import("tablecloth_keyed.rye");
+const kumara = @import("kumara.rye");
+
+pub const publish_receipt_version = "20260812.173656";
+
+pub const pubkey_len: u32 = 32;
+pub const sig_len: u32 = 64;
+pub const digest_len: u32 = 32;
+
+pub const ReceiptError = error{ NameTooLong };
+
+/// A detached, portable publication receipt — the signed word a keeper hands to another keeper.
+/// It carries only the facts the signature binds; it holds no content and no store handle.
+// Invariant: name_len <= tablecloth.max_name.
+pub const Publication = struct {
+    point: u32,
+    name_bytes: [tablecloth.max_name]u8,
+    name_len: u32,
+    whole_len: u32,
+    digest: [digest_len]u8,
+    sig: [sig_len]u8,
+
+    pub fn name(self: *const Publication) []const u8 {
+        // invariant: the held name honors the catalog's name budget
+        assert(self.name_len <= tablecloth.max_name);
+        return self.name_bytes[0..self.name_len];
+    }
+};
+
+/// Sign a publication into a detached receipt — the owner's word that this exact content, under
+/// this name, at this length, is published by this point. Reuses BUHR-J7r4's signing, so the
+/// receipt's signed word is identical to a stored publication's. Refuses an overlong name rather
+/// than truncate the signed facts.
+pub fn make_publication(
+    keeper_seed: *const [kumara.seed_length]u8,
+    point: u32,
+    art_name: []const u8,
+    content: []const u8,
+) ReceiptError!Publication {
+    if (art_name.len > tablecloth.max_name) return error.NameTooLong;
+    const sig = keyed.sign_publication(keeper_seed, point, art_name, content);
+    const digest = keyed.digest_of(content);
+    var receipt = Publication{
+        .point = point,
+        .name_bytes = undefined,
+        .name_len = @intCast(art_name.len),
+        .whole_len = @intCast(content.len),
+        .digest = digest,
+        .sig = sig,
+    };
+    var i: u32 = 0;
+    while (i < art_name.len) : (i += 1) {
+        receipt.name_bytes[i] = art_name[i];
+    }
+    // invariant: a fresh receipt records the exact length it signed
+    assert(receipt.whole_len == content.len);
+    // invariant: the receipt's name length honors the budget
+    assert(receipt.name_len <= tablecloth.max_name);
+    return receipt;
+}
+
+/// Verify the receipt's signature offline, against a publisher's keeper public key — no content,
+/// no store, no network. A forged signature or a key that never signed these facts refuses.
+pub fn verify_offline(receipt: *const Publication, keeper_pubkey: [pubkey_len]u8) bool {
+    return keyed.verify_receipt(
+        keeper_pubkey,
+        receipt.point,
+        receipt.name(),
+        receipt.whole_len,
+        &receipt.digest,
+        &receipt.sig,
+    );
+}
+
+/// The second half of trust: a recipient holding the content confirms its digest matches the one
+/// the receipt bound. A tampered artifact refuses here even when the signature is authentic.
+pub fn matches_content(receipt: *const Publication, content: []const u8) bool {
+    if (content.len != receipt.whole_len) return false;
+    const cd = keyed.digest_of(content);
+    // invariant: a SHA-256 digest is thirty-two bytes wide
+    assert(cd.len == digest_len);
+    return std.mem.eql(u8, &cd, &receipt.digest);
+}
+
+// ---- witnesses ----
+
+// Example seeds — plainly not a real keeper's key, so no identity is invented.
+const demo_keeper: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
+const other_keeper: [kumara.seed_length]u8 = .{0x55} ** kumara.seed_length;
+const demo_point: u32 = 3;
+
+fn pubkey_of(seed: *const [kumara.seed_length]u8) [pubkey_len]u8 {
+    return kumara.keypair_from_seed(seed).public_key.bytes;
+}
+
+/// A real receipt verifies offline against the publisher's key, and its content matches the bound
+/// digest — the two halves of trust, both green, with no store and no network.
+fn welcome_receipt_verifies_offline() !void {
+    const content = "the harvest ledger, spring";
+    const receipt = try make_publication(&demo_keeper, demo_point, "ledger.txt", content);
+    assert(verify_offline(&receipt, pubkey_of(&demo_keeper)));
+    assert(matches_content(&receipt, content));
+    assert(std.mem.eql(u8, receipt.name(), "ledger.txt"));
+    print("publish_receipt: a receipt verified offline against the publisher's key; content matched the digest.\n", .{});
+}
+
+/// A forged signature refuses — a single flipped byte breaks the signed word.
+fn unwelcome_forged_signature_refuses() !void {
+    var receipt = try make_publication(&demo_keeper, demo_point, "ledger.txt", "the harvest ledger, spring");
+    receipt.sig[0] ^= 0xFF;
+    assert(!verify_offline(&receipt, pubkey_of(&demo_keeper)));
+    print("publish_receipt: a forged signature refused offline verification.\n", .{});
+}
+
+/// A different keeper's key refuses — the receipt names exactly who published it.
+fn unwelcome_wrong_keeper_refuses() !void {
+    const receipt = try make_publication(&demo_keeper, demo_point, "ledger.txt", "the harvest ledger, spring");
+    assert(!verify_offline(&receipt, pubkey_of(&other_keeper)));
+    print("publish_receipt: a wrong keeper key refused; the receipt names exactly who published.\n", .{});
+}
+
+/// Tampered content refuses the digest half even under an authentic signature — the content is
+/// bound in, so possessing a valid receipt is never license to swap the bytes.
+fn unwelcome_tampered_content_refuses() !void {
+    const receipt = try make_publication(&demo_keeper, demo_point, "ledger.txt", "the harvest ledger, spring");
+    // the signature is still authentic...
+    assert(verify_offline(&receipt, pubkey_of(&demo_keeper)));
+    // ...yet swapped content fails the digest half.
+    assert(!matches_content(&receipt, "the harvest ledger, autumn"));
+    print("publish_receipt: an authentic receipt still refused swapped content (the digest is bound in).\n", .{});
+}
+
+/// An overlong name refuses rather than truncate the signed facts.
+fn unwelcome_overlong_name_refuses() !void {
+    const long_name = "x" ** (tablecloth.max_name + 1);
+    const made = make_publication(&demo_keeper, demo_point, long_name, "content");
+    assert(made == error.NameTooLong);
+    print("publish_receipt: an overlong name refused NameTooLong rather than truncate the signed word.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_receipt_verifies_offline();
+    try unwelcome_forged_signature_refuses();
+    try unwelcome_wrong_keeper_refuses();
+    try unwelcome_tampered_content_refuses();
+    try unwelcome_overlong_name_refuses();
+    print("publish_receipt {s} — GREEN\n", .{publish_receipt_version});
+    print("GREEN: TACT-J2r1 publish_receipt; an owner-signed publication verifies offline, forgery and tamper refused.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest();
+    }
+    print("usage: publish-receipt selftest\n", .{});
+    return 1;
+}
