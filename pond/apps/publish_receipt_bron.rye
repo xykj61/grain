@@ -1,0 +1,233 @@
+//! pond/apps/publish_receipt_bron.rye — TACT Journey 2, Rung 3: the receipt made portable.
+//!
+//! Rungs one and two proved a receipt verifies offline and binds to a settled, current keeper. A
+//! receipt is only useful, though, if it can travel — written to a file, pinned in Tablecloth, or
+//! handed to another keeper. This rung renders a Publication to a `format publication-v1` Bron
+//! record and parses it back byte-for-byte, so the signed word survives the crossing intact.
+//!
+//! The crux is preservation: `parse(render(receipt))` recovers an equal receipt — same point,
+//! name, length, digest, and signature — and the recovered receipt still verifies offline against
+//! the publisher's key, so nothing about the signed word was lost in becoming text. The reader is
+//! a purpose-built bounded Bron reader (flat `key value` lines, the tree's shared idiom), never a
+//! general parser: an unknown field refuses (never dropped), a missing field refuses, a wrong
+//! header refuses, and malformed hex refuses rather than decode to garbage.
+//!
+//! Composed over rung one's Publication (its fields read through the public `name` accessor). It
+//! reads no network — the serve transport that carries this record across the wire is the
+//! Comlink-served custody gate (r4).
+//!
+//!   rye build pond/apps/publish_receipt_bron.rye -femit-bin=pond/bin/publish-receipt-bron
+//!   pond/bin/publish-receipt-bron selftest
+//!
+//! Scope: active-designing/20260812-173656_tact-journey2-publishing-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const receipt_mod = @import("publish_receipt.rye");
+const tablecloth = @import("tablecloth.rye");
+const parse_int = @import("parse_int.rye");
+const kumara = @import("kumara.rye");
+
+pub const publish_receipt_bron_version = "20260812.173656";
+
+pub const digest_len: u32 = 32;
+pub const sig_len: u32 = 64;
+// The rendered record: a header plus five short lines, the widest being the 128-hex signature.
+pub const max_record: u32 = 512;
+
+pub const BronError = error{
+    BadFormat, // the header line is not `format publication-v1`
+    UnknownField, // a line names a field the record does not define
+    MissingField, // a required field never appeared
+    BadInt, // a numeric field did not parse
+    BadHex, // a hex field was the wrong length or held a non-hex byte
+    NameTooLong, // the name field exceeds the catalog budget
+    RecordTooLong, // the render exceeded its bounded buffer
+};
+
+const hex_digits = "0123456789abcdef";
+
+/// Write `bytes` as lowercase hex into `out` (out.len must be twice bytes.len).
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex chars per byte
+    assert(out.len == bytes.len * 2);
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0F];
+    }
+}
+
+/// Decode one hex nibble, or refuse.
+fn nibble(c: u8) BronError!u8 {
+    return switch (c) {
+        '0'...'9' => c - '0',
+        'a'...'f' => c - 'a' + 10,
+        'A'...'F' => c - 'A' + 10,
+        else => error.BadHex,
+    };
+}
+
+/// Decode `text` (exactly out.len*2 hex chars) into `out`, refusing wrong length or non-hex.
+fn from_hex(text: []const u8, out: []u8) BronError!void {
+    if (text.len != out.len * 2) return error.BadHex;
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < out.len) : (i += 1) {
+        const hi = try nibble(text[i * 2]);
+        const lo = try nibble(text[i * 2 + 1]);
+        out[i] = (hi << 4) | lo;
+    }
+}
+
+/// Render a receipt to a `format publication-v1` record. Refuses when it would overflow.
+pub fn render(receipt: *const receipt_mod.Publication, out: []u8) BronError!u32 {
+    // invariant: the render buffer honors its bound
+    assert(out.len >= max_record);
+    var digest_hex: [digest_len * 2]u8 = undefined;
+    var sig_hex: [sig_len * 2]u8 = undefined;
+    to_hex(&receipt.digest, &digest_hex);
+    to_hex(&receipt.sig, &sig_hex);
+    const text = std.fmt.bufPrint(out, "format publication-v1\npoint {d}\nname {s}\nlen {d}\ndigest {s}\nsig {s}\n", .{
+        receipt.point, receipt.name(), receipt.whole_len, digest_hex, sig_hex,
+    }) catch return error.RecordTooLong;
+    return @intCast(text.len);
+}
+
+/// Split a line into its first-token key and trimmed remainder value — the flat-Bron idiom.
+fn key_val(line: []const u8) struct { key: []const u8, val: []const u8 } {
+    var sp: usize = 0; // seam: slice index over the source
+    while (sp < line.len and line[sp] != ' ') : (sp += 1) {}
+    const key = line[0..sp];
+    const val = std.mem.trim(u8, line[sp..], " \t");
+    return .{ .key = key, .val = val };
+}
+
+/// Parse a `format publication-v1` record back into a receipt, refusing an unknown or missing
+/// field, a bad header, a bad integer, or malformed hex.
+pub fn parse(text: []const u8) BronError!receipt_mod.Publication {
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const header = lines.next() orelse return error.BadFormat;
+    if (!std.mem.eql(u8, header, "format publication-v1")) return error.BadFormat;
+
+    var have_point = false;
+    var have_name = false;
+    var have_len = false;
+    var have_digest = false;
+    var have_sig = false;
+    var receipt = receipt_mod.Publication{
+        .point = 0,
+        .name_bytes = undefined,
+        .name_len = 0,
+        .whole_len = 0,
+        .digest = undefined,
+        .sig = undefined,
+    };
+
+    while (lines.next()) |raw| {
+        if (raw.len == 0) continue; // a trailing newline yields one empty line
+        const kv = key_val(raw);
+        if (std.mem.eql(u8, kv.key, "point")) {
+            receipt.point = parse_int.parse_int(u32, kv.val, .{}) catch return error.BadInt;
+            have_point = true;
+        } else if (std.mem.eql(u8, kv.key, "name")) {
+            if (kv.val.len > tablecloth.max_name) return error.NameTooLong;
+            receipt.name_len = @intCast(kv.val.len);
+            var i: u32 = 0;
+            while (i < kv.val.len) : (i += 1) {
+                receipt.name_bytes[i] = kv.val[i];
+            }
+            have_name = true;
+        } else if (std.mem.eql(u8, kv.key, "len")) {
+            receipt.whole_len = parse_int.parse_int(u32, kv.val, .{}) catch return error.BadInt;
+            have_len = true;
+        } else if (std.mem.eql(u8, kv.key, "digest")) {
+            try from_hex(kv.val, &receipt.digest);
+            have_digest = true;
+        } else if (std.mem.eql(u8, kv.key, "sig")) {
+            try from_hex(kv.val, &receipt.sig);
+            have_sig = true;
+        } else {
+            return error.UnknownField;
+        }
+    }
+    if (!(have_point and have_name and have_len and have_digest and have_sig)) return error.MissingField;
+    // invariant: a fully parsed receipt honors the name budget
+    assert(receipt.name_len <= tablecloth.max_name);
+    return receipt;
+}
+
+// ---- witnesses ----
+
+const keeper_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
+const demo_point: u32 = 3;
+
+fn pubkey_of(seed: *const [kumara.seed_length]u8) [receipt_mod.pubkey_len]u8 {
+    return kumara.keypair_from_seed(seed).public_key.bytes;
+}
+
+fn equal(a: *const receipt_mod.Publication, b: *const receipt_mod.Publication) bool {
+    return a.point == b.point and a.whole_len == b.whole_len and
+        std.mem.eql(u8, a.name(), b.name()) and
+        std.mem.eql(u8, &a.digest, &b.digest) and std.mem.eql(u8, &a.sig, &b.sig);
+}
+
+/// A receipt renders to Bron and parses back byte-for-byte, and the recovered receipt still
+/// verifies offline — the signed word survived the crossing whole.
+fn welcome_round_trip_preserves() !void {
+    var buf: [max_record]u8 = undefined;
+    const receipt = try receipt_mod.make_publication(&keeper_seed, demo_point, "ledger.txt", "the harvest ledger, spring");
+    const n = try render(&receipt, &buf);
+    const back = try parse(buf[0..n]);
+    assert(equal(&receipt, &back));
+    assert(receipt_mod.verify_offline(&back, pubkey_of(&keeper_seed)));
+    print("publish_receipt_bron: a receipt round-tripped through Bron byte-for-byte and still verified offline.\n", .{});
+}
+
+/// An unknown field refuses — never silently dropped.
+fn unwelcome_unknown_field_refuses() !void {
+    const record = "format publication-v1\npoint 3\nname a.txt\nlen 4\ndigest " ++ ("0" ** 64) ++ "\nsig " ++ ("0" ** 128) ++ "\nsurprise yes\n";
+    const parsed = parse(record);
+    assert(parsed == error.UnknownField);
+    print("publish_receipt_bron: an unknown field refused UnknownField (never dropped).\n", .{});
+}
+
+/// A missing field refuses.
+fn unwelcome_missing_field_refuses() !void {
+    const record = "format publication-v1\npoint 3\nname a.txt\nlen 4\ndigest " ++ ("0" ** 64) ++ "\n";
+    const parsed = parse(record);
+    assert(parsed == error.MissingField);
+    print("publish_receipt_bron: a missing field refused MissingField.\n", .{});
+}
+
+/// A wrong header refuses, and malformed hex refuses rather than decode to garbage.
+fn unwelcome_bad_header_and_hex_refuse() !void {
+    const bad_header = "format other-v1\npoint 3\n";
+    const header_result = parse(bad_header);
+    assert(header_result == error.BadFormat);
+    const short_hex = "format publication-v1\npoint 3\nname a.txt\nlen 4\ndigest abcd\nsig " ++ ("0" ** 128) ++ "\n";
+    const hex_result = parse(short_hex);
+    assert(hex_result == error.BadHex);
+    print("publish_receipt_bron: a wrong header and short hex each refused.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_round_trip_preserves();
+    try unwelcome_unknown_field_refuses();
+    try unwelcome_missing_field_refuses();
+    try unwelcome_bad_header_and_hex_refuse();
+    print("publish_receipt_bron {s} — GREEN\n", .{publish_receipt_bron_version});
+    print("GREEN: TACT-J2r3 publish_receipt_bron; a receipt travels as Bron and returns whole, or names its refusal.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest();
+    }
+    print("usage: publish-receipt-bron selftest\n", .{});
+    return 1;
+}
