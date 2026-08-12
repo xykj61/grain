@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260812.125247
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR-J4r4 — undo as reading an earlier revision
+prompt Autonomous loop: next agent-doable lap Lindy-first crux-first, harmony-of-styles balance compass; approve own design rounds; send each increment; stop at custody gates.
+think Read REMEMBER; the living edge is BUHR Journey 4 (Realidream editing surface). Named next crux: undo as reading an earlier revision · or the web-read half (a checkpoint).
+think Lindy-first crux-first: undo is the crux — it grounds the editor's whole accrete-never-break model. In an append-only log undo cannot be deletion; it must be a read of an earlier node followed by an append. Chose it over the web-read half (a design choice better checkpointed).
+think Studied mantra_editor.rye (commit/open_lane), mantra_browser.rye (head_revision/render), mantra/recall_lap1.rye (recall reads content at a Name = peer/bolt/revision/path). recall gives exactly the earlier-revision bytes revert needs.
+think Added pub revert to mantra_editor.rye beside commit: head_revision guards LaneUnknown, to_revision > head refuses RevisionUnknown, catalog.recall reads the earlier content into a local buffer, commit appends it (which copies before returning — no dangling). Two invariants at the edges, plus the append-advances-by-one postcondition.
+think Wrote mantra_editor_undo.rye proving it by the bytes: revert b.txt r2 -> r1 returns r3 whose bytes == r1 "beta"; r2 still recalls "beta-two" untouched (append-only); graph grows r1 -> r2 -> r3; other lanes byte-unchanged; RevisionUnknown / LaneUnknown refusals hold.
+obs Undo-as-append is the honest shape for accrete-never-break: no rewrite path exists to guard, so the editor cannot lose history even on undo. This is why undo was the Lindy crux rather than a mere feature.
+obs Kept additive: rung one (editor) witness re-runs GREEN inside the r4 witness, matching the fork rung's regression guard.
+loom witness=buhr_mantra_editor_undo_witness cases=3 editor_rerun=1 result=GREEN
+file pond/apps/mantra_editor.rye added pub revert (undo = recall earlier revision + commit) and RevisionUnknown to EditError
+file pond/apps/mantra_editor_undo.rye BUHR-J4r4 proof — undo returns old bytes as a new head, intermediate revision still stands
+file tools/buhr_mantra_editor_undo_witness.rish witness — GREEN, re-runs editor rung one for regression
+file work-in-progress/REMEMBER.md logged J4r4; core editor surface (open·commit·undo·show-lit) complete; next crux = web-read half (checkpoint)
+recommend keep-going the editor's core append surface is complete; the remaining BUHR-J4 crux (compose the web-read half beside the program-write half) is a design choice worth a checkpoint, so lean to the next agent-doable rung
