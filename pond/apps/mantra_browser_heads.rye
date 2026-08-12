@@ -31,7 +31,7 @@ const mn = @import("mantra/recall_lap1.rye");
 const tokens = @import("brushstroke/tokens.rye");
 const skate = @import("brushstroke/skate_grid.rye");
 
-const mantra_browser_heads_version = "20260812.161500";
+const mantra_browser_heads_version = "20260812.120515";
 
 // A bounded viewport, wide enough for a lane line and tall enough for the demo
 // graph — the same discipline rung two keeps.
@@ -42,9 +42,11 @@ pub const view_rows: u32 = 16;
 // inside Skate's bounded run palette — one color for the living edge.
 pub const head_slot: u8 = 3;
 
-// The token a head node wears — the sheet's warm mid rule, distinct from the
-// reading ink so the living edge stands out without leaving the warm family.
-const head_token = "edge";
+// The token a head node wears — the sheet's own `head` accent, a semantic token
+// named for exactly this mark, so a `.brush` theme recolors the living edge on its
+// own key without touching the edge rule or the ink. Warmer and brighter than the
+// ink, it draws the eye to where each lane's history currently stands.
+const head_token = "head";
 
 pub const HeadsError = error{
     ViewTooNarrow,
@@ -224,6 +226,10 @@ fn welcome_head_distinct_from_ink() !void {
     const head = try tokens.token_color(tokens.base_sheet, head_token);
     const paint = try tokens.dress(tokens.base_sheet);
     assert(head.r != paint.ink.r or head.g != paint.ink.g or head.b != paint.ink.b);
+    // The head wears its own semantic token, not the edge rule — a theme can recolor
+    // the living edge without disturbing borders or ink.
+    const edge = try tokens.token_color(tokens.base_sheet, "edge");
+    assert(head.r != edge.r or head.g != edge.g or head.b != edge.b);
     print("mantra_browser_heads: head color stands apart from the reading ink\n", .{});
 }
 
