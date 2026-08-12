@@ -1,0 +1,38 @@
+# tools/buhr_tablecloth_index_witness.rish — BUHR Journey 7, Rung 2: the manifest as the true index.
+#
+# Rung one round-tripped the Brix-facing `format tablecloth-v1` manifest. This rung
+# proves the manifest is an *honest index of a live store*: given a parsed manifest and
+# the Catalog + BeadStore it claims to describe, every published name is actually held,
+# reassembles, and hashes to exactly the address the manifest names — so a person handed
+# a manifest can check the store satisfies it, artifact for artifact. A name the store
+# lacks, a wrong published length, and a wrong published address each refuse. Rung one
+# stays its own green binary (the naming layer is additive under this reader).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/buhr_tablecloth_index_witness.rish
+
+say "buhr7: Language EN — the format tablecloth-v1 manifest verified against the live store."
+say "buhr7: Lens TAME — fetch reassembles each name by digest; length and address must match; disagreement refuses."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/tablecloth-index"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/tablecloth_index.rye -femit-bin=${bin}"]
+assert build.ok else "buhr7: tablecloth_index build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "buhr7: tablecloth_index selftest exited non-zero"
+assert selftest.out contains "GREEN" else "buhr7: selftest did not speak GREEN"
+assert selftest.out contains "verified 2 published artifacts against the live store" else "buhr7: index verify missing"
+assert selftest.out contains "a name the store lacks, a wrong length, a wrong address each refused GREEN" else "buhr7: index refusals missing"
+
+# Rung one — the named artifact store the index verifies over — stays its own green
+# binary; rung two adds only the reader, additively.
+let r1_bin = "pond/bin/tablecloth"
+let r1_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/tablecloth.rye -femit-bin=${r1_bin}"]
+assert r1_build.ok else "buhr7: tablecloth (r1) re-build failed"
+let r1_selftest = run ["sh" "-c" "${r1_bin} selftest 2>&1"]
+assert r1_selftest.ok else "buhr7: tablecloth (r1) selftest exited non-zero"
+assert r1_selftest.out contains "GREEN" else "buhr7: tablecloth (r1) did not speak GREEN"
+
+say "buhr7: GREEN — the manifest is an honest index of the live store; a missing name, wrong length, or wrong address refuses."
