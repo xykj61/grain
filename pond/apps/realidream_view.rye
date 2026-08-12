@@ -144,9 +144,9 @@ pub fn paint_origins(catalog: *const mn.BoltCatalog, grid: *skate.Grid, sheet: [
 
 /// Build the fused scene: a demo catalog of program lanes, two pinned read lanes, and a
 /// program lane fused from both reads — so one render carries read origins, program
-/// lanes, and a fused node together. A witness helper so every welcome starts from the
-/// same three-origin graph.
-fn fused_scene() !mn.BoltCatalog {
+/// lanes, and a fused node together. Public so a later theming rung starts from the
+/// same three-origin graph without duplicating the setup.
+pub fn fused_scene() !mn.BoltCatalog {
     var catalog = try mb.demo_catalog();
     _ = try reader.pin_read(&catalog, "local", "web", "read/left", "abcd", "leaf");
     _ = try reader.pin_read(&catalog, "local", "web", "read/right", "xy", "leaf");
