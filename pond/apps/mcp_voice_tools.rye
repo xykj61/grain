@@ -1,0 +1,279 @@
+//! pond/apps/mcp_voice_tools.rye - BUHR Journey 9, Rung 2: the voices as distinct MCP tools.
+//!
+//! Rung one made the whole intelligence reachable as one MCP tool (`ask`) over the
+//! gathered Q-vane host. This rung gives each voice its own name at the protocol surface:
+//! a caller **discovers** the intelligence by listing five typed tools - `lattice`,
+//! `scribble`, `ember`, `graph`, `artifact` - and **invokes** one by name. The tool name
+//! is a typed assertion of which voice should answer: `serve_voice` dispatches the prompt
+//! through the same gathered host and then cross-checks that the voice which actually
+//! served equals the voice the tool named, refusing `wrong_voice` when a prompt routes
+//! elsewhere. So the protocol surface can never claim a voice answered that did not.
+//!
+//! Discovery reuses Journey 3's own `tools/list` machinery: five `format mcp-tool-v1`
+//! manifests are gathered into a `ToolList` and rendered to the JSON-RPC `tools/list`
+//! response by `mcp_list.list_to_json`, then read back by `list_from_json` - the same
+//! envelope a JSON MCP host already reads. Invocation reuses rung one's own result
+//! rendering and error mapping. Both are composition; no new transport, no new parser.
+//!
+//! Additive by construction: it imports mcp_bron, mcp_manifest, mcp_list, mcp_voice, and
+//! quin_host_artifact and calls only their public functions. Every module stays its own
+//! green binary. It reads no network - the real fetch and the Comlink-served transport
+//! stay the held custody/serve gates.
+//!
+//!   rye build pond/apps/mcp_voice_tools.rye -femit-bin=pond/bin/mcp-voice-tools
+//!   pond/bin/mcp-voice-tools selftest
+//!
+//! Scope: active-designing/20260812-150600_buhr-journey9-intelligence-served-as-mcp-tools-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lc = @import("lantern/lantern_core.rye");
+const mcp = @import("mcp_bron.rye");
+const man = @import("mcp_manifest.rye");
+const lst = @import("mcp_list.rye");
+const mv = @import("mcp_voice.rye"); // rung one: render_ok / render_error / error_name
+const qha = @import("quin_host_artifact.rye"); // the five-voice Q-vane host
+
+const mcp_voice_tools_version = "20260812.151500";
+
+// The default token budget when a call omits max_tokens - Lantern still meters it.
+const default_budget: u32 = 64;
+
+// A rendered result envelope stays within the shape's own bound.
+const max_out: u32 = mcp.max_result;
+
+// The five voice tools, in the host's own try-order. Each name is both the MCP tool a
+// caller invokes and the voice the host must report to satisfy the call.
+const VoiceTool = struct { name: []const u8, voice: qha.Voice };
+const voice_tools = [_]VoiceTool{
+    .{ .name = "lattice", .voice = .lattice },
+    .{ .name = "scribble", .voice = .scribble },
+    .{ .name = "ember", .voice = .ember },
+    .{ .name = "graph", .voice = .graph },
+    .{ .name = "artifact", .voice = .artifact },
+};
+
+// Each voice tool's `format mcp-tool-v1` manifest - the descriptor a caller discovers.
+// Kept as literals so their parsed slices live for the whole program.
+const m_lattice =
+    \\format mcp-tool-v1
+    \\tool lattice
+    \\summary arithmetic over the Lattice voice
+    \\arg model str
+    \\arg prompt str
+    \\result str
+;
+const m_scribble =
+    \\format mcp-tool-v1
+    \\tool scribble
+    \\summary a reading over the Scribble voice
+    \\arg model str
+    \\arg prompt str
+    \\result str
+;
+const m_ember =
+    \\format mcp-tool-v1
+    \\tool ember
+    \\summary corpus craft over the Ember voice
+    \\arg model str
+    \\arg prompt str
+    \\result str
+;
+const m_graph =
+    \\format mcp-tool-v1
+    \\tool graph
+    \\summary a reading of the living Mantra graph
+    \\arg model str
+    \\arg prompt str
+    \\result str
+;
+const m_artifact =
+    \\format mcp-tool-v1
+    \\tool artifact
+    \\summary read a content-verified Tablecloth artifact
+    \\arg model str
+    \\arg prompt str
+    \\result str
+;
+const manifests = [_][]const u8{ m_lattice, m_scribble, m_ember, m_graph, m_artifact };
+
+/// Map an invoked tool name to the voice that must answer it, or null when the name is
+/// not one of the five voice tools.
+fn required_voice(tool: []const u8) ?qha.Voice {
+    // invariant: a real tool name is being matched
+    assert(tool.len <= mcp.max_field);
+    var i: u32 = 0;
+    while (i < voice_tools.len) : (i += 1) {
+        if (std.mem.eql(u8, voice_tools[i].name, tool)) return voice_tools[i].voice;
+    }
+    return null;
+}
+
+/// Gather the five voice-tool manifests into a bounded ToolList - the catalog a caller
+/// discovers through `tools/list`.
+pub fn build_catalog(list: *lst.ToolList) man.ManifestError!void {
+    list.count = 0;
+    // invariant: the catalog never exceeds the list bound
+    assert(manifests.len <= lst.max_tools);
+    var i: u32 = 0;
+    while (i < manifests.len) : (i += 1) {
+        try man.parse_manifest(manifests[i], &list.tools[i]);
+        list.count += 1;
+    }
+    // invariant: every voice tool is in the catalog
+    assert(list.count == voice_tools.len);
+}
+
+/// Serve a per-voice MCP call: the tool names the voice, the prompt carries the op. The
+/// prompt dispatches through the gathered host and the served voice is cross-checked
+/// against the named tool - a prompt that routes to a different voice refuses
+/// `wrong_voice`, so the protocol surface never claims a voice that did not answer. An
+/// unknown tool name refuses `unknown_tool`; a missing arg `bad_args`; a bad budget
+/// `bad_int`; any host refusal answers under its named MCP error.
+pub fn serve_voice(call: *const mcp.Call, allow_text: []const u8, out: []u8) mcp.McpError![]const u8 {
+    // invariant: the caller's buffer respects the result bound
+    assert(out.len <= max_out);
+    // invariant: the call carries a bounded argument set
+    assert(call.arg_count <= mcp.max_args);
+
+    const want = required_voice(call.tool) orelse return mv.render_error(call.id, "unknown_tool", out);
+    const model_hash = call.arg_val("model") orelse return mv.render_error(call.id, "bad_args", out);
+    const prompt = call.arg_val("prompt") orelse return mv.render_error(call.id, "bad_args", out);
+    var budget: u32 = default_budget;
+    if (call.arg_val("max_tokens")) |b| {
+        budget = std.fmt.parseInt(u32, b, 10) catch return mv.render_error(call.id, "bad_int", out);
+    }
+
+    const req = lc.Request{ .model_hash = model_hash, .prompt = prompt, .max_tokens = budget };
+
+    var scratch: [lc.max_completion_len]u8 = undefined;
+    if (qha.dispatch(req, allow_text, scratch[0..])) |served| {
+        // invariant: a served answer honors Lantern's completion bound
+        assert(served.response.text.len <= lc.max_completion_len);
+        // The tool named a voice; the host must have served that very voice.
+        if (served.voice != want) return mv.render_error(call.id, "wrong_voice", out);
+        return mv.render_ok(call.id, served.response.text, out);
+    } else |err| {
+        return mv.render_error(call.id, mv.error_name(err), out);
+    }
+}
+
+// --- selftest -----------------------------------------------------------
+
+const allow =
+    \\model_hash sha3-256-rye-forge-lap0
+;
+const model = "sha3-256-rye-forge-lap0";
+
+/// Build a `format mcp-call-v1` envelope naming a voice tool and prompt, into `buf`.
+fn voice_envelope(tool: []const u8, prompt: []const u8, buf: []u8) []const u8 {
+    return std.fmt.bufPrint(buf, "format mcp-call-v1\nid 5\ntool {s}\narg model {s}\narg prompt {s}\n", .{ tool, model, prompt }) catch unreachable;
+}
+
+/// Invoke a voice tool with a prompt and read the rendered result back. The caller owns
+/// `out` so the parsed Result's slices outlive this call.
+fn invoke_and_read(tool: []const u8, prompt: []const u8, out: []u8, res: *mcp.Result) !void {
+    var call_buf: [256]u8 = undefined;
+    const env = voice_envelope(tool, prompt, call_buf[0..]);
+    var call: mcp.Call = undefined;
+    try mcp.parse_call(env, &call);
+    const rendered = try serve_voice(&call, allow, out);
+    try mcp.parse_result(rendered, res);
+}
+
+fn welcome_discovery_lists_five_voices() !void {
+    var list: lst.ToolList = undefined;
+    try build_catalog(&list);
+    assert(list.count == 5);
+
+    // Render the tools/list response and read it back - the discovery a JSON host performs.
+    var json: [lst.max_list_json]u8 = undefined;
+    const rendered = try lst.list_to_json(&list, 1, json[0..]);
+    var scratch: [lst.max_list_scratch]u8 = undefined;
+    var back: lst.ToolList = undefined;
+    try lst.list_from_json(rendered, scratch[0..], &back);
+    // invariant: every advertised voice tool survives the round-trip.
+    assert(back.count == 5);
+    assert(std.mem.eql(u8, back.tools[0].tool, "lattice"));
+    assert(std.mem.eql(u8, back.tools[4].tool, "artifact"));
+    print("mcp_voice_tools: tools/list advertises {d} voice tools - lattice..artifact, round-tripped\n", .{back.count});
+}
+
+fn welcome_lattice_tool_serves_lattice() !void {
+    var out: [max_out]u8 = undefined;
+    var res: mcp.Result = undefined;
+    try invoke_and_read("lattice", "matmul the pair", out[0..], &res);
+    // invariant: the named tool and the served voice agree; the answer crossed whole.
+    assert(!res.is_error);
+    assert(std.mem.eql(u8, res.value, "19 22 43 50"));
+    print("mcp_voice_tools: the lattice tool served the Lattice voice - result '{s}'\n", .{res.value});
+}
+
+fn welcome_artifact_tool_serves_artifact() !void {
+    var out: [max_out]u8 = undefined;
+    var res: mcp.Result = undefined;
+    try invoke_and_read("artifact", "words notes.txt", out[0..], &res);
+    assert(!res.is_error);
+    assert(std.mem.eql(u8, res.value, "16"));
+    print("mcp_voice_tools: the artifact tool served the artifact voice - {s} words, verified fetch\n", .{res.value});
+}
+
+fn welcome_wrong_voice_refused() !void {
+    // The tool names Lattice, but a `words` prompt routes to the artifact voice: the
+    // cross-check refuses rather than letting the protocol claim Lattice answered.
+    var out: [max_out]u8 = undefined;
+    var res: mcp.Result = undefined;
+    try invoke_and_read("lattice", "words notes.txt", out[0..], &res);
+    assert(res.is_error);
+    assert(std.mem.eql(u8, res.err_name, "wrong_voice"));
+    print("mcp_voice_tools: a prompt routing off the named tool -> named MCP error '{s}'\n", .{res.err_name});
+}
+
+fn welcome_unknown_tool_refused() !void {
+    var out: [max_out]u8 = undefined;
+    var res: mcp.Result = undefined;
+    try invoke_and_read("frobnicate", "matmul the pair", out[0..], &res);
+    assert(res.is_error);
+    assert(std.mem.eql(u8, res.err_name, "unknown_tool"));
+    print("mcp_voice_tools: an unlisted tool -> named MCP error '{s}'\n", .{res.err_name});
+}
+
+fn welcome_model_not_allowed_refused() !void {
+    var call_buf: [256]u8 = undefined;
+    const env = std.fmt.bufPrint(call_buf[0..], "format mcp-call-v1\nid 8\ntool graph\narg model sha3-256-not-on-list\narg prompt lane_count the graph\n", .{}) catch unreachable;
+    var call: mcp.Call = undefined;
+    try mcp.parse_call(env, &call);
+    var out: [max_out]u8 = undefined;
+    const rendered = try serve_voice(&call, allow, out[0..]);
+    var res: mcp.Result = undefined;
+    try mcp.parse_result(rendered, &res);
+    assert(res.is_error);
+    assert(std.mem.eql(u8, res.err_name, "model_not_allowed"));
+    print("mcp_voice_tools: a disallowed model on a voice tool -> named MCP error '{s}'\n", .{res.err_name});
+}
+
+fn run_selftest() !u8 {
+    try welcome_discovery_lists_five_voices();
+    try welcome_lattice_tool_serves_lattice();
+    try welcome_artifact_tool_serves_artifact();
+    try welcome_wrong_voice_refused();
+    try welcome_unknown_tool_refused();
+    try welcome_model_not_allowed_refused();
+
+    print("mcp_voice_tools: five voices, each a named MCP tool, discovered by tools/list and invoked by name\n", .{});
+    print("mcp_voice_tools: the tool name is a typed assertion - a prompt off the named voice refuses wrong_voice\n", .{});
+    print("mcp_voice_tools: version {s}\n", .{mcp_voice_tools_version});
+    print("GREEN: BUHR-J9r2 mcp_voice_tools - the intelligence is discoverable and addressable voice by voice.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "voices")) {
+            return run_selftest();
+        }
+    }
+    return run_selftest();
+}
