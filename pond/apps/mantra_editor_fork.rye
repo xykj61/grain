@@ -1,0 +1,134 @@
+//! pond/apps/mantra_editor_fork.rye — BUHR Journey 4, Rung 3: an edit can fork a
+//! new lane, not only continue an old one.
+//!
+//! Rung one gave the editor `commit` — continue an existing lane by appending its
+//! next revision. This rung gives it the other half of a file editor's basic surface:
+//! `open_lane`, forking a new lane by appending the first revision on a fresh path.
+//! Together they are the editor's "new file" and "edit file": a person opens a lane
+//! that did not exist, then commits revisions onto it exactly as onto any other lane.
+//! Both are appends to the same append-only Mantra catalog — a fork adds a lane, never
+//! a store beside the log — so the browser's render shows the new lane because it
+//! shows the log.
+//!
+//! The proof: open a lane on a fresh path, and the rendered graph grows by exactly one
+//! new lane line (`c.txt: r1[…]`), its lane count up by one, every existing lane byte
+//! for byte unchanged. The forked lane is then a lane like any other — a `commit` onto
+//! it chains `r1 -> r2`. Opening a path that already carries a leaf refuses `LaneExists`
+//! rather than opening a duplicate — there is a chain to continue, not a new one to fork.
+//!
+//! Additive by construction: it imports mantra_browser and mantra_editor, calling only
+//! their public functions. No file beneath it changes; rung one (editor) stays its own
+//! green binary.
+//!
+//!   rye build pond/apps/mantra_editor_fork.rye -femit-bin=pond/bin/mantra-editor-fork
+//!   pond/bin/mantra-editor-fork selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const mb = @import("mantra_browser.rye");
+const editor = @import("mantra_editor.rye");
+
+const mantra_editor_fork_version = "20260812.124800";
+
+/// Count how many times `needle` occurs in `haystack`, bounded by the haystack's own
+/// length — a witness helper proving a lane marker appears exactly once (or not at all).
+fn count_occurrences(haystack: []const u8, needle: []const u8) u32 {
+    // invariant: a real needle has bytes to match.
+    assert(needle.len > 0);
+    var count: u32 = 0;
+    var i: usize = 0; // seam: slice index over a std search
+    while (i + needle.len <= haystack.len) {
+        if (std.mem.eql(u8, haystack[i .. i + needle.len], needle)) {
+            count += 1;
+            i += needle.len;
+        } else {
+            i += 1;
+        }
+    }
+    return count;
+}
+
+/// Return the rendered line that contains `marker`, without its trailing newline —
+/// a witness helper so a lane can be compared before and after a fork.
+fn line_with(text: []const u8, marker: []const u8) []const u8 {
+    // invariant: a real marker has bytes to find.
+    assert(marker.len > 0);
+    const at = std.mem.indexOf(u8, text, marker) orelse return text[0..0];
+    var start = at;
+    while (start > 0 and text[start - 1] != '\n') start -= 1;
+    var end = at;
+    while (end < text.len and text[end] != '\n') end += 1;
+    return text[start..end];
+}
+
+fn welcome_fork_opens_a_lane() !void {
+    var catalog = try mb.demo_catalog();
+    const lanes_before = mb.lane_count(&catalog);
+
+    var before_buf: [mb.max_render_bytes]u8 = undefined;
+    const before = try mb.render(&catalog, &before_buf);
+    // The fresh path carries no lane yet.
+    assert(std.mem.indexOf(u8, before, "c.txt:") == null);
+
+    // Open a new lane on a fresh path — the first revision, always one.
+    const rev = try editor.open_lane(&catalog, "local", "notes", "c.txt", "gamma", "leaf");
+    assert(rev == 1);
+    assert(mb.lane_count(&catalog) == lanes_before + 1);
+
+    var after_buf: [mb.max_render_bytes]u8 = undefined;
+    const after = try mb.render(&catalog, &after_buf);
+    // The graph grew by exactly one lane line, its single node at r1.
+    const c_line = line_with(after, "c.txt:");
+    assert(count_occurrences(c_line, "r1[") == 1);
+    assert(count_occurrences(c_line, "->") == 0);
+
+    // Every existing lane paints unchanged — the fork touched only the new path.
+    assert(std.mem.eql(u8, line_with(before, "a.txt:"), line_with(after, "a.txt:")));
+    assert(std.mem.eql(u8, line_with(before, "b.txt:"), line_with(after, "b.txt:")));
+    assert(std.mem.eql(u8, line_with(before, "index:"), line_with(after, "index:")));
+    print("mantra_editor_fork: opened a new lane at r{d}; the graph gained one lane, every existing lane unchanged\n", .{rev});
+}
+
+fn welcome_forked_lane_is_a_lane() !void {
+    // A forked lane is a lane like any other — a commit onto it chains r1 -> r2.
+    var catalog = try mb.demo_catalog();
+    _ = try editor.open_lane(&catalog, "local", "notes", "c.txt", "gamma", "leaf");
+    const rev2 = try editor.commit(&catalog, "local", "notes", "c.txt", "gamma-two", "leaf");
+    assert(rev2 == 2);
+
+    var buf: [mb.max_render_bytes]u8 = undefined;
+    const after = try mb.render(&catalog, &buf);
+    const c_line = line_with(after, "c.txt:");
+    assert(count_occurrences(c_line, "->") == 1);
+    assert(count_occurrences(c_line, "r1[") == 1);
+    assert(count_occurrences(c_line, "r2[") == 1);
+    print("mantra_editor_fork: the forked lane is a lane like any other — a commit onto it chains r1 -> r2\n", .{});
+}
+
+fn welcome_refuses_existing_lane() !void {
+    // Opening a path that already carries a leaf refuses — there is a chain to
+    // continue with a commit, not a new lane to fork.
+    var catalog = try mb.demo_catalog();
+    if (editor.open_lane(&catalog, "local", "notes", "b.txt", "dup", "leaf")) |_| {
+        unreachable;
+    } else |err| {
+        // invariant: an existing lane refuses a fork by the named error.
+        assert(err == error.LaneExists);
+    }
+    print("mantra_editor_fork: opening an existing lane refuses — LaneExists\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_fork_opens_a_lane();
+        try welcome_forked_lane_is_a_lane();
+        try welcome_refuses_existing_lane();
+        print("mantra_editor_fork {s} — GREEN\n", .{mantra_editor_fork_version});
+        return 0;
+    }
+    print("usage: mantra-editor-fork selftest\n", .{});
+    return 1;
+}
