@@ -30,9 +30,12 @@ let seed_reset = run ["test" "-f" "recursion-prompts/seed/context-reset-handoff.
 assert seed_reset.ok else "seed/context-reset-handoff.seed.md is missing"
 
 # invariant: at least one dated filled version is present (the cellar is not empty).
-let versions = run ["sh" "-c" "ls recursion-prompts/versions/*.md 2>/dev/null | wc -l"]
+# Test presence, not a count: the cellar grows one version per run, so a count
+# check (contains "1") false-fails the moment a second version lands. This prints
+# "yes" iff the glob matches at least one file, and stays green as the cellar grows.
+let versions = run ["sh" "-c" "ls recursion-prompts/versions/*.md >/dev/null 2>&1 && echo yes || echo no"]
 assert versions.ok else "recursion-prompts/versions listing failed"
-assert versions.out contains "1" else "recursion-prompts/versions holds no dated version yet"
+assert versions.out contains "yes" else "recursion-prompts/versions holds no dated version yet"
 
 # invariant: the two autonomous seeds carry the GATES-ONLY stop clause — the fence
 # an unattended run prints when only custody work remains. The interactive
