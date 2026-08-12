@@ -20,7 +20,7 @@ The module grew as one foundation and a family of compositions. `recall_lap1.rye
 | `recall_sync_delivery.rye` | One-shot per-resin sync over sealed datagrams, hosted **38478/38479** | `tools/mantra_recall_lap3_wire.rish` |
 | `resin_batch.rye` | The signed batch frame (kind `0x03`): one signature, payloads prove by digest, have-already lane | `tools/mantra_resin_batch.rish` |
 | `beading.rye` | A resin too large for one frame beads into content-addressed beads under a `bead-index` | `tools/mantra_beading.rish` |
-| `recall_beaded.rye` | Append and recall transparent to size; beads land as derived `{path}.bN` leaves; `hydrateBeadStoreFromCatalog` | `tools/mantra_recall_beaded.rish` |
+| `recall_beaded.rye` | Append and recall transparent to size; beads land as derived `{path}.bN` leaves; `hydrate_bead_store_from_catalog` | `tools/mantra_recall_beaded.rish` |
 | `recall_batch_wire.rye` | Batch response framing + chunking (kind `0x04`) and the bounded `BatchAssembler` | (via batch witness) |
 | `recall_batch_delivery.rye` | Batch sync over the wire, hosted **38480/38481**, chunked and beaded crossings; one bound socket per assembly with a silent-peer timeout | `tools/mantra_recall_batch_wire.rish` |
 | `recall_by_mark.rye` | Read by Tilak within peer/bolt/revision; shared marks refuse without a path hint | `tools/mantra_recall_by_mark.rish` |

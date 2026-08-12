@@ -9,6 +9,7 @@
 
 *Written by Kaeden and Rio 3.*
 Radiant pass `20260725.035645`
+Correction pass `20260811.233044` — §Beading function citations aligned to the landed snake_case code (`append_leaf_beaded` · `recall_beaded` · `hydrate_bead_store_from_catalog`), per this spec's own "prose disagrees → code governs → this document earns a correction" clause. Behavior unchanged; a citation fix, not a rewrite.
 
 ---
 
@@ -56,7 +57,7 @@ Each reader composes over §4 and **must** preserve its outcomes and refusals un
 
 **Tablecloth query** (`recall_tablecloth_query.rye`). `TableclothQuery` makes peer, bolt, revision, tilak, and path_hint all optional. The query is one walk over the bounded catalog; matches **must** return in held (append) order; an empty result is a count of zero, never an error; an output slice too small for the matches **must** refuse with `ResultOverflow`. This surface is a filter, deliberately: no index, no plan, no store.
 
-**Beaded recall** (`recall_beaded.rye`). `appendLeafBeaded` stores content at or below one bead budget directly under the caller's Tilak; larger content beads content-defined, the bead-index lands at the name under Tilak `bead-index`, and **each bead also lands as an ordinary leaf at the derived path `{path}.b{N}`** (ordinal `N` from 0) under `plain-bytes`, so every existing sync, batch, and have-already mechanism carries beads unchanged. `recallBeaded` returns byte-identical content whichever way it was stored, proven at two layers (the catalog's digest on the index; beading's digest on every bead and the whole). After a crossing, `hydrateBeadStoreFromCatalog` **must** rebuild a bead store from the derived leaves such that reassembly succeeds. Stated scope line: the reported Tilak for a beaded resin is `bead-index`, not the caller's original mark.
+**Beaded recall** (`recall_beaded.rye`). `append_leaf_beaded` stores content at or below one bead budget directly under the caller's Tilak; larger content beads content-defined, the bead-index lands at the name under Tilak `bead-index`, and **each bead also lands as an ordinary leaf at the derived path `{path}.b{N}`** (ordinal `N` from 0) under `plain-bytes`, so every existing sync, batch, and have-already mechanism carries beads unchanged. `recall_beaded` returns byte-identical content whichever way it was stored, proven at two layers (the catalog's digest on the index; beading's digest on every bead and the whole). After a crossing, `hydrate_bead_store_from_catalog` **must** rebuild a bead store from the derived leaves such that reassembly succeeds. Stated scope line: the reported Tilak for a beaded resin is `bead-index`, not the caller's original mark.
 
 ## §6 Beading
 
