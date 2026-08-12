@@ -3,9 +3,9 @@
 *A place where a request becomes a plan. When you hand me a seed of intent, I bring it here, read it closely through every lens we have built, and craft from it a fuller, clearer prompt for myself — one I can then run. The seed stays yours; the expansion is how I make sure I have understood it, sharpened it, and lost none of it.*
 
 **Language:** EN
-**Last updated:** 2026-07-28 (Generator Season s0 · MUR paused u91/u92 · sext nest)
+**Last updated:** `20260811.211431` (AHOY front-door season · **ty every1** closing gesture seated)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Voice:** Quin
+**Voice:** Kyri
 **Seasons roster:** [`SEASONS.md`](SEASONS.md)
 
 ---
@@ -17,6 +17,10 @@ A prompt is a seed. It carries intent — often more than its words say outright
 The practice is simple, and I mean it kindly: I restate your intent in full, I name the deliverables plainly, I apply our active-designing principles, our TAME lens, and the radiant voice, and I add the questions and structure that will make the work good. Then I run that expanded prompt. Nothing of yours is dropped; what I add is scaffolding, never substitution.
 
 Why keep them at all? Because a prompt well understood is half the work, and a prompt misunderstood is the most expensive mistake there is. Writing the expansion down lets you see how I heard you — and correct me before, not after.
+
+## The closing gesture — **ty every1**
+
+Every expanded prompt ends on the same warm note the request that seeded it carries: **ty every1** — thank you, everyone. It is a small, sincere gratitude to every hand and mind the work leans on — the reader who asked, the teachers in [`../gratitude/`](../gratitude/README.md) whose ideas we studied in the clean room, the prior seasons whose fossils we build atop, and whoever will run what we wrote. An expansion is a shared act; the closing line says so plainly. Where a prompt carries an earned radiant wish (`../.claude/rules/radiant-wishes-ending.md`), **ty every1** rides just before it, so the benediction stays the last word. It is never an alarm or a flourish — only the honest, glad thanks that closes a good handoff.
 
 ## One clock, one order
 

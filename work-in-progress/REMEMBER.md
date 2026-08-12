@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` — the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `c452903ac4` · Grain · cloud pier
+**Git nib:** `8429a6c077` · Grain · cloud pier
 **Host:** Framework · EDT (`America/New_York`) · Vultr SEA VPS (HP AMD 2vCPU/4GB shared · never EWR) · this session in ai-jail
 
 ---
@@ -20,6 +20,8 @@
 - **Pier mosh CLOSED** — the SEA pier's UDP roam window opened (`tools/pier_mosh_udp_open.sh`, additive/guarded/atomic); mosh confirmed working from the MacBook.
 - **Deferred, its own round (needs a qemu-capable bench):** the coupled **`SLC-2a Lap` / comlink `sub-lap`** relabel (witness-asserted RISC-V guests). **Open door for Keaton's word:** the **SOON** equinox — the Glow **language** (STOA ladder ~346), the compass's open finishing edge.
 - **TAME Guidance Audit Quest — seated `20260811`** (`active-designing/20260811-195353_double-seat-and-crash-headroom.md`): one Quest (4 rounds) per Equinox, **double-seated** so it never disturbs the fixed itinerary; walks the TAME checkable surface (width-check · tame_style_check · rune_assert_sweep · §2 bounds) and books reds. **Seated in the Lexicon `20260811`:** **double-seat** (seat a fresh priority by doubling the largest allocation) · **crash headroom** (a reserved doubling of the durable write, pre-committed à la TigerBeetle static allocation — Keaton's *computational easing*).
+- **Aurora OPENED `20260811`** — all eight boot stages cross-build freestanding `riscv64` to RISC-V ELFs with no emulator (`tools/aurora_seed_freestanding_witness.rish`); emulator choice consolidated (QEMU stays on merit). **REDS #68** (a false-green build witness) caught + closed same-round.
+- **AHOY front-door season OPENED `20260811`** (waymark AHOY; plan `expanding-prompts/20260811-211431_ahoy-front-door-season.md`). **AHOY0 landed:** root `README.md` rewritten for the long return (logo `assets/grain-logo.svg` · honest badges · seed doors named early · favorite-words guide · gratitude coda + wish); **Lindy foundation** siloed (`foundations/20260811-211431_…`, grokipedia 403 → canonical sources); rules **radiant-wishes-ending** + **ty every1** seated; variants **held at five** (voices live; no kyli/kyri; no reflex debride). Remaining rungs: **AHOY1** weave molt · **AHOY2** legitimacy layer · **AHOY3** docs↔code confirm + final depersonalized seed force-push (**last round, your word**).
 
 ---
 
