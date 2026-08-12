@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260812.151959
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR Journey 10 opened — artifacts served as MCP resources
+prompt recur BUHR Lindy-first crux-first; double-seat visions for itinerary blind spots; send often; stop at custody gates
+think Read REMEMBER whole; J9 (intelligence served as MCP tools) complete — r1 crux + r2 horizon landed, only the Comlink-serve custody gate remains, so J9 is agent-done.
+think Walked the blind-spot pattern every BUHR journey opened on: a pair the equinox names, built on each side, never joined. J9 served the intelligence as MCP tools/call + tools/list — the verb half of the protocol. MCP names a second first-class surface: resources (resources/list · resources/read) — the noun half — never spoken.
+think The noun half already has its module: Tablecloth (J7), a store of named content-addressed artifacts. A catalog is a resource list; an artifact is a resource. The join is the next Lindy-first crux-first move.
+think Crux named: an MCP resources/read returns exactly the bytes whose digest the URI pins, a tampered store refusing — Tablecloth's own crux lifted onto the resource surface, content-address integrity travelling through fetch_artifact for free.
+obs Grounded the design in real code first — read mcp_bron.rye (J3r1 shape idiom, unknown-field-refused, bounded envelopes) and tablecloth.rye (fetch_artifact verified, DigestMismatch on tamper, address_hex, artifact_len). Confirmed the toolchain (vendor/zig-toolchain/zig + rye/bin/rye) and a green tablecloth baseline before committing to the plan.
+obs Rungs ordered Lindy-first crux-first: J10r1 one artifact read as an MCP resource (the crux, next); J10r2 horizon resources/list; the Comlink-served transport stays the held serve gate (Keaton's hand).
+file active-designing/20260812-151959_buhr-journey10-artifacts-served-as-mcp-resources-exploration.md the exploration opening BUHR Journey 10
+recommend keep-going BUHR-J10r1 lands next — pond/apps/mcp_resource.rye, resources/read over fetch_artifact, tamper/unknown/bad-uri refused, round-trip reader, its witness GREEN
