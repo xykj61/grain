@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260812.123018
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu ai-jail (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR-J2r7 — one .brush file re-skins a whole component on both axes at once
+prompt Autonomous loop — keep taking agent-doable BUHR laps Lindy-first crux-first, send each finished increment, STOP at custody gates
+think After landing r6 (ground) I looked for a non-redundant next crux. Rung four proved only the accent recolor on the heads view; rung six only the ground on the plain view. Neither proved the property a design system actually promises: a single .brush file re-skinning a whole component on both axes at once. That is the honest capstone of the theming arc.
+think The hot-edge.brush fixture already sets all three tokens (paper Bark, ink Flax, head terracotta) and heads.paint_heads already dresses both the ground and the head span — so painting the heads view with hot-edge re-skins both axes. The new work is proving both, honestly, in one app.
+think Wrote pond/apps/mantra_browser_full_theme.rye — resolve_full_theme requires paper, ink, AND head present (ThemeIncomplete otherwise), paints via heads.paint_heads unchanged, and proves each axis by its own honest measure.
+think The ground uses the r6 role-inversion proof (Flax rules the base canvas, Bark rules the themed one — the paper↔ink swap forbids a false zero). The accent gets a clean zero: terracotta is distinct from both grounds, so it never appears without the theme — a true recolor, not an addition.
+think TAME bit a compound assert(a and b) I had used for the channel checks — split each into per-channel asserts with a positive // invariant: comment, which is both the ban fix and clearer.
+obs Two axes, two truthful measures: a swapped color pair needs the majority-inversion proof, a distinct color earns the clean-zero proof. Matching the measure to the color relationship keeps the witness honest rather than forcing one template.
+obs r7 closes the theming arc — both sides of the sheet (accent r4, ground r6) proven together from one authored file; the next crux is a fresh BUHR journey (a design commitment, a natural checkpoint).
+loom witness=buhr_mantra_browser_full_theme_witness cases=4 rung4_rerun=green rung6_rerun=green tame=clean width=rc0
+file pond/apps/mantra_browser_full_theme.rye BUHR-J2r7 — one .brush file re-skins the heads view on both axes (ground inversion + accent clean-zero)
+file tools/buhr_mantra_browser_full_theme_witness.rish witness — builds, runs selftest (4 welcomes), re-runs rungs four and six GREEN
+recommend check-in (Claude) opening a new BUHR journey is a design commitment worth a checkpoint; the .brush theming arc (J2 r1–r7) is complete and sent
