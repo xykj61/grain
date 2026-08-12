@@ -1,0 +1,33 @@
+Grain — Licensing
+
+Copyright (c) 2026 Keaton Dunsford and contributors.
+
+Grain carries two kinds of work under one roof, and each is offered under the
+license that fits it. This file is the index; the full texts live beside it.
+
+Code — Apache-2.0 OR MIT (your choice)
+
+  Every source file, script, and build tool in this repository is offered
+  under the Apache License 2.0 or the MIT License, at your option — the
+  permissive dual-license convention the wider ecosystem already reads. Take
+  whichever suits your use; you need satisfy only one.
+
+    - Apache-2.0 — see LICENSE-APACHE
+    - MIT        — see LICENSE-MIT
+
+Documentation and prose — CC-BY-4.0
+
+  The writings — research, design briefs, specifications, session logs, and
+  the prose throughout active-designing/, external-research/, context/,
+  work-in-progress/, expanding-prompts/, session-logs/, and SOURCE.md — are
+  offered under the Creative Commons Attribution 4.0 International license.
+  Share and adapt them freely, for any purpose, with attribution.
+
+    - CC-BY-4.0 — see LICENSE-CC-BY
+
+Contributions
+
+  Unless you state otherwise, work you contribute is offered under these same
+  terms — code under Apache-2.0 OR MIT, prose under CC-BY-4.0 — so the tree
+  stays licensed as a whole. Every commit is GPG-signed; the history proves who
+  wrote it. See CONTRIBUTING.md for the shape a contribution takes.

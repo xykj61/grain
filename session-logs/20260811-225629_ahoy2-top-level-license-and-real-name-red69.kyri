@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260811.225629
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title AHOY2 top-level LICENSE + real copyright name + book REDS #69
+prompt Continue AHOY/WADE per Lindy-first, crux-first; then Keaton: update the license name to his real legal name (Kaeden Reyklah was the anon name)
+think REMEMBER + both plans read: AHOY1 weave saturated (six tiers woven), WADE0 the crux but seed-boundary/provisioning gated. Legitimacy files were the next durable tier — three license variants existed but no single top-level LICENSE, no SECURITY/CODE_OF_CONDUCT.
+think Lindy-first, crux-first → the single most-read legitimacy artifact is a top-level LICENSE. Wrote it as a plain honest index over the three existing files (Apache-2.0 OR MIT for code · CC-BY-4.0 for prose), matching README exactly (docs↔code sync). Technical file — ended plainly, no benediction.
+think Keaton's two interrupts named different people — Dunsford (current legal name until the change to Livermore confirms) vs Livermore. For a copyright notice the distinction is legally load-bearing and the messages conflicted, so I asked rather than guessed; he chose Keaton Dunsford (strictly-correct current legal holder).
+think Renamed the copyright line in all four LICENSE* files from the anon Kaeden Reyklah to Keaton Dunsford — scope held to the license copyright notices, not the dated anon foundations/specs (immutable, accrete-never-break).
+think Added the new LICENSE to template-manifest.bron as allow + scrub (matching the three siblings: copyright holder is a real name, M3 scrub substitutes it back to the anon name for the public seed). Ran sow_witness.
+obs sow_witness went M1_BAD — five root dirs (assets · brix · pleac · journey · research-silo) unclassified in the manifest. A stash-check proved the red predates this round at HEAD; my LICENSE line only showed as in-manifest-not-in-tree because untracked, resolving on commit. Booked as REDS #69.
+obs assets/brix/pleac are plainly public (logo + code modules); journey and research-silo touch identity and want a scrub-vs-withhold call. Deciding what enters a public force-push seed is Keaton's hand (AHOY3), so I flagged the classification for his word rather than guessing seed contents.
+obs living_docs_lint GREEN. sow_witness stays RED on the pre-existing manifest drift — named honestly; the license work itself is verified by the copyright-line grep (all four consistent) and does not depend on the seed-coverage witness.
+file LICENSE new top-level license index; copyright Keaton Dunsford; Apache-2.0 OR MIT / CC-BY-4.0
+file LICENSE-MIT copyright line → Keaton Dunsford and contributors
+file LICENSE-APACHE copyright line → Keaton Dunsford and contributors
+file LICENSE-CC-BY copyright line → Keaton Dunsford and contributors
+file template-manifest.bron allow + scrub the new LICENSE (real name, scrubbed for the seed)
+file work-in-progress/REDS.md book #69 — manifest coverage drift; five unclassified root dirs; classification waits on Keaton's word
+recommend check-in Keaton — seed-boundary classification of journey/research-silo (scrub vs withhold) needs your word before sow_witness can go GREEN and AHOY3 can project; assets/brix/pleac are ready to allow. AHOY1 weave otherwise complete; next AHOY2 files (SECURITY.md · CODE_OF_CONDUCT.md) are mechanical when you want them.
