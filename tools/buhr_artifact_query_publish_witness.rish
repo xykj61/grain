@@ -1,0 +1,42 @@
+# tools/buhr_artifact_query_publish_witness.rish — BUHR Journey 8, Rung 2: the reading tracks a live publish.
+#
+# Rung one let a voice read a named Tablecloth artifact, and only bytes that proved
+# themselves. This rung proves the living in a living store: compose the voice's read with
+# Journey 7's store_artifact over one catalog, and the answer moves with the publish. A
+# name the store does not yet hold refuses (UnknownArtifact, no invented answer); once
+# published, the same query reads its true bytes. A publish is an append — held names
+# stand unchanged across a later publish, and the query itself writes nothing (a
+# published store reads the new name; a pristine store still refuses it). Rung one and
+# Journey 7's store stay their own green binaries (this rung composes over public API).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/buhr_artifact_query_publish_witness.rish
+
+say "buhr8r2: Language EN — a voice's reading tracks a live publish, read only through the verified fetch."
+say "buhr8r2: Lens TAME — a publish is an append; a refused name becomes a true reading, held names stand, the query never writes."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/artifact-query-publish"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/artifact_query_publish.rye -femit-bin=${bin}"]
+assert build.ok else "buhr8r2: artifact_query_publish build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "buhr8r2: artifact_query_publish selftest exited non-zero"
+assert selftest.out contains "GREEN" else "buhr8r2: selftest did not speak GREEN"
+assert selftest.out contains "before publish - brief.txt refuses" else "buhr8r2: pre-publish refusal missing"
+assert selftest.out contains "after publish - brief.txt reads" else "buhr8r2: the crux (reading tracks the publish) missing"
+assert selftest.out contains "the reading tracks the publish" else "buhr8r2: live-publish tracking claim missing"
+assert selftest.out contains "accrete-never-break" else "buhr8r2: held-name stability missing"
+assert selftest.out contains "the reading is read-only" else "buhr8r2: read-only proof missing"
+
+# Rung one — the voice that reads a named artifact — stays its own green binary; rung two
+# composes over its public answer_over, additively.
+let r1_bin = "pond/bin/artifact-query"
+let r1_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/artifact_query.rye -femit-bin=${r1_bin}"]
+assert r1_build.ok else "buhr8r2: artifact_query (J8r1) re-build failed"
+let r1_selftest = run ["sh" "-c" "${r1_bin} selftest 2>&1"]
+assert r1_selftest.ok else "buhr8r2: artifact_query (J8r1) selftest exited non-zero"
+assert r1_selftest.out contains "GREEN" else "buhr8r2: artifact_query (J8r1) did not speak GREEN"
+
+say "buhr8r2: GREEN — the reading tracks a live publish; a refused name becomes a true reading once the store holds it, and the query never writes."
