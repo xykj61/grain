@@ -138,6 +138,32 @@ pub fn lane_count(catalog: *const mn.BoltCatalog) u32 {
     return count;
 }
 
+/// The head revision on a lane — the newest node in its chain — or null when the
+/// lane has no leaf yet. The living edge the browser lights (rung three) is this
+/// revision; an editor reads it to know which revision its next append continues.
+/// Reads the append-only log the same way the graph does, so the number it returns
+/// is exactly the head the painted view shows.
+pub fn head_revision(catalog: *const mn.BoltCatalog, peer: []const u8, bolt: []const u8, path: []const u8) ?u32 {
+    // invariant: the catalog respects Mantra's binding budget.
+    assert(catalog.leaf_count <= mn.max_bindings);
+    var head: ?u32 = null;
+    var i: u32 = 0;
+    while (i < catalog.leaf_count) : (i += 1) {
+        const leaf = &catalog.leaves[i];
+        if (!std.mem.eql(u8, leaf_peer(leaf), peer)) continue;
+        if (!std.mem.eql(u8, leaf_bolt(leaf), bolt)) continue;
+        if (!std.mem.eql(u8, leaf_path(leaf), path)) continue;
+        if (head) |h| {
+            if (leaf.revision > h) head = leaf.revision;
+        } else {
+            head = leaf.revision;
+        }
+    }
+    // invariant: a found head is a real revision, counting from one.
+    if (head) |h| assert(h >= 1);
+    return head;
+}
+
 /// Find the leaf on a given lane at a given revision, or null. The append-only log
 /// holds at most one leaf per (peer,bolt,path,revision), so this is the node lookup.
 fn find_rev(catalog: *const mn.BoltCatalog, anchor: *const mn.LeafBinding, revision: u32) ?*const mn.LeafBinding {

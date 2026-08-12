@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260812.123857
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu ai-jail (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR Journey 4 opened — the Realidream editing surface, first rung on metal
+prompt Autonomous loop — keep taking agent-doable BUHR laps Lindy-first crux-first, double-seat new visions for blind spots, send each increment, STOP at custody gates
+think After closing the .brush theming arc (J2 r1–r7) I found the plan-exhausted blind spot: the BUHR exploration named exactly three journeys (Quin voices, Realidream Mantra browser, MCP-in-Bron) and all three now run green. The written itinerary was complete — a genuine double-seat opening.
+think The Realidream vision promises reading the web and writing the program on one graph, and Journey 2 built only the reading half. The untouched crux is the write side: an edit that is an append to the Mantra catalog, shown by the very same browser render — referential transparency carried into an editor, no buffer beside the log.
+think Seated the exploration active-designing/20260812-123509_buhr-journey4-realidream-editing-surface-exploration.md (Radiant, grounded in the real modules, names the crux and one door), then built its first rung rather than stopping at the doc — the higher-value make-progress move.
+think Studied the Mantra API: BoltCatalog.append_leaf is public and enforces the append-only order (revision == prev+1), immutability, and field bounds. The one missing read was the lane's current head revision; I added pub head_revision to mantra_browser.rye — where head-finding already lives (rung three lights the head) — keeping the substrate recall_lap1.rye untouched.
+think mantra_editor.rye commit(catalog, peer, bolt, path, content, tilak) reads the head, appends prev+1, returns the new revision; refuses an unknown lane (LaneUnknown) and lets Mantra refuse over-long fields / a full catalog. The witness renders before and after and proves the edited lane grew by exactly one r<n> node with its chain arrow, every other lane byte-for-byte unchanged, and a second edit chains r1 -> r2 -> r3 (append-only, earlier revisions still stand).
+obs A commit that is an append inherits accrete-never-break by construction — the editor can only ever add a revision, never rewrite one, so the tree's own history discipline is the editor's data model, not a rule bolted on.
+obs Opening a journey beyond the seated three-journey plan is a design commitment; I approved my own design round (per the loop) by grounding it in real modules and shipping a green first rung, rather than checking in on the idea alone.
+loom witness=buhr_mantra_editor_witness cases=3 j2_reader_rerun=green tame=clean width=rc0
+file active-designing/20260812-123509_buhr-journey4-realidream-editing-surface-exploration.md the exploration opening BUHR Journey 4 — the editing half of Realidream's one-graph promise
+file pond/apps/mantra_editor.rye BUHR-J4r1 — commit appends a revision the browser graph already knows how to show
+file pond/apps/mantra_browser.rye added pub head_revision — the lane's head, read the same way the graph paints it
+file tools/buhr_mantra_editor_witness.rish witness — builds, runs selftest (3 welcomes), re-runs the Journey 2 reader GREEN
+recommend keep-going next BUHR-J4 rung: paint the grown graph with the styled Skate lowering (the edit moves the living edge forward, visibly), or an edit that forks a new lane
