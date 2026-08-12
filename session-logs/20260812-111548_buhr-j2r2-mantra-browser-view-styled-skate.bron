@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260812.111548
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention — this session in ai-jail
+title BUHR Journey 2 Rung 2 — the append-only graph painted onto the styled Skate surface
+prompt recur BUHR crux-first, approve own design rounds, send each increment, stop at custody gates
+think Rung one rendered Mantra's append-only log as readable text. J2's Lindy payload is the styled Skate surface — "editor and view share one graph" — so crux-first, rung two paints that same graph.
+think Surveyed the surface: brushstroke/skate_grid.rye (Grid.init/put_line/rasterize/lit_pixel_count) and brushstroke/tokens.rye (resolve cascade + dress/dress_grid lowering) are landed and witnessed; imports resolve under pond/apps through the brushstroke symlink.
+think Approved my own design round: pond/apps/mantra_browser_view.rye with paint_graph(catalog, grid, sheet) that calls mantra_browser.render for the exact bytes rung one witnesses, splits lines, and dresses each onto a grid row. The view can never drift from the text because it IS the text — one reading.
+think Made mantra_browser.demo_catalog pub so the view paints the very same graph the browser renders (shared graph, literally).
+obs Five witnessed cases: whole demo graph painted onto 6 styled rows; row 0 carries the render's first line glyph-for-glyph (shared-graph proof); glyphs rasterize to lit ink pixels over Flax paper; light and dark sheets lower to distinct grounds (styling is real, not a no-op); a 3-row viewport bounds the paint to 3 rows (no overflow). Rung one re-run stays GREEN inside the witness — strictly additive.
+obs TAME first pass clean (learned the compound-assert ban in rung one — wrote the distinctness check as a single or-expression, not assert(a and b)).
+loom witness=buhr_mantra_browser_view_witness result=GREEN cases=5 painted_rows=6 grid=48x16 lit_over_flax=true
+file pond/apps/mantra_browser_view.rye paints the append-only graph onto a styled Skate grid; editor and view share one graph
+file tools/buhr_mantra_browser_view_witness.rish proves the styled paint + shared graph + lit pixels + distinct grounds + viewport bound on metal, rung one still GREEN
+file pond/apps/mantra_browser.rye demo_catalog made pub so the view shares the browser's exact graph
+recommend keep-going BUHR Journey 3 (MCP-in-Bron greenfield) — or deepen Journey 2 with a styled-run per node (dress_run coloring revision digests); both agent-doable over witnessed ground
