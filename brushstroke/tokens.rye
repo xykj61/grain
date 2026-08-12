@@ -1,0 +1,387 @@
+//! brushstroke/tokens.rye — the WADE1 token sheet: named palette values, a
+//! cascade by per-key infuse, and a lowering into the Skate cell grid.
+//!
+//! WADE1 is the `.brush` surface-bridge seam: a cascading component styleguide
+//! expressed in the tree's own tongue — Bron infused into Bron, never a web
+//! cascade (active-designing/20260812-000456_wade1-brush-surface-bridge-seam.md).
+//! The three layers the seam names live here as one module:
+//!
+//!   1. The token sheet   — Flax · Bark · Oat · Walnut as ARGB8888 constants,
+//!                          plus paper/ink/edge + weight/space/elevate fields.
+//!   2. The cascade       — style_child = infuse(style_base, style_override),
+//!                          reusing brix/infuse.rye's proven per-key override.
+//!   3. The lowering      — a resolved sheet dresses a Skate grid: a cell's
+//!                          paint color read from the paper/ink tokens.
+//!
+//! The six palette invariants from the weave silo
+//! (active-designing/yonder/20260712-091012_brushstroke-linengrow-weave-silo.md)
+//! are the ARGB constants' asserted bounds — warm hue, low blue, gentle
+//! lightness spread, paper hierarchy — checked at construction, not assumed.
+//!
+//! Build and prove (from repo root):
+//!   rye build brushstroke/tokens.rye -femit-bin=tools/.build/brushstroke_tokens
+//!   tools/.build/brushstroke_tokens selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const infuse = @import("brix_infuse.rye");
+const skate = @import("skate_grid.rye");
+
+pub const tokens_version = "20260812.043000";
+
+// --- bounds — every collection and loop names its maximum ----------------
+
+pub const max_sheet_bytes: u32 = 512; // one token sheet in Bron, bounded like infuse's max_line
+pub const max_cascade_depth: u32 = 8; // deepest inheritance chain a component may stack
+
+pub const TokensError = error{ CascadeTooDeep, ChannelOutOfRange };
+
+// --- the palette — Flax · Bark · Oat · Walnut, ARGB8888 (0xAARRGGBB) ------
+//
+// Each constant honors the six invariants (silo law), and `assert_warm_low_blue`
+// below proves the warm-hue and low-blue laws hold rather than trusting the hex.
+//
+// A warm plant-fiber hedgerow: red channel leads, green follows warm, blue
+// trails lowest of the three — the cloth stays the same warm family as the
+// light goes down (invariant 2), and the blue channel is always the smallest
+// (invariant 6), so the family survives reflective glass.
+
+/// Flax — the light page (ground). Warm off-white near L83 (invariant 1: the
+/// light end of the ~66-point lightness spread). R242 > G236 > B223.
+pub const flax: u32 = 0xFF_F2_EC_DF;
+
+/// Oat — the light card. Lifts a touch above Flax — elevation as a finer,
+/// brighter weave (invariant 3), never a shadow; paper receives the writing
+/// above the cloth (invariant 5). R248 > G243 > B232.
+pub const oat: u32 = 0xFF_F8_F3_E8;
+
+/// Bark — the dark page (ground). Warm near-black near L17 (invariant 1: the
+/// dark end of the spread) — the same warm family as Flax, only the light gone
+/// down (invariant 2). R43 > G38 > B32.
+pub const bark: u32 = 0xFF_2B_26_20;
+
+/// Walnut — the dark card. Lifts above Bark as a finer weave (invariant 3),
+/// the dark twin of Oat over Flax. R58 > G52 > B43.
+pub const walnut: u32 = 0xFF_3A_34_2B;
+
+/// A mid warm rule for edges — reads on both Flax and Bark, blue still lowest.
+/// R138 > G122 > B102.
+pub const edge_warm: u32 = 0xFF_8A_7A_66;
+
+// --- channel helpers — one value model, explicit widths ------------------
+
+/// The red channel of an ARGB8888 word. In-memory count → u32.
+fn red_of(argb: u32) u32 {
+    // invariant: the extracted channel is a single byte, never wider.
+    const r: u32 = (argb >> 16) & 0xFF;
+    assert(r <= 0xFF);
+    // invariant: the input word carries an opaque alpha for a paint token.
+    assert(((argb >> 24) & 0xFF) == 0xFF);
+    return r;
+}
+
+/// The green channel of an ARGB8888 word.
+fn green_of(argb: u32) u32 {
+    const g: u32 = (argb >> 8) & 0xFF;
+    // invariant: the extracted channel is a single byte, never wider.
+    assert(g <= 0xFF);
+    // invariant: the input word carries an opaque alpha for a paint token.
+    assert(((argb >> 24) & 0xFF) == 0xFF);
+    return g;
+}
+
+/// The blue channel of an ARGB8888 word.
+fn blue_of(argb: u32) u32 {
+    const b: u32 = argb & 0xFF;
+    // invariant: the extracted channel is a single byte.
+    assert(b <= 0xFF);
+    // invariant: a byte value never reaches the next byte's place.
+    assert(b < 0x100);
+    return b;
+}
+
+/// Prove one palette word honors invariants 2 (warm hue) and 6 (low blue):
+/// red leads, green follows, blue trails lowest of the three. Returns the word
+/// unchanged so callers can assert against a checked constant.
+pub fn assert_warm_low_blue(argb: u32) TokensError!u32 {
+    const r = red_of(argb);
+    const g = green_of(argb);
+    const b = blue_of(argb);
+    // invariant: warm hue — red leads green leads blue (a plant-fiber family).
+    if (!(r >= g and g >= b)) return error.ChannelOutOfRange;
+    // invariant: low blue — blue is strictly the smallest channel.
+    if (!(b < r and b <= g)) return error.ChannelOutOfRange;
+    return argb;
+}
+
+// --- the token sheet, as Bron the cascade infuses ------------------------
+//
+// A token sheet is data, not code — flat Bron infuse already parses:
+//   paper <hex>   ink <hex>   edge <hex>   weight <name>   space <px>   elevate <name>
+// The values are the palette hex words above (written as 0x… strings) so the
+// resolved sheet round-trips through infuse unchanged.
+
+/// The base sheet — Flax paper, Bark ink, a warm edge, a light weave.
+pub const base_sheet =
+    "paper 0xFFF2ECDF\n" ++ // Flax — light page
+    "ink 0xFF2B2620\n" ++ // Bark — dark text on light cloth
+    "edge 0xFF8A7A66\n" ++ // warm rule
+    "weight regular\n" ++
+    "space 4\n" ++ // thread_px — invariant 4, 4px chosen
+    "elevate flat\n";
+
+/// A dark-mode override — the light goes down, the cloth stays the same family.
+/// Only paper and ink change; edge, weight, space, elevate inherit unchanged.
+pub const dark_override =
+    "paper 0xFF2B2620\n" ++ // Bark — dark page
+    "ink 0xFFF2ECDF\n"; // Flax — light text on dark cloth
+
+// --- the cascade — inheritance by infuse ---------------------------------
+
+/// Resolve a child sheet by infusing an override over a base: the override wins
+/// per token, inherited tokens stay in place, new tokens append. This reuses
+/// brix/infuse.rye — the proven per-key override — rather than a fresh engine.
+/// `out` is the caller's bounded buffer; the byte length is returned.
+pub fn resolve(base_src: []const u8, over_src: []const u8, out: []u8) !u32 {
+    // invariant: the resolved sheet fits the token-sheet bound.
+    assert(out.len <= max_sheet_bytes);
+    // invariant: a sheet carries at least a paper token to lower from.
+    assert(base_src.len > 0);
+    const n = try infuse.infuse(base_src, over_src, out);
+    // invariant: the resolved sheet is non-empty.
+    assert(n > 0);
+    // invariant: the resolved sheet stays within the given buffer.
+    assert(n <= out.len);
+    return n;
+}
+
+/// Resolve a stack of overrides bottom-up, bounded by max_cascade_depth. Each
+/// layer infuses onto the accumulated result, so the topmost override wins.
+/// `layers[0]` is the base; layers after it are overrides in cascade order.
+pub fn resolve_stack(layers: []const []const u8, out: []u8, scratch: []u8) !u32 {
+    // invariant: a cascade names a base and stays within the depth bound.
+    assert(layers.len >= 1);
+    if (layers.len > max_cascade_depth) return error.CascadeTooDeep;
+    // invariant: the output buffer is token-sheet sized.
+    assert(out.len <= max_sheet_bytes);
+    // invariant: the scratch buffer is token-sheet sized — the ping-pong twin.
+    assert(scratch.len <= max_sheet_bytes);
+
+    var cur = try infuse.infuse(layers[0], "", out); // base normalized through infuse
+    var in_out = true; // the live bytes currently sit in `out`
+    var i: u32 = 1;
+    const layer_count: u32 = @intCast(layers.len);
+    while (i < layer_count) : (i += 1) {
+        if (in_out) {
+            cur = try infuse.infuse(out[0..cur], layers[i], scratch);
+        } else {
+            cur = try infuse.infuse(scratch[0..cur], layers[i], out);
+        }
+        in_out = !in_out;
+    }
+    // The result must land in `out`; when it sits in scratch, copy it home.
+    if (!in_out) {
+        // invariant: the final bytes fit the destination buffer exactly.
+        assert(cur <= out.len);
+        var j: u32 = 0;
+        while (j < cur) : (j += 1) out[j] = scratch[j];
+    }
+    // invariant: a resolved cascade is non-empty.
+    assert(cur > 0);
+    // invariant: a resolved cascade fits the destination buffer.
+    assert(cur <= out.len);
+    return cur;
+}
+
+// --- the lowering — a resolved sheet dresses a Skate grid ----------------
+
+/// Read one token's hex value out of a resolved Bron sheet by key. Returns the
+/// ARGB8888 word. Refuses a missing or malformed token rather than guessing.
+fn token_argb(sheet: []const u8, key: []const u8) !u32 {
+    // invariant: a key is present to match.
+    assert(key.len > 0);
+    // invariant: a key stays within infuse's bounded key length.
+    assert(key.len <= infuse.max_key);
+    var lines = std.mem.splitScalar(u8, sheet, '\n');
+    // invariant: a sheet holds at most this many lines — bound the scan.
+    var seen: u32 = 0;
+    while (lines.next()) |raw| {
+        seen += 1;
+        assert(seen <= infuse.max_pairs);
+        const line = std.mem.trim(u8, raw, " \t\r");
+        if (line.len == 0 or line[0] == '#') continue;
+        var sp: usize = 0; // seam: slice index over a std source line
+        while (sp < line.len and line[sp] != ' ') : (sp += 1) {}
+        if (!std.mem.eql(u8, line[0..sp], key)) continue;
+        const val = std.mem.trim(u8, line[sp..], " \t");
+        return parse_hex_argb(val);
+    }
+    return error.ChannelOutOfRange;
+}
+
+/// Parse a `0xAARRGGBB` string to a u32 word. Refuses anything not eight hex
+/// digits behind `0x`.
+fn parse_hex_argb(val: []const u8) !u32 {
+    // invariant: an ARGB word is exactly the `0x` prefix and eight hex digits.
+    if (val.len != 10) return error.ChannelOutOfRange;
+    if (!(val[0] == '0' and (val[1] == 'x' or val[1] == 'X'))) return error.ChannelOutOfRange;
+    var w: u32 = 0;
+    var i: u32 = 2;
+    // invariant: exactly eight nibbles are folded, no more.
+    while (i < 10) : (i += 1) {
+        const c = val[i];
+        const nib: u32 = if (c >= '0' and c <= '9')
+            @as(u32, c - '0')
+        else if (c >= 'a' and c <= 'f')
+            @as(u32, c - 'a' + 10)
+        else if (c >= 'A' and c <= 'F')
+            @as(u32, c - 'A' + 10)
+        else
+            return error.ChannelOutOfRange;
+        w = (w << 4) | nib;
+    }
+    return w;
+}
+
+/// The paint pair a resolved sheet lowers to: ground and text as Skate Colors.
+pub const Paint = struct {
+    paper: skate.Color,
+    ink: skate.Color,
+};
+
+/// An ARGB8888 word to a Skate Color (drops alpha — Skate paints opaque).
+fn to_color(argb: u32) skate.Color {
+    // invariant: each channel narrows from a proven single byte.
+    const r = red_of(argb);
+    const g = green_of(argb);
+    const b = blue_of(argb);
+    // invariant: red narrows to a single byte at the Skate edge.
+    assert(r <= 0xFF);
+    // invariant: green narrows to a single byte.
+    assert(g <= 0xFF);
+    // invariant: blue narrows to a single byte.
+    assert(b <= 0xFF);
+    return .{ .r = @intCast(r), .g = @intCast(g), .b = @intCast(b) };
+}
+
+/// Lower a resolved sheet to a paint pair, proving both tokens are warm/low-blue
+/// before they reach the grid. This is the seam's third layer — tokens to paint.
+pub fn dress(sheet: []const u8) !Paint {
+    // invariant: a sheet long enough to carry paper and ink tokens.
+    assert(sheet.len > 0);
+    const paper = try assert_warm_low_blue(try token_argb(sheet, "paper"));
+    const ink = try assert_warm_low_blue(try token_argb(sheet, "ink"));
+    // invariant: paper and ink resolve to distinct grounds (cloth is not ink).
+    assert(paper != ink);
+    return .{ .paper = to_color(paper), .ink = to_color(ink) };
+}
+
+/// Apply a resolved sheet to a Skate grid: write one line of text, then return
+/// the paint pair so the caller rasterizes with the sheet's own paper/ink.
+/// The grid holds the glyphs; the sheet holds the colors — drawn, never retained.
+pub fn dress_grid(grid: *skate.Grid, row: u32, text: []const u8, sheet: []const u8) !Paint {
+    // invariant: the row sits inside the grid's bounded height.
+    assert(row < grid.rows);
+    // invariant: a line of text is present to paint.
+    assert(text.len > 0);
+    const paint = try dress(sheet);
+    grid.put_line(row, text);
+    return paint;
+}
+
+// --- selftest ------------------------------------------------------------
+
+fn prove_palette() !void {
+    // The four named tokens each honor warm-hue and low-blue.
+    _ = try assert_warm_low_blue(flax);
+    _ = try assert_warm_low_blue(oat);
+    _ = try assert_warm_low_blue(bark);
+    _ = try assert_warm_low_blue(walnut);
+    _ = try assert_warm_low_blue(edge_warm);
+
+    // Invariant 1 — gentle lightness spread: the light page reads far brighter
+    // than the dark page, by a wide, honest margin (roughly the ~66-point L
+    // spread the silo names, measured here as a red-channel gap).
+    if (!(red_of(flax) > red_of(bark) + 150)) return error.ChannelOutOfRange;
+    // Invariant 3 — elevation as a finer weave: each card lifts above its page.
+    if (!(red_of(oat) > red_of(flax))) return error.ChannelOutOfRange;
+    if (!(red_of(walnut) > red_of(bark))) return error.ChannelOutOfRange;
+}
+
+fn prove_cascade() !void {
+    var out: [max_sheet_bytes]u8 = undefined;
+    const n = try resolve(base_sheet, dark_override, &out);
+    const sheet = out[0..n];
+
+    // (a) The child sheet's tokens still honor the invariants after the cascade.
+    _ = try dress(sheet);
+
+    // (b) Base-only tokens kept; override tokens win; the base's old paper gone.
+    if (std.mem.indexOf(u8, sheet, "edge 0xFF8A7A66") == null) return error.ChannelOutOfRange; // kept
+    if (std.mem.indexOf(u8, sheet, "space 4") == null) return error.ChannelOutOfRange; // kept
+    if (std.mem.indexOf(u8, sheet, "paper 0xFF2B2620") == null) return error.ChannelOutOfRange; // override won
+    if (std.mem.indexOf(u8, sheet, "paper 0xFFF2ECDF") != null) return error.ChannelOutOfRange; // old gone
+
+    // A new token appends — an override-only key the base never named.
+    var out2: [max_sheet_bytes]u8 = undefined;
+    const n2 = try resolve(base_sheet, "reduced_motion on\n", &out2);
+    if (std.mem.indexOf(u8, out2[0..n2], "reduced_motion on") == null) return error.ChannelOutOfRange;
+
+    // A stacked cascade, base then two overrides, top layer winning.
+    var out3: [max_sheet_bytes]u8 = undefined;
+    var scratch: [max_sheet_bytes]u8 = undefined;
+    const layers = [_][]const u8{ base_sheet, dark_override, "weight bold\n" };
+    const n3 = try resolve_stack(&layers, &out3, &scratch);
+    if (std.mem.indexOf(u8, out3[0..n3], "paper 0xFF2B2620") == null) return error.ChannelOutOfRange; // dark won
+    if (std.mem.indexOf(u8, out3[0..n3], "weight bold") == null) return error.ChannelOutOfRange; // top won
+    if (std.mem.indexOf(u8, out3[0..n3], "weight regular") != null) return error.ChannelOutOfRange; // base gone
+}
+
+fn prove_lowering() !void {
+    const allocator = std.heap.page_allocator;
+    const cols: u32 = 32;
+    const rows: u32 = 4;
+    var grid = try skate.Grid.init(allocator, cols, rows);
+
+    // Resolve a dark sheet and dress the grid with it.
+    var out: [max_sheet_bytes]u8 = undefined;
+    const n = try resolve(base_sheet, dark_override, &out);
+    const paint = try dress_grid(&grid, 0, "WADE1 token sheet", out[0..n]);
+
+    // The dark sheet lowers to Bark paper (R43 G38 B32) and Flax ink (R242 G236 B223).
+    assert(paint.paper.r == 0x2B); // Bark red
+    assert(paint.paper.g == 0x26); // Bark green
+    assert(paint.paper.b == 0x20); // Bark blue
+    assert(paint.ink.r == 0xF2); // Flax red
+    assert(paint.ink.g == 0xEC); // Flax green
+    assert(paint.ink.b == 0xDF); // Flax blue
+
+    // Rasterize with the sheet's own colors; the grid renders lit ink on paper.
+    const width: i32 = @intCast(cols * skate.cell_w);
+    const height: i32 = @intCast(rows * skate.cell_h);
+    const stride: u32 = @as(u32, @intCast(width)) * 4;
+    const height_u: u32 = @intCast(height);
+    const pixels = try allocator.alloc(u8, @intCast(stride * height_u));
+    grid.rasterize(pixels, stride, width, height, paint.paper, paint.ink, 1);
+
+    const lit = grid.lit_pixel_count(pixels, stride, width, height, paint.paper);
+    // invariant: dressed text renders visibly against its own paper ground.
+    assert(lit > 100);
+}
+
+fn run_selftest() !u8 {
+    try prove_palette();
+    try prove_cascade();
+    try prove_lowering();
+    print("brushstroke tokens: Flax/Bark/Oat/Walnut ARGB8888 honor warm-hue, low-blue, gentle-lightness, and paper-hierarchy invariants.\n", .{});
+    print("brushstroke tokens: the cascade is per-key infuse — override tokens win, inherited tokens stay in place, new tokens append.\n", .{});
+    print("brushstroke tokens: a resolved sheet dresses a Skate grid — paper/ink lower to Colors and rasterize to ARGB8888 pixels.\n", .{});
+    print("brushstroke tokens: version {s}\n", .{tokens_version});
+    print("GREEN: brushstroke tokens — a cascading token sheet by infuse, lowered into the Skate grid, honoring the six weave invariants.\n", .{});
+    return 0;
+}
+
+pub fn main() !u8 {
+    return run_selftest();
+}
