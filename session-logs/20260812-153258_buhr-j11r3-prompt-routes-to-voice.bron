@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260812.153258
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR-J11r3 — a filled prompt routes to a voice
+prompt Keep going Lindy-first crux-first; double-seat visions on blind spots; send each increment; stop at custody gates.
+think The fusion rung: Journey 9 served the intelligence as MCP tools, Journey 11 rungs one and two served prompts; this joins them — a server's filled template IS a prompt a Grain voice can answer.
+think Wrote pond/apps/mcp_prompt_voice.rye: answer(desc, req, model_hash, budget, allow_text, out) fills the template via rung one's get_prompt, parses the result; a fill refusal (the four named errors) crosses straight back and the prompt is never routed half-filled; else the filled body becomes an lc.Request dispatched through quin_host_artifact — the filled WORDS choose the voice.
+think Proven on metal: `matmul {subject}` filled `the pair` → `matmul the pair` → Lattice → 19 22 43 50; `lane_count {graph}` filled `the graph` → graph voice → 3. Refusals: missing_argument + prompt_not_found cross back from the fill (never routed); unknown_op (no voice knows the filled prompt) + model_not_allowed cross back from the voice under their MCP names (mcp_voice.error_name reused). Owned format mcp-prompt-run-v1 envelope (id · voice · result) round-trips.
+think One fix: the selftest const `budget` shadowed the answer() parameter — renamed to demo_budget.
+obs Built GREEN (2 welcomes + 5 unwelcomes) after the shadow fix. Additive — rung one and the host stay their own green binaries. Reads no network. TAME + width clean. BUHR Journey 11's agent-doable arc (exploration + r1 fill + r2 list + r3 route) is complete; the remaining door (Comlink-served) is a serve gate.
+loom witness=buhr_mcp_prompt_voice_witness welcomes=2 unwelcomes=5 lattice_answer="19 22 43 50" result=GREEN
+file pond/apps/mcp_prompt_voice.rye the fusion — fill then route; the filled words choose the voice
+file tools/buhr_mcp_prompt_voice_witness.rish the witness: both routings + four cross-backs asserted · rung one re-run
+file work-in-progress/REMEMBER.md marked the J11 arc complete and bumped the Git nib
+recommend check-in (Claude) BUHR's remaining doors — Comlink-served (serve gate) + owner-signed corpus (custody) — are Keaton's hand; the next constructive move opens a new equinox/domain seam

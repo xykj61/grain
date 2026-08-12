@@ -1,0 +1,348 @@
+//! pond/apps/mcp_prompt_voice.rye — BUHR Journey 11, Rung 3: a filled prompt routes to a voice.
+//!
+//! Journey 9 served the intelligence as MCP tools (a voice a caller invokes); rungs one and two
+//! of Journey 11 served prompts (a template a server offers and fills). This rung joins them —
+//! the equinox's two halves, the intelligence and the protocol, meeting once more. A server's
+//! own prompt template, filled by a caller's arguments (rung one), *is* a prompt a Grain voice
+//! can answer; `answer` fills the template and dispatches the finished text through the gathered
+//! Q-vane host (`quin_host_artifact`), so which voice replies is chosen by the filled words.
+//!
+//! A `matmul {subject}` template filled with `subject=the pair` becomes `matmul the pair`, which
+//! routes to Lattice and answers `19 22 43 50`; a `lane_count {graph}` template filled with
+//! `graph=the graph` becomes `lane_count the graph`, which routes to the graph voice. The
+//! result crosses back in an owned `format mcp-prompt-run-v1` envelope carrying id · voice ·
+//! result, and a round-trip reader recovers the serving voice and the answer.
+//!
+//! Every refusal crosses the surface as a *named* error, never a fabricated answer — the fill's
+//! own four refusals (`prompt_not_found` · `unknown_argument` · `missing_argument` ·
+//! `unbound_placeholder`, rung one) cross straight back, and a voice refusal crosses under its
+//! MCP name (`model_not_allowed` · `unknown_op` · … , via `mcp_voice.error_name`). It composes
+//! over public API only: rung one fills, the host dispatches; neither is reopened. It reads no
+//! network — the real fetch and the Comlink-served transport stay the held custody/serve gates.
+//!
+//!   rye build pond/apps/mcp_prompt_voice.rye -femit-bin=pond/bin/mcp-prompt-voice
+//!   pond/bin/mcp-prompt-voice selftest
+//!
+//! Scope: active-designing/20260812-153255_buhr-journey11-mcp-prompts-surface-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const mp = @import("mcp_prompt.rye");
+const mv = @import("mcp_voice.rye"); // reused for error_name; a voice refusal keeps its MCP name
+const qha = @import("quin_host_artifact.rye"); // the five-voice Q-vane host
+const lc = @import("lantern/lantern_core.rye");
+
+pub const mcp_prompt_voice_version = "20260812.153255";
+
+// The run envelope's bound: a header, id, voice line, and a bounded result body.
+pub const max_run_env: u32 = lc.max_completion_len + 128;
+
+pub const RunError = error{
+    BadFormat,
+    MissingField,
+    UnknownField,
+    LineTooLong,
+    BadInt,
+    EnvTooLong,
+};
+
+/// The plain name a served voice reports at the protocol surface.
+fn voice_name(v: qha.Voice) []const u8 {
+    return switch (v) {
+        .lattice => "lattice",
+        .scribble => "scribble",
+        .ember => "ember",
+        .graph => "graph",
+        .artifact => "artifact",
+    };
+}
+
+/// Render an error run envelope naming `err_name` for request `id`.
+fn render_error(id: u32, err_name: []const u8, out: []u8) RunError![]const u8 {
+    // invariant: the caller's buffer respects the run bound
+    assert(out.len <= max_run_env);
+    // invariant: a named error is present
+    assert(err_name.len > 0);
+    const s = std.fmt.bufPrint(out, "format mcp-prompt-run-v1\nid {d}\nerror {s}\n", .{ id, err_name }) catch return error.EnvTooLong;
+    // seam: bufPrint returns a slice into out; it never exceeds the slice it wrote
+    assert(s.len <= out.len);
+    return s;
+}
+
+/// Fill a prompt template (rung one) and route the finished text through the gathered voice
+/// host, rendering the answer into `out`. The fill's own refusals cross straight back under
+/// their names; a voice refusal crosses under its MCP error name; on success the envelope
+/// carries the serving voice and its answer. `model_hash`/`budget` are the server's own, and
+/// `allow_text` its model allow-list — the caller supplies only the prompt name and arguments.
+pub fn answer(
+    desc: *const mp.PromptDesc,
+    req: *const mp.GetRequest,
+    model_hash: []const u8,
+    budget: u32,
+    allow_text: []const u8,
+    out: []u8,
+) RunError![]const u8 {
+    // invariant: the caller's buffer respects the run bound
+    assert(out.len <= max_run_env);
+    // invariant: a request carries a bounded model hash
+    assert(model_hash.len > 0);
+
+    // Fill the template through rung one. A fill refusal is a rendered MCP-prompt error, not a
+    // Zig error, so parse it back and cross its name straight through — the filled prompt is
+    // never routed to a voice unless every placeholder resolved.
+    var fill_buf: [mp.max_env]u8 = undefined;
+    const filled_env = mp.get_prompt(desc, req, fill_buf[0..]) catch return error.EnvTooLong;
+    var fres: mp.PromptResult = undefined;
+    mp.parse_result(filled_env, &fres) catch return error.BadFormat;
+    if (fres.is_error) return render_error(req.id, fres.err_name, out);
+
+    // The finished text is exactly a Lantern prompt. Which voice answers is chosen by its words.
+    const lreq = lc.Request{ .model_hash = model_hash, .prompt = fres.body, .max_tokens = budget };
+    var scratch: [lc.max_completion_len]u8 = undefined;
+    if (qha.dispatch(lreq, allow_text, scratch[0..])) |served| {
+        // invariant: a served answer honors Lantern's completion bound
+        assert(served.response.text.len <= lc.max_completion_len);
+        const s = std.fmt.bufPrint(out, "format mcp-prompt-run-v1\nid {d}\nvoice {s}\nresult {s}\n", .{
+            req.id, voice_name(served.voice), served.response.text,
+        }) catch return error.EnvTooLong;
+        // invariant: the rendered envelope stays within the buffer
+        assert(s.len <= out.len);
+        return s;
+    } else |err| {
+        return render_error(req.id, mv.error_name(err), out);
+    }
+}
+
+/// A parsed run result — the id it answers and either a serving voice with its answer, or a
+/// named error, exactly one of the two.
+pub const RunResult = struct {
+    id: u32,
+    voice: []const u8, // the serving voice, or empty on error
+    result: []const u8, // the voice's answer, or empty on error
+    err_name: []const u8, // the named error, or empty on success
+    is_error: bool,
+};
+
+/// Split a line into its first space-delimited token (the key) and the trimmed remainder.
+fn key_val(line: []const u8) struct { key: []const u8, val: []const u8 } {
+    // invariant: the line respects the run bound
+    assert(line.len <= max_run_env);
+    var sp: usize = 0; // seam: slice index over a std source
+    while (sp < line.len and line[sp] != ' ') : (sp += 1) {}
+    const key = line[0..sp];
+    const val = std.mem.trim(u8, line[sp..], " \t");
+    return .{ .key = key, .val = val };
+}
+
+/// Parse a `format mcp-prompt-run-v1` envelope back into a RunResult — the reading sibling of
+/// `answer`, so a caller recovers the serving voice and the answer. The `result` value is the
+/// rest of its line, so a multi-word answer (`19 22 43 50`) crosses whole.
+pub fn parse_run(src: []const u8, out: *RunResult) RunError!void {
+    // invariant: a run envelope carries at least a header
+    assert(src.len > 0);
+    // invariant: the source respects the run bound
+    assert(src.len <= max_run_env);
+
+    out.voice = "";
+    out.result = "";
+    out.err_name = "";
+    out.is_error = false;
+
+    var have_header = false;
+    var have_id = false;
+    var have_body = false;
+
+    var lines = std.mem.splitScalar(u8, src, '\n');
+    while (lines.next()) |raw| {
+        const line = std.mem.trim(u8, raw, " \t\r");
+        if (line.len == 0 or line[0] == '#') continue;
+        if (line.len > max_run_env) return error.LineTooLong;
+        const kv = key_val(line);
+        if (std.mem.eql(u8, kv.key, "format")) {
+            if (!std.mem.eql(u8, kv.val, "mcp-prompt-run-v1")) return error.BadFormat;
+            have_header = true;
+        } else if (std.mem.eql(u8, kv.key, "id")) {
+            out.id = std.fmt.parseInt(u32, kv.val, 10) catch return error.BadInt;
+            have_id = true;
+        } else if (std.mem.eql(u8, kv.key, "voice")) {
+            out.voice = kv.val;
+        } else if (std.mem.eql(u8, kv.key, "result")) {
+            out.result = kv.val;
+            out.is_error = false;
+            have_body = true;
+        } else if (std.mem.eql(u8, kv.key, "error")) {
+            out.err_name = kv.val;
+            out.is_error = true;
+            have_body = true;
+        } else {
+            return error.UnknownField;
+        }
+    }
+    if (!have_header) return error.BadFormat;
+    if (!have_id) return error.MissingField;
+    if (!have_body) return error.MissingField;
+}
+
+// --- selftest -----------------------------------------------------------
+
+const allow =
+    \\model_hash sha3-256-rye-forge-lap0
+;
+const model = "sha3-256-rye-forge-lap0";
+const demo_budget: u32 = 64;
+
+// A server-offered template whose filled text is a Lattice prompt.
+const matmul_src =
+    \\format mcp-prompt-v1
+    \\prompt do_matmul
+    \\summary multiply the pinned pair of matrices
+    \\arg subject
+    \\template matmul {subject}
+;
+// A template whose filled text is a graph-voice prompt.
+const graph_src =
+    \\format mcp-prompt-v1
+    \\prompt count_lanes
+    \\arg graph
+    \\template lane_count {graph}
+;
+
+fn get_request(id: u32, prompt: []const u8, arg_name: []const u8, arg_val: []const u8, buf: []u8, req: *mp.GetRequest) !void {
+    const env = std.fmt.bufPrint(buf, "format mcp-prompt-get-v1\nid {d}\nprompt {s}\narg {s} {s}\n", .{ id, prompt, arg_name, arg_val }) catch unreachable;
+    try mp.parse_get(env, req);
+}
+
+fn welcome_filled_prompt_routes_to_lattice() !void {
+    var desc: mp.PromptDesc = undefined;
+    try mp.parse_desc(matmul_src, &desc);
+    var rbuf: [256]u8 = undefined;
+    var req: mp.GetRequest = undefined;
+    try get_request(7, "do_matmul", "subject", "the pair", rbuf[0..], &req);
+
+    var out: [max_run_env]u8 = undefined;
+    const rendered = try answer(&desc, &req, model, demo_budget, allow, out[0..]);
+    var res: RunResult = undefined;
+    try parse_run(rendered, &res);
+    assert(res.id == 7);
+    assert(!res.is_error);
+    // The fill chose the voice: `matmul the pair` routed to Lattice, which multiplied the pair.
+    assert(std.mem.eql(u8, res.voice, "lattice"));
+    assert(std.mem.eql(u8, res.result, "19 22 43 50"));
+    print("mcp_prompt_voice: a filled template routed to Lattice — 'matmul the pair' -> {s}\n", .{res.result});
+}
+
+fn welcome_a_different_fill_routes_to_the_graph() !void {
+    var desc: mp.PromptDesc = undefined;
+    try mp.parse_desc(graph_src, &desc);
+    var rbuf: [256]u8 = undefined;
+    var req: mp.GetRequest = undefined;
+    try get_request(8, "count_lanes", "graph", "the graph", rbuf[0..], &req);
+
+    var out: [max_run_env]u8 = undefined;
+    const rendered = try answer(&desc, &req, model, demo_budget, allow, out[0..]);
+    var res: RunResult = undefined;
+    try parse_run(rendered, &res);
+    // A different filled prompt chose a different voice, over the same host.
+    assert(std.mem.eql(u8, res.voice, "graph"));
+    assert(res.result.len > 0);
+    print("mcp_prompt_voice: a different fill routed to the graph voice — 'lane_count the graph' -> {s}\n", .{res.result});
+}
+
+fn unwelcome_missing_argument_crosses_back() !void {
+    // A fill refusal crosses straight back — the prompt never reaches a voice half-filled.
+    var desc: mp.PromptDesc = undefined;
+    try mp.parse_desc(matmul_src, &desc);
+    // A request that binds no argument leaves `subject` unbound.
+    const env = "format mcp-prompt-get-v1\nid 1\nprompt do_matmul\n";
+    var req: mp.GetRequest = undefined;
+    try mp.parse_get(env, &req);
+    var out: [max_run_env]u8 = undefined;
+    const rendered = try answer(&desc, &req, model, demo_budget, allow, out[0..]);
+    assert(std.mem.eql(u8, rendered, "format mcp-prompt-run-v1\nid 1\nerror missing_argument\n"));
+    print("mcp_prompt_voice: a declared-yet-unbound argument crossed back as missing_argument (never routed)\n", .{});
+}
+
+fn unwelcome_unknown_prompt_crosses_back() !void {
+    var desc: mp.PromptDesc = undefined;
+    try mp.parse_desc(matmul_src, &desc);
+    var rbuf: [256]u8 = undefined;
+    var req: mp.GetRequest = undefined;
+    try get_request(2, "no_such_prompt", "subject", "the pair", rbuf[0..], &req);
+    var out: [max_run_env]u8 = undefined;
+    const rendered = try answer(&desc, &req, model, demo_budget, allow, out[0..]);
+    assert(std.mem.eql(u8, rendered, "format mcp-prompt-run-v1\nid 2\nerror prompt_not_found\n"));
+    print("mcp_prompt_voice: an unknown prompt name crossed back as prompt_not_found (never routed)\n", .{});
+}
+
+fn unwelcome_unknown_op_crosses_back() !void {
+    // A well-formed fill whose text no voice recognizes crosses back as unknown_op — the bridge
+    // never invents an answer for a prompt no voice knows.
+    const src =
+        \\format mcp-prompt-v1
+        \\prompt sing
+        \\arg how
+        \\template sing {how}
+    ;
+    var desc: mp.PromptDesc = undefined;
+    try mp.parse_desc(src, &desc);
+    var rbuf: [256]u8 = undefined;
+    var req: mp.GetRequest = undefined;
+    try get_request(3, "sing", "how", "loud", rbuf[0..], &req);
+    var out: [max_run_env]u8 = undefined;
+    const rendered = try answer(&desc, &req, model, demo_budget, allow, out[0..]);
+    assert(std.mem.eql(u8, rendered, "format mcp-prompt-run-v1\nid 3\nerror unknown_op\n"));
+    print("mcp_prompt_voice: a filled prompt no voice knows crossed back as unknown_op\n", .{});
+}
+
+fn unwelcome_disallowed_model_crosses_back() !void {
+    var desc: mp.PromptDesc = undefined;
+    try mp.parse_desc(matmul_src, &desc);
+    var rbuf: [256]u8 = undefined;
+    var req: mp.GetRequest = undefined;
+    try get_request(4, "do_matmul", "subject", "the pair", rbuf[0..], &req);
+    var out: [max_run_env]u8 = undefined;
+    // A model outside the server's allow-list refuses at the voice, under its MCP name.
+    const rendered = try answer(&desc, &req, "sha3-256-not-on-list", demo_budget, allow, out[0..]);
+    assert(std.mem.eql(u8, rendered, "format mcp-prompt-run-v1\nid 4\nerror model_not_allowed\n"));
+    print("mcp_prompt_voice: a disallowed model crossed back as model_not_allowed\n", .{});
+}
+
+fn unwelcome_unknown_run_field_refuses() !void {
+    const src =
+        \\format mcp-prompt-run-v1
+        \\id 5
+        \\voice lattice
+        \\color red
+    ;
+    var res: RunResult = undefined;
+    if (parse_run(src, &res)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.UnknownField);
+    }
+    print("mcp_prompt_voice: an unknown run field refused (not silently ignored)\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_filled_prompt_routes_to_lattice();
+    try welcome_a_different_fill_routes_to_the_graph();
+    try unwelcome_missing_argument_crosses_back();
+    try unwelcome_unknown_prompt_crosses_back();
+    try unwelcome_unknown_op_crosses_back();
+    try unwelcome_disallowed_model_crosses_back();
+    try unwelcome_unknown_run_field_refuses();
+    print("mcp_prompt_voice {s} — GREEN\n", .{mcp_prompt_voice_version});
+    print("GREEN: BUHR-J11r3 mcp_prompt_voice; a filled prompt routes to a voice — the equinox's two halves meet.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest();
+    }
+    print("usage: mcp-prompt-voice selftest\n", .{});
+    return 1;
+}
