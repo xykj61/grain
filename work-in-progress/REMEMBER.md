@@ -6,7 +6,7 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` — the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `58d8f6b660` · Grain · cloud pier
+**Git nib:** `5c27c5f624` · Grain · cloud pier · **public seed `grain-os/grain` @ `6d184f7`**
 **Host:** Framework · EDT (`America/New_York`) · Vultr SEA VPS (HP AMD 2vCPU/4GB shared · never EWR) · this session in ai-jail
 
 ---
@@ -77,7 +77,7 @@ The private field is `~/grain`; the public template **grain-os/grain** is *proje
 
 For any self-paced or outer-jail loop: recur through all agent-doable work, yet **stop and surface — never cross — these custody/irreversible/provisioning acts.** They are Keaton's hand by design (custody-first):
 
-1. **The AHOY3 final seed force-push** to `grain-os/grain` — irreversible; `sow_witness` may run GREEN autonomously, the *push* waits.
+1. ~~**The AHOY3 final seed force-push**~~ — **DONE `20260812`** on Keaton's word (*push the seed*): the clean projection published to `grain-os/grain` @ `6d184f7` (fast-forward, author *Grain OS*, unsigned by design). Caught + fixed a scrub name-doubling first (**REDS #70**) — LICENSE and family names had garbled to "the maintainer the maintainer"; a pre-push content scan caught what IDENT_CLEAN could not. **The AHOY front-door season is CLOSED.** Future seed refreshes stay Keaton's word.
 2. **Provisioning or paying** for any cloud/VPS/Pond/subscription (Vultr SEA IaC, WADE2/3) — agents author IaC; Keaton provisions and pays.
 3. **Moving funds, holding keys, or opening any custody/wallet/payment rail** — Dimeroll records facts only; disbursement waits on licensed counsel.
 4. **Generating Keaton's own Kumara instance** from his real seed/keeper — his hand alone.
