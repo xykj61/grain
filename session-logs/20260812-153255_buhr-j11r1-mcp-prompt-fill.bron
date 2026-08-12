@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260812.153256
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR-J11r1 — prompts/get fills a named template
+prompt Land the next agent-doable lap Lindy-first crux-first; send each finished increment as its own signed round; stop at custody gates.
+think Crux of Journey 11, taken first: prompts/get returns the template filled with every declared arg and every placeholder resolved — completeness — never a half-filled body.
+think Wrote pond/apps/mcp_prompt.rye self-contained (owned Bron shapes, idiom kin to mcp_bron/mcp_resource, no storage import): parse_desc (format mcp-prompt-v1, length-delimited template body after a `template ` marker), parse_get (format mcp-prompt-get-v1, arg name+value bindings), get_prompt (match name · every binding declared · every declared arg bound · fill), parse_result (round-trip, body length-delimited after `body `).
+think Fill is a single bounded pass over the template: on `{` find the closing `}`, look up the placeholder among the request bindings, append its value; a placeholder with no binding refuses UnboundPlaceholder; an unpaired `{` is a literal byte. Four named refusals: prompt_not_found · unknown_argument (never dropped) · missing_argument · unbound_placeholder — the crux refusal.
+think Two fixes before green: UnboundPlaceholder was missing from the PromptError set (added) and a stray unused error-const removed; then TAME caught one compound assert (desc.arg_count and req.binding_count) — split into two named asserts.
+obs Built GREEN first run (3 welcomes + 7 unwelcomes: round-trip · multi-line body · repeated placeholder; four refusals + unknown-field + bad-format + body-len-mismatch). Additive by construction — no existing file changed; the two earlier MCP surfaces stay untouched. Reads no network.
+loom witness=buhr_mcp_prompt_witness selftest_bytes=42 welcomes=3 unwelcomes=7 result=GREEN
+file pond/apps/mcp_prompt.rye the prompts surface — descriptor · get request · fill · result, every placeholder resolved or named
+file tools/buhr_mcp_prompt_witness.rish the witness: build · selftest GREEN · every crux line and refusal asserted
+file work-in-progress/REMEMBER.md accreted the J10/J11 progress line and bumped the Git nib
+recommend keep-going land J11r2 (prompts/list) as its own signed round — the discovery mirror of tools/list and resources/list
