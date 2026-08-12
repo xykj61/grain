@@ -1,0 +1,259 @@
+//! pond/apps/realidream_view_derived_theme_stack.rye — BUHR Journey 5, Rung 10: two
+//! .brush accent layers compose both ends of the fused edge at once.
+//!
+//! Rung seven proved two `.brush` layers compose the Realidream surface — a mode ground
+//! under a read-origin accent. Rung nine made the derived node (the downstream end of
+//! the fused edge) themeable on its own `flow` key, mirroring rung six's read origin
+//! (the upstream end). This rung joins the two accents: two *independent* `.brush`
+//! layers — a **read-source** accent that sets only the `read` origin token and a
+//! **flow-source** accent that sets only the `flow` derived-node token — compose cleanly
+//! through the WADE1 cascade, each winning the one token it names, the base sheet's
+//! untouched tokens (the living-edge `head`, the ground, the edge rule) inheriting
+//! beneath both. So a person themes *both ends of the fused edge at once* by stacking
+//! two small, focused `.brush` files — a warm amber read origin over a deep honey
+//! derived node — never one monolithic sheet.
+//!
+//! It stays on witnessed ground end to end. Each layer is read through the real
+//! authoring loop (`brush_parse.parse_brush` validates, `collect_brush_style`
+//! reassembles the flat Bron), the layers compose through `tokens.resolve_stack` (the
+//! ping-pong per-key `brix/infuse` cascade, already witnessed), and the paint is rung
+//! eight's unchanged `paint_flow`. The composition is proven by reading back three
+//! sources at once: the read origin from the read accent, the derived node from the flow
+//! accent, and the living-edge head from the base sheet neither accent named — three
+//! authors, one resolved surface, both fused-edge ends lit in their authored colors.
+//!
+//! Additive by construction: it imports realidream_view_derived, mantra_browser,
+//! brushstroke/tokens, brushstroke/skate_grid, and brushstroke/brush_parse, calling only
+//! their public functions. No file beneath it changes; rungs one through nine and
+//! Journey 2 stay their own green binaries.
+//!
+//!   rye build pond/apps/realidream_view_derived_theme_stack.rye -femit-bin=pond/bin/realidream-view-derived-theme-stack
+//!   pond/bin/realidream-view-derived-theme-stack selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const vd = @import("realidream_view_derived.rye");
+const mb = @import("mantra_browser.rye");
+const tokens = @import("brushstroke/tokens.rye");
+const skate = @import("brushstroke/skate_grid.rye");
+const bp = @import("brushstroke/brush_parse.rye");
+
+const realidream_view_derived_theme_stack_version = "20260812.140000";
+
+// The two accent fixtures — real `.brush` authoring files, each focused on one end of
+// the fused edge: the read-source sets the upstream read origin, the flow-source sets
+// the downstream derived node.
+const read_accent_path = "pond/apps/read-source.brush";
+const flow_accent_path = "pond/apps/flow-source.brush";
+
+// The read accent's amber (R204 > G122 > B51) and the flow accent's honey
+// (R210 > G136 > B42) — each warm/low-blue so it passes the palette law, each distinct
+// from its base token, so a stacked accent unmistakably wins the top of the cascade.
+const accent_read_argb: u32 = 0xFF_CC_7A_33;
+const accent_flow_argb: u32 = 0xFF_D2_88_2A;
+
+pub const StackError = error{
+    LayerEmpty,
+};
+
+/// Read one `.brush` layer's style block into a flat Bron sheet, validated through the
+/// real authoring loop. Returns the collected byte length in `out`. A layer that
+/// declares no style block is refused — a cascade layer must carry tokens.
+fn read_layer(io: std.Io, path: []const u8, out: []u8) !u32 {
+    // invariant: a real layer path names a file to read.
+    assert(path.len > 0);
+    // invariant: the collected sheet fits the style-sheet bound.
+    assert(out.len <= bp.max_style_bytes);
+    const garden = std.heap.page_allocator;
+    const cwd = std.Io.Dir.cwd();
+    const src = try cwd.readFileAlloc(io, path, garden, .limited(bp.max_brush_bytes));
+    // invariant: the source stays inside the brush read budget.
+    assert(src.len <= bp.max_brush_bytes);
+    defer garden.free(src);
+
+    const surface = try bp.parse_brush(src);
+    // invariant: a cascade layer carries at least one style token.
+    if (surface.style_count == 0) return error.LayerEmpty;
+    const n = try bp.collect_brush_style(src, out);
+    // invariant: a declared style block collects a non-empty sheet.
+    assert(n > 0);
+    return n;
+}
+
+/// Compose the base sheet, a read-source accent, and a flow-source accent into one
+/// resolved sheet through `resolve_stack`. The read accent wins the read origin; the
+/// flow accent wins the derived node; the base's untouched tokens (head, ground, edge)
+/// inherit beneath both. Returns the resolved byte length in `out`.
+pub fn resolve_stacked(io: std.Io, out: []u8) !u32 {
+    // invariant: the resolved sheet fits the token-sheet bound.
+    assert(out.len <= tokens.max_sheet_bytes);
+
+    var read_buf: [bp.max_style_bytes]u8 = undefined;
+    const read_len = try read_layer(io, read_accent_path, &read_buf);
+    var flow_buf: [bp.max_style_bytes]u8 = undefined;
+    const flow_len = try read_layer(io, flow_accent_path, &flow_buf);
+
+    // Base first, then the read accent, then the flow accent on top — the cascade order.
+    // The two accents name disjoint tokens, so each simply wins the one it declares.
+    const layers = [_][]const u8{ tokens.base_sheet, read_buf[0..read_len], flow_buf[0..flow_len] };
+    var scratch: [tokens.max_sheet_bytes]u8 = undefined;
+    const n = try tokens.resolve_stack(&layers, out, &scratch);
+    // invariant: a resolved cascade is non-empty and bounded.
+    assert(n > 0);
+    assert(n <= out.len);
+    return n;
+}
+
+/// Count pixels whose visible color exactly matches `c` (ignoring alpha) — a witness
+/// helper proving a token color reached (or never reached) the canvas.
+fn count_pixels_of_color(pixels: []const u8, stride: u32, width: u32, height: u32, c: skate.Color) u32 {
+    // invariant: the stride holds a full row of ARGB8888 pixels.
+    assert(stride >= width * 4);
+    // invariant: a real canvas has width.
+    assert(width > 0);
+    // invariant: a real canvas has height.
+    assert(height > 0);
+    const stride_usize: usize = @intCast(stride);
+    var count: u32 = 0;
+    var y: u32 = 0;
+    while (y < height) : (y += 1) {
+        const y_usize: usize = @intCast(y);
+        const rowbytes = pixels[y_usize * stride_usize ..][0 .. @as(usize, @intCast(width)) * 4];
+        var x: u32 = 0;
+        while (x < width) : (x += 1) {
+            const px: usize = @intCast(x * 4);
+            if (rowbytes[px + 0] == c.b and rowbytes[px + 1] == c.g and rowbytes[px + 2] == c.r) {
+                count += 1;
+            }
+        }
+    }
+    return count;
+}
+
+fn welcome_both_accents_compose(io: std.Io) !void {
+    var sheet_buf: [tokens.max_sheet_bytes]u8 = undefined;
+    const n = try resolve_stacked(io, &sheet_buf);
+    const sheet = sheet_buf[0..n];
+
+    // Three authors, one surface. The read origin came from the read accent (upstream):
+    const read = try tokens.token_color(sheet, "read");
+    assert(read.r == 0xCC);
+    assert(read.g == 0x7A);
+    assert(read.b == 0x33);
+
+    // The derived node came from the flow accent (downstream):
+    const flow = try tokens.token_color(sheet, "flow");
+    assert(flow.r == 0xD2);
+    assert(flow.g == 0x88);
+    assert(flow.b == 0x2A);
+
+    // The two accents are genuinely distinct marks — both ends lit, never one color.
+    assert(read.r != flow.r or read.g != flow.g or read.b != flow.b);
+
+    // The living-edge head, the ground, and the edge rule inherited from the base sheet,
+    // which neither accent named:
+    const head = try tokens.token_color(sheet, "head");
+    assert(head.r == 0xC8); // Ochre — inherited beneath both accents
+    const paper = try tokens.token_color(sheet, "paper");
+    assert(paper.r == 0xF2); // Flax — the base ground, untouched
+    const edge = try tokens.token_color(sheet, "edge");
+    assert(edge.r == 0x8A); // edge_warm — inherited beneath both accents
+    print("realidream_view_derived_theme_stack: read from the read accent, flow from the flow accent, head/ground/edge from the base — three authors, one surface\n", .{});
+}
+
+fn welcome_accents_win_over_base(io: std.Io) !void {
+    // Each stacked accent is its own authored color, not the base sheet's default — each
+    // accent wins the one token it names at the top of the cascade.
+    var sheet_buf: [tokens.max_sheet_bytes]u8 = undefined;
+    const n = try resolve_stacked(io, &sheet_buf);
+    const sheet = sheet_buf[0..n];
+
+    const read = try tokens.token_color(sheet, "read");
+    const base_read = try tokens.token_color(tokens.base_sheet, "read");
+    assert(read.r != base_read.r or read.g != base_read.g or read.b != base_read.b);
+    const want_read = skate.Color{
+        .r = @intCast((accent_read_argb >> 16) & 0xFF),
+        .g = @intCast((accent_read_argb >> 8) & 0xFF),
+        .b = @intCast(accent_read_argb & 0xFF),
+    };
+    assert(read.r == want_read.r);
+    assert(read.g == want_read.g);
+    assert(read.b == want_read.b);
+
+    const flow = try tokens.token_color(sheet, "flow");
+    const base_flow = try tokens.token_color(tokens.base_sheet, "flow");
+    assert(flow.r != base_flow.r or flow.g != base_flow.g or flow.b != base_flow.b);
+    const want_flow = skate.Color{
+        .r = @intCast((accent_flow_argb >> 16) & 0xFF),
+        .g = @intCast((accent_flow_argb >> 8) & 0xFF),
+        .b = @intCast(accent_flow_argb & 0xFF),
+    };
+    assert(flow.r == want_flow.r);
+    assert(flow.g == want_flow.g);
+    assert(flow.b == want_flow.b);
+    print("realidream_view_derived_theme_stack: each accent wins its own token at the top of the cascade — read amber, flow honey\n", .{});
+}
+
+fn welcome_stacked_paint_reaches_canvas(allocator: std.mem.Allocator, io: std.Io) !void {
+    var sheet_buf: [tokens.max_sheet_bytes]u8 = undefined;
+    const n = try resolve_stacked(io, &sheet_buf);
+    const sheet = sheet_buf[0..n];
+
+    var catalog = try vd.derived_scene();
+    var grid = try skate.Grid.init(allocator, vd.view_cols, vd.view_rows);
+    const rows = try vd.paint_flow(&catalog, &grid, sheet);
+    assert(rows == 9);
+
+    const paint = try tokens.dress(sheet);
+    const read = try tokens.token_color(sheet, "read");
+    const flow = try tokens.token_color(sheet, "flow");
+    const head = try tokens.token_color(sheet, "head");
+    const width: i32 = @intCast(vd.view_cols * skate.cell_w);
+    const height: i32 = @intCast(vd.view_rows * skate.cell_h);
+    const stride: u32 = vd.view_cols * skate.cell_w * 4;
+    const pixel_count: usize = @intCast(stride * @as(u32, @intCast(height)));
+    const pixels = try allocator.alloc(u8, pixel_count);
+    grid.rasterize(pixels, stride, width, height, paint.paper, paint.ink, 1);
+
+    const w_u: u32 = @intCast(width);
+    const h_u: u32 = @intCast(height);
+    const read_pixels = count_pixels_of_color(pixels, stride, w_u, h_u, read);
+    const flow_pixels = count_pixels_of_color(pixels, stride, w_u, h_u, flow);
+    const head_pixels = count_pixels_of_color(pixels, stride, w_u, h_u, head);
+    // Both stacked accents reached the canvas — the amber read origin (upstream) and the
+    // honey derived node (downstream) — and the base's inherited Ochre head too.
+    assert(read_pixels > 0);
+    assert(flow_pixels > 0);
+    assert(head_pixels > 0);
+    print("realidream_view_derived_theme_stack: {d} read, {d} flow, and {d} inherited head pixels on the canvas — both fused-edge ends lit\n", .{ read_pixels, flow_pixels, head_pixels });
+}
+
+fn welcome_stack_refuses_styleless(io: std.Io) !void {
+    // read_layer refuses a `.brush` with no style block — a cascade layer must carry
+    // tokens. The seed fixture declares none.
+    var out: [bp.max_style_bytes]u8 = undefined;
+    if (read_layer(io, "brushstroke/seed-frame.brush", &out)) |_| {
+        unreachable;
+    } else |err| {
+        // invariant: a style-less layer refuses by the named error.
+        assert(err == error.LayerEmpty);
+    }
+    print("realidream_view_derived_theme_stack: a style-less layer refuses — LayerEmpty\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_both_accents_compose(io);
+        try welcome_accents_win_over_base(io);
+        try welcome_stacked_paint_reaches_canvas(garden, io);
+        try welcome_stack_refuses_styleless(io);
+        print("realidream_view_derived_theme_stack {s} — GREEN\n", .{realidream_view_derived_theme_stack_version});
+        return 0;
+    }
+    print("usage: realidream-view-derived-theme-stack selftest\n", .{});
+    return 1;
+}
