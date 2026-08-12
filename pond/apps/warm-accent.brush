@@ -1,0 +1,21 @@
+::  name       warm-accent layer
+::  shape      a style: layer that sets the living-edge accent (head) only
+::  invariant  the head token stays warm/low-blue; ground is another layer's to set
+::  example    a honey head accent, composable over any mode layer beneath it
+::  readers    brush_parse.rye → tokens.resolve_stack → mantra_browser_theme_stack
+::  nib        surface-wade1-accent-warm-v0
+::
+::  A .brush *accent* layer: it names only the living-edge `head` token — a warm honey
+::  the eye lands on first — and leaves the ground (paper/ink) for a mode layer to
+::  set. Stacked over a mode layer, it proves the accent wins at the top of the
+::  cascade while the mode's ground survives beneath and the base's edge inherits.
+::  Tongue: Glow · Bron · TAME · Radiant. Never JS · HTML · CSS · JSON.
+::
+::  at-nib:     mantra-graph-warm-accent
+::  present:    Frame
+::  max-lines:  8
+::  style:
+::    head 0xFFD9A441
+::  lines:
+::    mantra graph, warm accent layer
+::  refuse:     src/web · Wasm/Web backend · CSS rail · a { } stylesheet
