@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260812.151041
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR-J9r1 the intelligence served as an MCP tool
+prompt Keep going Lindy-first crux-first; double-seat visions for calendar blind spots; send each increment; stop at custody gates; GATES-ONLY if only gates remain
+think After J8r3, BUHR's named journeys were done — but the MCP host (J3r5) still routed tools/call only to toy add/join, never to the actual Quin voices; the two halves the equinox names had never met
+think Rather than declare GATES-ONLY, I opened BUHR Journey 9 (self-approved design round, exploration doc) — the intelligence served as MCP tools — because a genuine agent-doable, Lindy-durable blind spot remained (no network; the Comlink-served transport stays the held gate)
+think Wrote pond/apps/mcp_voice.rye: an MCP `ask` call crosses into a Lantern request, dispatches through quin_host_artifact (five voices), and the response crosses back into a format mcp-result-v1 envelope read by J3's own parse_result
+obs Two reds caught by the build/witness before commit — a file-level `model` const shadowed the local in serve (renamed to model_hash), and serve_and_read returned a Result whose slices dangled into a local buffer (moved buffer ownership to the caller so the round-tripped value outlives the call)
+obs Every voice refusal crosses back as a named MCP error (unknown_tool · model_not_allowed · unknown_op · unknown_artifact · bad_args); the bridge never invents a result, and the artifact voice's content-address integrity travels through the MCP surface
+loom witness=buhr_mcp_voice_witness result=GREEN welcomes=8 shape_rerun=GREEN host_rerun=GREEN
+file active-designing/20260812-150600_buhr-journey9-intelligence-served-as-mcp-tools-exploration.md opens BUHR Journey 9, names the crux and rungs
+file pond/apps/mcp_voice.rye BUHR-J9r1 the gathered intelligence reachable as one MCP tool over the owned Bron shape
+file tools/buhr_mcp_voice_witness.rish witnesses the round-trip, five named errors, and the J3r1 + J8r3 re-runs
+recommend check-in (Keaton) BUHR's intelligence now speaks the owned MCP shape end to end; J9r2 (voices as distinct tools) is agent-doable, and owner-signed corpus + Comlink-served remain the custody/serve gates
