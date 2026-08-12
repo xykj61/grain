@@ -1,0 +1,43 @@
+# tools/gism_j5_corpus_real_witness.rish — GISM Journey 5 (Real corpora), Rung 1.
+#
+# Season 2, Yield: the reading voice stands on real data. This witness carries the
+# Lantern-contracted Scribble reading onto a real tree document — a compile-time
+# embed of the living context/TAME_CORE.md (symlinked, so the bytes read are the
+# bytes a keeper reads) — and proves it runs GREEN over real bytes, where a demo
+# literal never had to. It also proves Yield red #72 was real and its fix holds:
+# a real paragraph exceeds the old 512-byte block bound, yet parses under the
+# raised 2048-byte bound. The demo reading over pinned_doc (reading_query) is
+# re-run untouched — the refactor was additive.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/gism_j5_corpus_real_witness.rish
+
+say "gism-j5r1: Language EN — the reading voice reads a real tree document, red #72 fixed on metal."
+say "gism-j5r1: Lens TAME — real bytes, one bounded reader; the demo reading over pinned_doc still GREEN."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/corpus-real"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/corpus_real.rye -femit-bin=${bin}"]
+assert build.ok else "gism-j5r1: corpus_real build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "gism-j5r1: corpus_real selftest exited non-zero"
+assert selftest.out contains "GREEN" else "gism-j5r1: selftest did not speak GREEN"
+assert selftest.out contains "real parse — blocks 18, largest block 1327 bytes (old bound 512)" else "gism-j5r1: real parse / red-#72 proof missing"
+assert selftest.out contains "real outline — 'TAME Core" else "gism-j5r1: real outline reading missing"
+assert selftest.out contains "Crash headroom' eos" else "gism-j5r1: real outline did not reach the last heading"
+assert selftest.out contains "real fences — 'rye 0 rish 0 plain 0' eos" else "gism-j5r1: real fence-kinds reading missing"
+assert selftest.out contains "length budget — tokens 2 length" else "gism-j5r1: length-budget stop missing over real corpus"
+assert selftest.out contains "model not allowed refused" else "gism-j5r1: allow-list gate missing"
+assert selftest.out contains "unknown op refused" else "gism-j5r1: unknown-op refusal missing (would be a fake answer)"
+
+# The demo reading over pinned_doc must still be GREEN — the answer_over refactor is additive.
+let demo_bin = "pond/bin/reading-query"
+let demo_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/reading_query.rye -femit-bin=${demo_bin}"]
+assert demo_build.ok else "gism-j5r1: reading_query (demo) rebuild failed after refactor"
+let demo_selftest = run ["sh" "-c" "${demo_bin} selftest 2>&1"]
+assert demo_selftest.ok else "gism-j5r1: reading_query (demo) selftest regressed"
+assert demo_selftest.out contains "GREEN" else "gism-j5r1: reading_query (demo) did not speak GREEN"
+
+say "GREEN: GISM-J5r1 — the reading voice reads a real embedded corpus; red #72 fixed; the demo reading stays GREEN."

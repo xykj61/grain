@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260812.181015
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title GISM-J5r1 — the reading voice reads a real corpus (Yield opens)
+prompt keep climbing the road Lindy-first crux-first; approve own design rounds; send each finished increment to both remotes; stop at custody gates
+think TACT's whole agent-doable arc is done — J1 complete end to end, J2/J4 agent-doable arcs complete with only their serve/settle custody rungs left, J3 hardware-gated. So the next Lindy-first crux on the whole 1,024-round road is Season 2 (Yield), Journey 5 (Real corpora), under the already-seated GISM waymark — no new ladder drawn.
+think Self-approved design round: active-designing/20260812-181015_gism-journey5-real-corpora-exploration.md. Crux — a voice reads a real tree document end to end, and every bound the real bytes exceed is booked as a red. The measurements proved the collision before any code: reading_query's pinned_doc is a hand-tuned literal; a real doc is not.
+think Substrate: no network crosses (that seam stays the held gate). A real corpus binds a living tree file at compile time via @embedFile — the idiom already in mandate/store.rye. Zig refuses embedding outside the package path, so the corpus is a symlink pond/apps/corpora/tame_core.md -> context/TAME_CORE.md; the embedded bytes are exactly the living doc's and can never drift into a stale copy.
+think Probed on metal first: the real doc trips exactly one bound — BlockTooLarge. A real reference paragraph (a run of consecutive bullet lines with no blank line between) measures 1327 bytes, far past max_block_text=512; blocks (18<32), headings (7<16), outline (188B<256), and doc bytes (4953<8192) all fit. My awk first guessed 1311; Scribble's own parse said 1327 — measurement beats memory, so 1327 is written everywhere.
+think Reds-first fix: raise scribble_core's max_block_text 512 → 2048 (double twice, headroom over the measured 1327), named with its reason and the red number. A widening admits strictly more, so every existing GREEN reader still fits; the demo reading is re-run GREEN to prove it.
+think Additive refactor mirroring graph_query_edit's answer_over idiom: reading_query gains pub compute_over(op, doc, out_buf) and answer_over(req, doc, allow, out_buf); the demo compute/answer delegate over pinned_doc. corpus_real.rye imports reading_query and reads the embedded real doc through the same bounded reader — one code path for demo and real.
+obs Booked REDS #72 (a real corpus tripped BlockTooLarge — the bound was only ever exercised by a literal written to respect it) plus a reds-first accounting line; ledger 17539 B, under the 24576 pin.
+obs Witness tools/gism_j5_corpus_real_witness.rish GREEN — real parse (18 blocks, largest 1327 > old 512), real outline (TAME Core … Crash headroom, eos), real fences (rye 0 rish 0 plain 0), length-budget stop over the real reading, allow-list + unknown-op refusals; the demo reading (reading_query) rebuilt and re-run GREEN. TAME bans clean, width-check exit 0.
+loom witness=gism_j5_corpus_real_witness result=GREEN cases=6 corpus_bytes=4953 largest_block=1327 old_bound=512 new_bound=2048 blocks=18
+file active-designing/20260812-181015_gism-journey5-real-corpora-exploration.md self-approved design round — opens Season 2 (Yield), Journey 5, names the crux and four rounds
+file scribble/scribble_core.rye max_block_text 512 → 2048 with named reason (Yield red #72); admits real reference-doc paragraphs with headroom
+file pond/apps/reading_query.rye additive answer_over/compute_over over an explicit doc; demo answer/compute delegate over pinned_doc (untouched behavior)
+file pond/apps/corpus_real.rye GISM-J5r1 — embeds the living TAME_CORE.md (symlinked corpus), reads it through answer_over; proves the real reading GREEN and red #72 real
+file pond/apps/corpora/tame_core.md symlink to context/TAME_CORE.md — the embedded corpus is the living doc, never a drifting copy
+file tools/gism_j5_corpus_real_witness.rish witness — GREEN (6 cases + demo reading re-run)
+file work-in-progress/REDS.md booked row #72 + reds-first accounting for GISM-J5r1
+recommend keep-going GISM-J5r2 — carry Ember (corpus) and the graph reader onto real embedded corpora too, booking whatever reds each real corpus surfaces; agent-doable, no gate reached
