@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260812.120515
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention · this session in ai-jail
+title A semantic head token for the living edge
+prompt autonomous run — keep taking agent-doable laps Lindy-first crux-first, send each finished increment as its own signed round, stop at custody gates
+think J2r3 shipped lighting each lane's head node by borrowing the edge token. Edge means borders/rules, not revision head — a semantic stretch. The more Lindy shape is a design-system token named for exactly this mark, so a .brush theme recolors the living edge on its own key.
+think Added head_ochre (0xFFC89B5A) to the palette — warm/low-blue (R200>=G155>=B90, blue lowest), brighter than both edge_warm and bark so the head draws the eye first; proved all three relations in prove_palette.
+think Added the head token line to base_sheet (infuse keeps it as a plain appended token; paper/ink readers like mantra_browser_view are untouched — re-ran rung two green through the heads witness).
+think Repointed mantra_browser_heads head_token from edge to head, and strengthened welcome_head_distinct_from_ink to assert head differs from edge too — proving the semantic token is genuinely its own color, not an alias.
+obs Additive across the board: same 36 head cells, same 1468 ink / 826 head pixels on the canvas; only the head color changed from edge_warm to head_ochre. The token sheet is now the single place a theme changes the accent.
+loom witness=buhr_mantra_browser_heads_witness welcomes=6 head_cells=36 ink_pixels=1468 head_pixels=826 tokens_selftest=green
+file pond/apps/brushstroke/tokens.rye added head_ochre + head token in base_sheet, proved warm/low-blue and brighter than edge/ink
+file pond/apps/mantra_browser_heads.rye repointed head_token edge -> head, asserted head != ink != edge
+file work-in-progress/REMEMBER.md logged the semantic-token refinement and next crux
+recommend keep-going carry a head-token override through a real .brush authoring file (a theme recoloring the living edge), or open BUHR Journey 4

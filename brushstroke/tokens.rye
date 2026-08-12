@@ -28,7 +28,7 @@ const print = std.debug.print;
 const infuse = @import("brix_infuse.rye");
 const skate = @import("skate_grid.rye");
 
-pub const tokens_version = "20260812.043000";
+pub const tokens_version = "20260812.120515";
 
 // --- bounds — every collection and loop names its maximum ----------------
 
@@ -68,6 +68,12 @@ pub const walnut: u32 = 0xFF_3A_34_2B;
 /// A mid warm rule for edges — reads on both Flax and Bark, blue still lowest.
 /// R138 > G122 > B102.
 pub const edge_warm: u32 = 0xFF_8A_7A_66;
+
+/// Ochre — the living edge. A warm accent for the one mark that should draw the
+/// eye first (the head of a revision chain, the current line), brighter and more
+/// saturated than the edge rule yet the same plant-fiber family, blue still
+/// lowest. R200 > G155 > B90 — an honest step apart from ink and edge alike.
+pub const head_ochre: u32 = 0xFF_C8_9B_5A;
 
 // --- channel helpers — one value model, explicit widths ------------------
 
@@ -127,6 +133,7 @@ pub const base_sheet =
     "paper 0xFFF2ECDF\n" ++ // Flax — light page
     "ink 0xFF2B2620\n" ++ // Bark — dark text on light cloth
     "edge 0xFF8A7A66\n" ++ // warm rule
+    "head 0xFFC89B5A\n" ++ // Ochre — the living edge accent
     "weight regular\n" ++
     "space 4\n" ++ // thread_px — invariant 4, 4px chosen
     "elevate flat\n";
@@ -341,6 +348,12 @@ fn prove_palette() !void {
     _ = try assert_warm_low_blue(bark);
     _ = try assert_warm_low_blue(walnut);
     _ = try assert_warm_low_blue(edge_warm);
+    _ = try assert_warm_low_blue(head_ochre);
+
+    // The living-edge accent stands apart from both the ink and the edge rule —
+    // brighter than the edge, so the head draws the eye first.
+    if (!(red_of(head_ochre) > red_of(edge_warm))) return error.ChannelOutOfRange;
+    if (!(red_of(head_ochre) > red_of(bark))) return error.ChannelOutOfRange;
 
     // Invariant 1 — gentle lightness spread: the light page reads far brighter
     // than the dark page, by a wide, honest margin (roughly the ~66-point L
