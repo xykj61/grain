@@ -1,0 +1,27 @@
+::  name       styled frame
+::  shape      lines + an OPTIONAL style: token sheet (WADE1 surface bridge)
+::  invariant  each line non-empty; each style token is `key value` flat Bron
+::  example    a dark sheet — Bark paper, Flax ink — over three drawn lines
+::  readers    Brushstroke · tokens.rye (infuse cascade) · Skate styled runs
+::  nib        surface-wade1-v0
+::
+::  Thin .brush fixture — WADE1 surface-bridge seam (p23 parser + style: block).
+::  Parser begun. Describes how a value at a nib is drawn as Frame, and the
+::  token sheet it dresses with. The style: block reassembles into flat Bron
+::  that tokens.rye's infuse cascade and dress lower to Skate paint.
+::  Tongue: Glow · Bron · TAME · Radiant. Never JS · HTML · CSS · JSON.
+::  Reader: brushstroke/brush_parse.rye (pins + style sheet) → brushstroke/tokens.rye.
+::
+::  at-nib:     brushstroke-styled
+::  present:    Frame
+::  max-lines:  8
+::  style:
+::    paper 0xFF2B2620
+::    ink 0xFFF2ECDF
+::    edge 0xFF8A7A66
+::    space 4
+::  lines:
+::    styled frame
+::    drawn from a token sheet
+::    Bark paper, Flax ink
+::  refuse:     src/web · Wasm/Web backend · CSS rail · a { } stylesheet

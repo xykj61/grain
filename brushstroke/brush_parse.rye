@@ -38,11 +38,23 @@ pub const max_brush_bytes: u32 = 16 * 1024;
 /// Bound on one pin value (nib name · present word) after trim.
 pub const max_pin_bytes: u32 = 128;
 
+/// Bound on the OPTIONAL `style:` block's token count — one flat Bron token per
+/// line (paper · ink · edge · weight · space · elevate and their kin). Sized to
+/// hold the seam's named token family with headroom, well under infuse's 64.
+pub const max_style_tokens: u32 = 16;
+
+/// Bound on the reassembled `style:` token sheet in bytes — a bounded Bron buffer
+/// tokens.rye's infuse/dress consume directly (infuse's own max_line is 512).
+pub const max_style_bytes: u32 = 512;
+
 pub const BrushSurface = struct {
     at_nib: []const u8,
     present: []const u8,
     max_lines: u32,
     line_count: u32,
+    /// Count of `style:` token lines seen. Zero when the file declares no style
+    /// block — the additive default, byte-for-byte the pre-style parse.
+    style_count: u32,
 };
 
 /// Frame lowered from a welcome .brush — line texts slice the source buffer.
@@ -67,6 +79,9 @@ pub const ParseError = error{
     TooManyLines,
     BadMaxLines,
     SourceTooLarge,
+    TooManyStyleTokens,
+    StyleTokenMalformed,
+    StyleSheetTooLarge,
 };
 
 /// Raw pins collected while scanning — unfinished until `finish_brush_surface`.
@@ -76,6 +91,8 @@ const BrushPins = struct {
     max_lines: ?u32 = null,
     line_count: u32 = 0,
     saw_lines_header: bool = false,
+    style_count: u32 = 0,
+    saw_style_header: bool = false,
 };
 
 /// Parse a .brush source buffer into a BrushSurface.
@@ -93,6 +110,7 @@ fn scan_brush_pins(src: []const u8) ParseError!BrushPins {
 
     var pins = BrushPins{};
     var in_lines = false;
+    var in_style = false;
     var it = std.mem.splitScalar(u8, src, '\n');
     while (it.next()) |raw| {
         const line = trim_right(raw);
@@ -103,25 +121,43 @@ fn scan_brush_pins(src: []const u8) ParseError!BrushPins {
         const body = trim_left(line[2..]);
         if (try take_pin(body, "at-nib:", &pins.at_nib)) {
             in_lines = false;
+            in_style = false;
             continue;
         }
         if (try take_pin(body, "present:", &pins.present)) {
             in_lines = false;
+            in_style = false;
             continue;
         }
         if (std.mem.startsWith(u8, body, "max-lines:")) {
             const text = trim_left(body["max-lines:".len..]);
             pins.max_lines = try parse_u32_decimal(text);
             in_lines = false;
+            in_style = false;
             continue;
         }
         if (std.mem.startsWith(u8, body, "lines:")) {
             pins.saw_lines_header = true;
             in_lines = true;
+            in_style = false;
+            continue;
+        }
+        // OPTIONAL `style:` block — a flat Bron token sheet tokens.rye consumes.
+        // Additive: a file with no `style:` header never enters this branch, so
+        // its parse is byte-for-byte the pre-style behavior.
+        if (std.mem.startsWith(u8, body, "style:")) {
+            pins.saw_style_header = true;
+            in_style = true;
+            in_lines = false;
             continue;
         }
         if (std.mem.startsWith(u8, body, "refuse:")) {
             in_lines = false;
+            in_style = false;
+            continue;
+        }
+        if (in_style) {
+            in_style = try count_style_token(line, body, &pins.style_count);
             continue;
         }
         if (in_lines) {
@@ -130,6 +166,8 @@ fn scan_brush_pins(src: []const u8) ParseError!BrushPins {
     }
     // invariant: scan never invents a line count past the Frame ceiling
     assert(pins.line_count <= max_frame_lines);
+    // invariant: scan never invents a style-token count past its own bound
+    assert(pins.style_count <= max_style_tokens);
     return pins;
 }
 
@@ -150,11 +188,15 @@ fn finish_brush_surface(pins: BrushPins) ParseError!BrushSurface {
     if (pins.line_count == 0) return error.MissingLines;
     if (pins.line_count > ceiling) return error.TooManyLines;
 
+    // invariant: a declared style block carries at least one token, never empty
+    if (pins.saw_style_header and pins.style_count == 0) return error.StyleTokenMalformed;
+
     const surface = BrushSurface{
         .at_nib = nib,
         .present = pres,
         .max_lines = ceiling,
         .line_count = pins.line_count,
+        .style_count = pins.style_count,
     };
     // invariant: present is Frame after finish
     assert(std.mem.eql(u8, surface.present, "Frame"));
@@ -199,6 +241,43 @@ fn count_frame_line(line: []const u8, body: []const u8, line_count: *u32) ParseE
     return false;
 }
 
+/// Count one indented `style:` token line (`::    key value`). Returns whether
+/// still in-style. A token is a flat Bron pair: a space-delimited key and a
+/// non-empty value — exactly what tokens.rye's infuse/dress parse.
+fn count_style_token(line: []const u8, body: []const u8, style_count: *u32) ParseError!bool {
+    // invariant: counter never enters past the style-token ceiling
+    assert(style_count.* <= max_style_tokens);
+    if (slice_len_u32(body) == 0) return error.StyleTokenMalformed;
+    // Style tokens under `style:` are indented (`::    key value`) like `lines:`.
+    const line_len = slice_len_u32(line);
+    if (line_len >= 4 and line[2] == ' ' and line[3] == ' ') {
+        const text = trim_left(body);
+        // invariant: a style token names a key and a value, never a bare word
+        if (!style_token_well_formed(text)) return error.StyleTokenMalformed;
+        style_count.* += 1;
+        if (style_count.* > max_style_tokens) return error.TooManyStyleTokens;
+        return true;
+    }
+    return false;
+}
+
+/// A well-formed style token is `key value`: a non-empty key, a space, then a
+/// non-empty value — the flat Bron shape tokens.rye parses. No CSS `:`/`;`, no
+/// braces; the owned tongue only.
+fn style_token_well_formed(text: []const u8) bool {
+    const n = slice_len_u32(text);
+    if (n == 0) return false;
+    var sp: u32 = 0;
+    // invariant: the key scan stays inside the trimmed token
+    while (sp < n and text[sp] != ' ') : (sp += 1) {}
+    if (sp == 0) return false; // no key
+    if (sp >= n) return false; // no space → no value
+    const val = trim_left(text[sp..]);
+    // invariant: a value survives after the key and its separating space
+    if (slice_len_u32(val) == 0) return false;
+    return true;
+}
+
 /// Collect line-body slices under `lines:` into `line_buf` (second pass after parse).
 fn collect_brush_lines(src: []const u8, line_buf: *[max_frame_lines][]const u8) ParseError!u32 {
     // invariant: collect shares parse's source budget
@@ -215,7 +294,7 @@ fn collect_brush_lines(src: []const u8, line_buf: *[max_frame_lines][]const u8) 
             in_lines = true;
             continue;
         }
-        if (std.mem.startsWith(u8, body, "at-nib:") or std.mem.startsWith(u8, body, "present:") or std.mem.startsWith(u8, body, "max-lines:") or std.mem.startsWith(u8, body, "refuse:")) {
+        if (std.mem.startsWith(u8, body, "at-nib:") or std.mem.startsWith(u8, body, "present:") or std.mem.startsWith(u8, body, "max-lines:") or std.mem.startsWith(u8, body, "refuse:") or std.mem.startsWith(u8, body, "style:")) {
             in_lines = false;
             continue;
         }
@@ -259,6 +338,76 @@ pub fn lower_brush(src: []const u8, line_buf: *[max_frame_lines][]const u8) Pars
         assert(text.len > 0);
     }
     return frame;
+}
+
+/// Reassemble the OPTIONAL `style:` block into a flat Bron token sheet in
+/// `out` — `key value\n` per token, exactly the shape tokens.rye's infuse and
+/// dress parse. Returns the byte length written (0 when the file declares no
+/// style block). This is the WADE1 bridge: a `.brush` file → a token sheet.
+pub fn collect_brush_style(src: []const u8, out: []u8) ParseError!u32 {
+    // invariant: collect shares parse's source budget
+    assert(src.len <= max_brush_bytes);
+    // invariant: the destination stays inside the named style-sheet bound
+    assert(out.len <= max_style_bytes);
+    var pos: u32 = 0;
+    var token_count: u32 = 0;
+    var in_style = false;
+    var it = std.mem.splitScalar(u8, src, '\n');
+    while (it.next()) |raw| {
+        const line = trim_right(raw);
+        if (slice_len_u32(line) == 0) continue;
+        if (!std.mem.startsWith(u8, line, "::")) continue;
+        const body = trim_left(line[2..]);
+        if (std.mem.startsWith(u8, body, "style:")) {
+            in_style = true;
+            continue;
+        }
+        if (std.mem.startsWith(u8, body, "at-nib:") or std.mem.startsWith(u8, body, "present:") or std.mem.startsWith(u8, body, "max-lines:") or std.mem.startsWith(u8, body, "lines:") or std.mem.startsWith(u8, body, "refuse:")) {
+            in_style = false;
+            continue;
+        }
+        if (!in_style) continue;
+        const line_len = slice_len_u32(line);
+        if (line_len < 4 or line[2] != ' ' or line[3] != ' ') {
+            in_style = false;
+            continue;
+        }
+        const text = trim_left(body);
+        // invariant: a collected token is the well-formed shape the scan proved
+        if (!style_token_well_formed(text)) return error.StyleTokenMalformed;
+        // invariant: token slot matches the living count under the ceiling
+        assert(token_count < max_style_tokens);
+        pos = try emit_style_line(out, pos, text);
+        token_count += 1;
+        if (token_count > max_style_tokens) return error.TooManyStyleTokens;
+    }
+    // invariant: collected token count never past the style ceiling
+    assert(token_count <= max_style_tokens);
+    // invariant: written bytes stay inside the style-sheet bound
+    assert(pos <= max_style_bytes);
+    return pos;
+}
+
+/// Append one already-trimmed `key value` token, plus a newline, to `out`.
+/// Refuses to overflow the bounded style sheet rather than truncating.
+fn emit_style_line(out: []u8, pos: u32, text: []const u8) ParseError!u32 {
+    const text_len = slice_len_u32(text);
+    const need: u32 = text_len + 1; // token bytes plus the trailing newline
+    // invariant: the style sheet stays within its named byte bound
+    if (@as(u32, pos) + need > max_style_bytes) return error.StyleSheetTooLarge;
+    // invariant: the write never runs past the destination buffer
+    if (@as(usize, pos) + need > out.len) return error.StyleSheetTooLarge;
+    var p: u32 = pos;
+    var i: u32 = 0;
+    while (i < text_len) : (i += 1) {
+        out[p] = text[i];
+        p += 1;
+    }
+    out[p] = '\n';
+    p += 1;
+    // invariant: the cursor advanced by exactly the token plus its newline
+    assert(p == pos + need);
+    return p;
 }
 
 /// Redraw a BrushFrame to stdout — thin hosted Skate lean (one line = one grid row).
@@ -407,6 +556,86 @@ fn prove_seed_fixture(garden: std.mem.Allocator, io: std.Io) !void {
     assert(surface.max_lines == 8);
     // invariant: seed Frame carries three example lines
     assert(surface.line_count == 3);
+    // invariant: the seed fixture declares no style block — the additive default
+    assert(surface.style_count == 0);
+}
+
+/// Prove the OPTIONAL `style:` block: a `.brush` declaring style pins parses
+/// into a token sheet whose bytes are the flat Bron tokens.rye consumes, and a
+/// `.brush` with no style block collects an empty sheet — additive by default.
+fn prove_style_block() ParseError!void {
+    const with_style =
+        \\::  at-nib:     styled-seed
+        \\::  present:    Frame
+        \\::  max-lines:  8
+        \\::  style:
+        \\::    paper 0xFF2B2620
+        \\::    ink 0xFFF2ECDF
+        \\::    space 4
+        \\::  lines:
+        \\::    styled frame
+    ;
+    const surface = try parse_brush(with_style);
+    // invariant: the style block's three tokens are counted
+    assert(surface.style_count == 3);
+    // invariant: the frame line beneath the style block still parses
+    assert(surface.line_count == 1);
+
+    var sheet_buf: [max_style_bytes]u8 = undefined;
+    const n = try collect_brush_style(with_style, &sheet_buf);
+    const sheet = sheet_buf[0..n];
+    // invariant: the reassembled sheet carries the declared paper token
+    assert(std.mem.indexOf(u8, sheet, "paper 0xFF2B2620") != null);
+    // invariant: the reassembled sheet carries the declared ink token
+    assert(std.mem.indexOf(u8, sheet, "ink 0xFFF2ECDF") != null);
+    // invariant: the reassembled sheet carries the declared space token
+    assert(std.mem.indexOf(u8, sheet, "space 4") != null);
+    // invariant: no CSS punctuation leaked into the owned-tongue sheet
+    assert(std.mem.indexOf(u8, sheet, ";") == null);
+    assert(std.mem.indexOf(u8, sheet, "{") == null);
+
+    // A .brush with no style block collects an empty sheet — additive default.
+    const no_style =
+        \\::  at-nib:     plain-seed
+        \\::  present:    Frame
+        \\::  max-lines:  8
+        \\::  lines:
+        \\::    plain frame
+    ;
+    const plain = try parse_brush(no_style);
+    // invariant: absent style block leaves the style count at zero
+    assert(plain.style_count == 0);
+    var empty_buf: [max_style_bytes]u8 = undefined;
+    const m = try collect_brush_style(no_style, &empty_buf);
+    // invariant: no style block reassembles to zero bytes
+    assert(m == 0);
+}
+
+/// Refuse a malformed or empty `style:` block by named ParseError.
+fn prove_refuse_style() void {
+    // A style header with no tokens is an empty block — refused.
+    assert_parse_error(
+        \\::  at-nib:     x
+        \\::  present:    Frame
+        \\::  max-lines:  8
+        \\::  style:
+        \\::  lines:
+        \\::    one line
+    ,
+        error.StyleTokenMalformed,
+    );
+    // A bare-word token (no value) is malformed — refused.
+    assert_parse_error(
+        \\::  at-nib:     x
+        \\::  present:    Frame
+        \\::  max-lines:  8
+        \\::  style:
+        \\::    paper
+        \\::  lines:
+        \\::    one line
+    ,
+        error.StyleTokenMalformed,
+    );
 }
 
 fn prove_seed_lower(garden: std.mem.Allocator, io: std.Io) !void {
@@ -567,10 +796,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     try prove_seed_fixture(garden, io);
     prove_refuse_pins();
     prove_refuse_bounds();
+    try prove_style_block();
+    prove_refuse_style();
     try prove_seed_lower(garden, io);
     try prove_seed_redraw(garden, io);
     try prove_seed_grid(garden, io);
-    try std.Io.File.stdout().writeStreamingAll(io, "GREEN: brush-parse selftest — seed-frame · refuse-suite · lower · redraw · skate-grid · TAME\n");
+    try std.Io.File.stdout().writeStreamingAll(io, "GREEN: brush-parse selftest — seed-frame · refuse-suite · style-block · lower · redraw · skate-grid · TAME\n");
     return 0;
 }
 
@@ -599,6 +830,31 @@ fn run_redraw_path(garden: std.mem.Allocator, io: std.Io, path: []const u8) !u8 
     print("brush-parse redraw: at-nib={s} (stdout Skate lean)\n", .{frame.at_nib});
     try redraw_brush_frame(frame, io);
     try std.Io.File.stdout().writeStreamingAll(io, "GREEN: brush-parse redraw\n");
+    return 0;
+}
+
+fn run_style_path(garden: std.mem.Allocator, io: std.Io, path: []const u8) !u8 {
+    // invariant: path argument is non-empty
+    assert(path.len > 0);
+    const cwd = std.Io.Dir.cwd();
+    const src = try cwd.readFileAlloc(io, path, garden, .limited(max_brush_bytes));
+    // invariant: path read stays inside the named budget
+    assert(src.len <= max_brush_bytes);
+    const surface = try parse_brush(src);
+    var sheet_buf: [max_style_bytes]u8 = undefined;
+    const n = try collect_brush_style(src, &sheet_buf);
+    // invariant: the reassembled sheet honors the parsed token count's presence
+    assert((n == 0) == (surface.style_count == 0));
+    print("brush-parse style: at-nib={s} style-tokens={d} sheet-bytes={d}\n", .{
+        surface.at_nib,
+        surface.style_count,
+        n,
+    });
+    const stdout = std.Io.File.stdout();
+    try stdout.writeStreamingAll(io, "---sheet---\n");
+    try stdout.writeStreamingAll(io, sheet_buf[0..n]);
+    try stdout.writeStreamingAll(io, "---end---\n");
+    try stdout.writeStreamingAll(io, "GREEN: brush-parse style\n");
     return 0;
 }
 
@@ -633,11 +889,14 @@ pub fn main(init: std.process.Init) !u8 {
     if (args.len >= 3 and std.mem.eql(u8, args[1], "redraw")) {
         return run_redraw_path(garden, io, args[2]);
     }
+    if (args.len >= 3 and std.mem.eql(u8, args[1], "style")) {
+        return run_style_path(garden, io, args[2]);
+    }
     if (args.len >= 3 and std.mem.eql(u8, args[1], "grid")) {
         return run_grid_path(garden, io, args[2]);
     }
     if (args.len < 2) {
-        try std.Io.File.stderr().writeStreamingAll(io, "usage: brush-parse <path.brush>|selftest|lower <path>|redraw <path>|grid <path>\n");
+        try std.Io.File.stderr().writeStreamingAll(io, "usage: brush-parse <path.brush>|selftest|lower <path>|redraw <path>|style <path>|grid <path>\n");
         return 2;
     }
     const path = args[1];

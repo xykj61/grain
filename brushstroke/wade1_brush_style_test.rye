@@ -1,0 +1,118 @@
+//! brushstroke/wade1_brush_style_test.rye — WADE1 authoring loop, end-to-end.
+//!
+//! Closes the seam the WADE1 bridge names
+//! (active-designing/20260812-000456_wade1-brush-surface-bridge-seam.md): a
+//! `.brush` *file* declares a `style:` token block; the parser reassembles it
+//! into a flat Bron token sheet; tokens.rye's infuse cascade resolves it; and a
+//! resolved sheet dresses a Skate grid to the declared colors. Source → token
+//! sheet → infuse cascade → Skate styled runs, proven from a file on disk.
+//!
+//! TAME (hosted Rye): opening triad · u32 counts · named bounds · `// invariant:`
+//! on every assert · short verb-named functions · named errors with try.
+//!
+//!   rye/bin/rye run brushstroke/wade1_brush_style_test.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const brush = @import("brush_parse.rye");
+const tokens = @import("tokens.rye");
+const skate = @import("skate_grid.rye");
+
+/// The fixture `.brush` this loop reads — a file that declares a style block.
+const styled_fixture = "brushstroke/styled-frame.brush";
+
+/// Grid shape for the proof — narrow, so the whole loop stays cheap.
+const grid_cols: u32 = 32;
+const grid_rows: u32 = 4;
+
+/// Read the fixture, collect its declared style into a bounded Bron sheet, and
+/// return the byte length. The sheet buffer is the caller's, tokens.rye-shaped.
+fn read_style_sheet(garden: std.mem.Allocator, io: std.Io, out: *[brush.max_style_bytes]u8) !u32 {
+    const cwd = std.Io.Dir.cwd();
+    const src = try cwd.readFileAlloc(io, styled_fixture, garden, .limited(brush.max_brush_bytes));
+    // invariant: the fixture read respects the parser's own source budget
+    assert(src.len <= brush.max_brush_bytes);
+    const surface = try brush.parse_brush(src);
+    // invariant: the styled fixture declares a non-empty style block
+    assert(surface.style_count > 0);
+    const n = try brush.collect_brush_style(src, out);
+    // invariant: a declared style block reassembles to real bytes
+    assert(n > 0);
+    return n;
+}
+
+/// Prove the full source→pixels loop: a file's declared style resolves through
+/// infuse and dresses a grid to the declared paper (Bark) and ink (Flax).
+fn prove_authoring_loop(garden: std.mem.Allocator, io: std.Io) !void {
+    var sheet_buf: [brush.max_style_bytes]u8 = undefined;
+    const n = try read_style_sheet(garden, io, &sheet_buf);
+    const declared = sheet_buf[0..n];
+
+    // The declared sheet carries the fixture's own tokens, in the owned tongue.
+    // invariant: the fixture's declared paper (Bark) survived the reassembly
+    assert(std.mem.indexOf(u8, declared, "paper 0xFF2B2620") != null);
+    // invariant: the fixture's declared ink (Flax) survived the reassembly
+    assert(std.mem.indexOf(u8, declared, "ink 0xFFF2ECDF") != null);
+
+    // Resolve the declared sheet through tokens.rye's infuse cascade — an empty
+    // override is identity, so the resolved sheet is the file's own style,
+    // normalized through the same per-key mechanism a real cascade would use.
+    var resolved: [tokens.max_sheet_bytes]u8 = undefined;
+    const rn = try tokens.resolve(declared, "", &resolved);
+    const sheet = resolved[0..rn];
+
+    // dress lowers the resolved sheet to a paint pair, proving both tokens honor
+    // the six weave invariants (warm hue, low blue) before they reach the grid.
+    const paint = try tokens.dress(sheet);
+    // invariant: the declared paper lowered to Bark red (R43)
+    assert(paint.paper.r == 0x2B);
+    // invariant: the declared paper lowered to Bark green (G38)
+    assert(paint.paper.g == 0x26);
+    // invariant: the declared paper lowered to Bark blue (B32)
+    assert(paint.paper.b == 0x20);
+    // invariant: the declared ink lowered to Flax red (R242)
+    assert(paint.ink.r == 0xF2);
+    // invariant: the declared ink lowered to Flax green (G236)
+    assert(paint.ink.g == 0xEC);
+    // invariant: the declared ink lowered to Flax blue (B223)
+    assert(paint.ink.b == 0xDF);
+
+    // Dress a real Skate grid with the file-declared sheet and rasterize it.
+    var grid = try skate.Grid.init(garden, grid_cols, grid_rows);
+    const dressed = try tokens.dress_grid(&grid, 0, "WADE1 from a .brush file", sheet);
+    // invariant: the grid dresses to the same declared paper as dress alone
+    assert(dressed.paper.r == paint.paper.r);
+    // invariant: the grid dresses to the same declared ink as dress alone
+    assert(dressed.ink.r == paint.ink.r);
+
+    const width: i32 = @intCast(grid_cols * skate.cell_w);
+    const height: i32 = @intCast(grid_rows * skate.cell_h);
+    const stride: u32 = @as(u32, @intCast(width)) * 4;
+    const height_u: u32 = @intCast(height);
+    const pixels = try garden.alloc(u8, @as(usize, stride) * height_u);
+    grid.rasterize(pixels, stride, width, height, dressed.paper, dressed.ink, 1);
+    const lit = grid.lit_pixel_count(pixels, stride, width, height, dressed.paper);
+    // invariant: the file-declared text renders visibly against its own paper
+    assert(lit > 100);
+
+    // A styled run wears a declared token too — paint cells [0,6) in the edge
+    // rule the file declared, proving a run reads its color from the sheet.
+    const edge_color = try tokens.dress_run(&grid, 0, 0, 6, sheet, "edge", 1);
+    // invariant: the edge run seated a real, warm, distinct color from ink
+    assert(edge_color.r != dressed.ink.r or edge_color.b != dressed.ink.b);
+    // invariant: the painted run seated the grid's palette at its slot
+    assert(grid.palette[1].r == edge_color.r);
+
+    print("wade1 brush style: read {s} — style tokens reassembled to {d} bytes.\n", .{ styled_fixture, n });
+    print("wade1 brush style: resolved through infuse cascade — paper Bark, ink Flax, honoring the six weave invariants.\n", .{});
+    print("wade1 brush style: dressed a Skate grid to the declared colors — lit {d} pixels; edge run seated its own color.\n", .{lit});
+    print("GREEN: WADE1 brush style — a .brush file's declared style parses, resolves through infuse, and dresses a Skate grid to the declared colors — source to pixels.\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    try prove_authoring_loop(garden, io);
+    return 0;
+}
