@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260812.145402
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention · this session in ai-jail
+title BUHR-J8r1 — a voice reads a named artifact from the store
+prompt Recur Lindy-first crux-first; land the first door of the self-approved Journey 8; send each increment.
+think Journey 8's exploration named the crux: a voice reads only verified bytes — its corpus is a named artifact fetched through Tablecloth's fetch_artifact, tamper refused before a byte reaches the reader.
+think Mirrored graph_query.rye's composition shape exactly (route a Lantern prompt → real reading → meter against max_tokens with a length stop). pond/apps/artifact_query.rye adds ops bytes/words/line over a named artifact; words and line fetch through the verified reassembly, bytes reads store metadata (artifact_len).
+think Parsed the artifact name as the prompt's second whitespace token, bounded to tc.max_name; an op with no name returns UnknownOp (never invents).
+obs The crux is witnessed directly: unwelcome_tampered_bead flips one byte of a held bead and the voice refuses with DigestMismatch — the corpus proves itself before the reader reads it. Content-addressed storage is the intelligence's integrity guarantee for free.
+obs A false-positive TAME compound-assert ban fired on a string literal ("...warp and hemp...") inside an assert — the checker matches " and " textually. Reworded the demo doc to "warp then hemp" (and doc_brief's "plain and glad" → "plain, glad"); rebuilt GREEN, tame + width clean.
+obs Nine cases green: bytes/words/line, length-budget truncation (8-word line → 3, length stop), unknown name, tampered bead, unknown op, model-not-allowed, zero budget. J7r1 store re-runs its own GREEN binary (additive).
+loom witness=buhr_artifact_query_witness build=green cases=9 refusals=5 store_rerun=green
+file pond/apps/artifact_query.rye BUHR-J8r1 — the Lantern voice over Tablecloth's verified fetch
+file tools/buhr_artifact_query_witness.rish witness — build · GREEN · 9 cases · J7r1 store re-run green
+recommend check-in (Claude) — J8r1 landed and sent; the equinox's storage and intelligence modules now meet. Next agent-doable options: J8r2 (reading tracks a live publish) or J8r3 (gather under the Q-vane host). The owner-signed-corpus and Comlink-served horizons stay custody/serve gates; whether to keep expanding BUHR or turn toward the TACT equinox is worth Keaton's eye.
