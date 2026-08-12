@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260812.172129
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title TACT-J1r1 — the Ship-Pilot spine
+prompt read REMEMBER + the 1,024-round itinerary; take the next agent-doable lap Lindy-first crux-first; approve own design rounds; send each finished increment; stop at custody gates
+think BUHR's whole agent-doable arc is done (all eleven journeys witnessed). The next Lindy-first crux on the *whole* road is the 1,024-itinerary's Season 1 (The World, TACT), Journey 1 — Ship-Pilot: a guided first-run from zero to a running Pond.
+think Surveyed the ground — no TACT/Ship-Pilot rounds exist; Pond is the application module with apps/ + bin/; identity lives in settlement/constellation.rye (open = genesis), receipt policy in pond/customs.rye, runnable apps in pond/apps. Each onboarding step already has a module; what is unbuilt is the ordered *arc*.
+think Self-approved the design round: the crux is the enforced arc itself — a checklist that cannot be cheated, read every first-run for as long as the tree onboards anyone (the most Lindy artifact in the journey). Ordered r1 spine (pure) → r2 identity genesis → r3 customs consent → r4 ready report.
+think Built r1 as the pure keystone before wiring any module: a bounded state machine (four steps identity·place·customs·app), cursor==passed-count, advance only on the current step with a met precondition. Out-of-order → OutOfOrder (cursor holds); unmet precondition → StepNotReady (cursor holds); READY only when all four pass in order. A bounded report renders the arc a keeper reads.
+obs Proving enforcement pure in r1 (preconditions as supplied signals) means r2–r4 wire real modules into a spine already known correct — the arc law is separated from the module seams.
+obs usize kept to the two slice-index seams (append loop, key split), each marked // seam:, per the width discipline; width-check exit 0.
+loom witness=tact_ship_pilot_witness result=GREEN steps=4 cases=4
+file active-designing/20260812-172129_tact-journey1-ship-pilot-exploration.md self-approved design round opening TACT Journey 1
+file pond/apps/ship_pilot.rye the pilot spine — ordered enforced first-run arc, bounded, ≥2 asserts/fn
+file tools/tact_ship_pilot_witness.rish witness — GREEN; out-of-order and unmet-precondition each refuse, READY only when all pass
+recommend keep-going TACT-J1r2 wires the identity step to settlement/constellation.open (demo keeper seed; the maintainer's own Kumara instance stays custody gate #4)

@@ -1,0 +1,261 @@
+//! pond/apps/ship_pilot.rye — TACT Journey 1, Rung 1: the pilot spine.
+//!
+//! Season 1 of the 1,024-round itinerary (The World, TACT) carries one durable promise: a
+//! stranger reaches a working, signed, publishable instance without the maintainer's hand on
+//! each step. Ship-Pilot is the guided first-run that keeps that promise — it pilots a new
+//! keeper from zero to a running Pond.
+//!
+//! Every onboarding step already has a module of its own (identity in settlement/constellation,
+//! receipt policy in pond/customs, a runnable app in pond/apps). The durable artifact this rung
+//! fixes is neither of those: it is the ordered, enforced *arc* — the pilot that knows which
+//! steps a keeper takes, in what order, and refuses to report READY until every one has
+//! genuinely passed. A checklist that cannot be cheated is read every first-run for as long as
+//! the tree onboards anyone, so the spine is the crux.
+//!
+//! The arc is four steps in order: identity, place, customs, app. The pilot advances one step
+//! at a time and only when the current step's precondition holds. It refuses an out-of-order
+//! jump (OutOfOrder) and refuses to advance a step whose precondition is unmet (StepNotReady,
+//! and the cursor does not move). It reports PILOT READY only when every step has passed in
+//! order. In this rung each precondition is a supplied signal, so the *enforcement* is proven
+//! pure before any module is wired — r2 wires identity to constellation, r3 wires customs to
+//! pond/customs, r4 composes the ready-to-run report.
+//!
+//! It invents no storage and reads no network — a bounded state machine over an owned buffer.
+//!
+//!   rye build pond/apps/ship_pilot.rye -femit-bin=pond/bin/ship-pilot
+//!   pond/bin/ship-pilot selftest
+//!
+//! Scope: active-designing/20260812-172129_tact-journey1-ship-pilot-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const ship_pilot_version = "20260812.172129";
+
+// The arc's bounds, each named once and enforced at the edge.
+pub const step_count: u32 = 4; // identity, place, customs, app — the whole first-run arc
+pub const max_report: u32 = 256; // the rendered arc report's byte budget
+
+pub const PilotError = error{
+    OutOfOrder, // a step attempted that is not the one at the cursor
+    StepNotReady, // the current step's precondition is unmet; the pilot holds
+    ReportTooLong, // the rendered report exceeds its bounded buffer
+};
+
+/// The four onboarding steps, in the exact order a keeper walks them. The enum value is the
+/// step's index, so the cursor and the step are one number.
+pub const Step = enum(u32) {
+    identity = 0, // a settled Kumara identity (r2 wires constellation.open)
+    place = 1, // a place assigned in the topology
+    customs = 2, // the keeper's first mark placed by pond/customs (r3)
+    app = 3, // a runnable Pond app named (r4 composes the ready report)
+};
+
+/// The plain name of a step, for the report and for a keeper reading their progress.
+pub fn step_name(step: Step) []const u8 {
+    // invariant: the step index honors the arc bound
+    assert(@intFromEnum(step) < step_count);
+    return switch (step) {
+        .identity => "identity",
+        .place => "place",
+        .customs => "customs",
+        .app => "app",
+    };
+}
+
+/// The pilot's whole state: which steps have passed, and how far the cursor has walked. The
+/// cursor is the count of steps passed in order, so it doubles as the index of the current step.
+// Invariant: cursor <= step_count; passed[0..cursor] are all true; passed[cursor..] all false.
+pub const Pilot = struct {
+    passed: [step_count]bool,
+    cursor: u32,
+
+    /// A fresh pilot at the start of the arc — nothing passed, cursor at the first step.
+    pub fn begin() Pilot {
+        var p = Pilot{ .passed = undefined, .cursor = 0 };
+        var i: u32 = 0;
+        while (i < step_count) : (i += 1) {
+            p.passed[i] = false;
+        }
+        // invariant: a fresh pilot starts before the first step
+        assert(p.cursor == 0);
+        // invariant: nothing is passed at the start
+        assert(!p.passed[0]);
+        return p;
+    }
+
+    /// The step the pilot is currently on, or null when the whole arc is walked.
+    pub fn current(self: *const Pilot) ?Step {
+        // invariant: the cursor never overruns the arc
+        assert(self.cursor <= step_count);
+        if (self.cursor >= step_count) return null;
+        return @enumFromInt(self.cursor);
+    }
+
+    /// Attempt a step. It must be the step at the cursor (else OutOfOrder), and its precondition
+    /// must hold (else StepNotReady, and the cursor does not move). Only a met precondition on
+    /// the current step advances the pilot — the one path forward.
+    pub fn attempt(self: *Pilot, step: Step, precondition_met: bool) PilotError!void {
+        // invariant: the cursor is a valid position in or at the end of the arc
+        assert(self.cursor <= step_count);
+        const idx: u32 = @intFromEnum(step);
+        // invariant: the attempted step is a real arc step
+        assert(idx < step_count);
+        if (idx != self.cursor) return error.OutOfOrder;
+        if (!precondition_met) return error.StepNotReady;
+        self.passed[self.cursor] = true;
+        self.cursor += 1;
+        // invariant: a met precondition advances the cursor by exactly one
+        assert(self.cursor == idx + 1);
+        // invariant: the step just attempted is now marked passed
+        assert(self.passed[idx]);
+    }
+
+    /// How many steps have passed in order.
+    pub fn passed_count(self: *const Pilot) u32 {
+        // invariant: the cursor counts the passed steps
+        assert(self.cursor <= step_count);
+        var n: u32 = 0;
+        var i: u32 = 0;
+        while (i < step_count) : (i += 1) {
+            if (self.passed[i]) n += 1;
+        }
+        // invariant: the passed count equals the cursor (steps pass in order)
+        assert(n == self.cursor);
+        return n;
+    }
+
+    /// The whole arc is walked when every step has passed in order.
+    pub fn is_ready(self: *const Pilot) bool {
+        // invariant: readiness means the cursor reached the arc's end
+        assert(self.cursor <= step_count);
+        return self.cursor == step_count;
+    }
+
+    /// Render the arc as a keeper reads it — one line per step, checked or open, and a final
+    /// verdict. Refuses when the rendering exceeds its bounded buffer.
+    pub fn report(self: *const Pilot, out: []u8) PilotError!u32 {
+        // invariant: the report buffer honors its bound
+        assert(out.len >= max_report);
+        // invariant: the cursor is a valid arc position
+        assert(self.cursor <= step_count);
+        var n: u32 = 0;
+        var i: u32 = 0;
+        while (i < step_count) : (i += 1) {
+            const mark: []const u8 = if (self.passed[i]) "[x] " else "[ ] ";
+            n = try append(out, n, mark);
+            n = try append(out, n, step_name(@enumFromInt(i)));
+            n = try append(out, n, "\n");
+        }
+        if (self.is_ready()) {
+            n = try append(out, n, "PILOT READY");
+        } else {
+            n = try append(out, n, "PILOT INCOMPLETE at ");
+            const here = self.current().?;
+            n = try append(out, n, step_name(here));
+        }
+        // invariant: the rendered report never exceeds its bound
+        assert(n <= max_report);
+        return n;
+    }
+};
+
+/// Append a bounded token into the report buffer, refusing when it would overflow.
+fn append(out: []u8, at: u32, tok: []const u8) PilotError!u32 {
+    // invariant: the write cursor is within the buffer
+    assert(at <= out.len);
+    if (at + tok.len > out.len) return error.ReportTooLong;
+    var i: usize = 0; // seam: slice index over the owned buffer
+    while (i < tok.len) : (i += 1) {
+        out[at + i] = tok[i];
+    }
+    const next: u32 = at + @as(u32, @intCast(tok.len));
+    // invariant: the cursor advanced by exactly the token length
+    assert(next == at + tok.len);
+    return next;
+}
+
+// ---- witnesses ----
+
+/// The whole arc walks green: every step met in order carries the pilot to READY.
+fn welcome_full_arc_reaches_ready() !void {
+    var p = Pilot.begin();
+    try p.attempt(.identity, true);
+    try p.attempt(.place, true);
+    try p.attempt(.customs, true);
+    try p.attempt(.app, true);
+    assert(p.is_ready());
+    assert(p.passed_count() == step_count);
+    assert(p.current() == null);
+    print("ship_pilot: the four-step arc walked in order reaches PILOT READY.\n", .{});
+}
+
+/// A step attempted out of order refuses — the cursor cannot be jumped past an earlier step.
+fn unwelcome_out_of_order_refuses() !void {
+    var p = Pilot.begin();
+    const jumped = p.attempt(.customs, true);
+    assert(jumped == error.OutOfOrder);
+    // the pilot did not move
+    assert(p.cursor == 0);
+    assert(!p.passed[2]);
+    print("ship_pilot: a step jumped out of order refused OutOfOrder; the cursor held.\n", .{});
+}
+
+/// A step whose precondition is unmet refuses and does not advance — a keeper cannot be marked
+/// past a step they have not truly completed.
+fn unwelcome_unmet_precondition_holds() !void {
+    var p = Pilot.begin();
+    try p.attempt(.identity, true);
+    const held = p.attempt(.place, false);
+    assert(held == error.StepNotReady);
+    // the pilot holds exactly at the unmet step
+    assert(p.cursor == 1);
+    assert(!p.is_ready());
+    assert(p.current().? == .place);
+    // and once the precondition is met, the same step advances
+    try p.attempt(.place, true);
+    assert(p.cursor == 2);
+    print("ship_pilot: an unmet precondition held at its step, then advanced once met.\n", .{});
+}
+
+/// The report reads a keeper's progress honestly — passed steps checked, the current step named,
+/// and the verdict matching the arc's true state.
+fn welcome_report_reads_progress() !void {
+    var buf: [max_report]u8 = undefined;
+    var p = Pilot.begin();
+    try p.attempt(.identity, true);
+    try p.attempt(.place, true);
+    const n = try p.report(&buf);
+    const text = buf[0..n];
+    assert(std.mem.indexOf(u8, text, "[x] identity") != null);
+    assert(std.mem.indexOf(u8, text, "[x] place") != null);
+    assert(std.mem.indexOf(u8, text, "[ ] customs") != null);
+    assert(std.mem.indexOf(u8, text, "PILOT INCOMPLETE at customs") != null);
+    // a fully walked arc reports READY
+    try p.attempt(.customs, true);
+    try p.attempt(.app, true);
+    const m = try p.report(&buf);
+    assert(std.mem.indexOf(u8, buf[0..m], "PILOT READY") != null);
+    print("ship_pilot: the report checked passed steps, named the current one, and read the verdict.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_full_arc_reaches_ready();
+    try unwelcome_out_of_order_refuses();
+    try unwelcome_unmet_precondition_holds();
+    try welcome_report_reads_progress();
+    print("ship_pilot {s} — GREEN\n", .{ship_pilot_version});
+    print("GREEN: TACT-J1r1 ship_pilot; the first-run arc advances only in order and only when each step is proven.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest();
+    }
+    print("usage: ship-pilot selftest\n", .{});
+    return 1;
+}
