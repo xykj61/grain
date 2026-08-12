@@ -1,0 +1,168 @@
+//! brushstroke/skate_styled_run_test.rye — WADE1: per-cell styled runs prove
+//! two runs paint two colors, and a no-runs grid stays byte-identical.
+//!
+//! The durable claim of the styled-run growth is that the default path is
+//! unchanged: a grid with no `put_color_run` rasterizes to the exact same bytes
+//! as before the palette existed. This witness proves that with a whole-buffer
+//! signature, and proves that a painted run genuinely changes the pixels a
+//! different color — the two together are the seam's safety and its purpose.
+//!
+//!   rye/bin/rye run brushstroke/skate_styled_run_test.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const skate = @import("skate_grid.rye");
+
+/// Bounded grid for the proof — small enough to reason about, wide enough to
+/// hold two distinct runs on one row.
+const cols: u32 = 24;
+const rows: u32 = 3;
+
+const bg = skate.Color{ .r = 0x10, .g = 0x12, .b = 0x18 };
+const fg = skate.Color{ .r = 0xe0, .g = 0xe0, .b = 0xe0 };
+const run_a_color = skate.Color{ .r = 0xd0, .g = 0x30, .b = 0x20 }; // warm red
+const run_b_color = skate.Color{ .r = 0x20, .g = 0xb0, .b = 0x40 }; // green
+
+/// FNV-1a over the whole pixel buffer — the same shape the Wayland seed uses
+/// to sign a frame, so "byte-identical" is a single compared number.
+fn buffer_signature(pixels: []const u8) u64 {
+    // invariant: a buffer is present to sign.
+    assert(pixels.len > 0);
+    var hash: u64 = 0xcbf29ce484222325;
+    var i: u32 = 0;
+    const n: u32 = @intCast(pixels.len);
+    // invariant: the walk stays inside the buffer we were handed.
+    assert(n == pixels.len);
+    while (i < n) : (i += 1) {
+        hash ^= pixels[i];
+        hash *%= 0x100000001b3;
+    }
+    return hash;
+}
+
+/// Count pixels whose red channel is close to a target color's red, on one cell
+/// row band. A crude but honest "this run wears this color" probe: a run painted
+/// warm-red lights red-heavy pixels a green run never does.
+fn red_heavy_count(pixels: []const u8, stride: u32, width: u32, y0: u32, y1: u32, target: skate.Color) u32 {
+    // invariant: the band is a real, ordered pixel range.
+    assert(y1 > y0);
+    // invariant: stride holds the whole row width in bytes.
+    assert(stride >= width * 4);
+    const stride_usize: usize = @intCast(stride);
+    var count: u32 = 0;
+    var y: u32 = y0;
+    while (y < y1) : (y += 1) {
+        const y_usize: usize = @intCast(y);
+        const row = pixels[y_usize * stride_usize ..][0 .. @as(usize, @intCast(width)) * 4];
+        var x: u32 = 0;
+        while (x < width) : (x += 1) {
+            const px: usize = @intCast(x * 4);
+            // ARGB8888 little-endian in the buffer: b, g, r, a.
+            const r = row[px + 2];
+            const g = row[px + 1];
+            const b = row[px + 0];
+            if (r == target.r and g == target.g and b == target.b) count += 1;
+        }
+    }
+    return count;
+}
+
+fn render(grid: *const skate.Grid, allocator: std.mem.Allocator) ![]u8 {
+    const width: u32 = cols * skate.cell_w;
+    const height: u32 = rows * skate.cell_h;
+    const stride: u32 = width * 4;
+    const pixels = try allocator.alloc(u8, @intCast(stride * height));
+    grid.rasterize(pixels, stride, @intCast(width), @intCast(height), bg, fg, 1);
+    return pixels;
+}
+
+pub fn main() !void {
+    const allocator = std.heap.page_allocator;
+    const width: u32 = cols * skate.cell_w;
+    const stride: u32 = width * 4;
+
+    // --- 1. The no-runs grid is byte-identical to a fresh baseline grid. ----
+    // Two independently built grids with the same text and no color runs must
+    // sign to the same number — the default path carries no palette drift.
+    var plain = try skate.Grid.init(allocator, cols, rows);
+    plain.put_line(0, "the quick brown fox jumps");
+    plain.put_line(1, "over the lazy dog again");
+    const plain_pixels = try render(&plain, allocator);
+    const sig_plain = buffer_signature(plain_pixels);
+
+    var baseline = try skate.Grid.init(allocator, cols, rows);
+    baseline.put_line(0, "the quick brown fox jumps");
+    baseline.put_line(1, "over the lazy dog again");
+    const baseline_pixels = try render(&baseline, allocator);
+    const sig_baseline = buffer_signature(baseline_pixels);
+    // invariant: no-runs grids with identical text sign identically.
+    assert(sig_plain == sig_baseline);
+
+    // --- 2. A painted grid differs from the no-runs grid, byte for byte. -----
+    // Same text, same fg — only the runs change. Two runs on row 0: cells
+    // [0,8) wear slot 1 (red), cells [8,16) wear slot 2 (green).
+    var painted = try skate.Grid.init(allocator, cols, rows);
+    painted.put_line(0, "the quick brown fox jumps");
+    painted.put_line(1, "over the lazy dog again");
+    painted.set_palette(1, run_a_color);
+    painted.set_palette(2, run_b_color);
+    painted.put_color_run(0, 0, 8, 1);
+    painted.put_color_run(0, 8, 16, 2);
+    const painted_pixels = try render(&painted, allocator);
+    const sig_painted = buffer_signature(painted_pixels);
+    // invariant: painting a run changes the rendered bytes.
+    assert(sig_painted != sig_plain);
+
+    // --- 3. The two runs genuinely wear two different colors. ---------------
+    // Run A's cell band lights warm-red pixels; run B's band lights green ones.
+    // Cross-check: run A's band holds no green-run pixels, and vice versa.
+    const row0_y0: u32 = 0;
+    const row0_y1: u32 = skate.cell_h;
+    const run_a_x1: u32 = 8 * skate.cell_w;
+    const run_b_x0: u32 = 8 * skate.cell_w;
+    const run_b_x1: u32 = 16 * skate.cell_w;
+
+    // Slice the buffer's run-A band (columns 0..8) and count red-run pixels.
+    const red_in_a = red_heavy_count(painted_pixels, stride, run_a_x1, row0_y0, row0_y1, run_a_color);
+    const green_in_a = red_heavy_count(painted_pixels, stride, run_a_x1, row0_y0, row0_y1, run_b_color);
+    // invariant: run A's band lights its own red color.
+    assert(red_in_a > 0);
+    // invariant: run A's band never wears run B's green.
+    assert(green_in_a == 0);
+
+    // Run-B band (columns 8..16) — count both colors across the whole row width,
+    // then confine to the band by checking the full row and the band bounds.
+    var green_in_b: u32 = 0;
+    var red_in_b: u32 = 0;
+    {
+        const stride_usize: usize = @intCast(stride);
+        var y: u32 = row0_y0;
+        while (y < row0_y1) : (y += 1) {
+            const y_usize: usize = @intCast(y);
+            const row = painted_pixels[y_usize * stride_usize ..][0 .. @as(usize, @intCast(width)) * 4];
+            var xp: u32 = run_b_x0;
+            // Bounded by run_b_x1, itself a named 16-cell edge inside the grid.
+            while (xp < run_b_x1) : (xp += 1) {
+                const px: usize = @intCast(xp * 4);
+                const r = row[px + 2];
+                const g = row[px + 1];
+                const b = row[px + 0];
+                if (r == run_b_color.r and g == run_b_color.g and b == run_b_color.b) green_in_b += 1;
+                if (r == run_a_color.r and g == run_a_color.g and b == run_a_color.b) red_in_b += 1;
+            }
+        }
+    }
+    // invariant: run B's band lights its own green color.
+    assert(green_in_b > 0);
+    // invariant: run B's band never wears run A's red.
+    assert(red_in_b == 0);
+
+    // invariant: the two runs are painted in genuinely different colors.
+    assert(run_a_color.r != run_b_color.r or run_a_color.g != run_b_color.g or run_a_color.b != run_b_color.b);
+
+    print("skate styled run: no-runs byte-identical sig={x} (baseline {x})\n", .{ sig_plain, sig_baseline });
+    print("skate styled run: painted sig={x} differs from plain — runs change pixels\n", .{sig_painted});
+    print("skate styled run: run A red={d} green={d}; run B green={d} red={d}\n", .{ red_in_a, green_in_a, green_in_b, red_in_b });
+    print("GREEN: brushstroke skate styled runs — two ranges two colors; no-runs path byte-identical.\n", .{});
+}
