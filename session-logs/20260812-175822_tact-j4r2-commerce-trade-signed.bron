@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260812.175822
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title TACT-J4r2 — a trade both parties signed
+prompt keep climbing the road Lindy-first crux-first; approve own design rounds; send each finished increment to both remotes; stop at custody gates
+think r1 booked a fair-value trade on both parties' books at one agreed price, fair value by construction. Yet a booking alone does not prove agreement — a steward could write a number one side never accepted. r2's crux: a recorded trade is one both hands signed.
+think Bound the trade to two settled Kumara identities. pond/apps/commerce_trade_signed.rye builds an auth message from the exact facts (seller point, buyer point, price i64, item with length) and both the seller and the buyer sign that identical message with their keeper seed (kumara.sign, the same layout tablecloth_keyed signs publications with).
+think both_agree requires the seller's signature and the buyer's signature to each verify over the identical facts (kumara.verify_bytes against each keeper PublicKey). record_signed gates rung one's record_trade behind both_agree — an unagreed trade refuses NotAgreed before any book is touched, an agreed one books through r1 (fair value still holds).
+think The honesty crux made checkable: change trade.price after both signed and both signatures fall, because the signed message carried the old price — a steward cannot quietly rebook at a number neither accepted. Proven as unwelcome_price_tamper_refuses (sign at 1000, mutate to 900, NotAgreed).
+obs Five cases: both sign → verify + book, fair value holds; forged seller sig → NotAgreed; forged buyer sig → refused; wrong keeper key → refused (names exactly who agreed); price tampered after signing → NotAgreed.
+obs One fix before green: verify_bytes takes a PublicKey as its third arg (not its bytes) — matched tablecloth_keyed's own usage (kumara.verify_bytes(msg, sig, pub_key)).
+obs Composed over public API only — kumara signing + r1's record_trade; rung one stays its own GREEN binary under the witness. Demo keeper seeds only, no real key, no funds; settling reaches custody gate #3.
+loom witness=tact_commerce_trade_signed_witness result=GREEN cases=5 signatures=2
+file pond/apps/commerce_trade_signed.rye a trade both parties sign; books only when both signatures verify over the identical facts; forgery/wrong-key/price-tamper refused
+file tools/tact_commerce_trade_signed_witness.rish witness — GREEN (5 cases + r1 re-run)
+recommend keep-going TACT-J4r2 binds the trade to two agreeing identities; r3 (portable format trade-v1 Bron round-trip) is the last agent-doable rung; settling reaches custody gate #3
