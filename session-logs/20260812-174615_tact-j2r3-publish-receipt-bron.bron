@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260812.174615
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title TACT-J2r3 — the receipt made portable (Bron round-trip)
+prompt continue the road Lindy-first crux-first; keep agent-doable work moving; send each increment; stop at custody gates
+think r1 (offline verify) and r2 (constellation-bound) proved a receipt's trust; r3 makes it travel. Renders a Publication to a format publication-v1 Bron record and parses it back byte-for-byte.
+think The crux is preservation: parse(render(receipt)) recovers an equal receipt (point, name, len, digest, sig) and the recovered receipt still verify_offline's against the publisher's key — the signed word survived becoming text. digest/sig cross as lowercase hex (32B->64, 64B->128); point/len via tally parse_int; name flat.
+think The reader is purpose-built and bounded: an unknown field refuses UnknownField (never dropped), a missing field MissingField, a wrong header BadFormat, malformed/short hex BadHex. Four cases green.
+obs TAME ban caught before commit: inline `) == error.` at a call seam in the header/hex refusal test; bound each parse result to a const first (header_result/hex_result), matching the other unwelcome cases. tame_style_check then GREEN.
+obs Reads no network — the serve transport carrying this record across the wire is the Comlink-served custody gate (r4). Journey 2's agent-doable arc (r1 offline · r2 bound · r3 portable) now stands; only the serve rung remains, and it is Keaton's hand.
+loom witness=tact_publish_receipt_bron_witness result=GREEN cases=4 digest_hex=64 sig_hex=128
+file pond/apps/publish_receipt_bron.rye render/parse a format publication-v1 record; round-trip preserves the signed word, malformed records refuse
+file tools/tact_publish_receipt_bron_witness.rish witness — GREEN (4 cases + r1 re-run)
+recommend check-in (Claude) TACT Journeys 1 (complete) and 2 (agent-doable arc complete: r1·r2·r3) landed and sent; Journey 2's r4 (serve) reaches the Comlink-served custody gate — Keaton's hand. Next agent-doable crux is a fresh TACT journey (Grainphone/Commerce) or Season 2 — confirm direction
