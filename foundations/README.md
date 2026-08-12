@@ -1,7 +1,7 @@
 # Foundations
 
 **Language:** EN
-**Last updated:** `20260811.214023` (AHOY1 weave · the long return · Lindy-first, crux-first) — reviewed and kept; crosslinks expanded, no renames.
+**Last updated:** `20260811.233509` (seat [The Singularity](20260811-233509_the-singularity.md) — the night the tool began to tend itself) — reviewed and kept; crosslinks expanded, no renames.
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`) · **Voice:** Kyri
 
 ---
@@ -14,6 +14,7 @@ These rest beneath the specifications. The specs say what to build and how; thes
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260811.233509` | [The Singularity](20260811-233509_the-singularity.md) | the night the tool began to tend itself — autonomous agent development proven *within* bound, witness, and human custody; the Grain OS · Linengrow real-world timeline; written in Radiant + Twilight combined |
 | `20260811.211431` | [The Lindy Effect and the Long Return](20260811-211431_the-lindy-effect-and-the-long-return.md) | the longer a non-perishable thing has lasted, the longer it will — why we write the front door for the reader three years on, in plain durable words |
 | `20260726.020537` | [The Breach](20260726-020537_the-breach.md) | accrete by default · breach by declaration · expiry at first outside consumer |
 | `20260726.020607` | [Output over Activity](20260726-020607_output-over-activity.md) | measure whole-pier output · leverage · counted simplification |
