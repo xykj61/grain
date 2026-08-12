@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260812.075736
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Infuse jq into the pier NixOS config (guarded, reversible)
+prompt Keaton: update our nix pier rebuild infuse for all these installs and finish
+think The one tool this work proved the pier lacks is jq — the season loop streams with --output-format stream-json, unreadable without it (node/python/jaq/gojq/yq also absent, yet those are far larger and left for Keaton's word). So "these installs" resolves to jq: the concrete, demonstrated gap.
+think Found the pier-config pattern: the live /etc/nixos/configuration.nix (hostName pier, SEA VPS marker, flake at /etc/nixos#pier) is edited by a guarded root script — the mosh precedent (tools/pier_mosh_udp_open.sh: additive · idempotent · guarded · reversible). Followed it exactly for jq.
+think Wrote tools/pier_jq_install.sh: guards (pier + SEA + expected systemPackages shape), idempotent, backs up the config, inserts one `jq` line into environment.systemPackages via awk, VALIDATES the edit with `nix-instantiate --parse` before moving it into place, then `nixos-rebuild switch --flake /etc/nixos#pier`, and proves jq on PATH. Synced the repo reference nixos-guide/pier-staging/configuration.nix with the same jq line.
+think Verified on metal: sh -n clean; the awk edit on a copy of the LIVE config places jq inside the block and the result PARSES OK under nix-instantiate --parse (baseline parses too). Caught + fixed my own idempotency bug — the check grepped for a bare `jq` line but I insert `jq` with a trailing comment, so a re-run would have duplicated it; widened the grep to `^\s*jq([[:space:]]|$)`, which matches the commented line and does not false-match a jq-prefixed name.
+think Pointed the jq notes (recursion-prompts/README + the recipe) at the durable install script rather than only nix-shell. The rebuild itself stays Keaton's hand (root) — agents author IaC, hands provision, per the custody gates.
+obs living_docs_lint GREEN (README link to the new script resolves); the recipe still prints GREEN. No PII added; nixos-guide is already scrub-classified for the seed.
+file tools/pier_jq_install.sh guarded/reversible root script — infuse jq into systemPackages + rebuild
+file nixos-guide/pier-staging/configuration.nix repo reference config synced with the jq package line
+file recursion-prompts/README.md jq note points at the pier install script
+file tools/launch-claude-season.rish streaming note points at the pier install script
+recommend check-in Keaton — on the pier as root: sudo sh tools/pier_jq_install.sh (backs up, validates, rebuilds); then the loop's stream-json pipes through jq for a clean live view. node/python left for your word if you want them
