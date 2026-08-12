@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260811.232232
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title AHOY2 — CHANGELOG.md that points at the real record
+prompt Keaton: kg all seasons autonomously (AHOY2 legitimacy layer continues)
+think The plan wanted "a changelog that is really the session-log index." A hand-written changelog would drift from the signed history, so I wrote a short CHANGELOG.md that points at the records already true (git log + the session-log index) rather than duplicating them.
+think Caught a seed leak before it shipped: my first draft linked session-logs/README.md and work-in-progress/REMEMBER.md as markdown links — both are personal (withheld from the public seed), so those links would break in the projected grain-os/grain. Rewrote seed-safe: git log leads (it travels in every clone), the two withheld paths are plain backticked references (not clickable links), and only seed-present targets (context/RADIANT_STYLE.md, CONTRIBUTING.md) stay as links.
+think Verified the fix on metal: grepped the projected seed/CHANGELOG.md — only two markdown links, both resolving inside the seed. The withheld-dir references are prose, not broken links.
+obs Seed-plumbed (allow + scrub). living_docs_lint GREEN; sow_witness SOW_WITNESS_GREEN, IDENT_CLEAN, NO_PERSONAL. AHOY2's core file set is complete: LICENSE · SECURITY.md · CODE_OF_CONDUCT.md · CHANGELOG.md.
+obs A general lesson worth carrying: a doc destined for the seed must only hard-link seed-present paths; withheld dirs are named in prose. Kin to docs↔code sync — the projection is a second audience the links must satisfy.
+loom witness=sow_witness result=GREEN seed_changelog_links=2 both_resolve=true
+file CHANGELOG.md new — points to git log + the private session-log record; seed-safe links
+file .gitignore allowlist CHANGELOG.md
+file template-manifest.bron allow + scrub CHANGELOG.md
+recommend keep-going AHOY2 core complete; remaining is the honest-badges review (a confirm), then AHOY1's low-Lindy gratitude tail or WADE1's .brush surface bridge. AHOY3 (final seed force-push) stays Keaton's hand
