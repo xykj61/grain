@@ -1,0 +1,47 @@
+# tools/buhr_quin_host_artifact_witness.rish — BUHR Journey 8, Rung 3: the artifact voice, gathered.
+#
+# Journey 1 gathered three voices under the Q-vane host; Journey 6 gathered a fourth whose
+# corpus is the living Mantra graph. This rung gathers a fifth — the voice whose corpus is
+# a named Tablecloth artifact — so a single Lantern-shaped request routes to whichever
+# voice recognizes the prompt: arithmetic, reading, corpus, graph, or a stored artifact.
+# The whole of Surface & Intelligence answers under one bounded entry, and the artifact
+# voice brings its integrity guarantee with it (its answers rest on bytes that proved
+# themselves). It wraps quin_host_graph.dispatch unchanged and falls through to the
+# artifact voice only on UnknownOp; a real request fault (disallowed model) surfaces at
+# once. The four-voice host stays its own green binary (this rung composes over public API).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/buhr_quin_host_artifact_witness.rish
+
+say "buhr8r3: Language EN — a fifth voice whose corpus is a named Tablecloth artifact, gathered under one host."
+say "buhr8r3: Lens TAME — try the four voices first, fall through on UnknownOp only; a real fault surfaces at once."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/quin-host-artifact"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/quin_host_artifact.rye -femit-bin=${bin}"]
+assert build.ok else "buhr8r3: quin_host_artifact build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "buhr8r3: quin_host_artifact selftest exited non-zero"
+assert selftest.out contains "GREEN" else "buhr8r3: selftest did not speak GREEN"
+assert selftest.out contains "matmul still routes to Lattice" else "buhr8r3: the arithmetic voice was displaced"
+assert selftest.out contains "lane_count still routes to the graph voice" else "buhr8r3: the graph voice was displaced"
+assert selftest.out contains "words dispatched to the artifact voice" else "buhr8r3: the artifact voice did not join"
+assert selftest.out contains "line dispatched to the artifact voice" else "buhr8r3: the artifact line op did not route"
+assert selftest.out contains "length stop carried through from the artifact voice" else "buhr8r3: metering did not carry through"
+assert selftest.out contains "disallowed model refused at once" else "buhr8r3: model fault fell through instead of surfacing"
+assert selftest.out contains "unknown artifact name refused" else "buhr8r3: unknown-name refusal missing"
+assert selftest.out contains "no voice recognized the prompt" else "buhr8r3: no-voice refusal missing"
+assert selftest.out contains "five voices under one bounded entry" else "buhr8r3: the whole-host claim missing"
+
+# The four-voice host — the surface voice gathered in Journey 6 — stays its own green
+# binary; this rung composes over its public dispatch, additively.
+let host_bin = "pond/bin/quin-host-graph"
+let host_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/quin_host_graph.rye -femit-bin=${host_bin}"]
+assert host_build.ok else "buhr8r3: quin_host_graph (J6r3) re-build failed"
+let host_selftest = run ["sh" "-c" "${host_bin} selftest 2>&1"]
+assert host_selftest.ok else "buhr8r3: quin_host_graph (J6r3) selftest exited non-zero"
+assert host_selftest.out contains "GREEN" else "buhr8r3: quin_host_graph (J6r3) did not speak GREEN"
+
+say "buhr8r3: GREEN — five voices under one host; the artifact voice joins without displacing any, and reads only bytes that proved themselves."
