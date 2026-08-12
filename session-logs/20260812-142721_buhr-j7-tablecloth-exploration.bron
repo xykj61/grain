@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260812.142721
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR Journey 7 opened — Tablecloth, the named artifact store
+prompt Read REMEMBER; take the next agent-doable lap Lindy-first crux-first; approve own design rounds; double-seat visions for itinerary blind spots; send often; stop at custody gates
+think Read the whole operator card. BUHR Journey 6 landed complete end to end; the card's own next-option line named a fresh BUHR journey or Tablecloth, still unbuilt.
+think Ordered Lindy-first, crux-first: Tablecloth is the one module named in the BUHR equinox row (Realidream · Quin voices · MCP-in-Bron · Tablecloth) that no journey has built — the most durable, still-tractable move left in the equinox.
+think Grounded it before designing: the Lexicon holds two Tablecloth senses — the already-witnessed namespace query, and the unbuilt Brix-facing application database and artifact store (line 189). The artifact store is the blind spot.
+think Found the substrate: mantra/beading.rye already carries a content-addressed BeadStore (deposit/get/reassemble/verify, dedup, tamper-refused, selftest green). Tablecloth invents no storage — it is the naming layer over that store.
+obs Named the crux as a name bound to a content address: fetch-by-name returns exactly the bytes whose digest the name pins, a tamper anywhere refuses — content-addressing makes accrete-never-break the store's own data model, the same discipline the Realidream editor earned as an edit is an append.
+obs Self-approved the design round (a plan-exhausted itinerary blind spot) and double-seated Journey 7 beside the six complete, matching the season's established rhythm.
+file active-designing/20260812-142132_buhr-journey7-tablecloth-artifact-store-exploration.md the Journey 7 exploration — crux, substrate (BeadStore), first door, journey onward, boundary
+recommend keep-going land BUHR-J7r1 (pond/apps/tablecloth.rye + witness) as its own signed round
