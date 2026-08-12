@@ -6,7 +6,7 @@
 
 ## The one line (paste form)
 
-> Read `work-in-progress/REMEMBER.md`; take the next agent-doable lap Lindy-first crux-first; send often — push each finished increment (a new file, a passing witness, a doc) to `origin` and `xykj61` as its own signed round so progress is followable on GitHub; approve your own design rounds and trust yourself before checking in; keep double-seating new visions that address calendar-itinerary blind spots; STOP at the custody gates in REMEMBER; if only those gates remain print exactly `GATES-ONLY` and stop. baton prin recur
+> Read `work-in-progress/REMEMBER.md`; take the next agent-doable lap Lindy-first crux-first; send often — push each finished increment (a new file, a passing witness, a doc) to `origin` and `xykj61` as its own signed round so progress is followable on GitHub; approve your own design rounds and trust yourself before checking in; keep double-seating new visions that address calendar-itinerary blind spots; STOP at the custody gates in REMEMBER; if only those gates remain, run the shell command `touch .loop-gates-only` and print exactly `GATES-ONLY`, then stop. baton prin recur
 
 ## 1 — The lenses, loaded by reference
 
@@ -60,7 +60,7 @@ A `.bron`/`.kyri` session log per round (`session-logs/`), a newest-first row in
 ## 8 — The budget and the stop rule
 
 - **Budget:** {{N rounds or N commits, whichever first — or "until the clock reaches {{time}}"}}.
-- **Stop rule:** if only the custody gates remain agent-blocked, print exactly `GATES-ONLY` and stop. Otherwise continue the recursion.
+- **Stop rule:** if only the custody gates remain agent-blocked, `touch .loop-gates-only` (the loop's file sentinel — robust against the prompt echo that a grep on stream-json would false-match) and print exactly `GATES-ONLY`, then stop. Otherwise continue the recursion.
 
 ---
 

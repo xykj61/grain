@@ -59,6 +59,17 @@ A **seed** is a template with `{{fill}}` slots and its laws stated in full. A **
 
 Census witness: [`../tools/recursion_prompts_census_witness.rish`](../tools/recursion_prompts_census_witness.rish) — proves the seeds present, the versions dated, and the gate clause carried in every seed.
 
+## Watching a run live
+
+Plain `--verbose` does **not** stream through a pipe ([claude-code #733](https://github.com/anthropics/claude-code/issues/733)); the streaming format is **`--output-format stream-json --verbose`**, which emits one JSON event per line as they happen. On a pier without `jq` the raw NDJSON scrolls live — ugly, yet honest proof the lap is working. For readable output, add `jq` (`nix-shell -p jq`) and pipe the stream through it:
+
+```sh
+… claude --output-format stream-json --verbose -p '…' \
+  | jq -rj 'select(.type=="stream_event" and .event.delta.type?=="text_delta") | .event.delta.text'
+```
+
+**The loop stops on a file sentinel, not a grep.** Because stream-json echoes the prompt — which contains the words `GATES-ONLY` — a grep on the stream would false-match and stop after one lap. So the prompt tells the agent to `touch .loop-gates-only` when only custody gates remain, and the outer loop checks for that file (`[ -f .loop-gates-only ]`), leaving the stream purely for the operator's eyes. The exact loop lives in [`../tools/launch-claude-season.rish`](../tools/launch-claude-season.rish). The cleanest progress signal of all is the **per-increment commits on GitHub** — the loop pushes each finished file, witness, and doc as its own round.
+
 ---
 
 *May every prompt reward exactly the work we mean. May every fork be resolved on paper or parked with grace. And may the agent, reading one of these, find the named route generous — every stop inside it green, every gate outside it named, and the bench it wakes already home.*

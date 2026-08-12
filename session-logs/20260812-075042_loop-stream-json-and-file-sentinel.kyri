@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260812.075042
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Loop streams live (stream-json) + a file-sentinel gate
+prompt Keaton: --verbose isn't streaming the Claude Code session; maybe search the web for a better way
+think Had the Claude Code guide agent research it: plain --verbose does NOT stream through a pipe (claude-code issue #733); the streaming path is --output-format stream-json --verbose, which emits one NDJSON event per line, live. Token-level via --include-partial-messages; readable via jq.
+think Pier reality check: no jq, no node, no python, no jaq/gojq/yq — the pier has no JSON tooling. stdbuf is present. So the jq-pretty path can't run here; the raw NDJSON stream is the honest best (it scrolls live = proof of progress). Recommended adding jq (nix-shell -p jq) for readable output, with the exact jq filter placed in recursion-prompts/README.md.
+think Caught a bug I would have introduced: stream-json echoes the input prompt, which literally contains the words GATES-ONLY, so a grep on the stream would false-match and stop the loop after one lap. Switched the gate to a FILE SENTINEL — the agent runs `touch .loop-gates-only` when only gates remain, and the outer loop checks `[ -f .loop-gates-only ]`. The raw stream is purely for the operator's eyes; GATES-ONLY is still printed (human-readable, census-witness-compatible).
+think Updated the recipe (both lap and loop): --verbose → --output-format stream-json --verbose; the loop became a while-true with rm-sentinel-first, tee to /tmp/claude_lap.jsonl (live view + saved log), file-sentinel break, sleep 20. Updated the autonomous-loop seed's gate clause + stop rule to the touch sentinel, and added a "Watching a run live" section to the cellar README with the jq filter and the why-a-sentinel note.
+obs .loop-gates-only is already ignored by the root allowlist .gitignore (not a tracked path). Verified: the script prints clean, the while-loop bash -n parses, the census witness stays GREEN (GATES-ONLY clause preserved in every seed), living_docs_lint GREEN.
+file tools/launch-claude-season.rish stream-json streaming + file-sentinel loop + jq/streaming notes
+file recursion-prompts/seed/autonomous-loop.seed.md gate clause + stop rule use the touch sentinel
+file recursion-prompts/README.md new "Watching a run live" section — stream-json, jq filter, the sentinel rationale
+recommend check-in Keaton — restart with the new command: it streams raw NDJSON live (add jq for readable), and self-stops on the file sentinel, not the echoed prompt; the per-increment GitHub commits remain the cleanest progress view
