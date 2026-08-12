@@ -1,0 +1,41 @@
+# tools/buhr_mcp_json_witness.rish — BUHR Journey 3, Rung 2.
+#
+# The Bron<->JSON tiles, proven on metal: a Grain tool described in MCP-in-Bron
+# meets a JSON-speaking MCP host without either side bending. A bounded Bron Call
+# renders to a real JSON-RPC tools/call request and reads back into the same Call;
+# a Bron Result renders to the JSON-RPC response shape (a content text item on
+# success, a code/message object on error) and reads back into the same Result.
+# The crux property carries across the tile -- parse(render(x)) recovers x. A quoted,
+# backslashed value survives the crossing; a non tools/call method, an unknown field,
+# and a truncated envelope are each refused with a named error rather than half-read.
+#
+# Rung one (buhr_mcp_bron_witness.rish) fixed the owned shape; this rung tiles it to
+# the world. Run from the repository root:
+#   rishi/bin/rishi run tools/buhr_mcp_json_witness.rish
+
+say "buhr-j3r2: Language EN — MCP-in-Bron meets JSON-RPC tools/call, round-tripped both ways."
+say "buhr-j3r2: Lens TAME — bounded envelopes, unknown fields refused, escapes faithful."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/mcp-json"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mcp_json.rye -femit-bin=${bin}"]
+assert build.ok else "buhr-j3r2: mcp_json build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "buhr-j3r2: mcp_json selftest exited non-zero"
+assert selftest.out contains "GREEN" else "buhr-j3r2: selftest did not speak GREEN"
+assert selftest.out contains "call tile — Bron add -> JSON-RPC tools/call -> Bron, recovered" else "buhr-j3r2: call tile round-trip missing"
+assert selftest.out contains "result tile — Bron result 5 -> JSON-RPC content -> Bron, recovered" else "buhr-j3r2: result tile round-trip missing"
+assert selftest.out contains "error tile — Bron error -> JSON-RPC code/message -> Bron, recovered" else "buhr-j3r2: error tile round-trip missing"
+assert selftest.out contains "escaping — a quoted, backslashed value survives the JSON crossing" else "buhr-j3r2: escaping round-trip missing"
+assert selftest.out contains "a non tools/call method is refused" else "buhr-j3r2: bad-method refusal missing"
+assert selftest.out contains "an unknown top-level field is refused" else "buhr-j3r2: unknown-field refusal missing"
+assert selftest.out contains "a truncated envelope is refused" else "buhr-j3r2: truncation refusal missing"
+
+# Rung one stays its own GREEN binary -- the tile is additive, not a rewrite.
+let rung1 = run ["sh" "-c" "rishi/bin/rishi run tools/buhr_mcp_bron_witness.rish 2>&1"]
+assert rung1.ok else "buhr-j3r2: rung one witness regressed"
+assert rung1.out contains "GREEN: BUHR-J3r1" else "buhr-j3r2: rung one green line missing"
+
+say "GREEN: BUHR-J3r2 — the Bron<->JSON tiles carry a Grain tool to a JSON MCP host and back, faithfully."

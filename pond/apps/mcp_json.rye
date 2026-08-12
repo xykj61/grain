@@ -1,0 +1,657 @@
+//! pond/apps/mcp_json.rye — BUHR Journey 3, Rung 2: the Bron<->JSON tiles.
+//!
+//! Rung one fixed the descriptor shape: MCP spoken in Bron, call and result
+//! envelopes that round-trip on the owned notation. This rung opens the named
+//! horizon — the tiles that let a Grain tool meet a JSON-speaking MCP host without
+//! either side bending to the other. A Bron `Call` renders to a real JSON-RPC
+//! `tools/call` request; a JSON request reads back into the same bounded `Call`. A
+//! Bron `Result` renders to the JSON-RPC response shape (a `content` text item on
+//! success, a `code`/`message` object on error) and reads back into the same
+//! `Result`. The crux property carries across the tile: parse(render(x)) recovers x,
+//! and render(parse(json)) reproduces the json — the two worlds meet, faithfully.
+//!
+//! This is a purpose-built reader for the MCP `tools/call` envelope, not a general
+//! JSON parser: it reads objects, strings, and unsigned ids, refuses an unknown
+//! field rather than dropping it, and bounds every collection. It reuses rung one's
+//! `mcp_bron.rye` shapes (Call, Arg, Result) and the byte-by-byte bounded append the
+//! tree already trusts (kin to mantra_browser.rye) — no @memcpy, no new transport.
+//!
+//!   rye build pond/apps/mcp_json.rye -femit-bin=pond/bin/mcp-json
+//!   pond/bin/mcp-json selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const mcp = @import("mcp_bron.rye");
+
+const mcp_json_version = "20260812.163000";
+
+// The tile's bounds, each named once and enforced at the edge.
+pub const max_json: u32 = 512; // a bounded JSON envelope, request or response
+pub const max_scratch: u32 = 512; // decoded strings a reader interns from one envelope
+
+pub const JsonError = error{
+    JsonTooLong,
+    BadJson,
+    Unterminated,
+    BadMethod,
+    UnknownField,
+    FieldTooLong,
+    TooManyArgs,
+};
+
+// --- the writer: Bron shapes -> JSON bytes ---------------------------------
+
+/// Append `s` into `out` at cursor `n`, bounded by the caller's buffer. Byte by
+/// byte within a named bound — the tree's trusted append, no @memcpy.
+fn append(out: []u8, n: *u32, s: []const u8) JsonError!void {
+    // invariant: the buffer respects the JSON envelope bound
+    assert(out.len <= max_json);
+    // invariant: the cursor never sits past the buffer
+    assert(n.* <= out.len);
+    if (s.len > out.len - n.*) return error.JsonTooLong;
+    var i: u32 = 0;
+    // seam: s.len is usize; the guard above kept it inside our u32 budget
+    const m: u32 = @intCast(s.len);
+    while (i < m) : (i += 1) out[n.* + i] = s[i];
+    n.* += m;
+    // invariant: we never wrote past the caller's buffer
+    assert(n.* <= out.len);
+}
+
+/// Append an unsigned id as decimal digits.
+fn append_uint(out: []u8, n: *u32, v: u32) JsonError!void {
+    // invariant: the cursor stays within the buffer
+    assert(n.* <= out.len);
+    var tmp: [10]u8 = undefined; // a u32 is at most ten decimal digits
+    const s = std.fmt.bufPrint(&tmp, "{d}", .{v}) catch return error.JsonTooLong;
+    try append(out, n, s);
+    // invariant: the cursor advanced within bound
+    assert(n.* <= out.len);
+}
+
+/// Append `s` as a JSON string body (the bytes between the quotes), escaping the
+/// two characters a JSON string must escape. A control byte is refused rather than
+/// mis-emitted — honest about the subset this tile speaks.
+fn append_escaped(out: []u8, n: *u32, s: []const u8) JsonError!void {
+    // invariant: the cursor stays within the buffer
+    assert(n.* <= out.len);
+    // invariant: the bounded envelope holds this scalar
+    assert(out.len <= max_json);
+    var i: usize = 0; // seam: index over a std slice
+    while (i < s.len) : (i += 1) {
+        const c = s[i];
+        if (c < 0x20) return error.BadJson; // control chars want \u escapes we do not emit
+        if (c == '"' or c == '\\') {
+            const bs = [_]u8{'\\'};
+            try append(out, n, bs[0..]);
+        }
+        const one = [_]u8{c};
+        try append(out, n, one[0..]);
+    }
+    // invariant: still within the buffer after escaping
+    assert(n.* <= out.len);
+}
+
+/// Render a bounded Call to a JSON-RPC `tools/call` request. The shape a JSON MCP
+/// host expects: a version tag, the id, the method, and params naming the tool with
+/// its arguments object.
+pub fn call_to_json(call: *const mcp.Call, out: []u8) JsonError![]const u8 {
+    // invariant: the caller's buffer respects the envelope bound
+    assert(out.len <= max_json);
+    // invariant: the call carries a bounded argument set
+    assert(call.arg_count <= mcp.max_args);
+    var n: u32 = 0;
+    try append(out, &n, "{\"jsonrpc\":\"2.0\",\"id\":");
+    try append_uint(out, &n, call.id);
+    try append(out, &n, ",\"method\":\"tools/call\",\"params\":{\"name\":\"");
+    try append_escaped(out, &n, call.tool);
+    try append(out, &n, "\",\"arguments\":{");
+    var i: u32 = 0;
+    while (i < call.arg_count) : (i += 1) {
+        if (i > 0) try append(out, &n, ",");
+        try append(out, &n, "\"");
+        try append_escaped(out, &n, call.args[i].name);
+        try append(out, &n, "\":\"");
+        try append_escaped(out, &n, call.args[i].val);
+        try append(out, &n, "\"");
+    }
+    try append(out, &n, "}}}");
+    // invariant: the rendered request stayed within the buffer
+    assert(n <= out.len);
+    return out[0..n];
+}
+
+/// Render a bounded Result to a JSON-RPC response. Success carries a single text
+/// content item; an error carries a code/message object. Exactly one of the two,
+/// mirroring the Result's own is_error discipline.
+pub fn result_to_json(res: *const mcp.Result, out: []u8) JsonError![]const u8 {
+    // invariant: the caller's buffer respects the envelope bound
+    assert(out.len <= max_json);
+    // invariant: an error result names its error, a value result does not
+    assert(res.is_error == (res.err_name.len > 0));
+    var n: u32 = 0;
+    try append(out, &n, "{\"jsonrpc\":\"2.0\",\"id\":");
+    try append_uint(out, &n, res.id);
+    if (res.is_error) {
+        try append(out, &n, ",\"error\":{\"code\":-32000,\"message\":\"");
+        try append_escaped(out, &n, res.err_name);
+        try append(out, &n, "\"}}");
+    } else {
+        try append(out, &n, ",\"result\":{\"content\":[{\"type\":\"text\",\"text\":\"");
+        try append_escaped(out, &n, res.value);
+        try append(out, &n, "\"}]}}");
+    }
+    // invariant: the rendered response stayed within the buffer
+    assert(n <= out.len);
+    return out[0..n];
+}
+
+// --- the reader: JSON bytes -> Bron shapes ---------------------------------
+
+/// A bounded scratch arena the reader interns decoded strings into, so a Call's or
+/// Result's slices outlive the source bytes they came from.
+const Scratch = struct {
+    buf: []u8,
+    used: u32,
+};
+
+/// Decode a raw JSON string span (escapes intact) into `out`, resolving the escapes
+/// this tile speaks. An unknown escape is refused rather than guessed.
+fn json_unescape(s: []const u8, out: []u8) JsonError![]const u8 {
+    // invariant: the destination respects a bounded envelope
+    assert(out.len <= max_scratch);
+    var n: usize = 0; // seam: index over the caller buffer
+    var i: usize = 0;
+    while (i < s.len) : (i += 1) {
+        var c = s[i];
+        if (c == '\\') {
+            i += 1;
+            if (i >= s.len) return error.BadJson;
+            c = switch (s[i]) {
+                '"' => '"',
+                '\\' => '\\',
+                '/' => '/',
+                'n' => '\n',
+                't' => '\t',
+                else => return error.BadJson,
+            };
+        }
+        if (n >= out.len) return error.JsonTooLong;
+        out[n] = c;
+        n += 1;
+    }
+    return out[0..n];
+}
+
+/// Intern a raw JSON string span into the scratch arena, returning the decoded slice.
+fn intern(sc: *Scratch, raw: []const u8) JsonError![]const u8 {
+    // invariant: the arena never overflows
+    assert(sc.used <= sc.buf.len);
+    const dst = sc.buf[sc.used..];
+    const s = try json_unescape(raw, dst);
+    if (s.len > mcp.max_field) return error.FieldTooLong;
+    // seam: s.len is usize, bounded above by max_field
+    sc.used += @intCast(s.len);
+    // invariant: the arena stayed within its bound
+    assert(sc.used <= sc.buf.len);
+    return s;
+}
+
+/// A bounded cursor over JSON source. Purpose-built for the MCP `tools/call` shape:
+/// objects, strings, and unsigned ids, with whitespace skipped between tokens.
+const Parser = struct {
+    src: []const u8,
+    pos: usize, // seam: index over a std source slice
+
+    fn skip_ws(self: *Parser) void {
+        while (self.pos < self.src.len) : (self.pos += 1) {
+            const c = self.src[self.pos];
+            if (c != ' ' and c != '\t' and c != '\n' and c != '\r') break;
+        }
+    }
+
+    fn at(self: *Parser) JsonError!u8 {
+        self.skip_ws();
+        if (self.pos >= self.src.len) return error.Unterminated;
+        return self.src[self.pos];
+    }
+
+    fn expect(self: *Parser, c: u8) JsonError!void {
+        const got = try self.at();
+        if (got != c) return error.BadJson;
+        self.pos += 1;
+    }
+
+    /// The raw span of a JSON string (escapes left intact), consuming both quotes.
+    fn raw_string(self: *Parser) JsonError![]const u8 {
+        try self.expect('"');
+        const start = self.pos;
+        while (self.pos < self.src.len) : (self.pos += 1) {
+            const c = self.src[self.pos];
+            if (c == '\\') {
+                self.pos += 1; // skip the escaped byte; the loop step skips the backslash
+                continue;
+            }
+            if (c == '"') {
+                const span = self.src[start..self.pos];
+                self.pos += 1;
+                return span;
+            }
+        }
+        return error.Unterminated;
+    }
+
+    fn read_uint(self: *Parser) JsonError!u32 {
+        self.skip_ws();
+        const start = self.pos;
+        while (self.pos < self.src.len and self.src[self.pos] >= '0' and self.src[self.pos] <= '9') : (self.pos += 1) {}
+        if (self.pos == start) return error.BadJson;
+        return std.fmt.parseInt(u32, self.src[start..self.pos], 10) catch return error.BadJson;
+    }
+
+    /// Skip a signed integer — the JSON-RPC error `code` this tile does not carry back.
+    fn skip_int(self: *Parser) JsonError!void {
+        self.skip_ws();
+        const start = self.pos;
+        if (self.pos < self.src.len and self.src[self.pos] == '-') self.pos += 1;
+        while (self.pos < self.src.len and self.src[self.pos] >= '0' and self.src[self.pos] <= '9') : (self.pos += 1) {}
+        if (self.pos == start) return error.BadJson;
+    }
+};
+
+/// Parse the `params` object of a `tools/call` request — the tool name and its
+/// arguments object — into the Call.
+fn parse_params(p: *Parser, sc: *Scratch, call: *mcp.Call, have_name: *bool) JsonError!void {
+    // invariant: the cursor sits within the source
+    assert(p.pos <= p.src.len);
+    // invariant: the call carries a bounded argument set on entry
+    assert(call.arg_count <= mcp.max_args);
+    try p.expect('{');
+    while (true) {
+        const key = try p.raw_string();
+        try p.expect(':');
+        if (std.mem.eql(u8, key, "name")) {
+            call.tool = try intern(sc, try p.raw_string());
+            have_name.* = true;
+        } else if (std.mem.eql(u8, key, "arguments")) {
+            try parse_arguments(p, sc, call);
+        } else {
+            return error.UnknownField;
+        }
+        const sep = try p.at();
+        if (sep == ',') {
+            p.pos += 1;
+            continue;
+        }
+        if (sep == '}') {
+            p.pos += 1;
+            break;
+        }
+        return error.BadJson;
+    }
+    // invariant: the cursor stayed within the source
+    assert(p.pos <= p.src.len);
+}
+
+/// Parse the `arguments` object — each member a named string argument — into the Call.
+fn parse_arguments(p: *Parser, sc: *Scratch, call: *mcp.Call) JsonError!void {
+    // invariant: the cursor sits within the source
+    assert(p.pos <= p.src.len);
+    // invariant: the call carries a bounded argument set on entry
+    assert(call.arg_count <= mcp.max_args);
+    try p.expect('{');
+    if ((try p.at()) == '}') {
+        p.pos += 1;
+        return; // an empty arguments object is a well-formed no-argument call
+    }
+    while (true) {
+        const name = try intern(sc, try p.raw_string());
+        try p.expect(':');
+        const val = try intern(sc, try p.raw_string());
+        if (call.arg_count >= mcp.max_args) return error.TooManyArgs;
+        call.args[call.arg_count] = .{ .name = name, .val = val };
+        call.arg_count += 1;
+        const sep = try p.at();
+        if (sep == ',') {
+            p.pos += 1;
+            continue;
+        }
+        if (sep == '}') {
+            p.pos += 1;
+            break;
+        }
+        return error.BadJson;
+    }
+    // invariant: the parsed arguments stayed within the bound
+    assert(call.arg_count <= mcp.max_args);
+}
+
+/// Read a JSON-RPC `tools/call` request into a bounded Call, interning its strings
+/// into `scratch`. A non-`tools/call` method, an unknown field, or a malformed byte
+/// is refused with a named error — the tile never guesses.
+pub fn call_from_json(src: []const u8, scratch: []u8, call: *mcp.Call) JsonError!void {
+    // invariant: a request carries at least an opening byte
+    assert(src.len > 0);
+    // invariant: the source respects the bounded envelope
+    assert(src.len <= max_json);
+    call.arg_count = 0;
+    var p = Parser{ .src = src, .pos = 0 };
+    var sc = Scratch{ .buf = scratch, .used = 0 };
+    try p.expect('{');
+    var have_id = false;
+    var have_method = false;
+    var have_name = false;
+    while (true) {
+        const key = try p.raw_string();
+        try p.expect(':');
+        if (std.mem.eql(u8, key, "jsonrpc")) {
+            _ = try p.raw_string();
+        } else if (std.mem.eql(u8, key, "id")) {
+            call.id = try p.read_uint();
+            have_id = true;
+        } else if (std.mem.eql(u8, key, "method")) {
+            const m = try p.raw_string();
+            if (!std.mem.eql(u8, m, "tools/call")) return error.BadMethod;
+            have_method = true;
+        } else if (std.mem.eql(u8, key, "params")) {
+            try parse_params(&p, &sc, call, &have_name);
+        } else {
+            return error.UnknownField;
+        }
+        const sep = try p.at();
+        if (sep == ',') {
+            p.pos += 1;
+            continue;
+        }
+        if (sep == '}') {
+            p.pos += 1;
+            break;
+        }
+        return error.BadJson;
+    }
+    if (!have_id or !have_method or !have_name) return error.BadJson;
+    // invariant: the parsed call stays within the argument bound
+    assert(call.arg_count <= mcp.max_args);
+}
+
+/// Parse the success `result` object — a `content` array of one text item — and
+/// return the text value, interned into the scratch arena.
+fn parse_result_body(p: *Parser, sc: *Scratch) JsonError![]const u8 {
+    // invariant: the cursor sits within the source
+    assert(p.pos <= p.src.len);
+    try p.expect('{');
+    const key = try p.raw_string();
+    if (!std.mem.eql(u8, key, "content")) return error.UnknownField;
+    try p.expect(':');
+    try p.expect('[');
+    try p.expect('{');
+    var text: []const u8 = "";
+    var have_text = false;
+    while (true) {
+        const k = try p.raw_string();
+        try p.expect(':');
+        const v = try p.raw_string();
+        if (std.mem.eql(u8, k, "type")) {
+            if (!std.mem.eql(u8, v, "text")) return error.BadJson; // only text content this rung
+        } else if (std.mem.eql(u8, k, "text")) {
+            text = try intern(sc, v);
+            have_text = true;
+        } else {
+            return error.UnknownField;
+        }
+        const sep = try p.at();
+        if (sep == ',') {
+            p.pos += 1;
+            continue;
+        }
+        if (sep == '}') {
+            p.pos += 1;
+            break;
+        }
+        return error.BadJson;
+    }
+    try p.expect(']'); // exactly one content item — bounded on purpose
+    try p.expect('}');
+    if (!have_text) return error.BadJson;
+    // invariant: the cursor stayed within the source
+    assert(p.pos <= p.src.len);
+    return text;
+}
+
+/// Parse the `error` object — a code (ignored) and a message — returning the message
+/// name interned into the scratch arena.
+fn parse_error_body(p: *Parser, sc: *Scratch) JsonError![]const u8 {
+    // invariant: the cursor sits within the source
+    assert(p.pos <= p.src.len);
+    try p.expect('{');
+    var msg: []const u8 = "";
+    var have_msg = false;
+    while (true) {
+        const k = try p.raw_string();
+        try p.expect(':');
+        if (std.mem.eql(u8, k, "code")) {
+            try p.skip_int();
+        } else if (std.mem.eql(u8, k, "message")) {
+            msg = try intern(sc, try p.raw_string());
+            have_msg = true;
+        } else {
+            return error.UnknownField;
+        }
+        const sep = try p.at();
+        if (sep == ',') {
+            p.pos += 1;
+            continue;
+        }
+        if (sep == '}') {
+            p.pos += 1;
+            break;
+        }
+        return error.BadJson;
+    }
+    if (!have_msg) return error.BadJson;
+    // invariant: the cursor stayed within the source
+    assert(p.pos <= p.src.len);
+    return msg;
+}
+
+/// Read a JSON-RPC response into a bounded Result — a success value or a named error,
+/// exactly one — interning its strings into `scratch`.
+pub fn result_from_json(src: []const u8, scratch: []u8, out: *mcp.Result) JsonError!void {
+    // invariant: a response carries at least an opening byte
+    assert(src.len > 0);
+    // invariant: the source respects the bounded envelope
+    assert(src.len <= max_json);
+    out.value = "";
+    out.err_name = "";
+    out.is_error = false;
+    var p = Parser{ .src = src, .pos = 0 };
+    var sc = Scratch{ .buf = scratch, .used = 0 };
+    try p.expect('{');
+    var have_id = false;
+    var have_body = false;
+    while (true) {
+        const key = try p.raw_string();
+        try p.expect(':');
+        if (std.mem.eql(u8, key, "jsonrpc")) {
+            _ = try p.raw_string();
+        } else if (std.mem.eql(u8, key, "id")) {
+            out.id = try p.read_uint();
+            have_id = true;
+        } else if (std.mem.eql(u8, key, "result")) {
+            out.value = try parse_result_body(&p, &sc);
+            out.is_error = false;
+            have_body = true;
+        } else if (std.mem.eql(u8, key, "error")) {
+            out.err_name = try parse_error_body(&p, &sc);
+            out.is_error = true;
+            have_body = true;
+        } else {
+            return error.UnknownField;
+        }
+        const sep = try p.at();
+        if (sep == ',') {
+            p.pos += 1;
+            continue;
+        }
+        if (sep == '}') {
+            p.pos += 1;
+            break;
+        }
+        return error.BadJson;
+    }
+    if (!have_id or !have_body) return error.BadJson;
+    // invariant: the cursor stayed within the source
+    assert(p.pos <= p.src.len);
+}
+
+// --- witnesses -------------------------------------------------------------
+
+fn welcome_call_tile_round_trips() !void {
+    const bron =
+        \\format mcp-call-v1
+        \\id 7
+        \\tool add
+        \\arg a 2
+        \\arg b 3
+    ;
+    var call: mcp.Call = undefined;
+    try mcp.parse_call(bron, &call);
+
+    var jbuf: [max_json]u8 = undefined;
+    const json = try call_to_json(&call, &jbuf);
+    const want = "{\"jsonrpc\":\"2.0\",\"id\":7,\"method\":\"tools/call\",\"params\":{\"name\":\"add\",\"arguments\":{\"a\":\"2\",\"b\":\"3\"}}}";
+    assert(std.mem.eql(u8, json, want));
+
+    var scratch: [max_scratch]u8 = undefined;
+    var back: mcp.Call = undefined;
+    try call_from_json(json, &scratch, &back);
+    assert(back.id == 7);
+    assert(std.mem.eql(u8, back.tool, "add"));
+    assert(back.arg_count == 2);
+    assert(std.mem.eql(u8, back.arg_val("a").?, "2"));
+    assert(std.mem.eql(u8, back.arg_val("b").?, "3"));
+    print("mcp_json: call tile — Bron add -> JSON-RPC tools/call -> Bron, recovered\n", .{});
+}
+
+fn welcome_result_tile_round_trips() !void {
+    const bron =
+        \\format mcp-call-v1
+        \\id 7
+        \\tool add
+        \\arg a 2
+        \\arg b 3
+    ;
+    var call: mcp.Call = undefined;
+    try mcp.parse_call(bron, &call);
+    var rbuf: [512]u8 = undefined;
+    const rendered = try mcp.dispatch(&call, &rbuf);
+    var res: mcp.Result = undefined;
+    try mcp.parse_result(rendered, &res);
+
+    var jbuf: [max_json]u8 = undefined;
+    const json = try result_to_json(&res, &jbuf);
+    const want = "{\"jsonrpc\":\"2.0\",\"id\":7,\"result\":{\"content\":[{\"type\":\"text\",\"text\":\"5\"}]}}";
+    assert(std.mem.eql(u8, json, want));
+
+    var scratch: [max_scratch]u8 = undefined;
+    var back: mcp.Result = undefined;
+    try result_from_json(json, &scratch, &back);
+    assert(back.id == 7);
+    assert(!back.is_error);
+    assert(std.mem.eql(u8, back.value, "5"));
+    print("mcp_json: result tile — Bron result 5 -> JSON-RPC content -> Bron, recovered\n", .{});
+}
+
+fn welcome_error_result_tile() !void {
+    var res: mcp.Result = undefined;
+    res.id = 1;
+    res.value = "";
+    res.err_name = "unknown_tool";
+    res.is_error = true;
+
+    var jbuf: [max_json]u8 = undefined;
+    const json = try result_to_json(&res, &jbuf);
+    const want = "{\"jsonrpc\":\"2.0\",\"id\":1,\"error\":{\"code\":-32000,\"message\":\"unknown_tool\"}}";
+    assert(std.mem.eql(u8, json, want));
+
+    var scratch: [max_scratch]u8 = undefined;
+    var back: mcp.Result = undefined;
+    try result_from_json(json, &scratch, &back);
+    assert(back.id == 1);
+    assert(back.is_error);
+    assert(std.mem.eql(u8, back.err_name, "unknown_tool"));
+    print("mcp_json: error tile — Bron error -> JSON-RPC code/message -> Bron, recovered\n", .{});
+}
+
+fn welcome_escaping_round_trips() !void {
+    // A value carrying a quote and a backslash must survive the JSON crossing intact.
+    var call: mcp.Call = undefined;
+    call.id = 3;
+    call.tool = "join";
+    call.arg_count = 1;
+    call.args[0] = .{ .name = "a", .val = "he said \"hi\\\"" };
+
+    var jbuf: [max_json]u8 = undefined;
+    const json = try call_to_json(&call, &jbuf);
+
+    var scratch: [max_scratch]u8 = undefined;
+    var back: mcp.Call = undefined;
+    try call_from_json(json, &scratch, &back);
+    assert(std.mem.eql(u8, back.arg_val("a").?, "he said \"hi\\\""));
+    print("mcp_json: escaping — a quoted, backslashed value survives the JSON crossing\n", .{});
+}
+
+fn unwelcome_bad_method() !void {
+    const json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/list\",\"params\":{\"name\":\"add\",\"arguments\":{}}}";
+    var scratch: [max_scratch]u8 = undefined;
+    var call: mcp.Call = undefined;
+    if (call_from_json(json, &scratch, &call)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.BadMethod);
+    }
+    print("mcp_json: a non tools/call method is refused\n", .{});
+}
+
+fn unwelcome_unknown_field() !void {
+    const json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/call\",\"color\":\"red\",\"params\":{\"name\":\"add\",\"arguments\":{}}}";
+    var scratch: [max_scratch]u8 = undefined;
+    var call: mcp.Call = undefined;
+    if (call_from_json(json, &scratch, &call)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.UnknownField);
+    }
+    print("mcp_json: an unknown top-level field is refused (not silently dropped)\n", .{});
+}
+
+fn unwelcome_truncated_json() !void {
+    const json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/call\",\"params\":{\"name\":\"add";
+    var scratch: [max_scratch]u8 = undefined;
+    var call: mcp.Call = undefined;
+    if (call_from_json(json, &scratch, &call)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.Unterminated);
+    }
+    print("mcp_json: a truncated envelope is refused, never half-read\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_call_tile_round_trips();
+        try welcome_result_tile_round_trips();
+        try welcome_error_result_tile();
+        try welcome_escaping_round_trips();
+        try unwelcome_bad_method();
+        try unwelcome_unknown_field();
+        try unwelcome_truncated_json();
+        print("mcp_json {s} — GREEN\n", .{mcp_json_version});
+        return 0;
+    }
+    print("usage: mcp-json selftest\n", .{});
+    return 1;
+}
