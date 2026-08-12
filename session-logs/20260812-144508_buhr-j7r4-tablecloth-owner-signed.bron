@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260812.144508
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention · this session in ai-jail
+title BUHR-J7r4 — the owner-signed Tablecloth catalog
+prompt Take the next agent-doable lap Lindy-first crux-first, harmony of styles; approve own design rounds; double-seat visions for blind spots; send each finished increment; STOP at custody gates; GATES-ONLY if only gates remain. baton prin recur
+think Read REMEMBER whole. Newest work is BUHR Journey 7 (Tablecloth), rungs r1-r3 landed; card says remaining horizon rungs (owner-signed Kumara-keyed · Comlink-served) reach custody/serve gates.
+think Tested the gate classification against the six enumerated custody gates in REMEMBER. Gate #4 is Keaton's own Kumara instance from his REAL seed/keeper. An owner-signed catalog using DEMO seeds is not that.
+think Read mandate/keyed.rye: it keys the vector store with demo seeds (0x11..0x88) baked into its selftest, and it landed as agent work. So the owner-signed Tablecloth rung, done the same way, is agent-doable implementation-floor code — not gate #4.
+think The Comlink-SERVED rung is a genuine network/serve gate; left it. Owner-signing is the crux-first, Lindy-durable half: provenance is the invariant every later serve-rung leans on.
+think Design (self-approved): a KeyedCatalog wraps r1's Catalog unchanged (one source of truth for names) plus an owners[] array aligned by index. store_owned gates on settlement.verify(deed) then a keeper signature over point·name·length·content-digest, then calls r1 store_artifact, records the owning point. owner_of + place_of resolve whose it is — symmetric with mandate/keyed.rye's place_of.
+think Added an additive pub index_of to tablecloth.rye so the keyed layer reads the owner beside an entry; r1 stays its own green binary.
+think Symlinked kumara/tilak/topology/constellation into pond/apps (mirroring mandate/), so @import resolves; Zig resolved constellation's transitive imports from its real settlement/ dir with no extra symlinks.
+obs Signed over a SHA-256 of the content (not beading's internal whole_digest), decoupling the auth message from the store's hash choice; a tampered artifact yields a different digest → BadSignature before any byte is stored.
+obs Refusals proven: non-owner (ghost deed, nothing stored), forged signature (zero sig), content-mismatched signature (sign doc_planet, publish doc_star), taken name. All hold.
+obs Caught my own fabricated version stamp — first wrote 20260812.184200 from the wrong zone; corrected to the live TZ=America/New_York clock 20260812.144508 and rebuilt (measurement beats memory; never fabricate a stamp).
+obs Custody line held: demo seeds only, no real key, no network, no funds. The served rung stays Keaton's hand.
+loom witness=buhr_tablecloth_keyed_witness build=green selftest=green refusals=4 r1_rerun=green
+file pond/apps/tablecloth_keyed.rye BUHR-J7r4 — the owner-signed catalog over r1's naming layer
+file pond/apps/tablecloth.rye additive pub index_of so the keyed layer reads the owner beside an entry
+file tools/buhr_tablecloth_keyed_witness.rish witness — build · GREEN · four refusals · r1 re-run green
+file pond/apps/kumara.rye pond/apps/kumara_tilak.rye pond/apps/topology.rye pond/apps/constellation.rye identity-module symlinks so pond apps reach the settlement surface (mirrors mandate/)
+recommend keep-going — a fresh BUHR surface or the next agent-doable rung; the Comlink-served Tablecloth rung and Keaton's real Kumara instance stay custody/serve gates
