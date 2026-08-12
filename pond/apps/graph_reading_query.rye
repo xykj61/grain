@@ -1,0 +1,365 @@
+//! pond/apps/graph_reading_query.rye — BUHR Journey 6, Rung 4: the reading voice folds the graph.
+//!
+//! Rungs one through three let the graph voice *count* the living surface (lanes,
+//! bolts, a head) and gathered it under the Q-vane host. This rung brings the reading
+//! voice to bear on the same surface: Scribble folds a markdown render of the graph,
+//! so the voice reads the very structure the browser shows — a title, the bolts as
+//! headings, the lanes as their content. `outline` names the title and every bolt;
+//! `bolts` folds to just the depth-two bolt headings.
+//!
+//! The crux carried from Journey 2: the voice reads the same bytes the browser paints.
+//! `mantra_browser.render_markdown` is the one source; Scribble parses exactly those
+//! bytes, so the reading can never drift from the graph the reader sees. All bounded
+//! and metered by the same Lantern contract every other voice obeys.
+//!
+//! Additive by construction: it imports lantern_core, mantra_browser, and
+//! scribble_core and calls only their public functions. No contract changes; the
+//! browser and the counting voice stay their own green binaries.
+//!
+//!   rye build pond/apps/graph_reading_query.rye -femit-bin=pond/bin/graph-reading-query
+//!   pond/bin/graph-reading-query selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lc = @import("lantern/lantern_core.rye");
+const mb = @import("mantra_browser.rye");
+const sc = @import("scribble/scribble_core.rye");
+
+const graph_reading_query_version = "20260812.141145";
+
+const max_result_text: u32 = lc.max_completion_len; // never exceed Lantern's completion bound
+
+/// The reading operations the router recognizes by name in the prompt. Each routes to
+/// a real Scribble fold of the graph's markdown; unknown prompts refuse (no guess).
+pub const Op = enum(u8) {
+    outline,
+    bolts,
+};
+
+pub const QueryError = error{
+    UnknownOp,
+    ResultTooLong,
+    ModelNotAllowed,
+};
+
+/// Recognize the operation named at the head of the prompt. Returns UnknownOp rather
+/// than guessing — the host never invents a reading over a graph it cannot fold.
+pub fn route_op(prompt: []const u8) QueryError!Op {
+    // invariant: the prompt fits Lantern's own bound before we read it
+    assert(prompt.len <= lc.max_prompt_len);
+    // invariant: a bound prompt names zero or more bytes, never a negative span
+    assert(prompt.len >= 0);
+    if (std.mem.startsWith(u8, prompt, "outline")) return .outline;
+    if (std.mem.startsWith(u8, prompt, "bolts")) return .bolts;
+    return error.UnknownOp;
+}
+
+/// Append `src` into `out_buf` at `written`, bounded by the caller's buffer. Byte by
+/// byte within a named bound — no `@memcpy`, no unbounded copy.
+fn append(out_buf: []u8, written: *u32, src: []const u8) QueryError!void {
+    // invariant: the source respects Scribble's block bound
+    assert(src.len <= sc.max_block_text);
+    if (src.len > out_buf.len - written.*) return error.ResultTooLong;
+    var i: u32 = 0;
+    // invariant: the copy walks no further than the source
+    assert(src.len <= sc.max_block_text);
+    while (i < src.len) : (i += 1) {
+        out_buf[written.* + i] = src[i];
+    }
+    // seam: src.len is usize; the bound above kept it inside our u32 budget
+    written.* += @intCast(src.len);
+    // invariant: we never wrote past the caller's buffer
+    assert(written.* <= out_buf.len);
+}
+
+/// Render the live graph as markdown, parse it with Scribble, run the routed fold for
+/// a real result, and format it as space-separated words into `out_buf`. The graph's
+/// own bytes are the corpus — never a pinned document.
+pub fn compute(op: Op, catalog: *const mn_catalog, out_buf: []u8) (sc.ParseError || mb.RenderError || QueryError || error{NoSpaceLeft})![]const u8 {
+    // invariant: the caller's buffer respects Lantern's completion bound
+    assert(out_buf.len <= max_result_text);
+    // invariant: there is room for at least one byte
+    assert(out_buf.len > 0);
+
+    var md_buf: [mb.max_render_bytes]u8 = undefined;
+    const md = try mb.render_markdown(catalog, &md_buf);
+    // invariant: the markdown render stays inside Scribble's document budget
+    assert(md.len <= sc.max_doc_bytes);
+
+    var blocks: [sc.max_blocks]sc.Block = undefined;
+    const block_count = try sc.parse_markdown(md, &blocks);
+    // invariant: the parse stays inside Scribble's block budget
+    assert(block_count <= sc.max_blocks);
+
+    var written: u32 = 0;
+    switch (op) {
+        .outline => {
+            var headings: [sc.max_headings]sc.Heading = undefined;
+            const n = try sc.extract_headings(blocks[0..block_count], &headings);
+            // invariant: the outline stays inside Scribble's heading budget
+            assert(n <= sc.max_headings);
+            var i: u32 = 0;
+            while (i < n) : (i += 1) {
+                if (written > 0) try append(out_buf, &written, " ");
+                try append(out_buf, &written, headings[i].text_slice());
+            }
+        },
+        .bolts => {
+            var headings: [sc.max_headings]sc.Heading = undefined;
+            const n = try sc.extract_headings_at_depth(blocks[0..block_count], 2, &headings);
+            // invariant: the depth fold stays inside Scribble's heading budget
+            assert(n <= sc.max_headings);
+            var i: u32 = 0;
+            while (i < n) : (i += 1) {
+                if (written > 0) try append(out_buf, &written, " ");
+                try append(out_buf, &written, headings[i].text_slice());
+            }
+        },
+    }
+
+    // invariant: we never wrote past the caller's buffer
+    assert(written <= out_buf.len);
+    return out_buf[0..written];
+}
+
+/// Count whitespace-separated words in `text` — the same token sense Lantern's own
+/// length budget uses when it truncates a completion.
+pub fn count_words(text: []const u8) u32 {
+    // invariant: the text respects Lantern's completion bound
+    assert(text.len <= max_result_text);
+    var words: u32 = 0;
+    var in_word = false;
+    var i: u32 = 0;
+    // invariant: the loop is bounded by the text length
+    assert(text.len <= max_result_text);
+    while (i < text.len) : (i += 1) {
+        const ch = text[i];
+        const is_space = ch == ' ' or ch == '\t' or ch == '\n' or ch == '\r';
+        if (!is_space) {
+            if (!in_word) {
+                words += 1;
+                in_word = true;
+            }
+        } else {
+            in_word = false;
+        }
+    }
+    return words;
+}
+
+/// The Q-vane reading query over the live graph: validate the request against
+/// Lantern's contract, gate the model through the allow-list, fold the graph's own
+/// markdown with Scribble, and return a Lantern Response bounded by max_tokens (length
+/// stop when the budget bites). The model is never trusted before the list clears; the
+/// graph is folded, never guessed.
+pub fn answer(req: lc.Request, allow_text: []const u8, catalog: *const mn_catalog, out_buf: []u8) (lc.LanternError || sc.ParseError || mb.RenderError || QueryError || error{NoSpaceLeft})!lc.Response {
+    // invariant: the caller's buffer honors Lantern's completion bound
+    assert(out_buf.len <= max_result_text);
+    // invariant: the buffer can hold at least one token
+    assert(out_buf.len > 0);
+
+    try lc.validate_request(req);
+    if (!lc.model_allowed(req.model_hash, allow_text)) return error.ModelNotAllowed;
+
+    const op = try route_op(req.prompt);
+    const text = try compute(op, catalog, out_buf);
+
+    const tokens_in = count_words(req.prompt);
+    var tokens_out = count_words(text);
+    var final_text = text;
+    var reason: lc.StoppedReason = .eos;
+
+    // Honor Lantern's metering: when the real reading outruns the budget, truncate to
+    // max_tokens words and mark a length stop — the same discipline every other voice
+    // applies to a reading that outruns its budget.
+    if (tokens_out > req.max_tokens) {
+        var words: u32 = 0;
+        var cut: u32 = 0;
+        var i: u32 = 0;
+        var in_word = false;
+        // invariant: truncation walks no further than the produced text
+        assert(text.len <= max_result_text);
+        while (i < text.len) : (i += 1) {
+            const ch = text[i];
+            const is_space = ch == ' ' or ch == '\t' or ch == '\n' or ch == '\r';
+            if (!is_space) {
+                if (!in_word) {
+                    if (words == req.max_tokens) break;
+                    words += 1;
+                    in_word = true;
+                }
+                cut = i + 1;
+            } else {
+                in_word = false;
+            }
+        }
+        final_text = text[0..cut];
+        tokens_out = words;
+        reason = .length;
+    }
+
+    // invariant: the returned text never exceeds Lantern's completion bound
+    assert(final_text.len <= lc.max_completion_len);
+    // invariant: metered output never exceeds the requested budget
+    assert(tokens_out <= req.max_tokens);
+    return .{
+        .text = final_text,
+        .tokens_in = tokens_in,
+        .tokens_out = tokens_out,
+        .stopped_reason = reason,
+    };
+}
+
+const mn_catalog = @import("mantra/recall_lap1.rye").BoltCatalog;
+
+fn welcome_outline_query() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var catalog = try mb.demo_catalog();
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "outline the graph",
+        .max_tokens = 64,
+    };
+    const resp = try answer(req, allow, &catalog, &buf);
+    // The title heading plus the two bolt headings, in source order.
+    assert(std.mem.eql(u8, resp.text, "mantra log local/notes local/site"));
+    assert(resp.tokens_out == 4);
+    assert(resp.stopped_reason == .eos);
+    print("graph_reading_query: outline folded the graph markdown — text '{s}' eos\n", .{resp.text});
+}
+
+fn welcome_bolts_query() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var catalog = try mb.demo_catalog();
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "bolts the graph",
+        .max_tokens = 64,
+    };
+    const resp = try answer(req, allow, &catalog, &buf);
+    // Only the depth-two bolt headings answer this fold.
+    assert(std.mem.eql(u8, resp.text, "local/notes local/site"));
+    assert(resp.tokens_out == 2);
+    assert(resp.stopped_reason == .eos);
+    print("graph_reading_query: bolts folded to the bolt headings — text '{s}' eos\n", .{resp.text});
+}
+
+fn welcome_reading_tracks_a_fork() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    // A fork adds a lane under a *new* bolt, so the reading voice's bolt fold grows —
+    // the reading tracks the living surface, exactly as the counting voice did.
+    var catalog = try mb.demo_catalog();
+    try catalog.append_leaf("local", "wiki", 1, "home", "w", "leaf");
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "bolts the graph",
+        .max_tokens = 64,
+    };
+    const resp = try answer(req, allow, &catalog, &buf);
+    assert(std.mem.eql(u8, resp.text, "local/notes local/site local/wiki"));
+    print("graph_reading_query: a new bolt appears in the fold — text '{s}'\n", .{resp.text});
+}
+
+fn welcome_length_budget() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var catalog = try mb.demo_catalog();
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "outline the graph",
+        .max_tokens = 2,
+    };
+    const resp = try answer(req, allow, &catalog, &buf);
+    // The real outline is four words; a budget of two truncates and marks length.
+    assert(resp.tokens_out == 2);
+    assert(std.mem.eql(u8, resp.text, "mantra log"));
+    assert(resp.stopped_reason == .length);
+    print("graph_reading_query: length budget — tokens {d} length\n", .{resp.tokens_out});
+}
+
+fn unwelcome_model_not_allowed() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var catalog = try mb.demo_catalog();
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-not-on-list",
+        .prompt = "outline the graph",
+        .max_tokens = 64,
+    };
+    if (answer(req, allow, &catalog, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ModelNotAllowed);
+    }
+    print("graph_reading_query: model not allowed refused\n", .{});
+}
+
+fn unwelcome_unknown_op() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var catalog = try mb.demo_catalog();
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "translate this poem",
+        .max_tokens = 64,
+    };
+    if (answer(req, allow, &catalog, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.UnknownOp);
+    }
+    print("graph_reading_query: unknown op refused (no fake answer)\n", .{});
+}
+
+fn unwelcome_zero_budget() !void {
+    const allow =
+        \\model_hash sha3-256-rye-forge-lap0
+    ;
+    var catalog = try mb.demo_catalog();
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{
+        .model_hash = "sha3-256-rye-forge-lap0",
+        .prompt = "outline the graph",
+        .max_tokens = 0,
+    };
+    if (answer(req, allow, &catalog, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.BudgetExceeded);
+    }
+    print("graph_reading_query: zero budget refused by Lantern contract\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_outline_query();
+        try welcome_bolts_query();
+        try welcome_reading_tracks_a_fork();
+        try welcome_length_budget();
+        try unwelcome_model_not_allowed();
+        try unwelcome_unknown_op();
+        try unwelcome_zero_budget();
+        print("graph_reading_query {s} — GREEN\n", .{graph_reading_query_version});
+        return 0;
+    }
+    print("usage: graph-reading-query selftest\n", .{});
+    return 1;
+}

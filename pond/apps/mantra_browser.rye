@@ -285,6 +285,68 @@ pub fn render(catalog: *const mn.BoltCatalog, out: []u8) RenderError![]const u8 
     return out[0..written];
 }
 
+/// Render the same append-only log as a **markdown** outline into `out`: a title
+/// heading, then one `## peer/bolt` heading per distinct bolt, then a `- path` line
+/// per lane beneath it. Deterministic and bounded exactly like `render`, walking the
+/// bolts in append order. This is the reading-voice's door onto the graph — a
+/// markdown structure Scribble can outline — so a voice folds the very grouping the
+/// browser shows, rather than a separate reading of the catalog.
+pub fn render_markdown(catalog: *const mn.BoltCatalog, out: []u8) RenderError![]const u8 {
+    // invariant: the caller's buffer respects the render budget
+    assert(out.len <= max_render_bytes);
+    // invariant: there is room for at least the title
+    assert(out.len > 0);
+
+    var written: u32 = 0;
+    try append(out, &written, "# mantra log\n");
+
+    // Walk bolt anchors — the first leaf of each distinct peer/bolt — in append order,
+    // exactly as `render` does, so the markdown outline matches the readable graph.
+    var bi: u32 = 0;
+    while (bi < catalog.leaf_count) : (bi += 1) {
+        const bolt_anchor = &catalog.leaves[bi];
+        var bolt_seen = false;
+        var bj: u32 = 0;
+        while (bj < bi) : (bj += 1) {
+            if (same_bolt(bolt_anchor, &catalog.leaves[bj])) {
+                bolt_seen = true;
+                break;
+            }
+        }
+        if (bolt_seen) continue;
+
+        try append(out, &written, "## ");
+        try append(out, &written, leaf_peer(bolt_anchor));
+        try append(out, &written, "/");
+        try append(out, &written, leaf_bolt(bolt_anchor));
+        try append(out, &written, "\n");
+
+        // A `- path` line per distinct lane in this bolt — prose, not a heading, so an
+        // outline names the bolts while the lanes read as their content.
+        var li: u32 = 0;
+        while (li < catalog.leaf_count) : (li += 1) {
+            const lane_anchor = &catalog.leaves[li];
+            if (!same_bolt(lane_anchor, bolt_anchor)) continue;
+            var lane_seen = false;
+            var lj: u32 = 0;
+            while (lj < li) : (lj += 1) {
+                if (same_lane(lane_anchor, &catalog.leaves[lj])) {
+                    lane_seen = true;
+                    break;
+                }
+            }
+            if (lane_seen) continue;
+            try append(out, &written, "- ");
+            try append(out, &written, leaf_path(lane_anchor));
+            try append(out, &written, "\n");
+        }
+    }
+
+    // invariant: the render never exceeds the caller's buffer
+    assert(written <= out.len);
+    return out[0..written];
+}
+
 /// A small deterministic catalog for the selftest: two bolts under one peer, one
 /// lane carrying two revisions, proving the chain and the grouping both render.
 /// Public so a view rung paints the very same graph this browser renders.
@@ -352,6 +414,19 @@ fn welcome_deterministic() !void {
     print("mantra_browser: render is deterministic — same catalog, same bytes\n", .{});
 }
 
+fn welcome_markdown_outline() !void {
+    var catalog = try demo_catalog();
+    var buf: [max_render_bytes]u8 = undefined;
+    const text = try render_markdown(&catalog, &buf);
+    // A title heading, one bolt heading per distinct bolt, a `- path` line per lane.
+    assert(std.mem.indexOf(u8, text, "# mantra log\n") != null);
+    assert(std.mem.indexOf(u8, text, "## local/notes\n") != null);
+    assert(std.mem.indexOf(u8, text, "## local/site\n") != null);
+    assert(std.mem.indexOf(u8, text, "- a.txt\n") != null);
+    assert(std.mem.indexOf(u8, text, "- index\n") != null);
+    print("mantra_browser: markdown outline rendered — title + 2 bolt headings + lane lines\n", .{});
+}
+
 fn unwelcome_buffer_too_small() !void {
     var catalog = try demo_catalog();
     var tiny: [8]u8 = undefined;
@@ -372,6 +447,7 @@ pub fn main(init: std.process.Init) !u8 {
         try welcome_chain_is_dense();
         try welcome_empty_log();
         try welcome_deterministic();
+        try welcome_markdown_outline();
         try unwelcome_buffer_too_small();
         print("mantra_browser {s} — GREEN\n", .{mantra_browser_version});
         return 0;

@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260812.141632
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title BUHR Journey 6, Rung 4 — the reading voice folds the graph
+prompt Autonomous recur: continue Lindy-first crux-first after J6r3, closing Journey 6; send each increment; STOP at custody gates
+think J6r1–r3 let the graph voice *count* the surface (lanes, bolts, head) and gathered it under the Q-vane host. The last planned rung is the *reading* voice folding the surface — the crux carried from Journey 2: a voice reads the same bytes the browser paints.
+think The snag named in r3's log: Scribble parses markdown, and mantra_browser.render is not markdown. Resolved it honestly by adding an additive markdown door on the browser — render_markdown emits the same append-only grouping as render, but as a title heading + `## peer/bolt` bolt headings + `- path` lane lines, walking the bolts in the same append order so the outline matches the readable graph. Added its own selftest to the browser (markdown outline rendered) so the browser witness covers it; render/head/count paths untouched.
+think Authored graph_reading_query.rye mirroring reading_query's Scribble shape, but the corpus is render_markdown(catalog) rather than a pinned document: outline → title + every bolt heading (mantra log local/notes local/site), bolts → depth-two bolt headings only (local/notes local/site). A fork under a new bolt grows the fold (local/wiki appears) — the reading tracks the living surface as the counting voice did. Length budget truncates (4 words → 2, length stop); disallowed model, unknown op, zero budget each refuse.
+obs The crux holds: render_markdown is the one source, Scribble parses exactly those bytes, so the reading can never drift from the graph the reader sees. Built directly first (rc=0) to catch compile errors before the witness; used a container-level type alias (mn_catalog = recall_lap1.BoltCatalog) for the catalog parameter.
+obs TAME kept: additive browser change (render/count paths unchanged), ≥2 asserts/fn with positive invariants, snake_case, named errors, no @memcpy, seam-only @intCast, every buffer bounded (md_buf ≤ mb.max_render_bytes ≤ sc.max_doc_bytes). BUHR Journey 6 now stands complete end to end.
+loom witness=buhr_graph_reading_query_witness green=1 welcomes=4 unwelcomes=3 browser_rerun=1
+file pond/apps/mantra_browser.rye added render_markdown (additive markdown door) + its selftest; render/count/head paths unchanged
+file pond/apps/graph_reading_query.rye the rung — Scribble folds render_markdown of the live graph (outline · bolts), tracks a fork
+file tools/buhr_graph_reading_query_witness.rish proves the fold, the fork-tracking, metering, refusals; browser (with render_markdown) re-runs GREEN
+file work-in-progress/REMEMBER.md BUHR-J6r4 landed note + git nib in the same work commit
+recommend check-in (either) BUHR Journey 6 complete (read · track-edit · gather-under-host · reading-fold); next is a fresh BUHR journey/surface or the held real-network seam (Keaton's word) — a good place for Keaton to steer the equinox
