@@ -1,0 +1,204 @@
+//! pond/apps/realidream_derive.rye — BUHR Journey 5, Rung 3: a program node that
+//! depends on a read node — the graph's true fused edge.
+//!
+//! Rung 1 fused a read lane and a program lane on one graph; rung 2 made a re-read an
+//! append, exactly as an edit is. Both left the two lanes independent — a read and a
+//! program sharing a graph, yet neither feeding the other. This rung draws the edge the
+//! Realidream foundation names most directly: two sources can feed one node
+//! (foundations/20260728-220203_realidream.md). Here a *program* node is derived from a
+//! *read* node — its content is a pure function of the read lane's current head — so the
+//! read is no longer beside the program but *upstream* of it.
+//!
+//! Because the program node is a pure function of the read it consumed, a re-read flows
+//! downstream honestly: refresh the read lane (rung 2's append), derive again, and the
+//! new program node reflects the new read — while the earlier program node still recalls
+//! the value it derived from the earlier read. The change flows only on a fresh derive,
+//! never by silent mutation: that is referential transparency carried across the fused
+//! edge. Nothing updates behind a reader's back; every downstream value is one more
+//! append whose content is a named function of an upstream node the reader can point to.
+//!
+//! `derive_from_read` reads the head content of a `read/` lane and appends a derived
+//! summary (`read-len=<n>` — a small, unambiguous pure function of the read, standing in
+//! for any real consumer) to a program lane, opening the program lane on the first derive
+//! and continuing it on each later one. It refuses a read source path that does not name
+//! itself a read (`NotAReadPath`), a destination that *is* a read path (`NotAProgramPath`
+//! — a derived node is a program node, not a read), and lets the recall refuse a read
+//! lane that was never pinned (`LaneUnknown`).
+//!
+//! This rung reads no network: the read content is supplied in-process, exactly as rungs
+//! one and two supply theirs. A real web fetch is a genuine outward act and stays a named
+//! seam behind a bounded reader — its own later rung, surfacing for Keaton's word.
+//!
+//! Additive by construction: it imports realidream_reader, realidream_reread,
+//! mantra_editor, mantra_browser and mantra/recall_lap1, calling only their public
+//! functions. No file beneath it changes; rungs one and two and Journey 4 stay green.
+//!
+//!   rye build pond/apps/realidream_derive.rye -femit-bin=pond/bin/realidream-derive
+//!   pond/bin/realidream-derive selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const mb = @import("mantra_browser.rye");
+const reader = @import("realidream_reader.rye");
+const reread = @import("realidream_reread.rye");
+const editor = @import("mantra_editor.rye");
+const mn = @import("mantra/recall_lap1.rye");
+
+const realidream_derive_version = "20260812.131500";
+
+const read_prefix = "read/";
+
+// The derived summary "read-len=<n>" is at most this many bytes: the label plus a u32's
+// widest decimal (ten digits) — bounded, so the derive never allocates or overruns.
+const max_summary_bytes: u32 = 24;
+
+pub const DeriveError = error{
+    NotAProgramPath,
+};
+
+/// Derive a program node from a read node: read the head content of the `read/` lane at
+/// (`peer`, `bolt`, `read_path`), compute a pure summary of it, and append that summary
+/// as the program lane at (`peer`, `bolt`, `prog_path`). The summary — `read-len=<n>` —
+/// is a small unambiguous function of the read content, standing in for any real
+/// consumer of a read source. The first derive opens the program lane; each later derive
+/// continues it, so re-deriving after a re-read flows the newer read downstream. Refuses
+/// a read source that does not name itself a read (`NotAReadPath`) and a destination that
+/// is itself a read path (`NotAProgramPath`); lets `recall` refuse a read lane never
+/// pinned (`LaneUnknown`). Returns the program lane's new revision number.
+pub fn derive_from_read(
+    catalog: *mn.BoltCatalog,
+    peer: []const u8,
+    bolt: []const u8,
+    read_path: []const u8,
+    prog_path: []const u8,
+    tilak: []const u8,
+) !u32 {
+    // invariant: a real derive names all four of its coordinates.
+    assert(peer.len > 0);
+    assert(bolt.len > 0);
+    assert(read_path.len > 0);
+    assert(prog_path.len > 0);
+    // invariant: the upstream is a read lane; the downstream is a program lane. The edge
+    // runs read -> program, never program -> read and never read -> read.
+    if (!std.mem.startsWith(u8, read_path, read_prefix)) return error.NotAReadPath;
+    if (std.mem.startsWith(u8, prog_path, read_prefix)) return error.NotAProgramPath;
+
+    // Read the upstream node's current head content — LaneUnknown if it was never pinned.
+    const head = mb.head_revision(catalog, peer, bolt, read_path) orelse return error.LaneUnknown;
+    // invariant: a pinned read lane has a real head counting from one.
+    assert(head >= 1);
+
+    var read_buf: [mn.max_resin_bytes]u8 = undefined;
+    const res = try catalog.recall(.{ .peer = peer, .bolt = bolt, .revision = head, .path = read_path }, &read_buf);
+    // invariant: the head of a real read lane resolves to real content.
+    assert(res.outcome == .here);
+    const read_len = res.len;
+
+    // Compute the derived summary — a pure function of the read content's length.
+    var summary_buf: [max_summary_bytes]u8 = undefined;
+    const summary = try std.fmt.bufPrint(&summary_buf, "read-len={d}", .{read_len});
+    // invariant: the summary fits its named bound.
+    assert(summary.len <= max_summary_bytes);
+
+    // Append the derived node: open the program lane on the first derive, continue it on
+    // every later one — so re-deriving after a re-read appends the fresher downstream node.
+    if (mb.head_revision(catalog, peer, bolt, prog_path)) |_| {
+        const rev = try editor.commit(catalog, peer, bolt, prog_path, summary, tilak);
+        // invariant: a continued derive advances the program lane by one revision.
+        assert(rev >= 2);
+        return rev;
+    }
+    const rev = try editor.open_lane(catalog, peer, bolt, prog_path, summary, tilak);
+    // invariant: the first derive opens the program lane at revision one.
+    assert(rev == 1);
+    return rev;
+}
+
+fn welcome_derive_reflects_read() !void {
+    // A program node derived from a read node carries a pure function of the read's
+    // content — the read is upstream of the program, not merely beside it.
+    var catalog = try mb.demo_catalog();
+    _ = try reader.pin_read(&catalog, "local", "web", "read/home", "abcd", "leaf");
+
+    const rev = try derive_from_read(&catalog, "local", "web", "read/home", "summary", "leaf");
+    assert(rev == 1);
+
+    var buf: [mn.max_resin_bytes]u8 = undefined;
+    const got = try catalog.recall(.{ .peer = "local", .bolt = "web", .revision = 1, .path = "summary" }, &buf);
+    assert(got.outcome == .here);
+    // The read was four bytes ("abcd"); the derived program node reflects exactly that.
+    assert(std.mem.eql(u8, buf[0..got.len], "read-len=4"));
+    print("realidream_derive: a program node derived read-len=4 from the read node — the read is upstream of the program\n", .{});
+}
+
+fn welcome_reread_flows_downstream() !void {
+    // The true fused edge: refresh the read (rung 2's append), derive again, and the new
+    // program node reflects the new read — while the earlier program node still recalls
+    // the value it derived from the earlier read. The change flows only on a fresh derive.
+    var catalog = try mb.demo_catalog();
+    _ = try reader.pin_read(&catalog, "local", "web", "read/home", "abcd", "leaf");
+    _ = try derive_from_read(&catalog, "local", "web", "read/home", "summary", "leaf");
+
+    // Re-read the source with different-length content, then derive again downstream.
+    _ = try reread.refresh_read(&catalog, "local", "web", "read/home", "abcdefghij", "leaf");
+    const rev2 = try derive_from_read(&catalog, "local", "web", "read/home", "summary", "leaf");
+    assert(rev2 == 2);
+
+    // The newer program node reflects the newer read (ten bytes).
+    var buf: [mn.max_resin_bytes]u8 = undefined;
+    const p2 = try catalog.recall(.{ .peer = "local", .bolt = "web", .revision = 2, .path = "summary" }, &buf);
+    assert(p2.outcome == .here);
+    assert(std.mem.eql(u8, buf[0..p2.len], "read-len=10"));
+
+    // The earlier program node still recalls the value it derived from the earlier read —
+    // referential transparency across the fused edge; nothing mutated behind the reader.
+    var buf1: [mn.max_resin_bytes]u8 = undefined;
+    const p1 = try catalog.recall(.{ .peer = "local", .bolt = "web", .revision = 1, .path = "summary" }, &buf1);
+    assert(p1.outcome == .here);
+    assert(std.mem.eql(u8, buf1[0..p1.len], "read-len=4"));
+    print("realidream_derive: a re-read flowed downstream — the new program node read-len=10, the old still read-len=4 (never mutated)\n", .{});
+}
+
+fn welcome_refuses_wrong_edges() !void {
+    // The edge runs read -> program only. A non-read source, a read destination, and an
+    // unpinned read all refuse by their named errors.
+    var catalog = try mb.demo_catalog();
+    // A source that does not name itself a read cannot be the upstream of a derive.
+    if (derive_from_read(&catalog, "local", "notes", "b.txt", "summary", "leaf")) |_| {
+        unreachable;
+    } else |err| {
+        // invariant: a non-read source refuses by the named error.
+        assert(err == error.NotAReadPath);
+    }
+    _ = try reader.pin_read(&catalog, "local", "web", "read/home", "abcd", "leaf");
+    // A destination that is itself a read path cannot be the downstream of a derive.
+    if (derive_from_read(&catalog, "local", "web", "read/home", "read/mirror", "leaf")) |_| {
+        unreachable;
+    } else |err| {
+        // invariant: a read destination refuses by the named error.
+        assert(err == error.NotAProgramPath);
+    }
+    // A read lane that was never pinned has no head to consume.
+    if (derive_from_read(&catalog, "local", "web", "read/never", "summary", "leaf")) |_| {
+        unreachable;
+    } else |err| {
+        // invariant: an unpinned read source refuses by the recall's named error.
+        assert(err == error.LaneUnknown);
+    }
+    print("realidream_derive: a non-read source refuses NotAReadPath; a read destination NotAProgramPath; an unpinned read LaneUnknown\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_derive_reflects_read();
+        try welcome_reread_flows_downstream();
+        try welcome_refuses_wrong_edges();
+        print("realidream_derive {s} — GREEN\n", .{realidream_derive_version});
+        return 0;
+    }
+    print("usage: realidream-derive selftest\n", .{});
+    return 1;
+}
