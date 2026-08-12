@@ -1,0 +1,344 @@
+//! pond/apps/provenance_chain.rye — GISM Journey 6 (Provenance), Rung 3.
+//!
+//! Season 2, Yield: custody is a verifiable *chain*, not a single stamp. Rung one bound
+//! a real tree document to one settled identity; rung two carried that word out of the
+//! store as a portable receipt. This rung lengthens the chain — a real artifact is
+//! **handed** from one settled identity to the next, each transfer signed by the current
+//! holder, so a reader can prove not only whose it is now but the whole ordered line of
+//! who held it before.
+//!
+//! The design, chosen for the settlement's shrunk shared surface: a custody link is
+//! **self-describing** — it records the from-point, the to-point, a sequence number, the
+//! from-holder's keeper public key, and the signature over exactly those facts bound to
+//! the constant artifact digest. That makes the chain tamper-evident on its own (a
+//! forged or reordered link breaks a signature or the contiguity), yet a link's stored
+//! keeper is only a convenience: re-verifying a chain from cold **re-presents each
+//! holder's Deed** (exactly as BUHR-J7r4's store_owned required a Deed), and verify_chain
+//! confirms each presented Deed is a current constellation member whose keeper matches
+//! the link — so a self-signed forgery that never settled cannot pass. The tie to the
+//! settled ledger is what makes the chain trustworthy, not the bytes alone.
+//!
+//! A transfer refuses a non-holder (NotHolder), an unsettled holder (NotSettled), and a
+//! full chain (ChainFull); verify_chain refuses a broken signature, a discontiguous line,
+//! a swapped digest, or a presented Deed that is not the current member. The artifact is
+//! the same real embedded waymark green-claim rung one carried; demo keeper seeds only,
+//! no custody crosses.
+//!
+//!   rye build pond/apps/provenance_chain.rye -femit-bin=pond/bin/provenance-chain
+//!   pond/bin/provenance-chain selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const keyed = @import("tablecloth_keyed.rye");
+const kumara = @import("kumara.rye");
+const tilak = @import("kumara_tilak.rye");
+const topology = @import("topology.rye");
+const settlement = @import("constellation.rye");
+
+const provenance_chain_version = "20260812.190500";
+
+const real_doc = @embedFile("corpora/waymark_green.md");
+
+const pubkey_len: u32 = 32;
+const sig_len: u32 = 64;
+const digest_len: u32 = 32;
+// A custody chain holds a bounded line of handoffs. Eight is ample for a demo lineage
+// and keeps the whole chain a small, stack-friendly value.
+const max_links: u32 = 8;
+
+pub const ChainError = error{ ChainFull, NotHolder, NotSettled, BadTransfer };
+
+// The message a holder signs to hand the artifact on: the constant artifact digest binds
+// the transfer to *this* artifact, then the from-point, to-point, and sequence number.
+const transfer_msg_len: u32 = digest_len + 4 + 4 + 4; // 44
+
+fn transfer_message(out: *[transfer_msg_len]u8, digest: *const [digest_len]u8, from: u32, to: u32, seq: u32) void {
+    var off: u32 = 0;
+    for (digest) |b| {
+        out[off] = b;
+        off += 1;
+    }
+    std.mem.writeInt(u32, out[off..][0..4], from, .little);
+    off += 4;
+    std.mem.writeInt(u32, out[off..][0..4], to, .little);
+    off += 4;
+    std.mem.writeInt(u32, out[off..][0..4], seq, .little);
+    off += 4;
+    // invariant: the assembled transfer message is exactly its bound width
+    assert(off == transfer_msg_len);
+}
+
+// One handoff. Self-describing: it names who handed to whom, in what order, under which
+// keeper key, with the signature over the facts bound to the artifact digest.
+pub const Link = struct {
+    from_point: u32,
+    to_point: u32,
+    seq: u32,
+    from_keeper: [pubkey_len]u8,
+    sig: [sig_len]u8,
+};
+
+// A bounded custody chain over one artifact. The origin point holds it until the first
+// link hands it on; head_point walks to the current holder.
+// Invariant: count <= max_links; link i's from_point == (i==0 ? origin_point : link[i-1].to_point).
+pub const CustodyChain = struct {
+    digest: [digest_len]u8,
+    origin_point: u32,
+    links: [max_links]Link,
+    count: u32,
+
+    pub fn head_point(self: *const CustodyChain) u32 {
+        // invariant: the chain honors its link bound
+        assert(self.count <= max_links);
+        if (self.count == 0) return self.origin_point;
+        return self.links[self.count - 1].to_point;
+    }
+};
+
+/// Open a custody chain over a real artifact owned by a settled origin. The origin's
+/// ownership is established by rung one's owner-signed publication; this records the
+/// artifact digest and the origin holder, ready to hand on.
+pub fn open_chain(content: []const u8, origin_deed: *const settlement.Deed, con: *const settlement.Constellation) ChainError!CustodyChain {
+    // invariant: the origin is a current settled member — an unsettled origin cannot hold
+    if (!settlement.verify(con, origin_deed)) return error.NotSettled;
+    return .{
+        .digest = keyed.digest_of(content),
+        .origin_point = origin_deed.point,
+        .links = undefined,
+        .count = 0,
+    };
+}
+
+/// Hand the artifact from its current holder to a new point. The current holder presents
+/// its Deed (verified as the current settled member) and signs the transfer; the link is
+/// appended. Refuses a non-holder, an unsettled holder, or a full chain.
+pub fn transfer(
+    chain: *CustodyChain,
+    con: *const settlement.Constellation,
+    from_deed: *const settlement.Deed,
+    from_keeper_seed: *const [kumara.seed_length]u8,
+    to_point: u32,
+) ChainError!void {
+    if (chain.count >= max_links) return error.ChainFull;
+    // invariant: only the current holder may hand the artifact on
+    if (from_deed.point != chain.head_point()) return error.NotHolder;
+    // invariant: the handing holder is a current settled member
+    if (!settlement.verify(con, from_deed)) return error.NotSettled;
+    const seq = chain.count;
+    var msg: [transfer_msg_len]u8 = undefined;
+    transfer_message(&msg, &chain.digest, from_deed.point, to_point, seq);
+    const kp = kumara.keypair_from_seed(from_keeper_seed);
+    const sig = kumara.sign(&msg, kp, null).toBytes();
+    chain.links[seq] = .{
+        .from_point = from_deed.point,
+        .to_point = to_point,
+        .seq = seq,
+        .from_keeper = from_deed.keeper,
+        .sig = sig,
+    };
+    chain.count += 1;
+    // invariant: a successful transfer moved the head to the new point
+    assert(chain.head_point() == to_point);
+}
+
+/// Verify one link's signature against a presented Deed — the tie to the settled ledger.
+/// The presented Deed must be a current member, its point must be the link's from-point,
+/// and its keeper must be the keeper the link recorded and that signed the transfer.
+fn verify_link(chain: *const CustodyChain, i: u32, from_deed: *const settlement.Deed, con: *const settlement.Constellation) bool {
+    // invariant: the link index is inside the live chain
+    assert(i < chain.count);
+    const link = &chain.links[i];
+    if (from_deed.point != link.from_point) return false;
+    if (!std.mem.eql(u8, &from_deed.keeper, &link.from_keeper)) return false;
+    if (!settlement.verify(con, from_deed)) return false;
+    var msg: [transfer_msg_len]u8 = undefined;
+    transfer_message(&msg, &chain.digest, link.from_point, link.to_point, link.seq);
+    const pub_key = kumara.PublicKey.fromBytes(link.from_keeper) catch return false;
+    kumara.verify_bytes(&msg, &link.sig, pub_key) catch return false;
+    return true;
+}
+
+/// Verify the whole custody chain from cold, given the holders' presented Deeds in order
+/// (the origin Deed first, then each to-holder as it received the artifact). Confirms the
+/// line is contiguous, every link's signature valid by a current settled holder, and the
+/// digest constant — returning the head holder's point, or refusing.
+pub fn verify_chain(
+    chain: *const CustodyChain,
+    con: *const settlement.Constellation,
+    holder_deeds: []const settlement.Deed,
+) ChainError!u32 {
+    // invariant: a holder Deed is presented for the origin and each to-point
+    if (holder_deeds.len != chain.count + 1) return error.BadTransfer;
+    // invariant: the first presented Deed is the origin holder
+    if (holder_deeds[0].point != chain.origin_point) return error.BadTransfer;
+    if (!settlement.verify(con, &holder_deeds[0])) return error.NotSettled;
+    var i: u32 = 0;
+    while (i < chain.count) : (i += 1) {
+        const link = &chain.links[i];
+        // invariant: link i is handed by holder i and received by holder i+1
+        if (link.from_point != holder_deeds[i].point) return error.BadTransfer;
+        if (link.to_point != holder_deeds[i + 1].point) return error.BadTransfer;
+        if (!verify_link(chain, i, &holder_deeds[i], con)) return error.BadTransfer;
+    }
+    return chain.head_point();
+}
+
+// --- selftest -----------------------------------------------------------
+
+const g_key: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
+const g_keeper: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
+const s_key: [kumara.seed_length]u8 = .{0x44} ** kumara.seed_length;
+const s_keeper: [kumara.seed_length]u8 = .{0x55} ** kumara.seed_length;
+const p_key: [kumara.seed_length]u8 = .{0x77} ** kumara.seed_length;
+const p_keeper: [kumara.seed_length]u8 = .{0x88} ** kumara.seed_length;
+
+const galaxy_num: u32 = 3;
+const star_num: u32 = 27;
+const planet_num: u32 = 267;
+
+fn spawn_authority(signer_seed: *const [kumara.seed_length]u8, child: u32, child_identity: *const [pubkey_len]u8) [sig_len]u8 {
+    const kp = kumara.keypair_from_seed(signer_seed);
+    var msg: [4 + pubkey_len]u8 = undefined;
+    std.mem.writeInt(u32, msg[0..4], child, .little);
+    for (child_identity, 0..) |b, i| msg[4 + i] = b;
+    return kumara.sign(&msg, kp, null).toBytes();
+}
+
+const World = struct {
+    con: settlement.Constellation,
+    galaxy: settlement.Deed,
+    star: settlement.Deed,
+    planet: settlement.Deed,
+};
+
+fn seat_world() !World {
+    const g_bind = tilak.make_bind(&g_key, &g_keeper);
+    const s_bind = tilak.make_bind(&s_key, &s_keeper);
+    const p_bind = tilak.make_bind(&p_key, &p_keeper);
+    const opened = try settlement.open(galaxy_num, &g_bind);
+    var con = opened.con;
+    const galaxy_deed = opened.deed;
+
+    const g_sow = tilak.make_cap(&g_keeper, galaxy_num, .sow, g_bind.kumara_pubkey);
+    const spawn_star = spawn_authority(&g_key, star_num, &s_bind.kumara_pubkey);
+    const star = try settlement.mint(&con, &galaxy_deed, star_num, &s_bind, &g_sow, &spawn_star);
+
+    const s_sow = tilak.make_cap(&s_keeper, star_num, .sow, s_bind.kumara_pubkey);
+    const spawn_planet = spawn_authority(&s_key, planet_num, &p_bind.kumara_pubkey);
+    const planet = try settlement.mint(&con, &star, planet_num, &p_bind, &s_sow, &spawn_planet);
+
+    return .{ .con = con, .galaxy = galaxy_deed, .star = star, .planet = planet };
+}
+
+/// The real artifact is handed planet → star → galaxy, each transfer signed by the
+/// current holder; the whole chain re-verifies from cold and resolves the head holder.
+fn welcome_chain_lengthens() !void {
+    const w = try seat_world();
+    var chain = try open_chain(real_doc, &w.planet, &w.con);
+    // invariant: the fresh chain's head is the origin holder
+    assert(chain.head_point() == planet_num);
+
+    try transfer(&chain, &w.con, &w.planet, &p_keeper, star_num);
+    try transfer(&chain, &w.con, &w.star, &s_keeper, galaxy_num);
+    // invariant: the artifact now rests with the galaxy, two handoffs deep
+    assert(chain.count == 2);
+    assert(chain.head_point() == galaxy_num);
+
+    const holders = [_]settlement.Deed{ w.planet, w.star, w.galaxy };
+    const head = try verify_chain(&chain, &w.con, holders[0..]);
+    // invariant: the cold re-verification resolves the same head holder
+    assert(head == galaxy_num);
+    print("provenance_chain: real artifact handed {d} -> {d} -> {d}, chain verified, head {d}\n", .{ planet_num, star_num, galaxy_num, head });
+}
+
+/// Only the current holder may hand the artifact on — the star cannot transfer while the
+/// planet still holds it.
+fn unwelcome_non_holder() !void {
+    const w = try seat_world();
+    var chain = try open_chain(real_doc, &w.planet, &w.con);
+    // the star is not the holder yet (the planet is)
+    if (transfer(&chain, &w.con, &w.star, &s_keeper, galaxy_num)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        // invariant: a non-holder transfer refuses NotHolder
+        assert(err == error.NotHolder);
+    }
+    // invariant: the refused transfer appended nothing
+    assert(chain.count == 0);
+    print("provenance_chain: non-holder transfer refused (NotHolder), nothing appended\n", .{});
+}
+
+/// A forged link fails cold re-verification — the signature is over facts a real holder
+/// never signed.
+fn unwelcome_forged_link() !void {
+    const w = try seat_world();
+    var chain = try open_chain(real_doc, &w.planet, &w.con);
+    try transfer(&chain, &w.con, &w.planet, &p_keeper, star_num);
+    // Flip a byte of the recorded signature — a real holder never signed this.
+    chain.links[0].sig[0] +%= 1;
+    const holders = [_]settlement.Deed{ w.planet, w.star };
+    if (verify_chain(&chain, &w.con, holders[0..])) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        // invariant: a broken signature refuses the whole chain
+        assert(err == error.BadTransfer);
+    }
+    print("provenance_chain: forged link refused on re-verification (BadTransfer)\n", .{});
+}
+
+/// A swapped artifact digest breaks every link — the transfers are bound to *this*
+/// artifact, so a chain cannot be lifted onto other bytes.
+fn unwelcome_swapped_digest() !void {
+    const w = try seat_world();
+    var chain = try open_chain(real_doc, &w.planet, &w.con);
+    try transfer(&chain, &w.con, &w.planet, &p_keeper, star_num);
+    // Repoint the chain at other content — the links signed the real digest.
+    chain.digest = keyed.digest_of("a different artifact entirely");
+    const holders = [_]settlement.Deed{ w.planet, w.star };
+    if (verify_chain(&chain, &w.con, holders[0..])) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        // invariant: a chain bound to one artifact refuses another's digest
+        assert(err == error.BadTransfer);
+    }
+    print("provenance_chain: swapped artifact digest refused (BadTransfer)\n", .{});
+}
+
+/// A wrong holder Deed presented at verify refuses — the ledger tie catches a Deed that
+/// is not the recorded holder even if the chain bytes are internally consistent.
+fn unwelcome_wrong_presented_deed() !void {
+    const w = try seat_world();
+    var chain = try open_chain(real_doc, &w.planet, &w.con);
+    try transfer(&chain, &w.con, &w.planet, &p_keeper, star_num);
+    // Present the galaxy Deed where the star should be — a mismatched holder line.
+    const holders = [_]settlement.Deed{ w.planet, w.galaxy };
+    if (verify_chain(&chain, &w.con, holders[0..])) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        // invariant: a presented holder that is not the recorded to-point refuses
+        assert(err == error.BadTransfer);
+    }
+    print("provenance_chain: wrong presented holder refused (BadTransfer)\n", .{});
+}
+
+fn run_chain_selftest() !u8 {
+    try welcome_chain_lengthens();
+    try unwelcome_non_holder();
+    try unwelcome_forged_link();
+    try unwelcome_swapped_digest();
+    try unwelcome_wrong_presented_deed();
+    print("provenance_chain {s} — GREEN\n", .{provenance_chain_version});
+    print("GREEN: GISM-J6r3 provenance chain — custody is a verifiable line of signed handoffs, grounded in the settled ledger.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_chain_selftest();
+    }
+    print("usage: provenance-chain selftest\n", .{});
+    return 1;
+}
