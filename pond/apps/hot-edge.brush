@@ -1,0 +1,25 @@
+::  name       hot-edge theme
+::  shape      a style: token sheet that recolors the living edge (WADE1 cascade)
+::  invariant  each style token is `key value` flat Bron; head stays warm/low-blue
+::  example    a dark sheet whose head accent burns terracotta, not the default ochre
+::  readers    brush_parse.rye (style sheet) → tokens.rye (infuse) → mantra_browser_heads
+::  nib        surface-wade1-theme-v0
+::
+::  A .brush authoring file that themes the Realidream revision graph. Its style:
+::  block overrides three tokens over tokens.rye's base sheet — a dark page, a
+::  light ink, and a hotter head accent for the living edge of each lane's history.
+::  The head key is the whole point: a theme recolors the newest revision node on
+::  its own token, without touching the edge rule or the reading ink. The cascade
+::  is per-key infuse (Bron over Bron), never a CSS rail.
+::  Tongue: Glow · Bron · TAME · Radiant. Never JS · HTML · CSS · JSON.
+::
+::  at-nib:     mantra-graph-hot-edge
+::  present:    Frame
+::  max-lines:  8
+::  style:
+::    paper 0xFF2B2620
+::    ink 0xFFF2ECDF
+::    head 0xFFB4502D
+::  lines:
+::    mantra graph, hot-edge theme
+::  refuse:     src/web · Wasm/Web backend · CSS rail · a { } stylesheet

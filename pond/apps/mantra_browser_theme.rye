@@ -1,0 +1,251 @@
+//! pond/apps/mantra_browser_theme.rye — BUHR Journey 2, Rung 4: a .brush theme
+//! recolors the living edge.
+//!
+//! Rung three lit each lane's head revision — the living edge of a history — in
+//! the design system's own `head` token, seated in `tokens.base_sheet`. This rung
+//! closes the authoring loop the token was named for: a `.brush` file's optional
+//! `style:` block overrides the `head` key, the WADE1 cascade infuses that override
+//! over the base sheet, and the same `paint_heads` lowering paints each lane's head
+//! in the *authored* color. The proof this rung wants is that the living edge is
+//! genuinely themeable — a person editing a `.brush` file, never Skate or Rye,
+//! recolors the newest node of every lane by writing one token line.
+//!
+//! It stays on witnessed ground end to end. The theme is read by the real `.brush`
+//! authoring loop (`brush_parse.parse_brush` validates the file, `collect_brush_style`
+//! reassembles its style block into the flat Bron sheet `tokens.rye` consumes); the
+//! cascade is `tokens.resolve` (per-key `brix/infuse`, already witnessed); the paint
+//! is rung three's `paint_heads` unchanged. The recolor is proven two ways: the
+//! themed head resolves to the authored color, and the base sheet's default head
+//! color leaves *zero* pixels on the themed canvas — a recolor, not an addition.
+//!
+//! Additive by construction: it imports mantra_browser, mantra_browser_heads,
+//! brushstroke/tokens, brushstroke/skate_grid, and brushstroke/brush_parse, calling
+//! only their public functions. No file beneath it changes; rungs one through three
+//! stay their own green binaries.
+//!
+//!   rye build pond/apps/mantra_browser_theme.rye -femit-bin=pond/bin/mantra-browser-theme
+//!   pond/bin/mantra-browser-theme selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const mb = @import("mantra_browser.rye");
+const heads = @import("mantra_browser_heads.rye");
+const tokens = @import("brushstroke/tokens.rye");
+const skate = @import("brushstroke/skate_grid.rye");
+const bp = @import("brushstroke/brush_parse.rye");
+
+const mantra_browser_theme_version = "20260812.140000";
+
+// The theme fixture the rung reads — a real `.brush` authoring file whose style
+// block recolors the `head` token (and paper/ink for a full dark theme).
+const theme_path = "pond/apps/hot-edge.brush";
+
+// The head color the theme authors — a hotter terracotta than the base sheet's
+// ochre. Warm and low-blue (R180 > G80 > B45), so it passes the design system's
+// own palette law; distinctly redder, so the recolor is unmistakable.
+const themed_head_argb: u32 = 0xFF_B4_50_2D;
+
+pub const ThemeError = error{
+    ThemeMissingHead,
+};
+
+/// Resolve the theme fixture into a token sheet: read the `.brush` file, validate
+/// it through the real authoring loop, collect its `style:` block into flat Bron,
+/// and infuse that override over `tokens.base_sheet`. Returns the resolved sheet's
+/// byte length in `out`. The head key the theme overrides now wins in the cascade.
+pub fn resolve_theme(io: std.Io, path: []const u8, out: []u8) !u32 {
+    // invariant: a real theme path names a file to read.
+    assert(path.len > 0);
+    // invariant: the resolved sheet fits the token-sheet bound.
+    assert(out.len <= tokens.max_sheet_bytes);
+
+    const garden = std.heap.page_allocator;
+    const cwd = std.Io.Dir.cwd();
+    const src = try cwd.readFileAlloc(io, path, garden, .limited(bp.max_brush_bytes));
+    // invariant: the source stays inside the brush read budget.
+    assert(src.len <= bp.max_brush_bytes);
+    defer garden.free(src);
+
+    // Validate the file through the real authoring loop before trusting its style.
+    const surface = try bp.parse_brush(src);
+    // invariant: a theme fixture declares a non-empty style block to override with.
+    if (surface.style_count == 0) return error.ThemeMissingHead;
+
+    // Reassemble the style block into the flat Bron sheet tokens.rye's infuse reads.
+    var override_buf: [bp.max_style_bytes]u8 = undefined;
+    const over_len = try bp.collect_brush_style(src, &override_buf);
+    // invariant: a declared style block collects at least one token line.
+    assert(over_len > 0);
+    // invariant: a hot-edge theme names the head token it means to recolor.
+    if (std.mem.indexOf(u8, override_buf[0..over_len], "head ") == null) return error.ThemeMissingHead;
+
+    const n = try tokens.resolve(tokens.base_sheet, override_buf[0..over_len], out);
+    // invariant: the resolved sheet is non-empty and bounded.
+    assert(n > 0);
+    assert(n <= out.len);
+    return n;
+}
+
+/// Count pixels whose visible color exactly matches `c` (ignoring alpha) in a
+/// rasterized buffer — a witness helper proving a specific token color reached (or
+/// never reached) the canvas.
+fn count_pixels_of_color(pixels: []const u8, stride: u32, width: u32, height: u32, c: skate.Color) u32 {
+    // invariant: the stride holds a full row of ARGB8888 pixels.
+    assert(stride >= width * 4);
+    // invariant: a real canvas has width.
+    assert(width > 0);
+    // invariant: a real canvas has height.
+    assert(height > 0);
+    const stride_usize: usize = @intCast(stride);
+    var count: u32 = 0;
+    var y: u32 = 0;
+    while (y < height) : (y += 1) {
+        const y_usize: usize = @intCast(y);
+        const rowbytes = pixels[y_usize * stride_usize ..][0 .. @as(usize, @intCast(width)) * 4];
+        var x: u32 = 0;
+        while (x < width) : (x += 1) {
+            const px: usize = @intCast(x * 4);
+            if (rowbytes[px + 0] == c.b and rowbytes[px + 1] == c.g and rowbytes[px + 2] == c.r) {
+                count += 1;
+            }
+        }
+    }
+    return count;
+}
+
+fn welcome_theme_recolors_head(allocator: std.mem.Allocator, io: std.Io) !void {
+    var themed_buf: [tokens.max_sheet_bytes]u8 = undefined;
+    const n = try resolve_theme(io, theme_path, &themed_buf);
+    const themed = themed_buf[0..n];
+
+    // The themed sheet's head token now resolves to the authored terracotta, not
+    // the base sheet's default ochre — the override won the cascade on its own key.
+    const themed_head = try tokens.token_color(themed, "head");
+    const base_head = try tokens.token_color(tokens.base_sheet, "head");
+    assert(themed_head.r == 0xB4);
+    assert(themed_head.g == 0x50);
+    assert(themed_head.b == 0x2D);
+    assert(themed_head.r != base_head.r or themed_head.g != base_head.g or themed_head.b != base_head.b);
+
+    // Paint the graph with the themed sheet — every lane's head wears the new color.
+    var catalog = try mb.demo_catalog();
+    var grid = try skate.Grid.init(allocator, heads.view_cols, heads.view_rows);
+    const rows = try heads.paint_heads(&catalog, &grid, themed);
+    assert(rows == 6);
+
+    // Rasterize the themed canvas and prove the recolor two ways.
+    const paint = try tokens.dress(themed);
+    const width: i32 = @intCast(heads.view_cols * skate.cell_w);
+    const height: i32 = @intCast(heads.view_rows * skate.cell_h);
+    const stride: u32 = heads.view_cols * skate.cell_w * 4;
+    const pixel_count: usize = @intCast(stride * @as(u32, @intCast(height)));
+    const pixels = try allocator.alloc(u8, pixel_count);
+    grid.rasterize(pixels, stride, width, height, paint.paper, paint.ink, 1);
+
+    const w_u: u32 = @intCast(width);
+    const h_u: u32 = @intCast(height);
+    const themed_head_pixels = count_pixels_of_color(pixels, stride, w_u, h_u, themed_head);
+    const base_head_pixels = count_pixels_of_color(pixels, stride, w_u, h_u, base_head);
+    // The authored head color reached the canvas — the living edge burns terracotta.
+    assert(themed_head_pixels > 0);
+    // The default ochre left zero pixels — this is a recolor, never an addition.
+    assert(base_head_pixels == 0);
+    print("mantra_browser_theme: {d} themed-head pixels on the canvas, {d} default-head pixels (recolored)\n", .{ themed_head_pixels, base_head_pixels });
+}
+
+fn welcome_theme_head_is_warm(io: std.Io) !void {
+    var themed_buf: [tokens.max_sheet_bytes]u8 = undefined;
+    const n = try resolve_theme(io, theme_path, &themed_buf);
+    // token_color asserts warm/low-blue on the way — a theme cannot smuggle a cold
+    // head past the design system's own palette law. The authored value it returns
+    // is exactly the terracotta the fixture declared.
+    const themed_head = try tokens.token_color(themed_buf[0..n], "head");
+    assert(themed_head.r > themed_head.g);
+    assert(themed_head.g > themed_head.b);
+    // The authored word matches the constant this rung names it by.
+    const want = skate.Color{
+        .r = @intCast((themed_head_argb >> 16) & 0xFF),
+        .g = @intCast((themed_head_argb >> 8) & 0xFF),
+        .b = @intCast(themed_head_argb & 0xFF),
+    };
+    assert(themed_head.r == want.r);
+    assert(themed_head.g == want.g);
+    assert(themed_head.b == want.b);
+    print("mantra_browser_theme: the authored head is warm/low-blue — the palette law holds through the theme\n", .{});
+}
+
+fn welcome_theme_additive_glyphs(allocator: std.mem.Allocator, io: std.Io) !void {
+    var themed_buf: [tokens.max_sheet_bytes]u8 = undefined;
+    const n = try resolve_theme(io, theme_path, &themed_buf);
+
+    var catalog = try mb.demo_catalog();
+    var grid = try skate.Grid.init(allocator, heads.view_cols, heads.view_rows);
+    _ = try heads.paint_heads(&catalog, &grid, themed_buf[0..n]);
+
+    // Theming touches only color — the painted glyphs still carry the very bytes
+    // rung one renders. Editor (render) and view (grid) stay one graph.
+    var buf: [mb.max_render_bytes]u8 = undefined;
+    const text = try mb.render(&catalog, &buf);
+    const first_nl = std.mem.indexOfScalar(u8, text, '\n').?;
+    const first_line = text[0..first_nl];
+    const painted = grid.row_cells(0);
+    // invariant: the grid row holds at least the rendered line's bytes.
+    assert(painted.len >= first_line.len);
+    assert(std.mem.startsWith(u8, painted, first_line));
+    print("mantra_browser_theme: theming recolors, never rewrites — text unchanged by the theme\n", .{});
+}
+
+fn welcome_no_style_keeps_default(allocator: std.mem.Allocator) !void {
+    // A paint with the untouched base sheet keeps the default ochre head — proving
+    // it is the theme's override, not the paint path, that recolors the living edge.
+    var catalog = try mb.demo_catalog();
+    var grid = try skate.Grid.init(allocator, heads.view_cols, heads.view_rows);
+    _ = try heads.paint_heads(&catalog, &grid, tokens.base_sheet);
+
+    const base_head = try tokens.token_color(tokens.base_sheet, "head");
+    const paint = try tokens.dress(tokens.base_sheet);
+    const width: i32 = @intCast(heads.view_cols * skate.cell_w);
+    const height: i32 = @intCast(heads.view_rows * skate.cell_h);
+    const stride: u32 = heads.view_cols * skate.cell_w * 4;
+    const pixel_count: usize = @intCast(stride * @as(u32, @intCast(height)));
+    const pixels = try allocator.alloc(u8, pixel_count);
+    grid.rasterize(pixels, stride, width, height, paint.paper, paint.ink, 1);
+
+    const w_u: u32 = @intCast(width);
+    const h_u: u32 = @intCast(height);
+    const base_head_pixels = count_pixels_of_color(pixels, stride, w_u, h_u, base_head);
+    // Untouched, the base sheet's ochre head still reaches the canvas.
+    assert(base_head_pixels > 0);
+    print("mantra_browser_theme: without a theme, the base head stands — the override is what recolors\n", .{});
+}
+
+fn welcome_theme_refuses_styleless(io: std.Io) !void {
+    // The seed fixture declares no style block; theming it names ThemeMissingHead
+    // rather than silently painting the default — a theme must carry a head to win.
+    var out: [tokens.max_sheet_bytes]u8 = undefined;
+    if (resolve_theme(io, "brushstroke/seed-frame.brush", &out)) |_| {
+        unreachable;
+    } else |err| {
+        // invariant: a style-less fixture refuses by the named error.
+        assert(err == error.ThemeMissingHead);
+    }
+    print("mantra_browser_theme: a style-less .brush refuses to theme — ThemeMissingHead\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_theme_recolors_head(garden, io);
+        try welcome_theme_head_is_warm(io);
+        try welcome_theme_additive_glyphs(garden, io);
+        try welcome_no_style_keeps_default(garden);
+        try welcome_theme_refuses_styleless(io);
+        print("mantra_browser_theme {s} — GREEN\n", .{mantra_browser_theme_version});
+        return 0;
+    }
+    print("usage: mantra-browser-theme selftest\n", .{});
+    return 1;
+}
