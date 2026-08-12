@@ -68,6 +68,10 @@ allow src
 allow tally
 allow tools
 allow vault
+# -- this season: logo asset + SOON/AHOY code modules (clean, no name) --
+allow assets
+allow brix
+allow pleac
 # -- teaching (clean-authored; personal sub-parts sub_excluded) --
 allow manual
 allow docs
@@ -184,6 +188,9 @@ template  vault                           # keeper of secrets (Shamir sharding) 
 template  src                             # Glow userland (five rooms)
 template  tally                           # bounded allocation
 template  tools                           # witnesses and gates; gitignored secrets never enter; scrub any name on touch
+template  assets                          # the Grain logo (archetype wheat-sephirot SVG, no personal art, no name)
+template  brix                            # Brix composition language module (infuse) — clean code, no name
+template  pleac                           # the PLEAC cookbook (strings/lists/numbers) — clean code, no name
 
 # ---- code modules that name the maintainer in comments (scrub the name, ship the code) ----
 scrub     kumara                          # identity module — tilak comments name the maintainer
@@ -219,6 +226,8 @@ personal  saga                            # season-close narratives, one steward
 personal  classical-vedic-astrology       # a personal-life study library, privacy-gated
 personal  rye-learning-process            # a personal learning almanac
 personal  keys                            # identity QR cards and key material
+personal  journey                         # season/quest narratives that name the maintainer — withheld (Keaton's word 20260811)
+personal  research-silo                   # research trails, name-bearing — withheld until each file earns a place (Keaton's word 20260811)
 
 # ---- sub-exclude: paths withheld even though their verdict is scrub ----
 # An entry is either a whole path or a single file inside a scrub directory.
