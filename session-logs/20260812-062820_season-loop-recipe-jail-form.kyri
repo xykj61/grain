@@ -1,0 +1,14 @@
+format session-log-v1
+stamp 20260812.062820
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Fix the season-loop recipe — jail form, working loop, no backslash trap
+prompt Keaton: our outer command is ./tools/agent-jail.sh --dangerously-skip-permissions claude; update the recursion command and print it; and shouldn't it be a rishi script?
+think The honest answer to "shouldn't it be a rishi script": the Rishi piece IS the printer (tools/launch-claude-season.rish, the seated "Rish preferred entry"). The unbounded loop itself stays an outer-shell loop by design — the jail launch belongs outside the jail (agent-jail.sh runs on the host and creates the sandbox), and TAME forbids unbounded loops in the tree's own code (Rishi has for-each, no while). So the .rish prints; the outer shell loops.
+think Read agent-jail.sh: it forwards --dangerously-skip-permissions and any -p 'prompt' to claude (help examples confirm `agent-jail.sh --dangerously-skip-permissions claude -p '...'`). Updated the recipe to that exact form and to the current itinerary (AHOY closed, next agent-doable lap Lindy-first crux-first, gates in REMEMBER).
+think Caught a real trap: Rishi's `say` prints backslashes literally (tested: source `\\` prints `\\`), so the original multi-line `\\` line-continuations would reach bash as double backslashes and break the command. Rewrote both the single lap and the loop as ONE-LINE commands (no continuations), copy-paste safe. bash -n confirms both parse; the loop uses `until … | tee /dev/stderr | grep -q GATES-ONLY; do sleep 20; done` so it shows each lap and stops itself when the agent prints GATES-ONLY.
+obs The loop self-terminates at the custody boundary: the prompt tells the agent to print GATES-ONLY when only gates remain, and `until … grep -q GATES-ONLY` breaks then. Gates stay manual (seed force-push, provisioning, funds/keys, the maintainer's Kumara instance).
+file tools/launch-claude-season.rish recipe → jail form + working one-line loop with GATES-ONLY self-stop; current itinerary; no backslash trap
+recommend keep-going the recipe is verified (bash -n GREEN); run `rishi/bin/rishi run tools/launch-claude-season.rish` in the outer terminal for the copy-paste command, or paste the loop directly
