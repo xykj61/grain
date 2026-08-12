@@ -1,0 +1,368 @@
+//! pond/apps/artifact_query.rye - BUHR Journey 8, Rung 1: the intelligence reads the store.
+//!
+//! BUHR is Surface & Intelligence. Journey 6 let a voice read the living Realidream
+//! graph; Journey 7 built Tablecloth, the named artifact store. This rung joins the two:
+//! a Lantern-shaped request whose *corpus is a named artifact*, read only through
+//! Tablecloth's `fetch_artifact` - so every bead proves itself against its digest and
+//! the whole against its recorded content address *before a single byte reaches the
+//! voice*. A tampered bead refuses the fetch (DigestMismatch) and the voice answers
+//! nothing at all, rather than reading corruption; an unknown name refuses
+//! (UnknownArtifact). Content-addressed storage becomes the intelligence's integrity
+//! guarantee for free - the same verified fetch the store already earned, now standing
+//! between the corpus and the reader.
+//!
+//! Additive by construction: it imports lantern_core and tablecloth and calls only their
+//! public functions. Neither contract changes; Journey 7's store stays its own green
+//! binary. No storage, no transport, no network, no custody.
+//!
+//!   rye build pond/apps/artifact_query.rye -femit-bin=pond/bin/artifact-query
+//!   pond/bin/artifact-query selftest
+//!
+//! Scope: active-designing/20260812-144916_buhr-journey8-voice-reads-artifact-store-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lc = @import("lantern/lantern_core.rye");
+const tc = @import("tablecloth.rye");
+const beading = @import("mantra/beading.rye");
+
+const artifact_query_version = "20260812.144916";
+
+const max_result_text: u32 = lc.max_completion_len; // never exceed Lantern's completion bound
+
+// The whole errors this voice owns beyond Lantern's and the store's own sets.
+pub const QueryError = error{
+    UnknownOp,
+    ResultTooLong,
+    ModelNotAllowed,
+};
+
+// The union a caller sees: Lantern's contract, the store's fetch refusals, and ours.
+pub const AnswerError = lc.LanternError || tc.ClothError || beading.BeadError || QueryError;
+
+/// The artifact operations the router recognizes by name in the prompt.
+pub const Op = enum(u8) {
+    bytes, // the whole length the name pins (store metadata)
+    words, // the word count of the verified content
+    line, // the first line of the verified content
+};
+
+// A routed query: an operation and the artifact name it reads. The name is the second
+// whitespace token of the prompt - "words notes.txt" reads notes.txt.
+const Routed = struct { op: Op, name: []const u8 };
+
+/// Recognize the operation and artifact name in the prompt. Returns UnknownOp rather
+/// than guessing - the voice never invents an answer over an artifact it cannot name.
+pub fn route(prompt: []const u8) QueryError!Routed {
+    // invariant: the prompt fits Lantern's own bound before we read it
+    assert(prompt.len <= lc.max_prompt_len);
+    var parts = std.mem.tokenizeScalar(u8, prompt, ' ');
+    const verb = parts.next() orelse return error.UnknownOp;
+    const op: Op = if (std.mem.eql(u8, verb, "bytes"))
+        .bytes
+    else if (std.mem.eql(u8, verb, "words"))
+        .words
+    else if (std.mem.eql(u8, verb, "line"))
+        .line
+    else
+        return error.UnknownOp;
+    const name = parts.next() orelse return error.UnknownOp; // an op with no name names nothing
+    // invariant: a routed name fits the catalog's name budget
+    if (name.len > tc.max_name) return error.UnknownOp;
+    return .{ .op = op, .name = name };
+}
+
+/// Count whitespace-separated words - the same token sense Lantern's length budget uses.
+pub fn count_words(text: []const u8) u32 {
+    // invariant: the text respects Lantern's completion bound
+    assert(text.len <= max_result_text);
+    var words: u32 = 0;
+    var in_word = false;
+    var i: u32 = 0;
+    while (i < text.len) : (i += 1) {
+        const is_space = text[i] == ' ' or text[i] == '\t' or text[i] == '\n' or text[i] == '\r';
+        if (!is_space) {
+            if (!in_word) {
+                words += 1;
+                in_word = true;
+            }
+        } else {
+            in_word = false;
+        }
+    }
+    return words;
+}
+
+/// Read the routed operation over the named artifact and format the true result into
+/// out_buf. The content ops (words, line) fetch through Tablecloth's verified reassembly,
+/// so a tampered bead or an unknown name refuses before the voice reads anything.
+pub fn compute(r: Routed, cat: *const tc.Catalog, store: *const beading.BeadStore, out_buf: []u8) AnswerError![]const u8 {
+    // invariant: the caller's buffer respects Lantern's completion bound
+    assert(out_buf.len <= max_result_text);
+    // invariant: there is room for at least one byte
+    assert(out_buf.len > 0);
+
+    switch (r.op) {
+        .bytes => {
+            const n = try tc.artifact_len(cat, r.name);
+            const piece = std.fmt.bufPrint(out_buf, "{d}", .{n}) catch return error.ResultTooLong;
+            // seam: bufPrint returns usize; it never exceeds the slice it wrote into
+            assert(piece.len <= out_buf.len);
+            return out_buf[0..piece.len];
+        },
+        .words => {
+            var scratch: [tc.max_content_bytes]u8 = undefined;
+            const n = try tc.fetch_artifact(cat, store, r.name, scratch[0..]);
+            // invariant: a verified fetch returns no more than a whole resin
+            assert(n <= tc.max_content_bytes);
+            const words = count_words(scratch[0..n]);
+            const piece = std.fmt.bufPrint(out_buf, "{d}", .{words}) catch return error.ResultTooLong;
+            assert(piece.len <= out_buf.len);
+            return out_buf[0..piece.len];
+        },
+        .line => {
+            var scratch: [tc.max_content_bytes]u8 = undefined;
+            const n = try tc.fetch_artifact(cat, store, r.name, scratch[0..]);
+            // invariant: a verified fetch returns no more than a whole resin
+            assert(n <= tc.max_content_bytes);
+            var end: u32 = 0;
+            while (end < n and scratch[end] != '\n') : (end += 1) {}
+            if (end > out_buf.len) return error.ResultTooLong; // the first line must fit
+            var i: u32 = 0;
+            while (i < end) : (i += 1) out_buf[i] = scratch[i];
+            // invariant: the copied line never exceeds the buffer
+            assert(end <= out_buf.len);
+            return out_buf[0..end];
+        },
+    }
+}
+
+/// The Q-vane query over an explicit store: validate the request against Lantern's
+/// contract, gate the model through the allow-list, read the named artifact through the
+/// verified fetch, and return a Lantern Response bounded by max_tokens (length stop when
+/// the budget bites). The model is never trusted before the list clears; the corpus is
+/// never read before it proves itself.
+pub fn answer_over(
+    req: lc.Request,
+    allow_text: []const u8,
+    cat: *const tc.Catalog,
+    store: *const beading.BeadStore,
+    out_buf: []u8,
+) AnswerError!lc.Response {
+    // invariant: the caller's buffer honors Lantern's completion bound
+    assert(out_buf.len <= max_result_text);
+    // invariant: the buffer can hold at least one token
+    assert(out_buf.len > 0);
+
+    try lc.validate_request(req);
+    if (!lc.model_allowed(req.model_hash, allow_text)) return error.ModelNotAllowed;
+
+    const r = try route(req.prompt);
+    const text = try compute(r, cat, store, out_buf);
+
+    const tokens_in = count_words(req.prompt);
+    var tokens_out = count_words(text);
+    var final_text = text;
+    var reason: lc.StoppedReason = .eos;
+
+    // Honor Lantern's metering: when the real reading outruns the budget, truncate to
+    // max_tokens words and mark a length stop - the same discipline every voice applies.
+    if (tokens_out > req.max_tokens) {
+        var words: u32 = 0;
+        var cut: u32 = 0;
+        var i: u32 = 0;
+        var in_word = false;
+        assert(text.len <= max_result_text);
+        while (i < text.len) : (i += 1) {
+            const is_space = text[i] == ' ' or text[i] == '\t' or text[i] == '\n' or text[i] == '\r';
+            if (!is_space) {
+                if (!in_word) {
+                    if (words == req.max_tokens) break;
+                    words += 1;
+                    in_word = true;
+                }
+                cut = i + 1;
+            } else {
+                in_word = false;
+            }
+        }
+        final_text = text[0..cut];
+        tokens_out = words;
+        reason = .length;
+    }
+
+    // invariant: the returned text never exceeds Lantern's completion bound
+    assert(final_text.len <= lc.max_completion_len);
+    // invariant: metered output never exceeds the requested budget
+    assert(tokens_out <= req.max_tokens);
+    return .{
+        .text = final_text,
+        .tokens_in = tokens_in,
+        .tokens_out = tokens_out,
+        .stopped_reason = reason,
+    };
+}
+
+const doc_notes = "linen holds the warp then hemp the weft\nramie brightens the border where the light lands";
+const doc_brief = "a cloth over the table, plain, glad";
+
+// Seat the demo corpus: two named artifacts over one shared BeadStore, exactly as the
+// Tablecloth selftest stores them - the same verified store every other reader uses.
+fn seat_demo(cat: *tc.Catalog, store: *beading.BeadStore) (tc.ClothError || beading.BeadError)!void {
+    cat.* = tc.Catalog.empty();
+    store.* = .empty();
+    _ = try tc.store_artifact(cat, store, "notes.txt", doc_notes);
+    _ = try tc.store_artifact(cat, store, "brief.txt", doc_brief);
+}
+
+/// The Q-vane query over the demo corpus - two named artifacts a caller with no store of
+/// its own can still ask against, read through the same verified fetch.
+pub fn answer(req: lc.Request, allow_text: []const u8, out_buf: []u8) AnswerError!lc.Response {
+    // invariant: the caller's buffer honors Lantern's completion bound
+    assert(out_buf.len <= max_result_text);
+    var cat: tc.Catalog = undefined;
+    var store: beading.BeadStore = undefined;
+    try seat_demo(&cat, &store);
+    return answer_over(req, allow_text, &cat, &store, out_buf);
+}
+
+// --- selftest -----------------------------------------------------------
+
+const allow =
+    \\model_hash sha3-256-rye-forge-lap0
+;
+const model = "sha3-256-rye-forge-lap0";
+
+fn welcome_bytes() !void {
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{ .model_hash = model, .prompt = "bytes notes.txt", .max_tokens = 64 };
+    const resp = try answer(req, allow, &buf);
+    // The store metadata: the whole length the name pins.
+    var expect: [8]u8 = undefined;
+    const want = std.fmt.bufPrint(&expect, "{d}", .{doc_notes.len}) catch unreachable;
+    assert(std.mem.eql(u8, resp.text, want));
+    assert(resp.stopped_reason == .eos);
+    print("artifact_query: bytes read the store - notes.txt is {s} bytes eos\n", .{resp.text});
+}
+
+fn welcome_words() !void {
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{ .model_hash = model, .prompt = "words notes.txt", .max_tokens = 64 };
+    const resp = try answer(req, allow, &buf);
+    // A true reading of the verified content, not a pinned constant.
+    var expect: [8]u8 = undefined;
+    const want = std.fmt.bufPrint(&expect, "{d}", .{count_words(doc_notes)}) catch unreachable;
+    assert(std.mem.eql(u8, resp.text, want));
+    assert(resp.stopped_reason == .eos);
+    print("artifact_query: words read the verified content - notes.txt has {s} words eos\n", .{resp.text});
+}
+
+fn welcome_line() !void {
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{ .model_hash = model, .prompt = "line notes.txt", .max_tokens = 64 };
+    const resp = try answer(req, allow, &buf);
+    assert(std.mem.eql(u8, resp.text, "linen holds the warp then hemp the weft"));
+    assert(resp.stopped_reason == .eos);
+    print("artifact_query: line read the verified content - '{s}' eos\n", .{resp.text});
+}
+
+fn welcome_length_budget() !void {
+    var buf: [max_result_text]u8 = undefined;
+    // The first line is eight words; a budget of three truncates and marks length.
+    const req = lc.Request{ .model_hash = model, .prompt = "line notes.txt", .max_tokens = 3 };
+    const resp = try answer(req, allow, &buf);
+    assert(resp.tokens_out == 3);
+    assert(std.mem.eql(u8, resp.text, "linen holds the"));
+    assert(resp.stopped_reason == .length);
+    print("artifact_query: length budget - tokens {d} length\n", .{resp.tokens_out});
+}
+
+fn unwelcome_unknown_name() !void {
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{ .model_hash = model, .prompt = "words absent.txt", .max_tokens = 64 };
+    if (answer(req, allow, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.UnknownArtifact);
+    }
+    print("artifact_query: unknown name refused - the voice reads no artifact it cannot name\n", .{});
+}
+
+fn unwelcome_tampered_bead() !void {
+    // The crux, witnessed: corrupt a stored bead, and the voice refuses to read - the
+    // fetch proves every bead by digest before a byte reaches the reader.
+    var cat: tc.Catalog = undefined;
+    var store: beading.BeadStore = undefined;
+    try seat_demo(&cat, &store);
+    store.beads[0].bytes[0] +%= 1; // flip one byte of a held bead
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{ .model_hash = model, .prompt = "words notes.txt", .max_tokens = 64 };
+    if (answer_over(req, allow, &cat, &store, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.DigestMismatch);
+    }
+    print("artifact_query: tampered bead refused - the corpus proves itself before the voice reads it\n", .{});
+}
+
+fn unwelcome_unknown_op() !void {
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{ .model_hash = model, .prompt = "translate notes.txt", .max_tokens = 64 };
+    if (answer(req, allow, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.UnknownOp);
+    }
+    print("artifact_query: unknown op refused - no invented answer\n", .{});
+}
+
+fn unwelcome_model_not_allowed() !void {
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{ .model_hash = "sha3-256-not-on-list", .prompt = "bytes notes.txt", .max_tokens = 64 };
+    if (answer(req, allow, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ModelNotAllowed);
+    }
+    print("artifact_query: model not allowed refused\n", .{});
+}
+
+fn unwelcome_zero_budget() !void {
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{ .model_hash = model, .prompt = "bytes notes.txt", .max_tokens = 0 };
+    if (answer(req, allow, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.BudgetExceeded);
+    }
+    print("artifact_query: zero budget refused by the Lantern contract\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_bytes();
+    try welcome_words();
+    try welcome_line();
+    try welcome_length_budget();
+    try unwelcome_unknown_name();
+    try unwelcome_tampered_bead();
+    try unwelcome_unknown_op();
+    try unwelcome_model_not_allowed();
+    try unwelcome_zero_budget();
+
+    print("artifact_query: a voice's corpus is a named Tablecloth artifact, read only through the verified fetch\n", .{});
+    print("artifact_query: bytes, words, and line each read the true store; every refusal holds\n", .{});
+    print("artifact_query: version {s}\n", .{artifact_query_version});
+    print("GREEN: BUHR-J8r1 artifact_query - the intelligence reads the store, and only bytes that proved themselves.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "artifact")) {
+            return run_selftest();
+        }
+    }
+    return run_selftest();
+}
