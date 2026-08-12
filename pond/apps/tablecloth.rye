@@ -1,0 +1,382 @@
+//! pond/apps/tablecloth.rye - BUHR Journey 7, Rung 1: the named artifact store.
+//!
+//! Tablecloth is the equinox's last unbuilt module - the Lexicon's "Brix-facing
+//! application database and artifact store", held apart from the namespace query of the
+//! same name. It invents no storage: it is the naming layer over mantra/beading.rye's
+//! content-addressed BeadStore. An artifact is beaded into the shared store (a bead held
+//! twice is stored once, the dedup dividend), and the catalog binds a human name to that
+//! stored content address - the whole digest and the bead-index recipe that reassembles
+//! it. Asking by name reassembles the artifact, every bead proving itself against its
+//! digest and the whole against its recorded address, so a tampered byte or a tampered
+//! recipe refuses before a single byte is trusted. The same bytes are stored once and
+//! named many times, never rewritten in place - accrete-never-break as the store's own
+//! data model, the discipline the Realidream editor earned as "an edit is an append".
+//!
+//! The Brix-facing face is a `format tablecloth-v1` flat-Bron manifest - one line per
+//! artifact, `artifact <name> <digest> <len>` - the Bron a Brix descriptor evaluates to.
+//! Render and parse round-trip it name for name and address for address.
+//!
+//!   rye build pond/apps/tablecloth.rye -femit-bin=pond/bin/tablecloth
+//!   pond/bin/tablecloth selftest
+//!
+//! Scope: active-designing/20260812-142132_buhr-journey7-tablecloth-artifact-store-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const beading = @import("mantra/beading.rye");
+const tally_copy = @import("tally_copy.rye");
+const parse_int = @import("parse_int.rye");
+
+pub const tablecloth_version = "20260812.142132";
+
+// An artifact's human name. Short and plain, so a manifest line stays readable.
+pub const max_name: u32 = 48;
+// The catalog's capacity - how many named artifacts one cloth holds.
+pub const max_artifacts: u32 = 32;
+// An artifact's whole byte budget, bounded by what a bead-index can address.
+pub const max_content_bytes: u32 = beading.max_resin_bytes;
+// A SHA3-256 whole digest rendered lowercase hex: two chars per raw byte.
+const digest_raw_len: u32 = 32;
+const digest_hex_len: u32 = digest_raw_len * 2;
+// A bead-index recipe is itself a resin, so it fits the same bound.
+const max_index_bytes: u32 = beading.max_resin_bytes;
+
+pub const ClothError = error{
+    NameEmpty,
+    NameTooLong,
+    NameTaken,
+    UnknownArtifact,
+    CatalogFull,
+    ContentTooLarge,
+    Overflow,
+    BadManifest,
+};
+
+// One named artifact: its name, the content address it pins, and the recipe to rebuild
+// it. Invariant: name_len <= max_name; index_len is a valid bead-index length.
+const Entry = struct {
+    name: [max_name]u8,
+    name_len: u32,
+    whole_digest: [32]u8,
+    whole_len: u32,
+    index: [max_index_bytes]u8,
+    index_len: u32,
+};
+
+/// A bounded catalog binding names to content addresses over a shared BeadStore.
+// Invariant: count <= max_artifacts; every live entry honors the Entry invariant.
+pub const Catalog = struct {
+    entries: [max_artifacts]Entry,
+    count: u32,
+
+    pub fn empty() Catalog {
+        return .{ .entries = undefined, .count = 0 };
+    }
+
+    fn find(self: *const Catalog, name: []const u8) ?u32 {
+        // invariant: the search stays within the live count
+        assert(self.count <= max_artifacts);
+        var i: u32 = 0;
+        while (i < self.count) : (i += 1) {
+            const e = &self.entries[i];
+            if (std.mem.eql(u8, e.name[0..e.name_len], name)) return i;
+        }
+        // invariant: a miss scanned every live entry
+        assert(i == self.count);
+        return null;
+    }
+};
+
+// Render raw bytes as lowercase hex, two chars per byte.
+fn write_hex_lower(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds two hex chars per input byte
+    assert(out.len >= bytes.len * 2);
+    const digits = "0123456789abcdef";
+    var i: u32 = 0;
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = digits[bytes[i] >> 4];
+        out[i * 2 + 1] = digits[bytes[i] & 0x0F];
+    }
+    // invariant: every input byte produced its two hex chars
+    assert(i == bytes.len);
+}
+
+/// Store an artifact under a name. The content is beaded into the shared store (dedup
+/// earned across artifacts that share bytes) and the catalog records the name and the
+/// content address. Returns the beading report so a caller can see the dedup dividend.
+/// Refuses an empty or overlong name, a taken name, a full catalog, and oversized content.
+pub fn store_artifact(
+    cat: *Catalog,
+    store: *beading.BeadStore,
+    name: []const u8,
+    content: []const u8,
+) (beading.BeadError || ClothError)!beading.BeadReport {
+    if (name.len == 0) return error.NameEmpty; // a name carries at least one byte
+    if (name.len > max_name) return error.NameTooLong; // a name fits its budget
+    if (content.len > max_content_bytes) return error.ContentTooLarge; // fits a resin
+    if (cat.find(name) != null) return error.NameTaken; // names are unique in a cloth
+    if (cat.count >= max_artifacts) return error.CatalogFull; // the catalog is bounded
+    // invariant: room remains for exactly this entry
+    assert(cat.count < max_artifacts);
+
+    var index: [max_index_bytes]u8 = undefined;
+    const b = try beading.bead_content_defined(store, content, index[0..]);
+
+    var e = &cat.entries[cat.count];
+    tally_copy.copy_disjoint(u8, e.name[0..name.len], name);
+    e.name_len = @intCast(name.len);
+    e.whole_digest = b.whole_digest;
+    e.whole_len = @intCast(content.len);
+    tally_copy.copy_disjoint(u8, e.index[0..b.len], index[0..b.len]);
+    e.index_len = b.len;
+    cat.count += 1;
+
+    // invariant: the catalog grew and stays within its bound
+    assert(cat.count <= max_artifacts);
+    return b.report;
+}
+
+/// Fetch an artifact by name into out, returning its length. Reassembly proves every
+/// bead against its digest and the whole against the recorded address, so a tampered
+/// bead or recipe refuses (DigestMismatch); an unknown name refuses (UnknownArtifact).
+pub fn fetch_artifact(
+    cat: *const Catalog,
+    store: *const beading.BeadStore,
+    name: []const u8,
+    out: []u8,
+) (beading.BeadError || ClothError)!u32 {
+    const i = cat.find(name) orelse return error.UnknownArtifact;
+    // invariant: a found index is within the live catalog
+    assert(i < cat.count);
+    const e = &cat.entries[i];
+    const re = try beading.reassemble(store, beading.tilak_bead_index, e.index[0..e.index_len], out);
+    // invariant: reassembly returns exactly the whole the name pins
+    assert(re.len == e.whole_len);
+    // invariant: the reassembled address matches the recorded one
+    assert(std.mem.eql(u8, re.whole_digest[0..], e.whole_digest[0..]));
+    return re.len;
+}
+
+/// Render the catalog as its Brix-facing `format tablecloth-v1` manifest, returning its
+/// length. One `artifact <name> <digest> <len>` line per entry, in held order.
+pub fn render_manifest(cat: *const Catalog, out: []u8) ClothError!u32 {
+    // invariant: a manifest names at most the catalog bound
+    assert(cat.count <= max_artifacts);
+    const header = "format tablecloth-v1\n";
+    if (header.len > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[0..header.len], header);
+    var off: u32 = @intCast(header.len);
+
+    var i: u32 = 0;
+    while (i < cat.count) : (i += 1) {
+        const e = &cat.entries[i];
+        var hex: [digest_hex_len]u8 = undefined;
+        write_hex_lower(e.whole_digest[0..], hex[0..]);
+        const line = std.fmt.bufPrint(out[off..], "artifact {s} {s} {d}\n", .{
+            e.name[0..e.name_len], hex[0..], e.whole_len,
+        }) catch return error.Overflow;
+        off += @intCast(line.len);
+    }
+    // invariant: the rendered manifest stays within the buffer
+    assert(off <= out.len);
+    return off;
+}
+
+// A parsed manifest entry: the published name, address (hex), and length. The recipe to
+// reassemble lives in the store's Catalog, not in the manifest a Brix descriptor holds.
+const ManifestEntry = struct {
+    name: [max_name]u8,
+    name_len: u32,
+    digest_hex: [digest_hex_len]u8,
+    whole_len: u32,
+};
+
+/// The Brix-facing manifest read back: names, addresses, and lengths, in held order.
+// Invariant: count <= max_artifacts.
+pub const Manifest = struct {
+    entries: [max_artifacts]ManifestEntry,
+    count: u32,
+};
+
+/// Parse a `format tablecloth-v1` manifest into names, addresses, and lengths. An
+/// unknown header, a malformed line, or an out-of-range field refuses (BadManifest).
+pub fn parse_manifest(text: []const u8, man: *Manifest) ClothError!void {
+    man.count = 0;
+    // invariant: parsing starts from an empty manifest
+    assert(man.count == 0);
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const first = lines.next() orelse return error.BadManifest;
+    if (!std.mem.eql(u8, first, "format tablecloth-v1")) return error.BadManifest;
+
+    while (lines.next()) |line| {
+        if (line.len == 0) continue; // a trailing newline yields an empty final piece
+        if (man.count >= max_artifacts) return error.CatalogFull;
+
+        var parts = std.mem.tokenizeScalar(u8, line, ' ');
+        const tag = parts.next() orelse return error.BadManifest;
+        if (!std.mem.eql(u8, tag, "artifact")) return error.BadManifest;
+        const name = parts.next() orelse return error.BadManifest;
+        const hex = parts.next() orelse return error.BadManifest;
+        const len_tok = parts.next() orelse return error.BadManifest;
+        if (parts.next() != null) return error.BadManifest; // no slack past the fields
+        if (name.len == 0) return error.BadManifest;
+        if (name.len > max_name) return error.BadManifest;
+        if (hex.len != digest_hex_len) return error.BadManifest;
+        const whole_len = parse_int.parse_int(u32, len_tok, .{}) catch return error.BadManifest;
+
+        var e = &man.entries[man.count];
+        tally_copy.copy_disjoint(u8, e.name[0..name.len], name);
+        e.name_len = @intCast(name.len);
+        tally_copy.copy_disjoint(u8, e.digest_hex[0..], hex);
+        e.whole_len = whole_len;
+        man.count += 1;
+    }
+    // invariant: a parsed manifest holds no more than the bound
+    assert(man.count <= max_artifacts);
+}
+
+const doc_a = "linen holds the warp, hemp the weft - a cloth over the table, plain and glad.";
+const doc_b = "ramie brightens the border where the light lands, and the table keeps its word.";
+
+fn run_tablecloth_selftest() !u8 {
+    // Store two names over one content: the same bytes are stored once, named twice.
+    var store: beading.BeadStore = .empty();
+    var cat: Catalog = .empty();
+
+    const rep_a = try store_artifact(&cat, &store, "notes.txt", doc_a);
+    assert(rep_a.beads_deposited >= 1); // a fresh artifact deposits its beads
+    const rep_copy = try store_artifact(&cat, &store, "notes-copy.txt", doc_a);
+    assert(rep_copy.beads_deposited == 0); // identical content: nothing new stored
+    assert(rep_copy.beads_deduped == rep_copy.bead_count); // every bead already held
+
+    const rep_b = try store_artifact(&cat, &store, "site.md", doc_b);
+    assert(rep_b.beads_deposited >= 1); // different content deposits its own beads
+    assert(cat.count == 3);
+
+    // Fetch each by name and prove the bytes returned are exactly the bytes stored.
+    var out: [max_content_bytes]u8 = undefined;
+    const n1 = try fetch_artifact(&cat, &store, "notes.txt", out[0..]);
+    assert(std.mem.eql(u8, out[0..n1], doc_a));
+    const n2 = try fetch_artifact(&cat, &store, "notes-copy.txt", out[0..]);
+    assert(std.mem.eql(u8, out[0..n2], doc_a)); // one storage, two true names
+    const n3 = try fetch_artifact(&cat, &store, "site.md", out[0..]);
+    assert(std.mem.eql(u8, out[0..n3], doc_b));
+
+    // The Brix-facing manifest round-trips: render then parse recovers name, address,
+    // and length for every entry, field for field.
+    var man_bytes: [1024]u8 = undefined;
+    const man_len = try render_manifest(&cat, man_bytes[0..]);
+    var man: Manifest = undefined;
+    try parse_manifest(man_bytes[0..man_len], &man);
+    assert(man.count == cat.count);
+    {
+        var i: u32 = 0;
+        while (i < man.count) : (i += 1) {
+            const ce = &cat.entries[i];
+            const me = &man.entries[i];
+            assert(std.mem.eql(u8, me.name[0..me.name_len], ce.name[0..ce.name_len]));
+            assert(me.whole_len == ce.whole_len);
+            var hex: [digest_hex_len]u8 = undefined;
+            write_hex_lower(ce.whole_digest[0..], hex[0..]);
+            assert(std.mem.eql(u8, me.digest_hex[0..], hex[0..]));
+        }
+    }
+
+    // Unwelcome: a tampered bead refuses the fetch by digest. Corrupt a stored bead in a
+    // fresh store so the rest of the selftest is untouched.
+    {
+        var store_t: beading.BeadStore = .empty();
+        var cat_t: Catalog = .empty();
+        _ = try store_artifact(&cat_t, &store_t, "brief.txt", doc_a);
+        store_t.beads[0].bytes[0] +%= 1; // flip one byte of a held bead
+        var scratch: [max_content_bytes]u8 = undefined;
+        if (fetch_artifact(&cat_t, &store_t, "brief.txt", scratch[0..])) |_| {
+            return error.DigestMismatch;
+        } else |err| {
+            assert(err == error.DigestMismatch);
+        }
+    }
+
+    // Unwelcome: an unknown name refuses.
+    {
+        var scratch: [max_content_bytes]u8 = undefined;
+        if (fetch_artifact(&cat, &store, "absent.txt", scratch[0..])) |_| {
+            return error.UnknownArtifact;
+        } else |err| {
+            assert(err == error.UnknownArtifact);
+        }
+    }
+
+    // Unwelcome: a name already taken refuses.
+    if (store_artifact(&cat, &store, "notes.txt", doc_b)) |_| {
+        return error.NameTaken;
+    } else |err| {
+        assert(err == error.NameTaken);
+    }
+
+    // Unwelcome: an empty and an overlong name refuse.
+    if (store_artifact(&cat, &store, "", doc_a)) |_| {
+        return error.NameEmpty;
+    } else |err| {
+        assert(err == error.NameEmpty);
+    }
+    {
+        const long_name = "x" ** (max_name + 1);
+        if (store_artifact(&cat, &store, long_name, doc_a)) |_| {
+            return error.NameTooLong;
+        } else |err| {
+            assert(err == error.NameTooLong);
+        }
+    }
+
+    // Unwelcome: content past the resin bound refuses.
+    {
+        var big: [max_content_bytes + 1]u8 = undefined;
+        var i: u32 = 0;
+        while (i < big.len) : (i += 1) big[i] = 'z';
+        if (store_artifact(&cat, &store, "too-big.bin", big[0..])) |_| {
+            return error.ContentTooLarge;
+        } else |err| {
+            assert(err == error.ContentTooLarge);
+        }
+    }
+
+    // Unwelcome: a manifest with the wrong header refuses.
+    {
+        var bad: Manifest = undefined;
+        if (parse_manifest("format not-a-cloth\nartifact a ff 1\n", &bad)) |_| {
+            return error.BadManifest;
+        } else |err| {
+            assert(err == error.BadManifest);
+        }
+    }
+
+    print("tablecloth: stored 3 names over 2 contents; one content stored once, named twice\n", .{});
+    print("tablecloth: dedup dividend - notes-copy deposited {d} beads, deduped {d}\n", .{
+        rep_copy.beads_deposited, rep_copy.beads_deduped,
+    });
+    print("tablecloth: fetch by name returned {d}/{d}/{d} bytes, each equal to what was stored\n", .{
+        n1, n2, n3,
+    });
+    print("tablecloth: format tablecloth-v1 manifest round-tripped {d} artifacts, len {d}\n", .{
+        man.count, man_len,
+    });
+    print("tablecloth: tampered bead, unknown name, taken name refused whole GREEN\n", .{});
+    print("tablecloth: empty name, overlong name, oversized content refused whole GREEN\n", .{});
+    print("tablecloth: bad manifest header refused GREEN\n", .{});
+    print("tablecloth: version {s}\n", .{tablecloth_version});
+    print("GREEN: BUHR-J7r1 tablecloth; a name pins a content address, fetch returns the true bytes.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "tablecloth")) {
+            return run_tablecloth_selftest();
+        }
+    }
+    return run_tablecloth_selftest();
+}
