@@ -1,0 +1,306 @@
+//! pond/apps/commerce_trade_bron.rye — TACT Journey 4, Rung 3: the trade made portable.
+//!
+//! Rungs one and two booked a fair-value trade and proved it one both parties signed. A trade is
+//! only useful, though, if both sides can carry the identical fact — written to a file, pinned in
+//! Tablecloth, or handed to the other keeper. This rung renders a signed trade to a
+//! `format trade-v1` Bron record and parses it back byte-for-byte, so the agreement survives the
+//! crossing intact.
+//!
+//! The crux is preservation: `parse(render(signed))` recovers an equal signed trade — same points,
+//! item, price, stamp, and both signatures — and the recovered trade still passes `both_agree`, so
+//! nothing about the two-party agreement was lost in becoming text. The reader is a purpose-built
+//! bounded Bron reader (flat `key value` lines, the tree's shared idiom), never a general parser:
+//! an unknown field refuses (never dropped), a missing field refuses, a wrong header refuses, and
+//! malformed hex refuses rather than decode to garbage.
+//!
+//! It composes rungs one and two — a recovered trade builds a `commerce.Trade` and a
+//! `signed.SignedTrade` view over its own owned buffers, verified by rung two's `both_agree`. It
+//! reads no network — the serve transport that carries this record across the wire is the
+//! Comlink-served custody gate (Keaton's hand). Demo keeper seeds only.
+//!
+//!   rye build pond/apps/commerce_trade_bron.rye -femit-bin=pond/bin/commerce-trade-bron
+//!   pond/bin/commerce-trade-bron selftest
+//!
+//! Scope: active-designing/20260812-175228_tact-journey4-commerce-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const commerce = @import("commerce_trade.rye");
+const signed_mod = @import("commerce_trade_signed.rye");
+const parse_int = @import("parse_int.rye");
+const kumara = @import("kumara.rye");
+
+pub const commerce_trade_bron_version = "20260812.180216";
+
+pub const sig_len: u32 = 64;
+pub const max_item: u32 = commerce.max_item_len;
+pub const max_stamp: u32 = 32;
+// The rendered record: a header plus seven short lines, the widest two being 128-hex signatures.
+pub const max_record: u32 = 512;
+
+pub const BronError = error{
+    BadFormat, // the header line is not `format trade-v1`
+    UnknownField, // a line names a field the record does not define
+    MissingField, // a required field never appeared
+    BadInt, // a numeric field did not parse
+    BadHex, // a hex field was the wrong length or held a non-hex byte
+    ItemTooLong, // the item field exceeds the trade's item budget
+    StampTooLong, // the stamp field exceeds its budget
+    RecordTooLong, // the render exceeded its bounded buffer
+};
+
+const hex_digits = "0123456789abcdef";
+
+/// Write `bytes` as lowercase hex into `out` (out.len must be twice bytes.len).
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex chars per byte
+    assert(out.len == bytes.len * 2);
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0F];
+    }
+}
+
+/// Decode one hex nibble, or refuse.
+fn nibble(c: u8) BronError!u8 {
+    return switch (c) {
+        '0'...'9' => c - '0',
+        'a'...'f' => c - 'a' + 10,
+        'A'...'F' => c - 'A' + 10,
+        else => error.BadHex,
+    };
+}
+
+/// Decode `text` (exactly out.len*2 hex chars) into `out`, refusing wrong length or non-hex.
+fn from_hex(text: []const u8, out: []u8) BronError!void {
+    if (text.len != out.len * 2) return error.BadHex;
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < out.len) : (i += 1) {
+        const hi = try nibble(text[i * 2]);
+        const lo = try nibble(text[i * 2 + 1]);
+        out[i] = (hi << 4) | lo;
+    }
+}
+
+/// A parsed trade that owns its variable-length fields, so the `commerce.Trade` and
+/// `signed.SignedTrade` views it hands out point into its own buffers, never into freed text.
+// Invariant: item_len <= max_item and stamp_len <= max_stamp.
+pub const PortableTrade = struct {
+    seller: u32,
+    buyer: u32,
+    price: i64,
+    item_bytes: [max_item]u8,
+    item_len: u32,
+    stamp_bytes: [max_stamp]u8,
+    stamp_len: u32,
+    seller_sig: [sig_len]u8,
+    buyer_sig: [sig_len]u8,
+
+    pub fn item(self: *const PortableTrade) []const u8 {
+        // invariant: the held item honors the trade's item budget
+        assert(self.item_len <= max_item);
+        return self.item_bytes[0..self.item_len];
+    }
+
+    pub fn stamp(self: *const PortableTrade) []const u8 {
+        // invariant: the held stamp honors its budget
+        assert(self.stamp_len <= max_stamp);
+        return self.stamp_bytes[0..self.stamp_len];
+    }
+
+    /// The trade facts as a `commerce.Trade` view over this record's own buffers.
+    pub fn trade(self: *const PortableTrade) commerce.Trade {
+        return .{ .seller = self.seller, .buyer = self.buyer, .item = self.item(), .price = self.price, .stamp = self.stamp() };
+    }
+
+    /// The signed trade as a `signed.SignedTrade` view, ready for `both_agree`.
+    pub fn as_signed(self: *const PortableTrade) signed_mod.SignedTrade {
+        return .{ .trade = self.trade(), .seller_sig = self.seller_sig, .buyer_sig = self.buyer_sig };
+    }
+};
+
+/// Render a signed trade to a `format trade-v1` record. Refuses when it would overflow.
+pub fn render(signed: *const signed_mod.SignedTrade, out: []u8) BronError!u32 {
+    // invariant: the render buffer honors its bound
+    assert(out.len >= max_record);
+    var seller_hex: [sig_len * 2]u8 = undefined;
+    var buyer_hex: [sig_len * 2]u8 = undefined;
+    to_hex(&signed.seller_sig, &seller_hex);
+    to_hex(&signed.buyer_sig, &buyer_hex);
+    const t = &signed.trade;
+    const text = std.fmt.bufPrint(out, "format trade-v1\nseller {d}\nbuyer {d}\nitem {s}\nprice {d}\nstamp {s}\nseller-sig {s}\nbuyer-sig {s}\n", .{
+        t.seller, t.buyer, t.item, t.price, t.stamp, seller_hex, buyer_hex,
+    }) catch return error.RecordTooLong;
+    return @intCast(text.len);
+}
+
+/// Split a line into its first-token key and trimmed remainder value — the flat-Bron idiom.
+fn key_val(line: []const u8) struct { key: []const u8, val: []const u8 } {
+    var sp: usize = 0; // seam: slice index over the source
+    while (sp < line.len and line[sp] != ' ') : (sp += 1) {}
+    const key = line[0..sp];
+    const val = std.mem.trim(u8, line[sp..], " \t");
+    return .{ .key = key, .val = val };
+}
+
+fn copy_field(dst: []u8, src: []const u8) void {
+    var i: u32 = 0;
+    while (i < src.len) : (i += 1) dst[i] = src[i];
+}
+
+/// Parse a `format trade-v1` record into a PortableTrade, refusing an unknown or missing field, a
+/// bad header, a bad integer, an overlong field, or malformed hex.
+pub fn parse(text: []const u8) BronError!PortableTrade {
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const header = lines.next() orelse return error.BadFormat;
+    if (!std.mem.eql(u8, header, "format trade-v1")) return error.BadFormat;
+
+    var have_seller = false;
+    var have_buyer = false;
+    var have_item = false;
+    var have_price = false;
+    var have_stamp = false;
+    var have_ssig = false;
+    var have_bsig = false;
+    var pt = PortableTrade{
+        .seller = 0,
+        .buyer = 0,
+        .price = 0,
+        .item_bytes = undefined,
+        .item_len = 0,
+        .stamp_bytes = undefined,
+        .stamp_len = 0,
+        .seller_sig = undefined,
+        .buyer_sig = undefined,
+    };
+
+    while (lines.next()) |raw| {
+        if (raw.len == 0) continue; // a trailing newline yields one empty line
+        const kv = key_val(raw);
+        if (std.mem.eql(u8, kv.key, "seller")) {
+            pt.seller = parse_int.parse_int(u32, kv.val, .{}) catch return error.BadInt;
+            have_seller = true;
+        } else if (std.mem.eql(u8, kv.key, "buyer")) {
+            pt.buyer = parse_int.parse_int(u32, kv.val, .{}) catch return error.BadInt;
+            have_buyer = true;
+        } else if (std.mem.eql(u8, kv.key, "item")) {
+            if (kv.val.len > max_item) return error.ItemTooLong;
+            pt.item_len = @intCast(kv.val.len);
+            copy_field(&pt.item_bytes, kv.val);
+            have_item = true;
+        } else if (std.mem.eql(u8, kv.key, "price")) {
+            pt.price = parse_int.parse_int(i64, kv.val, .{}) catch return error.BadInt;
+            have_price = true;
+        } else if (std.mem.eql(u8, kv.key, "stamp")) {
+            if (kv.val.len > max_stamp) return error.StampTooLong;
+            pt.stamp_len = @intCast(kv.val.len);
+            copy_field(&pt.stamp_bytes, kv.val);
+            have_stamp = true;
+        } else if (std.mem.eql(u8, kv.key, "seller-sig")) {
+            try from_hex(kv.val, &pt.seller_sig);
+            have_ssig = true;
+        } else if (std.mem.eql(u8, kv.key, "buyer-sig")) {
+            try from_hex(kv.val, &pt.buyer_sig);
+            have_bsig = true;
+        } else {
+            return error.UnknownField;
+        }
+    }
+    if (!(have_seller and have_buyer and have_item and have_price and have_stamp and have_ssig and have_bsig)) {
+        return error.MissingField;
+    }
+    // invariant: a fully parsed trade honors its field budgets
+    assert(pt.item_len <= max_item);
+    assert(pt.stamp_len <= max_stamp);
+    return pt;
+}
+
+// ---- witnesses ----
+
+const seller_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
+const buyer_seed: [kumara.seed_length]u8 = .{0x66} ** kumara.seed_length;
+
+fn pubkey_of(seed: *const [kumara.seed_length]u8) [signed_mod.pubkey_len]u8 {
+    return kumara.keypair_from_seed(seed).public_key.bytes;
+}
+
+fn demo_signed() signed_mod.SignedTrade {
+    const trade = commerce.Trade{ .seller = 7, .buyer = 12, .item = "hemp bolt", .price = 1000, .stamp = "20260812.180216" };
+    return .{
+        .trade = trade,
+        .seller_sig = signed_mod.sign_trade(&seller_seed, &trade),
+        .buyer_sig = signed_mod.sign_trade(&buyer_seed, &trade),
+    };
+}
+
+fn trades_equal(a: *const signed_mod.SignedTrade, b: *const signed_mod.SignedTrade) bool {
+    return a.trade.seller == b.trade.seller and a.trade.buyer == b.trade.buyer and
+        a.trade.price == b.trade.price and
+        std.mem.eql(u8, a.trade.item, b.trade.item) and
+        std.mem.eql(u8, a.trade.stamp, b.trade.stamp) and
+        std.mem.eql(u8, &a.seller_sig, &b.seller_sig) and
+        std.mem.eql(u8, &a.buyer_sig, &b.buyer_sig);
+}
+
+/// A signed trade renders to Bron and parses back byte-for-byte, and the recovered trade still
+/// passes both_agree — the two-party agreement survived the crossing whole.
+fn welcome_round_trip_preserves() !void {
+    var buf: [max_record]u8 = undefined;
+    const signed = demo_signed();
+    const n = try render(&signed, &buf);
+    const pt = try parse(buf[0..n]);
+    const back = pt.as_signed();
+    assert(trades_equal(&signed, &back));
+    assert(signed_mod.both_agree(&back, pubkey_of(&seller_seed), pubkey_of(&buyer_seed)));
+    print("commerce_trade_bron: a signed trade round-tripped through Bron byte-for-byte and still passed both_agree.\n", .{});
+}
+
+/// An unknown field refuses — never silently dropped.
+fn unwelcome_unknown_field_refuses() !void {
+    const record = "format trade-v1\nseller 7\nbuyer 12\nitem x\nprice 1000\nstamp s\nseller-sig " ++ ("0" ** 128) ++ "\nbuyer-sig " ++ ("0" ** 128) ++ "\nsurprise yes\n";
+    const parsed = parse(record);
+    assert(parsed == error.UnknownField);
+    print("commerce_trade_bron: an unknown field refused UnknownField (never dropped).\n", .{});
+}
+
+/// A missing field refuses.
+fn unwelcome_missing_field_refuses() !void {
+    const record = "format trade-v1\nseller 7\nbuyer 12\nitem x\nprice 1000\nstamp s\nseller-sig " ++ ("0" ** 128) ++ "\n";
+    const parsed = parse(record);
+    assert(parsed == error.MissingField);
+    print("commerce_trade_bron: a missing field refused MissingField.\n", .{});
+}
+
+/// A wrong header refuses, and malformed hex refuses rather than decode to garbage.
+fn unwelcome_bad_header_and_hex_refuse() !void {
+    const bad_header = "format other-v1\nseller 7\n";
+    const header_result = parse(bad_header);
+    assert(header_result == error.BadFormat);
+    const short_hex = "format trade-v1\nseller 7\nbuyer 12\nitem x\nprice 1000\nstamp s\nseller-sig abcd\nbuyer-sig " ++ ("0" ** 128) ++ "\n";
+    const hex_result = parse(short_hex);
+    assert(hex_result == error.BadHex);
+    print("commerce_trade_bron: a wrong header and short hex each refused.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_round_trip_preserves();
+    try unwelcome_unknown_field_refuses();
+    try unwelcome_missing_field_refuses();
+    try unwelcome_bad_header_and_hex_refuse();
+    print("commerce_trade_bron {s} — GREEN\n", .{commerce_trade_bron_version});
+    print("GREEN: TACT-J4r3 commerce_trade_bron; a signed trade travels as Bron and returns whole, or names its refusal.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest();
+    }
+    print("usage: commerce-trade-bron selftest\n", .{});
+    return 1;
+}

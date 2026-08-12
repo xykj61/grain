@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260812.180216
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title TACT-J4r3 — the trade made portable (Bron round-trip)
+prompt keep climbing the road Lindy-first crux-first; approve own design rounds; send each finished increment to both remotes; stop at custody gates
+think r1 booked a fair-value trade, r2 proved it one both parties signed. A trade is only useful if both sides can carry the identical fact — to a file, into Tablecloth, or handed to the other keeper. r3's crux: preservation across the text crossing.
+think pond/apps/commerce_trade_bron.rye renders a SignedTrade to a format trade-v1 Bron record (seller · buyer · item · price · stamp · seller-sig/buyer-sig as 128-hex) and parses it back. parse(render(signed)) recovers an equal signed trade that still passes both_agree — the two-party agreement survived becoming text.
+think Ownership: commerce.Trade holds []const u8 slices (item, stamp), so a parsed trade cannot borrow freed text. Introduced PortableTrade, which owns fixed item/stamp buffers and two sigs and hands out commerce.Trade and signed.SignedTrade views over its own buffers (trade() / as_signed()), so the recovered agreement points at durable storage.
+think The reader is purpose-built and bounded (the flat key/value idiom, mirroring publish_receipt_bron): an unknown field refuses UnknownField (never dropped), a missing field MissingField, a wrong header BadFormat, malformed/short hex BadHex, an overlong item/stamp its own error. Reused the local to_hex/from_hex/key_val idiom.
+obs Four cases: a signed trade round-trips byte-for-byte and still passes both_agree; an unknown field refuses; a missing field refuses; a wrong header and short hex each refuse.
+obs Built GREEN first pass; TAME bans clean, width-check exit 0. Composed over r1 (Trade) + r2 (SignedTrade, both_agree, sign_trade) public API; rung two re-runs GREEN under the witness.
+obs This completes TACT Journey 4's agent-doable arc — r1 book (fair value) · r2 sign (both agree) · r3 portable (travels whole). The settle rung (r4) reaches custody gate #3 (moving funds / a payment rail), Keaton's hand.
+loom witness=tact_commerce_trade_bron_witness result=GREEN cases=4 sigs_preserved=2
+file pond/apps/commerce_trade_bron.rye render/parse a signed trade as format trade-v1; PortableTrade owns the fields; round-trip preserves both_agree; unknown/missing/bad-header/bad-hex refuse
+file tools/tact_commerce_trade_bron_witness.rish witness — GREEN (4 cases + r2 re-run)
+recommend check-in (Claude) TACT Journey 4's agent-doable arc stands (r1 book · r2 sign · r3 portable); the settle rung reaches custody gate #3. Good moment to confirm direction — a fresh TACT journey, or Season 2 (Yield), Lindy-first — or keep climbing autonomously
