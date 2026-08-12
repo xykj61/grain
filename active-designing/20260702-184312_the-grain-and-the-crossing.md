@@ -9,7 +9,7 @@
 **Lens:** TAME — safety, performance, joy
 **Status:** Canon — vocabulary law beside the silo principle and the graduation rule · living accretion
 
-*Written together by Kaeden and Rio 3. Twin-crossing accretion by Keaton and Riyo (`20260802.141933`). Resin-hygiene accretion by Keaton and Riyo (`20260802.150850`–`20260802.152308`).*
+*Written together by Kaeden and Rio 3. Twin-crossing accretion by Keaton and Riyo (`20260802.141933`). Resin-hygiene accretion by Keaton and Riyo (`20260802.150850`–`20260802.152308`). AHOY1 weave accretion by Keaton and Kyri (`20260811.214423`) — kin block only; canon body unchanged.*
 
 ---
 
@@ -73,6 +73,17 @@ The two-room law above still holds for outside ideas. A second doorway now names
 **Resin hygiene (seated by Keaton's word, e213).** A resin is packaging, and packaging is finished the moment its landing is proven. The pattern per round: extract, verify every bead against the manifest, land the patches, run the witnesses, dual-push — and then the landing hand removes the zip and its extracted folder with a plain `rm`. Two walls keep this honest: removal comes only *after* the dual-push shows the content living in the tree, and the tree's own `.gitignore` refuses root-level zips outright, so transport never becomes testimony by accident. We chose `rm` over a to-be-shredded pen deliberately — a holding folder would braid ordinary packaging into the gated shred instrument and grow a second queue for material that carries nothing the tree lacks; the seats and the manifest lines already remember everything the zip ever knew.
 
 Landed proof at this accretion: a0 on tip after v2 (30 beads) · v3 delta M3+M4 when the pier had already moved — patch `0031` only, union on REMEMBER/seat map · Mantra pedestal tier **M1–M4 COMPLETE**.
+
+---
+
+## Kin in the weave
+
+The grain is one of two canonical hubs every leaf foundation routes through; naming its neighbours keeps the tree wiki-connected rather than star-shaped.
+
+- **The front door** — the root [`../README.md`](../README.md) opens onto the tree and names this brief as the first *why* to read.
+- **The room of reasons** — [`foundations/README.md`](../foundations/README.md) indexes the *why*; the strands here are what those reasons cut with.
+- **The sibling hub** — [Follow Our Compass](../foundations/20260706-185112_follow-our-compass.md) is the *return habit* that brings a reader back to these strands: the grain answers *does this cut clean?*, the compass answers *where do I look to remember what we decided?*
+- **The long return** — why the strands and this index are written to last is [the Lindy effect](../foundations/20260811-211431_the-lindy-effect-and-the-long-return.md); the order we cut and build by is [**Lindy-first, crux-first**](../.claude/rules/lindy-first-crux.md).
 
 ---
 
