@@ -1,0 +1,160 @@
+//! pond/apps/mantra_editor_undo.rye — BUHR Journey 4, Rung 4: undo is reading an
+//! earlier revision, then appending it — never a rewrite.
+//!
+//! Rung one gave the editor `commit` (continue a lane), rung three gave it `open_lane`
+//! (fork a lane). Both add a node to the append-only Mantra catalog. This rung closes
+//! the editor's core surface with the one operation a naive editor implements by
+//! deletion: undo. In an append-only log there is no node to delete — so undo is
+//! instead a *read of an earlier revision followed by an append of its content*. The
+//! crux: `revert(to_revision)` recalls the bytes bound at that earlier node and commits
+//! them as the lane's next revision, so the reverted content returns as a new head
+//! while every revision between still stands, readable. Undo inherits
+//! accrete-never-break by construction — there is no rewrite path to guard.
+//!
+//! The proof: on a lane standing at r2 ("beta-two"), revert to r1 ("beta"). The lane's
+//! new head is r3, and recalling r3 returns the r1 bytes — the content came back. Yet
+//! r2 still recalls "beta-two", untouched: undo added a node, it did not remove one.
+//! The rendered graph grows to r1 -> r2 -> r3, every other lane byte for byte unchanged.
+//! A revert to a revision the lane never had refuses `RevisionUnknown`; a revert on a
+//! lane with no head refuses `LaneUnknown`.
+//!
+//! Additive by construction: it imports mantra_browser, mantra_editor, and
+//! mantra/recall_lap1, calling only their public functions (one new public function,
+//! `revert`, added to the editor where commit already lives). No file beneath it
+//! changes; rung one (editor) stays its own green binary.
+//!
+//!   rye build pond/apps/mantra_editor_undo.rye -femit-bin=pond/bin/mantra-editor-undo
+//!   pond/bin/mantra-editor-undo selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const mb = @import("mantra_browser.rye");
+const editor = @import("mantra_editor.rye");
+const mn = @import("mantra/recall_lap1.rye");
+
+const mantra_editor_undo_version = "20260812.124942";
+
+/// Count how many times `needle` occurs in `haystack`, bounded by the haystack's own
+/// length — a witness helper proving a node marker appears exactly once (or not at all).
+fn count_occurrences(haystack: []const u8, needle: []const u8) u32 {
+    // invariant: a real needle has bytes to match.
+    assert(needle.len > 0);
+    var count: u32 = 0;
+    var i: usize = 0; // seam: slice index over a std search
+    while (i + needle.len <= haystack.len) {
+        if (std.mem.eql(u8, haystack[i .. i + needle.len], needle)) {
+            count += 1;
+            i += needle.len;
+        } else {
+            i += 1;
+        }
+    }
+    return count;
+}
+
+/// Return the rendered line that contains `marker`, without its trailing newline —
+/// a witness helper so a lane can be compared before and after an undo.
+fn line_with(text: []const u8, marker: []const u8) []const u8 {
+    // invariant: a real marker has bytes to find.
+    assert(marker.len > 0);
+    const at = std.mem.indexOf(u8, text, marker) orelse return text[0..0];
+    var start = at;
+    while (start > 0 and text[start - 1] != '\n') start -= 1;
+    var end = at;
+    while (end < text.len and text[end] != '\n') end += 1;
+    return text[start..end];
+}
+
+/// Recall a lane's content at a given revision into `out`, returning the read slice —
+/// a witness helper so undo can be proven by the bytes it brought back.
+fn read_rev(catalog: *const mn.BoltCatalog, path: []const u8, revision: u32, out: []u8) []const u8 {
+    // invariant: a revision counts from one.
+    assert(revision >= 1);
+    const res = catalog.recall(.{ .peer = "local", .bolt = "notes", .revision = revision, .path = path }, out) catch unreachable;
+    // invariant: the witness recalls only revisions that are really there.
+    assert(res.outcome == .here);
+    return out[0..res.len];
+}
+
+fn welcome_undo_reads_an_earlier_revision() !void {
+    var catalog = try mb.demo_catalog();
+    // b.txt stands at r1 "beta"; commit r2 "beta-two" so there is an edit to undo.
+    _ = try editor.commit(&catalog, "local", "notes", "b.txt", "beta-two", "leaf");
+    assert(mb.head_revision(&catalog, "local", "notes", "b.txt").? == 2);
+
+    var before_buf: [mb.max_render_bytes]u8 = undefined;
+    const before = try mb.render(&catalog, &before_buf);
+
+    // Undo the edit by reverting to r1 — the earlier content returns as a new head.
+    const rev = try editor.revert(&catalog, "local", "notes", "b.txt", 1, "leaf");
+    assert(rev == 3);
+    assert(mb.head_revision(&catalog, "local", "notes", "b.txt").? == 3);
+
+    // The reverted head carries the r1 bytes — the old content came back.
+    var head_buf: [mn.max_resin_bytes]u8 = undefined;
+    var r1_buf: [mn.max_resin_bytes]u8 = undefined;
+    const head_bytes = read_rev(&catalog, "b.txt", 3, &head_buf);
+    const r1_bytes = read_rev(&catalog, "b.txt", 1, &r1_buf);
+    assert(std.mem.eql(u8, head_bytes, r1_bytes));
+    assert(std.mem.eql(u8, head_bytes, "beta"));
+
+    // The graph grew to r1 -> r2 -> r3; the undo added a node, it did not remove one.
+    var after_buf: [mb.max_render_bytes]u8 = undefined;
+    const after = try mb.render(&catalog, &after_buf);
+    const b_line = line_with(after, "b.txt:");
+    assert(count_occurrences(b_line, "->") == 2);
+    assert(count_occurrences(b_line, "r3[") == 1);
+
+    // Every other lane paints unchanged — undo touched only its own lane.
+    assert(std.mem.eql(u8, line_with(before, "a.txt:"), line_with(after, "a.txt:")));
+    assert(std.mem.eql(u8, line_with(before, "index:"), line_with(after, "index:")));
+    print("mantra_editor_undo: reverted b.txt to r1; the r1 bytes returned as r3, the graph grew r1 -> r2 -> r3\n", .{});
+}
+
+fn welcome_undo_keeps_the_intermediate() !void {
+    // Undo is an append, not a rewrite: the revision it reverts past still stands,
+    // readable in full, after the undo. Nothing between the head and the target is lost.
+    var catalog = try mb.demo_catalog();
+    _ = try editor.commit(&catalog, "local", "notes", "b.txt", "beta-two", "leaf");
+    _ = try editor.revert(&catalog, "local", "notes", "b.txt", 1, "leaf");
+
+    // r2 "beta-two" — the edit that was undone — still recalls untouched at r2.
+    var mid_buf: [mn.max_resin_bytes]u8 = undefined;
+    const mid = read_rev(&catalog, "b.txt", 2, &mid_buf);
+    assert(std.mem.eql(u8, mid, "beta-two"));
+    print("mantra_editor_undo: the reverted-past revision r2 'beta-two' still stands — undo appended, never rewrote\n", .{});
+}
+
+fn welcome_refuses_unknown_revision() !void {
+    // A revert to a revision the lane never had refuses rather than inventing history;
+    // a revert on a lane with no head refuses too.
+    var catalog = try mb.demo_catalog();
+    if (editor.revert(&catalog, "local", "notes", "b.txt", 5, "leaf")) |_| {
+        unreachable;
+    } else |err| {
+        // invariant: a revision past the head refuses by the named error.
+        assert(err == error.RevisionUnknown);
+    }
+    if (editor.revert(&catalog, "local", "notes", "never.txt", 1, "leaf")) |_| {
+        unreachable;
+    } else |err| {
+        // invariant: a lane with no head refuses by the named error.
+        assert(err == error.LaneUnknown);
+    }
+    print("mantra_editor_undo: a revert past the head refuses RevisionUnknown; a revert on an unknown lane refuses LaneUnknown\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_undo_reads_an_earlier_revision();
+        try welcome_undo_keeps_the_intermediate();
+        try welcome_refuses_unknown_revision();
+        print("mantra_editor_undo {s} — GREEN\n", .{mantra_editor_undo_version});
+        return 0;
+    }
+    print("usage: mantra-editor-undo selftest\n", .{});
+    return 1;
+}
