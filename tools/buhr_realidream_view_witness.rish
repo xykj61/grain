@@ -1,0 +1,48 @@
+# tools/buhr_realidream_view_witness.rish — BUHR Journey 5, Rung 5.
+#
+# The read, program, and fused lanes painted together on one styled surface — origin
+# made visible. Rungs one through four built Realidream's fused edge in the log: a read
+# source and a written program are two lanes on one graph (r1), a re-read is an append
+# (r2), one read feeds one program node (r3), two reads fuse into one (r4). Journey 2
+# taught the graph to paint itself onto WADE1's styled Skate surface. This rung joins
+# the two halves — paint_origins renders the whole fused scene onto one canvas and marks
+# each read origin (a read/ lane) in the sheet's own read token (Madder), while every
+# lane's living edge keeps Journey 2's head token (Ochre), so one surface carries three
+# readings at once: the body ink, the read origins, and each lane's head. The origin
+# mark reads off the very bytes the browser renders (read_label_span finds the read/
+# path label), so the painted color can never point at an origin the readable text does
+# not name. This rung reads no network — the read content is supplied in-process; a real
+# web fetch stays a named seam behind a bounded reader (its own later rung, for Keaton's
+# word).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/buhr_realidream_view_witness.rish
+
+say "buhr-j5r5: Language EN — read, program, and fused lanes painted onto one styled surface; each read origin marked in its own token."
+say "buhr-j5r5: Lens TAME — proven on metal; 10 styled rows, exactly 2 read lanes tinted, three token colors (ink, read-origin, living-edge) share the canvas. No network read."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/realidream-view"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/realidream_view.rye -femit-bin=${bin}"]
+assert build.ok else "buhr-j5r5: realidream_view build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "buhr-j5r5: realidream_view selftest exited non-zero"
+assert selftest.out contains "GREEN" else "buhr-j5r5: selftest did not speak GREEN"
+assert selftest.out contains "painted onto 10 styled rows" else "buhr-j5r5: the three-origins-painted proof is missing"
+assert selftest.out contains "across exactly 2 read lanes" else "buhr-j5r5: the read-origins-marked proof is missing"
+assert selftest.out contains "share the canvas" else "buhr-j5r5: the three-colors-on-canvas proof is missing"
+assert selftest.out contains "editor and view share one graph" else "buhr-j5r5: the shared-graph proof is missing"
+assert selftest.out contains "refuses program lanes and headers" else "buhr-j5r5: the read_label_span proof is missing"
+
+# Rung 4 (two reads fuse into one) stays its own green binary — additive.
+let rung4 = run ["sh" "-c" "rishi/bin/rishi run tools/buhr_realidream_fuse_witness.rish 2>&1"]
+assert rung4.ok else "buhr-j5r5: the fuse (J5r4) witness regressed"
+assert rung4.out contains "GREEN: BUHR-J5r4" else "buhr-j5r5: rung four lost its green"
+
+# Journey 2's living-edge view (heads) stays green — its head token is reused unchanged.
+let heads = run ["sh" "-c" "rishi/bin/rishi run tools/buhr_mantra_browser_heads_witness.rish 2>&1"]
+assert heads.ok else "buhr-j5r5: the heads (J2r3) witness regressed"
+
+say "GREEN: BUHR-J5r5 — read, program, and fused lanes painted together; read origins marked in the read token, living edges in the head token, three colors on one canvas."

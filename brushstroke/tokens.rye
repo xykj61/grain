@@ -75,6 +75,14 @@ pub const edge_warm: u32 = 0xFF_8A_7A_66;
 /// lowest. R200 > G155 > B90 — an honest step apart from ink and edge alike.
 pub const head_ochre: u32 = 0xFF_C8_9B_5A;
 
+/// Madder — the read origin. A warm plant-root-dye red for the one distinction
+/// Realidream draws on the graph: a *read* lane, content fetched or pinned from an
+/// outside source, set apart from the program a person writes. Warmer and darker
+/// than the ochre living edge, the same plant-fiber family, blue still lowest.
+/// R166 > G92 > B70 — an honest step apart from ink, edge, and head alike, so a
+/// reader tells a read origin from a written program at a glance.
+pub const read_madder: u32 = 0xFF_A6_5C_46;
+
 // --- channel helpers — one value model, explicit widths ------------------
 
 /// The red channel of an ARGB8888 word. In-memory count → u32.
@@ -134,6 +142,7 @@ pub const base_sheet =
     "ink 0xFF2B2620\n" ++ // Bark — dark text on light cloth
     "edge 0xFF8A7A66\n" ++ // warm rule
     "head 0xFFC89B5A\n" ++ // Ochre — the living edge accent
+    "read 0xFFA65C46\n" ++ // Madder — the read origin accent
     "weight regular\n" ++
     "space 4\n" ++ // thread_px — invariant 4, 4px chosen
     "elevate flat\n";
@@ -349,11 +358,17 @@ fn prove_palette() !void {
     _ = try assert_warm_low_blue(walnut);
     _ = try assert_warm_low_blue(edge_warm);
     _ = try assert_warm_low_blue(head_ochre);
+    _ = try assert_warm_low_blue(read_madder);
 
     // The living-edge accent stands apart from both the ink and the edge rule —
     // brighter than the edge, so the head draws the eye first.
     if (!(red_of(head_ochre) > red_of(edge_warm))) return error.ChannelOutOfRange;
     if (!(red_of(head_ochre) > red_of(bark))) return error.ChannelOutOfRange;
+
+    // The read-origin accent stands apart from the living edge and the ink — a
+    // distinct warm mark, so a read origin never reads as a head node or as body ink.
+    if (!(red_of(read_madder) != red_of(head_ochre))) return error.ChannelOutOfRange;
+    if (!(red_of(read_madder) > red_of(bark))) return error.ChannelOutOfRange;
 
     // Invariant 1 — gentle lightness spread: the light page reads far brighter
     // than the dark page, by a wide, honest margin (roughly the ~66-point L
