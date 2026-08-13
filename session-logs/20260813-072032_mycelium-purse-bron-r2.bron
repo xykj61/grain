@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260813.072032
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title mycelium Purse r2 — the per-account verdict travels as a format purse-v1 record
+prompt Continue the agent-doable lap; let the Purse verdict travel (r2), mirroring till_bron; send as its own signed round to origin and xykj61.
+think r1 resolved the agreed order into a Purse locally; a verdict a node cannot hand to another is only a local reading. r2 lets it cross as format purse-v1 bytes, mirroring till_bron's purpose-built bounded reader (local hex helpers, a six-token splitter, parse through an out-pointer since a Purse carries a large account table).
+think The record shape carries the per-account verdict: issued <total>, one holds <pk> <balance> per account (all accounts, including zero balances, so account_count and balance_of round-trip exactly), one moved <from> <to> <amount> <pos> <round> per winning transfer, one short <from> <amount> <pos> <received-at> per spent-out loss. The moved line is the widest at six tokens — exactly the splitter's ceiling.
+think Conservation travels as the record's OWN law, the way till-v1 carried the supply law (taxed <= issued). On parse the balances must sum to exactly the issued total or the reader refuses BadInt — computed by a local balances_total that does NOT call the balances_sum read, so a broken record refuses cleanly rather than tripping that read's conservation assert. A recovered verdict never reports received, so each account's received is held at its balance to keep the account invariant (balance <= received) honest.
+obs Crux GREEN first pass: render the r1 scene → parse back → verdicts_agree (moves 1, shorts 1, issued 100, every balance via balance_of, the loser's signer); balances_sum recovers to 100 (conservation intact); re-render is a byte-identical fixed point. Six malformed records refuse whole — bad header (BadFormat), unknown field (UnknownField, never dropped), bad hex key (BadHex), broken conservation law (BadInt), missing issued (BadFormat), over-long verdict (TooManyMoves at render before a partial record).
+obs TAME bans clean, width exit 0. Additive — composes purse + fold public API only, editing no elder; demo keeper seeds, no key/funds/network/custody. The Purse arc now stands r1 (verdict) · r2 (travels); r3 (across a Knot, mirroring till_knot) and r4 (a real fixture true, app == awk) remain the agent-doable rungs.
+file mycelium/purse_bron.rye r2 — render/parse a format purse-v1 record; conservation travels as the record's law
+file tools/mycelium_purse_bron_witness.rish r2 witness — GREEN round-trip + fixed point + six refusals; the Purse at the door
+recommend keep-going the Purse verdict travels (r2 fixed point, conservation intact, six refusals whole); next r3 reads it across a Knot (mirror till_knot), then r4 a real on-disk fixture true. Per-account mint authority · a served Purse · breach renames (cairn-first) · deep debride · seed force-push stay Keaton's hand.
