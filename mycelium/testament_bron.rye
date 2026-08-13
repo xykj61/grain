@@ -1,0 +1,352 @@
+//! mycelium/testament_bron.rye — a named constellation's certificate travels as a readable record (r3).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · Testament · rung r3 — travel.
+//! Design read: active-designing/20260813-135126_mycelium-testament-named-quorum-certificate-exploration.md
+//!
+//! r1 sealed a reading into a Testament and verified it OFFLINE from the roster names alone; r2 carried the
+//! roll's fault tolerance into that offline certificate. Yet the certificate still lived in memory. A belief
+//! a keeper cannot hand to another is only a local reading, so r3 lets the whole Testament cross as
+//! `format testament-v1` bytes: one `ship <name>` line per roster ship (the NAME only — a ship's key is a
+//! pure function of its name, so the record needs no key), then the shared claim named once (`head`,
+//! `account`, `position <balance> <reserved> <received>`), then one `member <node-hex> <sig-hex>` line per
+//! sealing ship. Render writes it, parse reads it back, so a round trip is a fixed point.
+//!
+//! The distinction from the bare `chorus_bron` record is exactly the roster: a `chorus-v1` record STATES its
+//! threshold and carries no membership, so a recipient trusts the number and the keys the record names. A
+//! `testament-v1` record carries the constellation's NAMES and states NO threshold — parse boots the roster
+//! from the names, DERIVES the Byzantine threshold from the roster's size, and re-runs r1's `verify` over the
+//! recovered certificate, so the named binding travels: a member whose key is not one of the roster's names
+//! refuses `NotMember`, a quorum too thin refuses `BelowQuorum`, a tampered ship name re-derives a different
+//! key so a real signer stops being a member (`NotMember`) — the same teeth r1 proved, now across the wire.
+//!
+//! A purpose-built bounded reader, never a general parser: a wrong header refuses `BadFormat`, an unknown
+//! field `UnknownField` (never dropped), a malformed line `BadLine`, a bad integer `BadInt`, a bad hex field
+//! `BadHex`, a missing claim field `BadFormat`, an over-full roster `TooManyShips`, an over-full member set
+//! `TooManyMembers`. Composes testament + constel + chorus + voucher public API only, editing none. Siloed
+//! dev fixtures, demo seeds — no key held, no funds, no network, no custody.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/testament_bron.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const kumara = @import("kumara.rye");
+const cord = @import("cord.rye");
+const voucher = @import("voucher.rye");
+const chorus = @import("chorus.rye");
+const constel = @import("constel.rye");
+const testament = @import("testament.rye");
+const tally_copy = @import("tally_copy.rye");
+const parse_int = @import("parse_int.rye");
+
+pub const pk_len: u32 = testament.pk_len;
+pub const head_len: u32 = testament.head_len;
+pub const max_name_len: u32 = testament.max_name_len;
+pub const max_ships: u32 = testament.testament_max_ships;
+
+/// The record buffer bound — a full roster's ship lines plus the claim and one member line per voice fit
+/// with room to spare.
+pub const max_record: u32 = 8192;
+
+pub const BronError = error{
+    BadFormat, // the header is not `format testament-v1`, or a required claim field is missing
+    UnknownField, // a line names a field the record does not define
+    BadLine, // a known line carries the wrong token count, or a ship name is empty / overlong
+    BadInt, // an integer position field did not parse
+    BadHex, // a hex field was the wrong length or held a non-hex char
+    TooManyShips, // more ship lines than a Testament's roster holds
+    TooManyMembers, // more member lines than a Chorus holds
+    RecordTooLong, // the rendered record overflowed the buffer
+};
+
+const hex_digits = "0123456789abcdef";
+
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex chars per byte.
+    assert(out.len == bytes.len * 2);
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0F];
+    }
+}
+
+fn nibble(c: u8) BronError!u8 {
+    return switch (c) {
+        '0'...'9' => c - '0',
+        'a'...'f' => c - 'a' + 10,
+        'A'...'F' => c - 'A' + 10,
+        else => error.BadHex,
+    };
+}
+
+fn from_hex(text: []const u8, out: []u8) BronError!void {
+    if (text.len != out.len * 2) return error.BadHex;
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < out.len) : (i += 1) {
+        const hi = try nibble(text[i * 2]);
+        const lo = try nibble(text[i * 2 + 1]);
+        out[i] = (hi << 4) | lo;
+    }
+}
+
+/// Render one Testament to a `format testament-v1` record — the roster names, the shared claim once, and one
+/// member line per sealing voice. States NO threshold: the record carries the names a verifier re-derives it
+/// from. Refuses an overflow rather than a partial record.
+pub fn render(t: *const testament.Testament, out: []u8) BronError!u32 {
+    // invariant: the render buffer honors its bound.
+    assert(out.len >= max_record);
+    // invariant: a rendered certificate names at least one ship.
+    assert(t.roster_count >= 1);
+    const header = std.fmt.bufPrint(out, "format testament-v1\n", .{}) catch return error.RecordTooLong;
+    var off: u32 = @intCast(header.len);
+
+    var s: u32 = 0;
+    while (s < t.roster_count) : (s += 1) {
+        const line = std.fmt.bufPrint(out[off..], "ship {s}\n", .{t.name_slice(s)}) catch return error.RecordTooLong;
+        off += @intCast(line.len);
+    }
+
+    var head_hex: [head_len * 2]u8 = undefined;
+    to_hex(t.seal.head_slice(), &head_hex);
+    const head_line = std.fmt.bufPrint(out[off..], "head {s}\n", .{head_hex}) catch return error.RecordTooLong;
+    off += @intCast(head_line.len);
+
+    var acct_hex: [pk_len * 2]u8 = undefined;
+    to_hex(t.seal.account_slice(), &acct_hex);
+    const acct_line = std.fmt.bufPrint(out[off..], "account {s}\n", .{acct_hex}) catch return error.RecordTooLong;
+    off += @intCast(acct_line.len);
+
+    const pos_line = std.fmt.bufPrint(out[off..], "position {d} {d} {d}\n", .{ t.seal.balance, t.seal.reserved, t.seal.received }) catch return error.RecordTooLong;
+    off += @intCast(pos_line.len);
+
+    var m: u32 = 0;
+    while (m < t.seal.count) : (m += 1) {
+        var node_hex: [pk_len * 2]u8 = undefined;
+        to_hex(t.seal.members[m].node_slice(), &node_hex);
+        var sig_hex: [kumara.signature_length * 2]u8 = undefined;
+        to_hex(t.seal.members[m].sig[0..], &sig_hex);
+        const line = std.fmt.bufPrint(out[off..], "member {s} {s}\n", .{ node_hex, sig_hex }) catch return error.RecordTooLong;
+        off += @intCast(line.len);
+    }
+
+    // invariant: the rendered record never exceeds its bound.
+    assert(off <= max_record);
+    return off;
+}
+
+/// Split a line into up to four tokens; returns the count (or five to signal a token past a member line's
+/// width — the position record, at four, is the widest).
+fn tokens(line: []const u8, out: *[4][]const u8) u32 {
+    var count: u32 = 0;
+    var it = std.mem.tokenizeScalar(u8, line, ' ');
+    while (it.next()) |t| {
+        if (count >= 4) return count + 1;
+        out[count] = t;
+        count += 1;
+    }
+    return count;
+}
+
+/// Parse a `format testament-v1` record into `out`, then — the crux — re-run r1's `verify` over the recovered
+/// certificate: boot the roster from the carried names, derive the Byzantine threshold from its size, and pass
+/// the seal offline. A record whose sealing voices are not the named roster's ships refuses `NotMember`, one
+/// too thin refuses `BelowQuorum`, so a certificate that does not prove its own NAMED quorum refuses before
+/// it is trusted. No Dag, no stored key, no stated threshold.
+pub fn parse(text: []const u8, out: *testament.Testament) !void {
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const header = lines.next() orelse return error.BadFormat;
+    if (!std.mem.eql(u8, header, "format testament-v1")) return error.BadFormat;
+
+    out.roster_count = 0;
+    out.seal = chorus.Chorus{ .count = 0 };
+    var have_head = false;
+    var have_account = false;
+    var have_position = false;
+
+    while (lines.next()) |raw| {
+        if (raw.len == 0) continue; // a trailing newline yields one empty line
+        var tok: [4][]const u8 = undefined;
+        const n = tokens(raw, &tok);
+        if (n == 0) continue;
+        if (std.mem.eql(u8, tok[0], "ship")) {
+            if (n != 2) return error.BadLine;
+            const nm = tok[1];
+            if (nm.len == 0 or nm.len > max_name_len) return error.BadLine;
+            if (out.roster_count >= max_ships) return error.TooManyShips;
+            tally_copy.copy_disjoint(u8, out.names[out.roster_count][0..nm.len], nm);
+            out.name_lens[out.roster_count] = @intCast(nm.len);
+            out.roster_count += 1;
+        } else if (std.mem.eql(u8, tok[0], "head")) {
+            if (n != 2) return error.BadLine;
+            try from_hex(tok[1], out.seal.order_head[0..]);
+            have_head = true;
+        } else if (std.mem.eql(u8, tok[0], "account")) {
+            if (n != 2) return error.BadLine;
+            try from_hex(tok[1], out.seal.account_pk[0..]);
+            have_account = true;
+        } else if (std.mem.eql(u8, tok[0], "position")) {
+            if (n != 4) return error.BadLine;
+            out.seal.balance = parse_int.parse_int(u64, tok[1], .{}) catch return error.BadInt;
+            out.seal.reserved = parse_int.parse_int(u64, tok[2], .{}) catch return error.BadInt;
+            out.seal.received = parse_int.parse_int(u64, tok[3], .{}) catch return error.BadInt;
+            have_position = true;
+        } else if (std.mem.eql(u8, tok[0], "member")) {
+            if (n != 3) return error.BadLine;
+            // The claim must be read before a member is reconstructed from it.
+            if (!(have_head and have_account and have_position)) return error.BadFormat;
+            if (out.seal.count >= chorus.chorus_max_members) return error.TooManyMembers;
+            var v = voucher.Voucher{ .balance = out.seal.balance, .reserved = out.seal.reserved, .received = out.seal.received };
+            tally_copy.copy_disjoint(u8, v.order_head[0..], out.seal.order_head[0..]);
+            tally_copy.copy_disjoint(u8, v.account_pk[0..], out.seal.account_pk[0..]);
+            try from_hex(tok[1], v.node_pk[0..]);
+            try from_hex(tok[2], v.sig[0..]);
+            chorus.add_voucher(&out.seal, v) catch return error.TooManyMembers;
+        } else {
+            return error.UnknownField;
+        }
+    }
+    // invariant: a whole certificate names its roster, its claim, and carries at least one voice.
+    if (out.roster_count == 0) return error.BadFormat;
+    if (!(have_head and have_account and have_position)) return error.BadFormat;
+    if (out.seal.count == 0) return error.BadFormat;
+
+    // The named quorum law travels: the recovered certificate must prove itself against the constellation its
+    // OWN names define, deriving the threshold from that roster — no stated number to trust.
+    try testament.verify(out);
+}
+
+// --- selftest: a named certificate travels and still proves itself against its own roster ----------------
+
+// The Testament dev-net roster — the same five named ships r1 sealed (see testament.rye for the naming law).
+const roster = [_][]const u8{
+    "xnvethqua",
+    "kwelmirran",
+    "xzobrilth",
+    "murrqaveln",
+    "xwendakosh",
+};
+
+/// Two certificates name the same constellation and the same seal — roster names, claim, and every member's
+/// node key and signature, in order.
+fn testaments_agree(a: *const testament.Testament, b: *const testament.Testament) bool {
+    if (a.roster_count != b.roster_count) return false;
+    var s: u32 = 0;
+    while (s < a.roster_count) : (s += 1) {
+        if (!std.mem.eql(u8, a.name_slice(s), b.name_slice(s))) return false;
+    }
+    if (!std.mem.eql(u8, a.seal.head_slice(), b.seal.head_slice())) return false;
+    if (!std.mem.eql(u8, a.seal.account_slice(), b.seal.account_slice())) return false;
+    if (a.seal.balance != b.seal.balance or a.seal.reserved != b.seal.reserved or a.seal.received != b.seal.received) return false;
+    if (a.seal.count != b.seal.count) return false;
+    var m: u32 = 0;
+    while (m < a.seal.count) : (m += 1) {
+        if (!std.mem.eql(u8, a.seal.members[m].node_pk[0..], b.seal.members[m].node_pk[0..])) return false;
+        if (!std.mem.eql(u8, a.seal.members[m].sig[0..], b.seal.members[m].sig[0..])) return false;
+    }
+    return true;
+}
+
+pub fn main() !void {
+    const issuer = constel.seeded(0xF0);
+    const account = constel.seeded(0xA1);
+    const account_pk = account.public_key.toBytes();
+    var dag = try constel.demo_genesis(issuer, account_pk[0..]);
+
+    var c = try constel.boot(roster[0..]);
+    const t = try testament.seal(&c, &dag, account_pk[0..]);
+    try testament.verify(&t); // the certificate stands before it travels
+
+    // --- The crux: render the certificate, parse it back, and it proves itself offline from the record ---
+    var buf: [max_record]u8 = undefined;
+    const len = try render(&t, buf[0..]);
+
+    var recovered: testament.Testament = undefined;
+    try parse(buf[0..len], &recovered); // parse re-runs verify against the recovered roster
+
+    // The recovered certificate is the identical constellation and seal.
+    if (!testaments_agree(&t, &recovered)) return error.CertificateChanged;
+    // Verify again explicitly — the belief survives the crossing, from the names alone.
+    try testament.verify(&recovered);
+    // The recovered roster derives the same Byzantine threshold from its own names.
+    const threshold = try testament.threshold_of(&recovered);
+
+    // Re-rendering the recovered certificate reproduces the exact bytes (a fixed point).
+    var buf2: [max_record]u8 = undefined;
+    const len2 = try render(&recovered, buf2[0..]);
+    if (len2 != len) return error.NotFixedPoint;
+    if (!std.mem.eql(u8, buf[0..len], buf2[0..len2])) return error.NotFixedPoint;
+
+    var scratch: testament.Testament = undefined;
+
+    // --- Refusal: a wrong header refuses BadFormat (checked before any field is read) -------------------
+    if (parse("format testament-v2\n", &scratch)) |_| return error.BadHeaderAdmitted else |err| {
+        if (err != error.BadFormat) return error.WrongHeader;
+    }
+    // --- Refusal: an unknown field refuses UnknownField (never dropped) ---------------------------------
+    {
+        var tmp: [max_record]u8 = undefined;
+        tally_copy.copy_disjoint(u8, tmp[0..len], buf[0..len]);
+        const extra = "bogus a b\n";
+        tally_copy.copy_disjoint(u8, tmp[len .. len + extra.len], extra);
+        if (parse(tmp[0 .. len + extra.len], &scratch)) |_| return error.UnknownAdmitted else |err| {
+            if (err != error.UnknownField) return error.WrongUnknown;
+        }
+    }
+    // --- Refusal: a missing claim field (no position line) refuses BadFormat ----------------------------
+    {
+        const bad = "format testament-v1\nship xnvethqua\nhead " ++ ("00" ** head_len) ++ "\naccount " ++ ("00" ** pk_len) ++ "\nmember " ++ ("00" ** pk_len) ++ " " ++ ("00" ** kumara.signature_length) ++ "\n";
+        if (parse(bad, &scratch)) |_| return error.MissingAdmitted else |err| {
+            if (err != error.BadFormat) return error.WrongMissing;
+        }
+    }
+    // --- Refusal: a bad hex member node key refuses BadHex ----------------------------------------------
+    {
+        const bad = "format testament-v1\nship xnvethqua\nhead " ++ ("00" ** head_len) ++ "\naccount " ++ ("00" ** pk_len) ++ "\nposition 0 0 0\nmember zz " ++ ("00" ** kumara.signature_length) ++ "\n";
+        if (parse(bad, &scratch)) |_| return error.BadHexAdmitted else |err| {
+            if (err != error.BadHex) return error.WrongBadHex;
+        }
+    }
+
+    // --- Teeth 1 — the named binding travels: a stranger's valid voice refuses NotMember on the wire ----
+    // A bare chorus-v1 record would ACCEPT this honest, agreeing signature; a testament-v1 record refuses it
+    // because the signer is not one of the roster's own named ships.
+    {
+        var forged = t;
+        const stranger = try constel.seat_ship("xzoutlander7"); // valid ship, NOT in the roster
+        try chorus.add(&forged.seal, &dag, stranger.kp);
+        var fb: [max_record]u8 = undefined;
+        const fl = try render(&forged, fb[0..]);
+        if (parse(fb[0..fl], &scratch)) |_| return error.StrangerAdmitted else |err| {
+            if (err != error.NotMember) return error.WrongStranger;
+        }
+    }
+    // --- Teeth 2 — a thin quorum short of the derived threshold refuses BelowQuorum on the wire ---------
+    {
+        const thin = try testament.seal_subset(&c, &dag, account_pk[0..], threshold - 1);
+        var tb: [max_record]u8 = undefined;
+        const tl = try render(&thin, tb[0..]);
+        if (parse(tb[0..tl], &scratch)) |_| return error.ThinAdmitted else |err| {
+            if (err != error.BelowQuorum) return error.WrongThin;
+        }
+    }
+    // --- Teeth 3 — a tampered ship name re-derives a different key, so a real signer stops being a member -
+    // Flip one byte of the first ship name in the record; parse boots a different key for that slot, the real
+    // sealing voucher is no longer a member, and the certificate refuses NotMember — bound to the exact names.
+    {
+        var tmp: [max_record]u8 = undefined;
+        tally_copy.copy_disjoint(u8, tmp[0..len], buf[0..len]);
+        // The first ship line is "ship xnvethqua\n" at a fixed offset after the header line.
+        const ship_name_at: u32 = @intCast(("format testament-v1\n" ++ "ship ").len);
+        tmp[ship_name_at] ^= 0x01; // "xnvethqua" -> a name deriving a different key
+        if (parse(tmp[0..len], &scratch)) |_| return error.TamperAdmitted else |err| {
+            if (err != error.NotMember) return error.WrongTamper;
+        }
+    }
+
+    print("testament-bron: a named constellation of {d} ships renders its certificate to a format testament-v1 record and parses back byte-for-byte (a fixed point)\n", .{t.roster_count});
+    print("testament-bron: the recovered certificate boots the roster from the record's names alone, derives threshold {d}, and proves itself OFFLINE after the crossing — no Dag, no stored key, no stated threshold\n", .{threshold});
+    print("testament-bron: the named binding travels — a stranger's valid voice refuses NotMember, a thin quorum BelowQuorum, a tampered ship name NotMember, before the record is trusted; a bad header · unknown field · missing field · bad hex each refuse\n", .{});
+    print("GREEN: myc testament-bron — a named constellation's verdict travels as readable text and still proves itself against its own roster offline · ships={d} voices={d} threshold={d} · fixed point\n", .{ t.roster_count, t.seal.count, threshold });
+}
