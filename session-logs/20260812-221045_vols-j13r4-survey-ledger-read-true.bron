@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260812.221045
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title VOLS-J13r4 — the survey ledger read true, Journey 13 closes
+prompt Continue the autonomous loop: climb VOLS-J13r4 (the closing round), send as its own signed round.
+think r1 made the census complete by construction, r2 classified each site, r3 rendered it to a Bron ledger; r4's crux is read-true — the ledger agrees with an independent measure — and seating the ledger as a living pin LOWE reads.
+think Two tools, one answer: vols_survey_render.sh renders the ledger; vols_survey_truth.sh computes the same totals a second way (grep -rl traversal, basename classification — genuinely different from the classifier's find-loop over the census). vols_survey_readtrue.sh emits readtrue=agree only when sites, handles, and prose_gaps each match — no number hardcoded, so it stays true as the tree grows.
+think Seated the ledger as a living pin work-in-progress/vols-survey-ledger.bron (230 lines: header · stamp · five totals · 223 site lines) with a real one-clock stamp. The witness proves the pin self-consistent (site_lines == declared sites) without hardcoding the count, so a future re-seat at a new stamp keeps the witness true.
+obs Both tools agree on the live tree: 223 sites = 144 kept witness handles + 79 prose gaps, guarded_sites=0. The survey deliverable stands on metal — the map LOWE relabels against, cross-checked.
+obs Performance note: each VOLS witness runs full-tree live scans (grep -rl + render of 223 sites), so the four-witness suite plus reds overran a 2-minute batch; each witness passes comfortably standalone. If VOLS witnesses later join a choir, they want their own longer budget or a cached census — a Loom horizon, not a red.
+loom witness=vols_survey_true_witness live_sites=223 live_handles=144 live_prose_gaps=79 guarded_sites=0 ledger_lines=230
+file tools/fixtures/vols_survey_truth.sh the independent measure (grep -rl traversal, basename classification)
+file tools/fixtures/vols_survey_readtrue.sh renders the ledger and cross-checks it against the truth measure (readtrue=agree)
+file tools/gen/season/vols_survey_true_witness.rish fixture + live read-true, seated-pin self-consistency; closes Journey 13
+file work-in-progress/vols-survey-ledger.bron the seated VOLS survey ledger — the living pin LOWE reads (223 sites classified)
+recommend keep-going VOLS Journey 14 (LOWE, Molt) — grow the CION guard to cover the 79 prose gaps and relabel them to semantic label + stamp; the survey names them all, so the molt is a filled worklist
