@@ -1,0 +1,48 @@
+# tools/mycelium_cord_byzantine_witness.rish — the Cord survives equivocation (r2).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · rung r2 — Byzantine refusal.
+# r1 fixed the deterministic-commit crux over an honest mesh. r2 wires onto that spine the adversary a
+# leaderless DAG must survive: equivocation — one author publishing two distinct blocks at the same round,
+# hoping to split honest nodes' view of history.
+#
+# The crux this witness proves: the Cord quarantines the equivocator by admission control — an author
+# speaks at most once per round — so the commit over the honest sub-DAG is byte-identical whether or not
+# an equivocator tried. A second distinct block at a seen round refuses Equivocation (the Dag unchanged);
+# the same author at a later round is honest progress, admitted; a forward reference refuses DanglingParent
+# (so a block points only backward — no cycle can form); a forgery refuses BadSignature, never mislabeled.
+# Demo keeper seeds only — no real key, no funds, no network, no custody.
+#
+# Additive: the r1 deterministic-commit witness re-runs GREEN under this one.
+#
+# Scope: active-designing/20260813-032851_mycelium-consensus-cord-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mycelium_cord_byzantine_witness.rish
+
+say "mycelium-cord-bft: Language EN — one author, one voice per round; the mesh keeps its single true order."
+say "mycelium-cord-bft: Style Radiant — where an author speaks twice at once, the Cord hears the first and lets the second fall; the honest weave holds."
+say "mycelium-cord-bft: Lens TAME — equivocation refused before the Dag mutates; a forgery refused first; every buffer bounded; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/cord_byzantine"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_byzantine.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-cord-bft: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mycelium-cord-bft: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-cord-bft: selftest did not speak GREEN"
+assert selftest.out contains "refuses Equivocation, the Dag unchanged" else "mycelium-cord-bft: equivocation-refusal claim missing"
+assert selftest.out contains "the same author at a later round is admitted" else "mycelium-cord-bft: per-round-not-per-author claim missing"
+assert selftest.out contains "a block points only backward (no cycle)" else "mycelium-cord-bft: cycle-impossibility claim missing"
+assert selftest.out contains "a forged block refuses BadSignature, never mislabeled" else "mycelium-cord-bft: forgery-not-equivocation claim missing"
+assert selftest.out contains "honest commit order and fold state are byte-identical with a quarantined equivocator" else "mycelium-cord-bft: honest-order-unchanged crux missing"
+
+# Additive: r1's deterministic-commit crux still stands under the Byzantine round — the spine r2 wired onto.
+let r1bin = "mycelium/bin/cord"
+let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord.rye -femit-bin=${r1bin} && ${r1bin} 2>&1"]
+assert r1.ok else "mycelium-cord-bft: r1 deterministic-commit witness is not GREEN"
+assert r1.out contains "GREEN" else "mycelium-cord-bft: r1 did not speak its GREEN"
+assert r1.out contains "three arrival permutations commit to one identical order" else "mycelium-cord-bft: r1 arrival-order-independence missing"
+
+say "mycelium-cord-bft: GREEN — an equivocator is quarantined before the Dag mutates, the honest commit order and Mycelium supply are unchanged, and r1's arrival-order-independent commit still stands beneath."

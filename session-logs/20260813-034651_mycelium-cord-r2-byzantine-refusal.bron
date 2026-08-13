@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260813.034651
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) · this session in ai-jail
+title Mycelium Cord r2 — Byzantine refusal (equivocation quarantined)
+prompt take the next agent-doable lap Lindy-first crux-first; approve own design rounds; send each finished increment as its own signed round; STOP at custody gates
+think The fixed 1,024-round road is complete (GRAD sealed); the bench climbs the double-seat expansion. REMEMBER's live edge + the last session log named the next Lindy-first crux plainly: Cord r2 — Byzantine refusal. The design read (20260813-032851) fixed r2 as equivocation refusal onto r1's spine known correct.
+think The adversary a leaderless DAG must survive is equivocation — one author publishing two distinct blocks at the same round, hoping honest nodes admit different ones and split history. r1's add refuses BadSignature · DanglingParent · TooManyParents · DagFull · Duplicate, but two DISTINCT blocks from one author at one round (different hashes) would both admit. r2 closes that.
+think Kept it additive per the reviving/finishing discipline: r1's add stays a green binary, r2 is its own file mycelium/cord_byzantine.rye composing r1 public API. Grew two small additive pubs on cord.rye — address (a block's SHA-256, to tell a Duplicate at the same hash from an Equivocation at a different hash) and verify_block (the signature check, extracted so add and add_bft share one crypto check rather than duplicate it). r1 selftest re-ran GREEN after the refactor.
+think add_bft's order is load-bearing and truthful: reject a forgery (BadSignature) BEFORE classifying an equivocation, so a garbage block carrying a real author's key-bytes cannot pose as one; then is_equivocation (same author + same round + different address among held blocks); then delegate to r1 add. is_equivocation skips the same-round-different-author and the same-block (equal address, a Duplicate for r1) cases honestly.
+think The r2 crux proven on metal: build the honest four-block Dag, record its committed order and fold state; attempt author A's second distinct genesis at round 0 (validly signed by A, fact 999 memo genesis-a-evil) — refused Equivocation, dag len unchanged; commit again — byte-identical order, identical fold state (issued 1000 · taxed 300 · supply 700 · one star). The equivocator gains zero ordering weight. Four supporting cases: same author at a LATER round admitted (per-round not per-author); a forward reference refuses DanglingParent (so a block points only backward — no cycle can form); a forgery refuses BadSignature not Equivocation.
+obs The n/3 Byzantine-threshold framing in the design is honored here as a mechanism, not an over-claim: safety is by admission control (at most one block per author per round), so an equivocator never outweighs an honest author. A simulated f<n/3 fault-tolerance benchmark stays a named later round; the witness proves what it runs (Two Rooms).
+obs GREEN first pass — no red booked this round. TAME style bans clean, width-check exit 0, ratchet counts unchanged (zero-assert files = 11, honest exempt list).
+loom witness=mycelium_cord_byzantine_witness cases=5 refusals=Equivocation,DanglingParent,BadSignature supply=700 stars=1 first_pass=green
+file mycelium/cord.rye two additive pubs (address · verify_block); add refactored to reuse verify_block, behavior unchanged (r1 re-runs GREEN)
+file mycelium/cord_byzantine.rye r2 — is_equivocation + add_bft; equivocator quarantined before the Dag mutates; the honest commit and fold unchanged
+file tools/mycelium_cord_byzantine_witness.rish r2 witness; re-runs r1 deterministic-commit GREEN at its door (additive)
+recommend keep-going Cord r3 — the Cord travels as a format cord-dag-v1 Bron record byte-for-byte, the recovered Dag committing to the identical order and folding to the identical supply; r4 reads a real Cord fixture true. Breach renames (cairn-first), deep debride + seed force-push stay Keaton's hand.

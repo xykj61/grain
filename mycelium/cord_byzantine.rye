@@ -1,0 +1,247 @@
+//! mycelium/cord_byzantine.rye — the Cord survives equivocation (r2).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · rung r2 — Byzantine refusal.
+//! Design read: active-designing/20260813-032851_mycelium-consensus-cord-exploration.md
+//!
+//! r1 fixed the deterministic-commit crux over an *honest* mesh; r2 wires the
+//! adversary a leaderless DAG must survive onto that spine, known correct. The
+//! adversary is **equivocation** — one author publishing two distinct blocks at
+//! the same round, hoping different honest nodes admit different ones and split
+//! the network's view of history.
+//!
+//! The Cord quarantines it by admission control: an author speaks at most once
+//! per round. `add_bft` refuses a second, distinct block at a round an author
+//! has already spoken at (`Equivocation`), the Dag unchanged, before it can gain
+//! one grain of ordering weight — so the commit over the honest sub-DAG is
+//! identical whether or not an equivocator tried. A cycle cannot even be built:
+//! r1 admits a block only when every parent it names is already held, so a block
+//! may reference only backward, and a forward reference refuses `DanglingParent`.
+//! A forged block is still refused as a forgery, never mislabeled an equivocation.
+//!
+//! Additive — composes r1's public API only (`cord.add`, `cord.commit`,
+//! `cord.address`, `cord.verify_block`), inventing no storage and weakening no
+//! bound. Siloed, dev-only, demo seeds — no real key, no funds, no network, no
+//! custody.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/cord_byzantine.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("cord.rye");
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+
+/// True when the Dag already holds a block by this author at this round whose
+/// address differs from the candidate's — a genuine equivocation. A byte-identical
+/// resubmission is *not* an equivocation (r1's `add` catches it as a `Duplicate`);
+/// a same-author block at a *different* round is honest progress, not equivocation.
+pub fn is_equivocation(dag: *const cord.Dag, block: *const cord.Block) bool {
+    // invariant: fan-in is bounded, so the candidate's canonical bytes are laid
+    // out within r1's ceiling before it is addressed.
+    assert(block.parent_count <= cord.cord_max_parents);
+    var cand: [cord.hash_len]u8 = undefined;
+    cord.address(block, &cand);
+    var i: u32 = 0;
+    while (i < dag.len) : (i += 1) {
+        const held = &dag.blocks[i];
+        if (held.round != block.round) continue;
+        if (!std.mem.eql(u8, held.author_pk[0..], block.author_pk[0..])) continue;
+        // Same author, same round: an equivocation unless it is the very same
+        // block (equal address), which r1's admission will name a Duplicate.
+        if (!std.mem.eql(u8, dag.hashes[i][0..], cand[0..])) return true;
+    }
+    return false;
+}
+
+/// Admit a block under Byzantine discipline. A forgery refuses `BadSignature`
+/// first, so an equivocation is never mislabeled; an author's second distinct
+/// block at a round already seen refuses `Equivocation`; otherwise r1's `add`
+/// admits it under the same bounds and refuses whole on any of its own faults.
+/// The Dag is unchanged on every refusal.
+pub fn add_bft(dag: *cord.Dag, block: cord.Block) error{
+    Equivocation,
+    BadSignature,
+    DanglingParent,
+    TooManyParents,
+    DagFull,
+    Duplicate,
+}!void {
+    if (block.parent_count > cord.cord_max_parents) return error.TooManyParents;
+    // invariant: reject a forgery before classifying an equivocation, so a
+    // garbage block from a real author's key-bytes cannot pose as one.
+    if (!cord.verify_block(&block)) return error.BadSignature;
+    // invariant: an author speaks at most once per round — the equivocator is
+    // quarantined before the Dag mutates.
+    if (is_equivocation(dag, &block)) return error.Equivocation;
+    try cord.add(dag, block);
+}
+
+// ---- selftest: the honest order is unchanged by a quarantined equivocator ----
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+/// The four honest authors and their genesis/round-one blocks, mirroring r1's
+/// scene: A and B issue at round 0; C taxes and D reserves a star at round 1,
+/// each referencing both genesis blocks. issued 1000 · taxed 300 · supply 700.
+const Scene = struct {
+    ka: kumara.KeyPair,
+    a: cord.Block,
+    b: cord.Block,
+    c: cord.Block,
+    d: cord.Block,
+};
+
+fn make_scene() !Scene {
+    const ka = seeded(0xA1);
+    const kb = seeded(0xB2);
+    const kc = seeded(0xC3);
+    const kd = seeded(0xD4);
+
+    const fa = fold.mint_fact(ka, fold.kind_issue, 500, "", "genesis-a") orelse return error.MintA;
+    const fb = fold.mint_fact(kb, fold.kind_issue, 500, "", "genesis-b") orelse return error.MintB;
+    const fc = fold.mint_fact(kc, fold.kind_tax, 200, "", "tax-c") orelse return error.MintC;
+    const fd = fold.mint_fact(kd, fold.kind_star_reserve, 100, "vega", "reserve") orelse return error.MintD;
+
+    const a = cord.mint_block(ka, 0, &[_][cord.hash_len]u8{}, fa) orelse return error.BlockA;
+    const b = cord.mint_block(kb, 0, &[_][cord.hash_len]u8{}, fb) orelse return error.BlockB;
+
+    var ha: [cord.hash_len]u8 = undefined;
+    var hb: [cord.hash_len]u8 = undefined;
+    cord.address(&a, &ha);
+    cord.address(&b, &hb);
+    const roots = [_][cord.hash_len]u8{ ha, hb };
+
+    const c = cord.mint_block(kc, 1, roots[0..], fc) orelse return error.BlockC;
+    const d = cord.mint_block(kd, 1, roots[0..], fd) orelse return error.BlockD;
+    return .{ .ka = ka, .a = a, .b = b, .c = c, .d = d };
+}
+
+/// Add the four honest blocks under `add_bft`, commit, and fold to a state.
+fn honest_run(s: *const Scene) !fold.FoldState {
+    var dag = cord.Dag.empty();
+    try add_bft(&dag, s.a);
+    try add_bft(&dag, s.b);
+    try add_bft(&dag, s.c);
+    try add_bft(&dag, s.d);
+
+    var order: [cord.cord_max_blocks]u32 = undefined;
+    const count = cord.commit(&dag, order[0..]);
+    var log = fold.Log.empty();
+    cord.committed_log(&dag, order[0..], count, &log);
+    return try fold.fold_log(&log);
+}
+
+/// The committed order as a flat run of block-address bytes, so two commits can
+/// be compared for byte-identity.
+const Order = struct {
+    hashes: [cord.cord_max_blocks][cord.hash_len]u8 = undefined,
+    count: u32 = 0,
+};
+
+fn commit_order(dag: *const cord.Dag) Order {
+    var order: [cord.cord_max_blocks]u32 = undefined;
+    const count = cord.commit(dag, order[0..]);
+    var o = Order{ .count = count };
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        tally_copy.copy_disjoint(u8, o.hashes[i][0..], dag.hashes[order[i]][0..]);
+    }
+    return o;
+}
+
+fn orders_equal(x: *const Order, y: *const Order) bool {
+    if (x.count != y.count) return false;
+    var i: u32 = 0;
+    while (i < x.count) : (i += 1) {
+        if (!std.mem.eql(u8, x.hashes[i][0..], y.hashes[i][0..])) return false;
+    }
+    return true;
+}
+
+pub fn main() !void {
+    const s = try make_scene();
+
+    // Case 1 — an equivocation refuses whole, the Dag unchanged.
+    // Author A's second, distinct genesis at round 0: a different fact, validly
+    // signed by A's own key — exactly what an equivocator publishes.
+    const fa2 = fold.mint_fact(s.ka, fold.kind_issue, 999, "", "genesis-a-evil") orelse return error.MintEvil;
+    const a_evil = cord.mint_block(s.ka, 0, &[_][cord.hash_len]u8{}, fa2) orelse return error.BlockEvil;
+
+    var d1 = cord.Dag.empty();
+    try add_bft(&d1, s.a);
+    const len_before = d1.len;
+    if (add_bft(&d1, a_evil)) |_| return error.EquivocationAdmitted else |err| {
+        if (err != error.Equivocation) return error.WrongEquivocation;
+    }
+    if (d1.len != len_before) return error.EquivocationMutated;
+
+    // Case 2 — the same author at a *different* round is honest progress, not an
+    // equivocation. A speaks again at round 1, referencing its own genesis.
+    var ha: [cord.hash_len]u8 = undefined;
+    cord.address(&s.a, &ha);
+    const roots_a = [_][cord.hash_len]u8{ha};
+    const fa_r1 = fold.mint_fact(s.ka, fold.kind_tax, 100, "", "tax-a-r1") orelse return error.MintAr1;
+    const a_r1 = cord.mint_block(s.ka, 1, roots_a[0..], fa_r1) orelse return error.BlockAr1;
+    var d2 = cord.Dag.empty();
+    try add_bft(&d2, s.a);
+    try add_bft(&d2, a_r1); // admitted — a later round is not equivocation
+    if (d2.len != 2) return error.RoundProgressRefused;
+
+    // Case 3 — a cycle cannot be built: a forward reference to a block not held
+    // refuses DanglingParent, so a block may point only backward (acyclic).
+    var d3 = cord.Dag.empty();
+    if (add_bft(&d3, s.c)) |_| return error.CycleAdmitted else |err| {
+        if (err != error.DanglingParent) return error.WrongCycle;
+    }
+    if (d3.len != 0) return error.CycleMutated;
+
+    // Case 4 — a forgery is refused as a forgery, never mislabeled equivocation.
+    var a_forged = s.a;
+    a_forged.sig[0] ^= 0xff;
+    var d4 = cord.Dag.empty();
+    if (add_bft(&d4, a_forged)) |_| return error.ForgeryAdmitted else |err| {
+        if (err != error.BadSignature) return error.WrongForgery;
+    }
+
+    // Case 5 — the crux of r2: the honest commit is unchanged by a quarantined
+    // equivocator. Build the honest Dag, record its order and fold; attempt the
+    // equivocating block (refused); commit again — identical order, identical state.
+    var honest = cord.Dag.empty();
+    try add_bft(&honest, s.a);
+    try add_bft(&honest, s.b);
+    try add_bft(&honest, s.c);
+    try add_bft(&honest, s.d);
+    const before = commit_order(&honest);
+    const state_before = try honest_run(&s);
+
+    if (add_bft(&honest, a_evil)) |_| return error.EquivocatorEntered else |err| {
+        if (err != error.Equivocation) return error.WrongEquivocation;
+    }
+    const after = commit_order(&honest);
+    if (!orders_equal(&before, &after)) return error.EquivocatorChangedOrder;
+
+    const state_after = try honest_run(&s);
+    if (state_after.issued != state_before.issued) return error.EquivocatorChangedSupply;
+    if (state_after.taxed != state_before.taxed) return error.EquivocatorChangedSupply;
+    if (state_after.star_count != state_before.star_count) return error.EquivocatorChangedSupply;
+
+    // The honest law stands exactly as r1: issued 1000, taxed 300, supply 700, one star.
+    if (state_before.issued != 1000) return error.SupplyIssued;
+    if (state_before.supply() != 700) return error.SupplyNet;
+    if (state_before.star_count != 1) return error.StarCount;
+
+    print("cord-bft: an author's second distinct block at a seen round refuses Equivocation, the Dag unchanged\n", .{});
+    print("cord-bft: the same author at a later round is admitted — equivocation is per-round, not per-author\n", .{});
+    print("cord-bft: a forward reference refuses DanglingParent, so a block points only backward (no cycle)\n", .{});
+    print("cord-bft: a forged block refuses BadSignature, never mislabeled an equivocation\n", .{});
+    print("cord-bft: the honest commit order and fold state are byte-identical with a quarantined equivocator\n", .{});
+    print("GREEN: myc cord-bft — equivocation quarantined · honest order unchanged · supply={d} · stars={d}\n", .{
+        state_before.supply(),
+        state_before.star_count,
+    });
+}
