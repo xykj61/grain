@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260813.083001
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Mycelium Braid r2 — the linked-chain verdict travels as a format braid-v1 record
+prompt remember/loop card: take the next agent-doable lap Lindy-first crux-first; send each finished increment as its own signed round; STOP at custody gates
+think r1 (braid.rye) landed and pushed both remotes — the linked-chain crux (commit whole or reverse whole, decided once by the order). The seated Mycelium rhythm is r1 core · r2 travels/Bron · r3 across a Knot · r4 true-to-bytes, so the next agent-doable lap is r2: a verdict a node cannot hand to another is only a local reading.
+think Mirrored purse_bron.rye (the closest model — per-account balances). The record is `format braid-v1`: issued · holds <pk> <balance> per account · braid <id> <state> per chain · link <id> <seq> <from> <to> <amount> per link. The atom-verdict lives in the braid line's state (pending/committed/rejected); closed is derivable (closed ⟺ state != pending), so I reconstruct it rather than storing a redundant flag. Links seat by their seq slot on parse, so link_count is the highest slot filled plus one.
+think Conservation travels as the record's own law, as purse-v1's did: balances_total must equal the issued total or the reader refuses BadInt before trusting the record — a committed braid (coins moved) and a rejected braid (nothing moved) both leave the sum whole. Replaced an early threadlocal id-scratch with a clean local buffer in the link branch (cleaner, no odd global).
+obs GREEN first pass on selftest, TAME bans clean, width-check exit 0. The committing scene (Alice 100 · Bob 50 genesis, then Alice→Bob 100, Bob→Carol 120, Carol→Dave 60) resolves to one committed braid over four accounts; render→parse recovers the identical balances (Alice 0, Bob 30, Carol 60, Dave 60), atom-verdict (committed 1, rejected 0), and links; re-render is a byte-identical fixed point; conservation to 150 survives the crossing. Seven refusals hold whole: bad header, unknown field, bad hex key, unknown braid state, broken conservation law, missing issued, over-long verdict (TooManyBraids at render).
+loom witness=mycelium_braid_bron_witness result=GREEN committed=1 rejected=0 accounts=4 conserved=150 fixed_point=true refusals=7
+file mycelium/braid_bron.rye r2 — the linked-chain verdict renders to a format braid-v1 record and parses back byte-for-byte
+file tools/mycelium_braid_bron_witness.rish witness — selftest GREEN + round-trip·unchanged·conservation·fixed-point·refuse claims + the Braid at the door
+recommend keep-going the Braid arc travels now (r1 decided · r2 crosses as text). Next: r3 reads the linked-chain verdict across a Knot (a chain opened before a pruning cut, settled after it — mirroring pledge_knot/purse_knot), then r4 true-to-bytes vs an independent awk. REMEMBER is well past stale — a remember/align pass folding the whole Mycelium arc (Cord through Braid) onto the card is worth its own round. A served braid · per-account mint authority · breach renames (cairn-first) · deep debride · seed force-push stay Keaton's hand.
