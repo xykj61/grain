@@ -1,0 +1,273 @@
+//! mycelium/puddle_bron.rye — a fleet travels as a readable record, and berths the same offline (r3).
+//!
+//! Season D (Kresfa & Mycelium) · Puddle fleet orchestration · rung r3 — travel.
+//! Design read: active-designing/20260813-114651_puddle-fleet-placement-exploration.md
+//!
+//! r1 derived the berth; r2 healed the fleet. A fleet a node cannot hand to another is only a local layout,
+//! so r3 lets the whole roster cross as `format puddle-fleet-v1` bytes — one `host <pk-hex> <capacity>` line
+//! per host in enrollment order, one `world <id>` line per world. The reader rebuilds the fleet through r1's
+//! own `add_host`/`add_world`, so the fleet's laws (a host once, a world once, the static bounds, a real
+//! capacity and name) travel with it — a record can never rebuild a fleet r1 would refuse to build.
+//!
+//! The crux is THE PLACEMENT SURVIVES THE WIRE, not merely the bytes: a fleet parsed from bytes berths to
+//! the byte-identical placement as the fleet in memory — two nodes agree on where every world runs by
+//! exchanging the roster alone. Render writes it, parse reads it back byte-for-byte, so a round trip is a
+//! fixed point.
+//!
+//! A purpose-built bounded reader, never a general parser: a wrong header refuses `BadFormat`, an unknown
+//! field `UnknownField` (never dropped), a malformed line `BadLine`, a bad hex key `BadHex`, a bad capacity
+//! `BadInt`, and the fleet's own laws surface as `DuplicateHost`/`DuplicateWorld`/`BadCapacity`/
+//! `BadWorldName` on rebuild. Composes puddle.rye public API only. Siloed, dev-only, demo host and world
+//! seeds — no key, no funds, no network, no world provisioned; a served fleet reaches the Comlink-served
+//! gate.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/puddle_bron.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const puddle = @import("puddle.rye");
+const kumara = @import("kumara.rye");
+const parse_int = @import("parse_int.rye");
+const tally_copy = @import("tally_copy.rye");
+
+/// The record buffer bound — a full fleet's host and world lines fit with room.
+pub const max_record: u32 = 8192;
+
+pub const BronError = error{
+    BadFormat, // the header is wrong
+    UnknownField, // a line names a field the record does not define
+    BadLine, // a known line carries the wrong token count
+    BadHex, // a host key was the wrong length or held a non-hex char
+    BadInt, // a capacity was not a decimal u32
+    RecordTooLong, // the rendered record overflowed the buffer
+} || puddle.PuddleError;
+
+const hex_digits = "0123456789abcdef";
+
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex chars per byte.
+    assert(out.len == bytes.len * 2);
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0F];
+    }
+}
+
+fn nibble(c: u8) BronError!u8 {
+    return switch (c) {
+        '0'...'9' => c - '0',
+        'a'...'f' => c - 'a' + 10,
+        'A'...'F' => c - 'A' + 10,
+        else => error.BadHex,
+    };
+}
+
+fn from_hex(text: []const u8, out: []u8) BronError!void {
+    if (text.len != out.len * 2) return error.BadHex;
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < out.len) : (i += 1) {
+        const hi = try nibble(text[i * 2]);
+        const lo = try nibble(text[i * 2 + 1]);
+        out[i] = (hi << 4) | lo;
+    }
+}
+
+/// Render one fleet to a `format puddle-fleet-v1` record — one host line (key hex · capacity) in enrollment
+/// order, then one world line each. Refuses an overflow rather than a partial record.
+pub fn render(f: *const puddle.Fleet, out: []u8) BronError!u32 {
+    // invariant: the render buffer honors its bound.
+    assert(out.len >= max_record);
+    // invariant: the fleet honors both static bounds.
+    assert(f.host_count <= puddle.max_hosts);
+    assert(f.world_count <= puddle.max_worlds);
+
+    const head = std.fmt.bufPrint(out, "format puddle-fleet-v1\n", .{}) catch return error.RecordTooLong;
+    var off: u32 = @intCast(head.len);
+
+    var i: u32 = 0;
+    while (i < f.host_count) : (i += 1) {
+        var pk_hex: [puddle.pk_len * 2]u8 = undefined;
+        to_hex(f.hosts[i].pk_slice(), &pk_hex);
+        const line = std.fmt.bufPrint(out[off..], "host {s} {d}\n", .{ pk_hex, f.hosts[i].capacity }) catch return error.RecordTooLong;
+        off += @intCast(line.len);
+    }
+
+    var j: u32 = 0;
+    while (j < f.world_count) : (j += 1) {
+        const line = std.fmt.bufPrint(out[off..], "world {s}\n", .{f.worlds[j].id_slice()}) catch return error.RecordTooLong;
+        off += @intCast(line.len);
+    }
+
+    // invariant: the rendered record never exceeds its bound.
+    assert(off <= max_record);
+    return off;
+}
+
+/// Split a line into up to three tokens; returns the count (or four to signal a token past any line's
+/// width — a host line, at three, is the widest).
+fn tokens(line: []const u8, out: *[3][]const u8) u32 {
+    var count: u32 = 0;
+    var it = std.mem.tokenizeScalar(u8, line, ' ');
+    while (it.next()) |t| {
+        if (count >= 3) return count + 1;
+        out[count] = t;
+        count += 1;
+    }
+    return count;
+}
+
+/// Parse a `format puddle-fleet-v1` record into `out`, rebuilding each host and world through r1's own
+/// `add_host`/`add_world` so the fleet's laws travel with the bytes. A record can never rebuild a fleet r1
+/// would refuse to build.
+pub fn parse(text: []const u8, out: *puddle.Fleet) BronError!void {
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const header = lines.next() orelse return error.BadFormat;
+    if (!std.mem.eql(u8, header, "format puddle-fleet-v1")) return error.BadFormat;
+
+    out.* = puddle.Fleet.empty();
+    while (lines.next()) |raw| {
+        if (raw.len == 0) continue; // a trailing newline yields one empty line
+        var tok: [3][]const u8 = undefined;
+        const n = tokens(raw, &tok);
+        if (n == 0) continue;
+        if (std.mem.eql(u8, tok[0], "host")) {
+            if (n != 3) return error.BadLine;
+            var pk: [puddle.pk_len]u8 = undefined;
+            try from_hex(tok[1], pk[0..puddle.pk_len]);
+            const cap = parse_int.parse_int(u32, tok[2], .{}) catch return error.BadInt;
+            try puddle.add_host(out, pk[0..puddle.pk_len], cap);
+        } else if (std.mem.eql(u8, tok[0], "world")) {
+            if (n != 2) return error.BadLine;
+            try puddle.add_world(out, tok[1]);
+        } else {
+            return error.UnknownField;
+        }
+    }
+}
+
+// --- selftest: a fleet travels and berths the same offline ---------------------------------------------
+
+fn host_key(byte: u8) [puddle.pk_len]u8 {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    const kp = kumara.keypair_from_seed(&seed);
+    return kp.public_key.toBytes();
+}
+
+fn build(host_bytes: []const u8, cap: u32, world_ids: []const []const u8) !puddle.Fleet {
+    var f = puddle.Fleet.empty();
+    for (host_bytes) |b| {
+        const pk = host_key(b);
+        try puddle.add_host(&f, pk[0..puddle.pk_len], cap);
+    }
+    for (world_ids) |id| try puddle.add_world(&f, id);
+    return f;
+}
+
+/// Two fleets carry the same hosts (key + capacity) and worlds in the same order.
+fn fleets_agree(a: *const puddle.Fleet, b: *const puddle.Fleet) bool {
+    if (a.host_count != b.host_count) return false;
+    if (a.world_count != b.world_count) return false;
+    var i: u32 = 0;
+    while (i < a.host_count) : (i += 1) {
+        if (!std.mem.eql(u8, a.hosts[i].pk_slice(), b.hosts[i].pk_slice())) return false;
+        if (a.hosts[i].capacity != b.hosts[i].capacity) return false;
+    }
+    var j: u32 = 0;
+    while (j < a.world_count) : (j += 1) {
+        if (!std.mem.eql(u8, a.worlds[j].id_slice(), b.worlds[j].id_slice())) return false;
+    }
+    return true;
+}
+
+pub fn main() !void {
+    const ids = [_][]const u8{ "alpha", "bravo", "charlie", "delta", "echo", "foxtrot" };
+    const hosts = [_]u8{ 0x11, 0x22, 0x33, 0x44 };
+
+    var f = try build(hosts[0..], 4, ids[0..]);
+    var pf: [puddle.max_worlds]u32 = undefined;
+    try puddle.berth(&f, &pf);
+
+    var buf: [max_record]u8 = undefined;
+    const len = try render(&f, buf[0..]);
+
+    var recovered: puddle.Fleet = undefined;
+    try parse(buf[0..len], &recovered);
+
+    // The whole roster survives the wire — same hosts (key + capacity) and worlds in the same order.
+    if (!fleets_agree(&f, &recovered)) return error.FleetChanged;
+
+    // Re-rendering the recovered fleet reproduces the exact bytes (fixed point).
+    var buf2: [max_record]u8 = undefined;
+    const len2 = try render(&recovered, buf2[0..]);
+    if (len2 != len) return error.NotFixedPoint;
+    if (!std.mem.eql(u8, buf[0..len], buf2[0..len2])) return error.NotFixedPoint;
+
+    // THE CRUX: the recovered fleet berths to the byte-identical placement as the one in memory — two nodes
+    // agree on where every world runs by exchanging the roster alone.
+    var pr: [puddle.max_worlds]u32 = undefined;
+    try puddle.berth(&recovered, &pr);
+    var w: u32 = 0;
+    while (w < f.world_count) : (w += 1) {
+        if (pf[w] != pr[w]) return error.PlacementDrift;
+    }
+
+    var scratch: puddle.Fleet = undefined;
+
+    // Refusal: a wrong header refuses BadFormat before any line is read.
+    if (parse("format puddle-fleet-v2\n", &scratch)) |_| return error.BadHeaderAdmitted else |err| {
+        if (err != error.BadFormat) return error.WrongHeader;
+    }
+    // Refusal: an unknown field refuses UnknownField (never dropped).
+    {
+        var tmp: [max_record]u8 = undefined;
+        tally_copy.copy_disjoint(u8, tmp[0..len], buf[0..len]);
+        const extra = "bogus a\n";
+        tally_copy.copy_disjoint(u8, tmp[len .. len + extra.len], extra);
+        if (parse(tmp[0 .. len + extra.len], &scratch)) |_| return error.UnknownAdmitted else |err| {
+            if (err != error.UnknownField) return error.WrongUnknown;
+        }
+    }
+    // Refusal: a host line with the wrong token count refuses BadLine.
+    {
+        const bad = "format puddle-fleet-v1\nhost deadbeef\n";
+        if (parse(bad, &scratch)) |_| return error.BadLineAdmitted else |err| {
+            if (err != error.BadLine) return error.WrongBadLine;
+        }
+    }
+    // Refusal: a bad hex host key refuses BadHex.
+    {
+        const bad = "format puddle-fleet-v1\nhost zz 4\n";
+        if (parse(bad, &scratch)) |_| return error.BadHexAdmitted else |err| {
+            if (err != error.BadHex) return error.WrongBadHex;
+        }
+    }
+    // Refusal: a bad capacity refuses BadInt.
+    {
+        var pk_hex: [puddle.pk_len * 2]u8 = undefined;
+        to_hex(host_key(0x11)[0..puddle.pk_len], &pk_hex);
+        var tmp: [max_record]u8 = undefined;
+        const bad = std.fmt.bufPrint(tmp[0..], "format puddle-fleet-v1\nhost {s} nope\n", .{pk_hex}) catch return error.RecordTooLong;
+        if (parse(bad, &scratch)) |_| return error.BadIntAdmitted else |err| {
+            if (err != error.BadInt) return error.WrongBadInt;
+        }
+    }
+    // Refusal: a duplicate host line refuses DuplicateHost — the fleet's own law travels with the bytes.
+    {
+        var pk_hex: [puddle.pk_len * 2]u8 = undefined;
+        to_hex(host_key(0x11)[0..puddle.pk_len], &pk_hex);
+        var tmp: [max_record]u8 = undefined;
+        const bad = std.fmt.bufPrint(tmp[0..], "format puddle-fleet-v1\nhost {s} 4\nhost {s} 4\n", .{ pk_hex, pk_hex }) catch return error.RecordTooLong;
+        if (parse(bad, &scratch)) |_| return error.DupHostAdmitted else |err| {
+            if (err != error.DuplicateHost) return error.WrongDupHost;
+        }
+    }
+
+    puddle.render(&recovered);
+
+    print("puddle-bron: a fleet renders to a format puddle-fleet-v1 record and parses back byte-for-byte (fixed point); one host line (key hex · capacity) and one world line each travel in enrollment order\n", .{});
+    print("puddle-bron: the recovered fleet berths to the byte-identical placement — two nodes agree on where every world runs by exchanging the roster alone; the fleet's own laws (duplicate host or world, bad capacity or name) travel with the bytes\n", .{});
+    print("puddle-bron: a bad header, an unknown field, a malformed line, a bad hex key, a bad capacity, a duplicate host each refuse\n", .{});
+    print("GREEN: myc puddle-bron r3 — a fleet travels as readable text and berths the same offline · hosts={d} worlds={d} · fixed point. The roster carries the placement.\n", .{ recovered.host_count, recovered.world_count });
+}

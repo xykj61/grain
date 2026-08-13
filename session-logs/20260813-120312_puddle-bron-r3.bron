@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260813.120312
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — ai-jail — Eastern (EDT) time convention
+title Puddle r3 — the fleet travels as a format puddle-fleet-v1 record and berths the same offline
+prompt keep going the loop — send each finished increment as its own signed round; continue the Puddle arc after r2
+think r1 derived the berth, r2 healed the fleet — both over fleets seated in code. A fleet a node cannot hand to another is only a local layout; r3 lets the whole roster cross as text so two nodes can agree without a shared runtime.
+think Followed the family _bron idiom exactly (warrant_bron): to_hex/nibble/from_hex, tokens (max 3), render/parse, fixed-point re-render check, purpose-built bounded reader with named refusals. Record: format puddle-fleet-v1 · one host line (pk-hex · capacity) in enrollment order · one world line each.
+think The design honesty: the reader rebuilds through r1's own add_host/add_world, so the fleet's laws (a host once, a world once, static bounds, real capacity + name) travel WITH the bytes — a record can never rebuild a fleet r1 would refuse. Unioned puddle.PuddleError into BronError so those refusals surface by their true name on rebuild.
+think The crux is the PLACEMENT surviving the wire, not merely the bytes: the recovered fleet berths to the byte-identical placement (pf[w] == pr[w] for every world), so two nodes agree on where every world runs by exchanging the roster alone. Fixed point proven (re-render reproduces the exact bytes).
+obs GREEN on the first build and run — no red this round. TAME bans exit0, no ban patterns, width-check exit0 (the usize in the hex helpers is a seam-commented boundary, exactly the warrant_bron pattern, accepted by width-check). The r1 berth re-runs GREEN at the door.
+obs Custody honored — demo host/world seeds only, no key/funds/network/world provisioned; sent as its own signed round after r1 and r2, both remotes, per send-often.
+loom witness=mycelium_puddle_bron_witness hosts=4 worlds=6 record_format=puddle-fleet-v1 property=placement-survives-wire fixed_point=true
+file mycelium/puddle_bron.rye r3 — render/parse a fleet byte-for-byte; the recovered roster berths to the identical placement offline
+file tools/mycelium_puddle_bron_witness.rish witness proving travel GREEN (build · selftest · fixed point · placement · refusals · r1 at the door)
+file work-in-progress/REMEMBER.md accreted the r3 landing into the Puddle bullet; next crux repointed to r4
+recommend keep-going Puddle r4 — carry the reader onto a real on-disk format puddle-fleet-v1 fixture (produced reproducibly by a fixture-gen, @embedFile-bound through the mycelium/corpora/ symlink), report host count · world count · a placement summary, and cross-check that triple against an independent tools/fixtures/*_truth.awk reading — two tools, one answer — closing the Puddle agent-doable arc.
