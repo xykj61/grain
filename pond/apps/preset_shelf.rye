@@ -12,6 +12,10 @@
 //! refuses `ShelfTooSmall` rather than silently drop a book past the last row: a rendered shelf shows every book or
 //! none. No network, no key, no funds.
 //!
+//! HUNK37 answers that refusal with a window: `shelf_window` renders one page of the library — the books
+//! `[offset, offset + rows)` — so a library larger than the screen is fully reachable one page at a time. Together
+//! the pages cover the whole library in held order, each book once — paging loses nothing.
+//!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/preset_shelf.rye selftest
 
 const std = @import("std");
@@ -31,8 +35,88 @@ pub const PresetShelfError = error{
     EmptyShelf,
     ShelfTooLarge,
     ShelfTooSmall,
+    BadOffset,
     Overflow,
 };
+
+/// Draw one book's detail onto `grid` at `row`: the row text `<name>  <preset…>` placed with `put_line` (clamped to
+/// the grid width — a display, never an overrun), the book name painted as a chip with `put_color_run`. Shared by
+/// the whole shelf and the windowed pager so both paint a row identically.
+fn draw_row(grid: *skate.Grid, row: u32, d: *const preset_detail.BookDetail) PresetShelfError!void {
+    // invariant: a drawn row sits inside the grid.
+    assert(row < grid.rows);
+    const name = d.name_slice();
+
+    var line_buf: [preset_detail.per_line_bound]u8 = undefined;
+    var off: u32 = 0;
+    const head = std.fmt.bufPrint(line_buf[off..], "{s} ", .{name}) catch return error.Overflow;
+    off += @intCast(head.len);
+    var j: u32 = 0;
+    while (j < d.preset_count) : (j += 1) {
+        const nm = d.preset_at(j).slice();
+        const chip = std.fmt.bufPrint(line_buf[off..], " {s}", .{nm}) catch return error.Overflow;
+        off += @intCast(chip.len);
+    }
+    // invariant: the built line never exceeds its scratch bound.
+    assert(off <= line_buf.len);
+    grid.put_line(row, line_buf[0..off]);
+
+    const name_len: u32 = @intCast(name.len);
+    if (name_len > 0) grid.put_color_run(row, 0, name_len, name_slot);
+}
+
+/// How many full pages a library of this size needs at `rows` books per page — a ceiling division, so the last
+/// short page still counts. Bounded by the detailing's own count.
+pub fn page_count(listing: *const preset_detail.DetailListing, rows: u32) u32 {
+    // invariant: paging needs at least one row per page.
+    assert(rows > 0);
+    if (listing.count == 0) return 0;
+    return (listing.count + rows - 1) / rows;
+}
+
+/// How many books the page starting at `offset` shows — a full `rows` mid-library, fewer on the last page, zero when
+/// the offset lands at or past the library.
+pub fn window_len(listing: *const preset_detail.DetailListing, rows: u32, offset: u32) u32 {
+    // invariant: a window is at least one row tall.
+    assert(rows > 0);
+    if (offset >= listing.count) return 0;
+    const remaining = listing.count - offset;
+    return @min(remaining, rows);
+}
+
+/// Render a page of the library — the books `[offset, offset + rows)` — onto a fresh grid. Unlike `shelf_grid`, a
+/// window is meant to show a slice, so it never refuses `ShelfTooSmall`; it refuses `BadOffset` when the offset
+/// lands past the library (a page with no book to show), so every page a keeper reaches is a real one. Together the
+/// pages cover the whole library in held order, each book once — paging loses nothing. Pure over the detailing.
+pub fn shelf_window(
+    allocator: std.mem.Allocator,
+    listing: *const preset_detail.DetailListing,
+    cols: u32,
+    rows: u32,
+    offset: u32,
+) !skate.Grid {
+    // invariant: the detailing never outgrew its own bound before it is paged.
+    assert(listing.count <= preset_detail.max_details);
+    if (cols == 0 or rows == 0) return error.EmptyShelf;
+    if (cols > image_skate.max_map_cols or rows > image_skate.max_map_rows) return error.ShelfTooLarge;
+    // An offset past the library shows no book — refuse rather than paint an empty page. Offset 0 on an empty
+    // library is a real (empty) first page and is allowed.
+    if (offset >= listing.count and !(offset == 0 and listing.count == 0)) return error.BadOffset;
+
+    var grid = try skate.Grid.init(allocator, cols, rows);
+    grid.set_palette(name_slot, .{ .r = 120, .g = 200, .b = 255 });
+
+    const n = window_len(listing, rows, offset);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        // invariant: the windowed book index sits inside the detailing.
+        assert(offset + i < listing.count);
+        try draw_row(&grid, i, listing.at(offset + i));
+    }
+    // invariant: exactly one row was drawn per book on this page.
+    assert(i == n);
+    return grid;
+}
 
 /// Render a keeper's installed-book detailing onto a Skate grid, one row per book reading `<name>  <preset…>`. The
 /// book name wears `name_slot` so it stands out as a chip. Pure over the detailing — it is read many times and
@@ -60,29 +144,7 @@ pub fn shelf_grid(
     while (i < listing.count) : (i += 1) {
         // invariant: a drawn row sits inside the grid (rows >= listing.count checked above).
         assert(i < rows);
-        const d = listing.at(i);
-        const name = d.name_slice();
-
-        // Build the row text `<name>  <preset…>` into a bounded scratch line, then place it — `put_line` clamps to
-        // the grid width, so a long line paints only the cells that exist (a display, never an overrun).
-        var line_buf: [preset_detail.per_line_bound]u8 = undefined;
-        var off: u32 = 0;
-        const head = std.fmt.bufPrint(line_buf[off..], "{s} ", .{name}) catch return error.Overflow;
-        off += @intCast(head.len);
-        var j: u32 = 0;
-        while (j < d.preset_count) : (j += 1) {
-            const nm = d.preset_at(j).slice();
-            const chip = std.fmt.bufPrint(line_buf[off..], " {s}", .{nm}) catch return error.Overflow;
-            off += @intCast(chip.len);
-        }
-        // invariant: the built line never exceeds its scratch bound.
-        assert(off <= line_buf.len);
-        grid.put_line(i, line_buf[0..off]);
-
-        // Paint the name as a chip: the cells `[0, name_len)` wear the name slot (clamped to the grid width by
-        // `put_color_run`, so a name wider than the grid colors only the visible cells).
-        const name_len: u32 = @intCast(name.len);
-        if (name_len > 0) grid.put_color_run(i, 0, name_len, name_slot);
+        try draw_row(&grid, i, listing.at(i));
     }
     // invariant: exactly one row was drawn per book.
     assert(i == listing.count);
@@ -175,12 +237,83 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (e != error.ShelfTooLarge) return error.WrongLarge;
     }
 
+    // HUNK37 — the pager: build a five-book library and prove paging loses nothing. Five distinct books stored, so a
+    // window at two rows per page needs three pages (2 + 2 + 1).
+    var store5: beading.BeadStore = .empty();
+    var cat5: tablecloth.Catalog = .empty();
+    _ = try preset_store.store_book(&cat5, &store5, "stock.presets", &stock);
+    _ = try preset_store.store_book(&cat5, &store5, "custom.presets", &small);
+    {
+        var one = photo_edits.EditList.init();
+        try one.push(.flip_h);
+        var k: u32 = 0;
+        // Three more one-preset books named a/b/c.presets, so the library holds five in a known order.
+        const names = [_][]const u8{ "a.presets", "b.presets", "c.presets" };
+        while (k < names.len) : (k += 1) {
+            var b = filter_preset.PresetBook.init();
+            try b.define("edit", &one);
+            _ = try preset_store.store_book(&cat5, &store5, names[k], &b);
+        }
+    }
+    var lib: preset_detail.DetailListing = undefined;
+    try preset_detail.detail_books(&cat5, &store5, &lib);
+    assert(lib.len() == 5);
+
+    // Page arithmetic is honest: five books at two rows per page need three pages; window_len is 2, 2, then 1.
+    const page_rows: u32 = 2;
+    assert(page_count(&lib, page_rows) == 3);
+    assert(window_len(&lib, page_rows, 0) == 2);
+    assert(window_len(&lib, page_rows, 2) == 2);
+    assert(window_len(&lib, page_rows, 4) == 1);
+    assert(window_len(&lib, page_rows, 5) == 0);
+
+    // A page shows exactly its slice: the first page's two rows carry the library's first two books in held order.
+    const page0 = try shelf_window(garden, &lib, cols, page_rows, 0);
+    assert(std.mem.indexOf(u8, page0.row_cells(0), lib.at(0).name_slice()) != null);
+    assert(std.mem.indexOf(u8, page0.row_cells(1), lib.at(1).name_slice()) != null);
+
+    // Paging loses nothing: walk every page in order and the books shown, concatenated, are exactly the whole
+    // library in held order — no book skipped, none shown twice.
+    {
+        var seen: u32 = 0;
+        var pageno: u32 = 0;
+        while (pageno < page_count(&lib, page_rows)) : (pageno += 1) {
+            const ofs = pageno * page_rows;
+            const wl = window_len(&lib, page_rows, ofs);
+            const page = try shelf_window(garden, &lib, cols, page_rows, ofs);
+            var r: u32 = 0;
+            while (r < wl) : (r += 1) {
+                // The r-th book on this page is the (seen)-th book of the library, in order.
+                assert(std.mem.indexOf(u8, page.row_cells(r), lib.at(seen).name_slice()) != null);
+                seen += 1;
+            }
+        }
+        // invariant: every book was shown exactly once across the pages.
+        assert(seen == lib.len());
+    }
+
+    // A window is pure and deterministic: the same page built twice is byte-identical, the library untouched.
+    const page0_again = try shelf_window(garden, &lib, cols, page_rows, 0);
+    assert(std.mem.eql(u8, page0.cells, page0_again.cells));
+    assert(std.mem.eql(u8, listing.at(0).name_slice(), "stock.presets"));
+
+    // Refusals named: an offset past the library refuses BadOffset; the shared dimension refusals hold for a window.
+    if (shelf_window(garden, &lib, cols, page_rows, 5)) |_| return error.OffsetSlipped else |e| {
+        if (e != error.BadOffset) return error.WrongOffset;
+    }
+    if (shelf_window(garden, &lib, 0, page_rows, 0)) |_| return error.WinEmptySlipped else |e| {
+        if (e != error.EmptyShelf) return error.WrongWinEmpty;
+    }
+
     print("GREEN preset-shelf: a real catalog of two installed books details honestly and renders to a {d}x{d} " ++
         "Skate shelf — one row per book in held order (stock.presets with vivid…sketch, custom.presets with mirror " ++
         "quarter), the book name wearing a color chip distinct from its presets; the shelf is pure over the " ++
         "detailing (built twice, identical cells and colors, the detailing untouched) and rasterizes to {d} lit " ++
         "pixels; a grid with fewer rows than books refuses ShelfTooSmall (every book or none, never a silent drop), " ++
-        "a zero dimension EmptyShelf, an over-ceiling dimension ShelfTooLarge\n", .{ grid.cols, grid.rows, lit });
+        "a zero dimension EmptyShelf, an over-ceiling dimension ShelfTooLarge. HUNK37 the pager: a five-book " ++
+        "library at two rows per page needs three pages (window_len 2,2,1); walking every page in order shows each " ++
+        "of the five books exactly once in held order (paging loses nothing), a page is pure and deterministic, an " ++
+        "offset past the library refuses BadOffset\n", .{ grid.cols, grid.rows, lit });
     return 0;
 }
 
