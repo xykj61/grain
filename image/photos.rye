@@ -710,6 +710,67 @@ pub fn sharpen(allocator: std.mem.Allocator, pm: *const qoi.Pixmap) !qoi.Pixmap 
     return convolve(allocator, pm, &kernel, 1, 0);
 }
 
+/// Auto-levels: stretch each color channel's actual value range to fill the full 0..255, alpha untouched. This is
+/// the analytical filter the levels and curves tools stand on — a first scan finds each channel's darkest and
+/// brightest value, then a second pass linearly maps that range onto the whole byte range, so the dimmest pixel
+/// lands on 0 and the brightest on 255. A channel already spanning the full range is a fixed point (it maps onto
+/// itself); a flat channel — every pixel equal, range zero — passes through untouched rather than dividing by
+/// nothing. The map is monotone, so pixel order within a channel is preserved. Pure: the source is never mutated.
+/// Refuses only a degenerate image (`EmptyImage`).
+pub fn stretch(allocator: std.mem.Allocator, pm: *const qoi.Pixmap) !qoi.Pixmap {
+    // invariant: the source buffer is exactly four bytes per pixel.
+    assert(pm.pixels.len == @as(usize, pm.width) * @as(usize, pm.height) * 4);
+    if (pm.width == 0 or pm.height == 0) return error.EmptyImage;
+
+    // First scan: the darkest and brightest value each color channel actually holds. Alpha is not stretched.
+    var lo = [3]u8{ 255, 255, 255 };
+    var hi = [3]u8{ 0, 0, 0 };
+    {
+        var i: usize = 0;
+        while (i < pm.pixels.len) : (i += 4) {
+            var c: usize = 0;
+            while (c < 3) : (c += 1) {
+                const v = pm.pixels[i + c];
+                if (v < lo[c]) lo[c] = v;
+                if (v > hi[c]) hi[c] = v;
+            }
+        }
+    }
+
+    const out = try allocator.alloc(u8, pm.pixels.len);
+    // Second pass: map [lo, hi] onto [0, 255] per channel. A zero-range channel (lo == hi) passes through, so no
+    // divide by nothing; a full-range channel maps onto itself. The rounding half is added before truncation.
+    var i: usize = 0;
+    while (i < pm.pixels.len) : (i += 4) {
+        var c: usize = 0;
+        while (c < 3) : (c += 1) {
+            const v = pm.pixels[i + c];
+            if (hi[c] == lo[c]) {
+                out[i + c] = v;
+            } else {
+                const range = @as(u32, hi[c] - lo[c]);
+                // (v - lo)·255 ≤ 255·255 = 65025, far inside u32; +range/2 rounds to nearest.
+                const num = @as(u32, v - lo[c]) * 255 + range / 2;
+                const mapped = num / range;
+                // invariant: a monotone map of a value inside [lo, hi] lands inside the byte range.
+                assert(mapped <= 255);
+                out[i + c] = @intCast(mapped);
+            }
+        }
+        out[i + 3] = pm.pixels[i + 3];
+    }
+
+    // invariant: auto-levels changes no pixel count — the output length matches the source exactly.
+    assert(out.len == pm.pixels.len);
+    return qoi.Pixmap{
+        .width = pm.width,
+        .height = pm.height,
+        .channels = pm.channels,
+        .colorspace = pm.colorspace,
+        .pixels = out,
+    };
+}
+
 // --- selftest: crop a position-tagged image, prove every cropped pixel is its source pixel, prove purity and
 //     the open round-trip, and prove the named refusals ------------------------------------------------------
 
@@ -1392,6 +1453,92 @@ fn run_convolve(garden: std.mem.Allocator) !struct { w: u32, h: u32 } {
     return .{ .w = same.width, .h = same.height };
 }
 
+fn run_stretch(garden: std.mem.Allocator) !struct { w: u32, h: u32 } {
+    // A dim red ramp {40, 60, 80, 100} with green and blue held flat: red stretches to fill [0,255] while the
+    // two flat channels pass through untouched. lo=40, hi=100, range=60 →
+    //   40 → 0 ; 60 → (20·255+30)/60 = 85 ; 80 → (40·255+30)/60 = 170 ; 100 → (60·255+30)/60 = 255.
+    const reds = [4]u8{ 40, 60, 80, 100 };
+    const ramp = try garden.alloc(u8, 4 * 1 * 4);
+    {
+        var x: usize = 0;
+        while (x < 4) : (x += 1) {
+            ramp[x * 4] = reds[x];
+            ramp[x * 4 + 1] = 90; // green flat
+            ramp[x * 4 + 2] = 200; // blue flat
+            ramp[x * 4 + 3] = 128; // alpha carried, not stretched
+        }
+    }
+    const ramp_pm = qoi.Pixmap{ .width = 4, .height = 1, .channels = 4, .colorspace = 0, .pixels = ramp };
+    const wide = try stretch(garden, &ramp_pm);
+    assert(wide.pixels[0] == 0);
+    assert(wide.pixels[4] == 85);
+    assert(wide.pixels[8] == 170);
+    assert(wide.pixels[12] == 255);
+    // The flat green and blue channels passed through untouched — a zero-range channel is not stretched.
+    {
+        var x: usize = 0;
+        while (x < 4) : (x += 1) {
+            assert(wide.pixels[x * 4 + 1] == 90);
+            assert(wide.pixels[x * 4 + 2] == 200);
+            assert(wide.pixels[x * 4 + 3] == 128); // alpha rode through untouched
+        }
+    }
+    // Monotone: the stretched red channel never decreases across the ramp.
+    assert(wide.pixels[0] <= wide.pixels[4]);
+    assert(wide.pixels[4] <= wide.pixels[8]);
+    assert(wide.pixels[8] <= wide.pixels[12]);
+
+    // Pure: the source ramp's first red is untouched.
+    assert(ramp_pm.pixels[0] == 40);
+
+    // A channel already spanning the full range is a fixed point: a red ramp {0,...,255} maps onto itself. Here a
+    // 2×1 image whose red already touches both 0 and 255 stretches to exactly itself on red.
+    const full = try garden.alloc(u8, 2 * 1 * 4);
+    full[0] = 0;
+    full[1] = 10;
+    full[2] = 20;
+    full[3] = 255;
+    full[4] = 255;
+    full[5] = 10;
+    full[6] = 20;
+    full[7] = 255;
+    const full_pm = qoi.Pixmap{ .width = 2, .height = 1, .channels = 4, .colorspace = 0, .pixels = full };
+    const same = try stretch(garden, &full_pm);
+    assert(same.same_bytes(&full_pm));
+
+    // A solid color is a fixed point: every channel is flat, so each passes through and the image is byte-identical.
+    const sw: u32 = 3;
+    const sh: u32 = 3;
+    const solid = try garden.alloc(u8, sw * sh * 4);
+    {
+        var i: usize = 0;
+        while (i < solid.len) : (i += 4) {
+            solid[i] = 120;
+            solid[i + 1] = 60;
+            solid[i + 2] = 200;
+            solid[i + 3] = 255;
+        }
+    }
+    const solid_pm = qoi.Pixmap{ .width = sw, .height = sh, .channels = 4, .colorspace = 0, .pixels = solid };
+    const solid_out = try stretch(garden, &solid_pm);
+    assert(solid_out.same_bytes(&solid_pm));
+
+    // A stretched image is still an OPEN image: it re-encodes and round-trips byte-for-byte through the codec.
+    const cap = qoi.encoded_bound(wide.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const res = try qoi.encode(&wide, dst);
+    const back = try qoi.decode(garden, dst[0..res.len]);
+    assert(back.same_bytes(&wide));
+
+    // Unwelcome: a zero-dimension image refuses.
+    const empty = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (stretch(garden, &empty)) |_| return error.EmptySlipped else |e| {
+        if (e != error.EmptyImage) return error.WrongEmpty;
+    }
+
+    return .{ .w = wide.width, .h = wide.height };
+}
+
 fn run_selftest(garden: std.mem.Allocator) !u8 {
     const pm = try craft_tagged(garden);
 
@@ -1505,6 +1652,13 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         "[0,90,0] box-blurs to [30,30,30], the exact clamped mean at every pixel; alpha passes through " ++
         "untouched; source untouched (pure); blurred image re-encodes and round-trips; an empty image, a zero " ++
         "divisor, and an over-ceiling weight refused by name\n", .{ conv.w, conv.h });
+
+    const str = try run_stretch(garden);
+    print("GREEN image-photos-stretch: a {d}x{d} image auto-levels — a dim red ramp [40,60,80,100] stretches to " ++
+        "[0,85,170,255], the exact rounded map onto the full range; the flat green and blue channels pass through " ++
+        "untouched; the map is monotone (order preserved); a channel already spanning [0,255] is a fixed point; a " ++
+        "solid color is byte-identical; alpha passes through untouched; source untouched (pure); stretched image " ++
+        "re-encodes and round-trips; an empty image refused by name\n", .{ str.w, str.h });
     return 0;
 }
 
