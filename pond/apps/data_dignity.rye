@@ -1,0 +1,366 @@
+//! pond/apps/data_dignity.rye — Season 3 Journey 12 (Data-dignity), Rung 1: a keeper's word outlives the keeper, an heir inherits only what was willed, and what the keeper chose to rest is allowed to rest.
+//!
+//! Season 3, Commons — keepers meet each other with consent. Journeys 9–11 built how *living* keepers
+//! meet: consent between two (Skate), quorum among many (Membership), a whole loaded shape (Council).
+//! Journey 12 is Commons' last and most tender crux — what becomes of a keeper's data when the keeper is
+//! gone. The season's promise (consent, and the keeper's own word) is carried past a single lifetime.
+//!
+//! The crux: **succession honors the keeper's declared word, and rests what the keeper chose to rest.** An
+//! `Estate` opens naming a keeper and a distinct heir. The keeper wills each holding either **bequeathed**
+//! (it passes to the heir at succession) or **rested** (the keeper's dignity choice — extinguished at
+//! succession, inherited by no one, returned to no hand). The keeper then **seals** the directive (their
+//! pre-declared word, fixed while present); the heir **accepts** custody. Succession fires only on **two
+//! proofs, never one** — the sealed directive (`NotSealed`) *and* the heir's acceptance (`NotAccepted`) —
+//! so neither the departing keeper's word alone nor the receiving heir's alone moves custody: a directive
+//! without acceptance holds (an heir is never conscripted), an acceptance without a directive holds (a
+//! steward cannot manufacture a will). This is the settlement ledger's escape law — both consent, the old
+//! sponsor keeps no veto — carried across the one boundary the ledger had not crossed: the keeper's
+//! absence.
+//!
+//! Who holds an item is **derived**, never written: before succession every willed item is the keeper's;
+//! after, a bequeathed item resolves to the heir and a rested item resolves to `rested` (no one's) — never
+//! to the heir, never to a steward. The rested set's extinction is the promise made checkable: the count
+//! the heir holds equals the bequeathed count, and no rested item is ever the heir's. The one preference a
+//! departed person can no longer defend — to let some things rest — is the one the rule guards hardest.
+//!
+//! This is the pure rule as a bounded state machine — no signing yet (r2 binds the keeper's seal and the
+//! heir's acceptance each to a settled Kumara identity, mirroring `skate_group_signed`). Facts only,
+//! custody-first: it records the facts of a sealed will and a succession and holds nothing, opens no
+//! network, moves no funds, and generates no real identity or seed (the maintainer's own succession over a
+//! real Kumara instance is the maintainer's hand — gate #4-adjacent). Demo keeper and heir points (plain
+//! indices) only.
+//!
+//!   rye build pond/apps/data_dignity.rye -femit-bin=pond/bin/data-dignity
+//!   pond/bin/data-dignity selftest
+//!
+//! Scope: active-designing/20260812-212607_dahl-journey12-data-dignity-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const data_dignity_app_version = "20260812.212607";
+
+/// An estate wills at most this many holdings — bounded so a keeper's will never grows unbounded.
+pub const max_holdings: u32 = 256;
+
+/// The keeper's word for one holding — the two dispositions a will can carry.
+pub const Disposition = enum {
+    bequeathed, // passes to the heir at succession
+    rested, // the keeper's dignity choice — extinguished at succession, inherited by no one
+};
+
+/// Who holds an item — always *derived* from the sealed will and the succession state, never written, so
+/// no hand can name a holder the keeper did not authorize.
+pub const Holder = enum {
+    keeper, // before succession, every willed item is the keeper's
+    heir, // after succession, a bequeathed item is the heir's
+    rested, // after succession, a rested item is held by no one — the keeper's word honored
+    unknown, // the estate does not will this item
+};
+
+pub const EstateError = error{
+    SelfHeir, // an heir must be distinct from the keeper — succession to oneself is empty
+    AlreadyWilled, // this item already carries the keeper's word — one word per holding
+    EstateFull, // the will is at its bound — refuse rather than drop a holding
+    Sealed, // the directive is sealed — the keeper's word no longer changes
+    NotSealed, // succession needs the keeper's sealed directive — one proof alone holds custody
+    NotAccepted, // succession needs the heir's acceptance — one proof alone holds custody
+    AlreadySucceeded, // custody has already passed — the estate is settled, succession fires once
+};
+
+/// One holding the keeper has willed — an item (a demo artifact index) and the keeper's word over it.
+const Holding = struct {
+    item: u32,
+    disposition: Disposition,
+};
+
+/// A keeper's estate: the keeper, a distinct heir, a bounded will of dispositions, and the two proofs a
+/// succession turns on. Custody is *derived* — before succession the keeper's, after it the heir-or-rested
+/// by the will's own marks — so the tie the keeper drew (what passes, what rests) can never be overwritten.
+// Invariant: keeper != heir; will_count <= max_holdings; a succeeded estate is both sealed and accepted.
+pub const Estate = struct {
+    keeper: u32,
+    heir: u32,
+    will: [max_holdings]Holding,
+    will_count: u32,
+    sealed: bool,
+    accepted: bool,
+    succeeded: bool,
+
+    /// Open an estate naming a keeper and a distinct heir. Succession to oneself is empty, so a self-heir
+    /// refuses (`SelfHeir`). The will opens empty, unsealed, unaccepted, unsucceeded.
+    pub fn open(keeper: u32, heir: u32) EstateError!Estate {
+        // invariant: an heir distinct from the keeper — succession to oneself carries nothing.
+        if (keeper == heir) return error.SelfHeir;
+        assert(keeper != heir);
+        return Estate{
+            .keeper = keeper,
+            .heir = heir,
+            .will = undefined,
+            .will_count = 0,
+            .sealed = false,
+            .accepted = false,
+            .succeeded = false,
+        };
+    }
+
+    /// The index of a willed item, if the estate wills it.
+    fn find(self: *const Estate, item: u32) ?u32 {
+        // invariant: the will never exceeds its bound.
+        assert(self.will_count <= max_holdings);
+        var i: u32 = 0;
+        while (i < self.will_count) : (i += 1) {
+            if (self.will[i].item == item) return i;
+        }
+        return null;
+    }
+
+    /// Record the keeper's word for one holding. The directive must be unsealed (`Sealed` — a sealed will
+    /// no longer changes), the item unwilled (`AlreadyWilled` — one word per holding), and the will within
+    /// its bound (`EstateFull`).
+    fn record(self: *Estate, item: u32, disposition: Disposition) EstateError!void {
+        if (self.sealed) return error.Sealed;
+        if (self.find(item) != null) return error.AlreadyWilled;
+        if (self.will_count >= max_holdings) return error.EstateFull;
+
+        const i = self.will_count;
+        self.will[i] = .{ .item = item, .disposition = disposition };
+        self.will_count += 1;
+        // invariant: the will grew by exactly one, within its bound.
+        assert(self.will_count == i + 1);
+        assert(self.will_count <= max_holdings);
+    }
+
+    /// The keeper wills a holding to the heir — it passes at succession.
+    pub fn bequeath(self: *Estate, item: u32) EstateError!void {
+        try self.record(item, .bequeathed);
+    }
+
+    /// The keeper lets a holding rest — it is extinguished at succession, inherited by no one. The dignity
+    /// choice: a keeper's right to let some data end with them.
+    pub fn rest(self: *Estate, item: u32) EstateError!void {
+        try self.record(item, .rested);
+    }
+
+    /// Seal the directive — the keeper's pre-declared word, fixed while the keeper is present. After this
+    /// the will no longer changes; a re-seal refuses (`Sealed`). This is r2's signed act.
+    pub fn seal(self: *Estate) EstateError!void {
+        if (self.sealed) return error.Sealed;
+        self.sealed = true;
+        // invariant: the directive is now sealed and stays sealed.
+        assert(self.sealed);
+    }
+
+    /// The heir accepts custody — an heir is never conscripted, so succession waits on this. This is r2's
+    /// signed act. Acceptance is a standing yes; recording it twice is harmless.
+    pub fn accept(self: *Estate) void {
+        // invariant: custody has not already passed — acceptance precedes succession.
+        assert(!self.succeeded);
+        self.accepted = true;
+        assert(self.accepted);
+    }
+
+    /// Fire succession — custody passes. Only on **two proofs**: the sealed directive (`NotSealed`) and the
+    /// heir's acceptance (`NotAccepted`); either alone holds custody with the keeper. Succession fires once
+    /// (`AlreadySucceeded`). The holder of each item is derived from the will thereafter — nothing written.
+    pub fn succeed(self: *Estate) EstateError!void {
+        if (self.succeeded) return error.AlreadySucceeded;
+        if (!self.sealed) return error.NotSealed;
+        if (!self.accepted) return error.NotAccepted;
+        self.succeeded = true;
+        // invariant: a succeeded estate carries both proofs — never one alone.
+        assert(self.sealed);
+        assert(self.accepted);
+        // invariant: the heir holds exactly the bequeathed set — no more (the rested set is extinguished).
+        assert(self.heir_held_count() == self.bequeathed_count());
+    }
+
+    /// Who holds an item — derived, never written. An unwilled item is `unknown`; before succession every
+    /// willed item is the keeper's; after, a bequeathed item is the heir's and a rested item is `rested`.
+    pub fn holder_of(self: *const Estate, item: u32) Holder {
+        const idx = self.find(item) orelse return .unknown;
+        // invariant: a found index names a real holding within the will.
+        assert(idx < self.will_count);
+        if (!self.succeeded) return .keeper;
+        return switch (self.will[idx].disposition) {
+            .bequeathed => .heir,
+            .rested => .rested,
+        };
+    }
+
+    /// How many holdings the keeper willed to the heir.
+    pub fn bequeathed_count(self: *const Estate) u32 {
+        assert(self.will_count <= max_holdings);
+        var count: u32 = 0;
+        var i: u32 = 0;
+        while (i < self.will_count) : (i += 1) {
+            if (self.will[i].disposition == .bequeathed) count += 1;
+        }
+        // invariant: the bequeathed set never exceeds the whole will.
+        assert(count <= self.will_count);
+        return count;
+    }
+
+    /// How many holdings the keeper let rest — extinguished at succession.
+    pub fn rested_count(self: *const Estate) u32 {
+        assert(self.will_count <= max_holdings);
+        var count: u32 = 0;
+        var i: u32 = 0;
+        while (i < self.will_count) : (i += 1) {
+            if (self.will[i].disposition == .rested) count += 1;
+        }
+        // invariant: bequeathed and rested partition the will — the two counts sum to it.
+        assert(count <= self.will_count);
+        return count;
+    }
+
+    /// How many holdings resolve to the heir right now — before succession none, after it exactly the
+    /// bequeathed set. The rested set never counts here: no rested item is ever the heir's.
+    pub fn heir_held_count(self: *const Estate) u32 {
+        assert(self.will_count <= max_holdings);
+        var count: u32 = 0;
+        var i: u32 = 0;
+        while (i < self.will_count) : (i += 1) {
+            if (self.holder_of(self.will[i].item) == .heir) count += 1;
+        }
+        // invariant: the heir can hold no more than the whole will.
+        assert(count <= self.will_count);
+        return count;
+    }
+};
+
+// --- selftest -----------------------------------------------------------
+
+/// A keeper wills two holdings to the heir and rests one, seals the directive, the heir accepts, and
+/// succession fires on both proofs — the heir holds exactly the two bequeathed, and the rested one rests.
+fn welcome_two_proof_succession() !void {
+    var e = try Estate.open(11, 42); // keeper 11, heir 42
+
+    try e.bequeath(1); // a letter, for the heir
+    try e.bequeath(2); // a ledger, for the heir
+    try e.rest(3); // a private journal, to rest with the keeper
+
+    // Before succession, every willed item is still the keeper's.
+    assert(e.holder_of(1) == .keeper);
+    assert(e.holder_of(3) == .keeper);
+    assert(e.heir_held_count() == 0);
+
+    try e.seal();
+    e.accept();
+    try e.succeed();
+
+    // After the two-proof succession: the bequeathed pass to the heir, the rested one is held by no one.
+    assert(e.holder_of(1) == .heir);
+    assert(e.holder_of(2) == .heir);
+    assert(e.holder_of(3) == .rested);
+    assert(e.heir_held_count() == 2);
+    assert(e.bequeathed_count() == 2);
+    assert(e.rested_count() == 1);
+    print("data_dignity: a sealed will and an heir's acceptance passed exactly the two bequeathed holdings, and the one rested holding was allowed to rest.\n", .{});
+}
+
+/// The crux: the rested set is extinguished. No rested item is ever the heir's, and the heir holds exactly
+/// the bequeathed count — the keeper's dignity choice is the outcome the rule guards hardest.
+fn welcome_rested_set_extinguished() !void {
+    var e = try Estate.open(1, 2);
+    try e.bequeath(10);
+    try e.rest(20);
+    try e.rest(21);
+    try e.rest(22);
+    try e.seal();
+    e.accept();
+    try e.succeed();
+
+    // Every rested item resolves to `rested`, never to the heir.
+    assert(e.holder_of(20) == .rested);
+    assert(e.holder_of(21) == .rested);
+    assert(e.holder_of(22) == .rested);
+    // The heir holds exactly the bequeathed set — no rested item leaked in.
+    assert(e.heir_held_count() == e.bequeathed_count());
+    assert(e.heir_held_count() == 1);
+    assert(e.rested_count() == 3);
+    print("data_dignity: three rested holdings all resolved to rested and none to the heir — the rested set is extinguished, held by no one.\n", .{});
+}
+
+/// Custody moves on two proofs, never one: a sealed directive with no acceptance holds (`NotAccepted`),
+/// and an acceptance with no sealed directive holds (`NotSealed`). A steward cannot move custody from one
+/// side, and an heir is never conscripted.
+fn unwelcome_one_proof_holds_custody() !void {
+    // Sealed, but the heir has not accepted — succession holds.
+    var a = try Estate.open(1, 2);
+    try a.bequeath(5);
+    try a.seal();
+    const no_accept = a.succeed();
+    assert(no_accept == error.NotAccepted);
+    assert(!a.succeeded);
+    assert(a.holder_of(5) == .keeper); // custody stayed with the keeper
+
+    // Accepted, but the directive is not sealed — succession holds.
+    var b = try Estate.open(3, 4);
+    try b.bequeath(6);
+    b.accept();
+    const no_seal = b.succeed();
+    assert(no_seal == error.NotSealed);
+    assert(!b.succeeded);
+    assert(b.holder_of(6) == .keeper);
+    print("data_dignity: succession from one proof alone refused (NotAccepted, NotSealed) and custody stayed with the keeper — neither side moves custody alone.\n", .{});
+}
+
+/// A self-heir refuses (succession to oneself is empty), an item willed twice refuses (one word per
+/// holding), and a sealed will refuses a further word (the keeper's word is fixed once sealed).
+fn unwelcome_open_will_and_seal_refuse() !void {
+    // Succession to oneself carries nothing.
+    const self_heir = Estate.open(7, 7);
+    assert(self_heir == error.SelfHeir);
+
+    var e = try Estate.open(7, 8);
+    try e.bequeath(100);
+    // The same item cannot carry two words.
+    const doubled = e.rest(100);
+    assert(doubled == error.AlreadyWilled);
+    assert(e.will_count == 1);
+
+    // Once sealed, the keeper's word no longer changes.
+    try e.seal();
+    const after_seal = e.bequeath(101);
+    assert(after_seal == error.Sealed);
+    assert(e.will_count == 1);
+    print("data_dignity: a self-heir refused SelfHeir, a re-willed item refused AlreadyWilled, and a sealed will refused a further word — the keeper's word is one and fixed.\n", .{});
+}
+
+/// Succession fires exactly once — a settled estate refuses a second passage (`AlreadySucceeded`), so
+/// custody cannot be replayed.
+fn unwelcome_succession_fires_once() !void {
+    var e = try Estate.open(1, 2);
+    try e.bequeath(9);
+    try e.seal();
+    e.accept();
+    try e.succeed();
+    assert(e.succeeded);
+
+    const again = e.succeed();
+    assert(again == error.AlreadySucceeded);
+    assert(e.holder_of(9) == .heir); // still exactly as the one succession left it
+    print("data_dignity: a second succession refused AlreadySucceeded — custody passes once and cannot be replayed.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_two_proof_succession();
+    try welcome_rested_set_extinguished();
+    try unwelcome_one_proof_holds_custody();
+    try unwelcome_open_will_and_seal_refuse();
+    try unwelcome_succession_fires_once();
+    print("data_dignity: version {s}\n", .{data_dignity_app_version});
+    print("GREEN: DAHL-J12r1 data_dignity; a keeper's sealed will and an heir's acceptance pass exactly the bequeathed holdings, the rested set extinguished — succession honors the keeper's declared word.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "data-dignity"))) {
+        return run_selftest();
+    }
+    return run_selftest();
+}

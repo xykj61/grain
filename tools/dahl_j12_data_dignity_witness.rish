@@ -1,0 +1,39 @@
+# tools/dahl_j12_data_dignity_witness.rish — Season 3 Journey 12 (Data-dignity), Rung 1.
+#
+# Season 3, Commons — keepers meet each other with consent. Journeys 9–11 built how living keepers meet:
+# consent between two (Skate), quorum among many (Membership), a whole loaded shape (Council). Journey 12
+# is Commons' last and most tender crux — what becomes of a keeper's data when the keeper is gone.
+# pond/apps/data_dignity.rye fixes the crux — succession honors the keeper's declared word, and rests what
+# the keeper chose to rest. An Estate opens naming a keeper and a distinct heir; the keeper wills each
+# holding bequeathed (passes to the heir) or rested (extinguished at succession, inherited by no one),
+# seals the directive, and the heir accepts. Succession fires only on two proofs, never one — the sealed
+# directive (NotSealed) and the heir's acceptance (NotAccepted) — so neither side moves custody alone.
+# Who holds an item is derived: before succession the keeper's, after a bequeathed item the heir's and a
+# rested item held by no one. A self-heir (SelfHeir), a re-willed item (AlreadyWilled), a word after seal
+# (Sealed), and a replayed succession (AlreadySucceeded) each refuse. Pure state machine — no signing yet
+# (r2 binds the keeper's seal and the heir's acceptance to settled Kumara identities). Facts only; no
+# network, no funds, no key, no real seed (the maintainer's own succession is the maintainer's hand); demo
+# keeper and heir points only.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/dahl_j12_data_dignity_witness.rish
+
+say "dahl-j12r1: Language EN — a keeper's word outlives the keeper; an heir inherits only what was willed, and what the keeper chose to rest is allowed to rest."
+say "dahl-j12r1: Lens TAME — two proofs pass exactly the bequeathed set; the rested set extinguishes; a self-heir, a re-willed item, a word after seal, and a replayed succession each refuse."
+
+let zig = "vendor/zig-toolchain/zig"
+
+let bin = "pond/bin/data-dignity"
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/data_dignity.rye -femit-bin=${bin}"]
+assert build.ok else "dahl-j12r1: data_dignity build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "dahl-j12r1: data_dignity selftest exited non-zero"
+assert selftest.out contains "GREEN" else "dahl-j12r1: selftest did not speak GREEN"
+assert selftest.out contains "allowed to rest" else "dahl-j12r1: two-proof succession crux missing"
+assert selftest.out contains "the rested set is extinguished" else "dahl-j12r1: rested-set-extinguished crux missing"
+assert selftest.out contains "neither side moves custody alone" else "dahl-j12r1: two-proof gate crux missing"
+assert selftest.out contains "the keeper's word is one and fixed" else "dahl-j12r1: sealed-will refusal missing"
+assert selftest.out contains "custody passes once and cannot be replayed" else "dahl-j12r1: single-succession refusal missing"
+
+say "GREEN: dahl-j12r1 — data_dignity passes exactly the bequeathed holdings on two proofs, extinguishes the rested set, and refuses a self-heir, a re-willed item, a word after seal, and a replayed succession."

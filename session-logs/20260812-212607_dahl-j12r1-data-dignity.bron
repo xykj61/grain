@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260812.212607
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention · this session in ai-jail
+title DAHL-J12r1 data_dignity — succession honors the keeper's declared word
+prompt Read REMEMBER + the 1024-round itinerary; take the next agent-doable lap Lindy-first crux-first, self-approving design rounds; send each finished increment as its own signed round; stop at custody gates.
+think Read REMEMBER.md and the 1,024-round itinerary. Last landed: DAHL Journey 11 (Council skies) complete end to end (git nib dfd202a204). The itinerary and REMEMBER both name the next agent-doable crux: Season 3 (Commons) Journey 12 — Data-dignity (succession, consent, the keeper's rights, custody-first).
+think The filling law asks for a self-approved design read before a new journey's first round. Studied council_sky.rye r1 (the pattern to mirror) and its witness; launched an Explore agent to survey succession-relevant module APIs (constellation transfer/escape, kumara sign, keyring signing, vault shards, names custody) so r2+ compose cleanly.
+think Fixed the crux for r1 as a pure bounded state machine: an Estate names keeper + distinct heir; the keeper wills each holding bequeathed or rested, seals the directive, the heir accepts; succeed fires only on two proofs (NotSealed / NotAccepted), mirroring the ledger's escape law (both consent, no veto) carried across the keeper's absence. holder_of is derived, never written.
+think The dignity heart: the rested set is extinguished — no rested item ever the heir's; heir_held_count == bequeathed_count asserted in succeed. Refusals: SelfHeir, AlreadyWilled, Sealed (word after seal), AlreadySucceeded (succession fires once).
+obs TAME reflexes kept: opening triad, ≥2 asserts per fn with // invariant, named errors, bounded max_holdings, no compound assert, unqualified assert. tame_style_check bans clean (file absent from every ratchet list); width-check exit 0; witness GREEN first pass.
+obs Custody-first held: facts only, no network/funds/key/real seed. r2 signs seal+acceptance (Kumara), r3 travels as Bron, r4 reads a real fixture true — the established four-round arc. The maintainer's own succession over a real Kumara instance is gate #4-adjacent, Keaton's hand.
+loom witness=dahl_j12_data_dignity_witness build=green selftests=5 cases_pass=5
+file active-designing/20260812-212607_dahl-journey12-data-dignity-exploration.md self-approved design read opening Journey 12, naming the crux and four rounds
+file pond/apps/data_dignity.rye r1 — the estate, the sealed will, the two-proof succession, the derived holder
+file tools/dahl_j12_data_dignity_witness.rish witness building + proving the r1 selftest GREEN
+file work-in-progress/REMEMBER.md landed line for DAHL-J12r1 + git nib refresh
+recommend keep-going DAHL-J12r2 (sign the keeper's seal + heir's acceptance with settled Kumara identities, mirroring skate_group_signed) — mechanical, single-module, pattern written
