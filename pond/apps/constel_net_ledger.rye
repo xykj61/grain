@@ -84,6 +84,15 @@ fn signer_is_sovereign(ledger: *const NetLedger, fact: *const fold.Fact) bool {
     return std.mem.eql(u8, fact.signer_pk[0..], ledger.net.galaxy.keeper[0..]);
 }
 
+/// The sovereignty gate, exposed for rungs that mint their own fact kinds (star reservations, r2):
+/// whether a fact was authorized by the identity that holds this net's genesis.
+pub fn signer_is_sovereign_of(ledger: *const NetLedger, fact: *const fold.Fact) bool {
+    // invariant: this public reader is exactly the private gate admit uses — one authority test,
+    // never a second that could drift from it.
+    assert(fact.signer_pk.len == ledger.net.galaxy.keeper.len);
+    return signer_is_sovereign(ledger, fact);
+}
+
 /// Open a ledger on a fresh dev-net. The name is quarantined first (an unsafe name opens no genesis,
 /// so no ledger exists under a name that could be real), then the sovereign keeper keypair is derived
 /// from the same seed that settled the genesis, so the money's signer is provably the net's own hand.
