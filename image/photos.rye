@@ -29,6 +29,7 @@ pub const PhotosError = error{
     BadBrightness,
     BadSaturation,
     NotDownscale,
+    BadKernel,
 };
 
 /// A brightness delta never needs to exceed a full channel range in either direction.
@@ -39,6 +40,9 @@ pub const adjust_contrast_max: u32 = 1 << 16;
 /// A saturation ratio's numerator and denominator ceiling — bounds the luma-preserving map so no product can
 /// wrap: the largest chroma a channel carries from its luma is 255, and 255·(1<<16) stays far inside i64.
 pub const saturate_max: u32 = 1 << 16;
+/// A convolution weight and divisor magnitude ceiling — bounds the 3×3 accumulation so no term can wrap in i64:
+/// the largest single term is 255·(1<<16), and nine of them plus a bias stay far inside i64.
+pub const kernel_weight_max: i32 = 1 << 16;
 
 /// Rec.601 luma weights scaled to sum exactly 256, so a gray pixel (r == g == b == v) maps to luma v with no
 /// rounding drift: 77 + 150 + 29 == 256. A right shift by 8 divides by that 256 exactly.
@@ -613,6 +617,97 @@ pub fn hue_turn(allocator: std.mem.Allocator, pm: *const qoi.Pixmap, thirds: u32
         .colorspace = pm.colorspace,
         .pixels = out,
     };
+}
+
+/// Convolve a decoded image with a 3×3 kernel over the three color channels, leaving alpha untouched, returning
+/// a fresh Pixmap. Each output color channel is the kernel-weighted sum of the pixel's 3×3 neighborhood divided
+/// by `divisor`, plus `bias`, then clamped into 0..255. Edges extend: a neighbor past a border clamps to the
+/// nearest real pixel, so no read wraps and no black halo forms. The identity kernel {0,0,0,0,1,0,0,0,0} with
+/// divisor 1 and bias 0 recovers the source byte-for-byte; a box-blur kernel (all ones, divisor 9) leaves a
+/// solid color exactly unchanged. Pure — the source is never mutated. This is the primitive the filter family
+/// stands on: blur, sharpen, and any future edge verb is one kernel over it. Refuses a degenerate image
+/// (`EmptyImage`), a zero or over-ceiling divisor (`BadKernel`), and any over-ceiling weight (`BadKernel`).
+pub fn convolve(
+    allocator: std.mem.Allocator,
+    pm: *const qoi.Pixmap,
+    kernel: *const [9]i32,
+    divisor: i32,
+    bias: i32,
+) !qoi.Pixmap {
+    // invariant: the source buffer is exactly four bytes per pixel.
+    assert(pm.pixels.len == @as(usize, pm.width) * @as(usize, pm.height) * 4);
+    if (pm.width == 0 or pm.height == 0) return error.EmptyImage;
+    // The divisor must be a real, bounded divisor — a zero divides by nothing, and an over-ceiling magnitude
+    // could let the i64 accumulation wrap.
+    if (divisor == 0 or divisor > kernel_weight_max or divisor < -kernel_weight_max) return error.BadKernel;
+    {
+        var k: usize = 0;
+        while (k < 9) : (k += 1) {
+            if (kernel[k] > kernel_weight_max or kernel[k] < -kernel_weight_max) return error.BadKernel;
+        }
+    }
+
+    const out = try allocator.alloc(u8, pm.pixels.len);
+
+    const div = @as(i64, divisor);
+    const b = @as(i64, bias);
+    const w = pm.width;
+    const h = pm.height;
+
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const dst_off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            // Each color channel accumulates the 3×3 weighted sum in i64 so no term wraps; alpha passes through.
+            var c: usize = 0;
+            while (c < 3) : (c += 1) {
+                var acc: i64 = 0;
+                var ky: i64 = -1;
+                while (ky <= 1) : (ky += 1) {
+                    var kx: i64 = -1;
+                    while (kx <= 1) : (kx += 1) {
+                        const sx = clamp_index(@as(i64, x) + kx, w);
+                        const sy = clamp_index(@as(i64, y) + ky, h);
+                        const s_off = (@as(usize, @intCast(sy)) * @as(usize, w) + @as(usize, @intCast(sx))) * 4;
+                        const weight = @as(i64, kernel[@as(usize, @intCast((ky + 1) * 3 + (kx + 1)))]);
+                        acc += weight * @as(i64, pm.pixels[s_off + c]);
+                    }
+                }
+                const mapped = @divTrunc(acc, div) + b;
+                const clamped: i64 = if (mapped < 0) 0 else if (mapped > 255) 255 else mapped;
+                out[dst_off + c] = @intCast(clamped);
+            }
+            out[dst_off + 3] = pm.pixels[dst_off + 3];
+        }
+    }
+
+    // invariant: a convolution changes no pixel count — the output length matches the source exactly.
+    assert(out.len == pm.pixels.len);
+    return qoi.Pixmap{
+        .width = pm.width,
+        .height = pm.height,
+        .channels = pm.channels,
+        .colorspace = pm.colorspace,
+        .pixels = out,
+    };
+}
+
+/// A box blur — the mean of each pixel's 3×3 neighborhood — over the color channels, alpha untouched. One kernel
+/// over `convolve`: nine weights of one, divisor nine. A solid color is a fixed point, since the mean of nine
+/// equal values is that value. Pure. Refuses only a degenerate image (`EmptyImage`).
+pub fn blur(allocator: std.mem.Allocator, pm: *const qoi.Pixmap) !qoi.Pixmap {
+    const kernel = [9]i32{ 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+    return convolve(allocator, pm, &kernel, 9, 0);
+}
+
+/// A sharpen — the classic five-neighborhood high-pass — over the color channels, alpha untouched. One kernel
+/// over `convolve`: center five, four edge neighbors minus-one, divisor one. Its weights sum to one, so a flat
+/// neighborhood maps to itself — a solid color is a fixed point, and only real local contrast is amplified.
+/// Pure. Refuses only a degenerate image (`EmptyImage`).
+pub fn sharpen(allocator: std.mem.Allocator, pm: *const qoi.Pixmap) !qoi.Pixmap {
+    const kernel = [9]i32{ 0, -1, 0, -1, 5, -1, 0, -1, 0 };
+    return convolve(allocator, pm, &kernel, 1, 0);
 }
 
 // --- selftest: crop a position-tagged image, prove every cropped pixel is its source pixel, prove purity and
@@ -1217,6 +1312,86 @@ fn run_hue_turn(garden: std.mem.Allocator) !struct { w: u32, h: u32 } {
     return .{ .w = w, .h = h };
 }
 
+/// Prove the convolution primitive and its blur/sharpen wrappers by the algebra they must obey: identity is the
+/// source, a solid color is a fixed point of both filters, a box blur averages a known row exactly, purity and
+/// the open round-trip hold, and every degenerate input refuses by name. Returns the identity image's dimensions.
+fn run_convolve(garden: std.mem.Allocator) !struct { w: u32, h: u32 } {
+    // The identity kernel over a position-tagged image is exactly the source, byte-for-byte.
+    const tag = try craft_tagged_wh(garden, 4, 3);
+    const identity = [9]i32{ 0, 0, 0, 0, 1, 0, 0, 0, 0 };
+    const same = try convolve(garden, &tag, &identity, 1, 0);
+    assert(same.same_bytes(&tag));
+
+    // A solid color is a fixed point of both the box blur (mean of nine equal values) and the sharpen (weights
+    // sum to one over a flat field).
+    const sw: u32 = 4;
+    const sh: u32 = 4;
+    const solid = try garden.alloc(u8, sw * sh * 4);
+    {
+        var i: usize = 0;
+        while (i < solid.len) : (i += 4) {
+            solid[i] = 120;
+            solid[i + 1] = 60;
+            solid[i + 2] = 200;
+            solid[i + 3] = 255;
+        }
+    }
+    const solid_pm = qoi.Pixmap{ .width = sw, .height = sh, .channels = 4, .colorspace = 0, .pixels = solid };
+    const blurred_solid = try blur(garden, &solid_pm);
+    assert(blurred_solid.same_bytes(&solid_pm));
+    const sharp_solid = try sharpen(garden, &solid_pm);
+    assert(sharp_solid.same_bytes(&solid_pm));
+
+    // A box blur truly averages: a 3×1 red row [0, 90, 0] blurs to [30, 30, 30] — with the single row clamped
+    // vertically, each pixel's 3×3 neighborhood is its three horizontal neighbors thrice, landing on the mean.
+    const row = try garden.alloc(u8, 3 * 1 * 4);
+    const reds = [3]u8{ 0, 90, 0 };
+    {
+        var x: usize = 0;
+        while (x < 3) : (x += 1) {
+            row[x * 4] = reds[x];
+            row[x * 4 + 1] = 0;
+            row[x * 4 + 2] = 0;
+            row[x * 4 + 3] = 255;
+        }
+    }
+    const row_pm = qoi.Pixmap{ .width = 3, .height = 1, .channels = 4, .colorspace = 0, .pixels = row };
+    const row_blur = try blur(garden, &row_pm);
+    // Left edge {A,A,B} = 0,0,90 → 30; center {A,B,C} = 0,90,0 → 30; right edge {B,C,C} = 90,0,0 → 30.
+    assert(row_blur.pixels[0] == 30);
+    assert(row_blur.pixels[4] == 30);
+    assert(row_blur.pixels[8] == 30);
+    // Alpha rode through the blur untouched.
+    assert(row_blur.pixels[7] == 255);
+
+    // Pure: the source row's center is untouched.
+    assert(row_pm.pixels[4] == 90);
+
+    // A blurred image is still an OPEN image: it re-encodes and round-trips byte-for-byte through the codec.
+    const cap = qoi.encoded_bound(row_blur.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const res = try qoi.encode(&row_blur, dst);
+    const back = try qoi.decode(garden, dst[0..res.len]);
+    assert(back.same_bytes(&row_blur));
+
+    // Unwelcome: a zero-dimension image refuses.
+    const empty = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (convolve(garden, &empty, &identity, 1, 0)) |_| return error.EmptySlipped else |e| {
+        if (e != error.EmptyImage) return error.WrongEmpty;
+    }
+    // Unwelcome: a zero divisor refuses.
+    if (convolve(garden, &solid_pm, &identity, 0, 0)) |_| return error.KernelSlipped else |e| {
+        if (e != error.BadKernel) return error.WrongKernel;
+    }
+    // Unwelcome: an over-ceiling weight refuses.
+    const huge = [9]i32{ kernel_weight_max + 1, 0, 0, 0, 1, 0, 0, 0, 0 };
+    if (convolve(garden, &solid_pm, &huge, 1, 0)) |_| return error.KernelSlipped else |e| {
+        if (e != error.BadKernel) return error.WrongKernel;
+    }
+
+    return .{ .w = same.width, .h = same.height };
+}
+
 fn run_selftest(garden: std.mem.Allocator) !u8 {
     const pm = try craft_tagged(garden);
 
@@ -1323,6 +1498,13 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         "(the +120 direction); every pixel keeps its max and min channel (HSV value and chroma preserved); an " ++
         "already-gray pixel is a fixed point at every turn; alpha passes through untouched; source untouched " ++
         "(pure); hue-turned image re-encodes and round-trips; an empty image refused by name\n", .{ hue.w, hue.h });
+
+    const conv = try run_convolve(garden);
+    print("GREEN image-photos-convolve: a {d}x{d} image convolves — the identity kernel is the source " ++
+        "byte-identical; a solid color is a fixed point of both the box blur and the sharpen; a 3x1 red row " ++
+        "[0,90,0] box-blurs to [30,30,30], the exact clamped mean at every pixel; alpha passes through " ++
+        "untouched; source untouched (pure); blurred image re-encodes and round-trips; an empty image, a zero " ++
+        "divisor, and an over-ceiling weight refused by name\n", .{ conv.w, conv.h });
     return 0;
 }
 
