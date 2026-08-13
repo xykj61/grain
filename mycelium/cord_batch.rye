@@ -1,0 +1,491 @@
+//! mycelium/cord_batch.rye — the batched Cord: one block seals many facts.
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · fact batching · rung r1 — the crux.
+//! Design read: active-designing/20260813-043303_mycelium-fact-batching-exploration.md
+//!
+//! The single-fact Cord (mycelium/cord.rye) buys — for one author signature, one
+//! node in the agreed order, one round of admission — exactly one fact. From
+//! TigerBeetle comes the batching insight: amortize that fixed per-block cost
+//! across many facts by sealing a bounded *batch* under one author signature.
+//! Clean-room — TigerBeetle is studied, never copied.
+//!
+//! Grown BESIDE the elder, never over it: the single-fact `cord.Block` and its
+//! whole witnessed arc stay a green binary. A `BatchBlock` carries `fact_count`
+//! facts, sealed together under one author signature, admitted and ordered as one
+//! node of the Dag — the topological commit rule (round asc · author key · block
+//! hash) is the elder's exactly; only the payload per node grows from one fact to
+//! a bounded batch.
+//!
+//! The crux: a batched history and a single-fact history over the identical facts
+//! fold to the byte-identical supply — batching is a throughput transform, never a
+//! semantic one. The supply never notices how the facts were packed.
+//!
+//! Siloed, dev-only, demo seeds — no real key, no funds, no network, no custody.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/cord_batch.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+const cord = @import("cord.rye");
+const tally_copy = @import("tally_copy.rye");
+
+const Sha256 = std.crypto.hash.sha2.Sha256;
+
+/// A batch seals at most this many facts under one author signature — a named
+/// ceiling, generous over the demo's handful and well under the fold log bound
+/// (fold.myc_log_max_facts = 1024). An over-full batch refuses `BatchFull`.
+pub const max_facts_per_block: u32 = 16;
+
+/// Canonical batch-block bytes: author_pk · round(le4) · parent_count(le4) ·
+/// parents(32 each) · fact_count(le4) · each fact's signature(64). One author
+/// signature seals the whole batch; each fact's own signature (bound in here)
+/// binds its own content, so a tampered fact anywhere breaks the block signature.
+const batch_bytes_max: u32 =
+    kumara.PublicKey.encoded_length + 4 + 4 + cord.cord_max_parents * cord.hash_len + 4 +
+    max_facts_per_block * kumara.signature_length;
+
+pub const BatchBlock = struct {
+    author_pk: [kumara.PublicKey.encoded_length]u8 = undefined,
+    round: u32 = 0,
+    parents: [cord.cord_max_parents][cord.hash_len]u8 = undefined,
+    parent_count: u32 = 0,
+    facts: [max_facts_per_block]fold.Fact = undefined,
+    fact_count: u32 = 0,
+    sig: [kumara.signature_length]u8 = undefined,
+};
+
+/// Write a batch block's canonical bytes into `out`, returning the length written.
+fn batch_bytes(b: *const BatchBlock, out: []u8) u32 {
+    // invariant: the caller's buffer holds the whole bounded layout.
+    assert(out.len >= batch_bytes_max);
+    // invariant: fan-in and batch size are bounded before any copy.
+    assert(b.parent_count <= cord.cord_max_parents);
+    assert(b.fact_count <= max_facts_per_block);
+    const pk_len: u32 = kumara.PublicKey.encoded_length;
+    tally_copy.copy_disjoint(u8, out[0..pk_len], b.author_pk[0..]);
+    var off: u32 = pk_len;
+    var r = b.round;
+    var i: u32 = 0;
+    while (i < 4) : (i += 1) {
+        out[off] = @truncate(r);
+        r >>= 8;
+        off += 1;
+    }
+    var pc = b.parent_count;
+    i = 0;
+    while (i < 4) : (i += 1) {
+        out[off] = @truncate(pc);
+        pc >>= 8;
+        off += 1;
+    }
+    var p: u32 = 0;
+    while (p < b.parent_count) : (p += 1) {
+        tally_copy.copy_disjoint(u8, out[off..][0..cord.hash_len], b.parents[p][0..]);
+        off += cord.hash_len;
+    }
+    var fc = b.fact_count;
+    i = 0;
+    while (i < 4) : (i += 1) {
+        out[off] = @truncate(fc);
+        fc >>= 8;
+        off += 1;
+    }
+    var f: u32 = 0;
+    while (f < b.fact_count) : (f += 1) {
+        tally_copy.copy_disjoint(u8, out[off..][0..kumara.signature_length], b.facts[f].sig[0..]);
+        off += kumara.signature_length;
+    }
+    // invariant: the written length never exceeds the named ceiling.
+    assert(off <= batch_bytes_max);
+    return off;
+}
+
+/// The batch block's address — SHA-256 over its canonical bytes.
+fn batch_hash(b: *const BatchBlock, out: *[cord.hash_len]u8) void {
+    var buf: [batch_bytes_max]u8 = undefined;
+    const n = batch_bytes(b, &buf);
+    // invariant: hashing covers exactly the canonical prefix, never a stale tail.
+    assert(n <= batch_bytes_max);
+    assert(n >= kumara.PublicKey.encoded_length);
+    Sha256.hash(buf[0..n], out, .{});
+}
+
+/// A batch block's address, exposed for a Byzantine-aware caller. Additive — the
+/// r1 admission path is unchanged.
+pub fn address_batch(b: *const BatchBlock, out: *[cord.hash_len]u8) void {
+    batch_hash(b, out);
+}
+
+/// True when the batch block's author signature verifies over its canonical bytes.
+pub fn verify_batch(b: *const BatchBlock) bool {
+    // invariant: fan-in and batch size are bounded before the layout.
+    assert(b.parent_count <= cord.cord_max_parents);
+    assert(b.fact_count <= max_facts_per_block);
+    var buf: [batch_bytes_max]u8 = undefined;
+    const n = batch_bytes(b, &buf);
+    const pk = kumara.PublicKey.fromBytes(b.author_pk) catch return false;
+    kumara.verify_bytes(buf[0..n], b.sig[0..], pk) catch return false;
+    return true;
+}
+
+/// Mint an author-signed batch block over a bounded set of facts and parents.
+/// A block with nothing to say is no block (`EmptyBatch`); an over-full batch or
+/// an over-wide fan-in refuse by name before any signing.
+pub fn mint_batch(
+    author: kumara.KeyPair,
+    round: u32,
+    parents: []const [cord.hash_len]u8,
+    facts: []const fold.Fact,
+) error{ EmptyBatch, BatchFull, TooManyParents }!BatchBlock {
+    // invariant: batch size and fan-in are named before construction.
+    if (facts.len == 0) return error.EmptyBatch;
+    if (facts.len > max_facts_per_block) return error.BatchFull;
+    if (parents.len > cord.cord_max_parents) return error.TooManyParents;
+
+    var b = BatchBlock{ .round = round };
+    const pk = author.public_key.toBytes();
+    tally_copy.copy_disjoint(u8, b.author_pk[0..], pk[0..]);
+    b.parent_count = @intCast(parents.len);
+    var i: u32 = 0;
+    while (i < b.parent_count) : (i += 1) {
+        tally_copy.copy_disjoint(u8, b.parents[i][0..], parents[i][0..]);
+    }
+    b.fact_count = @intCast(facts.len);
+    var j: u32 = 0;
+    while (j < b.fact_count) : (j += 1) {
+        b.facts[j] = facts[j];
+    }
+    var buf: [batch_bytes_max]u8 = undefined;
+    const n = batch_bytes(&b, &buf);
+    const sig = kumara.sign(buf[0..n], author, null);
+    const sb = sig.toBytes();
+    tally_copy.copy_disjoint(u8, b.sig[0..], sb[0..]);
+    // invariant: a minted batch carries at least one fact and a verifying seal.
+    assert(b.fact_count >= 1);
+    return b;
+}
+
+pub const BatchDag = struct {
+    blocks: [cord.cord_max_blocks]BatchBlock = undefined,
+    hashes: [cord.cord_max_blocks][cord.hash_len]u8 = undefined,
+    len: u32 = 0,
+
+    pub fn empty() BatchDag {
+        return .{ .blocks = undefined, .hashes = undefined, .len = 0 };
+    }
+};
+
+/// Index of a batch block by its hash, or null when absent.
+fn find_index(dag: *const BatchDag, hash: *const [cord.hash_len]u8) ?u32 {
+    // invariant: the search stays within the seated blocks.
+    assert(dag.len <= cord.cord_max_blocks);
+    var i: u32 = 0;
+    while (i < dag.len) : (i += 1) {
+        if (std.mem.eql(u8, dag.hashes[i][0..], hash[0..])) return i;
+    }
+    return null;
+}
+
+/// Admit a batch block. Refuses whole (Dag unchanged) on any fault — a forged
+/// block bypassing `mint_batch` is still caught here.
+pub fn add_batch(dag: *BatchDag, block: BatchBlock) error{
+    BadSignature,
+    DanglingParent,
+    TooManyParents,
+    DagFull,
+    Duplicate,
+    EmptyBatch,
+    BatchFull,
+}!void {
+    if (block.parent_count > cord.cord_max_parents) return error.TooManyParents;
+    if (block.fact_count == 0) return error.EmptyBatch;
+    if (block.fact_count > max_facts_per_block) return error.BatchFull;
+    if (dag.len >= cord.cord_max_blocks) return error.DagFull;
+
+    // invariant: only an author-signed batch may join.
+    if (!verify_batch(&block)) return error.BadSignature;
+
+    var i: u32 = 0;
+    while (i < block.parent_count) : (i += 1) {
+        if (find_index(dag, &block.parents[i]) == null) return error.DanglingParent;
+    }
+
+    var h: [cord.hash_len]u8 = undefined;
+    batch_hash(&block, &h);
+    if (find_index(dag, &h) != null) return error.Duplicate;
+
+    const at = dag.len;
+    dag.blocks[at] = block;
+    tally_copy.copy_disjoint(u8, dag.hashes[at][0..], h[0..]);
+    dag.len += 1;
+    // invariant: growth is exactly one seat, never past the ceiling.
+    assert(dag.len <= cord.cord_max_blocks);
+}
+
+/// True when every parent of batch block `idx` has already been emitted.
+fn parents_emitted(dag: *const BatchDag, idx: u32, emitted: []const bool) bool {
+    // invariant: the index names a real seat.
+    assert(idx < dag.len);
+    const b = &dag.blocks[idx];
+    var i: u32 = 0;
+    while (i < b.parent_count) : (i += 1) {
+        const j = find_index(dag, &b.parents[i]) orelse return false;
+        if (!emitted[j]) return false;
+    }
+    return true;
+}
+
+/// The deterministic tie-break, identical to the elder Cord's: round ascending,
+/// then author key, then block hash — a total order over distinct blocks.
+fn block_less(dag: *const BatchDag, a: u32, b: u32) bool {
+    // invariant: both indices name real seats.
+    assert(a < dag.len);
+    assert(b < dag.len);
+    const ba = &dag.blocks[a];
+    const bb = &dag.blocks[b];
+    if (ba.round != bb.round) return ba.round < bb.round;
+    const ord_pk = std.mem.order(u8, ba.author_pk[0..], bb.author_pk[0..]);
+    if (ord_pk != .eq) return ord_pk == .lt;
+    return std.mem.order(u8, dag.hashes[a][0..], dag.hashes[b][0..]) == .lt;
+}
+
+/// Commit — linearize the Dag to one total order of block indices. A pure
+/// function of the graph: the same blocks yield the identical order whatever
+/// order they arrived in.
+pub fn commit_batch(dag: *const BatchDag, order_out: []u32) u32 {
+    // invariant: the output holds a full permutation of the Dag's blocks.
+    assert(order_out.len >= dag.len);
+    var emitted: [cord.cord_max_blocks]bool = undefined;
+    var z: u32 = 0;
+    while (z < dag.len) : (z += 1) emitted[z] = false;
+
+    var count: u32 = 0;
+    while (count < dag.len) {
+        var best: ?u32 = null;
+        var i: u32 = 0;
+        while (i < dag.len) : (i += 1) {
+            if (emitted[i]) continue;
+            if (!parents_emitted(dag, i, emitted[0..dag.len])) continue;
+            if (best == null or block_less(dag, i, best.?)) best = i;
+        }
+        // invariant: acyclic by construction, so a ready block always exists
+        // until all are emitted — a stall would mean a cycle got in.
+        assert(best != null);
+        order_out[count] = best.?;
+        emitted[best.?] = true;
+        count += 1;
+    }
+    // invariant: every block is emitted exactly once.
+    assert(count == dag.len);
+    return count;
+}
+
+/// Gather the committed batches' facts into a fold Log — committed block order,
+/// facts within a block in array order. The one place batching flattens back to
+/// the single stream `fold_log` folds.
+pub fn committed_batch_log(
+    dag: *const BatchDag,
+    order: []const u32,
+    count: u32,
+    log_out: *fold.Log,
+) void {
+    // invariant: the committed block count never exceeds the Dag's own bound.
+    assert(count <= dag.len);
+    log_out.len = 0;
+    var total: u32 = 0;
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        const idx = order[i];
+        assert(idx < dag.len);
+        const b = &dag.blocks[idx];
+        var f: u32 = 0;
+        while (f < b.fact_count) : (f += 1) {
+            // invariant: the flattened total never overflows the fold log bound.
+            assert(total < fold.myc_log_max_facts);
+            log_out.facts[total] = b.facts[f];
+            total += 1;
+        }
+    }
+    log_out.len = total;
+    // invariant: the log holds every fact of every committed batch, no more.
+    assert(log_out.len == total);
+}
+
+// ---- selftest: the batch folds identical to single-fact -------------------
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+/// The shared four facts both histories fold — two genesis issues, then a tax and
+/// a star reserve. Their aggregates (issued · taxed · star) are packing-invariant:
+/// issues commute, and round ordering keeps the round-1 drains after them.
+const Facts = struct {
+    fa: fold.Fact,
+    fb: fold.Fact,
+    fc: fold.Fact,
+    fd: fold.Fact,
+};
+
+fn make_facts() !Facts {
+    const ka = seeded(0xA1);
+    const kb = seeded(0xB2);
+    const kc = seeded(0xC3);
+    const kd = seeded(0xD4);
+    const fa = fold.mint_fact(ka, fold.kind_issue, 500, "", "genesis-a") orelse return error.MintA;
+    const fb = fold.mint_fact(kb, fold.kind_issue, 500, "", "genesis-b") orelse return error.MintB;
+    const fc = fold.mint_fact(kc, fold.kind_tax, 200, "", "tax-c") orelse return error.MintC;
+    const fd = fold.mint_fact(kd, fold.kind_star_reserve, 100, "vega", "reserve") orelse return error.MintD;
+    return .{ .fa = fa, .fb = fb, .fc = fc, .fd = fd };
+}
+
+/// Fold the four facts one-per-block across the ELDER single-fact Cord.
+fn fold_single(f: *const Facts) !fold.FoldState {
+    const ka = seeded(0xA1);
+    const kb = seeded(0xB2);
+    const kc = seeded(0xC3);
+    const kd = seeded(0xD4);
+
+    const a = cord.mint_block(ka, 0, &[_][cord.hash_len]u8{}, f.fa) orelse return error.BlockA;
+    const b = cord.mint_block(kb, 0, &[_][cord.hash_len]u8{}, f.fb) orelse return error.BlockB;
+    var ha: [cord.hash_len]u8 = undefined;
+    var hb: [cord.hash_len]u8 = undefined;
+    cord.address(&a, &ha);
+    cord.address(&b, &hb);
+    const roots = [_][cord.hash_len]u8{ ha, hb };
+    const c = cord.mint_block(kc, 1, roots[0..], f.fc) orelse return error.BlockC;
+    const d = cord.mint_block(kd, 1, roots[0..], f.fd) orelse return error.BlockD;
+
+    var dag = cord.Dag.empty();
+    try cord.add(&dag, a);
+    try cord.add(&dag, b);
+    try cord.add(&dag, c);
+    try cord.add(&dag, d);
+
+    var order: [cord.cord_max_blocks]u32 = undefined;
+    const count = cord.commit(&dag, order[0..]);
+    var log = fold.Log.empty();
+    cord.committed_log(&dag, order[0..], count, &log);
+    // invariant: four single-fact blocks flatten to four facts.
+    assert(log.len == 4);
+    return try fold.fold_log(&log);
+}
+
+/// Fold the SAME four facts as two batched blocks — one round-0 batch of the two
+/// genesis issues, one round-1 batch of the tax and the reserve.
+fn fold_batched(f: *const Facts) !fold.FoldState {
+    const ka = seeded(0xA1);
+    const kc = seeded(0xC3);
+
+    const genesis = [_]fold.Fact{ f.fa, f.fb };
+    const round1 = [_]fold.Fact{ f.fc, f.fd };
+
+    const g = try mint_batch(ka, 0, &[_][cord.hash_len]u8{}, genesis[0..]);
+    var hg: [cord.hash_len]u8 = undefined;
+    address_batch(&g, &hg);
+    const roots = [_][cord.hash_len]u8{hg};
+    const h = try mint_batch(kc, 1, roots[0..], round1[0..]);
+
+    var dag = BatchDag.empty();
+    try add_batch(&dag, g);
+    try add_batch(&dag, h);
+
+    var order: [cord.cord_max_blocks]u32 = undefined;
+    const count = commit_batch(&dag, order[0..]);
+    // invariant: two batches commit, and flatten to four facts.
+    assert(count == 2);
+    var log = fold.Log.empty();
+    committed_batch_log(&dag, order[0..], count, &log);
+    assert(log.len == 4);
+    return try fold.fold_log(&log);
+}
+
+fn states_equal(x: *const fold.FoldState, y: *const fold.FoldState) bool {
+    if (x.issued != y.issued) return false;
+    if (x.taxed != y.taxed) return false;
+    if (x.star_count != y.star_count) return false;
+    return true;
+}
+
+pub fn main() !void {
+    const f = try make_facts();
+
+    // The crux: the same facts, packed one-per-block and batched, fold to one
+    // supply. Batching never changes what the network agrees the supply is.
+    const single = try fold_single(&f);
+    const batched = try fold_batched(&f);
+    if (!states_equal(&single, &batched)) return error.PackingChangedSupply;
+    if (batched.issued != 1000) return error.SupplyIssued;
+    if (batched.taxed != 300) return error.SupplyTaxed;
+    if (batched.supply() != 700) return error.SupplyNet;
+    if (batched.star_count != 1) return error.StarCount;
+
+    // Refusal: an over-full batch refuses by name before any signing.
+    const ka = seeded(0xA1);
+    var many: [max_facts_per_block + 1]fold.Fact = undefined;
+    var m: u32 = 0;
+    while (m < max_facts_per_block + 1) : (m += 1) many[m] = f.fa;
+    if (mint_batch(ka, 0, &[_][cord.hash_len]u8{}, many[0..])) |_| {
+        return error.OverFullMinted;
+    } else |err| {
+        if (err != error.BatchFull) return error.WrongBatchFull;
+    }
+
+    // Refusal: an empty batch is no block.
+    if (mint_batch(ka, 0, &[_][cord.hash_len]u8{}, &[_]fold.Fact{})) |_| {
+        return error.EmptyMinted;
+    } else |err| {
+        if (err != error.EmptyBatch) return error.WrongEmpty;
+    }
+
+    // Refusal: a tampered fact anywhere in a batch breaks the block signature at
+    // add, before the Dag grows.
+    const genesis = [_]fold.Fact{ f.fa, f.fb };
+    const g = try mint_batch(ka, 0, &[_][cord.hash_len]u8{}, genesis[0..]);
+    var g_bad = g;
+    g_bad.facts[0].sig[0] ^= 0xff;
+    var d_tamper = BatchDag.empty();
+    if (add_batch(&d_tamper, g_bad)) |_| {
+        return error.TamperAdmitted;
+    } else |err| {
+        if (err != error.BadSignature) return error.WrongTamper;
+    }
+    if (d_tamper.len != 0) return error.TamperMutated;
+
+    // Refusal: a batch whose parent is not yet held refuses whole.
+    const round1 = [_]fold.Fact{ f.fc, f.fd };
+    var hg: [cord.hash_len]u8 = undefined;
+    address_batch(&g, &hg);
+    const kc = seeded(0xC3);
+    const h = try mint_batch(kc, 1, &[_][cord.hash_len]u8{hg}, round1[0..]);
+    var d_dangle = BatchDag.empty();
+    if (add_batch(&d_dangle, h)) |_| {
+        return error.DangleAdmitted;
+    } else |err| {
+        if (err != error.DanglingParent) return error.WrongDangle;
+    }
+    if (d_dangle.len != 0) return error.DangleMutated;
+
+    // Refusal: the same batch twice is a duplicate, refused whole.
+    var d_dup = BatchDag.empty();
+    try add_batch(&d_dup, g);
+    const len_before = d_dup.len;
+    if (add_batch(&d_dup, g)) |_| {
+        return error.DupAdmitted;
+    } else |err| {
+        if (err != error.Duplicate) return error.WrongDup;
+    }
+    if (d_dup.len != len_before) return error.DupMutated;
+
+    print("cord-batch: a batched history and a single-fact history over the identical facts fold to one supply\n", .{});
+    print("cord-batch: batching amortizes the per-block cost — supply {d}, one star, unchanged by packing\n", .{batched.supply()});
+    print("cord-batch: an over-full batch, an empty batch, and a tampered fact each refuse whole\n", .{});
+    print("GREEN: myc cord-batch — batch folds identical to single-fact · supply={d} · stars={d} · refuse whole\n", .{
+        batched.supply(),
+        batched.star_count,
+    });
+}
