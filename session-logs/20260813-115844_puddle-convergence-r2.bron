@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260813.115844
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — ai-jail — Eastern (EDT) time convention
+title Puddle r2 — the fleet heals: a host departs and only its worlds re-berth (convergence, minimal disruption)
+prompt keep going the loop — send each finished increment as its own signed round; continue the Puddle arc after r1
+think r1 fixed the berth as a pure function of the fleet (highest weave-score, arrival-order independent). r2's crux is the property that method was CHOSEN for over hash-mod-count — minimal disruption, the reason HRW earns its keep in a real fleet where machines fail.
+think Under generous capacity the berth reduces to pure HRW (capacity never binds — each world simply takes its single highest-scoring host). So removing one host moves only the worlds that had berthed there (their next-highest survivor receives them) and leaves every world on a surviving host byte-identical (its argmax host still stands). The symmetric join only pulls the worlds the newcomer now wins.
+think Wrote mycelium/puddle_convergence.rye composing r1 public API ONLY (add_host · add_world · berth · berth_pk · load_of · find_world) — no edit to puddle.rye. The after-fleet is built from the surviving hosts (the departed host simply not enrolled), so the comparison is honest: same worlds, one host gone. Compared world-by-world by host public key since indices differ once a host departs.
+think Chose the departed host = the one carrying the most worlds (deterministic), asserting 0 < load < world_count so the scene shows both a move and a stay; the crux made checkable as moved == departed's former load, moved>0 && stayed>0, no survivor-tenant moved.
+obs GREEN on the first build and run — no red this round. TAME bans clean, width-check exit 0, no ban patterns. The r1 berth re-runs GREEN at the witness's door (additive).
+obs Custody honored — demo host/world seeds only, no key/funds/network/world provisioned; no gate crossed. Sent as its own signed round after r1, both remotes, per the send-often instruction.
+loom witness=mycelium_puddle_convergence_witness scenes=3 hosts=4 worlds=6 property=departure-moves-only-departed-tenants join=pulls-only-newcomer-wins
+file mycelium/puddle_convergence.rye r2 — the heal: departure moves only the departed host's worlds, survivors byte-identical; symmetric join minimal
+file tools/mycelium_puddle_convergence_witness.rish witness proving convergence GREEN (build · selftest · claims · r1 re-run at the door)
+file work-in-progress/REMEMBER.md accreted the r2 landing into the Puddle bullet; next crux repointed to r3
+recommend keep-going Puddle r3 — the fleet travels as a format puddle-fleet-v1 Bron record (one host line with capacity, one world line, in canonical order); render/parse byte-for-byte fixed point, the recovered fleet berthing to the identical placement offline (two nodes agree by exchanging the roster alone), then r4 reads a real on-disk fixture true against an independent awk reading.
