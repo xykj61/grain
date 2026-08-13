@@ -1,0 +1,273 @@
+//! mycelium/muster_bron.rye — a validator set travels as a readable record (r2).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Muster · rung r2 — travel.
+//! Design read: active-designing/20260813-110039_mycelium-muster-known-validator-set-exploration.md
+//!
+//! r1 bound a Chorus to a known validator set — a Muster — and proved a quorum is believed only when its
+//! enrolled voices meet the Byzantine threshold read from the roll's size. A roll a holder cannot hand to
+//! another is only a local standard, so r2 lets the whole Muster cross as `format muster-v1` bytes: one
+//! `validator <pk-hex>` line per enrolled node, in enrollment order. The threshold is NOT written — it is
+//! derived from the count by the reader (`byzantine_threshold`), so a roll cannot carry a lowered bar
+//! across the wire; a tampered count changes the threshold honestly, never a hidden field.
+//!
+//! The crux is THE ROLL'S VERDICT SURVIVES THE WIRE: a Chorus judged against a Muster parsed from bytes
+//! reaches the identical verdict as against the roll in memory — an enrolled quorum passes, an outsider
+//! quorum refuses `NotMember`, a thin one refuses `BelowQuorum`. A recipient reads the same standard r1
+//! enforced, needing no roll of their own. Render writes it, parse reads it back byte-for-byte, so a round
+//! trip is a fixed point.
+//!
+//! A purpose-built bounded reader, never a general parser: a wrong header refuses `BadFormat`, an empty
+//! roll `BadFormat` (a meaningful roll enrolls at least one validator), an unknown field `UnknownField`
+//! (never dropped), a malformed line `BadLine`, a bad hex key `BadHex`, a repeated validator `Duplicate`,
+//! an over-full roll `MusterFull`. Composes muster.rye + chorus.rye public API only. Siloed, dev-only,
+//! demo seeds — no key, no funds, no network, no custody.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/muster_bron.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const muster = @import("muster.rye");
+const chorus = @import("chorus.rye");
+const cord = @import("cord.rye");
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+
+/// The record buffer bound — a full roll's validator lines fit with room.
+pub const max_record: u32 = 4096;
+
+pub const BronError = error{
+    BadFormat, // the header is not `format muster-v1`, or the roll is empty
+    UnknownField, // a line names a field the record does not define
+    BadLine, // a known line carries the wrong token count
+    BadHex, // a hex field was the wrong length or held a non-hex char
+    Duplicate, // two lines carry the same validator key — a validator counts once
+    MusterFull, // more validator lines than a roll holds
+    RecordTooLong, // the rendered record overflowed the buffer
+};
+
+const hex_digits = "0123456789abcdef";
+
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex chars per byte.
+    assert(out.len == bytes.len * 2);
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0F];
+    }
+}
+
+fn nibble(c: u8) BronError!u8 {
+    return switch (c) {
+        '0'...'9' => c - '0',
+        'a'...'f' => c - 'a' + 10,
+        'A'...'F' => c - 'A' + 10,
+        else => error.BadHex,
+    };
+}
+
+fn from_hex(text: []const u8, out: []u8) BronError!void {
+    if (text.len != out.len * 2) return error.BadHex;
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < out.len) : (i += 1) {
+        const hi = try nibble(text[i * 2]);
+        const lo = try nibble(text[i * 2 + 1]);
+        out[i] = (hi << 4) | lo;
+    }
+}
+
+/// Render one Muster to a `format muster-v1` record — one validator line per enrolled key, in enrollment
+/// order. Refuses an overflow rather than a partial record.
+pub fn render(m: *const muster.Muster, out: []u8) BronError!u32 {
+    // invariant: the render buffer honors its bound.
+    assert(out.len >= max_record);
+    // invariant: the roll honors its static bound.
+    assert(m.len <= muster.muster_max_members);
+    const head = std.fmt.bufPrint(out, "format muster-v1\n", .{}) catch return error.RecordTooLong;
+    var off: u32 = @intCast(head.len);
+
+    var i: u32 = 0;
+    while (i < m.len) : (i += 1) {
+        var pk_hex: [muster.pk_len * 2]u8 = undefined;
+        to_hex(m.members[i][0..muster.pk_len], &pk_hex);
+        const line = std.fmt.bufPrint(out[off..], "validator {s}\n", .{pk_hex}) catch return error.RecordTooLong;
+        off += @intCast(line.len);
+    }
+
+    // invariant: the rendered record never exceeds its bound.
+    assert(off <= max_record);
+    return off;
+}
+
+/// Split a line into up to two tokens; returns the count (or three to signal a trailing token past any
+/// line's width — a validator line, at two, is the widest).
+fn tokens(line: []const u8, out: *[2][]const u8) u32 {
+    var count: u32 = 0;
+    var it = std.mem.tokenizeScalar(u8, line, ' ');
+    while (it.next()) |t| {
+        if (count >= 2) return count + 1;
+        out[count] = t;
+        count += 1;
+    }
+    return count;
+}
+
+/// Parse a `format muster-v1` record into `out`, enrolling each validator through `muster.enroll` so the
+/// roll's own laws (a validator counts once; the roll honors its bound) travel with it. Refuses an empty
+/// roll — a meaningful validator set names at least one node.
+pub fn parse(text: []const u8, out: *muster.Muster) BronError!void {
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const header = lines.next() orelse return error.BadFormat;
+    if (!std.mem.eql(u8, header, "format muster-v1")) return error.BadFormat;
+
+    out.len = 0;
+    while (lines.next()) |raw| {
+        if (raw.len == 0) continue; // a trailing newline yields one empty line
+        var tok: [2][]const u8 = undefined;
+        const n = tokens(raw, &tok);
+        if (n == 0) continue;
+        if (std.mem.eql(u8, tok[0], "validator")) {
+            if (n != 2) return error.BadLine;
+            var pk: [muster.pk_len]u8 = undefined;
+            try from_hex(tok[1], pk[0..]);
+            muster.enroll(out, pk[0..]) catch |e| switch (e) {
+                error.Duplicate => return error.Duplicate,
+                error.MusterFull => return error.MusterFull,
+                else => return error.BadFormat, // enroll returns only Duplicate/MusterFull; kept exhaustive
+            };
+        } else {
+            return error.UnknownField;
+        }
+    }
+    // invariant: a whole roll carries at least one validator.
+    if (out.len == 0) return error.BadFormat;
+}
+
+// ---- selftest: a validator set travels and its verdict on a quorum is unchanged ----------------
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+/// A minimal honest scene — one genesis issue of 100 to Alice — enough for a Chorus to vouch a position a
+/// roll is weighed against.
+fn issue_dag(alice_pk: []const u8) !cord.Dag {
+    const kf = seeded(0xF0);
+    const f_gen = fold.mint_fact(kf, fold.kind_issue, 100, "", alice_pk) orelse return error.MintGen;
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_gen) orelse return error.BlockG;
+    var dag = cord.Dag.empty();
+    try cord.add(&dag, g);
+    return dag;
+}
+
+fn muster_of(seeds: []const u8) !muster.Muster {
+    var m = muster.Muster.empty();
+    for (seeds) |s| {
+        const pk = seeded(s).public_key.toBytes();
+        try muster.enroll(&m, pk[0..]);
+    }
+    return m;
+}
+
+/// Two rolls name the same validators in the same order.
+fn rolls_agree(a: *const muster.Muster, b: *const muster.Muster) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) {
+        if (!std.mem.eql(u8, a.members[i][0..muster.pk_len], b.members[i][0..muster.pk_len])) return false;
+    }
+    return true;
+}
+
+pub fn main() !void {
+    const validators = [_]u8{ 0x11, 0x22, 0x33, 0x44 };
+    const roll = try muster_of(validators[0..]);
+
+    var buf: [max_record]u8 = undefined;
+    const len = try render(&roll, buf[0..]);
+
+    var recovered: muster.Muster = undefined;
+    try parse(buf[0..len], &recovered);
+
+    // The roll survives the wire: same validators, same order, same derived threshold.
+    if (!rolls_agree(&roll, &recovered)) return error.RollChanged;
+    if (muster.byzantine_threshold(&recovered) != 3) return error.ThresholdLost;
+
+    // Re-rendering the recovered roll reproduces the exact bytes (fixed point).
+    var buf2: [max_record]u8 = undefined;
+    const len2 = try render(&recovered, buf2[0..]);
+    if (len2 != len) return error.NotFixedPoint;
+    if (!std.mem.eql(u8, buf[0..len], buf2[0..len2])) return error.NotFixedPoint;
+
+    // The crux: the recovered roll reaches the IDENTICAL verdict on a quorum as the roll in memory.
+    const alice_pk = seeded(0xA1).public_key.toBytes();
+    const dag = try issue_dag(alice_pk[0..]);
+    {
+        // An enrolled quorum of three passes against the recovered roll.
+        var c = try chorus.open(&dag, alice_pk[0..]);
+        try chorus.add(&c, &dag, seeded(0x11));
+        try chorus.add(&c, &dag, seeded(0x22));
+        try chorus.add(&c, &dag, seeded(0x33));
+        try muster.pass_muster(&recovered, &c);
+    }
+    {
+        // Three fresh keys refuse NotMember against the recovered roll, exactly as in memory.
+        var c = try chorus.open(&dag, alice_pk[0..]);
+        try chorus.add(&c, &dag, seeded(0xE1));
+        try chorus.add(&c, &dag, seeded(0xE2));
+        try chorus.add(&c, &dag, seeded(0xE3));
+        if (muster.pass_muster(&recovered, &c)) |_| return error.OutsiderBelieved else |err| {
+            if (err != error.NotMember) return error.WrongOutsider;
+        }
+    }
+
+    var scratch: muster.Muster = undefined;
+
+    // Refusal: a wrong header refuses BadFormat before any field is read.
+    if (parse("format muster-v2\n", &scratch)) |_| return error.BadHeaderAdmitted else |err| {
+        if (err != error.BadFormat) return error.WrongHeader;
+    }
+    // Refusal: an empty roll refuses BadFormat.
+    if (parse("format muster-v1\n", &scratch)) |_| return error.EmptyAdmitted else |err| {
+        if (err != error.BadFormat) return error.WrongEmpty;
+    }
+    // Refusal: an unknown field refuses UnknownField (never dropped).
+    {
+        var tmp: [max_record]u8 = undefined;
+        tally_copy.copy_disjoint(u8, tmp[0..len], buf[0..len]);
+        const extra = "bogus a\n";
+        tally_copy.copy_disjoint(u8, tmp[len .. len + extra.len], extra);
+        if (parse(tmp[0 .. len + extra.len], &scratch)) |_| return error.UnknownAdmitted else |err| {
+            if (err != error.UnknownField) return error.WrongUnknown;
+        }
+    }
+    // Refusal: a bad hex validator key refuses BadHex.
+    {
+        const bad = "format muster-v1\nvalidator zz\n";
+        if (parse(bad, &scratch)) |_| return error.BadHexAdmitted else |err| {
+            if (err != error.BadHex) return error.WrongBadHex;
+        }
+    }
+    // Refusal: a repeated validator refuses Duplicate — a validator counts once on the wire too.
+    {
+        const dup = try muster_of(&[_]u8{ 0x11, 0x22 });
+        var db: [max_record]u8 = undefined;
+        const dl = try render(&dup, db[0..]);
+        // Append a second copy of the first validator's line.
+        var pk_hex: [muster.pk_len * 2]u8 = undefined;
+        to_hex(dup.members[0][0..muster.pk_len], &pk_hex);
+        const extra = std.fmt.bufPrint(db[dl..], "validator {s}\n", .{pk_hex}) catch return error.RecordTooLong;
+        const total = dl + @as(u32, @intCast(extra.len));
+        if (parse(db[0..total], &scratch)) |_| return error.DupAdmitted else |err| {
+            if (err != error.Duplicate) return error.WrongDup;
+        }
+    }
+
+    print("muster-bron: a validator set renders to a format muster-v1 record and parses back byte-for-byte (fixed point); the threshold is derived from the count, never carried\n", .{});
+    print("muster-bron: the recovered roll reaches the identical verdict — an enrolled quorum passes, three fresh keys refuse NotMember — as the roll in memory\n", .{});
+    print("muster-bron: a bad header, an empty roll, an unknown field, a bad hex key, a repeated validator each refuse\n", .{});
+    print("GREEN: myc muster-bron — a known validator set travels as readable text and judges a quorum the same offline · validators={d} byzantine_threshold={d} · fixed point\n", .{ recovered.len, muster.byzantine_threshold(&recovered) });
+}
