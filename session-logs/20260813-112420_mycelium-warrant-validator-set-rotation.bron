@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20260813.112420
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS server (Vultr SEA VPS · HP AMD 2vCPU/4GB) — Eastern (EDT) time convention · ai-jail
+title Mycelium Warrant — safe validator-set rotation (design + r1–r4)
+prompt Read REMEMBER + the itinerary and double-seat visions; take the next agent-doable lap Lindy-first crux-first; approve own design rounds; send often; stop at custody gates.
+think Read REMEMBER, the 1,024-round itinerary, and the six-season double-seat. The Mycelium consensus road (Cord … Voucher · Chorus · Muster) had just closed the Muster arc; the standing next pointer was a fresh Season D crux, self-approved.
+think Lindy-first crux-first over the consensus road: Muster fixed WHICH validators but froze the roll forever. The deepest remaining keystone is reconfiguration — rotating the set safely, where the outgoing quorum certifies its successor (TigerBeetle view change, Mysticeti committee reconfig). Named it Warrant per the comlink tendency (clear·fun·safe; grep found no collision).
+think Studied muster.rye / muster_bron.rye / chorus.rye / kumara.rye APIs so the Warrant composes public surfaces only. Signed tuple = domain tag `myc-warrant-v1` · epoch(u32 le) · prev_digest · next_digest; roll_digest = SHA-256 over canonical `format muster-v1` bytes.
+think Wrote the self-approved design read, then climbed r1–r4 mirroring the seated arc shape (crux · _bron wire · _knot checkpoint · _true measurement), each its own signed send to origin + xykj61.
+obs r1 crux on metal: the successor's own three fresh keys signing their coronation refuse NotMember — a set cannot crown itself; only the outgoing roll hands authority forward. Eight scenes GREEN first build.
+obs r3 modeled the Knot as a succession chain with checkpoint pruning: a party holding only a trusted anchor roll forward reaches the identical head as one who walked from genesis; four broken-link refusals (NotMember/BelowQuorum/DigestMismatch/StaleEpoch).
+obs r4 true-to-the-bytes: std.debug.print writes to stderr, so the sha256sum cross-check needed `2>&1 |` (learned from muster_true's witness idiom); the system sha256sum of the canonical roll bytes equals the digest the warrant carries and every validator signed — two tools, one answer. fmtSliceHexLower is absent in this Zig std; used the module's own to_hex.
+obs No red booked — all four rungs GREEN on first or second build; TAME style + width clean throughout. A served warrant reaches the Comlink-served custody gate (stayed the maintainer's hand).
+file active-designing/20260813-112420_mycelium-warrant-validator-set-rotation-exploration.md the self-approved design read opening the Warrant journey
+file mycelium/warrant.rye r1 — the succession crux (verify_warrant folds five laws; a set cannot crown itself)
+file mycelium/warrant_bron.rye r2 — a handoff travels as format warrant-v1, byte-for-byte fixed point
+file mycelium/warrant_knot.rye r3 — a succession chain survives a checkpoint (pruned base, same head)
+file mycelium/warrant_true.rye r4 — signed digests true to a system sha256sum of the canonical roll bytes
+file tools/mycelium_warrant_witness.rish r1 witness GREEN
+file tools/mycelium_warrant_bron_witness.rish r2 witness GREEN
+file tools/mycelium_warrant_knot_witness.rish r3 witness GREEN
+file tools/mycelium_warrant_true_witness.rish r4 witness GREEN — sha256sum + grep cross-checks
+file work-in-progress/REMEMBER.md folded the Warrant arc onto the living card; module list gains Warrant
+recommend keep-going the next agent-doable crux is a fresh Season D journey / double-seat season's crux, each a self-approved design read first; served ledger · breach renames · deep debride · seed force-push stay Keaton's hand
