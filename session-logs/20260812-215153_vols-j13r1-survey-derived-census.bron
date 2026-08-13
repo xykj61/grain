@@ -1,0 +1,26 @@
+format session-log-v1
+stamp 20260812.215153
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title VOLS-J13r1 — the derived survey census
+prompt Read REMEMBER + the 1024-round itinerary; take the next agent-doable lap Lindy-first crux-first; open new journeys self-approved; send each finished increment as its own signed round; stop at custody gates.
+think Read REMEMBER and the 1,024-round itinerary; the git log shows Season 3 (Commons) closed end to end through DAHL-J12r4 (Data-dignity read-true). Season 1–2 have only custody-gated rungs left (J2r4 serve, J3 hardware, J4r4 funds); those are not agent-doable.
+think Lindy-first crux-first on the whole road puts the next agent-doable crux at Season 4 (Seal) — the CION meta-season — Journey 13, Survey (VOLS): name every living count-up ID, each site and each gap, before a single relabel.
+think Reds ledger GREEN (faults=0, all through #73 closed); no red preempts.
+think Grounded the crux by measurement, not memory: a derived scan of the source tree finds hundreds of living surfaces carrying a bare "lap N", against the seven the hand-list guard (cion_module_labeling_witness) covers. The gap is completeness — the guard scans only what a human remembered to list, exactly how a human, not a witness, caught red #65.
+think r1 crux: a census that is complete BY CONSTRUCTION (derives its input set with find, never hand-lists) and honest about the testimony boundary (session-logs/counsel/archive/dated specs keep the ordinals they recorded) and the seed/ projection (a derived copy, named at its source).
+obs A survey reports, it does not gate — verdict=ok means the census ran completely over a derived set, however many sites it found; the GRAD seal, not VOLS, fails on drift. Confusing the two would make the survey fail on honest not-yet-swept work.
+obs The independent cross-check first mis-escaped the PCRE lookaround through Rishi's string layer (degraded to matching "lap 4b", counted 2). Fixed by authoring the cross-count as its own fixture script (vols_survey_crosscount.sh) so the refined pattern is written once, never re-escaped — two genuinely different traversals (find-loop vs grep -r), one answer.
+obs Live source-tree census (excluding seed/): 2690 surfaces · 223 sites · 1146 hits — the real map LOWE will relabel against, and the proof of the survey's worth (223 sites vs 7 swept modules).
+loom witness=vols_survey_witness surfaces_fixture=3 sites_fixture=1 hits_fixture=1 live_surfaces=2690 live_sites=223 live_hits=1146
+file active-designing/20260812-215153_vols-journey13-survey-complete-census-exploration.md opens Journey 13 (Survey, VOLS), four rounds self-approved
+file tools/fixtures/vols_survey_scan.sh derives the living-surface set and reports the census (site · surfaces · sites · hits)
+file tools/fixtures/vols_survey_crosscount.sh the second tool — grep -r cross-count, PCRE authored once in a file
+file tools/gen/season/vols_survey_witness.rish proves completeness, the testimony boundary, permitted-code faith, and two-tools-one-answer; reports the live census
+file tools/fixtures/vols_survey_tree/livemod/README.md fixture — a living README naming a capability by a bare lap ordinal (a site)
+file tools/fixtures/vols_survey_tree/livemod/core.rye fixture — a clean authored surface
+file tools/fixtures/vols_survey_tree/livemod/notes.glow fixture — permitted schemes only (lap 4b · sub-lap 2), not a site
+file tools/fixtures/vols_survey_tree/session-logs/20260101-000000_x.rish fixture — dated testimony, excluded structurally
+recommend keep-going VOLS-J13r2 — classify each finding by kind (site · stable handle · derived copy) and name the gap set the guard does not yet watch
