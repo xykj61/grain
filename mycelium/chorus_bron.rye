@@ -1,0 +1,389 @@
+//! mycelium/chorus_bron.rye — a quorum of vouchers travels as a readable record (r2).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Chorus · rung r2 — travel.
+//! Design read: active-designing/20260813-102533_mycelium-chorus-quorum-attestation-exploration.md
+//!
+//! r1 gathered a Chorus — a bounded quorum of independent Vouchers for one account position at one
+//! order-head — and proved it is believed only when a threshold of distinct nodes agree. A quorum a
+//! holder cannot hand to another is only a local reading, so r2 lets the whole Chorus cross as
+//! `format chorus-v1` bytes. Because every member attests the SAME claim, the record names the claim
+//! once — a `head` line, an `account` line, a `position <balance> <reserved> <received>` line, a
+//! `threshold <t>` line — then one `member <node-hex> <sig-hex>` line per voice: each member carries
+//! only its own node key and its signature, since the head, account, and position it signed are the
+//! shared claim. Render writes it, parse reads it back, so a round trip is a fixed point.
+//!
+//! The crux is THE QUORUM LAW SURVIVES THE WIRE: a parsed Chorus is reconstructed member by member from
+//! the shared claim, then re-run through r1's `verify_chorus` at the record's own stated threshold — so a
+//! record whose members do not meet that threshold (`BelowThreshold`), whose members are not distinct
+//! (`DuplicateNode`), or one of whose signatures does not verify over the claim (`BadSignature`) refuses
+//! before it is trusted. A recipient reads the same quorum r1 asserted, needing no ledger of their own; a
+//! recipient who DOES hold the blocks can still run r1's `check_against` on the recovered Chorus.
+//!
+//! A purpose-built bounded reader, never a general parser: a wrong header refuses `BadFormat`, an unknown
+//! field `UnknownField` (never dropped), a malformed line `BadLine`, a bad integer `BadInt`, a bad hex
+//! field `BadHex`, a missing field `BadFormat`, an over-full member set `TooManyMembers`. Composes
+//! chorus.rye + voucher.rye public API only. Siloed, dev-only, demo seeds — no key, no funds, no network,
+//! no custody.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/chorus_bron.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const chorus = @import("chorus.rye");
+const voucher = @import("voucher.rye");
+const cord = @import("cord.rye");
+const fold = @import("fold.rye");
+const lapse = @import("lapse.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+const parse_int = @import("parse_int.rye");
+
+/// The record buffer bound — a full quorum's claim lines plus one member line per voice fit with room.
+pub const max_record: u32 = 8192;
+
+pub const BronError = error{
+    BadFormat, // the header is not `format chorus-v1`, or a required claim field is missing
+    UnknownField, // a line names a field the record does not define
+    BadLine, // a known line carries the wrong token count
+    BadInt, // an integer field did not parse, or a threshold below one
+    BadHex, // a hex field was the wrong length or held a non-hex char
+    BadSignature, // a member's signature did not verify over the shared claim
+    Disagreement, // (defensive) a reconstructed member disagreed with the claim
+    DuplicateNode, // two members carry the same node key — one voice counted as many
+    BelowThreshold, // fewer distinct members than the record's own stated threshold
+    TooManyMembers, // more member lines than a Chorus holds
+    RecordTooLong, // the rendered record overflowed the buffer
+};
+
+const hex_digits = "0123456789abcdef";
+
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex chars per byte.
+    assert(out.len == bytes.len * 2);
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0F];
+    }
+}
+
+fn nibble(c: u8) BronError!u8 {
+    return switch (c) {
+        '0'...'9' => c - '0',
+        'a'...'f' => c - 'a' + 10,
+        'A'...'F' => c - 'A' + 10,
+        else => error.BadHex,
+    };
+}
+
+fn from_hex(text: []const u8, out: []u8) BronError!void {
+    if (text.len != out.len * 2) return error.BadHex;
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < out.len) : (i += 1) {
+        const hi = try nibble(text[i * 2]);
+        const lo = try nibble(text[i * 2 + 1]);
+        out[i] = (hi << 4) | lo;
+    }
+}
+
+/// Render one Chorus to a `format chorus-v1` record at a stated threshold. Refuses an overflow rather
+/// than a partial record. The claim is named once; each member contributes only node key and signature.
+pub fn render(c: *const chorus.Chorus, threshold: u32, out: []u8) BronError!u32 {
+    // invariant: the render buffer honors its bound.
+    assert(out.len >= max_record);
+    // invariant: a rendered quorum names a meaningful threshold.
+    assert(threshold >= 1);
+    const head = std.fmt.bufPrint(out, "format chorus-v1\n", .{}) catch return error.RecordTooLong;
+    var off: u32 = @intCast(head.len);
+
+    var head_hex: [chorus.order_head_len * 2]u8 = undefined;
+    to_hex(c.head_slice(), &head_hex);
+    const head_line = std.fmt.bufPrint(out[off..], "head {s}\n", .{head_hex}) catch return error.RecordTooLong;
+    off += @intCast(head_line.len);
+
+    var acct_hex: [chorus.pk_len * 2]u8 = undefined;
+    to_hex(c.account_slice(), &acct_hex);
+    const acct_line = std.fmt.bufPrint(out[off..], "account {s}\n", .{acct_hex}) catch return error.RecordTooLong;
+    off += @intCast(acct_line.len);
+
+    const pos_line = std.fmt.bufPrint(out[off..], "position {d} {d} {d}\n", .{ c.balance, c.reserved, c.received }) catch return error.RecordTooLong;
+    off += @intCast(pos_line.len);
+
+    const thr_line = std.fmt.bufPrint(out[off..], "threshold {d}\n", .{threshold}) catch return error.RecordTooLong;
+    off += @intCast(thr_line.len);
+
+    var m: u32 = 0;
+    while (m < c.count) : (m += 1) {
+        var node_hex: [chorus.pk_len * 2]u8 = undefined;
+        to_hex(c.members[m].node_slice(), &node_hex);
+        var sig_hex: [kumara.signature_length * 2]u8 = undefined;
+        to_hex(c.members[m].sig[0..], &sig_hex);
+        const member_line = std.fmt.bufPrint(out[off..], "member {s} {s}\n", .{ node_hex, sig_hex }) catch return error.RecordTooLong;
+        off += @intCast(member_line.len);
+    }
+
+    // invariant: the rendered record never exceeds its bound.
+    assert(off <= max_record);
+    return off;
+}
+
+/// Split a line into up to four tokens; returns the count (or five to signal a trailing token past what
+/// any line allows — the position record, at four, is the widest).
+fn tokens(line: []const u8, out: *[4][]const u8) u32 {
+    var count: u32 = 0;
+    var it = std.mem.tokenizeScalar(u8, line, ' ');
+    while (it.next()) |t| {
+        if (count >= 4) return count + 1;
+        out[count] = t;
+        count += 1;
+    }
+    return count;
+}
+
+/// Parse a `format chorus-v1` record into `out`, returning the record's stated threshold. Reconstructs
+/// each member from the shared claim, then — the crux — re-runs r1's `verify_chorus` at that threshold,
+/// so a record that does not prove its own quorum refuses before it is trusted.
+pub fn parse(text: []const u8, out: *chorus.Chorus) BronError!u32 {
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const header = lines.next() orelse return error.BadFormat;
+    if (!std.mem.eql(u8, header, "format chorus-v1")) return error.BadFormat;
+
+    out.balance = 0;
+    out.reserved = 0;
+    out.received = 0;
+    out.count = 0;
+    var threshold: u32 = 0;
+    var have_head = false;
+    var have_account = false;
+    var have_position = false;
+    var have_threshold = false;
+
+    while (lines.next()) |raw| {
+        if (raw.len == 0) continue; // a trailing newline yields one empty line
+        var tok: [4][]const u8 = undefined;
+        const n = tokens(raw, &tok);
+        if (n == 0) continue;
+        if (std.mem.eql(u8, tok[0], "head")) {
+            if (n != 2) return error.BadLine;
+            try from_hex(tok[1], out.order_head[0..]);
+            have_head = true;
+        } else if (std.mem.eql(u8, tok[0], "account")) {
+            if (n != 2) return error.BadLine;
+            try from_hex(tok[1], out.account_pk[0..]);
+            have_account = true;
+        } else if (std.mem.eql(u8, tok[0], "position")) {
+            if (n != 4) return error.BadLine;
+            out.balance = parse_int.parse_int(u64, tok[1], .{}) catch return error.BadInt;
+            out.reserved = parse_int.parse_int(u64, tok[2], .{}) catch return error.BadInt;
+            out.received = parse_int.parse_int(u64, tok[3], .{}) catch return error.BadInt;
+            have_position = true;
+        } else if (std.mem.eql(u8, tok[0], "threshold")) {
+            if (n != 2) return error.BadLine;
+            threshold = parse_int.parse_int(u32, tok[1], .{}) catch return error.BadInt;
+            if (threshold < 1) return error.BadInt; // a quorum asks for at least one voice
+            have_threshold = true;
+        } else if (std.mem.eql(u8, tok[0], "member")) {
+            if (n != 3) return error.BadLine;
+            // The claim fields must be read before a member is reconstructed from them.
+            if (!(have_head and have_account and have_position)) return error.BadFormat;
+            if (out.count >= chorus.chorus_max_members) return error.TooManyMembers;
+            var v = voucher.Voucher{ .balance = out.balance, .reserved = out.reserved, .received = out.received };
+            tally_copy.copy_disjoint(u8, v.order_head[0..], out.order_head[0..]);
+            tally_copy.copy_disjoint(u8, v.account_pk[0..], out.account_pk[0..]);
+            try from_hex(tok[1], v.node_pk[0..]);
+            try from_hex(tok[2], v.sig[0..]);
+            chorus.add_voucher(out, v) catch return error.TooManyMembers;
+        } else {
+            return error.UnknownField;
+        }
+    }
+    // invariant: a whole chorus names its claim and its threshold, and carries at least one voice.
+    if (!(have_head and have_account and have_position and have_threshold)) return error.BadFormat;
+    if (out.count == 0) return error.BadFormat;
+
+    // The quorum law travels: the recovered chorus must prove its own stated threshold, or a quorum was
+    // forged, padded with a repeated signer, or thinned in the crossing.
+    chorus.verify_chorus(out, threshold) catch |e| switch (e) {
+        error.BadSignature => return error.BadSignature,
+        error.Disagreement => return error.Disagreement,
+        error.DuplicateNode => return error.DuplicateNode,
+        error.BelowThreshold => return error.BelowThreshold,
+        error.TooManyMembers => return error.TooManyMembers, // verify never gathers; kept exhaustive
+    };
+    return threshold;
+}
+
+// ---- selftest: a quorum travels and still proves itself ----------------------
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn write_deadline(deadline: u64, out: []u8) void {
+    // invariant: the buffer holds a full little-endian order position.
+    assert(out.len == lapse.deadline_len);
+    var v = deadline;
+    var i: u32 = 0;
+    while (i < lapse.deadline_len) : (i += 1) {
+        out[i] = @truncate(v);
+        v >>= 8;
+    }
+}
+
+fn pledge_body(id: []const u8, deadline: u64, to: []const u8, out: []u8) u32 {
+    // invariant: the buffer holds tag · id · deadline · recipient exactly.
+    assert(out.len >= 1 + lapse.id_len + lapse.deadline_len + lapse.pk_len);
+    assert(id.len == lapse.id_len);
+    out[0] = lapse.tag_pledge;
+    tally_copy.copy_disjoint(u8, out[1 .. 1 + lapse.id_len], id);
+    write_deadline(deadline, out[1 + lapse.id_len .. 1 + lapse.id_len + lapse.deadline_len]);
+    tally_copy.copy_disjoint(u8, out[1 + lapse.id_len + lapse.deadline_len ..][0..lapse.pk_len], to);
+    return 1 + lapse.id_len + lapse.deadline_len + lapse.pk_len;
+}
+
+/// Build a Dag: genesis credits Alice 100, Alice pledges 100 to Bob under a far deadline (open) — so a
+/// chorus over Alice reads balance 0, reserved 100, received 100, the position the wire must carry whole.
+fn build_dag() !cord.Dag {
+    const id = [_]u8{0x01} ** lapse.id_len;
+    const kf = seeded(0xF0);
+    const ka = seeded(0xA1);
+    const kb = seeded(0xB2);
+    const alice_pk = ka.public_key.toBytes();
+    const bob_pk = kb.public_key.toBytes();
+
+    const f_gen = fold.mint_fact(kf, fold.kind_issue, 100, "", alice_pk[0..]) orelse return error.MintGen;
+
+    var pb: [1 + lapse.id_len + lapse.deadline_len + lapse.pk_len]u8 = undefined;
+    const pn = pledge_body(id[0..], 9, bob_pk[0..], &pb);
+    const f_pledge = fold.mint_fact(ka, fold.kind_tax, 100, "", pb[0..pn]) orelse return error.MintPledge;
+
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_gen) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+    const roots = [_][cord.hash_len]u8{hg};
+    const bp = cord.mint_block(ka, 1, roots[0..], f_pledge) orelse return error.BlockP;
+
+    var dag = cord.Dag.empty();
+    try cord.add(&dag, g);
+    try cord.add(&dag, bp);
+    return dag;
+}
+
+/// Two chorus records name the same quorum: claim and every member's node key and signature.
+fn choruses_agree(a: *const chorus.Chorus, b: *const chorus.Chorus) bool {
+    if (!std.mem.eql(u8, a.order_head[0..], b.order_head[0..])) return false;
+    if (!std.mem.eql(u8, a.account_pk[0..], b.account_pk[0..])) return false;
+    if (a.balance != b.balance or a.reserved != b.reserved or a.received != b.received) return false;
+    if (a.count != b.count) return false;
+    var i: u32 = 0;
+    while (i < a.count) : (i += 1) {
+        if (!std.mem.eql(u8, a.members[i].node_pk[0..], b.members[i].node_pk[0..])) return false;
+        if (!std.mem.eql(u8, a.members[i].sig[0..], b.members[i].sig[0..])) return false;
+    }
+    return true;
+}
+
+fn three_nodes() [3]kumara.KeyPair {
+    return .{ seeded(0x11), seeded(0x22), seeded(0x33) };
+}
+
+pub fn main() !void {
+    const dag = try build_dag();
+    const nodes = three_nodes();
+    const alice_pk = seeded(0xA1).public_key.toBytes();
+
+    var c = try chorus.open(&dag, alice_pk[0..]);
+    for (nodes) |n| try chorus.add(&c, &dag, n);
+    // The open-pledge position the wire must carry whole, across three voices.
+    if (c.balance != 0 or c.reserved != 100 or c.received != 100 or c.count != 3) return error.MakeQuorum;
+
+    var buf: [max_record]u8 = undefined;
+    const len = try render(&c, 2, buf[0..]);
+
+    var recovered: chorus.Chorus = undefined;
+    const thr = try parse(buf[0..len], &recovered);
+    if (thr != 2) return error.ThresholdLost;
+
+    // The crux: the recovered chorus is the identical quorum and PROVES ITSELF after the crossing.
+    if (!choruses_agree(&c, &recovered)) return error.QuorumChanged;
+    try chorus.verify_chorus(&recovered, 2);
+    // And a recipient holding the blocks can still check it against the very ledger it vouches.
+    if (!try chorus.check_against(&recovered, &dag)) return error.RecoveredCheck;
+
+    // Re-rendering the recovered chorus reproduces the exact bytes (fixed point).
+    var buf2: [max_record]u8 = undefined;
+    const len2 = try render(&recovered, 2, buf2[0..]);
+    if (len2 != len) return error.NotFixedPoint;
+    if (!std.mem.eql(u8, buf[0..len], buf2[0..len2])) return error.NotFixedPoint;
+
+    var scratch: chorus.Chorus = undefined;
+
+    // Refusal: a wrong header refuses BadFormat (checked before any field is read).
+    if (parse("format chorus-v2\n", &scratch)) |_| return error.BadHeaderAdmitted else |err| {
+        if (err != error.BadFormat) return error.WrongHeader;
+    }
+    // Refusal: an unknown field refuses UnknownField (never dropped).
+    {
+        var tmp: [max_record]u8 = undefined;
+        tally_copy.copy_disjoint(u8, tmp[0..len], buf[0..len]);
+        const extra = "bogus a b\n";
+        tally_copy.copy_disjoint(u8, tmp[len .. len + extra.len], extra);
+        if (parse(tmp[0 .. len + extra.len], &scratch)) |_| return error.UnknownAdmitted else |err| {
+            if (err != error.UnknownField) return error.WrongUnknown;
+        }
+    }
+    // Refusal: a missing field (no threshold line) refuses BadFormat.
+    {
+        const bad = "format chorus-v1\nhead " ++ ("00" ** chorus.order_head_len) ++ "\naccount " ++ ("00" ** chorus.pk_len) ++ "\nposition 0 0 0\nmember " ++ ("00" ** chorus.pk_len) ++ " " ++ ("00" ** kumara.signature_length) ++ "\n";
+        if (parse(bad, &scratch)) |_| return error.MissingAdmitted else |err| {
+            if (err != error.BadFormat) return error.WrongMissing;
+        }
+    }
+    // Refusal: a bad hex member node key refuses BadHex.
+    {
+        const bad = "format chorus-v1\nhead " ++ ("00" ** chorus.order_head_len) ++ "\naccount " ++ ("00" ** chorus.pk_len) ++ "\nposition 0 0 0\nthreshold 1\nmember zz " ++ ("00" ** kumara.signature_length) ++ "\n";
+        if (parse(bad, &scratch)) |_| return error.BadHexAdmitted else |err| {
+            if (err != error.BadHex) return error.WrongBadHex;
+        }
+    }
+    // Refusal — the crux: a forged member (one signature byte flipped) breaks the quorum, so the record
+    // refuses BadSignature before it is trusted.
+    {
+        var forged_c = c;
+        forged_c.members[0].sig[0] +%= 1;
+        var fb: [max_record]u8 = undefined;
+        const fl = try render(&forged_c, 2, fb[0..]);
+        if (parse(fb[0..fl], &scratch)) |_| return error.ForgeAdmitted else |err| {
+            if (err != error.BadSignature) return error.WrongForge;
+        }
+    }
+    // Refusal — the crux: a record whose members do not meet its own stated threshold refuses
+    // BelowThreshold (three honest voices cannot satisfy a threshold of four).
+    {
+        var tb: [max_record]u8 = undefined;
+        const tl = try render(&c, 4, tb[0..]);
+        if (parse(tb[0..tl], &scratch)) |_| return error.ThinAdmitted else |err| {
+            if (err != error.BelowThreshold) return error.WrongThin;
+        }
+    }
+    // Refusal — the crux: a record padded with a repeated signer refuses DuplicateNode, so a quorum
+    // cannot be inflated on the wire any more than in memory.
+    {
+        var dup = try chorus.open(&dag, alice_pk[0..]);
+        try chorus.add(&dup, &dag, nodes[0]);
+        try chorus.add(&dup, &dag, nodes[1]);
+        try chorus.add(&dup, &dag, nodes[0]); // node 0 again
+        var db: [max_record]u8 = undefined;
+        const dl = try render(&dup, 3, db[0..]);
+        if (parse(db[0..dl], &scratch)) |_| return error.DupAdmitted else |err| {
+            if (err != error.DuplicateNode) return error.WrongDup;
+        }
+    }
+
+    print("chorus-bron: a quorum of vouchers renders to a format chorus-v1 record and parses back byte-for-byte (fixed point)\n", .{});
+    print("chorus-bron: the recovered quorum proves itself at threshold offline after the crossing and still checks against the ledger it vouches; a forged member refuses BadSignature, a thin record BelowThreshold, a padded record DuplicateNode before the record is trusted\n", .{});
+    print("chorus-bron: a bad header, an unknown field, a missing field, a bad hex key each refuse\n", .{});
+    print("GREEN: myc chorus-bron — a quorum travels as readable text and still proves itself at threshold offline · balance={d} reserved={d} received={d} voices={d} · fixed point\n", .{ recovered.balance, recovered.reserved, recovered.received, recovered.count });
+}
