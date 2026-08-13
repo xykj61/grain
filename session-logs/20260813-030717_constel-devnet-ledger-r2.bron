@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260813.030717
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — ai-jail — Eastern (EDT) time convention
+title Constel dev-net ledger r2 — star reservations settle beside the topology, drain the net's own supply like tax
+prompt Keep taking the next agent-doable Lindy-first crux; approve own design rounds; double-seat; send each increment as its own signed round; stop at custody gates.
+think r1 landed and sent — the fake net runs the real Mycelium supply law, its money moving only by the genesis keeper. The exploration doc named r2 plainly: a star_reserve fact reserves a star name under the sovereign, draining supply like tax, mirroring the harness's r2 topology settlement, so the ledger and the address space grow together inside the fake net. Agent-doable, reaches no custody gate.
+think mycelium/fold.rye already carries kind_star_reserve with its own law: a reservation carries a positive myc price and a non-empty star name (else mint_fact returns null), the fold enforces uniqueness (star_taken -> StarTaken) and drains supply like tax (amount > supply -> Overdraw). So r2 is a thin, honest composition: reserve_star mints a sovereign-signed star_reserve fact and admits it through r1's gate. The reservation inherits both r1's sovereignty (NotSovereign) and the fold's own StarTaken/Overdraw refusals.
+think Wrote r2 as its own file composing r1's public API (open_ledger · admit · NetLedger), exactly as the harness's constel_net_topology.rye (r2) composes constel_net.spin_up (r1). r2 needed the sovereignty gate, which r1 kept private (signer_is_sovereign); added a pub reader signer_is_sovereign_of to r1 that is the exact same private gate admit uses (asserted, so one authority test never drifts into two) — the tree's own "r1 grew only a pub reader" additive pattern. r1 re-runs GREEN at r2's door.
+obs Landed pond/apps/constel_net_ledger_stars.rye + tools/constel_net_ledger_stars_witness.rish + a pub signer_is_sovereign_of in constel_net_ledger.rye. Selftest GREEN first pass (4 cases): issue 100 then reserve vega(30)+rigel(20) drains supply to 50 over three sovereign facts · a second reservation of vega refuses StarTaken whole (supply held at 70, log untouched) · a reservation priced 999 over a supply of 40 refuses Overdraw (supply held at 40) · an alien signer's reservation refuses NotSovereign before the log (only the sovereign's issue stands). The witness re-runs r1 GREEN at its door; tame_style_check bans clean, width-check exit 0.
+obs Reaches no custody gate: the fold is a supply model, not a payment rail (gate #3), no real key/funds/network (gate #4). Two full signed rounds sent this turn (r1, r2), each its own increment on both remotes (origin + xykj61).
+loom witness=constel_net_ledger_stars_witness cases=4 r1_rerun=green build=first_pass
+file pond/apps/constel_net_ledger_stars.rye r2 — reserve_star mints a sovereign-signed star_reserve fact and admits it; sovereign-only, unique, drains like tax
+file pond/apps/constel_net_ledger.rye grew a pub signer_is_sovereign_of (the exact private gate admit uses), additive; r1 re-runs GREEN
+file tools/constel_net_ledger_stars_witness.rish proves r2 GREEN (4 cases) and re-runs r1 at its door
+file work-in-progress/REMEMBER.md accreted the ledger r2 landing; next crux points at ledger r3/r4 or the Mycelium consensus design read
+recommend keep-going — the fake net now issues, taxes, and reserves stars under one sovereign hand; the next agent-doable Lindy-first crux is ledger r3 (the ledger travels as format constel-ledger-v1 Bron, the safe name + sovereign key riding with it) then r4 (read a real fixture true), or the Mycelium consensus design read; breach renames (cairn-first) + deep debride + seed force-push stay Keaton's hand (gates #1/#5)
