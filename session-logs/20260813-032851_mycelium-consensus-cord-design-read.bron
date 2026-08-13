@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260813.032851
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) · this session in ai-jail
+title Mycelium consensus design read — the Cord
+prompt take the next agent-doable lap Lindy-first crux-first past the closed constel dev-net ledger; approve own design rounds; send often as signed increments; stop at custody gates
+think Read REMEMBER + the 1,024-round itinerary + the six-season double-seat. The fixed road stands complete across all four seasons; the live edge is the double-seat Season D (Kresfa & Mycelium), whose constel dev-net ledger just closed (r4 reads true, nib 09d7aa5c2f). The named next crux at REMEMBER's live edge: the Mycelium consensus design read over TigerBeetle + Mysticeti.
+think Lindy-first crux-first: the tree's own consensus protocol is deeply durable (read for years) and is the exact named next crux — so a self-approved design read is the right agent-doable lap, not a code rung yet. Grounded it in what already stands: mycelium/fold.rye (pure fold over Kumara-signed facts, supply = Σ issued − Σ taxed, static log 1024) runs GREEN; constel_net_ledger binds it to a sovereign. Fold is a deterministic replicated state machine with no network to replicate across — consensus is the missing half.
+think Named the layer. Weave is already seated in Mantra (a text-history CRDT) so it cannot carry consensus. Reached for a clear warm safe word per comlink-tendency: Cord — a mycelial rhizomorph, bundled hyphae transporting as one; many validator threads, one agreed order. Grepped zero collisions in mycelium/ mantra/ pond/ tally/ comlink/. Proposed, born-named when r1's code lands.
+think The synthesis, honestly two-rooms: from TigerBeetle take determinism + static allocation (the fold already keeps this); from Mysticeti take order-read-from-an-uncertified-DAG by a deterministic commit rule (no leader, no certificate round). commit(dag) is a pure topological linearization; fold_log runs over it unchanged. Named the four-round crux-first arc: r1 deterministic commit (same order regardless of arrival order) · r2 Byzantine refusal (equivocation, cycle, f<n/3) · r3 travels as Bron · r4 read a real fixture true.
+think The 'improving on both' claim from the six-season plan named as a HORIZON aim, not a witnessed benchmark — the arc's witnesses prove correctness; a performance comparison is a later loom round, never asserted from memory. Clean-room throughout: TigerBeetle already siloed; Mysticeti studied under Sui's permissive license per gratitude-licenses.
+obs A design read is a complete, sendable Lindy increment that exactly matches the named crux; it seats a spine r1 opens known-correct. No custody gate reached. Also gitignored mycelium/bin/ (an untracked 12MB build artifact) matching the other module-bin patterns — tree hygiene.
+file active-designing/20260813-032851_mycelium-consensus-cord-exploration.md the design read — TigerBeetle+Mysticeti synthesis, Cord named, four-round arc
+file .gitignore ignore /mycelium/bin/ like every other module bin
+recommend keep-going Cord r1 — the deterministic commit crux: build a bounded Dag of Kumara-signed blocks, prove the same total order emerges regardless of arrival order, fold_log unchanged over it
