@@ -19,7 +19,7 @@ const print = std.debug.print;
 const qoi = @import("qoi.rye");
 const tally_copy = @import("tally_copy.rye");
 
-pub const photos_version = "20260813.150912";
+pub const photos_version = "20260813.170307";
 
 pub const PhotosError = error{
     EmptyRect,
@@ -27,6 +27,7 @@ pub const PhotosError = error{
     EmptyImage,
     BadContrast,
     BadBrightness,
+    BadSaturation,
 };
 
 /// A brightness delta never needs to exceed a full channel range in either direction.
@@ -34,6 +35,26 @@ pub const adjust_brightness_max: i32 = 255;
 /// A contrast ratio's numerator and denominator ceiling — bounds the affine map so no product can wrap: the
 /// largest deviation a channel carries is 127, and 127·(1<<16) stays far inside i64.
 pub const adjust_contrast_max: u32 = 1 << 16;
+/// A saturation ratio's numerator and denominator ceiling — bounds the luma-preserving map so no product can
+/// wrap: the largest chroma a channel carries from its luma is 255, and 255·(1<<16) stays far inside i64.
+pub const saturate_max: u32 = 1 << 16;
+
+/// Rec.601 luma weights scaled to sum exactly 256, so a gray pixel (r == g == b == v) maps to luma v with no
+/// rounding drift: 77 + 150 + 29 == 256. A right shift by 8 divides by that 256 exactly.
+const luma_r: u32 = 77;
+const luma_g: u32 = 150;
+const luma_b: u32 = 29;
+
+/// The Rec.601 luma of one RGB pixel, 0..255 — the gray a channel is pulled toward as saturation falls. Computed
+/// in u32 (max 255·256 = 65280, far inside u32) and shifted by 8 to divide by the weight sum exactly.
+fn luma_of(r: u8, g: u8, b: u8) u8 {
+    // invariant: the weights sum to exactly 256, so a gray pixel maps to its own value with no drift.
+    assert(luma_r + luma_g + luma_b == 256);
+    const sum = @as(u32, r) * luma_r + @as(u32, g) * luma_g + @as(u32, b) * luma_b;
+    // invariant: the weighted sum stays within the byte range once divided by 256.
+    assert((sum >> 8) <= 255);
+    return @intCast(sum >> 8);
+}
 
 /// Crop the rectangle at (x, y) of size (w, h) out of a decoded RGBA image, returning a fresh Pixmap. Pure:
 /// the source is never mutated. Refuses an empty rectangle (`EmptyRect`) and any rectangle that reaches past
@@ -277,6 +298,56 @@ pub fn adjust(
     }
 
     // invariant: an adjust changes no pixel count — the output length matches the source exactly.
+    assert(out.len == pm.pixels.len);
+    return qoi.Pixmap{
+        .width = pm.width,
+        .height = pm.height,
+        .channels = pm.channels,
+        .colorspace = pm.colorspace,
+        .pixels = out,
+    };
+}
+
+/// Scale each pixel's color toward or away from its own Rec.601 luma, leaving alpha untouched, returning a fresh
+/// Pixmap. Each color channel takes the luma-preserving map out = L + (c - L)·sat_num/sat_den, clamped into
+/// 0..255, where L is the pixel's gray — so sat_num == sat_den recovers the source, sat_num == 0 flattens every
+/// pixel to its own gray (a true grayscale), and sat_num > sat_den pushes colors apart. A gray pixel (r == g == b)
+/// is a fixed point at every saturation, since its chroma c - L is zero. Pure — the source is never mutated.
+/// Refuses a degenerate image (`EmptyImage`) and a zero or over-ceiling saturation term (`BadSaturation`).
+pub fn saturate(
+    allocator: std.mem.Allocator,
+    pm: *const qoi.Pixmap,
+    sat_num: u32,
+    sat_den: u32,
+) !qoi.Pixmap {
+    // invariant: the source buffer is exactly four bytes per pixel.
+    assert(pm.pixels.len == @as(usize, pm.width) * @as(usize, pm.height) * 4);
+    if (pm.width == 0 or pm.height == 0) return error.EmptyImage;
+    // The denominator must be a real divisor; both terms stay under the ceiling so the map cannot wrap in i64.
+    if (sat_den == 0 or sat_den > saturate_max) return error.BadSaturation;
+    if (sat_num > saturate_max) return error.BadSaturation;
+
+    const out = try allocator.alloc(u8, pm.pixels.len);
+
+    const num = @as(i64, sat_num);
+    const den = @as(i64, sat_den);
+
+    var i: usize = 0;
+    while (i < pm.pixels.len) : (i += 4) {
+        const l = @as(i64, luma_of(pm.pixels[i], pm.pixels[i + 1], pm.pixels[i + 2]));
+        // The three color channels take the luma-preserving map; alpha passes through untouched.
+        var c: usize = 0;
+        while (c < 3) : (c += 1) {
+            const v = @as(i64, pm.pixels[i + c]);
+            // Computed in i64 so no product wraps; then clamped into the byte range.
+            const mapped = l + @divTrunc((v - l) * num, den);
+            const clamped: i64 = if (mapped < 0) 0 else if (mapped > 255) 255 else mapped;
+            out[i + c] = @intCast(clamped);
+        }
+        out[i + 3] = pm.pixels[i + 3];
+    }
+
+    // invariant: a saturation change keeps the pixel count exactly.
     assert(out.len == pm.pixels.len);
     return qoi.Pixmap{
         .width = pm.width,
@@ -534,6 +605,95 @@ fn run_adjust(garden: std.mem.Allocator) !struct { w: u32, h: u32 } {
     return .{ .w = w, .h = h };
 }
 
+/// Prove the saturate verb by the algebra it must obey: a neutral saturation recovers the source byte-for-byte,
+/// a zero saturation flattens every pixel to its own Rec.601 luma (a true grayscale with r == g == b), a gray
+/// pixel is a fixed point at any saturation, a boost pushes a color away from its luma, alpha passes through, the
+/// source stays pure, a saturated image is still open, and the named refusals hold. Returns the strip's
+/// dimensions for the GREEN line.
+fn run_saturate(garden: std.mem.Allocator) !struct { w: u32, h: u32 } {
+    // A 4x1 strip: three saturated colors and one already-gray pixel, alpha varied to prove pass-through.
+    const w: u32 = 4;
+    const h: u32 = 1;
+    const buf = try garden.alloc(u8, w * h * 4);
+    const cols = [_][4]u8{
+        .{ 200, 50, 50, 255 }, //  a warm red
+        .{ 40, 180, 90, 200 }, //  a green
+        .{ 60, 90, 220, 128 }, //  a blue
+        .{ 130, 130, 130, 0 }, //  already gray — a fixed point
+    };
+    var i: u32 = 0;
+    while (i < w) : (i += 1) {
+        buf[i * 4] = cols[i][0];
+        buf[i * 4 + 1] = cols[i][1];
+        buf[i * 4 + 2] = cols[i][2];
+        buf[i * 4 + 3] = cols[i][3];
+    }
+    const pm = qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+
+    // A neutral saturation (num == den) recovers the source byte-for-byte.
+    const neutral = try saturate(garden, &pm, 1, 1);
+    assert(neutral.same_bytes(&pm));
+
+    // A zero saturation flattens every pixel to its own luma: r == g == b == luma_of(source), alpha untouched.
+    const gray = try saturate(garden, &pm, 0, 1);
+    {
+        var p: u32 = 0;
+        while (p < w) : (p += 1) {
+            const off = @as(usize, p) * 4;
+            const l = luma_of(pm.pixels[off], pm.pixels[off + 1], pm.pixels[off + 2]);
+            assert(gray.pixels[off] == l and gray.pixels[off + 1] == l and gray.pixels[off + 2] == l);
+            assert(gray.pixels[off + 3] == pm.pixels[off + 3]);
+        }
+    }
+
+    // The already-gray pixel (index 3, r == g == b == 130) is a fixed point at every saturation, boost included.
+    const boost = try saturate(garden, &pm, 2, 1);
+    assert(boost.pixels[12] == 130 and boost.pixels[13] == 130 and boost.pixels[14] == 130);
+    assert(gray.pixels[12] == 130 and gray.pixels[13] == 130 and gray.pixels[14] == 130);
+
+    // A boost pushes a color channel away from its luma: the red pixel's dominant red rises above its own value
+    // (or clamps at 255) while its weaker green falls further below the luma — chroma widens, never narrows.
+    {
+        const l0 = @as(i32, luma_of(pm.pixels[0], pm.pixels[1], pm.pixels[2]));
+        // Red (200) sits above the luma, so a 2x boost lifts it toward 255; green (50) sits below and falls.
+        assert(@as(i32, boost.pixels[0]) >= @as(i32, pm.pixels[0]));
+        assert(@as(i32, boost.pixels[1]) <= @as(i32, pm.pixels[1]));
+        // The boosted red stays on the far side of the luma from where its chroma pointed.
+        assert(@as(i32, boost.pixels[0]) >= l0);
+        assert(@as(i32, boost.pixels[1]) <= l0);
+    }
+
+    // Alpha passes through untouched across the whole strip for both the gray flatten and the boost.
+    assert(gray.pixels[3] == 255 and gray.pixels[7] == 200 and gray.pixels[11] == 128 and gray.pixels[15] == 0);
+    assert(boost.pixels[3] == 255 and boost.pixels[15] == 0);
+
+    // Pure: the source is untouched.
+    assert(pm.pixels[0] == 200 and pm.pixels[12] == 130 and pm.pixels[15] == 0);
+
+    // Still an OPEN image: a saturated image re-encodes and round-trips through the codec byte-for-byte.
+    const cap = qoi.encoded_bound(gray.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const res = try qoi.encode(&gray, dst);
+    const back = try qoi.decode(garden, dst[0..res.len]);
+    assert(back.same_bytes(&gray));
+
+    // Unwelcome: a zero saturation denominator refuses BadSaturation.
+    if (saturate(garden, &pm, 1, 0)) |_| return error.SaturationSlipped else |e| {
+        if (e != error.BadSaturation) return error.WrongSaturation;
+    }
+    // Unwelcome: an over-ceiling saturation numerator refuses BadSaturation.
+    if (saturate(garden, &pm, saturate_max + 1, 1)) |_| return error.SaturationSlipped else |e| {
+        if (e != error.BadSaturation) return error.WrongSaturation;
+    }
+    // Unwelcome: a degenerate zero-dimension image refuses EmptyImage.
+    const empty = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (saturate(garden, &empty, 1, 1)) |_| return error.EmptySlipped else |e| {
+        if (e != error.EmptyImage) return error.WrongEmpty;
+    }
+
+    return .{ .w = w, .h = h };
+}
+
 fn run_selftest(garden: std.mem.Allocator) !u8 {
     const pm = try craft_tagged(garden);
 
@@ -613,6 +773,13 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         "contrast flattens to the midpoint; alpha passes through untouched; source untouched (pure); adjusted " ++
         "image re-encodes and round-trips; a zero denominator, an over-range brightness, and an empty image " ++
         "refused by name\n", .{ tuned.w, tuned.h });
+
+    const sat = try run_saturate(garden);
+    print("GREEN image-photos-saturate: a {d}x{d} strip saturates — a neutral saturation byte-identical; a zero " ++
+        "saturation flattens each pixel to its own Rec.601 luma (r==g==b, a true grayscale); an already-gray " ++
+        "pixel is a fixed point at every saturation; a boost pushes each channel away from its luma; alpha " ++
+        "passes through untouched; source untouched (pure); saturated image re-encodes and round-trips; a zero " ++
+        "denominator, an over-ceiling numerator, and an empty image refused by name\n", .{ sat.w, sat.h });
     return 0;
 }
 

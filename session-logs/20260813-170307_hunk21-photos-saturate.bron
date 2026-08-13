@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260813.170307
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title HUNK21 — the Photos app tunes saturation
+prompt baton prin recur — continue the loop past HUNK20, next agent-doable Lindy-first crux, send each increment
+think REMEMBER named the next crux: another Photos gesture (a smoother resampler, or hue/saturation as a bounded verb). Lindy-first crux-first favors saturation — a capability every photo app carries, and unlike a floating-point HSL round-trip it admits a clean integer-only, algebra-provable shape over the open module already built.
+think Chose the luma-preserving map out = L + (c-L)*num/den, clamped, with Rec.601 weights scaled to sum exactly 256 (77+150+29) so gray maps to itself with no drift. num==den recovers the source, num==0 flattens to a true grayscale, a gray pixel is a fixed point, i64 keeps every product from wrapping, saturate_max bounds the term.
+think Proved by algebra not one arithmetic: neutral byte-identical, zero-saturation r==g==b==luma per pixel, already-gray fixed point at every saturation, a boost drives the dominant channel above and the weak channel below its luma, alpha pass-through, purity, still-open round-trip, and the named refusals (BadSaturation, EmptyImage).
+obs Built GREEN first try; all five photos selftests GREEN (crop, orient, scale, adjust, saturate). Added a small luma_of helper (its own two invariants, the weight-sum assert) that a future hue rotation will reuse.
+obs A true hue rotation — modular color-wheel turn, cleanest as a luma-chroma matrix — is genuinely harder to bound cleanly in integer math; named as a horizon on the same module rather than half-built here.
+obs TAME bans clean, width exit 0; no new compound asserts.
+loom witness=hunk_photos_saturate_witness build=ok selftest=green verbs=5 luma_weight_sum=256 refusals=3
+file image/photos.rye saturate verb + luma_of helper + BadSaturation/saturate_max; run_saturate selftest and GREEN line; version restamped
+file tools/hunk_photos_saturate_witness.rish new HUNK21 witness, GREEN; asserts the four prior selftests still GREEN beneath
+file active-designing/20260813-170307_hunk-photos-saturate-exploration.md the self-approved HUNK21 design round
+file work-in-progress/REMEMBER.md HUNK21 narrative appended; git nib refreshed
+recommend keep-going a hue rotation (the named horizon, reusing luma_of), a smoother bilinear/area resampler, or the next Season-A / double-seat journey; hardware buys stay custody gates #2/#3
