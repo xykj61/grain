@@ -137,6 +137,25 @@ pub fn mint_fact(
     return f;
 }
 
+/// Verify a fact's own signature over its canonical bytes by its signer key.
+/// Additive — `fold_fact` already runs exactly this crypto gate before applying the
+/// global-supply law; this exposes the gate alone for a resolver (like the Purse)
+/// that folds a DIFFERENT law over the same signed facts yet must still trust who
+/// signed each fact and to whom. The existing fold path is unchanged — the same
+/// additive shape `cord.verify_block` set for a Byzantine-aware caller.
+pub fn verify_fact(fact: *const Fact) bool {
+    // invariant: the canonical buffer holds the whole bounded fact layout.
+    assert(fact.star_len <= star_name_max_bytes);
+    assert(fact.body_len <= myc_fact_max_bytes);
+    const pk = kumara.PublicKey.fromBytes(fact.signer_pk) catch return false;
+    var msg: [1 + 8 + star_name_max_bytes + myc_fact_max_bytes]u8 = undefined;
+    const n = canonical_bytes(fact, &msg);
+    // invariant: the signed prefix never runs past the canonical buffer.
+    assert(n <= msg.len);
+    kumara.verify_bytes(msg[0..n], fact.sig[0..], pk) catch return false;
+    return true;
+}
+
 fn star_taken(state: *const FoldState, name: []const u8) bool {
     var i: u32 = 0;
     while (i < state.star_count) : (i += 1) {
