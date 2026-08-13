@@ -1,0 +1,49 @@
+# tools/hunk_preset_shelf_witness.rish — a keeper reads their installed library as a shelf on glass (HUNK36).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK36.
+# Design read: active-designing/20260813-185517_hunk-preset-shelf-exploration.md.
+# Teacher, thanked clean-room: the installed filter-pack shelf of Instagram / VSCO (concept only, siloed).
+#
+# HUNK35 detailed a keeper's installed books honestly; this rung paints that detailing on glass. `pond/apps/
+# preset_shelf.rye` `shelf_grid` renders a DetailListing onto a Skate grid, one row per book reading
+# `<name>  <preset…>`, the book name wearing a color chip. The shelf is a PURE view of an already-honest detailing
+# and refuses ShelfTooSmall rather than silently drop a book past the last row — a rendered shelf shows every book
+# or none. The selftest builds a real catalog of two books, details it, renders the shelf, and proves one row per
+# book with names and presets shown, the name a distinct chip, the shelf pure/deterministic and genuinely lit, and
+# the never-hide-a-book refusals (ShelfTooSmall / EmptyShelf / ShelfTooLarge) fire. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_preset_shelf_witness.rish
+
+say "hunk-preset-shelf: Language EN — HUNK36 paints the library on glass: a keeper reads which filter books they have installed, and which filters each holds, as a Skate shelf — no network, no key, no funds."
+say "hunk-preset-shelf: Style Radiant — a pure view of an already-honest detailing: it can add no new way to lie, and it shows every book or none, never a silent drop."
+say "hunk-preset-shelf: Lens TAME — pure composition over HUNK35's detailing and the Skate grid, positive invariants per fn, a never-hide-a-book bound enforced at the render edge; refusals named."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/apps/bin/preset_shelf"
+
+let build = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/preset_shelf.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-preset-shelf: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-preset-shelf: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+say "hunk-preset-shelf: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN preset-shelf' && echo yes"]
+assert (trim green.out) == "yes" else "hunk-preset-shelf: selftest did not print the GREEN preset-shelf line"
+
+let rows = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'one row per book in held order' && echo yes"]
+assert (trim rows.out) == "yes" else "hunk-preset-shelf: the shelf did not render one row per book in held order"
+
+let chip = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the book name wearing a color chip distinct from its presets' && echo yes"]
+assert (trim chip.out) == "yes" else "hunk-preset-shelf: the book name was not proven a distinct color chip"
+
+let pure = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'pure over the detailing' && echo yes"]
+assert (trim pure.out) == "yes" else "hunk-preset-shelf: the shelf was not proven pure over the detailing"
+
+let honest = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'every book or none, never a silent drop' && echo yes"]
+assert (trim honest.out) == "yes" else "hunk-preset-shelf: the never-hide-a-book guarantee was not proven"
+
+say "hunk-preset-shelf: GREEN — a keeper reads their installed library on glass; the shelf is pure over an honest detailing; it shows every book or none; refusals named."

@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260813.185517
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu (Framework 16 AMD) — Eastern (EDT) time convention · ai-jail on Vultr SEA VPS
+title HUNK36 — a keeper reads their installed library as a shelf on glass
+prompt Kyri: keep taking the next agent-doable lap Lindy-first crux-first on the Season A road; approve your own design rounds; send each finished increment as its own signed round; STOP at custody gates.
+think HUNK35 (preset_detail) landed and sent; its first named horizon was the Skate view of the detail — a book shown as a shelf of named chips. Lindy-first crux-first: the library is read every time the Photos app opens, and it composes two proven seams (HUNK35's honest detailing + the Skate grid) rather than inventing a pipeline.
+think Chose the home carefully. The DetailListing lives in pond/apps with its full verified-store chain; the Skate grid lives in brushstroke. pond/apps already carries a `brushstroke/` symlink, so `@import("brushstroke/skate_grid.rye")` resolves with zero new symlinks — the shelf's natural home is pond/apps.
+think The property this rung earns: a view must never quietly hide a book. shelf_grid refuses ShelfTooSmall when the grid has fewer rows than books — the display-side echo of HUNK35's whole-detailing honesty. Upstream never advertises a phantom; downstream never omits a real one.
+obs The shelf is a PURE view over an already-honest detailing, so it can add no new way to lie — proven by building twice for identical cells and fg_index with the detailing untouched. The book name wears a real palette slot (a chip) distinct from the presets beside it (put_color_run + put_line composed).
+obs Witness GREEN on first run (72x4 shelf, 1607 lit pixels). tame_style_check bans clean; width-check exit 0 — the single usize is the sanctioned @as(usize,...) allocation seam cast, matching preset_preview's own idiom, none in authored API. No network, no key, no funds; no custody gate reached.
+loom witness=hunk_preset_shelf_witness shelf_cols=72 shelf_rows=4 lit_pixels=1607 books=2 asserts=20
+file active-designing/20260813-185517_hunk-preset-shelf-exploration.md self-approved design round for HUNK36
+file pond/apps/preset_shelf.rye the keystone — shelf_grid renders a DetailListing to a Skate shelf, never hiding a book
+file tools/hunk_preset_shelf_witness.rish the witness, GREEN on metal
+file work-in-progress/REMEMBER.md latest-lap HUNK36 note and git nib refresh
+recommend keep-going — the next agent-doable crux is the scrollable shelf (a bounded viewport over a library larger than the grid, never a silent truncation), still clear of every custody gate.

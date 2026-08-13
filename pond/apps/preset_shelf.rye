@@ -1,0 +1,195 @@
+//! pond/apps/preset_shelf.rye — HUNK36: a keeper reads their installed filter library as a shelf on glass.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK36.
+//! Design read: active-designing/20260813-185517_hunk-preset-shelf-exploration.md.
+//! Teacher, thanked clean-room: the installed filter-pack shelf of Instagram / VSCO — a keeper reads their whole
+//! library at a glance (concept only, siloed).
+//!
+//! HUNK35 gave a keeper an honest detailing of their installed books — every book's name and its preset names, read
+//! from a verified reopen. This rung paints that detailing on glass: `shelf_grid` renders a `DetailListing` onto a
+//! Skate grid, one row per book reading `<name>  <preset…>`, the book name wearing a real palette slot so it stands
+//! out as a chip. The shelf is a PURE view of an already-honest detailing — it can add no new way to lie, and it
+//! refuses `ShelfTooSmall` rather than silently drop a book past the last row: a rendered shelf shows every book or
+//! none. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/preset_shelf.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const preset_detail = @import("preset_detail.rye");
+const image_skate = @import("brushstroke/image_skate.rye");
+const skate = @import("brushstroke/skate_grid.rye");
+
+pub const preset_shelf_version = "20260813.185517";
+
+/// The palette slot the book name wears — a real slot (never the sentinel 0), so a name reads as a chip against the
+/// presets listed beside it.
+pub const name_slot: u8 = 1;
+
+pub const PresetShelfError = error{
+    EmptyShelf,
+    ShelfTooLarge,
+    ShelfTooSmall,
+    Overflow,
+};
+
+/// Render a keeper's installed-book detailing onto a Skate grid, one row per book reading `<name>  <preset…>`. The
+/// book name wears `name_slot` so it stands out as a chip. Pure over the detailing — it is read many times and
+/// touched never. Refuses `EmptyShelf` on a zero dimension, `ShelfTooLarge` past the map ceiling, and
+/// `ShelfTooSmall` when the grid has fewer rows than the detailing has books — a rendered shelf shows every book or
+/// none, never a silent drop.
+pub fn shelf_grid(
+    allocator: std.mem.Allocator,
+    listing: *const preset_detail.DetailListing,
+    cols: u32,
+    rows: u32,
+) !skate.Grid {
+    // invariant: the detailing never outgrew its own bound before it is drawn.
+    assert(listing.count <= preset_detail.max_details);
+    if (cols == 0 or rows == 0) return error.EmptyShelf;
+    if (cols > image_skate.max_map_cols or rows > image_skate.max_map_rows) return error.ShelfTooLarge;
+    // A shelf shows every book or none — never the books past the last row silently dropped.
+    if (rows < listing.count) return error.ShelfTooSmall;
+
+    var grid = try skate.Grid.init(allocator, cols, rows);
+    // A gentle chip color for the book name — a real slot, never the sentinel.
+    grid.set_palette(name_slot, .{ .r = 120, .g = 200, .b = 255 });
+
+    var i: u32 = 0;
+    while (i < listing.count) : (i += 1) {
+        // invariant: a drawn row sits inside the grid (rows >= listing.count checked above).
+        assert(i < rows);
+        const d = listing.at(i);
+        const name = d.name_slice();
+
+        // Build the row text `<name>  <preset…>` into a bounded scratch line, then place it — `put_line` clamps to
+        // the grid width, so a long line paints only the cells that exist (a display, never an overrun).
+        var line_buf: [preset_detail.per_line_bound]u8 = undefined;
+        var off: u32 = 0;
+        const head = std.fmt.bufPrint(line_buf[off..], "{s} ", .{name}) catch return error.Overflow;
+        off += @intCast(head.len);
+        var j: u32 = 0;
+        while (j < d.preset_count) : (j += 1) {
+            const nm = d.preset_at(j).slice();
+            const chip = std.fmt.bufPrint(line_buf[off..], " {s}", .{nm}) catch return error.Overflow;
+            off += @intCast(chip.len);
+        }
+        // invariant: the built line never exceeds its scratch bound.
+        assert(off <= line_buf.len);
+        grid.put_line(i, line_buf[0..off]);
+
+        // Paint the name as a chip: the cells `[0, name_len)` wear the name slot (clamped to the grid width by
+        // `put_color_run`, so a name wider than the grid colors only the visible cells).
+        const name_len: u32 = @intCast(name.len);
+        if (name_len > 0) grid.put_color_run(i, 0, name_len, name_slot);
+    }
+    // invariant: exactly one row was drawn per book.
+    assert(i == listing.count);
+    return grid;
+}
+
+// --- selftest: build a real catalog of two preset books, detail it honestly (HUNK35), render the detailing to a
+//     shelf, and prove one row per book with names and presets shown, the name a colored chip, the shelf pure and
+//     deterministic and genuinely lit, and the never-hide-a-book refusals fire ---------------------------------
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const beading = @import("mantra/beading.rye");
+    const tablecloth = @import("tablecloth.rye");
+    const filter_preset = @import("filter_preset.rye");
+    const preset_store = @import("preset_store.rye");
+    const photo_edits = @import("photo_edits.rye");
+
+    var store: beading.BeadStore = .empty();
+    var cat: tablecloth.Catalog = .empty();
+
+    // The nine-preset stock book and a small two-preset custom book — the same real corpus HUNK35 details.
+    const stock = try filter_preset.stock_book();
+    _ = try preset_store.store_book(&cat, &store, "stock.presets", &stock);
+    var small = filter_preset.PresetBook.init();
+    var flip = photo_edits.EditList.init();
+    try flip.push(.flip_h);
+    try small.define("mirror", &flip);
+    var spin = photo_edits.EditList.init();
+    try spin.push(.{ .rotate = .{ .turns = 1 } });
+    try small.define("quarter", &spin);
+    _ = try preset_store.store_book(&cat, &store, "custom.presets", &small);
+
+    // Detail it honestly (HUNK35), then render the detailing onto a shelf.
+    var listing: preset_detail.DetailListing = undefined;
+    try preset_detail.detail_books(&cat, &store, &listing);
+    assert(listing.len() == 2);
+
+    const cols: u32 = 72;
+    const rows: u32 = 4;
+    const grid = try shelf_grid(garden, &listing, cols, rows);
+    assert(grid.cols == cols);
+    assert(grid.rows == rows);
+
+    // One row per book, names and presets shown: row 0 carries the stock book and its presets, row 1 the custom.
+    const row0 = grid.row_cells(0);
+    assert(std.mem.indexOf(u8, row0, "stock.presets") != null);
+    assert(std.mem.indexOf(u8, row0, "vivid") != null);
+    assert(std.mem.indexOf(u8, row0, "sketch") != null);
+    const row1 = grid.row_cells(1);
+    assert(std.mem.indexOf(u8, row1, "custom.presets") != null);
+    assert(std.mem.indexOf(u8, row1, "mirror") != null);
+    assert(std.mem.indexOf(u8, row1, "quarter") != null);
+
+    // The name is a chip: the first cells of row 0 wear the name slot, the cells past the name do not — a name reads
+    // distinct from the presets beside it.
+    assert(grid.fg_index[0] == name_slot); // first cell of the book name
+    const stock_name_len = "stock.presets".len;
+    assert(grid.fg_index[stock_name_len + 1] != name_slot); // a cell out among the presets is not the name chip
+
+    // Pure and deterministic: building the shelf again yields identical cells and foreground indices, and the
+    // detailing is untouched (its first book still names the stock book).
+    const grid2 = try shelf_grid(garden, &listing, cols, rows);
+    assert(std.mem.eql(u8, grid.cells, grid2.cells));
+    assert(std.mem.eql(u8, grid.fg_index, grid2.fg_index));
+    assert(std.mem.eql(u8, listing.at(0).name_slice(), "stock.presets"));
+
+    // Genuinely seen: the shelf rasterizes to a lit canvas.
+    const view_scale: u32 = 1;
+    const width: u32 = cols * skate.cell_w * view_scale;
+    const height: u32 = rows * skate.cell_h * view_scale;
+    const stride: u32 = width * 4;
+    const canvas = try garden.alloc(u8, @as(usize, stride) * @as(usize, height));
+    const bg = skate.Color{ .r = 1, .g = 2, .b = 3 };
+    const fg = skate.Color{ .r = 220, .g = 220, .b = 220 };
+    grid.rasterize(canvas, stride, @intCast(width), @intCast(height), bg, fg, view_scale);
+    const lit = grid.lit_pixel_count(canvas, stride, @intCast(width), @intCast(height), bg);
+    assert(lit > 0);
+
+    // Never hides a book: a grid with fewer rows than books refuses ShelfTooSmall rather than drop the last book.
+    if (shelf_grid(garden, &listing, cols, 1)) |_| return error.SmallSlipped else |e| {
+        if (e != error.ShelfTooSmall) return error.WrongSmall;
+    }
+    // A zero dimension refuses EmptyShelf; an over-ceiling dimension refuses ShelfTooLarge.
+    if (shelf_grid(garden, &listing, 0, rows)) |_| return error.EmptySlipped else |e| {
+        if (e != error.EmptyShelf) return error.WrongEmpty;
+    }
+    if (shelf_grid(garden, &listing, image_skate.max_map_cols + 1, rows)) |_| {
+        return error.LargeSlipped;
+    } else |e| {
+        if (e != error.ShelfTooLarge) return error.WrongLarge;
+    }
+
+    print("GREEN preset-shelf: a real catalog of two installed books details honestly and renders to a {d}x{d} " ++
+        "Skate shelf — one row per book in held order (stock.presets with vivid…sketch, custom.presets with mirror " ++
+        "quarter), the book name wearing a color chip distinct from its presets; the shelf is pure over the " ++
+        "detailing (built twice, identical cells and colors, the detailing untouched) and rasterizes to {d} lit " ++
+        "pixels; a grid with fewer rows than books refuses ShelfTooSmall (every book or none, never a silent drop), " ++
+        "a zero dimension EmptyShelf, an over-ceiling dimension ShelfTooLarge\n", .{ grid.cols, grid.rows, lit });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: preset_shelf selftest\n", .{});
+    return 1;
+}
