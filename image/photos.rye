@@ -771,6 +771,71 @@ pub fn stretch(allocator: std.mem.Allocator, pm: *const qoi.Pixmap) !qoi.Pixmap 
     };
 }
 
+/// Edge detection: the Sobel gradient magnitude over each pixel's luma, returned as a grayscale image where a
+/// bright pixel marks a strong local change and a flat region is black. Two 3×3 gradient kernels — one horizontal
+/// (`gx`), one vertical (`gy`) — read the 3×3 luma neighborhood; the magnitude is the L1 sum `|gx| + |gy|`,
+/// clamped into 0..255, so no square root and no float is needed and the arithmetic stays exact. A solid color
+/// (or any flat neighborhood) has zero gradient — a fixed point at black. Edges are extended by clamping so no
+/// read wraps. Alpha is set opaque on the edge map, since an edge image is a fresh grayscale view, not the source.
+/// Pure. Refuses only a degenerate image (`EmptyImage`).
+pub fn edges(allocator: std.mem.Allocator, pm: *const qoi.Pixmap) !qoi.Pixmap {
+    // invariant: the source buffer is exactly four bytes per pixel.
+    assert(pm.pixels.len == @as(usize, pm.width) * @as(usize, pm.height) * 4);
+    if (pm.width == 0 or pm.height == 0) return error.EmptyImage;
+
+    const gx = [9]i32{ -1, 0, 1, -2, 0, 2, -1, 0, 1 };
+    const gy = [9]i32{ -1, -2, -1, 0, 0, 0, 1, 2, 1 };
+
+    const out = try allocator.alloc(u8, pm.pixels.len);
+    const w = pm.width;
+    const h = pm.height;
+
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            // Accumulate each directional gradient over the 3×3 luma neighborhood. The largest term is 4·255 = 1020
+            // per direction, so both sums and their absolute magnitudes stay far inside i32.
+            var sx: i32 = 0;
+            var sy: i32 = 0;
+            var ky: i64 = -1;
+            while (ky <= 1) : (ky += 1) {
+                var kx: i64 = -1;
+                while (kx <= 1) : (kx += 1) {
+                    const px = clamp_index(@as(i64, x) + kx, w);
+                    const py = clamp_index(@as(i64, y) + ky, h);
+                    const s_off = (@as(usize, @intCast(py)) * @as(usize, w) + @as(usize, @intCast(px))) * 4;
+                    const lum = @as(i32, luma_of(pm.pixels[s_off], pm.pixels[s_off + 1], pm.pixels[s_off + 2]));
+                    const k = @as(usize, @intCast((ky + 1) * 3 + (kx + 1)));
+                    sx += gx[k] * lum;
+                    sy += gy[k] * lum;
+                }
+            }
+            const mag_x: i32 = if (sx < 0) -sx else sx;
+            const mag_y: i32 = if (sy < 0) -sy else sy;
+            const mag: i32 = mag_x + mag_y;
+            const clamped: i32 = if (mag > 255) 255 else mag;
+            const dst_off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            const g: u8 = @intCast(clamped);
+            // A grayscale edge view: the same magnitude on every color channel, alpha opaque.
+            out[dst_off] = g;
+            out[dst_off + 1] = g;
+            out[dst_off + 2] = g;
+            out[dst_off + 3] = 255;
+        }
+    }
+
+    // invariant: edge detection changes no pixel count — the output length matches the source exactly.
+    assert(out.len == pm.pixels.len);
+    return qoi.Pixmap{
+        .width = pm.width,
+        .height = pm.height,
+        .channels = pm.channels,
+        .colorspace = pm.colorspace,
+        .pixels = out,
+    };
+}
+
 // --- selftest: crop a position-tagged image, prove every cropped pixel is its source pixel, prove purity and
 //     the open round-trip, and prove the named refusals ------------------------------------------------------
 
@@ -1539,6 +1604,81 @@ fn run_stretch(garden: std.mem.Allocator) !struct { w: u32, h: u32 } {
     return .{ .w = wide.width, .h = wide.height };
 }
 
+fn run_edges(garden: std.mem.Allocator) !struct { w: u32, h: u32 } {
+    // A sharp vertical step: a single row of luma [0, 0, 255, 255]. With the single row clamped vertically, the
+    // vertical gradient is zero everywhere and the horizontal Sobel is gx = -4·L(x-1) + 4·L(x+1) with edges
+    // clamped, so the magnitudes are [0, 255, 255, 0] — the two pixels straddling the step light up, the flat
+    // ends stay black.
+    const lum = [4]u8{ 0, 0, 255, 255 };
+    const step = try garden.alloc(u8, 4 * 1 * 4);
+    {
+        var x: usize = 0;
+        while (x < 4) : (x += 1) {
+            step[x * 4] = lum[x];
+            step[x * 4 + 1] = lum[x];
+            step[x * 4 + 2] = lum[x];
+            step[x * 4 + 3] = 200; // a translucent source: the edge map still comes back opaque
+        }
+    }
+    const step_pm = qoi.Pixmap{ .width = 4, .height = 1, .channels = 4, .colorspace = 0, .pixels = step };
+    const edged = try edges(garden, &step_pm);
+    const want = [4]u8{ 0, 255, 255, 0 };
+    {
+        var x: usize = 0;
+        while (x < 4) : (x += 1) {
+            // Grayscale: every color channel carries the same magnitude, alpha opaque.
+            assert(edged.pixels[x * 4] == want[x]);
+            assert(edged.pixels[x * 4 + 1] == want[x]);
+            assert(edged.pixels[x * 4 + 2] == want[x]);
+            assert(edged.pixels[x * 4 + 3] == 255);
+        }
+    }
+
+    // Pure: the source step's translucent alpha and second pixel are untouched.
+    assert(step_pm.pixels[3] == 200);
+    assert(step_pm.pixels[4] == 0);
+
+    // A solid color is a fixed point at black: no gradient anywhere.
+    const sw: u32 = 4;
+    const sh: u32 = 4;
+    const solid = try garden.alloc(u8, sw * sh * 4);
+    {
+        var i: usize = 0;
+        while (i < solid.len) : (i += 4) {
+            solid[i] = 120;
+            solid[i + 1] = 60;
+            solid[i + 2] = 200;
+            solid[i + 3] = 255;
+        }
+    }
+    const solid_pm = qoi.Pixmap{ .width = sw, .height = sh, .channels = 4, .colorspace = 0, .pixels = solid };
+    const flat = try edges(garden, &solid_pm);
+    {
+        var i: usize = 0;
+        while (i < flat.pixels.len) : (i += 4) {
+            assert(flat.pixels[i] == 0);
+            assert(flat.pixels[i + 1] == 0);
+            assert(flat.pixels[i + 2] == 0);
+            assert(flat.pixels[i + 3] == 255);
+        }
+    }
+
+    // An edge image is still an OPEN image: it re-encodes and round-trips byte-for-byte through the codec.
+    const cap = qoi.encoded_bound(edged.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const res = try qoi.encode(&edged, dst);
+    const back = try qoi.decode(garden, dst[0..res.len]);
+    assert(back.same_bytes(&edged));
+
+    // Unwelcome: a zero-dimension image refuses.
+    const empty = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (edges(garden, &empty)) |_| return error.EmptySlipped else |e| {
+        if (e != error.EmptyImage) return error.WrongEmpty;
+    }
+
+    return .{ .w = edged.width, .h = edged.height };
+}
+
 fn run_selftest(garden: std.mem.Allocator) !u8 {
     const pm = try craft_tagged(garden);
 
@@ -1659,6 +1799,12 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         "untouched; the map is monotone (order preserved); a channel already spanning [0,255] is a fixed point; a " ++
         "solid color is byte-identical; alpha passes through untouched; source untouched (pure); stretched image " ++
         "re-encodes and round-trips; an empty image refused by name\n", .{ str.w, str.h });
+
+    const edg = try run_edges(garden);
+    print("GREEN image-photos-edges: a {d}x{d} image detects edges — a sharp luma step [0,0,255,255] Sobels to " ++
+        "the magnitudes [0,255,255,0], the two pixels straddling the step lighting up and the flat ends black; " ++
+        "the edge map is grayscale (r==g==b) and opaque; a solid color is a fixed point at black (no gradient); " ++
+        "source untouched (pure); edge image re-encodes and round-trips; an empty image refused by name\n", .{ edg.w, edg.h });
     return 0;
 }
 
