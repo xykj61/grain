@@ -1,0 +1,50 @@
+# tools/hunk_preset_list_witness.rish — a keeper lists their installed filter-preset books, on metal (HUNK34).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK34.
+# Design read: active-designing/20260813-184007_hunk-preset-book-listing-exploration.md.
+# Teacher, thanked clean-room: the installed filter-pack shelf of Instagram / VSCO (concept only, siloed).
+#
+# HUNK32 banked a curated filter book content-addressed; this rung surfaces the index, mirroring session_list
+# (HUNK19/20) over the preset store. `pond/apps/preset_list.rye` `list_books` walks the catalog, selects every
+# `.presets` artifact, and open_books each verified (every bead proven against its digest and the whole against its
+# recorded address BEFORE parse), recording name + preset count. The selftest proves the listing names exactly the
+# installed books in held order (the non-book skipped, never opened), each preset count read from a verified reopen,
+# travels both ways as a format preset-list-v1 record (render(parse(render)) a fixed point), refuses a bad header,
+# unknown tag, malformed field, extra field, and an over-ceiling count by BadListing, and refuses the WHOLE listing
+# DigestMismatch when a held book is tampered. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_preset_list_witness.rish
+
+say "hunk-preset-list: Language EN — HUNK34 surfaces the index: a keeper sees the filter books they have installed and how many presets each holds — no network, no key, no funds."
+say "hunk-preset-list: Style Radiant — an honest index: the listing never names a book it cannot honestly reopen, each summary read from a verified reopen, the whole listing refusing rather than advertising a phantom."
+say "hunk-preset-list: Lens TAME — pure composition over preset_store's verified open, positive invariants per fn, the book's own ceiling re-enforced at the text edge; refusals named."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/apps/bin/preset_list"
+
+let build = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/preset_list.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-preset-list: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-preset-list: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+say "hunk-preset-list: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN preset-list' && echo yes"]
+assert (trim green.out) == "yes" else "hunk-preset-list: selftest did not print the GREEN preset-list line"
+
+let exact = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'lists exactly its 2 installed preset books in held order' && echo yes"]
+assert (trim exact.out) == "yes" else "hunk-preset-list: the listing did not name exactly the installed books in held order"
+
+let verified = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'each preset count read from a verified reopen' && echo yes"]
+assert (trim verified.out) == "yes" else "hunk-preset-list: the preset counts were not proven read from a verified reopen"
+
+let travels = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'travels BOTH ways' && echo yes"]
+assert (trim travels.out) == "yes" else "hunk-preset-list: the listing was not proven to travel both ways as a fixed point"
+
+let honest = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'refuse DigestMismatch rather than advertise a phantom' && echo yes"]
+assert (trim honest.out) == "yes" else "hunk-preset-list: the whole-listing honesty guarantee was not proven"
+
+say "hunk-preset-list: GREEN — a keeper's installed preset books are indexed honestly; the listing travels both ways; refusals named."

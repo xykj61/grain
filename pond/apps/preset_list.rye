@@ -1,0 +1,302 @@
+//! pond/apps/preset_list.rye — HUNK34: a keeper lists their installed filter-preset books, an honest index.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK34.
+//! Design read: active-designing/20260813-184007_hunk-preset-book-listing-exploration.md.
+//! Teacher, thanked clean-room: the installed filter-pack shelf of Instagram / VSCO — a keeper sees the books they
+//! have installed and how much each holds (concept only, siloed).
+//!
+//! HUNK32 banked a curated filter book content-addressed — store it, reopen it whole from cold. This rung surfaces
+//! the index, mirroring `session_list` (HUNK19/20) over the preset store: `list_books` walks the catalog, selects
+//! every artifact ending in `.presets`, and `open_book` each (every bead proven against its digest and the whole
+//! against its recorded address BEFORE parse), recording a bounded summary — name and preset count. The honesty
+//! guarantee, borrowed from `session_list`: a listing never names a book it cannot honestly reopen, so a tampered
+//! book makes the whole listing refuse `DigestMismatch`. The listing travels both ways as a `format preset-list-v1`
+//! record. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/preset_list.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const tablecloth = @import("tablecloth.rye");
+const beading = @import("mantra/beading.rye");
+const filter_preset = @import("filter_preset.rye");
+const preset_store = @import("preset_store.rye");
+const tally_copy = @import("tally_copy.rye");
+const parse_int = @import("parse_int.rye");
+
+pub const preset_list_version = "20260813.184007";
+
+/// The suffix that marks an installed preset book in the catalog. A keeper names books `stock.presets`; the listing
+/// selects exactly those, leaving images, edit-lists, sessions, and sprites unlisted.
+pub const preset_suffix = ".presets";
+
+/// The most summaries one listing holds — the catalog's own bound, so a listing can never outgrow what is stored.
+pub const max_summaries: u32 = tablecloth.max_artifacts;
+
+/// A safe upper bound on one rendered listing line: `book ` (5) + a name (`max_name`) + one space + a u32 count
+/// (10 digits) + newline, well inside 80 bytes. The whole record is the header plus one bounded line per book.
+pub const per_line_bound: u32 = 80;
+pub const max_listing_bytes: u32 = 20 + max_summaries * per_line_bound;
+
+pub const PresetListError = error{
+    Overflow,
+    TooManyEntries,
+    BadListing,
+};
+
+const header = "format preset-list-v1\n";
+
+/// One book's summary — what a keeper needs to choose, no recipe bodies. The name is held in a fixed buffer copied
+/// out of the catalog, so a summary outlives the walk that built it.
+pub const BookSummary = struct {
+    name: [tablecloth.max_name]u8 = undefined,
+    name_len: u32 = 0,
+    presets: u32 = 0,
+
+    pub fn name_slice(self: *const BookSummary) []const u8 {
+        // invariant: the held name honors the catalog's own name bound.
+        assert(self.name_len <= tablecloth.max_name);
+        return self.name[0..self.name_len];
+    }
+};
+
+/// A bounded listing of book summaries in the catalog's own held order.
+pub const BookListing = struct {
+    items: [max_summaries]BookSummary = undefined,
+    count: u32 = 0,
+
+    pub fn len(self: *const BookListing) u32 {
+        return self.count;
+    }
+
+    pub fn at(self: *const BookListing, i: u32) *const BookSummary {
+        // invariant: an index reads only a recorded summary.
+        assert(i < self.count);
+        return &self.items[i];
+    }
+};
+
+/// Whether `name` ends in the preset suffix — the selector that keeps the listing to installed books alone.
+fn is_book(name: []const u8) bool {
+    return std.mem.endsWith(u8, name, preset_suffix);
+}
+
+/// Walk the catalog and record a summary for every installed preset book, each read from a verified reopen. A
+/// tampered book refuses `DigestMismatch` through `open_book` and the whole listing refuses with it — the index
+/// never names a book it cannot honestly reopen. A non-book artifact is skipped, never opened.
+pub fn list_books(
+    cat: *const tablecloth.Catalog,
+    store: *const beading.BeadStore,
+    out: *BookListing,
+) !void {
+    out.* = BookListing{ .count = 0 };
+    // invariant: the walk stays within the catalog bound.
+    assert(cat.count <= tablecloth.max_artifacts);
+
+    var i: u32 = 0;
+    while (i < cat.count) : (i += 1) {
+        const name = tablecloth.artifact_name(cat, i);
+        if (!is_book(name)) continue;
+
+        // Open it verified — a tampered book refuses here, before it is ever advertised.
+        var book: filter_preset.PresetBook = undefined;
+        try preset_store.open_book(cat, store, name, &book);
+        // invariant: a reopened book never holds more than the preset ceiling.
+        assert(book.len() <= filter_preset.max_presets);
+
+        // invariant: room remains for exactly this summary (the listing bound equals the catalog bound).
+        assert(out.count < max_summaries);
+        var s = &out.items[out.count];
+        // invariant: the name fits the summary buffer (both bounded by max_name).
+        assert(name.len <= tablecloth.max_name);
+        tally_copy.copy_disjoint(u8, s.name[0..name.len], name);
+        s.name_len = @intCast(name.len);
+        s.presets = book.len();
+        out.count += 1;
+    }
+    // invariant: the listing never outgrew the catalog.
+    assert(out.count <= max_summaries);
+}
+
+/// Render a listing as its `format preset-list-v1` record into `out`, one `book <name> <presets>` line per entry
+/// in held order, returning its length. Refuses `Overflow` rather than writing past the buffer.
+pub fn render_listing(listing: *const BookListing, out: []u8) PresetListError!u32 {
+    // invariant: a rendered listing names at most the listing bound.
+    assert(listing.count <= max_summaries);
+    if (header.len > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[0..header.len], header);
+    var off: u32 = @intCast(header.len);
+
+    var i: u32 = 0;
+    while (i < listing.count) : (i += 1) {
+        const s = &listing.items[i];
+        const line = std.fmt.bufPrint(out[off..], "book {s} {d}\n", .{
+            s.name[0..s.name_len], s.presets,
+        }) catch return error.Overflow;
+        off += @intCast(line.len);
+    }
+    // invariant: the rendered listing stays within the buffer.
+    assert(off <= out.len);
+    return off;
+}
+
+/// Parse a `format preset-list-v1` record into a fresh listing, closing the travel round-trip so
+/// `render(parse(render(x)))` is a fixed point (HUNK7's own idiom). Each line names a book and exactly its preset
+/// count. Refuses `BadListing` on a bad header, an unknown tag, a malformed field, an extra field, a name past the
+/// summary buffer, or a preset count past the book ceiling — the book's own bound, enforced at the text edge. More
+/// than `max_summaries` lines refuses `TooManyEntries`.
+pub fn parse_listing(text: []const u8, out: *BookListing) PresetListError!void {
+    out.* = BookListing{ .count = 0 };
+    // invariant: parsing starts from an empty listing.
+    assert(out.count == 0);
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const first = lines.next() orelse return error.BadListing;
+    if (!std.mem.eql(u8, first, "format preset-list-v1")) return error.BadListing;
+
+    while (lines.next()) |line| {
+        if (line.len == 0) continue; // a trailing newline yields an empty final piece
+        var parts = std.mem.tokenizeScalar(u8, line, ' ');
+        const tag = parts.next() orelse return error.BadListing;
+        if (!std.mem.eql(u8, tag, "book")) return error.BadListing;
+        const name = parts.next() orelse return error.BadListing;
+        if (name.len > tablecloth.max_name) return error.BadListing;
+        const presets = field_u32(&parts) catch return error.BadListing;
+        if (parts.next() != null) return error.BadListing; // no slack past the shape
+        // invariant: a parsed book never holds more than the preset ceiling (the book's law at the text edge).
+        if (presets > filter_preset.max_presets) return error.BadListing;
+
+        if (out.count >= max_summaries) return error.TooManyEntries;
+        var s = &out.items[out.count];
+        tally_copy.copy_disjoint(u8, s.name[0..name.len], name);
+        s.name_len = @intCast(name.len);
+        s.presets = presets;
+        out.count += 1;
+    }
+    // invariant: a parsed listing holds no more than the listing bound.
+    assert(out.count <= max_summaries);
+}
+
+/// Read one required u32 field, surfacing a missing or malformed token so the caller refuses `BadListing`.
+fn field_u32(parts: *std.mem.TokenIterator(u8, .scalar)) !u32 {
+    const tok = parts.next() orelse return error.BadListing;
+    return parse_int.parse_int(u32, tok, .{});
+}
+
+// --- selftest: store two preset books and one non-book artifact, prove the listing names exactly the two books
+//     with true preset counts, travels both ways as a fixed point, refuses malformed records, and refuses the whole
+//     listing DigestMismatch when a held book is tampered --------------------------------------------------------
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    _ = garden;
+    var store: beading.BeadStore = .empty();
+    var cat: tablecloth.Catalog = .empty();
+
+    // The nine-preset stock book, installed under its own name.
+    const stock = try filter_preset.stock_book();
+    _ = try preset_store.store_book(&cat, &store, "stock.presets", &stock);
+
+    // A smaller two-preset book built from two proven verbs, so its count is unambiguous.
+    var small = filter_preset.PresetBook.init();
+    var flip = @import("photo_edits.rye").EditList.init();
+    try flip.push(.flip_h);
+    try small.define("mirror", &flip);
+    var spin = @import("photo_edits.rye").EditList.init();
+    try spin.push(.{ .rotate = .{ .turns = 1 } });
+    try small.define("quarter", &spin);
+    _ = try preset_store.store_book(&cat, &store, "custom.presets", &small);
+
+    // A non-book artifact stored between them — it must be skipped, never opened as a book.
+    _ = try tablecloth.store_artifact(&cat, &store, "notes.txt", "just some bytes");
+
+    // List: exactly the two books, in held order, the non-book skipped.
+    var listing: BookListing = undefined;
+    try list_books(&cat, &store, &listing);
+    assert(listing.len() == 2);
+    assert(std.mem.eql(u8, listing.at(0).name_slice(), "stock.presets"));
+    assert(std.mem.eql(u8, listing.at(1).name_slice(), "custom.presets"));
+
+    // True summaries: the stock book reports its nine presets, the custom book its two — each read from a verified
+    // reopen, not a stored number.
+    assert(listing.at(0).presets == 9);
+    assert(listing.at(1).presets == 2);
+
+    // Travels as text: the listing renders to a bounded record naming both books.
+    var buf: [max_listing_bytes]u8 = undefined;
+    const n = try render_listing(&listing, buf[0..]);
+    const text = buf[0..n];
+    assert(std.mem.indexOf(u8, text, "book stock.presets 9\n") != null);
+    assert(std.mem.indexOf(u8, text, "book custom.presets 2\n") != null);
+
+    // Travels BOTH ways: parse the record back and prove render(parse(render(x))) is a fixed point, the rebuilt
+    // listing carrying the same names and counts.
+    var rebuilt: BookListing = undefined;
+    try parse_listing(text, &rebuilt);
+    assert(rebuilt.len() == listing.len());
+    assert(std.mem.eql(u8, rebuilt.at(0).name_slice(), "stock.presets"));
+    assert(rebuilt.at(0).presets == 9);
+    assert(std.mem.eql(u8, rebuilt.at(1).name_slice(), "custom.presets"));
+    assert(rebuilt.at(1).presets == 2);
+    var buf2: [max_listing_bytes]u8 = undefined;
+    const n2 = try render_listing(&rebuilt, buf2[0..]);
+    assert(n2 == n);
+    assert(std.mem.eql(u8, buf2[0..n2], text));
+
+    // Refusals: a bad header, an unknown tag, a malformed field, an extra field, and a count past the book ceiling
+    // each refuse BadListing by name.
+    var bad_hdr: BookListing = undefined;
+    if (parse_listing("format wrong-v1\n", &bad_hdr)) |_| return error.HdrSlipped else |e| {
+        if (e != error.BadListing) return error.WrongHdr;
+    }
+    var bad_tag: BookListing = undefined;
+    if (parse_listing("format preset-list-v1\npack a.presets 1\n", &bad_tag)) |_| return error.TagSlipped else |e| {
+        if (e != error.BadListing) return error.WrongTag;
+    }
+    var bad_field: BookListing = undefined;
+    if (parse_listing("format preset-list-v1\nbook a.presets x\n", &bad_field)) |_| return error.FieldSlipped else |e| {
+        if (e != error.BadListing) return error.WrongField;
+    }
+    var slack: BookListing = undefined;
+    if (parse_listing("format preset-list-v1\nbook a.presets 2 9\n", &slack)) |_| return error.SlackSlipped else |e| {
+        if (e != error.BadListing) return error.WrongSlack;
+    }
+    var over: BookListing = undefined;
+    if (parse_listing("format preset-list-v1\nbook a.presets 99\n", &over)) |_| return error.OverSlipped else |e| {
+        if (e != error.BadListing) return error.WrongOver;
+    }
+
+    // Honest as a whole: tamper one held bead and prove the WHOLE listing refuses DigestMismatch — it never names a
+    // book it cannot honestly reopen.
+    {
+        var store_t: beading.BeadStore = .empty();
+        var cat_t: tablecloth.Catalog = .empty();
+        _ = try preset_store.store_book(&cat_t, &store_t, "stock.presets", &stock);
+        store_t.beads[0].bytes[0] +%= 1; // flip one byte of a held bead
+        var wreck: BookListing = undefined;
+        if (list_books(&cat_t, &store_t, &wreck)) |_| {
+            return error.TamperSlipped;
+        } else |e| {
+            if (e != error.DigestMismatch) return error.WrongTamper;
+        }
+    }
+
+    print("GREEN preset-list: a catalog of {d} artifacts lists exactly its {d} installed preset books in held " ++
+        "order (the non-book skipped, never opened) — each preset count read from a verified reopen: stock.presets " ++
+        "holds 9, custom.presets holds 2; the listing travels BOTH ways as a {d}-byte format preset-list-v1 record " ++
+        "(render(parse(render)) a fixed point), a bad header, an unknown tag, a malformed field, an extra field, " ++
+        "and a count past the book ceiling each refusing BadListing; a tampered book makes the whole listing " ++
+        "refuse DigestMismatch rather than advertise a phantom\n", .{ cat.count, listing.len(), n });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: preset_list selftest\n", .{});
+    return 1;
+}

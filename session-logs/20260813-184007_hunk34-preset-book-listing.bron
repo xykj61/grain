@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260813.184007
+editor Zed
+model Fable 5
+voice Kyri
+host cloud bench — Eastern (EDT) time convention · ai-jail
+title HUNK34 — a keeper lists their installed preset books
+prompt Keep taking the next agent-doable lap Lindy-first crux-first; send each increment as its own signed round.
+think HUNK32 banked filter books content-addressed but gave no index; HUNK19/20 already proved the index idiom over sessions. The Lindy crux is the same index over the preset store — a keeper's daily "what have I installed, how much in each".
+think Mirrored session_list seam-for-seam: list_books walks the catalog, selects .presets, open_books each verified (tamper refuses DigestMismatch through the whole listing), records name + preset count; render/parse_listing travel both ways as format preset-list-v1, render(parse(render)) a fixed point.
+think Re-enforced the book's own ceiling at the text edge (a count past filter_preset.max_presets refuses BadListing), exactly as session_list re-enforced the cursor's position<=edits bound.
+obs New file pond/apps/preset_list.rye; its deps (tablecloth, mantra/beading, filter_preset, preset_store, tally_copy, parse_int) already resolve in pond/apps/ as session_list and preset_store proved. No symlink needed.
+obs Caught and removed a stray broken snippet before the first build — a half-written filter_preset.@"photo_edits.rye" line; the small book builds cleanly from @import("photo_edits.rye").
+loom witness=hunk_preset_list_witness result=GREEN artifacts=3 books=2 record_bytes=65 stock_presets=9
+file pond/apps/preset_list.rye list_books + render/parse_listing, the honest index over installed preset books
+file tools/hunk_preset_list_witness.rish proves the index on metal — held order, verified reopen, travel, refusals
+file active-designing/20260813-184007_hunk-preset-book-listing-exploration.md the self-approved design round for HUNK34
+recommend keep-going a richer summary line carrying each book's preset names, the Skate view of the index, or a fresh Season-A / double-seat journey; served indexes stop at the Comlink-served custody gate, hardware buys at gates #2/#3
