@@ -1,0 +1,415 @@
+//! pond/apps/council_sky_bron.rye — Season 3 Journey 11 (Council skies), Rung 3: the signed council travels.
+//!
+//! Rungs one and two fixed the council rule and bound each ballot to a seat's signature. A council is
+//! only useful to a commons if it can be *carried* — handed to another keeper, checked with no live
+//! council in hand. This rung renders a signed council to a `format council-sky-v1` Bron record and
+//! parses it back byte-for-byte, still tie-free and quorum-honest **offline**.
+//!
+//! A `SignedCouncil` keeps, beside rung one's live council, the sky it loaded (its galaxy/star/planet
+//! counts), the seated size, and the signature that authorized each ballot — so the record carries not
+//! just *that* a proposal was decided but *the ballots that decided it* and *the shape it was decided
+//! under*. The traveled `PortableCouncil` owns its own buffers; `still_quorum_honest` re-verifies every
+//! carried ballot signature against the recipient's keyring through rung two's `verify_ballot` — so a
+//! ballot flipped after the crossing refuses `BadConsent` with no network, no live council. `rebuild`
+//! reconstructs the sky, re-seats the council through rung one's `load` (inheriting its `NotAFractalLevel`
+//! / `EvenCouncil` refusals — a record naming an even body cannot rebuild), and replays every ballot
+//! through rung two's `vote_signed` into an equal live council whose outcome matches the original.
+//!
+//! The reader is a purpose-built bounded flat-Bron reader (the tree's `key value` idiom), never a general
+//! parser: an unknown field refuses `UnknownField` (never dropped), a malformed line `BadLine`, a wrong
+//! header `BadFormat`, bad hex `BadHex`, a missing council line `MissingCouncil`. Additive — composes
+//! rungs one and two over public API; both re-run GREEN. Demo keeper seeds only, no network (a council
+//! served over the wire reaches the serve gate — Keaton's hand).
+//!
+//!   rye build pond/apps/council_sky_bron.rye -femit-bin=pond/bin/council-sky-bron
+//!   pond/bin/council-sky-bron selftest
+//!
+//! Scope: active-designing/20260812-210603_dahl-journey11-council-skies-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const council_mod = @import("council_sky.rye");
+const signed = @import("council_sky_signed.rye");
+const topology = @import("topology.rye");
+const kumara = @import("kumara.rye");
+const parse_int = @import("parse_int.rye");
+
+pub const council_sky_bron_version = "20260812.210603";
+
+pub const sig_len: u32 = 64;
+pub const max_votes: u32 = council_mod.max_votes;
+
+/// The rendered record: a header, a council line (id + sky shape + size), and one `ballot` line per vote
+/// (each carrying a 128-hex signature). Bounded over the worst case (512 ballots).
+pub const max_record: u32 = 131072;
+
+pub const BronError = error{
+    BadFormat, // the header line is not `format council-sky-v1`
+    UnknownField, // a line names a field the record does not define
+    BadLine, // a council/ballot line is missing a token or carries a trailing one
+    BadInt, // a numeric field did not parse, or a yes/no was not 0 or 1
+    BadHex, // a signature field was the wrong length or held a non-hex byte
+    MissingCouncil, // the record never named its council line (id, sky, size)
+    TooManyVotes, // the record carries past the vote bound
+    RecordTooLong, // the render exceeded its bounded buffer
+};
+
+const hex_digits = "0123456789abcdef";
+
+/// Write `bytes` as lowercase hex into `out` (out.len must be twice bytes.len).
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex chars per byte.
+    assert(out.len == bytes.len * 2);
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0F];
+    }
+}
+
+fn nibble(c: u8) BronError!u8 {
+    return switch (c) {
+        '0'...'9' => c - '0',
+        'a'...'f' => c - 'a' + 10,
+        'A'...'F' => c - 'A' + 10,
+        else => error.BadHex,
+    };
+}
+
+/// Decode `text` (exactly out.len*2 hex chars) into `out`, refusing wrong length or non-hex.
+fn from_hex(text: []const u8, out: []u8) BronError!void {
+    if (text.len != out.len * 2) return error.BadHex;
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < out.len) : (i += 1) {
+        const hi = try nibble(text[i * 2]);
+        const lo = try nibble(text[i * 2 + 1]);
+        out[i] = (hi << 4) | lo;
+    }
+}
+
+/// A signed council: rung one's live council plus the sky it loaded, the seated size, and the signature
+/// that authorized each ballot, so the whole decision history and its shape can travel and be re-checked.
+// Invariant: vote_count <= max_votes.
+pub const SignedCouncil = struct {
+    council: council_mod.Council,
+    council_id: u32,
+    sky: topology.Sky,
+    size: u32,
+    ballot_seats: [max_votes]u32,
+    ballot_proposals: [max_votes]u32,
+    ballot_yeas: [max_votes]bool,
+    ballot_sigs: [max_votes][sig_len]u8,
+    vote_count: u32,
+
+    /// Open a signed council over a loaded sky and size — the live council opens through rung one.
+    pub fn open(council_id: u32, sky: topology.Sky, size: u32) council_mod.CouncilError!SignedCouncil {
+        const sc = SignedCouncil{
+            .council = try council_mod.Council.load(sky, size),
+            .council_id = council_id,
+            .sky = sky,
+            .size = size,
+            .ballot_seats = undefined,
+            .ballot_proposals = undefined,
+            .ballot_yeas = undefined,
+            .ballot_sigs = undefined,
+            .vote_count = 0,
+        };
+        // invariant: a fresh signed council carries no ballots and matches the loaded size.
+        assert(sc.vote_count == 0);
+        assert(sc.council.size == size);
+        return sc;
+    }
+
+    /// Record a signed ballot — verify and vote through rung two, then keep the ballot and its signature
+    /// so the vote can travel with its seat's word.
+    pub fn record_ballot(self: *SignedCouncil, ring: *const signed.Keyring, seat: u32, proposal: u32, yea: bool, sig: *const [sig_len]u8) signed.CouncilActError!void {
+        try signed.vote_signed(&self.council, ring, self.council_id, seat, proposal, yea, sig);
+        const i = self.vote_count;
+        self.ballot_seats[i] = seat;
+        self.ballot_proposals[i] = proposal;
+        self.ballot_yeas[i] = yea;
+        self.ballot_sigs[i] = sig.*;
+        self.vote_count += 1;
+        // invariant: the vote book grew by exactly one, within its bound.
+        assert(self.vote_count == i + 1);
+        assert(self.vote_count <= max_votes);
+    }
+};
+
+/// A parsed signed council that owns its arrays, so nothing points into freed record text.
+// Invariant: vote_count <= max_votes.
+pub const PortableCouncil = struct {
+    council_id: u32,
+    galaxies: u32,
+    stars: u32,
+    planets: u32,
+    size: u32,
+    ballot_seats: [max_votes]u32,
+    ballot_proposals: [max_votes]u32,
+    ballot_yeas: [max_votes]bool,
+    ballot_sigs: [max_votes][sig_len]u8,
+    vote_count: u32,
+
+    /// The sky this record loaded, reconstructed from its carried counts.
+    pub fn sky(self: *const PortableCouncil) topology.Sky {
+        return .{ .galaxies = self.galaxies, .stars = self.stars, .planets = self.planets };
+    }
+
+    /// Re-verify every carried ballot signature against the recipient's keyring, offline, by rung two's
+    /// `verify_ballot`. A flipped or forged signature refuses `BadConsent`, so a tampered record cannot
+    /// pass with no live council in hand.
+    pub fn still_quorum_honest(self: *const PortableCouncil, ring: *const signed.Keyring) signed.SignedError!void {
+        var i: u32 = 0;
+        while (i < self.vote_count) : (i += 1) {
+            try signed.verify_ballot(ring, self.council_id, self.size, self.ballot_seats[i], self.ballot_proposals[i], self.ballot_yeas[i], &self.ballot_sigs[i]);
+        }
+    }
+
+    /// Reconstruct the sky, re-seat the council through rung one's `load`, and replay every ballot through
+    /// rung two's `vote_signed` into an equal live council, so the traveled outcome matches the original.
+    /// Refuses exactly as the lower rungs would on a bad shape or a bad ballot signature.
+    pub fn rebuild(self: *const PortableCouncil, ring: *const signed.Keyring) signed.CouncilActError!council_mod.Council {
+        var council = try council_mod.Council.load(self.sky(), self.size);
+        var i: u32 = 0;
+        while (i < self.vote_count) : (i += 1) {
+            try signed.vote_signed(&council, ring, self.council_id, self.ballot_seats[i], self.ballot_proposals[i], self.ballot_yeas[i], &self.ballot_sigs[i]);
+        }
+        return council;
+    }
+};
+
+/// Render a signed council to a `format council-sky-v1` record. Refuses an overflow rather than a partial
+/// record.
+pub fn render(sc: *const SignedCouncil, out: []u8) BronError!u32 {
+    // invariant: the render buffer honors its bound.
+    assert(out.len >= max_record);
+    const head = std.fmt.bufPrint(out, "format council-sky-v1\ncouncil {d} {d} {d} {d} {d}\n", .{ sc.council_id, sc.sky.galaxies, sc.sky.stars, sc.sky.planets, sc.size }) catch return error.RecordTooLong;
+    var off: u32 = @intCast(head.len);
+    var j: u32 = 0;
+    while (j < sc.vote_count) : (j += 1) {
+        var sig_hex: [sig_len * 2]u8 = undefined;
+        to_hex(&sc.ballot_sigs[j], &sig_hex);
+        const yea: u32 = if (sc.ballot_yeas[j]) 1 else 0;
+        const line = std.fmt.bufPrint(out[off..], "ballot {d} {d} {d} {s}\n", .{ sc.ballot_seats[j], sc.ballot_proposals[j], yea, sig_hex }) catch return error.RecordTooLong;
+        off += @intCast(line.len);
+    }
+    // invariant: the rendered record never exceeds its bound.
+    assert(off <= max_record);
+    return off;
+}
+
+/// Split a line on spaces into up to six tokens; returns the count found (or one past six to signal a
+/// trailing token no line allows).
+fn tokens(line: []const u8, out: *[6][]const u8) u32 {
+    var count: u32 = 0;
+    var it = std.mem.tokenizeScalar(u8, line, ' ');
+    while (it.next()) |t| {
+        if (count >= 6) return count + 1; // signal a trailing token past what any line allows
+        out[count] = t;
+        count += 1;
+    }
+    return count;
+}
+
+/// Parse a yes/no field: exactly "0" or "1", else BadInt.
+fn parse_yea(tok: []const u8) BronError!bool {
+    if (std.mem.eql(u8, tok, "1")) return true;
+    if (std.mem.eql(u8, tok, "0")) return false;
+    return error.BadInt;
+}
+
+/// Parse a `format council-sky-v1` record into a PortableCouncil, refusing an unknown or malformed field,
+/// a bad header, a missing council line, an overlong vote book, a bad integer, or malformed hex.
+pub fn parse(text: []const u8) BronError!PortableCouncil {
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const header = lines.next() orelse return error.BadFormat;
+    if (!std.mem.eql(u8, header, "format council-sky-v1")) return error.BadFormat;
+
+    var have_council = false;
+    var pc = PortableCouncil{
+        .council_id = 0,
+        .galaxies = 0,
+        .stars = 0,
+        .planets = 0,
+        .size = 0,
+        .ballot_seats = undefined,
+        .ballot_proposals = undefined,
+        .ballot_yeas = undefined,
+        .ballot_sigs = undefined,
+        .vote_count = 0,
+    };
+
+    while (lines.next()) |raw| {
+        if (raw.len == 0) continue; // a trailing newline yields one empty line
+        var tok: [6][]const u8 = undefined;
+        const n = tokens(raw, &tok);
+        if (n == 0) continue;
+        if (std.mem.eql(u8, tok[0], "council")) {
+            if (n != 6) return error.BadLine;
+            pc.council_id = parse_int.parse_int(u32, tok[1], .{}) catch return error.BadInt;
+            pc.galaxies = parse_int.parse_int(u32, tok[2], .{}) catch return error.BadInt;
+            pc.stars = parse_int.parse_int(u32, tok[3], .{}) catch return error.BadInt;
+            pc.planets = parse_int.parse_int(u32, tok[4], .{}) catch return error.BadInt;
+            pc.size = parse_int.parse_int(u32, tok[5], .{}) catch return error.BadInt;
+            have_council = true;
+        } else if (std.mem.eql(u8, tok[0], "ballot")) {
+            if (n != 5) return error.BadLine;
+            if (pc.vote_count >= max_votes) return error.TooManyVotes;
+            const vi = pc.vote_count;
+            pc.ballot_seats[vi] = parse_int.parse_int(u32, tok[1], .{}) catch return error.BadInt;
+            pc.ballot_proposals[vi] = parse_int.parse_int(u32, tok[2], .{}) catch return error.BadInt;
+            pc.ballot_yeas[vi] = try parse_yea(tok[3]);
+            try from_hex(tok[4], &pc.ballot_sigs[vi]);
+            pc.vote_count += 1;
+        } else {
+            return error.UnknownField;
+        }
+    }
+    if (!have_council) return error.MissingCouncil;
+    return pc;
+}
+
+// --- selftest -----------------------------------------------------------
+
+// Demo keeper seeds — plainly not real keys, so no identity is invented. Three seats of a triad.
+const seat0_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
+const seat1_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
+const seat2_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
+
+const demo_council: u32 = 9;
+const prop: u32 = 3;
+
+fn pubkey_of(seed: *const [kumara.seed_length]u8) [signed.pubkey_len]u8 {
+    return kumara.keypair_from_seed(seed).public_key.bytes;
+}
+
+fn demo_ring() error{KeyringFull}!signed.Keyring {
+    var ring = signed.Keyring.open();
+    try ring.enroll(0, pubkey_of(&seat0_seed));
+    try ring.enroll(1, pubkey_of(&seat1_seed));
+    try ring.enroll(2, pubkey_of(&seat2_seed));
+    return ring;
+}
+
+/// Build a signed triad council (over the council sky) that passes a proposal by two signed yes-ballots.
+fn build_passed(ring: *const signed.Keyring) !SignedCouncil {
+    var sc = try SignedCouncil.open(demo_council, topology.council_sky, 3);
+    const b0 = signed.sign_ballot(&seat0_seed, demo_council, sc.council.size, 0, prop, true);
+    const b1 = signed.sign_ballot(&seat1_seed, demo_council, sc.council.size, 1, prop, true);
+    try sc.record_ballot(ring, 0, prop, true, &b0);
+    try sc.record_ballot(ring, 1, prop, true, &b1);
+    return sc;
+}
+
+/// The signed council renders to Bron and parses back byte-for-byte; the rebuilt council carries the
+/// identical outcome, and every carried ballot still verifies offline.
+fn welcome_round_trip_still_honest() !void {
+    const ring = try demo_ring();
+    var sc = try build_passed(&ring);
+    assert(sc.council.outcome(prop) == .passed);
+
+    var buf1: [max_record]u8 = undefined;
+    const n1 = try render(&sc, &buf1);
+    const pc = try parse(buf1[0..n1]);
+
+    // Byte-for-byte: re-rendering an equal signed council reproduces the exact bytes.
+    var rebuilt_sc = try build_passed(&ring);
+    var buf2: [max_record]u8 = undefined;
+    const n2 = try render(&rebuilt_sc, &buf2);
+    assert(n1 == n2);
+    assert(std.mem.eql(u8, buf1[0..n1], buf2[0..n2]));
+
+    // The carried sky is recovered exactly.
+    assert(pc.galaxies == 15);
+    assert(pc.stars == 3);
+    assert(pc.planets == 9);
+    assert(pc.size == 3);
+
+    // Still quorum-honest offline: every carried ballot re-verifies.
+    try pc.still_quorum_honest(&ring);
+
+    // The rebuilt live council carries the identical outcome, and it is tie-free (quorum 2 of an odd 3).
+    const council = try pc.rebuild(&ring);
+    assert(council.outcome(prop) == .passed);
+    assert(council.quorum == 2);
+    assert(2 * council.quorum > council.size); // the odd-body tie-free invariant survives the crossing
+    print("council_sky_bron: a signed council rendered to Bron, parsed back byte-for-byte, recovered its sky, stayed quorum-honest offline, and rebuilt the identical tie-free outcome.\n", .{});
+}
+
+/// A ballot signature flipped after the crossing refuses offline — a tampered record cannot pass.
+fn unwelcome_flipped_ballot_refuses() !void {
+    const ring = try demo_ring();
+    var sc = try build_passed(&ring);
+    var buf: [max_record]u8 = undefined;
+    const n = try render(&sc, &buf);
+    var pc = try parse(buf[0..n]);
+    // Flip one byte of the first ballot's carried signature.
+    pc.ballot_sigs[0][0] ^= 0xFF;
+    const bad = pc.still_quorum_honest(&ring);
+    assert(bad == error.BadConsent);
+    print("council_sky_bron: a ballot signature flipped after the crossing refused BadConsent offline.\n", .{});
+}
+
+/// A record naming an even body cannot rebuild — the reader inherits rung one's EvenCouncil law.
+fn unwelcome_even_body_cannot_rebuild() !void {
+    const ring = try demo_ring();
+    // A hand-authored record naming the compass sky's even d60 (12*5*12 → prosperity 60).
+    const text = "format council-sky-v1\ncouncil 9 12 5 12 60\n";
+    const pc = try parse(text);
+    const bad = pc.rebuild(&ring);
+    assert(bad == error.EvenCouncil);
+    print("council_sky_bron: a record naming an even body refused EvenCouncil on rebuild — the tie-free law travels with the record.\n", .{});
+}
+
+/// An unknown field refuses rather than being dropped — the reader keeps every line honest.
+fn unwelcome_unknown_field_refuses() !void {
+    const text = "format council-sky-v1\ncouncil 9 15 3 9 3\nghost 5\n";
+    const bad = parse(text);
+    assert(bad == error.UnknownField);
+    print("council_sky_bron: an unknown field refused UnknownField rather than be dropped.\n", .{});
+}
+
+/// A wrong header refuses — the record must name its own format.
+fn unwelcome_bad_header_refuses() !void {
+    const bad = parse("format other-v1\ncouncil 9 15 3 9 3\n");
+    assert(bad == error.BadFormat);
+    print("council_sky_bron: a wrong header refused BadFormat.\n", .{});
+}
+
+/// A record that never names its council line refuses — the council id, sky, and size are required.
+fn unwelcome_missing_council_refuses() !void {
+    const bad = parse("format council-sky-v1\nballot 0 3 1 " ++ ("00" ** sig_len) ++ "\n");
+    assert(bad == error.MissingCouncil);
+    print("council_sky_bron: a record with no council line refused MissingCouncil.\n", .{});
+}
+
+/// Malformed hex in a ballot signature refuses — the reader will not accept a corrupt signature field.
+fn unwelcome_bad_hex_refuses() !void {
+    const bad = parse("format council-sky-v1\ncouncil 9 15 3 9 3\nballot 0 3 1 zz\n");
+    assert(bad == error.BadHex);
+    print("council_sky_bron: malformed signature hex refused BadHex.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_round_trip_still_honest();
+    try unwelcome_flipped_ballot_refuses();
+    try unwelcome_even_body_cannot_rebuild();
+    try unwelcome_unknown_field_refuses();
+    try unwelcome_bad_header_refuses();
+    try unwelcome_missing_council_refuses();
+    try unwelcome_bad_hex_refuses();
+    print("council_sky_bron: version {s}\n", .{council_sky_bron_version});
+    print("GREEN: DAHL-J11r3 council_sky_bron; a signed council travels as Bron, byte-for-byte, recovers its sky, and stays tie-free and quorum-honest offline.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "council-sky-bron"))) {
+        return run_selftest();
+    }
+    return run_selftest();
+}
