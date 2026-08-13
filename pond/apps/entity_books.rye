@@ -1,0 +1,286 @@
+//! pond/apps/entity_books.rye — Season 2 Journey 8 (Cash-first), Rung 1: entity books that balance, never braided.
+//!
+//! Dimeroll keeps one steward's centralized books of record — a journal of double-entry facts
+//! folded to a trial balance, projected to income statement, balance sheet, and cash flow. The
+//! entity-books design extends that model's *scope* to two organizations (Siya Fund, Linengrow PBC)
+//! and names the one strand this journey turns on: **entity separation, never braided.** One steward
+//! keeps distinct books per entity, and a value crosses between them only as an explicit inter-entity
+//! fact recorded on both sides — never a silent shared balance.
+//!
+//! The crux: a segregated inter-entity transfer that conserves. Two entities whose own books each
+//! balance; a grant booked as one fact on both — the grantor debits an expense and credits cash, the
+//! grantee debits cash and credits revenue, of the one agreed amount — so the value the grantor parts
+//! with equals the value the grantee receives by construction. Two conservation laws hold together:
+//! each entity's own journal conserves (Dimeroll's own law) and its balance sheet balances, and the
+//! pair conserves across the cash line (the grantor's cash falls by the amount, the grantee's rises by
+//! it, summing to zero). And segregation holds: an entry added to one entity's journal never changes
+//! the other's fold — the books are kept apart, never braided.
+//!
+//! It composes `dimeroll_core`'s own `post_entry` / `fold_journal` / `fold_balance_sheet` over
+//! public API, inventing no new value model. Boundary (custody-first): it records the *facts* of an
+//! entity's books and holds nothing — actually paying a person or moving a fund's assets reaches
+//! custody gate #3 (a payment rail) and waits on licensed counsel. Demo entities only.
+//!
+//!   rye build pond/apps/entity_books.rye -femit-bin=pond/bin/entity-books
+//!   pond/bin/entity-books selftest
+//!
+//! Scope: active-designing/20260812-195711_gism-ayre-journey8-cash-first-entity-books-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const gc = @import("dimeroll/dimeroll_core.rye");
+
+pub const entity_books_version = "20260812.195711";
+
+/// Each entity's own journal holds at most this many facts — a bounded book, not a corpus.
+pub const max_entity_entries: u32 = 16;
+
+/// An entity name honors this width — a short organization name (`Siya Fund`, `Linengrow PBC`).
+pub const max_entity_name: u32 = 32;
+
+/// The debit-positive net index for cash, read the way the core reads it.
+const cash_ix: u32 = @intFromEnum(gc.Account.cash);
+
+pub const EntityError = error{
+    JournalFull, // the entity's journal grew past max_entity_entries
+    NameTooLong, // the entity name exceeds max_entity_name
+    SameEntity, // an entity cannot transfer to itself — a value must cross between two books
+};
+
+/// Every way an entity's book can refuse — its own bounds plus the core's posting laws.
+pub const BookError = EntityError || error{ Unbalanced, BadAmount, SameAccount };
+
+/// One named entity's own set of books — its name and its own append-only journal. The journal folds
+/// exactly as the running module folds one steward's books; nothing here changes the value model.
+// Invariant: count <= max_entity_entries; name_len <= max_entity_name.
+pub const Entity = struct {
+    name_bytes: [max_entity_name]u8,
+    name_len: u32,
+    entries: [max_entity_entries]gc.Entry,
+    count: u32,
+
+    pub fn open(entity_name: []const u8) EntityError!Entity {
+        if (entity_name.len > max_entity_name) return error.NameTooLong;
+        var e = Entity{ .name_bytes = undefined, .name_len = 0, .entries = undefined, .count = 0 };
+        var k: u32 = 0;
+        while (k < entity_name.len) : (k += 1) e.name_bytes[k] = entity_name[k];
+        e.name_len = @intCast(entity_name.len);
+        // invariant: an opened entity holds an empty, in-bound journal.
+        assert(e.count == 0);
+        assert(e.name_len <= max_entity_name);
+        return e;
+    }
+
+    pub fn name(self: *const Entity) []const u8 {
+        // invariant: the held name honors its width.
+        assert(self.name_len <= max_entity_name);
+        return self.name_bytes[0..self.name_len];
+    }
+
+    /// Append one double-entry fact to this entity's own journal, refusing a full journal or a fact
+    /// the core's posting laws reject (non-positive amount, same debit/credit account).
+    pub fn post(self: *Entity, entry: gc.Entry) BookError!void {
+        if (self.count >= max_entity_entries) return error.JournalFull;
+        if (entry.amount <= 0) return error.BadAmount; // the core's own law, refused before append
+        if (entry.debit == entry.credit) return error.SameAccount;
+        const i = self.count;
+        self.entries[i] = entry;
+        self.count += 1;
+        // invariant: posting grew the journal by exactly one fact, within its bound.
+        assert(self.count == i + 1);
+        assert(self.count <= max_entity_entries);
+    }
+
+    /// This entity's trial balance — a pure fold of only its own journal. It sees no other entity.
+    pub fn trial_balance(self: *const Entity) BookError!gc.TrialBalance {
+        // invariant: the fold reads only this entity's live journal.
+        assert(self.count <= max_entity_entries);
+        return gc.fold_journal(self.entries[0..self.count]);
+    }
+
+    /// This entity's balance sheet — a projection of its own fold; the core asserts it balances.
+    pub fn balance_sheet(self: *const Entity) BookError!gc.BalanceSheet {
+        const tb = try self.trial_balance();
+        return gc.fold_balance_sheet(tb);
+    }
+
+    /// The debit-positive cash net of this entity's own books.
+    pub fn cash_net(self: *const Entity) BookError!i64 {
+        const tb = try self.trial_balance();
+        return tb.nets[cash_ix];
+    }
+};
+
+/// The record of one inter-entity transfer — the two entities and the one amount that crossed. Both
+/// legs are already booked on the two entities' journals; this names the fact for later signing.
+pub const Transfer = struct {
+    grantor: []const u8,
+    grantee: []const u8,
+    amount: i64,
+    memo: []const u8,
+    stamp: []const u8,
+};
+
+/// The grantor's leg: a grant is an expense, and cash goes out. One debit, one credit, of the amount.
+fn grantor_entry(amount: i64, memo: []const u8, stamp: []const u8) gc.Entry {
+    return .{ .debit = .expense, .credit = .cash, .amount = amount, .memo = memo, .stamp = stamp };
+}
+
+/// The grantee's leg: cash comes in, and the grant is revenue. One debit, one credit, of the amount.
+fn grantee_entry(amount: i64, memo: []const u8, stamp: []const u8) gc.Entry {
+    return .{ .debit = .cash, .credit = .revenue, .amount = amount, .memo = memo, .stamp = stamp };
+}
+
+/// Book an inter-entity transfer as one fact on both entities' own journals. The one amount feeds
+/// both legs, so the grantor's cash outflow equals the grantee's cash inflow by construction. Refuses
+/// a self-transfer (a value must cross between two distinct books) and a non-positive amount before
+/// any journal is touched. Records only — holds and moves nothing.
+pub fn transfer(
+    grantor: *Entity,
+    grantee: *Entity,
+    amount: i64,
+    memo: []const u8,
+    stamp: []const u8,
+) BookError!Transfer {
+    if (grantor == grantee) return error.SameEntity;
+    if (amount <= 0) return error.BadAmount;
+    try grantor.post(grantor_entry(amount, memo, stamp));
+    try grantee.post(grantee_entry(amount, memo, stamp));
+    // invariant: after the transfer each entity's own books still conserve.
+    assert((try grantor.trial_balance()).conservation() == 0);
+    assert((try grantee.trial_balance()).conservation() == 0);
+    return .{ .grantor = grantor.name(), .grantee = grantee.name(), .amount = amount, .memo = memo, .stamp = stamp };
+}
+
+/// The pair conserves across the cash line: the grantor's cash fell by exactly the amount that the
+/// grantee's cash rose. Measured as the difference each entity's cash net moved from a pre-transfer
+/// snapshot, so the transfer's own contribution is isolated from the entities' other facts.
+pub fn pair_conserves(grantor_cash_before: i64, grantor_after: *const Entity, grantee_cash_before: i64, grantee_after: *const Entity, amount: i64) BookError!bool {
+    const grantor_delta = (try grantor_after.cash_net()) - grantor_cash_before;
+    const grantee_delta = (try grantee_after.cash_net()) - grantee_cash_before;
+    if (grantor_delta != -amount) return false; // the grantor's cash fell by exactly the amount
+    if (grantee_delta != amount) return false; // the grantee's cash rose by exactly the amount
+    return grantor_delta + grantee_delta == 0; // and the pair conserves across the cash line
+}
+
+// --- selftest -----------------------------------------------------------
+
+/// Seat Siya Fund with its own opening books: an equity contribution funds its cash.
+fn seat_siya() !Entity {
+    var e = try Entity.open("Siya Fund");
+    // Opening: a contribution brings cash in against equity (cash debit, equity credit).
+    try e.post(.{ .debit = .cash, .credit = .equity, .amount = 5000, .memo = "opening contribution", .stamp = "20260812.195711" });
+    return e;
+}
+
+/// Seat Linengrow PBC with its own opening books and one operating fact of its own.
+fn seat_linengrow() !Entity {
+    var e = try Entity.open("Linengrow PBC");
+    try e.post(.{ .debit = .cash, .credit = .equity, .amount = 2000, .memo = "opening contribution", .stamp = "20260812.195711" });
+    // An operating cost paid in cash — a fact of Linengrow's own, not Siya's.
+    try e.post(.{ .debit = .expense, .credit = .cash, .amount = 300, .memo = "hemp seed", .stamp = "20260812.195711" });
+    return e;
+}
+
+/// Each entity's own books balance, an inter-entity grant books on both, and the pair conserves
+/// across the cash line — the value Siya parts with equals the value Linengrow receives.
+fn welcome_transfer_conserves_and_balances() !void {
+    var siya = try seat_siya();
+    var linengrow = try seat_linengrow();
+
+    // Each entity's own books balance before the transfer.
+    assert((try siya.balance_sheet()).balances());
+    assert((try linengrow.balance_sheet()).balances());
+
+    const siya_cash_before = try siya.cash_net();
+    const linengrow_cash_before = try linengrow.cash_net();
+
+    const t = try transfer(&siya, &linengrow, 1500, "seed grant", "20260812.195711");
+    assert(t.amount == 1500);
+    assert(std.mem.eql(u8, t.grantor, "Siya Fund"));
+    assert(std.mem.eql(u8, t.grantee, "Linengrow PBC"));
+
+    // Each entity's own books still balance after the transfer.
+    assert((try siya.balance_sheet()).balances());
+    assert((try linengrow.balance_sheet()).balances());
+
+    // The pair conserves across cash: Siya's cash fell by 1500, Linengrow's rose by 1500.
+    assert(try pair_conserves(siya_cash_before, &siya, linengrow_cash_before, &linengrow, 1500));
+    assert((try siya.cash_net()) == siya_cash_before - 1500);
+    assert((try linengrow.cash_net()) == linengrow_cash_before + 1500);
+    print("entity_books: a 1500 grant booked on both entities; each book balances, the pair conserves across cash.\n", .{});
+}
+
+/// Segregation — the books are never braided: an entry added to Linengrow's journal never changes
+/// Siya's fold. Each entity's trial balance reads only its own journal.
+fn welcome_books_never_braided() !void {
+    var siya = try seat_siya();
+    var linengrow = try seat_linengrow();
+
+    const siya_before = try siya.trial_balance();
+    // A fact of Linengrow's alone — a further operating cost.
+    try linengrow.post(.{ .debit = .expense, .credit = .cash, .amount = 120, .memo = "loom repair", .stamp = "20260812.195711" });
+    const siya_after = try siya.trial_balance();
+
+    var i: u32 = 0;
+    while (i < gc.account_count) : (i += 1) {
+        assert(siya_before.nets[i] == siya_after.nets[i]); // Siya's fold is untouched by Linengrow's fact
+    }
+    // Linengrow's own fold did change — the fact landed on its own books.
+    assert((try linengrow.trial_balance()).nets[@intFromEnum(gc.Account.expense)] == 420);
+    print("entity_books: an entry added to Linengrow's journal left Siya's fold byte-identical — the books are never braided.\n", .{});
+}
+
+/// A self-transfer refuses — a value must cross between two distinct books, never fold back into one.
+fn unwelcome_self_transfer_refuses() !void {
+    var siya = try seat_siya();
+    const t = transfer(&siya, &siya, 100, "self", "20260812.195711");
+    assert(t == error.SameEntity);
+    print("entity_books: a self-transfer refused SameEntity — a value must cross between two books.\n", .{});
+}
+
+/// A non-positive transfer refuses before any journal is touched — a transfer of no value is not a
+/// fact the books will pretend to.
+fn unwelcome_nonpositive_transfer_refuses() !void {
+    var siya = try seat_siya();
+    var linengrow = try seat_linengrow();
+    const siya_count_before = siya.count;
+    const t = transfer(&siya, &linengrow, 0, "nothing", "20260812.195711");
+    assert(t == error.BadAmount);
+    assert(siya.count == siya_count_before); // no journal was touched
+    print("entity_books: a zero-amount transfer refused BadAmount and touched no journal.\n", .{});
+}
+
+/// A full journal refuses rather than drop a fact — the entity's book is bounded.
+fn unwelcome_full_journal_refuses() !void {
+    var e = try Entity.open("Full Books");
+    var n: u32 = 0;
+    while (n < max_entity_entries) : (n += 1) {
+        try e.post(.{ .debit = .cash, .credit = .equity, .amount = 1, .memo = "fill", .stamp = "20260812.195711" });
+    }
+    const overflow = e.post(.{ .debit = .cash, .credit = .equity, .amount = 1, .memo = "one too many", .stamp = "20260812.195711" });
+    assert(overflow == error.JournalFull);
+    print("entity_books: a journal at its bound refused JournalFull rather than drop a fact.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_transfer_conserves_and_balances();
+    try welcome_books_never_braided();
+    try unwelcome_self_transfer_refuses();
+    try unwelcome_nonpositive_transfer_refuses();
+    try unwelcome_full_journal_refuses();
+    print("entity_books: version {s}\n", .{entity_books_version});
+    print("GREEN: GISM-AYRE-J8r1 entity_books; two entities' books each balance, an inter-entity transfer conserves across cash, and the books are never braided.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "entity-books"))) {
+        return run_selftest();
+    }
+    return run_selftest();
+}

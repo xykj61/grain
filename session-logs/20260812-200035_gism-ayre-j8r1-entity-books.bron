@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260812.200035
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title GISM-AYRE-J8r1 — entity books that balance, never braided (Season 2 Journey 8 opens)
+prompt continue the 1024-round road Lindy-first crux-first; open the next journey with a self-approved design round, take r1, send each increment; stop only at custody gates
+think AYRE Journey 7 closed; the next Lindy-first crux on the whole road is Season 2 Journey 8 (Cash-first) — the accounting spine for Linengrow PBC / Siya Fund
+think read the seated entity-books design (20260811-220402) — it names the crux exactly: entity separation, never braided; a value crosses only as an explicit inter-entity fact on both sides, never a silent shared balance
+think studied dimeroll_core — post_entry / fold_journal / fold_balance_sheet (asserts balances() internally); each entity is a named journal folding as one steward's books; an inter-entity grant is grantor debit-expense/credit-cash + grantee debit-cash/credit-revenue of one amount
+think wrote the self-approved exploration doc (four rounds — r1 segregated transfer · r2 signed · r3 period travels · r4 read true) then pond/apps/entity_books.rye: an Entity owns its name + bounded journal, folds its own trial balance / balance sheet / cash net; transfer books one fact on both, refuses SameEntity + BadAmount before touching a journal; pair_conserves isolates the transfer's cash delta from a pre-snapshot; segregation proven byte-identical (a fact on Linengrow leaves Siya's fold unchanged)
+think first build failed — the open() parameter `name` shadowed the `name` method; renamed to entity_name; GREEN on re-run
+obs additive — composes dimeroll_core public API, no new value model; dimeroll selftest re-runs GREEN under the witness; facts only, holds nothing, disbursement reaches custody gate #3 (licensed counsel); demo entities only
+loom witness=gism_ayre_j8_entity_books_witness cases=5 dimeroll_rerun=green tame=clean width=clean
+file active-designing/20260812-195711_gism-ayre-journey8-cash-first-entity-books-exploration.md self-approved design round opening Journey 8
+file pond/apps/entity_books.rye J8r1 — two entities' books each balance, an inter-entity transfer conserves across cash, never braided
+file tools/gism_ayre_j8_entity_books_witness.rish witness — builds dimeroll + entity_books, asserts GREEN, conservation, segregation, three refusals
+file work-in-progress/REMEMBER.md living card — J8 opened + J8r1 landed row + git nib refresh
+recommend keep-going GISM-AYRE-J8r2 — the inter-entity fact signed (both stewards sign the transfer over grantor·grantee·amount·memo, mirroring commerce_trade_signed)
