@@ -1,0 +1,58 @@
+# tools/mycelium_lapse_witness.rish — the Lapse: a reservation the order lets expire on time (r1).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · the deadline verdict · rung r1 — the crux.
+# The Pledge reserves coins and settles them later; the Lapse gives that reservation an HOUR. A pledge
+# neither honored nor released would lock a purse forever, so it carries a DEADLINE — a position in the
+# agreed order, the one clock every honest node shares — and the ledger itself expires it when the order's
+# own clock passes that position, returning the reserved coins to the pledger with no further signature.
+# That is TigerBeetle's pending-transfer timeout (its third signature primitive after the two-phase Pledge
+# and the linked Braid), read here as the agreed order's own law.
+#
+# The crux this witness proves is EXPIRY BEATS A LATE HONOR: a pledge opens at order position 1 under a
+# deadline of 2; a post AND a void both ride round 2 (positions 2 and 3); the clock reaches position 2 and
+# lapses the pledge before either settles, so both are lawful no-ops and Alice's coins come home — and
+# because the Cord's order is deterministic regardless of arrival, swapping the two round-2 facts names the
+# identical verdict. The same post under a deadline of 4 (not yet reached) honors instead; the same deadline
+# of 2 with the order walking no further stands OPEN (the future was never reached). Conservation is
+# unwidened: a lapse moves coins reserved -> balance, so balances + reserved always sums to what genesis
+# issued. A deadline not strictly after its own position (BadDeadline), an unknown pledge, a wrong signer,
+# an amount mismatch, and a star reservation each refuse whole. Composes cord + fold + kumara public API
+# only; every buffer bounded; demo keeper seeds — no key, no funds, no network, no custody.
+#
+# Scope: active-designing/20260813-085046_mycelium-lapse-pending-timeout-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mycelium_lapse_witness.rish
+
+say "mycelium-lapse: Language EN — a promise held has an hour, and the hour keeps itself; no hand need cut a stale reservation loose, for the order lets it go on time."
+say "mycelium-lapse: Style Radiant — the Pledge decided honored-or-released by a fact that arrives; the Lapse decides by a deadline a fact fails to meet, and the Cord decides it once, on time, for every hand alike."
+say "mycelium-lapse: Lens TAME — the verdict composes cord + fold + kumara public API; every buffer bounded; the deadline reads the order's own position, never the wall; conservation of balance + reserved holds on every path; bad-deadline · unknown · wrong-signer · amount-mismatch · star each refuse whole; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/lapse"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/lapse.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-lapse: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mycelium-lapse: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-lapse: selftest did not speak GREEN"
+assert selftest.out contains "deadline in the order's own clock" else "mycelium-lapse: order-clock deadline claim missing"
+assert selftest.out contains "already lapsed" else "mycelium-lapse: late-honor-finds-lapsed claim missing"
+assert selftest.out contains "every honest arrival names the same verdict" else "mycelium-lapse: arrival-order-independence claim missing"
+assert selftest.out contains "conservation of balance + reserved holds" else "mycelium-lapse: conservation claim missing"
+assert selftest.out contains "never reaches stays open" else "mycelium-lapse: unreached-deadline-stays-open claim missing"
+assert selftest.out contains "refuse whole" else "mycelium-lapse: refusal claim missing"
+
+# The Cord whose agreed order the Lapse reads (the deadline is a position in that order), and the Mycelium
+# fold whose signed-fact model and additive verify_fact it reuses, both stand at the door — their own
+# selftests prove the machinery the verdict rests on.
+let cord = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord.rye -femit-bin=mycelium/bin/cord && mycelium/bin/cord 2>&1"]
+assert cord.ok else "mycelium-lapse: the Cord the Lapse reads is not GREEN"
+assert cord.out contains "GREEN" else "mycelium-lapse: the Cord did not speak its GREEN"
+
+let fold = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/fold.rye -femit-bin=mycelium/bin/fold && mycelium/bin/fold 2>&1"]
+assert fold.ok else "mycelium-lapse: the Mycelium fold the Lapse reuses is not GREEN"
+assert fold.out contains "GREEN" else "mycelium-lapse: the Mycelium fold did not speak its GREEN"
+
+say "mycelium-lapse: GREEN — a pledge carries a deadline in the order's own clock, and the order lets it expire on time: a settlement placed at or past the deadline finds the pledge already lapsed and its coins home to the pledger, every honest arrival names the same verdict, conservation of balance + reserved holds on every path, a deadline the order never reaches stays open, and bad-deadline · unknown · wrong-signer · amount-mismatch · star each refuse whole; the Cord and the fold stand at the door."
