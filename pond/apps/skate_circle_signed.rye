@@ -135,6 +135,25 @@ pub const Keyring = struct {
     }
 };
 
+/// Verify a keeper's own join signature against the keyring, refusing an unenrolled point
+/// (`UnknownKeeper`) or an unverifying signature (`BadConsent`). Touches no circle — the verification
+/// half alone, so a traveled record (r3) can re-check consent offline with no state to mutate.
+pub fn verify_join(ring: *const Keyring, circle_id: u32, point: u32, sig: *const [sig_len]u8) SignedError!void {
+    const key = ring.key_of(point) orelse return error.UnknownKeeper;
+    var msg: [max_msg_len]u8 = undefined;
+    const len = join_message(&msg, circle_id, point);
+    if (!verify_over(key, msg[0..len], sig)) return error.BadConsent;
+}
+
+/// Verify a requester's own link-request signature against the keyring, refusing an unenrolled
+/// requester (`UnknownKeeper`) or an unverifying signature (`BadConsent`). Touches no circle.
+pub fn verify_request(ring: *const Keyring, circle_id: u32, from: u32, to: u32, sig: *const [sig_len]u8) SignedError!void {
+    const key = ring.key_of(from) orelse return error.UnknownKeeper;
+    var msg: [max_msg_len]u8 = undefined;
+    const len = request_message(&msg, circle_id, from, to);
+    if (!verify_over(key, msg[0..len], sig)) return error.BadConsent;
+}
+
 /// A keeper joins a circle only when their own signature over this exact join verifies. Refuses an
 /// unenrolled point (`UnknownKeeper`) or an unverifying signature (`BadConsent`) before touching the
 /// circle, then joins through rung one (which refuses a taken seat / full circle by its own laws).
@@ -145,10 +164,7 @@ pub fn join_signed(
     point: u32,
     sig: *const [sig_len]u8,
 ) CircleActError!void {
-    const key = ring.key_of(point) orelse return error.UnknownKeeper;
-    var msg: [max_msg_len]u8 = undefined;
-    const len = join_message(&msg, circle_id, point);
-    if (!verify_over(key, msg[0..len], sig)) return error.BadConsent;
+    try verify_join(ring, circle_id, point, sig);
     try circle.join(point);
 }
 
@@ -164,10 +180,7 @@ pub fn request_signed(
     to: u32,
     sig: *const [sig_len]u8,
 ) CircleActError!void {
-    const key = ring.key_of(from) orelse return error.UnknownKeeper;
-    var msg: [max_msg_len]u8 = undefined;
-    const len = request_message(&msg, circle_id, from, to);
-    if (!verify_over(key, msg[0..len], sig)) return error.BadConsent;
+    try verify_request(ring, circle_id, from, to, sig);
     try circle.request_link(from, to);
 }
 

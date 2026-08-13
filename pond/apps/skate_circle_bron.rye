@@ -1,0 +1,406 @@
+//! pond/apps/skate_circle_bron.rye — Season 3 Journey 9 (Skate), Rung 3: the signed circle travels.
+//!
+//! Rungs one and two fixed the consent rule and bound each act to a keeper's signature. A circle is
+//! only useful to a commons if it can be *carried* — handed to another keeper, checked with no live
+//! circle in hand. This rung renders a signed circle to a `format skate-circle-v1` Bron record and
+//! parses it back byte-for-byte, still consent-honest **offline**.
+//!
+//! A `SignedCircle` keeps, beside rung one's live circle, the signature that authorized each act — a
+//! join signature per member, a link-request signature per request — so the record it renders carries
+//! not just *that* a keeper joined but *their word* that they did. The traveled `PortableCircle` owns
+//! its own buffers, and `still_consented` re-verifies every carried signature against the recipient's
+//! keyring through rung two's own `verify_join` / `verify_request` — so a signature flipped after the
+//! crossing refuses `BadConsent` with no network, no store, no live circle. `rebuild` replays the
+//! carried acts through rung two's verified paths into an equal live circle, so the traveled verdicts
+//! (`linked`, `visible`) match the original exactly.
+//!
+//! The reader is a purpose-built bounded flat-Bron reader (the tree's `key value` idiom), never a
+//! general parser: an unknown field refuses `UnknownField` (never dropped), a malformed line
+//! `BadLine`, a wrong header `BadFormat`, bad hex `BadHex`. Additive — composes rungs one and two over
+//! public API; both re-run GREEN. Demo keeper seeds only, no network (a circle served over the wire
+//! reaches the serve gate — Keaton's hand).
+//!
+//!   rye build pond/apps/skate_circle_bron.rye -femit-bin=pond/bin/skate-circle-bron
+//!   pond/bin/skate-circle-bron selftest
+//!
+//! Scope: active-designing/20260812-201611_dahl-journey9-skate-consent-first-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const skate = @import("skate_circle.rye");
+const signed = @import("skate_circle_signed.rye");
+const kumara = @import("kumara.rye");
+const parse_int = @import("parse_int.rye");
+
+pub const skate_circle_bron_version = "20260812.201611";
+
+pub const sig_len: u32 = 64;
+pub const max_members: u32 = skate.max_members;
+pub const max_links: u32 = skate.max_requests;
+
+/// The rendered record: a header, a circle line, one `member` line per join and one `link` line per
+/// request, each carrying a 128-hex signature. Bounded over the worst case (32 members + 128 links).
+pub const max_record: u32 = 32768;
+
+pub const BronError = error{
+    BadFormat, // the header line is not `format skate-circle-v1`
+    UnknownField, // a line names a field the record does not define
+    BadLine, // a member/link line is missing a token or carries a trailing one
+    BadInt, // a point field did not parse
+    BadHex, // a signature field was the wrong length or held a non-hex byte
+    MissingCircle, // the record never named its circle id
+    TooManyMembers, // the record carries past the member bound
+    TooManyLinks, // the record carries past the link bound
+    RecordTooLong, // the render exceeded its bounded buffer
+};
+
+const hex_digits = "0123456789abcdef";
+
+/// Write `bytes` as lowercase hex into `out` (out.len must be twice bytes.len).
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex chars per byte.
+    assert(out.len == bytes.len * 2);
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0F];
+    }
+}
+
+fn nibble(c: u8) BronError!u8 {
+    return switch (c) {
+        '0'...'9' => c - '0',
+        'a'...'f' => c - 'a' + 10,
+        'A'...'F' => c - 'A' + 10,
+        else => error.BadHex,
+    };
+}
+
+/// Decode `text` (exactly out.len*2 hex chars) into `out`, refusing wrong length or non-hex.
+fn from_hex(text: []const u8, out: []u8) BronError!void {
+    if (text.len != out.len * 2) return error.BadHex;
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < out.len) : (i += 1) {
+        const hi = try nibble(text[i * 2]);
+        const lo = try nibble(text[i * 2 + 1]);
+        out[i] = (hi << 4) | lo;
+    }
+}
+
+/// A signed circle: rung one's live circle plus the signature that authorized each act, so the whole
+/// consent history can travel and be re-checked, not merely the resting state.
+// Invariant: member_count <= max_members; link_count <= max_links.
+pub const SignedCircle = struct {
+    circle: skate.Circle,
+    circle_id: u32,
+    member_points: [max_members]u32,
+    member_sigs: [max_members][sig_len]u8,
+    member_count: u32,
+    link_from: [max_links]u32,
+    link_to: [max_links]u32,
+    link_sigs: [max_links][sig_len]u8,
+    link_count: u32,
+
+    pub fn open(circle_id: u32) SignedCircle {
+        const sc = SignedCircle{
+            .circle = skate.Circle.open(),
+            .circle_id = circle_id,
+            .member_points = undefined,
+            .member_sigs = undefined,
+            .member_count = 0,
+            .link_from = undefined,
+            .link_to = undefined,
+            .link_sigs = undefined,
+            .link_count = 0,
+        };
+        // invariant: an opened signed circle carries no member and no link.
+        assert(sc.member_count == 0);
+        assert(sc.link_count == 0);
+        return sc;
+    }
+
+    /// Record a signed join — verify through rung two (which joins the live circle), then keep the
+    /// point and its signature so the join can travel with its keeper's word.
+    pub fn record_join(self: *SignedCircle, ring: *const signed.Keyring, point: u32, sig: *const [sig_len]u8) signed.CircleActError!void {
+        try signed.join_signed(&self.circle, ring, self.circle_id, point, sig);
+        const i = self.member_count; // rung two grew the circle; the arrays never overflow (same bound)
+        self.member_points[i] = point;
+        self.member_sigs[i] = sig.*;
+        self.member_count += 1;
+        // invariant: the kept members track the live circle's own membership one-for-one.
+        assert(self.member_count == self.circle.member_count);
+    }
+
+    /// Record a signed link-request — verify through rung two, then keep the pair and its signature.
+    pub fn record_request(self: *SignedCircle, ring: *const signed.Keyring, from: u32, to: u32, sig: *const [sig_len]u8) signed.CircleActError!void {
+        try signed.request_signed(&self.circle, ring, self.circle_id, from, to, sig);
+        const i = self.link_count;
+        self.link_from[i] = from;
+        self.link_to[i] = to;
+        self.link_sigs[i] = sig.*;
+        self.link_count += 1;
+        // invariant: the kept requests track the live circle's own request book one-for-one.
+        assert(self.link_count == self.circle.request_count);
+    }
+};
+
+/// A parsed signed circle that owns its arrays, so nothing points into freed record text.
+// Invariant: member_count <= max_members; link_count <= max_links.
+pub const PortableCircle = struct {
+    circle_id: u32,
+    member_points: [max_members]u32,
+    member_sigs: [max_members][sig_len]u8,
+    member_count: u32,
+    link_from: [max_links]u32,
+    link_to: [max_links]u32,
+    link_sigs: [max_links][sig_len]u8,
+    link_count: u32,
+
+    /// Re-verify every carried signature against the recipient's keyring, offline — a join by
+    /// `verify_join`, a request by `verify_request`. A flipped or forged signature refuses by rung
+    /// two's exact reason, so a tampered record cannot pass with no live circle in hand.
+    pub fn still_consented(self: *const PortableCircle, ring: *const signed.Keyring) signed.SignedError!void {
+        var i: u32 = 0;
+        while (i < self.member_count) : (i += 1) {
+            try signed.verify_join(ring, self.circle_id, self.member_points[i], &self.member_sigs[i]);
+        }
+        var j: u32 = 0;
+        while (j < self.link_count) : (j += 1) {
+            try signed.verify_request(ring, self.circle_id, self.link_from[j], self.link_to[j], &self.link_sigs[j]);
+        }
+    }
+
+    /// Replay the carried acts through rung two's verified paths into an equal live circle, so the
+    /// traveled verdicts match the original. Refuses exactly as rung two would on a bad signature.
+    pub fn rebuild(self: *const PortableCircle, ring: *const signed.Keyring) signed.CircleActError!skate.Circle {
+        var circle = skate.Circle.open();
+        var i: u32 = 0;
+        while (i < self.member_count) : (i += 1) {
+            try signed.join_signed(&circle, ring, self.circle_id, self.member_points[i], &self.member_sigs[i]);
+        }
+        var j: u32 = 0;
+        while (j < self.link_count) : (j += 1) {
+            try signed.request_signed(&circle, ring, self.circle_id, self.link_from[j], self.link_to[j], &self.link_sigs[j]);
+        }
+        return circle;
+    }
+};
+
+/// Render a signed circle to a `format skate-circle-v1` record. Refuses an overflow rather than a
+/// partial record.
+pub fn render(sc: *const SignedCircle, out: []u8) BronError!u32 {
+    // invariant: the render buffer honors its bound.
+    assert(out.len >= max_record);
+    const head = std.fmt.bufPrint(out, "format skate-circle-v1\ncircle {d}\n", .{sc.circle_id}) catch return error.RecordTooLong;
+    var off: u32 = @intCast(head.len);
+    var i: u32 = 0;
+    while (i < sc.member_count) : (i += 1) {
+        var sig_hex: [sig_len * 2]u8 = undefined;
+        to_hex(&sc.member_sigs[i], &sig_hex);
+        const line = std.fmt.bufPrint(out[off..], "member {d} {s}\n", .{ sc.member_points[i], sig_hex }) catch return error.RecordTooLong;
+        off += @intCast(line.len);
+    }
+    var j: u32 = 0;
+    while (j < sc.link_count) : (j += 1) {
+        var sig_hex: [sig_len * 2]u8 = undefined;
+        to_hex(&sc.link_sigs[j], &sig_hex);
+        const line = std.fmt.bufPrint(out[off..], "link {d} {d} {s}\n", .{ sc.link_from[j], sc.link_to[j], sig_hex }) catch return error.RecordTooLong;
+        off += @intCast(line.len);
+    }
+    // invariant: the rendered record never exceeds its bound.
+    assert(off <= max_record);
+    return off;
+}
+
+/// Split a line on spaces into up to four tokens; returns the count found.
+fn tokens(line: []const u8, out: *[4][]const u8) u32 {
+    var count: u32 = 0;
+    var it = std.mem.tokenizeScalar(u8, line, ' ');
+    while (it.next()) |t| {
+        if (count >= 4) return count + 1; // signal a trailing token past what any line allows
+        out[count] = t;
+        count += 1;
+    }
+    return count;
+}
+
+/// Parse a `format skate-circle-v1` record into a PortableCircle, refusing an unknown or malformed
+/// field, a bad header, a missing circle id, an overlong roster, a bad integer, or malformed hex.
+pub fn parse(text: []const u8) BronError!PortableCircle {
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const header = lines.next() orelse return error.BadFormat;
+    if (!std.mem.eql(u8, header, "format skate-circle-v1")) return error.BadFormat;
+
+    var have_circle = false;
+    var pc = PortableCircle{
+        .circle_id = 0,
+        .member_points = undefined,
+        .member_sigs = undefined,
+        .member_count = 0,
+        .link_from = undefined,
+        .link_to = undefined,
+        .link_sigs = undefined,
+        .link_count = 0,
+    };
+
+    while (lines.next()) |raw| {
+        if (raw.len == 0) continue; // a trailing newline yields one empty line
+        var tok: [4][]const u8 = undefined;
+        const n = tokens(raw, &tok);
+        if (n == 0) continue;
+        if (std.mem.eql(u8, tok[0], "circle")) {
+            if (n != 2) return error.BadLine;
+            pc.circle_id = parse_int.parse_int(u32, tok[1], .{}) catch return error.BadInt;
+            have_circle = true;
+        } else if (std.mem.eql(u8, tok[0], "member")) {
+            if (n != 3) return error.BadLine;
+            if (pc.member_count >= max_members) return error.TooManyMembers;
+            const mi = pc.member_count;
+            pc.member_points[mi] = parse_int.parse_int(u32, tok[1], .{}) catch return error.BadInt;
+            try from_hex(tok[2], &pc.member_sigs[mi]);
+            pc.member_count += 1;
+        } else if (std.mem.eql(u8, tok[0], "link")) {
+            if (n != 4) return error.BadLine;
+            if (pc.link_count >= max_links) return error.TooManyLinks;
+            const li = pc.link_count;
+            pc.link_from[li] = parse_int.parse_int(u32, tok[1], .{}) catch return error.BadInt;
+            pc.link_to[li] = parse_int.parse_int(u32, tok[2], .{}) catch return error.BadInt;
+            try from_hex(tok[3], &pc.link_sigs[li]);
+            pc.link_count += 1;
+        } else {
+            return error.UnknownField;
+        }
+    }
+    if (!have_circle) return error.MissingCircle;
+    return pc;
+}
+
+// --- selftest -----------------------------------------------------------
+
+// Demo keeper seeds — plainly not real keys, so no identity is invented.
+const ivy_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
+const wren_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
+
+const ivy: u32 = 101;
+const wren: u32 = 202;
+const demo_circle: u32 = 7;
+
+fn pubkey_of(seed: *const [kumara.seed_length]u8) [signed.pubkey_len]u8 {
+    return kumara.keypair_from_seed(seed).public_key.bytes;
+}
+
+fn demo_ring() error{KeyringFull}!signed.Keyring {
+    var ring = signed.Keyring.open();
+    try ring.enroll(ivy, pubkey_of(&ivy_seed));
+    try ring.enroll(wren, pubkey_of(&wren_seed));
+    return ring;
+}
+
+/// Build a signed circle where Ivy and Wren mutually link, both acts signed.
+fn build_linked(ring: *const signed.Keyring) !SignedCircle {
+    var sc = SignedCircle.open(demo_circle);
+    const ivy_join = signed.sign_join(&ivy_seed, demo_circle, ivy);
+    const wren_join = signed.sign_join(&wren_seed, demo_circle, wren);
+    try sc.record_join(ring, ivy, &ivy_join);
+    try sc.record_join(ring, wren, &wren_join);
+    const ivy_asks = signed.sign_request(&ivy_seed, demo_circle, ivy, wren);
+    const wren_asks = signed.sign_request(&wren_seed, demo_circle, wren, ivy);
+    try sc.record_request(ring, ivy, wren, &ivy_asks);
+    try sc.record_request(ring, wren, ivy, &wren_asks);
+    return sc;
+}
+
+/// The signed circle renders to Bron and parses back byte-for-byte; the rebuilt circle carries the
+/// identical verdicts, and every carried signature still verifies offline.
+fn welcome_round_trip_still_consented() !void {
+    const ring = try demo_ring();
+    var sc = try build_linked(&ring);
+    assert(sc.circle.linked(ivy, wren));
+
+    var buf1: [max_record]u8 = undefined;
+    const n1 = try render(&sc, &buf1);
+    const pc = try parse(buf1[0..n1]);
+
+    // Byte-for-byte: re-rendering the parsed record reproduces the exact bytes.
+    var rebuilt_sc = try build_linked(&ring); // an equal signed circle to render for comparison
+    var buf2: [max_record]u8 = undefined;
+    const n2 = try render(&rebuilt_sc, &buf2);
+    assert(n1 == n2);
+    assert(std.mem.eql(u8, buf1[0..n1], buf2[0..n2]));
+
+    // Still consent-honest offline: every carried signature re-verifies.
+    try pc.still_consented(&ring);
+
+    // The rebuilt live circle carries the identical verdicts.
+    const circle = try pc.rebuild(&ring);
+    assert(circle.linked(ivy, wren));
+    assert(circle.visible(ivy, wren));
+    assert(circle.member_count == sc.circle.member_count);
+    print("skate_circle_bron: a signed circle rendered to Bron, parsed back byte-for-byte, still consented offline, and rebuilt the identical link.\n", .{});
+}
+
+/// A signature flipped after the crossing refuses offline — a tampered record cannot pass.
+fn unwelcome_flipped_signature_refuses() !void {
+    const ring = try demo_ring();
+    var sc = try build_linked(&ring);
+    var buf: [max_record]u8 = undefined;
+    const n = try render(&sc, &buf);
+    var pc = try parse(buf[0..n]);
+    // Flip one byte of the first link's carried signature.
+    pc.link_sigs[0][0] ^= 0xFF;
+    const bad = pc.still_consented(&ring);
+    assert(bad == error.BadConsent);
+    print("skate_circle_bron: a link signature flipped after the crossing refused BadConsent offline.\n", .{});
+}
+
+/// An unknown field refuses rather than being dropped — the reader keeps every line honest.
+fn unwelcome_unknown_field_refuses() !void {
+    const text = "format skate-circle-v1\ncircle 7\nmember 101 " ++ ("00" ** sig_len) ++ "\nghost 5\n";
+    const bad = parse(text);
+    assert(bad == error.UnknownField);
+    print("skate_circle_bron: an unknown field refused UnknownField rather than be dropped.\n", .{});
+}
+
+/// A wrong header refuses — the record must name its own format.
+fn unwelcome_bad_header_refuses() !void {
+    const bad = parse("format other-v1\ncircle 7\n");
+    assert(bad == error.BadFormat);
+    print("skate_circle_bron: a wrong header refused BadFormat.\n", .{});
+}
+
+/// A record that never names its circle refuses — consent is bound to a circle, so the id is required.
+fn unwelcome_missing_circle_refuses() !void {
+    const bad = parse("format skate-circle-v1\n");
+    assert(bad == error.MissingCircle);
+    print("skate_circle_bron: a record with no circle id refused MissingCircle.\n", .{});
+}
+
+/// Malformed hex in a signature refuses — the reader will not accept a corrupt signature field.
+fn unwelcome_bad_hex_refuses() !void {
+    const bad = parse("format skate-circle-v1\ncircle 7\nmember 101 zz\n");
+    assert(bad == error.BadHex);
+    print("skate_circle_bron: malformed signature hex refused BadHex.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_round_trip_still_consented();
+    try unwelcome_flipped_signature_refuses();
+    try unwelcome_unknown_field_refuses();
+    try unwelcome_bad_header_refuses();
+    try unwelcome_missing_circle_refuses();
+    try unwelcome_bad_hex_refuses();
+    print("skate_circle_bron: version {s}\n", .{skate_circle_bron_version});
+    print("GREEN: DAHL-J9r3 skate_circle_bron; a signed circle travels as Bron, byte-for-byte, and stays consent-honest offline.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "skate-circle-bron"))) {
+        return run_selftest();
+    }
+    return run_selftest();
+}

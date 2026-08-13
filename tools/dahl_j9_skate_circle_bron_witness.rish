@@ -1,0 +1,51 @@
+# tools/dahl_j9_skate_circle_bron_witness.rish — Season 3 Journey 9 (Skate), Rung 3.
+#
+# Rungs one and two fixed the consent rule and bound each act to a keeper's signature. A circle is
+# only useful to a commons if it can be carried and checked with no live circle in hand.
+# pond/apps/skate_circle_bron.rye renders a signed circle (members + links, each with the signature
+# that authorized it) to a format skate-circle-v1 Bron record and parses it back byte-for-byte, still
+# consent-honest offline: still_consented re-verifies every carried signature against the recipient's
+# keyring through rung two's verify_join / verify_request, and rebuild replays the acts into an equal
+# live circle whose verdicts match. A signature flipped after the crossing refuses BadConsent offline;
+# an unknown field (UnknownField), a wrong header (BadFormat), a missing circle id (MissingCircle),
+# and malformed hex (BadHex) each refuse. Additive — composes rungs one and two over public API (both
+# re-run GREEN); demo keeper seeds only, no network (serve reaches the custody gate).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/dahl_j9_skate_circle_bron_witness.rish
+
+say "dahl-j9r3: Language EN — a signed circle travels as Bron, byte-for-byte, and stays consent-honest offline."
+say "dahl-j9r3: Lens TAME — a flipped signature, an unknown field, a bad header, a missing circle id, and bad hex each refuse."
+
+let zig = "vendor/zig-toolchain/zig"
+
+# Rungs one and two stay GREEN beneath the travel layer — additive.
+let binr1 = "pond/bin/skate-circle"
+let buildr1 = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_circle.rye -femit-bin=${binr1}"]
+assert buildr1.ok else "dahl-j9r3: skate_circle (r1) build failed"
+let selfr1 = run ["sh" "-c" "${binr1} selftest 2>&1"]
+assert selfr1.ok else "dahl-j9r3: skate_circle (r1) selftest exited non-zero"
+assert selfr1.out contains "GREEN" else "dahl-j9r3: r1 did not speak GREEN"
+
+let binr2 = "pond/bin/skate-circle-signed"
+let buildr2 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_circle_signed.rye -femit-bin=${binr2}"]
+assert buildr2.ok else "dahl-j9r3: skate_circle_signed (r2) build failed"
+let selfr2 = run ["sh" "-c" "${binr2} selftest 2>&1"]
+assert selfr2.ok else "dahl-j9r3: skate_circle_signed (r2) selftest exited non-zero"
+assert selfr2.out contains "GREEN" else "dahl-j9r3: r2 did not speak GREEN"
+
+let bin = "pond/bin/skate-circle-bron"
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_circle_bron.rye -femit-bin=${bin}"]
+assert build.ok else "dahl-j9r3: skate_circle_bron build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "dahl-j9r3: skate_circle_bron selftest exited non-zero"
+assert selftest.out contains "GREEN" else "dahl-j9r3: selftest did not speak GREEN"
+assert selftest.out contains "parsed back byte-for-byte, still consented offline, and rebuilt the identical link" else "dahl-j9r3: round-trip crux missing"
+assert selftest.out contains "flipped after the crossing refused BadConsent offline" else "dahl-j9r3: flipped-signature refusal missing"
+assert selftest.out contains "refused UnknownField" else "dahl-j9r3: unknown-field refusal missing"
+assert selftest.out contains "refused BadFormat" else "dahl-j9r3: bad-header refusal missing"
+assert selftest.out contains "refused MissingCircle" else "dahl-j9r3: missing-circle refusal missing"
+assert selftest.out contains "refused BadHex" else "dahl-j9r3: bad-hex refusal missing"
+
+say "dahl-j9r3: GREEN — the signed circle travels byte-for-byte and re-verifies offline; r1 and r2 stay GREEN."
