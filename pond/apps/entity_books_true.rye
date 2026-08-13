@@ -1,0 +1,121 @@
+//! pond/apps/entity_books_true.rye — Season 2 Journey 8 (Cash-first), Rung 4: the books read true (Journey 8 closes).
+//!
+//! Rungs one through three booked a segregated inter-entity transfer, signed it, and let a closed
+//! period travel and re-verify offline — all on demo journals seated in code. This closing rung
+//! carries the entity's books onto a **real** Dimeroll journal fixture and proves the one property
+//! the whole spine rests on: what a fold *reports* is **true to the bytes a keeper can open and add up
+//! by hand**, so an entity's balance can never drift from the facts.
+//!
+//! The corpus is `dimeroll/fixtures/journal.bron`, the module's own byte-stable lap-1 fixture,
+//! `@embedFile`-bound at compile time through a symlink in `pond/apps/corpora/` — no network, the
+//! bytes read are the tree's own, never a drifting copy. The journal is parsed by
+//! `dimeroll_core.parse_journal`, loaded into a rung-one `Entity`, and folded to a trial balance;
+//! the app reports the three facts an auditor checks — the entry count, the amount total, and the
+//! debit-positive cash net. The witness measures the same file independently with
+//! `tools/fixtures/entity_journal_truth.awk` and asserts field for field: two tools, one answer.
+//! In-app the fold's own conservation and balance hold (the accounting identity on real bytes).
+//!
+//! It composes rung one's `Entity` and `dimeroll_core`'s parse and fold over public API, inventing
+//! no new value model. Facts only; reads no network; demo custody untouched (gate #3).
+//!
+//!   rye build pond/apps/entity_books_true.rye -femit-bin=pond/bin/entity-books-true
+//!   pond/bin/entity-books-true measure   # prints "<entries> <amount_sum> <cash_net>" for the awk cross-check
+//!   pond/bin/entity-books-true selftest
+//!
+//! Scope: active-designing/20260812-195711_gism-ayre-journey8-cash-first-entity-books-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const entity = @import("entity_books.rye");
+const gc = @import("dimeroll/dimeroll_core.rye");
+
+pub const entity_books_true_version = "20260812.201055";
+
+/// The real corpus — Dimeroll's own byte-stable journal fixture, bound at compile time.
+const real_journal = @embedFile("corpora/dimeroll_journal.bron");
+
+/// What an auditor reads off an entity's books: how many facts, their amount total, and the
+/// debit-positive cash net. Each is a number a keeper can recompute by hand from the same bytes.
+pub const Reading = struct {
+    entries: u32,
+    amount_sum: i64,
+    cash_net: i64,
+};
+
+/// Load a real journal's facts into a fresh entity and read its books. Parses the journal by the
+/// core's own reader, posts each fact to the entity, folds its trial balance, and reports the three
+/// auditor facts. Refuses whatever the core's parse or the entity's post refuses — a malformed real
+/// fixture is named, never guessed past.
+pub fn read_journal(name: []const u8, journal_text: []const u8) (entity.BookError || error{ InvalidEntry, UnknownAccount, TooMany })!Reading {
+    var parsed: [gc.max_entries]gc.Entry = undefined;
+    var count: u32 = 0;
+    try gc.parse_journal(journal_text, &parsed, &count);
+
+    var e = try entity.Entity.open(name);
+    var sum: i64 = 0;
+    var i: u32 = 0;
+    // invariant: the parse never yields more facts than the entity's journal can hold.
+    assert(count <= gc.max_entries);
+    while (i < count) : (i += 1) {
+        try e.post(parsed[i]);
+        sum += parsed[i].amount;
+    }
+
+    const tb = try e.trial_balance();
+    // invariant: real books conserve and balance, exactly as demo books do (the accounting identity).
+    assert(tb.conservation() == 0);
+    const sheet = try e.balance_sheet();
+    assert(sheet.balances());
+
+    return .{ .entries = count, .amount_sum = sum, .cash_net = tb.nets[@intFromEnum(gc.Account.cash)] };
+}
+
+// --- selftest -----------------------------------------------------------
+
+/// The entity's books read true to the real fixture: the fold conserves and balances, and the three
+/// auditor facts match the values a keeper reads straight from the bytes (cross-checked by awk in the
+/// witness). The fixture is two balanced entries — 1000 cash/revenue and 200 expense/cash.
+fn welcome_reads_true() !void {
+    const r = try read_journal("Linengrow PBC", real_journal);
+    assert(r.entries == 2); // two facts in the fixture
+    assert(r.amount_sum == 1200); // 1000 + 200
+    assert(r.cash_net == 800); // +1000 cash debit, -200 cash credit
+    print("entity_books_true: the real journal folded to 2 entries, amount total 1200, cash net 800 — conserving and balancing.\n", .{});
+}
+
+/// A malformed real journal refuses rather than fold garbage — an unknown account is named.
+fn unwelcome_bad_journal_refuses() !void {
+    const bad = "debit cash\ncredit unicorn\namount 100\nmemo x\nstamp s\n";
+    const r = read_journal("Bad Books", bad);
+    assert(r == error.UnknownAccount);
+    print("entity_books_true: a journal naming an unknown account refused UnknownAccount — no garbage folded.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_reads_true();
+    try unwelcome_bad_journal_refuses();
+    print("entity_books_true: version {s}\n", .{entity_books_true_version});
+    print("GREEN: GISM-AYRE-J8r4 entity_books_true; an entity's books read true to a real journal — the fold matches an independent count of the same bytes.\n", .{});
+    return 0;
+}
+
+/// Print the three auditor facts for the witness's independent awk cross-check.
+fn run_measure() !u8 {
+    const r = try read_journal("Linengrow PBC", real_journal);
+    print("{d} {d} {d}\n", .{ r.entries, r.amount_sum, r.cash_net });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "measure")) {
+        return run_measure();
+    }
+    if (args.len >= 2 and (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "entity-books-true"))) {
+        return run_selftest();
+    }
+    return run_selftest();
+}

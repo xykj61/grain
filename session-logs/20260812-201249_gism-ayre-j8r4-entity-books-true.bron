@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260812.201249
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title GISM-AYRE-J8r4 — the entity's books read true (Journey 8 closes)
+prompt continue the 1024-round road Lindy-first crux-first; take the next agent-doable lap, send each increment; stop only at custody gates
+think REMEMBER names the closing crux — J8r4, the books read true: an entity loads a real journal fixture, folds it, and the fold matches an independent measurement of the same bytes (mirroring GISM-J5r4 true-to-the-bytes)
+think the real corpus is dimeroll/fixtures/journal.bron (the module's own byte-stable lap-1 fixture); symlinked into pond/apps/corpora and @embedFile-bound; parse_journal → post into a rung-one Entity → fold
+think wrote tools/fixtures/entity_journal_truth.awk — counts entries (one per amount line), sums amounts, computes debit-positive cash net (cash += debit, cash -= credit); on the fixture it reads 2 1200 800
+think wrote pond/apps/entity_books_true.rye — read_journal loads a real journal into a fresh Entity, folds, asserts conservation + balances, reports (entries, amount_sum, cash_net); a `measure` subcommand prints the three facts for the awk cross-check; a malformed journal refuses UnknownAccount
+think the witness runs the app's measure and awk on the same file and asserts fold.out == truth.out — two tools, one answer; both 2 1200 800
+obs additive — composes entity_books (r1) + dimeroll_core parse/fold public API; r1 re-runs GREEN; reads no network; demo entities only, custody gate #3 untouched
+obs Season 2 Journey 8 (Cash-first) stands complete end to end — r1 segregated transfer · r2 signed · r3 period travels · r4 read-true; Season 2 (Yield) agent-doable arc is complete across J5·J6·J7·J8
+loom witness=gism_ayre_j8_entity_books_true_witness cases=2 crux=app_eq_awk fold=2_1200_800 rung_one_rerun=green tame=clean width=clean
+file pond/apps/entity_books_true.rye J8r4 — an entity's fold reads true to a real journal fixture, cross-checked by awk
+file tools/fixtures/entity_journal_truth.awk independent measurement of the same real bytes
+file tools/gism_ayre_j8_entity_books_true_witness.rish witness — app fold == awk truth, malformed refusal, r1 re-run
+file work-in-progress/REMEMBER.md living card — J8r4 landed row, Journey 8 closed, Season 2 arc complete + git nib refresh
+recommend check-in (either) — Season 2 (Yield) agent-doable arc is complete; the next Lindy-first crux crosses into Season 3 (Commons, DAHL) — Journey 9 (Skate social layer, a consent-first surface), a new domain worth a fresh design read

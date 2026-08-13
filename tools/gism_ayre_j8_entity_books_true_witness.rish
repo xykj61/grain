@@ -1,0 +1,46 @@
+# tools/gism_ayre_j8_entity_books_true_witness.rish — Season 2 Journey 8 (Cash-first), Rung 4 (closes Journey 8).
+#
+# Season 2, Yield — the accounting spine, never braided. Rungs one through three booked a segregated
+# inter-entity transfer, signed it, and let a closed period travel and re-verify offline — all on demo
+# journals. This closing rung carries the entity's books onto a real Dimeroll journal fixture
+# (dimeroll/fixtures/journal.bron, @embedFile-bound through a symlink) and proves the property the
+# spine rests on: what the fold reports is true to the bytes a keeper can add up by hand. The app
+# reports three auditor facts (entry count, amount total, cash net); this witness measures the same
+# file independently with tools/fixtures/entity_journal_truth.awk and asserts field for field — two
+# tools, one answer. A malformed journal refuses (UnknownAccount). Composes rung one's Entity and
+# dimeroll_core; facts only; demo entities only (gate #3 untouched).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/gism_ayre_j8_entity_books_true_witness.rish
+
+say "gism-ayre-j8r4: Language EN — an entity's books read true to a real journal; the fold matches an independent count of the same bytes."
+say "gism-ayre-j8r4: Lens TAME — two tools one answer; a malformed real journal refuses UnknownAccount rather than fold garbage."
+
+let zig = "vendor/zig-toolchain/zig"
+
+# Rung one stays GREEN beneath the real-corpus layer — additive.
+let bin1 = "pond/bin/entity-books"
+let build1 = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/entity_books.rye -femit-bin=${bin1}"]
+assert build1.ok else "gism-ayre-j8r4: rung-one entity_books build failed"
+let self1 = run ["sh" "-c" "${bin1} selftest 2>&1"]
+assert self1.ok else "gism-ayre-j8r4: rung-one selftest exited non-zero"
+assert self1.out contains "GREEN" else "gism-ayre-j8r4: rung-one did not speak GREEN"
+
+let bin = "pond/bin/entity-books-true"
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/entity_books_true.rye -femit-bin=${bin}"]
+assert build.ok else "gism-ayre-j8r4: entity_books_true build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "gism-ayre-j8r4: entity_books_true selftest exited non-zero"
+assert selftest.out contains "GREEN" else "gism-ayre-j8r4: selftest did not speak GREEN"
+assert selftest.out contains "amount total 1200, cash net 800" else "gism-ayre-j8r4: fold facts missing"
+assert selftest.out contains "refused UnknownAccount" else "gism-ayre-j8r4: malformed refusal missing"
+
+# The crux cross-check: the app's fold matches an independent awk reading of the same real bytes.
+let fold = run ["sh" "-c" "${bin} measure 2>&1"]
+assert fold.ok else "gism-ayre-j8r4: measure exited non-zero"
+let truth = run ["sh" "-c" "awk -f tools/fixtures/entity_journal_truth.awk dimeroll/fixtures/journal.bron"]
+assert truth.ok else "gism-ayre-j8r4: awk truth measurement failed"
+assert fold.out == truth.out else "gism-ayre-j8r4: the fold disagrees with the independent awk count of the same bytes"
+
+say "GREEN: GISM-AYRE-J8r4 entity_books_true — the fold reads true to a real journal (app == awk, two tools one answer); Season 2 Journey 8 (Cash-first) closes."
