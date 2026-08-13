@@ -4,7 +4,7 @@
 #   rishi/bin/rishi run tools/pond_ring_drawn_terminal_witness.rish
 #
 # One application under policy: the manifest crosses customs at receipt; a
-# place verdict admits the app and its headless Lap 3 session runs; a refuse
+# place verdict admits the app and its headless session runs; a refuse
 # verdict blocks placement whole, and the app stays unrun. Both spaces held.
 
 say "ring: Language EN — the first Pond ring, one app under customs."
@@ -26,7 +26,7 @@ assert ins.ok else "ring: place manifest did not admit"
 assert ins.err contains "verdict=place" else "ring: verdict was not place"
 assert ins.err contains "admitted for placement" else "ring: admission line missing"
 
-say "ring: admitted — the session runs headless (Lap 3)..."
+say "ring: admitted — the session runs headless..."
 let app = run ["pond/bin/drawn-terminal" "sessiontest"]
 assert app.ok else "ring: admitted app failed its session lap"
 assert app.out contains "GREEN" else "ring: session lap did not speak GREEN"
