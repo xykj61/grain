@@ -1,0 +1,118 @@
+//! mycelium/pledge_fixture_gen.rye — reproducibly emit a two-phase-transfer Cord dev-net fixture (r4 support).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · the two-phase transfer · rung r4 support.
+//! Design read: active-designing/20260813-075049_mycelium-pledge-two-phase-transfer-exploration.md
+//!
+//! Seats a real four-block scene carrying a genuine two-phase transfer — a pledge opened, honored,
+//! and a second pledge left standing open. A demo funder issues a genesis credit of 200 to Alice
+//! (round 0); Alice pledges 100 to Bob (round 1, id 0x01…) reserving her coins; Alice posts that
+//! pledge (round 2), honoring it so the reserved hundred reaches Bob; Alice pledges 100 to Carol
+//! (round 3, id 0x02…) and leaves it open. The whole order is unambiguous by round, so a keeper (or an
+//! awk) can walk the block lines in file order and name the same honored recipient, posted count, and
+//! open count the Pledge's agreed-order resolution names. Committing and rendering to a
+//! `format cord-dag-v1` record gives the exact bytes `mycelium/pledge_true.rye` reads back and the r4
+//! witness cross-checks against an independent awk reading.
+//!
+//! Deterministic: seeded demo keys and a pure commit mean the same bytes every run, so the on-disk
+//! fixture is what the Cord emits, never a hand-mock. Emitted on stderr (hosted `print` is
+//! `std.debug.print`), so capture with `2>`.
+//!
+//! Siloed, dev-only, demo seeds — no real key, no funds, no network, no custody.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/pledge_fixture_gen.rye \
+//!     2> tools/fixtures/pledge_dag.bron
+//!
+//! Kin: mycelium/purse_fixture_gen.rye (the per-account sibling).
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("cord.rye");
+const cord_bron = @import("cord_bron.rye");
+const fold = @import("fold.rye");
+const pledge = @import("pledge.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn pledge_body(id: []const u8, to: []const u8, out: []u8) u32 {
+    // invariant: the buffer holds tag · id · recipient exactly.
+    assert(out.len >= 1 + pledge.id_len + pledge.pk_len);
+    assert(id.len == pledge.id_len);
+    out[0] = pledge.tag_pledge;
+    tally_copy.copy_disjoint(u8, out[1 .. 1 + pledge.id_len], id);
+    tally_copy.copy_disjoint(u8, out[1 + pledge.id_len ..][0..pledge.pk_len], to);
+    return 1 + pledge.id_len + pledge.pk_len;
+}
+
+fn post_body(id: []const u8, out: []u8) u32 {
+    // invariant: the buffer holds tag · id exactly.
+    assert(out.len >= 1 + pledge.id_len);
+    assert(id.len == pledge.id_len);
+    out[0] = pledge.tag_post;
+    tally_copy.copy_disjoint(u8, out[1 .. 1 + pledge.id_len], id);
+    return 1 + pledge.id_len;
+}
+
+/// Seat the two-phase four-block Dag — genesis credits Alice 200; Alice pledges 100 to Bob at round 1;
+/// Alice posts it at round 2 (honored, Bob receives the reserved hundred); Alice pledges 100 to Carol at
+/// round 3 and leaves it open.
+fn seat_dag() !cord.Dag {
+    const id1 = [_]u8{0x01} ** pledge.id_len;
+    const id2 = [_]u8{0x02} ** pledge.id_len;
+    const kf = seeded(0xF0); // demo funder / genesis credit authority
+    const ka = seeded(0xA1); // Alice — the pledger
+    const kb = seeded(0xB2); // Bob — the honored recipient
+    const kc = seeded(0xC3); // Carol — the open pledge's recipient (paid nothing yet)
+
+    const alice_pk = ka.public_key.toBytes();
+    const bob_pk = kb.public_key.toBytes();
+    const carol_pk = kc.public_key.toBytes();
+
+    const f_gen = fold.mint_fact(kf, fold.kind_issue, 200, "", alice_pk[0..]) orelse return error.MintGen;
+    var pb1: [1 + pledge.id_len + pledge.pk_len]u8 = undefined;
+    const pn1 = pledge_body(id1[0..], bob_pk[0..], &pb1);
+    const f_p1 = fold.mint_fact(ka, fold.kind_tax, 100, "", pb1[0..pn1]) orelse return error.MintP1;
+    var hb1: [1 + pledge.id_len]u8 = undefined;
+    const hn1 = post_body(id1[0..], &hb1);
+    const f_post1 = fold.mint_fact(ka, fold.kind_tax, 100, "", hb1[0..hn1]) orelse return error.MintPost1;
+    var pb2: [1 + pledge.id_len + pledge.pk_len]u8 = undefined;
+    const pn2 = pledge_body(id2[0..], carol_pk[0..], &pb2);
+    const f_p2 = fold.mint_fact(ka, fold.kind_tax, 100, "", pb2[0..pn2]) orelse return error.MintP2;
+
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_gen) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+    const r0 = [_][cord.hash_len]u8{hg};
+    const b1 = cord.mint_block(ka, 1, r0[0..], f_p1) orelse return error.BlockP1;
+    var h1: [cord.hash_len]u8 = undefined;
+    cord.address(&b1, &h1);
+    const r1 = [_][cord.hash_len]u8{h1};
+    const b2 = cord.mint_block(ka, 2, r1[0..], f_post1) orelse return error.BlockPost1;
+    var h2: [cord.hash_len]u8 = undefined;
+    cord.address(&b2, &h2);
+    const r2 = [_][cord.hash_len]u8{h2};
+    const b3 = cord.mint_block(ka, 3, r2[0..], f_p2) orelse return error.BlockP2;
+
+    var dag = cord.Dag.empty();
+    try cord.add(&dag, g);
+    try cord.add(&dag, b1);
+    try cord.add(&dag, b2);
+    try cord.add(&dag, b3);
+    return dag;
+}
+
+pub fn main() !void {
+    var dag = try seat_dag();
+    const pl = try cord_bron.from_dag(&dag);
+    var buf: [cord_bron.max_record]u8 = undefined;
+    const n = try cord_bron.render(&pl, &buf);
+    // invariant: the render is bounded and non-empty — a real record carries its header.
+    assert(n > 0);
+    assert(n <= cord_bron.max_record);
+    print("{s}", .{buf[0..n]});
+}

@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260813.081033
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Mycelium Pledge r4 — a real two-phase transfer reads true (app == awk); the arc closes
+prompt remember/loop card: take the next agent-doable lap Lindy-first crux-first; make progress before checking in; send each finished increment as its own signed round; STOP at custody gates
+think r1, r2, r3 landed and pushed both remotes. The closing rung carries the reader onto a REAL on-disk Cord record carrying a genuine two-phase transfer a keeper can open and walk, proving the honored recipient is true to the bytes — the mirror of purse_true carried from a per-account double-spend to a two-phase pledge.
+think Designed the fixture scene for awk-honesty: genesis 200 to Alice; Alice pledges 100 to Bob at round 1 (id 0x01); Alice posts it at round 2 (honored, Bob receives the reserved hundred); Alice pledges 100 to Carol at round 3 (id 0x02, open). The single post unambiguously honors the round-1 pledge before the round-3 pledge is even seated, and every pledge is affordable, so the app's full commit tie-break and the awk's file-order pledge-state accounting name the same honored recipient.
+think The awk reads the phase from the signed body hex: a kind-2 body's first byte is the phase tag (50=P pledge, 48=H post, 56=V void), the id is hex chars 3..34, the pledge recipient hex chars 35..98. It seats open pledges by id, honors on a post (naming the recipient), releases on a void, and prints the triple honored-recipient-hex posted open. The app resolves the record through pledge, finds the first posted pledge's `to`, and reports the identical triple.
+obs GREEN first pass on both selftest and app==awk. The triple is Bob (55154f42…) posted 1 open 1 — app and awk byte-for-byte. Selftest also proves the honored pledge's coins reached Bob, the open pledge still holds 100 reserved, conservation of balance + reserved to 200 over the real bytes, and a tampered header refuses BadFormat. Fixture reproducible (generator re-emits byte-identical bytes). Witness GREEN (the Pledge re-runs its green binary at the door), TAME bans clean, width-check exit 0.
+loom witness=mycelium_pledge_true_witness result=GREEN triple=55154f42…_1_1 posted=1 open=1 conserved=200 reproducible=true app_eq_awk=true
+file mycelium/pledge_fixture_gen.rye reproducibly emits the two-phase-transfer record (mirror of purse_fixture_gen)
+file tools/fixtures/pledge_dag.bron the generated real record (@embedFile-bound through the corpora symlink)
+file mycelium/corpora/pledge_dag.bron symlink binding the fixture at compile time
+file tools/fixtures/pledge_dag_truth.awk independent pledge-state accounting from the body phase tags — two tools, one answer
+file mycelium/pledge_true.rye r4 — reads the real record, resolves through pledge, reports honored·posted·open
+file tools/mycelium_pledge_true_witness.rish witness — selftest + app == awk + reproducible + the Pledge at the door
+recommend keep-going the Mycelium Pledge arc closes end to end (r1 decided-once · r2 travels · r3 across a Knot · r4 reads true) — the fourth Season D ledger, and the first two-phase transfer, improving on TigerBeetle's signature feature over the Cord's agreed order. Next: a fresh Mycelium journey (linked/atomic multi-pledge chains, or an account-statement voice) or another double-seat crux. REMEMBER is ~45 commits stale — a remember/align pass is now well worth folding the whole Mycelium arc (Cord · Knot · batch · ledger voice · Tenure · Till · Purse · Pledge) onto the card. A served pledge · per-account mint authority · breach renames (cairn-first) · deep debride · seed force-push stay Keaton's hand.
