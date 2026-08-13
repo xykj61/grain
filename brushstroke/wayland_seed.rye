@@ -13,9 +13,9 @@
 //!     -femit-bin=brushstroke/bin/brushstroke-wayland-seed
 //!   brushstroke/bin/brushstroke-wayland-seed          # Wayland window
 //!   brushstroke/bin/brushstroke-wayland-seed selftest # headless grid proof
-//!   brushstroke/bin/brushstroke-wayland-seed arbitrary # SLC-2a Lap 1 witness
-//!   brushstroke/bin/brushstroke-wayland-seed redraw     # SLC-2a Lap 2 metal: A then B
-//!   brushstroke/bin/brushstroke-wayland-seed redrawtest # SLC-2a Lap 2 headless witness
+//!   brushstroke/bin/brushstroke-wayland-seed arbitrary # SLC-2a arbitrary-value witness
+//!   brushstroke/bin/brushstroke-wayland-seed redraw     # SLC-2a redraw metal: A then B
+//!   brushstroke/bin/brushstroke-wayland-seed redrawtest # SLC-2a redraw headless witness
 //!   brushstroke/bin/brushstroke-wayland-seed brushtest [path.brush]  # p49/p52 · glass Frame feed
 //!   brushstroke/bin/brushstroke-wayland-seed brush <path.brush>     # present .brush on Wayland
 //!   brushstroke/bin/brushstroke-wayland-seed livetest               # p54 · type · :quit headless
