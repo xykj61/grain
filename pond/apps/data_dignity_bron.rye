@@ -1,0 +1,433 @@
+//! pond/apps/data_dignity_bron.rye — Season 3 Journey 12 (Data-dignity), Rung 3: the signed succession travels.
+//!
+//! Rungs one and two fixed the succession rule and bound each of its two proofs to a settled identity. A
+//! succession is only useful past a keeper's lifetime if it can be *carried* — handed to an executor, a
+//! kin, or a court, and checked with no live estate in hand. This rung renders a signed estate to a
+//! `format data-dignity-v1` Bron record and parses it back byte-for-byte, still dignity-honest **offline**.
+//!
+//! A `SignedEstate` keeps rung one's estate (keeper, heir, and the sealed will of bequeathed/rested marks)
+//! beside the estate id and the two signatures that authorized it — the keeper's directive and the heir's
+//! acceptance — so the record carries not just *that* a succession was authorized but *the will it passed*
+//! and *the two hands that agreed to it*. The traveled `PortableEstate` owns its own arrays.
+//! `still_dignity_honest` rebuilds the will, recomputes its digest, and re-verifies both signatures
+//! through rung two — so a mark tampered or a signature flipped after the crossing refuses `BadConsent`
+//! with no network, no live estate. `rebuild` replays the will through rung one, seals and accepts through
+//! rung two's signed gates, and succeeds — recovering an estate whose holder of each item matches, the
+//! rested set still extinguished.
+//!
+//! The reader is a purpose-built bounded flat-Bron reader (the tree's `key value` idiom), never a general
+//! parser: an unknown field refuses `UnknownField` (never dropped), a malformed line `BadLine`, a wrong
+//! header `BadFormat`, bad hex `BadHex`, a bad disposition or integer `BadInt`, a missing estate or proof
+//! line its own error. Additive — composes rungs one and two over public API; both re-run GREEN. Demo
+//! keeper and heir seeds only, no network (a succession served over the wire reaches the serve gate —
+//! Keaton's hand).
+//!
+//!   rye build pond/apps/data_dignity_bron.rye -femit-bin=pond/bin/data-dignity-bron
+//!   pond/bin/data-dignity-bron selftest
+//!
+//! Scope: active-designing/20260812-212607_dahl-journey12-data-dignity-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const estate_mod = @import("data_dignity.rye");
+const signed = @import("data_dignity_signed.rye");
+const kumara = @import("kumara.rye");
+const parse_int = @import("parse_int.rye");
+
+pub const data_dignity_bron_version = "20260812.212607";
+
+pub const sig_len: u32 = 64;
+pub const max_holdings: u32 = estate_mod.max_holdings;
+
+/// The rendered record: a header, an estate line (id + keeper + heir), one `hold` line per willed holding,
+/// and the two proof lines. Bounded over the worst case (256 holdings + two 128-hex signatures).
+pub const max_record: u32 = 16384;
+
+pub const BronError = error{
+    BadFormat, // the header line is not `format data-dignity-v1`
+    UnknownField, // a line names a field the record does not define
+    BadLine, // an estate/hold/proof line is missing a token or carries a trailing one
+    BadInt, // a numeric field did not parse, or a disposition was not 0 or 1
+    BadHex, // a signature field was the wrong length or held a non-hex byte
+    MissingEstate, // the record never named its estate line (id, keeper, heir)
+    MissingDirective, // the record carried no keeper directive signature
+    MissingAcceptance, // the record carried no heir acceptance signature
+    TooManyHoldings, // the record carries past the holdings bound
+    RecordTooLong, // the render exceeded its bounded buffer
+};
+
+const hex_digits = "0123456789abcdef";
+
+/// Write `bytes` as lowercase hex into `out` (out.len must be twice bytes.len).
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex chars per byte.
+    assert(out.len == bytes.len * 2);
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0F];
+    }
+}
+
+fn nibble(c: u8) BronError!u8 {
+    return switch (c) {
+        '0'...'9' => c - '0',
+        'a'...'f' => c - 'a' + 10,
+        'A'...'F' => c - 'A' + 10,
+        else => error.BadHex,
+    };
+}
+
+/// Decode `text` (exactly out.len*2 hex chars) into `out`, refusing wrong length or non-hex.
+fn from_hex(text: []const u8, out: []u8) BronError!void {
+    if (text.len != out.len * 2) return error.BadHex;
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < out.len) : (i += 1) {
+        const hi = try nibble(text[i * 2]);
+        const lo = try nibble(text[i * 2 + 1]);
+        out[i] = (hi << 4) | lo;
+    }
+}
+
+/// A disposition renders as one byte and parses back: 0 bequeathed, 1 rested — matching rung one's enum
+/// order, so the mark survives the crossing exactly.
+fn parse_disposition(tok: []const u8) BronError!estate_mod.Disposition {
+    if (std.mem.eql(u8, tok, "0")) return .bequeathed;
+    if (std.mem.eql(u8, tok, "1")) return .rested;
+    return error.BadInt;
+}
+
+/// A signed estate: rung one's estate plus the estate id and the two signatures that authorized the
+/// succession, so the whole will and its two proofs can travel and be re-checked with no live estate.
+pub const SignedEstate = struct {
+    estate: estate_mod.Estate,
+    estate_id: u32,
+    directive_sig: [sig_len]u8,
+    acceptance_sig: [sig_len]u8,
+};
+
+/// A parsed signed estate that owns its arrays, so nothing points into freed record text.
+// Invariant: will_count <= max_holdings.
+pub const PortableEstate = struct {
+    estate_id: u32,
+    keeper: u32,
+    heir: u32,
+    items: [max_holdings]u32,
+    dispositions: [max_holdings]estate_mod.Disposition,
+    will_count: u32,
+    directive_sig: [sig_len]u8,
+    acceptance_sig: [sig_len]u8,
+
+    /// Rebuild the estate's will (open + will each holding), without sealing — the shape a digest and a
+    /// verify need. Refuses exactly as rung one would (a self-heir, a repeated item, an overfull will).
+    fn to_estate(self: *const PortableEstate) estate_mod.EstateError!estate_mod.Estate {
+        var e = try estate_mod.Estate.open(self.keeper, self.heir);
+        var i: u32 = 0;
+        while (i < self.will_count) : (i += 1) {
+            switch (self.dispositions[i]) {
+                .bequeathed => try e.bequeath(self.items[i]),
+                .rested => try e.rest(self.items[i]),
+            }
+        }
+        // invariant: the rebuilt will carries exactly the traveled holdings.
+        assert(e.will_count == self.will_count);
+        return e;
+    }
+
+    /// Re-verify both carried proofs against the recipient's keyring, offline: the keeper's directive over
+    /// the rebuilt will's digest and the heir's acceptance. A tampered mark (the digest shifts) or a
+    /// flipped signature refuses `BadConsent`, so a traveled record cannot pass with no live estate.
+    pub fn still_dignity_honest(self: *const PortableEstate, ring: *const signed.Keyring) signed.EstateActError!void {
+        const e = try self.to_estate();
+        const digest = signed.will_digest(&e);
+        try signed.verify_directive(ring, self.estate_id, self.keeper, self.heir, &digest, &self.directive_sig);
+        try signed.verify_acceptance(ring, self.estate_id, self.keeper, self.heir, &self.acceptance_sig);
+    }
+
+    /// Replay the succession into a succeeded estate — seal and accept through rung two's signed gates,
+    /// then succeed — so the traveled outcome matches the original: a bequeathed item is the heir's, a
+    /// rested item rests. Refuses exactly as the lower rungs would on a bad mark or a bad signature.
+    pub fn rebuild(self: *const PortableEstate, ring: *const signed.Keyring) signed.EstateActError!estate_mod.Estate {
+        var e = try self.to_estate();
+        try signed.seal_signed(&e, ring, self.estate_id, &self.directive_sig);
+        try signed.accept_signed(&e, ring, self.estate_id, &self.acceptance_sig);
+        try e.succeed();
+        // invariant: a rebuilt succession passes exactly the bequeathed set.
+        assert(e.heir_held_count() == e.bequeathed_count());
+        return e;
+    }
+};
+
+/// Render a signed estate to a `format data-dignity-v1` record. Refuses an overflow rather than a partial
+/// record.
+pub fn render(se: *const SignedEstate, out: []u8) BronError!u32 {
+    // invariant: the render buffer honors its bound.
+    assert(out.len >= max_record);
+    const head = std.fmt.bufPrint(out, "format data-dignity-v1\nestate {d} {d} {d}\n", .{ se.estate_id, se.estate.keeper, se.estate.heir }) catch return error.RecordTooLong;
+    var off: u32 = @intCast(head.len);
+    var j: u32 = 0;
+    while (j < se.estate.will_count) : (j += 1) {
+        const disp: u32 = @intFromEnum(se.estate.disposition_at(j));
+        const line = std.fmt.bufPrint(out[off..], "hold {d} {d}\n", .{ se.estate.item_at(j), disp }) catch return error.RecordTooLong;
+        off += @intCast(line.len);
+    }
+    var dir_hex: [sig_len * 2]u8 = undefined;
+    to_hex(&se.directive_sig, &dir_hex);
+    const dline = std.fmt.bufPrint(out[off..], "directive {s}\n", .{dir_hex}) catch return error.RecordTooLong;
+    off += @intCast(dline.len);
+    var acc_hex: [sig_len * 2]u8 = undefined;
+    to_hex(&se.acceptance_sig, &acc_hex);
+    const aline = std.fmt.bufPrint(out[off..], "acceptance {s}\n", .{acc_hex}) catch return error.RecordTooLong;
+    off += @intCast(aline.len);
+    // invariant: the rendered record never exceeds its bound.
+    assert(off <= max_record);
+    return off;
+}
+
+/// Split a line on spaces into up to four tokens; returns the count found (or one past four to signal a
+/// trailing token no line allows).
+fn tokens(line: []const u8, out: *[4][]const u8) u32 {
+    var count: u32 = 0;
+    var it = std.mem.tokenizeScalar(u8, line, ' ');
+    while (it.next()) |t| {
+        if (count >= 4) return count + 1; // signal a trailing token past what any line allows
+        out[count] = t;
+        count += 1;
+    }
+    return count;
+}
+
+/// Parse a `format data-dignity-v1` record into a PortableEstate, refusing an unknown or malformed field,
+/// a bad header, a missing estate or proof line, an overfull will, a bad integer, or malformed hex.
+pub fn parse(text: []const u8) BronError!PortableEstate {
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const header = lines.next() orelse return error.BadFormat;
+    if (!std.mem.eql(u8, header, "format data-dignity-v1")) return error.BadFormat;
+
+    var have_estate = false;
+    var have_directive = false;
+    var have_acceptance = false;
+    var pe = PortableEstate{
+        .estate_id = 0,
+        .keeper = 0,
+        .heir = 0,
+        .items = undefined,
+        .dispositions = undefined,
+        .will_count = 0,
+        .directive_sig = undefined,
+        .acceptance_sig = undefined,
+    };
+
+    while (lines.next()) |raw| {
+        if (raw.len == 0) continue; // a trailing newline yields one empty line
+        var tok: [4][]const u8 = undefined;
+        const n = tokens(raw, &tok);
+        if (n == 0) continue;
+        if (std.mem.eql(u8, tok[0], "estate")) {
+            if (n != 4) return error.BadLine;
+            pe.estate_id = parse_int.parse_int(u32, tok[1], .{}) catch return error.BadInt;
+            pe.keeper = parse_int.parse_int(u32, tok[2], .{}) catch return error.BadInt;
+            pe.heir = parse_int.parse_int(u32, tok[3], .{}) catch return error.BadInt;
+            have_estate = true;
+        } else if (std.mem.eql(u8, tok[0], "hold")) {
+            if (n != 3) return error.BadLine;
+            if (pe.will_count >= max_holdings) return error.TooManyHoldings;
+            const hi = pe.will_count;
+            pe.items[hi] = parse_int.parse_int(u32, tok[1], .{}) catch return error.BadInt;
+            pe.dispositions[hi] = try parse_disposition(tok[2]);
+            pe.will_count += 1;
+        } else if (std.mem.eql(u8, tok[0], "directive")) {
+            if (n != 2) return error.BadLine;
+            try from_hex(tok[1], &pe.directive_sig);
+            have_directive = true;
+        } else if (std.mem.eql(u8, tok[0], "acceptance")) {
+            if (n != 2) return error.BadLine;
+            try from_hex(tok[1], &pe.acceptance_sig);
+            have_acceptance = true;
+        } else {
+            return error.UnknownField;
+        }
+    }
+    if (!have_estate) return error.MissingEstate;
+    if (!have_directive) return error.MissingDirective;
+    if (!have_acceptance) return error.MissingAcceptance;
+    return pe;
+}
+
+// --- selftest -----------------------------------------------------------
+
+// Demo keeper and heir seeds — plainly not real keys, so no identity is invented.
+const demo_keeper_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
+const demo_heir_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
+
+const keeper_pt: u32 = 11;
+const heir_pt: u32 = 42;
+const demo_estate_id: u32 = 7;
+
+fn pubkey_of(seed: *const [kumara.seed_length]u8) [signed.pubkey_len]u8 {
+    return kumara.keypair_from_seed(seed).public_key.bytes;
+}
+
+fn demo_ring() error{KeyringFull}!signed.Keyring {
+    var ring = signed.Keyring.open();
+    try ring.enroll(keeper_pt, pubkey_of(&demo_keeper_seed));
+    try ring.enroll(heir_pt, pubkey_of(&demo_heir_seed));
+    return ring;
+}
+
+/// Build a signed estate willing two holdings to the heir and resting one, both proofs signed, sealed and
+/// accepted — ready to succeed and to travel.
+fn build_signed(ring: *const signed.Keyring) !SignedEstate {
+    var e = try estate_mod.Estate.open(keeper_pt, heir_pt);
+    try e.bequeath(1);
+    try e.bequeath(2);
+    try e.rest(3);
+
+    const digest = signed.will_digest(&e);
+    const dir_sig = signed.sign_directive(&demo_keeper_seed, demo_estate_id, keeper_pt, heir_pt, &digest);
+    try signed.seal_signed(&e, ring, demo_estate_id, &dir_sig);
+    const acc_sig = signed.sign_acceptance(&demo_heir_seed, demo_estate_id, keeper_pt, heir_pt);
+    try signed.accept_signed(&e, ring, demo_estate_id, &acc_sig);
+
+    return SignedEstate{ .estate = e, .estate_id = demo_estate_id, .directive_sig = dir_sig, .acceptance_sig = acc_sig };
+}
+
+/// The signed estate renders to Bron and parses back byte-for-byte; the rebuilt succession carries the
+/// identical holders (the rested set still extinguished), and both proofs still verify offline.
+fn welcome_round_trip_still_honest() !void {
+    const ring = try demo_ring();
+    var se = try build_signed(&ring);
+
+    var buf1: [max_record]u8 = undefined;
+    const n1 = try render(&se, &buf1);
+    const pe = try parse(buf1[0..n1]);
+
+    // Byte-for-byte: re-rendering an equal signed estate reproduces the exact bytes.
+    var se2 = try build_signed(&ring);
+    var buf2: [max_record]u8 = undefined;
+    const n2 = try render(&se2, &buf2);
+    assert(n1 == n2);
+    assert(std.mem.eql(u8, buf1[0..n1], buf2[0..n2]));
+
+    // The will is recovered exactly.
+    assert(pe.will_count == 3);
+    assert(pe.keeper == keeper_pt);
+    assert(pe.heir == heir_pt);
+
+    // Still dignity-honest offline: both carried proofs re-verify.
+    try pe.still_dignity_honest(&ring);
+
+    // The rebuilt succession carries the identical holders — the rested set still extinguished.
+    const rebuilt = try pe.rebuild(&ring);
+    assert(rebuilt.holder_of(1) == .heir);
+    assert(rebuilt.holder_of(2) == .heir);
+    assert(rebuilt.holder_of(3) == .rested);
+    assert(rebuilt.heir_held_count() == rebuilt.bequeathed_count());
+    print("data_dignity_bron: a signed estate rendered to Bron, parsed back byte-for-byte, stayed dignity-honest offline, and rebuilt the identical succession — the rested set still resting.\n", .{});
+}
+
+/// A directive signature flipped after the crossing refuses offline — a tampered record cannot pass, and
+/// cannot rebuild a succession either.
+fn unwelcome_flipped_directive_refuses() !void {
+    const ring = try demo_ring();
+    var se = try build_signed(&ring);
+    var buf: [max_record]u8 = undefined;
+    const n = try render(&se, &buf);
+    var pe = try parse(buf[0..n]);
+
+    // Flip one byte of the carried directive signature.
+    pe.directive_sig[0] ^= 0xFF;
+    const bad = pe.still_dignity_honest(&ring);
+    assert(bad == error.BadConsent);
+    const bad_rebuild = pe.rebuild(&ring);
+    assert(bad_rebuild == error.BadConsent);
+    print("data_dignity_bron: a directive signature flipped after the crossing refused BadConsent offline — the sealed will cannot be forged in transit.\n", .{});
+}
+
+/// A hold mark tampered after the crossing shifts the will digest, so the keeper's directive no longer
+/// verifies — the rested/bequeathed marks travel under the signature, not beside it.
+fn unwelcome_tampered_mark_refuses() !void {
+    const ring = try demo_ring();
+    var se = try build_signed(&ring);
+    var buf: [max_record]u8 = undefined;
+    const n = try render(&se, &buf);
+    var pe = try parse(buf[0..n]);
+
+    // Flip item 3 from rested to bequeathed after the crossing.
+    var i: u32 = 0;
+    while (i < pe.will_count) : (i += 1) {
+        if (pe.items[i] == 3) pe.dispositions[i] = .bequeathed;
+    }
+    const bad = pe.still_dignity_honest(&ring);
+    assert(bad == error.BadConsent);
+    print("data_dignity_bron: a hold mark flipped after the crossing refused BadConsent — the will's marks travel under the keeper's signature.\n", .{});
+}
+
+/// An unknown field refuses rather than being dropped — the reader keeps every line honest.
+fn unwelcome_unknown_field_refuses() !void {
+    const text = "format data-dignity-v1\nestate 7 11 42\nghost 5\n";
+    const bad = parse(text);
+    assert(bad == error.UnknownField);
+    print("data_dignity_bron: an unknown field refused UnknownField rather than be dropped.\n", .{});
+}
+
+/// A wrong header refuses — the record must name its own format.
+fn unwelcome_bad_header_refuses() !void {
+    const bad = parse("format other-v1\nestate 7 11 42\n");
+    assert(bad == error.BadFormat);
+    print("data_dignity_bron: a wrong header refused BadFormat.\n", .{});
+}
+
+/// A record with no estate line refuses — the estate id, keeper, and heir are required.
+fn unwelcome_missing_estate_refuses() !void {
+    const bad = parse("format data-dignity-v1\nhold 1 0\n");
+    assert(bad == error.MissingEstate);
+    print("data_dignity_bron: a record with no estate line refused MissingEstate.\n", .{});
+}
+
+/// A record with an estate but no proof lines refuses — a succession travels with both signatures.
+fn unwelcome_missing_proof_refuses() !void {
+    const bad = parse("format data-dignity-v1\nestate 7 11 42\nhold 1 0\n");
+    assert(bad == error.MissingDirective);
+    print("data_dignity_bron: a record with no directive refused MissingDirective.\n", .{});
+}
+
+/// A bad disposition byte refuses — a mark is strictly 0 (bequeathed) or 1 (rested).
+fn unwelcome_bad_disposition_refuses() !void {
+    const bad = parse("format data-dignity-v1\nestate 7 11 42\nhold 1 2\n");
+    assert(bad == error.BadInt);
+    print("data_dignity_bron: a disposition that is neither 0 nor 1 refused BadInt.\n", .{});
+}
+
+/// Malformed hex in a signature refuses — the reader will not accept a corrupt proof field.
+fn unwelcome_bad_hex_refuses() !void {
+    const bad = parse("format data-dignity-v1\nestate 7 11 42\ndirective zz\n");
+    assert(bad == error.BadHex);
+    print("data_dignity_bron: malformed signature hex refused BadHex.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_round_trip_still_honest();
+    try unwelcome_flipped_directive_refuses();
+    try unwelcome_tampered_mark_refuses();
+    try unwelcome_unknown_field_refuses();
+    try unwelcome_bad_header_refuses();
+    try unwelcome_missing_estate_refuses();
+    try unwelcome_missing_proof_refuses();
+    try unwelcome_bad_disposition_refuses();
+    try unwelcome_bad_hex_refuses();
+    print("data_dignity_bron: version {s}\n", .{data_dignity_bron_version});
+    print("GREEN: DAHL-J12r3 data_dignity_bron; a signed succession travels as Bron, byte-for-byte, and stays dignity-honest offline — the rested set extinguished on rebuild.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "data-dignity-bron"))) {
+        return run_selftest();
+    }
+    return run_selftest();
+}
