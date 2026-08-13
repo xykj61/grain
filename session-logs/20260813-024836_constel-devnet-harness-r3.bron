@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260813.024836
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — ai-jail — Eastern (EDT) time convention
+title Constel dev-net harness r3 — the net travels as a format constel-net-v1 record, the quarantine carried in the bytes
+prompt Keep taking the next agent-doable Lindy-first crux; approve own design rounds; double-seat; send each increment; stop at custody gates.
+think r2 settled a whole d12·d60 branch inside the fake net. The exploration doc named r3: render a spun-up constel to a format constel-net-v1 Bron record and parse it back byte-for-byte, so a dev-net's roster crosses as text a person can read, the safe name riding with it. Agent-doable, reaches no custody gate — a pure render/parse round-trip over the settled roster.
+think Mirrored the tree's flat-Bron idiom from pond/apps/council_sky_bron.rye: a header line, a keyed line per field, a purpose-built bounded tokenizer (never a general parser), and a fixed-point round-trip proven by re-rendering the parsed record to identical bytes. Shaped the record as net <name> + one point <number> line per roster member (galaxy · star · planet in settle order), a PortableConstel owning its name buffer and roster so nothing borrows freed text.
+think The distinctive r3 crux, drawn from the constel law rather than a generic bron round-trip: the quarantine travels with the bytes. parse re-checks constel_net.name_safe, so a record whose net name carries no digit refuses UnsafeName — exactly as spin_up refuses one at genesis — so a roster can never be read under a name that could parse as a real @p. The safety is a property of the bytes, not only of the live harness. This mirrors how council_sky_bron inherits EvenCouncil on rebuild.
+obs Landed pond/apps/constel_net_bron.rye (PortableConstel · from_settled · render · parse) and tools/constel_net_bron_witness.rish. Selftest GREEN, 6 cases: a settled net renders and parses back byte-for-byte, recovering its safe name and galaxy·star·planet roster (re-render reproduces identical bytes — a fixed point); an @p-shaped net name refuses UnsafeName on parse (the quarantine travels); an unknown field refuses UnknownField (never dropped); a wrong header refuses BadFormat; a missing net line refuses MissingNet; a non-numeric point refuses BadInt.
+obs Additive — the witness re-runs r2 (constel_net_topology_witness) GREEN at r3's door, so the whole-fractal crux stands. All arithmetic in u32 (no usize seam needed — width-check exit 0); tame_style_check bans clean; ≥2 asserts per function, each // invariant; version const from the live clock, never fabricated. Demo seeds only — no real key, no network, no custody; the maintainer's own Kumara instance stays gate #4, a served constel reaches the serve gate. Third send of the arc this run (r1 · r2 · r3), each its own signed round on both remotes.
+file pond/apps/constel_net_bron.rye r3 — a settled net renders to a format constel-net-v1 record and parses back byte-for-byte, the safe name re-checked on parse
+file tools/constel_net_bron_witness.rish proves the harness GREEN (6 cases) and re-runs r2 at its door
+file work-in-progress/REMEMBER.md accreted the r3 landing on the Constel dev-net line; next crux now points at r4 (read a real fixture true)
+recommend keep-going — constel-net r4 (read a genuine on-disk constel record, cross-check the harness reading against an independent measure — two tools, one answer) closes the harness's agent-doable arc; breach renames + deep debride + seed force-push stay Keaton's hand
