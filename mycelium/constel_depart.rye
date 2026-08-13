@@ -1,0 +1,134 @@
+//! mycelium/constel_depart.rye — a constellation tolerates f ships down, the (f+1)th honestly fails (r2).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · Constel · rung r2.
+//! r1 booted a named constellation and reached quorum when EVERY ship vouched. A real dev-net loses nodes:
+//! a ship goes down, its host reboots, a laptop closes. The roll's Byzantine arithmetic promises a precise
+//! fault tolerance — an n-ship roll believes any quorum of at least `n − (n−1)/3` enrolled voices, so it
+//! survives up to `f = (n−1)/3` down. r2 proves that promise on metal: the muster stays the FULL roster
+//! (every ship enrolled), only a subset is UP and vouches, and the constellation still believes while `up`
+//! meets the threshold — then the (f+1)th departure refuses BelowQuorum, the honest edge of the guarantee.
+//!
+//! Composes constel + chorus + muster + voucher public API only, editing none. Demo ship and keeper seeds —
+//! no key held, no funds, no network, no real value.
+//!
+//! Scope: active-designing/20260813-132009_mycelium-constel-named-dev-net-exploration.md
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/constel_depart.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const kumara = @import("kumara.rye");
+const cord = @import("cord.rye");
+const chorus = @import("chorus.rye");
+const muster = @import("muster.rye");
+const voucher = @import("voucher.rye");
+const constel = @import("constel.rye");
+
+pub const pk_len: u32 = constel.pk_len;
+pub const head_len: u32 = constel.head_len;
+
+/// Reach quorum with only the first `up` ships vouching — the rest are down. The muster stays the FULL
+/// roster (every ship an enrolled validator whether up or not), so the threshold the up voices must meet is
+/// the whole constellation's, not a shrunken one. Fills the agreed head. Refuses through Muster when too few
+/// are up (BelowQuorum), exactly as the roll's arithmetic promises.
+pub fn reach_quorum_up(
+    c: *const constel.Constel,
+    up: u32,
+    dag: *const cord.Dag,
+    account_pk: []const u8,
+    head_out: *[head_len]u8,
+) !void {
+    // invariant: at least one ship is up, and no more than the whole roster.
+    assert(up >= 1);
+    assert(up <= c.count);
+    // invariant: a quorum attests one full holder identity.
+    assert(account_pk.len == pk_len);
+
+    var ch = try chorus.open(dag, account_pk);
+    var i: u32 = 0;
+    while (i < up) : (i += 1) {
+        try chorus.add(&ch, dag, c.ships[i].kp);
+    }
+    // invariant: exactly the up ships vouched.
+    assert(ch.count == up);
+
+    const m = try constel.into_muster(c); // the full roll — down ships are still enrolled
+    try muster.pass_muster(&m, &ch);
+    tally_head(head_out, ch.head_slice());
+}
+
+fn tally_head(head_out: *[head_len]u8, head: []const u8) void {
+    // invariant: an agreed head is exactly one order-head wide.
+    assert(head.len == head_len);
+    var i: u32 = 0;
+    while (i < head_len) : (i += 1) head_out[i] = head[i];
+    // invariant: the whole head was copied.
+    assert(i == head_len);
+}
+
+// The r1 dev-net roster — five named ships (see constel.rye for the naming law).
+const roster = [_][]const u8{
+    "xnvethqua",
+    "kwelmirran",
+    "xzobrilth",
+    "murrqaveln",
+    "xwendakosh",
+};
+
+pub fn main() !void {
+    var c = try constel.boot(roster[0..]);
+    const m = try constel.into_muster(&c);
+    const n = c.count;
+    const threshold = muster.byzantine_threshold(&m);
+    const f = (n - 1) / 3; // the number the roll may lose
+
+    // The roll's arithmetic: the most it can lose is n − threshold, and that equals f.
+    assert(n - threshold == f);
+    assert(threshold >= 1);
+
+    const issuer = constel.seeded(0xF0);
+    const account = constel.seeded(0xA1);
+    const account_pk = account.public_key.toBytes();
+    var dag = try constel.demo_genesis(issuer, account_pk[0..]);
+
+    var head: [head_len]u8 = undefined;
+
+    // The true head every up quorum must agree on.
+    var expected_head: [head_len]u8 = undefined;
+    voucher.order_head_of(&dag, &expected_head);
+
+    // --- Whole roster up — the constellation believes, all five vouching -------------------------------
+    try reach_quorum_up(&c, n, &dag, account_pk[0..], &head);
+    assert(std.mem.eql(u8, head[0..], expected_head[0..]));
+
+    // --- f ships down — still believed, the fault tolerance the arithmetic promises --------------------
+    {
+        const up = n - f; // exactly the threshold when f are down
+        try reach_quorum_up(&c, up, &dag, account_pk[0..], &head);
+        assert(std.mem.eql(u8, head[0..], expected_head[0..]));
+        // The believed quorum sits exactly at the threshold — one voice from the edge.
+        assert(up == threshold);
+    }
+
+    // --- (f+1) ships down — honestly fails, the edge of the guarantee ----------------------------------
+    {
+        const up = n - (f + 1); // one below the threshold
+        const r = reach_quorum_up(&c, up, &dag, account_pk[0..], &head);
+        assert(r == error.BelowQuorum);
+        assert(up + 1 == threshold);
+    }
+
+    // --- A permanent departure — a smaller roster re-derives its own lower threshold and still agrees ---
+    {
+        var small = try constel.boot(roster[0 .. n - 1]); // four ships enrolled
+        const ms = try constel.into_muster(&small);
+        const ts = muster.byzantine_threshold(&ms);
+        assert(ts < threshold); // a smaller roll asks less
+        try reach_quorum_up(&small, small.count, &dag, account_pk[0..], &head);
+        assert(std.mem.eql(u8, head[0..], expected_head[0..]));
+    }
+
+    print("constel-depart: GREEN — a {d}-ship constellation tolerates {d} down (up {d} still meets threshold {d}) and honestly fails BelowQuorum at {d} down; a permanently smaller roster re-derives its own lower threshold and still agrees. The roll keeps exactly the promise its arithmetic makes.\n", .{ n, f, threshold, threshold, f + 1 });
+}
