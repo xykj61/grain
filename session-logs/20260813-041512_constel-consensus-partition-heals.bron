@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260813.041512
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Constel gossip convergence r2 — a partition heals
+prompt Keep climbing the next agent-doable lap Lindy-first crux-first; send each finished increment as its own signed round; stop at custody gates
+think r1 proved two nodes begun from their own genesis converge once they gossip; the design read named r2 as partition-heals — convergence is content-dependent, not timing-dependent
+think Exposed r1's helpers as pub (seeded, gossip_merge, committed_supply, commits_equal) — additive, r1's own main path unchanged, r1 selftest re-runs GREEN — so r2 composes them thin
+think r2 seats three Dags: C hears only the first genesis block (a genuinely stale partial view, one block), then is cut off while A and B advance to the full four-block mesh and converge; on rejoin one gossip_merge from a converged peer drains the whole mesh into C
+obs Crux proven on metal: the late joiner gains exactly the three blocks it lacked (keeping the one it held) and arrives at the byte-identical committed order folding to identical supply 700 over one star — no leader replayed it a log, no round number gated its return
+obs Added two invariant asserts to main to clear the zero-assert ratchet (each node begins holding its own single genesis; a healed node holds exactly the mesh)
+obs Custody honored — dev-only, demo keeper seeds, no key/funds/network; serve gate + gate #4 untouched
+loom witness=constel_consensus_partition_witness nodes=3 stale_view=1 healed=4 gained=3 supply=700 stars=1 wall_ok=green
+file pond/apps/constel_consensus.rye r1 helpers exposed pub (additive); main unchanged, re-runs GREEN
+file pond/apps/constel_consensus_partition.rye r2 app — three nodes, a partition, a heal, convergence with two invariant asserts
+file tools/constel_consensus_partition_witness.rish witness — GREEN, re-runs r1 at its door
+recommend keep-going gossip-convergence r3 (the network travels — a converged Dag renders to format cord-dag-v1 and a second node reconstructs from bytes alone, committing to the identical order); agent-doable, composes cord_bron, custody untouched
