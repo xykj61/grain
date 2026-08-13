@@ -6,7 +6,7 @@ Five Ember corpus Rishi scripts live here (lineage `tools/gen/anvil/` → `tools
 
 | Script | Role |
 |--------|------|
-| `ember_corpus_lap1.rish` | Corpus lap 0 catalog |
+| `ember_corpus_lap1.rish` | Corpus catalog |
 | `ember_corpus_lap2.rish` | min_lines filter query |
 | `ember_corpus_lap3.rish` | max_lines |
 | `ember_corpus_lap4.rish` | path_suffix |
