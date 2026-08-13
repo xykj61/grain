@@ -1,0 +1,392 @@
+//! mycelium/cord.rye — the Cord: one agreed order read from a mesh of signed blocks.
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · Journey rung r1 — the crux.
+//! Design read: active-designing/20260813-032851_mycelium-consensus-cord-exploration.md
+//!
+//! A Cord bundles many hyphal threads into one transporting strand — many
+//! validators' Kumara-signed blocks, one total order. From TigerBeetle it takes
+//! determinism and static allocation; from Mysticeti, order read from an
+//! uncertified DAG by a deterministic commit rule (no leader, no certificate
+//! round). Clean-room: both are studied, never copied.
+//!
+//! A Block carries its author's key, a round, the hashes of the blocks it
+//! references (its parents), one `mycelium/fold` Fact, and the author's signature
+//! over its canonical bytes. A Dag admits a block only when its signature verifies
+//! and every parent it names is already held — so the graph stays closed under
+//! "references" and is acyclic by construction (a block may only point backward at
+//! blocks already present). `commit` is the pure function at the heart of it: a
+//! canonical topological walk (round, then author key, then block hash) yielding
+//! one order — identical at every honest node, independent of arrival order — over
+//! which `fold_log` runs unchanged.
+//!
+//! Siloed, dev-only, demo seeds — no real key, no funds, no network, no custody.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/cord.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+
+const Sha256 = std.crypto.hash.sha2.Sha256;
+
+/// A dev-net Dag holds at most a journey of blocks — power of two, bounded.
+pub const cord_max_blocks: u32 = 256;
+
+/// Bounded fan-in: a block references at most this many parents.
+pub const cord_max_parents: u32 = 8;
+
+/// A block address is a SHA-256 digest.
+pub const hash_len: u32 = 32;
+
+/// Canonical block bytes: author_pk · round(le4) · parent_count(le4) ·
+/// parents(32 each) · fact signature(64). Signed by the author, hashed to the
+/// block's address. The fact's own signature binds the fact's content, so a
+/// tampered fact breaks the block signature.
+const block_bytes_max: u32 =
+    kumara.PublicKey.encoded_length + 4 + 4 + cord_max_parents * hash_len + kumara.signature_length;
+
+pub const Block = struct {
+    author_pk: [kumara.PublicKey.encoded_length]u8 = undefined,
+    round: u32 = 0,
+    parents: [cord_max_parents][hash_len]u8 = undefined,
+    parent_count: u32 = 0,
+    fact: fold.Fact = .{},
+    sig: [kumara.signature_length]u8 = undefined,
+};
+
+/// Write a block's canonical bytes into `out`, returning the length written.
+fn block_bytes(b: *const Block, out: []u8) u32 {
+    // invariant: the caller's buffer holds the whole bounded layout.
+    assert(out.len >= block_bytes_max);
+    // invariant: fan-in is bounded before any copy.
+    assert(b.parent_count <= cord_max_parents);
+    const pk_len: u32 = kumara.PublicKey.encoded_length;
+    tally_copy.copy_disjoint(u8, out[0..pk_len], b.author_pk[0..]);
+    var off: u32 = pk_len;
+    var r = b.round;
+    var i: u32 = 0;
+    while (i < 4) : (i += 1) {
+        out[off] = @truncate(r);
+        r >>= 8;
+        off += 1;
+    }
+    var pc = b.parent_count;
+    i = 0;
+    while (i < 4) : (i += 1) {
+        out[off] = @truncate(pc);
+        pc >>= 8;
+        off += 1;
+    }
+    var p: u32 = 0;
+    while (p < b.parent_count) : (p += 1) {
+        tally_copy.copy_disjoint(u8, out[off..][0..hash_len], b.parents[p][0..]);
+        off += hash_len;
+    }
+    tally_copy.copy_disjoint(u8, out[off..][0..kumara.signature_length], b.fact.sig[0..]);
+    off += kumara.signature_length;
+    // invariant: the written length never exceeds the named ceiling.
+    assert(off <= block_bytes_max);
+    return off;
+}
+
+/// The block's address — SHA-256 over its canonical bytes.
+fn block_hash(b: *const Block, out: *[hash_len]u8) void {
+    var buf: [block_bytes_max]u8 = undefined;
+    const n = block_bytes(b, &buf);
+    // invariant: hashing covers exactly the canonical prefix, never stale tail.
+    assert(n <= block_bytes_max);
+    Sha256.hash(buf[0..n], out, .{});
+}
+
+/// Mint an author-signed block over a fact and a bounded parent set.
+/// Refuses (null) an over-wide fan-in.
+pub fn mint_block(
+    author: kumara.KeyPair,
+    round: u32,
+    parents: []const [hash_len]u8,
+    fact: fold.Fact,
+) ?Block {
+    if (parents.len > cord_max_parents) return null;
+    var b = Block{ .round = round, .fact = fact };
+    const pk = author.public_key.toBytes();
+    tally_copy.copy_disjoint(u8, b.author_pk[0..], pk[0..]);
+    b.parent_count = @intCast(parents.len);
+    var i: u32 = 0;
+    while (i < b.parent_count) : (i += 1) {
+        tally_copy.copy_disjoint(u8, b.parents[i][0..], parents[i][0..]);
+    }
+    var buf: [block_bytes_max]u8 = undefined;
+    const n = block_bytes(&b, &buf);
+    const sig = kumara.sign(buf[0..n], author, null);
+    const sb = sig.toBytes();
+    tally_copy.copy_disjoint(u8, b.sig[0..], sb[0..]);
+    return b;
+}
+
+pub const Dag = struct {
+    blocks: [cord_max_blocks]Block = undefined,
+    hashes: [cord_max_blocks][hash_len]u8 = undefined,
+    len: u32 = 0,
+
+    pub fn empty() Dag {
+        return .{ .blocks = undefined, .hashes = undefined, .len = 0 };
+    }
+};
+
+/// Index of a block by its hash, or null when absent.
+fn find_index(dag: *const Dag, hash: *const [hash_len]u8) ?u32 {
+    var i: u32 = 0;
+    while (i < dag.len) : (i += 1) {
+        if (std.mem.eql(u8, dag.hashes[i][0..], hash[0..])) return i;
+    }
+    return null;
+}
+
+/// Admit a block. Refuses whole (Dag unchanged) on any fault.
+pub fn add(dag: *Dag, block: Block) error{
+    BadSignature,
+    DanglingParent,
+    TooManyParents,
+    DagFull,
+    Duplicate,
+}!void {
+    if (block.parent_count > cord_max_parents) return error.TooManyParents;
+    if (dag.len >= cord_max_blocks) return error.DagFull;
+
+    var buf: [block_bytes_max]u8 = undefined;
+    const n = block_bytes(&block, &buf);
+    const pk = kumara.PublicKey.fromBytes(block.author_pk) catch return error.BadSignature;
+    kumara.verify_bytes(buf[0..n], block.sig[0..], pk) catch return error.BadSignature;
+
+    var i: u32 = 0;
+    while (i < block.parent_count) : (i += 1) {
+        if (find_index(dag, &block.parents[i]) == null) return error.DanglingParent;
+    }
+
+    var h: [hash_len]u8 = undefined;
+    block_hash(&block, &h);
+    if (find_index(dag, &h) != null) return error.Duplicate;
+
+    const at = dag.len;
+    dag.blocks[at] = block;
+    tally_copy.copy_disjoint(u8, dag.hashes[at][0..], h[0..]);
+    dag.len += 1;
+    // invariant: growth is exactly one seat, never past the ceiling.
+    assert(dag.len <= cord_max_blocks);
+}
+
+/// True when every parent of block `idx` has already been emitted.
+fn parents_emitted(dag: *const Dag, idx: u32, emitted: []const bool) bool {
+    // invariant: the index names a real seat.
+    assert(idx < dag.len);
+    const b = &dag.blocks[idx];
+    var i: u32 = 0;
+    while (i < b.parent_count) : (i += 1) {
+        const j = find_index(dag, &b.parents[i]) orelse return false;
+        if (!emitted[j]) return false;
+    }
+    return true;
+}
+
+/// The deterministic tie-break: round ascending, then author key, then hash.
+/// A total order over distinct blocks — no two blocks compare equal, since two
+/// distinct blocks with the same author and round would share no hash.
+fn block_less(dag: *const Dag, a: u32, b: u32) bool {
+    // invariant: both indices name real seats.
+    assert(a < dag.len);
+    assert(b < dag.len);
+    const ba = &dag.blocks[a];
+    const bb = &dag.blocks[b];
+    if (ba.round != bb.round) return ba.round < bb.round;
+    const ord_pk = std.mem.order(u8, ba.author_pk[0..], bb.author_pk[0..]);
+    if (ord_pk != .eq) return ord_pk == .lt;
+    return std.mem.order(u8, dag.hashes[a][0..], dag.hashes[b][0..]) == .lt;
+}
+
+/// Commit — linearize the Dag to one total order, written as block indices into
+/// `order_out`, returning the count. A pure function of the graph: the same set
+/// of blocks yields the identical order regardless of the order they arrived.
+pub fn commit(dag: *const Dag, order_out: []u32) u32 {
+    // invariant: the output holds a full permutation of the Dag's blocks.
+    assert(order_out.len >= dag.len);
+    var emitted: [cord_max_blocks]bool = undefined;
+    var z: u32 = 0;
+    while (z < dag.len) : (z += 1) emitted[z] = false;
+
+    var count: u32 = 0;
+    while (count < dag.len) {
+        var best: ?u32 = null;
+        var i: u32 = 0;
+        while (i < dag.len) : (i += 1) {
+            if (emitted[i]) continue;
+            if (!parents_emitted(dag, i, emitted[0..dag.len])) continue;
+            if (best == null or block_less(dag, i, best.?)) best = i;
+        }
+        // invariant: the Dag is acyclic by construction, so a ready block always
+        // exists until all are emitted — a stall would mean a cycle got in.
+        assert(best != null);
+        order_out[count] = best.?;
+        emitted[best.?] = true;
+        count += 1;
+    }
+    // invariant: every block is emitted exactly once.
+    assert(count == dag.len);
+    return count;
+}
+
+/// Gather the committed blocks' facts into a fold Log, in committed order.
+pub fn committed_log(dag: *const Dag, order: []const u32, count: u32, log_out: *fold.Log) void {
+    // invariant: the committed count never exceeds the fold log's own ceiling.
+    assert(count <= fold.myc_log_max_facts);
+    log_out.len = 0;
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        const idx = order[i];
+        assert(idx < dag.len);
+        log_out.facts[i] = dag.blocks[idx].fact;
+        log_out.len += 1;
+    }
+}
+
+// ---- selftest: the crux is arrival-order independence ---------------------
+
+const TestBlocks = struct {
+    a: Block,
+    b: Block,
+    c: Block,
+    d: Block,
+};
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+/// Build the four demo blocks: two genesis issues, then a tax and a star reserve
+/// each referencing both genesis blocks. Any commit order of the two genesis
+/// issues is fold-valid; the round-1 facts drain the supply the issues raised.
+fn make_test_blocks() !TestBlocks {
+    const ka = seeded(0xA1);
+    const kb = seeded(0xB2);
+    const kc = seeded(0xC3);
+    const kd = seeded(0xD4);
+
+    const fa = fold.mint_fact(ka, fold.kind_issue, 500, "", "genesis-a") orelse return error.MintA;
+    const fb = fold.mint_fact(kb, fold.kind_issue, 500, "", "genesis-b") orelse return error.MintB;
+    const fc = fold.mint_fact(kc, fold.kind_tax, 200, "", "tax-c") orelse return error.MintC;
+    const fd = fold.mint_fact(kd, fold.kind_star_reserve, 100, "vega", "reserve") orelse return error.MintD;
+
+    const a = mint_block(ka, 0, &[_][hash_len]u8{}, fa) orelse return error.BlockA;
+    const b = mint_block(kb, 0, &[_][hash_len]u8{}, fb) orelse return error.BlockB;
+
+    var ha: [hash_len]u8 = undefined;
+    var hb: [hash_len]u8 = undefined;
+    block_hash(&a, &ha);
+    block_hash(&b, &hb);
+    const roots = [_][hash_len]u8{ ha, hb };
+
+    const c = mint_block(kc, 1, roots[0..], fc) orelse return error.BlockC;
+    const d = mint_block(kd, 1, roots[0..], fd) orelse return error.BlockD;
+    return .{ .a = a, .b = b, .c = c, .d = d };
+}
+
+/// A committed run: the ordered block hashes and the final fold state.
+const Run = struct {
+    order_hashes: [cord_max_blocks][hash_len]u8 = undefined,
+    count: u32 = 0,
+    state: fold.FoldState = .{},
+};
+
+/// Add the given blocks (in the given arrival order), commit, and fold.
+fn run_permutation(blocks: []const Block) !Run {
+    var dag = Dag.empty();
+    for (blocks) |blk| try add(&dag, blk);
+
+    var order: [cord_max_blocks]u32 = undefined;
+    const count = commit(&dag, order[0..]);
+
+    var log = fold.Log.empty();
+    committed_log(&dag, order[0..], count, &log);
+    const state = try fold.fold_log(&log);
+
+    var run = Run{ .count = count, .state = state };
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        tally_copy.copy_disjoint(u8, run.order_hashes[i][0..], dag.hashes[order[i]][0..]);
+    }
+    return run;
+}
+
+fn runs_equal(x: *const Run, y: *const Run) bool {
+    if (x.count != y.count) return false;
+    var i: u32 = 0;
+    while (i < x.count) : (i += 1) {
+        if (!std.mem.eql(u8, x.order_hashes[i][0..], y.order_hashes[i][0..])) return false;
+    }
+    if (x.state.issued != y.state.issued) return false;
+    if (x.state.taxed != y.state.taxed) return false;
+    if (x.state.star_count != y.state.star_count) return false;
+    return true;
+}
+
+pub fn main() !void {
+    const t = try make_test_blocks();
+
+    // Three arrival permutations, each parents-first (genesis before children).
+    const p1 = [_]Block{ t.a, t.b, t.c, t.d };
+    const p2 = [_]Block{ t.b, t.a, t.d, t.c };
+    const p3 = [_]Block{ t.a, t.b, t.d, t.c };
+
+    const r1 = try run_permutation(p1[0..]);
+    const r2 = try run_permutation(p2[0..]);
+    const r3 = try run_permutation(p3[0..]);
+
+    // The crux: the same blocks commit to the identical order and fold state,
+    // whatever order they arrived in.
+    if (!runs_equal(&r1, &r2)) return error.ArrivalOrderChangedCommit;
+    if (!runs_equal(&r1, &r3)) return error.ArrivalOrderChangedCommit;
+    if (r1.count != 4) return error.CommitIncomplete;
+
+    // The folded supply is the real Mycelium law over the agreed order:
+    // issued 1000, taxed 200 (tax) + 100 (reserve) = 300, supply 700, one star.
+    if (r1.state.issued != 1000) return error.SupplyIssued;
+    if (r1.state.taxed != 300) return error.SupplyTaxed;
+    if (r1.state.supply() != 700) return error.SupplyNet;
+    if (r1.state.star_count != 1) return error.StarCount;
+
+    // Refusal: a tampered block signature is refused before the Dag grows.
+    var bad = t.a;
+    bad.sig[0] ^= 0xff;
+    var d_bad = Dag.empty();
+    if (add(&d_bad, bad)) |_| return error.TamperAdmitted else |err| {
+        if (err != error.BadSignature) return error.WrongTamper;
+    }
+    if (d_bad.len != 0) return error.TamperMutated;
+
+    // Refusal: a child whose parents are not yet held is refused whole.
+    var d_dangle = Dag.empty();
+    if (add(&d_dangle, t.c)) |_| return error.DangleAdmitted else |err| {
+        if (err != error.DanglingParent) return error.WrongDangle;
+    }
+    if (d_dangle.len != 0) return error.DangleMutated;
+
+    // Refusal: the same block twice is a duplicate, refused whole.
+    var d_dup = Dag.empty();
+    try add(&d_dup, t.a);
+    const len_before = d_dup.len;
+    if (add(&d_dup, t.a)) |_| return error.DupAdmitted else |err| {
+        if (err != error.Duplicate) return error.WrongDup;
+    }
+    if (d_dup.len != len_before) return error.DupMutated;
+
+    print("cord: three arrival permutations commit to one identical order and fold state\n", .{});
+    print("cord: the agreed order folds the real Mycelium law to supply {d} over one star\n", .{r1.state.supply()});
+    print("cord: a tampered block signature, a dangling parent, and a duplicate each refuse whole\n", .{});
+    print("GREEN: myc cord — commit order arrival-independent · supply={d} · stars={d} · refuse whole\n", .{
+        r1.state.supply(),
+        r1.state.star_count,
+    });
+}
