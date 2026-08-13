@@ -1,0 +1,48 @@
+# tools/constel_consensus_witness.rish — two Constel nodes reach one agreed order (gossip-convergence r1).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · gossip-convergence rung r1.
+# The Cord (mycelium/cord.rye) proved a total order can be read out of one node's Dag, independent of the
+# order blocks arrived. This carries that primitive onto the Constel dev-net bench and proves what a
+# network actually promises: two nodes, each begun from its own genesis and each minting its own
+# Kumara-signed blocks, converge on the byte-identical history once they gossip — no leader, no round of
+# certificates, every buffer bounded.
+#
+# The crux this witness proves: node A and node B, from their own separate genesis issues, gossip both
+# ways and both commit to one identical agreed order folding to the identical supply (700 over one star).
+# The one new piece — gossip_merge — is a bounded fixpoint that tolerates out-of-order delivery: a source
+# Dag listing children before parents still drains to the identical order. A forged block in the gossip
+# stream refuses whole, the converged Dag unchanged. Demo keeper seeds only — no real key, no funds, no
+# network, no custody.
+#
+# Additive: the Cord's own r1 arrival-order-independence witness re-runs GREEN under this one.
+#
+# Scope: active-designing/20260813-040613_constel-consensus-gossip-convergence-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/constel_consensus_witness.rish
+
+say "constel-consensus: Language EN — two nodes begun from their own genesis converge on one agreed history."
+say "constel-consensus: Style Radiant — two threads reach through the dark from their own beginnings and, hearing each other, agree on one past."
+say "constel-consensus: Lens TAME — gossip_merge is a bounded fixpoint; convergence is a pure commit of the merged graph; a forged block refuses whole; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/constel-consensus"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/constel_consensus.rye -femit-bin=${bin}"]
+assert build.ok else "constel-consensus: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "constel-consensus: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "constel-consensus: selftest did not speak GREEN"
+assert selftest.out contains "two nodes from their own genesis converge to one identical committed order" else "constel-consensus: convergence claim missing"
+assert selftest.out contains "an out-of-order gossip stream drains to the identical order" else "constel-consensus: out-of-order claim missing"
+assert selftest.out contains "folds the real Mycelium law to supply 700 over one star" else "constel-consensus: fold-over-agreed-order claim missing"
+assert selftest.out contains "a forged block in the gossip stream refuses whole" else "constel-consensus: forgery-refusal claim missing"
+
+# The Cord primitive this round composes stands at its door — its own r1 witness proves the deterministic
+# commit (arrival-order independence over one Dag) that gossip convergence extends across two nodes.
+let cord = run ["sh" "-c" "rishi/bin/rishi run tools/mycelium_cord_witness.rish 2>&1"]
+assert cord.ok else "constel-consensus: the Cord primitive (r1) is not GREEN"
+assert cord.out contains "mycelium-cord: GREEN" else "constel-consensus: the Cord primitive did not speak its GREEN"
+
+say "constel-consensus: GREEN — two nodes from their own genesis gossip both ways and converge on one agreed order (supply 700, one star), an out-of-order stream drains to the identical order, a forged block refuses whole; the Cord primitive stands at its door. The mesh knows its own history without a leader."

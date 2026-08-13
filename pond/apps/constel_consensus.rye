@@ -1,0 +1,237 @@
+//! pond/apps/constel_consensus.rye — two Constel nodes reach one agreed order.
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · gossip-convergence r1.
+//! Design read: active-designing/20260813-040613_constel-consensus-gossip-convergence-exploration.md
+//!
+//! The Cord proved a total order can be read out of one node's Dag, independent
+//! of the order blocks arrived (mycelium/cord.rye r1). This carries that primitive
+//! onto the dev-net bench and proves what a network actually promises: two nodes,
+//! each begun from its own genesis and each minting its own Kumara-signed blocks,
+//! converge on the byte-identical history once they gossip — no leader, no round
+//! of certificates, every buffer bounded.
+//!
+//! The one new piece is `gossip_merge`: a bounded fixpoint that admits a source
+//! Dag's blocks into a destination, tolerant of delivery order. Gossip does not
+//! arrive parents-first, so a block whose parents are not yet held is deferred and
+//! retried rather than refused; a block already held is skipped (gossip is
+//! idempotent); a forged block is a real fault and refuses. A closed, acyclic
+//! source drains in at most its own length of passes — a named ceiling.
+//!
+//! Siloed, dev-only, demo seeds — no real key, no funds, no network, no custody.
+//! Composes mycelium/cord.rye and mycelium/fold.rye public API only.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/constel_consensus.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("mycelium_cord.rye");
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+
+/// A dev-net node: one keeper, one local view of the mesh.
+const Node = struct {
+    key: kumara.KeyPair,
+    dag: cord.Dag,
+};
+
+/// A deterministic demo keeper — seed a keypair from one repeated byte, exactly
+/// as the Cord's own selftest does. Demo only; never a real key.
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+/// Admit every block of `src` into `dst`, tolerant of gossip delivery order.
+///
+/// A bounded fixpoint: each pass admits any now-admissible block (its parents
+/// already held); a block whose parents are absent is deferred to a later pass,
+/// never refused; a block `dst` already holds is skipped (gossip is idempotent);
+/// a forged block refuses whole. A closed, acyclic source drains in at most
+/// `src.len` passes, so the retry can never run away. Returns the count admitted.
+fn gossip_merge(dst: *cord.Dag, src: *const cord.Dag) error{
+    BadSignature,
+    TooManyParents,
+    DagFull,
+    IncompleteMerge,
+}!u32 {
+    // invariant: the source fits the bounded ceiling we scan and track.
+    assert(src.len <= cord.cord_max_blocks);
+    // invariant: the destination is a real Dag under the same ceiling.
+    assert(dst.len <= cord.cord_max_blocks);
+
+    var done: [cord.cord_max_blocks]bool = undefined;
+    var k: u32 = 0;
+    while (k < src.len) : (k += 1) done[k] = false;
+
+    var admitted: u32 = 0;
+    var pass: u32 = 0;
+    // The fixpoint: at most one pass per source block, each pass strictly
+    // monotone in blocks admitted until it drains.
+    while (pass <= src.len) : (pass += 1) {
+        var progress = false;
+        var i: u32 = 0;
+        while (i < src.len) : (i += 1) {
+            if (done[i]) continue;
+            cord.add(dst, src.blocks[i]) catch |err| switch (err) {
+                // Already held — gossip heard the same block twice, no fault.
+                error.Duplicate => {
+                    done[i] = true;
+                    continue;
+                },
+                // Parents not yet admitted — defer to a later pass, do not refuse.
+                error.DanglingParent => continue,
+                error.BadSignature => return error.BadSignature,
+                error.TooManyParents => return error.TooManyParents,
+                error.DagFull => return error.DagFull,
+            };
+            done[i] = true;
+            admitted += 1;
+            progress = true;
+        }
+        if (!progress) break;
+    }
+
+    // invariant: a closed, acyclic source drains entirely; a leftover block means
+    // the source referenced a parent neither it nor the destination ever held.
+    var r: u32 = 0;
+    while (r < src.len) : (r += 1) {
+        if (!done[r]) return error.IncompleteMerge;
+    }
+    // invariant: never claim more admitted than the source could hold.
+    assert(admitted <= src.len);
+    return admitted;
+}
+
+/// Fold the committed order of a Dag to its supply state — the real Mycelium law
+/// over the agreed order.
+fn committed_supply(dag: *const cord.Dag) !fold.FoldState {
+    // invariant: a Dag never holds more blocks than the fold log can carry.
+    assert(dag.len <= fold.myc_log_max_facts);
+    var order: [cord.cord_max_blocks]u32 = undefined;
+    const count = cord.commit(dag, order[0..]);
+    // invariant: the commit returns a full permutation of the Dag.
+    assert(count == dag.len);
+    var log = fold.Log.empty();
+    cord.committed_log(dag, order[0..], count, &log);
+    return try fold.fold_log(&log);
+}
+
+/// True when two Dags commit to the identical sequence of blocks — compared by
+/// block *hash*, so two Dags built in different internal orders still agree iff
+/// their agreed histories are the same.
+fn commits_equal(x: *const cord.Dag, y: *const cord.Dag) bool {
+    if (x.len != y.len) return false;
+    var ox: [cord.cord_max_blocks]u32 = undefined;
+    var oy: [cord.cord_max_blocks]u32 = undefined;
+    const cx = cord.commit(x, ox[0..]);
+    const cy = cord.commit(y, oy[0..]);
+    // invariant: a commit is a full permutation, so the counts match the lengths.
+    assert(cx == x.len);
+    assert(cy == y.len);
+    if (cx != cy) return false;
+    var i: u32 = 0;
+    while (i < cx) : (i += 1) {
+        if (!std.mem.eql(u8, x.hashes[ox[i]][0..], y.hashes[oy[i]][0..])) return false;
+    }
+    return true;
+}
+
+pub fn main() !void {
+    const ka = seeded(0xA1);
+    const kb = seeded(0xB2);
+    const kc = seeded(0xC3);
+    const kd = seeded(0xD4);
+
+    // Two nodes, each begun from its own genesis issue.
+    var node_a = Node{ .key = ka, .dag = cord.Dag.empty() };
+    var node_b = Node{ .key = kb, .dag = cord.Dag.empty() };
+
+    const fa = fold.mint_fact(ka, fold.kind_issue, 500, "", "genesis-a") orelse return error.MintA;
+    const fb = fold.mint_fact(kb, fold.kind_issue, 500, "", "genesis-b") orelse return error.MintB;
+    const ba = cord.mint_block(ka, 0, &[_][cord.hash_len]u8{}, fa) orelse return error.BlockA;
+    const bb = cord.mint_block(kb, 0, &[_][cord.hash_len]u8{}, fb) orelse return error.BlockB;
+    try cord.add(&node_a.dag, ba);
+    try cord.add(&node_b.dag, bb);
+
+    // Gossip the genesis blocks both ways — now each node holds both genesis blocks.
+    _ = try gossip_merge(&node_a.dag, &node_b.dag);
+    _ = try gossip_merge(&node_b.dag, &node_a.dag);
+    if (node_a.dag.len != 2) return error.GenesisMergeA;
+    if (node_b.dag.len != 2) return error.GenesisMergeB;
+
+    // Each node mints a round-1 fact referencing both genesis blocks — genuine
+    // cross-node fan-in, only mintable after gossip taught each node the other's root.
+    var ha: [cord.hash_len]u8 = undefined;
+    var hb: [cord.hash_len]u8 = undefined;
+    cord.address(&ba, &ha);
+    cord.address(&bb, &hb);
+    const roots = [_][cord.hash_len]u8{ ha, hb };
+
+    const fc = fold.mint_fact(kc, fold.kind_tax, 200, "", "tax-c") orelse return error.MintC;
+    const fd = fold.mint_fact(kd, fold.kind_star_reserve, 100, "vega", "reserve") orelse return error.MintD;
+    const bc = cord.mint_block(kc, 1, roots[0..], fc) orelse return error.BlockC;
+    const bd = cord.mint_block(kd, 1, roots[0..], fd) orelse return error.BlockD;
+    try cord.add(&node_a.dag, bc);
+    try cord.add(&node_b.dag, bd);
+
+    // Gossip the round-1 blocks both ways — now both nodes hold the whole mesh.
+    _ = try gossip_merge(&node_a.dag, &node_b.dag);
+    _ = try gossip_merge(&node_b.dag, &node_a.dag);
+    if (node_a.dag.len != 4) return error.MeshMergeA;
+    if (node_b.dag.len != 4) return error.MeshMergeB;
+
+    // The crux: two nodes begun from their own genesis converge on one order.
+    if (!commits_equal(&node_a.dag, &node_b.dag)) return error.NodesDiverged;
+
+    const state = try committed_supply(&node_a.dag);
+    const state_b = try committed_supply(&node_b.dag);
+    if (state.supply() != state_b.supply()) return error.SupplyDiverged;
+    if (state.issued != 1000) return error.SupplyIssued;
+    if (state.taxed != 300) return error.SupplyTaxed;
+    if (state.supply() != 700) return error.SupplyNet;
+    if (state.star_count != 1) return error.StarCount;
+
+    // Out-of-order gossip: a source that lists children before parents still
+    // drains to the identical order. Build the source Dag directly (bypassing
+    // add's parents-first rule) with the round-1 blocks first, then gossip it
+    // into a fresh node and assert convergence to the same agreed history.
+    var scrambled = cord.Dag.empty();
+    const feed = [_]cord.Block{ bc, bd, ba, bb };
+    var s: u32 = 0;
+    while (s < feed.len) : (s += 1) {
+        scrambled.blocks[s] = feed[s];
+        cord.address(&feed[s], &scrambled.hashes[s]);
+        scrambled.len += 1;
+    }
+    var node_c = Node{ .key = seeded(0xE5), .dag = cord.Dag.empty() };
+    const drained = try gossip_merge(&node_c.dag, &scrambled);
+    if (drained != 4) return error.ScrambledDrainedPartial;
+    if (!commits_equal(&node_c.dag, &node_a.dag)) return error.OutOfOrderDiverged;
+
+    // Refusal: a forged block in a gossip stream refuses whole, the converged
+    // Dag unchanged. Tamper a genesis block's signature — its bytes change, so it
+    // is not a duplicate; add rejects the forgery before the hash is taken.
+    var forged = cord.Dag.empty();
+    var bad = ba;
+    bad.sig[0] ^= 0xff;
+    forged.blocks[0] = bad;
+    cord.address(&bad, &forged.hashes[0]);
+    forged.len = 1;
+    const len_before = node_a.dag.len;
+    if (gossip_merge(&node_a.dag, &forged)) |_| {
+        return error.ForgeryAdmitted;
+    } else |err| {
+        if (err != error.BadSignature) return error.WrongForgery;
+    }
+    if (node_a.dag.len != len_before) return error.ForgeryMutated;
+
+    print("constel-consensus: two nodes from their own genesis converge to one identical committed order\n", .{});
+    print("constel-consensus: an out-of-order gossip stream drains to the identical order (children heard before parents)\n", .{});
+    print("constel-consensus: the converged order folds the real Mycelium law to supply {d} over one star\n", .{state.supply()});
+    print("constel-consensus: a forged block in the gossip stream refuses whole, the converged Dag unchanged\n", .{});
+    print("GREEN: constel consensus — two-node gossip convergence · supply={d} · stars={d} · forgery refused whole\n", .{
+        state.supply(),
+        state.star_count,
+    });
+}

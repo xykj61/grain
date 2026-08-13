@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260813.040613
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Constel gossip convergence — two nodes, one agreed order (r1)
+prompt Take the next agent-doable lap Lindy-first crux-first past the Mycelium Cord arc; approve own design rounds; send each finished increment as its own signed round; stop at custody gates
+think Read REMEMBER + the 1,024-round itinerary + the six-season double-seat expansion; the REMEMBER tail narrative is stale (bench climbed past Season 3 into Season D — Kresfa & Mycelium); git log shows the last landed arc was mycelium: the Cord (r1-r4)
+think Read the Cord exploration — it named the open question its own four rounds never closed: two honest nodes each holding their own copy converge once they gossip. r1 proved arrival-order independence over ONE Dag; convergence across two independently-begun nodes is the higher-Lindy crux and the network's actual promise
+think Surveyed cord.rye public API (Block, mint_block, Dag, add, commit, committed_log, address, verify_block) and fold.rye (Fact, FoldState, Log, mint_fact, fold_log, kinds); names constel_consensus/gossip_merge free
+think Self-approved the design round: the one genuinely new piece is gossip_merge, a bounded fixpoint that tolerates out-of-order gossip delivery — defer a dangling-parent block and retry rather than refuse, skip a duplicate (gossip is idempotent), refuse a forgery; a closed acyclic source drains in at most src.len passes
+obs Rye resolves a symlinked module's own imports relative to the symlink's directory, not the real path — cord.rye needed fold.rye beside it in pond/apps; added pond/apps/fold.rye and pond/apps/mycelium_cord.rye symlinks; aligned the app's fold import to fold.rye so cord and app share one module identity (fold.Fact type)
+obs Crux proven: node A and node B from separate genesis issues gossip both ways and commit to the byte-identical order folding to supply 700 over one star; a scrambled source (children before parents) drains via node C to the identical order; a forged block refuses BadSignature with the converged Dag unchanged
+obs Custody honored — dev-only, demo keeper seeds, no key/funds/network; a Cord gossiped over the wire reaches the serve gate (Keaton's hand), gate #4 (maintainer Kumara) untouched
+loom witness=constel_consensus_witness nodes=2 blocks=4 supply=700 stars=1 wall_ok=green
+file active-designing/20260813-040613_constel-consensus-gossip-convergence-exploration.md the self-approved design round naming the crux and four rounds
+file pond/apps/constel_consensus.rye the app — Node, gossip_merge fixpoint, two-node convergence, out-of-order drain, forgery refusal
+file pond/apps/mycelium_cord.rye symlink so the app imports the Cord
+file pond/apps/fold.rye symlink so cord.rye's own fold import resolves under pond/apps
+file tools/constel_consensus_witness.rish witness — GREEN, re-runs the Cord r1 witness additively
+recommend keep-going gossip-convergence r2 (partition heals — a late joiner catches up to the identical order); agent-doable, composes the same primitive, custody untouched
