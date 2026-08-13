@@ -1,0 +1,53 @@
+# tools/constel_consensus_travels_witness.rish — the network travels (gossip-convergence r3).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · gossip-convergence rung r3.
+# r1 proved two nodes begun from their own genesis converge once they gossip; r2 proved a healed
+# partition catches up because convergence is content-dependent, not timing-dependent. Both exchanged
+# blocks in shared process memory. This round proves the thing that turns a mesh into a network: a
+# node's gossip-converged agreed order crosses to a stranger as readable bytes — no shared memory, no
+# gossip channel, no ordering message.
+#
+# The crux this witness proves: node A and node B converge over gossip, A renders its converged Dag to a
+# format cord-dag-v1 record, and a far node — one that never gossiped and begins empty — reconstructs the
+# whole history from those bytes alone and commits to the byte-identical order, folding to the identical
+# supply (700 over one star). Every signature rides in the record and is re-verified on rebuild: a
+# tampered record refuses BadSignature and can never cross as consensus. Demo keeper seeds only — no real
+# key, no funds, no network, no custody.
+#
+# Additive: r1 (constel_consensus) and the Cord's cord-bron reader/writer re-run GREEN at this round's door.
+#
+# Scope: active-designing/20260813-040613_constel-consensus-gossip-convergence-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/constel_consensus_travels_witness.rish
+
+say "constel-travels: Language EN — a converged mesh crosses to a stranger as text, and the stranger agrees on the same past."
+say "constel-travels: Style Radiant — the agreed history leaves shared memory, travels as readable bytes, and stands whole in a node that never heard the gossip."
+say "constel-travels: Lens TAME — the record replaces the gossip channel; rebuild re-verifies every signature; a tampered record refuses whole; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/constel-consensus-travels"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/constel_consensus_travels.rye -femit-bin=${bin}"]
+assert build.ok else "constel-travels: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "constel-travels: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "constel-travels: selftest did not speak GREEN"
+assert selftest.out contains "two nodes from their own genesis converge over gossip on one agreed order" else "constel-travels: convergence claim missing"
+assert selftest.out contains "renders to a format cord-dag-v1 record" else "constel-travels: render claim missing"
+assert selftest.out contains "a far node that never gossiped reconstructs from the bytes alone and commits to the byte-identical order" else "constel-travels: far-node claim missing"
+assert selftest.out contains "a tampered record refuses BadSignature on rebuild" else "constel-travels: tamper-refusal claim missing"
+assert selftest.out contains "the converged mesh crosses to a far node as text" else "constel-travels: travels claim missing"
+
+# r1 stays its own GREEN binary — this rung composes r1's public gossip fixpoint and commit helpers.
+let r1 = run ["sh" "-c" "rishi/bin/rishi run tools/constel_consensus_witness.rish 2>&1"]
+assert r1.ok else "constel-travels: rung one (two-node convergence) is not GREEN"
+assert r1.out contains "constel-consensus: GREEN" else "constel-travels: rung one did not speak its GREEN"
+
+# The Cord's cord-bron reader/writer this rung carries the converged Dag through stands at its door.
+let bron = run ["sh" "-c" "rishi/bin/rishi run tools/mycelium_cord_bron_witness.rish 2>&1"]
+assert bron.ok else "constel-travels: the cord-bron reader/writer (Cord r3) is not GREEN"
+assert bron.out contains "mycelium-cord-bron: GREEN" else "constel-travels: cord-bron did not speak its GREEN"
+
+say "constel-travels: GREEN — two nodes converge over gossip, A renders its Dag to a format cord-dag-v1 record, and a far node that never gossiped rebuilds from the bytes alone to the identical agreed order (supply 700, one star); a tampered record refuses whole; rung one and cord-bron stand at their door. The bytes are the network."

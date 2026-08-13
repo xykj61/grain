@@ -25,7 +25,7 @@
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
-const cord = @import("mycelium_cord.rye");
+const cord = @import("cord.rye");
 const fold = @import("fold.rye");
 const kumara = @import("kumara.rye");
 
