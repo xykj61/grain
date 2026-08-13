@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260812.204233
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title DAHL-J10r1 — skate_group, admission by quorum, never one hand
+prompt continue the 1,024-round itinerary Lindy-first crux-first; take the next agent-doable lap, approve own design rounds, send each finished increment as its own signed round, stop at custody gates
+think Read REMEMBER + the 1,024-round itinerary. Seasons 1 (TACT) and 2 (Yield) stand complete; Season 3 (Commons, DAHL) Journey 9 (Skate) just closed end to end (git nib 742a8573fc). No custody gate blocks — the next Lindy-first crux on the whole road is DAHL Journey 10 (Membership), the quorum surface the itinerary names, extending settlement/names.rye.
+think Read settlement/names.rye and skate_circle.rye (J9r1) for the idioms. names.rye's own header says it plainly: names are the one surface that genuinely needs consensus. J9 proved consent at its smallest size — exactly-two mutual link. J10's durable new law is the next size up: threshold-of-n quorum, proven at more than two keepers. That distinction is the crux and it is Lindy-durable — the quorum rule is read for as long as the commons lives.
+think Design decision: a Group opens with a founder roster and a fixed quorum t (2 <= t <= roster). A member votes for a candidate; the candidate is seated only when t DISTINCT members have voted. The honesty is distinctness with threshold — one keeper voting twice is counted once (AlreadyVoted), so a lone steward can never manufacture a quorum. Admission is derived from the distinct-vote count reaching t (no direct add-member), mirroring how J9 derived a link from two opposing requests rather than storing it. is_member follows the verdict exactly (invariant-asserted).
+think Ordering care in vote(): if this vote would reach quorum and the roster is full, refuse GroupFull BEFORE recording the vote, so the bound holds before consent is counted rather than counting consent the group cannot honor.
+think Self-approved the design round (exploration doc), then wrote pond/apps/skate_group.rye + tools/dahl_j10_skate_group_witness.rish. Witness GREEN first run (2 welcomes: quorum-of-two admits, quorum-of-three needs three; 4 refusals: double-vote-cannot-fake-quorum, non-member/re-admit, bad openings, full roster).
+obs tame_style_check caught one compound assert (open() postcondition asserting quorum >= 2 and quorum <= member_count) — split into two named asserts per the TAME ban, exactly the discipline. Re-ran: TAME bans clean, width-check clean, witness re-GREEN.
+obs The quorum-of-three test is the honest heart of the journey — consent proven past two keepers, where J9's number-two rule could not reach. The double-vote-refuses-and-tally-holds test is the load-bearing safety property: one hand can never count for two.
+loom witness=dahl_j10_skate_group_witness cases=6 members_bound=32 votes_bound=256 result=GREEN
+file active-designing/20260812-204233_dahl-journey10-membership-quorum-exploration.md self-approved design round opening Journey 10 — the quorum crux, four rounds Lindy-first
+file pond/apps/skate_group.rye r1 — Group with founder roster + fixed quorum; a candidate seated only by t distinct member votes; admission derived, never written
+file tools/dahl_j10_skate_group_witness.rish witness — builds and runs the selftest, asserts the quorum-of-two, quorum-past-two, and lone-steward cruxes
+file work-in-progress/REMEMBER.md appended the DAHL-J10r1 landing to the Season 3 arc
+recommend keep-going DAHL-J10r2 — sign each vote with the member's settled Kumara identity over the exact facts (tag · group id · voter · candidate), verified against a caller keyring, so a steward cannot fabricate a vote (mirrors skate_circle_signed)
