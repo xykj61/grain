@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260813.110543
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention; this session in ai-jail
+title mycelium Muster r1 — a Chorus passes a known validator set
+prompt baton prin recur — read REMEMBER + the 1,024-round itinerary + the six-season double-seat, take the next agent-doable lap Lindy-first crux-first, approve own design rounds, send each finished increment as its own signed round, stop at custody gates.
+think Surveyed the true frontier: REMEMBER's prose lagged git HEAD, but the Chorus arc (quorum-attestation r1–r4) had just closed and folded onto the card. The recommend line named the next lap as a fresh Season D Mycelium journey. Read cord.rye and chorus.rye to find the highest-Lindy crux the ledger set still lacked.
+think Found the blind spot: chorus.verify_chorus counts ANY distinct keys — three fresh keypairs pass verify_chorus(3). Nothing in the set names WHICH nodes are legitimate validators. Both Cord (admits any signed block) and Chorus (counts any distinct signer) implicitly assume a validator set never written down. That is the keystone every BFT protocol rests on (TigerBeetle's fixed replica set, Mysticeti's committee) — the next Lindy-first crux.
+think Self-approved the design round (active-designing/20260813-110039_...): the Muster, a known bounded roll of validator keys, with a Byzantine threshold derived from the size (n−(n−1)/3, never stored so a tampered roll cannot lower its bar). The crux pass_muster(muster, chorus) passes only when the Chorus is internally sound (verify_chorus), every voice is enrolled (else NotMember), and the enrolled count meets the threshold (else BelowQuorum).
+think Named it Muster per the Comlink tendency — the enrolled roll a company answers at, carrying the exact idiom the crux wants (a Chorus must pass muster); safe (no seated module/waymark, parses as no address). Grep confirmed the tree uses roster only as ordinary English.
+obs Implemented mycelium/muster.rye additively — composes chorus·voucher·kumara public API only, edits none. Fix on first build: verify_chorus is a free function, not a method (chorus.verify_chorus(c, 1), not c.verify_chorus(1)). The crux scene proves the demonstration on metal: three fresh keys the Chorus alone believes (verify_chorus(3) passes) refuse pass_muster NotMember against a roll they were never enrolled in. Threshold arithmetic proven across n=1·3·4·7·10 → t=1·3·3·5·7; enroll refuses Duplicate and MusterFull; a padded quorum refuses whole rather than silently trimming the stranger.
+obs Witness tools/mycelium_muster_witness.rish GREEN; tame_style_check bans clean; width-check exit 0. Demo validator and keeper seeds only — no key, no funds, no network, no custody. A served muster (live validator set over Comlink) reaches the Comlink-served gate, the maintainer's hand.
+loom witness=mycelium_muster_witness result=GREEN module_lines=muster.rye code_changed=1 composes=chorus+voucher+kumara edits_existing=0
+file active-designing/20260813-110039_mycelium-muster-known-validator-set-exploration.md self-approved design read opening the Muster journey
+file mycelium/muster.rye r1 crux — a known validator set a Chorus must pass; pass_muster · enroll · byzantine_threshold · is_member
+file tools/mycelium_muster_witness.rish r1 witness — GREEN, proves the crux (fresh keys refuse) · thin quorum · padded quorum · enroll refusals
+recommend keep-going Muster r2 (travels — a format muster-v1 record a validator set crosses a wire and is judged offline), then r3 (across a Knot) and r4 (true to the bytes), each its own signed round. A served muster · breach renames (cairn-first) · deep debride · seed force-push stay the maintainer's hand.
