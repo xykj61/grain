@@ -1,0 +1,416 @@
+//! mycelium/lapse_bron.rye — the deadline verdict travels as a readable record.
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · Lapse rung r2 — travel.
+//! Design read: active-designing/20260813-085046_mycelium-lapse-pending-timeout-exploration.md
+//!
+//! r1 resolved a Cord's agreed order into a Ledger under the deadline clock — every
+//! account's spendable balance and reserved holdings, and every pledge's settlement (open,
+//! posted, voided, or LAPSED by the order's own position). A verdict a node cannot hand to
+//! another is only a local reading, so r2 lets a resolved Ledger cross as `format lapse-v1`
+//! bytes: an `issued <total>` line, one `holds <pk> <balance> <reserved>` line per account,
+//! one `pledge <id> <from> <to> <amount> <deadline> <state> <pos>` line per pledge — the
+//! deadline the clock reads travelling with the pledge it governs. Render writes it, parse
+//! reads it back, so a round trip is a fixed point, and the recovered Ledger reports the
+//! identical balances, reserves, settlements (a lapse crosses as a lapse), deadlines, and
+//! totals — the deadline verdict crosses to a stranger unchanged.
+//!
+//! The record carries conservation as its own law, the Pledge's unwidened: the balances PLUS
+//! the reserves a record claims must sum to exactly the `issued` total it names, or the
+//! reader refuses `BadInt` before the record is trusted — no coin appears or vanishes in the
+//! crossing, whether spendable, held in an open pledge, or returned home by a lapse.
+//!
+//! A purpose-built bounded reader, never a general parser: a wrong header refuses
+//! `BadFormat`, an unknown field `UnknownField` (never dropped), a malformed line `BadLine`,
+//! a bad integer or broken conservation law or unknown state `BadInt`, a bad hex field
+//! `BadHex`, an over-long record `TooManyAccounts`/`TooManyPledges`. Composes lapse.rye +
+//! cord.rye + fold.rye public API only. Siloed, dev-only, demo seeds — no key, no funds, no
+//! network, no custody.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/lapse_bron.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lapse = @import("lapse.rye");
+const cord = @import("cord.rye");
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+const parse_int = @import("parse_int.rye");
+
+/// A travelled record carries at most this many accounts — a dev-net ledger is small
+/// and legible, well under the Ledger's own ceiling.
+pub const max_accounts_in_record: u32 = 64;
+
+/// And at most this many pledges.
+pub const max_pledges_in_record: u32 = 32;
+
+/// The record buffer bound — a small ledger's whole verdict fits with room.
+pub const max_record: u32 = 32768;
+
+pub const BronError = error{
+    BadFormat, // the header line is not `format lapse-v1`, or no issued line
+    UnknownField, // a line names a field the record does not define
+    BadLine, // a known line carries the wrong token count
+    BadInt, // an integer field did not parse, an unknown state, or broke conservation
+    BadHex, // a hex field was the wrong length or held a non-hex char
+    TooManyAccounts, // more accounts than a v1 record admits
+    TooManyPledges, // more pledges than a v1 record admits
+    RecordTooLong, // the rendered record overflowed the buffer
+};
+
+const hex_digits = "0123456789abcdef";
+
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex chars per byte.
+    assert(out.len == bytes.len * 2);
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0F];
+    }
+}
+
+fn nibble(c: u8) BronError!u8 {
+    return switch (c) {
+        '0'...'9' => c - '0',
+        'a'...'f' => c - 'a' + 10,
+        'A'...'F' => c - 'A' + 10,
+        else => error.BadHex,
+    };
+}
+
+fn from_hex(text: []const u8, out: []u8) BronError!void {
+    if (text.len != out.len * 2) return error.BadHex;
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < out.len) : (i += 1) {
+        const hi = try nibble(text[i * 2]);
+        const lo = try nibble(text[i * 2 + 1]);
+        out[i] = (hi << 4) | lo;
+    }
+}
+
+/// Render a resolved Ledger to a `format lapse-v1` record. Refuses an overflow or an
+/// over-long verdict rather than a partial record.
+pub fn render(l: *const lapse.Ledger, out: []u8) BronError!u32 {
+    // invariant: the record honors each of its axis bounds.
+    if (l.account_count > max_accounts_in_record) return error.TooManyAccounts;
+    if (l.pledge_count > max_pledges_in_record) return error.TooManyPledges;
+    // invariant: the render buffer honors its bound.
+    assert(out.len >= max_record);
+    const head = std.fmt.bufPrint(out, "format lapse-v1\n", .{}) catch return error.RecordTooLong;
+    var off: u32 = @intCast(head.len);
+    const iss = std.fmt.bufPrint(out[off..], "issued {d}\n", .{l.total_issued}) catch return error.RecordTooLong;
+    off += @intCast(iss.len);
+
+    var a: u32 = 0;
+    while (a < l.account_count) : (a += 1) {
+        const acct = &l.accounts[a];
+        var pk_hex: [lapse.pk_len * 2]u8 = undefined;
+        to_hex(acct.pk[0..], &pk_hex);
+        const line = std.fmt.bufPrint(out[off..], "holds {s} {d} {d}\n", .{ pk_hex, acct.balance, acct.reserved }) catch return error.RecordTooLong;
+        off += @intCast(line.len);
+    }
+
+    var p: u32 = 0;
+    while (p < l.pledge_count) : (p += 1) {
+        const pl = &l.pledges[p];
+        var id_hex: [lapse.id_len * 2]u8 = undefined;
+        var from_hex_buf: [lapse.pk_len * 2]u8 = undefined;
+        var to_hex_buf: [lapse.pk_len * 2]u8 = undefined;
+        to_hex(pl.id[0..], &id_hex);
+        to_hex(pl.from[0..], &from_hex_buf);
+        to_hex(pl.to[0..], &to_hex_buf);
+        const line = std.fmt.bufPrint(out[off..], "pledge {s} {s} {s} {d} {d} {d} {d}\n", .{ id_hex, from_hex_buf, to_hex_buf, pl.amount, pl.deadline, pl.state, pl.pos }) catch return error.RecordTooLong;
+        off += @intCast(line.len);
+    }
+    // invariant: the rendered record never exceeds its bound.
+    assert(off <= max_record);
+    return off;
+}
+
+/// Split a line into up to eight tokens; returns the count (or nine to signal a trailing
+/// token past what any line allows — the pledge line, at eight, is the widest).
+fn tokens(line: []const u8, out: *[8][]const u8) u32 {
+    var count: u32 = 0;
+    var it = std.mem.tokenizeScalar(u8, line, ' ');
+    while (it.next()) |t| {
+        if (count >= 8) return count + 1;
+        out[count] = t;
+        count += 1;
+    }
+    return count;
+}
+
+/// Sum the parsed spendable balances — the conservation law's left half, computed
+/// without the read's own assert so a broken record refuses cleanly rather than trips it.
+fn balances_total(out: *const lapse.Ledger) u64 {
+    var sum: u64 = 0;
+    var i: u32 = 0;
+    while (i < out.account_count) : (i += 1) sum += out.accounts[i].balance;
+    return sum;
+}
+
+/// Sum the parsed reserved holdings — the conservation law's right half.
+fn reserves_total(out: *const lapse.Ledger) u64 {
+    var sum: u64 = 0;
+    var i: u32 = 0;
+    while (i < out.account_count) : (i += 1) sum += out.accounts[i].reserved;
+    return sum;
+}
+
+/// Parse a `format lapse-v1` record into `out`, writing through a pointer (a Ledger carries
+/// a large account table, so no return-by-value copy). Refuses an unknown or malformed field,
+/// a bad header, an unknown state, a broken conservation law, or an over-long verdict.
+pub fn parse(text: []const u8, out: *lapse.Ledger) BronError!void {
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const header = lines.next() orelse return error.BadFormat;
+    if (!std.mem.eql(u8, header, "format lapse-v1")) return error.BadFormat;
+
+    out.account_count = 0;
+    out.pledge_count = 0;
+    out.total_issued = 0;
+    var have_issued = false;
+
+    while (lines.next()) |raw| {
+        if (raw.len == 0) continue; // a trailing newline yields one empty line
+        var tok: [8][]const u8 = undefined;
+        const n = tokens(raw, &tok);
+        if (n == 0) continue;
+        if (std.mem.eql(u8, tok[0], "issued")) {
+            if (n != 2) return error.BadLine;
+            out.total_issued = parse_int.parse_int(u64, tok[1], .{}) catch return error.BadInt;
+            have_issued = true;
+        } else if (std.mem.eql(u8, tok[0], "holds")) {
+            if (n != 4) return error.BadLine;
+            if (out.account_count >= lapse.lapse_max_accounts) return error.TooManyAccounts;
+            const at = out.account_count;
+            try from_hex(tok[1], out.accounts[at].pk[0..]);
+            const bal = parse_int.parse_int(u64, tok[2], .{}) catch return error.BadInt;
+            const res = parse_int.parse_int(u64, tok[3], .{}) catch return error.BadInt;
+            out.accounts[at].balance = bal;
+            out.accounts[at].reserved = res;
+            // A recovered verdict never reports `received`; hold it at balance + reserved
+            // so the account's own invariant (balance <= received) is never violated.
+            out.accounts[at].received = bal + res;
+            out.account_count += 1;
+        } else if (std.mem.eql(u8, tok[0], "pledge")) {
+            if (n != 8) return error.BadLine;
+            if (out.pledge_count >= lapse.lapse_max_pledges) return error.TooManyPledges;
+            const at = out.pledge_count;
+            try from_hex(tok[1], out.pledges[at].id[0..]);
+            try from_hex(tok[2], out.pledges[at].from[0..]);
+            try from_hex(tok[3], out.pledges[at].to[0..]);
+            out.pledges[at].amount = parse_int.parse_int(u64, tok[4], .{}) catch return error.BadInt;
+            out.pledges[at].deadline = parse_int.parse_int(u64, tok[5], .{}) catch return error.BadInt;
+            const st = parse_int.parse_int(u8, tok[6], .{}) catch return error.BadInt;
+            // Only the four settlement states travel — an unknown state refuses.
+            if (st != lapse.state_open and st != lapse.state_posted and st != lapse.state_voided and st != lapse.state_lapsed) return error.BadInt;
+            out.pledges[at].state = st;
+            out.pledges[at].pos = parse_int.parse_int(u32, tok[7], .{}) catch return error.BadInt;
+            out.pledge_count += 1;
+        } else {
+            return error.UnknownField;
+        }
+    }
+    if (!have_issued) return error.BadFormat;
+    // The conservation law travels: spendable balances plus reserved holdings must sum to
+    // exactly the issued total, or the record made or lost a coin in the crossing.
+    if (balances_total(out) + reserves_total(out) != out.total_issued) return error.BadInt;
+    // invariant: the parsed verdict is bounded on every axis.
+    assert(out.account_count <= lapse.lapse_max_accounts);
+    assert(out.pledge_count <= lapse.lapse_max_pledges);
+}
+
+// ---- selftest: the deadline verdict travels and answers unchanged ------------
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn write_deadline(deadline: u64, out: []u8) void {
+    // invariant: the buffer holds a full little-endian order position.
+    assert(out.len == lapse.deadline_len);
+    var v = deadline;
+    var i: u32 = 0;
+    while (i < lapse.deadline_len) : (i += 1) {
+        out[i] = @truncate(v);
+        v >>= 8;
+    }
+}
+
+fn pledge_body(id: []const u8, deadline: u64, to: []const u8, out: []u8) u32 {
+    // invariant: the buffer holds tag · id · deadline · recipient exactly.
+    assert(out.len >= 1 + lapse.id_len + lapse.deadline_len + lapse.pk_len);
+    assert(id.len == lapse.id_len);
+    out[0] = lapse.tag_pledge;
+    tally_copy.copy_disjoint(u8, out[1 .. 1 + lapse.id_len], id);
+    write_deadline(deadline, out[1 + lapse.id_len .. 1 + lapse.id_len + lapse.deadline_len]);
+    tally_copy.copy_disjoint(u8, out[1 + lapse.id_len + lapse.deadline_len ..][0..lapse.pk_len], to);
+    return 1 + lapse.id_len + lapse.deadline_len + lapse.pk_len;
+}
+
+fn post_body(id: []const u8, out: []u8) u32 {
+    // invariant: the buffer holds tag · id exactly.
+    assert(out.len >= 1 + lapse.id_len);
+    assert(id.len == lapse.id_len);
+    out[0] = lapse.tag_post;
+    tally_copy.copy_disjoint(u8, out[1 .. 1 + lapse.id_len], id);
+    return 1 + lapse.id_len;
+}
+
+/// Build a scene that travels a LAPSED pledge and an open one: genesis credits 200 to Alice;
+/// Alice pledges 100 to Bob under deadline 2, then posts it — yet the post rides order
+/// position 2, so the clock lapses the pledge first (coins home to Alice); Alice then pledges
+/// 100 to Carol under a far deadline and leaves it open (reserved). The record must carry the
+/// lapsed settlement, the open one, the reserved holding, and each deadline.
+fn build_scene() !lapse.Ledger {
+    const id1 = [_]u8{0x01} ** lapse.id_len;
+    const id2 = [_]u8{0x02} ** lapse.id_len;
+    const kf = seeded(0xF0);
+    const ka = seeded(0xA1);
+    const kb = seeded(0xB2);
+    const kc = seeded(0xC3);
+    const alice_pk = ka.public_key.toBytes();
+    const bob_pk = kb.public_key.toBytes();
+    const carol_pk = kc.public_key.toBytes();
+
+    const f_gen = fold.mint_fact(kf, fold.kind_issue, 200, "", alice_pk[0..]) orelse return error.MintGen;
+
+    var pb1: [1 + lapse.id_len + lapse.deadline_len + lapse.pk_len]u8 = undefined;
+    const pn1 = pledge_body(id1[0..], 2, bob_pk[0..], &pb1);
+    const f_p1 = fold.mint_fact(ka, fold.kind_tax, 100, "", pb1[0..pn1]) orelse return error.MintP1;
+
+    var hb1: [1 + lapse.id_len]u8 = undefined;
+    const hn1 = post_body(id1[0..], &hb1);
+    const f_post1 = fold.mint_fact(ka, fold.kind_tax, 100, "", hb1[0..hn1]) orelse return error.MintPost1;
+
+    var pb2: [1 + lapse.id_len + lapse.deadline_len + lapse.pk_len]u8 = undefined;
+    const pn2 = pledge_body(id2[0..], 9, carol_pk[0..], &pb2);
+    const f_p2 = fold.mint_fact(ka, fold.kind_tax, 100, "", pb2[0..pn2]) orelse return error.MintP2;
+
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_gen) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+    const r0 = [_][cord.hash_len]u8{hg};
+    const b1 = cord.mint_block(ka, 1, r0[0..], f_p1) orelse return error.BlockP1;
+    var h1: [cord.hash_len]u8 = undefined;
+    cord.address(&b1, &h1);
+    const r1 = [_][cord.hash_len]u8{h1};
+    const b2 = cord.mint_block(ka, 2, r1[0..], f_post1) orelse return error.BlockPost1;
+    var h2: [cord.hash_len]u8 = undefined;
+    cord.address(&b2, &h2);
+    const r2 = [_][cord.hash_len]u8{h2};
+    const b3 = cord.mint_block(ka, 3, r2[0..], f_p2) orelse return error.BlockP2;
+
+    var dag = cord.Dag.empty();
+    try cord.add(&dag, g);
+    try cord.add(&dag, b1);
+    try cord.add(&dag, b2);
+    try cord.add(&dag, b3);
+    return lapse.resolve(&dag);
+}
+
+/// Two Ledgers answer the same deadline verdict: totals, counts, every balance and reserve,
+/// and every pledge's settlement, deadline, and amount.
+fn verdicts_agree(a: *const lapse.Ledger, b: *const lapse.Ledger) bool {
+    if (a.pledges_seen() != b.pledges_seen()) return false;
+    if (a.posted_seen() != b.posted_seen()) return false;
+    if (a.voided_seen() != b.voided_seen()) return false;
+    if (a.lapsed_seen() != b.lapsed_seen()) return false;
+    if (a.total_issued != b.total_issued) return false;
+    if (a.account_count != b.account_count) return false;
+    var i: u32 = 0;
+    while (i < a.account_count) : (i += 1) {
+        const ak = a.accounts[i].pk[0..];
+        if (a.accounts[i].balance != b.balance_of(ak)) return false;
+        if (a.accounts[i].reserved != b.reserved_of(ak)) return false;
+    }
+    i = 0;
+    while (i < a.pledge_count) : (i += 1) {
+        if (a.pledges[i].state != b.pledges[i].state) return false;
+        if (a.pledges[i].amount != b.pledges[i].amount) return false;
+        if (a.pledges[i].deadline != b.pledges[i].deadline) return false;
+        if (!std.mem.eql(u8, a.pledges[i].id[0..], b.pledges[i].id[0..])) return false;
+    }
+    return true;
+}
+
+pub fn main() !void {
+    const l = try build_scene();
+    // The scene carries one lapsed and one open pledge, and a reserved holding.
+    assert(l.pledges_seen() == 2);
+    assert(l.lapsed_seen() == 1);
+    assert(l.open_seen() == 1);
+    assert(l.posted_seen() == 0);
+    assert(l.balances_sum() + l.reserved_sum() == l.total_issued);
+
+    var buf: [max_record]u8 = undefined;
+    const len = try render(&l, buf[0..]);
+
+    var recovered: lapse.Ledger = undefined;
+    try parse(buf[0..len], &recovered);
+
+    // The crux: the recovered verdict answers the identical deadline verdict.
+    if (!verdicts_agree(&l, &recovered)) return error.VerdictChanged;
+    if (recovered.pledges_seen() != 2) return error.PledgeCount;
+    if (recovered.lapsed_seen() != 1) return error.LapsedCount;
+    if (recovered.open_seen() != 1) return error.OpenCount;
+    if (recovered.total_issued != 200) return error.IssuedValue;
+    // Conservation survives the crossing — balance + reserved still sums to issued.
+    if (recovered.balances_sum() + recovered.reserved_sum() != 200) return error.NotConserved;
+    if (recovered.reserved_sum() != 100) return error.ReservedValue;
+
+    // Re-rendering the recovered verdict reproduces the exact bytes (fixed point).
+    var buf2: [max_record]u8 = undefined;
+    const len2 = try render(&recovered, buf2[0..]);
+    if (len2 != len) return error.NotFixedPoint;
+    if (!std.mem.eql(u8, buf[0..len], buf2[0..len2])) return error.NotFixedPoint;
+
+    // Refusal: a wrong header refuses BadFormat.
+    var scratch: lapse.Ledger = undefined;
+    if (parse("format lapse-v2\nissued 0\n", &scratch)) |_| return error.BadHeaderAdmitted else |err| {
+        if (err != error.BadFormat) return error.WrongHeader;
+    }
+    // Refusal: an unknown field refuses UnknownField (never dropped).
+    if (parse("format lapse-v1\nissued 0\nbogus a b\n", &scratch)) |_| return error.UnknownAdmitted else |err| {
+        if (err != error.UnknownField) return error.WrongUnknown;
+    }
+    // Refusal: a bad hex account key refuses BadHex.
+    if (parse("format lapse-v1\nissued 0\nholds zz 0 0\n", &scratch)) |_| return error.BadHexAdmitted else |err| {
+        if (err != error.BadHex) return error.WrongBadHex;
+    }
+    // Refusal: balances plus reserves that do not sum to issued break conservation (BadInt).
+    if (parse("format lapse-v1\nissued 100\n", &scratch)) |_| return error.BadLawAdmitted else |err| {
+        if (err != error.BadInt) return error.WrongBadLaw;
+    }
+    // Refusal: an unknown pledge state refuses BadInt (5 is past state_lapsed).
+    {
+        const bad_state = "format lapse-v1\nissued 0\npledge " ++ ("00" ** lapse.id_len) ++ " " ++ ("00" ** lapse.pk_len) ++ " " ++ ("00" ** lapse.pk_len) ++ " 0 2 5 0\n";
+        if (parse(bad_state, &scratch)) |_| return error.BadStateAdmitted else |err| {
+            if (err != error.BadInt) return error.WrongBadState;
+        }
+    }
+    // A lapsed state (3) parses cleanly — the new settlement class travels.
+    {
+        const lapsed_line = "format lapse-v1\nissued 0\npledge " ++ ("00" ** lapse.id_len) ++ " " ++ ("00" ** lapse.pk_len) ++ " " ++ ("00" ** lapse.pk_len) ++ " 0 2 3 0\n";
+        if (parse(lapsed_line, &scratch)) |_| {} else |_| return error.LapsedRejected;
+        if (scratch.lapsed_seen() != 1) return error.LapsedNotRead;
+    }
+    // Refusal: no issued line refuses BadFormat.
+    if (parse("format lapse-v1\n", &scratch)) |_| return error.NoIssuedAdmitted else |err| {
+        if (err != error.BadFormat) return error.WrongNoIssued;
+    }
+    // Refusal: an over-long verdict refuses at render before a partial record.
+    var big: lapse.Ledger = .{};
+    big.pledge_count = max_pledges_in_record + 1;
+    if (render(&big, buf[0..])) |_| return error.OverLongAdmitted else |err| {
+        if (err != error.TooManyPledges) return error.WrongOverLong;
+    }
+
+    print("lapse-bron: the resolved verdict renders to a format lapse-v1 record and parses back byte-for-byte\n", .{});
+    print("lapse-bron: the recovered verdict answers the identical balances, reserves, deadlines, and settlements, a lapse crossing as a lapse, conservation of balance + reserved to {d} unchanged\n", .{recovered.balances_sum() + recovered.reserved_sum()});
+    print("lapse-bron: a bad header, an unknown field, a bad hex key, a broken conservation law, an unknown state, a missing issued, an over-long verdict each refuse\n", .{});
+    print("GREEN: myc lapse-bron — the deadline verdict travels as readable text · pledges={d} · lapsed={d} · open={d} · reserved={d} · fixed point\n", .{ recovered.pledges_seen(), recovered.lapsed_seen(), recovered.open_seen(), recovered.reserved_sum() });
+}

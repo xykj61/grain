@@ -1,0 +1,52 @@
+# tools/mycelium_lapse_bron_witness.rish — the deadline verdict travels as a record (r2).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · the Lapse verdict travels · rung r2.
+# r1 resolved a Cord's agreed order into a Ledger under the deadline clock — every account's balance and
+# reserved holdings, and every pledge's settlement (open, posted, voided, or LAPSED by the order's own
+# position). A verdict a node cannot hand to another is only a local reading, so r2 lets a resolved Ledger
+# cross as `format lapse-v1` bytes: an `issued` line, one `holds <pk> <balance> <reserved>` line per account,
+# one `pledge <id> <from> <to> <amount> <deadline> <state> <pos>` line per pledge — the deadline the clock
+# reads travelling with the pledge it governs. Render writes it, parse reads it back byte-for-byte (a fixed
+# point), and the recovered Ledger answers the identical balances, reserves, deadlines, and settlements — a
+# lapse crossing as a lapse.
+#
+# The record carries conservation as its own law (the Pledge's, unwidened): the balances plus reserves a
+# record claims must sum to exactly the `issued` total, or the reader refuses `BadInt` before trusting it —
+# no coin appears or vanishes, whether spendable, held in an open pledge, or returned home by a lapse. A
+# purpose-built bounded reader refuses a bad header (`BadFormat`), an unknown field (`UnknownField`, never
+# dropped), a bad hex key (`BadHex`), an unknown state or broken conservation (`BadInt`), a missing issued
+# line (`BadFormat`), and an over-long verdict (`TooManyPledges` at render); the four settlement states
+# (open · posted · voided · lapsed) travel, a fifth refuses. Composes lapse + cord + fold public API only;
+# every buffer bounded; demo keeper seeds — no key, no funds, no network, no custody.
+#
+# Scope: active-designing/20260813-085046_mycelium-lapse-pending-timeout-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mycelium_lapse_bron_witness.rish
+
+say "mycelium-lapse-bron: Language EN — a deadline verdict written plainly enough that a stranger reads it back unchanged, the hour each pledge was given travelling with it."
+say "mycelium-lapse-bron: Style Radiant — r1 decided the deadline locally; r2 lets it cross as readable bytes, carrying its own conservation law so no coin is made or lost in the crossing, and a lapse crosses as a lapse."
+say "mycelium-lapse-bron: Lens TAME — render/parse compose lapse + cord + fold public API; every buffer bounded; the balances plus reserves must sum to the issued total or the record refuses; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/lapse_bron"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/lapse_bron.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-lapse-bron: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mycelium-lapse-bron: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-lapse-bron: selftest did not speak GREEN"
+assert selftest.out contains "parses back byte-for-byte" else "mycelium-lapse-bron: round-trip claim missing"
+assert selftest.out contains "a lapse crossing as a lapse" else "mycelium-lapse-bron: lapse-crosses-as-lapse claim missing"
+assert selftest.out contains "conservation of balance + reserved to 200 unchanged" else "mycelium-lapse-bron: conservation-travels claim missing"
+assert selftest.out contains "each refuse" else "mycelium-lapse-bron: refusal claim missing"
+assert selftest.out contains "fixed point" else "mycelium-lapse-bron: fixed-point claim missing"
+
+# The Lapse whose deadline verdict this record carries stands at the door — its own selftest proves the
+# order-clock the bytes describe.
+let lapse = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/lapse.rye -femit-bin=mycelium/bin/lapse && mycelium/bin/lapse 2>&1"]
+assert lapse.ok else "mycelium-lapse-bron: the Lapse this record carries is not GREEN"
+assert lapse.out contains "GREEN" else "mycelium-lapse-bron: the Lapse did not speak its GREEN"
+
+say "mycelium-lapse-bron: GREEN — the deadline verdict renders to a format lapse-v1 record and parses back byte-for-byte, the recovered verdict answers the identical balances, reserves, deadlines, and settlements (a lapse crossing as a lapse), conservation of balance + reserved travels as the record's own law, and a bad header · unknown field · bad hex · broken law · unknown state · missing issued · over-long verdict each refuse; the Lapse stands at the door."
