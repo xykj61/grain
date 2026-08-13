@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260813.062952
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title mycelium tenure reads across a Knot (r3)
+prompt Read REMEMBER + the itinerary + six-season expansion; take the next agent-doable lap Lindy-first crux-first, self-approve design rounds, send each finished increment, stop at custody gates.
+think Read the two itinerary docs and REMEMBER; the frontier had moved past the card onto Mycelium (Season D). git log showed the tenure arc: r1 (the verdict) and r2 (the verdict travels) landed; the next crux is r3 — the verdict reads across a Knot.
+think Read the r3 design (active-designing/20260813-060935) — resolve over a Knot plus its live suffix, proving a name won in a sealed checkpoint stays held. Studied the parallel ledger-voice r3 (pond/apps/ledger_query_knot.rye) for the Knot-continue seam, and cord_knot.rye's seal/verify/continue_verified API.
+think The honest seam: a Knot seals only the supply law (issued · taxed · reserved-star SET), not WHO holds each name. So a Tenure-across-a-Knot carries two things across the cut — the Knot (integrity-sealed supply, so overdraw and star-uniqueness hold) and the prefix verdict's holdings (the name→holder map the FoldState omits). Every suffix reservation re-proves its own signer through fold.fold_fact.
+think Extracted two pub helpers in the elder tenure.rye — record_holding / record_contest — and rewrote resolve to call them, behavior-identical (r1 witness re-run GREEN). This lets the Knot-continued resolve record holdings by the same bytes as a full-Cord resolve (reviving discipline: compose public API, edit the elder only additively).
+obs Demo: genesis (r0), vega + bandun-x won at r1 → sealed into a TenureKnot; the suffix is ky reserving bandun → StarTaken across the cut (a lawful no-op). bandun stays held by kx; holders_match proves the holder never drifts between the full Cord and the Knot-continued resolution.
+obs Integrity across the cut proven three ways — a corrupt Knot (KnotCorrupt before any fold), a tampered suffix fact (IdentityRefused), an overdrawing suffix tax against the sealed 1000 (Overdraw). Position across a checkpoint is honestly local to the live epoch; the pruned prefix's global order is gone — the holder identity is what carries.
+obs Scope kept narrow per the design: only a name-contest loss is a lawful no-op; a double-spend loser and a served-without-re-resolving Tenure stay named horizons behind the gates. GREEN first pass; TAME bans clean, width exit 0.
+file mycelium/tenure.rye extracted pub record_holding/record_contest; resolve calls them (behavior-identical, r1 GREEN)
+file mycelium/tenure_knot.rye r3 — TenureKnot (Knot + prefix verdict), seal_tenure, continue_tenure, holders_match; crux + three integrity refusals
+file tools/mycelium_tenure_knot_witness.rish r3 witness; tenure r1 and cord_knot stand at the door
+recommend keep-going r4 (read a real contested fixture true) closes the Tenure arc; quorum-served readings and the breach renames stay the maintainer's hand.

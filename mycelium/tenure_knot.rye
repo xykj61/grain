@@ -1,0 +1,272 @@
+//! mycelium/tenure_knot.rye — the Tenure reads across a Knot (rung r3).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · the contested-name verdict · rung r3.
+//! Design read: active-designing/20260813-060935_mycelium-tenure-contested-name-exploration.md
+//!
+//! Rung 1 resolved a whole Cord Dag into a Tenure — who holds each name, whom the
+//! agreed order turned away. Yet a namespace a family runs for years does not carry
+//! its whole past unbroken: the Knot (`cord_knot.rye`) ties off a committed prefix
+//! into a sealed `fold.FoldState` so a bounded Dag runs forever, and new facts
+//! continue onto that seal. This rung makes the Tenure's corpus a Knot plus its live
+//! suffix — the checkpointed supply read through the same verdict, continued by the
+//! reservations that arrived since the cut.
+//!
+//! The crux: a name won inside a sealed checkpoint stays held when new facts continue
+//! the log — the holder is the SAME keeper whether the winning reservation lives in a
+//! full Cord or a sealed Knot, and a later contestant loses that name across the cut
+//! exactly as it would within one unbroken resolution. The Knot's own equivalence (a
+//! continued fold matches a whole one) carried up to the namespace verdict.
+//!
+//! The one honest seam this names: a Knot seals only the supply law — issued, taxed,
+//! and the reserved-star SET — not WHO holds each name. So a Tenure-across-a-Knot
+//! carries two things across the cut: the Knot (the integrity-sealed supply, so
+//! overdraw and star-uniqueness hold against the real starting supply) and the prefix
+//! verdict's holdings (the name→holder map the FoldState omits). The Knot's digest is
+//! integrity-in-travel for the supply; the holder map travels beside it, and every
+//! suffix reservation re-proves its own signer through `fold.fold_fact`.
+//!
+//! Additive by construction: it imports `tenure` (r1's `resolve` / `record_holding` /
+//! `record_contest`), `cord_knot`, `cord`, and `fold`, and calls only their public
+//! API. Rung one stays its own green binary; the Knot stays its own green binary. No
+//! storage, no transport, no network, no custody — a node reads across its own sealed
+//! checkpoint. Demo keeper seeds only — no real key, no funds.
+//!
+//! Named horizon (not this arc): a double-spend loser as a lawful no-op, and a Tenure
+//! served to another node without re-resolving (the Comlink-served gate, Keaton's hand).
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/tenure_knot.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("cord.rye");
+const cord_knot = @import("cord_knot.rye");
+const fold = @import("fold.rye");
+const tenure = @import("tenure.rye");
+const kumara = @import("kumara.rye");
+
+/// A checkpointed namespace verdict: the Knot sealing the prefix's supply law under a
+/// digest, beside the prefix's holder map (the name→holder facts the FoldState omits).
+pub const TenureKnot = struct {
+    knot: cord_knot.Knot = .{},
+    verdict: tenure.Tenure = .{},
+};
+
+/// Seal a committed prefix Dag into a TenureKnot — resolve it to its verdict, then tie
+/// off its supply with a Knot. The prefix's holdings and contests travel in `verdict`;
+/// the sealed `FoldState` in `knot` is the integrity-checked starting supply.
+pub fn seal_tenure(dag: *const cord.Dag) error{
+    IdentityRefused,
+    UnknownKind,
+    Overdraw,
+    LogFull,
+    TooManyHoldings,
+    TooManyContests,
+}!TenureKnot {
+    // invariant: the prefix Dag fits the static bound before it is committed.
+    assert(dag.len <= cord.cord_max_blocks);
+    const v = try tenure.resolve(dag);
+    const k = cord_knot.seal(v.state);
+    // invariant: the sealed Knot verifies the instant it is made.
+    assert(cord_knot.verify(&k));
+    return .{ .knot = k, .verdict = v };
+}
+
+/// Continue the namespace verdict onto a checkpoint — verify the Knot, seed a Tenure
+/// with the prefix's holder map and sealed supply, then walk the live suffix one fact
+/// at a time through `fold.fold_fact`. A suffix reservation the order grants is a new
+/// holding; one that names a star already sealed in the Knot loses (`StarTaken`) — the
+/// same lawful no-op r1 records within one Cord, now across the cut. A corrupt Knot
+/// refuses before a single fact is folded; every other corruption still refuses whole.
+pub fn continue_tenure(tk: *const TenureKnot, suffix: *const fold.Log) error{
+    KnotCorrupt,
+    IdentityRefused,
+    UnknownKind,
+    Overdraw,
+    LogFull,
+    TooManyHoldings,
+    TooManyContests,
+}!tenure.Tenure {
+    // invariant: the suffix stays within the fold's own log bound.
+    assert(suffix.len <= fold.myc_log_max_facts);
+    // invariant: the sealed prefix state is lawful before it seeds the fold.
+    assert(tk.knot.state.taxed <= tk.knot.state.issued);
+    if (!cord_knot.verify(&tk.knot)) return error.KnotCorrupt;
+
+    var t = tk.verdict; // the prefix holdings + contests, carried across the cut
+    var state = tk.knot.state; // the sealed supply is the real starting supply
+    var i: u32 = 0;
+    while (i < suffix.len) : (i += 1) {
+        const fact = &suffix.facts[i];
+        if (fold.fold_fact(&state, fact)) |_| {
+            // A suffix reservation the order grants wins a fresh holding. Position is
+            // local to the live epoch — the pruned prefix's global order is gone, which
+            // is exactly what a checkpoint means; the holder identity is what carries.
+            if (fact.kind == fold.kind_star_reserve) {
+                try tenure.record_holding(&t, fact, i, 0);
+            }
+        } else |err| switch (err) {
+            // The verdict across the cut: a name sealed in the Knot is already held, so
+            // a suffix reservation of it loses — a lawful no-op, the ledger unbroken.
+            error.StarTaken => try tenure.record_contest(&t, fact, i),
+            error.IdentityRefused => return error.IdentityRefused,
+            error.UnknownKind => return error.UnknownKind,
+            error.Overdraw => return error.Overdraw,
+            error.LogFull => return error.LogFull,
+        }
+    }
+    t.state = state;
+    // invariant: the continued supply is still lawful past the cut.
+    assert(t.state.taxed <= t.state.issued);
+    return t;
+}
+
+/// Order-independent holder equality: every name held in `whole` resolves to the same
+/// keeper in `across`, and the counts agree. This is r3's crux assertion — the holder
+/// of a name never drifts between a full Cord and a Knot-continued resolution.
+pub fn holders_match(whole: *const tenure.Tenure, across: *const tenure.Tenure) bool {
+    // invariant: both holding sets stay within the named ceiling.
+    assert(whole.holding_count <= tenure.tenure_max_holdings);
+    assert(across.holding_count <= tenure.tenure_max_holdings);
+    if (whole.holding_count != across.holding_count) return false;
+    if (whole.contest_count != across.contest_count) return false;
+    if (whole.state.issued != across.state.issued) return false;
+    if (whole.state.taxed != across.state.taxed) return false;
+    var i: u32 = 0;
+    while (i < whole.holding_count) : (i += 1) {
+        const h = &whole.holdings[i];
+        const name = h.name[0..h.name_len];
+        const who = across.holder_of(name) orelse return false;
+        if (!std.mem.eql(u8, who, h.holder_pk[0..])) return false;
+    }
+    return true;
+}
+
+// ---- selftest: the verdict reads the same across a sealed checkpoint --------------
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+pub fn main() !void {
+    const kf = seeded(0xA1); // funder / genesis issue
+    const kv = seeded(0xC3); // "vega" — uncontested, won in the prefix
+    const kx = seeded(0x11); // "bandun" winner — reserves in the prefix (earlier round)
+    const ky = seeded(0x22); // "bandun" contestant — reserves in the suffix, loses
+
+    const f_issue = fold.mint_fact(kf, fold.kind_issue, 1000, "", "genesis") orelse return error.MintIssue;
+    const f_vega = fold.mint_fact(kv, fold.kind_star_reserve, 100, "vega", "reserve") orelse return error.MintVega;
+    const f_bx = fold.mint_fact(kx, fold.kind_star_reserve, 100, "bandun", "reserve-x") orelse return error.MintBx;
+    const f_by = fold.mint_fact(ky, fold.kind_star_reserve, 100, "bandun", "reserve-y") orelse return error.MintBy;
+
+    // Genesis at round 0; the prefix winners at round 1 (they reference genesis).
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_issue) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+    const roots = [_][cord.hash_len]u8{hg};
+    const b_vega = cord.mint_block(kv, 1, roots[0..], f_vega) orelse return error.BlockVega;
+    const b_bx = cord.mint_block(kx, 1, roots[0..], f_bx) orelse return error.BlockBx;
+    // The suffix contestant at round 2 (later in the whole order) — so kx wins "bandun"
+    // unambiguously by round, and the same win survives the checkpoint below.
+    var hbx: [cord.hash_len]u8 = undefined;
+    cord.address(&b_bx, &hbx);
+    const roots2 = [_][cord.hash_len]u8{hbx};
+    const b_by = cord.mint_block(ky, 2, roots2[0..], f_by) orelse return error.BlockBy;
+
+    const pkx = kx.public_key.toBytes();
+    const pkv = kv.public_key.toBytes();
+    const pky = ky.public_key.toBytes();
+
+    // The truth to match: the WHOLE history resolved as one Cord Dag.
+    var whole = cord.Dag.empty();
+    try cord.add(&whole, g);
+    try cord.add(&whole, b_vega);
+    try cord.add(&whole, b_bx);
+    try cord.add(&whole, b_by);
+    const whole_verdict = try tenure.resolve(&whole);
+    // kx holds "bandun" (earlier round wins), kv holds "vega", ky lost "bandun".
+    {
+        const who = whole_verdict.holder_of("bandun") orelse return error.WholeBandunFree;
+        if (!std.mem.eql(u8, who, pkx[0..])) return error.WholeBandunWrong;
+    }
+    if (whole_verdict.count() != 2) return error.WholeHeld;
+    if (whole_verdict.contests_seen() != 1) return error.WholeContests;
+
+    // The Knot path: seal the prefix (genesis + the two round-1 winners), then continue
+    // the suffix (ky's contest) onto the checkpoint.
+    var prefix = cord.Dag.empty();
+    try cord.add(&prefix, g);
+    try cord.add(&prefix, b_vega);
+    try cord.add(&prefix, b_bx);
+    const tk = try seal_tenure(&prefix);
+    // The checkpoint already holds both names, no contest yet.
+    if (tk.verdict.count() != 2) return error.PrefixHeld;
+    if (tk.verdict.contests_seen() != 0) return error.PrefixContests;
+    {
+        const who = tk.verdict.holder_of("bandun") orelse return error.PrefixBandunFree;
+        if (!std.mem.eql(u8, who, pkx[0..])) return error.PrefixBandunWrong;
+    }
+
+    // The live suffix: ky reserves "bandun" — already sealed in the Knot, so it loses.
+    var suffix = fold.Log.empty();
+    suffix.facts[0] = f_by;
+    suffix.len = 1;
+    const across = try continue_tenure(&tk, &suffix);
+
+    // The crux: "bandun" is still held by kx — the winner sealed in the Knot — and ky is
+    // recorded as a contested loss across the cut. The checkpoint is invisible to the verdict.
+    {
+        const who = across.holder_of("bandun") orelse return error.AcrossBandunFree;
+        if (!std.mem.eql(u8, who, pkx[0..])) return error.AcrossBandunWrong;
+    }
+    {
+        const who = across.holder_of("vega") orelse return error.AcrossVegaFree;
+        if (!std.mem.eql(u8, who, pkv[0..])) return error.AcrossVegaWrong;
+    }
+    if (across.contests_seen() != 1) return error.AcrossContests;
+    if (!std.mem.eql(u8, across.contests[0].name[0..across.contests[0].name_len], "bandun")) return error.AcrossContestName;
+    if (!std.mem.eql(u8, across.contests[0].loser_pk[0..], pky[0..])) return error.AcrossContestLoser;
+
+    // The holder never drifts between the full Cord and the Knot-continued resolution.
+    if (!holders_match(&whole_verdict, &across)) return error.KnotChangedVerdict;
+
+    // Integrity across the cut, three ways.
+    // 1. A Knot corrupted after sealing refuses before a suffix fact is folded.
+    var tk_bad = tk;
+    tk_bad.knot.state.issued += 1;
+    if (continue_tenure(&tk_bad, &suffix)) |_| {
+        return error.CorruptTrusted;
+    } else |err| {
+        if (err != error.KnotCorrupt) return error.WrongCorrupt;
+    }
+
+    // 2. A tampered suffix fact (its own signature broken) refuses IdentityRefused.
+    var f_tamper = f_by;
+    f_tamper.sig[0] ^= 0xff;
+    var suffix_tamper = fold.Log.empty();
+    suffix_tamper.facts[0] = f_tamper;
+    suffix_tamper.len = 1;
+    if (continue_tenure(&tk, &suffix_tamper)) |_| {
+        return error.TamperTrusted;
+    } else |err| {
+        if (err != error.IdentityRefused) return error.WrongTamper;
+    }
+
+    // 3. A suffix tax exceeding the sealed supply overdraws — non-negativity holds
+    //    against the checkpointed past, proof the Knot's supply is the real start.
+    const f_over = fold.mint_fact(kf, fold.kind_tax, 5000, "", "over-tax") orelse return error.MintOver;
+    var suffix_over = fold.Log.empty();
+    suffix_over.facts[0] = f_over;
+    suffix_over.len = 1;
+    if (continue_tenure(&tk, &suffix_over)) |_| {
+        return error.OverdrawCrossed;
+    } else |err| {
+        if (err != error.Overdraw) return error.WrongOverdraw;
+    }
+
+    print("tenure-knot: the prefix seals a Knot holding \"bandun\" for its winner; the suffix contests it and loses\n", .{});
+    print("tenure-knot: \"bandun\" stays held by the same keeper across the cut — a full Cord and a sealed Knot read one holder\n", .{});
+    print("tenure-knot: a corrupt Knot, a tampered suffix fact, and an overdraw past the cut each refuse whole\n", .{});
+    print("GREEN: myc tenure-knot — the verdict reads across a Knot · held={d} · contests={d} · holder never drifts\n", .{ across.count(), across.contests_seen() });
+}

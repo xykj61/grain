@@ -116,6 +116,43 @@ pub const Tenure = struct {
     }
 };
 
+/// Record a winning holding — `name → holder`, at its position in the agreed
+/// order. The shared primitive `resolve` and the Knot-continued resolve both use,
+/// so a name won in a full Cord and a name won across a sealed checkpoint are
+/// recorded by identical bytes.
+pub fn record_holding(t: *Tenure, fact: *const fold.Fact, pos: u32, round: u32) error{TooManyHoldings}!void {
+    // invariant: only a star reservation ever wins a holding.
+    assert(fact.kind == fold.kind_star_reserve);
+    if (t.holding_count >= tenure_max_holdings) return error.TooManyHoldings;
+    const at = t.holding_count;
+    const name = fact.star_slice();
+    // invariant: the recorded name fits the star-name ceiling.
+    assert(name.len <= fold.star_name_max_bytes);
+    tally_copy.copy_disjoint(u8, t.holdings[at].name[0..name.len], name);
+    t.holdings[at].name_len = fact.star_len;
+    tally_copy.copy_disjoint(u8, t.holdings[at].holder_pk[0..], fact.signer_pk[0..]);
+    t.holdings[at].pos = pos;
+    t.holdings[at].round = round;
+    t.holding_count += 1;
+}
+
+/// Record a contested loss — the keeper the agreed order turned away from a name.
+/// The twin of `record_holding` on the losing side of the verdict.
+pub fn record_contest(t: *Tenure, fact: *const fold.Fact, pos: u32) error{TooManyContests}!void {
+    // invariant: only a star reservation can lose a name-contest.
+    assert(fact.kind == fold.kind_star_reserve);
+    if (t.contest_count >= tenure_max_contests) return error.TooManyContests;
+    const at = t.contest_count;
+    const name = fact.star_slice();
+    // invariant: the recorded name fits the star-name ceiling.
+    assert(name.len <= fold.star_name_max_bytes);
+    tally_copy.copy_disjoint(u8, t.contests[at].name[0..name.len], name);
+    t.contests[at].name_len = fact.star_len;
+    tally_copy.copy_disjoint(u8, t.contests[at].loser_pk[0..], fact.signer_pk[0..]);
+    t.contests[at].pos = pos;
+    t.contest_count += 1;
+}
+
 /// Resolve a committed Dag into a Tenure — the namespace verdict of the agreed
 /// order. Refuses the WHOLE resolution on any corruption (a broken fact signature,
 /// an unknown kind, an overdraw for a free name); a name-contest loss is a lawful
@@ -147,29 +184,12 @@ pub fn resolve(dag: *const cord.Dag) error{
         if (fold.fold_fact(&state, fact)) |_| {
             // Accepted — a star reservation the order granted is a winning holding.
             if (fact.kind == fold.kind_star_reserve) {
-                if (t.holding_count >= tenure_max_holdings) return error.TooManyHoldings;
-                const at = t.holding_count;
-                const name = fact.star_slice();
-                tally_copy.copy_disjoint(u8, t.holdings[at].name[0..name.len], name);
-                t.holdings[at].name_len = fact.star_len;
-                tally_copy.copy_disjoint(u8, t.holdings[at].holder_pk[0..], fact.signer_pk[0..]);
-                t.holdings[at].pos = i;
-                t.holdings[at].round = blk.round;
-                t.holding_count += 1;
+                try record_holding(&t, fact, i, blk.round);
             }
         } else |err| switch (err) {
             // The verdict: a reservation the order placed after the winner loses
             // the name — a lawful no-op, folding continues, the ledger unbroken.
-            error.StarTaken => {
-                if (t.contest_count >= tenure_max_contests) return error.TooManyContests;
-                const at = t.contest_count;
-                const name = fact.star_slice();
-                tally_copy.copy_disjoint(u8, t.contests[at].name[0..name.len], name);
-                t.contests[at].name_len = fact.star_len;
-                tally_copy.copy_disjoint(u8, t.contests[at].loser_pk[0..], fact.signer_pk[0..]);
-                t.contests[at].pos = i;
-                t.contest_count += 1;
-            },
+            error.StarTaken => try record_contest(&t, fact, i),
             // Corruption is not a verdict — it refuses the whole resolution.
             error.IdentityRefused => return error.IdentityRefused,
             error.UnknownKind => return error.UnknownKind,
