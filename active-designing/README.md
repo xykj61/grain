@@ -80,10 +80,10 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-slug.md` filenames; this README is the
 | `20260711.012451` | [Granary weave steward — second roof on Skate](20260711-012451_granary-steward-composition-hammock.md) | Tip **424** — list → settle → Dimeroll for weaves |
 | `20260711.011254` | [Steward sight — livelihood + books on one frame](20260711-011254_steward-sight-composition-hammock.md) | Tip **423** — same journal fold on Skate |
 | `20260711.010030` | [Steward composition — livelihood on one Skate frame](20260711-010030_steward-composition-glass-hammock.md) | Tip **422** — list → settle → Dimeroll on glass |
-| `20260710.133500` | [Inference stack — lap 0 hammock](20260710-133500_inference-stack-lap0-hammock.md) | Lattice · Scribble · Lantern · Anvil · assist view; parity **215** |
-| `20260710.132548` | [Dimeroll — lap 3 sight view](20260710-132548_dimeroll-lap3-sight-view.md) | Carriage + books on one Skate frame; parity **210** |
-| `20260710.131212` | [Dimeroll — lap 2 reports](20260710-131212_dimeroll-lap2-reports.md) | Own root; P&L · BS · exception queue; parity **209** |
-| `20260710.125953` | [Dimeroll — hammock scope (lap 1)](20260710-125953_dimeroll-hammock.md) | Centralized books; chart · journal · fold · Skate books view; **landed** parity **207**/**208** |
+| `20260710.133500` | [Inference stack — hammock scope](20260710-133500_inference-stack-lap0-hammock.md) | Lattice · Scribble · Lantern · Anvil · assist view; parity **215** |
+| `20260710.132548` | [Dimeroll — sight view](20260710-132548_dimeroll-lap3-sight-view.md) | Carriage + books on one Skate frame; parity **210** |
+| `20260710.131212` | [Dimeroll — reports](20260710-131212_dimeroll-lap2-reports.md) | Own root; P&L · BS · exception queue; parity **209** |
+| `20260710.125953` | [Dimeroll — hammock scope](20260710-125953_dimeroll-hammock.md) | Centralized books; chart · journal · fold · Skate books view; **landed** parity **207**/**208** |
 | `20260706.185112` | [The witness bolt](20260706-185112_the-witness-bolt.md) | Minimal pinned catalog fixture for NS-L3 witnesses; small, chunk, and beaded variants |
 | `20260706.023912` | [The referential namespace — Mantra grows to hold it](20260706-023912_the-referential-namespace.md) | **recall** and **bolt** seated; NS-L1–L3 wire + batch chunking GREEN parity **166** |
 | `20260705.225412` | [Comlink device wire](20260705-225412_comlink-device-wire.md) | Virtio carriage for sealed datagram — sub-lap 1 fixture selftest GREEN |

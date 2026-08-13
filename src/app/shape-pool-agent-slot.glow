@@ -1,12 +1,12 @@
 ::  name       pool agent slot
 ::  shape      slots - int (@u32)
-::  invariant  one trivial agent slot opens the Pool room; Lap 0 shape
+::  invariant  one trivial agent slot opens the Pool room; the first shape
 ::  example    1
 ::  readers    Pool · TUBE · Surface first resident
 ::  nib        surface-p13-v0
 ::
 ::  Surface Season p13 — first resident in src/app (Pool agents).
-::  Names Pool as Glow's Gall-role host; one slot is the honest Lap 0 open.
+::  Names Pool as Glow's Gall-role host; one slot is the honest first open.
 ::  Does not seat TUBE packaging · APK · or revive pond/apps (elder Rye stays
 ::  beside until each is revived as a new Glow artifact).
 +$  pool-agent-slot-shape
