@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260813.080044
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Mycelium Pledge r2 — the two-phase verdict travels as a format pledge-v1 record
+prompt remember/loop card: take the next agent-doable lap Lindy-first crux-first; make progress before checking in; send each finished increment as its own signed round; STOP at custody gates
+think r1 landed and pushed both remotes (a pledge decided once by the order). Continuing the Pledge arc — r2 lets the verdict travel, mirroring purse_bron carried from a single-column ledger to the two-column two-phase model. A verdict a node cannot hand to another is only a local reading; the ledger must cross as readable bytes.
+think Read the mirror purse_bron.rye in full: render/parse over a format purse-v1 record, conservation as the record's own law (BadInt if balances != issued), the fixed-point re-render, six refusals, a purpose-built bounded reader never a general parser. The one shift from the Purse (single balance column) to the Pledge (balance + reserved) is the record's own law widened by one column: balances PLUS reserves must sum to issued, and each pledge line carries its settlement state which must be one of open/posted/voided or the reader refuses BadInt.
+think Designed the record: `holds <pk> <balance> <reserved>` per account, `pledge <id> <from> <to> <amount> <state> <pos>` per pledge. On parse `received` is unknown after the crossing, so it is held at balance+reserved (preserves the account invariant balance <= received, since a holder received at least what it holds and reserves). tokens() grew from 6 to 7 to fit the pledge line's seven fields.
+think Built a scene that travels BOTH a settled and an open pledge and a reserved holding (what purse_bron could not carry): genesis 200 to Alice; Alice pledges 100 to Bob and posts it (settled, Bob +100); Alice pledges 100 to Carol and leaves it open (reserved 100). Final: Alice 0/reserved 100, Bob 100, Carol 0; pledge1 posted, pledge2 open; conservation 0+100+0 + reserved 100 = 200.
+obs GREEN first pass. Round trip is a fixed point (byte-identical re-render), the recovered verdict answers identical balances/reserves/settlements, conservation of balance+reserved intact at 200, reserved_sum 100. Seven refusals hold: bad header (BadFormat), unknown field (UnknownField), bad hex (BadHex), broken conservation (BadInt), unknown pledge state (BadInt), missing issued (BadFormat), over-long (TooManyPledges at render). Witness GREEN (the Pledge re-runs its green binary at the door), TAME bans clean, width-check exit 0.
+loom witness=mycelium_pledge_bron_witness result=GREEN pledges=2 posted=1 reserved=100 conserved=200 fixed_point=true refusals=7
+file mycelium/pledge_bron.rye r2 — render/parse a format pledge-v1 record; conservation of balance + reserved as the record's own law
+file tools/mycelium_pledge_bron_witness.rish witness — selftest + the Pledge re-runs its green binary at the door
+recommend keep-going Pledge r3 (the two-phase verdict reads across a Knot, mirroring purse_knot), then r4 a real fixture true (app == awk). REMEMBER still ~40 commits stale — a remember/align pass is worth folding the whole Mycelium arc onto the card. A served pledge · per-account mint authority · breach renames (cairn-first) · deep debride · seed force-push stay Keaton's hand.
