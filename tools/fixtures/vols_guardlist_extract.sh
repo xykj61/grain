@@ -23,8 +23,14 @@ fi
 
 # The guard invokes labeling_module_scan.sh with every scanned file as a quoted arg on
 # one line; pull that line, split on quotes, keep the living-surface paths.
+#
+# REDS #74 (closed 20260813, LOWE-J14r4d read-true close): the filter previously kept only
+# rye|md|brix and silently dropped every .rish and .glow guarded site, so the coverage
+# count undershot the hand-count. The guard scans .rish witnesses (the tools/*.rish molt
+# cluster) and one .glow surface too; the filter now names every extension the guard
+# actually scans, so "guarded" is a faithful projection of the guard in force.
 grep -oE 'labeling_module_scan.sh"[^]]*' "$guard" \
   | head -1 \
   | tr '"' '\n' \
-  | grep -E '\.(rye|md|brix)$' \
+  | grep -E '\.(rye|md|brix|rish|glow)$' \
   | sort -u
