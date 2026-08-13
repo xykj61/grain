@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260812.205100
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title DAHL-J10r2 — skate_group_signed, a vote that cannot be fabricated
+prompt keep going the 1,024-round itinerary; next agent-doable lap, send each increment as its own signed round
+think r1 fixed the quorum rule as a pure state machine, yet a bare state machine trusts whoever calls it — a steward could cast a vote in a member's name. r2's crux: bind each vote to the voting member's settled Kumara identity, mirroring skate_circle_signed (r2 of J9).
+think Read skate_circle_signed.rye for the exact idiom — a tagged fixed-length message (tag · group_id · voter · candidate = 13 bytes), a bounded Keyring point→key, a verify_over helper, and a *_signed entry that verifies before touching r1. Kept verify_vote touching no group (the verification half alone), so r3's traveled record can re-check a vote offline with no state to mutate — exactly as J9r3 needed verify_join/verify_request split out.
+think Design decision on founders: the founders are the group's seeded bootstrap (its genesis); every admission after takes signed distinct votes. Signing the votes is the load-bearing act for the quorum crux — a vote is the consent that must not be fabricated. Documented plainly rather than signing the genesis roster, which would add ceremony without touching the crux.
+think Two cruxes proven together: (1) the honesty crux — relabel a vote's candidate after signing and reuse the sig → BadConsent, tally(cate)==0; (2) the lone-steward guard carries through signing — a valid signature lets a member vote once, the repeat refusing AlreadyVoted with tally held at one, so signing cannot fake a quorum from one hand. Also forged-by-wrong-keeper, unknown-keeper (a real member unenrolled), and cross-group each refuse.
+obs GREEN first run — no TAME/width fix needed this round (the compound-assert lesson from r1 carried forward; wrote asserts split from the start). Rung one re-runs GREEN under the witness, confirming additivity.
+loom witness=dahl_j10_skate_group_signed_witness cases=6 msg_bytes=13 result=GREEN
+file pond/apps/skate_group_signed.rye r2 — each vote signed by its member's Kumara identity over (tag · group id · voter · candidate); verify before touching r1's group
+file tools/dahl_j10_skate_group_signed_witness.rish witness — rung one re-run + signed-quorum, lone-steward-through-signing, relabel, forged, unknown-keeper, cross-group
+file work-in-progress/REMEMBER.md appended the DAHL-J10r2 landing to the Season 3 arc
+recommend keep-going DAHL-J10r3 — the signed group travels as a format skate-group-v1 Bron record and parses back byte-for-byte, still quorum-honest offline (a vote signature flipped after the crossing refuses), mirroring skate_circle_bron

@@ -1,0 +1,42 @@
+# tools/dahl_j10_skate_group_signed_witness.rish — Season 3 Journey 10 (Membership), Rung 2.
+#
+# Rung one fixed the quorum rule as a pure state machine — a candidate is seated only when a quorum of
+# distinct members votes. Yet a bare state machine trusts whoever calls it: a steward could cast a vote in
+# a member's name. pond/apps/skate_group_signed.rye binds each vote to the voting member's settled Kumara
+# identity — a vote is signed by the very member it speaks for, over the exact facts (a tag so a vote is
+# never replayed as another act, the group id so a vote cannot cross groups, the voter, the candidate). A
+# Keyring maps a point to its keeper key; vote_signed verifies the voter's own signature before touching
+# rung one's group, refusing UnknownKeeper (unenrolled) or BadConsent (unverifying). The honesty crux
+# mirrors the circle's relabel — change the candidate after signing and reuse the signature, it falls; and
+# the lone-steward guard carries through r1 unchanged (a signed vote still counts once, never twice, so
+# signing cannot fake a quorum from one hand). Additive — composes skate_group + kumara over public API;
+# rung one re-runs GREEN. Demo keeper seeds only, no real key, no network (serve reaches the custody gate).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/dahl_j10_skate_group_signed_witness.rish
+
+say "dahl-j10r2: Language EN — each vote carries the voting member's Kumara signature; a vote cannot be fabricated or faked from one hand."
+say "dahl-j10r2: Lens TAME — a relabelled candidate, a forged vote, an unenrolled voter, and a cross-group signature each refuse; the double-vote guard carries through."
+
+let zig = "vendor/zig-toolchain/zig"
+
+# Rung one re-runs GREEN — the signed layer is additive over it.
+let r1_bin = "pond/bin/skate-group"
+let r1_build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_group.rye -femit-bin=${r1_bin}"]
+assert r1_build.ok else "dahl-j10r2: rung-one skate_group build failed"
+let r1_run = run ["sh" "-c" "${r1_bin} selftest 2>&1"]
+assert r1_run.ok else "dahl-j10r2: rung-one selftest exited non-zero"
+assert r1_run.out contains "GREEN" else "dahl-j10r2: rung-one selftest did not speak GREEN"
+
+let bin = "pond/bin/skate-group-signed"
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_group_signed.rye -femit-bin=${bin}"]
+assert build.ok else "dahl-j10r2: skate_group_signed build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "dahl-j10r2: skate_group_signed selftest exited non-zero"
+assert selftest.out contains "GREEN" else "dahl-j10r2: selftest did not speak GREEN"
+assert selftest.out contains "two signed votes from distinct members seated a candidate" else "dahl-j10r2: signed-quorum crux missing"
+assert selftest.out contains "signing cannot fake a quorum from one hand" else "dahl-j10r2: lone-steward-through-signing crux missing"
+assert selftest.out contains "a steward cannot swap whom a member voted for" else "dahl-j10r2: relabel crux missing"
+
+say "GREEN: dahl-j10r2 — skate_group_signed binds each vote to its member's Kumara identity; a vote cannot be fabricated, relabelled, or doubled from one hand."
