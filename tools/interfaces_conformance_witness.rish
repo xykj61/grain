@@ -1,6 +1,6 @@
 # interfaces_conformance_witness.rish — the reference module keeps the interface shape.
 #
-# Development-season lap 3. The interfaces-surface contract
+# Acme DX dev season, interfaces surface · 20260811. The interfaces-surface contract
 # (active-designing/20260811-170901_acme-dx-interfaces-surface-contract.md) names the
 # shape a Grain module presents: an API (opening triad, a named bound, invariant
 # asserts, a snake_case verb), a CLI (a selftest verb that greens), and a witness. This
