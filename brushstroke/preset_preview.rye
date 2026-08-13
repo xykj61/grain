@@ -1,0 +1,194 @@
+//! brushstroke/preset_preview.rye — HUNK33: the Skate preview of a named filter, seen before it is committed.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK33.
+//! Design read: active-designing/20260813-183502_hunk-preset-preview-exploration.md.
+//! Teachers, thanked clean-room: gratitude/qoi.md (the open codec) · the named filter strips of Instagram / VSCO /
+//! iCloud Photos — a keeper sees "vivid" or "noir" over their own photo before tapping it (concept only, siloed).
+//!
+//! HUNK30 gave a keeper filters by name; HUNK13 gave the eye — a pending edit-list previewed as a Skate grid before
+//! it is committed. Neither lets a keeper LOOK at a filter by its name. This rung joins the two: `preview_preset`
+//! looks a recipe up in a `PresetBook` (HUNK30's `find`) and previews it (HUNK13's `preview` — pure, the source
+//! untouched, nothing stored). `preview_book` is the filter strip: every named filter previewed over one image at
+//! once, so a keeper scrolls the whole book and taps the one they want, none committed. No name is stored, no bead
+//! written, no network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/preset_preview.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const filter_preset = @import("filter_preset.rye");
+const edit_preview = @import("edit_preview.rye");
+const image_skate = @import("image_skate.rye");
+const skate = @import("skate_grid.rye");
+
+pub const preset_preview_version = "20260813.183502";
+
+/// Preview a named filter over a source image: look the recipe up in the book by name, then preview its edit-list
+/// as a Skate grid (HUNK13's `preview` — pure, the source never touched, nothing stored). An absent name refuses
+/// `UnknownPreset` before a single verb replays or a grid is built; a verb's own refusal folds through `preview`
+/// by that verb's name, and the down-map's own `EmptyImage` / `GridTooLarge` surface unchanged — no new failure
+/// mode, only proven refusals sequenced.
+pub fn preview_preset(
+    allocator: std.mem.Allocator,
+    book: *const filter_preset.PresetBook,
+    preset_name: []const u8,
+    source: *const qoi.Pixmap,
+    cols: u32,
+    rows: u32,
+) !skate.Grid {
+    // invariant: the book stays within its named ceiling before a lookup.
+    assert(book.len() <= filter_preset.max_presets);
+    // invariant: the source is a well-formed image — four bytes per pixel — the whole pipeline relies on.
+    assert(source.pixels.len == @as(usize, source.width) * @as(usize, source.height) * 4);
+
+    const idx = book.find(preset_name) orelse return error.UnknownPreset;
+    // invariant: a found preset sits within the held count.
+    assert(idx < book.len());
+    return edit_preview.preview(allocator, source, &book.at(idx).list, cols, rows);
+}
+
+/// The filter strip: preview EVERY named filter in the book over one source, filling `out_grids` in book order and
+/// returning the count previewed. The property `edit_preview` cannot claim — a keeper sees the whole book of
+/// named filters over their own photo at once, none committed. Refuses `Overflow` when the caller's slice is
+/// smaller than the book, rather than writing past it; each preview is pure, so the source is read many times and
+/// touched never.
+pub fn preview_book(
+    allocator: std.mem.Allocator,
+    book: *const filter_preset.PresetBook,
+    source: *const qoi.Pixmap,
+    cols: u32,
+    rows: u32,
+    out_grids: []skate.Grid,
+) !u32 {
+    // invariant: the book stays within its named ceiling before the strip is drawn.
+    assert(book.len() <= filter_preset.max_presets);
+    if (out_grids.len < book.len()) return error.Overflow;
+
+    var i: u32 = 0;
+    while (i < book.len()) : (i += 1) {
+        // invariant: the strip index never runs past the held presets or the caller's slice.
+        assert(i < book.len());
+        assert(i < out_grids.len);
+        out_grids[i] = try edit_preview.preview(allocator, source, &book.at(i).list, cols, rows);
+    }
+    // invariant: exactly one grid per held preset was drawn.
+    assert(i == book.len());
+    return book.len();
+}
+
+// --- selftest: preview named filters over a colour image, prove each named preview equals the recipe's own
+//     preview, that distinct names differ in the view, that the filter strip fills one grid per preset, that a
+//     preview is non-destructive and deterministic and genuinely lit, and that the named refusals fire ----------
+
+/// Build a small image where each pixel carries a distinct colour, so a filter's colour work is visible in the
+/// down-mapped grid. Pixel (x,y) = (x·40+20, y·30+10, (x*3+y*7)·5, 255).
+fn craft_colour(allocator: std.mem.Allocator, w: u32, h: u32) !qoi.Pixmap {
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            buf[off] = @intCast((x * 40 + 20) & 0xff);
+            buf[off + 1] = @intCast((y * 30 + 10) & 0xff);
+            buf[off + 2] = @intCast((x * 3 + y * 7) * 5 & 0xff);
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const pm = try craft_colour(garden, 8, 8);
+    const cols: u32 = 4;
+    const rows: u32 = 4;
+
+    const book = try filter_preset.stock_book();
+
+    // Previews by name, equalling the recipe's own preview: `vivid` looked up by name previews to exactly the grid
+    // `edit_preview.preview` produces over that same recipe, cell-for-cell and fg-for-fg.
+    const vivid_idx = book.find("vivid") orelse return error.NoVivid;
+    const by_name = try preview_preset(garden, &book, "vivid", &pm, cols, rows);
+    const by_hand = try edit_preview.preview(garden, &pm, &book.at(vivid_idx).list, cols, rows);
+    assert(std.mem.eql(u8, by_name.cells, by_hand.cells));
+    assert(std.mem.eql(u8, by_name.fg_index, by_hand.fg_index));
+
+    // The named preview shows the filter's real work: `mono` (grayscale) previews to a different view than `vivid`
+    // (saturated) over the same image — a name is not a no-op in the eye.
+    const mono_view = try preview_preset(garden, &book, "mono", &pm, cols, rows);
+    assert(!std.mem.eql(u8, mono_view.fg_index, by_name.fg_index));
+
+    // The filter strip: preview EVERY named filter over one photo at once — one grid per preset, each equal to that
+    // preset's own `preview_preset` cell-for-cell. A keeper scrolls the whole book over their photo, none committed.
+    const strip = try garden.alloc(skate.Grid, filter_preset.max_presets);
+    const drawn = try preview_book(garden, &book, &pm, cols, rows, strip);
+    assert(drawn == book.len());
+    var i: u32 = 0;
+    while (i < drawn) : (i += 1) {
+        const one = try preview_preset(garden, &book, book.at(i).name(), &pm, cols, rows);
+        assert(std.mem.eql(u8, strip[i].cells, one.cells));
+        assert(std.mem.eql(u8, strip[i].fg_index, one.fg_index));
+    }
+
+    // Non-destructive and deterministic: the source is untouched, and the same name previews to the same grid twice.
+    assert(pm.pixels[0] == 20); // the source red channel is untouched
+    assert(pm.pixels[3] == 255); // the source alpha is untouched
+    const again = try preview_preset(garden, &book, "vivid", &pm, cols, rows);
+    assert(std.mem.eql(u8, again.cells, by_name.cells));
+    assert(std.mem.eql(u8, again.fg_index, by_name.fg_index));
+
+    // Genuinely seen: a named preview rasterizes to a lit canvas.
+    const view_scale: u32 = 1;
+    const width: u32 = cols * skate.cell_w * view_scale;
+    const height: u32 = rows * skate.cell_h * view_scale;
+    const stride: u32 = width * 4;
+    const canvas = try garden.alloc(u8, @as(usize, stride) * @as(usize, height));
+    const bg = skate.Color{ .r = 1, .g = 2, .b = 3 };
+    const fg = skate.Color{ .r = 200, .g = 200, .b = 200 };
+    by_name.rasterize(canvas, stride, @intCast(width), @intCast(height), bg, fg, view_scale);
+    const lit = by_name.lit_pixel_count(canvas, stride, @intCast(width), @intCast(height), bg);
+    assert(lit > 0);
+
+    // Refusals named: an unknown filter name refuses UnknownPreset before a grid is built.
+    if (preview_preset(garden, &book, "nosuch", &pm, cols, rows)) |_| {
+        return error.UnknownSlipped;
+    } else |e| {
+        if (e != error.UnknownPreset) return error.WrongUnknown;
+    }
+    // The down-map's own refusals surface unchanged through the named preview: an empty grid dimension refuses
+    // EmptyImage, an over-ceiling grid refuses GridTooLarge.
+    if (preview_preset(garden, &book, "vivid", &pm, 0, rows)) |_| return error.EmptySlipped else |e| {
+        if (e != error.EmptyImage) return error.WrongEmpty;
+    }
+    if (preview_preset(garden, &book, "vivid", &pm, image_skate.max_map_cols + 1, rows)) |_| {
+        return error.TooLargeSlipped;
+    } else |e| {
+        if (e != error.GridTooLarge) return error.WrongTooLarge;
+    }
+    // The filter strip refuses Overflow rather than write past a slice smaller than the book.
+    const tiny = try garden.alloc(skate.Grid, book.len() - 1);
+    if (preview_book(garden, &book, &pm, cols, rows, tiny)) |_| return error.OverflowSlipped else |e| {
+        if (e != error.Overflow) return error.WrongOverflow;
+    }
+
+    print("GREEN preset-preview: a stock book of {d} named filters previews over one 8x8 colour image — vivid " ++
+        "looked up by name previews to exactly edit_preview.preview over its recipe cell-for-cell; mono differs " ++
+        "from vivid in the view (a name is not a no-op); the filter strip fills {d} grids, one per preset, each " ++
+        "equal to its own single preview; a preview is non-destructive and deterministic and rasterizes to {d} " ++
+        "lit pixels; an unknown name refuses UnknownPreset before a grid, an empty grid EmptyImage, an over-ceiling " ++
+        "grid GridTooLarge, and a short strip slice Overflow — seen by name, not committed; no name, no bead, no " ++
+        "funds\n", .{ book.len(), drawn, lit });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: preset_preview selftest\n", .{});
+    return 1;
+}

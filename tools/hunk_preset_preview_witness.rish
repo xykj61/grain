@@ -1,0 +1,48 @@
+# tools/hunk_preset_preview_witness.rish — the Skate preview of a named filter, seen before committed (HUNK33).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK33.
+# Design read: active-designing/20260813-183502_hunk-preset-preview-exploration.md.
+# Teachers, thanked clean-room: gratitude/qoi.md (the open codec) · the named filter strips of Instagram / VSCO /
+# iCloud Photos (concept only, siloed).
+#
+# HUNK30 gave a keeper filters by name; HUNK13 gave the eye — a pending edit-list previewed as a Skate grid before
+# it is committed. This rung joins the two: `brushstroke/preset_preview.rye` `preview_preset` looks a recipe up in a
+# PresetBook by name and previews it (pure — the source untouched, nothing stored), and `preview_book` is the filter
+# strip: every named filter previewed over one image at once. The selftest proves a named preview equals
+# edit_preview.preview over its recipe cell-for-cell, that distinct names differ in the view, that the strip fills
+# one grid per preset each equal to its own preview, that a preview is non-destructive and deterministic and lit,
+# and that an unknown name, an empty grid, an over-ceiling grid, and a short strip slice each refuse by name. No
+# network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_preset_preview_witness.rish
+
+say "hunk-preset-preview: Language EN — HUNK33 joins two proven journeys: a keeper SEES a filter by its name over their own photo before tapping it, and the filter strip previews the whole book at once — no name, no bead, no funds."
+say "hunk-preset-preview: Style Radiant — a preview is a look, not a commit: the source stays whole, nothing is stored, and each named view faithfully shows exactly what that filter would produce."
+say "hunk-preset-preview: Lens TAME — pure composition over two proven seams, positive invariants per fn, no new failure mode: an unknown name and the down-map's own refusals surface by their named errors."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/preset_preview"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/preset_preview.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-preset-preview: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-preset-preview: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+say "hunk-preset-preview: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN preset-preview' && echo yes"]
+assert (trim green.out) == "yes" else "hunk-preset-preview: selftest did not print the GREEN preset-preview line"
+
+let byname = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'looked up by name previews to exactly edit_preview.preview over its recipe cell-for-cell' && echo yes"]
+assert (trim byname.out) == "yes" else "hunk-preset-preview: the by-name preview was not proven equal to the recipe's own preview"
+
+let strip = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the filter strip fills' && echo yes"]
+assert (trim strip.out) == "yes" else "hunk-preset-preview: the filter strip was not proven to fill one grid per preset"
+
+let committed = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'seen by name, not committed' && echo yes"]
+assert (trim committed.out) == "yes" else "hunk-preset-preview: the seen-not-committed guarantee was not stated"
+
+say "hunk-preset-preview: GREEN — a filter is seen by its name before it is committed; the strip previews the whole book; refusals named."
