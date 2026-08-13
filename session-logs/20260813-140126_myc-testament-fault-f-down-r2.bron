@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260813.140126
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Testament r2 — a certificate sealed with f down verifies offline
+prompt Take the next agent-doable lap Lindy-first crux-first on the road past BUHR; approve own design rounds; send each increment; stop at custody gates. baton prin recur.
+think Read REMEMBER, the 1,024-round itinerary, and the six-season double-seat expansion. The loop stands deep in Season D (Kresfa & Mycelium), Constel journey closed r1-r4, Testament journey opened with r1 landed (GREEN). Next Lindy-first crux on the whole road is Testament r2 — sealed with f down.
+think Read the r1 design read and mycelium/testament.rye. r1 already exposes seal_subset (first N ships seal) and verify (offline, boots roster from names, derives Byzantine threshold). r2's crux: carry the roll's fault tolerance INTO the offline certificate — a seal by n-f ships still names the whole roster, verify believes it from the names alone, one ship more refuses BelowQuorum.
+think Read muster.byzantine_threshold: f = (n-1)/3, threshold = n - f. For the five-ship roster n=5, f=1, threshold=4. Mirrored the established r2 shape (mycelium/constel_depart.rye reach_quorum_up) so the family reads consistently, with the offline-certificate distinction made explicit.
+think Wrote mycelium/testament_fault.rye — seal_with_down(c, dag, account_pk, down) seals with c.count-down ships via testament.seal_subset, asserting the WHOLE roster's names still travel (roster_count == c.count) though only up ships voiced. main proves: whole roster up verifies offline; f down verifies offline (survivors sit exactly at threshold, threshold_of the certificate == full threshold); f+1 down refuses BelowQuorum at the honest edge; a permanently smaller roster re-derives its own lower threshold and is believed.
+think Wrote tools/mycelium_testament_fault_witness.rish mirroring the family witness shape (three prose lens lines, build, selftest claim asserts, r1 crux re-run at the door). GREEN first build and run.
+obs The distinction from Constel's own depart rung is the offline certificate: there the survivors reached quorum in one process; here their sealed belief travels as a Testament whose FULL roster names carry forward, so a recipient boots the whole constellation and measures survivors against ITS threshold, never a shrunken one. seal_subset (r1) already carried the whole roster by construction (carry_roster copies all names before adding signer_count voices), so r2 is pure composition — no edit to testament.rye.
+obs TAME bans clean (testament_fault.rye not on the zero-assert ratchet), width-check exit 0. Composes testament + constel + muster + voucher public API only; demo seeds — no key, funds, network, real value. A served testament (ships attesting over Comlink) reaches the Comlink-served custody gate — Keaton's hand — untouched.
+loom witness=mycelium_testament_fault_witness build=green selftest=green r1_door=green ships=5 threshold=4 f=1
+file mycelium/testament_fault.rye r2 crux — seal with f down, verify the offline certificate against the full named roster, refuse BelowQuorum one past the edge
+file tools/mycelium_testament_fault_witness.rish GREEN witness — build · selftest claims · Testament r1 crux re-run at the door
+recommend keep-going Testament r3 — a format testament-v1 record carries roster names + shared claim + one signature line per sealing ship, render/parse a fixed point, verified from the record alone; then r4 reads true against a real fixture. A served testament reaches the Comlink gate.
