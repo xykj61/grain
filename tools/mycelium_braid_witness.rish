@@ -1,0 +1,54 @@
+# tools/mycelium_braid_witness.rish — the Braid: a linked chain committed whole or reversed whole (r1).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · the linked-chain verdict · rung r1 — the crux.
+# Every Mycelium ledger before this settles the fate of ONE transfer (the Purse a per-account double-spend,
+# the Pledge a single transfer across two phases). The Braid settles a CHAIN of linked transfers as one atom:
+# a payment that routes through a hop, a swap, a three-book settlement — every step lands TOGETHER or not at
+# all, so no observer ever sees the chain half-applied. That all-or-nothing across several linked moves is
+# TigerBeetle's linked events, read here as the agreed order's own law.
+#
+# The crux this witness proves is ATOMICITY across a chain: a three-link braid routes coins
+# Alice->Bob->Carol->Dave, and when the FINAL step overdraws, the whole braid reverses — not one coin moves,
+# not even the earlier links that afford on their own. Because the Cord's order is deterministic regardless of
+# arrival, every honest node names the identical commit-or-reject verdict (proven by swapping the two
+# independent genesis roots, a valid arrival permutation, to one identical ledger). Conservation is unwidened:
+# a committed braid moves coins between accounts, a rejected braid moves nothing, so the balances always sum to
+# exactly what genesis issued. A chain whose final link never arrives stays pending; an out-of-sequence link, a
+# malformed body, a star reservation, and a broken signature each refuse whole. Composes cord + fold + kumara
+# public API only; every buffer bounded; demo keeper seeds — no key, no funds, no network, no custody.
+#
+# Scope: active-designing/20260813-081709_mycelium-braid-linked-atomic-chain-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mycelium_braid_witness.rish
+
+say "mycelium-braid: Language EN — many strands drawn tight into one; they hold together or come undone together, and never does one hand see the braid half-woven."
+say "mycelium-braid: Style Radiant — the Pledge decided the fate of one promise; the Braid decides the fate of a whole chain, and the Cord decides it once, plainly, for every hand alike."
+say "mycelium-braid: Lens TAME — the verdict composes cord + fold + kumara public API; every buffer bounded; conservation of balance holds on every path; an unclosed chain stays pending, and out-of-sequence · malformed · star · broken-signature each refuse whole; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/braid"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/braid.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-braid: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mycelium-braid: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-braid: selftest did not speak GREEN"
+assert selftest.out contains "commits whole or reverses whole" else "mycelium-braid: atomic commit-or-reverse verdict claim missing"
+assert selftest.out contains "every honest arrival names the same verdict" else "mycelium-braid: arrival-order-independence claim missing"
+assert selftest.out contains "conservation holds" else "mycelium-braid: conservation claim missing"
+assert selftest.out contains "stays pending" else "mycelium-braid: open-chain-stays-pending claim missing"
+assert selftest.out contains "refuse whole" else "mycelium-braid: refusal claim missing"
+
+# The Cord whose agreed order the Braid reads, and the Mycelium fold whose signed-fact model and additive
+# verify_fact it reuses, both stand at the door — their own selftests prove the machinery the verdict rests on.
+let cord = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord.rye -femit-bin=mycelium/bin/cord && mycelium/bin/cord 2>&1"]
+assert cord.ok else "mycelium-braid: the Cord the Braid reads is not GREEN"
+assert cord.out contains "GREEN" else "mycelium-braid: the Cord did not speak its GREEN"
+
+let fold = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/fold.rye -femit-bin=mycelium/bin/fold && mycelium/bin/fold 2>&1"]
+assert fold.ok else "mycelium-braid: the Mycelium fold the Braid reuses is not GREEN"
+assert fold.out contains "GREEN" else "mycelium-braid: the Mycelium fold did not speak its GREEN"
+
+say "mycelium-braid: GREEN — a linked chain of transfers commits whole or reverses whole, decided once by the agreed order and named identically by every honest arrival; conservation of balance holds on every path, an unclosed chain stays pending, and out-of-sequence · malformed · star · broken-signature each refuse whole; the Cord and the fold stand at the door."

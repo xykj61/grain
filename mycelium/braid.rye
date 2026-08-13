@@ -1,0 +1,640 @@
+//! mycelium/braid.rye — the Braid: a linked chain of transfers, committed whole or not at all.
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · Journey rung r1 — the crux.
+//! Design read: active-designing/20260813-081709_mycelium-braid-linked-atomic-chain-exploration.md
+//!
+//! Every Mycelium ledger before this settles the fate of ONE transfer — the Purse decides a
+//! per-account double-spend, the Pledge carries a single transfer across two phases. Yet a
+//! real exchange is rarely one move: a payment routes through a hop, a swap trades one thing
+//! for another, a settlement touches three books at once — and every step must land TOGETHER
+//! or not at all, so no observer ever sees the chain half-applied. That all-or-nothing across
+//! several LINKED moves is TigerBeetle's other signature (linked events), read here as the
+//! agreed order's own law.
+//!
+//! A BRAID is an ordered chain of linked transfers sharing one 16-byte braid id, each link a
+//! signed kind_tax fact carrying its SEQUENCE in the chain and a flag marking the LAST link.
+//! The links chain on the Cord causally — link k+1 names link k's block as its parent — so
+//! the agreed order always places seq 0, 1, 2, ... in order, no matter what order a node first
+//! heard the blocks. When the final link commits the chain is complete, and the order resolves
+//! it as ONE atom: if every link can afford its transfer at its point in the chain (reading
+//! each sender's balance forward through the chain's own earlier moves) the whole braid
+//! COMMITS; if any link cannot afford, the whole braid REJECTS — not one coin moves, not even
+//! the earlier links that would have paid on their own.
+//!
+//! The crux is that last line: a three-link braid whose first two steps afford alone, but
+//! whose final step overdraws, leaves the ledger UNTOUCHED — the atom is indivisible, so an
+//! early success cannot survive a late failure. Because the Cord's order is deterministic
+//! regardless of arrival, every honest node names the identical commit-or-reject verdict —
+//! proven here by resolving every arrival permutation of the chain's blocks to one identical
+//! ledger. Conservation is unwidened: a committed braid moves coins between accounts (no coin
+//! made or destroyed), a rejected braid moves nothing, so the balances always sum to exactly
+//! what genesis issued.
+//!
+//! A link rides the Cord editing nothing: `fold.verify_fact` trusts a fact by its signature
+//! over kind·amount·star·body without restricting the kind, so the Braid reads the same signed
+//! kind_tax facts the Purse does and discriminates a link by a body tag bound to the signer's
+//! signature — `L·id·seq·last·to` transfers `amount` to `to` as sequence `seq` of braid `id`,
+//! and every link may carry a DIFFERENT signer (the chain routes coins hand to hand). A genesis
+//! credit is a kind_issue whose body names the account to fund, exactly as the Purse's.
+//!
+//! Grown beside cord.rye, fold.rye, purse.rye, pledge.rye — editing none, composing cord +
+//! fold + kumara public API only. Siloed, dev-only, demo seeds — no real key, no funds, no
+//! network, no custody. A served braid reaches the Comlink-served gate (Keaton's hand).
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/braid.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("cord.rye");
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+
+/// A keeper's public key, in its encoded (holder-identity) width.
+pub const pk_len: u32 = kumara.PublicKey.encoded_length;
+
+/// A braid id — a fixed 16-byte tag naming one linked chain across all its links.
+pub const id_len: u32 = 16;
+
+/// The body tag marking a link — the phase, bound into the signer's signature.
+pub const tag_link: u8 = 'L';
+
+/// One braid's resolution.
+pub const state_pending: u8 = 0;
+pub const state_committed: u8 = 1;
+pub const state_rejected: u8 = 2;
+
+/// At most one link opens per block, and each account enters at most twice per link
+/// (a sender and a recipient); the Dag holds a journey of blocks (256).
+pub const braid_max_accounts: u32 = 2 * cord.cord_max_blocks;
+
+/// At most one braid opened per block — the Dag holds a journey of blocks.
+pub const braid_max_braids: u32 = cord.cord_max_blocks;
+
+/// The longest a single linked chain may run — a named bound on the atom's width, so the
+/// affordability walk and its scratch table stay bounded (TigerBeetle bounds a linked chain too).
+pub const braid_max_chain: u32 = 8;
+
+/// The affordability scratch touches at most a sender and a recipient per link.
+pub const braid_max_touched: u32 = 2 * braid_max_chain;
+
+/// One account's balance, and what genesis issued (tracked on the Ledger).
+pub const Account = struct {
+    pk: [pk_len]u8 = undefined,
+    balance: u64 = 0,
+};
+
+/// One link the agreed order seated into a braid — a transfer from one purse to another,
+/// at a fixed sequence in the chain.
+pub const Link = struct {
+    from: [pk_len]u8 = undefined,
+    to: [pk_len]u8 = undefined,
+    amount: u64 = 0,
+    seq: u8 = 0,
+};
+
+/// One linked chain the order gathered — its ordered links, whether the final link has
+/// closed it, and the atom's verdict (pending until closed, then committed or rejected).
+pub const Braid = struct {
+    id: [id_len]u8 = undefined,
+    links: [braid_max_chain]Link = undefined,
+    link_count: u32 = 0,
+    closed: bool = false,
+    state: u8 = state_pending,
+};
+
+/// The resolved linked-chain ledger: every account's balance, every braid's atom-verdict,
+/// and the coins genesis issued — over which balance always sums to exactly what was issued.
+pub const Ledger = struct {
+    accounts: [braid_max_accounts]Account = undefined,
+    account_count: u32 = 0,
+    braids: [braid_max_braids]Braid = undefined,
+    braid_count: u32 = 0,
+    total_issued: u64 = 0,
+
+    /// The count of braids the order gathered (pending, committed, or rejected).
+    pub fn braids_seen(l: *const Ledger) u32 {
+        // invariant: the braid count never exceeds the named ceiling.
+        assert(l.braid_count <= braid_max_braids);
+        return l.braid_count;
+    }
+
+    /// The count of braids the order committed whole.
+    pub fn committed_seen(l: *const Ledger) u32 {
+        var n: u32 = 0;
+        var i: u32 = 0;
+        while (i < l.braid_count) : (i += 1) {
+            if (l.braids[i].state == state_committed) n += 1;
+        }
+        // invariant: the committed count never exceeds the braids seated.
+        assert(n <= l.braid_count);
+        return n;
+    }
+
+    /// The count of braids the order rejected whole.
+    pub fn rejected_seen(l: *const Ledger) u32 {
+        var n: u32 = 0;
+        var i: u32 = 0;
+        while (i < l.braid_count) : (i += 1) {
+            if (l.braids[i].state == state_rejected) n += 1;
+        }
+        // invariant: the rejected count never exceeds the braids seated.
+        assert(n <= l.braid_count);
+        return n;
+    }
+
+    /// The count of braids still open — the final link never arrived.
+    pub fn pending_seen(l: *const Ledger) u32 {
+        var n: u32 = 0;
+        var i: u32 = 0;
+        while (i < l.braid_count) : (i += 1) {
+            if (l.braids[i].state == state_pending) n += 1;
+        }
+        // invariant: the pending count never exceeds the braids seated.
+        assert(n <= l.braid_count);
+        return n;
+    }
+
+    /// One account's balance, or zero when the account never appeared.
+    pub fn balance_of(l: *const Ledger, pk: []const u8) u64 {
+        // invariant: an account key is always a full holder identity.
+        assert(pk.len == pk_len);
+        if (account_index(l, pk)) |k| return l.accounts[k].balance;
+        return 0;
+    }
+
+    /// The sum of every account's balance — always equal to `total_issued`, since neither a
+    /// committed braid (coins move) nor a rejected braid (nothing moves) makes or destroys a coin.
+    pub fn balances_sum(l: *const Ledger) u64 {
+        // invariant: accounts stay within the ceiling before we sum them.
+        assert(l.account_count <= braid_max_accounts);
+        var sum: u64 = 0;
+        var i: u32 = 0;
+        while (i < l.account_count) : (i += 1) sum += l.accounts[i].balance;
+        // invariant: conservation — the balances sum to exactly what genesis issued.
+        assert(sum == l.total_issued);
+        return sum;
+    }
+
+    /// The braid seated at index `i`, or null past the count.
+    pub fn braid_at(l: *const Ledger, i: u32) ?*const Braid {
+        // invariant: the braid count never exceeds the named ceiling.
+        assert(l.braid_count <= braid_max_braids);
+        if (i >= l.braid_count) return null;
+        return &l.braids[i];
+    }
+};
+
+/// Index of an account by its key, or null when absent.
+fn account_index(l: *const Ledger, pk: []const u8) ?u32 {
+    // invariant: an account key is always a full holder identity.
+    assert(pk.len == pk_len);
+    var i: u32 = 0;
+    while (i < l.account_count) : (i += 1) {
+        if (std.mem.eql(u8, l.accounts[i].pk[0..], pk)) return i;
+    }
+    return null;
+}
+
+/// Find an account, or seat a fresh one at zero. Refuses past the account ceiling.
+fn ensure_account(l: *Ledger, pk: []const u8) error{TooManyAccounts}!u32 {
+    // invariant: an account key is always a full holder identity.
+    assert(pk.len == pk_len);
+    if (account_index(l, pk)) |k| return k;
+    if (l.account_count >= braid_max_accounts) return error.TooManyAccounts;
+    const at = l.account_count;
+    tally_copy.copy_disjoint(u8, l.accounts[at].pk[0..], pk);
+    l.accounts[at].balance = 0;
+    l.account_count += 1;
+    // invariant: growth is exactly one seat, never past the ceiling.
+    assert(l.account_count <= braid_max_accounts);
+    return at;
+}
+
+/// Index of a braid by its id, or null when no chain carries it.
+fn braid_index(l: *const Ledger, id: []const u8) ?u32 {
+    // invariant: a braid id is always the fixed tag width.
+    assert(id.len == id_len);
+    var i: u32 = 0;
+    while (i < l.braid_count) : (i += 1) {
+        if (std.mem.eql(u8, l.braids[i].id[0..], id)) return i;
+    }
+    return null;
+}
+
+/// The recipient key named in a link body's `to` field — a full, valid holder key, or a
+/// refusal when it is not exactly one parseable key.
+fn valid_key(bytes: []const u8) error{Malformed}![]const u8 {
+    if (bytes.len != pk_len) return error.Malformed;
+    var rk: [pk_len]u8 = undefined;
+    tally_copy.copy_disjoint(u8, rk[0..], bytes[0..pk_len]);
+    _ = kumara.PublicKey.fromBytes(rk) catch return error.Malformed;
+    return bytes;
+}
+
+/// The genesis-credit body of a kind_issue fact names the account to fund — one full key.
+fn credit_recipient(fact: *const fold.Fact) error{Malformed}![]const u8 {
+    return valid_key(fact.body_slice());
+}
+
+/// Credit an account — its balance rises. A wrap refuses whole.
+fn credit(l: *Ledger, pk: []const u8, amount: u64) error{ Overdraw, TooManyAccounts }!void {
+    const k = try ensure_account(l, pk);
+    const nb = l.accounts[k].balance +% amount;
+    if (nb < l.accounts[k].balance) return error.Overdraw; // wrap refuse
+    l.accounts[k].balance = nb;
+    // invariant: a credited balance is at least the coins just added.
+    assert(l.accounts[k].balance >= amount);
+}
+
+/// The full error set the linked-chain law can refuse with.
+pub const FoldError = error{
+    IdentityRefused,
+    Malformed,
+    Overdraw,
+    StarReserve,
+    UnknownKind,
+    BraidBroken,
+    TooManyAccounts,
+    TooManyBraids,
+    TooManyLinks,
+};
+
+/// Evaluate a closed braid as one atom: walk its links in sequence, reading each sender's
+/// balance forward through the chain's own earlier moves; if every link affords, commit them
+/// all to the real ledger; if any link cannot afford, reject the whole braid (nothing moves).
+/// A scratch table of touched accounts, seeded from real balances, holds the forward walk so
+/// the real ledger is untouched until the atom is known to commit whole.
+fn settle_braid(l: *Ledger, bi: u32) FoldError!void {
+    const b = &l.braids[bi];
+    // invariant: a settled braid is closed and carries at least one link.
+    assert(b.closed);
+    assert(b.link_count >= 1 and b.link_count <= braid_max_chain);
+
+    var touched: [braid_max_touched][pk_len]u8 = undefined;
+    var tbal: [braid_max_touched]u64 = undefined;
+    var tn: u32 = 0;
+
+    var affords = true;
+    var li: u32 = 0;
+    while (li < b.link_count and affords) : (li += 1) {
+        const lk = &b.links[li];
+        const si = touched_index(touched[0..], tn, lk.from[0..]) orelse blk: {
+            tbal[tn] = l.balance_of(lk.from[0..]);
+            tally_copy.copy_disjoint(u8, touched[tn][0..], lk.from[0..]);
+            tn += 1;
+            // invariant: the scratch never grows past its bound.
+            assert(tn <= braid_max_touched);
+            break :blk tn - 1;
+        };
+        if (tbal[si] < lk.amount) {
+            affords = false;
+        } else {
+            tbal[si] -= lk.amount;
+            const ri = touched_index(touched[0..], tn, lk.to[0..]) orelse blk: {
+                tbal[tn] = l.balance_of(lk.to[0..]);
+                tally_copy.copy_disjoint(u8, touched[tn][0..], lk.to[0..]);
+                tn += 1;
+                // invariant: the scratch never grows past its bound.
+                assert(tn <= braid_max_touched);
+                break :blk tn - 1;
+            };
+            const nb = tbal[ri] +% lk.amount;
+            if (nb < tbal[ri]) return error.Overdraw; // wrap refuse
+            tbal[ri] = nb;
+        }
+    }
+
+    if (!affords) {
+        // The atom is indivisible — one late failure reverses every earlier success.
+        b.state = state_rejected;
+        return;
+    }
+
+    // Every link affords: apply the whole atom to the real ledger. The scratch already holds
+    // each touched account's final balance, and every debit was matched by a credit within the
+    // chain, so writing the scratch back conserves the total exactly.
+    var ti: u32 = 0;
+    while (ti < tn) : (ti += 1) {
+        const k = try ensure_account(l, touched[ti][0..]);
+        l.accounts[k].balance = tbal[ti];
+    }
+    b.state = state_committed;
+}
+
+/// Index of a key in the scratch touched table, or null when absent.
+fn touched_index(touched: []const [pk_len]u8, tn: u32, pk: []const u8) ?u32 {
+    // invariant: a scratch key is always a full holder identity.
+    assert(pk.len == pk_len);
+    var i: u32 = 0;
+    while (i < tn) : (i += 1) {
+        if (std.mem.eql(u8, touched[i][0..], pk)) return i;
+    }
+    return null;
+}
+
+/// Fold one signed fact into a Ledger — the linked-chain law for a single fact, the step
+/// `resolve` walks over the agreed order and `braid_knot.continue_braid` walks over a live
+/// suffix seeded from a sealed checkpoint. `pos` is the fact's position in its epoch. A fact
+/// whose own signature is broken refuses the whole fold before any coin moves; a link opens or
+/// continues a braid, and the final link settles it as one atom (committed or rejected); a link
+/// out of sequence, a malformed body, an unknown kind, a star reserve, and an overfull chain
+/// each refuse whole.
+pub fn fold_link(l: *Ledger, fact: *const fold.Fact, pos: u32) FoldError!void {
+    // invariant: a fact's position is a real index within the fold's log ceiling.
+    assert(pos < fold.myc_log_max_facts);
+
+    // Corruption is not a verdict — a broken signature refuses before any coin moves.
+    if (!fold.verify_fact(fact)) return error.IdentityRefused;
+
+    if (fact.kind == fold.kind_issue) {
+        const to = try credit_recipient(fact);
+        try credit(l, to, fact.amount);
+        const nt = l.total_issued +% fact.amount;
+        if (nt < l.total_issued) return error.Overdraw; // wrap refuse
+        l.total_issued = nt;
+        return;
+    }
+    if (fact.kind == fold.kind_star_reserve) {
+        // A name reservation is fold's / the Tenure's resource, not the Braid's.
+        return error.StarReserve;
+    }
+    if (fact.kind != fold.kind_tax) return error.UnknownKind;
+
+    // A link rides a kind_tax fact, its chain read from the signed body tag.
+    const body = fact.body_slice();
+    if (body.len == 0) return error.Malformed;
+    if (body[0] != tag_link) return error.Malformed;
+    // invariant: a link body is exactly tag · id · seq · last · recipient.
+    if (body.len != 1 + id_len + 1 + 1 + pk_len) return error.Malformed;
+    const id = body[1 .. 1 + id_len];
+    const seq = body[1 + id_len];
+    const last = body[1 + id_len + 1];
+    if (last != 0 and last != 1) return error.Malformed;
+    const to = try valid_key(body[1 + id_len + 2 ..]);
+    const from = fact.signer_pk[0..];
+
+    const existing = braid_index(l, id);
+    const bi = if (existing) |k| k else blk: {
+        // A fresh chain must open at sequence zero.
+        if (seq != 0) return error.BraidBroken;
+        if (l.braid_count >= braid_max_braids) return error.TooManyBraids;
+        const at = l.braid_count;
+        tally_copy.copy_disjoint(u8, l.braids[at].id[0..], id);
+        l.braids[at].link_count = 0;
+        l.braids[at].closed = false;
+        l.braids[at].state = state_pending;
+        l.braid_count += 1;
+        // invariant: growth is exactly one seat, never past the ceiling.
+        assert(l.braid_count <= braid_max_braids);
+        break :blk at;
+    };
+
+    const b = &l.braids[bi];
+    // A closed chain takes no more links; a link's seq must be exactly the next in the chain.
+    if (b.closed) return error.BraidBroken;
+    if (seq != b.link_count) return error.BraidBroken;
+    if (b.link_count >= braid_max_chain) return error.TooManyLinks;
+
+    const at = b.link_count;
+    tally_copy.copy_disjoint(u8, b.links[at].from[0..], from);
+    tally_copy.copy_disjoint(u8, b.links[at].to[0..], to[0..pk_len]);
+    b.links[at].amount = fact.amount;
+    b.links[at].seq = seq;
+    b.link_count += 1;
+    // invariant: growth is exactly one link, never past the chain bound.
+    assert(b.link_count <= braid_max_chain);
+
+    if (last == 1) {
+        b.closed = true;
+        try settle_braid(l, bi);
+    }
+}
+
+/// Resolve a committed Dag into a linked-chain Ledger — the verdict of the agreed order.
+/// A braid commits whole when every link affords and rejects whole when any cannot; a braid
+/// whose final link never arrives stays pending. Conservation holds over every path: the
+/// balances sum to exactly what genesis issued.
+pub fn resolve(dag: *const cord.Dag) FoldError!Ledger {
+    // invariant: each block carries one fact, so the Dag fits the fold ceiling.
+    assert(dag.len <= fold.myc_log_max_facts);
+    var order: [cord.cord_max_blocks]u32 = undefined;
+    // invariant: the order buffer holds the whole Dag.
+    assert(order.len >= dag.len);
+    const committed = cord.commit(dag, order[0..]);
+
+    var l = Ledger{};
+    var i: u32 = 0;
+    while (i < committed) : (i += 1) {
+        const idx = order[i];
+        // invariant: every committed index names a real seat.
+        assert(idx < dag.len);
+        const blk = &dag.blocks[idx];
+        try fold_link(&l, &blk.fact, i);
+    }
+
+    // invariant: conservation — the balances sum to exactly what genesis issued.
+    assert(l.balances_sum() == l.total_issued);
+    return l;
+}
+
+// ---- selftest: the crux is a chain that commits whole or reverses whole ---------
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn link_body(id: []const u8, seq: u8, last: u8, to: []const u8, out: []u8) u32 {
+    // invariant: the buffer holds tag · id · seq · last · recipient exactly.
+    assert(out.len >= 1 + id_len + 1 + 1 + pk_len);
+    assert(id.len == id_len);
+    assert(to.len == pk_len);
+    out[0] = tag_link;
+    tally_copy.copy_disjoint(u8, out[1 .. 1 + id_len], id);
+    out[1 + id_len] = seq;
+    out[1 + id_len + 1] = last;
+    tally_copy.copy_disjoint(u8, out[1 + id_len + 2 ..][0..pk_len], to);
+    return 1 + id_len + 1 + 1 + pk_len;
+}
+
+fn resolve_perm(blocks: []const cord.Block) !Ledger {
+    var dag = cord.Dag.empty();
+    for (blocks) |blk| try cord.add(&dag, blk);
+    return resolve(&dag);
+}
+
+fn ledgers_equal(x: *const Ledger, y: *const Ledger) bool {
+    if (x.braid_count != y.braid_count) return false;
+    if (x.committed_seen() != y.committed_seen()) return false;
+    if (x.rejected_seen() != y.rejected_seen()) return false;
+    if (x.pending_seen() != y.pending_seen()) return false;
+    if (x.total_issued != y.total_issued) return false;
+    if (x.account_count != y.account_count) return false;
+    // Every account holds the same balance on both nodes (order-independent lookup).
+    var i: u32 = 0;
+    while (i < x.account_count) : (i += 1) {
+        const xk = x.accounts[i].pk[0..];
+        if (x.accounts[i].balance != y.balance_of(xk)) return false;
+    }
+    return true;
+}
+
+/// Genesis funds Alice and Bob, then a three-link braid routes coins Alice→Bob→Carol→Dave.
+/// The two genesis credits are independent roots (either arrival order), so swapping them is
+/// a valid permutation that genuinely tests the Cord's determinism; the chain l0→l1→l2 stays
+/// causal. `final_amount` sets the last link (Carol→Dave): a small amount all links afford, a
+/// large amount the final link cannot — the whole braid then reverses. Returns g, g2, l0, l1, l2.
+fn seat_chain(id: []const u8, final_amount: u64) ![5]cord.Block {
+    const kf = seeded(0xF0);
+    const ka = seeded(0xA1);
+    const kb = seeded(0xB2);
+    const kc = seeded(0xC3);
+    const kd = seeded(0xD4);
+    const alice = ka.public_key.toBytes();
+    const bob = kb.public_key.toBytes();
+    const carol = kc.public_key.toBytes();
+    const dave = kd.public_key.toBytes();
+
+    // Two genesis roots: Alice 100, Bob 50 — independent, either arrival order.
+    const f_ga = fold.mint_fact(kf, fold.kind_issue, 100, "", alice[0..]) orelse return error.MintGA;
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_ga) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+
+    const f_gb = fold.mint_fact(kf, fold.kind_issue, 50, "", bob[0..]) orelse return error.MintGB;
+    const g2 = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_gb) orelse return error.BlockG2;
+    var hg2: [cord.hash_len]u8 = undefined;
+    cord.address(&g2, &hg2);
+
+    // Link 0: Alice → Bob, 100 (Alice affords 100). Names both genesis roots as parents.
+    var b0: [1 + id_len + 1 + 1 + pk_len]u8 = undefined;
+    const n0 = link_body(id, 0, 0, bob[0..], &b0);
+    const f0 = fold.mint_fact(ka, fold.kind_tax, 100, "", b0[0..n0]) orelse return error.Mint0;
+    const l0 = cord.mint_block(ka, 1, &[_][cord.hash_len]u8{ hg, hg2 }, f0) orelse return error.Block0;
+    var h0: [cord.hash_len]u8 = undefined;
+    cord.address(&l0, &h0);
+
+    // Link 1: Bob → Carol, 120 (Bob holds 50 + 100 from link 0 = 150, affords 120).
+    var b1: [1 + id_len + 1 + 1 + pk_len]u8 = undefined;
+    const n1 = link_body(id, 1, 0, carol[0..], &b1);
+    const f1 = fold.mint_fact(kb, fold.kind_tax, 120, "", b1[0..n1]) orelse return error.Mint1;
+    const l1 = cord.mint_block(kb, 2, &[_][cord.hash_len]u8{h0}, f1) orelse return error.Block1;
+    var h1: [cord.hash_len]u8 = undefined;
+    cord.address(&l1, &h1);
+
+    // Link 2 (last): Carol → Dave, `final_amount` (Carol holds 120 from link 1).
+    var b2: [1 + id_len + 1 + 1 + pk_len]u8 = undefined;
+    const n2 = link_body(id, 2, 1, dave[0..], &b2);
+    const f2 = fold.mint_fact(kc, fold.kind_tax, final_amount, "", b2[0..n2]) orelse return error.Mint2;
+    const l2 = cord.mint_block(kc, 3, &[_][cord.hash_len]u8{h1}, f2) orelse return error.Block2;
+
+    return .{ g, g2, l0, l1, l2 };
+}
+
+pub fn main() !void {
+    const id = [_]u8{0x07} ** id_len;
+    const ka = seeded(0xA1);
+    const kb = seeded(0xB2);
+    const kc = seeded(0xC3);
+    const kd = seeded(0xD4);
+    const alice = ka.public_key.toBytes();
+    const bob = kb.public_key.toBytes();
+    const carol = kc.public_key.toBytes();
+    const dave = kd.public_key.toBytes();
+
+    // A chain whose final step overdraws (Carol holds 120, is asked for 200) reverses WHOLE —
+    // not one coin moves, not even Alice→Bob and Bob→Carol, which each afford on their own.
+    {
+        const s = try seat_chain(id[0..], 200);
+        const base = try resolve_perm(&[_]cord.Block{ s[0], s[1], s[2], s[3], s[4] });
+        assert(base.braids_seen() == 1);
+        assert(base.rejected_seen() == 1);
+        assert(base.committed_seen() == 0);
+        // The ledger stands exactly as genesis left it — the atom left no trace.
+        assert(base.balance_of(alice[0..]) == 100);
+        assert(base.balance_of(bob[0..]) == 50);
+        assert(base.balance_of(carol[0..]) == 0);
+        assert(base.balance_of(dave[0..]) == 0);
+        assert(base.balances_sum() == base.total_issued);
+        assert(base.total_issued == 150);
+
+        // Swapping the two independent genesis roots is a valid arrival permutation — the
+        // Cord fixes their order deterministically, so the reject verdict and every balance
+        // are identical (the chain l0→l1→l2 stays causal and cannot itself be reordered).
+        const p1 = try resolve_perm(&[_]cord.Block{ s[1], s[0], s[2], s[3], s[4] });
+        assert(ledgers_equal(&base, &p1));
+    }
+
+    // A chain whose final step affords (Carol holds 120, is asked for 60) commits WHOLE —
+    // every coin moves along the braid: Alice 0, Bob 30, Carol 60, Dave 60.
+    {
+        const s = try seat_chain(id[0..], 60);
+        const done = try resolve_perm(&[_]cord.Block{ s[0], s[1], s[2], s[3], s[4] });
+        assert(done.committed_seen() == 1);
+        assert(done.rejected_seen() == 0);
+        assert(done.balance_of(alice[0..]) == 0); // 100 start − 100 sent
+        assert(done.balance_of(bob[0..]) == 30); // 50 start + 100 in − 120 out
+        assert(done.balance_of(carol[0..]) == 60); // 120 in − 60 out
+        assert(done.balance_of(dave[0..]) == 60); // 60 in
+        assert(done.balances_sum() == done.total_issued);
+        // Arrival independence holds for the committing chain too (roots swapped).
+        const q = try resolve_perm(&[_]cord.Block{ s[1], s[0], s[2], s[3], s[4] });
+        assert(ledgers_equal(&done, &q));
+    }
+
+    // A chain whose final link never arrives stays PENDING — no link applied, coins untouched.
+    {
+        const s = try seat_chain(id[0..], 60);
+        const open = try resolve_perm(&[_]cord.Block{ s[0], s[1], s[2], s[3] });
+        assert(open.braids_seen() == 1);
+        assert(open.pending_seen() == 1);
+        assert(open.committed_seen() == 0 and open.rejected_seen() == 0);
+        assert(open.balance_of(alice[0..]) == 100);
+        assert(open.balance_of(bob[0..]) == 50);
+        assert(open.balances_sum() == open.total_issued);
+    }
+
+    // Refusals — each holds honestly, refusing the whole resolution.
+    {
+        const kf = seeded(0xF0);
+        const f_ga = fold.mint_fact(kf, fold.kind_issue, 100, "", alice[0..]) orelse return error.MintGA;
+        const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_ga) orelse return error.BlockG;
+        var hg: [cord.hash_len]u8 = undefined;
+        cord.address(&g, &hg);
+        const roots = [_][cord.hash_len]u8{hg};
+
+        // A chain that opens at a non-zero sequence is broken — refuses whole.
+        var bx: [1 + id_len + 1 + 1 + pk_len]u8 = undefined;
+        const nx = link_body(id[0..], 3, 0, bob[0..], &bx);
+        const f_gap = fold.mint_fact(ka, fold.kind_tax, 10, "", bx[0..nx]) orelse return error.MintGap;
+        const b_gap = cord.mint_block(ka, 1, roots[0..], f_gap) orelse return error.BlockGap;
+        assert(std.meta.isError(resolve_perm(&[_]cord.Block{ g, b_gap })));
+
+        // A link whose body is not a valid tag·id·seq·last·key is malformed — refuses whole.
+        const f_mal = fold.mint_fact(ka, fold.kind_tax, 10, "", "not-a-link-body") orelse return error.MintMal;
+        const b_mal = cord.mint_block(ka, 1, roots[0..], f_mal) orelse return error.BlockMal;
+        assert(std.meta.isError(resolve_perm(&[_]cord.Block{ g, b_mal })));
+
+        // A star reservation is not the Braid's resource — it refuses whole.
+        const f_star = fold.mint_fact(ka, fold.kind_star_reserve, 10, "acmestar", "reserve") orelse return error.MintStar;
+        const b_star = cord.mint_block(ka, 1, roots[0..], f_star) orelse return error.BlockStar;
+        assert(std.meta.isError(resolve_perm(&[_]cord.Block{ g, b_star })));
+
+        // A broken signature on a link refuses whole, before any coin moves.
+        var b0: [1 + id_len + 1 + 1 + pk_len]u8 = undefined;
+        const n0 = link_body(id[0..], 0, 1, bob[0..], &b0);
+        var f_bad = fold.mint_fact(ka, fold.kind_tax, 10, "", b0[0..n0]) orelse return error.MintBad;
+        f_bad.sig[0] ^= 0xff;
+        const b_bad = cord.mint_block(ka, 1, roots[0..], f_bad) orelse return error.BlockBad;
+        assert(std.meta.isError(resolve_perm(&[_]cord.Block{ g, b_bad })));
+    }
+
+    print("braid: a linked chain routes coins Alice->Bob->Carol->Dave, decided as one atom by the agreed order\n", .{});
+    print("braid: a chain whose last step overdraws reverses whole — not one coin moves, and every honest arrival names the same verdict\n", .{});
+    print("braid: a chain whose every link affords commits whole; a chain whose final link never arrives stays pending\n", .{});
+    print("braid: conservation holds — the balances sum to exactly what genesis issued, no coin made or lost on any path\n", .{});
+    print("braid: an out-of-sequence link, a malformed body, a star reservation, and a broken signature each refuse whole\n", .{});
+    print("GREEN: myc braid — a linked chain commits whole or reverses whole, decided once by the agreed order · atomic · conserved · refuse whole\n", .{});
+}
