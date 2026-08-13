@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260813.132945
+editor Zed Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Constel r1 — a named, reproducible dev-net constellation reaches quorum
+prompt baton prin recur — take the next agent-doable lap Lindy-first crux-first; approve own design rounds; send often; keep double-seating; STOP at the custody gates
+think After folding the Portage arc onto REMEMBER, the Mycelium consensus stack stood saturated through its named frontier (Portage = cross-shard atomic settlement). The next Lindy-first crux was the double-seat vision's explicitly-named agent-doable blind spot: the Constel test network — every consensus module was witnessed alone with inline seeded() keypairs; none ran as a named, reproducible network of nodes.
+think Self-approved the design read (active-designing/20260813-132009_...); the crux is that a ship's identity be a pure function of its name (seed = SHA-256(name)), so the whole constellation is the same every boot — a dev-net a keeper hands another keeper. This also seats the Constel naming law's first roster, which the vision reserved for a self-approved naming round.
+think Grounded r1 in the real API: kumara.keypair_from_seed, cord/fold genesis, chorus.open/add/verify_chorus, muster.enroll/byzantine_threshold/pass_muster. The crux fn reach_quorum opens a Chorus, gathers every ship's voucher, and passes the constellation's own Muster; the teeth (NotMember, BelowQuorum) come from pass_muster directly.
+obs GREEN on the first build and run — no red. Five ships → Byzantine threshold 4 (n − (n−1)/3); the agreed head equals voucher.order_head_of (the quorum believes the true reading, not a claim). Reproducibility asserted (boot twice, byte-identical keys) and distinctness (no two ships collide).
+obs Ship names honor BOTH the Constel naming law (queyqwinqkri family) and the always-on placeholder-ship-names hard rule — single tokens, no ~, irregular length (9/10, never 3/6/12), structurally never a valid @p. Siloed dev fixtures; no real point, no custody. Composes six modules' public API, editing none (Chorus + Muster re-run GREEN at the door).
+loom witness=mycelium_constel_witness result=GREEN ships=5 byzantine_threshold=4
+file active-designing/20260813-132009_mycelium-constel-named-dev-net-exploration.md the self-approved design read opening the Constel journey
+file mycelium/constel.rye the r1 module — boot · into_muster · reach_quorum · seed_from_name
+file tools/mycelium_constel_witness.rish the r1 witness (GREEN; Chorus + Muster at the door)
+file work-in-progress/REMEMBER.md Constel journey OPENED + r1 LANDED bullet; Git nib refreshed
+file session-logs/20260813-132945_myc-constel-named-dev-net-r1.bron this log
+recommend keep-going Constel r2 — a ship departs and the constellation still meets the new Byzantine threshold (fault tolerance proven by removing ships until the quorum honestly fails); served constellation stays the Comlink gate

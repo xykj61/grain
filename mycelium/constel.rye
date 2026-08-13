@@ -1,0 +1,278 @@
+//! mycelium/constel.rye — a named, reproducible dev-net constellation reaches quorum (r1).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · Constel · rung r1.
+//! Every consensus witness so far conjured its nodes inline (`seeded(0x11)`…) — anonymous keypairs made up
+//! for one proof and forgotten. A CONSTEL gives the dev-net a name and a roster: a small set of fake ships,
+//! each ship's identity a PURE FUNCTION of its name (seed = SHA-256(name)), so the whole constellation —
+//! every key, the Muster it seats, the quorum it reaches — is determined by the list of names alone. Boot it
+//! twice, read it the same. The sovereign-lane echo of elder Urbit's fake-galaxy dev networks, run from
+//! inside the jailed pier under quarantined demo identities.
+//!
+//! Ship names are seated under the Constel naming law (the queyqwinqkri / maicmalammurr family) and the
+//! always-on placeholder-ship-names rule: each is a single invented token of irregular length (nine or ten
+//! letters, no `~`, no three-letter hyphenated syllable structure), so it can NEVER parse as a live-network
+//! `@p`. Siloed dev fixtures only — never a real point, never signing real value.
+//!
+//! Composes kumara + cord + fold + voucher + chorus + muster public API only, editing none. Demo ship and
+//! keeper seeds — no key held, no funds, no network, no real value.
+//!
+//! Scope: active-designing/20260813-132009_mycelium-constel-named-dev-net-exploration.md
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/constel.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const kumara = @import("kumara.rye");
+const cord = @import("cord.rye");
+const fold = @import("fold.rye");
+const voucher = @import("voucher.rye");
+const chorus = @import("chorus.rye");
+const muster = @import("muster.rye");
+const tally_copy = @import("tally_copy.rye");
+
+const Sha256 = std.crypto.hash.sha2.Sha256;
+
+pub const constel_version = "20260813.132009";
+
+pub const pk_len: u32 = muster.pk_len;
+pub const seed_len: u32 = kumara.seed_length;
+pub const head_len: u32 = voucher.order_head_len;
+
+// A dev ship name is bounded; the roster echoes the constellation's twelve seats.
+pub const max_name_len: u32 = 32;
+pub const constel_max_ships: u32 = 12;
+
+pub const ConstelError = error{
+    NameEmpty,
+    NameTooLong,
+    TooManyShips,
+    EmptyConstel,
+};
+
+pub const Ship = struct {
+    name: [max_name_len]u8 = undefined,
+    name_len: u32 = 0,
+    kp: kumara.KeyPair = undefined,
+
+    /// The ship's name — the bytes that define its whole identity.
+    pub fn name_slice(s: *const Ship) []const u8 {
+        // invariant: a ship name honors its bounded buffer.
+        assert(s.name_len <= max_name_len);
+        // invariant: a seated ship carries a non-empty name.
+        assert(s.name_len >= 1);
+        return s.name[0..s.name_len];
+    }
+
+    /// The ship's public key — a pure function of its name.
+    pub fn pk(s: *const Ship) [pk_len]u8 {
+        // invariant: a seated ship carries a name to have derived a key from.
+        assert(s.name_len >= 1);
+        return s.kp.public_key.toBytes();
+    }
+};
+
+/// A ship's Ed25519 seed is SHA-256 of its name — the same name always yields the same keys, no stored
+/// secret and no random, so the whole constellation is determined by its list of names.
+pub fn seed_from_name(name: []const u8) [seed_len]u8 {
+    // invariant: a name is non-empty — an empty name seeds nothing.
+    assert(name.len >= 1);
+    // invariant: the name fits the seam SHA-256 folds.
+    assert(name.len <= max_name_len);
+    var seed: [seed_len]u8 = undefined;
+    Sha256.hash(name, &seed, .{});
+    return seed;
+}
+
+/// Seat one named ship: copy its bounded name, derive its keypair from that name. Refuses NameEmpty and
+/// NameTooLong rather than truncating.
+pub fn seat_ship(name: []const u8) ConstelError!Ship {
+    if (name.len == 0) return error.NameEmpty;
+    if (name.len > max_name_len) return error.NameTooLong;
+    // invariant: the name fits the ship's bounded buffer, checked above.
+    assert(name.len <= max_name_len);
+    var s = Ship{};
+    tally_copy.copy_disjoint(u8, s.name[0..name.len], name);
+    s.name_len = @intCast(name.len);
+    const seed = seed_from_name(name);
+    s.kp = kumara.keypair_from_seed(&seed);
+    // invariant: a seated ship carries its whole name.
+    assert(s.name_len == name.len);
+    // invariant: a seated ship carries a non-empty name.
+    assert(s.name_len >= 1);
+    return s;
+}
+
+pub const Constel = struct {
+    ships: [constel_max_ships]Ship = undefined,
+    count: u32 = 0,
+
+    pub fn empty() Constel {
+        return .{ .ships = undefined, .count = 0 };
+    }
+};
+
+/// Boot a named constellation — one ship per name, each identity derived from its name. Refuses
+/// TooManyShips past the static bound rather than growing.
+pub fn boot(names: []const []const u8) ConstelError!Constel {
+    if (names.len > constel_max_ships) return error.TooManyShips;
+    // invariant: a booted roster honors the ship ceiling, checked above.
+    assert(names.len <= constel_max_ships);
+    var c = Constel.empty();
+    for (names) |nm| {
+        c.ships[c.count] = try seat_ship(nm);
+        c.count += 1;
+    }
+    // invariant: booting N names seats exactly N ships.
+    assert(c.count == names.len);
+    return c;
+}
+
+/// Seat the constellation as a Muster — every ship enrolled as a validator on the roll.
+pub fn into_muster(c: *const Constel) !muster.Muster {
+    // invariant: a meaningful constellation seats at least one ship.
+    if (c.count == 0) return error.EmptyConstel;
+    assert(c.count >= 1);
+    // invariant: the roster honors its bound before enrolling.
+    assert(c.count <= constel_max_ships);
+    var m = muster.Muster.empty();
+    var i: u32 = 0;
+    while (i < c.count) : (i += 1) {
+        const p = c.ships[i].pk();
+        try muster.enroll(&m, p[0..]);
+    }
+    // invariant: every ship became a member — one enrollment each.
+    assert(m.len == c.count);
+    return m;
+}
+
+/// The crux: the named constellation reaches quorum on the account's position at the Dag's order-head.
+/// Every ship adds its own honest voucher; the Chorus is internally sound (distinct voices, one agreed
+/// claim), and it passes the constellation's own Muster (every voice enrolled, the count meeting the
+/// Byzantine threshold). Fills the agreed order-head. A foreign or thin quorum refuses through Chorus/Muster.
+pub fn reach_quorum(
+    c: *const Constel,
+    dag: *const cord.Dag,
+    account_pk: []const u8,
+    head_out: *[head_len]u8,
+) !void {
+    // invariant: a quorum is read over a bounded, non-empty roster.
+    assert(c.count >= 1);
+    assert(c.count <= constel_max_ships);
+    // invariant: a quorum attests one full holder identity.
+    assert(account_pk.len == pk_len);
+
+    var ch = try chorus.open(dag, account_pk);
+    var i: u32 = 0;
+    while (i < c.count) : (i += 1) {
+        try chorus.add(&ch, dag, c.ships[i].kp);
+    }
+    const m = try into_muster(c);
+    try muster.pass_muster(&m, &ch);
+    tally_copy.copy_disjoint(u8, head_out[0..], ch.head_slice());
+
+    // invariant: a believed quorum meets the roll's Byzantine threshold.
+    assert(ch.count >= muster.byzantine_threshold(&m));
+}
+
+/// A demo genesis Dag — the issuer mints one hundred coins to the account, giving it a position the
+/// constellation attests. Demo seeds only.
+fn demo_genesis(issuer: kumara.KeyPair, account_pk: []const u8) !cord.Dag {
+    // invariant: a genesis credits a full holder identity.
+    assert(account_pk.len == pk_len);
+    const f_gen = fold.mint_fact(issuer, fold.kind_issue, 100, "", account_pk) orelse return error.MintGen;
+    const g = cord.mint_block(issuer, 0, &[_][cord.hash_len]u8{}, f_gen) orelse return error.BlockG;
+    var dag = cord.Dag.empty();
+    try cord.add(&dag, g);
+    // invariant: the demo genesis is one block.
+    assert(dag.len == 1);
+    return dag;
+}
+
+/// A fixed demo keypair from a single repeated seed byte — a caller (or witness) names an account or a
+/// stranger ship distinct from the roster.
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [seed_len]u8 = .{byte} ** seed_len;
+    return kumara.keypair_from_seed(&seed);
+}
+
+// The first Constel dev-net roster — seated this round under the Constel naming law and the always-on
+// placeholder-ship-names rule (single tokens, no `~`, length ≠ 3/6/12, never a valid @p). Siloed fixtures.
+const roster = [_][]const u8{
+    "xnvethqua",
+    "kwelmirran",
+    "xzobrilth",
+    "murrqaveln",
+    "xwendakosh",
+};
+
+pub fn main() !void {
+    // --- Reproducibility — the constellation is a pure function of its names ---------------------------
+    var a = try boot(roster[0..]);
+    var b = try boot(roster[0..]);
+    assert(a.count == roster.len);
+    assert(b.count == roster.len);
+    {
+        var i: u32 = 0;
+        while (i < a.count) : (i += 1) {
+            const pa = a.ships[i].pk();
+            const pb = b.ships[i].pk();
+            // The same name yields byte-identical keys, ship for ship — boot twice, read the same.
+            assert(std.mem.eql(u8, pa[0..], pb[0..]));
+        }
+    }
+    // Distinct names yield distinct ships — no two members collide.
+    {
+        var i: u32 = 0;
+        while (i < a.count) : (i += 1) {
+            var j: u32 = i + 1;
+            while (j < a.count) : (j += 1) {
+                const pi = a.ships[i].pk();
+                const pj = a.ships[j].pk();
+                assert(!std.mem.eql(u8, pi[0..], pj[0..]));
+            }
+        }
+    }
+
+    // --- The demo account and its position ------------------------------------------------------------
+    const issuer = seeded(0xF0);
+    const account = seeded(0xA1);
+    const account_pk = account.public_key.toBytes();
+    var dag = try demo_genesis(issuer, account_pk[0..]);
+
+    // --- The crux — the named constellation reaches quorum on one head --------------------------------
+    var head: [head_len]u8 = undefined;
+    try reach_quorum(&a, &dag, account_pk[0..], &head);
+
+    // The agreed head is the Dag's real order-head — the quorum believes the true reading, not a claim.
+    var expected_head: [head_len]u8 = undefined;
+    voucher.order_head_of(&dag, &expected_head);
+    assert(std.mem.eql(u8, head[0..], expected_head[0..]));
+
+    const m = try into_muster(&a);
+    const threshold = muster.byzantine_threshold(&m);
+
+    // --- Teeth 1 — a stranger ship never counts toward the constellation's quorum ----------------------
+    {
+        const stranger = try seat_ship("xzoutlander7"); // a name NOT in the roster
+        var ch = try chorus.open(&dag, account_pk[0..]);
+        var i: u32 = 0;
+        while (i < a.count) : (i += 1) try chorus.add(&ch, &dag, a.ships[i].kp);
+        try chorus.add(&ch, &dag, stranger.kp); // one foreign voice, honestly agreeing
+        const r = muster.pass_muster(&m, &ch);
+        assert(r == error.NotMember);
+    }
+
+    // --- Teeth 2 — a quorum too thin for the Byzantine threshold is not believed -----------------------
+    {
+        var ch = try chorus.open(&dag, account_pk[0..]);
+        var i: u32 = 0;
+        while (i + 1 < threshold) : (i += 1) try chorus.add(&ch, &dag, a.ships[i].kp);
+        // ch.count == threshold - 1, one voice short.
+        const r = muster.pass_muster(&m, &ch);
+        assert(r == error.BelowQuorum);
+    }
+
+    print("constel: GREEN — a named constellation of {d} ships boots reproducibly (same names, byte-identical keys), seats as a Muster (Byzantine threshold {d}), and reaches quorum on the account's true order-head; a stranger ship refuses NotMember, a thin quorum refuses BelowQuorum. The dev-net has a name and a roster.\n", .{ a.count, threshold });
+}
