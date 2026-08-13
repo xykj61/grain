@@ -1,0 +1,13 @@
+# tools/fixtures/constel_names.txt — the first draws of the Constel test-network naming law.
+#
+# Fake, self-invented constellation names for sandbox / testnet / localhost Comlink p2p
+# networks run INSIDE the jailed pier. Each carries at least one digit, the structural
+# proof it can never parse as a real @p (which is letters + hyphens only). Siloed, dev-only,
+# never a real address, never a seed artifact. Law + rationale:
+#   active-designing/20260813-022222_constel-test-network-naming-law.md
+# Witness: tools/constel_naming_witness.rish. Comment lines (#) and blank lines are skipped.
+xnqvel34
+xzkerith58
+xwmur-dol12
+maqwintel06
+sunveknar90
