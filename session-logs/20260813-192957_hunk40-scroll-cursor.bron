@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260813.192957
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title HUNK40 — the scroll cursor: a live viewport offset from a keeper's gesture
+prompt take the next agent-doable HUNK lap Lindy-first crux-first; approve your own design round, make progress, send each finished increment to origin and xykj61, stop at custody gates
+think Read REMEMBER (300KB, tail lap HUNK39), the 1024-round itinerary, and the six-season double-seat expansion. Season A (waymark HUNK), the marketplace/Photos surface, is the live crux; HUNK39 closed naming three next doors — the held module-assembly seam (Keaton's ruling), a live scroll offset from a keeper's gesture, or another Season-A journey.
+think Lindy-first crux-first among the agent-doable pair: a scroll offset is read by every list surface on a small screen, so it compounds far past this shelf; the module-assembly seam is a design ruling held for Keaton, not agent-doable. Chose the scroll cursor.
+think Modeled it on HUNK16's EditCursor idiom — a pure bounded state machine that holds a position and moves it by gestures, clamping at both edges. The crux is the bottom-pin law: max_offset = (count>rows) ? count-rows : 0, so the last book reaches the bottom row and no blank row ever shows past the end.
+think The reward the HUNK37 pager alone could not claim: a scroll cursor's window NEVER refuses BadOffset, because every reachable offset is a real page — offset <= max_offset <= count-1 when count>0, and offset 0 on an empty library is the allowed empty first page.
+think Home is pond/apps/preset_scroll.rye beside preset_shelf.rye — one symlink assembly, so DetailListing/shelf_window/Skate grid resolve through one root and I dodge the cross-assembly type-identity wall HUNK39 held for Keaton.
+obs line_down adds in u64 before the clamp so a huge k can never wrap; every gesture routes through one scroll_to clamp, so no gesture can under/overflow. Two+ positive invariants per fn, opening triad, no usize, no @memcpy.
+obs A witness red taught the same lesson HUNK39 booked: the GREEN line's apostrophes ("cursor's") broke the shell single-quoted grep round-trip. Fixed by removing apostrophes from the print line rather than reaching for a temp file — the simplest durable fix here.
+loom witness=hunk_scroll_cursor_witness build=green selftest=green library_books=5 viewport_rows=2 max_offset=3 tame_bans=clean width_exit=0
+file pond/apps/preset_scroll.rye the ScrollCursor state machine + window(); HUNK40
+file tools/hunk_scroll_cursor_witness.rish builds + runs the selftest, greps every proven property
+file active-designing/20260813-192957_hunk-scroll-cursor-exploration.md the self-approved design round
+file work-in-progress/REMEMBER.md git nib refreshed in this same commit
+file session-logs/README.md newest-first HUNK40 row prepended
+recommend keep-going — next agent-doable crux: a sticky page header or a scrollbar-position hint over this cursor, the served-marketplace module-assembly ruling (held for Keaton), or a fresh Season-A / double-seat journey. Hardware buys stay custody gates #2/#3.

@@ -1,0 +1,342 @@
+//! pond/apps/preset_scroll.rye — HUNK40: the scroll cursor — a live viewport offset from a keeper's gesture.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · marketplace / Photos-app surface · rung HUNK40.
+//! Design read: active-designing/20260813-192957_hunk-scroll-cursor-exploration.md
+//! Teacher, thanked clean-room: the scroll viewport of any list surface (iCloud Photos / a McMaster-Carr catalog) —
+//! a position walks up and down over a library taller than the screen, pinned at both ends (concept only, siloed).
+//!
+//! HUNK37 gave the installed-book shelf a pager: `shelf_window(offset)` renders the books `[offset, offset + rows)`,
+//! and walking page-aligned offsets covers the whole library. Yet nothing held *where a keeper's viewport sits* — a
+//! page number is a fact about the library; a scroll offset is a fact about the reader. This rung is that piece: a
+//! `ScrollCursor` holds `{ count, rows, offset }` and moves the offset by gestures (`line_down`, `page_up`, `to_top`,
+//! `to_bottom`), clamping at both edges so it can never fall off the ends. The one governing law is that a viewport
+//! is bottom-pinned — a keeper scrolls until the last book sits at the bottom row, never further, so the surface
+//! never shows blank rows past the end. The reward the pager could not claim: a scroll cursor's window NEVER refuses
+//! `BadOffset`, because every reachable offset is a real page. Composes HUNK37's `shelf_window`, inventing no storage
+//! and no new render error. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/preset_scroll.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const preset_detail = @import("preset_detail.rye");
+const preset_shelf = @import("preset_shelf.rye");
+const skate = @import("brushstroke/skate_grid.rye");
+
+pub const preset_scroll_version = "20260813.192957";
+
+pub const ScrollError = error{
+    EmptyViewport,
+};
+
+/// A live viewport over a library of `count` books, `rows` books tall, its top row showing book `offset`. No pixels
+/// and no book text live here — a cursor is a place in a library, three counts. The governing invariant, preserved
+/// by every gesture: `offset <= max_offset`, where `max_offset` bottom-pins the viewport (the last book can reach the
+/// bottom row, never fall below it). A library that fits the screen (`count <= rows`) has `max_offset == 0` and never
+/// scrolls at all.
+pub const ScrollCursor = struct {
+    count: u32 = 0,
+    rows: u32 = 1,
+    offset: u32 = 0,
+
+    /// Open a cursor at the top of a library. `rows` is the viewport height and must be at least one row, or the
+    /// viewport is degenerate (`EmptyViewport`).
+    pub fn open(count: u32, rows: u32) ScrollError!ScrollCursor {
+        // invariant: a viewport shows at least one row.
+        if (rows == 0) return error.EmptyViewport;
+        // invariant: the library never outgrew the shelf's own bound.
+        assert(count <= preset_detail.max_details);
+        return ScrollCursor{ .count = count, .rows = rows, .offset = 0 };
+    }
+
+    /// The largest offset that still bottom-pins the last book: `count - rows` when the library is taller than the
+    /// viewport, else 0 (a fitting library never scrolls). Pure over the cursor.
+    pub fn max_offset(self: *const ScrollCursor) u32 {
+        // invariant: a viewport is at least one row tall.
+        assert(self.rows > 0);
+        if (self.count <= self.rows) return 0;
+        const m = self.count - self.rows;
+        // invariant: the bottom-pinned offset still leaves a full viewport of books below it.
+        assert(m + self.rows == self.count);
+        return m;
+    }
+
+    /// Move the top of the viewport to `target`, clamped into `[0, max_offset]`. Every gesture routes through this
+    /// one clamp, so no gesture can under/overflow the ends. Pure over the count and rows.
+    pub fn scroll_to(self: *ScrollCursor, target: u32) void {
+        // invariant: the cursor stands within its library before the move.
+        assert(self.offset <= self.max_offset());
+        const m = self.max_offset();
+        self.offset = @min(target, m);
+        // invariant: the clamp lands the offset on a real, bottom-pinned viewport.
+        assert(self.offset <= m);
+    }
+
+    /// Scroll `k` books down, clamping at the bottom. Adds in u64 so a huge `k` can never wrap before the clamp.
+    pub fn line_down(self: *ScrollCursor, k: u32) void {
+        // invariant: the cursor stands within its library.
+        assert(self.offset <= self.max_offset());
+        const target: u64 = @as(u64, self.offset) + @as(u64, k);
+        // The clamp is against max_offset (a u32), so a saturated target is safe to narrow through @min at scroll_to;
+        // cap the u64 into u32 range first without wrapping.
+        const capped: u32 = if (target > self.count) self.count else @intCast(target);
+        self.scroll_to(capped);
+        // invariant: a downward scroll never rises above where it started.
+        assert(self.offset <= self.max_offset());
+    }
+
+    /// Scroll `k` books up, clamping at the top without underflow.
+    pub fn line_up(self: *ScrollCursor, k: u32) void {
+        // invariant: the cursor stands within its library.
+        assert(self.offset <= self.max_offset());
+        self.offset = if (k >= self.offset) 0 else self.offset - k;
+        // invariant: the top of the library is the floor.
+        assert(self.offset <= self.max_offset());
+    }
+
+    /// Jump one whole viewport down (the common Page-Down gesture), clamped at the bottom.
+    pub fn page_down(self: *ScrollCursor) void {
+        // invariant: a viewport is at least one row tall.
+        assert(self.rows > 0);
+        self.line_down(self.rows);
+        // invariant: a page jump lands on a real viewport.
+        assert(self.offset <= self.max_offset());
+    }
+
+    /// Jump one whole viewport up, clamped at the top.
+    pub fn page_up(self: *ScrollCursor) void {
+        // invariant: a viewport is at least one row tall.
+        assert(self.rows > 0);
+        self.line_up(self.rows);
+        // invariant: a page jump lands on a real viewport.
+        assert(self.offset <= self.max_offset());
+    }
+
+    /// Snap to the top of the library.
+    pub fn to_top(self: *ScrollCursor) void {
+        // invariant: the cursor stands within its library.
+        assert(self.offset <= self.max_offset());
+        self.offset = 0;
+        // invariant: the top is offset zero.
+        assert(self.offset == 0);
+    }
+
+    /// Snap to the bottom — the last book pinned to the bottom row.
+    pub fn to_bottom(self: *ScrollCursor) void {
+        // invariant: the cursor stands within its library.
+        assert(self.offset <= self.max_offset());
+        self.offset = self.max_offset();
+        // invariant: the bottom is exactly the bottom-pinned offset.
+        assert(self.offset == self.max_offset());
+    }
+
+    pub fn at_top(self: *const ScrollCursor) bool {
+        // invariant: the cursor stands within its library.
+        assert(self.offset <= self.max_offset());
+        return self.offset == 0;
+    }
+
+    pub fn at_bottom(self: *const ScrollCursor) bool {
+        // invariant: the cursor stands within its library.
+        assert(self.offset <= self.max_offset());
+        return self.offset == self.max_offset();
+    }
+
+    /// How many books the current viewport shows — a full `rows` mid-library, fewer only when the whole library is
+    /// shorter than the viewport (the bottom pin guarantees a full page whenever the library is taller). Reuses
+    /// HUNK37's own `window_len`, so the cursor and the pager agree on what is visible.
+    pub fn visible(self: *const ScrollCursor, listing: *const preset_detail.DetailListing) u32 {
+        // invariant: the cursor's library matches the listing it reads.
+        assert(self.count == listing.count);
+        return preset_shelf.window_len(listing, self.rows, self.offset);
+    }
+};
+
+/// Render the page a keeper currently sees — the books at the cursor's offset — onto a fresh Skate grid, through
+/// HUNK37's `shelf_window`. The guarantee the pager alone could not make: because the cursor's offset is always a
+/// bottom-pinned, in-range viewport, this window can never refuse `BadOffset` — every gesture lands on a real page.
+pub fn window(
+    allocator: std.mem.Allocator,
+    listing: *const preset_detail.DetailListing,
+    cursor: *const ScrollCursor,
+    cols: u32,
+) !skate.Grid {
+    // invariant: the cursor's library matches the listing it renders.
+    assert(cursor.count == listing.count);
+    // invariant: the cursor stands on a bottom-pinned, in-range viewport (so shelf_window never refuses BadOffset).
+    assert(cursor.offset <= cursor.max_offset());
+    return preset_shelf.shelf_window(allocator, listing, cols, cursor.rows, cursor.offset);
+}
+
+// --- selftest: build a five-book library and prove a fresh cursor sits at the top, line/page gestures walk the
+//     offset, the viewport bottom-pins, every gesture clamps without under/overflow, a fitting library never
+//     scrolls, the cursor's window never refuses, and paging top-to-bottom shows every book -----------------------
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const beading = @import("mantra/beading.rye");
+    const tablecloth = @import("tablecloth.rye");
+    const filter_preset = @import("filter_preset.rye");
+    const preset_store = @import("preset_store.rye");
+    const photo_edits = @import("photo_edits.rye");
+
+    // Build a real five-book library, exactly as the HUNK37 pager selftest does — three one-preset books beside the
+    // stock and a small custom book, so the library holds five in a known held order.
+    var store: beading.BeadStore = .empty();
+    var cat: tablecloth.Catalog = .empty();
+    const stock = try filter_preset.stock_book();
+    _ = try preset_store.store_book(&cat, &store, "stock.presets", &stock);
+    var small = filter_preset.PresetBook.init();
+    var flip = photo_edits.EditList.init();
+    try flip.push(.flip_h);
+    try small.define("mirror", &flip);
+    _ = try preset_store.store_book(&cat, &store, "custom.presets", &small);
+    {
+        var one = photo_edits.EditList.init();
+        try one.push(.flip_h);
+        const names = [_][]const u8{ "a.presets", "b.presets", "c.presets" };
+        var k: u32 = 0;
+        while (k < names.len) : (k += 1) {
+            var b = filter_preset.PresetBook.init();
+            try b.define("edit", &one);
+            _ = try preset_store.store_book(&cat, &store, names[k], &b);
+        }
+    }
+    var lib: preset_detail.DetailListing = undefined;
+    try preset_detail.detail_books(&cat, &store, &lib);
+    assert(lib.len() == 5);
+
+    const cols: u32 = 72;
+    const rows: u32 = 2; // a viewport two books tall over a five-book library
+
+    // A fresh cursor sits at the top: offset 0, at_top, and its window shows the first two books in held order.
+    var cur = try ScrollCursor.open(lib.count, rows);
+    assert(cur.offset == 0);
+    assert(cur.at_top());
+    assert(!cur.at_bottom());
+    // max_offset bottom-pins: five books, two rows → the last full viewport starts at book 3 (shows books 3,4).
+    assert(cur.max_offset() == 3);
+    assert(cur.visible(&lib) == 2);
+    {
+        const top = try window(garden, &lib, &cur, cols);
+        assert(std.mem.indexOf(u8, top.row_cells(0), lib.at(0).name_slice()) != null);
+        assert(std.mem.indexOf(u8, top.row_cells(1), lib.at(1).name_slice()) != null);
+    }
+
+    // line_down walks the offset one book at a time.
+    cur.line_down(1);
+    assert(cur.offset == 1);
+    assert(!cur.at_top());
+    {
+        const v = try window(garden, &lib, &cur, cols);
+        assert(std.mem.indexOf(u8, v.row_cells(0), lib.at(1).name_slice()) != null);
+        assert(std.mem.indexOf(u8, v.row_cells(1), lib.at(2).name_slice()) != null);
+    }
+    // line_up reverses it — a walk is reversible.
+    cur.line_up(1);
+    assert(cur.offset == 0);
+    assert(cur.at_top());
+
+    // Bottom-pinned: to_bottom lands on max_offset, at_bottom is true, and the window shows the LAST two books with
+    // the final book on the bottom row — no blank row past the end.
+    cur.to_bottom();
+    assert(cur.offset == 3);
+    assert(cur.at_bottom());
+    assert(cur.visible(&lib) == 2);
+    {
+        const bot = try window(garden, &lib, &cur, cols);
+        assert(std.mem.indexOf(u8, bot.row_cells(0), lib.at(3).name_slice()) != null);
+        assert(std.mem.indexOf(u8, bot.row_cells(1), lib.at(4).name_slice()) != null); // the final book, pinned
+    }
+
+    // Clamp, never over/underflow: scrolling down past the bottom stays at max_offset; up past the top stays at 0.
+    cur.line_down(100);
+    assert(cur.offset == 3); // clamped at the bottom, no wrap
+    cur.line_up(100);
+    assert(cur.offset == 0); // clamped at the top, no underflow
+
+    // Page gestures jump a whole viewport and clamp: from the top, one page_down shows books 2,3; a second lands on
+    // the bottom-pinned 3 (not 4), never past it; page_up returns toward the top and clamps at 0.
+    cur.page_down();
+    assert(cur.offset == 2);
+    cur.page_down();
+    assert(cur.offset == 3); // clamped to max_offset, not 4
+    cur.page_up();
+    assert(cur.offset == 1);
+    cur.page_up();
+    assert(cur.offset == 0); // clamped at the top
+
+    // The cursor's window never refuses: at every reachable offset from top to bottom, shelf_window returns a real
+    // page whose visible count matches window_len — a keeper's gesture always lands on a real page.
+    {
+        var ofs: u32 = 0;
+        while (ofs <= cur.max_offset()) : (ofs += 1) {
+            cur.scroll_to(ofs);
+            const wl = cur.visible(&lib);
+            assert(wl > 0);
+            const page = try window(garden, &lib, &cur, cols); // never error.BadOffset
+            assert(page.rows == rows);
+        }
+    }
+    cur.to_top();
+
+    // Coverage: paging top-to-bottom by page_down shows every one of the five books at least once — scrolling loses
+    // nothing, exactly as the HUNK37 pager walk proved.
+    {
+        var seen = [_]bool{false} ** 5;
+        while (true) {
+            const wl = cur.visible(&lib);
+            const page = try window(garden, &lib, &cur, cols);
+            var r: u32 = 0;
+            while (r < wl) : (r += 1) {
+                const row = page.row_cells(r);
+                var b: u32 = 0;
+                while (b < lib.count) : (b += 1) {
+                    if (std.mem.indexOf(u8, row, lib.at(b).name_slice()) != null) seen[b] = true;
+                }
+            }
+            if (cur.at_bottom()) break;
+            cur.page_down();
+        }
+        var b: u32 = 0;
+        while (b < 5) : (b += 1) assert(seen[b]); // every book met at least once
+    }
+
+    // A library that fits the screen never scrolls: rows tall enough to hold every book gives max_offset 0, and every
+    // gesture is a no-op — at_top and at_bottom both true at once.
+    {
+        var fit = try ScrollCursor.open(lib.count, 8); // eight rows over five books
+        assert(fit.max_offset() == 0);
+        assert(fit.at_top() and fit.at_bottom());
+        fit.page_down();
+        fit.line_down(3);
+        fit.to_bottom();
+        assert(fit.offset == 0); // never moved
+        assert(fit.visible(&lib) == lib.count); // the whole library visible at once
+    }
+
+    // A degenerate viewport refuses: zero rows is EmptyViewport.
+    if (ScrollCursor.open(lib.count, 0)) |_| return error.ViewportSlipped else |e| {
+        if (e != error.EmptyViewport) return error.WrongViewport;
+    }
+
+    print("GREEN preset-scroll: a five-book library scrolled through a {d}-row viewport — a fresh cursor sits at the " ++
+        "top (offset 0, its window the first two books), line_down/line_up walk the offset reversibly, to_bottom " ++
+        "bottom-pins the last book to the bottom row (max_offset {d}, no blank row past the end); scrolling down " ++
+        "past the bottom clamps to max_offset and up past the top clamps to 0 without under/overflow, page_down/" ++
+        "page_up jump a whole viewport and clamp at both edges; at every reachable offset the window is a real page " ++
+        "(never BadOffset) whose visible count matches window_len; paging top-to-bottom shows every one " ++
+        "of the five books; a library that fits the screen has max_offset 0 and never scrolls; a zero-row viewport " ++
+        "refuses EmptyViewport\n", .{ rows, cur.max_offset() });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: preset_scroll selftest\n", .{});
+    return 1;
+}
