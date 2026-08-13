@@ -1,0 +1,72 @@
+//! pond/apps/data_dignity_fixture_gen.rye — generate skate/fixtures/estate.bron with real Ed25519 succession proofs.
+//!
+//! DAHL-J12r4 reads a real succession record true. This generator produces that fixture reproducibly: it
+//! builds a demo signed estate over the demo keeper and heir seeds and renders it through rung three's own
+//! `render`, so the fixture is exactly what `data_dignity_bron` reads — a genuine `format data-dignity-v1`
+//! record, not a hand-typed shape. The keeper wills two holdings to the heir (items 1 and 2) and rests one
+//! (item 3), seals the directive, and the heir accepts — so the record carries a real will (two bequeathed,
+//! one rested) and both real signatures, real structure a reader and an awk both count.
+//!
+//! Keeping the generator in-tree makes the fixture reproducible — re-running it reproduces the exact
+//! committed bytes. It lives beside its sibling modules so the `@import`s resolve through the same symlinks
+//! the apps use. Demo keeper and heir seeds only — no real key, no identity invented.
+//!
+//! The record prints on stderr (the tree's `std.debug.print` convention), so capture stderr, not stdout:
+//!
+//!   rye build pond/apps/data_dignity_fixture_gen.rye -femit-bin=pond/bin/data-dignity-fixture-gen
+//!   pond/bin/data-dignity-fixture-gen 2> skate/fixtures/estate.bron
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const estate_mod = @import("data_dignity.rye");
+const signed = @import("data_dignity_signed.rye");
+const bron = @import("data_dignity_bron.rye");
+const kumara = @import("kumara.rye");
+
+// Demo keeper and heir seeds — plainly not real keys, so no identity is invented.
+const demo_keeper_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
+const demo_heir_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
+
+const keeper_pt: u32 = 11;
+const heir_pt: u32 = 42;
+const demo_estate_id: u32 = 7;
+
+fn pubkey_of(seed: *const [kumara.seed_length]u8) [signed.pubkey_len]u8 {
+    return kumara.keypair_from_seed(seed).public_key.bytes;
+}
+
+fn demo_ring() error{KeyringFull}!signed.Keyring {
+    var ring = signed.Keyring.open();
+    try ring.enroll(keeper_pt, pubkey_of(&demo_keeper_seed));
+    try ring.enroll(heir_pt, pubkey_of(&demo_heir_seed));
+    return ring;
+}
+
+fn build_fixture(ring: *const signed.Keyring) !bron.SignedEstate {
+    var e = try estate_mod.Estate.open(keeper_pt, heir_pt);
+    try e.bequeath(1); // a letter, for the heir
+    try e.bequeath(2); // a ledger, for the heir
+    try e.rest(3); // a private journal, to rest with the keeper
+
+    const digest = signed.will_digest(&e);
+    const dir_sig = signed.sign_directive(&demo_keeper_seed, demo_estate_id, keeper_pt, heir_pt, &digest);
+    try signed.seal_signed(&e, ring, demo_estate_id, &dir_sig);
+    const acc_sig = signed.sign_acceptance(&demo_heir_seed, demo_estate_id, keeper_pt, heir_pt);
+    try signed.accept_signed(&e, ring, demo_estate_id, &acc_sig);
+
+    // invariant: the fixture wills two holdings and rests one.
+    assert(e.bequeathed_count() == 2);
+    assert(e.rested_count() == 1);
+    return bron.SignedEstate{ .estate = e, .estate_id = demo_estate_id, .directive_sig = dir_sig, .acceptance_sig = acc_sig };
+}
+
+pub fn main() !u8 {
+    const ring = try demo_ring();
+    var se = try build_fixture(&ring);
+    var buf: [bron.max_record]u8 = undefined;
+    const n = try bron.render(&se, &buf);
+    print("{s}", .{buf[0..n]});
+    return 0;
+}

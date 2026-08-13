@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260812.214624
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention · this session in ai-jail
+title DAHL-J12r4 data_dignity_true — a real succession reads true (Journey 12 closes)
+prompt Continue the loop: take the next agent-doable lap Lindy-first crux-first; send each finished increment as its own signed round; close Journey 12's arc; stop at custody gates.
+think r1–r3 built the succession rule, signed its two proofs, and let it travel as Bron — all over estates seated in code. r4's crux (from the Journey 12 exploration): carry the reader onto a real record a keeper can open and count, so what the reader reports can never drift from the bytes. Mirrored council_sky_true + its fixture-gen + its awk.
+think Built the reproducible trio: pond/apps/data_dignity_fixture_gen.rye renders a demo signed estate (bequeath 1, bequeath 2, rest 3) through r3's render to stderr; captured to skate/fixtures/estate.bron; symlinked pond/apps/corpora/estate.bron for @embedFile. tools/fixtures/data_dignity_truth.awk counts marks structurally.
+think The cross-check has real teeth: the app computes heir-held by *actually running* the signed succession (r3 rebuild → seal_signed, accept_signed, succeed) and resolving each item's holder, while awk reads heir-held structurally off the marks. Two genuinely different computations agreeing (2 1 2) proves the succession machinery yields exactly the bequeathed set — the rested holding rests.
+obs One build red caught on metal: read_estate mixes bron.BronError (parse) and signed.EstateActError (rebuild), so its return type needed the merged set (bron.BronError || signed.EstateActError). Fixed; witness GREEN. still_dignity_honest re-verifies both real Ed25519 proofs; a tampered header refuses BadFormat.
+obs TAME bans + width clean; additive (r1/r3 re-run GREEN in the witness). Demo keeper and heir seeds only, reads no network — the Comlink-served succession stays the serve custody gate (Keaton's hand). DAHL Journey 12 (Data-dignity) stands complete end to end: r1 two-proof rule · r2 signed · r3 travels · r4 read-true. Season 3 (Commons) agent-doable arc complete across J9·J10·J11·J12.
+loom witness=dahl_j12_data_dignity_true_witness build=green selftests=3 app_awk_triple=2_1_2 r1_rerun=green r3_rerun=green
+file pond/apps/data_dignity_true.rye r4 — @embedFile the real fixture, cross-check bequeathed/rested/heir-held against awk, prove the record dignity-honest
+file pond/apps/data_dignity_fixture_gen.rye reproducible generator for skate/fixtures/estate.bron with real Ed25519 proofs
+file skate/fixtures/estate.bron the real format data-dignity-v1 record (2 bequeathed, 1 rested, both proofs signed)
+file pond/apps/corpora/estate.bron symlink so @embedFile binds the fixture at compile time
+file tools/fixtures/data_dignity_truth.awk independent structural count of the marks — the second tool
+file tools/dahl_j12_data_dignity_true_witness.rish witness cross-checking app==awk (2 1 2) and the record's honesty
+file work-in-progress/REMEMBER.md landed line closing Journey 12 + git nib refresh
+recommend keep-going a fresh Season 4 (Seal, CION — VOLS survey) self-approved design read is the next Lindy-first crux on the whole 1,024-round road, Season 3 now complete across every agent-doable rung
