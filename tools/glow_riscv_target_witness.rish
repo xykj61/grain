@@ -15,9 +15,9 @@
 # Nine foundational folds prove the claim, one from each keystone vane
 # family rather than Seva alone: Seva B0 (the session-broadcast root), Neth's
 # minimal witness (the settlement state-root), Pool P0 (the capability-hosted
-# fold), Rhyz/Kumara (the Ed25519 identity seam), the Nock core lap 1
-# (Glow's second backend, opcodes 0-5), Nock lap 2 (the macro layer, opcodes
-# 6-9 and 11), Nock lap 3 (the edit primitive and opcode 10 -- the whole
+# fold), Rhyz/Kumara (the Ed25519 identity seam), the Nock primitive core
+# (Glow's second backend, opcodes 0-5), Nock's macro layer (opcodes
+# 6-9 and 11), Nock's edit primitive (opcode 10 -- the whole
 # numbered core, real), the dec jet (fast, slow, and dispatched, proven to
 # agree), and the bounded |- rune's front half (the design brief's own
 # proposed parser). Each comparison is the strongest and most general form
@@ -149,40 +149,40 @@ let bin_nock2_native = "glow/nock/bin/nock_lap2_witness_native"
 let bin_nock2_riscv = "glow/nock/bin/nock_lap2_witness_riscv64"
 
 let build_nock2_native = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${src_nock2} -femit-bin=${bin_nock2_native}"]
-assert build_nock2_native.ok else "Nock lap 2 native build failed"
+assert build_nock2_native.ok else "Nock macro layer native build failed"
 let native_nock2 = run ["sh" "-c" "${bin_nock2_native} 2>&1"]
-assert native_nock2.ok else "Nock lap 2 native run failed"
-assert native_nock2.out contains "GREEN" else "Nock lap 2 native run not GREEN"
+assert native_nock2.ok else "Nock macro layer native run failed"
+assert native_nock2.out contains "GREEN" else "Nock macro layer native run not GREEN"
 
 let build_nock2_riscv = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${src_nock2} -target riscv64-linux-musl -femit-bin=${bin_nock2_riscv}"]
-assert build_nock2_riscv.ok else "Nock lap 2 RISC-V cross-build failed"
+assert build_nock2_riscv.ok else "Nock macro layer RISC-V cross-build failed"
 let shape_nock2 = run ["sh" "-c" "file ${bin_nock2_riscv}"]
-assert shape_nock2.out contains "RISC-V" else "Nock lap 2 cross-built binary is not RISC-V"
+assert shape_nock2.out contains "RISC-V" else "Nock macro layer cross-built binary is not RISC-V"
 
 let emu_nock2 = run ["sh" "-c" "qemu-riscv64-static ${bin_nock2_riscv} 2>&1"]
-assert emu_nock2.ok else "Nock lap 2 riscv64 witness failed under QEMU"
-assert emu_nock2.out == native_nock2.out else "Nock lap 2 riscv64 output diverges from native -- not byte-identical"
-say "GREEN: Nock's macro layer (lap 2) runs on emulated RISC-V, byte-for-byte identical to native."
+assert emu_nock2.ok else "Nock macro layer riscv64 witness failed under QEMU"
+assert emu_nock2.out == native_nock2.out else "Nock macro layer riscv64 output diverges from native -- not byte-identical"
+say "GREEN: Nock's macro layer runs on emulated RISC-V, byte-for-byte identical to native."
 
 let src_nock3 = "glow/nock/nock_lap3_witness.rye"
 let bin_nock3_native = "glow/nock/bin/nock_lap3_witness_native"
 let bin_nock3_riscv = "glow/nock/bin/nock_lap3_witness_riscv64"
 
 let build_nock3_native = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${src_nock3} -femit-bin=${bin_nock3_native}"]
-assert build_nock3_native.ok else "Nock lap 3 native build failed"
+assert build_nock3_native.ok else "Nock edit primitive native build failed"
 let native_nock3 = run ["sh" "-c" "${bin_nock3_native} 2>&1"]
-assert native_nock3.ok else "Nock lap 3 native run failed"
-assert native_nock3.out contains "GREEN" else "Nock lap 3 native run not GREEN"
+assert native_nock3.ok else "Nock edit primitive native run failed"
+assert native_nock3.out contains "GREEN" else "Nock edit primitive native run not GREEN"
 
 let build_nock3_riscv = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${src_nock3} -target riscv64-linux-musl -femit-bin=${bin_nock3_riscv}"]
-assert build_nock3_riscv.ok else "Nock lap 3 RISC-V cross-build failed"
+assert build_nock3_riscv.ok else "Nock edit primitive RISC-V cross-build failed"
 let shape_nock3 = run ["sh" "-c" "file ${bin_nock3_riscv}"]
-assert shape_nock3.out contains "RISC-V" else "Nock lap 3 cross-built binary is not RISC-V"
+assert shape_nock3.out contains "RISC-V" else "Nock edit primitive cross-built binary is not RISC-V"
 
 let emu_nock3 = run ["sh" "-c" "qemu-riscv64-static ${bin_nock3_riscv} 2>&1"]
-assert emu_nock3.ok else "Nock lap 3 riscv64 witness failed under QEMU"
-assert emu_nock3.out == native_nock3.out else "Nock lap 3 riscv64 output diverges from native -- not byte-identical"
-say "GREEN: Nock's edit primitive and opcode 10 (lap 3) run on emulated RISC-V, byte-for-byte identical to native."
+assert emu_nock3.ok else "Nock edit primitive riscv64 witness failed under QEMU"
+assert emu_nock3.out == native_nock3.out else "Nock edit primitive riscv64 output diverges from native -- not byte-identical"
+say "GREEN: Nock's edit primitive and opcode 10 run on emulated RISC-V, byte-for-byte identical to native."
 
 let src_jet = "glow/nock/nock_jet_dec_witness.rye"
 let bin_jet_native = "glow/nock/bin/nock_jet_dec_witness_native"
@@ -226,4 +226,4 @@ assert emu_rune.ok else "Rune bounded-trap riscv64 witness failed under QEMU"
 assert emu_rune.out == native_rune.out else "Rune bounded-trap riscv64 output diverges from native -- not byte-identical"
 say "GREEN: the bounded |- rune's front half runs on emulated RISC-V, byte-for-byte identical to native."
 
-say "GREEN: Glow's primary backend (Glow -> Zig 0.16.0 -> RISC-V) proves out across nine keystone pieces -- Seva, Neth, Pool, Rhyz/Kumara, Nock lap 1, Nock lap 2, Nock lap 3, the dec jet, the bounded rune parser -- each byte-identical to its native run."
+say "GREEN: Glow's primary backend (Glow -> Zig 0.16.0 -> RISC-V) proves out across nine keystone pieces -- Seva, Neth, Pool, Rhyz/Kumara, Nock primitive core, Nock macro layer, Nock edit primitive, the dec jet, the bounded rune parser -- each byte-identical to its native run."
