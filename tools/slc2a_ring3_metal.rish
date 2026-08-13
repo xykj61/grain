@@ -1,4 +1,4 @@
-# tools/slc2a_ring3_metal.rish — SLC-2a Lap 3: Wayland metal smoke (automated slice).
+# tools/slc2a_ring3_metal.rish — SLC-2a Wayland metal smoke, automated slice · 20260713.
 #
 # Run from the repository root when WAYLAND_DISPLAY is set:
 #   rishi/bin/rishi run tools/slc2a_ring3_metal.rish
@@ -10,7 +10,7 @@ let bin = "pond/bin/drawn-terminal"
 
 say "metal-smoke: prepare — drawn-terminal build (prepare → compile → prove)"
 let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
-assert build.ok else "drawn_terminal build failed for Lap 3 metal smoke"
+assert build.ok else "drawn_terminal build failed for the metal-smoke witness"
 assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
 say build.out
 
@@ -19,7 +19,7 @@ assert wayland.ok else "WAYLAND_DISPLAY unset — run metalsmoke on GNOME Waylan
 
 let smoke = run ["sh" "-c" "${bin} metalsmoke 2>&1"]
 assert smoke.ok else "drawn terminal metalsmoke exited non-zero"
-assert smoke.out contains "metalsmoke" else "Lap 3 metal smoke missing expected output"
+assert smoke.out contains "metalsmoke" else "metal smoke missing expected output"
 assert smoke.out contains "GREEN" else "drawn terminal metalsmoke not GREEN"
 
-say "GREEN: SLC-2a Lap 3 Wayland metal smoke passed (interactive idle/ceiling still manual)."
+say "GREEN: SLC-2a Wayland metal smoke passed (interactive idle/ceiling still manual)."
