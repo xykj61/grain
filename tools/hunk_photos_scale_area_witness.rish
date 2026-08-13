@@ -1,0 +1,66 @@
+# tools/hunk_photos_scale_area_witness.rish — the Photos app downscales by area averaging on metal (HUNK22).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Open Image · rung HUNK22.
+# Design read: active-designing/20260813-171223_hunk-photos-scale-area-exploration.md (the area-downscale round).
+# Teacher, thanked clean-room: the box filter every photo app and thumbnailer carries (concept only, siloed).
+#
+# HUNK9 gave the open module a nearest-neighbor `scale`, honest for an upscale yet aliasing when an image shrinks.
+# This rung gives it a proper downscale: `image/photos.rye` `scale_area` is a pure bounded function over the decoded
+# RGBA grid where each output pixel is the exact integer mean, over all four channels, of the source pixels its cell
+# covers — the source bands tile the image with no gap or overlap, so every source pixel is read exactly once. The
+# selftest proves an identity size recovers the source byte-for-byte, a solid color stays that exact color at any
+# smaller size (the box-filter no-drift invariant), a 2x2 image downscales to 1x1 as the exact integer average of
+# its four pixels over every channel and alpha, the source stays pure, the downscaled image still re-encodes and
+# round-trips as an open image, and an upscale (NotDownscale) and a zero dimension (EmptyImage) each refuse by name.
+# No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_photos_scale_area_witness.rish
+
+say "hunk-photos-scale-area: Language EN — HUNK22 gives the Photos app a proper downscale: a pure bounded area-average function over the decoded grid that returns a fresh open image, the source untouched."
+say "hunk-photos-scale-area: Style Radiant — a downscaled image is still an open image: it re-encodes and round-trips byte-for-byte, so area resampling stands on the open module the quest built, never a proprietary one."
+say "hunk-photos-scale-area: Lens TAME — the bands tile the source so every pixel is read once; each channel sum stays in u32 (255·2^20 < 2^32) and divides by a non-zero block area; positive invariants per fn; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/photos"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/photos.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-photos-scale-area: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-photos-scale-area: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+say "hunk-photos-scale-area: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-scale-area' && echo yes"]
+assert (trim green.out) == "yes" else "hunk-photos-scale-area: selftest did not print the GREEN area-downscale line"
+
+let identity = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'identity size byte-identical' && echo yes"]
+assert (trim identity.out) == "yes" else "hunk-photos-scale-area: the identity size was not proven byte-identical"
+
+let constant = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'stays that exact color at any smaller size' && echo yes"]
+assert (trim constant.out) == "yes" else "hunk-photos-scale-area: the constant-stays-constant box-filter invariant was not proven"
+
+let mean = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'exact integer average of all four pixels' && echo yes"]
+assert (trim mean.out) == "yes" else "hunk-photos-scale-area: the exact block mean was not proven"
+
+let open = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'downscaled image re-encodes and round-trips' && echo yes"]
+assert (trim open.out) == "yes" else "hunk-photos-scale-area: a downscaled image did not round-trip as an open image"
+
+let refuse = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'an upscale and a zero target refused by name' && echo yes"]
+assert (trim refuse.out) == "yes" else "hunk-photos-scale-area: the NotDownscale and EmptyImage refusals were not proven"
+
+# HUNK3 crop, HUNK8 orient, HUNK9 scale, HUNK10 adjust, and HUNK21 saturate selftests share the binary — GREEN holds.
+let crop = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos:' && echo yes"]
+assert (trim crop.out) == "yes" else "hunk-photos-scale-area: HUNK3 crop selftest no longer GREEN beneath"
+let orient = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-orient' && echo yes"]
+assert (trim orient.out) == "yes" else "hunk-photos-scale-area: HUNK8 orient selftest no longer GREEN beneath"
+let scale = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-scale:' && echo yes"]
+assert (trim scale.out) == "yes" else "hunk-photos-scale-area: HUNK9 scale selftest no longer GREEN beneath"
+let adjust = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-adjust' && echo yes"]
+assert (trim adjust.out) == "yes" else "hunk-photos-scale-area: HUNK10 adjust selftest no longer GREEN beneath"
+let saturate = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-saturate' && echo yes"]
+assert (trim saturate.out) == "yes" else "hunk-photos-scale-area: HUNK21 saturate selftest no longer GREEN beneath"
+
+say "hunk-photos-scale-area: GREEN — HUNK22 area downscale proven on metal; crop, orient, scale, adjust, and saturate still GREEN beneath."

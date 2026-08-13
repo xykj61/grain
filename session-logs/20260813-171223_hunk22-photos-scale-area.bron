@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260813.171223
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title HUNK22 — the Photos app downscales by area averaging
+prompt baton prin recur — continue the loop past HUNK21, next agent-doable Lindy-first crux, send each increment
+think REMEMBER named three next doors: a hue rotation (harder to bound in integer math), a smoother resampler, or another Season-A journey. Lindy-first crux-first favors the area resampler — scaling is a foundational primitive the Photos resize and the marketplace sprite thumbnail both read, and unlike the nearest-neighbor scale (HUNK9) an area average admits a clean integer-only, algebra-provable shape today.
+think Chose scale_area: a downscale where each output pixel is the exact integer mean over all four channels of the source pixels its cell covers. The source bands [ox·w/new_w, (ox+1)·w/new_w) tile the image with no gap or overlap, so every source pixel is read once and every band is non-empty when new_w ≤ width and new_h ≤ height. An upscale would leave source pixels unread, so it refuses NotDownscale by name — nearest scale keeps the upscale.
+think Proved by algebra not one arithmetic: identity size byte-identical, a solid color stays that exact color at any smaller size (the box-filter no-drift invariant), a 2x2 downscales to 1x1 as the exact per-channel mean (r32 g50 b67 a85), alpha means alongside the colors, source pure, the downscaled image still re-encodes and round-trips as an open image, and NotDownscale and EmptyImage refusals hold.
+obs Built GREEN first try; all six image-photos selftests GREEN (crop, orient, scale, scale-area, adjust, saturate). Each channel sum stays in u32 (255·2^20 < 2^32) and divides by a non-zero block area — no float, no wrap. Split every compound assert (bands, area, sums) into single-predicate asserts to keep the TAME ban clean.
+obs A true hue rotation (modular color-wheel turn) and a fractional-coverage bilinear resampler stay named horizons on the same module — both genuinely harder to bound cleanly in integer math; named, not half-built here.
+loom witness=hunk_photos_scale_area_witness build=ok selftest=green verbs=6 channels_averaged=4 mean_1x1_rgba=32,50,67,85 refusals=2
+file image/photos.rye scale_area verb + NotDownscale error + run_scale_area selftest and GREEN line; version restamped 20260813.171223
+file tools/hunk_photos_scale_area_witness.rish new HUNK22 witness, GREEN; asserts crop·orient·scale·adjust·saturate still GREEN beneath
+file active-designing/20260813-171223_hunk-photos-scale-area-exploration.md the self-approved HUNK22 design round
+file work-in-progress/REMEMBER.md HUNK22 narrative appended; git nib refreshed in the same work commit
+recommend keep-going the hue rotation horizon (reusing luma_of), a bilinear resampler, or the next Season-A / double-seat journey; hardware buys stay custody gates #2/#3
