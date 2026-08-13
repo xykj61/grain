@@ -1,0 +1,174 @@
+//! brushstroke/revert_preview.rye — HUNK15: the Skate view of a revert, seen before it is committed.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK15.
+//! Design read: active-designing/20260813-155719_hunk-photo-edits-non-destructive-exploration.md (revert horizon).
+//! Teachers, thanked clean-room: gratitude/qoi.md (the open codec) · the "revert to original" of iCloud Photos /
+//! Google Photos (concept only, siloed).
+//!
+//! HUNK13 let a keeper *see* a pending edit; HUNK14 let a keeper *revert* by dropping edits off the end of the
+//! list. This rung joins them so a keeper sees exactly what a revert will restore before committing it.
+//! `preview_revert` drops the last `k` edits (`photo_revert.drop_last`, pure — the caller's list untouched) and
+//! hands the shorter list to `edit_preview.preview`, returning the Skate grid of the earlier image. Reverting all
+//! the way previews the **original** — the empty list's own down-map — so "revert to original" is a look, not a
+//! reconstruction: no pixels stored, no history replayed backward. Pure composition over two proven seams, adding
+//! no new failure mode; and because a revert removes edits, reverting away a bad edit **rescues** a list that
+//! refused, previewing cleanly. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/revert_preview.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const photo_edits = @import("photo_edits.rye");
+const photo_revert = @import("photo_revert.rye");
+const edit_preview = @import("edit_preview.rye");
+const image_skate = @import("image_skate.rye");
+const skate = @import("skate_grid.rye");
+
+pub const revert_preview_version = "20260813.162400";
+
+/// Preview the image a revert of `k` steps would restore: drop the last `k` edits and hand the shorter list to
+/// `edit_preview.preview`, returning the cols×rows Skate grid a keeper looks at. Pure: `drop_last` leaves the
+/// caller's list whole and `preview` folds from a clone, so neither the list nor the source is touched — a preview
+/// is a look, not a commit. Reverting at least as many steps as the list holds previews the original image. Adds
+/// no new failure mode: a surviving verb's own refusal surfaces by its name through the fold, and an empty or
+/// over-ceiling grid refuses from the down-map, each before a grid is returned.
+pub fn preview_revert(
+    allocator: std.mem.Allocator,
+    source: *const qoi.Pixmap,
+    list: *const photo_edits.EditList,
+    k: u32,
+    cols: u32,
+    rows: u32,
+) !skate.Grid {
+    // invariant: the edit-list stays within its named ceiling before a single edit is dropped or replayed.
+    assert(list.len() <= photo_edits.max_edits);
+    // invariant: the source is a well-formed image — four bytes per pixel — the whole pipeline relies on.
+    assert(source.pixels.len == @as(usize, source.width) * @as(usize, source.height) * 4);
+
+    var reverted = photo_revert.drop_last(list, k);
+    // invariant: a revert only shrinks the list — never more edits survive than the source held.
+    assert(reverted.len() <= list.len());
+
+    return edit_preview.preview(allocator, source, &reverted, cols, rows);
+}
+
+// --- selftest: preview reverts of a two-tone image, prove the view shows the restored image faithfully, that
+//     reverting all previews the original, that a revert changes the view and is pure and deterministic, that a
+//     revert rescues a refusing list, and that the grid refusals still land by name -----------------------------
+
+/// Build an 8×8 image whose left half is red and right half is blue — a spatial pattern a preview must carry, and
+/// one a `flip_h` visibly swaps, so each revert step is visible in the left cell.
+fn craft_two_tone(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 8;
+    const h: u32 = 8;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            const left = x < w / 2;
+            buf[off] = if (left) 255 else 0; // r
+            buf[off + 1] = 0; // g
+            buf[off + 2] = if (left) 0 else 255; // b
+            buf[off + 3] = 255; // a
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const pm = try craft_two_tone(garden);
+    const cols: u32 = 2;
+    const rows: u32 = 2;
+    const red_slot: u8 = 3; // anchors slot 3 is red
+    const blue_slot: u8 = 5; // anchors slot 5 is blue
+    const left_i: usize = 0;
+
+    // A committed-so-far edit: flip the image horizontally, swapping the red and blue halves.
+    var list = photo_edits.EditList.init();
+    try list.push(.flip_h);
+
+    // The full view (nothing reverted): the left cell reads blue — the flip is in effect.
+    const full = try edit_preview.preview(garden, &pm, &list, cols, rows);
+    assert(full.fg_index[left_i] == blue_slot);
+
+    // Revert of zero is identity: preview_revert(list, 0) equals the full preview cell-for-cell.
+    const rev0 = try preview_revert(garden, &pm, &list, 0, cols, rows);
+    assert(std.mem.eql(u8, rev0.cells, full.cells));
+    assert(std.mem.eql(u8, rev0.fg_index, full.fg_index));
+
+    // Revert of one restores the ORIGINAL: the view equals the source's own down-map, the left cell reads red
+    // again, and the reverted view differs from the full view — the keeper sees what a revert restores.
+    const rev1 = try preview_revert(garden, &pm, &list, 1, cols, rows);
+    const source_map = try image_skate.down_map(garden, &pm, cols, rows);
+    assert(std.mem.eql(u8, rev1.cells, source_map.cells));
+    assert(std.mem.eql(u8, rev1.fg_index, source_map.fg_index));
+    assert(rev1.fg_index[left_i] == red_slot);
+    assert(!std.mem.eql(u8, rev1.fg_index, full.fg_index));
+
+    // Reverting past the count also previews the original — clamped, never underflowing.
+    const rev_over = try preview_revert(garden, &pm, &list, list.len() + 9, cols, rows);
+    assert(std.mem.eql(u8, rev_over.fg_index, source_map.fg_index));
+
+    // Pure: the caller's own list is untouched by a revert-preview, so the full view is unchanged after.
+    assert(list.len() == 1);
+    const full_again = try edit_preview.preview(garden, &pm, &list, cols, rows);
+    assert(std.mem.eql(u8, full_again.fg_index, full.fg_index));
+
+    // Deterministic: the same source, list, k, and grid preview to the same grid twice.
+    const rev1b = try preview_revert(garden, &pm, &list, 1, cols, rows);
+    assert(std.mem.eql(u8, rev1.cells, rev1b.cells));
+    assert(std.mem.eql(u8, rev1.fg_index, rev1b.fg_index));
+
+    // Rescue: a list ending in an out-of-bounds crop refuses when previewed whole — yet reverting that one bad
+    // edit previews cleanly, exactly the flip's own view. A revert removes the failure.
+    var bad = photo_edits.EditList.init();
+    try bad.push(.flip_h);
+    try bad.push(.{ .crop = .{ .x = 6, .y = 0, .w = 4, .h = 2 } }); // 6+4 > 8, refuses OutOfBounds
+    if (edit_preview.preview(garden, &pm, &bad, cols, rows)) |_| return error.BadSlipped else |e| {
+        if (e != error.OutOfBounds) return error.WrongBad;
+    }
+    const rescued = try preview_revert(garden, &pm, &bad, 1, cols, rows);
+    assert(std.mem.eql(u8, rescued.fg_index, full.fg_index));
+
+    // Genuinely seen: the restored view rasterizes to a lit canvas, red back in the left cell.
+    const view_scale: u32 = 1;
+    const width: u32 = cols * skate.cell_w * view_scale;
+    const height: u32 = rows * skate.cell_h * view_scale;
+    const stride: u32 = width * 4;
+    const canvas = try garden.alloc(u8, @as(usize, stride) * @as(usize, height));
+    const bg = skate.Color{ .r = 1, .g = 2, .b = 3 };
+    const fg = skate.Color{ .r = 200, .g = 200, .b = 200 };
+    rev1.rasterize(canvas, stride, @intCast(width), @intCast(height), bg, fg, view_scale);
+    const lit = rev1.lit_pixel_count(canvas, stride, @intCast(width), @intCast(height), bg);
+    assert(lit > 0);
+    // Skate writes B,G,R,A; the restored top-left cell carries red, not the flip's blue.
+    assert(canvas[0 + 2] == 255); // red channel lit
+    assert(canvas[0 + 0] == 0); // blue channel dark
+
+    // The grid refusals still land by name through the revert: an empty grid dimension refuses EmptyImage.
+    if (preview_revert(garden, &pm, &list, 1, 0, rows)) |_| return error.EmptySlipped else |e| {
+        if (e != error.EmptyImage) return error.WrongEmpty;
+    }
+
+    print("GREEN revert-preview: reverting one step of a flip_h over an 8x8 two-tone previews to a {d}x{d} Skate " ++
+        "grid equal to the source down_map cell-for-cell (the original restored, left cell blue->red); a " ++
+        "revert of zero is the full view; reverting past the count clamps to the original; the input list is " ++
+        "untouched; deterministic; reverting away an out-of-bounds crop rescues a refusing list to preview " ++
+        "cleanly; the restored view rasterizes to {d} lit pixels with red in the left cell; an empty grid refuses " ++
+        "EmptyImage — seen, not committed; no name, no bead, no funds\n", .{ cols, rows, lit });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: revert_preview selftest\n", .{});
+    return 1;
+}

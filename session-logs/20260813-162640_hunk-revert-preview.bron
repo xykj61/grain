@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260813.162640
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title HUNK15 — the Skate view of a revert (preview_revert)
+prompt Autonomous recursion lap: continue the Season-A Photos journey Lindy-first crux-first after HUNK14 sent; land a clean self-contained increment, send it as its own signed round, stop at custody gates.
+think After HUNK14 (the revert as pure data) sent, the crux options were another Photos verb (touches the proven photos.rye + photo_edits.rye), the Skate view of a revert (pure composition, no proven file touched), or a revert/redo cursor. Chose the Skate view of a revert: it completes the revert story visibly and is low-risk pure composition over HUNK13's preview and HUNK14's drop_last.
+think preview_revert drops the last k edits then hands the shorter list to edit_preview.preview — so it reuses two proven seams and adds no new failure mode. Reverting all the way previews the empty list's own down-map, i.e. the original image; a keeper sees what "revert to original" restores without any reconstruction.
+think Symlinked photo_revert.rye into brushstroke/ so imports resolve beside the existing qoi/photo_edits/photos/image_skate/skate_grid links; touched no proven file.
+obs Chose proofs that make correctness unambiguous over an 8×8 two-tone: the restored view equals the source down-map cell-for-cell (left cell blue→red), a revert of zero is the full view, an over-count revert clamps to the original, the input list survives (pure), deterministic, and — a genuinely new property — reverting away an out-of-bounds crop RESCUES a list that refused when previewed whole, previewing cleanly. A revert removes the failure.
+obs Hit the known apostrophe-in-GREEN-line shell trap (HUNK5/HUNK13 saw it): the selftest printed GREEN but the single-quoted grep broke on "source's" and "caller's". Reworded both to "source down-map" and "input list", witness grep realigned; GREEN on the re-run.
+obs No custody gate reached — pure look over the edit-list, no name, no bead, no key, no funds, no network. HUNK13 and HUNK14 witnesses still GREEN beneath.
+loom witness=hunk_revert_preview_witness image=8x8 grid=2x2 lit=256 result=GREEN
+file brushstroke/revert_preview.rye HUNK15 — preview_revert composes drop_last + preview; selftest GREEN.
+file tools/hunk_revert_preview_witness.rish witnesses HUNK15 on metal.
+file brushstroke/photo_revert.rye symlink to image/photo_revert.rye so the composition resolves.
+file work-in-progress/REMEMBER.md latest-lap bumped with the HUNK15 landing; git nib refreshed in the same work commit.
+recommend keep-going — next agent-doable crux is another Photos gesture (a smoother resampler, or hue/saturation as a new bounded verb), a revert/redo cursor over the edit-list, or another Season-A / double-seat journey; all agent-doable, no gate.
