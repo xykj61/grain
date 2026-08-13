@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260812.214126
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention · this session in ai-jail
+title DAHL-J12r3 data_dignity_bron — the signed succession travels as Bron
+prompt Continue the loop: take the next agent-doable lap Lindy-first crux-first; send each finished increment as its own signed round; stop at custody gates.
+think r1 fixed succession, r2 signed the two proofs. r3's crux (from the Journey 12 exploration): a succession must be carriable — handed to an executor, a kin, a court — and checked with no live estate in hand. Mirrored council_sky_bron / skate_group_bron: a purpose-built bounded flat-Bron reader, never a general parser.
+think Record shape format data-dignity-v1: header · estate <id> <keeper> <heir> · one hold <item> <disposition> line per willed holding · directive <sig-hex> · acceptance <sig-hex>. A SignedEstate bundles r1's estate + estate_id + the two sigs; a PortableEstate owns its arrays.
+think still_dignity_honest rebuilds the will, recomputes r2's digest, and re-verifies both proofs offline; rebuild replays through r2's signed gates and succeeds. The dignity crux carries: the rested set still extinguishes on rebuild (holder_of == rested), heir_held_count == bequeathed_count asserted.
+obs The strongest new test is the tampered-mark refusal: flip a rested mark to bequeathed after the crossing and the keeper's directive falls BadConsent — the will's marks travel *under* the signature (via the digest), not beside it. A flipped directive refuses both still_dignity_honest and rebuild. Unknown field, bad header, missing estate, missing proof, bad disposition, bad hex each refuse.
+obs GREEN first pass — no build reds this round (the r2 lessons on shadowing and SHA-256 carried). TAME bans + width clean; the flat-Bron hex/tokenizer idiom reused from the sibling Bron apps. Additive: r1 and r2 re-run GREEN. Demo seeds only, no network (serve = custody gate).
+loom witness=dahl_j12_data_dignity_bron_witness build=green selftests=9 cases_pass=9 r1_rerun=green r2_rerun=green
+file pond/apps/data_dignity_bron.rye r3 — render/parse a format data-dignity-v1 record byte-for-byte, still dignity-honest offline
+file tools/dahl_j12_data_dignity_bron_witness.rish witness building r1+r2+r3 and proving the Bron selftest GREEN
+file work-in-progress/REMEMBER.md landed line for DAHL-J12r3 + git nib refresh
+recommend keep-going DAHL-J12r4 (carry the reader onto a real skate/fixtures/estate.bron with real Ed25519 proofs, cross-check bequeathed/rested/heir-held counts against an awk truth script — two tools, one answer — closing Journey 12's agent-doable arc)
