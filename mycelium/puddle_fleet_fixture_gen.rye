@@ -1,0 +1,53 @@
+//! mycelium/puddle_fleet_fixture_gen.rye — reproducibly emit the Puddle fleet fixture (r4 support).
+//!
+//! Season D (Kresfa & Mycelium) · Puddle fleet orchestration · rung r4 support.
+//! Design read: active-designing/20260813-114651_puddle-fleet-placement-exploration.md
+//!
+//! Seats the honest four-host, six-world fleet r1/r2/r3 use (each host capacity four), renders it to a
+//! `format puddle-fleet-v1` record on stderr — the exact bytes `mycelium/puddle_true.rye` reads back and the
+//! r4 witness cross-checks against an independent awk reading. Deterministic: seeded demo host keys and a
+//! pure render mean the same bytes every run, so the on-disk fixture is what the Puddle emits, never a
+//! hand-mock.
+//!
+//! Siloed, dev-only, demo host and world seeds — no real key, no funds, no network, no world provisioned.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/puddle_fleet_fixture_gen.rye \
+//!     2> tools/fixtures/puddle_fleet.bron
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const puddle = @import("puddle.rye");
+const puddle_bron = @import("puddle_bron.rye");
+const kumara = @import("kumara.rye");
+
+fn host_key(byte: u8) [puddle.pk_len]u8 {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    const kp = kumara.keypair_from_seed(&seed);
+    return kp.public_key.toBytes();
+}
+
+/// Seat the honest four-host, six-world fleet — the same scene the Puddle's own selftests use.
+fn seat_fleet() !puddle.Fleet {
+    const ids = [_][]const u8{ "alpha", "bravo", "charlie", "delta", "echo", "foxtrot" };
+    const hosts = [_]u8{ 0x11, 0x22, 0x33, 0x44 };
+    var f = puddle.Fleet.empty();
+    for (hosts) |b| {
+        const pk = host_key(b);
+        try puddle.add_host(&f, pk[0..puddle.pk_len], 4);
+    }
+    for (ids) |id| try puddle.add_world(&f, id);
+    // invariant: the seated fixture is the four-host, six-world scene.
+    assert(f.host_count == 4);
+    assert(f.world_count == 6);
+    return f;
+}
+
+pub fn main() !void {
+    var f = try seat_fleet();
+    var buf: [puddle_bron.max_record]u8 = undefined;
+    const len = try puddle_bron.render(&f, buf[0..]);
+    // invariant: a rendered fixture is never empty.
+    assert(len > 0);
+    print("{s}", .{buf[0..len]});
+}

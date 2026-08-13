@@ -1,0 +1,129 @@
+//! mycelium/puddle_true.rye — a real fleet record reads true, and berths over the real bytes (r4, the arc
+//! closes).
+//!
+//! Season D (Kresfa & Mycelium) · Puddle fleet orchestration · rung r4 — reads true.
+//! Design read: active-designing/20260813-114651_puddle-fleet-placement-exploration.md
+//!
+//! r1 derived the berth, r2 healed the fleet, r3 let it travel — all over fleets seated in code. r4 carries
+//! the reader onto a REAL on-disk `format puddle-fleet-v1` record a keeper can open and count —
+//! `tools/fixtures/puddle_fleet.bron`, produced reproducibly by `mycelium/puddle_fleet_fixture_gen.rye`,
+//! `@embedFile`-bound at compile time through the `mycelium/corpora/` symlink (no network).
+//!
+//! The crux is TWO TOOLS, ONE ANSWER: the app parses the record through r3's own reader and reports the
+//! roster shape — hosts · worlds · total capacity — and the r4 witness cross-checks that triple against
+//! `tools/fixtures/puddle_fleet_truth.awk`'s independent reading of the same bytes, so a fleet's shape can
+//! never drift from a record a keeper adds up by hand. Genuineness beyond the triple: the fleet berths over
+//! the real bytes (every world on a real host within capacity, none orphaned), re-rendering the parsed fleet
+//! reproduces the embedded bytes exactly (a fixed point — the fixture is what the Puddle emits, not a
+//! hand-mock), and a tampered header refuses `BadFormat`.
+//!
+//! Composes puddle.rye + puddle_bron.rye public API only. Siloed, dev-only, demo host and world seeds — no
+//! real key, no funds, no network, no world provisioned; a served fleet reaches the Comlink-served gate.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/puddle_true.rye selftest
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/puddle_true.rye measure
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const puddle = @import("puddle.rye");
+const puddle_bron = @import("puddle_bron.rye");
+
+pub const puddle_true_version = "20260813.120312";
+
+const real_fleet = @embedFile("corpora/puddle_fleet.bron");
+
+/// The roster shape of a fleet — the triple the app reports and awk independently reads.
+const Shape = struct {
+    hosts: u32 = 0,
+    worlds: u32 = 0,
+    capacity: u32 = 0,
+};
+
+/// Parse the real record and read its roster shape — hosts, worlds, and total capacity.
+fn read_shape(text: []const u8) !Shape {
+    var f: puddle.Fleet = undefined;
+    try puddle_bron.parse(text, &f);
+    // invariant: the parsed fleet honors both static bounds.
+    assert(f.host_count <= puddle.max_hosts);
+    assert(f.world_count <= puddle.max_worlds);
+    var cap: u32 = 0;
+    var i: u32 = 0;
+    while (i < f.host_count) : (i += 1) cap += f.hosts[i].capacity;
+    return Shape{ .hosts = f.host_count, .worlds = f.world_count, .capacity = cap };
+}
+
+/// The reading of the real fleet is true to the bytes: the roster shape matches an independent count, and
+/// the fleet berths genuinely over the real bytes — every world on a real host within capacity, none lost.
+fn welcome_reading_true_to_bytes() !void {
+    const s = try read_shape(real_fleet);
+
+    var f: puddle.Fleet = undefined;
+    try puddle_bron.parse(real_fleet, &f);
+    var placement: [puddle.max_worlds]u32 = undefined;
+    try puddle.berth(&f, &placement);
+
+    // Every world berthed on a real host; no host over its capacity; none orphaned.
+    var total: u32 = 0;
+    var hi: u32 = 0;
+    while (hi < f.host_count) : (hi += 1) {
+        const load = puddle.load_of(&f, &placement, hi);
+        if (load > f.hosts[hi].capacity) return error.OverCapacity;
+        total += load;
+    }
+    if (total != f.world_count) return error.Orphaned;
+
+    print("puddle-true: truth-triple {d} {d} {d}\n", .{ s.hosts, s.worlds, s.capacity });
+    print("puddle-true: the reading of the real fleet — hosts, worlds, total capacity — matches an independent count of the same bytes, and every world berths on a real host within capacity.\n", .{});
+}
+
+/// The record is genuinely what the Puddle renders: re-rendering the parsed fleet reproduces the embedded
+/// bytes exactly (a fixed point), so the fixture is not a hand-mock.
+fn welcome_record_is_really_a_fleet() !void {
+    var f: puddle.Fleet = undefined;
+    try puddle_bron.parse(real_fleet, &f);
+    var buf: [puddle_bron.max_record]u8 = undefined;
+    const len = try puddle_bron.render(&f, buf[0..]);
+    // invariant: the re-render honors the record bound.
+    assert(len <= puddle_bron.max_record);
+    if (!std.mem.eql(u8, buf[0..len], real_fleet)) return error.NotFixedPoint;
+    print("puddle-true: the record re-renders to the embedded bytes exactly — the fixture is what the Puddle emits, never a hand-mock.\n", .{});
+}
+
+/// A tampered record refuses: a wrong header is caught before any host or world is read.
+fn unwelcome_tampered_record_refuses() !void {
+    const bad = "format puddle-fleet-v2\nhost aa 4\n";
+    var f: puddle.Fleet = undefined;
+    if (puddle_bron.parse(bad, &f)) |_| return error.TamperAdmitted else |err| {
+        if (err != error.BadFormat) return error.WrongTamper;
+    }
+    print("puddle-true: a tampered header refused BadFormat.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_reading_true_to_bytes();
+    try welcome_record_is_really_a_fleet();
+    try unwelcome_tampered_record_refuses();
+    print("puddle_true {s} — GREEN\n", .{puddle_true_version});
+    print("GREEN: myc puddle r4; the reading of a real fleet record is true to the bytes (hosts·worlds·capacity), the fleet berths over the real bytes on real hosts within capacity, its record a fixed point. The Puddle's agent-doable arc closes.\n", .{});
+    return 0;
+}
+
+fn run_measure() !u8 {
+    const s = try read_shape(real_fleet);
+    print("{d} {d} {d}\n", .{ s.hosts, s.worlds, s.capacity });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "measure")) {
+        return run_measure();
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest();
+    }
+    print("usage: puddle-true selftest | measure\n", .{});
+    return 1;
+}

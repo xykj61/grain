@@ -1,0 +1,63 @@
+# tools/mycelium_puddle_true_witness.rish — a real fleet record reads true, and berths over the real bytes
+# (r4, the arc closes).
+#
+# Season D (Kresfa & Mycelium) · Puddle fleet orchestration · rung r4 — reads true.
+# r1 derived the berth, r2 healed the fleet, r3 let it travel — all over fleets seated in code. r4 carries
+# the reader onto a REAL on-disk `format puddle-fleet-v1` record a keeper can open and count
+# (tools/fixtures/puddle_fleet.bron, produced reproducibly by mycelium/puddle_fleet_fixture_gen.rye,
+# @embedFile-bound through the mycelium/corpora/ symlink).
+#
+# The crux this witness proves is TWO TOOLS, ONE ANSWER: the app parses the record through r3's reader and
+# reports the roster shape (hosts · worlds · total capacity), and this witness cross-checks that triple
+# against tools/fixtures/puddle_fleet_truth.awk's reading of the same bytes. Genuineness beyond the triple:
+# the fleet berths over the real bytes (every world on a real host within capacity, none orphaned), the
+# record is a fixed point (re-render reproduces the embedded bytes), the fixture is reproducible, and a
+# tampered header refuses BadFormat. Composes puddle + puddle_bron public API only; demo seeds — no key, no
+# funds, no network, no world provisioned.
+#
+# Scope: active-designing/20260813-114651_puddle-fleet-placement-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mycelium_puddle_true_witness.rish
+
+say "mycelium-puddle-true: Language EN — a fleet's shape a keeper can open and count is a fleet the software cannot lie about: the reader's hosts, worlds, and capacity match an independent reading of the same real bytes, and the fleet berths over those bytes on real hosts within capacity."
+say "mycelium-puddle-true: Style Radiant — r1 derived the berth, r2 healed it, r3 let it travel; r4 reads a real on-disk record true, closing the Puddle's agent-doable arc."
+say "mycelium-puddle-true: Lens TAME — the reading is cross-checked against an independent awk of the same bytes (two tools, one answer); the fixture is reproducible and the record a fixed point; a tampered header refuses; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/puddle_true"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/puddle_true.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-puddle-true: build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "mycelium-puddle-true: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-puddle-true: selftest did not speak GREEN"
+assert selftest.out contains "matches an independent count of the same bytes" else "mycelium-puddle-true: read-true claim missing"
+assert selftest.out contains "the fixture is what the Puddle emits, never a hand-mock" else "mycelium-puddle-true: genuine-fleet claim missing"
+assert selftest.out contains "a tampered header refused BadFormat" else "mycelium-puddle-true: tamper refusal missing"
+assert selftest.out contains "The Puddle's agent-doable arc closes" else "mycelium-puddle-true: arc-close claim missing"
+
+# The crux — two tools, one answer. The app's measure triple must equal awk's reading of the same bytes.
+let app = run ["sh" "-c" "${bin} measure 2>&1"]
+assert app.ok else "mycelium-puddle-true: app measure exited non-zero"
+let awk = run ["sh" "-c" "awk -f tools/fixtures/puddle_fleet_truth.awk tools/fixtures/puddle_fleet.bron"]
+assert awk.ok else "mycelium-puddle-true: awk truth read failed"
+assert awk.out contains "4 6 16" else "mycelium-puddle-true: awk triple not 4 6 16"
+assert app.out == awk.out else "mycelium-puddle-true: app and awk disagree — the reading drifted from the bytes"
+
+# The fixture is genuinely reproducible — the generator re-emits byte-identical bytes, so the on-disk record
+# is what the Puddle renders, never a hand-mock. Emit to a scratch path and diff (never overwrite the
+# committed fixture in a read-only witness).
+let gen = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/puddle_fleet_fixture_gen.rye -femit-bin=mycelium/bin/puddle_fleet_fixture_gen"]
+assert gen.ok else "mycelium-puddle-true: fixture generator build failed"
+let regen = run ["sh" "-c" "mycelium/bin/puddle_fleet_fixture_gen 2> /tmp/puddle_fleet_regen.bron; diff tools/fixtures/puddle_fleet.bron /tmp/puddle_fleet_regen.bron && echo REPRODUCIBLE"]
+assert regen.ok else "mycelium-puddle-true: the fixture generator did not reproduce the committed bytes"
+assert regen.out contains "REPRODUCIBLE" else "mycelium-puddle-true: the regenerated fixture drifted from the committed one"
+
+# r3 stays its own GREEN binary — this rung reads the record r3 renders, never replaces it.
+let r3 = run ["sh" "-c" "rishi/bin/rishi run tools/mycelium_puddle_bron_witness.rish 2>&1"]
+assert r3.ok else "mycelium-puddle-true: rung three (travel) is not GREEN"
+assert r3.out contains "mycelium-puddle-bron: GREEN" else "mycelium-puddle-true: rung three did not speak its GREEN"
+
+say "mycelium-puddle-true: GREEN — a real fleet record reads true (app==awk, 4 6 16), the fleet berthing over the real bytes on real hosts within capacity, its record a fixed point, its fixture reproducible; the travel round stands at r4's door. The Puddle's agent-doable arc closes."

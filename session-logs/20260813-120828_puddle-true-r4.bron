@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260813.120828
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — ai-jail — Eastern (EDT) time convention
+title Puddle r4 — a real fleet record reads true (app == awk, 4 6 16); the Puddle agent-doable arc closes
+prompt keep going the loop — send each finished increment as its own signed round; close the Puddle arc after r3
+think r1 derived the berth, r2 healed the fleet, r3 let it travel — all over fleets seated in code. r4 carries the reader onto a real on-disk record a keeper can open and count, closing the arc the family way (fixture-gen · corpora symlink · @embedFile · truth.awk · two tools one answer).
+think Wrote mycelium/puddle_fleet_fixture_gen.rye (seats the honest four-host six-world fleet, renders via puddle_bron, prints to stderr), generated tools/fixtures/puddle_fleet.bron via `2>` redirect, and symlinked mycelium/corpora/puddle_fleet.bron -> ../../tools/fixtures/puddle_fleet.bron (matching the cord/muster corpora pattern).
+think mycelium/puddle_true.rye @embedFiles the record and dispatches selftest/measure (main(init) reading argv, garden arena for args only). measure reports the awk-checkable roster shape hosts·worlds·total-capacity (4 6 16); selftest proves the berth genuine over the real bytes (every world on a real host within capacity, none orphaned), the record a fixed point (re-render == embedded bytes), and a tampered header refusing BadFormat.
+think The two-tools-one-answer is on structural facts awk can compute (host/world counts + capacity sum); the placement genuineness lives in selftest since awk cannot recompute HRW/SHA-256 — the same division cord_true keeps (awk checks supply arithmetic, the app proves the graph). tools/fixtures/puddle_fleet_truth.awk counts host/world lines and sums the capacity column.
+obs GREEN on the first build and run — no red this round. app measure "4 6 16" == awk "4 6 16"; REPRODUCIBLE (generator re-emits byte-identical bytes); r3 re-runs GREEN at the door. TAME bans exit0, no ban patterns, width-check exit0.
+obs The Puddle agent-doable arc stands complete end to end — r1 berth crux · r2 convergence · r3 travels · r4 reads true. Season D now carries a fleet-orchestration layer beside its consensus season (Cord…Warrant) and dev-net (Constel).
+obs Custody honored — demo host/world seeds only, no key/funds/network/world provisioned; a served fleet reaches the Comlink-served gate, a real Aurora host + provisioning gates #2/#4. Sent as its own signed round, both remotes, per send-often.
+loom witness=mycelium_puddle_true_witness triple=4-6-16 app_eq_awk=true reproducible=true fixed_point=true
+file mycelium/puddle_fleet_fixture_gen.rye reproducibly emits the format puddle-fleet-v1 fixture (four hosts, six worlds, capacity four each)
+file mycelium/corpora/puddle_fleet.bron symlink binding the fixture for @embedFile
+file tools/fixtures/puddle_fleet.bron the committed real record the reader reads and awk counts
+file tools/fixtures/puddle_fleet_truth.awk the independent measure — hosts · worlds · total capacity
+file mycelium/puddle_true.rye r4 — reads the real record true, berths over the real bytes, a fixed point
+file tools/mycelium_puddle_true_witness.rish witness proving app==awk (4 6 16), reproducible, fixed point, r3 at the door
+file work-in-progress/REMEMBER.md accreted the r4 landing; the Puddle arc marked complete end to end
+recommend keep-going a fresh Season D / double-seat season's journey, each a self-approved design read first — Puddle could grow a served/Aurora rung at the serve gate (Keaton's hand); Kresfa/.kres is a breach rename gated on Keaton's word (cairn-first). Continue the loop on the next agent-doable Lindy-first crux.
