@@ -1,4 +1,4 @@
-//! mantra/recall_sync_wire.rye — NS-L3 wire payloads for bolt-revision sync (hosted lap 1).
+//! mantra/recall_sync_wire.rye — NS-L3 wire payloads for bolt-revision sync (hosted) · 20260713.
 //!
 //! Compact request/response bodies that fit one sealed datagram (max_message 340).
 //! Scope: [`active-designing/20260706-023912_the-referential-namespace.md`](../active-designing/20260706-023912_the-referential-namespace.md)

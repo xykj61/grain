@@ -1,4 +1,4 @@
-//! mantra/recall_sync_delivery.rye — NS-L3 wire lap 1: hosted sync over Comlink sealed datagrams.
+//! mantra/recall_sync_delivery.rye — NS-L3 wire: hosted sync over Comlink sealed datagrams · 20260713.
 //!
 //!   rye build mantra/recall_sync_delivery.rye -lc -femit-bin=mantra/bin/recall-sync-delivery
 //!   mantra/bin/recall-sync-delivery selftest
@@ -190,7 +190,7 @@ fn run_selftest(_: std.Io) !u8 {
     print("nsw1: bolt synced over wire — had-already {d}, need-resin {d}; recall identical on both peers\n", .{ report.had_already, report.needed });
     print("nsw1: tampered resin refused whole — GREEN unwelcome path\n", .{});
     print("nsw1: version {s} sync_wire {s} wire_format {s}\n", .{ nsw_version, sw.sync_wire_version, wf.wire_format_version });
-    print("GREEN: NS-L3 wire lap 1 — hosted sync request/response under Comlink seal.\n", .{});
+    print("GREEN: NS-L3 wire — hosted sync request/response under Comlink seal.\n", .{});
     return 0;
 }
 

@@ -1,4 +1,4 @@
-//! mantra/snapshot_export_delivery.rye — I2 snapshot export lap 3: hosted Comlink crossing.
+//! mantra/snapshot_export_delivery.rye — I2 snapshot export: hosted Comlink crossing · 20260713.
 //!
 //!   rye build mantra/snapshot_export_delivery.rye -lc -femit-bin=mantra/bin/snapshot-export-delivery
 //!   mantra/bin/snapshot-export-delivery selftest
@@ -273,7 +273,7 @@ fn run_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8
         snap.snapshot_export_version,
         bw.batch_wire_version,
     });
-    print("GREEN: I2 snapshot export lap 3 — hosted Comlink crossing.\n", .{});
+    print("GREEN: I2 snapshot export — hosted Comlink crossing.\n", .{});
     return 0;
 }
 
