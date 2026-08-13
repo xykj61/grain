@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260813.045555
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Mycelium fact batching r3 — batching is a pure throughput win, measured honestly
+prompt Keep going on the next agent-doable crux Lindy-first; send each increment as its own signed round; stop only at custody gates
+think r1 (fold identical) and r2 (travels) landed and sent. The design read names r3: measure what batching bought, as an honest loom ratio — never a fabricated benchmark (Two Rooms).
+think Wrote mycelium/cord_batch_bench.rye: a fixed corpus of 32 genesis-issue facts arranged two ways — one fact per block across the elder Cord (32 blocks) and packed into full batches of 16 across the batched Cord (2 blocks) — both folding to the identical supply (320).
+think Two Rooms discipline is the crux of this round's honesty: the module ASSERTS only what it proves exactly (identical supply, exact block counts, the packing divides evenly) and REPORTS the amortization ratio as a measured observation, never an asserted invariant. A real wall-time benchmark stays a named later loom round.
+think The win is structural, not a stopwatch: a block's fixed cost (one author signature, one node in the agreed order, one round of admission) is paid once per block, so 32 blocks fall to 2 — a 16x amortization for the same facts. Each fact still signs once in both arrangements; batching amortizes only the per-block cost.
+obs The measured loom line rides in the binary's own output so a Loom-aware reader can trend it: facts=32 blocks_single=32 blocks_batched=2 block_sigs_saved=30 block_ratio_x10=160.
+obs Additive — composes cord_batch + cord + fold public API only; r1 and r2 both re-run GREEN at the witness door.
+loom cord_batch_bench facts=32 blocks_single=32 blocks_batched=2 block_sigs_saved=30 block_ratio_x10=160
+file mycelium/cord_batch_bench.rye the same corpus one-per-block vs batched — identical supply, measured block-count ratio
+file tools/mycelium_cord_batch_bench_witness.rish asserts the exact counts + supply, records the loom line, r1 + r2 green at their doors
+file work-in-progress/REMEMBER.md living edge + git nib for the fact-batching r3 round
+recommend keep-going fact batching r4 (read a real batched fixture true — app==awk over a reproducibly-generated format cord-batch-v1 record) closes the arc; policy in the design read

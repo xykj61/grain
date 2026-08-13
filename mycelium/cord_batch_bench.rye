@@ -1,0 +1,160 @@
+//! mycelium/cord_batch_bench.rye — batching is a pure throughput win (fact batching r3).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · fact batching · rung r3.
+//! Design read: active-designing/20260813-043303_mycelium-fact-batching-exploration.md
+//!
+//! r1 proved a batched history folds to the byte-identical supply as the same facts
+//! one-per-block; r2 let it travel. This rung measures what batching bought, honestly.
+//! The same fixed corpus of facts is arranged two ways — one fact per block across the
+//! elder Cord, and packed into full batches across the batched Cord — and both fold to
+//! the identical supply. The win is a STRUCTURAL count, not a stopwatch: the batched
+//! arrangement carries far fewer BLOCKS, and a block's fixed cost (one author signature,
+//! one node in the agreed order, one round of admission) is paid once per block. Each
+//! fact still signs once in both arrangements; batching amortizes only the per-block
+//! cost, across the whole batch.
+//!
+//! Two Rooms honesty: the code ASSERTS only what it can prove exactly — both
+//! arrangements fold to one supply, and the block counts are what they are. The
+//! throughput CLAIM (fewer blocks is cheaper) is reported as a measured ratio, never
+//! an asserted invariant; a real wall-time benchmark stays a named later `loom` round.
+//!
+//! Additive — composes cord_batch + cord + fold public API only. Siloed, dev-only,
+//! demo seeds — no real key, no funds, no network, no custody.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/cord_batch_bench.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("cord.rye");
+const cord_batch = @import("cord_batch.rye");
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+
+/// The fixed corpus size — a named bound, an exact multiple of the batch width so the
+/// packing divides evenly and the ratio reads cleanly.
+pub const corpus_facts: u32 = 32;
+
+/// The batch width the corpus packs into — cord_batch's own ceiling, so each batch is
+/// full and the amortization is at its honest maximum for this corpus.
+pub const batch_width: u32 = cord_batch.max_facts_per_block;
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+/// Mint the fixed corpus — `corpus_facts` genesis issues of ten myc each, one per
+/// distinct signer, so every fact is a valid round-0 genesis in any order.
+fn mint_corpus(out: *[corpus_facts]fold.Fact) !void {
+    var i: u32 = 0;
+    while (i < corpus_facts) : (i += 1) {
+        const kp = seeded(@intCast(i + 1));
+        out[i] = fold.mint_fact(kp, fold.kind_issue, 10, "", "issue") orelse return error.MintFact;
+    }
+    // invariant: the corpus is exactly the named size.
+    assert(i == corpus_facts);
+}
+
+/// Fold the corpus one fact per block across the elder Cord; report the block count.
+fn fold_single(corpus: *const [corpus_facts]fold.Fact, out_state: *fold.FoldState) !u32 {
+    var dag = cord.Dag.empty();
+    var i: u32 = 0;
+    while (i < corpus_facts) : (i += 1) {
+        const kp = seeded(@intCast(i + 1));
+        const b = cord.mint_block(kp, 0, &[_][cord.hash_len]u8{}, corpus[i]) orelse return error.BlockMint;
+        try cord.add(&dag, b);
+    }
+    // invariant: one block per fact.
+    assert(dag.len == corpus_facts);
+    var order: [cord.cord_max_blocks]u32 = undefined;
+    const count = cord.commit(&dag, order[0..]);
+    var log = fold.Log.empty();
+    cord.committed_log(&dag, order[0..], count, &log);
+    out_state.* = try fold.fold_log(&log);
+    return dag.len;
+}
+
+/// Fold the same corpus packed into full batches across the batched Cord; report the
+/// block count. Writes the BatchDag through a caller buffer — it is large.
+fn fold_batched(
+    corpus: *const [corpus_facts]fold.Fact,
+    dag: *cord_batch.BatchDag,
+    out_state: *fold.FoldState,
+) !u32 {
+    dag.* = cord_batch.BatchDag.empty();
+    // invariant: the corpus divides evenly into full batches.
+    assert(corpus_facts % batch_width == 0);
+    const batches = corpus_facts / batch_width;
+    var b: u32 = 0;
+    while (b < batches) : (b += 1) {
+        const author = seeded(@intCast(0xB0 + b));
+        const start = b * batch_width;
+        const block = try cord_batch.mint_batch(
+            author,
+            0,
+            &[_][cord.hash_len]u8{},
+            corpus[start .. start + batch_width],
+        );
+        try cord_batch.add_batch(dag, block);
+    }
+    // invariant: exactly `batches` blocks carry the whole corpus.
+    assert(dag.len == batches);
+    var order: [cord.cord_max_blocks]u32 = undefined;
+    const count = cord_batch.commit_batch(dag, order[0..]);
+    var log = fold.Log.empty();
+    cord_batch.committed_batch_log(dag, order[0..], count, &log);
+    out_state.* = try fold.fold_log(&log);
+    return dag.len;
+}
+
+pub fn main() !void {
+    var corpus: [corpus_facts]fold.Fact = undefined;
+    try mint_corpus(&corpus);
+
+    var state_single: fold.FoldState = .{};
+    const blocks_single = try fold_single(&corpus, &state_single);
+
+    var dag_batched: cord_batch.BatchDag = undefined;
+    var state_batched: fold.FoldState = .{};
+    const blocks_batched = try fold_batched(&corpus, &dag_batched, &state_batched);
+
+    // What the code may assert: both arrangements fold the identical supply, and the
+    // structural counts are exactly what the packing dictates.
+    if (state_single.supply() != state_batched.supply()) return error.SupplyDiffers;
+    if (state_single.issued != state_batched.issued) return error.IssuedDiffers;
+    if (state_batched.supply() != corpus_facts * 10) return error.SupplyWrong;
+    if (blocks_single != corpus_facts) return error.SingleCountWrong;
+    if (blocks_batched != corpus_facts / batch_width) return error.BatchedCountWrong;
+    if (blocks_batched >= blocks_single) return error.NoAmortization;
+
+    // What the code only REPORTS (measured, never asserted as an invariant): the
+    // per-block cost fell by this ratio. Integer counts, exact — a stopwatch stays a
+    // named later loom round.
+    const block_sigs_saved = blocks_single - blocks_batched;
+    const ratio_x10 = (blocks_single * 10) / blocks_batched;
+
+    print("cord-batch-bench: a fixed corpus of {d} facts folds to the identical supply {d} whether one-per-block or batched\n", .{
+        corpus_facts,
+        state_batched.supply(),
+    });
+    print("cord-batch-bench: one-per-block carries {d} blocks; packed into full batches, {d} blocks — {d} fewer block signatures for the same facts\n", .{
+        blocks_single,
+        blocks_batched,
+        block_sigs_saved,
+    });
+    print("loom cord_batch_bench facts={d} blocks_single={d} blocks_batched={d} block_sigs_saved={d} block_ratio_x10={d}\n", .{
+        corpus_facts,
+        blocks_single,
+        blocks_batched,
+        block_sigs_saved,
+        ratio_x10,
+    });
+    print("GREEN: myc cord-batch-bench — same supply {d}, {d}->{d} blocks, per-block cost amortized {d}.{d}x\n", .{
+        state_batched.supply(),
+        blocks_single,
+        blocks_batched,
+        ratio_x10 / 10,
+        ratio_x10 % 10,
+    });
+}
