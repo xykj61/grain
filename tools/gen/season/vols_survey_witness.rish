@@ -8,10 +8,11 @@
 # from the tree, so a capability born tomorrow appears without anyone editing the tool.
 #
 # The controlled fixture tree (tools/fixtures/vols_survey_tree/) holds four files:
-#   livemod/README.md   — a living README naming a capability "lap 3" (a SITE)
+#   livemod/README.md   — a living README naming a capability by a bare "lap <N>"
+#                          ordinal (a SITE — <N> a placeholder for the biting shape)
 #   livemod/core.rye    — a clean authored surface (no bare ordinal)
 #   livemod/notes.glow  — permitted schemes only ("lap 4b", "sub-lap 2") — NOT a site
-#   session-logs/...     — dated testimony carrying "lap 5" — EXCLUDED, not a surface
+#   session-logs/...     — dated testimony carrying a bare "lap <N>" ordinal — EXCLUDED
 #
 # Design: active-designing/20260812-215153_vols-journey13-survey-complete-census-exploration.md
 # Law:    context/specs/20260810-222755_chronological-semantic-labeling-and-the-cion-meta-season.md
@@ -49,7 +50,7 @@ assert cross.ok else "vols-survey: cross-count verdict and status disagree"
 
 # The testimony boundary bites — planting a bare ordinal INSIDE the session log must not
 # raise the census (the log is excluded whether or not it carries an ordinal).
-let boundary = run ["sh" "-c" "grep -c 'lap 5' tools/fixtures/vols_survey_tree/session-logs/20260101-000000_x.rish | tr -d ' '"]
+let boundary = run ["sh" "-c" "grep -c 'lap [0-9]' tools/fixtures/vols_survey_tree/session-logs/20260101-000000_x.rish | tr -d ' '"]
 say "vols-survey: testimony fixture carries a planted ordinal (excluded anyway) —"
 say boundary.out
 assert boundary.out contains "1" else "vols-survey: the testimony fixture lost its planted ordinal"
