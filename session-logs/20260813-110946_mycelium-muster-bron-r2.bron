@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260813.110946
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention; this session in ai-jail
+title mycelium Muster r2 — a validator set travels, verdict unchanged
+prompt baton prin recur — take the next agent-doable lap Lindy-first crux-first, approve own design rounds, send each finished increment as its own signed round, stop at custody gates.
+think r1 bound a Chorus to a known roll; a roll a holder cannot hand to another is only a local standard. r2 (mycelium/muster_bron.rye, mirroring chorus_bron/voucher_bron) lets the whole Muster cross as format muster-v1 bytes — one validator line per enrolled key, in enrollment order.
+think Design choice: the Byzantine threshold is NOT written to the record — it is derived from the count by the reader (byzantine_threshold), so a roll cannot smuggle a lowered bar across the wire; a tampered count changes the threshold honestly. Each validator is enrolled through muster.enroll on parse, so the roll's own laws (a validator counts once; the roll honors its bound) travel with it — a repeated validator refuses Duplicate, an over-full roll MusterFull.
+think The crux is the roll's VERDICT surviving the wire, not merely the bytes: a Chorus judged against a Muster parsed from bytes reaches the identical verdict as against the roll in memory — an enrolled quorum of three passes, three fresh keys refuse NotMember. Fixed point proven (parse then re-render reproduces the exact bytes).
+obs GREEN on the first build and run. Composes muster + chorus public API only, editing none (the Muster r1 and Chorus re-run GREEN at the door). No parse_int needed — a Muster carries no integers, only hex keys, so the reader is simpler than chorus_bron. Refusals: BadFormat (wrong header · empty roll), UnknownField, BadHex, Duplicate. Demo seeds only — no key/funds/network/custody. Witness tools/mycelium_muster_bron_witness.rish GREEN; tame_style_check clean; width-check exit 0.
+loom witness=mycelium_muster_bron_witness result=GREEN code_changed=1 composes=muster+chorus edits_existing=0 fixed_point=true
+file mycelium/muster_bron.rye r2 travel — render/parse a format muster-v1 record byte-for-byte; the threshold derived by the reader, never carried
+file tools/mycelium_muster_bron_witness.rish r2 witness — GREEN, proves fixed point · verdict survives the wire · refusals
+recommend keep-going Muster r3 (across a Knot — a roll judging a Chorus gathered over a ledger resolved across an epoch cut, the verdict continuous across the join), then r4 (true to the bytes), each its own signed round. A served muster · breach renames (cairn-first) · deep debride · seed force-push stay the maintainer's hand.
