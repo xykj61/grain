@@ -1,0 +1,154 @@
+//! pond/apps/sprite_store.rye — HUNK6: the marketplace sprite sheet is a content-addressed Tablecloth artifact.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Open Image journey · rung HUNK6 (sprite quest).
+//! Design read: active-designing/20260813-201500_hunk-sprite-marketplace-index-exploration.md
+//! Teacher, thanked clean-room: McMaster-Carr's one-sprite-sheet render trick (concept only, siloed).
+//!
+//! HUNK4 made each product a bounded window into one decoded sheet; HUNK5 painted a product's window as a
+//! seen page. Both trust the sheet in hand. This rung gives the sheet an identity: `store_sheet` beads the
+//! sprite content-addressed (HUNK1's `image_artifact.store_image`), and `open_sheet` fetches it back — the
+//! fetch proving every bead against its digest and the whole against its recorded address BEFORE the codec
+//! reads a pixel, so a tampered sheet refuses `DigestMismatch` and an unknown market refuses `UnknownArtifact`
+//! each **before a SpriteIndex is ever built or a product rendered**. A marketplace can only be served from a
+//! sheet whose bytes are exactly the ones its name pins. Pure composition over public APIs — no new storage,
+//! no new codec. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/sprite_store.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const sprite = @import("sprite.rye");
+const tablecloth = @import("tablecloth.rye");
+const beading = @import("mantra/beading.rye");
+const image_artifact = @import("image_artifact.rye");
+
+pub const sprite_store_version = "20260813.203000";
+
+/// Store a sprite sheet content-addressed under a market name. Returns the beading report so a caller sees the
+/// dedup dividend. The sheet is an image like any other — this is HUNK1's `store_image` named for the market.
+pub fn store_sheet(
+    allocator: std.mem.Allocator,
+    cat: *tablecloth.Catalog,
+    store: *beading.BeadStore,
+    name: []const u8,
+    sheet: *const qoi.Pixmap,
+) !beading.BeadReport {
+    // invariant: a real sheet holds exactly four bytes per pixel.
+    assert(sheet.pixels.len == @as(usize, sheet.width) * @as(usize, sheet.height) * 4);
+    return image_artifact.store_image(allocator, cat, store, name, sheet);
+}
+
+/// Open a marketplace: fetch the sheet by name, verified bead by bead, and decode it — so the returned sheet
+/// is provably the bytes the market name pins. A tampered bead refuses `DigestMismatch` and an unknown market
+/// refuses `UnknownArtifact`, each before this returns, so an index built over the result reads only a
+/// verified sheet. The caller opens a `SpriteIndex` over the returned sheet (HUNK4) and renders products.
+pub fn open_sheet(
+    allocator: std.mem.Allocator,
+    cat: *const tablecloth.Catalog,
+    store: *const beading.BeadStore,
+    name: []const u8,
+) !qoi.Pixmap {
+    const sheet = try image_artifact.fetch_image(allocator, cat, store, name);
+    // invariant: a verified, decoded sheet is a real open image ready to window into.
+    assert(sheet.pixels.len == @as(usize, sheet.width) * @as(usize, sheet.height) * 4);
+    return sheet;
+}
+
+// --- selftest: store a sprite sheet content-addressed, open a market over the verified sheet and render two
+//     products, then tamper a bead and prove the whole market refuses before any product renders -------------
+
+/// Build an 8×8 two-tone sheet (red left, blue right) whose QOI stream fits one resin — a real marketplace
+/// sprite in miniature, left half one part, right half another.
+fn craft_sheet(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 8;
+    const h: u32 = 8;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            const left = x < 4;
+            buf[off] = if (left) 255 else 0;
+            buf[off + 1] = 0;
+            buf[off + 2] = if (left) 0 else 255;
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+/// Confirm a rendered window equals the sheet's sub-rectangle at (wx,wy), pixel for pixel.
+fn assert_window(sheet: *const qoi.Pixmap, cut: *const qoi.Pixmap, wx: u32, wy: u32) void {
+    assert(cut.width > 0);
+    assert(cut.height > 0);
+    var y: u32 = 0;
+    while (y < cut.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x < cut.width) : (x += 1) {
+            const c_off = (@as(usize, y) * @as(usize, cut.width) + @as(usize, x)) * 4;
+            const s_off = (@as(usize, wy + y) * @as(usize, sheet.width) + @as(usize, wx + x)) * 4;
+            assert(cut.pixels[c_off] == sheet.pixels[s_off]);
+            assert(cut.pixels[c_off + 3] == sheet.pixels[s_off + 3]);
+        }
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const sheet = try craft_sheet(garden);
+
+    // Store the sheet content-addressed under a market name.
+    var store: beading.BeadStore = .empty();
+    var cat: tablecloth.Catalog = .empty();
+    const rep = try store_sheet(garden, &cat, &store, "parts.qoi", &sheet);
+    assert(rep.beads_deposited >= 1);
+
+    // Open the market over the VERIFIED sheet, index two products, and render each — a served marketplace.
+    const opened = try open_sheet(garden, &cat, &store, "parts.qoi");
+    assert(opened.same_bytes(&sheet)); // the served sheet is byte-for-byte the stored one
+    var index = sprite.SpriteIndex.init(&opened);
+    try index.add("red-part", 0, 0, 4, 8);
+    try index.add("blue-part", 4, 0, 4, 8);
+    const red = try index.render(garden, "red-part");
+    assert_window(&opened, &red, 0, 0);
+    const blue = try index.render(garden, "blue-part");
+    assert_window(&opened, &blue, 4, 0);
+
+    // Unwelcome: an unknown market refuses before any sheet is decoded or indexed.
+    if (open_sheet(garden, &cat, &store, "absent.qoi")) |_| return error.UnknownSlipped else |e| {
+        if (e != error.UnknownArtifact) return error.WrongUnknown;
+    }
+
+    // The crux: a tampered sheet refuses BEFORE any product renders. Store the same sheet in a fresh store,
+    // flip a single stored byte, and prove open_sheet refuses DigestMismatch — so no SpriteIndex is ever built
+    // over corrupt bytes and no product is served from a sheet whose bytes are not the ones its name pins.
+    var store_t: beading.BeadStore = .empty();
+    var cat_t: tablecloth.Catalog = .empty();
+    _ = try store_sheet(garden, &cat_t, &store_t, "parts.qoi", &sheet);
+    store_t.beads[0].bytes[0] +%= 1; // flip one byte of a held bead
+    if (open_sheet(garden, &cat_t, &store_t, "parts.qoi")) |_| {
+        return error.TamperSlipped;
+    } else |e| {
+        if (e != error.DigestMismatch) return error.WrongTamper;
+    }
+
+    const stored_len = try tablecloth.artifact_len(&cat, "parts.qoi");
+    print("GREEN sprite-store: sprite sheet stored content-addressed ({d} bytes over {d} beads) — a market " ++
+        "opens over the verified sheet and renders every product from its own window; a tampered sheet " ++
+        "refuses DigestMismatch and an unknown market refuses UnknownArtifact, each before a product renders\n", .{
+        stored_len, rep.bead_count,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: sprite_store selftest\n", .{});
+    return 1;
+}

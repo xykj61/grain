@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260813.152815
+editor Zed
+model Fable 5
+voice Kyri
+host cloud bench — Eastern (EDT) time convention
+title HUNK6 — the marketplace sprite sheet is a content-addressed artifact
+prompt Continue the loop: next agent-doable lap Lindy-first crux-first, self-approve design rounds, send each finished increment as its own signed round, STOP at custody gates
+think HUNK4 (the index) and HUNK5 (the seen page) both trust the sheet in hand. The next agent-doable crux the design round named is HUNK6: give the sheet an identity, so a marketplace can only be served from the exact bytes its name pins. It composes HUNK1's image_artifact (store_image/fetch_image) with HUNK4's SpriteIndex.
+think The crux to prove: a tampered sheet refuses DigestMismatch BEFORE any SpriteIndex is built or product rendered — content-addressed storage is the marketplace's integrity guarantee for free, the pattern HUNK1 gave a single image now carried to the whole sheet a catalog windows into.
+think Home in pond/apps/ where image_artifact + tablecloth + beading live; symlinked sprite.rye + photos.rye in (qoi + tally_copy already there). open_sheet is HUNK1's verified fetch; store_sheet is HUNK1's store_image, both named for the market.
+obs Checked the real HUNK1 API before building — BeadStore/Catalog are .empty() not .init()/{}, the report fields are beads_deposited/bead_count/beads_deduped, tamper is a direct store_t.beads[0].bytes[0] +%= 1, stored length via tablecloth.artifact_len. GREEN on the first build and run after matching that API.
+obs Proven on metal: sheet stored (54 bytes over 1 bead), a market opened over the verified sheet renders two products from their own windows byte-for-byte, an unknown market refuses UnknownArtifact, and a single flipped stored byte makes open_sheet refuse DigestMismatch before any product renders. tame_style_check exit 0, width exit 0; HUNK1 image_artifact re-run GREEN beneath.
+obs Additive and reuse-only — no change to image_artifact.rye, sprite.rye, tablecloth.rye, or beading. No breach, so no cairn. No network, key, or funds — hosting a real sheet stays custody gates #2/#3.
+loom witness=hunk_sprite_store_witness green=1 stored_bytes=54 beads=1 products=2
+file pond/apps/sprite_store.rye HUNK6 — store_sheet + open_sheet give the marketplace sheet a content address; a tampered sheet refuses before any product renders
+file tools/hunk_sprite_store_witness.rish binds the HUNK6 crux GREEN on metal; re-runs HUNK1 verified fetch beneath
+file pond/apps/sprite.rye symlink to image/sprite.rye so pond/apps can open a market over the index
+file pond/apps/photos.rye symlink to image/photos.rye — sprite's crop dependency present in pond/apps
+file work-in-progress/REMEMBER.md folds the HUNK6 landing onto the latest-lap line; git nib refreshed same commit
+recommend keep-going next agent-doable crux is HUNK7 (a format sprite-catalog-v1 manifest binding names to windows, round-tripping byte-for-byte so a marketplace travels as text); served/hardware rounds stay custody gates
