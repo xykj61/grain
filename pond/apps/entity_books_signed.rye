@@ -1,0 +1,246 @@
+//! pond/apps/entity_books_signed.rye — Season 2 Journey 8 (Cash-first), Rung 2: the inter-entity fact signed.
+//!
+//! Rung one booked a segregated inter-entity transfer on both entities' books at one agreed amount —
+//! fair by construction. Yet a booking alone does not prove *agreement*: one steward could move a
+//! value between two entities the other never accepted. This rung binds the transfer to two settled
+//! Kumara identities — each entity's steward signs the exact fact (the two entity names, the amount,
+//! the memo), and the transfer books on both books only when *both* signatures verify over the
+//! identical facts.
+//!
+//! The crux mirrors `commerce_trade_signed`: a signature is a promise about an exact fact. Change the
+//! amount after both stewards signed, and both signatures fall — the agreement was to the old number,
+//! so a steward cannot quietly rebook the transfer at a value neither accepted, and an unagreed
+//! transfer never touches a journal. A forged signature, a wrong steward key, or a tampered fact each
+//! refuses.
+//!
+//! It composes rung one's `transfer` over the Kumara signing the settlement already witnessed
+//! (`kumara.rye`, the same layout `commerce_trade_signed` signs trades with) — inventing no new
+//! signing and no new booking. Demo steward seeds only; no real key, no funds, no custody. Actually
+//! moving a fund's assets reaches custody gate #3 (a payment rail) and waits on licensed counsel.
+//!
+//!   rye build pond/apps/entity_books_signed.rye -femit-bin=pond/bin/entity-books-signed
+//!   pond/bin/entity-books-signed selftest
+//!
+//! Scope: active-designing/20260812-195711_gism-ayre-journey8-cash-first-entity-books-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const entity = @import("entity_books.rye");
+const gc = @import("dimeroll/dimeroll_core.rye");
+const kumara = @import("kumara.rye");
+
+pub const entity_books_signed_version = "20260812.200226";
+
+pub const pubkey_len: u32 = 32;
+pub const sig_len: u32 = 64;
+
+pub const AgreeError = error{NotAgreed};
+
+/// The exact bytes each steward signs: the two entity names (each with its length, so no two names
+/// collide by padding), the amount, and the memo. Both stewards sign this identical message.
+pub const max_msg_len: u32 = 4 + entity.max_entity_name + 4 + entity.max_entity_name + 8 + 4 + gc.max_memo_len;
+
+fn auth_message(out: *[max_msg_len]u8, grantor: []const u8, grantee: []const u8, amount: i64, memo: []const u8) u32 {
+    // invariant: the names and memo fit their budgets, so the message fits its buffer.
+    assert(grantor.len <= entity.max_entity_name);
+    assert(grantee.len <= entity.max_entity_name);
+    assert(memo.len <= gc.max_memo_len);
+    var off: u32 = 0;
+    std.mem.writeInt(u32, out[off..][0..4], @intCast(grantor.len), .little);
+    off += 4;
+    var k: u32 = 0;
+    while (k < grantor.len) : (k += 1) {
+        out[off] = grantor[k];
+        off += 1;
+    }
+    std.mem.writeInt(u32, out[off..][0..4], @intCast(grantee.len), .little);
+    off += 4;
+    k = 0;
+    while (k < grantee.len) : (k += 1) {
+        out[off] = grantee[k];
+        off += 1;
+    }
+    std.mem.writeInt(i64, out[off..][0..8], amount, .little);
+    off += 8;
+    std.mem.writeInt(u32, out[off..][0..4], @intCast(memo.len), .little);
+    off += 4;
+    k = 0;
+    while (k < memo.len) : (k += 1) {
+        out[off] = memo[k];
+        off += 1;
+    }
+    // invariant: the assembled message never exceeds its bound.
+    assert(off <= max_msg_len);
+    return off;
+}
+
+/// One steward's signature over the exact transfer facts — their word that this amount crossing
+/// between these two entities, under this memo, is a fact they accept.
+pub fn sign_transfer(steward_seed: *const [kumara.seed_length]u8, grantor: []const u8, grantee: []const u8, amount: i64, memo: []const u8) [sig_len]u8 {
+    const kp = kumara.keypair_from_seed(steward_seed);
+    var msg: [max_msg_len]u8 = undefined;
+    const len = auth_message(&msg, grantor, grantee, amount, memo);
+    return kumara.sign(msg[0..len], kp, null).toBytes();
+}
+
+/// Verify one steward's signature over the transfer facts against their keeper public key. A forged
+/// signature, a wrong key, or a fact changed since signing each refuses (returns false).
+pub fn verify_transfer(steward: [pubkey_len]u8, grantor: []const u8, grantee: []const u8, amount: i64, memo: []const u8, sig: *const [sig_len]u8) bool {
+    // invariant: an Ed25519 public key is 32 bytes and a signature 64.
+    assert(pubkey_len == 32);
+    assert(sig_len == 64);
+    if (grantor.len > entity.max_entity_name or grantee.len > entity.max_entity_name or memo.len > gc.max_memo_len) return false;
+    const pub_key = kumara.PublicKey.fromBytes(steward) catch return false;
+    var msg: [max_msg_len]u8 = undefined;
+    const len = auth_message(&msg, grantor, grantee, amount, memo);
+    kumara.verify_bytes(msg[0..len], sig, pub_key) catch return false;
+    return true;
+}
+
+/// A transfer carrying both stewards' signatures — the durable artifact of an agreed inter-entity
+/// fact. The names are the two entities'; the amount and memo are the value that crossed.
+pub const SignedTransfer = struct {
+    grantor_name: []const u8,
+    grantee_name: []const u8,
+    amount: i64,
+    memo: []const u8,
+    stamp: []const u8,
+    grantor_sig: [sig_len]u8,
+    grantee_sig: [sig_len]u8,
+};
+
+/// Both stewards agreed: the grantor's steward signature and the grantee's each verify over the
+/// identical facts. Neither side alone is enough — a value one entity's steward never signed for is
+/// not an agreed transfer.
+pub fn both_agree(signed: *const SignedTransfer, grantor_key: [pubkey_len]u8, grantee_key: [pubkey_len]u8) bool {
+    if (!verify_transfer(grantor_key, signed.grantor_name, signed.grantee_name, signed.amount, signed.memo, &signed.grantor_sig)) return false;
+    if (!verify_transfer(grantee_key, signed.grantor_name, signed.grantee_name, signed.amount, signed.memo, &signed.grantee_sig)) return false;
+    return true;
+}
+
+/// Book an inter-entity transfer only when both stewards signed it. An unagreed transfer refuses
+/// `NotAgreed` before any journal is touched; the signed names must match the two entities' own names
+/// (`NameMismatch`), so a signature for one pair cannot book a different pair. An agreed, matching
+/// transfer books through rung one's `transfer`. So the two entities' books record only inter-entity
+/// facts both stewards accepted.
+pub fn record_signed_transfer(
+    grantor: *entity.Entity,
+    grantee: *entity.Entity,
+    signed: *const SignedTransfer,
+    grantor_key: [pubkey_len]u8,
+    grantee_key: [pubkey_len]u8,
+) (AgreeError || error{NameMismatch} || entity.BookError)!entity.Transfer {
+    if (!std.mem.eql(u8, grantor.name(), signed.grantor_name)) return error.NameMismatch;
+    if (!std.mem.eql(u8, grantee.name(), signed.grantee_name)) return error.NameMismatch;
+    if (!both_agree(signed, grantor_key, grantee_key)) return error.NotAgreed;
+    return entity.transfer(grantor, grantee, signed.amount, signed.memo, signed.stamp);
+}
+
+// --- witnesses ----
+
+// Demo steward seeds — plainly not real keys, so no identity is invented.
+const siya_steward_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
+const linengrow_steward_seed: [kumara.seed_length]u8 = .{0x66} ** kumara.seed_length;
+
+fn pubkey_of(seed: *const [kumara.seed_length]u8) [pubkey_len]u8 {
+    return kumara.keypair_from_seed(seed).public_key.bytes;
+}
+
+fn seat_siya() !entity.Entity {
+    var e = try entity.Entity.open("Siya Fund");
+    try e.post(.{ .debit = .cash, .credit = .equity, .amount = 5000, .memo = "opening contribution", .stamp = "20260812.200226" });
+    return e;
+}
+
+fn seat_linengrow() !entity.Entity {
+    var e = try entity.Entity.open("Linengrow PBC");
+    try e.post(.{ .debit = .cash, .credit = .equity, .amount = 2000, .memo = "opening contribution", .stamp = "20260812.200226" });
+    return e;
+}
+
+fn sign_both(grantor: []const u8, grantee: []const u8, amount: i64, memo: []const u8, stamp: []const u8) SignedTransfer {
+    return .{
+        .grantor_name = grantor,
+        .grantee_name = grantee,
+        .amount = amount,
+        .memo = memo,
+        .stamp = stamp,
+        .grantor_sig = sign_transfer(&siya_steward_seed, grantor, grantee, amount, memo),
+        .grantee_sig = sign_transfer(&linengrow_steward_seed, grantor, grantee, amount, memo),
+    };
+}
+
+/// A transfer both stewards signed verifies and books — both signatures check over the identical
+/// facts, and each entity's own books balance after the agreed transfer.
+fn welcome_both_agree_and_books() !void {
+    var siya = try seat_siya();
+    var linengrow = try seat_linengrow();
+    const signed = sign_both("Siya Fund", "Linengrow PBC", 1500, "seed grant", "20260812.200226");
+    assert(both_agree(&signed, pubkey_of(&siya_steward_seed), pubkey_of(&linengrow_steward_seed)));
+    const t = try record_signed_transfer(&siya, &linengrow, &signed, pubkey_of(&siya_steward_seed), pubkey_of(&linengrow_steward_seed));
+    assert(t.amount == 1500);
+    assert((try siya.balance_sheet()).balances());
+    assert((try linengrow.balance_sheet()).balances());
+    print("entity_books_signed: a transfer both stewards signed verified and booked; each entity's books balance.\n", .{});
+}
+
+/// A forged grantor-steward signature refuses — the transfer never touches a journal.
+fn unwelcome_forged_signature_refuses() !void {
+    var siya = try seat_siya();
+    var linengrow = try seat_linengrow();
+    var signed = sign_both("Siya Fund", "Linengrow PBC", 1500, "seed grant", "20260812.200226");
+    signed.grantor_sig[0] ^= 0xFF;
+    const siya_count_before = siya.count;
+    assert(!both_agree(&signed, pubkey_of(&siya_steward_seed), pubkey_of(&linengrow_steward_seed)));
+    const t = record_signed_transfer(&siya, &linengrow, &signed, pubkey_of(&siya_steward_seed), pubkey_of(&linengrow_steward_seed));
+    assert(t == error.NotAgreed);
+    assert(siya.count == siya_count_before); // no journal was touched
+    print("entity_books_signed: a forged steward signature refused NotAgreed; no journal was touched.\n", .{});
+}
+
+/// The honesty crux: change the amount after both signed, and both signatures fall — the agreement
+/// was to the old amount, so a steward cannot rebook the transfer at a number neither accepted.
+fn unwelcome_amount_tamper_refuses() !void {
+    var siya = try seat_siya();
+    var linengrow = try seat_linengrow();
+    var signed = sign_both("Siya Fund", "Linengrow PBC", 1500, "seed grant", "20260812.200226");
+    signed.amount = 2500;
+    assert(!both_agree(&signed, pubkey_of(&siya_steward_seed), pubkey_of(&linengrow_steward_seed)));
+    const t = record_signed_transfer(&siya, &linengrow, &signed, pubkey_of(&siya_steward_seed), pubkey_of(&linengrow_steward_seed));
+    assert(t == error.NotAgreed);
+    print("entity_books_signed: an amount changed after signing refused NotAgreed; the agreement was to the signed amount.\n", .{});
+}
+
+/// A signature for one entity pair cannot book a different pair — the signed names must match the two
+/// entities' own names, else NameMismatch before any signature is even checked.
+fn unwelcome_name_mismatch_refuses() !void {
+    var siya = try seat_siya();
+    var other = try entity.Entity.open("Other Co");
+    try other.post(.{ .debit = .cash, .credit = .equity, .amount = 1000, .memo = "opening", .stamp = "20260812.200226" });
+    // Signed for Siya -> Linengrow, but booked against Siya -> Other Co.
+    const signed = sign_both("Siya Fund", "Linengrow PBC", 1500, "seed grant", "20260812.200226");
+    const t = record_signed_transfer(&siya, &other, &signed, pubkey_of(&siya_steward_seed), pubkey_of(&linengrow_steward_seed));
+    assert(t == error.NameMismatch);
+    print("entity_books_signed: a signature for one entity pair refused NameMismatch against a different pair.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_both_agree_and_books();
+    try unwelcome_forged_signature_refuses();
+    try unwelcome_amount_tamper_refuses();
+    try unwelcome_name_mismatch_refuses();
+    print("entity_books_signed: version {s}\n", .{entity_books_signed_version});
+    print("GREEN: GISM-AYRE-J8r2 entity_books_signed; an inter-entity transfer books only when both stewards signed the identical facts, forgery and tamper refused.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "entity-books-signed"))) {
+        return run_selftest();
+    }
+    return run_selftest();
+}

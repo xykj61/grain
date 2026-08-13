@@ -1,0 +1,41 @@
+# tools/gism_ayre_j8_entity_books_signed_witness.rish — Season 2 Journey 8 (Cash-first), Rung 2.
+#
+# Season 2, Yield — the accounting spine, never braided. Rung one booked a segregated inter-entity
+# transfer at one agreed amount; a booking alone does not prove agreement. pond/apps/entity_books_signed.rye
+# binds the transfer to two settled Kumara identities — each entity's steward signs the exact fact
+# (the two entity names, the amount, the memo), and the transfer books on both books only when both
+# signatures verify over the identical facts. The honesty crux mirrors commerce_trade_signed: change
+# the amount after both signed and both signatures fall (NotAgreed, no journal touched). A forged
+# signature (NotAgreed) and a signature booked against a different entity pair (NameMismatch) each
+# refuse. Composes rung one's transfer over kumara signing; facts only, custody gate #3 untouched;
+# demo steward seeds only.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/gism_ayre_j8_entity_books_signed_witness.rish
+
+say "gism-ayre-j8r2: Language EN — an inter-entity transfer books only when both stewards signed the identical facts."
+say "gism-ayre-j8r2: Lens TAME — a forged signature, an amount changed after signing, and a wrong entity pair each refuse before any journal is touched."
+
+let zig = "vendor/zig-toolchain/zig"
+
+# Rung one stays GREEN beneath the signing layer — additive.
+let bin1 = "pond/bin/entity-books"
+let build1 = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/entity_books.rye -femit-bin=${bin1}"]
+assert build1.ok else "gism-ayre-j8r2: rung-one entity_books build failed"
+let self1 = run ["sh" "-c" "${bin1} selftest 2>&1"]
+assert self1.ok else "gism-ayre-j8r2: rung-one selftest exited non-zero"
+assert self1.out contains "GREEN" else "gism-ayre-j8r2: rung-one did not speak GREEN"
+
+let bin = "pond/bin/entity-books-signed"
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/entity_books_signed.rye -femit-bin=${bin}"]
+assert build.ok else "gism-ayre-j8r2: entity_books_signed build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "gism-ayre-j8r2: entity_books_signed selftest exited non-zero"
+assert selftest.out contains "GREEN" else "gism-ayre-j8r2: selftest did not speak GREEN"
+assert selftest.out contains "verified and booked; each entity's books balance" else "gism-ayre-j8r2: agreed booking missing"
+assert selftest.out contains "refused NotAgreed; no journal was touched" else "gism-ayre-j8r2: forged refusal missing"
+assert selftest.out contains "changed after signing refused NotAgreed" else "gism-ayre-j8r2: amount-tamper refusal missing"
+assert selftest.out contains "refused NameMismatch against a different pair" else "gism-ayre-j8r2: name-mismatch refusal missing"
+
+say "GREEN: GISM-AYRE-J8r2 entity_books_signed — an inter-entity transfer books only when both stewards signed the identical facts; forgery, tamper, and wrong pair refused."

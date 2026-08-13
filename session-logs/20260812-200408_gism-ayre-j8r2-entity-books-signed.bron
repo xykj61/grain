@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260812.200408
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title GISM-AYRE-J8r2 — the inter-entity fact signed
+prompt continue the 1024-round road Lindy-first crux-first; take the next agent-doable lap, send each increment; stop only at custody gates
+think REMEMBER names the next crux — J8r2, the inter-entity fact signed: each entity's steward signs the transfer, and it books only when both signatures verify (mirroring commerce_trade_signed)
+think studied commerce_trade_signed for the signing layout — auth_message over the exact facts, sign/verify, both_agree with caller-supplied keys, record_signed gating the booking behind agreement
+think wrote pond/apps/entity_books_signed.rye — auth_message over (grantor name, grantee name, amount, memo) each length-prefixed; sign_transfer/verify_transfer; SignedTransfer + both_agree; record_signed_transfer gates rung one's transfer behind NameMismatch (signed names must match the two entities' own names) then NotAgreed, both before any journal is touched
+think honesty crux mirrors price-tamper — change the amount after both signed and both signatures fall (NotAgreed); a forged signature refuses NotAgreed with no journal touched; a signature for one pair refuses NameMismatch against a different pair
+obs additive — composes entity_books (r1) + kumara over public API; r1 re-runs GREEN under the witness; demo steward seeds only, no real key, custody gate #3 (moving a fund's assets) untouched
+loom witness=gism_ayre_j8_entity_books_signed_witness cases=4 rung_one_rerun=green tame=clean width=clean
+file pond/apps/entity_books_signed.rye J8r2 — a transfer books only when both entity stewards signed the identical facts
+file tools/gism_ayre_j8_entity_books_signed_witness.rish witness — builds r1+r2, asserts GREEN, agreed booking + forgery/tamper/name-mismatch refusals
+file work-in-progress/REMEMBER.md living card — J8r2 landed row + git nib refresh
+recommend keep-going GISM-AYRE-J8r3 — the closed period travels (an entity's period folds to a sealed statement that renders to Bron and parses back byte-for-byte, still balancing)
