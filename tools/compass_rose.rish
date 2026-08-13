@@ -101,19 +101,19 @@ let gr = run ["sh" "-c" "test -f context/specs/20260702-035018_graduation-rule.m
 assert gr.ok else "graduation rule pair missing"
 assert gr.out contains "GRAD_OK" else "graduation pair check failed"
 
-say "compass rose: Dimeroll lap 1 packet…"
+say "compass rose: Dimeroll books-view packet…"
 let gc = run ["sh" "-c" "test -f active-designing/20260710-125953_dimeroll-hammock.md && test -f external-research/20260710-125953_dimeroll-kick-digits-clean-room.md && test -f expanding-prompts/yonder/20260710-125953_dimeroll-lap1-books-view.md && test -f dimeroll/dimeroll_core.rye && test -f dimeroll/fixtures/journal.bron && test -f dimeroll/README.md && echo DIMEROLL_OK"]
-assert gc.ok else "Dimeroll lap 1 packet missing"
+assert gc.ok else "Dimeroll books-view packet missing"
 assert gc.out contains "DIMEROLL_OK" else "Dimeroll packet check failed"
 
-say "compass rose: Dimeroll lap 3 sight packet…"
+say "compass rose: Dimeroll sight-view packet…"
 let gv = run ["sh" "-c" "test -f active-designing/20260710-132548_dimeroll-lap3-sight-view.md && test -f tools/dimeroll_sight_view.rish && echo SIGHT_OK"]
-assert gv.ok else "Dimeroll lap 3 sight packet missing"
+assert gv.ok else "Dimeroll sight-view packet missing"
 assert gv.out contains "SIGHT_OK" else "sight packet check failed"
 
-say "compass rose: inference stack lap 0 packet…"
+say "compass rose: inference stack packet…"
 let inf = run ["sh" "-c" "test -f active-designing/20260710-133500_inference-stack-lap0-hammock.md && test -f external-research/20260710-133500_local-forge-minisforum-inference.md && test -f lattice/lattice_core.rye && test -f scribble/scribble_core.rye && test -f lantern/lantern_core.rye && test -f ember/ember_core.rye && test -f tools/inference_assist_view.rish && echo INFERENCE_OK"]
-assert inf.ok else "inference stack lap 0 packet missing"
+assert inf.ok else "inference stack packet missing"
 assert inf.out contains "INFERENCE_OK" else "inference packet check failed"
 
 say "compass rose: Granary and Mandi commerce packet…"
@@ -121,4 +121,4 @@ let cm = run ["sh" "-c" "test -d granary && test -d mandi && test -f context/spe
 assert cm.ok else "Granary/Mandi commerce packet missing"
 assert cm.out contains "COMMERCE_OK" else "commerce packet check failed"
 
-say "GREEN: compass rose — foundations, grain, two rooms, kitchen twin, ladder, now, order; plain stories; pointer hygiene; Dimeroll; sight; inference lap 0; Granary/Mandi commerce."
+say "GREEN: compass rose — foundations, grain, two rooms, kitchen twin, ladder, now, order; plain stories; pointer hygiene; Dimeroll; sight; inference stack; Granary/Mandi commerce."
