@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260813.172645
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title HUNK23 — the Photos app turns hue at the color wheel's three exact stops
+prompt baton prin recur — continue the loop past HUNK22, next agent-doable Lindy-first crux, send each increment
+think REMEMBER named the hue rotation the crux horizon twice (HUNK21, HUNK22), flagged harder to bound cleanly in integer math because a general-angle luma-preserving turn wants fixed-point cos/sin. Crux-first says take the hardest still-tractable, decisive move. The general angle is not byte-exact-provable in integer math today; yet the color wheel has three points where the turn IS exactly integer — the 120° thirds — and that is the decisive, provable core the module can land now, exactly as rotate_quarter is the exact special case of a general affine rotation.
+think Chose hue_turn(thirds): a hue rotation by 120°·thirds is a cyclic permutation of the three color channels — thirds%3==1 maps (r,g,b)→(b,r,g) (+120°), ==2 maps (g,b,r) (+240°), a multiple of three is identity. No trig, no rounding, no clamp. Verified direction on a pure primary: red→green→blue→red, each a 120° advance on the HSV wheel.
+think Because the map only permutes the color channels, each pixel's max and min channel are unchanged — so HSV value (=max) and chroma (=max−min) are preserved exactly; only hue turns. The modulo is total, so any thirds is valid (no bad-argument refusal, as rotate_quarter accepts any turns) — only a zero-dimension image refuses EmptyImage.
+obs Proved by the algebra not one arithmetic: a zero turn byte-identical, three turns compose to the identity (the circle closes) and turn(1)∘turn(2) too, turn(2) equals two single thirds (the arg is honest), a pure red walks red→green→blue→red, every pixel keeps its max and min channel, an already-gray pixel a fixed point at every turn, alpha pass-through, purity, the turned image still re-encoding + round-tripping as an open image, EmptyImage refusal.
+obs Built GREEN first try; all seven image-photos selftests GREEN (crop, orient, scale, scale-area, adjust, saturate, hue-turn). TAME bans clean, width exit 0 — the channel-permutation body carries no compound asserts and no @memcpy.
+obs The general-angle hue rotation (fixed-point cos/sin about the luma axis, reusing luma_of) and a fractional-coverage bilinear resampler stay named horizons on the same module — genuinely harder to bound cleanly in integer math; named, not half-built here.
+loom witness=hunk_photos_hue_turn_witness build=ok selftest=green verbs=7 exact_stops=3 red_turn1_rgb=30,200,50 red_turn2_rgb=50,30,200 refusals=1
+file image/photos.rye hue_turn verb + run_hue_turn selftest and GREEN line; version restamped 20260813.172645; no new error (EmptyImage reused)
+file tools/hunk_photos_hue_turn_witness.rish new HUNK23 witness, GREEN; asserts crop·orient·scale·adjust·saturate still GREEN beneath
+file active-designing/20260813-172645_hunk-photos-hue-turn-exploration.md the self-approved HUNK23 design round
+file work-in-progress/REMEMBER.md HUNK23 narrative appended; git nib refreshed in the same work commit
+recommend keep-going the general-angle hue rotation horizon (fixed-point cos/sin, reusing luma_of), a bilinear resampler, or the next Season-A / double-seat journey; hardware buys stay custody gates #2/#3

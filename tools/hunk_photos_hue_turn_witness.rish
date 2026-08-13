@@ -1,0 +1,71 @@
+# tools/hunk_photos_hue_turn_witness.rish — the Photos app turns hue on metal (HUNK23).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK23.
+# Design read: active-designing/20260813-172645_hunk-photos-hue-turn-exploration.md (the Photos-app journey).
+# Teacher, thanked clean-room: the everyday iCloud Photos / Google Photos hue slider (concept only, siloed).
+#
+# HUNK21 gave the Photos app its color (saturation) and named a hue rotation the next horizon — harder to bound
+# cleanly in integer math. This rung lands the color wheel's three exactly-integer stops: `image/photos.rye`
+# `hue_turn` rotates every pixel's hue by exactly 120·thirds degrees as a cyclic permutation of the three color
+# channels — no trig, no rounding, no clamp. The selftest proves a zero turn recovers the source byte-for-byte,
+# three turns compose to the identity, turn(2) equals two single thirds, a pure red walks red->green->blue->red
+# (the +120 direction), every pixel keeps its max and min channel (HSV value and chroma preserved), an
+# already-gray pixel is a fixed point at every turn, alpha passes through untouched, the hue-turned image still
+# re-encodes and round-trips as an open image, and a degenerate image refuses by name. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_photos_hue_turn_witness.rish
+
+say "hunk-photos-hue-turn: Language EN — HUNK23 turns the Photos app's hue: a pure bounded channel-permutation over the decoded grid that returns a fresh open image, the source untouched, at the color wheel's three exact stops."
+say "hunk-photos-hue-turn: Style Radiant — a hue-turned image is still an open image: it re-encodes and round-trips byte-for-byte, so hue tuning stands on the open module the quest built, never a proprietary one; the general-angle turn stays a named horizon."
+say "hunk-photos-hue-turn: Lens TAME — the 120-degree turn is an exact integer channel permutation, no trig and no rounding; value and chroma are preserved by construction; the modulo is total so any thirds is valid; alpha passes through; positive invariants per fn; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/photos"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/photos.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-photos-hue-turn: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-photos-hue-turn: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+say "hunk-photos-hue-turn: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-hue-turn' && echo yes"]
+assert (trim green.out) == "yes" else "hunk-photos-hue-turn: selftest did not print the GREEN hue-turn line"
+
+let zero = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a zero turn byte-identical' && echo yes"]
+assert (trim zero.out) == "yes" else "hunk-photos-hue-turn: the zero turn was not proven byte-identical"
+
+let order = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'three turns compose to the identity' && echo yes"]
+assert (trim order.out) == "yes" else "hunk-photos-hue-turn: the order-three composition was not proven"
+
+let direction = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'red->green->blue->red' && echo yes"]
+assert (trim direction.out) == "yes" else "hunk-photos-hue-turn: the +120 direction was not proven"
+
+let preserved = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'HSV value and chroma preserved' && echo yes"]
+assert (trim preserved.out) == "yes" else "hunk-photos-hue-turn: value and chroma preservation was not proven"
+
+let fixed = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'already-gray pixel is a fixed point' && echo yes"]
+assert (trim fixed.out) == "yes" else "hunk-photos-hue-turn: the gray fixed point was not proven"
+
+let alpha = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'alpha passes through untouched' && echo yes"]
+assert (trim alpha.out) == "yes" else "hunk-photos-hue-turn: alpha pass-through was not proven"
+
+let open = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'hue-turned image re-encodes and round-trips' && echo yes"]
+assert (trim open.out) == "yes" else "hunk-photos-hue-turn: a hue-turned image did not round-trip as an open image"
+
+# HUNK3 crop, HUNK8 orient, HUNK9 scale, HUNK10 adjust, and HUNK21 saturate selftests still run in the same binary.
+let crop = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos:' && echo yes"]
+assert (trim crop.out) == "yes" else "hunk-photos-hue-turn: HUNK3 crop selftest no longer GREEN beneath"
+let orient = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-orient' && echo yes"]
+assert (trim orient.out) == "yes" else "hunk-photos-hue-turn: HUNK8 orient selftest no longer GREEN beneath"
+let scale = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-scale' && echo yes"]
+assert (trim scale.out) == "yes" else "hunk-photos-hue-turn: HUNK9 scale selftest no longer GREEN beneath"
+let adjust = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-adjust' && echo yes"]
+assert (trim adjust.out) == "yes" else "hunk-photos-hue-turn: HUNK10 adjust selftest no longer GREEN beneath"
+let saturate = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-saturate' && echo yes"]
+assert (trim saturate.out) == "yes" else "hunk-photos-hue-turn: HUNK21 saturate selftest no longer GREEN beneath"
+
+say "hunk-photos-hue-turn: GREEN — the Photos app turns hue over the open grid; pure, exact-integer, value and chroma preserved, alpha untouched, refusal named; HUNK3 crop, HUNK8 orient, HUNK9 scale, HUNK10 adjust, and HUNK21 saturate still GREEN beneath."
