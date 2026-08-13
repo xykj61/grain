@@ -2,7 +2,7 @@
 #
 #   rishi/bin/rishi run tools/gen/season/grad_seal_witness.rish
 #
-# The seal of the chronological-semantic labeling law, in its two living halves:
+# The seal of the chronological-semantic labeling law, in its three living halves:
 #   (1) the living operator PINS carry no bare count-up-from-0 identity (a season ordinal
 #       or a waymark-redundant equinox number) — labeling_law_scan.sh over REMEMBER /
 #       ROADMAP / THREADS;
@@ -12,7 +12,17 @@
 #       and the guard itself (20260813). Folding it here seats the labeling-law guard in
 #       the standing seal, so the whole LOWE conversion can never silently regress (REDS
 #       #67's lesson: a witness outside the run-suite rots unseen).
-# Both halves prove the guard bites a planted drift. Dated testimony and rested-history
+#   (3) the CONVERSION IS COMPLETE — zero unconverted prose gaps remain anywhere in the
+#       living tree (GRAD-J16r2, 20260813). Half (2) proves guarded files are CLEAN; half
+#       (3) proves the molt is FINISHED: vols_classify_scan.sh classifies every living
+#       count-up site against the guardlist in force, and a prose gap (a bare "lap N" that
+#       is neither guarded nor a kept witness handle) is exactly the drift LOWE relabeled.
+#       Sealing prose_gaps=0 turns the seal into a whole-tree guard — a bare-ordinal prose
+#       identity born ANYWHERE, not only inside an already-watched file, raises the count
+#       and bites. Honest to handles: a legitimately-named witness handle (its ordinal in
+#       the FILENAME) classifies as a handle, never a gap. Design:
+#       active-designing/20260813-021123_grad-journey16-witness-whole-conversion-exploration.md
+# All three halves prove the guard bites a planted drift. Dated testimony and rested-history
 # docs keep the ordinals they recorded (the law governs living now-lines). Law:
 # context/specs/20260810-222755_chronological-semantic-labeling-and-the-cion-meta-season.md
 
@@ -41,4 +51,22 @@ say "grad-seal: CION module labeling guard —"
 assert modguard.ok else "grad-seal: a living module surface names a capability by a bare lap ordinal"
 assert modguard.out contains "GREEN: cion-module" else "grad-seal: the module labeling guard did not seal GREEN"
 
-say "GREEN: grad-seal — living pins carry no bare count-up identity and living module surfaces name no capability by a bare lap ordinal; both guards bite a planted drift"
+# The third half: the CONVERSION IS COMPLETE — zero unconverted prose gaps remain anywhere
+# in the living tree. Classify every living count-up site against the guardlist in force
+# (derived from the guard witness itself, never hand-copied); a prose gap is a bare lap
+# ordinal that is neither guarded nor a kept witness handle. LOWE relabeled all 79; the seal
+# now proves none has returned and none was born.
+let complete = run ["sh" "-c" "sh tools/fixtures/vols_guardlist_extract.sh tools/gen/season/cion_module_labeling_witness.rish > /tmp/grad_seal_guardlist.txt && sh tools/fixtures/vols_classify_scan.sh . /tmp/grad_seal_guardlist.txt | grep -E '^(prose_gaps|guarded_sites)='"]
+say "grad-seal: conversion-complete —"
+say complete.out
+assert complete.out contains "prose_gaps=0" else "grad-seal: the CION conversion is incomplete — a living surface still names a capability by a bare lap ordinal outside every guard"
+assert complete.out contains "guarded_sites=0" else "grad-seal: a live guarded file drifted — a watched surface carries a bare lap ordinal"
+
+# The completeness half bites — a tree still carrying an unconverted prose gap (the classify
+# fixture, whose livemod/README.md holds a bare ordinal outside the guardlist) must report
+# prose_gaps above zero, so the seal cannot pass a molt left unfinished.
+let incomplete = run ["sh" "tools/fixtures/vols_classify_scan.sh" "tools/fixtures/vols_classify_tree" "tools/fixtures/vols_classify_guardlist_ok.txt"]
+say incomplete.out
+assert incomplete.out contains "prose_gaps=1" else "grad-seal: the completeness seal failed to bite a tree with an unconverted prose gap"
+
+say "GREEN: grad-seal — living pins carry no bare count-up identity, living module surfaces name no capability by a bare lap ordinal, and the conversion stands complete (zero prose gaps live); every guard bites a planted drift"

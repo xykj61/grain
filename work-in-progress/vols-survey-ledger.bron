@@ -1,62 +1,12 @@
 format cion-survey-v1
-stamp 20260812.221045
-surfaces 2692
-sites 223
+stamp 20260813.021357
+surfaces 2693
+sites 144
 handles 144
-prose_gaps 79
+prose_gaps 0
 guarded_sites 0
-site ./active-designing/README.md prose gap
-site ./amphora/manifest_entry.rye prose gap
-site ./amphora/README.md prose gap
-site ./amphora/vessel_fetch_delivery.rye prose gap
-site ./brushstroke/wayland_seed.rye prose gap
-site ./comlink/guest_open_asks_escrow_hold_rx.rye prose gap
-site ./comlink/guest_open_asks_escrow_hold_tx.rye prose gap
-site ./comlink/guest_open_asks_escrow_release_rx.rye prose gap
-site ./comlink/guest_open_asks_escrow_release_tx.rye prose gap
-site ./comlink/guest_snapshot_fetcher_rx.rye prose gap
-site ./comlink/guest_snapshot_fetcher_tx.rye prose gap
-site ./comlink/guest_snapshot_source_rx.rye prose gap
-site ./comlink/guest_snapshot_source_tx.rye prose gap
-site ./comlink/guest_sync_fetcher_rx.rye prose gap
-site ./comlink/guest_sync_fetcher_tx.rye prose gap
-site ./comlink/guest_sync_source_rx.rye prose gap
-site ./comlink/guest_sync_source_tx.rye prose gap
-site ./comlink/guest_vessel_fetch_fetcher_rx.rye prose gap
-site ./comlink/guest_vessel_fetch_fetcher_tx.rye prose gap
-site ./comlink/guest_vessel_fetch_source_rx.rye prose gap
-site ./comlink/guest_vessel_fetch_source_tx.rye prose gap
-site ./comlink/README.md prose gap
-site ./ember/ember_core.rye prose gap
-site ./ember/README.md prose gap
-site ./expanding-prompts/README.md prose gap
-site ./glow/nock/nock_core.rye prose gap
-site ./glow/nock/nock_core_witness.rye prose gap
 site ./glow/nock/nock_lap2_witness.rye handle gap
 site ./glow/nock/nock_lap3_witness.rye handle gap
-site ./glow/nock/README.md prose gap
-site ./dimeroll/dimeroll_core.rye prose gap
-site ./dimeroll/dimeroll.rye prose gap
-site ./dimeroll/README.md prose gap
-site ./lantern/lantern_core.rye prose gap
-site ./lantern/lantern.rye prose gap
-site ./lantern/README.md prose gap
-site ./lattice/lattice_core.rye prose gap
-site ./lattice/lattice.rye prose gap
-site ./lattice/README.md prose gap
-site ./mandi/listing_settle_core.rye prose gap
-site ./mandi/listing_settle.rye prose gap
-site ./mandi/mandi_core.rye prose gap
-site ./mandi/mandi.rye prose gap
-site ./mandi/README.md prose gap
-site ./mantra/README.md prose gap
-site ./mantra/recall_sync_delivery.rye prose gap
-site ./mantra/recall_sync_wire.rye prose gap
-site ./mantra/snapshot_export_delivery.rye prose gap
-site ./mantra/snapshot_export.rye prose gap
-site ./src/app/shape-pool-agent-slot.glow prose gap
-site ./tools/cellar_first_ring.rish prose gap
-site ./tools/compass_rose.rish prose gap
 site ./tools/gen/amphora/amphora_lap1.rish handle gap
 site ./tools/gen/amphora/amphora_lap2.rish handle gap
 site ./tools/gen/amphora/amphora_lap3.rish handle gap
@@ -65,17 +15,9 @@ site ./tools/gen/ember/ember_corpus_lap2.rish handle gap
 site ./tools/gen/ember/ember_corpus_lap3.rish handle gap
 site ./tools/gen/ember/ember_corpus_lap4.rish handle gap
 site ./tools/gen/ember/ember_corpus_lap5.rish handle gap
-site ./tools/gen/ember/README.md prose gap
-site ./tools/gen/season/fascia_metric_v0.rish prose gap
-site ./tools/gen/season/pond_brushstroke_frame_witness.rish prose gap
-site ./tools/gen/season/vols_survey_witness.rish prose gap
-site ./tools/glow_riscv_target_witness.rish prose gap
-site ./tools/granary_exchange.rish prose gap
 site ./tools/granary_lap1.rish handle gap
 site ./tools/granary_lap2.rish handle gap
 site ./tools/granary_lap3.rish handle gap
-site ./tools/granary_resin_wire.rish prose gap
-site ./tools/granary_weave_settle.rish prose gap
 site ./tools/dimeroll_lap1.rish handle gap
 site ./tools/dimeroll_lap2.rish handle gap
 site ./tools/dimeroll_lap4.rish handle gap
@@ -121,7 +63,6 @@ site ./tools/inference_assist_view_lap6.rish handle gap
 site ./tools/inference_assist_view_lap7.rish handle gap
 site ./tools/inference_assist_view_lap8.rish handle gap
 site ./tools/inference_assist_view_lap9.rish handle gap
-site ./tools/interfaces_conformance_witness.rish prose gap
 site ./tools/lantern_lap10.rish handle gap
 site ./tools/lantern_lap11.rish handle gap
 site ./tools/lantern_lap12.rish handle gap
@@ -196,25 +137,10 @@ site ./tools/lattice_lap7.rish handle gap
 site ./tools/lattice_lap8.rish handle gap
 site ./tools/lattice_lap9.rish handle gap
 site ./tools/mandi_lap1.rish handle gap
-site ./tools/mandi_listing_settle.rish prose gap
 site ./tools/mantra_recall_lap3_wire.rish handle gap
-site ./tools/mantra_snapshot_horizon.rish prose gap
-site ./tools/mantra_snapshot_replay.rish prose gap
-site ./tools/mantra_snapshot_wire.rish prose gap
-site ./tools/neth_sim_witness.rish prose gap
-site ./tools/nock_core_witness.rish prose gap
 site ./tools/nock_lap2_witness.rish handle gap
 site ./tools/nock_lap3_witness.rish handle gap
-site ./tools/onboarding_path_witness.rish prose gap
 site ./tools/open_asks_lap3.rish handle gap
-site ./tools/operations_conformance_witness.rish prose gap
-site ./tools/parity_ch01.rish prose gap
-site ./tools/parity_ch02.rish prose gap
-site ./tools/pond_ring_drawn_terminal_witness.rish prose gap
-site ./tools/rishi_filter_chain_witness.rish prose gap
-site ./tools/rishi_fold_witness.rish prose gap
-site ./tools/rishi_lines_bounded_witness.rish prose gap
-site ./tools/rishi_quote_safe_witness.rish prose gap
 site ./tools/scribble_lap1.rish handle gap
 site ./tools/scribble_lap2.rish handle gap
 site ./tools/scribble_lap3.rish handle gap
@@ -223,8 +149,3 @@ site ./tools/scribble_lap5.rish handle gap
 site ./tools/scribble_lap6.rish handle gap
 site ./tools/scribble_lap7.rish handle gap
 site ./tools/scribble_lap8.rish handle gap
-site ./tools/slc2a_ring1_arbitrary.rish prose gap
-site ./tools/slc2a_ring2_redraw.rish prose gap
-site ./tools/slc2a_ring3_metal.rish prose gap
-site ./tools/slc2a_ring3_session.rish prose gap
-site ./tools/wov_exit_honesty.rish prose gap
