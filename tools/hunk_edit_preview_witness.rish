@@ -1,0 +1,51 @@
+# tools/hunk_edit_preview_witness.rish — the Skate view of a pending edit, seen before committed, on metal (HUNK13).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK13.
+# Design read: active-designing/20260813-160955_hunk-edit-preview-seen-before-committed-exploration.md.
+# Teachers, thanked clean-room: gratitude/qoi.md (the open codec) · the non-destructive edit history of
+# iCloud Photos / Google Photos (concept only, siloed).
+#
+# HUNK11 recorded the Photos verbs as data and proved replay is deterministic and non-destructive; HUNK12 banked
+# that determinism as a content address. This rung is the eye: `brushstroke/edit_preview.rye` `preview` replays an
+# edit-list over a source image (pure — the source untouched, nothing stored) and down-maps the fresh result to a
+# Skate grid, so a pending edit is SEEN before it is committed. The selftest proves the preview equals
+# down_map(apply(source,list)) cell-for-cell, is non-destructive (the empty list previews to the source's own
+# down-map), changes the view when the edit is pending (a flip_h swaps red<->blue), is deterministic, rasterizes to
+# a lit canvas, and refuses an out-of-bounds crop, an empty grid, and an over-ceiling grid by name. No network,
+# no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_edit_preview_witness.rish
+
+say "hunk-edit-preview: Language EN — HUNK13 is the eye: a pending edit-list is replayed and down-mapped to a Skate grid, so a keeper SEES the edit before committing it — no name, no bead, no funds."
+say "hunk-edit-preview: Style Radiant — the preview is a look, not a commit: the source stays whole, nothing is stored, and the view faithfully shows exactly what a direct apply would produce."
+say "hunk-edit-preview: Lens TAME — pure composition over two proven seams, positive invariants per fn, no new failure mode: a verb's own refusal and the down-map's own refuse by their named errors."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/edit_preview"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/edit_preview.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-edit-preview: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-edit-preview: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+say "hunk-edit-preview: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN edit-preview' && echo yes"]
+assert (trim green.out) == "yes" else "hunk-edit-preview: selftest did not print the GREEN edit-preview line"
+
+let faithful = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'down_map(apply(source,list)) cell-for-cell' && echo yes"]
+assert (trim faithful.out) == "yes" else "hunk-edit-preview: the preview was not proven equal to a direct apply cell-for-cell"
+
+let nondestructive = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the empty list previews to the plain source down-map' && echo yes"]
+assert (trim nondestructive.out) == "yes" else "hunk-edit-preview: the non-destructive empty-list baseline was not proven"
+
+let changes = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the pending edit changes the view' && echo yes"]
+assert (trim changes.out) == "yes" else "hunk-edit-preview: a pending edit was not proven to change the view"
+
+let committed = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'seen, not committed' && echo yes"]
+assert (trim committed.out) == "yes" else "hunk-edit-preview: the seen-not-committed guarantee was not stated"
+
+say "hunk-edit-preview: GREEN — a pending edit is seen before it is committed; the view faithfully shows the replayed result; refusals named."

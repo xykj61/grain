@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260813.160955
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) time convention — this session in ai-jail
+title HUNK13 — the Skate view of a pending edit, seen before it is committed
+prompt Read REMEMBER + the 1024-round itinerary + the six-season double-seat; take the next agent-doable lap Lindy-first crux-first, self-approving design rounds; send each finished increment to origin and xykj61; stop at custody gates.
+think Read REMEMBER's latest lap — HUNK12 landed (edit-list content-addressed), and the card names the next agent-doable crux plainly: HUNK13, the Skate view of a pending edit (down-map the replayed result so an edit is seen before it is committed), or HUNK14 (revert/truncate).
+think Lindy-first crux-first: HUNK13 sits directly on two proven seams (photo_edits.apply from HUNK11, image_skate.down_map from HUNK2), opens no custody gate, needs no deferred web search, and is the crux of the Photos-edit quest's fourth rung — the eye a keeper looks through before committing. Self-approved the design round rather than pausing.
+think Studied both seams: photo_edits.apply folds from a clone (pure, non-destructive, nothing stored); image_skate.down_map returns a bounded Skate grid that rasterizes to a lit canvas. Preview is their composition — no name, no bead, no funds.
+think Home in brushstroke/ beside image_skate.rye; added a photo_edits.rye symlink there (its own deps — photos/qoi/parse_int/tally_copy — already resolve in brushstroke/, mirroring the pond/apps/ symlink pattern).
+think Proved on metal by the properties that matter: preview equals down_map(apply(source,list)) cell-for-cell; non-destructive (source untouched, empty list previews to the plain source down-map); a pending flip_h changes the view (left cell red->blue); deterministic; rasterizes to 256 lit pixels with blue in the left cell; an out-of-bounds crop refuses OutOfBounds through the fold, an empty grid EmptyImage, an over-ceiling grid GridTooLarge — no new failure mode.
+obs Witness green on the first build+run; the only catch was the same apostrophe-in-GREEN-line shell trap HUNK5 hit (single-quoted rishi interpolation) — reworded "source's own down-map" to "plain source down-map". TAME split one compound assert; width clean.
+obs No breach, so no cairn; no network/key/funds — HUNK's hardware rounds (buying panels, sourcing parts) stay custody gates #2/#3, untouched here.
+loom witness=hunk_edit_preview_witness green=1 lit_pixels=256 cols=2 rows=2 build=first_run
+file brushstroke/edit_preview.rye HUNK13 keystone — preview replays an edit-list and down-maps the result to a Skate grid
+file brushstroke/photo_edits.rye new symlink to ../image/photo_edits.rye so preview reaches the replay seam
+file tools/hunk_edit_preview_witness.rish witness proving the preview on metal, refusals named
+file active-designing/20260813-160955_hunk-edit-preview-seen-before-committed-exploration.md self-approved design read for the rung
+file work-in-progress/REMEMBER.md latest lap adds HUNK13 LANDED; next crux HUNK14
+file session-logs/README.md newest-first index row for this log
+recommend keep-going next agent-doable crux is HUNK14 (revert/truncate — drop the last k edits, the original always one empty-list apply away), another Photos gesture, or a fresh Season-A / double-seat journey; served/hardware rounds stay custody gates
