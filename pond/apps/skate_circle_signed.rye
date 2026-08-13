@@ -1,0 +1,295 @@
+//! pond/apps/skate_circle_signed.rye — Season 3 Journey 9 (Skate), Rung 2: consent that cannot be fabricated.
+//!
+//! Rung one fixed the consent rule as a pure state machine — a link is mutual-only, presence is never
+//! default. Yet a bare state machine trusts whoever calls it: a steward could `join` a keeper who
+//! never asked, or `request_link` on a keeper's behalf, and the books would read as consent. This rung
+//! binds each consent act to the keeper's **settled Kumara identity**, so a consent the keeper never
+//! gave cannot be booked.
+//!
+//! Each act is signed by the very keeper it speaks for: a join is signed by the joining point, a
+//! link-request by the requesting point, over the exact facts (a tag so a join can never be replayed as
+//! a request, the circle id so it cannot cross circles, and the points). A `Keyring` maps a point to
+//! its keeper public key — the caller's statement of whose word to trust (as `commerce_trade_signed`
+//! passes the seller/buyer keys). `join_signed` / `request_signed` verify the acting keeper's own
+//! signature against the keyring **before** touching rung one's circle, refusing `UnknownKeeper` (the
+//! point is not enrolled) or `BadConsent` (the signature does not verify). The honesty crux mirrors
+//! commerce's price-tamper: relabel a request's `to` after signing and reuse the signature, and it
+//! falls — the signature was over the pair the keeper actually named, not the one a steward swapped in.
+//!
+//! Additive — composes rung one (`skate_circle`) and `kumara` over public API; rung one stays its own
+//! GREEN binary. Demo keeper seeds only — no real key, no network, no real identity (a circle served
+//! over the wire reaches the serve gate — Keaton's hand).
+//!
+//!   rye build pond/apps/skate_circle_signed.rye -femit-bin=pond/bin/skate-circle-signed
+//!   pond/bin/skate-circle-signed selftest
+//!
+//! Scope: active-designing/20260812-201611_dahl-journey9-skate-consent-first-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const skate = @import("skate_circle.rye");
+const kumara = @import("kumara.rye");
+
+pub const skate_circle_signed_version = "20260812.201611";
+
+pub const pubkey_len: u32 = 32;
+pub const sig_len: u32 = 64;
+
+/// A keyring maps a point to its keeper public key — a caller's statement of whose consent to trust.
+pub const max_keyring: u32 = skate.max_members;
+
+/// The act a signature speaks for — a tag so a join can never be replayed as a link-request.
+const tag_join: u8 = 1;
+const tag_request: u8 = 2;
+
+/// The exact bytes a consent act signs: the tag, the circle id (so consent cannot cross circles), and
+/// the acting points. A join names one point; a request names two.
+pub const max_msg_len: u32 = 1 + 4 + 4 + 4; // tag, circle_id, point_a, point_b
+
+pub const SignedError = error{
+    UnknownKeeper, // the acting point is not enrolled in the keyring — no key to check its word against
+    BadConsent, // the signature does not verify over these exact facts — the keeper did not give this consent
+};
+
+pub const CircleActError = SignedError || skate.CircleError;
+
+fn join_message(out: *[max_msg_len]u8, circle_id: u32, point: u32) u32 {
+    out[0] = tag_join;
+    std.mem.writeInt(u32, out[1..5], circle_id, .little);
+    std.mem.writeInt(u32, out[5..9], point, .little);
+    // invariant: the join message is exactly its fixed length, within the buffer bound.
+    assert(9 <= max_msg_len);
+    return 9;
+}
+
+fn request_message(out: *[max_msg_len]u8, circle_id: u32, from: u32, to: u32) u32 {
+    out[0] = tag_request;
+    std.mem.writeInt(u32, out[1..5], circle_id, .little);
+    std.mem.writeInt(u32, out[5..9], from, .little);
+    std.mem.writeInt(u32, out[9..13], to, .little);
+    // invariant: the request message is exactly its fixed length, within the buffer bound.
+    assert(13 <= max_msg_len);
+    return 13;
+}
+
+/// The joining keeper's signature over their own join — proof this point asked to join this circle.
+pub fn sign_join(keeper_seed: *const [kumara.seed_length]u8, circle_id: u32, point: u32) [sig_len]u8 {
+    const kp = kumara.keypair_from_seed(keeper_seed);
+    var msg: [max_msg_len]u8 = undefined;
+    const len = join_message(&msg, circle_id, point);
+    return kumara.sign(msg[0..len], kp, null).toBytes();
+}
+
+/// The requesting keeper's signature over their own link-request — proof this point offered this link.
+pub fn sign_request(keeper_seed: *const [kumara.seed_length]u8, circle_id: u32, from: u32, to: u32) [sig_len]u8 {
+    const kp = kumara.keypair_from_seed(keeper_seed);
+    var msg: [max_msg_len]u8 = undefined;
+    const len = request_message(&msg, circle_id, from, to);
+    return kumara.sign(msg[0..len], kp, null).toBytes();
+}
+
+fn verify_over(keeper: [pubkey_len]u8, msg: []const u8, sig: *const [sig_len]u8) bool {
+    // invariant: an Ed25519 public key is 32 bytes and a signature 64.
+    assert(pubkey_len == 32);
+    assert(sig_len == 64);
+    const pub_key = kumara.PublicKey.fromBytes(keeper) catch return false;
+    kumara.verify_bytes(msg, sig, pub_key) catch return false;
+    return true;
+}
+
+/// A bounded map from a point to its keeper public key — whose consent the caller trusts.
+// Invariant: count <= max_keyring.
+pub const Keyring = struct {
+    points: [max_keyring]u32,
+    keys: [max_keyring][pubkey_len]u8,
+    count: u32,
+
+    pub fn open() Keyring {
+        const k = Keyring{ .points = undefined, .keys = undefined, .count = 0 };
+        // invariant: an opened keyring enrolls no one.
+        assert(k.count == 0);
+        return k;
+    }
+
+    pub fn enroll(self: *Keyring, point: u32, key: [pubkey_len]u8) error{KeyringFull}!void {
+        if (self.count >= max_keyring) return error.KeyringFull;
+        const i = self.count;
+        self.points[i] = point;
+        self.keys[i] = key;
+        self.count += 1;
+        // invariant: enrolling grew the ring by exactly one, within its bound.
+        assert(self.count == i + 1);
+        assert(self.count <= max_keyring);
+    }
+
+    pub fn key_of(self: *const Keyring, point: u32) ?[pubkey_len]u8 {
+        // invariant: the ring never exceeds its bound.
+        assert(self.count <= max_keyring);
+        var i: u32 = 0;
+        while (i < self.count) : (i += 1) {
+            if (self.points[i] == point) return self.keys[i];
+        }
+        return null;
+    }
+};
+
+/// A keeper joins a circle only when their own signature over this exact join verifies. Refuses an
+/// unenrolled point (`UnknownKeeper`) or an unverifying signature (`BadConsent`) before touching the
+/// circle, then joins through rung one (which refuses a taken seat / full circle by its own laws).
+pub fn join_signed(
+    circle: *skate.Circle,
+    ring: *const Keyring,
+    circle_id: u32,
+    point: u32,
+    sig: *const [sig_len]u8,
+) CircleActError!void {
+    const key = ring.key_of(point) orelse return error.UnknownKeeper;
+    var msg: [max_msg_len]u8 = undefined;
+    const len = join_message(&msg, circle_id, point);
+    if (!verify_over(key, msg[0..len], sig)) return error.BadConsent;
+    try circle.join(point);
+}
+
+/// A keeper offers a link only when their own signature over this exact request verifies. The
+/// *requesting* point signs (a keeper offers their own consent, never another's). Refuses an unenrolled
+/// requester (`UnknownKeeper`) or an unverifying signature (`BadConsent`) before touching the circle,
+/// then records through rung one (which refuses a non-member / self-link / repeat by its own laws).
+pub fn request_signed(
+    circle: *skate.Circle,
+    ring: *const Keyring,
+    circle_id: u32,
+    from: u32,
+    to: u32,
+    sig: *const [sig_len]u8,
+) CircleActError!void {
+    const key = ring.key_of(from) orelse return error.UnknownKeeper;
+    var msg: [max_msg_len]u8 = undefined;
+    const len = request_message(&msg, circle_id, from, to);
+    if (!verify_over(key, msg[0..len], sig)) return error.BadConsent;
+    try circle.request_link(from, to);
+}
+
+// --- selftest -----------------------------------------------------------
+
+// Demo keeper seeds — plainly not real keys, so no identity is invented.
+const ivy_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
+const wren_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
+
+const ivy: u32 = 101;
+const wren: u32 = 202;
+const demo_circle: u32 = 7;
+
+fn pubkey_of(seed: *const [kumara.seed_length]u8) [pubkey_len]u8 {
+    return kumara.keypair_from_seed(seed).public_key.bytes;
+}
+
+fn demo_ring() error{KeyringFull}!Keyring {
+    var ring = Keyring.open();
+    try ring.enroll(ivy, pubkey_of(&ivy_seed));
+    try ring.enroll(wren, pubkey_of(&wren_seed));
+    return ring;
+}
+
+/// Signed joins and a mutual signed link build a real connection — each act carrying its keeper's word.
+fn welcome_signed_consent_links() !void {
+    var c = skate.Circle.open();
+    const ring = try demo_ring();
+
+    const ivy_join = sign_join(&ivy_seed, demo_circle, ivy);
+    const wren_join = sign_join(&wren_seed, demo_circle, wren);
+    try join_signed(&c, &ring, demo_circle, ivy, &ivy_join);
+    try join_signed(&c, &ring, demo_circle, wren, &wren_join);
+
+    const ivy_asks = sign_request(&ivy_seed, demo_circle, ivy, wren);
+    try request_signed(&c, &ring, demo_circle, ivy, wren, &ivy_asks);
+    assert(c.verdict(ivy, wren) == .hold); // one signed offer holds
+
+    const wren_asks = sign_request(&wren_seed, demo_circle, wren, ivy);
+    try request_signed(&c, &ring, demo_circle, wren, ivy, &wren_asks);
+    assert(c.linked(ivy, wren)); // both signed — the link places
+    assert(c.visible(ivy, wren));
+    print("skate_circle_signed: two signed joins and a mutual signed link built a real connection — each act its keeper's own word.\n", .{});
+}
+
+/// The honesty crux — a steward relabels a request's target after signing and reuses the signature; it
+/// falls, because the signature was over the pair the keeper actually named.
+fn unwelcome_relabel_refuses() !void {
+    var c = skate.Circle.open();
+    var ring = try demo_ring();
+    // Enroll a third keeper the requester never asked for.
+    const flax: u32 = 303;
+    const flax_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
+    try ring.enroll(flax, pubkey_of(&flax_seed));
+
+    const ivy_join = sign_join(&ivy_seed, demo_circle, ivy);
+    const wren_join = sign_join(&wren_seed, demo_circle, wren);
+    const flax_join = sign_join(&flax_seed, demo_circle, flax);
+    try join_signed(&c, &ring, demo_circle, ivy, &ivy_join);
+    try join_signed(&c, &ring, demo_circle, wren, &wren_join);
+    try join_signed(&c, &ring, demo_circle, flax, &flax_join);
+
+    // Ivy signed a request to Wren; a steward reuses that signature claiming Ivy asked Flax.
+    const ivy_asks_wren = sign_request(&ivy_seed, demo_circle, ivy, wren);
+    const swapped = request_signed(&c, &ring, demo_circle, ivy, flax, &ivy_asks_wren);
+    assert(swapped == error.BadConsent);
+    assert(c.verdict(ivy, flax) == .refuse); // no offer to Flax was recorded
+    print("skate_circle_signed: a request's target relabelled after signing refused BadConsent — a steward cannot swap whom a keeper asked.\n", .{});
+}
+
+/// One keeper cannot sign another's join — the joining point must sign its own join.
+fn unwelcome_forged_join_refuses() !void {
+    var c = skate.Circle.open();
+    const ring = try demo_ring();
+    // Wren signs a join naming Ivy — the wrong keeper's word for Ivy's consent.
+    const forged = sign_join(&wren_seed, demo_circle, ivy);
+    const bad = join_signed(&c, &ring, demo_circle, ivy, &forged);
+    assert(bad == error.BadConsent);
+    assert(!c.is_member(ivy)); // no seat was taken on a forged word
+    print("skate_circle_signed: a join signed by the wrong keeper refused BadConsent — a keeper signs their own join.\n", .{});
+}
+
+/// An unenrolled keeper has no key to check — their word cannot be trusted, so the act refuses.
+fn unwelcome_unknown_keeper_refuses() !void {
+    var c = skate.Circle.open();
+    const ring = try demo_ring();
+    const stranger: u32 = 909;
+    const stranger_seed: [kumara.seed_length]u8 = .{0x44} ** kumara.seed_length;
+    const sig = sign_join(&stranger_seed, demo_circle, stranger);
+    const bad = join_signed(&c, &ring, demo_circle, stranger, &sig);
+    assert(bad == error.UnknownKeeper);
+    print("skate_circle_signed: a join by a keeper the ring does not enroll refused UnknownKeeper.\n", .{});
+}
+
+/// A signature bound to one circle does not cross into another — consent names its circle.
+fn unwelcome_cross_circle_refuses() !void {
+    var c = skate.Circle.open();
+    const ring = try demo_ring();
+    // Ivy signs a join for circle 7; the same signature is presented to circle 8.
+    const ivy_join_7 = sign_join(&ivy_seed, demo_circle, ivy);
+    const other_circle: u32 = 8;
+    const bad = join_signed(&c, &ring, other_circle, ivy, &ivy_join_7);
+    assert(bad == error.BadConsent);
+    print("skate_circle_signed: a join signed for one circle refused BadConsent in another — consent names its circle.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_signed_consent_links();
+    try unwelcome_relabel_refuses();
+    try unwelcome_forged_join_refuses();
+    try unwelcome_unknown_keeper_refuses();
+    try unwelcome_cross_circle_refuses();
+    print("skate_circle_signed: version {s}\n", .{skate_circle_signed_version});
+    print("GREEN: DAHL-J9r2 skate_circle_signed; each consent act carries its keeper's signature, and consent cannot be fabricated.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "skate-circle-signed"))) {
+        return run_selftest();
+    }
+    return run_selftest();
+}
