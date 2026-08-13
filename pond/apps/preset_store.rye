@@ -1,0 +1,161 @@
+//! pond/apps/preset_store.rye — HUNK32: a curated filter-preset book is a content-addressed Tablecloth artifact.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK32.
+//! Design read: active-designing/20260813-181925_hunk-filter-preset-book-exploration.md (names HUNK32 as a horizon).
+//! Teacher, thanked clean-room: the shared filter packs of Instagram / VSCO — a curated set of named looks a
+//! keeper installs by name (concept only, siloed).
+//!
+//! HUNK30 gave the Photos app a `PresetBook` — filters applied by name — and HUNK31 let a whole book travel as a
+//! `format filter-presets-v1` record. This rung banks that record content-addressed: `store_book` renders a book
+//! to its text and beads it (HUNK1's Tablecloth store), and `open_book` fetches it back — every bead proven against
+//! its digest and the whole against its recorded address BEFORE the text is parsed or a preset is defined — then
+//! parses it into a fresh book. So a curated filter set reproduces from cold out of its name alone: the recipes
+//! never need re-authoring, only fetching. A tampered book refuses `DigestMismatch` and an unknown name refuses
+//! `UnknownArtifact`, each before a preset is read. Pure composition over public APIs — no network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/preset_store.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const filter_preset = @import("filter_preset.rye");
+const tablecloth = @import("tablecloth.rye");
+const beading = @import("mantra/beading.rye");
+
+pub const preset_store_version = "20260813.182736";
+
+/// The largest preset-book text this rung stores — a resin's worth (the artifact-content bound). A curated book of
+/// a dozen named looks fits with room to spare; a book too large to bead refuses rather than truncating.
+pub const max_book_stream: u32 = tablecloth.max_content_bytes;
+
+pub const PresetStoreError = error{
+    BookTooLarge,
+};
+
+/// Store a preset book content-addressed under a name: render it to its `format filter-presets-v1` text, then bead
+/// that text into the shared store so the same curated book stored twice is stored once. Returns the beading report
+/// so a caller sees the dedup dividend. Refuses `BookTooLarge` rather than storing a book a fetch cannot hold.
+pub fn store_book(
+    cat: *tablecloth.Catalog,
+    store: *beading.BeadStore,
+    name: []const u8,
+    book: *const filter_preset.PresetBook,
+) !beading.BeadReport {
+    // invariant: the book stays within its own named ceiling before it is ever rendered.
+    assert(book.len() <= filter_preset.max_presets);
+    var buf: [max_book_stream]u8 = undefined;
+    const n = filter_preset.render_book(book, buf[0..]) catch return error.BookTooLarge;
+    // invariant: only a book the fetch buffer can hold is ever stored.
+    assert(n <= max_book_stream);
+    return tablecloth.store_artifact(cat, store, name, buf[0..n]);
+}
+
+/// Open a preset book by name into a fresh book. The fetch reassembles the beads and proves each against its digest
+/// and the whole against its recorded address BEFORE this parses anything — so a tampered book refuses
+/// (`DigestMismatch`) and an unknown name refuses (`UnknownArtifact`), each before a preset is defined. Only
+/// verified text ever reaches the parser.
+pub fn open_book(
+    cat: *const tablecloth.Catalog,
+    store: *const beading.BeadStore,
+    name: []const u8,
+    out: *filter_preset.PresetBook,
+) !void {
+    var buf: [max_book_stream]u8 = undefined;
+    const n = try tablecloth.fetch_artifact(cat, store, name, buf[0..]);
+    // invariant: a verified book fits the content bound.
+    assert(n <= max_book_stream);
+    try filter_preset.parse_book(buf[0..n], out);
+}
+
+// --- selftest: bank the stock book content-addressed, reopen it from cold, apply a preset from the reopened book,
+//     prove the dedup dividend, and prove a tampered book and an unknown name each refuse before a preset is read -
+
+/// Build a small colour image so a preset applied from a reopened book is unambiguous.
+fn craft_colour(allocator: std.mem.Allocator, w: u32, h: u32) !qoi.Pixmap {
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            buf[off] = @intCast((x * 40 + 20) & 0xff);
+            buf[off + 1] = @intCast((y * 30 + 10) & 0xff);
+            buf[off + 2] = @intCast((x * 3 + y * 7) * 5 & 0xff);
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const img = try craft_colour(garden, 6, 6);
+    const book = try filter_preset.stock_book();
+
+    // What a preset applied from the reopened book must equal — `noir` over the live stock book, by hand.
+    const direct = try filter_preset.apply_preset(garden, &book, "noir", &img);
+
+    var store: beading.BeadStore = .empty();
+    var cat: tablecloth.Catalog = .empty();
+
+    // Bank the curated book content-addressed, then reopen it FROM COLD and apply a preset from the reopened book.
+    const rep = try store_book(&cat, &store, "stock.presets", &book);
+    assert(rep.beads_deposited >= 1);
+    var reopened: filter_preset.PresetBook = undefined;
+    try open_book(&cat, &store, "stock.presets", &reopened);
+    // The crux: the reopened book carries every preset — its `noir` applies to the same bytes as the original.
+    assert(reopened.len() == book.len());
+    const cold = try filter_preset.apply_preset(garden, &reopened, "noir", &img);
+    assert(cold.same_bytes(&direct));
+
+    // The dedup dividend for books: the same book under a second name is stored once, and still reopens whole.
+    const rep_copy = try store_book(&cat, &store, "stock-v2.presets", &book);
+    assert(rep_copy.beads_deduped == rep_copy.bead_count); // identical text: nothing new stored
+    var reopened2: filter_preset.PresetBook = undefined;
+    try open_book(&cat, &store, "stock-v2.presets", &reopened2);
+    assert(reopened2.len() == book.len());
+
+    // Unwelcome: a tampered book refuses BEFORE a preset is read. Store the same book in a fresh store, flip a
+    // single stored byte, and prove open_book refuses DigestMismatch — so no preset is ever defined from bytes the
+    // name does not pin.
+    {
+        var store_t: beading.BeadStore = .empty();
+        var cat_t: tablecloth.Catalog = .empty();
+        _ = try store_book(&cat_t, &store_t, "stock.presets", &book);
+        store_t.beads[0].bytes[0] +%= 1; // flip one byte of a held bead
+        var bad: filter_preset.PresetBook = undefined;
+        if (open_book(&cat_t, &store_t, "stock.presets", &bad)) |_| {
+            return error.TamperSlipped;
+        } else |e| {
+            if (e != error.DigestMismatch) return error.WrongTamper;
+        }
+    }
+
+    // Unwelcome: an unknown book name refuses, again before any preset is read.
+    {
+        var absent: filter_preset.PresetBook = undefined;
+        if (open_book(&cat, &store, "absent.presets", &absent)) |_| {
+            return error.UnknownSlipped;
+        } else |e| {
+            if (e != error.UnknownArtifact) return error.WrongUnknown;
+        }
+    }
+
+    const stored_len = try tablecloth.artifact_len(&cat, "stock.presets");
+    print("GREEN preset-store: a {d}-preset filter book banked content-addressed ({d} bytes) — the book reopens " ++
+        "from cold out of its name, every preset intact (its `noir` applies to the same bytes byte-for-byte), the " ++
+        "recipes never re-authored; the same book under two names is stored once (deduped {d}/{d} beads); a " ++
+        "tampered book refuses DigestMismatch and an unknown name refuses UnknownArtifact, each before a preset " ++
+        "is defined\n", .{ book.len(), stored_len, rep_copy.beads_deduped, rep_copy.bead_count });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: preset_store selftest\n", .{});
+    return 1;
+}

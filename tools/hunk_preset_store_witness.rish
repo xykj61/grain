@@ -1,0 +1,53 @@
+# tools/hunk_preset_store_witness.rish — a curated filter-preset book is content-addressed on metal (HUNK32).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK32.
+# Design read: active-designing/20260813-181925_hunk-filter-preset-book-exploration.md (names HUNK32 as a horizon).
+# Teacher, thanked clean-room: the shared filter packs of Instagram / VSCO — a curated set of named looks (concept only, siloed).
+#
+# HUNK30 gave the Photos app filters by name and HUNK31 let a whole book travel as a format filter-presets-v1 record;
+# this rung banks that record content-addressed. `pond/apps/preset_store.rye` `store_book` beads a preset book's text
+# (HUNK1's Tablecloth store), and `open_book` fetches it back — proving every bead against its digest and the whole
+# against its recorded address BEFORE the text is parsed or a preset defined — then parses it into a fresh book. So a
+# curated filter set reproduces from cold out of its name alone, the recipes never re-authored. The selftest proves a
+# preset from the reopened book applies to the same bytes byte-for-byte, the dedup dividend (same book, two names,
+# stored once), and a tampered book refusing DigestMismatch and an unknown name refusing UnknownArtifact, each before
+# a preset is defined. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_preset_store_witness.rish
+
+say "hunk-preset-store: Language EN — HUNK32 banks a curated filter-preset book content-addressed: a whole set of named looks reproduces from cold out of its name, the recipes never re-authored."
+say "hunk-preset-store: Style Radiant — a filter pack becomes shareable, verifiable text: the book the store hands back either is the one its name pins, or it is a named refusal, before a single preset is defined."
+say "hunk-preset-store: Lens TAME — the book text is bounded to a resin or refuses, the fetch verifies every bead against its digest before parse, positive invariants per fn; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/apps/bin/preset_store"
+
+let build = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/preset_store.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-preset-store: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-preset-store: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+say "hunk-preset-store: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN preset-store' && echo yes"]
+assert (trim green.out) == "yes" else "hunk-preset-store: selftest did not print the GREEN preset-store line"
+
+let cold = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'reopens from cold out of its name, every preset intact' && echo yes"]
+assert (trim cold.out) == "yes" else "hunk-preset-store: the cold reopen was not proven with every preset intact"
+
+let byte = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'applies to the same bytes byte-for-byte' && echo yes"]
+assert (trim byte.out) == "yes" else "hunk-preset-store: a reopened preset did not apply to the same bytes"
+
+let dedup = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the same book under two names is stored once' && echo yes"]
+assert (trim dedup.out) == "yes" else "hunk-preset-store: the book dedup dividend was not proven"
+
+let tamper = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a tampered book refuses DigestMismatch' && echo yes"]
+assert (trim tamper.out) == "yes" else "hunk-preset-store: a tampered book did not refuse before a preset was defined"
+
+let before = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'each before a preset is defined' && echo yes"]
+assert (trim before.out) == "yes" else "hunk-preset-store: the refusals were not proven to land before parse"
+
+say "hunk-preset-store: GREEN — a curated filter-preset book is content-addressed; it reopens from cold, verified bead by bead, before a preset is defined; refusals named."
