@@ -1,0 +1,360 @@
+//! image/photo_edits.rye — HUNK11: the non-destructive edit-list — verbs as data, replayed and travelling.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK11.
+//! Design read: active-designing/20260813-155719_hunk-photo-edits-non-destructive-exploration.md
+//! Teacher, thanked clean-room: the non-destructive edit history of iCloud Photos / Google Photos — the
+//! original is never overwritten, the edits ride alongside as data (concept only, siloed).
+//!
+//! HUNK3–HUNK10 gave the Photos app six pure verbs (crop, flip_h, flip_v, rotate_quarter, scale, adjust), each
+//! returning a fresh open image and leaving its source untouched. This rung is the keystone that purity is built
+//! for: an `EditList` records those verbs *as data*, and `apply` replays the whole list over a source image to
+//! produce a fresh edited image, the source never touched. Replay is deterministic — the same list over the same
+//! source yields the same bytes every time — which is the content-address guarantee an edited image never needs
+//! its pixels stored, only the pair (source, edit-list). The list itself travels as a flat-Bron
+//! `format photo-edits-v1` record, so `render(parse(render(x)))` is a fixed point. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/photo_edits.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const photos = @import("photos.rye");
+const parse_int = @import("parse_int.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const photo_edits_version = "20260813.155719";
+
+/// The most verbs one edit-list holds — a keeper's photo carries a handful of edits, never thousands. Named at
+/// construction so a list can never grow unbounded (TAME bound).
+pub const max_edits: u32 = 64;
+
+/// A safe upper bound on one rendered verb line: the longest is `adjust -255 65536 65536\n`, well inside 48
+/// bytes. The whole record is the 22-byte header plus one bounded line per edit (TAME bound at construction).
+pub const per_line_bound: u32 = 48;
+pub const max_edits_bytes: u32 = 22 + max_edits * per_line_bound;
+
+pub const EditsError = error{
+    TooManyEdits,
+    BadEdits,
+    Overflow,
+};
+
+const header = "format photo-edits-v1\n";
+
+/// The six Photos verbs, named as an enum so an edit-list is a bounded array of tagged verbs.
+pub const EditKind = enum(u8) { crop, flip_h, flip_v, rotate, scale, adjust };
+
+/// One recorded edit — a verb plus exactly the parameters that verb takes. A tagged union so `apply` and the
+/// travel functions switch over one value model, and a new verb joins by adding one variant.
+pub const Edit = union(EditKind) {
+    crop: struct { x: u32, y: u32, w: u32, h: u32 },
+    flip_h: void,
+    flip_v: void,
+    rotate: struct { turns: u32 },
+    scale: struct { w: u32, h: u32 },
+    adjust: struct { brightness: i32, num: u32, den: u32 },
+};
+
+/// A bounded, ordered sequence of edits recorded as data — the non-destructive edit history beside an image.
+pub const EditList = struct {
+    items: [max_edits]Edit = undefined,
+    count: u32 = 0,
+
+    pub fn init() EditList {
+        return EditList{ .count = 0 };
+    }
+
+    /// Append one edit, refusing `TooManyEdits` at the named ceiling rather than growing past the buffer.
+    pub fn push(self: *EditList, e: Edit) EditsError!void {
+        // invariant: the list never exceeds its named ceiling.
+        assert(self.count <= max_edits);
+        if (self.count >= max_edits) return error.TooManyEdits;
+        self.items[self.count] = e;
+        self.count += 1;
+        // invariant: a push adds exactly one edit within bounds.
+        assert(self.count <= max_edits);
+    }
+
+    pub fn len(self: *const EditList) u32 {
+        return self.count;
+    }
+
+    pub fn at(self: *const EditList, i: u32) Edit {
+        // invariant: an index reads only a held edit.
+        assert(i < self.count);
+        return self.items[i];
+    }
+};
+
+/// Copy a pixmap into a fresh buffer — a pure clone, so `apply` returns a fresh image even for the empty list and
+/// never hands back the caller's own source buffer.
+fn clone(allocator: std.mem.Allocator, pm: *const qoi.Pixmap) !qoi.Pixmap {
+    // invariant: the source buffer is exactly four bytes per pixel.
+    assert(pm.pixels.len == @as(usize, pm.width) * @as(usize, pm.height) * 4);
+    const out = try allocator.alloc(u8, pm.pixels.len);
+    tally_copy.copy_disjoint(u8, out, pm.pixels);
+    // invariant: the clone holds exactly the source's bytes.
+    assert(out.len == pm.pixels.len);
+    return qoi.Pixmap{
+        .width = pm.width,
+        .height = pm.height,
+        .channels = pm.channels,
+        .colorspace = pm.colorspace,
+        .pixels = out,
+    };
+}
+
+/// Replay an edit-list over a source image, folding each verb's fresh result into the next, and return the final
+/// edited image. Pure — the source is never mutated (the fold begins from a clone). The empty list recovers the
+/// source byte-for-byte. A verb's own refusal (an out-of-bounds crop, a bad contrast) surfaces by that verb's
+/// named error through the fold; the edit-list adds no new failure mode, it only sequences the proven ones.
+pub fn apply(allocator: std.mem.Allocator, source: *const qoi.Pixmap, list: *const EditList) !qoi.Pixmap {
+    // invariant: the list stays within its named ceiling.
+    assert(list.count <= max_edits);
+    var cur = try clone(allocator, source);
+    var i: u32 = 0;
+    while (i < list.count) : (i += 1) {
+        const e = list.items[i];
+        cur = switch (e) {
+            .crop => |c| try photos.crop(allocator, &cur, c.x, c.y, c.w, c.h),
+            .flip_h => try photos.flip_h(allocator, &cur),
+            .flip_v => try photos.flip_v(allocator, &cur),
+            .rotate => |r| try photos.rotate_quarter(allocator, &cur, r.turns),
+            .scale => |s| try photos.scale(allocator, &cur, s.w, s.h),
+            .adjust => |a| try photos.adjust(allocator, &cur, a.brightness, a.num, a.den),
+        };
+    }
+    // invariant: the final image carries four bytes per pixel like every stage before it.
+    assert(cur.pixels.len == @as(usize, cur.width) * @as(usize, cur.height) * 4);
+    return cur;
+}
+
+/// Render an edit-list as its `format photo-edits-v1` Bron record into `out`, one verb per line in held order,
+/// returning its length. Refuses `Overflow` rather than writing past the buffer a caller supplied.
+pub fn render_edits(list: *const EditList, out: []u8) EditsError!u32 {
+    // invariant: a rendered list names at most the edit ceiling.
+    assert(list.count <= max_edits);
+    if (header.len > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[0..header.len], header);
+    var off: u32 = @intCast(header.len);
+
+    var i: u32 = 0;
+    while (i < list.count) : (i += 1) {
+        const e = list.items[i];
+        const line = switch (e) {
+            .crop => |c| std.fmt.bufPrint(out[off..], "crop {d} {d} {d} {d}\n", .{ c.x, c.y, c.w, c.h }),
+            .flip_h => std.fmt.bufPrint(out[off..], "flip_h\n", .{}),
+            .flip_v => std.fmt.bufPrint(out[off..], "flip_v\n", .{}),
+            .rotate => |r| std.fmt.bufPrint(out[off..], "rotate {d}\n", .{r.turns}),
+            .scale => |s| std.fmt.bufPrint(out[off..], "scale {d} {d}\n", .{ s.w, s.h }),
+            .adjust => |a| std.fmt.bufPrint(out[off..], "adjust {d} {d} {d}\n", .{ a.brightness, a.num, a.den }),
+        } catch return error.Overflow;
+        off += @intCast(line.len);
+    }
+    // invariant: the rendered record stays within the buffer.
+    assert(off <= out.len);
+    return off;
+}
+
+/// Parse a `format photo-edits-v1` record into a fresh edit-list. Each line names a verb and exactly its fields;
+/// an unknown header, an unknown verb tag, a malformed field, or an extra field refuses `BadEdits`. More than
+/// `max_edits` lines refuses `TooManyEdits` through `push`.
+pub fn parse_edits(text: []const u8, out: *EditList) !void {
+    out.* = EditList.init();
+    // invariant: parsing starts from an empty list.
+    assert(out.count == 0);
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const first = lines.next() orelse return error.BadEdits;
+    if (!std.mem.eql(u8, first, "format photo-edits-v1")) return error.BadEdits;
+
+    while (lines.next()) |line| {
+        if (line.len == 0) continue; // a trailing newline yields an empty final piece
+        var parts = std.mem.tokenizeScalar(u8, line, ' ');
+        const tag = parts.next() orelse return error.BadEdits;
+        if (std.mem.eql(u8, tag, "crop")) {
+            const x = try field_u32(&parts);
+            const y = try field_u32(&parts);
+            const w = try field_u32(&parts);
+            const h = try field_u32(&parts);
+            try no_slack(&parts);
+            try out.push(.{ .crop = .{ .x = x, .y = y, .w = w, .h = h } });
+        } else if (std.mem.eql(u8, tag, "flip_h")) {
+            try no_slack(&parts);
+            try out.push(.flip_h);
+        } else if (std.mem.eql(u8, tag, "flip_v")) {
+            try no_slack(&parts);
+            try out.push(.flip_v);
+        } else if (std.mem.eql(u8, tag, "rotate")) {
+            const turns = try field_u32(&parts);
+            try no_slack(&parts);
+            try out.push(.{ .rotate = .{ .turns = turns } });
+        } else if (std.mem.eql(u8, tag, "scale")) {
+            const w = try field_u32(&parts);
+            const h = try field_u32(&parts);
+            try no_slack(&parts);
+            try out.push(.{ .scale = .{ .w = w, .h = h } });
+        } else if (std.mem.eql(u8, tag, "adjust")) {
+            const brightness = try field_i32(&parts);
+            const num = try field_u32(&parts);
+            const den = try field_u32(&parts);
+            try no_slack(&parts);
+            try out.push(.{ .adjust = .{ .brightness = brightness, .num = num, .den = den } });
+        } else {
+            return error.BadEdits; // an unknown verb tag
+        }
+    }
+    // invariant: a parsed list holds no more than the edit ceiling.
+    assert(out.count <= max_edits);
+}
+
+/// Read one required u32 field, refusing `BadEdits` on a missing or malformed token.
+fn field_u32(parts: *std.mem.TokenIterator(u8, .scalar)) EditsError!u32 {
+    const tok = parts.next() orelse return error.BadEdits;
+    return parse_int.parse_int(u32, tok, .{}) catch return error.BadEdits;
+}
+
+/// Read one required i32 field (a brightness may be negative), refusing `BadEdits` on a missing or malformed token.
+fn field_i32(parts: *std.mem.TokenIterator(u8, .scalar)) EditsError!i32 {
+    const tok = parts.next() orelse return error.BadEdits;
+    return parse_int.parse_int(i32, tok, .{}) catch return error.BadEdits;
+}
+
+/// Refuse `BadEdits` when a line carries a field past the verb's own — no slack past the shape.
+fn no_slack(parts: *std.mem.TokenIterator(u8, .scalar)) EditsError!void {
+    if (parts.next() != null) return error.BadEdits;
+}
+
+// --- selftest: replay an edit-list and prove it composes the verbs by hand, is deterministic and
+//     non-destructive, stays open, travels as a fixed point, and refuses malformed records by name --------------
+
+/// Build a 6×6 image where each pixel encodes its own coordinates, so a replayed edit's correctness is
+/// unambiguous: pixel (x,y) = (x·40, y·40, x+y, 255).
+fn craft_tagged(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 6;
+    const h: u32 = 6;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            buf[off] = @intCast(x * 40);
+            buf[off + 1] = @intCast(y * 40);
+            buf[off + 2] = @intCast(x + y);
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const pm = try craft_tagged(garden);
+
+    // An edit-list of three verbs: crop a 4×4, turn it a quarter clockwise, lift brightness +40.
+    var list = EditList.init();
+    try list.push(.{ .crop = .{ .x = 1, .y = 1, .w = 4, .h = 4 } });
+    try list.push(.{ .rotate = .{ .turns = 1 } });
+    try list.push(.{ .adjust = .{ .brightness = 40, .num = 1, .den = 1 } });
+
+    // Replay composes: the list equals the same three verbs called by hand, byte-for-byte.
+    const replayed = try apply(garden, &pm, &list);
+    const by_hand_crop = try photos.crop(garden, &pm, 1, 1, 4, 4);
+    const by_hand_rot = try photos.rotate_quarter(garden, &by_hand_crop, 1);
+    const by_hand = try photos.adjust(garden, &by_hand_rot, 40, 1, 1);
+    assert(replayed.same_bytes(&by_hand));
+
+    // Deterministic (the content-address guarantee): the same list over the same source yields identical bytes.
+    const again = try apply(garden, &pm, &list);
+    assert(again.same_bytes(&replayed));
+
+    // Non-destructive: the source is untouched, and the EMPTY list recovers it byte-for-byte.
+    assert(pm.pixels[0] == 0 and pm.pixels[3] == 255);
+    var empty = EditList.init();
+    const untouched = try apply(garden, &pm, &empty);
+    assert(untouched.same_bytes(&pm));
+
+    // Still an OPEN image: an edited image re-encodes and round-trips through the codec byte-for-byte.
+    const cap = qoi.encoded_bound(replayed.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const res = try qoi.encode(&replayed, dst);
+    const back = try qoi.decode(garden, dst[0..res.len]);
+    assert(back.same_bytes(&replayed));
+
+    // Travels as text: render the list, parse it back, prove the fixed point and that the rebuilt list applies
+    // to the same bytes.
+    var buf: [max_edits_bytes]u8 = undefined;
+    const n = try render_edits(&list, buf[0..]);
+    const text = buf[0..n];
+    var rebuilt: EditList = undefined;
+    try parse_edits(text, &rebuilt);
+    assert(rebuilt.len() == list.len());
+    var buf2: [max_edits_bytes]u8 = undefined;
+    const n2 = try render_edits(&rebuilt, buf2[0..]);
+    assert(n2 == n);
+    assert(std.mem.eql(u8, buf2[0..n2], text));
+    const from_text = try apply(garden, &pm, &rebuilt);
+    assert(from_text.same_bytes(&replayed));
+
+    // A list carrying every verb kind renders and parses back to the same bytes — the whole value model travels.
+    var all = EditList.init();
+    try all.push(.flip_h);
+    try all.push(.flip_v);
+    try all.push(.{ .scale = .{ .w = 8, .h = 8 } });
+    try all.push(.{ .adjust = .{ .brightness = -20, .num = 2, .den = 1 } });
+    var abuf: [max_edits_bytes]u8 = undefined;
+    const an = try render_edits(&all, abuf[0..]);
+    var all_back: EditList = undefined;
+    try parse_edits(abuf[0..an], &all_back);
+    const all_a = try apply(garden, &pm, &all);
+    const all_b = try apply(garden, &pm, &all_back);
+    assert(all_a.same_bytes(&all_b));
+
+    // Unwelcome: a bad header refuses.
+    var bad_hdr: EditList = undefined;
+    if (parse_edits("format wrong-v1\n", &bad_hdr)) |_| return error.HdrSlipped else |e| {
+        if (e != error.BadEdits) return error.WrongHdr;
+    }
+    // Unwelcome: an unknown verb tag refuses.
+    var bad_verb: EditList = undefined;
+    if (parse_edits("format photo-edits-v1\nsharpen 3\n", &bad_verb)) |_| return error.VerbSlipped else |e| {
+        if (e != error.BadEdits) return error.WrongVerb;
+    }
+    // Unwelcome: a malformed field (a non-numeric coordinate) refuses.
+    var bad_field: EditList = undefined;
+    if (parse_edits("format photo-edits-v1\ncrop 1 1 x 4\n", &bad_field)) |_| return error.FieldSlipped else |e| {
+        if (e != error.BadEdits) return error.WrongField;
+    }
+    // Unwelcome: an extra field past the verb's own refuses (no slack).
+    var slack: EditList = undefined;
+    if (parse_edits("format photo-edits-v1\nrotate 1 9\n", &slack)) |_| return error.SlackSlipped else |e| {
+        if (e != error.BadEdits) return error.WrongSlack;
+    }
+    // Unwelcome: a verb's OWN refusal surfaces through the fold — an out-of-bounds crop in a list refuses by its
+    // own name, not a new one.
+    var oob = EditList.init();
+    try oob.push(.{ .crop = .{ .x = 4, .y = 0, .w = 3, .h = 2 } }); // 4+3 > 6
+    if (apply(garden, &pm, &oob)) |_| return error.OobSlipped else |e| {
+        if (e != error.OutOfBounds) return error.WrongOob;
+    }
+
+    print("GREEN image-photo-edits: a {d}-verb edit-list replayed over a {d}x{d} image equals the verbs by " ++
+        "hand byte-for-byte; replay is deterministic; the source is untouched and the empty list recovers it; " ++
+        "the edited image re-encodes and round-trips; render(parse(render)) is a {d}-byte fixed point and the " ++
+        "rebuilt list applies to the same bytes; a bad header, an unknown verb, a malformed field, an extra " ++
+        "field each refuse by name; an out-of-bounds crop surfaces OutOfBounds through the fold\n", .{
+        list.len(), pm.width, pm.height, n,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: photo_edits selftest\n", .{});
+    return 1;
+}

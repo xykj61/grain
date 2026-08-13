@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260813.155719
+editor Zed
+model Fable 5
+voice Kyri
+host cloud bench — Eastern (EDT) time convention
+title HUNK11 — the non-destructive edit-list: verbs as data, replayed and travelling
+prompt Take the next agent-doable lap Lindy-first crux-first on the Season A / itinerary road; approve my own design round; send each finished increment; stop at custody gates.
+think Read REMEMBER (latest lap HUNK10 Photos adjust) and both itinerary docs. HUNK10 named the next crux: another Photos gesture, or a Season-A/double-seat journey. The double-seat doc names a non-destructive edit-list (record verbs as data, replay, content-address) as a horizon.
+think Lindy-first crux-first: the edit-list is the highest-Lindy move — it composes all six Photos verbs into one value model, and its deterministic replay IS the content-address guarantee (edited pixels need never be stored, only source + edit-list). Chosen over a bilinear resampler (lower Lindy, one verb) or hue/saturation (one more gesture).
+think Studied photos.rye (the six pure verbs, Pixmap struct, same_bytes/pixel_count), sprite_catalog.rye (the flat-Bron render/parse fixed-point idiom), parse_int.rye (signed i32 parses for brightness). Self-approved the design round rather than pausing — the crux is agent-doable, no custody gate, no deferred web search.
+think Built image/photo_edits.rye: an Edit tagged union (one variant per verb), a bounded EditList (max_edits=64), apply folds each verb's fresh result from a clone so the source is pure, render_edits/parse_edits travel as format photo-edits-v1. A verb's own refusal surfaces through the fold — no new failure mode.
+obs GREEN on the first build and run: replay equals the verbs by hand byte-for-byte, deterministic, non-destructive (empty list recovers the source), still an open image, render(parse(render)) a 58-byte fixed point, every verb kind travels, and a bad header/unknown verb/malformed field/extra field each refuse BadEdits while an out-of-bounds crop surfaces OutOfBounds through the fold.
+obs tame_style_check bans clean; width-check exit 0. No breach, so no cairn. No network, no key, no funds — hardware buying stays custody gates #2/#3, untouched.
+obs Named HUNK12–14 as horizons in the design: bead the edit-list into Tablecloth (the dedup dividend for edits), the Skate view of a pending edit, and revert/truncate.
+loom witness=hunk_photo_edits_witness green=1 record_bytes=58 verbs=3 max_edits=64
+file image/photo_edits.rye HUNK11 — the Edit value model, apply replay, render/parse travel; GREEN selftest.
+file tools/hunk_photo_edits_witness.rish witnesses HUNK11 on metal; GREEN.
+file active-designing/20260813-155719_hunk-photo-edits-non-destructive-exploration.md self-approved design round; names HUNK12–14 horizons.
+file work-in-progress/REMEMBER.md latest-lap line extended with HUNK11; git nib refreshed.
+file session-logs/README.md prepended the HUNK11 index row.
+recommend keep-going another Photos gesture (a smoother resampler or hue/saturation) or HUNK12 (bead the edit-list content-addressed) — all agent-doable; hardware rounds stay custody gates.
