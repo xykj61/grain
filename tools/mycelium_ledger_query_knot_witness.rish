@@ -1,0 +1,57 @@
+# tools/mycelium_ledger_query_knot_witness.rish — the Ledger Voice (r3): the voice reads across a Knot.
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · the reading half, rung 3. Rung 1 read a hand-seeded
+# fold.Log; rung 2 read a committed cord.Dag. Both folded a whole history from its first fact. This rung
+# makes the voice's corpus a Knot plus its live suffix — the checkpointed supply (the Knot seals a
+# committed prefix into a FoldState) continued by the facts that arrived since the cut, read through the
+# same ops as an unbroken log.
+#
+# The crux: a reader sees the same total whether the past is a full log or a sealed Knot. Knot+suffix and
+# the whole four-fact log both read supply 700, four facts, vega held, summary 'supply=700 stars=1', field
+# for field — the Knot's own equivalence carried into the reader, the checkpoint invisible to the voice.
+# The integrity gate holds across the cut: a corrupt Knot (KnotCorrupt), a tampered suffix fact
+# (IdentityRefused), and an overdrawing suffix (Overdraw, proof the Knot's sealed supply is the real
+# starting supply) each read nothing. An unknown op still refuses (no fake answer). Demo keeper seeds only
+# — no key, no funds, no network, no custody: a node reads across its own sealed checkpoint.
+#
+# Additive: composes ledger_query (r1's answer_over_state / answer_over), cord_knot, and fold public API
+# only; both rung one and the Knot stay their own GREEN binaries under this one.
+#
+# Scope: active-designing/20260813-053843_mycelium-ledger-voice-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mycelium_ledger_query_knot_witness.rish
+
+say "mycelium-ledger-query-knot: Language EN — the Ledger Voice reads across a Knot, a sealed past continued by a live suffix."
+say "mycelium-ledger-query-knot: Style Radiant — the checkpoint is invisible; the reader sees the same total a whole history holds."
+say "mycelium-ledger-query-knot: Lens TAME — a corrupt Knot, a forged suffix, and an overdraw each read nothing; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/ledger-query-knot"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/ledger_query_knot.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-ledger-query-knot: build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "mycelium-ledger-query-knot: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-ledger-query-knot: selftest did not speak GREEN"
+assert selftest.out contains "supply read across the Knot — text '700' eos" else "mycelium-ledger-query-knot: supply-across-Knot reading missing"
+assert selftest.out contains "facts=4, vega held" else "mycelium-ledger-query-knot: facts/star reading missing"
+assert selftest.out contains "summary read across the Knot — text 'supply=700 stars=1'" else "mycelium-ledger-query-knot: summary reading missing"
+assert selftest.out contains "Knot+suffix and the full log read one total for every op — the checkpoint is invisible" else "mycelium-ledger-query-knot: same-total equivalence (the crux) missing"
+assert selftest.out contains "a corrupt Knot refused the whole reading" else "mycelium-ledger-query-knot: corrupt-Knot refusal missing"
+assert selftest.out contains "a tampered suffix fact refused the continued fold" else "mycelium-ledger-query-knot: tampered-suffix refusal missing"
+assert selftest.out contains "an overdrawing suffix refused across the cut" else "mycelium-ledger-query-knot: overdraw-across-cut refusal missing"
+assert selftest.out contains "unknown op refused across the Knot (no fake answer)" else "mycelium-ledger-query-knot: no-fake-answer refusal missing"
+
+# Rung one and the Knot both stay their own green binaries — the contract this rung reads through is r1's
+# answer_over_state (metering unchanged), and the checkpoint it reads across is the Knot's own seal.
+let r1 = run ["sh" "-c" "rishi/bin/rishi run tools/mycelium_ledger_query_witness.rish 2>&1"]
+assert r1.ok else "mycelium-ledger-query-knot: rung one (the lawful-fold voice) is not GREEN"
+assert r1.out contains "mycelium-ledger-query: GREEN" else "mycelium-ledger-query-knot: rung one did not speak its GREEN"
+
+let knot = run ["sh" "-c" "rishi/bin/rishi run tools/mycelium_cord_knot_witness.rish 2>&1"]
+assert knot.ok else "mycelium-ledger-query-knot: the Knot is not GREEN"
+assert knot.out contains "GREEN" else "mycelium-ledger-query-knot: the Knot did not speak GREEN"
+
+say "mycelium-ledger-query-knot: GREEN — the Ledger Voice reads across a Knot; a sealed past continued by a live suffix reads the same total (700, one star, four facts) as the whole unbroken log, and every corruption across the cut reads nothing. The intelligence reads the checkpointed consensus."

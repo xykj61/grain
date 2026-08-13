@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260813.055640
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Mycelium Ledger Voice r3 — the voice reads across a Knot
+prompt take the next agent-doable lap Lindy-first crux-first on the Mycelium road; approve own design rounds; send each finished increment; STOP at custody gates; baton prin recur
+think The bench has climbed far past REMEMBER's recorded nib — the living arc is the Ledger Voice (active-designing/20260813-053843), the reading half of the Mycelium consensus ledger. r1 (lawful fold) and r2 (committed Cord) landed; the exploration names r3 next.
+think r3's crux, from the exploration: the corpus becomes a Knot plus its live suffix; a reader sees the same total whether the past is a full log or a sealed Knot — the Knot's own equivalence carried into the reader.
+think Design seam: r1's answer_over takes a fold.Log and folds it; the Knot path yields a FoldState from cord_knot.continue_verified, not a Log. Extracted a shared meter helper in r1 and added a public answer_over_state(req, allow, state, fact_count, out_buf) — same Lantern contract (validate/model gate/route/compute/meter), reading a state the integrity gate already blessed. answer_over kept byte-identical in ordering; both r1 and r2 re-run GREEN.
+think Grew pond/apps/ledger_query_knot.rye as a sibling composing ledger_query + cord_knot + fold public API only (reviving-not-renaming). Added the pond/apps/cord_knot.rye symlink; all transitive deps (fold, kumara, cord, tally_copy) already symlinked.
+think checkpoint_facts=2 travels with the Knot so `facts` over Knot+suffix names the same 4 as the whole log — the node knows how many facts it sealed. The Knot seals the two genesis issues; the suffix carries the tax + vega reservation.
+obs One red in-round: fold.append_fact probe-folds the whole log from zero, so building a standalone suffix log [tax 200, ...] overdrew at append (zero issued). Fixed by constructing the suffix Log via direct field assignment — a suffix is unfolded facts until it meets a Knot, where continue_verified folds it lawfully onto the sealed 1000 issued. Same idiom the cord_knot r1 arc used for its cross-cut facts.
+obs Integrity across the cut proven three ways: a corrupt Knot digest refuses KnotCorrupt before a fact is folded, a tampered suffix fact refuses IdentityRefused, an overdrawing suffix (tax 1200 vs sealed 1000) refuses Overdraw — the last proving the Knot's sealed supply is the real starting supply, not a fresh zero.
+obs The crux test reads supply/facts/summary/star vega over both Knot+suffix and the whole four-fact log and asserts field-for-field equality — the checkpoint is invisible to the reader. Both read 700, 4 facts, vega held, supply=700 stars=1.
+loom witness=mycelium_ledger_query_knot_witness verdict=GREEN cases=8 supply=700 facts=4 stars=1
+file pond/apps/ledger_query.rye extracted meter helper + added public answer_over_state; answer_over ordering byte-identical, r1 GREEN
+file pond/apps/ledger_query_knot.rye r3 — the Ledger Voice reads across a Knot, sibling composing r1 + cord_knot + fold
+file pond/apps/cord_knot.rye symlink into pond/apps so the short import resolves
+file tools/mycelium_ledger_query_knot_witness.rish witness — crux equivalence + three cross-cut refusals + unknown op; r1 and the Knot re-run GREEN at its door
+recommend keep-going Ledger Voice r4 — read a real ledger true (an @embedFile-bound fixture, folded supply cross-checked against an independent awk reading, two tools one answer), closing the arc. Quorum-served readings + breach renames (cairn-first) + deep debride + seed force-push stay Keaton's hand.

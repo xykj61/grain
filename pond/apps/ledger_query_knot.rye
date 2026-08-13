@@ -1,0 +1,281 @@
+//! pond/apps/ledger_query_knot.rye - the Ledger Voice, rung 3: the voice reads across a Knot.
+//!
+//! Season D (Kresfa & Mycelium). Rung 1 read a hand-seeded fold.Log; rung 2 read a committed
+//! cord.Dag. Both folded a whole history from its first fact. Yet a ledger a family runs for
+//! years does not carry its whole past unbroken - the Knot ties off a committed prefix into a
+//! sealed FoldState so a bounded Dag runs forever, and new facts continue onto that seal. This
+//! rung makes the voice's corpus a Knot plus its live suffix: the checkpointed supply, read
+//! through the same ops as an unbroken log, continued by the facts that arrived since the cut.
+//!
+//! The crux: a reader sees the same total whether the past is a full log or a sealed Knot. The
+//! Knot's own equivalence (a continued fold matches a whole one) carried into the reader - so
+//! Knot+suffix and the whole four-fact log both read supply 700, four facts, vega held, the
+//! summary supply=700 stars=1, field for field. The checkpoint is invisible to the reader.
+//!
+//! The integrity gate holds across the cut. cord_knot.continue_verified refuses a corrupt Knot
+//! (KnotCorrupt) before a single fact is folded, re-verifies every suffix fact's signer
+//! (IdentityRefused), and enforces overdraw and star-uniqueness against the Knot's real sealed
+//! supply (Overdraw) - so the voice reads nothing over a broken checkpoint or an unlawful
+//! suffix, exactly as rung one reads nothing over a tampered log.
+//!
+//! Additive by construction: it imports ledger_query (r1's answer_over_state / answer_over),
+//! cord_knot, and fold, and calls only their public functions. Rung one stays its own green
+//! binary; the Knot stays its own green binary. No storage, no transport, no network, no
+//! custody - a node reads across its own sealed checkpoint.
+//!
+//!   rye build pond/apps/ledger_query_knot.rye -femit-bin=pond/bin/ledger-query-knot
+//!   pond/bin/ledger-query-knot selftest
+//!
+//! Scope: active-designing/20260813-053843_mycelium-ledger-voice-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lc = @import("lantern/lantern_core.rye");
+const lq = @import("ledger_query.rye");
+const cord_knot = @import("cord_knot.rye");
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+
+const ledger_query_knot_version = "20260813.053843";
+
+const allow_line = "model_hash sha3-256-rye-forge-lap0";
+const model = "sha3-256-rye-forge-lap0";
+
+// The two genesis issues the Knot seals away, so `facts` over Knot+suffix names the same
+// count as `facts` over the whole log - the node knows how many facts it checkpointed.
+const checkpoint_facts: u32 = 2;
+
+// The four demo facts, mirroring the Cord's own demo (rung 2): two genesis issues (500
+// each), then a tax (200) and a star reservation (vega, 100). issued 1000, taxed 300,
+// supply 700, one star, four facts.
+const Facts = struct {
+    fa: fold.Fact,
+    fb: fold.Fact,
+    fc: fold.Fact,
+    fd: fold.Fact,
+};
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn make_facts() !Facts {
+    const ka = seeded(0xa1);
+    const kb = seeded(0xb2);
+    const kc = seeded(0xc3);
+    const kd = seeded(0xd4);
+    const fa = fold.mint_fact(ka, fold.kind_issue, 500, "", "genesis-a") orelse return error.MintA;
+    const fb = fold.mint_fact(kb, fold.kind_issue, 500, "", "genesis-b") orelse return error.MintB;
+    const fc = fold.mint_fact(kc, fold.kind_tax, 200, "", "tax-c") orelse return error.MintC;
+    const fd = fold.mint_fact(kd, fold.kind_star_reserve, 100, "vega", "reserve") orelse return error.MintD;
+    return .{ .fa = fa, .fb = fb, .fc = fc, .fd = fd };
+}
+
+/// Seal the prefix - the two genesis issues - into a Knot. This is the checkpoint a node
+/// ties off before its Dag fills; the voice reads across it as a real starting supply.
+fn seal_prefix(f: *const Facts) !cord_knot.Knot {
+    var log = fold.Log.empty();
+    _ = try fold.append_fact(&log, f.fa);
+    _ = try fold.append_fact(&log, f.fb);
+    const state = try fold.fold_log(&log);
+    // invariant: the checkpointed prefix issued the whole genesis supply
+    assert(state.issued == 1000);
+    // invariant: nothing is taxed at the checkpoint - the drains live in the suffix
+    assert(state.taxed == 0);
+    return cord_knot.seal(state);
+}
+
+/// The live suffix - the facts that arrived since the cut: the tax and the reservation.
+/// Built by direct assignment, not append_fact: a suffix folds lawfully only *onto the
+/// Knot's sealed supply* (continue_verified), never from a zero-issued log of its own - a
+/// tax against zero issued would overdraw. The suffix is unfolded facts until it meets a Knot.
+fn suffix_log(f: *const Facts) fold.Log {
+    var log = fold.Log.empty();
+    log.facts[0] = f.fc;
+    log.facts[1] = f.fd;
+    log.len = 2;
+    // invariant: the suffix carries exactly the two post-checkpoint facts
+    assert(log.len == 2);
+    return log;
+}
+
+/// The whole four-fact history, unbroken - the log the reader must read the same total over.
+fn full_log(f: *const Facts) !fold.Log {
+    var log = fold.Log.empty();
+    _ = try fold.append_fact(&log, f.fa);
+    _ = try fold.append_fact(&log, f.fb);
+    _ = try fold.append_fact(&log, f.fc);
+    _ = try fold.append_fact(&log, f.fd);
+    // invariant: the full log carries all four facts
+    assert(log.len == 4);
+    return log;
+}
+
+/// Ask the routed prompt across a Knot continued by a suffix. continue_verified checks the
+/// Knot and folds the suffix onto its sealed supply; only that lawful state is read, metered
+/// by rung one's own Lantern contract via answer_over_state.
+fn ask_over_knot(prompt: []const u8, knot: *const cord_knot.Knot, suffix: *const fold.Log, out_buf: []u8) !lc.Response {
+    const state = try cord_knot.continue_verified(knot, suffix);
+    const req = lc.Request{ .model_hash = model, .prompt = prompt, .max_tokens = 64 };
+    return lq.answer_over_state(req, allow_line, &state, checkpoint_facts + suffix.len, out_buf);
+}
+
+/// Ask the routed prompt over the whole unbroken log - rung one's answer_over, unchanged.
+fn ask_over_log(prompt: []const u8, log: *const fold.Log, out_buf: []u8) !lc.Response {
+    const req = lc.Request{ .model_hash = model, .prompt = prompt, .max_tokens = 64 };
+    return lq.answer_over(req, allow_line, log, out_buf);
+}
+
+// --- selftest -----------------------------------------------------------
+
+fn welcome_supply_over_knot() !void {
+    const f = try make_facts();
+    const knot = try seal_prefix(&f);
+    var suffix = suffix_log(&f);
+    var buf: [lc.max_completion_len]u8 = undefined;
+    const resp = try ask_over_knot("supply the ledger", &knot, &suffix, &buf);
+    // issued 1000 - taxed 300 (200 tax + 100 reservation) = 700, across the checkpoint.
+    assert(std.mem.eql(u8, resp.text, "700"));
+    assert(resp.stopped_reason == .eos);
+    print("ledger_query_knot: supply read across the Knot — text '{s}' eos\n", .{resp.text});
+}
+
+fn welcome_facts_and_star_over_knot() !void {
+    const f = try make_facts();
+    const knot = try seal_prefix(&f);
+    var suffix = suffix_log(&f);
+    var buf: [lc.max_completion_len]u8 = undefined;
+    const facts = try ask_over_knot("facts the ledger", &knot, &suffix, &buf);
+    // two sealed in the Knot + two in the suffix = the four the whole history holds.
+    assert(std.mem.eql(u8, facts.text, "4"));
+    var buf2: [lc.max_completion_len]u8 = undefined;
+    const held = try ask_over_knot("star vega", &knot, &suffix, &buf2);
+    assert(std.mem.eql(u8, held.text, "held"));
+    print("ledger_query_knot: facts=4, vega held — the sealed past and live suffix read true\n", .{});
+}
+
+fn welcome_summary_over_knot() !void {
+    const f = try make_facts();
+    const knot = try seal_prefix(&f);
+    var suffix = suffix_log(&f);
+    var buf: [lc.max_completion_len]u8 = undefined;
+    const resp = try ask_over_knot("summary the ledger", &knot, &suffix, &buf);
+    assert(std.mem.eql(u8, resp.text, "supply=700 stars=1"));
+    print("ledger_query_knot: summary read across the Knot — text '{s}'\n", .{resp.text});
+}
+
+// The crux: a reader sees the same total whether the past is a full log or a sealed Knot. For
+// every op, Knot+suffix and the whole four-fact log read the identical answer - the Knot's own
+// equivalence carried into the reader. The checkpoint is invisible to the voice.
+fn welcome_same_total_knot_or_log() !void {
+    const f = try make_facts();
+    const knot = try seal_prefix(&f);
+    var suffix = suffix_log(&f);
+    var full = try full_log(&f);
+    const ops = [_][]const u8{ "supply the ledger", "facts the ledger", "summary the ledger", "star vega" };
+    var oi: u32 = 0;
+    // invariant: the ops list stays within a small named bound
+    assert(ops.len <= 8);
+    while (oi < ops.len) : (oi += 1) {
+        var kbuf: [lc.max_completion_len]u8 = undefined;
+        var lbuf: [lc.max_completion_len]u8 = undefined;
+        const kr = try ask_over_knot(ops[oi], &knot, &suffix, &kbuf);
+        const lr = try ask_over_log(ops[oi], &full, &lbuf);
+        // the sealed-past reading equals the whole-log reading, field for field.
+        assert(std.mem.eql(u8, kr.text, lr.text));
+    }
+    print("ledger_query_knot: Knot+suffix and the full log read one total for every op — the checkpoint is invisible\n", .{});
+}
+
+// A Knot corrupted in travel refuses the whole reading - verify fails before a fact is folded,
+// so the voice reads no supply across a broken checkpoint. The twin of rung one's tampered log.
+fn unwelcome_corrupt_knot_refuses_all() !void {
+    const f = try make_facts();
+    var knot = try seal_prefix(&f);
+    var suffix = suffix_log(&f);
+    knot.digest[0] ^= 0xff; // a byte flipped in travel - the seal no longer matches its state
+    var buf: [lc.max_completion_len]u8 = undefined;
+    if (ask_over_knot("supply the ledger", &knot, &suffix, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.KnotCorrupt);
+    }
+    var buf2: [lc.max_completion_len]u8 = undefined;
+    if (ask_over_knot("summary the ledger", &knot, &suffix, &buf2)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.KnotCorrupt);
+    }
+    print("ledger_query_knot: a corrupt Knot refused the whole reading — no supply read across a broken checkpoint\n", .{});
+}
+
+// A tampered suffix fact refuses the continued fold - continue_verified re-verifies every
+// signer past the cut, so a forged fact reads nothing, exactly as within one unbroken fold.
+fn unwelcome_tampered_suffix_refuses_all() !void {
+    const f = try make_facts();
+    const knot = try seal_prefix(&f);
+    var suffix = suffix_log(&f);
+    suffix.facts[0].sig[0] ^= 0xff; // the tax fact's signer no longer verifies
+    var buf: [lc.max_completion_len]u8 = undefined;
+    if (ask_over_knot("supply the ledger", &knot, &suffix, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.IdentityRefused);
+    }
+    print("ledger_query_knot: a tampered suffix fact refused the continued fold — no supply past a forged fact\n", .{});
+}
+
+// A suffix that would overdraw refuses across the cut - proof the Knot's supply is the real
+// starting supply, not a fresh zero: a tax of 1200 against a sealed 1000 issued is Overdraw.
+fn unwelcome_overdraw_across_cut() !void {
+    const f = try make_facts();
+    const knot = try seal_prefix(&f);
+    const ke = seeded(0xe5);
+    const fe = fold.mint_fact(ke, fold.kind_tax, 1200, "", "overtax") orelse return error.MintE;
+    // Direct assignment, not append_fact: the overdraw must surface where the suffix meets
+    // the Knot's sealed 1000 issued (continue_verified), not at a zero-issued append.
+    var suffix = fold.Log.empty();
+    suffix.facts[0] = fe;
+    suffix.len = 1;
+    var buf: [lc.max_completion_len]u8 = undefined;
+    if (ask_over_knot("supply the ledger", &knot, &suffix, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.Overdraw);
+    }
+    print("ledger_query_knot: an overdrawing suffix refused across the cut — the Knot's sealed supply is the real starting supply\n", .{});
+}
+
+fn unwelcome_unknown_op_over_knot() !void {
+    const f = try make_facts();
+    const knot = try seal_prefix(&f);
+    var suffix = suffix_log(&f);
+    var buf: [lc.max_completion_len]u8 = undefined;
+    if (ask_over_knot("mint the ledger", &knot, &suffix, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.UnknownOp);
+    }
+    print("ledger_query_knot: unknown op refused across the Knot (no fake answer)\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_supply_over_knot();
+        try welcome_facts_and_star_over_knot();
+        try welcome_summary_over_knot();
+        try welcome_same_total_knot_or_log();
+        try unwelcome_corrupt_knot_refuses_all();
+        try unwelcome_tampered_suffix_refuses_all();
+        try unwelcome_overdraw_across_cut();
+        try unwelcome_unknown_op_over_knot();
+        print("ledger_query_knot {s} — GREEN\n", .{ledger_query_knot_version});
+        return 0;
+    }
+    print("usage: ledger-query-knot selftest\n", .{});
+    return 1;
+}

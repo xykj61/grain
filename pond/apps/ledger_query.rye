@@ -181,45 +181,22 @@ pub fn count_words(text: []const u8) u32 {
     return words;
 }
 
-/// The Q-vane query over an explicit log: validate the request against Lantern's contract,
-/// gate the model through the allow-list, fold the whole log lawful, read the routed op,
-/// and return a Lantern Response bounded by max_tokens (length stop when the budget bites).
-/// The model is never trusted before the list clears; the ledger is never read before the
-/// fold law accepts every fact in it - one unlawful fact refuses the whole reading.
-pub fn answer_over(
-    req: lc.Request,
-    allow_text: []const u8,
-    log: *const fold.Log,
-    out_buf: []u8,
-) AnswerError!lc.Response {
-    // invariant: the caller's buffer honors Lantern's completion bound
-    assert(out_buf.len <= max_result_text);
-    // invariant: the buffer can hold at least one token
-    assert(out_buf.len > 0);
-
-    try lc.validate_request(req);
-    if (!lc.model_allowed(req.model_hash, allow_text)) return error.ModelNotAllowed;
-
-    const r = try route(req.prompt);
-    // The integrity gate: fold the whole log lawful before reading a single grain. A
-    // forged signature, an overdraw, a doubled star, or an unknown kind refuses here, and
-    // the voice reports nothing - it can only ever see a supply the fold law has blessed.
-    const state = try fold.fold_log(log);
-    const text = try compute(r, &state, log.len, out_buf);
-
+/// Meter a finished reading by the Lantern contract: count the prompt and result words,
+/// and when the reading outruns the budget truncate to max_tokens words with a length stop
+/// - the same discipline every voice applies. Pure over `text`; produces the Response.
+fn meter(req: lc.Request, text: []const u8) lc.Response {
+    // invariant: the text respects Lantern's completion bound before metering
+    assert(text.len <= max_result_text);
     const tokens_in = count_words(req.prompt);
     var tokens_out = count_words(text);
     var final_text = text;
     var reason: lc.StoppedReason = .eos;
 
-    // Honor Lantern's metering: when the real reading outruns the budget, truncate to
-    // max_tokens words and mark a length stop - the same discipline every voice applies.
     if (tokens_out > req.max_tokens) {
         var words: u32 = 0;
         var cut: u32 = 0;
         var i: u32 = 0;
         var in_word = false;
-        assert(text.len <= max_result_text);
         while (i < text.len) : (i += 1) {
             const is_space = text[i] == ' ' or text[i] == '\t' or text[i] == '\n' or text[i] == '\r';
             if (!is_space) {
@@ -248,6 +225,60 @@ pub fn answer_over(
         .tokens_out = tokens_out,
         .stopped_reason = reason,
     };
+}
+
+/// The Q-vane query over an explicit log: validate the request against Lantern's contract,
+/// gate the model through the allow-list, fold the whole log lawful, read the routed op,
+/// and return a Lantern Response bounded by max_tokens (length stop when the budget bites).
+/// The model is never trusted before the list clears; the ledger is never read before the
+/// fold law accepts every fact in it - one unlawful fact refuses the whole reading.
+pub fn answer_over(
+    req: lc.Request,
+    allow_text: []const u8,
+    log: *const fold.Log,
+    out_buf: []u8,
+) AnswerError!lc.Response {
+    // invariant: the caller's buffer honors Lantern's completion bound
+    assert(out_buf.len <= max_result_text);
+    // invariant: the buffer can hold at least one token
+    assert(out_buf.len > 0);
+
+    try lc.validate_request(req);
+    if (!lc.model_allowed(req.model_hash, allow_text)) return error.ModelNotAllowed;
+
+    const r = try route(req.prompt);
+    // The integrity gate: fold the whole log lawful before reading a single grain. A
+    // forged signature, an overdraw, a doubled star, or an unknown kind refuses here, and
+    // the voice reports nothing - it can only ever see a supply the fold law has blessed.
+    const state = try fold.fold_log(log);
+    const text = try compute(r, &state, log.len, out_buf);
+    return meter(req, text);
+}
+
+/// The Q-vane query over an already-lawful folded state - the reading half a caller holds
+/// when the past is a sealed Knot continued by a live suffix, rather than a whole log to
+/// fold here. The Lantern contract still holds (validate, model gate, route, meter); the
+/// integrity gate lives in whoever produced `state` - a Knot's own verify and the suffix's
+/// per-fact re-verify (cord_knot.continue_verified) - so this reads only a blessed supply,
+/// exactly as answer_over reads only a folded-lawful one.
+pub fn answer_over_state(
+    req: lc.Request,
+    allow_text: []const u8,
+    state: *const fold.FoldState,
+    fact_count: u32,
+    out_buf: []u8,
+) AnswerError!lc.Response {
+    // invariant: the caller's buffer honors Lantern's completion bound
+    assert(out_buf.len <= max_result_text);
+    // invariant: the fold law holds on the state we are about to read
+    assert(state.taxed <= state.issued);
+
+    try lc.validate_request(req);
+    if (!lc.model_allowed(req.model_hash, allow_text)) return error.ModelNotAllowed;
+
+    const r = try route(req.prompt);
+    const text = try compute(r, state, fact_count, out_buf);
+    return meter(req, text);
 }
 
 // Seat the demo ledger: one keeper issues a genesis supply, pays a tax, and reserves one
