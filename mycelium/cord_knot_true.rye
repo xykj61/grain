@@ -1,0 +1,146 @@
+//! mycelium/cord_knot_true.rye — the Knot reads true (checkpointing r4, the arc closes).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · checkpointing · rung r4.
+//! Design read: active-designing/20260813-050903_mycelium-cord-knot-checkpoint-exploration.md
+//!
+//! r1 proved a checkpoint folds identical to the whole history, r2 let it travel, r3
+//! measured the bound win — all over Knots sealed in code. This closing rung carries
+//! the reader onto a **real** on-disk `format cord-knot-v1` record a keeper can open
+//! and add up, and proves the property the whole checkpoint rests on: the sealed
+//! supply the Knot reports is true to the bytes.
+//!
+//! The corpus is `tools/fixtures/cord_knot.bron`, a genuine record produced
+//! reproducibly by `mycelium/cord_knot_fixture_gen.rye` (the honest four-fact history's
+//! Knot — issued 1000 · taxed 300 · supply 700 · one star vega), `@embedFile`-bound at
+//! compile time through a symlink in `mycelium/corpora/` — no network, the bytes read
+//! are the tree's own. Two independent readings must agree: the app parses the record
+//! through r2, **verifies** the recovered Knot against its own digest, and reports the
+//! **folded supply** and the **star count**; the r4 witness cross-checks that pair
+//! against `tools/fixtures/cord_knot_truth.awk`'s reading of the same file — two tools,
+//! one answer. And the record is genuinely a sealed Knot: it verifies, it continues to
+//! a lawful supply, and re-rendering the parsed Knot reproduces the embedded bytes exactly.
+//!
+//! Additive — composes r2 over public API (r1/r2/r3 re-run GREEN). Siloed, dev-only,
+//! demo seeds — no real key, no funds, no network, no custody.
+//!
+//!   rye build mycelium/cord_knot_true.rye -femit-bin=mycelium/bin/cord_knot_true
+//!   mycelium/bin/cord_knot_true selftest | measure
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+const cord_knot = @import("cord_knot.rye");
+const cord_knot_bron = @import("cord_knot_bron.rye");
+
+pub const cord_knot_true_version = "20260813.052900";
+
+/// The real Knot record, bound at compile time — the tree's own bytes.
+const real_knot = @embedFile("corpora/cord_knot.bron");
+
+/// The two facts a keeper can count by hand: the Knot's folded supply and how many
+/// stars it reserved.
+pub const Reading = struct {
+    supply: u64,
+    stars: u32,
+};
+
+/// Read the real Knot: parse it, verify the recovered Knot against its own digest
+/// (a real record's digest matches its sealed state), and report the supply and star
+/// count. A record whose digest does not match its state is not a true Knot and refuses.
+pub fn read_knot(text: []const u8) !Reading {
+    var k: cord_knot.Knot = undefined;
+    try cord_knot_bron.parse(text, &k);
+    // invariant: a real Knot record's digest matches its sealed state.
+    if (!cord_knot.verify(&k)) return error.KnotCorrupt;
+    // invariant: a lawful Knot never taxes past what it issued.
+    assert(k.state.taxed <= k.state.issued);
+    return .{ .supply = k.state.supply(), .stars = k.state.star_count };
+}
+
+// --- selftest -----------------------------------------------------------
+
+/// The reading of the real record — the witness cross-checks this pair against awk's
+/// reading of the same bytes, so the two tools must give one answer.
+fn welcome_reading_true_to_bytes() !void {
+    const r = try read_knot(real_knot);
+    // The fixture's Knot folds to supply 700, reserves one star.
+    assert(r.supply == 700);
+    assert(r.stars == 1);
+    print("cord-knot-true: truth-pair {d} {d}\n", .{ r.supply, r.stars });
+    print("cord-knot-true: the reading of the real Knot — supply and stars — matches an independent count of the same bytes.\n", .{});
+}
+
+/// The record is genuinely a sealed Knot: it verifies, re-rendering the parsed Knot
+/// reproduces the embedded bytes exactly, and it continues to a lawful supply.
+fn welcome_record_is_really_a_knot() !void {
+    var k: cord_knot.Knot = undefined;
+    try cord_knot_bron.parse(real_knot, &k);
+    // invariant: the recovered Knot verifies against its own digest.
+    assert(cord_knot.verify(&k));
+    var buf: [cord_knot_bron.max_record]u8 = undefined;
+    const n = try cord_knot_bron.render(&k, buf[0..]);
+    // invariant: the re-render reproduces exactly the embedded bytes.
+    assert(n == real_knot.len);
+    assert(std.mem.eql(u8, buf[0..n], real_knot));
+    // The recovered Knot is a valid genesis: a fresh issue continues onto it lawfully.
+    const ke = seeded(0xE5);
+    const fe = fold.mint_fact(ke, fold.kind_issue, 300, "", "epoch-2") orelse return error.MintE;
+    var suf = fold.Log.empty();
+    suf.facts[0] = fe;
+    suf.len = 1;
+    const cont = try cord_knot.continue_verified(&k, &suf);
+    // invariant: continuing the real Knot adds the new issue onto its sealed supply.
+    assert(cont.issued == 1300);
+    print("cord-knot-true: the real record verifies, re-renders to the embedded bytes exactly, and continues to a lawful supply.\n", .{});
+}
+
+/// A tampered copy of the real bytes refuses — a corrupted record is never read as
+/// true. A flipped header byte refuses `BadFormat`; a flipped payload byte would
+/// break the digest and refuse `KnotCorrupt` at verify.
+fn unwelcome_tampered_record_refuses() !void {
+    var buf: [real_knot.len]u8 = undefined;
+    var i: u32 = 0;
+    while (i < real_knot.len) : (i += 1) buf[i] = real_knot[i];
+    buf[7] ^= 0xFF; // inside "format ..."
+    const bad = read_knot(buf[0..]);
+    // invariant: a tampered header is refused, never read as true.
+    assert(bad == error.BadFormat);
+    print("cord-knot-true: a tampered header refused BadFormat — a corrupted record is never read as true.\n", .{});
+}
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn run_selftest() !u8 {
+    try welcome_reading_true_to_bytes();
+    try welcome_record_is_really_a_knot();
+    try unwelcome_tampered_record_refuses();
+    print("cord_knot_true {s} — GREEN\n", .{cord_knot_true_version});
+    print("GREEN: myc checkpointing r4; the reading of a real Knot record is true to the bytes (supply·stars), the recovered Knot verifies against its own digest and continues to a lawful supply. The Mycelium checkpointing arc closes.\n", .{});
+    return 0;
+}
+
+/// Emit exactly the awk-format pair (`<supply> <stars>`), so the witness can compare
+/// the app's reading against `cord_knot_truth.awk` — two tools, one answer.
+fn run_measure() !u8 {
+    const r = try read_knot(real_knot);
+    print("{d} {d}\n", .{ r.supply, r.stars });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "measure")) {
+        return run_measure();
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest();
+    }
+    print("usage: cord-knot-true selftest | measure\n", .{});
+    return 1;
+}

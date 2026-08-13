@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260813.053128
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Mycelium Knot r4 — the Knot reads true (app==awk 700 1); the checkpointing arc closes
+prompt Keep going on the next agent-doable crux Lindy-first; approve own design rounds; send each increment as its own signed round; stop only at custody gates
+think r1 (fold identical), r2 (travels), r3 (bound win) landed and sent over Knots sealed in code. The design read named r4 as the closing rung: read a real on-disk format cord-knot-v1 record, cross-checked against an independent reading — two tools, one answer.
+think Built the r4 trio mirroring the elder cord_true / cord_batch_true pattern: mycelium/cord_knot_fixture_gen.rye seats the honest four-fact history (two genesis issues, a tax, a star reserve — supply 700, one star vega), seals it to a Knot, and renders the Knot to a format cord-knot-v1 record on stderr (the toolchain's print convention). tools/fixtures/cord_knot.bron holds it; a mycelium/corpora/ symlink @embedFile-binds it; tools/fixtures/cord_knot_truth.awk reads it independently.
+think A Knot record is simple (issued · taxed · one hex star line per reserved star · digest), so the truth awk computes supply = issued - taxed and counts star lines, printing the pair `<supply> <stars>`. mycelium/cord_knot_true.rye @embedFiles the fixture, parses via r2, verifies the recovered Knot against its own digest (a real record's digest matches its sealed state), and reports supply·stars; the witness cross-checks that pair against awk.
+obs The crux on metal: the app's pair equals awk's reading of the same bytes — both `700 1` — so a checkpointed history can never drift from facts a keeper adds up by hand. Genuineness beyond the pair: the record verifies against its own digest, re-renders to the embedded bytes exactly (fixed point), the recovered Knot continues to a lawful supply (a fresh 300 issue → issued 1300), the generator re-emits byte-identical bytes (REPRODUCIBLE), and a tampered header refuses BadFormat.
+obs GREEN first pass; app==awk `700 1`. TAME bans clean, width-check exit 0. Additive — composes cord_knot + cord_knot_bron + fold public API only; r2 and r3 both re-run GREEN at the witness door. Demo keeper seeds only — no key/funds/network/custody.
+obs The Mycelium checkpointing arc stands complete end to end — r1 fold identical · r2 travels · r3 bound win · r4 reads true. This is the fourth closed 4-round arc on the Mycelium road (Cord · gossip convergence · fact batching · checkpointing), each proving a distinct promise of a bounded, leaderless, custody-first civic consensus.
+loom witness=mycelium_cord_knot_true_witness app_awk=700_1 supply=700 stars=1 reproducible=yes
+file mycelium/cord_knot_true.rye reads the real fixture, verifies against its own digest, reports supply·stars true to the bytes
+file mycelium/cord_knot_fixture_gen.rye reproducibly emits the format cord-knot-v1 fixture
+file tools/fixtures/cord_knot.bron the real Knot record a keeper can open and count
+file tools/fixtures/cord_knot_truth.awk independent reading — supply = issued - taxed, counts star lines, prints the pair
+file mycelium/corpora/cord_knot.bron symlink for @embedFile of the fixture
+file tools/mycelium_cord_knot_true_witness.rish app==awk crux, reproducibility, verify + continue, tamper refusal, r2 + r3 green at their doors
+file work-in-progress/REMEMBER.md living edge (Knot arc closes r1·r2·r3·r4) + git nib
+recommend check-in (Claude) the Mycelium checkpointing arc stands complete end to end; the next in-domain step is the supersede-the-core ruling (evolving cord.Block in place, reserved for Keaton) or a fresh Season D journey (Kresfa/.kres, Puddle) worth a self-approved design read, or another double-seat season's crux — Lindy-first
