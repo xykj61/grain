@@ -1,0 +1,73 @@
+//! pond/apps/council_sky_fixture_gen.rye — generate skate/fixtures/council.bron with real Ed25519 ballot signatures.
+//!
+//! DAHL-J11r4 reads a real council record true. This generator produces that fixture reproducibly: it
+//! builds a demo signed council over the demo keeper seeds and renders it through rung three's own
+//! `render`, so the fixture is exactly what `council_sky_bron` reads — a genuine `format council-sky-v1`
+//! record, not a hand-typed shape. The council loads the council sky at its triad level (size 3, quorum
+//! 2); on proposal A two signed yes-ballots decide it (passed), and on proposal B one signed yes-ballot
+//! holds it open (short of quorum), so the record carries both a decided proposal and an open one — real
+//! structure a reader and an awk both count.
+//!
+//! Keeping the generator in-tree makes the fixture reproducible — re-running it reproduces the exact
+//! committed bytes. It lives beside its sibling modules so the `@import`s resolve through the same
+//! symlinks the apps use. Demo keeper seeds only — no real key, no identity invented.
+//!
+//! The record prints on stderr (the tree's `std.debug.print` convention), so capture stderr, not stdout:
+//!
+//!   rye build pond/apps/council_sky_fixture_gen.rye -femit-bin=pond/bin/council-sky-fixture-gen
+//!   pond/bin/council-sky-fixture-gen 2> skate/fixtures/council.bron
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const bron = @import("council_sky_bron.rye");
+const signed = @import("council_sky_signed.rye");
+const topology = @import("topology.rye");
+const kumara = @import("kumara.rye");
+
+// Demo keeper seeds — plainly not real keys, so no identity is invented. Three seats of a triad.
+const seat0_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
+const seat1_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
+const seat2_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
+
+const demo_council: u32 = 9;
+const prop_a: u32 = 3; // decided — two yes-ballots reach quorum 2
+const prop_b: u32 = 4; // open — one yes-ballot, short of quorum
+
+fn pubkey_of(seed: *const [kumara.seed_length]u8) [signed.pubkey_len]u8 {
+    return kumara.keypair_from_seed(seed).public_key.bytes;
+}
+
+fn demo_ring() error{KeyringFull}!signed.Keyring {
+    var ring = signed.Keyring.open();
+    try ring.enroll(0, pubkey_of(&seat0_seed));
+    try ring.enroll(1, pubkey_of(&seat1_seed));
+    try ring.enroll(2, pubkey_of(&seat2_seed));
+    return ring;
+}
+
+fn build_fixture(ring: *const signed.Keyring) !bron.SignedCouncil {
+    var sc = try bron.SignedCouncil.open(demo_council, topology.council_sky, 3);
+    // Proposal A: two signed yes-ballots decide it (quorum 2 met).
+    const b0a = signed.sign_ballot(&seat0_seed, demo_council, sc.council.size, 0, prop_a, true);
+    const b1a = signed.sign_ballot(&seat1_seed, demo_council, sc.council.size, 1, prop_a, true);
+    try sc.record_ballot(ring, 0, prop_a, true, &b0a);
+    try sc.record_ballot(ring, 1, prop_a, true, &b1a);
+    // Proposal B: one signed yes-ballot holds it open — short of quorum, never decided.
+    const b2b = signed.sign_ballot(&seat2_seed, demo_council, sc.council.size, 2, prop_b, true);
+    try sc.record_ballot(ring, 2, prop_b, true, &b2b);
+    // invariant: proposal A is decided by quorum; proposal B holds open.
+    assert(sc.council.outcome(prop_a) == .passed);
+    assert(sc.council.outcome(prop_b) == .open);
+    return sc;
+}
+
+pub fn main() !u8 {
+    const ring = try demo_ring();
+    var sc = try build_fixture(&ring);
+    var buf: [bron.max_record]u8 = undefined;
+    const n = try bron.render(&sc, &buf);
+    print("{s}", .{buf[0..n]});
+    return 0;
+}

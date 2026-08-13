@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260812.212205
+editor Zed
+model Fable 5
+voice Kyri
+host cloud bench — ai-jail — Eastern (EDT) time convention
+title DAHL-J11r4 — the council reads true on a real fixture; Journey 11 closes
+prompt Continue the 1024-round itinerary Lindy-first crux-first; send each finished increment as its own signed round; STOP at custody gates.
+think r1 (odd quorum), r2 (signed ballots), r3 (Bron travel) landed and sent. r4 is the closing rung, mirroring skate_group_true / the fixture-gen + awk trio. Agent-doable — demo seeds only, no custody crossed.
+think Built pond/apps/council_sky_fixture_gen.rye (a triad over council_sky, size 3, quorum 2: two yes-ballots decide proposal A, one yes-ballot holds proposal B open) and rendered it through r3's render, so the fixture is exactly what council_sky_bron reads — real Ed25519 signatures, not a hand-typed shape. Captured stderr to skate/fixtures/council.bron (the std.debug.print-to-stderr convention the J10 fixture-gen red taught), symlinked into pond/apps/corpora/.
+think The council's truth-triple is size, ballots, decided-proposal count. decided_count judges each distinct proposal once and counts it decided when its yes- or no-tally reaches the quorum (int(size/2)+1). tools/fixtures/council_sky_truth.awk reads size from the council line field 6, dedups ballots by (seat,proposal), tallies per side, and counts decided independently.
+think The crux held first pass — app measure and awk both read `3 3 1` and app.out == awk.out. still_quorum_honest re-verifies every ballot offline; rebuild recovers proposal A's passage and proposal B's open hold exactly, and 2*quorum > size holds on the real record — the tie-free invariant proven on bytes a keeper can hash.
+obs GREEN first pass; TAME bans + width clean; r1 and r3 re-run GREEN (additive). DAHL Journey 11 (Council skies) stands complete end to end — r1 odd quorum · r2 signed · r3 travels · r4 read-true. The Comlink-served rung (a council over the wire) reaches the serve custody gate — Keaton's hand.
+loom witness=dahl_j11_council_sky_true_witness triple=3-3-1 app_eq_awk=true r1_rerun=green r3_rerun=green tame=clean
+file pond/apps/council_sky_fixture_gen.rye reproducible generator — renders a real signed council through r3
+file skate/fixtures/council.bron the real fixture (format council-sky-v1, real Ed25519 ballots)
+file pond/apps/corpora/council.bron symlink so the reader @embedFile-binds the fixture
+file tools/fixtures/council_sky_truth.awk independent measure — size, ballots, decided proposals
+file pond/apps/council_sky_true.rye r4 reader — reports the truth-triple, cross-checked app==awk
+file tools/dahl_j11_council_sky_true_witness.rish builds, runs the selftest, asserts app==awk (3 3 1) + r1/r3 re-runs
+recommend keep-going next agent-doable Lindy-first crux — Season 3 Journey 12 (Data-dignity: succession, consent, the keeper's rights, custody-first), a new domain worth a fresh self-approved design read.
