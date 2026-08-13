@@ -41,8 +41,9 @@ const anchors = [anchor_count]skate.Color{
 pub const max_map_cols: u32 = 256;
 pub const max_map_rows: u32 = 256;
 
-/// The cell value that renders as a full block through Skate's extended-glyph slot 0 (below).
-const block_cell: u8 = 128;
+/// The cell value that renders as a full block through Skate's extended-glyph slot 0 (below). Public so a
+/// surface that tiles down-mapped thumbnails onto one grid (HUNK38's catalog shelf) paints the same solid block.
+pub const block_cell: u8 = 128;
 
 /// A full-block extended-glyph atlas — every slot fully lit — so a palette-colored cell paints a solid block.
 /// Skate reads glyphs 128..255 from here when `extended_glyphs` points at it (its ZETA4 emoji-atlas seam).
@@ -52,6 +53,23 @@ pub const MapError = error{
     EmptyImage,
     GridTooLarge,
 };
+
+/// Point Skate at the full-block atlas and set a grid's palette to the fixed anchor colors, so a cell wearing
+/// slot 1..anchor_count paints a solid block in that anchor's color. Shared by `down_map` and any surface that
+/// tiles down-mapped thumbnails onto one grid (HUNK38's catalog shelf) — one source of the anchor palette.
+pub fn set_anchor_palette(grid: *skate.Grid) void {
+    // invariant: the anchor palette fills only usable slots — never the sentinel, never past the ceiling.
+    assert(anchor_count >= 1);
+    assert(anchor_count < skate.max_palette);
+    // Point Skate at the full-block atlas so cell value 128 paints a solid block in its palette color.
+    skate.extended_glyphs = &block_atlas;
+    var slot: u8 = 1;
+    while (slot <= anchor_count) : (slot += 1) {
+        grid.set_palette(slot, anchors[slot - 1]);
+    }
+    // invariant: every anchor slot was set — the loop reached exactly one past the last anchor.
+    assert(slot == anchor_count + 1);
+}
 
 /// The squared color distance between a sampled color and an anchor — the nearest-anchor cost. Bounded by
 /// 3·255² well inside u32.
@@ -99,14 +117,10 @@ pub fn down_map(
     // invariant: the decoded buffer is exactly four bytes per pixel.
     assert(pm.pixels.len == @as(usize, pm.width) * @as(usize, pm.height) * 4);
 
-    // Point Skate at the full-block atlas so cell value 128 paints a solid block in its palette color.
-    skate.extended_glyphs = &block_atlas;
-
     var grid = try skate.Grid.init(allocator, cols, rows);
-    var slot: u8 = 1;
-    while (slot <= anchor_count) : (slot += 1) {
-        grid.set_palette(slot, anchors[slot - 1]);
-    }
+    // Point Skate at the full-block atlas and set the anchor palette — the one seam a down-map and a thumbnail
+    // shelf share, so both paint solid blocks in the same fixed colors.
+    set_anchor_palette(&grid);
 
     const width = pm.width;
     const height = pm.height;

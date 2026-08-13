@@ -1,0 +1,57 @@
+# tools/hunk_sprite_shelf_witness.rish — the marketplace catalog is browsed as a paged shelf (HUNK38, sprite quest).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · Open Image journey · rung HUNK38.
+# Design read: active-designing/20260813-203000_hunk-sprite-catalog-shelf-exploration.md
+# Teacher, thanked clean-room: McMaster-Carr's fast one-sprite-sheet index page (concept only, siloed).
+#
+# HUNK4 made each product a bounded window into one decoded sheet; HUNK5 painted a single product page; HUNK2
+# down-mapped a decoded image into Skate's palette-indexed cells; HUNK36/37 proved a paged shelf over a library.
+# This rung is the marketplace's own front door: `brushstroke/sprite_shelf.rye` `catalog_shelf` renders a whole
+# SpriteIndex onto one Skate grid, one row per product reading `<name>` and a color swatch wearing the product's
+# own down-mapped slot; `catalog_window` pages a catalog larger than the screen. The selftest indexes four
+# solid-color products (red/green/blue/yellow bands) into one 16x8 sheet and proves each row's swatch carries its
+# product's color slot (3,4,5,6), each row names its product, paging covers every product once in held order, the
+# shelf is pure and deterministic, and the five named refusals fire. Pure composition over public APIs — no new
+# storage, codec, or palette. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_sprite_shelf_witness.rish
+
+say "hunk-sprite-shelf: Language EN — HUNK38 paints a whole SpriteIndex as a paged catalog shelf: one row per product, its name beside a color swatch drawn from its own window into the one shared sheet."
+say "hunk-sprite-shelf: Style Radiant — a keeper reads the marketplace at a glance; every product reachable a page at a time, each swatch its product's own color, none shown twice, none silently dropped."
+say "hunk-sprite-shelf: Lens TAME — pure composition over public APIs; the swatch is a 1x1 down-map valid for any window; every dimension refuses by name; positive invariants per fn; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/sprite_shelf"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/sprite_shelf.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-sprite-shelf: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-sprite-shelf: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+say "hunk-sprite-shelf: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN sprite-shelf' && echo yes"]
+assert (trim green.out) == "yes" else "hunk-sprite-shelf: selftest did not print the GREEN shelf line"
+
+let nolose = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'paging loses' && echo yes"]
+assert (trim nolose.out) == "yes" else "hunk-sprite-shelf: the selftest did not prove paging loses nothing"
+
+let swatch = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'its own down-mapped slot' && echo yes"]
+assert (trim swatch.out) == "yes" else "hunk-sprite-shelf: the selftest did not prove each swatch carries its product's color"
+
+# HUNK5 stays GREEN — the shelf reuses sprite.render and image_skate.down_map that the product page proved.
+let page = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/sprite_page.rye -femit-bin=brushstroke/bin/sprite_page && brushstroke/bin/sprite_page selftest 2>&1"]
+assert page.ok else "hunk-sprite-shelf: HUNK5 sprite_page re-run failed — ${page.out}"
+let page_green = run ["sh" "-c" "printf '%s' '${page.out}' | grep -q 'GREEN sprite-page' && echo yes"]
+assert (trim page_green.out) == "yes" else "hunk-sprite-shelf: HUNK5 sprite_page did not stay GREEN"
+
+# HUNK2 stays GREEN — the down-map the swatch stands on, and the set_anchor_palette refactor beneath it, must hold.
+let skate = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/image_skate.rye -femit-bin=brushstroke/bin/image_skate && brushstroke/bin/image_skate selftest 2>&1"]
+assert skate.ok else "hunk-sprite-shelf: HUNK2 image_skate re-run failed — ${skate.out}"
+let skate_green = run ["sh" "-c" "printf '%s' '${skate.out}' | grep -q 'GREEN image-skate' && echo yes"]
+assert (trim skate_green.out) == "yes" else "hunk-sprite-shelf: HUNK2 image_skate did not stay GREEN after the set_anchor_palette refactor"
+
+say "hunk-sprite-shelf: GREEN — the marketplace catalog is browsed as a paged shelf on metal; HUNK5 page and HUNK2 down-map underneath stay GREEN. HUNK38 lands."

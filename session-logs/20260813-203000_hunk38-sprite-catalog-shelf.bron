@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260813.203000
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu (Framework 16 AMD) — Eastern (EDT) time convention · ai-jail on Vultr SEA VPS
+title HUNK38 — the marketplace catalog painted as a paged shelf on glass
+prompt Kyri: take the next agent-doable lap Lindy-first crux-first on the Season A road; approve your own design rounds; send each finished increment as its own signed round; STOP at custody gates; GATES-ONLY if only gates remain.
+think Read REMEMBER + both itineraries. The whole HUNK image journey stands landed through HUNK37 (QOI codec, content-address, Skate down-map, crop, the sprite marketplace index HUNK4-7, single product page HUNK5, the Photos filter family, presets, the preset-library shelf and pager). Everything named is GREEN; no red booked; no gate open.
+think Lindy-first crux-first across the WHOLE road, not merely the next image rung: the marketplace's own front door — McMaster-Carr's fast index page, a scannable list of many products drawn from one sheet — is the missing durable crux. HUNK5 paints ONE product; a keeper still meets the catalog one product at a time. The browse surface is read far more than any single product page and composes only proven parts (the sprite index, the down-map, the paging shape preset_shelf already proved). No custody gate, no deferred web search.
+think Chose the robust swatch: each product's color is a 1x1 down_map of its own window (a block that spans the whole window can never empty), so the shelf never asserts on a small product — a later rung enriches the swatch to a multi-cell strip. Name left, swatch right, a gap between; the name truncates to the label region so it never overwrites the swatch.
+obs Two additive seams landed beneath in image_skate.rye — set_anchor_palette (down_map refactored to share it, behavior identical) and block_cell made public — each reused by any surface tiling down-mapped thumbnails onto one grid. HUNK2's down-map selftest re-runs GREEN, proving the refactor preserved behavior.
+obs Palette pressure caught: the anchor palette fills slots 1..7 and slot 0 is the sentinel, so no free slot remained for a colored name chip. Resolved honestly by leaving the name in the default fg (the swatch carries the color, the name carries the text) rather than forcing a collision.
+obs Witness GREEN first run: four color-band products render to a 24x4 shelf, swatch slots 3·4·5·6 each its product's own down-mapped color, paging covers every product once in held order (two pages 2·2·0), 2186 lit pixels; BadOffset·ShelfTooSmall·EmptyShelf·ShelfTooLarge·RowTooNarrow each refuse by name. HUNK5 page + HUNK2 down-map GREEN beneath. tame_style_check bans clean; width-check exit 0; every authored fn well under 70 lines.
+loom witness=hunk_sprite_shelf_witness products=4 sheet=16x8 shelf=24x4 swatch_slots=3,4,5,6 lit=2186 pages=2 window_lens=2,2,0
+file active-designing/20260813-203000_hunk-sprite-catalog-shelf-exploration.md self-approved design round for HUNK38
+file brushstroke/sprite_shelf.rye the catalog shelf — catalog_shelf, catalog_window, page_count, window_len over a shared row drawer
+file brushstroke/image_skate.rye additive set_anchor_palette seam + public block_cell; down_map refactored to share the palette seam
+file tools/hunk_sprite_shelf_witness.rish GREEN on metal; HUNK5 + HUNK2 re-run GREEN beneath
+file work-in-progress/REMEMBER.md latest-lap HUNK38 note and git nib refresh
+recommend keep-going — a multi-cell thumbnail strip per row (window down-mapped 1xN so a product's shape reads), the catalog served over a content-addressed sheet (HUNK6), a live scroll offset from a keeper's gesture, or a fresh Season-A / double-seat journey; all clear of every custody gate.
