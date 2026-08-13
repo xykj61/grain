@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260813.125340
+editor Zed
+model Fable 5
+voice Kyri
+title Portage r2 — a crossing lands on both worlds or neither (atomic all-or-nothing)
+prompt take the next agent-doable lap Lindy-first crux-first; approve own design rounds; send each finished increment as its own signed round; recur through agent-doable work; stop at custody gates
+think Portage r1 landed and sent (both remotes) — value crosses two worlds and the pair conserves, but r1's out was a one-shot burn: the coins left A the instant the out folded, with no way back if the in never landed on B. That is not yet atomic — a real crossing must land on both ledgers or neither, with no window for a loss (gone from A, absent on B) or a double (present on both).
+think The exploration's r2 names the fix: make the out two-phase — the Pledge's own atomicity widened from two phases to two shards. Alice STAGES (balance→reserved, coins held in transit), then COMMITS once the in lands on B (reserve leaves circulation, Bob's now) or REVERTS if it never lands (reserve returns to Alice, whole). This is exactly the Pledge's pending→post/void, so I modelled the source law closely on pledge.rye which was in context.
+think Wrote mycelium/portage_atomic.rye as its own two-phase source law resolve_source(dag) — Account gains a reserved column; Crossing tracks staged/committed/reverted; stage/commit/revert tags S/C/B. World B's in stays r1's resolve_world unchanged, so a committed source is paired with a landed in and a reverted source with none.
+obs r2 built and ran GREEN first pass. Four scenes prove the two-outcome law: (1) committed source + landed in — Alice's spendable falls by amount, reserved 0, Bob rises by amount, left==reached==40 (both moved); (2) reverted source + no in — Alice whole (100), Bob 0 (neither moved), the two-world sum as if the crossing never began; (3) equivocation — Alice signs both commit and revert at one round, the order decides once and both arrival permutations name the identical verdict (sources_equal), exactly one settled; (4) staged-but-undecided — coins held reserved in transit (spendable+reserved==start), never lost.
+obs One TAME fix on metal — a compound assert(a and b) in scene 2 (the no-loss-no-double check) tripped the tame_style_check ban; split into two positive asserts each naming its half. Re-ran GREEN; tame_style_check GREEN, no usize / std.debug.assert / memcpy remaining.
+obs Composed portage + cord + fold + kumara public API only, editing none — the Portage r1 crux and the Pledge two-phase transfer both re-run GREEN at the witness door. Custody untouched — demo world/keeper seeds only, no key/funds/network, no value crossed. A served commit-after-landing (World A learning of B's in over Comlink) reaches the Comlink-served gate. No gate reached this round.
+loom witness=mycelium_portage_atomic_witness result=GREEN worlds=2 amount=40 scenes=4 doors=2
+file mycelium/portage_atomic.rye r2 — the two-phase source law (stage · commit · revert) with a reserved column; the two-outcome + equivocation + in-transit selftest
+file tools/mycelium_portage_atomic_witness.rish GREEN witness; asserts the atomicity two-outcome law, equivocation-decided-once, in-transit, and Portage r1 / Pledge re-runs at the door
+recommend keep-going Portage r3 — the crossing travels as a format portage-v1 record (id · from · to_world · to_account · amount · digest · out-head · in-head; render/parse byte-for-byte, a receiving world accepts by reading its record alone)
