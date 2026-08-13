@@ -1,7 +1,7 @@
 //! ember/ember_core.rye — Rye corpus catalog for local forge (query + views).
 //!
 //! Chunks name paths in our tree — gratitude and vendor stay in their reading rooms.
-//! Lap 2 deepens filters: min_lines · max_lines · path_suffix · sum_lines fold.
+//! Filters deepened: min_lines · max_lines · path_suffix · sum_lines fold · 20260809.
 
 const std = @import("std");
 const assert = std.debug.assert;

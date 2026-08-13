@@ -7,7 +7,7 @@
 **Status:** Checkable-room module — corpus catalog + query + Skate views green; LoRA and training remain horizon  
 **Style:** Radiant · **Lens:** TAME · SLC · Gall's Law
 
-Kiln names training and fine-tuning on our own corpus (was **Anvil** forge path). Lap 0 catalogs `.rye` / `.rish` chunks from **our tree** — gratitude and vendor stay in their reading rooms. Query filters by kind and path prefix. Corpus views fold those hits onto Skate.
+Kiln names training and fine-tuning on our own corpus (was **Anvil** forge path). The catalog folds `.rye` / `.rish` chunks from **our tree** — gratitude and vendor stay in their reading rooms. Query filters by kind and path prefix. Corpus views fold those hits onto Skate.
 
 | Lap | Claim | Witness |
 |-----|--------|---------|
