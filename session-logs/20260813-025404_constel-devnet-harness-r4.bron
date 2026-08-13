@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260813.025404
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — ai-jail — Eastern (EDT) time convention
+title Constel dev-net harness r4 — the net reads true (app==awk, 3 3 267); the harness's agent-doable arc closes
+prompt Keep taking the next agent-doable Lindy-first crux; approve own design rounds; double-seat; send each increment; stop at custody gates.
+think r3 let a constel travel as a format constel-net-v1 record. The exploration doc named r4 as the closing rung: read a genuine on-disk constel record and cross-check the harness's reading against an independent measure — two tools, one answer — so a fake net can never drift from the bytes. Agent-doable, reaches no custody gate; the *_true read-true pattern the tree already runs (council_sky_true, skate_group_true, data_dignity_true).
+think Mirrored that pattern faithfully: a fixture produced reproducibly by an in-tree generator (constel_net_fixture_gen.rye settles the demo branch through r2, renders through r3, prints on stderr per the tree's std.debug.print convention), written to tools/fixtures/constel_net.bron and @embedFile-bound through a pond/apps/corpora/ symlink. The reader reports a numeric triple (roster size · galaxy · planet = 3 3 267) and an independent awk (constel_net_truth.awk) reads the same file; the witness asserts app==awk. Constel is dev-only/siloed, so the fixture lives under tools/fixtures beside the naming-law fixtures, not under skate/fixtures.
+think Two distinct proofs of genuineness beyond the triple: (1) re-rendering the parsed roster reproduces the embedded bytes EXACTLY — so the fixture is what the harness emits, not a hand-mock; (2) the recovered name is still law-safe — the quarantine holds on the real bytes, not only on the live harness. A tampered header refuses BadFormat. The generator emit_record initially returned u32 into a u8 main — fixed to !u8; otherwise GREEN first real build.
+obs Landed pond/apps/constel_net_true.rye + pond/apps/constel_net_fixture_gen.rye + tools/fixtures/constel_net.bron + pond/apps/corpora/constel_net.bron symlink + tools/fixtures/constel_net_truth.awk + tools/constel_net_true_witness.rish. Selftest GREEN (3 cases: reading true to bytes · genuine-harness-net re-render + law-safe name · tampered-header refuses); the app==awk crux passes (3 3 267 both tools); the witness re-runs r3 GREEN at r4's door. tame_style_check + width-check clean; version const from the live clock. Demo seeds only — no key, no network, no custody (gate #4 untouched; a served constel reaches the serve gate).
+obs The Constel dev-net harness stands complete end to end — r1 named genesis · r2 the fractal settles · r3 the net travels · r4 reads true. Four sends this run, each its own signed round on both remotes (origin + xykj61). The one remaining harness horizon rung (Comlink-served) reaches the serve custody gate.
+file pond/apps/constel_net_true.rye r4 — reads the real record, reports points·galaxy·planet, proves re-render byte-for-byte + law-safe name
+file pond/apps/constel_net_fixture_gen.rye reproducibly emits the fixture (settle → render), so the on-disk bytes are exactly the harness's own
+file tools/fixtures/constel_net.bron the genuine format constel-net-v1 record (galaxy 3 · star 27 · planet 267, name xnqvel34)
+file tools/fixtures/constel_net_truth.awk the independent measure — counts point lines, first = galaxy, last = planet
+file tools/constel_net_true_witness.rish proves the harness GREEN (3 cases + app==awk crux) and re-runs r3 at its door
+file work-in-progress/REMEMBER.md accreted the r4 landing; marked the harness arc complete; next crux points at a fresh Season D design read
+recommend keep-going — the constel harness is a bench now, so the next agent-doable Lindy-first crux is a real Comlink handshake / settlement test running against a spun-up constel (proving the harness earns its keep), or the Mycelium consensus design read; the three breach renames (cairn-first) + deep debride + seed force-push stay Keaton's hand (gates #1/#5)
