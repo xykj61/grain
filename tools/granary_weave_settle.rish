@@ -1,4 +1,4 @@
-# granary_weave_settle.rish — Granary lap 6: settle weave listing (MUR + WOV in-process; was MALA).
+# granary_weave_settle.rish — Granary weave settle: settle weave listing, MUR + WOV in-process (was MALA) · 20260713.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/granary_weave_settle.rish
@@ -23,4 +23,4 @@ assert selftest.out contains "murr fold refused" else "Granary weave settle miss
 assert selftest.out contains "wov insufficient refused" else "Granary weave settle missing wov refuse"
 assert selftest.out contains "double settle refused" else "Granary weave settle missing double settle refuse"
 
-say "GREEN: Granary lap 6 — weave settle binds MUR send (was MALA) + WOV transfer; no identities."
+say "GREEN: Granary weave settle binds MUR send (was MALA) + WOV transfer; no identities."

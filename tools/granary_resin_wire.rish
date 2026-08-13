@@ -1,4 +1,4 @@
-# granary_resin_wire.rish — Granary lap 4: Comlink resin serve (Sharing over the wire).
+# granary_resin_wire.rish — Granary Comlink resin serve (Sharing over the wire) · 20260713.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/granary_resin_wire.rish
@@ -24,4 +24,4 @@ assert demo.out contains "GREEN" else "Granary resin wire demo not GREEN"
 assert demo.out contains "guest equals host" else "Granary resin wire demo missing equality"
 assert demo.out contains "mirrored front page" else "Granary resin wire demo missing front page"
 
-say "GREEN: Granary lap 4 — resin serve over Comlink; guest mirrors host."
+say "GREEN: Granary resin serve over Comlink; guest mirrors host."

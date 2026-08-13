@@ -1,4 +1,4 @@
-# mantra_snapshot_wire.rish — I2 snapshot export lap 3: hosted + device Comlink crossing.
+# mantra_snapshot_wire.rish — I2 snapshot export: hosted + device Comlink crossing · 20260713.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/mantra_snapshot_wire.rish
@@ -18,4 +18,4 @@ let device = run ["sh" "comlink/run_snapshot_export_wire_lab.sh"]
 assert device.ok else "snapshot device wire lab failed"
 assert device.out contains "GREEN" else "snapshot device wire lab not GREEN"
 
-say "GREEN: I2 snapshot export lap 3 hosted + device Comlink crossing witness passed."
+say "GREEN: I2 snapshot export hosted + device Comlink crossing witness passed."
