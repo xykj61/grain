@@ -1,0 +1,53 @@
+# tools/mycelium_lapse_knot_witness.rish — the deadline verdict reads across a Knot (r3).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · the Lapse across a checkpoint · rung r3.
+# r1 resolved a whole Cord into a deadline-clock Ledger; r2 let it travel. A ledger a family runs for years
+# does not carry its whole past unbroken — the Knot ties off a committed prefix into a sealed FoldState so a
+# bounded Dag runs forever — so r3 makes the Lapse's corpus a Knot plus its live suffix.
+#
+# The crux this witness proves is a DEADLINE THAT REACHES ACROSS THE CUT: a pledge opens under a deadline
+# inside the sealed prefix (coins reserved, the promise young); the past is pruned; then the order's clock
+# passes the deadline in the live suffix and the pledge LAPSES there — the coins home to the pledger, though
+# the deadline was set before the checkpoint and reached after it. The honest seam the crux surfaces is new
+# to the Lapse: the Pledge's timing was irrelevant, so pledge_knot folds its suffix at LOCAL positions; the
+# Lapse's deadline is an ABSOLUTE order position, so the LapseKnot carries the epoch BASE (the count of
+# positions the prefix consumed) and continues the clock at base + i, so the hour is not reset at the cut.
+# The verdict never drifts between a full Cord and a Knot-continued resolution (a far deadline honors the
+# suffix post instead; conservation of balance + reserved holds past the cut). A corrupt Knot, a tampered
+# suffix fact, and a resolution of a pledge the checkpoint never opened each refuse whole. Composes lapse +
+# cord_knot + cord + fold public API only; demo keeper seeds — no key, no funds, no network, no custody.
+#
+# Scope: active-designing/20260813-085046_mycelium-lapse-pending-timeout-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mycelium_lapse_knot_witness.rish
+
+say "mycelium-lapse-knot: Language EN — a promise's hour set before the checkpoint and reached after it, the clock never resetting at the cut."
+say "mycelium-lapse-knot: Style Radiant — r1 decided the deadline within one Cord; r3 lets the hour keep time across a sealed past, and a full history and a Knot-plus-suffix name one verdict."
+say "mycelium-lapse-knot: Lens TAME — the continuation composes lapse + cord_knot + cord + fold public API; the Knot's integrity is a runtime gate, never an assert; the epoch base carries the absolute clock; conservation holds past the cut; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/lapse_knot"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/lapse_knot.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-lapse-knot: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mycelium-lapse-knot: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-lapse-knot: selftest did not speak GREEN"
+assert selftest.out contains "LAPSES across the cut" else "mycelium-lapse-knot: lapse-across-the-cut claim missing"
+assert selftest.out contains "the clock carried unbroken by the epoch base" else "mycelium-lapse-knot: epoch-base clock claim missing"
+assert selftest.out contains "verdict never drifts" else "mycelium-lapse-knot: no-drift claim missing"
+assert selftest.out contains "refuse whole" else "mycelium-lapse-knot: refusal claim missing"
+
+# The Lapse whose deadline the checkpoint carries, and the Knot that seals the prefix, both stand at the
+# door — their own selftests prove the machinery the crossing rests on.
+let lapse = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/lapse.rye -femit-bin=mycelium/bin/lapse && mycelium/bin/lapse 2>&1"]
+assert lapse.ok else "mycelium-lapse-knot: the Lapse the checkpoint carries is not GREEN"
+assert lapse.out contains "GREEN" else "mycelium-lapse-knot: the Lapse did not speak its GREEN"
+
+let knot = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_knot.rye -femit-bin=mycelium/bin/cord_knot && mycelium/bin/cord_knot 2>&1"]
+assert knot.ok else "mycelium-lapse-knot: the Knot that seals the prefix is not GREEN"
+assert knot.out contains "GREEN" else "mycelium-lapse-knot: the Knot did not speak its GREEN"
+
+say "mycelium-lapse-knot: GREEN — a pledge opened under a deadline inside a sealed prefix lapses across the cut when the live suffix reaches that deadline, the clock carried unbroken by the epoch base; the verdict never drifts between a full Cord and a Knot-plus-suffix, a far deadline honors the suffix post instead, conservation of balance + reserved holds past the cut, and a corrupt Knot · tampered suffix fact · unknown-pledge resolution each refuse whole; the Lapse and the Knot stand at the door."
