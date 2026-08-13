@@ -1,0 +1,226 @@
+//! mycelium/warrant_knot.rye — a succession chain survives a checkpoint (rung r3).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Warrant · rung r3 — across a Knot.
+//! Design read: active-designing/20260813-112420_mycelium-warrant-validator-set-rotation-exploration.md
+//!
+//! r1 bound one succession to a quorum of the outgoing roll; r2 let one handoff travel as bytes. Yet a
+//! network that runs for years rotates its validators again and again — a chain of handoffs, each roll
+//! authorized by the previous roll's own quorum. And a stranger who joins late does not carry the whole
+//! past unbroken: as the Cord's Knot ties off a committed prefix so a bounded Dag runs forever, a validator
+//! chain is CHECKPOINTED at a roll everyone already trusts, the pre-checkpoint handoffs discarded. This rung
+//! proves the succession is CONTINUOUS across that checkpoint.
+//!
+//! The crux is A SUCCESSION CHAIN SURVIVES A CHECKPOINT. `verify_chain(anchor, steps)` walks from a trusted
+//! anchor roll: each step's Warrant must verify against (the current roll · the step's successor roll), the
+//! epochs strictly increasing (a stale handoff cannot be spliced in), and the current roll advances to the
+//! successor — yielding the HEAD roll (today's validators) only when every link is lawful. A party who holds
+//! only a checkpoint roll (a later anchor, the base handoffs pruned) reaches the SAME head as one who walked
+//! from genesis — trust chains forward across epochs without carrying the whole past. A broken link refuses
+//! the whole chain: a self-crowning roll refuses `NotMember`, a re-pointed link `DigestMismatch`, a thin
+//! handoff `BelowQuorum`, a spliced older handoff `StaleEpoch`.
+//!
+//! Additive by construction: imports `warrant` (r1's certificate) and `muster` (the roll), calling only
+//! public API. Each stays its own green binary; no existing module changes. No storage, no transport, no
+//! network, no custody — a party walks its own chain from its own trusted anchor. Demo validator and keeper
+//! seeds only — no real key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/warrant_knot.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const warrant = @import("warrant.rye");
+const muster = @import("muster.rye");
+const kumara = @import("kumara.rye");
+
+/// A chain rotates its validators at most this many times before a fresh checkpoint anchors a new walk —
+/// the bound that keeps a succession walk finite.
+pub const chain_max_steps: u32 = 8;
+
+pub const ChainError = error{
+    ChainFull, // more handoffs than a chain holds between checkpoints
+    StaleEpoch, // a handoff's epoch did not exceed the one before it — an older handoff cannot be spliced
+} || warrant.WarrantError;
+
+/// One rotation in a succession chain: the successor roll and the Warrant that authorized it (signed by a
+/// quorum of the roll it succeeds).
+pub const Step = struct {
+    roll: muster.Muster = .{},
+    cert: warrant.Warrant = .{},
+};
+
+/// A succession chain anchored at a trusted roll — the checkpoint everyone already believes — and a bounded
+/// sequence of lawful handoffs forward from it.
+pub const Chain = struct {
+    anchor: muster.Muster = .{},
+    anchor_epoch: u32 = 0,
+    steps: [chain_max_steps]Step = undefined,
+    len: u32 = 0,
+
+    pub fn empty(anchor: muster.Muster, anchor_epoch: u32) Chain {
+        return .{ .anchor = anchor, .anchor_epoch = anchor_epoch, .steps = undefined, .len = 0 };
+    }
+};
+
+/// Append one lawful handoff — the successor roll and its authorizing Warrant. Refuses `ChainFull` past the
+/// bound. Lawfulness is weighed at `verify_chain`, not here, so a broken chain can be built and then refused.
+pub fn extend(ch: *Chain, roll: muster.Muster, cert: warrant.Warrant) ChainError!void {
+    // invariant: the chain honors its static bound before any growth.
+    assert(ch.len <= chain_max_steps);
+    if (ch.len >= chain_max_steps) return error.ChainFull;
+    ch.steps[ch.len] = .{ .roll = roll, .cert = cert };
+    ch.len += 1;
+    // invariant: appending one handoff grows the chain by exactly one, never past the ceiling.
+    assert(ch.len <= chain_max_steps);
+}
+
+/// Walk a succession chain from its trusted anchor and return the HEAD roll — today's validators — only
+/// when every link is lawful: each Warrant verifies against (the current roll · its successor), and the
+/// epochs strictly increase so no older handoff can be spliced in. A broken link refuses the whole chain on
+/// the Warrant's own terms (`NotMember`, `DigestMismatch`, `BelowQuorum`) or `StaleEpoch`.
+pub fn verify_chain(ch: *const Chain) ChainError!muster.Muster {
+    // invariant: the chain honors its static bound.
+    assert(ch.len <= chain_max_steps);
+    // invariant: a meaningful anchor enrolls at least one validator.
+    assert(ch.anchor.len >= 1);
+    var current = ch.anchor;
+    var last_epoch = ch.anchor_epoch;
+    var i: u32 = 0;
+    while (i < ch.len) : (i += 1) {
+        const step = &ch.steps[i];
+        // The epoch strictly increases — an older or replayed handoff cannot be spliced into the walk.
+        if (step.cert.epoch <= last_epoch) return error.StaleEpoch;
+        // The Warrant lawfully authorizes this successor from the current roll (a quorum of the current
+        // roll signed the successor's content-address), or the whole chain refuses on its own terms.
+        try warrant.verify_warrant(&step.cert, &current, &step.roll);
+        current = step.roll;
+        last_epoch = step.cert.epoch;
+    }
+    // invariant: the walk consumed exactly the chain's handoffs.
+    assert(i == ch.len);
+    return current;
+}
+
+// ---- selftest: a succession chain reads the same head across a checkpoint ----------------------------
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn muster_of(seeds: []const u8) !muster.Muster {
+    var m = muster.Muster.empty();
+    for (seeds) |s| {
+        const pk = seeded(s).public_key.toBytes();
+        try muster.enroll(&m, pk[0..]);
+    }
+    return m;
+}
+
+/// Build a Warrant at `epoch` handing `prev` off to `next`, endorsed by the given outgoing signer seeds.
+fn warrant_by(epoch: u32, prev: *const muster.Muster, next: *const muster.Muster, signers: []const u8) !warrant.Warrant {
+    var w = try warrant.open(epoch, prev, next);
+    for (signers) |s| try warrant.endorse(&w, seeded(s));
+    return w;
+}
+
+/// Two rolls name the same validators in the same order — a head reads as expected.
+fn rolls_equal(a: *const muster.Muster, b: *const muster.Muster) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) {
+        if (!std.mem.eql(u8, a.members[i][0..muster.pk_len], b.members[i][0..muster.pk_len])) return false;
+    }
+    return true;
+}
+
+pub fn main() !void {
+    // A genuine rotation: each roll drops one validator and admits one, and each handoff is signed by three
+    // of the four OUTGOING validators (threshold 3). Genesis r0 → r1 → r2 → r3.
+    const r0 = try muster_of(&[_]u8{ 0x11, 0x22, 0x33, 0x44 });
+    const r1 = try muster_of(&[_]u8{ 0x11, 0x22, 0x33, 0x55 });
+    const r2 = try muster_of(&[_]u8{ 0x11, 0x22, 0x55, 0x66 });
+    const r3 = try muster_of(&[_]u8{ 0x11, 0x55, 0x66, 0x77 });
+
+    const w1 = try warrant_by(1, &r0, &r1, &[_]u8{ 0x11, 0x22, 0x33 }); // outgoing quorum of r0
+    const w2 = try warrant_by(2, &r1, &r2, &[_]u8{ 0x11, 0x22, 0x33 }); // outgoing quorum of r1
+    const w3 = try warrant_by(3, &r2, &r3, &[_]u8{ 0x11, 0x22, 0x55 }); // outgoing quorum of r2
+
+    // --- The crux: the whole chain from genesis, and a chain from a later checkpoint, reach the same head ---
+    {
+        // A stranger who walked from genesis (anchor r0) reaches head r3.
+        var whole = Chain.empty(r0, 0);
+        try extend(&whole, r1, w1);
+        try extend(&whole, r2, w2);
+        try extend(&whole, r3, w3);
+        const head_whole = try verify_chain(&whole);
+        if (!rolls_equal(&head_whole, &r3)) return error.WholeHead;
+
+        // A party who joined at the checkpoint holds only r1 (a trusted anchor at epoch 1) and the handoffs
+        // FORWARD from it — the pre-checkpoint handoff (r0→r1) pruned. It reaches the SAME head r3.
+        var pruned = Chain.empty(r1, 1);
+        try extend(&pruned, r2, w2);
+        try extend(&pruned, r3, w3);
+        const head_pruned = try verify_chain(&pruned);
+        if (!rolls_equal(&head_pruned, &r3)) return error.PrunedHead;
+
+        // The checkpoint changes nothing about who stands today: both walks agree on the head roll.
+        if (!rolls_equal(&head_whole, &head_pruned)) return error.HeadDrift;
+    }
+
+    // --- A broken link refuses the whole chain, each on the Warrant's own terms ---
+    {
+        // A self-crowning link: r2 → r3 signed by keys NOT enrolled in r2 (0x77 is r3's new validator;
+        // 0x88, 0x99 are strangers to both) — the fresh validators cannot crown themselves; the chain
+        // refuses NotMember at that link.
+        const w3_self = try warrant_by(3, &r2, &r3, &[_]u8{ 0x77, 0x88, 0x99 }); // none enrolled in r2
+        var bad = Chain.empty(r1, 1);
+        try extend(&bad, r2, w2);
+        try extend(&bad, r3, w3_self);
+        if (verify_chain(&bad)) |_| return error.SelfCrownWalked else |err| {
+            if (err != error.NotMember) return error.WrongSelfCrown;
+        }
+    }
+    {
+        // A thin link: r1 → r2 signed by only TWO of r1's outgoing validators — the chain refuses BelowQuorum.
+        const w2_thin = try warrant_by(2, &r1, &r2, &[_]u8{ 0x11, 0x22 });
+        var bad = Chain.empty(r1, 1);
+        try extend(&bad, r2, w2_thin);
+        try extend(&bad, r3, w3);
+        if (verify_chain(&bad)) |_| return error.ThinWalked else |err| {
+            if (err != error.BelowQuorum) return error.WrongThin;
+        }
+    }
+    {
+        // A re-pointed link: the warrant that authorized r2 is spliced against a DIFFERENT successor roll —
+        // its next digest no longer binds, so the chain refuses DigestMismatch.
+        const other = try muster_of(&[_]u8{ 0x11, 0x22, 0x88, 0x99 });
+        var bad = Chain.empty(r1, 1);
+        try extend(&bad, other, w2); // w2 authorized r2, not `other`
+        if (verify_chain(&bad)) |_| return error.RepointWalked else |err| {
+            if (err != error.DigestMismatch) return error.WrongRepoint;
+        }
+    }
+    {
+        // A spliced stale handoff: the r0→r1 warrant (epoch 1) spliced AFTER the checkpoint anchor at epoch
+        // 1 — its epoch does not exceed the anchor's, so the chain refuses StaleEpoch before trusting a
+        // replayed handoff.
+        var bad = Chain.empty(r1, 1);
+        try extend(&bad, r1, w1); // w1 has epoch 1, not > anchor_epoch 1
+        if (verify_chain(&bad)) |_| return error.StaleWalked else |err| {
+            if (err != error.StaleEpoch) return error.WrongStale;
+        }
+    }
+
+    // A last render, for eyes — the head roll a keeper stands on today.
+    var head = Chain.empty(r0, 0);
+    try extend(&head, r1, w1);
+    try extend(&head, r2, w2);
+    try extend(&head, r3, w3);
+    const today = try verify_chain(&head);
+    muster.render(&today);
+
+    print("warrant-knot: a succession chain r0→r1→r2→r3, each roll authorized by a Byzantine quorum of the roll before it, walks from genesis to a head of today's validators; a party holding only a later checkpoint roll (the base handoffs pruned) reaches the identical head\n", .{});
+    print("warrant-knot: a broken link refuses the whole chain on the Warrant's own terms — a self-crowning roll refuses NotMember, a thin handoff BelowQuorum, a re-pointed link DigestMismatch, a spliced older handoff StaleEpoch\n", .{});
+    print("GREEN: myc warrant-knot — a succession chain survives a checkpoint: trust chains forward across epochs without carrying the whole past, and no unlawful handoff is ever walked. Validator-set rotation reads continuous across a checkpoint.\n", .{});
+}
