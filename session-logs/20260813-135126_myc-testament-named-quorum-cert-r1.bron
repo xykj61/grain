@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260813.135126
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention · Vultr SEA VPS · ai-jail
+title Testament r1 — a named constellation's verdict travels as an offline certificate
+prompt recur the 1024-round itinerary — next agent-doable lap, Lindy-first crux-first, approve own design rounds, send each finished increment, stop at custody gates
+think Read REMEMBER + the 1,024-round itinerary + the double-seat six-season expansion; the BUHR/TACT agent-doable arcs stand complete and the git log shows the Constel journey (r1-r4) as the freshest work.
+think Verified state: git clean, Constel r4 witness GREEN — the Constel agent-doable arc is closed. The next Lindy-first crux is a fresh Season D (Kresfa & Mycelium) journey.
+think Surveyed the Mycelium consensus stack (Cord · Voucher · Chorus · Muster · Warrant · Constel …). The honest blind spot: Constel reaches quorum IN one process (reach_quorum returns a head and nothing else); nothing carries the constellation's belief OUT as a portable, offline-verifiable artifact.
+think Checked chorus_bron — it already lets a bare Chorus travel and re-verify at a STATED threshold, no Dag. Its weakness: it carries no roster, so it cannot tell an enrolled ship from a stranger with a valid signature. That is exactly the gap a NAMED constellation closes.
+think Named the crux: a Testament — a certificate carrying the roster NAMES + the sealed Chorus. A recipient boots the exact roster from the names alone (Constel's reproducible gift), seats the Muster, derives the Byzantine threshold from the roster size, and passes the seal offline. Genuinely stronger than a bare travelling Chorus and non-duplicative.
+think Confirmed name freedom: testament/ratify/docket/beacon all zero collisions; the existing "certificate" language belongs to warrant (roll-rotation), a different thing. Chose Testament (warm, clear, safe per the Comlink tendency).
+think Read chorus/muster/voucher structs and confirmed verify_voucher · verify_chorus · pass_muster all work with NO Dag — so a seal made WITH the ledger verifies WITHOUT it. Designed seal_subset (first k ships) so full-seal, thin-quorum, and r2's f-down all share one path (DRY).
+obs Teeth chosen to prove the named binding a bare Chorus cannot: (1) a stranger's valid, agreeing voucher refuses NotMember; (2) a thin quorum below the DERIVED threshold refuses BelowQuorum; (3) a one-byte name tamper re-boots a different key so the real signer stops being a member → NotMember, proving binding to the exact names byte for byte.
+obs Self-approved the design round (exploration doc first) and landed r1 in the same turn rather than checking in — the itinerary's filling law authorizes exactly this. Only r1 landed; the finishing edge holds (one keystone, one send). r2-r4 (f-down · travels · reads-true) named for later laps.
+obs Composed constel + chorus + muster + voucher public API only, editing none; the four modules re-run GREEN at the witness door. Demo ship/keeper seeds only — a served testament reaches the Comlink gate, a real Kumara instance gates #2/#4; no custody crossed.
+loom witness=mycelium_testament_witness green=1 ships=5 threshold=4 voices=5 teeth=3
+file active-designing/20260813-135126_mycelium-testament-named-quorum-certificate-exploration.md the self-approved design read opening the Testament journey (4 rounds named)
+file mycelium/testament.rye r1 — seal a reading into a name-bound certificate; verify offline from the names alone
+file tools/mycelium_testament_witness.rish GREEN witness; Constel + Chorus stand at the door
+recommend keep-going — Testament r2 (sealed with f down, verifies against the full named roster), a self-approved lap continuing the Season D consensus arc; breach renames stay cairn-first, deep debride + seed force-push stay Keaton's hand (gate #1)

@@ -1,0 +1,60 @@
+# tools/mycelium_testament_witness.rish — a named constellation's verdict travels as an offline
+# certificate (r1, the Testament crux).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · Testament · rung r1.
+# The Constel journey gave the dev-net a name and a roster and reached quorum on a real fact — yet that
+# quorum lived and died in one process. A TESTAMENT is the carried belief: a portable certificate that a
+# NAMED constellation, by Byzantine quorum, certified a reading, verifiable OFFLINE holding only the
+# certificate and the roster NAMES. `chorus_bron` already lets a bare quorum travel and re-verify at a
+# STATED threshold — yet it cannot tell an enrolled ship from a stranger with a valid signature, because it
+# carries no roster. A Testament closes that gap: it carries the ship names, so a recipient BOOTS the exact
+# roster from the names alone (reproducible, no stored keys), seats the Muster, derives the Byzantine
+# threshold from the roster's size, and confirms the sealing voices are that constellation's own ships.
+#
+# The crux this witness proves is NAMED, OFFLINE-VERIFIABLE QUORUM — a certificate that binds a reading to a
+# constellation a keeper can name and re-boot, made WITH the ledger but verified WITHOUT it, with the teeth
+# that a stranger's valid voice never rides it (NotMember — the binding a bare Chorus cannot enforce), a
+# quorum too thin is not believed (BelowQuorum), and a tampered name refuses (NotMember — bound to the exact
+# names, byte for byte). Composes constel + chorus + muster + voucher public API only, editing none; demo
+# ship and keeper seeds — no key, no funds, no network, no real value.
+#
+# Scope: active-designing/20260813-135126_mycelium-testament-named-quorum-certificate-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mycelium_testament_witness.rish
+
+say "mycelium-testament: Language EN — the Constel quorum lived and died in one process; a Testament carries the constellation's belief out as a certificate a keeper verifies offline, holding only the roster names and the seal."
+say "mycelium-testament: Style Radiant — seal the reading in the constellation's own name and a keeper a world away boots the roster from the names alone and knows it true; no stranger's valid voice ever passes for one of the fleet's own, no thin quorum is believed, and a tampered name refuses byte for byte."
+say "mycelium-testament: Lens TAME — verification touches no Dag (verify_voucher · verify_chorus · pass_muster all work offline over the certificate's own bound facts); the threshold is DERIVED from the booted roster's size, never a number the certificate states about itself; composes constel + chorus + muster + voucher public API only; ship names can never parse as a live-network @p; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/testament"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/testament.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-testament: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mycelium-testament: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-testament: selftest did not speak GREEN"
+assert selftest.out contains "verifies OFFLINE from its names alone" else "mycelium-testament: the offline-from-names crux claim missing"
+assert selftest.out contains "no Dag" else "mycelium-testament: the no-ledger claim missing"
+assert selftest.out contains "re-boots byte-identical" else "mycelium-testament: the reproducibility claim missing"
+assert selftest.out contains "true order-head" else "mycelium-testament: the true-reading claim missing"
+assert selftest.out contains "Byzantine threshold" else "mycelium-testament: the derived-threshold claim missing"
+assert selftest.out contains "stranger's valid voice refuses NotMember" else "mycelium-testament: the stranger-binding tooth missing"
+assert selftest.out contains "thin quorum refuses BelowQuorum" else "mycelium-testament: the thin-quorum tooth missing"
+assert selftest.out contains "tampered name refuses NotMember" else "mycelium-testament: the name-tamper tooth missing"
+
+# The Constel whose named roster a Testament binds to stands at the door — a testament is the carried
+# belief of exactly the reproducible, named constellation the Constel journey seated.
+let constel = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/constel.rye -femit-bin=mycelium/bin/constel && mycelium/bin/constel 2>&1"]
+assert constel.ok else "mycelium-testament: the Constel roster a Testament binds to is not GREEN"
+assert constel.out contains "GREEN" else "mycelium-testament: the Constel did not speak its GREEN"
+
+# The Chorus whose quorum a Testament seals stands too — the certificate carries exactly the distinct-voice
+# attestation the Chorus proves, now bound to a named roster.
+let chorus = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/chorus.rye -femit-bin=mycelium/bin/chorus && mycelium/bin/chorus 2>&1"]
+assert chorus.ok else "mycelium-testament: the Chorus quorum a Testament seals is not GREEN"
+assert chorus.out contains "GREEN" else "mycelium-testament: the Chorus did not speak its GREEN"
+
+say "mycelium-testament: GREEN — a named constellation's verdict travels as an offline certificate: the roster re-boots byte-identical from the names alone, the sealed head is the account's true order-head, and the sealed voices meet the Byzantine threshold the booted roster derives — all verified with no Dag. A stranger's valid voice refuses NotMember, a thin quorum refuses BelowQuorum, a tampered name refuses NotMember; the Constel and the Chorus both stand at the door. The constellation's belief is a portable object bound to its own name."
