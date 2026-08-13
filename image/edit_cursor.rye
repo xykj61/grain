@@ -1,0 +1,250 @@
+//! image/edit_cursor.rye — HUNK16: the edit cursor — undo and redo over one history, a fresh edit forgets the road not taken.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK16.
+//! Design read: active-designing/20260813-171500_hunk-edit-cursor-undo-redo-exploration.md
+//! Teacher, thanked clean-room: the undo/redo history stack of a photo editor (iCloud Photos / Google Photos) — a
+//! position walks back and forth over one recorded history, and a fresh edit past a rewind discards the branch not
+//! kept (concept only, siloed).
+//!
+//! HUNK11 recorded the six Photos verbs as a bounded `EditList` and replayed them over an untouched source. HUNK14
+//! banked that purity: a revert is only dropping edits off the end, and the dropped edits could be redone — yet
+//! nothing held *where in the history a keeper stands*. This rung is that missing piece: an `EditCursor` carries the
+//! whole reachable history plus a `position` naming how many of its edits are in effect. `undo` steps the position
+//! back, `redo` steps it forward, and the image a keeper sees is `apply(source, first position edits)` — a walk
+//! destroys nothing, so ten undos roll forward again byte-for-byte. The one new law (the crux): a fresh `push` while
+//! rewound forgets the redo tail — the road not taken is discarded the moment a different one is taken. Composes
+//! HUNK14's `truncate` and HUNK11's `apply`, inventing no storage and no new failure mode. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/edit_cursor.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const photos = @import("photos.rye");
+const edits = @import("photo_edits.rye");
+const revert = @import("photo_revert.rye");
+
+pub const edit_cursor_version = "20260813.171500";
+
+/// A recorded history with a live position: `list` holds every reachable edit up to the live edge, and `position`
+/// names how many of them are currently applied. The governing invariant of the whole structure is `position <=
+/// list.count`, always — every operation preserves it. No pixels live here; a cursor is a recipe plus a place in it.
+pub const EditCursor = struct {
+    list: edits.EditList = edits.EditList.init(),
+    position: u32 = 0,
+
+    pub fn init() EditCursor {
+        return EditCursor{ .list = edits.EditList.init(), .position = 0 };
+    }
+
+    /// The edits currently in effect — the first `position` of the history. Pure over the cursor: HUNK14's own
+    /// `truncate`, which copies and never touches the source list.
+    pub fn applied(self: *const EditCursor) edits.EditList {
+        // invariant: the cursor never stands past the edits it holds.
+        assert(self.position <= self.list.count);
+        const out = revert.truncate(&self.list, self.position);
+        // invariant: the applied prefix holds exactly `position` edits.
+        assert(out.count == self.position);
+        return out;
+    }
+
+    /// How many edits are behind the cursor (undoable) and ahead of it (redoable).
+    pub fn can_undo(self: *const EditCursor) bool {
+        // invariant: the cursor stays within its history.
+        assert(self.position <= self.list.count);
+        return self.position > 0;
+    }
+
+    pub fn can_redo(self: *const EditCursor) bool {
+        // invariant: the cursor stays within its history.
+        assert(self.position <= self.list.count);
+        return self.position < self.list.count;
+    }
+
+    /// Record a fresh edit at the live position. The crux: any redo tail past the cursor is forgotten first — the
+    /// road not taken is discarded the moment a different one is taken — then the edit is appended and the position
+    /// advances onto it. Refuses `TooManyEdits` at the list's own ceiling; invents no new error.
+    pub fn push(self: *EditCursor, e: edits.Edit) edits.EditsError!void {
+        // invariant: the cursor stands within its history before a push.
+        assert(self.position <= self.list.count);
+        // Forget the redo tail: keep only the prefix the cursor currently stands on.
+        self.list = revert.truncate(&self.list, self.position);
+        // invariant: the truncation left exactly the applied prefix.
+        assert(self.list.count == self.position);
+        try self.list.push(e);
+        self.position = self.list.count;
+        // invariant: a fresh edit is the live edge, and no redo tail remains.
+        assert(self.position == self.list.count);
+    }
+
+    /// Step one edit back, clamping at the original (position 0) without underflow. A walk destroys nothing — the
+    /// edit stepped over stays in the history, redoable.
+    pub fn undo(self: *EditCursor) void {
+        // invariant: the cursor stands within its history.
+        assert(self.position <= self.list.count);
+        if (self.position > 0) self.position -= 1;
+        // invariant: the cursor never falls below the original.
+        assert(self.position <= self.list.count);
+    }
+
+    /// Step one edit forward, clamping at the live edge without overflow. Redo rolls a walked-back edit forward
+    /// exactly; a fresh push is what forgets a tail, never redo.
+    pub fn redo(self: *EditCursor) void {
+        // invariant: the cursor stands within its history.
+        assert(self.position <= self.list.count);
+        if (self.position < self.list.count) self.position += 1;
+        // invariant: the cursor never runs past the live edge.
+        assert(self.position <= self.list.count);
+    }
+
+    /// The count of edits behind the cursor — the undo depth.
+    pub fn depth(self: *const EditCursor) u32 {
+        // invariant: the cursor stands within its history.
+        assert(self.position <= self.list.count);
+        return self.position;
+    }
+};
+
+/// Replay the cursor's applied prefix over a source image — the image a keeper currently sees. Pure: the source is
+/// never mutated (HUNK11's `apply` begins from a clone). Position 0 recovers the original byte-for-byte.
+pub fn view(allocator: std.mem.Allocator, source: *const qoi.Pixmap, cursor: *const EditCursor) !qoi.Pixmap {
+    // invariant: the cursor stands within its history.
+    assert(cursor.position <= cursor.list.count);
+    const prefix = cursor.applied();
+    const out = try edits.apply(allocator, source, &prefix);
+    // invariant: the viewed image carries four bytes per pixel like every replay stage.
+    assert(out.pixels.len == @as(usize, out.width) * @as(usize, out.height) * 4);
+    return out;
+}
+
+// --- selftest: prove undo walks back and redo walks forward byte-for-byte, a walk destroys nothing, a fresh edit
+//     while rewound forgets the redo tail, undo/redo clamp without under/overflow, and the applied prefix still
+//     travels as an open fixed-point record ----------------------------------------------------------------------
+
+/// Build a 6×6 image where each pixel encodes its own coordinates, so a replayed cursor view's correctness is
+/// unambiguous: pixel (x,y) = (x·40, y·40, x+y, 255). Matches photo_edits.rye's own craft so proofs line up.
+fn craft_tagged(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 6;
+    const h: u32 = 6;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            buf[off] = @intCast(x * 40);
+            buf[off + 1] = @intCast(y * 40);
+            buf[off + 2] = @intCast(x + y);
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const pm = try craft_tagged(garden);
+
+    // Build a history of three edits through the cursor's own push: crop a 4×4, turn a quarter clockwise, +40 bright.
+    var cur = EditCursor.init();
+    try cur.push(.{ .crop = .{ .x = 1, .y = 1, .w = 4, .h = 4 } });
+    try cur.push(.{ .rotate = .{ .turns = 1 } });
+    try cur.push(.{ .adjust = .{ .brightness = 40, .num = 1, .den = 1 } });
+    assert(cur.list.count == 3 and cur.position == 3);
+    assert(cur.can_undo() and !cur.can_redo());
+
+    // The full view equals the three verbs by hand, byte-for-byte.
+    const full = try view(garden, &pm, &cur);
+    const by_hand_crop = try photos.crop(garden, &pm, 1, 1, 4, 4);
+    const by_hand_rot = try photos.rotate_quarter(garden, &by_hand_crop, 1);
+    const by_hand_full = try photos.adjust(garden, &by_hand_rot, 40, 1, 1);
+    assert(full.same_bytes(&by_hand_full));
+
+    // Undo walks back: two edits applied equals the first two verbs by hand.
+    cur.undo();
+    const undo_pos = cur.position;
+    assert(undo_pos == 2 and cur.can_redo());
+    const at2 = try view(garden, &pm, &cur);
+    assert(at2.same_bytes(&by_hand_rot));
+
+    // Redo walks forward, byte-for-byte back to the full image — a walk destroyed nothing.
+    cur.redo();
+    assert(cur.position == 3 and !cur.can_redo());
+    const back_full = try view(garden, &pm, &cur);
+    assert(back_full.same_bytes(&full));
+
+    // Rewind ALL the way to the original (position 0, the empty-list apply), then roll every step forward again.
+    cur.undo();
+    cur.undo();
+    cur.undo();
+    assert(cur.position == 0 and !cur.can_undo());
+    const original = try view(garden, &pm, &cur);
+    assert(original.same_bytes(&pm));
+    cur.redo();
+    const roll1 = try view(garden, &pm, &cur);
+    assert(roll1.same_bytes(&by_hand_crop)); // one edit forward: the crop alone
+    cur.redo();
+    cur.redo();
+    assert(cur.position == 3);
+    const rolled_full = try view(garden, &pm, &cur);
+    assert(rolled_full.same_bytes(&full)); // the whole history rolled forward, unchanged
+
+    // The crux: rewind one step, then push a DIFFERENT edit — the redo tail is forgotten.
+    cur.undo(); // now at position 2, a redo (the +40 adjust) available
+    assert(cur.can_redo());
+    try cur.push(.flip_h); // a fresh edit at position 2 forgets the adjust
+    assert(cur.list.count == 3 and cur.position == 3);
+    assert(!cur.can_redo()); // the discarded adjust is gone, nothing to redo
+    const branched = try view(garden, &pm, &cur);
+    const by_hand_branch = try photos.flip_h(garden, &by_hand_rot); // crop, rotate, then flip_h — the new road
+    assert(branched.same_bytes(&by_hand_branch));
+
+    // Clamp, never underflow or overflow: undo past the original stays at 0, redo past the live edge stays at count.
+    var edge = EditCursor.init();
+    try edge.push(.flip_v);
+    edge.undo();
+    edge.undo(); // second undo on an empty history clamps
+    assert(edge.position == 0 and !edge.can_undo());
+    edge.redo();
+    edge.redo(); // second redo past the live edge clamps
+    assert(edge.position == 1 and !edge.can_redo());
+
+    // The applied prefix still travels as an open, fixed-point record: render the branched cursor's edits, parse
+    // back, and it replays to the same image.
+    const prefix = cur.applied();
+    var buf: [edits.max_edits_bytes]u8 = undefined;
+    const n = try edits.render_edits(&prefix, buf[0..]);
+    var rebuilt: edits.EditList = undefined;
+    try edits.parse_edits(buf[0..n], &rebuilt);
+    assert(rebuilt.len() == prefix.len());
+    const from_text = try edits.apply(garden, &pm, &rebuilt);
+    assert(from_text.same_bytes(&branched));
+
+    // The ceiling holds: a fresh cursor filled to max_edits refuses the next push by the list's own bound.
+    var full_cur = EditCursor.init();
+    var i: u32 = 0;
+    while (i < edits.max_edits) : (i += 1) try full_cur.push(.flip_h);
+    assert(full_cur.position == edits.max_edits);
+    if (full_cur.push(.flip_v)) |_| return error.CeilingSlipped else |e| {
+        if (e != error.TooManyEdits) return error.WrongCeiling;
+    }
+
+    print("GREEN image-edit-cursor: a {d}-edit history walks — undo to {d} equals the first two verbs by hand and " ++
+        "redo returns to the full image byte-for-byte; rewinding to the original recovers the source and every " ++
+        "step rolls forward again unchanged; a fresh edit while rewound forgets the redo tail (the discarded verb " ++
+        "gone, the new road replayed by hand); undo and redo clamp at both edges without under/overflow; the " ++
+        "applied prefix still round-trips as an open fixed-point record; the {d}-edit ceiling refuses TooManyEdits\n", .{
+        cur.list.count, undo_pos, edits.max_edits,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: edit_cursor selftest\n", .{});
+    return 1;
+}

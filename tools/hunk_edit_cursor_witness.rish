@@ -1,0 +1,53 @@
+# tools/hunk_edit_cursor_witness.rish — the Photos app undo/redo cursor on metal (HUNK16).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK16.
+# Design read: active-designing/20260813-171500_hunk-edit-cursor-undo-redo-exploration.md.
+# Teacher, thanked clean-room: the undo/redo history stack of a photo editor (iCloud Photos / Google Photos) — a
+# position walks a recorded history, and a fresh edit past a rewind discards the branch not kept (concept only, siloed).
+#
+# HUNK11 recorded the six Photos verbs as a bounded edit-list and replayed them over an untouched source; HUNK14 made a
+# revert dropping edits off the end. This rung holds the piece redo actually needs: an `EditCursor` carries the whole
+# reachable history plus a `position`. Undo steps back, redo steps forward, and the image a keeper sees is the first
+# `position` edits replayed — a walk destroys nothing, so ten undos roll forward again byte-for-byte. The one new law:
+# a fresh push while rewound forgets the redo tail. The selftest proves the walk both ways byte-for-byte, that a
+# rewind-then-push forgets the discarded verb, that undo/redo clamp at both edges, that the applied prefix still
+# round-trips as an open record, and that the edit ceiling still refuses. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_edit_cursor_witness.rish
+
+say "hunk-edit-cursor: Language EN — HUNK16 carries a position over the recorded history; undo steps back, redo steps forward, and the viewed image is the first position edits replayed."
+say "hunk-edit-cursor: Style Radiant — a walk destroys nothing, so every undo rolls forward again; only a fresh edit ever forgets a road, and only the road left behind."
+say "hunk-edit-cursor: Lens TAME — the cursor is one edit-list plus a u32 with the invariant position <= count; undo/redo clamp without under/overflow; no new storage, no new error; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/edit_cursor"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/edit_cursor.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-edit-cursor: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-edit-cursor: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+say "hunk-edit-cursor: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-edit-cursor' && echo yes"]
+assert (trim green.out) == "yes" else "hunk-edit-cursor: selftest did not print the GREEN cursor line"
+
+let walk = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'redo returns to the full image byte-for-byte' && echo yes"]
+assert (trim walk.out) == "yes" else "hunk-edit-cursor: undo/redo did not walk the history byte-for-byte"
+
+let roll = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'every step rolls forward again unchanged' && echo yes"]
+assert (trim roll.out) == "yes" else "hunk-edit-cursor: a full rewind did not roll forward again unchanged"
+
+let forget = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'forgets the redo tail' && echo yes"]
+assert (trim forget.out) == "yes" else "hunk-edit-cursor: a fresh edit while rewound did not forget the redo tail"
+
+let clamp = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'clamp at both edges without' && echo yes"]
+assert (trim clamp.out) == "yes" else "hunk-edit-cursor: undo/redo did not clamp at both edges"
+
+let travel = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'still round-trips as an open fixed-point record' && echo yes"]
+assert (trim travel.out) == "yes" else "hunk-edit-cursor: the applied prefix did not round-trip as an open record"
+
+say "hunk-edit-cursor: GREEN — the Photos app walks its history: undo and redo byte-for-byte, a fresh edit forgets the road not taken, both edges clamped, the applied prefix still an open record; no network, no key, no funds."
