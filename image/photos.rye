@@ -19,7 +19,7 @@ const print = std.debug.print;
 const qoi = @import("qoi.rye");
 const tally_copy = @import("tally_copy.rye");
 
-pub const photos_version = "20260813.172645";
+pub const photos_version = "20260813.173146";
 
 pub const PhotosError = error{
     EmptyRect,
@@ -339,6 +339,125 @@ pub fn scale_area(
         .colorspace = pm.colorspace,
         .pixels = out,
     };
+}
+
+/// Fixed-point fraction bits for bilinear resampling — a source coordinate carries 8 bits of fraction, so the
+/// four-corner weights each fit in [0, 256] and their product pair sums to exactly 256·256.
+const bilinear_frac: u6 = 8;
+/// The fixed-point unit (2^bilinear_frac) — one whole source pixel measured in fraction units.
+const bilinear_unit: i64 = 1 << bilinear_frac;
+
+/// Map an output index to its half-pixel-center source coordinate in fixed point: pos = S·((2n+1)·src − dst)/(2·dst),
+/// where S = bilinear_unit. Computed in i64 so no product wraps and an edge coordinate may go honestly negative.
+/// At an identity size (src == dst) the coordinate lands exactly on the integer pixel n with zero fraction, which is
+/// what makes a same-size bilinear resize byte-identical.
+fn bilinear_pos(n: u32, src: u32, dst: u32) i64 {
+    // invariant: the target axis is non-empty — the caller refuses a zero dimension before mapping.
+    assert(dst > 0);
+    const numer = bilinear_unit * ((2 * @as(i64, n) + 1) * @as(i64, src) - @as(i64, dst));
+    return @divFloor(numer, 2 * @as(i64, dst));
+}
+
+/// Resize an image to new_w×new_h by BILINEAR sampling, returning a fresh Pixmap: each output pixel is the weighted
+/// blend of the four source pixels around the real coordinate it lands on, per channel and alpha. Bilinear is the
+/// smooth resampler between HUNK9's nearest-neighbor `scale` (blocky up) and HUNK22's area-average `scale_area`
+/// (down only): it grows and shrinks, blending rather than dropping or repeating. The source coordinate uses the
+/// half-pixel-center map (`bilinear_pos`) in fixed point, so an identity resize recovers the source byte-for-byte,
+/// and the edge samples clamp to the nearest real pixel. The four blend weights sum to exactly bilinear_unit², so a
+/// solid color stays that exact color at any size with no drift. Each channel sum stays in u32 (255·256² < 2^32) and
+/// divides by the constant weight total with round-to-nearest — no float, no wrap. Pure — the source is never
+/// mutated. Refuses a degenerate source or target with a zero dimension (`EmptyImage`) and a target past the codec's
+/// pixel ceiling (`OutOfBounds`).
+pub fn scale_bilinear(
+    allocator: std.mem.Allocator,
+    pm: *const qoi.Pixmap,
+    new_w: u32,
+    new_h: u32,
+) !qoi.Pixmap {
+    // invariant: the source buffer is exactly four bytes per pixel.
+    assert(pm.pixels.len == @as(usize, pm.width) * @as(usize, pm.height) * 4);
+    if (pm.width == 0 or pm.height == 0 or new_w == 0 or new_h == 0) return error.EmptyImage;
+
+    const total = @as(u64, new_w) * @as(u64, new_h);
+    if (total > qoi.qoi_max_pixels) return error.OutOfBounds;
+    // invariant: the target fits the codec's own pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+
+    const unit = bilinear_unit;
+    const half = unit * unit >> 1; // round-to-nearest bias, added before the divide by unit².
+    const out = try allocator.alloc(u8, @as(usize, @intCast(total)) * 4);
+
+    var ny: u32 = 0;
+    while (ny < new_h) : (ny += 1) {
+        const py = bilinear_pos(ny, pm.height, new_h);
+        const iy = @divFloor(py, unit);
+        const fy = py - iy * unit; // fractional row weight in [0, unit)
+        // invariant: the fractional part is non-negative (floor division keeps it so even for a negative coordinate).
+        assert(fy >= 0);
+        // invariant: the fractional part is below one whole source pixel.
+        assert(fy < unit);
+        // Clamp the two source rows into the image — an edge coordinate samples the nearest real row.
+        const y0: u32 = @intCast(clamp_index(iy, pm.height));
+        const y1: u32 = @intCast(clamp_index(iy + 1, pm.height));
+
+        var nx: u32 = 0;
+        while (nx < new_w) : (nx += 1) {
+            const px = bilinear_pos(nx, pm.width, new_w);
+            const ix = @divFloor(px, unit);
+            const fx = px - ix * unit; // fractional column weight in [0, unit)
+            // invariant: the fractional part is non-negative (floor division keeps it so even for a negative coordinate).
+            assert(fx >= 0);
+            // invariant: the fractional part is below one whole source pixel.
+            assert(fx < unit);
+            const x0: u32 = @intCast(clamp_index(ix, pm.width));
+            const x1: u32 = @intCast(clamp_index(ix + 1, pm.width));
+
+            // The four corner weights sum to exactly unit²; each channel blend divides by that total.
+            const w_tl: i64 = (unit - fx) * (unit - fy);
+            const w_tr: i64 = fx * (unit - fy);
+            const w_bl: i64 = (unit - fx) * fy;
+            const w_br: i64 = fx * fy;
+            // invariant: the four bilinear weights sum to exactly one whole pixel of weight (unit²).
+            assert(w_tl + w_tr + w_bl + w_br == unit * unit);
+
+            const tl = (@as(usize, y0) * @as(usize, pm.width) + @as(usize, x0)) * 4;
+            const tr = (@as(usize, y0) * @as(usize, pm.width) + @as(usize, x1)) * 4;
+            const bl = (@as(usize, y1) * @as(usize, pm.width) + @as(usize, x0)) * 4;
+            const br = (@as(usize, y1) * @as(usize, pm.width) + @as(usize, x1)) * 4;
+            const d_off = (@as(usize, ny) * @as(usize, new_w) + @as(usize, nx)) * 4;
+
+            var c: usize = 0;
+            while (c < 4) : (c += 1) {
+                const blend = w_tl * @as(i64, pm.pixels[tl + c]) + w_tr * @as(i64, pm.pixels[tr + c]) +
+                    w_bl * @as(i64, pm.pixels[bl + c]) + w_br * @as(i64, pm.pixels[br + c]);
+                // invariant: the weighted channel sum is non-negative (weights and channel bytes are non-negative).
+                assert(blend >= 0);
+                // invariant: the weighted channel sum stays within a byte's worth of the weight total (255·unit²).
+                assert(blend <= 255 * unit * unit);
+                out[d_off + c] = @intCast(@divFloor(blend + half, unit * unit));
+            }
+        }
+    }
+
+    // invariant: the output buffer is exactly four bytes per resized pixel.
+    assert(out.len == @as(usize, @intCast(total)) * 4);
+    return qoi.Pixmap{
+        .width = new_w,
+        .height = new_h,
+        .channels = pm.channels,
+        .colorspace = pm.colorspace,
+        .pixels = out,
+    };
+}
+
+/// Clamp a possibly-off-edge source index into [0, len − 1], so a bilinear edge coordinate samples the nearest real
+/// pixel rather than reading out of bounds. len is a positive image dimension.
+fn clamp_index(i: i64, len: u32) i64 {
+    // invariant: an image dimension is never zero at a sampling call.
+    assert(len > 0);
+    if (i < 0) return 0;
+    if (i > @as(i64, len - 1)) return @as(i64, len - 1);
+    return i;
 }
 
 /// Adjust brightness and contrast over the three color channels of a decoded image, leaving alpha untouched,
@@ -750,6 +869,98 @@ fn run_scale_area(garden: std.mem.Allocator) !struct { mean_r: u8 } {
     return .{ .mean_r = one.pixels[0] };
 }
 
+/// Prove the bilinear resampler by the algebra it must obey: an identity size recovers the source byte-for-byte, a
+/// solid color stays that exact color at any size (no drift, up or down), a 2×1 [A,B] upscaled to 3 wide blends to
+/// [A, (A+B)/2, B] (the outer pixels clamp to source, the center reads the exact average), alpha blends alongside
+/// the colors, the source stays pure, a resized image is still open, and a zero dimension and an over-ceiling target
+/// each refuse by name. Returns the upscaled dimensions for the GREEN line.
+fn run_bilinear(garden: std.mem.Allocator) !struct { uw: u32, uh: u32 } {
+    const w: u32 = 3;
+    const h: u32 = 4;
+    const pm = try craft_tagged_wh(garden, w, h);
+
+    // Identity size recovers the source byte-for-byte (the half-pixel map lands on integer pixels, zero fraction).
+    const same = try scale_bilinear(garden, &pm, w, h);
+    assert(same.same_bytes(&pm));
+
+    // A clean midpoint blend: a 2×1 [A, B] upscaled across to 3 wide gives [A, (A+B)/2, B]. Red A=0, B=100 → 50.
+    {
+        const two = try garden.alloc(u8, 2 * 1 * 4);
+        two[0] = 0;
+        two[1] = 10;
+        two[2] = 20;
+        two[3] = 200;
+        two[4] = 100;
+        two[5] = 30;
+        two[6] = 60;
+        two[7] = 40;
+        const line = qoi.Pixmap{ .width = 2, .height = 1, .channels = 4, .colorspace = 0, .pixels = two };
+        const wide = try scale_bilinear(garden, &line, 3, 1);
+        assert(wide.width == 3 and wide.height == 1);
+        // The outer output pixels clamp to the exact source pixels — every channel, alpha included.
+        assert(wide.pixels[0] == 0 and wide.pixels[1] == 10 and wide.pixels[2] == 20 and wide.pixels[3] == 200);
+        assert(wide.pixels[8] == 100 and wide.pixels[9] == 30 and wide.pixels[10] == 60 and wide.pixels[11] == 40);
+        // The center pixel is the exact average of the two source pixels, per channel and alpha.
+        assert(wide.pixels[4] == 50); //  (0+100)/2
+        assert(wide.pixels[5] == 20); //  (10+30)/2
+        assert(wide.pixels[6] == 40); //  (20+60)/2
+        assert(wide.pixels[7] == 120); // (200+40)/2 — alpha blends alongside the colors.
+    }
+
+    // Constant stays constant: a solid-color image resizes to the SAME color at any size, up or down, no drift.
+    {
+        const sw: u32 = 5;
+        const sh: u32 = 3;
+        const solid = try garden.alloc(u8, @as(usize, sw) * @as(usize, sh) * 4);
+        var p: u32 = 0;
+        while (p < sw * sh) : (p += 1) {
+            solid[p * 4] = 33;
+            solid[p * 4 + 1] = 66;
+            solid[p * 4 + 2] = 99;
+            solid[p * 4 + 3] = 222;
+        }
+        const flat = qoi.Pixmap{ .width = sw, .height = sh, .channels = 4, .colorspace = 0, .pixels = solid };
+        // Grow it and shrink it — both stay the exact color.
+        const big = try scale_bilinear(garden, &flat, 8, 7);
+        const small = try scale_bilinear(garden, &flat, 2, 2);
+        var q: u32 = 0;
+        while (q < big.width * big.height) : (q += 1) {
+            assert(big.pixels[q * 4] == 33 and big.pixels[q * 4 + 1] == 66);
+            assert(big.pixels[q * 4 + 2] == 99 and big.pixels[q * 4 + 3] == 222);
+        }
+        q = 0;
+        while (q < small.width * small.height) : (q += 1) {
+            assert(small.pixels[q * 4] == 33 and small.pixels[q * 4 + 1] == 66);
+            assert(small.pixels[q * 4 + 2] == 99 and small.pixels[q * 4 + 3] == 222);
+        }
+    }
+
+    // A 2x upscale of the tagged image, kept for the round-trip and the GREEN dimensions.
+    const up = try scale_bilinear(garden, &pm, w * 2, h * 2);
+    assert(up.width == w * 2 and up.height == h * 2);
+
+    // Pure: the source is untouched.
+    assert(pm.pixels[0] == 0 and pm.pixels[3] == 255);
+
+    // Still an OPEN image: a bilinearly-resized image re-encodes and round-trips through the codec byte-for-byte.
+    const cap = qoi.encoded_bound(up.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const res = try qoi.encode(&up, dst);
+    const back = try qoi.decode(garden, dst[0..res.len]);
+    assert(back.same_bytes(&up));
+
+    // Unwelcome: a zero-dimension target refuses EmptyImage.
+    if (scale_bilinear(garden, &pm, 0, 4)) |_| return error.EmptySlipped else |e| {
+        if (e != error.EmptyImage) return error.WrongEmpty;
+    }
+    // Unwelcome: a target past the codec's pixel ceiling refuses OutOfBounds (1<<11 · 1<<10 = 1<<21 > 1<<20).
+    if (scale_bilinear(garden, &pm, 1 << 11, 1 << 10)) |_| return error.BoundsSlipped else |e| {
+        if (e != error.OutOfBounds) return error.WrongBounds;
+    }
+
+    return .{ .uw = up.width, .uh = up.height };
+}
+
 /// Prove the adjust verb by the exact arithmetic it must obey: a neutral adjust recovers the source, a
 /// brightness lift and cut shift and clamp each color channel, a contrast push pivots around 128, a zero
 /// contrast flattens to the midpoint, alpha always passes through, the source stays pure, an adjusted image is
@@ -1084,6 +1295,13 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         "byte-identical; a solid color stays that exact color at any smaller size (no drift); the 1x1 mean is the " ++
         "exact integer average of all four pixels over every channel and alpha; source untouched (pure); " ++
         "downscaled image re-encodes and round-trips; an upscale and a zero target refused by name\n", .{area.mean_r});
+
+    const bilin = try run_bilinear(garden);
+    print("GREEN image-photos-bilinear: a 3x4 image resamples smoothly to {d}x{d} — identity size byte-identical; " ++
+        "a solid color stays that exact color at any size (no drift, up or down); a 2x1 [A,B] upscaled blends to " ++
+        "[A, (A+B)/2, B] with the exact average at the center; alpha blends alongside the colors; source untouched " ++
+        "(pure); resized image re-encodes and round-trips; a zero target and an over-ceiling target refused by " ++
+        "name\n", .{ bilin.uw, bilin.uh });
 
     const tuned = try run_adjust(garden);
     print("GREEN image-photos-adjust: a {d}x{d} strip tunes — a neutral adjust byte-identical; a brightness " ++
