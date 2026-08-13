@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260812.200856
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title GISM-AYRE-J8r3 — the closed period travels
+prompt continue the 1024-round road Lindy-first crux-first; take the next agent-doable lap, send each increment; stop only at custody gates
+think REMEMBER names the next crux — J8r3, the closed period travels: an entity's period folds to a sealed statement that renders to Bron and parses back byte-for-byte, still balancing
+think studied commerce_trade_bron / fairtrade_cert_bron for the flat-Bron render/parse idiom; a closed period seals the entity's trial-balance nets (cash/revenue/expense/equity), name, and close stamp — a recipient re-derives the balance sheet offline
+think wrote pond/apps/entity_books_period.rye — render emits format entity-period-v1 (name · stamp · four account nets, signed i64 via parse_int); PortablePeriod owns name+stamp buffers, reconstructs the TrialBalance and refuses Unbalanced if the nets do not conserve, else folds the balance sheet (core asserts the identity); round trip preserves every field and still balances
+think first TAME run RED — two `) == error.` call seams (parse(bad_header) and pp.balances()); fixed by assigning to a variable first (the codebase idiom), GREEN
+obs additive — composes entity_books (r1) fold + dimeroll_core public API; r1 re-runs GREEN; reads no network (serve transport = Comlink-served gate); facts only, demo entities only, custody gate #3 untouched
+obs a closed period is testimony — it renders what the fold sealed; unbalanced nets refuse rather than travel as false books, so a traveled period cannot claim to balance if it does not
+loom witness=gism_ayre_j8_entity_books_period_witness cases=4 rung_one_rerun=green tame=clean width=clean
+file pond/apps/entity_books_period.rye J8r3 — a closed period renders to Bron and parses back still conserving and balancing
+file tools/gism_ayre_j8_entity_books_period_witness.rish witness — builds r1+r3, asserts GREEN, round-trip preservation, missing/unknown/malformed/unbalanced refusals
+file work-in-progress/REMEMBER.md living card — J8r3 landed row + git nib refresh
+recommend keep-going GISM-AYRE-J8r4 — the entity's books read true (an independent measurement of a real journal fixture matches the fold, mirroring GISM-J5r4), closing Journey 8
