@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260813.130910
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — ai-jail — Eastern (EDT) time convention
+title Portage r3 — a crossing travels as a readable record, accepted by that alone
+prompt loop turn — take the next agent-doable lap Lindy-first crux-first on the whole road; approve own design rounds; send each finished increment as its own signed round; STOP at custody gates
+think REMEMBER.md (git nib 315c2d2d0b) is stale against HEAD 39203ca — the bench has climbed far past it into Season D (Kresfa & Mycelium); trusted the code and git log over the card.
+think The whole-road Lindy-first crux is the current journey's next rung, not a fixed-itinerary rung: HEAD landed Portage r2 (atomic), so the next agent-doable crux is Portage r3 — the crossing travels as text.
+think Modeled the rung on the family's own `_bron` idiom (freight_bron.rye the closest kin): a fixed-order line-per-field record, a purpose-built bounded hex/decimal reader, render/parse a fixed point, a seen-bitmask refusing MissingField.
+think The record's fields: id · from · to-world · to-account · amount · digest · out-head · in-head (the exploration's own list). from/to/world/id/digest/heads render as fixed-width hex, amount as decimal.
+think The crux is acceptance BY THE RECORD ALONE — designed two teeth: self_certifies re-derives the digest from the record's own bound fields (id·amount·from·world·to) so any altered field diverges; accept ties the light record to r1's heavy proof — out-head must equal World A's real order-head with a matching burn, in-head must equal World B's real order-head crediting the recipient under this digest (resolve_world refuses NoMatchingBurn otherwise).
+obs GREEN after one shadow fix (a local hex buffer named from_hex shadowed the from_hex fn — renamed to from_hex_buf); no logic red. Conservation across the pair read from the record's own worlds (40 left A == 40 reached B).
+obs Tamper teeth all bite: a changed amount breaks self-certification (NotSelfCertified), a changed out-head refuses OutHeadMismatch, a changed in-head refuses InHeadMismatch; every malformed record (bad header · unknown field · bad line · bad hex · bad amount · missing field) refuses.
+obs Composes portage + cord + voucher + kumara public API only, editing none; Portage r1 crux and r2 atomic law both re-run GREEN at the witness door; demo world/keeper seeds — no key, no funds, no network, no value crossed; a served crossing (World B fetching World A's record over Comlink) stays the Comlink-served custody gate.
+loom witness=mycelium_portage_bron_witness build=green selftest=green r1=green r2=green amount=40
+file mycelium/portage_bron.rye the r3 record — render/parse a format portage-v1 receipt, self_certifies + accept tie it to both ledgers
+file tools/mycelium_portage_bron_witness.rish the witness — build · selftest · GREEN + claim asserts; r1 and r2 re-run at the door
+recommend keep-going Portage r4 — reads true against a real on-disk fixture cross-checked by an independent awk reading (two tools, one answer), closing the Portage agent-doable arc; a served crossing stays the Comlink gate.

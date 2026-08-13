@@ -1,0 +1,498 @@
+//! mycelium/portage_bron.rye — a crossing travels as a readable record, and a world accepts it by that alone (r3, travel).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · Portage · rung r3 — travel.
+//! Design read: active-designing/20260813-124159_mycelium-portage-cross-world-transfer-exploration.md
+//!
+//! r1 proved value crosses two worlds and the pair conserves; r2 made the crossing atomic — it lands on both
+//! ledgers or neither. Both read the two worlds' ledger blocks in hand. Yet the correspondent a portage means
+//! to replace is exactly the party a receiving world would otherwise trust for word of the far shore. r3 lets
+//! the crossing cross as a RECORD: a `format portage-v1` line-per-field receipt carrying id · from · to-world ·
+//! to-account · amount · digest · out-head · in-head. Render writes it, parse reads it back byte-for-byte — a
+//! round trip is a fixed point.
+//!
+//! The crux is that the record is SELF-CERTIFYING and TIED TO BOTH LEDGERS, so a world accepts a cross-world
+//! transfer by reading its record alone rather than believing a correspondent:
+//!   - the carried digest is a pure function of the record's own bound fields (id·amount·from·to-world·
+//!     to-account), so re-deriving it from the record and comparing catches any altered field — a tampered
+//!     amount or recipient makes the record fail `self_certifies` before a coin is considered;
+//!   - the out-head fingerprints World A's real ledger and the in-head fingerprints World B's, and `accept`
+//!     ties the light record to r1's heavy proof: the carried out-head must equal World A's real order-head
+//!     and World A must have burned exactly this digest, and the carried in-head must equal World B's real
+//!     order-head and World B must credit the recipient under this digest (`resolve_world` refuses
+//!     `NoMatchingBurn` for any other), returning the conserved amount the two shores agree on.
+//! So a node trusts a moving crossing by its record alone, yet still catches a record whose fields, whose
+//! source head, or whose destination head does not match the ledgers it names.
+//!
+//! A purpose-built bounded reader, never a general parser: a wrong header refuses `BadFormat`, an unknown field
+//! `UnknownField` (never dropped), a malformed line `BadLine`, a bad hex field `BadHex`, a bad amount `BadInt`,
+//! a missing field `MissingField`, an overflow `RecordTooLong`. Composes portage + cord + voucher + kumara
+//! public API only, editing none (r1's own selftest re-runs GREEN at this witness's door). Siloed, dev-only,
+//! demo world/keeper seeds — no key, no funds, no network, no value crossed; a served crossing (World B
+//! fetching World A's record over Comlink) reaches the Comlink-served gate (Keaton's hand).
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/portage_bron.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const portage = @import("portage.rye");
+const cord = @import("cord.rye");
+const fold = @import("fold.rye");
+const voucher = @import("voucher.rye");
+const kumara = @import("kumara.rye");
+const parse_int = @import("parse_int.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const portage_bron_version = "20260813.124159";
+
+pub const pk_len: u32 = portage.pk_len;
+pub const id_len: u32 = portage.id_len;
+pub const world_tag_len: u32 = portage.world_tag_len;
+pub const digest_len: u32 = portage.digest_len;
+pub const head_len: u32 = voucher.order_head_len;
+
+/// The record buffer bound — a full portage record fits with room to spare.
+pub const max_record: u32 = 1024;
+
+/// The eight fields a record must carry; a parse refuses `MissingField` unless every bit is set.
+const field_id: u8 = 1 << 0;
+const field_from: u8 = 1 << 1;
+const field_world: u8 = 1 << 2;
+const field_to: u8 = 1 << 3;
+const field_amount: u8 = 1 << 4;
+const field_digest: u8 = 1 << 5;
+const field_out_head: u8 = 1 << 6;
+const field_in_head: u8 = 1 << 7;
+const field_all: u8 = field_id | field_from | field_world | field_to | field_amount | field_digest | field_out_head | field_in_head;
+
+pub const BronError = error{
+    BadFormat, // the header is wrong
+    UnknownField, // a line names a field the record does not define
+    BadLine, // a known line carries the wrong token count
+    BadHex, // a fixed-width field was the wrong length or held a non-hex char
+    BadInt, // the amount was not a decimal u64
+    MissingField, // the record omitted a field the crossing needs
+    RecordTooLong, // the rendered record overflowed the buffer
+};
+
+/// Every way accepting a record can fail against the two ledgers it names.
+pub const AcceptError = error{
+    NotSelfCertified, // the carried digest is not the digest of the record's own bound fields
+    OutHeadMismatch, // the carried out-head is not World A's real order-head
+    InHeadMismatch, // the carried in-head is not World B's real order-head
+    BurnAbsent, // World A never burned this crossing's digest
+} || portage.WorldError;
+
+/// The amount a record's crossing moves, once accepted — the value the two shores agree on.
+pub const Accepted = struct {
+    amount: u64,
+};
+
+/// A portage record: the whole crossing as bytes. `id·from·world·to` are the fields the digest binds; the
+/// digest content-addresses them; the two heads fingerprint the two worlds the crossing joined.
+pub const Record = struct {
+    id: [id_len]u8,
+    from: [pk_len]u8,
+    world: [world_tag_len]u8,
+    to: [pk_len]u8,
+    amount: u64,
+    digest: [digest_len]u8,
+    out_head: [head_len]u8,
+    in_head: [head_len]u8,
+};
+
+const hex_digits = "0123456789abcdef";
+
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex chars per byte.
+    assert(out.len == bytes.len * 2);
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0F];
+    }
+}
+
+fn nibble(c: u8) BronError!u8 {
+    return switch (c) {
+        '0'...'9' => c - '0',
+        'a'...'f' => c - 'a' + 10,
+        'A'...'F' => c - 'A' + 10,
+        else => error.BadHex,
+    };
+}
+
+fn from_hex(text: []const u8, out: []u8) BronError!void {
+    if (text.len != out.len * 2) return error.BadHex;
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < out.len) : (i += 1) {
+        const hi = try nibble(text[i * 2]);
+        const lo = try nibble(text[i * 2 + 1]);
+        out[i] = (hi << 4) | lo;
+    }
+}
+
+/// Render one record to a `format portage-v1` receipt — one field per line, in a fixed order. Refuses an
+/// overflow rather than a partial record.
+pub fn render(r: *const Record, out: []u8) BronError!u32 {
+    // invariant: the render buffer honors its bound.
+    assert(out.len >= max_record);
+    // invariant: an order-head is exactly one block-address width, so the two heads round-trip whole.
+    assert(head_len == cord.hash_len);
+
+    var id_hex: [id_len * 2]u8 = undefined;
+    to_hex(r.id[0..], &id_hex);
+    var from_hex_buf: [pk_len * 2]u8 = undefined;
+    to_hex(r.from[0..], &from_hex_buf);
+    var world_hex: [world_tag_len * 2]u8 = undefined;
+    to_hex(r.world[0..], &world_hex);
+    var to_hex_buf: [pk_len * 2]u8 = undefined;
+    to_hex(r.to[0..], &to_hex_buf);
+    var digest_hex: [digest_len * 2]u8 = undefined;
+    to_hex(r.digest[0..], &digest_hex);
+    var out_head_hex: [head_len * 2]u8 = undefined;
+    to_hex(r.out_head[0..], &out_head_hex);
+    var in_head_hex: [head_len * 2]u8 = undefined;
+    to_hex(r.in_head[0..], &in_head_hex);
+
+    const body = std.fmt.bufPrint(out, "format portage-v1\nid {s}\nfrom {s}\nworld {s}\nto {s}\namount {d}\ndigest {s}\nout-head {s}\nin-head {s}\n", .{
+        id_hex, from_hex_buf, world_hex, to_hex_buf, r.amount, digest_hex, out_head_hex, in_head_hex,
+    }) catch return error.RecordTooLong;
+
+    const off: u32 = @intCast(body.len);
+    // invariant: the rendered record never exceeds its bound.
+    assert(off <= max_record);
+    return off;
+}
+
+/// Split a line into up to two tokens; returns the count (or three to signal a token past a record line's
+/// width — every line is exactly `field value`, two tokens).
+fn tokens(line: []const u8, out: *[2][]const u8) u32 {
+    var count: u32 = 0;
+    var it = std.mem.tokenizeScalar(u8, line, ' ');
+    while (it.next()) |t| {
+        if (count >= 2) return count + 1;
+        out[count] = t;
+        count += 1;
+    }
+    return count;
+}
+
+fn parse_u64(text: []const u8) BronError!u64 {
+    return parse_int.parse_int(u64, text, .{}) catch return error.BadInt;
+}
+
+/// Parse a `format portage-v1` record into `out`. Every field is required; the record refuses `MissingField`
+/// unless all eight arrive, so a partial record can never leave an undefined crossing.
+pub fn parse(text: []const u8, out: *Record) BronError!void {
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const header = lines.next() orelse return error.BadFormat;
+    if (!std.mem.eql(u8, header, "format portage-v1")) return error.BadFormat;
+
+    var seen: u8 = 0;
+    out.amount = 0;
+    while (lines.next()) |raw| {
+        if (raw.len == 0) continue; // a trailing newline yields one empty line
+        var tok: [2][]const u8 = undefined;
+        const n = tokens(raw, &tok);
+        if (n == 0) continue;
+        if (n != 2) return error.BadLine;
+        if (std.mem.eql(u8, tok[0], "id")) {
+            try from_hex(tok[1], out.id[0..id_len]);
+            seen |= field_id;
+        } else if (std.mem.eql(u8, tok[0], "from")) {
+            try from_hex(tok[1], out.from[0..pk_len]);
+            seen |= field_from;
+        } else if (std.mem.eql(u8, tok[0], "world")) {
+            try from_hex(tok[1], out.world[0..world_tag_len]);
+            seen |= field_world;
+        } else if (std.mem.eql(u8, tok[0], "to")) {
+            try from_hex(tok[1], out.to[0..pk_len]);
+            seen |= field_to;
+        } else if (std.mem.eql(u8, tok[0], "amount")) {
+            out.amount = try parse_u64(tok[1]);
+            seen |= field_amount;
+        } else if (std.mem.eql(u8, tok[0], "digest")) {
+            try from_hex(tok[1], out.digest[0..digest_len]);
+            seen |= field_digest;
+        } else if (std.mem.eql(u8, tok[0], "out-head")) {
+            try from_hex(tok[1], out.out_head[0..head_len]);
+            seen |= field_out_head;
+        } else if (std.mem.eql(u8, tok[0], "in-head")) {
+            try from_hex(tok[1], out.in_head[0..head_len]);
+            seen |= field_in_head;
+        } else {
+            return error.UnknownField;
+        }
+    }
+    if (seen != field_all) return error.MissingField;
+}
+
+/// The record reads its own bound fields alone: the carried digest is a pure function of id·amount·from·
+/// world·to, so re-deriving it and comparing catches any field altered in transit. True exactly when the
+/// digest the record carries is the digest of the fields it carries.
+pub fn self_certifies(r: *const Record) bool {
+    var d: [digest_len]u8 = undefined;
+    portage.portage_digest(r.id[0..], r.amount, r.from[0..], r.world[0..], r.to[0..], &d);
+    return std.mem.eql(u8, d[0..], r.digest[0..]);
+}
+
+/// Accept a crossing by its record alone, tied to the two real ledgers it names. The record must self-certify
+/// (its digest binds its own fields), its out-head must be World A's real order-head with a matching burn, and
+/// its in-head must be World B's real order-head that credits the recipient under this digest. Returns the
+/// conserved amount the two shores agree on; any mismatch refuses rather than trusting a correspondent.
+pub fn accept(r: *const Record, dag_a: *const cord.Dag, dag_b: *const cord.Dag) AcceptError!Accepted {
+    // invariant: an order-head is exactly one block-address width.
+    assert(head_len == cord.hash_len);
+
+    // The record certifies its own identity from its bound fields — no correspondent consulted.
+    if (!self_certifies(r)) return error.NotSelfCertified;
+
+    // The out-head fingerprints World A's real ledger, and World A burned exactly this digest.
+    var ha: [head_len]u8 = undefined;
+    portage.world_head(dag_a, &ha);
+    if (!std.mem.eql(u8, ha[0..], r.out_head[0..])) return error.OutHeadMismatch;
+    const la = try portage.resolve_world(dag_a, null);
+    if (!la.out_present) return error.BurnAbsent;
+    if (!std.mem.eql(u8, la.out_digest_slice(), r.digest[0..])) return error.BurnAbsent;
+
+    // The in-head fingerprints World B's real ledger, and World B credits the recipient under this digest —
+    // resolve_world refuses NoMatchingBurn for any other, so acceptance is a pure function of the two ledgers.
+    var hb: [head_len]u8 = undefined;
+    portage.world_head(dag_b, &hb);
+    if (!std.mem.eql(u8, hb[0..], r.in_head[0..])) return error.InHeadMismatch;
+    const lb = try portage.resolve_world(dag_b, &r.digest);
+
+    // invariant: the amount the two shores agree on is exactly World A's burn, and it reached the recipient.
+    assert(lb.balance_of(r.to[0..]) >= la.out_amount);
+    return .{ .amount = la.out_amount };
+}
+
+// --- selftest scaffolding: build two worlds over the season's own idioms --------------------------------
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn world_tag(name: []const u8) [world_tag_len]u8 {
+    // invariant: a world tag name fits the fixed tag width.
+    assert(name.len <= world_tag_len);
+    var t: [world_tag_len]u8 = .{0} ** world_tag_len;
+    tally_copy.copy_disjoint(u8, t[0..name.len], name);
+    return t;
+}
+
+/// Build World A's source Dag: a funder credits `owner` `start`, then the owner signs a portage-OUT of
+/// `amount` to `to` on `world`. Returns the two blocks.
+fn seat_source(funder: u8, owner: u8, start: u64, id: []const u8, world: []const u8, amount: u64, to: []const u8) ![2]cord.Block {
+    const kf = seeded(funder);
+    const ka = seeded(owner);
+    const owner_pk = ka.public_key.toBytes();
+
+    const f_gen = fold.mint_fact(kf, fold.kind_issue, start, "", owner_pk[0..]) orelse return error.MintGen;
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_gen) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+    const roots = [_][cord.hash_len]u8{hg};
+
+    var ob: [1 + id_len + world_tag_len + pk_len]u8 = undefined;
+    ob[0] = portage.tag_out;
+    tally_copy.copy_disjoint(u8, ob[1 .. 1 + id_len], id);
+    tally_copy.copy_disjoint(u8, ob[1 + id_len .. 1 + id_len + world_tag_len], world);
+    tally_copy.copy_disjoint(u8, ob[1 + id_len + world_tag_len ..][0..pk_len], to);
+    const f_out = fold.mint_fact(ka, fold.kind_tax, amount, "", ob[0..]) orelse return error.MintOut;
+    const bo = cord.mint_block(ka, 1, roots[0..], f_out) orelse return error.BlockOut;
+    return .{ g, bo };
+}
+
+/// Build World B's destination Dag: a gateway signs a portage-IN of `amount` to `to`, carrying `dg`. Returns
+/// the one block.
+fn seat_dest(gateway: u8, id: []const u8, dg: []const u8, amount: u64, to: []const u8) !cord.Block {
+    const kg = seeded(gateway);
+    var ib: [1 + id_len + digest_len + pk_len]u8 = undefined;
+    ib[0] = portage.tag_in;
+    tally_copy.copy_disjoint(u8, ib[1 .. 1 + id_len], id);
+    tally_copy.copy_disjoint(u8, ib[1 + id_len .. 1 + id_len + digest_len], dg);
+    tally_copy.copy_disjoint(u8, ib[1 + id_len + digest_len ..][0..pk_len], to);
+    const f_in = fold.mint_fact(kg, fold.kind_tax, amount, "", ib[0..]) orelse return error.MintIn;
+    const b = cord.mint_block(kg, 0, &[_][cord.hash_len]u8{}, f_in) orelse return error.BlockIn;
+    return b;
+}
+
+fn dag_of(blocks: []const cord.Block) !cord.Dag {
+    var dag = cord.Dag.empty();
+    for (blocks) |blk| try cord.add(&dag, blk);
+    return dag;
+}
+
+/// Build the record that advertises the crossing the two worlds settled — every field read from the real
+/// worlds, never invented.
+fn build_record(id: []const u8, from: []const u8, world: []const u8, to: []const u8, amount: u64, digest: []const u8, dag_a: *const cord.Dag, dag_b: *const cord.Dag) Record {
+    var r: Record = undefined;
+    tally_copy.copy_disjoint(u8, r.id[0..], id);
+    tally_copy.copy_disjoint(u8, r.from[0..], from);
+    tally_copy.copy_disjoint(u8, r.world[0..], world);
+    tally_copy.copy_disjoint(u8, r.to[0..], to);
+    r.amount = amount;
+    tally_copy.copy_disjoint(u8, r.digest[0..], digest);
+    portage.world_head(dag_a, &r.out_head);
+    portage.world_head(dag_b, &r.in_head);
+    return r;
+}
+
+pub fn main() !void {
+    const id = [_]u8{0x2C} ** id_len;
+    const wtag = world_tag("world-b");
+    const start: u64 = 100;
+    const amount: u64 = 40;
+
+    const alice = seeded(0xA1).public_key.toBytes();
+    const bob = seeded(0xB2).public_key.toBytes();
+
+    // The digest both shores compute from the crossing's content alone.
+    var digest: [digest_len]u8 = undefined;
+    portage.portage_digest(id[0..], amount, alice[0..], wtag[0..], bob[0..], &digest);
+
+    // Two real worlds settle the crossing (r1's own scene): World A burns, World B credits under the digest.
+    const src = try seat_source(0xF0, 0xA1, start, id[0..], wtag[0..], amount, bob[0..]);
+    var dag_a = try dag_of(&[_]cord.Block{ src[0], src[1] });
+    const in_block = try seat_dest(0xF1, id[0..], digest[0..], amount, bob[0..]);
+    var dag_b = try dag_of(&[_]cord.Block{in_block});
+
+    // The record that advertises the settled crossing — every field read from the real worlds.
+    const record = build_record(id[0..], alice[0..], wtag[0..], bob[0..], amount, digest[0..], &dag_a, &dag_b);
+
+    // --- Travel: render writes the record, parse reads it back byte-for-byte (a fixed point) ---------------
+    var buf: [max_record]u8 = undefined;
+    const len = try render(&record, buf[0..]);
+
+    var recovered: Record = undefined;
+    try parse(buf[0..len], &recovered);
+
+    // Every field survives the wire.
+    if (!std.mem.eql(u8, record.id[0..], recovered.id[0..])) return error.PortageChanged;
+    if (!std.mem.eql(u8, record.from[0..], recovered.from[0..])) return error.PortageChanged;
+    if (!std.mem.eql(u8, record.world[0..], recovered.world[0..])) return error.PortageChanged;
+    if (!std.mem.eql(u8, record.to[0..], recovered.to[0..])) return error.PortageChanged;
+    if (record.amount != recovered.amount) return error.PortageChanged;
+    if (!std.mem.eql(u8, record.digest[0..], recovered.digest[0..])) return error.PortageChanged;
+    if (!std.mem.eql(u8, record.out_head[0..], recovered.out_head[0..])) return error.PortageChanged;
+    if (!std.mem.eql(u8, record.in_head[0..], recovered.in_head[0..])) return error.PortageChanged;
+
+    // Re-rendering the recovered record reproduces the exact bytes (fixed point).
+    var buf2: [max_record]u8 = undefined;
+    const len2 = try render(&recovered, buf2[0..]);
+    if (len2 != len) return error.NotFixedPoint;
+    if (!std.mem.eql(u8, buf[0..len], buf2[0..len2])) return error.NotFixedPoint;
+
+    // --- THE CRUX: a world accepts the crossing by reading its record alone, tied to the two ledgers -------
+    // The record self-certifies (its digest binds its own fields), so re-deriving from the recovered record
+    // matches the carried digest.
+    if (!self_certifies(&recovered)) return error.NotSelfCertified;
+
+    // And accept ties the light record to r1's heavy proof: out-head is World A's real head with a matching
+    // burn, in-head is World B's real head that credits the recipient under this digest.
+    const accepted = try accept(&recovered, &dag_a, &dag_b);
+    if (accepted.amount != amount) return error.WrongAmount;
+
+    // CONSERVATION ACROSS THE PAIR, read from the record's own worlds: the amount that left A reached B.
+    const la = try portage.resolve_world(&dag_a, null);
+    const lb = try portage.resolve_world(&dag_b, &recovered.digest);
+    if (start - la.balance_of(alice[0..]) != accepted.amount) return error.NotConserved;
+    if (lb.balance_of(bob[0..]) != accepted.amount) return error.NotConserved;
+
+    // --- Teeth: a record altered in transit refuses, field by field ---------------------------------------
+    // A tampered bound field (the amount) breaks self-certification — the digest no longer binds it.
+    {
+        var t = recovered;
+        t.amount = amount + 1;
+        if (self_certifies(&t)) return error.TamperCertified;
+        if (accept(&t, &dag_a, &dag_b)) |_| return error.TamperAccepted else |err| {
+            if (err != error.NotSelfCertified) return err;
+        }
+    }
+    // A tampered out-head no longer matches World A's real ledger.
+    {
+        var t = recovered;
+        t.out_head[0] +%= 1;
+        if (accept(&t, &dag_a, &dag_b)) |_| return error.TamperAccepted else |err| {
+            if (err != error.OutHeadMismatch) return err;
+        }
+    }
+    // A tampered in-head no longer matches World B's real ledger.
+    {
+        var t = recovered;
+        t.in_head[0] +%= 1;
+        if (accept(&t, &dag_a, &dag_b)) |_| return error.TamperAccepted else |err| {
+            if (err != error.InHeadMismatch) return err;
+        }
+    }
+
+    var scratch: Record = undefined;
+
+    // Refusal: a wrong header refuses BadFormat before any line is read.
+    if (parse("format portage-v2\n", &scratch)) |_| return error.BadHeaderAdmitted else |err| {
+        if (err != error.BadFormat) return error.WrongHeader;
+    }
+    // Refusal: an unknown field refuses UnknownField (never dropped).
+    {
+        var tmp: [max_record]u8 = undefined;
+        tally_copy.copy_disjoint(u8, tmp[0..len], buf[0..len]);
+        const extra = "bogus x\n";
+        tally_copy.copy_disjoint(u8, tmp[len .. len + extra.len], extra);
+        if (parse(tmp[0 .. len + extra.len], &scratch)) |_| return error.UnknownAdmitted else |err| {
+            if (err != error.UnknownField) return error.WrongUnknown;
+        }
+    }
+    // Refusal: a line with the wrong token count refuses BadLine.
+    {
+        const bad = "format portage-v1\namount\n";
+        if (parse(bad, &scratch)) |_| return error.BadLineAdmitted else |err| {
+            if (err != error.BadLine) return error.WrongBadLine;
+        }
+    }
+    // Refusal: a bad hex field refuses BadHex.
+    {
+        const bad = "format portage-v1\nid zz\n";
+        if (parse(bad, &scratch)) |_| return error.BadHexAdmitted else |err| {
+            if (err != error.BadHex) return error.WrongBadHex;
+        }
+    }
+    // Refusal: a bad amount refuses BadInt.
+    {
+        var tmp: [max_record]u8 = undefined;
+        var idh: [id_len * 2]u8 = undefined;
+        to_hex(id[0..], &idh);
+        var fromh: [pk_len * 2]u8 = undefined;
+        to_hex(alice[0..], &fromh);
+        var worldh: [world_tag_len * 2]u8 = undefined;
+        to_hex(wtag[0..], &worldh);
+        var toh: [pk_len * 2]u8 = undefined;
+        to_hex(bob[0..], &toh);
+        var dh: [digest_len * 2]u8 = undefined;
+        to_hex(digest[0..], &dh);
+        var oh: [head_len * 2]u8 = undefined;
+        to_hex(record.out_head[0..], &oh);
+        var ih: [head_len * 2]u8 = undefined;
+        to_hex(record.in_head[0..], &ih);
+        const bad = std.fmt.bufPrint(tmp[0..], "format portage-v1\nid {s}\nfrom {s}\nworld {s}\nto {s}\namount nope\ndigest {s}\nout-head {s}\nin-head {s}\n", .{
+            idh, fromh, worldh, toh, dh, oh, ih,
+        }) catch return error.RecordTooLong;
+        if (parse(bad, &scratch)) |_| return error.BadIntAdmitted else |err| {
+            if (err != error.BadInt) return error.WrongBadInt;
+        }
+    }
+    // Refusal: a record missing a field refuses MissingField (no undefined crossing leaves the reader).
+    {
+        const bad = "format portage-v1\namount 40\n";
+        if (parse(bad, &scratch)) |_| return error.MissingAdmitted else |err| {
+            if (err != error.MissingField) return error.WrongMissing;
+        }
+    }
+
+    print("portage-bron: a crossing renders to a format portage-v1 record (id · from · world · to · amount · digest · out-head · in-head) and parses back byte-for-byte — a fixed point\n", .{});
+    print("portage-bron: a world accepts the crossing by its record alone — the digest self-certifies its bound fields, the out-head accepts World A's real ledger with a matching burn, and the in-head accepts World B's real ledger crediting the recipient under this digest ({d} left A == {d} reached B)\n", .{ amount, accepted.amount });
+    print("portage-bron: a tampered field, a tampered out-head, and a tampered in-head each refuse; a bad header, unknown field, malformed line, bad hex, bad amount, and a missing field each refuse\n", .{});
+    print("GREEN: myc portage r3 — a crossing travels as a readable record and a world accepts it by that alone: the correspondent replaced by a receipt that self-certifies and ties to both ledgers. The record carries the crossing.\n", .{});
+}
