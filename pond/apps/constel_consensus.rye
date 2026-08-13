@@ -37,7 +37,7 @@ const Node = struct {
 
 /// A deterministic demo keeper — seed a keypair from one repeated byte, exactly
 /// as the Cord's own selftest does. Demo only; never a real key.
-fn seeded(byte: u8) kumara.KeyPair {
+pub fn seeded(byte: u8) kumara.KeyPair {
     const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
     return kumara.keypair_from_seed(&seed);
 }
@@ -49,7 +49,7 @@ fn seeded(byte: u8) kumara.KeyPair {
 /// never refused; a block `dst` already holds is skipped (gossip is idempotent);
 /// a forged block refuses whole. A closed, acyclic source drains in at most
 /// `src.len` passes, so the retry can never run away. Returns the count admitted.
-fn gossip_merge(dst: *cord.Dag, src: *const cord.Dag) error{
+pub fn gossip_merge(dst: *cord.Dag, src: *const cord.Dag) error{
     BadSignature,
     TooManyParents,
     DagFull,
@@ -105,7 +105,7 @@ fn gossip_merge(dst: *cord.Dag, src: *const cord.Dag) error{
 
 /// Fold the committed order of a Dag to its supply state — the real Mycelium law
 /// over the agreed order.
-fn committed_supply(dag: *const cord.Dag) !fold.FoldState {
+pub fn committed_supply(dag: *const cord.Dag) !fold.FoldState {
     // invariant: a Dag never holds more blocks than the fold log can carry.
     assert(dag.len <= fold.myc_log_max_facts);
     var order: [cord.cord_max_blocks]u32 = undefined;
@@ -120,7 +120,7 @@ fn committed_supply(dag: *const cord.Dag) !fold.FoldState {
 /// True when two Dags commit to the identical sequence of blocks — compared by
 /// block *hash*, so two Dags built in different internal orders still agree iff
 /// their agreed histories are the same.
-fn commits_equal(x: *const cord.Dag, y: *const cord.Dag) bool {
+pub fn commits_equal(x: *const cord.Dag, y: *const cord.Dag) bool {
     if (x.len != y.len) return false;
     var ox: [cord.cord_max_blocks]u32 = undefined;
     var oy: [cord.cord_max_blocks]u32 = undefined;
