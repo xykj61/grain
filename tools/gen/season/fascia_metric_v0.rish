@@ -1,7 +1,7 @@
 # tools/gen/season/fascia_metric_v0.rish — fascia metric (i4–i9).
 #
 # Difficulty-style connective-tissue grade 0–100 from four clutter signals.
-# i5: Amphora lap 1 · softer weights · window mean.
+# i5: Amphora manifest entry · softer weights · window mean.
 # i6: Amphora laps 1–3 folded; weights unchanged (window like-to-like).
 # i7: Class A exclude trial · window_min baseline.
 # i8: Class A HOLD disclosed · window_min kept · exclusion refuses silence.
@@ -21,18 +21,18 @@ if length args != 0 then let verb = args[0]
 
 # Amphora stack fold — laps 1–3 must green beside the meter.
 let amphora1 = run ["rishi/bin/rishi" "run" "tools/gen/amphora/amphora_lap1.rish"]
-assert amphora1.ok else "fascia-metric-v0 Amphora lap 1 fold RED"
-assert amphora1.out contains "GREEN: Amphora lap 1" else "fascia-metric-v0 Amphora lap 1 missing GREEN"
+assert amphora1.ok else "fascia-metric-v0 Amphora manifest-entry fold RED"
+assert amphora1.out contains "manifest entry + vessel seated" else "fascia-metric-v0 Amphora manifest-entry missing GREEN"
 say "fold: amphora_lap1 GREEN"
 
 let amphora2 = run ["rishi/bin/rishi" "run" "tools/gen/amphora/amphora_lap2.rish"]
-assert amphora2.ok else "fascia-metric-v0 Amphora lap 2 fold RED"
-assert amphora2.out contains "GREEN: Amphora lap 2" else "fascia-metric-v0 Amphora lap 2 missing GREEN"
+assert amphora2.ok else "fascia-metric-v0 Amphora Cellar-pour fold RED"
+assert amphora2.out contains "Cellar season poured" else "fascia-metric-v0 Amphora Cellar-pour missing GREEN"
 say "fold: amphora_lap2 GREEN"
 
 let amphora3 = run ["rishi/bin/rishi" "run" "tools/gen/amphora/amphora_lap3.rish"]
-assert amphora3.ok else "fascia-metric-v0 Amphora lap 3 fold RED"
-assert amphora3.out contains "GREEN: Amphora lap 3" else "fascia-metric-v0 Amphora lap 3 missing GREEN"
+assert amphora3.ok else "fascia-metric-v0 Amphora cargo-fetch fold RED"
+assert amphora3.out contains "vessel cargo fetched over Comlink" else "fascia-metric-v0 Amphora cargo-fetch missing GREEN"
 say "fold: amphora_lap3 GREEN"
 
 let metric = run ["sh" "tools/fixtures/fascia_metric_v0.sh" verb]
