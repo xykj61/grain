@@ -1,8 +1,8 @@
 //! dimeroll/dimeroll_core.rye — Dimeroll: chart, journal, trial-balance fold, reports.
 //!
 //! Centralized books of record. Debit-positive nets; conservation holds when the sum of nets is zero.
-//! Lap 2 adds income-statement and balance-sheet projections from the same fold.
-//! Lap 4 deepens journal filters: account · memo prefix · cash flow · sum amounts.
+//! Income statement and balance sheet projections from the same fold · 20260713.
+//! Journal filters deepened: account · memo prefix · cash flow · sum amounts · 20260713.
 
 const std = @import("std");
 const assert = std.debug.assert;

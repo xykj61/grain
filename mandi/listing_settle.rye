@@ -1,4 +1,4 @@
-//! mandi/listing_settle.rye — Mandi lap 3 selftest (settle vessel listing).
+//! mandi/listing_settle.rye — Mandi listing-settle selftest (settle vessel listing) · 20260728.
 //!
 //!   rye build mandi/listing_settle.rye -femit-bin=mandi/bin/listing-settle
 //!   mandi/bin/listing-settle selftest

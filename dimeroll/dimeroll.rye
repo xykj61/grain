@@ -1,4 +1,4 @@
-//! dimeroll/dimeroll.rye — Dimeroll selftest (lap 1–2 fold/reports + lap 4 filters).
+//! dimeroll/dimeroll.rye — Dimeroll selftest (fold/reports + filters) · 20260713.
 //!
 //!   rye build dimeroll/dimeroll.rye -femit-bin=dimeroll/bin/dimeroll
 //!   dimeroll/bin/dimeroll selftest
