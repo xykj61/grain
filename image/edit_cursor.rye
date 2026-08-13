@@ -150,8 +150,10 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     try cur.push(.{ .crop = .{ .x = 1, .y = 1, .w = 4, .h = 4 } });
     try cur.push(.{ .rotate = .{ .turns = 1 } });
     try cur.push(.{ .adjust = .{ .brightness = 40, .num = 1, .den = 1 } });
-    assert(cur.list.count == 3 and cur.position == 3);
-    assert(cur.can_undo() and !cur.can_redo());
+    assert(cur.list.count == 3);
+    assert(cur.position == 3);
+    assert(cur.can_undo());
+    assert(!cur.can_redo());
 
     // The full view equals the three verbs by hand, byte-for-byte.
     const full = try view(garden, &pm, &cur);
@@ -163,13 +165,15 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     // Undo walks back: two edits applied equals the first two verbs by hand.
     cur.undo();
     const undo_pos = cur.position;
-    assert(undo_pos == 2 and cur.can_redo());
+    assert(undo_pos == 2);
+    assert(cur.can_redo());
     const at2 = try view(garden, &pm, &cur);
     assert(at2.same_bytes(&by_hand_rot));
 
     // Redo walks forward, byte-for-byte back to the full image — a walk destroyed nothing.
     cur.redo();
-    assert(cur.position == 3 and !cur.can_redo());
+    assert(cur.position == 3);
+    assert(!cur.can_redo());
     const back_full = try view(garden, &pm, &cur);
     assert(back_full.same_bytes(&full));
 
@@ -177,7 +181,8 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     cur.undo();
     cur.undo();
     cur.undo();
-    assert(cur.position == 0 and !cur.can_undo());
+    assert(cur.position == 0);
+    assert(!cur.can_undo());
     const original = try view(garden, &pm, &cur);
     assert(original.same_bytes(&pm));
     cur.redo();
@@ -193,7 +198,8 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     cur.undo(); // now at position 2, a redo (the +40 adjust) available
     assert(cur.can_redo());
     try cur.push(.flip_h); // a fresh edit at position 2 forgets the adjust
-    assert(cur.list.count == 3 and cur.position == 3);
+    assert(cur.list.count == 3);
+    assert(cur.position == 3);
     assert(!cur.can_redo()); // the discarded adjust is gone, nothing to redo
     const branched = try view(garden, &pm, &cur);
     const by_hand_branch = try photos.flip_h(garden, &by_hand_rot); // crop, rotate, then flip_h — the new road
@@ -204,10 +210,12 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     try edge.push(.flip_v);
     edge.undo();
     edge.undo(); // second undo on an empty history clamps
-    assert(edge.position == 0 and !edge.can_undo());
+    assert(edge.position == 0);
+    assert(!edge.can_undo());
     edge.redo();
     edge.redo(); // second redo past the live edge clamps
-    assert(edge.position == 1 and !edge.can_redo());
+    assert(edge.position == 1);
+    assert(!edge.can_redo());
 
     // The applied prefix still travels as an open, fixed-point record: render the branched cursor's edits, parse
     // back, and it replays to the same image.

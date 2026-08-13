@@ -1,0 +1,47 @@
+# tools/hunk_cursor_preview_witness.rish — the Skate view of a cursor's neighbors on metal (HUNK17).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK17.
+# Design read: active-designing/20260813-171500_hunk-edit-cursor-undo-redo-exploration.md (the Skate-painted cursor door).
+# Teacher, thanked clean-room: the undo/redo previews of a photo editor — a keeper sees the neighbor image a step
+# would restore before committing to the walk (concept only, siloed).
+#
+# HUNK16 gave the edit-list a cursor (history plus a position); HUNK13 gave a pending edit an eye. This rung joins
+# them: `brushstroke/cursor_preview.rye` shows the Skate grid of a cursor's view at any position without mutating the
+# cursor (a value copy walks). preview_undo/preview_redo show the one-step neighbors. The property only a cursor can
+# offer, a plain revert cannot: a rewound cursor RETAINS its redo tail, so preview_redo shows a real image of the road
+# ahead — and after HUNK16's forget-the-tail push, that same preview honestly falls back to the current view. The
+# selftest proves the neighbor previews against a direct view, that a preview never mutates the cursor, and the crux
+# tie-in to HUNK16. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_cursor_preview_witness.rish
+
+say "hunk-cursor-preview: Language EN — HUNK17 previews a cursor's neighbors; preview_undo and preview_redo show the image a step would restore, without walking the cursor."
+say "hunk-cursor-preview: Style Radiant — only a cursor can preview its redo, having kept the tail a plain revert threw away; a fresh edit forgets that tail and the preview falls back honestly to the current view."
+say "hunk-cursor-preview: Lens TAME — a value copy walks so the caller's cursor is untouched; pure composition over two proven seams, no new failure mode; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/cursor_preview"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/cursor_preview.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-cursor-preview: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-cursor-preview: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+say "hunk-cursor-preview: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN cursor-preview' && echo yes"]
+assert (trim green.out) == "yes" else "hunk-cursor-preview: selftest did not print the GREEN cursor-preview line"
+
+let neighbors = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'preview_redo shows the retained tail cell-for-cell' && echo yes"]
+assert (trim neighbors.out) == "yes" else "hunk-cursor-preview: preview_redo did not show the retained tail cell-for-cell"
+
+let pure = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a preview never mutates the cursor' && echo yes"]
+assert (trim pure.out) == "yes" else "hunk-cursor-preview: a preview was not proven to leave the cursor untouched"
+
+let forget = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a fresh push forgets the redo tail so preview_redo falls back' && echo yes"]
+assert (trim forget.out) == "yes" else "hunk-cursor-preview: the forget-the-tail fallback was not proven"
+
+say "hunk-cursor-preview: GREEN — a cursor previews its neighbors: undo and redo seen before the walk, the redo tail a cursor keeps and a fresh edit forgets, the cursor untouched by any look; no network, no key, no funds."

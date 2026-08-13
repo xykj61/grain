@@ -1,0 +1,200 @@
+//! brushstroke/cursor_preview.rye — HUNK17: the Skate view of a cursor's neighbors — see what undo or redo restores, before you walk.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK17.
+//! Design read: active-designing/20260813-171500_hunk-edit-cursor-undo-redo-exploration.md (the Skate-painted cursor door).
+//! Teacher, thanked clean-room: the undo/redo previews of a photo editor — a keeper sees the neighbor image a step
+//! would restore before committing to the walk (concept only, siloed).
+//!
+//! HUNK16 gave the edit-list a cursor: the whole reachable history plus a position, with undo/redo walking it and a
+//! fresh edit forgetting the redo tail. HUNK13 gave a pending edit an eye (down-map the replayed result to a Skate
+//! grid). This rung joins them: `preview_at` shows the view at any position of a cursor's history — HUNK16's own
+//! `applied` prefix handed to HUNK13's `preview` — WITHOUT mutating the cursor (a value copy walks, the caller's
+//! cursor untouched). `preview_undo` and `preview_redo` show the one-step neighbors. The property only a *cursor*
+//! can offer (a plain revert cannot, having thrown its tail away): a rewound cursor **retains** its redo tail, so
+//! `preview_redo` shows a real image of the road ahead — and after HUNK16's forget-the-tail push, that same
+//! preview honestly falls back to the current view, because there is no longer a tail to show. A pure look over the
+//! edit-list: no name, no bead, no key, no funds, no network.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/cursor_preview.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const photos = @import("photos.rye");
+const edit_cursor = @import("edit_cursor.rye");
+const edit_preview = @import("edit_preview.rye");
+const image_skate = @import("image_skate.rye");
+const skate = @import("skate_grid.rye");
+
+pub const cursor_preview_version = "20260813.171500";
+
+/// Show the Skate grid of a cursor's view at `position` — the first `position` edits replayed and down-mapped —
+/// without mutating the cursor. A value copy of the cursor walks to the clamped position, so the caller's own
+/// cursor is untouched (a preview is a look, not a walk). `position` past the live edge clamps to the whole
+/// history. Adds no new failure mode: a verb's own refusal and the down-map's bounds surface through `preview`.
+pub fn preview_at(
+    allocator: std.mem.Allocator,
+    source: *const qoi.Pixmap,
+    cursor: *const edit_cursor.EditCursor,
+    position: u32,
+    cols: u32,
+    rows: u32,
+) !skate.Grid {
+    // invariant: the source cursor stands within its own history.
+    assert(cursor.position <= cursor.list.count);
+    // A value copy — EditCursor is a fixed array plus a u32, so this walk never touches the caller's cursor.
+    var walked = cursor.*;
+    walked.position = if (position > walked.list.count) walked.list.count else position;
+    // invariant: the copy stands within the history at the clamped position.
+    assert(walked.position <= walked.list.count);
+    const prefix = walked.applied();
+    return edit_preview.preview(allocator, source, &prefix, cols, rows);
+}
+
+/// Show what a single undo restores — the view one step back. At the original (position 0) it stays there, showing
+/// the original, so a keeper is never left without a view.
+pub fn preview_undo(
+    allocator: std.mem.Allocator,
+    source: *const qoi.Pixmap,
+    cursor: *const edit_cursor.EditCursor,
+    cols: u32,
+    rows: u32,
+) !skate.Grid {
+    // invariant: the cursor stands within its history.
+    assert(cursor.position <= cursor.list.count);
+    const back = if (cursor.position > 0) cursor.position - 1 else 0;
+    return preview_at(allocator, source, cursor, back, cols, rows);
+}
+
+/// Show what a single redo restores — the view one step forward. Only a cursor can offer this: it retains the redo
+/// tail a plain revert discards. At the live edge (no tail) it stays put, showing the current view honestly rather
+/// than inventing a road that is not there.
+pub fn preview_redo(
+    allocator: std.mem.Allocator,
+    source: *const qoi.Pixmap,
+    cursor: *const edit_cursor.EditCursor,
+    cols: u32,
+    rows: u32,
+) !skate.Grid {
+    // invariant: the cursor stands within its history.
+    assert(cursor.position <= cursor.list.count);
+    const fwd = if (cursor.position < cursor.list.count) cursor.position + 1 else cursor.position;
+    return preview_at(allocator, source, cursor, fwd, cols, rows);
+}
+
+// --- selftest: prove the neighbor previews equal a direct view at that position, the cursor is untouched by a
+//     preview, a rewound cursor's redo preview shows the retained tail, and a fresh push makes that redo preview
+//     fall back to the current view (the tail forgotten) ----------------------------------------------------------
+
+/// Build an 8×8 image whose left half is red and right half is blue — the same spatial pattern HUNK13/HUNK15 use,
+/// so a `flip_h` visibly swaps the halves and slot proofs line up.
+fn craft_two_tone(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 8;
+    const h: u32 = 8;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            const left = x < w / 2;
+            buf[off] = if (left) 255 else 0; // r
+            buf[off + 1] = 0; // g
+            buf[off + 2] = if (left) 0 else 255; // b
+            buf[off + 3] = 255; // a
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const pm = try craft_two_tone(garden);
+    const cols: u32 = 2;
+    const rows: u32 = 2;
+    const red_slot: u8 = 3; // anchors slot 3 is red
+    const blue_slot: u8 = 5; // anchors slot 5 is blue
+
+    // A two-edit history through the cursor: flip_h (swaps red/blue halves), then flip_h again (swaps them back).
+    var cur = edit_cursor.EditCursor.init();
+    try cur.push(.flip_h);
+    try cur.push(.flip_h);
+    assert(cur.position == 2);
+    assert(cur.list.count == 2);
+
+    // Rewind one step: the cursor now stands at position 1 (one flip applied), with a redo available.
+    cur.undo();
+    assert(cur.position == 1);
+    assert(cur.can_redo());
+    assert(cur.can_undo());
+
+    // preview_undo shows position 0 — the original. Its left cell reads red (the source's own left half).
+    const undo_grid = try preview_undo(garden, &pm, &cur, cols, rows);
+    const source_map = try image_skate.down_map(garden, &pm, cols, rows);
+    assert(std.mem.eql(u8, undo_grid.fg_index, source_map.fg_index));
+    assert(undo_grid.fg_index[0] == red_slot);
+
+    // preview_redo shows position 2 — the retained tail (flip, then flip back) = the original again, cell-for-cell.
+    // This is the property only a cursor offers: the tail was never thrown away, so the road ahead has a real image.
+    const redo_grid = try preview_redo(garden, &pm, &cur, cols, rows);
+    assert(std.mem.eql(u8, redo_grid.fg_index, source_map.fg_index));
+
+    // The current view (position 1, one flip_h) differs from both neighbors: its left cell reads BLUE (swapped).
+    const here = try preview_at(garden, &pm, &cur, cur.position, cols, rows);
+    assert(here.fg_index[0] == blue_slot);
+    assert(!std.mem.eql(u8, here.fg_index, source_map.fg_index));
+
+    // A preview NEVER mutates the cursor — after three previews the cursor still stands exactly where it was.
+    assert(cur.position == 1);
+    assert(cur.list.count == 2);
+
+    // The crux tie-in to HUNK16: a fresh push while rewound forgets the redo tail, so preview_redo falls back to the
+    // current view (no road ahead to show) rather than inventing one. Push a crop at position 1.
+    try cur.push(.{ .crop = .{ .x = 0, .y = 0, .w = 4, .h = 8 } });
+    assert(cur.position == 2);
+    assert(cur.list.count == 2);
+    assert(!cur.can_redo());
+    const after_push_here = try preview_at(garden, &pm, &cur, cur.position, cols, rows);
+    const after_push_redo = try preview_redo(garden, &pm, &cur, cols, rows);
+    // No tail: the redo preview equals the current view exactly.
+    assert(std.mem.eql(u8, after_push_redo.fg_index, after_push_here.fg_index));
+    assert(std.mem.eql(u8, after_push_redo.cells, after_push_here.cells));
+
+    // And the new road is genuinely the pushed crop: view = flip_h then crop the left half, down-mapped. Prove it
+    // equals a direct apply of exactly those two verbs, cell-for-cell.
+    const after_flip = try photos.flip_h(garden, &pm);
+    const after_crop = try photos.crop(garden, &after_flip, 0, 0, 4, 8);
+    const direct = try image_skate.down_map(garden, &after_crop, cols, rows);
+    assert(std.mem.eql(u8, after_push_here.fg_index, direct.fg_index));
+
+    // Genuinely seen: the current view rasterizes to a lit canvas.
+    const view_scale: u32 = 1;
+    const width: u32 = cols * skate.cell_w * view_scale;
+    const height: u32 = rows * skate.cell_h * view_scale;
+    const stride: u32 = width * 4;
+    const canvas = try garden.alloc(u8, @as(usize, stride) * @as(usize, height));
+    const bg = skate.Color{ .r = 1, .g = 2, .b = 3 };
+    const fg = skate.Color{ .r = 200, .g = 200, .b = 200 };
+    after_push_here.rasterize(canvas, stride, @intCast(width), @intCast(height), bg, fg, view_scale);
+    const lit = after_push_here.lit_pixel_count(canvas, stride, @intCast(width), @intCast(height), bg);
+    assert(lit > 0);
+
+    print("GREEN cursor-preview: a rewound cursor previews its neighbors on a {d}x{d} grid — preview_undo shows the " ++
+        "original (left cell red), preview_redo shows the retained tail cell-for-cell (the road only a cursor keeps), " ++
+        "the current view differs (left cell blue); a preview never mutates the cursor; a fresh push forgets the " ++
+        "redo tail so preview_redo falls back to the current view, which equals a direct apply of the pushed verbs " ++
+        "cell-for-cell; the view rasterizes to {d} lit pixels — seen, not walked; no name, no bead, no funds\n", .{
+        cols, rows, lit,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: cursor_preview selftest\n", .{});
+    return 1;
+}
