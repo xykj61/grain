@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260813.092847
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention; this session in ai-jail
+title Mycelium Statement r2 — the line travels, and reconciliation survives the wire
+prompt baton prin recur — continue the Statement journey after r1 landed and sent; take the next agent-doable rung Lindy-first, send it as its own signed round.
+think r1 (statement.rye) landed and pushed to both remotes (commit fc7adc6ece). The next rung on the Statement arc is r2 — travel — mirroring the seated lapse_bron/pledge_bron/braid_bron shape: a resolved reading a node cannot hand to another is only local, so a Statement must cross as readable bytes.
+think Studied mycelium/lapse_bron.rye for the render/parse/fixed-point/refusal pattern (format header · to_hex/from_hex · tokens splitter · conservation as the record's own law · a roster of named refusals). Carried that shape to the Statement: a `format statement-v1` record with one `account <pk> <balance> <reserved> <received> <present>` line and one `line <dir> <counterparty> <amount> <state>` per pledge the account touched.
+think The crux to carry across is reconciliation, not conservation: where lapse_bron makes balances+reserves==issued the record's law, the Statement's law is per-account — a present statement's reserved must equal the sum of its own still-open made lines (statement.reconciles()). Enforced on parse: a present statement that fails refuses BadReconcile before it is trusted, so a holder verifies r1's arithmetic with no ledger of their own.
+obs First build failed honestly — the account line is six tokens (account·pk·balance·reserved·received·present), wider than the five-token buffer I first sized to the line record; widened tokens to [6] and it went GREEN. The scene (Alice reserves 200 across two open made lines to Bob and Carol) exercises a multi-line statement; round trip is a fixed point (re-render byte-identical); a stranger's true zero travels (present=0, no lines); seven named refusals hold, including the new BadReconcile.
+obs Additive — composes statement + lapse + cord + fold public API only, edited no module; the Statement r1 and the Lapse re-run GREEN at the witness door. TAME bans clean (statement_bron.rye not flagged), width-check clean.
+loom witness=mycelium_statement_bron_witness round_trip=fixed_point reserved=200 made_lines=2 refusals=7
+file mycelium/statement_bron.rye r2 — render/parse a format statement-v1 record, reconciliation as the record's own law, fixed point, seven refusals
+file tools/mycelium_statement_bron_witness.rish the r2 witness — selftest GREEN + the Statement and Lapse re-run at the door
+file work-in-progress/REMEMBER.md folded r2 into the Statement bullet (design·r1·r2 LANDED); git nib refreshed in the same work commit
+recommend keep-going Statement r3 (the line reads across a Knot — an account's position continuous over an epoch cut, mirroring lapse_knot's absolute-clock seam), then r4 true to the bytes (app == awk over a real record). A served statement · per-account mint authority · breach renames (cairn-first) · deep debride · seed force-push stay the maintainer's hand.
