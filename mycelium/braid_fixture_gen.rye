@@ -1,0 +1,116 @@
+//! mycelium/braid_fixture_gen.rye — reproducibly emit a linked-chain Cord dev-net fixture (r4 support).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Braid · rung r4 support.
+//! Design read: active-designing/20260813-081709_mycelium-braid-linked-atomic-chain-exploration.md
+//!
+//! Seats a real five-block scene carrying a genuine REVERTING linked chain — the Braid's signature crux.
+//! A demo funder issues genesis credits of 100 to Alice and 50 to Bob (round 0); then a three-link braid
+//! (id 0x07…) routes coins Alice→Bob 100 (round 1), Bob→Carol 120 (round 2), Carol→Dave 200 (round 3, the
+//! final link). Carol holds only the 120 link 1 routed to her, so the final link overdraws and the WHOLE
+//! braid reverses — not one coin moves, not even the earlier links that afford on their own. The whole
+//! order is unambiguous by round, so a keeper (or an awk) can walk the block lines in file order, seed
+//! balances from the genesis credits, simulate the chain atomically, and name the same terminal recipient,
+//! committed count, and rejected count the Braid's agreed-order resolution names. Committing and rendering
+//! to a `format cord-dag-v1` record gives the exact bytes `mycelium/braid_true.rye` reads back and the r4
+//! witness cross-checks against an independent awk reading.
+//!
+//! Deterministic: seeded demo keys and a pure commit mean the same bytes every run, so the on-disk fixture
+//! is what the Cord emits, never a hand-mock. Emitted on stderr (hosted `print` is `std.debug.print`), so
+//! capture with `2>`.
+//!
+//! Siloed, dev-only, demo seeds — no real key, no funds, no network, no custody.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/braid_fixture_gen.rye \
+//!     2> tools/fixtures/braid_dag.bron
+//!
+//! Kin: mycelium/pledge_fixture_gen.rye · mycelium/purse_fixture_gen.rye.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("cord.rye");
+const cord_bron = @import("cord_bron.rye");
+const fold = @import("fold.rye");
+const braid = @import("braid.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn link_body(id: []const u8, seq: u8, last: u8, to: []const u8, out: []u8) u32 {
+    // invariant: the buffer holds tag · id · seq · last · recipient exactly.
+    assert(out.len >= 1 + braid.id_len + 1 + 1 + braid.pk_len);
+    assert(id.len == braid.id_len);
+    assert(to.len == braid.pk_len);
+    out[0] = braid.tag_link;
+    tally_copy.copy_disjoint(u8, out[1 .. 1 + braid.id_len], id);
+    out[1 + braid.id_len] = seq;
+    out[1 + braid.id_len + 1] = last;
+    tally_copy.copy_disjoint(u8, out[1 + braid.id_len + 2 ..][0..braid.pk_len], to);
+    return 1 + braid.id_len + 1 + 1 + braid.pk_len;
+}
+
+/// Seat the reverting five-block Dag — genesis credits Alice 100 and Bob 50; a three-link braid routes
+/// Alice→Bob 100, Bob→Carol 120, Carol→Dave 200, whose final link overdraws so the whole chain reverses.
+fn seat_dag() !cord.Dag {
+    const id = [_]u8{0x07} ** braid.id_len;
+    const kf = seeded(0xF0); // demo funder / genesis credit authority
+    const ka = seeded(0xA1); // Alice
+    const kb = seeded(0xB2); // Bob
+    const kc = seeded(0xC3); // Carol
+    const kd = seeded(0xD4); // Dave — the final link's recipient (paid nothing, the chain reverses)
+    const alice = ka.public_key.toBytes();
+    const bob = kb.public_key.toBytes();
+    const carol = kc.public_key.toBytes();
+    const dave = kd.public_key.toBytes();
+
+    const f_ga = fold.mint_fact(kf, fold.kind_issue, 100, "", alice[0..]) orelse return error.MintGA;
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_ga) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+    const f_gb = fold.mint_fact(kf, fold.kind_issue, 50, "", bob[0..]) orelse return error.MintGB;
+    const g2 = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_gb) orelse return error.BlockG2;
+    var hg2: [cord.hash_len]u8 = undefined;
+    cord.address(&g2, &hg2);
+
+    var b0: [1 + braid.id_len + 1 + 1 + braid.pk_len]u8 = undefined;
+    const n0 = link_body(id[0..], 0, 0, bob[0..], &b0);
+    const f0 = fold.mint_fact(ka, fold.kind_tax, 100, "", b0[0..n0]) orelse return error.Mint0;
+    const l0 = cord.mint_block(ka, 1, &[_][cord.hash_len]u8{ hg, hg2 }, f0) orelse return error.Block0;
+    var h0: [cord.hash_len]u8 = undefined;
+    cord.address(&l0, &h0);
+
+    var b1: [1 + braid.id_len + 1 + 1 + braid.pk_len]u8 = undefined;
+    const n1 = link_body(id[0..], 1, 0, carol[0..], &b1);
+    const f1 = fold.mint_fact(kb, fold.kind_tax, 120, "", b1[0..n1]) orelse return error.Mint1;
+    const l1 = cord.mint_block(kb, 2, &[_][cord.hash_len]u8{h0}, f1) orelse return error.Block1;
+    var h1: [cord.hash_len]u8 = undefined;
+    cord.address(&l1, &h1);
+
+    var b2: [1 + braid.id_len + 1 + 1 + braid.pk_len]u8 = undefined;
+    const n2 = link_body(id[0..], 2, 1, dave[0..], &b2);
+    const f2 = fold.mint_fact(kc, fold.kind_tax, 200, "", b2[0..n2]) orelse return error.Mint2;
+    const l2 = cord.mint_block(kc, 3, &[_][cord.hash_len]u8{h1}, f2) orelse return error.Block2;
+
+    var dag = cord.Dag.empty();
+    try cord.add(&dag, g);
+    try cord.add(&dag, g2);
+    try cord.add(&dag, l0);
+    try cord.add(&dag, l1);
+    try cord.add(&dag, l2);
+    return dag;
+}
+
+pub fn main() !void {
+    var dag = try seat_dag();
+    const pl = try cord_bron.from_dag(&dag);
+    var buf: [cord_bron.max_record]u8 = undefined;
+    const n = try cord_bron.render(&pl, &buf);
+    // invariant: the render is bounded and non-empty — a real record carries its header.
+    assert(n > 0);
+    assert(n <= cord_bron.max_record);
+    print("{s}", .{buf[0..n]});
+}
