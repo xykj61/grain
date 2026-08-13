@@ -24,6 +24,12 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260813.020035` — Double-seat expansion breach queue (prep, no cut yet)
+
+**Walk-back nib:** `0a074d5059`
+**Swept:** *nothing yet* — this cairn is planted **ahead** of a queue of four approved breaches so each has its walk-back before it cuts: **Dimeroll → Dimeroll** (bought `dimeroll.com`), **`.myc` → `.kres`** (Kresfa, supersedes `.myc` + Sui Move), **council sky → constel sky** (bought `constel.net`), and the **deep debride + seed force-push** (*initial public seed*, again — depersonalized, `twilight/` kept). The last rewrites history and loses its own walk-back, so this nib is where the whole pre-breach tree lives.
+**What waits there, worth recalling:** every module, doc, and notation under its elder name — `dimeroll/`, `.myc` contracts, "council sky" prose — plus the whole signed commit history before any rewrite. Walk back with `git show 0a074d5059:<path>` or `git log --oneline 0a074d5059`. Queue + gate flags: [`../active-designing/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/20260813-020035_double-seat-expansion-six-seasons.md).
+
 ### `20260810.160511` — Expanding-prompts archive-fold (Option B, safe subset)
 
 **Walk-back nib:** `663b778b38`
