@@ -19,7 +19,7 @@ const print = std.debug.print;
 const qoi = @import("qoi.rye");
 const tally_copy = @import("tally_copy.rye");
 
-pub const photos_version = "20260813.171223";
+pub const photos_version = "20260813.172645";
 
 pub const PhotosError = error{
     EmptyRect,
@@ -433,6 +433,59 @@ pub fn saturate(
     }
 
     // invariant: a saturation change keeps the pixel count exactly.
+    assert(out.len == pm.pixels.len);
+    return qoi.Pixmap{
+        .width = pm.width,
+        .height = pm.height,
+        .channels = pm.channels,
+        .colorspace = pm.colorspace,
+        .pixels = out,
+    };
+}
+
+/// Rotate every pixel's hue by exactly 120°·thirds around the color wheel, leaving alpha and the pixel count
+/// untouched, returning a fresh Pixmap. Pure: the source is never mutated. The 120° thirds are the color wheel's
+/// three exactly-integer stops — a hue turn by a third is a cyclic permutation of the three color channels, no
+/// trig and no rounding: thirds % 3 == 1 maps (r,g,b) → (b,r,g) (+120°), thirds % 3 == 2 maps (r,g,b) → (g,b,r)
+/// (+240°), and a multiple of 3 is the identity. Because it only permutes the color channels, each pixel's max and
+/// min channel are unchanged — HSV value (= max) and chroma (= max − min) are preserved exactly; only hue turns.
+/// A gray pixel (r == g == b) is a fixed point at every turn. Any thirds is valid (the modulo is total, as
+/// rotate_quarter's turns are); only a degenerate image refuses (`EmptyImage`).
+pub fn hue_turn(allocator: std.mem.Allocator, pm: *const qoi.Pixmap, thirds: u32) !qoi.Pixmap {
+    // invariant: the source buffer is exactly four bytes per pixel.
+    assert(pm.pixels.len == @as(usize, pm.width) * @as(usize, pm.height) * 4);
+    if (pm.width == 0 or pm.height == 0) return error.EmptyImage;
+
+    const t = thirds % 3;
+    // invariant: the reduced turn names exactly one of the three exact stops on the wheel.
+    assert(t < 3);
+
+    const out = try allocator.alloc(u8, pm.pixels.len);
+
+    var i: usize = 0;
+    while (i < pm.pixels.len) : (i += 4) {
+        const r = pm.pixels[i];
+        const g = pm.pixels[i + 1];
+        const b = pm.pixels[i + 2];
+        // The channel permutation is the whole turn: a +120° step advances (r,g,b) → (b,r,g); a +240° step
+        // advances it twice, to (g,b,r). A third of 0 is the identity. Alpha never moves.
+        if (t == 1) {
+            out[i] = b;
+            out[i + 1] = r;
+            out[i + 2] = g;
+        } else if (t == 2) {
+            out[i] = g;
+            out[i + 1] = b;
+            out[i + 2] = r;
+        } else {
+            out[i] = r;
+            out[i + 1] = g;
+            out[i + 2] = b;
+        }
+        out[i + 3] = pm.pixels[i + 3];
+    }
+
+    // invariant: a hue turn keeps the pixel count exactly.
     assert(out.len == pm.pixels.len);
     return qoi.Pixmap{
         .width = pm.width,
@@ -861,6 +914,98 @@ fn run_saturate(garden: std.mem.Allocator) !struct { w: u32, h: u32 } {
     return .{ .w = w, .h = h };
 }
 
+/// Prove the hue_turn verb by the algebra it must obey: a zero turn recovers the source byte-for-byte, three
+/// turns compose to the identity, turn(2) equals two single thirds, a pure red walks red→green→blue→red (the
+/// +120° direction), every pixel keeps its max and min channel (HSV value and chroma preserved), a gray pixel is
+/// a fixed point, alpha passes through, the source stays pure, a hue-turned image is still open, and a degenerate
+/// image refuses by name. Returns the strip's dimensions for the GREEN line.
+fn run_hue_turn(garden: std.mem.Allocator) !struct { w: u32, h: u32 } {
+    // A 4x1 strip: three saturated colors and one already-gray pixel, alpha varied to prove pass-through.
+    const w: u32 = 4;
+    const h: u32 = 1;
+    const buf = try garden.alloc(u8, w * h * 4);
+    const cols = [_][4]u8{
+        .{ 200, 50, 30, 255 }, //  a warm red — max red, min blue
+        .{ 40, 180, 90, 200 }, //  a green
+        .{ 60, 90, 220, 128 }, //  a blue
+        .{ 130, 130, 130, 0 }, //  already gray — a fixed point at every turn
+    };
+    var i: u32 = 0;
+    while (i < w) : (i += 1) {
+        buf[i * 4] = cols[i][0];
+        buf[i * 4 + 1] = cols[i][1];
+        buf[i * 4 + 2] = cols[i][2];
+        buf[i * 4 + 3] = cols[i][3];
+    }
+    const pm = qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+
+    // A zero turn (and any multiple of three) recovers the source byte-for-byte.
+    const zero = try hue_turn(garden, &pm, 0);
+    assert(zero.same_bytes(&pm));
+    const three = try hue_turn(garden, &pm, 3);
+    assert(three.same_bytes(&pm));
+
+    const one = try hue_turn(garden, &pm, 1);
+    const two = try hue_turn(garden, &pm, 2);
+
+    // Order three: a single third composed three times is the identity, byte-for-byte — the circle closes.
+    const one1 = try hue_turn(garden, &one, 1);
+    const one2 = try hue_turn(garden, &one1, 1);
+    assert(one2.same_bytes(&pm));
+    // turn(1) then turn(2) is also the identity.
+    const back = try hue_turn(garden, &one, 2);
+    assert(back.same_bytes(&pm));
+    // turn(2) equals two single thirds — the thirds argument is honest.
+    assert(one1.same_bytes(&two));
+
+    // Direction: the first pixel is a warm red (max red). One third turns it toward green (max green), two thirds
+    // toward blue (max blue). The channel map (b,r,g) then (g,b,r) is exact.
+    assert(one.pixels[0] == 30 and one.pixels[1] == 200 and one.pixels[2] == 50);
+    assert(two.pixels[0] == 50 and two.pixels[1] == 30 and two.pixels[2] == 200);
+
+    // Value and chroma preserved: for every pixel, the max and min color channel are unchanged at every turn.
+    {
+        var p: u32 = 0;
+        while (p < w) : (p += 1) {
+            const off = @as(usize, p) * 4;
+            const smax = @max(pm.pixels[off], @max(pm.pixels[off + 1], pm.pixels[off + 2]));
+            const smin = @min(pm.pixels[off], @min(pm.pixels[off + 1], pm.pixels[off + 2]));
+            const omax1 = @max(one.pixels[off], @max(one.pixels[off + 1], one.pixels[off + 2]));
+            const omin1 = @min(one.pixels[off], @min(one.pixels[off + 1], one.pixels[off + 2]));
+            const omax2 = @max(two.pixels[off], @max(two.pixels[off + 1], two.pixels[off + 2]));
+            const omin2 = @min(two.pixels[off], @min(two.pixels[off + 1], two.pixels[off + 2]));
+            assert(omax1 == smax and omin1 == smin);
+            assert(omax2 == smax and omin2 == smin);
+        }
+    }
+
+    // The already-gray pixel (index 3, r == g == b == 130) is a fixed point at every turn.
+    assert(one.pixels[12] == 130 and one.pixels[13] == 130 and one.pixels[14] == 130);
+    assert(two.pixels[12] == 130 and two.pixels[13] == 130 and two.pixels[14] == 130);
+
+    // Alpha passes through untouched across the whole strip for both turns.
+    assert(one.pixels[3] == 255 and one.pixels[7] == 200 and one.pixels[11] == 128 and one.pixels[15] == 0);
+    assert(two.pixels[3] == 255 and two.pixels[15] == 0);
+
+    // Pure: the source is untouched.
+    assert(pm.pixels[0] == 200 and pm.pixels[12] == 130 and pm.pixels[15] == 0);
+
+    // Still an OPEN image: a hue-turned image re-encodes and round-trips through the codec byte-for-byte.
+    const cap = qoi.encoded_bound(one.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const res = try qoi.encode(&one, dst);
+    const decoded = try qoi.decode(garden, dst[0..res.len]);
+    assert(decoded.same_bytes(&one));
+
+    // Unwelcome: a degenerate zero-dimension image refuses EmptyImage.
+    const empty = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (hue_turn(garden, &empty, 1)) |_| return error.EmptySlipped else |e| {
+        if (e != error.EmptyImage) return error.WrongEmpty;
+    }
+
+    return .{ .w = w, .h = h };
+}
+
 fn run_selftest(garden: std.mem.Allocator) !u8 {
     const pm = try craft_tagged(garden);
 
@@ -953,6 +1098,13 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         "pixel is a fixed point at every saturation; a boost pushes each channel away from its luma; alpha " ++
         "passes through untouched; source untouched (pure); saturated image re-encodes and round-trips; a zero " ++
         "denominator, an over-ceiling numerator, and an empty image refused by name\n", .{ sat.w, sat.h });
+
+    const hue = try run_hue_turn(garden);
+    print("GREEN image-photos-hue-turn: a {d}x{d} strip turns hue — a zero turn byte-identical; three turns " ++
+        "compose to the identity; turn(2) equals two single thirds; a pure red walks red->green->blue->red " ++
+        "(the +120 direction); every pixel keeps its max and min channel (HSV value and chroma preserved); an " ++
+        "already-gray pixel is a fixed point at every turn; alpha passes through untouched; source untouched " ++
+        "(pure); hue-turned image re-encodes and round-trips; an empty image refused by name\n", .{ hue.w, hue.h });
     return 0;
 }
 
