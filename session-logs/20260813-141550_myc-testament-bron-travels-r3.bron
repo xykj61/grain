@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260813.141550
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Testament r3 — the named certificate travels as a self-proving record
+prompt Continue the loop past testament r2 — take the next agent-doable crux Lindy-first, send each increment. baton prin recur.
+think r1 sealed and verified offline; r2 carried fault tolerance into the certificate. The certificate still lived in memory — the next crux (r3) is travel: a format testament-v1 record a keeper hands another keeper.
+think Studied the family travel idiom — chorus_bron.rye (claim named once + one member line per voice, render/parse a fixed point, parse re-runs verify_chorus at the STATED threshold) and constel_bron.rye (self-contained hex helpers, ship lines). Each _bron module is self-contained with its own to_hex/from_hex/nibble.
+think The distinguishing design vs chorus_bron: a testament-v1 record carries the roster NAMES and states NO threshold. parse boots the roster from names, derives the Byzantine threshold from its size, and re-runs r1's verify — so the named binding travels, not merely a stated number. This is the whole point of a Testament over a bare Chorus.
+think Wrote mycelium/testament_bron.rye — render writes ship-name lines + head/account/position + member lines; parse collects names into the Testament, reconstructs each voucher into out.seal from the shared claim (mirroring chorus_bron), then calls testament.verify(out) as the crux. Refusals: BadFormat/UnknownField/BadLine/BadInt/BadHex/TooManyShips/TooManyMembers plus the verify teeth surfacing across the wire.
+think Teeth prove the named binding survives the crossing, mirroring r1 but over the record: a stranger's honest voucher appended to the seal renders + parses to NotMember (a bare chorus-v1 would accept it); a threshold-1 subset seal renders + parses to BelowQuorum; a one-byte flip of the first ship-name line in the record re-derives a different key so a real signer stops being a member → NotMember (bound to the exact names, byte for byte).
+obs GREEN on the first build and run. Fixed point proven (re-render of the recovered certificate is byte-identical). Composes testament + constel + chorus + voucher public API only, editing none (r1 re-runs GREEN at the door). TAME bans clean, width-check exit 0.
+obs The tampered-name tooth reads the first ship name at a fixed offset (after "format testament-v1\nship "), computed from the literal so no magic number. A served testament (ships attesting over Comlink rather than in one process) still reaches the Comlink-served custody gate — Keaton's hand — untouched; r4 (reads true against a real on-disk fixture) is the remaining agent-doable rung.
+loom witness=mycelium_testament_bron_witness build=green selftest=green r1_door=green ships=5 voices=5 threshold=4 record_bytes=fixed-point
+file mycelium/testament_bron.rye r3 — render/parse a format testament-v1 record (names + claim + member lines), parse re-runs verify so the named binding proves itself offline across the wire
+file tools/mycelium_testament_bron_witness.rish GREEN witness — build · fixed point · offline-after-crossing · three named-binding teeth · format refusals · Testament r1 at the door
+recommend keep-going Testament r4 — reads true against a real on-disk format testament-v1 fixture, produced reproducibly and cross-checked by an independent awk reading (two tools, one answer), closing the Testament agent-doable arc. A served testament reaches the Comlink gate.
