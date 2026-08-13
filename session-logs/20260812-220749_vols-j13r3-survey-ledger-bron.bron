@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260812.220749
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title VOLS-J13r3 — the survey census travels as a Bron ledger
+prompt Continue the autonomous loop: climb VOLS-J13r3, send as its own signed round.
+think r1 made the census complete by construction; r2 classified each site. r3's crux: make the survey a durable artifact LOWE reads — a format cion-survey-v1 Bron ledger, not a console print that scrolls away.
+think Render half: vols_survey_render.sh emits the record (header · stamp · totals · one `site <path> <kind> <guard>` line each, sorted). Parse half: vols_survey_parse.sh reads the totals back and independently counts the site lines, so the record proves itself; a wrong/missing header refuses verdict=badformat.
+think Proved the round-trip three ways: parse recovers exactly what render wrote (totals match a fresh classify scan), the render is idempotent (the sorted census + fixed stamp yield identical bytes twice), and a tampered header refuses.
+obs Passed a fixed stamp (20260101.000000) to the fixture render so idempotence is deterministic; the live ledger takes a real one-clock stamp at the seat that writes it (r4).
+obs Live surfaces ticked 2690 → 2692 as this round's two new .rish witnesses joined the tree; sites held at 223 (the new witnesses carry no bare ordinal), so the ledger's live totals stayed honest: 223 sites = 144 handles + 79 prose gaps, guarded_sites=0, site_lines=223.
+loom witness=vols_survey_bron_witness live_surfaces=2692 live_sites=223 live_handles=144 live_prose_gaps=79 site_lines=223
+file tools/fixtures/vols_survey_render.sh renders the classified census to a format cion-survey-v1 Bron ledger (deterministic, sorted)
+file tools/fixtures/vols_survey_parse.sh parses the ledger back to its totals, counts site lines, refuses a bad header
+file tools/gen/season/vols_survey_bron_witness.rish proves parse==render, idempotence, tamper refusal; live ledger report
+recommend keep-going VOLS-J13r4 — cross-check the ledger against the live scan and seat the VOLS survey ledger as a living pin, closing Journey 13
