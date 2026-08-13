@@ -1,0 +1,162 @@
+//! mycelium/constel_true.rye — a real Constel roster reads true, and is the receipt of the real
+//! constellation (r4, the arc closes).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · Constel · rung r4 — reads true.
+//! Design read: active-designing/20260813-132009_mycelium-constel-named-dev-net-exploration.md
+//!
+//! r1 booted a named constellation and reached quorum, r2 proved its fault tolerance, r3 let it travel as a
+//! record — all over rosters seated in code. r4 carries the reader onto a REAL on-disk `format constel-v1`
+//! record a keeper can open and read — `tools/fixtures/constel_roster.bron`, produced reproducibly by
+//! `mycelium/constel_fixture_gen.rye`, `@embedFile`-bound at compile time through the `mycelium/corpora/`
+//! symlink (no network).
+//!
+//! Two crux checks make the reading true to the bytes:
+//!   - TWO TOOLS, ONE ANSWER — the app derives the roster shape (`<count> <firstkey8>`) INDEPENDENTLY of the
+//!     record text, by BOOTING the constellation from its ship names (each key a pure function of its name);
+//!     the r4 witness cross-checks that pair against `constel_roster_truth.awk`'s reading of the same bytes,
+//!     so a named constellation can never drift from a roster a keeper reads by hand.
+//!   - THE RECORD IS THE RECEIPT OF THE REAL CONSTELLATION — the app parses the record (which self-certifies:
+//!     every carried key must be the one its name yields, else `PkMismatch`), boots the same roster from its
+//!     names, and confirms name for name and key for key that the record carries the real constellation —
+//!     which then reaches quorum on a demo Dag's true order-head. So the fixture is a real constellation, not
+//!     a hand-mock.
+//! Genuineness beyond that: re-rendering the parsed roster reproduces the embedded bytes (a fixed point), and
+//! a tampered header refuses `BadFormat`.
+//!
+//! Composes constel + constel_bron + constel_fixture_gen + voucher public API only. Siloed, dev-only, demo
+//! ship seeds — no real key, no funds, no network, no real value.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/constel_true.rye selftest
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/constel_true.rye measure
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const constel = @import("constel.rye");
+const constel_bron = @import("constel_bron.rye");
+const gen = @import("constel_fixture_gen.rye");
+const voucher = @import("voucher.rye");
+
+pub const constel_true_version = "20260813.132009";
+pub const head_len: u32 = constel.head_len;
+
+const real_record = @embedFile("corpora/constel_roster.bron");
+
+/// Parse the real roster off the embedded fixture bytes (self-certifying — a carried key its name does not
+/// yield refuses PkMismatch).
+fn read_constel() !constel.Constel {
+    var c: constel.Constel = undefined;
+    try constel_bron.parse(real_record, &c);
+    return c;
+}
+
+/// The first eight hex characters of a key — the prefix a keeper reads off the record and the awk reports.
+fn key8(k: []const u8, out: *[8]u8) void {
+    // invariant: eight hex chars read four whole key bytes.
+    assert(k.len >= 4);
+    const hex = "0123456789abcdef";
+    var i: u32 = 0;
+    while (i < 4) : (i += 1) {
+        out[i * 2] = hex[k[i] >> 4];
+        out[i * 2 + 1] = hex[k[i] & 0x0F];
+    }
+}
+
+/// Derive the roster shape INDEPENDENTLY of the record text: boot the constellation from its ship names and
+/// report `<count> <firstkey8>`. The app's answer for the two-tools cross-check.
+fn derive_answer(count_out: *u32, k8_out: *[8]u8) !void {
+    var c = try gen.booted();
+    // invariant: the fixture roster is non-empty.
+    assert(c.count >= 1);
+    count_out.* = c.count;
+    const first = c.ships[0].pk();
+    key8(first[0..], k8_out);
+}
+
+/// The reading of the real record is true to the bytes AND is the receipt of the real constellation: the
+/// parsed roster matches the constellation booted from its names name-for-name and key-for-key, and it
+/// reaches quorum on a demo Dag's true order-head.
+fn welcome_reading_true_and_real() !void {
+    var rec = try read_constel();
+    var booted = try gen.booted();
+
+    // The record carries the real constellation — same ships, names, and (self-certified) keys, in order.
+    if (rec.count != booted.count) return error.RecordNotReal;
+    var i: u32 = 0;
+    while (i < rec.count) : (i += 1) {
+        if (!std.mem.eql(u8, rec.ships[i].name_slice(), booted.ships[i].name_slice())) return error.RecordNotReal;
+        const pr = rec.ships[i].pk();
+        const pb = booted.ships[i].pk();
+        if (!std.mem.eql(u8, pr[0..], pb[0..])) return error.RecordNotReal;
+    }
+
+    // The record's constellation reaches quorum on a demo Dag's true order-head — a real, believing dev-net.
+    const issuer = constel.seeded(0xF0);
+    const account = constel.seeded(0xA1);
+    const account_pk = account.public_key.toBytes();
+    var dag = try constel.demo_genesis(issuer, account_pk[0..]);
+    var head: [head_len]u8 = undefined;
+    try constel.reach_quorum(&rec, &dag, account_pk[0..], &head);
+    var expected: [head_len]u8 = undefined;
+    voucher.order_head_of(&dag, &expected);
+    if (!std.mem.eql(u8, head[0..], expected[0..])) return error.RecordNotReal;
+
+    var count: u32 = 0;
+    var k8: [8]u8 = undefined;
+    try derive_answer(&count, &k8);
+    print("constel-true: truth-answer {d} {s}\n", .{ count, k8 });
+    print("constel-true: the reading of the real roster — its ship count and first key — matches an independent boot from the ship names, and the record is the receipt of the real constellation (every key self-certifies against its name, and the roster reaches quorum on a real order-head).\n", .{});
+}
+
+/// The record is genuinely what the Constel renders: re-rendering the parsed roster reproduces the embedded
+/// bytes exactly (a fixed point), so the fixture is not a hand-mock.
+fn welcome_record_is_really_constel() !void {
+    var c = try read_constel();
+    var buf: [constel_bron.max_record]u8 = undefined;
+    const len = try constel_bron.render(&c, buf[0..]);
+    // invariant: the re-render honors the record bound.
+    assert(len <= constel_bron.max_record);
+    if (!std.mem.eql(u8, buf[0..len], real_record)) return error.NotFixedPoint;
+    print("constel-true: the record re-renders to the embedded bytes exactly — the fixture is what the Constel emits, never a hand-mock.\n", .{});
+}
+
+/// A tampered record refuses: a wrong header is caught before any field is read.
+fn unwelcome_tampered_record_refuses() !void {
+    const bad = "format constel-v2\nship xnvethqua 00\n";
+    var c: constel.Constel = undefined;
+    if (constel_bron.parse(bad, &c)) |_| return error.TamperAdmitted else |err| {
+        if (err != error.BadFormat) return error.WrongTamper;
+    }
+    print("constel-true: a tampered header refused BadFormat.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_reading_true_and_real();
+    try welcome_record_is_really_constel();
+    try unwelcome_tampered_record_refuses();
+    print("constel_true {s} — GREEN\n", .{constel_true_version});
+    print("GREEN: myc constel r4; the reading of a real Constel roster is true to the bytes (count·firstkey, app == awk), the record the receipt of the real constellation whose keys self-certify against their names and whose roster reaches quorum on a real order-head, its record a fixed point. The Constel agent-doable arc closes.\n", .{});
+    return 0;
+}
+
+fn run_measure() !u8 {
+    var count: u32 = 0;
+    var k8: [8]u8 = undefined;
+    try derive_answer(&count, &k8);
+    print("{d} {s}\n", .{ count, k8 });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "measure")) {
+        return run_measure();
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest();
+    }
+    print("usage: constel-true selftest | measure\n", .{});
+    return 1;
+}

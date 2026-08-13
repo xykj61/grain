@@ -1,0 +1,48 @@
+//! mycelium/constel_fixture_gen.rye — reproducibly emit the Constel roster fixture (r4 support).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · Constel · rung r4 support.
+//! Design read: active-designing/20260813-132009_mycelium-constel-named-dev-net-exploration.md
+//!
+//! Boots the named dev-net roster and renders it to a `format constel-v1` record — the exact bytes
+//! `mycelium/constel_true.rye` reads back and the r4 witness cross-checks against an independent awk reading.
+//! Deterministic: each ship's key is a pure function of its name (SHA-256(name)) and the render is pure, so
+//! the same bytes every run — the on-disk fixture is what a real constellation emits, never a mock.
+//!
+//! Siloed, dev-only, demo ship seeds — no real key, no funds, no network, no real value.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/constel_fixture_gen.rye \
+//!     2> tools/fixtures/constel_roster.bron
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const constel = @import("constel.rye");
+const constel_bron = @import("constel_bron.rye");
+
+// The first Constel dev-net roster — five named ships under the Constel naming law (see constel.rye).
+// constel_true.rye boots the identical roster from these names, so the on-disk record is provably the
+// receipt of the real constellation, not a mock. Keep the two files in step.
+pub const roster = [_][]const u8{
+    "xnvethqua",
+    "kwelmirran",
+    "xzobrilth",
+    "murrqaveln",
+    "xwendakosh",
+};
+
+/// Boot the fixture's constellation — the same roster the record carries.
+pub fn booted() !constel.Constel {
+    return try constel.boot(roster[0..]);
+}
+
+pub fn main() !void {
+    var c = try booted();
+    // invariant: the fixture roster seats every named ship.
+    assert(c.count == roster.len);
+    var buf: [constel_bron.max_record]u8 = undefined;
+    const len = try constel_bron.render(&c, buf[0..]);
+    // invariant: a rendered fixture is never empty.
+    assert(len > 0);
+    print("{s}", .{buf[0..len]});
+}

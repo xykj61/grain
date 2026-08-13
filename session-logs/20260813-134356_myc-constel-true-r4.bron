@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260813.134356
+editor Zed Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Constel r4 — a real roster reads true; the Constel arc closes
+prompt baton prin recur — next agent-doable lap Lindy-first crux-first; send often; make progress before checking in
+think r1-r3 read rosters seated in code. r4 carries the reader onto a REAL on-disk format constel-v1 fixture a keeper can open and read — constel_fixture_gen.rye emits it reproducibly, @embedFile-bound through the mycelium/corpora/ symlink (no network), matching the family portage_true/freight_true pattern.
+think Two tools, one answer: the app derives the roster shape (<count> <firstkey8>) INDEPENDENTLY of the record text by booting the constellation from its ship names (each key a pure function of its name); the awk reads the same pair straight off the bytes. app==awk (5 97f92882) proves the record faithfully carries the real constellation.
+think The record is the receipt of the REAL constellation, not a mock: every carried key self-certifies against its name (constel_bron.parse enforces PkMismatch), the parsed roster matches the name-booted one name-for-name and key-for-key, and it reaches quorum on a demo Dag's true order-head; re-render is a fixed point; the generator re-emits byte-identical (REPRODUCIBLE); a tampered header refuses BadFormat.
+obs GREEN on the first build and run. Created the fixture (tools/fixtures/constel_roster.bron), the corpora symlink, and the truth awk; the fixture is 5 ships, first key 97f92882. Composes constel + constel_bron + constel_fixture_gen + voucher public API only; r3 re-runs GREEN at the door; siloed dev fixtures, no custody.
+obs The Constel journey (r1 named-quorum crux · r2 fault tolerance · r3 travels self-certifying · r4 reads true) stands complete end to end — the first named, reproducible dev-net for the whole Mycelium consensus stack, the sovereign-lane echo of elder Urbit's fake-galaxy networks. Four signed increments this session plus the Portage fold: five rounds on both remotes.
+loom witness=mycelium_constel_true_witness result=GREEN app_eq_awk=5_97f92882 reproducible=yes
+file mycelium/constel_fixture_gen.rye reproducible fixture emitter for the roster record
+file mycelium/constel_true.rye the r4 reader — two-tools cross-check, receipt-of-real, fixed point
+file tools/fixtures/constel_roster.bron the real on-disk roster fixture (5 ships)
+file tools/fixtures/constel_roster_truth.awk independent awk reading (count · firstkey8)
+file mycelium/corpora/constel_roster.bron symlink embedding the fixture at compile time
+file tools/mycelium_constel_true_witness.rish the r4 witness (GREEN; app==awk; reproducible; r3 at the door)
+file work-in-progress/REMEMBER.md Constel r4 LANDED + arc-close folded into the journey bullet; Git nib refreshed
+file session-logs/20260813-134356_myc-constel-true-r4.bron this log
+recommend keep-going a fresh Season D / double-seat journey, each a self-approved design read first (Constel could grow a served/Aurora rung at the serve gate; a second dev-net roster or a Puddle-placed Constel are agent-doable); breach renames stay cairn-first, deep debride + seed force-push stay Keaton's hand (gate #1)
