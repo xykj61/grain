@@ -28,7 +28,12 @@ pub const preset_scroll_version = "20260813.192957";
 
 pub const ScrollError = error{
     EmptyViewport,
+    BadTrack,
 };
+
+/// A sensible bound on a scrollbar track — a small screen never renders a taller bar. The scroll thumb is measured
+/// against this, so a track never runs past what a display could hold.
+pub const max_track: u32 = 4096;
 
 /// A live viewport over a library of `count` books, `rows` books tall, its top row showing book `offset`. No pixels
 /// and no book text live here — a cursor is a place in a library, three counts. The governing invariant, preserved
@@ -169,6 +174,72 @@ pub fn window(
     return preset_shelf.shelf_window(allocator, listing, cols, cursor.rows, cursor.offset);
 }
 
+/// A scrollbar thumb over a track of `track` rows: a filled run `[thumb_start, thumb_start + thumb_len)` that shows a
+/// keeper where in the library they stand and how much of it fits. The thumb length is proportional to how much of
+/// the library the viewport shows (`rows / count`), and its position to how far the cursor has scrolled — pinned to
+/// the top edge at the top and the bottom edge at the bottom. It always sits inside the track. No pixels here — three
+/// counts a surface paints.
+pub const ScrollBar = struct {
+    track: u32 = 0,
+    thumb_start: u32 = 0,
+    thumb_len: u32 = 0,
+
+    pub fn at_track_top(self: *const ScrollBar) bool {
+        // invariant: the thumb sits inside its track.
+        assert(self.thumb_start + self.thumb_len <= self.track);
+        return self.thumb_start == 0;
+    }
+
+    pub fn at_track_bottom(self: *const ScrollBar) bool {
+        // invariant: the thumb sits inside its track.
+        assert(self.thumb_start + self.thumb_len <= self.track);
+        return self.thumb_start + self.thumb_len == self.track;
+    }
+};
+
+/// Measure the scrollbar thumb for a cursor against a track of `track_len` rows. A library that fits the viewport
+/// fills the whole track (nothing to scroll — the thumb IS the track). Otherwise the thumb is `rows/count` of the
+/// track (at least one row so it is always visible), and its start is `offset/max_offset` of the leftover travel,
+/// pinned to 0 at the top and to `track - thumb_len` at the bottom so the edges read exactly. Pure over the cursor;
+/// refuses `BadTrack` on a zero or over-ceiling track. The products run in u64 so no term wraps.
+pub fn scroll_bar(cursor: *const ScrollCursor, track_len: u32) ScrollError!ScrollBar {
+    // invariant: the cursor stands on a real viewport.
+    assert(cursor.offset <= cursor.max_offset());
+    if (track_len == 0 or track_len > max_track) return error.BadTrack;
+
+    // A library no taller than the viewport shows all of itself: the thumb fills the track, pinned at the top.
+    if (cursor.count <= cursor.rows) {
+        return ScrollBar{ .track = track_len, .thumb_start = 0, .thumb_len = track_len };
+    }
+
+    // The thumb is the visible fraction of the track, rounded to nearest, floored at one row and capped at the track.
+    const num: u64 = @as(u64, cursor.rows) * @as(u64, track_len) + @as(u64, cursor.count) / 2;
+    var thumb_len: u32 = @intCast(num / @as(u64, cursor.count));
+    if (thumb_len == 0) thumb_len = 1;
+    if (thumb_len > track_len) thumb_len = track_len;
+    // invariant: a measured thumb is at least one row.
+    assert(thumb_len >= 1);
+    // invariant: a measured thumb is never larger than its track.
+    assert(thumb_len <= track_len);
+
+    const travel: u32 = track_len - thumb_len;
+    const m = cursor.max_offset();
+    var thumb_start: u32 = undefined;
+    if (cursor.offset == 0) {
+        thumb_start = 0; // pinned to the top edge
+    } else if (cursor.offset == m) {
+        thumb_start = travel; // pinned to the bottom edge, so start + len == track exactly
+    } else {
+        // interior: the start is the scrolled fraction of the leftover travel, rounded to nearest.
+        const sn: u64 = @as(u64, cursor.offset) * @as(u64, travel) + @as(u64, m) / 2;
+        thumb_start = @intCast(sn / @as(u64, m));
+        if (thumb_start > travel) thumb_start = travel;
+    }
+    // invariant: the thumb sits wholly inside the track.
+    assert(thumb_start + thumb_len <= track_len);
+    return ScrollBar{ .track = track_len, .thumb_start = thumb_start, .thumb_len = thumb_len };
+}
+
 // --- selftest: build a five-book library and prove a fresh cursor sits at the top, line/page gestures walk the
 //     offset, the viewport bottom-pins, every gesture clamps without under/overflow, a fitting library never
 //     scrolls, the cursor's window never refuses, and paging top-to-bottom shows every book -----------------------
@@ -307,7 +378,8 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     {
         var fit = try ScrollCursor.open(lib.count, 8); // eight rows over five books
         assert(fit.max_offset() == 0);
-        assert(fit.at_top() and fit.at_bottom());
+        assert(fit.at_top());
+        assert(fit.at_bottom());
         fit.page_down();
         fit.line_down(3);
         fit.to_bottom();
@@ -320,6 +392,66 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (e != error.EmptyViewport) return error.WrongViewport;
     }
 
+    // HUNK41 — the scrollbar thumb: a keeper sees where in the library they stand. Over a 10-row track on the
+    // five-book, two-row viewport (max_offset 3), the thumb is 2/5 of the track (four rows) and its start walks the
+    // leftover six rows of travel with the offset.
+    const track: u32 = 10;
+    cur.to_top();
+    {
+        const bar = try scroll_bar(&cur, track);
+        assert(bar.track == track);
+        // A shorter thumb than the track: only part of the library is in view (two of five books → 4/10).
+        assert(bar.thumb_len == 4);
+        assert(bar.thumb_len < track);
+        // At the top the thumb pins to the top edge.
+        assert(bar.thumb_start == 0);
+        assert(bar.at_track_top());
+        assert(!bar.at_track_bottom());
+        assert(bar.thumb_start + bar.thumb_len <= track);
+    }
+    // At the bottom the thumb pins to the bottom edge — start + len == track exactly, so the edge reads true.
+    cur.to_bottom();
+    {
+        const bar = try scroll_bar(&cur, track);
+        assert(bar.thumb_start + bar.thumb_len == track);
+        assert(bar.at_track_bottom());
+        assert(!bar.at_track_top());
+    }
+
+    // Monotone and always-inside: walking the offset top to bottom, the thumb start never moves up and the thumb
+    // always sits wholly inside the track — a keeper's position reads honestly at every step.
+    {
+        var prev_start: u32 = 0;
+        var ofs: u32 = 0;
+        while (ofs <= cur.max_offset()) : (ofs += 1) {
+            cur.scroll_to(ofs);
+            const bar = try scroll_bar(&cur, track);
+            assert(bar.thumb_start >= prev_start); // scrolling down never moves the thumb up
+            assert(bar.thumb_start + bar.thumb_len <= track); // wholly inside the track
+            assert(bar.thumb_len == 4); // the thumb length is stable across offsets (the viewport is unchanged)
+            prev_start = bar.thumb_start;
+        }
+    }
+    cur.to_top();
+
+    // A library that fits the screen fills the whole track — nothing to scroll, so the thumb IS the track.
+    {
+        var fit = try ScrollCursor.open(lib.count, 8);
+        const bar = try scroll_bar(&fit, track);
+        assert(bar.thumb_len == track);
+        assert(bar.thumb_start == 0);
+        assert(bar.at_track_top()); // the full thumb touches the top edge
+        assert(bar.at_track_bottom()); // and the bottom edge
+    }
+
+    // A zero or over-ceiling track refuses BadTrack.
+    if (scroll_bar(&cur, 0)) |_| return error.TrackSlipped else |e| {
+        if (e != error.BadTrack) return error.WrongTrack;
+    }
+    if (scroll_bar(&cur, max_track + 1)) |_| return error.TrackSlipped else |e| {
+        if (e != error.BadTrack) return error.WrongTrack;
+    }
+
     print("GREEN preset-scroll: a five-book library scrolled through a {d}-row viewport — a fresh cursor sits at the " ++
         "top (offset 0, its window the first two books), line_down/line_up walk the offset reversibly, to_bottom " ++
         "bottom-pins the last book to the bottom row (max_offset {d}, no blank row past the end); scrolling down " ++
@@ -327,7 +459,10 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         "page_up jump a whole viewport and clamp at both edges; at every reachable offset the window is a real page " ++
         "(never BadOffset) whose visible count matches window_len; paging top-to-bottom shows every one " ++
         "of the five books; a library that fits the screen has max_offset 0 and never scrolls; a zero-row viewport " ++
-        "refuses EmptyViewport\n", .{ rows, cur.max_offset() });
+        "refuses EmptyViewport. HUNK41 the scrollbar: over a {d}-row track the thumb is 2/5 of the track (four " ++
+        "rows), pinned to the top edge at the top and the bottom edge at the bottom (start + len == track exactly), " ++
+        "its start monotone as the offset walks down and the thumb always wholly inside the track; a library that " ++
+        "fits fills the whole track; a zero or over-ceiling track refuses BadTrack\n", .{ rows, cur.max_offset(), track });
     return 0;
 }
 

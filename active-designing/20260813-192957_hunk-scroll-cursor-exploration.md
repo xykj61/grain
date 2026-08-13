@@ -55,4 +55,14 @@ Line-granular over page-aligned is the richer, more Lindy behavior — every rea
 
 `pond/apps/preset_scroll.rye` — beside `preset_shelf.rye` in the same assembly, so `DetailListing`, `shelf_window`, and the Skate grid are reached through one symlink root (no cross-assembly type-identity wall, the seam HUNK39 held for Keaton). Witness `tools/hunk_scroll_cursor_witness.rish`.
 
-*A page number tells you about the book; a scroll offset tells you about the reader. May the viewport always land on a real page, and the bottom always pin true.*
+## HUNK41 addendum — the scrollbar thumb (additive, `20260813.193940`)
+
+The cursor holds a keeper's position; a scrollbar *shows* it. `scroll_bar(cursor, track_len)` is a pure function over the cursor, additive on the same module (as HUNK37's pager was additive on `preset_shelf`), yielding a `ScrollBar { track, thumb_start, thumb_len }`:
+
+- **Proportional length** — `thumb_len ≈ rows/count` of the track, floored at one row so it is always visible, capped at the track. A library that fits the viewport fills the whole track (nothing to scroll — the thumb *is* the track).
+- **Edges pinned true** — at the top the thumb pins to `0`; at the bottom `thumb_start + thumb_len == track` exactly, so a keeper reads the ends without rounding drift. Interior positions are `offset/max_offset` of the leftover travel.
+- **Monotone and always inside** — scrolling down never moves the thumb up, and `thumb_start + thumb_len <= track` at every reachable offset. Products run in u64 so no term wraps; a zero or over-ceiling track refuses `BadTrack`.
+
+Witness `tools/hunk_scroll_cursor_witness.rish` extended (four scrollbar greps), GREEN; `tame_style_check` clean, width exit 0.
+
+*A page number tells you about the book; a scroll offset tells you about the reader. May the viewport always land on a real page, the bottom always pin true, and the thumb always read a keeper home.*

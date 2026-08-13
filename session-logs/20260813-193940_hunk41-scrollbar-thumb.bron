@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260813.193940
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title HUNK41 — the scrollbar thumb: a keeper sees where in the library they stand
+prompt keep going Lindy-first crux-first after HUNK40; send each finished increment as its own signed round; stop at custody gates
+think HUNK40 landed the ScrollCursor (a keeper's live viewport offset). The cursor holds a position; the natural composable next rung shows it — a scrollbar thumb every scroll surface paints, additive on the same module (as HUNK37's pager was additive on preset_shelf). Finishing edge: ship the next real thing over the just-built cursor rather than name a new idea.
+think scroll_bar(cursor, track_len) is a pure function yielding ScrollBar { track, thumb_start, thumb_len }. The crux is the honest arithmetic: thumb_len proportional to rows/count (floored at 1, capped at track), thumb_start proportional to offset/max_offset, pinned to 0 at the top and track-thumb_len at the bottom so the edges read exactly with no rounding drift.
+think Two properties a witness can pin regardless of rounding: monotone (scrolling down never moves the thumb up) and always-inside (thumb_start + thumb_len <= track at every reachable offset). A library that fits fills the whole track — nothing to scroll.
+obs A TAME red caught and booked: tame_style_check DOES cover pond/apps (not only image/), and it flagged five compound asserts — one of them `assert(fit.at_top() and fit.at_bottom())` that HUNK40 shipped in its selftest. Split all five so each failing half is named; the HUNK40 line is now healed here (accrete-never-break, a tidy on touch).
+obs Products run in u64 so a large track or offset can never wrap before the clamp; one new refusal (BadTrack) on a zero or over-ceiling track. max_track = 4096 bounds the bar.
+loom witness=hunk_scroll_cursor_witness selftest=green track_len=10 thumb_len=4 max_offset=3 tame_exit=0 width_exit=0
+file pond/apps/preset_scroll.rye ScrollBar struct + scroll_bar() added additively; HUNK41; five compound asserts split (one from HUNK40)
+file tools/hunk_scroll_cursor_witness.rish four HUNK41 scrollbar greps added
+file active-designing/20260813-192957_hunk-scroll-cursor-exploration.md HUNK41 addendum on the scrollbar thumb
+file work-in-progress/REMEMBER.md git nib refreshed in this same commit
+file session-logs/README.md newest-first HUNK41 row prepended
+recommend keep-going — next agent-doable crux: a sticky page header over the cursor, painting the scrollbar+shelf together on one Skate grid, the served-marketplace module-assembly ruling (held for Keaton), or a fresh Season-A / double-seat journey. Hardware buys stay custody gates #2/#3.
