@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260813.195500
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title HUNK43 — the input seam: a keeper's raw gesture drives the cursor
+prompt Continue the autonomous loop — take the next agent-doable lap Lindy-first crux-first, self-approve design rounds, send each finished increment as its own signed round, stop only at custody gates.
+think After HUNK42 landed and sent, the next crux its recommend named is the input seam: the boundary above HUNK40's pure cursor that turns a raw gesture (a signed scroll delta, a page/edge key) into exactly one cursor move.
+think Lindy weight: every scroll surface has this seam, and it composes HUNK40 exactly rather than inventing anything — durable and agent-doable, no gate touched.
+think Designed apply(cursor, input) over an Input { kind, lines } record; scroll routes by sign to line_down/line_up with the magnitude capped at the library count. The one real hazard is i32 min: negating it in i32 overflows, so magnitude() takes the absolute value in i64 before capping into u32 — an assert names the non-negativity.
+obs Kept one value model (enum tag + signed count), no new refusal, no storage — the seam only routes to HUNK40's already-clamped gestures, so every clamp guarantee is inherited, not re-proven.
+obs The witness red from HUNK39/40/42 recurred a third time (the GREEN line's apostrophe in cursor's breaks the shell single-quoted grep) — dropped the apostrophe from the print line before running, so the witness passed first build. This pattern is now reflexive on this ladder.
+obs The selftest drives the cursor by i32 max/min deltas, a zero delta, and a long mixed stream of wheel deltas and page keys, asserting a real viewport after each — an adversarial input can never move the offset off the ends.
+loom witness=hunk_scroll_input_witness viewport=2x5 max_offset=3 clamp_deltas=i32min,i32max mixed_stream=8
+file pond/apps/preset_scroll_input.rye HUNK43 — apply(cursor, input) routes a raw event to one HUNK40 gesture; magnitude taken in i64 so i32 min never wraps.
+file tools/hunk_scroll_input_witness.rish proves the seam on metal — reversible walk, extreme-delta clamp without wrap, page/edge kinds matching the cursor, a fitting library that never moves.
+file active-designing/20260813-195500_hunk-scroll-input-exploration.md self-approved design read.
+file work-in-progress/REMEMBER.md git nib refreshed in this same work commit.
+recommend keep-going — HUNK44 could turn a real device delta (a touch drag in pixels) into line deltas over the cell height, a sticky page header over the scroll view, the served-marketplace module-assembly ruling (held for Keaton), or a fresh Season-A / double-seat journey.

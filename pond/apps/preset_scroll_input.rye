@@ -1,0 +1,204 @@
+//! pond/apps/preset_scroll_input.rye — HUNK43: the input seam — a keeper's raw gesture drives the cursor.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · marketplace / Photos-app surface · rung HUNK43.
+//! Design read: active-designing/20260813-195500_hunk-scroll-input-exploration.md
+//! Teacher, thanked clean-room: the input layer of any scroll surface — a wheel notch, a drag delta, a Page-Down key
+//! become one move over a list (concept only, siloed).
+//!
+//! HUNK40 gave a pure `ScrollCursor` whose gestures each clamp at both ends; HUNK42 painted its page beside a live
+//! scroll bar. What was missing is the boundary above the cursor: the translation from a raw input event — a signed
+//! scroll delta, a page key, a home/end key — into exactly one cursor move. This rung is that seam: `apply(cursor,
+//! input)` maps one event to one gesture, preserving every clamp the cursor already holds, so a fling of ten thousand
+//! lines past the end still lands on the bottom-pinned page and a delta at the i32 extremes never under/overflows
+//! before the clamp. A pure composition over HUNK40 — no storage, no render, no new refusal. No network, no key, no
+//! funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/preset_scroll_input.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const preset_detail = @import("preset_detail.rye");
+const preset_scroll = @import("preset_scroll.rye");
+
+pub const preset_scroll_input_version = "20260813.195500";
+
+/// The kinds of raw input a scroll surface receives. `scroll` carries a signed line delta (positive scrolls down,
+/// negative up); the rest are the named keys a keeper presses. Every kind routes to exactly one HUNK40 gesture, so the
+/// cursor's clamp guarantees hold whatever the input.
+pub const InputKind = enum {
+    scroll,
+    page_down,
+    page_up,
+    to_top,
+    to_bottom,
+};
+
+/// One raw input event. `lines` is read only for `scroll` — a signed line delta from a wheel notch or a drag; the
+/// other kinds ignore it. A plain record over one value model: an enum tag and a signed count.
+pub const Input = struct {
+    kind: InputKind,
+    lines: i32 = 0,
+
+    pub fn scroll_by(lines: i32) Input {
+        return .{ .kind = .scroll, .lines = lines };
+    }
+};
+
+/// The magnitude of a signed delta as a `u32`, capped at `cap` (the library count is a safe cap — no scroll needs to
+/// move more books than exist). Taken through `i64` so even `i32` min negates without overflow before the cap.
+fn magnitude(lines: i32, cap: u32) u32 {
+    // invariant: the cap is a real library bound, never absurd.
+    assert(cap <= preset_detail.max_details);
+    const wide: i64 = if (lines < 0) -@as(i64, lines) else @as(i64, lines);
+    // invariant: the absolute value is non-negative and fits an i64 (i32 min negates safely in i64).
+    assert(wide >= 0);
+    if (wide > @as(i64, cap)) return cap;
+    return @intCast(wide);
+}
+
+/// Apply one raw input event to a cursor, routing it to exactly one HUNK40 gesture. For `scroll`, the sign picks the
+/// direction and the magnitude the line count (capped at the library size so a huge fling costs no more than a walk to
+/// the end); every path routes through the cursor's own clamps, so no input can move the offset off the ends. Pure
+/// over the cursor beyond the single offset move it performs.
+pub fn apply(cursor: *preset_scroll.ScrollCursor, input: Input) void {
+    // invariant: the cursor stands on a real viewport before the input.
+    assert(cursor.offset <= cursor.max_offset());
+    switch (input.kind) {
+        .scroll => {
+            const mag = magnitude(input.lines, cursor.count);
+            if (input.lines >= 0) cursor.line_down(mag) else cursor.line_up(mag);
+        },
+        .page_down => cursor.page_down(),
+        .page_up => cursor.page_up(),
+        .to_top => cursor.to_top(),
+        .to_bottom => cursor.to_bottom(),
+    }
+    // invariant: after any input the cursor still stands on a real, bottom-pinned viewport.
+    assert(cursor.offset <= cursor.max_offset());
+}
+
+// --- selftest: build a real five-book library, drive a two-row viewport by raw input events, and prove a signed
+//     delta walks reversibly, an extreme delta clamps without wrap, the page/edge kinds match the cursor's gestures,
+//     and a fitting library never moves whatever the input --------------------------------------------------------
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const beading = @import("mantra/beading.rye");
+    const tablecloth = @import("tablecloth.rye");
+    const filter_preset = @import("filter_preset.rye");
+    const preset_store = @import("preset_store.rye");
+    const photo_edits = @import("photo_edits.rye");
+
+    // The same real five-book library the HUNK40/41/42 selftests build.
+    var store: beading.BeadStore = .empty();
+    var cat: tablecloth.Catalog = .empty();
+    const stock = try filter_preset.stock_book();
+    _ = try preset_store.store_book(&cat, &store, "stock.presets", &stock);
+    var small = filter_preset.PresetBook.init();
+    var flip = photo_edits.EditList.init();
+    try flip.push(.flip_h);
+    try small.define("mirror", &flip);
+    _ = try preset_store.store_book(&cat, &store, "custom.presets", &small);
+    {
+        var one = photo_edits.EditList.init();
+        try one.push(.flip_h);
+        const names = [_][]const u8{ "a.presets", "b.presets", "c.presets" };
+        var k: u32 = 0;
+        while (k < names.len) : (k += 1) {
+            var b = filter_preset.PresetBook.init();
+            try b.define("edit", &one);
+            _ = try preset_store.store_book(&cat, &store, names[k], &b);
+        }
+    }
+    var lib: preset_detail.DetailListing = undefined;
+    try preset_detail.detail_books(&cat, &store, &lib);
+    assert(lib.len() == 5);
+
+    const rows: u32 = 2; // a two-row viewport over five books; max_offset 3
+    var cur = try preset_scroll.ScrollCursor.open(lib.count, rows);
+    assert(cur.max_offset() == 3);
+
+    // A signed scroll delta walks the offset: +2 scrolls down two books, -1 back up one — a raw gesture reversible.
+    apply(&cur, Input.scroll_by(2));
+    assert(cur.offset == 2);
+    apply(&cur, Input.scroll_by(-1));
+    assert(cur.offset == 1);
+
+    // A huge positive delta clamps to the bottom-pinned offset (never past it, no wrap); a huge negative one to the
+    // top — a fling can never fall off the ends.
+    apply(&cur, Input.scroll_by(100000));
+    assert(cur.offset == 3); // clamped at max_offset
+    apply(&cur, Input.scroll_by(-100000));
+    assert(cur.offset == 0); // clamped at the top
+
+    // The i32 extremes as deltas both clamp cleanly — the magnitude is taken in i64 so i32 min negates without
+    // overflow before the cap.
+    apply(&cur, Input.scroll_by(std.math.maxInt(i32)));
+    assert(cur.offset == 3);
+    apply(&cur, Input.scroll_by(std.math.minInt(i32)));
+    assert(cur.offset == 0);
+
+    // A zero delta is a no-op — an input event that moves nothing moves the cursor nowhere.
+    apply(&cur, Input.scroll_by(0));
+    assert(cur.offset == 0);
+
+    // The page and edge kinds match the cursor's own gestures exactly: page_down from the top lands on offset 2, a
+    // second clamps to the bottom-pinned 3; to_top and to_bottom snap to the ends.
+    apply(&cur, .{ .kind = .page_down });
+    assert(cur.offset == 2);
+    apply(&cur, .{ .kind = .page_down });
+    assert(cur.offset == 3); // clamped, not 4
+    apply(&cur, .{ .kind = .page_up });
+    assert(cur.offset == 1);
+    apply(&cur, .{ .kind = .to_bottom });
+    assert(cur.offset == 3);
+    assert(cur.at_bottom());
+    apply(&cur, .{ .kind = .to_top });
+    assert(cur.offset == 0);
+    assert(cur.at_top());
+
+    // A library that fits the screen never moves, whatever the input arrives — max_offset 0, every gesture a no-op.
+    {
+        var fit = try preset_scroll.ScrollCursor.open(lib.count, 8); // eight rows over five books
+        assert(fit.max_offset() == 0);
+        apply(&fit, Input.scroll_by(3));
+        apply(&fit, .{ .kind = .page_down });
+        apply(&fit, .{ .kind = .to_bottom });
+        assert(fit.offset == 0); // never moved
+    }
+
+    // Every reachable offset stays a real, bottom-pinned viewport under a long stream of mixed inputs — drive the
+    // cursor by wheel deltas and page keys and it never leaves its library.
+    {
+        const stream = [_]Input{
+            Input.scroll_by(1),  .{ .kind = .page_down }, Input.scroll_by(-2),
+            .{ .kind = .to_bottom }, Input.scroll_by(50), .{ .kind = .page_up },
+            Input.scroll_by(-9), .{ .kind = .to_top },
+        };
+        var s: u32 = 0;
+        while (s < stream.len) : (s += 1) {
+            apply(&cur, stream[s]);
+            assert(cur.offset <= cur.max_offset()); // always a real viewport
+        }
+    }
+
+    _ = garden;
+    print("GREEN preset-scroll-input: a five-book library driven through a two-row viewport by raw input events — a " ++
+        "signed scroll delta walks the offset reversibly (+2 down, -1 up), a huge positive delta clamps to the " ++
+        "bottom-pinned offset and a huge negative one to the top without wrap, the i32 min and max deltas both clamp " ++
+        "cleanly (magnitude taken in i64), a zero delta is a no-op; the page and edge kinds match the cursor gestures " ++
+        "(page_down clamps at the bottom, to_top/to_bottom snap the ends); a library that fits never moves " ++
+        "whatever the input; a long mixed stream of wheel deltas and page keys never leaves the library. HUNK40 " ++
+        "cursor GREEN beneath\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: preset_scroll_input selftest\n", .{});
+    return 1;
+}
