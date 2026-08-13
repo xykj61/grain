@@ -13,6 +13,10 @@
 //! its pixels stored, only the pair (source, edit-list). The list itself travels as a flat-Bron
 //! `format photo-edits-v1` record, so `render(parse(render(x)))` is a fixed point. No network, no key, no funds.
 //!
+//! HUNK28 joins the first of the HUNK21+ filter family to this grammar: `saturate` — the paired tone twin of
+//! `adjust` — now records, replays, and travels like any verb, so a filter is a non-destructive edit rather than a
+//! wound. Its own refusal (`BadSaturation`) surfaces through the fold by its own name; no new failure mode.
+//!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/photo_edits.rye selftest
 
 const std = @import("std");
@@ -42,8 +46,9 @@ pub const EditsError = error{
 
 const header = "format photo-edits-v1\n";
 
-/// The six Photos verbs, named as an enum so an edit-list is a bounded array of tagged verbs.
-pub const EditKind = enum(u8) { crop, flip_h, flip_v, rotate, scale, adjust };
+/// The Photos verbs the edit-list carries, named as an enum so an edit-list is a bounded array of tagged verbs.
+/// `saturate` (HUNK28) is the first filter of the HUNK21+ family to join — the paired tone twin of `adjust`.
+pub const EditKind = enum(u8) { crop, flip_h, flip_v, rotate, scale, adjust, saturate };
 
 /// One recorded edit — a verb plus exactly the parameters that verb takes. A tagged union so `apply` and the
 /// travel functions switch over one value model, and a new verb joins by adding one variant.
@@ -54,6 +59,7 @@ pub const Edit = union(EditKind) {
     rotate: struct { turns: u32 },
     scale: struct { w: u32, h: u32 },
     adjust: struct { brightness: i32, num: u32, den: u32 },
+    saturate: struct { num: u32, den: u32 },
 };
 
 /// A bounded, ordered sequence of edits recorded as data — the non-destructive edit history beside an image.
@@ -123,6 +129,7 @@ pub fn apply(allocator: std.mem.Allocator, source: *const qoi.Pixmap, list: *con
             .rotate => |r| try photos.rotate_quarter(allocator, &cur, r.turns),
             .scale => |s| try photos.scale(allocator, &cur, s.w, s.h),
             .adjust => |a| try photos.adjust(allocator, &cur, a.brightness, a.num, a.den),
+            .saturate => |s| try photos.saturate(allocator, &cur, s.num, s.den),
         };
     }
     // invariant: the final image carries four bytes per pixel like every stage before it.
@@ -149,6 +156,7 @@ pub fn render_edits(list: *const EditList, out: []u8) EditsError!u32 {
             .rotate => |r| std.fmt.bufPrint(out[off..], "rotate {d}\n", .{r.turns}),
             .scale => |s| std.fmt.bufPrint(out[off..], "scale {d} {d}\n", .{ s.w, s.h }),
             .adjust => |a| std.fmt.bufPrint(out[off..], "adjust {d} {d} {d}\n", .{ a.brightness, a.num, a.den }),
+            .saturate => |s| std.fmt.bufPrint(out[off..], "saturate {d} {d}\n", .{ s.num, s.den }),
         } catch return error.Overflow;
         off += @intCast(line.len);
     }
@@ -201,6 +209,11 @@ pub fn parse_edits(text: []const u8, out: *EditList) !void {
             const den = try field_u32(&parts);
             try no_slack(&parts);
             try out.push(.{ .adjust = .{ .brightness = brightness, .num = num, .den = den } });
+        } else if (std.mem.eql(u8, tag, "saturate")) {
+            const num = try field_u32(&parts);
+            const den = try field_u32(&parts);
+            try no_slack(&parts);
+            try out.push(.{ .saturate = .{ .num = num, .den = den } });
         } else {
             return error.BadEdits; // an unknown verb tag
         }
@@ -297,12 +310,39 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const from_text = try apply(garden, &pm, &rebuilt);
     assert(from_text.same_bytes(&replayed));
 
+    // HUNK28 — a filter joins the grammar: an edit-list `crop → saturate` equals the same two verbs called by
+    // hand, byte-for-byte, so a filter replays like any verb.
+    var filt = EditList.init();
+    try filt.push(.{ .crop = .{ .x = 1, .y = 1, .w = 4, .h = 4 } });
+    try filt.push(.{ .saturate = .{ .num = 3, .den = 2 } });
+    const filt_replayed = try apply(garden, &pm, &filt);
+    const filt_crop = try photos.crop(garden, &pm, 1, 1, 4, 4);
+    const filt_hand = try photos.saturate(garden, &filt_crop, 3, 2);
+    assert(filt_replayed.same_bytes(&filt_hand));
+
+    // The filter travels as text: render the saturate list, parse it back, prove the fixed point.
+    var fbuf: [max_edits_bytes]u8 = undefined;
+    const fn_len = try render_edits(&filt, fbuf[0..]);
+    var filt_back: EditList = undefined;
+    try parse_edits(fbuf[0..fn_len], &filt_back);
+    const filt_from_text = try apply(garden, &pm, &filt_back);
+    assert(filt_from_text.same_bytes(&filt_replayed));
+
+    // The filter's OWN refusal folds through: a zero denominator refuses BadSaturation by its own name, not a new
+    // one — the edit-list adds no failure mode, it sequences the verb's proven ones.
+    var bad_sat = EditList.init();
+    try bad_sat.push(.{ .saturate = .{ .num = 3, .den = 0 } });
+    if (apply(garden, &pm, &bad_sat)) |_| return error.SatSlipped else |e| {
+        if (e != error.BadSaturation) return error.WrongSat;
+    }
+
     // A list carrying every verb kind renders and parses back to the same bytes — the whole value model travels.
     var all = EditList.init();
     try all.push(.flip_h);
     try all.push(.flip_v);
     try all.push(.{ .scale = .{ .w = 8, .h = 8 } });
     try all.push(.{ .adjust = .{ .brightness = -20, .num = 2, .den = 1 } });
+    try all.push(.{ .saturate = .{ .num = 1, .den = 2 } });
     var abuf: [max_edits_bytes]u8 = undefined;
     const an = try render_edits(&all, abuf[0..]);
     var all_back: EditList = undefined;
@@ -342,8 +382,10 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     print("GREEN image-photo-edits: a {d}-verb edit-list replayed over a {d}x{d} image equals the verbs by " ++
         "hand byte-for-byte; replay is deterministic; the source is untouched and the empty list recovers it; " ++
         "the edited image re-encodes and round-trips; render(parse(render)) is a {d}-byte fixed point and the " ++
-        "rebuilt list applies to the same bytes; a bad header, an unknown verb, a malformed field, an extra " ++
-        "field each refuse by name; an out-of-bounds crop surfaces OutOfBounds through the fold\n", .{
+        "rebuilt list applies to the same bytes; the HUNK28 filter saturate joins the grammar — it composes by " ++
+        "hand, travels as text, and folds its own BadSaturation refusal through apply; a bad header, an unknown " ++
+        "verb, a malformed field, an extra field each refuse by name; an out-of-bounds crop surfaces OutOfBounds " ++
+        "through the fold\n", .{
         list.len(), pm.width, pm.height, n,
     });
     return 0;

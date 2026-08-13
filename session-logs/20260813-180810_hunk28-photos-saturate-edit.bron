@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260813.180810
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title HUNK28 — the filter family joins the edit-list: saturate records as a non-destructive edit
+prompt Continue the recursion loop past HUNK27: read REMEMBER + the two itineraries, take the next agent-doable lap Lindy-first crux-first, self-approve the design round, send each finished increment as its own signed round, stop at custody gates.
+think Two halves of the Photos app grew apart. HUNK11's edit-list grammar names only the six original verbs (crop, flip_h, flip_v, rotate, scale, adjust); the whole HUNK21-27 filter family (saturate, hue_turn, bilinear, convolve, stretch, edges) rode outside it. So every filter is a wound the moment a keeper applies it — it overwrites rather than riding as replayable data.
+think Read Lindy-first crux-first: the durable move is not a 28th filter but closing that gap. Once a filter joins the edit-list it inherits undo/redo (HUNK16), cold-restart persistence (HUNK18), and travel-as-text (HUNK11) for free — the machinery the quest already built. One rung, two halves become one.
+think Chose saturate as the first filter to seat: it is the paired tone twin of adjust already in the grammar, and takes the same num/den ratio shape, so it joins the value model without inventing a new field kind — the cleanest proof the pattern generalizes.
+think Grew image/photo_edits.rye by one variant: EditKind gains saturate; Edit gains saturate: struct { num: u32, den: u32 }; apply gains .saturate => photos.saturate; render_edits gains "saturate {d} {d}\n" (21 bytes at the ceiling, inside the 48-byte per-line bound); parse_edits gains a saturate arm reading two u32 fields with no_slack. No new error, no new failure mode.
+obs The filter's own refusal folds through: a zero-denominator saturate in a list refuses BadSaturation by its own name through apply, exactly as an out-of-bounds crop surfaces OutOfBounds. The edit-list adds no failure mode, it sequences the verb's proven ones. Selftest proves composition byte-for-byte, travel as a fixed point, the folded refusal, and the every-verb-kind round-trip now carrying saturate.
+obs No regression: all five downstream witnesses that ride the edit-list re-run GREEN — edit_cursor (undo/redo), edit_store (content-address), edit_preview, cursor_preview, session_store, session_list. The whole non-destructive/persistence/travel family carries saturate transparently.
+obs Self-approved design round, no gate. No breach, no cairn — a purely additive grammar variant. No network/key/funds — hardware buys stay custody gates #2/#3, untouched.
+loom witness=hunk_photo_edits_witness green=1 fixed_point_bytes=58 downstream_green=5 new_variant=saturate
+file image/photo_edits.rye added saturate to EditKind/Edit/apply/render_edits/parse_edits + selftest compose/travel/folded-refusal/every-verb checks + GREEN line
+file active-designing/20260813-180504_hunk-photos-saturate-edit-exploration.md self-approved design round
+file work-in-progress/REMEMBER.md HUNK28 latest-lap note + git nib
+file session-logs/README.md prepended newest-first row
+recommend keep-going next agent-doable crux: hue_turn joins the grammar (one u32 thirds field), then the nullary filters (blur, sharpen, stretch, edges) join together as void variants, completing the edit-list vocabulary; then a general filter round-trip witness. Hardware buys stay custody gates #2/#3.
