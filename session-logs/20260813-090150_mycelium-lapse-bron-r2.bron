@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260813.090150
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title mycelium Lapse r2 — the deadline verdict travels as a format lapse-v1 record
+prompt loop card: keep going Lindy-first crux-first; each finished increment its own signed round; send often
+think r1 resolved a Cord into a deadline-clock Ledger locally; a verdict a node cannot hand to another is only a local reading, so r2 lets it cross as readable bytes. Mirrored pledge_bron/braid_bron: an issued line, one holds line per account (pk · balance · reserved), one pledge line per pledge. The one new column is the deadline the clock reads — it travels inside the pledge line (pledge · id · from · to · amount · deadline · state · pos), eight tokens, so the token splitter widened 7 -> 8.
+think The settlement enum gained a fourth class, so the parse state gate now admits state_lapsed (3) alongside open/posted/voided and refuses a fifth. Added a positive test that a lapsed line (state 3) parses cleanly and reads back lapsed_seen == 1 — the new settlement class must survive the crossing, not just the three the Pledge had.
+think The travelling scene is chosen to carry a LAPSED pledge, not just a settled one: genesis credits Alice 200; Alice pledges 100 to Bob under deadline 2 then posts it, yet the post rides order position 2 so the clock lapses the pledge first (coins home to Alice, post a no-op); Alice then pledges 100 to Carol under a far deadline and leaves it open. The record carries lapsed 1, open 1, reserved 100 — exercising the deadline field and the lapsed state end to end. verdicts_agree also compares each pledge's deadline, so a dropped or corrupted hour would fail the round trip.
+think Conservation travels unchanged as the record's own law (the Pledge's, unwidened): balances plus reserves must sum to the issued total or the reader refuses BadInt before trusting the record — a lapse (reserved -> balance) keeps the sum whole. Round trip is a fixed point (re-render byte-identical). Refusals: bad header, unknown field, bad hex, broken conservation, unknown state, missing issued, over-long verdict.
+obs GREEN on the first run; witness re-runs the Lapse binary at the door. TAME bans clean, width-check clean (no lapse_bron violations). Additive — composes lapse + cord + fold public API only, editing none.
+loom witness=mycelium_lapse_bron_witness build=ok selftest=GREEN pledges=2 lapsed=1 open=1 reserved=100 fixed_point=yes
+file mycelium/lapse_bron.rye r2 travel — the deadline verdict renders to a format lapse-v1 record (deadline column added, lapsed state admitted) and parses back byte-for-byte, conservation as the record's own law
+file tools/mycelium_lapse_bron_witness.rish GREEN witness — proves the round trip, the lapse-crosses-as-lapse, conservation-travels, the fixed point, and every refusal; the Lapse stands at the door
+recommend keep-going Lapse r3 (the deadline verdict reads across a Knot — a pledge opened before a checkpoint cut, its deadline reached after, the clock carried across the seal, mirroring pledge_knot/braid_knot), then r4 true to the bytes. A served lapse · per-account mint authority · breach renames (cairn-first) · deep debride · seed force-push stay the maintainer's hand.
