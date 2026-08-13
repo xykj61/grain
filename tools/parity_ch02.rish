@@ -22,62 +22,62 @@ let apps_prefix_view = run ["sh" "tools/parity_time_one.sh" "apps_prefix_view" "
 assert apps_prefix_view.ok else "Ember corpus apps prefix view witness failed"
 say "GREEN: Ember corpus apps prefix view witness passed."
 
-say "witness suite: Inference assist sight lap 4 (chart on carriage)…"
+say "witness suite: Inference assist sight chart on carriage…"
 let assist_sight_lap4 = run ["sh" "tools/parity_time_one.sh" "assist_sight_lap4" "--" "rishi/bin/rishi" "run" "tools/inference_assist_sight_lap4.rish"]
-assert assist_sight_lap4.ok else "Inference assist sight lap 4 witness failed"
-say "GREEN: Inference assist sight lap 4 witness passed."
+assert assist_sight_lap4.ok else "Inference assist sight chart on carriage witness failed"
+say "GREEN: Inference assist sight chart on carriage witness passed."
 
-say "witness suite: Lantern lap 11 (temperature pin)…"
+say "witness suite: Lantern temperature pin…"
 let lantern_lap11 = run ["sh" "tools/parity_time_one.sh" "lantern_lap11" "--" "rishi/bin/rishi" "run" "tools/lantern_lap11.rish"]
-assert lantern_lap11.ok else "Lantern lap 11 witness failed"
-say "GREEN: Lantern lap 11 witness passed."
+assert lantern_lap11.ok else "Lantern temperature pin witness failed"
+say "GREEN: Lantern temperature pin witness passed."
 
-say "witness suite: Lattice lap 14 (clamp)…"
+say "witness suite: Lattice clamp…"
 let lattice_lap15 = run ["sh" "tools/parity_time_one.sh" "lattice_lap15" "--" "rishi/bin/rishi" "run" "tools/lattice_lap15.rish"]
-assert lattice_lap15.ok else "Lattice lap 14 witness failed"
-say "GREEN: Lattice lap 14 witness passed."
+assert lattice_lap15.ok else "Lattice clamp witness failed"
+say "GREEN: Lattice clamp witness passed."
 
-say "witness suite: Scribble lap 7 (heading depth + h1 view)…"
+say "witness suite: Scribble heading depth + h1 view…"
 let scribble_lap8 = run ["sh" "tools/parity_time_one.sh" "scribble_lap8" "--" "rishi/bin/rishi" "run" "tools/scribble_lap8.rish"]
-assert scribble_lap8.ok else "Scribble lap 7 witness failed"
+assert scribble_lap8.ok else "Scribble heading depth + h1 view witness failed"
 let scribble_h1_view = run ["sh" "tools/parity_time_one.sh" "scribble_h1_view" "--" "rishi/bin/rishi" "run" "tools/inference_scribble_h1_view.rish"]
 assert scribble_h1_view.ok else "Scribble h1 view witness failed"
-say "GREEN: Scribble lap 7 witness passed."
+say "GREEN: Scribble heading depth + h1 view witness passed."
 
-say "witness suite: Assist view lap 6 (chart on assist fold)…"
+say "witness suite: Assist view chart on assist fold…"
 let assist_view_lap6 = run ["sh" "tools/parity_time_one.sh" "assist_view_lap6" "--" "rishi/bin/rishi" "run" "tools/inference_assist_view_lap6.rish"]
-assert assist_view_lap6.ok else "Assist view lap 6 witness failed"
-say "GREEN: Assist view lap 6 witness passed."
+assert assist_view_lap6.ok else "Assist view chart on assist fold witness failed"
+say "GREEN: Assist view chart on assist fold witness passed."
 
-say "witness suite: Lantern lap 12 (seed pin)…"
+say "witness suite: Lantern seed pin…"
 let lantern_lap12 = run ["sh" "tools/parity_time_one.sh" "lantern_lap12" "--" "rishi/bin/rishi" "run" "tools/lantern_lap12.rish"]
-assert lantern_lap12.ok else "Lantern lap 12 witness failed"
-say "GREEN: Lantern lap 12 witness passed."
+assert lantern_lap12.ok else "Lantern seed pin witness failed"
+say "GREEN: Lantern seed pin witness passed."
 
-say "witness suite: Lattice lap 15 (reduce_max)…"
+say "witness suite: Lattice reduce_max…"
 let lattice_lap16 = run ["sh" "tools/parity_time_one.sh" "lattice_lap16" "--" "rishi/bin/rishi" "run" "tools/lattice_lap16.rish"]
-assert lattice_lap16.ok else "Lattice lap 15 witness failed"
-say "GREEN: Lattice lap 15 witness passed."
+assert lattice_lap16.ok else "Lattice reduce_max witness failed"
+say "GREEN: Lattice reduce_max witness passed."
 
 say "witness suite: Scribble h2 view…"
 let scribble_h2_view = run ["sh" "tools/parity_time_one.sh" "scribble_h2_view" "--" "rishi/bin/rishi" "run" "tools/inference_scribble_h2_view.rish"]
 assert scribble_h2_view.ok else "Scribble h2 view witness failed"
 say "GREEN: Scribble h2 view witness passed."
 
-say "witness suite: Linengrow sight view lap 4 (P&L net on glass)…"
+say "witness suite: Linengrow sight view P&L net on glass…"
 let sight_view_lap4 = run ["sh" "tools/parity_time_one.sh" "sight_view_lap4" "--" "rishi/bin/rishi" "run" "tools/dimeroll_sight_view_lap4.rish"]
-assert sight_view_lap4.ok else "Linengrow sight view lap 4 witness failed"
-say "GREEN: Linengrow sight view lap 4 witness passed."
+assert sight_view_lap4.ok else "Linengrow sight view P&L net on glass witness failed"
+say "GREEN: Linengrow sight view P&L net on glass witness passed."
 
-say "witness suite: Lantern lap 13 (top_p pin)…"
+say "witness suite: Lantern top_p pin…"
 let lantern_lap13 = run ["sh" "tools/parity_time_one.sh" "lantern_lap13" "--" "rishi/bin/rishi" "run" "tools/lantern_lap13.rish"]
-assert lantern_lap13.ok else "Lantern lap 13 witness failed"
-say "GREEN: Lantern lap 13 witness passed."
+assert lantern_lap13.ok else "Lantern top_p pin witness failed"
+say "GREEN: Lantern top_p pin witness passed."
 
-say "witness suite: Lattice lap 16 (reduce_min)…"
+say "witness suite: Lattice reduce_min…"
 let lattice_lap17 = run ["sh" "tools/parity_time_one.sh" "lattice_lap17" "--" "rishi/bin/rishi" "run" "tools/lattice_lap17.rish"]
-assert lattice_lap17.ok else "Lattice lap 16 witness failed"
-say "GREEN: Lattice lap 16 witness passed."
+assert lattice_lap17.ok else "Lattice reduce_min witness failed"
+say "GREEN: Lattice reduce_min witness passed."
 
 say "witness suite: Scribble h3 view…"
 let scribble_h3_view = run ["sh" "tools/parity_time_one.sh" "scribble_h3_view" "--" "rishi/bin/rishi" "run" "tools/inference_scribble_h3_view.rish"]
@@ -89,330 +89,330 @@ let rye_candy_prefix = run ["sh" "tools/parity_time_one.sh" "rye_candy_prefix" "
 assert rye_candy_prefix.ok else "Anvil rye dimeroll prefix view witness failed"
 say "GREEN: Anvil rye dimeroll prefix view witness passed."
 
-say "witness suite: Lantern lap 14 (err_stop pin)…"
+say "witness suite: Lantern err_stop pin…"
 let lantern_lap14 = run ["sh" "tools/parity_time_one.sh" "lantern_lap14" "--" "rishi/bin/rishi" "run" "tools/lantern_lap14.rish"]
-assert lantern_lap14.ok else "Lantern lap 14 witness failed"
-say "GREEN: Lantern lap 14 witness passed."
+assert lantern_lap14.ok else "Lantern err_stop pin witness failed"
+say "GREEN: Lantern err_stop pin witness passed."
 
-say "witness suite: Lattice lap 17 (sqrt)…"
+say "witness suite: Lattice sqrt…"
 let lattice_lap18 = run ["sh" "tools/parity_time_one.sh" "lattice_lap18" "--" "rishi/bin/rishi" "run" "tools/lattice_lap18.rish"]
-assert lattice_lap18.ok else "Lattice lap 17 witness failed"
-say "GREEN: Lattice lap 17 witness passed."
+assert lattice_lap18.ok else "Lattice sqrt witness failed"
+say "GREEN: Lattice sqrt witness passed."
 
 say "witness suite: Ember corpus rish tools prefix view…"
 let rish_tools_prefix = run ["sh" "tools/parity_time_one.sh" "rish_tools_prefix" "--" "rishi/bin/rishi" "run" "tools/inference_ember_corpus_rish_tools_prefix_view.rish"]
 assert rish_tools_prefix.ok else "Anvil rish tools prefix view witness failed"
 say "GREEN: Anvil rish tools prefix view witness passed."
 
-say "witness suite: Inference assist sight lap 5 (P&L on carriage)…"
+say "witness suite: Inference assist sight P&L on carriage…"
 let assist_sight_lap5 = run ["sh" "tools/parity_time_one.sh" "assist_sight_lap5" "--" "rishi/bin/rishi" "run" "tools/inference_assist_sight_lap5.rish"]
-assert assist_sight_lap5.ok else "Inference assist sight lap 5 witness failed"
-say "GREEN: Inference assist sight lap 5 witness passed."
+assert assist_sight_lap5.ok else "Inference assist sight P&L on carriage witness failed"
+say "GREEN: Inference assist sight P&L on carriage witness passed."
 
-say "witness suite: Lantern lap 15 (length_stop pin)…"
+say "witness suite: Lantern length_stop pin…"
 let lantern_lap15 = run ["sh" "tools/parity_time_one.sh" "lantern_lap15" "--" "rishi/bin/rishi" "run" "tools/lantern_lap15.rish"]
-assert lantern_lap15.ok else "Lantern lap 15 witness failed"
-say "GREEN: Lantern lap 15 witness passed."
+assert lantern_lap15.ok else "Lantern length_stop pin witness failed"
+say "GREEN: Lantern length_stop pin witness passed."
 
-say "witness suite: Lattice lap 18 (exp)…"
+say "witness suite: Lattice exp…"
 let lattice_lap19 = run ["sh" "tools/parity_time_one.sh" "lattice_lap19" "--" "rishi/bin/rishi" "run" "tools/lattice_lap19.rish"]
-assert lattice_lap19.ok else "Lattice lap 18 witness failed"
-say "GREEN: Lattice lap 18 witness passed."
+assert lattice_lap19.ok else "Lattice exp witness failed"
+say "GREEN: Lattice exp witness passed."
 
 say "witness suite: Scribble depth view…"
 let scribble_depth_view = run ["sh" "tools/parity_time_one.sh" "scribble_depth_view" "--" "rishi/bin/rishi" "run" "tools/inference_scribble_depth_view.rish"]
 assert scribble_depth_view.ok else "Scribble depth view witness failed"
 say "GREEN: Scribble depth view witness passed."
 
-say "witness suite: Linengrow sight view lap 5 (BS equity on glass)…"
+say "witness suite: Linengrow sight view BS equity on glass…"
 let sight_view_lap5 = run ["sh" "tools/parity_time_one.sh" "sight_view_lap5" "--" "rishi/bin/rishi" "run" "tools/dimeroll_sight_view_lap5.rish"]
-assert sight_view_lap5.ok else "Linengrow sight view lap 5 witness failed"
-say "GREEN: Linengrow sight view lap 5 witness passed."
+assert sight_view_lap5.ok else "Linengrow sight view BS equity on glass witness failed"
+say "GREEN: Linengrow sight view BS equity on glass witness passed."
 
-say "witness suite: Lantern lap 16 (empty allow-list)…"
+say "witness suite: Lantern empty allow-list…"
 let lantern_lap16 = run ["sh" "tools/parity_time_one.sh" "lantern_lap16" "--" "rishi/bin/rishi" "run" "tools/lantern_lap16.rish"]
-assert lantern_lap16.ok else "Lantern lap 16 witness failed"
-say "GREEN: Lantern lap 16 witness passed."
+assert lantern_lap16.ok else "Lantern empty allow-list witness failed"
+say "GREEN: Lantern empty allow-list witness passed."
 
-say "witness suite: Lattice lap 19 (log)…"
+say "witness suite: Lattice log…"
 let lattice_lap20 = run ["sh" "tools/parity_time_one.sh" "lattice_lap20" "--" "rishi/bin/rishi" "run" "tools/lattice_lap20.rish"]
-assert lattice_lap20.ok else "Lattice lap 19 witness failed"
-say "GREEN: Lattice lap 19 witness passed."
+assert lattice_lap20.ok else "Lattice log witness failed"
+say "GREEN: Lattice log witness passed."
 
 say "witness suite: Ember corpus rye apps prefix view…"
 let rye_apps_prefix = run ["sh" "tools/parity_time_one.sh" "rye_apps_prefix" "--" "rishi/bin/rishi" "run" "tools/inference_ember_corpus_rye_apps_prefix_view.rish"]
 assert rye_apps_prefix.ok else "Anvil rye apps prefix view witness failed"
 say "GREEN: Anvil rye apps prefix view witness passed."
 
-say "witness suite: Assist view lap 7 (P&L on assist fold)…"
+say "witness suite: Assist view P&L on assist fold…"
 let assist_view_lap7 = run ["sh" "tools/parity_time_one.sh" "assist_view_lap7" "--" "rishi/bin/rishi" "run" "tools/inference_assist_view_lap7.rish"]
-assert assist_view_lap7.ok else "Assist view lap 7 witness failed"
-say "GREEN: Assist view lap 7 witness passed."
+assert assist_view_lap7.ok else "Assist view P&L on assist fold witness failed"
+say "GREEN: Assist view P&L on assist fold witness passed."
 
-say "witness suite: Lantern lap 17 (allow_count pin)…"
+say "witness suite: Lantern allow_count pin…"
 let lantern_lap17 = run ["sh" "tools/parity_time_one.sh" "lantern_lap17" "--" "rishi/bin/rishi" "run" "tools/lantern_lap17.rish"]
-assert lantern_lap17.ok else "Lantern lap 17 witness failed"
-say "GREEN: Lantern lap 17 witness passed."
+assert lantern_lap17.ok else "Lantern allow_count pin witness failed"
+say "GREEN: Lantern allow_count pin witness passed."
 
-say "witness suite: Lattice lap 20 (pow)…"
+say "witness suite: Lattice pow…"
 let lattice_lap21 = run ["sh" "tools/parity_time_one.sh" "lattice_lap21" "--" "rishi/bin/rishi" "run" "tools/lattice_lap21.rish"]
-assert lattice_lap21.ok else "Lattice lap 20 witness failed"
-say "GREEN: Lattice lap 20 witness passed."
+assert lattice_lap21.ok else "Lattice pow witness failed"
+say "GREEN: Lattice pow witness passed."
 
 say "witness suite: Scribble tally view…"
 let scribble_tally_view = run ["sh" "tools/parity_time_one.sh" "scribble_tally_view" "--" "rishi/bin/rishi" "run" "tools/inference_scribble_tally_view.rish"]
 assert scribble_tally_view.ok else "Scribble tally view witness failed"
 say "GREEN: Scribble tally view witness passed."
 
-say "witness suite: Linengrow sight view lap 6 (TB on glass)…"
+say "witness suite: Linengrow sight view TB on glass…"
 let sight_view_lap6 = run ["sh" "tools/parity_time_one.sh" "sight_view_lap6" "--" "rishi/bin/rishi" "run" "tools/dimeroll_sight_view_lap6.rish"]
-assert sight_view_lap6.ok else "Linengrow sight view lap 6 witness failed"
-say "GREEN: Linengrow sight view lap 6 witness passed."
+assert sight_view_lap6.ok else "Linengrow sight view TB on glass witness failed"
+say "GREEN: Linengrow sight view TB on glass witness passed."
 
-say "witness suite: Lantern lap 18 (dual-model allow)…"
+say "witness suite: Lantern dual-model allow…"
 let lantern_lap18 = run ["sh" "tools/parity_time_one.sh" "lantern_lap18" "--" "rishi/bin/rishi" "run" "tools/lantern_lap18.rish"]
-assert lantern_lap18.ok else "Lantern lap 18 witness failed"
-say "GREEN: Lantern lap 18 witness passed."
+assert lantern_lap18.ok else "Lantern dual-model allow witness failed"
+say "GREEN: Lantern dual-model allow witness passed."
 
-say "witness suite: Lattice lap 21 (relu)…"
+say "witness suite: Lattice relu…"
 let lattice_lap22 = run ["sh" "tools/parity_time_one.sh" "lattice_lap22" "--" "rishi/bin/rishi" "run" "tools/lattice_lap22.rish"]
-assert lattice_lap22.ok else "Lattice lap 21 witness failed"
-say "GREEN: Lattice lap 21 witness passed."
+assert lattice_lap22.ok else "Lattice relu witness failed"
+say "GREEN: Lattice relu witness passed."
 
-say "witness suite: Inference assist sight lap 6 (BS equity on carriage)…"
+say "witness suite: Inference assist sight BS equity on carriage…"
 let assist_sight_lap6 = run ["sh" "tools/parity_time_one.sh" "assist_sight_lap6" "--" "rishi/bin/rishi" "run" "tools/inference_assist_sight_lap6.rish"]
-assert assist_sight_lap6.ok else "Inference assist sight lap 6 witness failed"
-say "GREEN: Inference assist sight lap 6 witness passed."
+assert assist_sight_lap6.ok else "Inference assist sight BS equity on carriage witness failed"
+say "GREEN: Inference assist sight BS equity on carriage witness passed."
 
-say "witness suite: Assist view lap 8 (BS equity on assist fold)…"
+say "witness suite: Assist view BS equity on assist fold…"
 let assist_view_lap8 = run ["sh" "tools/parity_time_one.sh" "assist_view_lap8" "--" "rishi/bin/rishi" "run" "tools/inference_assist_view_lap8.rish"]
-assert assist_view_lap8.ok else "Assist view lap 8 witness failed"
-say "GREEN: Assist view lap 8 witness passed."
+assert assist_view_lap8.ok else "Assist view BS equity on assist fold witness failed"
+say "GREEN: Assist view BS equity on assist fold witness passed."
 
-say "witness suite: Lantern lap 19 (require_model pin)…"
+say "witness suite: Lantern require_model pin…"
 let lantern_lap19 = run ["sh" "tools/parity_time_one.sh" "lantern_lap19" "--" "rishi/bin/rishi" "run" "tools/lantern_lap19.rish"]
-assert lantern_lap19.ok else "Lantern lap 19 witness failed"
-say "GREEN: Lantern lap 19 witness passed."
+assert lantern_lap19.ok else "Lantern require_model pin witness failed"
+say "GREEN: Lantern require_model pin witness passed."
 
-say "witness suite: Lattice lap 22 (sigmoid)…"
+say "witness suite: Lattice sigmoid…"
 let lattice_lap23 = run ["sh" "tools/parity_time_one.sh" "lattice_lap23" "--" "rishi/bin/rishi" "run" "tools/lattice_lap23.rish"]
-assert lattice_lap23.ok else "Lattice lap 22 witness failed"
-say "GREEN: Lattice lap 22 witness passed."
+assert lattice_lap23.ok else "Lattice sigmoid witness failed"
+say "GREEN: Lattice sigmoid witness passed."
 
 say "witness suite: Scribble blocks view…"
 let scribble_blocks_view = run ["sh" "tools/parity_time_one.sh" "scribble_blocks_view" "--" "rishi/bin/rishi" "run" "tools/inference_scribble_blocks_view.rish"]
 assert scribble_blocks_view.ok else "Scribble blocks view witness failed"
 say "GREEN: Scribble blocks view witness passed."
 
-say "witness suite: Linengrow sight view lap 7 (exceptions on glass)…"
+say "witness suite: Linengrow sight view exceptions on glass…"
 let sight_view_lap7 = run ["sh" "tools/parity_time_one.sh" "sight_view_lap7" "--" "rishi/bin/rishi" "run" "tools/dimeroll_sight_view_lap7.rish"]
-assert sight_view_lap7.ok else "Linengrow sight view lap 7 witness failed"
-say "GREEN: Linengrow sight view lap 7 witness passed."
+assert sight_view_lap7.ok else "Linengrow sight view exceptions on glass witness failed"
+say "GREEN: Linengrow sight view exceptions on glass witness passed."
 
-say "witness suite: Lantern lap 20 (stopped_reason eos pin)…"
+say "witness suite: Lantern stopped_reason eos pin…"
 let lantern_lap20 = run ["sh" "tools/parity_time_one.sh" "lantern_lap20" "--" "rishi/bin/rishi" "run" "tools/lantern_lap20.rish"]
-assert lantern_lap20.ok else "Lantern lap 20 witness failed"
-say "GREEN: Lantern lap 20 witness passed."
+assert lantern_lap20.ok else "Lantern stopped_reason eos pin witness failed"
+say "GREEN: Lantern stopped_reason eos pin witness passed."
 
-say "witness suite: Lattice lap 23 (softmax)…"
+say "witness suite: Lattice softmax…"
 let lattice_lap24 = run ["sh" "tools/parity_time_one.sh" "lattice_lap24" "--" "rishi/bin/rishi" "run" "tools/lattice_lap24.rish"]
-assert lattice_lap24.ok else "Lattice lap 23 witness failed"
-say "GREEN: Lattice lap 23 witness passed."
+assert lattice_lap24.ok else "Lattice softmax witness failed"
+say "GREEN: Lattice softmax witness passed."
 
-say "witness suite: Inference assist sight lap 7 (exceptions on carriage)…"
+say "witness suite: Inference assist sight exceptions on carriage…"
 let assist_sight_lap7 = run ["sh" "tools/parity_time_one.sh" "assist_sight_lap7" "--" "rishi/bin/rishi" "run" "tools/inference_assist_sight_lap7.rish"]
-assert assist_sight_lap7.ok else "Inference assist sight lap 7 witness failed"
-say "GREEN: Inference assist sight lap 7 witness passed."
+assert assist_sight_lap7.ok else "Inference assist sight exceptions on carriage witness failed"
+say "GREEN: Inference assist sight exceptions on carriage witness passed."
 
-say "witness suite: Assist view lap 9 (exceptions on assist fold)…"
+say "witness suite: Assist view exceptions on assist fold…"
 let assist_view_lap9 = run ["sh" "tools/parity_time_one.sh" "assist_view_lap9" "--" "rishi/bin/rishi" "run" "tools/inference_assist_view_lap9.rish"]
-assert assist_view_lap9.ok else "Assist view lap 9 witness failed"
-say "GREEN: Assist view lap 9 witness passed."
+assert assist_view_lap9.ok else "Assist view exceptions on assist fold witness failed"
+say "GREEN: Assist view exceptions on assist fold witness passed."
 
-say "witness suite: Lantern lap 21 (stopped_reason length pin)…"
+say "witness suite: Lantern stopped_reason length pin…"
 let lantern_lap21 = run ["sh" "tools/parity_time_one.sh" "lantern_lap21" "--" "rishi/bin/rishi" "run" "tools/lantern_lap21.rish"]
-assert lantern_lap21.ok else "Lantern lap 21 witness failed"
-say "GREEN: Lantern lap 21 witness passed."
+assert lantern_lap21.ok else "Lantern stopped_reason length pin witness failed"
+say "GREEN: Lantern stopped_reason length pin witness passed."
 
-say "witness suite: Lattice lap 24 (tanh)…"
+say "witness suite: Lattice tanh…"
 let lattice_lap25 = run ["sh" "tools/parity_time_one.sh" "lattice_lap25" "--" "rishi/bin/rishi" "run" "tools/lattice_lap25.rish"]
-assert lattice_lap25.ok else "Lattice lap 24 witness failed"
-say "GREEN: Lattice lap 24 witness passed."
+assert lattice_lap25.ok else "Lattice tanh witness failed"
+say "GREEN: Lattice tanh witness passed."
 
 say "witness suite: Scribble fence heading view…"
 let scribble_fence_heading = run ["sh" "tools/parity_time_one.sh" "scribble_fence_heading" "--" "rishi/bin/rishi" "run" "tools/inference_scribble_fence_heading_view.rish"]
 assert scribble_fence_heading.ok else "Scribble fence heading view witness failed"
 say "GREEN: Scribble fence heading view witness passed."
 
-say "witness suite: Linengrow sight view lap 8 (exception reason on glass)…"
+say "witness suite: Linengrow sight view exception reason on glass…"
 let sight_view_lap8 = run ["sh" "tools/parity_time_one.sh" "sight_view_lap8" "--" "rishi/bin/rishi" "run" "tools/dimeroll_sight_view_lap8.rish"]
-assert sight_view_lap8.ok else "Linengrow sight view lap 8 witness failed"
-say "GREEN: Linengrow sight view lap 8 witness passed."
+assert sight_view_lap8.ok else "Linengrow sight view exception reason on glass witness failed"
+say "GREEN: Linengrow sight view exception reason on glass witness passed."
 
-say "witness suite: Lantern lap 22 (stream pin false)…"
+say "witness suite: Lantern stream pin false…"
 let lantern_lap22 = run ["sh" "tools/parity_time_one.sh" "lantern_lap22" "--" "rishi/bin/rishi" "run" "tools/lantern_lap22.rish"]
-assert lantern_lap22.ok else "Lantern lap 22 witness failed"
-say "GREEN: Lantern lap 22 witness passed."
+assert lantern_lap22.ok else "Lantern stream pin false witness failed"
+say "GREEN: Lantern stream pin false witness passed."
 
-say "witness suite: Lattice lap 25 (gelu)…"
+say "witness suite: Lattice gelu…"
 let lattice_lap26 = run ["sh" "tools/parity_time_one.sh" "lattice_lap26" "--" "rishi/bin/rishi" "run" "tools/lattice_lap26.rish"]
-assert lattice_lap26.ok else "Lattice lap 25 witness failed"
-say "GREEN: Lattice lap 25 witness passed."
+assert lattice_lap26.ok else "Lattice gelu witness failed"
+say "GREEN: Lattice gelu witness passed."
 
-say "witness suite: Inference assist sight lap 8 (exception reason on carriage)…"
+say "witness suite: Inference assist sight exception reason on carriage…"
 let assist_sight_lap8 = run ["sh" "tools/parity_time_one.sh" "assist_sight_lap8" "--" "rishi/bin/rishi" "run" "tools/inference_assist_sight_lap8.rish"]
-assert assist_sight_lap8.ok else "Inference assist sight lap 8 witness failed"
-say "GREEN: Inference assist sight lap 8 witness passed."
+assert assist_sight_lap8.ok else "Inference assist sight exception reason on carriage witness failed"
+say "GREEN: Inference assist sight exception reason on carriage witness passed."
 
-say "witness suite: Assist view lap 10 (exception reason on assist fold)…"
+say "witness suite: Assist view exception reason on assist fold…"
 let assist_view_lap10 = run ["sh" "tools/parity_time_one.sh" "assist_view_lap10" "--" "rishi/bin/rishi" "run" "tools/inference_assist_view_lap10.rish"]
-assert assist_view_lap10.ok else "Assist view lap 10 witness failed"
-say "GREEN: Assist view lap 10 witness passed."
+assert assist_view_lap10.ok else "Assist view exception reason on assist fold witness failed"
+say "GREEN: Assist view exception reason on assist fold witness passed."
 
-say "witness suite: Lantern lap 23 (stream pin true)…"
+say "witness suite: Lantern stream pin true…"
 let lantern_lap23 = run ["sh" "tools/parity_time_one.sh" "lantern_lap23" "--" "rishi/bin/rishi" "run" "tools/lantern_lap23.rish"]
-assert lantern_lap23.ok else "Lantern lap 23 witness failed"
-say "GREEN: Lantern lap 23 witness passed."
+assert lantern_lap23.ok else "Lantern stream pin true witness failed"
+say "GREEN: Lantern stream pin true witness passed."
 
-say "witness suite: Lattice lap 26 (silu)…"
+say "witness suite: Lattice silu…"
 let lattice_lap27 = run ["sh" "tools/parity_time_one.sh" "lattice_lap27" "--" "rishi/bin/rishi" "run" "tools/lattice_lap27.rish"]
-assert lattice_lap27.ok else "Lattice lap 26 witness failed"
-say "GREEN: Lattice lap 26 witness passed."
+assert lattice_lap27.ok else "Lattice silu witness failed"
+say "GREEN: Lattice silu witness passed."
 
 say "witness suite: Scribble tally blocks view…"
 let scribble_tally_blocks = run ["sh" "tools/parity_time_one.sh" "scribble_tally_blocks" "--" "rishi/bin/rishi" "run" "tools/inference_scribble_tally_blocks_view.rish"]
 assert scribble_tally_blocks.ok else "Scribble tally blocks view witness failed"
 say "GREEN: Scribble tally blocks view witness passed."
 
-say "witness suite: Linengrow sight view lap 9 (second exception reason on glass)…"
+say "witness suite: Linengrow sight view second exception reason on glass…"
 let sight_view_lap9 = run ["sh" "tools/parity_time_one.sh" "sight_view_lap9" "--" "rishi/bin/rishi" "run" "tools/dimeroll_sight_view_lap9.rish"]
-assert sight_view_lap9.ok else "Linengrow sight view lap 9 witness failed"
-say "GREEN: Linengrow sight view lap 9 witness passed."
+assert sight_view_lap9.ok else "Linengrow sight view second exception reason on glass witness failed"
+say "GREEN: Linengrow sight view second exception reason on glass witness passed."
 
-say "witness suite: Lantern lap 24 (stopped_reason err_stop pin)…"
+say "witness suite: Lantern stopped_reason err_stop pin…"
 let lantern_lap24 = run ["sh" "tools/parity_time_one.sh" "lantern_lap24" "--" "rishi/bin/rishi" "run" "tools/lantern_lap24.rish"]
-assert lantern_lap24.ok else "Lantern lap 24 witness failed"
-say "GREEN: Lantern lap 24 witness passed."
+assert lantern_lap24.ok else "Lantern stopped_reason err_stop pin witness failed"
+say "GREEN: Lantern stopped_reason err_stop pin witness passed."
 
-say "witness suite: Lattice lap 27 (leaky_relu)…"
+say "witness suite: Lattice leaky_relu…"
 let lattice_lap28 = run ["sh" "tools/parity_time_one.sh" "lattice_lap28" "--" "rishi/bin/rishi" "run" "tools/lattice_lap28.rish"]
-assert lattice_lap28.ok else "Lattice lap 27 witness failed"
-say "GREEN: Lattice lap 27 witness passed."
+assert lattice_lap28.ok else "Lattice leaky_relu witness failed"
+say "GREEN: Lattice leaky_relu witness passed."
 
-say "witness suite: Inference assist sight lap 9 (second exception reason on carriage)…"
+say "witness suite: Inference assist sight second exception reason on carriage…"
 let assist_sight_lap9 = run ["sh" "tools/parity_time_one.sh" "assist_sight_lap9" "--" "rishi/bin/rishi" "run" "tools/inference_assist_sight_lap9.rish"]
-assert assist_sight_lap9.ok else "Inference assist sight lap 9 witness failed"
-say "GREEN: Inference assist sight lap 9 witness passed."
+assert assist_sight_lap9.ok else "Inference assist sight second exception reason on carriage witness failed"
+say "GREEN: Inference assist sight second exception reason on carriage witness passed."
 
-say "witness suite: Assist view lap 11 (second exception reason on assist fold)…"
+say "witness suite: Assist view second exception reason on assist fold…"
 let assist_view_lap11 = run ["sh" "tools/parity_time_one.sh" "assist_view_lap11" "--" "rishi/bin/rishi" "run" "tools/inference_assist_view_lap11.rish"]
-assert assist_view_lap11.ok else "Assist view lap 11 witness failed"
-say "GREEN: Assist view lap 11 witness passed."
+assert assist_view_lap11.ok else "Assist view second exception reason on assist fold witness failed"
+say "GREEN: Assist view second exception reason on assist fold witness passed."
 
-say "witness suite: Lantern lap 25 (stopped_reason stop_sequence pin)…"
+say "witness suite: Lantern stopped_reason stop_sequence pin…"
 let lantern_lap25 = run ["sh" "tools/parity_time_one.sh" "lantern_lap25" "--" "rishi/bin/rishi" "run" "tools/lantern_lap25.rish"]
-assert lantern_lap25.ok else "Lantern lap 25 witness failed"
-say "GREEN: Lantern lap 25 witness passed."
+assert lantern_lap25.ok else "Lantern stopped_reason stop_sequence pin witness failed"
+say "GREEN: Lantern stopped_reason stop_sequence pin witness passed."
 
-say "witness suite: Lattice lap 28 (softplus)…"
+say "witness suite: Lattice softplus…"
 let lattice_lap29 = run ["sh" "tools/parity_time_one.sh" "lattice_lap29" "--" "rishi/bin/rishi" "run" "tools/lattice_lap29.rish"]
-assert lattice_lap29.ok else "Lattice lap 28 witness failed"
-say "GREEN: Lattice lap 28 witness passed."
+assert lattice_lap29.ok else "Lattice softplus witness failed"
+say "GREEN: Lattice softplus witness passed."
 
 say "witness suite: Scribble para blocks view…"
 let scribble_para_blocks = run ["sh" "tools/parity_time_one.sh" "scribble_para_blocks" "--" "rishi/bin/rishi" "run" "tools/inference_scribble_para_blocks_view.rish"]
 assert scribble_para_blocks.ok else "Scribble para blocks view witness failed"
 say "GREEN: Scribble para blocks view witness passed."
 
-say "witness suite: Linengrow sight view lap 10 (exception tallies on glass)…"
+say "witness suite: Linengrow sight view exception tallies on glass…"
 let sight_view_lap10 = run ["sh" "tools/parity_time_one.sh" "sight_view_lap10" "--" "rishi/bin/rishi" "run" "tools/dimeroll_sight_view_lap10.rish"]
-assert sight_view_lap10.ok else "Linengrow sight view lap 10 witness failed"
-say "GREEN: Linengrow sight view lap 10 witness passed."
+assert sight_view_lap10.ok else "Linengrow sight view exception tallies on glass witness failed"
+say "GREEN: Linengrow sight view exception tallies on glass witness passed."
 
-say "witness suite: Lantern lap 26 (top_k pin)…"
+say "witness suite: Lantern top_k pin…"
 let lantern_lap26 = run ["sh" "tools/parity_time_one.sh" "lantern_lap26" "--" "rishi/bin/rishi" "run" "tools/lantern_lap26.rish"]
-assert lantern_lap26.ok else "Lantern lap 26 witness failed"
-say "GREEN: Lantern lap 26 witness passed."
+assert lantern_lap26.ok else "Lantern top_k pin witness failed"
+say "GREEN: Lantern top_k pin witness passed."
 
-say "witness suite: Lattice lap 29 (maximum)…"
+say "witness suite: Lattice maximum…"
 let lattice_lap30 = run ["sh" "tools/parity_time_one.sh" "lattice_lap30" "--" "rishi/bin/rishi" "run" "tools/lattice_lap30.rish"]
-assert lattice_lap30.ok else "Lattice lap 29 witness failed"
-say "GREEN: Lattice lap 29 witness passed."
+assert lattice_lap30.ok else "Lattice maximum witness failed"
+say "GREEN: Lattice maximum witness passed."
 
-say "witness suite: Inference assist sight lap 10 (exception tallies on carriage)…"
+say "witness suite: Inference assist sight exception tallies on carriage…"
 let assist_sight_lap10 = run ["sh" "tools/parity_time_one.sh" "assist_sight_lap10" "--" "rishi/bin/rishi" "run" "tools/inference_assist_sight_lap10.rish"]
-assert assist_sight_lap10.ok else "Inference assist sight lap 10 witness failed"
-say "GREEN: Inference assist sight lap 10 witness passed."
+assert assist_sight_lap10.ok else "Inference assist sight exception tallies on carriage witness failed"
+say "GREEN: Inference assist sight exception tallies on carriage witness passed."
 
-say "witness suite: Assist view lap 12 (exception tallies on assist fold)…"
+say "witness suite: Assist view exception tallies on assist fold…"
 let assist_view_lap12 = run ["sh" "tools/parity_time_one.sh" "assist_view_lap12" "--" "rishi/bin/rishi" "run" "tools/inference_assist_view_lap12.rish"]
-assert assist_view_lap12.ok else "Assist view lap 12 witness failed"
-say "GREEN: Assist view lap 12 witness passed."
+assert assist_view_lap12.ok else "Assist view exception tallies on assist fold witness failed"
+say "GREEN: Assist view exception tallies on assist fold witness passed."
 
-say "witness suite: Lantern lap 27 (frequency_penalty pin)…"
+say "witness suite: Lantern frequency_penalty pin…"
 let lantern_lap27 = run ["sh" "tools/parity_time_one.sh" "lantern_lap27" "--" "rishi/bin/rishi" "run" "tools/lantern_lap27.rish"]
-assert lantern_lap27.ok else "Lantern lap 27 witness failed"
-say "GREEN: Lantern lap 27 witness passed."
+assert lantern_lap27.ok else "Lantern frequency_penalty pin witness failed"
+say "GREEN: Lantern frequency_penalty pin witness passed."
 
-say "witness suite: Lattice lap 30 (minimum)…"
+say "witness suite: Lattice minimum…"
 let lattice_lap31 = run ["sh" "tools/parity_time_one.sh" "lattice_lap31" "--" "rishi/bin/rishi" "run" "tools/lattice_lap31.rish"]
-assert lattice_lap31.ok else "Lattice lap 30 witness failed"
-say "GREEN: Lattice lap 30 witness passed."
+assert lattice_lap31.ok else "Lattice minimum witness failed"
+say "GREEN: Lattice minimum witness passed."
 
 say "witness suite: Scribble h1 blocks view…"
 let scribble_h1_blocks = run ["sh" "tools/parity_time_one.sh" "scribble_h1_blocks" "--" "rishi/bin/rishi" "run" "tools/inference_scribble_h1_blocks_view.rish"]
 assert scribble_h1_blocks.ok else "Scribble h1 blocks view witness failed"
 say "GREEN: Scribble h1 blocks view witness passed."
 
-say "witness suite: Linengrow sight view lap 11 (exception kinds on glass)…"
+say "witness suite: Linengrow sight view exception kinds on glass…"
 let sight_view_lap11 = run ["sh" "tools/parity_time_one.sh" "sight_view_lap11" "--" "rishi/bin/rishi" "run" "tools/dimeroll_sight_view_lap11.rish"]
-assert sight_view_lap11.ok else "Linengrow sight view lap 11 witness failed"
-say "GREEN: Linengrow sight view lap 11 witness passed."
+assert sight_view_lap11.ok else "Linengrow sight view exception kinds on glass witness failed"
+say "GREEN: Linengrow sight view exception kinds on glass witness passed."
 
-say "witness suite: Lantern lap 28 (presence_penalty pin)…"
+say "witness suite: Lantern presence_penalty pin…"
 let lantern_lap28 = run ["sh" "tools/parity_time_one.sh" "lantern_lap28" "--" "rishi/bin/rishi" "run" "tools/lantern_lap28.rish"]
-assert lantern_lap28.ok else "Lantern lap 28 witness failed"
-say "GREEN: Lantern lap 28 witness passed."
+assert lantern_lap28.ok else "Lantern presence_penalty pin witness failed"
+say "GREEN: Lantern presence_penalty pin witness passed."
 
-say "witness suite: Lattice lap 31 (elu)…"
+say "witness suite: Lattice elu…"
 let lattice_lap32 = run ["sh" "tools/parity_time_one.sh" "lattice_lap32" "--" "rishi/bin/rishi" "run" "tools/lattice_lap32.rish"]
-assert lattice_lap32.ok else "Lattice lap 31 witness failed"
-say "GREEN: Lattice lap 31 witness passed."
+assert lattice_lap32.ok else "Lattice elu witness failed"
+say "GREEN: Lattice elu witness passed."
 
-say "witness suite: Inference assist sight lap 11 (exception kinds on carriage)…"
+say "witness suite: Inference assist sight exception kinds on carriage…"
 let assist_sight_lap11 = run ["sh" "tools/parity_time_one.sh" "assist_sight_lap11" "--" "rishi/bin/rishi" "run" "tools/inference_assist_sight_lap11.rish"]
-assert assist_sight_lap11.ok else "Inference assist sight lap 11 witness failed"
-say "GREEN: Inference assist sight lap 11 witness passed."
+assert assist_sight_lap11.ok else "Inference assist sight exception kinds on carriage witness failed"
+say "GREEN: Inference assist sight exception kinds on carriage witness passed."
 
-say "witness suite: Assist view lap 13 (exception kinds on assist fold)…"
+say "witness suite: Assist view exception kinds on assist fold…"
 let assist_view_lap13 = run ["sh" "tools/parity_time_one.sh" "assist_view_lap13" "--" "rishi/bin/rishi" "run" "tools/inference_assist_view_lap13.rish"]
-assert assist_view_lap13.ok else "Assist view lap 13 witness failed"
-say "GREEN: Assist view lap 13 witness passed."
+assert assist_view_lap13.ok else "Assist view exception kinds on assist fold witness failed"
+say "GREEN: Assist view exception kinds on assist fold witness passed."
 
-say "witness suite: Lantern lap 29 (n pin)…"
+say "witness suite: Lantern n pin…"
 let lantern_lap29 = run ["sh" "tools/parity_time_one.sh" "lantern_lap29" "--" "rishi/bin/rishi" "run" "tools/lantern_lap29.rish"]
-assert lantern_lap29.ok else "Lantern lap 29 witness failed"
-say "GREEN: Lantern lap 29 witness passed."
+assert lantern_lap29.ok else "Lantern n pin witness failed"
+say "GREEN: Lantern n pin witness passed."
 
-say "witness suite: Ember corpus lap 2 (min_lines)…"
+say "witness suite: Ember corpus min_lines…"
 let ember_corpus_lap2 = run ["sh" "tools/parity_time_one.sh" "ember_corpus_lap2" "--" "rishi/bin/rishi" "run" "tools/ember_corpus_lap2.rish"]
-assert ember_corpus_lap2.ok else "Ember corpus lap 2 witness failed"
-say "GREEN: Ember corpus lap 2 witness passed."
+assert ember_corpus_lap2.ok else "Ember corpus min_lines witness failed"
+say "GREEN: Ember corpus min_lines witness passed."
 
-say "witness suite: Ember corpus lap 3 (max_lines)…"
+say "witness suite: Ember corpus max_lines…"
 let ember_corpus_lap3 = run ["sh" "tools/parity_time_one.sh" "ember_corpus_lap3" "--" "rishi/bin/rishi" "run" "tools/ember_corpus_lap3.rish"]
-assert ember_corpus_lap3.ok else "Ember corpus lap 3 witness failed"
-say "GREEN: Ember corpus lap 3 witness passed."
+assert ember_corpus_lap3.ok else "Ember corpus max_lines witness failed"
+say "GREEN: Ember corpus max_lines witness passed."
 
-say "witness suite: Ember corpus lap 4 (path_suffix)…"
+say "witness suite: Ember corpus path_suffix…"
 let ember_corpus_lap4 = run ["sh" "tools/parity_time_one.sh" "ember_corpus_lap4" "--" "rishi/bin/rishi" "run" "tools/ember_corpus_lap4.rish"]
-assert ember_corpus_lap4.ok else "Ember corpus lap 4 witness failed"
-say "GREEN: Ember corpus lap 4 witness passed."
+assert ember_corpus_lap4.ok else "Ember corpus path_suffix witness failed"
+say "GREEN: Ember corpus path_suffix witness passed."
 
-say "witness suite: Ember corpus lap 5 (sum_lines)…"
+say "witness suite: Ember corpus sum_lines…"
 let ember_corpus_lap5 = run ["sh" "tools/parity_time_one.sh" "ember_corpus_lap5" "--" "rishi/bin/rishi" "run" "tools/ember_corpus_lap5.rish"]
-assert ember_corpus_lap5.ok else "Ember corpus lap 5 witness failed"
-say "GREEN: Ember corpus lap 5 witness passed."
+assert ember_corpus_lap5.ok else "Ember corpus sum_lines witness failed"
+say "GREEN: Ember corpus sum_lines witness passed."
 
 say "witness suite: Ember corpus min_lines view…"
 let ember_min_lines_view = run ["sh" "tools/parity_time_one.sh" "ember_min_lines_view" "--" "rishi/bin/rishi" "run" "tools/inference_ember_corpus_min_lines_view.rish"]
@@ -434,25 +434,25 @@ let ember_sum_lines_view = run ["sh" "tools/parity_time_one.sh" "ember_sum_lines
 assert ember_sum_lines_view.ok else "Ember corpus sum_lines view witness failed"
 say "GREEN: Ember corpus sum_lines view witness passed."
 
-say "witness suite: Dimeroll lap 4 (account filter)…"
+say "witness suite: Dimeroll account filter…"
 let dimeroll_lap4 = run ["sh" "tools/parity_time_one.sh" "dimeroll_lap4" "--" "rishi/bin/rishi" "run" "tools/dimeroll_lap4.rish"]
-assert dimeroll_lap4.ok else "Dimeroll lap 4 witness failed"
-say "GREEN: Dimeroll lap 4 witness passed."
+assert dimeroll_lap4.ok else "Dimeroll account filter witness failed"
+say "GREEN: Dimeroll account filter witness passed."
 
-say "witness suite: Dimeroll lap 5 (memo prefix)…"
+say "witness suite: Dimeroll memo prefix…"
 let dimeroll_lap5 = run ["sh" "tools/parity_time_one.sh" "dimeroll_lap5" "--" "rishi/bin/rishi" "run" "tools/dimeroll_lap5.rish"]
-assert dimeroll_lap5.ok else "Dimeroll lap 5 witness failed"
-say "GREEN: Dimeroll lap 5 witness passed."
+assert dimeroll_lap5.ok else "Dimeroll memo prefix witness failed"
+say "GREEN: Dimeroll memo prefix witness passed."
 
-say "witness suite: Dimeroll lap 6 (cash flow)…"
+say "witness suite: Dimeroll cash flow…"
 let dimeroll_lap6 = run ["sh" "tools/parity_time_one.sh" "dimeroll_lap6" "--" "rishi/bin/rishi" "run" "tools/dimeroll_lap6.rish"]
-assert dimeroll_lap6.ok else "Dimeroll lap 6 witness failed"
-say "GREEN: Dimeroll lap 6 witness passed."
+assert dimeroll_lap6.ok else "Dimeroll cash flow witness failed"
+say "GREEN: Dimeroll cash flow witness passed."
 
-say "witness suite: Dimeroll lap 7 (sum amounts)…"
+say "witness suite: Dimeroll sum amounts…"
 let dimeroll_lap7 = run ["sh" "tools/parity_time_one.sh" "dimeroll_lap7" "--" "rishi/bin/rishi" "run" "tools/dimeroll_lap7.rish"]
-assert dimeroll_lap7.ok else "Dimeroll lap 7 witness failed"
-say "GREEN: Dimeroll lap 7 witness passed."
+assert dimeroll_lap7.ok else "Dimeroll sum amounts witness failed"
+say "GREEN: Dimeroll sum amounts witness passed."
 
 say "witness suite: Dimeroll cash account view…"
 let dimeroll_cash_account = run ["sh" "tools/parity_time_one.sh" "dimeroll_cash_account" "--" "rishi/bin/rishi" "run" "tools/dimeroll_cash_account_view.rish"]
@@ -474,125 +474,125 @@ let dimeroll_sum_amounts = run ["sh" "tools/parity_time_one.sh" "dimeroll_sum_am
 assert dimeroll_sum_amounts.ok else "Dimeroll sum amounts view witness failed"
 say "GREEN: Dimeroll sum amounts view witness passed."
 
-say "witness suite: Lattice lap 32 (softsign)…"
+say "witness suite: Lattice softsign…"
 let lattice_lap33 = run ["sh" "tools/parity_time_one.sh" "lattice_lap33" "--" "rishi/bin/rishi" "run" "tools/lattice_lap33.rish"]
-assert lattice_lap33.ok else "Lattice lap 32 witness failed"
-say "GREEN: Lattice lap 32 witness passed."
+assert lattice_lap33.ok else "Lattice softsign witness failed"
+say "GREEN: Lattice softsign witness passed."
 
 say "witness suite: Scribble h2 blocks view…"
 let scribble_h2_blocks = run ["sh" "tools/parity_time_one.sh" "scribble_h2_blocks" "--" "rishi/bin/rishi" "run" "tools/inference_scribble_h2_blocks_view.rish"]
 assert scribble_h2_blocks.ok else "Scribble h2 blocks view witness failed"
 say "GREEN: Scribble h2 blocks view witness passed."
 
-say "witness suite: Lattice lap 33 (square)…"
+say "witness suite: Lattice square…"
 let lattice_lap34 = run ["sh" "tools/parity_time_one.sh" "lattice_lap34" "--" "rishi/bin/rishi" "run" "tools/lattice_lap34.rish"]
-assert lattice_lap34.ok else "Lattice lap 33 witness failed"
-say "GREEN: Lattice lap 33 witness passed."
+assert lattice_lap34.ok else "Lattice square witness failed"
+say "GREEN: Lattice square witness passed."
 
-say "witness suite: Lantern lap 30 (tokens_out pin)…"
+say "witness suite: Lantern tokens_out pin…"
 let lantern_lap30 = run ["sh" "tools/parity_time_one.sh" "lantern_lap30" "--" "rishi/bin/rishi" "run" "tools/lantern_lap30.rish"]
-assert lantern_lap30.ok else "Lantern lap 30 witness failed"
-say "GREEN: Lantern lap 30 witness passed."
+assert lantern_lap30.ok else "Lantern tokens_out pin witness failed"
+say "GREEN: Lantern tokens_out pin witness passed."
 
-say "witness suite: Lattice lap 34 (sign)…"
+say "witness suite: Lattice sign…"
 let lattice_lap35 = run ["sh" "tools/parity_time_one.sh" "lattice_lap35" "--" "rishi/bin/rishi" "run" "tools/lattice_lap35.rish"]
-assert lattice_lap35.ok else "Lattice lap 34 witness failed"
-say "GREEN: Lattice lap 34 witness passed."
+assert lattice_lap35.ok else "Lattice sign witness failed"
+say "GREEN: Lattice sign witness passed."
 
 say "witness suite: Scribble h3 blocks view…"
 let scribble_h3_blocks = run ["sh" "tools/parity_time_one.sh" "scribble_h3_blocks" "--" "rishi/bin/rishi" "run" "tools/inference_scribble_h3_blocks_view.rish"]
 assert scribble_h3_blocks.ok else "Scribble h3 blocks view witness failed"
 say "GREEN: Scribble h3 blocks view witness passed."
 
-say "witness suite: Lattice lap 35 (reciprocal)…"
+say "witness suite: Lattice reciprocal…"
 let lattice_lap36 = run ["sh" "tools/parity_time_one.sh" "lattice_lap36" "--" "rishi/bin/rishi" "run" "tools/lattice_lap36.rish"]
-assert lattice_lap36.ok else "Lattice lap 35 witness failed"
-say "GREEN: Lattice lap 35 witness passed."
+assert lattice_lap36.ok else "Lattice reciprocal witness failed"
+say "GREEN: Lattice reciprocal witness passed."
 
-say "witness suite: Lantern lap 31 (tokens_in pin)…"
+say "witness suite: Lantern tokens_in pin…"
 let lantern_lap31 = run ["sh" "tools/parity_time_one.sh" "lantern_lap31" "--" "rishi/bin/rishi" "run" "tools/lantern_lap31.rish"]
-assert lantern_lap31.ok else "Lantern lap 31 witness failed"
-say "GREEN: Lantern lap 31 witness passed."
+assert lantern_lap31.ok else "Lantern tokens_in pin witness failed"
+say "GREEN: Lantern tokens_in pin witness passed."
 
-say "witness suite: Lattice lap 36 (hard_sigmoid)…"
+say "witness suite: Lattice hard_sigmoid…"
 let lattice_lap37 = run ["sh" "tools/parity_time_one.sh" "lattice_lap37" "--" "rishi/bin/rishi" "run" "tools/lattice_lap37.rish"]
-assert lattice_lap37.ok else "Lattice lap 36 witness failed"
-say "GREEN: Lattice lap 36 witness passed."
+assert lattice_lap37.ok else "Lattice hard_sigmoid witness failed"
+say "GREEN: Lattice hard_sigmoid witness passed."
 
 say "witness suite: Scribble rye blocks view…"
 let scribble_rye_blocks = run ["sh" "tools/parity_time_one.sh" "scribble_rye_blocks" "--" "rishi/bin/rishi" "run" "tools/inference_scribble_rye_blocks_view.rish"]
 assert scribble_rye_blocks.ok else "Scribble rye blocks view witness failed"
 say "GREEN: Scribble rye blocks view witness passed."
 
-say "witness suite: Lattice lap 37 (rsqrt)…"
+say "witness suite: Lattice rsqrt…"
 let lattice_lap38 = run ["sh" "tools/parity_time_one.sh" "lattice_lap38" "--" "rishi/bin/rishi" "run" "tools/lattice_lap38.rish"]
-assert lattice_lap38.ok else "Lattice lap 37 witness failed"
-say "GREEN: Lattice lap 37 witness passed."
+assert lattice_lap38.ok else "Lattice rsqrt witness failed"
+say "GREEN: Lattice rsqrt witness passed."
 
-say "witness suite: Lantern lap 32 (echo pin)…"
+say "witness suite: Lantern echo pin…"
 let lantern_lap32 = run ["sh" "tools/parity_time_one.sh" "lantern_lap32" "--" "rishi/bin/rishi" "run" "tools/lantern_lap32.rish"]
-assert lantern_lap32.ok else "Lantern lap 32 witness failed"
-say "GREEN: Lantern lap 32 witness passed."
+assert lantern_lap32.ok else "Lantern echo pin witness failed"
+say "GREEN: Lantern echo pin witness passed."
 
-say "witness suite: Lattice lap 38 (hardtanh)…"
+say "witness suite: Lattice hardtanh…"
 let lattice_lap39 = run ["sh" "tools/parity_time_one.sh" "lattice_lap39" "--" "rishi/bin/rishi" "run" "tools/lattice_lap39.rish"]
-assert lattice_lap39.ok else "Lattice lap 38 witness failed"
-say "GREEN: Lattice lap 38 witness passed."
+assert lattice_lap39.ok else "Lattice hardtanh witness failed"
+say "GREEN: Lattice hardtanh witness passed."
 
 say "witness suite: Scribble rish blocks view…"
 let scribble_rish_blocks = run ["sh" "tools/parity_time_one.sh" "scribble_rish_blocks" "--" "rishi/bin/rishi" "run" "tools/inference_scribble_rish_blocks_view.rish"]
 assert scribble_rish_blocks.ok else "Scribble rish blocks view witness failed"
 say "GREEN: Scribble rish blocks view witness passed."
 
-say "witness suite: Lattice lap 39 (cube)…"
+say "witness suite: Lattice cube…"
 let lattice_lap40 = run ["sh" "tools/parity_time_one.sh" "lattice_lap40" "--" "rishi/bin/rishi" "run" "tools/lattice_lap40.rish"]
-assert lattice_lap40.ok else "Lattice lap 39 witness failed"
-say "GREEN: Lattice lap 39 witness passed."
+assert lattice_lap40.ok else "Lattice cube witness failed"
+say "GREEN: Lattice cube witness passed."
 
-say "witness suite: Lantern lap 33 (user pin)…"
+say "witness suite: Lantern user pin…"
 let lantern_lap33 = run ["sh" "tools/parity_time_one.sh" "lantern_lap33" "--" "rishi/bin/rishi" "run" "tools/lantern_lap33.rish"]
-assert lantern_lap33.ok else "Lantern lap 33 witness failed"
-say "GREEN: Lantern lap 33 witness passed."
+assert lantern_lap33.ok else "Lantern user pin witness failed"
+say "GREEN: Lantern user pin witness passed."
 
-say "witness suite: Assist view lap 14 (blocks on snippets band)…"
+say "witness suite: Assist view blocks on snippets band…"
 let assist_view_lap14 = run ["sh" "tools/parity_time_one.sh" "assist_view_lap14" "--" "rishi/bin/rishi" "run" "tools/inference_assist_view_lap14.rish"]
-assert assist_view_lap14.ok else "Assist view lap 14 witness failed"
-say "GREEN: Assist view lap 14 witness passed."
+assert assist_view_lap14.ok else "Assist view blocks on snippets band witness failed"
+say "GREEN: Assist view blocks on snippets band witness passed."
 
-say "witness suite: Inference assist sight lap 12 (blocks on carriage)…"
+say "witness suite: Inference assist sight blocks on carriage…"
 let assist_sight_lap12 = run ["sh" "tools/parity_time_one.sh" "assist_sight_lap12" "--" "rishi/bin/rishi" "run" "tools/inference_assist_sight_lap12.rish"]
-assert assist_sight_lap12.ok else "Inference assist sight lap 12 witness failed"
-say "GREEN: Inference assist sight lap 12 witness passed."
+assert assist_sight_lap12.ok else "Inference assist sight blocks on carriage witness failed"
+say "GREEN: Inference assist sight blocks on carriage witness passed."
 
-say "witness suite: Assist view lap 15 (fence-rye + blocks)…"
+say "witness suite: Assist view fence-rye + blocks…"
 let assist_view_lap15 = run ["sh" "tools/parity_time_one.sh" "assist_view_lap15" "--" "rishi/bin/rishi" "run" "tools/inference_assist_view_lap15.rish"]
-assert assist_view_lap15.ok else "Assist view lap 15 witness failed"
-say "GREEN: Assist view lap 15 witness passed."
+assert assist_view_lap15.ok else "Assist view fence-rye + blocks witness failed"
+say "GREEN: Assist view fence-rye + blocks witness passed."
 
-say "witness suite: Inference assist sight lap 13 (fence-rye + blocks)…"
+say "witness suite: Inference assist sight fence-rye + blocks…"
 let assist_sight_lap13 = run ["sh" "tools/parity_time_one.sh" "assist_sight_lap13" "--" "rishi/bin/rishi" "run" "tools/inference_assist_sight_lap13.rish"]
-assert assist_sight_lap13.ok else "Inference assist sight lap 13 witness failed"
-say "GREEN: Inference assist sight lap 13 witness passed."
+assert assist_sight_lap13.ok else "Inference assist sight fence-rye + blocks witness failed"
+say "GREEN: Inference assist sight fence-rye + blocks witness passed."
 
-say "witness suite: Assist view lap 16 (echo pin on lantern band)…"
+say "witness suite: Assist view echo pin on lantern band…"
 let assist_view_lap16 = run ["sh" "tools/parity_time_one.sh" "assist_view_lap16" "--" "rishi/bin/rishi" "run" "tools/inference_assist_view_lap16.rish"]
-assert assist_view_lap16.ok else "Assist view lap 16 witness failed"
-say "GREEN: Assist view lap 16 witness passed."
+assert assist_view_lap16.ok else "Assist view echo pin on lantern band witness failed"
+say "GREEN: Assist view echo pin on lantern band witness passed."
 
-say "witness suite: Inference assist sight lap 14 (echo pin on carriage)…"
+say "witness suite: Inference assist sight echo pin on carriage…"
 let assist_sight_lap14 = run ["sh" "tools/parity_time_one.sh" "assist_sight_lap14" "--" "rishi/bin/rishi" "run" "tools/inference_assist_sight_lap14.rish"]
-assert assist_sight_lap14.ok else "Inference assist sight lap 14 witness failed"
-say "GREEN: Inference assist sight lap 14 witness passed."
+assert assist_sight_lap14.ok else "Inference assist sight echo pin on carriage witness failed"
+say "GREEN: Inference assist sight echo pin on carriage witness passed."
 
-say "witness suite: Assist view lap 17 (user pin on lantern band)…"
+say "witness suite: Assist view user pin on lantern band…"
 let assist_view_lap17 = run ["sh" "tools/parity_time_one.sh" "assist_view_lap17" "--" "rishi/bin/rishi" "run" "tools/inference_assist_view_lap17.rish"]
-assert assist_view_lap17.ok else "Assist view lap 17 witness failed"
-say "GREEN: Assist view lap 17 witness passed."
+assert assist_view_lap17.ok else "Assist view user pin on lantern band witness failed"
+say "GREEN: Assist view user pin on lantern band witness passed."
 
-say "witness suite: Inference assist sight lap 15 (user pin — glass composition close)…"
+say "witness suite: Inference assist sight user pin — glass composition close…"
 let assist_sight_lap15 = run ["sh" "tools/parity_time_one.sh" "assist_sight_lap15" "--" "rishi/bin/rishi" "run" "tools/inference_assist_sight_lap15.rish"]
-assert assist_sight_lap15.ok else "Inference assist sight lap 15 witness failed"
-say "GREEN: Inference assist sight lap 15 witness passed."
+assert assist_sight_lap15.ok else "Inference assist sight user pin — glass composition close witness failed"
+say "GREEN: Inference assist sight user pin — glass composition close witness passed."
 
 say "witness suite: Commerce steward demo (list → settle → Dimeroll receipt)…"
 let commerce_steward = run ["sh" "tools/parity_time_one.sh" "commerce_steward" "--" "rishi/bin/rishi" "run" "tools/commerce_steward_demo.rish"]
