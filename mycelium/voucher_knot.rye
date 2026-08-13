@@ -1,0 +1,294 @@
+//! mycelium/voucher_knot.rye — a voucher's position survives a checkpoint (rung r3).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Voucher · rung r3 — across a Knot.
+//! Design read: active-designing/20260813-095216_mycelium-voucher-attested-statement-exploration.md
+//!
+//! r1 made a node's signed attestation bind an account's position to a named ORDER-HEAD, checkable
+//! against the ledger it vouches; r2 let that proof travel as bytes. Yet a ledger a family runs for years
+//! does not carry its whole past unbroken: the Knot (`cord_knot.rye`) ties off a committed prefix into a
+//! sealed supply so a bounded Dag runs forever, and the Lapse continues its deadline clock across that
+//! seal by carrying the epoch base (`lapse_knot.rye`). This rung reads a voucher over a ledger resolved
+//! ACROSS an epoch cut and proves the vouched position is CONTINUOUS across the join.
+//!
+//! The crux is A VOUCHER'S POSITION SURVIVES A CHECKPOINT. A node vouches Alice's position against the
+//! whole Cord; a counterparty who has already checkpointed — sealed the prefix into a Knot, discarded the
+//! base blocks, continued only the live suffix — reads Alice's Statement from that Knot-continued ledger
+//! and finds the identical position (balance · reserved · received) the voucher signed. The epoch base
+//! keeps the clock and the inflow unbroken (`statement_knot` proved the reading itself does not drift), so
+//! the voucher stays true to a party who no longer holds the base. A pledge opened before the cut and
+//! lapsed in the suffix, a far-deadline pledge honored in the suffix (received accumulated, never
+//! restarted) — the voucher's numbers match the pruned-history reading on both.
+//!
+//! The honest seam this surfaces, named plainly: the ORDER-HEAD is the WHOLE-HISTORY fingerprint — a
+//! SHA-256 fold over every ordered block address, base included — so a party that pruned the base cannot
+//! recompute it from a Knot alone. `check_against` (r1) needs the whole Dag; across a cut it is the
+//! POSITION that a checkpointing counterparty verifies, and `check_position_across` is exactly that check
+//! (verify the signature offline, then confirm the vouched triple equals the continued ledger's reading).
+//! The order-head still binds base inside the signature — a voucher naming the whole three-block order
+//! folds a digest distinct from one naming only the sealed prefix, so a node cannot silently vouch against
+//! a shorter order and pass the whole one.
+//!
+//! Additive by construction: imports `voucher` (r1's attestation), `statement` (r1's projection),
+//! `lapse_knot` (r3's checkpoint), `lapse`, `cord`, `fold`, and `kumara`, calling only their public API.
+//! Each stays its own green binary; no existing module changes. No storage, no transport, no network, no
+//! custody — a node reads its own attestation across its own sealed checkpoint. Demo keeper seeds only —
+//! no real key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/voucher_knot.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("cord.rye");
+const fold = @import("fold.rye");
+const lapse = @import("lapse.rye");
+const lapse_knot = @import("lapse_knot.rye");
+const statement = @import("statement.rye");
+const voucher = @import("voucher.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+
+/// The check that survives pruning: verify the voucher's signature offline, then confirm every vouched
+/// field equals the account's reading in a ledger resolved across a checkpoint. Where r1's `check_against`
+/// re-derives the order-head from a whole Dag (which a checkpointing party no longer holds), this checks
+/// the POSITION a Knot-continued reader independently resolves — the continuity the epoch base keeps. A
+/// forged or tampered voucher fails the offline verify and is never matched against any ledger.
+pub fn check_position_across(v: *const voucher.Voucher, ledger: *const lapse.Ledger) !bool {
+    // invariant: the account vouched is a full holder identity.
+    assert(v.account_pk.len == voucher.pk_len);
+    // invariant: the continued ledger stays within the named account ceiling.
+    assert(ledger.account_count <= lapse.lapse_max_accounts);
+    // The signature must hold first — an unsigned or forged voucher matches nothing.
+    voucher.verify_voucher(v) catch return false;
+    const s = try statement.statement_for(ledger, v.account_slice());
+    // invariant: a matching voucher agrees on every projected field, not merely the balance.
+    return s.balance == v.balance and s.reserved == v.reserved and s.received == v.received;
+}
+
+// ---- selftest: a voucher's vouched position reads true across a sealed checkpoint ----
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn write_deadline(deadline: u64, out: []u8) void {
+    // invariant: the buffer holds a full little-endian order position.
+    assert(out.len == lapse.deadline_len);
+    var v = deadline;
+    var i: u32 = 0;
+    while (i < lapse.deadline_len) : (i += 1) {
+        out[i] = @truncate(v);
+        v >>= 8;
+    }
+}
+
+fn pledge_body(id: []const u8, deadline: u64, to: []const u8, out: []u8) u32 {
+    // invariant: the buffer holds tag · id · deadline · recipient exactly.
+    assert(out.len >= 1 + lapse.id_len + lapse.deadline_len + lapse.pk_len);
+    assert(id.len == lapse.id_len);
+    out[0] = lapse.tag_pledge;
+    tally_copy.copy_disjoint(u8, out[1 .. 1 + lapse.id_len], id);
+    write_deadline(deadline, out[1 + lapse.id_len .. 1 + lapse.id_len + lapse.deadline_len]);
+    tally_copy.copy_disjoint(u8, out[1 + lapse.id_len + lapse.deadline_len ..][0..lapse.pk_len], to);
+    return 1 + lapse.id_len + lapse.deadline_len + lapse.pk_len;
+}
+
+fn resolve_body(tag: u8, id: []const u8, out: []u8) u32 {
+    // invariant: the buffer holds tag · id exactly.
+    assert(out.len >= 1 + lapse.id_len);
+    assert(id.len == lapse.id_len);
+    out[0] = tag;
+    tally_copy.copy_disjoint(u8, out[1 .. 1 + lapse.id_len], id);
+    return 1 + lapse.id_len;
+}
+
+const Scene = struct {
+    g: cord.Block,
+    pledge: cord.Block,
+    post: cord.Block,
+    post_fact: fold.Fact,
+};
+
+/// Seat the scene: genesis credits Alice 100 (round 0); Alice pledges 100 to Bob under the given deadline
+/// (round 1); Alice posts it (round 2). The prefix is genesis + pledge (base 2), the suffix the post — so
+/// a deadline of 2 is reached in the suffix (lapse across the cut) and a far deadline is honored across it.
+fn seat(id: []const u8, deadline: u64) !Scene {
+    const kf = seeded(0xF0);
+    const ka = seeded(0xA1);
+    const kb = seeded(0xB2);
+    const alice_pk = ka.public_key.toBytes();
+    const bob_pk = kb.public_key.toBytes();
+
+    const f_gen = fold.mint_fact(kf, fold.kind_issue, 100, "", alice_pk[0..]) orelse return error.MintGen;
+    var pb: [1 + lapse.id_len + lapse.deadline_len + lapse.pk_len]u8 = undefined;
+    const pn = pledge_body(id, deadline, bob_pk[0..], &pb);
+    const f_pledge = fold.mint_fact(ka, fold.kind_tax, 100, "", pb[0..pn]) orelse return error.MintPledge;
+    var hb: [1 + lapse.id_len]u8 = undefined;
+    const hn = resolve_body(lapse.tag_post, id, &hb);
+    const f_post = fold.mint_fact(ka, fold.kind_tax, 100, "", hb[0..hn]) orelse return error.MintPost;
+
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_gen) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+    const roots = [_][cord.hash_len]u8{hg};
+    const b_pledge = cord.mint_block(ka, 1, roots[0..], f_pledge) orelse return error.BlockPledge;
+    var hpl: [cord.hash_len]u8 = undefined;
+    cord.address(&b_pledge, &hpl);
+    const roots2 = [_][cord.hash_len]u8{hpl};
+    const b_post = cord.mint_block(ka, 2, roots2[0..], f_post) orelse return error.BlockPost;
+    return .{ .g = g, .pledge = b_pledge, .post = b_post, .post_fact = f_post };
+}
+
+/// The whole three-block Cord as one Dag — the history a node that still holds the blocks vouches against.
+fn whole_dag(s: *const Scene) !cord.Dag {
+    var dag = cord.Dag.empty();
+    try cord.add(&dag, s.g);
+    try cord.add(&dag, s.pledge);
+    try cord.add(&dag, s.post);
+    return dag;
+}
+
+/// The prefix Dag (genesis + pledge) a node seals before its Dag fills — the base of the checkpoint.
+fn prefix_dag(s: *const Scene) !cord.Dag {
+    var dag = cord.Dag.empty();
+    try cord.add(&dag, s.g);
+    try cord.add(&dag, s.pledge);
+    return dag;
+}
+
+/// Seal the prefix into a LapseKnot and continue the post across the cut — the reading a checkpointing
+/// counterparty holds, having discarded the base blocks and kept only the Knot plus its live suffix.
+fn continue_across(s: *const Scene) !lapse.Ledger {
+    var prefix = try prefix_dag(s);
+    const lk = try lapse_knot.seal_lapse(&prefix);
+    var suffix = fold.Log.empty();
+    suffix.facts[0] = s.post_fact;
+    suffix.len = 1;
+    return lapse_knot.continue_lapse(&lk, &suffix);
+}
+
+pub fn main() !void {
+    const id = [_]u8{0x01} ** lapse.id_len;
+    const node = seeded(0x0D);
+    const alice_pk = seeded(0xA1).public_key.toBytes();
+    const bob_pk = seeded(0xB2).public_key.toBytes();
+
+    // --- The crux: a pledge that lapses across the cut, vouched true on both paths ---
+    // Deadline 2. The suffix post rides absolute position base+0 = 2, so the pledge lapses across the cut:
+    // Alice's coins home to her (balance 100, reserved 0). A node vouches Alice's position against the
+    // whole three-block Cord; a party who checkpointed the prefix reads the identical position.
+    {
+        const s = try seat(id[0..], 2);
+        const whole = try whole_dag(&s);
+        const across = try continue_across(&s);
+
+        const v = try voucher.make_voucher(&whole, node, alice_pk[0..]);
+        // Alice's coins came home across the cut — the vouched position reads lapsed.
+        if (v.balance != 100 or v.reserved != 0 or v.received != 100) return error.CruxPosition;
+        // The voucher verifies offline and checks against the whole Cord the node still holds.
+        try voucher.verify_voucher(&v);
+        if (!try voucher.check_against(&v, &whole)) return error.CruxWhole;
+        // The crux: the checkpointing counterparty, holding only the Knot plus its suffix, reads Alice's
+        // vouched position true — the epoch base kept the clock, so the position did not drift.
+        if (across.lapsed_seen() != 1) return error.CruxNotLapsed;
+        if (!try check_position_across(&v, &across)) return error.CruxAcross;
+
+        // Bob's line agrees too — a voucher for Bob's position reads true across the same cut.
+        const vb = try voucher.make_voucher(&whole, node, bob_pk[0..]);
+        if (!try check_position_across(&vb, &across)) return error.CruxBobAcross;
+    }
+
+    // --- The seam: received accumulates across the cut (a far deadline, honored in the suffix) ---
+    // Deadline 5. The suffix post rides position 2 < 5, so the pledge honors across the cut: Bob is
+    // credited in the SUFFIX, absent at the seal. His received reads 100 (his whole inflow), not a restart
+    // — and a voucher of Bob's position, signed against the whole Cord, reads true to the pruned history.
+    {
+        const s = try seat(id[0..], 5);
+        const whole = try whole_dag(&s);
+        const across = try continue_across(&s);
+        if (across.posted_seen() != 1) return error.SeamNotPosted;
+
+        const vb = try voucher.make_voucher(&whole, node, bob_pk[0..]);
+        // Bob's whole inflow, accumulated across the base, is what the voucher vouches.
+        if (vb.received != 100 or vb.balance != 100) return error.SeamBobPosition;
+        if (!try check_position_across(&vb, &across)) return error.SeamBobAcross;
+
+        // Alice's line agrees — reserved returned, her vouched position reads true across the honor.
+        const va = try voucher.make_voucher(&whole, node, alice_pk[0..]);
+        if (va.reserved != 0) return error.SeamAliceReserve;
+        if (!try check_position_across(&va, &across)) return error.SeamAliceAcross;
+    }
+
+    // --- The order-head is the whole-history fingerprint: base included, distinct from the prefix ---
+    // The whole three-block order folds a digest; the sealed prefix (two blocks) folds a DIFFERENT one, so
+    // the base is inside the signed head — a node cannot silently vouch against a shorter order and pass
+    // the whole one. This is the honest seam: a party that pruned the base cannot recompute the whole head
+    // (check_against needs the whole Dag), which is exactly why check_position_across is the pruned check.
+    {
+        const s = try seat(id[0..], 9);
+        const whole = try whole_dag(&s);
+        var prefix = try prefix_dag(&s);
+
+        var head_whole: [voucher.order_head_len]u8 = undefined;
+        var head_prefix: [voucher.order_head_len]u8 = undefined;
+        voucher.order_head_of(&whole, &head_whole);
+        voucher.order_head_of(&prefix, &head_prefix);
+        // Base included: the whole order-head differs from the prefix-only one.
+        if (std.mem.eql(u8, head_whole[0..], head_prefix[0..])) return error.HeadBaseElided;
+
+        // A voucher made against the whole Cord names the whole head; it checks against the whole Dag but
+        // not against the shorter prefix order — the order-head disagreement refuses the cross-ledger read.
+        const v = try voucher.make_voucher(&whole, node, alice_pk[0..]);
+        if (!std.mem.eql(u8, v.order_head[0..], head_whole[0..])) return error.HeadNotWhole;
+        if (!try voucher.check_against(&v, &whole)) return error.HeadWholeCheck;
+        if (try voucher.check_against(&v, &prefix)) return error.HeadPrefixPassed;
+    }
+
+    // --- Tamper across the cut: no false position is ever read from a broken proof or a corrupt Knot ---
+    {
+        const s = try seat(id[0..], 2);
+        const whole = try whole_dag(&s);
+        const across = try continue_across(&s);
+        const v = try voucher.make_voucher(&whole, node, alice_pk[0..]);
+
+        // A flipped position breaks the offline signature, so check_position_across refuses (false) before
+        // it ever reads the continued ledger — a forged proof matches no checkpoint.
+        var flipped = v;
+        flipped.balance += 1;
+        if (voucher.verify_voucher(&flipped)) |_| return error.FlipVerified else |_| {}
+        if (try check_position_across(&flipped, &across)) return error.FlipAcrossPassed;
+
+        // A wrong signer is refused the same way.
+        var wrong = v;
+        const other = seeded(0xEE).public_key.toBytes();
+        tally_copy.copy_disjoint(u8, wrong.node_pk[0..], other[0..]);
+        if (try check_position_across(&wrong, &across)) return error.WrongAcrossPassed;
+
+        // A Knot corrupted after sealing refuses whole — no continued ledger is ever built from it, so no
+        // position is ever read from a tampered checkpoint.
+        var prefix = try prefix_dag(&s);
+        var lk_bad = try lapse_knot.seal_lapse(&prefix);
+        lk_bad.knot.state.issued += 1;
+        var suffix = fold.Log.empty();
+        suffix.facts[0] = s.post_fact;
+        suffix.len = 1;
+        if (lapse_knot.continue_lapse(&lk_bad, &suffix)) |_| return error.CorruptTrusted else |err| {
+            if (err != error.KnotCorrupt) return error.WrongCorrupt;
+        }
+    }
+
+    // A last render, for eyes — a voucher of Alice's lapsed position across the cut.
+    {
+        const s = try seat(id[0..], 2);
+        const whole = try whole_dag(&s);
+        const v = try voucher.make_voucher(&whole, node, alice_pk[0..]);
+        voucher.render(&v);
+    }
+
+    print("voucher-knot: a pledge opened before the cut lapses in the suffix; a node's voucher of Alice's position, signed against the whole Cord, reads true to a party who checkpointed the prefix and kept only the Knot plus its suffix\n", .{});
+    print("voucher-knot: received accumulates across the cut — Bob, absent at the seal and credited in the suffix, is vouched his whole 100 inflow, and the voucher reads true to the pruned history\n", .{});
+    print("voucher-knot: the order-head is the whole-history fingerprint, base included — it differs from the prefix-only head, so a voucher cannot silently name a shorter order; a party that pruned the base checks the position, not the head\n", .{});
+    print("voucher-knot: a flipped position and a wrong signer each fail the offline verify and match no checkpoint; a corrupt Knot refuses whole, so no position is read from a tampered checkpoint\n", .{});
+    print("GREEN: myc voucher-knot — a voucher's vouched position survives a checkpoint, continuous across the epoch base (lapse and honor both), the order-head a whole-history fingerprint base included, tamper and a corrupt checkpoint refused\n", .{});
+}

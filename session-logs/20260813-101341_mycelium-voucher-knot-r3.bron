@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260813.101341
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Mycelium Voucher r3 — a voucher's position survives a checkpoint
+prompt recur the itinerary loop — take the next agent-doable Lindy-first crux-first lap, self-approve design rounds, send each finished increment as its own signed round, stop at custody gates
+think Read REMEMBER + the two itinerary docs; the fixed 1,024-round road and the six double-seat seasons both point at Season D (Kresfa & Mycelium) as the live agent-doable arc, and the recent commits show the Mycelium Voucher journey mid-arc (r1 proves a position, r2 travels).
+think The voucher exploration (20260813-095216) names r3 explicitly — the attestation read across a Knot — so no fresh design round was needed; the crux was already self-approved when the journey opened.
+think Studied voucher.rye (make_voucher takes a whole cord.Dag; order_head_of folds SHA-256 over the committed order), then the Knot machinery — cord_knot seals a FoldState digest, lapse_knot carries the epoch base so the deadline clock does not restart, statement_knot proved the reading itself does not drift across a cut.
+think The honest seam: across a Knot the base blocks are pruned, so a party who checkpointed CANNOT recompute the whole-history order-head (check_against needs the whole Dag). What survives pruning is the POSITION — the epoch base keeps balance/reserved/received continuous — so r3's added helper check_position_across verifies the signature offline then confirms the vouched triple equals the Knot-continued ledger's reading.
+think Mirrored statement_knot's scene shape: crux (deadline 2, pledge lapses in the suffix, Alice's voucher reads true to the pruned history; Bob too); seam (deadline 5, honored in suffix, Bob credited across the cut reads his whole 100 inflow accumulated not restarted); order-head base-inclusion (whole 3-block head differs from prefix-only 2-block head, so a voucher cannot silently name a shorter order); tamper (flipped position + wrong signer fail the offline verify and match no checkpoint, a corrupt Knot refuses whole).
+obs GREEN on the first build and run — the additive discipline (compose voucher + statement + lapse_knot public API, edit none) kept the new module honest; no existing module changed, each stays its own green binary.
+obs The design doc's phrase "the order-head folds the whole agreed order, base included" is honored precisely as a whole-history fingerprint, and the file names plainly that a pruned-history party checks the position, not the head — a two-rooms-honest seam rather than an overclaim that a Knot alone recomputes the head.
+loom witness=mycelium_voucher_knot_witness build=ok selftest=GREEN scenes=4 render=1
+file mycelium/voucher_knot.rye r3 — check_position_across + four scenes proving a voucher's position survives a checkpoint
+file tools/mycelium_voucher_knot_witness.rish GREEN witness; the Voucher r1 and Lapse-Knot re-run their green binaries at the door
+file work-in-progress/REMEMBER.md git nib refreshed to living HEAD in the same work commit (remember-git-nib rule)
+recommend keep-going Voucher r4 (true to the bytes — a real on-disk Cord fixture, app == awk, the order-head recomputed from the fixture matches the signed one), then the arc closes; a served voucher · per-account mint authority · breach renames (cairn-first) · deep debride · seed force-push stay the maintainer's hand
