@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260813.111657
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention; this session in ai-jail
+title mycelium Muster r4 — a real quorum passes a real roll; the arc closes
+prompt baton prin recur — take the next agent-doable lap Lindy-first crux-first, approve own design rounds, send each finished increment as its own signed round, stop at custody gates.
+think r1 fixed the crux (a quorum passes a known roll), r2 let the roll travel, r3 judged across a Knot — all over Dags seated in code. The closing rung (mycelium/muster_true.rye, mirroring chorus_true) carries the roll onto a real on-disk Cord record a keeper can open and hash, reusing the Lapse's own fixture tools/fixtures/lapse_dag.bron @embedFile-bound through the mycelium/corpora/ symlink — no network, the bytes are the tree's own.
+think The mesh IS the validator set: the three demo nodes that vouch are exactly the roll enrolled, so a real quorum is judged against the real roll it belongs to. The crux — two tools, one answer: the app rebuilds the Dag under cord.add, gathers a three-node quorum over the genesis-funded account, confirms the roll passes it (pass_muster), and emits the position tuple bc7cbcb5… 100 100 200; the independent statement_dag_truth.awk names the identical position (app.out == awk.out enforced).
+think The roll's verdict is honest to the bytes: three validators enrolled, three voices present, Byzantine threshold three (the enrolled count is exactly the members present, asserted byzantine_threshold(roll)==c.count), and a roll of three strangers refuses the same real quorum NotMember — a real quorum never passes a roll it does not belong to. A tampered header refuses BadFormat.
+obs GREEN on the first build and run. Composes cord_bron + cord + lapse + statement + voucher + chorus + muster + kumara public API only (the Muster r1 re-runs GREEN at the door). Demo node and keeper seeds only — no key/funds/network/custody; a served muster reaches the Comlink-served gate. Witness tools/mycelium_muster_true_witness.rish GREEN; tame_style_check clean; width-check clean. The Mycelium Muster arc stands complete end to end — r1 quorum-against-a-roll crux · r2 travels · r3 across a Knot · r4 true to the bytes.
+loom witness=mycelium_muster_true_witness result=GREEN app_equals_awk=true code_changed=1 composes=cord_bron+cord+lapse+statement+voucher+chorus+muster edits_existing=0
+file mycelium/muster_true.rye r4 true to the bytes — a real quorum passes the roll of its mesh; app==awk on the position; a stranger roll refuses NotMember
+file tools/mycelium_muster_true_witness.rish r4 witness — GREEN, two tools one answer · enrolled count = members present · stranger-roll refusal · tamper refusal
+recommend keep-going a remember fold of the Muster arc onto REMEMBER (docs-implementation-sync), then a fresh Season D journey, each a self-approved design read first. A served muster · breach renames (cairn-first) · deep debride · seed force-push stay the maintainer's hand.
