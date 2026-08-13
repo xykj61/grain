@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260813.181110
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title HUNK29 — the whole filter family joins the edit-list: hue, blur, sharpen, auto-levels, edges
+prompt Continue the recursion loop past HUNK28: take the next agent-doable lap Lindy-first crux-first, self-approve the design round, send each finished increment as its own signed round, stop at custody gates.
+think HUNK28 seated the first filter (saturate) into the non-destructive edit-list and proved the pattern: a filter recorded as an edit inherits undo/redo, cold-restart persistence, and travel-as-text for free. It named the rest of the family as next intent. This rung finishes the vocabulary.
+think Read Lindy-first crux-first: this is one cohesive keystone (complete the grammar), not five scattered ones, because each verb is the identical additive shape HUNK28 proved, and the value — a fully recordable, replayable, travelling edit history — arrives only when the last verb joins. So hue_turn, blur, sharpen, stretch, edges all join in one round.
+think Two field shapes cover the family, both already proven: hue_turn takes one u32 thirds (like rotate's turns); blur/sharpen/stretch/edges are nullary (like flip_h). No new field kind, no new error. Grew EditKind, Edit, apply, render_edits, parse_edits by five variants each.
+obs One care caught: the selftest used "sharpen 3" as its unknown-verb refusal case — once sharpen is a real nullary verb, that line would refuse as an extra field instead. Moved the test to a genuinely-unknown tag (vignette) so the unknown-verb path stays honestly proven.
+obs Selftest proves composition byte-for-byte (hue_turn then blur equals the two verbs by hand), and a list carrying EVERY verb kind — the complete filter family now — renders, parses back, and applies to the same bytes. The edit-list is now the one home for every Photos gesture; no edit is a wound.
+obs No regression: all six downstream edit-list witnesses re-run GREEN (edit_cursor, edit_store, edit_preview, cursor_preview, session_store, session_list). Self-approved design round, no gate. No breach, no cairn — purely additive grammar variants. No network/key/funds — hardware buys stay custody gates #2/#3.
+loom witness=hunk_photo_edits_witness green=1 new_variants=5 verb_kinds=12 downstream_green=6
+file image/photo_edits.rye added hue_turn/blur/sharpen/stretch/edges to EditKind/Edit/apply/render_edits/parse_edits + selftest compose/every-verb checks + unknown-verb test moved to vignette + GREEN line
+file active-designing/20260813-181110_hunk-photos-filter-family-edit-exploration.md self-approved design round
+file work-in-progress/REMEMBER.md HUNK29 latest-lap note + git nib
+file session-logs/README.md prepended newest-first row
+recommend keep-going next agent-doable crux: a dedicated general filter round-trip witness (tools/hunk_edit_family_witness.rish) proving every verb kind travels as a standalone claim; then named filter presets (a saved edit-list applied by name); or another Season-A / double-seat journey. Hardware buys stay custody gates #2/#3.
