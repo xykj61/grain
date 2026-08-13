@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260813.204500
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu (Framework 16 AMD) — Eastern (EDT) time convention · ai-jail on Vultr SEA VPS
+title HUNK39 — the catalog swatch enriched to a thumbnail strip; the served-market seam named
+prompt Kyri: keep taking the next agent-doable lap Lindy-first crux-first on the Season A road; approve your own design rounds; send each finished increment as its own signed round; STOP at custody gates.
+think After HUNK38 landed and sent, the higher-Lindy next crux looked like the SERVED marketplace — verified sheet (HUNK6) + travelling manifest (HUNK7) → browsable shelf (HUNK38), so nothing browsed is trusted that is not proven. I wrote pond/apps/sprite_market.rye and its witness.
+think The build failed on a real architectural seam: catalog_shelf lives in the brushstroke/ assembly and sprite_store/sprite_catalog in pond/apps/; Zig treats the same SpriteIndex (and Pixmap) reached through different symlink paths (pond/apps/sprite.rye vs brushstroke/sprite.rye, both → image/sprite.rye) as DISTINCT types. Composing across the two assemblies is a deliberate module-seam decision, not a quick lap.
+think Slower to go faster: I set the served-market aside (removed the draft, named it a checkpoint in REMEMBER) and took the self-contained HUNK39 instead — enrich the swatch into a real thumbnail strip, entirely within brushstroke/, no cross-assembly wall.
+obs The strip: draw_product_row down-maps the window to (min(swatch_cols, window.width), 1) and stretches it across the fixed swatch width (src = c·strip_n/swatch_cols), so a product's left-to-right shape reads. Additive and behavior-preserving — a window thinner than the swatch (the four 4×8 bands) stretches a solid strip and still wears its single color slot, so HUNK38's four-band assertions hold unchanged; a wide two-tone window now proves red-left/green-right variation.
+obs A witness red taught a durable fix: the GREEN line carries apostrophes ("product's", "window's") that break a shell single-quoted round-trip (printf '%s' '${out}'), so the grep failed though the selftest was GREEN. Rewrote the witness to write the output to a file and grep the file (HUNK27's proven approach) — robust to any content.
+loom witness=hunk_sprite_shelf_witness products=4 sheet=16x8 shelf=24x4 swatch_slots=3,4,5,6 two_tone_left=3 two_tone_right=4 lit=2186
+file brushstroke/sprite_shelf.rye swatch enriched to a stretched thumbnail strip; version 20260813.204500; header + selftest + GREEN line updated
+file tools/hunk_sprite_shelf_witness.rish greps a written output file (apostrophe-robust); a new shape grep; say lines synced to the strip
+file work-in-progress/REMEMBER.md latest-lap HUNK39 note, the served-market checkpoint named, git nib refresh
+recommend check-in (Claude) — the served marketplace wants a module-assembly ruling (where a cross-brushstroke/pond-apps composition lives and which symlinks it roots through) before it can compose; a live scroll offset or another Season-A / double-seat journey are clean kg alternatives, all clear of every custody gate.

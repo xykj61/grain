@@ -8,11 +8,13 @@
 //! down-mapped a decoded image into Skate's palette-indexed cells; HUNK36/37 proved a paged shelf over a
 //! library. This rung is the marketplace's own front door: `catalog_shelf` renders a whole `SpriteIndex` onto
 //! one Skate grid, one row per product reading `<name>` at the left and a fixed-width color **swatch** at the
-//! right, the swatch wearing the palette slot the product's window down-maps to (its dominant anchor). So a
-//! keeper reads the whole catalog at a glance — each product's name beside its own color, every product drawn
-//! from the ONE shared sheet. `catalog_window` pages a catalog larger than the screen, `[offset, offset+rows)`,
-//! so nothing is unreachable and nothing is silently dropped. Pure composition over public APIs — no new
-//! storage, codec, or palette. No network, no key, no funds.
+//! right. HUNK39 makes the swatch a real **thumbnail strip** — the product's window down-mapped to a horizontal
+//! run — so a product's left-to-right shape reads, not only its dominant color: a two-tone part shows two
+//! colors. A window thinner than the swatch stretches to fill it; a one-column window is a solid swatch, valid
+//! for a window of any size. So a keeper reads the whole catalog at a glance — each product's name beside its
+//! own thumbnail, every product drawn from the ONE shared sheet. `catalog_window` pages a catalog larger than
+//! the screen, `[offset, offset+rows)`, so nothing is unreachable and nothing is silently dropped. Pure
+//! composition over public APIs — no new storage, codec, or palette. No network, no key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/sprite_shelf.rye selftest
 
@@ -24,7 +26,7 @@ const sprite = @import("sprite.rye");
 const image_skate = @import("image_skate.rye");
 const skate = @import("skate_grid.rye");
 
-pub const sprite_shelf_version = "20260813.203000";
+pub const sprite_shelf_version = "20260813.204500";
 
 /// The width, in cells, of the color swatch each product wears at the right of its row — a fixed, readable chip.
 pub const swatch_cols: u32 = 6;
@@ -89,28 +91,36 @@ fn draw_product_row(
     // invariant: the label region leaves at least one cell for a name.
     assert(label_cols >= 1);
 
-    // The product's dominant color: render its window out of the one sheet (HUNK4), down-map to a single cell
-    // (HUNK2). A 1×1 block spans the whole window, so this is valid for a window of any size.
+    // The product's thumbnail: render its window out of the one sheet (HUNK4), down-map it to a horizontal
+    // strip (HUNK2). The strip is as wide as the swatch when the window allows, so a product's left-to-right
+    // shape reads — a two-tone part shows two colors, not one average. A strip narrower than the swatch (a thin
+    // window) stretches to fill it; a 1-wide strip is a solid swatch, valid for a window of any size.
     const window = try index.render(allocator, name);
     // invariant: the rendered window is a real open image — four bytes per pixel.
     assert(window.pixels.len == @as(usize, window.width) * @as(usize, window.height) * 4);
-    const dominant = try image_skate.down_map(allocator, &window, 1, 1);
-    // invariant: a one-cell down-map holds exactly one slot to read.
-    assert(dominant.fg_index.len == 1);
-    const slot = dominant.fg_index[0];
+    const strip_n: u32 = @min(swatch_cols, window.width);
+    // invariant: a strip is at least one cell wide — a window has at least one column.
+    assert(strip_n >= 1);
+    const strip = try image_skate.down_map(allocator, &window, strip_n, 1);
+    // invariant: the strip holds exactly one slot per down-mapped column.
+    assert(strip.fg_index.len == strip_n);
 
     // Name at the left, truncated to the label region so it never overwrites the swatch.
     const shown: u32 = @intCast(@min(name.len, @as(usize, label_cols)));
     grid.put_line(row, name[0..shown]);
 
-    // The swatch: a run of solid blocks in the product's dominant slot at the right of the row.
+    // The swatch: the strip painted across the right of the row, each swatch column reading its strip column
+    // (stretched when the strip is narrower than the swatch), each a solid block in that column's slot.
     var c: u32 = 0;
     while (c < swatch_cols) : (c += 1) {
+        const src: u32 = c * strip_n / swatch_cols; // stretch the strip across the fixed swatch width
+        // invariant: the stretched source column sits inside the strip.
+        assert(src < strip_n);
         const ci: usize = @intCast(@as(u64, row) * @as(u64, grid.cols) + @as(u64, swatch_x0 + c));
         // invariant: the swatch cell sits inside the parallel cell and fg buffers.
         assert(ci < grid.cells.len);
         grid.cells[ci] = image_skate.block_cell;
-        grid.fg_index[ci] = slot;
+        grid.fg_index[ci] = strip.fg_index[src];
     }
 }
 
@@ -276,6 +286,20 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const lit = grid.lit_pixel_count(canvas, stride, @intCast(width), @intCast(height), bg);
     assert(lit > 0);
 
+    // The strip reads a product's shape, not only its dominant color: a window spanning the red and green bands
+    // (columns 0..8 of the sheet) down-maps to a swatch whose left cells are red and right cells green.
+    {
+        var wide = sprite.SpriteIndex.init(&sheet);
+        try wide.add("two-tone", 0, 0, 8, 8); // red band | green band
+        const wide_grid = try catalog_shelf(garden, &wide, cols, 1);
+        const sx0 = wide_grid.cols - swatch_cols;
+        const left_i: usize = @intCast(0 * wide_grid.cols + sx0);
+        const right_i: usize = @intCast(0 * wide_grid.cols + sx0 + swatch_cols - 1);
+        assert(wide_grid.fg_index[left_i] == 3); // red at the left of the swatch
+        assert(wide_grid.fg_index[right_i] == 4); // green at the right — the strip carries the window's shape
+        assert(wide_grid.fg_index[left_i] != wide_grid.fg_index[right_i]);
+    }
+
     // The pager: four products at two rows per page need two pages; window_len is 2, 2, then 0.
     const page_rows: u32 = 2;
     assert(page_count(&index, page_rows) == 2);
@@ -332,9 +356,10 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
 
     print("GREEN sprite-shelf: four solid-color products indexed into one 16x8 sheet render to a {d}x{d} Skate " ++
         "catalog shelf — one row per product in held order (red-bolt, green-nut, blue-gear, gold-cap), each row " ++
-        "naming its product beside a color swatch wearing its own down-mapped slot (3,4,5,6); the name never " ++
-        "reaches the swatch; the shelf is pure over the index (built twice, identical cells and colors, the sheet " ++
-        "unmutated) and rasterizes to {d} lit pixels. The pager: four products at two rows per page need two " ++
+        "naming its product beside a thumbnail swatch wearing its own down-mapped slot (3,4,5,6); a two-tone " ++
+        "window's swatch reads red at the left and green at the right (the strip carries the window's shape); the " ++
+        "name never reaches the swatch; the shelf is pure over the index (built twice, identical cells and colors, " ++
+        "the sheet unmutated) and rasterizes to {d} lit pixels. The pager: four products at two rows per page need two " ++
         "pages (window_len 2,2,0); walking every page shows each product exactly once in held order (paging loses " ++
         "nothing); an offset past the catalog refuses BadOffset, fewer rows than products ShelfTooSmall, a zero " ++
         "dimension EmptyShelf, an over-ceiling dimension ShelfTooLarge, a too-thin row RowTooNarrow\n", .{
