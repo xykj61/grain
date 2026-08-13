@@ -11,7 +11,7 @@
 
 **Loobeans stay Nock's own law here.** Opcode 6 treats atom **0 as yes** and **1 as no** — correct for Nock, and **not** Glow ambient truth. Glow uses Zig/`bool` and POSIX exits; crossing into this interpreter converts through [`../glow/truth_semantics.rye`](../../truth_semantics.rye). Ruling: [`../context/specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md`](../../context/specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md).
 
-## Lap 1 — the Primitive Core
+## The Primitive Core
 
 Per [`../external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md`](../../external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md)'s phased plan, this lap proves the Turing-complete primitive core:
 
@@ -22,17 +22,17 @@ Per [`../external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-
 
 **The one place this file could have quietly exempted itself, and did not:** Nock's own semantics are naturally recursive, and TAME's root rule 2 states plainly that "recursion stays out, so that everything which should be bounded stays bounded." Rather than treat this interpreter as an implicit carve-out, `eval` and `eql` both carry an explicit depth counter, checked before every recursive step, refusing cleanly with `DepthExceeded` rather than trusting the host stack — witnessed directly (claim 11: a formula nested past the ceiling refuses, rather than overflowing). This is the [sameness-and-the-rune brief](../../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md)'s own resolved principle, kept here in running code rather than only argued in prose.
 
-## Lap 2 — the Macro Layer, Proven Against Lap 1
+## The Macro Layer, Proven Against the Primitive Core
 
 The phased plan's own stated test for this lap: *"each opcode's witness proving it reduces to the same result as its stated 0-5 expansion."* `nock_core.rye` gains native, direct implementations of opcodes 6 (if/then/else), 7 (compose), 8 (extend the subject), 9 (invoke an arm — Hoon's own core-calling convention), and 11 (hint, semantically inert) — each fast and readable in its own right.
 
 | File | Proves |
 |---|---|
-| [`nock_lap2_witness.rye`](nock_lap2_witness.rye) | Eleven claims. Every opcode proven **twice**: once through its native call, once through a hand-built formula using *only* primitives lap 1 already proved — opcode 6's own expansion, `*[a 6 b c d] = *[a *[[c d] 0 *[[2 3] 0 *[a 4 4 b]]]]` (per `old/doc/spec/nock/4.txt`, held whole in this fork's own tree — quoted exactly, bracket for bracket), reconstructed literally, one nested star at a time; opcodes 7, 8, and 9 each expressed as a pure opcode-2/autocons composition — and asserted to agree exactly, not merely argued to |
+| [`nock_lap2_witness.rye`](nock_lap2_witness.rye) | Eleven claims. Every opcode proven **twice**: once through its native call, once through a hand-built formula using *only* primitives the core already proved — opcode 6's own expansion, `*[a 6 b c d] = *[a *[[c d] 0 *[[2 3] 0 *[a 4 4 b]]]]` (per `old/doc/spec/nock/4.txt`, held whole in this fork's own tree — quoted exactly, bracket for bracket), reconstructed literally, one nested star at a time; opcodes 7, 8, and 9 each expressed as a pure opcode-2/autocons composition — and asserted to agree exactly, not merely argued to |
 
-## Lap 3 — the Edit Primitive, and Opcode 10
+## The Edit Primitive, and Opcode 10
 
-Opcode 10 needed a genuinely new primitive lap 2 named honestly and left open: `#[axis value tree]`, the constructive counterpart to `slot()`'s own tree addressing. Same bit-walk, same address convention — but where `slot()` only reads, `edit()` records each level's untouched sibling on the way down and rebuilds the whole tree on the way back up, splicing the new value in at exactly the addressed leaf and nothing else. Bounded by a `u64` axis's own width alone (at most 64 levels can ever exist) — no separate ceiling, no recursion, two plain loops.
+Opcode 10 needed a genuinely new primitive the macro layer named honestly and left open: `#[axis value tree]`, the constructive counterpart to `slot()`'s own tree addressing. Same bit-walk, same address convention — but where `slot()` only reads, `edit()` records each level's untouched sibling on the way down and rebuilds the whole tree on the way back up, splicing the new value in at exactly the addressed leaf and nothing else. Bounded by a `u64` axis's own width alone (at most 64 levels can ever exist) — no separate ceiling, no recursion, two plain loops.
 
 | File | Proves |
 |---|---|
