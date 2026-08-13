@@ -1,0 +1,414 @@
+//! mycelium/cord_bron.rye — the Cord travels as text (r3).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · rung r3 — the Cord travels.
+//! Design read: active-designing/20260813-032851_mycelium-consensus-cord-exploration.md
+//!
+//! r1 fixed the deterministic-commit crux and r2 quarantined the equivocator. A
+//! consensus a developer cannot *hand to another node* is only a sandbox: a mesh
+//! becomes a network when one node's agreed order crosses to a second as readable
+//! bytes. This rung renders a committed Dag to a `format cord-dag-v1` Bron record
+//! — one `block` line per block in committed order (author key · round · fact ·
+//! the fact's signature · the block's signature) with its parents as following
+//! `parent <hash>` lines — and parses it back, rebuilding the Dag from the bytes.
+//!
+//! The distinctive r3 crux, over a number-only roster: **the agreed order travels
+//! with the bytes.** The recovered Dag, re-admitted block by block under r1's own
+//! `add`, commits to the byte-identical order and folds the real Mycelium supply
+//! law to the identical supply — so two nodes agree by exchanging blocks alone, no
+//! ordering message. Every signature rides in the record and is re-verified on
+//! rebuild: a tampered block refuses `BadSignature` at `add`, so corruption can
+//! never cross as consensus. The reader is a purpose-built bounded flat-Bron reader
+//! (never a general parser): an unknown field refuses `UnknownField` (never
+//! dropped), a wrong header `BadFormat`, a malformed line `BadLine`, a bad integer
+//! `BadInt`, a bad hex field `BadHex`, a parent before any block `ParentBeforeBlock`,
+//! a fan-in past bound `TooManyParents`, a roster past bound `TooManyBlocks`.
+//!
+//! Additive — composes r1's public API only (`commit`, `add`, `address`); r1 and r2
+//! re-run GREEN. Siloed, dev-only, demo seeds — no real key, no funds, no network,
+//! no custody; a Cord gossiped over the wire reaches the serve gate.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/cord_bron.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("cord.rye");
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+const parse_int = @import("parse_int.rye");
+
+const pk_len = kumara.PublicKey.encoded_length;
+const sig_len = kumara.signature_length;
+const hash_len = cord.hash_len;
+
+/// A dev-net Cord is small and legible — a demo bench never bundles thousands of
+/// blocks. Bounded here well under r1's own `cord_max_blocks`, generous over the
+/// demo's handful.
+pub const max_blocks: u32 = 32;
+
+/// The rendered record: per block a `block` line (two 64-hex keys, two amounts, a
+/// star and a body field, three signatures' worth of hex) plus up to eight
+/// `parent` lines. Bounded generously over the worst case (32 blocks).
+pub const max_record: u32 = 65536;
+
+/// The sentinel token for an empty star or body field — hex is never a lone dash,
+/// so an empty field can never be mistaken for content.
+const empty_field = "-";
+
+pub const BronError = error{
+    BadFormat, // the header line is not `format cord-dag-v1`
+    UnknownField, // a line names a field the record does not define
+    BadLine, // a line is missing a token or carries a trailing one
+    BadInt, // a numeric field did not parse
+    BadHex, // a hex field was the wrong length or held a non-hex char
+    ParentBeforeBlock, // a `parent` line appeared before any `block` line
+    TooManyParents, // a block's fan-in ran past r1's bound
+    TooManyBlocks, // the Dag carried past this record's bound
+    RecordTooLong, // the render exceeded its bounded buffer
+};
+
+const hex_digits = "0123456789abcdef";
+
+/// Write `bytes` as lowercase hex into `out` (out.len must be twice bytes.len).
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex chars per byte.
+    assert(out.len == bytes.len * 2);
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0F];
+    }
+}
+
+fn nibble(c: u8) BronError!u8 {
+    return switch (c) {
+        '0'...'9' => c - '0',
+        'a'...'f' => c - 'a' + 10,
+        'A'...'F' => c - 'A' + 10,
+        else => error.BadHex,
+    };
+}
+
+/// Decode `text` (exactly out.len*2 hex chars) into `out`, refusing wrong length
+/// or a non-hex char.
+fn from_hex(text: []const u8, out: []u8) BronError!void {
+    if (text.len != out.len * 2) return error.BadHex;
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < out.len) : (i += 1) {
+        const hi = try nibble(text[i * 2]);
+        const lo = try nibble(text[i * 2 + 1]);
+        out[i] = (hi << 4) | lo;
+    }
+}
+
+/// Render a possibly-empty byte field to a token: `-` when empty, else lowercase
+/// hex written into `scratch`. Returns the slice to write.
+fn encode_field(bytes: []const u8, scratch: []u8) []const u8 {
+    if (bytes.len == 0) return empty_field;
+    // invariant: the scratch buffer holds two hex chars per byte.
+    assert(scratch.len >= bytes.len * 2);
+    to_hex(bytes, scratch[0 .. bytes.len * 2]);
+    return scratch[0 .. bytes.len * 2];
+}
+
+/// Decode a star/body token into `out`, returning the byte length. `-` is empty;
+/// else an even run of hex within the buffer's bound.
+fn decode_field(token: []const u8, out: []u8) BronError!u32 {
+    if (std.mem.eql(u8, token, empty_field)) return 0;
+    if (token.len % 2 != 0) return error.BadHex;
+    const n = token.len / 2;
+    if (n > out.len) return error.BadHex;
+    try from_hex(token, out[0..n]);
+    return @intCast(n);
+}
+
+/// A travelable Dag: the blocks in committed order, owning all their bytes (a
+/// `cord.Block` is fixed-size throughout, so nothing points into freed text).
+/// Both `render` writes this and `parse` reads it, so a round trip is a fixed point.
+// Invariant: len <= max_blocks.
+pub const PortableDag = struct {
+    blocks: [max_blocks]cord.Block = undefined,
+    len: u32 = 0,
+};
+
+/// Build a travelable Dag from a live Dag: commit it, then carry the blocks in
+/// that agreed order, so the record lists parents before children.
+pub fn from_dag(dag: *const cord.Dag) BronError!PortableDag {
+    if (dag.len > max_blocks) return error.TooManyBlocks;
+    var order: [cord.cord_max_blocks]u32 = undefined;
+    const count = cord.commit(dag, order[0..]);
+    // invariant: the committed count is exactly the Dag's block count.
+    assert(count == dag.len);
+    var pl = PortableDag{ .len = count };
+    var i: u32 = 0;
+    while (i < count) : (i += 1) pl.blocks[i] = dag.blocks[order[i]];
+    // invariant: the roster carries exactly the committed blocks, within bound.
+    assert(pl.len <= max_blocks);
+    return pl;
+}
+
+/// Render a portable Dag to a `format cord-dag-v1` record. Refuses an overflow
+/// rather than a partial record.
+pub fn render(pl: *const PortableDag, out: []u8) BronError!u32 {
+    // invariant: the render buffer honors its bound.
+    assert(out.len >= max_record);
+    const head = std.fmt.bufPrint(out, "format cord-dag-v1\n", .{}) catch return error.RecordTooLong;
+    var off: u32 = @intCast(head.len);
+    var j: u32 = 0;
+    while (j < pl.len) : (j += 1) {
+        const b = &pl.blocks[j];
+        // invariant: fan-in is bounded before any parent is written.
+        assert(b.parent_count <= cord.cord_max_parents);
+        var author_hex: [pk_len * 2]u8 = undefined;
+        var signer_hex: [pk_len * 2]u8 = undefined;
+        var fsig_hex: [sig_len * 2]u8 = undefined;
+        var bsig_hex: [sig_len * 2]u8 = undefined;
+        to_hex(b.author_pk[0..], &author_hex);
+        to_hex(b.fact.signer_pk[0..], &signer_hex);
+        to_hex(b.fact.sig[0..], &fsig_hex);
+        to_hex(b.sig[0..], &bsig_hex);
+        var star_buf: [fold.star_name_max_bytes * 2]u8 = undefined;
+        var body_buf: [fold.myc_fact_max_bytes * 2]u8 = undefined;
+        const star = encode_field(b.fact.star_slice(), &star_buf);
+        const body = encode_field(b.fact.body_slice(), &body_buf);
+        const line = std.fmt.bufPrint(
+            out[off..],
+            "block {s} {d} {d} {d} {s} {s} {s} {s} {s}\n",
+            .{ author_hex, b.round, b.fact.kind, b.fact.amount, star, body, signer_hex, fsig_hex, bsig_hex },
+        ) catch return error.RecordTooLong;
+        off += @intCast(line.len);
+        var p: u32 = 0;
+        while (p < b.parent_count) : (p += 1) {
+            var phex: [hash_len * 2]u8 = undefined;
+            to_hex(b.parents[p][0..], &phex);
+            const pline = std.fmt.bufPrint(out[off..], "parent {s}\n", .{phex}) catch return error.RecordTooLong;
+            off += @intCast(pline.len);
+        }
+    }
+    // invariant: the rendered record never exceeds its bound.
+    assert(off <= max_record);
+    return off;
+}
+
+/// Split a line on spaces into up to ten tokens; returns the count found (or one
+/// past ten to signal a trailing token no line allows). A `block` line carries
+/// ten tokens, a `parent` line two.
+fn tokens(line: []const u8, out: *[10][]const u8) u32 {
+    var count: u32 = 0;
+    var it = std.mem.tokenizeScalar(u8, line, ' ');
+    while (it.next()) |t| {
+        if (count >= 10) return count + 1; // signal a trailing token past what any line allows
+        out[count] = t;
+        count += 1;
+    }
+    return count;
+}
+
+/// Read a `block` line's ten tokens into a fresh block (parents come on following
+/// lines). tok[0] is the `block` keyword; the nine payload tokens are author key,
+/// round, kind, amount, star, body, fact-signer key, fact signature, block signature.
+fn read_block(tok: *const [10][]const u8) BronError!cord.Block {
+    var b = cord.Block{};
+    try from_hex(tok[1], b.author_pk[0..]);
+    b.round = parse_int.parse_int(u32, tok[2], .{}) catch return error.BadInt;
+    const kind_u = parse_int.parse_int(u32, tok[3], .{}) catch return error.BadInt;
+    if (kind_u > 255) return error.BadInt;
+    b.fact.kind = @intCast(kind_u);
+    b.fact.amount = parse_int.parse_int(u64, tok[4], .{}) catch return error.BadInt;
+    b.fact.star_len = try decode_field(tok[5], b.fact.star[0..]);
+    b.fact.body_len = try decode_field(tok[6], b.fact.body[0..]);
+    try from_hex(tok[7], b.fact.signer_pk[0..]);
+    try from_hex(tok[8], b.fact.sig[0..]);
+    try from_hex(tok[9], b.sig[0..]);
+    b.parent_count = 0;
+    return b;
+}
+
+/// Parse a `format cord-dag-v1` record into a PortableDag, refusing an unknown or
+/// malformed field, a bad header, a parent before any block, an over-wide fan-in,
+/// or an over-long roster. The parse reads structure only; rebuilding the Dag under
+/// r1's `add` re-verifies every signature, so the sovereignty of the order is proven.
+pub fn parse(text: []const u8) BronError!PortableDag {
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const header = lines.next() orelse return error.BadFormat;
+    if (!std.mem.eql(u8, header, "format cord-dag-v1")) return error.BadFormat;
+
+    var pl = PortableDag{ .len = 0 };
+    var pending: cord.Block = undefined;
+    var have_pending = false;
+
+    while (lines.next()) |raw| {
+        if (raw.len == 0) continue; // a trailing newline yields one empty line
+        var tok: [10][]const u8 = undefined;
+        const n = tokens(raw, &tok);
+        if (n == 0) continue;
+        if (std.mem.eql(u8, tok[0], "block")) {
+            if (n != 10) return error.BadLine;
+            if (have_pending) {
+                if (pl.len >= max_blocks) return error.TooManyBlocks;
+                pl.blocks[pl.len] = pending;
+                pl.len += 1;
+            }
+            pending = try read_block(&tok);
+            have_pending = true;
+        } else if (std.mem.eql(u8, tok[0], "parent")) {
+            if (n != 2) return error.BadLine;
+            if (!have_pending) return error.ParentBeforeBlock;
+            if (pending.parent_count >= cord.cord_max_parents) return error.TooManyParents;
+            try from_hex(tok[1], pending.parents[pending.parent_count][0..]);
+            pending.parent_count += 1;
+        } else {
+            return error.UnknownField;
+        }
+    }
+    if (have_pending) {
+        if (pl.len >= max_blocks) return error.TooManyBlocks;
+        pl.blocks[pl.len] = pending;
+        pl.len += 1;
+    }
+    // invariant: a parsed record carries a bounded roster.
+    assert(pl.len <= max_blocks);
+    return pl;
+}
+
+/// Rebuild a live Dag from a portable one by re-admitting each block under r1's
+/// own `add`, in the record's (committed) order — so every signature is re-verified
+/// and every parent must already be held. A tampered block refuses at `add`.
+pub fn rebuild(pl: *const PortableDag) !cord.Dag {
+    var dag = cord.Dag.empty();
+    var i: u32 = 0;
+    while (i < pl.len) : (i += 1) try cord.add(&dag, pl.blocks[i]);
+    // invariant: every carried block was re-admitted.
+    assert(dag.len == pl.len);
+    return dag;
+}
+
+// ---- selftest: the agreed order travels with the bytes ---------------------
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+/// The honest four-block scene from r1/r2: two genesis issues, then a tax and a
+/// star reserve each referencing both. issued 1000 · taxed 300 · supply 700.
+fn seat_dag() !cord.Dag {
+    const ka = seeded(0xA1);
+    const kb = seeded(0xB2);
+    const kc = seeded(0xC3);
+    const kd = seeded(0xD4);
+    const fa = fold.mint_fact(ka, fold.kind_issue, 500, "", "genesis-a") orelse return error.MintA;
+    const fb = fold.mint_fact(kb, fold.kind_issue, 500, "", "genesis-b") orelse return error.MintB;
+    const fc = fold.mint_fact(kc, fold.kind_tax, 200, "", "tax-c") orelse return error.MintC;
+    const fd = fold.mint_fact(kd, fold.kind_star_reserve, 100, "vega", "reserve") orelse return error.MintD;
+    const a = cord.mint_block(ka, 0, &[_][hash_len]u8{}, fa) orelse return error.BlockA;
+    const b = cord.mint_block(kb, 0, &[_][hash_len]u8{}, fb) orelse return error.BlockB;
+    var ha: [hash_len]u8 = undefined;
+    var hb: [hash_len]u8 = undefined;
+    cord.address(&a, &ha);
+    cord.address(&b, &hb);
+    const roots = [_][hash_len]u8{ ha, hb };
+    const c = cord.mint_block(kc, 1, roots[0..], fc) orelse return error.BlockC;
+    const d = cord.mint_block(kd, 1, roots[0..], fd) orelse return error.BlockD;
+
+    var dag = cord.Dag.empty();
+    try cord.add(&dag, a);
+    try cord.add(&dag, b);
+    try cord.add(&dag, c);
+    try cord.add(&dag, d);
+    return dag;
+}
+
+/// The committed order as a flat run of block-address bytes, so two commits can be
+/// compared for byte-identity.
+const Order = struct {
+    hashes: [cord.cord_max_blocks][hash_len]u8 = undefined,
+    count: u32 = 0,
+};
+
+fn commit_order(dag: *const cord.Dag) Order {
+    var order: [cord.cord_max_blocks]u32 = undefined;
+    const count = cord.commit(dag, order[0..]);
+    var o = Order{ .count = count };
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        tally_copy.copy_disjoint(u8, o.hashes[i][0..], dag.hashes[order[i]][0..]);
+    }
+    return o;
+}
+
+fn orders_equal(x: *const Order, y: *const Order) bool {
+    if (x.count != y.count) return false;
+    var i: u32 = 0;
+    while (i < x.count) : (i += 1) {
+        if (!std.mem.eql(u8, x.hashes[i][0..], y.hashes[i][0..])) return false;
+    }
+    return true;
+}
+
+fn fold_supply(dag: *const cord.Dag) !fold.FoldState {
+    var order: [cord.cord_max_blocks]u32 = undefined;
+    const count = cord.commit(dag, order[0..]);
+    var log = fold.Log.empty();
+    cord.committed_log(dag, order[0..], count, &log);
+    return try fold.fold_log(&log);
+}
+
+pub fn main() !void {
+    var dag = try seat_dag();
+    const order_before = commit_order(&dag);
+    const state_before = try fold_supply(&dag);
+    if (state_before.supply() != 700) return error.SupplyNet;
+    if (state_before.star_count != 1) return error.StarCount;
+
+    // The crux: render the committed Dag, parse it back, rebuild, and prove the
+    // agreed order and the folded supply crossed with the bytes.
+    const pl = try from_dag(&dag);
+    var buf1: [max_record]u8 = undefined;
+    const n1 = try render(&pl, &buf1);
+    const back = try parse(buf1[0..n1]);
+    if (back.len != 4) return error.RosterLost;
+
+    var dag2 = try rebuild(&back);
+    const order_after = commit_order(&dag2);
+    if (!orders_equal(&order_before, &order_after)) return error.OrderChangedAcrossBytes;
+    const state_after = try fold_supply(&dag2);
+    if (state_after.supply() != state_before.supply()) return error.SupplyChangedAcrossBytes;
+    if (state_after.star_count != state_before.star_count) return error.StarsChangedAcrossBytes;
+
+    // Byte-for-byte: re-rendering the parsed record reproduces the exact bytes.
+    var buf2: [max_record]u8 = undefined;
+    const n2 = try render(&back, &buf2);
+    if (n1 != n2) return error.RenderNotFixedPoint;
+    if (!std.mem.eql(u8, buf1[0..n1], buf2[0..n2])) return error.RenderNotFixedPoint;
+
+    // A tampered block cannot cross as consensus: flip one byte of a block
+    // signature in the record and the rebuild refuses BadSignature at add.
+    var tampered = back;
+    tampered.blocks[0].sig[0] ^= 0xff;
+    if (rebuild(&tampered)) |_| return error.TamperCrossed else |err| {
+        if (err != error.BadSignature) return error.WrongTamper;
+    }
+
+    // Refusals real: a wrong header, an unknown field, and a parent before any
+    // block each refuse.
+    if (parse("format other-v1\n")) |_| return error.BadHeaderAdmitted else |err| {
+        if (err != error.BadFormat) return error.WrongHeader;
+    }
+    if (parse("format cord-dag-v1\nghost 5\n")) |_| return error.UnknownAdmitted else |err| {
+        if (err != error.UnknownField) return error.WrongUnknown;
+    }
+    if (parse("format cord-dag-v1\nparent " ++ "00" ** hash_len ++ "\n")) |_| return error.OrphanAdmitted else |err| {
+        if (err != error.ParentBeforeBlock) return error.WrongOrphan;
+    }
+
+    print("cord-bron: the committed Dag rendered to a format cord-dag-v1 record and parsed back, its four signed blocks recovered whole\n", .{});
+    print("cord-bron: the recovered Dag re-admitted under add commits to the byte-identical order and folds supply {d} over one star\n", .{state_after.supply()});
+    print("cord-bron: re-rendering the parsed record reproduces the exact bytes; a tampered block refuses BadSignature on rebuild\n", .{});
+    print("cord-bron: a wrong header, an unknown field, and a parent before any block each refuse\n", .{});
+    print("GREEN: myc cord-bron — the agreed order travels as text · order unchanged · supply={d} · stars={d} · tamper refused\n", .{
+        state_after.supply(),
+        state_after.star_count,
+    });
+}
