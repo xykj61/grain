@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260813.173146
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention · ai-jail
+title HUNK24 — the Photos app resamples smoothly (bilinear)
+prompt Read REMEMBER + the 1024-round itinerary and the six-seasons double-seat; take the next agent-doable Lindy-first crux-first lap; approve own design round; send each finished increment; STOP at custody gates.
+think REMEMBER's latest lap is HUNK23 (exact 120 hue turn); the named next agent-doable cruxes are a general-angle hue rotation, a bilinear resampler, or another Season-A journey. Custody gates 2/3/4 (hardware buys, provisioning, keys) stay untouched — agent-doable work remains, so not gates-only.
+think Lindy-first crux-first: the resampler family (HUNK9 nearest-up, HUNK22 area-down) is a durable, oft-used core; bilinear is the clean, integer-boundable crux that completes it — chosen over the general-angle hue rotation, which needs fixed-point trig tables and is the larger, riskier lap. Bilinear is the hardest *solvable* clean move, not the impossible one.
+think The half-pixel-center map pos = S*((2n+1)*src - dst)/(2*dst) in fixed point (S=256) lands exactly on the integer pixel at identity size (zero fractional weight), which is the property that makes a same-size bilinear resize byte-identical — the anchor the whole witness rests on.
+think Proven by the algebra it must obey: identity byte-identical, a solid color exact at any size (weights sum to exactly 256^2, no drift), a 2x1 [A,B] upscaled to [A,(A+B)/2,B] with the exact center average, alpha blending alongside the colors, purity, still-an-open-image round-trip, and EmptyImage/OutOfBounds refusals — reusing the family's own error names, minting none.
+obs First build failed on a u64->i64 coercion in bilinear_pos; fixed by casting n to i64 before the arithmetic ((2*@as(i64,n)+1)) rather than casting a u64 subexpression.
+obs tame_style_check passed GREEN yet its scan fixture does not cover image/ (noted since HUNK17); split the three compound invariant asserts (fx/fy range, blend bound) by hand to keep TAME discipline, matching HUNK17's tidy. Selftest compound asserts left to match the file's pervasive surrounding style.
+loom witness=hunk_photos_bilinear_witness result=GREEN selftests_green=7 new_pub_fn=scale_bilinear
+file image/photos.rye added scale_bilinear + bilinear_pos + clamp_index + run_bilinear selftest; version bumped
+file tools/hunk_photos_bilinear_witness.rish new witness — proves bilinear on metal, family GREEN beneath
+file active-designing/20260813-173146_hunk-photos-bilinear-exploration.md self-approved design round for HUNK24
+recommend keep-going HUNK25 — the general-angle hue rotation (fixed-point cos/sin about the luma axis, reusing luma_of), a Lanczos/cubic resampler, or another Season-A / double-seat journey; hardware buys stay custody gates 2/3.
