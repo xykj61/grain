@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260813.060935
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Mycelium Tenure r1 — a contested name decided by the agreed order
+prompt take the next agent-doable lap Lindy-first crux-first; approve own design rounds; double-seat visions for blind spots; a breach rename records a cairn before it cuts; send each finished increment as its own signed round; STOP at custody gates; baton prin recur
+think Read REMEMBER + the 1,024-round itinerary + the six-season double-seat expansion, then the live frontier (git log): the Mycelium road has closed Cord, gossip convergence, batching, the Knot, and the Ledger Voice (r1–r4 all landed at 952e2a6666). The Ledger Voice arc is complete, so the next Lindy-first crux is a fresh Mycelium journey.
+think The genuine blind spot: every arc proved the ledger could be written, agreed, packed, checkpointed, and read for supply — none answered the question a namespace exists for: when two keepers reach for one name at once, who holds it? A supply total is commutative; a name is not. That is the oldest reason a registry wants consensus, and it was untested — the Cord witnesses never even exercise a star_reserve fact (grepped: 0).
+think The honest crux is a distinction fold.fold_log cannot draw: it refuses the WHOLE log on StarTaken, which would let one node break the ledger by front-running a name. Consensus exists so a front-run merely LOSES. Verified fold.fold_fact returns on StarTaken (line 175) before any mutation — so a contested loser is a true no-op. So the Tenure walks the committed order through fold_fact per-fact, treating StarTaken as a lawful no-op the verdict records, and re-raising IdentityRefused/UnknownKind/Overdraw as poison (corruption, not a lost race).
+think Grew mycelium/tenure.rye as a sibling composing cord + fold public API only, editing no elder (reviving-not-renaming). Named Tenure — a name's tenure is the term on which it is held; grepped clean in the code namespace (roster/claim/holding were overloaded, tenure/warrant clean). Chose per comlink-tendency: clear, warm, safe.
+obs The crux witness: two keepers (seeds 0x11, 0x22) reserve "bandun" at round 1; the smaller author key wins by the Cord's own tie-break, computed independently in-test (std.mem.order) rather than hardcoded. Proven: the same keeper holds "bandun" across three arrival permutations (deterministic verdict); the uncontested "vega" still holds and the supply folds to 800 (loser paid nothing); a block carrying a broken-fact signature refuses IdentityRefused and a free-name overdraw refuses Overdraw — corruption still poisons whole.
+obs Scope kept narrow on purpose: only a name-contest loss (StarTaken) is a lawful no-op this round; a double-spend loser (Overdraw that lost a race) is a named horizon, not folded in, so the verdict stays legible.
+obs One small friction: the witness assert used escaped \"bandun\" which rish's [sh -c] did not match; simplified to match "across three arrival orders". TAME style bans clean, width-check exit 0.
+loom witness=mycelium_tenure_witness verdict=GREEN held=2 contests=1 supply=800 issued=1000 taxed=200 perms=3
+file active-designing/20260813-060935_mycelium-tenure-contested-name-exploration.md self-approved design read — the crux, the name, the four rounds
+file mycelium/tenure.rye r1 — resolve a Dag into a Tenure; contested name to the first in agreed order; loser a no-op; corruption poisons
+file tools/mycelium_tenure_witness.rish witness — deterministic verdict across arrivals · lawful no-op · corruption refuses whole; Cord + fold stand at the door
+recommend keep-going Tenure r1 (the crux) stands; next agent-doable is r2 (the verdict travels as a format tenure-v1 Bron record, round-tripped byte-for-byte, same holder_of), then r3 (across a Knot) and r4 (a real contested fixture cross-checked by awk). Breach renames (cairn-first), deep debride + seed force-push, and quorum-served readings stay Keaton's hand.

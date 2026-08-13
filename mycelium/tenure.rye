@@ -1,0 +1,313 @@
+//! mycelium/tenure.rye — the Tenure: a contested name decided by the agreed order.
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · Journey rung r1 — the crux.
+//! Design read: active-designing/20260813-060935_mycelium-tenure-contested-name-exploration.md
+//!
+//! A name's *tenure* is the term on which it is held — who holds it, and by what
+//! right. A supply total forgives every order (issue then tax, or tax then issue,
+//! one number); a name forgives only one holder. So when two keepers each sign a
+//! reservation for the same star at the same round, the ledger must pick one, and
+//! every honest node must pick the SAME one. The Cord already derives one total
+//! order from the mesh regardless of arrival; the Tenure reads that order as the
+//! namespace's verdict — the first reservation of a name in the agreed order holds
+//! it, every later one loses.
+//!
+//! The honest distinction is the whole crux. `fold.fold_log` refuses the WHOLE log
+//! on a taken star, which is right for a hand-built log yet wrong for a mesh: it
+//! would let one node break the ledger by front-running a name. So the Tenure walks
+//! the committed facts one at a time through `fold.fold_fact` and treats a
+//! name-contest loss (`StarTaken`) as a lawful no-op — the loser's signed fact was
+//! rejected by the order, folding continues, the ledger unbroken. Every other fold
+//! refusal — a forged signature, an unknown kind, an overdraw for a FREE name —
+//! stays poison, because those are corruption, not a lost race. `fold.fold_fact`
+//! already checks taken-before-affordable, so a contestant loses the name before
+//! the ledger asks whether it could pay.
+//!
+//! Composes cord.rye + fold.rye public API only — inventing no storage, weakening
+//! no bound, editing no elder. Siloed, dev-only, demo seeds — no real key, no funds,
+//! no network, no custody.
+//!
+//! Named horizon (not this arc): a double-spend loser (an `Overdraw` that lost a
+//! race rather than never-could-pay) as a lawful no-op — kept out on purpose so the
+//! name-contest verdict stays legible.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/tenure.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("cord.rye");
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+
+/// A keeper's public key, in its encoded (holder-identity) width.
+pub const pk_len: u32 = kumara.PublicKey.encoded_length;
+
+/// At most one holding per block — the Dag holds a journey of blocks (256).
+pub const tenure_max_holdings: u32 = cord.cord_max_blocks;
+
+/// At most one contested loss per block — same ceiling as holdings.
+pub const tenure_max_contests: u32 = cord.cord_max_blocks;
+
+/// One name held by one keeper, at its position in the agreed order.
+pub const Holding = struct {
+    name: [fold.star_name_max_bytes]u8 = undefined,
+    name_len: u32 = 0,
+    holder_pk: [pk_len]u8 = undefined,
+    pos: u32 = 0,
+    round: u32 = 0,
+};
+
+/// One reservation the agreed order turned away — the keeper who lost a name.
+pub const Contest = struct {
+    name: [fold.star_name_max_bytes]u8 = undefined,
+    name_len: u32 = 0,
+    loser_pk: [pk_len]u8 = undefined,
+    pos: u32 = 0,
+};
+
+/// The resolved namespace: who holds each name, who lost, and the lawful state
+/// folded over the verdict.
+pub const Tenure = struct {
+    holdings: [tenure_max_holdings]Holding = undefined,
+    holding_count: u32 = 0,
+    contests: [tenure_max_contests]Contest = undefined,
+    contest_count: u32 = 0,
+    state: fold.FoldState = .{},
+
+    /// The keeper holding `name`, or null when the name is free.
+    pub fn holder_of(t: *const Tenure, name: []const u8) ?[]const u8 {
+        // invariant: holdings stay within the ceiling before any scan.
+        assert(t.holding_count <= tenure_max_holdings);
+        var i: u32 = 0;
+        while (i < t.holding_count) : (i += 1) {
+            const h = &t.holdings[i];
+            // invariant: every recorded name fits the star-name ceiling.
+            assert(h.name_len <= fold.star_name_max_bytes);
+            if (h.name_len != name.len) continue;
+            if (std.mem.eql(u8, h.name[0..h.name_len], name)) return h.holder_pk[0..];
+        }
+        return null;
+    }
+
+    /// True when the name is held.
+    pub fn is_held(t: *const Tenure, name: []const u8) bool {
+        // invariant: holdings stay within the ceiling before we scan them.
+        assert(t.holding_count <= tenure_max_holdings);
+        const who = t.holder_of(name);
+        // invariant: a held name resolves to a full-width holder key.
+        if (who) |pk| assert(pk.len == pk_len);
+        return who != null;
+    }
+
+    /// The count of names held.
+    pub fn count(t: *const Tenure) u32 {
+        // invariant: the held count never exceeds the named ceiling.
+        assert(t.holding_count <= tenure_max_holdings);
+        return t.holding_count;
+    }
+
+    /// The count of contested losses recorded.
+    pub fn contests_seen(t: *const Tenure) u32 {
+        // invariant: the loss count never exceeds the named ceiling.
+        assert(t.contest_count <= tenure_max_contests);
+        return t.contest_count;
+    }
+};
+
+/// Resolve a committed Dag into a Tenure — the namespace verdict of the agreed
+/// order. Refuses the WHOLE resolution on any corruption (a broken fact signature,
+/// an unknown kind, an overdraw for a free name); a name-contest loss is a lawful
+/// no-op the verdict records, never a refusal.
+pub fn resolve(dag: *const cord.Dag) error{
+    IdentityRefused,
+    UnknownKind,
+    Overdraw,
+    LogFull,
+    TooManyHoldings,
+    TooManyContests,
+}!Tenure {
+    // invariant: each block carries one fact, so the Dag fits the fold ceiling.
+    assert(dag.len <= fold.myc_log_max_facts);
+    var order: [cord.cord_max_blocks]u32 = undefined;
+    // invariant: the order buffer holds the whole Dag.
+    assert(order.len >= dag.len);
+    const committed = cord.commit(dag, order[0..]);
+
+    var t = Tenure{};
+    var state = fold.FoldState{};
+    var i: u32 = 0;
+    while (i < committed) : (i += 1) {
+        const idx = order[i];
+        // invariant: every committed index names a real seat.
+        assert(idx < dag.len);
+        const blk = &dag.blocks[idx];
+        const fact = &blk.fact;
+        if (fold.fold_fact(&state, fact)) |_| {
+            // Accepted — a star reservation the order granted is a winning holding.
+            if (fact.kind == fold.kind_star_reserve) {
+                if (t.holding_count >= tenure_max_holdings) return error.TooManyHoldings;
+                const at = t.holding_count;
+                const name = fact.star_slice();
+                tally_copy.copy_disjoint(u8, t.holdings[at].name[0..name.len], name);
+                t.holdings[at].name_len = fact.star_len;
+                tally_copy.copy_disjoint(u8, t.holdings[at].holder_pk[0..], fact.signer_pk[0..]);
+                t.holdings[at].pos = i;
+                t.holdings[at].round = blk.round;
+                t.holding_count += 1;
+            }
+        } else |err| switch (err) {
+            // The verdict: a reservation the order placed after the winner loses
+            // the name — a lawful no-op, folding continues, the ledger unbroken.
+            error.StarTaken => {
+                if (t.contest_count >= tenure_max_contests) return error.TooManyContests;
+                const at = t.contest_count;
+                const name = fact.star_slice();
+                tally_copy.copy_disjoint(u8, t.contests[at].name[0..name.len], name);
+                t.contests[at].name_len = fact.star_len;
+                tally_copy.copy_disjoint(u8, t.contests[at].loser_pk[0..], fact.signer_pk[0..]);
+                t.contests[at].pos = i;
+                t.contest_count += 1;
+            },
+            // Corruption is not a verdict — it refuses the whole resolution.
+            error.IdentityRefused => return error.IdentityRefused,
+            error.UnknownKind => return error.UnknownKind,
+            error.Overdraw => return error.Overdraw,
+            error.LogFull => return error.LogFull,
+        }
+    }
+    t.state = state;
+    // invariant: the resolved state keeps the supply law.
+    assert(t.state.taxed <= t.state.issued);
+    return t;
+}
+
+// ---- selftest: the crux is a contested name decided by the agreed order ------
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn resolve_perm(blocks: []const cord.Block) !Tenure {
+    var dag = cord.Dag.empty();
+    for (blocks) |blk| try cord.add(&dag, blk);
+    return resolve(&dag);
+}
+
+fn expect_holder(t: *const Tenure, name: []const u8, pk: []const u8) !void {
+    const who = t.holder_of(name) orelse return error.NameFree;
+    if (!std.mem.eql(u8, who, pk)) return error.WrongHolder;
+}
+
+fn tenures_equal(x: *const Tenure, y: *const Tenure) bool {
+    if (x.holding_count != y.holding_count) return false;
+    if (x.contest_count != y.contest_count) return false;
+    if (x.state.issued != y.state.issued) return false;
+    if (x.state.taxed != y.state.taxed) return false;
+    var i: u32 = 0;
+    while (i < x.holding_count) : (i += 1) {
+        const hx = &x.holdings[i];
+        const hy = &y.holdings[i];
+        if (hx.name_len != hy.name_len) return false;
+        if (!std.mem.eql(u8, hx.name[0..hx.name_len], hy.name[0..hy.name_len])) return false;
+        if (!std.mem.eql(u8, hx.holder_pk[0..], hy.holder_pk[0..])) return false;
+    }
+    return true;
+}
+
+pub fn main() !void {
+    const kf = seeded(0xA1); // funder / genesis issue
+    const kv = seeded(0xC3); // "vega" — uncontested
+    const kx = seeded(0x11); // "bandun" contestant X
+    const ky = seeded(0x22); // "bandun" contestant Y
+
+    const f_issue = fold.mint_fact(kf, fold.kind_issue, 1000, "", "genesis") orelse return error.MintIssue;
+    const f_vega = fold.mint_fact(kv, fold.kind_star_reserve, 100, "vega", "reserve") orelse return error.MintVega;
+    const f_bx = fold.mint_fact(kx, fold.kind_star_reserve, 100, "bandun", "reserve-x") orelse return error.MintBx;
+    const f_by = fold.mint_fact(ky, fold.kind_star_reserve, 100, "bandun", "reserve-y") orelse return error.MintBy;
+
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_issue) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+    const roots = [_][cord.hash_len]u8{hg};
+
+    const u = cord.mint_block(kv, 1, roots[0..], f_vega) orelse return error.BlockU;
+    const w1 = cord.mint_block(kx, 1, roots[0..], f_bx) orelse return error.BlockW1;
+    const w2 = cord.mint_block(ky, 1, roots[0..], f_by) orelse return error.BlockW2;
+
+    // Expected winner of "bandun": at the same round the smaller author key sorts
+    // first in the agreed order, so it holds the name.
+    const pkx = kx.public_key.toBytes();
+    const pky = ky.public_key.toBytes();
+    const x_wins = std.mem.order(u8, pkx[0..], pky[0..]) == .lt;
+    const winner_pk = if (x_wins) pkx else pky;
+    const loser_pk = if (x_wins) pky else pkx;
+    const pkv = kv.public_key.toBytes();
+
+    // Three arrival permutations of the round-1 blocks (g always first: children
+    // reference it, so it must be held before they can be admitted).
+    const p1 = [_]cord.Block{ g, u, w1, w2 };
+    const p2 = [_]cord.Block{ g, w2, w1, u };
+    const p3 = [_]cord.Block{ g, w1, u, w2 };
+
+    const t1 = try resolve_perm(p1[0..]);
+    const t2 = try resolve_perm(p2[0..]);
+    const t3 = try resolve_perm(p3[0..]);
+
+    // The verdict: one keeper holds "bandun", the same keeper every arrival.
+    try expect_holder(&t1, "bandun", winner_pk[0..]);
+    try expect_holder(&t2, "bandun", winner_pk[0..]);
+    try expect_holder(&t3, "bandun", winner_pk[0..]);
+    // "vega" is uncontested — held by its keeper.
+    try expect_holder(&t1, "vega", pkv[0..]);
+
+    // The loser holds nothing and is recorded as a contested loss.
+    if (t1.holder_of("bandun")) |pk| {
+        if (std.mem.eql(u8, pk, loser_pk[0..])) return error.LoserHeldName;
+    } else return error.WinnerAbsent;
+    if (t1.contests_seen() != 1) return error.ContestCount;
+    if (!std.mem.eql(u8, t1.contests[0].name[0..t1.contests[0].name_len], "bandun")) return error.ContestName;
+    if (!std.mem.eql(u8, t1.contests[0].loser_pk[0..], loser_pk[0..])) return error.ContestLoser;
+
+    // The loser is a lawful no-op: the resolution succeeds, two names hold, the
+    // supply folds, the loser paid nothing (taxed = 100 vega + 100 winner).
+    if (t1.count() != 2) return error.HeldCount;
+    if (t1.state.issued != 1000) return error.Issued;
+    if (t1.state.taxed != 200) return error.Taxed;
+    if (t1.state.supply() != 800) return error.Supply;
+
+    // Arrival-order independence: the whole verdict is identical across arrivals.
+    if (!tenures_equal(&t1, &t2)) return error.ArrivalChangedVerdict;
+    if (!tenures_equal(&t1, &t3)) return error.ArrivalChangedVerdict;
+
+    // Corruption still poisons: a block validly authored yet carrying a fact whose
+    // OWN signature is broken refuses the whole resolution.
+    var f_bad = f_vega;
+    f_bad.sig[0] ^= 0xff;
+    const bad_block = cord.mint_block(kv, 1, roots[0..], f_bad) orelse return error.MintBad;
+    var d_bad = cord.Dag.empty();
+    try cord.add(&d_bad, g);
+    try cord.add(&d_bad, bad_block);
+    if (resolve(&d_bad)) |_| return error.PoisonAdmitted else |err| {
+        if (err != error.IdentityRefused) return error.WrongPoison;
+    }
+
+    // Corruption: a reservation for a FREE name it cannot pay for refuses whole —
+    // an overdraw is never-could-pay, not a lost race.
+    const f_over = fold.mint_fact(kv, fold.kind_star_reserve, 5000, "sirius", "cannot-pay") orelse return error.MintOver;
+    const over_block = cord.mint_block(kv, 1, roots[0..], f_over) orelse return error.MintOverBlock;
+    var d_over = cord.Dag.empty();
+    try cord.add(&d_over, g);
+    try cord.add(&d_over, over_block);
+    if (resolve(&d_over)) |_| return error.OverAdmitted else |err| {
+        if (err != error.Overdraw) return error.WrongOver;
+    }
+
+    print("tenure: two keepers reach for \"bandun\" at one round; the agreed order grants it to one\n", .{});
+    print("tenure: the same keeper holds \"bandun\" across three arrival orders — the verdict is deterministic\n", .{});
+    print("tenure: the loser is a lawful no-op — \"vega\" still holds, supply folds to {d}, the loss recorded\n", .{t1.state.supply()});
+    print("tenure: a broken-fact block and a free-name overdraw each refuse the whole resolution\n", .{});
+    print("GREEN: myc tenure — contested name decided by the agreed order · held={d} · contests={d} · refuse whole\n", .{ t1.count(), t1.contests_seen() });
+}
