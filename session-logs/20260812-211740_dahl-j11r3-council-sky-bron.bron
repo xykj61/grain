@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260812.211740
+editor Zed
+model Fable 5
+voice Kyri
+host cloud bench — ai-jail — Eastern (EDT) time convention
+title DAHL-J11r3 — the signed council travels as Bron, tie-free offline
+prompt Continue the 1024-round itinerary Lindy-first crux-first; send each finished increment as its own signed round; STOP at custody gates.
+think r1 (odd quorum) and r2 (signed ballots) landed and sent. r3 is the Bron travel round, mirroring skate_group_bron. Agent-doable — demo seeds only, no custody crossed.
+think A council loads a sky, so the record must carry the sky's shape (galaxy/star/planet counts) beside the id and size, else a recipient cannot re-seat the council. Chose a council line `council <id> <galaxies> <stars> <planets> <size>` and one `ballot <seat> <proposal> <yea> <sig-hex>` line each; the token buffer grew to six for the council line.
+think rebuild reconstructs the Sky from the carried counts, re-seats through r1's load (inheriting NotAFractalLevel/EvenCouncil), and replays each ballot through r2's vote_signed — so a hand-authored record naming the compass sky's even d60 (12 5 12 60) refuses EvenCouncil on rebuild: the tie-free law travels with the record, a crux distinct from skate_group's (whose rule had no shape to carry).
+think Kept the flat-Bron hex + tokenizer idiom; parse_yea accepts strictly 0 or 1 (else BadInt). still_quorum_honest re-verifies via r2 verify_ballot with the carried size; the round-trip asserts byte-for-byte equality and that 2*quorum > size survives the crossing.
+obs GREEN first pass; TAME bans + width clean; r1 and r2 re-run GREEN (additive). The even-body-cannot-rebuild case is the round's honest distinction — the record carries not just votes but the shape they were cast under, and the shape is re-checked.
+loom witness=dahl_j11_council_sky_bron_witness cases=7 r1_rerun=green r2_rerun=green tame=clean
+file pond/apps/council_sky_bron.rye r3 module — SignedCouncil/PortableCouncil, render/parse format council-sky-v1, rebuild re-seats the sky
+file tools/dahl_j11_council_sky_bron_witness.rish builds + runs the selftest, asserts four crux lines + r1/r2 re-runs
+recommend keep-going DAHL-J11r4 — carry the reader onto a real fixture (skate/fixtures/council.bron, real Ed25519 ballots) and cross-check roster/vote/decided-proposal counts against an awk truth script; closes Journey 11's agent-doable arc.
