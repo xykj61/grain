@@ -1,0 +1,49 @@
+# tools/constel_net_ledger_witness.rish — Constel dev-net ledger, Rung 1: the fake net's money moves only by the identity that holds its genesis.
+#
+# The Constel dev-net harness proved a fake constellation, quarantined by a law-safe name, running the
+# real settlement protocol from genesis. This rung gives the tree's real Mycelium supply primitive
+# (mycelium/fold.rye — supply as a pure fold over Kumara-signed facts, non-negative, an overdraw
+# refusing the whole fold) a network to belong to. The crux, fused: an economic ledger runs from
+# genesis inside the fake net — its money signed by the net's own settled identity, refused for anyone
+# else — and it can never run under a name that could be real. The quarantine wraps the ledger (an
+# unsafe name opens no genesis, so no ledger), and sovereignty is structural (a fact enters only when
+# its signer's key equals the genesis galaxy Deed's keeper). Demo keeper seeds only — no real key, no
+# funds, no network, no custody (gate #3 payment rail and gate #4 the maintainer's Kumara untouched).
+#
+# Scope: active-designing/20260813-030005_constel-devnet-ledger-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/constel_net_ledger_witness.rish
+
+say "constel-net-ledger: Language EN — a fake net runs the real Mycelium supply law, its money the net's own."
+say "constel-net-ledger: Style Radiant — the identity that holds the genesis is the only hand that moves the money."
+say "constel-net-ledger: Lens TAME — sovereignty is structural and asserted; an unsafe name opens no ledger; an overdraw refuses whole; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/constel-net-ledger"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/constel_net_ledger.rye -femit-bin=${bin}"]
+assert build.ok else "constel-net-ledger: build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "constel-net-ledger: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "constel-net-ledger: selftest did not speak GREEN"
+assert selftest.out contains "opened a ledger whose sovereign is the genesis keeper" else "constel-net-ledger: sovereign-is-genesis claim missing"
+assert selftest.out contains "folded to supply 90 over three sovereign facts" else "constel-net-ledger: supply-folds-the-law claim missing"
+assert selftest.out contains "no ledger was born under it" else "constel-net-ledger: unsafe-name quarantine missing"
+assert selftest.out contains "refused Overdraw; supply held at 50" else "constel-net-ledger: overdraw-refuses-whole claim missing"
+assert selftest.out contains "refused NotSovereign before the log" else "constel-net-ledger: alien-signer refusal missing"
+
+# The Constel dev-net harness this ledger is opened on stands at its door — the same harness whose name
+# gate refuses UnsafeName before any genesis. If the harness is not GREEN, the ledger's quarantine claim
+# rests on nothing.
+let harness = run ["sh" "-c" "rishi/bin/rishi run tools/constel_net_witness.rish 2>&1"]
+assert harness.ok else "constel-net-ledger: the Constel dev-net harness the ledger opens on is not GREEN"
+assert harness.out contains "constel-net: GREEN" else "constel-net-ledger: the dev-net harness did not speak its GREEN"
+
+# The Mycelium supply fold this ledger folds through stands too — its own selftest proves the pure-fold
+# law (issued minus taxed, non-negative, overdraw refuses whole) the ledger inherits.
+let myc = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/fold.rye -femit-bin=mycelium/bin/fold && mycelium/bin/fold 2>&1"]
+assert myc.ok else "constel-net-ledger: the Mycelium fold the ledger folds through is not GREEN"
+
+say "constel-net-ledger: GREEN — the fake net's money folds the real Mycelium supply law and moves only by the identity that holds its genesis; the harness and the fold both stand at its door."
