@@ -1,0 +1,462 @@
+//! mycelium/cord_batch_bron.rye — the batched Cord travels as text (fact batching r2).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · fact batching · rung r2.
+//! Design read: active-designing/20260813-043303_mycelium-fact-batching-exploration.md
+//!
+//! r1 proved a batched history folds to the byte-identical supply as the same facts
+//! placed one-per-block. A consensus a developer cannot hand to another node is only
+//! a sandbox — so this rung lets a batched Dag cross to a stranger as readable bytes.
+//! It renders a committed BatchDag to a `format cord-batch-v1` record — per block a
+//! `block` line (author key · round · block signature), then one `fact` line per
+//! fact in the batch (kind · amount · star · body · fact-signer key · fact signature),
+//! then the block's `parent` lines — and parses it back, rebuilding the Dag from the
+//! bytes.
+//!
+//! The crux, as in the single-fact Cord's own travel rung: **the agreed order travels
+//! with the bytes.** The recovered batched Dag, re-admitted block by block under r1's
+//! own `add_batch`, commits to the byte-identical order and folds the identical supply
+//! — two nodes agree by exchanging batched blocks alone. Every signature rides in the
+//! record and is re-verified on rebuild: a tampered fact breaks its block's signature
+//! at `add_batch` (`BadSignature`), so corruption can never cross as consensus. The
+//! reader is a purpose-built bounded flat-Bron reader — an unknown field refuses
+//! `UnknownField` (never dropped), a wrong header `BadFormat`, a fact before any block
+//! `FactBeforeBlock`, a batch with no facts `EmptyBatch`, and the elder's own refusals.
+//!
+//! Additive — composes cord_batch + cord + fold public API only; the elder single-fact
+//! cord-bron (r3) is untouched and re-runs GREEN. Siloed, dev-only, demo seeds — no
+//! real key, no funds, no network, no custody; a Cord gossiped over Comlink reaches
+//! the serve gate.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/cord_batch_bron.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("cord.rye");
+const cord_batch = @import("cord_batch.rye");
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+const parse_int = @import("parse_int.rye");
+
+const pk_len = kumara.PublicKey.encoded_length;
+const sig_len = kumara.signature_length;
+const hash_len = cord.hash_len;
+
+/// A batched dev-net record bundles few blocks — the whole point of batching is
+/// fewer, fuller blocks — so the roster bound is small and legible.
+pub const max_blocks: u32 = 8;
+
+/// The rendered record: per block one `block` line, up to sixteen `fact` lines,
+/// and up to eight `parent` lines. Bounded generously over the worst case for a
+/// small batched dev-net roster.
+pub const max_record: u32 = 16384;
+
+/// The sentinel token for an empty star or body field — hex is never a lone dash.
+const empty_field = "-";
+
+pub const BronError = error{
+    BadFormat, // the header line is not `format cord-batch-v1`
+    UnknownField, // a line names a field the record does not define
+    BadLine, // a line is missing a token or carries a trailing one
+    BadInt, // a numeric field did not parse
+    BadHex, // a hex field was the wrong length or held a non-hex char
+    FactBeforeBlock, // a `fact` line appeared before any `block` line
+    ParentBeforeBlock, // a `parent` line appeared before any `block` line
+    EmptyBatch, // a block carried no `fact` line — no block has nothing to say
+    TooManyFacts, // a batch's fact run passed cord_batch's own bound
+    TooManyParents, // a block's fan-in ran past cord's bound
+    TooManyBlocks, // the Dag carried past this record's bound
+    RecordTooLong, // the render exceeded its bounded buffer
+};
+
+const hex_digits = "0123456789abcdef";
+
+/// Write `bytes` as lowercase hex into `out` (out.len must be twice bytes.len).
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex chars per byte.
+    assert(out.len == bytes.len * 2);
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0F];
+    }
+}
+
+fn nibble(c: u8) BronError!u8 {
+    return switch (c) {
+        '0'...'9' => c - '0',
+        'a'...'f' => c - 'a' + 10,
+        'A'...'F' => c - 'A' + 10,
+        else => error.BadHex,
+    };
+}
+
+/// Decode `text` (exactly out.len*2 hex chars) into `out`, refusing wrong length
+/// or a non-hex char.
+fn from_hex(text: []const u8, out: []u8) BronError!void {
+    if (text.len != out.len * 2) return error.BadHex;
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < out.len) : (i += 1) {
+        const hi = try nibble(text[i * 2]);
+        const lo = try nibble(text[i * 2 + 1]);
+        out[i] = (hi << 4) | lo;
+    }
+}
+
+/// Render a possibly-empty byte field to a token: `-` when empty, else lowercase
+/// hex written into `scratch`. Returns the slice to write.
+fn encode_field(bytes: []const u8, scratch: []u8) []const u8 {
+    if (bytes.len == 0) return empty_field;
+    // invariant: the scratch buffer holds two hex chars per byte.
+    assert(scratch.len >= bytes.len * 2);
+    to_hex(bytes, scratch[0 .. bytes.len * 2]);
+    return scratch[0 .. bytes.len * 2];
+}
+
+/// Decode a star/body token into `out`, returning the byte length. `-` is empty;
+/// else an even run of hex within the buffer's bound.
+fn decode_field(token: []const u8, out: []u8) BronError!u32 {
+    if (std.mem.eql(u8, token, empty_field)) return 0;
+    if (token.len % 2 != 0) return error.BadHex;
+    const n = token.len / 2;
+    if (n > out.len) return error.BadHex;
+    try from_hex(token, out[0..n]);
+    return @intCast(n);
+}
+
+/// A travelable batched Dag: the batch blocks in committed order, owning all their
+/// bytes (a BatchBlock is fixed-size throughout, so nothing points into freed text).
+// Invariant: len <= max_blocks.
+pub const PortableBatchDag = struct {
+    blocks: [max_blocks]cord_batch.BatchBlock = undefined,
+    len: u32 = 0,
+};
+
+/// Build a travelable Dag from a live BatchDag: commit it, then carry the blocks in
+/// that agreed order, so the record lists parents before children.
+pub fn from_batch_dag(dag: *const cord_batch.BatchDag) BronError!PortableBatchDag {
+    if (dag.len > max_blocks) return error.TooManyBlocks;
+    var order: [cord.cord_max_blocks]u32 = undefined;
+    const count = cord_batch.commit_batch(dag, order[0..]);
+    // invariant: the committed count is exactly the Dag's block count.
+    assert(count == dag.len);
+    var pl = PortableBatchDag{ .len = count };
+    var i: u32 = 0;
+    while (i < count) : (i += 1) pl.blocks[i] = dag.blocks[order[i]];
+    // invariant: the roster carries exactly the committed blocks, within bound.
+    assert(pl.len <= max_blocks);
+    return pl;
+}
+
+/// Render a portable batched Dag to a `format cord-batch-v1` record. Refuses an
+/// overflow rather than a partial record.
+pub fn render(pl: *const PortableBatchDag, out: []u8) BronError!u32 {
+    // invariant: the render buffer honors its bound.
+    assert(out.len >= max_record);
+    // invariant: the roster is within bound before any line is written.
+    assert(pl.len <= max_blocks);
+    const head = std.fmt.bufPrint(out, "format cord-batch-v1\n", .{}) catch return error.RecordTooLong;
+    var off: u32 = @intCast(head.len);
+    var j: u32 = 0;
+    while (j < pl.len) : (j += 1) {
+        const b = &pl.blocks[j];
+        // invariant: batch size and fan-in are bounded before any line is written.
+        assert(b.fact_count <= cord_batch.max_facts_per_block);
+        assert(b.parent_count <= cord.cord_max_parents);
+        var author_hex: [pk_len * 2]u8 = undefined;
+        var bsig_hex: [sig_len * 2]u8 = undefined;
+        to_hex(b.author_pk[0..], &author_hex);
+        to_hex(b.sig[0..], &bsig_hex);
+        const line = std.fmt.bufPrint(
+            out[off..],
+            "block {s} {d} {s}\n",
+            .{ author_hex, b.round, bsig_hex },
+        ) catch return error.RecordTooLong;
+        off += @intCast(line.len);
+        var f: u32 = 0;
+        while (f < b.fact_count) : (f += 1) {
+            const ft = &b.facts[f];
+            var signer_hex: [pk_len * 2]u8 = undefined;
+            var fsig_hex: [sig_len * 2]u8 = undefined;
+            to_hex(ft.signer_pk[0..], &signer_hex);
+            to_hex(ft.sig[0..], &fsig_hex);
+            var star_buf: [fold.star_name_max_bytes * 2]u8 = undefined;
+            var body_buf: [fold.myc_fact_max_bytes * 2]u8 = undefined;
+            const star = encode_field(ft.star_slice(), &star_buf);
+            const body = encode_field(ft.body_slice(), &body_buf);
+            const fline = std.fmt.bufPrint(
+                out[off..],
+                "fact {d} {d} {s} {s} {s} {s}\n",
+                .{ ft.kind, ft.amount, star, body, signer_hex, fsig_hex },
+            ) catch return error.RecordTooLong;
+            off += @intCast(fline.len);
+        }
+        var p: u32 = 0;
+        while (p < b.parent_count) : (p += 1) {
+            var phex: [hash_len * 2]u8 = undefined;
+            to_hex(b.parents[p][0..], &phex);
+            const pline = std.fmt.bufPrint(out[off..], "parent {s}\n", .{phex}) catch return error.RecordTooLong;
+            off += @intCast(pline.len);
+        }
+    }
+    // invariant: the rendered record never exceeds its bound.
+    assert(off <= max_record);
+    return off;
+}
+
+/// Split a line on spaces into up to ten tokens; returns the count found (or one
+/// past ten to signal a trailing token no line allows). A `fact` line carries
+/// seven tokens, a `block` line four, a `parent` line two.
+fn tokens(line: []const u8, out: *[10][]const u8) u32 {
+    var count: u32 = 0;
+    var it = std.mem.tokenizeScalar(u8, line, ' ');
+    while (it.next()) |t| {
+        if (count >= 10) return count + 1; // signal a trailing token past what any line allows
+        out[count] = t;
+        count += 1;
+    }
+    return count;
+}
+
+/// Read a `block` line's four tokens into a fresh batch block (facts and parents
+/// come on following lines). tok[0] is the `block` keyword; the three payload
+/// tokens are the author key, the round, and the block signature.
+fn read_block(tok: *const [10][]const u8) BronError!cord_batch.BatchBlock {
+    var b = cord_batch.BatchBlock{};
+    try from_hex(tok[1], b.author_pk[0..]);
+    b.round = parse_int.parse_int(u32, tok[2], .{}) catch return error.BadInt;
+    try from_hex(tok[3], b.sig[0..]);
+    b.fact_count = 0;
+    b.parent_count = 0;
+    return b;
+}
+
+/// Append a `fact` line's fact to the pending batch block. tok[0] is `fact`; the
+/// six payload tokens are kind, amount, star, body, fact-signer key, fact signature.
+fn read_fact(pending: *cord_batch.BatchBlock, tok: *const [10][]const u8) BronError!void {
+    // invariant: the batch stays within its bound before the fact is admitted.
+    if (pending.fact_count >= cord_batch.max_facts_per_block) return error.TooManyFacts;
+    var ft = fold.Fact{};
+    const kind_u = parse_int.parse_int(u32, tok[1], .{}) catch return error.BadInt;
+    if (kind_u > 255) return error.BadInt;
+    ft.kind = @intCast(kind_u);
+    ft.amount = parse_int.parse_int(u64, tok[2], .{}) catch return error.BadInt;
+    ft.star_len = try decode_field(tok[3], ft.star[0..]);
+    ft.body_len = try decode_field(tok[4], ft.body[0..]);
+    try from_hex(tok[5], ft.signer_pk[0..]);
+    try from_hex(tok[6], ft.sig[0..]);
+    pending.facts[pending.fact_count] = ft;
+    pending.fact_count += 1;
+    // invariant: the batch grew by exactly one, still within bound.
+    assert(pending.fact_count <= cord_batch.max_facts_per_block);
+}
+
+/// Flush the pending block into the roster, refusing an empty batch or an over-long
+/// roster. A block with no `fact` line is no block.
+fn flush(pl: *PortableBatchDag, pending: *const cord_batch.BatchBlock) BronError!void {
+    if (pending.fact_count == 0) return error.EmptyBatch;
+    if (pl.len >= max_blocks) return error.TooManyBlocks;
+    pl.blocks[pl.len] = pending.*;
+    pl.len += 1;
+    // invariant: the roster stays within bound after the flush.
+    assert(pl.len <= max_blocks);
+}
+
+/// Parse a `format cord-batch-v1` record into a PortableBatchDag, refusing an
+/// unknown or malformed field, a bad header, a fact or parent before any block, an
+/// empty batch, an over-wide fan-in, or an over-long roster. The parse reads
+/// structure only; rebuilding under `add_batch` re-verifies every signature.
+pub fn parse(text: []const u8) BronError!PortableBatchDag {
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const header = lines.next() orelse return error.BadFormat;
+    if (!std.mem.eql(u8, header, "format cord-batch-v1")) return error.BadFormat;
+
+    var pl = PortableBatchDag{ .len = 0 };
+    var pending: cord_batch.BatchBlock = undefined;
+    var have_pending = false;
+
+    while (lines.next()) |raw| {
+        if (raw.len == 0) continue; // a trailing newline yields one empty line
+        var tok: [10][]const u8 = undefined;
+        const n = tokens(raw, &tok);
+        if (n == 0) continue;
+        if (std.mem.eql(u8, tok[0], "block")) {
+            if (n != 4) return error.BadLine;
+            if (have_pending) try flush(&pl, &pending);
+            pending = try read_block(&tok);
+            have_pending = true;
+        } else if (std.mem.eql(u8, tok[0], "fact")) {
+            if (n != 7) return error.BadLine;
+            if (!have_pending) return error.FactBeforeBlock;
+            try read_fact(&pending, &tok);
+        } else if (std.mem.eql(u8, tok[0], "parent")) {
+            if (n != 2) return error.BadLine;
+            if (!have_pending) return error.ParentBeforeBlock;
+            if (pending.parent_count >= cord.cord_max_parents) return error.TooManyParents;
+            try from_hex(tok[1], pending.parents[pending.parent_count][0..]);
+            pending.parent_count += 1;
+        } else {
+            return error.UnknownField;
+        }
+    }
+    if (have_pending) try flush(&pl, &pending);
+    // invariant: a parsed record carries a bounded roster.
+    assert(pl.len <= max_blocks);
+    return pl;
+}
+
+/// Rebuild a live BatchDag from a portable one by re-admitting each block under
+/// r1's own `add_batch`, in the record's (committed) order — so every signature is
+/// re-verified and every parent must already be held. A tampered block refuses.
+/// Writes through `out` rather than returning by value: a BatchDag statically
+/// allocates its full block bound, so a return copy would put a second whole Dag
+/// on the stack for no reason.
+pub fn rebuild(pl: *const PortableBatchDag, out: *cord_batch.BatchDag) !void {
+    out.* = cord_batch.BatchDag.empty();
+    var i: u32 = 0;
+    while (i < pl.len) : (i += 1) try cord_batch.add_batch(out, pl.blocks[i]);
+    // invariant: every carried block was re-admitted, within bound.
+    assert(out.len == pl.len);
+    assert(out.len <= cord.cord_max_blocks);
+}
+
+// ---- selftest: the agreed order travels with the batched bytes -------------
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+/// The honest batched scene from r1: a round-0 batch of the two genesis issues and
+/// a round-1 batch of the tax and the star reserve. issued 1000 · taxed 300 · 700.
+/// Writes through `out` — a BatchDag is too large to return by value on the stack.
+fn seat_batch_dag(out: *cord_batch.BatchDag) !void {
+    const ka = seeded(0xA1);
+    const kb = seeded(0xB2);
+    const kc = seeded(0xC3);
+    const kd = seeded(0xD4);
+    const fa = fold.mint_fact(ka, fold.kind_issue, 500, "", "genesis-a") orelse return error.MintA;
+    const fb = fold.mint_fact(kb, fold.kind_issue, 500, "", "genesis-b") orelse return error.MintB;
+    const fc = fold.mint_fact(kc, fold.kind_tax, 200, "", "tax-c") orelse return error.MintC;
+    const fd = fold.mint_fact(kd, fold.kind_star_reserve, 100, "vega", "reserve") orelse return error.MintD;
+
+    const genesis = [_]fold.Fact{ fa, fb };
+    const round1 = [_]fold.Fact{ fc, fd };
+    const g = try cord_batch.mint_batch(ka, 0, &[_][hash_len]u8{}, genesis[0..]);
+    var hg: [hash_len]u8 = undefined;
+    cord_batch.address_batch(&g, &hg);
+    const roots = [_][hash_len]u8{hg};
+    const h = try cord_batch.mint_batch(kc, 1, roots[0..], round1[0..]);
+
+    out.* = cord_batch.BatchDag.empty();
+    try cord_batch.add_batch(out, g);
+    try cord_batch.add_batch(out, h);
+    // invariant: the seated scene is exactly two batched blocks.
+    assert(out.len == 2);
+}
+
+/// The committed order as a flat run of block-address bytes, so two commits can be
+/// compared for byte-identity.
+const Order = struct {
+    hashes: [cord.cord_max_blocks][hash_len]u8 = undefined,
+    count: u32 = 0,
+};
+
+fn commit_order(dag: *const cord_batch.BatchDag) Order {
+    var order: [cord.cord_max_blocks]u32 = undefined;
+    const count = cord_batch.commit_batch(dag, order[0..]);
+    var o = Order{ .count = count };
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        tally_copy.copy_disjoint(u8, o.hashes[i][0..], dag.hashes[order[i]][0..]);
+    }
+    return o;
+}
+
+fn orders_equal(x: *const Order, y: *const Order) bool {
+    if (x.count != y.count) return false;
+    var i: u32 = 0;
+    while (i < x.count) : (i += 1) {
+        if (!std.mem.eql(u8, x.hashes[i][0..], y.hashes[i][0..])) return false;
+    }
+    return true;
+}
+
+fn fold_supply(dag: *const cord_batch.BatchDag) !fold.FoldState {
+    var order: [cord.cord_max_blocks]u32 = undefined;
+    const count = cord_batch.commit_batch(dag, order[0..]);
+    var log = fold.Log.empty();
+    cord_batch.committed_batch_log(dag, order[0..], count, &log);
+    return try fold.fold_log(&log);
+}
+
+pub fn main() !void {
+    var dag: cord_batch.BatchDag = undefined;
+    try seat_batch_dag(&dag);
+    const order_before = commit_order(&dag);
+    const state_before = try fold_supply(&dag);
+    if (state_before.supply() != 700) return error.SupplyNet;
+    if (state_before.star_count != 1) return error.StarCount;
+
+    // The crux: render the committed batched Dag, parse it back, rebuild, and prove
+    // the agreed order and the folded supply crossed with the bytes.
+    const pl = try from_batch_dag(&dag);
+    if (pl.len != 2) return error.RosterLost;
+    var buf1: [max_record]u8 = undefined;
+    const n1 = try render(&pl, &buf1);
+    const back = try parse(buf1[0..n1]);
+    if (back.len != 2) return error.RosterLostBack;
+
+    var dag2: cord_batch.BatchDag = undefined;
+    try rebuild(&back, &dag2);
+    const order_after = commit_order(&dag2);
+    if (!orders_equal(&order_before, &order_after)) return error.OrderChangedAcrossBytes;
+    const state_after = try fold_supply(&dag2);
+    if (state_after.supply() != state_before.supply()) return error.SupplyChangedAcrossBytes;
+    if (state_after.star_count != state_before.star_count) return error.StarsChangedAcrossBytes;
+
+    // Byte-for-byte: re-rendering the parsed record reproduces the exact bytes.
+    var buf2: [max_record]u8 = undefined;
+    const n2 = try render(&back, &buf2);
+    if (n1 != n2) return error.RenderNotFixedPoint;
+    if (!std.mem.eql(u8, buf1[0..n1], buf2[0..n2])) return error.RenderNotFixedPoint;
+
+    // A tampered fact cannot cross as consensus: flip one byte of a fact signature
+    // in the record and the rebuild refuses BadSignature at add_batch — the batch's
+    // own author signature seals every fact's signature.
+    var tampered = back;
+    tampered.blocks[0].facts[0].sig[0] ^= 0xff;
+    // reuse dag2's storage — the order comparison above is done with it.
+    if (rebuild(&tampered, &dag2)) |_| return error.TamperCrossed else |err| {
+        if (err != error.BadSignature) return error.WrongTamper;
+    }
+
+    // Refusals real: a wrong header, an unknown field, a fact before any block, and
+    // a block with no fact each refuse.
+    if (parse("format other-v1\n")) |_| return error.BadHeaderAdmitted else |err| {
+        if (err != error.BadFormat) return error.WrongHeader;
+    }
+    if (parse("format cord-batch-v1\nghost 5\n")) |_| return error.UnknownAdmitted else |err| {
+        if (err != error.UnknownField) return error.WrongUnknown;
+    }
+    if (parse("format cord-batch-v1\nfact 1 5 - 616263 " ++ "00" ** pk_len ++ " " ++ "00" ** sig_len ++ "\n")) |_| {
+        return error.OrphanFactAdmitted;
+    } else |err| {
+        if (err != error.FactBeforeBlock) return error.WrongOrphanFact;
+    }
+    if (parse("format cord-batch-v1\nblock " ++ "00" ** pk_len ++ " 0 " ++ "00" ** sig_len ++ "\n")) |_| {
+        return error.EmptyBatchAdmitted;
+    } else |err| {
+        if (err != error.EmptyBatch) return error.WrongEmptyBatch;
+    }
+
+    print("cord-batch-bron: the committed batched Dag rendered to a format cord-batch-v1 record and parsed back, its two batches recovered whole\n", .{});
+    print("cord-batch-bron: the recovered Dag re-admitted under add_batch commits to the byte-identical order and folds supply {d} over one star\n", .{state_after.supply()});
+    print("cord-batch-bron: re-rendering the parsed record reproduces the exact bytes; a tampered fact refuses BadSignature on rebuild\n", .{});
+    print("cord-batch-bron: a wrong header, an unknown field, a fact before any block, and an empty batch each refuse\n", .{});
+    print("GREEN: myc cord-batch-bron — the batched order travels as text · order unchanged · supply={d} · stars={d} · tamper refused\n", .{
+        state_after.supply(),
+        state_after.star_count,
+    });
+}
