@@ -1,0 +1,58 @@
+# tools/hunk_photos_edges_witness.rish — the Photos app detects edges: Sobel gradient magnitude on metal (HUNK27).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Open Image · rung HUNK27.
+# Design read: active-designing/20260812-171050_the-1024-round-itinerary.md (Season A · the open image quest).
+# Teacher, thanked clean-room: the Sobel operator every photo app's edge/outline filter carries (concept only, siloed).
+#
+# HUNK25 gave the module its convolution primitive and named an edge detector the next crux. This rung lands it:
+# `image/photos.rye` `edges` is a pure Sobel gradient magnitude over each pixel's Rec.601 luma — two 3x3 gradient
+# kernels (horizontal gx, vertical gy) read the 3x3 luma neighborhood, and the magnitude is the L1 sum |gx|+|gy|
+# clamped into 0..255, so no square root and no float is needed and the arithmetic stays exact (the largest term
+# is 4*255 = 1020 per direction, far inside i32). Edges are extended by clamping so no read wraps; the edge map is
+# a fresh grayscale view (r==g==b), alpha opaque. The selftest proves a sharp luma step [0,0,255,255] Sobels to the
+# magnitudes [0,255,255,0] — the two pixels straddling the step lighting up, the flat ends black — the map grayscale
+# and opaque, a solid color a fixed point at black (no gradient), the source pure, the edge image still re-encoding
+# and round-tripping as an open image, and an empty image refusing by name. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_photos_edges_witness.rish
+
+say "hunk-photos-edges: Language EN — HUNK27 gives the Photos app edge detection: a pure Sobel gradient magnitude over the decoded grid's luma that returns a fresh grayscale open image, the source untouched."
+say "hunk-photos-edges: Style Radiant — an edge image is still an open image: it re-encodes and round-trips byte-for-byte; a flat region is a fixed point at black, and only real local change lights up."
+say "hunk-photos-edges: Lens TAME — each directional gradient sums in i32 (largest term 4*255 = 1020); the L1 magnitude clamps into the byte range; edges clamp so no read wraps; positive invariants per fn; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/photos"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/photos.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-photos-edges: build failed — ${build.err}"
+
+let log = "image/bin/photos-selftest.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${log} 2>&1"]
+assert selftest.ok else "hunk-photos-edges: selftest exited non-zero"
+
+let green = run ["sh" "-c" "grep -q 'GREEN image-photos-edges' ${log} && echo yes"]
+assert (trim green.out) == "yes" else "hunk-photos-edges: selftest did not print the GREEN edges line"
+
+let step = run ["sh" "-c" "grep -qF 'a sharp luma step [0,0,255,255] Sobels to the magnitudes [0,255,255,0]' ${log} && echo yes"]
+assert (trim step.out) == "yes" else "hunk-photos-edges: the exact Sobel step magnitudes were not proven"
+
+let gray = run ["sh" "-c" "grep -qF 'the edge map is grayscale (r==g==b) and opaque' ${log} && echo yes"]
+assert (trim gray.out) == "yes" else "hunk-photos-edges: the grayscale opaque edge map was not proven"
+
+let fixed = run ["sh" "-c" "grep -qF 'a solid color is a fixed point at black (no gradient)' ${log} && echo yes"]
+assert (trim fixed.out) == "yes" else "hunk-photos-edges: the solid-color fixed point at black was not proven"
+
+let open = run ["sh" "-c" "grep -q 'edge image re-encodes and round-trips' ${log} && echo yes"]
+assert (trim open.out) == "yes" else "hunk-photos-edges: an edge image did not round-trip as an open image"
+
+let refuse = run ["sh" "-c" "grep -q 'an empty image refused by name' ${log} && echo yes"]
+assert (trim refuse.out) == "yes" else "hunk-photos-edges: the EmptyImage refusal was not proven"
+
+# The earlier Photos rungs share the binary — GREEN holds beneath.
+let stretch = run ["sh" "-c" "grep -q 'GREEN image-photos-stretch:' ${log} && echo yes"]
+assert (trim stretch.out) == "yes" else "hunk-photos-edges: HUNK26 stretch selftest no longer GREEN beneath"
+let convolve = run ["sh" "-c" "grep -q 'GREEN image-photos-convolve:' ${log} && echo yes"]
+assert (trim convolve.out) == "yes" else "hunk-photos-edges: HUNK25 convolve selftest no longer GREEN beneath"
+
+say "hunk-photos-edges: GREEN — HUNK27 Sobel edge detection proven on metal; the sharp step lights up its boundary; stretch, convolve, crop, and the resampler family all still GREEN beneath."

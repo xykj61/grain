@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260813.180014
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title HUNK27 — the Photos app detects edges (Sobel gradient magnitude, integer, algebra-proven)
+prompt Continue the recursion loop past HUNK26: take the next agent-doable lap Lindy-first crux-first, self-approve the design round, send each finished increment as its own signed round, stop at custody gates.
+think HUNK25 named an edge detector the crux convolve was for. blur/sharpen rode convolve; an edge detector wants two directional convolutions combined, which no single clamped-per-channel kernel expresses — so edges is its own verb, the still-tractable move the earlier rung pointed at.
+think Landed image/photos.rye edges — a pure Sobel gradient magnitude over each pixel's Rec.601 luma (reusing luma_of). Two 3x3 kernels gx/gy read the luma neighborhood; magnitude is the L1 sum |gx|+|gy| clamped 0..255 — no sqrt, no float, exact in i32 (largest term 4*255=1020). Edges clamp so no read wraps; the edge map is a fresh grayscale view (r==g==b), alpha opaque.
+think Proved by the algebra it must obey: a sharp luma step [0,0,255,255] (single row) Sobels to [0,255,255,0] — with one row clamped vertically Gy=0 and Gx=-4L(x-1)+4L(x+1), unambiguous; the map grayscale+opaque even from a translucent source; a solid color a fixed point at black; purity; still-open round-trip; EmptyImage refusal.
+obs Chose L1 magnitude over L2 sqrt: the standard integer-friendly stand-in, exact and wrap-free, lights up the same edges. A bounded-integer-sqrt L2 magnitude is a named future rung.
+obs Witness hit Rishi StringTooLong when interpolating the grown selftest output into each grep command; rewrote to redirect the selftest to a file and grep the file. GREEN after.
+obs Self-approved design round, no gate. No breach, no cairn. No network/key/funds — hardware buys stay custody gates #2/#3, untouched.
+loom witness=hunk_photos_edges_witness green=1 step=[0,0,255,255]->[0,255,255,0] largest_term=1020
+file image/photos.rye added edges + run_edges selftest + GREEN line
+file tools/hunk_photos_edges_witness.rish new witness, greps a written selftest log, GREEN on metal
+file active-designing/20260813-180100_hunk-photos-edges-exploration.md self-approved design round
+file work-in-progress/REMEMBER.md HUNK27 latest-lap note + git nib
+file session-logs/README.md prepended newest-first row
+recommend keep-going next agent-doable crux: an emboss kernel over convolve, an L2 bounded-integer-sqrt edge magnitude, a general-angle hue rotation, or a fresh Season-A / double-seat journey; hardware buys stay custody gates #2/#3.
