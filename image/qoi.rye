@@ -1,0 +1,447 @@
+//! image/qoi.rye — the open image codec (HUNK0, the crux).
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · opening journey Open Image · rung HUNK0.
+//! Design read: active-designing/20260813-144218_hunk-season-a-open-image-exploration.md
+//! Teacher, thanked clean-room: gratitude/qoi.md (the "Quite OK Image" format — public spec only, never the C).
+//!
+//! An image is verified bytes that DECODE, deterministically and within named bounds, to a pixel grid; a
+//! malformed or truncated stream refuses BY NAME rather than painting garbage. QOI is the teacher because it
+//! is a real lossless compressor (index · diff · luma · run chunks) small enough to hold whole in one hand —
+//! exactly the tree's aesthetic, and exactly the "existing open-source image format with the compression
+//! wanted" Season A names beneath the parts marketplace and the Photos app.
+//!
+//! This module owns both halves so the property that matters is provable on metal: `decode(encode(pm))`
+//! recovers the pixmap BYTE-FOR-BYTE, across a pattern that exercises every one of the six chunk kinds.
+//! Pixels are always held RGBA (four channels) so a decoded grid lowers straight to Skate's ARGB later
+//! (HUNK2); the source channel count and colorspace ride along for fidelity. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/qoi.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const tally_copy = @import("tally_copy.rye");
+
+pub const qoi_version = "20260813.144218";
+
+/// Header is fixed: 4 magic · 4 width · 4 height · 1 channels · 1 colorspace.
+pub const header_len: u32 = 14;
+
+/// The stream ends in exactly these eight bytes — seven zeros and a one.
+pub const end_marker = [8]u8{ 0, 0, 0, 0, 0, 0, 0, 1 };
+
+/// Per-axis ceiling — a right-to-repair panel is far smaller; the bound is honest headroom, not ambition.
+pub const qoi_max_dim: u32 = 8192;
+
+/// Decoded-buffer ceiling in pixels — 1<<20 (a 1024×1024 image), 4 MiB RGBA, named at construction.
+pub const qoi_max_pixels: u32 = 1 << 20;
+
+/// The eight-byte magic-and-tag alphabet.
+const op_index: u8 = 0x00; // tag 00xxxxxx — a 64-slot running-index reference
+const op_diff: u8 = 0x40; // tag 01xxxxxx — a small per-channel diff
+const op_luma: u8 = 0x80; // tag 10xxxxxx — a luma-relative diff
+const op_run: u8 = 0xC0; // tag 11xxxxxx — a run of the previous pixel
+const op_rgb: u8 = 0xFE; // a full RGB pixel (alpha carried)
+const op_rgba: u8 = 0xFF; // a full RGBA pixel
+const tag_mask: u8 = 0xC0;
+
+/// The six op kinds, in the order the encoder counts them (RGB · RGBA · INDEX · DIFF · LUMA · RUN).
+pub const op_count_kinds: u32 = 6;
+pub const kind_rgb: u32 = 0;
+pub const kind_rgba: u32 = 1;
+pub const kind_index: u32 = 2;
+pub const kind_diff: u32 = 3;
+pub const kind_luma: u32 = 4;
+pub const kind_run: u32 = 5;
+
+/// One pixel, always four channels in memory.
+const Rgba = struct {
+    r: u8 = 0,
+    g: u8 = 0,
+    b: u8 = 0,
+    a: u8 = 255,
+
+    fn eql(x: Rgba, y: Rgba) bool {
+        return x.r == y.r and x.g == y.g and x.b == y.b and x.a == y.a;
+    }
+};
+
+/// The running-index slot of a pixel — the QOI hash, computed identically on both sides.
+fn index_slot(p: Rgba) u32 {
+    // invariant: the slot is one of the 64 the format defines.
+    const h = (@as(u32, p.r) * 3 + @as(u32, p.g) * 5 + @as(u32, p.b) * 7 + @as(u32, p.a) * 11) % 64;
+    assert(h < 64);
+    return h;
+}
+
+fn read_u32_be(b: []const u8) u32 {
+    // invariant: a big-endian read needs its four bytes present.
+    assert(b.len >= 4);
+    return (@as(u32, b[0]) << 24) | (@as(u32, b[1]) << 16) | (@as(u32, b[2]) << 8) | @as(u32, b[3]);
+}
+
+fn write_u32_be(b: []u8, v: u32) void {
+    // invariant: a big-endian write needs its four bytes of room.
+    assert(b.len >= 4);
+    b[0] = @intCast((v >> 24) & 0xFF);
+    b[1] = @intCast((v >> 16) & 0xFF);
+    b[2] = @intCast((v >> 8) & 0xFF);
+    b[3] = @intCast(v & 0xFF);
+}
+
+/// A decoded image — pixels always RGBA, len == width*height*4.
+pub const Pixmap = struct {
+    width: u32 = 0,
+    height: u32 = 0,
+    channels: u8 = 4, // source channel count (3 or 4); pixels held RGBA regardless
+    colorspace: u8 = 0,
+    pixels: []u8 = &[_]u8{},
+
+    pub fn pixel_count(self: *const Pixmap) u32 {
+        // invariant: a pixmap's pixel count is its two dimensions multiplied, within the named ceiling.
+        const n = @as(u64, self.width) * @as(u64, self.height);
+        assert(n <= qoi_max_pixels);
+        return @intCast(n);
+    }
+
+    pub fn same_bytes(self: *const Pixmap, other: *const Pixmap) bool {
+        if (self.width != other.width or self.height != other.height) return false;
+        if (self.pixels.len != other.pixels.len) return false;
+        return std.mem.eql(u8, self.pixels, other.pixels);
+    }
+};
+
+/// What an encode produced — the byte length written, and how many of each op kind it used, so a witness can
+/// prove the encoder truly reached for all six chunk kinds (and the round-trip then proves the decoder read
+/// each one).
+pub const EncodeResult = struct {
+    len: u32 = 0,
+    ops: [op_count_kinds]u32 = [_]u32{0} ** op_count_kinds,
+};
+
+/// A safe upper bound on the encoded size of a pixmap of `pixels` pixels: header + worst case one 5-byte
+/// RGBA chunk per pixel + the 8-byte end marker. A caller sizes its buffer by this, never guessing.
+pub fn encoded_bound(pixels: u32) u32 {
+    // invariant: the bound covers a pixel count the format can hold.
+    assert(pixels <= qoi_max_pixels);
+    return header_len + pixels * 5 + @as(u32, end_marker.len);
+}
+
+/// Decode a QOI byte stream into a freshly allocated RGBA Pixmap. Every failure is a NAMED refusal; nothing
+/// past the header is trusted until it decodes to exactly width*height pixels and the stream ends in the
+/// canonical eight-byte marker with no trailing data.
+pub fn decode(allocator: std.mem.Allocator, bytes: []const u8) !Pixmap {
+    // invariant: a real QOI stream is at least a header and an end marker long.
+    if (bytes.len < header_len + end_marker.len) return error.Truncated;
+    if (!(bytes[0] == 'q' and bytes[1] == 'o' and bytes[2] == 'i' and bytes[3] == 'f')) return error.BadMagic;
+
+    const width = read_u32_be(bytes[4..8]);
+    const height = read_u32_be(bytes[8..12]);
+    const channels = bytes[12];
+    const colorspace = bytes[13];
+    if (channels != 3 and channels != 4) return error.BadChannels;
+    if (colorspace != 0 and colorspace != 1) return error.BadColorspace;
+    if (width == 0 or height == 0) return error.BadDimensions;
+    if (width > qoi_max_dim or height > qoi_max_dim) return error.TooLarge;
+
+    const total = @as(u64, width) * @as(u64, height);
+    if (total > qoi_max_pixels) return error.TooLarge;
+    const pixel_count: u32 = @intCast(total);
+
+    const out = try allocator.alloc(u8, @as(usize, pixel_count) * 4);
+    // invariant: the output buffer is exactly four bytes per pixel.
+    assert(out.len == @as(usize, pixel_count) * 4);
+
+    var index = [_]Rgba{.{ .r = 0, .g = 0, .b = 0, .a = 0 }} ** 64;
+    var px = Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    var run: u32 = 0;
+    var p: u32 = header_len; // read cursor into `bytes`
+    var i: u32 = 0; // pixel cursor
+
+    while (i < pixel_count) : (i += 1) {
+        if (run > 0) {
+            run -= 1;
+        } else {
+            if (p >= bytes.len) return error.Truncated;
+            const b1 = bytes[p];
+            p += 1;
+            if (b1 == op_rgb) {
+                if (p + 3 > bytes.len) return error.Truncated;
+                px.r = bytes[p];
+                px.g = bytes[p + 1];
+                px.b = bytes[p + 2];
+                p += 3;
+            } else if (b1 == op_rgba) {
+                if (p + 4 > bytes.len) return error.Truncated;
+                px.r = bytes[p];
+                px.g = bytes[p + 1];
+                px.b = bytes[p + 2];
+                px.a = bytes[p + 3];
+                p += 4;
+            } else if ((b1 & tag_mask) == op_index) {
+                px = index[b1 & 0x3F];
+            } else if ((b1 & tag_mask) == op_diff) {
+                const dr: u8 = ((b1 >> 4) & 0x03);
+                const dg: u8 = ((b1 >> 2) & 0x03);
+                const db: u8 = (b1 & 0x03);
+                px.r = px.r +% dr -% 2;
+                px.g = px.g +% dg -% 2;
+                px.b = px.b +% db -% 2;
+            } else if ((b1 & tag_mask) == op_luma) {
+                if (p >= bytes.len) return error.Truncated;
+                const b2 = bytes[p];
+                p += 1;
+                const vg: u8 = (b1 & 0x3F) -% 32;
+                const drg: u8 = ((b2 >> 4) & 0x0F) -% 8;
+                const dbg: u8 = (b2 & 0x0F) -% 8;
+                px.g = px.g +% vg;
+                px.r = px.r +% vg +% drg;
+                px.b = px.b +% vg +% dbg;
+            } else {
+                // (b1 & tag_mask) == op_run — a run of the previous pixel, biased by one.
+                run = (b1 & 0x3F);
+            }
+            index[index_slot(px)] = px;
+        }
+        const off = @as(usize, i) * 4;
+        out[off] = px.r;
+        out[off + 1] = px.g;
+        out[off + 2] = px.b;
+        out[off + 3] = px.a;
+    }
+
+    // The tail must be exactly the eight-byte end marker — no fewer (Truncated), no more (TrailingData),
+    // no other bytes (BadEndMarker). A run that overran the pixel count leaves the cursor short here.
+    if (run != 0) return error.BadStream;
+    const remaining = @as(u64, bytes.len) - @as(u64, p);
+    if (remaining < end_marker.len) return error.Truncated;
+    if (remaining > end_marker.len) return error.TrailingData;
+    if (!std.mem.eql(u8, bytes[p .. p + end_marker.len], end_marker[0..])) return error.BadEndMarker;
+
+    // invariant: the decode filled every pixel and consumed the whole stream.
+    assert(i == pixel_count);
+    assert(p + end_marker.len == bytes.len);
+    return Pixmap{
+        .width = width,
+        .height = height,
+        .channels = channels,
+        .colorspace = colorspace,
+        .pixels = out,
+    };
+}
+
+/// Encode an RGBA Pixmap into a caller-provided buffer (sized by `encoded_bound`). Returns the byte length
+/// written and the per-op counts. Emits with four channels so the round-trip is exact.
+pub fn encode(pm: *const Pixmap, dst: []u8) !EncodeResult {
+    // invariant: encoding needs pixels to encode and room the bound covers.
+    assert(pm.pixels.len == @as(usize, pm.width) * @as(usize, pm.height) * 4);
+    const pixel_count = pm.pixel_count();
+    if (dst.len < encoded_bound(pixel_count)) return error.EncodeOverflow;
+
+    var res = EncodeResult{};
+    var w: u32 = 0; // write cursor into dst
+
+    dst[w] = 'q';
+    dst[w + 1] = 'o';
+    dst[w + 2] = 'i';
+    dst[w + 3] = 'f';
+    write_u32_be(dst[w + 4 .. w + 8], pm.width);
+    write_u32_be(dst[w + 8 .. w + 12], pm.height);
+    dst[w + 12] = 4; // always emit four channels
+    dst[w + 13] = pm.colorspace;
+    w = header_len;
+
+    var index = [_]Rgba{.{ .r = 0, .g = 0, .b = 0, .a = 0 }} ** 64;
+    var prev = Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    var run: u32 = 0;
+
+    var i: u32 = 0;
+    while (i < pixel_count) : (i += 1) {
+        const off = @as(usize, i) * 4;
+        const px = Rgba{ .r = pm.pixels[off], .g = pm.pixels[off + 1], .b = pm.pixels[off + 2], .a = pm.pixels[off + 3] };
+        const last = (i + 1 == pixel_count);
+
+        if (px.eql(prev)) {
+            run += 1;
+            if (run == 62 or last) {
+                dst[w] = op_run | @as(u8, @intCast(run - 1));
+                w += 1;
+                res.ops[kind_run] += 1;
+                run = 0;
+            }
+        } else {
+            if (run > 0) {
+                dst[w] = op_run | @as(u8, @intCast(run - 1));
+                w += 1;
+                res.ops[kind_run] += 1;
+                run = 0;
+            }
+            const slot = index_slot(px);
+            if (index[slot].eql(px)) {
+                dst[w] = op_index | @as(u8, @intCast(slot));
+                w += 1;
+                res.ops[kind_index] += 1;
+            } else {
+                index[slot] = px;
+                if (px.a == prev.a) {
+                    const vr: i8 = @bitCast(px.r -% prev.r);
+                    const vg: i8 = @bitCast(px.g -% prev.g);
+                    const vb: i8 = @bitCast(px.b -% prev.b);
+                    const vrg: i16 = @as(i16, vr) - @as(i16, vg);
+                    const vbg: i16 = @as(i16, vb) - @as(i16, vg);
+                    if (vr >= -2 and vr <= 1 and vg >= -2 and vg <= 1 and vb >= -2 and vb <= 1) {
+                        const er: u8 = @intCast(vr + 2);
+                        const eg: u8 = @intCast(vg + 2);
+                        const eb: u8 = @intCast(vb + 2);
+                        dst[w] = op_diff | (er << 4) | (eg << 2) | eb;
+                        w += 1;
+                        res.ops[kind_diff] += 1;
+                    } else if (vrg >= -8 and vrg <= 7 and vg >= -32 and vg <= 31 and vbg >= -8 and vbg <= 7) {
+                        const eg: u8 = @intCast(@as(i16, vg) + 32);
+                        const erg: u8 = @intCast(vrg + 8);
+                        const ebg: u8 = @intCast(vbg + 8);
+                        dst[w] = op_luma | eg;
+                        dst[w + 1] = (erg << 4) | ebg;
+                        w += 2;
+                        res.ops[kind_luma] += 1;
+                    } else {
+                        dst[w] = op_rgb;
+                        dst[w + 1] = px.r;
+                        dst[w + 2] = px.g;
+                        dst[w + 3] = px.b;
+                        w += 4;
+                        res.ops[kind_rgb] += 1;
+                    }
+                } else {
+                    dst[w] = op_rgba;
+                    dst[w + 1] = px.r;
+                    dst[w + 2] = px.g;
+                    dst[w + 3] = px.b;
+                    dst[w + 4] = px.a;
+                    w += 5;
+                    res.ops[kind_rgba] += 1;
+                }
+            }
+        }
+        prev = px;
+    }
+
+    var m: u32 = 0;
+    while (m < end_marker.len) : (m += 1) {
+        dst[w] = end_marker[m];
+        w += 1;
+    }
+
+    // invariant: a run never survives the last pixel, and the write stayed within the bound.
+    assert(run == 0);
+    assert(w <= encoded_bound(pixel_count));
+    res.len = w;
+    return res;
+}
+
+// --- selftest: encode a pattern that exercises all six ops, decode it back byte-for-byte, and prove each
+//     named refusal ---------------------------------------------------------------------------------------
+
+/// Build the crafted 8×8 pattern whose encoding reaches for every chunk kind (see the exploration doc).
+fn craft(allocator: std.mem.Allocator) !Pixmap {
+    const n: u32 = 64;
+    const buf = try allocator.alloc(u8, n * 4);
+    const seq = [_]Rgba{
+        .{ .r = 10, .g = 20, .b = 30, .a = 255 }, // p0 — first color → RGB
+        .{ .r = 10, .g = 20, .b = 30, .a = 255 }, // p1..p3 — identical → RUN
+        .{ .r = 10, .g = 20, .b = 30, .a = 255 },
+        .{ .r = 10, .g = 20, .b = 30, .a = 255 },
+        .{ .r = 11, .g = 21, .b = 31, .a = 255 }, // p4 — ±1 per channel → DIFF
+        .{ .r = 21, .g = 31, .b = 41, .a = 255 }, // p5 — +10 luma-relative → LUMA
+        .{ .r = 10, .g = 20, .b = 30, .a = 255 }, // p6 — back to p0's color, in index → INDEX
+        .{ .r = 10, .g = 20, .b = 30, .a = 128 }, // p7 — alpha change → RGBA
+    };
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const px = if (i < seq.len) seq[i] else Rgba{ .r = 10, .g = 20, .b = 30, .a = 128 }; // p8.. → RUN
+        const off = @as(usize, i) * 4;
+        buf[off] = px.r;
+        buf[off + 1] = px.g;
+        buf[off + 2] = px.b;
+        buf[off + 3] = px.a;
+    }
+    return Pixmap{ .width = 8, .height = 8, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const pm = try craft(garden);
+    const cap = encoded_bound(pm.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+
+    const res = try encode(&pm, dst);
+    // invariant: the encoder reached for every one of the six chunk kinds.
+    var k: u32 = 0;
+    while (k < op_count_kinds) : (k += 1) {
+        assert(res.ops[k] >= 1);
+    }
+    // invariant: compression happened — encoded is smaller than the raw RGBA.
+    assert(res.len < pm.pixels.len);
+
+    const stream = dst[0..res.len];
+    const back = try decode(garden, stream);
+    // The crux: a full round-trip recovers the pixmap byte-for-byte.
+    assert(back.same_bytes(&pm));
+    assert(back.channels == 4 and back.colorspace == 0);
+
+    // --- named refusals -------------------------------------------------------------------------------
+    // Truncated: drop the last byte.
+    if (decode(garden, stream[0 .. stream.len - 1])) |_| return error.TruncSlipped else |e| {
+        if (e != error.BadEndMarker and e != error.Truncated) return error.WrongTrunc;
+    }
+    // Bad magic: corrupt the first byte.
+    {
+        const bad = try garden.alloc(u8, stream.len);
+        tally_copy.copy_disjoint(u8, bad[0..stream.len], stream);
+        bad[0] = 'X';
+        if (decode(garden, bad)) |_| return error.MagicSlipped else |e| {
+            if (e != error.BadMagic) return error.WrongMagic;
+        }
+    }
+    // Bad end marker: corrupt the final byte.
+    {
+        const bad = try garden.alloc(u8, stream.len);
+        tally_copy.copy_disjoint(u8, bad[0..stream.len], stream);
+        bad[bad.len - 1] = 0x02;
+        if (decode(garden, bad)) |_| return error.EndSlipped else |e| {
+            if (e != error.BadEndMarker) return error.WrongEnd;
+        }
+    }
+    // Trailing data: an extra byte past a whole valid stream.
+    {
+        const bad = try garden.alloc(u8, stream.len + 1);
+        tally_copy.copy_disjoint(u8, bad[0..stream.len], stream);
+        bad[bad.len - 1] = 0x00;
+        if (decode(garden, bad)) |_| return error.TrailSlipped else |e| {
+            if (e != error.TrailingData) return error.WrongTrail;
+        }
+    }
+    // Bad dimensions: zero width in an otherwise clean header.
+    {
+        const bad = try garden.alloc(u8, stream.len);
+        tally_copy.copy_disjoint(u8, bad[0..stream.len], stream);
+        write_u32_be(bad[4..8], 0);
+        if (decode(garden, bad)) |_| return error.DimSlipped else |e| {
+            if (e != error.BadDimensions) return error.WrongDim;
+        }
+    }
+
+    print("GREEN image-qoi: 8x8 round-trip byte-identical; ops rgb={d} rgba={d} index={d} diff={d} luma={d} run={d}; encoded {d} bytes < raw {d}; refusals BadMagic·BadEndMarker·TrailingData·Truncated·BadDimensions all named\n", .{
+        res.ops[kind_rgb], res.ops[kind_rgba], res.ops[kind_index], res.ops[kind_diff], res.ops[kind_luma], res.ops[kind_run], res.len, pm.pixels.len,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: qoi selftest\n", .{});
+    return 1;
+}
