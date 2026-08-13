@@ -6,8 +6,10 @@
 
 *One-page carry card for outer terminal · phone · waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` — the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `4b9b778be4` · Grain · cloud pier · **public seed `grain-os/grain` @ `26cae5b` (single-commit; force-push refresh)**
+**Git nib:** `29e64fef1b` · Grain · cloud pier · **public seed `grain-os/grain` @ `26cae5b` (single-commit; force-push refresh)**
 **Host:** Framework · EDT (`America/New_York`) · Vultr SEA VPS (HP AMD 2vCPU/4GB shared · never EWR) · this session in ai-jail
+
+**Latest lap `20260813` — Season A opens (waymark HUNK).** The Mycelium consensus season (Season D's protocol half) stands whole and witnessed (98 modules · 80 witnesses · foundation + README) — a clean season close — so by Lindy-first crux-first the road turned to **Season A (Hardware & Right-to-Repair)** and its opening journey, the **open image module** beneath the parts marketplace and the Photos app. **HUNK0 LANDED:** `image/qoi.rye` — a whole open **QOI** codec (encode + decode), so `decode(encode(pm))` recovers a pixmap **byte-for-byte** across all six chunk kinds (rgb·rgba·index·diff·luma·run), real compression (37 < 256 raw), five corruptions each refusing by name. Waymark **HUNK** seated (derive script · both rule twins · Lexicon); QOI thanked clean-room (`gratitude/qoi.md`). Witness `tools/hunk_qoi_witness.rish` GREEN. Next: **HUNK1** (image as a content-addressed Tablecloth artifact — a tampered bead refuses before a pixel is read); HUNK's hardware rounds stay custody gates #2/#3.
 
 ---
 

@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260813.145055
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title HUNK0 — the open image codec (QOI) round-trips on metal
+prompt autonomous loop — take the next agent-doable lap Lindy-first crux-first past the Mycelium season, double-seating new visions, sending each finished increment, stopping at custody gates
+think read REMEMBER, the 1024-round itinerary, and the six-season expansion; found Mycelium (Season D consensus half) whole and witnessed — 98 modules, 80 witnesses, foundation + README seated — a clean season close
+think Lindy-first crux-first over the whole road: the next durable, fully agent-doable, ungated crux is Season A's open image module, the substrate Season A names beneath both the parts marketplace and the Photos app
+think chose QOI as the teacher — a genuinely open, real lossless compressor (index·diff·luma·run) small enough to implement whole in bounded asserted Rye; clean-room from the public one-page spec, never the reference C
+think opened Season A as a self-approved design round; drew and seated waymark HUNK (season-a-open-image-decode-and-photos-surface) in the derive script, both rule twins, and the Lexicon
+think built image/qoi.rye owning both halves so the crux is provable: decode(encode(pm)) recovers the pixmap byte-for-byte across a crafted 8×8 pattern that reaches for all six chunk kinds; encode returns per-op counts so the witness proves every op fired
+think caught my own TAME ban (std.mem.copyForwards in the selftest) and swapped it for tally_copy.copy_disjoint via a symlink, mirroring how mycelium/ holds tally_copy
+obs the tame_style_check and width-check rosters do not scan image/ (nor mycelium/); discipline is held by hand plus the module's own witness, exactly as the Mycelium season does
+obs a new top-level directory needed a root .gitignore allow (!/image/) and a bin ignore (/image/bin/); the /* ignore-everything root would otherwise have swallowed the whole module silently
+obs pixels held RGBA always so a decoded grid lowers straight to Skate ARGB in HUNK2; channels/colorspace ride along for fidelity; no network, no key, no funds — every real-world act stays a later, gated rung
+loom witness=hunk_qoi_witness ops_rgb=1 ops_rgba=1 ops_index=1 ops_diff=1 ops_luma=1 ops_run=2 encoded_bytes=37 raw_bytes=256 image=8x8
+file image/qoi.rye the open image codec — QOI encode+decode over a bounded RGBA Pixmap, named refusals, all six ops
+file image/tally_copy.rye seam symlink to tally/copy.rye for copy_disjoint (TAME, over bare copyForwards)
+file tools/hunk_qoi_witness.rish proves the six-op round-trip byte-identical and every named refusal, GREEN on metal
+file active-designing/20260813-144218_hunk-season-a-open-image-exploration.md the self-approved design round opening Season A / HUNK
+file gratitude/qoi.md clean-room thanks to QOI, the teacher — spec studied, code our own
+recommend keep-going HUNK1 (content-addressed image as a Tablecloth artifact — verified fetch, tamper refuses before a pixel is read) is the next mechanical crux; no gate until HUNK's later hardware rounds

@@ -1,0 +1,42 @@
+# tools/hunk_qoi_witness.rish — the open image codec proves itself on metal (HUNK0, the crux).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · opening journey Open Image · rung HUNK0.
+# Design read: active-designing/20260813-144218_hunk-season-a-open-image-exploration.md
+# Teacher, thanked clean-room: gratitude/qoi.md (the "Quite OK Image" format — public spec only, never the C).
+#
+# The crux this witness proves is a REAL, BOUNDED, OPEN image codec: an image is verified bytes that decode,
+# deterministically and within named ceilings, to a pixel grid — and a malformed stream refuses BY NAME. The
+# module owns both halves (encode + decode) so the property that matters is checkable end to end: a full
+# round-trip over a crafted 8×8 pattern that exercises every one of QOI's six chunk kinds (RGB · RGBA ·
+# INDEX · DIFF · LUMA · RUN) recovers the pixmap byte-for-byte, and five deliberate corruptions each refuse
+# with their own named error (BadMagic · BadEndMarker · TrailingData · Truncated · BadDimensions). The codec
+# reaches for all six ops (each op count ≥ 1) and compresses (37 bytes < 256 raw), so this is genuine
+# compression, not a raw copy. No network, no key, no funds — the substrate beneath the parts marketplace
+# and the Photos app, standing on an open format no one had to ask permission to read.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_qoi_witness.rish
+
+say "hunk-qoi: Language EN — Season A opens with the open image module; an image is verified bytes that decode within named bounds to a pixel grid, a malformed stream refusing by name rather than painting garbage."
+say "hunk-qoi: Style Radiant — the codec owns both halves, so decode(encode(pm)) recovers the pixmap byte for byte across every one of the six chunk kinds; QOI is thanked clean-room as the teacher of an open format small enough to hold whole in one hand."
+say "hunk-qoi: Lens TAME — u32 in-memory dims/indices, u8 channel bytes, wire is bytes; every buffer names a maximum (qoi_max_dim · qoi_max_pixels · encoded_bound); each function states its invariants positively; copy_disjoint over bare copyForwards; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/qoi"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/qoi.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-qoi: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-qoi: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+say "hunk-qoi: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-qoi' && echo yes"]
+assert (trim green.out) == "yes" else "hunk-qoi: selftest did not print the GREEN codec line"
+
+let round = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-trip byte-identical' && echo yes"]
+assert (trim round.out) == "yes" else "hunk-qoi: round-trip was not byte-identical"
+
+say "hunk-qoi: GREEN — open image codec whole; six-op round-trip byte-identical, every refusal named, compression real."
