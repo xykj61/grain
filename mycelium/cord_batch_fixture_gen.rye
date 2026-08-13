@@ -1,0 +1,69 @@
+//! mycelium/cord_batch_fixture_gen.rye — reproducibly emit the batched Cord fixture (r4 support).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · fact batching · rung r4 support.
+//! Design read: active-designing/20260813-043303_mycelium-fact-batching-exploration.md
+//!
+//! Seats the honest batched scene r1/r2/r3 use — a round-0 batch of the two genesis
+//! issues and a round-1 batch of the tax and the star reserve — commits it, and
+//! renders it to a `format cord-batch-v1` record on stdout: the exact bytes
+//! `mycelium/cord_batch_true.rye` reads back and the r4 witness cross-checks against
+//! an independent awk reading. Deterministic: seeded demo keys and a pure commit mean
+//! the same bytes every run, so the on-disk fixture is what the batched Cord emits,
+//! never a hand-mock.
+//!
+//! Siloed, dev-only, demo seeds — no real key, no funds, no network, no custody.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/cord_batch_fixture_gen.rye \
+//!     > tools/fixtures/cord_batch_dag.bron
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("cord.rye");
+const cord_batch = @import("cord_batch.rye");
+const cord_batch_bron = @import("cord_batch_bron.rye");
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+/// Seat the honest two-batch scene — the same scene the batched Cord's selftests use.
+fn seat_batch_dag(out: *cord_batch.BatchDag) !void {
+    const ka = seeded(0xA1);
+    const kb = seeded(0xB2);
+    const kc = seeded(0xC3);
+    const kd = seeded(0xD4);
+    const fa = fold.mint_fact(ka, fold.kind_issue, 500, "", "genesis-a") orelse return error.MintA;
+    const fb = fold.mint_fact(kb, fold.kind_issue, 500, "", "genesis-b") orelse return error.MintB;
+    const fc = fold.mint_fact(kc, fold.kind_tax, 200, "", "tax-c") orelse return error.MintC;
+    const fd = fold.mint_fact(kd, fold.kind_star_reserve, 100, "vega", "reserve") orelse return error.MintD;
+
+    const genesis = [_]fold.Fact{ fa, fb };
+    const round1 = [_]fold.Fact{ fc, fd };
+    const g = try cord_batch.mint_batch(ka, 0, &[_][cord.hash_len]u8{}, genesis[0..]);
+    var hg: [cord.hash_len]u8 = undefined;
+    cord_batch.address_batch(&g, &hg);
+    const roots = [_][cord.hash_len]u8{hg};
+    const h = try cord_batch.mint_batch(kc, 1, roots[0..], round1[0..]);
+
+    out.* = cord_batch.BatchDag.empty();
+    try cord_batch.add_batch(out, g);
+    try cord_batch.add_batch(out, h);
+    // invariant: exactly two batched blocks carry the whole scene.
+    assert(out.len == 2);
+}
+
+pub fn main() !void {
+    var dag: cord_batch.BatchDag = undefined;
+    try seat_batch_dag(&dag);
+    const pl = try cord_batch_bron.from_batch_dag(&dag);
+    var buf: [cord_batch_bron.max_record]u8 = undefined;
+    const n = try cord_batch_bron.render(&pl, &buf);
+    // invariant: the render is bounded and non-empty — a real record carries its header.
+    assert(n > 0);
+    assert(n <= cord_batch_bron.max_record);
+    print("{s}", .{buf[0..n]});
+}
