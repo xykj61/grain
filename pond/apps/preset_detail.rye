@@ -1,0 +1,385 @@
+//! pond/apps/preset_detail.rye — HUNK35: a keeper reads what is inside each installed filter book, not only how many.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK35.
+//! Design read: active-designing/20260813-184630_hunk-preset-detail-listing-exploration.md.
+//! Teacher, thanked clean-room: the installed filter-pack shelf of Instagram / VSCO — a keeper sees not only how
+//! many filters a pack holds but which ones (concept only, siloed).
+//!
+//! HUNK34 indexed a keeper's installed books by name and count. This rung reads one step deeper: `detail_books`
+//! walks the catalog, selects every `.presets` artifact, `open_book` each (every bead proven against its digest
+//! and the whole against its recorded address BEFORE parse), and records the book's name plus the name of every
+//! preset it holds. The honesty guarantee, borrowed from `preset_list`: a detailing never names a book it cannot
+//! honestly reopen, so a tampered book makes the whole detailing refuse `DigestMismatch`. The detailing travels
+//! both ways as a `format preset-detail-v1` record whose declared count can never drift from the names it counts.
+//! No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/preset_detail.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const tablecloth = @import("tablecloth.rye");
+const beading = @import("mantra/beading.rye");
+const filter_preset = @import("filter_preset.rye");
+const preset_store = @import("preset_store.rye");
+const tally_copy = @import("tally_copy.rye");
+const parse_int = @import("parse_int.rye");
+
+pub const preset_detail_version = "20260813.184630";
+
+/// The suffix that marks an installed preset book in the catalog — the same selector HUNK34 uses, so a detailing
+/// reads exactly the books an index would list.
+pub const preset_suffix = ".presets";
+
+/// The most books one detailing holds — the catalog's own bound, so a detailing can never outgrow what is stored.
+pub const max_details: u32 = tablecloth.max_artifacts;
+
+/// A safe upper bound on one rendered detail line: `book ` (5) + a name (`max_name`) + one space + a u32 count
+/// (10 digits) + up to `max_presets` preset names each with a leading space (`1 + max_preset_name`) + newline. The
+/// whole record is the header plus one bounded line per book.
+pub const per_line_bound: u32 =
+    5 + tablecloth.max_name + 1 + 10 + filter_preset.max_presets * (1 + filter_preset.max_preset_name) + 1;
+pub const max_detail_bytes: u32 = 24 + max_details * per_line_bound;
+
+pub const PresetDetailError = error{
+    Overflow,
+    TooManyEntries,
+    BadDetail,
+};
+
+const header = "format preset-detail-v1\n";
+
+/// One preset's name, held in a fixed buffer copied out of the verified reopen so it outlives the walk that read it.
+pub const PresetName = struct {
+    name: [filter_preset.max_preset_name]u8 = undefined,
+    name_len: u32 = 0,
+
+    pub fn slice(self: *const PresetName) []const u8 {
+        // invariant: the held name honors the preset name ceiling.
+        assert(self.name_len <= filter_preset.max_preset_name);
+        return self.name[0..self.name_len];
+    }
+};
+
+/// One book's detail — its name and the names of every preset it holds, in the book's own defined order.
+pub const BookDetail = struct {
+    name: [tablecloth.max_name]u8 = undefined,
+    name_len: u32 = 0,
+    presets: [filter_preset.max_presets]PresetName = undefined,
+    preset_count: u32 = 0,
+
+    pub fn name_slice(self: *const BookDetail) []const u8 {
+        // invariant: the held book name honors the catalog's own name bound.
+        assert(self.name_len <= tablecloth.max_name);
+        return self.name[0..self.name_len];
+    }
+
+    pub fn preset_at(self: *const BookDetail, i: u32) *const PresetName {
+        // invariant: an index reads only a recorded preset name.
+        assert(i < self.preset_count);
+        return &self.presets[i];
+    }
+};
+
+/// A bounded detailing of books in the catalog's own held order.
+pub const DetailListing = struct {
+    items: [max_details]BookDetail = undefined,
+    count: u32 = 0,
+
+    pub fn len(self: *const DetailListing) u32 {
+        return self.count;
+    }
+
+    pub fn at(self: *const DetailListing, i: u32) *const BookDetail {
+        // invariant: an index reads only a recorded detail.
+        assert(i < self.count);
+        return &self.items[i];
+    }
+};
+
+/// Whether `name` ends in the preset suffix — the selector that keeps the detailing to installed books alone.
+fn is_book(name: []const u8) bool {
+    return std.mem.endsWith(u8, name, preset_suffix);
+}
+
+/// Copy a book's preset names out of a verified reopen into a detail, in the book's own defined order. The count is
+/// set to exactly the number copied, so a detail's declared count can never drift from the names it holds.
+fn fill_presets(book: *const filter_preset.PresetBook, d: *BookDetail) void {
+    // invariant: a reopened book never holds more than the preset ceiling.
+    assert(book.len() <= filter_preset.max_presets);
+    d.preset_count = 0;
+    var j: u32 = 0;
+    while (j < book.len()) : (j += 1) {
+        const nm = book.at(j).name();
+        // invariant: a preset name fits its slot (both bounded by max_preset_name).
+        assert(nm.len <= filter_preset.max_preset_name);
+        var slot = &d.presets[d.preset_count];
+        tally_copy.copy_disjoint(u8, slot.name[0..nm.len], nm);
+        slot.name_len = @intCast(nm.len);
+        d.preset_count += 1;
+    }
+    // invariant: the detail holds exactly the book's preset count.
+    assert(d.preset_count == book.len());
+}
+
+/// Walk the catalog and record a detail for every installed preset book, each read from a verified reopen. A
+/// tampered book refuses `DigestMismatch` through `open_book` and the whole detailing refuses with it — the detail
+/// never names a book it cannot honestly reopen. A non-book artifact is skipped, never opened.
+pub fn detail_books(
+    cat: *const tablecloth.Catalog,
+    store: *const beading.BeadStore,
+    out: *DetailListing,
+) !void {
+    out.* = DetailListing{ .count = 0 };
+    // invariant: the walk stays within the catalog bound.
+    assert(cat.count <= tablecloth.max_artifacts);
+
+    var i: u32 = 0;
+    while (i < cat.count) : (i += 1) {
+        const name = tablecloth.artifact_name(cat, i);
+        if (!is_book(name)) continue;
+
+        // Open it verified — a tampered book refuses here, before it is ever advertised.
+        var book: filter_preset.PresetBook = undefined;
+        try preset_store.open_book(cat, store, name, &book);
+
+        // invariant: room remains for exactly this detail (the detailing bound equals the catalog bound).
+        assert(out.count < max_details);
+        var d = &out.items[out.count];
+        // invariant: the book name fits the detail buffer (both bounded by max_name).
+        assert(name.len <= tablecloth.max_name);
+        tally_copy.copy_disjoint(u8, d.name[0..name.len], name);
+        d.name_len = @intCast(name.len);
+        fill_presets(&book, d);
+        out.count += 1;
+    }
+    // invariant: the detailing never outgrew the catalog.
+    assert(out.count <= max_details);
+}
+
+/// Render a detailing as its `format preset-detail-v1` record into `out`, one `book <name> <count> <preset…>` line
+/// per entry in held order, returning its length. Refuses `Overflow` rather than writing past the buffer.
+pub fn render_detail(listing: *const DetailListing, out: []u8) PresetDetailError!u32 {
+    // invariant: a rendered detailing names at most the detailing bound.
+    assert(listing.count <= max_details);
+    if (header.len > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[0..header.len], header);
+    var off: u32 = @intCast(header.len);
+
+    var i: u32 = 0;
+    while (i < listing.count) : (i += 1) {
+        const d = &listing.items[i];
+        // invariant: a detail's count always equals the names it holds — so the rendered count never lies.
+        assert(d.preset_count <= filter_preset.max_presets);
+        const head = std.fmt.bufPrint(out[off..], "book {s} {d}", .{
+            d.name[0..d.name_len], d.preset_count,
+        }) catch return error.Overflow;
+        off += @intCast(head.len);
+
+        var j: u32 = 0;
+        while (j < d.preset_count) : (j += 1) {
+            const nm = d.presets[j];
+            const chip = std.fmt.bufPrint(out[off..], " {s}", .{nm.name[0..nm.name_len]}) catch return error.Overflow;
+            off += @intCast(chip.len);
+        }
+        if (off >= out.len) return error.Overflow;
+        out[off] = '\n';
+        off += 1;
+    }
+    // invariant: the rendered detailing stays within the buffer.
+    assert(off <= out.len);
+    return off;
+}
+
+/// Parse a `format preset-detail-v1` record into a fresh detailing, closing the travel round-trip so
+/// `render(parse(render(x)))` is a fixed point (HUNK7's own idiom). Each line names a book, its declared count, and
+/// exactly that many preset names. Refuses `BadDetail` on a bad header, an unknown tag, a missing or over-long book
+/// name, a malformed count, an over-long or over-ceiling preset run, or a count that does not match the names that
+/// follow it — the self-consistency this record earns over HUNK34's count-only line. More than `max_details` lines
+/// refuses `TooManyEntries`.
+pub fn parse_detail(text: []const u8, out: *DetailListing) PresetDetailError!void {
+    out.* = DetailListing{ .count = 0 };
+    // invariant: parsing starts from an empty detailing.
+    assert(out.count == 0);
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const first = lines.next() orelse return error.BadDetail;
+    if (!std.mem.eql(u8, first, "format preset-detail-v1")) return error.BadDetail;
+
+    while (lines.next()) |line| {
+        if (line.len == 0) continue; // a trailing newline yields an empty final piece
+        var parts = std.mem.tokenizeScalar(u8, line, ' ');
+        const tag = parts.next() orelse return error.BadDetail;
+        if (!std.mem.eql(u8, tag, "book")) return error.BadDetail;
+        const name = parts.next() orelse return error.BadDetail;
+        if (name.len > tablecloth.max_name) return error.BadDetail;
+        const declared = field_u32(&parts) catch return error.BadDetail;
+        // invariant: a declared count never exceeds the book's preset ceiling (the book's law at the text edge).
+        if (declared > filter_preset.max_presets) return error.BadDetail;
+
+        if (out.count >= max_details) return error.TooManyEntries;
+        var d = &out.items[out.count];
+        tally_copy.copy_disjoint(u8, d.name[0..name.len], name);
+        d.name_len = @intCast(name.len);
+        d.preset_count = 0;
+        while (parts.next()) |nm| {
+            if (nm.len > filter_preset.max_preset_name) return error.BadDetail;
+            if (d.preset_count >= filter_preset.max_presets) return error.BadDetail;
+            var slot = &d.presets[d.preset_count];
+            tally_copy.copy_disjoint(u8, slot.name[0..nm.len], nm);
+            slot.name_len = @intCast(nm.len);
+            d.preset_count += 1;
+        }
+        // The self-consistency invariant that travels: the declared count must equal the names actually listed.
+        if (d.preset_count != declared) return error.BadDetail;
+        out.count += 1;
+    }
+    // invariant: a parsed detailing holds no more than the detailing bound.
+    assert(out.count <= max_details);
+}
+
+/// Read one required u32 field, surfacing a missing or malformed token so the caller refuses `BadDetail`.
+fn field_u32(parts: *std.mem.TokenIterator(u8, .scalar)) !u32 {
+    const tok = parts.next() orelse return error.BadDetail;
+    return parse_int.parse_int(u32, tok, .{});
+}
+
+// --- selftest: store two preset books and one non-book artifact, prove the detailing names each book's presets by
+//     name in defined order, travels both ways as a fixed point, refuses a count/name mismatch and other malformed
+//     records, and refuses the whole detailing DigestMismatch when a held book is tampered ----------------------
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    _ = garden;
+    var store: beading.BeadStore = .empty();
+    var cat: tablecloth.Catalog = .empty();
+
+    // The nine-preset stock book, installed under its own name.
+    const stock = try filter_preset.stock_book();
+    _ = try preset_store.store_book(&cat, &store, "stock.presets", &stock);
+
+    // A smaller two-preset book from two proven verbs, so its names are unambiguous.
+    var small = filter_preset.PresetBook.init();
+    var flip = @import("photo_edits.rye").EditList.init();
+    try flip.push(.flip_h);
+    try small.define("mirror", &flip);
+    var spin = @import("photo_edits.rye").EditList.init();
+    try spin.push(.{ .rotate = .{ .turns = 1 } });
+    try small.define("quarter", &spin);
+    _ = try preset_store.store_book(&cat, &store, "custom.presets", &small);
+
+    // A non-book artifact stored between them — it must be skipped, never opened as a book.
+    _ = try tablecloth.store_artifact(&cat, &store, "notes.txt", "just some bytes");
+
+    // Detail: exactly the two books, in held order, each carrying its preset names in defined order.
+    var listing: DetailListing = undefined;
+    try detail_books(&cat, &store, &listing);
+    assert(listing.len() == 2);
+    assert(std.mem.eql(u8, listing.at(0).name_slice(), "stock.presets"));
+    assert(std.mem.eql(u8, listing.at(1).name_slice(), "custom.presets"));
+
+    // True names: the stock book details to its nine preset names in defined order, read from a verified reopen.
+    const stock_d = listing.at(0);
+    assert(stock_d.preset_count == 9);
+    const want = [_][]const u8{ "vivid", "pop", "mono", "noir", "bright", "auto", "soft", "sharp", "sketch" };
+    var k: u32 = 0;
+    while (k < want.len) : (k += 1) {
+        assert(std.mem.eql(u8, stock_d.preset_at(k).slice(), want[k]));
+    }
+    // The custom book details to its own two names.
+    const custom_d = listing.at(1);
+    assert(custom_d.preset_count == 2);
+    assert(std.mem.eql(u8, custom_d.preset_at(0).slice(), "mirror"));
+    assert(std.mem.eql(u8, custom_d.preset_at(1).slice(), "quarter"));
+
+    // Travels as text: the detailing renders to a bounded record naming each book's presets.
+    var buf: [max_detail_bytes]u8 = undefined;
+    const n = try render_detail(&listing, buf[0..]);
+    const text = buf[0..n];
+    assert(std.mem.indexOf(u8, text, "book stock.presets 9 vivid pop mono noir bright auto soft sharp sketch\n") != null);
+    assert(std.mem.indexOf(u8, text, "book custom.presets 2 mirror quarter\n") != null);
+
+    // Travels BOTH ways: parse the record back and prove render(parse(render(x))) is a fixed point, the rebuilt
+    // detailing carrying the same names.
+    var rebuilt: DetailListing = undefined;
+    try parse_detail(text, &rebuilt);
+    assert(rebuilt.len() == listing.len());
+    assert(rebuilt.at(0).preset_count == 9);
+    assert(std.mem.eql(u8, rebuilt.at(0).preset_at(3).slice(), "noir"));
+    assert(rebuilt.at(1).preset_count == 2);
+    assert(std.mem.eql(u8, rebuilt.at(1).preset_at(0).slice(), "mirror"));
+    var buf2: [max_detail_bytes]u8 = undefined;
+    const n2 = try render_detail(&rebuilt, buf2[0..]);
+    assert(n2 == n);
+    assert(std.mem.eql(u8, buf2[0..n2], text));
+
+    // The new property: a record whose declared count does not match its listed names refuses BadDetail (the count
+    // can never drift from the names it counts) — here 3 promised, 2 listed.
+    var mismatch: DetailListing = undefined;
+    if (parse_detail("format preset-detail-v1\nbook a.presets 3 one two\n", &mismatch)) |_| {
+        return error.MismatchSlipped;
+    } else |e| {
+        if (e != error.BadDetail) return error.WrongMismatch;
+    }
+    // And the other direction: 1 promised, 2 listed.
+    var mismatch2: DetailListing = undefined;
+    if (parse_detail("format preset-detail-v1\nbook a.presets 1 one two\n", &mismatch2)) |_| {
+        return error.Mismatch2Slipped;
+    } else |e| {
+        if (e != error.BadDetail) return error.WrongMismatch2;
+    }
+
+    // Refusals: a bad header, an unknown tag, a malformed count, and a count past the book ceiling each refuse
+    // BadDetail by name.
+    var bad_hdr: DetailListing = undefined;
+    if (parse_detail("format wrong-v1\n", &bad_hdr)) |_| return error.HdrSlipped else |e| {
+        if (e != error.BadDetail) return error.WrongHdr;
+    }
+    var bad_tag: DetailListing = undefined;
+    if (parse_detail("format preset-detail-v1\npack a.presets 0\n", &bad_tag)) |_| return error.TagSlipped else |e| {
+        if (e != error.BadDetail) return error.WrongTag;
+    }
+    var bad_field: DetailListing = undefined;
+    if (parse_detail("format preset-detail-v1\nbook a.presets x\n", &bad_field)) |_| return error.FieldSlipped else |e| {
+        if (e != error.BadDetail) return error.WrongField;
+    }
+    var over: DetailListing = undefined;
+    if (parse_detail("format preset-detail-v1\nbook a.presets 99\n", &over)) |_| return error.OverSlipped else |e| {
+        if (e != error.BadDetail) return error.WrongOver;
+    }
+
+    // Honest as a whole: tamper one held bead and prove the WHOLE detailing refuses DigestMismatch — it never names
+    // a book it cannot honestly reopen.
+    {
+        var store_t: beading.BeadStore = .empty();
+        var cat_t: tablecloth.Catalog = .empty();
+        _ = try preset_store.store_book(&cat_t, &store_t, "stock.presets", &stock);
+        store_t.beads[0].bytes[0] +%= 1; // flip one byte of a held bead
+        var wreck: DetailListing = undefined;
+        if (detail_books(&cat_t, &store_t, &wreck)) |_| {
+            return error.TamperSlipped;
+        } else |e| {
+            if (e != error.DigestMismatch) return error.WrongTamper;
+        }
+    }
+
+    print("GREEN preset-detail: a catalog of {d} artifacts details exactly its {d} installed preset books in held " ++
+        "order (the non-book skipped, never opened) — the stock book reads to its nine preset names in defined " ++
+        "order (vivid pop mono noir bright auto soft sharp sketch) and the custom book to its two (mirror quarter), " ++
+        "each read from a verified reopen; the detailing travels BOTH ways as a {d}-byte format preset-detail-v1 " ++
+        "record (render(parse(render)) a fixed point), a declared count that does not match its listed names " ++
+        "refuses BadDetail both directions, a bad header, an unknown tag, a malformed count, and a count past the " ++
+        "book ceiling each refuse BadDetail, and a tampered book makes the whole detailing refuse DigestMismatch " ++
+        "rather than advertise a phantom\n", .{ cat.count, listing.len(), n });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: preset_detail selftest\n", .{});
+    return 1;
+}
