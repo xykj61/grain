@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260813.132009
+editor Zed Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title remember — fold the Portage arc onto the living card
+prompt baton prin recur — take the next agent-doable lap Lindy-first crux-first; send often, each finished increment its own signed round; STOP at the custody gates
+think Read REMEMBER, the 1,024-round itinerary, and the six-season double-seat expansion; the fixed road's open crux is Season 2/Journey 7, yet the working tree has climbed far past the card — TACT J1-J4, GISM/AYRE J7-J8, DAHL J9-J12, and deep into Season D Mycelium (Cord…Warrant, Puddle, Freight, Portage).
+think git log shows Portage r1-r4 all landed (801db38899 r4), but REMEMBER folded only r1-r2 and still read "Remaining Portage rounds: r3…r4" — a stale claim wearing the card's clothes (docs-implementation-sync). The last completed journey's fold is the next mechanical lap before opening a new journey.
+think Witness before narrative — ran both remaining witnesses on metal before folding: mycelium_portage_bron_witness (r3) GREEN and mycelium_portage_true_witness (r4) GREEN (app==awk, 40 d2bafdd4).
+obs A remember fold is not code — it is a substantive record fold of one complete arc, matching the Chorus · Muster · Warrant · Freight fold commits before it. Accretive (Tier-3 living pin; no dated fact rewritten); Git nib refreshed to living HEAD in the same work commit.
+obs The Portage crux — cross-shard atomic settlement, the frontier the double-seat vision names as worth beating TigerBeetle/Mysticeti — now stands complete on the card end to end: r1 cross-world · r2 atomic · r3 travels · r4 reads true.
+loom witness=mycelium_portage_bron_witness result=GREEN
+loom witness=mycelium_portage_true_witness result=GREEN app_eq_awk=40_d2bafdd4
+file work-in-progress/REMEMBER.md replace the stale "Remaining Portage rounds" tail with the landed r3/r4 record and arc-close line; refresh Git nib
+file session-logs/20260813-132009_remember-fold-portage.bron this log
+recommend keep-going a fresh Season D / double-seat journey next, self-approved design read first; breach renames stay cairn-first, deep debride + seed force-push stay Keaton's hand (gate #1)
