@@ -1,0 +1,315 @@
+//! mycelium/warrant_bron.rye — a validator-set handoff travels as a readable record (r2).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Warrant · rung r2 — travel.
+//! Design read: active-designing/20260813-112420_mycelium-warrant-validator-set-rotation-exploration.md
+//!
+//! r1 bound a succession to a quorum of the outgoing roll: a successor validator set is authorized only
+//! when a Byzantine quorum of the previous roll signed its content-address. A certificate a holder cannot
+//! hand to another is only a local proof, so r2 lets the whole Warrant cross as `format warrant-v1` bytes:
+//! the epoch, the retiring and successor roll digests as hex, and one `endorse <pk-hex> <sig-hex>` line per
+//! outgoing validator, in endorsement order.
+//!
+//! The crux is THE HANDOFF'S VERDICT SURVIVES THE WIRE: a Warrant parsed from bytes, judged against the two
+//! rolls, reaches the identical verdict as the certificate in memory — a lawful handoff passes, the
+//! successor's own keys refuse `NotMember`, a re-pointed one refuses `DigestMismatch`. A recipient re-judges
+//! the same succession r1 enforced, holding only the two rolls and the record. Render writes it, parse reads
+//! it back byte-for-byte, so a round trip is a fixed point.
+//!
+//! A purpose-built bounded reader, never a general parser: a wrong header refuses `BadFormat`, a missing
+//! epoch/prev/next `BadFormat`, an unknown field `UnknownField` (never dropped), a malformed line `BadLine`,
+//! a bad hex field `BadHex`, a bad epoch `BadInt`, a repeated endorser `DuplicateSigner`, an over-full
+//! certificate `WarrantFull`. Composes warrant.rye + muster.rye public API only. Siloed, dev-only, demo
+//! seeds — no key, no funds, no network, no custody.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/warrant_bron.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const warrant = @import("warrant.rye");
+const muster = @import("muster.rye");
+const muster_bron = @import("muster_bron.rye");
+const kumara = @import("kumara.rye");
+const parse_int = @import("parse_int.rye");
+const tally_copy = @import("tally_copy.rye");
+
+/// The record buffer bound — a full certificate's endorsement lines fit with room.
+pub const max_record: u32 = 8192;
+
+pub const BronError = error{
+    BadFormat, // the header is wrong, or a required epoch/prev/next line is missing
+    UnknownField, // a line names a field the record does not define
+    BadLine, // a known line carries the wrong token count
+    BadHex, // a hex field was the wrong length or held a non-hex char
+    BadInt, // the epoch was not a decimal u32
+    DuplicateSigner, // two lines carry the same endorser key — a validator signs the handoff once
+    WarrantFull, // more endorsement lines than a certificate holds
+    RecordTooLong, // the rendered record overflowed the buffer
+};
+
+const hex_digits = "0123456789abcdef";
+
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex chars per byte.
+    assert(out.len == bytes.len * 2);
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0F];
+    }
+}
+
+fn nibble(c: u8) BronError!u8 {
+    return switch (c) {
+        '0'...'9' => c - '0',
+        'a'...'f' => c - 'a' + 10,
+        'A'...'F' => c - 'A' + 10,
+        else => error.BadHex,
+    };
+}
+
+fn from_hex(text: []const u8, out: []u8) BronError!void {
+    if (text.len != out.len * 2) return error.BadHex;
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < out.len) : (i += 1) {
+        const hi = try nibble(text[i * 2]);
+        const lo = try nibble(text[i * 2 + 1]);
+        out[i] = (hi << 4) | lo;
+    }
+}
+
+/// Render one Warrant to a `format warrant-v1` record — epoch, prev/next digest hex, one endorse line per
+/// signer in endorsement order. Refuses an overflow rather than a partial record.
+pub fn render(w: *const warrant.Warrant, out: []u8) BronError!u32 {
+    // invariant: the render buffer honors its bound.
+    assert(out.len >= max_record);
+    // invariant: the certificate honors its static bound.
+    assert(w.count <= warrant.warrant_max_sigs);
+    var pd_hex: [warrant.digest_len * 2]u8 = undefined;
+    var nd_hex: [warrant.digest_len * 2]u8 = undefined;
+    to_hex(w.prev_digest[0..warrant.digest_len], &pd_hex);
+    to_hex(w.next_digest[0..warrant.digest_len], &nd_hex);
+    const head = std.fmt.bufPrint(out, "format warrant-v1\nepoch {d}\nprev {s}\nnext {s}\n", .{ w.epoch, pd_hex, nd_hex }) catch return error.RecordTooLong;
+    var off: u32 = @intCast(head.len);
+
+    var i: u32 = 0;
+    while (i < w.count) : (i += 1) {
+        var pk_hex: [warrant.pk_len * 2]u8 = undefined;
+        var sig_hex: [warrant.sig_len * 2]u8 = undefined;
+        to_hex(w.endorsements[i].signer_pk[0..warrant.pk_len], &pk_hex);
+        to_hex(w.endorsements[i].sig[0..warrant.sig_len], &sig_hex);
+        const line = std.fmt.bufPrint(out[off..], "endorse {s} {s}\n", .{ pk_hex, sig_hex }) catch return error.RecordTooLong;
+        off += @intCast(line.len);
+    }
+
+    // invariant: the rendered record never exceeds its bound.
+    assert(off <= max_record);
+    return off;
+}
+
+/// Split a line into up to three tokens; returns the count (or four to signal a token past any line's
+/// width — an endorse line, at three, is the widest).
+fn tokens(line: []const u8, out: *[3][]const u8) u32 {
+    var count: u32 = 0;
+    var it = std.mem.tokenizeScalar(u8, line, ' ');
+    while (it.next()) |t| {
+        if (count >= 3) return count + 1;
+        out[count] = t;
+        count += 1;
+    }
+    return count;
+}
+
+/// Parse a `format warrant-v1` record into `out`, appending each endorsement with the same duplicate and
+/// bound laws r1's `endorse` keeps. Refuses a record missing its epoch, prev, or next line — a whole
+/// certificate names all three.
+pub fn parse(text: []const u8, out: *warrant.Warrant) BronError!void {
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const header = lines.next() orelse return error.BadFormat;
+    if (!std.mem.eql(u8, header, "format warrant-v1")) return error.BadFormat;
+
+    out.count = 0;
+    var have_epoch = false;
+    var have_prev = false;
+    var have_next = false;
+    while (lines.next()) |raw| {
+        if (raw.len == 0) continue; // a trailing newline yields one empty line
+        var tok: [3][]const u8 = undefined;
+        const n = tokens(raw, &tok);
+        if (n == 0) continue;
+        if (std.mem.eql(u8, tok[0], "epoch")) {
+            if (n != 2) return error.BadLine;
+            out.epoch = parse_int.parse_int(u32, tok[1], .{}) catch return error.BadInt;
+            have_epoch = true;
+        } else if (std.mem.eql(u8, tok[0], "prev")) {
+            if (n != 2) return error.BadLine;
+            try from_hex(tok[1], out.prev_digest[0..warrant.digest_len]);
+            have_prev = true;
+        } else if (std.mem.eql(u8, tok[0], "next")) {
+            if (n != 2) return error.BadLine;
+            try from_hex(tok[1], out.next_digest[0..warrant.digest_len]);
+            have_next = true;
+        } else if (std.mem.eql(u8, tok[0], "endorse")) {
+            if (n != 3) return error.BadLine;
+            if (out.count >= warrant.warrant_max_sigs) return error.WarrantFull;
+            var e = warrant.Endorsement{};
+            try from_hex(tok[1], e.signer_pk[0..warrant.pk_len]);
+            try from_hex(tok[2], e.sig[0..warrant.sig_len]);
+            var j: u32 = 0;
+            while (j < out.count) : (j += 1) {
+                if (std.mem.eql(u8, out.endorsements[j].signer_slice(), e.signer_slice())) return error.DuplicateSigner;
+            }
+            out.endorsements[out.count] = e;
+            out.count += 1;
+        } else {
+            return error.UnknownField;
+        }
+    }
+    // invariant: a whole certificate names its epoch and both roll digests.
+    if (!have_epoch or !have_prev or !have_next) return error.BadFormat;
+}
+
+// ---- selftest: a handoff travels and its verdict on a succession is unchanged --------------------
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn muster_of(seeds: []const u8) !muster.Muster {
+    var m = muster.Muster.empty();
+    for (seeds) |s| {
+        const pk = seeded(s).public_key.toBytes();
+        try muster.enroll(&m, pk[0..]);
+    }
+    return m;
+}
+
+/// Two warrants carry the same epoch, digests, and endorsements in the same order.
+fn warrants_agree(a: *const warrant.Warrant, b: *const warrant.Warrant) bool {
+    if (a.epoch != b.epoch) return false;
+    if (!std.mem.eql(u8, a.prev_digest[0..], b.prev_digest[0..])) return false;
+    if (!std.mem.eql(u8, a.next_digest[0..], b.next_digest[0..])) return false;
+    if (a.count != b.count) return false;
+    var i: u32 = 0;
+    while (i < a.count) : (i += 1) {
+        if (!std.mem.eql(u8, a.endorsements[i].signer_slice(), b.endorsements[i].signer_slice())) return false;
+        if (!std.mem.eql(u8, a.endorsements[i].sig[0..], b.endorsements[i].sig[0..])) return false;
+    }
+    return true;
+}
+
+pub fn main() !void {
+    const prev = try muster_of(&[_]u8{ 0x11, 0x22, 0x33, 0x44 });
+    const next = try muster_of(&[_]u8{ 0xA1, 0xB2, 0xC3 });
+
+    // A lawful handoff — three of the four outgoing validators endorse the fresh successor.
+    var w = try warrant.open(1, &prev, &next);
+    try warrant.endorse(&w, seeded(0x11));
+    try warrant.endorse(&w, seeded(0x22));
+    try warrant.endorse(&w, seeded(0x33));
+    try warrant.verify_warrant(&w, &prev, &next);
+
+    var buf: [max_record]u8 = undefined;
+    const len = try render(&w, buf[0..]);
+
+    var recovered: warrant.Warrant = undefined;
+    try parse(buf[0..len], &recovered);
+
+    // The handoff survives the wire: same epoch, digests, and endorsements in the same order.
+    if (!warrants_agree(&w, &recovered)) return error.WarrantChanged;
+
+    // Re-rendering the recovered certificate reproduces the exact bytes (fixed point).
+    var buf2: [max_record]u8 = undefined;
+    const len2 = try render(&recovered, buf2[0..]);
+    if (len2 != len) return error.NotFixedPoint;
+    if (!std.mem.eql(u8, buf[0..len], buf2[0..len2])) return error.NotFixedPoint;
+
+    // The crux: the recovered certificate reaches the IDENTICAL verdict as the one in memory.
+    {
+        // The lawful handoff passes against the two rolls, parsed from bytes.
+        try warrant.verify_warrant(&recovered, &prev, &next);
+    }
+    {
+        // The successor's own fresh keys, endorsed and rendered, refuse NotMember on the far side too.
+        var self_w = try warrant.open(1, &prev, &next);
+        try warrant.endorse(&self_w, seeded(0xA1));
+        try warrant.endorse(&self_w, seeded(0xB2));
+        try warrant.endorse(&self_w, seeded(0xC3));
+        var sb: [max_record]u8 = undefined;
+        const sl = try render(&self_w, sb[0..]);
+        var self_recovered: warrant.Warrant = undefined;
+        try parse(sb[0..sl], &self_recovered);
+        if (warrant.verify_warrant(&self_recovered, &prev, &next)) |_| return error.SelfCrowned else |err| {
+            if (err != error.NotMember) return error.WrongSelfCrown;
+        }
+    }
+    {
+        // A re-pointed certificate — the recovered handoff judged against a different successor — refuses.
+        const other = try muster_of(&[_]u8{ 0xD4, 0xE5, 0xF6 });
+        if (warrant.verify_warrant(&recovered, &prev, &other)) |_| return error.Repointed else |err| {
+            if (err != error.DigestMismatch) return error.WrongRepoint;
+        }
+    }
+
+    var scratch: warrant.Warrant = undefined;
+
+    // Refusal: a wrong header refuses BadFormat before any field is read.
+    if (parse("format warrant-v2\n", &scratch)) |_| return error.BadHeaderAdmitted else |err| {
+        if (err != error.BadFormat) return error.WrongHeader;
+    }
+    // Refusal: a record missing its epoch/prev/next refuses BadFormat.
+    if (parse("format warrant-v1\n", &scratch)) |_| return error.MissingAdmitted else |err| {
+        if (err != error.BadFormat) return error.WrongMissing;
+    }
+    // Refusal: an unknown field refuses UnknownField (never dropped).
+    {
+        var tmp: [max_record]u8 = undefined;
+        tally_copy.copy_disjoint(u8, tmp[0..len], buf[0..len]);
+        const extra = "bogus a\n";
+        tally_copy.copy_disjoint(u8, tmp[len .. len + extra.len], extra);
+        if (parse(tmp[0 .. len + extra.len], &scratch)) |_| return error.UnknownAdmitted else |err| {
+            if (err != error.UnknownField) return error.WrongUnknown;
+        }
+    }
+    // Refusal: a bad hex digest refuses BadHex.
+    {
+        const bad = "format warrant-v1\nepoch 1\nprev zz\nnext zz\n";
+        if (parse(bad, &scratch)) |_| return error.BadHexAdmitted else |err| {
+            if (err != error.BadHex) return error.WrongBadHex;
+        }
+    }
+    // Refusal: a bad epoch refuses BadInt.
+    {
+        var pd_hex: [warrant.digest_len * 2]u8 = undefined;
+        var nd_hex: [warrant.digest_len * 2]u8 = undefined;
+        to_hex(w.prev_digest[0..warrant.digest_len], &pd_hex);
+        to_hex(w.next_digest[0..warrant.digest_len], &nd_hex);
+        var tmp: [max_record]u8 = undefined;
+        const bad = std.fmt.bufPrint(tmp[0..], "format warrant-v1\nepoch nope\nprev {s}\nnext {s}\n", .{ pd_hex, nd_hex }) catch return error.RecordTooLong;
+        if (parse(bad, &scratch)) |_| return error.BadIntAdmitted else |err| {
+            if (err != error.BadInt) return error.WrongBadInt;
+        }
+    }
+    // Refusal: a repeated endorser refuses DuplicateSigner — a validator signs the handoff once on the wire.
+    {
+        var db: [max_record]u8 = undefined;
+        const dl = try render(&w, db[0..]);
+        var pk_hex: [warrant.pk_len * 2]u8 = undefined;
+        var sig_hex: [warrant.sig_len * 2]u8 = undefined;
+        to_hex(w.endorsements[0].signer_pk[0..warrant.pk_len], &pk_hex);
+        to_hex(w.endorsements[0].sig[0..warrant.sig_len], &sig_hex);
+        const extra = std.fmt.bufPrint(db[dl..], "endorse {s} {s}\n", .{ pk_hex, sig_hex }) catch return error.RecordTooLong;
+        const total = dl + @as(u32, @intCast(extra.len));
+        if (parse(db[0..total], &scratch)) |_| return error.DupAdmitted else |err| {
+            if (err != error.DuplicateSigner) return error.WrongDup;
+        }
+    }
+
+    warrant.render(&recovered);
+
+    print("warrant-bron: a validator-set handoff renders to a format warrant-v1 record and parses back byte-for-byte (fixed point); the epoch and both roll digests travel, one endorse line per outgoing validator\n", .{});
+    print("warrant-bron: the recovered certificate reaches the identical verdict — a lawful handoff passes, the successor's own keys refuse NotMember, a re-pointed one refuses DigestMismatch — as the one in memory\n", .{});
+    print("warrant-bron: a bad header, a missing epoch/prev/next, an unknown field, a bad hex digest, a bad epoch, a repeated endorser each refuse\n", .{});
+    print("GREEN: myc warrant-bron — a validator-set handoff travels as readable text and judges a succession the same offline · epoch={d} endorsements={d} · fixed point\n", .{ recovered.epoch, recovered.count });
+}
