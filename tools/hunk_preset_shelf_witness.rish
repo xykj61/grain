@@ -46,4 +46,13 @@ assert (trim pure.out) == "yes" else "hunk-preset-shelf: the shelf was not prove
 let honest = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'every book or none, never a silent drop' && echo yes"]
 assert (trim honest.out) == "yes" else "hunk-preset-shelf: the never-hide-a-book guarantee was not proven"
 
-say "hunk-preset-shelf: GREEN — a keeper reads their installed library on glass; the shelf is pure over an honest detailing; it shows every book or none; refusals named."
+let pager = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'needs three pages (window_len 2,2,1)' && echo yes"]
+assert (trim pager.out) == "yes" else "hunk-preset-shelf: HUNK37 page arithmetic was not proven"
+
+let cover = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'shows each of the five books exactly once in held order (paging loses nothing)' && echo yes"]
+assert (trim cover.out) == "yes" else "hunk-preset-shelf: HUNK37 paging-loses-nothing coverage was not proven"
+
+let offset = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'an offset past the library refuses BadOffset' && echo yes"]
+assert (trim offset.out) == "yes" else "hunk-preset-shelf: HUNK37 BadOffset refusal was not proven"
+
+say "hunk-preset-shelf: GREEN — a keeper reads their installed library on glass and pages through one larger than the screen; the shelf is pure over an honest detailing; it shows every book or none, and paging loses nothing; refusals named."
