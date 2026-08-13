@@ -14,6 +14,12 @@
 //! listing refuses rather than advertising a phantom. The listing travels as a flat-Bron `format session-list-v1`
 //! record. No network, no key, no funds.
 //!
+//! HUNK20 closes the travel round-trip: `parse_listing` reads a `format session-list-v1` record back into a fresh
+//! listing, so `render(parse(render(x)))` is a fixed point exactly as the sprite catalog's is (HUNK7). Each line
+//! names a session and exactly its two counts; a bad header, an unknown tag, a malformed field, an extra field, or
+//! a position standing past its edit-count each refuse `BadListing` — the same position bound the cursor itself
+//! keeps, enforced again at the text boundary.
+//!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/session_list.rye selftest
 
 const std = @import("std");
@@ -24,6 +30,7 @@ const beading = @import("mantra/beading.rye");
 const edit_cursor = @import("edit_cursor.rye");
 const session_store = @import("session_store.rye");
 const tally_copy = @import("tally_copy.rye");
+const parse_int = @import("parse_int.rye");
 
 pub const session_list_version = "20260813.175000";
 
@@ -42,6 +49,8 @@ pub const max_listing_bytes: u32 = 21 + max_summaries * per_line_bound;
 
 pub const SessionListError = error{
     Overflow,
+    TooManyEntries,
+    BadListing,
 };
 
 const header = "format session-list-v1\n";
@@ -149,6 +158,51 @@ pub fn render_listing(listing: *const SessionListing, out: []u8) SessionListErro
     return off;
 }
 
+/// Parse a `format session-list-v1` record into a fresh listing — HUNK20, closing the travel round-trip so
+/// `render(parse(render(x)))` is a fixed point (HUNK7's own idiom). Each line names a session and exactly its two
+/// counts. Refuses `BadListing` on a bad header, an unknown tag, a malformed field, an extra field, a name past the
+/// summary buffer, or a position standing past its edit-count — the cursor's own bound, enforced at the text edge.
+/// More than `max_summaries` lines refuses `TooManyEntries`.
+pub fn parse_listing(text: []const u8, out: *SessionListing) SessionListError!void {
+    out.* = SessionListing{ .count = 0 };
+    // invariant: parsing starts from an empty listing.
+    assert(out.count == 0);
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const first = lines.next() orelse return error.BadListing;
+    if (!std.mem.eql(u8, first, "format session-list-v1")) return error.BadListing;
+
+    while (lines.next()) |line| {
+        if (line.len == 0) continue; // a trailing newline yields an empty final piece
+        var parts = std.mem.tokenizeScalar(u8, line, ' ');
+        const tag = parts.next() orelse return error.BadListing;
+        if (!std.mem.eql(u8, tag, "session")) return error.BadListing;
+        const name = parts.next() orelse return error.BadListing;
+        if (name.len > tablecloth.max_name) return error.BadListing;
+        const edits = field_u32(&parts) catch return error.BadListing;
+        const position = field_u32(&parts) catch return error.BadListing;
+        if (parts.next() != null) return error.BadListing; // no slack past the shape
+        // invariant: a parsed session never stands past its own history (the cursor's law at the text edge).
+        if (position > edits) return error.BadListing;
+
+        if (out.count >= max_summaries) return error.TooManyEntries;
+        var s = &out.items[out.count];
+        tally_copy.copy_disjoint(u8, s.name[0..name.len], name);
+        s.name_len = @intCast(name.len);
+        s.edits = edits;
+        s.position = position;
+        out.count += 1;
+    }
+    // invariant: a parsed listing holds no more than the listing bound.
+    assert(out.count <= max_summaries);
+}
+
+/// Read one required u32 field, surfacing a missing or malformed token so the caller refuses `BadListing`.
+fn field_u32(parts: *std.mem.TokenIterator(u8, .scalar)) !u32 {
+    const tok = parts.next() orelse return error.BadListing;
+    return parse_int.parse_int(u32, tok, .{});
+}
+
 // --- selftest: store two sessions and one non-session artifact, prove the listing names exactly the two sessions
 //     with true summaries (a rewound session reporting a redo depth), and that a tampered session makes the whole
 //     listing refuse DigestMismatch rather than advertise a phantom --------------------------------------------------
@@ -198,6 +252,45 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(std.mem.indexOf(u8, text, "session portrait.session 3 2\n") != null);
     assert(std.mem.indexOf(u8, text, "session landscape.session 2 2\n") != null);
 
+    // HUNK20: travels BOTH ways — parse the record back and prove render(parse(render(x))) is a fixed point, the
+    // rebuilt listing carrying the same names and counts.
+    var rebuilt: SessionListing = undefined;
+    try parse_listing(text, &rebuilt);
+    assert(rebuilt.len() == listing.len());
+    assert(std.mem.eql(u8, rebuilt.at(0).name_slice(), "portrait.session"));
+    assert(rebuilt.at(0).edits == 3);
+    assert(rebuilt.at(0).position == 2);
+    assert(std.mem.eql(u8, rebuilt.at(1).name_slice(), "landscape.session"));
+    assert(rebuilt.at(1).edits == 2);
+    assert(rebuilt.at(1).position == 2);
+    var buf2: [max_listing_bytes]u8 = undefined;
+    const n2 = try render_listing(&rebuilt, buf2[0..]);
+    assert(n2 == n);
+    assert(std.mem.eql(u8, buf2[0..n2], text));
+
+    // HUNK20 refusals: a bad header, an unknown tag, a malformed field, an extra field, and a position past its
+    // edit-count each refuse BadListing by name.
+    var bad_hdr: SessionListing = undefined;
+    if (parse_listing("format wrong-v1\n", &bad_hdr)) |_| return error.HdrSlipped else |e| {
+        if (e != error.BadListing) return error.WrongHdr;
+    }
+    var bad_tag: SessionListing = undefined;
+    if (parse_listing("format session-list-v1\nphoto a.session 1 1\n", &bad_tag)) |_| return error.TagSlipped else |e| {
+        if (e != error.BadListing) return error.WrongTag;
+    }
+    var bad_field: SessionListing = undefined;
+    if (parse_listing("format session-list-v1\nsession a.session x 1\n", &bad_field)) |_| return error.FieldSlipped else |e| {
+        if (e != error.BadListing) return error.WrongField;
+    }
+    var slack: SessionListing = undefined;
+    if (parse_listing("format session-list-v1\nsession a.session 2 1 9\n", &slack)) |_| return error.SlackSlipped else |e| {
+        if (e != error.BadListing) return error.WrongSlack;
+    }
+    var past: SessionListing = undefined;
+    if (parse_listing("format session-list-v1\nsession a.session 2 5\n", &past)) |_| return error.PastSlipped else |e| {
+        if (e != error.BadListing) return error.WrongPast;
+    }
+
     // Honest as a whole: tamper one held bead and prove the WHOLE listing refuses DigestMismatch — it never names a
     // session it cannot honestly reopen.
     {
@@ -215,9 +308,12 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
 
     print("GREEN session-list: a catalog of {d} artifacts lists exactly its {d} saved sessions in held order (the " ++
         "non-session skipped, never opened) — each summary read from a verified reopen: portrait.session at 2/3 " ++
-        "(redo depth 1), landscape.session at 2/2 (nothing to redo); the listing travels as a {d}-byte " ++
-        "format session-list-v1 record; a tampered session makes the whole listing refuse DigestMismatch rather " ++
-        "than advertise a phantom\n", .{ cat.count, listing.len(), n });
+        "(redo depth 1), landscape.session at 2/2 (nothing to redo); the listing travels BOTH ways as a {d}-byte " ++
+        "format session-list-v1 record (render(parse(render)) a fixed point), a bad header, an unknown tag, a " ++
+        "malformed field, an extra field, and a position past its edits each refusing BadListing; a tampered " ++
+        "session makes the whole listing refuse DigestMismatch rather than advertise a phantom\n", .{
+        cat.count, listing.len(), n,
+    });
     return 0;
 }
 
