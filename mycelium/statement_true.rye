@@ -1,0 +1,199 @@
+//! mycelium/statement_true.rye — the Statement reads a real ledger record true (r4, the arc closes).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Statement · rung r4.
+//! Design read: active-designing/20260813-091851_mycelium-statement-account-voice-exploration.md
+//!
+//! r1 fixed the reconciliation crux (a statement's reserved equals its own open made pledges), r2 let a
+//! statement travel as a `format statement-v1` record, r3 read a position continuous across a Knot — all
+//! over Dags seated in code. This closing rung carries the reader onto a REAL on-disk Cord record a keeper
+//! can open and walk, and proves the property the whole Statement rests on: an account's own line —
+//! WHERE DO I STAND? — is true to the bytes.
+//!
+//! The corpus reuses the Lapse's own fixture `tools/fixtures/lapse_dag.bron`, a genuine record produced
+//! reproducibly by `mycelium/lapse_fixture_gen.rye` (a demo funder credits Alice 200; Alice pledges 100 to
+//! Bob under a deadline the order's clock reaches, so it LAPSES and the hundred comes home; Alice pledges
+//! 100 to Carol under a far deadline and leaves it OPEN), `@embedFile`-bound at compile time through a
+//! symlink in `mycelium/corpora/` — no network, the bytes read are the tree's own. Two independent readings
+//! must agree: the app parses the record through `cord_bron`, REBUILDS the Dag under `cord.add` (re-verifying
+//! every signature), resolves it through `lapse`, projects the genesis-funded account's `Statement` through
+//! `statement`, and reports the account key with its balance · reserved · received; the r4 witness
+//! cross-checks that against `tools/fixtures/statement_dag_truth.awk`'s per-account deadline-clock reading of
+//! the same file — two tools, one answer. The awk ticks the clock in file order, reserving on a pledge,
+//! bringing coins home on a lapse or void, and paying a recipient on a post, exactly as `lapse.rye`'s fold
+//! does — so the app's full resolve and the awk's file-order accounting name one position.
+//!
+//! The chosen account is the GENESIS-FUNDED one — the recipient of the issue fact, whom both tools identify
+//! the same way (the app as the account whose received equals what genesis issued, the awk as the first
+//! kind-1 fact's recipient) — so no magic constant chooses whose line is read.
+//!
+//! Additive — composes `cord_bron` + `cord` + `lapse` + `statement` public API only (each re-runs GREEN).
+//! Siloed, dev-only, demo seeds — no real key, no funds, no network, no custody. A SERVED statement (a
+//! holder fetching their own line over Comlink) reaches the Comlink-served gate, the maintainer's hand.
+//!
+//!   rye build mycelium/statement_true.rye -femit-bin=mycelium/bin/statement_true
+//!   mycelium/bin/statement_true selftest | measure
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("cord.rye");
+const cord_bron = @import("cord_bron.rye");
+const lapse = @import("lapse.rye");
+const statement = @import("statement.rye");
+
+pub const statement_true_version = "20260813.091851";
+
+/// The real ledger record, bound at compile time — the tree's own bytes, never a drift. Reused from the
+/// Lapse's fixture, since a statement is a projection of exactly the resolved ledger the Lapse produces.
+const real_dag = @embedFile("corpora/lapse_dag.bron");
+
+const hex_digits = "0123456789abcdef";
+
+/// Encode bytes to lowercase hex — the same width the record's account keys carry, so the app's chosen
+/// account and awk's chosen account are compared as identical strings.
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex nibbles per byte.
+    assert(out.len == bytes.len * 2);
+    var i: u32 = 0;
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0f];
+    }
+}
+
+/// The facts a keeper can read by hand off an account's own line: whose line it is, and the position —
+/// balance (spendable), reserved (held in open pledges), received (cumulative lawful inflow).
+pub const Reading = struct {
+    account_hex: [statement.pk_len * 2]u8 = undefined,
+    balance: u64 = 0,
+    reserved: u64 = 0,
+    received: u64 = 0,
+};
+
+/// The genesis-funded account's index — the one seat whose received equals what genesis issued. Both tools
+/// choose the read account this way, so neither picks a favorite by a hidden constant.
+fn funded_account(l: *const lapse.Ledger) ?u32 {
+    var found: ?u32 = null;
+    var a: u32 = 0;
+    while (a < l.account_count) : (a += 1) {
+        if (l.accounts[a].received == l.total_issued) {
+            // invariant: exactly one account is funded to the whole issued supply on this fixture.
+            assert(found == null);
+            found = a;
+        }
+    }
+    return found;
+}
+
+/// Read the real record: parse it, rebuild the Dag under `cord.add` (verifying every signature), resolve it
+/// through the Lapse, project the genesis-funded account's Statement, and read off its position.
+pub fn read_statement(text: []const u8) !Reading {
+    const rec = try cord_bron.parse(text);
+    // invariant: a real ledger record carries blocks — an empty Dag holds no account to read.
+    if (rec.len == 0) return error.BadFormat;
+    var dag = try cord_bron.rebuild(&rec);
+    const verdict = try lapse.resolve(&dag);
+    const ai = funded_account(&verdict) orelse return error.NoFundedAccount;
+    const pk = verdict.accounts[ai].pk[0..];
+    // invariant: a resolved account names a full-width holder key.
+    assert(pk.len == statement.pk_len);
+    const s = try statement.statement_for(&verdict, pk);
+    // invariant: the projected statement reconciles — reserved equals its own open made pledges.
+    assert(s.reconciles());
+    var r = Reading{
+        .balance = s.balance,
+        .reserved = s.reserved,
+        .received = s.received,
+    };
+    to_hex(pk, r.account_hex[0..]);
+    return r;
+}
+
+// --- selftest -----------------------------------------------------------
+
+/// The reading of the real record — the witness cross-checks this tuple against awk's reading of the same
+/// bytes, so the two tools must name one account and one position.
+fn welcome_reading_true_to_bytes() !void {
+    const r = try read_statement(real_dag);
+    // The funded account holds 100 spendable, 100 reserved in the open pledge to Carol, having received the
+    // full 200 genesis credit; the lapsed pledge to Bob brought its hundred home to spendable.
+    assert(r.balance == 100);
+    assert(r.reserved == 100);
+    assert(r.received == 200);
+    print("statement-true: truth-tuple {s} {d} {d} {d}\n", .{ r.account_hex, r.balance, r.reserved, r.received });
+    print("statement-true: the account key and its balance · reserved · received match an independent reading of the same bytes.\n", .{});
+}
+
+/// The projected statement reconciles over the real bytes: the funded account's reserved equals exactly the
+/// amount of its single still-open made pledge (to Carol), the lapsed pledge (to Bob) counting toward none.
+fn welcome_statement_reconciles_over_real_bytes() !void {
+    const rec = try cord_bron.parse(real_dag);
+    var dag = try cord_bron.rebuild(&rec);
+    const verdict = try lapse.resolve(&dag);
+    const ai = funded_account(&verdict) orelse return error.NoFundedAccount;
+    const s = try statement.statement_for(&verdict, verdict.accounts[ai].pk[0..]);
+    // invariant: the statement reconciles — reserved equals the sum of its own open made pledges.
+    assert(s.reconciles());
+    // invariant: reserved is held by exactly the open made pledge, so the open-made sum is that reserved.
+    assert(s.open_made_sum() == s.reserved);
+    // invariant: the funded account made two pledges (one lapsed, one open) and received none of its own.
+    assert(s.count_dir(statement.dir_made) == 2);
+    assert(s.count_dir(statement.dir_received) == 0);
+    print("statement-true: the statement reconciles over the real bytes — reserved equals its single open made pledge, the lapsed pledge counting toward none.\n", .{});
+}
+
+/// Conservation holds over the real bytes: across every account, balance + reserved sums to exactly what
+/// genesis issued — the projection conserves, not merely the ledger it reads.
+fn welcome_statements_conserve_over_real_bytes() !void {
+    const rec = try cord_bron.parse(real_dag);
+    var dag = try cord_bron.rebuild(&rec);
+    const verdict = try lapse.resolve(&dag);
+    // invariant: the real record issued exactly the two hundred the genesis credit funds.
+    assert(verdict.total_issued == 200);
+    // invariant: conservation — the statements sum balance + reserved to exactly what genesis issued.
+    assert(try statement.statements_conserve(&verdict));
+    print("statement-true: conservation holds over the real bytes — every account's balance + reserved sums to the 200 genesis issued, the projection conserving.\n", .{});
+}
+
+/// A tampered copy of the real bytes refuses — the reader will not read a corrupted record as true. A
+/// flipped header byte refuses `BadFormat`; a flipped signature byte would refuse at add.
+fn unwelcome_tampered_record_refuses() !void {
+    var buf: [real_dag.len]u8 = undefined;
+    var k: u32 = 0;
+    while (k < real_dag.len) : (k += 1) buf[k] = real_dag[k];
+    buf[7] ^= 0xFF; // inside "format ..."
+    const bad = read_statement(buf[0..]);
+    assert(bad == error.BadFormat);
+    print("statement-true: a tampered header refused BadFormat — a corrupted record is never read as true.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_reading_true_to_bytes();
+    try welcome_statement_reconciles_over_real_bytes();
+    try welcome_statements_conserve_over_real_bytes();
+    try unwelcome_tampered_record_refuses();
+    print("statement_true {s} — GREEN\n", .{statement_true_version});
+    print("GREEN: myc statement r4; the genesis-funded account's own line of a real ledger record is true to the bytes (account·balance·reserved·received), resolved under the Cord's own add and the agreed order, the statement reconciling, conservation of balance + reserved whole, a tampered record refused. The Mycelium Statement's agent-doable arc closes.\n", .{});
+    return 0;
+}
+
+/// Emit exactly the awk-format tuple (`<account-hex> <balance> <reserved> <received>`), so the witness can
+/// compare the app's reading against `statement_dag_truth.awk` byte for byte — two tools, one answer.
+fn run_measure() !u8 {
+    const r = try read_statement(real_dag);
+    print("{s} {d} {d} {d}\n", .{ r.account_hex, r.balance, r.reserved, r.received });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "measure")) {
+        return run_measure();
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest();
+    }
+    print("usage: statement-true selftest | measure\n", .{});
+    return 1;
+}

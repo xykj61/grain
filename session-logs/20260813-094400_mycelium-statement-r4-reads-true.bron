@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260813.094400
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title mycelium Statement r4 — an account's own line reads true
+prompt autonomous loop — take the next agent-doable Lindy-first crux-first, send each finished increment as its own signed round, stop at custody gates
+think Read REMEMBER (164 lines) and found the git history had advanced past the card into a Mycelium Statement arc; HEAD was r3 (a statement crosses a Knot whole), so the next crux was Statement r4 — reads a real fixture true.
+think Confirmed the custody gates (six, all Keaton's hand) and that agent-doable work clearly remained, so this is not gates-only.
+think Read the Statement design doc, statement.rye (r1), and the closest mirror (lapse_true.rye + lapse_dag_truth.awk + its witness) to match the arc's read-true shape exactly.
+think The design says r4 reuses the Lapse's own fixture; the corpora/lapse_dag.bron symlink already exists, so no new fixture_gen or .bron — only a new per-account awk, the app, and the witness.
+think Chose the account by a principled rule both tools share: the genesis-funded account (the recipient of the issue fact / the account whose received equals total_issued), so no magic constant picks whose line is read.
+think Traced the fixture by hand: Alice (bc7cbcb5…) funded 200; her pledge to Bob lapses (clock reaches the deadline) and comes home; her pledge to Carol stays open and reserves 100 → balance 100, reserved 100, received 200. The awk confirmed the same tuple before I wrote the witness assertion.
+obs Built a per-account deadline-clock awk from the union of lapse_dag_truth.awk (clock ticks, pledge-body parsing) and purse_dag_truth.awk (per-account balance accounting) — reserve on pledge, home on lapse/void, pay recipient on post.
+obs app == awk on the real bytes (bc7cbcb5… 100 100 200); the statement reconciles (reserved == open made sum) and conserves (balance + reserved sums to the 200 issued) over the real record; a tampered header refuses BadFormat.
+obs Witness GREEN on metal; tame_style_check bans clean; width-check exit 0. Additive — composes cord_bron + cord + lapse + statement public API only; demo seeds, no key/funds/network/custody.
+loom witness=mycelium_statement_true_witness result=GREEN app_awk=agree tuple="bc7cbcb5 100 100 200"
+file mycelium/statement_true.rye the r4 reader — projects the genesis-funded account's Statement over the real record, measure emits the awk-format tuple
+file tools/fixtures/statement_dag_truth.awk the independent per-account deadline-clock reading — two tools, one answer
+file tools/mycelium_statement_true_witness.rish cross-checks app==awk, reconciliation, conservation, tamper-refusal, fixture reproducibility, Statement r1 at the door
+recommend keep-going — Statement arc closes end to end (r1 verdict · r2 travels · r3 across a Knot · r4 reads true); next agent-doable crux is a fresh Season D journey, a self-approved design read first
