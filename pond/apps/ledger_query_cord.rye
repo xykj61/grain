@@ -1,0 +1,175 @@
+//! pond/apps/ledger_query_cord.rye - the Ledger Voice, rung 2: the voice reads the living Cord.
+//!
+//! Season D (Kresfa & Mycelium). Rung 1 read a hand-seeded fold.Log; a consensus ledger's
+//! whole point is that the order is *agreed*, not authored. This rung makes the voice's
+//! corpus a committed cord.Dag: the blocks are ordered by the Cord's own deterministic
+//! commit, gathered into a fold.Log in committed order (cord.committed_log), and read by
+//! rung one's unchanged answer_over - so the supply the voice reports is exactly the
+//! supply consensus agreed, not a number that depends on which node's packets arrived
+//! first.
+//!
+//! The crux: two different *arrival* permutations of the same blocks commit to the one
+//! identical order and fold to the one identical supply, so the voice answers the same
+//! 700 either way. Arrival order is a network accident; the committed order is the
+//! agreement, and the voice reads only the agreement.
+//!
+//! Additive by construction: it imports ledger_query, cord, and fold and calls only their
+//! public functions. Rung one stays its own green binary; the Cord stays its own green
+//! binary. No storage, no transport, no network, no custody - a node reads its own
+//! committed fold.
+//!
+//!   rye build pond/apps/ledger_query_cord.rye -femit-bin=pond/bin/ledger-query-cord
+//!   pond/bin/ledger-query-cord selftest
+//!
+//! Scope: active-designing/20260813-053843_mycelium-ledger-voice-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lc = @import("lantern/lantern_core.rye");
+const lq = @import("ledger_query.rye");
+const cord = @import("cord.rye");
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+
+const ledger_query_cord_version = "20260813.053843";
+
+const allow_line = "model_hash sha3-256-rye-forge-lap0";
+const model = "sha3-256-rye-forge-lap0";
+
+// The four demo blocks, mirroring the Cord's own demo: two genesis issues (500 each),
+// then a tax (200) and a star reservation (vega, 100), each referencing both genesis
+// blocks. issued 1000, taxed 300, supply 700, one star, four facts.
+const DemoBlocks = struct {
+    a: cord.Block,
+    b: cord.Block,
+    c: cord.Block,
+    d: cord.Block,
+};
+
+fn seat_blocks() !DemoBlocks {
+    const ka = kumara.keypair_from_seed(&([_]u8{0xa1} ** kumara.seed_length));
+    const kb = kumara.keypair_from_seed(&([_]u8{0xb2} ** kumara.seed_length));
+    const kc = kumara.keypair_from_seed(&([_]u8{0xc3} ** kumara.seed_length));
+    const kd = kumara.keypair_from_seed(&([_]u8{0xd4} ** kumara.seed_length));
+
+    const fa = fold.mint_fact(ka, fold.kind_issue, 500, "", "genesis-a") orelse return error.MintA;
+    const fb = fold.mint_fact(kb, fold.kind_issue, 500, "", "genesis-b") orelse return error.MintB;
+    const fc = fold.mint_fact(kc, fold.kind_tax, 200, "", "tax-c") orelse return error.MintC;
+    const fd = fold.mint_fact(kd, fold.kind_star_reserve, 100, "vega", "reserve") orelse return error.MintD;
+
+    const a = cord.mint_block(ka, 0, &[_][cord.hash_len]u8{}, fa) orelse return error.BlockA;
+    const b = cord.mint_block(kb, 0, &[_][cord.hash_len]u8{}, fb) orelse return error.BlockB;
+
+    var ha: [cord.hash_len]u8 = undefined;
+    var hb: [cord.hash_len]u8 = undefined;
+    cord.address(&a, &ha);
+    cord.address(&b, &hb);
+    const roots = [_][cord.hash_len]u8{ ha, hb };
+
+    const c = cord.mint_block(kc, 1, roots[0..], fc) orelse return error.BlockC;
+    const d = cord.mint_block(kd, 1, roots[0..], fd) orelse return error.BlockD;
+    return .{ .a = a, .b = b, .c = c, .d = d };
+}
+
+/// Admit the given blocks in the given arrival order, commit by the Cord's own rule, and
+/// gather the committed blocks into a fold.Log in committed order. The log is the voice's
+/// corpus - the agreed order, not the arrival order.
+fn commit_to_log(blocks: []const cord.Block, log_out: *fold.Log) !void {
+    var dag = cord.Dag.empty();
+    for (blocks) |blk| try cord.add(&dag, blk);
+    var order: [cord.cord_max_blocks]u32 = undefined;
+    const count = cord.commit(&dag, order[0..]);
+    // invariant: every admitted block commits (the demo Dag has no equivocation)
+    assert(count == dag.len);
+    cord.committed_log(&dag, order[0..], count, log_out);
+}
+
+/// Ask the routed prompt over a committed Cord ledger built from the given arrival order.
+fn ask_over_arrival(prompt: []const u8, blocks: []const cord.Block, out_buf: []u8) !lc.Response {
+    var log: fold.Log = undefined;
+    try commit_to_log(blocks, &log);
+    const req = lc.Request{ .model_hash = model, .prompt = prompt, .max_tokens = 64 };
+    return lq.answer_over(req, allow_line, &log, out_buf);
+}
+
+// --- selftest -----------------------------------------------------------
+
+fn welcome_supply_over_cord() !void {
+    const blk = try seat_blocks();
+    const arrival = [_]cord.Block{ blk.a, blk.b, blk.c, blk.d };
+    var buf: [lc.max_completion_len]u8 = undefined;
+    const resp = try ask_over_arrival("supply the ledger", arrival[0..], &buf);
+    // issued 1000 - taxed 300 (200 tax + 100 reservation) = 700.
+    assert(std.mem.eql(u8, resp.text, "700"));
+    assert(resp.stopped_reason == .eos);
+    print("ledger_query_cord: supply read the committed Cord — text '{s}' eos\n", .{resp.text});
+}
+
+fn welcome_facts_and_star() !void {
+    const blk = try seat_blocks();
+    const arrival = [_]cord.Block{ blk.a, blk.b, blk.c, blk.d };
+    var buf: [lc.max_completion_len]u8 = undefined;
+    const facts = try ask_over_arrival("facts the ledger", arrival[0..], &buf);
+    assert(std.mem.eql(u8, facts.text, "4"));
+    var buf2: [lc.max_completion_len]u8 = undefined;
+    const held = try ask_over_arrival("star vega", arrival[0..], &buf2);
+    assert(std.mem.eql(u8, held.text, "held"));
+    print("ledger_query_cord: facts=4, vega held — the committed blocks read true\n", .{});
+}
+
+fn welcome_summary_over_cord() !void {
+    const blk = try seat_blocks();
+    const arrival = [_]cord.Block{ blk.a, blk.b, blk.c, blk.d };
+    var buf: [lc.max_completion_len]u8 = undefined;
+    const resp = try ask_over_arrival("summary the ledger", arrival[0..], &buf);
+    assert(std.mem.eql(u8, resp.text, "supply=700 stars=1"));
+    print("ledger_query_cord: summary read the committed Cord — text '{s}'\n", .{resp.text});
+}
+
+// The crux: arrival order is a network accident; the committed order is the agreement. Two
+// different arrival permutations of the same blocks commit to one order and the voice
+// reads one supply. The voice reports the agreement, never the accident.
+fn welcome_arrival_order_independent() !void {
+    const blk = try seat_blocks();
+    // Two genesis issues commute; the round-1 drains follow them either way. A shuffled
+    // arrival (b before a, d before c) admits and commits to the identical agreed order.
+    const forward = [_]cord.Block{ blk.a, blk.b, blk.c, blk.d };
+    const shuffled = [_]cord.Block{ blk.b, blk.a, blk.d, blk.c };
+    var buf1: [lc.max_completion_len]u8 = undefined;
+    var buf2: [lc.max_completion_len]u8 = undefined;
+    const s1 = try ask_over_arrival("summary the ledger", forward[0..], &buf1);
+    const s2 = try ask_over_arrival("summary the ledger", shuffled[0..], &buf2);
+    // Same agreement, same voice: both read supply=700 stars=1.
+    assert(std.mem.eql(u8, s1.text, s2.text));
+    assert(std.mem.eql(u8, s1.text, "supply=700 stars=1"));
+    print("ledger_query_cord: two arrival orders, one agreement — the voice reads '{s}' either way\n", .{s1.text});
+}
+
+fn unwelcome_unknown_op_over_cord() !void {
+    const blk = try seat_blocks();
+    const arrival = [_]cord.Block{ blk.a, blk.b, blk.c, blk.d };
+    var buf: [lc.max_completion_len]u8 = undefined;
+    if (ask_over_arrival("mint the ledger", arrival[0..], &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.UnknownOp);
+    }
+    print("ledger_query_cord: unknown op refused over the committed Cord (no fake answer)\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_supply_over_cord();
+        try welcome_facts_and_star();
+        try welcome_summary_over_cord();
+        try welcome_arrival_order_independent();
+        try unwelcome_unknown_op_over_cord();
+        print("ledger_query_cord {s} — GREEN\n", .{ledger_query_cord_version});
+        return 0;
+    }
+    print("usage: ledger-query-cord selftest\n", .{});
+    return 1;
+}

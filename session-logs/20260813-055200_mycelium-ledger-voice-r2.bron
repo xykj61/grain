@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260813.055200
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT), this session in ai-jail
+title Mycelium Ledger Voice r2 — the voice reads the living Cord, arrival-order-independent
+prompt recur the road Lindy-first crux-first; approve own design rounds, make progress, send each finished increment as its own signed round; stop at custody gates; baton prin recur
+think r1 landed and sent (the Ledger Voice over a hand-seeded fold.Log, integrity-gated by fold_log). Next mechanical lap on the same arc: r2, the voice reads the living Cord — a consensus ledger's point is that the order is agreed, not authored.
+think Design was already self-approved in the r1 exploration (four rounds named). r2 needs no new module: cord.rye exposes commit(dag, order) and committed_log(dag, order, count, log_out) → a fold.Log in committed order, which is exactly the *const fold.Log r1's answer_over already takes. So r2 gathers a committed Cord into a log and delegates to r1's unchanged voice.
+think Built pond/apps/ledger_query_cord.rye mirroring cord.rye's own demo (two genesis issues 500 each, tax 200, reserve vega 100 → issued 1000, taxed 300, supply 700, one star, four facts). Public API only: mint_block · address · add · commit · committed_log.
+obs The crux is arrival-order-independence: two arrival permutations of the same blocks ([a,b,c,d] and [b,a,d,c]) commit to the one agreed order and fold to the one supply, so the voice reads 'supply=700 stars=1' either way. Arrival order is a network accident; the committed order is the agreement, and the voice reports only the agreement. Proven on metal.
+obs supply 700, facts 4, vega held, summary 'supply=700 stars=1'; an unknown op still refuses (no fake answer). GREEN first pass. Additive — r1 (the lawful-fold voice) and the Cord both re-run their own GREEN binaries under the witness. TAME bans clean, width-check exit 0.
+loom witness=mycelium_ledger_query_cord_witness demo_supply=700 stars=1 facts=4 arrival_perms=2 result=GREEN
+file pond/apps/ledger_query_cord.rye r2 — reads a committed cord.Dag through r1's answer_over; arrival-order-independent
+file tools/mycelium_ledger_query_cord_witness.rish witness — selftest GREEN + r1 and the Cord re-run as their own green binaries
+file session-logs/README.md prepended this round's newest-first row
+recommend keep-going Ledger Voice r3 — the voice reads across a Knot (the checkpointed supply plus a live suffix reads the same total as the whole log), then r4 real ledger true. Quorum-served readings + breach renames (cairn-first) + deep debride + seed force-push stay Keaton's hand.
