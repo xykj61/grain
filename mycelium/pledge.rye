@@ -1,0 +1,610 @@
+//! mycelium/pledge.rye — the Pledge: a two-phase transfer decided by the order.
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · Journey rung r1 — the crux.
+//! Design read: active-designing/20260813-075049_mycelium-pledge-two-phase-transfer-exploration.md
+//!
+//! Every Mycelium ledger before this settles a transfer in one committed fact — the coins
+//! move, or the transfer comes up short, the moment the order places it. The truest thing a
+//! value ledger owes a real trade is atomicity across two steps: coins reserved now, and
+//! THEN either honored or released, so a multi-party exchange either wholly commits or
+//! wholly reverses. That is the two-phase transfer (pending → post-or-void), TigerBeetle's
+//! signature, read here as the agreed order's own law.
+//!
+//! A PLEDGE reserves coins without moving them — the signer's spendable balance falls, a
+//! matching RESERVED amount rises, and an open pledge is seated under a 16-byte id. A later
+//! POST honors it (the reserved coins reach the named recipient); a later VOID releases it
+//! (the reserved coins return to the pledger). The pledge settles exactly once.
+//!
+//! The crux is EQUIVOCATION: a holder signs BOTH a post and a void for one pledge at the
+//! same round, the twin of the Purse's double-spender signing two transfers of coins she
+//! held once. No arrival order may leave the pledge both honored and released, and no two
+//! honest nodes may disagree on which won. The Cord's total order is deterministic
+//! regardless of arrival, so the FIRST resolution the order places decides and the second
+//! is a lawful no-op — every honest node names the same outcome, proven here by resolving
+//! every arrival permutation to one identical verdict.
+//!
+//! Conservation is the Purse's law widened by one column: at every step the sum of all
+//! spendable BALANCES plus all RESERVED holdings equals exactly what genesis issued. A
+//! pledge moves coins balance→reserved, a post reserved→recipient, a void reserved→balance —
+//! no coin is made or destroyed by any phase.
+//!
+//! A phase rides the Cord editing nothing: `fold.verify_fact` trusts a fact by its
+//! signature over kind·amount·star·body without restricting the kind, so the Pledge reads
+//! the same signed `kind_tax` facts the Purse does and discriminates the phase by a body
+//! tag bound to the signer's signature — `P·id·to` reserves, `H·id` honors, `V·id`
+//! releases. A post or void carries the pledge's own amount (positive, so `mint_fact`
+//! accepts it) and that signed amount MUST equal the referenced pledge's amount, so the
+//! signature binds phase, id, and sum together. A genesis credit is a kind_issue whose body
+//! names the account to fund, exactly as the Purse's.
+//!
+//! Grown beside cord.rye, fold.rye, purse.rye — editing none, composing cord + fold +
+//! kumara public API only. Siloed, dev-only, demo seeds — no real key, no funds, no
+//! network, no custody. A served pledge reaches the Comlink-served gate (Keaton's hand).
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/pledge.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("cord.rye");
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+
+/// A keeper's public key, in its encoded (holder-identity) width.
+pub const pk_len: u32 = kumara.PublicKey.encoded_length;
+
+/// A pledge id — a fixed 16-byte tag naming one open promise across its two phases.
+pub const id_len: u32 = 16;
+
+/// Body tags — the phase, bound into the signer's signature over the fact body.
+pub const tag_pledge: u8 = 'P';
+pub const tag_post: u8 = 'H';
+pub const tag_void: u8 = 'V';
+
+/// One open pledge's settlement state.
+pub const state_open: u8 = 0;
+pub const state_posted: u8 = 1;
+pub const state_voided: u8 = 2;
+
+/// At most two accounts enter per block (a sender and a recipient); the Dag holds a
+/// journey of blocks (256), so twice that bounds the distinct-account table.
+pub const pledge_max_accounts: u32 = 2 * cord.cord_max_blocks;
+
+/// At most one pledge opened per block — the Dag holds a journey of blocks.
+pub const pledge_max_pledges: u32 = cord.cord_max_blocks;
+
+/// One account's purse under two-phase accounting — what it can spend, what it holds
+/// reserved in open pledges, and the monotonic high-water mark that proves a loss lawful.
+pub const Account = struct {
+    pk: [pk_len]u8 = undefined,
+    balance: u64 = 0,
+    reserved: u64 = 0,
+    received: u64 = 0,
+};
+
+/// One pledge the agreed order seated — coins reserved from one purse toward another,
+/// settled exactly once (posted or voided) or standing open at the ledger's end.
+pub const Pledge = struct {
+    id: [id_len]u8 = undefined,
+    from: [pk_len]u8 = undefined,
+    to: [pk_len]u8 = undefined,
+    amount: u64 = 0,
+    state: u8 = state_open,
+    pos: u32 = 0,
+};
+
+/// The resolved two-phase ledger: every account's spendable and reserved coins, every
+/// pledge's settlement, and the coins genesis issued — over which balance + reserved
+/// always sums to exactly what was issued.
+pub const Ledger = struct {
+    accounts: [pledge_max_accounts]Account = undefined,
+    account_count: u32 = 0,
+    pledges: [pledge_max_pledges]Pledge = undefined,
+    pledge_count: u32 = 0,
+    total_issued: u64 = 0,
+
+    /// The count of pledges the order seated (open or settled).
+    pub fn pledges_seen(l: *const Ledger) u32 {
+        // invariant: the pledge count never exceeds the named ceiling.
+        assert(l.pledge_count <= pledge_max_pledges);
+        return l.pledge_count;
+    }
+
+    /// The count of pledges the order honored.
+    pub fn posted_seen(l: *const Ledger) u32 {
+        var n: u32 = 0;
+        var i: u32 = 0;
+        while (i < l.pledge_count) : (i += 1) {
+            if (l.pledges[i].state == state_posted) n += 1;
+        }
+        // invariant: the honored count never exceeds the pledges seated.
+        assert(n <= l.pledge_count);
+        return n;
+    }
+
+    /// The count of pledges the order released.
+    pub fn voided_seen(l: *const Ledger) u32 {
+        var n: u32 = 0;
+        var i: u32 = 0;
+        while (i < l.pledge_count) : (i += 1) {
+            if (l.pledges[i].state == state_voided) n += 1;
+        }
+        // invariant: the released count never exceeds the pledges seated.
+        assert(n <= l.pledge_count);
+        return n;
+    }
+
+    /// One account's spendable balance, or zero when the account never appeared.
+    pub fn balance_of(l: *const Ledger, pk: []const u8) u64 {
+        // invariant: an account key is always a full holder identity.
+        assert(pk.len == pk_len);
+        if (account_index(l, pk)) |k| return l.accounts[k].balance;
+        return 0;
+    }
+
+    /// One account's reserved holdings, or zero when the account never appeared.
+    pub fn reserved_of(l: *const Ledger, pk: []const u8) u64 {
+        // invariant: an account key is always a full holder identity.
+        assert(pk.len == pk_len);
+        if (account_index(l, pk)) |k| return l.accounts[k].reserved;
+        return 0;
+    }
+
+    /// The sum of every account's spendable balance.
+    pub fn balances_sum(l: *const Ledger) u64 {
+        var s: u64 = 0;
+        var i: u32 = 0;
+        while (i < l.account_count) : (i += 1) s += l.accounts[i].balance;
+        // invariant: no single balance exceeds the running sum it joined.
+        assert(l.account_count == 0 or s >= l.accounts[0].balance);
+        return s;
+    }
+
+    /// The sum of every account's reserved holdings.
+    pub fn reserved_sum(l: *const Ledger) u64 {
+        var s: u64 = 0;
+        var i: u32 = 0;
+        while (i < l.account_count) : (i += 1) s += l.accounts[i].reserved;
+        // invariant: no single reserve exceeds the running sum it joined.
+        assert(l.account_count == 0 or s >= l.accounts[0].reserved);
+        return s;
+    }
+
+    /// The pledge seated at index `i`, or null past the count.
+    pub fn pledge_at(l: *const Ledger, i: u32) ?*const Pledge {
+        // invariant: the pledge count never exceeds the named ceiling.
+        assert(l.pledge_count <= pledge_max_pledges);
+        if (i >= l.pledge_count) return null;
+        return &l.pledges[i];
+    }
+};
+
+/// Index of an account by its key, or null when absent.
+fn account_index(l: *const Ledger, pk: []const u8) ?u32 {
+    // invariant: an account key is always a full holder identity.
+    assert(pk.len == pk_len);
+    var i: u32 = 0;
+    while (i < l.account_count) : (i += 1) {
+        if (std.mem.eql(u8, l.accounts[i].pk[0..], pk)) return i;
+    }
+    return null;
+}
+
+/// Find an account, or seat a fresh one at zero. Refuses past the account ceiling.
+fn ensure_account(l: *Ledger, pk: []const u8) error{TooManyAccounts}!u32 {
+    // invariant: an account key is always a full holder identity.
+    assert(pk.len == pk_len);
+    if (account_index(l, pk)) |k| return k;
+    if (l.account_count >= pledge_max_accounts) return error.TooManyAccounts;
+    const at = l.account_count;
+    tally_copy.copy_disjoint(u8, l.accounts[at].pk[0..], pk);
+    l.accounts[at].balance = 0;
+    l.accounts[at].reserved = 0;
+    l.accounts[at].received = 0;
+    l.account_count += 1;
+    // invariant: growth is exactly one seat, never past the ceiling.
+    assert(l.account_count <= pledge_max_accounts);
+    return at;
+}
+
+/// Credit an account — spendable balance and cumulative inflow both rise. A wrap refuses.
+fn credit(l: *Ledger, pk: []const u8, amount: u64) error{ Overdraw, TooManyAccounts }!void {
+    const k = try ensure_account(l, pk);
+    const nb = l.accounts[k].balance +% amount;
+    if (nb < l.accounts[k].balance) return error.Overdraw; // wrap refuse
+    l.accounts[k].balance = nb;
+    const nr = l.accounts[k].received +% amount;
+    if (nr < l.accounts[k].received) return error.Overdraw; // wrap refuse
+    l.accounts[k].received = nr;
+    // invariant: an account never takes in less than it can spend outright.
+    assert(l.accounts[k].balance <= l.accounts[k].received);
+}
+
+/// Index of an open-or-settled pledge by its id, or null when no pledge carries it.
+fn pledge_index(l: *const Ledger, id: []const u8) ?u32 {
+    // invariant: a pledge id is always the fixed tag width.
+    assert(id.len == id_len);
+    var i: u32 = 0;
+    while (i < l.pledge_count) : (i += 1) {
+        if (std.mem.eql(u8, l.pledges[i].id[0..], id)) return i;
+    }
+    return null;
+}
+
+/// The recipient named in a pledge body's `to` field — a full, valid holder key, or a
+/// refusal when it is not exactly one parseable key.
+fn valid_key(bytes: []const u8) error{Malformed}![]const u8 {
+    if (bytes.len != pk_len) return error.Malformed;
+    var rk: [pk_len]u8 = undefined;
+    tally_copy.copy_disjoint(u8, rk[0..], bytes[0..pk_len]);
+    _ = kumara.PublicKey.fromBytes(rk) catch return error.Malformed;
+    return bytes;
+}
+
+/// The genesis-credit body of a kind_issue fact names the account to fund — one full key.
+fn credit_recipient(fact: *const fold.Fact) error{Malformed}![]const u8 {
+    return valid_key(fact.body_slice());
+}
+
+/// Seat a fresh open pledge. Refuses a reused id and refuses past the pledge ceiling.
+fn open_pledge(l: *Ledger, id: []const u8, from: []const u8, to: []const u8, amount: u64, pos: u32) error{ PledgeExists, TooManyPledges }!void {
+    // invariant: id, sender, and recipient are their fixed identity widths.
+    assert(id.len == id_len);
+    assert(from.len == pk_len);
+    assert(to.len == pk_len);
+    if (pledge_index(l, id) != null) return error.PledgeExists;
+    if (l.pledge_count >= pledge_max_pledges) return error.TooManyPledges;
+    const at = l.pledge_count;
+    tally_copy.copy_disjoint(u8, l.pledges[at].id[0..], id);
+    tally_copy.copy_disjoint(u8, l.pledges[at].from[0..], from);
+    tally_copy.copy_disjoint(u8, l.pledges[at].to[0..], to);
+    l.pledges[at].amount = amount;
+    l.pledges[at].state = state_open;
+    l.pledges[at].pos = pos;
+    l.pledge_count += 1;
+    // invariant: growth is exactly one seat, never past the ceiling.
+    assert(l.pledge_count <= pledge_max_pledges);
+}
+
+/// The full error set the two-phase law can refuse with.
+pub const FoldError = error{
+    IdentityRefused,
+    Malformed,
+    NeverPaid,
+    Overdraw,
+    StarReserve,
+    UnknownKind,
+    UnknownPledge,
+    WrongSigner,
+    AmountMismatch,
+    PledgeExists,
+    TooManyAccounts,
+    TooManyPledges,
+};
+
+/// Fold one signed fact into a Ledger — the two-phase law for a single phase, the step
+/// `resolve` walks over the agreed order and `pledge_knot.continue_pledge` walks over a
+/// live suffix seeded from a sealed checkpoint. `pos` is the fact's position in its epoch.
+/// A fact whose own signature is broken refuses the whole fold before any coin moves; a
+/// pledge the sender cannot reserve yet once could afford is a lawful no-op spent-out loss
+/// (folding continues); a pledge that never could pay, a resolution of an unknown or
+/// wrong-signed or amount-mismatched pledge, a reused id, an unknown kind, a star reserve,
+/// and a malformed body each refuse whole; a resolution of an already-settled pledge is a
+/// lawful no-op (the order already decided).
+pub fn fold_pledge(l: *Ledger, fact: *const fold.Fact, pos: u32) FoldError!void {
+    // invariant: a fact's position is a real index within the fold's log ceiling.
+    assert(pos < fold.myc_log_max_facts);
+
+    // Corruption is not a verdict — a broken signature refuses before any coin moves.
+    if (!fold.verify_fact(fact)) return error.IdentityRefused;
+
+    if (fact.kind == fold.kind_issue) {
+        const to = try credit_recipient(fact);
+        try credit(l, to, fact.amount);
+        const nt = l.total_issued +% fact.amount;
+        if (nt < l.total_issued) return error.Overdraw; // wrap refuse
+        l.total_issued = nt;
+        return;
+    }
+    if (fact.kind == fold.kind_star_reserve) {
+        // A name reservation is fold's / the Tenure's resource, not the Pledge's.
+        return error.StarReserve;
+    }
+    if (fact.kind != fold.kind_tax) return error.UnknownKind;
+
+    // A transfer phase rides a kind_tax fact, its phase read from the signed body tag.
+    const body = fact.body_slice();
+    if (body.len == 0) return error.Malformed;
+    const tag = body[0];
+    const from = fact.signer_pk[0..];
+
+    if (tag == tag_pledge) {
+        // invariant: a pledge body is exactly tag · id · recipient.
+        if (body.len != 1 + id_len + pk_len) return error.Malformed;
+        const id = body[1 .. 1 + id_len];
+        const to = try valid_key(body[1 + id_len ..]);
+        if (pledge_index(l, id) != null) return error.PledgeExists;
+
+        const si = account_index(l, from);
+        const received_here = if (si) |k| l.accounts[k].received else 0;
+        const balance_here = if (si) |k| l.accounts[k].balance else 0;
+
+        // Never-could-pay: more than the holder ever received refuses whole.
+        if (fact.amount > received_here) return error.NeverPaid;
+        if (fact.amount > balance_here) {
+            // Lost a race: an earlier winning phase already spent these coins — a lawful
+            // no-op (the coins were in this purse once), folding continues.
+            return;
+        }
+        // Accepted: coins move balance → reserved (conserved), an open pledge is seated.
+        const sidx = try ensure_account(l, from);
+        // invariant: an accepted pledge never reserves more than the sender can spend.
+        assert(fact.amount <= l.accounts[sidx].balance);
+        l.accounts[sidx].balance -= fact.amount;
+        const nr = l.accounts[sidx].reserved +% fact.amount;
+        if (nr < l.accounts[sidx].reserved) return error.Overdraw; // wrap refuse
+        l.accounts[sidx].reserved = nr;
+        try open_pledge(l, id, from, to, fact.amount, pos);
+        return;
+    }
+
+    if (tag == tag_post or tag == tag_void) {
+        // invariant: a resolution body is exactly tag · id.
+        if (body.len != 1 + id_len) return error.Malformed;
+        const id = body[1..];
+        const pi = pledge_index(l, id) orelse return error.UnknownPledge;
+        const pl = &l.pledges[pi];
+        // Only the pledger settles their own pledge, and the signed amount must equal it —
+        // the signature binds phase, id, and sum together.
+        if (!std.mem.eql(u8, pl.from[0..], from)) return error.WrongSigner;
+        if (fact.amount != pl.amount) return error.AmountMismatch;
+        if (pl.state != state_open) return; // the order already decided — a lawful no-op
+
+        const ki = account_index(l, from) orelse return error.UnknownPledge;
+        // invariant: an open pledge's reserve is still held by its pledger.
+        assert(l.accounts[ki].reserved >= pl.amount);
+        l.accounts[ki].reserved -= pl.amount;
+        if (tag == tag_post) {
+            // Honor: reserved → recipient (conserved).
+            try credit(l, pl.to[0..], pl.amount);
+            pl.state = state_posted;
+        } else {
+            // Release: reserved → pledger's own balance (conserved).
+            const nb = l.accounts[ki].balance +% pl.amount;
+            if (nb < l.accounts[ki].balance) return error.Overdraw; // wrap refuse
+            l.accounts[ki].balance = nb;
+            pl.state = state_voided;
+        }
+        return;
+    }
+
+    return error.Malformed;
+}
+
+/// Resolve a committed Dag into a two-phase Ledger — the verdict of the agreed order.
+/// Conservation holds over every phase: balance + reserved sums to exactly what genesis
+/// issued.
+pub fn resolve(dag: *const cord.Dag) FoldError!Ledger {
+    // invariant: each block carries one fact, so the Dag fits the fold ceiling.
+    assert(dag.len <= fold.myc_log_max_facts);
+    var order: [cord.cord_max_blocks]u32 = undefined;
+    // invariant: the order buffer holds the whole Dag.
+    assert(order.len >= dag.len);
+    const committed = cord.commit(dag, order[0..]);
+
+    var l = Ledger{};
+    var i: u32 = 0;
+    while (i < committed) : (i += 1) {
+        const idx = order[i];
+        // invariant: every committed index names a real seat.
+        assert(idx < dag.len);
+        const blk = &dag.blocks[idx];
+        try fold_pledge(&l, &blk.fact, i);
+    }
+
+    // invariant: conservation — balance + reserved sums to exactly what genesis issued.
+    assert(l.balances_sum() + l.reserved_sum() == l.total_issued);
+    return l;
+}
+
+// ---- selftest: the crux is one pledge, resolved once by the order --------------
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn pledge_body(id: []const u8, to: []const u8, out: []u8) u32 {
+    // invariant: the buffer holds tag · id · recipient exactly.
+    assert(out.len >= 1 + id_len + pk_len);
+    assert(id.len == id_len);
+    out[0] = tag_pledge;
+    tally_copy.copy_disjoint(u8, out[1 .. 1 + id_len], id);
+    tally_copy.copy_disjoint(u8, out[1 + id_len ..][0..pk_len], to);
+    return 1 + id_len + pk_len;
+}
+
+fn resolve_body(tag: u8, id: []const u8, out: []u8) u32 {
+    // invariant: the buffer holds tag · id exactly.
+    assert(out.len >= 1 + id_len);
+    assert(id.len == id_len);
+    out[0] = tag;
+    tally_copy.copy_disjoint(u8, out[1 .. 1 + id_len], id);
+    return 1 + id_len;
+}
+
+fn resolve_perm(blocks: []const cord.Block) !Ledger {
+    var dag = cord.Dag.empty();
+    for (blocks) |blk| try cord.add(&dag, blk);
+    return resolve(&dag);
+}
+
+fn ledgers_equal(x: *const Ledger, y: *const Ledger) bool {
+    if (x.pledge_count != y.pledge_count) return false;
+    if (x.posted_seen() != y.posted_seen()) return false;
+    if (x.voided_seen() != y.voided_seen()) return false;
+    if (x.total_issued != y.total_issued) return false;
+    if (x.account_count != y.account_count) return false;
+    // The settlement of each pledge is the verdict's fingerprint.
+    var i: u32 = 0;
+    while (i < x.pledge_count) : (i += 1) {
+        const yj = pledge_index(y, x.pledges[i].id[0..]) orelse return false;
+        if (x.pledges[i].state != y.pledges[yj].state) return false;
+    }
+    // Every account holds the same spendable and reserved coins on both nodes.
+    i = 0;
+    while (i < x.account_count) : (i += 1) {
+        const xk = x.accounts[i].pk[0..];
+        if (x.accounts[i].balance != y.balance_of(xk)) return false;
+        if (x.accounts[i].reserved != y.reserved_of(xk)) return false;
+    }
+    return true;
+}
+
+/// Seat the equivocation scene: genesis credits Alice 100; Alice pledges 100 to Bob;
+/// Alice signs BOTH a post and a void for that pledge at the same round.
+fn seat_equivocation(id: []const u8) ![4]cord.Block {
+    const kf = seeded(0xF0);
+    const ka = seeded(0xA1);
+    const kb = seeded(0xB2);
+    const bob_pk = kb.public_key.toBytes();
+    const alice_pk = ka.public_key.toBytes();
+
+    const f_gen = fold.mint_fact(kf, fold.kind_issue, 100, "", alice_pk[0..]) orelse return error.MintGen;
+
+    var pb: [1 + id_len + pk_len]u8 = undefined;
+    const pn = pledge_body(id, bob_pk[0..], &pb);
+    const f_pledge = fold.mint_fact(ka, fold.kind_tax, 100, "", pb[0..pn]) orelse return error.MintPledge;
+
+    var hb: [1 + id_len]u8 = undefined;
+    const hn = resolve_body(tag_post, id, &hb);
+    const f_post = fold.mint_fact(ka, fold.kind_tax, 100, "", hb[0..hn]) orelse return error.MintPost;
+
+    var vb: [1 + id_len]u8 = undefined;
+    const vn = resolve_body(tag_void, id, &vb);
+    const f_void = fold.mint_fact(ka, fold.kind_tax, 100, "", vb[0..vn]) orelse return error.MintVoid;
+
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_gen) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+    const roots = [_][cord.hash_len]u8{hg};
+
+    const bp = cord.mint_block(ka, 1, roots[0..], f_pledge) orelse return error.BlockP;
+    var hp: [cord.hash_len]u8 = undefined;
+    cord.address(&bp, &hp);
+    const roots2 = [_][cord.hash_len]u8{hp};
+
+    const bpost = cord.mint_block(ka, 2, roots2[0..], f_post) orelse return error.BlockPost;
+    const bvoid = cord.mint_block(ka, 2, roots2[0..], f_void) orelse return error.BlockVoid;
+    return .{ g, bp, bpost, bvoid };
+}
+
+pub fn main() !void {
+    const id = [_]u8{0x01} ** id_len;
+
+    // The crux — the equivocation is resolved once by the order, identically across every
+    // arrival permutation. The verdict: exactly one of post/void settles the pledge, the
+    // other a lawful no-op; conservation holds.
+    const s = try seat_equivocation(id[0..]);
+    const base = try resolve_perm(&[_]cord.Block{ s[0], s[1], s[2], s[3] });
+    assert(base.pledges_seen() == 1);
+    assert(base.posted_seen() + base.voided_seen() == 1); // decided exactly once
+    // invariant: conservation across the two-phase ledger.
+    assert(base.balances_sum() + base.reserved_sum() == base.total_issued);
+    assert(base.total_issued == 100);
+
+    // Either arrival order of the two equivocating round-2 facts (both children of the
+    // pledge block) names the same verdict — the second resolution the order places is a
+    // lawful no-op, never a second settlement.
+    const p1 = try resolve_perm(&[_]cord.Block{ s[0], s[1], s[3], s[2] });
+    assert(ledgers_equal(&base, &p1));
+
+    // A clean honor moves the reserved coins to the recipient and closes the pledge.
+    {
+        const kb = seeded(0xB2);
+        const ka = seeded(0xA1);
+        const bob_pk = kb.public_key.toBytes();
+        const alice_pk = ka.public_key.toBytes();
+        const honored = try resolve_perm(&[_]cord.Block{ s[0], s[1], s[2] });
+        assert(honored.posted_seen() == 1);
+        assert(honored.voided_seen() == 0);
+        assert(honored.balance_of(bob_pk[0..]) == 100);
+        assert(honored.balance_of(alice_pk[0..]) == 0);
+        assert(honored.reserved_of(alice_pk[0..]) == 0);
+        assert(honored.balances_sum() + honored.reserved_sum() == honored.total_issued);
+    }
+
+    // A clean release returns the reserved coins to the pledger — atomic reversal.
+    {
+        const ka = seeded(0xA1);
+        const kb = seeded(0xB2);
+        const alice_pk = ka.public_key.toBytes();
+        const bob_pk = kb.public_key.toBytes();
+        const released = try resolve_perm(&[_]cord.Block{ s[0], s[1], s[3] });
+        assert(released.voided_seen() == 1);
+        assert(released.posted_seen() == 0);
+        assert(released.balance_of(alice_pk[0..]) == 100);
+        assert(released.reserved_of(alice_pk[0..]) == 0);
+        assert(released.balance_of(bob_pk[0..]) == 0);
+        assert(released.balances_sum() + released.reserved_sum() == released.total_issued);
+    }
+
+    // An open pledge holds coins reserved, not spendable, not the recipient's yet.
+    {
+        const ka = seeded(0xA1);
+        const kb = seeded(0xB2);
+        const alice_pk = ka.public_key.toBytes();
+        const bob_pk = kb.public_key.toBytes();
+        const open = try resolve_perm(&[_]cord.Block{ s[0], s[1] });
+        assert(open.pledges_seen() == 1);
+        assert(open.posted_seen() == 0 and open.voided_seen() == 0);
+        assert(open.balance_of(alice_pk[0..]) == 0);
+        assert(open.reserved_of(alice_pk[0..]) == 100);
+        assert(open.balance_of(bob_pk[0..]) == 0);
+        assert(open.balances_sum() + open.reserved_sum() == open.total_issued);
+    }
+
+    // Refusals — each holds honestly.
+    {
+        const kf = seeded(0xF0);
+        const ka = seeded(0xA1);
+        const kz = seeded(0xE9); // a stranger who signed no pledge
+        const alice_pk = ka.public_key.toBytes();
+        const f_gen = fold.mint_fact(kf, fold.kind_issue, 100, "", alice_pk[0..]) orelse return error.MintGen;
+        const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_gen) orelse return error.BlockG;
+        var hg: [cord.hash_len]u8 = undefined;
+        cord.address(&g, &hg);
+        const roots = [_][cord.hash_len]u8{hg};
+
+        // A post of an unknown pledge id refuses whole.
+        var hb: [1 + id_len]u8 = undefined;
+        const hn = resolve_body(tag_post, id[0..], &hb);
+        const f_ghost = fold.mint_fact(ka, fold.kind_tax, 100, "", hb[0..hn]) orelse return error.MintGhost;
+        const b_ghost = cord.mint_block(ka, 1, roots[0..], f_ghost) orelse return error.BlockGhost;
+        assert(std.meta.isError(resolve_perm(&[_]cord.Block{ g, b_ghost })));
+
+        // A wrong signer settling another's pledge refuses whole.
+        const s2 = try seat_equivocation(id[0..]);
+        var hb2: [1 + id_len]u8 = undefined;
+        const hn2 = resolve_body(tag_post, id[0..], &hb2);
+        const f_wrong = fold.mint_fact(kz, fold.kind_tax, 100, "", hb2[0..hn2]) orelse return error.MintWrong;
+        const b_wrong = cord.mint_block(kz, 2, roots[0..], f_wrong) orelse return error.BlockWrong;
+        assert(std.meta.isError(resolve_perm(&[_]cord.Block{ s2[0], s2[1], b_wrong })));
+
+        // A resolution whose amount disagrees with the pledge refuses whole.
+        const f_badamt = fold.mint_fact(ka, fold.kind_tax, 40, "", hb2[0..hn2]) orelse return error.MintBadAmt;
+        const b_badamt = cord.mint_block(ka, 2, roots[0..], f_badamt) orelse return error.BlockBadAmt;
+        assert(std.meta.isError(resolve_perm(&[_]cord.Block{ s2[0], s2[1], b_badamt })));
+
+        // A star reservation is not the Pledge's resource — it refuses whole.
+        const f_star = fold.mint_fact(ka, fold.kind_star_reserve, 10, "acmestar", "reserve") orelse return error.MintStar;
+        const b_star = cord.mint_block(ka, 1, roots[0..], f_star) orelse return error.BlockStar;
+        assert(std.meta.isError(resolve_perm(&[_]cord.Block{ g, b_star })));
+    }
+
+    print("mycelium-pledge: GREEN — a pledge reserves coins, and one order decides once " ++
+        "whether it is honored or released; every honest arrival names the same verdict, " ++
+        "conservation of balance + reserved holds against genesis, and unknown · wrong-signer " ++
+        "· amount-mismatch · star reserve each refuse whole.\n", .{});
+}
