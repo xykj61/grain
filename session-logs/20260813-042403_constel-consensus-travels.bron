@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260813.042403
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Constel gossip convergence r3 — the network travels
+prompt Keep climbing the next agent-doable lap Lindy-first crux-first; send each finished increment as its own signed round; stop at custody gates
+think r1 converged two nodes over gossip in shared memory; r2 healed a partition; the design named r3 as the-network-travels — a converged Dag crosses to a stranger as readable bytes with no gossip channel
+think The crux distinct from cord-bron's own r3: here the source is a gossip-converged Dag, and the far node reconstructs from bytes alone with no gossip — the record replaces the gossip protocol entirely
+obs Hit a real seam — Rye keys modules by import-name string, not realpath, so pond/apps mycelium_cord.rye and cord_bron's own cord.rye were two distinct nominal types (mycelium_cord.Dag vs cord.Dag) even for one file; the build refused the cross-type call
+obs Fixed structurally, not by duplication — unified the import alias to cord.rye across all three constel apps (r1/r2/r3) and symlinked pond/apps/cord.rye; removed the redundant mycelium_cord.rye symlink; r1 and r2 re-run GREEN unchanged in logic
+obs Crux proven on metal — a far node that never gossiped rebuilds the converged four-block mesh from the format cord-dag-v1 bytes alone, commits to the byte-identical order, folds supply 700 over one star; a tampered record refuses BadSignature on rebuild before the forgery is ever held
+obs Custody honored — dev-only, demo keeper seeds, no key/funds/network; a Cord gossiped over Comlink stays the serve gate, gate #4 untouched
+loom witness=constel_consensus_travels_witness nodes=2 far_nodes=1 blocks=4 supply=700 stars=1 record_format=cord-dag-v1 wall_ok=green
+file pond/apps/constel_consensus_travels.rye r3 app — converge two nodes, render to cord-dag-v1, a far node rebuilds from bytes alone to the identical order
+file tools/constel_consensus_travels_witness.rish witness — GREEN, re-runs r1 and cord-bron at its door
+file pond/apps/constel_consensus.rye r1 import alias unified mycelium_cord.rye -> cord.rye (logic unchanged, re-runs GREEN)
+file pond/apps/constel_consensus_partition.rye r2 import alias unified mycelium_cord.rye -> cord.rye (logic unchanged, re-runs GREEN)
+file pond/apps/cord.rye symlink to mycelium/cord.rye (module-name unification across the constel bench)
+file pond/apps/cord_bron.rye symlink to mycelium/cord_bron.rye (the cord-dag-v1 reader/writer this rung composes)
+recommend keep-going gossip-convergence r4 (read a real two-node converged fixture true — cross-check the committed order against an independent awk/rish reading, two tools one answer); agent-doable, closes the arc, custody untouched
