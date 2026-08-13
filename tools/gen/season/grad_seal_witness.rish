@@ -2,11 +2,18 @@
 #
 #   rishi/bin/rishi run tools/gen/season/grad_seal_witness.rish
 #
-# The seal of the chronological-semantic labeling law: the living operator pins carry
-# no bare count-up-from-0 identity (a season ordinal or a waymark-redundant equinox
-# number), and the guard is proven to bite a planted one. Dated testimony and
-# rested-history docs keep the ordinals they recorded (the law governs living
-# now-lines); this seal guards the living pins. Law:
+# The seal of the chronological-semantic labeling law, in its two living halves:
+#   (1) the living operator PINS carry no bare count-up-from-0 identity (a season ordinal
+#       or a waymark-redundant equinox number) — labeling_law_scan.sh over REMEMBER /
+#       ROADMAP / THREADS;
+#   (2) the living MODULE SURFACES carry no bare "lap N" capability identity — the CION
+#       module labeling guard (cion_module_labeling_witness), which LOWE Journey 14 grew
+#       to scan every one of the 79 VOLS-surveyed prose gaps, the kept witness handles,
+#       and the guard itself (20260813). Folding it here seats the labeling-law guard in
+#       the standing seal, so the whole LOWE conversion can never silently regress (REDS
+#       #67's lesson: a witness outside the run-suite rots unseen).
+# Both halves prove the guard bites a planted drift. Dated testimony and rested-history
+# docs keep the ordinals they recorded (the law governs living now-lines). Law:
 # context/specs/20260810-222755_chronological-semantic-labeling-and-the-cion-meta-season.md
 
 say "grad-seal: Language EN — the labeling law, sealed on the living pins."
@@ -26,4 +33,12 @@ say neg.out
 assert neg.out contains "verdict=drift" else "grad-seal: planted count-up identity was not flagged"
 assert (neg.ok == false) else "grad-seal: the guard failed to bite the planted negative"
 
-say "GREEN: grad-seal — living pins carry no bare count-up identity; the guard bites a planted one"
+# The second half: the living module surfaces name no capability by a bare lap ordinal.
+# Compose the CION module labeling guard (its own scan list + planted negative), so the
+# LOWE conversion is sealed by the same seal that guards the pins.
+let modguard = run ["rishi/bin/rishi" "run" "tools/gen/season/cion_module_labeling_witness.rish"]
+say "grad-seal: CION module labeling guard —"
+assert modguard.ok else "grad-seal: a living module surface names a capability by a bare lap ordinal"
+assert modguard.out contains "GREEN: cion-module" else "grad-seal: the module labeling guard did not seal GREEN"
+
+say "GREEN: grad-seal — living pins carry no bare count-up identity and living module surfaces name no capability by a bare lap ordinal; both guards bite a planted drift"
