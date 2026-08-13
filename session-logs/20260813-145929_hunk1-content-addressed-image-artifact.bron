@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260813.145929
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu (ai-jail) · Vultr SEA VPS (2vCPU/4GB) — Eastern (EDT) time convention
+title HUNK1 — an image is a content-addressed Tablecloth artifact
+prompt Read REMEMBER + the 1024-round itinerary + the six-season double-seat; take the next agent-doable lap Lindy-first crux-first; approve my own design rounds; send each finished increment as its own signed round; STOP at custody gates.
+think Read the itinerary and double-seat docs, then found the live next lap in REMEMBER: HUNK0 (open QOI codec) landed last round; the named next crux is HUNK1 — the image as a content-addressed Tablecloth artifact, a tampered bead refusing before a pixel is read. Fully agent-doable, ungated, high-Lindy (one primitive beneath both the parts marketplace and the Photos app).
+think Studied the two halves the rung joins: image/qoi.rye (HUNK0 — encode/decode, Pixmap, encoded_bound, six-op round-trip) and pond/apps/tablecloth.rye (store_artifact beads content under a name; fetch_artifact reassembles, proving every bead against its digest and the whole against its recorded address → DigestMismatch on tamper). The tablecloth family and its symlink infrastructure (mantra/beading.rye, parse_int.rye, tally_copy.rye) all live in pond/apps/, so the bridge module belongs there; symlinked qoi.rye into pond/apps/ (code untouched).
+think Bounds: beading.max_resin_bytes = 512, so max_content_bytes = 512 — a stored QOI stream must fit a resin. The crafted 8×8 image encodes to 166 bytes over 2 beads, well within the bound. Named max_stream_bytes = tablecloth.max_content_bytes and refused StreamTooLarge before storing anything a fetch could not hold.
+think Wrote pond/apps/image_artifact.rye — store_image (encode → store_artifact) and fetch_image (fetch_artifact → decode). The crux ordering is load-bearing: fetch_artifact's digest check runs and returns FIRST; only on Ok does qoi.decode run, so a tampered bead refuses before a single pixel is read. Selftest rides a real image through the store byte-for-byte, proves the dedup dividend (same image, two names, stored once), and proves the tampered-bead (DigestMismatch) and unknown-name (UnknownArtifact) refusals both land before decode.
+obs GREEN on the first build and run. TAME caught one compound assert (back.width==8 and height==8 and channels==4); split into three so each half names itself, then GREEN. Width check clean. Re-ran HUNK0's witness — still GREEN (symlink only, qoi.rye byte-identical).
+obs Custody gates untouched — no network, no key, no funds; HUNK's hardware rounds (buying panels, sourcing parts) stay gates #2/#3. No breach rename this round, so no cairn needed.
+loom witness=hunk_artifact_witness stream_bytes=166 beads=2 deduped=2 wall_first_build=green
+file pond/apps/image_artifact.rye the HUNK1 bridge — an image is a content-addressed Tablecloth artifact
+file tools/hunk_artifact_witness.rish proves the round-trip through the store and both named refusals on metal
+file pond/apps/qoi.rye symlink to image/qoi.rye so the bridge resolves the codec alongside tablecloth
+file work-in-progress/REMEMBER.md folded HUNK1 landed; next crux HUNK2 (the decoded grid meets Skate)
+recommend keep-going HUNK2 — a bounded down-map from the decoded RGBA grid to Skate's palette-indexed cells, lit pixels reaching the canvas; still ungated, still agent-doable.
