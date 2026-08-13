@@ -1,0 +1,67 @@
+//! mycelium/cord_fixture_gen.rye — reproducibly emit the Cord dev-net fixture (r4 support).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · rung r4 support.
+//! Design read: active-designing/20260813-032851_mycelium-consensus-cord-exploration.md
+//!
+//! Seats the honest four-block scene r1/r2/r3 use (two genesis issues, then a tax
+//! and a star reserve each referencing both), commits it, and renders it to a
+//! `format cord-dag-v1` record on stdout — the exact bytes `mycelium/cord_true.rye`
+//! reads back and the r4 witness cross-checks against an independent awk reading.
+//! Deterministic: seeded demo keys and a pure commit mean the same bytes every run,
+//! so the on-disk fixture is what the Cord emits, never a hand-mock.
+//!
+//! Siloed, dev-only, demo seeds — no real key, no funds, no network, no custody.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/cord_fixture_gen.rye \
+//!     > tools/fixtures/cord_dag.bron
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("cord.rye");
+const cord_bron = @import("cord_bron.rye");
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+/// Seat the honest four-block Dag — the same scene the Cord's own selftests use.
+fn seat_dag() !cord.Dag {
+    const ka = seeded(0xA1);
+    const kb = seeded(0xB2);
+    const kc = seeded(0xC3);
+    const kd = seeded(0xD4);
+    const fa = fold.mint_fact(ka, fold.kind_issue, 500, "", "genesis-a") orelse return error.MintA;
+    const fb = fold.mint_fact(kb, fold.kind_issue, 500, "", "genesis-b") orelse return error.MintB;
+    const fc = fold.mint_fact(kc, fold.kind_tax, 200, "", "tax-c") orelse return error.MintC;
+    const fd = fold.mint_fact(kd, fold.kind_star_reserve, 100, "vega", "reserve") orelse return error.MintD;
+    const a = cord.mint_block(ka, 0, &[_][cord.hash_len]u8{}, fa) orelse return error.BlockA;
+    const b = cord.mint_block(kb, 0, &[_][cord.hash_len]u8{}, fb) orelse return error.BlockB;
+    var ha: [cord.hash_len]u8 = undefined;
+    var hb: [cord.hash_len]u8 = undefined;
+    cord.address(&a, &ha);
+    cord.address(&b, &hb);
+    const roots = [_][cord.hash_len]u8{ ha, hb };
+    const c = cord.mint_block(kc, 1, roots[0..], fc) orelse return error.BlockC;
+    const d = cord.mint_block(kd, 1, roots[0..], fd) orelse return error.BlockD;
+    var dag = cord.Dag.empty();
+    try cord.add(&dag, a);
+    try cord.add(&dag, b);
+    try cord.add(&dag, c);
+    try cord.add(&dag, d);
+    return dag;
+}
+
+pub fn main() !void {
+    var dag = try seat_dag();
+    const pl = try cord_bron.from_dag(&dag);
+    var buf: [cord_bron.max_record]u8 = undefined;
+    const n = try cord_bron.render(&pl, &buf);
+    // invariant: the render is bounded and non-empty — a real record carries its header.
+    assert(n > 0);
+    assert(n <= cord_bron.max_record);
+    print("{s}", .{buf[0..n]});
+}

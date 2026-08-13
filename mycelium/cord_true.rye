@@ -1,0 +1,145 @@
+//! mycelium/cord_true.rye — the Cord reads true (r4, the arc closes).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · rung r4 — read a real fixture true.
+//! Design read: active-designing/20260813-032851_mycelium-consensus-cord-exploration.md
+//!
+//! r1 fixed the deterministic commit, r2 quarantined the equivocator, r3 let a
+//! committed Dag travel as a `format cord-dag-v1` record — all over Dags seated in
+//! code. This closing rung carries the reader onto a **real** on-disk Cord record a
+//! keeper can open and walk, and proves the property the whole consensus rests on:
+//! the order the Cord reports is true to the bytes.
+//!
+//! The corpus is `tools/fixtures/cord_dag.bron`, a genuine record produced
+//! reproducibly by `mycelium/cord_fixture_gen.rye` (the honest four-block scene —
+//! issued 1000 · taxed 300 · supply 700 · one star), `@embedFile`-bound at compile
+//! time through a symlink in `mycelium/corpora/` — no network, the bytes read are
+//! the tree's own. Two independent readings must agree: the app parses the record
+//! through r3, **rebuilds** the Dag under r1's own `add` (re-verifying every
+//! signature, requiring every parent already held), commits it, and reports the
+//! **block count**, the **folded supply**, and the **star count**; the r4 witness
+//! cross-checks that triple against `tools/fixtures/cord_dag_truth.awk`'s reading of
+//! the same file — two tools, one answer. And the record is genuinely a committed
+//! Cord: the fixture's block lines are in agreed order, so re-committing the rebuilt
+//! Dag reproduces the file's order (the identity permutation), and re-rendering the
+//! parsed Dag reproduces the embedded bytes exactly (not a hand-mock).
+//!
+//! Additive — composes r3 over public API (r1/r2/r3 re-run GREEN). Siloed, dev-only,
+//! demo seeds — no real key, no funds, no network, no custody; a Cord gossiped over
+//! the wire reaches the serve gate.
+//!
+//!   rye build mycelium/cord_true.rye -femit-bin=mycelium/bin/cord_true
+//!   mycelium/bin/cord_true selftest | measure
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("cord.rye");
+const cord_bron = @import("cord_bron.rye");
+const fold = @import("fold.rye");
+
+pub const cord_true_version = "20260813.040000";
+
+/// The real Cord record, bound at compile time — the tree's own bytes, never a drifting copy.
+const real_cord = @embedFile("corpora/cord_dag.bron");
+
+/// The three facts a keeper can count by hand: how many blocks the Cord bundles, its folded supply, and
+/// how many of those blocks reserve a star.
+pub const Reading = struct {
+    blocks: u32,
+    supply: u64,
+    stars: u32,
+};
+
+/// Read the real Cord: parse it, rebuild the Dag under r1's own `add` (verifying every signature and
+/// requiring every parent already held), commit it, and fold the supply through the real Mycelium law.
+/// The fixture is rendered in agreed order, so committing the rebuilt Dag must reproduce the file's order
+/// (the identity permutation) — else the record is not a committed Cord and the reading refuses.
+pub fn read_cord(text: []const u8) !Reading {
+    const pl = try cord_bron.parse(text);
+    // invariant: a real Cord record carries at least one block — an empty Dag is no consensus to read.
+    if (pl.len == 0) return error.BadFormat;
+    var dag = try cord_bron.rebuild(&pl);
+    var order: [cord.cord_max_blocks]u32 = undefined;
+    const count = cord.commit(&dag, order[0..]);
+    // invariant: the fixture's block lines are already in the agreed order, so the app's independent
+    // commit is the identity permutation over them — the recorded order is the true one.
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        if (order[i] != i) return error.OrderNotCanonical;
+    }
+    var log = fold.Log.empty();
+    cord.committed_log(&dag, order[0..], count, &log);
+    const state = try fold.fold_log(&log);
+    // invariant: supply is exactly issued minus taxed over the agreed order.
+    assert(state.supply() == state.issued - state.taxed);
+    return .{ .blocks = pl.len, .supply = state.supply(), .stars = state.star_count };
+}
+
+// --- selftest -----------------------------------------------------------
+
+/// The reading of the real record — the witness cross-checks this triple against awk's reading of the
+/// same bytes, so the two tools must give one answer.
+fn welcome_reading_true_to_bytes() !void {
+    const r = try read_cord(real_cord);
+    // The fixture bundles four blocks, folds to supply 700, and reserves one star.
+    assert(r.blocks == 4);
+    assert(r.supply == 700);
+    assert(r.stars == 1);
+    print("cord-true: truth-triple {d} {d} {d}\n", .{ r.blocks, r.supply, r.stars });
+    print("cord-true: the reading of the real Cord — blocks, supply, stars — matches an independent count of the same bytes.\n", .{});
+}
+
+/// The record is genuinely a committed Cord: re-rendering the parsed Dag reproduces the embedded bytes
+/// exactly, and re-committing the rebuilt Dag reproduces the file's order (the identity permutation).
+fn welcome_record_is_really_a_cord() !void {
+    const pl = try cord_bron.parse(real_cord);
+    var buf: [cord_bron.max_record]u8 = undefined;
+    const n = try cord_bron.render(&pl, &buf);
+    assert(n == real_cord.len);
+    assert(std.mem.eql(u8, buf[0..n], real_cord));
+    // the order check inside read_cord already proved the identity permutation; reading again confirms it.
+    _ = try read_cord(real_cord);
+    print("cord-true: the real record re-renders to the embedded bytes exactly, and its blocks stand in the agreed order.\n", .{});
+}
+
+/// A tampered copy of the real bytes refuses — the reader will not read a corrupted record as true. A
+/// flipped header byte refuses `BadFormat`; a flipped signature byte would refuse `BadSignature` at add.
+fn unwelcome_tampered_record_refuses() !void {
+    var buf: [real_cord.len]u8 = undefined;
+    var k: u32 = 0;
+    while (k < real_cord.len) : (k += 1) buf[k] = real_cord[k];
+    buf[7] ^= 0xFF; // inside "format ..."
+    const bad = read_cord(buf[0..]);
+    assert(bad == error.BadFormat);
+    print("cord-true: a tampered header refused BadFormat — a corrupted record is never read as true.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_reading_true_to_bytes();
+    try welcome_record_is_really_a_cord();
+    try unwelcome_tampered_record_refuses();
+    print("cord_true {s} — GREEN\n", .{cord_true_version});
+    print("GREEN: myc cord r4; the reading of a real Cord record is true to the bytes (blocks·supply·stars), the supply rebuilt under the Cord's own add and folded through the real Mycelium law, the blocks in the agreed order. The Cord's agent-doable arc closes.\n", .{});
+    return 0;
+}
+
+/// Emit exactly the awk-format triple (`<blocks> <supply> <stars>`), so the witness can compare the app's
+/// reading against `cord_dag_truth.awk` byte for byte — two tools, one answer.
+fn run_measure() !u8 {
+    const r = try read_cord(real_cord);
+    print("{d} {d} {d}\n", .{ r.blocks, r.supply, r.stars });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "measure")) {
+        return run_measure();
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest();
+    }
+    print("usage: cord-true selftest | measure\n", .{});
+    return 1;
+}

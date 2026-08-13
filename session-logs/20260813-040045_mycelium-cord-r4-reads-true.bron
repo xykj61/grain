@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260813.040045
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) · this session in ai-jail
+title Mycelium Cord r4 — the Cord reads true; the arc closes
+prompt take the next agent-doable lap Lindy-first crux-first; approve own design rounds; send each finished increment as its own signed round; STOP at custody gates
+think r3 let a committed Dag travel as text over Dags seated in code; the design read named r4 as the closing rung: read a real on-disk Cord record and cross-check against an independent measure — two tools, one answer. Closing the arc reads better on the long return (Lindy) than a dangling 3/4, so I took r4 rather than opening a fresh journey.
+think Mirrored the established _true + fixture-gen + awk pattern (constel_net_ledger_true). Built mycelium/cord_fixture_gen.rye — seats the honest four-block scene, renders via cord_bron, prints the format cord-dag-v1 record; captured its stderr (print = std.debug.print → stderr, like the ledger gen) into tools/fixtures/cord_dag.bron (9 lines, deterministic — seeded keys + pure commit). Symlinked mycelium/corpora/cord_dag.bron → ../../tools/fixtures/cord_dag.bron for @embedFile.
+think mycelium/cord_true.rye @embedFile's the fixture, parses via cord_bron.parse, REBUILDS the Dag under r1's own add (every signature re-verified, every parent already held), commits, and folds the supply through the real Mycelium law — reporting blocks · supply · stars. The genuineness beyond the triple: the fixture is rendered in committed order, so re-committing the rebuilt Dag must yield the identity permutation (order[i]==i) — else OrderNotCanonical; re-rendering the parsed Dag reproduces the embedded bytes exactly; a tampered header refuses BadFormat. app measure emits 4 700 1.
+think The r4 crux (two tools, one answer): tools/fixtures/cord_dag_truth.awk reads each block line blind to the graph structure — issued = Σ kind1 amounts, taxed = Σ (kind2+kind3), supply = issued − taxed, stars = count(kind3) — and prints 4 700 1. The witness asserts app.out == awk.out. A signature-verifying rebuild+fold and a bare arithmetic scan agree, so the agreed supply can never drift from a record a keeper adds up by hand. The witness also proves the fixture reproducible (regen 2> scratch, diff == committed → REPRODUCIBLE) and re-runs r3 (which re-runs r1/r2) GREEN.
+obs GREEN first pass — no red booked. app==awk 4 700 1; TAME bans clean; width-check exit 0. Additive: r1/r2/r3 unchanged, all re-run GREEN. The Cord's agent-doable arc stands complete end to end — r1 deterministic commit · r2 Byzantine refusal · r3 travels · r4 reads true. The one remaining Cord rung — gossiped over the wire — reaches the serve custody gate (Keaton's hand).
+loom witness=mycelium_cord_true_witness app_triple=4_700_1 awk_triple=4_700_1 fixture_lines=9 reproducible=true first_pass=green
+file mycelium/cord_fixture_gen.rye reproducibly emits the format cord-dag-v1 fixture (seeded scene → render)
+file mycelium/cord_true.rye r4 — reads the real fixture true, rebuilt under add, app==awk 4 700 1
+file mycelium/corpora/cord_dag.bron symlink to ../../tools/fixtures/cord_dag.bron for @embedFile
+file tools/fixtures/cord_dag.bron the real committed Cord record (9 lines, reproducible)
+file tools/fixtures/cord_dag_truth.awk independent arithmetic measure of the fixture (blocks·supply·stars)
+file tools/mycelium_cord_true_witness.rish r4 witness; app==awk cross-check + reproducible fixture + re-runs r3 (hence r1/r2) GREEN
+recommend keep-going the Cord's agent-doable arc is complete (r1–r4); the next Lindy-first crux is a fresh Season D journey (Kresfa/.kres language ecosystem, or Puddle fleet orchestration of the Aurora hypervisor) or another double-seat season's crux, each a self-approved design read first. The Cord gossiped over the wire, breach renames (cairn-first), deep debride + seed force-push stay Keaton's hand.
