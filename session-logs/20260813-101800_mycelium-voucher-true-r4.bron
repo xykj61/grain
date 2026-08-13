@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260813.101800
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Mycelium Voucher r4 — a voucher reads a real record true; the arc closes
+prompt recur the itinerary loop — take the next agent-doable Lindy-first crux-first lap, self-approve, send each finished increment as its own signed round, stop at custody gates
+think With r3 landed and pushed, the same-turn next crux is the voucher arc's finishing rung r4 (true to the bytes), already named in the exploration doc — mechanical, single-module, policy written, so a kg lap needing no fresh design round.
+think Mirrored statement_true.rye exactly: reuse the Lapse fixture tools/fixtures/lapse_dag.bron (a statement is a projection of that resolved ledger, a voucher a signature over that projection), @embedFile through the existing mycelium/corpora/ symlink, no new generator.
+think The voucher adds one cross-check the statement did not have: beyond position (app == awk over statement_dag_truth.awk), the order-head recomputed from the rebuilt fixture Dag must equal the head the node signed — proven inside vouch_real and in its own welcome, so the signed order is the fixture's own agreed order, not a number from another world.
+think Chose the vouched account the same principled way both tools do — the genesis-funded seat whose received equals total_issued — so no constant picks whose position is vouched; the measure tuple is byte-identical to awk's.
+obs GREEN on the first build and run; app == awk on the funded account bc7cbcb5… 100 100 200; verify_voucher offline and check_against(dag) both true over the real bytes; a tampered header refuses BadFormat.
+obs The Mycelium Voucher journey now stands complete end to end — r1 the proof-of-position crux · r2 travels · r3 across a Knot · r4 reads true — composing cord/fold/lapse/statement/kumara public API only, editing none; each stays its own green binary.
+loom witness=mycelium_voucher_true_witness build=ok selftest=GREEN app_eq_awk=true tuple=100/100/200
+file mycelium/voucher_true.rye r4 — vouch_real over the real fixture; position true to bytes; order-head recomputed matches the signed one
+file tools/mycelium_voucher_true_witness.rish GREEN witness; app==awk cross-check; the Voucher r1 re-runs its green binary at the door
+file work-in-progress/REMEMBER.md git nib refreshed to living HEAD in the same work commit (remember-git-nib rule)
+recommend keep-going the Voucher arc closes; the next agent-doable crux is a remember/align fold of the Voucher arc onto REMEMBER (its newest Mycelium entry stops before the Voucher) or a fresh Season D journey, each a self-approved design read first; a served voucher · per-account mint authority · breach renames (cairn-first) · deep debride · seed force-push stay the maintainer's hand

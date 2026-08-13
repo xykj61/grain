@@ -1,0 +1,214 @@
+//! mycelium/voucher_true.rye — a voucher reads a real ledger record true (r4, the arc closes).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Voucher · rung r4.
+//! Design read: active-designing/20260813-095216_mycelium-voucher-attested-statement-exploration.md
+//!
+//! r1 fixed the crux (a node's signed attestation binds a position to a named order-head, checkable
+//! against the ledger it vouches), r2 let the proof travel as bytes, r3 read a voucher across a Knot — all
+//! over Dags seated in code. This closing rung carries the attestation onto a REAL on-disk Cord record a
+//! keeper can open and hash, and proves the property the whole Voucher rests on: the vouched position is
+//! TRUE TO THE BYTES, and the order-head the node signed is the very order the fixture folds.
+//!
+//! The corpus reuses the Lapse's own fixture `tools/fixtures/lapse_dag.bron` (a demo funder credits Alice
+//! 200; Alice pledges 100 to Bob under a deadline the order's clock reaches, so it LAPSES and the hundred
+//! comes home; Alice pledges 100 to Carol under a far deadline, left OPEN), `@embedFile`-bound at compile
+//! time through the existing `mycelium/corpora/` symlink — no network, the bytes read are the tree's own.
+//! A statement is a projection of exactly this resolved ledger, and a voucher is a node's signature over
+//! that projection bound to the order-head, so one fixture proves both.
+//!
+//! Two independent readings must agree, twice over:
+//!   - THE POSITION — the app parses the record through `cord_bron`, REBUILDS the Dag under `cord.add`
+//!     (re-verifying every signature), makes a voucher over the genesis-funded account, and emits the
+//!     vouched triple; the r4 witness cross-checks it against `tools/fixtures/statement_dag_truth.awk`'s
+//!     per-account deadline-clock reading of the same bytes — two tools, one answer.
+//!   - THE ORDER-HEAD — the head recomputed from the rebuilt fixture Dag (`voucher.order_head_of`) equals
+//!     the head the node signed inside the voucher, so the signed order is the fixture's own agreed order,
+//!     not a number from another world; and `check_against` re-derives head and position together and agrees.
+//!
+//! The chosen account is the GENESIS-FUNDED one — the recipient of the issue fact, whom both tools identify
+//! the same way (the app as the account whose received equals what genesis issued, the awk as the first
+//! kind-1 fact's recipient) — so no magic constant chooses whose position is vouched.
+//!
+//! Additive — composes `cord_bron` + `cord` + `lapse` + `statement` + `voucher` + `kumara` public API only
+//! (each re-runs GREEN). Siloed, dev-only, demo node and keeper seeds — no real key, no funds, no network,
+//! no custody. A SERVED voucher (a holder fetching a node's attestation over Comlink) reaches the
+//! Comlink-served gate, the maintainer's hand.
+//!
+//!   rye build mycelium/voucher_true.rye -femit-bin=mycelium/bin/voucher_true
+//!   mycelium/bin/voucher_true selftest | measure
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("cord.rye");
+const cord_bron = @import("cord_bron.rye");
+const lapse = @import("lapse.rye");
+const statement = @import("statement.rye");
+const voucher = @import("voucher.rye");
+const kumara = @import("kumara.rye");
+
+pub const voucher_true_version = "20260813.095216";
+
+/// The real ledger record, bound at compile time — the tree's own bytes, never a drift. Reused from the
+/// Lapse's fixture, since a voucher is a node's signature over exactly the position that ledger projects.
+const real_dag = @embedFile("corpora/lapse_dag.bron");
+
+const hex_digits = "0123456789abcdef";
+
+/// Encode bytes to lowercase hex — the same width the record's account keys carry, so the app's chosen
+/// account and awk's chosen account are compared as identical strings.
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex nibbles per byte.
+    assert(out.len == bytes.len * 2);
+    var i: u32 = 0;
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0f];
+    }
+}
+
+/// The facts a keeper can read by hand off a vouched slip: whose position it vouches, and the position —
+/// balance (spendable), reserved (held in open pledges), received (cumulative lawful inflow).
+pub const Reading = struct {
+    account_hex: [statement.pk_len * 2]u8 = undefined,
+    balance: u64 = 0,
+    reserved: u64 = 0,
+    received: u64 = 0,
+};
+
+/// A deterministic demo node keypair — the node that vouches. Dev-only seed; no real key is ever held.
+fn node_keypair() kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{0x0D} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+/// The genesis-funded account's index — the one seat whose received equals what genesis issued. Both tools
+/// choose the vouched account this way, so neither picks a favorite by a hidden constant.
+fn funded_account(l: *const lapse.Ledger) ?u32 {
+    var found: ?u32 = null;
+    var a: u32 = 0;
+    while (a < l.account_count) : (a += 1) {
+        if (l.accounts[a].received == l.total_issued) {
+            // invariant: exactly one account is funded to the whole issued supply on this fixture.
+            assert(found == null);
+            found = a;
+        }
+    }
+    return found;
+}
+
+/// Read the real record and vouch the funded account: parse, rebuild the Dag under `cord.add` (verifying
+/// every signature), make a voucher over the genesis-funded account, and read off the vouched position. The
+/// voucher verifies offline and its recomputed order-head equals the head the node signed — both asserted.
+pub fn vouch_real(text: []const u8) !Reading {
+    const rec = try cord_bron.parse(text);
+    // invariant: a real ledger record carries blocks — an empty Dag holds no account to vouch.
+    if (rec.len == 0) return error.BadFormat;
+    var dag = try cord_bron.rebuild(&rec);
+    const verdict = try lapse.resolve(&dag);
+    const ai = funded_account(&verdict) orelse return error.NoFundedAccount;
+    const pk = verdict.accounts[ai].pk[0..];
+    // invariant: a resolved account names a full-width holder key.
+    assert(pk.len == voucher.pk_len);
+
+    const node = node_keypair();
+    const v = try voucher.make_voucher(&dag, node, pk);
+    // invariant: a voucher of a real record verifies offline against its own node key.
+    try voucher.verify_voucher(&v);
+    // invariant: the order the node signed is the fixture's own agreed order — the recomputed head matches.
+    var head: [voucher.order_head_len]u8 = undefined;
+    voucher.order_head_of(&dag, &head);
+    assert(std.mem.eql(u8, head[0..], v.order_head[0..]));
+
+    var r = Reading{ .balance = v.balance, .reserved = v.reserved, .received = v.received };
+    to_hex(v.account_slice(), r.account_hex[0..]);
+    return r;
+}
+
+// --- selftest -----------------------------------------------------------
+
+/// The vouched reading of the real record — the witness cross-checks this tuple against awk's reading of the
+/// same bytes, so the two tools must name one account and one position, and the order-head must match.
+fn welcome_vouch_true_to_bytes() !void {
+    const r = try vouch_real(real_dag);
+    // The funded account holds 100 spendable, 100 reserved in the open pledge to Carol, having received the
+    // full 200 genesis credit; the lapsed pledge to Bob brought its hundred home to spendable.
+    assert(r.balance == 100);
+    assert(r.reserved == 100);
+    assert(r.received == 200);
+    print("voucher-true: truth-tuple {s} {d} {d} {d}\n", .{ r.account_hex, r.balance, r.reserved, r.received });
+    print("voucher-true: the vouched account key and its balance · reserved · received match an independent reading of the same bytes.\n", .{});
+}
+
+/// The voucher checks against the very ledger it vouches: `check_against` re-derives the order-head and
+/// re-reads the funded account's Statement from the rebuilt fixture Dag and confirms every signed field.
+fn welcome_check_against_the_real_ledger() !void {
+    const rec = try cord_bron.parse(real_dag);
+    var dag = try cord_bron.rebuild(&rec);
+    const verdict = try lapse.resolve(&dag);
+    const ai = funded_account(&verdict) orelse return error.NoFundedAccount;
+    const node = node_keypair();
+    const v = try voucher.make_voucher(&dag, node, verdict.accounts[ai].pk[0..]);
+    // invariant: an honest voucher checks true against the real ledger it was read from.
+    assert(try voucher.check_against(&v, &dag));
+    print("voucher-true: the voucher checks against the real ledger it vouches — order-head and position re-derived from the rebuilt Dag agree with the signed slip.\n", .{});
+}
+
+/// The order-head the node signed is the fixture's own agreed order — recomputed from the rebuilt Dag it is
+/// byte-identical to the head inside the voucher, so the signed order is never a number from another world.
+fn welcome_order_head_is_the_fixtures_own() !void {
+    const rec = try cord_bron.parse(real_dag);
+    var dag = try cord_bron.rebuild(&rec);
+    const verdict = try lapse.resolve(&dag);
+    const ai = funded_account(&verdict) orelse return error.NoFundedAccount;
+    const node = node_keypair();
+    const v = try voucher.make_voucher(&dag, node, verdict.accounts[ai].pk[0..]);
+    var head: [voucher.order_head_len]u8 = undefined;
+    voucher.order_head_of(&dag, &head);
+    // invariant: the recomputed order-head equals the head the node signed inside the voucher.
+    assert(std.mem.eql(u8, head[0..], v.order_head[0..]));
+    print("voucher-true: the signed order-head equals the head recomputed from the fixture's own agreed order.\n", .{});
+}
+
+/// A tampered copy of the real bytes refuses — the reader will not vouch a corrupted record. A flipped
+/// header byte refuses `BadFormat`; a flipped signature byte would refuse at add.
+fn unwelcome_tampered_record_refuses() !void {
+    var buf: [real_dag.len]u8 = undefined;
+    var k: u32 = 0;
+    while (k < real_dag.len) : (k += 1) buf[k] = real_dag[k];
+    buf[7] ^= 0xFF; // inside "format ..."
+    const bad = vouch_real(buf[0..]);
+    assert(bad == error.BadFormat);
+    print("voucher-true: a tampered header refused BadFormat — a corrupted record is never vouched as true.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_vouch_true_to_bytes();
+    try welcome_check_against_the_real_ledger();
+    try welcome_order_head_is_the_fixtures_own();
+    try unwelcome_tampered_record_refuses();
+    print("voucher_true {s} — GREEN\n", .{voucher_true_version});
+    print("GREEN: myc voucher r4; a node's voucher of the genesis-funded account of a real ledger record is true to the bytes (account·balance·reserved·received), the signed order-head recomputed from the fixture's own agreed order, verifying offline and checking against the ledger it vouches, a tampered record refused. The Mycelium Voucher's agent-doable arc closes.\n", .{});
+    return 0;
+}
+
+/// Emit exactly the awk-format tuple (`<account-hex> <balance> <reserved> <received>`), so the witness can
+/// compare the app's vouched reading against `statement_dag_truth.awk` byte for byte — two tools, one answer.
+fn run_measure() !u8 {
+    const r = try vouch_real(real_dag);
+    print("{s} {d} {d} {d}\n", .{ r.account_hex, r.balance, r.reserved, r.received });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "measure")) {
+        return run_measure();
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest();
+    }
+    print("usage: voucher-true selftest | measure\n", .{});
+    return 1;
+}
