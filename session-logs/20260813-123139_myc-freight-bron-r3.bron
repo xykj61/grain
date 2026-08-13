@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260813.123139
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title myc freight bron r3 — a world's freight travels as text and reads the same offline
+prompt keep taking the next agent-doable Freight crux, sending each finished increment as its own signed round
+think r2 (conservation) landed and sent; the next Lindy-first crux on the Freight journey is r3 — the freight travels as a format freight-v1 record. Modeled the render/parse reader on the family _bron idiom (puddle_bron.rye).
+think Wrote mycelium/freight_bron.rye: a Manifest (world id · berth host key · freight.Position) renders to a fixed-order record and parses back byte-for-byte; every one of seven fields is required (a seen-bitmask refuses MissingField), so a partial manifest never leaves an undefined position.
+think The teeth tie the light record to r1's heavy proof: the recovered manifest's advertised order-head accepts the world's real ledger blocks through freight.receive, and a head altered in transit makes those same blocks refuse FreightTampered — a node trusts a moving world by its record alone yet still catches a ledger that does not match it.
+obs Refusals: bad header · unknown field · bad line arity · bad hex head · bad amount · bad present flag · missing field. Composes freight + puddle + cord + lapse + fold + voucher + kumara public API only; demo seeds, no key/funds/network, no world moved.
+loom witness=mycelium_freight_bron_witness green=true fields=7 record_max=1024
+file mycelium/freight_bron.rye the freight-v1 manifest render/parse reader (r3) — travels and reads the identical position offline
+file tools/mycelium_freight_bron_witness.rish builds + runs the r3 selftest, asserts fixed-point/offline-position/tamper-teeth/refusal claims, re-runs r1 + r2 GREEN
+recommend keep-going Freight r4 (reads true — a real on-disk format freight-v1 fixture, produced reproducibly, cross-checked against an independent awk reading, two tools one answer) closes the Freight agent-doable arc; no custody gate reached
