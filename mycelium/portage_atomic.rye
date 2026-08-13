@@ -1,0 +1,475 @@
+//! mycelium/portage_atomic.rye — a crossing lands on BOTH worlds or NEITHER (r2, atomic all-or-nothing).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · Portage · rung r2.
+//! Design read: active-designing/20260813-124159_mycelium-portage-cross-world-transfer-exploration.md
+//!
+//! r1 proved value crosses two worlds and the pair conserves: a signed portage-out debits the sender on A,
+//! a signed portage-in credits the recipient on B only when its digest matches the verified burn. Yet r1's
+//! out was a one-shot burn — the coins left A the instant the out folded, with no way back if the in never
+//! landed on B. A real crossing must be ATOMIC: it lands on both ledgers or on neither, with no window where
+//! the coins are gone from A and absent on B (a loss) or present on both (a double).
+//!
+//! So the out becomes TWO-PHASE, the Pledge's own atomicity widened from two phases to two shards. Alice
+//! STAGES a crossing (`S·id·digest`): her spendable balance falls, a matching RESERVED amount rises, and an
+//! open crossing is seated under the id — the coins are held IN TRANSIT, neither spent nor returned. Once the
+//! matching in lands on B, Alice COMMITS (`C·id`): the reserved coins leave circulation (they are Bob's now).
+//! If the in never lands, Alice REVERTS (`B·id`): the reserved coins return to her balance, whole. The
+//! crossing settles exactly once.
+//!
+//! The crux is the TWO-OUTCOME LAW read against World B:
+//!   - a COMMITTED source pairs with a landed in — Alice's spendable fell by the amount AND Bob rose by it
+//!     (both moved);
+//!   - a REVERTED source pairs with no in — Alice is whole AND Bob is unpaid (neither moved), the two-world
+//!     sum exactly as if the crossing never began;
+//!   - never a loss (Alice short, Bob unpaid) and never a double (Alice whole, Bob paid).
+//! And, as the Pledge proved for two phases, EQUIVOCATION is decided once: Alice signs BOTH a commit and a
+//! revert for one crossing at the same round, and the agreed order names one identical verdict regardless of
+//! arrival — the second resolution is a lawful no-op. A staged-but-undecided crossing holds its coins
+//! reserved (in transit), never lost.
+//!
+//! Grown beside portage.rye, cord.rye, fold.rye — editing none, composing portage + cord + fold + kumara
+//! public API only (portage r1's own selftest re-runs GREEN at this witness's door). Siloed, dev-only, demo
+//! world/keeper seeds — no real key, no funds, no network, no value crossed. A served commit-after-landing
+//! (World A learning of B's in over Comlink) reaches the Comlink-served gate (Keaton's hand).
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/portage_atomic.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const portage = @import("portage.rye");
+const cord = @import("cord.rye");
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const portage_atomic_version = "20260813.124159";
+
+pub const pk_len: u32 = portage.pk_len;
+pub const id_len: u32 = portage.id_len;
+pub const digest_len: u32 = portage.digest_len;
+
+/// Body tags for the two-phase source — stage · commit · revert, each bound into the signer's signature.
+pub const tag_stage: u8 = 'S';
+pub const tag_commit: u8 = 'C';
+pub const tag_revert: u8 = 'B';
+
+/// One open crossing's settlement state on the source world.
+pub const state_staged: u8 = 0;
+pub const state_committed: u8 = 1;
+pub const state_reverted: u8 = 2;
+
+pub const source_max_accounts: u32 = 2 * cord.cord_max_blocks;
+pub const source_max_crossings: u32 = cord.cord_max_blocks;
+
+/// The full error set the source two-phase law can refuse with.
+pub const SourceError = error{
+    IdentityRefused,
+    UnknownKind,
+    Malformed,
+    NeverPaid, // a stage of more than the signer can spend
+    Overdraw, // an arithmetic wrap
+    UnknownCrossing, // a commit/revert of a crossing never staged
+    WrongSigner, // a settler who is not the stager
+    AmountMismatch, // a commit/revert whose amount is not the staged amount
+    CrossingExists, // a reused crossing id
+    TooManyAccounts,
+    TooManyCrossings,
+};
+
+/// One account's purse on the source world — spendable, and coins held reserved in open crossings.
+pub const Account = struct {
+    pk: [pk_len]u8 = undefined,
+    balance: u64 = 0,
+    reserved: u64 = 0,
+};
+
+/// One crossing the source world staged — its id, the digest binding it to the destination in, its amount,
+/// and its settlement (staged · committed · reverted).
+pub const Crossing = struct {
+    id: [id_len]u8 = undefined,
+    who: [pk_len]u8 = undefined,
+    digest: [digest_len]u8 = undefined,
+    amount: u64 = 0,
+    state: u8 = state_staged,
+};
+
+/// The resolved source ledger: every account's spendable and reserved coins, and every crossing's settlement.
+pub const Source = struct {
+    accounts: [source_max_accounts]Account = undefined,
+    account_count: u32 = 0,
+    crossings: [source_max_crossings]Crossing = undefined,
+    crossing_count: u32 = 0,
+
+    pub fn balance_of(l: *const Source, pk: []const u8) u64 {
+        // invariant: an account key is always a full holder identity.
+        assert(pk.len == pk_len);
+        if (account_index(l, pk)) |k| return l.accounts[k].balance;
+        return 0;
+    }
+
+    pub fn reserved_of(l: *const Source, pk: []const u8) u64 {
+        // invariant: an account key is always a full holder identity.
+        assert(pk.len == pk_len);
+        if (account_index(l, pk)) |k| return l.accounts[k].reserved;
+        return 0;
+    }
+
+    /// The count of crossings the order committed (coins gone to the destination).
+    pub fn committed_seen(l: *const Source) u32 {
+        var n: u32 = 0;
+        var i: u32 = 0;
+        while (i < l.crossing_count) : (i += 1) {
+            if (l.crossings[i].state == state_committed) n += 1;
+        }
+        // invariant: the committed count never exceeds the crossings seated.
+        assert(n <= l.crossing_count);
+        return n;
+    }
+
+    /// The count of crossings the order reverted (coins returned to the sender).
+    pub fn reverted_seen(l: *const Source) u32 {
+        var n: u32 = 0;
+        var i: u32 = 0;
+        while (i < l.crossing_count) : (i += 1) {
+            if (l.crossings[i].state == state_reverted) n += 1;
+        }
+        // invariant: the reverted count never exceeds the crossings seated.
+        assert(n <= l.crossing_count);
+        return n;
+    }
+
+    /// The settlement state of a crossing by id, or null when no crossing carries it.
+    pub fn state_of(l: *const Source, id: []const u8) ?u8 {
+        // invariant: a crossing id is always the fixed tag width.
+        assert(id.len == id_len);
+        if (crossing_index(l, id)) |k| return l.crossings[k].state;
+        return null;
+    }
+};
+
+fn account_index(l: *const Source, pk: []const u8) ?u32 {
+    // invariant: an account key is always a full holder identity.
+    assert(pk.len == pk_len);
+    var i: u32 = 0;
+    while (i < l.account_count) : (i += 1) {
+        if (std.mem.eql(u8, l.accounts[i].pk[0..], pk)) return i;
+    }
+    return null;
+}
+
+fn ensure_account(l: *Source, pk: []const u8) error{TooManyAccounts}!u32 {
+    // invariant: an account key is always a full holder identity.
+    assert(pk.len == pk_len);
+    if (account_index(l, pk)) |k| return k;
+    if (l.account_count >= source_max_accounts) return error.TooManyAccounts;
+    const at = l.account_count;
+    tally_copy.copy_disjoint(u8, l.accounts[at].pk[0..], pk);
+    l.accounts[at].balance = 0;
+    l.accounts[at].reserved = 0;
+    l.account_count += 1;
+    // invariant: growth is exactly one seat, never past the ceiling.
+    assert(l.account_count <= source_max_accounts);
+    return at;
+}
+
+fn credit(l: *Source, pk: []const u8, amount: u64) error{ Overdraw, TooManyAccounts }!void {
+    // invariant: a credit carries a positive amount (mint_fact forbids zero).
+    assert(amount > 0);
+    const k = try ensure_account(l, pk);
+    const nb = l.accounts[k].balance +% amount;
+    if (nb < l.accounts[k].balance) return error.Overdraw; // wrap refuse
+    l.accounts[k].balance = nb;
+    // invariant: the credited seat now holds at least what it took in.
+    assert(l.accounts[k].balance >= amount);
+}
+
+fn crossing_index(l: *const Source, id: []const u8) ?u32 {
+    // invariant: a crossing id is always the fixed tag width.
+    assert(id.len == id_len);
+    var i: u32 = 0;
+    while (i < l.crossing_count) : (i += 1) {
+        if (std.mem.eql(u8, l.crossings[i].id[0..], id)) return i;
+    }
+    return null;
+}
+
+fn open_crossing(l: *Source, id: []const u8, who: []const u8, digest: []const u8, amount: u64) error{ CrossingExists, TooManyCrossings }!void {
+    // invariant: id, stager, and digest are their fixed widths.
+    assert(id.len == id_len);
+    assert(who.len == pk_len);
+    assert(digest.len == digest_len);
+    if (crossing_index(l, id) != null) return error.CrossingExists;
+    if (l.crossing_count >= source_max_crossings) return error.TooManyCrossings;
+    const at = l.crossing_count;
+    tally_copy.copy_disjoint(u8, l.crossings[at].id[0..], id);
+    tally_copy.copy_disjoint(u8, l.crossings[at].who[0..], who);
+    tally_copy.copy_disjoint(u8, l.crossings[at].digest[0..], digest);
+    l.crossings[at].amount = amount;
+    l.crossings[at].state = state_staged;
+    l.crossing_count += 1;
+    // invariant: growth is exactly one seat, never past the ceiling.
+    assert(l.crossing_count <= source_max_crossings);
+}
+
+fn issue_recipient(fact: *const fold.Fact) error{Malformed}![]const u8 {
+    const body = fact.body_slice();
+    if (body.len != pk_len) return error.Malformed;
+    var rk: [pk_len]u8 = undefined;
+    tally_copy.copy_disjoint(u8, rk[0..], body[0..pk_len]);
+    _ = kumara.PublicKey.fromBytes(rk) catch return error.Malformed;
+    return body;
+}
+
+/// Fold one signed fact into the source Source under the two-phase law. A genesis credits; a STAGE reserves
+/// coins balance→reserved and opens a crossing; a COMMIT moves the reserve out of circulation (to the
+/// destination); a REVERT returns the reserve to the sender. A crossing settles exactly once — the first
+/// resolution the order places decides, a second for one id is a lawful no-op.
+pub fn fold_source(l: *Source, fact: *const fold.Fact) SourceError!void {
+    // invariant: a genuine fact carries a bounded body under the fact ceiling.
+    assert(fact.body_len <= fold.myc_fact_max_bytes);
+
+    // Corruption is not a verdict — a broken signature refuses before any coin moves.
+    if (!fold.verify_fact(fact)) return error.IdentityRefused;
+
+    if (fact.kind == fold.kind_issue) {
+        const to = try issue_recipient(fact);
+        try credit(l, to, fact.amount);
+        return;
+    }
+    if (fact.kind != fold.kind_tax) return error.UnknownKind;
+
+    const body = fact.body_slice();
+    if (body.len == 0) return error.Malformed;
+    const tag = body[0];
+    const from = fact.signer_pk[0..];
+
+    if (tag == tag_stage) {
+        // invariant: a stage body is exactly tag · id · digest.
+        if (body.len != 1 + id_len + digest_len) return error.Malformed;
+        const id = body[1 .. 1 + id_len];
+        const digest = body[1 + id_len ..];
+        if (crossing_index(l, id) != null) return error.CrossingExists;
+        // A sender can stage only coins she actually holds — never conjure a debit.
+        if (fact.amount > l.balance_of(from)) return error.NeverPaid;
+        const si = try ensure_account(l, from);
+        // invariant: an accepted stage never reserves more than the sender can spend.
+        assert(fact.amount <= l.accounts[si].balance);
+        l.accounts[si].balance -= fact.amount;
+        const nr = l.accounts[si].reserved +% fact.amount;
+        if (nr < l.accounts[si].reserved) return error.Overdraw; // wrap refuse
+        l.accounts[si].reserved = nr;
+        try open_crossing(l, id, from, digest, fact.amount);
+        return;
+    }
+
+    if (tag == tag_commit or tag == tag_revert) {
+        // invariant: a resolution body is exactly tag · id.
+        if (body.len != 1 + id_len) return error.Malformed;
+        const id = body[1..];
+        const ci = crossing_index(l, id) orelse return error.UnknownCrossing;
+        const cr = &l.crossings[ci];
+        // Only the stager settles their own crossing, and the signed amount must equal it.
+        if (!std.mem.eql(u8, cr.who[0..], from)) return error.WrongSigner;
+        if (fact.amount != cr.amount) return error.AmountMismatch;
+        if (cr.state != state_staged) return; // the order already decided — a lawful no-op
+
+        const ki = account_index(l, from) orelse return error.UnknownCrossing;
+        // invariant: an open crossing's reserve is still held by its stager.
+        assert(l.accounts[ki].reserved >= cr.amount);
+        l.accounts[ki].reserved -= cr.amount;
+        if (tag == tag_commit) {
+            // The coins leave circulation on the source — they are the recipient's on the destination now.
+            cr.state = state_committed;
+        } else {
+            // The coins return to the sender, whole — the crossing never landed.
+            const nb = l.accounts[ki].balance +% cr.amount;
+            if (nb < l.accounts[ki].balance) return error.Overdraw; // wrap refuse
+            l.accounts[ki].balance = nb;
+            cr.state = state_reverted;
+        }
+        return;
+    }
+
+    return error.Malformed;
+}
+
+/// Resolve a committed source-world Dag into a Source ledger under the two-phase law.
+pub fn resolve_source(dag: *const cord.Dag) SourceError!Source {
+    // invariant: each block carries one fact, so the Dag fits the fold ceiling.
+    assert(dag.len <= fold.myc_log_max_facts);
+    var order: [cord.cord_max_blocks]u32 = undefined;
+    // invariant: the order buffer holds the whole Dag.
+    assert(order.len >= dag.len);
+    const committed = cord.commit(dag, order[0..]);
+
+    var l = Source{};
+    var i: u32 = 0;
+    while (i < committed) : (i += 1) {
+        const idx = order[i];
+        // invariant: every committed index names a real seat.
+        assert(idx < dag.len);
+        const blk = &dag.blocks[idx];
+        try fold_source(&l, &blk.fact);
+    }
+    return l;
+}
+
+// --- selftest scaffolding -------------------------------------------------------------------------------
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn dag_of(blocks: []const cord.Block) !cord.Dag {
+    var dag = cord.Dag.empty();
+    for (blocks) |blk| try cord.add(&dag, blk);
+    return dag;
+}
+
+/// Two source ledgers name the same verdict — the crossing's settlement and both purses agree.
+fn sources_equal(x: *const Source, y: *const Source) bool {
+    if (x.crossing_count != y.crossing_count) return false;
+    if (x.committed_seen() != y.committed_seen()) return false;
+    if (x.reverted_seen() != y.reverted_seen()) return false;
+    if (x.account_count != y.account_count) return false;
+    var i: u32 = 0;
+    while (i < x.account_count) : (i += 1) {
+        const xk = x.accounts[i].pk[0..];
+        if (x.accounts[i].balance != y.balance_of(xk)) return false;
+        if (x.accounts[i].reserved != y.reserved_of(xk)) return false;
+    }
+    return true;
+}
+
+/// Build the source genesis + stage blocks: a funder credits Alice `start`, then Alice stages `amount` under
+/// `id` bound to `digest`. Returns the two blocks; a caller appends a commit or revert.
+fn seat_stage(funder: u8, owner: u8, start: u64, id: []const u8, digest: []const u8, amount: u64) ![2]cord.Block {
+    const kf = seeded(funder);
+    const ka = seeded(owner);
+    const owner_pk = ka.public_key.toBytes();
+
+    const f_gen = fold.mint_fact(kf, fold.kind_issue, start, "", owner_pk[0..]) orelse return error.MintGen;
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_gen) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+    const roots = [_][cord.hash_len]u8{hg};
+
+    var sb: [1 + id_len + digest_len]u8 = undefined;
+    sb[0] = tag_stage;
+    tally_copy.copy_disjoint(u8, sb[1 .. 1 + id_len], id);
+    tally_copy.copy_disjoint(u8, sb[1 + id_len ..], digest);
+    const f_stage = fold.mint_fact(ka, fold.kind_tax, amount, "", sb[0..]) orelse return error.MintStage;
+    const bs = cord.mint_block(ka, 1, roots[0..], f_stage) orelse return error.BlockS;
+    return .{ g, bs };
+}
+
+/// A resolution block (commit or revert) for `id`, signed by the stager, child of the stage block `parent`.
+fn seat_resolve(owner: u8, tag: u8, id: []const u8, amount: u64, parent: []const u8) !cord.Block {
+    const ka = seeded(owner);
+    var rb: [1 + id_len]u8 = undefined;
+    rb[0] = tag;
+    tally_copy.copy_disjoint(u8, rb[1..], id);
+    const f = fold.mint_fact(ka, fold.kind_tax, amount, "", rb[0..]) orelse return error.MintResolve;
+    const roots = [_][cord.hash_len]u8{parent[0..cord.hash_len].*};
+    const b = cord.mint_block(ka, 2, roots[0..], f) orelse return error.BlockR;
+    return b;
+}
+
+/// The destination in-block bound to `digest`, crediting Bob `amount` — r1's own in-fact.
+fn seat_in(gateway: u8, id: []const u8, digest: []const u8, amount: u64, to: []const u8) !cord.Block {
+    const kg = seeded(gateway);
+    var ib: [1 + portage.id_len + portage.digest_len + portage.pk_len]u8 = undefined;
+    ib[0] = portage.tag_in;
+    tally_copy.copy_disjoint(u8, ib[1 .. 1 + portage.id_len], id);
+    tally_copy.copy_disjoint(u8, ib[1 + portage.id_len .. 1 + portage.id_len + portage.digest_len], digest);
+    tally_copy.copy_disjoint(u8, ib[1 + portage.id_len + portage.digest_len ..][0..portage.pk_len], to);
+    const f_in = fold.mint_fact(kg, fold.kind_tax, amount, "", ib[0..]) orelse return error.MintIn;
+    const b = cord.mint_block(kg, 0, &[_][cord.hash_len]u8{}, f_in) orelse return error.BlockIn;
+    return b;
+}
+
+fn stage_head(s: cord.Block) [cord.hash_len]u8 {
+    var h: [cord.hash_len]u8 = undefined;
+    cord.address(&s, &h);
+    return h;
+}
+
+pub fn main() !void {
+    const id = [_]u8{0x3A} ** id_len;
+    const wtag = [_]u8{0} ** portage.world_tag_len;
+    const start: u64 = 100;
+    const amount: u64 = 40;
+
+    const alice = seeded(0xA1).public_key.toBytes();
+    const bob = seeded(0xB2).public_key.toBytes();
+
+    var digest: [digest_len]u8 = undefined;
+    portage.portage_digest(id[0..], amount, alice[0..], wtag[0..], bob[0..], &digest);
+
+    const stage = try seat_stage(0xF0, 0xA1, start, id[0..], digest[0..], amount);
+    const shead = stage_head(stage[1]);
+    const b_commit = try seat_resolve(0xA1, tag_commit, id[0..], amount, shead[0..]);
+    const b_revert = try seat_resolve(0xA1, tag_revert, id[0..], amount, shead[0..]);
+    const b_in = try seat_in(0xF1, id[0..], digest[0..], amount, bob[0..]);
+
+    // --- Scene 1 — COMMITTED source pairs with a landed in: BOTH worlds move -------------------------------
+    {
+        var dag_a = try dag_of(&[_]cord.Block{ stage[0], stage[1], b_commit });
+        const sa = try resolve_source(&dag_a);
+        assert(sa.committed_seen() == 1);
+        assert(sa.reverted_seen() == 0);
+        assert(sa.balance_of(alice[0..]) == start - amount); // Alice's spendable fell
+        assert(sa.reserved_of(alice[0..]) == 0); // nothing left in transit
+
+        var dag_b = try dag_of(&[_]cord.Block{b_in});
+        const lb = try portage.resolve_world(&dag_b, &digest);
+        assert(lb.balance_of(bob[0..]) == amount); // Bob rose
+
+        const left_a = start - sa.balance_of(alice[0..]);
+        const reached_b = lb.balance_of(bob[0..]);
+        assert(left_a == reached_b); // both moved, conserved
+        assert(left_a == amount);
+    }
+
+    // --- Scene 2 — REVERTED source pairs with no in: NEITHER world moves -----------------------------------
+    {
+        var dag_a = try dag_of(&[_]cord.Block{ stage[0], stage[1], b_revert });
+        const sa = try resolve_source(&dag_a);
+        assert(sa.reverted_seen() == 1);
+        assert(sa.committed_seen() == 0);
+        assert(sa.balance_of(alice[0..]) == start); // Alice whole again
+        assert(sa.reserved_of(alice[0..]) == 0);
+        // No in landed on B — Bob is unpaid; the two-world sum is exactly the pre-crossing sum.
+        var dag_b = try dag_of(&[_]cord.Block{});
+        const lb = try portage.resolve_world(&dag_b, &digest);
+        assert(lb.balance_of(bob[0..]) == 0);
+        // Neither a loss (Alice short, Bob unpaid) nor a double (Alice whole, Bob paid) is possible:
+        assert(sa.balance_of(alice[0..]) == start); // the sender is whole
+        assert(lb.balance_of(bob[0..]) == 0); // the recipient is unpaid
+    }
+
+    // --- Scene 3 — EQUIVOCATION decided once, identically across arrival order -----------------------------
+    {
+        var d1 = try dag_of(&[_]cord.Block{ stage[0], stage[1], b_commit, b_revert });
+        const s1 = try resolve_source(&d1);
+        var d2 = try dag_of(&[_]cord.Block{ stage[0], stage[1], b_revert, b_commit });
+        const s2 = try resolve_source(&d2);
+        // Exactly one settlement, and both permutations name the identical verdict.
+        assert(s1.committed_seen() + s1.reverted_seen() == 1);
+        assert(sources_equal(&s1, &s2));
+    }
+
+    // --- Scene 4 — a STAGED but undecided crossing holds its coins in transit, never lost ------------------
+    {
+        var dag_a = try dag_of(&[_]cord.Block{ stage[0], stage[1] });
+        const sa = try resolve_source(&dag_a);
+        assert(sa.state_of(id[0..]).? == state_staged);
+        assert(sa.balance_of(alice[0..]) == start - amount);
+        assert(sa.reserved_of(alice[0..]) == amount); // held in transit, spendable+reserved == start
+        assert(sa.balance_of(alice[0..]) + sa.reserved_of(alice[0..]) == start);
+    }
+
+    print("portage-atomic: GREEN — a crossing lands on BOTH worlds or NEITHER: a committed source pairs with a landed in ({d} left A == {d} reached B), a reverted source leaves Alice whole and Bob unpaid (neither moved), equivocation is decided once identically across arrival order, and a staged-but-undecided crossing holds its coins reserved in transit, never lost. Atomic across two shards.\n", .{ amount, amount });
+}
