@@ -1,0 +1,280 @@
+//! mycelium/cord_knot_bron.rye — the Knot travels as a `format cord-knot-v1` record.
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · checkpointing · rung r2 — the Knot travels.
+//! Design read: active-designing/20260813-050903_mycelium-cord-knot-checkpoint-exploration.md
+//!
+//! r1 sealed a committed Cord to a Knot and proved a continuation folds identical
+//! to the whole history. A checkpoint a node cannot hand to another node is only a
+//! local optimization; this rung lets a Knot cross as readable bytes, so a far node
+//! that never held the pruned prefix can trust the sealed supply and continue from
+//! it. A `format cord-knot-v1` record carries the whole Knot — issued, taxed, one
+//! `star` line per reserved star (in seal order), and the digest as hex — and parses
+//! back byte-for-byte; the recovered Knot verifies and continues to the identical
+//! supply. A tampered field breaks the digest, so `continue_verified` refuses
+//! `KnotCorrupt` on rebuild — corruption can never cross as a trusted checkpoint.
+//!
+//! Grown BESIDE the elder: composes cord_knot.rye + fold.rye public API only; the
+//! reader is purpose-built and bounded (never a general parser), refusing an unknown
+//! field rather than dropping it. Siloed, dev-only, demo seeds — no key, funds,
+//! network, or custody.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/cord_knot_bron.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+const cord = @import("cord.rye");
+const cord_knot = @import("cord_knot.rye");
+
+/// A Knot's record carries at most this many reserved stars — a named ceiling
+/// generous for a family-scale ledger, well under the fold's own 1024 star bound.
+/// A Knot holding more refuses `TooManyStars` rather than travel truncated.
+pub const max_stars_in_record: u32 = 64;
+
+/// The bounded record buffer: header, the two integer lines, up to
+/// max_stars_in_record star lines (each `star ` + 64 hex + newline), and the
+/// digest line — sized with headroom so a legal Knot never overflows.
+pub const max_record: u32 = 8192;
+
+pub const BronError = error{
+    BadFormat, // the header line is not `format cord-knot-v1`
+    UnknownField, // a line names a field the record does not define
+    BadLine, // a line is missing a token or carries a trailing one
+    BadInt, // a numeric field did not parse
+    BadHex, // a hex field was the wrong length or held a non-hex char
+    TooManyStars, // the Knot carried more stars than a v1 record admits
+    RecordTooLong, // the render exceeded its bounded buffer
+};
+
+const hex_digits = "0123456789abcdef";
+
+/// Write `bytes` as lowercase hex into `out` (out.len must be twice bytes.len).
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex chars per byte.
+    assert(out.len == bytes.len * 2);
+    // invariant: hex encoding never loses a byte.
+    assert(out.len % 2 == 0);
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0F];
+    }
+}
+
+fn nibble(c: u8) BronError!u8 {
+    return switch (c) {
+        '0'...'9' => c - '0',
+        'a'...'f' => c - 'a' + 10,
+        'A'...'F' => c - 'A' + 10,
+        else => error.BadHex,
+    };
+}
+
+/// Decode `text` (exactly out.len*2 hex chars) into `out`, refusing wrong length
+/// or a non-hex char.
+fn from_hex(text: []const u8, out: []u8) BronError!void {
+    if (text.len != out.len * 2) return error.BadHex;
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < out.len) : (i += 1) {
+        const hi = try nibble(text[i * 2]);
+        const lo = try nibble(text[i * 2 + 1]);
+        out[i] = (hi << 4) | lo;
+    }
+}
+
+/// Render a Knot to a `format cord-knot-v1` record. Refuses an overflow or an
+/// over-full star set rather than a partial record.
+pub fn render(k: *const cord_knot.Knot, out: []u8) BronError!u32 {
+    // invariant: the render buffer honors its bound.
+    assert(out.len >= max_record);
+    // invariant: a Knot's state is always lawful before it is rendered.
+    assert(k.state.taxed <= k.state.issued);
+    if (k.state.star_count > max_stars_in_record) return error.TooManyStars;
+    const head = std.fmt.bufPrint(out, "format cord-knot-v1\n", .{}) catch return error.RecordTooLong;
+    var off: u32 = @intCast(head.len);
+    const il = std.fmt.bufPrint(out[off..], "issued {d}\n", .{k.state.issued}) catch return error.RecordTooLong;
+    off += @intCast(il.len);
+    const tl = std.fmt.bufPrint(out[off..], "taxed {d}\n", .{k.state.taxed}) catch return error.RecordTooLong;
+    off += @intCast(tl.len);
+    var s: u32 = 0;
+    while (s < k.state.star_count) : (s += 1) {
+        const len = k.state.star_lens[s];
+        // invariant: every star name fits the fold's per-name ceiling.
+        assert(len <= fold.star_name_max_bytes);
+        var hex: [fold.star_name_max_bytes * 2]u8 = undefined;
+        to_hex(k.state.stars[s][0..len], hex[0 .. len * 2]);
+        const sl = std.fmt.bufPrint(out[off..], "star {s}\n", .{hex[0 .. len * 2]}) catch return error.RecordTooLong;
+        off += @intCast(sl.len);
+    }
+    var dhex: [cord_knot.knot_digest_len * 2]u8 = undefined;
+    to_hex(k.digest[0..], &dhex);
+    const dl = std.fmt.bufPrint(out[off..], "digest {s}\n", .{dhex}) catch return error.RecordTooLong;
+    off += @intCast(dl.len);
+    // invariant: the rendered record never exceeds its bound.
+    assert(off <= max_record);
+    return off;
+}
+
+/// Split a line on spaces into up to two tokens; returns the count found (or three
+/// to signal a trailing token no line allows). Every Knot line carries two tokens.
+fn tokens(line: []const u8, out: *[2][]const u8) u32 {
+    var count: u32 = 0;
+    var it = std.mem.tokenizeScalar(u8, line, ' ');
+    while (it.next()) |t| {
+        if (count >= 2) return count + 1; // signal a trailing token past what any line allows
+        out[count] = t;
+        count += 1;
+    }
+    return count;
+}
+
+/// Parse a `format cord-knot-v1` record into `out`, refusing an unknown or
+/// malformed field or a bad header. The parse reconstructs structure only — the
+/// digest is not recomputed here, so a tampered field survives into a Knot whose
+/// stored digest no longer matches its state; `continue_verified` catches it.
+pub fn parse(text: []const u8, out: *cord_knot.Knot) BronError!void {
+    out.* = cord_knot.Knot{};
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const header = lines.next() orelse return error.BadFormat;
+    if (!std.mem.eql(u8, header, "format cord-knot-v1")) return error.BadFormat;
+    // invariant: a fresh Knot begins with no stars sealed.
+    assert(out.state.star_count == 0);
+
+    while (lines.next()) |raw| {
+        if (raw.len == 0) continue; // a trailing newline yields one empty line
+        var tok: [2][]const u8 = undefined;
+        const n = tokens(raw, &tok);
+        if (n == 0) continue;
+        if (n != 2) return error.BadLine;
+        if (std.mem.eql(u8, tok[0], "issued")) {
+            out.state.issued = std.fmt.parseInt(u64, tok[1], 10) catch return error.BadInt;
+        } else if (std.mem.eql(u8, tok[0], "taxed")) {
+            out.state.taxed = std.fmt.parseInt(u64, tok[1], 10) catch return error.BadInt;
+        } else if (std.mem.eql(u8, tok[0], "star")) {
+            if (out.state.star_count >= max_stars_in_record) return error.TooManyStars;
+            const hexlen = tok[1].len;
+            if (hexlen % 2 != 0) return error.BadHex;
+            const nb = hexlen / 2;
+            if (nb == 0 or nb > fold.star_name_max_bytes) return error.BadHex;
+            const at = out.state.star_count;
+            try from_hex(tok[1], out.state.stars[at][0..nb]);
+            out.state.star_lens[at] = @intCast(nb);
+            out.state.star_count += 1;
+        } else if (std.mem.eql(u8, tok[0], "digest")) {
+            try from_hex(tok[1], out.digest[0..]);
+        } else {
+            return error.UnknownField;
+        }
+    }
+    // invariant: a parsed Knot carries a bounded star set.
+    assert(out.state.star_count <= max_stars_in_record);
+}
+
+// --- demo, dev-only, deterministic seeds -----------------------------------
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+/// Build the four-fact demo history's committed Cord (a, b genesis issues;
+/// c tax, d star reserve as round-1 children) — the same scene r1 checkpoints.
+fn demo_dag() !cord.Dag {
+    const ka = seeded(0xA1);
+    const kb = seeded(0xB2);
+    const kc = seeded(0xC3);
+    const kd = seeded(0xD4);
+    const fa = fold.mint_fact(ka, fold.kind_issue, 500, "", "genesis-a") orelse return error.MintA;
+    const fb = fold.mint_fact(kb, fold.kind_issue, 500, "", "genesis-b") orelse return error.MintB;
+    const fc = fold.mint_fact(kc, fold.kind_tax, 200, "", "tax-c") orelse return error.MintC;
+    const fd = fold.mint_fact(kd, fold.kind_star_reserve, 100, "vega", "reserve") orelse return error.MintD;
+    const a = cord.mint_block(ka, 0, &[_][cord.hash_len]u8{}, fa) orelse return error.BlockA;
+    const b = cord.mint_block(kb, 0, &[_][cord.hash_len]u8{}, fb) orelse return error.BlockB;
+    var ha: [cord.hash_len]u8 = undefined;
+    var hb: [cord.hash_len]u8 = undefined;
+    cord.address(&a, &ha);
+    cord.address(&b, &hb);
+    const roots = [_][cord.hash_len]u8{ ha, hb };
+    const c = cord.mint_block(kc, 1, roots[0..], fc) orelse return error.BlockC;
+    const d = cord.mint_block(kd, 1, roots[0..], fd) orelse return error.BlockD;
+    var dag = cord.Dag.empty();
+    try cord.add(&dag, a);
+    try cord.add(&dag, b);
+    try cord.add(&dag, c);
+    try cord.add(&dag, d);
+    return dag;
+}
+
+pub fn main() !void {
+    var dag = try demo_dag();
+    const knot = try cord_knot.seal_dag(&dag);
+    if (knot.state.supply() != 700) return error.KnotSupply;
+    if (knot.state.star_count != 1) return error.KnotStar;
+
+    // The crux: render the Knot to a record, parse it back, and the recovered Knot
+    // verifies and carries the byte-identical sealed supply — a checkpoint crosses
+    // to a stranger as readable bytes.
+    var buf: [max_record]u8 = undefined;
+    const n = try render(&knot, buf[0..]);
+    var recovered: cord_knot.Knot = undefined;
+    try parse(buf[0..n], &recovered);
+    if (!cord_knot.verify(&recovered)) return error.RecoveredCorrupt;
+    if (!cord_knot.states_match(&knot.state, &recovered.state)) return error.SupplyCrossed;
+
+    // The recovered Knot continues to the identical supply as the original: fold a
+    // fresh issue of 300 onto each and the two agree (1300 issued, one star).
+    const ke = seeded(0xE5);
+    const fe = fold.mint_fact(ke, fold.kind_issue, 300, "", "epoch-2") orelse return error.MintE;
+    var suf = fold.Log.empty();
+    suf.facts[0] = fe;
+    suf.len = 1;
+    const from_original = try cord_knot.continue_verified(&knot, &suf);
+    const from_recovered = try cord_knot.continue_verified(&recovered, &suf);
+    if (!cord_knot.states_match(&from_original, &from_recovered)) return error.ContinuationCrossed;
+    if (from_recovered.issued != 1300) return error.ContinuationSupply;
+
+    // Fixed point: re-rendering the parsed Knot reproduces the exact bytes.
+    var buf2: [max_record]u8 = undefined;
+    const n2 = try render(&recovered, buf2[0..]);
+    if (n2 != n) return error.RenderNotFixed;
+    if (!std.mem.eql(u8, buf[0..n], buf2[0..n2])) return error.RenderDrift;
+
+    // Refusal: a tampered star line breaks the digest — the recovered Knot no
+    // longer verifies, and continuing it refuses KnotCorrupt on rebuild.
+    var tampered: cord_knot.Knot = undefined;
+    try parse(buf[0..n], &tampered);
+    tampered.state.stars[0][0] ^= 0xff;
+    if (cord_knot.continue_verified(&tampered, &suf)) |_| {
+        return error.TamperTrusted;
+    } else |err| {
+        if (err != error.KnotCorrupt) return error.WrongTamper;
+    }
+
+    // Refusal: a wrong header, an unknown field, and a bad hex star each refuse.
+    var scratch: cord_knot.Knot = undefined;
+    if (parse("format cord-dag-v1\nissued 5\n", &scratch)) |_| {
+        return error.BadHeaderAdmitted;
+    } else |err| {
+        if (err != error.BadFormat) return error.WrongHeader;
+    }
+    if (parse("format cord-knot-v1\nghost 5\n", &scratch)) |_| {
+        return error.UnknownAdmitted;
+    } else |err| {
+        if (err != error.UnknownField) return error.WrongUnknown;
+    }
+    if (parse("format cord-knot-v1\nstar zz\n", &scratch)) |_| {
+        return error.BadHexAdmitted;
+    } else |err| {
+        if (err != error.BadHex) return error.WrongBadHex;
+    }
+
+    print("cord-knot-bron: a Knot rendered to a format cord-knot-v1 record and parsed back, verifying and carrying the identical sealed supply\n", .{});
+    print("cord-knot-bron: the recovered Knot continues to the identical supply (issued 1300), and re-rendering is a fixed point\n", .{});
+    print("cord-knot-bron: a tampered star breaks the digest (KnotCorrupt), and a bad header, unknown field, and bad hex each refuse\n", .{});
+    print("GREEN: myc cord-knot-bron — the Knot travels byte-for-byte · supply={d} · stars={d} · a tampered checkpoint never crosses as trusted\n", .{
+        knot.state.supply(),
+        knot.state.star_count,
+    });
+}
