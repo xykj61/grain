@@ -1,0 +1,423 @@
+//! pond/apps/ledger_query.rye - the Ledger Voice, rung 1: the intelligence reads the ledger.
+//!
+//! Season D (Kresfa & Mycelium). The Cord commits, gossip converges, batching amortizes,
+//! and the Knot checkpoints - the Mycelium ledger can be written and agreed four ways
+//! over. No rung had let a person *read* it. Every other module the tree built earned a
+//! voice (graph_query reads the living Mantra graph, artifact_query reads verified bytes);
+//! this rung carries the same Lantern-shaped voice to the consensus ledger's folded supply.
+//!
+//! The crux is the integrity gate, the twin of artifact_query's own: the voice folds the
+//! whole log lawful (fold.fold_log) *before* it reports a single grain. A log carrying one
+//! unlawful fact - a forged signature, an overdraw, a doubled star, an unknown kind -
+//! refuses the whole fold, and the voice answers nothing at all rather than read an illegal
+//! supply. The only supply it can see is the one the fold law already accepted, so it can
+//! never report a number the mesh would not agree to.
+//!
+//! Additive by construction: it imports lantern_core and mycelium's fold and calls only
+//! their public functions. Neither contract changes; the fold stays its own green binary.
+//! No storage, no transport, no network, no custody - a node reads its own lawful fold.
+//!
+//!   rye build pond/apps/ledger_query.rye -femit-bin=pond/bin/ledger-query
+//!   pond/bin/ledger-query selftest
+//!
+//! Scope: active-designing/20260813-053843_mycelium-ledger-voice-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lc = @import("lantern/lantern_core.rye");
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+
+const ledger_query_version = "20260813.053843";
+
+const max_result_text: u32 = lc.max_completion_len; // never exceed Lantern's completion bound
+
+// The whole errors this voice owns beyond Lantern's and the fold's own sets.
+pub const QueryError = error{
+    UnknownOp,
+    ResultTooLong,
+    ModelNotAllowed,
+    StarNameTooLong,
+};
+
+// The fold's own refusal set - the corpus refusing to exist in a corrupt form. When any
+// of these bites the voice reports nothing; the reading never rides an unlawful ledger.
+pub const FoldError = error{
+    IdentityRefused,
+    UnknownKind,
+    Overdraw,
+    StarTaken,
+    LogFull,
+};
+
+// The union a caller sees: Lantern's contract, the fold's refusals, and ours.
+pub const AnswerError = lc.LanternError || FoldError || QueryError;
+
+/// The ledger operations the router recognizes by name in the prompt.
+pub const Op = enum(u8) {
+    supply, // the current supply: issued - taxed
+    issued, // the running total issued
+    taxed, // the running total taxed (into the twelve)
+    stars, // the count of reserved stars
+    star, // whether a named star is held ("held" / "free")
+    facts, // the number of facts the lawful log carries
+    summary, // "supply=<n> stars=<m>" - the one-line state
+};
+
+// A routed query: an operation and, for `star`, the name it asks after. The name is the
+// second whitespace token of the prompt - "star bandun" asks after bandun.
+const Routed = struct { op: Op, name: []const u8 = "" };
+
+/// Recognize the operation (and star name, for `star`) in the prompt. Returns UnknownOp
+/// rather than guessing - the voice never invents an answer over an op it cannot name.
+pub fn route(prompt: []const u8) QueryError!Routed {
+    // invariant: the prompt fits Lantern's own bound before we read it
+    assert(prompt.len <= lc.max_prompt_len);
+    var parts = std.mem.tokenizeScalar(u8, prompt, ' ');
+    const verb = parts.next() orelse return error.UnknownOp;
+    const op: Op = if (std.mem.eql(u8, verb, "supply"))
+        .supply
+    else if (std.mem.eql(u8, verb, "issued"))
+        .issued
+    else if (std.mem.eql(u8, verb, "taxed"))
+        .taxed
+    else if (std.mem.eql(u8, verb, "stars"))
+        .stars
+    else if (std.mem.eql(u8, verb, "star"))
+        .star
+    else if (std.mem.eql(u8, verb, "facts"))
+        .facts
+    else if (std.mem.eql(u8, verb, "summary"))
+        .summary
+    else
+        return error.UnknownOp;
+    if (op == .star) {
+        const name = parts.next() orelse return error.UnknownOp; // `star` with no name names nothing
+        if (name.len > fold.star_name_max_bytes) return error.StarNameTooLong;
+        return .{ .op = op, .name = name };
+    }
+    return .{ .op = op };
+}
+
+/// True when the folded state holds a reservation for `name`. A pure read of the state's
+/// own star table - the same lookup a reservation refuses a duplicate against.
+pub fn star_held(state: *const fold.FoldState, name: []const u8) bool {
+    // invariant: the state's star count never exceeds the log bound
+    assert(state.star_count <= fold.myc_log_max_facts);
+    var i: u32 = 0;
+    while (i < state.star_count) : (i += 1) {
+        const len = state.star_lens[i];
+        if (len != name.len) continue;
+        if (std.mem.eql(u8, state.stars[i][0..len], name)) return true;
+    }
+    return false;
+}
+
+/// Read the routed operation over the lawful folded state and format the true result into
+/// out_buf. Called only after fold_log accepted the whole log, so every value read is a
+/// value the fold law already blessed.
+pub fn compute(r: Routed, state: *const fold.FoldState, fact_count: u32, out_buf: []u8) QueryError![]const u8 {
+    // invariant: the caller's buffer respects Lantern's completion bound
+    assert(out_buf.len <= max_result_text);
+    // invariant: there is room for at least one byte
+    assert(out_buf.len > 0);
+    // invariant: the fold law holds on the state we are about to read
+    assert(state.taxed <= state.issued);
+
+    switch (r.op) {
+        .supply => return fmt_u64(state.supply(), out_buf),
+        .issued => return fmt_u64(state.issued, out_buf),
+        .taxed => return fmt_u64(state.taxed, out_buf),
+        .stars => return fmt_u64(state.star_count, out_buf),
+        .facts => return fmt_u64(fact_count, out_buf),
+        .star => {
+            const held = star_held(state, r.name);
+            const word = if (held) "held" else "free";
+            if (word.len > out_buf.len) return error.ResultTooLong;
+            var i: u32 = 0;
+            while (i < word.len) : (i += 1) out_buf[i] = word[i];
+            // invariant: the copied word never exceeds the buffer
+            assert(word.len <= out_buf.len);
+            return out_buf[0..word.len];
+        },
+        .summary => {
+            const piece = std.fmt.bufPrint(out_buf, "supply={d} stars={d}", .{ state.supply(), state.star_count }) catch return error.ResultTooLong;
+            // seam: bufPrint returns usize; it never exceeds the slice it wrote into
+            assert(piece.len <= out_buf.len);
+            return out_buf[0..piece.len];
+        },
+    }
+}
+
+/// Format an unsigned value into out_buf, refusing rather than overrun.
+fn fmt_u64(v: u64, out_buf: []u8) QueryError![]const u8 {
+    // invariant: room for at least one digit
+    assert(out_buf.len > 0);
+    const piece = std.fmt.bufPrint(out_buf, "{d}", .{v}) catch return error.ResultTooLong;
+    // seam: bufPrint returns usize bounded by the slice it wrote into
+    assert(piece.len <= out_buf.len);
+    return out_buf[0..piece.len];
+}
+
+/// Count whitespace-separated words - the same token sense Lantern's length budget uses.
+pub fn count_words(text: []const u8) u32 {
+    // invariant: the text respects Lantern's completion bound
+    assert(text.len <= max_result_text);
+    var words: u32 = 0;
+    var in_word = false;
+    var i: u32 = 0;
+    while (i < text.len) : (i += 1) {
+        const is_space = text[i] == ' ' or text[i] == '\t' or text[i] == '\n' or text[i] == '\r';
+        if (!is_space) {
+            if (!in_word) {
+                words += 1;
+                in_word = true;
+            }
+        } else {
+            in_word = false;
+        }
+    }
+    return words;
+}
+
+/// The Q-vane query over an explicit log: validate the request against Lantern's contract,
+/// gate the model through the allow-list, fold the whole log lawful, read the routed op,
+/// and return a Lantern Response bounded by max_tokens (length stop when the budget bites).
+/// The model is never trusted before the list clears; the ledger is never read before the
+/// fold law accepts every fact in it - one unlawful fact refuses the whole reading.
+pub fn answer_over(
+    req: lc.Request,
+    allow_text: []const u8,
+    log: *const fold.Log,
+    out_buf: []u8,
+) AnswerError!lc.Response {
+    // invariant: the caller's buffer honors Lantern's completion bound
+    assert(out_buf.len <= max_result_text);
+    // invariant: the buffer can hold at least one token
+    assert(out_buf.len > 0);
+
+    try lc.validate_request(req);
+    if (!lc.model_allowed(req.model_hash, allow_text)) return error.ModelNotAllowed;
+
+    const r = try route(req.prompt);
+    // The integrity gate: fold the whole log lawful before reading a single grain. A
+    // forged signature, an overdraw, a doubled star, or an unknown kind refuses here, and
+    // the voice reports nothing - it can only ever see a supply the fold law has blessed.
+    const state = try fold.fold_log(log);
+    const text = try compute(r, &state, log.len, out_buf);
+
+    const tokens_in = count_words(req.prompt);
+    var tokens_out = count_words(text);
+    var final_text = text;
+    var reason: lc.StoppedReason = .eos;
+
+    // Honor Lantern's metering: when the real reading outruns the budget, truncate to
+    // max_tokens words and mark a length stop - the same discipline every voice applies.
+    if (tokens_out > req.max_tokens) {
+        var words: u32 = 0;
+        var cut: u32 = 0;
+        var i: u32 = 0;
+        var in_word = false;
+        assert(text.len <= max_result_text);
+        while (i < text.len) : (i += 1) {
+            const is_space = text[i] == ' ' or text[i] == '\t' or text[i] == '\n' or text[i] == '\r';
+            if (!is_space) {
+                if (!in_word) {
+                    if (words == req.max_tokens) break;
+                    words += 1;
+                    in_word = true;
+                }
+                cut = i + 1;
+            } else {
+                in_word = false;
+            }
+        }
+        final_text = text[0..cut];
+        tokens_out = words;
+        reason = .length;
+    }
+
+    // invariant: the returned text never exceeds Lantern's completion bound
+    assert(final_text.len <= lc.max_completion_len);
+    // invariant: metered output never exceeds the requested budget
+    assert(tokens_out <= req.max_tokens);
+    return .{
+        .text = final_text,
+        .tokens_in = tokens_in,
+        .tokens_out = tokens_out,
+        .stopped_reason = reason,
+    };
+}
+
+// Seat the demo ledger: one keeper issues a genesis supply, pays a tax, and reserves one
+// star - exactly the shape the fold selftest folds, the same lawful log every reader sees.
+// issued=1000, taxed=128 (64 tax + 64 reservation), supply=872, one star "bandun".
+fn seat_demo(log: *fold.Log) FoldError!void {
+    const seed: [kumara.seed_length]u8 = .{0x7e} ** kumara.seed_length;
+    const kp = kumara.keypair_from_seed(&seed);
+    const issue = fold.mint_fact(kp, fold.kind_issue, 1000, "", "genesis-purpose") orelse unreachable;
+    const tax = fold.mint_fact(kp, fold.kind_tax, 64, "", "star-price-drain") orelse unreachable;
+    const star_a = fold.mint_fact(kp, fold.kind_star_reserve, 64, "bandun", "reserve") orelse unreachable;
+    log.* = fold.Log.empty();
+    _ = try fold.append_fact(log, issue);
+    _ = try fold.append_fact(log, tax);
+    _ = try fold.append_fact(log, star_a);
+}
+
+/// The Q-vane query over the demo ledger - a caller with no log of its own can still ask
+/// against the same lawful fold every reader sees.
+pub fn answer(req: lc.Request, allow_text: []const u8, out_buf: []u8) AnswerError!lc.Response {
+    // invariant: the caller's buffer honors Lantern's completion bound
+    assert(out_buf.len <= max_result_text);
+    var log: fold.Log = undefined;
+    try seat_demo(&log);
+    return answer_over(req, allow_text, &log, out_buf);
+}
+
+// --- selftest -----------------------------------------------------------
+
+const allow_line = "model_hash sha3-256-rye-forge-lap0";
+const model = "sha3-256-rye-forge-lap0";
+
+fn ask(prompt: []const u8, max_tokens: u32, out_buf: []u8) AnswerError!lc.Response {
+    const req = lc.Request{ .model_hash = model, .prompt = prompt, .max_tokens = max_tokens };
+    return answer(req, allow_line, out_buf);
+}
+
+fn welcome_supply() !void {
+    var buf: [max_result_text]u8 = undefined;
+    const resp = try ask("supply the ledger", 64, &buf);
+    // issued 1000 - taxed 128 (64 tax + 64 reservation) = 872.
+    assert(std.mem.eql(u8, resp.text, "872"));
+    assert(resp.stopped_reason == .eos);
+    print("ledger_query: supply read the lawful fold — text '{s}' eos\n", .{resp.text});
+}
+
+fn welcome_issued_taxed() !void {
+    var buf: [max_result_text]u8 = undefined;
+    const issued = try ask("issued the ledger", 64, &buf);
+    assert(std.mem.eql(u8, issued.text, "1000"));
+    var buf2: [max_result_text]u8 = undefined;
+    const taxed = try ask("taxed the ledger", 64, &buf2);
+    assert(std.mem.eql(u8, taxed.text, "128"));
+    print("ledger_query: issued/taxed read the running totals — 1000/128\n", .{});
+}
+
+fn welcome_stars_and_star() !void {
+    var buf: [max_result_text]u8 = undefined;
+    const stars = try ask("stars the ledger", 64, &buf);
+    assert(std.mem.eql(u8, stars.text, "1"));
+    var buf2: [max_result_text]u8 = undefined;
+    const held = try ask("star bandun", 64, &buf2);
+    assert(std.mem.eql(u8, held.text, "held"));
+    var buf3: [max_result_text]u8 = undefined;
+    const free = try ask("star acme", 64, &buf3);
+    assert(std.mem.eql(u8, free.text, "free"));
+    print("ledger_query: stars=1, bandun held, acme free — the reservation table reads true\n", .{});
+}
+
+fn welcome_facts() !void {
+    var buf: [max_result_text]u8 = undefined;
+    const resp = try ask("facts the ledger", 64, &buf);
+    assert(std.mem.eql(u8, resp.text, "3"));
+    print("ledger_query: facts=3 — the lawful log's own length\n", .{});
+}
+
+fn welcome_summary() !void {
+    var buf: [max_result_text]u8 = undefined;
+    const resp = try ask("summary the ledger", 64, &buf);
+    assert(std.mem.eql(u8, resp.text, "supply=872 stars=1"));
+    assert(resp.tokens_out == 2);
+    assert(resp.stopped_reason == .eos);
+    print("ledger_query: summary read the one-line state — text '{s}' eos\n", .{resp.text});
+}
+
+fn welcome_length_budget() !void {
+    var buf: [max_result_text]u8 = undefined;
+    // "supply=872 stars=1" is two tokens; a one-token budget truncates with a length stop.
+    const resp = try ask("summary the ledger", 1, &buf);
+    assert(resp.tokens_out == 1);
+    assert(resp.stopped_reason == .length);
+    assert(std.mem.eql(u8, resp.text, "supply=872"));
+    print("ledger_query: length budget — tokens {d} length\n", .{resp.tokens_out});
+}
+
+// The crux: a log carrying one tampered fact refuses the whole fold, so *every* op reports
+// nothing at all - the voice can never read an illegal supply. This is the twin of
+// artifact_query's tampered-bead refusal: the corpus refuses to exist in a corrupt form.
+fn unwelcome_tampered_fact_refuses_all() !void {
+    var log: fold.Log = undefined;
+    try seat_demo(&log);
+    // Flip a signature byte on the genesis issue - the fold re-verifies every signer.
+    log.facts[0].sig[0] ^= 0xff;
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{ .model_hash = model, .prompt = "supply the ledger", .max_tokens = 64 };
+    if (answer_over(req, allow_line, &log, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.IdentityRefused);
+    }
+    // Not just supply - a summary over the same corrupt log refuses identically.
+    const req2 = lc.Request{ .model_hash = model, .prompt = "summary the ledger", .max_tokens = 64 };
+    if (answer_over(req2, allow_line, &log, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.IdentityRefused);
+    }
+    print("ledger_query: a tampered fact refused the whole fold — the voice read no supply at all\n", .{});
+}
+
+fn unwelcome_model_not_allowed() !void {
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{ .model_hash = "sha3-256-unlisted", .prompt = "supply the ledger", .max_tokens = 64 };
+    if (answer(req, allow_line, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.ModelNotAllowed);
+    }
+    print("ledger_query: model not allowed refused\n", .{});
+}
+
+fn unwelcome_unknown_op() !void {
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{ .model_hash = model, .prompt = "mint the ledger", .max_tokens = 64 };
+    if (answer(req, allow_line, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.UnknownOp);
+    }
+    print("ledger_query: unknown op refused (no fake answer)\n", .{});
+}
+
+fn unwelcome_zero_budget() !void {
+    var buf: [max_result_text]u8 = undefined;
+    const req = lc.Request{ .model_hash = model, .prompt = "supply the ledger", .max_tokens = 0 };
+    if (answer(req, allow_line, &buf)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.BudgetExceeded);
+    }
+    print("ledger_query: zero budget refused by Lantern contract\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        try welcome_supply();
+        try welcome_issued_taxed();
+        try welcome_stars_and_star();
+        try welcome_facts();
+        try welcome_summary();
+        try welcome_length_budget();
+        try unwelcome_tampered_fact_refuses_all();
+        try unwelcome_model_not_allowed();
+        try unwelcome_unknown_op();
+        try unwelcome_zero_budget();
+        print("ledger_query {s} — GREEN\n", .{ledger_query_version});
+        return 0;
+    }
+    print("usage: ledger-query selftest\n", .{});
+    return 1;
+}

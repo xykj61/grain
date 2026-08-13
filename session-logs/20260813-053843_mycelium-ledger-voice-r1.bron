@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260813.053843
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT), this session in ai-jail
+title Mycelium Ledger Voice r1 — the intelligence reads only a lawful supply
+prompt recur the 1024-round road Lindy-first crux-first; approve own design rounds, make progress, send each finished increment as its own signed round; stop at custody gates; baton prin recur
+think Read REMEMBER (stale — git nib 63bc127a76, HEAD 3085991632) and both itinerary docs. The loop has climbed far past the card: Seasons 2-4 done, into the double-seat expansion — Constel dev-net, then Season D Mycelium (Cord · gossip · batch · Knot). The Knot checkpoint arc (r1-r4) is the last four commits, closed GREEN.
+think Next Lindy-first crux: the Mycelium road wrote and agreed the ledger four ways but no rung let a person READ it. Every other module earned a Lantern-shaped voice (graph_query, artifact_query, corpus_query); the newest, most load-bearing module had none. A civic ledger is read far more than written — highest-Lindy crux left, and it stays on the honest local floor (a node reads its own fold; quorum-serve is the held gate).
+think Crux-first: the decisive move is the integrity gate, twin of artifact_query's own — fold the whole log lawful before reporting a grain, so a tampered fact refuses the whole fold and the voice reads no supply at all. Content-address integrity there; fold-law integrity here. Formatting the ops is the easy part.
+think Studied the pattern: artifact_query/graph_query answer_over shape, lantern_core Request/Response + validate_request + model_allowed, fold.rye FoldState (issued/taxed/supply/stars/star_count) + Log + mint_fact/fold_log/append_fact + the demo seed (0x7e keypair, issue 1000 · tax 64 · reserve bandun 64 → supply 872, one star). pond/apps already carries fold.rye + kumara.rye + lantern/ symlinks, so imports resolve.
+obs Self-approved the design round (exploration doc names the 4-round arc: r1 lawful fold · r2 living Cord · r3 across a Knot · r4 real ledger true). This round seats the exploration + r1 only, one keystone, one send.
+obs Built GREEN first pass; ops supply/issued/taxed/stars/star/facts/summary each read the fold true (872, 1000, 128, 1, held/free, 3, "supply=872 stars=1"). The crux proven: a signature byte flipped on the genesis issue refuses EVERY op with IdentityRefused — the voice reads nothing. Length budget truncates summary to one token; model/unknown-op/zero-budget each refuse.
+obs Additive by construction — composes lantern_core + mycelium/fold public API only; the fold re-runs its own GREEN binary under the witness (two tools, one law: the voice's 872/1-star equals the fold's supply=872 stars=1). TAME bans clean, width-check exit 0.
+loom witness=mycelium_ledger_query_witness ops=7 demo_supply=872 stars=1 facts=3 result=GREEN
+file active-designing/20260813-053843_mycelium-ledger-voice-exploration.md the self-approved design read naming the crux and the four rounds
+file pond/apps/ledger_query.rye r1 — the Ledger Voice: Lantern-shaped query over the fold, integrity-gated by fold_log
+file tools/mycelium_ledger_query_witness.rish witness — selftest GREEN + fold re-run as its own green binary
+file session-logs/README.md prepended this round's newest-first row
+recommend keep-going Ledger Voice r2 — the voice reads the living Cord (fold exactly the committed cord.Dag's blocks), then r3 across a Knot, r4 real ledger true. Quorum-served readings + breach renames (cairn-first) + deep debride + seed force-push stay Keaton's hand.

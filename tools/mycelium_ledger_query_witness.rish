@@ -1,0 +1,59 @@
+# tools/mycelium_ledger_query_witness.rish — the Ledger Voice (r1): the intelligence reads the ledger.
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · the reading half. The Cord commits, gossip
+# converges, batching amortizes, and the Knot checkpoints — four ways to write and agree the ledger, yet
+# no rung had let a person read it. This rung carries the same Lantern-shaped voice every other module
+# earned (graph_query reads the living Mantra graph, artifact_query reads verified bytes) to the consensus
+# ledger's folded supply: supply · issued · taxed · the count of reserved stars · whether a named star is
+# held · the fact count · a one-line summary, each metered by the Lantern contract.
+#
+# The crux is the integrity gate, the twin of artifact_query's own — the voice folds the whole log lawful
+# (fold.fold_log) *before* it reports a single grain, so a log carrying one tampered fact refuses the
+# whole fold and the voice reports nothing rather than read an illegal supply. It can only ever see a
+# supply the fold law already blessed. A disallowed model, an unknown op, and a zero budget each refuse;
+# a summary that outruns the budget truncates with a length stop. Demo keeper seeds only — no real key,
+# no funds, no network, no custody: a node reads its own lawful fold.
+#
+# Additive: composes lantern_core and mycelium's fold public API only; the fold stays its own GREEN binary
+# under this one.
+#
+# Scope: active-designing/20260813-053843_mycelium-ledger-voice-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mycelium_ledger_query_witness.rish
+
+say "mycelium-ledger-query: Language EN — a Q-vane query whose corpus is the Mycelium consensus ledger."
+say "mycelium-ledger-query: Style Radiant — the supply is drawn from the fold and read plainly; what it says is what the mesh agrees to."
+say "mycelium-ledger-query: Lens TAME — every answer a lawful fold reading; a tampered fact refuses the whole fold; contract faults surface; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/ledger-query"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/ledger_query.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-ledger-query: build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "mycelium-ledger-query: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-ledger-query: selftest did not speak GREEN"
+assert selftest.out contains "supply read the lawful fold — text '872' eos" else "mycelium-ledger-query: supply reading missing"
+assert selftest.out contains "issued/taxed read the running totals — 1000/128" else "mycelium-ledger-query: issued/taxed reading missing"
+assert selftest.out contains "stars=1, bandun held, acme free" else "mycelium-ledger-query: reservation-table reading missing"
+assert selftest.out contains "facts=3" else "mycelium-ledger-query: fact-count reading missing"
+assert selftest.out contains "summary read the one-line state — text 'supply=872 stars=1' eos" else "mycelium-ledger-query: summary reading missing"
+assert selftest.out contains "length budget — tokens 1 length" else "mycelium-ledger-query: metering/length stop missing"
+assert selftest.out contains "a tampered fact refused the whole fold — the voice read no supply at all" else "mycelium-ledger-query: integrity gate (the crux) missing"
+assert selftest.out contains "model not allowed refused" else "mycelium-ledger-query: model allow-list gate missing"
+assert selftest.out contains "unknown op refused (no fake answer)" else "mycelium-ledger-query: no-fake-answer refusal missing"
+assert selftest.out contains "zero budget refused by Lantern contract" else "mycelium-ledger-query: Lantern budget gate missing"
+
+# The fold the voice reads over stays its own green binary — the supply the voice reports is the supply
+# the fold law computes, proven separately. Two tools, one law.
+let fold_bin = "mycelium/bin/fold"
+let fold_build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/fold.rye -femit-bin=${fold_bin}"]
+assert fold_build.ok else "mycelium-ledger-query: fold re-build failed"
+let fold_selftest = run ["sh" "-c" "${fold_bin} 2>&1"]
+assert fold_selftest.ok else "mycelium-ledger-query: fold selftest regressed"
+assert fold_selftest.out contains "supply=872" else "mycelium-ledger-query: fold does not agree the demo supply the voice reports"
+assert fold_selftest.out contains "stars=1" else "mycelium-ledger-query: fold does not agree the demo star count the voice reports"
+
+say "mycelium-ledger-query: GREEN — the intelligence reads only a lawful supply; the number the voice reports (872, one star) is the number the fold law computes, and a tampered fact refuses the whole reading. The Mycelium ledger earns its voice."
