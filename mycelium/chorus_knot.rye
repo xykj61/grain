@@ -1,0 +1,309 @@
+//! mycelium/chorus_knot.rye — a quorum's position survives a checkpoint (rung r3).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Chorus · rung r3 — across a Knot.
+//! Design read: active-designing/20260813-102533_mycelium-chorus-quorum-attestation-exploration.md
+//!
+//! r1 gathered a Chorus (a bounded quorum of independent Vouchers for one account position at one
+//! order-head) believed only when a threshold of distinct nodes agree; r2 let the whole quorum travel as
+//! bytes. Yet a ledger a family runs for years does not carry its whole past unbroken: the Knot
+//! (`cord_knot.rye`) ties off a committed prefix into a sealed supply so a bounded Dag runs forever, and
+//! the Lapse continues its deadline clock across that seal by carrying the epoch base (`lapse_knot.rye`).
+//! This rung reads a whole quorum over a ledger resolved ACROSS an epoch cut and proves the vouched
+//! position is CONTINUOUS across the join.
+//!
+//! The crux is A QUORUM'S POSITION SURVIVES A CHECKPOINT. A mesh of distinct nodes vouches Alice's
+//! position against the whole Cord; a counterparty who has already checkpointed — sealed the prefix into a
+//! Knot, discarded the base blocks, continued only the live suffix — reads Alice's Statement from that
+//! Knot-continued ledger and finds the identical position the quorum agreed. `check_position_across`
+//! re-runs r1's quorum law at the record's threshold (every member verifies offline, all agree, distinct
+//! signers, count met), then confirms the one agreed triple equals the continued ledger's reading — so a
+//! quorum stays believable to a party who no longer holds the base. Proven on a pledge lapsing across the
+//! cut (coins home) and a far-deadline pledge honored in the suffix (received accumulated, never
+//! restarted).
+//!
+//! The honest seam, named plainly: the ORDER-HEAD is the WHOLE-HISTORY fingerprint — a SHA-256 fold over
+//! every ordered block address, base included — so a party that pruned the base cannot recompute it from a
+//! Knot alone. r1's `check_against` needs the whole Dag; across a cut it is the POSITION a checkpointing
+//! counterparty verifies, and `check_position_across` is exactly that check. Every member's order-head
+//! still binds the base inside its signature — a quorum naming the whole three-block order folds a digest
+//! distinct from one naming only the sealed prefix, so no node can silently vouch a shorter order and pass
+//! the whole one.
+//!
+//! Additive by construction: imports `chorus` (r1's quorum), `voucher`, `statement`, `lapse_knot`
+//! (r3's checkpoint), `lapse`, `cord`, `fold`, `kumara`, calling only public API. Each stays its own green
+//! binary; no existing module changes. No storage, no transport, no network, no custody — a mesh reads its
+//! own attestations across its own sealed checkpoint. Demo keeper seeds only — no real key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/chorus_knot.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("cord.rye");
+const fold = @import("fold.rye");
+const lapse = @import("lapse.rye");
+const lapse_knot = @import("lapse_knot.rye");
+const statement = @import("statement.rye");
+const voucher = @import("voucher.rye");
+const chorus = @import("chorus.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+
+/// The check that survives pruning: re-run r1's quorum law at the given threshold (every member verifies
+/// offline, all agree on the one claim, the signers are distinct, the count is met), then confirm the one
+/// agreed position equals the account's reading in a ledger resolved across a checkpoint. Where r1's
+/// `check_against` re-derives the order-head from a whole Dag (which a checkpointing party no longer
+/// holds), this checks the POSITION a Knot-continued reader independently resolves — the continuity the
+/// epoch base keeps. A thin or forged quorum fails the quorum law and is never matched against any ledger.
+pub fn check_position_across(c: *const chorus.Chorus, ledger: *const lapse.Ledger, threshold: u32) !bool {
+    // invariant: the account vouched is a full holder identity.
+    assert(c.account_slice().len == chorus.pk_len);
+    // invariant: the continued ledger stays within the named account ceiling.
+    assert(ledger.account_count <= lapse.lapse_max_accounts);
+    // The whole quorum must prove itself first — a thin or forged quorum matches nothing.
+    chorus.verify_chorus(c, threshold) catch return false;
+    const s = try statement.statement_for(ledger, c.account_slice());
+    // invariant: a matching quorum agrees on every projected field, not merely the balance.
+    return s.balance == c.balance and s.reserved == c.reserved and s.received == c.received;
+}
+
+// ---- selftest: a quorum's agreed position reads true across a sealed checkpoint ----
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn write_deadline(deadline: u64, out: []u8) void {
+    // invariant: the buffer holds a full little-endian order position.
+    assert(out.len == lapse.deadline_len);
+    var v = deadline;
+    var i: u32 = 0;
+    while (i < lapse.deadline_len) : (i += 1) {
+        out[i] = @truncate(v);
+        v >>= 8;
+    }
+}
+
+fn pledge_body(id: []const u8, deadline: u64, to: []const u8, out: []u8) u32 {
+    // invariant: the buffer holds tag · id · deadline · recipient exactly.
+    assert(out.len >= 1 + lapse.id_len + lapse.deadline_len + lapse.pk_len);
+    assert(id.len == lapse.id_len);
+    out[0] = lapse.tag_pledge;
+    tally_copy.copy_disjoint(u8, out[1 .. 1 + lapse.id_len], id);
+    write_deadline(deadline, out[1 + lapse.id_len .. 1 + lapse.id_len + lapse.deadline_len]);
+    tally_copy.copy_disjoint(u8, out[1 + lapse.id_len + lapse.deadline_len ..][0..lapse.pk_len], to);
+    return 1 + lapse.id_len + lapse.deadline_len + lapse.pk_len;
+}
+
+fn resolve_body(tag: u8, id: []const u8, out: []u8) u32 {
+    // invariant: the buffer holds tag · id exactly.
+    assert(out.len >= 1 + lapse.id_len);
+    assert(id.len == lapse.id_len);
+    out[0] = tag;
+    tally_copy.copy_disjoint(u8, out[1 .. 1 + lapse.id_len], id);
+    return 1 + lapse.id_len;
+}
+
+const Scene = struct {
+    g: cord.Block,
+    pledge: cord.Block,
+    post: cord.Block,
+    post_fact: fold.Fact,
+};
+
+/// Seat the scene: genesis credits Alice 100 (round 0); Alice pledges 100 to Bob under the given deadline
+/// (round 1); Alice posts it (round 2). The prefix is genesis + pledge (base 2), the suffix the post — so
+/// a deadline of 2 is reached in the suffix (lapse across the cut) and a far deadline is honored across it.
+fn seat(id: []const u8, deadline: u64) !Scene {
+    const kf = seeded(0xF0);
+    const ka = seeded(0xA1);
+    const kb = seeded(0xB2);
+    const alice_pk = ka.public_key.toBytes();
+    const bob_pk = kb.public_key.toBytes();
+
+    const f_gen = fold.mint_fact(kf, fold.kind_issue, 100, "", alice_pk[0..]) orelse return error.MintGen;
+    var pb: [1 + lapse.id_len + lapse.deadline_len + lapse.pk_len]u8 = undefined;
+    const pn = pledge_body(id, deadline, bob_pk[0..], &pb);
+    const f_pledge = fold.mint_fact(ka, fold.kind_tax, 100, "", pb[0..pn]) orelse return error.MintPledge;
+    var hb: [1 + lapse.id_len]u8 = undefined;
+    const hn = resolve_body(lapse.tag_post, id, &hb);
+    const f_post = fold.mint_fact(ka, fold.kind_tax, 100, "", hb[0..hn]) orelse return error.MintPost;
+
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_gen) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+    const roots = [_][cord.hash_len]u8{hg};
+    const b_pledge = cord.mint_block(ka, 1, roots[0..], f_pledge) orelse return error.BlockPledge;
+    var hpl: [cord.hash_len]u8 = undefined;
+    cord.address(&b_pledge, &hpl);
+    const roots2 = [_][cord.hash_len]u8{hpl};
+    const b_post = cord.mint_block(ka, 2, roots2[0..], f_post) orelse return error.BlockPost;
+    return .{ .g = g, .pledge = b_pledge, .post = b_post, .post_fact = f_post };
+}
+
+/// The whole three-block Cord as one Dag — the history a mesh that still holds the blocks vouches against.
+fn whole_dag(s: *const Scene) !cord.Dag {
+    var dag = cord.Dag.empty();
+    try cord.add(&dag, s.g);
+    try cord.add(&dag, s.pledge);
+    try cord.add(&dag, s.post);
+    return dag;
+}
+
+/// The prefix Dag (genesis + pledge) a node seals before its Dag fills — the base of the checkpoint.
+fn prefix_dag(s: *const Scene) !cord.Dag {
+    var dag = cord.Dag.empty();
+    try cord.add(&dag, s.g);
+    try cord.add(&dag, s.pledge);
+    return dag;
+}
+
+/// Seal the prefix into a LapseKnot and continue the post across the cut — the reading a checkpointing
+/// counterparty holds, having discarded the base blocks and kept only the Knot plus its live suffix.
+fn continue_across(s: *const Scene) !lapse.Ledger {
+    var prefix = try prefix_dag(s);
+    const lk = try lapse_knot.seal_lapse(&prefix);
+    var suffix = fold.Log.empty();
+    suffix.facts[0] = s.post_fact;
+    suffix.len = 1;
+    return lapse_knot.continue_lapse(&lk, &suffix);
+}
+
+/// Three distinct honest nodes — a small mesh that vouches together.
+fn three_nodes() [3]kumara.KeyPair {
+    return .{ seeded(0x11), seeded(0x22), seeded(0x33) };
+}
+
+/// Gather a whole quorum over one Dag for one account: open the claim, then add each node's voice.
+fn gather(dag: *const cord.Dag, account_pk: []const u8, nodes: []const kumara.KeyPair) !chorus.Chorus {
+    var c = try chorus.open(dag, account_pk);
+    for (nodes) |n| try chorus.add(&c, dag, n);
+    return c;
+}
+
+pub fn main() !void {
+    const id = [_]u8{0x01} ** lapse.id_len;
+    const nodes = three_nodes();
+    const alice_pk = seeded(0xA1).public_key.toBytes();
+    const bob_pk = seeded(0xB2).public_key.toBytes();
+
+    // --- The crux: a pledge that lapses across the cut, the quorum vouched true on both paths ---
+    // Deadline 2. The suffix post rides absolute position base+0 = 2, so the pledge lapses across the cut:
+    // Alice's coins home to her (balance 100, reserved 0). A three-node mesh vouches Alice's position
+    // against the whole three-block Cord; a party who checkpointed the prefix reads the identical position.
+    {
+        const s = try seat(id[0..], 2);
+        const whole = try whole_dag(&s);
+        const across = try continue_across(&s);
+
+        var c = try gather(&whole, alice_pk[0..], nodes[0..]);
+        // Alice's coins came home across the cut — the agreed position reads lapsed.
+        if (c.balance != 100 or c.reserved != 0 or c.received != 100) return error.CruxClaim;
+        // The quorum is believed and checks against the whole Cord the mesh still holds.
+        try chorus.verify_chorus(&c, 3);
+        if (!try chorus.check_against(&c, &whole)) return error.CruxWhole;
+        // The crux: the checkpointing counterparty, holding only the Knot plus its suffix, reads Alice's
+        // agreed position true at the full threshold — the epoch base kept the clock, so it did not drift.
+        if (across.lapsed_seen() != 1) return error.CruxNotLapsed;
+        if (!try check_position_across(&c, &across, 3)) return error.CruxAcross;
+
+        // Bob's line agrees too — a quorum for Bob's position reads true across the same cut.
+        var cb = try gather(&whole, bob_pk[0..], nodes[0..]);
+        if (!try check_position_across(&cb, &across, 3)) return error.CruxBobAcross;
+    }
+
+    // --- The seam: received accumulates across the cut (a far deadline, honored in the suffix) ---
+    // Deadline 5. The suffix post rides position 2 < 5, so the pledge honors across the cut: Bob is
+    // credited in the SUFFIX, absent at the seal. His received reads 100 (his whole inflow), not a restart
+    // — and a quorum of Bob's position, gathered against the whole Cord, reads true to the pruned history.
+    {
+        const s = try seat(id[0..], 5);
+        const whole = try whole_dag(&s);
+        const across = try continue_across(&s);
+        if (across.posted_seen() != 1) return error.SeamNotPosted;
+
+        var cb = try gather(&whole, bob_pk[0..], nodes[0..]);
+        // Bob's whole inflow, accumulated across the base, is what the quorum agrees.
+        if (cb.received != 100 or cb.balance != 100) return error.SeamBobClaim;
+        if (!try check_position_across(&cb, &across, 3)) return error.SeamBobAcross;
+
+        // Alice's line agrees — reserved returned, her agreed position reads true across the honor.
+        var ca = try gather(&whole, alice_pk[0..], nodes[0..]);
+        if (ca.reserved != 0) return error.SeamAliceReserve;
+        if (!try check_position_across(&ca, &across, 3)) return error.SeamAliceAcross;
+    }
+
+    // --- The order-head is the whole-history fingerprint: base included, distinct from the prefix ---
+    // The whole three-block order folds a digest; the sealed prefix (two blocks) folds a DIFFERENT one, so
+    // the base is inside every member's signed head — no node can silently vouch a shorter order and pass
+    // the whole one. A party that pruned the base cannot recompute the whole head (check_against needs the
+    // whole Dag), which is exactly why check_position_across is the pruned check.
+    {
+        const s = try seat(id[0..], 9);
+        const whole = try whole_dag(&s);
+        var prefix = try prefix_dag(&s);
+
+        var head_whole: [voucher.order_head_len]u8 = undefined;
+        var head_prefix: [voucher.order_head_len]u8 = undefined;
+        voucher.order_head_of(&whole, &head_whole);
+        voucher.order_head_of(&prefix, &head_prefix);
+        // Base included: the whole order-head differs from the prefix-only one.
+        if (std.mem.eql(u8, head_whole[0..], head_prefix[0..])) return error.HeadBaseElided;
+
+        // A quorum gathered against the whole Cord names the whole head in its claim and in every member;
+        // it checks against the whole Dag but not against the shorter prefix order.
+        var c = try gather(&whole, alice_pk[0..], nodes[0..]);
+        if (!std.mem.eql(u8, c.order_head[0..], head_whole[0..])) return error.HeadNotWhole;
+        var m: u32 = 0;
+        while (m < c.count) : (m += 1) {
+            if (!std.mem.eql(u8, c.members[m].order_head[0..], head_whole[0..])) return error.MemberHeadNotWhole;
+        }
+        if (!try chorus.check_against(&c, &whole)) return error.HeadWholeCheck;
+        if (try chorus.check_against(&c, &prefix)) return error.HeadPrefixPassed;
+    }
+
+    // --- Tamper across the cut: no false position is ever read from a broken quorum or a corrupt Knot ---
+    {
+        const s = try seat(id[0..], 2);
+        const whole = try whole_dag(&s);
+        const across = try continue_across(&s);
+        var c = try gather(&whole, alice_pk[0..], nodes[0..]);
+
+        // A forged member (one balance flipped) breaks the quorum, so check_position_across refuses
+        // (false) before it ever reads the continued ledger — a broken quorum matches no checkpoint.
+        var forged = c;
+        forged.members[0].balance += 1;
+        if (chorus.verify_chorus(&forged, 3)) |_| return error.ForgedBelieved else |_| {}
+        if (try check_position_across(&forged, &across, 3)) return error.ForgedAcrossPassed;
+
+        // A thin quorum — the same honest mesh read at a threshold of four — is refused the same way.
+        if (try check_position_across(&c, &across, 4)) return error.ThinAcrossPassed;
+
+        // A Knot corrupted after sealing refuses whole — no continued ledger is ever built from it, so no
+        // position is ever read from a tampered checkpoint.
+        var prefix = try prefix_dag(&s);
+        var lk_bad = try lapse_knot.seal_lapse(&prefix);
+        lk_bad.knot.state.issued += 1;
+        var suffix = fold.Log.empty();
+        suffix.facts[0] = s.post_fact;
+        suffix.len = 1;
+        if (lapse_knot.continue_lapse(&lk_bad, &suffix)) |_| return error.CorruptTrusted else |err| {
+            if (err != error.KnotCorrupt) return error.WrongCorrupt;
+        }
+    }
+
+    // A last render, for eyes — a quorum of Alice's lapsed position across the cut.
+    {
+        const s = try seat(id[0..], 2);
+        const whole = try whole_dag(&s);
+        var c = try gather(&whole, alice_pk[0..], nodes[0..]);
+        chorus.render(&c);
+    }
+
+    print("chorus-knot: a pledge opened before the cut lapses in the suffix; a mesh's quorum of Alice's position, gathered against the whole Cord, reads true to a party who checkpointed the prefix and kept only the Knot plus its suffix\n", .{});
+    print("chorus-knot: received accumulates across the cut — Bob, absent at the seal and credited in the suffix, is vouched his whole 100 inflow, and the quorum reads true to the pruned history\n", .{});
+    print("chorus-knot: the order-head is the whole-history fingerprint, base included — it differs from the prefix-only head in the claim and in every member, so no node can silently name a shorter order; a party that pruned the base checks the position, not the head\n", .{});
+    print("chorus-knot: a forged member and a thin threshold each fail the quorum law and match no checkpoint; a corrupt Knot refuses whole, so no position is read from a tampered checkpoint\n", .{});
+    print("GREEN: myc chorus-knot — a quorum's agreed position survives a checkpoint, continuous across the epoch base (lapse and honor both), the order-head a whole-history fingerprint base included, a broken or thin quorum and a corrupt checkpoint refused\n", .{});
+}
