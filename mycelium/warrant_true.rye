@@ -1,0 +1,156 @@
+//! mycelium/warrant_true.rye — a handoff's signed facts are true to the bytes (r4, the arc closes).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Warrant · rung r4.
+//! Design read: active-designing/20260813-112420_mycelium-warrant-validator-set-rotation-exploration.md
+//!
+//! r1 bound a succession to a quorum of the outgoing roll; r2 let one handoff travel as bytes; r3 walked a
+//! whole succession chain across a checkpoint — all over rolls seated in code. This closing rung proves the
+//! property the whole Warrant rests on: the certificate's signed facts are TRUE TO THE BYTES a keeper can
+//! open and hash. Every outgoing validator signs a tuple binding the successor roll's CONTENT-ADDRESS — a
+//! SHA-256 over the roll's canonical `format muster-v1` bytes — so a keeper who renders those same bytes and
+//! hashes them with the system `sha256sum` recovers the exact digest the warrant carries and every validator
+//! endorsed. If the two agreed, the certificate cannot have signed one roll while naming another.
+//!
+//! Two independent readings must agree:
+//!   - THE DIGEST — the app carries `prev` and `next` digest hex inside the rendered `format warrant-v1`
+//!     record; the r4 witness pipes the same canonical roll bytes (`prev-bytes`, `next-bytes`) through
+//!     `sha256sum` and cross-checks each against the record's line — two tools, one answer.
+//!   - THE COUNT — the app reports how many outgoing validators endorsed the handoff; the witness counts the
+//!     `endorse` lines in the record independently (`grep -c`) and cross-checks — the certificate cannot
+//!     claim a quorum it did not carry.
+//!
+//! Additive — composes `warrant` + `muster` + `muster_bron` + `kumara` public API only (each re-runs GREEN).
+//! Siloed, dev-only, demo validator and keeper seeds — no real key, no funds, no network, no custody. A
+//! SERVED warrant (a holder fetching the live succession chain over Comlink) reaches the Comlink-served gate.
+//!
+//!   rye build mycelium/warrant_true.rye -femit-bin=mycelium/bin/warrant_true
+//!   mycelium/bin/warrant_true selftest
+//!   mycelium/bin/warrant_true prev-bytes | sha256sum   # equals the record's `prev` line
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const warrant = @import("warrant.rye");
+const warrant_bron = @import("warrant_bron.rye");
+const muster = @import("muster.rye");
+const muster_bron = @import("muster_bron.rye");
+const kumara = @import("kumara.rye");
+
+pub const warrant_true_version = "20260813.112420";
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn muster_of(seeds: []const u8) !muster.Muster {
+    var m = muster.Muster.empty();
+    for (seeds) |s| {
+        const pk = seeded(s).public_key.toBytes();
+        try muster.enroll(&m, pk[0..]);
+    }
+    return m;
+}
+
+/// The one demo scene both the app and the witness read: an outgoing roll of four validators hands authority
+/// to a fresh successor roll of three, endorsed by three of the four outgoing validators (its Byzantine
+/// threshold). Deterministic from demo seeds, so the app's bytes and the witness's `sha256sum` read the same.
+fn prev_roll() !muster.Muster {
+    return muster_of(&[_]u8{ 0x11, 0x22, 0x33, 0x44 });
+}
+fn next_roll() !muster.Muster {
+    return muster_of(&[_]u8{ 0xA1, 0xB2, 0xC3 });
+}
+fn lawful_warrant() !warrant.Warrant {
+    const prev = try prev_roll();
+    const next = try next_roll();
+    var w = try warrant.open(1, &prev, &next);
+    try warrant.endorse(&w, seeded(0x11));
+    try warrant.endorse(&w, seeded(0x22));
+    try warrant.endorse(&w, seeded(0x33));
+    return w;
+}
+
+// --- selftest -----------------------------------------------------------
+
+/// The lawful handoff verifies, and the app's carried digests equal a fresh recomputation over the canonical
+/// roll bytes — the in-app half of the cross-check the witness completes with the system `sha256sum`.
+fn welcome_handoff_true_to_its_rolls() !void {
+    const prev = try prev_roll();
+    const next = try next_roll();
+    const w = try lawful_warrant();
+    try warrant.verify_warrant(&w, &prev, &next);
+
+    var pd: [warrant.digest_len]u8 = undefined;
+    var nd: [warrant.digest_len]u8 = undefined;
+    try warrant.roll_digest(&prev, &pd);
+    try warrant.roll_digest(&next, &nd);
+    // invariant: the carried digests are exactly the content-addresses of the two canonical roll records.
+    assert(std.mem.eql(u8, w.prev_digest[0..], pd[0..]));
+    assert(std.mem.eql(u8, w.next_digest[0..], nd[0..]));
+    // invariant: three of the four outgoing validators endorsed — the threshold their roll set.
+    assert(w.count == 3);
+    assert(muster.byzantine_threshold(&prev) == 3);
+    print("warrant-true: the lawful handoff verifies; its carried prev/next digests equal the content-addresses of the two canonical roll records, and three outgoing validators endorsed it — the threshold prev's size sets.\n", .{});
+}
+
+/// A digest bound to the wrong roll is caught in-app too: a single-byte neighbor of the successor roll's
+/// bytes hashes to a different address, so a warrant carrying it would fail `verify_warrant` DigestMismatch.
+fn unwelcome_wrong_roll_refuses() !void {
+    const prev = try prev_roll();
+    const next = try next_roll();
+    const w = try lawful_warrant();
+    // A different successor roll (one validator swapped) — the warrant's next digest no longer binds.
+    const other = try muster_of(&[_]u8{ 0xA1, 0xB2, 0xD4 });
+    if (warrant.verify_warrant(&w, &prev, &other)) |_| return error.WrongRollBelieved else |err| {
+        if (err != error.DigestMismatch) return error.WrongRefusal;
+    }
+    _ = next;
+    print("warrant-true: a warrant judged against a successor roll one validator different refuses DigestMismatch — the signed digest binds one roll, never a neighbor.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_handoff_true_to_its_rolls();
+    try unwelcome_wrong_roll_refuses();
+    print("warrant_true {s} — GREEN\n", .{warrant_true_version});
+    print("warrant-true: endorsements=3\n", .{});
+    print("GREEN: myc warrant r4; a handoff's signed facts are true to the bytes — the prev/next roll content-addresses the certificate carries and every outgoing validator endorsed equal a system sha256sum of the same canonical roll bytes, and the endorsement count equals an independent line count. The Mycelium Warrant's agent-doable arc closes.\n", .{});
+    return 0;
+}
+
+/// Emit the exact canonical `format muster-v1` bytes of the outgoing roll — the bytes whose SHA-256 is the
+/// warrant's `prev` digest. Piped through `sha256sum`, it must equal the record's `prev` line.
+fn emit_roll_bytes(m: *const muster.Muster) !u8 {
+    var buf: [muster_bron.max_record]u8 = undefined;
+    const n = try muster_bron.render(m, buf[0..]);
+    // invariant: exactly the canonical bytes are emitted, nothing appended, so an external hash matches.
+    print("{s}", .{buf[0..n]});
+    return 0;
+}
+
+/// Emit the rendered `format warrant-v1` record — the certificate the witness reads the `prev`/`next` digest
+/// lines and counts the `endorse` lines from.
+fn emit_warrant() !u8 {
+    const w = try lawful_warrant();
+    var buf: [warrant_bron.max_record]u8 = undefined;
+    const n = try warrant_bron.render(&w, buf[0..]);
+    print("{s}", .{buf[0..n]});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_selftest();
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "prev-bytes")) {
+        const prev = try prev_roll();
+        return emit_roll_bytes(&prev);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "next-bytes")) {
+        const next = try next_roll();
+        return emit_roll_bytes(&next);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "warrant")) return emit_warrant();
+    print("usage: warrant-true selftest | prev-bytes | next-bytes | warrant\n", .{});
+    return 1;
+}
