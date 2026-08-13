@@ -1,0 +1,69 @@
+//! mycelium/testament_fixture_gen.rye — reproducibly emit the Testament certificate fixture (r4 support).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · Testament · rung r4 support.
+//! Design read: active-designing/20260813-135126_mycelium-testament-named-quorum-certificate-exploration.md
+//!
+//! Boots the named dev-net roster, seals a reading over a fixed demo Dag, and renders the whole Testament to
+//! a `format testament-v1` record — the exact bytes `mycelium/testament_true.rye` reads back and the r4
+//! witness cross-checks against an independent awk reading. Deterministic through and through: each ship's
+//! key is a pure function of its name (SHA-256(name)), Ed25519 signing is deterministic (RFC 8032), and the
+//! demo Dag is built from fixed seeds — so the same bytes every run. The on-disk certificate is what a real
+//! named constellation seals, never a hand-mock.
+//!
+//! Siloed, dev-only, demo ship and keeper seeds — no real key, no funds, no network, no real value.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/testament_fixture_gen.rye \
+//!     2> tools/fixtures/testament_cert.bron
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const constel = @import("constel.rye");
+const testament = @import("testament.rye");
+const testament_bron = @import("testament_bron.rye");
+
+// The Testament dev-net roster — five named ships, the same names r1-r3 sealed (see testament.rye for the
+// naming law). testament_true.rye boots the identical roster from these names and rebuilds the identical demo
+// Dag, so the on-disk certificate is provably the receipt of the real constellation, not a mock. Keep these
+// three constants in step across the fixture generator and the true-reader.
+pub const roster = [_][]const u8{
+    "xnvethqua",
+    "kwelmirran",
+    "xzobrilth",
+    "murrqaveln",
+    "xwendakosh",
+};
+
+pub const issuer_seed: u8 = 0xF0;
+pub const account_seed: u8 = 0xA1;
+
+/// Build the exact demo Dag the certificate is sealed over — issuer mints one hundred coins to the account.
+pub fn fixture_dag() !@import("cord.rye").Dag {
+    const issuer = constel.seeded(issuer_seed);
+    const account = constel.seeded(account_seed);
+    const account_pk = account.public_key.toBytes();
+    return try constel.demo_genesis(issuer, account_pk[0..]);
+}
+
+/// Seal the fixture's Testament — the whole named roster signs the reading over the demo Dag.
+pub fn sealed() !testament.Testament {
+    var c = try constel.boot(roster[0..]);
+    // invariant: the fixture roster seats every named ship.
+    assert(c.count == roster.len);
+    const account = constel.seeded(account_seed);
+    const account_pk = account.public_key.toBytes();
+    var dag = try fixture_dag();
+    return try testament.seal(&c, &dag, account_pk[0..]);
+}
+
+pub fn main() !void {
+    const t = try sealed();
+    // invariant: the whole roster sealed a voice.
+    assert(t.seal.count == roster.len);
+    var buf: [testament_bron.max_record]u8 = undefined;
+    const len = try testament_bron.render(&t, buf[0..]);
+    // invariant: a rendered fixture is never empty.
+    assert(len > 0);
+    print("{s}", .{buf[0..len]});
+}

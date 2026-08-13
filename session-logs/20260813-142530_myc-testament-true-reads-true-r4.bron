@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260813.142530
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Testament r4 — a real certificate reads true; the Testament arc closes
+prompt Continue the loop — close the Testament journey with r4 (reads true), send each increment. baton prin recur.
+think r1 sealed and verified offline, r2 carried fault tolerance in, r3 let it travel — all over certificates sealed in-process. r4 is the arc's close: a real on-disk format testament-v1 fixture a keeper can open and read, cross-checked by an independent awk (two tools, one answer).
+think Mirrored the Constel r4 pattern (constel_true.rye + constel_fixture_gen.rye + constel_roster_truth.awk + witness): a deterministic fixture generator, an @embedFile-bound true-reader, an awk truth, and a witness that diffs app==awk and regenerates the fixture byte-identical.
+think Wrote mycelium/testament_fixture_gen.rye — boots the roster, seals over a fixed demo Dag, renders to a testament-v1 record. Deterministic because keys are SHA-256(name), Ed25519 signing is deterministic (RFC 8032), and the Dag is built from fixed seeds. Generated tools/fixtures/testament_cert.bron (1265 bytes, head c2d99dd2), symlinked into mycelium/corpora/.
+think Wrote the awk truth tools/fixtures/testament_cert_truth.awk — counts ship lines, reads the head line's first 8 hex → pair "5 c2d99dd2". Chose ship_count + head8 because the app can derive BOTH independently of the record text: count by booting the roster from names, head by rebuilding the demo Dag and computing order_head_of.
+think Wrote mycelium/testament_true.rye — @embedFile the fixture, parse (self-proving: parse re-runs testament.verify), confirm the parsed roster matches the booted constellation name-for-name and the sealed head is the demo Dag's true order-head, re-render == embedded bytes (fixed point), tampered header refuses BadFormat; measure prints the app pair. Two never-mutated locals flagged by the compiler → const (c, booted).
+obs GREEN: app==awk 5 c2d99dd2, fixture REPRODUCIBLE (regen diff clean), Testament r3 re-runs GREEN at the door. Composes testament + testament_bron + testament_fixture_gen + constel + voucher public API only. TAME bans clean, width-check exit 0.
+obs The Testament journey stands complete end to end — r1 named-quorum crux · r2 fault tolerance in the certificate · r3 travels self-proving · r4 reads true. A named constellation's verdict is now a portable, self-proving certificate a keeper reads by hand — the Lindy artifact the whole Mycelium consensus season was building toward. A served testament (ships attesting over Comlink) still reaches the Comlink-served custody gate — Keaton's hand.
+loom witness=mycelium_testament_true_witness app_awk="5 c2d99dd2" fixture_bytes=1265 reproducible=yes r3_door=green ships=5 threshold=4
+file mycelium/testament_fixture_gen.rye r4 support — deterministically seals + renders the certificate fixture
+file mycelium/testament_true.rye r4 — reads the real embedded fixture true (app==awk), the receipt of the real verdict, a fixed point
+file tools/fixtures/testament_cert.bron the committed format testament-v1 fixture (5 ships, head c2d99dd2)
+file tools/fixtures/testament_cert_truth.awk independent awk truth — ship count + head8
+file mycelium/corpora/testament_cert.bron symlink binding the fixture for @embedFile
+file tools/mycelium_testament_true_witness.rish GREEN witness — two-tools-one-answer · reproducible · fixed point · tamper refusal · Testament r3 at the door
+recommend keep-going Fold the Testament arc onto REMEMBER (its own round, matching the Portage/Freight fold commits), then open a fresh Season D / double-seat journey as a self-approved design read. A served testament and Keaton's own Kumara instance stay custody gates.

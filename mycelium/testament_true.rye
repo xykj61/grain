@@ -1,0 +1,163 @@
+//! mycelium/testament_true.rye — a real Testament certificate reads true, the receipt of the real
+//! constellation's verdict (r4, the Testament arc closes).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · Testament · rung r4 — reads true.
+//! Design read: active-designing/20260813-135126_mycelium-testament-named-quorum-certificate-exploration.md
+//!
+//! r1 sealed a named constellation's verdict and verified it offline, r2 carried its fault tolerance, r3 let
+//! it travel as a record — all over certificates sealed in the same process. r4 carries the reader onto a
+//! REAL on-disk `format testament-v1` certificate a keeper can open and read — `tools/fixtures/testament_cert.bron`,
+//! produced reproducibly by `mycelium/testament_fixture_gen.rye`, `@embedFile`-bound at compile time through
+//! the `mycelium/corpora/` symlink (no network).
+//!
+//! Two crux checks make the reading true to the bytes:
+//!   - TWO TOOLS, ONE ANSWER — the app derives the certificate's shape (`<ship_count> <head8>`) INDEPENDENTLY
+//!     of the record text: the ship count by BOOTING the constellation from its names, the head by REBUILDING
+//!     the demo Dag and computing its true order-head. The r4 witness cross-checks that pair against
+//!     `testament_cert_truth.awk`'s reading of the same bytes, so a certificate can never drift from one a
+//!     keeper reads by hand.
+//!   - THE CERTIFICATE IS THE RECEIPT OF THE REAL VERDICT — the app parses the record (which self-proves: parse
+//!     boots the roster from the names, derives the threshold, and re-runs r1's `verify`, so a certificate that
+//!     does not prove its own NAMED quorum refuses), confirms the parsed roster matches the constellation
+//!     booted from its names name-for-name, and that the sealed head is the demo Dag's true order-head. So the
+//!     fixture is a real sealed verdict, not a hand-mock.
+//! Genuineness beyond that: re-rendering the parsed certificate reproduces the embedded bytes (a fixed point),
+//! and a tampered header refuses `BadFormat`.
+//!
+//! Composes testament + testament_bron + testament_fixture_gen + constel + voucher public API only. Siloed,
+//! dev-only, demo ship and keeper seeds — no real key, no funds, no network, no real value.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/testament_true.rye selftest
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/testament_true.rye measure
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const constel = @import("constel.rye");
+const voucher = @import("voucher.rye");
+const testament = @import("testament.rye");
+const testament_bron = @import("testament_bron.rye");
+const gen = @import("testament_fixture_gen.rye");
+
+pub const testament_true_version = "20260813.135126";
+pub const head_len: u32 = testament.head_len;
+
+const real_record = @embedFile("corpora/testament_cert.bron");
+
+/// Parse the real certificate off the embedded fixture bytes. `parse` self-proves — it boots the roster from
+/// the carried names, derives the Byzantine threshold, and re-runs r1's `verify`, so a certificate that does
+/// not prove its own named quorum never returns.
+fn read_testament() !testament.Testament {
+    var t: testament.Testament = undefined;
+    try testament_bron.parse(real_record, &t);
+    return t;
+}
+
+/// The first eight hex characters of the sealed order-head — the reading a keeper sees on the `head` line and
+/// the awk reports.
+fn head8(head: []const u8, out: *[8]u8) void {
+    // invariant: eight hex chars read four whole head bytes.
+    assert(head.len >= 4);
+    const hex = "0123456789abcdef";
+    var i: u32 = 0;
+    while (i < 4) : (i += 1) {
+        out[i * 2] = hex[head[i] >> 4];
+        out[i * 2 + 1] = hex[head[i] & 0x0F];
+    }
+}
+
+/// Derive the certificate's shape INDEPENDENTLY of the record text: the ship count by booting the roster from
+/// its names, the head by rebuilding the demo Dag and computing its true order-head. The app's answer for the
+/// two-tools cross-check — blind to the bytes on disk.
+fn derive_answer(count_out: *u32, h8_out: *[8]u8) !void {
+    const c = try constel.boot(gen.roster[0..]);
+    // invariant: the fixture roster is non-empty.
+    assert(c.count >= 1);
+    count_out.* = c.count;
+    var dag = try gen.fixture_dag();
+    var head: [head_len]u8 = undefined;
+    voucher.order_head_of(&dag, &head);
+    head8(head[0..], h8_out);
+}
+
+/// The reading of the real certificate is true to the bytes AND is the receipt of the real verdict: it
+/// self-proves on parse, the parsed roster matches the constellation booted from its names name-for-name, and
+/// the sealed head is the demo Dag's true order-head.
+fn welcome_reading_true_and_real() !void {
+    const cert = try read_testament(); // self-proving: parse re-ran verify
+    // Verify again explicitly — the certificate stands offline from its names alone.
+    try testament.verify(&cert);
+
+    // The certificate names the real constellation — same ships, same names, in order.
+    const booted = try constel.boot(gen.roster[0..]);
+    if (cert.roster_count != booted.count) return error.CertNotReal;
+    var i: u32 = 0;
+    while (i < cert.roster_count) : (i += 1) {
+        if (!std.mem.eql(u8, cert.name_slice(i), booted.ships[i].name_slice())) return error.CertNotReal;
+    }
+
+    // The sealed head is the demo Dag's true order-head — the certificate swears the real reading.
+    var dag = try gen.fixture_dag();
+    var expected: [head_len]u8 = undefined;
+    voucher.order_head_of(&dag, &expected);
+    if (!std.mem.eql(u8, cert.seal.head_slice(), expected[0..])) return error.CertNotReal;
+
+    var count: u32 = 0;
+    var h8: [8]u8 = undefined;
+    try derive_answer(&count, &h8);
+    print("testament-true: truth-answer {d} {s}\n", .{ count, h8 });
+    print("testament-true: the reading of the real certificate — its ship count and sealed head — matches an independent boot from the ship names and rebuild of the demo Dag, and the certificate is the receipt of the real verdict (it self-proves against its own named roster, and the sealed head is a real order-head).\n", .{});
+}
+
+/// The record is genuinely what the Testament renders: re-rendering the parsed certificate reproduces the
+/// embedded bytes exactly (a fixed point), so the fixture is not a hand-mock.
+fn welcome_record_is_really_testament() !void {
+    var cert = try read_testament();
+    var buf: [testament_bron.max_record]u8 = undefined;
+    const len = try testament_bron.render(&cert, buf[0..]);
+    // invariant: the re-render honors the record bound.
+    assert(len <= testament_bron.max_record);
+    if (!std.mem.eql(u8, buf[0..len], real_record)) return error.NotFixedPoint;
+    print("testament-true: the certificate re-renders to the embedded bytes exactly — the fixture is what the Testament seals, never a hand-mock.\n", .{});
+}
+
+/// A tampered record refuses: a wrong header is caught before any field is read.
+fn unwelcome_tampered_record_refuses() !void {
+    const bad = "format testament-v2\nship xnvethqua\n";
+    var t: testament.Testament = undefined;
+    if (testament_bron.parse(bad, &t)) |_| return error.TamperAdmitted else |err| {
+        if (err != error.BadFormat) return error.WrongTamper;
+    }
+    print("testament-true: a tampered header refused BadFormat.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_reading_true_and_real();
+    try welcome_record_is_really_testament();
+    try unwelcome_tampered_record_refuses();
+    print("testament_true {s} — GREEN\n", .{testament_true_version});
+    print("GREEN: myc testament r4; the reading of a real Testament certificate is true to the bytes (ship-count·head8, app == awk), the certificate the receipt of the real verdict that self-proves against its own named roster and whose sealed head is a real order-head, its record a fixed point. The Testament agent-doable arc closes.\n", .{});
+    return 0;
+}
+
+fn run_measure() !u8 {
+    var count: u32 = 0;
+    var h8: [8]u8 = undefined;
+    try derive_answer(&count, &h8);
+    print("{d} {s}\n", .{ count, h8 });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "measure")) {
+        return run_measure();
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest();
+    }
+    print("usage: testament-true selftest | measure\n", .{});
+    return 1;
+}
