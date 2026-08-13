@@ -1,4 +1,4 @@
-//! comlink/guest_vessel_fetch_fetcher_rx.rye — Amphora lap 3 device: fetcher RX (verify resin bytes).
+//! comlink/guest_vessel_fetch_fetcher_rx.rye — Amphora device: fetcher RX (verify resin bytes) · 20260713.
 
 const vn = @import("virtio_net.rye");
 const wf = @import("wire_format.rye");
