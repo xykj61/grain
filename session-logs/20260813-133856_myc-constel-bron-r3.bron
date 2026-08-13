@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260813.133856
+editor Zed Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Constel r3 — a named constellation travels as a record, self-certifying
+prompt baton prin recur — next agent-doable lap Lindy-first crux-first; send often; make progress before checking in
+think r1 and r2 held the roster in memory. A dev-net a keeper cannot hand to another is only a local fixture; r3 lets the whole constellation cross as a format constel-v1 record (one ship <name> <pk-hex> line each), the family _bron travel idiom.
+think The self-certifying insight is unique to Constel and free: since a ship's key is a pure function of its name (r1: seed = SHA-256(name)), the record's carried pk can be re-derived from the name at parse and checked — a tampered key refuses PkMismatch, so a key can never ride a real name. Richer than the puddle_bron analog, which carries opaque host keys.
+think The crux is not merely byte round-trip but that a keeper boots the IDENTICAL constellation from the record alone — proven by reaching the byte-identical quorum head as the in-memory roster over a demo dag (and that head is the Dag's true order-head).
+obs GREEN on the first build and run. Modeled the reader on puddle_bron (to_hex/from_hex/tokens, usize seam-only with // seam: comment); refusals cover BadFormat, UnknownField, and the PkMismatch tamper (flip the last hex nibble of the first ship line's key). Composes constel public API only; r1 re-runs GREEN at the door; demo seeds, no custody.
+loom witness=mycelium_constel_bron_witness result=GREEN ships=5 format=constel-v1
+file mycelium/constel_bron.rye the r3 module — render/parse, self-certifying, boot-from-record crux
+file tools/mycelium_constel_bron_witness.rish the r3 witness (GREEN; r1 at the door)
+file work-in-progress/REMEMBER.md Constel r3 LANDED folded into the journey bullet; Git nib refreshed
+file session-logs/20260813-133856_myc-constel-bron-r3.bron this log
+recommend keep-going Constel r4 — reads true against a real on-disk fixture cross-checked by an independent awk reading (two tools, one answer), closing the Constel agent-doable arc
