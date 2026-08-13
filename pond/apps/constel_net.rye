@@ -1,0 +1,214 @@
+//! pond/apps/constel_net.rye — Constel dev-net harness, Rung 1: a named fake dev-net, quarantined by its name.
+//!
+//! A constel is a fake, self-invented constellation for a sandbox / testnet / localhost Comlink
+//! p2p network run inside the jailed pier — the peers, piers, and points a developer spins up to
+//! exercise settlement, handshake, and topology without touching any real network. This rung fixes
+//! the crux: a fake dev-net can only be named by a provably-non-@p name (a digit anywhere, the one
+//! promise the Constel naming law guards), and under that name it runs the real settlement protocol
+//! from a genuine genesis.
+//!
+//! The name carries the safety, not a flag a caller could forget. `spin_up` refuses `UnsafeName`
+//! before it opens a single genesis — a name with no digit could parse as a real @p in someone's
+//! custody, so no dev-net is ever born under it. Then it opens a real `settlement.open` galaxy from
+//! demo seeds and verifies the Deed, so the fake net is the actual protocol running where nothing it
+//! names can escape. A forged bind and a non-galaxy number each refuse.
+//!
+//! Demo keeper seeds only — no real key, no network, no custody. Generating the maintainer's own
+//! Kumara instance stays custody gate #4; a constel served over the wire reaches the serve gate.
+//!
+//!   rye build pond/apps/constel_net.rye -femit-bin=pond/bin/constel-net
+//!   pond/bin/constel-net selftest
+//!
+//! Law: active-designing/20260813-022222_constel-test-network-naming-law.md
+//! Scope: active-designing/20260813-022908_constel-devnet-harness-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const settlement = @import("constellation.rye");
+const tilak = @import("kumara_tilak.rye");
+const kumara = @import("kumara.rye");
+
+pub const constel_net_version = "20260813.022908";
+
+// A constel name is short — a hand-drawn dev-net handle, never a long path.
+pub const max_name_len: u32 = 32;
+
+pub const ConstelError = error{
+    UnsafeName, // no digit — the name could parse as a real @p, so no dev-net is born under it
+    NameTooLong,
+    NameEmpty,
+};
+
+/// The one load-bearing promise of the Constel naming law, mirrored in Rye: a real @p body after
+/// its `~` is lowercase letters and hyphens only (a fixed 256-syllable table with no digits), so a
+/// digit anywhere is a structural proof the name can never be a real address. This is exactly the
+/// check `tools/fixtures/constel_naming_scan.sh` runs; the harness draws from the seated law rather
+/// than inventing a parallel rule.
+pub fn name_safe(name: []const u8) bool {
+    // invariant: an empty name is not a name, and carries no safety.
+    if (name.len == 0) return false;
+    // invariant: the scan is bounded — a dev-net handle never exceeds its named maximum.
+    if (name.len > max_name_len) return false;
+    var i: u32 = 0;
+    while (i < name.len) : (i += 1) {
+        const c = name[i];
+        if (c >= '0' and c <= '9') return true;
+    }
+    return false;
+}
+
+/// A spun-up fake dev-net: its law-safe name and the real constellation it opened from genesis.
+pub const Constel = struct {
+    name_buf: [max_name_len]u8,
+    name_len: u32,
+    con: settlement.Constellation,
+    galaxy: settlement.Deed,
+
+    /// The dev-net's name, read back from its own storage (never a borrowed slice).
+    pub fn name(self: *const Constel) []const u8 {
+        // invariant: the stored length never exceeds the buffer it was copied into.
+        assert(self.name_len <= max_name_len);
+        return self.name_buf[0..self.name_len];
+    }
+
+    /// The galaxy number this dev-net is crowned by.
+    pub fn galaxy_point(self: *const Constel) u32 {
+        return self.galaxy.point;
+    }
+};
+
+/// Spin up a fake dev-net under a law-safe name. The name is checked FIRST — a name with no digit
+/// refuses `UnsafeName` before any genesis opens, so a dev-net can never exist under a name that
+/// could reach the live network. Only then does a real genesis open from the demo seeds and its
+/// Deed verify against the fresh constellation; any settlement failure (a forged bind, a non-galaxy
+/// number) propagates, so the fake net runs the genuine protocol.
+pub fn spin_up(
+    net_name: []const u8,
+    key_seed: *const [kumara.seed_length]u8,
+    keeper_seed: *const [kumara.seed_length]u8,
+    galaxy_number: u32,
+) (ConstelError || settlement.SettleError)!Constel {
+    // invariant: the name is bounded and non-empty before it is stored.
+    if (net_name.len == 0) return error.NameEmpty;
+    if (net_name.len > max_name_len) return error.NameTooLong;
+    // invariant: the quarantine is structural — a name that could parse as a real @p never
+    // names a dev-net. This gate stands before genesis, so no fake net is born un-quarantined.
+    if (!name_safe(net_name)) return error.UnsafeName;
+
+    const bind = tilak.make_bind(key_seed, keeper_seed);
+    const opened = try settlement.open(galaxy_number, &bind);
+    // invariant: the opened Deed must verify against its own constellation — the dev-net's root
+    // is proven, not merely returned.
+    assert(settlement.verify(&opened.con, &opened.deed));
+
+    var c = Constel{
+        .name_buf = undefined,
+        .name_len = @intCast(net_name.len),
+        .con = opened.con,
+        .galaxy = opened.deed,
+    };
+    var i: u32 = 0;
+    while (i < net_name.len) : (i += 1) {
+        c.name_buf[i] = net_name[i];
+    }
+    // invariant: a spun-up dev-net reads back its own safe name and a verified genesis galaxy.
+    assert(name_safe(c.name()));
+    assert(c.galaxy_point() == galaxy_number);
+    return c;
+}
+
+// ---- witnesses ----
+
+// Example seeds — plainly not a real keeper's key, so no identity is invented and no key is held.
+const demo_key: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
+const demo_keeper: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
+const demo_galaxy: u32 = 3; // a number that decodes to a galaxy under the compass sky
+
+// The seated first draws of the naming law — the harness proves it draws from them.
+const seated_draws = [_][]const u8{
+    "xnqvel34",
+    "xzkerith58",
+    "xwmur-dol12",
+    "maqwintel06",
+    "sunveknar90",
+};
+
+/// A law-safe constel name spins up a real demo genesis, and the dev-net reads back its safe name
+/// and its verified galaxy — the fake net runs the genuine protocol.
+fn welcome_safe_name_spins_up() !void {
+    const c = try spin_up("xnqvel34", &demo_key, &demo_keeper, demo_galaxy);
+    assert(std.mem.eql(u8, c.name(), "xnqvel34"));
+    assert(c.galaxy_point() == demo_galaxy);
+    // the genesis is a real, verified settlement member
+    assert(settlement.verify(&c.con, &c.galaxy));
+    assert(c.con.is_settled(demo_galaxy));
+    print("constel_net: a law-safe name spun up a real demo genesis; the fake net's galaxy verifies.\n", .{});
+}
+
+/// Every seated draw of the naming law is law-safe here — the harness draws from the seated law,
+/// so a name a developer copies from the fixture always names a valid dev-net.
+fn welcome_every_seated_draw_is_safe() !void {
+    var i: u32 = 0;
+    while (i < seated_draws.len) : (i += 1) {
+        assert(name_safe(seated_draws[i]));
+    }
+    print("constel_net: every seated draw of the naming law is law-safe; the harness draws from the law.\n", .{});
+}
+
+/// An @p-shaped name (letters only, no digit — it could be a real point in someone's custody)
+/// refuses `UnsafeName`, and NO genesis opens. The quarantine is structural: a dev-net can never
+/// be born under a name that could reach the live network.
+fn unwelcome_at_p_shaped_name_refuses() !void {
+    assert(!name_safe("sarlev"));
+    const spun = spin_up("sarlev", &demo_key, &demo_keeper, demo_galaxy);
+    assert(spun == error.UnsafeName);
+    print("constel_net: an @p-shaped name refused UnsafeName; no fake net was born under it.\n", .{});
+}
+
+/// The real settlement protocol runs behind the name gate: a forged bind refuses `BadBind` at
+/// genesis, and a non-galaxy number refuses `NotGenesis` even under a perfectly safe name — the
+/// fake net is the genuine protocol, not a hollow shell.
+fn unwelcome_bad_genesis_refuses() !void {
+    var bind = tilak.make_bind(&demo_key, &demo_keeper);
+    bind.sig_by_key[0] ^= 0xFF; // break the key's signature over the keeper
+    const opened = settlement.open(demo_galaxy, &bind);
+    assert(opened == error.BadBind);
+    // spin_up builds its own bind from the seeds, so drive a distinct real settlement refusal
+    // through the harness: a non-galaxy number, to prove the protocol gate stands behind the name.
+    const non_galaxy = spin_up("xnqvel34", &demo_key, &demo_keeper, 27); // 27 decodes to a star
+    assert(non_galaxy == error.NotGenesis);
+    print("constel_net: a non-galaxy number refused NotGenesis behind a safe name; the real protocol runs in the fake net.\n", .{});
+}
+
+/// An empty name and an overlong name each refuse before any genesis — the handle is bounded.
+fn unwelcome_bad_length_refuses() !void {
+    const empty = spin_up("", &demo_key, &demo_keeper, demo_galaxy);
+    assert(empty == error.NameEmpty);
+    const long_name = "x1" ++ ("a" ** (max_name_len));
+    const overlong = spin_up(long_name, &demo_key, &demo_keeper, demo_galaxy);
+    assert(overlong == error.NameTooLong);
+    print("constel_net: an empty name and an overlong name each refuse before genesis; the handle is bounded.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_safe_name_spins_up();
+    try welcome_every_seated_draw_is_safe();
+    try unwelcome_at_p_shaped_name_refuses();
+    try unwelcome_bad_genesis_refuses();
+    try unwelcome_bad_length_refuses();
+    print("constel_net {s} — GREEN\n", .{constel_net_version});
+    print("GREEN: constel-net r1; a fake dev-net is born only from a law-safe name, and under it runs the real settlement protocol from genesis.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest();
+    }
+    print("usage: constel-net selftest\n", .{});
+    return 1;
+}
