@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260813.174431
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention · ai-jail
+title HUNK25 — the Photos app convolves (blur + sharpen over a 3x3 primitive)
+prompt Read REMEMBER + the 1024-round itinerary and the six-seasons double-seat; take the next agent-doable Lindy-first crux-first lap; approve own design round; send each finished increment to origin and xykj61; STOP at custody gates.
+think REMEMBER's latest lap was HUNK24 (bilinear resampler). Custody gates 2/3/4 (hardware buys, provisioning, real keys) stay untouched and agent-doable image work remains, so this is not gates-only.
+think Lindy-first crux-first: the module had point verbs and the full resampler family, but no neighborhood operation. A single 3x3 convolution primitive is the crux because blur, sharpen, emboss, and every edge detector are each one kernel over it — landing the primitive once opens the whole filter family. Chosen over the general-angle hue rotation (fixed-point trig, a larger, more delicate lap) as the harder-solvable move that opens more road.
+think Shape: convolve(alloc, pm, kernel *const [9]i32, divisor, bias) -> fresh Pixmap; each color channel the kernel-weighted 3x3 sum over divisor plus bias, clamped 0..255; alpha untouched; edges extend via the module's own clamp_index so no read wraps. blur (nine ones over nine) and sharpen (center 5, four -1, over one) are thin wrappers proving the primitive opens the family.
+think Bounds the TAME way: every weight and the divisor bounded by kernel_weight_max = 1<<16, checked at the edge (BadKernel); the 3x3 accumulation runs in i64 (largest term 255*(1<<16), nine plus a bias far inside i64, no wrap); a zero divisor and a degenerate image refuse by name.
+think Proven by the algebra it must obey: identity kernel byte-identical; a solid color a fixed point of both filters (weights sum to one over a flat field); a 3x1 red row [0,90,0] box-blurs to the exact clamped mean [30,30,30]; alpha rides through untouched; source pure; blurred image round-trips as an open image; EmptyImage and BadKernel refusals — reusing the module's own error family, minting only BadKernel.
+obs Witness bracket-grep on [30,30,30] failed through the sh/Rishi escaping; matched the plain phrase 'the exact clamped mean at every pixel' instead — a witness-text choice, not a code fault. Selftest passed first build.
+obs tame_style_check GREEN (its scan fixture still does not cover image/ — noted since HUNK17); width-check exit 0. Kept invariant asserts positive and per-fn; no compound asserts introduced.
+loom witness=hunk_photos_convolve_witness result=GREEN selftests_green=8 new_pub_fn=convolve,blur,sharpen
+file image/photos.rye added convolve + blur + sharpen + kernel_weight_max + BadKernel + run_convolve selftest
+file tools/hunk_photos_convolve_witness.rish new witness — proves the convolution primitive and both filters on metal, family GREEN beneath
+file active-designing/20260813-174431_hunk-photos-convolve-exploration.md self-approved design round for HUNK25
+file work-in-progress/REMEMBER.md HUNK25 lap appended; git nib refreshed
+recommend keep-going HUNK26 — an edge-detect verb (Sobel/Laplacian) is now one kernel over convolve, alongside the general-angle hue rotation or another Season-A / double-seat journey; hardware buys stay custody gates 2/3.
