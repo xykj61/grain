@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260813.044150
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Mycelium fact batching r1 — a batch folds identical to single-fact
+prompt Read REMEMBER + the two itineraries; take the next agent-doable lap Lindy-first crux-first; self-approve design rounds; send each increment; stop at custody gates
+think Read REMEMBER (155 lines), the 1024-round itinerary, and the six-season double-seat expansion. Confirmed tree clean, all reds (#65-74) closed, no reds-first preemption.
+think HEAD (fe36b9e) sits several commits past REMEMBER's git nib (d1aa6eb) — a converged-mesh gossip arc and a fresh design read landed after the card was last refreshed.
+think The most recent self-approved design read (20260813-043303 fact batching) already fixes the shape, name, crux, and four rounds; r1 is agent-doable end to end as a SIBLING module (supersede-the-core waits for Keaton). This is the crux-first next step on the arc already in flight, ahead of opening a brand-new Puddle journey.
+think An Explore agent confirmed Puddle is an explicit named horizon (earns its build only when the vibe-coding sandbox loop it serves exists) — validating the pivot to fact batching, which is fully scoped now.
+think Read cord.rye + fold.rye + the elder witness. Grew mycelium/cord_batch.rye beside the elder: a BatchBlock seals up to 16 facts under one author signature; the canonical bytes bind each fact's own signature so a tampered fact anywhere breaks the block signature at add; commit reuses the elder's exact topological rule (round asc, author key, block hash).
+think The crux proof folds the SAME four facts two ways — one-per-block across the elder Cord and batched (round-0 genesis pair, round-1 tax+reserve) — and asserts issued/taxed/supply/star_count byte-identical (1000/300/700/1). The aggregates are packing-invariant: issues commute, round ordering keeps the drains after them.
+obs Refusals proven whole: BatchFull (mint 17), EmptyBatch (mint 0), tampered fact (BadSignature at add), dangling parent, duplicate — the Dag never grows on a fault.
+obs Additive by construction — composes cord.rye + fold.rye public API only, invents no storage, weakens no bound. Elder Cord and fold both re-run GREEN at the witness door.
+loom witness=mycelium_cord_batch_witness build=green facts=4 max_facts_per_block=16 supply=700 stars=1
+file mycelium/cord_batch.rye the batched Cord — one block seals many facts, folds identical to single-fact
+file tools/mycelium_cord_batch_witness.rish proves the packing equivalence, the refusals, and the elder + fold green at their doors
+file work-in-progress/REMEMBER.md living edge + git nib for the fact-batching r1 round
+recommend keep-going fact batching r2 (the batch travels as format cord-batch-v1 Bron) is the next mechanical lap on the same arc, policy already written in the design read
