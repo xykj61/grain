@@ -1,0 +1,166 @@
+//! pond/apps/image_artifact.rye — HUNK1: an image is a content-addressed Tablecloth artifact.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · opening journey Open Image · rung HUNK1.
+//! Design read: active-designing/20260813-144218_hunk-season-a-open-image-exploration.md (the HUNK0–HUNK3 quest).
+//! Teachers, thanked clean-room: gratitude/qoi.md (the open codec) · mantra/beading.rye (content-addressed store).
+//!
+//! HUNK0 proved the codec: decode(encode(pm)) recovers a pixmap byte-for-byte. This rung gives that pixmap an
+//! identity. An image is encoded to QOI bytes and BEADED into a Tablecloth artifact under a name; the name pins
+//! a content address (a SHA3 digest of the whole and the recipe that reassembles it). Fetching by name
+//! reassembles the bytes, and reassembly proves EVERY bead against its digest FIRST — so a tampered bead refuses
+//! (`DigestMismatch`) before `qoi.decode` reads a single pixel. Content-addressed storage becomes the image's
+//! integrity guarantee for free: an image the store hands back either is the image its name pinned, or it is a
+//! named refusal — never garbage painted onto a canvas. The same image stored under two names is stored once
+//! (the dedup dividend the sprite-sheet marketplace will lean on). No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/image_artifact.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const tablecloth = @import("tablecloth.rye");
+const beading = @import("mantra/beading.rye");
+
+pub const image_artifact_version = "20260813.145706";
+
+/// The largest QOI stream this rung stores — the artifact-content bound the store enforces (a resin's worth,
+/// 512 bytes). A right-to-repair panel's sprite is beaded in its own later round; this rung proves the seam.
+pub const max_stream_bytes: u32 = tablecloth.max_content_bytes;
+
+pub const ImageArtifactError = error{
+    StreamTooLarge,
+};
+
+/// Encode a pixmap to QOI and store it under a name as a content-addressed Tablecloth artifact. The encoded
+/// bytes are beaded into the shared store (so the same image stored twice is stored once); the catalog binds
+/// the name to that content address. Returns the beading report, so a caller can see the dedup dividend.
+/// Refuses a stream past the content bound (`StreamTooLarge`) rather than storing what a fetch cannot hold.
+pub fn store_image(
+    allocator: std.mem.Allocator,
+    cat: *tablecloth.Catalog,
+    store: *beading.BeadStore,
+    name: []const u8,
+    pm: *const qoi.Pixmap,
+) !beading.BeadReport {
+    const pixels = pm.pixel_count();
+    const cap = qoi.encoded_bound(pixels);
+    // invariant: the encode scratch is at least the codec's own safe upper bound.
+    assert(cap >= qoi.header_len);
+    const scratch = try allocator.alloc(u8, cap);
+    const res = try qoi.encode(pm, scratch);
+    const stream = scratch[0..res.len];
+    // invariant: only a stream the fetch buffer can hold is ever stored.
+    if (stream.len > max_stream_bytes) return error.StreamTooLarge;
+    assert(stream.len <= max_stream_bytes);
+    return tablecloth.store_artifact(cat, store, name, stream);
+}
+
+/// Fetch an image by name and decode it into a freshly allocated RGBA Pixmap. The fetch reassembles the beads
+/// and proves each against its digest and the whole against its recorded address BEFORE this function decodes
+/// anything — so a tampered bead refuses (`DigestMismatch`) and an unknown name refuses (`UnknownArtifact`),
+/// each before a single pixel is read. Only verified bytes ever reach the codec.
+pub fn fetch_image(
+    allocator: std.mem.Allocator,
+    cat: *const tablecloth.Catalog,
+    store: *const beading.BeadStore,
+    name: []const u8,
+) !qoi.Pixmap {
+    var buf: [max_stream_bytes]u8 = undefined;
+    // The digest check lives inside fetch_artifact; on a tamper it returns before we read `n`.
+    const n = try tablecloth.fetch_artifact(cat, store, name, buf[0..]);
+    // invariant: a verified stream fits the content bound.
+    assert(n <= max_stream_bytes);
+    return qoi.decode(allocator, buf[0..n]);
+}
+
+// --- selftest: round-trip a real image THROUGH the content-addressed store, prove the dedup dividend, and
+//     prove that a tampered bead refuses before the codec sees a pixel --------------------------------------
+
+/// Build a small, varied 8×8 image whose QOI encoding is a genuine multi-op stream (not a raw copy), so the
+/// round-trip through the store exercises real beads rather than a trivial one.
+fn craft(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const n: u32 = 64;
+    const buf = try allocator.alloc(u8, n * 4);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        // A gentle diagonal ramp with a repeated band — runs, diffs, and index hits all arise naturally.
+        const band: u8 = @intCast((i / 8) & 0xFF);
+        const step: u8 = @intCast((i % 8) & 0xFF);
+        const off = @as(usize, i) * 4;
+        buf[off] = 10 +% band *% 3; // r
+        buf[off + 1] = 20 +% step *% 2; // g
+        buf[off + 2] = 30 +% band; // b
+        buf[off + 3] = 255; // a
+    }
+    return qoi.Pixmap{ .width = 8, .height = 8, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const pm = try craft(garden);
+
+    var store: beading.BeadStore = .empty();
+    var cat: tablecloth.Catalog = .empty();
+
+    // Store the image under a name, then fetch it back and prove byte-for-byte recovery THROUGH the store.
+    const rep = try store_image(garden, &cat, &store, "photo.qoi", &pm);
+    assert(rep.beads_deposited >= 1); // a fresh image deposits its beads
+    const back = try fetch_image(garden, &cat, &store, "photo.qoi");
+    // The crux of this rung: the image the store hands back is the image its name pinned, byte for byte.
+    assert(back.same_bytes(&pm));
+    assert(back.width == 8);
+    assert(back.height == 8);
+    assert(back.channels == 4);
+
+    // The dedup dividend: the same image under a second name is stored once, and still fetches whole.
+    const rep_copy = try store_image(garden, &cat, &store, "photo-copy.qoi", &pm);
+    assert(rep_copy.beads_deposited == 0); // identical bytes: nothing new stored
+    assert(rep_copy.beads_deduped == rep_copy.bead_count); // every bead already held
+    const back_copy = try fetch_image(garden, &cat, &store, "photo-copy.qoi");
+    assert(back_copy.same_bytes(&pm)); // one storage, two true names
+
+    // Unwelcome: a tampered bead refuses BEFORE a pixel is read. Corrupt a held bead in a fresh store so the
+    // rest of the selftest is untouched, then confirm the fetch never reaches the codec.
+    {
+        var store_t: beading.BeadStore = .empty();
+        var cat_t: tablecloth.Catalog = .empty();
+        _ = try store_image(garden, &cat_t, &store_t, "tampered.qoi", &pm);
+        store_t.beads[0].bytes[0] +%= 1; // flip one byte of a held bead
+        if (fetch_image(garden, &cat_t, &store_t, "tampered.qoi")) |_| {
+            return error.TamperSlipped;
+        } else |e| {
+            if (e != error.DigestMismatch) return error.WrongTamper;
+        }
+    }
+
+    // Unwelcome: an unknown name refuses, again before any decode.
+    if (fetch_image(garden, &cat, &store, "absent.qoi")) |_| {
+        return error.UnknownSlipped;
+    } else |e| {
+        if (e != error.UnknownArtifact) return error.WrongUnknown;
+    }
+
+    // Prove the stream really rode the store: fetch its published content address and its whole length.
+    var addr: [tablecloth.address_hex_width]u8 = undefined;
+    try tablecloth.address_hex(&cat, "photo.qoi", addr[0..]);
+    const stored_len = try tablecloth.artifact_len(&cat, "photo.qoi");
+    assert(stored_len >= qoi.header_len + @as(u32, qoi.end_marker.len));
+    assert(stored_len <= max_stream_bytes); // the image fit a resin, as this rung requires
+
+    print("GREEN image-artifact: 8x8 image round-tripped THROUGH the content-addressed store byte-for-byte; " ++
+        "stored {d} bytes at address {s}; same image under two names stored once (deduped {d}/{d} beads); " ++
+        "tampered bead refused DigestMismatch and unknown name refused UnknownArtifact, each before a pixel was read\n", .{
+        stored_len, addr[0..16], rep_copy.beads_deduped, rep_copy.bead_count,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: image_artifact selftest\n", .{});
+    return 1;
+}
