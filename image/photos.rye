@@ -19,7 +19,7 @@ const print = std.debug.print;
 const qoi = @import("qoi.rye");
 const tally_copy = @import("tally_copy.rye");
 
-pub const photos_version = "20260813.170307";
+pub const photos_version = "20260813.171223";
 
 pub const PhotosError = error{
     EmptyRect,
@@ -28,6 +28,7 @@ pub const PhotosError = error{
     BadContrast,
     BadBrightness,
     BadSaturation,
+    NotDownscale,
 };
 
 /// A brightness delta never needs to exceed a full channel range in either direction.
@@ -242,6 +243,90 @@ pub fn scale(
             const src_off = (@as(usize, sy) * @as(usize, pm.width) + @as(usize, sx)) * 4;
             const dst_off = (@as(usize, ny) * @as(usize, new_w) + @as(usize, nx)) * 4;
             tally_copy.copy_disjoint(u8, out[dst_off .. dst_off + 4], pm.pixels[src_off .. src_off + 4]);
+        }
+    }
+
+    // invariant: the output buffer is exactly four bytes per resized pixel.
+    assert(out.len == @as(usize, @intCast(total)) * 4);
+    return qoi.Pixmap{
+        .width = new_w,
+        .height = new_h,
+        .channels = pm.channels,
+        .colorspace = pm.colorspace,
+        .pixels = out,
+    };
+}
+
+/// Resize a decoded image DOWN to new_w×new_h by area averaging, returning a fresh Pixmap: each output pixel is
+/// the exact integer mean, over all four channels, of the source pixels its cell covers. Unlike nearest-neighbor
+/// `scale`, an area downscale reads every source pixel exactly once, so a constant image stays constant with no
+/// drift and fine detail averages rather than drops. The source column band for output column ox is
+/// [ox·w/new_w, (ox+1)·w/new_w); rows likewise — a partition that tiles the source with no gap or overlap, so
+/// every band is non-empty whenever new_w ≤ width and new_h ≤ height. Pure — the source is never mutated. An
+/// identity size recovers the source byte-for-byte. Refuses a zero dimension (`EmptyImage`) and any target larger
+/// than the source in either axis (`NotDownscale` — nearest-neighbor `scale` handles upscales).
+pub fn scale_area(
+    allocator: std.mem.Allocator,
+    pm: *const qoi.Pixmap,
+    new_w: u32,
+    new_h: u32,
+) !qoi.Pixmap {
+    // invariant: the source buffer is exactly four bytes per pixel.
+    assert(pm.pixels.len == @as(usize, pm.width) * @as(usize, pm.height) * 4);
+    if (pm.width == 0 or pm.height == 0 or new_w == 0 or new_h == 0) return error.EmptyImage;
+    // Area averaging is a downscale (or identity); an upscale would leave source pixels unread. Refuse it by name.
+    if (new_w > pm.width or new_h > pm.height) return error.NotDownscale;
+
+    const total = @as(u64, new_w) * @as(u64, new_h);
+    // invariant: the target never exceeds the source, so it fits the codec ceiling the source already met.
+    assert(total <= qoi.qoi_max_pixels);
+
+    const out = try allocator.alloc(u8, @as(usize, @intCast(total)) * 4);
+
+    var oy: u32 = 0;
+    while (oy < new_h) : (oy += 1) {
+        // The source row band [y0, y1) this output row averages — computed in u64 so oy·height cannot wrap.
+        const y0: u32 = @intCast((@as(u64, oy) * @as(u64, pm.height)) / @as(u64, new_h));
+        const y1: u32 = @intCast((@as(u64, oy + 1) * @as(u64, pm.height)) / @as(u64, new_h));
+        var ox: u32 = 0;
+        while (ox < new_w) : (ox += 1) {
+            const x0: u32 = @intCast((@as(u64, ox) * @as(u64, pm.width)) / @as(u64, new_w));
+            const x1: u32 = @intCast((@as(u64, ox + 1) * @as(u64, pm.width)) / @as(u64, new_w));
+            // invariant: the column band is non-empty — new_w ≤ width forces a band width of at least one.
+            assert(x1 > x0);
+            // invariant: the row band is non-empty — new_h ≤ height forces a band height of at least one.
+            assert(y1 > y0);
+            const area = (x1 - x0) * (y1 - y0);
+            // invariant: the block covers at least one pixel and never exceeds the codec's pixel ceiling.
+            assert(area >= 1);
+            // invariant: the block area stays inside the ceiling, so a channel sum stays in u32 (255·2^20 < 2^32).
+            assert(area <= qoi.qoi_max_pixels);
+
+            var sum_r: u32 = 0;
+            var sum_g: u32 = 0;
+            var sum_b: u32 = 0;
+            var sum_a: u32 = 0;
+            var sy: u32 = y0;
+            while (sy < y1) : (sy += 1) {
+                var sx: u32 = x0;
+                while (sx < x1) : (sx += 1) {
+                    const s_off = (@as(usize, sy) * @as(usize, pm.width) + @as(usize, sx)) * 4;
+                    sum_r += pm.pixels[s_off];
+                    sum_g += pm.pixels[s_off + 1];
+                    sum_b += pm.pixels[s_off + 2];
+                    sum_a += pm.pixels[s_off + 3];
+                }
+            }
+            // invariant: each channel sum is at most 255 per covered pixel, still inside u32.
+            assert(sum_r <= 255 * area);
+            // invariant: the alpha sum obeys the same per-pixel byte bound.
+            assert(sum_a <= 255 * area);
+
+            const d_off = (@as(usize, oy) * @as(usize, new_w) + @as(usize, ox)) * 4;
+            out[d_off] = @intCast(sum_r / area);
+            out[d_off + 1] = @intCast(sum_g / area);
+            out[d_off + 2] = @intCast(sum_b / area);
+            out[d_off + 3] = @intCast(sum_a / area);
         }
     }
 
@@ -530,6 +615,88 @@ fn run_scale(garden: std.mem.Allocator) !struct { uw: u32, uh: u32 } {
     return .{ .uw = up.width, .uh = up.height };
 }
 
+/// Prove the area downscale by the algebra it must obey: an identity size recovers the source byte-for-byte, a
+/// solid-color image stays that exact color at any smaller size (the box-filter invariant, no drift), a 2×2 image
+/// downscales to 1×1 as the exact integer mean of its four pixels over all four channels, alpha means alongside
+/// the colors, the source stays pure, a downscaled image is still open, and an upscale and a zero dimension each
+/// refuse by name. Returns the mean pixel's red for the GREEN line.
+fn run_scale_area(garden: std.mem.Allocator) !struct { mean_r: u8 } {
+    // A 2×2 image with four known colors so the 1×1 mean is unambiguous, every channel varied including alpha.
+    const buf = try garden.alloc(u8, 2 * 2 * 4);
+    const cols = [_][4]u8{
+        .{ 10, 20, 30, 40 }, //   top-left
+        .{ 20, 40, 60, 80 }, //   top-right
+        .{ 40, 60, 80, 100 }, //  bottom-left
+        .{ 60, 80, 100, 120 }, // bottom-right
+    };
+    var i: u32 = 0;
+    while (i < 4) : (i += 1) {
+        buf[i * 4] = cols[i][0];
+        buf[i * 4 + 1] = cols[i][1];
+        buf[i * 4 + 2] = cols[i][2];
+        buf[i * 4 + 3] = cols[i][3];
+    }
+    const pm = qoi.Pixmap{ .width = 2, .height = 2, .channels = 4, .colorspace = 0, .pixels = buf };
+
+    // Identity size recovers the source byte-for-byte (every cell is one pixel, its own mean).
+    const same = try scale_area(garden, &pm, 2, 2);
+    assert(same.same_bytes(&pm));
+
+    // A 2×2 downscales to 1×1 as the exact integer mean of all four pixels, per channel and alpha:
+    //   r = (10+20+40+60)/4 = 32, g = (20+40+60+80)/4 = 50, b = (30+60+80+100)/4 = 67, a = (40+80+100+120)/4 = 85.
+    const one = try scale_area(garden, &pm, 1, 1);
+    assert(one.width == 1 and one.height == 1);
+    assert(one.pixels[0] == 32);
+    assert(one.pixels[1] == 50);
+    assert(one.pixels[2] == 67);
+    assert(one.pixels[3] == 85);
+
+    // Constant stays constant: a solid-color image downscales to the SAME color at any smaller size, no drift.
+    {
+        const sw: u32 = 6;
+        const sh: u32 = 4;
+        const solid = try garden.alloc(u8, @as(usize, sw) * @as(usize, sh) * 4);
+        var p: u32 = 0;
+        while (p < sw * sh) : (p += 1) {
+            solid[p * 4] = 77;
+            solid[p * 4 + 1] = 88;
+            solid[p * 4 + 2] = 99;
+            solid[p * 4 + 3] = 111;
+        }
+        const flat = qoi.Pixmap{ .width = sw, .height = sh, .channels = 4, .colorspace = 0, .pixels = solid };
+        const small = try scale_area(garden, &flat, 2, 3);
+        assert(small.width == 2 and small.height == 3);
+        var q: u32 = 0;
+        while (q < small.width * small.height) : (q += 1) {
+            assert(small.pixels[q * 4] == 77);
+            assert(small.pixels[q * 4 + 1] == 88);
+            assert(small.pixels[q * 4 + 2] == 99);
+            assert(small.pixels[q * 4 + 3] == 111);
+        }
+    }
+
+    // Pure: the source is untouched.
+    assert(pm.pixels[0] == 10 and pm.pixels[15] == 120);
+
+    // Still an OPEN image: a downscaled image re-encodes and round-trips through the codec byte-for-byte.
+    const cap = qoi.encoded_bound(one.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const res = try qoi.encode(&one, dst);
+    const back = try qoi.decode(garden, dst[0..res.len]);
+    assert(back.same_bytes(&one));
+
+    // Unwelcome: an upscale in either axis refuses NotDownscale — nearest `scale` handles upscales.
+    if (scale_area(garden, &pm, 3, 2)) |_| return error.UpscaleSlipped else |e| {
+        if (e != error.NotDownscale) return error.WrongUpscale;
+    }
+    // Unwelcome: a zero-dimension target refuses EmptyImage.
+    if (scale_area(garden, &pm, 1, 0)) |_| return error.EmptySlipped else |e| {
+        if (e != error.EmptyImage) return error.WrongEmpty;
+    }
+
+    return .{ .mean_r = one.pixels[0] };
+}
+
 /// Prove the adjust verb by the exact arithmetic it must obey: a neutral adjust recovers the source, a
 /// brightness lift and cut shift and clamp each color channel, a contrast push pivots around 128, a zero
 /// contrast flattens to the midpoint, alpha always passes through, the source stays pure, an adjusted image is
@@ -766,6 +933,12 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         "a 2x nearest upscale samples each pixel from src(nx/2,ny/2); a downscale to 1x1 picks the top-left " ++
         "pixel; source untouched (pure); scaled image re-encodes and round-trips; a zero target and an " ++
         "over-ceiling target refused by name\n", .{ scaled.uw, scaled.uh });
+
+    const area = try run_scale_area(garden);
+    print("GREEN image-photos-scale-area: a 2x2 image area-downscales to 1x1 with mean red {d} — identity size " ++
+        "byte-identical; a solid color stays that exact color at any smaller size (no drift); the 1x1 mean is the " ++
+        "exact integer average of all four pixels over every channel and alpha; source untouched (pure); " ++
+        "downscaled image re-encodes and round-trips; an upscale and a zero target refused by name\n", .{area.mean_r});
 
     const tuned = try run_adjust(garden);
     print("GREEN image-photos-adjust: a {d}x{d} strip tunes — a neutral adjust byte-identical; a brightness " ++
