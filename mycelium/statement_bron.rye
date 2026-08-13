@@ -1,0 +1,355 @@
+//! mycelium/statement_bron.rye — an account statement travels as a readable record.
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Statement · rung r2 — travel.
+//! Design read: active-designing/20260813-091851_mycelium-statement-account-voice-exploration.md
+//!
+//! r1 read one account's line out of a resolved ledger — balance, reserved, received, and every
+//! pledge it made or received — and proved the line RECONCILES (reserved equals the sum of its own
+//! still-open outbound pledges). A statement a holder cannot hand to another is only a local reading,
+//! so r2 lets it cross as `format statement-v1` bytes: an `account <pk> <balance> <reserved>
+//! <received> <present>` line, then one `line <dir> <counterparty> <amount> <state>` per pledge the
+//! account touched (dir 1 made · 2 received; state 0 open · 1 posted · 2 voided · 3 lapsed). Render
+//! writes it, parse reads it back, so a round trip is a fixed point and the recovered statement is
+//! byte-for-byte the same line.
+//!
+//! The crux is RECONCILIATION SURVIVES THE WIRE: the record carries its own reconciliation as a law —
+//! a parsed PRESENT statement whose reserved does not equal the sum of its own still-open made lines
+//! refuses `BadReconcile` before it is trusted, so a statement cannot make or drop a reserve in the
+//! crossing. A holder who receives the bytes checks the same arithmetic r1 asserted, needing no ledger
+//! of their own.
+//!
+//! A purpose-built bounded reader, never a general parser: a wrong header refuses `BadFormat`, an
+//! unknown field `UnknownField` (never dropped), a malformed line `BadLine`, a bad integer or unknown
+//! direction or unknown state `BadInt`, a bad hex field `BadHex`, a broken reconciliation
+//! `BadReconcile`, an over-long statement `TooManyLines`. Composes statement.rye + lapse.rye public
+//! API only. Siloed, dev-only, demo seeds — no key, no funds, no network, no custody.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/statement_bron.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const statement = @import("statement.rye");
+const lapse = @import("lapse.rye");
+const cord = @import("cord.rye");
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+const parse_int = @import("parse_int.rye");
+
+/// A travelled statement carries at most this many lines — bounded by the ledger's own pledge ceiling.
+pub const max_lines_in_record: u32 = statement.statement_max_lines;
+
+/// The record buffer bound — one account's whole line fits with room.
+pub const max_record: u32 = 32768;
+
+pub const BronError = error{
+    BadFormat, // the header line is not `format statement-v1`, or no account line
+    UnknownField, // a line names a field the record does not define
+    BadLine, // a known line carries the wrong token count
+    BadInt, // an integer field did not parse, an unknown direction, or an unknown state
+    BadHex, // a hex field was the wrong length or held a non-hex char
+    BadReconcile, // a present statement's reserved did not equal its open made sum
+    TooManyLines, // more lines than a v1 record admits
+    RecordTooLong, // the rendered record overflowed the buffer
+};
+
+const hex_digits = "0123456789abcdef";
+
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex chars per byte.
+    assert(out.len == bytes.len * 2);
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0F];
+    }
+}
+
+fn nibble(c: u8) BronError!u8 {
+    return switch (c) {
+        '0'...'9' => c - '0',
+        'a'...'f' => c - 'a' + 10,
+        'A'...'F' => c - 'A' + 10,
+        else => error.BadHex,
+    };
+}
+
+fn from_hex(text: []const u8, out: []u8) BronError!void {
+    if (text.len != out.len * 2) return error.BadHex;
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < out.len) : (i += 1) {
+        const hi = try nibble(text[i * 2]);
+        const lo = try nibble(text[i * 2 + 1]);
+        out[i] = (hi << 4) | lo;
+    }
+}
+
+/// Render one account's statement to a `format statement-v1` record. Refuses an overflow rather than
+/// a partial record.
+pub fn render(s: *const statement.Statement, out: []u8) BronError!u32 {
+    // invariant: the statement honors its line bound.
+    if (s.line_count > max_lines_in_record) return error.TooManyLines;
+    // invariant: the render buffer honors its bound.
+    assert(out.len >= max_record);
+    const head = std.fmt.bufPrint(out, "format statement-v1\n", .{}) catch return error.RecordTooLong;
+    var off: u32 = @intCast(head.len);
+
+    var pk_hex: [statement.pk_len * 2]u8 = undefined;
+    to_hex(s.pk_slice(), &pk_hex);
+    const present: u8 = if (s.present) 1 else 0;
+    const acct = std.fmt.bufPrint(out[off..], "account {s} {d} {d} {d} {d}\n", .{ pk_hex, s.balance, s.reserved, s.received, present }) catch return error.RecordTooLong;
+    off += @intCast(acct.len);
+
+    var i: u32 = 0;
+    while (i < s.line_count) : (i += 1) {
+        const ln = &s.lines[i];
+        var cp_hex: [statement.pk_len * 2]u8 = undefined;
+        to_hex(ln.counterparty_slice(), &cp_hex);
+        const line = std.fmt.bufPrint(out[off..], "line {d} {s} {d} {d}\n", .{ ln.dir, cp_hex, ln.amount, ln.state }) catch return error.RecordTooLong;
+        off += @intCast(line.len);
+    }
+    // invariant: the rendered record never exceeds its bound.
+    assert(off <= max_record);
+    return off;
+}
+
+/// Split a line into up to six tokens; returns the count (or seven to signal a trailing token past
+/// what any line allows — the account record, at six, is the widest).
+fn tokens(line: []const u8, out: *[6][]const u8) u32 {
+    var count: u32 = 0;
+    var it = std.mem.tokenizeScalar(u8, line, ' ');
+    while (it.next()) |t| {
+        if (count >= 6) return count + 1;
+        out[count] = t;
+        count += 1;
+    }
+    return count;
+}
+
+/// Parse a `format statement-v1` record into `out`. Refuses an unknown or malformed field, a bad
+/// header, an unknown direction or state, or a broken reconciliation law.
+pub fn parse(text: []const u8, out: *statement.Statement) BronError!void {
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const header = lines.next() orelse return error.BadFormat;
+    if (!std.mem.eql(u8, header, "format statement-v1")) return error.BadFormat;
+
+    out.present = false;
+    out.balance = 0;
+    out.reserved = 0;
+    out.received = 0;
+    out.line_count = 0;
+    var have_account = false;
+
+    while (lines.next()) |raw| {
+        if (raw.len == 0) continue; // a trailing newline yields one empty line
+        var tok: [6][]const u8 = undefined;
+        const n = tokens(raw, &tok);
+        if (n == 0) continue;
+        if (std.mem.eql(u8, tok[0], "account")) {
+            if (n != 6) return error.BadLine;
+            try from_hex(tok[1], out.pk[0..]);
+            out.balance = parse_int.parse_int(u64, tok[2], .{}) catch return error.BadInt;
+            out.reserved = parse_int.parse_int(u64, tok[3], .{}) catch return error.BadInt;
+            out.received = parse_int.parse_int(u64, tok[4], .{}) catch return error.BadInt;
+            const pres = parse_int.parse_int(u8, tok[5], .{}) catch return error.BadInt;
+            if (pres != 0 and pres != 1) return error.BadInt;
+            out.present = pres == 1;
+            have_account = true;
+        } else if (std.mem.eql(u8, tok[0], "line")) {
+            if (n != 5) return error.BadLine;
+            if (out.line_count >= statement.statement_max_lines) return error.TooManyLines;
+            const at = out.line_count;
+            const dir = parse_int.parse_int(u8, tok[1], .{}) catch return error.BadInt;
+            if (dir != statement.dir_made and dir != statement.dir_received) return error.BadInt;
+            out.lines[at].dir = dir;
+            try from_hex(tok[2], out.lines[at].counterparty[0..]);
+            out.lines[at].amount = parse_int.parse_int(u64, tok[3], .{}) catch return error.BadInt;
+            const st = parse_int.parse_int(u8, tok[4], .{}) catch return error.BadInt;
+            if (st != lapse.state_open and st != lapse.state_posted and st != lapse.state_voided and st != lapse.state_lapsed) return error.BadInt;
+            out.lines[at].state = st;
+            out.line_count += 1;
+        } else {
+            return error.UnknownField;
+        }
+    }
+    if (!have_account) return error.BadFormat;
+    // The reconciliation law travels: a present statement's reserved must equal the sum of its own
+    // still-open made lines, or the statement made or dropped a reserve in the crossing.
+    if (out.present and !out.reconciles()) return error.BadReconcile;
+    // invariant: the parsed statement is bounded on its line axis.
+    assert(out.line_count <= statement.statement_max_lines);
+}
+
+// ---- selftest: the statement travels and still reconciles --------------------
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn write_deadline(deadline: u64, out: []u8) void {
+    // invariant: the buffer holds a full little-endian order position.
+    assert(out.len == lapse.deadline_len);
+    var v = deadline;
+    var i: u32 = 0;
+    while (i < lapse.deadline_len) : (i += 1) {
+        out[i] = @truncate(v);
+        v >>= 8;
+    }
+}
+
+fn pledge_body(id: []const u8, deadline: u64, to: []const u8, out: []u8) u32 {
+    // invariant: the buffer holds tag · id · deadline · recipient exactly.
+    assert(out.len >= 1 + lapse.id_len + lapse.deadline_len + lapse.pk_len);
+    assert(id.len == lapse.id_len);
+    out[0] = lapse.tag_pledge;
+    tally_copy.copy_disjoint(u8, out[1 .. 1 + lapse.id_len], id);
+    write_deadline(deadline, out[1 + lapse.id_len .. 1 + lapse.id_len + lapse.deadline_len]);
+    tally_copy.copy_disjoint(u8, out[1 + lapse.id_len + lapse.deadline_len ..][0..lapse.pk_len], to);
+    return 1 + lapse.id_len + lapse.deadline_len + lapse.pk_len;
+}
+
+/// Build a scene and resolve it: genesis credits Alice 200; Alice pledges 100 to Bob under a far
+/// deadline (open) and 100 to Carol under a far deadline (open) — Alice's statement then carries two
+/// open made lines and reserves 200, a line the wire must carry whole.
+fn build_ledger() !lapse.Ledger {
+    const id1 = [_]u8{0x01} ** lapse.id_len;
+    const id2 = [_]u8{0x02} ** lapse.id_len;
+    const kf = seeded(0xF0);
+    const ka = seeded(0xA1);
+    const kb = seeded(0xB2);
+    const kc = seeded(0xC3);
+    const alice_pk = ka.public_key.toBytes();
+    const bob_pk = kb.public_key.toBytes();
+    const carol_pk = kc.public_key.toBytes();
+
+    const f_gen = fold.mint_fact(kf, fold.kind_issue, 200, "", alice_pk[0..]) orelse return error.MintGen;
+
+    var pb1: [1 + lapse.id_len + lapse.deadline_len + lapse.pk_len]u8 = undefined;
+    const pn1 = pledge_body(id1[0..], 9, bob_pk[0..], &pb1);
+    const f_p1 = fold.mint_fact(ka, fold.kind_tax, 100, "", pb1[0..pn1]) orelse return error.MintP1;
+
+    var pb2: [1 + lapse.id_len + lapse.deadline_len + lapse.pk_len]u8 = undefined;
+    const pn2 = pledge_body(id2[0..], 9, carol_pk[0..], &pb2);
+    const f_p2 = fold.mint_fact(ka, fold.kind_tax, 100, "", pb2[0..pn2]) orelse return error.MintP2;
+
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_gen) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+    const r0 = [_][cord.hash_len]u8{hg};
+    const b1 = cord.mint_block(ka, 1, r0[0..], f_p1) orelse return error.BlockP1;
+    var h1: [cord.hash_len]u8 = undefined;
+    cord.address(&b1, &h1);
+    const r1 = [_][cord.hash_len]u8{h1};
+    const b2 = cord.mint_block(ka, 2, r1[0..], f_p2) orelse return error.BlockP2;
+
+    var dag = cord.Dag.empty();
+    try cord.add(&dag, g);
+    try cord.add(&dag, b1);
+    try cord.add(&dag, b2);
+    return lapse.resolve(&dag);
+}
+
+/// Two statements answer the same line: position, presence, and each pledge line's facts.
+fn statements_agree(a: *const statement.Statement, b: *const statement.Statement) bool {
+    if (a.present != b.present) return false;
+    if (a.balance != b.balance or a.reserved != b.reserved or a.received != b.received) return false;
+    if (a.line_count != b.line_count) return false;
+    if (!std.mem.eql(u8, a.pk_slice(), b.pk_slice())) return false;
+    var i: u32 = 0;
+    while (i < a.line_count) : (i += 1) {
+        if (a.lines[i].dir != b.lines[i].dir) return false;
+        if (a.lines[i].amount != b.lines[i].amount) return false;
+        if (a.lines[i].state != b.lines[i].state) return false;
+        if (!std.mem.eql(u8, a.lines[i].counterparty_slice(), b.lines[i].counterparty_slice())) return false;
+    }
+    return true;
+}
+
+pub fn main() !void {
+    const ledger = try build_ledger();
+    const alice_pk = seeded(0xA1).public_key.toBytes();
+    const s = try statement.statement_for(&ledger, alice_pk[0..]);
+    // Alice reserves 200 across two open made lines — the line the wire must carry whole.
+    assert(s.present);
+    assert(s.reserved == 200);
+    assert(s.count_dir(statement.dir_made) == 2);
+    assert(s.reconciles());
+
+    var buf: [max_record]u8 = undefined;
+    const len = try render(&s, buf[0..]);
+
+    var recovered: statement.Statement = undefined;
+    try parse(buf[0..len], &recovered);
+
+    // The crux: the recovered statement is the identical line and RECONCILES after the crossing.
+    if (!statements_agree(&s, &recovered)) return error.StatementChanged;
+    if (!recovered.reconciles()) return error.RecoveredNotReconciled;
+    if (recovered.reserved != 200) return error.ReservedValue;
+    if (recovered.count_dir(statement.dir_made) != 2) return error.MadeCount;
+
+    // Re-rendering the recovered statement reproduces the exact bytes (fixed point).
+    var buf2: [max_record]u8 = undefined;
+    const len2 = try render(&recovered, buf2[0..]);
+    if (len2 != len) return error.NotFixedPoint;
+    if (!std.mem.eql(u8, buf[0..len], buf2[0..len2])) return error.NotFixedPoint;
+
+    // A stranger's true zero statement also travels — present=0, no lines, reconciles trivially.
+    {
+        const stranger_pk = seeded(0xCC).public_key.toBytes();
+        const nobody = try statement.statement_for(&ledger, stranger_pk[0..]);
+        var nb: [max_record]u8 = undefined;
+        const nl = try render(&nobody, nb[0..]);
+        var nrec: statement.Statement = undefined;
+        try parse(nb[0..nl], &nrec);
+        if (nrec.present) return error.StrangerPresent;
+        if (nrec.line_count != 0) return error.StrangerLines;
+        if (!statements_agree(&nobody, &nrec)) return error.StrangerChanged;
+    }
+
+    // Refusal: a wrong header refuses BadFormat.
+    var scratch: statement.Statement = undefined;
+    if (parse("format statement-v2\naccount " ++ ("00" ** statement.pk_len) ++ " 0 0 0 0\n", &scratch)) |_| return error.BadHeaderAdmitted else |err| {
+        if (err != error.BadFormat) return error.WrongHeader;
+    }
+    // Refusal: an unknown field refuses UnknownField (never dropped).
+    if (parse("format statement-v1\naccount " ++ ("00" ** statement.pk_len) ++ " 0 0 0 0\nbogus a b\n", &scratch)) |_| return error.UnknownAdmitted else |err| {
+        if (err != error.UnknownField) return error.WrongUnknown;
+    }
+    // Refusal: a bad hex account key refuses BadHex.
+    if (parse("format statement-v1\naccount zz 0 0 0 0\n", &scratch)) |_| return error.BadHexAdmitted else |err| {
+        if (err != error.BadHex) return error.WrongBadHex;
+    }
+    // Refusal: no account line refuses BadFormat.
+    if (parse("format statement-v1\n", &scratch)) |_| return error.NoAccountAdmitted else |err| {
+        if (err != error.BadFormat) return error.WrongNoAccount;
+    }
+    // Refusal: an unknown direction refuses BadInt (3 is neither made nor received).
+    {
+        const bad_dir = "format statement-v1\naccount " ++ ("00" ** statement.pk_len) ++ " 0 0 0 1\nline 3 " ++ ("00" ** statement.pk_len) ++ " 0 0\n";
+        if (parse(bad_dir, &scratch)) |_| return error.BadDirAdmitted else |err| {
+            if (err != error.BadInt) return error.WrongBadDir;
+        }
+    }
+    // Refusal: an unknown state refuses BadInt (5 is past state_lapsed).
+    {
+        const bad_state = "format statement-v1\naccount " ++ ("00" ** statement.pk_len) ++ " 0 0 0 1\nline 1 " ++ ("00" ** statement.pk_len) ++ " 0 5\n";
+        if (parse(bad_state, &scratch)) |_| return error.BadStateAdmitted else |err| {
+            if (err != error.BadInt) return error.WrongBadState;
+        }
+    }
+    // Refusal: a broken reconciliation refuses BadReconcile — a present statement claiming reserved 50
+    // with an open made line of 100 made or dropped a reserve in the crossing.
+    {
+        const broken = "format statement-v1\naccount " ++ ("00" ** statement.pk_len) ++ " 0 50 100 1\nline 1 " ++ ("11" ** statement.pk_len) ++ " 100 0\n";
+        if (parse(broken, &scratch)) |_| return error.BrokenAdmitted else |err| {
+            if (err != error.BadReconcile) return error.WrongBroken;
+        }
+    }
+
+    print("statement-bron: one account's line renders to a format statement-v1 record and parses back byte-for-byte (fixed point)\n", .{});
+    print("statement-bron: the recovered statement reconciles after the crossing — reserved {d} == the sum of its open made lines — and a broken reconciliation refuses before the record is trusted\n", .{recovered.reserved});
+    print("statement-bron: a bad header, an unknown field, a bad hex key, a missing account, an unknown direction, an unknown state, a broken reconciliation each refuse\n", .{});
+    print("GREEN: myc statement-bron — a statement travels as readable text and still reconciles · reserved={d} · made lines={d} · fixed point\n", .{ recovered.reserved, recovered.count_dir(statement.dir_made) });
+}

@@ -1,0 +1,55 @@
+# tools/mycelium_statement_bron_witness.rish — an account statement travels as a record (r2).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · the account-statement voice · rung r2 — travel.
+# r1 read one account's line out of a resolved ledger and proved it RECONCILES (reserved equals the sum
+# of its own still-open outbound pledges). A statement a holder cannot hand to another is only a local
+# reading, so r2 lets it cross as `format statement-v1` bytes: an `account <pk> <balance> <reserved>
+# <received> <present>` line, then one `line <dir> <counterparty> <amount> <state>` per pledge the account
+# touched. Render writes it, parse reads it back, so a round trip is a fixed point and the recovered
+# statement is byte-for-byte the same line.
+#
+# The crux this witness proves is RECONCILIATION SURVIVES THE WIRE: the record carries its own
+# reconciliation as a law — a parsed present statement whose reserved does not equal the sum of its own
+# still-open made lines refuses BadReconcile before it is trusted, so a statement cannot make or drop a
+# reserve in the crossing; a holder who receives the bytes checks the same arithmetic r1 asserted, needing
+# no ledger of their own. Alice reserves 200 across two open made lines; the record carries the line whole
+# and the recovered statement reconciles, re-renders byte-identical (fixed point), and a stranger's true
+# zero statement travels too (present=0, no lines). A bad header · unknown field · bad hex key · missing
+# account · unknown direction · unknown state · broken reconciliation each refuse. Composes statement +
+# lapse + cord + fold public API only; demo keeper seeds — no key, no funds, no network, no custody.
+#
+# Scope: active-designing/20260813-091851_mycelium-statement-account-voice-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mycelium_statement_bron_witness.rish
+
+say "mycelium-statement-bron: Language EN — a holder's own line, written to readable bytes and handed to another, who checks the same arithmetic without a ledger of their own."
+say "mycelium-statement-bron: Style Radiant — r1 read the line and proved it reconciles; r2 lets it cross the wire and carries the reconciliation as the record's own law."
+say "mycelium-statement-bron: Lens TAME — the reader is purpose-built and bounded; a present statement's reserved must equal its open made sum or refuse BadReconcile; the round trip is a fixed point; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/statement_bron"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/statement_bron.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-statement-bron: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mycelium-statement-bron: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-statement-bron: selftest did not speak GREEN"
+assert selftest.out contains "parses back byte-for-byte (fixed point)" else "mycelium-statement-bron: fixed-point claim missing"
+assert selftest.out contains "reconciles after the crossing" else "mycelium-statement-bron: reconciles-after-crossing claim missing"
+assert selftest.out contains "a broken reconciliation refuses before the record is trusted" else "mycelium-statement-bron: broken-reconcile-refusal claim missing"
+assert selftest.out contains "an unknown direction, an unknown state, a broken reconciliation each refuse" else "mycelium-statement-bron: refusal roster missing"
+assert selftest.out contains "a statement travels as readable text and still reconciles" else "mycelium-statement-bron: GREEN summary missing"
+
+# The Statement r1 whose line this rung travels, and the Lapse whose ledger it reads through, both stand at
+# the door — their own selftests prove the machinery the record rests on.
+let statement = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/statement.rye -femit-bin=mycelium/bin/statement && mycelium/bin/statement 2>&1"]
+assert statement.ok else "mycelium-statement-bron: the Statement r1 whose line this rung travels is not GREEN"
+assert statement.out contains "GREEN" else "mycelium-statement-bron: the Statement r1 did not speak its GREEN"
+
+let lapse = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/lapse.rye -femit-bin=mycelium/bin/lapse && mycelium/bin/lapse 2>&1"]
+assert lapse.ok else "mycelium-statement-bron: the Lapse whose ledger the Statement reads is not GREEN"
+assert lapse.out contains "GREEN" else "mycelium-statement-bron: the Lapse did not speak its GREEN"
+
+say "mycelium-statement-bron: GREEN — one account's line renders to a format statement-v1 record and parses back byte-for-byte, the recovered statement reconciles after the crossing (reserved == open made sum), a stranger's true zero travels, and a broken reconciliation refuses BadReconcile; the Statement and the Lapse stand at the door. The Statement travels."
