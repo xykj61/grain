@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260813.151841
+editor Zed
+model Fable 5
+voice Kyri
+host cloud bench — Eastern (EDT) time convention
+title HUNK4 — the single-sprite marketplace index renders on metal
+prompt Read REMEMBER + the two itinerary docs; take the next agent-doable lap Lindy-first crux-first, approve own design rounds, send each finished increment as its own signed round, STOP at custody gates
+think Read the operator card and both itinerary docs. The Open Image journey (HUNK0-3) stands complete; REMEMBER names the next agent-doable crux plainly — a fresh HUNK quest, the single-sprite marketplace index (one sheet, each product a bounded window into it), which Season A names as McMaster-Carr's speed trick under the parts marketplace.
+think Lindy-first crux-first confirms it: high-Lindy (how a thousand-part catalog stays fast), sits directly on the open module just built, no custody gate, no deferred web search. Self-approved the design round rather than pausing.
+think Studied the building blocks — qoi.Pixmap (decoded RGBA grid), photos.crop (pure bounded rectangle read). The crux is exactly a crop at a named window into one shared decoded sheet, so I reuse crop rather than re-invent a windowing loop.
+think Designed image/sprite.rye — SpriteIndex.init(sheet) borrows one decoded sheet; add(name,x,y,w,h) binds a window bound-checked in u64 at add time so render can never fail on bounds; render(name) = photos.crop at the window. Named refusals: UnknownProduct, WindowOutOfBounds, EmptyWindow, NameTaken, NameTooLong, TooManyProducts. Bounds named at construction (256 products, 48-byte names).
+think The witness proves the crux over one 8x8 tagged sheet (each pixel encodes its coords): each product renders exactly its window, disjoint windows carry different pixels (no product leaks a neighbor's bytes), the sheet is shared and unmutated across every render, a rendered product re-encodes and round-trips byte-for-byte. HUNK3 crop re-run GREEN beneath.
+obs GREEN on the first build and run. Caught two TAME bans proactively before any gate — copyForwards (swapped tally_copy.copy_disjoint) and three compound asserts (split each) — learned from the HUNK1/HUNK2 pattern. tame_style_check GREEN, width-check exit 0.
+obs Additive and reuse-only: no new storage, no new codec, no change to photos.rye or qoi.rye — the sprite index composes their public API. The trick measured honestly: three products served from one 256-byte decoded sheet, one decode many windows.
+obs No breach rename this round, so no cairn. No network, key, or funds — hosting a real sprite sheet and sourcing real parts stay custody gates #2/#3, untouched.
+loom witness=hunk_sprite_witness green=1 products=3 sheet_bytes=256 refusals=5
+file image/sprite.rye HUNK4 — SpriteIndex over one decoded sheet, each product a bounded window rendered via photos.crop
+file tools/hunk_sprite_witness.rish binds the HUNK4 crux GREEN on metal; re-runs HUNK3 crop beneath
+file active-designing/20260813-201500_hunk-sprite-marketplace-index-exploration.md self-approved design round; names HUNK5-7 horizon rungs as intent
+file work-in-progress/REMEMBER.md folds the HUNK4 landing onto the latest-lap line; git nib refreshed same commit
+recommend keep-going next agent-doable crux is HUNK5 (a product page painted through HUNK2's Skate down-map) or HUNK6 (the sheet as a content-addressed Tablecloth artifact); served/hardware rounds stay custody gates

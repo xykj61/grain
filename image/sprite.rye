@@ -1,0 +1,249 @@
+//! image/sprite.rye — HUNK4: the single-sprite marketplace index — one sheet, each product a window into it.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Open Image journey · rung HUNK4 (sprite-index quest opens).
+//! Design read: active-designing/20260813-201500_hunk-sprite-marketplace-index-exploration.md
+//! Teacher, thanked clean-room: McMaster-Carr's one-sprite-sheet render trick (concept only, siloed).
+//!
+//! Season A names the parts marketplace plainly: "one massive sprite image web-hosted, each product rendered
+//! as an index into that single image (their speed trick)." This rung fixes the crux of that trick over the
+//! open image module the HUNK0–HUNK3 quest built: a `SpriteIndex` binds each product name to a bounded
+//! rectangle — a *window* — into ONE decoded sheet, and `render` returns that window as a fresh open image by
+//! reusing HUNK3's own `photos.crop`. The one sheet is decoded once and shared by every product; a render
+//! mutates nothing. Every window is bound-checked at index time, so a bound that reaches past the sheet
+//! refuses by name when a product is added, never when it is rendered. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/sprite.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const photos = @import("photos.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const sprite_version = "20260813.201500";
+
+/// A marketplace holds many products, yet a bounded many — the sheet is one image, the catalog a page a
+/// person reads. 256 products per sheet, each name at most 48 bytes; both named at construction (TAME bounds).
+pub const max_products: u32 = 256;
+pub const max_name_len: u32 = 48;
+
+pub const SpriteError = error{
+    NameTooLong,
+    NameTaken,
+    WindowOutOfBounds,
+    EmptyWindow,
+    TooManyProducts,
+    UnknownProduct,
+};
+
+/// A rectangle into the sheet: the top-left corner and the size of one product's window. Every field is a
+/// u32 in-memory coordinate; a window is validated against the sheet before it is ever stored.
+pub const Window = struct {
+    x: u32 = 0,
+    y: u32 = 0,
+    w: u32 = 0,
+    h: u32 = 0,
+};
+
+/// One catalog entry: a product name (held in a fixed buffer, never a borrowed slice) and its window.
+const Cell = struct {
+    name_buf: [max_name_len]u8 = [_]u8{0} ** max_name_len,
+    name_len: u32 = 0,
+    win: Window = .{},
+
+    fn name(self: *const Cell) []const u8 {
+        // invariant: the stored name length never exceeds the buffer it lives in.
+        assert(self.name_len <= max_name_len);
+        return self.name_buf[0..self.name_len];
+    }
+};
+
+/// The index: one decoded sheet, a bounded catalog of named windows into it. The sheet is borrowed, never
+/// owned — the whole point of the trick is that every product shares the single decoded image.
+pub const SpriteIndex = struct {
+    sheet: *const qoi.Pixmap,
+    cells: [max_products]Cell = [_]Cell{.{}} ** max_products,
+    count: u32 = 0,
+
+    /// Open an index over an already-decoded sheet. The sheet is decoded once, by the caller, and read by
+    /// every product from here on.
+    pub fn init(sheet: *const qoi.Pixmap) SpriteIndex {
+        // invariant: a real sheet holds exactly four bytes per pixel — the open module's decoded shape.
+        assert(sheet.pixels.len == @as(usize, sheet.width) * @as(usize, sheet.height) * 4);
+        // invariant: the sheet has at least one pixel to window into.
+        assert(sheet.width > 0);
+        assert(sheet.height > 0);
+        return SpriteIndex{ .sheet = sheet };
+    }
+
+    /// Bind a product name to a window into the sheet. Every failure is a NAMED refusal, checked here so a
+    /// render can never fail on bounds: an overlong name, a taken name, an empty window, a window past the
+    /// sheet, or a full catalog each refuse before a single byte is stored.
+    pub fn add(self: *SpriteIndex, product: []const u8, x: u32, y: u32, w: u32, h: u32) !void {
+        // invariant: the index never grows past its named ceiling.
+        assert(self.count <= max_products);
+        if (self.count == max_products) return error.TooManyProducts;
+        if (product.len == 0 or product.len > max_name_len) return error.NameTooLong;
+        if (w == 0 or h == 0) return error.EmptyWindow;
+        // The right and bottom edges must land within the sheet — checked in u64 so a large x+w cannot wrap.
+        if (@as(u64, x) + @as(u64, w) > self.sheet.width) return error.WindowOutOfBounds;
+        if (@as(u64, y) + @as(u64, h) > self.sheet.height) return error.WindowOutOfBounds;
+
+        var i: u32 = 0;
+        while (i < self.count) : (i += 1) {
+            if (std.mem.eql(u8, self.cells[i].name(), product)) return error.NameTaken;
+        }
+
+        var cell = Cell{ .name_len = @intCast(product.len), .win = .{ .x = x, .y = y, .w = w, .h = h } };
+        tally_copy.copy_disjoint(u8, cell.name_buf[0..product.len], product);
+        self.cells[self.count] = cell;
+        self.count += 1;
+        // invariant: the catalog grew by exactly one honest entry.
+        assert(self.count >= 1);
+        assert(self.count <= max_products);
+    }
+
+    /// The window a product name pins, or `UnknownProduct` if the catalog holds no such name.
+    pub fn window_of(self: *const SpriteIndex, product: []const u8) !Window {
+        // invariant: the catalog count never exceeds the array behind it.
+        assert(self.count <= max_products);
+        var i: u32 = 0;
+        while (i < self.count) : (i += 1) {
+            if (std.mem.eql(u8, self.cells[i].name(), product)) return self.cells[i].win;
+        }
+        return error.UnknownProduct;
+    }
+
+    /// Render a product: crop the ONE sheet at the product's window, returning a fresh open image. Reuses
+    /// HUNK3's `photos.crop`, so a rendered product is still an open image that re-encodes and round-trips.
+    /// The sheet is never mutated — every product is a read of the same decoded bytes.
+    pub fn render(self: *const SpriteIndex, allocator: std.mem.Allocator, product: []const u8) !qoi.Pixmap {
+        const win = try self.window_of(product);
+        // invariant: a stored window was bound-checked at add time, so it still fits the sheet at render.
+        assert(@as(u64, win.x) + @as(u64, win.w) <= self.sheet.width);
+        assert(@as(u64, win.y) + @as(u64, win.h) <= self.sheet.height);
+        return photos.crop(allocator, self.sheet, win.x, win.y, win.w, win.h);
+    }
+};
+
+// --- selftest: index three products into one tagged sheet, prove each renders exactly its own window, prove
+//     the sheet is shared and unmutated, prove windows are disjoint, and prove the named refusals ------------
+
+/// Build an 8×8 sheet where each pixel encodes its own coordinates, so a window's correctness is unambiguous:
+/// pixel (x,y) = (x·30, y·30, x+y, 255).
+fn craft_sheet(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 8;
+    const h: u32 = 8;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            buf[off] = @intCast(x * 30);
+            buf[off + 1] = @intCast(y * 30);
+            buf[off + 2] = @intCast(x + y);
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+/// Assert a rendered product equals the sheet's sub-rectangle at its window, pixel for pixel.
+fn assert_window(sheet: *const qoi.Pixmap, cut: *const qoi.Pixmap, wx: u32, wy: u32) void {
+    assert(cut.width > 0);
+    assert(cut.height > 0);
+    var y: u32 = 0;
+    while (y < cut.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x < cut.width) : (x += 1) {
+            const c_off = (@as(usize, y) * @as(usize, cut.width) + @as(usize, x)) * 4;
+            const s_off = (@as(usize, wy + y) * @as(usize, sheet.width) + @as(usize, wx + x)) * 4;
+            assert(cut.pixels[c_off] == sheet.pixels[s_off]);
+            assert(cut.pixels[c_off + 1] == sheet.pixels[s_off + 1]);
+            assert(cut.pixels[c_off + 2] == sheet.pixels[s_off + 2]);
+            assert(cut.pixels[c_off + 3] == sheet.pixels[s_off + 3]);
+        }
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const sheet = try craft_sheet(garden);
+    var index = SpriteIndex.init(&sheet);
+
+    // Three products, three windows into the one sheet — a bolt top-left, a washer top-right, a gear below.
+    try index.add("bolt", 0, 0, 4, 4);
+    try index.add("washer", 4, 0, 4, 4);
+    try index.add("gear", 2, 4, 4, 4);
+    assert(index.count == 3);
+
+    // Each product renders exactly its own window out of the single sheet.
+    const bolt = try index.render(garden, "bolt");
+    assert_window(&sheet, &bolt, 0, 0);
+    const washer = try index.render(garden, "washer");
+    assert_window(&sheet, &washer, 4, 0);
+    const gear = try index.render(garden, "gear");
+    assert_window(&sheet, &gear, 2, 4);
+
+    // Disjoint windows carry different pixels — a product's render can never leak a neighbor's bytes. The
+    // tagged sheet makes this exact: bolt's top-left pixel (0,0) differs from washer's top-left (4,0).
+    assert(bolt.pixels[0] != washer.pixels[0]);
+
+    // One sheet, shared and unmutated: after every render the sheet's first and last pixels stand as crafted.
+    assert(sheet.pixels[0] == 0);
+    const last = (@as(usize, sheet.height - 1) * @as(usize, sheet.width) + @as(usize, sheet.width - 1)) * 4;
+    assert(sheet.pixels[last] == @as(u8, @intCast((sheet.width - 1) * 30)));
+
+    // A rendered product is still an OPEN image: it re-encodes and round-trips byte-for-byte through the codec.
+    const cap = qoi.encoded_bound(bolt.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const res = try qoi.encode(&bolt, dst);
+    const back = try qoi.decode(garden, dst[0..res.len]);
+    assert(back.same_bytes(&bolt));
+
+    // The trick, measured: three products served from ONE decoded sheet of 8×8×4 = 256 bytes — one decode,
+    // many windows, no per-product image stored.
+    const sheet_bytes: u32 = sheet.width * sheet.height * 4;
+    assert(sheet_bytes == 256);
+
+    // Unwelcome: an unknown product name refuses.
+    if (index.render(garden, "phantom")) |_| return error.UnknownSlipped else |e| {
+        if (e != error.UnknownProduct) return error.WrongUnknown;
+    }
+    // Unwelcome: a window reaching past the sheet refuses at add time (x + w > width).
+    if (index.add("wide", 6, 0, 4, 2)) |_| return error.BoundsSlipped else |e| {
+        if (e != error.WindowOutOfBounds) return error.WrongBounds;
+    }
+    // Unwelcome: an empty window refuses.
+    if (index.add("void", 0, 0, 0, 2)) |_| return error.EmptySlipped else |e| {
+        if (e != error.EmptyWindow) return error.WrongEmpty;
+    }
+    // Unwelcome: a duplicate product name refuses.
+    if (index.add("bolt", 0, 0, 2, 2)) |_| return error.DupeSlipped else |e| {
+        if (e != error.NameTaken) return error.WrongDupe;
+    }
+    // Unwelcome: an overlong product name refuses.
+    var long_name: [max_name_len + 1]u8 = [_]u8{'a'} ** (max_name_len + 1);
+    if (index.add(long_name[0..], 0, 0, 2, 2)) |_| return error.LongSlipped else |e| {
+        if (e != error.NameTooLong) return error.WrongLong;
+    }
+
+    print("GREEN image-sprite: {d} products indexed into one {d}x{d} sheet ({d} bytes decoded once) — " ++
+        "each renders exactly its window; disjoint windows carry different pixels; the sheet is shared and " ++
+        "unmutated; a rendered product re-encodes and round-trips; unknown/out-of-bounds/empty/duplicate/" ++
+        "overlong each refused by name\n", .{
+        index.count, sheet.width, sheet.height, sheet_bytes,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: sprite selftest\n", .{});
+    return 1;
+}

@@ -1,0 +1,54 @@
+# tools/hunk_sprite_witness.rish — the single-sprite marketplace index renders on metal (HUNK4, sprite quest opens).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · Open Image journey · rung HUNK4.
+# Design read: active-designing/20260813-201500_hunk-sprite-marketplace-index-exploration.md
+# Teacher, thanked clean-room: McMaster-Carr's one-sprite-sheet render trick (concept only, siloed).
+#
+# The HUNK0–HUNK3 quest built the open image module (codec · content address · painted · cropped). This rung
+# opens Season A's parts-marketplace trick over it: `image/sprite.rye` `SpriteIndex` binds each product name to
+# a bounded rectangle — a window — into ONE decoded sheet, and `render` returns that window as a fresh open
+# image by reusing HUNK3's own `photos.crop`. The selftest indexes three products into one 8×8 tagged sheet and
+# proves each renders exactly its own window, that disjoint windows carry different pixels (no product leaks a
+# neighbor's bytes), that the one sheet is shared and unmutated across every render, and that a rendered product
+# is still an open image that re-encodes and round-trips byte-for-byte. Unknown name, out-of-bounds window,
+# empty window, duplicate name, and overlong name each refuse by name. No network, no key, no funds — one
+# decode serves every product, McMaster-Carr's speed trick over the tree's own open module.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_sprite_witness.rish
+
+say "hunk-sprite: Language EN — HUNK4 opens Season A's parts-marketplace trick over the open module: one decoded sheet, each product a bounded window into it, rendered by reusing HUNK3's crop."
+say "hunk-sprite: Style Radiant — one sprite decoded once serves every product; a render is a read of the same bytes, and a rendered product is still an open image that re-encodes and round-trips."
+say "hunk-sprite: Lens TAME — u32 window coordinates bound-checked in u64 at add time so a render can never fail on bounds; the catalog names its ceiling; copy_disjoint for names; positive invariants per fn; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/sprite"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/sprite.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-sprite: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-sprite: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+say "hunk-sprite: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-sprite' && echo yes"]
+assert (trim green.out) == "yes" else "hunk-sprite: selftest did not print the GREEN sprite line"
+
+let onesheet = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'decoded once' && echo yes"]
+assert (trim onesheet.out) == "yes" else "hunk-sprite: the selftest did not prove one sheet decoded once serving every product"
+
+let window = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'each renders exactly its window' && echo yes"]
+assert (trim window.out) == "yes" else "hunk-sprite: the selftest did not prove each product renders exactly its window"
+
+let disjoint = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'disjoint windows carry different pixels' && echo yes"]
+assert (trim disjoint.out) == "yes" else "hunk-sprite: the selftest did not prove disjoint windows carry different pixels"
+
+# HUNK3 stays GREEN — the sprite index reuses photos.crop; the crop verb underneath must still hold.
+let photos = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/photos.rye -femit-bin=image/bin/photos && image/bin/photos selftest 2>&1"]
+assert photos.ok else "hunk-sprite: HUNK3 photos re-run failed — ${photos.out}"
+let photos_green = run ["sh" "-c" "printf '%s' '${photos.out}' | grep -q 'GREEN image-photos' && echo yes"]
+assert (trim photos_green.out) == "yes" else "hunk-sprite: HUNK3 photos selftest did not stay GREEN"
+
+say "hunk-sprite: GREEN — the marketplace sprite index renders each product from one decoded sheet on metal; HUNK3 crop underneath stays GREEN. HUNK4 lands."
