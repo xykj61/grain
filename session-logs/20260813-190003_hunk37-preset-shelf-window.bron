@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260813.190003
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu (Framework 16 AMD) — Eastern (EDT) time convention · ai-jail on Vultr SEA VPS
+title HUNK37 — a keeper pages through a library larger than one screen
+prompt Kyri: keep taking the next agent-doable lap Lindy-first crux-first on the Season A road; send each finished increment as its own signed round; STOP at custody gates.
+think HUNK36 made an honest promise — refuse ShelfTooSmall rather than drop a book past the last row — yet that leaves a keeper stuck when the library outgrows the screen. The honest refusal needs an honest answer: a window onto the library, a page the keeper can move through.
+think Lindy-first crux-first: paging is the mechanism every list surface on a small screen needs, so the work compounds far past this one shelf; and it composes HUNK36's proven row render rather than inventing one. Additive on preset_shelf.rye, as parse_listing was additive on session_list.
+think Extracted the row render into a shared draw_row helper so the whole shelf and the windowed pager paint a row identically — one source of truth for a row, no drift. Refactored shelf_grid to call it; HUNK36's assertions re-run GREEN beneath.
+obs The property this rung earns: paging must lose nothing. The witness walks every page in order and proves the books shown, concatenated, are exactly the whole library in held order — each of five books shown exactly once. A window refuses BadOffset past the library rather than paint an empty page; offset 0 on an empty library is a real first page and allowed.
+obs Witness GREEN. tame_style_check bans clean; width-check exit 0. All authored functions well under 70 lines (shelf_window 28, shelf_grid 26, draw_row 21). No network, no key, no funds; no custody gate reached.
+loom witness=hunk_preset_shelf_witness library_books=5 page_rows=2 pages=3 window_lens=2,2,1 asserts_added=~15
+file active-designing/20260813-190003_hunk-preset-shelf-window-exploration.md self-approved design round for HUNK37
+file pond/apps/preset_shelf.rye additive pager — page_count, window_len, shelf_window over a shared draw_row helper
+file tools/hunk_preset_shelf_witness.rish extended with paging greps, GREEN on metal
+file work-in-progress/REMEMBER.md latest-lap HUNK37 note and git nib refresh
+recommend keep-going — a live scroll offset driven by a keeper's gesture (the input seam above this pure pager), a sticky page header, or a fresh Season-A / double-seat journey; all clear of every custody gate.
