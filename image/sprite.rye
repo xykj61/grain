@@ -46,6 +46,13 @@ pub const Window = struct {
     h: u32 = 0,
 };
 
+/// One catalog entry read back out: a product name (a slice into the index's own storage) and its window.
+/// A caller reads the catalog to render it as text (HUNK7) without reaching into private cell storage.
+pub const Entry = struct {
+    name: []const u8 = &[_]u8{},
+    win: Window = .{},
+};
+
 /// One catalog entry: a product name (held in a fixed buffer, never a borrowed slice) and its window.
 const Cell = struct {
     name_buf: [max_name_len]u8 = [_]u8{0} ** max_name_len,
@@ -102,6 +109,20 @@ pub const SpriteIndex = struct {
         // invariant: the catalog grew by exactly one honest entry.
         assert(self.count >= 1);
         assert(self.count <= max_products);
+    }
+
+    /// How many products the catalog holds — a reader walks `entry(0..len)` to render the catalog as text.
+    pub fn len(self: *const SpriteIndex) u32 {
+        // invariant: the count never exceeds the array behind it.
+        assert(self.count <= max_products);
+        return self.count;
+    }
+
+    /// The i-th catalog entry: a product name (a slice into the index's own storage) and its window.
+    pub fn entry(self: *const SpriteIndex, i: u32) Entry {
+        // invariant: the index sits inside the held catalog.
+        assert(i < self.count);
+        return Entry{ .name = self.cells[i].name(), .win = self.cells[i].win };
     }
 
     /// The window a product name pins, or `UnknownProduct` if the catalog holds no such name.
