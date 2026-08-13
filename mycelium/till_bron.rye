@@ -1,0 +1,292 @@
+//! mycelium/till_bron.rye — the treasury verdict travels as a readable record.
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · Till rung r2 — travel.
+//! Design read: active-designing/20260813-064129_mycelium-till-double-spend-exploration.md
+//!
+//! r1 resolved a Cord's agreed order into a Till — which draws took coins, which
+//! came up short. A verdict a node cannot hand to another node is only a local
+//! reading, so r2 lets a resolved Till cross as `format till-v1` bytes: a `supply`
+//! line, one `drew <signer-pk> <amount> <pos> <round>` line per winning draw, one
+//! `short <signer-pk> <amount> <pos> <issued-at>` line per spent-out loss. Render
+//! writes it, parse reads it back, so a round trip is a fixed point — and the
+//! recovered Till reports the identical draw and loss counts, the identical coins
+//! drawn and lost, and the identical supply, so the treasury verdict crosses to a
+//! stranger unchanged.
+//!
+//! A purpose-built bounded reader, never a general parser: a wrong header refuses
+//! `BadFormat`, an unknown field `UnknownField` (never dropped), a malformed line
+//! `BadLine`, a bad integer `BadInt` (or a broken supply law), a bad hex field
+//! `BadHex`, an over-long record `TooManyDraws`/`TooManyShorts`. Composes till.rye +
+//! fold.rye public API only. Siloed, dev-only, demo seeds — no key, no funds, no
+//! network, no custody. The record carries the COIN verdict (draws keyed by signer);
+//! a name verdict is the Tenure's, travelling in its own `format tenure-v1`.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/till_bron.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const till = @import("till.rye");
+const cord = @import("cord.rye");
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+const parse_int = @import("parse_int.rye");
+
+/// A travelled record carries at most this many winning draws — a dev-net treasury
+/// is small and legible, well under the Till's own 256 ceiling.
+pub const max_draws_in_record: u32 = 32;
+
+/// And at most this many spent-out losses.
+pub const max_shorts_in_record: u32 = 32;
+
+/// The record buffer bound — a small treasury's whole verdict fits with room.
+pub const max_record: u32 = 32768;
+
+pub const BronError = error{
+    BadFormat, // the header line is not `format till-v1`, or no supply line
+    UnknownField, // a line names a field the record does not define
+    BadLine, // a known line carries the wrong token count
+    BadInt, // an integer field did not parse, or broke the supply law
+    BadHex, // a hex field was the wrong length or held a non-hex char
+    TooManyDraws, // more draws than a v1 record admits
+    TooManyShorts, // more losses than a v1 record admits
+    RecordTooLong, // the rendered record overflowed the buffer
+};
+
+const hex_digits = "0123456789abcdef";
+
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex chars per byte.
+    assert(out.len == bytes.len * 2);
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0F];
+    }
+}
+
+fn nibble(c: u8) BronError!u8 {
+    return switch (c) {
+        '0'...'9' => c - '0',
+        'a'...'f' => c - 'a' + 10,
+        'A'...'F' => c - 'A' + 10,
+        else => error.BadHex,
+    };
+}
+
+fn from_hex(text: []const u8, out: []u8) BronError!void {
+    if (text.len != out.len * 2) return error.BadHex;
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < out.len) : (i += 1) {
+        const hi = try nibble(text[i * 2]);
+        const lo = try nibble(text[i * 2 + 1]);
+        out[i] = (hi << 4) | lo;
+    }
+}
+
+/// Render a resolved Till to a `format till-v1` record. Refuses an overflow or an
+/// over-long verdict rather than a partial record.
+pub fn render(t: *const till.Till, out: []u8) BronError!u32 {
+    // invariant: the record honors its draw and short bounds.
+    if (t.draw_count > max_draws_in_record) return error.TooManyDraws;
+    if (t.short_count > max_shorts_in_record) return error.TooManyShorts;
+    // invariant: the render buffer honors its bound.
+    assert(out.len >= max_record);
+    const head = std.fmt.bufPrint(out, "format till-v1\n", .{}) catch return error.RecordTooLong;
+    var off: u32 = @intCast(head.len);
+    const sup = std.fmt.bufPrint(out[off..], "supply {d} {d}\n", .{ t.state.issued, t.state.taxed }) catch return error.RecordTooLong;
+    off += @intCast(sup.len);
+
+    var i: u32 = 0;
+    while (i < t.draw_count) : (i += 1) {
+        const d = &t.draws[i];
+        var pk_hex: [till.pk_len * 2]u8 = undefined;
+        to_hex(d.signer_pk[0..], &pk_hex);
+        const line = std.fmt.bufPrint(out[off..], "drew {s} {d} {d} {d}\n", .{ pk_hex, d.amount, d.pos, d.round }) catch return error.RecordTooLong;
+        off += @intCast(line.len);
+    }
+
+    var s: u32 = 0;
+    while (s < t.short_count) : (s += 1) {
+        const sh = &t.shorts[s];
+        var pk_hex: [till.pk_len * 2]u8 = undefined;
+        to_hex(sh.signer_pk[0..], &pk_hex);
+        const line = std.fmt.bufPrint(out[off..], "short {s} {d} {d} {d}\n", .{ pk_hex, sh.amount, sh.pos, sh.issued_at }) catch return error.RecordTooLong;
+        off += @intCast(line.len);
+    }
+    // invariant: the rendered record never exceeds its bound.
+    assert(off <= max_record);
+    return off;
+}
+
+/// Split a line into up to six tokens; returns the count (or seven to signal a
+/// trailing token past what any line allows).
+fn tokens(line: []const u8, out: *[6][]const u8) u32 {
+    var count: u32 = 0;
+    var it = std.mem.tokenizeScalar(u8, line, ' ');
+    while (it.next()) |t| {
+        if (count >= 6) return count + 1;
+        out[count] = t;
+        count += 1;
+    }
+    return count;
+}
+
+/// Parse a `format till-v1` record into `out`, writing through a pointer (a Till
+/// carries a full fold state, so no return-by-value copy). Refuses an unknown or
+/// malformed field, a bad header, or an over-long verdict.
+pub fn parse(text: []const u8, out: *till.Till) BronError!void {
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const header = lines.next() orelse return error.BadFormat;
+    if (!std.mem.eql(u8, header, "format till-v1")) return error.BadFormat;
+
+    out.draw_count = 0;
+    out.short_count = 0;
+    out.state = fold.FoldState{};
+    var have_supply = false;
+
+    while (lines.next()) |raw| {
+        if (raw.len == 0) continue; // a trailing newline yields one empty line
+        var tok: [6][]const u8 = undefined;
+        const n = tokens(raw, &tok);
+        if (n == 0) continue;
+        if (std.mem.eql(u8, tok[0], "supply")) {
+            if (n != 3) return error.BadLine;
+            out.state.issued = parse_int.parse_int(u64, tok[1], .{}) catch return error.BadInt;
+            out.state.taxed = parse_int.parse_int(u64, tok[2], .{}) catch return error.BadInt;
+            if (out.state.taxed > out.state.issued) return error.BadInt; // the supply law
+            have_supply = true;
+        } else if (std.mem.eql(u8, tok[0], "drew")) {
+            if (n != 5) return error.BadLine;
+            if (out.draw_count >= till.till_max_draws) return error.TooManyDraws;
+            const at = out.draw_count;
+            try from_hex(tok[1], out.draws[at].signer_pk[0..]);
+            out.draws[at].amount = parse_int.parse_int(u64, tok[2], .{}) catch return error.BadInt;
+            out.draws[at].pos = parse_int.parse_int(u32, tok[3], .{}) catch return error.BadInt;
+            out.draws[at].round = parse_int.parse_int(u32, tok[4], .{}) catch return error.BadInt;
+            out.draw_count += 1;
+        } else if (std.mem.eql(u8, tok[0], "short")) {
+            if (n != 5) return error.BadLine;
+            if (out.short_count >= till.till_max_shorts) return error.TooManyShorts;
+            const at = out.short_count;
+            try from_hex(tok[1], out.shorts[at].signer_pk[0..]);
+            out.shorts[at].amount = parse_int.parse_int(u64, tok[2], .{}) catch return error.BadInt;
+            out.shorts[at].pos = parse_int.parse_int(u32, tok[3], .{}) catch return error.BadInt;
+            out.shorts[at].issued_at = parse_int.parse_int(u64, tok[4], .{}) catch return error.BadInt;
+            out.short_count += 1;
+        } else {
+            return error.UnknownField;
+        }
+    }
+    if (!have_supply) return error.BadFormat;
+    // invariant: the parsed verdict is bounded on both axes.
+    assert(out.draw_count <= till.till_max_draws);
+    assert(out.short_count <= till.till_max_shorts);
+}
+
+// ---- selftest: the verdict travels and answers unchanged ---------------------
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+/// Build the r1 contested scene and resolve it: genesis issue, an uncontested small
+/// draw, two keepers each drawing 700 from a treasury of 1000 at one round.
+fn build_contested() !till.Till {
+    const kf = seeded(0xA1);
+    const kv = seeded(0xC3);
+    const kx = seeded(0x11);
+    const ky = seeded(0x22);
+
+    const f_issue = fold.mint_fact(kf, fold.kind_issue, 1000, "", "genesis") orelse return error.MintIssue;
+    const f_vega = fold.mint_fact(kv, fold.kind_tax, 100, "", "small") orelse return error.MintVega;
+    const f_bx = fold.mint_fact(kx, fold.kind_tax, 700, "", "draw-x") orelse return error.MintBx;
+    const f_by = fold.mint_fact(ky, fold.kind_tax, 700, "", "draw-y") orelse return error.MintBy;
+
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_issue) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+    const roots = [_][cord.hash_len]u8{hg};
+    const u = cord.mint_block(kv, 1, roots[0..], f_vega) orelse return error.BlockU;
+    const w1 = cord.mint_block(kx, 1, roots[0..], f_bx) orelse return error.BlockW1;
+    const w2 = cord.mint_block(ky, 1, roots[0..], f_by) orelse return error.BlockW2;
+
+    var dag = cord.Dag.empty();
+    try cord.add(&dag, g);
+    try cord.add(&dag, u);
+    try cord.add(&dag, w1);
+    try cord.add(&dag, w2);
+    return till.resolve(&dag);
+}
+
+/// Two Tills answer the same coin verdict: counts, coins, and the loser's signer.
+fn verdicts_agree(a: *const till.Till, b: *const till.Till) bool {
+    if (a.draws_seen() != b.draws_seen()) return false;
+    if (a.shorts_seen() != b.shorts_seen()) return false;
+    if (a.total_drawn() != b.total_drawn()) return false;
+    if (a.total_lost() != b.total_lost()) return false;
+    if (a.state.supply() != b.state.supply()) return false;
+    var i: u32 = 0;
+    while (i < a.short_count) : (i += 1) {
+        if (!std.mem.eql(u8, a.shorts[i].signer_pk[0..], b.shorts[i].signer_pk[0..])) return false;
+        if (a.shorts[i].amount != b.shorts[i].amount) return false;
+    }
+    return true;
+}
+
+pub fn main() !void {
+    const t = try build_contested();
+
+    var buf: [max_record]u8 = undefined;
+    const len = try render(&t, buf[0..]);
+
+    var recovered: till.Till = undefined;
+    try parse(buf[0..len], &recovered);
+
+    // The crux: the recovered verdict answers the identical coin verdict.
+    if (!verdicts_agree(&t, &recovered)) return error.VerdictChanged;
+    if (recovered.draws_seen() != 2) return error.DrawCount;
+    if (recovered.shorts_seen() != 1) return error.ShortCount;
+    if (recovered.state.supply() != 200) return error.SupplyValue;
+    if (recovered.total_lost() != 700) return error.LostValue;
+
+    // Re-rendering the recovered verdict reproduces the exact bytes (fixed point).
+    var buf2: [max_record]u8 = undefined;
+    const len2 = try render(&recovered, buf2[0..]);
+    if (len2 != len) return error.NotFixedPoint;
+    if (!std.mem.eql(u8, buf[0..len], buf2[0..len2])) return error.NotFixedPoint;
+
+    // Refusal: a wrong header refuses BadFormat.
+    var scratch: till.Till = undefined;
+    if (parse("format till-v2\nsupply 1000 200\n", &scratch)) |_| return error.BadHeaderAdmitted else |err| {
+        if (err != error.BadFormat) return error.WrongHeader;
+    }
+    // Refusal: an unknown field refuses UnknownField (never dropped).
+    if (parse("format till-v1\nsupply 1000 200\nbogus a b\n", &scratch)) |_| return error.UnknownAdmitted else |err| {
+        if (err != error.UnknownField) return error.WrongUnknown;
+    }
+    // Refusal: a bad hex signer key refuses BadHex.
+    if (parse("format till-v1\nsupply 1000 200\ndrew zz 700 1 1\n", &scratch)) |_| return error.BadHexAdmitted else |err| {
+        if (err != error.BadHex) return error.WrongBadHex;
+    }
+    // Refusal: a supply line that breaks the supply law refuses BadInt.
+    if (parse("format till-v1\nsupply 100 200\n", &scratch)) |_| return error.BadLawAdmitted else |err| {
+        if (err != error.BadInt) return error.WrongBadLaw;
+    }
+    // Refusal: no supply line refuses BadFormat.
+    if (parse("format till-v1\n", &scratch)) |_| return error.NoSupplyAdmitted else |err| {
+        if (err != error.BadFormat) return error.WrongNoSupply;
+    }
+    // Refusal: an over-long verdict refuses at render before a partial record.
+    var big: till.Till = .{};
+    big.draw_count = max_draws_in_record + 1;
+    if (render(&big, buf[0..])) |_| return error.OverLongAdmitted else |err| {
+        if (err != error.TooManyDraws) return error.WrongOverLong;
+    }
+
+    print("till-bron: the resolved verdict renders to a format till-v1 record and parses back byte-for-byte\n", .{});
+    print("till-bron: the recovered verdict answers the identical draws and loss, supply {d} unchanged\n", .{recovered.state.supply()});
+    print("till-bron: a bad header, an unknown field, a bad hex key, a broken supply law, a missing supply, an over-long verdict each refuse\n", .{});
+    print("GREEN: myc till-bron — the treasury verdict travels as readable text · drew={d} · short={d} · fixed point\n", .{ recovered.draws_seen(), recovered.shorts_seen() });
+}
