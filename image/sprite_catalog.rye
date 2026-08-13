@@ -1,0 +1,205 @@
+//! image/sprite_catalog.rye — HUNK7: the marketplace catalog travels as text (the sprite quest closes).
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Open Image journey · rung HUNK7 (sprite quest close).
+//! Design read: active-designing/20260813-201500_hunk-sprite-marketplace-index-exploration.md
+//! Teacher, thanked clean-room: McMaster-Carr's one-sprite-sheet render trick (concept only, siloed).
+//!
+//! HUNK4 bound each product to a window, HUNK5 painted a window as a page, HUNK6 gave the sheet a content
+//! address. This rung lets the *index itself* travel: `render_catalog` writes a `SpriteIndex` as a flat-Bron
+//! `format sprite-catalog-v1` record — one `product <name> <x> <y> <w> <h>` line per entry — and
+//! `parse_catalog` reads that text back into a fresh index over a given sheet, so `render(parse(render(x)))`
+//! is a fixed point and the rebuilt index renders every product from the same window byte-for-byte. Parse
+//! validates each window against the actual sheet (a window past it refuses through `SpriteIndex.add`), so a
+//! catalog can never name bytes the sheet lacks. An unknown header, a malformed line, or an out-of-range
+//! field refuses `BadCatalog`. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/sprite_catalog.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const sprite = @import("sprite.rye");
+const parse_int = @import("parse_int.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const sprite_catalog_version = "20260813.203600";
+
+/// A safe upper bound on a rendered catalog: the header plus a generous per-product line (a 48-byte name plus
+/// four u32 fields as decimal, spaces, and a newline all fit in 96 bytes). Named at construction (TAME bound).
+pub const per_line_bound: u32 = sprite.max_name_len + 48;
+pub const max_catalog_bytes: u32 = 21 + sprite.max_products * per_line_bound;
+
+pub const CatalogError = error{
+    BadCatalog,
+    Overflow,
+};
+
+const header = "format sprite-catalog-v1\n";
+
+/// Render a sprite index as its `format sprite-catalog-v1` Bron record into `out`, returning its length. One
+/// `product <name> <x> <y> <w> <h>` line per entry, in held order. Refuses `Overflow` rather than writing past
+/// the buffer a caller supplied.
+pub fn render_catalog(index: *const sprite.SpriteIndex, out: []u8) CatalogError!u32 {
+    // invariant: a catalog names at most the index bound.
+    assert(index.len() <= sprite.max_products);
+    if (header.len > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[0..header.len], header);
+    var off: u32 = @intCast(header.len);
+
+    var i: u32 = 0;
+    while (i < index.len()) : (i += 1) {
+        const e = index.entry(i);
+        const line = std.fmt.bufPrint(out[off..], "product {s} {d} {d} {d} {d}\n", .{
+            e.name, e.win.x, e.win.y, e.win.w, e.win.h,
+        }) catch return error.Overflow;
+        off += @intCast(line.len);
+    }
+    // invariant: the rendered catalog stays within the buffer.
+    assert(off <= out.len);
+    return off;
+}
+
+/// Parse a `format sprite-catalog-v1` record into a fresh index over `sheet`. Each product is added through
+/// `SpriteIndex.add`, so every window is validated against the real sheet and every name against uniqueness —
+/// a catalog can never name a window the sheet lacks. An unknown header, a malformed line, or an out-of-range
+/// field refuses `BadCatalog`; a window past the sheet surfaces `add`'s own named refusal.
+pub fn parse_catalog(text: []const u8, sheet: *const qoi.Pixmap, out: *sprite.SpriteIndex) !void {
+    out.* = sprite.SpriteIndex.init(sheet);
+    // invariant: parsing starts from an empty index.
+    assert(out.len() == 0);
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const first = lines.next() orelse return error.BadCatalog;
+    if (!std.mem.eql(u8, first, "format sprite-catalog-v1")) return error.BadCatalog;
+
+    while (lines.next()) |line| {
+        if (line.len == 0) continue; // a trailing newline yields an empty final piece
+        var parts = std.mem.tokenizeScalar(u8, line, ' ');
+        const tag = parts.next() orelse return error.BadCatalog;
+        if (!std.mem.eql(u8, tag, "product")) return error.BadCatalog;
+        const name = parts.next() orelse return error.BadCatalog;
+        const x_tok = parts.next() orelse return error.BadCatalog;
+        const y_tok = parts.next() orelse return error.BadCatalog;
+        const w_tok = parts.next() orelse return error.BadCatalog;
+        const h_tok = parts.next() orelse return error.BadCatalog;
+        if (parts.next() != null) return error.BadCatalog; // no slack past the fields
+        const x = parse_int.parse_int(u32, x_tok, .{}) catch return error.BadCatalog;
+        const y = parse_int.parse_int(u32, y_tok, .{}) catch return error.BadCatalog;
+        const w = parse_int.parse_int(u32, w_tok, .{}) catch return error.BadCatalog;
+        const h = parse_int.parse_int(u32, h_tok, .{}) catch return error.BadCatalog;
+        try out.add(name, x, y, w, h);
+    }
+    // invariant: a parsed catalog holds no more than the index bound.
+    assert(out.len() <= sprite.max_products);
+}
+
+// --- selftest: render an index to text, parse it back over the same sheet, prove the fixed point and that the
+//     rebuilt index renders the same windows, then prove the sheet-validating and malformed refusals ----------
+
+/// Build an 8×8 sheet where each pixel encodes its own coordinates, so a rendered window is unambiguous.
+fn craft_sheet(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 8;
+    const h: u32 = 8;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            buf[off] = @intCast(x * 30);
+            buf[off + 1] = @intCast(y * 30);
+            buf[off + 2] = @intCast(x + y);
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const sheet = try craft_sheet(garden);
+    var index = sprite.SpriteIndex.init(&sheet);
+    try index.add("bolt", 0, 0, 4, 4);
+    try index.add("washer", 4, 0, 4, 4);
+    try index.add("gear", 2, 4, 4, 4);
+
+    // Render the catalog to text.
+    var buf: [max_catalog_bytes]u8 = undefined;
+    const n = try render_catalog(&index, buf[0..]);
+    const text = buf[0..n];
+
+    // Parse it back over the same sheet, and prove the rebuilt index equals the original entry for entry.
+    var rebuilt: sprite.SpriteIndex = undefined;
+    try parse_catalog(text, &sheet, &rebuilt);
+    assert(rebuilt.len() == index.len());
+    {
+        var i: u32 = 0;
+        while (i < index.len()) : (i += 1) {
+            const a = index.entry(i);
+            const b = rebuilt.entry(i);
+            assert(std.mem.eql(u8, a.name, b.name));
+            assert(a.win.x == b.win.x);
+            assert(a.win.y == b.win.y);
+            assert(a.win.w == b.win.w);
+            assert(a.win.h == b.win.h);
+        }
+    }
+
+    // Fixed point: rendering the rebuilt catalog reproduces the same bytes.
+    var buf2: [max_catalog_bytes]u8 = undefined;
+    const n2 = try render_catalog(&rebuilt, buf2[0..]);
+    assert(n2 == n);
+    assert(std.mem.eql(u8, buf2[0..n2], text));
+
+    // The rebuilt index renders every product from the same window byte-for-byte.
+    const a_bolt = try index.render(garden, "bolt");
+    const b_bolt = try rebuilt.render(garden, "bolt");
+    assert(a_bolt.same_bytes(&b_bolt));
+
+    // Unwelcome: parsing over a SMALLER sheet refuses — a catalog can never name a window the sheet lacks.
+    const small = qoi.Pixmap{
+        .width = 4,
+        .height = 4,
+        .channels = 4,
+        .colorspace = 0,
+        .pixels = try garden.alloc(u8, 4 * 4 * 4),
+    };
+    var over: sprite.SpriteIndex = undefined;
+    if (parse_catalog(text, &small, &over)) |_| return error.OverSlipped else |e| {
+        if (e != error.WindowOutOfBounds) return error.WrongOver;
+    }
+
+    // Unwelcome: a bad header refuses.
+    var bad_hdr: sprite.SpriteIndex = undefined;
+    if (parse_catalog("format wrong-v1\n", &sheet, &bad_hdr)) |_| return error.HdrSlipped else |e| {
+        if (e != error.BadCatalog) return error.WrongHdr;
+    }
+    // Unwelcome: a malformed line (a non-numeric coordinate) refuses.
+    var bad_line: sprite.SpriteIndex = undefined;
+    const junk = "format sprite-catalog-v1\nproduct bolt 0 0 x 4\n";
+    if (parse_catalog(junk, &sheet, &bad_line)) |_| return error.LineSlipped else |e| {
+        if (e != error.BadCatalog) return error.WrongLine;
+    }
+    // Unwelcome: an extra field past the five refuses (no slack).
+    var slack: sprite.SpriteIndex = undefined;
+    const extra = "format sprite-catalog-v1\nproduct bolt 0 0 4 4 5\n";
+    if (parse_catalog(extra, &sheet, &slack)) |_| return error.SlackSlipped else |e| {
+        if (e != error.BadCatalog) return error.WrongSlack;
+    }
+
+    print("GREEN sprite-catalog: {d} products rendered to a {d}-byte sprite-catalog-v1 record and parsed " ++
+        "back over the sheet entry for entry; render(parse(render)) is a fixed point; the rebuilt index " ++
+        "renders the same windows; a window past a smaller sheet, a bad header, a malformed line, and an " ++
+        "extra field each refuse by name\n", .{ index.len(), n });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: sprite_catalog selftest\n", .{});
+    return 1;
+}

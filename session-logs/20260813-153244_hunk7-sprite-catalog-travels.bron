@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260813.153244
+editor Zed
+model Fable 5
+voice Kyri
+host cloud bench — Eastern (EDT) time convention
+title HUNK7 — the marketplace catalog travels as text; the sprite quest closes
+prompt Continue the loop: next agent-doable lap Lindy-first crux-first, self-approve design rounds, send each finished increment as its own signed round, STOP at custody gates
+think HUNK4-6 built the index, the seen page, and the content-addressed sheet. The last named rung closes the sprite quest: let the index itself travel as text — the McMaster-Carr catalog crossing to a portable record and home again losing nothing. Pure Bron render/parse over sprite.SpriteIndex, mirroring tablecloth's format tablecloth-v1 idiom.
+think A reader needs the entries (name + window) to render them. sprite.SpriteIndex's cells are private-by-convention, so I added two small additive pub accessors — len and entry(i) returning a pub Entry (name slice + Window) — rather than reaching into cell storage from another file. HUNK4 must re-run GREEN (additive), and it did.
+think The crux worth proving: parse rebuilds over a GIVEN sheet through SpriteIndex.add, so every window is validated against the real sheet — a catalog can never name bytes the sheet lacks. Proven by parsing the same text over a smaller 4x4 sheet and refusing WindowOutOfBounds. Plus the fixed point render(parse(render(x))) byte-for-byte and the rebuilt index rendering the same windows.
+obs GREEN on the first build and run. Studied tablecloth's render_manifest/parse_manifest for the flat-Bron idiom (header line, tokenizeScalar, no-slack extra-field refusal, parse_int for numbers) and matched it. Symlinked tally/parse_int.rye into image/ (tally_copy already there). tame_style_check exit 0, width exit 0; HUNK4 sprite re-run GREEN beneath.
+obs The sprite-marketplace quest now stands whole end to end — HUNK4 index, HUNK5 seen page, HUNK6 content-addressed sheet, HUNK7 travels as text — four signed rounds, each its own green witness on both remotes, mirroring the HUNK0-3 Open Image quest close. One decode serves a whole catalog; the catalog itself is portable and self-validating against its sheet.
+obs Additive throughout — sprite.rye grew two pub accessors, nothing else changed. No breach, so no cairn. No network, key, or funds — hosting a real sheet and sourcing parts stay custody gates #2/#3.
+loom witness=hunk_sprite_catalog_witness green=1 products=3 record_bytes=90 refusals=4
+file image/sprite_catalog.rye HUNK7 — render_catalog/parse_catalog; the index travels as a format sprite-catalog-v1 record, validated against its sheet
+file image/sprite.rye added additive pub len/entry accessors and a pub Entry so a reader walks the catalog
+file tools/hunk_sprite_catalog_witness.rish binds the HUNK7 crux GREEN on metal; re-runs HUNK4 index beneath
+file image/parse_int.rye symlink to tally/parse_int.rye for the catalog's number parsing
+file work-in-progress/REMEMBER.md folds the HUNK7 landing and the sprite-quest close; git nib refreshed same commit
+recommend keep-going the sprite-marketplace quest closes whole; next agent-doable crux is a fresh HUNK quest (Photos gestures past crop — rotate/flip on the open grid) or another Season-A / double-seat journey; served/hardware rounds stay custody gates
