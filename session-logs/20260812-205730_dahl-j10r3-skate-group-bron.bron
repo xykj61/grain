@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260812.205730
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title DAHL-J10r3 — skate_group_bron, the signed group travels
+prompt keep going the 1,024-round itinerary; next agent-doable lap, send each increment as its own signed round
+think r1 and r2 fixed the quorum rule and signed each vote; r3's crux is carry — a group is only useful to a commons if it can be handed to another keeper and checked with no live group in hand. Mirror skate_circle_bron (J9r3): render to a format skate-group-v1 Bron record, parse back byte-for-byte, still quorum-honest offline.
+think Design: a SignedGroup keeps, beside r1's live group, its founder roster · quorum · the signature that authorized each vote — so the record carries the votes that admitted a candidate, not merely who is currently seated. The record shape: a group line (id + quorum), one founder line per founder (the seeded bootstrap, unsigned), one vote line per signed vote (voter · candidate · 128-hex sig). PortableGroup owns its arrays so nothing points into freed record text.
+think still_quorum_honest re-verifies each carried vote via r2's verify_vote (which touches no group — exactly why r2 split that out); rebuild replays founders through r1's open and votes through r2's vote_signed into an equal live group, so the traveled admission matches (Bram still a member, verdict .place). Reused the exact hex + tokenizer + flat-Bron reader idiom from skate_circle_bron, with the group's own field set.
+think Byte-for-byte proven by rendering an equal signed group and comparing bytes; a vote signature flipped after the crossing refuses BadConsent offline; unknown field · bad header · missing group line · bad hex each refuse.
+obs GREEN first run — no TAME/width fix. The parse_int + kumara symlinks in pond/apps already existed from J9. The 65536-byte record bound covers the worst case (32 founders + 256 votes × ~150 bytes each) with headroom, asserted.
+loom witness=dahl_j10_skate_group_bron_witness cases=6 record_bound=65536 result=GREEN
+file pond/apps/skate_group_bron.rye r3 — render a signed group to format skate-group-v1, parse back byte-for-byte, still quorum-honest offline, rebuild the identical admission
+file tools/dahl_j10_skate_group_bron_witness.rish witness — rungs one/two re-run + round-trip, flipped-vote, unknown-field, bad-header, missing-group, bad-hex
+file work-in-progress/REMEMBER.md appended the DAHL-J10r3 landing to the Season 3 arc
+recommend keep-going DAHL-J10r4 — carry the reader onto a real fixture (skate/fixtures/group.bron, real Ed25519 vote signatures) and cross-check the roster size, vote count, and admitted-by-quorum count against an independent awk truth measure (two tools, one answer), closing Journey 10's agent-doable arc

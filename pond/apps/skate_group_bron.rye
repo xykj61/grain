@@ -1,0 +1,390 @@
+//! pond/apps/skate_group_bron.rye — Season 3 Journey 10 (Membership), Rung 3: the signed group travels.
+//!
+//! Rungs one and two fixed the quorum rule and bound each vote to a member's signature. A group is only
+//! useful to a commons if it can be *carried* — handed to another keeper, checked with no live group in
+//! hand. This rung renders a signed group to a `format skate-group-v1` Bron record and parses it back
+//! byte-for-byte, still quorum-honest **offline**.
+//!
+//! A `SignedGroup` keeps, beside rung one's live group, the founder roster, the quorum, and the
+//! signature that authorized each vote — so the record it renders carries not just *that* a candidate was
+//! admitted but *the votes that admitted them*. The traveled `PortableGroup` owns its own buffers, and
+//! `still_quorum_honest` re-verifies every carried vote signature against the recipient's keyring through
+//! rung two's own `verify_vote` — so a vote signature flipped after the crossing refuses `BadConsent`
+//! with no network, no store, no live group. `rebuild` replays the carried founders and votes through
+//! rung one's `open` and rung two's `vote_signed` into an equal live group, so the traveled admissions
+//! (who is a member) match the original exactly.
+//!
+//! The reader is a purpose-built bounded flat-Bron reader (the tree's `key value` idiom), never a
+//! general parser: an unknown field refuses `UnknownField` (never dropped), a malformed line `BadLine`,
+//! a wrong header `BadFormat`, bad hex `BadHex`, a missing group line `MissingGroup`. Additive — composes
+//! rungs one and two over public API; both re-run GREEN. Demo keeper seeds only, no network (a group
+//! served over the wire reaches the serve gate — Keaton's hand).
+//!
+//!   rye build pond/apps/skate_group_bron.rye -femit-bin=pond/bin/skate-group-bron
+//!   pond/bin/skate-group-bron selftest
+//!
+//! Scope: active-designing/20260812-204233_dahl-journey10-membership-quorum-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const group_mod = @import("skate_group.rye");
+const signed = @import("skate_group_signed.rye");
+const kumara = @import("kumara.rye");
+const parse_int = @import("parse_int.rye");
+
+pub const skate_group_bron_version = "20260812.204233";
+
+pub const sig_len: u32 = 64;
+pub const max_members: u32 = group_mod.max_members;
+pub const max_votes: u32 = group_mod.max_votes;
+
+/// The rendered record: a header, a group line, one `founder` line per founder and one `vote` line per
+/// vote (each carrying a 128-hex signature). Bounded over the worst case (32 founders + 256 votes).
+pub const max_record: u32 = 65536;
+
+pub const BronError = error{
+    BadFormat, // the header line is not `format skate-group-v1`
+    UnknownField, // a line names a field the record does not define
+    BadLine, // a group/founder/vote line is missing a token or carries a trailing one
+    BadInt, // a point, quorum, or candidate field did not parse
+    BadHex, // a signature field was the wrong length or held a non-hex byte
+    MissingGroup, // the record never named its group line (id and quorum)
+    TooManyFounders, // the record carries past the founder bound
+    TooManyVotes, // the record carries past the vote bound
+    RecordTooLong, // the render exceeded its bounded buffer
+};
+
+const hex_digits = "0123456789abcdef";
+
+/// Write `bytes` as lowercase hex into `out` (out.len must be twice bytes.len).
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex chars per byte.
+    assert(out.len == bytes.len * 2);
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0F];
+    }
+}
+
+fn nibble(c: u8) BronError!u8 {
+    return switch (c) {
+        '0'...'9' => c - '0',
+        'a'...'f' => c - 'a' + 10,
+        'A'...'F' => c - 'A' + 10,
+        else => error.BadHex,
+    };
+}
+
+/// Decode `text` (exactly out.len*2 hex chars) into `out`, refusing wrong length or non-hex.
+fn from_hex(text: []const u8, out: []u8) BronError!void {
+    if (text.len != out.len * 2) return error.BadHex;
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < out.len) : (i += 1) {
+        const hi = try nibble(text[i * 2]);
+        const lo = try nibble(text[i * 2 + 1]);
+        out[i] = (hi << 4) | lo;
+    }
+}
+
+/// A signed group: rung one's live group plus its founder roster, quorum, and the signature that
+/// authorized each vote, so the whole admission history can travel and be re-checked, not merely who is
+/// currently seated.
+// Invariant: founder_count <= max_members; vote_count <= max_votes.
+pub const SignedGroup = struct {
+    group: group_mod.Group,
+    group_id: u32,
+    founders: [max_members]u32,
+    founder_count: u32,
+    quorum: u32,
+    vote_voters: [max_votes]u32,
+    vote_candidates: [max_votes]u32,
+    vote_sigs: [max_votes][sig_len]u8,
+    vote_count: u32,
+
+    /// Open a signed group over a founder roster and quorum — the live group opens through rung one.
+    pub fn open(group_id: u32, founders: []const u32, quorum: u32) group_mod.GroupError!SignedGroup {
+        var sg = SignedGroup{
+            .group = try group_mod.Group.open(founders, quorum),
+            .group_id = group_id,
+            .founders = undefined,
+            .founder_count = @intCast(founders.len),
+            .quorum = quorum,
+            .vote_voters = undefined,
+            .vote_candidates = undefined,
+            .vote_sigs = undefined,
+            .vote_count = 0,
+        };
+        for (founders, 0..) |point, i| sg.founders[i] = point;
+        // invariant: the kept founders track the live group's opening roster one-for-one.
+        assert(sg.founder_count == sg.group.member_count);
+        assert(sg.vote_count == 0);
+        return sg;
+    }
+
+    /// Record a signed vote — verify and count through rung two, then keep the vote and its signature so
+    /// the vote can travel with its member's word.
+    pub fn record_vote(self: *SignedGroup, ring: *const signed.Keyring, voter: u32, candidate: u32, sig: *const [sig_len]u8) signed.GroupActError!void {
+        try signed.vote_signed(&self.group, ring, self.group_id, voter, candidate, sig);
+        const i = self.vote_count;
+        self.vote_voters[i] = voter;
+        self.vote_candidates[i] = candidate;
+        self.vote_sigs[i] = sig.*;
+        self.vote_count += 1;
+        // invariant: the vote book grew by exactly one, within its bound.
+        assert(self.vote_count == i + 1);
+        assert(self.vote_count <= max_votes);
+    }
+};
+
+/// A parsed signed group that owns its arrays, so nothing points into freed record text.
+// Invariant: founder_count <= max_members; vote_count <= max_votes.
+pub const PortableGroup = struct {
+    group_id: u32,
+    quorum: u32,
+    founders: [max_members]u32,
+    founder_count: u32,
+    vote_voters: [max_votes]u32,
+    vote_candidates: [max_votes]u32,
+    vote_sigs: [max_votes][sig_len]u8,
+    vote_count: u32,
+
+    /// Re-verify every carried vote signature against the recipient's keyring, offline, by rung two's
+    /// `verify_vote`. A flipped or forged signature refuses `BadConsent`, so a tampered record cannot
+    /// pass with no live group in hand.
+    pub fn still_quorum_honest(self: *const PortableGroup, ring: *const signed.Keyring) signed.SignedError!void {
+        var i: u32 = 0;
+        while (i < self.vote_count) : (i += 1) {
+            try signed.verify_vote(ring, self.group_id, self.vote_voters[i], self.vote_candidates[i], &self.vote_sigs[i]);
+        }
+    }
+
+    /// Replay the carried founders and votes through rung one's `open` and rung two's `vote_signed` into
+    /// an equal live group, so the traveled admissions match the original. Refuses exactly as the lower
+    /// rungs would on a bad opening or a bad vote signature.
+    pub fn rebuild(self: *const PortableGroup, ring: *const signed.Keyring) signed.GroupActError!group_mod.Group {
+        var group = try group_mod.Group.open(self.founders[0..self.founder_count], self.quorum);
+        var i: u32 = 0;
+        while (i < self.vote_count) : (i += 1) {
+            try signed.vote_signed(&group, ring, self.group_id, self.vote_voters[i], self.vote_candidates[i], &self.vote_sigs[i]);
+        }
+        return group;
+    }
+};
+
+/// Render a signed group to a `format skate-group-v1` record. Refuses an overflow rather than a partial
+/// record.
+pub fn render(sg: *const SignedGroup, out: []u8) BronError!u32 {
+    // invariant: the render buffer honors its bound.
+    assert(out.len >= max_record);
+    const head = std.fmt.bufPrint(out, "format skate-group-v1\ngroup {d} {d}\n", .{ sg.group_id, sg.quorum }) catch return error.RecordTooLong;
+    var off: u32 = @intCast(head.len);
+    var i: u32 = 0;
+    while (i < sg.founder_count) : (i += 1) {
+        const line = std.fmt.bufPrint(out[off..], "founder {d}\n", .{sg.founders[i]}) catch return error.RecordTooLong;
+        off += @intCast(line.len);
+    }
+    var j: u32 = 0;
+    while (j < sg.vote_count) : (j += 1) {
+        var sig_hex: [sig_len * 2]u8 = undefined;
+        to_hex(&sg.vote_sigs[j], &sig_hex);
+        const line = std.fmt.bufPrint(out[off..], "vote {d} {d} {s}\n", .{ sg.vote_voters[j], sg.vote_candidates[j], sig_hex }) catch return error.RecordTooLong;
+        off += @intCast(line.len);
+    }
+    // invariant: the rendered record never exceeds its bound.
+    assert(off <= max_record);
+    return off;
+}
+
+/// Split a line on spaces into up to four tokens; returns the count found.
+fn tokens(line: []const u8, out: *[4][]const u8) u32 {
+    var count: u32 = 0;
+    var it = std.mem.tokenizeScalar(u8, line, ' ');
+    while (it.next()) |t| {
+        if (count >= 4) return count + 1; // signal a trailing token past what any line allows
+        out[count] = t;
+        count += 1;
+    }
+    return count;
+}
+
+/// Parse a `format skate-group-v1` record into a PortableGroup, refusing an unknown or malformed field, a
+/// bad header, a missing group line, an overlong roster or vote book, a bad integer, or malformed hex.
+pub fn parse(text: []const u8) BronError!PortableGroup {
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const header = lines.next() orelse return error.BadFormat;
+    if (!std.mem.eql(u8, header, "format skate-group-v1")) return error.BadFormat;
+
+    var have_group = false;
+    var pg = PortableGroup{
+        .group_id = 0,
+        .quorum = 0,
+        .founders = undefined,
+        .founder_count = 0,
+        .vote_voters = undefined,
+        .vote_candidates = undefined,
+        .vote_sigs = undefined,
+        .vote_count = 0,
+    };
+
+    while (lines.next()) |raw| {
+        if (raw.len == 0) continue; // a trailing newline yields one empty line
+        var tok: [4][]const u8 = undefined;
+        const n = tokens(raw, &tok);
+        if (n == 0) continue;
+        if (std.mem.eql(u8, tok[0], "group")) {
+            if (n != 3) return error.BadLine;
+            pg.group_id = parse_int.parse_int(u32, tok[1], .{}) catch return error.BadInt;
+            pg.quorum = parse_int.parse_int(u32, tok[2], .{}) catch return error.BadInt;
+            have_group = true;
+        } else if (std.mem.eql(u8, tok[0], "founder")) {
+            if (n != 2) return error.BadLine;
+            if (pg.founder_count >= max_members) return error.TooManyFounders;
+            const fi = pg.founder_count;
+            pg.founders[fi] = parse_int.parse_int(u32, tok[1], .{}) catch return error.BadInt;
+            pg.founder_count += 1;
+        } else if (std.mem.eql(u8, tok[0], "vote")) {
+            if (n != 4) return error.BadLine;
+            if (pg.vote_count >= max_votes) return error.TooManyVotes;
+            const vi = pg.vote_count;
+            pg.vote_voters[vi] = parse_int.parse_int(u32, tok[1], .{}) catch return error.BadInt;
+            pg.vote_candidates[vi] = parse_int.parse_int(u32, tok[2], .{}) catch return error.BadInt;
+            try from_hex(tok[3], &pg.vote_sigs[vi]);
+            pg.vote_count += 1;
+        } else {
+            return error.UnknownField;
+        }
+    }
+    if (!have_group) return error.MissingGroup;
+    return pg;
+}
+
+// --- selftest -----------------------------------------------------------
+
+// Demo keeper seeds — plainly not real keys, so no identity is invented.
+const ivy_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
+const wren_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
+const flax_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
+
+const ivy: u32 = 101;
+const wren: u32 = 202;
+const flax: u32 = 303;
+const bram: u32 = 404;
+const demo_group: u32 = 7;
+
+fn pubkey_of(seed: *const [kumara.seed_length]u8) [signed.pubkey_len]u8 {
+    return kumara.keypair_from_seed(seed).public_key.bytes;
+}
+
+fn demo_ring() error{KeyringFull}!signed.Keyring {
+    var ring = signed.Keyring.open();
+    try ring.enroll(ivy, pubkey_of(&ivy_seed));
+    try ring.enroll(wren, pubkey_of(&wren_seed));
+    try ring.enroll(flax, pubkey_of(&flax_seed));
+    return ring;
+}
+
+/// Build a signed group of three founders (quorum 2) that admits Bram by two signed votes.
+fn build_admitted(ring: *const signed.Keyring) !SignedGroup {
+    var sg = try SignedGroup.open(demo_group, &.{ ivy, wren, flax }, 2);
+    const ivy_votes = signed.sign_vote(&ivy_seed, demo_group, ivy, bram);
+    const wren_votes = signed.sign_vote(&wren_seed, demo_group, wren, bram);
+    try sg.record_vote(ring, ivy, bram, &ivy_votes);
+    try sg.record_vote(ring, wren, bram, &wren_votes);
+    return sg;
+}
+
+/// The signed group renders to Bron and parses back byte-for-byte; the rebuilt group carries the
+/// identical admission, and every carried vote still verifies offline.
+fn welcome_round_trip_still_honest() !void {
+    const ring = try demo_ring();
+    var sg = try build_admitted(&ring);
+    assert(sg.group.is_member(bram));
+
+    var buf1: [max_record]u8 = undefined;
+    const n1 = try render(&sg, &buf1);
+    const pg = try parse(buf1[0..n1]);
+
+    // Byte-for-byte: re-rendering an equal signed group reproduces the exact bytes.
+    var rebuilt_sg = try build_admitted(&ring);
+    var buf2: [max_record]u8 = undefined;
+    const n2 = try render(&rebuilt_sg, &buf2);
+    assert(n1 == n2);
+    assert(std.mem.eql(u8, buf1[0..n1], buf2[0..n2]));
+
+    // Still quorum-honest offline: every carried vote re-verifies.
+    try pg.still_quorum_honest(&ring);
+
+    // The rebuilt live group carries the identical admission.
+    const group = try pg.rebuild(&ring);
+    assert(group.is_member(bram));
+    assert(group.verdict(bram) == .place);
+    assert(group.member_count == sg.group.member_count);
+    print("skate_group_bron: a signed group rendered to Bron, parsed back byte-for-byte, still quorum-honest offline, and rebuilt the identical admission.\n", .{});
+}
+
+/// A vote signature flipped after the crossing refuses offline — a tampered record cannot pass.
+fn unwelcome_flipped_vote_refuses() !void {
+    const ring = try demo_ring();
+    var sg = try build_admitted(&ring);
+    var buf: [max_record]u8 = undefined;
+    const n = try render(&sg, &buf);
+    var pg = try parse(buf[0..n]);
+    // Flip one byte of the first vote's carried signature.
+    pg.vote_sigs[0][0] ^= 0xFF;
+    const bad = pg.still_quorum_honest(&ring);
+    assert(bad == error.BadConsent);
+    print("skate_group_bron: a vote signature flipped after the crossing refused BadConsent offline.\n", .{});
+}
+
+/// An unknown field refuses rather than being dropped — the reader keeps every line honest.
+fn unwelcome_unknown_field_refuses() !void {
+    const text = "format skate-group-v1\ngroup 7 2\nfounder 101\nghost 5\n";
+    const bad = parse(text);
+    assert(bad == error.UnknownField);
+    print("skate_group_bron: an unknown field refused UnknownField rather than be dropped.\n", .{});
+}
+
+/// A wrong header refuses — the record must name its own format.
+fn unwelcome_bad_header_refuses() !void {
+    const bad = parse("format other-v1\ngroup 7 2\n");
+    assert(bad == error.BadFormat);
+    print("skate_group_bron: a wrong header refused BadFormat.\n", .{});
+}
+
+/// A record that never names its group line refuses — a group's id and quorum are required.
+fn unwelcome_missing_group_refuses() !void {
+    const bad = parse("format skate-group-v1\nfounder 101\n");
+    assert(bad == error.MissingGroup);
+    print("skate_group_bron: a record with no group line refused MissingGroup.\n", .{});
+}
+
+/// Malformed hex in a vote signature refuses — the reader will not accept a corrupt signature field.
+fn unwelcome_bad_hex_refuses() !void {
+    const bad = parse("format skate-group-v1\ngroup 7 2\nvote 101 404 zz\n");
+    assert(bad == error.BadHex);
+    print("skate_group_bron: malformed signature hex refused BadHex.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_round_trip_still_honest();
+    try unwelcome_flipped_vote_refuses();
+    try unwelcome_unknown_field_refuses();
+    try unwelcome_bad_header_refuses();
+    try unwelcome_missing_group_refuses();
+    try unwelcome_bad_hex_refuses();
+    print("skate_group_bron: version {s}\n", .{skate_group_bron_version});
+    print("GREEN: DAHL-J10r3 skate_group_bron; a signed group travels as Bron, byte-for-byte, and stays quorum-honest offline.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "skate-group-bron"))) {
+        return run_selftest();
+    }
+    return run_selftest();
+}

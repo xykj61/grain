@@ -1,0 +1,48 @@
+# tools/dahl_j10_skate_group_bron_witness.rish — Season 3 Journey 10 (Membership), Rung 3.
+#
+# Rungs one and two fixed the quorum rule and bound each vote to a member's signature. A group is only
+# useful to a commons if it can be carried — handed to another keeper, checked with no live group in hand.
+# pond/apps/skate_group_bron.rye renders a signed group to a format skate-group-v1 Bron record (a group
+# line with id and quorum, one founder line per founder, one vote line per signed vote) and parses it back
+# byte-for-byte, still quorum-honest offline: still_quorum_honest re-verifies every carried vote signature
+# against the recipient's keyring through rung two's verify_vote, and rebuild replays the founders and
+# votes through rung one's open and rung two's vote_signed into an equal live group whose admission
+# matches. A vote signature flipped after the crossing refuses BadConsent offline; an unknown field
+# (UnknownField, never dropped), a wrong header (BadFormat), a missing group line (MissingGroup), and
+# malformed hex (BadHex) each refuse. Additive — composes rungs one and two over public API; both re-run
+# GREEN. Demo keeper seeds only, no network (serve reaches the custody gate).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/dahl_j10_skate_group_bron_witness.rish
+
+say "dahl-j10r3: Language EN — a signed group travels as Bron, byte-for-byte, and stays quorum-honest offline."
+say "dahl-j10r3: Lens TAME — a flipped vote signature, an unknown field, a wrong header, a missing group line, and bad hex each refuse."
+
+let zig = "vendor/zig-toolchain/zig"
+
+# Rungs one and two re-run GREEN — the travel layer is additive over them.
+let r1_bin = "pond/bin/skate-group"
+let r1_build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_group.rye -femit-bin=${r1_bin}"]
+assert r1_build.ok else "dahl-j10r3: rung-one skate_group build failed"
+let r1_run = run ["sh" "-c" "${r1_bin} selftest 2>&1"]
+assert r1_run.ok else "dahl-j10r3: rung-one selftest exited non-zero"
+assert r1_run.out contains "GREEN" else "dahl-j10r3: rung-one selftest did not speak GREEN"
+
+let r2_bin = "pond/bin/skate-group-signed"
+let r2_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_group_signed.rye -femit-bin=${r2_bin}"]
+assert r2_build.ok else "dahl-j10r3: rung-two skate_group_signed build failed"
+let r2_run = run ["sh" "-c" "${r2_bin} selftest 2>&1"]
+assert r2_run.ok else "dahl-j10r3: rung-two selftest exited non-zero"
+assert r2_run.out contains "GREEN" else "dahl-j10r3: rung-two selftest did not speak GREEN"
+
+let bin = "pond/bin/skate-group-bron"
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_group_bron.rye -femit-bin=${bin}"]
+assert build.ok else "dahl-j10r3: skate_group_bron build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "dahl-j10r3: skate_group_bron selftest exited non-zero"
+assert selftest.out contains "GREEN" else "dahl-j10r3: selftest did not speak GREEN"
+assert selftest.out contains "parsed back byte-for-byte, still quorum-honest offline, and rebuilt the identical admission" else "dahl-j10r3: round-trip crux missing"
+assert selftest.out contains "flipped after the crossing refused BadConsent offline" else "dahl-j10r3: flipped-vote crux missing"
+
+say "GREEN: dahl-j10r3 — skate_group_bron travels a signed group as a format skate-group-v1 record, byte-for-byte, quorum-honest offline."
