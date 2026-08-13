@@ -101,6 +101,26 @@ fn block_hash(b: *const Block, out: *[hash_len]u8) void {
     Sha256.hash(buf[0..n], out, .{});
 }
 
+/// A block's address, exposed for a Byzantine-aware caller that must tell a
+/// duplicate (same address) from an equivocation (same author and round, a
+/// *different* address). Additive — the r1 admission path is unchanged.
+pub fn address(b: *const Block, out: *[hash_len]u8) void {
+    block_hash(b, out);
+}
+
+/// True when the block's author signature verifies over its canonical bytes.
+/// Exposed so a Byzantine-aware caller can reject a forgery before it classifies
+/// an equivocation, sharing this one crypto check rather than duplicating it.
+pub fn verify_block(b: *const Block) bool {
+    // invariant: fan-in is bounded before the canonical bytes are laid out.
+    assert(b.parent_count <= cord_max_parents);
+    var buf: [block_bytes_max]u8 = undefined;
+    const n = block_bytes(b, &buf);
+    const pk = kumara.PublicKey.fromBytes(b.author_pk) catch return false;
+    kumara.verify_bytes(buf[0..n], b.sig[0..], pk) catch return false;
+    return true;
+}
+
 /// Mint an author-signed block over a fact and a bounded parent set.
 /// Refuses (null) an over-wide fan-in.
 pub fn mint_block(
@@ -156,10 +176,9 @@ pub fn add(dag: *Dag, block: Block) error{
     if (block.parent_count > cord_max_parents) return error.TooManyParents;
     if (dag.len >= cord_max_blocks) return error.DagFull;
 
-    var buf: [block_bytes_max]u8 = undefined;
-    const n = block_bytes(&block, &buf);
-    const pk = kumara.PublicKey.fromBytes(block.author_pk) catch return error.BadSignature;
-    kumara.verify_bytes(buf[0..n], block.sig[0..], pk) catch return error.BadSignature;
+    // invariant: only an author-signed block may join — the same check a
+    // Byzantine-aware caller reuses through `verify_block`.
+    if (!verify_block(&block)) return error.BadSignature;
 
     var i: u32 = 0;
     while (i < block.parent_count) : (i += 1) {
