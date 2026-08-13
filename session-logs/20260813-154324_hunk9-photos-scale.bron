@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260813.154324
+editor Zed
+model Fable 5
+voice Kyri
+title HUNK9 — Photos resize (scale) over the open grid
+prompt Autonomous loop (baton prin recur) — take the next agent-doable lap Lindy-first crux-first, self-approve design rounds, send each finished increment as its own signed round, stop at custody gates.
+think HUNK8 (orient) sent GREEN to both remotes; the loop wants continued progress, so I took the next everyday Photos gesture named as the crux — resize/scale on the open grid. No custody gate touched.
+think Added scale additively to image/photos.rye beside crop and the orient verbs (all untouched): nearest-neighbor, output pixel (nx,ny) samples src(nx·w/new_w, ny·h/new_h), sampling in u64 so a product can never wrap.
+obs Proved it concretely and by identity: an identity resize recovers the source byte-for-byte, a 2x nearest upscale samples every output pixel from src(nx/2,ny/2) (checked for every pixel on a tagged 3x4 image), a downscale to 1x1 picks the top-left pixel; source stays pure; the scaled image still re-encodes and round-trips as an open image; a zero target refuses EmptyImage and a 2^21 target past the 2^20 ceiling refuses OutOfBounds before allocating.
+obs Nearest-neighbor is the honest first scaler (exact, bounded, allocation-free per pixel); a smoother resampler (bilinear/area-average) is a named horizon on the same signature.
+loom witness=hunk_photos_scale_witness verb=scale upscaled=6x8 checks=identity,2x-upscale,1x1-downscale,open-roundtrip,refusals build=green
+file image/photos.rye add scale (nearest-neighbor resize) + run_scale selftest; crop and orient untouched
+file tools/hunk_photos_scale_witness.rish new witness — assert the scale GREEN line and its proofs; confirm HUNK3 crop and HUNK8 orient still GREEN beneath
+file active-designing/20260813-154324_hunk-photos-scale-exploration.md self-approved design round for HUNK9
+recommend keep-going — HUNK9 GREEN and sent; next agent-doable crux is another Photos gesture (a bilinear/area-average resampler, or adjust: brightness/contrast on the grid) or a fresh Season-A journey; hardware buying stays custody gate #2/#3.

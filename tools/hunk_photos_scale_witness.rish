@@ -1,0 +1,52 @@
+# tools/hunk_photos_scale_witness.rish — the Photos app resizes the open grid on metal (HUNK9).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK9.
+# Design read: active-designing/20260813-154324_hunk-photos-scale-exploration.md
+# Teacher, thanked clean-room: the everyday iCloud Photos / Google Photos resize gesture (concept only, siloed).
+#
+# HUNK3 cropped, HUNK8 turned and mirrored; this rung gives the Photos app its resize. `image/photos.rye`
+# `scale` is a pure bounded function over the decoded RGBA grid: it samples output pixel (nx, ny) from the
+# source pixel at (nx·w/new_w, ny·h/new_h) — nearest-neighbor — returning a fresh image and leaving the source
+# untouched. The selftest proves an identity resize recovers the source byte-for-byte, a 2x nearest upscale
+# samples each output pixel from src(nx/2, ny/2), a downscale to 1x1 picks the top-left pixel, the scaled image
+# still re-encodes and round-trips as an open image, and a zero target and an over-ceiling target each refuse
+# by name. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_photos_scale_witness.rish
+
+say "hunk-photos-scale: Language EN — HUNK9 gives the Photos app its resize: a pure bounded nearest-neighbor function over the decoded grid that returns a fresh open image, the source untouched."
+say "hunk-photos-scale: Style Radiant — a scaled image is still an open image: it re-encodes and round-trips byte-for-byte, so resize stands on the open module the quest built, never a proprietary one."
+say "hunk-photos-scale: Lens TAME — sampling computed in u64 so nx·width cannot wrap; the target fits the codec's pixel ceiling or refuses; copy_disjoint per pixel; positive invariants per fn; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/photos"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/photos.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-photos-scale: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-photos-scale: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+say "hunk-photos-scale: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-scale' && echo yes"]
+assert (trim green.out) == "yes" else "hunk-photos-scale: selftest did not print the GREEN scale line"
+
+let identity = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'identity resize byte-identical' && echo yes"]
+assert (trim identity.out) == "yes" else "hunk-photos-scale: the identity resize was not proven byte-identical"
+
+let upscale = run ["sh" "-c" "printf '%s' '${out}' | grep -q '2x nearest upscale samples each pixel' && echo yes"]
+assert (trim upscale.out) == "yes" else "hunk-photos-scale: the 2x upscale sampling was not proven"
+
+let open = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'scaled image re-encodes and round-trips' && echo yes"]
+assert (trim open.out) == "yes" else "hunk-photos-scale: a scaled image did not round-trip as an open image"
+
+# HUNK3 crop and HUNK8 orient selftests still run in the same binary — their GREEN lines must remain.
+let crop = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos:' && echo yes"]
+assert (trim crop.out) == "yes" else "hunk-photos-scale: HUNK3 crop selftest no longer GREEN beneath"
+let orient = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-orient' && echo yes"]
+assert (trim orient.out) == "yes" else "hunk-photos-scale: HUNK8 orient selftest no longer GREEN beneath"
+
+say "hunk-photos-scale: GREEN — the Photos app resizes the open grid; pure, bounded, nearest-neighbor, refusals named; HUNK3 crop and HUNK8 orient still GREEN beneath."
