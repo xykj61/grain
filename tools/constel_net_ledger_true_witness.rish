@@ -1,0 +1,62 @@
+# tools/constel_net_ledger_true_witness.rish — Constel dev-net ledger, Rung 4: the ledger reads true (the arc closes).
+#
+# Rungs one through three ran a sovereign ledger over the fake net's money, reserved stars beside its
+# topology, and let a folded ledger travel as a format constel-ledger-v1 record — all over ledgers seated
+# in code. This closing rung carries the reader onto a REAL on-disk ledger record
+# (tools/fixtures/constel_net_ledger.bron, produced reproducibly by
+# pond/apps/constel_net_ledger_fixture_gen.rye, @embedFile-bound through a pond/apps/corpora/ symlink) and
+# proves what the reader reports is true to the bytes. The crux is the cross-check: constel_net_ledger_true
+# re-folds the record through the real Mycelium law and reports fact count · supply · reservations, and
+# tools/fixtures/constel_net_ledger_truth.awk reads the same file independently; the witness asserts the
+# app's triple equals awk's — two tools, one answer (3 50 1). The fixture is genuinely reproducible (the
+# generator re-emits identical bytes) and the record is a genuine, law-safe ledger. Demo keeper seeds only
+# — no key, no funds, no network, no custody (gate #3 and gate #4 untouched).
+#
+# Law:   active-designing/20260813-022222_constel-test-network-naming-law.md
+# Scope: active-designing/20260813-030005_constel-devnet-ledger-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/constel_net_ledger_true_witness.rish
+
+say "constel-net-ledger-true: Language EN — the reading of a real ledger record is true to the bytes; app and awk give one answer."
+say "constel-net-ledger-true: Style Radiant — the fixture is what the ledger renders, its supply re-folded through the real Mycelium law, its safe name holding on the real bytes."
+say "constel-net-ledger-true: Lens TAME — fact count, supply, and reservations cross-check against an independent awk; a tampered record is never read as true; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/constel-net-ledger-true"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/constel_net_ledger_true.rye -femit-bin=${bin}"]
+assert build.ok else "constel-net-ledger-true: constel_net_ledger_true build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "constel-net-ledger-true: constel_net_ledger_true selftest exited non-zero"
+assert selftest.out contains "GREEN" else "constel-net-ledger-true: selftest did not speak GREEN"
+assert selftest.out contains "matches an independent count of the same bytes" else "constel-net-ledger-true: read-true claim missing"
+assert selftest.out contains "re-renders to the embedded bytes exactly, and its recovered name is still law-safe" else "constel-net-ledger-true: genuine-ledger claim missing"
+assert selftest.out contains "a tampered header refused BadFormat" else "constel-net-ledger-true: tamper refusal missing"
+assert selftest.out contains "The ledger's agent-doable arc closes" else "constel-net-ledger-true: arc-close claim missing"
+
+# The crux — two tools, one answer. The app's measure triple must equal awk's reading of the same bytes.
+let app = run ["sh" "-c" "${bin} measure 2>&1"]
+assert app.ok else "constel-net-ledger-true: app measure exited non-zero"
+let awk = run ["sh" "-c" "awk -f tools/fixtures/constel_net_ledger_truth.awk tools/fixtures/constel_net_ledger.bron"]
+assert awk.ok else "constel-net-ledger-true: awk truth read failed"
+assert awk.out contains "3 50 1" else "constel-net-ledger-true: awk triple not 3 50 1"
+assert app.out == awk.out else "constel-net-ledger-true: app and awk disagree — the reading drifted from the bytes"
+
+# The fixture is genuinely reproducible — the generator re-emits byte-identical bytes, so the on-disk
+# record is what the ledger renders, never a hand-mock. Emit to a scratch path and diff (never overwrite
+# the committed fixture in a read-only witness).
+let gen = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/constel_net_ledger_fixture_gen.rye -femit-bin=pond/bin/constel-net-ledger-fixture-gen"]
+assert gen.ok else "constel-net-ledger-true: fixture generator build failed"
+let regen = run ["sh" "-c" "pond/bin/constel-net-ledger-fixture-gen 2> /tmp/constel_net_ledger_regen.bron; diff tools/fixtures/constel_net_ledger.bron /tmp/constel_net_ledger_regen.bron && echo REPRODUCIBLE"]
+assert regen.ok else "constel-net-ledger-true: the fixture generator did not reproduce the committed bytes"
+assert regen.out contains "REPRODUCIBLE" else "constel-net-ledger-true: the regenerated fixture drifted from the committed one"
+
+# Rung three stays its own GREEN binary — this rung reads the record it renders, never replaces it, so
+# the travel crux stands at r4's door.
+let r3 = run ["sh" "-c" "rishi/bin/rishi run tools/constel_net_ledger_bron_witness.rish 2>&1"]
+assert r3.ok else "constel-net-ledger-true: rung three (the ledger travels) is not GREEN under the closing rung"
+assert r3.out contains "constel-net-ledger-bron: GREEN" else "constel-net-ledger-true: rung three did not speak its GREEN"
+
+say "constel-net-ledger-true: GREEN — a real ledger record reads true (app==awk, 3 50 1), its supply re-folded through the real Mycelium law and its fixture reproducible; rung three stands at its door. The Constel dev-net ledger's agent-doable arc closes."
