@@ -1,0 +1,299 @@
+//! mycelium/pledge_knot.rye — the two-phase verdict reads across a Knot (rung r3).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · the two-phase transfer · rung r3.
+//! Design read: active-designing/20260813-075049_mycelium-pledge-two-phase-transfer-exploration.md
+//!
+//! Rung 1 resolved a whole Cord Dag into a two-phase Ledger — which pledges reserved
+//! coins, which were honored, which released. Yet a ledger a family runs for years does
+//! not carry its whole past unbroken: the Knot (`cord_knot.rye`) ties off a committed
+//! prefix into a sealed `fold.FoldState` so a bounded Dag runs forever, and new facts
+//! continue onto that seal. This rung makes the Pledge's corpus a Knot plus its live
+//! suffix — the checkpointed accounts and open pledges read through the same verdict,
+//! continued by the phases that arrived since the cut.
+//!
+//! The crux is what two-phase transfer exists FOR: a pledge and its resolution can stand
+//! far apart in time — even across a pruning checkpoint. Genesis credits a hundred to
+//! Alice and she PLEDGES it to Bob inside the SEALED prefix (her coins reserved, not yet
+//! moved); after the past is tied off and pruned, she POSTS that pledge in the live
+//! suffix, and the reserved hundred reaches Bob — a promise made before the cut, kept
+//! after it. A VOID in the suffix would instead return the reserved hundred to Alice.
+//! Every honest node names the same outcome whether it reads the whole Cord or a Knot
+//! plus a live suffix.
+//!
+//! The honest seam, the Purse's carried forward: a `cord_knot.Knot` seals only fold's
+//! GLOBAL supply law (issued · taxed · the reserved-star set), not WHO holds what and
+//! which pledges stand open. So a Pledge-across-a-Knot carries two things across the cut —
+//! the Knot (the integrity-sealed supply, whose `issued` equals the prefix's
+//! `total_issued`, both counting only genesis credits) and the prefix verdict's accounts
+//! and open pledges (the map the FoldState omits). The Knot's digest is integrity-in-
+//! travel for the number conservation is measured against; the account-and-pledge map
+//! travels beside it, and every suffix phase re-proves its own signer and folds the
+//! Pledge's own two-phase law through the shared `pledge.fold_pledge` step. A pledge stays
+//! ONE kind_tax fact in the sealed prefix (so fold's global taxed never double-counts a
+//! reserve-and-resolve pair) — the resolution rides the live suffix, exactly where the
+//! contest belongs.
+//!
+//! Additive by construction: it imports `pledge` (r1's `Ledger` / `fold_pledge` /
+//! `balances_sum`), `cord_knot`, `cord`, and `fold`, and calls only their public API.
+//! Rung one stays its own green binary; the Knot stays its own green binary. No storage,
+//! no transport, no network, no custody — a node reads across its own sealed checkpoint.
+//! Demo keeper seeds only — no real key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/pledge_knot.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("cord.rye");
+const cord_knot = @import("cord_knot.rye");
+const fold = @import("fold.rye");
+const pledge = @import("pledge.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+
+/// A checkpointed two-phase verdict: the Knot sealing the prefix's global supply law
+/// under a digest, beside the prefix's account-and-pledge map (the balances, reserves,
+/// and open pledges the FoldState omits).
+pub const PledgeKnot = struct {
+    knot: cord_knot.Knot = .{},
+    verdict: pledge.Ledger = .{},
+};
+
+/// Seal a committed prefix Dag into a PledgeKnot — resolve it to its two-phase verdict,
+/// then tie off its global supply with a Knot. The prefix's accounts and open pledges
+/// travel in `verdict`; the sealed `FoldState` in `knot` is the integrity-checked starting
+/// supply. A prefix that itself overdrew globally refuses at `seal_dag` — a checkpoint
+/// seals a settled prefix.
+pub fn seal_pledge(dag: *const cord.Dag) (pledge.FoldError || error{ LogFull, StarTaken })!PledgeKnot {
+    // invariant: the prefix Dag fits the static bound before it is committed.
+    assert(dag.len <= cord.cord_max_blocks);
+    const v = try pledge.resolve(dag);
+    const k = try cord_knot.seal_dag(dag);
+    // invariant: the sealed Knot verifies the instant it is made.
+    assert(cord_knot.verify(&k));
+    // invariant: the sealed global issue equals the per-account issue — the number
+    // conservation is measured against travels integrity-checked.
+    assert(k.state.issued == v.total_issued);
+    return .{ .knot = k, .verdict = v };
+}
+
+/// Continue the two-phase verdict onto a checkpoint — verify the Knot, seed a Ledger with
+/// the prefix's accounts and open pledges, then walk the live suffix one fact at a time
+/// through `pledge.fold_pledge`. A suffix post honors a pledge opened before the cut; a
+/// suffix void releases it; the second resolution of an already-settled pledge is a lawful
+/// no-op — the same two-phase verdict r1 records within one Cord, now across the cut. A
+/// corrupt Knot refuses before a single fact is folded; an unknown or wrong-signed or
+/// amount-mismatched resolution, a never-could-pay pledge, a broken signature, a star
+/// reserve, and a malformed body each still refuse whole. Conservation holds past the cut.
+pub fn continue_pledge(pk: *const PledgeKnot, suffix: *const fold.Log) (error{KnotCorrupt} || pledge.FoldError)!pledge.Ledger {
+    // invariant: the suffix stays within the fold's own log bound.
+    assert(suffix.len <= fold.myc_log_max_facts);
+    // invariant: the sealed prefix state is a lawful fold state before it is trusted.
+    assert(pk.knot.state.taxed <= pk.knot.state.issued);
+    // The Knot is untrusted input — a tampered one violates its own digest by design, so
+    // its integrity is a runtime GATE (verify), never an assert. A corrupt Knot refuses
+    // whole before a single suffix fact is folded.
+    if (!cord_knot.verify(&pk.knot)) return error.KnotCorrupt;
+
+    var l = pk.verdict; // the prefix account-and-pledge map, carried across the cut
+    var i: u32 = 0;
+    while (i < suffix.len) : (i += 1) {
+        // Position is local to the live epoch — the pruned prefix's global order is gone,
+        // which is exactly what a checkpoint means. The signer, the coins, the pledge id,
+        // and the verdict are what carry across the cut.
+        try pledge.fold_pledge(&l, &suffix.facts[i], i);
+    }
+    // invariant: conservation — balance + reserved still sums to what genesis issued.
+    assert(l.balances_sum() + l.reserved_sum() == l.total_issued);
+    return l;
+}
+
+/// The two-phase verdict never drifts between a full Cord and a Knot-continued resolution:
+/// the pledge and settlement counts, the issued total, each account's balance and reserve,
+/// and every pledge's settlement agree. Position is deliberately not compared — it is local
+/// to the live epoch across a cut.
+pub fn pledges_match(whole: *const pledge.Ledger, across: *const pledge.Ledger) bool {
+    // invariant: both verdicts stay within the named ceilings.
+    assert(whole.pledge_count <= pledge.pledge_max_pledges);
+    assert(across.pledge_count <= pledge.pledge_max_pledges);
+    if (whole.pledges_seen() != across.pledges_seen()) return false;
+    if (whole.posted_seen() != across.posted_seen()) return false;
+    if (whole.voided_seen() != across.voided_seen()) return false;
+    if (whole.total_issued != across.total_issued) return false;
+    if (whole.account_count != across.account_count) return false;
+    // Every account holds the same spendable and reserved coins on both nodes.
+    var i: u32 = 0;
+    while (i < whole.account_count) : (i += 1) {
+        const wk = whole.accounts[i].pk[0..];
+        if (whole.accounts[i].balance != across.balance_of(wk)) return false;
+        if (whole.accounts[i].reserved != across.reserved_of(wk)) return false;
+    }
+    // Each pledge's settlement is the verdict's fingerprint.
+    i = 0;
+    while (i < whole.pledge_count) : (i += 1) {
+        const wp = whole.pledge_at(i) orelse return false;
+        const ap = across.pledge_at(i) orelse return false;
+        if (wp.state != ap.state) return false;
+        if (wp.amount != ap.amount) return false;
+        if (!std.mem.eql(u8, wp.id[0..], ap.id[0..])) return false;
+    }
+    return true;
+}
+
+// ---- selftest: the two-phase verdict reads the same across a sealed checkpoint ----
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn pledge_body(id: []const u8, to: []const u8, out: []u8) u32 {
+    // invariant: the buffer holds tag · id · recipient exactly.
+    assert(out.len >= 1 + pledge.id_len + pledge.pk_len);
+    assert(id.len == pledge.id_len);
+    out[0] = pledge.tag_pledge;
+    tally_copy.copy_disjoint(u8, out[1 .. 1 + pledge.id_len], id);
+    tally_copy.copy_disjoint(u8, out[1 + pledge.id_len ..][0..pledge.pk_len], to);
+    return 1 + pledge.id_len + pledge.pk_len;
+}
+
+fn resolve_body(tag: u8, id: []const u8, out: []u8) u32 {
+    // invariant: the buffer holds tag · id exactly.
+    assert(out.len >= 1 + pledge.id_len);
+    assert(id.len == pledge.id_len);
+    out[0] = tag;
+    tally_copy.copy_disjoint(u8, out[1 .. 1 + pledge.id_len], id);
+    return 1 + pledge.id_len;
+}
+
+pub fn main() !void {
+    const id = [_]u8{0x01} ** pledge.id_len;
+    const id2 = [_]u8{0x02} ** pledge.id_len;
+    const kf = seeded(0xF0); // funder / genesis credit
+    const ka = seeded(0xA1); // Alice — pledges inside the prefix, resolves across the cut
+    const kb = seeded(0xB2); // Bob — the pledge's recipient
+
+    const alice_pk = ka.public_key.toBytes();
+    const bob_pk = kb.public_key.toBytes();
+
+    const f_gen = fold.mint_fact(kf, fold.kind_issue, 100, "", alice_pk[0..]) orelse return error.MintGen;
+    var pb: [1 + pledge.id_len + pledge.pk_len]u8 = undefined;
+    const pn = pledge_body(id[0..], bob_pk[0..], &pb);
+    const f_pledge = fold.mint_fact(ka, fold.kind_tax, 100, "", pb[0..pn]) orelse return error.MintPledge;
+    var hb: [1 + pledge.id_len]u8 = undefined;
+    const hn = resolve_body(pledge.tag_post, id[0..], &hb);
+    const f_post = fold.mint_fact(ka, fold.kind_tax, 100, "", hb[0..hn]) orelse return error.MintPost;
+    var vb: [1 + pledge.id_len]u8 = undefined;
+    const vn = resolve_body(pledge.tag_void, id[0..], &vb);
+    const f_void = fold.mint_fact(ka, fold.kind_tax, 100, "", vb[0..vn]) orelse return error.MintVoid;
+
+    // Genesis at round 0; Alice's pledge at round 1 (references genesis); the resolution at
+    // round 2 (references the pledge block), so the whole order is unambiguous by round.
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_gen) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+    const roots = [_][cord.hash_len]u8{hg};
+    const b_pledge = cord.mint_block(ka, 1, roots[0..], f_pledge) orelse return error.BlockPledge;
+    var hpl: [cord.hash_len]u8 = undefined;
+    cord.address(&b_pledge, &hpl);
+    const roots2 = [_][cord.hash_len]u8{hpl};
+    const b_post = cord.mint_block(ka, 2, roots2[0..], f_post) orelse return error.BlockPost;
+
+    // The truth to match: the WHOLE history resolved as one Cord Dag — pledge then post.
+    var whole = cord.Dag.empty();
+    try cord.add(&whole, g);
+    try cord.add(&whole, b_pledge);
+    try cord.add(&whole, b_post);
+    const whole_verdict = try pledge.resolve(&whole);
+    if (whole_verdict.posted_seen() != 1) return error.WholePosted;
+    if (whole_verdict.balance_of(bob_pk[0..]) != 100) return error.WholeBob;
+    if (whole_verdict.reserved_of(alice_pk[0..]) != 0) return error.WholeReserve;
+
+    // The Knot path: seal the prefix (genesis + pledge), then continue the suffix (post)
+    // onto the checkpoint.
+    var prefix = cord.Dag.empty();
+    try cord.add(&prefix, g);
+    try cord.add(&prefix, b_pledge);
+    const pk = try seal_pledge(&prefix);
+    // The checkpoint holds Alice's coin reserved in one open pledge — not moved, not hers
+    // to spend, issue sealed at 100.
+    if (pk.verdict.pledges_seen() != 1) return error.PrefixPledges;
+    if (pk.verdict.posted_seen() != 0) return error.PrefixPosted;
+    if (pk.verdict.reserved_of(alice_pk[0..]) != 100) return error.PrefixReserve;
+    if (pk.knot.state.issued != 100) return error.PrefixIssued;
+
+    // The live suffix: Alice posts the pledge she opened before the cut — the reserved
+    // hundred reaches Bob. A promise made before the checkpoint, kept after it.
+    var suffix = fold.Log.empty();
+    suffix.facts[0] = f_post;
+    suffix.len = 1;
+    const across = try continue_pledge(&pk, &suffix);
+
+    // The crux: the pledge opened in the sealed past is honored across the cut — Bob holds
+    // the coin, Alice holds nothing spendable or reserved, conservation holds, and the
+    // checkpoint is invisible to the verdict.
+    if (across.posted_seen() != 1) return error.AcrossPosted;
+    if (across.voided_seen() != 0) return error.AcrossVoided;
+    if (across.balance_of(bob_pk[0..]) != 100) return error.AcrossBob;
+    if (across.reserved_of(alice_pk[0..]) != 0) return error.AcrossReserve;
+    if (across.balance_of(alice_pk[0..]) != 0) return error.AcrossAlice;
+    if (across.total_issued != 100) return error.AcrossIssued;
+    if (across.balances_sum() + across.reserved_sum() != 100) return error.AcrossNotConserved;
+
+    // The two-phase verdict never drifts between the full Cord and the Knot-continued one.
+    if (!pledges_match(&whole_verdict, &across)) return error.KnotChangedVerdict;
+
+    // The other resolution reads across the cut too: a VOID in the suffix releases the
+    // reserved hundred back to Alice — an atomic reversal spanning the checkpoint.
+    var suffix_void = fold.Log.empty();
+    suffix_void.facts[0] = f_void;
+    suffix_void.len = 1;
+    const released = try continue_pledge(&pk, &suffix_void);
+    if (released.voided_seen() != 1) return error.ReleasedVoided;
+    if (released.balance_of(alice_pk[0..]) != 100) return error.ReleasedAlice;
+    if (released.reserved_of(alice_pk[0..]) != 0) return error.ReleasedReserve;
+    if (released.balance_of(bob_pk[0..]) != 0) return error.ReleasedBob;
+    if (released.balances_sum() + released.reserved_sum() != 100) return error.ReleasedNotConserved;
+
+    // Integrity across the cut, three ways.
+    // 1. A Knot corrupted after sealing refuses before a suffix fact is folded.
+    var pk_bad = pk;
+    pk_bad.knot.state.issued += 1;
+    if (continue_pledge(&pk_bad, &suffix)) |_| {
+        return error.CorruptTrusted;
+    } else |err| {
+        if (err != error.KnotCorrupt) return error.WrongCorrupt;
+    }
+
+    // 2. A tampered suffix fact (its own signature broken) refuses IdentityRefused.
+    var f_tamper = f_post;
+    f_tamper.sig[0] ^= 0xff;
+    var suffix_tamper = fold.Log.empty();
+    suffix_tamper.facts[0] = f_tamper;
+    suffix_tamper.len = 1;
+    if (continue_pledge(&pk, &suffix_tamper)) |_| {
+        return error.TamperTrusted;
+    } else |err| {
+        if (err != error.IdentityRefused) return error.WrongTamper;
+    }
+
+    // 3. A suffix resolution of a pledge the checkpoint never opened refuses UnknownPledge
+    //    across the cut — the pledge-reference law holds past a checkpoint exactly as
+    //    within one Cord.
+    var hb2: [1 + pledge.id_len]u8 = undefined;
+    const hn2 = resolve_body(pledge.tag_post, id2[0..], &hb2);
+    const f_ghost = fold.mint_fact(ka, fold.kind_tax, 100, "", hb2[0..hn2]) orelse return error.MintGhost;
+    var suffix_ghost = fold.Log.empty();
+    suffix_ghost.facts[0] = f_ghost;
+    suffix_ghost.len = 1;
+    if (continue_pledge(&pk, &suffix_ghost)) |_| {
+        return error.GhostCrossed;
+    } else |err| {
+        if (err != error.UnknownPledge) return error.WrongGhost;
+    }
+
+    print("pledge-knot: the prefix seals a Knot holding Alice's coin reserved in one open pledge; the suffix post honors it across the cut, the coin reaching Bob\n", .{});
+    print("pledge-knot: the two-phase verdict reads the same across the cut — a full Cord and a sealed Knot name one honored pledge, conservation of balance + reserved whole; a suffix void releases it instead\n", .{});
+    print("pledge-knot: a corrupt Knot, a tampered suffix fact, and a resolution of a pledge the checkpoint never opened each refuse whole\n", .{});
+    print("GREEN: myc pledge-knot — the two-phase verdict reads across a Knot · posted={d} · reserved-cleared · verdict never drifts\n", .{across.posted_seen()});
+}
