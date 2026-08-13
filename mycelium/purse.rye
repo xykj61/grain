@@ -268,6 +268,74 @@ fn record_short(p: *Purse, from: []const u8, amount: u64, pos: u32, received_at:
     p.short_count += 1;
 }
 
+/// Fold one signed fact into a Purse — the per-account law for a single transfer, the
+/// step `resolve` walks over the agreed order and `purse_knot.continue_purse` walks
+/// over a live suffix seeded from a sealed checkpoint. `pos` is the fact's position in
+/// its epoch, `round` the block round a winning move records. A fact whose own signature
+/// is broken refuses the whole fold before any coin moves; a transfer the sender cannot
+/// pay yet once could afford (amount <= received-so-far) is a lawful no-op spent-out
+/// loss (folding continues); a transfer that never could pay, an unknown kind, a star
+/// reserve, and a malformed recipient each refuse whole.
+pub fn fold_transfer(p: *Purse, fact: *const fold.Fact, pos: u32, round: u32) error{
+    IdentityRefused,
+    Malformed,
+    NeverPaid,
+    Overdraw,
+    StarReserve,
+    UnknownKind,
+    TooManyAccounts,
+    TooManyMoves,
+    TooManyShorts,
+}!void {
+    // invariant: a fact's position is a real index within the fold's log ceiling.
+    assert(pos < fold.myc_log_max_facts);
+
+    // Corruption is not a verdict — a fact whose own signature is broken refuses
+    // the whole fold before any coin moves.
+    if (!fold.verify_fact(fact)) return error.IdentityRefused;
+
+    if (fact.kind == fold.kind_issue) {
+        // A genesis credit funds one account (demo funder authority — real mint
+        // policy is a named horizon).
+        const to = try recipient_of(fact);
+        try credit(p, to, fact.amount);
+        const nt = p.total_issued +% fact.amount;
+        if (nt < p.total_issued) return error.Overdraw; // wrap refuse
+        p.total_issued = nt;
+    } else if (fact.kind == fold.kind_tax) {
+        // A transfer moves coins from the signer's purse to the named recipient.
+        const to = try recipient_of(fact);
+        const from = fact.signer_pk[0..];
+        const si = account_index(p, from);
+        const received_here = if (si) |k| p.accounts[k].received else 0;
+        const balance_here = if (si) |k| p.accounts[k].balance else 0;
+
+        // Never-could-pay: more than the holder ever received refuses whole —
+        // that was never a race, only a demand no order could meet.
+        if (fact.amount > received_here) return error.NeverPaid;
+
+        if (fact.amount > balance_here) {
+            // Lost a race: the coins were in this purse once, an earlier winning
+            // transfer took them first — a lawful no-op, folding continues.
+            try record_short(p, from, fact.amount, pos, received_here);
+        } else {
+            // Accepted: the sender's purse pays; the recipient's rises; conserved.
+            const sidx = try ensure_account(p, from);
+            // invariant: an accepted move never overdraws the sender.
+            assert(fact.amount <= p.accounts[sidx].balance);
+            p.accounts[sidx].balance -= fact.amount;
+            try credit(p, to, fact.amount);
+            try record_move(p, from, to, fact.amount, pos, round);
+        }
+    } else if (fact.kind == fold.kind_star_reserve) {
+        // A name reservation is fold's / the Tenure's resource, not the Purse's —
+        // a Purse log carries coins between accounts, so it refuses whole here.
+        return error.StarReserve;
+    } else {
+        return error.UnknownKind;
+    }
+}
+
 /// Resolve a committed Dag into a Purse — the per-account verdict of the agreed order.
 /// A transfer the sender cannot pay yet once could afford (amount <= received-so-far)
 /// is a lawful no-op spent-out loss; a transfer that never could pay, a broken
@@ -298,52 +366,8 @@ pub fn resolve(dag: *const cord.Dag) error{
         // invariant: every committed index names a real seat.
         assert(idx < dag.len);
         const blk = &dag.blocks[idx];
-        const fact = &blk.fact;
-
-        // Corruption is not a verdict — a fact whose own signature is broken refuses
-        // the whole resolution before any coin moves.
-        if (!fold.verify_fact(fact)) return error.IdentityRefused;
-
-        if (fact.kind == fold.kind_issue) {
-            // A genesis credit funds one account (demo funder authority — real mint
-            // policy is a named horizon).
-            const to = try recipient_of(fact);
-            try credit(&p, to, fact.amount);
-            const nt = p.total_issued +% fact.amount;
-            if (nt < p.total_issued) return error.Overdraw; // wrap refuse
-            p.total_issued = nt;
-        } else if (fact.kind == fold.kind_tax) {
-            // A transfer moves coins from the signer's purse to the named recipient.
-            const to = try recipient_of(fact);
-            const from = fact.signer_pk[0..];
-            const si = account_index(&p, from);
-            const received_here = if (si) |k| p.accounts[k].received else 0;
-            const balance_here = if (si) |k| p.accounts[k].balance else 0;
-
-            // Never-could-pay: more than the holder ever received refuses whole —
-            // that was never a race, only a demand no order could meet.
-            if (fact.amount > received_here) return error.NeverPaid;
-
-            if (fact.amount > balance_here) {
-                // Lost a race: the coins were in this purse once, an earlier winning
-                // transfer took them first — a lawful no-op, folding continues.
-                try record_short(&p, from, fact.amount, i, received_here);
-            } else {
-                // Accepted: the sender's purse pays; the recipient's rises; conserved.
-                const sidx = try ensure_account(&p, from);
-                // invariant: an accepted move never overdraws the sender.
-                assert(fact.amount <= p.accounts[sidx].balance);
-                p.accounts[sidx].balance -= fact.amount;
-                try credit(&p, to, fact.amount);
-                try record_move(&p, from, to, fact.amount, i, blk.round);
-            }
-        } else if (fact.kind == fold.kind_star_reserve) {
-            // A name reservation is fold's / the Tenure's resource, not the Purse's —
-            // a Purse log carries coins between accounts, so it refuses whole here.
-            return error.StarReserve;
-        } else {
-            return error.UnknownKind;
-        }
+        // The per-account law for one fact, at its committed position and round.
+        try fold_transfer(&p, &blk.fact, i, blk.round);
     }
 
     // invariant: conservation — the balances sum to exactly what genesis issued.
