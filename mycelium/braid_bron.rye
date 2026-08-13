@@ -1,0 +1,395 @@
+//! mycelium/braid_bron.rye — the linked-chain verdict travels as a readable record.
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · Braid rung r2 — travel.
+//! Design read: active-designing/20260813-081709_mycelium-braid-linked-atomic-chain-exploration.md
+//!
+//! r1 resolved a Cord's agreed order into a Ledger — every account's balance and every
+//! braid's atom-verdict (committed, rejected, or pending). A verdict a node cannot hand to
+//! another node is only a local reading, so r2 lets a resolved Ledger cross as
+//! `format braid-v1` bytes: an `issued <total>` line, one `holds <pk> <balance>` line per
+//! account, one `braid <id> <state>` line per linked chain, and one
+//! `link <id> <seq> <from> <to> <amount>` line per link the chain gathered. Render writes it,
+//! parse reads it back, so a round trip is a fixed point — and the recovered Ledger reports
+//! the identical balances, atom-verdicts, and links, so the linked-chain verdict crosses to a
+//! stranger unchanged.
+//!
+//! The record carries conservation as its own law, the way purse-v1 did: the balances a
+//! record claims must sum to exactly the `issued` total it names, or the reader refuses
+//! `BadInt` before the record is trusted — no coin appears or vanishes in the crossing, and a
+//! committed braid (coins moved) or a rejected braid (nothing moved) both leave the sum whole.
+//!
+//! A purpose-built bounded reader, never a general parser: a wrong header refuses `BadFormat`,
+//! an unknown field `UnknownField` (never dropped), a malformed line `BadLine`, a bad integer
+//! or broken conservation law `BadInt`, a bad hex field `BadHex`, an over-long record
+//! `TooManyAccounts`/`TooManyBraids`/`TooManyLinks`. Composes braid.rye + cord.rye + fold.rye
+//! public API only. Siloed, dev-only, demo seeds — no key, no funds, no network, no custody.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/braid_bron.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const braid = @import("braid.rye");
+const cord = @import("cord.rye");
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+const parse_int = @import("parse_int.rye");
+const tally_copy = @import("tally_copy.rye");
+
+/// A travelled record carries at most this many accounts — a dev-net ledger is small and
+/// legible, well under the Braid's own ceiling.
+pub const max_accounts_in_record: u32 = 64;
+
+/// And at most this many linked chains.
+pub const max_braids_in_record: u32 = 32;
+
+/// And at most this many links across all chains.
+pub const max_links_in_record: u32 = 64;
+
+/// The record buffer bound — a small ledger's whole verdict fits with room.
+pub const max_record: u32 = 32768;
+
+pub const BronError = error{
+    BadFormat, // the header line is not `format braid-v1`, or no issued line
+    UnknownField, // a line names a field the record does not define
+    BadLine, // a known line carries the wrong token count, or a link names no braid
+    BadInt, // an integer field did not parse, held a bad state, or broke conservation
+    BadHex, // a hex field was the wrong length or held a non-hex char
+    TooManyAccounts, // more accounts than a v1 record admits
+    TooManyBraids, // more chains than a v1 record admits
+    TooManyLinks, // more links than a v1 record (or one chain) admits
+    RecordTooLong, // the rendered record overflowed the buffer
+};
+
+const hex_digits = "0123456789abcdef";
+
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex chars per byte.
+    assert(out.len == bytes.len * 2);
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0F];
+    }
+}
+
+fn nibble(c: u8) BronError!u8 {
+    return switch (c) {
+        '0'...'9' => c - '0',
+        'a'...'f' => c - 'a' + 10,
+        'A'...'F' => c - 'A' + 10,
+        else => error.BadHex,
+    };
+}
+
+fn from_hex(text: []const u8, out: []u8) BronError!void {
+    if (text.len != out.len * 2) return error.BadHex;
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < out.len) : (i += 1) {
+        const hi = try nibble(text[i * 2]);
+        const lo = try nibble(text[i * 2 + 1]);
+        out[i] = (hi << 4) | lo;
+    }
+}
+
+/// Render a resolved Ledger to a `format braid-v1` record. Refuses an overflow or an
+/// over-long verdict rather than a partial record.
+pub fn render(l: *const braid.Ledger, out: []u8) BronError!u32 {
+    // invariant: the record honors each of its axis bounds.
+    if (l.account_count > max_accounts_in_record) return error.TooManyAccounts;
+    if (l.braid_count > max_braids_in_record) return error.TooManyBraids;
+    // invariant: the render buffer honors its bound.
+    assert(out.len >= max_record);
+    const head = std.fmt.bufPrint(out, "format braid-v1\n", .{}) catch return error.RecordTooLong;
+    var off: u32 = @intCast(head.len);
+    const iss = std.fmt.bufPrint(out[off..], "issued {d}\n", .{l.total_issued}) catch return error.RecordTooLong;
+    off += @intCast(iss.len);
+
+    var a: u32 = 0;
+    while (a < l.account_count) : (a += 1) {
+        const acct = &l.accounts[a];
+        var pk_hex: [braid.pk_len * 2]u8 = undefined;
+        to_hex(acct.pk[0..], &pk_hex);
+        const line = std.fmt.bufPrint(out[off..], "holds {s} {d}\n", .{ pk_hex, acct.balance }) catch return error.RecordTooLong;
+        off += @intCast(line.len);
+    }
+
+    var total_links: u32 = 0;
+    var b: u32 = 0;
+    while (b < l.braid_count) : (b += 1) {
+        const br = &l.braids[b];
+        var id_hex: [braid.id_len * 2]u8 = undefined;
+        to_hex(br.id[0..], &id_hex);
+        const line = std.fmt.bufPrint(out[off..], "braid {s} {d}\n", .{ id_hex, br.state }) catch return error.RecordTooLong;
+        off += @intCast(line.len);
+        total_links += br.link_count;
+        if (total_links > max_links_in_record) return error.TooManyLinks;
+        var li: u32 = 0;
+        while (li < br.link_count) : (li += 1) {
+            const lk = &br.links[li];
+            var from_hex_buf: [braid.pk_len * 2]u8 = undefined;
+            var to_hex_buf: [braid.pk_len * 2]u8 = undefined;
+            to_hex(lk.from[0..], &from_hex_buf);
+            to_hex(lk.to[0..], &to_hex_buf);
+            const lline = std.fmt.bufPrint(out[off..], "link {s} {d} {s} {s} {d}\n", .{ id_hex, lk.seq, from_hex_buf, to_hex_buf, lk.amount }) catch return error.RecordTooLong;
+            off += @intCast(lline.len);
+        }
+    }
+    // invariant: the rendered record never exceeds its bound.
+    assert(off <= max_record);
+    return off;
+}
+
+/// Split a line into up to six tokens; returns the count (or seven to signal a trailing
+/// token past what any line allows).
+fn tokens(line: []const u8, out: *[6][]const u8) u32 {
+    var count: u32 = 0;
+    var it = std.mem.tokenizeScalar(u8, line, ' ');
+    while (it.next()) |t| {
+        if (count >= 6) return count + 1;
+        out[count] = t;
+        count += 1;
+    }
+    return count;
+}
+
+/// Sum the parsed balances — the conservation law's left side, computed without the read's
+/// own assert so a broken record refuses cleanly rather than tripping it.
+fn balances_total(out: *const braid.Ledger) u64 {
+    var sum: u64 = 0;
+    var i: u32 = 0;
+    while (i < out.account_count) : (i += 1) sum += out.accounts[i].balance;
+    return sum;
+}
+
+/// Index of a parsed braid by its id, or null when no chain carries it yet.
+fn find_braid(out: *const braid.Ledger, id: []const u8) ?u32 {
+    // invariant: a braid id is always the fixed tag width.
+    assert(id.len == braid.id_len);
+    var i: u32 = 0;
+    while (i < out.braid_count) : (i += 1) {
+        if (std.mem.eql(u8, out.braids[i].id[0..], id)) return i;
+    }
+    return null;
+}
+
+/// Parse a `format braid-v1` record into `out`, writing through a pointer (a Ledger carries
+/// large tables, so no return-by-value copy). Refuses an unknown or malformed field, a bad
+/// header, a broken conservation law, or an over-long verdict.
+pub fn parse(text: []const u8, out: *braid.Ledger) BronError!void {
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const header = lines.next() orelse return error.BadFormat;
+    if (!std.mem.eql(u8, header, "format braid-v1")) return error.BadFormat;
+
+    out.account_count = 0;
+    out.braid_count = 0;
+    out.total_issued = 0;
+    var have_issued = false;
+
+    while (lines.next()) |raw| {
+        if (raw.len == 0) continue; // a trailing newline yields one empty line
+        var tok: [6][]const u8 = undefined;
+        const n = tokens(raw, &tok);
+        if (n == 0) continue;
+        if (std.mem.eql(u8, tok[0], "issued")) {
+            if (n != 2) return error.BadLine;
+            out.total_issued = parse_int.parse_int(u64, tok[1], .{}) catch return error.BadInt;
+            have_issued = true;
+        } else if (std.mem.eql(u8, tok[0], "holds")) {
+            if (n != 3) return error.BadLine;
+            if (out.account_count >= braid.braid_max_accounts) return error.TooManyAccounts;
+            const at = out.account_count;
+            try from_hex(tok[1], out.accounts[at].pk[0..]);
+            out.accounts[at].balance = parse_int.parse_int(u64, tok[2], .{}) catch return error.BadInt;
+            out.account_count += 1;
+        } else if (std.mem.eql(u8, tok[0], "braid")) {
+            if (n != 3) return error.BadLine;
+            if (out.braid_count >= braid.braid_max_braids) return error.TooManyBraids;
+            const at = out.braid_count;
+            try from_hex(tok[1], out.braids[at].id[0..]);
+            const st = parse_int.parse_int(u8, tok[2], .{}) catch return error.BadInt;
+            if (st != braid.state_pending and st != braid.state_committed and st != braid.state_rejected) return error.BadInt;
+            out.braids[at].state = st;
+            // A closed chain is exactly one whose atom already settled (committed or rejected).
+            out.braids[at].closed = st != braid.state_pending;
+            out.braids[at].link_count = 0;
+            out.braid_count += 1;
+        } else if (std.mem.eql(u8, tok[0], "link")) {
+            if (n != 6) return error.BadLine;
+            var lid: [braid.id_len]u8 = undefined;
+            try from_hex(tok[1], lid[0..]);
+            const bi = find_braid(out, lid[0..]) orelse return error.BadLine;
+            const br = &out.braids[bi];
+            const seq = parse_int.parse_int(u8, tok[2], .{}) catch return error.BadInt;
+            if (seq >= braid.braid_max_chain) return error.TooManyLinks;
+            const at: u32 = seq;
+            try from_hex(tok[3], br.links[at].from[0..]);
+            try from_hex(tok[4], br.links[at].to[0..]);
+            br.links[at].amount = parse_int.parse_int(u64, tok[5], .{}) catch return error.BadInt;
+            br.links[at].seq = seq;
+            // A link seats its slot; the chain's length is the highest slot filled plus one.
+            if (seq + 1 > br.link_count) br.link_count = seq + 1;
+        } else {
+            return error.UnknownField;
+        }
+    }
+    if (!have_issued) return error.BadFormat;
+    // The conservation law travels: the balances must sum to exactly the issued total, or the
+    // record made or lost a coin in the crossing and is refused.
+    if (balances_total(out) != out.total_issued) return error.BadInt;
+    // invariant: the parsed verdict is bounded on every axis.
+    assert(out.account_count <= braid.braid_max_accounts);
+    assert(out.braid_count <= braid.braid_max_braids);
+}
+
+// ---- selftest: the linked-chain verdict travels and answers unchanged ----------
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn link_body(id: []const u8, seq: u8, last: u8, to: []const u8, out: []u8) u32 {
+    // invariant: the buffer holds tag · id · seq · last · recipient exactly.
+    assert(out.len >= 1 + braid.id_len + 1 + 1 + braid.pk_len);
+    out[0] = braid.tag_link;
+    tally_copy.copy_disjoint(u8, out[1 .. 1 + braid.id_len], id);
+    out[1 + braid.id_len] = seq;
+    out[1 + braid.id_len + 1] = last;
+    tally_copy.copy_disjoint(u8, out[1 + braid.id_len + 2 ..][0..braid.pk_len], to);
+    return 1 + braid.id_len + 1 + 1 + braid.pk_len;
+}
+
+/// Build and resolve a committing three-link chain: genesis Alice 100 · Bob 50, then
+/// Alice→Bob 100, Bob→Carol 120, Carol→Dave 60 — every link affords, the braid commits whole.
+fn build_scene() !braid.Ledger {
+    const id = [_]u8{0x07} ** braid.id_len;
+    const kf = seeded(0xF0);
+    const ka = seeded(0xA1);
+    const kb = seeded(0xB2);
+    const kc = seeded(0xC3);
+    const kd = seeded(0xD4);
+    const alice = ka.public_key.toBytes();
+    const bob = kb.public_key.toBytes();
+    const carol = kc.public_key.toBytes();
+    const dave = kd.public_key.toBytes();
+
+    const f_ga = fold.mint_fact(kf, fold.kind_issue, 100, "", alice[0..]) orelse return error.MintGA;
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_ga) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+    const f_gb = fold.mint_fact(kf, fold.kind_issue, 50, "", bob[0..]) orelse return error.MintGB;
+    const g2 = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_gb) orelse return error.BlockG2;
+    var hg2: [cord.hash_len]u8 = undefined;
+    cord.address(&g2, &hg2);
+
+    var b0: [1 + braid.id_len + 1 + 1 + braid.pk_len]u8 = undefined;
+    const n0 = link_body(id[0..], 0, 0, bob[0..], &b0);
+    const f0 = fold.mint_fact(ka, fold.kind_tax, 100, "", b0[0..n0]) orelse return error.Mint0;
+    const l0 = cord.mint_block(ka, 1, &[_][cord.hash_len]u8{ hg, hg2 }, f0) orelse return error.Block0;
+    var h0: [cord.hash_len]u8 = undefined;
+    cord.address(&l0, &h0);
+
+    var b1: [1 + braid.id_len + 1 + 1 + braid.pk_len]u8 = undefined;
+    const n1 = link_body(id[0..], 1, 0, carol[0..], &b1);
+    const f1 = fold.mint_fact(kb, fold.kind_tax, 120, "", b1[0..n1]) orelse return error.Mint1;
+    const l1 = cord.mint_block(kb, 2, &[_][cord.hash_len]u8{h0}, f1) orelse return error.Block1;
+    var h1: [cord.hash_len]u8 = undefined;
+    cord.address(&l1, &h1);
+
+    var b2: [1 + braid.id_len + 1 + 1 + braid.pk_len]u8 = undefined;
+    const n2 = link_body(id[0..], 2, 1, dave[0..], &b2);
+    const f2 = fold.mint_fact(kc, fold.kind_tax, 60, "", b2[0..n2]) orelse return error.Mint2;
+    const l2 = cord.mint_block(kc, 3, &[_][cord.hash_len]u8{h1}, f2) orelse return error.Block2;
+
+    var dag = cord.Dag.empty();
+    try cord.add(&dag, g);
+    try cord.add(&dag, g2);
+    try cord.add(&dag, l0);
+    try cord.add(&dag, l1);
+    try cord.add(&dag, l2);
+    return braid.resolve(&dag);
+}
+
+/// Two Ledgers answer the same linked-chain verdict: totals, atom-verdict counts, every
+/// balance, and each braid's settled state.
+fn verdicts_agree(a: *const braid.Ledger, b: *const braid.Ledger) bool {
+    if (a.braids_seen() != b.braids_seen()) return false;
+    if (a.committed_seen() != b.committed_seen()) return false;
+    if (a.rejected_seen() != b.rejected_seen()) return false;
+    if (a.pending_seen() != b.pending_seen()) return false;
+    if (a.total_issued != b.total_issued) return false;
+    if (a.account_count != b.account_count) return false;
+    var i: u32 = 0;
+    while (i < a.account_count) : (i += 1) {
+        if (a.accounts[i].balance != b.balance_of(a.accounts[i].pk[0..])) return false;
+    }
+    i = 0;
+    while (i < a.braid_count) : (i += 1) {
+        const bj = find_braid(b, a.braids[i].id[0..]) orelse return false;
+        if (a.braids[i].state != b.braids[bj].state) return false;
+        if (a.braids[i].link_count != b.braids[bj].link_count) return false;
+    }
+    return true;
+}
+
+pub fn main() !void {
+    const l = try build_scene();
+
+    var buf: [max_record]u8 = undefined;
+    const len = try render(&l, buf[0..]);
+
+    var recovered: braid.Ledger = undefined;
+    try parse(buf[0..len], &recovered);
+
+    // The crux: the recovered verdict answers the identical linked-chain verdict.
+    if (!verdicts_agree(&l, &recovered)) return error.VerdictChanged;
+    if (recovered.committed_seen() != 1) return error.CommittedCount;
+    if (recovered.rejected_seen() != 0) return error.RejectedCount;
+    if (recovered.total_issued != 150) return error.IssuedValue;
+    // Conservation survives the crossing — the balances still sum to the issued total.
+    if (recovered.balances_sum() != 150) return error.NotConserved;
+
+    // Re-rendering the recovered verdict reproduces the exact bytes (fixed point).
+    var buf2: [max_record]u8 = undefined;
+    const len2 = try render(&recovered, buf2[0..]);
+    if (len2 != len) return error.NotFixedPoint;
+    if (!std.mem.eql(u8, buf[0..len], buf2[0..len2])) return error.NotFixedPoint;
+
+    // Refusal: a wrong header refuses BadFormat.
+    var scratch: braid.Ledger = undefined;
+    if (parse("format braid-v2\nissued 0\n", &scratch)) |_| return error.BadHeaderAdmitted else |err| {
+        if (err != error.BadFormat) return error.WrongHeader;
+    }
+    // Refusal: an unknown field refuses UnknownField (never dropped).
+    if (parse("format braid-v1\nissued 0\nbogus a b\n", &scratch)) |_| return error.UnknownAdmitted else |err| {
+        if (err != error.UnknownField) return error.WrongUnknown;
+    }
+    // Refusal: a bad hex account key refuses BadHex.
+    if (parse("format braid-v1\nissued 0\nholds zz 0\n", &scratch)) |_| return error.BadHexAdmitted else |err| {
+        if (err != error.BadHex) return error.WrongBadHex;
+    }
+    // Refusal: an unknown braid state refuses BadInt.
+    if (parse("format braid-v1\nissued 0\nbraid 0000000000000000000000000000000f 9\n", &scratch)) |_| return error.BadStateAdmitted else |err| {
+        if (err != error.BadInt) return error.WrongBadState;
+    }
+    // Refusal: balances that do not sum to the issued total break conservation (BadInt).
+    if (parse("format braid-v1\nissued 100\n", &scratch)) |_| return error.BadLawAdmitted else |err| {
+        if (err != error.BadInt) return error.WrongBadLaw;
+    }
+    // Refusal: no issued line refuses BadFormat.
+    if (parse("format braid-v1\n", &scratch)) |_| return error.NoIssuedAdmitted else |err| {
+        if (err != error.BadFormat) return error.WrongNoIssued;
+    }
+    // Refusal: an over-long verdict refuses at render before a partial record.
+    var big: braid.Ledger = .{};
+    big.braid_count = max_braids_in_record + 1;
+    if (render(&big, buf[0..])) |_| return error.OverLongAdmitted else |err| {
+        if (err != error.TooManyBraids) return error.WrongOverLong;
+    }
+
+    print("braid-bron: the resolved verdict renders to a format braid-v1 record and parses back byte-for-byte\n", .{});
+    print("braid-bron: the recovered verdict answers the identical balances and atom-verdict, conservation to {d} unchanged\n", .{recovered.balances_sum()});
+    print("braid-bron: a bad header, an unknown field, a bad hex key, a bad state, a broken conservation law, a missing issued, an over-long verdict each refuse\n", .{});
+    print("GREEN: myc braid-bron — the linked-chain verdict travels as readable text · committed={d} · rejected={d} · fixed point\n", .{ recovered.committed_seen(), recovered.rejected_seen() });
+}
