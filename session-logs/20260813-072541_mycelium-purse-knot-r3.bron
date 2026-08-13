@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260813.072541
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Mycelium Purse r3 — the per-account verdict reads across a Knot
+prompt remember/loop card: take the next agent-doable lap Lindy-first crux-first; approve own design rounds; send each finished increment as its own signed round; stop at custody gates
+think Read REMEMBER + the two itinerary docs. The live edge names the next agent-doable crux plainly — Purse r3 (across a Knot, mirror till_knot), then r4. In-domain, Lindy-first (the checkpoint is the one durable capability a long-lived per-account ledger still lacks), crux-first. Chosen over a fresh season (a rename or a jump opens no new capability the way closing the open arc does).
+think Read purse.rye, till_knot.rye (the mirror), cord_knot.rye (Knot/seal_dag/verify), fold.rye (verify_fact/Log/FoldState). The wrinkle a per-account Knot names: cord_knot.Knot seals fold's GLOBAL supply (issued·taxed·stars), not who-holds-what. So a PurseKnot pairs the sealed Knot (integrity of the number conservation is measured against — knot.state.issued == prefix total_issued, both count only kind_issue) with the prefix Purse map the FoldState omits — exactly till_knot's shape.
+think Refactored purse.rye additively: extracted the per-fact body of resolve into a pub fold_transfer(p, fact, pos, round); resolve now loops calling it. Rebuilt+ran purse — byte-identical GREEN, so the extraction moved no behavior.
+think The crux is truer across a cut than within one round: Alice credited 100, transfers it to Bob INSIDE the sealed prefix, then signs a fresh 100 to Carol in the live suffix. Her purse emptied in the checkpointed past, so the suffix transfer comes up short — lawful no-op, Carol paid nothing, conservation whole. A prefix double-spend would fail seal_dag at the global overdraw, which is correct — a checkpoint seals a SETTLED prefix; the contest belongs across the cut.
+obs Red caught in-round: first draft asserted knot.state.issued == verdict.total_issued as a precondition in continue_purse. The corruption test tampers pk_bad.knot.state.issued += 1, so the assert panicked before verify could return KnotCorrupt — an assert on untrusted input. Fix: the Knot is untrusted; its integrity is a runtime GATE (cord_knot.verify), never an assert. Kept only the sealed-state lawfulness assert (taxed <= issued, which survives the +1 tamper, matching till_knot) plus the conservation postcondition. Bisected with prints, then removed them.
+obs Two large-struct copies (PurseKnot ~95KB, Purse ~58KB) — confirmed no corruption (balances_sum on the returned struct read 100/2 correctly in main), so kept the by-value return like till_knot rather than adding out-pointers where none were needed.
+loom witness=mycelium_purse_knot_witness result=GREEN cases=selftest+purse+cord_knot moved=1 short=1
+file mycelium/purse.rye extract pub fold_transfer as the shared per-fact step; resolve re-runs byte-identical GREEN
+file mycelium/purse_knot.rye r3 — PurseKnot · seal_purse · continue_purse · purses_match; the per-account verdict reads across a Knot
+file tools/mycelium_purse_knot_witness.rish witness — selftest GREEN + Purse and Knot re-run at the door
+file active-designing/20260813-072541_mycelium-purse-knot-across-a-cut-exploration.md self-approved design read for the rung
+file work-in-progress/REMEMBER.md live-edge update — Purse r3 landed; next crux Purse r4 (a real fixture true)
+recommend keep-going Purse r4 (a real reproducible fixture read true, app == awk) closes the third contested-verdict arc; mechanical mirror of till_true, policy already written
