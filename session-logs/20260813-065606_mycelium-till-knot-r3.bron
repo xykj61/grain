@@ -1,0 +1,15 @@
+format session-log-v1
+stamp 20260813.065606
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title mycelium Till — the treasury verdict reads across a Knot (r3)
+prompt Continue the agent-doable lap Lindy-first crux-first; carry the Till arc to r3; send each finished increment to origin and xykj61.
+think r1 fixed the double-spend verdict, r2 let it travel; the next crux is r3 — a treasury a family runs for years does not carry its whole past unbroken, so the Till's corpus becomes a Knot (cord_knot.rye) plus its live suffix. Mirrored mycelium/tenure_knot.rye exactly: a TillKnot pairs the sealed FoldState with the prefix verdict's coin map (the signer→coins the FoldState omits), seal_till resolves+seals, continue_till verifies the Knot then walks the suffix through fold.fold_fact seeded by the sealed supply.
+think The crux the Knot lets me prove that r1 alone could not: the sealed supply is the REAL starting supply, so the same issued-so-far measure that separates a lost race from a never-could-pay draw holds against the CHECKPOINTED past. A suffix draw within the sealed issued is a spent-out loss across the cut; one beyond it refuses whole — the double-spend verdict survives pruning.
+obs Scene: treasury 1000, two prefix draws (kv 100, kx 700) sealed to a Knot at supply 200; suffix draw ky 700 finds only 200 yet the sealed issued is 1000, so issued_here=1000 ≥ 700 → a lawful no-op spent-out loss. verdicts_match proves the full Cord and the Knot-continued resolution name the identical draws (2), loss (1), coins drawn/lost (800/700), supply (200), and loser signer — position deliberately NOT compared (local to the live epoch across a cut, per the tenure_knot seam). GREEN first pass.
+obs Integrity across the cut, three ways (mirroring tenure_knot): a Knot corrupted after sealing (issued+1) refuses KnotCorrupt before a fact is folded; a tampered suffix fact refuses IdentityRefused; a never-could-pay draw (5000 past the sealed issued 1000) refuses Overdraw whole — proof the never-could-pay line holds past a checkpoint exactly as within one Cord. Composes till + cord_knot + cord + fold public API only; the Till and the Knot re-run their own GREEN binaries at the witness door. TAME bans clean, width exit 0.
+file mycelium/till_knot.rye r3 — TillKnot · seal_till · continue_till (spent-out loss across the cut, never-could-pay refuses whole) · verdicts_match
+file tools/mycelium_till_knot_witness.rish r3 witness — spent-out across the cut · verdict never drifts · three integrity refusals; the Till and the Knot at the door
+recommend keep-going the Till verdict now reads across a Knot (r1 verdict · r2 travels · r3 across a Knot); next r4 closes the arc — a real on-disk double-spend fixture true, its winning draw and spent-out loss cross-checked against an independent awk reading (app == awk), mirroring till_bron + tenure_true (a fixture_gen + corpora symlink + truth.awk). Per-account balances + a served Till stay Keaton's hand.
