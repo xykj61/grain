@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260813.155338
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title HUNK10 — the Photos app tunes brightness and contrast over the open grid
+prompt Take the next agent-doable lap Lindy-first crux-first on the Season A / 1024-round road; approve own design rounds; send each finished increment as its own signed round; stop at the custody gates.
+think Read REMEMBER, the 1,024-round itinerary, and the six-season double-seat doc. The road stands at Season A (waymark HUNK), opening journey Open Image, with the Photos-app journey climbing: HUNK3 crop, HUNK8 orient (flip_h/flip_v/rotate_quarter), HUNK9 scale. The sprite-marketplace quest (HUNK4-7) closed. No red booked.
+think Lindy-first crux-first within the open journey: the next agent-doable Photos gesture. A brightness/contrast adjust is a real iCloud/Google Photos slider, purely computable, bounded, and composes with the existing verbs — one keystone, no custody gate, no deferred web search. Self-approved the design round rather than pausing.
+think Matched the module idiom exactly (pure verb returning a fresh Pixmap, source read-only, named refusals, i64 arithmetic so no product wraps, alpha untouched). Bounded contrast terms by a named ceiling (adjust_contrast_max = 1<<16) and brightness by adjust_brightness_max = 255; the affine map out = (v-128)*num/den + 128 + brightness pivots contrast around the 128 midpoint.
+think Wrote run_adjust over a 4x1 gray strip with varied alpha so every value is unambiguous: neutral recovers byte-for-byte, +40/-40 shift-and-clamp, 2/1 contrast (0->clamp0, 100->72, 200->clamp255), 0/1 flattens to 128, alpha passes through, purity, open round-trip, and BadContrast/BadBrightness/EmptyImage refusals. Wired its GREEN line into run_selftest beneath crop/orient/scale.
+obs GREEN on the first build and run — all four Photos selftests (crop, orient, scale, adjust) print GREEN in one binary. tame_style_check bans clean, width-check exit 0. No compound asserts, no @memcpy — learned from earlier HUNK rungs.
+obs Additive by construction: crop, flip_h, flip_v, rotate_quarter, scale untouched; HUNK3/HUNK8/HUNK9 selftests still GREEN beneath. No breach, so no cairn. No network, no key, no funds — hardware buying stays custody gates #2/#3, none reached.
+file image/photos.rye added adjust(brightness, contrast_num, contrast_den) + run_adjust selftest + GREEN line
+file tools/hunk_photos_adjust_witness.rish the HUNK10 witness — builds, runs selftest, asserts the adjust GREEN line and crop/orient/scale still GREEN beneath
+file work-in-progress/REMEMBER.md latest-lap line gains the HUNK10 entry; git nib refreshed in the send commit
+recommend keep-going next agent-doable crux is another Photos gesture (hue/saturation, or the non-destructive edit-list that records verbs as data and content-addresses the result) or a fresh Season-A / double-seat journey; served/hardware rounds stay custody gates

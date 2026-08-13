@@ -25,7 +25,15 @@ pub const PhotosError = error{
     EmptyRect,
     OutOfBounds,
     EmptyImage,
+    BadContrast,
+    BadBrightness,
 };
+
+/// A brightness delta never needs to exceed a full channel range in either direction.
+pub const adjust_brightness_max: i32 = 255;
+/// A contrast ratio's numerator and denominator ceiling — bounds the affine map so no product can wrap: the
+/// largest deviation a channel carries is 127, and 127·(1<<16) stays far inside i64.
+pub const adjust_contrast_max: u32 = 1 << 16;
 
 /// Crop the rectangle at (x, y) of size (w, h) out of a decoded RGBA image, returning a fresh Pixmap. Pure:
 /// the source is never mutated. Refuses an empty rectangle (`EmptyRect`) and any rectangle that reaches past
@@ -227,6 +235,58 @@ pub fn scale(
     };
 }
 
+/// Adjust brightness and contrast over the three color channels of a decoded image, leaving alpha untouched,
+/// returning a fresh Pixmap. Each color channel takes the affine map out = (v - 128)·contrast_num/contrast_den
+/// + 128 + brightness, then clamps into 0..255 — contrast pivots around the 128 midpoint, brightness shifts the
+/// whole channel. A neutral adjust (brightness 0, contrast_num == contrast_den) recovers the source
+/// byte-for-byte. Pure — the source is never mutated. Refuses a degenerate image (`EmptyImage`), a brightness
+/// past full range (`BadBrightness`), and a zero or over-ceiling contrast term (`BadContrast`).
+pub fn adjust(
+    allocator: std.mem.Allocator,
+    pm: *const qoi.Pixmap,
+    brightness: i32,
+    contrast_num: u32,
+    contrast_den: u32,
+) !qoi.Pixmap {
+    // invariant: the source buffer is exactly four bytes per pixel.
+    assert(pm.pixels.len == @as(usize, pm.width) * @as(usize, pm.height) * 4);
+    if (pm.width == 0 or pm.height == 0) return error.EmptyImage;
+    if (brightness < -adjust_brightness_max or brightness > adjust_brightness_max) return error.BadBrightness;
+    // The denominator must be a real divisor; both terms stay under the ceiling so the map cannot wrap in i64.
+    if (contrast_den == 0 or contrast_den > adjust_contrast_max) return error.BadContrast;
+    if (contrast_num > adjust_contrast_max) return error.BadContrast;
+
+    const out = try allocator.alloc(u8, pm.pixels.len);
+
+    const num = @as(i64, contrast_num);
+    const den = @as(i64, contrast_den);
+    const bright = @as(i64, brightness);
+
+    var i: usize = 0;
+    while (i < pm.pixels.len) : (i += 4) {
+        // The three color channels take the affine map; alpha passes through untouched.
+        var c: usize = 0;
+        while (c < 3) : (c += 1) {
+            const v = @as(i64, pm.pixels[i + c]);
+            // Computed in i64 so no product wraps; then clamped into the byte range.
+            const mapped = @divTrunc((v - 128) * num, den) + 128 + bright;
+            const clamped: i64 = if (mapped < 0) 0 else if (mapped > 255) 255 else mapped;
+            out[i + c] = @intCast(clamped);
+        }
+        out[i + 3] = pm.pixels[i + 3];
+    }
+
+    // invariant: an adjust changes no pixel count — the output length matches the source exactly.
+    assert(out.len == pm.pixels.len);
+    return qoi.Pixmap{
+        .width = pm.width,
+        .height = pm.height,
+        .channels = pm.channels,
+        .colorspace = pm.colorspace,
+        .pixels = out,
+    };
+}
+
 // --- selftest: crop a position-tagged image, prove every cropped pixel is its source pixel, prove purity and
 //     the open round-trip, and prove the named refusals ------------------------------------------------------
 
@@ -399,6 +459,81 @@ fn run_scale(garden: std.mem.Allocator) !struct { uw: u32, uh: u32 } {
     return .{ .uw = up.width, .uh = up.height };
 }
 
+/// Prove the adjust verb by the exact arithmetic it must obey: a neutral adjust recovers the source, a
+/// brightness lift and cut shift and clamp each color channel, a contrast push pivots around 128, a zero
+/// contrast flattens to the midpoint, alpha always passes through, the source stays pure, an adjusted image is
+/// still open, and the named refusals hold. Returns the strip's dimensions for the GREEN line.
+fn run_adjust(garden: std.mem.Allocator) !struct { w: u32, h: u32 } {
+    // A 4x1 strip with known gray levels so the affine map is unambiguous, alpha varied to prove pass-through.
+    const w: u32 = 4;
+    const h: u32 = 1;
+    const buf = try garden.alloc(u8, w * h * 4);
+    const grays = [_]u8{ 0, 100, 200, 255 };
+    const alphas = [_]u8{ 255, 200, 128, 0 };
+    var i: u32 = 0;
+    while (i < w) : (i += 1) {
+        buf[i * 4] = grays[i];
+        buf[i * 4 + 1] = grays[i];
+        buf[i * 4 + 2] = grays[i];
+        buf[i * 4 + 3] = alphas[i];
+    }
+    const pm = qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+
+    // A neutral adjust (brightness 0, contrast 1/1) recovers the source byte-for-byte.
+    const neutral = try adjust(garden, &pm, 0, 1, 1);
+    assert(neutral.same_bytes(&pm));
+
+    // A brightness lift of +40 with neutral contrast adds 40 to each color channel and clamps at 255.
+    const lit = try adjust(garden, &pm, 40, 1, 1);
+    assert(lit.pixels[0] == 40); //   0 -> 40
+    assert(lit.pixels[4] == 140); // 100 -> 140
+    assert(lit.pixels[8] == 240); // 200 -> 240
+    assert(lit.pixels[12] == 255); // 255 -> clamp 255
+    // Alpha passes through untouched across the whole strip.
+    assert(lit.pixels[3] == 255 and lit.pixels[7] == 200 and lit.pixels[11] == 128 and lit.pixels[15] == 0);
+
+    // A brightness cut of -40 subtracts and clamps at 0.
+    const dim = try adjust(garden, &pm, -40, 1, 1);
+    assert(dim.pixels[0] == 0); //   0 -> clamp 0
+    assert(dim.pixels[4] == 60); // 100 -> 60
+
+    // A contrast of 2/1 pushes each channel away from the 128 midpoint: out = clamp((v-128)*2 + 128).
+    const punch = try adjust(garden, &pm, 0, 2, 1);
+    assert(punch.pixels[0] == 0); //   (0-128)*2+128 = -128 -> clamp 0
+    assert(punch.pixels[4] == 72); // (100-128)*2+128 = 72
+    assert(punch.pixels[8] == 255); // (200-128)*2+128 = 272 -> clamp 255
+
+    // A contrast of 0/1 flattens every color channel to the midpoint 128 — a legal extreme.
+    const flat = try adjust(garden, &pm, 0, 0, 1);
+    assert(flat.pixels[0] == 128 and flat.pixels[4] == 128 and flat.pixels[8] == 128);
+
+    // Pure: the source is untouched.
+    assert(pm.pixels[0] == 0 and pm.pixels[4] == 100 and pm.pixels[12] == 255);
+
+    // Still an OPEN image: an adjusted image re-encodes and round-trips through the codec byte-for-byte.
+    const cap = qoi.encoded_bound(lit.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const res = try qoi.encode(&lit, dst);
+    const back = try qoi.decode(garden, dst[0..res.len]);
+    assert(back.same_bytes(&lit));
+
+    // Unwelcome: a zero contrast denominator refuses BadContrast.
+    if (adjust(garden, &pm, 0, 1, 0)) |_| return error.ContrastSlipped else |e| {
+        if (e != error.BadContrast) return error.WrongContrast;
+    }
+    // Unwelcome: a brightness past full range refuses BadBrightness.
+    if (adjust(garden, &pm, 300, 1, 1)) |_| return error.BrightnessSlipped else |e| {
+        if (e != error.BadBrightness) return error.WrongBrightness;
+    }
+    // Unwelcome: a degenerate zero-dimension image refuses EmptyImage.
+    const empty = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (adjust(garden, &empty, 0, 1, 1)) |_| return error.EmptySlipped else |e| {
+        if (e != error.EmptyImage) return error.WrongEmpty;
+    }
+
+    return .{ .w = w, .h = h };
+}
+
 fn run_selftest(garden: std.mem.Allocator) !u8 {
     const pm = try craft_tagged(garden);
 
@@ -471,6 +606,13 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         "a 2x nearest upscale samples each pixel from src(nx/2,ny/2); a downscale to 1x1 picks the top-left " ++
         "pixel; source untouched (pure); scaled image re-encodes and round-trips; a zero target and an " ++
         "over-ceiling target refused by name\n", .{ scaled.uw, scaled.uh });
+
+    const tuned = try run_adjust(garden);
+    print("GREEN image-photos-adjust: a {d}x{d} strip tunes — a neutral adjust byte-identical; a brightness " ++
+        "lift and cut shift each color channel and clamp; a contrast pivots around the 128 midpoint; a zero " ++
+        "contrast flattens to the midpoint; alpha passes through untouched; source untouched (pure); adjusted " ++
+        "image re-encodes and round-trips; a zero denominator, an over-range brightness, and an empty image " ++
+        "refused by name\n", .{ tuned.w, tuned.h });
     return 0;
 }
 
