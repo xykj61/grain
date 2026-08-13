@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260813.114651
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — ai-jail — Eastern (EDT) time convention
+title Puddle r1 — a fleet places each world at exactly one host by a rule every node computes alike
+prompt keep going the loop — take the next agent-doable lap Lindy-first crux-first; approve own design rounds; double-seat visions; send each finished increment as its own signed round; STOP at the custody gates
+think Read REMEMBER + the 1,024-round itinerary + the double-seat expansion; reconciled the true frontier against git log — the Mycelium consensus season (Cord · gossip · fact-batching · Knot · Tenure · Till · Purse · Pledge · Braid · Lapse · Statement · Voucher · Chorus · Muster · Warrant) and the Constel dev-net (harness · ledger · consensus) all stand complete and committed; working tree clean, no red open.
+think The card's own live edge named the next crux: a fresh Season D journey. Lindy-first crux-first, the standout named-but-unbuilt Season D module is Puddle — fleet orchestration (LEXICON · the 2026-07-02 research · the double-seat expansion). Orchestration is foundational infrastructure read for years; that is the Lindy weight.
+think The genuinely new crux none of the agree-on-order/supply/quorum/rotation arcs touched is PLACEMENT — which host runs which world. The hard-but-tractable decisive move: a placement that is a pure function of the fleet, invariant under arrival order, so no central scheduler is trusted (the leaderless answer the season already keeps, applied one layer down). Method: highest weave-score (rendezvous/HRW), SHA-256(domain · world-id · host-pk), chosen over hash-mod-count for minimal disruption (which becomes r2's convergence).
+think Self-approved the design read (active-designing/20260813-114651_…), then wrote mycelium/puddle.rye following the warrant.rye idiom exactly — opening triad, named errors, ≥2 asserts per fn with // invariant, bounded Fleet (max_hosts 16 · max_worlds 64 · world_id_len 24), copy_disjoint not @memcpy, no compound asserts, u32 widths, pure fixed buffers (main() !void, no arena).
+think The berth is derived never written (no set_berth); worlds processed in canonical id order (bounded selection sort); each takes the highest-weave-score host with remaining capacity; ties (never seen with SHA-256) break on the greater public key, never on insertion index — so arrival-order independence holds even in the impossible case.
+obs One build red caught + fixed on metal: the selftest helper host_pk shadowed the weave_score parameter host_pk — renamed the helper host_key. Rebuilt GREEN first pass after.
+obs Placed the module in mycelium/ (composing the local kumara.rye + tally_copy.rye symlinks already present) — the least-friction fully-witnessed path, matching the season's r1 witness/build idiom (mycelium/bin/, gitignored); the header names Puddle the Season D fleet-orchestration module with Aurora as its horizon substrate.
+obs Custody honored — demo host/world seeds only, no key/funds/network/world provisioned; a real Aurora host + provisioning reach gates #2/#4, a served fleet the Comlink-served gate; no gate crossed.
+loom witness=mycelium_puddle_witness scenes=6 hosts=3 worlds=5 placement=byte-identical-across-two-arrival-orders
+file active-designing/20260813-114651_puddle-fleet-placement-exploration.md the self-approved design read opening the Puddle journey
+file mycelium/puddle.rye r1 — the berth crux: derived, arrival-order-independent, capacity-honoring placement
+file tools/mycelium_puddle_witness.rish witness proving the crux GREEN on metal (build · selftest · claims · refusals)
+file work-in-progress/REMEMBER.md accreted a Puddle bullet after the Warrant bullet; Git nib refreshed same commit
+recommend keep-going Puddle r2 — the fleet heals: a host departs, only its worlds re-berth, every surviving world staying exactly where it was (convergence with minimal disruption), the HRW property made visible; then r3 travels as format puddle-fleet-v1 Bron, r4 reads a real fixture true.
