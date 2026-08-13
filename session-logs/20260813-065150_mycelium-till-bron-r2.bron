@@ -1,0 +1,15 @@
+format session-log-v1
+stamp 20260813.065150
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title mycelium Till — the treasury verdict travels as a record (r2)
+prompt Continue the agent-doable lap Lindy-first crux-first; carry the Till arc to r2; send each finished increment to origin and xykj61.
+think r1 fixed the double-spend verdict; the next crux on the Till arc is r2 — a resolved Till a node cannot hand to another is only a local reading, so let it cross as readable bytes. Mirrored mycelium/tenure_bron.rye exactly (the parallel closing shape): a format-vN header, a supply line, one line per record entry, render/parse through an out-pointer (a Till carries a full fold state, no return-by-value copy), a fixed-point re-render, a purpose-built bounded reader that refuses whole.
+think The coin verdict's record is keyed by SIGNER, not name — a draw is `drew <signer-pk> <amount> <pos> <round>`, a loss is `short <signer-pk> <amount> <pos> <issued-at>`. Unlike tenure_bron I did NOT set state.star_count on parse: the Till reads coins, and a tax draw occupies no star, so leaving star_count 0 is honest (the Till's reads never touch it). Added one refusal tenure_bron's scene could not exercise cleanly — a supply line that breaks the supply law (taxed > issued) refuses BadInt.
+obs mycelium/till_bron.rye: render the r1 scene (treasury 1000, uncontested 100, two 700 draws) → parse back → verdicts_agree over draw/short counts, coins drawn/lost, supply, and the loser's signer; drew 2 · short 1 · supply 200 · lost 700 recovered exactly; re-render is a fixed point (byte-identical). Refusals real: bad header (BadFormat), unknown field (UnknownField, never dropped), bad hex key (BadHex), broken supply law (BadInt), missing supply (BadFormat), over-long verdict (TooManyDraws at render before a partial record). GREEN first pass.
+obs Composes till.rye + fold.rye public API only; the Till re-runs its own GREEN binary at the witness door. TAME bans clean, width-check exit 0. Additive — no elder edited; demo keeper seeds, no key/funds/network/custody.
+file mycelium/till_bron.rye r2 — render/parse a resolved Till as format till-v1; fixed point; purpose-built bounded reader refuses whole
+file tools/mycelium_till_bron_witness.rish r2 witness — round-trip byte-for-byte · verdict unchanged · six refusals; the Till stands at the door
+recommend keep-going the Till verdict now travels (r1 verdict · r2 travels); next r3 reads the verdict across a Knot (mirroring tenure_knot over cord_knot.rye), then r4 a real double-spend fixture true (app == awk). Per-account balances + a served Till stay Keaton's hand.
