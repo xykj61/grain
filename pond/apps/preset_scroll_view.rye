@@ -1,0 +1,272 @@
+//! pond/apps/preset_scroll_view.rye — HUNK42: the scrollable surface — the page a keeper sees, painted beside a live
+//! scroll bar, on one glass grid.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · marketplace / Photos-app surface · rung HUNK42.
+//! Design read: active-designing/20260813-194607_hunk-scroll-view-exploration.md
+//! Teacher, thanked clean-room: the scrollable list surface of any reader (iCloud Photos / a McMaster-Carr catalog) —
+//! the visible rows and a scroll thumb beside them, drawn together so a keeper reads their place at a glance (concept
+//! only, siloed).
+//!
+//! HUNK40 gave a keeper a `ScrollCursor` — a live viewport offset that walks a library taller than the screen and
+//! pins at both ends. HUNK41 gave that cursor a `ScrollBar` — a pure thumb geometry that reads where in the library a
+//! keeper stands and how much of it fits. Two honest facts about the reader, measured but not yet seen together. This
+//! rung paints them on one Skate grid: `scroll_view` renders the cursor's current page (HUNK40's `window`) into the
+//! left region and paints the scroll bar (HUNK41's `scroll_bar`) down a reserved right-hand column, one bar cell per
+//! viewport row, so a keeper SEES the books they are on and the thumb marking their place at once. A pure composition
+//! — it invents no storage, no new gesture, no new render primitive, and stays inside the single-symlink pond/apps/
+//! assembly. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/preset_scroll_view.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const preset_detail = @import("preset_detail.rye");
+const preset_shelf = @import("preset_shelf.rye");
+const preset_scroll = @import("preset_scroll.rye");
+const image_skate = @import("brushstroke/image_skate.rye");
+const skate = @import("brushstroke/skate_grid.rye");
+
+pub const preset_scroll_view_version = "20260813.194607";
+
+/// The palette slot the book name wears — held equal to `preset_shelf.name_slot` so the chip color copied from the
+/// rendered page reads the same on the composed surface.
+pub const name_slot: u8 = preset_shelf.name_slot;
+/// The scroll-bar track (the groove behind the thumb) — a dim slot, a real slot, never the sentinel.
+pub const track_slot: u8 = 2;
+/// The scroll-bar thumb (the keeper's place) — a bright slot that stands out against the groove.
+pub const thumb_slot: u8 = 3;
+
+/// The glyph the thumb wears — a dense block so the thumb rasterizes clearly lit. The groove wears a thin bar so the
+/// track reads as a groove, not empty space. Both are ASCII (< 128), so they live in the basic font.
+pub const thumb_glyph: u8 = '#';
+pub const track_glyph: u8 = '|';
+
+pub const ScrollViewError = error{
+    EmptyView,
+    BadBar,
+};
+
+/// Render the page a keeper currently sees, painted beside a live scroll bar, onto one fresh Skate grid `cols` wide
+/// and `cursor.rows` tall. The books fill the left region `[0, cols - bar_w)` through HUNK40's `window`; the scroll
+/// bar owns the right `bar_w` columns, its track exactly as tall as the viewport (`scroll_bar(cursor, cursor.rows)`),
+/// so the thumb maps one bar cell per visible row. Pure over the cursor and the listing — it holds no state and adds
+/// no way to lie. Refuses `EmptyView` on a zero grid width and `BadBar` when the bar owns no column or leaves no
+/// column for text.
+pub fn scroll_view(
+    allocator: std.mem.Allocator,
+    listing: *const preset_detail.DetailListing,
+    cursor: *const preset_scroll.ScrollCursor,
+    cols: u32,
+    bar_w: u32,
+) !skate.Grid {
+    // invariant: the cursor's library matches the listing it renders.
+    assert(cursor.count == listing.count);
+    // invariant: the cursor stands on a bottom-pinned, in-range viewport (so window never refuses BadOffset).
+    assert(cursor.offset <= cursor.max_offset());
+    if (cols == 0 or cursor.rows == 0) return error.EmptyView;
+    // The bar must own at least one column and leave at least one column for the books.
+    if (bar_w == 0 or bar_w >= cols) return error.BadBar;
+    if (cols > image_skate.max_map_cols) return error.BadBar;
+
+    const rows = cursor.rows;
+    const text_cols = cols - bar_w;
+    // invariant: the text region and the bar together tile the grid width exactly.
+    assert(text_cols + bar_w == cols);
+
+    // The page the cursor shows (HUNK40) rendered into the left region's width, and the bar geometry (HUNK41) over a
+    // track exactly as tall as the viewport — one bar cell per visible row.
+    const page = try preset_scroll.window(allocator, listing, cursor, text_cols);
+    const bar = try preset_scroll.scroll_bar(cursor, rows);
+    // invariant: the bar's track matches the grid height, so the thumb sits wholly inside the drawn column.
+    assert(bar.track == rows);
+    assert(bar.thumb_start + bar.thumb_len <= rows);
+
+    var grid = try skate.Grid.init(allocator, cols, rows);
+    grid.set_palette(name_slot, .{ .r = 120, .g = 200, .b = 255 });
+    grid.set_palette(track_slot, .{ .r = 70, .g = 70, .b = 80 });
+    grid.set_palette(thumb_slot, .{ .r = 200, .g = 220, .b = 255 });
+
+    var r: u32 = 0;
+    while (r < rows) : (r += 1) {
+        // Copy the page's row text into the left region. `put_line` clamps to the grid width; the row is text_cols
+        // wide, and the left region is exactly text_cols, so every text cell lands and the bar columns stay clear.
+        const src = page.row_cells(r);
+        // invariant: the rendered page is exactly as wide as the text region it fills.
+        assert(src.len == @as(usize, @intCast(text_cols)));
+        grid.put_line(r, src);
+
+        // Carry the page's per-cell foreground (the book-name chip) into the same left cells, so the composed surface
+        // keeps the shelf's own look. Bounded by text_cols, itself bounded by the named grid width.
+        const page_base: usize = @intCast(r * text_cols);
+        const grid_base: usize = @intCast(r * cols);
+        var c: u32 = 0;
+        while (c < text_cols) : (c += 1) {
+            const cc: usize = @intCast(c);
+            // invariant: both index seams sit inside their parallel fg-index buffers.
+            assert(page_base + cc < page.fg_index.len);
+            assert(grid_base + cc < grid.fg_index.len);
+            grid.fg_index[grid_base + cc] = page.fg_index[page_base + cc];
+        }
+
+        // Paint the bar cell for this row: the thumb where the keeper stands, the groove elsewhere. A dense glyph so
+        // the thumb rasterizes clearly lit; a thin glyph so the groove reads as a track.
+        const in_thumb = r >= bar.thumb_start and r < bar.thumb_start + bar.thumb_len;
+        const glyph: u8 = if (in_thumb) thumb_glyph else track_glyph;
+        var bc: u32 = text_cols;
+        while (bc < cols) : (bc += 1) {
+            const bcc: usize = @intCast(grid_base + @as(usize, @intCast(bc)));
+            // invariant: the bar cell sits inside the grid's cells.
+            assert(bcc < grid.cells.len);
+            grid.cells[bcc] = glyph;
+        }
+        const slot: u8 = if (in_thumb) thumb_slot else track_slot;
+        grid.put_color_run(r, text_cols, cols, slot);
+    }
+    // invariant: exactly one bar cell was painted per viewport row.
+    assert(r == rows);
+    return grid;
+}
+
+// --- selftest: build a real five-book library, scroll a two-row viewport through it, and prove the composed surface
+//     shows the cursor's page beside a live scroll bar — the thumb on the top cell at the top and the bottom cell at
+//     the bottom, the bar genuinely lit, the view pure, a fitting library filling the whole bar, and the refusals ---
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const beading = @import("mantra/beading.rye");
+    const tablecloth = @import("tablecloth.rye");
+    const filter_preset = @import("filter_preset.rye");
+    const preset_store = @import("preset_store.rye");
+    const photo_edits = @import("photo_edits.rye");
+
+    // The same real five-book library the HUNK40/41 scroll selftest builds — stock, a small custom book, and three
+    // one-preset books a/b/c, so the library holds five in a known held order.
+    var store: beading.BeadStore = .empty();
+    var cat: tablecloth.Catalog = .empty();
+    const stock = try filter_preset.stock_book();
+    _ = try preset_store.store_book(&cat, &store, "stock.presets", &stock);
+    var small = filter_preset.PresetBook.init();
+    var flip = photo_edits.EditList.init();
+    try flip.push(.flip_h);
+    try small.define("mirror", &flip);
+    _ = try preset_store.store_book(&cat, &store, "custom.presets", &small);
+    {
+        var one = photo_edits.EditList.init();
+        try one.push(.flip_h);
+        const names = [_][]const u8{ "a.presets", "b.presets", "c.presets" };
+        var k: u32 = 0;
+        while (k < names.len) : (k += 1) {
+            var b = filter_preset.PresetBook.init();
+            try b.define("edit", &one);
+            _ = try preset_store.store_book(&cat, &store, names[k], &b);
+        }
+    }
+    var lib: preset_detail.DetailListing = undefined;
+    try preset_detail.detail_books(&cat, &store, &lib);
+    assert(lib.len() == 5);
+
+    const cols: u32 = 24;
+    const bar_w: u32 = 2;
+    const text_cols: u32 = cols - bar_w;
+    const rows: u32 = 2; // a viewport two books tall over a five-book library
+
+    // At the top: the left region shows the first two books; the bar is one thumb cell (2 of 5 books fit → thumb_len 1
+    // over a two-row track) pinned to the top row, the second row the groove.
+    var cur = try preset_scroll.ScrollCursor.open(lib.count, rows);
+    assert(cur.at_top());
+    const top = try scroll_view(garden, &lib, &cur, cols, bar_w);
+    assert(top.cols == cols);
+    assert(top.rows == rows);
+    // The books are really there, in held order, in the left region.
+    assert(std.mem.indexOf(u8, top.row_cells(0), lib.at(0).name_slice()) != null);
+    assert(std.mem.indexOf(u8, top.row_cells(1), lib.at(1).name_slice()) != null);
+    // The bar column carries the thumb on the top row and the groove below it.
+    assert(top.row_cells(0)[text_cols] == thumb_glyph);
+    assert(top.row_cells(1)[text_cols] == track_glyph);
+    // The thumb cell wears the thumb slot; the groove cell wears the track slot — the bar reads as distinct color.
+    assert(top.fg_index[0 * cols + text_cols] == thumb_slot);
+    assert(top.fg_index[1 * cols + text_cols] == track_slot);
+    // The book-name chip carried across: the first cell of row 0 wears the name slot, copied from the page.
+    assert(top.fg_index[0] == name_slot);
+
+    // Scrolled to the bottom: the region shows the last two books pinned true, and the thumb walks to the bottom bar
+    // cell (start + len == track), the top row now the groove.
+    cur.to_bottom();
+    assert(cur.at_bottom());
+    const bot = try scroll_view(garden, &lib, &cur, cols, bar_w);
+    assert(std.mem.indexOf(u8, bot.row_cells(0), lib.at(3).name_slice()) != null);
+    assert(std.mem.indexOf(u8, bot.row_cells(1), lib.at(4).name_slice()) != null); // the final book, pinned
+    assert(bot.row_cells(0)[text_cols] == track_glyph);
+    assert(bot.row_cells(1)[text_cols] == thumb_glyph);
+
+    // Genuinely seen: the composed surface rasterizes to a lit canvas, and the bar column adds lit pixels beyond the
+    // text alone — the scroll bar is really painted, not merely recorded.
+    const view_scale: u32 = 1;
+    const width: u32 = cols * skate.cell_w * view_scale;
+    const height: u32 = rows * skate.cell_h * view_scale;
+    const stride: u32 = width * 4;
+    const bg = skate.Color{ .r = 1, .g = 2, .b = 3 };
+    const fg = skate.Color{ .r = 220, .g = 220, .b = 220 };
+    cur.to_top();
+    const view = try scroll_view(garden, &lib, &cur, cols, bar_w);
+    const canvas = try garden.alloc(u8, @as(usize, stride) * @as(usize, height));
+    view.rasterize(canvas, stride, @intCast(width), @intCast(height), bg, fg, view_scale);
+    const lit_all = view.lit_pixel_count(canvas, stride, @intCast(width), @intCast(height), bg);
+    assert(lit_all > 0);
+    // Render the very same page with no bar (a full-width text page) and confirm the bar adds lit pixels.
+    const page_only = try preset_scroll.window(garden, &lib, &cur, cols);
+    const canvas2 = try garden.alloc(u8, @as(usize, stride) * @as(usize, height));
+    page_only.rasterize(canvas2, stride, @intCast(width), @intCast(height), bg, fg, view_scale);
+    const lit_text = page_only.lit_pixel_count(canvas2, stride, @intCast(width), @intCast(height), bg);
+    assert(lit_all > lit_text);
+
+    // Pure and deterministic: the same view built twice is byte-identical in cells and colors, the library untouched.
+    const view_again = try scroll_view(garden, &lib, &cur, cols, bar_w);
+    assert(std.mem.eql(u8, view.cells, view_again.cells));
+    assert(std.mem.eql(u8, view.fg_index, view_again.fg_index));
+    assert(std.mem.eql(u8, lib.at(0).name_slice(), "stock.presets"));
+
+    // A library that fits the screen fills the whole bar — nothing to scroll, so every bar cell is the thumb.
+    {
+        var fit = try preset_scroll.ScrollCursor.open(lib.count, 8); // eight rows over five books
+        const fv = try scroll_view(garden, &lib, &fit, cols, bar_w);
+        var fr: u32 = 0;
+        while (fr < fv.rows) : (fr += 1) {
+            assert(fv.row_cells(fr)[text_cols] == thumb_glyph); // the whole bar is thumb
+        }
+    }
+
+    // Refusals named: a bar that owns no column or leaves no column for text refuses BadBar; a zero grid refuses
+    // EmptyView.
+    if (scroll_view(garden, &lib, &cur, cols, 0)) |_| return error.BarSlipped else |e| {
+        if (e != error.BadBar) return error.WrongBar;
+    }
+    if (scroll_view(garden, &lib, &cur, cols, cols)) |_| return error.BarSlipped else |e| {
+        if (e != error.BadBar) return error.WrongBar;
+    }
+    if (scroll_view(garden, &lib, &cur, 0, bar_w)) |_| return error.ViewSlipped else |e| {
+        if (e != error.EmptyView) return error.WrongView;
+    }
+
+    print("GREEN preset-scroll-view: a five-book library scrolled through a two-row viewport, painted on one {d}x{d} " ++
+        "Skate grid — the cursor page fills the left {d} columns (books in held order) and a live scroll bar owns " ++
+        "the right {d}; at the top the thumb sits on the top bar cell (the groove below it) and the region shows " ++
+        "books 0,1, scrolled to the bottom the thumb walks to the bottom bar cell (start + len == track) and the " ++
+        "region shows the last two books pinned true; the composed surface rasterizes to {d} lit pixels and the bar " ++
+        "adds pixels beyond the text alone (a scroll bar you can see); the view is pure and deterministic (built " ++
+        "twice, byte-identical, the library untouched); a library that fits the screen fills the whole bar (nothing " ++
+        "to scroll); a bar owning no column or leaving no text refuses BadBar, a zero grid EmptyView\n", .{
+        view.cols, view.rows, text_cols, bar_w, lit_all,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: preset_scroll_view selftest\n", .{});
+    return 1;
+}

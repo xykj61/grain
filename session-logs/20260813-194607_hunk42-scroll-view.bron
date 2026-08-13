@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260813.194607
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title HUNK42 — the scrollable surface: page beside a live scroll bar on one glass grid
+prompt Read REMEMBER + the 1024-round itinerary + the six-season double-seat; take the next agent-doable lap Lindy-first crux-first, self-approve design rounds, send each finished increment as its own signed round, stop at custody gates.
+think Read the two itinerary docs and surveyed the live frontier: git nib is HUNK41 (scroll bar), REMEMBER's lap line stops at HUNK39 but HUNK40 (ScrollCursor) and HUNK41 (ScrollBar) already landed in git.
+think Lindy-first crux-first among agent-doable doors: the served-marketplace module-assembly seam is a ruling held for Keaton (HUNK39 checkpoint), so the durable agent-doable crux is the one HUNK40 and HUNK41 named plainly — paint the cursor page and the scroll bar together on one Skate grid, the reader's actual scrollable surface. It composes two proven pieces, invents nothing, and stays inside the single-symlink pond/apps assembly, dodging the cross-assembly type-identity wall.
+think Read preset_shelf.rye (HUNK37 pager, draw_row), preset_scroll.rye (HUNK40 window + HUNK41 scroll_bar), and skate_grid.rye (Grid API: put_line copies cells, put_color_run sets fg slots, rasterize lights a cell by its glyph bits). A cell paints lit only when its glyph is non-space, so the thumb wears # and the groove |.
+think Designed scroll_view(allocator, listing, cursor, cols, bar_w): render the page via HUNK40 window into text_cols = cols - bar_w, measure the bar via HUNK41 scroll_bar over a track exactly cursor.rows tall (one bar cell per visible row, the honest one-to-one), then compose onto a cols-wide grid — copy the page cells and its name-chip fg into the left region, paint the thumb/groove glyph and palette slot down the right bar_w columns.
+obs Self-approved the design round (active-designing/20260813-194607) before code, per the standing autonomy: the served-market ruling is the only held door; this rung is clean agent-doable work.
+obs A witness red repeated the HUNK39/HUNK40 lesson: the GREEN line carried an apostrophe (cursor's) that broke the shell single-quoted grep round-trip — dropped the apostrophe from the print line and the matching grep. The selftest was GREEN throughout; only the witness assertion tripped.
+obs Kept parity by holding name_slot equal to preset_shelf.name_slot so the copied chip color reads identically; the fg copy is a bounded per-cell loop with asserted index seams rather than a reach into internals.
+loom witness=hunk_scroll_view_witness grid=24x2 text_cols=22 bar_w=2 lit_pixels=831 refusals=3
+file pond/apps/preset_scroll_view.rye HUNK42 — scroll_view composes HUNK40 window + HUNK41 scroll_bar onto one Skate grid; pure, two refusals (BadBar, EmptyView).
+file tools/hunk_scroll_view_witness.rish proves the composed surface on metal — thumb walks top to bottom beside the page, bar genuinely lit, view pure, fitting library fills the bar, refusals fire.
+file active-designing/20260813-194607_hunk-scroll-view-exploration.md self-approved design read for the rung.
+file work-in-progress/REMEMBER.md git nib refreshed in this same work commit.
+recommend keep-going — the input seam that turns a keeper's real gesture (touch/scroll delta) into cursor gestures, a sticky page header over the scroll view, the served-marketplace module-assembly ruling (held for Keaton), or a fresh Season-A / double-seat journey.
