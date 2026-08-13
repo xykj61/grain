@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260813.152351
+editor Zed
+model Fable 5
+voice Kyri
+host cloud bench — Eastern (EDT) time convention
+title HUNK5 — a marketplace product page is seen on the canvas
+prompt Continue the loop: next agent-doable lap Lindy-first crux-first, self-approve design rounds, send each finished increment as its own signed round, STOP at custody gates
+think HUNK4 landed and sent (the sprite index). The design round named HUNK5 as horizon intent: a product page painted through HUNK2's Skate down-map. That is the next agent-doable crux — high-Lindy (how a catalog entry is seen), no gate, pure composition.
+think The building blocks are both proven: HUNK4's sprite.render returns a product's window as a qoi.Pixmap; HUNK2's image_skate.down_map paints a Pixmap into a Skate grid reading fg_index per cell. HUNK5 is exactly render then down_map, so I compose their public API rather than re-invent either.
+think Home: brushstroke/ (where the down-map and Grid live). Symlinked image/sprite.rye and image/photos.rye into brushstroke/ (qoi + tally_copy already symlinked there), mirroring how pond/apps composes across modules.
+think The crux the witness must prove: the page derives from exactly the window the index pins, so it can never show a product the catalog does not name. Chose a two-tone sheet (red left, blue right) so a left-window product paints slot 3 and a right-window product paints slot 5 — an unambiguous spatial page, distinct per product.
+obs Proven on metal: red-part → slot 3, blue-part → slot 5, pages differ; the page equals a direct down_map(render(product)) cell for cell (no drift); 256 lit pixels on a real canvas; unknown product refuses UnknownProduct through the composition before any paint.
+obs Two build catches, both mechanical: rasterize takes a []u8 canvas (stride = width*4), not []u32 — matched HUNK2's own selftest; and the witness grep broke on an apostrophe in "window's" inside the GREEN print line (single-quoted shell string), fixed by dropping the apostrophe. GREEN after. tame_style_check exit 0, width exit 0; HUNK4 index re-run GREEN beneath.
+obs Additive and reuse-only — no change to sprite.rye, photos.rye, qoi.rye, or image_skate.rye; the page composes their public API. No breach, so no cairn. No network, key, or funds — hosting a real sheet stays custody gates #2/#3.
+loom witness=hunk_sprite_page_witness green=1 products=2 red_slot=3 blue_slot=5 lit_pixels=256
+file brushstroke/sprite_page.rye HUNK5 — paint_product joins HUNK4's window and HUNK2's down-map into a seen product page
+file tools/hunk_sprite_page_witness.rish binds the HUNK5 crux GREEN on metal; re-runs HUNK4 index beneath
+file brushstroke/sprite.rye symlink to image/sprite.rye so brushstroke can compose the index
+file brushstroke/photos.rye symlink to image/photos.rye — sprite's crop dependency present in brushstroke
+file work-in-progress/REMEMBER.md folds the HUNK5 landing onto the latest-lap line; git nib refreshed same commit
+recommend keep-going next agent-doable crux is HUNK6 (the sheet as a content-addressed Tablecloth artifact, a tampered sheet refusing before a product renders) or HUNK7 (a sprite-catalog manifest that travels); served/hardware rounds stay custody gates

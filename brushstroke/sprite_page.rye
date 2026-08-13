@@ -1,0 +1,146 @@
+//! brushstroke/sprite_page.rye — HUNK5: a marketplace product page — a sprite window painted through Skate.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Open Image journey · rung HUNK5 (sprite quest).
+//! Design read: active-designing/20260813-201500_hunk-sprite-marketplace-index-exploration.md
+//! Teacher, thanked clean-room: McMaster-Carr's one-sprite-sheet render trick (concept only, siloed).
+//!
+//! HUNK4 made each product a bounded window into one decoded sheet; HUNK2 down-mapped a decoded image into
+//! Skate's palette-indexed cell grid. This rung joins them: `paint_product` renders a product's window
+//! (HUNK4's `sprite.render`, reusing HUNK3's crop) and down-maps that window to a Skate grid (HUNK2's
+//! `image_skate.down_map`), so a catalog entry is not only stored and windowed but *seen* — a product page a
+//! keeper looks at. The page derives from exactly the window the index pins, so it can never show a product
+//! the catalog does not name; an unknown product refuses by name through the whole composition. Pure
+//! composition over public APIs — no new storage, no new codec, no new palette. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/sprite_page.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const sprite = @import("sprite.rye");
+const image_skate = @import("image_skate.rye");
+const skate = @import("skate_grid.rye");
+
+pub const sprite_page_version = "20260813.202400";
+
+/// Paint a product page: render the product's window out of the one sheet (HUNK4) and down-map it to a Skate
+/// grid (HUNK2). The refusal travels — an unknown product name refuses `UnknownProduct` before any paint. The
+/// returned grid's cells carry the product window's own down-mapped colors, so the page and the index agree.
+pub fn paint_product(
+    allocator: std.mem.Allocator,
+    index: *const sprite.SpriteIndex,
+    product: []const u8,
+    cols: u32,
+    rows: u32,
+) !skate.Grid {
+    // invariant: a page is a thumbnail of a bounded window — both grid axes fit the down-map ceilings.
+    assert(cols <= image_skate.max_map_cols);
+    assert(rows <= image_skate.max_map_rows);
+    const window = try index.render(allocator, product);
+    // invariant: the rendered window is a real open image — four bytes per pixel — ready to down-map.
+    assert(window.pixels.len == @as(usize, window.width) * @as(usize, window.height) * 4);
+    return image_skate.down_map(allocator, &window, cols, rows);
+}
+
+// --- selftest: index two products into one two-tone sheet, paint each page, prove each carries its own
+//     window's color, prove the two pages differ, prove the page equals a direct down-map, and prove the
+//     unknown-product refusal travels through the composition -------------------------------------------------
+
+/// Build an 8×8 sheet with the left four columns solid red and the right four solid blue, so a window on the
+/// left half paints red cells and a window on the right half paints blue cells — an unambiguous spatial page.
+fn craft_two_tone(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 8;
+    const h: u32 = 8;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            const left = x < 4;
+            buf[off] = if (left) 255 else 0; // r
+            buf[off + 1] = 0; // g
+            buf[off + 2] = if (left) 0 else 255; // b
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+/// Every cell of a grid carries the same palette slot — a solid-color page. Returns that slot.
+fn sole_slot(grid: *const skate.Grid) u8 {
+    assert(grid.cells.len >= 1);
+    const first = grid.fg_index[0];
+    var i: usize = 0;
+    while (i < grid.fg_index.len) : (i += 1) {
+        assert(grid.fg_index[i] == first);
+    }
+    return first;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const sheet = try craft_two_tone(garden);
+    var index = sprite.SpriteIndex.init(&sheet);
+
+    // Two products, two windows into the one sheet — a red part on the left half, a blue part on the right.
+    try index.add("red-part", 0, 0, 4, 8);
+    try index.add("blue-part", 4, 0, 4, 8);
+
+    // Each product page carries its own window's down-mapped color: red slot 3, blue slot 5.
+    const red_page = try paint_product(garden, &index, "red-part", 2, 2);
+    const blue_page = try paint_product(garden, &index, "blue-part", 2, 2);
+    const red_slot = sole_slot(&red_page);
+    const blue_slot = sole_slot(&blue_page);
+    assert(red_slot == 3);
+    assert(blue_slot == 5);
+    // The two product pages differ — a page is seen as its own product, never a neighbor's.
+    assert(red_slot != blue_slot);
+
+    // The page derives from exactly the product's window: painting the page equals rendering the window and
+    // down-mapping it directly, cell for cell — no drift between the index and the seen page.
+    const window = try index.render(garden, "red-part");
+    const direct = try image_skate.down_map(garden, &window, 2, 2);
+    assert(direct.fg_index.len == red_page.fg_index.len);
+    {
+        var i: usize = 0;
+        while (i < red_page.fg_index.len) : (i += 1) {
+            assert(red_page.fg_index[i] == direct.fg_index[i]);
+            assert(red_page.cells[i] == direct.cells[i]);
+        }
+    }
+
+    // The page paints lit pixels onto a real canvas — a keeper sees a solid color block per cell.
+    const scale: u32 = 1;
+    const width: u32 = 2 * skate.cell_w * scale;
+    const height: u32 = 2 * skate.cell_h * scale;
+    const stride: u32 = width * 4;
+    const canvas = try garden.alloc(u8, @as(usize, stride) * @as(usize, height));
+    const bg = skate.Color{ .r = 1, .g = 2, .b = 3 };
+    const fg = skate.Color{ .r = 200, .g = 200, .b = 200 };
+    red_page.rasterize(canvas, stride, @intCast(width), @intCast(height), bg, fg, scale);
+    const lit = red_page.lit_pixel_count(canvas, stride, @intCast(width), @intCast(height), bg);
+    assert(lit > 0);
+
+    // Unwelcome: an unknown product name refuses through the composition, before any paint.
+    if (paint_product(garden, &index, "phantom", 2, 2)) |_| return error.UnknownSlipped else |e| {
+        if (e != error.UnknownProduct) return error.WrongUnknown;
+    }
+
+    print("GREEN sprite-page: two products painted from one 8x8 sheet — red-part slot {d}, blue-part " ++
+        "slot {d} (each carries its own window color, pages differ); the page equals a direct down-map cell " ++
+        "for cell; {d} lit pixels on the canvas; unknown product refused by name through the composition\n", .{
+        red_slot, blue_slot, lit,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: sprite_page selftest\n", .{});
+    return 1;
+}
