@@ -1,0 +1,56 @@
+# tools/hunk_photos_orient_witness.rish — Photos gestures past crop turn the open grid on metal (HUNK8).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK8 (a fresh quest opens).
+# Design read: active-designing/20260813-153700_hunk-photos-orient-exploration.md
+# Teacher, thanked clean-room: the everyday iCloud Photos / Google Photos rotate + mirror gestures (concept
+# only, siloed).
+#
+# HUNK3 gave the Photos app its first verb, a crop; the sprite-marketplace quest then stood over that open
+# module. This rung gives the app its next everyday gestures — orient the image: rotate it in quarter turns,
+# mirror it left-to-right, mirror it top-to-bottom. `image/photos.rye` `flip_h`, `flip_v`, and `rotate_quarter`
+# are pure bounded functions over the decoded RGBA grid, each returning a fresh image and leaving the source
+# untouched. The selftest proves the verbs by the algebra they must obey — rotate_quarter four times is
+# identity, rotate_quarter(2) equals flip_h(flip_v), each mirror is its own inverse — so an index bug is caught
+# regardless of the exact arithmetic; a concrete clockwise corner pins the turn's direction, a 90 turn swaps
+# dimensions, a rotated image still re-encodes and round-trips as an open image, and a zero-dimension image
+# refuses by name. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_photos_orient_witness.rish
+
+say "hunk-photos-orient: Language EN — HUNK8 gives the Photos app its next gestures: rotate in quarter turns and mirror, pure bounded functions over the decoded grid that each return a fresh open image, the source untouched."
+say "hunk-photos-orient: Style Radiant — a photo you can turn in your hand is a small freedom; a rotated image is still an open image that re-encodes and round-trips byte-for-byte, so the gesture stands on the open module the quest built."
+say "hunk-photos-orient: Lens TAME — correctness proven by the algebra (four quarter turns = identity; a half turn = both mirrors; each mirror is its own inverse) so any index bug is caught; u32 dims within the codec ceiling; copy_disjoint; positive invariants per fn; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/photos"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/photos.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-photos-orient: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-photos-orient: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+say "hunk-photos-orient: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-orient' && echo yes"]
+assert (trim green.out) == "yes" else "hunk-photos-orient: selftest did not print the GREEN orient line"
+
+let identity = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'rotate_quarter four times is identity' && echo yes"]
+assert (trim identity.out) == "yes" else "hunk-photos-orient: the four-quarter-turn identity was not proven"
+
+let half = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'rotate_quarter(2) equals flip_h(flip_v)' && echo yes"]
+assert (trim half.out) == "yes" else "hunk-photos-orient: the half-turn-equals-both-mirrors law was not proven"
+
+let swap = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a 90 turn swaps dimensions' && echo yes"]
+assert (trim swap.out) == "yes" else "hunk-photos-orient: a 90 turn did not swap dimensions"
+
+let open = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'rotated image re-encodes and round-trips' && echo yes"]
+assert (trim open.out) == "yes" else "hunk-photos-orient: a rotated image did not round-trip as an open image"
+
+# HUNK3's crop selftest still runs in the same binary — its GREEN line must remain, unchanged.
+let crop = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos:' && echo yes"]
+assert (trim crop.out) == "yes" else "hunk-photos-orient: HUNK3 crop selftest no longer GREEN beneath"
+
+say "hunk-photos-orient: GREEN — the Photos app turns and mirrors the open grid; pure, bounded, proven by algebra, refusals named; HUNK3 crop still GREEN beneath."

@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260813.153700
+editor Zed
+model Fable 5
+voice Kyri
+title HUNK8 — Photos orient (rotate + flip) over the open grid
+prompt Read REMEMBER + the 1024-round and six-season itineraries; take the next agent-doable lap Lindy-first crux-first; approve own design rounds; send each finished increment as its own signed round; stop at custody gates.
+think Read the two itineraries and the REMEMBER latest-lap line — Season A (HUNK) open; HUNK0–HUNK7 (open image + sprite marketplace) landed; the named next crux is a fresh HUNK quest, Photos gestures past crop (rotate/flip on the open grid). None of custody gates #1–#5 touched by pure image code.
+think Noticed pond/apps/bin/ untracked (compiled witness binaries) — a gitignore gap; added /pond/apps/bin/ beside the other module bin ignores so build artifacts never ride a send.
+think Chose to extend image/photos.rye additively (the Photos app is one concern) rather than fragment it: flip_h, flip_v, rotate_quarter, each a pure bounded fn returning a fresh Pixmap, refusing a zero-dimension image (EmptyImage). crop and its witness stay untouched.
+think First draft of the selftest used a try_ref helper returning the address of a local Pixmap — a dangling stack pointer. Caught it before building; rewrote the compositions with named intermediates and deleted the helper.
+obs Proved the verbs by the algebra they must obey rather than a hand-checked index formula: rotate_quarter four times = identity byte-for-byte, rotate_quarter(2) = flip_h(flip_v), each mirror its own inverse, rotate_quarter(k) = k single turns; a 90 turn swaps dims and a concrete clockwise corner (top-left to top-right) pins direction; a rotated image still re-encodes and round-trips as an open image. This catches an index bug regardless of the exact arithmetic.
+obs Used a non-square 3x5 tagged image so a width/height swap is visible and a turn can never masquerade as a transpose or a no-op.
+loom witness=hunk_photos_orient_witness verbs=3 rotated=5x3 laws=four-turn-identity,half=both-mirrors,mirror-involution build=green
+file .gitignore ignore /pond/apps/bin/ so compiled witness binaries never ride a send
+file image/photos.rye add flip_h, flip_v, rotate_quarter + run_orient selftest proving the orient algebra; crop untouched
+file tools/hunk_photos_orient_witness.rish new witness — build photos.rye, assert the orient GREEN line and its laws, confirm HUNK3 crop still GREEN beneath
+file active-designing/20260813-153700_hunk-photos-orient-exploration.md self-approved design round for HUNK8
+recommend keep-going — HUNK8 GREEN and sent; next agent-doable crux is another Photos gesture (resize/scale on the open grid) or a fresh Season-A journey; hardware buying stays custody gate #2/#3.

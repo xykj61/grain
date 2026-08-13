@@ -24,6 +24,7 @@ pub const photos_version = "20260813.150912";
 pub const PhotosError = error{
     EmptyRect,
     OutOfBounds,
+    EmptyImage,
 };
 
 /// Crop the rectangle at (x, y) of size (w, h) out of a decoded RGBA image, returning a fresh Pixmap. Pure:
@@ -71,6 +72,117 @@ pub fn crop(
     };
 }
 
+/// Mirror an image left-to-right, returning a fresh Pixmap: pixel (x, y) moves to (w-1-x, y). Pure — the source
+/// is never mutated. Refuses a degenerate image with a zero dimension (`EmptyImage`).
+pub fn flip_h(allocator: std.mem.Allocator, pm: *const qoi.Pixmap) !qoi.Pixmap {
+    // invariant: the source buffer is exactly four bytes per pixel.
+    assert(pm.pixels.len == @as(usize, pm.width) * @as(usize, pm.height) * 4);
+    if (pm.width == 0 or pm.height == 0) return error.EmptyImage;
+
+    const out = try allocator.alloc(u8, pm.pixels.len);
+    var y: u32 = 0;
+    while (y < pm.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x < pm.width) : (x += 1) {
+            const src_off = (@as(usize, y) * @as(usize, pm.width) + @as(usize, x)) * 4;
+            const dst_off = (@as(usize, y) * @as(usize, pm.width) + @as(usize, pm.width - 1 - x)) * 4;
+            tally_copy.copy_disjoint(u8, out[dst_off .. dst_off + 4], pm.pixels[src_off .. src_off + 4]);
+        }
+    }
+
+    // invariant: a mirror keeps the pixel count exactly.
+    assert(out.len == pm.pixels.len);
+    return qoi.Pixmap{
+        .width = pm.width,
+        .height = pm.height,
+        .channels = pm.channels,
+        .colorspace = pm.colorspace,
+        .pixels = out,
+    };
+}
+
+/// Mirror an image top-to-bottom, returning a fresh Pixmap: pixel (x, y) moves to (x, h-1-y). Pure. Refuses a
+/// degenerate image with a zero dimension (`EmptyImage`). Copies a whole row at a time — the row order flips,
+/// each row's own pixels stay in place.
+pub fn flip_v(allocator: std.mem.Allocator, pm: *const qoi.Pixmap) !qoi.Pixmap {
+    // invariant: the source buffer is exactly four bytes per pixel.
+    assert(pm.pixels.len == @as(usize, pm.width) * @as(usize, pm.height) * 4);
+    if (pm.width == 0 or pm.height == 0) return error.EmptyImage;
+
+    const out = try allocator.alloc(u8, pm.pixels.len);
+    const span = @as(usize, pm.width) * 4;
+    var y: u32 = 0;
+    while (y < pm.height) : (y += 1) {
+        const src_off = @as(usize, y) * span;
+        const dst_off = @as(usize, pm.height - 1 - y) * span;
+        tally_copy.copy_disjoint(u8, out[dst_off .. dst_off + span], pm.pixels[src_off .. src_off + span]);
+    }
+
+    // invariant: a mirror keeps the pixel count exactly.
+    assert(out.len == pm.pixels.len);
+    return qoi.Pixmap{
+        .width = pm.width,
+        .height = pm.height,
+        .channels = pm.channels,
+        .colorspace = pm.colorspace,
+        .pixels = out,
+    };
+}
+
+/// Rotate an image clockwise by `turns mod 4` quarter turns, returning a fresh Pixmap. A 90° or 270° turn swaps
+/// width and height; a 180° turn keeps them; a 0-turn is an identity copy. Pure — the source is never mutated.
+/// Refuses a degenerate image with a zero dimension (`EmptyImage`).
+pub fn rotate_quarter(allocator: std.mem.Allocator, pm: *const qoi.Pixmap, turns: u32) !qoi.Pixmap {
+    // invariant: the source buffer is exactly four bytes per pixel.
+    assert(pm.pixels.len == @as(usize, pm.width) * @as(usize, pm.height) * 4);
+    if (pm.width == 0 or pm.height == 0) return error.EmptyImage;
+
+    const q = turns % 4;
+    // A quarter or three-quarter turn transposes the grid; a half or whole turn keeps its shape.
+    const swap = (q == 1 or q == 3);
+    const ow: u32 = if (swap) pm.height else pm.width;
+    const oh: u32 = if (swap) pm.width else pm.height;
+
+    const out = try allocator.alloc(u8, pm.pixels.len);
+    var y: u32 = 0;
+    while (y < pm.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x < pm.width) : (x += 1) {
+            // Clockwise destination of source (x, y) in an ow×oh grid, one turn per branch.
+            var nx: u32 = x;
+            var ny: u32 = y;
+            switch (q) {
+                1 => { // 90° clockwise: (x, y) -> (h-1-y, x)
+                    nx = pm.height - 1 - y;
+                    ny = x;
+                },
+                2 => { // 180°: (x, y) -> (w-1-x, h-1-y)
+                    nx = pm.width - 1 - x;
+                    ny = pm.height - 1 - y;
+                },
+                3 => { // 270° clockwise: (x, y) -> (y, w-1-x)
+                    nx = y;
+                    ny = pm.width - 1 - x;
+                },
+                else => {}, // 0: identity
+            }
+            const src_off = (@as(usize, y) * @as(usize, pm.width) + @as(usize, x)) * 4;
+            const dst_off = (@as(usize, ny) * @as(usize, ow) + @as(usize, nx)) * 4;
+            tally_copy.copy_disjoint(u8, out[dst_off .. dst_off + 4], pm.pixels[src_off .. src_off + 4]);
+        }
+    }
+
+    // invariant: a rotation keeps the pixel count exactly.
+    assert(out.len == pm.pixels.len);
+    return qoi.Pixmap{
+        .width = ow,
+        .height = oh,
+        .channels = pm.channels,
+        .colorspace = pm.colorspace,
+        .pixels = out,
+    };
+}
+
 // --- selftest: crop a position-tagged image, prove every cropped pixel is its source pixel, prove purity and
 //     the open round-trip, and prove the named refusals ------------------------------------------------------
 
@@ -92,6 +204,97 @@ fn craft_tagged(allocator: std.mem.Allocator) !qoi.Pixmap {
         }
     }
     return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+/// Build a non-square w×h image where each pixel encodes its own coordinates, so orientation proofs are
+/// unambiguous and a width/height swap is visible: pixel (x,y) = (x·30, y·30, x·7+y, 255).
+fn craft_tagged_wh(allocator: std.mem.Allocator, w: u32, h: u32) !qoi.Pixmap {
+    const buf = try allocator.alloc(u8, @as(usize, w) * @as(usize, h) * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            buf[off] = @intCast(x * 30);
+            buf[off + 1] = @intCast(y * 30);
+            buf[off + 2] = @intCast(x * 7 + y);
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+/// Prove the orient verbs (flip_h, flip_v, rotate_quarter) by the algebra they must obey, so any index bug is
+/// caught regardless of the exact arithmetic. Returns the rotated image's dimensions for the GREEN line.
+fn run_orient(garden: std.mem.Allocator) !struct { rw: u32, rh: u32 } {
+    const w: u32 = 3;
+    const h: u32 = 5;
+    const pm = try craft_tagged_wh(garden, w, h);
+
+    // Each mirror is its own inverse: two flips recover the source byte-for-byte.
+    const h1 = try flip_h(garden, &pm);
+    const hh = try flip_h(garden, &h1);
+    assert(hh.same_bytes(&pm));
+    const v1 = try flip_v(garden, &pm);
+    const vv = try flip_v(garden, &v1);
+    assert(vv.same_bytes(&pm));
+
+    // A quarter turn, composed four times, is a full turn: identity, byte-for-byte.
+    const r1 = try rotate_quarter(garden, &pm, 1);
+    const r2 = try rotate_quarter(garden, &r1, 1);
+    const r3 = try rotate_quarter(garden, &r2, 1);
+    const r4 = try rotate_quarter(garden, &r3, 1);
+    assert(r4.same_bytes(&pm));
+
+    // A half turn equals both mirrors: rotate_quarter(2) == flip_h(flip_v(pm)).
+    const half = try rotate_quarter(garden, &pm, 2);
+    const fv = try flip_v(garden, &pm);
+    const both = try flip_h(garden, &fv);
+    assert(half.same_bytes(&both));
+
+    // rotate_quarter(k) equals a single quarter turn composed k times — the turns arg is honest.
+    assert(rotate_eq(garden, &pm, 2, &r2));
+    assert(rotate_eq(garden, &pm, 3, &r3));
+
+    // A 90° turn swaps the dimensions — never a no-op or a bare transpose masquerade.
+    assert(r1.width == h and r1.height == w);
+    assert(half.width == w and half.height == h);
+
+    // Concrete clockwise witness: the source top-left pixel (0,0) lands at the output top-right (w'-1, 0).
+    const tr_off = (@as(usize, 0) * @as(usize, r1.width) + @as(usize, r1.width - 1)) * 4;
+    assert(r1.pixels[tr_off] == pm.pixels[0]);
+    assert(r1.pixels[tr_off + 1] == pm.pixels[1]);
+    assert(r1.pixels[tr_off + 2] == pm.pixels[2]);
+
+    // Pure: the source is untouched — its first pixel is exactly as crafted.
+    assert(pm.pixels[0] == 0 and pm.pixels[3] == 255);
+
+    // Still an OPEN image: a rotated image re-encodes and round-trips through the codec byte-for-byte.
+    const cap = qoi.encoded_bound(r1.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const res = try qoi.encode(&r1, dst);
+    const back = try qoi.decode(garden, dst[0..res.len]);
+    assert(back.same_bytes(&r1));
+
+    // Unwelcome: a degenerate zero-dimension image refuses by name for every verb.
+    const empty = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (flip_h(garden, &empty)) |_| return error.EmptySlipped else |e| {
+        if (e != error.EmptyImage) return error.WrongEmpty;
+    }
+    if (flip_v(garden, &empty)) |_| return error.EmptySlipped else |e| {
+        if (e != error.EmptyImage) return error.WrongEmpty;
+    }
+    if (rotate_quarter(garden, &empty, 1)) |_| return error.EmptySlipped else |e| {
+        if (e != error.EmptyImage) return error.WrongEmpty;
+    }
+
+    return .{ .rw = r1.width, .rh = r1.height };
+}
+
+/// True when rotate_quarter(pm, turns) equals `want` byte-for-byte — used to prove the turns arg composes.
+fn rotate_eq(garden: std.mem.Allocator, pm: *const qoi.Pixmap, turns: u32, want: *const qoi.Pixmap) bool {
+    const got = rotate_quarter(garden, pm, turns) catch return false;
+    return got.same_bytes(want);
 }
 
 fn run_selftest(garden: std.mem.Allocator) !u8 {
@@ -154,6 +357,12 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         "empty rect and both out-of-bounds rects refused by name\n", .{
         cw, ch, cx, cy, pm.width, pm.height,
     });
+
+    const orient = try run_orient(garden);
+    print("GREEN image-photos-orient: a 3x5 image turns to {d}x{d} — rotate_quarter four times is identity; " ++
+        "rotate_quarter(2) equals flip_h(flip_v); each mirror is its own inverse; a 90 turn swaps dimensions " ++
+        "clockwise (top-left to top-right); source untouched (pure); rotated image re-encodes and round-trips; " ++
+        "a zero-dimension image refused by name for every verb\n", .{ orient.rw, orient.rh });
     return 0;
 }
 
