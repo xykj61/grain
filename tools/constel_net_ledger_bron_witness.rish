@@ -1,0 +1,44 @@
+# tools/constel_net_ledger_bron_witness.rish — Constel dev-net ledger, Rung 3: the ledger travels as text.
+#
+# Rungs one and two proved the fake net's money folds the real Mycelium supply law and moves only by
+# the identity that holds its genesis. This rung renders a folded ledger to a format constel-ledger-v1
+# Bron record (the safe name, the sovereign key, one signed fact line each) and parses it back
+# byte-for-byte, so a dev-net's books cross as readable text. Two promises ride in the bytes: the
+# quarantine (an @p-shaped net name refuses UnsafeName on parse) and the sovereignty (a swapped
+# sovereign key no longer matches the facts' signatures, so the fold refuses IdentityRefused). Demo
+# keeper seeds only — no real key, no funds, no network, no custody (gate #3 and gate #4 untouched).
+#
+# Scope: active-designing/20260813-030005_constel-devnet-ledger-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/constel_net_ledger_bron_witness.rish
+
+say "constel-net-ledger-bron: Language EN — a fake net's books cross as readable text a second bench can fold."
+say "constel-net-ledger-bron: Style Radiant — the safe name and the sovereign key ride in the bytes, the supply re-folded from the record."
+say "constel-net-ledger-bron: Lens TAME — a bounded flat-Bron reader; unsafe name, wrong sovereign, and malformed field each refuse; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/constel-net-ledger-bron"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/constel_net_ledger_bron.rye -femit-bin=${bin}"]
+assert build.ok else "constel-net-ledger-bron: build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "constel-net-ledger-bron: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "constel-net-ledger-bron: selftest did not speak GREEN"
+assert selftest.out contains "parsed back byte-for-byte, and recovered its safe name, sovereign key, and supply 50" else "constel-net-ledger-bron: round-trip claim missing"
+assert selftest.out contains "refused IdentityRefused on the fold — the sovereignty rides in the bytes" else "constel-net-ledger-bron: wrong-sovereign crux claim missing"
+assert selftest.out contains "refused UnsafeName — the quarantine travels with the bytes" else "constel-net-ledger-bron: unsafe-name quarantine claim missing"
+assert selftest.out contains "refused UnknownField rather than be dropped" else "constel-net-ledger-bron: unknown-field refusal missing"
+assert selftest.out contains "refused BadFormat" else "constel-net-ledger-bron: bad-header refusal missing"
+assert selftest.out contains "refused MissingNet" else "constel-net-ledger-bron: missing-net refusal missing"
+assert selftest.out contains "refused MissingSovereign" else "constel-net-ledger-bron: missing-sovereign refusal missing"
+assert selftest.out contains "refused BadHex" else "constel-net-ledger-bron: bad-hex refusal missing"
+
+# Rung two stands at its door — the star reservations the ledger travels re-run GREEN, so this rung's
+# travelling ledger rests on a ledger already proven honest.
+let r2 = run ["sh" "-c" "rishi/bin/rishi run tools/constel_net_ledger_stars_witness.rish 2>&1"]
+assert r2.ok else "constel-net-ledger-bron: rung two (the star reservations) is not GREEN"
+assert r2.out contains "constel-net-ledger-stars: GREEN" else "constel-net-ledger-bron: rung two did not speak its GREEN"
+
+say "constel-net-ledger-bron: GREEN — a fake dev-net's ledger travels as a format constel-ledger-v1 record byte-for-byte, its safe name and sovereign key riding in the bytes; the supply re-folds and the sovereignty re-verifies from the record; rung two stands at its door."
