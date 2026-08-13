@@ -1,0 +1,296 @@
+//! mycelium/braid_knot.rye — the linked-chain verdict reads across a Knot (rung r3).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Braid · rung r3.
+//! Design read: active-designing/20260813-081709_mycelium-braid-linked-atomic-chain-exploration.md
+//!
+//! Rung 1 resolved a whole Cord Dag into a linked-chain Ledger — which braids committed
+//! whole, which rejected, which stand open. Yet a ledger a family runs for years does not
+//! carry its whole past unbroken: the Knot (`cord_knot.rye`) ties off a committed prefix
+//! into a sealed `fold.FoldState` so a bounded Dag runs forever, and new facts continue onto
+//! that seal. This rung makes the Braid's corpus a Knot plus its live suffix — the
+//! checkpointed accounts and the braid opened before the cut read through the same verdict,
+//! settled by the links that arrived since.
+//!
+//! The crux is what a linked chain exists FOR: a chain and its settlement can stand far
+//! apart in time — even across a pruning checkpoint. Genesis credits Alice and Bob, and the
+//! braid's FIRST link (Alice→Bob) is sealed inside the prefix, the chain standing OPEN — no
+//! coin has moved, because a braid settles only when its final link closes it. After the past
+//! is tied off and pruned, the routing tail (Bob→Carol→Dave) arrives in the live suffix, the
+//! final link closes the chain, and the whole atom commits at once — every coin moving in one
+//! step, a chain begun before the cut, finished after it. Every honest node names the same
+//! outcome whether it reads the whole Cord or a Knot plus a live suffix.
+//!
+//! The honest seam this rung makes plain: fold's GLOBAL supply law reads a `kind_tax` fact as
+//! a BURN (`taxed ≤ issued`), yet the Braid reuses `kind_tax` as a CONSERVING transfer — a
+//! chain that routes coins hand to hand taxes far more than genesis issued (100+120+60 over an
+//! issued 150). So a braid cannot seal its whole routing chain into one checkpoint; it seals
+//! only its OPENING (the first link, whose single tax stays within issued), and the routing
+//! tail rides the live suffix, where the Braid's own conserving law governs rather than fold's
+//! global burn. The Knot's digest is integrity-in-travel for the number conservation is
+//! measured against; the account-and-braid map travels beside it, and every suffix link
+//! re-proves its own signer and folds the Braid's own linked-chain law through the shared
+//! `braid.fold_link` step.
+//!
+//! Additive by construction: it imports `braid` (r1's `Ledger` / `fold_link` /
+//! `balances_sum`), `cord_knot`, `cord`, and `fold`, and calls only their public API. Rung one
+//! stays its own green binary; the Knot stays its own green binary. No storage, no transport,
+//! no network, no custody — a node reads across its own sealed checkpoint. Demo keeper seeds
+//! only — no real key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/braid_knot.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("cord.rye");
+const cord_knot = @import("cord_knot.rye");
+const fold = @import("fold.rye");
+const braid = @import("braid.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+
+/// A checkpointed linked-chain verdict: the Knot sealing the prefix's global supply law under
+/// a digest, beside the prefix's account-and-braid map (the balances and the open chain the
+/// FoldState omits).
+pub const BraidKnot = struct {
+    knot: cord_knot.Knot = .{},
+    verdict: braid.Ledger = .{},
+};
+
+/// Seal a committed prefix Dag into a BraidKnot — resolve it to its linked-chain verdict, then
+/// tie off its global supply with a Knot. The prefix's accounts and open braid travel in
+/// `verdict`; the sealed `FoldState` in `knot` is the integrity-checked starting supply. A
+/// prefix whose links tax past what genesis issued refuses at `seal_dag` — a checkpoint seals
+/// a prefix whose global supply stays whole, so only a braid's opening (not its routing tail)
+/// belongs in a seal.
+pub fn seal_braid(dag: *const cord.Dag) (braid.FoldError || error{ LogFull, StarTaken })!BraidKnot {
+    // invariant: the prefix Dag fits the static bound before it is committed.
+    assert(dag.len <= cord.cord_max_blocks);
+    const v = try braid.resolve(dag);
+    const k = try cord_knot.seal_dag(dag);
+    // invariant: the sealed Knot verifies the instant it is made.
+    assert(cord_knot.verify(&k));
+    // invariant: the sealed global issue equals the per-account issue — the number
+    // conservation is measured against travels integrity-checked.
+    assert(k.state.issued == v.total_issued);
+    return .{ .knot = k, .verdict = v };
+}
+
+/// Continue the linked-chain verdict onto a checkpoint — verify the Knot, seed a Ledger with
+/// the prefix's accounts and open braid, then walk the live suffix one link at a time through
+/// `braid.fold_link`. A suffix link continues a chain opened before the cut, and the final
+/// link settles it as one atom — the same verdict r1 records within one Cord, now across the
+/// cut. A corrupt Knot refuses before a single link is folded; an out-of-sequence link, a
+/// malformed body, a broken signature, a star reserve, and an over-full chain each still
+/// refuse whole. Conservation holds past the cut.
+pub fn continue_braid(bk: *const BraidKnot, suffix: *const fold.Log) (error{KnotCorrupt} || braid.FoldError)!braid.Ledger {
+    // invariant: the suffix stays within the fold's own log bound.
+    assert(suffix.len <= fold.myc_log_max_facts);
+    // invariant: the sealed prefix state is a lawful fold state before it is trusted.
+    assert(bk.knot.state.taxed <= bk.knot.state.issued);
+    // The Knot is untrusted input — a tampered one violates its own digest by design, so its
+    // integrity is a runtime GATE (verify), never an assert. A corrupt Knot refuses whole
+    // before a single suffix link is folded.
+    if (!cord_knot.verify(&bk.knot)) return error.KnotCorrupt;
+
+    var l = bk.verdict; // the prefix account-and-braid map, carried across the cut
+    var i: u32 = 0;
+    while (i < suffix.len) : (i += 1) {
+        // Position is local to the live epoch — the pruned prefix's global order is gone,
+        // which is exactly what a checkpoint means. The signer, the coins, the braid id, and
+        // the link's place in the chain are what carry across the cut.
+        try braid.fold_link(&l, &suffix.facts[i], i);
+    }
+    // invariant: conservation — the balances still sum to what genesis issued.
+    assert(l.balances_sum() == l.total_issued);
+    return l;
+}
+
+/// The linked-chain verdict never drifts between a full Cord and a Knot-continued resolution:
+/// the braid and atom-verdict counts, the issued total, each account's balance, and every
+/// braid's settled state and length agree.
+pub fn braids_match(whole: *const braid.Ledger, across: *const braid.Ledger) bool {
+    // invariant: both verdicts stay within the named ceiling.
+    assert(whole.braid_count <= braid.braid_max_braids);
+    assert(across.braid_count <= braid.braid_max_braids);
+    if (whole.braids_seen() != across.braids_seen()) return false;
+    if (whole.committed_seen() != across.committed_seen()) return false;
+    if (whole.rejected_seen() != across.rejected_seen()) return false;
+    if (whole.pending_seen() != across.pending_seen()) return false;
+    if (whole.total_issued != across.total_issued) return false;
+    if (whole.account_count != across.account_count) return false;
+    // Every account holds the same coins on both nodes.
+    var i: u32 = 0;
+    while (i < whole.account_count) : (i += 1) {
+        const wk = whole.accounts[i].pk[0..];
+        if (whole.accounts[i].balance != across.balance_of(wk)) return false;
+    }
+    // Each braid's settlement and length is the verdict's fingerprint.
+    i = 0;
+    while (i < whole.braid_count) : (i += 1) {
+        const wb = whole.braid_at(i) orelse return false;
+        const ab = across.braid_at(i) orelse return false;
+        if (wb.state != ab.state) return false;
+        if (wb.link_count != ab.link_count) return false;
+        if (!std.mem.eql(u8, wb.id[0..], ab.id[0..])) return false;
+    }
+    return true;
+}
+
+// ---- selftest: the linked-chain verdict reads the same across a sealed checkpoint ----
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn link_body(id: []const u8, seq: u8, last: u8, to: []const u8, out: []u8) u32 {
+    // invariant: the buffer holds tag · id · seq · last · recipient exactly.
+    assert(out.len >= 1 + braid.id_len + 1 + 1 + braid.pk_len);
+    assert(id.len == braid.id_len);
+    assert(to.len == braid.pk_len);
+    out[0] = braid.tag_link;
+    tally_copy.copy_disjoint(u8, out[1 .. 1 + braid.id_len], id);
+    out[1 + braid.id_len] = seq;
+    out[1 + braid.id_len + 1] = last;
+    tally_copy.copy_disjoint(u8, out[1 + braid.id_len + 2 ..][0..braid.pk_len], to);
+    return 1 + braid.id_len + 1 + 1 + braid.pk_len;
+}
+
+pub fn main() !void {
+    const id = [_]u8{0x07} ** braid.id_len;
+    const id2 = [_]u8{0x09} ** braid.id_len;
+    const kf = seeded(0xF0);
+    const ka = seeded(0xA1); // Alice — opens the chain inside the prefix
+    const kb = seeded(0xB2); // Bob
+    const kc = seeded(0xC3); // Carol
+    const kd = seeded(0xD4); // Dave
+    const alice = ka.public_key.toBytes();
+    const bob = kb.public_key.toBytes();
+    const carol = kc.public_key.toBytes();
+    const dave = kd.public_key.toBytes();
+
+    // Genesis roots: Alice 100, Bob 50 (issued 150).
+    const f_ga = fold.mint_fact(kf, fold.kind_issue, 100, "", alice[0..]) orelse return error.MintGA;
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_ga) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+    const f_gb = fold.mint_fact(kf, fold.kind_issue, 50, "", bob[0..]) orelse return error.MintGB;
+    const g2 = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_gb) orelse return error.BlockG2;
+    var hg2: [cord.hash_len]u8 = undefined;
+    cord.address(&g2, &hg2);
+
+    // Link 0 (opening): Alice → Bob 100 — sealed in the prefix. Its single tax (100) stays
+    // within the issued 150, so the checkpoint seals a whole global supply.
+    var b0: [1 + braid.id_len + 1 + 1 + braid.pk_len]u8 = undefined;
+    const n0 = link_body(id[0..], 0, 0, bob[0..], &b0);
+    const f0 = fold.mint_fact(ka, fold.kind_tax, 100, "", b0[0..n0]) orelse return error.Mint0;
+    const l0 = cord.mint_block(ka, 1, &[_][cord.hash_len]u8{ hg, hg2 }, f0) orelse return error.Block0;
+    var h0: [cord.hash_len]u8 = undefined;
+    cord.address(&l0, &h0);
+
+    // Link 1: Bob → Carol 120 — rides the live suffix.
+    var b1: [1 + braid.id_len + 1 + 1 + braid.pk_len]u8 = undefined;
+    const n1 = link_body(id[0..], 1, 0, carol[0..], &b1);
+    const f1 = fold.mint_fact(kb, fold.kind_tax, 120, "", b1[0..n1]) orelse return error.Mint1;
+    const l1 = cord.mint_block(kb, 2, &[_][cord.hash_len]u8{h0}, f1) orelse return error.Block1;
+    var h1: [cord.hash_len]u8 = undefined;
+    cord.address(&l1, &h1);
+
+    // Link 2 (last): Carol → Dave 60 — closes the chain in the suffix, settling the whole atom.
+    var b2: [1 + braid.id_len + 1 + 1 + braid.pk_len]u8 = undefined;
+    const n2 = link_body(id[0..], 2, 1, dave[0..], &b2);
+    const f2 = fold.mint_fact(kc, fold.kind_tax, 60, "", b2[0..n2]) orelse return error.Mint2;
+    const l2 = cord.mint_block(kc, 3, &[_][cord.hash_len]u8{h1}, f2) orelse return error.Block2;
+
+    // The truth to match: the WHOLE history resolved as one Cord Dag — the chain commits whole.
+    var whole = cord.Dag.empty();
+    try cord.add(&whole, g);
+    try cord.add(&whole, g2);
+    try cord.add(&whole, l0);
+    try cord.add(&whole, l1);
+    try cord.add(&whole, l2);
+    const whole_verdict = try braid.resolve(&whole);
+    if (whole_verdict.committed_seen() != 1) return error.WholeCommitted;
+    if (whole_verdict.balance_of(dave[0..]) != 60) return error.WholeDave;
+
+    // The Knot path: seal the prefix (genesis + the opening link), then continue the suffix
+    // (the routing tail) onto the checkpoint.
+    var prefix = cord.Dag.empty();
+    try cord.add(&prefix, g);
+    try cord.add(&prefix, g2);
+    try cord.add(&prefix, l0);
+    const bk = try seal_braid(&prefix);
+    // The checkpoint holds the chain OPEN — one link seated, no coin moved (a braid settles
+    // only when its final link closes it), issue sealed at 150.
+    if (bk.verdict.braids_seen() != 1) return error.PrefixBraids;
+    if (bk.verdict.pending_seen() != 1) return error.PrefixPending;
+    if (bk.verdict.committed_seen() != 0) return error.PrefixCommitted;
+    if (bk.verdict.balance_of(alice[0..]) != 100) return error.PrefixAlice;
+    if (bk.verdict.balance_of(bob[0..]) != 50) return error.PrefixBob;
+    if (bk.knot.state.issued != 150) return error.PrefixIssued;
+
+    // The live suffix: the routing tail arrives and the final link closes the chain — the
+    // whole atom commits at once, every coin moving in one step across the cut.
+    var suffix = fold.Log.empty();
+    suffix.facts[0] = f1;
+    suffix.facts[1] = f2;
+    suffix.len = 2;
+    const across = try continue_braid(&bk, &suffix);
+
+    // The crux: the chain opened in the sealed past commits across the cut — every coin moved,
+    // conservation whole, the checkpoint invisible to the verdict.
+    if (across.committed_seen() != 1) return error.AcrossCommitted;
+    if (across.rejected_seen() != 0) return error.AcrossRejected;
+    if (across.balance_of(alice[0..]) != 0) return error.AcrossAlice;
+    if (across.balance_of(bob[0..]) != 30) return error.AcrossBob;
+    if (across.balance_of(carol[0..]) != 60) return error.AcrossCarol;
+    if (across.balance_of(dave[0..]) != 60) return error.AcrossDave;
+    if (across.total_issued != 150) return error.AcrossIssued;
+    if (across.balances_sum() != 150) return error.AcrossNotConserved;
+
+    // The linked-chain verdict never drifts between the full Cord and the Knot-continued one.
+    if (!braids_match(&whole_verdict, &across)) return error.KnotChangedVerdict;
+
+    // Integrity across the cut, three ways.
+    // 1. A Knot corrupted after sealing refuses before a suffix link is folded.
+    var bk_bad = bk;
+    bk_bad.knot.state.issued += 1;
+    if (continue_braid(&bk_bad, &suffix)) |_| {
+        return error.CorruptTrusted;
+    } else |err| {
+        if (err != error.KnotCorrupt) return error.WrongCorrupt;
+    }
+
+    // 2. A tampered suffix link (its own signature broken) refuses IdentityRefused.
+    var f_tamper = f1;
+    f_tamper.sig[0] ^= 0xff;
+    var suffix_tamper = fold.Log.empty();
+    suffix_tamper.facts[0] = f_tamper;
+    suffix_tamper.len = 1;
+    if (continue_braid(&bk, &suffix_tamper)) |_| {
+        return error.TamperTrusted;
+    } else |err| {
+        if (err != error.IdentityRefused) return error.WrongTamper;
+    }
+
+    // 3. A suffix link continuing a chain the checkpoint never opened refuses BraidBroken
+    //    across the cut — a fresh chain must open at sequence zero, so a non-zero seq for an
+    //    unknown id is broken, exactly as within one Cord.
+    var bg: [1 + braid.id_len + 1 + 1 + braid.pk_len]u8 = undefined;
+    const ng = link_body(id2[0..], 1, 1, dave[0..], &bg);
+    const f_ghost = fold.mint_fact(kb, fold.kind_tax, 10, "", bg[0..ng]) orelse return error.MintGhost;
+    var suffix_ghost = fold.Log.empty();
+    suffix_ghost.facts[0] = f_ghost;
+    suffix_ghost.len = 1;
+    if (continue_braid(&bk, &suffix_ghost)) |_| {
+        return error.GhostCrossed;
+    } else |err| {
+        if (err != error.BraidBroken) return error.WrongGhost;
+    }
+
+    print("braid-knot: the prefix seals a Knot holding the chain OPEN (one link, no coin moved); the suffix tail closes it across the cut, the whole atom committing at once\n", .{});
+    print("braid-knot: the linked-chain verdict reads the same across the cut — a full Cord and a sealed Knot name one committed chain, conservation of balance whole\n", .{});
+    print("braid-knot: a corrupt Knot, a tampered suffix link, and a link continuing a chain the checkpoint never opened each refuse whole\n", .{});
+    print("GREEN: myc braid-knot — the linked-chain verdict reads across a Knot · committed={d} · conserved · verdict never drifts\n", .{across.committed_seen()});
+}
