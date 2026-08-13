@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260813.111321
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention; this session in ai-jail
+title mycelium Muster r3 — a roll's verdict survives a checkpoint
+prompt baton prin recur — take the next agent-doable lap Lindy-first crux-first, approve own design rounds, send each finished increment as its own signed round, stop at custody gates.
+think r1 bound a Chorus to a known roll; r2 let the roll travel. A ledger a family runs for years is checkpointed and pruned — the Knot seals a prefix and the Lapse carries the epoch base across the cut. r3 (mycelium/muster_knot.rye, mirroring chorus_knot) judges a quorum against a Muster over a ledger resolved across an epoch cut.
+think The crux: the roll's VERDICT is continuous across the join. pass_muster_across runs r1's membership-and-quorum law (muster.pass_muster) then confirms the agreed position equals the Knot-continued ledger's reading — so a party who kept only the Knot plus its suffix applies the same roll and believes the same enrolled quorum. Where a mesh that still holds the blocks can re-derive the whole order-head, a checkpointing party checks the POSITION it independently resolves.
+think Proven on a pledge lapsing across the cut (Alice's coins home, lapsed_seen==1) and a far deadline honored in the suffix (Bob credited in the suffix, received accumulates to his whole 100, never restarted). The roll refuses across the cut exactly as in memory: an outsider quorum of three fresh keys the Chorus alone believes refuses NotMember, a thin quorum refuses BelowQuorum; a corrupt Knot yields no continued ledger at all.
+obs GREEN on the first build and run. Composes muster + chorus + statement + lapse_knot + lapse + cord + fold + kumara public API only, editing none (the Muster r1 and the Lapse-Knot re-run GREEN at the door). pass_muster_across returns the roll's exact refusal (NotMember/BelowQuorum propagated), so the knot rung preserves r1's verdict distinctions, not just a pass/fail. Demo validator and keeper seeds only — no key/funds/network/custody. Witness tools/mycelium_muster_knot_witness.rish GREEN; tame_style_check clean; width-check clean.
+loom witness=mycelium_muster_knot_witness result=GREEN code_changed=1 composes=muster+chorus+statement+lapse_knot edits_existing=0
+file mycelium/muster_knot.rye r3 across a Knot — pass_muster_across: the roll's verdict on a quorum continuous across an epoch cut
+file tools/mycelium_muster_knot_witness.rish r3 witness — GREEN, proves verdict continuity (lapse · honor) · outsider/thin refusal across the cut · corrupt Knot never continued
+recommend keep-going Muster r4 (true to the bytes — a real on-disk Cord fixture, a real Chorus judged against a real roll, the enrolled-voice count cross-checked against an independent awk reading), then the arc closes and a remember fold onto REMEMBER follows. A served muster · breach renames (cairn-first) · deep debride · seed force-push stay the maintainer's hand.
