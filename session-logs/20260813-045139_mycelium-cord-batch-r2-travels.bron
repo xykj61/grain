@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260813.045139
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Mycelium fact batching r2 — the batch travels as a format cord-batch-v1 record
+prompt Keep going on the next agent-doable crux Lindy-first; send each increment as its own signed round; stop only at custody gates
+think r1 (a batch folds identical to single-fact) landed and sent. The design read names r2 next: the batched Dag crosses to a stranger as readable bytes, composing the cord-bron reader/writer idiom.
+think Wrote mycelium/cord_batch_bron.rye: a `format cord-batch-v1` record — per block a `block` line (author key · round · block signature), then one `fact` line per batched fact (kind · amount · star · body · signer key · fact signature), then the `parent` lines. Purpose-built bounded flat-Bron reader, a small pending-block state machine.
+think The crux mirrors the elder cord-bron r3: the recovered batched Dag, re-admitted under r1's own add_batch (every signature re-verified), commits to the byte-identical order and folds the identical supply (700 over one star); re-rendering the parsed record reproduces the exact bytes (fixed point).
+think Hit a real red — a segfault (stack overflow) in seat_batch_dag: a BatchDag statically allocates cord_max_blocks (256) × max_facts_per_block (16) ≈ 1.77 MB, and returning it by value from seat/rebuild put transient whole-Dag copies on the stack. Fixed structurally: seat_batch_dag and rebuild now write through an out-pointer (no return copy — the right bounded-memory move), max_record shrank 262144 → 16384 (a batched dev-net roster is small), and the tamper test reuses dag2's storage rather than a third BatchDag.
+obs Every refusal holds whole: a wrong header (BadFormat), an unknown field (UnknownField, never dropped), a fact before any block (FactBeforeBlock), an empty batch (EmptyBatch), and a tampered fact (BadSignature at add_batch — the batch's author signature seals every fact's signature).
+obs Additive — composes cord_batch + cord + fold public API only; r1 and the elder single-fact cord-bron both re-run GREEN at the witness door.
+loom witness=mycelium_cord_batch_bron_witness build=green blocks=2 facts=4 record_format=cord-batch-v1 supply=700 stars=1
+file mycelium/cord_batch_bron.rye the batched Cord travels — render/parse a format cord-batch-v1 record, rebuild under add_batch
+file tools/mycelium_cord_batch_bron_witness.rish proves the order travels, the fixed point, the refusals, r1 + elder cord-bron green at their doors
+file work-in-progress/REMEMBER.md living edge + git nib for the fact-batching r2 round
+recommend keep-going fact batching r3 (batching is a pure throughput win, measured as an honest loom ratio — blocks before vs after for a fixed fact count) is the next lap; policy in the design read
