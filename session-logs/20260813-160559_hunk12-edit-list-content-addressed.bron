@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260813.160559
+editor Zed
+model Fable 5
+voice Kyri
+host cloud bench — Eastern (EDT) time convention
+title HUNK12 — the non-destructive edit-list is content-addressed; reproduce from cold
+prompt Continue the autonomous loop: keep taking agent-doable laps Lindy-first crux-first, send each finished increment as its own signed round, stop at custody gates.
+think HUNK11 landed and shipped the edit-list (verbs as data, deterministic replay). Its design doc named HUNK12 as the next crux: bead an edit-list into Tablecloth so (image, edit-list address) reproduces the edited image from cold. That is the higher-Lindy continuation — it banks HUNK11's determinism as a content-address guarantee.
+think Studied the HUNK6 sprite_store and HUNK1 image_artifact pattern: tablecloth.store_artifact / fetch_artifact is a generic verified byte store (digest-checked before return). An edit-list's format photo-edits-v1 text is just a byte stream, so I mirrored the store/fetch/verify shape exactly.
+think Built pond/apps/edit_store.rye: store_edits renders the list to text and beads it content-addressed (bounded to a resin, refusing EditsTooLarge); open_edits fetches verified then parses; reproduce fetches verified then applies over a source image — so a tampered recipe or unknown name refuses before any verb replays. Symlinked photo_edits.rye into pond/apps beside the existing qoi/photos/parse_int/tally_copy links.
+obs GREEN on the first build and run: the cold reproduction equals a direct apply byte-for-byte (edited pixels never stored, only the 58-byte recipe), the recipe dedup dividend holds (same list two names, stored once, 1/1 beads deduped), a tampered recipe refuses DigestMismatch and an unknown name refuses UnknownArtifact each before a verb runs.
+obs One witness grep pattern was wrong (a `.*` expected a token between "same" and "recipe" where the text is adjacent) — fixed to the literal text; the code itself was GREEN throughout. tame_style_check bans clean, width exit 0.
+loom witness=hunk_edit_store_witness green=1 recipe_bytes=58 verbs=3 beads_deduped=1
+file pond/apps/edit_store.rye HUNK12 — store_edits, open_edits, reproduce; GREEN selftest.
+file pond/apps/photo_edits.rye symlink to image/photo_edits.rye so pond/apps composes it.
+file tools/hunk_edit_store_witness.rish witnesses HUNK12 on metal; GREEN.
+file work-in-progress/REMEMBER.md latest-lap line extended with HUNK12; git nib refreshed.
+file session-logs/README.md prepended the HUNK12 index row.
+recommend keep-going HUNK13 (the Skate view of a pending edit, down-mapping the replayed result so an edit is seen before it is committed) or HUNK14 (revert/truncate) — both agent-doable; hardware rounds stay custody gates.

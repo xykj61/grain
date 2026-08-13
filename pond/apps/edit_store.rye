@@ -1,0 +1,178 @@
+//! pond/apps/edit_store.rye — HUNK12: a non-destructive edit-list is a content-addressed Tablecloth artifact.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK12.
+//! Design read: active-designing/20260813-155719_hunk-photo-edits-non-destructive-exploration.md (names HUNK12).
+//! Teacher, thanked clean-room: the non-destructive edit history of iCloud Photos / Google Photos (concept only).
+//!
+//! HUNK11 recorded the Photos verbs as data and proved replay is deterministic — the same edit-list over the
+//! same source yields the same bytes every time. This rung banks that determinism: `store_edits` beads an
+//! edit-list's `format photo-edits-v1` text content-addressed (HUNK1's Tablecloth store), and `reproduce`
+//! fetches it back — the fetch proving every bead against its digest and the whole against its recorded address
+//! BEFORE the text is parsed or a single verb replayed — then parses and applies it over a source image. So an
+//! edited image is reproducible from cold out of the pair (source, edit-list address): its pixels never need
+//! storing, only the small recipe that makes them. A tampered edit-list refuses `DigestMismatch` and an unknown
+//! name refuses `UnknownArtifact`, each before `apply` touches the source. Pure composition over public APIs.
+//! No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/edit_store.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const photo_edits = @import("photo_edits.rye");
+const tablecloth = @import("tablecloth.rye");
+const beading = @import("mantra/beading.rye");
+
+pub const edit_store_version = "20260813.160000";
+
+/// The largest edit-list text this rung stores — a resin's worth (the artifact-content bound). A short recipe
+/// holds a keeper's handful of edits with room to spare; a list too long to bead refuses rather than truncating.
+pub const max_edits_stream: u32 = tablecloth.max_content_bytes;
+
+pub const EditStoreError = error{
+    EditsTooLarge,
+};
+
+/// Store an edit-list content-addressed under a name: render it to its `format photo-edits-v1` text, then bead
+/// that text into the shared store so the same recipe stored twice is stored once. Returns the beading report so
+/// a caller sees the dedup dividend. Refuses `EditsTooLarge` rather than storing a recipe a fetch cannot hold.
+pub fn store_edits(
+    cat: *tablecloth.Catalog,
+    store: *beading.BeadStore,
+    name: []const u8,
+    list: *const photo_edits.EditList,
+) !beading.BeadReport {
+    // invariant: the list stays within its own named ceiling before it is ever rendered.
+    assert(list.len() <= photo_edits.max_edits);
+    var buf: [max_edits_stream]u8 = undefined;
+    const n = photo_edits.render_edits(list, buf[0..]) catch return error.EditsTooLarge;
+    // invariant: only a recipe the fetch buffer can hold is ever stored.
+    assert(n <= max_edits_stream);
+    return tablecloth.store_artifact(cat, store, name, buf[0..n]);
+}
+
+/// Open an edit-list by name into a fresh list. The fetch reassembles the beads and proves each against its
+/// digest and the whole against its recorded address BEFORE this parses anything — so a tampered recipe refuses
+/// (`DigestMismatch`) and an unknown name refuses (`UnknownArtifact`), each before a verb is read. Only verified
+/// text ever reaches the parser.
+pub fn open_edits(
+    cat: *const tablecloth.Catalog,
+    store: *const beading.BeadStore,
+    name: []const u8,
+    out: *photo_edits.EditList,
+) !void {
+    var buf: [max_edits_stream]u8 = undefined;
+    const n = try tablecloth.fetch_artifact(cat, store, name, buf[0..]);
+    // invariant: a verified recipe fits the content bound.
+    assert(n <= max_edits_stream);
+    try photo_edits.parse_edits(buf[0..n], out);
+}
+
+/// Reproduce an edited image from cold: fetch the named edit-list (verified), then apply it over `source`. The
+/// result is exactly the image the pair (source, edit-list address) pins — reproducible without ever storing the
+/// edited pixels. A tampered recipe or unknown name refuses before `apply` touches the source.
+pub fn reproduce(
+    allocator: std.mem.Allocator,
+    cat: *const tablecloth.Catalog,
+    store: *const beading.BeadStore,
+    name: []const u8,
+    source: *const qoi.Pixmap,
+) !qoi.Pixmap {
+    var list: photo_edits.EditList = undefined;
+    try open_edits(cat, store, name, &list);
+    return photo_edits.apply(allocator, source, &list);
+}
+
+// --- selftest: bank an edit-list content-addressed, reproduce the edited image from cold, prove the dedup
+//     dividend, and prove a tampered recipe and an unknown name each refuse before a verb is replayed ----------
+
+/// Build a 6×6 image where each pixel encodes its own coordinates, so a reproduced edit is unambiguous.
+fn craft_tagged(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 6;
+    const h: u32 = 6;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            buf[off] = @intCast(x * 40);
+            buf[off + 1] = @intCast(y * 40);
+            buf[off + 2] = @intCast(x + y);
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const pm = try craft_tagged(garden);
+
+    // A three-verb recipe: crop a 4×4, turn it a quarter clockwise, lift brightness +40.
+    var list = photo_edits.EditList.init();
+    try list.push(.{ .crop = .{ .x = 1, .y = 1, .w = 4, .h = 4 } });
+    try list.push(.{ .rotate = .{ .turns = 1 } });
+    try list.push(.{ .adjust = .{ .brightness = 40, .num = 1, .den = 1 } });
+
+    // The image applied by hand — what a cold reproduction must equal.
+    const direct = try photo_edits.apply(garden, &pm, &list);
+
+    var store: beading.BeadStore = .empty();
+    var cat: tablecloth.Catalog = .empty();
+
+    // Bank the recipe content-addressed, then reproduce the edited image FROM COLD out of (source, name).
+    const rep = try store_edits(&cat, &store, "portrait.edits", &list);
+    assert(rep.beads_deposited >= 1);
+    const cold = try reproduce(garden, &cat, &store, "portrait.edits", &pm);
+    // The crux: the image reproduced from the stored recipe equals the one applied by hand, byte for byte —
+    // the edited pixels were never stored, only the recipe that makes them.
+    assert(cold.same_bytes(&direct));
+
+    // The dedup dividend for recipes: the same edit-list under a second name is stored once, and still reproduces.
+    const rep_copy = try store_edits(&cat, &store, "portrait-v2.edits", &list);
+    assert(rep_copy.beads_deduped == rep_copy.bead_count); // identical text: nothing new stored
+    const cold_copy = try reproduce(garden, &cat, &store, "portrait-v2.edits", &pm);
+    assert(cold_copy.same_bytes(&direct)); // one storage, two true names
+
+    // Unwelcome: a tampered recipe refuses BEFORE a verb is replayed. Store the same recipe in a fresh store,
+    // flip a single stored byte, and prove reproduce refuses DigestMismatch — so no verb ever runs on a recipe
+    // whose bytes are not the ones its name pins.
+    {
+        var store_t: beading.BeadStore = .empty();
+        var cat_t: tablecloth.Catalog = .empty();
+        _ = try store_edits(&cat_t, &store_t, "portrait.edits", &list);
+        store_t.beads[0].bytes[0] +%= 1; // flip one byte of a held bead
+        if (reproduce(garden, &cat_t, &store_t, "portrait.edits", &pm)) |_| {
+            return error.TamperSlipped;
+        } else |e| {
+            if (e != error.DigestMismatch) return error.WrongTamper;
+        }
+    }
+
+    // Unwelcome: an unknown recipe name refuses, again before any verb runs.
+    if (reproduce(garden, &cat, &store, "absent.edits", &pm)) |_| {
+        return error.UnknownSlipped;
+    } else |e| {
+        if (e != error.UnknownArtifact) return error.WrongUnknown;
+    }
+
+    const stored_len = try tablecloth.artifact_len(&cat, "portrait.edits");
+    print("GREEN edit-store: a {d}-verb edit-list banked content-addressed ({d} bytes) — the edited image " ++
+        "reproduces from cold out of (source, name) byte-for-byte, the edited pixels never stored; the same " ++
+        "recipe under two names is stored once (deduped {d}/{d} beads); a tampered recipe refuses DigestMismatch " ++
+        "and an unknown name refuses UnknownArtifact, each before a verb is replayed\n", .{
+        list.len(), stored_len, rep_copy.beads_deduped, rep_copy.bead_count,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: edit_store selftest\n", .{});
+    return 1;
+}
