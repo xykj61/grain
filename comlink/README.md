@@ -35,10 +35,10 @@ Every Mantra and Linengrow wire capability that crosses onto real virtio carries
 | Catch-up | 38484 / 38485 | — |
 | Subscribe poll | 38486 / 38487 | 15565 / 15566 |
 | Open Asks (OA-L5) | 38488 / 38489 | 15561–15563 |
-| Snapshot lap 3 | 38490 / 38491 | 15567 / 15568 |
+| Snapshot device | 38490 / 38491 | 15567 / 15568 |
 | MALA M2 / M2b | 38492 / 38493 | 15569 / 15570 |
-| Amphora lap 3 vessel fetch | 38494 / 38495 | 15571 / 15572 |
-| Granary lap 4 resin serve | 38496 / 38497 | 15573 / 15574 |
+| Amphora vessel fetch | 38494 / 38495 | 15571 / 15572 |
+| Granary resin serve | 38496 / 38497 | 15573 / 15574 |
 | Tablecloth query (hosted + device) | 38490 / 38491 | 15575 / 15576 |
 
 Ports repeat across unrelated laps by design — each witness binds, uses, and releases its own pair within one bounded run, and Comlink's laps never run concurrently against the same address.

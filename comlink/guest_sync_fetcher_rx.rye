@@ -1,4 +1,4 @@
-//! comlink/guest_sync_fetcher_rx.rye — NS-L3 wire lap 2: fetcher RX (apply sync response, recall beta).
+//! comlink/guest_sync_fetcher_rx.rye — NS-L3 wire: fetcher RX (apply sync response, recall beta) · 20260713.
 
 const vn = @import("virtio_net.rye");
 const wf = @import("wire_format.rye");
