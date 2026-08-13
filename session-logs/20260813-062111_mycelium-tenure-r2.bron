@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260813.062111
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Mycelium Tenure r2 — the namespace verdict travels as a record
+prompt take the next agent-doable lap Lindy-first crux-first; approve own design rounds; send each finished increment as its own signed round; STOP at custody gates; baton prin recur
+think With Tenure r1 (the crux) landed and sent, the next agent-doable lap on the arc is r2 from the design read — a resolved verdict a node cannot hand to another is only a local reading, so let it cross as a format tenure-v1 record and back, byte-for-byte, answering the identical holder_of.
+think Mirrored the established cord_bron / cord_knot_bron idiom: local to_hex/from_hex/encode_field/decode_field, a bounded six-token line splitter, render writing a supply line + one hold line per holding + one lost line per contest, parse reading them back through an out-pointer (a Tenure embeds a full ~36 KB fold.FoldState, so no return-by-value copy — the cord_knot_bron stack-safety idiom).
+think The recovered Tenure only needs the reading surface (holdings, contests, issued/taxed) for holder_of and supply(); the full FoldState.stars array is not travelled — holder_of reads holdings, supply() reads issued−taxed, so both answer identically. Set recovered.state.star_count = holding_count for a consistent surface and honesty.
+obs The crux proven on metal: render the r1 contested verdict → parse back → holder_of agrees for "bandun", "vega", and a free "sirius" (both null), count and contests_seen equal, supply 800 unchanged; re-render is a fixed point (byte-equal). Refusals hold whole: a bad header (BadFormat), an unknown field (UnknownField, never dropped), a bad hex holder key (BadHex via the length check), a missing supply line (BadFormat — I require it), an over-long verdict (TooManyHoldings at render before any partial record).
+obs GREEN first pass — no red this round. TAME bans clean, width-check exit 0. Additive: composes tenure + fold public API only, editing no elder; the r1 Tenure re-runs its own green binary at the witness door.
+loom witness=mycelium_tenure_bron_witness verdict=GREEN held=1 contests=1 supply=800 fixed_point=yes record_format=tenure-v1
+file mycelium/tenure_bron.rye r2 — render/parse a resolved Tenure as format tenure-v1; recovered holder_of and supply identical; fixed point
+file tools/mycelium_tenure_bron_witness.rish witness — round-trip byte-for-byte · holder unchanged · malformed records refuse whole; r1 re-runs GREEN
+recommend keep-going Tenure r2 (travel) stands. Next agent-doable is r3 — the verdict reads across a Knot (a name won inside a sealed checkpoint stays held when new facts continue the log), then r4 a real contested fixture cross-checked by awk, closing the arc. Quorum-served verdicts + breach renames (cairn-first) + deep debride + seed force-push stay Keaton's hand.

@@ -1,0 +1,303 @@
+//! mycelium/tenure_bron.rye — the namespace verdict travels as a readable record.
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · Tenure rung r2 — travel.
+//! Design read: active-designing/20260813-060935_mycelium-tenure-contested-name-exploration.md
+//!
+//! r1 resolved a Cord's agreed order into a Tenure — who holds each name, who lost
+//! a contest. A verdict a node cannot hand to another node is only a local reading,
+//! so r2 lets a resolved Tenure cross as `format tenure-v1` bytes: a `supply` line,
+//! one `hold <name> <holder-pk> <pos> <round>` line per holding, one
+//! `lost <name> <loser-pk> <pos>` line per contested loss. Render writes it, parse
+//! reads it back, so a round trip is a fixed point — and the recovered Tenure
+//! answers the identical `holder_of` for every name and reports the identical
+//! supply, so the namespace verdict crosses to a stranger unchanged.
+//!
+//! A purpose-built bounded reader, never a general parser: a wrong header refuses
+//! `BadFormat`, an unknown field `UnknownField` (never dropped), a malformed line
+//! `BadLine`, a bad integer `BadInt`, a bad hex field `BadHex`, an over-long record
+//! `TooManyHoldings`/`TooManyContests`. Composes tenure.rye + fold.rye public API
+//! only. Siloed, dev-only, demo seeds — no key, no funds, no network, no custody.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/tenure_bron.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const tenure = @import("tenure.rye");
+const cord = @import("cord.rye");
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+const parse_int = @import("parse_int.rye");
+
+/// A travelled record carries at most this many holdings — a dev-net namespace is
+/// small and legible, well under the Tenure's own 256 ceiling.
+pub const max_holdings_in_record: u32 = 32;
+
+/// And at most this many contested losses.
+pub const max_contests_in_record: u32 = 32;
+
+/// The record buffer bound — a small namespace's whole verdict fits with room.
+pub const max_record: u32 = 32768;
+
+pub const BronError = error{
+    BadFormat, // the header line is not `format tenure-v1`, or no supply line
+    UnknownField, // a line names a field the record does not define
+    BadLine, // a known line carries the wrong token count
+    BadInt, // an integer field did not parse, or broke the supply law
+    BadHex, // a hex field was the wrong length or held a non-hex char
+    TooManyHoldings, // more holdings than a v1 record admits
+    TooManyContests, // more losses than a v1 record admits
+    RecordTooLong, // the rendered record overflowed the buffer
+};
+
+const hex_digits = "0123456789abcdef";
+const empty_field = "-";
+
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex chars per byte.
+    assert(out.len == bytes.len * 2);
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0F];
+    }
+}
+
+fn nibble(c: u8) BronError!u8 {
+    return switch (c) {
+        '0'...'9' => c - '0',
+        'a'...'f' => c - 'a' + 10,
+        'A'...'F' => c - 'A' + 10,
+        else => error.BadHex,
+    };
+}
+
+fn from_hex(text: []const u8, out: []u8) BronError!void {
+    if (text.len != out.len * 2) return error.BadHex;
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < out.len) : (i += 1) {
+        const hi = try nibble(text[i * 2]);
+        const lo = try nibble(text[i * 2 + 1]);
+        out[i] = (hi << 4) | lo;
+    }
+}
+
+fn encode_field(bytes: []const u8, scratch: []u8) []const u8 {
+    if (bytes.len == 0) return empty_field;
+    // invariant: the scratch buffer holds two hex chars per byte.
+    assert(scratch.len >= bytes.len * 2);
+    to_hex(bytes, scratch[0 .. bytes.len * 2]);
+    return scratch[0 .. bytes.len * 2];
+}
+
+fn decode_field(token: []const u8, out: []u8) BronError!u32 {
+    if (std.mem.eql(u8, token, empty_field)) return 0;
+    if (token.len % 2 != 0) return error.BadHex;
+    const n = token.len / 2;
+    if (n > out.len) return error.BadHex;
+    try from_hex(token, out[0..n]);
+    return @intCast(n);
+}
+
+/// Render a resolved Tenure to a `format tenure-v1` record. Refuses an overflow or
+/// an over-long verdict rather than a partial record.
+pub fn render(t: *const tenure.Tenure, out: []u8) BronError!u32 {
+    // invariant: the record honors its holding and contest bounds.
+    if (t.holding_count > max_holdings_in_record) return error.TooManyHoldings;
+    if (t.contest_count > max_contests_in_record) return error.TooManyContests;
+    // invariant: the render buffer honors its bound.
+    assert(out.len >= max_record);
+    const head = std.fmt.bufPrint(out, "format tenure-v1\n", .{}) catch return error.RecordTooLong;
+    var off: u32 = @intCast(head.len);
+    const sup = std.fmt.bufPrint(out[off..], "supply {d} {d}\n", .{ t.state.issued, t.state.taxed }) catch return error.RecordTooLong;
+    off += @intCast(sup.len);
+
+    var i: u32 = 0;
+    while (i < t.holding_count) : (i += 1) {
+        const h = &t.holdings[i];
+        var name_buf: [fold.star_name_max_bytes * 2]u8 = undefined;
+        const name = encode_field(h.name[0..h.name_len], &name_buf);
+        var pk_hex: [tenure.pk_len * 2]u8 = undefined;
+        to_hex(h.holder_pk[0..], &pk_hex);
+        const line = std.fmt.bufPrint(out[off..], "hold {s} {s} {d} {d}\n", .{ name, pk_hex, h.pos, h.round }) catch return error.RecordTooLong;
+        off += @intCast(line.len);
+    }
+
+    var c: u32 = 0;
+    while (c < t.contest_count) : (c += 1) {
+        const ct = &t.contests[c];
+        var name_buf: [fold.star_name_max_bytes * 2]u8 = undefined;
+        const name = encode_field(ct.name[0..ct.name_len], &name_buf);
+        var pk_hex: [tenure.pk_len * 2]u8 = undefined;
+        to_hex(ct.loser_pk[0..], &pk_hex);
+        const line = std.fmt.bufPrint(out[off..], "lost {s} {s} {d}\n", .{ name, pk_hex, ct.pos }) catch return error.RecordTooLong;
+        off += @intCast(line.len);
+    }
+    // invariant: the rendered record never exceeds its bound.
+    assert(off <= max_record);
+    return off;
+}
+
+/// Split a line into up to six tokens; returns the count (or seven to signal a
+/// trailing token past what any line allows).
+fn tokens(line: []const u8, out: *[6][]const u8) u32 {
+    var count: u32 = 0;
+    var it = std.mem.tokenizeScalar(u8, line, ' ');
+    while (it.next()) |t| {
+        if (count >= 6) return count + 1;
+        out[count] = t;
+        count += 1;
+    }
+    return count;
+}
+
+/// Parse a `format tenure-v1` record into `out`, writing through a pointer (a
+/// Tenure carries a full fold state, so no return-by-value copy). Refuses an
+/// unknown or malformed field, a bad header, or an over-long verdict.
+pub fn parse(text: []const u8, out: *tenure.Tenure) BronError!void {
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const header = lines.next() orelse return error.BadFormat;
+    if (!std.mem.eql(u8, header, "format tenure-v1")) return error.BadFormat;
+
+    out.holding_count = 0;
+    out.contest_count = 0;
+    out.state = fold.FoldState{};
+    var have_supply = false;
+
+    while (lines.next()) |raw| {
+        if (raw.len == 0) continue; // a trailing newline yields one empty line
+        var tok: [6][]const u8 = undefined;
+        const n = tokens(raw, &tok);
+        if (n == 0) continue;
+        if (std.mem.eql(u8, tok[0], "supply")) {
+            if (n != 3) return error.BadLine;
+            out.state.issued = parse_int.parse_int(u64, tok[1], .{}) catch return error.BadInt;
+            out.state.taxed = parse_int.parse_int(u64, tok[2], .{}) catch return error.BadInt;
+            if (out.state.taxed > out.state.issued) return error.BadInt; // the supply law
+            have_supply = true;
+        } else if (std.mem.eql(u8, tok[0], "hold")) {
+            if (n != 5) return error.BadLine;
+            if (out.holding_count >= tenure.tenure_max_holdings) return error.TooManyHoldings;
+            const at = out.holding_count;
+            out.holdings[at].name_len = try decode_field(tok[1], out.holdings[at].name[0..]);
+            try from_hex(tok[2], out.holdings[at].holder_pk[0..]);
+            out.holdings[at].pos = parse_int.parse_int(u32, tok[3], .{}) catch return error.BadInt;
+            out.holdings[at].round = parse_int.parse_int(u32, tok[4], .{}) catch return error.BadInt;
+            out.holding_count += 1;
+        } else if (std.mem.eql(u8, tok[0], "lost")) {
+            if (n != 4) return error.BadLine;
+            if (out.contest_count >= tenure.tenure_max_contests) return error.TooManyContests;
+            const at = out.contest_count;
+            out.contests[at].name_len = try decode_field(tok[1], out.contests[at].name[0..]);
+            try from_hex(tok[2], out.contests[at].loser_pk[0..]);
+            out.contests[at].pos = parse_int.parse_int(u32, tok[3], .{}) catch return error.BadInt;
+            out.contest_count += 1;
+        } else {
+            return error.UnknownField;
+        }
+    }
+    if (!have_supply) return error.BadFormat;
+    // The reading surface is consistent: one star held per winning holding.
+    out.state.star_count = out.holding_count;
+    // invariant: the parsed verdict is bounded on both axes.
+    assert(out.holding_count <= tenure.tenure_max_holdings);
+    assert(out.contest_count <= tenure.tenure_max_contests);
+}
+
+// ---- selftest: the verdict travels and answers unchanged ---------------------
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+/// Build the r1 contested scene and resolve it: genesis issue, uncontested "vega",
+/// two keepers reaching for "bandun" at one round.
+fn build_contested() !tenure.Tenure {
+    const kf = seeded(0xA1);
+    const kv = seeded(0xC3);
+    const kx = seeded(0x11);
+    const ky = seeded(0x22);
+
+    const f_issue = fold.mint_fact(kf, fold.kind_issue, 1000, "", "genesis") orelse return error.MintIssue;
+    const f_vega = fold.mint_fact(kv, fold.kind_star_reserve, 100, "vega", "reserve") orelse return error.MintVega;
+    const f_bx = fold.mint_fact(kx, fold.kind_star_reserve, 100, "bandun", "reserve-x") orelse return error.MintBx;
+    const f_by = fold.mint_fact(ky, fold.kind_star_reserve, 100, "bandun", "reserve-y") orelse return error.MintBy;
+
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_issue) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+    const roots = [_][cord.hash_len]u8{hg};
+    const u = cord.mint_block(kv, 1, roots[0..], f_vega) orelse return error.BlockU;
+    const w1 = cord.mint_block(kx, 1, roots[0..], f_bx) orelse return error.BlockW1;
+    const w2 = cord.mint_block(ky, 1, roots[0..], f_by) orelse return error.BlockW2;
+
+    var dag = cord.Dag.empty();
+    try cord.add(&dag, g);
+    try cord.add(&dag, u);
+    try cord.add(&dag, w1);
+    try cord.add(&dag, w2);
+    return tenure.resolve(&dag);
+}
+
+fn holders_agree(a: *const tenure.Tenure, b: *const tenure.Tenure, name: []const u8) bool {
+    const ha = a.holder_of(name);
+    const hb = b.holder_of(name);
+    if (ha == null and hb == null) return true;
+    if (ha == null or hb == null) return false;
+    return std.mem.eql(u8, ha.?, hb.?);
+}
+
+pub fn main() !void {
+    const t = try build_contested();
+
+    var buf: [max_record]u8 = undefined;
+    const len = try render(&t, buf[0..]);
+
+    var recovered: tenure.Tenure = undefined;
+    try parse(buf[0..len], &recovered);
+
+    // The crux: the recovered verdict answers the identical holder for every name.
+    if (!holders_agree(&t, &recovered, "bandun")) return error.HolderChanged;
+    if (!holders_agree(&t, &recovered, "vega")) return error.HolderChanged;
+    if (!holders_agree(&t, &recovered, "sirius")) return error.FreeNameChanged; // both free
+    if (recovered.count() != t.count()) return error.HeldCount;
+    if (recovered.contests_seen() != t.contests_seen()) return error.ContestCount;
+    if (recovered.state.supply() != t.state.supply()) return error.SupplyChanged;
+    if (recovered.state.supply() != 800) return error.SupplyValue;
+
+    // Re-rendering the recovered verdict reproduces the exact bytes (fixed point).
+    var buf2: [max_record]u8 = undefined;
+    const len2 = try render(&recovered, buf2[0..]);
+    if (len2 != len) return error.NotFixedPoint;
+    if (!std.mem.eql(u8, buf[0..len], buf2[0..len2])) return error.NotFixedPoint;
+
+    // Refusal: a wrong header refuses BadFormat.
+    var scratch: tenure.Tenure = undefined;
+    if (parse("format tenure-v2\nsupply 1000 200\n", &scratch)) |_| return error.BadHeaderAdmitted else |err| {
+        if (err != error.BadFormat) return error.WrongHeader;
+    }
+    // Refusal: an unknown field refuses UnknownField (never dropped).
+    if (parse("format tenure-v1\nsupply 1000 200\nbogus a b\n", &scratch)) |_| return error.UnknownAdmitted else |err| {
+        if (err != error.UnknownField) return error.WrongUnknown;
+    }
+    // Refusal: a bad hex holder key refuses BadHex.
+    if (parse("format tenure-v1\nsupply 1000 200\nhold 62616e64756e zz 0 1\n", &scratch)) |_| return error.BadHexAdmitted else |err| {
+        if (err != error.BadHex) return error.WrongBadHex;
+    }
+    // Refusal: no supply line refuses BadFormat.
+    if (parse("format tenure-v1\n", &scratch)) |_| return error.NoSupplyAdmitted else |err| {
+        if (err != error.BadFormat) return error.WrongNoSupply;
+    }
+    // Refusal: an over-long verdict refuses at render before a partial record.
+    var big: tenure.Tenure = .{};
+    big.holding_count = max_holdings_in_record + 1;
+    if (render(&big, buf[0..])) |_| return error.OverLongAdmitted else |err| {
+        if (err != error.TooManyHoldings) return error.WrongOverLong;
+    }
+
+    print("tenure-bron: the resolved verdict renders to a format tenure-v1 record and parses back byte-for-byte\n", .{});
+    print("tenure-bron: the recovered verdict answers the identical holder for every name, supply {d} unchanged\n", .{recovered.state.supply()});
+    print("tenure-bron: a bad header, an unknown field, a bad hex key, a missing supply, an over-long verdict each refuse\n", .{});
+    print("GREEN: myc tenure-bron — the namespace verdict travels as readable text · held={d} · contests={d} · fixed point\n", .{ recovered.count(), recovered.contests_seen() });
+}
