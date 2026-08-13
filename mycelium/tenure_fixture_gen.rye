@@ -1,0 +1,76 @@
+//! mycelium/tenure_fixture_gen.rye — reproducibly emit a contested Cord dev-net fixture (r4 support).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · the contested-name verdict · rung r4 support.
+//! Design read: active-designing/20260813-060935_mycelium-tenure-contested-name-exploration.md
+//!
+//! Seats a real four-block scene carrying a genuine name-contest — a genesis issue, an
+//! uncontested reservation of "vega", and two distinct keepers reaching for "bandun":
+//! the winner reserves it at round 1, the contestant at round 2 (referencing the winner's
+//! block). Committing and rendering it to a `format cord-dag-v1` record on stdout gives
+//! the exact bytes `mycelium/tenure_true.rye` reads back and the r4 witness cross-checks
+//! against an independent awk reading. The earlier round wins unambiguously, so a keeper
+//! (or an awk) can name the holder of "bandun" by walking the block lines by hand.
+//!
+//! Deterministic: seeded demo keys and a pure commit mean the same bytes every run, so the
+//! on-disk fixture is what the Cord emits, never a hand-mock.
+//!
+//! Siloed, dev-only, demo seeds — no real key, no funds, no network, no custody.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/tenure_fixture_gen.rye \
+//!     > tools/fixtures/tenure_dag.bron
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("cord.rye");
+const cord_bron = @import("cord_bron.rye");
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+/// Seat the contested four-block Dag — the same scene the Tenure's Knot rung uses:
+/// genesis funds; "vega" uncontested; "bandun" won at round 1, contested at round 2.
+fn seat_dag() !cord.Dag {
+    const kf = seeded(0xA1); // funder / genesis issue
+    const kv = seeded(0xC3); // "vega" — uncontested
+    const kx = seeded(0x11); // "bandun" winner — round 1
+    const ky = seeded(0x22); // "bandun" contestant — round 2, loses
+
+    const f_issue = fold.mint_fact(kf, fold.kind_issue, 1000, "", "genesis") orelse return error.MintIssue;
+    const f_vega = fold.mint_fact(kv, fold.kind_star_reserve, 100, "vega", "reserve") orelse return error.MintVega;
+    const f_bx = fold.mint_fact(kx, fold.kind_star_reserve, 100, "bandun", "reserve-x") orelse return error.MintBx;
+    const f_by = fold.mint_fact(ky, fold.kind_star_reserve, 100, "bandun", "reserve-y") orelse return error.MintBy;
+
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_issue) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+    const roots = [_][cord.hash_len]u8{hg};
+    const b_vega = cord.mint_block(kv, 1, roots[0..], f_vega) orelse return error.BlockVega;
+    const b_bx = cord.mint_block(kx, 1, roots[0..], f_bx) orelse return error.BlockBx;
+    var hbx: [cord.hash_len]u8 = undefined;
+    cord.address(&b_bx, &hbx);
+    const roots2 = [_][cord.hash_len]u8{hbx};
+    const b_by = cord.mint_block(ky, 2, roots2[0..], f_by) orelse return error.BlockBy;
+
+    var dag = cord.Dag.empty();
+    try cord.add(&dag, g);
+    try cord.add(&dag, b_vega);
+    try cord.add(&dag, b_bx);
+    try cord.add(&dag, b_by);
+    return dag;
+}
+
+pub fn main() !void {
+    var dag = try seat_dag();
+    const pl = try cord_bron.from_dag(&dag);
+    var buf: [cord_bron.max_record]u8 = undefined;
+    const n = try cord_bron.render(&pl, &buf);
+    // invariant: the render is bounded and non-empty — a real record carries its header.
+    assert(n > 0);
+    assert(n <= cord_bron.max_record);
+    print("{s}", .{buf[0..n]});
+}
