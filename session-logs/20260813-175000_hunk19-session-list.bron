@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260813.175000
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title HUNK19 — a keeper lists their saved editing sessions
+prompt baton prin recur — continue the loop past HUNK18, next agent-doable lap Lindy-first crux-first, send each increment
+think HUNK18 made a session a content-addressed artifact (store + reopen). The persistence story's small durable finish is the third verb: list. A keeper who cannot find their saved work does not really have saved work.
+think The catalog already exposes artifact_name(cat, i) and count. list_sessions walks it, selects .session names, open_session each (verified), records a bounded summary (name, edits, position). The honesty crux, borrowed from mcp_resource_list: never name a session you cannot honestly reopen — a tampered session refuses the whole listing.
+think Wrote self-approved design round, then pond/apps/session_list.rye: SessionSummary (name/edits/position + redo_depth), SessionListing, list_sessions, render_listing to format session-list-v1.
+obs Built GREEN first try. Catalog of 3 (two sessions + one notes.txt) lists exactly the two sessions in held order, the non-session skipped and never opened; the rewound session surfaces redo depth 1.
+obs TAME flagged two compound asserts in the selftest (edits and position joined) — split into four; witness GREEN, width exit 0.
+loom witness=hunk_session_list_witness build=ok selftest=green catalog=3 sessions=2 listing_bytes=82
+file active-designing/20260813-175000_hunk-session-list-exploration.md the self-approved HUNK19 design round
+file pond/apps/session_list.rye the honest index over saved editing sessions
+file tools/hunk_session_list_witness.rish the on-metal witness, GREEN
+file work-in-progress/REMEMBER.md HUNK19 narrative appended; git nib refreshed
+recommend keep-going a session-list parser (round-trip the listing), a new Photos gesture (saturation/resampler), or the next Season-A / double-seat journey — all mechanical; hardware buys stay custody gates

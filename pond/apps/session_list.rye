@@ -1,0 +1,232 @@
+//! pond/apps/session_list.rye — HUNK19: a keeper lists their saved editing sessions, an honest index.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK19.
+//! Design read: active-designing/20260813-175000_hunk-session-list-exploration.md (names HUNK19).
+//! Teacher, thanked clean-room: the "recent edits" surface of iCloud Photos / Google Photos — a keeper sees the
+//! sessions they have saved and where each stands (concept only, siloed).
+//!
+//! HUNK18 made an editing session a content-addressed artifact — store it, reopen it from cold, undo and redo
+//! intact. This rung surfaces the list: `list_sessions` walks the catalog (`tablecloth.artifact_name`), selects
+//! every artifact whose name ends in `.session`, and `open_session` each (HUNK18, every bead proven against its
+//! digest and the whole against its recorded address BEFORE parse), recording a bounded summary — name, edit-count,
+//! live position — for each. The honesty guarantee, borrowed from `mcp_resource_list`: a listing never names a
+//! session it cannot honestly reopen, so a tampered session refuses `DigestMismatch` through the open and the whole
+//! listing refuses rather than advertising a phantom. The listing travels as a flat-Bron `format session-list-v1`
+//! record. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/session_list.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const tablecloth = @import("tablecloth.rye");
+const beading = @import("mantra/beading.rye");
+const edit_cursor = @import("edit_cursor.rye");
+const session_store = @import("session_store.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const session_list_version = "20260813.175000";
+
+/// The suffix that marks a saved session in the catalog. A keeper names sessions `portrait.session`; the listing
+/// selects exactly those, leaving images, edit-lists, and sprites unlisted.
+pub const session_suffix = ".session";
+
+/// The most summaries one listing holds — the catalog's own bound, so a listing can never outgrow what is stored.
+pub const max_summaries: u32 = tablecloth.max_artifacts;
+
+/// A safe upper bound on one rendered listing line: `session ` (8) + a name (`max_name`) + two spaces + two u32
+/// counts (10 digits each) + newline, well inside 80 bytes. The whole record is the header plus one bounded line
+/// per session (TAME bound at construction).
+pub const per_line_bound: u32 = 80;
+pub const max_listing_bytes: u32 = 21 + max_summaries * per_line_bound;
+
+pub const SessionListError = error{
+    Overflow,
+};
+
+const header = "format session-list-v1\n";
+
+/// One session's summary — what a keeper needs to choose, no recipe body and no pixels. The name is held in a
+/// fixed buffer copied out of the catalog, so a summary outlives the walk that built it.
+pub const SessionSummary = struct {
+    name: [tablecloth.max_name]u8 = undefined,
+    name_len: u32 = 0,
+    edits: u32 = 0,
+    position: u32 = 0,
+
+    pub fn name_slice(self: *const SessionSummary) []const u8 {
+        // invariant: the held name honors the catalog's own name bound.
+        assert(self.name_len <= tablecloth.max_name);
+        return self.name[0..self.name_len];
+    }
+
+    /// How many edits stand ahead of the live position — the redo depth a keeper could roll forward.
+    pub fn redo_depth(self: *const SessionSummary) u32 {
+        // invariant: a session never stands past its own history.
+        assert(self.position <= self.edits);
+        return self.edits - self.position;
+    }
+};
+
+/// A bounded listing of session summaries in the catalog's own held order.
+pub const SessionListing = struct {
+    items: [max_summaries]SessionSummary = undefined,
+    count: u32 = 0,
+
+    pub fn len(self: *const SessionListing) u32 {
+        return self.count;
+    }
+
+    pub fn at(self: *const SessionListing, i: u32) *const SessionSummary {
+        // invariant: an index reads only a recorded summary.
+        assert(i < self.count);
+        return &self.items[i];
+    }
+};
+
+/// Whether `name` ends in the session suffix — the selector that keeps the listing to saved sessions alone.
+fn is_session(name: []const u8) bool {
+    return std.mem.endsWith(u8, name, session_suffix);
+}
+
+/// Walk the catalog and record a summary for every saved session, each read from a verified reopen. A tampered
+/// session refuses `DigestMismatch` through `open_session` and the whole listing refuses with it — the index never
+/// names a session it cannot honestly reopen. A non-session artifact is skipped, never opened.
+pub fn list_sessions(
+    cat: *const tablecloth.Catalog,
+    store: *const beading.BeadStore,
+    out: *SessionListing,
+) !void {
+    out.* = SessionListing{ .count = 0 };
+    // invariant: the walk stays within the catalog bound.
+    assert(cat.count <= tablecloth.max_artifacts);
+
+    var i: u32 = 0;
+    while (i < cat.count) : (i += 1) {
+        const name = tablecloth.artifact_name(cat, i);
+        if (!is_session(name)) continue;
+
+        // Open it verified — a tampered session refuses here, before it is ever advertised.
+        var cursor: edit_cursor.EditCursor = undefined;
+        try session_store.open_session(cat, store, name, &cursor);
+        // invariant: a reopened cursor never stands past its own history.
+        assert(cursor.position <= cursor.list.count);
+
+        // invariant: room remains for exactly this summary (the listing bound equals the catalog bound).
+        assert(out.count < max_summaries);
+        var s = &out.items[out.count];
+        // invariant: the name fits the summary buffer (both bounded by max_name).
+        assert(name.len <= tablecloth.max_name);
+        tally_copy.copy_disjoint(u8, s.name[0..name.len], name);
+        s.name_len = @intCast(name.len);
+        s.edits = cursor.list.count;
+        s.position = cursor.position;
+        out.count += 1;
+    }
+    // invariant: the listing never outgrew the catalog.
+    assert(out.count <= max_summaries);
+}
+
+/// Render a listing as its `format session-list-v1` record into `out`, one `session <name> <edits> <position>`
+/// line per entry in held order, returning its length. Refuses `Overflow` rather than writing past the buffer.
+pub fn render_listing(listing: *const SessionListing, out: []u8) SessionListError!u32 {
+    // invariant: a rendered listing names at most the listing bound.
+    assert(listing.count <= max_summaries);
+    if (header.len > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[0..header.len], header);
+    var off: u32 = @intCast(header.len);
+
+    var i: u32 = 0;
+    while (i < listing.count) : (i += 1) {
+        const s = &listing.items[i];
+        const line = std.fmt.bufPrint(out[off..], "session {s} {d} {d}\n", .{
+            s.name[0..s.name_len], s.edits, s.position,
+        }) catch return error.Overflow;
+        off += @intCast(line.len);
+    }
+    // invariant: the rendered listing stays within the buffer.
+    assert(off <= out.len);
+    return off;
+}
+
+// --- selftest: store two sessions and one non-session artifact, prove the listing names exactly the two sessions
+//     with true summaries (a rewound session reporting a redo depth), and that a tampered session makes the whole
+//     listing refuse DigestMismatch rather than advertise a phantom --------------------------------------------------
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    _ = garden;
+    var store: beading.BeadStore = .empty();
+    var cat: tablecloth.Catalog = .empty();
+
+    // A three-edit session rewound one step — a redo tail of one waiting.
+    var rewound = edit_cursor.EditCursor.init();
+    try rewound.push(.{ .crop = .{ .x = 1, .y = 1, .w = 4, .h = 4 } });
+    try rewound.push(.{ .rotate = .{ .turns = 1 } });
+    try rewound.push(.{ .adjust = .{ .brightness = 40, .num = 1, .den = 1 } });
+    rewound.undo(); // position 2 of 3
+    _ = try session_store.store_session(&cat, &store, "portrait.session", &rewound);
+
+    // A two-edit session at its live edge — nothing to redo.
+    var live = edit_cursor.EditCursor.init();
+    try live.push(.flip_h);
+    try live.push(.flip_v);
+    _ = try session_store.store_session(&cat, &store, "landscape.session", &live);
+
+    // A non-session artifact stored between them — it must be skipped, never opened as a session.
+    _ = try tablecloth.store_artifact(&cat, &store, "notes.txt", "just some bytes");
+
+    // List: exactly the two sessions, in held order, the non-session skipped.
+    var listing: SessionListing = undefined;
+    try list_sessions(&cat, &store, &listing);
+    assert(listing.len() == 2);
+    assert(std.mem.eql(u8, listing.at(0).name_slice(), "portrait.session"));
+    assert(std.mem.eql(u8, listing.at(1).name_slice(), "landscape.session"));
+
+    // True summaries: the rewound session reports 3 edits at position 2 (a redo depth of 1); the live session
+    // reports 2 edits at position 2 (nothing to redo).
+    assert(listing.at(0).edits == 3);
+    assert(listing.at(0).position == 2);
+    assert(listing.at(0).redo_depth() == 1);
+    assert(listing.at(1).edits == 2);
+    assert(listing.at(1).position == 2);
+    assert(listing.at(1).redo_depth() == 0);
+
+    // Travels as text: the listing renders to a bounded record naming both sessions.
+    var buf: [max_listing_bytes]u8 = undefined;
+    const n = try render_listing(&listing, buf[0..]);
+    const text = buf[0..n];
+    assert(std.mem.indexOf(u8, text, "session portrait.session 3 2\n") != null);
+    assert(std.mem.indexOf(u8, text, "session landscape.session 2 2\n") != null);
+
+    // Honest as a whole: tamper one held bead and prove the WHOLE listing refuses DigestMismatch — it never names a
+    // session it cannot honestly reopen.
+    {
+        var store_t: beading.BeadStore = .empty();
+        var cat_t: tablecloth.Catalog = .empty();
+        _ = try session_store.store_session(&cat_t, &store_t, "portrait.session", &rewound);
+        store_t.beads[0].bytes[0] +%= 1; // flip one byte of a held bead
+        var wreck: SessionListing = undefined;
+        if (list_sessions(&cat_t, &store_t, &wreck)) |_| {
+            return error.TamperSlipped;
+        } else |e| {
+            if (e != error.DigestMismatch) return error.WrongTamper;
+        }
+    }
+
+    print("GREEN session-list: a catalog of {d} artifacts lists exactly its {d} saved sessions in held order (the " ++
+        "non-session skipped, never opened) — each summary read from a verified reopen: portrait.session at 2/3 " ++
+        "(redo depth 1), landscape.session at 2/2 (nothing to redo); the listing travels as a {d}-byte " ++
+        "format session-list-v1 record; a tampered session makes the whole listing refuse DigestMismatch rather " ++
+        "than advertise a phantom\n", .{ cat.count, listing.len(), n });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: session_list selftest\n", .{});
+    return 1;
+}
