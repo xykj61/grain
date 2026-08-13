@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260813.052619
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Mycelium Knot r3 — checkpointing is a genuine bound win; a bounded Dag runs past its 256-block ceiling
+prompt Keep going on the next agent-doable crux Lindy-first; approve own design rounds; send each increment as its own signed round; stop only at custody gates
+think r1 proved a checkpoint folds identical to the whole history; r2 let it travel. The design read named r3: measure what the Knot buys, in the Two Rooms voice — a measured loom observation, never an asserted benchmark.
+think The honest, checkable claim: the Cord's Dag is statically allocated (cord.cord_max_blocks 256), so a history longer than the ceiling cannot live in one Dag. mycelium/cord_knot_bench.rye proves the ceiling is real — fill a fresh Dag to 256 (distinct rounds over one fact, so DagFull is reached before the duplicate check) and the 257th add refuses DagFull.
+think The win: a checkpoint chain of 5 windows of 64 blocks (320 facts, past the 256 ceiling) — each epoch a bounded Cord Dag sealed to a Knot then pruned, the next epoch continuing onto the Knot via continue_verified — folds to the byte-identical whole-history supply (issued 320) while the LIVE Dag never exceeds one window (64). Ground truth is a plain fold of all 320 issues from empty; states_match confirms the chain equals it.
+think Two Rooms honesty held: asserted only the exact facts (total_facts > dag_ceiling; the ceiling refuses DagFull; final supply == ground truth; max_live == window < ceiling) and reported the amortization as a measured loom line in the binary's own output (total_facts=320 dag_ceiling=256 max_live_blocks=64 windows=5 live_ratio_x10=50 would_overflow=yes) — a 5.0x fewer live blocks than an un-checkpointed run would need, which the ceiling makes not merely costly but impossible. A wall-time benchmark stays a named later round.
+obs GREEN first pass; ~8.6s run (mostly build; ~576 signs — 256 ceiling fills + 320 window blocks + facts). TAME bans clean, width-check exit 0. Additive — composes cord + fold + cord_knot public API only; r1 and r2 both re-run GREEN at the witness door. Demo keeper seeds only — no key/funds/network/custody.
+loom bench=cord_knot total_facts=320 dag_ceiling=256 max_live_blocks=64 windows=5 live_ratio_x10=50 would_overflow=yes
+file mycelium/cord_knot_bench.rye r3 — the ceiling refuses DagFull; a checkpoint chain folds 320 facts past the 256 ceiling with the live Dag <= 64; loom line honest
+file tools/mycelium_cord_knot_bench_witness.rish exact claims + loom-line presence; r1 + r2 green at their doors
+file work-in-progress/REMEMBER.md living edge (Knot r3 landed) + git nib
+recommend keep-going Knot r4 — read a real knotted fixture true (a reproducibly-generated format cord-knot-v1 record @embedFile-bound, its recovered supply cross-checked against an independent awk reading, two tools one answer), closing the Knot arc
