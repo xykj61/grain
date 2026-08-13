@@ -1,0 +1,148 @@
+//! mycelium/portage_fixture_gen.rye — reproducibly emit the Portage record fixture (r4 support).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · Portage · rung r4 support.
+//! Design read: active-designing/20260813-124159_mycelium-portage-cross-world-transfer-exploration.md
+//!
+//! Seats the two real worlds of one crossing — World A where a funder credits Alice 100 and Alice signs a
+//! portage-OUT of 40 to Bob, and World B where a gateway signs the matching portage-IN bound to the crossing
+//! digest — builds the r3 `Record` around them (every field read from the real worlds), and renders a
+//! `format portage-v1` receipt to stderr. Those are the exact bytes `mycelium/portage_true.rye` reads back and
+//! the r4 witness cross-checks against an independent awk reading. Deterministic: seeded demo keys and a pure
+//! render mean the same bytes every run, so the on-disk fixture is what a real crossing emits, never a mock.
+//!
+//! Siloed, dev-only, demo world/keeper seeds — no real key, no funds, no network, no value crossed.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/portage_fixture_gen.rye \
+//!     2> tools/fixtures/portage_record.bron
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const portage = @import("portage.rye");
+const portage_bron = @import("portage_bron.rye");
+const cord = @import("cord.rye");
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+
+// The fixture constants — portage_true.rye rebuilds the identical worlds from these, so the on-disk record is
+// provably the receipt of a real crossing, not a mock. Keep the two files in step.
+pub const world_name = "world-b";
+pub const id_byte: u8 = 0x2C;
+pub const alice_byte: u8 = 0xA1;
+pub const bob_byte: u8 = 0xB2;
+pub const funder_byte: u8 = 0xF0;
+pub const gateway_byte: u8 = 0xF1;
+pub const start: u64 = 100;
+pub const amount: u64 = 40;
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn world_tag(name: []const u8) [portage.world_tag_len]u8 {
+    // invariant: a world tag name fits the fixed tag width.
+    assert(name.len <= portage.world_tag_len);
+    var t: [portage.world_tag_len]u8 = .{0} ** portage.world_tag_len;
+    tally_copy.copy_disjoint(u8, t[0..name.len], name);
+    return t;
+}
+
+/// The crossing's fixed 16-byte id.
+pub fn crossing_id() [portage.id_len]u8 {
+    return .{id_byte} ** portage.id_len;
+}
+
+/// The crossing's content digest — derived from the fixture's own seeds, independent of any record text.
+pub fn crossing_digest() [portage.digest_len]u8 {
+    const alice = seeded(alice_byte).public_key.toBytes();
+    const bob = seeded(bob_byte).public_key.toBytes();
+    const wtag = world_tag(world_name);
+    const id = crossing_id();
+    var d: [portage.digest_len]u8 = undefined;
+    portage.portage_digest(id[0..], amount, alice[0..], wtag[0..], bob[0..], &d);
+    return d;
+}
+
+/// World A's source Dag: a funder credits Alice `start`, then Alice signs a portage-OUT of `amount` to Bob.
+pub fn seat_source_dag() !cord.Dag {
+    const kf = seeded(funder_byte);
+    const ka = seeded(alice_byte);
+    const owner_pk = ka.public_key.toBytes();
+    const bob = seeded(bob_byte).public_key.toBytes();
+    const wtag = world_tag(world_name);
+    const id = crossing_id();
+
+    const f_gen = fold.mint_fact(kf, fold.kind_issue, start, "", owner_pk[0..]) orelse return error.MintGen;
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_gen) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+    const roots = [_][cord.hash_len]u8{hg};
+
+    var ob: [1 + portage.id_len + portage.world_tag_len + portage.pk_len]u8 = undefined;
+    ob[0] = portage.tag_out;
+    tally_copy.copy_disjoint(u8, ob[1 .. 1 + portage.id_len], id[0..]);
+    tally_copy.copy_disjoint(u8, ob[1 + portage.id_len .. 1 + portage.id_len + portage.world_tag_len], wtag[0..]);
+    tally_copy.copy_disjoint(u8, ob[1 + portage.id_len + portage.world_tag_len ..][0..portage.pk_len], bob[0..]);
+    const f_out = fold.mint_fact(ka, fold.kind_tax, amount, "", ob[0..]) orelse return error.MintOut;
+    const bo = cord.mint_block(ka, 1, roots[0..], f_out) orelse return error.BlockOut;
+
+    var dag = cord.Dag.empty();
+    try cord.add(&dag, g);
+    try cord.add(&dag, bo);
+    return dag;
+}
+
+/// World B's destination Dag: a gateway signs a portage-IN of `amount` to Bob, carrying the crossing digest.
+pub fn seat_dest_dag() !cord.Dag {
+    const kg = seeded(gateway_byte);
+    const bob = seeded(bob_byte).public_key.toBytes();
+    const id = crossing_id();
+    const d = crossing_digest();
+
+    var ib: [1 + portage.id_len + portage.digest_len + portage.pk_len]u8 = undefined;
+    ib[0] = portage.tag_in;
+    tally_copy.copy_disjoint(u8, ib[1 .. 1 + portage.id_len], id[0..]);
+    tally_copy.copy_disjoint(u8, ib[1 + portage.id_len .. 1 + portage.id_len + portage.digest_len], d[0..]);
+    tally_copy.copy_disjoint(u8, ib[1 + portage.id_len + portage.digest_len ..][0..portage.pk_len], bob[0..]);
+    const f_in = fold.mint_fact(kg, fold.kind_tax, amount, "", ib[0..]) orelse return error.MintIn;
+    const b = cord.mint_block(kg, 0, &[_][cord.hash_len]u8{}, f_in) orelse return error.BlockIn;
+
+    var dag = cord.Dag.empty();
+    try cord.add(&dag, b);
+    return dag;
+}
+
+/// Build the r3 record around the two real worlds — the receipt the crossing would carry to the far shore.
+pub fn build_record() !portage_bron.Record {
+    const alice = seeded(alice_byte).public_key.toBytes();
+    const bob = seeded(bob_byte).public_key.toBytes();
+    const wtag = world_tag(world_name);
+    const id = crossing_id();
+    const d = crossing_digest();
+    var dag_a = try seat_source_dag();
+    var dag_b = try seat_dest_dag();
+
+    var r: portage_bron.Record = undefined;
+    tally_copy.copy_disjoint(u8, r.id[0..], id[0..]);
+    tally_copy.copy_disjoint(u8, r.from[0..], alice[0..]);
+    tally_copy.copy_disjoint(u8, r.world[0..], wtag[0..]);
+    tally_copy.copy_disjoint(u8, r.to[0..], bob[0..]);
+    r.amount = amount;
+    tally_copy.copy_disjoint(u8, r.digest[0..], d[0..]);
+    portage.world_head(&dag_a, &r.out_head);
+    portage.world_head(&dag_b, &r.in_head);
+    // invariant: the fixture record carries exactly the crossing amount.
+    assert(r.amount == amount);
+    return r;
+}
+
+pub fn main() !void {
+    var r = try build_record();
+    var buf: [portage_bron.max_record]u8 = undefined;
+    const len = try portage_bron.render(&r, buf[0..]);
+    // invariant: a rendered fixture is never empty.
+    assert(len > 0);
+    print("{s}", .{buf[0..len]});
+}

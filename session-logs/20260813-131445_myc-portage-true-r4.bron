@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260813.131445
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — ai-jail — Eastern (EDT) time convention
+title Portage r4 — a real portage record reads true; the Portage agent-doable arc closes
+prompt loop turn — continue the next agent-doable lap Lindy-first crux-first; make progress before checking in; send each finished increment as its own signed round; STOP at custody gates
+think Same loop turn landed Portage r3 (the record) and sent it; the next agent-doable crux closing the arc is r4 — reads true against a real on-disk fixture cross-checked by an independent awk (two tools, one answer), the family's own *_true idiom.
+think Modeled on freight_true + freight_fixture_gen + freight_manifest_truth.awk: a fixture generator owns the seat helpers (pub), the true reader imports the generator to rebuild the real worlds, the awk reads the same bytes a keeper would.
+think Chose a two-field answer richer than a single number: `<amount> <digest8>`. Both are derived by the app INDEPENDENTLY of the record text — the amount from accept (World A's real burn), the digest from the crossing's content seeds — while awk reads them straight off the record. Two genuinely independent paths, one answer.
+think portage_bron.rye's seat helpers are private, so put the fixture-building logic (seat_source_dag, seat_dest_dag, crossing_digest, build_record) as pub fns in portage_fixture_gen.rye and had portage_true.rye import them — mirroring freight exactly (gen owns the seats, true imports).
+obs GREEN on the first build and run of both the generator and the reader — no red. app measure `40 d2bafdd4` equals awk `40 d2bafdd4`; the fixture regenerates byte-identical (REPRODUCIBLE); the record re-renders to the embedded bytes (a fixed point); a tampered header refuses BadFormat.
+obs The record is proven the receipt of a REAL crossing, not a mock: accept ties the parsed record to both freshly-rebuilt worlds (self-certifying digest, out-head == World A's real head with a matching burn, in-head == World B's real head crediting under the digest).
+obs Composes portage + portage_bron + portage_fixture_gen + cord + kumara public API only; r3 re-runs GREEN at the witness door; demo world/keeper seeds — no key, no funds, no network, no value crossed; a served crossing stays the Comlink-served custody gate.
+loom witness=mycelium_portage_true_witness build=green selftest=green app_awk=match r3=green amount=40 digest8=d2bafdd4
+file mycelium/portage_fixture_gen.rye reproducibly emits the format portage-v1 fixture; owns the pub seat helpers r4 rebuilds from
+file mycelium/portage_true.rye the r4 reader — app==awk on value·digest, accept ties the record to both real ledgers, fixed point, tamper refuses
+file tools/fixtures/portage_record.bron the real on-disk record (deterministic; @embedFile-bound via the corpora symlink)
+file tools/fixtures/portage_record_truth.awk the independent reading — prints amount + digest8 a keeper reads by hand
+file tools/mycelium_portage_true_witness.rish the witness — selftest · app==awk · reproducible · r3 at the door
+recommend keep-going the Portage journey stands complete end to end (r1 crux · r2 atomic · r3 record · r4 reads true); next agent-doable crux is a fresh Season D / double-seat journey (self-approved design read first), or a remember fold of the Portage arc onto REMEMBER; breach renames are cairn-first, deep debride + seed force-push stay Keaton's hand.
