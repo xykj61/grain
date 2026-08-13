@@ -1,0 +1,356 @@
+//! pond/apps/data_dignity_signed.rye — Season 3 Journey 12 (Data-dignity), Rung 2: a succession whose two proofs cannot be forged.
+//!
+//! Rung one fixed the succession rule as a pure state machine — a keeper wills each holding bequeathed or
+//! rested, seals the directive, the heir accepts, and custody passes only on both proofs. Yet a bare state
+//! machine trusts whoever calls it: a steward could seal a directive in a departed keeper's name, or
+//! record an acceptance the heir never gave, and the tree would read a succession no one authorized. This
+//! rung binds **each of the two proofs** to a settled Kumara identity — the keeper's seal to the keeper's
+//! key, the heir's acceptance to the heir's key — so a succession a keeper never sealed, or an heir never
+//! accepted, cannot fire.
+//!
+//! The keeper's **directive** is signed over the exact facts it commits to: a tag (so a seal is never
+//! replayed as another act), the estate id (so a seal cannot cross estates), the keeper and heir points,
+//! and a **digest of the will's own marks** — every willed item and its disposition, in order. Binding the
+//! digest is the honesty crux: alter a bequeathed mark to rested (or slip a holding in) after the keeper
+//! signed, and the recomputed digest no longer matches the one the keeper's signature covers, so the seal
+//! falls (`BadConsent`) — a steward cannot rewrite the will a departed keeper meant. The heir's
+//! **acceptance** is signed over a tag, the estate id, and the keeper and heir points, so an acceptance
+//! cannot be lifted from one estate to another; an heir is never conscripted, and no one can forge the yes.
+//!
+//! A `Keyring` maps a point to its keeper public key — the caller's statement of whose word to trust (as
+//! `council_sky_signed` maps a seat to its key). `seal_signed` verifies the keeper's directive over the
+//! estate's *current* will before sealing; `accept_signed` verifies the heir's acceptance before
+//! recording it. Succession itself is rung one's unchanged two-proof gate, so a signed round still needs
+//! both a sealed directive and an acceptance to move custody.
+//!
+//! Additive — composes rung one (`data_dignity`) and `kumara` over public API; rung one stays its own
+//! GREEN binary. Demo keeper and heir seeds only — no real key, no network, no real identity or seed (the
+//! maintainer's own succession over a real Kumara instance is the maintainer's hand — gate #4-adjacent).
+//!
+//!   rye build pond/apps/data_dignity_signed.rye -femit-bin=pond/bin/data-dignity-signed
+//!   pond/bin/data-dignity-signed selftest
+//!
+//! Scope: active-designing/20260812-212607_dahl-journey12-data-dignity-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const estate_mod = @import("data_dignity.rye");
+const kumara = @import("kumara.rye");
+
+const Sha256 = std.crypto.hash.sha2.Sha256;
+
+pub const data_dignity_signed_version = "20260812.212607";
+
+pub const pubkey_len: u32 = 32;
+pub const sig_len: u32 = 64;
+pub const digest_len: u32 = 32;
+
+/// A keyring maps a point to its keeper public key. Bounded above the two parties of a succession, with
+/// headroom for a caller that enrolls a wider circle of trusted points.
+pub const max_keyring: u32 = 64;
+
+/// The act a signature speaks for — a distinct tag per proof, so a seal can never be replayed as an
+/// acceptance, nor either as another act.
+const tag_directive: u8 = 1;
+const tag_acceptance: u8 = 2;
+
+/// The exact bytes a directive signs: the tag, the estate id, the keeper and heir points, and the will
+/// digest that binds the keeper's marks.
+pub const directive_msg_len: u32 = 1 + 4 + 4 + 4 + digest_len; // tag, estate_id, keeper, heir, will_digest
+
+/// The exact bytes an acceptance signs: the tag, the estate id, and the keeper and heir points.
+pub const acceptance_msg_len: u32 = 1 + 4 + 4 + 4; // tag, estate_id, keeper, heir
+
+pub const SignedError = error{
+    UnknownKeeper, // the signing party is not enrolled in the keyring — no key to check its word against
+    BadConsent, // the signature does not verify over these exact facts — the party did not authorize this
+};
+
+pub const EstateActError = SignedError || estate_mod.EstateError;
+
+/// The digest of a will's own marks — every willed item and its disposition, in order — so a directive
+/// signs *what the keeper willed*, and any later tampering of a mark falls the signature. A rested mark
+/// carries one byte, a bequeathed mark another, so flipping one changes the digest.
+pub fn will_digest(estate: *const estate_mod.Estate) [digest_len]u8 {
+    var h = Sha256.init(.{});
+    var i: u32 = 0;
+    while (i < estate.will_count) : (i += 1) {
+        var rec: [5]u8 = undefined; // item (4) + disposition (1)
+        std.mem.writeInt(u32, rec[0..4], estate.item_at(i), .little);
+        rec[4] = @intFromEnum(estate.disposition_at(i));
+        h.update(&rec);
+    }
+    var out: [digest_len]u8 = undefined;
+    h.final(&out);
+    // invariant: a SHA-256 digest is exactly 32 bytes.
+    assert(digest_len == 32);
+    return out;
+}
+
+fn directive_message(out: *[directive_msg_len]u8, estate_id: u32, keeper: u32, heir: u32, digest: *const [digest_len]u8) u32 {
+    out[0] = tag_directive;
+    std.mem.writeInt(u32, out[1..5], estate_id, .little);
+    std.mem.writeInt(u32, out[5..9], keeper, .little);
+    std.mem.writeInt(u32, out[9..13], heir, .little);
+    var j: u32 = 0;
+    while (j < digest_len) : (j += 1) {
+        out[13 + j] = digest[j];
+    }
+    // invariant: the directive message fills its fixed length exactly.
+    assert(13 + digest_len == directive_msg_len);
+    return directive_msg_len;
+}
+
+fn acceptance_message(out: *[acceptance_msg_len]u8, estate_id: u32, keeper: u32, heir: u32) u32 {
+    out[0] = tag_acceptance;
+    std.mem.writeInt(u32, out[1..5], estate_id, .little);
+    std.mem.writeInt(u32, out[5..9], keeper, .little);
+    std.mem.writeInt(u32, out[9..13], heir, .little);
+    // invariant: the acceptance message is exactly its fixed length.
+    assert(13 == acceptance_msg_len);
+    return acceptance_msg_len;
+}
+
+/// The keeper's signature over their directive — proof this keeper sealed *this will* to *this heir*.
+pub fn sign_directive(keeper_seed: *const [kumara.seed_length]u8, estate_id: u32, keeper: u32, heir: u32, digest: *const [digest_len]u8) [sig_len]u8 {
+    const kp = kumara.keypair_from_seed(keeper_seed);
+    var msg: [directive_msg_len]u8 = undefined;
+    const len = directive_message(&msg, estate_id, keeper, heir, digest);
+    return kumara.sign(msg[0..len], kp, null).toBytes();
+}
+
+/// The heir's signature over their acceptance — proof this heir freely accepted custody of this estate.
+pub fn sign_acceptance(heir_seed: *const [kumara.seed_length]u8, estate_id: u32, keeper: u32, heir: u32) [sig_len]u8 {
+    const kp = kumara.keypair_from_seed(heir_seed);
+    var msg: [acceptance_msg_len]u8 = undefined;
+    const len = acceptance_message(&msg, estate_id, keeper, heir);
+    return kumara.sign(msg[0..len], kp, null).toBytes();
+}
+
+fn verify_over(keeper: [pubkey_len]u8, msg: []const u8, sig: *const [sig_len]u8) bool {
+    // invariant: an Ed25519 public key is 32 bytes and a signature 64.
+    assert(pubkey_len == 32);
+    assert(sig_len == 64);
+    const pub_key = kumara.PublicKey.fromBytes(keeper) catch return false;
+    kumara.verify_bytes(msg, sig, pub_key) catch return false;
+    return true;
+}
+
+/// A bounded map from a point to its keeper public key — whose word the caller trusts.
+// Invariant: count <= max_keyring.
+pub const Keyring = struct {
+    points: [max_keyring]u32,
+    keys: [max_keyring][pubkey_len]u8,
+    count: u32,
+
+    pub fn open() Keyring {
+        const k = Keyring{ .points = undefined, .keys = undefined, .count = 0 };
+        // invariant: an opened keyring enrolls no one.
+        assert(k.count == 0);
+        return k;
+    }
+
+    pub fn enroll(self: *Keyring, point: u32, key: [pubkey_len]u8) error{KeyringFull}!void {
+        if (self.count >= max_keyring) return error.KeyringFull;
+        const i = self.count;
+        self.points[i] = point;
+        self.keys[i] = key;
+        self.count += 1;
+        // invariant: enrolling grew the ring by exactly one, within its bound.
+        assert(self.count == i + 1);
+        assert(self.count <= max_keyring);
+    }
+
+    pub fn key_of(self: *const Keyring, point: u32) ?[pubkey_len]u8 {
+        // invariant: the ring never exceeds its bound.
+        assert(self.count <= max_keyring);
+        var i: u32 = 0;
+        while (i < self.count) : (i += 1) {
+            if (self.points[i] == point) return self.keys[i];
+        }
+        return null;
+    }
+};
+
+/// Verify the keeper's directive over a will digest against the keyring, refusing an unenrolled keeper
+/// (`UnknownKeeper`) or an unverifying signature (`BadConsent`). Touches no estate — the verification half
+/// alone, so a traveled record (r3) can re-check a directive offline.
+pub fn verify_directive(ring: *const Keyring, estate_id: u32, keeper: u32, heir: u32, digest: *const [digest_len]u8, sig: *const [sig_len]u8) SignedError!void {
+    const key = ring.key_of(keeper) orelse return error.UnknownKeeper;
+    var msg: [directive_msg_len]u8 = undefined;
+    const len = directive_message(&msg, estate_id, keeper, heir, digest);
+    if (!verify_over(key, msg[0..len], sig)) return error.BadConsent;
+}
+
+/// Verify the heir's acceptance against the keyring, refusing an unenrolled heir (`UnknownKeeper`) or an
+/// unverifying signature (`BadConsent`). Touches no estate.
+pub fn verify_acceptance(ring: *const Keyring, estate_id: u32, keeper: u32, heir: u32, sig: *const [sig_len]u8) SignedError!void {
+    const key = ring.key_of(heir) orelse return error.UnknownKeeper;
+    var msg: [acceptance_msg_len]u8 = undefined;
+    const len = acceptance_message(&msg, estate_id, keeper, heir);
+    if (!verify_over(key, msg[0..len], sig)) return error.BadConsent;
+}
+
+/// Seal the directive only when the keeper's own signature over the estate's **current** will verifies.
+/// The digest is recomputed from the estate's marks, so a will tampered after the keeper signed refuses
+/// `BadConsent` before sealing. Then seals through rung one (a re-seal refuses by its own law).
+pub fn seal_signed(estate: *estate_mod.Estate, ring: *const Keyring, estate_id: u32, keeper_sig: *const [sig_len]u8) EstateActError!void {
+    const digest = will_digest(estate);
+    try verify_directive(ring, estate_id, estate.keeper, estate.heir, &digest, keeper_sig);
+    try estate.seal();
+}
+
+/// Record the heir's acceptance only when the heir's own signature verifies. Then accepts through rung one.
+pub fn accept_signed(estate: *estate_mod.Estate, ring: *const Keyring, estate_id: u32, heir_sig: *const [sig_len]u8) EstateActError!void {
+    try verify_acceptance(ring, estate_id, estate.keeper, estate.heir, heir_sig);
+    estate.accept();
+}
+
+// --- selftest -----------------------------------------------------------
+
+// Demo keeper and heir seeds — plainly not real keys, so no identity is invented.
+const demo_keeper_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
+const demo_heir_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
+const stranger_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
+
+const keeper_pt: u32 = 11;
+const heir_pt: u32 = 42;
+const demo_estate_id: u32 = 7;
+
+fn pubkey_of(seed: *const [kumara.seed_length]u8) [pubkey_len]u8 {
+    return kumara.keypair_from_seed(seed).public_key.bytes;
+}
+
+fn demo_ring() error{KeyringFull}!Keyring {
+    var ring = Keyring.open();
+    try ring.enroll(keeper_pt, pubkey_of(&demo_keeper_seed));
+    try ring.enroll(heir_pt, pubkey_of(&demo_heir_seed));
+    return ring;
+}
+
+/// A demo estate: keeper 11, heir 42, willing two holdings to the heir and resting one.
+fn demo_estate() estate_mod.EstateError!estate_mod.Estate {
+    var e = try estate_mod.Estate.open(keeper_pt, heir_pt);
+    try e.bequeath(1);
+    try e.bequeath(2);
+    try e.rest(3);
+    return e;
+}
+
+/// Both proofs signed by the right parties: the keeper seals their will, the heir accepts, and succession
+/// passes exactly the bequeathed set — the rested holding still rests.
+fn welcome_signed_succession() !void {
+    var e = try demo_estate();
+    const ring = try demo_ring();
+
+    const digest = will_digest(&e);
+    const seal_sig = sign_directive(&demo_keeper_seed, demo_estate_id, keeper_pt, heir_pt, &digest);
+    try seal_signed(&e, &ring, demo_estate_id, &seal_sig);
+
+    const accept_sig = sign_acceptance(&demo_heir_seed, demo_estate_id, keeper_pt, heir_pt);
+    try accept_signed(&e, &ring, demo_estate_id, &accept_sig);
+
+    try e.succeed();
+    assert(e.holder_of(1) == .heir);
+    assert(e.holder_of(2) == .heir);
+    assert(e.holder_of(3) == .rested);
+    assert(e.heir_held_count() == e.bequeathed_count());
+    print("data_dignity_signed: a keeper-signed directive and an heir-signed acceptance passed exactly the bequeathed set, the rested holding still resting.\n", .{});
+}
+
+/// The honesty crux — a steward flips a bequeathed mark to rested after the keeper sealed it and reuses
+/// the keeper's signature; the recomputed will digest no longer matches, so the seal falls `BadConsent`.
+fn unwelcome_tampered_will_refuses() !void {
+    // The keeper signs a directive over a will that bequeaths item 2.
+    var honest = try demo_estate();
+    const honest_digest = will_digest(&honest);
+    const seal_sig = sign_directive(&demo_keeper_seed, demo_estate_id, keeper_pt, heir_pt, &honest_digest);
+
+    // A steward builds a different will — item 2 rested instead of bequeathed — and reuses the signature.
+    var tampered = try estate_mod.Estate.open(keeper_pt, heir_pt);
+    try tampered.bequeath(1);
+    try tampered.rest(2); // the changed mark
+    try tampered.rest(3);
+
+    const ring = try demo_ring();
+    const bad = seal_signed(&tampered, &ring, demo_estate_id, &seal_sig);
+    assert(bad == error.BadConsent);
+    assert(!tampered.sealed); // the tampered will was never sealed
+    print("data_dignity_signed: a will tampered after the keeper sealed it refused BadConsent — a steward cannot rewrite the marks a departed keeper meant.\n", .{});
+}
+
+/// The keeper's directive must be signed by the keeper — a stranger's signature over the same facts falls,
+/// and a wrong-signer acceptance falls too. Neither proof can be forged by another hand.
+fn unwelcome_forged_proofs_refuse() !void {
+    var e = try demo_estate();
+    const ring = try demo_ring();
+    const digest = will_digest(&e);
+
+    // A stranger signs the directive claiming to be the keeper — it does not verify against the keeper key.
+    const forged_seal = sign_directive(&stranger_seed, demo_estate_id, keeper_pt, heir_pt, &digest);
+    const bad_seal = seal_signed(&e, &ring, demo_estate_id, &forged_seal);
+    assert(bad_seal == error.BadConsent);
+    assert(!e.sealed);
+
+    // Seal honestly, then a stranger signs the acceptance claiming to be the heir — it falls.
+    const seal_sig = sign_directive(&demo_keeper_seed, demo_estate_id, keeper_pt, heir_pt, &digest);
+    try seal_signed(&e, &ring, demo_estate_id, &seal_sig);
+    const forged_accept = sign_acceptance(&stranger_seed, demo_estate_id, keeper_pt, heir_pt);
+    const bad_accept = accept_signed(&e, &ring, demo_estate_id, &forged_accept);
+    assert(bad_accept == error.BadConsent);
+    assert(!e.accepted);
+    print("data_dignity_signed: a forged directive and a forged acceptance each refused BadConsent — neither proof can be signed by another hand.\n", .{});
+}
+
+/// A party the ring does not enroll has no key to check — its word cannot be trusted, so the proof refuses
+/// `UnknownKeeper` before the estate is touched, even though the point is real.
+fn unwelcome_unknown_keeper_refuses() !void {
+    var e = try demo_estate();
+    const digest = will_digest(&e);
+    // A ring that enrolls the heir but not the keeper — the keeper is real but unenrolled.
+    var ring = Keyring.open();
+    try ring.enroll(heir_pt, pubkey_of(&demo_heir_seed));
+
+    const seal_sig = sign_directive(&demo_keeper_seed, demo_estate_id, keeper_pt, heir_pt, &digest);
+    const bad = seal_signed(&e, &ring, demo_estate_id, &seal_sig);
+    assert(bad == error.UnknownKeeper);
+    assert(!e.sealed);
+    print("data_dignity_signed: a directive by a keeper the ring does not enroll refused UnknownKeeper — whose word is unknown cannot seal a succession.\n", .{});
+}
+
+/// A signature bound to one estate does not cross into another — both proofs name their estate id.
+fn unwelcome_cross_estate_refuses() !void {
+    var e = try demo_estate();
+    const ring = try demo_ring();
+    const digest = will_digest(&e);
+
+    // The keeper signs a directive for estate 7; the same signature is presented to estate 8.
+    const seal_sig = sign_directive(&demo_keeper_seed, demo_estate_id, keeper_pt, heir_pt, &digest);
+    const other_estate: u32 = 8;
+    const bad = seal_signed(&e, &ring, other_estate, &seal_sig);
+    assert(bad == error.BadConsent);
+    assert(!e.sealed);
+    print("data_dignity_signed: a directive signed for one estate refused BadConsent in another — a proof names its estate.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_signed_succession();
+    try unwelcome_tampered_will_refuses();
+    try unwelcome_forged_proofs_refuse();
+    try unwelcome_unknown_keeper_refuses();
+    try unwelcome_cross_estate_refuses();
+    print("data_dignity_signed: version {s}\n", .{data_dignity_signed_version});
+    print("GREEN: DAHL-J12r2 data_dignity_signed; the keeper's seal and the heir's acceptance are each a settled signature, and neither proof can be forged nor a sealed will rewritten.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "data-dignity-signed"))) {
+        return run_selftest();
+    }
+    return run_selftest();
+}

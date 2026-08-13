@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260812.213700
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention · this session in ai-jail
+title DAHL-J12r2 data_dignity_signed — the two succession proofs bound to settled identities
+prompt Continue the loop: take the next agent-doable lap Lindy-first crux-first; send each finished increment as its own signed round; stop at custody gates.
+think r1 fixed succession as a pure two-proof state machine. r2's crux (from the Journey 12 exploration): bind each proof to a settled Kumara identity so a steward cannot seal in a departed keeper's name or record an acceptance the heir never gave. Mirrored council_sky_signed / skate_group_signed.
+think Two distinct signed acts: the keeper's directive signs tag+estate_id+keeper+heir+will_digest (a SHA-256 over every willed item and its disposition, in order); the heir's acceptance signs tag+estate_id+keeper+heir. Distinct tags so a seal is never replayed as an acceptance; estate_id so neither crosses estates.
+think The honesty crux is the will digest: seal_signed recomputes the digest from the estate's current marks and checks the keeper's signature over it, so a bequeathed→rested tamper after signing falls BadConsent — a steward cannot rewrite a departed keeper's will. Added two pub readers to r1 (item_at, disposition_at) so r2 can digest the marks — additive, r1 re-runs GREEN.
+obs Two build reds caught on metal and fixed: (1) Zig forbids a parameter shadowing a file-scope const — demo constants keeper_seed/heir_seed/estate_id collided with param names; renamed the demo constants demo_* via a line-ranged rename (params kept their meaningful names). (2) The streaming SHA-256 method is `final`, not `finalize`. Both fixed, witness GREEN.
+obs TAME reflexes kept (opening triad, ≥2 asserts/fn with // invariant, named errors, bounded max_keyring, unqualified assert, no compound assert); tame_style_check + width-check clean. Custody-first held: demo keeper/heir seeds only, no real key/network/seed; gate #4-adjacent untouched. Ed25519 flows through the kumara seam, as the sibling signed apps do.
+loom witness=dahl_j12_data_dignity_signed_witness build=green selftests=5 cases_pass=5 r1_rerun=green
+file pond/apps/data_dignity_signed.rye r2 — the keeper's seal + heir's acceptance each a settled signature; the directive binds a digest of the will's marks
+file pond/apps/data_dignity.rye grew two pub readers (item_at, disposition_at) so r2 can digest the marks — additive
+file tools/dahl_j12_data_dignity_signed_witness.rish witness building r1+r2 and proving the signed selftest GREEN
+file work-in-progress/REMEMBER.md landed line for DAHL-J12r2 + git nib refresh
+recommend keep-going DAHL-J12r3 (render the signed estate to a format data-dignity-v1 Bron record, parse back byte-for-byte, still dignity-honest offline) — mechanical, single-module, pattern written
