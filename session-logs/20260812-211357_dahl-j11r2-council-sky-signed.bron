@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260812.211357
+editor Zed
+model Fable 5
+voice Kyri
+host cloud bench — ai-jail — Eastern (EDT) time convention
+title DAHL-J11r2 — each council ballot signed by its seat's Kumara identity
+prompt Continue the 1024-round itinerary Lindy-first crux-first; send each finished increment as its own signed round; STOP at custody gates.
+think r1 landed and sent (a council loads a sky; the odd fractal gives a tie-free quorum). r2 is the next rung: bind each ballot to the voting seat's settled Kumara identity, mirroring skate_group_signed / commerce_trade_signed. Agent-doable — demo seeds only, no custody crossed.
+think Read skate_group_signed.rye for the exact idiom (tag + fixed-field message, Keyring point->key, verify-before-touch, honesty-crux relabel, forged/unknown/cross-group refusals).
+think Council ballots vote by seat index (r1's abstraction), so the Keyring maps seat->key and the signed message carries tag, council_id, size, seat, proposal, and the yes/no as one byte. The size is signed too, so a ballot cannot cross a differently-shaped body; vote_signed checks over council.size.
+think The honesty crux for a council is flipping yes->no after signing (mirrors the group's candidate relabel) — the signature was over the choice actually made, so it falls BadConsent. Forged (wrong seed), unknown seat, cross-council each refuse; the odd-quorum lone-hand guard carries through r1 (AlreadyVoted, tally unmoved).
+obs GREEN first pass; TAME bans + width clean; r1 re-runs GREEN (additive). verify_ballot touches no council, so r3 can re-check a traveled ballot offline.
+loom witness=dahl_j11_council_sky_signed_witness cases=6 r1_rerun=green tame=clean
+file pond/apps/council_sky_signed.rye r2 module — Keyring seat->key, sign/verify a ballot, vote_signed gates r1's vote
+file tools/dahl_j11_council_sky_signed_witness.rish builds + runs the selftest, asserts four crux lines + r1 re-run
+recommend keep-going DAHL-J11r3 — render a council's sky level, roster, and signed ballots to a format council-sky-v1 Bron record and parse back byte-for-byte, still tie-free and quorum-honest offline.

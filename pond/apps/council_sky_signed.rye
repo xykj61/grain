@@ -1,0 +1,281 @@
+//! pond/apps/council_sky_signed.rye — Season 3 Journey 11 (Council skies), Rung 2: a council vote that cannot be fabricated.
+//!
+//! Rung one fixed the council rule as a pure state machine — a council loads a sky, seats a body at one
+//! of the sky's odd fractal levels, and decides by a majority that can never tie. Yet a bare state
+//! machine trusts whoever calls it: a steward could cast a ballot in a seat-holder's name, and the tally
+//! would read as that member's word. This rung binds each ballot to the voting member's **settled Kumara
+//! identity**, so a vote a member never cast cannot be counted toward a quorum.
+//!
+//! Each ballot is signed by the very seat it speaks for, over the exact facts: a tag (so a ballot can
+//! never be replayed as another act), the council id (so a ballot cannot cross councils), the council's
+//! size (so a ballot cannot cross a differently-shaped body), the seat, the proposal, and the yes/no. A
+//! `Keyring` maps a seat to its keeper public key — the caller's statement of whose word to trust (as
+//! `skate_group_signed` maps a point to its key). `vote_signed` verifies the seat's own signature against
+//! the keyring **before** touching rung one's council, refusing `UnknownKeeper` (the seat is not enrolled)
+//! or `BadConsent` (the signature does not verify). The honesty crux mirrors the group's relabel: flip a
+//! ballot's yes to no after signing and reuse the signature, and it falls — the signature was over the
+//! choice the member actually made. And the odd-quorum guard carries through r1 unchanged: a seat's
+//! signature lets it vote once per proposal, never twice, so a signed act still cannot fake a majority.
+//!
+//! Additive — composes rung one (`council_sky`) and `kumara` over public API; rung one stays its own
+//! GREEN binary. Demo keeper seeds only — no real key, no network, no real identity (a council served
+//! over the wire reaches the serve gate — Keaton's hand).
+//!
+//!   rye build pond/apps/council_sky_signed.rye -femit-bin=pond/bin/council-sky-signed
+//!   pond/bin/council-sky-signed selftest
+//!
+//! Scope: active-designing/20260812-210603_dahl-journey11-council-skies-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const council_mod = @import("council_sky.rye");
+const topology = @import("topology.rye");
+const kumara = @import("kumara.rye");
+
+pub const council_sky_signed_version = "20260812.210603";
+
+pub const pubkey_len: u32 = 32;
+pub const sig_len: u32 = 64;
+
+/// A keyring maps a seat to its keeper public key — a caller's statement of whose ballot to trust. Bounded
+/// by the largest council body a sky can seat.
+pub const max_keyring: u32 = council_mod.max_seats;
+
+/// The act a signature speaks for — a tag so a ballot can never be replayed as another act.
+const tag_ballot: u8 = 1;
+
+/// The exact bytes a ballot signs: the tag, the council id, the council size, the seat, the proposal, and
+/// the yes/no choice as one byte.
+pub const max_msg_len: u32 = 1 + 4 + 4 + 4 + 4 + 1; // tag, council_id, size, seat, proposal, yea
+
+pub const SignedError = error{
+    UnknownKeeper, // the voting seat is not enrolled in the keyring — no key to check its word against
+    BadConsent, // the signature does not verify over these exact facts — the member did not cast this ballot
+};
+
+pub const CouncilActError = SignedError || council_mod.CouncilError;
+
+fn ballot_message(out: *[max_msg_len]u8, council_id: u32, size: u32, seat: u32, proposal: u32, yea: bool) u32 {
+    out[0] = tag_ballot;
+    std.mem.writeInt(u32, out[1..5], council_id, .little);
+    std.mem.writeInt(u32, out[5..9], size, .little);
+    std.mem.writeInt(u32, out[9..13], seat, .little);
+    std.mem.writeInt(u32, out[13..17], proposal, .little);
+    out[17] = if (yea) 1 else 0;
+    // invariant: the ballot message is exactly its fixed length, within the buffer bound.
+    assert(18 <= max_msg_len);
+    return 18;
+}
+
+/// The voting seat's signature over its own ballot — proof this seat made this choice on this proposal.
+pub fn sign_ballot(keeper_seed: *const [kumara.seed_length]u8, council_id: u32, size: u32, seat: u32, proposal: u32, yea: bool) [sig_len]u8 {
+    const kp = kumara.keypair_from_seed(keeper_seed);
+    var msg: [max_msg_len]u8 = undefined;
+    const len = ballot_message(&msg, council_id, size, seat, proposal, yea);
+    return kumara.sign(msg[0..len], kp, null).toBytes();
+}
+
+fn verify_over(keeper: [pubkey_len]u8, msg: []const u8, sig: *const [sig_len]u8) bool {
+    // invariant: an Ed25519 public key is 32 bytes and a signature 64.
+    assert(pubkey_len == 32);
+    assert(sig_len == 64);
+    const pub_key = kumara.PublicKey.fromBytes(keeper) catch return false;
+    kumara.verify_bytes(msg, sig, pub_key) catch return false;
+    return true;
+}
+
+/// A bounded map from a seat to its keeper public key — whose ballot the caller trusts.
+// Invariant: count <= max_keyring.
+pub const Keyring = struct {
+    seats: [max_keyring]u32,
+    keys: [max_keyring][pubkey_len]u8,
+    count: u32,
+
+    pub fn open() Keyring {
+        const k = Keyring{ .seats = undefined, .keys = undefined, .count = 0 };
+        // invariant: an opened keyring enrolls no one.
+        assert(k.count == 0);
+        return k;
+    }
+
+    pub fn enroll(self: *Keyring, seat: u32, key: [pubkey_len]u8) error{KeyringFull}!void {
+        if (self.count >= max_keyring) return error.KeyringFull;
+        const i = self.count;
+        self.seats[i] = seat;
+        self.keys[i] = key;
+        self.count += 1;
+        // invariant: enrolling grew the ring by exactly one, within its bound.
+        assert(self.count == i + 1);
+        assert(self.count <= max_keyring);
+    }
+
+    pub fn key_of(self: *const Keyring, seat: u32) ?[pubkey_len]u8 {
+        // invariant: the ring never exceeds its bound.
+        assert(self.count <= max_keyring);
+        var i: u32 = 0;
+        while (i < self.count) : (i += 1) {
+            if (self.seats[i] == seat) return self.keys[i];
+        }
+        return null;
+    }
+};
+
+/// Verify a seat's own ballot signature against the keyring, refusing an unenrolled seat
+/// (`UnknownKeeper`) or an unverifying signature (`BadConsent`). Touches no council — the verification
+/// half alone, so a traveled record (r3) can re-check a ballot offline with no state to mutate.
+pub fn verify_ballot(ring: *const Keyring, council_id: u32, size: u32, seat: u32, proposal: u32, yea: bool, sig: *const [sig_len]u8) SignedError!void {
+    const key = ring.key_of(seat) orelse return error.UnknownKeeper;
+    var msg: [max_msg_len]u8 = undefined;
+    const len = ballot_message(&msg, council_id, size, seat, proposal, yea);
+    if (!verify_over(key, msg[0..len], sig)) return error.BadConsent;
+}
+
+/// A seat votes on a proposal only when its own signature over this exact ballot verifies. Refuses an
+/// unenrolled seat (`UnknownKeeper`) or an unverifying signature (`BadConsent`) before touching the
+/// council, then votes through rung one (which refuses a non-seat / double vote / full book by its own
+/// laws, so a signed ballot still cannot fake a majority). The signature is checked over the council's
+/// own size, so a ballot signed for a differently-shaped body does not carry.
+pub fn vote_signed(
+    council: *council_mod.Council,
+    ring: *const Keyring,
+    council_id: u32,
+    seat: u32,
+    proposal: u32,
+    yea: bool,
+    sig: *const [sig_len]u8,
+) CouncilActError!void {
+    try verify_ballot(ring, council_id, council.size, seat, proposal, yea, sig);
+    try council.vote(seat, proposal, yea);
+}
+
+// --- selftest -----------------------------------------------------------
+
+// Demo keeper seeds — plainly not real keys, so no identity is invented. Three seats of a triad.
+const seat0_seed: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
+const seat1_seed: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
+const seat2_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
+
+const demo_council: u32 = 9;
+const prop: u32 = 3;
+
+fn pubkey_of(seed: *const [kumara.seed_length]u8) [pubkey_len]u8 {
+    return kumara.keypair_from_seed(seed).public_key.bytes;
+}
+
+fn demo_ring() error{KeyringFull}!Keyring {
+    var ring = Keyring.open();
+    try ring.enroll(0, pubkey_of(&seat0_seed));
+    try ring.enroll(1, pubkey_of(&seat1_seed));
+    try ring.enroll(2, pubkey_of(&seat2_seed));
+    return ring;
+}
+
+fn demo_triad() council_mod.CouncilError!council_mod.Council {
+    return council_mod.Council.load(topology.council_sky, 3);
+}
+
+/// A majority of signed ballots decides — each ballot carrying its seat's own word. Two yes-ballots on a
+/// triad reach the quorum of two.
+fn welcome_signed_majority_decides() !void {
+    var c = try demo_triad();
+    const ring = try demo_ring();
+
+    const b0 = sign_ballot(&seat0_seed, demo_council, c.size, 0, prop, true);
+    try vote_signed(&c, &ring, demo_council, 0, prop, true, &b0);
+    assert(c.outcome(prop) == .open); // one signed yes holds
+
+    const b1 = sign_ballot(&seat1_seed, demo_council, c.size, 1, prop, true);
+    try vote_signed(&c, &ring, demo_council, 1, prop, true, &b1);
+    assert(c.outcome(prop) == .passed); // two distinct signed yes-ballots — the majority is met
+    print("council_sky_signed: two signed yes-ballots from distinct seats carried a proposal — each ballot its seat's own word.\n", .{});
+}
+
+/// The odd-quorum guard carries through signing — a seat's valid signature lets it vote once, not twice,
+/// so a signed act still cannot fake a majority from one hand.
+fn unwelcome_signed_double_cannot_fake() !void {
+    var c = try demo_triad();
+    const ring = try demo_ring();
+
+    const b0 = sign_ballot(&seat0_seed, demo_council, c.size, 0, prop, true);
+    try vote_signed(&c, &ring, demo_council, 0, prop, true, &b0);
+    // The same signed ballot presented again — one seat, one vote per proposal.
+    const doubled = vote_signed(&c, &ring, demo_council, 0, prop, true, &b0);
+    assert(doubled == error.AlreadyVoted);
+    assert(c.tally(prop, true) == 1);
+    assert(c.outcome(prop) == .open);
+    print("council_sky_signed: a seat's signed ballot counted once, the repeat refused AlreadyVoted — signing cannot fake a majority from one hand.\n", .{});
+}
+
+/// The honesty crux — a steward flips a ballot's yes to no after signing and reuses the signature; it
+/// falls, because the signature was over the choice the member actually made.
+fn unwelcome_flip_choice_refuses() !void {
+    var c = try demo_triad();
+    const ring = try demo_ring();
+    // Seat 0 signed a yes-ballot; a steward reuses it claiming seat 0 voted no.
+    const b0_yes = sign_ballot(&seat0_seed, demo_council, c.size, 0, prop, true);
+    const flipped = vote_signed(&c, &ring, demo_council, 0, prop, false, &b0_yes);
+    assert(flipped == error.BadConsent);
+    assert(c.tally(prop, false) == 0); // no no-vote was recorded
+    print("council_sky_signed: a ballot's choice flipped after signing refused BadConsent — a steward cannot swap a member's yes for a no.\n", .{});
+}
+
+/// One seat cannot sign another's ballot — the voting seat must sign its own.
+fn unwelcome_forged_ballot_refuses() !void {
+    var c = try demo_triad();
+    const ring = try demo_ring();
+    // Seat 1 signs a ballot naming seat 0 as the voter — the wrong keeper's word for seat 0's ballot.
+    const forged = sign_ballot(&seat1_seed, demo_council, c.size, 0, prop, true);
+    const bad = vote_signed(&c, &ring, demo_council, 0, prop, true, &forged);
+    assert(bad == error.BadConsent);
+    assert(c.tally(prop, true) == 0);
+    print("council_sky_signed: a ballot signed by the wrong keeper refused BadConsent — a seat signs its own ballot.\n", .{});
+}
+
+/// A seat the ring does not enroll has no key to check — its word cannot be trusted, so the ballot
+/// refuses UnknownKeeper before the council is touched, even though the seat is real.
+fn unwelcome_unknown_keeper_refuses() !void {
+    var c = try demo_triad();
+    // A ring that enrolls only seats 0 and 1 — seat 2 is real but unenrolled.
+    var ring = Keyring.open();
+    try ring.enroll(0, pubkey_of(&seat0_seed));
+    try ring.enroll(1, pubkey_of(&seat1_seed));
+    const b2 = sign_ballot(&seat2_seed, demo_council, c.size, 2, prop, true);
+    const bad = vote_signed(&c, &ring, demo_council, 2, prop, true, &b2);
+    assert(bad == error.UnknownKeeper);
+    print("council_sky_signed: a ballot by a seat the ring does not enroll refused UnknownKeeper — whose word is unknown is not counted.\n", .{});
+}
+
+/// A signature bound to one council does not cross into another — a ballot names its council.
+fn unwelcome_cross_council_refuses() !void {
+    var c = try demo_triad();
+    const ring = try demo_ring();
+    // Seat 0 signs a ballot for council 9; the same signature is presented to council 10.
+    const b0_nine = sign_ballot(&seat0_seed, demo_council, c.size, 0, prop, true);
+    const other_council: u32 = 10;
+    const bad = vote_signed(&c, &ring, other_council, 0, prop, true, &b0_nine);
+    assert(bad == error.BadConsent);
+    print("council_sky_signed: a ballot signed for one council refused BadConsent in another — a ballot names its council.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_signed_majority_decides();
+    try unwelcome_signed_double_cannot_fake();
+    try unwelcome_flip_choice_refuses();
+    try unwelcome_forged_ballot_refuses();
+    try unwelcome_unknown_keeper_refuses();
+    try unwelcome_cross_council_refuses();
+    print("council_sky_signed: version {s}\n", .{council_sky_signed_version});
+    print("GREEN: DAHL-J11r2 council_sky_signed; each ballot carries its seat's signature, and a vote cannot be fabricated or faked from one hand.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "council-sky-signed"))) {
+        return run_selftest();
+    }
+    return run_selftest();
+}
