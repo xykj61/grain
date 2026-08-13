@@ -1,0 +1,45 @@
+# tools/constel_consensus_partition_witness.rish — a partition heals (gossip-convergence r2).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · gossip-convergence rung r2.
+# r1 proved two nodes begun from their own genesis converge once they gossip. This round proves
+# convergence is content-dependent, not timing-dependent: a node partitioned away while the other two
+# advance catches up to the identical agreed order the moment it rejoins and gossips — no leader replays
+# it a log, no round number gates its return.
+#
+# The crux this witness proves: node C holds a stale partial view (one genesis block) while A and B
+# advance to the full four-block mesh and converge; on rejoin, one gossip drains the whole mesh into C
+# (it gains the three blocks it lacked, keeping the one it held), and C arrives at the byte-identical
+# committed order folding to the identical supply (700 over one star). Demo keeper seeds only — no real
+# key, no funds, no network, no custody.
+#
+# Additive: r1 (constel_consensus) re-runs GREEN at this round's door.
+#
+# Scope: active-designing/20260813-040613_constel-consensus-gossip-convergence-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/constel_consensus_partition_witness.rish
+
+say "constel-partition: Language EN — a node cut off from the mesh catches up to the identical history when it rejoins."
+say "constel-partition: Style Radiant — a thread that fell into the dark returns, hears the others, and stands in the same agreed past."
+say "constel-partition: Lens TAME — convergence is a pure commit of the merged graph; the late joiner needs no leader's replay; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/constel-consensus-partition"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/constel_consensus_partition.rye -femit-bin=${bin}"]
+assert build.ok else "constel-partition: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "constel-partition: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "constel-partition: selftest did not speak GREEN"
+assert selftest.out contains "holds a stale partial view (1 block) while two peers advance to 4" else "constel-partition: stale-view claim missing"
+assert selftest.out contains "one gossip drains the whole mesh into the late joiner (gained 3, held 1 already)" else "constel-partition: heal-drain claim missing"
+assert selftest.out contains "convergence is content-dependent, not timing-dependent" else "constel-partition: content-not-timing claim missing"
+assert selftest.out contains "a healed partition converges" else "constel-partition: heal-converge claim missing"
+
+# r1 stays its own GREEN binary — this rung composes r1's public gossip fixpoint and commit helpers.
+let r1 = run ["sh" "-c" "rishi/bin/rishi run tools/constel_consensus_witness.rish 2>&1"]
+assert r1.ok else "constel-partition: rung one (two-node convergence) is not GREEN"
+assert r1.out contains "constel-consensus: GREEN" else "constel-partition: rung one did not speak its GREEN"
+
+say "constel-partition: GREEN — a partitioned node holding one stale block rejoins, one gossip drains the whole mesh into it, and it arrives at the identical agreed order (supply 700, one star); rung one stands at its door. A healed partition needs no leader to know the truth."

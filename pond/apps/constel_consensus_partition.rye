@@ -1,0 +1,108 @@
+//! pond/apps/constel_consensus_partition.rye — a partition heals (gossip-convergence r2).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · gossip-convergence r2.
+//! Design read: active-designing/20260813-040613_constel-consensus-gossip-convergence-exploration.md
+//!
+//! r1 proved two nodes begun from their own genesis converge once they gossip.
+//! This round proves convergence is **content-dependent, not timing-dependent**:
+//! a node partitioned away while the others advance catches up to the identical
+//! agreed order the moment it rejoins and gossips — no leader replays it a log,
+//! no round number gates its return. The late joiner arrives at the same history
+//! because it hears the same blocks, whenever it hears them.
+//!
+//! Composes r1's public gossip fixpoint and commit helpers only (constel_consensus
+//! re-runs GREEN at this round's door). Siloed, dev-only, demo seeds — no real key,
+//! no funds, no network, no custody.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/constel_consensus_partition.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("mycelium_cord.rye");
+const fold = @import("fold.rye");
+const cc = @import("constel_consensus.rye");
+
+pub fn main() !void {
+    const ka = cc.seeded(0xA1);
+    const kb = cc.seeded(0xB2);
+    const kc = cc.seeded(0xC3);
+    const kd = cc.seeded(0xD4);
+
+    // Three nodes' local views. C is the one that will be partitioned away.
+    var dag_a = cord.Dag.empty();
+    var dag_b = cord.Dag.empty();
+    var dag_c = cord.Dag.empty();
+
+    // Two genesis issues, one from A and one from B.
+    const fa = fold.mint_fact(ka, fold.kind_issue, 500, "", "genesis-a") orelse return error.MintA;
+    const fb = fold.mint_fact(kb, fold.kind_issue, 500, "", "genesis-b") orelse return error.MintB;
+    const ba = cord.mint_block(ka, 0, &[_][cord.hash_len]u8{}, fa) orelse return error.BlockA;
+    const bb = cord.mint_block(kb, 0, &[_][cord.hash_len]u8{}, fb) orelse return error.BlockB;
+    try cord.add(&dag_a, ba);
+    try cord.add(&dag_b, bb);
+    // invariant: each node begins holding exactly its own single genesis block.
+    assert(dag_a.len == 1);
+    assert(dag_b.len == 1);
+
+    // Before the partition, C heard only the first genesis block — a genuinely
+    // stale partial view (one block), not an empty one.
+    try cord.add(&dag_c, ba);
+    if (dag_c.len != 1) return error.StaleViewWrong;
+
+    // --- Partition: C is cut off. A and B gossip and advance without it. ---
+    _ = try cc.gossip_merge(&dag_a, &dag_b);
+    _ = try cc.gossip_merge(&dag_b, &dag_a);
+
+    // A and B each mint a round-1 fact referencing both genesis blocks.
+    var ha: [cord.hash_len]u8 = undefined;
+    var hb: [cord.hash_len]u8 = undefined;
+    cord.address(&ba, &ha);
+    cord.address(&bb, &hb);
+    const roots = [_][cord.hash_len]u8{ ha, hb };
+
+    const fc = fold.mint_fact(kc, fold.kind_tax, 200, "", "tax-c") orelse return error.MintC;
+    const fd = fold.mint_fact(kd, fold.kind_star_reserve, 100, "vega", "reserve") orelse return error.MintD;
+    const bc = cord.mint_block(kc, 1, roots[0..], fc) orelse return error.BlockC;
+    const bd = cord.mint_block(kd, 1, roots[0..], fd) orelse return error.BlockD;
+    try cord.add(&dag_a, bc);
+    try cord.add(&dag_b, bd);
+    _ = try cc.gossip_merge(&dag_a, &dag_b);
+    _ = try cc.gossip_merge(&dag_b, &dag_a);
+
+    // A and B have converged on the full mesh while C was away.
+    if (dag_a.len != 4) return error.PartitionMeshA;
+    if (dag_b.len != 4) return error.PartitionMeshB;
+    if (!cc.commits_equal(&dag_a, &dag_b)) return error.PartitionDiverged;
+    // C is genuinely behind — one block against the network's four.
+    if (dag_c.len >= dag_a.len) return error.PartitionNotBehind;
+    if (cc.commits_equal(&dag_c, &dag_a)) return error.PartitionSharedTooEarly;
+
+    // --- Heal: C rejoins and gossips both directions. ---
+    // A single merge from a converged peer drains the whole mesh into C, in
+    // whatever order the fixpoint reaches it — the late joiner catches up.
+    const gained = try cc.gossip_merge(&dag_c, &dag_a);
+    _ = try cc.gossip_merge(&dag_a, &dag_c); // C carries nothing A lacks.
+
+    // The crux: the late joiner arrives at the identical agreed order.
+    if (dag_c.len != 4) return error.HealIncomplete;
+    if (gained != 3) return error.HealGainWrong; // C already held ba; it gains the other three.
+    if (!cc.commits_equal(&dag_c, &dag_a)) return error.LateJoinerDiverged;
+
+    // All three nodes now fold the real Mycelium law to the identical supply.
+    // invariant: a healed node holds exactly the mesh, never more, never less.
+    assert(dag_c.len == dag_a.len);
+    const sa = try cc.committed_supply(&dag_a);
+    const sc = try cc.committed_supply(&dag_c);
+    if (sa.supply() != sc.supply()) return error.SupplyDiverged;
+    if (sc.supply() != 700) return error.SupplyNet;
+    if (sc.star_count != 1) return error.StarCount;
+
+    print("constel-partition: a node partitioned away holds a stale partial view (1 block) while two peers advance to 4\n", .{});
+    print("constel-partition: on rejoin one gossip drains the whole mesh into the late joiner (gained 3, held 1 already)\n", .{});
+    print("constel-partition: the late joiner arrives at the identical agreed order — convergence is content-dependent, not timing-dependent\n", .{});
+    print("GREEN: constel partition — a healed partition converges · supply={d} · stars={d} · no leader replayed the log\n", .{
+        sc.supply(),
+        sc.star_count,
+    });
+}
