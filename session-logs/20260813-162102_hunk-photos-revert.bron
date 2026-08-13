@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260813.162102
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title HUNK14 — the Photos app reverts (drop_last / truncate)
+prompt Take the next agent-doable lap Lindy-first crux-first on the Season-A Photos journey; approve the design round, land it green, send as its own signed round, stop at custody gates.
+think Read REMEMBER's latest lap: HUNK13 landed (a pending edit seen before committed); the named next agent-doable crux is HUNK14 — revert/truncate, drop the last k edits, the original always one empty-list apply away. Lindy-first crux-first: HUNK14 is the direct continuation of the Photos edit-list journey and banks HUNK11's non-destructiveness, so it is the crux over starting a fresh journey.
+think Studied image/photo_edits.rye (HUNK11): EditList is a bounded fixed array with count; apply replays over a clone so the source is pure. A revert is therefore only shrinking the count — no pixels stored, no reverse replay. Chose pure functions returning a fresh shorter list (drop_last, truncate, revert_one) over mutating in place, matching the non-destructive theme so a reverted-then-redone edit keeps the source list whole.
+think Kept photo_edits.rye untouched (accrete) — HUNK14 is its own module image/photo_revert.rye, imports resolve through the existing image/ symlinks (qoi, photos, photo_edits all present). truncate is the primitive; drop_last computes keep = count - k clamped at 0 so an over-count drop lands at the empty original without underflow.
+obs Proofs chosen to be unambiguous: a one-step revert equals the first two verbs by hand byte-for-byte; truncate and drop_last are duals; dropping zero is identity; dropping all recovers the original one empty-list apply away byte-for-byte; over-count clamps to empty; truncate past the length keeps the whole list; the source list survives a revert (redo works); a revert is a byte-prefix of the full format photo-edits-v1 record and still round-trips as an open fixed-point record; the empty list reverts to itself.
+obs No custody gate reached — pure data over the edit-list, no name, no bead, no key, no funds, no network. HUNK's hardware rounds (panels, parts) remain custody gates #2/#3, untouched.
+loom witness=hunk_photo_revert_witness verbs=3 image=6x6 result=GREEN
+file image/photo_revert.rye HUNK14 — pure revert/truncate over the edit-list; drop_last, truncate, revert_one; selftest GREEN.
+file tools/hunk_photo_revert_witness.rish witnesses HUNK14 on metal; builds and runs the selftest, greps the proof claims.
+file work-in-progress/REMEMBER.md latest-lap bumped with the HUNK14 landing and the next agent-doable crux; git nib refreshed in the same work commit.
+recommend keep-going — next Photos gesture (smoother resampler or hue/saturation), the Skate view of a revert, or another Season-A / double-seat journey; all agent-doable, no gate.
