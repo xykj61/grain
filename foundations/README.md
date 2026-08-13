@@ -14,6 +14,7 @@ These rest beneath the specifications. The specs say what to build and how; thes
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260813.142420` | [Mycelium — the Consensus Protocol](20260813-142420_mycelium-the-consensus-protocol.md) | the tree's own leaderless consensus season gathered into one map — 98 modules from the Cord to the Testament, TigerBeetle + Mysticeti thanked clean-room, the order decided once and read by all the same; 80 witnesses on metal, every real-world crossing a held gate |
 | `20260811.233509` | [The Singularity](20260811-233509_the-singularity.md) | the night the tool began to tend itself — autonomous agent development proven *within* bound, witness, and human custody; the Grain OS · Linengrow real-world timeline; written in Radiant + Twilight combined |
 | `20260811.211431` | [The Lindy Effect and the Long Return](20260811-211431_the-lindy-effect-and-the-long-return.md) | the longer a non-perishable thing has lasted, the longer it will — why we write the front door for the reader three years on, in plain durable words |
 | `20260726.020537` | [The Breach](20260726-020537_the-breach.md) | accrete by default · breach by declaration · expiry at first outside consumer |
