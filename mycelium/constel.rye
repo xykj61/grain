@@ -178,7 +178,7 @@ pub fn reach_quorum(
 
 /// A demo genesis Dag — the issuer mints one hundred coins to the account, giving it a position the
 /// constellation attests. Demo seeds only.
-fn demo_genesis(issuer: kumara.KeyPair, account_pk: []const u8) !cord.Dag {
+pub fn demo_genesis(issuer: kumara.KeyPair, account_pk: []const u8) !cord.Dag {
     // invariant: a genesis credits a full holder identity.
     assert(account_pk.len == pk_len);
     const f_gen = fold.mint_fact(issuer, fold.kind_issue, 100, "", account_pk) orelse return error.MintGen;
@@ -192,7 +192,7 @@ fn demo_genesis(issuer: kumara.KeyPair, account_pk: []const u8) !cord.Dag {
 
 /// A fixed demo keypair from a single repeated seed byte — a caller (or witness) names an account or a
 /// stranger ship distinct from the roster.
-fn seeded(byte: u8) kumara.KeyPair {
+pub fn seeded(byte: u8) kumara.KeyPair {
     const seed: [seed_len]u8 = .{byte} ** seed_len;
     return kumara.keypair_from_seed(&seed);
 }
