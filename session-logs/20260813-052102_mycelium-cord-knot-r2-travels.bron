@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260813.052102
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Mycelium Knot r2 — the Knot travels as a format cord-knot-v1 record; a tampered checkpoint never crosses as trusted
+prompt Keep going on the next agent-doable crux Lindy-first; approve own design rounds; send each increment as its own signed round; stop only at custody gates
+think r1 sealed a committed Cord to a Knot and proved a continuation folds identical to the whole history. The design read named r2: a checkpoint a node cannot hand to another node is only a local optimization — let the Knot cross as readable bytes so a far node that never held the pruned prefix can trust the sealed supply and continue from it.
+think A Knot is far simpler to travel than a Dag: it is a single record (issued · taxed · one star line per reserved star in seal order · the digest as hex), no blocks. Mirrored the elder cord_bron flat-Bron idiom — a purpose-built bounded reader, an unknown field refusing UnknownField rather than dropping.
+think mycelium/cord_knot_bron.rye: render(k, out) writes the record; parse(text, out) reconstructs a Knot through an out-pointer (matching the batch-bron stack-safety fix — a Knot holds a full 36 KB FoldState, so no return-by-value copy). The parse does NOT recompute the digest, so a tampered field survives into a Knot whose stored digest no longer matches its state; continue_verified catches it.
+think Star names are hex-encoded (a star name could carry arbitrary bytes), matching cord_bron's field encoding. A v1 record carries at most max_stars_in_record (64) stars — a named ceiling generous for a family ledger, well under the fold's 1024; a Knot holding more refuses TooManyStars rather than travel truncated (an honest named bound, the demo carries one).
+obs The crux on metal: render → parse recovers a Knot that verifies and carries the byte-identical sealed supply (states_match over issued·taxed·the whole star set), continues to the identical supply as the original (fold a fresh 300 issue onto each → both issued 1300), and re-rendering is a fixed point (byte-equal). A tampered star line breaks the digest so continue_verified refuses KnotCorrupt — corruption never crosses as a trusted checkpoint. A bad header (BadFormat), an unknown field (UnknownField), and a bad hex star (BadHex) each refuse.
+obs GREEN first pass; no red this round. TAME bans clean, width-check exit 0. Additive — composes cord_knot + fold public API only; the r1 Knot re-runs GREEN at the witness door. Demo keeper seeds only — no key/funds/network/custody; a quorum-agreed checkpoint stays the Comlink-served serve gate.
+loom witness=mycelium_cord_knot_bron_witness supply=700 stars=1 continuation_issued=1300 fixed_point=yes
+file mycelium/cord_knot_bron.rye r2 — a Knot renders to format cord-knot-v1 and parses back byte-for-byte; recovered verifies + continues identical; tamper refuses KnotCorrupt
+file tools/mycelium_cord_knot_bron_witness.rish round-trip, continuation, fixed point, three refusals; the r1 Knot green at its door
+file work-in-progress/REMEMBER.md living edge (Knot r2 landed) + git nib
+recommend keep-going Knot r3 — the measured bound-win loom (a history longer than cord_max_blocks that only checkpoint-and-prune can carry, an honest ratio never a fabricated benchmark), then r4 reads a real knotted fixture true; the spine is known correct
