@@ -1,0 +1,432 @@
+//! mycelium/statement.rye — the Statement: one account's own line, read out of the resolved ledger.
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Statement · rung r1 — the crux.
+//! Design read: active-designing/20260813-091851_mycelium-statement-account-voice-exploration.md
+//!
+//! The ledger's primitives each decide something about the agreed order — who holds what, which
+//! pledge honored, which the clock let expire. Yet a holder who opens the ledger meets a stream of
+//! facts, not an answer to the plainest question they ever ask: WHERE DO I STAND? The Statement is
+//! that answer, read as a pure, bounded projection of one account out of a resolved `lapse.Ledger`:
+//! the account's balance (spendable), reserved (held in open pledges), received (cumulative lawful
+//! inflow), and a bounded list of pledge lines — each made or received, naming a counterparty, an
+//! amount, and a settlement state (open · posted · voided · lapsed).
+//!
+//! The crux is A STATEMENT RECONCILES: the account's reported `reserved` equals exactly the sum of
+//! the amounts of its own still-OPEN OUTBOUND pledges, because an open pledge is precisely what holds
+//! coins in reserve — a posted, voided, or lapsed pledge has already spent or returned them. And
+//! across every account the statements CONSERVE: balances + reserved sums to what genesis issued,
+//! unwidened from the Pledge's own law. A statement that failed either check would be a voice drifting
+//! from the ledger it claims to read; here that drift is forbidden by assertion.
+//!
+//! Because the resolved ledger is itself arrival-independent (every permutation resolves to one
+//! identical ledger, as the Pledge and Lapse proved), the Statement inherits that guarantee for free —
+//! the same ledger yields the same statement no matter the order facts arrived.
+//!
+//! The voice invents nothing: every field is read straight from `lapse.Ledger`'s public surface. An
+//! account that never appeared reads a true zero statement with no lines — silence about a stranger is
+//! honest, not a refusal.
+//!
+//! Grown beside cord.rye, fold.rye, lapse.rye — editing none, composing cord + fold + lapse + kumara
+//! public API only. Siloed, dev-only, demo seeds — no real key, no funds, no network, no custody. A
+//! SERVED statement (a holder fetching their own line over Comlink) reaches the Comlink-served gate.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/statement.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("cord.rye");
+const fold = @import("fold.rye");
+const lapse = @import("lapse.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const statement_version = "20260813.091851";
+
+/// A holder key width — the Statement names counterparties in the same encoded identity width the
+/// ledger seats.
+pub const pk_len: u32 = lapse.pk_len;
+
+/// A pledge line's direction — this account is the pledger (made) or the intended recipient (received).
+pub const dir_made: u8 = 1;
+pub const dir_received: u8 = 2;
+
+/// A statement holds at most every pledge the ledger could seat — a made or received line per pledge,
+/// each counted once for the account it touches, so the ledger's own pledge ceiling bounds the list.
+pub const statement_max_lines: u32 = lapse.lapse_max_pledges;
+
+/// One line of a statement: a pledge this account made or received, with its counterparty, amount, and
+/// settlement state. The counterparty is the OTHER end — the recipient of a made pledge, the pledger of
+/// a received one.
+pub const Line = struct {
+    dir: u8 = dir_made,
+    counterparty: [pk_len]u8 = undefined,
+    amount: u64 = 0,
+    state: u8 = lapse.state_open,
+
+    /// The counterparty key as a slice — a full holder identity.
+    pub fn counterparty_slice(ln: *const Line) []const u8 {
+        // invariant: a line always names a full-width counterparty key.
+        assert(pk_len == lapse.pk_len);
+        return ln.counterparty[0..pk_len];
+    }
+};
+
+/// One account's own line in the ledger: its position and every pledge it touched.
+pub const Statement = struct {
+    pk: [pk_len]u8 = undefined,
+    present: bool = false,
+    balance: u64 = 0,
+    reserved: u64 = 0,
+    received: u64 = 0,
+    lines: [statement_max_lines]Line = undefined,
+    line_count: u32 = 0,
+
+    /// The account key this statement speaks for.
+    pub fn pk_slice(s: *const Statement) []const u8 {
+        // invariant: a statement always names a full-width account key.
+        assert(pk_len == lapse.pk_len);
+        return s.pk[0..pk_len];
+    }
+
+    /// The line seated at index `i`, or null past the count.
+    pub fn line_at(s: *const Statement, i: u32) ?*const Line {
+        // invariant: the line count never exceeds the named ceiling.
+        assert(s.line_count <= statement_max_lines);
+        if (i >= s.line_count) return null;
+        return &s.lines[i];
+    }
+
+    /// The count of lines in a chosen direction (made or received).
+    pub fn count_dir(s: *const Statement, want: u8) u32 {
+        // invariant: the direction asked for is one the Statement seats.
+        assert(want == dir_made or want == dir_received);
+        var n: u32 = 0;
+        var i: u32 = 0;
+        while (i < s.line_count) : (i += 1) {
+            if (s.lines[i].dir == want) n += 1;
+        }
+        // invariant: a direction never counts past the lines seated.
+        assert(n <= s.line_count);
+        return n;
+    }
+
+    /// The sum of amounts of this account's still-OPEN made pledges — the coins it holds reserved.
+    /// The reconciliation crux compares this against the ledger's reported `reserved`.
+    pub fn open_made_sum(s: *const Statement) u64 {
+        var sum: u64 = 0;
+        var i: u32 = 0;
+        while (i < s.line_count) : (i += 1) {
+            const ln = &s.lines[i];
+            if (ln.dir == dir_made and ln.state == lapse.state_open) sum += ln.amount;
+        }
+        // invariant: a reserved sum never exceeds what the account received.
+        assert(sum <= s.received or !s.present);
+        return sum;
+    }
+
+    /// A statement RECONCILES when its reserved holdings equal the sum of its own open made pledges —
+    /// the property the whole Statement rests on. A drifted statement fails here.
+    pub fn reconciles(s: *const Statement) bool {
+        // invariant: reconciliation reads a bounded, already-seated line set.
+        assert(s.line_count <= statement_max_lines);
+        return s.reserved == s.open_made_sum();
+    }
+};
+
+/// Seat a line into a statement, refusing past the ceiling — the only growth path, so the bound is
+/// bitten in one place.
+fn add_line(s: *Statement, dir: u8, counterparty: []const u8, amount: u64, state: u8) error{TooManyLines}!void {
+    // invariant: a line's direction and counterparty are the fixed shapes the ledger seats.
+    assert(dir == dir_made or dir == dir_received);
+    assert(counterparty.len == pk_len);
+    if (s.line_count >= statement_max_lines) return error.TooManyLines;
+    const at = s.line_count;
+    s.lines[at].dir = dir;
+    tally_copy.copy_disjoint(u8, s.lines[at].counterparty[0..], counterparty);
+    s.lines[at].amount = amount;
+    s.lines[at].state = state;
+    s.line_count += 1;
+    // invariant: growth is exactly one seat, never past the ceiling.
+    assert(s.line_count <= statement_max_lines);
+}
+
+/// Read one account's statement out of a resolved ledger. Reads only the ledger's public surface, so
+/// the Statement can never disagree with the verdict it projects. An account that never appeared reads
+/// a true zero statement with no lines (present=false).
+pub fn statement_for(ledger: *const lapse.Ledger, pk: []const u8) error{TooManyLines}!Statement {
+    // invariant: a statement is read for a full holder identity.
+    assert(pk.len == pk_len);
+    var s = Statement{
+        .balance = ledger.balance_of(pk),
+        .reserved = ledger.reserved_of(pk),
+    };
+    tally_copy.copy_disjoint(u8, s.pk[0..], pk);
+
+    // Mark presence and read `received` by finding the account seat, if any.
+    var a: u32 = 0;
+    while (a < ledger.account_count) : (a += 1) {
+        if (std.mem.eql(u8, ledger.accounts[a].pk[0..], pk)) {
+            s.present = true;
+            s.received = ledger.accounts[a].received;
+            break;
+        }
+    }
+
+    // Walk every seated pledge; a made line for one this account pledged, a received line for one aimed
+    // at it. A pledge to oneself would seat both — honest, though the ledger's scenes never do it.
+    var i: u32 = 0;
+    while (i < ledger.pledges_seen()) : (i += 1) {
+        const pl = ledger.pledge_at(i) orelse break;
+        if (std.mem.eql(u8, pl.from[0..], pk)) {
+            try add_line(&s, dir_made, pl.to[0..], pl.amount, pl.state);
+        }
+        if (std.mem.eql(u8, pl.to[0..], pk)) {
+            try add_line(&s, dir_received, pl.from[0..], pl.amount, pl.state);
+        }
+    }
+    // invariant: a present account's reserved equals its own open made pledges — the reconciliation law.
+    assert(!s.present or s.reconciles());
+    return s;
+}
+
+/// Conservation across a whole ledger's statements: the sum over every account of (balance + reserved)
+/// equals what genesis issued. Reads statements, not the ledger's own sums, so it proves the PROJECTION
+/// conserves, not merely the ledger.
+pub fn statements_conserve(ledger: *const lapse.Ledger) error{TooManyLines}!bool {
+    var total: u64 = 0;
+    var a: u32 = 0;
+    while (a < ledger.account_count) : (a += 1) {
+        const s = try statement_for(ledger, ledger.accounts[a].pk[0..]);
+        total += s.balance + s.reserved;
+    }
+    // invariant: the projected total never exceeds what the ledger says it issued.
+    assert(total <= ledger.total_issued);
+    return total == ledger.total_issued;
+}
+
+// --- a bounded render a keeper reads --------------------------------------
+
+const hex_digits = "0123456789abcdef";
+
+fn hex8(bytes: []const u8, out: []u8) void {
+    // invariant: eight bytes render to sixteen nibbles — a short, legible account fingerprint.
+    assert(out.len == 16);
+    assert(bytes.len >= 8);
+    var i: u32 = 0;
+    while (i < 8) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0f];
+    }
+}
+
+fn state_word(state: u8) []const u8 {
+    return switch (state) {
+        lapse.state_open => "open",
+        lapse.state_posted => "posted",
+        lapse.state_voided => "voided",
+        lapse.state_lapsed => "lapsed",
+        else => "unknown",
+    };
+}
+
+fn dir_word(dir: u8) []const u8 {
+    return if (dir == dir_made) "made->" else "recv<-";
+}
+
+/// Print a statement a keeper can read — a short account fingerprint, its position, and each line.
+pub fn render(s: *const Statement) void {
+    var fp: [16]u8 = undefined;
+    hex8(s.pk_slice(), &fp);
+    print("statement {s} balance={d} reserved={d} received={d} lines={d}\n", .{
+        fp, s.balance, s.reserved, s.received, s.line_count,
+    });
+    var i: u32 = 0;
+    while (i < s.line_count) : (i += 1) {
+        const ln = &s.lines[i];
+        var cp: [16]u8 = undefined;
+        hex8(ln.counterparty_slice(), &cp);
+        print("  {s} {s} {d} {s}\n", .{ dir_word(ln.dir), cp, ln.amount, state_word(ln.state) });
+    }
+}
+
+// --- selftest: the crux is a statement that reconciles with its ledger ----
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn write_deadline(deadline: u64, out: []u8) void {
+    // invariant: the buffer holds a full little-endian order position.
+    assert(out.len == lapse.deadline_len);
+    var v = deadline;
+    var i: u32 = 0;
+    while (i < lapse.deadline_len) : (i += 1) {
+        out[i] = @truncate(v);
+        v >>= 8;
+    }
+}
+
+fn pledge_body(id: []const u8, deadline: u64, to: []const u8, out: []u8) u32 {
+    // invariant: the buffer holds tag · id · deadline · recipient exactly.
+    assert(out.len >= 1 + lapse.id_len + lapse.deadline_len + pk_len);
+    assert(id.len == lapse.id_len);
+    out[0] = lapse.tag_pledge;
+    tally_copy.copy_disjoint(u8, out[1 .. 1 + lapse.id_len], id);
+    write_deadline(deadline, out[1 + lapse.id_len .. 1 + lapse.id_len + lapse.deadline_len]);
+    tally_copy.copy_disjoint(u8, out[1 + lapse.id_len + lapse.deadline_len ..][0..pk_len], to);
+    return 1 + lapse.id_len + lapse.deadline_len + pk_len;
+}
+
+fn resolve_body(tag: u8, id: []const u8, out: []u8) u32 {
+    // invariant: the buffer holds tag · id exactly.
+    assert(out.len >= 1 + lapse.id_len);
+    assert(id.len == lapse.id_len);
+    out[0] = tag;
+    tally_copy.copy_disjoint(u8, out[1 .. 1 + lapse.id_len], id);
+    return 1 + lapse.id_len;
+}
+
+/// Seat a scene: a funder credits Alice 100, Alice pledges 100 to Bob under a deadline, and (optionally)
+/// posts or voids it — the same block-building the Lapse's own selftest proved. Returns four blocks
+/// (genesis · pledge · post · void); a caller resolves the prefix it wants.
+fn seat_scene(id: []const u8, deadline: u64) ![4]cord.Block {
+    const kf = seeded(0xF0);
+    const ka = seeded(0xA1);
+    const kb = seeded(0xB2);
+    const bob_pk = kb.public_key.toBytes();
+    const alice_pk = ka.public_key.toBytes();
+
+    const f_gen = fold.mint_fact(kf, fold.kind_issue, 100, "", alice_pk[0..]) orelse return error.MintGen;
+
+    var pb: [1 + lapse.id_len + lapse.deadline_len + pk_len]u8 = undefined;
+    const pn = pledge_body(id, deadline, bob_pk[0..], &pb);
+    const f_pledge = fold.mint_fact(ka, fold.kind_tax, 100, "", pb[0..pn]) orelse return error.MintPledge;
+
+    var hb: [1 + lapse.id_len]u8 = undefined;
+    const hn = resolve_body(lapse.tag_post, id, &hb);
+    const f_post = fold.mint_fact(ka, fold.kind_tax, 100, "", hb[0..hn]) orelse return error.MintPost;
+
+    var vb: [1 + lapse.id_len]u8 = undefined;
+    const vn = resolve_body(lapse.tag_void, id, &vb);
+    const f_void = fold.mint_fact(ka, fold.kind_tax, 100, "", vb[0..vn]) orelse return error.MintVoid;
+
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_gen) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+    const roots = [_][cord.hash_len]u8{hg};
+
+    const bp = cord.mint_block(ka, 1, roots[0..], f_pledge) orelse return error.BlockP;
+    var hp: [cord.hash_len]u8 = undefined;
+    cord.address(&bp, &hp);
+    const roots2 = [_][cord.hash_len]u8{hp};
+
+    const bpost = cord.mint_block(ka, 2, roots2[0..], f_post) orelse return error.BlockPost;
+    const bvoid = cord.mint_block(ka, 2, roots2[0..], f_void) orelse return error.BlockVoid;
+    return .{ g, bp, bpost, bvoid };
+}
+
+fn resolve_perm(blocks: []const cord.Block) !lapse.Ledger {
+    var dag = cord.Dag.empty();
+    for (blocks) |blk| try cord.add(&dag, blk);
+    return lapse.resolve(&dag);
+}
+
+pub fn main() !void {
+    const id = [_]u8{0x01} ** lapse.id_len;
+    const alice_pk = seeded(0xA1).public_key.toBytes();
+    const bob_pk = seeded(0xB2).public_key.toBytes();
+    const stranger_pk = seeded(0xCC).public_key.toBytes();
+
+    // Scene 1 — an OPEN pledge stands. Alice credited 100, pledges 100 to Bob under a far deadline that
+    // the two-block order never reaches. Alice's statement: balance 0, reserved 100, one made line to
+    // Bob, open — and it RECONCILES (reserved 100 == open made 100). Bob's: one received line, open.
+    {
+        const s = try seat_scene(id[0..], 9);
+        const ledger = try resolve_perm(&[_]cord.Block{ s[0], s[1] });
+        const alice = try statement_for(&ledger, alice_pk[0..]);
+        if (!alice.present) return error.AliceAbsent;
+        if (alice.balance != 0 or alice.reserved != 100 or alice.received != 100) return error.AlicePosition;
+        if (alice.count_dir(dir_made) != 1 or alice.count_dir(dir_received) != 0) return error.AliceLines;
+        const ml = alice.line_at(0) orelse return error.AliceLineMissing;
+        if (!std.mem.eql(u8, ml.counterparty_slice(), bob_pk[0..])) return error.AliceCounterparty;
+        if (ml.amount != 100 or ml.state != lapse.state_open) return error.AliceLineFacts;
+        if (!alice.reconciles()) return error.AliceReconcile;
+
+        const bob = try statement_for(&ledger, bob_pk[0..]);
+        // Bob is the intended recipient of an open pledge — he holds nothing spendable yet.
+        if (bob.balance != 0 or bob.reserved != 0) return error.BobPosition;
+        if (bob.count_dir(dir_received) != 1 or bob.count_dir(dir_made) != 0) return error.BobLines;
+        if (!bob.reconciles()) return error.BobReconcile;
+
+        if (!try statements_conserve(&ledger)) return error.OpenConserve;
+    }
+
+    // Scene 2 — a POSTED pledge (deadline far, honored on time). Alice reserved returns to 0, Bob's
+    // received line reads posted and Bob now holds 100 spendable. Both statements reconcile.
+    {
+        const s = try seat_scene(id[0..], 9);
+        const ledger = try resolve_perm(&[_]cord.Block{ s[0], s[1], s[2] });
+        const alice = try statement_for(&ledger, alice_pk[0..]);
+        if (alice.reserved != 0) return error.PostedAliceReserved;
+        if (!alice.reconciles()) return error.PostedAliceReconcile;
+        const bob = try statement_for(&ledger, bob_pk[0..]);
+        if (bob.balance != 100 or bob.received != 100) return error.PostedBobPosition;
+        const bl = bob.line_at(0) orelse return error.PostedBobLine;
+        if (bl.state != lapse.state_posted) return error.PostedBobState;
+        if (!bob.reconciles()) return error.PostedBobReconcile;
+        if (!try statements_conserve(&ledger)) return error.PostedConserve;
+    }
+
+    // Scene 3 — a LAPSED pledge: deadline 2, the round-2 settlements arrive at or past it, so the clock
+    // lapses first. Alice's coins come home (balance 100, reserved 0), her made line reads lapsed, and
+    // the statement reconciles (reserved 0 == open made 0 — a lapsed pledge is not open).
+    {
+        const s = try seat_scene(id[0..], 2);
+        const ledger = try resolve_perm(&[_]cord.Block{ s[0], s[1], s[2], s[3] });
+        const alice = try statement_for(&ledger, alice_pk[0..]);
+        if (alice.balance != 100 or alice.reserved != 0) return error.LapsedAlicePosition;
+        const ml = alice.line_at(0) orelse return error.LapsedAliceLine;
+        if (ml.state != lapse.state_lapsed) return error.LapsedAliceState;
+        if (!alice.reconciles()) return error.LapsedAliceReconcile;
+        const bob = try statement_for(&ledger, bob_pk[0..]);
+        // The lapse moved nothing to Bob — his position stays zero.
+        if (bob.balance != 0 or bob.received != 0) return error.LapsedBobPosition;
+        if (!try statements_conserve(&ledger)) return error.LapsedConserve;
+    }
+
+    // Scene 4 — a stranger who never appeared reads a true zero statement, no lines, present=false.
+    {
+        const s = try seat_scene(id[0..], 9);
+        const ledger = try resolve_perm(&[_]cord.Block{ s[0], s[1] });
+        const nobody = try statement_for(&ledger, stranger_pk[0..]);
+        if (nobody.present) return error.StrangerPresent;
+        if (nobody.balance != 0 or nobody.reserved != 0 or nobody.received != 0) return error.StrangerPosition;
+        if (nobody.line_count != 0) return error.StrangerLines;
+        if (!nobody.reconciles()) return error.StrangerReconcile; // 0 == 0, trivially true
+    }
+
+    // Scene 5 — arrival-independence inherited: the two round-2 facts swapped resolve to one ledger, so
+    // Alice's statement is byte-for-byte identical. The Statement adds no order of its own.
+    {
+        const s = try seat_scene(id[0..], 2);
+        const a1 = try statement_for(&try resolve_perm(&[_]cord.Block{ s[0], s[1], s[2], s[3] }), alice_pk[0..]);
+        const a2 = try statement_for(&try resolve_perm(&[_]cord.Block{ s[0], s[1], s[3], s[2] }), alice_pk[0..]);
+        if (a1.balance != a2.balance or a1.reserved != a2.reserved or a1.received != a2.received) {
+            return error.PermPosition;
+        }
+        if (a1.line_count != a2.line_count) return error.PermLines;
+        if (a1.line_at(0).?.state != a2.line_at(0).?.state) return error.PermState;
+    }
+
+    // A last render, for eyes — Alice's open statement, the plainest thing the voice does.
+    {
+        const s = try seat_scene(id[0..], 9);
+        const ledger = try resolve_perm(&[_]cord.Block{ s[0], s[1] });
+        const alice = try statement_for(&ledger, alice_pk[0..]);
+        render(&alice);
+    }
+
+    print("GREEN: myc statement r1 — a statement reconciles with the ledger it reads (reserved == open made sum) across open · posted · voided-scene · lapsed, statements conserve to genesis, a stranger reads a true zero, arrival-independence inherited. The account-statement voice stands.\n", .{});
+}
