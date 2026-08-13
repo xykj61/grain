@@ -1,0 +1,56 @@
+# tools/dahl_j10_skate_group_true_witness.rish — Season 3 Journey 10 (Membership), Rung 4 (Journey 10 closes).
+#
+# Rungs one through three fixed the quorum rule, signed each vote, and let a signed group travel — all
+# over groups seated in code. This closing rung carries the reader onto a real Skate group record a keeper
+# can open and count. pond/apps/skate_group_true.rye @embedFile-binds skate/fixtures/group.bron (a genuine
+# format skate-group-v1 record with real Ed25519 vote signatures — three founders at quorum 2, two votes
+# admit Bram, one one-sided vote for Cate holds) through a corpora symlink, parses it through rung three,
+# and reports the founder count, vote count, and admitted-by-quorum count. The crux is the cross-check:
+# tools/fixtures/skate_group_truth.awk measures the same bytes independently and this witness asserts the
+# app's reading equals the awk reading — two tools, one answer. And still_quorum_honest re-verifies every
+# carried vote against the demo keyring, and rebuild recovers Bram's admission and Cate's hold, so the
+# fixture is a real signed group, not a hollow shape. A tampered header refuses BadFormat. Additive —
+# composes rungs one, two, three over public API (all re-run GREEN); reads no network (serve reaches the
+# custody gate); demo keeper seeds only.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/dahl_j10_skate_group_true_witness.rish
+
+say "dahl-j10r4: Language EN — the reading of a real group record is true to the bytes, and the record is genuinely quorum-honest."
+say "dahl-j10r4: Lens TAME — the app's reading equals an independent awk count; a tampered record refuses."
+
+let zig = "vendor/zig-toolchain/zig"
+
+# Rungs one and three stay GREEN beneath the true layer — additive.
+let binr1 = "pond/bin/skate-group"
+let buildr1 = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_group.rye -femit-bin=${binr1}"]
+assert buildr1.ok else "dahl-j10r4: skate_group (r1) build failed"
+let selfr1 = run ["sh" "-c" "${binr1} selftest 2>&1"]
+assert selfr1.ok else "dahl-j10r4: skate_group (r1) selftest exited non-zero"
+
+let binr3 = "pond/bin/skate-group-bron"
+let buildr3 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_group_bron.rye -femit-bin=${binr3}"]
+assert buildr3.ok else "dahl-j10r4: skate_group_bron (r3) build failed"
+let selfr3 = run ["sh" "-c" "${binr3} selftest 2>&1"]
+assert selfr3.ok else "dahl-j10r4: skate_group_bron (r3) selftest exited non-zero"
+assert selfr3.out contains "GREEN" else "dahl-j10r4: r3 did not speak GREEN"
+
+let bin = "pond/bin/skate-group-true"
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_group_true.rye -femit-bin=${bin}"]
+assert build.ok else "dahl-j10r4: skate_group_true build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "dahl-j10r4: skate_group_true selftest exited non-zero"
+assert selftest.out contains "GREEN" else "dahl-j10r4: selftest did not speak GREEN"
+assert selftest.out contains "matches an independent count" else "dahl-j10r4: reading-true crux missing"
+assert selftest.out contains "re-verified every vote offline" else "dahl-j10r4: quorum-honest crux missing"
+assert selftest.out contains "refused BadFormat" else "dahl-j10r4: tamper refusal missing"
+
+# The crux cross-check: the app's reading matches an independent awk reading of the same real bytes.
+let measure = run ["sh" "-c" "${bin} measure 2>&1"]
+assert measure.ok else "dahl-j10r4: measure exited non-zero"
+let awk = run ["sh" "-c" "awk -f tools/fixtures/skate_group_truth.awk skate/fixtures/group.bron"]
+assert awk.ok else "dahl-j10r4: awk reading of the fixture failed"
+assert measure.out == awk.out else "dahl-j10r4: the app reading disagrees with the independent awk count of the same bytes"
+
+say "dahl-j10r4: GREEN — app reading == awk reading; the real group is true to the bytes and genuinely quorum-honest. Journey 10's agent-doable arc is complete."

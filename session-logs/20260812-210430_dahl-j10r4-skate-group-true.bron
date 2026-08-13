@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260812.210430
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title DAHL-J10r4 — skate_group_true, the group reads true (Journey 10 closes)
+prompt keep going the 1,024-round itinerary; next agent-doable lap, send each increment as its own signed round, close Journey 10's agent-doable arc
+think Rungs one through three fixed the quorum rule, signed each vote, and let a signed group travel — all over groups seated in code. r4's crux (mirroring DAHL-J9r4 and GISM-J5r4): what a reader reports about a real group is true to the bytes a keeper can open and count. Carry the reader onto a real fixture and cross-check an independent measure.
+think Chose a richer fixture than a bare admit — 3 founders at quorum 2, two votes admitting Bram (quorum met) plus one one-sided vote for Cate (holds, short of quorum), so the record carries both an admitted candidate and a holding one, mirroring J9's one-mutual-one-hold richness. Truth triple: founders 3, votes 3, admitted-by-quorum 1.
+think Wrote a committed, reproducible generator (pond/apps/skate_group_fixture_gen.rye) that renders the demo signed group through r3's own render — better than J9r4, whose fixture had no committed generator. Placed it in pond/apps so the @imports resolve through the existing symlinks (kumara, parse_int).
+obs Red caught on metal: the generator's std.debug.print writes to STDERR (the tree's bare-print convention), so `> group.bron` captured empty stdout while the record went to stderr; the empty @embedFile then failed the build (`cannot index into empty array` at the tamper byte). Fixed by capturing stderr (`2> group.bron`) and documenting it in the generator's run line. Regenerated: 494 bytes, awk reads `3 3 1`. Not booked as a REDS ledger entry — it was a generation-command mistake caught and fixed within the round, not a defect in shipped code or a wrong invariant.
+think The awk truth script reads the quorum from the group line, dedups (voter,candidate) pairs, tallies distinct votes per candidate, and counts candidates whose tally reaches quorum — a genuinely independent second computation of the same admitted-by-quorum fact. App measure == awk == `3 3 1`.
+obs still_quorum_honest re-verifies every real Ed25519 vote signature and rebuild recovers Bram's admission (.place) and Cate's hold (.hold, not seated) exactly, so the fixture is a real signed group. A tampered header refuses BadFormat.
+loom witness=dahl_j10_skate_group_true_witness cases=3 truth_triple=3_3_1 fixture_bytes=494 result=GREEN
+file pond/apps/skate_group_true.rye r4 — parse the real record through r3, report founders/votes/admitted, cross-check awk, re-verify offline, rebuild admission and hold
+file pond/apps/skate_group_fixture_gen.rye reproducible generator — renders the demo signed group through r3's render (capture stderr to the fixture)
+file skate/fixtures/group.bron the real record — 3 founders, quorum 2, real Ed25519 vote signatures
+file pond/apps/corpora/skate_group.bron symlink @embedFile-binding the fixture at compile time
+file tools/fixtures/skate_group_truth.awk independent measure — founders, votes, admitted-by-quorum
+file tools/dahl_j10_skate_group_true_witness.rish witness — r1/r3 re-run + reading-true + quorum-honest + tamper + app==awk crux
+file work-in-progress/REMEMBER.md marked Journey 10 complete; named the Comlink-served horizon and the J11 next crux
+recommend keep-going Season 3 Journey 11 (Council skies) — loadable topologies a community loads like a game (odd-quorum fractal 3·9·15·27, modality roles); a new domain worth a fresh self-approved design read first
