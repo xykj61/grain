@@ -1,4 +1,4 @@
-//! mandi/listing_settle_core.rye — Mandi lap 3: settle a vessel listing (in-process).
+//! mandi/listing_settle_core.rye — Mandi — listing settle: settle a vessel listing (in-process) · 20260728.
 //!
 //! Binds listing_receipt + payment digest under Kumara seed 0x68.
 //! Payment digests MUR send + WOV transfer proofs — no buyer/seller identities.

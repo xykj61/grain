@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Last updated:** 2026-07-11 (steward demo nib **419** `004652`)
-**Status:** Seated — name + lap 1 listing (`165634`); floor view (`170700`); listing settle lap 3 (`171202`); settle view lap 4 (`172955`); **steward demo** list→settle→Dimeroll (`004652`, nib **419**); live TigerBeetle rests until its brief
+**Status:** Seated — name + listing (`165634`); floor view (`170700`); listing settle (`171202`); settle view (`172955`); **steward demo** list→settle→Dimeroll (`004652`, nib **419**); live TigerBeetle rests until its brief
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Seating:** [`../context/specs/20260710-165634_mandi-name-seated.md`](../context/specs/20260710-165634_mandi-name-seated.md) · settle [`../context/specs/20260710-171202_mandi-listing-settle-seated.md`](../context/specs/20260710-171202_mandi-listing-settle-seated.md) · steward [`../active-designing/20260711-004652_commerce-citizen-steward-demo-hammock.md`](../active-designing/20260711-004652_commerce-citizen-steward-demo-hammock.md)
 **Study:** [`../external-research/20260703-200712_compute-commerce-on-the-network.md`](../external-research/20260703-200712_compute-commerce-on-the-network.md)
@@ -15,7 +15,7 @@ Mandi names the offer: a signed `vessel-listing-v1` binds `vessel_parent` + MALA
 
 **Sister room:** Granary holds the weave-sharing four doors. Mela and Haat stay parked as warm siblings.
 
-## Lap 1
+## Listing
 
 | Piece | Role |
 |-------|------|
@@ -27,7 +27,7 @@ Mandi names the offer: a signed `vessel-listing-v1` binds `vessel_parent` + MALA
 rishi/bin/rishi run tools/mandi_lap1.rish
 ```
 
-## Floor view (lap 2)
+## Floor view
 
 Citizen window on Skate — five lines: floor title, vessel parent prefix, price, receipt prefix, fold green. Lying listing refused.
 
@@ -37,7 +37,7 @@ rishi/bin/rishi run tools/mandi_floor_view.rish
 
 Witness → parity **240** (`mandiviewtest`).
 
-## Listing settle (lap 3)
+## Listing settle
 
 In-process close: listing receipt + `vessel-payment-v1` (MALA send digest + WOV transfer digest) under seed `0x68`. Refuses zero, lying, mismatches, overdraft, insufficient, double settle.
 
@@ -47,7 +47,7 @@ rishi/bin/rishi run tools/mandi_listing_settle.rish
 
 Witness → parity **242**.
 
-## Settle view (lap 4)
+## Settle view
 
 Citizen window on Skate — six lines: settle title, listing receipt, price, payment prefix, settled, fold green. Double settle refused.
 

@@ -1,7 +1,7 @@
 # Dimeroll — Centralized Books of Record
 
 **Language:** EN
-**Last updated:** 2026-07-10 (lap 4 filters `230433`; parity **394**)
+**Last updated:** 2026-07-10 (filters `230433`; parity **394**)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable-room module — laps 1–4 green; sight, exception, P&L, BS, TB, journal, chart, cash-account, memo-prefix, cash-flow, and sum-amounts views on Skate
 
@@ -26,7 +26,7 @@ Radiant pass `20260728.050004` — living L1 rename-forward: **MUR** (was MALA)
 | **memo prefix view** | Memo prefix stipend → five-line Skate frame | parity **392** · `tools/dimeroll_memo_prefix_view.rish` (`230433`) |
 | **cash flow view** | Inflow/outflow/net → five-line Skate frame | parity **393** · `tools/dimeroll_cash_flow_view.rish` (`230433`) |
 | **sum amounts view** | Journal amount total → five-line Skate frame | parity **394** · `tools/dimeroll_sum_amounts_view.rish` (`230433`) |
-| **sight lap 3** | Chart of accounts on steward glass | parity **301** · `tools/dimeroll_sight_view_lap3.rish` (`200203`) |
+| **sight** | Chart of accounts on steward glass | parity **301** · `tools/dimeroll_sight_view_lap3.rish` (`200203`) |
 
 ## Layout
 
@@ -57,7 +57,7 @@ rishi/bin/rishi run tools/dimeroll_sum_amounts_view.rish
 rishi/bin/rishi run tools/dimeroll_sight_view_lap3.rish
 ```
 
-**Design:** hammock [`../active-designing/20260710-125953_dimeroll-hammock.md`](../active-designing/20260710-125953_dimeroll-hammock.md) · lap 2 [`../active-designing/20260710-131212_dimeroll-lap2-reports.md`](../active-designing/20260710-131212_dimeroll-lap2-reports.md) · lap 3 sight [`../active-designing/20260710-132548_dimeroll-lap3-sight-view.md`](../active-designing/20260710-132548_dimeroll-lap3-sight-view.md) · lap 4 [`../active-designing/20260710-230433_dimeroll-lap4-filters.md`](../active-designing/yonder/20260710-230433_dimeroll-lap4-filters.md) · horizon [`../external-research/20260710-131956_seen-books-living-desktop-horizon.md`](../external-research/20260710-131956_seen-books-living-desktop-horizon.md)
+**Design:** hammock [`../active-designing/20260710-125953_dimeroll-hammock.md`](../active-designing/20260710-125953_dimeroll-hammock.md) · reports [`../active-designing/20260710-131212_dimeroll-lap2-reports.md`](../active-designing/20260710-131212_dimeroll-lap2-reports.md) · sight [`../active-designing/20260710-132548_dimeroll-lap3-sight-view.md`](../active-designing/20260710-132548_dimeroll-lap3-sight-view.md) · filters [`../active-designing/20260710-230433_dimeroll-lap4-filters.md`](../active-designing/yonder/20260710-230433_dimeroll-lap4-filters.md) · horizon [`../external-research/20260710-131956_seen-books-living-desktop-horizon.md`](../external-research/20260710-131956_seen-books-living-desktop-horizon.md)
 
 ---
 

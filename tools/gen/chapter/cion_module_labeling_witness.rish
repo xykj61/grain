@@ -28,7 +28,14 @@
 # git-author stamp, and lantern/README.md's 29-row fixtures table stripped of its "Lap N"
 # provenance prefix, each fixture kept by its own purpose; the voice binaries build and
 # pass GREEN through buhr_inference_query / buhr_reading_query / gism_j5_corpus_real_ember,
-# a comment-only change). Still deferred:
+# a comment-only change), then the market + accounting modules (20260812.224144 —
+# LOWE-J14r4a: mandi + dimeroll READMEs and authored .rye prose relabeled — Mandi's
+# lap-1/lap-3 version headers named by capability (market listing · listing settle) and
+# its README section headings named by feature, dimeroll's lap-2/lap-4 feature comments
+# and its README status/design/link labels named by report (the dimeroll_sight_view_lap3.rish
+# tool handle kept, and the dated design-doc filenames left untouched); mandi + dimeroll
+# build GREEN through mandi_listing_settle / mandi_lap1 / dimeroll_lap4 / gism_ayre_j8).
+# Still deferred:
 # the witness-asserted "SLC-2a Lap" scheme
 # (linengrow/wayland_seed.rye + pond/slc2a witnesses) and comlink's sub-lap — a
 # coupled cross-cutting round of its own. Dated
@@ -41,7 +48,7 @@ say "cion-module: Style Radiant — a capability's name is its semantic label + 
 say "cion-module: Lens TAME — guard the living module surfaces; a planted lap ordinal must bite."
 
 # The swept modules name no capability by a bare lap ordinal.
-let scan = run ["sh" "tools/fixtures/labeling_module_scan.sh" "mandate/README.md" "mandate/store.rye" "mandate/keyed.rye" "mandate/bucket.rye" "mandate/wal.rye" "mandate/serve.rye" "mandate/named_serve.rye" "mandate/comlink_serve.rye" "scribe/README.md" "scribe/reader.rye" "vault/README.md" "vault/shard.rye" "pond/README.md" "pond/apps/drawn_terminal.rye" "granary/README.md" "granary/exchange_listing.rye" "granary/resin_serve_delivery.rye" "granary/weave_settle.rye" "granary/weave_settle_core.rye" "scribble/README.md" "scribble/scribble.rye" "scribble/scribble_core.rye" "linengrow/README.md" "linengrow/wov_core.rye" "linengrow/neth_sim.rye" "linengrow/disclosure_core.rye" "linengrow/wov_tb_host.rye" "linengrow/neth_sim_witness.rye" "linengrow/open_asks_escrow_delivery.rye" "amphora/README.md" "amphora/manifest_entry.rye" "amphora/vessel_fetch_delivery.rye" "comlink/README.md" "comlink/guest_open_asks_escrow_hold_rx.rye" "comlink/guest_open_asks_escrow_hold_tx.rye" "comlink/guest_open_asks_escrow_release_rx.rye" "comlink/guest_open_asks_escrow_release_tx.rye" "comlink/guest_snapshot_fetcher_rx.rye" "comlink/guest_snapshot_fetcher_tx.rye" "comlink/guest_snapshot_source_rx.rye" "comlink/guest_snapshot_source_tx.rye" "comlink/guest_sync_fetcher_rx.rye" "comlink/guest_sync_fetcher_tx.rye" "comlink/guest_sync_source_rx.rye" "comlink/guest_sync_source_tx.rye" "comlink/guest_vessel_fetch_fetcher_rx.rye" "comlink/guest_vessel_fetch_fetcher_tx.rye" "comlink/guest_vessel_fetch_source_rx.rye" "comlink/guest_vessel_fetch_source_tx.rye" "lattice/README.md" "lattice/lattice_core.rye" "lattice/lattice.rye" "ember/README.md" "ember/ember_core.rye" "lantern/README.md" "lantern/lantern_core.rye" "lantern/lantern.rye"]
+let scan = run ["sh" "tools/fixtures/labeling_module_scan.sh" "mandate/README.md" "mandate/store.rye" "mandate/keyed.rye" "mandate/bucket.rye" "mandate/wal.rye" "mandate/serve.rye" "mandate/named_serve.rye" "mandate/comlink_serve.rye" "scribe/README.md" "scribe/reader.rye" "vault/README.md" "vault/shard.rye" "pond/README.md" "pond/apps/drawn_terminal.rye" "granary/README.md" "granary/exchange_listing.rye" "granary/resin_serve_delivery.rye" "granary/weave_settle.rye" "granary/weave_settle_core.rye" "scribble/README.md" "scribble/scribble.rye" "scribble/scribble_core.rye" "linengrow/README.md" "linengrow/wov_core.rye" "linengrow/neth_sim.rye" "linengrow/disclosure_core.rye" "linengrow/wov_tb_host.rye" "linengrow/neth_sim_witness.rye" "linengrow/open_asks_escrow_delivery.rye" "amphora/README.md" "amphora/manifest_entry.rye" "amphora/vessel_fetch_delivery.rye" "comlink/README.md" "comlink/guest_open_asks_escrow_hold_rx.rye" "comlink/guest_open_asks_escrow_hold_tx.rye" "comlink/guest_open_asks_escrow_release_rx.rye" "comlink/guest_open_asks_escrow_release_tx.rye" "comlink/guest_snapshot_fetcher_rx.rye" "comlink/guest_snapshot_fetcher_tx.rye" "comlink/guest_snapshot_source_rx.rye" "comlink/guest_snapshot_source_tx.rye" "comlink/guest_sync_fetcher_rx.rye" "comlink/guest_sync_fetcher_tx.rye" "comlink/guest_sync_source_rx.rye" "comlink/guest_sync_source_tx.rye" "comlink/guest_vessel_fetch_fetcher_rx.rye" "comlink/guest_vessel_fetch_fetcher_tx.rye" "comlink/guest_vessel_fetch_source_rx.rye" "comlink/guest_vessel_fetch_source_tx.rye" "lattice/README.md" "lattice/lattice_core.rye" "lattice/lattice.rye" "ember/README.md" "ember/ember_core.rye" "lantern/README.md" "lantern/lantern_core.rye" "lantern/lantern.rye" "mandi/README.md" "mandi/mandi_core.rye" "mandi/mandi.rye" "mandi/listing_settle_core.rye" "mandi/listing_settle.rye" "dimeroll/README.md" "dimeroll/dimeroll_core.rye" "dimeroll/dimeroll.rye"]
 say scan.out
 assert scan.out contains "verdict=ok" else "cion-module: a swept-module surface names a capability by a bare lap ordinal"
 # values_apart: the verdict key and the exit status must agree.
@@ -61,4 +68,4 @@ say pass.out
 assert pass.out contains "verdict=ok" else "cion-module: the guard false-positived on a meaningful code or sub-lap"
 assert pass.ok else "cion-module: pass-fixture verdict and status disagree"
 
-say "GREEN: cion-module — the swept modules (mandate · scribe · vault · pond · granary · scribble · linengrow · amphora · comlink device guests · lattice · ember · lantern) name every capability by semantic label + stamp, no bare lap ordinal; the guard bites a planted one and stays quiet on meaningful codes"
+say "GREEN: cion-module — the swept modules (mandate · scribe · vault · pond · granary · scribble · linengrow · amphora · comlink device guests · lattice · ember · lantern · mandi · dimeroll) name every capability by semantic label + stamp, no bare lap ordinal; the guard bites a planted one and stays quiet on meaningful codes"
