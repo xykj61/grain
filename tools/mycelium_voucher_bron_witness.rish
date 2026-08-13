@@ -1,0 +1,50 @@
+# tools/mycelium_voucher_bron_witness.rish — the Voucher travels as a readable record (r2).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · the Voucher · rung r2 — travel.
+# r1 made a Voucher — a node's signature over an account's position bound to an order-head — and proved it
+# verifies offline and checks against the ledger it vouches. A proof a holder cannot hand to another is
+# only a local reading, so r2 lets it cross as `format voucher-v1` bytes (`mycelium/voucher_bron.rye`,
+# mirroring `statement_bron`): a node line, a head line (the order-head), an account line, a position line
+# (balance · reserved · received), and a sig line. Render writes it, parse reads it back byte-for-byte.
+#
+# The crux this witness proves is THE SIGNATURE SURVIVES THE WIRE: the record carries its own attestation
+# as a law — a parsed voucher whose signature does not verify against its own node key over the bound facts
+# refuses BadSignature before it is trusted, so a proof of position cannot be forged or mangled in the
+# crossing. The round trip is a fixed point (re-render byte-identical); a recipient holding the blocks can
+# still run r1's check_against on the recovered voucher; a tampered position (balance +1) breaks the
+# signature and refuses BadSignature; a bad header · unknown field · bad hex · missing field each refuse.
+# Composes voucher.rye public API only, editing none; demo node/keeper seeds — no key, no funds, no
+# network, no custody.
+#
+# Scope: active-designing/20260813-095216_mycelium-voucher-attested-statement-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mycelium_voucher_bron_witness.rish
+
+say "mycelium-voucher-bron: Language EN — a node's proof of a holder's position crosses a wire as readable bytes and still verifies on the far side, needing no ledger."
+say "mycelium-voucher-bron: Style Radiant — the Voucher made a position provable; r2 lets the proof travel, carrying its own signature as the law a recipient checks before trusting a byte."
+say "mycelium-voucher-bron: Lens TAME — the record composes voucher public API; a purpose-built bounded reader; the recovered voucher verifies offline or refuses BadSignature; the round trip is a fixed point; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/voucher_bron"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/voucher_bron.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-voucher-bron: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mycelium-voucher-bron: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-voucher-bron: selftest did not speak GREEN"
+assert selftest.out contains "parses back byte-for-byte" else "mycelium-voucher-bron: fixed-point claim missing"
+assert selftest.out contains "verifies offline after the crossing" else "mycelium-voucher-bron: offline-verify-after-wire claim missing"
+assert selftest.out contains "still checks against the ledger it vouches" else "mycelium-voucher-bron: check-against claim missing"
+assert selftest.out contains "a tampered position refuses BadSignature" else "mycelium-voucher-bron: tamper-refusal claim missing"
+assert selftest.out contains "a tampered signature each refuse" else "mycelium-voucher-bron: refusal-roster claim missing"
+assert selftest.out contains "still verifies offline" else "mycelium-voucher-bron: closing claim missing"
+
+# The Voucher r1 the record carries, and the Statement it signs, stand at the door — their own selftests
+# prove the attestation the travelling record rests on.
+let voucher = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/voucher.rye -femit-bin=mycelium/bin/voucher && mycelium/bin/voucher 2>&1"]
+assert voucher.ok else "mycelium-voucher-bron: the Voucher r1 the record carries is not GREEN"
+assert voucher.out contains "GREEN" else "mycelium-voucher-bron: the Voucher r1 did not speak its GREEN"
+
+say "mycelium-voucher-bron: GREEN — a signed voucher renders to a format voucher-v1 record and parses back byte-for-byte, the recovered voucher verifies offline and still checks against the ledger it vouches, and a tampered position refuses BadSignature before the record is trusted (with bad header · unknown field · bad hex · missing field); the Voucher r1 stands at the door. The proof of position travels."

@@ -1,0 +1,322 @@
+//! mycelium/voucher_bron.rye — a signed voucher travels as a readable record.
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Voucher · rung r2 — travel.
+//! Design read: active-designing/20260813-095216_mycelium-voucher-attested-statement-exploration.md
+//!
+//! r1 made a Voucher — a node's signature over an account's position bound to an order-head — and proved
+//! it verifies offline and checks against the ledger it vouches. A proof a holder cannot hand to another
+//! is only a local reading, so r2 lets it cross as `format voucher-v1` bytes: a `node <hex>` line, a
+//! `head <hex>` line (the order-head), an `account <hex>` line, a `position <balance> <reserved>
+//! <received>` line, and a `sig <hex>` line. Render writes it, parse reads it back, so a round trip is a
+//! fixed point and the recovered voucher is byte-for-byte the same slip.
+//!
+//! The crux is THE SIGNATURE SURVIVES THE WIRE: the record carries its own attestation as a law — a
+//! parsed voucher whose signature does not verify against its own node key over the bound facts refuses
+//! `BadSignature` before it is trusted, so a proof of position cannot be forged or mangled in the
+//! crossing. A recipient checks the same signature r1 asserted, needing no ledger of their own; a
+//! recipient who DOES hold the blocks can still run r1's `check_against` on the recovered voucher.
+//!
+//! A purpose-built bounded reader, never a general parser: a wrong header refuses `BadFormat`, an
+//! unknown field `UnknownField` (never dropped), a malformed line `BadLine`, a bad integer `BadInt`, a
+//! bad hex field `BadHex`, a failed signature `BadSignature`, a missing field `BadFormat`. Composes
+//! voucher.rye public API only. Siloed, dev-only, demo seeds — no key, no funds, no network, no custody.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/voucher_bron.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const voucher = @import("voucher.rye");
+const cord = @import("cord.rye");
+const fold = @import("fold.rye");
+const lapse = @import("lapse.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+const parse_int = @import("parse_int.rye");
+
+/// The record buffer bound — one voucher's five lines fit with room to spare.
+pub const max_record: u32 = 4096;
+
+pub const BronError = error{
+    BadFormat, // the header line is not `format voucher-v1`, or a required field is missing
+    UnknownField, // a line names a field the record does not define
+    BadLine, // a known line carries the wrong token count
+    BadInt, // an integer field did not parse
+    BadHex, // a hex field was the wrong length or held a non-hex char
+    BadSignature, // the parsed voucher's signature did not verify over its bound facts
+    RecordTooLong, // the rendered record overflowed the buffer
+};
+
+const hex_digits = "0123456789abcdef";
+
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex chars per byte.
+    assert(out.len == bytes.len * 2);
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0F];
+    }
+}
+
+fn nibble(c: u8) BronError!u8 {
+    return switch (c) {
+        '0'...'9' => c - '0',
+        'a'...'f' => c - 'a' + 10,
+        'A'...'F' => c - 'A' + 10,
+        else => error.BadHex,
+    };
+}
+
+fn from_hex(text: []const u8, out: []u8) BronError!void {
+    if (text.len != out.len * 2) return error.BadHex;
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < out.len) : (i += 1) {
+        const hi = try nibble(text[i * 2]);
+        const lo = try nibble(text[i * 2 + 1]);
+        out[i] = (hi << 4) | lo;
+    }
+}
+
+/// Render one voucher to a `format voucher-v1` record. Refuses an overflow rather than a partial record.
+pub fn render(v: *const voucher.Voucher, out: []u8) BronError!u32 {
+    // invariant: the render buffer honors its bound.
+    assert(out.len >= max_record);
+    const head = std.fmt.bufPrint(out, "format voucher-v1\n", .{}) catch return error.RecordTooLong;
+    var off: u32 = @intCast(head.len);
+
+    var node_hex: [voucher.pk_len * 2]u8 = undefined;
+    to_hex(v.node_slice(), &node_hex);
+    const node_line = std.fmt.bufPrint(out[off..], "node {s}\n", .{node_hex}) catch return error.RecordTooLong;
+    off += @intCast(node_line.len);
+
+    var head_hex: [voucher.order_head_len * 2]u8 = undefined;
+    to_hex(v.head_slice(), &head_hex);
+    const head_line = std.fmt.bufPrint(out[off..], "head {s}\n", .{head_hex}) catch return error.RecordTooLong;
+    off += @intCast(head_line.len);
+
+    var acct_hex: [voucher.pk_len * 2]u8 = undefined;
+    to_hex(v.account_slice(), &acct_hex);
+    const acct_line = std.fmt.bufPrint(out[off..], "account {s}\n", .{acct_hex}) catch return error.RecordTooLong;
+    off += @intCast(acct_line.len);
+
+    const pos_line = std.fmt.bufPrint(out[off..], "position {d} {d} {d}\n", .{ v.balance, v.reserved, v.received }) catch return error.RecordTooLong;
+    off += @intCast(pos_line.len);
+
+    var sig_hex: [kumara.signature_length * 2]u8 = undefined;
+    to_hex(v.sig[0..], &sig_hex);
+    const sig_line = std.fmt.bufPrint(out[off..], "sig {s}\n", .{sig_hex}) catch return error.RecordTooLong;
+    off += @intCast(sig_line.len);
+
+    // invariant: the rendered record never exceeds its bound.
+    assert(off <= max_record);
+    return off;
+}
+
+/// Split a line into up to four tokens; returns the count (or five to signal a trailing token past what
+/// any line allows — the position record, at four, is the widest).
+fn tokens(line: []const u8, out: *[4][]const u8) u32 {
+    var count: u32 = 0;
+    var it = std.mem.tokenizeScalar(u8, line, ' ');
+    while (it.next()) |t| {
+        if (count >= 4) return count + 1;
+        out[count] = t;
+        count += 1;
+    }
+    return count;
+}
+
+/// Parse a `format voucher-v1` record into `out`. Refuses an unknown or malformed field, a bad header,
+/// a missing field, or — the crux — a signature that does not verify over the recovered facts.
+pub fn parse(text: []const u8, out: *voucher.Voucher) BronError!void {
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const header = lines.next() orelse return error.BadFormat;
+    if (!std.mem.eql(u8, header, "format voucher-v1")) return error.BadFormat;
+
+    out.balance = 0;
+    out.reserved = 0;
+    out.received = 0;
+    var have_node = false;
+    var have_head = false;
+    var have_account = false;
+    var have_position = false;
+    var have_sig = false;
+
+    while (lines.next()) |raw| {
+        if (raw.len == 0) continue; // a trailing newline yields one empty line
+        var tok: [4][]const u8 = undefined;
+        const n = tokens(raw, &tok);
+        if (n == 0) continue;
+        if (std.mem.eql(u8, tok[0], "node")) {
+            if (n != 2) return error.BadLine;
+            try from_hex(tok[1], out.node_pk[0..]);
+            have_node = true;
+        } else if (std.mem.eql(u8, tok[0], "head")) {
+            if (n != 2) return error.BadLine;
+            try from_hex(tok[1], out.order_head[0..]);
+            have_head = true;
+        } else if (std.mem.eql(u8, tok[0], "account")) {
+            if (n != 2) return error.BadLine;
+            try from_hex(tok[1], out.account_pk[0..]);
+            have_account = true;
+        } else if (std.mem.eql(u8, tok[0], "position")) {
+            if (n != 4) return error.BadLine;
+            out.balance = parse_int.parse_int(u64, tok[1], .{}) catch return error.BadInt;
+            out.reserved = parse_int.parse_int(u64, tok[2], .{}) catch return error.BadInt;
+            out.received = parse_int.parse_int(u64, tok[3], .{}) catch return error.BadInt;
+            have_position = true;
+        } else if (std.mem.eql(u8, tok[0], "sig")) {
+            if (n != 2) return error.BadLine;
+            try from_hex(tok[1], out.sig[0..]);
+            have_sig = true;
+        } else {
+            return error.UnknownField;
+        }
+    }
+    // invariant: a whole voucher names every one of its five fields.
+    if (!(have_node and have_head and have_account and have_position and have_sig)) return error.BadFormat;
+    // The attestation law travels: the recovered voucher must verify offline over its own bound facts, or
+    // a proof of position was forged or mangled in the crossing.
+    voucher.verify_voucher(out) catch return error.BadSignature;
+}
+
+// ---- selftest: the voucher travels and still verifies ------------------------
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn write_deadline(deadline: u64, out: []u8) void {
+    // invariant: the buffer holds a full little-endian order position.
+    assert(out.len == lapse.deadline_len);
+    var v = deadline;
+    var i: u32 = 0;
+    while (i < lapse.deadline_len) : (i += 1) {
+        out[i] = @truncate(v);
+        v >>= 8;
+    }
+}
+
+fn pledge_body(id: []const u8, deadline: u64, to: []const u8, out: []u8) u32 {
+    // invariant: the buffer holds tag · id · deadline · recipient exactly.
+    assert(out.len >= 1 + lapse.id_len + lapse.deadline_len + lapse.pk_len);
+    assert(id.len == lapse.id_len);
+    out[0] = lapse.tag_pledge;
+    tally_copy.copy_disjoint(u8, out[1 .. 1 + lapse.id_len], id);
+    write_deadline(deadline, out[1 + lapse.id_len .. 1 + lapse.id_len + lapse.deadline_len]);
+    tally_copy.copy_disjoint(u8, out[1 + lapse.id_len + lapse.deadline_len ..][0..lapse.pk_len], to);
+    return 1 + lapse.id_len + lapse.deadline_len + lapse.pk_len;
+}
+
+/// Build a Dag: genesis credits Alice 100, Alice pledges 100 to Bob under a far deadline (open) — so a
+/// voucher over Alice reads balance 0, reserved 100, received 100, the position the wire must carry whole.
+fn build_dag() !cord.Dag {
+    const id = [_]u8{0x01} ** lapse.id_len;
+    const kf = seeded(0xF0);
+    const ka = seeded(0xA1);
+    const kb = seeded(0xB2);
+    const alice_pk = ka.public_key.toBytes();
+    const bob_pk = kb.public_key.toBytes();
+
+    const f_gen = fold.mint_fact(kf, fold.kind_issue, 100, "", alice_pk[0..]) orelse return error.MintGen;
+
+    var pb: [1 + lapse.id_len + lapse.deadline_len + lapse.pk_len]u8 = undefined;
+    const pn = pledge_body(id[0..], 9, bob_pk[0..], &pb);
+    const f_pledge = fold.mint_fact(ka, fold.kind_tax, 100, "", pb[0..pn]) orelse return error.MintPledge;
+
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_gen) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+    const roots = [_][cord.hash_len]u8{hg};
+    const bp = cord.mint_block(ka, 1, roots[0..], f_pledge) orelse return error.BlockP;
+
+    var dag = cord.Dag.empty();
+    try cord.add(&dag, g);
+    try cord.add(&dag, bp);
+    return dag;
+}
+
+/// Two vouchers name the same slip: node, order-head, account, position, and signature.
+fn vouchers_agree(a: *const voucher.Voucher, b: *const voucher.Voucher) bool {
+    if (!std.mem.eql(u8, a.node_pk[0..], b.node_pk[0..])) return false;
+    if (!std.mem.eql(u8, a.order_head[0..], b.order_head[0..])) return false;
+    if (!std.mem.eql(u8, a.account_pk[0..], b.account_pk[0..])) return false;
+    if (a.balance != b.balance or a.reserved != b.reserved or a.received != b.received) return false;
+    if (!std.mem.eql(u8, a.sig[0..], b.sig[0..])) return false;
+    return true;
+}
+
+pub fn main() !void {
+    const dag = try build_dag();
+    const node = seeded(0x0D);
+    const alice_pk = seeded(0xA1).public_key.toBytes();
+    const v = try voucher.make_voucher(&dag, node, alice_pk[0..]);
+    // The open-pledge position the wire must carry whole.
+    if (v.balance != 0 or v.reserved != 100 or v.received != 100) return error.MakePosition;
+
+    var buf: [max_record]u8 = undefined;
+    const len = try render(&v, buf[0..]);
+
+    var recovered: voucher.Voucher = undefined;
+    try parse(buf[0..len], &recovered);
+
+    // The crux: the recovered voucher is the identical slip and VERIFIES after the crossing.
+    if (!vouchers_agree(&v, &recovered)) return error.VoucherChanged;
+    try voucher.verify_voucher(&recovered);
+    // And a recipient holding the blocks can still check it against the very ledger it vouches.
+    if (!try voucher.check_against(&recovered, &dag)) return error.RecoveredCheck;
+
+    // Re-rendering the recovered voucher reproduces the exact bytes (fixed point).
+    var buf2: [max_record]u8 = undefined;
+    const len2 = try render(&recovered, buf2[0..]);
+    if (len2 != len) return error.NotFixedPoint;
+    if (!std.mem.eql(u8, buf[0..len], buf2[0..len2])) return error.NotFixedPoint;
+
+    var scratch: voucher.Voucher = undefined;
+
+    // Refusal: a wrong header refuses BadFormat (checked before any field is read).
+    if (parse("format voucher-v2\n", &scratch)) |_| return error.BadHeaderAdmitted else |err| {
+        if (err != error.BadFormat) return error.WrongHeader;
+    }
+    // Refusal: an unknown field refuses UnknownField (never dropped).
+    {
+        var tmp: [max_record]u8 = undefined;
+        tally_copy.copy_disjoint(u8, tmp[0..len], buf[0..len]);
+        const extra = "bogus a b\n";
+        tally_copy.copy_disjoint(u8, tmp[len .. len + extra.len], extra);
+        if (parse(tmp[0 .. len + extra.len], &scratch)) |_| return error.UnknownAdmitted else |err| {
+            if (err != error.UnknownField) return error.WrongUnknown;
+        }
+    }
+    // Refusal: a bad hex node key refuses BadHex.
+    {
+        const bad = "format voucher-v1\nnode zz\nhead " ++ ("00" ** voucher.order_head_len) ++ "\naccount " ++ ("00" ** voucher.pk_len) ++ "\nposition 0 0 0\nsig " ++ ("00" ** kumara.signature_length) ++ "\n";
+        if (parse(bad, &scratch)) |_| return error.BadHexAdmitted else |err| {
+            if (err != error.BadHex) return error.WrongBadHex;
+        }
+    }
+    // Refusal: a missing field (no sig line) refuses BadFormat.
+    {
+        const bad = "format voucher-v1\nnode " ++ ("00" ** voucher.pk_len) ++ "\nhead " ++ ("00" ** voucher.order_head_len) ++ "\naccount " ++ ("00" ** voucher.pk_len) ++ "\nposition 0 0 0\n";
+        if (parse(bad, &scratch)) |_| return error.MissingAdmitted else |err| {
+            if (err != error.BadFormat) return error.WrongMissing;
+        }
+    }
+    // Refusal — the crux: a tampered position (balance +1) breaks the signature, so the record refuses
+    // BadSignature before it is trusted. Render the honest voucher, then flip the position line's balance.
+    {
+        var tampered = v;
+        tampered.balance += 1;
+        var tb: [max_record]u8 = undefined;
+        const tl = try render(&tampered, tb[0..]);
+        if (parse(tb[0..tl], &scratch)) |_| return error.TamperAdmitted else |err| {
+            if (err != error.BadSignature) return error.WrongTamper;
+        }
+    }
+
+    print("voucher-bron: a voucher renders to a format voucher-v1 record and parses back byte-for-byte (fixed point)\n", .{});
+    print("voucher-bron: the recovered voucher verifies offline after the crossing and still checks against the ledger it vouches; a tampered position refuses BadSignature before the record is trusted\n", .{});
+    print("voucher-bron: a bad header, an unknown field, a bad hex key, a missing field, a tampered signature each refuse\n", .{});
+    print("GREEN: myc voucher-bron — a signed voucher travels as readable text and still verifies offline · balance={d} reserved={d} received={d} · fixed point\n", .{ recovered.balance, recovered.reserved, recovered.received });
+}
