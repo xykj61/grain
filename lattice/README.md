@@ -1,7 +1,7 @@
 # Lattice — Tensors in Tally Gardens
 
 **Language:** EN
-**Last updated:** 2026-07-10 (lap 31 minimum · elu `224805`; parity **371**/**375** — Inference lap 1 close)
+**Last updated:** 2026-07-10 (minimum tensor set · elu `224805`; parity **371**/**375** — Inference arc close)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable-room module — laps 0–31 green (ops through minimum · elu)
 

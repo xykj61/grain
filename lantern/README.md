@@ -48,35 +48,35 @@ Lantern serves bounded request/response inference inside Pond. Each lap deepens 
 |------|------|
 | [`lantern_core.rye`](lantern_core.rye) | Request/response types, fixture complete + pins through stream |
 | [`lantern.rye`](lantern.rye) | Selftest |
-| [`fixtures/completion.bron`](fixtures/completion.bron) | Lap 0 pinned completion |
-| [`fixtures/completion_length.bron`](fixtures/completion_length.bron) | Lap 1 long completion |
-| [`fixtures/allowed_models.bron`](fixtures/allowed_models.bron) | Lap 2 model-hash allow-list |
-| [`fixtures/completion_seed.bron`](fixtures/completion_seed.bron) | Lap 3 seed + temperature pin |
-| [`fixtures/completion_top_p.bron`](fixtures/completion_top_p.bron) | Lap 4 top_p pin |
-| [`fixtures/completion_err_stop.bron`](fixtures/completion_err_stop.bron) | Lap 5 err_stop pin |
-| [`fixtures/completion_stop_sequence.bron`](fixtures/completion_stop_sequence.bron) | Lap 6–7 stop_sequence pin |
-| [`fixtures/completion_prompt.bron`](fixtures/completion_prompt.bron) | Lap 8 prompt pin |
-| [`fixtures/completion_max_tokens.bron`](fixtures/completion_max_tokens.bron) | Lap 9 max_tokens pin |
-| [`fixtures/completion_text.bron`](fixtures/completion_text.bron) | Lap 10 text pin |
-| [`fixtures/completion_temperature.bron`](fixtures/completion_temperature.bron) | Lap 11 temperature pin |
-| [`fixtures/completion_seed_pin.bron`](fixtures/completion_seed_pin.bron) | Lap 12 seed pin |
-| [`fixtures/completion_err_stop_pin.bron`](fixtures/completion_err_stop_pin.bron) | Lap 14 err_stop pin |
-| [`fixtures/completion_length_stop_pin.bron`](fixtures/completion_length_stop_pin.bron) | Lap 15 length_stop pin |
-| [`fixtures/allowed_models_empty.bron`](fixtures/allowed_models_empty.bron) | Lap 16 empty allow-list |
-| [`fixtures/completion_allow_count.bron`](fixtures/completion_allow_count.bron) | Lap 17 allow_count pin |
-| [`fixtures/allowed_models_one.bron`](fixtures/allowed_models_one.bron) | Lap 17 single-model mismatch |
-| [`fixtures/completion_assist.bron`](fixtures/completion_assist.bron) | Lap 18 assist-model completion |
-| [`fixtures/completion_require_model.bron`](fixtures/completion_require_model.bron) | Lap 19 require_model pin |
-| [`fixtures/completion_stopped_reason_pin.bron`](fixtures/completion_stopped_reason_pin.bron) | Lap 20 stopped_reason eos pin |
-| [`fixtures/completion_stopped_reason_length_pin.bron`](fixtures/completion_stopped_reason_length_pin.bron) | Lap 21 stopped_reason length pin |
-| [`fixtures/completion_stream_pin.bron`](fixtures/completion_stream_pin.bron) | Lap 22 stream pin false |
-| [`fixtures/completion_stream_on.bron`](fixtures/completion_stream_on.bron) | Lap 23 stream pin true |
-| [`fixtures/completion_stopped_reason_err_stop_pin.bron`](fixtures/completion_stopped_reason_err_stop_pin.bron) | Lap 24 stopped_reason err_stop pin |
-| [`fixtures/completion_stopped_reason_stop_sequence_pin.bron`](fixtures/completion_stopped_reason_stop_sequence_pin.bron) | Lap 25 stopped_reason stop_sequence pin |
-| [`fixtures/completion_top_k.bron`](fixtures/completion_top_k.bron) | Lap 26 top_k pin |
-| [`fixtures/completion_frequency_penalty.bron`](fixtures/completion_frequency_penalty.bron) | Lap 27 frequency_penalty pin |
-| [`fixtures/completion_presence_penalty.bron`](fixtures/completion_presence_penalty.bron) | Lap 28 presence_penalty pin |
-| [`fixtures/completion_n.bron`](fixtures/completion_n.bron) | Lap 29 n pin |
+| [`fixtures/completion.bron`](fixtures/completion.bron) | pinned completion |
+| [`fixtures/completion_length.bron`](fixtures/completion_length.bron) | long completion |
+| [`fixtures/allowed_models.bron`](fixtures/allowed_models.bron) | model-hash allow-list |
+| [`fixtures/completion_seed.bron`](fixtures/completion_seed.bron) | seed + temperature pin |
+| [`fixtures/completion_top_p.bron`](fixtures/completion_top_p.bron) | top_p pin |
+| [`fixtures/completion_err_stop.bron`](fixtures/completion_err_stop.bron) | err_stop pin |
+| [`fixtures/completion_stop_sequence.bron`](fixtures/completion_stop_sequence.bron) | stop_sequence pin |
+| [`fixtures/completion_prompt.bron`](fixtures/completion_prompt.bron) | prompt pin |
+| [`fixtures/completion_max_tokens.bron`](fixtures/completion_max_tokens.bron) | max_tokens pin |
+| [`fixtures/completion_text.bron`](fixtures/completion_text.bron) | text pin |
+| [`fixtures/completion_temperature.bron`](fixtures/completion_temperature.bron) | temperature pin |
+| [`fixtures/completion_seed_pin.bron`](fixtures/completion_seed_pin.bron) | seed pin |
+| [`fixtures/completion_err_stop_pin.bron`](fixtures/completion_err_stop_pin.bron) | err_stop pin |
+| [`fixtures/completion_length_stop_pin.bron`](fixtures/completion_length_stop_pin.bron) | length_stop pin |
+| [`fixtures/allowed_models_empty.bron`](fixtures/allowed_models_empty.bron) | empty allow-list |
+| [`fixtures/completion_allow_count.bron`](fixtures/completion_allow_count.bron) | allow_count pin |
+| [`fixtures/allowed_models_one.bron`](fixtures/allowed_models_one.bron) | single-model mismatch |
+| [`fixtures/completion_assist.bron`](fixtures/completion_assist.bron) | assist-model completion |
+| [`fixtures/completion_require_model.bron`](fixtures/completion_require_model.bron) | require_model pin |
+| [`fixtures/completion_stopped_reason_pin.bron`](fixtures/completion_stopped_reason_pin.bron) | stopped_reason eos pin |
+| [`fixtures/completion_stopped_reason_length_pin.bron`](fixtures/completion_stopped_reason_length_pin.bron) | stopped_reason length pin |
+| [`fixtures/completion_stream_pin.bron`](fixtures/completion_stream_pin.bron) | stream pin false |
+| [`fixtures/completion_stream_on.bron`](fixtures/completion_stream_on.bron) | stream pin true |
+| [`fixtures/completion_stopped_reason_err_stop_pin.bron`](fixtures/completion_stopped_reason_err_stop_pin.bron) | stopped_reason err_stop pin |
+| [`fixtures/completion_stopped_reason_stop_sequence_pin.bron`](fixtures/completion_stopped_reason_stop_sequence_pin.bron) | stopped_reason stop_sequence pin |
+| [`fixtures/completion_top_k.bron`](fixtures/completion_top_k.bron) | top_k pin |
+| [`fixtures/completion_frequency_penalty.bron`](fixtures/completion_frequency_penalty.bron) | frequency_penalty pin |
+| [`fixtures/completion_presence_penalty.bron`](fixtures/completion_presence_penalty.bron) | presence_penalty pin |
+| [`fixtures/completion_n.bron`](fixtures/completion_n.bron) | n pin |
 
 **RW-5** (`20260711.005028`) — mirrored pair with Drawn Terminal at `complete_fixture`: collaboration tip **420** (`tools/rw5_lantern_collab.rish`), contract tip **421** (`tools/rw5_lantern_contract.rish` · `lantern rw5contracttest`). Contract on paper: [`../work-in-progress/20260711-005028_rw5-mirrored-pair-contract.md`](../work-in-progress/archive/20260711-005028_rw5-mirrored-pair-contract.md).
 

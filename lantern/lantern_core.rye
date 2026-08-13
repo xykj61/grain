@@ -1,4 +1,4 @@
-//! lantern/lantern_core.rye — bounded request/response inference contract (lap 33).
+//! lantern/lantern_core.rye — bounded request/response inference contract · 20260713.
 //!
 //! Weights live in Tablecloth by hash. Laps deepen through echo · user pins.
 
@@ -145,7 +145,7 @@ pub fn parse_fixture(text: []const u8) LanternError!Response {
     };
 }
 
-/// Lap 1: return fixture completion when model hash matches; enforce max_tokens.
+/// Return fixture completion when model hash matches; enforce max_tokens.
 /// Truncates whitespace-separated words when the fixture outruns the budget.
 pub fn complete_fixture(req: Request, fixture_text: []const u8) LanternError!Response {
     try validate_request(req);
@@ -311,7 +311,7 @@ pub fn count_allowed_models(allow_text: []const u8) u32 {
     return n;
 }
 
-/// Lap 2: allow-list gate, then lap-1 complete_fixture.
+/// Allow-list gate, then complete_fixture.
 /// Empty allow-list refused; optional fixture `allow_count` pins the list size.
 pub fn complete_allowed(req: Request, fixture_text: []const u8, allow_text: []const u8) LanternError!Response {
     const allow_n = count_allowed_models(allow_text);

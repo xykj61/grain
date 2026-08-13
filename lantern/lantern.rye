@@ -1,4 +1,4 @@
-//! lantern/lantern.rye — Lantern lap 33 selftest (echo · user pins) + RW-5 contract.
+//! lantern/lantern.rye — Lantern selftest (echo · user pins) + RW-5 contract · 20260713.
 //!
 //!   rye build lantern/lantern.rye -femit-bin=lantern/bin/lantern
 //!   lantern/bin/lantern selftest
