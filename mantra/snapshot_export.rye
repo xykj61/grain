@@ -1,7 +1,7 @@
 //! mantra/snapshot_export.rye — I2 snapshot export: batch replay + horizon bundles.
 //!
-//! Lap 1 reuses `resin_batch.rye` frames under a `0x06` snapshot header.
-//! Lap 2 adds bundle prefixes (`catalog/`, `trust/`), a SHA3-512 head record,
+//! Snapshot frames reuse `resin_batch.rye` frames under a `0x06` snapshot header.
+//! Horizon bundles add bundle prefixes (`catalog/`, `trust/`), a SHA3-512 head record,
 //! and a continuity fact sketch per counsel I2 and I7.
 //!
 //!   rye build mantra/snapshot_export.rye -femit-bin=mantra/bin/snapshot-export
@@ -440,7 +440,7 @@ pub fn append_snapshot_batch(out: []u8, off: *u32, batch: []const u8) SnapshotEr
     try put_bytes(out, off, batch);
 }
 
-/// Initialize witness source catalog (lap 2 selftest shape).
+/// Initialize witness source catalog (horizon-bundle selftest shape).
 pub fn init_witness_source_catalog(cat: *ns.BoltCatalog) SnapshotError!void {
     cat.* = .empty();
     cat.append_leaf("peerB", "b", 1, "a.txt", "alpha", "plain-text") catch return error.Overflow;
@@ -648,7 +648,7 @@ fn run_selftest(_: std.Io) !u8 {
     print("snapshot: import replay — recall identical on every leaf GREEN\n", .{});
     print("snapshot: tampered batch and head refused whole GREEN\n", .{});
     print("snapshot: version {s} batch {s}\n", .{ snapshot_export_version, rb.batch_version });
-    print("GREEN: I2 snapshot export lap 2 — horizon bundles replay on host.\n", .{});
+    print("GREEN: I2 snapshot export — horizon bundles replay on host.\n", .{});
     return 0;
 }
 
