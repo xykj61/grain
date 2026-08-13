@@ -3,14 +3,14 @@
 //! Per external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md's
 //! phased plan:
 //!
-//! Lap 1 — the primitive core: a noun (atom or cell), the tree-addressing
+//! The primitive core: a noun (atom or cell), the tree-addressing
 //! "slot" helper (Nock's own `/` fas rune), and the Turing-complete
 //! primitive core -- *[a 0 b] through *[a 5 b c] -- plus the autocons rule
 //! that lets a formula's head itself be a cell
 //! (*[a [b c] d] = [*[a b c] *[a d]]).
 //!
-//! Lap 2 — the macro/sugar layer, the pieces expressible by direct
-//! composition of what lap 1 already proved, with no new supporting
+//! The macro/sugar layer, the pieces expressible by direct
+//! composition of what the primitive core already proved, with no new supporting
 //! machinery: *[a 6 b c d] (if/then/else), *[a 7 b c] (compose),
 //! *[a 8 b c] (extend the subject), *[a 9 b c] (invoke an arm -- Hoon's
 //! own core-calling convention), and *[a 11 b c] (a hint, semantically
@@ -19,7 +19,7 @@
 //! result to its own literal 0-5 expansion, hand-built from cons() and
 //! eval() alone -- the phased plan's own stated test.
 //!
-//! Lap 3 — the edit primitive: #[axis value tree], the constructive
+//! The edit primitive: #[axis value tree], the constructive
 //! counterpart to slot()'s own tree addressing -- same bit-walk, same
 //! address convention, but recorded on the way down and rebuilt on the way
 //! up, bounded by a u64 axis's own width alone. *[a 10 b c] (bare-atom
