@@ -1,0 +1,59 @@
+# tools/mycelium_freight_witness.rish — a world carries its whole signed ledger to its new berth (r1, the
+# freight crux).
+#
+# Season D (Kresfa & Mycelium) · Puddle fleet orchestration × Mycelium consensus · rung r1.
+# Puddle proved WHICH host runs which world, and healed a departure by moving only the failed host's worlds.
+# Yet it named a world by its id alone — it never carried the one thing a world exists to keep: its STATE.
+# Freight is what a world carries to its berth: its whole signed Mycelium ledger (a Cord Dag). This rung
+# proves the durability guarantee a fleet is worthless without — when a host departs and the world re-berths,
+# it arrives on its new host reading the BYTE-IDENTICAL account position it held on the old one. Placement
+# moves; state does not.
+#
+# The property is almost given, and that is the point: a world's position is a PURE FUNCTION of its ledger
+# bytes (statement_for(resolve(dag)) takes no host as input), so moving WHERE it runs cannot move WHAT it
+# says. The crux this witness proves is A MOVED WORLD READS THE IDENTICAL POSITION ON ITS NEW BERTH, with the
+# teeth that a freight TAMPERED IN TRANSIT REFUSES — the receiving host recomputes an order-head that
+# disagrees with the advertised head and refuses rather than serving a rewritten position. Composes puddle +
+# cord + lapse + statement + fold + voucher + kumara public API only, editing none; demo host/world/keeper
+# seeds — no key, no funds, no network, no world provisioned or moved.
+#
+# Scope: active-designing/20260813-121424_puddle-freight-world-state-migration-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mycelium_freight_witness.rish
+
+say "mycelium-freight: Language EN — a fleet is worthless if it moves a world's pointer while forgetting its ledger; because a world's position is a pure function of its own bytes, a re-berth changes where it runs and nothing about what it says."
+say "mycelium-freight: Style Radiant — Puddle proved placement moves minimally; Freight proves the state moves not at all — a moved world arrives on its new host reading the byte-identical position, and a ledger altered in transit is caught before a single answer is served."
+say "mycelium-freight: Lens TAME — the freight law composes puddle + cord + lapse + statement + fold + voucher + kumara public API only, editing none; every claim is a byte-comparison of an order-head digest and a position triple; the position is derived, never re-declared; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/freight"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/freight.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-freight: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mycelium-freight: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-freight: selftest did not speak GREEN"
+assert selftest.out contains "reads the byte-identical position on its new berth" else "mycelium-freight: migration crux claim missing"
+assert selftest.out contains "a freight tampered in transit refuses" else "mycelium-freight: tamper-refusal claim missing"
+assert selftest.out contains "no world reads another's freight" else "mycelium-freight: distinctness claim missing"
+assert selftest.out contains "Freight stands" else "mycelium-freight: closing claim missing"
+
+# The Puddle berth and convergence Freight rides both stand at the door — their own selftests prove the
+# placement law a migrated world moves along.
+let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/puddle.rye -femit-bin=mycelium/bin/puddle && mycelium/bin/puddle 2>&1"]
+assert r1.ok else "mycelium-freight: the Puddle berth Freight rides is not GREEN"
+assert r1.out contains "GREEN" else "mycelium-freight: the Puddle berth did not speak its GREEN"
+
+let conv = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/puddle_convergence.rye -femit-bin=mycelium/bin/puddle_convergence && mycelium/bin/puddle_convergence 2>&1"]
+assert conv.ok else "mycelium-freight: the Puddle convergence Freight rides is not GREEN"
+assert conv.out contains "GREEN" else "mycelium-freight: the Puddle convergence did not speak its GREEN"
+
+# The Statement voice Freight reads a position through stands too — a world's position is that voice's own
+# reading, unmoved by the host it runs on.
+let stmt = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/statement.rye -femit-bin=mycelium/bin/statement && mycelium/bin/statement 2>&1"]
+assert stmt.ok else "mycelium-freight: the Statement voice Freight reads through is not GREEN"
+assert stmt.out contains "GREEN" else "mycelium-freight: the Statement voice did not speak its GREEN"
+
+say "mycelium-freight: GREEN — a world carries its whole signed ledger to its new berth: a moved world genuinely changes host yet reads the byte-identical position, a stayed world keeps both, a freight tampered in transit refuses, and no world reads another's freight; the Puddle berth, its convergence, and the Statement voice all stand at the door. Freight stands."

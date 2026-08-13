@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260813.121424
+editor Zed
+model Fable 5
+voice Kyri
+title Freight r1 — a world carries its whole signed ledger to its new berth
+prompt take the next agent-doable lap Lindy-first crux-first on the 1024-round / double-seat road; approve own design rounds; double-seat visions for blind spots; send each finished increment; stop at custody gates
+think Read REMEMBER + the 1024-round itinerary + the six-season double-seat expansion; the loop had just closed the Puddle fleet-placement arc (r1-r4) end to end, folded onto REMEMBER, sent. Card names the next crux as a fresh Season D / double-seat journey, each a self-approved design read.
+think Lindy-first crux-first across the whole road: the highest-value still-tractable agent-doable move is the seam between the two substrates Season D just built — Mycelium consensus (Cord..Warrant) and Puddle fleet placement. Puddle convergence (r2) proved placement moves minimally but a placement is only a pointer; no round showed a world's STATE surviving a re-berth. That blind spot is the durability guarantee any real fleet needs.
+think Substrate check confirmed the crux is almost given, which is the point: a world's account position is a pure function of its ledger bytes — lapse.resolve(dag) + statement.statement_for + voucher.order_head_of take no host as input. So migration is free; the work is to PROVE the trivial move is the honest one (world genuinely moved, fingerprint held, tamper-in-transit caught).
+think Named the journey Freight per the comlink-tendency + Puddle's own maritime berth metaphor — what a vessel carries to its berth. Grep-confirmed collision-free (cargo was already amphora prose; freight is clean).
+obs r1 built GREEN first pass. Three scenes: the migration crux (moved world changes host, keeps byte-identical position; stayed world keeps both), the teeth (receive() refuses FreightTampered when a flipped fact byte makes the rebuilt order-head disagree with the advertised head; honest freight accepts), and distinctness (each world's order-head its own, no cross-wiring).
+obs Composed puddle + cord + lapse + statement + fold + voucher + kumara public API only, editing none — Puddle berth, convergence, and the Statement voice all re-run GREEN at the witness door. TAME bans clean (freight.rye carries asserts, not on the zero-assert ratchet); width-check exits clean.
+obs Custody untouched — demo host/world/keeper seeds only, no key/funds/network, no world provisioned or moved. A served migration reaches the Comlink-served gate; a real Aurora host reaches gates #2/#4. No gate reached this round.
+loom witness=mycelium_freight_witness result=GREEN worlds=3 scenes=3 doors=3
+file active-designing/20260813-121424_puddle-freight-world-state-migration-exploration.md the self-approved design read opening the Freight journey (crux + four rounds)
+file mycelium/freight.rye r1 — read_position (pure-function position), receive (tamper-refusing rebuild), Position.same; the crux/teeth/distinctness selftest
+file tools/mycelium_freight_witness.rish GREEN witness; asserts the migration crux, tamper refusal, distinctness, and Puddle/Statement re-runs at the door
+file work-in-progress/REMEMBER.md folded the Freight journey opening (r1) beside the Puddle bullet; git nib refreshed in this work commit
+recommend keep-going Freight r2 — the whole fleet's state conserved across a host departure (no world reads another's freight; sum-in == sum-out), a fresh mechanical lap on the same substrate
