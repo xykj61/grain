@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260813.074353
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Mycelium Purse r4 — a real per-account double-spend reads true (app == awk); the arc closes
+prompt remember/loop card: take the next agent-doable lap Lindy-first crux-first; approve own design rounds; send each finished increment as its own signed round; stop at custody gates
+think Read REMEMBER + the two itinerary docs. The tree has advanced well past the card's Aug-12 body — the live edge (REMEMBER line 73) names the next agent-doable crux plainly: Purse r4, a real reproducible fixture read true (app == awk), closing the third contested-verdict arc. In-domain, Lindy-first (a real on-disk fixture a keeper can open outlives a demo Dag seated in code), crux-first (the closing rung is the one that proves the whole per-account model true to bytes). Chosen over a fresh season — closing the open arc is the higher-Lindy move, and it is a mechanical mirror of till_true with policy already written.
+think Read the mirror: till_true.rye, till_fixture_gen.rye, till_dag_truth.awk, the till_true witness, and cord_bron.rye (parse/rebuild + the exact block-line field layout: block author round kind amount star body signer fsig bsig). The one shift from the Till (global supply) to the Purse (per-account balances): the awk must key balances by the hex from/to the record already carries — an issue credits its body recipient, a tax moves amount from signer to body when the signer's running balance can pay, else names the signer the spent-out loser.
+think Designed the fixture scene for awk-honesty: the losing transfer must be unambiguously round 2 (referencing the winner), and the paying moves must touch disjoint accounts, so the app's full commit tie-break and the awk's file-order accounting name the same holder. Genesis credits Alice 100; Alice → Bob 100 (r1, wins); Bob → Dan 40 (r2, uncontested, so moved is two not one); Alice → Carol 100 (r2, short — her purse emptied). Conservation: balances 0/60/40/0 sum to 100.
+obs Generated the fixture, confirmed the four block lines match the design (round 0 issue → Alice, r1 Alice→Bob, r2 Bob→Dan, r2 Alice→Carol), symlinked it into mycelium/corpora/. The awk named Alice (bc7cbcb5…) moved 2 short 1; purse_true selftest GREEN first pass, measure == awk byte-for-byte. No red this round — the mirror held.
+obs The Reading struct reads purse.ShortMove.from (not the Till's signer_pk) and purse.moves_seen/shorts_seen; added a conservation welcome (balances_sum == 100 over the real bytes) that the Till's r4 did not have, since the Purse is the first contested-verdict arc carrying a conservation law across all four rungs.
+loom witness=mycelium_purse_true_witness result=GREEN cases=selftest+app_eq_awk+reproducible+purse triple=bc7cbcb5…_2_1 moved=2 short=1 conserved=100
+file active-designing/20260813-073500_mycelium-purse-true-real-fixture-exploration.md self-approved design read for the closing rung
+file mycelium/purse_fixture_gen.rye reproducibly emits the per-account double-spend record (mirror of till_fixture_gen)
+file tools/fixtures/purse_dag.bron the generated real record (@embedFile-bound through the corpora symlink)
+file mycelium/corpora/purse_dag.bron symlink binding the fixture at compile time
+file tools/fixtures/purse_dag_truth.awk independent per-account balance accounting — two tools, one answer
+file mycelium/purse_true.rye r4 — reads the real record, resolves through purse, reports loser·moved·short
+file tools/mycelium_purse_true_witness.rish witness — selftest + app == awk + reproducible + purse at the door
+file work-in-progress/REMEMBER.md live-edge update — Purse r4 landed, the Purse arc complete end to end
+recommend keep-going a fresh Season D journey (Kresfa/.kres language ecosystem, or Puddle fleet orchestration of the Aurora hypervisor), each a self-approved design read first; the three contested-verdict arcs (Tenure · Till · Purse) all stand closed, so the next crux opens a new capability
