@@ -1,4 +1,4 @@
-//! comlink/guest_sync_source_rx.rye — NS-L3 wire lap 2: source RX (open and verify sync request).
+//! comlink/guest_sync_source_rx.rye — NS-L3 wire: source RX (open and verify sync request) · 20260713.
 
 const vn = @import("virtio_net.rye");
 const wf = @import("wire_format.rye");

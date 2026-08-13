@@ -1,4 +1,4 @@
-//! comlink/guest_vessel_fetch_source_tx.rye — Amphora lap 3 device: source TX (resin response).
+//! comlink/guest_vessel_fetch_source_tx.rye — Amphora device: source TX (resin response) · 20260713.
 
 const vn = @import("virtio_net.rye");
 const tally_copy = @import("tally_copy.rye");

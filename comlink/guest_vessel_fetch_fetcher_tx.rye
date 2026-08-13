@@ -1,4 +1,4 @@
-//! comlink/guest_vessel_fetch_fetcher_tx.rye — Amphora lap 3 device: fetcher TX (digest request).
+//! comlink/guest_vessel_fetch_fetcher_tx.rye — Amphora device: fetcher TX (digest request) · 20260713.
 
 const vn = @import("virtio_net.rye");
 const tally_copy = @import("tally_copy.rye");
