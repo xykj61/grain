@@ -1,0 +1,451 @@
+//! pond/apps/constel_net_ledger_bron.rye — Constel dev-net ledger, Rung 3: the ledger travels as text.
+//!
+//! Rungs one and two proved the fake net's money folds the real Mycelium supply law and moves only by
+//! the identity that holds its genesis (issue raises supply, tax lowers it, star reservations drain it,
+//! an alien signer refuses before the log). A dev-net ledger is only useful to a developer who can
+//! *hand it to another* — a bench's books read on a second bench, a testnet's supply named in a shared
+//! fixture. This rung renders a folded ledger to a `format constel-ledger-v1` Bron record (the safe
+//! name, the sovereign key, then one signed `fact` line each) and parses it back byte-for-byte, so a
+//! dev-net's books cross as readable text.
+//!
+//! Two promises ride in the bytes, distinct from the harness's own r3 (which travelled only a roster of
+//! numbers):
+//!
+//!   * The quarantine travels with the record. `parse` re-checks the naming law — a record whose net
+//!     name carries no digit refuses `UnsafeName`, exactly as `open_ledger` refuses one at genesis, so a
+//!     ledger can never be read under a name that could parse as a real @p.
+//!   * The sovereignty travels with the record. Each fact's signer is the carried sovereign key, and
+//!     `supply` re-folds the reconstructed facts through the real Mycelium law, which verifies every
+//!     signature against that key — so a record whose sovereign key does not match its facts' signatures
+//!     refuses `IdentityRefused` on the fold. The sovereign key is load-bearing in the bytes, not a note.
+//!
+//! The reader is a purpose-built bounded flat-Bron reader (the tree's `key value` idiom), never a
+//! general parser: an unknown field refuses `UnknownField` (never dropped), a wrong header `BadFormat`,
+//! a missing net line `MissingNet`, a missing sovereign line `MissingSovereign`, a malformed line
+//! `BadLine`, a bad integer `BadInt`, a bad hex field `BadHex`, an unsafe name `UnsafeName`, a roster
+//! past its bound `TooManyFacts`. Additive — composes rungs one and two over public API; both re-run
+//! GREEN. Demo keeper seeds only — no real key, no funds, no network, no custody (gate #3 payment rail
+//! and gate #4 the maintainer's Kumara untouched; a ledger served over the wire reaches the serve gate).
+//!
+//!   rye build pond/apps/constel_net_ledger_bron.rye -femit-bin=pond/bin/constel-net-ledger-bron
+//!   pond/bin/constel-net-ledger-bron selftest
+//!
+//! Law:   active-designing/20260813-022222_constel-test-network-naming-law.md
+//! Scope: active-designing/20260813-030005_constel-devnet-ledger-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const constel_net = @import("constel_net.rye");
+const ledger = @import("constel_net_ledger.rye");
+const stars = @import("constel_net_ledger_stars.rye");
+const fold = @import("mycelium_fold.rye");
+const kumara = @import("kumara.rye");
+const parse_int = @import("parse_int.rye");
+
+pub const constel_net_ledger_bron_version = "20260813.031434";
+
+// A dev-net ledger is a small, legible fixture — a demo bench never winds thousands of facts. Bounded
+// here at the edge, generous over the demo's handful while far under the Mycelium log's own 1024 bound.
+pub const max_facts: u32 = 64;
+
+// The sentinel token standing for "this fact carries no star name" (issue and tax carry none). A real
+// star name is never a lone dash, so the marker can never be mistaken for one.
+const no_star = "-";
+
+const pk_len = kumara.PublicKey.encoded_length;
+const sig_len = kumara.signature_length;
+
+// The rendered record: a short header, a `net` line, a `sovereign` line, and one `fact` line each. A
+// fact line carries a two-digit kind, an amount, a star token, and a 128-char signature hex — a
+// generous bound over the worst case (64 facts).
+pub const max_record: u32 = 16384;
+
+pub const BronError = error{
+    BadFormat, // the header line is not `format constel-ledger-v1`
+    UnknownField, // a line names a field the record does not define
+    BadLine, // a line is missing a token or carries a trailing one
+    BadInt, // a numeric field did not parse
+    BadHex, // a hex field was the wrong length or held a non-hex char
+    MissingNet, // the record never named its net line (the safe name)
+    MissingSovereign, // the record never named its sovereign key
+    UnsafeName, // the net name carries no digit — it could parse as a real @p, so it cannot travel
+    NameTooLong, // the net name exceeded its bound
+    TooManyFacts, // the ledger carried past its bound
+    RecordTooLong, // the render exceeded its bounded buffer
+};
+
+const hex_digits = "0123456789abcdef";
+
+/// Write `bytes` as lowercase hex into `out` (out.len must be twice bytes.len).
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex chars per byte.
+    assert(out.len == bytes.len * 2);
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0F];
+    }
+}
+
+fn nibble(c: u8) BronError!u8 {
+    return switch (c) {
+        '0'...'9' => c - '0',
+        'a'...'f' => c - 'a' + 10,
+        'A'...'F' => c - 'A' + 10,
+        else => error.BadHex,
+    };
+}
+
+/// Decode `text` (exactly out.len*2 hex chars) into `out`, refusing wrong length or non-hex.
+fn from_hex(text: []const u8, out: []u8) BronError!void {
+    if (text.len != out.len * 2) return error.BadHex;
+    var i: usize = 0; // seam: slice index over owned buffers
+    while (i < out.len) : (i += 1) {
+        const hi = try nibble(text[i * 2]);
+        const lo = try nibble(text[i * 2 + 1]);
+        out[i] = (hi << 4) | lo;
+    }
+}
+
+/// A travelable ledger: its law-safe name, the sovereign key that authorized its money, and the roster
+/// of signed facts, owning its own buffers so nothing points into freed record text. Both `render`
+/// writes this and `parse` reads it, so a round trip is a fixed point over one shape.
+// Invariant: fact_count <= max_facts; name_len <= constel_net.max_name_len.
+pub const PortableLedger = struct {
+    name_buf: [constel_net.max_name_len]u8,
+    name_len: u32,
+    sovereign_pk: [pk_len]u8,
+    facts: [max_facts]fold.Fact,
+    fact_count: u32,
+
+    /// The dev-net's law-safe name, read back from its own storage.
+    pub fn name(self: *const PortableLedger) []const u8 {
+        // invariant: the stored length never exceeds the buffer it was copied into.
+        assert(self.name_len <= constel_net.max_name_len);
+        return self.name_buf[0..self.name_len];
+    }
+
+    /// The current myc supply — a fresh fold of the carried facts through the real Mycelium law, so the
+    /// number is the pure fold the law defines, and the fold verifies every fact's signature against
+    /// the carried sovereign key: a record whose sovereign does not match its facts refuses
+    /// `IdentityRefused`, so the sovereignty is proven from the bytes, not trusted.
+    pub fn supply(self: *const PortableLedger) ledger.AdmitError!u64 {
+        var log = fold.Log.empty();
+        var i: u32 = 0;
+        while (i < self.fact_count) : (i += 1) log.facts[i] = self.facts[i];
+        log.len = self.fact_count;
+        const state = try fold.fold_log(&log);
+        // invariant: supply is exactly issued minus taxed at the whole-log prefix.
+        assert(state.supply() == state.issued - state.taxed);
+        return state.supply();
+    }
+};
+
+/// Build a travelable ledger from a live dev-net ledger (rungs one and two): the safe name, the
+/// sovereign key (the genesis galaxy Deed's keeper), and every signed fact in log order. The name is
+/// copied into the record's own storage, so it travels without borrowing.
+pub fn from_ledger(net_ledger: *const ledger.NetLedger) BronError!PortableLedger {
+    if (net_ledger.log.len > max_facts) return error.TooManyFacts;
+    const nm = net_ledger.name();
+    // invariant: a live ledger's name is already law-safe and bounded — rung one proved it at genesis.
+    assert(nm.len <= constel_net.max_name_len);
+    assert(constel_net.name_safe(nm));
+    var pl = PortableLedger{
+        .name_buf = undefined,
+        .name_len = @intCast(nm.len),
+        .sovereign_pk = undefined,
+        .facts = undefined,
+        .fact_count = net_ledger.log.len,
+    };
+    var i: u32 = 0;
+    while (i < nm.len) : (i += 1) pl.name_buf[i] = nm[i];
+    // the sovereign key rides with the record — the genesis galaxy Deed's keeper.
+    const keeper = net_ledger.net.galaxy.keeper;
+    var k: u32 = 0;
+    while (k < pk_len) : (k += 1) pl.sovereign_pk[k] = keeper[k];
+    var j: u32 = 0;
+    while (j < net_ledger.log.len) : (j += 1) {
+        const f = net_ledger.log.facts[j];
+        // invariant: a ledger fact carries no free-form body — its whole meaning is kind·amount·star,
+        // so the record need not carry a body and none is silently dropped.
+        assert(f.body_len == 0);
+        pl.facts[j] = f;
+    }
+    // invariant: the roster carries exactly the log's facts, within bound.
+    assert(pl.fact_count <= max_facts);
+    return pl;
+}
+
+/// Render a portable ledger to a `format constel-ledger-v1` record. Refuses an overflow rather than a
+/// partial record.
+pub fn render(pl: *const PortableLedger, out: []u8) BronError!u32 {
+    // invariant: the render buffer honors its bound.
+    assert(out.len >= max_record);
+    var sov_hex: [pk_len * 2]u8 = undefined;
+    to_hex(pl.sovereign_pk[0..], &sov_hex);
+    const head = std.fmt.bufPrint(
+        out,
+        "format constel-ledger-v1\nnet {s}\nsovereign {s}\n",
+        .{ pl.name(), sov_hex },
+    ) catch return error.RecordTooLong;
+    var off: u32 = @intCast(head.len);
+    var j: u32 = 0;
+    while (j < pl.fact_count) : (j += 1) {
+        const f = &pl.facts[j];
+        var sig_hex: [sig_len * 2]u8 = undefined;
+        to_hex(f.sig[0..], &sig_hex);
+        const star = if (f.star_len == 0) no_star else f.star_slice();
+        const line = std.fmt.bufPrint(
+            out[off..],
+            "fact {d} {d} {s} {s}\n",
+            .{ f.kind, f.amount, star, sig_hex },
+        ) catch return error.RecordTooLong;
+        off += @intCast(line.len);
+    }
+    // invariant: the rendered record never exceeds its bound.
+    assert(off <= max_record);
+    return off;
+}
+
+/// Split a line on spaces into up to five tokens; returns the count found (or one past five to signal a
+/// trailing token no line allows). A `fact` line carries five tokens; a `net`/`sovereign` line two.
+fn tokens(line: []const u8, out: *[5][]const u8) u32 {
+    var count: u32 = 0;
+    var it = std.mem.tokenizeScalar(u8, line, ' ');
+    while (it.next()) |t| {
+        if (count >= 5) return count + 1; // signal a trailing token past what any line allows
+        out[count] = t;
+        count += 1;
+    }
+    return count;
+}
+
+/// Reconstruct one signed fact from a `fact <kind> <amount> <star> <sig-hex>` line, binding the carried
+/// sovereign key as the signer, so the fold re-verifies each signature against the net's own identity.
+fn read_fact(tok: *const [4][]const u8, sovereign_pk: *const [pk_len]u8) BronError!fold.Fact {
+    const kind_u = parse_int.parse_int(u32, tok[1], .{}) catch return error.BadInt;
+    if (kind_u > 255) return error.BadInt;
+    const amount = parse_int.parse_int(u64, tok[2], .{}) catch return error.BadInt;
+    var f = fold.Fact{ .kind = @intCast(kind_u), .amount = amount };
+    const star = tok[3];
+    if (!std.mem.eql(u8, star, no_star)) {
+        if (star.len > fold.star_name_max_bytes) return error.BadLine;
+        var s: u32 = 0;
+        while (s < star.len) : (s += 1) f.star[s] = star[s];
+        f.star_len = @intCast(star.len);
+    }
+    // the signer is the carried sovereign — sovereignty rides in the bytes, verified on the fold.
+    var k: u32 = 0;
+    while (k < pk_len) : (k += 1) f.signer_pk[k] = sovereign_pk[k];
+    try from_hex(tok[0], f.sig[0..]);
+    // invariant: a reconstructed ledger fact carries no body — its whole meaning is kind·amount·star.
+    assert(f.body_len == 0);
+    return f;
+}
+
+/// Parse a `format constel-ledger-v1` record into a PortableLedger, refusing an unknown or malformed
+/// field, a bad header, a missing net or sovereign line, an overlong or unsafe name, an overlong
+/// roster, or a bad integer/hex. The safe-name check travels with the record — an unsafe name refuses
+/// `UnsafeName`. The parse reads structure only; `supply` folds and so proves the sovereignty.
+pub fn parse(text: []const u8) BronError!PortableLedger {
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const header = lines.next() orelse return error.BadFormat;
+    if (!std.mem.eql(u8, header, "format constel-ledger-v1")) return error.BadFormat;
+
+    var have_net = false;
+    var have_sovereign = false;
+    var pl = PortableLedger{
+        .name_buf = undefined,
+        .name_len = 0,
+        .sovereign_pk = undefined,
+        .facts = undefined,
+        .fact_count = 0,
+    };
+
+    while (lines.next()) |raw| {
+        if (raw.len == 0) continue; // a trailing newline yields one empty line
+        var tok: [5][]const u8 = undefined;
+        const n = tokens(raw, &tok);
+        if (n == 0) continue;
+        if (std.mem.eql(u8, tok[0], "net")) {
+            if (n != 2) return error.BadLine;
+            const nm = tok[1];
+            if (nm.len > constel_net.max_name_len) return error.NameTooLong;
+            // invariant: the quarantine travels with the record — a name that could parse as a real
+            // @p refuses here, exactly as `open_ledger` refuses it at genesis.
+            if (!constel_net.name_safe(nm)) return error.UnsafeName;
+            pl.name_len = @intCast(nm.len);
+            var i: u32 = 0;
+            while (i < nm.len) : (i += 1) pl.name_buf[i] = nm[i];
+            have_net = true;
+        } else if (std.mem.eql(u8, tok[0], "sovereign")) {
+            if (n != 2) return error.BadLine;
+            try from_hex(tok[1], pl.sovereign_pk[0..]);
+            have_sovereign = true;
+        } else if (std.mem.eql(u8, tok[0], "fact")) {
+            if (n != 5) return error.BadLine;
+            if (!have_sovereign) return error.MissingSovereign; // a fact needs its signer's key first
+            if (pl.fact_count >= max_facts) return error.TooManyFacts;
+            // the four fact fields are tok[1..5]; read_fact takes kind·amount·star·sig-hex in order.
+            var fields: [4][]const u8 = .{ tok[4], tok[1], tok[2], tok[3] };
+            pl.facts[pl.fact_count] = try read_fact(&fields, &pl.sovereign_pk);
+            pl.fact_count += 1;
+        } else {
+            return error.UnknownField;
+        }
+    }
+    if (!have_net) return error.MissingNet;
+    if (!have_sovereign) return error.MissingSovereign;
+    // invariant: a parsed record carries a bounded, safe name and a bounded roster.
+    assert(pl.name_len <= constel_net.max_name_len);
+    assert(pl.fact_count <= max_facts);
+    return pl;
+}
+
+// ---- witnesses ----
+
+// Example seeds — plainly not a real keeper's key, so no identity is invented and no key is held.
+const demo_key: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
+const demo_keeper: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
+const alien_seed: [kumara.seed_length]u8 = .{0x33} ** kumara.seed_length;
+const demo_galaxy: u32 = 3;
+const safe_name = "xnqvel34";
+
+/// Seat a demo ledger with a handful of sovereign facts: issue 100, tax 30, reserve vega(20). The
+/// supply folds to 50 (100 issued, 30 + 20 drained).
+fn seat_demo_ledger() !ledger.NetLedger {
+    var net_ledger = try ledger.open_ledger(safe_name, &demo_key, &demo_keeper, demo_galaxy);
+    _ = try ledger.issue(&net_ledger, 100);
+    _ = try ledger.tax(&net_ledger, 30);
+    _ = try stars.reserve_star(&net_ledger, "vega", 20);
+    return net_ledger;
+}
+
+/// A folded ledger renders to Bron and parses back byte-for-byte: the safe name, the sovereign key, and
+/// the roster of facts are recovered exactly; the recovered ledger folds to the same supply; and
+/// re-rendering the parsed record reproduces the identical bytes (a fixed point).
+fn welcome_round_trip_recovers_ledger() !void {
+    var net_ledger = try seat_demo_ledger();
+    const before = try net_ledger.supply();
+    assert(before == 50);
+    const pl = try from_ledger(&net_ledger);
+
+    var buf1: [max_record]u8 = undefined;
+    const n1 = try render(&pl, &buf1);
+    const back = try parse(buf1[0..n1]);
+
+    // The safe name and roster are recovered exactly.
+    assert(std.mem.eql(u8, back.name(), safe_name));
+    assert(back.fact_count == 3);
+    // the recovered name is still law-safe — the quarantine survived the crossing
+    assert(constel_net.name_safe(back.name()));
+    // the sovereign key rode with it — exactly the genesis keeper
+    assert(std.mem.eql(u8, back.sovereign_pk[0..], net_ledger.net.galaxy.keeper[0..]));
+    // the recovered ledger folds to the same supply, its signatures re-verified against the sovereign
+    const after = try back.supply();
+    assert(after == before);
+
+    // Byte-for-byte: re-rendering the parsed record reproduces the exact bytes (a fixed point).
+    var buf2: [max_record]u8 = undefined;
+    const n2 = try render(&back, &buf2);
+    assert(n1 == n2);
+    assert(std.mem.eql(u8, buf1[0..n1], buf2[0..n2]));
+    print("constel-net-ledger-bron: a folded ledger rendered to Bron, parsed back byte-for-byte, and recovered its safe name, sovereign key, and supply 50 over three facts.\n", .{});
+}
+
+/// The sovereignty rides in the bytes: a record whose sovereign key is swapped for another valid key no
+/// longer matches its facts' signatures, so the fold refuses `IdentityRefused` — the sovereign line is
+/// load-bearing, not a note. This is r3's distinctive crux over the harness's number-only roster.
+fn unwelcome_wrong_sovereign_refuses_fold() !void {
+    var net_ledger = try seat_demo_ledger();
+    const pl = try from_ledger(&net_ledger);
+    var buf: [max_record]u8 = undefined;
+    const n = try render(&pl, &buf);
+    var back = try parse(buf[0..n]);
+    // swap the sovereign for a different, well-formed key (the alien's) — parse still succeeds, yet the
+    // carried facts were signed by the real sovereign, so folding against the alien key refuses.
+    const alien = kumara.keypair_from_seed(&alien_seed);
+    const alien_pk = alien.public_key.toBytes();
+    assert(!std.mem.eql(u8, alien_pk[0..], back.sovereign_pk[0..]));
+    var k: u32 = 0;
+    while (k < pk_len) : (k += 1) {
+        back.sovereign_pk[k] = alien_pk[k];
+        var j: u32 = 0;
+        while (j < back.fact_count) : (j += 1) back.facts[j].signer_pk[k] = alien_pk[k];
+    }
+    const folded = back.supply();
+    assert(folded == error.IdentityRefused);
+    print("constel-net-ledger-bron: a record whose sovereign key was swapped refused IdentityRefused on the fold — the sovereignty rides in the bytes.\n", .{});
+}
+
+/// A record whose net name carries no digit refuses `UnsafeName` on parse — the quarantine travels with
+/// the bytes, so a ledger can never be read under a name that could parse as a real @p.
+fn unwelcome_unsafe_name_refuses() !void {
+    const text = "format constel-ledger-v1\nnet sarlev\nsovereign " ++ "00" ** pk_len ++ "\n";
+    const bad = parse(text);
+    assert(bad == error.UnsafeName);
+    print("constel-net-ledger-bron: a record naming an @p-shaped net refused UnsafeName — the quarantine travels with the bytes.\n", .{});
+}
+
+/// An unknown field refuses rather than being dropped — the reader keeps every line honest.
+fn unwelcome_unknown_field_refuses() !void {
+    const text = "format constel-ledger-v1\nnet xnqvel34\nsovereign " ++ "00" ** pk_len ++ "\nghost 5\n";
+    const bad = parse(text);
+    assert(bad == error.UnknownField);
+    print("constel-net-ledger-bron: an unknown field refused UnknownField rather than be dropped.\n", .{});
+}
+
+/// A wrong header refuses — the record must name its own format.
+fn unwelcome_bad_header_refuses() !void {
+    const bad = parse("format other-v1\nnet xnqvel34\n");
+    assert(bad == error.BadFormat);
+    print("constel-net-ledger-bron: a wrong header refused BadFormat.\n", .{});
+}
+
+/// A record that never names its net line refuses — the safe name is required.
+fn unwelcome_missing_net_refuses() !void {
+    const bad = parse("format constel-ledger-v1\nsovereign " ++ "00" ** pk_len ++ "\n");
+    assert(bad == error.MissingNet);
+    print("constel-net-ledger-bron: a record with no net line refused MissingNet.\n", .{});
+}
+
+/// A fact line before any sovereign line refuses — a fact needs its signer's key to be reconstructed.
+fn unwelcome_missing_sovereign_refuses() !void {
+    const bad = parse("format constel-ledger-v1\nnet xnqvel34\nfact 1 100 - " ++ "00" ** sig_len ++ "\n");
+    assert(bad == error.MissingSovereign);
+    print("constel-net-ledger-bron: a fact with no sovereign key before it refused MissingSovereign.\n", .{});
+}
+
+/// A malformed hex signature refuses — the reader will not accept a corrupt fact.
+fn unwelcome_bad_hex_refuses() !void {
+    const text = "format constel-ledger-v1\nnet xnqvel34\nsovereign " ++ "00" ** pk_len ++ "\nfact 1 100 - zz\n";
+    const bad = parse(text);
+    assert(bad == error.BadHex);
+    print("constel-net-ledger-bron: a malformed signature hex refused BadHex.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_round_trip_recovers_ledger();
+    try unwelcome_wrong_sovereign_refuses_fold();
+    try unwelcome_unsafe_name_refuses();
+    try unwelcome_unknown_field_refuses();
+    try unwelcome_bad_header_refuses();
+    try unwelcome_missing_net_refuses();
+    try unwelcome_missing_sovereign_refuses();
+    try unwelcome_bad_hex_refuses();
+    print("constel_net_ledger_bron {s} — GREEN\n", .{constel_net_ledger_bron_version});
+    print("GREEN: constel-net-ledger r3; a fake dev-net's ledger travels as a format constel-ledger-v1 record byte-for-byte, its safe name and sovereign key riding in the bytes, the supply re-folded and the sovereignty re-verified from the record.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest();
+    }
+    print("usage: constel-net-ledger-bron selftest\n", .{});
+    return 1;
+}
