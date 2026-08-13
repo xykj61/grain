@@ -1,0 +1,50 @@
+# tools/mycelium_till_witness.rish — the Till: a contested draw decided by the agreed order (r1).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · the double-spend verdict · rung r1 — the crux.
+# The Tenure decided a contested NAME (one holder); the Till decides a contested DRAW (one hand of coins) —
+# the double-spend, the oldest reason a value ledger wants consensus. Two keepers each reach into a treasury
+# of 1000 for 700; each is affordable alone, together they are not. The Cord's agreed order already weaves
+# one sequence through the mesh regardless of arrival, and the Till reads it as the treasury's verdict: the
+# first draw takes the coins, the second comes up short — and comes up short as a LAWFUL NO-OP, never a poison.
+#
+# The honest distinction this witness proves is the whole crux: a draw that overdraws yet asked for no more
+# than the treasury EVER ISSUED by its turn (amount <= issued-so-far) lost a race and is a lawful no-op the
+# verdict records; a draw that asked for more than the treasury ever issued NEVER COULD PAY and refuses the
+# whole resolution; a broken-fact signature refuses whole. The verdict is deterministic — the same keeper
+# comes up short across three arrival permutations. Composes cord + fold public API only; every buffer
+# bounded; demo keeper seeds — no key, no funds, no network, no custody.
+#
+# Scope: active-designing/20260813-064129_mycelium-till-double-spend-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mycelium_till_witness.rish
+
+say "mycelium-till: Language EN — a contested draw is paid to whichever spend the agreed order places first."
+say "mycelium-till: Style Radiant — a name forgives only one holder; a treasury forgives only what it holds; the Cord has already woven the order, and the Till reads it plainly."
+say "mycelium-till: Lens TAME — the verdict composes cord + fold public API; every buffer bounded; a lost race is a lawful no-op, never-could-pay and corruption refuse whole; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/till"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/till.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-till: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mycelium-till: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-till: selftest did not speak GREEN"
+assert selftest.out contains "the agreed order pays one" else "mycelium-till: verdict claim missing"
+assert selftest.out contains "across three arrival orders" else "mycelium-till: arrival-order-independence claim missing"
+assert selftest.out contains "the loser is a lawful no-op" else "mycelium-till: lawful-no-op claim missing"
+assert selftest.out contains "refuse the whole resolution" else "mycelium-till: never-could-pay/corruption claim missing"
+
+# The Cord whose agreed order the Till reads, and the Mycelium fold whose per-fact law it applies, both
+# stand at the door — their own selftests prove the machinery the verdict rests on.
+let cord = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord.rye -femit-bin=mycelium/bin/cord && mycelium/bin/cord 2>&1"]
+assert cord.ok else "mycelium-till: the Cord the Till reads is not GREEN"
+assert cord.out contains "GREEN" else "mycelium-till: the Cord did not speak its GREEN"
+
+let fold = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/fold.rye -femit-bin=mycelium/bin/fold && mycelium/bin/fold 2>&1"]
+assert fold.ok else "mycelium-till: the Mycelium fold the Till applies is not GREEN"
+assert fold.out contains "GREEN" else "mycelium-till: the Mycelium fold did not speak its GREEN"
+
+say "mycelium-till: GREEN — two keepers reach into one treasury for coins that cannot pay both, the agreed order pays one, the same one every arrival; the loser loses nothing but the coins it never truly had, never-could-pay and corruption refuse whole; the Cord and the fold stand at the door."
