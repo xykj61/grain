@@ -1,0 +1,57 @@
+# tools/mycelium_muster_knot_witness.rish — a roll's verdict on a quorum survives a checkpoint (r3).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · the Muster · rung r3 — across a Knot.
+# r1 bound a Chorus to a known validator set (a Muster); r2 let the whole roll travel. Yet a ledger a
+# family runs for years does not carry its whole past unbroken — the Knot ties off a committed prefix and
+# the Lapse continues its deadline clock across the seal by carrying the epoch base. r3 judges a whole
+# quorum against a Muster over a ledger resolved ACROSS an epoch cut.
+#
+# The crux this witness proves is A ROLL'S VERDICT ON A QUORUM SURVIVES A CHECKPOINT: a mesh of enrolled
+# validators vouches Alice's position against the whole Cord; a counterparty who checkpointed the prefix
+# (sealed it into a Knot, discarded the base blocks, kept only the Knot plus its suffix) applies the same
+# roll and reaches the same verdict — the enrolled quorum passes over the continued position.
+# pass_muster_across runs r1's membership-and-quorum law then confirms the agreed position equals the
+# Knot-continued ledger's reading. Proven on a pledge lapsing across the cut (coins home) and a far
+# deadline honored in the suffix (received accumulated, never restarted). An outsider quorum of three fresh
+# keys the Chorus alone believes refuses NotMember across the cut; a thin quorum refuses BelowQuorum; a
+# corrupt Knot yields no continued ledger. Composes muster + chorus + statement + lapse_knot public API
+# only; demo seeds — no key, no funds, no network, no custody.
+#
+# Scope: active-designing/20260813-110039_mycelium-muster-known-validator-set-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mycelium_muster_knot_witness.rish
+
+say "mycelium-muster-knot: Language EN — a ledger a family runs for years is checkpointed and pruned, yet the roll that says whose voices count still reaches the same verdict on a quorum across the seal."
+say "mycelium-muster-knot: Style Radiant — r1 made the roll a standard; r3 proves the standard is continuous across an epoch cut, so a party who kept only the checkpoint applies the same roll and believes the same enrolled quorum."
+say "mycelium-muster-knot: Lens TAME — pass_muster_across composes muster.pass_muster + statement over a Knot-continued ledger; the account ceiling is asserted; an outsider or thin quorum refuses on the roll's own terms before any ledger is read; a corrupt Knot is never continued; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/muster_knot"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/muster_knot.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-muster-knot: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mycelium-muster-knot: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-muster-knot: selftest did not speak GREEN"
+assert selftest.out contains "a party who checkpointed the prefix applies the same roll and reaches the same verdict" else "mycelium-muster-knot: verdict-survives-checkpoint claim missing"
+assert selftest.out contains "received accumulates across the cut" else "mycelium-muster-knot: received-accumulates claim missing"
+assert selftest.out contains "the roll refuses across the cut exactly as in memory" else "mycelium-muster-knot: refusal-across-cut claim missing"
+assert selftest.out contains "an outsider quorum of three fresh keys the Chorus alone believes refuses NotMember" else "mycelium-muster-knot: outsider-across-cut claim missing"
+assert selftest.out contains "a corrupt Knot yields no continued ledger" else "mycelium-muster-knot: corrupt-knot claim missing"
+assert selftest.out contains "a roll's verdict on a quorum survives a checkpoint" else "mycelium-muster-knot: closing claim missing"
+
+# The rendered roll a keeper applies across the cut.
+assert selftest.out contains "muster validators=4 byzantine_threshold=3" else "mycelium-muster-knot: rendered roll (n=4 t=3) missing"
+
+# The Muster r1 and the Lapse-Knot the continuity rests on stand at the door.
+let muster = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/muster.rye -femit-bin=mycelium/bin/muster && mycelium/bin/muster 2>&1"]
+assert muster.ok else "mycelium-muster-knot: the Muster r1 the roll is is not GREEN"
+assert muster.out contains "GREEN" else "mycelium-muster-knot: the Muster did not speak its GREEN"
+
+let lapse_knot = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/lapse_knot.rye -femit-bin=mycelium/bin/lapse_knot && mycelium/bin/lapse_knot 2>&1"]
+assert lapse_knot.ok else "mycelium-muster-knot: the Lapse-Knot the continuity rests on is not GREEN"
+assert lapse_knot.out contains "GREEN" else "mycelium-muster-knot: the Lapse-Knot did not speak its GREEN"
+
+say "mycelium-muster-knot: GREEN — a roll's verdict on a quorum survives a checkpoint: an enrolled quorum vouching against the whole Cord is judged the same by a party who kept only the Knot plus its suffix (lapse and honor both), an outsider or thin quorum refused across the cut exactly as in memory, a corrupt Knot never continued; the Muster and the Lapse-Knot stand at the door."
