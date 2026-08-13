@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260813.182736
+editor Zed
+model Fable 5
+voice Kyri
+host cloud bench — Eastern (EDT) time convention · ai-jail
+title HUNK31 — the preset book travels as a format filter-presets-v1 record
+prompt Keep taking the next agent-doable lap Lindy-first crux-first; send often as its own signed round.
+think HUNK30 named HUNK31 as the next crux: a curated preset book travelling as shareable text, a nested grammar over photo_edits's own line format.
+think Additive on image/filter_preset.rye (like parse_listing on session_list) keeps one home for the preset concept; render_book/parse_book reuse photo_edits.render_edits/parse_edits so the verb grammar is the single source of truth, never re-spelled.
+think Each preset block is `preset <name>` + the edit-list body (photo_edits header stripped) + `end`; parse rebuilds the edit text by prefixing the header back, so one grammar round-trips both ways.
+obs render(parse(render(x))) is a fixed point over the whole 9-preset stock book (280 bytes); a rebuilt noir applies to the same bytes as the original two-verb recipe — travel preserves the recipe, not just the names.
+obs Structural errors speak one honest text-edge error BadBook (bad header, a verb line out of place, an unclosed block, a malformed verb, a duplicate name), the PresetBook bounds re-enforced through define — the convention sprite_catalog and session_list already set.
+obs TAME bans clean, width exit 0, no compound asserts added; witness extended with three book-travel greps, GREEN.
+loom witness=hunk_filter_preset_witness result=GREEN book_bytes=280 presets=9
+file image/filter_preset.rye render_book/parse_book added additively; the book travels as a fixed-point record
+file tools/hunk_filter_preset_witness.rish extended to assert the book-travel fixed point and BadBook refusals
+recommend keep-going a preset book banked content-addressed (bead a curated filter set, reproduce from cold), the Skate preview of a preset (reusing HUNK13), or another Season-A / double-seat journey; hardware buys stay custody gates #2/#3

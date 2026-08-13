@@ -33,11 +33,23 @@ pub const max_presets: u32 = 16;
 /// The longest preset name — a plain word like `vivid` or `noir`, bounded so a name never overruns its slot.
 pub const max_preset_name: u32 = 32;
 
+/// A safe upper bound on one preset's block in a book record: a `preset <name>\n` head, up to one edit-list body
+/// (every verb line), and an `end\n` terminator. The whole book is the 24-byte header plus one block per preset.
+pub const per_preset_bound: u32 = 8 + max_preset_name + photo_edits.max_edits * photo_edits.per_line_bound + 4;
+pub const max_book_bytes: u32 = 24 + max_presets * per_preset_bound;
+
+/// The photo_edits record header a preset body is wrapped in when it travels — reused, not re-grammared, so one
+/// verb grammar is the single source of truth.
+const edits_header = "format photo-edits-v1\n";
+const book_header = "format filter-presets-v1\n";
+
 pub const PresetError = error{
     TooManyPresets,
     PresetExists,
     BadPresetName,
     UnknownPreset,
+    BadBook,
+    Overflow,
 };
 
 /// One named recipe — a plain name plus the edit-list the name stands for. The name lives in a fixed buffer so a
@@ -187,6 +199,94 @@ fn push_ok(list: *photo_edits.EditList, e: photo_edits.Edit) PresetError!void {
     list.push(e) catch return error.TooManyPresets;
 }
 
+/// Render a whole preset book as its `format filter-presets-v1` record into `out`, returning its length. Each
+/// preset is a `preset <name>` head, its edit-list body (reusing `photo_edits.render_edits` and stripping that
+/// record's own header so the verb grammar is not duplicated), and an `end` terminator. Refuses `Overflow` rather
+/// than writing past the buffer a caller supplied. So a curated book travels as shareable text, and — with
+/// `parse_book` — `render(parse(render(x)))` is a fixed point, exactly as the sprite catalog's is.
+pub fn render_book(book: *const PresetBook, out: []u8) PresetError!u32 {
+    // invariant: the book stays within its named ceiling before it is ever rendered.
+    assert(book.count <= max_presets);
+    if (book_header.len > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[0..book_header.len], book_header);
+    var off: u32 = @intCast(book_header.len);
+
+    var i: u32 = 0;
+    while (i < book.count) : (i += 1) {
+        const p = &book.presets[i];
+        // The head names the preset; the name is bounded so this line can never overrun.
+        const head = std.fmt.bufPrint(out[off..], "preset {s}\n", .{p.name()}) catch return error.Overflow;
+        off += @intCast(head.len);
+
+        // Render the preset's edit-list, then copy only its body (past the record's own header) so the one verb
+        // grammar in photo_edits is reused rather than re-spelled here.
+        var edits_buf: [photo_edits.max_edits_bytes]u8 = undefined;
+        const en = photo_edits.render_edits(&p.list, edits_buf[0..]) catch return error.Overflow;
+        // invariant: a rendered edit-list always opens with the photo_edits header, so a body is what follows it.
+        assert(en >= edits_header.len);
+        const body = edits_buf[edits_header.len..en];
+        if (off + body.len + 4 > out.len) return error.Overflow;
+        tally_copy.copy_disjoint(u8, out[off .. off + body.len], body);
+        off += @intCast(body.len);
+
+        tally_copy.copy_disjoint(u8, out[off .. off + 4], "end\n");
+        off += 4;
+    }
+    // invariant: the rendered record stays within the buffer.
+    assert(off <= out.len);
+    return off;
+}
+
+/// Parse a `format filter-presets-v1` record into a fresh book. Each block is a `preset <name>` head, zero or more
+/// verb lines, and an `end` terminator; the verb lines are handed to `photo_edits.parse_edits` (the one grammar).
+/// A bad header, a line out of place, a missing terminator, a malformed verb, or a duplicate name each refuse
+/// `BadBook` — one honest error at the text edge, the `PresetBook` bounds enforced through `define`.
+pub fn parse_book(text: []const u8, out: *PresetBook) PresetError!void {
+    out.* = PresetBook.init();
+    // invariant: parsing starts from an empty book.
+    assert(out.count == 0);
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const first = lines.next() orelse return error.BadBook;
+    if (!std.mem.eql(u8, first, "format filter-presets-v1")) return error.BadBook;
+
+    while (lines.next()) |line| {
+        if (line.len == 0) continue; // a trailing newline yields an empty final piece
+        // Each block must open with a `preset <name>` head; anything else here is out of place.
+        var head = std.mem.tokenizeScalar(u8, line, ' ');
+        const kw = head.next() orelse return error.BadBook;
+        if (!std.mem.eql(u8, kw, "preset")) return error.BadBook;
+        const name = head.next() orelse return error.BadBook;
+        if (head.next() != null) return error.BadBook; // a name is one token, no slack
+
+        // Build this preset's edit-list text by prefixing the photo_edits header to its verb lines, up to `end`.
+        var edits_buf: [photo_edits.max_edits_bytes]u8 = undefined;
+        if (edits_header.len > edits_buf.len) return error.BadBook;
+        tally_copy.copy_disjoint(u8, edits_buf[0..edits_header.len], edits_header);
+        var eoff: u32 = @intCast(edits_header.len);
+        var closed = false;
+        while (lines.next()) |body_line| {
+            if (std.mem.eql(u8, body_line, "end")) {
+                closed = true;
+                break;
+            }
+            if (body_line.len == 0) return error.BadBook; // no blank line inside a block
+            if (eoff + body_line.len + 1 > edits_buf.len) return error.BadBook;
+            tally_copy.copy_disjoint(u8, edits_buf[eoff .. eoff + body_line.len], body_line);
+            eoff += @intCast(body_line.len);
+            edits_buf[eoff] = '\n';
+            eoff += 1;
+        }
+        if (!closed) return error.BadBook; // a block that never closes with `end`
+
+        var list: photo_edits.EditList = undefined;
+        photo_edits.parse_edits(edits_buf[0..eoff], &list) catch return error.BadBook;
+        out.define(name, &list) catch return error.BadBook; // a bad name or a duplicate refuses at the text edge
+    }
+    // invariant: a parsed book holds no more than the preset ceiling.
+    assert(out.count <= max_presets);
+}
+
 // --- selftest: define a book, apply presets by name over more than one image, prove each equals its recipe by
 //     hand, that distinct presets differ, that a preset is deterministic and pure and stays open, and that the
 //     named refusals each fire ---------------------------------------------------------------------------------
@@ -300,12 +400,48 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
+    // HUNK31 — the book travels: render the whole stock book to a `format filter-presets-v1` record, parse it
+    // back, and prove render(parse(render(x))) is a fixed point AND a parsed preset applies to the same bytes as
+    // the original — a curated filter set is shareable text, the recipes intact.
+    const bookbuf = try garden.alloc(u8, max_book_bytes);
+    const bn = try render_book(&book, bookbuf);
+    const record = bookbuf[0..bn];
+    var rebuilt: PresetBook = undefined;
+    try parse_book(record, &rebuilt);
+    assert(rebuilt.len() == book.len());
+    const bookbuf2 = try garden.alloc(u8, max_book_bytes);
+    const bn2 = try render_book(&rebuilt, bookbuf2);
+    assert(bn2 == bn);
+    assert(std.mem.eql(u8, bookbuf2[0..bn2], record));
+    // The rebuilt `noir` applies to the same bytes as the original two-verb recipe — travel preserved the recipe.
+    const noir_rebuilt = try apply_preset(garden, &rebuilt, "noir", &img_a);
+    assert(noir_rebuilt.same_bytes(&noir_hand));
+
+    // Unwelcome: a bad book header, a line out of place (no `preset` head), and a block that never closes with
+    // `end` each refuse `BadBook`.
+    var bad_hdr: PresetBook = undefined;
+    if (parse_book("format wrong-v1\n", &bad_hdr)) |_| return error.BookHdrSlipped else |e| {
+        if (e != error.BadBook) return error.WrongBookHdr;
+    }
+    var bad_place: PresetBook = undefined;
+    if (parse_book("format filter-presets-v1\nsaturate 3 2\n", &bad_place)) |_| return error.PlaceSlipped else |e| {
+        if (e != error.BadBook) return error.WrongPlace;
+    }
+    var no_end: PresetBook = undefined;
+    if (parse_book("format filter-presets-v1\npreset vivid\nsaturate 3 2\n", &no_end)) |_| {
+        return error.NoEndSlipped;
+    } else |e| {
+        if (e != error.BadBook) return error.WrongNoEnd;
+    }
+
     print("GREEN filter-preset: a stock book of {d} named filters — `vivid` applied by name equals " ++
         "photos.saturate by hand byte-for-byte, the SAME preset applies to a DIFFERENT image equalling ITS own " ++
         "recipe by hand (a preset is not tied to one source), a two-verb `noir` resolves whole, distinct presets " ++
         "differ, a preset is deterministic and pure and re-encodes as an open image; an unknown name refuses " ++
         "UnknownPreset before a verb runs, a duplicate refuses PresetExists, a bad name refuses BadPresetName, " ++
-        "and a full book refuses TooManyPresets\n", .{book.len()});
+        "and a full book refuses TooManyPresets; the whole book travels as a {d}-byte format filter-presets-v1 " ++
+        "record — render(parse(render)) is a fixed point and a rebuilt preset applies to the same bytes, a bad " ++
+        "header, a line out of place, and an unclosed block each refuse BadBook\n", .{ book.len(), bn });
     return 0;
 }
 
