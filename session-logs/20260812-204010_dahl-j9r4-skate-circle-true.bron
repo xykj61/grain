@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260812.204010
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title DAHL-J9r4 — the circle reads true on a real fixture (Journey 9 closes)
+prompt Autonomous loop — take the next agent-doable lap Lindy-first crux-first; send each increment as its own signed round; STOP at custody gates.
+think Rungs one through three proved consent over circles seated in code; the closing rung mirrors GISM-J5r4 / entity_books_true — carry the reader onto a real record a keeper can open and count, and prove the reading is true to the bytes.
+think The signature wrinkle: a hand-authored fixture with placeholder sigs would not verify. To keep it honest, generated a real signed-circle fixture with a throwaway generator (real Ed25519 sigs from the demo seeds), captured it to skate/fixtures/circle.bron, and discarded the generator — so the on-disk record is a genuine signed circle.
+think Two-tools-one-answer: skate_circle_true reports members/links/mutual (a mutual link = an unordered pair both directed requests present), and the witness cross-checks the `measure` triple against skate_circle_truth.awk over the same bytes (3 3 1). still_consented re-verifies every sig and rebuild recovers the mutual link and the one-sided hold exactly.
+obs First witness cut used `.trim` on run output — not a rish accessor; switched to the entity_books_true idiom, a `measure` subcommand emitting exactly the awk format compared with `measure.out == awk.out`. GREEN after; TAME + width clean.
+loom witness=dahl_j9_skate_circle_true_witness cases=3 app_vs_awk=3_3_1 result=GREEN
+file skate/fixtures/circle.bron real format skate-circle-v1 record with real signatures — the tree's own bytes
+file pond/apps/corpora/skate_circle.bron symlink binding the fixture at compile time
+file tools/fixtures/skate_circle_truth.awk independent structural measure — members, links, mutual links
+file pond/apps/skate_circle_true.rye reads the real record, reports the triple, confirms still_consented, refuses a tampered header
+file tools/dahl_j9_skate_circle_true_witness.rish GREEN witness — app==awk crux + consent-honest + tamper refusal
+file work-in-progress/REMEMBER.md closed Journey 9 and named Journey 10 (Membership) as the next agent-doable crux
+recommend keep-going Season 3 Journey 10 (Membership) — the one surface that needs quorum, proven at more than two keepers, extending settlement/names.rye; a fresh self-approved design read first

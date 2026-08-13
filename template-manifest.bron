@@ -64,6 +64,7 @@ allow rye
 allow scribble
 allow scribe
 allow settlement
+allow skate
 allow src
 allow tally
 allow tools
@@ -191,6 +192,7 @@ template  rishi                           # the shell language
 template  rye                             # the systems language
 template  scribble                        # module
 template  scribe                          # the Kyri reader — clean code, no name
+template  skate                           # the consent-first social layer — clean code, demo keeper seeds only
 template  vault                           # keeper of secrets (Shamir sharding) — clean code, fake 0x11 seed only
 template  src                             # Glow userland (five rooms)
 template  tally                           # bounded allocation
