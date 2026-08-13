@@ -1,0 +1,156 @@
+//! pond/apps/ledger_query_true.rye - the Ledger Voice, rung 4: read a real ledger true.
+//!
+//! Season D (Kresfa & Mycelium). Rung 1 read a hand-seeded fold.Log, rung 2 a committed
+//! cord.Dag, rung 3 across a sealed Knot - all over corpora seated in code. This closing
+//! rung carries the *voice* onto a real on-disk ledger a keeper can open and add up by hand,
+//! and proves the property a family running the ledger for years most needs: the supply the
+//! intelligence reports is true to the bytes.
+//!
+//! The corpus is tools/fixtures/cord_dag.bron, a genuine `format cord-dag-v1` record of the
+//! honest four-block scene (two genesis issues 500 each, a tax 200, a star reservation vega
+//! 100 -> issued 1000, taxed 300, supply 700, one star), @embedFile-bound at compile time
+//! through a symlink in pond/apps/corpora/ - no network, the bytes read are the tree's own.
+//!
+//! The crux: two independent tools give one answer. The Ledger Voice parses the real record
+//! through cord_bron, rebuilds the Dag under the Cord's own add (re-verifying every signature),
+//! commits it in the recorded order, gathers the committed log, and reads the supply through
+//! rung one's Lantern-metered answer_over - the same voice a person asks. The r4 witness
+//! cross-checks the voice's `<supply> <stars>` against tools/fixtures/cord_dag_truth.awk's
+//! reading of the same file (supply = issued - taxed, counted by hand). cord_true already
+//! proved the *fold* reads a real Cord true; this rung proves the *voice* does - the reader a
+//! family actually uses can never drift from a record they can open.
+//!
+//! Additive by construction: it imports ledger_query, cord_bron, cord, and fold, and calls
+//! only their public functions. Rung one stays its own green binary. No storage, no transport,
+//! no network, no custody - a node reads its own real ledger.
+//!
+//!   rye build pond/apps/ledger_query_true.rye -femit-bin=pond/bin/ledger-query-true
+//!   pond/bin/ledger-query-true selftest | measure
+//!
+//! Scope: active-designing/20260813-053843_mycelium-ledger-voice-exploration.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const lc = @import("lantern/lantern_core.rye");
+const lq = @import("ledger_query.rye");
+const cord = @import("cord.rye");
+const cord_bron = @import("cord_bron.rye");
+const fold = @import("fold.rye");
+
+const ledger_query_true_version = "20260813.055640";
+
+const allow_line = "model_hash sha3-256-rye-forge-lap0";
+const model = "sha3-256-rye-forge-lap0";
+
+/// The real ledger record, bound at compile time - the tree's own bytes, never a drifting copy.
+const real_ledger = @embedFile("corpora/cord_dag.bron");
+
+/// Build the voice's corpus from a real `format cord-dag-v1` record: parse it, rebuild the Dag
+/// under the Cord's own add (re-verifying every signature, requiring every parent held), commit
+/// it, and gather the committed blocks into a fold.Log in agreed order. The fixture is rendered
+/// in agreed order, so the app's independent commit must be the identity permutation over it -
+/// else the record is not a committed ledger and the reading refuses.
+fn real_log(text: []const u8, log_out: *fold.Log) !void {
+    const pl = try cord_bron.parse(text);
+    // invariant: a real ledger record carries at least one block - an empty Dag is no supply to read.
+    if (pl.len == 0) return error.BadFormat;
+    var dag = try cord_bron.rebuild(&pl);
+    var order: [cord.cord_max_blocks]u32 = undefined;
+    const count = cord.commit(&dag, order[0..]);
+    // invariant: the count never exceeds the blocks the record held
+    assert(count == pl.len);
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        if (order[i] != i) return error.OrderNotCanonical;
+    }
+    cord.committed_log(&dag, order[0..], count, log_out);
+}
+
+/// Ask the routed prompt over the real ledger through rung one's Lantern-metered voice.
+fn ask_real(prompt: []const u8, out_buf: []u8) !lc.Response {
+    var log: fold.Log = undefined;
+    try real_log(real_ledger, &log);
+    const req = lc.Request{ .model_hash = model, .prompt = prompt, .max_tokens = 64 };
+    return lq.answer_over(req, allow_line, &log, out_buf);
+}
+
+// --- selftest -----------------------------------------------------------
+
+fn welcome_supply_true() !void {
+    var buf: [lc.max_completion_len]u8 = undefined;
+    const resp = try ask_real("supply the ledger", &buf);
+    // issued 1000 - taxed 300 = 700, over the real bytes.
+    assert(std.mem.eql(u8, resp.text, "700"));
+    assert(resp.stopped_reason == .eos);
+    print("ledger_query_true: supply read the real ledger — text '{s}' eos\n", .{resp.text});
+}
+
+fn welcome_stars_and_star_true() !void {
+    var buf: [lc.max_completion_len]u8 = undefined;
+    const stars = try ask_real("stars the ledger", &buf);
+    assert(std.mem.eql(u8, stars.text, "1"));
+    var buf2: [lc.max_completion_len]u8 = undefined;
+    const held = try ask_real("star vega", &buf2);
+    assert(std.mem.eql(u8, held.text, "held"));
+    var buf3: [lc.max_completion_len]u8 = undefined;
+    const facts = try ask_real("facts the ledger", &buf3);
+    assert(std.mem.eql(u8, facts.text, "4"));
+    print("ledger_query_true: stars=1, vega held, facts=4 — the real record's own tallies\n", .{});
+}
+
+fn welcome_summary_true() !void {
+    var buf: [lc.max_completion_len]u8 = undefined;
+    const resp = try ask_real("summary the ledger", &buf);
+    assert(std.mem.eql(u8, resp.text, "supply=700 stars=1"));
+    print("ledger_query_true: summary read the real ledger — text '{s}'\n", .{resp.text});
+}
+
+// A tampered copy of the real bytes reads nothing — the voice will not report a supply over a
+// corrupted record. A flipped header byte refuses BadFormat before a fact is folded.
+fn unwelcome_tampered_ledger_refuses() !void {
+    var copy: [real_ledger.len]u8 = undefined;
+    var k: u32 = 0;
+    while (k < real_ledger.len) : (k += 1) copy[k] = real_ledger[k];
+    copy[7] ^= 0xff; // inside "format ..."
+    var log: fold.Log = undefined;
+    if (real_log(copy[0..], &log)) |_| {
+        return error.UnwelcomePassed;
+    } else |err| {
+        assert(err == error.BadFormat);
+    }
+    print("ledger_query_true: a tampered ledger refused BadFormat — the voice read no supply over corrupted bytes\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_supply_true();
+    try welcome_stars_and_star_true();
+    try welcome_summary_true();
+    try unwelcome_tampered_ledger_refuses();
+    print("ledger_query_true {s} — GREEN\n", .{ledger_query_true_version});
+    return 0;
+}
+
+/// Emit exactly `<supply> <stars>` as the voice reads them, so the witness can compare against
+/// cord_dag_truth.awk's reading of the same file (fields 2 and 3) - two tools, one answer.
+fn run_measure() !u8 {
+    var buf: [lc.max_completion_len]u8 = undefined;
+    const supply = try ask_real("supply the ledger", &buf);
+    var buf2: [lc.max_completion_len]u8 = undefined;
+    const stars = try ask_real("stars the ledger", &buf2);
+    print("{s} {s}\n", .{ supply.text, stars.text });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "measure")) {
+        return run_measure();
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest();
+    }
+    print("usage: ledger-query-true selftest | measure\n", .{});
+    return 1;
+}

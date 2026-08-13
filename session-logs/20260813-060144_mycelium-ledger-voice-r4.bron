@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260813.060144
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Mycelium Ledger Voice r4 — read a real ledger true; the arc closes
+prompt take the next agent-doable lap Lindy-first crux-first on the Mycelium road; approve own design rounds; send each finished increment; STOP at custody gates; baton prin recur
+think With r3 sent, the next agent-doable Lindy-first crux is the exploration's r4 — carry the voice onto a real on-disk ledger and cross-check its reported supply against an independent awk reading (two tools, one answer), closing the four-round arc.
+think cord_true.rye already proved the *fold* reads the real cord_dag.bron true. r4's distinct value is that the *voice* — the Lantern-metered reader a family actually uses, r1's answer_over — reports true over the same real bytes, so the reader a keeper touches cannot drift from a record they can open.
+think Reused the existing real fixture: tools/fixtures/cord_dag.bron (the honest four-block scene, supply 700, one star vega), already @embedFile-bindable through pond/apps/corpora/cord_dag.bron. cord_bron.rye, cord.rye, fold.rye already symlinked in pond/apps.
+think pond/apps/ledger_query_true.rye builds the corpus from real bytes: cord_bron.parse -> rebuild (re-verify every signature) -> commit (assert identity permutation, the record is in agreed order) -> committed_log -> fold.Log, then asks through lq.answer_over. measure mode prints '<supply> <stars>' as the voice reads them.
+obs The crux cross-check: the voice's measure prints '700 1'; cord_dag_truth.awk reads the same bytes by hand (supply = issued − taxed over block lines, kind-3 lines are stars) and prints '4 700 1' — supply·stars agree. A tampered header refuses BadFormat before a fact is folded, so the voice reads no supply over corrupted bytes.
+obs One small red in-round: an inline awk in the witness with nested double-quotes failed to run under rish's [sh -c ...]; fixed by calling the existing tools/fixtures/cord_dag_truth.awk file instead — cleaner and the canonical measurement anyway.
+loom witness=mycelium_ledger_query_true_witness verdict=GREEN voice_measure="700 1" awk="4 700 1" supply=700 stars=1 facts=4
+file pond/apps/ledger_query_true.rye r4 — the voice reads a real on-disk ledger true, cross-checked against awk
+file tools/mycelium_ledger_query_true_witness.rish witness — voice reading == awk reading over the same bytes; r1 re-runs GREEN
+recommend keep-going the Mycelium Ledger Voice arc stands complete end to end (r1 lawful fold · r2 committed Cord · r3 across a Knot · r4 reads true). Next: a fresh Season D journey (Kresfa/.kres, Puddle) or another double-seat season's crux, each a self-approved design read first. Breach renames (cairn-first) + deep debride + seed force-push + quorum-served readings stay Keaton's hand.

@@ -1,0 +1,60 @@
+# tools/mycelium_ledger_query_true_witness.rish — the Ledger Voice (r4): read a real ledger true.
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · the reading half, rung 4 — the arc closes. Rungs 1–3
+# read corpora seated in code (a hand-seeded fold.Log, a committed cord.Dag, a sealed Knot). This closing
+# rung carries the voice onto a real on-disk `format cord-dag-v1` record — tools/fixtures/cord_dag.bron, the
+# honest four-block scene (issued 1000 · taxed 300 · supply 700 · one star vega), @embedFile-bound through a
+# pond/apps/corpora/ symlink — and reads its supply through rung one's Lantern-metered answer_over, the same
+# voice a person asks.
+#
+# The crux: two independent tools give one answer. The Ledger Voice's `measure` prints `<supply> <stars>` as
+# the voice reads them; tools/fixtures/cord_dag_truth.awk reads the same bytes by hand (supply = issued −
+# taxed over the block lines, stars the kind-3 lines). Both say `700 1` — so the supply the intelligence
+# reports can never drift from a record a keeper can open and add up. cord_true already proved the *fold*
+# reads a real Cord true; this proves the *voice* does. A tampered record reads nothing (BadFormat). Demo
+# keeper seeds only — no key, no funds, no network, no custody: a node reads its own real ledger.
+#
+# Additive: composes ledger_query (r1), cord_bron, cord, and fold public API only; rung one stays its own
+# GREEN binary under this one.
+#
+# Scope: active-designing/20260813-053843_mycelium-ledger-voice-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mycelium_ledger_query_true_witness.rish
+
+say "mycelium-ledger-query-true: Language EN — the Ledger Voice reads a real on-disk ledger, its own bytes, never a drifting copy."
+say "mycelium-ledger-query-true: Style Radiant — two tools give one answer; the reported supply is the supply a keeper counts by hand."
+say "mycelium-ledger-query-true: Lens TAME — the voice's reading equals awk's over the same real bytes; a tampered record reads nothing; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/ledger-query-true"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/ledger_query_true.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-ledger-query-true: build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "mycelium-ledger-query-true: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-ledger-query-true: selftest did not speak GREEN"
+assert selftest.out contains "supply read the real ledger — text '700' eos" else "mycelium-ledger-query-true: supply-over-real reading missing"
+assert selftest.out contains "stars=1, vega held, facts=4" else "mycelium-ledger-query-true: stars/star/facts reading missing"
+assert selftest.out contains "summary read the real ledger — text 'supply=700 stars=1'" else "mycelium-ledger-query-true: summary reading missing"
+assert selftest.out contains "a tampered ledger refused BadFormat" else "mycelium-ledger-query-true: tampered-record refusal missing"
+
+# The crux — two tools, one answer. The voice's measure prints '<supply> <stars>'; the awk reads the same
+# real bytes by hand and prints '<blocks> <supply> <stars>'. Their supply·stars must agree exactly.
+let voice = run ["sh" "-c" "${bin} measure 2>&1"]
+assert voice.ok else "mycelium-ledger-query-true: measure exited non-zero"
+assert voice.out contains "700 1" else "mycelium-ledger-query-true: the voice did not read '700 1' over the real ledger"
+
+# cord_dag_truth.awk prints '<blocks> <supply> <stars>'; its supply·stars tail must equal the voice's pair.
+let awk = run ["sh" "-c" "awk -f tools/fixtures/cord_dag_truth.awk tools/fixtures/cord_dag.bron"]
+assert awk.ok else "mycelium-ledger-query-true: awk reading failed"
+assert awk.out contains "4 700 1" else "mycelium-ledger-query-true: awk did not read '4 700 1' from the same bytes"
+
+# Rung one stays its own green binary — the voice this rung carries onto real bytes is r1's unchanged
+# answer_over, folding the whole log lawful before it reports a single grain.
+let r1 = run ["sh" "-c" "rishi/bin/rishi run tools/mycelium_ledger_query_witness.rish 2>&1"]
+assert r1.ok else "mycelium-ledger-query-true: rung one (the lawful-fold voice) is not GREEN"
+assert r1.out contains "mycelium-ledger-query: GREEN" else "mycelium-ledger-query-true: rung one did not speak its GREEN"
+
+say "mycelium-ledger-query-true: GREEN — the Ledger Voice reads a real on-disk ledger; the voice's supply·stars (700 1) equals an independent awk reading of the same bytes, so the intelligence's reported supply can never drift from a record a keeper can open. The Mycelium Ledger Voice arc stands complete end to end — r1 lawful fold · r2 committed Cord · r3 across a Knot · r4 reads true."
