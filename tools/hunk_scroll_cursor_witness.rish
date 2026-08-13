@@ -61,4 +61,16 @@ assert (trim fits.out) == "yes" else "hunk-scroll-cursor: the fitting-library-ne
 let refuse = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'refuses EmptyViewport' && echo yes"]
 assert (trim refuse.out) == "yes" else "hunk-scroll-cursor: the EmptyViewport refusal was not proven"
 
-say "hunk-scroll-cursor: GREEN — a keeper's scroll offset walks a library larger than the screen and pins at both ends; every gesture lands on a real page (the window never refuses), scrolling loses nothing, and a library that fits never scrolls. HUNK37 pager GREEN beneath."
+let bar = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'HUNK41 the scrollbar' && echo yes"]
+assert (trim bar.out) == "yes" else "hunk-scroll-cursor: HUNK41 the scrollbar thumb was not proven"
+
+let barpin = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'pinned to the top edge at the top and the bottom edge at the bottom (start + len == track exactly)' && echo yes"]
+assert (trim barpin.out) == "yes" else "hunk-scroll-cursor: the scrollbar edge-pin (start + len == track) was not proven"
+
+let barmono = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'start monotone as the offset walks down and the thumb always wholly inside the track' && echo yes"]
+assert (trim barmono.out) == "yes" else "hunk-scroll-cursor: the scrollbar monotone-and-inside guarantee was not proven"
+
+let bartrack = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a zero or over-ceiling track refuses BadTrack' && echo yes"]
+assert (trim bartrack.out) == "yes" else "hunk-scroll-cursor: the BadTrack refusal was not proven"
+
+say "hunk-scroll-cursor: GREEN — a keeper's scroll offset walks a library larger than the screen and pins at both ends; every gesture lands on a real page (the window never refuses), scrolling loses nothing, and a library that fits never scrolls. HUNK41 the scrollbar thumb reads a keeper's position honestly — proportional length, edges pinned true, monotone and always inside the track. HUNK37 pager GREEN beneath."
