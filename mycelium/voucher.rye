@@ -1,0 +1,406 @@
+//! mycelium/voucher.rye — the Voucher: a node's signed attestation of a holder's position.
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Voucher · rung r1 — the crux.
+//! Design read: active-designing/20260813-095216_mycelium-voucher-attested-statement-exploration.md
+//!
+//! The Statement answered WHERE DO I STAND as a pure projection of one account, and statement_bron let
+//! it cross a wire. Yet a statement that travels is still only a READING: a recipient can check the
+//! arithmetic reconciles, but nothing binds those numbers to the real agreed order they claim. A holder
+//! could hand over any balance at all, and the counterparty's only recourse would be to replay the whole
+//! ledger. The Voucher fills that blind spot: PROOF OF POSITION WITHOUT REPLAY.
+//!
+//! A VOUCHER is a fixed record a node signs — its own key, an ORDER-HEAD (a single SHA-256 digest of the
+//! committed block order the reading was taken against), the account vouched, and the position (balance,
+//! reserved, received) read straight from the Statement — under an Ed25519 signature over
+//! order-head · account · balance · reserved · received.
+//!
+//! The crux is A VOUCHER IS BOUND TO THE ORDER IT WAS READ AGAINST:
+//!   - verify_voucher checks the signature offline against the record's own node key — trust the node,
+//!     no ledger needed; a tampered field or wrong signer refuses BadSignature.
+//!   - check_against(dag) re-derives the order-head and re-reads the Statement from the same Dag, then
+//!     confirms every signed field matches — a node cannot vouch a false balance to a verifier who holds
+//!     the blocks, nor silently swap the order (the order-head is inside the signature).
+//!   - Arrival-independence is inherited: cord.commit yields one agreed order per permutation, so the
+//!     order-head folds to one digest and the Statement to one position — a voucher made against one
+//!     arrival checks against another. The attestation binds the AGREED order, not the arrival accident.
+//!
+//! The order-head fold lives here as the Voucher's own bounded derivation; cord, lapse, statement, and
+//! kumara are composed by public API only, edited none. Siloed, dev-only, demo seeds — no real key, no
+//! funds, no network, no custody. A SERVED voucher (a holder fetching a node's attestation over Comlink)
+//! reaches the Comlink-served gate.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/voucher.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("cord.rye");
+const fold = @import("fold.rye");
+const lapse = @import("lapse.rye");
+const statement = @import("statement.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+
+const Sha256 = std.crypto.hash.sha2.Sha256;
+
+pub const voucher_version = "20260813.095216";
+
+/// The order-head is one block-address-width digest of the whole agreed order.
+pub const order_head_len: u32 = cord.hash_len;
+
+/// A node key and an account key are each a full encoded holder identity, the width the ledger seats.
+pub const pk_len: u32 = statement.pk_len;
+
+/// The signed body: order-head · account · balance · reserved · received. Three u64 positions, each
+/// eight little-endian octets, follow the two fixed-width keys' worth of digest and account.
+pub const pos_len: u32 = 8;
+pub const body_len: u32 = order_head_len + pk_len + 3 * pos_len;
+
+/// A node's signed attestation of one account's position at a named order-head.
+pub const Voucher = struct {
+    node_pk: [pk_len]u8 = undefined,
+    order_head: [order_head_len]u8 = undefined,
+    account_pk: [pk_len]u8 = undefined,
+    balance: u64 = 0,
+    reserved: u64 = 0,
+    received: u64 = 0,
+    sig: [kumara.signature_length]u8 = undefined,
+
+    /// The node key that signed this attestation.
+    pub fn node_slice(v: *const Voucher) []const u8 {
+        // invariant: a voucher always names a full-width node key.
+        assert(pk_len == statement.pk_len);
+        return v.node_pk[0..pk_len];
+    }
+
+    /// The account key whose position is vouched.
+    pub fn account_slice(v: *const Voucher) []const u8 {
+        // invariant: a voucher always names a full-width account key.
+        assert(pk_len == statement.pk_len);
+        return v.account_pk[0..pk_len];
+    }
+
+    /// The order-head digest this attestation is bound to.
+    pub fn head_slice(v: *const Voucher) []const u8 {
+        // invariant: an order-head is exactly one block-address width.
+        assert(order_head_len == cord.hash_len);
+        return v.order_head[0..order_head_len];
+    }
+};
+
+/// Write a u64 as eight little-endian octets — the one place the position width is laid out.
+fn write_u64(value: u64, out: []u8) void {
+    // invariant: a position field is exactly eight octets wide.
+    assert(out.len == pos_len);
+    var v = value;
+    var i: u32 = 0;
+    while (i < pos_len) : (i += 1) {
+        out[i] = @truncate(v);
+        v >>= 8;
+    }
+    // invariant: eight octets carry the whole value back (no high bits dropped).
+    assert(i == pos_len);
+}
+
+/// Lay out the signed body from its parts — the single canonical shape both signing and verifying read,
+/// so the two can never disagree on what bytes the signature covers.
+fn voucher_body(order_head: []const u8, account_pk: []const u8, balance: u64, reserved: u64, received: u64, out: []u8) u32 {
+    // invariant: the caller's buffer holds the whole fixed body.
+    assert(out.len >= body_len);
+    // invariant: the head and account are the fixed widths the ledger seats.
+    assert(order_head.len == order_head_len);
+    assert(account_pk.len == pk_len);
+    tally_copy.copy_disjoint(u8, out[0..order_head_len], order_head);
+    var off: u32 = order_head_len;
+    tally_copy.copy_disjoint(u8, out[off..][0..pk_len], account_pk);
+    off += pk_len;
+    write_u64(balance, out[off..][0..pos_len]);
+    off += pos_len;
+    write_u64(reserved, out[off..][0..pos_len]);
+    off += pos_len;
+    write_u64(received, out[off..][0..pos_len]);
+    off += pos_len;
+    // invariant: the written length is exactly the named body width.
+    assert(off == body_len);
+    return off;
+}
+
+/// Fold one order-head digest over a Dag's committed order — SHA-256 over the count and each ordered
+/// block address, in agreed order. Stable exactly when the agreed order is, so two arrival permutations
+/// of the same blocks fold to the identical head.
+pub fn order_head_of(dag: *const cord.Dag, out: *[order_head_len]u8) void {
+    // invariant: an order-head fills exactly one block-address width.
+    assert(order_head_len == cord.hash_len);
+    var order: [cord.cord_max_blocks]u32 = undefined;
+    const count = cord.commit(dag, order[0..]);
+    // invariant: the committed count never exceeds the Dag's static block ceiling.
+    assert(count <= cord.cord_max_blocks);
+    var h = Sha256.init(.{});
+    var cnt = count;
+    var b: u32 = 0;
+    while (b < 4) : (b += 1) {
+        h.update(&[_]u8{@truncate(cnt)});
+        cnt >>= 8;
+    }
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        h.update(dag.hashes[order[i]][0..]);
+    }
+    h.final(out);
+}
+
+/// A node reads an account's Statement out of a Dag and signs the position bound to the Dag's order-head.
+/// Both the numbers and the order they bind come from ONE Dag, so they can never come from two worlds.
+pub fn make_voucher(dag: *const cord.Dag, node_kp: kumara.KeyPair, account_pk: []const u8) !Voucher {
+    // invariant: a voucher is made for a full holder identity.
+    assert(account_pk.len == pk_len);
+    var head: [order_head_len]u8 = undefined;
+    order_head_of(dag, &head);
+
+    const ledger = try lapse.resolve(dag);
+    const s = try statement.statement_for(&ledger, account_pk);
+
+    var v = Voucher{ .balance = s.balance, .reserved = s.reserved, .received = s.received };
+    const npk = node_kp.public_key.toBytes();
+    tally_copy.copy_disjoint(u8, v.node_pk[0..], npk[0..]);
+    tally_copy.copy_disjoint(u8, v.order_head[0..], head[0..]);
+    tally_copy.copy_disjoint(u8, v.account_pk[0..], account_pk);
+
+    var body: [body_len]u8 = undefined;
+    const n = voucher_body(head[0..], account_pk, s.balance, s.reserved, s.received, &body);
+    const sig = kumara.sign(body[0..n], node_kp, null).toBytes();
+    tally_copy.copy_disjoint(u8, v.sig[0..], sig[0..]);
+    // invariant: a freshly made voucher verifies against its own node key.
+    assert(std.mem.eql(u8, v.account_pk[0..], account_pk));
+    return v;
+}
+
+/// Verify a voucher's signature offline against its own node key — trust the node, no ledger needed. A
+/// tampered field or a wrong signer refuses BadSignature.
+pub fn verify_voucher(v: *const Voucher) error{BadSignature}!void {
+    // invariant: the signed body is the fixed width both sides lay out.
+    assert(order_head_len == cord.hash_len);
+    var body: [body_len]u8 = undefined;
+    const n = voucher_body(v.head_slice(), v.account_slice(), v.balance, v.reserved, v.received, &body);
+    const pk = kumara.PublicKey.fromBytes(v.node_pk) catch return error.BadSignature;
+    kumara.verify_bytes(body[0..n], v.sig[0..], pk) catch return error.BadSignature;
+}
+
+/// The stronger check: re-derive the order-head and re-read the account's Statement from the given Dag,
+/// then confirm the voucher's every signed field matches. A node cannot vouch a false balance to a
+/// verifier who holds the blocks, nor silently swap the order it read against.
+pub fn check_against(v: *const Voucher, dag: *const cord.Dag) !bool {
+    // invariant: the account read is a full holder identity.
+    assert(v.account_pk.len == pk_len);
+    // The signature must hold first — an unsigned or forged voucher checks against nothing.
+    verify_voucher(v) catch return false;
+
+    var head: [order_head_len]u8 = undefined;
+    order_head_of(dag, &head);
+    if (!std.mem.eql(u8, head[0..], v.order_head[0..])) return false;
+
+    const ledger = try lapse.resolve(dag);
+    const s = try statement.statement_for(&ledger, v.account_slice());
+    // invariant: a matching voucher agrees on every projected field, not merely the balance.
+    return s.balance == v.balance and s.reserved == v.reserved and s.received == v.received;
+}
+
+// --- a bounded render a keeper reads --------------------------------------
+
+const hex_digits = "0123456789abcdef";
+
+fn hex8(bytes: []const u8, out: []u8) void {
+    // invariant: eight bytes render to sixteen nibbles — a short, legible fingerprint.
+    assert(out.len == 16);
+    assert(bytes.len >= 8);
+    var i: u32 = 0;
+    while (i < 8) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0f];
+    }
+}
+
+/// Print a voucher a keeper can read — the node, the order-head, the account, and the vouched position.
+pub fn render(v: *const Voucher) void {
+    var nfp: [16]u8 = undefined;
+    var hfp: [16]u8 = undefined;
+    var afp: [16]u8 = undefined;
+    hex8(v.node_slice(), &nfp);
+    hex8(v.head_slice(), &hfp);
+    hex8(v.account_slice(), &afp);
+    print("voucher node={s} head={s} account={s} balance={d} reserved={d} received={d}\n", .{
+        nfp, hfp, afp, v.balance, v.reserved, v.received,
+    });
+}
+
+// --- selftest: a voucher is bound to the order it was read against --------
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn write_deadline(deadline: u64, out: []u8) void {
+    // invariant: the buffer holds a full little-endian order position.
+    assert(out.len == lapse.deadline_len);
+    var v = deadline;
+    var i: u32 = 0;
+    while (i < lapse.deadline_len) : (i += 1) {
+        out[i] = @truncate(v);
+        v >>= 8;
+    }
+}
+
+fn pledge_body(id: []const u8, deadline: u64, to: []const u8, out: []u8) u32 {
+    // invariant: the buffer holds tag · id · deadline · recipient exactly.
+    assert(out.len >= 1 + lapse.id_len + lapse.deadline_len + pk_len);
+    assert(id.len == lapse.id_len);
+    out[0] = lapse.tag_pledge;
+    tally_copy.copy_disjoint(u8, out[1 .. 1 + lapse.id_len], id);
+    write_deadline(deadline, out[1 + lapse.id_len .. 1 + lapse.id_len + lapse.deadline_len]);
+    tally_copy.copy_disjoint(u8, out[1 + lapse.id_len + lapse.deadline_len ..][0..pk_len], to);
+    return 1 + lapse.id_len + lapse.deadline_len + pk_len;
+}
+
+fn resolve_body(tag: u8, id: []const u8, out: []u8) u32 {
+    // invariant: the buffer holds tag · id exactly.
+    assert(out.len >= 1 + lapse.id_len);
+    assert(id.len == lapse.id_len);
+    out[0] = tag;
+    tally_copy.copy_disjoint(u8, out[1 .. 1 + lapse.id_len], id);
+    return 1 + lapse.id_len;
+}
+
+/// Seat a scene — the same block-building the Statement's own selftest proved. Returns four blocks
+/// (genesis · pledge · post · void); a caller resolves the prefix it wants.
+fn seat_scene(id: []const u8, deadline: u64) ![4]cord.Block {
+    const kf = seeded(0xF0);
+    const ka = seeded(0xA1);
+    const kb = seeded(0xB2);
+    const bob_pk = kb.public_key.toBytes();
+    const alice_pk = ka.public_key.toBytes();
+
+    const f_gen = fold.mint_fact(kf, fold.kind_issue, 100, "", alice_pk[0..]) orelse return error.MintGen;
+
+    var pb: [1 + lapse.id_len + lapse.deadline_len + pk_len]u8 = undefined;
+    const pn = pledge_body(id, deadline, bob_pk[0..], &pb);
+    const f_pledge = fold.mint_fact(ka, fold.kind_tax, 100, "", pb[0..pn]) orelse return error.MintPledge;
+
+    var hb: [1 + lapse.id_len]u8 = undefined;
+    const hn = resolve_body(lapse.tag_post, id, &hb);
+    const f_post = fold.mint_fact(ka, fold.kind_tax, 100, "", hb[0..hn]) orelse return error.MintPost;
+
+    var vb: [1 + lapse.id_len]u8 = undefined;
+    const vn = resolve_body(lapse.tag_void, id, &vb);
+    const f_void = fold.mint_fact(ka, fold.kind_tax, 100, "", vb[0..vn]) orelse return error.MintVoid;
+
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_gen) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+    const roots = [_][cord.hash_len]u8{hg};
+
+    const bp = cord.mint_block(ka, 1, roots[0..], f_pledge) orelse return error.BlockP;
+    var hp: [cord.hash_len]u8 = undefined;
+    cord.address(&bp, &hp);
+    const roots2 = [_][cord.hash_len]u8{hp};
+
+    const bpost = cord.mint_block(ka, 2, roots2[0..], f_post) orelse return error.BlockPost;
+    const bvoid = cord.mint_block(ka, 2, roots2[0..], f_void) orelse return error.BlockVoid;
+    return .{ g, bp, bpost, bvoid };
+}
+
+fn dag_of(blocks: []const cord.Block) !cord.Dag {
+    var dag = cord.Dag.empty();
+    for (blocks) |blk| try cord.add(&dag, blk);
+    return dag;
+}
+
+pub fn main() !void {
+    const id = [_]u8{0x01} ** lapse.id_len;
+    const node = seeded(0x0D);
+    const alice_pk = seeded(0xA1).public_key.toBytes();
+
+    // Scene 1 — an OPEN pledge stands. The node vouches Alice's position (balance 0, reserved 100,
+    // received 100) at the two-block order-head. The voucher verifies offline and checks against the
+    // very Dag it was read from.
+    {
+        const s = try seat_scene(id[0..], 9);
+        const dag = try dag_of(&[_]cord.Block{ s[0], s[1] });
+        const v = try make_voucher(&dag, node, alice_pk[0..]);
+        if (v.balance != 0 or v.reserved != 100 or v.received != 100) return error.OpenPosition;
+        try verify_voucher(&v);
+        if (!try check_against(&v, &dag)) return error.OpenCheck;
+        // The node key is the one that signed, the account the one vouched.
+        if (!std.mem.eql(u8, v.node_slice(), node.public_key.toBytes()[0..])) return error.OpenNode;
+        if (!std.mem.eql(u8, v.account_slice(), alice_pk[0..])) return error.OpenAccount;
+    }
+
+    // Scene 2 — a POSTED pledge. Alice's reserved returns to 0; the node vouches the new position at the
+    // three-block order-head, and it checks against that longer order.
+    {
+        const s = try seat_scene(id[0..], 9);
+        const dag = try dag_of(&[_]cord.Block{ s[0], s[1], s[2] });
+        const v = try make_voucher(&dag, node, alice_pk[0..]);
+        if (v.reserved != 0) return error.PostedReserved;
+        try verify_voucher(&v);
+        if (!try check_against(&v, &dag)) return error.PostedCheck;
+    }
+
+    // Scene 3 — a LAPSED pledge: the clock lapses first, Alice's coins come home (balance 100, reserved
+    // 0). The node vouches the returned position; it verifies and checks true.
+    {
+        const s = try seat_scene(id[0..], 2);
+        const dag = try dag_of(&[_]cord.Block{ s[0], s[1], s[2], s[3] });
+        const v = try make_voucher(&dag, node, alice_pk[0..]);
+        if (v.balance != 100 or v.reserved != 0) return error.LapsedPosition;
+        try verify_voucher(&v);
+        if (!try check_against(&v, &dag)) return error.LapsedCheck;
+    }
+
+    // Scene 4 — arrival-independence inherited. A voucher made against one permutation of the round-2
+    // facts CHECKS AGAINST the other permutation: the order-head folds to one digest and the Statement
+    // to one position. The attestation binds the agreed order, not the arrival.
+    {
+        const s = try seat_scene(id[0..], 2);
+        const dag_a = try dag_of(&[_]cord.Block{ s[0], s[1], s[2], s[3] });
+        const dag_b = try dag_of(&[_]cord.Block{ s[0], s[1], s[3], s[2] });
+        const v = try make_voucher(&dag_a, node, alice_pk[0..]);
+        // The head folded from one arrival equals the head folded from the other.
+        var hb: [order_head_len]u8 = undefined;
+        order_head_of(&dag_b, &hb);
+        if (!std.mem.eql(u8, v.order_head[0..], hb[0..])) return error.PermHead;
+        if (!try check_against(&v, &dag_b)) return error.PermCheck;
+    }
+
+    // Scene 5 — tamper refuses. A flipped balance breaks the offline signature; a wrong node key does
+    // too; and a voucher honest for one ledger fails check_against a genuinely different ledger (a
+    // shorter order where the pledge has not posted).
+    {
+        const s = try seat_scene(id[0..], 9);
+        const dag = try dag_of(&[_]cord.Block{ s[0], s[1], s[2] });
+        const v = try make_voucher(&dag, node, alice_pk[0..]);
+
+        var flipped = v;
+        flipped.balance += 1;
+        if (verify_voucher(&flipped)) |_| return error.FlipVerified else |_| {}
+
+        var wrong = v;
+        const other = seeded(0xEE).public_key.toBytes();
+        tally_copy.copy_disjoint(u8, wrong.node_pk[0..], other[0..]);
+        if (verify_voucher(&wrong)) |_| return error.WrongNodeVerified else |_| {}
+
+        // The same honest voucher against a DIFFERENT ledger (open, not posted) disagrees.
+        const dag_open = try dag_of(&[_]cord.Block{ s[0], s[1] });
+        if (try check_against(&v, &dag_open)) return error.CrossLedgerPassed;
+    }
+
+    // A last render, for eyes — a plain open-pledge voucher.
+    {
+        const s = try seat_scene(id[0..], 9);
+        const dag = try dag_of(&[_]cord.Block{ s[0], s[1] });
+        const v = try make_voucher(&dag, node, alice_pk[0..]);
+        render(&v);
+    }
+
+    print("GREEN: myc voucher r1 — a node's signed attestation binds an account's position to a named order-head; verifies offline, checks against the ledger it vouches (and only that ledger), inherits arrival-independence (a voucher made against one permutation checks against another), and refuses tamper (flipped field · wrong signer · cross-ledger). Proof of position without replay stands.\n", .{});
+}
