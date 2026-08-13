@@ -1,0 +1,279 @@
+//! pond/apps/session_store.rye — HUNK18: an editing session is a content-addressed Tablecloth artifact.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK18.
+//! Design read: active-designing/20260813-174500_hunk-session-persist-exploration.md (names HUNK18).
+//! Teacher, thanked clean-room: the persistent editing session of iCloud Photos / Google Photos — an edit stays
+//! open across a close-and-reopen, undo and redo intact (concept only, siloed).
+//!
+//! HUNK16 gave the Photos app an `EditCursor` — the whole reachable history plus a live `position` naming how many
+//! edits are in effect — so undo walks back and redo walks forward, a walk destroying nothing. HUNK12 banked an
+//! *edit-list* content-addressed, yet a list is only the applied recipe: it carries no live position and no redo
+//! tail. This rung stores the whole cursor. `store_session` renders the cursor as its `format photo-session-v1`
+//! record (a `position` line wrapping HUNK11's own `format photo-edits-v1` body) and beads it content-addressed
+//! (HUNK1's Tablecloth store); `open_session` fetches it back — proving every bead against its digest and the whole
+//! against its recorded address BEFORE the text is parsed — then rebuilds the cursor. The crux a plain edit-list
+//! store could not reach: a session reopened from cold still `can_redo()`, because the redo tail was stored, not
+//! just the prefix in effect. A tampered session refuses `DigestMismatch`, an unknown name `UnknownArtifact`, and a
+//! session standing past its own history `BadSession`, each before a verb is replayed. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/session_store.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const photo_edits = @import("photo_edits.rye");
+const edit_cursor = @import("edit_cursor.rye");
+const tablecloth = @import("tablecloth.rye");
+const beading = @import("mantra/beading.rye");
+
+pub const session_store_version = "20260813.174500";
+
+/// The session header — one line above HUNK11's own edit-list record. A session honestly wraps an edit-list, so the
+/// verb grammar is reused wholesale rather than duplicated.
+const session_header = "format photo-session-v1\n";
+
+/// The largest session text this rung stores — a resin's worth (the artifact-content bound). The whole record is
+/// the session header, a short `position N` line, and the edit-list body, well inside a resin for a keeper's
+/// handful of edits. A session too long to bead refuses rather than truncating.
+pub const max_session_stream: u32 = tablecloth.max_content_bytes;
+
+/// A safe upper bound on the wrapper this rung adds above the edit-list body: the session header plus the longest
+/// `position N\n` line (a u32 is at most ten digits). The edit-list body's own bound rides underneath it.
+pub const session_wrapper_bound: u32 = @intCast(session_header.len + "position 4294967295\n".len);
+
+pub const SessionError = error{
+    SessionTooLarge,
+    BadSession,
+};
+
+/// Render an editing session as its `format photo-session-v1` record into `out`, returning its length: the session
+/// header, a `position` line naming where the cursor stands, then HUNK11's `format photo-edits-v1` body for the
+/// whole reachable history. Refuses `SessionTooLarge` rather than writing past the caller's buffer.
+pub fn render_session(cursor: *const edit_cursor.EditCursor, out: []u8) SessionError!u32 {
+    // invariant: the cursor stands within its own history before it is ever rendered.
+    assert(cursor.position <= cursor.list.count);
+    // invariant: the session wrapper fits before the edit-list body is rendered under it.
+    if (session_wrapper_bound > out.len) return error.SessionTooLarge;
+
+    const head = std.fmt.bufPrint(out, "{s}position {d}\n", .{ session_header, cursor.position }) catch
+        return error.SessionTooLarge;
+    var off: u32 = @intCast(head.len);
+    const body = photo_edits.render_edits(&cursor.list, out[off..]) catch return error.SessionTooLarge;
+    off += body;
+    // invariant: the rendered session stays within the buffer.
+    assert(off <= out.len);
+    return off;
+}
+
+/// Parse a `format photo-session-v1` record into a fresh cursor. The session header, then a `position N` line, then
+/// HUNK11's edit-list body (handed to `photo_edits.parse_edits`). Refuses `BadSession` on a bad header, a malformed
+/// position, or a position standing past the parsed history — the cursor's governing invariant, checked at the
+/// trust boundary. A body over `max_edits` lines refuses `TooManyEdits` through the list's own push.
+pub fn parse_session(text: []const u8, out: *edit_cursor.EditCursor) !void {
+    // The header is one line; the position is the next; the rest is the edit-list record.
+    if (!std.mem.startsWith(u8, text, session_header)) return error.BadSession;
+    var rest = text[session_header.len..];
+
+    const nl = std.mem.indexOfScalar(u8, rest, '\n') orelse return error.BadSession;
+    const pos_line = rest[0..nl];
+    if (!std.mem.startsWith(u8, pos_line, "position ")) return error.BadSession;
+    const pos_tok = pos_line["position ".len..];
+    const position = std.fmt.parseInt(u32, pos_tok, 10) catch return error.BadSession;
+
+    var list: photo_edits.EditList = undefined;
+    try photo_edits.parse_edits(rest[nl + 1 ..], &list);
+
+    // invariant: a stored cursor never stands past the history it holds — the EditCursor law, enforced on the way in.
+    if (position > list.count) return error.BadSession;
+    out.* = edit_cursor.EditCursor{ .list = list, .position = position };
+    assert(out.position <= out.list.count);
+}
+
+/// Store an editing session content-addressed under a name: render it, then bead that text into the shared store so
+/// the same session stored twice is stored once. Returns the beading report so a caller sees the dedup dividend.
+/// Refuses `SessionTooLarge` rather than storing a session a fetch cannot hold.
+pub fn store_session(
+    cat: *tablecloth.Catalog,
+    store: *beading.BeadStore,
+    name: []const u8,
+    cursor: *const edit_cursor.EditCursor,
+) !beading.BeadReport {
+    // invariant: the cursor stands within its history before it is ever stored.
+    assert(cursor.position <= cursor.list.count);
+    var buf: [max_session_stream]u8 = undefined;
+    const n = render_session(cursor, buf[0..]) catch return error.SessionTooLarge;
+    // invariant: only a session the fetch buffer can hold is ever stored.
+    assert(n <= max_session_stream);
+    return tablecloth.store_artifact(cat, store, name, buf[0..n]);
+}
+
+/// Open an editing session by name into a fresh cursor. The fetch reassembles the beads and proves each against its
+/// digest and the whole against its recorded address BEFORE this parses anything — so a tampered session refuses
+/// (`DigestMismatch`) and an unknown name refuses (`UnknownArtifact`), each before a verb is read. Only verified
+/// text ever reaches the parser, and the cursor's own position bound is checked there.
+pub fn open_session(
+    cat: *const tablecloth.Catalog,
+    store: *const beading.BeadStore,
+    name: []const u8,
+    out: *edit_cursor.EditCursor,
+) !void {
+    var buf: [max_session_stream]u8 = undefined;
+    const n = try tablecloth.fetch_artifact(cat, store, name, buf[0..]);
+    // invariant: a verified session fits the content bound.
+    assert(n <= max_session_stream);
+    try parse_session(buf[0..n], out);
+}
+
+/// Reopen a session from cold and replay its applied prefix over a source — the exact image the keeper last saw, at
+/// the position they last stood. A tampered session or unknown name refuses before `view` touches the source.
+pub fn reopen_view(
+    allocator: std.mem.Allocator,
+    cat: *const tablecloth.Catalog,
+    store: *const beading.BeadStore,
+    name: []const u8,
+    source: *const qoi.Pixmap,
+) !qoi.Pixmap {
+    var cursor: edit_cursor.EditCursor = undefined;
+    try open_session(cat, store, name, &cursor);
+    return edit_cursor.view(allocator, source, &cursor);
+}
+
+// --- selftest: store a cursor rewound below its live edge, reopen from cold, and prove undo AND redo both survive —
+//     the reopened cursor equals the original, still can_redo, its view matches byte-for-byte, and rolling the redo
+//     tail forward reaches the same image; prove the dedup dividend, and that a tampered session, an unknown name,
+//     and a session standing past its history each refuse before a verb is replayed ----------------------------------
+
+/// Build a 6×6 image where each pixel encodes its own coordinates, so a reopened session's view is unambiguous.
+fn craft_tagged(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 6;
+    const h: u32 = 6;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            buf[off] = @intCast(x * 40);
+            buf[off + 1] = @intCast(y * 40);
+            buf[off + 2] = @intCast(x + y);
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const pm = try craft_tagged(garden);
+
+    // Build a three-edit history through the cursor, then rewind one step — a redo tail (the +40 adjust) now waits
+    // ahead of the live position. This is the state a plain edit-list store cannot preserve.
+    var cur = edit_cursor.EditCursor.init();
+    try cur.push(.{ .crop = .{ .x = 1, .y = 1, .w = 4, .h = 4 } });
+    try cur.push(.{ .rotate = .{ .turns = 1 } });
+    try cur.push(.{ .adjust = .{ .brightness = 40, .num = 1, .den = 1 } });
+    cur.undo(); // position 2, count 3 — a redo tail present
+    assert(cur.list.count == 3);
+    assert(cur.position == 2);
+    assert(cur.can_redo());
+
+    // The image the keeper sees right now, and the image one redo forward would restore.
+    const seen = try edit_cursor.view(garden, &pm, &cur);
+    var ahead_cur = cur;
+    ahead_cur.redo();
+    const ahead = try edit_cursor.view(garden, &pm, &ahead_cur);
+
+    var store: beading.BeadStore = .empty();
+    var cat: tablecloth.Catalog = .empty();
+
+    // Store the whole session content-addressed, then reopen it FROM COLD into a fresh cursor.
+    const rep = try store_session(&cat, &store, "portrait.session", &cur);
+    assert(rep.beads_deposited >= 1);
+    var reopened: edit_cursor.EditCursor = undefined;
+    try open_session(&cat, &store, "portrait.session", &reopened);
+
+    // The crux: undo AND redo both survived. The reopened cursor stands exactly where the keeper left it, holds the
+    // whole reachable history, and STILL can_redo — the redo tail was stored, not just the applied prefix.
+    assert(reopened.list.count == cur.list.count);
+    assert(reopened.position == cur.position);
+    assert(reopened.can_undo());
+    assert(reopened.can_redo());
+
+    // The view from cold equals the image the keeper last saw, byte-for-byte.
+    const cold = try reopen_view(garden, &cat, &store, "portrait.session", &pm);
+    assert(cold.same_bytes(&seen));
+
+    // The redo tail is real, not a label: rolling the reopened cursor forward one step reaches the same image the
+    // original would have — the road not taken survived the restart whole.
+    reopened.redo();
+    assert(!reopened.can_redo());
+    const rolled = try edit_cursor.view(garden, &pm, &reopened);
+    assert(rolled.same_bytes(&ahead));
+
+    // The dedup dividend for sessions: the same session under a second name is stored once, and still reopens whole.
+    const rep_copy = try store_session(&cat, &store, "portrait-v2.session", &cur);
+    assert(rep_copy.beads_deduped == rep_copy.bead_count); // identical text: nothing new stored
+    var reopened_copy: edit_cursor.EditCursor = undefined;
+    try open_session(&cat, &store, "portrait-v2.session", &reopened_copy);
+    assert(reopened_copy.position == cur.position);
+    assert(reopened_copy.list.count == cur.list.count);
+
+    // Unwelcome: a tampered session refuses BEFORE a verb is replayed. Store into a fresh store, flip a single held
+    // byte, and prove open refuses DigestMismatch.
+    {
+        var store_t: beading.BeadStore = .empty();
+        var cat_t: tablecloth.Catalog = .empty();
+        _ = try store_session(&cat_t, &store_t, "portrait.session", &cur);
+        store_t.beads[0].bytes[0] +%= 1; // flip one byte of a held bead
+        var wreck: edit_cursor.EditCursor = undefined;
+        if (open_session(&cat_t, &store_t, "portrait.session", &wreck)) |_| {
+            return error.TamperSlipped;
+        } else |e| {
+            if (e != error.DigestMismatch) return error.WrongTamper;
+        }
+    }
+
+    // Unwelcome: an unknown session name refuses, again before any verb runs.
+    var absent: edit_cursor.EditCursor = undefined;
+    if (open_session(&cat, &store, "absent.session", &absent)) |_| {
+        return error.UnknownSlipped;
+    } else |e| {
+        if (e != error.UnknownArtifact) return error.WrongUnknown;
+    }
+
+    // Unwelcome: a session standing PAST its own history refuses BadSession — the EditCursor law enforced at parse.
+    var past: edit_cursor.EditCursor = undefined;
+    if (parse_session("format photo-session-v1\nposition 5\nformat photo-edits-v1\nflip_h\n", &past)) |_| {
+        return error.PastSlipped;
+    } else |e| {
+        if (e != error.BadSession) return error.WrongPast;
+    }
+    // Unwelcome: a bad session header refuses BadSession.
+    var bad_hdr: edit_cursor.EditCursor = undefined;
+    if (parse_session("format wrong-session\nposition 0\n", &bad_hdr)) |_| {
+        return error.HdrSlipped;
+    } else |e| {
+        if (e != error.BadSession) return error.WrongHdr;
+    }
+
+    const stored_len = try tablecloth.artifact_len(&cat, "portrait.session");
+    print("GREEN session-store: a {d}-edit editing session rewound to position {d} is banked content-addressed " ++
+        "({d} bytes) — reopened from cold the cursor stands exactly where it was left, undo AND redo both intact " ++
+        "(the redo tail stored, not just the applied prefix), its view matches byte-for-byte and rolling the tail " ++
+        "forward reaches the same image; the same session under two names is stored once (deduped {d}/{d} beads); " ++
+        "a tampered session refuses DigestMismatch, an unknown name UnknownArtifact, a session past its history " ++
+        "BadSession, each before a verb is replayed\n", .{
+        cur.list.count, cur.position, stored_len, rep_copy.beads_deduped, rep_copy.bead_count,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: session_store selftest\n", .{});
+    return 1;
+}

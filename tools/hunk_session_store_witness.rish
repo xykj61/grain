@@ -1,0 +1,58 @@
+# tools/hunk_session_store_witness.rish — an editing session is content-addressed on metal (HUNK18).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK18.
+# Design read: active-designing/20260813-174500_hunk-session-persist-exploration.md (names HUNK18).
+# Teacher, thanked clean-room: the persistent editing session of iCloud Photos / Google Photos — an edit stays open
+# across a close-and-reopen, undo and redo intact (concept only, siloed).
+#
+# HUNK16 gave the Photos app an EditCursor — the whole reachable history plus a live position — and HUNK12 banked an
+# edit-list content-addressed. This rung stores the whole cursor. `pond/apps/session_store.rye` `store_session`
+# renders the cursor as its `format photo-session-v1` record and beads it content-addressed (HUNK1's Tablecloth
+# store); `open_session` fetches it back — proving every bead against its digest and the whole against its recorded
+# address BEFORE the text is parsed — then rebuilds the cursor. The crux a plain edit-list store could not reach:
+# a session reopened from cold still can_redo, because the redo tail was stored, not just the applied prefix. The
+# selftest proves undo AND redo both survive a cold restart, the view matches byte-for-byte, the dedup dividend for
+# sessions, and a tampered session refusing DigestMismatch, an unknown name UnknownArtifact, and a session past its
+# own history BadSession, each before a verb is replayed. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_session_store_witness.rish
+
+say "hunk-session-store: Language EN — HUNK18 banks a whole editing session content-addressed: a cursor reopens from cold with undo AND redo both intact, the redo tail stored, not just the applied prefix."
+say "hunk-session-store: Style Radiant — an editing session becomes a first-class artifact: reopened whole out of (source, session address), or a named refusal before a single verb runs."
+say "hunk-session-store: Lens TAME — the session text is bounded to a resin or refuses, the fetch verifies every bead against its digest before parse, the cursor's position bound is checked at the trust boundary, positive invariants per fn; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/apps/bin/session_store"
+
+let build = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/session_store.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-session-store: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-session-store: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+say "hunk-session-store: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN session-store' && echo yes"]
+assert (trim green.out) == "yes" else "hunk-session-store: selftest did not print the GREEN session-store line"
+
+let both = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'undo AND redo both intact' && echo yes"]
+assert (trim both.out) == "yes" else "hunk-session-store: undo and redo were not both proven to survive the restart"
+
+let tail = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the redo tail stored, not just the applied prefix' && echo yes"]
+assert (trim tail.out) == "yes" else "hunk-session-store: the redo tail was not proven stored"
+
+let cold = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'view matches byte-for-byte' && echo yes"]
+assert (trim cold.out) == "yes" else "hunk-session-store: the cold view was not proven byte-for-byte"
+
+let dedup = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the same session under two names is stored once' && echo yes"]
+assert (trim dedup.out) == "yes" else "hunk-session-store: the session dedup dividend was not proven"
+
+let tamper = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a tampered session refuses DigestMismatch' && echo yes"]
+assert (trim tamper.out) == "yes" else "hunk-session-store: a tampered session did not refuse before a verb ran"
+
+let before = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'each before a verb is replayed' && echo yes"]
+assert (trim before.out) == "yes" else "hunk-session-store: the refusals were not proven to land before replay"
+
+say "hunk-session-store: GREEN — a whole editing session is content-addressed; a cursor reopens from cold with undo AND redo intact, verified bead by bead, before a verb runs; refusals named."

@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260813.174500
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title HUNK18 — the editing session survives a cold restart
+prompt baton prin recur — take the next agent-doable lap Lindy-first crux-first past HUNK17; send each finished increment; stop at custody gates
+think Read the itinerary + six-season double-seat + REMEMBER's latest lap. HUNK17 landed (cursor preview); the prior lap itself named the next crux: the cursor beaded into Tablecloth as a live editing session, standing on HUNK12.
+think Lindy-first crux-first: persisting the editing session is the durable close of the Photos-app persistence story — read once, relied on for years — and the crux a plain edit-list store (HUNK12) could not reach, since a list carries no live position and no redo tail.
+think Read edit_cursor.rye (HUNK16), edit_store.rye (HUNK12), photo_edits.rye (HUNK11), tablecloth store/fetch sigs, beading BeadReport fields. The cursor is EditList + position u32 — a session record is a position line wrapping HUNK11's own format photo-edits-v1 body, so the verb grammar is reused wholesale, not duplicated.
+think Wrote a self-approved design round, then pond/apps/session_store.rye: render_session/parse_session/store_session/open_session/reopen_view. Symlinked edit_cursor.rye + photo_revert.rye into pond/apps.
+obs Built GREEN first try; session is 93 bytes for a 3-edit rewound cursor. The crux proof: reopened from cold the cursor still can_redo, and rolling the tail forward reaches the same image the original would — the road not taken survives the restart.
+obs TAME flagged one compound assert (reopened_copy position and count) — split it; witness GREEN, width exit 0.
+obs Stamp monotonic: the tree's recorded stamps today (last 173000) run ahead of this container's UTC wall clock (NY reads 16:45); honored the deeper monotonic invariant and stamped 174500 after the last.
+loom witness=hunk_session_store_witness build=ok selftest=green session_bytes=93 edits=3 position=2 beads_deduped=2
+file active-designing/20260813-174500_hunk-session-persist-exploration.md the self-approved HUNK18 design round
+file pond/apps/session_store.rye the editing session as a content-addressed Tablecloth artifact
+file tools/hunk_session_store_witness.rish the on-metal witness, GREEN
+file work-in-progress/REMEMBER.md HUNK18 narrative appended to the latest lap; git nib refreshed
+recommend keep-going another Photos gesture, a named catalog of sessions, or the next Season-A / double-seat journey — all mechanical, policy already written; hardware buys stay custody gates
