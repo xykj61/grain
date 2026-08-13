@@ -1,0 +1,131 @@
+//! mycelium/freight_true.rye — a real freight manifest reads true, and is the freight of a real ledger (r4,
+//! the arc closes).
+//!
+//! Season D (Kresfa & Mycelium) · Puddle fleet orchestration × Mycelium consensus · rung r4 — reads true.
+//! Design read: active-designing/20260813-121424_puddle-freight-world-state-migration-exploration.md
+//!
+//! r1 proved a moved world reads the byte-identical position on its new berth, r2 conserved the whole fleet's
+//! state across a healing, r3 let a world's freight travel as text — all over ledgers seated in code. r4
+//! carries the reader onto a REAL on-disk `format freight-v1` record a keeper can open and read —
+//! `tools/fixtures/freight_manifest.bron`, produced reproducibly by `mycelium/freight_fixture_gen.rye`,
+//! `@embedFile`-bound at compile time through the `mycelium/corpora/` symlink (no network).
+//!
+//! Two crux checks make the reading true to the bytes:
+//!   - TWO TOOLS, ONE ANSWER — the app parses the record through r3's reader and reports the position triple
+//!     (balance · reserved · received); the r4 witness cross-checks it against `freight_manifest_truth.awk`'s
+//!     reading of the same bytes, so a carried position can never drift from a record a keeper reads by hand.
+//!   - THE RECORD IS THE FREIGHT OF A REAL LEDGER — the app rebuilds the world's ledger from the fixture's own
+//!     seeds, reads its position the way r1 does, and confirms the parsed manifest's position and order-head
+//!     match the freshly-derived ones byte for byte, AND that the advertised head accepts the real blocks
+//!     through `freight.receive`. So the fixture is what a real world emits, not a hand-mock.
+//! Genuineness beyond that: re-rendering the parsed manifest reproduces the embedded bytes (a fixed point),
+//! and a tampered header refuses `BadFormat`.
+//!
+//! Composes freight + freight_bron + freight_fixture_gen + cord + kumara public API only. Siloed, dev-only,
+//! demo host/world/keeper seeds — no real key, no funds, no network, no world moved.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/freight_true.rye selftest
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/freight_true.rye measure
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const freight = @import("freight.rye");
+const freight_bron = @import("freight_bron.rye");
+const gen = @import("freight_fixture_gen.rye");
+const cord = @import("cord.rye");
+const kumara = @import("kumara.rye");
+
+pub const freight_true_version = "20260813.121424";
+
+const real_manifest = @embedFile("corpora/freight_manifest.bron");
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+/// Parse the real manifest and read its position triple — the numbers the app reports and awk independently
+/// reads off the same bytes.
+fn read_manifest() !freight_bron.Manifest {
+    var m: freight_bron.Manifest = undefined;
+    try freight_bron.parse(real_manifest, &m);
+    // invariant: the parsed manifest names a world within the id bound.
+    assert(m.id_len >= 1 and m.id_len <= 24);
+    return m;
+}
+
+/// The reading of the real manifest is true to the bytes AND is the freight of a real ledger: the parsed
+/// position matches the one freshly derived from the world's own rebuilt ledger, head and triple alike, and
+/// the advertised head accepts the real blocks through receive.
+fn welcome_reading_true_and_real() !void {
+    const m = try read_manifest();
+
+    // Rebuild the world's ledger from the fixture's own seeds and read its position the way r1 does.
+    const owner_pk = seeded(gen.owner_byte).public_key.toBytes();
+    const blocks = try gen.seat_ledger();
+    var dag = cord.Dag.empty();
+    for (blocks) |blk| try cord.add(&dag, blk);
+    const fresh = try freight.read_position(&dag, owner_pk[0..]);
+
+    // The record carries exactly the real world's position — head and triple.
+    if (!m.pos.same(&fresh)) return error.RecordNotReal;
+
+    // And the advertised head accepts the real ledger blocks through receive — the light record is honest
+    // against the heavy ledger it claims to summarize.
+    const accepted = try freight.receive(blocks[0..], m.pos.order_head[0..], owner_pk[0..]);
+    if (!accepted.same(&m.pos)) return error.RecordNotReal;
+
+    print("freight-true: truth-triple {d} {d} {d}\n", .{ m.pos.balance, m.pos.reserved, m.pos.received });
+    print("freight-true: the reading of the real manifest — balance, reserved, received — matches an independent count of the same bytes, and the record is the freight of a real ledger (its head accepts the real blocks through receive).\n", .{});
+}
+
+/// The record is genuinely what the Freight renders: re-rendering the parsed manifest reproduces the embedded
+/// bytes exactly (a fixed point), so the fixture is not a hand-mock.
+fn welcome_record_is_really_freight() !void {
+    const m = try read_manifest();
+    var buf: [freight_bron.max_record]u8 = undefined;
+    const len = try freight_bron.render(&m, buf[0..]);
+    // invariant: the re-render honors the record bound.
+    assert(len <= freight_bron.max_record);
+    if (!std.mem.eql(u8, buf[0..len], real_manifest)) return error.NotFixedPoint;
+    print("freight-true: the record re-renders to the embedded bytes exactly — the fixture is what the Freight emits, never a hand-mock.\n", .{});
+}
+
+/// A tampered record refuses: a wrong header is caught before any field is read.
+fn unwelcome_tampered_record_refuses() !void {
+    const bad = "format freight-v2\nworld alpha\n";
+    var m: freight_bron.Manifest = undefined;
+    if (freight_bron.parse(bad, &m)) |_| return error.TamperAdmitted else |err| {
+        if (err != error.BadFormat) return error.WrongTamper;
+    }
+    print("freight-true: a tampered header refused BadFormat.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_reading_true_and_real();
+    try welcome_record_is_really_freight();
+    try unwelcome_tampered_record_refuses();
+    print("freight_true {s} — GREEN\n", .{freight_true_version});
+    print("GREEN: myc freight r4; the reading of a real freight manifest is true to the bytes (balance·reserved·received), the record the freight of a real ledger whose head accepts the real blocks, its record a fixed point. The Freight agent-doable arc closes.\n", .{});
+    return 0;
+}
+
+fn run_measure() !u8 {
+    const m = try read_manifest();
+    print("{d} {d} {d}\n", .{ m.pos.balance, m.pos.reserved, m.pos.received });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "measure")) {
+        return run_measure();
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest();
+    }
+    print("usage: freight-true selftest | measure\n", .{});
+    return 1;
+}

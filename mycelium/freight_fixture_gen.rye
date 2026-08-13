@@ -1,0 +1,109 @@
+//! mycelium/freight_fixture_gen.rye — reproducibly emit the Freight manifest fixture (r4 support).
+//!
+//! Season D (Kresfa & Mycelium) · Puddle fleet orchestration × Mycelium consensus · rung r4 support.
+//! Design read: active-designing/20260813-121424_puddle-freight-world-state-migration-exploration.md
+//!
+//! Seats one world's real ledger (a funder credits the owner 100, the owner pledges 40 to a stranger under a
+//! far deadline the two-block order never reaches — so the owner reads balance 60, reserved 40, received 0),
+//! reads its position the way r1 does, builds the r3 manifest around it, and renders a `format freight-v1`
+//! record to stderr — the exact bytes `mycelium/freight_true.rye` reads back and the r4 witness cross-checks
+//! against an independent awk reading. Deterministic: seeded demo keys and a pure render mean the same bytes
+//! every run, so the on-disk fixture is what a real world emits, never a hand-mock.
+//!
+//! Siloed, dev-only, demo host/world/keeper seeds — no real key, no funds, no network, no world moved.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/freight_fixture_gen.rye \
+//!     2> tools/fixtures/freight_manifest.bron
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const freight = @import("freight.rye");
+const freight_bron = @import("freight_bron.rye");
+const puddle = @import("puddle.rye");
+const cord = @import("cord.rye");
+const lapse = @import("lapse.rye");
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+
+// The fixture constants — freight_true.rye rebuilds the identical ledger from these, so the on-disk record is
+// provably the freight of a real world, not a mock. Keep the two files in step.
+pub const world_id = "alpha";
+pub const owner_byte: u8 = 0xA1;
+pub const funder_byte: u8 = 0xF0;
+pub const stranger_byte: u8 = 0x5E;
+pub const berth_byte: u8 = 0x11;
+pub const credit: u64 = 100;
+pub const pledge_amt: u64 = 40;
+pub const pledge_byte: u8 = 0x10;
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn write_deadline(deadline: u64, out: []u8) void {
+    // invariant: the buffer holds a full little-endian order position.
+    assert(out.len == lapse.deadline_len);
+    var v = deadline;
+    var i: u32 = 0;
+    while (i < lapse.deadline_len) : (i += 1) {
+        out[i] = @truncate(v);
+        v >>= 8;
+    }
+}
+
+/// A world's ledger: a funder credits `owner` `credit`, and the owner pledges `pledge_amt` to a stranger
+/// under a far deadline the two-block order never reaches. Returns two blocks (genesis · pledge).
+pub fn seat_ledger() ![2]cord.Block {
+    // invariant: a pledge can only encumber value the owner holds.
+    assert(pledge_amt <= credit and pledge_amt > 0);
+    const kf = seeded(funder_byte);
+    const ka = seeded(owner_byte);
+    const owner_pk = ka.public_key.toBytes();
+    const stranger = seeded(stranger_byte).public_key.toBytes();
+
+    const f_gen = fold.mint_fact(kf, fold.kind_issue, credit, "", owner_pk[0..]) orelse return error.MintGen;
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_gen) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+    const roots = [_][cord.hash_len]u8{hg};
+
+    var pb: [1 + lapse.id_len + lapse.deadline_len + puddle.pk_len]u8 = undefined;
+    pb[0] = lapse.tag_pledge;
+    const id_bytes: [lapse.id_len]u8 = .{pledge_byte} ** lapse.id_len;
+    tally_copy.copy_disjoint(u8, pb[1 .. 1 + lapse.id_len], id_bytes[0..]);
+    write_deadline(9, pb[1 + lapse.id_len .. 1 + lapse.id_len + lapse.deadline_len]);
+    tally_copy.copy_disjoint(u8, pb[1 + lapse.id_len + lapse.deadline_len ..][0..puddle.pk_len], stranger[0..]);
+    const pn: u32 = 1 + lapse.id_len + lapse.deadline_len + puddle.pk_len;
+    const f_pledge = fold.mint_fact(ka, fold.kind_tax, pledge_amt, "", pb[0..pn]) orelse return error.MintPledge;
+    const bp = cord.mint_block(ka, 1, roots[0..], f_pledge) orelse return error.BlockP;
+    return .{ g, bp };
+}
+
+/// Build the r3 manifest around a freshly-read position — the fixture the world would carry to its berth.
+pub fn build_manifest() !freight_bron.Manifest {
+    const owner_pk = seeded(owner_byte).public_key.toBytes();
+    const berth = seeded(berth_byte).public_key.toBytes();
+    const blocks = try seat_ledger();
+    var dag = cord.Dag.empty();
+    for (blocks) |blk| try cord.add(&dag, blk);
+    const pos = try freight.read_position(&dag, owner_pk[0..]);
+
+    var m = freight_bron.Manifest{ .id = undefined, .id_len = world_id.len, .berth = undefined, .pos = pos };
+    tally_copy.copy_disjoint(u8, m.id[0..world_id.len], world_id);
+    tally_copy.copy_disjoint(u8, m.berth[0..puddle.pk_len], berth[0..puddle.pk_len]);
+    // invariant: the fixture world reads the seated position — balance credit-pledge, reserved pledge.
+    assert(m.pos.balance == credit - pledge_amt and m.pos.reserved == pledge_amt);
+    return m;
+}
+
+pub fn main() !void {
+    var m = try build_manifest();
+    var buf: [freight_bron.max_record]u8 = undefined;
+    const len = try freight_bron.render(&m, buf[0..]);
+    // invariant: a rendered fixture is never empty.
+    assert(len > 0);
+    print("{s}", .{buf[0..len]});
+}

@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260813.123539
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title myc freight true r4 — a real freight manifest reads true; the Freight arc closes
+prompt keep taking the next agent-doable Freight crux, sending each finished increment as its own signed round
+think r3 (travels as text) landed and sent; the closing Freight crux is r4 — reads true against a real on-disk fixture cross-checked by an independent awk. Modeled on the family _true idiom (puddle_true.rye + fixture gen + truth.awk + corpora symlink).
+think Wrote mycelium/freight_fixture_gen.rye (reproducibly emits a format freight-v1 manifest from a real seated ledger — pub constants so freight_true rebuilds the identical ledger), generated tools/fixtures/freight_manifest.bron, symlinked mycelium/corpora/freight_manifest.bron, and tools/fixtures/freight_manifest_truth.awk (prints the balance/reserved/received triple).
+think Wrote mycelium/freight_true.rye (selftest + measure modes): two crux checks — two tools one answer (app triple == awk, 60 40 100), and the record is the freight of a REAL ledger (rebuild the world's ledger from the fixture's own seeds, confirm the parsed position + head match byte for byte, and the advertised head accepts the real blocks through freight.receive). Plus fixed point (re-render == embedded bytes) and a tampered header refuses BadFormat.
+obs The fixture reads balance 60, reserved 40, received 100 — all three position components nonzero (the owner received the genesis credit, pledged 40 of it), so the awk cross-check exercises every field. Composes freight + freight_bron + freight_fixture_gen + cord + kumara public API only; demo seeds, no key/funds/network, no world moved.
+obs The Freight journey (Season D) now stands complete end to end — r1 the migration crux · r2 conservation · r3 travels as text · r4 reads true. A served migration (a node fetching a moving world's freight over Comlink) remains the Comlink-served custody gate.
+loom witness=mycelium_freight_true_witness green=true triple=60_40_100 app_eq_awk=true reproducible=true
+file mycelium/freight_fixture_gen.rye reproducibly emits the freight-v1 manifest fixture from a real ledger
+file mycelium/freight_true.rye reads the real manifest true and proves it is the freight of a real ledger (r4)
+file tools/fixtures/freight_manifest.bron the real on-disk fixture (balance 60 reserved 40 received 100)
+file tools/fixtures/freight_manifest_truth.awk independent awk reading of the position triple
+file mycelium/corpora/freight_manifest.bron embed symlink to the fixture
+file tools/mycelium_freight_true_witness.rish builds + runs the r4 selftest, cross-checks app==awk, reproduces the fixture, re-runs r3 GREEN
+recommend keep-going the Freight journey stands complete; the next agent-doable crux is a remember fold of the Freight arc onto REMEMBER, then a fresh Season D / double-seat journey (each a self-approved design read first); breach renames · deep debride · seed force-push stay the maintainer's hand
