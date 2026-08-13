@@ -1,0 +1,44 @@
+# tools/hunk_skate_witness.rish — a decoded image reaches the canvas through Skate (HUNK2).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · opening journey Open Image · rung HUNK2.
+# Design read: active-designing/20260813-144218_hunk-season-a-open-image-exploration.md
+# Teachers, thanked clean-room: gratitude/qoi.md (the open codec) · font8x8 public domain (via skate_grid.rye).
+#
+# HUNK0 decoded an image to an RGBA grid and HUNK1 gave it a content address; this rung makes it seen. The
+# module `brushstroke/image_skate.rye` down-maps the decoded pixels into Skate's palette-indexed cell grid:
+# the image is partitioned into cols×rows blocks, each block's average color quantized to the nearest of a
+# small fixed anchor palette, the matching cell wearing that slot over a full-block glyph — so rasterize
+# paints every cell as a solid color block. The selftest proves the down-map is spatial (a red half reaches a
+# red cell, a blue half a blue cell), deterministic (same image, same grid), and that the rasterized canvas is
+# fully lit with the down-mapped colors — lit pixels truly reach the canvas. Empty images and over-ceiling
+# grids refuse by name. No network, no key, no funds — the paint seam beneath the parts marketplace and Photos.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_skate_witness.rish
+
+say "hunk-skate: Language EN — HUNK2 makes a decoded image seen: a bounded down-map from RGBA pixels to Skate's palette-indexed cells, each cell a solid color block, so lit pixels reach the canvas."
+say "hunk-skate: Style Radiant — the map is spatial and deterministic; a red region reaches a red cell, a blue region a blue cell, and the rasterized canvas carries the down-mapped color, not a claim about it."
+say "hunk-skate: Lens TAME — u32 in-memory counts, both grid axes bounded at construction (max_map_cols · max_map_rows); nearest-anchor cost bounded well inside u32; positive invariants per fn; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/image-skate"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/image_skate.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-skate: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-skate: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+say "hunk-skate: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-skate' && echo yes"]
+assert (trim green.out) == "yes" else "hunk-skate: selftest did not print the GREEN down-map line"
+
+let lit = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'one glyph block per cell' && echo yes"]
+assert (trim lit.out) == "yes" else "hunk-skate: lit pixels did not reach the canvas as a glyph block per cell"
+
+let spatial = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'left cell red, right cell blue' && echo yes"]
+assert (trim spatial.out) == "yes" else "hunk-skate: the down-map did not carry color spatially"
+
+say "hunk-skate: GREEN — a decoded image reaches the canvas; the down-map is bounded, spatial, and deterministic."

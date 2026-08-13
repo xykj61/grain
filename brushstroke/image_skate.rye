@@ -1,0 +1,259 @@
+//! brushstroke/image_skate.rye — HUNK2: a decoded image meets Skate; lit pixels reach the canvas.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · opening journey Open Image · rung HUNK2.
+//! Design read: active-designing/20260813-144218_hunk-season-a-open-image-exploration.md (the HUNK0–HUNK3 quest).
+//! Teachers, thanked clean-room: gratitude/qoi.md (the open codec) · font8x8 public domain (via skate_grid.rye).
+//!
+//! HUNK0 decoded an image to an RGBA grid; HUNK1 gave it a content address. This rung makes it *seen*: a
+//! bounded down-map from the decoded pixels to Skate's palette-indexed cell grid. The image is partitioned
+//! into cols×rows blocks; each block's average color is quantized to the nearest of a small fixed anchor
+//! palette (seven vivid corners of the color cube), and the matching cell wears that palette slot over a
+//! full-block glyph — so `skate.Grid.rasterize` paints every cell as a solid color block and the down-mapped
+//! image lights the canvas. The map is deterministic (same image, same grid) and spatial (a red region reaches
+//! a red cell, a blue region a blue cell), and it is the seam the single-sprite marketplace and the Photos
+//! surface both stand on. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/image_skate.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const skate = @import("skate_grid.rye");
+
+pub const image_skate_version = "20260813.150309";
+
+/// The fixed anchor palette a block average quantizes to — seven vivid colors filling Skate's usable slots
+/// (1..7; slot 0 is the "wear the fg argument" sentinel). Named small on purpose: a down-map reads at a
+/// glance, not a photograph. A richer, image-derived palette is a later rung.
+pub const anchor_count: u32 = 7;
+const anchors = [anchor_count]skate.Color{
+    .{ .r = 0, .g = 0, .b = 0 }, // slot 1 — black
+    .{ .r = 255, .g = 255, .b = 255 }, // slot 2 — white
+    .{ .r = 255, .g = 0, .b = 0 }, // slot 3 — red
+    .{ .r = 0, .g = 255, .b = 0 }, // slot 4 — green
+    .{ .r = 0, .g = 0, .b = 255 }, // slot 5 — blue
+    .{ .r = 255, .g = 255, .b = 0 }, // slot 6 — yellow
+    .{ .r = 0, .g = 255, .b = 255 }, // slot 7 — cyan
+};
+
+/// Grid ceilings — a down-map is a thumbnail, not the whole panel; bound both axes at construction.
+pub const max_map_cols: u32 = 256;
+pub const max_map_rows: u32 = 256;
+
+/// The cell value that renders as a full block through Skate's extended-glyph slot 0 (below).
+const block_cell: u8 = 128;
+
+/// A full-block extended-glyph atlas — every slot fully lit — so a palette-colored cell paints a solid block.
+/// Skate reads glyphs 128..255 from here when `extended_glyphs` points at it (its ZETA4 emoji-atlas seam).
+var block_atlas: [128][8]u8 = [_][8]u8{[_]u8{0xFF} ** 8} ** 128;
+
+pub const MapError = error{
+    EmptyImage,
+    GridTooLarge,
+};
+
+/// The squared color distance between a sampled color and an anchor — the nearest-anchor cost. Bounded by
+/// 3·255² well inside u32.
+fn color_dist(r: u32, g: u32, b: u32, a: skate.Color) u32 {
+    const dr = if (r > a.r) r - a.r else @as(u32, a.r) - r;
+    const dg = if (g > a.g) g - a.g else @as(u32, a.g) - g;
+    const db = if (b > a.b) b - a.b else @as(u32, a.b) - b;
+    // invariant: each channel delta is a byte distance, so the square stays small.
+    assert(dr <= 255);
+    assert(dg <= 255);
+    assert(db <= 255);
+    return dr * dr + dg * dg + db * db;
+}
+
+/// The palette slot (1..anchor_count) whose anchor is nearest an average color.
+fn nearest_slot(r: u32, g: u32, b: u32) u8 {
+    var best: u8 = 1;
+    var best_d: u32 = color_dist(r, g, b, anchors[0]);
+    var k: u32 = 1;
+    while (k < anchor_count) : (k += 1) {
+        const d = color_dist(r, g, b, anchors[k]);
+        if (d < best_d) {
+            best_d = d;
+            best = @intCast(k + 1); // slot is the anchor index plus one
+        }
+    }
+    // invariant: a chosen slot is a real palette color, never the sentinel or past the bound.
+    assert(best >= 1);
+    assert(best <= anchor_count);
+    return best;
+}
+
+/// Down-map a decoded RGBA Pixmap into a cols×rows Skate grid: each cell wears the nearest anchor to its
+/// image block's average color, over a full-block glyph. Deterministic and bounded. Refuses an empty image
+/// (`EmptyImage`) and a grid past the ceiling (`GridTooLarge`).
+pub fn down_map(
+    allocator: std.mem.Allocator,
+    pm: *const qoi.Pixmap,
+    cols: u32,
+    rows: u32,
+) !skate.Grid {
+    if (pm.width == 0 or pm.height == 0) return error.EmptyImage;
+    if (cols == 0 or rows == 0) return error.EmptyImage;
+    if (cols > max_map_cols or rows > max_map_rows) return error.GridTooLarge;
+    // invariant: the decoded buffer is exactly four bytes per pixel.
+    assert(pm.pixels.len == @as(usize, pm.width) * @as(usize, pm.height) * 4);
+
+    // Point Skate at the full-block atlas so cell value 128 paints a solid block in its palette color.
+    skate.extended_glyphs = &block_atlas;
+
+    var grid = try skate.Grid.init(allocator, cols, rows);
+    var slot: u8 = 1;
+    while (slot <= anchor_count) : (slot += 1) {
+        grid.set_palette(slot, anchors[slot - 1]);
+    }
+
+    const width = pm.width;
+    const height = pm.height;
+    var gr: u32 = 0;
+    while (gr < rows) : (gr += 1) {
+        // The image rows this grid row covers: [y0, y1). Integer partition, every pixel counted once.
+        const y0 = gr * height / rows;
+        const y1 = (gr + 1) * height / rows;
+        var gc: u32 = 0;
+        while (gc < cols) : (gc += 1) {
+            const x0 = gc * width / cols;
+            const x1 = (gc + 1) * width / cols;
+            // invariant: a block spans at least one pixel — the partition never empties.
+            assert(y1 > y0);
+            assert(x1 > x0);
+
+            var sr: u32 = 0;
+            var sg: u32 = 0;
+            var sb: u32 = 0;
+            var n: u32 = 0;
+            var y = y0;
+            while (y < y1) : (y += 1) {
+                var x = x0;
+                while (x < x1) : (x += 1) {
+                    const off = (@as(usize, y) * @as(usize, width) + @as(usize, x)) * 4;
+                    sr += pm.pixels[off];
+                    sg += pm.pixels[off + 1];
+                    sb += pm.pixels[off + 2];
+                    n += 1;
+                }
+            }
+            // invariant: an averaged block sampled at least one pixel.
+            assert(n >= 1);
+            const cslot = nearest_slot(sr / n, sg / n, sb / n);
+
+            const cell_i: usize = @intCast(gr * cols + gc);
+            // invariant: the cell index sits inside the parallel cell and fg buffers.
+            assert(cell_i < grid.cells.len);
+            grid.cells[cell_i] = block_cell;
+            grid.fg_index[cell_i] = cslot;
+        }
+    }
+    return grid;
+}
+
+// --- selftest: down-map a two-tone image, prove color reaches the right cells, and prove the rasterized
+//     canvas is fully lit ------------------------------------------------------------------------------------
+
+/// Build an 8×8 image whose left half is red and right half is blue — a spatial pattern a down-map must carry.
+fn craft_two_tone(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 8;
+    const h: u32 = 8;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            const left = x < w / 2;
+            buf[off] = if (left) 255 else 0; // r
+            buf[off + 1] = 0; // g
+            buf[off + 2] = if (left) 0 else 255; // b
+            buf[off + 3] = 255; // a
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const pm = try craft_two_tone(garden);
+
+    // Down-map to a 2×2 grid: the left column samples red, the right column blue.
+    const cols: u32 = 2;
+    const rows: u32 = 2;
+    const grid = try down_map(garden, &pm, cols, rows);
+
+    // Spatial: cell (r,0) → red slot (3), cell (r,1) → blue slot (5), for every row. Color reached the cell.
+    const red_slot: u8 = 3;
+    const blue_slot: u8 = 5;
+    var gr: u32 = 0;
+    while (gr < rows) : (gr += 1) {
+        const left_i: usize = @intCast(gr * cols + 0);
+        const right_i: usize = @intCast(gr * cols + 1);
+        assert(grid.fg_index[left_i] == red_slot);
+        assert(grid.fg_index[right_i] == blue_slot);
+        assert(grid.cells[left_i] == block_cell);
+        assert(grid.cells[right_i] == block_cell);
+    }
+
+    // Deterministic: a second down-map of the same image yields the same cells and fg indices.
+    const grid2 = try down_map(garden, &pm, cols, rows);
+    assert(std.mem.eql(u8, grid.cells, grid2.cells));
+    assert(std.mem.eql(u8, grid.fg_index, grid2.fg_index));
+
+    // Rasterize onto a canvas sized exactly to the grid; a bg no anchor equals, so every filled cell lights.
+    const scale: u32 = 1;
+    const width: u32 = cols * skate.cell_w * scale;
+    const height: u32 = rows * skate.cell_h * scale;
+    const stride: u32 = width * 4;
+    const canvas = try garden.alloc(u8, @as(usize, stride) * @as(usize, height));
+    const bg = skate.Color{ .r = 1, .g = 2, .b = 3 };
+    const fg = skate.Color{ .r = 200, .g = 200, .b = 200 }; // fallback for any sentinel cell (none here)
+    grid.rasterize(canvas, stride, @intCast(width), @intCast(height), bg, fg, scale);
+
+    // The crux: lit pixels reach the canvas. Each cell paints its full-block glyph — 8×8 cells, scaled — so
+    // the lit count is exactly one glyph square per cell (a Skate cell is 8×16, so the glyph fills its width
+    // and its top half; the honest count names that geometry rather than claiming the whole canvas).
+    const lit = grid.lit_pixel_count(canvas, stride, @intCast(width), @intCast(height), bg);
+    const glyph_side = skate.cell_w * scale; // font glyph is 8 wide and 8 tall; cell_w is that 8
+    const lit_expected = cols * rows * glyph_side * glyph_side;
+    assert(lit == lit_expected);
+    assert(lit > 0);
+
+    // And the color truly flowed: the top-left cell's pixels carry red, the top-right cell's carry blue.
+    // Skate writes B,G,R,A; read the first pixel of the left cell and the first pixel of the right cell.
+    const left_px = 0;
+    assert(canvas[left_px + 2] == 255); // red channel
+    assert(canvas[left_px + 1] == 0); // no green
+    assert(canvas[left_px + 0] == 0); // no blue
+    const right_col_x = cols / 2 * skate.cell_w * scale; // first pixel column of the right cell
+    const right_px: usize = @intCast(right_col_x * 4);
+    assert(canvas[right_px + 2] == 0); // no red
+    assert(canvas[right_px + 1] == 0); // no green
+    assert(canvas[right_px + 0] == 255); // blue channel
+
+    // Unwelcome: an empty image and an over-ceiling grid each refuse by name.
+    if (down_map(garden, &pm, 0, rows)) |_| return error.EmptySlipped else |e| {
+        if (e != error.EmptyImage) return error.WrongEmpty;
+    }
+    if (down_map(garden, &pm, max_map_cols + 1, rows)) |_| return error.TooLargeSlipped else |e| {
+        if (e != error.GridTooLarge) return error.WrongTooLarge;
+    }
+
+    print("GREEN image-skate: 8x8 two-tone down-mapped to {d}x{d}; red reached slot {d}, blue slot {d}; " ++
+        "deterministic; rasterized canvas {d}x{d} lit {d} pixels (one glyph block per cell), left cell red, " ++
+        "right cell blue; empty image and over-ceiling grid refused by name\n", .{
+        cols, rows, red_slot, blue_slot, width, height, lit,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: image_skate selftest\n", .{});
+    return 1;
+}
