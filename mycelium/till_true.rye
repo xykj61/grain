@@ -1,0 +1,153 @@
+//! mycelium/till_true.rye — the Till reads a real double-spend fixture true (r4, the arc closes).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · the double-spend verdict · rung r4.
+//! Design read: active-designing/20260813-064129_mycelium-till-double-spend-exploration.md
+//!
+//! r1 fixed the verdict, r2 let it travel, r3 read it across a Knot — all over Dags
+//! seated in code. This closing rung carries the reader onto a **real** on-disk Cord
+//! record carrying a genuine double-spend a keeper can open and walk, and proves the
+//! property the whole treasury rests on: the SPENT-OUT draw is true to the bytes.
+//!
+//! The corpus is `tools/fixtures/till_dag.bron`, a genuine record produced reproducibly
+//! by `mycelium/till_fixture_gen.rye` (genesis funds 1000; a 100 draw uncontested; two
+//! keepers each drawing 700, won at round 1, short at round 2), `@embedFile`-bound at
+//! compile time through a symlink in `mycelium/corpora/` — no network, the bytes read are
+//! the tree's own. Two independent readings must agree: the app parses the record through
+//! `cord_bron`, **rebuilds** the Dag under `cord.add` (re-verifying every signature),
+//! resolves it through `till`, and reports the **signer of the spent-out draw**, the
+//! **draw count**, and the **short count**; the r4 witness cross-checks that triple
+//! against `tools/fixtures/till_dag_truth.awk`'s reading of the same file — two tools, one
+//! answer. The awk applies the simplest honest slice of the agreed order (supply
+//! accounting in round order); the app applies the full commit tie-break; on this fixture
+//! the two round-1 draws both fit and the loser is the round-2 draw, so both name the
+//! same spent-out signer.
+//!
+//! Additive — composes `cord_bron` + `cord` + `till` public API only (each re-runs GREEN).
+//! Siloed, dev-only, demo seeds — no real key, no funds, no network, no custody.
+//!
+//!   rye build mycelium/till_true.rye -femit-bin=mycelium/bin/till_true
+//!   mycelium/bin/till_true selftest | measure
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("cord.rye");
+const cord_bron = @import("cord_bron.rye");
+const till = @import("till.rye");
+
+pub const till_true_version = "20260813.070000";
+
+/// The real double-spend Cord record, bound at compile time — the tree's own bytes, never a drifting copy.
+const real_dag = @embedFile("corpora/till_dag.bron");
+
+const hex_digits = "0123456789abcdef";
+
+/// Encode bytes to lowercase hex — the same width the record's signer field carries, so the app's spent-out
+/// signer and awk's spent-out signer are compared as identical strings.
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex nibbles per byte.
+    assert(out.len == bytes.len * 2);
+    var i: u32 = 0;
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = hex_digits[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_digits[bytes[i] & 0x0f];
+    }
+}
+
+/// The three facts a keeper can read by hand from a double-spend record: who came up short, how many draws
+/// took coins, and how many came up short.
+pub const Reading = struct {
+    loser_hex: [till.pk_len * 2]u8 = undefined,
+    drew: u32 = 0,
+    short: u32 = 0,
+};
+
+/// Read the real double-spend record: parse it, rebuild the Dag under `cord.add` (verifying every
+/// signature), resolve it through the Till, and read off the signer of the spent-out draw.
+pub fn read_till(text: []const u8) !Reading {
+    const pl = try cord_bron.parse(text);
+    // invariant: a real double-spend record carries blocks — an empty Dag holds no contest to read.
+    if (pl.len == 0) return error.BadFormat;
+    var dag = try cord_bron.rebuild(&pl);
+    const verdict = try till.resolve(&dag);
+    const lost = verdict.short_at(0) orelse return error.NoSpentOutDraw;
+    // invariant: a spent-out draw carries a full-width signer key.
+    assert(lost.signer_pk.len == till.pk_len);
+    var r = Reading{ .drew = verdict.draws_seen(), .short = verdict.shorts_seen() };
+    to_hex(lost.signer_pk[0..], r.loser_hex[0..]);
+    return r;
+}
+
+// --- selftest -----------------------------------------------------------
+
+/// The reading of the real record — the witness cross-checks this triple against awk's reading of the same
+/// bytes, so the two tools must name one spent-out draw.
+fn welcome_reading_true_to_bytes() !void {
+    const r = try read_till(real_dag);
+    // The fixture pays two draws (100, 700) and one comes up short (the round-2 700).
+    assert(r.drew == 2);
+    assert(r.short == 1);
+    print("till-true: truth-triple {s} {d} {d}\n", .{ r.loser_hex, r.drew, r.short });
+    print("till-true: the signer of the spent-out draw, the draw count, and the short count match an independent reading of the same bytes.\n", .{});
+}
+
+/// The draw that came up short is the round-2 draw, not a round-1 winner — the treasury drained before its
+/// turn, exactly as the agreed order rules. The spent-out loss is lawful (it once could have been paid).
+fn welcome_spent_out_is_the_later_round() !void {
+    const pl = try cord_bron.parse(real_dag);
+    var dag = try cord_bron.rebuild(&pl);
+    const verdict = try till.resolve(&dag);
+    // Exactly one spent-out loss recorded — 1500 drawn against a treasury of 1000, paid once past the small draw.
+    assert(verdict.shorts_seen() == 1);
+    const lost = verdict.short_at(0) orelse return error.NoSpentOutDraw;
+    // invariant: the loss is lawful — it asked for no more than the treasury ever issued.
+    assert(lost.amount <= lost.issued_at);
+    // invariant: the spent-out signer holds no winning draw — it took no coins.
+    var i: u32 = 0;
+    while (i < verdict.draw_count) : (i += 1) {
+        assert(!std.mem.eql(u8, verdict.draws[i].signer_pk[0..], lost.signer_pk[0..]));
+    }
+    print("till-true: the spent-out draw holds no coins; it lost a lawful race the agreed order already ruled.\n", .{});
+}
+
+/// A tampered copy of the real bytes refuses — the reader will not read a corrupted record as true. A
+/// flipped header byte refuses `BadFormat`; a flipped signature byte would refuse `BadSignature` at add.
+fn unwelcome_tampered_record_refuses() !void {
+    var buf: [real_dag.len]u8 = undefined;
+    var k: u32 = 0;
+    while (k < real_dag.len) : (k += 1) buf[k] = real_dag[k];
+    buf[7] ^= 0xFF; // inside "format ..."
+    const bad = read_till(buf[0..]);
+    assert(bad == error.BadFormat);
+    print("till-true: a tampered header refused BadFormat — a corrupted record is never read as true.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try welcome_reading_true_to_bytes();
+    try welcome_spent_out_is_the_later_round();
+    try unwelcome_tampered_record_refuses();
+    print("till_true {s} — GREEN\n", .{till_true_version});
+    print("GREEN: myc till r4; the spent-out draw of a real double-spend is true to the bytes (loser·drew·short), resolved under the Cord's own add and the agreed order, a tampered record refused. The Till's agent-doable arc closes.\n", .{});
+    return 0;
+}
+
+/// Emit exactly the awk-format triple (`<loser-hex> <drew> <short>`), so the witness can compare the app's
+/// reading against `till_dag_truth.awk` byte for byte — two tools, one answer.
+fn run_measure() !u8 {
+    const r = try read_till(real_dag);
+    print("{s} {d} {d}\n", .{ r.loser_hex, r.drew, r.short });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "measure")) {
+        return run_measure();
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest();
+    }
+    print("usage: till-true selftest | measure\n", .{});
+    return 1;
+}

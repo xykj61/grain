@@ -1,0 +1,82 @@
+//! mycelium/till_fixture_gen.rye — reproducibly emit a double-spend Cord dev-net fixture (r4 support).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · the double-spend verdict · rung r4 support.
+//! Design read: active-designing/20260813-064129_mycelium-till-double-spend-exploration.md
+//!
+//! Seats a real four-block scene carrying a genuine double-spend — a genesis issue of
+//! 1000, an uncontested draw (a tax of 100), and two distinct keepers each drawing 700
+//! from the same treasury: the winner draws at round 1, the loser at round 2
+//! (referencing the winner's block). Each draw is affordable alone (700 <= 1000) yet the
+//! two together are not, so the agreed order pays one and the other comes up short.
+//! Committing and rendering to a `format cord-dag-v1` record gives the exact bytes
+//! `mycelium/till_true.rye` reads back and the r4 witness cross-checks against an
+//! independent awk reading. The earlier round wins unambiguously, and the two round-1
+//! draws (100 + 700) both fit, so a keeper (or an awk) can name the spent-out draw by
+//! walking the block lines by hand.
+//!
+//! Deterministic: seeded demo keys and a pure commit mean the same bytes every run, so
+//! the on-disk fixture is what the Cord emits, never a hand-mock. Emitted on stderr
+//! (hosted `print` is `std.debug.print`), so capture with `2>`.
+//!
+//! Siloed, dev-only, demo seeds — no real key, no funds, no network, no custody.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/till_fixture_gen.rye \
+//!     2> tools/fixtures/till_dag.bron
+//!
+//! Kin: mycelium/tenure_fixture_gen.rye (the name-contest sibling).
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("cord.rye");
+const cord_bron = @import("cord_bron.rye");
+const fold = @import("fold.rye");
+const kumara = @import("kumara.rye");
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+/// Seat the double-spend four-block Dag — the same scene the Till's Knot rung uses:
+/// genesis funds 1000; a 100 draw uncontested; two 700 draws, won at round 1, short at round 2.
+fn seat_dag() !cord.Dag {
+    const kf = seeded(0xA1); // funder / genesis issue
+    const kv = seeded(0xC3); // uncontested small draw
+    const kx = seeded(0x11); // winning 700 draw — round 1
+    const ky = seeded(0x22); // contesting 700 draw — round 2, comes up short
+
+    const f_issue = fold.mint_fact(kf, fold.kind_issue, 1000, "", "genesis") orelse return error.MintIssue;
+    const f_vega = fold.mint_fact(kv, fold.kind_tax, 100, "", "small") orelse return error.MintVega;
+    const f_bx = fold.mint_fact(kx, fold.kind_tax, 700, "", "draw-x") orelse return error.MintBx;
+    const f_by = fold.mint_fact(ky, fold.kind_tax, 700, "", "draw-y") orelse return error.MintBy;
+
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_issue) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+    const roots = [_][cord.hash_len]u8{hg};
+    const b_vega = cord.mint_block(kv, 1, roots[0..], f_vega) orelse return error.BlockVega;
+    const b_bx = cord.mint_block(kx, 1, roots[0..], f_bx) orelse return error.BlockBx;
+    var hbx: [cord.hash_len]u8 = undefined;
+    cord.address(&b_bx, &hbx);
+    const roots2 = [_][cord.hash_len]u8{hbx};
+    const b_by = cord.mint_block(ky, 2, roots2[0..], f_by) orelse return error.BlockBy;
+
+    var dag = cord.Dag.empty();
+    try cord.add(&dag, g);
+    try cord.add(&dag, b_vega);
+    try cord.add(&dag, b_bx);
+    try cord.add(&dag, b_by);
+    return dag;
+}
+
+pub fn main() !void {
+    var dag = try seat_dag();
+    const pl = try cord_bron.from_dag(&dag);
+    var buf: [cord_bron.max_record]u8 = undefined;
+    const n = try cord_bron.render(&pl, &buf);
+    // invariant: the render is bounded and non-empty — a real record carries its header.
+    assert(n > 0);
+    assert(n <= cord_bron.max_record);
+    print("{s}", .{buf[0..n]});
+}
