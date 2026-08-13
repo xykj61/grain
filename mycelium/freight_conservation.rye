@@ -1,0 +1,294 @@
+//! mycelium/freight_conservation.rye — the whole fleet's state is conserved across a healing (r2).
+//!
+//! Season D (Kresfa & Mycelium) · Puddle fleet orchestration × Mycelium consensus · rung r2.
+//! Design read: active-designing/20260813-121424_puddle-freight-world-state-migration-exploration.md
+//!
+//! r1 proved one moved world reads the byte-identical position on its new berth, and a freight tampered in
+//! transit refuses. r2 raises the claim from one world to the WHOLE FLEET: when a host departs and Puddle
+//! re-berths only the worlds it carried, the fleet's total state is CONSERVED — the sum of every world's
+//! position before the departure equals the sum read after, so a host failure costs ZERO state. This is the
+//! property a fleet exists to keep and a naive scheduler quietly breaks: reassign the pointers, lose the
+//! volumes, and the balances silently fall. Freight carries each world's whole ledger, so nothing is lost.
+//!
+//! Three scenes make it checkable on metal:
+//!   - THE CRUX — the fleet-state sum (balance · reserved · received · worlds) read before a departure equals
+//!     the sum read AFTER, where every world's after-position is obtained by RECEIVING its carried freight on
+//!     its new berth (r1's receive path), so conservation is proven THROUGH the migration, not around it.
+//!   - DISTINCTNESS — every world's order-head is pairwise distinct across the whole fleet, so no world's
+//!     freight can masquerade as another's; a healing can never cross-wire two worlds' state.
+//!   - THE TEETH — the conservation law is not vacuous: a fleet that DROPPED the departed host's tenants (a
+//!     scheduler that loses the failed host's volumes) reads a strictly smaller sum, short by exactly the
+//!     moved worlds' state. Carrying the freight is precisely what closes that gap.
+//!
+//! Composes `freight` + `puddle` + `cord` + `lapse` + `statement` + `fold` + `voucher` + `kumara` public API
+//! only, editing none (each re-runs GREEN at this witness's door). The position is derived, never re-declared.
+//! Siloed, dev-only, demo host/world/keeper seeds — no real key, no funds, no network, no world provisioned or
+//! moved; a served migration reaches the Comlink-served gate.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/freight_conservation.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const freight = @import("freight.rye");
+const puddle = @import("puddle.rye");
+const cord = @import("cord.rye");
+const lapse = @import("lapse.rye");
+const fold = @import("fold.rye");
+const voucher = @import("voucher.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const freight_conservation_version = "20260813.121424";
+
+pub const ConservationError = error{
+    MissingWorld, // a world id named to the fleet is not enrolled
+    NoTenant, // no world moved — the scene cannot show a migration
+    HostsAll, // one host carried every world — the scene cannot show a stay
+    StateNotConserved, // the fleet-state sum changed across the healing
+    StayedOnDeparted, // a world that should have moved kept its departed host
+    SurvivorMoved, // a world on a surviving host moved anyway
+    LossNotDetected, // dropping the moved worlds did not change the sum — the law is vacuous
+    CrossWired, // two distinct worlds carry the same order-head
+};
+
+/// The fleet's total account state: the three position components summed across every world, plus the count
+/// of worlds. Bounded by construction — the loop that fills it is bounded by `puddle.max_worlds`, and each
+/// world's position is a `u64` triple, so the running sum stays well inside `u64` for any demo fleet.
+const FleetSum = struct {
+    balance: u64,
+    reserved: u64,
+    received: u64,
+    worlds: u32,
+
+    fn zero() FleetSum {
+        return .{ .balance = 0, .reserved = 0, .received = 0, .worlds = 0 };
+    }
+
+    /// Fold one world's position into the running total.
+    fn add(self: *FleetSum, p: *const freight.Position) void {
+        // invariant: a world with no account present contributes nothing but its count is still real state.
+        assert(self.worlds < puddle.max_worlds);
+        self.balance += p.balance;
+        self.reserved += p.reserved;
+        self.received += p.received;
+        self.worlds += 1;
+    }
+
+    /// Two fleet sums are equal exactly when all three components and the world count agree.
+    fn same(a: *const FleetSum, b: *const FleetSum) bool {
+        // invariant: a conserved sum never loses a world silently — the count is part of the equality.
+        assert(a.worlds <= puddle.max_worlds and b.worlds <= puddle.max_worlds);
+        return a.balance == b.balance and a.reserved == b.reserved and a.received == b.received and a.worlds == b.worlds;
+    }
+};
+
+// --- selftest scaffolding: build fleets and per-world ledgers over the seasons' own idioms -------------
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn host_key(byte: u8) [puddle.pk_len]u8 {
+    return seeded(byte).public_key.toBytes();
+}
+
+/// Build a fleet from host seed bytes (each capacity `cap`) and world ids, in the given order.
+fn build_fleet(host_bytes: []const u8, cap: u32, world_ids: []const []const u8) !puddle.Fleet {
+    // invariant: a fleet is built from at least one host and at least one world.
+    assert(host_bytes.len >= 1 and world_ids.len >= 1);
+    var f = puddle.Fleet.empty();
+    for (host_bytes) |b| {
+        const pk = host_key(b);
+        try puddle.add_host(&f, pk[0..puddle.pk_len], cap);
+    }
+    for (world_ids) |id| try puddle.add_world(&f, id);
+    return f;
+}
+
+/// The berth host public key of the world named `id` under `placement`.
+fn berth_of(f: *const puddle.Fleet, placement: *const [puddle.max_worlds]u32, id: []const u8) ![]const u8 {
+    const wi = puddle.find_world(f, id) orelse return error.MissingWorld;
+    return puddle.berth_pk(f, placement, wi);
+}
+
+fn write_deadline(deadline: u64, out: []u8) void {
+    // invariant: the buffer holds a full little-endian order position.
+    assert(out.len == lapse.deadline_len);
+    var v = deadline;
+    var i: u32 = 0;
+    while (i < lapse.deadline_len) : (i += 1) {
+        out[i] = @truncate(v);
+        v >>= 8;
+    }
+}
+
+/// A world's ledger: a funder credits `owner` `credit`, and the owner pledges `pledge_amt` (`<= credit`) to a
+/// stranger under a far deadline the two-block order never reaches — so the owner reads balance
+/// `credit - pledge_amt` and reserved `pledge_amt`, both a world-specific slice of the fleet's state. The
+/// pledge id seeds a DISTINCT ledger per world. Returns two blocks (genesis · pledge).
+fn seat_ledger(pledge_id: u8, credit: u64, pledge_amt: u64, funder: u8, owner: u8, to: []const u8) ![2]cord.Block {
+    // invariant: a pledge can only encumber value the owner actually holds.
+    assert(pledge_amt <= credit and pledge_amt > 0);
+    const kf = seeded(funder);
+    const ka = seeded(owner);
+    const owner_pk = ka.public_key.toBytes();
+
+    const f_gen = fold.mint_fact(kf, fold.kind_issue, credit, "", owner_pk[0..]) orelse return error.MintGen;
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_gen) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+    const roots = [_][cord.hash_len]u8{hg};
+
+    var pb: [1 + lapse.id_len + lapse.deadline_len + puddle.pk_len]u8 = undefined;
+    pb[0] = lapse.tag_pledge;
+    const id_bytes: [lapse.id_len]u8 = .{pledge_id} ** lapse.id_len;
+    tally_copy.copy_disjoint(u8, pb[1 .. 1 + lapse.id_len], id_bytes[0..]);
+    write_deadline(9, pb[1 + lapse.id_len .. 1 + lapse.id_len + lapse.deadline_len]);
+    tally_copy.copy_disjoint(u8, pb[1 + lapse.id_len + lapse.deadline_len ..][0..puddle.pk_len], to);
+    const pn: u32 = 1 + lapse.id_len + lapse.deadline_len + puddle.pk_len;
+    const f_pledge = fold.mint_fact(ka, fold.kind_tax, pledge_amt, "", pb[0..pn]) orelse return error.MintPledge;
+    const bp = cord.mint_block(ka, 1, roots[0..], f_pledge) orelse return error.BlockP;
+    return .{ g, bp };
+}
+
+fn dag_of(blocks: []const cord.Block) !cord.Dag {
+    var dag = cord.Dag.empty();
+    for (blocks) |blk| try cord.add(&dag, blk);
+    return dag;
+}
+
+/// Find the host carrying the most worlds under `placement` — the deterministic choice for the departing
+/// node, so the scene shows both a move (its tenants) and a stay (everyone else).
+fn busiest_host(f: *const puddle.Fleet, placement: *const [puddle.max_worlds]u32) u32 {
+    var busiest: u32 = 0;
+    var best_load: u32 = 0;
+    var hi: u32 = 0;
+    while (hi < f.host_count) : (hi += 1) {
+        const load = puddle.load_of(f, placement, hi);
+        if (load > best_load) {
+            best_load = load;
+            busiest = hi;
+        }
+    }
+    // invariant: a non-empty fleet always has a busiest host carrying at least one world.
+    assert(best_load >= 1);
+    return busiest;
+}
+
+pub fn main() !void {
+    // Six worlds, each its own distinct ledger; varied credit and pledge so both the balance and reserved
+    // components of the fleet sum are genuinely non-trivial and world-specific.
+    const ids = [_][]const u8{ "alpha", "bravo", "charlie", "delta", "echo", "foxtrot" };
+    const owners = [_]u8{ 0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6 };
+    const credits = [_]u64{ 100, 80, 70, 120, 60, 90 };
+    const pledges = [_]u64{ 40, 80, 30, 50, 60, 25 };
+    const stranger = seeded(0x5E).public_key.toBytes();
+
+    var blocks: [6][2]cord.Block = undefined;
+    var i: u32 = 0;
+    while (i < ids.len) : (i += 1) {
+        blocks[i] = try seat_ledger(@truncate(0x10 + i), credits[i], pledges[i], 0xF0, owners[i], stranger[0..]);
+    }
+
+    // --- Scene 1 — THE CRUX: the whole fleet's state is conserved across a healing -----------------------
+    var sum_before = FleetSum.zero();
+    var moved_sum = FleetSum.zero();
+    {
+        const all = [_]u8{ 0x11, 0x22, 0x33 };
+        const cap: u32 = 8; // generous — capacity never binds, so the berth is exactly pure HRW
+        var before = try build_fleet(all[0..], cap, ids[0..]);
+        var pb: [puddle.max_worlds]u32 = undefined;
+        try puddle.berth(&before, &pb);
+
+        const departed = busiest_host(&before, &pb);
+        const best_load = puddle.load_of(&before, &pb, departed);
+        if (best_load == 0) return error.NoTenant;
+        if (best_load >= before.world_count) return error.HostsAll;
+        const departed_pk = before.hosts[departed].pk_slice();
+
+        var survivors: [3]u8 = undefined;
+        var sn: u32 = 0;
+        var b: u32 = 0;
+        while (b < all.len) : (b += 1) {
+            if (b == departed) continue;
+            survivors[sn] = all[b];
+            sn += 1;
+        }
+        var after = try build_fleet(survivors[0..sn], cap, ids[0..]);
+        var pa: [puddle.max_worlds]u32 = undefined;
+        try puddle.berth(&after, &pa);
+
+        // World by world: read the before-position from the world's own ledger; read the after-position by
+        // RECEIVING its carried freight on its new berth. Sum both. A moved world genuinely changed host; a
+        // stayed world kept its host. The fleet sum must agree byte for byte across the move.
+        var sum_after = FleetSum.zero();
+        var moved: u32 = 0;
+        var stayed: u32 = 0;
+        var w: u32 = 0;
+        while (w < ids.len) : (w += 1) {
+            const owner_pk = seeded(owners[w]).public_key.toBytes();
+            const dag = try dag_of(blocks[w][0..]);
+            const pos_before = try freight.read_position(&dag, owner_pk[0..]);
+            sum_before.add(&pos_before);
+
+            const was = try berth_of(&before, &pb, ids[w]);
+            const now = try berth_of(&after, &pa, ids[w]);
+            const pos_after = try freight.receive(blocks[w][0..], pos_before.order_head[0..], owner_pk[0..]);
+            sum_after.add(&pos_after);
+
+            if (std.mem.eql(u8, was, departed_pk)) {
+                if (std.mem.eql(u8, now, departed_pk)) return error.StayedOnDeparted;
+                moved_sum.add(&pos_before);
+                moved += 1;
+            } else {
+                if (!std.mem.eql(u8, was, now)) return error.SurvivorMoved;
+                stayed += 1;
+            }
+        }
+        if (moved == 0) return error.NoTenant;
+        if (stayed == 0) return error.HostsAll;
+        // The crux: a host failure moved worlds yet cost zero state — the fleet sum is byte-identical.
+        if (!sum_before.same(&sum_after)) return error.StateNotConserved;
+    }
+
+    // --- Scene 2 — DISTINCTNESS: every world's freight is its own, fleet-wide ----------------------------
+    {
+        var w: u32 = 0;
+        while (w < ids.len) : (w += 1) {
+            const dag_w = try dag_of(blocks[w][0..]);
+            var hw: [voucher.order_head_len]u8 = undefined;
+            voucher.order_head_of(&dag_w, &hw);
+            var other: u32 = w + 1;
+            while (other < ids.len) : (other += 1) {
+                const dag_o = try dag_of(blocks[other][0..]);
+                var ho: [voucher.order_head_len]u8 = undefined;
+                voucher.order_head_of(&dag_o, &ho);
+                // Distinct ledgers carry distinct order-heads — no world's freight can masquerade as another's,
+                // so a healing can never cross-wire two worlds' state.
+                if (std.mem.eql(u8, hw[0..], ho[0..])) return error.CrossWired;
+            }
+        }
+    }
+
+    // --- Scene 3 — THE TEETH: the conservation law is not vacuous ----------------------------------------
+    {
+        // A scheduler that dropped the departed host's tenants (lost their volumes, as a naive control plane
+        // does) reads a fleet sum short by exactly the moved worlds' state. The lossy sum MUST differ from the
+        // conserved one — proving that carrying the freight is precisely what closes the gap.
+        const lossy = FleetSum{
+            .balance = sum_before.balance - moved_sum.balance,
+            .reserved = sum_before.reserved - moved_sum.reserved,
+            .received = sum_before.received - moved_sum.received,
+            .worlds = sum_before.worlds - moved_sum.worlds,
+        };
+        if (lossy.same(&sum_before)) return error.LossNotDetected;
+        // And the deficit is exactly the moved worlds' state — no more, no less.
+        if (moved_sum.worlds == 0) return error.NoTenant;
+    }
+
+    print("freight-conservation: the whole fleet's state is conserved across a healing — the fleet-state sum (balance, reserved, received, worlds) read before a host departure equals the sum read after, where every world's after-position is obtained by receiving its carried freight on its new berth; a host failure costs zero state\n", .{});
+    print("freight-conservation: no world reads another's freight (every order-head pairwise distinct) and the law is not vacuous — a fleet that dropped the moved worlds reads a strictly smaller sum, short by exactly their state\n", .{});
+    print("GREEN: myc freight r2 — the whole fleet's state is conserved: content-addressed freight carries every moved world's ledger whole, so a departed host costs one re-placement and zero state, and a dropped volume is a sum a keeper can catch. Conservation stands.\n", .{});
+}

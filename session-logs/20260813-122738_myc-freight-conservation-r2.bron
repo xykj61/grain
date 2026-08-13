@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260813.122738
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title myc freight conservation r2 — the whole fleet's state is conserved across a healing
+prompt take the next agent-doable lap Lindy-first crux-first on the 1024-round road; send each finished increment; stop at custody gates
+think Read REMEMBER, the 1,024-round itinerary, and the six-season double-seat expansion; the live frontier is Season D (Kresfa & Mycelium), the Freight journey — r1 (freight crux) landed at git nib 5b884b20a2.
+think The Freight exploration names four rounds; r1 done, so the next Lindy-first crux is r2 — the whole fleet's state is conserved across a healing. Modeled the ledger scaffolding on freight.rye r1 and the conservation shape on puddle_convergence.rye r2.
+think Confirmed r1 GREEN first, then wrote mycelium/freight_conservation.rye: a FleetSum (balance·reserved·received·worlds) summed before a host departure and after — every after-position obtained by receiving the carried freight on its new berth, so conservation is proven through the migration, not around it.
+obs Three scenes make it checkable: the crux (sum_before == sum_after byte for byte), distinctness (every order-head pairwise distinct, no cross-wiring), and the teeth (a fleet that dropped the moved worlds reads a strictly smaller sum — the law is not vacuous). Varied credit/pledge per world so both balance and reserved components are non-trivial.
+obs Composes freight + puddle + cord + lapse + fold + voucher + kumara public API only, editing none; the position is derived, never re-declared (no set_position). Demo seeds only — no key, no funds, no network, no world moved; a served migration reaches the Comlink-served gate.
+loom witness=mycelium_freight_conservation_witness green=true worlds=6 hosts=3 scenes=3
+file mycelium/freight_conservation.rye the fleet-state conservation crux (r2) — six worlds, one host departs, sum conserved
+file tools/mycelium_freight_conservation_witness.rish builds + runs the r2 selftest, asserts the crux/zero-state/distinctness/teeth claims, re-runs r1 + convergence GREEN
+recommend keep-going Freight r3 (the freight travels as text — a format freight-v1 record renders/parses byte-for-byte and reads the identical position offline) is the next agent-doable crux; no custody gate reached
