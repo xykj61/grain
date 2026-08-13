@@ -176,6 +176,21 @@ pub const Estate = struct {
         assert(self.heir_held_count() == self.bequeathed_count());
     }
 
+    /// The item of a holding at an index — a reader (r2's directive digest binds the will's own marks).
+    pub fn item_at(self: *const Estate, i: u32) u32 {
+        // invariant: only a real holding within the will has an item.
+        assert(i < self.will_count);
+        return self.will[i].item;
+    }
+
+    /// The keeper's word for the holding at an index — a reader, so a signed directive can bind the exact
+    /// marks and a tampered mark falls the signature (r2).
+    pub fn disposition_at(self: *const Estate, i: u32) Disposition {
+        // invariant: only a real holding within the will has a disposition.
+        assert(i < self.will_count);
+        return self.will[i].disposition;
+    }
+
     /// Who holds an item — derived, never written. An unwilled item is `unknown`; before succession every
     /// willed item is the keeper's; after, a bequeathed item is the heir's and a rested item is `rested`.
     pub fn holder_of(self: *const Estate, item: u32) Holder {
