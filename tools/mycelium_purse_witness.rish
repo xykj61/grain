@@ -1,0 +1,54 @@
+# tools/mycelium_purse_witness.rish — the Purse: a per-account double-spend decided by the order (r1).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · the per-account double-spend verdict · rung r1 — the crux.
+# The Till decided a contested draw over a GLOBAL supply — the truest that model carries. The Purse decides the
+# truest double-spend a value ledger holds: ONE holder spending the same coins twice. Alice holds 100 and signs
+# one transfer of 100 to Bob and another 100 to Carol at the same round — each affordable against her balance
+# alone, together twice what she holds. The Cord's agreed order already weaves one sequence through the mesh
+# regardless of arrival, and the Purse reads it as each account's verdict: the first transfer moves the coins,
+# the second finds Alice's purse already empty — a LAWFUL NO-OP, never a poison — and every honest node names
+# the same winner.
+#
+# The honest distinction this witness proves is the whole crux, the twin of the Till's carried per account: a
+# transfer that overdraws the holder's CURRENT balance yet asked for no more than she EVER RECEIVED
+# (amount <= received-so-far) lost a race and is a lawful no-op; a transfer for more than she ever received
+# NEVER COULD PAY and refuses whole; a broken signature, a name reservation, and a malformed recipient each
+# refuse whole. Across every accepted move the ledger CONSERVES — the balances sum to exactly what genesis
+# issued, no coin made or lost. The verdict is deterministic — the same holder comes up short across both
+# arrival permutations. Composes cord + fold + kumara public API only (one additive fold.verify_fact, the shape
+# cord.verify_block already set); every buffer bounded; demo keeper seeds — no key, no funds, no network, no custody.
+#
+# Scope: active-designing/20260813-070923_mycelium-purse-per-account-balances-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mycelium_purse_witness.rish
+
+say "mycelium-purse: Language EN — one holder reaches twice into her own purse for coins she can spend only once; the agreed order pays the first reach."
+say "mycelium-purse: Style Radiant — a treasury forgives what it holds; a purse forgives what its holder took in; the Cord has already woven the order, and the Purse reads it plainly."
+say "mycelium-purse: Lens TAME — the verdict composes cord + fold + kumara public API; every buffer bounded; conservation holds; a lost race is a lawful no-op, never-could-pay and corruption refuse whole; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/purse"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/purse.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-purse: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mycelium-purse: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-purse: selftest did not speak GREEN"
+assert selftest.out contains "the agreed order moves one" else "mycelium-purse: double-spend verdict claim missing"
+assert selftest.out contains "across both arrival orders" else "mycelium-purse: arrival-order-independence claim missing"
+assert selftest.out contains "conservation holds" else "mycelium-purse: conservation claim missing"
+assert selftest.out contains "refuse whole" else "mycelium-purse: never-could-pay/corruption claim missing"
+
+# The Cord whose agreed order the Purse reads, and the Mycelium fold whose signed-fact model and additive
+# verify_fact it reuses, both stand at the door — their own selftests prove the machinery the verdict rests on.
+let cord = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord.rye -femit-bin=mycelium/bin/cord && mycelium/bin/cord 2>&1"]
+assert cord.ok else "mycelium-purse: the Cord the Purse reads is not GREEN"
+assert cord.out contains "GREEN" else "mycelium-purse: the Cord did not speak its GREEN"
+
+let fold = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/fold.rye -femit-bin=mycelium/bin/fold && mycelium/bin/fold 2>&1"]
+assert fold.ok else "mycelium-purse: the Mycelium fold the Purse reuses is not GREEN"
+assert fold.out contains "GREEN" else "mycelium-purse: the Mycelium fold did not speak its GREEN"
+
+say "mycelium-purse: GREEN — one holder signs two transfers of coins she can spend only once, the agreed order moves one, the same one every arrival; the balances conserve to exactly what genesis issued, the loser loses nothing but coins it never truly had, never-could-pay and corruption refuse whole; the Cord and the fold stand at the door."
