@@ -1,0 +1,56 @@
+# tools/mycelium_portage_witness.rish — value carried across two worlds, atomic on both ledgers or neither
+# (r1, the portage crux).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · Portage · rung r1.
+# Every Mycelium ledger before this conserved value it could see in ONE agreed order — the Purse within a
+# Cord, the Pledge across two phases, Puddle and Freight moving a whole world between hosts. Yet every coin
+# lived and died inside a single Cord. A PORTAGE is the crossing between two worlds that share no channel:
+# Alice banks on World A, Bob on World B, each a separate Cord with no shared total order. A portage moves N
+# coins from Alice to Bob bound by a content DIGEST (SHA-256 over id·amount·from·to_world·to_account), so the
+# two halves name one crossing and neither can be forged apart. A signed portage-OUT debits the signer on A;
+# a signed portage-IN credits the recipient on B ONLY when its digest matches the verified burn.
+#
+# The crux this witness proves is CONSERVATION ACROSS THE PAIR — the amount that left the sender on A equals
+# the amount that reached the recipient on B (a credit for every debit, TigerBeetle's double-entry widened
+# across two independent shards, decided by content rather than a correspondent), with the teeth that World B
+# refuses an unbacked credit (NoMatchingBurn), the crossing lands once (AlreadyLanded), and a burn beyond
+# balance refuses (NeverPaid). Composes cord + fold + voucher + kumara public API only, editing none; demo
+# world/keeper seeds — no key, no funds, no network, no value crossed.
+#
+# Scope: active-designing/20260813-124159_mycelium-portage-cross-world-transfer-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/mycelium_portage_witness.rish
+
+say "mycelium-portage: Language EN — every ledger so far conserved value inside one order; the truest question a many-ledger economy asks is how value crosses between two worlds with no moment where it exists in both or neither, and content-addressing answers it for free."
+say "mycelium-portage: Style Radiant — a portage carries coins from World A to World B bound by one signed digest; the amount that leaves the sender equals the amount that reaches the recipient, and a receiving world can never conjure value it cannot trace to a verified burn."
+say "mycelium-portage: Lens TAME — the two-world law composes cord + fold + voucher + kumara public API only, editing none; every claim is an integer comparison of a balance or a byte-comparison of a digest; the credit is derived from a verified burn, never re-declared; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/portage"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/portage.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-portage: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mycelium-portage: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-portage: selftest did not speak GREEN"
+assert selftest.out contains "a portage carries" else "mycelium-portage: the crossing claim missing"
+assert selftest.out contains "the pair conserves" else "mycelium-portage: the conservation crux claim missing"
+assert selftest.out contains "NoMatchingBurn" else "mycelium-portage: the unbacked-credit refusal claim missing"
+assert selftest.out contains "AlreadyLanded" else "mycelium-portage: the lands-once claim missing"
+assert selftest.out contains "NeverPaid" else "mycelium-portage: the burn-beyond-balance refusal claim missing"
+
+# The Voucher whose order-head Portage fingerprints each world with stands at the door — a crossing proves
+# which two worlds it joined by the same whole-order digest the Voucher computes.
+let vouch = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/voucher.rye -femit-bin=mycelium/bin/voucher && mycelium/bin/voucher 2>&1"]
+assert vouch.ok else "mycelium-portage: the Voucher order-head Portage fingerprints with is not GREEN"
+assert vouch.out contains "GREEN" else "mycelium-portage: the Voucher did not speak its GREEN"
+
+# The Pledge — the two-phase transfer WITHIN one ledger whose cross-world sibling this is — stands too; a
+# portage is the Pledge's atomicity widened from two phases to two shards.
+let pledge = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/pledge.rye -femit-bin=mycelium/bin/pledge && mycelium/bin/pledge 2>&1"]
+assert pledge.ok else "mycelium-portage: the Pledge two-phase transfer is not GREEN"
+assert pledge.out contains "GREEN" else "mycelium-portage: the Pledge did not speak its GREEN"
+
+say "mycelium-portage: GREEN — value crosses two worlds and conserves: a signed portage-out debits the sender on World A, a signed portage-in credits the recipient on World B, the amount that left equals the amount that arrived, and World B refuses an unbacked credit (NoMatchingBurn), the crossing lands once (AlreadyLanded), a burn beyond balance refuses (NeverPaid); the Voucher order-head and the Pledge two-phase transfer both stand at the door. Portage stands."

@@ -1,0 +1,458 @@
+//! mycelium/portage.rye — value carried across two worlds, atomic on both ledgers or neither (r1, the portage crux).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · Portage · rung r1 — the crux.
+//! Design read: active-designing/20260813-124159_mycelium-portage-cross-world-transfer-exploration.md
+//!
+//! Every Mycelium ledger before this conserved value it could see in ONE agreed order — the Purse within a
+//! Cord, the Pledge across two phases, Puddle and Freight moving a whole world between hosts with its state
+//! byte-identical. Yet every coin lived and died inside a single Cord. A real economy is many ledgers, and
+//! its truest question is the one no single-world ledger can answer: how does value cross from one world to
+//! another with no moment where it exists in both or in neither?
+//!
+//! A PORTAGE is that crossing — the old word for goods carried overland between two navigable waters that
+//! share no channel. Alice banks on World A; Bob banks on World B; the two worlds keep separate Cords with no
+//! shared total order. A portage moves N coins from Alice to Bob bound by a content DIGEST — a SHA-256 over
+//! id·amount·from·to_world·to_account — so the two halves name one crossing and neither can be forged apart.
+//!   - a signed portage-OUT (`O·id·world·to`) on World A DEBITS the signer by N (she cannot burn coins she
+//!     never received — `NeverPaid`);
+//!   - a signed portage-IN (`I·id·digest·to`) on World B CREDITS the recipient by N, but ONLY when its
+//!     embedded digest equals the verified burn's — a credit whose digest matches no verified burn refuses
+//!     `NoMatchingBurn`, so World B can never conjure value across the gap;
+//!   - the crossing lands once — a second in for one id refuses `AlreadyLanded`.
+//!
+//! The crux is CONSERVATION ACROSS THE PAIR: the amount that left the sender on A equals the amount that
+//! reached the recipient on B — a credit somewhere for every debit, TigerBeetle's double-entry widened
+//! across two independent shards, decided by content rather than a correspondent. Because World B credits
+//! ONLY a digest it can verify against the burn, the decision is a pure function of the two ledgers' bytes;
+//! no window admits a loss (gone from A, absent on B) or a double (present on both).
+//!
+//! Grown beside cord.rye, fold.rye, voucher.rye — editing none, composing cord + fold + voucher + kumara
+//! public API only. The credit is DERIVED from a verified burn, never re-declared — there is no set_balance.
+//! Siloed, dev-only, demo world/keeper seeds — no real key, no funds, no network, no value crossed. A SERVED
+//! portage (World B fetching World A's out-fact over Comlink) reaches the Comlink-served gate (Keaton's hand).
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/portage.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("cord.rye");
+const fold = @import("fold.rye");
+const voucher = @import("voucher.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+
+const Sha256 = std.crypto.hash.sha2.Sha256;
+
+pub const portage_version = "20260813.124159";
+
+/// A keeper's public key, in its encoded (holder-identity) width.
+pub const pk_len: u32 = kumara.PublicKey.encoded_length;
+
+/// A portage id — a fixed 16-byte tag naming one crossing across its two half-facts.
+pub const id_len: u32 = 16;
+
+/// A world tag — a fixed 16-byte name for the destination world, bound into the digest.
+pub const world_tag_len: u32 = 16;
+
+/// A portage digest — a SHA-256 over id·amount·from·to_world·to_account. One order-head width.
+pub const digest_len: u32 = 32;
+
+/// Body tags — the half of the crossing, bound into the signer's signature over the fact body.
+pub const tag_out: u8 = 'O';
+pub const tag_in: u8 = 'I';
+
+/// At most two accounts enter per block (a funder and an owner); the Dag holds a journey of blocks.
+pub const portage_max_accounts: u32 = 2 * cord.cord_max_blocks;
+
+/// At most one crossing lands per world's ledger in this rung's scene; the Dag bounds the id table.
+pub const portage_max_lands: u32 = cord.cord_max_blocks;
+
+/// The full error set the two-world law can refuse with.
+pub const WorldError = error{
+    IdentityRefused, // a fact's own signature is broken
+    UnknownKind, // a kind the portage law does not fold
+    Malformed, // a body that is not a well-formed out or in
+    NeverPaid, // a burn of more than the signer ever received
+    Overdraw, // an arithmetic wrap on a credit
+    NoMatchingBurn, // an in whose digest matches no verified burn
+    AlreadyLanded, // a second in for one crossing id
+    TooManyAccounts, // more distinct accounts than the ceiling admits
+    TooManyLands, // more crossings than the ceiling admits
+};
+
+/// One account's spendable balance under the two-world law.
+pub const Account = struct {
+    pk: [pk_len]u8 = undefined,
+    balance: u64 = 0,
+};
+
+/// The resolved single-world ledger: every account's balance, the one burn this world sent (if any), and
+/// the crossings it received. Read from the ledger bytes alone; no host and no correspondent is an input.
+pub const Ledger = struct {
+    accounts: [portage_max_accounts]Account = undefined,
+    account_count: u32 = 0,
+    out_present: bool = false,
+    out_amount: u64 = 0,
+    out_from: [pk_len]u8 = undefined,
+    out_digest: [digest_len]u8 = undefined,
+    landed: [portage_max_lands][id_len]u8 = undefined,
+    landed_count: u32 = 0,
+
+    /// One account's spendable balance, or zero when the account never appeared.
+    pub fn balance_of(l: *const Ledger, pk: []const u8) u64 {
+        // invariant: an account key is always a full holder identity.
+        assert(pk.len == pk_len);
+        if (account_index(l, pk)) |k| return l.accounts[k].balance;
+        return 0;
+    }
+
+    /// The sum of every account's spendable balance — a world's circulating value.
+    pub fn balances_sum(l: *const Ledger) u64 {
+        var s: u64 = 0;
+        var i: u32 = 0;
+        while (i < l.account_count) : (i += 1) s += l.accounts[i].balance;
+        // invariant: no single balance exceeds the running sum it joined.
+        assert(l.account_count == 0 or s >= l.accounts[0].balance);
+        return s;
+    }
+
+    /// The digest of the one burn this world sent — valid only when `out_present`.
+    pub fn out_digest_slice(l: *const Ledger) []const u8 {
+        // invariant: a world advertises a burn digest only when it actually sent one.
+        assert(l.out_present);
+        return l.out_digest[0..digest_len];
+    }
+};
+
+/// Index of an account by its key, or null when absent.
+fn account_index(l: *const Ledger, pk: []const u8) ?u32 {
+    // invariant: an account key is always a full holder identity.
+    assert(pk.len == pk_len);
+    var i: u32 = 0;
+    while (i < l.account_count) : (i += 1) {
+        if (std.mem.eql(u8, l.accounts[i].pk[0..], pk)) return i;
+    }
+    return null;
+}
+
+/// Find an account, or seat a fresh one at zero. Refuses past the account ceiling.
+fn ensure_account(l: *Ledger, pk: []const u8) error{TooManyAccounts}!u32 {
+    // invariant: an account key is always a full holder identity.
+    assert(pk.len == pk_len);
+    if (account_index(l, pk)) |k| return k;
+    if (l.account_count >= portage_max_accounts) return error.TooManyAccounts;
+    const at = l.account_count;
+    tally_copy.copy_disjoint(u8, l.accounts[at].pk[0..], pk);
+    l.accounts[at].balance = 0;
+    l.account_count += 1;
+    // invariant: growth is exactly one seat, never past the ceiling.
+    assert(l.account_count <= portage_max_accounts);
+    return at;
+}
+
+/// Credit an account's spendable balance by `amount`. A wrap refuses.
+fn credit(l: *Ledger, pk: []const u8, amount: u64) error{ Overdraw, TooManyAccounts }!void {
+    // invariant: a credit carries a positive amount (mint_fact forbids zero).
+    assert(amount > 0);
+    const k = try ensure_account(l, pk);
+    const nb = l.accounts[k].balance +% amount;
+    if (nb < l.accounts[k].balance) return error.Overdraw; // wrap refuse
+    l.accounts[k].balance = nb;
+    // invariant: the credited seat now holds at least what it took in.
+    assert(l.accounts[k].balance >= amount);
+}
+
+/// Whether a crossing id has already landed on this world.
+fn already_landed(l: *const Ledger, id: []const u8) bool {
+    // invariant: a crossing id is always the fixed tag width.
+    assert(id.len == id_len);
+    var i: u32 = 0;
+    while (i < l.landed_count) : (i += 1) {
+        if (std.mem.eql(u8, l.landed[i][0..], id)) return true;
+    }
+    return false;
+}
+
+/// Record a landed crossing id. Refuses past the land ceiling.
+fn mark_landed(l: *Ledger, id: []const u8) error{TooManyLands}!void {
+    // invariant: a crossing id is always the fixed tag width.
+    assert(id.len == id_len);
+    if (l.landed_count >= portage_max_lands) return error.TooManyLands;
+    tally_copy.copy_disjoint(u8, l.landed[l.landed_count][0..], id);
+    l.landed_count += 1;
+    // invariant: growth is exactly one land, never past the ceiling.
+    assert(l.landed_count <= portage_max_lands);
+}
+
+/// Write a u64 as eight little-endian bytes into `out`.
+fn write_le64(v: u64, out: []u8) void {
+    // invariant: the buffer holds a full little-endian amount.
+    assert(out.len == 8);
+    var n = v;
+    var i: u32 = 0;
+    while (i < 8) : (i += 1) {
+        out[i] = @truncate(n);
+        n >>= 8;
+    }
+}
+
+/// The portage digest binding a crossing's two halves — SHA-256 over id·amount·from·to_world·to_account.
+/// Content-addresses the crossing, so the same crossing hashes identically on either shore.
+pub fn portage_digest(id: []const u8, amount: u64, from: []const u8, world: []const u8, to: []const u8, out: *[digest_len]u8) void {
+    // invariant: each bound field is exactly its fixed identity/tag width.
+    assert(id.len == id_len);
+    assert(from.len == pk_len);
+    assert(world.len == world_tag_len);
+    assert(to.len == pk_len);
+    var h = Sha256.init(.{});
+    h.update(id);
+    var amt: [8]u8 = undefined;
+    write_le64(amount, amt[0..]);
+    h.update(amt[0..]);
+    h.update(from);
+    h.update(world);
+    h.update(to);
+    h.final(out);
+}
+
+/// The genesis-credit body of a kind_issue fact names the account to fund — one full key.
+fn issue_recipient(fact: *const fold.Fact) error{Malformed}![]const u8 {
+    const body = fact.body_slice();
+    if (body.len != pk_len) return error.Malformed;
+    var rk: [pk_len]u8 = undefined;
+    tally_copy.copy_disjoint(u8, rk[0..], body[0..pk_len]);
+    _ = kumara.PublicKey.fromBytes(rk) catch return error.Malformed;
+    return body;
+}
+
+/// Fold one signed fact into a single-world Ledger under the two-world law. `verify` is the burn digest a
+/// receiving world checks its in-facts against; a sending world passes null (it folds no in). A fact whose
+/// own signature is broken refuses before any coin moves. A genesis credits; an OUT debits the signer and
+/// records the world's one burn; an IN credits the named recipient ONLY when its digest matches `verify`.
+pub fn fold_portage(l: *Ledger, fact: *const fold.Fact, verify: ?*const [digest_len]u8) WorldError!void {
+    // invariant: a genuine fact carries a bounded body under the fact ceiling.
+    assert(fact.body_len <= fold.myc_fact_max_bytes);
+
+    // Corruption is not a verdict — a broken signature refuses before any coin moves.
+    if (!fold.verify_fact(fact)) return error.IdentityRefused;
+
+    if (fact.kind == fold.kind_issue) {
+        const to = try issue_recipient(fact);
+        try credit(l, to, fact.amount);
+        return;
+    }
+    if (fact.kind != fold.kind_tax) return error.UnknownKind;
+
+    const body = fact.body_slice();
+    if (body.len == 0) return error.Malformed;
+    const tag = body[0];
+    const from = fact.signer_pk[0..];
+
+    if (tag == tag_out) {
+        // invariant: an out body is exactly tag · id · world · to.
+        if (body.len != 1 + id_len + world_tag_len + pk_len) return error.Malformed;
+        const id = body[1 .. 1 + id_len];
+        const world = body[1 + id_len .. 1 + id_len + world_tag_len];
+        const to = body[1 + id_len + world_tag_len ..];
+        // A signer can burn only coins she actually holds — never conjure a debit.
+        const have = l.balance_of(from);
+        if (fact.amount > have) return error.NeverPaid;
+        const si = account_index(l, from) orelse return error.NeverPaid;
+        // invariant: an accepted burn never removes more than the signer can spend.
+        assert(fact.amount <= l.accounts[si].balance);
+        l.accounts[si].balance -= fact.amount;
+        l.out_present = true;
+        l.out_amount = fact.amount;
+        tally_copy.copy_disjoint(u8, l.out_from[0..], from);
+        portage_digest(id, fact.amount, from, world, to, &l.out_digest);
+        return;
+    }
+
+    if (tag == tag_in) {
+        // invariant: an in body is exactly tag · id · digest · to.
+        if (body.len != 1 + id_len + digest_len + pk_len) return error.Malformed;
+        const id = body[1 .. 1 + id_len];
+        const dg = body[1 + id_len .. 1 + id_len + digest_len];
+        const to = body[1 + id_len + digest_len ..];
+        _ = kumara.PublicKey.fromBytes(to[0..pk_len].*) catch return error.Malformed;
+        // The crossing lands once — a second in for one id refuses.
+        if (already_landed(l, id)) return error.AlreadyLanded;
+        // A credit is honored ONLY when its digest matches the verified burn — never conjured.
+        const v = verify orelse return error.NoMatchingBurn;
+        if (!std.mem.eql(u8, dg, v[0..digest_len])) return error.NoMatchingBurn;
+        try credit(l, to, fact.amount);
+        try mark_landed(l, id);
+        return;
+    }
+
+    return error.Malformed;
+}
+
+/// Resolve a committed single-world Dag into a Ledger under the two-world law — the verdict of that world's
+/// agreed order. `verify` is the burn digest a receiving world checks its in-facts against; a sending world
+/// passes null. Takes no host and no correspondent as input, so either shore reads the same verdict.
+pub fn resolve_world(dag: *const cord.Dag, verify: ?*const [digest_len]u8) WorldError!Ledger {
+    // invariant: each block carries one fact, so the Dag fits the fold ceiling.
+    assert(dag.len <= fold.myc_log_max_facts);
+    var order: [cord.cord_max_blocks]u32 = undefined;
+    // invariant: the order buffer holds the whole Dag.
+    assert(order.len >= dag.len);
+    const committed = cord.commit(dag, order[0..]);
+
+    var l = Ledger{};
+    var i: u32 = 0;
+    while (i < committed) : (i += 1) {
+        const idx = order[i];
+        // invariant: every committed index names a real seat.
+        assert(idx < dag.len);
+        const blk = &dag.blocks[idx];
+        try fold_portage(&l, &blk.fact, verify);
+    }
+    return l;
+}
+
+/// A world's order-head — the whole-order digest that fingerprints its ledger, reused from the Voucher so a
+/// crossing can prove which two worlds it joined. Two distinct worlds fingerprint distinctly.
+pub fn world_head(dag: *const cord.Dag, out: *[voucher.order_head_len]u8) void {
+    // invariant: an order-head is exactly one block-address width.
+    assert(voucher.order_head_len == cord.hash_len);
+    voucher.order_head_of(dag, out);
+}
+
+// --- selftest scaffolding: build two worlds over the season's own idioms --------------------------------
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn world_tag(name: []const u8) [world_tag_len]u8 {
+    // invariant: a world tag name fits the fixed tag width.
+    assert(name.len <= world_tag_len);
+    var t: [world_tag_len]u8 = .{0} ** world_tag_len;
+    tally_copy.copy_disjoint(u8, t[0..name.len], name);
+    return t;
+}
+
+/// Build a world's source Dag: a funder credits `owner` `start`, then the owner signs a portage-OUT of
+/// `amount` to `to` on `world`. Returns the two blocks a caller resolves into World A's Dag.
+fn seat_source(funder: u8, owner: u8, start: u64, id: []const u8, world: []const u8, amount: u64, to: []const u8) ![2]cord.Block {
+    const kf = seeded(funder);
+    const ka = seeded(owner);
+    const owner_pk = ka.public_key.toBytes();
+
+    const f_gen = fold.mint_fact(kf, fold.kind_issue, start, "", owner_pk[0..]) orelse return error.MintGen;
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_gen) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+    const roots = [_][cord.hash_len]u8{hg};
+
+    var ob: [1 + id_len + world_tag_len + pk_len]u8 = undefined;
+    ob[0] = tag_out;
+    tally_copy.copy_disjoint(u8, ob[1 .. 1 + id_len], id);
+    tally_copy.copy_disjoint(u8, ob[1 + id_len .. 1 + id_len + world_tag_len], world);
+    tally_copy.copy_disjoint(u8, ob[1 + id_len + world_tag_len ..][0..pk_len], to);
+    const f_out = fold.mint_fact(ka, fold.kind_tax, amount, "", ob[0..]) orelse return error.MintOut;
+    const bo = cord.mint_block(ka, 1, roots[0..], f_out) orelse return error.BlockOut;
+    return .{ g, bo };
+}
+
+/// Build a world's destination Dag: a gateway signs a portage-IN of `amount` to `to`, carrying `dg`. Returns
+/// the one block a caller resolves into World B's Dag (with the verified burn digest).
+fn seat_dest(gateway: u8, id: []const u8, dg: []const u8, amount: u64, to: []const u8) !cord.Block {
+    const kg = seeded(gateway);
+    var ib: [1 + id_len + digest_len + pk_len]u8 = undefined;
+    ib[0] = tag_in;
+    tally_copy.copy_disjoint(u8, ib[1 .. 1 + id_len], id);
+    tally_copy.copy_disjoint(u8, ib[1 + id_len .. 1 + id_len + digest_len], dg);
+    tally_copy.copy_disjoint(u8, ib[1 + id_len + digest_len ..][0..pk_len], to);
+    const f_in = fold.mint_fact(kg, fold.kind_tax, amount, "", ib[0..]) orelse return error.MintIn;
+    const b = cord.mint_block(kg, 0, &[_][cord.hash_len]u8{}, f_in) orelse return error.BlockIn;
+    return b;
+}
+
+fn dag_of(blocks: []const cord.Block) !cord.Dag {
+    var dag = cord.Dag.empty();
+    for (blocks) |blk| try cord.add(&dag, blk);
+    return dag;
+}
+
+pub fn main() !void {
+    const id = [_]u8{0x2C} ** id_len;
+    const wtag = world_tag("world-b");
+    const start: u64 = 100;
+    const amount: u64 = 40;
+
+    const alice = seeded(0xA1).public_key.toBytes();
+    const bob = seeded(0xB2).public_key.toBytes();
+
+    // The digest both shores compute from the crossing's content alone.
+    var expected: [digest_len]u8 = undefined;
+    portage_digest(id[0..], amount, alice[0..], wtag[0..], bob[0..], &expected);
+
+    // --- Scene 1 — THE CRUX: value leaves A, arrives on B, and the pair conserves --------------------------
+    const src = try seat_source(0xF0, 0xA1, start, id[0..], wtag[0..], amount, bob[0..]);
+    var dag_a = try dag_of(&[_]cord.Block{ src[0], src[1] });
+    const la = try resolve_world(&dag_a, null);
+
+    // A genuinely sent the burn, and its digest is exactly the content digest either shore computes.
+    assert(la.out_present);
+    assert(la.out_amount == amount);
+    assert(std.mem.eql(u8, la.out_digest_slice(), expected[0..]));
+    // Alice's spendable balance fell by exactly the crossing amount.
+    assert(la.balance_of(alice[0..]) == start - amount);
+
+    const in_block = try seat_dest(0xF1, id[0..], expected[0..], amount, bob[0..]);
+    var dag_b = try dag_of(&[_]cord.Block{in_block});
+    const lb = try resolve_world(&dag_b, &expected);
+
+    // Bob's spendable balance rose by exactly the crossing amount.
+    assert(lb.balance_of(bob[0..]) == amount);
+
+    // CONSERVATION ACROSS THE PAIR: the amount that left A equals the amount that reached B.
+    const left_a = start - la.balance_of(alice[0..]);
+    const reached_b = lb.balance_of(bob[0..]);
+    assert(left_a == reached_b);
+    assert(left_a == amount);
+
+    // The two worlds are genuinely distinct — their order-heads differ, so this is a real crossing.
+    var head_a: [voucher.order_head_len]u8 = undefined;
+    var head_b: [voucher.order_head_len]u8 = undefined;
+    world_head(&dag_a, &head_a);
+    world_head(&dag_b, &head_b);
+    assert(!std.mem.eql(u8, head_a[0..], head_b[0..]));
+
+    // --- Scene 2 — World B refuses to conjure value: an in whose digest matches no verified burn -----------
+    {
+        var wrong: [digest_len]u8 = undefined;
+        tally_copy.copy_disjoint(u8, wrong[0..], expected[0..]);
+        wrong[0] ^= 0xFF; // a digest that no real burn produced
+        var dag_wrong = try dag_of(&[_]cord.Block{in_block});
+        const r = resolve_world(&dag_wrong, &wrong);
+        assert(r == error.NoMatchingBurn);
+        // A receiving world with NO verified burn at all refuses just the same.
+        var dag_none = try dag_of(&[_]cord.Block{in_block});
+        const r2 = resolve_world(&dag_none, null);
+        assert(r2 == error.NoMatchingBurn);
+    }
+
+    // --- Scene 3 — the crossing lands once: a second in for one id refuses ---------------------------------
+    {
+        // A DISTINCT gateway re-presents the same crossing id — a distinct block, one crossing.
+        const in2 = try seat_dest(0xF2, id[0..], expected[0..], amount, bob[0..]);
+        var dag_twice = try dag_of(&[_]cord.Block{ in_block, in2 });
+        const r = resolve_world(&dag_twice, &expected);
+        assert(r == error.AlreadyLanded);
+    }
+
+    // --- Scene 4 — a burn of coins never received refuses (a debit cannot be conjured either) --------------
+    {
+        const overreach = try seat_source(0xF0, 0xA1, start, id[0..], wtag[0..], start + 1, bob[0..]);
+        var dag_over = try dag_of(&[_]cord.Block{ overreach[0], overreach[1] });
+        const r = resolve_world(&dag_over, null);
+        assert(r == error.NeverPaid);
+    }
+
+    print("portage: GREEN — a portage carries {d} coins from A to B; the pair conserves (left {d} == reached {d}), World B refuses an unbacked credit (NoMatchingBurn), the crossing lands once (AlreadyLanded), and a burn beyond balance refuses (NeverPaid).\n", .{ amount, left_a, reached_b });
+}
