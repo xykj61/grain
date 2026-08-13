@@ -1,4 +1,4 @@
-//! amphora/vessel_fetch_delivery.rye — Amphora lap 3: hosted Comlink fetch-by-digest for vessel cargo.
+//! amphora/vessel_fetch_delivery.rye — Amphora — vessel cargo fetch: hosted Comlink fetch-by-digest for vessel cargo · 20260713.
 //!
 //! Ports: fetcher 38494 · source 38495.
 //! Scope: [`active-designing/20260703-201612_the-sealed-crossing.md`](../active-designing/20260703-201612_the-sealed-crossing.md)
@@ -185,7 +185,7 @@ fn run_selftest(_: std.Io) !u8 {
     print("vfd: sealed fetch-by-digest round-trip — GREEN welcome\n", .{});
     print("vfd: bad seal + digest mismatch refused — GREEN unwelcome\n", .{});
     print("vfd: version {s} wire {s} format {s}\n", .{ vfd_version, vfw.vessel_fetch_wire_version, wf.wire_format_version });
-    print("GREEN: Amphora lap 3 — vessel cargo fetch under Comlink seal.\n", .{});
+    print("GREEN: Amphora vessel fetch — vessel cargo fetch under Comlink seal.\n", .{});
     return 0;
 }
 

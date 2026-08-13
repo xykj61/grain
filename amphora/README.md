@@ -37,7 +37,7 @@ Canonical roof: [`src/main.rye`](src/main.rye) — `//!` header + Q3 metal. HTML
 
 **Witnesses:** `tools/amphora_lap1.rish` · `tools/amphora_lap2.rish` · `tools/amphora_lap3.rish` · `tools/amphora_device_wire.rish` · `tools/amphora_vessel_stamp.rish` · `tools/amphora_vessel_seal.rish` · `tools/amphora_resin_chunk.rish` · `tools/amphora_purchase_delivery.rish` · `tools/pond_customs.rish` · `tools/realidream_forge_view.rish` · elder path `tools/crossing_manifest_seed.rish`
 
-**Tensegral Arc I r3** (`20260728.000659`): lap 1 · lap 2 · lap 3 · vessel seal · resin chunk all **GREEN** this sitting — Arc I (Brix · Cellar · Amphora) exits.
+**Tensegral Arc I r3** (`20260728.000659`): the `amphora_lap1/2/3` witnesses · vessel seal · resin chunk all **GREEN** this sitting — Arc I (Brix · Cellar · Amphora) exits.
 
 **Resin homes (one job each — consolidated `20260728.003902`):**
 
