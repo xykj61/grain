@@ -39,7 +39,7 @@ const cord_bron = @import("cord_bron.rye");
 /// exactly as r1 does — then return node A's converged Dag for the network to carry.
 /// The two nodes are asserted converged before the order is handed off, so what
 /// travels is a genuine agreed history, not one node's private draft.
-fn converge_two_nodes() !cord.Dag {
+pub fn converge_two_nodes() !cord.Dag {
     const ka = cc.seeded(0xA1);
     const kb = cc.seeded(0xB2);
     const kc = cc.seeded(0xC3);
