@@ -1,0 +1,168 @@
+//! image/photos.rye — HUNK3: the first Photos verb, a crop over the decoded grid.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · opening journey Open Image · rung HUNK3 (quest close).
+//! Design read: active-designing/20260813-144218_hunk-season-a-open-image-exploration.md (the HUNK0–HUNK3 quest).
+//! Teacher, thanked clean-room: the common iCloud Photos / Google Photos crop gesture (concept only, siloed).
+//!
+//! HUNK0 decoded an image, HUNK1 gave it a content address, HUNK2 painted it. This rung gives a keeper the
+//! first thing a Photos app is *for*: a crop. A crop is a pure, bounded function over the decoded RGBA grid —
+//! it reads a rectangle of an image and returns a fresh, smaller image, leaving the source untouched. Nothing
+//! proprietary underneath: the verb stands on the open module the whole quest built, so a cropped image is
+//! still an open image that re-encodes and round-trips byte-for-byte. An out-of-bounds or empty rectangle
+//! refuses by name rather than reading past the grid. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/photos.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const photos_version = "20260813.150912";
+
+pub const PhotosError = error{
+    EmptyRect,
+    OutOfBounds,
+};
+
+/// Crop the rectangle at (x, y) of size (w, h) out of a decoded RGBA image, returning a fresh Pixmap. Pure:
+/// the source is never mutated. Refuses an empty rectangle (`EmptyRect`) and any rectangle that reaches past
+/// the image (`OutOfBounds`) — a crop reads only pixels the image actually holds.
+pub fn crop(
+    allocator: std.mem.Allocator,
+    pm: *const qoi.Pixmap,
+    x: u32,
+    y: u32,
+    w: u32,
+    h: u32,
+) !qoi.Pixmap {
+    // invariant: the source buffer is exactly four bytes per pixel.
+    assert(pm.pixels.len == @as(usize, pm.width) * @as(usize, pm.height) * 4);
+    if (w == 0 or h == 0) return error.EmptyRect;
+    // The right and bottom edges must land within the image — checked in u64 so a large x+w cannot wrap.
+    if (@as(u64, x) + @as(u64, w) > pm.width) return error.OutOfBounds;
+    if (@as(u64, y) + @as(u64, h) > pm.height) return error.OutOfBounds;
+
+    const total = @as(u64, w) * @as(u64, h);
+    if (total > qoi.qoi_max_pixels) return error.OutOfBounds;
+    // invariant: the crop fits the codec's own pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+
+    const out = try allocator.alloc(u8, @as(usize, @intCast(total)) * 4);
+    // invariant: the output buffer is exactly four bytes per cropped pixel.
+    assert(out.len == @as(usize, @intCast(total)) * 4);
+
+    var row: u32 = 0;
+    while (row < h) : (row += 1) {
+        // Copy one source row's slice of the rectangle into the matching output row — bounded by w and h.
+        const src_off = (@as(usize, y + row) * @as(usize, pm.width) + @as(usize, x)) * 4;
+        const dst_off = @as(usize, row) * @as(usize, w) * 4;
+        const span = @as(usize, w) * 4;
+        tally_copy.copy_disjoint(u8, out[dst_off .. dst_off + span], pm.pixels[src_off .. src_off + span]);
+    }
+
+    return qoi.Pixmap{
+        .width = w,
+        .height = h,
+        .channels = pm.channels,
+        .colorspace = pm.colorspace,
+        .pixels = out,
+    };
+}
+
+// --- selftest: crop a position-tagged image, prove every cropped pixel is its source pixel, prove purity and
+//     the open round-trip, and prove the named refusals ------------------------------------------------------
+
+/// Build a 6×6 image where each pixel encodes its own coordinates, so a crop's correctness is unambiguous:
+/// pixel (x,y) = (x·40, y·40, x+y, 255).
+fn craft_tagged(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 6;
+    const h: u32 = 6;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            buf[off] = @intCast(x * 40);
+            buf[off + 1] = @intCast(y * 40);
+            buf[off + 2] = @intCast(x + y);
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const pm = try craft_tagged(garden);
+
+    // Crop a 3×2 rectangle at (2,1). Every cropped pixel must equal the source pixel at its shifted position.
+    const cx: u32 = 2;
+    const cy: u32 = 1;
+    const cw: u32 = 3;
+    const ch: u32 = 2;
+    const cut = try crop(garden, &pm, cx, cy, cw, ch);
+    assert(cut.width == cw);
+    assert(cut.height == ch);
+    {
+        var y: u32 = 0;
+        while (y < ch) : (y += 1) {
+            var x: u32 = 0;
+            while (x < cw) : (x += 1) {
+                const c_off = (@as(usize, y) * @as(usize, cw) + @as(usize, x)) * 4;
+                const s_off = (@as(usize, cy + y) * @as(usize, pm.width) + @as(usize, cx + x)) * 4;
+                assert(cut.pixels[c_off] == pm.pixels[s_off]);
+                assert(cut.pixels[c_off + 1] == pm.pixels[s_off + 1]);
+                assert(cut.pixels[c_off + 2] == pm.pixels[s_off + 2]);
+                assert(cut.pixels[c_off + 3] == pm.pixels[s_off + 3]);
+            }
+        }
+    }
+
+    // Pure: the source image is untouched — its first and last pixels are exactly as crafted.
+    assert(pm.pixels[0] == 0);
+    const last = (@as(usize, pm.height - 1) * @as(usize, pm.width) + @as(usize, pm.width - 1)) * 4;
+    assert(pm.pixels[last] == @as(u8, @intCast((pm.width - 1) * 40)));
+
+    // The identity crop (the whole rectangle) recovers the source byte-for-byte.
+    const whole = try crop(garden, &pm, 0, 0, pm.width, pm.height);
+    assert(whole.same_bytes(&pm));
+
+    // A cropped image is still an OPEN image: it re-encodes and round-trips byte-for-byte through the codec.
+    const cap = qoi.encoded_bound(cut.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const res = try qoi.encode(&cut, dst);
+    const back = try qoi.decode(garden, dst[0..res.len]);
+    assert(back.same_bytes(&cut));
+
+    // Unwelcome: an empty rectangle refuses.
+    if (crop(garden, &pm, 0, 0, 0, 2)) |_| return error.EmptySlipped else |e| {
+        if (e != error.EmptyRect) return error.WrongEmpty;
+    }
+    // Unwelcome: a rectangle reaching past the right edge refuses (x + w > width).
+    if (crop(garden, &pm, 4, 0, 3, 2)) |_| return error.BoundsSlipped else |e| {
+        if (e != error.OutOfBounds) return error.WrongBounds;
+    }
+    // Unwelcome: a rectangle reaching past the bottom edge refuses (y + h > height).
+    if (crop(garden, &pm, 0, 5, 2, 3)) |_| return error.BoundsSlipped else |e| {
+        if (e != error.OutOfBounds) return error.WrongBounds;
+    }
+
+    print("GREEN image-photos: cropped {d}x{d} at ({d},{d}) out of {d}x{d} — every pixel its source pixel; " ++
+        "source untouched (pure); identity crop byte-identical; cropped image re-encodes and round-trips; " ++
+        "empty rect and both out-of-bounds rects refused by name\n", .{
+        cw, ch, cx, cy, pm.width, pm.height,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: photos selftest\n", .{});
+    return 1;
+}
