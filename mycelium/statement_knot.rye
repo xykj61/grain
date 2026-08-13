@@ -1,0 +1,231 @@
+//! mycelium/statement_knot.rye — an account statement reads continuous across a Knot (rung r3).
+//!
+//! Season D (Kresfa & Mycelium) · Mycelium consensus · the Statement · rung r3 — across a Knot.
+//! Design read: active-designing/20260813-091851_mycelium-statement-account-voice-exploration.md
+//!
+//! r1 read one account's line out of a whole resolved ledger; r2 let it travel. Yet a ledger a family
+//! runs for years does not carry its whole past unbroken: the Knot (`cord_knot.rye`) ties off a
+//! committed prefix into a sealed supply so a bounded Dag runs forever, and the Lapse continues its
+//! deadline clock across that seal by carrying the epoch base (`lapse_knot.rye`). This rung reads one
+//! account's statement over a Knot-continued ledger and proves it is CONTINUOUS across the cut.
+//!
+//! The crux is A STATEMENT DOES NOT DRIFT AT THE CHECKPOINT: the statement read over the whole Cord and
+//! the statement read over the Knot-plus-suffix are the identical line — same position (balance ·
+//! reserved · received), same pledge lines, same states — and it still RECONCILES. A holder who reads
+//! their line after a checkpoint reads exactly what they would over the unpruned history.
+//!
+//! The honest seam this surfaces, the one the Statement meets across a Knot: an account's RECEIVED is
+//! cumulative inflow, so it must ACCUMULATE across the base, not restart at it. Because `continue_lapse`
+//! seeds its ledger with the prefix's account map (received intact) and the suffix's own credits add
+//! onto it, the Statement reads received continuous — an account credited before the cut and honored
+//! after it reads its whole inflow, not merely the suffix's share. The Statement adds nothing here; it
+//! reads the continuity the Lapse's epoch base already keeps.
+//!
+//! Additive by construction: imports `statement` (r1's projection), `lapse_knot` (r3's checkpoint),
+//! `lapse`, `cord`, and `fold`, calling only their public API. Each stays its own green binary. No
+//! storage, no transport, no network, no custody — a node reads its own line across its own sealed
+//! checkpoint. Demo keeper seeds only — no real key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/statement_knot.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cord = @import("cord.rye");
+const fold = @import("fold.rye");
+const lapse = @import("lapse.rye");
+const lapse_knot = @import("lapse_knot.rye");
+const statement = @import("statement.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+
+/// Two statements answer the same line: presence, position, and each pledge line's facts. Position is
+/// the account's own numbering, never a per-epoch order index, so it compares cleanly across a cut.
+pub fn statements_match(a: *const statement.Statement, b: *const statement.Statement) bool {
+    // invariant: both statements stay within the named line ceiling.
+    assert(a.line_count <= statement.statement_max_lines);
+    assert(b.line_count <= statement.statement_max_lines);
+    if (a.present != b.present) return false;
+    if (a.balance != b.balance or a.reserved != b.reserved or a.received != b.received) return false;
+    if (a.line_count != b.line_count) return false;
+    if (!std.mem.eql(u8, a.pk_slice(), b.pk_slice())) return false;
+    var i: u32 = 0;
+    while (i < a.line_count) : (i += 1) {
+        if (a.lines[i].dir != b.lines[i].dir) return false;
+        if (a.lines[i].amount != b.lines[i].amount) return false;
+        if (a.lines[i].state != b.lines[i].state) return false;
+        if (!std.mem.eql(u8, a.lines[i].counterparty_slice(), b.lines[i].counterparty_slice())) return false;
+    }
+    return true;
+}
+
+// ---- selftest: one account's line reads the same across a sealed checkpoint ----
+
+fn seeded(byte: u8) kumara.KeyPair {
+    const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
+    return kumara.keypair_from_seed(&seed);
+}
+
+fn write_deadline(deadline: u64, out: []u8) void {
+    // invariant: the buffer holds a full little-endian order position.
+    assert(out.len == lapse.deadline_len);
+    var v = deadline;
+    var i: u32 = 0;
+    while (i < lapse.deadline_len) : (i += 1) {
+        out[i] = @truncate(v);
+        v >>= 8;
+    }
+}
+
+fn pledge_body(id: []const u8, deadline: u64, to: []const u8, out: []u8) u32 {
+    // invariant: the buffer holds tag · id · deadline · recipient exactly.
+    assert(out.len >= 1 + lapse.id_len + lapse.deadline_len + lapse.pk_len);
+    assert(id.len == lapse.id_len);
+    out[0] = lapse.tag_pledge;
+    tally_copy.copy_disjoint(u8, out[1 .. 1 + lapse.id_len], id);
+    write_deadline(deadline, out[1 + lapse.id_len .. 1 + lapse.id_len + lapse.deadline_len]);
+    tally_copy.copy_disjoint(u8, out[1 + lapse.id_len + lapse.deadline_len ..][0..lapse.pk_len], to);
+    return 1 + lapse.id_len + lapse.deadline_len + lapse.pk_len;
+}
+
+fn resolve_body(tag: u8, id: []const u8, out: []u8) u32 {
+    // invariant: the buffer holds tag · id exactly.
+    assert(out.len >= 1 + lapse.id_len);
+    assert(id.len == lapse.id_len);
+    out[0] = tag;
+    tally_copy.copy_disjoint(u8, out[1 .. 1 + lapse.id_len], id);
+    return 1 + lapse.id_len;
+}
+
+const Scene = struct {
+    g: cord.Block,
+    pledge: cord.Block,
+    post: cord.Block,
+    post_fact: fold.Fact,
+};
+
+/// Seat the scene: genesis credits Alice 100 (round 0); Alice pledges 100 to Bob under the given
+/// deadline (round 1); Alice posts it (round 2). The prefix is genesis + pledge (base 2), the suffix
+/// the post — so a deadline of 2 is reached in the suffix (lapse across the cut) and a far deadline is
+/// honored across it.
+fn seat(id: []const u8, deadline: u64) !Scene {
+    const kf = seeded(0xF0);
+    const ka = seeded(0xA1);
+    const kb = seeded(0xB2);
+    const alice_pk = ka.public_key.toBytes();
+    const bob_pk = kb.public_key.toBytes();
+
+    const f_gen = fold.mint_fact(kf, fold.kind_issue, 100, "", alice_pk[0..]) orelse return error.MintGen;
+    var pb: [1 + lapse.id_len + lapse.deadline_len + lapse.pk_len]u8 = undefined;
+    const pn = pledge_body(id, deadline, bob_pk[0..], &pb);
+    const f_pledge = fold.mint_fact(ka, fold.kind_tax, 100, "", pb[0..pn]) orelse return error.MintPledge;
+    var hb: [1 + lapse.id_len]u8 = undefined;
+    const hn = resolve_body(lapse.tag_post, id, &hb);
+    const f_post = fold.mint_fact(ka, fold.kind_tax, 100, "", hb[0..hn]) orelse return error.MintPost;
+
+    const g = cord.mint_block(kf, 0, &[_][cord.hash_len]u8{}, f_gen) orelse return error.BlockG;
+    var hg: [cord.hash_len]u8 = undefined;
+    cord.address(&g, &hg);
+    const roots = [_][cord.hash_len]u8{hg};
+    const b_pledge = cord.mint_block(ka, 1, roots[0..], f_pledge) orelse return error.BlockPledge;
+    var hpl: [cord.hash_len]u8 = undefined;
+    cord.address(&b_pledge, &hpl);
+    const roots2 = [_][cord.hash_len]u8{hpl};
+    const b_post = cord.mint_block(ka, 2, roots2[0..], f_post) orelse return error.BlockPost;
+    return .{ .g = g, .pledge = b_pledge, .post = b_post, .post_fact = f_post };
+}
+
+/// Resolve the whole three-block Cord — the truth a Knot-continued reading must match.
+fn resolve_whole(s: *const Scene) !lapse.Ledger {
+    var whole = cord.Dag.empty();
+    try cord.add(&whole, s.g);
+    try cord.add(&whole, s.pledge);
+    try cord.add(&whole, s.post);
+    return lapse.resolve(&whole);
+}
+
+/// Seal the prefix (genesis + pledge) into a LapseKnot and continue the post across the cut.
+fn continue_across(s: *const Scene) !lapse.Ledger {
+    var prefix = cord.Dag.empty();
+    try cord.add(&prefix, s.g);
+    try cord.add(&prefix, s.pledge);
+    const lk = try lapse_knot.seal_lapse(&prefix);
+    var suffix = fold.Log.empty();
+    suffix.facts[0] = s.post_fact;
+    suffix.len = 1;
+    return lapse_knot.continue_lapse(&lk, &suffix);
+}
+
+pub fn main() !void {
+    const id = [_]u8{0x01} ** lapse.id_len;
+    const alice_pk = seeded(0xA1).public_key.toBytes();
+    const bob_pk = seeded(0xB2).public_key.toBytes();
+
+    // --- The crux: a pledge that lapses across the cut, read the same on both paths ---
+    // Deadline 2. The suffix post rides absolute position 2, so the pledge lapses across the cut.
+    // Alice's line (and Bob's) must read identical whether over the whole Cord or the Knot-plus-suffix.
+    {
+        const s = try seat(id[0..], 2);
+        const whole = try resolve_whole(&s);
+        const across = try continue_across(&s);
+        if (whole.lapsed_seen() != 1) return error.WholeNotLapsed;
+        if (across.lapsed_seen() != 1) return error.AcrossNotLapsed;
+
+        const alice_whole = try statement.statement_for(&whole, alice_pk[0..]);
+        const alice_across = try statement.statement_for(&across, alice_pk[0..]);
+        // Alice's coins came home across the cut; her line reads lapsed on both paths, and reconciles.
+        if (alice_whole.balance != 100 or alice_whole.reserved != 0) return error.WholeAlicePos;
+        if (!statements_match(&alice_whole, &alice_across)) return error.AliceDrifted;
+        if (!alice_across.reconciles()) return error.AliceAcrossReconcile;
+        const ml = alice_across.line_at(0) orelse return error.AliceNoLine;
+        if (ml.state != lapse.state_lapsed) return error.AliceNotLapsed;
+
+        const bob_whole = try statement.statement_for(&whole, bob_pk[0..]);
+        const bob_across = try statement.statement_for(&across, bob_pk[0..]);
+        if (!statements_match(&bob_whole, &bob_across)) return error.BobDrifted;
+
+        // A Knot corrupted after sealing refuses whole — no statement is ever read from it.
+        var prefix = cord.Dag.empty();
+        try cord.add(&prefix, s.g);
+        try cord.add(&prefix, s.pledge);
+        var lk_bad = try lapse_knot.seal_lapse(&prefix);
+        lk_bad.knot.state.issued += 1;
+        var suffix = fold.Log.empty();
+        suffix.facts[0] = s.post_fact;
+        suffix.len = 1;
+        if (lapse_knot.continue_lapse(&lk_bad, &suffix)) |_| return error.CorruptTrusted else |err| {
+            if (err != error.KnotCorrupt) return error.WrongCorrupt;
+        }
+    }
+
+    // --- The seam: received accumulates across the cut (a far deadline, honored in the suffix) ---
+    // Deadline 5. The suffix post rides position 2 < 5, so the pledge honors across the cut: Bob is
+    // credited in the SUFFIX, having been absent at the seal. His received must read 100 (his whole
+    // inflow), not restart at the cut — the continuity the epoch base keeps and the Statement reads.
+    {
+        const s = try seat(id[0..], 5);
+        const whole = try resolve_whole(&s);
+        const across = try continue_across(&s);
+        if (across.posted_seen() != 1) return error.HonoredNotPosted;
+
+        const bob_whole = try statement.statement_for(&whole, bob_pk[0..]);
+        const bob_across = try statement.statement_for(&across, bob_pk[0..]);
+        // Bob was absent at the seal, credited in the suffix — his received reads his whole inflow.
+        if (bob_across.received != 100 or bob_across.balance != 100) return error.BobReceivedRestart;
+        if (!statements_match(&bob_whole, &bob_across)) return error.BobHonoredDrifted;
+        const bl = bob_across.line_at(0) orelse return error.BobNoLine;
+        if (bl.state != lapse.state_posted) return error.BobNotPosted;
+
+        // Alice's line agrees too — reserved returned, the made line reads posted, reconciles.
+        const alice_whole = try statement.statement_for(&whole, alice_pk[0..]);
+        const alice_across = try statement.statement_for(&across, alice_pk[0..]);
+        if (alice_across.reserved != 0) return error.AliceHonoredReserve;
+        if (!statements_match(&alice_whole, &alice_across)) return error.AliceHonoredDrifted;
+        if (!alice_across.reconciles()) return error.AliceHonoredReconcile;
+    }
+
+    print("statement-knot: a pledge opened before the cut lapses in the suffix; Alice's line reads the same lapsed statement whether over the whole Cord or a sealed Knot plus its suffix, and it reconciles\n", .{});
+    print("statement-knot: received accumulates across the cut — Bob, absent at the seal and credited in the suffix, reads his whole 100 inflow, not a restart; the continuity the epoch base keeps and the Statement reads\n", .{});
+    print("statement-knot: a Knot corrupted after sealing refuses whole — no statement is ever read from a tampered checkpoint\n", .{});
+    print("GREEN: myc statement-knot — one account's line reads continuous across a Knot, position and lines and reconciliation unbroken, received accumulated across the epoch base, a corrupt checkpoint refused\n", .{});
+}
