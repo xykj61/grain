@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260814.143348
+editor Zed
+model Fable 5
+voice Kyri
+host Framework 16 AMD — Eastern (EDT) — Vultr SEA VPS cloud pier, this session in ai-jail
+title ALES29 — Lotus's stereo two-sided insert-join, both channels both seams in lockstep
+prompt Recur through agent-doable ALES laps Lindy-first crux-first; send each finished increment; stop at custody gates
+think ALES28 (the mono two-sided insert-join, the trailing-seam law) sent GREEN to both remotes. Its own road-on named the next Lindy-first crux plainly: carry the two-sided insert into stereo — the highest-Lindy move because it makes the trailing-seam law usable on the object a keeper actually edits (a StereoClip, not one channel), the exact twin of ALES27's move for the append-join.
+think Design: insert_join_stereo(master, at, ins_left, ins_right, lead, trail) runs ALES28's mono insert_join on each channel with the SAME at/lead/trail. Atomicity is stronger and cleaner here than ALES27's: every ALES28 guard (past-the-master at, lead/trail widths, overlap-under-two, overflow) depends ONLY on the shared length and shared span dimensions, never on a sample's VALUE. A StereoClip's channels are one length (ALES10) and a stereo span is one length (ins_left.len == ins_right.len else BadRange), so insert_join on the left succeeds iff it succeeds on the right — the left refuses first, atomically (ALES28's scratch build leaves it untouched), before the right is ever called; a legal insert lands in both.
+think Because no guard reads audio, I did not re-derive ALES28's two-seam guards in the wrapper (that would duplicate internals and risk drift — a maintenance red). I check the one stereo-specific guard (equal span lengths) and lean on ALES28's identical guards, documenting the values-independence argument as the invariant. Reuses insert_join.insert_join whole over its public API; no new arithmetic, no new error (timeline.EditError forwarded), no module seam, no gate.
+think Named lotus/stereo_insert_join.rye to match the tree's stereo_* family (stereo_transport, stereo_loop, stereo_meter, stereo_join). No collision. Fixed a first-draft duplicate postcondition assert into a meaningful shared-count assert (captured old_len and n_ins).
+obs GREEN through Rishi on the first build: tools/ales_stereo_insert_join_witness.rish — three selftest blocks (both channels 10,5,2,2 → 11 aligned; each channel its own two seams left 100→200 right 500→600 with its own boundary samples; refuse-by-name unequal-span/past-master/lead-too-wide/trail-too-wide BadRange and overflow ClipFull, both channels untouched and aligned after each). tame_style_check bans clean, no new zero-assert ratchet, no usize/@memcpy.
+obs The stereo two-sided insert closes the seam story for both mono and stereo — the trailing-seam law per channel, the lockstep shared, atomicity made airtight by the fact that no guard reads a sample.
+loom witness=ales_stereo_insert_join_witness green=1 selftest_blocks=3 records=insert_join_stereo build=first
+file active-designing/20260814-fill-ales29-lotus-stereo-two-sided-insert-join.md the self-approved design round naming the one crux and the shape
+file lotus/stereo_insert_join.rye the module — ALES28's insert_join run on both channels under one shared-length guard, atomic and aligned
+file tools/ales_stereo_insert_join_witness.rish the witness proving GREEN on metal, purely local
+file lotus/README.md status line + stereo-insert-join bullet + witness list + closing paragraph advanced to ALES29
+recommend keep-going ALES30 — offer a multi-slot clipboard rack (a named set of held spans), or let the graft/paste join rather than butt by default (an edit that crossfades its seams whenever they would step). The ALES0 wire seam and the real sound-card write stay Keaton's word.
