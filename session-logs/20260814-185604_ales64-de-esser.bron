@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260814.185604
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title ALES64 — Lotus's de-esser: the first sidechain composition
+prompt baton prin recur — continue the ALES ladder Lindy-first crux-first, sending each finished increment as its own signed round
+think ALES63 proved the sidechain primitive and named the three tools it unlocks: the de-esser (a band-pass key), the ducker (a voice key), the keyed gate. Crux-first, the de-esser is the one that proves the sidechain earns its keep — a real, loved tool falling out as a composition of proven parts rather than new machinery.
+think A de-esser listens to only the sibilant band (highs where the ess lives) and ducks the whole voice when that band is loud. That is exactly a sidechain whose key is a band-passed COPY of the signal itself: band-pass a copy (ALES46's Bandpass), then key ALES63's compressor on that copy over the original.
+think Design: lotus/deess.rye — one function `deess` taking the target, a caller-owned empty scratch key, the band cutoffs, and the compressor knobs. It splices an exact copy of the target into the scratch, runs Bandpass over the span, then compress_key_follow over the target keyed on the copy. The band-pass runs first over the scratch, so an illegal band refuses before any target sample changes; the target is atomic on refusal. Nothing allocates — the copy lives in the caller's scratch.
+think The fault set is `tone.ToneError || sidechain.SidechainError` — Zig error-set union merges the shared BadCoeff/BadRange and adds BadThreshold/BadRatio/BadHold/BadKey. BadKey can never fire (the scratch key is a full copy, always covering the span).
+obs First build hit a real bug: literal braces in the GREEN print format string ({band-pass a copy; sidechain-compress}) were parsed as Zig format placeholders (too few arguments). Escaped them {{ }}. Then GREEN.
+obs Five witness clauses: silence; the de-esser IS the composition {band-pass a copy; sidechain-compress} byte-for-byte (grounding law, run by hand); the key's band-passed level sets the crossing (MEASURE the copy's peak P, threshold P+1 is identity however loud, threshold P-1 ducks — proves the sibilant band not the raw level drives the gain); sign held / magnitude never expands; and each fault refuses by name before the target is touched.
+obs Honest scope: from-silence whole-span only, matching how the base dynamics preceded their carried forms. A carried/spanning de-esser (threading band-pass + follower states together) is named as the next rung, not shipped.
+obs Fixed a lingering doc gap: the README status line still ended at ALES62 (my earlier status-line edit had failed before the read); added ALES63 and ALES64 to it, and appended the ALES64 body entry.
+loom witness=ales_deess_witness green=yes clauses=5 reproofs=2 tame_bans=clean
+file lotus/deess.rye ALES64 module — deess, a band-passed copy keyed into the ALES63 compressor, GREEN selftest
+file tools/ales_deess_witness.rish witness — builds and runs the selftest, re-proves ALES46 and ALES63 beside it, GREEN
+file active-designing/20260814-185604_fill-ales64-lotus-de-esser.md design read — the crux, the shape, the five laws, honest scope
+file lotus/README.md front door — status line (ALES63 + ALES64, catching the earlier gap) and body prose synced
+file session-logs/README.md index — newest-first row prepended
+recommend keep-going — the sidechain wing continues: the ducker (a voice key over a music bed) and the keyed gate are the next self-approvable compositions of proven parts. A carried/spanning de-esser, external key routing, and the lookahead delay stay custody gates (Keaton's hand).

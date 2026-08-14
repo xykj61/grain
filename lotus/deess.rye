@@ -1,0 +1,294 @@
+//! lotus/deess.rye — ALES64: the de-esser — the first sidechain COMPOSITION. ALES63 gave the detector its freedom: a compressor
+//! keyed by a SEPARATE signal rather than the track it turns down, and named the three tools that freedom unlocks — the de-esser (a
+//! band-pass key), the ducker (a voice key), the keyed gate. This rung builds the first of them from proven parts, adding no new
+//! arithmetic on the audio path. A de-esser tames the harsh "ess" of a vocal without dulling the whole take: it listens to only the
+//! SIBILANT BAND (the high frequencies where the ess lives), and when that band gets loud it ducks the WHOLE vocal for that instant,
+//! so the ess softens while the body of the voice stays bright. That is exactly a sidechain whose key is a BAND-PASSED COPY of the
+//! signal itself: band-pass a copy to isolate the sibilant band (ALES46's proven Bandpass), then key ALES63's compressor on that copy
+//! over the original (ALES63's compress_key_follow). The de-esser IS that composition — band-pass a copy, then sidechain-compress —
+//! so it inherits every proof beneath it: the band-pass is the two proven one-pole stages in cascade, and the keyed compressor is the
+//! ordinary attack/hold/release compressor generalized to a key. The threshold is crossed by the KEY's band-passed level, not the
+//! target's broadband level, so a loud low note passes untouched while a quiet ess ducks — the de-esser reacts to the band, not the
+//! volume.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES64.
+//! Design read: active-designing/20260814-185604_fill-ales64-lotus-de-esser.md
+//! Stands on: lotus/timeline.rye (ALES2) — the Clip, samples(), splice, the range law shape; lotus/band.rye (ALES46) — the Bandpass
+//! that isolates the sibilant band, its run the two proven one-pole stages in cascade; lotus/sidechain.rye (ALES63) — the keyed
+//! compressor this drives, its compress_key_follow reading the band-passed copy as the detector while the gain lands on the target.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
+//! no network, no keys, no funds, no real device, no real sample rate — the band cutoffs are one-pole coefficients, the attack,
+//! release, and hold counted in sample INDICES, not milliseconds; the threshold is a magnitude in sample units, the ratio a plain
+//! fraction; there is no lookahead. One whole-span pass over the copy and the target; the from-silence form only (a carried/spanning
+//! de-esser, threading the band-pass and follower states together, is a later rung, exactly as the base dynamics preceded their
+//! carried forms). The band-passed copy lives in a caller-owned scratch clip, so nothing on the path allocates.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/deess.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const tone = @import("tone.rye");
+const band = @import("band.rye");
+const sidechain = @import("sidechain.rye");
+
+pub const deess_version = "20260814.185604";
+
+/// The de-esser's faults, one consistent name each, merged from the two proven tools it composes: the band-pass contributes BadCoeff
+/// (an illegal band cutoff) and BadRange (a span outside the samples); the keyed compressor contributes BadThreshold, BadRatio,
+/// BadCoeff (an illegal attack or release coefficient), BadHold, BadRange, and BadKey — every name coinciding with the family's, so a
+/// composer sees one consistent fault surface. BadKey cannot arise here (the scratch key is a full copy of the target, so it always
+/// covers the span); it is named only because it rides in on the sidechain's set.
+pub const DeessError = tone.ToneError || sidechain.SidechainError;
+
+/// De-ess `count` samples starting at `start` in place in `target`: band-pass a copy of the target into the caller-owned scratch
+/// `key` to isolate the sibilant band (the high-pass at `num_low/den_low` drops the lows, the low-pass at `num_high/den_high` drops
+/// the highs — ALES46's Bandpass), then key ALES63's attack/hold/release compressor on that copy over the target (ALES63's
+/// compress_key_follow), from a fresh envelope with the hold unarmed. The gain lands on the raw target while the detector listens to
+/// the band-passed copy, so the threshold is crossed by the SIBILANT band's level, not the target's broadband level — a loud low
+/// note whose sibilant band is quiet passes untouched, a loud ess ducks the whole voice for that instant. The `key` clip must arrive
+/// EMPTY; the de-esser fills it with the band-passed copy, so nothing on the path allocates. Refuses BadCoeff (either band cutoff or
+/// an illegal attack/release coefficient), BadThreshold, BadRatio, BadHold, and BadRange before the target is touched — the band-pass
+/// runs first over the scratch copy, so an illegal band refuses before a single target sample changes, and the keyed compressor
+/// checks all of its own edges before any write. On any refusal the target is untouched (the scratch key may hold a partial copy —
+/// it is scratch). Target values only — never a length.
+pub fn deess(
+    target: *timeline.Clip,
+    key: *timeline.Clip,
+    start: u32,
+    count: u32,
+    num_low: i32,
+    den_low: u32,
+    num_high: i32,
+    den_high: u32,
+    threshold: i32,
+    ratio_num: u32,
+    ratio_den: u32,
+    attack_num: u32,
+    attack_den: u32,
+    release_num: u32,
+    release_den: u32,
+    hold_samples: u32,
+) DeessError!void {
+    // invariant: the scratch key arrives empty — the de-esser fills it with a band-passed copy of the target and owns its whole
+    // content, so a caller never has to size or clear it and nothing here allocates.
+    assert(key.len == 0);
+
+    // Build the key: an exact copy of the target, then the sibilant band isolated over the span. splice into the empty scratch makes
+    // key.len == target.len, so the key covers the span and BadKey can never fire below.
+    timeline.splice(key, 0, target.samples()) catch {
+        // splice of a full copy into an empty clip cannot exceed max_clip (target already fits), so this branch names an impossible
+        // state defensively rather than a reachable fault; map it onto the range fault the family already knows.
+        return error.BadRange;
+    };
+    // invariant: the key is now an exact, same-length copy of the target — the detector will read the same span the gain lands on.
+    assert(key.len == target.len);
+
+    // Isolate the sibilant band in the copy. Its precheck refuses an illegal cutoff (BadCoeff) or span (BadRange) before it writes,
+    // and it touches only the scratch — the target is still whole here.
+    var sibilant = band.Bandpass{ .num_low = num_low, .den_low = den_low, .num_high = num_high, .den_high = den_high };
+    try sibilant.run(key, start, count);
+
+    // Key the attack/hold/release compressor on the band-passed copy over the target. Every threshold, ratio, coefficient, hold, and
+    // range edge is checked before any target write, so a fault here leaves the target exactly as it was.
+    try sidechain.compress_key_follow(target, key, start, count, threshold, ratio_num, ratio_den, attack_num, attack_den, release_num, release_den, hold_samples);
+
+    // invariant: a de-esser changes target sample values only, never the target's length or bound.
+    assert(start + count <= target.len);
+    assert(target.len <= target.buf.len);
+}
+
+// --- selftest: silence stays silence; a de-esser IS the composition {band-pass a copy; sidechain-compress} byte-for-byte (the
+//     grounding law, run by hand); the KEY's band-passed level sets the threshold crossing (a threshold just above the band-passed
+//     peak is the identity, a threshold below it ducks — proven by MEASURING the copy's peak, so the sibilant band, not the broadband
+//     level, drives the gain); a loud in-band signal is ducked with the sign held and never expanding; and each fault refuses by name
+//     before the target is touched -------------------------------------------------------------------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn abs16(v: i16) i32 {
+    return if (v < 0) -@as(i32, v) else @as(i32, v);
+}
+
+fn run_selftest() !u8 {
+    // 1. silence stays silence — an all-zero target de-esses to all zeros: the band-passed copy is silent, so nothing crosses.
+    {
+        var target = timeline.Clip{};
+        try load_clip(&target, &[_]i16{ 0, 0, 0, 0, 0, 0 });
+        var key = timeline.Clip{};
+        try deess(&target, &key, 0, target.len, 1, 3, 1, 2, 1000, 4, 1, 1, 4, 1, 8, 3);
+        const zeros = [_]i16{ 0, 0, 0, 0, 0, 0 };
+        if (!eq(target.samples(), &zeros)) return error.SilenceWrong;
+    }
+
+    // 2. THE GROUNDING LAW — a de-esser IS the composition {band-pass a copy of the target; then sidechain-compress the target keyed
+    //    on that copy}, byte-for-byte. Run the two steps by hand and demand equality: the de-esser adds no arithmetic on the audio
+    //    path — it is ALES46's band-pass and ALES63's keyed compressor in composition.
+    {
+        const sig = [_]i16{ 6000, -5800, 6200, 5900, -6100, 5700, 12000, -11800, 9000, 500, -900, 1100 };
+        // the de-esser
+        var target = timeline.Clip{};
+        try load_clip(&target, &sig);
+        var key = timeline.Clip{};
+        try deess(&target, &key, 0, target.len, 1, 3, 1, 2, 3000, 4, 1, 1, 3, 1, 5, 2);
+        // the composition by hand: band-pass a copy, then key the ALES63 compressor on it over a fresh copy of the signal
+        var hand_key = timeline.Clip{};
+        try load_clip(&hand_key, &sig);
+        var f = band.Bandpass{ .num_low = 1, .den_low = 3, .num_high = 1, .den_high = 2 };
+        try f.run(&hand_key, 0, hand_key.len);
+        var hand_target = timeline.Clip{};
+        try load_clip(&hand_target, &sig);
+        try sidechain.compress_key_follow(&hand_target, &hand_key, 0, hand_target.len, 3000, 4, 1, 1, 3, 1, 5, 2);
+        if (!eq(target.samples(), hand_target.samples())) return error.NotComposition;
+    }
+
+    // 3. THE KEY'S BAND-PASSED LEVEL SETS THE CROSSING — measure the band-passed copy's peak P, then a threshold just ABOVE P is the
+    //    identity (nothing crosses, the target passes byte-for-byte however loud its broadband level), while a threshold BELOW P ducks
+    //    (some sample reduced). So it is the SIBILANT band, not the target's raw level, that drives the gain — the de-esser reacts to
+    //    the band. Instant attack/release and no hold isolate the crossing from the time base.
+    {
+        const sig = [_]i16{ 9000, -9000, 9000, -9000, 9000, -9000, 9000, -9000 }; // a loud, fast, in-band (sibilant) signal
+        // measure the band-passed copy's peak the same way the de-esser builds its key
+        var probe = timeline.Clip{};
+        try load_clip(&probe, &sig);
+        var pf = band.Bandpass{ .num_low = 1, .den_low = 3, .num_high = 1, .den_high = 2 };
+        try pf.run(&probe, 0, probe.len);
+        var peak: i32 = 0;
+        {
+            const kb = probe.samples();
+            var i: u32 = 0;
+            while (i < kb.len) : (i += 1) if (abs16(kb[i]) > peak) {
+                peak = abs16(kb[i]);
+            };
+        }
+        // invariant: the probe is a real band-passed signal with energy — a legal threshold above it exists and is below the rail.
+        assert(peak >= 1 and peak < @as(i32, timeline.sample_max));
+
+        // threshold just above the band-passed peak — nothing crosses, the identity, however loud the broadband signal.
+        var above = timeline.Clip{};
+        try load_clip(&above, &sig);
+        var akey = timeline.Clip{};
+        try deess(&above, &akey, 0, above.len, 1, 3, 1, 2, peak + 1, 8, 1, 1, 1, 1, 1, 0);
+        if (!eq(above.samples(), &sig)) return error.AboveKeyReduced;
+
+        // threshold below the band-passed peak — the key crosses, the whole target ducks: some sample is reduced.
+        var below = timeline.Clip{};
+        try load_clip(&below, &sig);
+        var bkey = timeline.Clip{};
+        try deess(&below, &bkey, 0, below.len, 1, 3, 1, 2, peak - 1, 8, 1, 1, 1, 1, 1, 0);
+        var reduced = false;
+        {
+            const out = below.samples();
+            var i: u32 = 0;
+            while (i < out.len) : (i += 1) {
+                if (abs16(out[i]) > abs16(sig[i])) return error.DeessExpanded; // never boosts
+                if (abs16(out[i]) < abs16(sig[i])) reduced = true;
+            }
+        }
+        if (!reduced) return error.SibilantDidNotDuck;
+    }
+
+    // 4. THE SIGN IS HELD AND THE MAGNITUDE NEVER EXPANDS — a loud in-band signal de-esses so every output magnitude is at most the
+    //    target input's and every sign matches, under a real band, attack, release, and hold.
+    {
+        const sig = [_]i16{ 8000, -8000, 12000, -12000, 6000, -6000, 15000, -15000 };
+        var target = timeline.Clip{};
+        try load_clip(&target, &sig);
+        var key = timeline.Clip{};
+        try deess(&target, &key, 0, target.len, 1, 3, 1, 2, 2000, 4, 1, 1, 2, 1, 6, 2);
+        const out = target.samples();
+        var i: u32 = 0;
+        while (i < out.len) : (i += 1) {
+            if (abs16(out[i]) > abs16(sig[i])) return error.MagnitudeExpanded;
+            if ((sig[i] > 0 and out[i] < 0) or (sig[i] < 0 and out[i] > 0)) return error.SignFlipped;
+        }
+    }
+
+    // 5a. an illegal band cutoff (a high-pass numerator past the denominator) refuses BadCoeff before the target is touched.
+    {
+        var target = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&target, &three);
+        var key = timeline.Clip{};
+        if (deess(&target, &key, 0, target.len, 3, 2, 1, 2, 1000, 4, 1, 1, 4, 1, 8, 2)) |_| return error.BadBandSlipped else |e| if (e != error.BadCoeff) return error.WrongBadBand;
+        if (!eq(target.samples(), &three)) return error.RefusedBandMutated;
+    }
+
+    // 5b. a zero threshold refuses BadThreshold before the target is touched.
+    {
+        var target = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&target, &three);
+        var key = timeline.Clip{};
+        if (deess(&target, &key, 0, target.len, 1, 3, 1, 2, 0, 4, 1, 1, 4, 1, 8, 2)) |_| return error.ZeroThresholdSlipped else |e| if (e != error.BadThreshold) return error.WrongZeroThreshold;
+        if (!eq(target.samples(), &three)) return error.RefusedThresholdMutated;
+    }
+
+    // 5c. a sub-unity ratio refuses BadRatio before the target is touched.
+    {
+        var target = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&target, &three);
+        var key = timeline.Clip{};
+        if (deess(&target, &key, 0, target.len, 1, 3, 1, 2, 1000, 1, 2, 1, 4, 1, 8, 2)) |_| return error.SubUnitySlipped else |e| if (e != error.BadRatio) return error.WrongSubUnity;
+        if (!eq(target.samples(), &three)) return error.RefusedRatioMutated;
+    }
+
+    // 5d. an illegal attack coefficient refuses BadCoeff before the target is touched.
+    {
+        var target = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&target, &three);
+        var key = timeline.Clip{};
+        if (deess(&target, &key, 0, target.len, 1, 3, 1, 2, 1000, 4, 1, 3, 2, 1, 8, 2)) |_| return error.BadAttackSlipped else |e| if (e != error.BadCoeff) return error.WrongBadAttack;
+        if (!eq(target.samples(), &three)) return error.RefusedAttackMutated;
+    }
+
+    // 5e. a hold longer than max_clip refuses BadHold before the target is touched.
+    {
+        var target = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&target, &three);
+        var key = timeline.Clip{};
+        if (deess(&target, &key, 0, target.len, 1, 3, 1, 2, 1000, 4, 1, 1, 4, 1, 8, timeline.max_clip + 1)) |_| return error.BadHoldSlipped else |e| if (e != error.BadHold) return error.WrongBadHold;
+        if (!eq(target.samples(), &three)) return error.RefusedHoldMutated;
+    }
+
+    // 5f. an out-of-range span refuses BadRange before the target is touched (caught by the band-pass over the copy first).
+    {
+        var target = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&target, &three);
+        var key = timeline.Clip{};
+        if (deess(&target, &key, 2, 5, 1, 3, 1, 2, 1000, 4, 1, 1, 4, 1, 8, 2)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(target.samples(), &three)) return error.RefusedRangeMutated;
+    }
+
+    print("GREEN ales-deess: the DE-ESSER — the first sidechain composition: band-pass a copy of the target to isolate the sibilant " ++
+        "band (ALES46's Bandpass), then key ALES63's attack/hold/release compressor on that copy over the target. Silence stays " ++
+        "silence; the de-esser IS the composition {{band-pass a copy; sidechain-compress}} BYTE-FOR-BYTE (the grounding law, run by " ++
+        "hand — it adds no arithmetic on the audio path); the KEY's band-passed level sets the threshold crossing (a threshold just " ++
+        "above the band-passed peak is the identity however loud the broadband level, a threshold below it ducks — proven by MEASURING " ++
+        "the copy's peak, so the sibilant band, not the raw level, drives the gain); a loud in-band signal ducks with the sign held " ++
+        "and never expanding; and an illegal band cutoff refuses BadCoeff, a zero threshold BadThreshold, a sub-unity ratio BadRatio, " ++
+        "an illegal attack coefficient BadCoeff, a hold past max_clip BadHold, an out-of-range span BadRange, each before the target " ++
+        "is touched; no socket, no network, no keys, no funds, no real device, no real sample rate\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
