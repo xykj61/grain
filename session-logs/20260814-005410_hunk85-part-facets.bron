@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260814.005410
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title HUNK85 — the faceted query: OR within a facet, AND across facets
+prompt recur the itinerary loop — take the next agent-doable Lindy-first crux-first lap after HUNK84, send each finished increment as its own signed round
+think After HUNK84 brought the OR to glass, the boolean algebra stood whole as AND and OR separately — yet a real facet sidebar runs on both at once, in a fixed shape: OR within one facet (stainless or brass), AND across different facets (that union, and under a dollar). That is the canonical faceted query, a conjunction of disjunctions (CNF), and it was the next in-layer crux.
+think Chose a grammar that carries the two levels plainly and stays backward-compatible: the line is space-separated groups, each group a `|`-separated disjunction. A `|`-free line is an AND of one-clause groups — exactly HUNK78's conjunction — so the new grammar is a strict superset that disturbs nothing already proven.
+think No new matching rule: a group is HUNK83's matches_any over its `|`-clauses, and the line is those group verdicts under AND, exactly as HUNK78 ANDs single clauses. FacetQuery holds an array of part_or.OrQuery groups; filter_facets keeps a part when every group matches_any.
+think Three laws pin it honest: backward-compatibility (filter_facets over a `|`-free line equals part_and.filter_and part for part), identity (empty line = match-all, the AND identity; a hand-built empty group = match-none, the OR identity), and distribution ((a|b) AND c == (a AND c) union (b AND c), checked over every part).
+obs Witness GREEN; TAME style bans clean; width-check exit 0. HUNK83 disjunction and HUNK78 conjunction re-run GREEN beneath. Custody gate #3 untouched — a price clause compares a recorded cent count, nothing moved; no network, key, or funds.
+obs Synced image/README.md marketplace section — the boolean query algebra now reads HUNK75–HUNK85, naming the faceted grammar and its witness, a docs-implementation ratchet on a file already open for this journey.
+file image/part_facets.rye HUNK85 — parse_group/parse_facets/matches_all_groups/count_facets/filter_facets, CNF over HUNK78 AND + HUNK83 OR
+file tools/hunk_part_facets_witness.rish GREEN witness — OR-within, AND-across, backward-compat, empty match-all, distribution, refusals; HUNK83 + HUNK78 stay GREEN
+file active-designing/20260814-005410_hunk-part-facets-and-of-ors-exploration.md self-approved design round for HUNK85
+file image/README.md marketplace section names the faceted grammar (HUNK75–HUNK85) and its witness
+recommend keep-going HUNK86 — bring the faceted grammar to glass (a facets_search_shelf mirroring HUNK79/HUNK84), the named next horizon; agent-doable, no gate
