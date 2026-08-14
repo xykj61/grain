@@ -1,0 +1,349 @@
+//! image/part_facets.rye — HUNK85: the faceted query — OR within a facet, AND across facets.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK85.
+//! Design read: active-designing/20260814-005410_hunk-part-facets-and-of-ors-exploration.md
+//! Teacher, thanked clean-room: McMaster-Carr's faceted sidebar — checking two values of ONE facet widens (OR), while
+//! checking DIFFERENT facets narrows (AND) (concept only, siloed).
+//!
+//! HUNK78 gave the marketplace an AND of clauses, HUNK83 an OR of clauses. A real facet sidebar runs on BOTH at once,
+//! in a fixed shape: checking two values of one facet widens (stainless OR brass), while checking different facets
+//! narrows (stainless-or-brass AND under a dollar). That is the canonical faceted query — a CONJUNCTION OF DISJUNCTIONS:
+//! OR within a facet, AND across facets. This rung is that join. The line is space-separated GROUPS, each group a
+//! `|`-separated list of `key:value` clauses: `material:stainless-304|material:brass max:100` means
+//! (stainless OR brass) AND (<= 100 cents).
+//!
+//! The crux is that a part is kept exactly when EVERY group has at least one clause it matches — a group is HUNK83's
+//! `matches_any` over its `|`-clauses, the line those verdicts under AND, exactly as HUNK78 ANDs single clauses. No new
+//! matching rule is invented. Three laws make it honest: BACKWARD-COMPATIBILITY (a `|`-free line equals HUNK78's
+//! `filter_and` part for part — a strict superset), the IDENTITY law (an empty line is a match-ALL, the AND identity; a
+//! hand-built empty group is a match-NONE, the OR identity), and DISTRIBUTION ((a|b) AND c equals (a AND c) union
+//! (b AND c) — a free check against HUNK78 run twice).
+//!
+//! A price clause COMPARES a recorded cent count; nothing is moved (custody gate #3 untouched). No network, no key,
+//! no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/part_facets.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const sprite = @import("sprite.rye");
+const part_catalog = @import("part_catalog.rye");
+const part_filter = @import("part_filter.rye");
+const part_query = @import("part_query.rye");
+const part_and = @import("part_and.rye");
+const part_or = @import("part_or.rye");
+
+pub const part_facets_version = "20260814.005410";
+
+/// The most facets a keeper narrows across at once — the same handful the conjunction admits, so a faceted line is
+/// measured at the AND's own width (TAME bound).
+pub const max_groups: u32 = part_and.max_clauses;
+
+pub const FacetError = error{
+    TooManyGroups,
+};
+
+/// A conjunction of disjunctions: the parts kept satisfy EVERY group, and a group is satisfied by ANY of its clauses.
+/// Each group is a HUNK83 `OrQuery` whose clause text borrows into the caller's own typed line (never copied), so the
+/// `FacetQuery` lives no longer than the line it was parsed from. Zero groups is a valid match-all query.
+pub const FacetQuery = struct {
+    groups: [max_groups]part_or.OrQuery = undefined,
+    count: u32 = 0,
+};
+
+/// Parse one space-free group — `key:value` clauses joined by `|` — into the `OrQuery` (the within-facet union) it
+/// means. Blank runs between `|` are skipped. Each clause is parsed by HUNK76's own `parse_query`, so every
+/// single-clause law is reused verbatim; a malformed clause surfaces the parser's error, and an over-wide group refuses
+/// `part_or`'s `TooManyClauses`. A group token always yields at least one clause.
+pub fn parse_group(tok: []const u8) !part_or.OrQuery {
+    var oq = part_or.OrQuery{};
+    var it = std.mem.tokenizeScalar(u8, tok, '|');
+    while (it.next()) |clause| {
+        // invariant: a tokenized clause is never empty — tokenizeScalar skips blank runs.
+        assert(clause.len > 0);
+        if (oq.count == part_or.max_clauses) return error.TooManyClauses;
+        // invariant: there is room for one more clause before it is written.
+        assert(oq.count < part_or.max_clauses);
+        oq.clauses[oq.count] = try part_query.parse_query(clause);
+        oq.count += 1;
+    }
+    // invariant: the parsed clause count never passes the group's ceiling.
+    assert(oq.count <= part_or.max_clauses);
+    return oq;
+}
+
+/// Parse one line a keeper typed — space-separated groups, each group a `|`-joined disjunction — into the `FacetQuery`
+/// it means. Blank runs between groups are skipped. Zero groups (an empty or all-blank line) is a match-all query (the
+/// AND identity), exactly as HUNK78's empty line is.
+pub fn parse_facets(text: []const u8) !FacetQuery {
+    var fq = FacetQuery{};
+    var it = std.mem.tokenizeScalar(u8, text, ' ');
+    while (it.next()) |tok| {
+        // invariant: a tokenized group is never empty — tokenizeScalar skips blank runs.
+        assert(tok.len > 0);
+        if (fq.count == max_groups) return error.TooManyGroups;
+        // invariant: there is room for one more group before it is written.
+        assert(fq.count < max_groups);
+        fq.groups[fq.count] = try parse_group(tok);
+        fq.count += 1;
+    }
+    // invariant: the parsed group count never passes the ceiling.
+    assert(fq.count <= max_groups);
+    return fq;
+}
+
+/// Every clause of every group stays within the widest stored token field, so a hand-built `FacetQuery` can never drive
+/// `matches` past its bound. Refuses by name before any catalog walk.
+fn check_groups(fq: FacetQuery) part_filter.FilterError!void {
+    // invariant: the group count never passes the ceiling.
+    assert(fq.count <= max_groups);
+    var g: u32 = 0;
+    while (g < fq.count) : (g += 1) {
+        // invariant: the walked group index stays inside the live group count.
+        assert(g < fq.count);
+        const oq = fq.groups[g];
+        var c: u32 = 0;
+        while (c < oq.count) : (c += 1) {
+            if (oq.clauses[c].text.len > part_filter.max_query_text) return error.QueryTextTooLong;
+        }
+    }
+}
+
+/// Does the i-th part of `cat` satisfy EVERY group? A group is satisfied by HUNK83's `matches_any` (any of its
+/// `|`-clauses). Zero groups is trivially true — a match-all (the AND identity). A hand-built group with zero clauses is
+/// false (the empty OR), so the whole line keeps nothing — the honest AND-of-OR composition.
+pub fn matches_all_groups(cat: *const part_catalog.PartCatalog, i: u32, fq: FacetQuery) bool {
+    // invariant: the queried index sits inside the catalog.
+    assert(i < cat.len());
+    // invariant: the group count never passes the ceiling.
+    assert(fq.count <= max_groups);
+    var g: u32 = 0;
+    while (g < fq.count) : (g += 1) {
+        if (!part_or.matches_any(cat, i, fq.groups[g])) return false;
+    }
+    return true;
+}
+
+/// How many parts satisfy every group — a bounded walk of the whole catalog, so a caller can size a page before it
+/// filters. The count never exceeds the catalog's own length.
+pub fn count_facets(cat: *const part_catalog.PartCatalog, fq: FacetQuery) !u32 {
+    try check_groups(fq);
+    // invariant: the catalog never outgrew its sheet's product ceiling.
+    assert(cat.len() <= sprite.max_products);
+    var kept: u32 = 0;
+    var i: u32 = 0;
+    while (i < cat.len()) : (i += 1) {
+        // invariant: the running count never passes the number of parts walked so far.
+        assert(kept <= i);
+        if (matches_all_groups(cat, i, fq)) kept += 1;
+    }
+    // invariant: no more parts were kept than the catalog held.
+    assert(kept <= cat.len());
+    return kept;
+}
+
+/// Narrow-and-widen `cat` into `out` — a fresh `PartCatalog` over the SAME shared sheet, holding exactly the parts that
+/// satisfy every group (each group by any clause), in held order, each part once. Each match is re-added through
+/// `add_part` with its own window and facts, validated once by the source catalog, so the rebuild never half-adds. A
+/// zero-group query reproduces the catalog (match-all); the result is an ordinary `PartCatalog` — it paints, pages, and
+/// round-trips like any other, so a faceted query composes with a further narrowing.
+pub fn filter_facets(
+    cat: *const part_catalog.PartCatalog,
+    fq: FacetQuery,
+    out: *part_catalog.PartCatalog,
+) !void {
+    try check_groups(fq);
+    out.* = part_catalog.PartCatalog.init(cat.index.sheet);
+    // invariant: filtering starts from an empty sub-catalog over the source's own sheet.
+    assert(out.len() == 0);
+    assert(out.index.sheet == cat.index.sheet);
+
+    var i: u32 = 0;
+    while (i < cat.len()) : (i += 1) {
+        // invariant: the sub-catalog never holds more parts than the source walked so far.
+        assert(out.len() <= i);
+        if (!matches_all_groups(cat, i, fq)) continue;
+        const e = cat.index.entry(i);
+        const f = cat.facts_at(i);
+        try out.add_part(e.name, e.win.x, e.win.y, e.win.w, e.win.h, f.part_number, f.material, f.price_cents);
+    }
+    // invariant: the sub-catalog holds no more parts than the source.
+    assert(out.len() <= cat.len());
+}
+
+// --- selftest: five parts across three materials and a price spread — parse a faceted line, prove OR within a facet and
+//     AND across facets, that a |-free line equals HUNK78's conjunction part for part, that an empty line is a match-all,
+//     that distribution holds ((a|b) AND c == (a AND c) union (b AND c)), and that a malformed clause / over-many groups
+//     each refuse by name -----------------------------------------------------------------------------------------
+
+/// Build an 8×8 sheet where each pixel encodes its own coordinates, so a windowed part is unambiguous (HUNK71 fixture).
+fn craft_sheet(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 8;
+    const h: u32 = 8;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            buf[off] = @intCast(x * 30);
+            buf[off + 1] = @intCast(y * 30);
+            buf[off + 2] = @intCast(x + y);
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+/// The held-order names a catalog holds — walk it and collect its product names into `names`.
+fn kept_names(cat: *const part_catalog.PartCatalog, names: [][]const u8) u32 {
+    var i: u32 = 0;
+    while (i < cat.len()) : (i += 1) names[i] = cat.index.entry(i).name;
+    return cat.len();
+}
+
+/// Whether a catalog holds a part by this name — a small membership reader the distribution reference leans on.
+fn holds(cat: *const part_catalog.PartCatalog, name: []const u8) bool {
+    var i: u32 = 0;
+    while (i < cat.len()) : (i += 1) {
+        if (std.mem.eql(u8, cat.index.entry(i).name, name)) return true;
+    }
+    return false;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const sheet = try craft_sheet(garden);
+    var cat = part_catalog.PartCatalog.init(&sheet);
+    try cat.add_part("bolt", 0, 0, 2, 2, "HX-M8-40", "stainless-304", 129);
+    try cat.add_part("nut", 2, 0, 2, 2, "NY-M8", "brass", 60);
+    try cat.add_part("washer", 4, 0, 2, 2, "FW-M8", "zinc-steel", 7);
+    try cat.add_part("gear", 0, 2, 2, 2, "SPUR-24T", "acetal", 845);
+    try cat.add_part("hexnut", 2, 2, 2, 2, "HX-N8", "stainless-304", 55);
+    assert(cat.len() == 5);
+
+    var typed: [sprite.max_products][]const u8 = undefined;
+
+    // OR WITHIN a facet: material:stainless-304|material:brass keeps the union of stainless (bolt, hexnut) and brass
+    // (nut) — bolt, nut, hexnut, in held order, each once.
+    {
+        const fq = try parse_facets("material:stainless-304|material:brass");
+        assert(fq.count == 1); // one group, three clauses under OR
+        assert(fq.groups[0].count == 2);
+        assert((try count_facets(&cat, fq)) == 3);
+        var sub: part_catalog.PartCatalog = undefined;
+        try filter_facets(&cat, fq, &sub);
+        const tn = kept_names(&sub, typed[0..]);
+        assert(tn == 3);
+        assert(std.mem.eql(u8, typed[0], "bolt"));
+        assert(std.mem.eql(u8, typed[1], "nut"));
+        assert(std.mem.eql(u8, typed[2], "hexnut"));
+    }
+
+    // AND ACROSS facets over the union: (stainless|brass) AND (<= 100 cents) keeps, from {bolt 129, nut 60, hexnut 55},
+    // only the two under a dollar — nut, hexnut. bolt is stainless yet 129c, so the second group drops it.
+    {
+        const fq = try parse_facets("material:stainless-304|material:brass max:100");
+        assert(fq.count == 2); // two groups: the material union, then the price ceiling
+        assert(fq.groups[0].count == 2);
+        assert(fq.groups[1].count == 1);
+        assert((try count_facets(&cat, fq)) == 2);
+        var sub: part_catalog.PartCatalog = undefined;
+        try filter_facets(&cat, fq, &sub);
+        const tn = kept_names(&sub, typed[0..]);
+        assert(tn == 2);
+        assert(std.mem.eql(u8, typed[0], "nut")); // brass, 60c
+        assert(std.mem.eql(u8, typed[1], "hexnut")); // stainless, 55c
+    }
+
+    // BACKWARD-COMPATIBILITY: a |-free line is an AND of one-clause groups — exactly HUNK78's conjunction. The faceted
+    // filter equals part_and.filter_and part for part over the same line.
+    {
+        const line = "material:stainless-304 max:100";
+        const fq = try parse_facets(line);
+        const aq = try part_and.parse_and(line);
+        var via_facets: part_catalog.PartCatalog = undefined;
+        var via_and: part_catalog.PartCatalog = undefined;
+        try filter_facets(&cat, fq, &via_facets);
+        try part_and.filter_and(&cat, aq, &via_and);
+        const fn_names = kept_names(&via_facets, typed[0..]);
+        var and_names: [sprite.max_products][]const u8 = undefined;
+        const an = kept_names(&via_and, and_names[0..]);
+        assert(fn_names == an);
+        assert(fn_names == 1); // stainless AND <= 100 is hexnut alone
+        var i: u32 = 0;
+        while (i < an) : (i += 1) assert(std.mem.eql(u8, typed[i], and_names[i]));
+    }
+
+    // An empty line is a MATCH-ALL — zero groups, the AND identity, exactly as HUNK78's empty line is.
+    {
+        const fq = try parse_facets("   ");
+        assert(fq.count == 0);
+        assert((try count_facets(&cat, fq)) == cat.len());
+        var sub: part_catalog.PartCatalog = undefined;
+        try filter_facets(&cat, fq, &sub);
+        assert(sub.len() == cat.len());
+    }
+
+    // DISTRIBUTION: (a|b) AND c keeps exactly the parts (a AND c) union (b AND c) keeps. Over every part, membership in
+    // the faceted result equals (matches a OR matches b) AND matches c — the algebra's own distribution.
+    {
+        const fq = try parse_facets("material:stainless-304|material:brass max:100");
+        var sub: part_catalog.PartCatalog = undefined;
+        try filter_facets(&cat, fq, &sub);
+        const a = fq.groups[0].clauses[0]; // material:stainless-304
+        const b = fq.groups[0].clauses[1]; // material:brass
+        const c = fq.groups[1].clauses[0]; // max:100
+        var i: u32 = 0;
+        while (i < cat.len()) : (i += 1) {
+            const want = (part_filter.matches(&cat, i, a) or part_filter.matches(&cat, i, b)) and part_filter.matches(&cat, i, c);
+            assert(holds(&sub, cat.index.entry(i).name) == want);
+        }
+    }
+
+    // A malformed clause surfaces the parser's own named refusal — a bad facet parses to nothing.
+    if (parse_facets("material:stainless-304|colour:red")) |_| return error.BadClauseSlipped else |e| {
+        if (e != error.UnknownKey) return error.WrongClause;
+    }
+    if (parse_facets("material:stainless-304 nocolonhere")) |_| return error.BadClauseSlipped else |e| {
+        if (e != error.NoColon) return error.WrongClause;
+    }
+
+    // Over-many groups refuse by name — one past the ceiling, before the catalog is walked.
+    {
+        var line: [max_groups * 8 + 16]u8 = undefined;
+        var n: u32 = 0;
+        var k: u32 = 0;
+        while (k < max_groups + 1) : (k += 1) {
+            const group = "min:0 ";
+            var j: u32 = 0;
+            while (j < group.len) : (j += 1) {
+                line[n] = group[j];
+                n += 1;
+            }
+        }
+        if (parse_facets(line[0..n])) |_| return error.ManySlipped else |e| {
+            if (e != error.TooManyGroups) return error.WrongMany;
+        }
+    }
+
+    print("GREEN part-facets: five parts, three materials, a price spread — a faceted line is OR within a facet, AND " ++
+        "across facets: material:stainless-304|material:brass keeps the union bolt/nut/hexnut (each once), and " ++
+        "(stainless|brass) max:100 narrows that union to the two under a dollar (nut, hexnut) — bolt dropped by the " ++
+        "price group; a |-free line equals HUNK78's conjunction part for part (a strict superset); an empty line is a " ++
+        "match-all (the AND identity); distribution holds ((a|b) AND c == (a AND c) union (b AND c) over every part); " ++
+        "and a malformed clause (UnknownKey, NoColon) plus over-many groups (TooManyGroups) refuse by name before any " ++
+        "walk; a price is a fact compared, never moved — no network, no key, no funds\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: part_facets selftest\n", .{});
+    return 1;
+}
