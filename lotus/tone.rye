@@ -71,19 +71,29 @@ fn lp_step(state: *i64, x: i16, num: i32, den: u32) i16 {
     return timeline.saturate(y);
 }
 
-/// Low-pass `count` samples starting at `start` in place, from a zero initial state, by the coefficient num/den. num = den is
-/// the identity (pass-through); a smaller fraction smooths harder (rolls off more treble). Refuses BadCoeff on an illegal
-/// coefficient and BadRange on a span outside the samples, before any write. Values only — never the length.
-pub fn low_pass(clip: *timeline.Clip, start: u32, count: u32, num: i32, den: u32) ToneError!void {
+/// Low-pass `count` samples starting at `start` in place, CONTINUING from the caller's `state` rather than from silence — the
+/// carried-state form (ALES43). The caller owns the i64 state across calls, so filtering a span in two pieces (the second
+/// carrying the first's ending state) equals filtering the whole span once: no fresh transient at the seam, the click a
+/// per-span restart would leave. A fresh `state` of 0 is exactly the from-silence low_pass. Refuses BadCoeff on an illegal
+/// coefficient and BadRange on a span outside the samples, before any write; on refusal `state` is left untouched. Values only.
+pub fn low_pass_carry(clip: *timeline.Clip, start: u32, count: u32, state: *i64, num: i32, den: u32) ToneError!void {
     try check(clip.len, start, count, num, den);
-    var state: i64 = 0;
     var i: u32 = 0;
     while (i < count) : (i += 1) {
-        clip.buf[start + i] = lp_step(&state, clip.buf[start + i], num, den);
+        clip.buf[start + i] = lp_step(state, clip.buf[start + i], num, den);
     }
     // invariant: a filter changes sample values only, never the clip's length or bound.
     assert(start + count <= clip.len);
     assert(clip.len <= clip.buf.len);
+}
+
+/// Low-pass `count` samples starting at `start` in place, from a zero initial state, by the coefficient num/den. num = den is
+/// the identity (pass-through); a smaller fraction smooths harder (rolls off more treble). Refuses BadCoeff on an illegal
+/// coefficient and BadRange on a span outside the samples, before any write. Values only — never the length. The from-silence
+/// case of low_pass_carry — one implementation, so the carried and from-silence forms can never drift.
+pub fn low_pass(clip: *timeline.Clip, start: u32, count: u32, num: i32, den: u32) ToneError!void {
+    var state: i64 = 0;
+    return low_pass_carry(clip, start, count, &state, num, den);
 }
 
 /// High-pass `count` samples starting at `start` in place — the exact complement of the low-pass: each output is the input
