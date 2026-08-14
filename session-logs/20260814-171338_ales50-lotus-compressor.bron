@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260814.171338
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title ALES50 — Lotus's compressor: the limiter's ceiling softened
+prompt keep taking the next Lindy-first crux-first Lotus lap, self-approve the design round, send each finished increment, stop only at the custody gates in REMEMBER
+think ALES49 opened dynamics with the brickwall limiter. Lindy-first, crux-first, the next durable rung is the compressor — the same ceiling made gentle: past the threshold a signal still rises, only by a fraction (the ratio) of what it would. It is the most-reached-for dynamics tool, the counterpart to ALES48's bell in EQ.
+think Design: compress(clip, start, count, threshold, ratio_num, ratio_den) with ratio >= 1. Above threshold, new_m = threshold + excess·ratio_den/ratio_num (i64 divTrunc); below threshold, identity. Since ratio >= 1 the quotient <= excess, so new_m <= m <= sample_max — nothing on the audio path overflows, no saturate needed.
+think Crux chosen: unit ratio (ratio_num == ratio_den) is the identity EVERYWHERE (threshold + excess·1 = |x| even above threshold) — the compressor's counterpart to the bell's unity gain; a higher ratio compresses at least as hard (monotone — the meaning of "ratio"); and a ratio far past the excess divides it to zero, seating a peak exactly at the threshold — the limiter reached from within the compressor, an exact byte-equality (thr).
+obs Ratio params are u32 (num >= den, den nonzero) — a sub-unity ratio would EXPAND (a different tool) so it refuses BadRatio; threshold in [1, sample_max] else BadThreshold; span BadRange coincides by name with timeline/EQ/limiter. All checks before any write.
+obs GREEN on the first build across the seven clauses; ALES49 limiter re-run stays GREEN, so the softened ceiling rests beside the brickwall. TAME bans clean, width-check clean, zero-assert ratchet unchanged. Second dynamics rung of this turn (ALES49·50), each sent as its own signed round.
+loom witness=ales_compress_witness green=1 clauses=7 family=dynamics rung=ALES50 reuses=timeline,limit
+file lotus/compress.rye the compressor — pass below threshold, divide the above-threshold excess by the ratio, unit ratio the identity, high ratio the limiter
+file tools/ales_compress_witness.rish builds, runs the selftest, asserts GREEN ales-compress, re-proves ALES49 limiter green
+file active-designing/20260814-171338_fill-ales50-lotus-compressor.md the self-approved design round for ALES50
+file lotus/README.md front door synced — the ALES50 compressor sentence and the status header
+recommend check-in the dynamics family holds the brickwall (ALES49) and its softened ratio (ALES50); the next natural cruxes — an inverted threshold (a gate/expander) or an attack/release envelope — the latter reaches for a real time base, a good place for Keaton to point the next Lotus journey

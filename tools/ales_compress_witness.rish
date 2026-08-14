@@ -1,0 +1,42 @@
+# tools/ales_compress_witness.rish — a compressor: the limiter's ceiling made gentle (ALES50).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES50.
+# Design read: active-designing/20260814-171338_fill-ales50-lotus-compressor.md
+# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/sample_max, the range law shape); lotus/limit.rye (ALES49 — the
+# brickwall this softens, re-proven below).
+#
+# lotus/compress.rye passes a sample within the threshold byte-for-byte and divides an above-threshold sample's excess by the
+# ratio. The selftest proves: silence stays silence; below the threshold is the identity; unit ratio is the identity everywhere;
+# a loud signal has its peaks reduced with the sign held and the magnitude never expanding; a higher ratio compresses at least as
+# hard and a ratio far past the excess seats a peak at the threshold (the limiter within); a zero threshold refuses BadThreshold,
+# a sub-unity or zero-denominator ratio BadRatio, an out-of-range span BadRange. Purely local — no network, no keys, no funds,
+# no real device, no sample rate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_compress_witness.rish
+
+say "ales-compress: Language EN — ALES50 softens the limiter's brickwall into a compressor: past the threshold a signal still rises, only by a fraction (the ratio) of what it would. The most-reached-for dynamics tool — it evens a vocal so every word sits, glues a drum bus, tames a bass that jumps; at an extreme ratio the compressor IS the limiter."
+say "ales-compress: Style Radiant — the law is stated positively: below the threshold is the identity, unit ratio is the identity everywhere (a 1:1 compressor passes the whole signal by construction), and above the threshold the excess divides by the ratio so the magnitude only ever shrinks and the sign is always held — a higher ratio compresses at least as hard."
+say "ales-compress: Lens TAME — bounded Clip, u32 span, i16 samples; the threshold checked in [1, sample_max] and the ratio checked at least unity with a nonzero denominator before any write; the excess divided in i64 with divTrunc, a compressed magnitude at most the input's so nothing on the audio path can overflow; a zero threshold refuses BadThreshold, a sub-unity or zero-denominator ratio BadRatio, an out-of-range span BadRange; siloed to lotus/, no network, no keys, no funds, no device, no sample rate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/compress"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/compress.rye -femit-bin=${bin}"]
+assert build.ok else "ales-compress: build failed — ${build.err}"
+
+let outfile = "lotus/bin/compress.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-compress: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-compress: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-compress' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-compress: selftest did not print the GREEN ales-compress line"
+
+# The compressor softens the ceiling the limiter proved — re-prove ALES49's limiter still stands green, so the two rest together.
+let limit = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/limit.rye -femit-bin=lotus/bin/limit && lotus/bin/limit selftest 2>&1 | grep -q 'GREEN ales-limit' && echo yes"]
+assert (trim limit.out) == "yes" else "ales-compress: the ALES49 peak-limiter witness regressed under the compressor"
+
+say "ales-compress: GREEN — a compressor softens the limiter's ceiling by dividing the above-threshold excess by the ratio; below the threshold is the identity, unit ratio is the identity everywhere, a loud signal's peaks reduce with the sign held and the magnitude never expanding, a higher ratio compresses at least as hard, and a ratio far past the excess seats a peak at the threshold (the limiter within); a zero threshold refuses BadThreshold, a sub-unity or zero-denominator ratio BadRatio, an out-of-range span BadRange, each leaving the clip untouched; the ALES49 limiter selftest stays GREEN. The dynamics family now holds the brickwall and its softened ratio — the next rung can invert the threshold into a gate, or give the compressor an attack and release over a real time base."
