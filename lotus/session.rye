@@ -1,0 +1,269 @@
+//! lotus/session.rye — ALES39: the session file — a keeper's whole project as one sealed document. A keeper saves TWO kinds of thing —
+//! the rack (the held audio spans, ALES33) and the cue sheet (the arrangement map, ALES22) — yet until now they saved and loaded
+//! SEPARATELY, two files free to drift apart: a rack loaded beside a cue sheet from a different take, a map whose marks no longer name
+//! the audio. A keeper's project is one thing; it deserves one document. ALES38 made this rung clean — the seal is now one parser-agnostic
+//! primitive that frames a COMPOSITE body zero-scratch, exactly what a bundle wants.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES39.
+//! Design read: active-designing/20260814-155054_fill-ales39-lotus-session.md
+//! Stands on: lotus/seal.rye (ALES38) — begin / finish / open reused whole as the whole-project integrity frame; lotus/rack_sheet.rye
+//! (ALES33) and lotus/cue_sheet.rye (ALES22) — render / parse reused whole as the two sections; lotus/rack.rye (ALES30) and
+//! lotus/markers.rye (ALES20) — the two structures a project bundles.
+//!
+//! THE CRUX: a session document round-trips a keeper's whole project — rack AND cue sheet over one master — and the whole document
+//! verifies BEFORE either half is trusted. seal.open recomputes the Sha256 over the entire body (manifest + rack record + cue record) and
+//! refuses DigestMismatch before a single slot or marker is parsed; only then is the body split by its manifest and each half handed to
+//! its own ALES parser. Because parse_rack and parse_sheet each consume their WHOLE input, the split must be EXACT — a byte manifest names
+//! each section's length, so each parser sees exactly its own record and nothing of the other's. The body is length-delimited, never
+//! delimiter-scanned: a slot or marker name may hold any character, so a sentinel line could collide with real content — a byte length
+//! cannot. The manifest carries its own check: the payload after it must measure exactly rack_len + cue_len, or the document refuses
+//! BadRecord.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A Sha256 over an in-process text record, siloed to lotus/. It proves a project arrived
+//! whole, NOT who wrote it — no signature, no key. A signed carry stays a later rung on Keaton's word. No socket, no network, no keys, no
+//! funds, no real device, no real meter, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/session.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const pan = @import("pan.rye");
+const timeline = @import("timeline.rye");
+const selection = @import("selection.rye");
+const rack = @import("rack.rye");
+const markers = @import("markers.rye");
+const rack_sheet = @import("rack_sheet.rye");
+const cue_sheet = @import("cue_sheet.rye");
+const seal = @import("seal.rye");
+const parse_int = @import("parse_int.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const session_version = "20260814.155054";
+
+/// The sealed document header — distinct from every other Lotus sealed header (the rack seal's and the cue seal's), so no document is
+/// ever mistaken for a bare rack or cue seal. seal.open requires an opened document to carry exactly this.
+const sealed_header = "format lotus-session-sealed-v1";
+
+/// The body's own manifest header, its first line inside the seal. The two records follow the manifest verbatim, length-delimited.
+const body_header = "format lotus-session-v1";
+
+/// The manifest is the body header line, a `rack <n>` line, and a `cue <n>` line — each byte length at most ten decimal digits (u32). A
+/// named bound so the body scratch and the save buffer are sized honestly.
+const manifest_max: u32 = @intCast(body_header.len + 1 + "rack ".len + 10 + 1 + "cue ".len + 10 + 1);
+
+/// The largest body a session can carry — a full rack record and a full cue record. The render functions each bound themselves to the
+/// buffer handed to them, so a project larger than this refuses Overflow at render rather than writing past the scratch.
+pub const max_body: u32 = rack_sheet.max_rack_sheet_bytes + cue_sheet.max_sheet_bytes + manifest_max;
+
+/// The combined error set: the shared seal's faults unioned with every rack and cue fault forwarded unchanged. Zig merges error sets by
+/// name, so BadRecord / Overflow coincide across the three rather than tripling. DigestMismatch and a malformed manifest are caught
+/// before any slot or marker is parsed.
+pub const SessionError = seal.SealError || rack_sheet.RackSheetError || cue_sheet.MarkerTextError;
+
+/// Read one manifest section-length line — exactly `prefix` then a strict decimal count. Strict decimal (parse_int `.{}`) refuses a
+/// leading zero, so `rack 007` never masquerades as `7`. A missing prefix or a non-decimal count refuses BadRecord.
+fn section_len(comptime prefix: []const u8, line: []const u8) SessionError!u32 {
+    // invariant: a section line is its named prefix followed by at least one digit.
+    if (line.len <= prefix.len or !std.mem.eql(u8, line[0..prefix.len], prefix)) return error.BadRecord;
+    const n = parse_int.parse_int(u32, line[prefix.len..], .{}) catch return error.BadRecord;
+    return n;
+}
+
+/// Save a keeper's whole project — the rack and the cue sheet — as one sealed `format lotus-session-sealed-v1` document into `out`,
+/// returning the length written. The body is a manifest naming each section's byte length, then the plain ALES33 rack record and the
+/// plain ALES22 cue record verbatim; ALES38's seal.begin / seal.finish frame the whole with a Sha256 over exactly it. Refuses Overflow
+/// rather than writing past the caller's buffer. So a keeper's project travels as one document that verifies before it is trusted.
+pub fn save(r: *const rack.Rack, m: *const markers.Markers, out: []u8) SessionError!u32 {
+    // invariant: both structures stay within their named ceilings before they are ever bundled.
+    assert(r.count <= rack.max_slots);
+    assert(m.count <= markers.max_markers);
+
+    // Render the two sub-records into a scratch to learn their exact byte lengths; each render bounds itself to the scratch.
+    var scratch: [max_body]u8 = undefined;
+    const rack_len = try rack_sheet.render_rack(r, scratch[0..]);
+    const cue_len = try cue_sheet.render_sheet(m, scratch[rack_len..]);
+    const total = rack_len + cue_len;
+
+    const frame = try seal.begin(out, sealed_header);
+    var off: u32 = frame.body_at;
+
+    // The manifest — the two section byte lengths, so load hands each parser exactly its own bytes.
+    const man = std.fmt.bufPrint(out[off..], "{s}\nrack {d}\ncue {d}\n", .{ body_header, rack_len, cue_len }) catch return error.Overflow;
+    off += @intCast(man.len);
+
+    // The two records verbatim, rack then cue — the exact bytes render just produced, contiguous in the scratch.
+    if (off + total > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[off .. off + total], scratch[0..total]);
+    off += total;
+
+    // invariant: the whole document stays within the caller's buffer.
+    assert(off <= out.len);
+    return seal.finish(out, frame, off - frame.body_at);
+}
+
+/// Load a sealed session document into a fresh rack and a fresh markers track over `master` — the whole-project gate BEFORE trust.
+/// seal.open recomputes the Sha256 over the entire body and returns it only when the sealed header and digest are well-formed and match;
+/// only then is the body split by its manifest and each half handed to its own ALES parser (the cue's position-bound against `master`
+/// passed through, after the gate). A malformed seal or manifest refuses BadRecord, a tampered body refuses DigestMismatch — in every
+/// refusal both outputs are left empty and nothing is trusted.
+pub fn load(text: []const u8, master: *const pan.StereoClip, out_rack: *rack.Rack, out_markers: *markers.Markers) SessionError!void {
+    // invariant: loading starts from an empty project — a refused document leaves nothing half-parsed.
+    out_rack.* = rack.Rack{};
+    out_markers.* = markers.Markers{};
+    assert(out_rack.count == 0);
+
+    // The whole-project integrity gate: seal.open returns the verified body BYTES, or refuses before any slot or marker is trusted.
+    const body = try seal.open(text, sealed_header);
+
+    // The manifest — three lines: the session header, then `rack <n>`, then `cue <n>`.
+    var it = std.mem.splitScalar(u8, body, '\n');
+    const h = it.next() orelse return error.BadRecord;
+    if (!std.mem.eql(u8, h, body_header)) return error.BadRecord;
+    const rack_line = it.next() orelse return error.BadRecord;
+    const cue_line = it.next() orelse return error.BadRecord;
+    const rack_len = try section_len("rack ", rack_line);
+    const cue_len = try section_len("cue ", cue_line);
+
+    // The payload is everything after the third newline; it must measure EXACTLY the two section lengths, or the manifest lies.
+    const man_len = h.len + 1 + rack_line.len + 1 + cue_line.len + 1;
+    if (man_len > body.len) return error.BadRecord;
+    const payload = body[man_len..];
+    if (payload.len != rack_len + cue_len) return error.BadRecord;
+
+    // Each parser sees EXACTLY its own record — the rack half never the cue's bytes, the cue half never the rack's.
+    try rack_sheet.parse_rack(payload[0..rack_len], out_rack);
+    try cue_sheet.parse_sheet(payload[rack_len..], master, out_markers);
+
+    // invariant: a loaded project holds no more than each structure's ceiling.
+    assert(out_rack.count <= rack.max_slots);
+    assert(out_markers.count <= markers.max_markers);
+}
+
+// --- selftest: THE CRUX — a rack and a cue sheet over one master round-trip through save/load; a flipped byte in either half and a
+//     truncated tail refuse DigestMismatch; a malformed manifest refuses BadRecord; a save into a too-small buffer refuses Overflow ---
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn slot_is(r: *const rack.Rack, name: []const u8, want_l: []const i16, want_r: []const i16) !void {
+    var m = pan.StereoClip{};
+    try rack.paste(r, name, &m, 0);
+    if (!eq(m.left.samples(), want_l)) return error.SlotLeftWrong;
+    if (!eq(m.right.samples(), want_r)) return error.SlotRightWrong;
+}
+
+fn run_selftest() !u8 {
+    // A master long enough to hold every marker position.
+    var master = pan.StereoClip{};
+    master.left.len = 500;
+    master.right.len = 500;
+
+    // A two-slot rack of real stereo audio.
+    var src = pan.StereoClip{};
+    try timeline.splice(&src.left, 0, &[_]i16{ 0, 1, 2, 3, 4, 5 });
+    try timeline.splice(&src.right, 0, &[_]i16{ 0, -1, -2, -3, -4, -5 });
+    var r = rack.Rack{};
+    try rack.copy_to(&r, "head", &src, try selection.make(&src, 1, 3));
+    try rack.copy_to(&r, "tail", &src, try selection.make(&src, 4, 6));
+
+    // A four-marker cue sheet over the same master.
+    var track = markers.Markers{};
+    try markers.add(&track, &master, 0, "intro");
+    try markers.add(&track, &master, 100, "verse");
+    try markers.add(&track, &master, 250, "chorus");
+    try markers.add(&track, &master, 400, "outro");
+
+    // 1. THE CRUX — save then load recovers the whole project: both slots byte-for-byte, every marker's position and name.
+    {
+        var doc: [4096]u8 = undefined;
+        const n = try save(&r, &track, doc[0..]);
+        const want_head = "format lotus-session-sealed-v1\ndigest ";
+        if (!std.mem.eql(u8, doc[0..want_head.len], want_head)) return error.SaveHeadWrong;
+
+        var back_rack = rack.Rack{};
+        var back_track = markers.Markers{};
+        try load(doc[0..n], &master, &back_rack, &back_track);
+
+        if (back_rack.size() != 2) return error.RackCountWrong;
+        try slot_is(&back_rack, "head", &[_]i16{ 1, 2 }, &[_]i16{ -1, -2 });
+        try slot_is(&back_rack, "tail", &[_]i16{ 4, 5 }, &[_]i16{ -4, -5 });
+
+        if (back_track.count != 4) return error.CueCountWrong;
+        if (markers.pos_of(&back_track, 0) != 0 or !std.mem.eql(u8, markers.name_of(&back_track, 0), "intro")) return error.Cue0Wrong;
+        if (markers.pos_of(&back_track, 2) != 250 or !std.mem.eql(u8, markers.name_of(&back_track, 2), "chorus")) return error.Cue2Wrong;
+        if (markers.pos_of(&back_track, 3) != 400 or !std.mem.eql(u8, markers.name_of(&back_track, 3), "outro")) return error.Cue3Wrong;
+    }
+
+    // 2. a single flipped BODY byte refuses DigestMismatch — the whole-project gate, before any slot or marker is parsed. The final
+    //    byte is the cue record's trailing newline; step back to a name character (in the cue half) and change it.
+    {
+        var doc: [4096]u8 = undefined;
+        const n = try save(&r, &track, doc[0..]);
+        doc[n - 2] = if (doc[n - 2] == 'o') 'p' else 'o';
+        var back_rack = rack.Rack{};
+        var back_track = markers.Markers{};
+        if (load(doc[0..n], &master, &back_rack, &back_track)) |_| return error.TamperSlipped else |e| if (e != error.DigestMismatch) return error.WrongTamper;
+        if (back_rack.size() != 0 or back_track.count != 0) return error.TamperMutated;
+    }
+
+    // 3. a flipped byte in the RACK half also refuses — the seal covers the whole body. Flip a byte early in the body (a rack sample
+    //    digit sits well before the cue section).
+    {
+        var doc: [4096]u8 = undefined;
+        const n = try save(&r, &track, doc[0..]);
+        // the body begins after the sealed header and 64-hex digest line; the manifest is three short lines, then the rack record.
+        const body_at = "format lotus-session-sealed-v1\ndigest ".len + seal.digest_hex_len + 1;
+        // reach a byte inside the rack record (past the manifest) and flip it.
+        const rack_byte = body_at + 60;
+        doc[rack_byte] = if (doc[rack_byte] == 'x') 'y' else 'x';
+        var back_rack = rack.Rack{};
+        var back_track = markers.Markers{};
+        if (load(doc[0..n], &master, &back_rack, &back_track)) |_| return error.RackTamperSlipped else |e| if (e != error.DigestMismatch) return error.WrongRackTamper;
+    }
+
+    // 4. a TRUNCATED tail refuses DigestMismatch — the shortened body hashes differently.
+    {
+        var doc: [4096]u8 = undefined;
+        const n = try save(&r, &track, doc[0..]);
+        var back_rack = rack.Rack{};
+        var back_track = markers.Markers{};
+        if (load(doc[0 .. n - 1], &master, &back_rack, &back_track)) |_| return error.TruncSlipped else |e| if (e != error.DigestMismatch) return error.WrongTrunc;
+    }
+
+    // 5. a malformed seal or manifest refuses BadRecord — a plain (unsealed) record, and a bare sealed header with no manifest, each
+    //    caught (the first by the wrong header, the second by a digest/manifest that cannot form).
+    {
+        var back_rack = rack.Rack{};
+        var back_track = markers.Markers{};
+        if (load("format lotus-session-v1\nrack 0\ncue 0\n", &master, &back_rack, &back_track)) |_| return error.PlainSlipped else |e| if (e != error.BadRecord) return error.WrongPlain;
+        if (load("format lotus-session-sealed-v1\n", &master, &back_rack, &back_track)) |_| return error.NoDigestSlipped else |e| if (e != error.BadRecord) return error.WrongNoDigest;
+    }
+
+    // 6. a save into a too-small buffer refuses Overflow rather than writing past its end.
+    {
+        var tiny: [40]u8 = undefined; // room for the header but not the digest line
+        if (save(&r, &track, tiny[0..])) |_| return error.OverflowSlipped else |e| if (e != error.Overflow) return error.WrongOverflow;
+    }
+
+    print("GREEN ales-session: the session file — a keeper's whole project as one sealed document, the rack (ALES33) and the cue sheet " ++
+        "(ALES22) bundled over one master under ALES38's shared seal. THE CRUX: a session document round-trips the whole project AND the " ++
+        "whole document verifies before either half is trusted — save renders a length manifest then the two records verbatim and seals " ++
+        "the whole, and load runs seal.open over the ENTIRE body (refusing DigestMismatch before a single slot or marker is parsed) then " ++
+        "splits by the manifest so parse_rack and parse_sheet each see EXACTLY their own bytes; a two-slot rack and a four-marker cue " ++
+        "sheet round-trip whole, a flipped byte in either the rack half or the cue half and a truncated tail refuse DigestMismatch with " ++
+        "both outputs empty, a malformed seal or manifest refuses BadRecord, and a save into a too-small buffer refuses Overflow; " ++
+        "seal.begin/finish/open and rack_sheet/cue_sheet render/parse reused whole; the seal proves a project arrived whole, not who " ++
+        "wrote it — no signature, no socket, no network, no keys, no funds, no real device, no real meter, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
