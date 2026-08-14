@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260814.150213
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title ALES33 — Lotus's rack travels as text, a slot sheet
+prompt Continue the ALES recursion loop Lindy-first crux-first; send each finished increment to origin and xykj61; stop at custody gates; baton prin recur
+think After ALES32 (the rack's joined paste) sent, the ALES32 road-on named "let a rack travel as text — a saveable slot sheet, mirroring the ALES22 cue sheet" as the next agent-doable rung; the wire-carry alternative is a module seam that waits for Keaton's word.
+think Chose it Lindy-first crux-first: a persistence format is durable (the file a keeper writes today reads the same on its ten-thousandth day) and it is the hardest still-tractable rack rung. The honest difference from the cue sheet: a markers track carries only positions and names, while a rack carries actual stereo PCM in each slot — so a slot sheet renders each slot's held sample buffers, the first ALES travels-as-text rung to persist real audio.
+think Kept the exactness idiom whole: render walks the slots in stored order printing canonical i16 decimal (no leading zero), and parse rebuilds each slot through ALES30's own rack.copy_to — a tiny temporary master holds exactly the parsed samples, selection.make grabs the whole span — so every rack bound (BadName / Duplicate / RackFull) is enforced at the one place rather than re-spelled at the text edge. Confirmed selection.make refuses an empty span, so every slot holds >=1 sample and a zero-length record is corrupt.
+think Verified error-set nesting before writing: EditError subset SelectionError subset RackError subset RackSheetError, so `try timeline.splice` and `try rack.copy_to` type-check against the sheet's own error set with no re-wrapping.
+obs GREEN on the first build across five cases: a two-slot rack rendered to the exact expected format lotus-rack-sheet-v1 text and round-tripped both names and both channels byte-for-byte (verified by pasting each recovered slot), render(parse(render(r))) a fixed point; a name carrying a space round-tripped whole; every corruption refused by name — a bad header, a mis-ordered line, a wrong channel tag, an L/R length mismatch, a leading-zero or non-numeric sample, a zero-length slot (BadRecord), a duplicate slot name (Duplicate), a record past the ceiling (RackFull), a render into a too-small buffer (Overflow).
+obs Witness tools/ales_rack_sheet_witness.rish GREEN; TAME style bans clean; no new zero-assert ratchet, no usize, no bare memcpy. rack.copy_to / name_of / paste and parse_int reused whole. Purely local — no socket, no network, no keys, no funds, no real device, no real meter, no real speaker; every custody gate untouched.
+loom witness=ales_rack_sheet_witness result=green slots=2 fixed_point=yes build=first cases=5
+file lotus/rack_sheet.rye ALES33 module — render_rack / parse_rack over the ALES30 rack, the first ALES travels-as-text rung to carry real PCM
+file tools/ales_rack_sheet_witness.rish the witness that builds and proves it GREEN on metal
+file active-designing/20260814-150213_fill-ales33-lotus-rack-sheet.md the self-approved design read for the round
+file lotus/README.md front door synced — status list, ALES33 rung entry, road-on paragraph, stamp
+recommend keep-going ALES34 can give the slot sheet a Sha256 content digest (verify-before-trust, mirroring the ALES0 wire deframe) — the next agent-doable move; the wire-carry seam stays Keaton's word
