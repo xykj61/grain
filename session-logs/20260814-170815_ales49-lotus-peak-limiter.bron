@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260814.170815
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title ALES49 — Lotus's peak limiter: the dynamics family opens
+prompt keep taking the next Lindy-first crux-first Lotus lap, self-approve the design round, send each finished increment, stop only at the custody gates in REMEMBER
+think The fixed-EQ family closed at ALES48 (low-pass through parametric bell — all turn frequency). Lindy-first, the next durable thing is a whole new family: dynamics, which turns level rather than frequency. Crux-first within it, the cleanest provable floor is the peak limiter — a hard ceiling the signal may touch yet never cross — the way the tone control (ALES40) opened EQ.
+think Design: limit(clip, start, count, ceil). A sample within the ceiling passes byte-for-byte; a sample louder is pinned to sign(x)·ceil. No i64 saturation needed on the audio path — a limited magnitude is min(|x|, ceil) <= sample_max, so it cannot itself overflow. The ceiling is validated once as a legal magnitude in [1, sample_max].
+think Crux chosen: the ceiling is never crossed (the defining invariant, asserted on every written sample), below the ceiling is the identity (a limiter that finds nothing to do does nothing), and the sign is always held (magnitude only ever shrinks, so a limiter cannot invert phase). A ceiling at sample_max is the identity for in-range audio — the loosest legal ceiling degrades to a pass-through.
+obs Own error set LimitError = error{ BadCeiling, BadRange } rather than depending on tone (no cutoffs) — BadRange coincides by name with timeline's and the EQ family's, so a composer sees one consistent fault. The range check mirrors tone.check's underflow-safe form (start > len; count > len - start).
+obs GREEN on the first build across the six clauses; ALES48 bell re-run stays GREEN, so the dynamics opener rests beside the finished EQ family without disturbing it. TAME bans clean, width-check clean, zero-assert ratchet unchanged.
+loom witness=ales_limit_witness green=1 clauses=6 family=dynamics rung=ALES49 reuses=timeline
+file lotus/limit.rye the peak limiter — pass within the ceiling, pin louder to sign(x)·ceil, the ceiling never crossed, the sign always held
+file tools/ales_limit_witness.rish builds, runs the selftest, asserts GREEN ales-limit, re-proves ALES48 bell green
+file active-designing/20260814-170815_fill-ales49-lotus-peak-limiter.md the self-approved design round for ALES49
+file lotus/README.md front door synced — the ALES49 limiter sentence and the ALES44–49 status header
+recommend keep-going the dynamics family is open at its brickwall floor; the next Lindy-first cruxes accrete cleanly — a ratio softens the limiter into a compressor, an inverted threshold makes it a gate, an attack/release gives it a real time base; each is a self-approvable ALES lap, custody gates untouched
