@@ -40,7 +40,9 @@ pub const EnvelopeError = error{
 
 /// A legal envelope coefficient is a fraction in (0, 1]: a nonzero numerator no greater than a nonzero denominator. A zero
 /// numerator freezes the envelope; a numerator past the denominator would overshoot; a zero denominator would divide by zero.
-fn coeff_ok(num: u32, den: u32) bool {
+/// Public so a dynamics tool that reads this time base (ALES53's attack/release compressor) validates coefficients by the one
+/// rule the follower proves, rather than restating it and risking drift.
+pub fn coeff_ok(num: u32, den: u32) bool {
     // invariant: legality is exactly 1 <= num <= den — the fraction lies in (0, 1].
     return den != 0 and num != 0 and num <= den;
 }
@@ -50,7 +52,9 @@ fn coeff_ok(num: u32, den: u32) bool {
 /// positive rail. The envelope steps a fraction num/den of the way toward the target, choosing the attack fraction when rising and
 /// the release fraction when falling; when that fractional step truncates to zero yet the gap remains, it advances by one, so a
 /// held level is reached EXACTLY in finite steps (ALES40's guarantee). The step never overshoots, so convergence is monotone.
-fn env_step(
+/// Public so a dynamics tool that leans on this time base (ALES53's attack/release compressor) advances the same proven envelope
+/// one sample at a time and reads the smoothed magnitude, rather than re-implementing the follower and risking drift from it.
+pub fn env_step(
     env: *i64,
     x: i16,
     attack_num: u32,
