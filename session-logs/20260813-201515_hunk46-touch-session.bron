@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260813.201515
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title HUNK46 — the touch session: finger down · move · up become a live cursor
+prompt Continue the autonomous loop — take the next agent-doable lap Lindy-first crux-first, self-approve design rounds, send each finished increment as its own signed round, stop only at custody gates.
+think HUNK40–45 grew the touch-scroll journey in six clean pieces, each called separately. The capstone crux is the integration face a real device event loop actually calls — one object a touchscreen hands finger_down, a stream of finger_move, then finger_up, ticking between frames. That driver is the durable public face of the whole stack.
+think Designed a small three-phase state machine (idle · dragging · flinging): finger_down enters dragging and cancels any coast (grab-to-stop); finger_move drags the cursor by the pixel delta since the last position (HUNK44) and remembers it as the live velocity; finger_up seeds a fling from that velocity (HUNK45) or returns idle if the finger was at rest; tick/settle step the coast. Every motion routes through the proven pieces, so the session adds no arithmetic and no new clamp — only the phase transitions and grab-to-stop.
+think Safety: deltas taken in i64 and clamped to i32 so a wild finger jump never wraps; the fling seed clamped into HUNK45's velocity cap so finger_up never fails; friction and cell height validated once at open (catch unreachable at finger_up is honest — both preconditions already hold).
+obs One value model (a phase enum, three counts, two owned sub-structs), refusals only BadCellHeight/BadFriction at open, no storage, no render, no timer — a caller ticks it per frame. Velocity smoothing and rubber-band overscroll are named horizons.
+obs Built GREEN first try; no shadowing red this time. Split every compound assert by hand; TAME bans clean, width exit 0. The GREEN print line carries no apostrophe, so the witness grep passed first build (the ladder's reflexive fix held).
+obs The selftest drives whole gestures, not method calls in isolation: a pure drag (still finger before release → no fling), a flick (moving finger → coasts to the bottom-pinned offset), grab-to-stop (finger_down mid-coast freezes the cursor where caught), a hard flick (clamped, no overshoot) — so a phase-transition bug is caught by the observable cursor behaviour.
+loom witness=hunk_touch_scroll_witness cell_px=10 viewport=2x5 max_offset=3 friction=3/4 gestures=drag,flick,grab_to_stop,hard_flick
+file pond/apps/preset_touch_scroll.rye HUNK46 — TouchScroll routes finger_down/move/up and per-frame tick through HUNK44 drag + HUNK45 fling; grab-to-stop cancels a coast.
+file tools/hunk_touch_scroll_witness.rish proves the driver on metal — pure-drag no fling, flick that coasts, grab-to-stop, inherited clamp, open-time refusals.
+file active-designing/20260813-201244_hunk-touch-session-exploration.md self-approved design read.
+file work-in-progress/REMEMBER.md git nib refreshed in this same work commit.
+recommend keep-going — the touch-scroll journey (HUNK40 cursor · 41 bar · 42 view · 43 input · 44 drag · 45 fling · 46 session) now stands whole end to end; HUNK47 could pivot to a fresh Season-A / double-seat journey (the McMaster-Carr served marketplace's module-assembly ruling is held for Keaton), add rubber-band overscroll or velocity smoothing, or wire the touch session onto the painted HUNK42 scroll view.

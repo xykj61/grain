@@ -1,0 +1,301 @@
+//! pond/apps/preset_touch_scroll.rye — HUNK46: the touch session — finger down · move · up become a live cursor.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · marketplace / Photos-app surface · rung HUNK46.
+//! Design read: active-designing/20260813-201244_hunk-touch-session-exploration.md
+//! Teacher, thanked clean-room: the event-loop face of any touch scroll surface — a touchscreen reports finger down, a
+//! stream of finger move, then finger up, and ticks between frames; the surface scrolls, drags under the finger, and
+//! coasts when released (concept only, siloed).
+//!
+//! HUNK40–45 grew the touch-scroll journey in six clean pieces, each called separately. A real device event loop wants
+//! one object it hands raw finger events to. This rung is that driver: a small three-phase state machine (idle,
+//! dragging, flinging) that routes finger_down/move/up and a per-frame tick through the already-proven pieces —
+//! HUNK44's pixel drag and HUNK45's fling — inventing no arithmetic and no new clamp. The one behaviour it adds is
+//! grab-to-stop: a fresh finger_down during a coast cancels the fling, exactly as a finger on a coasting list stops it
+//! dead. A pure composition and a phase label — no storage, no render. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/preset_touch_scroll.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const preset_scroll = @import("preset_scroll.rye");
+const preset_scroll_drag = @import("preset_scroll_drag.rye");
+const preset_scroll_fling = @import("preset_scroll_fling.rye");
+
+pub const preset_touch_scroll_version = "20260813.201244";
+
+pub const TouchError = preset_scroll_drag.DragError || preset_scroll_fling.FlingError;
+
+/// The three phases of a touch session. `idle` — nothing under the finger, at rest. `dragging` — a finger is down and
+/// moving the cursor directly. `flinging` — the finger has lifted and the surface is coasting to rest.
+pub const TouchPhase = enum {
+    idle,
+    dragging,
+    flinging,
+};
+
+/// A live touch scroll session over one cursor. It holds the phase, the last finger pixel position, the live velocity
+/// (the last move's delta, the fling seed), HUNK44's pixel quantizer, HUNK45's fling, and the friction to seed a fling
+/// with. The governing law: every motion routes through the proven pieces, so the session adds no arithmetic and no new
+/// clamp — only the phase transitions and grab-to-stop. No cursor lives here; it is passed to each event.
+pub const TouchScroll = struct {
+    phase: TouchPhase = .idle,
+    last_y: i32 = 0,
+    velocity: i32 = 0,
+    quant: preset_scroll_drag.DragScroll,
+    fling: preset_scroll_fling.Fling,
+    friction_num: u32 = 3,
+    friction_den: u32 = 4,
+
+    /// Open a session over a row of `cell_px` pixels with the given fling friction. Validates the cell height (HUNK44)
+    /// and the friction (HUNK45) once at construction, so no later event can fail on them.
+    pub fn open(cell_px: u32, friction_num: u32, friction_den: u32) TouchError!TouchScroll {
+        const quant = try preset_scroll_drag.DragScroll.open(cell_px);
+        // A zero-velocity fling validates the friction and settles immediately (done); the real seed arrives at up.
+        const fling = try preset_scroll_fling.Fling.open(0, friction_num, friction_den);
+        return TouchScroll{
+            .phase = .idle,
+            .last_y = 0,
+            .velocity = 0,
+            .quant = quant,
+            .fling = fling,
+            .friction_num = friction_num,
+            .friction_den = friction_den,
+        };
+    }
+
+    pub fn is_flinging(self: *const TouchScroll) bool {
+        return self.phase == .flinging;
+    }
+
+    pub fn is_idle(self: *const TouchScroll) bool {
+        return self.phase == .idle;
+    }
+
+    /// A finger touches down at pixel `y`. Records the landing position and enters dragging; cancels any coast in
+    /// progress (grab-to-stop — a finger on a coasting list stops it dead).
+    pub fn finger_down(self: *TouchScroll, y: i32) void {
+        self.phase = .dragging;
+        self.last_y = y;
+        self.velocity = 0;
+        self.fling.velocity = 0; // settle any coast — the finger caught it
+        // invariant: a fresh touch is dragging with no live velocity.
+        assert(self.phase == .dragging);
+        assert(self.velocity == 0);
+    }
+
+    /// The finger moves to pixel `y`. Drags the cursor by the pixel delta since the last position (through HUNK44,
+    /// every clamp inherited) and remembers that delta as the live velocity. The delta is taken in `i64` and clamped to
+    /// `i32` so a wild jump never wraps.
+    pub fn finger_move(self: *TouchScroll, cursor: *preset_scroll.ScrollCursor, y: i32) void {
+        // invariant: a move only arrives while a finger is down.
+        assert(self.phase == .dragging);
+        const d: i64 = @as(i64, y) - @as(i64, self.last_y);
+        var clamped: i32 = 0;
+        if (d > std.math.maxInt(i32)) {
+            clamped = std.math.maxInt(i32);
+        } else if (d < std.math.minInt(i32)) {
+            clamped = std.math.minInt(i32);
+        } else {
+            clamped = @intCast(d);
+        }
+        self.velocity = clamped;
+        _ = preset_scroll_drag.drag(cursor, &self.quant, clamped);
+        self.last_y = y;
+        // invariant: after a move the cursor still stands on a real, bottom-pinned viewport.
+        assert(cursor.offset <= cursor.max_offset());
+    }
+
+    /// The finger lifts. If it was still moving, seeds a fling from the last velocity (clamped into the fling's own
+    /// velocity cap so this never fails) and enters flinging; if it had come to rest, returns to idle.
+    pub fn finger_up(self: *TouchScroll) void {
+        if (self.velocity == 0) {
+            self.phase = .idle;
+            // invariant: a finger lifted at rest leaves the session idle.
+            assert(self.phase == .idle);
+            return;
+        }
+        const cap: i64 = @as(i64, preset_scroll_fling.max_fling_velocity);
+        const v: i64 = @as(i64, self.velocity);
+        var seed: i32 = 0;
+        if (v > cap) {
+            seed = @intCast(cap);
+        } else if (v < -cap) {
+            seed = @intCast(-cap);
+        } else {
+            seed = @intCast(v);
+        }
+        // The seed sits within the fling cap and the friction was validated at open, so this cannot fail.
+        self.fling = preset_scroll_fling.Fling.open(seed, self.friction_num, self.friction_den) catch unreachable;
+        self.phase = .flinging;
+        // invariant: a fling released with real velocity is flinging and not yet settled.
+        assert(self.phase == .flinging);
+        assert(!self.fling.done());
+    }
+
+    /// Step one frame of coast. Returns whether the session is still flinging after the frame. A no-op (returns false)
+    /// unless the session is flinging.
+    pub fn tick(self: *TouchScroll, cursor: *preset_scroll.ScrollCursor) bool {
+        if (self.phase != .flinging) return false;
+        if (self.fling.done()) {
+            self.phase = .idle;
+            return false;
+        }
+        _ = self.fling.step(cursor, &self.quant);
+        if (self.fling.done()) {
+            self.phase = .idle;
+            return false;
+        }
+        // invariant: a still-flinging session leaves the cursor on a real viewport.
+        assert(cursor.offset <= cursor.max_offset());
+        return true;
+    }
+
+    /// Run the whole coast to rest, bounded by HUNK45's own tick ceiling, and return the tick count. A no-op (returns
+    /// zero) unless the session is flinging.
+    pub fn settle(self: *TouchScroll, cursor: *preset_scroll.ScrollCursor) u32 {
+        if (self.phase != .flinging) return 0;
+        const ticks = self.fling.run(cursor, &self.quant);
+        self.phase = .idle;
+        // invariant: after settling the session is idle and the cursor stands on a real viewport.
+        assert(self.phase == .idle);
+        assert(cursor.offset <= cursor.max_offset());
+        return ticks;
+    }
+};
+
+// --- selftest: build the same real five-book library and drive a two-row viewport by whole touch gestures — a pure
+//     drag with no fling, a flick that coasts, grab-to-stop, the inherited clamps, and the open-time refusals ---------
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const beading = @import("mantra/beading.rye");
+    const tablecloth = @import("tablecloth.rye");
+    const filter_preset = @import("filter_preset.rye");
+    const preset_store = @import("preset_store.rye");
+    const photo_edits = @import("photo_edits.rye");
+    const preset_detail = @import("preset_detail.rye");
+
+    // The same real five-book library the HUNK40/43/44/45 selftests build.
+    var store: beading.BeadStore = .empty();
+    var cat: tablecloth.Catalog = .empty();
+    const stock = try filter_preset.stock_book();
+    _ = try preset_store.store_book(&cat, &store, "stock.presets", &stock);
+    var small = filter_preset.PresetBook.init();
+    var flip = photo_edits.EditList.init();
+    try flip.push(.flip_h);
+    try small.define("mirror", &flip);
+    _ = try preset_store.store_book(&cat, &store, "custom.presets", &small);
+    {
+        var one = photo_edits.EditList.init();
+        try one.push(.flip_h);
+        const names = [_][]const u8{ "a.presets", "b.presets", "c.presets" };
+        var k: u32 = 0;
+        while (k < names.len) : (k += 1) {
+            var b = filter_preset.PresetBook.init();
+            try b.define("edit", &one);
+            _ = try preset_store.store_book(&cat, &store, names[k], &b);
+        }
+    }
+    var lib: preset_detail.DetailListing = undefined;
+    try preset_detail.detail_books(&cat, &store, &lib);
+    assert(lib.len() == 5);
+
+    const cell: u32 = 10;
+    const rows: u32 = 2;
+
+    // A pure drag: down, a move that scrolls, then a still finger before release — the cursor moves and returns to idle
+    // with no fling.
+    {
+        var cur = try preset_scroll.ScrollCursor.open(lib.count, rows);
+        var t = try TouchScroll.open(cell, 3, 4);
+        assert(t.is_idle());
+        t.finger_down(0);
+        t.finger_move(&cur, 25); // +25px → two lines down (offset 0 → 2)
+        assert(cur.offset == 2);
+        t.finger_move(&cur, 25); // delta 0 → the finger held still, no motion
+        assert(cur.offset == 2);
+        t.finger_up(); // released at rest → idle, no fling
+        assert(t.is_idle());
+        assert(!t.is_flinging());
+        assert(cur.offset == 2); // stayed where the drag left it
+    }
+
+    // A flick: down, a move while still travelling, release — the session flings and the coast advances the cursor
+    // further before it settles idle.
+    {
+        var cur = try preset_scroll.ScrollCursor.open(lib.count, rows);
+        var t = try TouchScroll.open(cell, 3, 4);
+        t.finger_down(0);
+        t.finger_move(&cur, 15); // +15px → one line down (offset 0 → 1), velocity 15 still travelling
+        assert(cur.offset == 1);
+        t.finger_up(); // released moving → flinging
+        assert(t.is_flinging());
+        const before = cur.offset;
+        const ticks = t.settle(&cur); // run the coast to rest
+        assert(t.is_idle());
+        assert(ticks > 0); // a real coast
+        assert(cur.offset >= before); // the fling advanced the cursor (or held it, never reversed)
+        assert(cur.offset == cur.max_offset()); // this flick carries past the end → bottom-pinned
+    }
+
+    // Grab-to-stop: a finger_down during a coast cancels the fling — the cursor freezes where the finger caught it, no
+    // further motion.
+    {
+        var cur = try preset_scroll.ScrollCursor.open(lib.count, rows);
+        var t = try TouchScroll.open(cell, 3, 4);
+        t.finger_down(0);
+        t.finger_move(&cur, 15); // offset 1, velocity 15
+        t.finger_up();
+        assert(t.is_flinging());
+        const caught = cur.offset; // where the finger will catch it (no tick has run yet)
+        t.finger_down(100); // grab — cancels the coast
+        assert(!t.is_flinging());
+        const ticks = t.settle(&cur); // dragging, not flinging → no coast
+        assert(ticks == 0);
+        assert(cur.offset == caught); // frozen exactly where it was grabbed
+        t.finger_up(); // lifted at rest → idle
+        assert(t.is_idle());
+    }
+
+    // The clamps are inherited: a hard flick lands bottom-pinned, never past; the cursor never leaves its library.
+    {
+        var cur = try preset_scroll.ScrollCursor.open(lib.count, rows);
+        var t = try TouchScroll.open(cell, 3, 4);
+        assert(cur.max_offset() == 3);
+        t.finger_down(0);
+        t.finger_move(&cur, 100000); // a hard drag past the end
+        assert(cur.offset == 3); // clamped, never past
+        t.finger_up(); // a huge velocity seeds a hard fling
+        _ = t.settle(&cur);
+        assert(cur.offset == 3); // still bottom-pinned after the coast, no overshoot
+        assert(t.is_idle());
+    }
+
+    // A bad cell height and a bad friction refuse at open by name.
+    if (TouchScroll.open(0, 3, 4)) |_| return error.CellSlipped else |e| {
+        if (e != error.BadCellHeight) return error.WrongCell;
+    }
+    if (TouchScroll.open(cell, 4, 4)) |_| return error.FrictionSlipped else |e| {
+        if (e != error.BadFriction) return error.WrongFriction;
+    }
+
+    _ = garden;
+    print("GREEN preset-touch-scroll: a five-book library driven through a two-row viewport by whole touch gestures " ++
+        "over a ten-pixel cell — a pure drag (down, a move that scrolls two lines, a still finger, release) moves the " ++
+        "cursor and returns to idle with no fling; a flick (down, a move while travelling, release) flings and the " ++
+        "coast advances the cursor to the bottom-pinned offset before settling idle; grab-to-stop (a finger_down " ++
+        "during a coast) freezes the cursor exactly where it was caught with no further motion; a hard flick lands " ++
+        "bottom-pinned with no overshoot (every clamp inherited from HUNK44/HUNK45); a bad cell height and a bad " ++
+        "friction refuse at open by name. HUNK45 fling, HUNK44 drag, HUNK43 input, and HUNK40 cursor GREEN beneath\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: preset_touch_scroll selftest\n", .{});
+    return 1;
+}
