@@ -1,0 +1,46 @@
+# tools/hunk_edit_filmstrip_scrub_witness.rish — drag the filmstrip, the cursor scrubs the history band by band, on metal (HUNK56).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK56.
+# Design read: active-designing/20260813-213001_hunk-filmstrip-scrub-exploration.md.
+# Teacher, thanked clean-room: the history scrubber of a photo app (iCloud Photos / Google Photos) — a keeper presses the
+# edit-history strip and drags, and the picture scrubs continuously through every step under the finger (concept only,
+# siloed).
+#
+# HUNK55 turned a tap on the filmstrip into a jump; this rung turns a DRAG into a continuous scrub. FilmstripScrub owns
+# one FilmstripJump (its cursor, geometry, paint) and adds only the drag arming (HUNK50's down/move/up law) and a
+# nearest-band clamp: where a tap classified to a band OR NONE, a scrub classifies to the NEAREST valid band, so it
+# follows the finger and pins at the ends (past the right edge on the live edge; off the left on the original). The
+# cursor move is HUNK16's seek — a jump that forgets nothing — so a scrub is a walk, never a push. The selftest proves a
+# drag tracks the finger band by band, a sweep back tracks in reverse, a scrub pins at both edges (unlike a tap), a scrub
+# forgets nothing, a move with no press fires nothing, and a bad thumbnail refuses at open. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_edit_filmstrip_scrub_witness.rish
+
+say "hunk-edit-filmstrip-scrub: Language EN — HUNK56 drags the filmstrip and seeks the cursor to the band under the finger at every point (HUNK55 jump · HUNK50 arming · HUNK16 cursor seek), the marker tracking the finger."
+say "hunk-edit-filmstrip-scrub: Style Radiant — a keeper presses the strip and sweeps, and the picture scrubs through every step under the finger, stopping wherever it looks right; the step under the finger is the step on the glass."
+say "hunk-edit-filmstrip-scrub: Lens TAME — a pure composition; a scrub is a clamped division to the nearest band, a seek forgets nothing, the source never mutated; a zero thumbnail refuses BadThumb; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/edit_filmstrip_scrub"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/edit_filmstrip_scrub.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-edit-filmstrip-scrub: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-edit-filmstrip-scrub: selftest exited non-zero — ${selftest.out}"
+
+# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# single-quoted string, so an apostrophe in the GREEN line can never break a check (the loom for REDS #76).
+let out = trim selftest.out
+say "hunk-edit-filmstrip-scrub: ${out}"
+
+assert out contains "GREEN edit-filmstrip-scrub" else "hunk-edit-filmstrip-scrub: selftest did not print the GREEN edit-filmstrip-scrub line"
+assert out contains "a drag tracks the finger band by band" else "hunk-edit-filmstrip-scrub: the drag did not track the finger band by band"
+assert out contains "a slow sweep back tracks in reverse" else "hunk-edit-filmstrip-scrub: the sweep back did not track in reverse"
+assert out contains "a scrub pins at the right edge on the live edge and at the left edge on the original" else "hunk-edit-filmstrip-scrub: a scrub did not pin at the edges"
+assert out contains "a scrub forgets nothing" else "hunk-edit-filmstrip-scrub: a scrub did not preserve the redo tail"
+assert out contains "a move with no press before it fires nothing" else "hunk-edit-filmstrip-scrub: a move with no press moved the cursor"
+assert out contains "refuses BadThumb at open" else "hunk-edit-filmstrip-scrub: a bad thumbnail did not refuse by name"
+
+say "hunk-edit-filmstrip-scrub: GREEN — a drag on the filmstrip scrubs the cursor band by band under the finger, pinning at both edges, forgetting nothing, a move with no press firing nothing, a bad thumbnail refusing by name; no network, no key, no funds."

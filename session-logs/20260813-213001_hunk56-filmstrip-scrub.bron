@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260813.213001
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) time convention · ai-jail
+title HUNK56 — drag the filmstrip, the cursor scrubs the history band by band
+prompt Take the next agent-doable lap Lindy-first crux-first on the Season-A / double-seat road; approve my own design rounds and make progress before checking in; send each finished increment as its own signed round; STOP at the custody gates.
+think Read the REMEMBER card, the 1,024-round itinerary, and the six-season double-seat. The card's latest-lap paragraph names HUNK0-3 but git log shows the loop has climbed to HUNK55; the Photos-app-on-glass arc (HUNK50-55) built a finger-driven editor — gesture-to-edit, verb-chip strip, palette, filmstrip, tap-to-jump. HUNK55's own named horizon: a drag across the filmstrip to scrub the history (continuous seek).
+think Lindy-first crux-first: the drag-to-scrub is the durable crux — the canonical Photos history gesture — and stays entirely inside the brushstroke assembly (no held seam crossed, no custody gate reached). The other in-assembly kg (the filmstrip scrolled) is more mechanical pager reuse; the session-that-travels crux still crosses the pond/apps<->brushstroke assembly-identity seam held for Keaton. So the scrub is the crux this round.
+think The one behavior that separates a scrub from HUNK55's tap: off the strip a tap fires nothing, but a scrub follows the finger and PINS at the ends (past the right edge -> the live edge; off the left -> the original). So the scrub classifies a pixel to the NEAREST valid band (a clamp, never a null), where the tap classified to a band OR none. Everything else composes: HUNK16 seek forgets nothing, HUNK50 arming (down/move/up), HUNK55 paint unchanged.
+obs Built brushstroke/edit_filmstrip_scrub.rye FilmstripScrub owning one HUNK55 FilmstripJump (its cursor, geometry, paint). scrub_band(x) clamps to [0, steps): x<0 -> band 0, band>last -> last (steps>=1 always, so a scrub always lands). finger_down arms + seeks; finger_move seeks only while armed (HUNK50 arming law, a move with no press fires nothing); finger_up seeks + disarms. push/steps/band_px/paint delegate to the jump. Pure composition — no new cursor move, no new render primitive, no new failure mode; no network, no key, no funds.
+obs GREEN on the first metal run. tame_style_check first flagged five compound assert(a and b) in the selftest (the ban) — split each into two asserts, then bans clean. width-check exit 0 (no seam violation). HUNK55 witness re-run GREEN (no regression; the jump code untouched, only owned). The REDS #76 loom held — the witness checks claims with native `assert out contains`.
+loom witness=hunk_edit_filmstrip_scrub_witness result=green modules=1 asserts_split=5
+file brushstroke/edit_filmstrip_scrub.rye HUNK56 FilmstripScrub — drag the filmstrip, seek the cursor to the nearest band under the finger, pinning at both edges, forgetting nothing
+file tools/hunk_edit_filmstrip_scrub_witness.rish HUNK56 witness — GREEN, native contains checks over the drag/pin/forget-nothing/arming/refuse claims
+file active-designing/20260813-213001_hunk-filmstrip-scrub-exploration.md self-approved design round for HUNK56
+file work-in-progress/REMEMBER.md Git nib refreshed in the same work commit
+recommend keep-going a velocity fling across the filmstrip (HUNK45 fling idiom to the history strip), the filmstrip scrolled when the history outgrows the view (HUNK40-47 pager), or a fresh Season-A / double-seat journey; the session-that-travels crux still crosses the assembly-identity seam held for Keaton; hardware buys stay custody gates #2/#3
