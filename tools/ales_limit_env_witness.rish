@@ -1,0 +1,47 @@
+# tools/ales_limit_env_witness.rish — an attack/release limiter: the hard ceiling given a patient sense of time (ALES55).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES55.
+# Design read: active-designing/20260814-174700_fill-ales55-lotus-attack-release-limiter.md
+# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/sample_max, the range law shape); lotus/limit.rye (ALES49 — the hard
+# ceiling this drives over time, re-proven below); lotus/envelope.rye (ALES52 — the proven time base, re-proven below).
+#
+# lotus/limit_env.rye drives ALES49's limiter from ALES52's envelope: each sample advances the proven follower one step (the attack
+# fraction rising, the release falling), and when the smoothed envelope rises above the ceiling the gain ceil/envelope is applied to
+# the raw sample — the compressor at an infinite ratio, the target pinned to the ceiling. The selftest proves: silence stays
+# silence; unit attack and release reduce it to the plain ALES49 limiter byte-for-byte (proven by running both tools on one signal);
+# below the ceiling is the identity; a loud signal has its magnitude reduced with the sign held and never expanding; a slower attack
+# lets the transient through (the gain reduction lags, the knob monotone, the honest overshoot of a limiter without lookahead); the
+# state carries so a span in two pieces equals the whole once; a bad ceiling refuses BadCeiling, an illegal coefficient BadCoeff, an
+# out-of-range span BadRange. Purely local — no network, no keys, no funds, no real device, no sample rate, no lookahead.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_limit_env_witness.rish
+
+say "ales-limit-env: Language EN — ALES55 completes the breathing trio: the limiter (ALES49) proved a hard ceiling, the envelope follower (ALES52) proved a patient sense of time, and this rung drives the first from the second so the ceiling is approached over an attack and released gently — the compressor (ALES53) and gate (ALES54) already learned this breath, and now the limiter reads the same proven follower."
+say "ales-limit-env: Style Radiant — the law is stated positively: with instant attack and release the smoothed limiter IS the plain ALES49 limiter byte-for-byte (the zero-smoothing limit, proven by running both tools on one signal), below the ceiling is the identity, a slower attack lets the transient through (the gain reduction lags, the knob monotone), and the state carries so a span in two pieces equals the whole once — the seam invisible, ALES43's lesson. Honest about the horizon: without lookahead a slow attack overshoots the ceiling, a true brickwall wants a delay line."
+say "ales-limit-env: Lens TAME — bounded Clip, u32 span, i16 samples, i64 envelope; ceiling checked in [1, sample_max], both coefficients in (0, 1] by the follower's one proven rule, all before any write; the gain ceil/envelope kept in (0, 1) so every written magnitude is at most the input's, fitting i16; the above-ceiling branch (e > ceil >= 1) makes the divide always safe (the zero-envelope case the gate faced cannot arise here); a bad ceiling refuses BadCeiling, an illegal coefficient BadCoeff, an out-of-range span BadRange; siloed to lotus/, no network, no keys, no funds, no device, no sample rate, no lookahead."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/limit_env"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/limit_env.rye -femit-bin=${bin}"]
+assert build.ok else "ales-limit-env: build failed — ${build.err}"
+
+let outfile = "lotus/bin/limit_env.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-limit-env: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-limit-env: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-limit-env' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-limit-env: selftest did not print the GREEN ales-limit-env line"
+
+# This rung composes both parents over their public APIs — re-prove ALES52's follower and ALES49's limiter still stand green.
+let env = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/envelope.rye -femit-bin=lotus/bin/envelope && lotus/bin/envelope selftest 2>&1 | grep -q 'GREEN ales-envelope' && echo yes"]
+assert (trim env.out) == "yes" else "ales-limit-env: the ALES52 envelope follower regressed under the attack/release limiter"
+
+let lim = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/limit.rye -femit-bin=lotus/bin/limit && lotus/bin/limit selftest 2>&1 | grep -q 'GREEN ales-limit' && echo yes"]
+assert (trim lim.out) == "yes" else "ales-limit-env: the ALES49 limiter regressed under the attack/release limiter"
+
+say "ales-limit-env: GREEN — an attack/release limiter drives ALES49's hard ceiling from ALES52's proven envelope, each sample advancing the follower one step and, when the smoothed envelope rises above the ceiling, applying the gain ceil/envelope to the raw sample; with instant attack and release it is the plain limiter byte-for-byte, below the ceiling is the identity, a loud signal's magnitude only reduces with the sign held, a slower attack lets the transient through (the knob monotone, the honest no-lookahead overshoot), the state carries so a span in two pieces equals the whole once; a bad ceiling refuses BadCeiling, an illegal coefficient BadCoeff, an out-of-range span BadRange, each leaving the clip untouched; the ALES52 follower and ALES49 limiter selftests stay GREEN. With the limiter, compressor, and gate all breathing over one proven follower, the dynamics trio is whole — the family's next rung can open a hold stage between attack and release, or a lookahead delay for a true brickwall."

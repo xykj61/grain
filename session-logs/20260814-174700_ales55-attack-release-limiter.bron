@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260814.174700
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title ALES55 — the attack/release limiter, the breathing trio made whole
+prompt recur the road past BUHR — take the next agent-doable lap Lindy-first crux-first; send each finished increment; stop at custody gates
+think ALES54's tail named the next rung: give the limiter the same attack/release the compressor and gate now have. Lindy-first crux-first, this completes the breathing trio (limiter, compressor, gate all reading the one proven ALES52 follower) — the coherent family close a keeper expects.
+think Structure mirrors compress_env exactly, even simpler — the envelope's target is pinned to the ceiling (no ratio knob). It IS the compressor at an infinite ratio. Gain = ceil/e on the branch e > ceil; since ceil >= 1, e > ceil means no zero-envelope divide (the case ALES54's gate had to guard cannot arise here).
+think One honest distinction stated plainly, not hidden: without lookahead a slow attack lets a fast transient briefly OVERSHOOT the ceiling before the envelope catches it. That is real analog feedforward-limiter behavior — this is a gain-reducer over time, not a sample-clamp. A true brickwall wants a lookahead delay line, named as a horizon rung for Keaton's word. At instant attack it IS the plain ALES49 brickwall byte-for-byte.
+think Monotonic stamp: after ALES54 at 174600, this is 174700 (wall clock still behind the seated artifacts; later-is-larger wins).
+obs Byte-for-byte unit identity: at instant e = |x|, for |x| > ceil the gain |x|·ceil/|x| = ceil lands exactly on the ceiling (ALES49's output); |x| <= ceil passes. Excluded x = sample_min from the identity test (the follower saturates |−32768| to 32767), as ALES53/54 did.
+obs Witness GREEN on metal; ALES52 follower and ALES49 limiter re-proven GREEN beside it. tame_style_check bans clean. Added an extra clause: the instant-attack onset lands exactly on the ceiling (the brickwall reached from within).
+loom witness=ales_limit_env_witness result=GREEN reproves=2 rung=ALES55
+file lotus/limit_env.rye ALES55 — the attack/release limiter, driving ALES49's ceiling from ALES52's envelope
+file tools/ales_limit_env_witness.rish witness — selftest GREEN plus the two parents re-proven
+file active-designing/20260814-174700_fill-ales55-lotus-attack-release-limiter.md self-approved design round for the rung
+file lotus/README.md status line and road-on prose extended to ALES55 (dynamics trio whole)
+recommend keep-going ALES56 can open a hold stage between attack and release, or a lookahead delay line for a true brickwall — same proven follower, no custody gate
