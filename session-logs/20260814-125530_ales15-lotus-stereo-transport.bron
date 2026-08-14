@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260814.125530
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (Eastern / EDT time convention)
+title ALES15 — Lotus's stereo transport, one head reading two channels
+prompt Autonomous loop past REMEMBER + the itineraries — keep taking the next agent-doable lap Lindy-first crux-first, self-approve the design round, send each finished increment, stop at the custody gates.
+think ALES13 (meter) and ALES14 (loop) sent GREEN to both remotes. Next lap, crux-first: two arcs had been diverging — the read side (play ALES7, meter ALES13, loop ALES14) over a MONO master, and the stereo side (pan ALES10, power ALES11, crossfade ALES12) rendering stereo masters nothing ever PLAYED. The durable convergence the whole stereo half pointed at is a stereo transport.
+think The crux: one head reads both channels in lockstep, because ALES10's StereoClip invariant is left.len == right.len — the two channels are one master heard twice. So no second cursor and no per-channel bookkeeping: a single position advances through both channels at once. The correctness beyond running ALES7 twice is the lockstep — both channels advance by the same count every block, so left and right never drift out of sample alignment.
+think Reused ALES7's Transport head whole (imported, no new cursor type), and proved the read side meets the stereo side directly: a StereoClip rendered by ALES11's power.render_stereo (a center pan, 0.707 per side) plays back its two channels exactly through the new head.
+obs GREEN on the first build across six selftest blocks: fixed blocks concatenate back to EACH channel byte-for-byte with left/right aligned; at_end exact over an empty and a played master; mismatched out buffers refuse BadBlock; seek_ms/elapsed_ms round-trip 3ms and a seek to 7ms past a 6-sample master refuses PastEnd; a power-rendered center pan reads back 700/700; a replay after rewind reads identical bytes, the stereo unmutated.
+obs No downstream churn — stereo_transport.rye imports transport/pan/clock/timeline (and track/fader/power in the render-playback block) over public APIs only; nothing else touched. Purely local, every custody gate untouched.
+loom witness=ales_stereo_transport_witness result=GREEN rung=ALES15 selftest_blocks=6 first_build=GREEN
+file lotus/stereo_transport.rye ALES15 — one Transport head over a pan.StereoClip; read_block copies both channels in lockstep (BadBlock on unequal out buffers); at_end / seek_ms / elapsed_ms over the shared length.
+file tools/ales_stereo_transport_witness.rish witness proving the stereo transport GREEN — lockstep concat, at_end, BadBlock, seek round-trip/PastEnd, power-rendered playback, read-only.
+file active-designing/20260814-fill-ales15-lotus-stereo-transport.md the self-approved design capture for the round.
+file lotus/README.md front door synced — ALES15 in the status line, the rung prose, the prove block, and the road-on.
+recommend keep-going — the next Lotus rung (metering a stereo master during playback, looping a stereo region, a scrub window, or a punch region tying playback back to the Mikrophone) is mechanical and single-module, policy already written; custody gates all still untouched.

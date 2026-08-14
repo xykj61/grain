@@ -1,0 +1,247 @@
+//! lotus/stereo_transport.rye — ALES15: the stereo transport — one head reading two channels in lockstep. Two arcs of the
+//! suite converge here: the READ side (play ALES7, meter ALES13, loop ALES14) grew over a MONO master, and the STEREO side
+//! (pan ALES10, equal power ALES11, crossfade ALES12) built the SECOND channel and rendered stereo masters that nothing has
+//! ever PLAYED. A StereoClip is two channels at rest; a keeper hears a mix by playing both together, in step. This rung makes
+//! the read side genuinely stereo.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES15.
+//! Design read: active-designing/20260814-fill-ales15-lotus-stereo-transport.md
+//! Stands on: lotus/transport.rye (ALES7) — the single-position Transport head reused whole (a stereo master needs no second
+//! cursor); lotus/pan.rye (ALES10) — the StereoClip whose two channels share one length; lotus/clock.rye (ALES5) — seek and
+//! elapsed speak real time; lotus/timeline.rye (ALES2) — the Clip each channel is.
+//!
+//! THE CRUX: one head reads BOTH channels in lockstep, because a stereo master's two channels share one length (ALES10's
+//! StereoClip invariant left.len == right.len). A single sample position advances through both channels at once, copying the
+//! same span from each into its own out buffer — no second cursor, no per-channel bookkeeping. The correctness beyond running
+//! ALES7 twice is the LOCKSTEP: both channels advance by the same count every block, so left and right never drift out of
+//! sample alignment, and concatenating every block reproduces EACH channel byte-for-byte.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A bounded read cursor over an in-process two-channel i16 PCM master, siloed to
+//! lotus/. No audio leaves the process — a block is COPIED samples, not a sound-card write (that real write is the paused
+//! hardware round). No socket, no network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_transport.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const clock = @import("clock.rye");
+const pan = @import("pan.rye");
+const transport = @import("transport.rye");
+
+pub const stereo_transport_version = "20260814.131500";
+
+pub const StereoReadError = error{
+    /// The two out buffers differ in length — a stereo block is one length, filled into both channels. Refused before any copy.
+    BadBlock,
+};
+
+/// The head sits exactly at the master's end — playback is complete. Exactly `pos == stereo.left.len` (the two channels' shared
+/// length), so a caller loops `while (!at_end)` and stops with nothing left unread in either channel.
+pub fn at_end(t: *const transport.Transport, stereo: *const pan.StereoClip) bool {
+    // invariant: a stereo master's two channels share one length, and the head never runs past it.
+    assert(stereo.left.len == stereo.right.len);
+    assert(t.pos <= stereo.left.len);
+    return t.pos == stereo.left.len;
+}
+
+/// Copy the next up-to-`out_left.len` samples of each channel into its buffer, advance the ONE head by exactly that many, and
+/// return the count — a full block mid-master, an honestly SHORT block at the end, and zero past it (never a wrap). Both
+/// channels advance in lockstep off the single head, so left and right stay sample-aligned. Refuses BadBlock when the two out
+/// buffers differ in length (a stereo block is one length).
+pub fn read_block(t: *transport.Transport, stereo: *const pan.StereoClip, out_left: []i16, out_right: []i16) StereoReadError!u32 {
+    // invariant: the two channels share one length and the head is within the master before the read.
+    assert(stereo.left.len == stereo.right.len);
+    assert(t.pos <= stereo.left.len);
+    if (out_left.len != out_right.len) return error.BadBlock;
+
+    const remaining: u32 = stereo.left.len - t.pos;
+    const want: u32 = @intCast(out_left.len);
+    const n: u32 = if (want < remaining) want else remaining;
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        out_left[i] = stereo.left.buf[t.pos + i];
+        out_right[i] = stereo.right.buf[t.pos + i];
+    }
+    t.pos += n;
+    // invariant: the one head advanced by exactly the count copied into both channels and still sits within the master.
+    assert(t.pos <= stereo.left.len);
+    assert(n <= want and n <= remaining);
+    return n;
+}
+
+/// Place the head at a real moment `ms` through the ALES5 clock. Refuses PastEnd when the time is past the master's shared end
+/// and forwards ALES5's DurationTooLong when the time exceeds the clip bound. So a keeper seeks a stereo master in seconds.
+pub fn seek_ms(t: *transport.Transport, stereo: *const pan.StereoClip, clk: clock.Clock, ms: u32) (transport.TransportError || clock.ClockError)!void {
+    // invariant: the two channels share one length and the clock is valid, so the conversion is bounded and safe.
+    assert(stereo.left.len == stereo.right.len);
+    assert(clk.rate >= 1 and clk.rate <= clock.max_rate);
+    const at = try clock.samples_for(clk, ms);
+    // invariant: the seek target must land within the master, inclusive of its end (a seek to the end is at_end).
+    if (at > stereo.left.len) return error.PastEnd;
+    t.pos = at;
+    assert(t.pos <= stereo.left.len);
+}
+
+/// The head's position reported back as a real duration through the clock — honestly lossy like ALES5's ms_for. So a stereo
+/// transport shows the keeper a time, not a raw index.
+pub fn elapsed_ms(t: *const transport.Transport, clk: clock.Clock) u32 {
+    // invariant: the clock is valid, so the conversion is safe.
+    assert(clk.rate >= 1 and clk.rate <= clock.max_rate);
+    return clock.ms_for(clk, t.pos);
+}
+
+// --- selftest: reading fixed blocks from the start concatenates back to EACH channel byte-for-byte (both channels, no sample
+//     skipped or repeated); both channels advance in LOCKSTEP; the last block is honestly short and the read past the end
+//     empty; at_end is exact; mismatched out buffers refuse BadBlock; seek_ms/elapsed_ms round-trip a real moment and a seek
+//     past the master refuses PastEnd; a StereoClip rendered by ALES11's power.render_stereo plays back its two channels
+//     exactly; the transport reads only (a replay after a rewind reads the identical bytes) ---------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn run_selftest() !u8 {
+    const c = try clock.make(1000); // 1 sample per ms — a millisecond position equals a sample position, legible on a bench
+
+    // 1. reading fixed 2-sample blocks from the start concatenates back to EACH channel byte-for-byte; both channels advance in
+    //    lockstep (the same count every block); the last block is honestly short (5 samples → 2,2,1) and the read past the end
+    //    empty (0). Left and right stay aligned throughout.
+    {
+        var stereo = pan.StereoClip{};
+        try timeline.splice(&stereo.left, 0, &[_]i16{ 10, 20, 30, 40, 50 });
+        try timeline.splice(&stereo.right, 0, &[_]i16{ -1, -2, -3, -4, -5 });
+        var t = transport.Transport{};
+        var gl: [5]i16 = [_]i16{0} ** 5;
+        var gr: [5]i16 = [_]i16{0} ** 5;
+        var got: u32 = 0;
+        while (!at_end(&t, &stereo)) {
+            var bl: [2]i16 = [_]i16{0} ** 2;
+            var br: [2]i16 = [_]i16{0} ** 2;
+            const n = try read_block(&t, &stereo, &bl, &br);
+            var k: u32 = 0;
+            while (k < n) : (k += 1) {
+                gl[got] = bl[k];
+                gr[got] = br[k];
+                got += 1;
+            }
+        }
+        if (got != 5) return error.CountWrong;
+        if (!eq(gl[0..got], stereo.left.samples())) return error.LeftConcatWrong;
+        if (!eq(gr[0..got], stereo.right.samples())) return error.RightConcatWrong;
+        // the read past the end is empty in both channels.
+        var tl: [2]i16 = [_]i16{0} ** 2;
+        var tr: [2]i16 = [_]i16{0} ** 2;
+        if (try read_block(&t, &stereo, &tl, &tr) != 0) return error.PastEndReadWrong;
+    }
+
+    // 2. at_end is exact — a fresh head over an empty stereo master is already at end; a head becomes at end only when it reads
+    //    the final sample of both channels.
+    {
+        var empty = pan.StereoClip{};
+        var te = transport.Transport{};
+        if (!at_end(&te, &empty)) return error.EmptyNotAtEnd;
+
+        var stereo = pan.StereoClip{};
+        try timeline.splice(&stereo.left, 0, &[_]i16{ 7, 8 });
+        try timeline.splice(&stereo.right, 0, &[_]i16{ 9, 10 });
+        var t = transport.Transport{};
+        if (at_end(&t, &stereo)) return error.FreshAtEnd;
+        var bl: [2]i16 = [_]i16{0} ** 2;
+        var br: [2]i16 = [_]i16{0} ** 2;
+        _ = try read_block(&t, &stereo, &bl, &br);
+        if (!at_end(&t, &stereo)) return error.NotAtEndAfterAll;
+    }
+
+    // 3. mismatched out buffers refuse BadBlock — a stereo block is one length, filled into both channels.
+    {
+        var stereo = pan.StereoClip{};
+        try timeline.splice(&stereo.left, 0, &[_]i16{ 1, 2, 3 });
+        try timeline.splice(&stereo.right, 0, &[_]i16{ 4, 5, 6 });
+        var t = transport.Transport{};
+        var bl: [2]i16 = [_]i16{0} ** 2;
+        var br: [3]i16 = [_]i16{0} ** 3;
+        if (read_block(&t, &stereo, &bl, &br)) |_| return error.BadBlockSlipped else |e| if (e != error.BadBlock) return error.WrongBadBlock;
+    }
+
+    // 4. seek_ms places the head at a real moment and elapsed_ms reports it back; a read after the seek continues from the
+    //    sought moment in both channels. A seek past the master refuses PastEnd, a seek exactly to the end is allowed.
+    {
+        var stereo = pan.StereoClip{};
+        try timeline.splice(&stereo.left, 0, &[_]i16{ 1, 2, 3, 4, 5, 6 });
+        try timeline.splice(&stereo.right, 0, &[_]i16{ 11, 12, 13, 14, 15, 16 });
+        var t = transport.Transport{};
+        try seek_ms(&t, &stereo, c, 3);
+        if (t.position() != 3 or elapsed_ms(&t, c) != 3) return error.SeekWrong;
+        var bl: [2]i16 = [_]i16{0} ** 2;
+        var br: [2]i16 = [_]i16{0} ** 2;
+        const n = try read_block(&t, &stereo, &bl, &br);
+        const want_l = [_]i16{ 4, 5 };
+        const want_r = [_]i16{ 14, 15 };
+        if (n != 2 or !eq(bl[0..n], &want_l) or !eq(br[0..n], &want_r)) return error.SeekReadWrong;
+
+        try seek_ms(&t, &stereo, c, 6); // exactly the end
+        if (!at_end(&t, &stereo)) return error.SeekEndWrong;
+        if (seek_ms(&t, &stereo, c, 7)) |_| return error.PastEndSlipped else |e| if (e != error.PastEnd) return error.WrongPastEnd;
+    }
+
+    // 5. a StereoClip rendered by ALES11's power.render_stereo plays back its two channels EXACTLY — the read side meets the
+    //    stereo side. A track panned center renders 0.707 per side, and the transport reads exactly those samples.
+    {
+        var a = timeline.Clip{};
+        try timeline.splice(&a, 0, &[_]i16{ 1000, 1000 });
+        var s = @import("track.rye").Session{};
+        try @import("track.rye").add_track(&s, &a, 0);
+        var rendered = pan.StereoClip{};
+        const faders = [_]@import("fader.rye").Fader{.{}};
+        const pans = [_]@import("power.rye").PowerPan{try @import("power.rye").make(50, 100)}; // center
+        try @import("power.rye").render_stereo(&s, &faders, &pans, c, &rendered);
+
+        var t = transport.Transport{};
+        var bl: [2]i16 = [_]i16{0} ** 2;
+        var br: [2]i16 = [_]i16{0} ** 2;
+        const n = try read_block(&t, &rendered, &bl, &br);
+        const seven_hundred = [_]i16{ 700, 700 }; // 1000 × isqrt(5000)/100
+        if (n != 2 or !eq(bl[0..n], &seven_hundred) or !eq(br[0..n], &seven_hundred)) return error.RenderedPlaybackWrong;
+    }
+
+    // 6. the transport reads only — playing a stereo master through, then rewinding and replaying, reads the identical bytes in
+    //    both channels; the rendered stereo is untouched.
+    {
+        var stereo = pan.StereoClip{};
+        try timeline.splice(&stereo.left, 0, &[_]i16{ 9, 8, 7, 6 });
+        try timeline.splice(&stereo.right, 0, &[_]i16{ 90, 80, 70, 60 });
+        const orig_l = [_]i16{ 9, 8, 7, 6 };
+        const orig_r = [_]i16{ 90, 80, 70, 60 };
+        var t = transport.Transport{};
+        var bl: [4]i16 = [_]i16{0} ** 4;
+        var br: [4]i16 = [_]i16{0} ** 4;
+        _ = try read_block(&t, &stereo, &bl, &br); // play to the end
+        try seek_ms(&t, &stereo, c, 0); // rewind
+        var al: [4]i16 = [_]i16{0} ** 4;
+        var ar: [4]i16 = [_]i16{0} ** 4;
+        const n = try read_block(&t, &stereo, &al, &ar);
+        if (n != 4 or !eq(al[0..n], &orig_l) or !eq(ar[0..n], &orig_r)) return error.ReplayWrong;
+        if (!eq(stereo.left.samples(), &orig_l) or !eq(stereo.right.samples(), &orig_r)) return error.MasterMutated;
+    }
+
+    print("GREEN ales-stereo-transport: one head reads both channels of a stereo master in LOCKSTEP — reading fixed blocks from " ++
+        "the start concatenates back to EACH channel byte-for-byte (no sample skipped or repeated, left and right always " ++
+        "aligned), the last block honestly short and the read past the end empty; at_end is exact at pos == len; mismatched out " ++
+        "buffers refuse BadBlock; seek_ms places the head at a real moment through the ALES5 clock and elapsed_ms reports it " ++
+        "back, a seek past the master refusing PastEnd; a StereoClip rendered by ALES11's power.render_stereo plays back its " ++
+        "two channels exactly (a center pan's 0.707 per side read whole); and the transport reads only — a replay after a " ++
+        "rewind reads the identical bytes, the rendered stereo never mutated; no audio leaves the process, no socket, no " ++
+        "network, no keys, no funds, no real device, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
