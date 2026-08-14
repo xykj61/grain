@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260813.222800
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title HUNK60 — the interactive crop gesture
+prompt autonomous loop past BUHR: next agent-doable lap Lindy-first crux-first, send each increment, stop at custody gates
+think After HUNK58/59 (two filmstrip laps), weighed Lindy-first: a third filmstrip refinement (auto-pan) polishes an already-strong sub-feature. The double-seat itinerary names cropping the crux gesture of the Photos app — higher Lindy. Turned there.
+think Checked the vocabulary: crop exists as a pure verb (photos.crop, HUNK3) and in the edit union/serialization/apply — so the pixel op is done. What is missing is the interactive crop GESTURE (drag a rectangle, commit a .crop edit), the itinerary's actual crux.
+think Designed CropGesture in image/ (pure, no Skate): owns width/height and two drag corners in image pixels under HUNK50's down/move/up arming law. rect() normalizes min/max of the corners so any drag direction names the same top-left rectangle; corners clamp to [0,width]×[0,height] so a rectangle is in-bounds by construction and its later apply cannot raise OutOfBounds.
+think as_edit() turns the rectangle into a .crop edit a cursor can push, so a dragged crop joins the same non-destructive history as every other verb; preview() applies it through HUNK3's crop for a live look. A degenerate drag (tap or zero-width sweep) refuses NoRect — the gesture's one honest failure.
+think First metal run RED: parse_edits takes an out-param (text, *EditList), not a return. Fixed to init a list and pass it. GREEN.
+obs The selftest gives the crop a per-column green gradient so a mis-placed rectangle would show; proves the dragged crop equals a direct crop cell-for-cell AND round-trips render/parse/apply — a first-class edit, not a one-off. Reverse drag normalizes the same; off-edge corners clamp to the whole image (recovering the source); tap and zero-width sweep refuse NoRect; unarmed move moves nothing; bad image refuses BadImage.
+obs Two-plus asserts per fn, invariants positive; TAME bans clean, width exit 0; no existing file touched.
+loom witness=hunk_crop_gesture_witness image=8x8 crop=2,2,4,4 result=GREEN
+file image/crop_gesture.rye HUNK60 — the drag-to-crop gesture producing a first-class .crop edit
+file tools/hunk_crop_gesture_witness.rish the metal witness, GREEN
+file active-designing/20260813-222800_hunk-crop-gesture-exploration.md the design read naming the crux and the road on
+recommend keep-going HUNK61 — a Skate/Brushstroke overlay painting the crop rectangle's outline on glass as it drags, paralleling the filmstrip paint surfaces; agent-doable, single module
