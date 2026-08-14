@@ -1,0 +1,37 @@
+# tools/fora_channel_witness.rish — a bounded byte channel carries the handshake one frame at a time (FORA5).
+#
+# Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA5.
+# Design read: active-designing/20260814-044915_fora5-constel-channel-byte-stream.md
+# Law kin: .claude/rules/placeholder-ship-names.md — the channel delimits but never re-checks: a frame read cleanly off the
+# stream but carrying a smuggled vowel still refuses VowelPresent at wire.deframe. The FORA3 gates keep the only trust.
+#
+# constel/channel.rye stands a bounded in-process byte FIFO — the loopback that models the Comlink seam without a socket. Its
+# one new concern is stream framing: read exactly one whole frame out of a continuous byte queue, waiting on a partial frame,
+# reading two back-to-back frames one at a time. The selftest proves: a whole exchange runs over two channels; a partial
+# frame waits then completes; two frames read one at a time; a wild length refuses BadFrame; an overfull channel refuses
+# ChannelFull; and the naming-law border still guards a stream. Purely local — no socket, no network, no keys, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/fora_channel_witness.rish
+
+say "fora-channel: Language EN — FORA5 stands a bounded byte queue between two piers, the loopback that models the Comlink seam without a socket; its one new concern is reading exactly one whole frame out of a continuous stream — the last purely-local rung before the real transport."
+say "fora-channel: Style Radiant — the channel's only job is delimiting, cutting one whole frame out of the stream; a half-arrived frame waits in peace, and the FORA3 gates keep the only trust."
+say "fora-channel: Lens TAME — a fixed-buffer FIFO with a read cursor, every fault failing closed without moving the cursor (NeedMoreBytes · BadFrame · ChannelFull); siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "constel/bin/channel"
+
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/channel.rye -femit-bin=${bin}"]
+assert build.ok else "fora-channel: build failed — ${build.err}"
+
+let outfile = "constel/bin/channel.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "fora-channel: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "fora-channel: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN fora-channel' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "fora-channel: selftest did not print the GREEN fora-channel line"
+
+say "fora-channel: GREEN — the handshake crosses a byte stream one frame at a time; the FORA6 round need only back this channel with a real Comlink socket (the seam-crossing that stays Keaton's check-in)."

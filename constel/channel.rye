@@ -1,0 +1,259 @@
+//! constel/channel.rye — FORA5: a bounded byte channel, one frame read at a time. FORA4 carried the whole handshake across
+//! frames, but each frame was handed over whole — one message, one buffer. A real transport is not a message hand-off; it is
+//! a BYTE STREAM: bytes arrive continuously, a frame may be split across two arrivals, and two frames may sit back to back.
+//! This rung introduces the one new concern a real socket forces and nothing before it did — read exactly one whole frame
+//! out of a continuous byte queue, waiting when the frame is not yet complete, leaving the rest untouched.
+//!
+//! Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA5.
+//! Design read: active-designing/20260814-044915_fora5-constel-channel-byte-stream.md
+//! Stands on: constel/wire.rye (FORA3) — the frame the channel delimits; constel/exchange.rye (FORA4) — the conversation the
+//! channel carries.
+//!
+//! Purely LOCAL — a bounded in-process byte FIFO over a fixed buffer on one bench, siloed to constel/, run from inside the
+//! jailed pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate #2 — real hardware / any
+//! real wire — and gate #4 — real Kumara, real network — both untouched). The channel's ONLY job is delimiting: cutting one
+//! whole frame out of the stream. It never re-checks the frame — the caller runs wire.deframe_*, so the two trust gates
+//! (Sha256 integrity + the naming-law border) stay exactly where FORA3 put them. FORA6, the real Comlink socket, is this same
+//! channel with a kernel file descriptor standing in for the buffer.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/channel.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const name = @import("name.rye");
+const handshake = @import("handshake.rye");
+const wire = @import("wire.rye");
+const exchange = @import("exchange.rye");
+
+pub const channel_version = "20260814.044915";
+
+/// The channel holds at least two whole frames, so the back-to-back case is real and bounded. No heap outlives this buffer.
+pub const max_channel: u32 = 2 * wire.max_frame;
+
+pub const ChannelError = error{
+    /// A push would overflow the fixed buffer — refused, never a silent overwrite.
+    ChannelFull,
+    /// Not a whole frame is available yet — the header, or the payload's tail, has not arrived. The cursor does not move.
+    NeedMoreBytes,
+    /// A frame header declares a payload length past wire.max_payload — refused before any over-read.
+    BadFrame,
+} || wire.WireError;
+
+/// A bounded byte FIFO: a fixed buffer, a read cursor, and the written length. A write appends; a read advances the cursor.
+/// When the cursor catches the length the channel is drained and the next write compacts back to the start.
+pub const Channel = struct {
+    buf: [max_channel]u8 = [_]u8{0} ** max_channel,
+    cursor: u32 = 0,
+    len: u32 = 0,
+
+    /// The bytes written but not yet read.
+    pub fn available(self: *const Channel) u32 {
+        // invariant: the cursor never passes the written length.
+        assert(self.cursor <= self.len);
+        return self.len - self.cursor;
+    }
+
+    /// Append bytes to the channel, refusing ChannelFull if they would overflow the fixed buffer. When the channel is fully
+    /// drained (cursor == len) a write first compacts back to the start, so a long-lived channel never creeps to full on
+    /// read bytes alone.
+    pub fn push(self: *Channel, bytes: []const u8) ChannelError!void {
+        // invariant: a drained channel resets to the start before the next write.
+        if (self.cursor == self.len) {
+            self.cursor = 0;
+            self.len = 0;
+        }
+        if (self.len + bytes.len > self.buf.len) return error.ChannelFull;
+        var i: u32 = 0;
+        while (i < bytes.len) : (i += 1) self.buf[self.len + i] = bytes[i];
+        self.len += @intCast(bytes.len);
+        // invariant: the written length never exceeds the buffer.
+        assert(self.len <= self.buf.len);
+    }
+
+    /// Read exactly ONE whole frame from the cursor, or refuse NeedMoreBytes. The stream discipline lives here: a header
+    /// that has not fully arrived, a payload tail that has not arrived, and a wild declared length each fail closed WITHOUT
+    /// moving the cursor, so the caller may retry after more bytes. Only a whole frame advances the cursor — one frame, no
+    /// more, the next left in place. Returns the raw frame bytes; the caller runs wire.deframe_* for the trust gates.
+    pub fn read_frame(self: *Channel) ChannelError![]const u8 {
+        const have = self.available();
+        // Not even a whole header has arrived.
+        if (have < wire.header_len) return error.NeedMoreBytes;
+        const base = self.cursor;
+        // The declared payload length — the same little-endian u32 wire.deframe reads, at offset 6 of the header.
+        const plen = std.mem.readInt(u32, self.buf[base + 6 ..][0..4], .little);
+        // A length past the widest payload is refused before it can size an over-read.
+        if (plen > wire.max_payload) return error.BadFrame;
+        const whole = wire.header_len + plen;
+        // The header is here but the payload's tail has not arrived — wait, cursor untouched.
+        if (have < whole) return error.NeedMoreBytes;
+        // invariant: a whole frame is present within what was written.
+        assert(base + whole <= self.len);
+        const frame = self.buf[base .. base + whole];
+        self.cursor += whole;
+        // invariant: the cursor advanced by exactly one whole frame and never past the written length.
+        assert(self.cursor == base + whole);
+        assert(self.cursor <= self.len);
+        return frame;
+    }
+};
+
+/// Push a Frame's bytes onto a channel — a small helper so a scenario reads as "pier writes a frame."
+pub fn send(ch: *Channel, frame: *const wire.Frame) ChannelError!void {
+    try ch.push(frame.bytes());
+}
+
+/// Drive a whole exchange over two channels — an a→b queue and a b→a queue carry the three frames — and return the sealed
+/// Session, read back from the final frame off the channel. Two Party views, two byte queues, and nothing else shared.
+pub fn exchange_over_channels(from: []const u8, sky: []const u8, me: []const u8, my_sky: []const u8) ChannelError!handshake.Session {
+    const a_party = try exchange.party(from, sky);
+    const b_party = try exchange.party(me, my_sky);
+
+    var a_to_b = Channel{};
+    var b_to_a = Channel{};
+
+    // Crossing 1 — the initiator writes its greeting onto the a→b channel.
+    var gf = wire.Frame{};
+    try exchange.initiator_greets(&a_party, &gf);
+    try send(&a_to_b, &gf);
+
+    // Crossing 2 — the responder reads one whole greeting frame off the stream, answers, and writes the ack onto b→a.
+    const greeting_bytes = try a_to_b.read_frame();
+    var af = wire.Frame{};
+    try exchange.responder_answers(&b_party, greeting_bytes, &af);
+    try send(&b_to_a, &af);
+
+    // Crossing 3 — the initiator reads one whole ack frame off the stream, seals the session, and writes it onto a→b.
+    const ack_bytes = try b_to_a.read_frame();
+    var sf = wire.Frame{};
+    try exchange.initiator_seals(gf.bytes(), ack_bytes, &sf);
+    try send(&a_to_b, &sf);
+
+    // The session crosses the wire — read one whole frame off the channel and deframe it.
+    const session_bytes = try a_to_b.read_frame();
+    const s = try wire.deframe_session(session_bytes);
+    // invariant: agreement was reached over byte queues alone — two distinct lawful piers, complete.
+    assert(s.complete);
+    assert(!std.mem.eql(u8, s.party_a(), s.party_b()));
+    assert(name.never_a_ship(s.party_a()) and name.never_a_ship(s.party_b()));
+    return s;
+}
+
+// --- selftest: a whole exchange runs over channels; a partial frame waits then completes; two frames read one at a time;
+//     a wild length refuses; an overfull channel refuses; and the naming-law border still guards a stream ----------------
+
+fn run_selftest() !u8 {
+    const sky = "xnb-xnc-xnd";
+
+    // 1. A whole exchange runs over two byte queues to a COMPLETE Session.
+    {
+        const s = try exchange_over_channels("xnb", sky, "xnc", sky);
+        assert(s.complete);
+        assert(std.mem.eql(u8, s.party_a(), "xnb") and std.mem.eql(u8, s.party_b(), "xnc"));
+    }
+
+    // Build one real greeting frame to exercise the stream discipline below.
+    const a_party = try exchange.party("xnb", sky);
+    var gf = wire.Frame{};
+    try exchange.initiator_greets(&a_party, &gf);
+
+    // 2. A partial frame waits — all but the last byte gives NeedMoreBytes and the cursor does not move; the last byte
+    //    completes the same read.
+    {
+        var ch = Channel{};
+        try ch.push(gf.buf[0 .. gf.len - 1]); // one byte short of a whole frame
+        if (ch.read_frame()) |_| {
+            return error.PartialSlipped;
+        } else |e| {
+            if (e != error.NeedMoreBytes) return error.WrongPartial;
+        }
+        assert(ch.cursor == 0); // the cursor did not move on the incomplete read
+        try ch.push(gf.buf[gf.len - 1 .. gf.len]); // the final byte arrives
+        const got = try ch.read_frame();
+        assert(std.mem.eql(u8, got, gf.bytes()));
+    }
+
+    // 3. Two frames read one at a time — the first read returns exactly the first, the second the second, a third waits.
+    {
+        // A second, distinct frame: an ack from the responder.
+        const b_party = try exchange.party("xnc", sky);
+        var af = wire.Frame{};
+        try exchange.responder_answers(&b_party, gf.bytes(), &af);
+
+        var ch = Channel{};
+        try ch.push(gf.bytes());
+        try ch.push(af.bytes()); // two frames back to back
+        const first = try ch.read_frame();
+        assert(std.mem.eql(u8, first, gf.bytes()));
+        const second = try ch.read_frame();
+        assert(std.mem.eql(u8, second, af.bytes()));
+        if (ch.read_frame()) |_| return error.ThirdSlipped else |e| if (e != error.NeedMoreBytes) return error.WrongThird;
+    }
+
+    // 4. A wild declared length refuses BadFrame before any over-read.
+    {
+        var ch = Channel{};
+        var bad = gf;
+        std.mem.writeInt(u32, bad.buf[6..10], wire.max_payload + 1, .little);
+        try ch.push(bad.bytes());
+        if (ch.read_frame()) |_| return error.WildSlipped else |e| if (e != error.BadFrame) return error.WrongWild;
+    }
+
+    // 5. An overfull channel refuses ChannelFull, never a silent overwrite. Push whole frames (never reading, so nothing
+    //    drains) until one refuses — the buffer holds only so many, and the refusal must arrive within a bound.
+    {
+        var ch = Channel{};
+        // The buffer holds max_channel bytes; a greeting frame is well under it, so a bounded loop must hit the wall.
+        const guard: u32 = (max_channel / wire.header_len) + 2; // strictly more pushes than the buffer can ever hold
+        var pushed: u32 = 0;
+        var hit_full = false;
+        while (pushed < guard) : (pushed += 1) {
+            if (ch.push(gf.bytes())) |_| {
+                // room remained — keep pushing
+            } else |e| {
+                if (e != error.ChannelFull) return error.WrongOverfull;
+                hit_full = true;
+                break;
+            }
+        }
+        if (!hit_full) return error.OverfullSlipped;
+    }
+
+    // 6. The naming-law border still guards a stream — a frame read cleanly off the channel but carrying a smuggled vowel
+    //    (digest fixed up) still refuses VowelPresent at wire.deframe. The channel delimits; it never re-checks.
+    {
+        var tampered = gf;
+        const field_at = wire.header_len + 4; // header + the first field's length prefix
+        tampered.buf[field_at + 0] = 'z';
+        tampered.buf[field_at + 1] = 'o'; // the smuggled vowel
+        tampered.buf[field_at + 2] = 'b';
+        const plen = std.mem.readInt(u32, tampered.buf[6..10], .little);
+        var dg: [wire.digest_len]u8 = undefined;
+        std.crypto.hash.sha2.Sha256.hash(tampered.buf[wire.header_len .. wire.header_len + plen], &dg, .{});
+        var d: u32 = 0;
+        while (d < wire.digest_len) : (d += 1) tampered.buf[10 + d] = dg[d];
+        var ch = Channel{};
+        try ch.push(tampered.bytes());
+        const framed = try ch.read_frame(); // the channel hands back a whole frame — delimiting succeeds
+        if (wire.deframe_greeting(framed)) |_| {
+            return error.VowelStreamed;
+        } else |e| {
+            if (e != error.VowelPresent) return error.WrongVowelStream; // the border refuses it, not the channel
+        }
+    }
+
+    print("GREEN fora-channel: a bounded byte queue carries the handshake one frame at a time — a whole exchange completes " ++
+        "over two channels (xnb and xnc agree through byte queues alone); a partial frame refuses NeedMoreBytes without " ++
+        "moving the cursor and completes once its last byte arrives; two frames back to back read one at a time, exact and " ++
+        "in order, a third waiting; a wild declared length refuses BadFrame before any over-read; an overfull channel " ++
+        "refuses ChannelFull; and a frame read cleanly off the stream but carrying a smuggled vowel still refuses " ++
+        "VowelPresent at the naming-law border — the channel delimits, the FORA3 gates keep the only trust; no socket, no " ++
+        "network, no keys, no funds, no real address ever formed\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
