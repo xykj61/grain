@@ -1,0 +1,328 @@
+//! mikrophone/catalog.rye — DREY7: the content-addressed desk catalog. Where DREY6's archive keeps proven recordings in
+//! arrival order (address by position), the catalog addresses each recording by its CONTENT — the Sha256 digest over its
+//! payload, the same digest the wire already carries. The same bytes always resolve to the same address, an identical
+//! recording deposited twice is kept once (idempotent), and any recording can be fetched by its address; a fetch never
+//! guesses.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY7.
+//! Design read: active-designing/20260814-064900_drey7-content-addressed-desk-catalog-exploration.md
+//! Stands on: mikrophone/wire.rye (DREY1) — deframe proves a payload whole BEFORE a byte is yielded; the wire's own
+//! Sha256 is the content address this catalog keys by.
+//!
+//! Content-addressing is the tree's spine — Tablecloth keys every artifact by the Sha256 of its bytes, so identical
+//! content has one identity and provenance never guesses. This rung brings that discipline to the desk: `deposit`
+//! deframes verify-before-trust FIRST, computes the content address over the PROVEN payload, and either recognizes an
+//! address it already holds (returning it unchanged, spending no bound) or appends within a fixed entry count and byte
+//! budget that refuse `CatalogFull` by name before a byte passes either bound. `fetch` returns the recording for an
+//! address or `null`. No disk, no network, no key signs, no funds (custody gate #2 — real hardware, a real desk, a real
+//! disk — untouched); the content address is an integrity identity the desk recomputes, not a signature.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/catalog.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const session = @import("session.rye");
+const wire = @import("wire.rye");
+
+const Sha256 = std.crypto.hash.sha2.Sha256;
+
+pub const catalog_version = "20260814.064900";
+
+/// The most distinct recordings a desk catalog holds at once — a named bound so the entry index can never overrun.
+pub const max_entries: u32 = 16;
+
+/// The total bytes the catalog's packed store holds across all distinct recordings — a named bound so the store can
+/// never overrun. Sized to hold several whole session payloads without an unbounded buffer.
+pub const max_bytes: u32 = 8 * session.max_samples;
+
+/// A content address: a full Sha256 over a recording's payload — the same digest the wire carries. Two recordings share
+/// an address exactly when they share every byte, so identical content has one identity.
+pub const Address = [wire.digest_len]u8;
+
+pub const CatalogError = error{
+    /// A deposit of a NEW address would pass the entry count or the byte budget — refused before a byte is written past
+    /// a bound. A re-deposit of an address already held never raises this; it spends no bound.
+    CatalogFull,
+};
+
+/// One kept recording's identity and place in the packed store: its content address, where it starts, and how long it
+/// is.
+const Entry = struct {
+    address: Address = [_]u8{0} ** wire.digest_len,
+    off: u32 = 0,
+    len: u32 = 0,
+};
+
+/// A bounded, content-addressed desk catalog: a packed byte store, the length actually used, a bounded index of entries
+/// keyed by content address, and a count of distinct recordings. A fresh catalog is empty; no heap outlives it.
+pub const Catalog = struct {
+    store: [max_bytes]u8 = [_]u8{0} ** max_bytes,
+    used: u32 = 0,
+    entries: [max_entries]Entry = [_]Entry{.{}} ** max_entries,
+    count: u32 = 0,
+
+    /// A fresh, empty catalog holding nothing.
+    pub fn init() Catalog {
+        return Catalog{};
+    }
+};
+
+/// The content address of a payload — a full Sha256 over exactly its bytes. The one place the address is computed, so a
+/// deposit and a later lookup can never key by different rules.
+pub fn address_of(payload: []const u8) Address {
+    // invariant: only a payload within the session ceiling is ever addressed — a proven payload always is.
+    assert(payload.len <= session.max_samples);
+    var addr: Address = undefined;
+    Sha256.hash(payload, &addr, .{});
+    // invariant: a content address is always a whole Sha256 digest.
+    assert(addr.len == wire.digest_len);
+    return addr;
+}
+
+/// How many distinct recordings the catalog holds.
+pub fn count_of(self: *const Catalog) u32 {
+    // invariant: the count never claims more entries than the index can hold.
+    assert(self.count <= max_entries);
+    return self.count;
+}
+
+/// The index of the entry holding `address`, or null when the catalog does not hold it. A bounded linear scan over the
+/// count — never past it.
+fn index_of(self: *const Catalog, address: Address) ?u32 {
+    // invariant: the scan is bounded by the count, itself bounded by the entry index.
+    assert(self.count <= max_entries);
+    var i: u32 = 0;
+    while (i < self.count) : (i += 1) {
+        if (std.mem.eql(u8, &self.entries[i].address, &address)) return i;
+    }
+    return null;
+}
+
+/// Whether the catalog holds a recording at this content address.
+pub fn holds(self: *const Catalog, address: Address) bool {
+    // invariant: holding is exactly having an index for the address — one source of truth.
+    const found = index_of(self, address) != null;
+    assert(found == (index_of(self, address) != null));
+    return found;
+}
+
+/// The content address of the i-th kept recording, in the order distinct recordings were first deposited. `i` must be
+/// within the count. Lets a keeper enumerate a manifest without reading a byte of payload.
+pub fn address_at(self: *const Catalog, i: u32) Address {
+    // invariant: only a kept entry can be addressed — never past the count.
+    assert(i < self.count);
+    // invariant: the count stays within the entry index.
+    assert(self.count <= max_entries);
+    return self.entries[i].address;
+}
+
+/// The recording for a content address, or null when the catalog does not hold it — a fetch never guesses. The returned
+/// slice reads back exactly the proven payload once deposited under that address.
+pub fn fetch(self: *const Catalog, address: Address) ?[]const u8 {
+    const at = index_of(self, address) orelse return null;
+    const e = self.entries[at];
+    // invariant: every kept entry's span stays inside the used region of the store.
+    assert(e.off + e.len <= self.used);
+    return self.store[e.off .. e.off + e.len];
+}
+
+/// Deposit a carried frame under its content address — deframe verify-before-trust FIRST, compute the address over the
+/// PROVEN payload, then either recognize an address already held (returning it unchanged, spending no bound) or append
+/// the proven payload within both bounds. Refuses `CatalogFull` for a NEW address only if the entry index is full or the
+/// payload would exceed the byte budget, before a single byte is written. Any wire error propagates by name and the
+/// catalog is left exactly as it was — a bad frame neither lands nor disturbs a prior entry. The copy is a plain bounded
+/// loop, never a bare memcpy.
+pub fn deposit(self: *Catalog, frame_bytes: []const u8) !Address {
+    // invariant: nothing is kept until the frame is proven whole — deframe runs before the address is even computed.
+    const payload = try wire.deframe(frame_bytes);
+    // invariant: a proven payload is bounded by the session ceiling.
+    assert(payload.len <= session.max_samples);
+    const address = address_of(payload);
+
+    // Idempotent: an address already held is kept once — no duplicate, no bound spent.
+    if (index_of(self, address)) |_| {
+        // invariant: a re-deposit returns the address the catalog already holds and leaves the count unchanged.
+        assert(holds(self, address));
+        return address;
+    }
+
+    const plen: u32 = @intCast(payload.len);
+    // The entry index is bounded — refuse before recording a seventeenth distinct recording.
+    if (self.count >= max_entries) return error.CatalogFull;
+    // The byte budget is bounded — refuse before a byte would pass the store. Checked in u64 so the sum cannot wrap.
+    const need: u64 = @as(u64, self.used) + @as(u64, plen);
+    if (need > max_bytes) return error.CatalogFull;
+
+    const start = self.used;
+    var i: u32 = 0;
+    while (i < plen) : (i += 1) self.store[start + i] = payload[i];
+    self.entries[self.count] = .{ .address = address, .off = start, .len = plen };
+    self.used = start + plen;
+    self.count += 1;
+    // invariant: the newly kept recording fetches back exactly the proven payload, byte-for-byte, under its address.
+    assert(std.mem.eql(u8, fetch(self, address).?, payload));
+    return address;
+}
+
+/// Forget the whole catalog, zeroing the store so nothing once kept can be recovered — the forgetting promise on the
+/// content-addressed hand too. A cleared catalog holds nothing.
+pub fn clear(self: *Catalog) void {
+    var i: u32 = 0;
+    while (i < self.store.len) : (i += 1) self.store[i] = 0;
+    self.used = 0;
+    self.count = 0;
+    // invariant: a cleared catalog holds no recordings and no residue remains in the store.
+    assert(self.count == 0);
+    assert(self.used == 0);
+}
+
+// --- selftest: the same bytes key to one address (idempotent), distinct bytes key distinct, only proven recordings
+//     land, both bounds refuse CatalogFull, a miss returns null, and clear forgets whole -------------------------------
+
+/// Frame the text as a committed session would carry it — capture, commit, frame — so each block starts from a real wire
+/// frame the catalog can deposit. Returns the frame; the caller reads `bytes()`.
+fn framed(text: []const u8) !wire.Frame {
+    var s = session.Session.init();
+    var i: u32 = 0;
+    while (i < text.len) : (i += 1) try session.capture(&s, text[i]);
+    try session.commit(&s);
+    var f = wire.Frame{};
+    try wire.frame(&s, &f);
+    return f;
+}
+
+fn run_selftest() !u8 {
+    // 1. Same bytes, same address, kept once — a recording deposited twice returns the identical address and the count
+    //    rises by one, not two.
+    {
+        var cat = Catalog.init();
+        assert(count_of(&cat) == 0);
+        var a = try framed("field recording");
+        const addr1 = try deposit(&cat, a.bytes());
+        var a2 = try framed("field recording");
+        const addr2 = try deposit(&cat, a2.bytes());
+        assert(std.mem.eql(u8, &addr1, &addr2));
+        assert(count_of(&cat) == 1);
+        assert(holds(&cat, addr1));
+        assert(std.mem.eql(u8, fetch(&cat, addr1).?, "field recording"));
+    }
+
+    // 2. Different bytes, different address — two distinct recordings resolve to two distinct addresses and both fetch
+    //    back exactly.
+    {
+        var cat = Catalog.init();
+        var a = try framed("first take");
+        var b = try framed("second take");
+        const addr_a = try deposit(&cat, a.bytes());
+        const addr_b = try deposit(&cat, b.bytes());
+        assert(!std.mem.eql(u8, &addr_a, &addr_b));
+        assert(count_of(&cat) == 2);
+        assert(std.mem.eql(u8, fetch(&cat, addr_a).?, "first take"));
+        assert(std.mem.eql(u8, fetch(&cat, addr_b).?, "second take"));
+        // The manifest enumerates both addresses in first-deposit order.
+        assert(std.mem.eql(u8, &address_at(&cat, 0), &addr_a));
+        assert(std.mem.eql(u8, &address_at(&cat, 1), &addr_b));
+    }
+
+    // 3. Only proven-whole recordings land — a tampered frame refuses DigestMismatch and the catalog is unchanged.
+    {
+        var cat = Catalog.init();
+        var a = try framed("kept one");
+        const kept = try deposit(&cat, a.bytes());
+        assert(count_of(&cat) == 1);
+        var bad = try framed("junk");
+        bad.buf[wire.header_len] = bad.buf[wire.header_len] ^ 0x01;
+        if (deposit(&cat, bad.bytes())) |_| {
+            return error.TamperKept;
+        } else |e| {
+            if (e != error.DigestMismatch) return error.WrongTamper;
+        }
+        // The catalog stands exactly as it was — count unchanged, the earlier recording intact.
+        assert(count_of(&cat) == 1);
+        assert(std.mem.eql(u8, fetch(&cat, kept).?, "kept one"));
+    }
+
+    // 4. The entry count is bounded — a deposit of a seventeenth DISTINCT recording refuses CatalogFull before it writes.
+    {
+        var cat = Catalog.init();
+        var n: u32 = 0;
+        while (n < max_entries) : (n += 1) {
+            // A distinct payload per entry: a single byte equal to the index.
+            var one: [1]u8 = .{@intCast(n)};
+            var f = try framed(&one);
+            _ = try deposit(&cat, f.bytes());
+        }
+        assert(count_of(&cat) == max_entries);
+        var over: [1]u8 = .{0xFF};
+        var f = try framed(&over);
+        if (deposit(&cat, f.bytes())) |_| {
+            return error.CountUnbounded;
+        } else |e| {
+            if (e != error.CatalogFull) return error.WrongCountBound;
+        }
+        assert(count_of(&cat) == max_entries);
+    }
+
+    // 5. The byte budget is bounded — distinct whole-session payloads that would exceed max_bytes refuse CatalogFull
+    //    before a write. Eight whole payloads exactly fill the store; a ninth distinct one overruns it.
+    {
+        var cat = Catalog.init();
+        var n: u32 = 0;
+        while (n < 8) : (n += 1) {
+            var big: [session.max_samples]u8 = undefined;
+            var k: u32 = 0;
+            while (k < session.max_samples) : (k += 1) big[k] = @intCast(n);
+            var f = try framed(&big);
+            _ = try deposit(&cat, f.bytes());
+        }
+        assert(cat.used == max_bytes);
+        var big9: [session.max_samples]u8 = undefined;
+        var k: u32 = 0;
+        while (k < session.max_samples) : (k += 1) big9[k] = 0x99;
+        var f = try framed(&big9);
+        if (deposit(&cat, f.bytes())) |_| {
+            return error.BytesUnbounded;
+        } else |e| {
+            if (e != error.CatalogFull) return error.WrongBytesBound;
+        }
+        assert(cat.used == max_bytes);
+    }
+
+    // 6. A miss is a miss, not a guess — fetch of an address the catalog never held returns null.
+    {
+        var cat = Catalog.init();
+        var a = try framed("present");
+        _ = try deposit(&cat, a.bytes());
+        const absent = address_of("never deposited");
+        assert(fetch(&cat, absent) == null);
+        assert(!holds(&cat, absent));
+    }
+
+    // 7. Clear forgets whole — the count is nothing and the store is entirely zero.
+    {
+        var cat = Catalog.init();
+        var a = try framed("forget me");
+        var b = try framed("and me");
+        _ = try deposit(&cat, a.bytes());
+        _ = try deposit(&cat, b.bytes());
+        assert(count_of(&cat) == 2);
+        clear(&cat);
+        assert(count_of(&cat) == 0);
+        var i: u32 = 0;
+        while (i < cat.store.len) : (i += 1) assert(cat.store[i] == 0);
+    }
+
+    print("GREEN drey-catalog: the Mikrophone desk addresses recordings by content — the same bytes key to one address " ++
+        "(a recording deposited twice is kept once, the count rising by one), distinct bytes key distinct addresses " ++
+        "(both fetch back byte-for-byte), only proven-whole recordings land (a tampered frame refuses DigestMismatch and " ++
+        "the catalog stands unchanged), both bounds refuse CatalogFull before a write (a seventeenth distinct entry, a " ++
+        "byte past the store), a miss returns null rather than a guess, and clear forgets whole. Content-addressing, the " ++
+        "Tablecloth spine, brought to the desk; pure before metal, no disk, no network, no key, no funds\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
