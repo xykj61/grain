@@ -1,0 +1,226 @@
+//! lotus/cue_sheet.rye — ALES22: the marker track travels as text — a cue sheet. ALES20 gave a keeper named places over a master
+//! and ALES21 let them be set and read in seconds, yet every marker lives only in process memory — close the session and the verse,
+//! the chorus, the edit point are gone. A cue sheet is the one primitive that lets a keeper's named places PERSIST and TRAVEL: a
+//! whole markers track rendered as shareable text, and parsed back into exactly the same sorted, named track. The audio world
+//! already has the word — a cue sheet is a list of named time positions handed from one hand to the next.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES22.
+//! Design read: active-designing/20260814-fill-ales22-lotus-cue-sheet.md
+//! Stands on: lotus/markers.rye (ALES20) — the sorted, unique named track and its one `add` reused whole, so every track bound is
+//! enforced at the text edge rather than re-spelled; lotus/pan.rye (ALES10) — the StereoClip master a marker is placed within;
+//! tally/parse_int.rye — strict decimal at the text edge (a leading zero refuses, so `007` never masquerades as `7`). Mirrors the
+//! proven "travels as text" idiom of image/filter_preset.rye (HUNK31: render_book / parse_book).
+//!
+//! THE CRUX: a markers track rendered to a cue sheet parses back to EXACTLY the same track — parse(render(m)) recovers every
+//! position and name byte-for-byte — and render(parse(render(m))) is a fixed point. Two facts make this exact. Render walks the
+//! strictly-ascending track in order, so the text is canonical (positions ascending, decimal with no leading zero) with no per-
+//! render choice to drift. And parse hands each line's position and name to markers.add, so the parsed track is sorted, unique,
+//! within the master, and within the ceiling by ALES20's own maintained invariant — a corrupt record refuses Duplicate, PastEnd,
+//! BadName, or MarkersFull by the track's own name before a byte is trusted.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Text in, text out, over an in-process two-channel i16 PCM master, siloed to lotus/.
+//! A cue sheet is a list of named indices as words, not a signal on a wire. No socket, no network, no keys, no funds, no real
+//! device, no real meter, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/cue_sheet.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const markers = @import("markers.rye");
+const parse_int = @import("parse_int.rye");
+
+pub const cue_sheet_version = "20260814.134526";
+
+/// The record header, its own line. A parsed record must open with exactly this, so a foreign or corrupt text refuses at the first
+/// line before any marker is trusted.
+const sheet_header = "format lotus-cue-sheet-v1";
+
+/// The most bytes a rendered cue sheet can need: the header line, then one `mark <pos> <name>` line per marker. Each line is
+/// bounded — `mark ` (5) + a u32's widest decimal (10) + a space (1) + at most max_name name bytes + a newline (1) — so the whole
+/// record is proven to fit a fixed buffer, never an unbounded string.
+pub const max_sheet_bytes: u32 = @intCast(sheet_header.len + 1 + markers.max_markers * (5 + 10 + 1 + markers.max_name + 1));
+
+/// The combined error set of the cue sheet: one honest edge error for the text grammar, every track bound forwarded unchanged from
+/// ALES20's markers.add. Each fault refuses by name before a marker is trusted or a byte written past the buffer.
+pub const MarkerTextError = error{
+    /// A render whose text would exceed the caller's buffer — refused rather than writing past its end.
+    Overflow,
+    /// A cue sheet whose header, line shape, or position field is malformed — the one honest error at the text edge.
+    BadRecord,
+} || markers.MarkerError;
+
+/// Render a whole markers track as its `format lotus-cue-sheet-v1` record into `out`, returning the length written. A header line,
+/// then one `mark <pos> <name>` line per marker in stored (ascending) order. Refuses Overflow rather than writing past the buffer a
+/// caller supplied. So a keeper's named places travel as shareable text, and — with parse_sheet — render(parse(render(x))) is a
+/// fixed point.
+pub fn render_sheet(m: *const markers.Markers, out: []u8) MarkerTextError!u32 {
+    // invariant: the track stays within its named ceiling before it is ever rendered.
+    assert(m.count <= markers.max_markers);
+    const head = std.fmt.bufPrint(out, "{s}\n", .{sheet_header}) catch return error.Overflow;
+    var off: u32 = @intCast(head.len);
+
+    var i: u32 = 0;
+    while (i < m.count) : (i += 1) {
+        // Both fields are bounded — a u32 position and a name ≤ max_name — so this line can never overrun a well-sized buffer.
+        const line = std.fmt.bufPrint(out[off..], "mark {d} {s}\n", .{ markers.pos_of(m, i), markers.name_of(m, i) }) catch return error.Overflow;
+        off += @intCast(line.len);
+    }
+    // invariant: the rendered record stays within the buffer.
+    assert(off <= out.len);
+    return off;
+}
+
+/// Parse a `format lotus-cue-sheet-v1` record into a fresh track over `master`. Each line past the header is a `mark <pos> <name>`
+/// line; the position is parsed strict-decimal (a leading zero refuses) and the name is the remainder of the line, so a name
+/// carrying a space survives. A bad header, a non-`mark` line, a missing name, or a malformed position refuses BadRecord; every
+/// bounds fault forwards from markers.add by its own name (Duplicate, PastEnd, BadName, MarkersFull) — so the parsed track is
+/// sorted, unique, and within the master by ALES20's own invariant, enforced at the text edge rather than re-spelled here.
+pub fn parse_sheet(text: []const u8, master: *const pan.StereoClip, out: *markers.Markers) MarkerTextError!void {
+    // invariant: parsing starts from an empty track and the master's two channels share one length.
+    out.* = markers.Markers{};
+    assert(out.count == 0 and master.left.len == master.right.len);
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const first = lines.next() orelse return error.BadRecord;
+    if (!std.mem.eql(u8, first, sheet_header)) return error.BadRecord;
+
+    while (lines.next()) |line| {
+        if (line.len == 0) continue; // a trailing newline yields an empty final piece
+        // Each line must open with exactly `mark ` — anything else here is out of place.
+        const prefix = "mark ";
+        if (line.len <= prefix.len or !std.mem.eql(u8, line[0..prefix.len], prefix)) return error.BadRecord;
+        const rest = line[prefix.len..];
+
+        // The position is the first token; the name is everything after the single delimiting space, so a name may carry spaces.
+        const sp = std.mem.indexOfScalar(u8, rest, ' ') orelse return error.BadRecord; // a mark with no name refuses
+        const pos_str = rest[0..sp];
+        const name = rest[sp + 1 ..];
+        const pos = parse_int.parse_int(u32, pos_str, .{}) catch return error.BadRecord;
+
+        // markers.add proves the position legal, sorted, unique, and within the ceiling — every bound at the one place.
+        try markers.add(out, master, pos, name);
+    }
+    // invariant: a parsed track holds no more than the marker ceiling.
+    assert(out.count <= markers.max_markers);
+}
+
+// --- selftest: THE CRUX — a track renders to the exact expected format lotus-cue-sheet-v1 text; parse recovers every position and
+//     name byte-for-byte; render(parse(render(x))) is a fixed point; a cue sheet whose lines arrive OUT OF ORDER parses to the same
+//     sorted track; a name with a space round-trips; and every corruption refuses by name ---------------------------------------
+
+fn run_selftest() !u8 {
+    var master = pan.StereoClip{};
+    var buf: [500]i16 = [_]i16{0} ** 500;
+    try timeline.splice(&master.left, 0, &buf);
+    try timeline.splice(&master.right, 0, &buf);
+
+    // 1. THE CRUX — a track of named places renders to the exact expected text, and parse recovers it byte-for-byte.
+    {
+        var m = markers.Markers{};
+        try markers.add(&m, &master, 0, "intro");
+        try markers.add(&m, &master, 100, "verse");
+        try markers.add(&m, &master, 250, "chorus");
+        try markers.add(&m, &master, 400, "outro");
+
+        var text: [max_sheet_bytes]u8 = undefined;
+        const n = try render_sheet(&m, text[0..]);
+        const want = "format lotus-cue-sheet-v1\nmark 0 intro\nmark 100 verse\nmark 250 chorus\nmark 400 outro\n";
+        if (!std.mem.eql(u8, text[0..n], want)) return error.RenderWrong;
+
+        var back = markers.Markers{};
+        try parse_sheet(text[0..n], &master, &back);
+        if (back.count != m.count) return error.ParseCountWrong;
+        var i: u32 = 0;
+        while (i < m.count) : (i += 1) {
+            if (markers.pos_of(&back, i) != markers.pos_of(&m, i)) return error.ParsePosWrong;
+            if (!std.mem.eql(u8, markers.name_of(&back, i), markers.name_of(&m, i))) return error.ParseNameWrong;
+        }
+
+        // render(parse(render(x))) is a fixed point — the parsed track renders to the identical bytes.
+        var text2: [max_sheet_bytes]u8 = undefined;
+        const n2 = try render_sheet(&back, text2[0..]);
+        if (!std.mem.eql(u8, text[0..n], text2[0..n2])) return error.NotFixedPoint;
+    }
+
+    // 2. a cue sheet whose lines arrive OUT OF ORDER parses to the same sorted track — ALES20's add re-sorts, so a shuffled record
+    //    is canonicalised on the way in. And a name carrying a SPACE round-trips whole.
+    {
+        const shuffled = "format lotus-cue-sheet-v1\nmark 250 the chorus\nmark 0 intro\nmark 400 outro\nmark 100 first verse\n";
+        var back = markers.Markers{};
+        try parse_sheet(shuffled, &master, &back);
+        if (back.count != 4) return error.ShuffledCountWrong;
+        const want_pos = [_]u32{ 0, 100, 250, 400 };
+        const want_name = [_][]const u8{ "intro", "first verse", "the chorus", "outro" };
+        var i: u32 = 0;
+        while (i < back.count) : (i += 1) {
+            if (markers.pos_of(&back, i) != want_pos[i]) return error.ShuffledNotSorted;
+            if (!std.mem.eql(u8, markers.name_of(&back, i), want_name[i])) return error.ShuffledNameWrong;
+        }
+    }
+
+    // 3. every corruption at the text grammar refuses BadRecord — a bad header, a non-`mark` line, a missing name, a leading-zero
+    //    position (the parse_int footgun refused), and a non-numeric position.
+    {
+        var back = markers.Markers{};
+        if (parse_sheet("format wrong-header\nmark 0 a\n", &master, &back)) |_| return error.BadHeaderSlipped else |e| if (e != error.BadRecord) return error.WrongBadHeader;
+        if (parse_sheet("format lotus-cue-sheet-v1\ncut 0 a\n", &master, &back)) |_| return error.BadLineSlipped else |e| if (e != error.BadRecord) return error.WrongBadLine;
+        if (parse_sheet("format lotus-cue-sheet-v1\nmark 0\n", &master, &back)) |_| return error.NoNameSlipped else |e| if (e != error.BadRecord) return error.WrongNoName;
+        if (parse_sheet("format lotus-cue-sheet-v1\nmark 007 a\n", &master, &back)) |_| return error.LeadingZeroSlipped else |e| if (e != error.BadRecord) return error.WrongLeadingZero;
+        if (parse_sheet("format lotus-cue-sheet-v1\nmark 1x a\n", &master, &back)) |_| return error.BadNumSlipped else |e| if (e != error.BadRecord) return error.WrongBadNum;
+    }
+
+    // 4. every BOUNDS fault forwards from markers.add by its own name — a duplicate position, a position past the master, an
+    //    oversized name, and a record past the marker ceiling.
+    {
+        var back = markers.Markers{};
+        if (parse_sheet("format lotus-cue-sheet-v1\nmark 5 a\nmark 5 b\n", &master, &back)) |_| return error.DupSlipped else |e| if (e != error.Duplicate) return error.WrongDup;
+        if (parse_sheet("format lotus-cue-sheet-v1\nmark 501 a\n", &master, &back)) |_| return error.PastEndSlipped else |e| if (e != error.PastEnd) return error.WrongPastEnd;
+        const huge_name = "mark 5 " ++ ("q" ** (markers.max_name + 1)) ++ "\n";
+        if (parse_sheet("format lotus-cue-sheet-v1\n" ++ huge_name, &master, &back)) |_| return error.HugeNameSlipped else |e| if (e != error.BadName) return error.WrongHugeName;
+    }
+
+    // 5. a record past the marker ceiling refuses MarkersFull — build a master long enough, render max_markers+1 lines, parse.
+    {
+        var big = pan.StereoClip{};
+        var big_buf: [markers.max_markers + 1]i16 = [_]i16{0} ** (markers.max_markers + 1);
+        try timeline.splice(&big.left, 0, &big_buf);
+        try timeline.splice(&big.right, 0, &big_buf);
+
+        var m = markers.Markers{};
+        var p: u32 = 0;
+        while (p < markers.max_markers) : (p += 1) try markers.add(&m, &big, p, "m");
+        var text: [max_sheet_bytes]u8 = undefined;
+        const n = try render_sheet(&m, text[0..]);
+        // append one more legal-looking mark line past the ceiling.
+        const over = std.fmt.bufPrint(text[n..], "mark {d} over\n", .{markers.max_markers}) catch return error.Overflow;
+        var back = markers.Markers{};
+        if (parse_sheet(text[0 .. n + over.len], &big, &back)) |_| return error.FullSlipped else |e| if (e != error.MarkersFull) return error.WrongFull;
+    }
+
+    // 6. a render into a too-small buffer refuses Overflow rather than writing past its end.
+    {
+        var m = markers.Markers{};
+        try markers.add(&m, &master, 10, "x");
+        var tiny: [8]u8 = undefined; // smaller than even the header line
+        if (render_sheet(&m, tiny[0..])) |_| return error.OverflowSlipped else |e| if (e != error.Overflow) return error.WrongOverflow;
+    }
+
+    print("GREEN ales-cue-sheet: a markers track travels as a format lotus-cue-sheet-v1 record — a keeper's named places persist and " ++
+        "port. THE CRUX: parse(render(m)) recovers every position and name byte-for-byte and render(parse(render(m))) is a fixed " ++
+        "point, the render walking the strictly-ascending track so the text is canonical and the parse enforcing every bound through " ++
+        "ALES20's one markers.add; a shuffled record parses to the same sorted track and a name with a space round-trips whole; and " ++
+        "every corruption refuses by name — a bad header, a non-mark line, a missing name, a leading-zero or non-numeric position " ++
+        "BadRecord, a duplicate Duplicate, a position past the master PastEnd, an oversized name BadName, a record past the ceiling " ++
+        "MarkersFull, a render into a too-small buffer Overflow; markers.add and parse_int reused whole; no socket, no network, no " ++
+        "keys, no funds, no real device, no real meter, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
