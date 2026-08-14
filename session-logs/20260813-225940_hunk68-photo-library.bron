@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260813.225940
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title HUNK68 — the Photos library, the app's home screen over the content-addressed store
+prompt recur baton — take the next agent-doable lap Lindy-first crux-first on the road past BUHR; send each finished increment as its own signed round; stop at the custody gates
+think Read REMEMBER (frontier Season A, waymark HUNK), the 1,024-round itinerary, and the six-season double-seat. HEAD is HUNK67 (photo_save) — the save loop is closed: open -> edit -> save -> re-open, byte-for-byte. The store can store_image and fetch_image by name, yet nothing can SHOW the store as a SET.
+think Lindy-first crux-first: the Photos app has no home screen. A library — the wall of thumbnails a keeper enters constantly — is the highest-Lindy next move: read on every open, and the crux that ties the store (HUNK1) to the render (HUNK2 down_map) into one browsable face. Checked the primitives: tablecloth already exposes artifact_name(cat,i) + cat.count (enumeration is there), and image_skate.down_map paints a thumbnail. So the crux is the library MODEL, not new store plumbing.
+think The durable invariant this rung earns: build_library FETCHES each image, and a fetch proves every bead against its digest FIRST (HUNK1). So the home screen shows only images that verified — a tampered image surfaces DigestMismatch at build time and is never painted as garbage. The catalog's own order is the library's order; bounded by max_artifacts.
+obs Built brushstroke/photo_library.rye: LibraryEntry {name owned, width, height, stored_len, thumb Grid} + Library {entries[max_entries], count}. build_library walks 0..cat.count, fetches, down-maps, records. GREEN on first build. Selftest proves: empty store -> empty wall; three distinct images -> three tiles in catalog order (sunrise, harbor, orchard), each thumbnail agreeing cell-for-cell with a direct down_map of the fetched image; the pictures genuinely differ; a tampered bead refuses DigestMismatch at build time; an over-ceiling thumbnail refuses ThumbTooLarge.
+obs TAME caught one compound assert (e.thumb.cols == 2 and e.thumb.rows == 2) — split into two so the failing half is named. No @memcpy (used tally_copy.copy_disjoint), no new usize, two+ asserts per fn. Width clean, TAME clean, witness GREEN. No custody gate reached — no network, no key, no funds.
+loom witness=hunk_photo_library_witness tiles=3 thumb=2x2 tame=clean width_exit=0
+file brushstroke/photo_library.rye HUNK68 — build_library enumerates the store into an ordered wall of verified image thumbnails
+file tools/hunk_photo_library_witness.rish the witness that binds the home-screen claim on metal
+file work-in-progress/REMEMBER.md Git nib refreshed to this round's HEAD
+recommend keep-going HUNK69 — paint the library grid on glass (lay the tiles in a scrollable Skate grid reusing touch_scroll), then tap a tile to open it into the Photos editor; the library model now stands

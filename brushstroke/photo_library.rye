@@ -1,0 +1,253 @@
+//! brushstroke/photo_library.rye — HUNK68: the Photos library — the app's home screen over the store.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK68.
+//! Design read: active-designing/20260813-222956_hunk-filter-picker-exploration.md ("The road on from here").
+//! Teacher, thanked clean-room: the photo-library grid of iCloud Photos / Google Photos — a wall of thumbnails
+//! you scroll and tap to open (concept only, siloed).
+//!
+//! HUNK1 gave an image a content-addressed identity; HUNK67 let the editor save an edit as a first-class
+//! artifact. Every rung since has stored images the store cannot yet SHOW as a set. This rung builds the home
+//! screen: it enumerates the Tablecloth catalog and, in held order, fetches each image and down-maps it to a
+//! small Skate thumbnail — so a keeper meets a wall of pictures, not a bare list of names.
+//!
+//! The durable invariant this rung earns: building the library FETCHES each image, and a fetch proves every
+//! bead against its digest FIRST (HUNK1). So the library grid shows only images that verified — a tampered
+//! image surfaces `DigestMismatch` at build time and is never painted as garbage onto the home screen. The
+//! catalog's own order is the library's order; the whole thing is bounded by `max_artifacts`. No network,
+//! no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/photo_library.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const tablecloth = @import("tablecloth.rye");
+const beading = @import("mantra/beading.rye");
+const image_artifact = @import("image_artifact.rye");
+const image_skate = @import("image_skate.rye");
+const skate = @import("skate_grid.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const photo_library_version = "20260813.225940";
+
+/// The most images one library holds — the catalog's own ceiling, so the library never claims to show more
+/// than the store can hold. Bounded at construction, walked no further than `count`.
+pub const max_entries: u32 = tablecloth.max_artifacts;
+
+/// A name fits the catalog's name budget; a library entry copies the catalog's name into its own storage so
+/// an entry outlives a borrowed slice.
+pub const max_name: u32 = tablecloth.max_name;
+
+/// A thumbnail is a small down-map, not the whole panel; both axes bounded by the down-map ceiling.
+pub const max_thumb_cols: u32 = image_skate.max_map_cols;
+pub const max_thumb_rows: u32 = image_skate.max_map_rows;
+
+/// A pleasant default thumbnail — four blocks square reads as a picture at a glance while staying tiny.
+pub const default_thumb_cols: u32 = 4;
+pub const default_thumb_rows: u32 = 4;
+
+pub const LibraryError = error{
+    ThumbTooLarge,
+};
+
+/// One tile on the home screen: the image's name (owned), its true dimensions, its stored byte length, and the
+/// Skate thumbnail painted from the verified pixels. Invariant: `name_len <= max_name`.
+pub const LibraryEntry = struct {
+    name: [max_name]u8 = undefined,
+    name_len: u32 = 0,
+    width: u32 = 0,
+    height: u32 = 0,
+    stored_len: u32 = 0,
+    thumb: skate.Grid = undefined,
+
+    /// The entry's name as a slice into its own owned storage.
+    pub fn name_slice(self: *const LibraryEntry) []const u8 {
+        // invariant: the held name honors its length bound
+        assert(self.name_len <= max_name);
+        return self.name[0..self.name_len];
+    }
+};
+
+/// The home screen: a bounded, ordered wall of verified image tiles over one store. Invariant: `count <=
+/// max_entries`, and every live entry honors the LibraryEntry invariant.
+pub const Library = struct {
+    entries: [max_entries]LibraryEntry = undefined,
+    count: u32 = 0,
+
+    pub fn empty() Library {
+        return .{ .entries = undefined, .count = 0 };
+    }
+
+    /// The tile at index `i`, in the catalog's held order.
+    pub fn entry_at(self: *const Library, i: u32) *const LibraryEntry {
+        // invariant: the index names a live tile
+        assert(i < self.count);
+        return &self.entries[i];
+    }
+};
+
+/// Build the library over a catalog and its store: for every artifact the catalog holds, in held order, fetch
+/// the image (which proves every bead against its digest FIRST) and down-map it to a `thumb_cols × thumb_rows`
+/// Skate thumbnail. A tampered or missing bead refuses (`DigestMismatch`) at fetch time, so a broken image is
+/// never painted onto the home screen — the library shows only pictures that verified. Refuses a thumbnail
+/// past the down-map ceiling (`ThumbTooLarge`).
+pub fn build_library(
+    allocator: std.mem.Allocator,
+    cat: *const tablecloth.Catalog,
+    store: *const beading.BeadStore,
+    thumb_cols: u32,
+    thumb_rows: u32,
+) !Library {
+    // invariant: a thumbnail is at least one block on each axis and never past the down-map ceiling.
+    if (thumb_cols == 0 or thumb_rows == 0) return error.ThumbTooLarge;
+    if (thumb_cols > max_thumb_cols or thumb_rows > max_thumb_rows) return error.ThumbTooLarge;
+    // invariant: the catalog never claims more entries than the library can hold.
+    assert(cat.count <= max_entries);
+
+    var lib: Library = .empty();
+    var i: u32 = 0;
+    while (i < cat.count) : (i += 1) {
+        const name = tablecloth.artifact_name(cat, i);
+        // The fetch proves every bead before it returns a byte — a tampered image refuses here, unshown.
+        const pm = try image_artifact.fetch_image(allocator, cat, store, name);
+        const thumb = try image_skate.down_map(allocator, &pm, thumb_cols, thumb_rows);
+        const stored_len = try tablecloth.artifact_len(cat, name);
+
+        var e = &lib.entries[i];
+        // invariant: a catalog name always fits the entry's name budget (both bound by max_name).
+        assert(name.len <= max_name);
+        tally_copy.copy_disjoint(u8, e.name[0..name.len], name);
+        e.name_len = @intCast(name.len);
+        e.width = pm.width;
+        e.height = pm.height;
+        e.stored_len = stored_len;
+        e.thumb = thumb;
+        lib.count += 1;
+    }
+
+    // invariant: the library holds exactly one tile per catalog entry, in the catalog's own order.
+    assert(lib.count == cat.count);
+    assert(lib.count <= max_entries);
+    return lib;
+}
+
+// --- selftest: fill a store with distinct images, build the home screen, and prove the wall is faithful and
+//     that a tampered image never reaches it --------------------------------------------------------------
+
+/// Build a small image whose pixels vary with a seed, so three seeds give three genuinely different pictures
+/// (different thumbnails, different content addresses).
+fn craft(allocator: std.mem.Allocator, seed: u8) !qoi.Pixmap {
+    const n: u32 = 64;
+    const buf = try allocator.alloc(u8, n * 4);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const band: u8 = @intCast((i / 8) & 0xFF);
+        const step: u8 = @intCast((i % 8) & 0xFF);
+        const off = @as(usize, i) * 4;
+        buf[off] = seed +% band *% 5; // r — the seed shifts the whole picture
+        buf[off + 1] = 20 +% step *% 2; // g
+        buf[off + 2] = 30 +% band *% seed; // b
+        buf[off + 3] = 255; // a
+    }
+    return qoi.Pixmap{ .width = 8, .height = 8, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+/// Two grids down-mapped from the same image must agree cell for cell — the thumbnail the library holds is the
+/// down-map of the image its name pinned, not an approximation.
+fn thumbs_agree(a: *const skate.Grid, b: *const skate.Grid) bool {
+    if (a.cols != b.cols or a.rows != b.rows) return false;
+    if (a.fg_index.len != b.fg_index.len) return false;
+    var i: usize = 0;
+    while (i < a.fg_index.len) : (i += 1) {
+        if (a.fg_index[i] != b.fg_index[i]) return false;
+        if (a.cells[i] != b.cells[i]) return false;
+    }
+    return true;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    var store: beading.BeadStore = .empty();
+    var cat: tablecloth.Catalog = .empty();
+
+    // An empty store yields an empty home screen — no tiles, no refusal.
+    {
+        const lib0 = try build_library(garden, &cat, &store, default_thumb_cols, default_thumb_rows);
+        assert(lib0.count == 0);
+    }
+
+    // Store three distinct images under three names, in a known order.
+    const names = [_][]const u8{ "sunrise.qoi", "harbor.qoi", "orchard.qoi" };
+    const seeds = [_]u8{ 10, 90, 170 };
+    var k: u32 = 0;
+    while (k < 3) : (k += 1) {
+        const pm = try craft(garden, seeds[k]);
+        _ = try image_artifact.store_image(garden, &cat, &store, names[k], &pm);
+    }
+
+    // Build the home screen at a 2×2 thumbnail.
+    const lib = try build_library(garden, &cat, &store, 2, 2);
+    assert(lib.count == 3);
+
+    // The wall is in the catalog's own order, and every tile is faithful to its image.
+    var j: u32 = 0;
+    while (j < 3) : (j += 1) {
+        const e = lib.entry_at(j);
+        // Name and order match the store.
+        assert(std.mem.eql(u8, e.name_slice(), names[j]));
+        // True dimensions carried through.
+        assert(e.width == 8);
+        assert(e.height == 8);
+        assert(e.stored_len >= qoi.header_len + @as(u32, qoi.end_marker.len));
+        // The thumbnail is exactly the down-map of the verified image the name pins.
+        const pm = try image_artifact.fetch_image(garden, &cat, &store, names[j]);
+        const want = try image_skate.down_map(garden, &pm, 2, 2);
+        assert(e.thumb.cols == 2);
+        assert(e.thumb.rows == 2);
+        assert(thumbs_agree(&e.thumb, &want));
+    }
+
+    // The three pictures really differ — at least one tile's thumbnail is not another's.
+    assert(!thumbs_agree(&lib.entry_at(0).thumb, &lib.entry_at(1).thumb) or
+        !thumbs_agree(&lib.entry_at(1).thumb, &lib.entry_at(2).thumb));
+
+    // Unwelcome: a tampered image never reaches the home screen. Corrupt a held bead in a fresh store and
+    // confirm the whole build refuses before the wall is painted.
+    {
+        var store_t: beading.BeadStore = .empty();
+        var cat_t: tablecloth.Catalog = .empty();
+        const pm = try craft(garden, 42);
+        _ = try image_artifact.store_image(garden, &cat_t, &store_t, "tampered.qoi", &pm);
+        store_t.beads[0].bytes[0] +%= 1; // flip one byte of a held bead
+        if (build_library(garden, &cat_t, &store_t, 2, 2)) |_| {
+            return error.TamperSlipped;
+        } else |e| {
+            if (e != error.DigestMismatch) return error.WrongTamper;
+        }
+    }
+
+    // Unwelcome: a thumbnail past the ceiling refuses rather than allocating an unbounded grid.
+    if (build_library(garden, &cat, &store, max_thumb_cols + 1, 2)) |_| {
+        return error.TooLargeSlipped;
+    } else |e| {
+        if (e != error.ThumbTooLarge) return error.WrongTooLarge;
+    }
+
+    print("GREEN photo-library: an empty store shows an empty home screen; three distinct images build a " ++
+        "three-tile library in the catalog's own order (sunrise, harbor, orchard), each tile carrying the " ++
+        "image's true 8x8 dimensions, its stored length, and a 2x2 thumbnail that agrees cell-for-cell with " ++
+        "the down-map of the verified image its name pins; the pictures genuinely differ; a tampered image " ++
+        "refused DigestMismatch at build time and never reached the wall; an over-ceiling thumbnail refused " ++
+        "ThumbTooLarge; no network, no key, no funds\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: photo_library selftest\n", .{});
+    return 1;
+}
