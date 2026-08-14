@@ -1,0 +1,236 @@
+//! lotus/stack.rye — ALES42: a three-band tone stack — bass, mid, and treble from two one-pole splits. ALES41 gave Lotus two
+//! knobs by scaling ALES40's low band and its exact high-band complement; yet the tone stack a keeper reaches for on a guitar
+//! amp, a mixing desk, or an everyday audio app has THREE knobs — bass, mid, and treble. The middle band is the one a two-band
+//! shelf cannot touch: the vocal presence, the snare crack, the body of a take. This rung opens it. The one correctness beyond
+//! ALES41 is the MID band as an exact residual — M = x − L − H, defined so the three bands sum to the input by construction, so
+//! unity on all three reconstructs the input byte-for-byte even if a band saturated, and the wide-domain sum clamps ONCE.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES42.
+//! Design read: active-designing/20260814-162200_fill-ales42-lotus-tone-stack.md
+//! Stands on: lotus/shelf.rye (ALES41) — the two-band scale-and-clamp it widens to three; lotus/tone.rye (ALES40) — the
+//! one-pole low-pass/high-pass split it calls twice; lotus/timeline.rye (ALES2) — the Clip and the one true saturation.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
+//! no network, no keys, no funds, no real device, no real sample rate (each crossover sets where a split falls over sample
+//! INDICES, not a frequency in hertz — a real time base is a later rung). Every band scale and the sum run in i64 so nothing
+//! overflows before the single clamp.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stack.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const tone = @import("tone.rye");
+
+pub const stack_version = "20260814.162200";
+
+/// The stack's faults: ALES40's coefficient/range faults reused whole, plus a zero band denominator (a divide by zero on a
+/// bass, mid, or treble gain). Zig merges error sets by name, so BadRange coincides with tone's rather than doubling, and
+/// BadGain is the same fault shelf (ALES41) already names.
+pub const StackError = tone.ToneError || error{
+    /// A band gain with a zero denominator — refused, no divide by zero.
+    BadGain,
+};
+
+/// Stack `count` samples starting at `start` in place: split the span into a low band (a one-pole low-pass at the bass
+/// crossover lo_num/lo_den, ALES40), a high band (a one-pole high-pass at the treble crossover hi_num/hi_den, ALES40), and the
+/// mid band as the exact residual M = x − L − H; scale each band by its own gain and write the sum saturated ONCE over the true
+/// wide-domain total. Unity on all three bands (bass = bass_den, mid = mid_den, treble = treble_den) reconstructs the input
+/// byte-for-byte — the mid is defined as the residual, so L + M + H = x by construction. At direct current L = x and H = 0
+/// exactly (ALES40's proven reach and removal), so M = 0: only bass moves a constant, neither mid nor treble reaches it.
+/// Refuses BadCoeff on an illegal crossover, BadGain on a zero band denominator, BadRange on a span outside the samples —
+/// each before any write. Values only — never the length.
+pub fn stack(
+    clip: *timeline.Clip,
+    start: u32,
+    count: u32,
+    lo_num: i32,
+    lo_den: u32,
+    hi_num: i32,
+    hi_den: u32,
+    bass_num: i32,
+    bass_den: u32,
+    mid_num: i32,
+    mid_den: u32,
+    treble_num: i32,
+    treble_den: u32,
+) StackError!void {
+    // invariant: each crossover is a legal fraction in (0, 1] — den nonzero, num in [1, den] (ALES40's own law), for both
+    // the bass split and the treble split.
+    if (lo_den == 0 or hi_den == 0) return error.BadCoeff;
+    if (lo_num < 1 or hi_num < 1) return error.BadCoeff;
+    if (@as(i64, lo_num) > @as(i64, lo_den)) return error.BadCoeff;
+    if (@as(i64, hi_num) > @as(i64, hi_den)) return error.BadCoeff;
+    // invariant: no band gain divides by zero.
+    if (bass_den == 0 or mid_den == 0 or treble_den == 0) return error.BadGain;
+    // invariant: the span lies wholly within the current samples (checked without underflow — count vs the remainder).
+    if (start > clip.len) return error.BadRange;
+    if (count > clip.len - start) return error.BadRange;
+
+    // The low band and the high band each live in a scratch copy of the span so the original samples (the mid band's minuend)
+    // stay intact until the combine writes them. The span always fits each scratch — all three share timeline.max_clip.
+    var low = timeline.Clip{};
+    var high = timeline.Clip{};
+    // invariant: the span fits each scratch buffer whole — no partial copy.
+    assert(count <= low.buf.len and count <= high.buf.len);
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        low.buf[i] = clip.buf[start + i];
+        high.buf[i] = clip.buf[start + i];
+    }
+    low.len = count;
+    high.len = count;
+    try tone.low_pass(&low, 0, count, lo_num, lo_den);
+    try tone.high_pass(&high, 0, count, hi_num, hi_den);
+
+    const bass_d: i64 = @as(i64, bass_den);
+    const mid_d: i64 = @as(i64, mid_den);
+    const treble_d: i64 = @as(i64, treble_den);
+    i = 0;
+    while (i < count) : (i += 1) {
+        const x: i64 = @as(i64, clip.buf[start + i]);
+        const lo: i64 = @as(i64, low.buf[i]);
+        const hi: i64 = @as(i64, high.buf[i]);
+        const mid: i64 = x - lo - hi; // the exact mid band: input minus the low and high bands — the residual that reconstructs
+        // Each band divided in i64 (the ALES2 gain rule), the three summed in i64, the single clamp over the true sum — ALES8's
+        // fader lesson carried by ALES41: scale in the wide domain and saturate once, never saturate then sum.
+        const scaled: i64 = @divTrunc(@as(i64, bass_num) * lo, bass_d) +
+            @divTrunc(@as(i64, mid_num) * mid, mid_d) +
+            @divTrunc(@as(i64, treble_num) * hi, treble_d);
+        clip.buf[start + i] = timeline.saturate(scaled);
+    }
+    // invariant: a stack changes sample values only, never the clip's length or bound.
+    assert(start + count <= clip.len);
+    assert(clip.len <= clip.buf.len);
+}
+
+// --- selftest: silence stays silence; unity on all three bands is the identity (the bands reconstruct); bass scales direct
+//     current while mid and treble leave it untouched (the knobs are orthogonal at direct current); a boost SATURATES rather
+//     than wraps; and an illegal crossover, a zero band denominator, and an out-of-range span each refuse by name -----------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn run_selftest() !u8 {
+    // 1. silence stays silence — an all-zero clip stacks to all zeros at any gains.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0 });
+        try stack(&clip, 0, clip.len, 1, 2, 1, 2, 3, 1, 2, 1, 4, 1);
+        const zeros = [_]i16{ 0, 0, 0, 0, 0, 0 };
+        if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
+    }
+
+    // 2. unity on all three bands is the IDENTITY — bass = mid = treble = 1/1 writes L + (x - L - H) + H = x byte-for-byte, at
+    //    any two crossovers. The sharpest proof the three bands reconstruct the input.
+    {
+        var clip = timeline.Clip{};
+        const src = [_]i16{ 100, -200, 3000, -4000, 500, 42 };
+        try load_clip(&clip, &src);
+        try stack(&clip, 0, clip.len, 1, 3, 1, 2, 1, 1, 1, 1, 1, 1); // flat three-band EQ
+        if (!eq(clip.samples(), &src)) return error.IdentityWrong;
+    }
+
+    // 3. bass moves direct current — a settled constant at bass = 2/1, mid = treble = 1/1 doubles the constant's tail; the first
+    //    sample differs (the filter transient), the settled tail is exactly twice the input.
+    {
+        var clip = timeline.Clip{};
+        const src = [_]i16{1000} ** 30;
+        try load_clip(&clip, &src);
+        try stack(&clip, 0, clip.len, 1, 2, 1, 2, 2, 1, 1, 1, 1, 1); // bass ×2, mid ×1, treble ×1
+        const out = clip.samples();
+        if (out[out.len - 1] != 2000) return error.BassDcWrong; // settled tail doubled
+        if (out[0] == 2000) return error.BassNoTransient; // the first sample is not yet settled
+    }
+
+    // 4. mid does NOT move direct current — the same constant at mid = 5/1, bass = treble = 1/1 leaves the settled tail exactly
+    //    the input: the mid band is zero at direct current (M = x - x - 0), so the knob cannot touch a constant.
+    {
+        var clip = timeline.Clip{};
+        const src = [_]i16{1000} ** 30;
+        try load_clip(&clip, &src);
+        try stack(&clip, 0, clip.len, 1, 2, 1, 2, 1, 1, 5, 1, 1, 1); // bass ×1, mid ×5, treble ×1
+        const out = clip.samples();
+        if (out[out.len - 1] != 1000) return error.MidMovedDc; // mid cannot touch a constant
+    }
+
+    // 5. treble does NOT move direct current — the same constant at treble = 5/1, bass = mid = 1/1 leaves the settled tail
+    //    exactly the input: the high band is zero at direct current, so the knobs are orthogonal.
+    {
+        var clip = timeline.Clip{};
+        const src = [_]i16{1000} ** 30;
+        try load_clip(&clip, &src);
+        try stack(&clip, 0, clip.len, 1, 2, 1, 2, 1, 1, 1, 1, 5, 1); // bass ×1, mid ×1, treble ×5
+        const out = clip.samples();
+        if (out[out.len - 1] != 1000) return error.TrebleMovedDc; // treble cannot touch a constant
+    }
+
+    // 6. a boost SATURATES rather than wraps — a loud constant at bass = 2/1 whose doubled value exceeds the i16 range pins to
+    //    sample_max, never a wrapped negative.
+    {
+        var clip = timeline.Clip{};
+        const src = [_]i16{20000} ** 30;
+        try load_clip(&clip, &src);
+        try stack(&clip, 0, clip.len, 1, 2, 1, 2, 2, 1, 1, 1, 1, 1); // bass ×2 → 40000, clamps to +32767
+        const out = clip.samples();
+        if (out[out.len - 1] != timeline.sample_max) return error.SaturateWrong;
+    }
+
+    // 7a. an illegal low crossover (zero denominator) refuses BadCoeff — no divide by zero on the bass split.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 1, 2, 3 });
+        if (stack(&clip, 0, clip.len, 1, 0, 1, 2, 1, 1, 1, 1, 1, 1)) |_| return error.ZeroLoSlipped else |e| if (e != error.BadCoeff) return error.WrongZeroLo;
+    }
+
+    // 7b. an illegal high crossover (above one — unstable) refuses BadCoeff.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 1, 2, 3 });
+        if (stack(&clip, 0, clip.len, 1, 2, 3, 2, 1, 1, 1, 1, 1, 1)) |_| return error.OverOneSlipped else |e| if (e != error.BadCoeff) return error.WrongOverOne;
+    }
+
+    // 7c. a zero bass, mid, or treble denominator each refuse BadGain.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 1, 2, 3 });
+        if (stack(&clip, 0, clip.len, 1, 2, 1, 2, 1, 0, 1, 1, 1, 1)) |_| return error.ZeroBassSlipped else |e| if (e != error.BadGain) return error.WrongZeroBass;
+        if (stack(&clip, 0, clip.len, 1, 2, 1, 2, 1, 1, 1, 0, 1, 1)) |_| return error.ZeroMidSlipped else |e| if (e != error.BadGain) return error.WrongZeroMid;
+        if (stack(&clip, 0, clip.len, 1, 2, 1, 2, 1, 1, 1, 1, 1, 0)) |_| return error.ZeroTrebleSlipped else |e| if (e != error.BadGain) return error.WrongZeroTreble;
+    }
+
+    // 7d. an out-of-range span refuses BadRange before any write, leaving the clip untouched.
+    {
+        var clip = timeline.Clip{};
+        const src = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &src);
+        if (stack(&clip, 2, 5, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(clip.samples(), &src)) return error.RefusedStackMutated;
+    }
+
+    print("GREEN ales-stack: a three-band tone stack scales the low band, the mid band, and the high band independently and " ++
+        "clamps once — silence stays silence; unity on all three bands (bass = mid = treble = 1/1) writes the input " ++
+        "byte-for-byte (the mid is the exact residual M = x - L - H, so the three bands reconstruct); bass = 2/1 doubles a " ++
+        "settled constant while the first sample stays in transient, and mid = 5/1 and treble = 5/1 each leave the same " ++
+        "constant untouched (the mid and high bands are zero at direct current — only bass moves a constant, the knobs are " ++
+        "orthogonal); a bass boost of a loud constant (20000×2) SATURATES to +32767 rather than wrapping, scaling in the wide " ++
+        "domain and clamping once (ALES8's fader lesson via ALES41); an illegal low or high crossover refuses BadCoeff, a zero " ++
+        "bass, mid, or treble denominator refuses BadGain, and an out-of-range span refuses BadRange leaving the clip " ++
+        "untouched; no socket, no network, no keys, no funds, no real device, no real sample rate\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
