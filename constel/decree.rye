@@ -1,0 +1,285 @@
+//! constel/decree.rye — FORA11: from an election, commit ONE value. FORA10 elected one leader and proved that leader unique;
+//! a leader is WHO may propose, not yet WHAT the sky agrees on. Every replicated ledger — a block committed, a balance moved,
+//! a name bound once across the whole constellation — leans on the next primitive: the sky commits a single VALUE, once, so
+//! that no two piers ever hold a different value for the same decision. This rung takes that one new concern and nothing more.
+//!
+//! The crux is the same safety the quorum handed the track, spent now on data rather than identity: because a member accepts
+//! ONE value per round and any two majorities intersect, AT MOST ONE value can ever commit for a decree. That single-value
+//! guarantee is the whole reason a replicated log stays consistent — it is asserted at the seal, not hoped. This rung is
+//! deliberately parallel to FORA10: an election decides identity, a decree decides value, and a single-slot consensus IS those
+//! two questions — proving them side by side shows the intersection property is the one engine under both.
+//!
+//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+//! FORA11. Design read: active-designing/20260814-053908_fora11-constel-single-decree.md
+//! Stands on: constel/elect.rye (FORA10) — the leader who proposes; constel/quorum.rye (FORA9) — majority_of, the strict
+//! threshold; constel/census.rye (FORA8) — announce/respond/hear collect the accepts at the border; constel/switchboard.rye
+//! (FORA6) — the medium; constel/roster.rye (FORA1) — the bound.
+//!
+//! Purely LOCAL — a bounded decision over the switchboard on one bench, siloed to constel/, run from inside the jailed pier.
+//! No socket, no network, no keys, no funds, no real address ever formed (custody gate #2 — real hardware / any real wire —
+//! and gate #4 — real Kumara — both untouched).
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/decree.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const name = @import("name.rye");
+const wire = @import("wire.rye");
+const exchange = @import("exchange.rye");
+const roster = @import("roster.rye");
+const switchboard = @import("switchboard.rye");
+const census = @import("census.rye");
+const quorum = @import("quorum.rye");
+
+pub const decree_version = "20260814.053908";
+
+pub const DecreeError = error{
+    /// No strict majority accepted the proposed value — the sky is undecided and commits nothing. A minority never decides.
+    NoDecree,
+    /// A voter already accepted this round accepted again — a pier accepts exactly once per decree.
+    DoubleAccept,
+    /// A voter accepted a value other than the one proposed — a decree is agreement on ONE value, so an off-value accept is a
+    /// fault the leader surfaces rather than silently miscounting toward a different value.
+    WrongValue,
+} || switchboard.SwitchboardError;
+
+/// A decree over one proposed value: each roster slot's single accept (the value it agreed to), which slots have cast, the
+/// value the leader proposed, and the constellation size. Bounded by max_piers, exactly like the roster it indexes.
+pub const Decree = struct {
+    accepted: [roster.max_piers]u32 = [_]u32{0} ** roster.max_piers,
+    cast: [roster.max_piers]bool = [_]bool{false} ** roster.max_piers,
+    value: u32 = 0,
+    size: u32 = 0,
+
+    /// Record one honest accept: a voter agrees to a value. A voter that has already cast refuses DoubleAccept; a value other
+    /// than the proposed one refuses WrongValue — a decree gathers support for a single value, never a mixture.
+    pub fn accept(self: *Decree, voter: u32, value: u32) DecreeError!void {
+        // invariant: only a real member of the constellation ever accepts.
+        assert(voter < self.size);
+        if (self.cast[voter]) return error.DoubleAccept; // a pier accepts exactly once per decree
+        if (value != self.value) return error.WrongValue; // a decree is agreement on the one proposed value
+        self.accepted[voter] = value;
+        self.cast[voter] = true;
+    }
+
+    /// How many cast accepts name the proposed value — every recorded accept is for that value by construction, so this is the
+    /// count of piers that agreed. Bounded by the constellation size.
+    pub fn support(self: *const Decree) u32 {
+        var n: u32 = 0;
+        var i: u32 = 0;
+        while (i < self.size) : (i += 1) {
+            if (self.cast[i]) {
+                // invariant: every recorded accept is for the one proposed value — accept refused any other.
+                assert(self.accepted[i] == self.value);
+                n += 1;
+            }
+        }
+        // invariant: support never exceeds the constellation it is drawn from.
+        assert(n <= self.size);
+        return n;
+    }
+
+    /// Commit the proposed value when a strict majority accepted it, else refuse NoDecree. The seal asserts the whole safety:
+    /// the committed value carries a strict majority, and no OTHER value could have — every recorded accept is for the one
+    /// proposed value, so a second value has zero support by construction and two values can never both commit.
+    pub fn commit(self: *const Decree) DecreeError!u32 {
+        // invariant: a decree commits over a real, bounded constellation.
+        assert(self.size >= 1 and self.size <= roster.max_piers);
+        const threshold = quorum.majority_of(self.size);
+        const backing = self.support();
+        if (backing < threshold) return error.NoDecree;
+        // invariant: the committed value holds a strict majority — the single-value safety, made checkable per decree.
+        assert(2 * backing > self.size);
+        return self.value;
+    }
+};
+
+/// The whole round over the switchboard: open (the leader is a member, else NoSuchPier), announce, drive every other member
+/// respond+hear interleaved — so an accept counts only from a member proven present at the border — record each member's
+/// accept of the proposed value, record the leader's own accept, and commit. Every honest member accepts the leader's value;
+/// the medium proves the right to accept it, this function never invents an accept.
+pub fn run_decree(sb: *switchboard.Switchboard, leader: []const u8, value: u32) DecreeError!u32 {
+    const leader_slot = try sb.member(leader); // a stranger cannot open a decree
+    const n = sb.size();
+    // invariant: the leader is a real member of a bounded constellation.
+    assert(leader_slot < n);
+    assert(n <= roster.max_piers);
+
+    var ping = wire.Frame{};
+    const reached = try census.announce(sb, leader, &ping);
+    // invariant: the announce reached exactly every other member.
+    assert(reached == n - 1);
+
+    var d = Decree{ .value = value, .size = n };
+    try d.accept(leader_slot, value); // the leader accepts its own proposal, present by definition
+
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        if (i == leader_slot) continue; // the leader does not accept to itself over the wire
+        const who = try sb.roster.member(i);
+        var wb: [name.max_ship_len]u8 = undefined;
+        const wn = copy_name(&wb, who);
+        try census.respond(sb, wn, leader); // the member replies its present token
+        const slot = try census.hear(sb, leader); // the leader reads exactly that one reply at the border
+        // invariant: a heard accept comes from a member whose reachability the medium just proved.
+        assert(slot < n);
+        try d.accept(slot, value); // an honest member accepts the proposed value
+    }
+    // invariant: a full round hears every other member, so every member accepted exactly once.
+    assert(d.support() == n);
+    return d.commit();
+}
+
+// --- selftest: a strict majority commits; below it refuses NoDecree; only the proposed value can commit; a unanimous sky
+//     commits and a lone accept never does; DoubleAccept refuses a second cast; a stranger cannot open; the border guards;
+//     eight stay bounded --------------------------------------------------------------------------------------------------
+
+fn run_selftest() !u8 {
+    // 1. A strict majority accepting commits the value — a sky of four, three accepting value 7 (slot 3 silent), commits 7.
+    {
+        var d = Decree{ .value = 7, .size = 4 };
+        try d.accept(0, 7);
+        try d.accept(1, 7);
+        try d.accept(2, 7);
+        assert(d.support() == 3);
+        assert((try d.commit()) == 7);
+    }
+
+    // 2. Below a majority refuses NoDecree — two of four accepting never commits; a minority never decides.
+    {
+        var d = Decree{ .value = 7, .size = 4 };
+        try d.accept(0, 7);
+        try d.accept(1, 7);
+        assert(d.support() == 2);
+        if (d.commit()) |_| return error.MinorityDecided else |e| if (e != error.NoDecree) return error.WrongMinority;
+    }
+
+    // 3. Only the proposed value can commit — an accept for a different value refuses WrongValue and is never tallied, so a
+    //    decree can never gather support for two values at once. Two values can never both commit.
+    {
+        var d = Decree{ .value = 7, .size = 4 };
+        try d.accept(0, 7);
+        if (d.accept(1, 9)) |_| return error.OffValueAccepted else |e| if (e != error.WrongValue) return error.WrongOffValue;
+        assert(d.support() == 1); // the off-value accept left no trace
+    }
+
+    // 4. A unanimous sky commits; a lone accept never does — one accept in a sky of three is a minority (NoDecree).
+    {
+        var u = Decree{ .value = 3, .size = 3 };
+        try u.accept(0, 3);
+        try u.accept(1, 3);
+        try u.accept(2, 3);
+        assert((try u.commit()) == 3);
+
+        var lone = Decree{ .value = 3, .size = 3 };
+        try lone.accept(0, 3);
+        if (lone.commit()) |_| return error.LoneDecided else |e| if (e != error.NoDecree) return error.WrongLone;
+    }
+
+    // 5. DoubleAccept refuses a pier accepting twice — a fresh accept is expected once per member per decree.
+    {
+        var d = Decree{ .value = 7, .size = 3 };
+        try d.accept(0, 7);
+        if (d.accept(0, 7)) |_| return error.DoubleAccepted else |e| if (e != error.DoubleAccept) return error.WrongDouble;
+    }
+
+    // 6. The whole round over the wire — a sky of four commits the leader's proposed value 42 through real announce, respond,
+    //    and hear (each accept proven present at the border).
+    {
+        var sb = switchboard.Switchboard{};
+        try sb.stand_up(4);
+        const leader = try name_of(&sb, 0);
+        var lb: [name.max_ship_len]u8 = undefined;
+        const ln = copy_name(&lb, leader);
+        const committed = try run_decree(&sb, ln, 42);
+        assert(committed == 42);
+    }
+
+    // 7. A stranger cannot open a decree — run_decree from a name no roster holds refuses NoSuchPier before any announce.
+    {
+        var sb = switchboard.Switchboard{};
+        try sb.stand_up(3);
+        if (run_decree(&sb, "zzzz9", 1)) |_| return error.StrangerDecided else |e| if (e != error.NoSuchPier) return error.WrongStranger;
+    }
+
+    // 8. The border guards every accept — a member replying with a vowel-bearing greeting is refused at the leader's hear, so
+    //    a real-@p-shaped name can never enter a decree even as an accept. (Same tamper the census/quorum border proves.)
+    {
+        var sb = switchboard.Switchboard{};
+        try sb.stand_up(3);
+        const leader = try name_of(&sb, 0);
+        const who = try name_of(&sb, 1);
+        var lb: [name.max_ship_len]u8 = undefined;
+        var wb: [name.max_ship_len]u8 = undefined;
+        const ln = copy_name(&lb, leader);
+        const wn = copy_name(&wb, who);
+
+        var ping = wire.Frame{};
+        _ = try census.announce(&sb, ln, &ping);
+        _ = try sb.receive(wn); // the responder drains its ping
+
+        var sky_buf: [name.max_constellation_bytes]u8 = undefined;
+        const whole = try sb.sky(&sky_buf);
+        const p = try exchange.party(wn, whole);
+        var pong = wire.Frame{};
+        try exchange.initiator_greets(&p, &pong);
+        const field_at = wire.header_len + 4;
+        pong.buf[field_at + 0] = 'z';
+        pong.buf[field_at + 1] = 'o'; // the smuggled vowel
+        pong.buf[field_at + 2] = 'b';
+        const plen = std.mem.readInt(u32, pong.buf[6..10], .little);
+        var dg: [wire.digest_len]u8 = undefined;
+        std.crypto.hash.sha2.Sha256.hash(pong.buf[wire.header_len .. wire.header_len + plen], &dg, .{});
+        var k: u32 = 0;
+        while (k < wire.digest_len) : (k += 1) pong.buf[10 + k] = dg[k];
+        try sb.deliver(ln, &pong);
+        if (census.hear(&sb, ln)) |_| return error.VowelAccepted else |e| if (e != error.VowelPresent) return error.WrongVowel;
+    }
+
+    // 9. A full constellation of eight commits and stays bounded — run_decree interleaves respond and hear so the leader's
+    //    mailbox holds one reply at a time (no ChannelFull), and the whole sky commits the proposed value 5.
+    {
+        var sb = switchboard.Switchboard{};
+        try sb.stand_up(roster.max_piers);
+        const leader = try name_of(&sb, 0);
+        var lb: [name.max_ship_len]u8 = undefined;
+        const ln = copy_name(&lb, leader);
+        const committed = try run_decree(&sb, ln, 5);
+        assert(committed == 5);
+    }
+
+    print("GREEN fora-decree: from an election, commit one value — a strict majority accepting commits the value (three of " ++
+        "four accept 7, seven is committed); below a majority refuses NoDecree (two of four, a minority never decides); only " ++
+        "the PROPOSED value can commit (an off-value accept refuses WrongValue and is never tallied, so two values can never " ++
+        "both commit); a unanimous sky commits and a lone accept never does (NoDecree); DoubleAccept refuses a second cast; a " ++
+        "stranger cannot open a decree (NoSuchPier); the border guards every accept (a vowel-bearing reply refuses " ++
+        "VowelPresent at hear); and a full constellation of eight commits bounded (no ChannelFull, the round interleaves " ++
+        "respond and hear) — one value, committed once, the ledger's consistency resting on the same intersection that made " ++
+        "the leader unique; no socket, no network, no keys, no funds, no real address ever formed\n", .{});
+    return 0;
+}
+
+/// The name at a roster slot — a thin selftest helper so a scenario names its piers off the roster rather than the alphabet.
+fn name_of(sb: *switchboard.Switchboard, slot: u32) switchboard.SwitchboardError![]const u8 {
+    // invariant: only a slot within the current constellation is ever named.
+    assert(slot < sb.size());
+    return sb.roster.member(slot);
+}
+
+/// Copy a pier name out of the roster's buffer into a caller-owned buffer, returning the plain slice — respond/hear mutate
+/// mailboxes but never the roster, so this is belt-and-braces clarity rather than a correctness need.
+fn copy_name(dst: []u8, src: []const u8) []const u8 {
+    // invariant: a pier name always fits the ship bound, so the copy never overruns.
+    assert(src.len <= name.max_ship_len);
+    assert(dst.len >= src.len);
+    var i: u32 = 0;
+    while (i < src.len) : (i += 1) dst[i] = src[i];
+    return dst[0..src.len];
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

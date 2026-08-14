@@ -1,0 +1,40 @@
+# tools/fora_decree_witness.rish — from an election, commit one value (FORA11).
+#
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# FORA11. Design read: active-designing/20260814-053908_fora11-constel-single-decree.md
+# Law kin: .claude/rules/placeholder-ship-names.md — the border guards every accept: a member replying with a vowel-bearing
+# greeting is refused at the leader's hear (wire.deframe). A real address can never enter a decree even as an accept.
+#
+# constel/decree.rye spends FORA9's quorum-intersection property on the value a ledger commits: one value, once. A Decree
+# records each member's accept of the proposed value (refusing DoubleAccept and WrongValue), support counts the accepts, and
+# commit returns the value iff a strict majority accepted it, else NoDecree. The seal asserts the safety — every recorded
+# accept is for the one proposed value, so a second value has zero support and two values can never both commit. The selftest
+# proves: a strict majority commits; below it refuses NoDecree; only the proposed value can commit (an off-value accept
+# refuses WrongValue); a unanimous sky commits and a lone accept never does; DoubleAccept refuses a second cast; a stranger
+# cannot open a decree; the border guards every accept; and a full constellation of eight commits bounded.
+# Purely local — no socket, no network, no keys, no funds, no real address ever formed.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/fora_decree_witness.rish
+
+say "fora-decree: Language EN — FORA11 decides a value where FORA10 decided identity: because a member accepts one value per round and any two strict-majority quorums intersect, at most one value can ever commit for a decree, so a replicated ledger never forks."
+say "fora-decree: Style Radiant — an election named who may propose; the decree names what the sky holds; one value, committed once, or honestly nothing at all."
+say "fora-decree: Lens TAME — accept refuses any value other than the one proposed (WrongValue) and any second cast (DoubleAccept); commit asserts a strict majority backs the committed value; the round interleaves respond+hear so the leader's mailbox holds one reply at a time (never ChannelFull); siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "constel/bin/decree"
+
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/decree.rye -femit-bin=${bin}"]
+assert build.ok else "fora-decree: build failed — ${build.err}"
+
+let outfile = "constel/bin/decree.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "fora-decree: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "fora-decree: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN fora-decree' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "fora-decree: selftest did not print the GREEN fora-decree line"
+
+say "fora-decree: GREEN — the election becomes a value the whole sky commits once; the constel consensus track can now decide a ledger entry, proven pure on the bench."
