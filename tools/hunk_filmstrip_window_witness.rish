@@ -1,0 +1,48 @@
+# tools/hunk_filmstrip_window_witness.rish — a bounded window over a history longer than the strip is wide, on metal (HUNK57).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK57.
+# Design read: active-designing/20260813-213640_hunk-filmstrip-window-exploration.md.
+# Teacher, thanked clean-room: the scrollable edit-history strip of a photo app (iCloud Photos / Google Photos) — the
+# strip shows a handful of thumbnails at a time, not the whole history at once (concept only, siloed).
+#
+# HUNK54 paints the whole edit history as one filmstrip, refusing FilmstripTooWide once the tiled width passes the map
+# ceiling — so a history longer than the strip is wide could not be painted at all. This rung adds the primitive every
+# windowing model needs: filmstrip_window paints only `count` thumbnails starting at step `first`, mapping window band j
+# to absolute step first+j, the marker shown only when the current step is inside the window (else the marker row is
+# blank — an honest "you are elsewhere"). filmstrip is now a thin wrapper painting the full window, so HUNK54's own
+# witness proves parity. The selftest proves the window has no drift, clamps past the live edge, equals the whole
+# filmstrip when full, refuses a bad window by name, and — the crux — paints GREEN where the whole strip refuses
+# FilmstripTooWide. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_filmstrip_window_witness.rish
+
+say "hunk-filmstrip-window: Language EN — HUNK57 paints a bounded window of the edit history (filmstrip_window), band j the absolute step first+j, the marker shown only in-window (HUNK54 filmstrip now a thin wrapper over it)."
+say "hunk-filmstrip-window: Style Radiant — a history longer than the strip is wide becomes readable a window at a time; the current step is marked when it is in view and the strip is honest when it is not."
+say "hunk-filmstrip-window: Lens TAME — a pure read; the window clamps to the real steps, refuses a bad window by name, and a bounded window paints where the whole strip refuses FilmstripTooWide; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/edit_filmstrip"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/edit_filmstrip.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-filmstrip-window: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-filmstrip-window: selftest exited non-zero — ${selftest.out}"
+
+# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# single-quoted string, so an apostrophe in the GREEN line can never break a check (the loom for REDS #76).
+let out = trim selftest.out
+say "hunk-filmstrip-window: ${out}"
+
+assert out contains "GREEN edit-filmstrip-window" else "hunk-filmstrip-window: selftest did not print the GREEN edit-filmstrip-window line"
+assert out contains "each equal to a direct preview cell-for-cell (no drift, band j the absolute step first+j)" else "hunk-filmstrip-window: a window band drifted from its absolute step"
+assert out contains "the marker row is blank when it is scrolled off-view" else "hunk-filmstrip-window: the marker did not blank when the current step scrolled off-view"
+assert out contains "clamps to the real steps" else "hunk-filmstrip-window: a window past the live edge did not clamp"
+assert out contains "the full window equals the whole filmstrip cell-for-cell" else "hunk-filmstrip-window: the full window did not equal the whole filmstrip"
+assert out contains "each refuse FilmstripBadWindow" else "hunk-filmstrip-window: a bad window did not refuse by name"
+assert out contains "a window paints GREEN where the whole strip refuses FilmstripTooWide" else "hunk-filmstrip-window: a window did not paint where the whole strip refuses"
+# HUNK54's own GREEN line still prints — the wrapper preserves the whole-strip behavior (no regression).
+assert out contains "GREEN edit-filmstrip:" else "hunk-filmstrip-window: HUNK54's whole-filmstrip GREEN line regressed"
+
+say "hunk-filmstrip-window: GREEN — filmstrip_window paints a bounded window of the history with no drift, clamping past the live edge, equal to the whole filmstrip when full, refusing a bad window by name, and painting where the whole strip refuses FilmstripTooWide; HUNK54's whole strip still GREEN; no network, no key, no funds."

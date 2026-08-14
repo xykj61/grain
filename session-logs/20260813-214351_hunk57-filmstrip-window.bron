@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260813.214351
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) time convention · ai-jail
+title HUNK57 — a windowed filmstrip: a history longer than the strip is wide, read a window at a time
+prompt Take the next agent-doable lap Lindy-first crux-first on the Season-A / double-seat road; approve my own design rounds and make progress before checking in; send each finished increment as its own signed round; STOP at the custody gates.
+think Second lap this turn (HUNK56 already landed+sent). HUNK55/56 named a drag-to-scrub done; the next named horizons were a velocity fling, the filmstrip scrolled, and the session-that-travels crux (held seam). Lindy-first crux-first: the filmstrip scrolled is the highest-Lindy — a real edit history reaches max_edits=64 (65 steps) and a phone shows only a handful; a 64-edit history at tcols=4 already tiles past the 256 map ceiling (65*4>256), so HUNK54's whole-strip filmstrip refuses FilmstripTooWide and CANNOT paint a long history at all.
+think The full interactive windowed scrubber raises a real interaction-design fork (does scrubbing pull the strip, or is scroll a separate gesture?) and composing the pond/apps pager would cross the held assembly-identity seam — both check-in territory. But the PRIMITIVE underneath is unambiguous and forces no decision: filmstrip_window paints a bounded band-range. So this lap lands the durable primitive and names the interaction fork as the next design decision.
+think The honest subtlety is the marker: in the whole strip the current step is always present, so it always draws; in a window the current step may be scrolled off-view, and then the marker row must be BLANK (an honest "you are elsewhere") rather than marking a band that is not the current step.
+obs Added pub filmstrip_window(allocator, source, cursor, tcols, trows, first, count) additively to HUNK54's edit_filmstrip.rye; made filmstrip a thin wrapper = filmstrip_window(0, max_edits+1), so the tiling logic lives once and HUNK54's own witness proves the wrapper's parity (no duplication, no drift). FilmstripError grew FilmstripBadWindow (empty count / first past last step); FilmstripTooWide now bounds the visible window. Band j shows absolute step first+j; vis clamps count to steps-first.
+obs First metal run RED — a wide-thumbnail crux case (tcols=256 over an 8px source) tripped down_map's per-block partition assert (x1>x0 needs cols<=width). Reworked the crux to a max_edits-long history at tcols=4: the full strip refuses FilmstripTooWide (65*4>256), a five-band window paints GREEN and rasterizes lit — the true reason the window exists. Then GREEN. tame_style_check bans clean (no compound asserts; the marker in-window test is an `if`, not an assert), width exit 0.
+obs Regression clean: HUNK54, HUNK55, HUNK56 witnesses all re-run GREEN — the wrapper preserves the whole-strip behavior exactly, and HUNK55/56 paint through it unchanged.
+loom witness=hunk_filmstrip_window_witness result=green modules=1 regressions_green=3 first_run=red_fixed_down_map_partition
+file brushstroke/edit_filmstrip.rye HUNK57 filmstrip_window additive primitive (bounded band-range, marker only in-window); filmstrip now a thin wrapper over it
+file tools/hunk_filmstrip_window_witness.rish HUNK57 witness — GREEN, native contains checks; asserts HUNK54's whole-strip GREEN still prints (no regression)
+file active-designing/20260813-213640_hunk-filmstrip-window-exploration.md self-approved design round for HUNK57; names the windowed-scrub interaction fork as the next design decision
+file work-in-progress/REMEMBER.md Git nib refreshed in the same work commit
+recommend check-in the windowed SCRUB surface raises a real interaction-design fork (scrubbing pulls the strip vs a separate scroll gesture) and the pond/apps pager path crosses the held assembly-identity seam — a Claude design decision; agent-doable kg meanwhile: a fresh Season-A / double-seat journey, or the velocity fling once the model is chosen; hardware buys stay custody gates #2/#3
