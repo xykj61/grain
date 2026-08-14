@@ -29,25 +29,16 @@ assert build.ok else "hunk-edit-touch-view: build failed — ${build.err}"
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "hunk-edit-touch-view: selftest exited non-zero — ${selftest.out}"
 
+# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# single-quoted string, so an apostrophe in the GREEN line can never break a check (the loom for REDS #75).
 let out = trim selftest.out
 say "hunk-edit-touch-view: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN edit-touch-view' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-edit-touch-view: selftest did not print the GREEN touch-view line"
-
-let track = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a commit(flip_h) gesture tracks on glass' && echo yes"]
-assert (trim track.out) == "yes" else "hunk-edit-touch-view: a commit gesture did not track the edit on glass"
-
-let walk = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'an undo returns the picture to the source and a redo to the flip' && echo yes"]
-assert (trim walk.out) == "yes" else "hunk-edit-touch-view: undo/redo gestures did not walk the picture"
-
-let drift = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'no drift' && echo yes"]
-assert (trim drift.out) == "yes" else "hunk-edit-touch-view: paint drifted from the cursor's applied prefix"
-
-let pure = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'painting never walks the cursor' && echo yes"]
-assert (trim pure.out) == "yes" else "hunk-edit-touch-view: painting moved the cursor"
-
-let refuse = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'refuse BadView at open, and a committed out-of-bounds crop refuses OutOfBounds' && echo yes"]
-assert (trim refuse.out) == "yes" else "hunk-edit-touch-view: a bad grid or a bad crop did not refuse by name"
+assert out contains "GREEN edit-touch-view" else "hunk-edit-touch-view: selftest did not print the GREEN touch-view line"
+assert out contains "a commit(flip_h) gesture tracks on glass" else "hunk-edit-touch-view: a commit gesture did not track the edit on glass"
+assert out contains "an undo returns the picture to the source and a redo to the flip" else "hunk-edit-touch-view: undo/redo gestures did not walk the picture"
+assert out contains "no drift" else "hunk-edit-touch-view: paint drifted from the applied prefix"
+assert out contains "painting never walks the cursor" else "hunk-edit-touch-view: painting moved the cursor"
+assert out contains "refuse BadView at open, and a committed out-of-bounds crop refuses OutOfBounds" else "hunk-edit-touch-view: a bad grid or a bad crop did not refuse by name"
 
 say "hunk-edit-touch-view: GREEN — the touchable Photos editor: a gesture edits and the view repaints from one cursor, undo and redo walk the picture byte-for-byte, paint never drifts, a bad grid and a bad crop refuse by name; no network, no key, no funds."
