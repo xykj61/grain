@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260814.135230
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (Eastern / EDT time convention)
+title ALES23 — Lotus's selection, a marked span a keeper edits as one across both channels
+prompt Autonomous loop past REMEMBER + the itineraries — take the next agent-doable lap Lindy-first crux-first, self-approve the design round, send each finished increment, stop at the custody gates. baton prin recur.
+think ALES20 named places and ALES22 saved them, yet a keeper does more than navigate to a mark — they GRAB the span between two marks and act on it whole: silence the count-in, halve the bridge, cut the bad take. A selection is that grabbed span [start,end) over a stereo master. Lindy-first crux-first: a selection is the primitive every span edit rides on (cut, gain, silence, and later copy/move all take a selection), a higher-Lindy move than one more single-purpose transform, reusing ALES2's two proven in-place edits and ALES20's region_between over public APIs — least risk of the road-on's rungs. No seam, no gate.
+think The crux and why it is EXACT: editing a selection keeps the two channels in LOCKSTEP and operates exactly the marked span. Lockstep from the shared length — a StereoClip's two channels share one length (ALES10's invariant left.len==right.len) and every edit passes the SAME (start,span) to each, so a cut shrinks both equally and a gain scales the same samples in both. The edit is checked against the shared length FIRST (ALES2's cut/gain refuse BadRange before any shift), so it is ATOMIC — either both channels change or neither does; a stale span past a shrunk master refuses BadRange before touching a sample. Exactness from ALES2's own edits — each channel edit is the proven cut/gain, so a selection cut equals cutting each channel by hand.
+think Reuse over reinvention: timeline.cut/gain and markers.region_between reused whole; selection.rye adds no new edit and no new bound. silence is a zero gain (one law, not a second path). SelectionError = BadSelection || timeline.EditError || markers.MarkerError, every forwarded fault refusing by name. No usize, no @memcpy, no qualified assert.
+think First build GREEN — no witness catch. The atomic guard is proven directly: a stale span [4,8) over a master cut down to length 2 refuses BadRange on the left channel before the right is touched, and the two channels stay aligned (left.len==right.len) after the refusal.
+obs GREEN on the first build across five cases: a selection cut of [2,5) removed samples 2,3,4 from both channels (left {0,1,5,6,7,8,9}, right {0,-1,-5,-6,-7,-8,-9}), both length 7, equal to cutting each by hand; a gain of 1/2 over [1,3) halved the span in both channels leaving the rest and lengths untouched; silence zeroed [0,2) in both; a selection grabbed between markers at 3 and 7 drove a real cut to {0,1,2,7,8,9}; every edge refused by name — BadSelection (empty [3,3], inverted [5,2], past [8,20]), BadGain (zero denominator), BadPair (non-ascending marker pair), and BadRange (a stale span past a shrunk master, the two channels still aligned after the refusal).
+obs tame_style_check GREEN (bans clean); width-check exit 0; the new module carries asserts on every public function, off the zero-assert ratchet.
+loom witness=ales_selection_witness cases=5 result=GREEN build=first
+file lotus/selection.rye ALES23 module — a marked span edited as one across both channels in lockstep.
+file tools/ales_selection_witness.rish the witness proving ALES23 GREEN on metal.
+file active-designing/20260814-fill-ales23-lotus-selection.md the self-approved design round for ALES23.
+file lotus/README.md status line, rung bullet, and road-on updated for ALES23.
+recommend keep-going ALES24 can offer the choice of law where a crossfade meets a selected edit, splice a selection onto a second point (a marked copy or move), or carry a selection across the ALES0 audio wire as its own framed payload — all agent-doable, no custody gate. The audio-interface hardware write stays a paused research round, taken only on Keaton's word.

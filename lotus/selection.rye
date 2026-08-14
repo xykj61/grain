@@ -1,0 +1,232 @@
+//! lotus/selection.rye — ALES23: the selection — a marked span a keeper edits as ONE across both channels. The markers track
+//! (ALES20) names places and the cue sheet (ALES22) saves them, yet a keeper does more than navigate to a mark — they GRAB the span
+//! between two marks and act on it whole: silence the count-in, halve the bridge, cut the bad take. A selection is that grabbed
+//! span [start, end) over a stereo master, and the one correctness it owes is LOCKSTEP: an edit touches both channels identically,
+//! so left and right never drift out of alignment.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES23.
+//! Design read: active-designing/20260814-fill-ales23-lotus-selection.md
+//! Stands on: lotus/timeline.rye (ALES2) — cut and gain, the two proven in-place edits, applied to each channel; lotus/pan.rye
+//! (ALES10) — the StereoClip whose two channels share one length (left.len == right.len), the invariant lockstep rests on;
+//! lotus/markers.rye (ALES20) — region_between, so a selection is grabbed between two named marks; lotus/loop.rye (ALES14) — the
+//! validated region [start, end) region_between returns.
+//!
+//! THE CRUX: editing a selection keeps the two channels in LOCKSTEP and operates EXACTLY the marked span. Two facts make this
+//! exact. The two channels share one length and every edit passes the SAME (start, span) to each, so a cut shrinks both by the same
+//! count (left.len == right.len after) and a gain scales the same samples in both — the edit is checked against the shared length
+//! FIRST, so either both channels change or neither does (a stale span past a shrunk master refuses BadRange before touching a
+//! sample). And each edit is ALES2's own proven cut/gain, so a selection cut equals cutting each channel by hand, the samples
+//! outside the span untouched and the tail gapless.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A span of indices into an in-process two-channel i16 PCM master, edited in place,
+//! siloed to lotus/. A selection is a pair of offsets, not a signal on a wire. No socket, no network, no keys, no funds, no real
+//! device, no real meter, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/selection.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const markers = @import("markers.rye");
+const loop = @import("loop.rye");
+
+pub const selection_version = "20260814.135230";
+
+/// The combined error set of a selection: a bad span at the edge, ALES2's edit faults forwarded from cut/gain, and ALES20's marker
+/// faults forwarded from a marks-grabbed selection. Every fault refuses by name before either channel is touched.
+pub const SelectionError = error{
+    /// A span that is empty or inverted (start ≥ end) or reaches past the master's shared length — refused before any edit.
+    BadSelection,
+} || timeline.EditError || markers.MarkerError;
+
+/// A grabbed span [start, end) over a stereo master — the audio a keeper acts on as one. A pair of offsets, no samples of its own;
+/// it names what the edits below touch in both channels.
+pub const Selection = struct {
+    start: u32 = 0,
+    end: u32 = 0,
+
+    /// The span's length in samples — what a cut removes or a gain scales in each channel.
+    pub fn span(self: *const Selection) u32 {
+        // invariant: a live selection is non-empty and non-inverted, so the width never underflows.
+        assert(self.end > self.start);
+        return self.end - self.start;
+    }
+};
+
+/// Grab a validated span [start, end) over `master`, refusing BadSelection at the edge: an empty or inverted region (start ≥ end)
+/// or a span reaching past the master's shared length. The one place a selection's legality is proven, against the shared length so
+/// every later edit is safe on both channels.
+pub fn make(master: *const pan.StereoClip, start: u32, end: u32) SelectionError!Selection {
+    // invariant: the two channels share one length, so a span legal on one is legal on both.
+    assert(master.left.len == master.right.len);
+    if (start >= end) return error.BadSelection; // empty or inverted
+    if (end > master.left.len) return error.BadSelection; // past the master
+    return Selection{ .start = start, .end = end };
+}
+
+/// Grab the span between marker `i` and marker `j` (i < j) — exactly ALES20's region_between, read as an editable selection rather
+/// than a playback loop. Forwards BadPair when the indices are not an ascending pair of valid marker indices. So a keeper selects
+/// between two named places.
+pub fn select_between(m: *const markers.Markers, i: u32, j: u32, master: *const pan.StereoClip) SelectionError!Selection {
+    // invariant: the two channels share one length.
+    assert(master.left.len == master.right.len);
+    const region: loop.Loop = try markers.region_between(m, i, j, master);
+    // region_between already proved [start, end) within the master and non-empty; carry it whole.
+    return Selection{ .start = region.start, .end = region.end };
+}
+
+/// Cut the selection from both channels in LOCKSTEP — ALES2's cut applied to each with the same (start, span), so both shrink by
+/// the same count and left.len == right.len holds after. The bounds are checked on the left channel FIRST (cut refuses BadRange
+/// before any shift), and because the two channels share one length the same span is legal on the right, so the edit is atomic:
+/// either both channels change or neither does. So a keeper deletes a marked span and the stereo stays aligned.
+pub fn cut(master: *pan.StereoClip, sel: Selection) SelectionError!void {
+    // invariant: the two channels share one length on entry, so a legal span on the left is legal on the right.
+    assert(master.left.len == master.right.len);
+    const at = sel.start;
+    const count = sel.span();
+    try timeline.cut(&master.left, at, count); // refuses BadRange on a stale span before touching a sample
+    try timeline.cut(&master.right, at, count);
+    // invariant: both channels shrank by the same count, so the stereo stays aligned.
+    assert(master.left.len == master.right.len);
+}
+
+/// Scale the selection's loudness in both channels in LOCKSTEP by the fraction num/den — ALES2's gain applied to each over the same
+/// span, saturating to the i16 range. A num of 0 silences the span; a negative num inverts its phase. The lengths never change, so
+/// alignment is trivially kept; the bounds are checked on the left first, so a stale span refuses BadRange before either channel is
+/// scaled. So a keeper rides the level of a marked span across the whole stereo image at once.
+pub fn gain(master: *pan.StereoClip, sel: Selection, num: i32, den: u32) SelectionError!void {
+    // invariant: the two channels share one length on entry.
+    assert(master.left.len == master.right.len);
+    const at = sel.start;
+    const count = sel.span();
+    try timeline.gain(&master.left, at, count, num, den); // refuses BadGain / BadRange before any write
+    try timeline.gain(&master.right, at, count, num, den);
+    // invariant: gain changes sample values only — the lengths (and their equality) are untouched.
+    assert(master.left.len == master.right.len);
+}
+
+/// Silence the selection in both channels — a gain of 0/1 over the span, the count-in or the dead bar zeroed as one. So a keeper
+/// mutes a marked span across the stereo image with a single gesture.
+pub fn silence(master: *pan.StereoClip, sel: Selection) SelectionError!void {
+    // invariant: silencing is exactly a zero gain — one law, not a second path.
+    return gain(master, sel, 0, 1);
+}
+
+// --- selftest: THE CRUX — a selection cut removes the span from both channels in lockstep, equal to cutting each by hand, the
+//     stereo staying aligned; a selection gain scales the span in both channels and leaves the rest and the lengths untouched;
+//     silence zeroes the span in both; a selection grabbed between two markers drives a real cut; every edge refuses by name -----
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn run_selftest() !u8 {
+    // 1. THE CRUX — a selection cut removes the span from BOTH channels in lockstep. Master left {0..9}, right {0,-1,…,-9}; select
+    //    [2,5) (samples 2,3,4), cut. Left → {0,1,5,6,7,8,9}, right → {0,-1,-5,-6,-7,-8,-9}, both length 7, aligned.
+    {
+        var master = pan.StereoClip{};
+        try timeline.splice(&master.left, 0, &[_]i16{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+        try timeline.splice(&master.right, 0, &[_]i16{ 0, -1, -2, -3, -4, -5, -6, -7, -8, -9 });
+        const sel = try make(&master, 2, 5);
+        if (sel.span() != 3) return error.SpanWrong;
+        try cut(&master, sel);
+        const want_l = [_]i16{ 0, 1, 5, 6, 7, 8, 9 };
+        const want_r = [_]i16{ 0, -1, -5, -6, -7, -8, -9 };
+        if (!eq(master.left.samples(), &want_l)) return error.CutLeftWrong;
+        if (!eq(master.right.samples(), &want_r)) return error.CutRightWrong;
+        if (master.left.len != master.right.len) return error.NotAligned;
+    }
+
+    // 2. a selection gain scales the span in both channels and leaves the rest and the lengths untouched — select [1,3), halve.
+    {
+        var master = pan.StereoClip{};
+        try timeline.splice(&master.left, 0, &[_]i16{ 400, 400, 400, 400 });
+        try timeline.splice(&master.right, 0, &[_]i16{ 800, 800, 800, 800 });
+        const sel = try make(&master, 1, 3);
+        try gain(&master, sel, 1, 2); // halve samples 1,2 in both channels
+        const want_l = [_]i16{ 400, 200, 200, 400 };
+        const want_r = [_]i16{ 800, 400, 400, 800 };
+        if (!eq(master.left.samples(), &want_l)) return error.GainLeftWrong;
+        if (!eq(master.right.samples(), &want_r)) return error.GainRightWrong;
+        if (master.left.len != 4 or master.right.len != 4) return error.GainLenWrong;
+    }
+
+    // 3. silence zeroes the span in BOTH channels — select [0,2), silence; the head goes quiet, the tail plays on.
+    {
+        var master = pan.StereoClip{};
+        try timeline.splice(&master.left, 0, &[_]i16{ 100, 200, 300, 400 });
+        try timeline.splice(&master.right, 0, &[_]i16{ -100, -200, -300, -400 });
+        const sel = try make(&master, 0, 2);
+        try silence(&master, sel);
+        const want_l = [_]i16{ 0, 0, 300, 400 };
+        const want_r = [_]i16{ 0, 0, -300, -400 };
+        if (!eq(master.left.samples(), &want_l)) return error.SilenceLeftWrong;
+        if (!eq(master.right.samples(), &want_r)) return error.SilenceRightWrong;
+    }
+
+    // 4. a selection grabbed BETWEEN two markers drives a real cut — mark two places, select between them, cut equals the region.
+    {
+        var master = pan.StereoClip{};
+        try timeline.splice(&master.left, 0, &[_]i16{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+        try timeline.splice(&master.right, 0, &[_]i16{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+        var m = markers.Markers{};
+        try markers.add(&m, &master, 3, "a");
+        try markers.add(&m, &master, 7, "b");
+        const sel = try select_between(&m, 0, 1, &master); // [3,7)
+        if (sel.start != 3 or sel.end != 7 or sel.span() != 4) return error.SelectBetweenWrong;
+        try cut(&master, sel);
+        const want = [_]i16{ 0, 1, 2, 7, 8, 9 };
+        if (!eq(master.left.samples(), &want)) return error.SelectCutWrong;
+        if (master.left.len != master.right.len) return error.SelectNotAligned;
+    }
+
+    // 5. every edge refuses by name — an empty [3,3] and inverted [5,2] and past-the-master [8,20] span refuse BadSelection; a
+    //    zero denominator refuses BadGain; a non-ascending marker pair refuses BadPair; and a STALE span past a shrunk master
+    //    refuses BadRange before either channel is touched.
+    {
+        var master = pan.StereoClip{};
+        try timeline.splice(&master.left, 0, &[_]i16{ 0, 1, 2, 3, 4, 5, 6, 7 });
+        try timeline.splice(&master.right, 0, &[_]i16{ 0, 1, 2, 3, 4, 5, 6, 7 });
+
+        if (make(&master, 3, 3)) |_| return error.EmptySlipped else |e| if (e != error.BadSelection) return error.WrongEmpty;
+        if (make(&master, 5, 2)) |_| return error.InvertSlipped else |e| if (e != error.BadSelection) return error.WrongInvert;
+        if (make(&master, 8, 20)) |_| return error.PastSlipped else |e| if (e != error.BadSelection) return error.WrongPast;
+
+        const sel = try make(&master, 0, 4);
+        if (gain(&master, sel, 1, 0)) |_| return error.ZeroDenSlipped else |e| if (e != error.BadGain) return error.WrongZeroDen;
+
+        var m = markers.Markers{};
+        try markers.add(&m, &master, 2, "x");
+        if (select_between(&m, 0, 0, &master)) |_| return error.BadPairSlipped else |e| if (e != error.BadPair) return error.WrongBadPair;
+
+        // a STALE span: select [4,8) over the full master, cut [0,6) first so only 2 samples remain, then the stale span refuses
+        // BadRange on the left channel before touching the right — the atomic guard.
+        const stale = try make(&master, 4, 8);
+        const head = try make(&master, 0, 6);
+        try cut(&master, head); // master now length 2 in both channels
+        if (cut(&master, stale)) |_| return error.StaleSlipped else |e| if (e != error.BadRange) return error.WrongStale;
+        if (master.left.len != master.right.len) return error.StaleMisaligned; // untouched, still aligned
+    }
+
+    print("GREEN ales-selection: a marked span a keeper edits as ONE across both channels — grab, cut, gain, silence. THE CRUX: an " ++
+        "edit touches both channels in LOCKSTEP with the same (start, span), so a cut shrinks both equally (left.len == right.len " ++
+        "after) and a gain scales the same samples in both, checked against the shared length first so the edit is atomic — a stale " ++
+        "span past a shrunk master refuses BadRange before either channel changes; each edit is ALES2's own proven cut/gain, so a " ++
+        "selection cut equals cutting each channel by hand, the samples outside untouched and the tail gapless; a selection grabbed " ++
+        "between two markers (ALES20's region_between) drives a real cut; and every edge refuses by name — an empty, inverted, or " ++
+        "past-the-master span BadSelection, a zero denominator BadGain, a non-ascending marker pair BadPair, a stale span BadRange; " ++
+        "timeline.cut/gain and markers.region_between reused whole; no socket, no network, no keys, no funds, no real device, no " ++
+        "real meter, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
