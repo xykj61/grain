@@ -1,0 +1,207 @@
+//! mikrophone/inbox.rye — DREY4: the far side keeps a carried frame only once it is proven whole. A carried frame is
+//! kept by the receiver only after every corruption check passes; a corrupted, truncated, or forged frame is refused by
+//! name and leaves not one byte in the inbox.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY4.
+//! Design read: active-designing/20260814-022831_drey4-inbox-far-side-accepts-verify-before-keep-exploration.md
+//! Stands on: mikrophone/wire.rye (DREY1) — deframe proves a payload whole BEFORE a byte is yielded. The SETU hearth
+//! carry (Glass↔Desk) names this receiving hand; this rung gives the Desk side its firmware discipline.
+//!
+//! A carry has two hands: the device that frames and only sends what was kept on purpose (DREY3), and the desk that
+//! keeps only what it has proven whole (here). This rung proves the receiving discipline pure: `accept` deframes first
+//! and copies the payload into a bounded inbox ONLY on a clean deframe — any wire error propagates by name and the inbox
+//! is left exactly as it was, so a bad frame neither lands nor erases a prior keep. `clear` forgets whole, zeroing the
+//! buffer, so nothing once kept can be recovered — the forgetting promise on the Desk side. No disk, no network, no key
+//! signs, no funds (custody gate #2 — real hardware, a real desk, a real cable — untouched). Verifying the frame's
+//! Sha256 stays an integrity check the receiver recomputes, not a signature; an authenticated sender is a later rung.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/inbox.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const session = @import("session.rye");
+const wire = @import("wire.rye");
+
+pub const inbox_version = "20260814.022831";
+
+/// A bounded receiving inbox: a fixed buffer sized by the session ceiling (the widest payload any frame can carry) and
+/// the length actually kept. A fresh inbox is empty; no heap outlives it. `keep` holds exactly the payload of the last
+/// frame proven whole and accepted.
+pub const Inbox = struct {
+    keep: [session.max_samples]u8 = [_]u8{0} ** session.max_samples,
+    keep_len: u32 = 0,
+
+    /// A fresh, empty inbox holding nothing.
+    pub fn init() Inbox {
+        return Inbox{};
+    }
+
+    /// The kept payload as it stands — exactly the bytes of the last accepted frame, empty until one is accepted.
+    pub fn held(self: *const Inbox) []const u8 {
+        // invariant: the kept length never claims more than the buffer holds.
+        assert(self.keep_len <= self.keep.len);
+        return self.keep[0..self.keep_len];
+    }
+};
+
+/// Accept a carried frame — deframe it verify-before-trust FIRST, and copy the proven payload into the inbox ONLY on a
+/// clean deframe. Any wire error (`BadMagic`, `BadVersion`, `LengthOverflow`, `FrameTruncated`, `DigestMismatch`,
+/// `FrameTooShort`) propagates by name and the inbox is left exactly as it was — a bad frame neither lands nor erases a
+/// prior keep. The copy is a plain bounded loop, never a bare memcpy.
+pub fn accept(self: *Inbox, frame_bytes: []const u8) !void {
+    // invariant: nothing is kept until the frame is proven whole — deframe runs before a single byte is written.
+    const payload = try wire.deframe(frame_bytes);
+    // invariant: a proven payload is bounded by the session ceiling, so it fits the inbox buffer.
+    assert(payload.len <= session.max_samples);
+    const plen: u32 = @intCast(payload.len);
+    var i: u32 = 0;
+    while (i < plen) : (i += 1) self.keep[i] = payload[i];
+    self.keep_len = plen;
+    // invariant: the inbox now holds exactly the proven payload, byte-for-byte.
+    assert(self.keep_len == plen);
+    assert(std.mem.eql(u8, self.held(), payload));
+}
+
+/// Forget the kept payload, zeroing the buffer whole so nothing once kept can be recovered — the forgetting promise on
+/// the receiving hand. A cleared inbox reads empty.
+pub fn clear(self: *Inbox) void {
+    var i: u32 = 0;
+    while (i < self.keep.len) : (i += 1) self.keep[i] = 0;
+    self.keep_len = 0;
+    // invariant: a cleared inbox holds nothing and no residue remains in the buffer.
+    assert(self.keep_len == 0);
+}
+
+// --- selftest: a whole frame is kept exactly, every corruption is refused and keeps nothing, a failed accept does not
+//     disturb a prior keep, and clear forgets whole -------------------------------------------------------------------
+
+/// Frame the text as a committed session would carry it — capture, commit, frame — so each block starts from a real wire
+/// frame the inbox can accept. Returns the frame; the caller reads `bytes()`.
+fn framed(text: []const u8) !wire.Frame {
+    var s = session.Session.init();
+    var i: u32 = 0;
+    while (i < text.len) : (i += 1) try session.capture(&s, text[i]);
+    try session.commit(&s);
+    var f = wire.Frame{};
+    try wire.frame(&s, &f);
+    return f;
+}
+
+fn run_selftest() !u8 {
+    // 1. A whole frame is kept exactly.
+    {
+        var box = Inbox.init();
+        assert(box.held().len == 0);
+        var f = try framed("field recording");
+        try accept(&box, f.bytes());
+        assert(std.mem.eql(u8, box.held(), "field recording"));
+    }
+
+    // 2. Each corruption is refused by name AND keeps nothing — no residue of a rejected frame.
+    {
+        var f = try framed("prove me whole");
+
+        // Flipped magic — BadMagic, inbox stays empty.
+        {
+            var box = Inbox.init();
+            var c = f;
+            c.buf[0] = 'X';
+            if (accept(&box, c.bytes())) |_| {
+                return error.MagicKept;
+            } else |e| {
+                if (e != error.BadMagic) return error.WrongMagic;
+            }
+            assert(box.held().len == 0);
+        }
+        // Wrong version — BadVersion, inbox stays empty.
+        {
+            var box = Inbox.init();
+            var c = f;
+            c.buf[4] = 2;
+            if (accept(&box, c.bytes())) |_| {
+                return error.VersionKept;
+            } else |e| {
+                if (e != error.BadVersion) return error.WrongVersion;
+            }
+            assert(box.held().len == 0);
+        }
+        // Over-declared length — LengthOverflow, inbox stays empty.
+        {
+            var box = Inbox.init();
+            var c = f;
+            std.mem.writeInt(u32, c.buf[5..9], session.max_samples + 1, .little);
+            if (accept(&box, c.bytes())) |_| {
+                return error.OverflowKept;
+            } else |e| {
+                if (e != error.LengthOverflow) return error.WrongOverflow;
+            }
+            assert(box.held().len == 0);
+        }
+        // Truncated tail — FrameTruncated, inbox stays empty.
+        {
+            var box = Inbox.init();
+            if (accept(&box, f.buf[0 .. f.len - 1])) |_| {
+                return error.TruncatedKept;
+            } else |e| {
+                if (e != error.FrameTruncated) return error.WrongTruncated;
+            }
+            assert(box.held().len == 0);
+        }
+        // Flipped payload byte — DigestMismatch, inbox stays empty (the digest is checked before a byte is yielded).
+        {
+            var box = Inbox.init();
+            var c = f;
+            c.buf[wire.header_len] = c.buf[wire.header_len] ^ 0x01;
+            if (accept(&box, c.bytes())) |_| {
+                return error.TamperKept;
+            } else |e| {
+                if (e != error.DigestMismatch) return error.WrongTamper;
+            }
+            assert(box.held().len == 0);
+        }
+    }
+
+    // 3. A failed accept does not disturb a prior keep — a good payload stands, a corrupt frame neither lands nor erases.
+    {
+        var box = Inbox.init();
+        var good = try framed("keep me");
+        try accept(&box, good.bytes());
+        assert(std.mem.eql(u8, box.held(), "keep me"));
+        // A corrupt frame handed to an inbox already holding a good payload.
+        var bad = try framed("junk");
+        bad.buf[wire.header_len] = bad.buf[wire.header_len] ^ 0x01;
+        if (accept(&box, bad.bytes())) |_| {
+            return error.CorruptDisturbed;
+        } else |e| {
+            if (e != error.DigestMismatch) return error.WrongDisturb;
+        }
+        // The earlier good payload still stands, untouched.
+        assert(std.mem.eql(u8, box.held(), "keep me"));
+    }
+
+    // 4. Clear forgets whole — held reads empty and the buffer is zeroed.
+    {
+        var box = Inbox.init();
+        var f = try framed("forget me");
+        try accept(&box, f.bytes());
+        assert(box.held().len == 9);
+        clear(&box);
+        assert(box.held().len == 0);
+        // The buffer itself is zeroed — no residue of what was kept.
+        var i: u32 = 0;
+        while (i < box.keep.len) : (i += 1) assert(box.keep[i] == 0);
+    }
+
+    print("GREEN drey-inbox: the Mikrophone receiving hand keeps a carried frame ONLY once it is proven whole — a frame " ++
+        "framed by the sending loop is kept byte-for-byte, every corruption is refused by name and keeps nothing " ++
+        "(BadMagic, BadVersion, LengthOverflow, FrameTruncated, DigestMismatch each leave the inbox empty), a corrupt " ++
+        "frame neither lands nor erases a prior keep, and clear forgets whole. Verify-before-keep, both hands of the " ++
+        "carry proven pure before metal; no disk, no network, no key, no funds\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

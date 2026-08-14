@@ -1,0 +1,35 @@
+# tools/drey_inbox_witness.rish — the far side keeps a carried frame only once it is proven whole (DREY4).
+#
+# Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY4.
+# Design read: active-designing/20260814-022831_drey4-inbox-far-side-accepts-verify-before-keep-exploration.md
+# Stands on: mikrophone/wire.rye (DREY1) — deframe proves a payload whole before a byte is yielded.
+#
+# mikrophone/inbox.rye gives the receiving hand (the SETU Desk side) its firmware discipline: `accept` deframes a
+# carried frame verify-before-trust FIRST and copies the payload into a bounded inbox ONLY on a clean deframe. The
+# selftest proves: a whole frame is kept byte-for-byte, every corruption is refused by name and keeps nothing (the
+# inbox stays empty), a corrupt frame neither lands nor erases a prior keep, and clear forgets whole (the buffer zeroed).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/drey_inbox_witness.rish
+
+say "drey-inbox: Language EN — DREY4 gives the Mikrophone's receiving hand its discipline: a carried frame is kept only once it is proven whole."
+say "drey-inbox: Style Radiant — a carry has two hands; the device sends only what was kept on purpose, and the desk keeps only what it has proven whole."
+say "drey-inbox: Lens TAME — accept deframes before it writes a byte; any wire error propagates by name and leaves the inbox exactly as it was (a bad frame neither lands nor erases); clear zeroes the buffer whole; no disk, no network, no key, no funds (custody gate #2 untouched)."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mikrophone/bin/inbox"
+
+let build = run ["sh" "-c" "mkdir -p mikrophone/bin && env RYE_ZIG=${zig} rye/bin/rye build mikrophone/inbox.rye -femit-bin=${bin}"]
+assert build.ok else "drey-inbox: build failed — ${build.err}"
+
+let outfile = "mikrophone/bin/inbox.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "drey-inbox: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "drey-inbox: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN drey-inbox' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "drey-inbox: selftest did not print the GREEN drey-inbox line"
+
+say "drey-inbox: GREEN — the Mikrophone receiving hand keeps only what it has proven whole. DREY4 gives both hands of the carry the same promise."
