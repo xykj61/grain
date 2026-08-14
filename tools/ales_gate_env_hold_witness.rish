@@ -1,0 +1,53 @@
+# tools/ales_gate_env_hold_witness.rish — an attack/HOLD/release noise gate: the breathing gate given the stage between its knobs (ALES57).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES57.
+# Design read: active-designing/20260814-180706_fill-ales57-lotus-attack-hold-release-gate.md
+# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/sample_max, max_clip, the range law shape); lotus/gate.rye (ALES51 — the
+# silenced floor this drives over time, re-proven below); lotus/hold_env.rye (ALES56 — the HELD time base, re-proven below); lotus/
+# gate_env.rye (ALES54 — the un-held attack/release gate this reduces to at a hold of zero, re-proven below).
+#
+# lotus/gate_env_hold.rye drives ALES51's silenced floor from ALES56's HELD follower: each sample advances the held follower one step
+# (attack rising and rearming the hold, the peak pinned while the countdown lasts, the release only once it expires), and when the
+# held envelope falls below the threshold its whole magnitude is divided by the ratio and that gain applied to the raw sample. The
+# selftest proves: silence stays silence; a hold of zero reduces to the plain ALES54 attack/release gate byte-for-byte (proven by
+# running both tools on one signal); unit ratio is the identity everywhere; a quiet signal has its floor pushed down with the sign held
+# and never expanding; a nonzero hold keeps the gate open across a brief dip (it does not chatter, the knob monotone); the state carries
+# so a span in two pieces equals the whole once; a bad threshold refuses BadThreshold, a sub-unity ratio BadRatio, an illegal
+# coefficient BadCoeff, a hold past max_clip BadHold, an out-of-range span BadRange. Purely local — no network, no keys, no funds, no
+# real device, no sample rate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_gate_env_hold_witness.rish
+
+say "ales-gate-env-hold: Language EN — ALES57 spends the ALES56 hold proof for the gate: ALES54 gave the gate a patient sense of time, yet an un-held gate still slams shut and re-opens on a brief dip between two loud samples (it chatters, and the ear hears the door). This rung swaps the plain follower for the HELD one, so on a fall away from a peak the envelope pins the peak for a while before the release begins — the gate stays open through the dip and the passage stays whole."
+say "ales-gate-env-hold: Style Radiant — the law is stated positively: a hold of zero IS the plain ALES54 attack/release gate byte-for-byte (the zero-hold limit, proven by running both tools on one signal), unit ratio is the identity everywhere, a nonzero hold keeps the gate open across a brief dip (it does not chatter, the knob monotone), and the state carries — env and hold_left both — so a span in two pieces equals the whole once, the seam invisible (ALES43's lesson)."
+say "ales-gate-env-hold: Lens TAME — bounded Clip, u32 span, i16 samples, i64 envelope, u32 hold counter; threshold checked in [1, sample_max], ratio at least unity with a nonzero denominator, both coefficients in (0, 1] by the follower's one proven rule, the hold bounded by max_clip, all before any write; the gated envelope kept within [0, envelope] so the gain sits in [0, 1] and every written magnitude is at most the input's, fitting i16; the zero-envelope case guarded (env_step forces a unit step toward any nonzero target and the hold only ever pins a peak, so a zero envelope means a silent sample — no divide by zero); a bad threshold refuses BadThreshold, a sub-unity ratio BadRatio, an illegal coefficient BadCoeff, a hold past max_clip BadHold, an out-of-range span BadRange; siloed to lotus/, no network, no keys, no funds, no device, no sample rate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/gate_env_hold"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/gate_env_hold.rye -femit-bin=${bin}"]
+assert build.ok else "ales-gate-env-hold: build failed — ${build.err}"
+
+let outfile = "lotus/bin/gate_env_hold.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-gate-env-hold: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-gate-env-hold: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-gate-env-hold' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-gate-env-hold: selftest did not print the GREEN ales-gate-env-hold line"
+
+# This rung composes three parents over their public APIs — re-prove ALES56's held follower, ALES51's gate, and ALES54's un-held gate
+# still stand green under it.
+let h = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/hold_env.rye -femit-bin=lotus/bin/hold_env && lotus/bin/hold_env selftest 2>&1 | grep -q 'GREEN ales-hold-env' && echo yes"]
+assert (trim h.out) == "yes" else "ales-gate-env-hold: the ALES56 held follower regressed under the attack/hold/release gate"
+
+let g = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/gate.rye -femit-bin=lotus/bin/gate && lotus/bin/gate selftest 2>&1 | grep -q 'GREEN ales-gate' && echo yes"]
+assert (trim g.out) == "yes" else "ales-gate-env-hold: the ALES51 gate regressed under the attack/hold/release gate"
+
+let ge = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/gate_env.rye -femit-bin=lotus/bin/gate_env && lotus/bin/gate_env selftest 2>&1 | grep -q 'GREEN ales-gate-env' && echo yes"]
+assert (trim ge.out) == "yes" else "ales-gate-env-hold: the ALES54 attack/release gate regressed under the attack/hold/release gate"
+
+say "ales-gate-env-hold: GREEN — an attack/HOLD/release noise gate drives ALES51's silenced floor from ALES56's HELD envelope, each sample advancing the held follower one step and, when the held envelope falls below the threshold, dividing its whole magnitude by the ratio and applying that gain to the raw sample; a hold of zero is the plain ALES54 gate byte-for-byte, unit ratio is the identity everywhere, a quiet signal's floor pushes down with the sign held, a nonzero hold keeps the gate open across a brief dip (the knob monotone, no chatter), the state carries so a span in two pieces equals the whole once; a bad threshold refuses BadThreshold, a sub-unity ratio BadRatio, an illegal coefficient BadCoeff, a hold past max_clip BadHold, an out-of-range span BadRange, each leaving the clip untouched; the ALES56 held follower, ALES51 gate, and ALES54 gate selftests stay GREEN. The gate now holds — the same swap gives the compressor (ALES53) and the limiter (ALES55) their hold too, each a short rung reading the same proven env_step_hold; the lookahead delay for a true brickwall stays Keaton's hand."
