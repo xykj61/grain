@@ -1,0 +1,36 @@
+# tools/drey_verify_witness.rish — the desk fsck: prove the integrity of everything it holds (DREY16).
+#
+# Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY16.
+# Design read: active-designing/20260814-073400_drey16-desk-verify-fsck-prove-what-it-holds-exploration.md
+# Stands on: mikrophone/catalog.rye (DREY7) — the content-addressed store and the one address_of rule.
+#
+# mikrophone/verify.rye is the desk's fsck: verify walks every held recording, re-derives its content address from the
+# bytes the store holds now, and asserts it still equals the address it was keyed under — refusing IntegrityFault by name
+# the moment a stored byte has drifted. The selftest proves: a whole desk verifies sound (read-only, count untouched), an
+# empty desk verifies trivially, a re-deposit stays sound, and a single flipped store byte refuses IntegrityFault — then
+# flips back to sound, proof the check tracks the bytes and not a latched flag.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/drey_verify_witness.rish
+
+say "drey-verify: Language EN — DREY16 lets the desk prove the trust it keeps; verify re-derives every stored recording's content address and refuses IntegrityFault the moment a byte has drifted."
+say "drey-verify: Style Radiant — the desk that keeps by content learns to prove what it keeps, re-deriving every address from the bytes it actually holds so soundness is shown, not merely declared."
+say "drey-verify: Lens TAME — verify is read-only over the public API, bounded by the count, re-hashing through the one address_of rule the deposit keyed by, refusing IntegrityFault by name; the content address is an integrity identity, not a signature; no disk, no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mikrophone/bin/verify"
+
+let build = run ["sh" "-c" "mkdir -p mikrophone/bin && env RYE_ZIG=${zig} rye/bin/rye build mikrophone/verify.rye -femit-bin=${bin}"]
+assert build.ok else "drey-verify: build failed — ${build.err}"
+
+let outfile = "mikrophone/bin/verify.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "drey-verify: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "drey-verify: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN drey-verify' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "drey-verify: selftest did not print the GREEN drey-verify line"
+
+say "drey-verify: GREEN — the Mikrophone desk proves the integrity of everything it holds, the fsck. DREY16 catches silent store corruption by name, read-only; proving over a real disk or transport stays the maintainer's gate."

@@ -1,4 +1,4 @@
-# tools/drey_witness.rish — the whole Mikrophone firmware journey, proven in one command (DREY0–DREY15).
+# tools/drey_witness.rish — the whole Mikrophone firmware journey, proven in one command (DREY0–DREY16).
 #
 # Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · aggregate witness.
 # Front door: mikrophone/README.md.
@@ -77,4 +77,8 @@ let reconcile = run ["rishi/bin/rishi" "run" "tools/drey_reconcile_witness.rish"
 assert reconcile.ok else "drey: DREY15 reconcile witness failed"
 assert (reconcile.out contains "GREEN drey-reconcile") else "drey: DREY15 reconcile not GREEN"
 
-say "GREEN drey: the whole Mikrophone firmware journey holds — DREY0 session · DREY1 wire · DREY2 recorder · DREY3 firmware · DREY4 inbox · DREY5 carry · DREY6 archive · DREY7 catalog · DREY8 manifest · DREY9 serve · DREY10 redact · DREY12 sync · DREY13 forget · DREY14 push · DREY15 reconcile, all fifteen rungs proven pure before metal in one command; no disk, no network, no key, no funds."
+let verify = run ["rishi/bin/rishi" "run" "tools/drey_verify_witness.rish"]
+assert verify.ok else "drey: DREY16 verify witness failed"
+assert (verify.out contains "GREEN drey-verify") else "drey: DREY16 verify not GREEN"
+
+say "GREEN drey: the whole Mikrophone firmware journey holds — DREY0 session · DREY1 wire · DREY2 recorder · DREY3 firmware · DREY4 inbox · DREY5 carry · DREY6 archive · DREY7 catalog · DREY8 manifest · DREY9 serve · DREY10 redact · DREY12 sync · DREY13 forget · DREY14 push · DREY15 reconcile · DREY16 verify, all sixteen rungs proven pure before metal in one command; no disk, no network, no key, no funds."
