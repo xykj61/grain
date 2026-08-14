@@ -1,0 +1,159 @@
+//! constel/lease.rye — FORA29: a lease read, safe under a bounded clock (Raft §6.4.1). FORA20 proved a read-index linearizable read
+//! — one round-trip per read on the read's own critical path, to confirm a majority still holds the leader's term. This rung proves
+//! the faster alternative and its exact price: a LEADER LEASE. If a majority acknowledged the leader at a recent tick and clocks
+//! drift by no more than a bounded amount, then for a bounded window afterward no other leader can have been elected — so within
+//! that window the leader may serve a read WITHOUT a fresh round-trip.
+//!
+//! The gap it closes:
+//!   The read-index is always safe but never free: every read pays a majority confirmation. Raft §6.4.1's lease trades that round-trip
+//!   for one clock assumption — yet the assumption has an exact bound, and a lease used past it is a stale-read bug. The whole rung
+//!   turns on one inequality: a lease is sound ONLY when its span is strictly shorter than the election timeout (adjusted for drift),
+//!   because if the lease outlived the timeout a partitioned-away leader could still believe its lease valid while the majority has
+//!   already elected a successor. So a lease read is served only while the lease is BOTH sound (span < election timeout) and
+//!   unexpired (now − granted < span); otherwise the caller falls back to the FORA20 read-index. A lease never replaces the safe
+//!   path — it only shortcuts it, and refuses the moment the clock assumption would make that unsafe.
+//!
+//! This composes FORA24 (tenure — still_commands, a leader commands a majority this window) as the grant gate, and shortcuts FORA20
+//! (read — the read-index) as the fallback, over public APIs only. No new transport, no new quorum math: the clock is a bounded
+//! monotonic tick (u64, no wrap), purely local — no wall clock, no real time.
+//!
+//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+//! FORA29. Design read: active-designing/20260814-081032_fora29-constel-lease-read.md
+//! Stands on: constel/tenure.rye (FORA24) — still_commands, the majority-backing gate; constel/roster.rye (FORA1) — max_piers, the
+//! bound the backing poll runs within.
+//!
+//! Purely LOCAL — a bounded tick counter and a backing count on one bench, siloed to constel/, run from inside the jailed pier. No
+//! socket, no network, no keys, no funds, no real address ever formed (custody gate #2 — real hardware / any real wire — and gate
+//! #4 — real Kumara — both untouched).
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/lease.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const roster = @import("roster.rye");
+const tenure = @import("tenure.rye");
+
+pub const lease_version = "20260814.081032";
+
+pub const LeaseError = error{
+    /// The leader did not command a majority this window, so no lease may be granted — a lease read rests on a leadership the
+    /// majority actually acknowledged, never on a hope. The exact gate CheckQuorum (FORA24) uses to step a leader down.
+    NoMajority,
+};
+
+/// A granted lease: the monotonic tick at which a majority last acknowledged the leader. A read may be served on the lease only
+/// while the lease is sound and unexpired — the tick is measured against `now` and the lease span at serve time.
+pub const Lease = struct {
+    /// The tick a majority acknowledged the leader — the lease's start. A `u64` monotonic counter, purely local, never a wall clock.
+    granted: u64,
+};
+
+/// GRANT A LEASE. A lease is granted only when the leader genuinely commands a majority this window (tenure.still_commands over the
+/// heartbeat acks) — a minority leader gets NoMajority, never a lease. The granted lease records the tick the acknowledgement stood.
+pub fn grant(acks: []const bool, threshold: u32, now: u64) LeaseError!Lease {
+    // invariant: the backing poll runs over the roster minus the leader — strictly fewer than the pier cap.
+    assert(acks.len < roster.max_piers);
+    if (!tenure.still_commands(acks, threshold)) return error.NoMajority; // no majority this window — no lease
+    return Lease{ .granted = now };
+}
+
+/// THE §6.4.1 SOUNDNESS INEQUALITY: a lease is sound only when its span is STRICTLY shorter than the election timeout (already
+/// adjusted for the drift bound by the caller). If the lease could outlive the timeout, a partitioned leader might still believe
+/// its lease valid while the majority has elected a successor — the stale-read door this inequality holds shut.
+pub fn lease_sound(lease_span: u64, election_timeout: u64) bool {
+    // invariant: both durations are real, non-zero windows.
+    assert(lease_span >= 1 and election_timeout >= 1);
+    return lease_span < election_timeout;
+}
+
+/// SERVE ON THE LEASE? True only when the lease is BOTH sound (span < election timeout) AND unexpired (now − granted < span). When
+/// false, the caller falls back to the FORA20 read-index — a lease read never replaces the safe path, it only shortcuts it. The
+/// subtraction stays in `u64` and never underflows: `now` is monotonic and never precedes the tick the lease was granted.
+pub fn serve_on_lease(lease: *const Lease, now: u64, lease_span: u64, election_timeout: u64) bool {
+    // invariant: time is monotonic — a read never happens before the lease that authorizes it was granted.
+    assert(now >= lease.granted);
+    // invariant: the lease span is a real, non-zero window.
+    assert(lease_span >= 1);
+    if (!lease_sound(lease_span, election_timeout)) return false; // an unsound lease is never served — fall back to the read-index
+    const elapsed = now - lease.granted; // u64, no wrap: now >= granted asserted above
+    return elapsed < lease_span; // unexpired within the sound window
+}
+
+// --- selftest: a lease is granted only to a majority-commanding leader; the soundness inequality is exact; THE CRUX — an unsound
+//     lease is never served even unexpired; a sound unexpired lease serves while an expired one falls back, the boundary exact;
+//     monotonic ticks never underflow; bounded over a full roster. ----------------------------------------------------------------
+
+const quorum = @import("quorum.rye");
+
+fn run_selftest() !u8 {
+    // 1. A LEASE IS GRANTED ONLY TO A LEADER COMMANDING A MAJORITY — a five-pier sky, threshold 3. A leader hearing two peers
+    //    (backing 3) is granted a lease; a leader hearing none (backing 1) is refused NoMajority.
+    {
+        const th = quorum.majority_of(5); // 3
+        const heard_two = [_]bool{ true, true, false, false }; // backing 3 == threshold
+        const l = try grant(&heard_two, th, 100);
+        assert(l.granted == 100);
+        const heard_none = [_]bool{ false, false, false, false }; // backing 1
+        const r = grant(&heard_none, th, 100);
+        if (r) |_| unreachable else |e| assert(e == error.NoMajority); // a minority leader gets no lease
+    }
+
+    // 2. THE SOUNDNESS INEQUALITY IS EXACT — span strictly below the election timeout is sound; equal or above is unsound.
+    {
+        assert(lease_sound(9, 10)); // 9 < 10 — sound
+        assert(!lease_sound(10, 10)); // 10 == 10 — a lease as long as the timeout is UNSOUND
+        assert(!lease_sound(11, 10)); // 11 > 10 — unsound
+    }
+
+    // 3. THE CRUX — AN UNSOUND LEASE IS NEVER SERVED, EVEN UNEXPIRED. A lease whose span equals the election timeout (10) is unsound;
+    //    although it was just granted (now == granted, elapsed 0, well "within" the span), serve_on_lease refuses — so no stale read
+    //    can slip through the drift gap. The read must take the read-index round-trip instead.
+    {
+        const l = Lease{ .granted = 100 };
+        assert(!serve_on_lease(&l, 100, 10, 10)); // elapsed 0 yet span == timeout — unsound, not served
+        assert(!serve_on_lease(&l, 105, 10, 10)); // still unsound at any tick
+    }
+
+    // 4. A SOUND, UNEXPIRED LEASE SERVES; AN EXPIRED ONE FALLS BACK — the boundary exact. Span 5, election timeout 10 (sound). Granted
+    //    at 100: at tick 104 (elapsed 4 < 5) it serves; at tick 105 (elapsed 5 == 5) the lease has EXPIRED and it falls back to the
+    //    read-index; the tick before the boundary serves, the boundary itself does not.
+    {
+        const l = Lease{ .granted = 100 };
+        assert(serve_on_lease(&l, 100, 5, 10)); // elapsed 0 — fresh, served
+        assert(serve_on_lease(&l, 104, 5, 10)); // elapsed 4 < 5 — served
+        assert(!serve_on_lease(&l, 105, 5, 10)); // elapsed 5 == span — expired, fall back to the read-index
+        assert(!serve_on_lease(&l, 200, 5, 10)); // long past — fall back
+    }
+
+    // 5. MONOTONIC TICKS NEVER UNDERFLOW — a read at the exact grant tick has elapsed 0 (no wrap), and the u64 window holds a large
+    //    tick without overflow.
+    {
+        const l = Lease{ .granted = 4_000_000_000 };
+        assert(serve_on_lease(&l, 4_000_000_000, 1000, 2000)); // elapsed 0 — no underflow at now == granted
+        assert(serve_on_lease(&l, 4_000_000_999, 1000, 2000)); // elapsed 999 < 1000 — served near the far edge
+        assert(!serve_on_lease(&l, 4_000_001_000, 1000, 2000)); // elapsed 1000 == span — expired
+    }
+
+    // 6. BOUNDED — the backing poll behind a grant runs over a full roster of eight (seven peers plus the leader) within the pier cap.
+    {
+        var acks: [roster.max_piers - 1]bool = [_]bool{true} ** (roster.max_piers - 1); // every peer answers
+        const l = try grant(&acks, quorum.majority_of(roster.max_piers), 500);
+        assert(l.granted == 500); // a fully-connected leader is granted its lease
+    }
+
+    print("GREEN fora-lease: a lease read, safe under a bounded clock (Raft §6.4.1) — `grant` gives a lease only to a leader that " ++
+        "still commands a majority this window (tenure.still_commands, else NoMajority); `lease_sound` is the exact soundness " ++
+        "inequality (span < election timeout); THE CRUX: an UNSOUND lease is never served even unexpired, so no stale read slips " ++
+        "through the drift gap; a SOUND unexpired lease serves while an expired one FALLS BACK to the FORA20 read-index, the " ++
+        "boundary exact at now − granted == span; monotonic u64 ticks never underflow at now == granted; bounded over a full " ++
+        "roster — the read-side companion to FORA24 CheckQuorum, no socket, no network, no keys, no funds, no real address ever " ++
+        "formed\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

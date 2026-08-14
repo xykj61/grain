@@ -1,0 +1,37 @@
+# tools/fora_lease_witness.rish — a lease read, safe under a bounded clock: the fast alternative to the read-index, and its exact
+# soundness price (FORA29).
+#
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# FORA29. Design read: active-designing/20260814-081032_fora29-constel-lease-read.md
+#
+# constel/lease.rye composes FORA24 (tenure — still_commands) as the grant gate and shortcuts FORA20 (read — the read-index) as the
+# fallback. `grant` gives a lease only to a leader commanding a majority (else NoMajority); `lease_sound` is the §6.4.1 inequality
+# (span < election timeout); `serve_on_lease` serves only a sound, unexpired lease. The selftest proves: a minority leader gets no
+# lease; the soundness inequality is exact; the crux — an unsound lease is never served even unexpired; a sound unexpired lease
+# serves while an expired one falls back, the boundary exact; monotonic u64 ticks never underflow; bounded over a full roster.
+# Purely local — no socket, no network, no keys, no funds, no real address.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/fora_lease_witness.rish
+
+say "fora-lease: Language EN — FORA29 proves the fast alternative to FORA20's read-index: a leader lease (Raft §6.4.1) lets a leader that a majority recently acknowledged serve a read without a fresh round-trip, for a bounded window shorter than the election timeout."
+say "fora-lease: Style Radiant — a fast read may rest on an honest clock, so long as the lease expires a breath before the sky could ever elect another; the moment that promise cannot hold, the read takes the slower, always-safe road home."
+say "fora-lease: Lens TAME — grant gates on tenure.still_commands (NoMajority) over public APIs only; the clock is a bounded monotonic u64 tick, no wrap, purely local — no wall clock; lease_sound holds the §6.4.1 inequality strict; serve_on_lease never underflows (now >= granted asserted); bounded to roster.max_piers; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "constel/bin/lease"
+
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/lease.rye -femit-bin=${bin}"]
+assert build.ok else "fora-lease: build failed — ${build.err}"
+
+let outfile = "constel/bin/lease.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "fora-lease: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "fora-lease: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN fora-lease' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "fora-lease: selftest did not print the GREEN fora-lease line"
+
+say "fora-lease: GREEN — the lease read is proven pure on the bench: served only while sound and unexpired, and falling back to the read-index the instant the clock assumption could not hold."
