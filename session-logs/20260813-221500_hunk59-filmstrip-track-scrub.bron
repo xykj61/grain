@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260813.221500
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title HUNK59 — drag a windowed filmstrip; a too-long history finally scrubs
+prompt autonomous loop past BUHR: next agent-doable lap Lindy-first crux-first, send each increment, stop at custody gates
+think HUNK58 landed the following window and named HUNK59 (windowed-finger classification) as the next crux. Took it.
+think The design fork: continuous auto-pan risks finger creep at a held pixel (classify against a moving window → seek → window pans → same pixel maps higher). Chose the provable form — a GESTURE WINDOW snapshotted at the press and frozen through the drag, so the band under the finger equals the marked band with no creep and no drift. Continuous auto-pan is named for a later rung.
+think FilmstripTrackScrub owns one FilmstripTrack + scrubbing flag + gesture_first. finger_down captures window_first() as gesture_first; move/up classify x against the frozen window (scrub_step → gesture_first + clamped band); paint shows the frozen window while armed and the following window when idle, so the display matches the finger during the drag and re-centers on lift.
+think The crux value: HUNK56's whole-strip scrub calls filmstrip (whole), which refuses FilmstripTooWide for a 64-edit history — so long histories could not be scrubbed at all. The windowed scrub paints and scrubs them. The selftest proves the whole strip refuses, then scrubs the same history band by band.
+obs Built and GREEN first metal run — no RED this lap. Two-plus asserts per fn, all invariants positive; TAME bans clean, width exit 0. No existing file touched, so no regression.
+obs Selftest also proves: a second press re-centers a fresh gesture window; a scrub pins at both shown ends (unlike a tap); a scrub forgets nothing (redo tail survives a back-scrub); an unarmed move fires nothing; a scrubbed window rasterizes lit.
+loom witness=hunk_filmstrip_track_scrub_witness steps=65 win_bands=5 tcols=4 map_ceiling=256 result=GREEN
+file brushstroke/edit_filmstrip_track_scrub.rye HUNK59 — the windowed drag-to-scrub surface
+file tools/hunk_filmstrip_track_scrub_witness.rish the metal witness, GREEN
+recommend keep-going HUNK60 — continuous auto-pan (the window slides under a held finger, delta-based to avoid creep), riding on this gesture-window scrub; agent-doable, single module
