@@ -1,0 +1,41 @@
+# tools/ales_join_witness.rish — the crossfade join: the choice of law where an inserted span meets its neighbour (ALES26).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES26.
+# Design read: active-designing/20260814-fill-ales26-lotus-crossfade-join.md
+# Stands on: lotus/crossfade.rye (ALES12) — the equal-power `crossfade` read at the seam, reused whole over its public API, so
+# the join inherits the proven −3 dB law rather than re-deriving it; lotus/timeline.rye (ALES2) — the `Clip` it edits, `splice`
+# reused to fill the overlap windows and append the span's tail, and `max_clip` as the one shared bound.
+#
+# lotus/join.rye gives an inserted span the choice of law where it meets its neighbour: instead of butting its head hard against
+# the outgoing tail (a step in the waveform, a click a keeper hears), it OVERLAPS the two and crosses them equal-power, so the
+# seam flows through ALES12's curve. The neighbours share the overlap in time, so the new length is clip + span − overlap. The
+# selftest proves: the join shares the overlap (5,5,2 → 8, not 10); the seam head still continues the clip (pure outgoing) and
+# its tail still continues the span (pure incoming); a hard butt splice steps the full 60000 swing where the join's seam sample
+# sits strictly inside it; a full overlap is a pure crossfade with nothing appended; a self-join never dips below the level; and
+# an overlap under two, past the tail, past the head, or an overflow each refuses by name leaving the clip untouched. Purely
+# local — no network, no keys, no funds, no real device, no real speaker.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_join_witness.rish
+
+say "ales-join: Language EN — ALES26 gives an inserted span the choice of law where it meets its neighbour: overlap the outgoing tail with the incoming head and cross them equal-power, so the seam flows through ALES12's curve rather than stepping into a click."
+say "ales-join: Style Radiant — the law is stated positively: the join's head still continues the clip before it and its tail still continues the span after it, and the two neighbours SHARE the overlap in time (clip + span − overlap) rather than one merely following the other."
+say "ales-join: Lens TAME — the crossfade is ALES12 reused whole over its public API (the proven law, not re-derived); the overlap windows and the span's tail are filled by ALES2's splice; refuses BadRange on an overlap under two / past the tail / past the head and ClipFull on overflow, each before any write; siloed to lotus/, no network, no keys, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/join"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/join.rye -femit-bin=${bin}"]
+assert build.ok else "ales-join: build failed — ${build.err}"
+
+let outfile = "lotus/bin/join.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-join: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-join: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-join' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-join: selftest did not print the GREEN ales-join line"
+
+say "ales-join: GREEN — an edit now chooses its law at the seam: a hard butt where the samples already meet, a crossfade join where they would step. The next Lotus rung can carry the join into stereo (both channels crossed in lockstep), offer a graft or paste its own crossfade seam, or name a trailing-seam law where the audio after an insert rejoins the timeline."
