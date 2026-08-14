@@ -93,7 +93,8 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     // Revert one step == truncate to two == the first two verbs by hand, byte-for-byte through replay.
     const reverted = revert_one(&list);
     const trunc2 = truncate(&list, 2);
-    assert(reverted.len() == 2 and trunc2.len() == 2);
+    assert(reverted.len() == 2);
+    assert(trunc2.len() == 2);
     const step2_replay = try edits.apply(garden, &pm, &reverted);
     const by_hand_crop = try photos.crop(garden, &pm, 1, 1, 4, 4);
     const by_hand_step2 = try photos.rotate_quarter(garden, &by_hand_crop, 1);

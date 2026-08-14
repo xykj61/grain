@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260813.230000
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title REDS #76 — the image/ journey was off the TAME scan roster
+prompt autonomous loop past BUHR: next agent-doable lap Lindy-first crux-first, reds-first, send each increment, stop at custody gates
+think While landing HUNK61 the crop_overlay TAME ban fired; splitting it, I checked whether image/crop_gesture.rye was even scanned and found the scan roster (tools/tame_style_scan_bans.rish line 16, and the advise twin) lists mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke image? — no: image/ was ABSENT. The whole Season A image journey (HUNK0–61, 13 files) had never been TAME-scanned since it opened 20260813.
+think This is a red (reds-first): a directory of authored .rye outside the discipline lint. What went wrong: image/ never joined the roster when the journey opened. What caught it: adding `image` to the roster turned the scan RED, naming every line. What it taught: a new module dir must join the TAME scan roster the round it opens — the lint surface is only as wide as its roster, and an off-roster dir is invisible to it.
+think Fixed in-round: widened the roster in tools/tame_style_scan_bans.rish, tools/tame_style_scan_advise.rish (two find lines), and the tools/fixtures/tame_style_scan.sh comment. The only ban class present was compound assert(a and b); split all of them — 3 in edit_touch_input, 1 each in photo_edits/photo_revert/qoi, ~34 in photos (awk split, no nested `and`), 5 in edit_input. Every touched module rebuilt and its selftest re-run GREEN (no functional change — a split assert proves the same facts, each half named).
+obs Closed on metal: tools/tame_style_check.rish now GREEN with image/ on the roster; width exit 0; advise ratchets unchanged (@memcpy application sites 0, zero-assert list unchanged). The fix is a witness, not a claim.
+obs Second-order finding, surfaced not fixed: work-in-progress/REDS.md is enforce-bound at living_pin_max_bytes 24576 and sits at 24435 (99.4%) — no room for the canonical three-field row for #76. The append-only-growth-law names the remedy (fold the closed season to a seasons roster), yet folding Keaton's reds ledger is a structural decision on his record — check-in territory, his word. So #76 is recorded here in full (three fields above) and in the commit body until the fold makes room for its row.
+loom witness=tame_style_check image_files=13 compound_asserts_split=45 roster=+image result=GREEN
+file tools/tame_style_scan_bans.rish widened the ban-scan find roster with image
+file tools/tame_style_scan_advise.rish widened the advise-scan roster (two find lines) with image
+file tools/fixtures/tame_style_scan.sh roster comment updated to name image
+file image/photos.rye compound asserts split (awk sweep), selftest GREEN
+file image/edit_input.rye compound asserts split, selftest GREEN
+file image/edit_touch_input.rye compound asserts split, selftest GREEN
+file image/photo_edits.rye compound assert split, selftest GREEN
+file image/photo_revert.rye compound assert split, selftest GREEN
+file image/qoi.rye compound assert split, selftest GREEN
+recommend check-in (Claude) — the image/ red is closed on metal; the REDS ledger is at its enforced ceiling (24435/24576) and wants a season-fold (Keaton's word) before #76 can seat its canonical row

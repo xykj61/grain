@@ -910,8 +910,10 @@ fn run_orient(garden: std.mem.Allocator) !struct { rw: u32, rh: u32 } {
     assert(rotate_eq(garden, &pm, 3, &r3));
 
     // A 90° turn swaps the dimensions — never a no-op or a bare transpose masquerade.
-    assert(r1.width == h and r1.height == w);
-    assert(half.width == w and half.height == h);
+    assert(r1.width == h);
+    assert(r1.height == w);
+    assert(half.width == w);
+    assert(half.height == h);
 
     // Concrete clockwise witness: the source top-left pixel (0,0) lands at the output top-right (w'-1, 0).
     const tr_off = (@as(usize, 0) * @as(usize, r1.width) + @as(usize, r1.width - 1)) * 4;
@@ -920,7 +922,8 @@ fn run_orient(garden: std.mem.Allocator) !struct { rw: u32, rh: u32 } {
     assert(r1.pixels[tr_off + 2] == pm.pixels[2]);
 
     // Pure: the source is untouched — its first pixel is exactly as crafted.
-    assert(pm.pixels[0] == 0 and pm.pixels[3] == 255);
+    assert(pm.pixels[0] == 0);
+    assert(pm.pixels[3] == 255);
 
     // Still an OPEN image: a rotated image re-encodes and round-trips through the codec byte-for-byte.
     const cap = qoi.encoded_bound(r1.pixel_count());
@@ -965,7 +968,8 @@ fn run_scale(garden: std.mem.Allocator) !struct { uw: u32, uh: u32 } {
 
     // A 2x nearest upscale: every output pixel equals src(nx/2, ny/2).
     const up = try scale(garden, &pm, w * 2, h * 2);
-    assert(up.width == w * 2 and up.height == h * 2);
+    assert(up.width == w * 2);
+    assert(up.height == h * 2);
     {
         var ny: u32 = 0;
         while (ny < up.height) : (ny += 1) {
@@ -983,11 +987,14 @@ fn run_scale(garden: std.mem.Allocator) !struct { uw: u32, uh: u32 } {
 
     // A downscale to 1x1 picks the top-left source pixel (sx=sy=0).
     const one = try scale(garden, &pm, 1, 1);
-    assert(one.width == 1 and one.height == 1);
-    assert(one.pixels[0] == pm.pixels[0] and one.pixels[3] == pm.pixels[3]);
+    assert(one.width == 1);
+    assert(one.height == 1);
+    assert(one.pixels[0] == pm.pixels[0]);
+    assert(one.pixels[3] == pm.pixels[3]);
 
     // Pure: the source is untouched.
-    assert(pm.pixels[0] == 0 and pm.pixels[3] == 255);
+    assert(pm.pixels[0] == 0);
+    assert(pm.pixels[3] == 255);
 
     // Still an OPEN image: an upscaled image re-encodes and round-trips through the codec byte-for-byte.
     const cap = qoi.encoded_bound(up.pixel_count());
@@ -1038,7 +1045,8 @@ fn run_scale_area(garden: std.mem.Allocator) !struct { mean_r: u8 } {
     // A 2×2 downscales to 1×1 as the exact integer mean of all four pixels, per channel and alpha:
     //   r = (10+20+40+60)/4 = 32, g = (20+40+60+80)/4 = 50, b = (30+60+80+100)/4 = 67, a = (40+80+100+120)/4 = 85.
     const one = try scale_area(garden, &pm, 1, 1);
-    assert(one.width == 1 and one.height == 1);
+    assert(one.width == 1);
+    assert(one.height == 1);
     assert(one.pixels[0] == 32);
     assert(one.pixels[1] == 50);
     assert(one.pixels[2] == 67);
@@ -1058,7 +1066,8 @@ fn run_scale_area(garden: std.mem.Allocator) !struct { mean_r: u8 } {
         }
         const flat = qoi.Pixmap{ .width = sw, .height = sh, .channels = 4, .colorspace = 0, .pixels = solid };
         const small = try scale_area(garden, &flat, 2, 3);
-        assert(small.width == 2 and small.height == 3);
+        assert(small.width == 2);
+        assert(small.height == 3);
         var q: u32 = 0;
         while (q < small.width * small.height) : (q += 1) {
             assert(small.pixels[q * 4] == 77);
@@ -1069,7 +1078,8 @@ fn run_scale_area(garden: std.mem.Allocator) !struct { mean_r: u8 } {
     }
 
     // Pure: the source is untouched.
-    assert(pm.pixels[0] == 10 and pm.pixels[15] == 120);
+    assert(pm.pixels[0] == 10);
+    assert(pm.pixels[15] == 120);
 
     // Still an OPEN image: a downscaled image re-encodes and round-trips through the codec byte-for-byte.
     const cap = qoi.encoded_bound(one.pixel_count());
@@ -1117,10 +1127,17 @@ fn run_bilinear(garden: std.mem.Allocator) !struct { uw: u32, uh: u32 } {
         two[7] = 40;
         const line = qoi.Pixmap{ .width = 2, .height = 1, .channels = 4, .colorspace = 0, .pixels = two };
         const wide = try scale_bilinear(garden, &line, 3, 1);
-        assert(wide.width == 3 and wide.height == 1);
+        assert(wide.width == 3);
+        assert(wide.height == 1);
         // The outer output pixels clamp to the exact source pixels — every channel, alpha included.
-        assert(wide.pixels[0] == 0 and wide.pixels[1] == 10 and wide.pixels[2] == 20 and wide.pixels[3] == 200);
-        assert(wide.pixels[8] == 100 and wide.pixels[9] == 30 and wide.pixels[10] == 60 and wide.pixels[11] == 40);
+        assert(wide.pixels[0] == 0);
+        assert(wide.pixels[1] == 10);
+        assert(wide.pixels[2] == 20);
+        assert(wide.pixels[3] == 200);
+        assert(wide.pixels[8] == 100);
+        assert(wide.pixels[9] == 30);
+        assert(wide.pixels[10] == 60);
+        assert(wide.pixels[11] == 40);
         // The center pixel is the exact average of the two source pixels, per channel and alpha.
         assert(wide.pixels[4] == 50); //  (0+100)/2
         assert(wide.pixels[5] == 20); //  (10+30)/2
@@ -1146,22 +1163,28 @@ fn run_bilinear(garden: std.mem.Allocator) !struct { uw: u32, uh: u32 } {
         const small = try scale_bilinear(garden, &flat, 2, 2);
         var q: u32 = 0;
         while (q < big.width * big.height) : (q += 1) {
-            assert(big.pixels[q * 4] == 33 and big.pixels[q * 4 + 1] == 66);
-            assert(big.pixels[q * 4 + 2] == 99 and big.pixels[q * 4 + 3] == 222);
+            assert(big.pixels[q * 4] == 33);
+            assert(big.pixels[q * 4 + 1] == 66);
+            assert(big.pixels[q * 4 + 2] == 99);
+            assert(big.pixels[q * 4 + 3] == 222);
         }
         q = 0;
         while (q < small.width * small.height) : (q += 1) {
-            assert(small.pixels[q * 4] == 33 and small.pixels[q * 4 + 1] == 66);
-            assert(small.pixels[q * 4 + 2] == 99 and small.pixels[q * 4 + 3] == 222);
+            assert(small.pixels[q * 4] == 33);
+            assert(small.pixels[q * 4 + 1] == 66);
+            assert(small.pixels[q * 4 + 2] == 99);
+            assert(small.pixels[q * 4 + 3] == 222);
         }
     }
 
     // A 2x upscale of the tagged image, kept for the round-trip and the GREEN dimensions.
     const up = try scale_bilinear(garden, &pm, w * 2, h * 2);
-    assert(up.width == w * 2 and up.height == h * 2);
+    assert(up.width == w * 2);
+    assert(up.height == h * 2);
 
     // Pure: the source is untouched.
-    assert(pm.pixels[0] == 0 and pm.pixels[3] == 255);
+    assert(pm.pixels[0] == 0);
+    assert(pm.pixels[3] == 255);
 
     // Still an OPEN image: a bilinearly-resized image re-encodes and round-trips through the codec byte-for-byte.
     const cap = qoi.encoded_bound(up.pixel_count());
@@ -1213,7 +1236,10 @@ fn run_adjust(garden: std.mem.Allocator) !struct { w: u32, h: u32 } {
     assert(lit.pixels[8] == 240); // 200 -> 240
     assert(lit.pixels[12] == 255); // 255 -> clamp 255
     // Alpha passes through untouched across the whole strip.
-    assert(lit.pixels[3] == 255 and lit.pixels[7] == 200 and lit.pixels[11] == 128 and lit.pixels[15] == 0);
+    assert(lit.pixels[3] == 255);
+    assert(lit.pixels[7] == 200);
+    assert(lit.pixels[11] == 128);
+    assert(lit.pixels[15] == 0);
 
     // A brightness cut of -40 subtracts and clamps at 0.
     const dim = try adjust(garden, &pm, -40, 1, 1);
@@ -1228,10 +1254,14 @@ fn run_adjust(garden: std.mem.Allocator) !struct { w: u32, h: u32 } {
 
     // A contrast of 0/1 flattens every color channel to the midpoint 128 — a legal extreme.
     const flat = try adjust(garden, &pm, 0, 0, 1);
-    assert(flat.pixels[0] == 128 and flat.pixels[4] == 128 and flat.pixels[8] == 128);
+    assert(flat.pixels[0] == 128);
+    assert(flat.pixels[4] == 128);
+    assert(flat.pixels[8] == 128);
 
     // Pure: the source is untouched.
-    assert(pm.pixels[0] == 0 and pm.pixels[4] == 100 and pm.pixels[12] == 255);
+    assert(pm.pixels[0] == 0);
+    assert(pm.pixels[4] == 100);
+    assert(pm.pixels[12] == 255);
 
     // Still an OPEN image: an adjusted image re-encodes and round-trips through the codec byte-for-byte.
     const cap = qoi.encoded_bound(lit.pixel_count());
@@ -1293,15 +1323,21 @@ fn run_saturate(garden: std.mem.Allocator) !struct { w: u32, h: u32 } {
         while (p < w) : (p += 1) {
             const off = @as(usize, p) * 4;
             const l = luma_of(pm.pixels[off], pm.pixels[off + 1], pm.pixels[off + 2]);
-            assert(gray.pixels[off] == l and gray.pixels[off + 1] == l and gray.pixels[off + 2] == l);
+            assert(gray.pixels[off] == l);
+            assert(gray.pixels[off + 1] == l);
+            assert(gray.pixels[off + 2] == l);
             assert(gray.pixels[off + 3] == pm.pixels[off + 3]);
         }
     }
 
     // The already-gray pixel (index 3, r == g == b == 130) is a fixed point at every saturation, boost included.
     const boost = try saturate(garden, &pm, 2, 1);
-    assert(boost.pixels[12] == 130 and boost.pixels[13] == 130 and boost.pixels[14] == 130);
-    assert(gray.pixels[12] == 130 and gray.pixels[13] == 130 and gray.pixels[14] == 130);
+    assert(boost.pixels[12] == 130);
+    assert(boost.pixels[13] == 130);
+    assert(boost.pixels[14] == 130);
+    assert(gray.pixels[12] == 130);
+    assert(gray.pixels[13] == 130);
+    assert(gray.pixels[14] == 130);
 
     // A boost pushes a color channel away from its luma: the red pixel's dominant red rises above its own value
     // (or clamps at 255) while its weaker green falls further below the luma — chroma widens, never narrows.
@@ -1316,11 +1352,17 @@ fn run_saturate(garden: std.mem.Allocator) !struct { w: u32, h: u32 } {
     }
 
     // Alpha passes through untouched across the whole strip for both the gray flatten and the boost.
-    assert(gray.pixels[3] == 255 and gray.pixels[7] == 200 and gray.pixels[11] == 128 and gray.pixels[15] == 0);
-    assert(boost.pixels[3] == 255 and boost.pixels[15] == 0);
+    assert(gray.pixels[3] == 255);
+    assert(gray.pixels[7] == 200);
+    assert(gray.pixels[11] == 128);
+    assert(gray.pixels[15] == 0);
+    assert(boost.pixels[3] == 255);
+    assert(boost.pixels[15] == 0);
 
     // Pure: the source is untouched.
-    assert(pm.pixels[0] == 200 and pm.pixels[12] == 130 and pm.pixels[15] == 0);
+    assert(pm.pixels[0] == 200);
+    assert(pm.pixels[12] == 130);
+    assert(pm.pixels[15] == 0);
 
     // Still an OPEN image: a saturated image re-encodes and round-trips through the codec byte-for-byte.
     const cap = qoi.encoded_bound(gray.pixel_count());
@@ -1392,8 +1434,12 @@ fn run_hue_turn(garden: std.mem.Allocator) !struct { w: u32, h: u32 } {
 
     // Direction: the first pixel is a warm red (max red). One third turns it toward green (max green), two thirds
     // toward blue (max blue). The channel map (b,r,g) then (g,b,r) is exact.
-    assert(one.pixels[0] == 30 and one.pixels[1] == 200 and one.pixels[2] == 50);
-    assert(two.pixels[0] == 50 and two.pixels[1] == 30 and two.pixels[2] == 200);
+    assert(one.pixels[0] == 30);
+    assert(one.pixels[1] == 200);
+    assert(one.pixels[2] == 50);
+    assert(two.pixels[0] == 50);
+    assert(two.pixels[1] == 30);
+    assert(two.pixels[2] == 200);
 
     // Value and chroma preserved: for every pixel, the max and min color channel are unchanged at every turn.
     {
@@ -1406,21 +1452,33 @@ fn run_hue_turn(garden: std.mem.Allocator) !struct { w: u32, h: u32 } {
             const omin1 = @min(one.pixels[off], @min(one.pixels[off + 1], one.pixels[off + 2]));
             const omax2 = @max(two.pixels[off], @max(two.pixels[off + 1], two.pixels[off + 2]));
             const omin2 = @min(two.pixels[off], @min(two.pixels[off + 1], two.pixels[off + 2]));
-            assert(omax1 == smax and omin1 == smin);
-            assert(omax2 == smax and omin2 == smin);
+            assert(omax1 == smax);
+            assert(omin1 == smin);
+            assert(omax2 == smax);
+            assert(omin2 == smin);
         }
     }
 
     // The already-gray pixel (index 3, r == g == b == 130) is a fixed point at every turn.
-    assert(one.pixels[12] == 130 and one.pixels[13] == 130 and one.pixels[14] == 130);
-    assert(two.pixels[12] == 130 and two.pixels[13] == 130 and two.pixels[14] == 130);
+    assert(one.pixels[12] == 130);
+    assert(one.pixels[13] == 130);
+    assert(one.pixels[14] == 130);
+    assert(two.pixels[12] == 130);
+    assert(two.pixels[13] == 130);
+    assert(two.pixels[14] == 130);
 
     // Alpha passes through untouched across the whole strip for both turns.
-    assert(one.pixels[3] == 255 and one.pixels[7] == 200 and one.pixels[11] == 128 and one.pixels[15] == 0);
-    assert(two.pixels[3] == 255 and two.pixels[15] == 0);
+    assert(one.pixels[3] == 255);
+    assert(one.pixels[7] == 200);
+    assert(one.pixels[11] == 128);
+    assert(one.pixels[15] == 0);
+    assert(two.pixels[3] == 255);
+    assert(two.pixels[15] == 0);
 
     // Pure: the source is untouched.
-    assert(pm.pixels[0] == 200 and pm.pixels[12] == 130 and pm.pixels[15] == 0);
+    assert(pm.pixels[0] == 200);
+    assert(pm.pixels[12] == 130);
+    assert(pm.pixels[15] == 0);
 
     // Still an OPEN image: a hue-turned image re-encodes and round-trips through the codec byte-for-byte.
     const cap = qoi.encoded_bound(one.pixel_count());

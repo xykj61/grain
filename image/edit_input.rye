@@ -67,8 +67,10 @@ pub fn apply(cursor: *edit_cursor.EditCursor, gesture: Gesture) edits.EditsError
 
 fn craft_tagged(allocator: std.mem.Allocator, w: u32, h: u32) !qoi.Pixmap {
     // invariant: a real image has both dimensions, kept small for the witness.
-    assert(w >= 1 and h >= 1);
-    assert(w <= 16 and h <= 16);
+    assert(w >= 1);
+    assert(h >= 1);
+    assert(w <= 16);
+    assert(h <= 16);
     const pixels = try allocator.alloc(u8, @as(usize, w) * @as(usize, h) * 4);
     var i: u32 = 0;
     while (i < w * h) : (i += 1) {
@@ -97,12 +99,14 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     var cur = edit_cursor.EditCursor.init();
     // invariant: a fresh cursor stands at the original with nothing to walk.
     assert(cur.depth() == 0);
-    assert(!cur.can_undo() and !cur.can_redo());
+    assert(!cur.can_undo());
+    assert(!cur.can_redo());
 
     // A committed verb advances the depth by one and the viewed image is exactly that verb applied to the source.
     try apply(&cur, Gesture.commit(.flip_h));
     assert(cur.depth() == 1);
-    assert(cur.can_undo() and !cur.can_redo());
+    assert(cur.can_undo());
+    assert(!cur.can_redo());
     {
         const seen = try edit_cursor.view(garden, &source, &cur);
         const want = try @import("photos.rye").flip_h(garden, &source);
@@ -152,7 +156,8 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     // A commit while rewound forgets the redo tail: rewound to depth 1, a fresh verb discards the branch not kept, so
     // no redo remains and the new verb is the live edge.
     try apply(&cur, .{ .kind = .redo }); // back to depth 1
-    assert(cur.depth() == 1 and cur.can_redo());
+    assert(cur.depth() == 1);
+    assert(cur.can_redo());
     try apply(&cur, Gesture.commit(.flip_v));
     assert(cur.depth() == 2);
     assert(!cur.can_redo()); // the redo tail was forgotten the moment a different road was taken
