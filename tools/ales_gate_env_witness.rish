@@ -1,0 +1,47 @@
+# tools/ales_gate_env_witness.rish — an attack/release noise gate: the silenced floor given a patient sense of time (ALES54).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES54.
+# Design read: active-designing/20260814-174600_fill-ales54-lotus-attack-release-gate.md
+# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/sample_max, the range law shape); lotus/gate.rye (ALES51 — the
+# silenced floor this drives over time, re-proven below); lotus/envelope.rye (ALES52 — the proven time base, re-proven below).
+#
+# lotus/gate_env.rye drives ALES51's gate from ALES52's envelope: each sample advances the proven follower one step (the attack
+# fraction rising, the release falling), and when the smoothed envelope falls below the threshold its whole magnitude is divided by
+# the ratio and that gain applied to the raw sample. The selftest proves: silence stays silence; unit attack and release reduce it
+# to the plain ALES51 gate byte-for-byte (proven by running both tools on one signal); unit ratio is the identity everywhere; a
+# quiet signal has its floor pushed down with the sign held and never expanding; a slower release holds the gate open longer (the
+# note's tail survives, the knob monotone); the state carries so a span in two pieces equals the whole once; a bad threshold refuses
+# BadThreshold, a sub-unity ratio BadRatio, an illegal coefficient BadCoeff, an out-of-range span BadRange. Purely local — no
+# network, no keys, no funds, no real device, no sample rate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_gate_env_witness.rish
+
+say "ales-gate-env: Language EN — ALES54 marries the two dynamics proofs the same way ALES53 did, the threshold inverted: the gate (ALES51) proved a silenced floor, the envelope follower (ALES52) proved a patient sense of time, and this rung drives the first from the second so the gate opens as the sound arrives and holds open over the release — the gate that breathes, rather than chopping the note's tail the instant a sample dips."
+say "ales-gate-env: Style Radiant — the law is stated positively: with instant attack and release the smoothed gate IS the plain gate byte-for-byte (the zero-smoothing limit, proven by running both tools on one signal), unit ratio is the identity everywhere, a slower release holds the gate open longer (the note's tail survives, the knob monotone), and the state carries so a span in two pieces equals the whole once — the seam invisible, the release holding across the boundary, ALES43's lesson."
+say "ales-gate-env: Lens TAME — bounded Clip, u32 span, i16 samples, i64 envelope; threshold checked in [1, sample_max], ratio at least unity with a nonzero denominator, both coefficients in (0, 1] by the follower's one proven rule, all before any write; the gated envelope kept within [0, envelope] so the gain sits in [0, 1] and every written magnitude is at most the input's, fitting i16; the zero-envelope case guarded (env_step forces a unit step toward any nonzero target, so a zero envelope means a silent sample — no divide by zero); a bad threshold refuses BadThreshold, a sub-unity ratio BadRatio, an illegal coefficient BadCoeff, an out-of-range span BadRange; siloed to lotus/, no network, no keys, no funds, no device, no sample rate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/gate_env"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/gate_env.rye -femit-bin=${bin}"]
+assert build.ok else "ales-gate-env: build failed — ${build.err}"
+
+let outfile = "lotus/bin/gate_env.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-gate-env: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-gate-env: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-gate-env' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-gate-env: selftest did not print the GREEN ales-gate-env line"
+
+# This rung composes both parents over their public APIs — re-prove ALES52's follower and ALES51's gate still stand green.
+let env = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/envelope.rye -femit-bin=lotus/bin/envelope && lotus/bin/envelope selftest 2>&1 | grep -q 'GREEN ales-envelope' && echo yes"]
+assert (trim env.out) == "yes" else "ales-gate-env: the ALES52 envelope follower regressed under the attack/release gate"
+
+let g = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/gate.rye -femit-bin=lotus/bin/gate && lotus/bin/gate selftest 2>&1 | grep -q 'GREEN ales-gate' && echo yes"]
+assert (trim g.out) == "yes" else "ales-gate-env: the ALES51 gate regressed under the attack/release gate"
+
+say "ales-gate-env: GREEN — an attack/release noise gate drives ALES51's silenced floor from ALES52's proven envelope, each sample advancing the follower one step and, when the smoothed envelope falls below the threshold, dividing its whole magnitude by the ratio and applying that gain to the raw sample; with instant attack and release it is the plain gate byte-for-byte, unit ratio is the identity everywhere, a quiet signal's floor pushes down with the sign held, a slower release holds the gate open longer (the knob monotone), the state carries so a span in two pieces equals the whole once; a bad threshold refuses BadThreshold, a sub-unity ratio BadRatio, an illegal coefficient BadCoeff, an out-of-range span BadRange, each leaving the clip untouched; the ALES52 follower and ALES51 gate selftests stay GREEN. The gate now breathes too — with the compressor (ALES53) and the gate breathing, the dynamics family's next rung can give the limiter the same attack and release, or open a hold stage between them."
