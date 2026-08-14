@@ -1,0 +1,193 @@
+//! image/edit_input.rye — HUNK48: the edit input seam — a keeper's raw gesture becomes exactly one history move.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK48.
+//! Design read: active-designing/20260813-202710_hunk-edit-input-seam-exploration.md
+//! Teacher, thanked clean-room: the input layer of a photo editor (iCloud Photos / Google Photos) — a tap commits a
+//! gesture, a swipe walks the undo/redo history — reduced to one move over a recorded edit-list (concept only, siloed).
+//!
+//! HUNK16 gave a pure `EditCursor` whose undo and redo each clamp at both ends and whose fresh push forgets the redo
+//! tail; HUNK43 gave the scroll arc its own input seam, one raw event to one cursor move. What was missing above the
+//! EditCursor is the same boundary: the translation from a raw editing gesture — commit this verb, undo, redo — into
+//! exactly one history move. This rung is that seam: `apply(cursor, gesture)` maps one gesture to one cursor call,
+//! preserving every clamp the cursor already holds, so an undo at the original moves nothing, a redo at the live edge
+//! moves nothing, and a committed verb forgets the road not taken. A pure composition over HUNK16 — no storage, no
+//! pixels, no new refusal beyond the list's own `TooManyEdits` ceiling. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/edit_input.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const edits = @import("photo_edits.rye");
+const edit_cursor = @import("edit_cursor.rye");
+
+pub const edit_input_version = "20260813.202710";
+
+/// The three raw editing gestures a Photos surface receives. `commit` carries a verb to record at the live position;
+/// `undo` and `redo` walk the history one step. Every kind routes to exactly one HUNK16 move, so the cursor's clamps
+/// hold whatever the gesture.
+pub const GestureKind = enum {
+    commit,
+    undo,
+    redo,
+};
+
+/// One raw editing gesture. `edit` is read only for `commit` — the verb a keeper committed; the walk gestures ignore
+/// it. A plain record over one value model: an enum tag beside the HUNK11 `Edit` payload.
+pub const Gesture = struct {
+    kind: GestureKind,
+    edit: edits.Edit = .flip_h,
+
+    /// A gesture that commits one verb at the live position — the constructor mirroring HUNK43's `scroll_by`.
+    pub fn commit(e: edits.Edit) Gesture {
+        return .{ .kind = .commit, .edit = e };
+    }
+};
+
+/// Apply one raw editing gesture to a cursor, routing it to exactly one HUNK16 move. `commit` pushes the carried verb
+/// (forgetting any redo tail, refusing `TooManyEdits` at the list's own ceiling — the only refusal the seam can
+/// surface); `undo` and `redo` step the position, each clamped by the cursor without under/overflow. Pure over the
+/// cursor beyond the single move it performs.
+pub fn apply(cursor: *edit_cursor.EditCursor, gesture: Gesture) edits.EditsError!void {
+    // invariant: the cursor stands within its history before the gesture.
+    assert(cursor.position <= cursor.list.count);
+    switch (gesture.kind) {
+        .commit => try cursor.push(gesture.edit),
+        .undo => cursor.undo(),
+        .redo => cursor.redo(),
+    }
+    // invariant: after any gesture the cursor still stands within its history.
+    assert(cursor.position <= cursor.list.count);
+}
+
+// --- selftest: build a real image, drive an EditCursor by raw gestures, and prove a committed verb advances the
+//     depth and the viewed image tracks byte-for-byte, undo/redo walk reversibly, both edges clamp as no-ops, a
+//     commit while rewound forgets the redo tail, and the list's ceiling still refuses through the seam -----------
+
+fn craft_tagged(allocator: std.mem.Allocator, w: u32, h: u32) !qoi.Pixmap {
+    // invariant: a real image has both dimensions, kept small for the witness.
+    assert(w >= 1 and h >= 1);
+    assert(w <= 16 and h <= 16);
+    const pixels = try allocator.alloc(u8, @as(usize, w) * @as(usize, h) * 4);
+    var i: u32 = 0;
+    while (i < w * h) : (i += 1) {
+        // A position-tagged pixel so a flip or crop is visible byte-for-byte.
+        pixels[i * 4 + 0] = @intCast(i % 256);
+        pixels[i * 4 + 1] = @intCast((i * 3) % 256);
+        pixels[i * 4 + 2] = @intCast((i * 7) % 256);
+        pixels[i * 4 + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+fn same_image(a: *const qoi.Pixmap, b: *const qoi.Pixmap) bool {
+    if (a.width != b.width or a.height != b.height) return false;
+    if (a.pixels.len != b.pixels.len) return false;
+    var i: u32 = 0;
+    while (i < a.pixels.len) : (i += 1) {
+        if (a.pixels[i] != b.pixels[i]) return false;
+    }
+    return true;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const source = try craft_tagged(garden, 6, 4);
+
+    var cur = edit_cursor.EditCursor.init();
+    // invariant: a fresh cursor stands at the original with nothing to walk.
+    assert(cur.depth() == 0);
+    assert(!cur.can_undo() and !cur.can_redo());
+
+    // A committed verb advances the depth by one and the viewed image is exactly that verb applied to the source.
+    try apply(&cur, Gesture.commit(.flip_h));
+    assert(cur.depth() == 1);
+    assert(cur.can_undo() and !cur.can_redo());
+    {
+        const seen = try edit_cursor.view(garden, &source, &cur);
+        const want = try @import("photos.rye").flip_h(garden, &source);
+        assert(same_image(&seen, &want)); // the seam's commit is exactly the verb
+    }
+
+    // A second committed verb stacks; the viewed image tracks the two-verb replay byte-for-byte.
+    try apply(&cur, Gesture.commit(.{ .rotate = .{ .turns = 1 } }));
+    assert(cur.depth() == 2);
+    {
+        var want_list = edits.EditList.init();
+        try want_list.push(.flip_h);
+        try want_list.push(.{ .rotate = .{ .turns = 1 } });
+        const seen = try edit_cursor.view(garden, &source, &cur);
+        const want = try edits.apply(garden, &source, &want_list);
+        assert(same_image(&seen, &want));
+    }
+
+    // Undo walks the depth back; redo walks it forward — the image recovered byte-for-byte both ways, a walk destroys
+    // nothing.
+    const at_two = try edit_cursor.view(garden, &source, &cur);
+    try apply(&cur, .{ .kind = .undo });
+    assert(cur.depth() == 1);
+    try apply(&cur, .{ .kind = .undo });
+    assert(cur.depth() == 0);
+    {
+        const seen = try edit_cursor.view(garden, &source, &cur);
+        assert(same_image(&seen, &source)); // fully rewound recovers the original
+    }
+    try apply(&cur, .{ .kind = .redo });
+    try apply(&cur, .{ .kind = .redo });
+    assert(cur.depth() == 2);
+    {
+        const seen = try edit_cursor.view(garden, &source, &cur);
+        assert(same_image(&seen, &at_two)); // fully rolled forward is unchanged
+    }
+
+    // Both edges clamp as no-ops through the seam: a redo at the live edge and, after a full rewind, an undo at the
+    // original each move nothing.
+    try apply(&cur, .{ .kind = .redo });
+    assert(cur.depth() == 2); // clamped, never past the edge
+    try apply(&cur, .{ .kind = .undo });
+    try apply(&cur, .{ .kind = .undo });
+    try apply(&cur, .{ .kind = .undo });
+    assert(cur.depth() == 0); // clamped, never below the original
+
+    // A commit while rewound forgets the redo tail: rewound to depth 1, a fresh verb discards the branch not kept, so
+    // no redo remains and the new verb is the live edge.
+    try apply(&cur, .{ .kind = .redo }); // back to depth 1
+    assert(cur.depth() == 1 and cur.can_redo());
+    try apply(&cur, Gesture.commit(.flip_v));
+    assert(cur.depth() == 2);
+    assert(!cur.can_redo()); // the redo tail was forgotten the moment a different road was taken
+
+    // The list's own ceiling still refuses `TooManyEdits` through the seam — the seam invents no new error. Fill a
+    // fresh cursor to the ceiling by committing, then the next commit refuses.
+    {
+        var full = edit_cursor.EditCursor.init();
+        var k: u32 = 0;
+        while (k < edits.max_edits) : (k += 1) {
+            try apply(&full, Gesture.commit(.flip_h));
+        }
+        assert(full.depth() == edits.max_edits);
+        if (apply(&full, Gesture.commit(.flip_h))) |_| {
+            return error.CeilingSlipped;
+        } else |e| {
+            assert(e == error.TooManyEdits); // the only refusal the seam can surface
+        }
+    }
+
+    print("GREEN image-edit-input: a real 6x4 image driven through an EditCursor by raw gestures — a committed verb " ++
+        "advances the depth and the viewed image is exactly that verb byte-for-byte, a second stacks and tracks the " ++
+        "two-verb replay; undo walks the depth back to the original recovered byte-for-byte and redo rolls forward " ++
+        "again unchanged; a redo at the live edge and an undo at the original each clamp as no-ops; a commit while " ++
+        "rewound forgets the redo tail (the road not taken discarded); the list ceiling still refuses TooManyEdits " ++
+        "through the seam, no new error invented. HUNK16 cursor GREEN beneath\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: edit_input selftest\n", .{});
+    return 1;
+}
