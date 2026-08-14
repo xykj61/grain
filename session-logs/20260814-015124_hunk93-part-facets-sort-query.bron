@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260814.015124
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title HUNK93 — the keeper types the direction: a sort directive in the query line picks which way the price sort turns
+prompt Recursion loop past HUNK92; take the next agent-doable lap Lindy-first crux-first; send each finished increment; stop at custody gates.
+think HUNK92 gives the sorted screen a direction, yet that direction is a parameter a caller chooses in code — a keeper typing a query still could not pick it; the sort control was reachable only by editing Rye, which is no control at all for a keeper.
+think The crux is that the typed line drives BOTH the direction and the facets without disturbing the faceted grammar — so the sort directive must be LIFTED out of the line before faceting, leaving the rest byte-for-byte the faceted query it always was; a line with no directive must behave exactly as HUNK92 ascending (a strict superset).
+think Built brushstroke/part_facets_sort_query.rye: parse_sort_query tokenizes on spaces, a `sort:` token sets the direction through dir_for_value (price-asc/price-desc, else UnknownSortValue; a second refusing DuplicateSort), every other token copied into a bounded owned scratch (max_facets_line) joined by single spaces, LineTooLong before overflow; facets_sorted_query_screen hands the stripped rest and chosen dir to HUNK92's facets_sorted_screen_dir.
+think Chose to lift the directive from ANYWHERE in the line (front, middle, alone), not only a fixed position, so a keeper types it wherever it falls — proven by a `sort:price-asc` in the middle rejoining the surrounding facets in typed order.
+obs Clean first build — GREEN on the first witness pass; TAME bans + width check clean (exit 0); HUNK92 sort-dir re-runs GREEN beside it (this rung feeds it a keeper-typed direction).
+obs A price is echoed, compared, and reordered by, never moved — custody gate #3 untouched; no network, no key, no funds.
+loom witness=hunk_part_facets_sort_query_witness green=1 parts=5 directives=price-asc,price-desc default=ascending refusals=UnknownSortValue,DuplicateSort,UnknownKey
+file brushstroke/part_facets_sort_query.rye HUNK93 SortQuery · parse_sort_query (lift directive, strip to bounded rest) · facets_sorted_query_screen
+file tools/hunk_part_facets_sort_query_witness.rish witness GREEN; HUNK92 sort-dir stays GREEN beside it
+file image/README.md search paragraph now names the keeper-typed sort directive and its witness
+recommend keep-going — the whole faceted-and-sorted search now reads from one keeper-typed line; next is a keeper-typed direction toggle drawn as a tappable control, a per-facet value count, or another Season-A / double-seat journey. No gate reached.

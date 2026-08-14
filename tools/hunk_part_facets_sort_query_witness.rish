@@ -1,0 +1,45 @@
+# tools/hunk_part_facets_sort_query_witness.rish — the keeper types the direction (HUNK93).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK93.
+# Design read: active-designing/20260814-014131_hunk-part-facets-sort-direction-named-exploration.md (HUNK92 kin)
+# Teacher, thanked clean-room: a search box where the sort control is part of the same query a keeper types (concept only, siloed).
+#
+# HUNK92 gives the sorted screen a direction, yet a keeper typing a query could not pick it. This rung hands the choice
+# over: brushstroke/part_facets_sort_query.rye lifts a `sort:price-asc` / `sort:price-desc` directive out of the typed
+# line (default ascending when none is typed, DuplicateSort on a second, UnknownSortValue on a bad value) and hands the
+# stripped faceted query and the keeper's direction to HUNK92's facets_sorted_screen_dir. The selftest proves the
+# directive is lifted from anywhere, the rest rejoins as the faceted query byte-for-byte, an absent directive defaults to
+# ascending (a strict superset of HUNK92), the typed direction and typed facets both reach the glass, and the named
+# refusals fire. It is additive — HUNK92 stays GREEN beside it.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_part_facets_sort_query_witness.rish
+
+say "hunk-part-facets-sort-query: Language EN — HUNK93 lets the keeper type the sort: a `sort:price-asc` / `sort:price-desc` directive anywhere in the query line picks the direction, and facets_sorted_query_screen draws the chosen way."
+say "hunk-part-facets-sort-query: Style Radiant — the sort control now lives in the same line a keeper types, so choosing the direction needs no code; the whole faceted-and-sorted search reads from one honest line."
+say "hunk-part-facets-sort-query: Lens TAME — the directive is lifted into a bounded scratch and the rest handed to HUNK92; an unknown value, a duplicate directive, and an over-long line each refuse by name before any catalog work; positive invariants per fn; a price is compared and reordered by, never moved; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/part_facets_sort_query"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_facets_sort_query.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-part-facets-sort-query: build failed — ${build.err}"
+
+# Read the GREEN line from a file — it carries an apostrophe ("parser's") that breaks a shell single-quote round-trip.
+let outfile = "brushstroke/bin/part_facets_sort_query.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "hunk-part-facets-sort-query: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "hunk-part-facets-sort-query: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN part-facets-sort-query' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "hunk-part-facets-sort-query: selftest did not print the GREEN part-facets-sort-query line"
+
+# HUNK92 stays GREEN — the directional screen this rung feeds a keeper-typed direction.
+let d = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_facets_sort_dir.rye -femit-bin=brushstroke/bin/part_facets_sort_dir && brushstroke/bin/part_facets_sort_dir selftest > brushstroke/bin/part_facets_sort_dir.out 2>&1"]
+assert d.ok else "hunk-part-facets-sort-query: HUNK92 part_facets_sort_dir re-run failed — see brushstroke/bin/part_facets_sort_dir.out"
+let d_green = run ["sh" "-c" "grep -q 'GREEN part-facets-sort-dir' brushstroke/bin/part_facets_sort_dir.out && echo yes"]
+assert (trim d_green.out) == "yes" else "hunk-part-facets-sort-query: HUNK92 part_facets_sort_dir did not stay GREEN"
+
+say "hunk-part-facets-sort-query: GREEN — a keeper types `sort:price-asc` or `sort:price-desc` and the glass draws the chosen direction; HUNK92 stays GREEN beside it. HUNK93 lands."
