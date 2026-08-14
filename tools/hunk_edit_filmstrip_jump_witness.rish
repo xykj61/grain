@@ -1,0 +1,44 @@
+# tools/hunk_edit_filmstrip_jump_witness.rish — tap a filmstrip thumbnail, the cursor jumps there, on metal (HUNK55).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK55.
+# Design read: active-designing/20260813-212112_hunk-filmstrip-jump-exploration.md.
+# Teacher, thanked clean-room: the edit-history filmstrip of a photo app (iCloud Photos / Google Photos) — a keeper taps
+# a thumbnail in the history strip and the picture jumps to that step (concept only, siloed).
+#
+# HUNK54 painted the whole edit history as a filmstrip a keeper could only read; the finger arc walked it one step per
+# swipe. This rung lets a keeper tap a thumbnail and land on that step in one gesture. FilmstripJump owns one EditCursor
+# and the filmstrip geometry; tap_at classifies a pixel tap into a band (HUNK50's x/cell_px idiom) and seeks the cursor
+# there through HUNK16's new seek — a jump that forgets nothing. paint is HUNK54's filmstrip unchanged, so the marker
+# lands on exactly the sought step: the band a keeper taps is the band the marker shows. The selftest proves tap-to-jump
+# lands exactly, the no-drift marker, that a jump forgets nothing, a tap off the strip firing nothing, and a bad
+# thumbnail refusing at open. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_edit_filmstrip_jump_witness.rish
+
+say "hunk-edit-filmstrip-jump: Language EN — HUNK55 taps a filmstrip band and seeks the cursor to that step (HUNK54 filmstrip · HUNK50 tap-to-cell · HUNK16 cursor seek), the marker landing on the tapped band."
+say "hunk-edit-filmstrip-jump: Style Radiant — a keeper reads the whole road their picture took and touches the step they want; the band they tap is the band the marker shows, in one gesture."
+say "hunk-edit-filmstrip-jump: Lens TAME — a pure composition; a tap is a clamped division, a jump forgets nothing, the source never mutated; a zero thumbnail refuses BadThumb; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/edit_filmstrip_jump"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/edit_filmstrip_jump.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-edit-filmstrip-jump: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-edit-filmstrip-jump: selftest exited non-zero — ${selftest.out}"
+
+# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# single-quoted string, so an apostrophe in the GREEN line can never break a check (the loom for REDS #76).
+let out = trim selftest.out
+say "hunk-edit-filmstrip-jump: ${out}"
+
+assert out contains "GREEN edit-filmstrip-jump" else "hunk-edit-filmstrip-jump: selftest did not print the GREEN edit-filmstrip-jump line"
+assert out contains "a tap centered on band k seeks the cursor to step k for every step" else "hunk-edit-filmstrip-jump: a tap did not land on its band"
+assert out contains "the band tapped is the band marked, no drift" else "hunk-edit-filmstrip-jump: the marker drifted from the tapped band"
+assert out contains "a jump forgets nothing" else "hunk-edit-filmstrip-jump: a jump did not preserve the redo tail"
+assert out contains "each fire nothing (the cursor unmoved)" else "hunk-edit-filmstrip-jump: a tap off the strip moved the cursor"
+assert out contains "refuses BadThumb at open" else "hunk-edit-filmstrip-jump: a bad thumbnail did not refuse by name"
+
+say "hunk-edit-filmstrip-jump: GREEN — a tap on a filmstrip thumbnail jumps the cursor to that step, the marker landing on exactly the tapped band, the jump forgetting nothing, a tap off the strip firing nothing, a bad thumbnail refusing by name; no network, no key, no funds."
