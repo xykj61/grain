@@ -45,9 +45,10 @@ pub const EditError = error{
     BadGain,
 };
 
-/// Clamp a wide intermediate to the i16 sample range. A scaled sample is computed in i64 so the multiply never overflows,
-/// then pinned to [sample_min, sample_max] — the saturation an audio edit owes so loud never wraps to the opposite sign.
-fn saturate(v: i64) i16 {
+/// Clamp a wide intermediate to the i16 sample range. A scaled or summed sample is computed in i64 so the arithmetic never
+/// overflows, then pinned to [sample_min, sample_max] — the saturation an audio edit owes so loud never wraps to the opposite
+/// sign. Public so the mixer (ALES3) reuses the one true saturation rather than re-deriving it.
+pub fn saturate(v: i64) i16 {
     // invariant: the clamp bounds are the true i16 extremes, so the result is always a legal sample.
     assert(sample_min == -32768 and sample_max == 32767);
     if (v < @as(i64, sample_min)) return sample_min;
