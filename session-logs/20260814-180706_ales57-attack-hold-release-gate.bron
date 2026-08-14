@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260814.180706
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title ALES57 — the attack/hold/release gate, the hold spent where the gate lives
+prompt recur the road past BUHR — take the next agent-doable lap Lindy-first crux-first; approve own design rounds; send each finished increment; stop at custody gates
+think ALES56's tail named two next rungs: drive the limiter, compressor, or gate from the held follower, or open a lookahead delay for a true brickwall. Lindy-first crux-first, the held-follower spend is the self-approvable move — the lookahead delay was explicitly named a Keaton's-word horizon by ALES55, so it is gated, not agent-doable. Of the three tools, the GATE is where hold earns its keep: an un-held gate chatters on a brief dip between two loud samples, the loudest artifact and the most audible fix. So ALES57 is the attack/HOLD/release gate.
+think The design keeps it Lindy the way the whole ladder does: reuse proven parents over public APIs, add no arithmetic on the audio path. gate_env_hold.rye mirrors ALES54's gate_env.rye line for line, with exactly two changes — carry a second piece of state (hold_left: *u32 beside env: *i64), and advance hold_env.env_step_hold instead of envelope.env_step. The gain math is ALES51's, proven; the time base is ALES56's held step, proven; this rung is their composition.
+think The crux law is the family's signature shape once more: hold_samples == 0 makes env_step_hold reduce to env_step every sample, so this gate reduces to ALES54's gate_follow byte-for-byte. Proven by running gate_hold_follow(hold=0) against gate_env.gate_follow on one mixed signal — the sibling of the unit-coefficient, zero-smoothing, and zero-hold identities that anchor every dynamics rung.
+think The gate-specific proof the compressor and limiter siblings will not need: a nonzero hold keeps the gate open across a brief DIP. Signal [15000, 300, 15000], threshold 1000, instant attack and instant release, hold 0 vs 1. With no hold the dip drops the envelope below threshold and is attenuated (chatter); with hold 1 the peak is pinned above threshold through the single dip sample, so it passes byte-for-byte. Asserted held magnitude >= un-held at every sample (monotone) and strictly louder at the dip (the chatter gone).
+think The zero-envelope guard the gate needs (its branch is e < threshold, and e can reach 0) still holds under the hold: env_step forces a unit step toward any nonzero target, and the hold only ever PINS a peak — it never lowers the envelope — so a zero envelope still means a silent sample, no divide by zero. Assert x == 0 in that branch.
+think Monotonic stamp: live clock read 20260814.180706 (TZ=America/New_York), after ALES56's 175827 — later-is-larger holds.
+obs Two authorship stumbles caught before green, both mechanical: a stray </content> line leaked into both the module and the witness on write (removed, then the module parsed clean); and I first imported gate.rye but referenced gate_env.gate_follow in the zero-hold test, so I swapped the unused import for gate_env.rye. After both, the selftest was GREEN on the next build.
+obs Witness GREEN on metal; three parents re-proven beneath it — ALES56 held follower, ALES51 gate, ALES54 attack/release gate all GREEN under the new rung. tame_style_check bans clean (gate_env_hold.rye carries positive invariants throughout, not in the zero-assert list). Hold bounded by timeline.max_clip; a longer hold refuses BadHold before any write. Purely local — no socket, network, keys, funds, device, or sample rate; every custody gate untouched.
+loom witness=ales_gate_env_hold_witness result=GREEN reproves=3 rung=ALES57
+file lotus/gate_env_hold.rye ALES57 — the held gate: ALES54's gate with the plain follower swapped for ALES56's held one, a hold of zero reducing to it byte-for-byte
+file tools/ales_gate_env_hold_witness.rish witness — selftest GREEN plus the ALES56 follower, ALES51 gate, and ALES54 gate re-proven beneath
+file active-designing/20260814-180706_fill-ales57-lotus-attack-hold-release-gate.md self-approved design round for the rung
+file lotus/README.md status line and road-on prose extended to ALES57 (the gate now holds)
+recommend keep-going ALES58 can give the compressor (ALES53) or the limiter (ALES55) the same hold — each a short rung reading the same proven env_step_hold — or open the lookahead delay line for a true brickwall (Keaton's-word horizon); no custody gate on the held-follower spends
+</content>
