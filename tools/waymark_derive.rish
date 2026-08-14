@@ -101,13 +101,14 @@ say "corpus sha3-512: ${digest_val}"
 #   cion-meta-season-equinox-4-seal -> GRAD (20260810.225345 · CION Eq4 Seal)
 #   season-a-open-image-decode-and-photos-surface -> HUNK (20260813 · Season A Hardware/Right-to-Repair, open image + Photos)
 #   season-a-mikrophone-firmware-forgetful-session-capture -> DREY (20260814 · Season A, Mikrophone firmware, memory-that-forgets)
+#   constel-test-network-fake-pier-local-constellations -> FORA (20260814 · Constel fake-pier test-network naming, siloed dev constellations)
 # SETU is hand-seated (not a corpus draw — SETU is absent from flw); exclude only.
 # SEVA is hand-seated (viewer; absent from flw).
 # MAND is the seated M vane (in flw corpus; exclude so it never draws as a waymark).
 # MONA is the same-day prior name of Mand — exclude for one season.
 # SALA dropped from exclude at alias retirement 20260724.202412 (Sala is historical).
 # Placeholder below is the most recent seat (SUNN); change it when drawing the next.
-let input_name = "season-a-mikrophone-firmware-forgetful-session-capture"
+let input_name = "constel-test-network-fake-pier-local-constellations"
 
 let hash_run = run ["sh" "-c" "printf '%s' '${input_name}' | ${ossl} dgst -sha3-512 | awk '{print $NF}' | cut -c1-8"]
 assert hash_run.ok else "openssl dgst -sha3-512 failed"
@@ -129,7 +130,7 @@ assert (word_val != "") else "empty word at derived index -- corpus or index mat
 # Existing proper names this scheme must never echo (four-letter Lexicon
 # identities + seated waymarks). Seated waymarks also live in
 # .cursor/rules/waymark-ladders.mdc — if the word matches, append -2 and redraw.
-let exclude_check = run ["sh" "-c" "echo '${word_val}' | grep -qxE '(BRIX|BRON|POND|MUR|MALA|SEVA|MAND|MONA|POOL|QUIN|RIYO|REYA|TREY|TERA|TRIZ|OJJO|GLOW|RHYZ|PEAL|HAWM|TUBE|ZETA|JABS|LULU|SETU|MAIR|STOA|SUNN|POLE|SOON|JARL|BUHR|TACT|GISM|AYRE|DAHL|KOFF|CION|VOLS|LOWE|OFFY|GRAD|BOZO|LINN|AHOY|WADE|HUNK|DREY)'"]
+let exclude_check = run ["sh" "-c" "echo '${word_val}' | grep -qxE '(BRIX|BRON|POND|MUR|MALA|SEVA|MAND|MONA|POOL|QUIN|RIYO|REYA|TREY|TERA|TRIZ|OJJO|GLOW|RHYZ|PEAL|HAWM|TUBE|ZETA|JABS|LULU|SETU|MAIR|STOA|SUNN|POLE|SOON|JARL|BUHR|TACT|GISM|AYRE|DAHL|KOFF|CION|VOLS|LOWE|OFFY|GRAD|BOZO|LINN|AHOY|WADE|HUNK|DREY|FORA)'"]
 assert (exclude_check.ok == false) else "derived waymark collides with an already-seated name -- append -2 to input_name above and rerun"
 
 say ""

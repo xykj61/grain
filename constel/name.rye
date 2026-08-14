@@ -1,0 +1,278 @@
+//! constel/name.rye — FORA0: a fake-pier name that can never be a real ship. Constel is the tree's own answer to elder
+//! Urbit's fake-galaxy dev networks — many local piers stood up on one machine to meet over Comlink, none of them a real
+//! point on the live network. This rung seats the one invariant every downstream Constel rung leans on: a Constel name is
+//! structurally incapable of being a real @p, proven by a single clean property — it carries no vowel.
+//!
+//! The load-bearing fact: every one of Urbit's 512 real syllables (256 three-letter prefixes, 256 three-letter suffixes)
+//! contains exactly one vowel, and `y` never appears in the table at all. So a vowel-free (Hebrew-style abjad) name can
+//! never be assembled from real syllables — it can never parse as a real @p. That missing vowel IS the safety proof, and
+//! it is checkable in one bounded pass, failing closed.
+//!
+//! Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA0.
+//! Design read: active-designing/20260814-fill-constel-naming-law.md
+//! Law kin: .claude/rules/placeholder-ship-names.md — Constel names are the runnable fake piers; their guarantee is the
+//! missing vowel, stronger and simpler than the ~acme- length trick used for docs illustrations.
+//!
+//! Purely LOCAL — a string predicate on the bench, siloed to constel/, run from inside the jailed pier. No network, no
+//! keys, no funds, no real address ever formed.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/name.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const name_version = "20260814";
+
+/// The consonant palette — the 21 lowercase consonants, every one of them vowel-free. `y` is included as a consonant; the
+/// real syllable table never uses it, so it stays safe. Generation draws over exactly this palette.
+pub const palette = "bcdfghjklmnpqrstvwxyz";
+
+/// One fake ship name is bounded to this length; a base-21 draw over the palette plus the `xn` silo prefix stays well
+/// within it.
+pub const max_ship_len: u32 = 12;
+/// A whole fake constellation is a hyphen-joined run of at most this many ships.
+pub const max_ships: u32 = 8;
+/// A whole constellation string is bounded to this many bytes end to end.
+pub const max_constellation_bytes: u32 = 64;
+/// Generation admits indices below this bound — 21^4, so a name never needs more than four base-21 digits (six bytes with
+/// the prefix), staying under max_ship_len.
+pub const max_index: u32 = 21 * 21 * 21 * 21;
+
+pub const NameError = error{
+    /// An empty string is not a name.
+    EmptyName,
+    /// A ship name past max_ship_len, or a constellation past max_constellation_bytes / max_ships.
+    NameTooLong,
+    /// A byte outside the consonant-and-digit alphabet (a vowel lands here too, since vowels are not in the alphabet).
+    BadCharacter,
+    /// A vowel is present — the one property that could let a name parse as a real @p. Refused by name so the safety
+    /// invariant is the failure, not a side effect.
+    VowelPresent,
+    /// A constellation segment that is not itself a valid ship, or an empty segment from a stray hyphen.
+    BadSegment,
+    /// generate() was handed an index at or past max_index.
+    IndexOutOfRange,
+};
+
+/// True when the byte is one of the five real-syllable vowels. `y` is deliberately absent — it is a consonant here and
+/// never appears in the syllable table.
+pub fn is_vowel(byte: u8) bool {
+    return byte == 'a' or byte == 'e' or byte == 'i' or byte == 'o' or byte == 'u';
+}
+
+/// True when the name carries any vowel. A bounded single pass; this is exactly the predicate that decides whether a name
+/// could ever be a real @p, so the whole safety proof reads through it.
+pub fn contains_vowel(name: []const u8) bool {
+    // invariant: the scan is bounded by the name's own length, itself bounded at the call sites below.
+    assert(name.len <= max_constellation_bytes);
+
+    var i: u32 = 0;
+    while (i < name.len) : (i += 1) {
+        if (is_vowel(name[i])) return true;
+    }
+    return false;
+}
+
+/// True when the byte is an allowed ship character — a palette consonant or a decimal digit. Vowels are not in the
+/// palette, so they never pass here.
+fn is_ship_char(byte: u8) bool {
+    if (byte >= '0' and byte <= '9') return true;
+    var i: u32 = 0;
+    while (i < palette.len) : (i += 1) {
+        if (byte == palette[i]) return true;
+    }
+    return false;
+}
+
+/// Prove a single fake ship name lawful, refusing by name at the first fault. On success the name is bounded, drawn only
+/// from the consonant-and-digit alphabet, and — the point — vowel-free, so it is structurally never a real @p.
+pub fn check_ship(name: []const u8) NameError!void {
+    // invariant: a name is bounded before any per-byte work, so the scan below is bounded.
+    if (name.len == 0) return error.EmptyName;
+    if (name.len > max_ship_len) return error.NameTooLong;
+
+    var i: u32 = 0;
+    while (i < name.len) : (i += 1) {
+        const byte = name[i];
+        // A vowel is refused as VowelPresent specifically — the safety invariant names its own failure — rather than
+        // folded into BadCharacter, so a reader sees exactly why a name was turned away.
+        if (is_vowel(byte)) return error.VowelPresent;
+        if (!is_ship_char(byte)) return error.BadCharacter;
+    }
+
+    // invariant: a name that reached here holds no vowel, so it can never be assembled from real syllables.
+    assert(!contains_vowel(name));
+}
+
+/// A ship name's soundness as a bool, for callers that want the predicate rather than the error.
+pub fn is_valid_ship(name: []const u8) bool {
+    check_ship(name) catch return false;
+    return true;
+}
+
+/// The safety statement, positive: a valid Constel name is provably never a real @p. Returns true exactly when the name is
+/// a lawful, vowel-free ship — which is precisely the condition under which no real-syllable assembly could produce it.
+pub fn never_a_ship(name: []const u8) bool {
+    return is_valid_ship(name) and !contains_vowel(name);
+}
+
+/// Prove a whole fake constellation lawful — a hyphen-joined run of valid ships, bounded in count and total bytes. Refuses
+/// BadSegment for an empty segment (a stray or leading/trailing hyphen) and propagates each ship's own fault.
+pub fn check_constellation(whole: []const u8) NameError!void {
+    // invariant: the whole is bounded before it is split, so segment walking is bounded.
+    if (whole.len == 0) return error.EmptyName;
+    if (whole.len > max_constellation_bytes) return error.NameTooLong;
+
+    var ships: u32 = 0;
+    var start: u32 = 0;
+    var i: u32 = 0;
+    while (i <= whole.len) : (i += 1) {
+        const at_end = i == whole.len;
+        if (at_end or whole[i] == '-') {
+            const seg = whole[start..i];
+            if (seg.len == 0) return error.BadSegment;
+            try check_ship(seg);
+            ships += 1;
+            if (ships > max_ships) return error.NameTooLong;
+            start = i + 1;
+        }
+    }
+
+    // invariant: at least one ship was proven, and the count stayed within the bound.
+    assert(ships >= 1 and ships <= max_ships);
+}
+
+/// Deterministically draw the fake ship name for an index — a two-letter `xn` silo prefix (a welcome clearly-fake digraph)
+/// followed by a base-21 encoding of the index over the palette. Distinct indices yield distinct names, every one valid
+/// and vowel-free by construction. Writes into `buf` and returns the filled slice.
+pub fn generate(index: u32, buf: []u8) NameError![]const u8 {
+    // invariant: only indices within the bound are drawable, keeping the encoding to at most four digits.
+    if (index >= max_index) return error.IndexOutOfRange;
+    // invariant: the caller's buffer must hold the longest name this can form (prefix 2 + up to 4 digits).
+    if (buf.len < max_ship_len) return error.NameTooLong;
+
+    buf[0] = 'x';
+    buf[1] = 'n';
+
+    // Extract base-21 digits least-significant first into a small stack, then write them most-significant first.
+    var digits: [4]u8 = undefined;
+    var n: u32 = index;
+    var count: u32 = 0;
+    // A do-while shape: index 0 must still emit one digit.
+    while (true) {
+        // invariant: the digit index stays within the fixed four-slot stack (max_index == 21^4 guarantees it).
+        assert(count < 4);
+        digits[count] = palette[n % 21];
+        count += 1;
+        n = n / 21;
+        if (n == 0) break;
+    }
+
+    var w: u32 = 2;
+    var d: u32 = count;
+    while (d > 0) : (d -= 1) {
+        buf[w] = digits[d - 1];
+        w += 1;
+    }
+
+    const out = buf[0..w];
+    // invariant: what we drew is a lawful, vowel-free ship — generation can only ever produce safe names.
+    assert(is_valid_ship(out));
+    assert(!contains_vowel(out));
+    return out;
+}
+
+// --- selftest: valid names accepted, every real @p example rejected for its vowel, generation deterministic and
+//     collision-free across a bounded sweep, and every generated name provably never a ship ----------------------------
+
+fn run_selftest() !u8 {
+    // 1. Lawful Constel ships are accepted — consonants and digits, no vowel, within bound.
+    {
+        assert(is_valid_ship("xykj"));
+        assert(is_valid_ship("xnkg30"));
+        assert(is_valid_ship("mrrkt"));
+        assert(is_valid_ship("xx"));
+        assert(is_valid_ship("bcdfghjklm")); // ten consonants, under the twelve bound
+        assert(never_a_ship("xnkg30"));
+    }
+
+    // 2. Every real @p example is refused for its vowel — the safety invariant catches each by name. These are the exact
+    //    shapes a newcomer might copy: a galaxy, a star, two planet halves, and a whole planet.
+    {
+        const ships = [_][]const u8{ "zod", "sarlev", "sampel", "palnet" };
+        var k: u32 = 0;
+        while (k < ships.len) : (k += 1) {
+            assert(contains_vowel(ships[k]));
+            if (check_ship(ships[k])) |_| {
+                return error.ShipSlippedThrough;
+            } else |e| {
+                if (e != error.VowelPresent) return error.WrongRefusal;
+            }
+            assert(!never_a_ship(ships[k]));
+        }
+        // A whole planet name refuses at the constellation level too — its segments carry vowels.
+        if (check_constellation("sampel-palnet")) |_| {
+            return error.ShipSlippedThrough;
+        } else |e| {
+            if (e != error.VowelPresent) return error.WrongRefusal;
+        }
+    }
+
+    // 3. The bound and alphabet refuse by name — empty, too long, a stray character, and an empty segment.
+    {
+        if (check_ship("")) |_| return error.EmptySlipped else |e| assert(e == error.EmptyName);
+        if (check_ship("bcdfghjklmnpq")) |_| return error.LongSlipped else |e| assert(e == error.NameTooLong);
+        if (check_ship("xn_kg")) |_| return error.CharSlipped else |e| assert(e == error.BadCharacter);
+        if (check_constellation("xnkg-")) |_| return error.SegSlipped else |e| assert(e == error.BadSegment);
+    }
+
+    // 4. A lawful constellation of fake piers is accepted — a small hyphen-joined network, every ship vowel-free.
+    {
+        try check_constellation("xnb-xnc-xnd");
+        try check_constellation("xx-xz-xn-xw"); // the welcome clearly-fake digraphs
+    }
+
+    // 5. Generation is deterministic and collision-free across a bounded sweep, and every name is provably never a ship.
+    {
+        const sweep: u32 = 512;
+        // A tiny fixed-capacity set: since names over the sweep are short, compare each fresh name against all prior.
+        var names: [512][12]u8 = undefined;
+        var lens: [512]u32 = undefined;
+        var i: u32 = 0;
+        while (i < sweep) : (i += 1) {
+            var buf: [16]u8 = undefined;
+            const nm = try generate(i, &buf);
+            // Determinism: a second draw of the same index yields the identical bytes.
+            var buf2: [16]u8 = undefined;
+            const nm2 = try generate(i, &buf2);
+            if (!std.mem.eql(u8, nm, nm2)) return error.NondeterministicDraw;
+            // Safety: every drawn name is a lawful, vowel-free ship.
+            assert(never_a_ship(nm));
+            // Collision-free: distinct indices never collide.
+            var j: u32 = 0;
+            while (j < i) : (j += 1) {
+                const prior = names[j][0..lens[j]];
+                if (std.mem.eql(u8, prior, nm)) return error.CollidingDraw;
+            }
+            var c: u32 = 0;
+            while (c < nm.len) : (c += 1) names[i][c] = nm[c];
+            lens[i] = @intCast(nm.len);
+        }
+        // An index at the bound is refused by name.
+        var over: [16]u8 = undefined;
+        if (generate(max_index, &over)) |_| return error.OverIndexSlipped else |e| assert(e == error.IndexOutOfRange);
+    }
+
+    print("GREEN fora-name: a Constel fake-pier name is provably never a real ship — lawful consonant-and-digit names " ++
+        "accepted, every real @p example (zod · sarlev · sampel · palnet · sampel-palnet) refused VowelPresent by name, " ++
+        "the bound and alphabet refusing empty/long/stray/empty-segment each by name, a lawful constellation of fake piers " ++
+        "accepted, and 512 generated names deterministic, collision-free, and every one vowel-free by construction — the " ++
+        "missing vowel is the whole safety proof; no network, no keys, no funds, no real address ever formed\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
