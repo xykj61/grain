@@ -1,0 +1,317 @@
+//! lotus/power.rye — ALES11: the equal-power pan law — the constant it keeps is POWER, not SUM. ALES10 opened the second
+//! channel with a LINEAR pan, weights that sum to `den`, so left + right reproduces the mono mix exactly — the SUM held
+//! constant, at the cost of a −6 dB center dip (each side gets half). This rung places each track on the QUARTER CIRCLE instead
+//! of the straight line between the speakers, so the two channels' POWERS — their squared amplitudes — sum to a constant. At
+//! center each side carries 0.707 (−3 dB), and a track keeps its apparent loudness wherever it sits in the field.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES11.
+//! Design read: active-designing/20260814-fill-ales11-lotus-equal-power.md
+//! Stands on: lotus/pan.rye (ALES10) — the second channel (StereoClip) and the fold bound (max_pan_den) are reused whole, the
+//! linear rung untouched; lotus/fader.rye (ALES8) — a panned track is TWO faded contributions, so each channel is `fader.render`
+//! run once with an equal-power-folded effective fader; lotus/track.rye (ALES6) — the Session the pans align with.
+//!
+//! THE LAW, no trigonometry and no float: "equal power" MEANS the two squared weights sum to den². Build them from that fact —
+//! left_power = den·(den − pos), right_power = den·pos — so left_power + right_power = den² EXACTLY, for any position. The
+//! amplitude weights are then isqrt(left_power) and isqrt(right_power): the power split is a straight line (linear in pos), and
+//! taking the square root bends it into the quarter circle the ear wants. The one genuinely new arithmetic in the suite is the
+//! bounded integer square root, proven to its contract r² ≤ x < (r+1)². Constant power survives the truncation with a PROVEN
+//! bound: left² + right² ≤ den², and den² − (left² + right²) ≤ 2·(left + right) + 2.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process stereo render over an ALES6 table of i16 PCM Clips on one
+//! bench, siloed to lotus/. No socket, no network, no keys, no funds, no real device, no real speaker. The pan law is a routing
+//! weight, not a psychoacoustic or electrical claim.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/power.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const clock = @import("clock.rye");
+const track = @import("track.rye");
+const fader = @import("fader.rye");
+const pan = @import("pan.rye");
+
+pub const power_version = "20260814.122502";
+
+/// The widest pan denominator this rung admits — reused from ALES10, so the two laws share one fold bound. Bounded so a weight
+/// folded into a fader (numerator × weight, denominator × den) never overflows the i32/u32 the fader carries, and so the power
+/// products (den × den) stay well inside u64: max_pan_den² = 4096² = 2²⁴, twelve binary digits of square root.
+pub const max_pan_den: u32 = pan.max_pan_den;
+
+/// A pan position as a fraction pos/den across the stereo field: pos = 0 is hard left, pos = den is hard right, pos = den/2 is
+/// center. Default center (1/2). Same value model ALES10 uses; the law reading it is the difference — equal power, not linear.
+pub const PowerPan = struct {
+    pos: u32 = 1,
+    den: u32 = 2,
+};
+
+/// Build a validated PowerPan, refusing at the edge before any render: BadGain on a zero denominator (reused from ALES2, the
+/// same no-divide-by-zero fault), BadRange on a position past the field or a denominator past the fold bound. The one place a
+/// pan's legality is proven, so the weights below rest on a bounded, in-range fraction.
+pub fn make(pos: u32, den: u32) timeline.EditError!PowerPan {
+    // invariant: a nonzero denominator, a position within the field, and a denominator within the fold bound.
+    if (den == 0) return error.BadGain;
+    if (pos > den or den > max_pan_den) return error.BadRange;
+    const p = PowerPan{ .pos = pos, .den = den };
+    // invariant: the built pan carries exactly the requested, validated position.
+    assert(p.pos == pos and p.den == den and p.pos <= p.den and p.den <= max_pan_den);
+    return p;
+}
+
+/// The bounded integer square root: the exact floor of √x, returned as the r with r² ≤ x < (r+1)². No float — a digit-by-digit
+/// binary descent, one power of four at a time from the top of the bounded domain down to one. The input is bounded by
+/// max_pan_den² (= 2²⁴), so `bit` needs no digit above 4¹² and the loop runs at most twelve steps — no unbounded recursion, no
+/// unbounded loop. This is the one genuinely new arithmetic the equal-power law needs.
+fn isqrt(x: u64) u64 {
+    // invariant: the input stays within the bounded power domain, so twelve digits of descent are enough.
+    assert(x <= @as(u64, max_pan_den) * @as(u64, max_pan_den));
+    var rem: u64 = x;
+    var root: u64 = 0;
+    // 4¹² = 2²⁴ is the largest digit the bounded domain can need; shift it down to the largest power of four not exceeding x.
+    var bit: u64 = @as(u64, 1) << 24;
+    while (bit > rem) : (bit >>= 2) {}
+    while (bit != 0) : (bit >>= 2) {
+        if (rem >= root + bit) {
+            rem -= root + bit;
+            root = (root >> 1) + bit;
+        } else {
+            root >>= 1;
+        }
+    }
+    // invariant: the contract — root is the exact floor of √x (root² ≤ x, and one more overshoots).
+    assert(root * root <= x);
+    assert((root + 1) * (root + 1) > x);
+    return root;
+}
+
+/// The equal-power split for a position: the two amplitude weights [left, right], each the floor square root of a power that is
+/// LINEAR in pos. The power split is exact — left_power + right_power = den² for any position — and taking the square root bends
+/// the straight power line into the quarter circle the ear hears as constant loudness. At center each weight is isqrt(den²/2) ≈
+/// 0.707·den (−3 dB), where the linear law gives 0.5·den (−6 dB). Weights never exceed den (isqrt is monotone, den² its cap).
+fn weights(p: PowerPan) [2]u64 {
+    // invariant: the pan is legal (den nonzero, pos within the field, den bounded), so the powers below are bounded.
+    assert(p.den >= 1 and p.pos <= p.den and p.den <= max_pan_den);
+    const den: u64 = p.den;
+    const pos: u64 = p.pos;
+    const left_power: u64 = den * (den - pos); // den² at hard left, 0 at hard right
+    const right_power: u64 = den * pos; //        0 at hard left, den² at hard right
+    // invariant: the CONSTANT-POWER law — the two squared weights sum to den² EXACTLY, before a single root is taken. This is
+    //   what "equal power" means, and it is exact in the power domain (contrast ALES10's exact left + right = den in amplitude).
+    assert(left_power + right_power == den * den);
+    const wl = isqrt(left_power);
+    const wr = isqrt(right_power);
+    // invariant: neither amplitude weight exceeds the field width, so the fold below stays within the fader's ints.
+    assert(wl <= den and wr <= den);
+    return .{ wl, wr };
+}
+
+/// Fold a track's fader and a channel's equal-power weight into ONE effective fader for that channel: (f.num × weight) /
+/// (f.den × den). The two fractions compose to one, so the channel's mix is plain ALES8 — no stereo accumulation is invented,
+/// exactly as ALES10. The products stay within i32/u32 because every input is bounded: the weight by den ≤ max_pan_den, the
+/// fader by the same bound (asserted — a panned session's faders are bounded levels).
+fn side_fader(f: fader.Fader, weight: u32, den: u32) fader.Fader {
+    // invariant: the pan fraction is bounded and legal — weight within the field, den within the fold bound.
+    assert(weight <= den and den >= 1 and den <= max_pan_den);
+    // invariant: the fader is a bounded level, so numerator × weight and denominator × den never overflow the fader's ints.
+    assert(f.den >= 1 and f.den <= max_pan_den);
+    assert(f.num >= -@as(i32, max_pan_den) and f.num <= @as(i32, max_pan_den));
+    return .{ .num = f.num * @as(i32, @intCast(weight)), .den = f.den * den };
+}
+
+/// Render a session to a STEREO master by the equal-power law — each track placed by its pan on the quarter circle, scaled by
+/// its fader. Left and right are each ALES8's `fader.render` run once, over an equal-power-folded effective fader column, so the
+/// only sum in the suite stays ALES8's — the same two-sums-are-one reuse ALES10 proved, only the weights are angular now. The
+/// fader and pan columns align one-to-one with the session's tracks (asserted). Every refusal is ALES8's, forwarded: a track
+/// past the master bound refuses `ClipFull`, a duration too long forwards `DurationTooLong`. A hard-panned track folds to a
+/// 0/N fader on the silent side — silence, never a divide fault.
+pub fn render_stereo(
+    session: *const track.Session,
+    faders: []const fader.Fader,
+    pans: []const PowerPan,
+    clk: clock.Clock,
+    out: *pan.StereoClip,
+) (track.TrackError || clock.ClockError || timeline.EditError)!void {
+    // invariant: both columns align one-to-one with the placed tracks.
+    assert(faders.len == session.count and pans.len == session.count);
+    assert(session.count <= track.max_tracks);
+
+    var left_col: [track.max_tracks]fader.Fader = [_]fader.Fader{.{}} ** track.max_tracks;
+    var right_col: [track.max_tracks]fader.Fader = [_]fader.Fader{.{}} ** track.max_tracks;
+    var t: u32 = 0;
+    while (t < session.count) : (t += 1) {
+        const p = pans[t];
+        // invariant: the pan reaching render is legal (den nonzero, pos within the field, den bounded) — proven by `make` or a
+        //   default; asserted here so the weights below are safe.
+        assert(p.den >= 1 and p.pos <= p.den and p.den <= max_pan_den);
+        const w = weights(p);
+        left_col[t] = side_fader(faders[t], @intCast(w[0]), p.den); // left  = isqrt(den·(den − pos))
+        right_col[t] = side_fader(faders[t], @intCast(w[1]), p.den); // right = isqrt(den·pos)
+    }
+
+    try fader.render(session, left_col[0..session.count], clk, &out.left);
+    try fader.render(session, right_col[0..session.count], clk, &out.right);
+    // invariant: a stereo master is two legal mono clips of the same length (both rendered from one session).
+    assert(out.left.len == out.right.len);
+}
+
+// --- selftest: the isqrt contract across a sweep; the constant-power law left_power + right_power == den² for any position; a
+//     CENTER pan at 0.707 (−3 dB), distinctly louder than ALES10's linear 0.5 (−6 dB); hard left/right route wholly to one
+//     channel; left² + right² within the proven truncation bound of den² across the sweep (constant POWER, not constant sum);
+//     pan composes with the fader; two tracks panned opposite separate; make refuses BadGain / BadRange; ClipFull forwarded ---
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn run_selftest() !u8 {
+    const c = try clock.make(1000); // 1 sample per ms — legible on a bench
+
+    // 1. the isqrt CONTRACT — r² ≤ x < (r+1)² across a sweep, and perfect squares land exact.
+    {
+        var x: u64 = 0;
+        while (x <= 4096) : (x += 1) {
+            const r = isqrt(x);
+            if (r * r > x) return error.IsqrtTooBig;
+            if ((r + 1) * (r + 1) <= x) return error.IsqrtTooSmall;
+        }
+        if (isqrt(10000) != 100) return error.IsqrtSquareWrong; // perfect square exact
+        if (isqrt(0) != 0) return error.IsqrtZeroWrong;
+        if (isqrt(@as(u64, 4096) * 4096) != 4096) return error.IsqrtTopWrong; // the domain ceiling
+    }
+
+    // 2. the CONSTANT-POWER law — left_power + right_power == den² for EVERY position across the field. Proven here in the power
+    //    domain (exact, before any root), and the amplitude weights' squares stay within the isqrt truncation bound of den².
+    {
+        const den: u64 = 100;
+        var pos: u64 = 0;
+        while (pos <= den) : (pos += 1) {
+            const p = try make(@intCast(pos), @intCast(den));
+            const w = weights(p);
+            const wl = w[0];
+            const wr = w[1];
+            // constant power, exact in the power domain
+            const lp = den * (den - pos);
+            const rp = den * pos;
+            if (lp + rp != den * den) return error.PowerSumBroken;
+            // and the amplitudes hold constant power within the two-isqrt truncation bound: den² − (wl²+wr²) ≤ 2(wl+wr)+2.
+            const sq = wl * wl + wr * wr;
+            if (sq > den * den) return error.PowerOverUnit;
+            if (den * den - sq > 2 * (wl + wr) + 2) return error.PowerBoundBroken;
+        }
+    }
+
+    // 3. a CENTER pan carries 0.707 per side (−3 dB), distinctly louder than ALES10's linear 0.5 (−6 dB) — the audible proof the
+    //    law is angular, not straight. den = 100, isqrt(5000) = 70, so a 1000-sample track lands 700 each side (linear: 500).
+    {
+        var a = timeline.Clip{};
+        try timeline.splice(&a, 0, &[_]i16{ 1000, 1000 });
+        var s = track.Session{};
+        try track.add_track(&s, &a, 0);
+        var out = pan.StereoClip{};
+        const faders = [_]fader.Fader{.{}};
+        const pans = [_]PowerPan{try make(50, 100)}; // center
+        try render_stereo(&s, &faders, &pans, c, &out);
+        const seven_hundred = [_]i16{ 700, 700 }; // 1000 × isqrt(5000)/100 = 1000 × 70/100
+        if (!eq(out.left.samples(), &seven_hundred)) return error.CenterLeftWrong;
+        if (!eq(out.right.samples(), &seven_hundred)) return error.CenterRightWrong;
+    }
+
+    // 4. hard LEFT routes the whole track to the left channel (isqrt(den²) == den), right silent (isqrt(0) == 0); hard RIGHT the
+    //    mirror. The equal-power law reaches the field edges exactly, no dip and no bleed.
+    {
+        var a = timeline.Clip{};
+        try timeline.splice(&a, 0, &[_]i16{ 10, 20 });
+        var s = track.Session{};
+        try track.add_track(&s, &a, 0);
+        const faders = [_]fader.Fader{.{}};
+
+        var lft = pan.StereoClip{};
+        const pan_l = [_]PowerPan{try make(0, 100)}; // hard left
+        try render_stereo(&s, &faders, &pan_l, c, &lft);
+        const whole = [_]i16{ 10, 20 };
+        const silent = [_]i16{ 0, 0 };
+        if (!eq(lft.left.samples(), &whole)) return error.HardLeftWrong;
+        if (!eq(lft.right.samples(), &silent)) return error.HardLeftBled;
+
+        var rgt = pan.StereoClip{};
+        const pan_r = [_]PowerPan{try make(100, 100)}; // hard right
+        try render_stereo(&s, &faders, &pan_r, c, &rgt);
+        if (!eq(rgt.right.samples(), &whole)) return error.HardRightWrong;
+        if (!eq(rgt.left.samples(), &silent)) return error.HardRightBled;
+    }
+
+    // 5. pan composes with the fader — a track at HALF fader, panned center, lands 350 each side (700 × 1/2). The equal-power
+    //    fold rides inside the fader exactly as the linear one, one sum run once per channel.
+    {
+        var a = timeline.Clip{};
+        try timeline.splice(&a, 0, &[_]i16{ 1000, 1000 });
+        var s = track.Session{};
+        try track.add_track(&s, &a, 0);
+        var out = pan.StereoClip{};
+        const faders = [_]fader.Fader{try fader.make(1, 2)}; // half level
+        const pans = [_]PowerPan{try make(50, 100)}; // center
+        try render_stereo(&s, &faders, &pans, c, &out);
+        const half_of_seven = [_]i16{ 350, 350 }; // 1000 × 70/100 × 1/2
+        if (!eq(out.left.samples(), &half_of_seven)) return error.FaderPanLeftWrong;
+        if (!eq(out.right.samples(), &half_of_seven)) return error.FaderPanRightWrong;
+    }
+
+    // 6. two tracks panned OPPOSITE (hard) separate into the two channels — the stereo separation a pan exists for.
+    {
+        var a = timeline.Clip{};
+        var b = timeline.Clip{};
+        try timeline.splice(&a, 0, &[_]i16{ 7, 7 });
+        try timeline.splice(&b, 0, &[_]i16{ 90, 90 });
+        var s = track.Session{};
+        try track.add_track(&s, &a, 0);
+        try track.add_track(&s, &b, 0);
+        var out = pan.StereoClip{};
+        const faders = [_]fader.Fader{ .{}, .{} };
+        const pans = [_]PowerPan{ try make(0, 100), try make(100, 100) }; // A hard left, B hard right
+        try render_stereo(&s, &faders, &pans, c, &out);
+        const only_a = [_]i16{ 7, 7 };
+        const only_b = [_]i16{ 90, 90 };
+        if (!eq(out.left.samples(), &only_a)) return error.SepLeftWrong;
+        if (!eq(out.right.samples(), &only_b)) return error.SepRightWrong;
+    }
+
+    // 7. make refuses an illegal pan at the edge — a zero denominator (BadGain), a position past the field, and a denominator
+    //    past the fold bound (both BadRange).
+    {
+        if (make(1, 0)) |_| return error.BadGainSlipped else |e| if (e != error.BadGain) return error.WrongBadGain;
+        if (make(3, 2)) |_| return error.PosSlipped else |e| if (e != error.BadRange) return error.WrongPos;
+        if (make(0, max_pan_den + 1)) |_| return error.DenSlipped else |e| if (e != error.BadRange) return error.WrongDen;
+    }
+
+    // 8. a track whose placed end exceeds the master bound forwards ClipFull — the bound check is ALES8's, inherited whole.
+    {
+        var a = timeline.Clip{};
+        try timeline.splice(&a, 0, &[_]i16{ 0, 0 });
+        var s = track.Session{};
+        try track.add_track(&s, &a, timeline.max_clip - 1); // one sample of room for a two-sample clip
+        var out = pan.StereoClip{};
+        const faders = [_]fader.Fader{.{}};
+        const pans = [_]PowerPan{.{}};
+        if (render_stereo(&s, &faders, &pans, c, &out)) |_| return error.OverflowSlipped else |e| if (e != error.ClipFull) return error.WrongOverflow;
+    }
+
+    print("GREEN ales-power: the equal-power pan law places each track on the quarter circle, keeping POWER constant where the " ++
+        "linear law kept SUM — the isqrt contract holds across a sweep (r² ≤ x < (r+1)², perfect squares exact); the " ++
+        "constant-power law left_power + right_power == den² holds for every position (exact in the power domain), and left² + " ++
+        "right² stays within the proven isqrt-truncation bound of den² across the field; a CENTER pan carries 0.707 per side " ++
+        "(−3 dB, a 1000-sample track landing 700 each side) — distinctly louder than ALES10's linear 0.5 (−6 dB), the audible " ++
+        "proof the law is angular; hard left/right route the whole track to one channel exactly (isqrt(den²) = den, isqrt(0) = " ++
+        "0); pan composes with the fader; two tracks panned opposite separate; make refuses BadGain / BadRange, and a track " ++
+        "past the master bound forwards ClipFull; no socket, no network, no keys, no funds, no real device, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
