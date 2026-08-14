@@ -1,0 +1,42 @@
+# tools/ales_expand_witness.rish — a downward expander: the compressor mirrored under the threshold (ALES60).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES60.
+# Design read: active-designing/20260814-183030_fill-ales60-lotus-downward-expander.md
+# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/sample_max, the range law shape); lotus/compress.rye (ALES50 — the
+# excess-above-threshold law this mirrors, re-proven below); lotus/gate.rye (ALES51 — the below-threshold floor this softens).
+#
+# lotus/expand.rye passes a sample at or above the threshold byte-for-byte and widens a below-threshold sample's deficit thr−m by
+# the ratio, flooring the result at zero. The selftest proves: silence stays silence; the threshold is the identity (continuous,
+# the expander's signature versus the gate's step); unit ratio is the identity everywhere; a quiet signal has its floor deepened
+# with the sign held and the magnitude never expanding; a higher ratio expands at least as hard and a ratio far past the deficit
+# floors the quiet to silence (the gate within); a zero threshold refuses BadThreshold, a sub-unity or zero-denominator ratio
+# BadRatio, an out-of-range span BadRange. Purely local — no network, no keys, no funds, no real device, no sample rate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_expand_witness.rish
+
+say "ales-expand: Language EN — ALES60 mirrors the compressor about the threshold to make the dynamics family symmetric: the compressor keeps the threshold whole and divides the excess ABOVE it, the expander keeps the threshold whole and widens the deficit BELOW it. The fourth member of the family — the limiter pins the peak, the compressor softens it, the gate floors the quiet, and the expander softens that floor: the space between phrases opened wider, the tail of a note pushed further down, room tone lowered without ever slamming shut."
+say "ales-expand: Style Radiant — the law is stated positively: the threshold is the identity (continuous, no step where the gate would jump), unit ratio is the identity everywhere (a 1:1 expander passes the whole signal by construction), and below the threshold the deficit is widened by the ratio so the magnitude only ever shrinks and the sign is always held — a higher ratio expands at least as hard, and a ratio far past the deficit floors the quiet to silence, the gate reached from within the expander."
+say "ales-expand: Lens TAME — bounded Clip, u32 span, i16 samples; the threshold checked in [1, sample_max] and the ratio checked at least unity with a nonzero denominator before any write; the deficit widened in i64 (|sample_min|·ratio fits easily) then floored at zero so an expanded magnitude is at most the input's and nothing on the audio path can overflow; a zero threshold refuses BadThreshold, a sub-unity or zero-denominator ratio BadRatio, an out-of-range span BadRange; siloed to lotus/, no network, no keys, no funds, no device, no sample rate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/expand"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/expand.rye -femit-bin=${bin}"]
+assert build.ok else "ales-expand: build failed — ${build.err}"
+
+let outfile = "lotus/bin/expand.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-expand: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-expand: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-expand' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-expand: selftest did not print the GREEN ales-expand line"
+
+# The expander mirrors the threshold the compressor leaned on — re-prove ALES50's compressor still stands green, so the mirror-pair rests together.
+let compress = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/compress.rye -femit-bin=lotus/bin/compress && lotus/bin/compress selftest 2>&1 | grep -q 'GREEN ales-compress' && echo yes"]
+assert (trim compress.out) == "yes" else "ales-expand: the ALES50 compressor witness regressed under the expander"
+
+say "ales-expand: GREEN — a downward expander mirrors the compressor about the threshold by widening the below-threshold deficit and flooring it at zero; the threshold is the identity (continuous where the gate steps), unit ratio is the identity everywhere, a quiet signal's floor deepens with the sign held and the magnitude never expanding, a higher ratio expands at least as hard, and a ratio far past the deficit floors the quiet exactly to silence (the gate within); a zero threshold refuses BadThreshold, a sub-unity or zero-denominator ratio BadRatio, an out-of-range span BadRange, each leaving the clip untouched; the ALES50 compressor selftest stays GREEN. The dynamics family is now symmetric about the threshold — compressor above, expander below — and the next rung can give either an attack and release over a real time base."

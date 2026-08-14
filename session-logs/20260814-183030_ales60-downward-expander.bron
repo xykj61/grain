@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260814.183030
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title ALES60 — Lotus's downward expander: the compressor mirrored under the threshold
+prompt recur the 1024-round itinerary Lindy-first crux-first, take the next agent-doable Lotus lap, send each finished increment, stop at custody gates
+think The ALES59 log closed the held dynamics arc (attack/hold/release for limiter, compressor, gate) and named the next Lindy-first cruxes: the lookahead delay line (a Keaton's-word horizon — needs a check-in) or a fresh dynamics gesture (de-esser, sidechain, expander) — each a clean rung on the proven follower with no custody gate. Crux-first among the self-approvable three: the expander, because it completes the classic dynamics QUARTET and is the one rung that makes the family symmetric about the threshold.
+think The dynamics family sits in two mirror-pairs about the threshold. Above: compressor (ALES50, divides the excess) and its infinite-ratio limit the limiter (ALES49, pins the peak). Below: the gate (ALES51, floors the quiet) already exists, yet its SOFT member was missing — the true downward mirror of the compressor. That soft member is the downward expander.
+think The gate and the expander are genuinely different rungs, not the same law twice. The gate divides the WHOLE below-threshold magnitude by the ratio, so it STEPS at the threshold (a sample just below jumps to ~thr/ratio). The expander keeps the threshold whole and widens only the DEFICIT: m<thr -> new_m = thr - (thr-m)*num/den, floored at 0. That is continuous at the threshold (deficit 0 -> new_m = thr, the identity), the exact mirror of the compressor's thr + (m-thr)*den/num.
+think Proved the algebraic laws before coding: unit ratio (num=den) gives new_m = thr-(thr-m) = m, identity everywhere; num/den>=1 gives widened deficit >= deficit so new_m <= m (reduces, never boosts); a ratio far past the deficit drives new_m negative, floored to 0 — the gate reached from within, mirroring how the limiter is reached from within the compressor.
+think Overflow bound: deficit <= sample_max (32767), num a u32, product <= ~1.4e14, inside i64; new_m may go negative before the floor so it is clamped to 0 then narrowed to i16 where 0<=new_m<=m<=sample_max fits. One compare, one multiply, one divide per sample; nothing on the audio path overflows.
+think Built lotus/expand.rye on gate.rye's exact frame — same ExpandError faults (BadThreshold/BadRatio/BadRange), same edge checks before any write, opening triad, >=2 asserts per fn each with a positive // invariant:, the one changed line the gain law. Witness tools/ales_expand_witness.rish mirrors the gate witness and re-proves ALES50 the compressor GREEN so the mirror-pair rests side by side.
+obs GREEN on the first build; the gate/compressor idiom carried over clean. tame_style_check bans clean, expand.rye carries asserts (not on the zero-assert ratchet). Purely local — no lookahead, socket, network, keys, funds, device, or sample rate; every custody gate untouched. The dynamics family is now symmetric about the threshold: compressor above, expander below.
+loom witness=ales_expand_witness green=1 first_build=1 clauses=9 reproven=ales50_compress
+file lotus/expand.rye ALES60 — the downward expander, the compressor mirrored under the threshold
+file tools/ales_expand_witness.rish proves the nine clauses GREEN and re-proves ALES50 beside it
+file active-designing/20260814-183030_fill-ales60-lotus-downward-expander.md the self-approved design read for the rung
+file lotus/README.md seats ALES60 in the Season C status line
+recommend keep-going the dynamics quartet is complete and symmetric; the next Lindy-first crux is an attack/release expander (a clean rung on ALES52's proven follower, mirroring ALES53-55) or the lookahead delay line for a true brickwall — the delay is a Keaton's-word horizon, so a check-in before crossing that one
