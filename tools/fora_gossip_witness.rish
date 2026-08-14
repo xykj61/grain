@@ -1,0 +1,38 @@
+# tools/fora_gossip_witness.rish — one frame reaches the whole constellation at once (FORA7).
+#
+# Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA7.
+# Design read: active-designing/20260814-050539_fora7-constel-gossip-broadcast.md
+# Law kin: .claude/rules/placeholder-ship-names.md — a broadcast is many honest deliveries, never a shortcut around the
+# border: a frame carrying a smuggled vowel is delivered to every mailbox yet each recipient's wire.deframe still refuses
+# VowelPresent. The FORA3 gates keep the only trust, per recipient.
+#
+# constel/gossip.rye adds one function over the FORA6 switchboard — broadcast — that fans a single frame out to every member
+# of the constellation except the announcer. It is the primitive every gossip and flood protocol stands on. The selftest
+# proves: a broadcast reaches every other member exactly once and never the announcer's own; each recipient reads its own
+# whole copy; a broadcast of two degenerates to a single delivery; a stranger cannot broadcast (no partial fan-out); and the
+# naming-law border still guards every copy. Purely local — no socket, no network, no keys, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/fora_gossip_witness.rish
+
+say "fora-gossip: Language EN — FORA7 adds broadcast over the FORA6 switchboard: fan a single frame out to the whole constellation at once, every other member's mailbox receiving its own whole copy, the announcer never its own echo — the primitive every gossip and flood protocol stands on."
+say "fora-gossip: Style Radiant — one voice reaches the whole sky at once; a broadcast is many honest deliveries, and the border keeps its watch over every copy."
+say "fora-gossip: Lens TAME — a bounded loop over the switchboard's mailboxes, a stranger's announce refusing NoSuchPier before any mailbox is touched; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "constel/bin/gossip"
+
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/gossip.rye -femit-bin=${bin}"]
+assert build.ok else "fora-gossip: build failed — ${build.err}"
+
+let outfile = "constel/bin/gossip.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "fora-gossip: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "fora-gossip: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN fora-gossip' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "fora-gossip: selftest did not print the GREEN fora-gossip line"
+
+say "fora-gossip: GREEN — one frame reaches the whole constellation at once; the constel consensus track is handed a fan-out already proven pure on the bench."

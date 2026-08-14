@@ -1,0 +1,225 @@
+//! constel/gossip.rye — FORA7: gossip, one frame reaching the whole constellation at once. FORA6's switchboard routes a frame
+//! to ONE named pier; yet the shape a real network leans on for a shared fact — a member joining, a name claimed, a block
+//! proposed — is ONE-TO-MANY: a pier announces once and every OTHER member hears it. This rung takes that one new concern and
+//! nothing more: fan a single frame out to the whole constellation, every other member's mailbox receiving its own whole
+//! copy, the announcer's own mailbox staying empty, the fan-out bounded by the roster.
+//!
+//! Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA7.
+//! Design read: active-designing/20260814-050539_fora7-constel-gossip-broadcast.md
+//! Stands on: constel/switchboard.rye (FORA6) — the medium and its per-pier mailboxes; constel/exchange.rye (FORA4) — the
+//! frame a pier announces.
+//!
+//! Purely LOCAL — a bounded loop over the switchboard's mailboxes on one bench, siloed to constel/, run from inside the jailed
+//! pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate #2 — real hardware / any real
+//! wire — and gate #4 — real Kumara, real network — both untouched). A broadcast is MANY honest deliveries, never a shortcut
+//! around the border: each recipient still runs wire.deframe_* on its own copy, so the two FORA3 trust gates (Sha256 + the
+//! naming-law border) run per recipient. This is the primitive every gossip and flood protocol stands on.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/gossip.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const name = @import("name.rye");
+const handshake = @import("handshake.rye");
+const wire = @import("wire.rye");
+const exchange = @import("exchange.rye");
+const channel = @import("channel.rye");
+const roster = @import("roster.rye");
+const switchboard = @import("switchboard.rye");
+
+pub const gossip_version = "20260814.050539";
+
+/// Fan a single frame out to every member of the constellation EXCEPT `from` — the announcer never hears its own broadcast.
+/// Refuses NoSuchPier if the announcer is not a member (before any mailbox is touched), then delivers the frame's bytes to
+/// each other member's mailbox and returns the count reached (size - 1 on a clean fan-out). Each recipient later reads its
+/// own copy with switchboard.receive, so the FORA3 trust gates still run per recipient at wire.deframe_*.
+pub fn broadcast(sb: *switchboard.Switchboard, from: []const u8, frame: *const wire.Frame) switchboard.SwitchboardError!u32 {
+    // The announcer must be a real member — refuse before a single delivery, so a stranger never causes a partial fan-out.
+    const from_slot = try sb.member(from);
+    // invariant: a found announcer is a real member index, in range of the current count.
+    assert(from_slot < sb.size());
+
+    const n = sb.size();
+    var reached: u32 = 0;
+    var i: u32 = 0;
+    // invariant: the fan-out walks each member once, bounded by the roster count itself bounded by max_piers.
+    assert(n <= roster.max_piers);
+    while (i < n) : (i += 1) {
+        if (i == from_slot) continue; // the announcer is skipped — never its own echo
+        const who = try sb.roster.member(i);
+        try sb.deliver(who, frame);
+        reached += 1;
+    }
+    // invariant: a clean broadcast reaches exactly every other member — one fewer than the whole constellation.
+    assert(reached == n - 1);
+    // invariant: the count reached never exceeds the bound.
+    assert(reached < roster.max_piers);
+    return reached;
+}
+
+// --- selftest: a broadcast reaches every other member exactly once; the announcer never hears its own; each recipient reads
+//     its own whole copy; a broadcast of two is a single delivery; a stranger cannot broadcast; the border guards each copy --
+
+fn run_selftest() !u8 {
+    // 1. A broadcast reaches every OTHER member exactly once, and the announcer never hears its own. Constellation of four.
+    {
+        var sb = switchboard.Switchboard{};
+        try sb.stand_up(4);
+        const p0 = try name_of(&sb, 0);
+        const p1 = try name_of(&sb, 1);
+        const p2 = try name_of(&sb, 2);
+        const p3 = try name_of(&sb, 3);
+        var b0: [name.max_ship_len]u8 = undefined;
+        var b1: [name.max_ship_len]u8 = undefined;
+        var b2: [name.max_ship_len]u8 = undefined;
+        var b3: [name.max_ship_len]u8 = undefined;
+        const n0 = copy_name(&b0, p0);
+        const n1 = copy_name(&b1, p1);
+        const n2 = copy_name(&b2, p2);
+        const n3 = copy_name(&b3, p3);
+
+        // p0 announces its own greeting frame to the sky.
+        var gf = wire.Frame{};
+        const a_party = try exchange.party(n0, try current_sky(&sb));
+        try exchange.initiator_greets(&a_party, &gf);
+
+        const reached = try broadcast(&sb, n0, &gf);
+        assert(reached == 3); // every other member of four
+
+        // The announcer's own mailbox stays empty; each of the other three holds exactly one whole frame.
+        assert((try sb.pending(n0)) == 0);
+        assert((try sb.pending(n1)) == gf.len);
+        assert((try sb.pending(n2)) == gf.len);
+        assert((try sb.pending(n3)) == gf.len);
+
+        // 2 (folded in) — each recipient reads its own whole copy, byte-for-byte, independently.
+        assert(std.mem.eql(u8, try sb.receive(n1), gf.bytes()));
+        assert(std.mem.eql(u8, try sb.receive(n2), gf.bytes()));
+        assert(std.mem.eql(u8, try sb.receive(n3), gf.bytes()));
+        // One recipient reading did not consume another's copy — they all drain independently.
+        assert((try sb.pending(n1)) == 0 and (try sb.pending(n2)) == 0 and (try sb.pending(n3)) == 0);
+    }
+
+    // 3. A broadcast of two degenerates cleanly to a single delivery — the fan-out reaches exactly one pier.
+    {
+        var sb = switchboard.Switchboard{};
+        try sb.stand_up(2);
+        const p0 = try name_of(&sb, 0);
+        const p1 = try name_of(&sb, 1);
+        var b0: [name.max_ship_len]u8 = undefined;
+        var b1: [name.max_ship_len]u8 = undefined;
+        const n0 = copy_name(&b0, p0);
+        const n1 = copy_name(&b1, p1);
+
+        var gf = wire.Frame{};
+        const a_party = try exchange.party(n0, try current_sky(&sb));
+        try exchange.initiator_greets(&a_party, &gf);
+        const reached = try broadcast(&sb, n0, &gf);
+        assert(reached == 1);
+        assert((try sb.pending(n0)) == 0);
+        assert((try sb.pending(n1)) == gf.len);
+    }
+
+    // 4. A stranger cannot broadcast — an announce from a name no roster holds refuses NoSuchPier before any mailbox is
+    //    touched (no partial fan-out).
+    {
+        var sb = switchboard.Switchboard{};
+        try sb.stand_up(4);
+        const p0 = try name_of(&sb, 0);
+        var b0: [name.max_ship_len]u8 = undefined;
+        const n0 = copy_name(&b0, p0);
+        var gf = wire.Frame{};
+        const a_party = try exchange.party(n0, try current_sky(&sb));
+        try exchange.initiator_greets(&a_party, &gf);
+        if (broadcast(&sb, "zzzz9", &gf)) |_| return error.StrangerBroadcast else |e| if (e != error.NoSuchPier) return error.WrongStranger;
+        // No mailbox was touched — every member is still empty.
+        var i: u32 = 0;
+        while (i < 4) : (i += 1) {
+            const who = try sb.roster.member(i);
+            assert((try sb.pending(who)) == 0);
+        }
+    }
+
+    // 5. The border still guards every copy — a broadcast frame carrying a smuggled vowel (digest fixed up) is delivered to
+    //    every mailbox, yet each recipient's wire.deframe still refuses VowelPresent. The fan-out routes; it never re-checks.
+    {
+        var sb = switchboard.Switchboard{};
+        try sb.stand_up(3);
+        const p0 = try name_of(&sb, 0);
+        const p1 = try name_of(&sb, 1);
+        const p2 = try name_of(&sb, 2);
+        var b0: [name.max_ship_len]u8 = undefined;
+        var b1: [name.max_ship_len]u8 = undefined;
+        var b2: [name.max_ship_len]u8 = undefined;
+        const n0 = copy_name(&b0, p0);
+        const n1 = copy_name(&b1, p1);
+        const n2 = copy_name(&b2, p2);
+
+        var gf = wire.Frame{};
+        const a_party = try exchange.party(n0, try current_sky(&sb));
+        try exchange.initiator_greets(&a_party, &gf);
+        // Smuggle a vowel into the from-name field and fix the digest so integrity alone would pass.
+        const field_at = wire.header_len + 4;
+        gf.buf[field_at + 0] = 'z';
+        gf.buf[field_at + 1] = 'o'; // the smuggled vowel
+        gf.buf[field_at + 2] = 'b';
+        const plen = std.mem.readInt(u32, gf.buf[6..10], .little);
+        var dg: [wire.digest_len]u8 = undefined;
+        std.crypto.hash.sha2.Sha256.hash(gf.buf[wire.header_len .. wire.header_len + plen], &dg, .{});
+        var d: u32 = 0;
+        while (d < wire.digest_len) : (d += 1) gf.buf[10 + d] = dg[d];
+
+        const reached = try broadcast(&sb, n0, &gf); // the fan-out carries it to both others
+        assert(reached == 2);
+        // Every recipient reads a whole frame off its mailbox, yet the naming-law border refuses the vowel on each.
+        const f1 = try sb.receive(n1);
+        if (wire.deframe_greeting(f1)) |_| return error.VowelGossiped else |e| if (e != error.VowelPresent) return error.WrongVowel1;
+        const f2 = try sb.receive(n2);
+        if (wire.deframe_greeting(f2)) |_| return error.VowelGossiped else |e| if (e != error.VowelPresent) return error.WrongVowel2;
+    }
+
+    print("GREEN fora-gossip: one frame reaches the whole constellation at once — a broadcast in a sky of four lands one " ++
+        "whole frame in each of the other three mailboxes (count three) and never the announcer's own; each recipient reads " ++
+        "its own copy byte-for-byte, independently; a broadcast of two degenerates cleanly to a single delivery; a " ++
+        "stranger's announce refuses NoSuchPier before any mailbox is touched (no partial fan-out); and a broadcast frame " ++
+        "carrying a smuggled vowel is delivered to every mailbox yet each recipient's wire.deframe still refuses " ++
+        "VowelPresent — the fan-out routes, the FORA3 gates keep the only trust per recipient; no socket, no network, no " ++
+        "keys, no funds, no real address ever formed\n", .{});
+    return 0;
+}
+
+/// The name at a roster slot — a thin selftest helper so a scenario names its piers off the roster rather than the alphabet.
+fn name_of(sb: *switchboard.Switchboard, slot: u32) switchboard.SwitchboardError![]const u8 {
+    // invariant: only a slot within the current constellation is ever named.
+    assert(slot < sb.size());
+    return sb.roster.member(slot);
+}
+
+/// Copy a pier name out of the roster's buffer into a caller-owned buffer, returning the plain slice — a broadcast mutates
+/// mailboxes but never the roster, so this is belt-and-braces clarity rather than a correctness need.
+fn copy_name(dst: []u8, src: []const u8) []const u8 {
+    // invariant: a pier name always fits the ship bound, so the copy never overruns.
+    assert(src.len <= name.max_ship_len);
+    assert(dst.len >= src.len);
+    var i: u32 = 0;
+    while (i < src.len) : (i += 1) dst[i] = src[i];
+    return dst[0..src.len];
+}
+
+/// The current rendered sky as a slice into a fresh static buffer — a small selftest convenience for building a Party.
+fn current_sky(sb: *switchboard.Switchboard) switchboard.SwitchboardError![]const u8 {
+    const S = struct {
+        var buf: [name.max_constellation_bytes]u8 = undefined;
+    };
+    const whole = try sb.sky(&S.buf);
+    // invariant: the rendered whole is always a lawful constellation within the byte bound.
+    assert(whole.len <= name.max_constellation_bytes);
+    return whole;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
