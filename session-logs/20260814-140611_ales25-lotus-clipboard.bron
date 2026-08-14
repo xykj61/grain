@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260814.140611
+editor Zed
+model Fable 5
+voice Kyri
+host Framework 16 AMD — Eastern (EDT) — Vultr SEA VPS cloud pier, this session in ai-jail
+title ALES25 — Lotus's clipboard, a held span pasted anywhere across masters
+prompt Recur through agent-doable ALES laps Lindy-first crux-first; send each finished increment; stop at custody gates
+think After ALES24 (graft: copy/move within one master) sent GREEN to both remotes, the next Lindy-first crux on the edit side is the primitive copy and move themselves generalize to: a clipboard that holds a span decoupled from any one master, pasted anywhere, repeatedly, across masters. Higher-Lindy than a crossfade-join ergonomic.
+think Design: a Clipboard holds two bounded max_clip buffers of one shared length plus len. copy_to / cut_to snapshot both channels' span into the clipboard's own buffers (so it survives after the source is edited); paste splices the held samples into a destination and leaves the clipboard untouched (non-consuming, cross-master); cut_to holds before it cuts.
+think Lockstep rests on equal-length held channels: every paste passes the same (at, span) to each destination channel with capacity checked first, so both grow equally or neither is touched. Errors: Empty (paste of nothing), forwarded BadRange (past the master) and ClipFull (overflow).
+think Verified no Clipboard/clipboard_version collision in lotus/. Reused timeline.splice and selection.cut whole; no new edit, no new bound.
+obs GREEN on the first build: tools/ales_clipboard_witness.rish — five selftest blocks (crux copy+paste, cross-master paste into a second master, twice-into-one non-consuming, cut_to lift-and-move, refuse-by-name Empty/BadRange/ClipFull). tame_style_check bans clean, no new ratchet.
+obs The clipboard is the split-in-time form of the graft: a graft is copy-and-paste fused into one master; the clipboard splits the two halves so paste lands anywhere, any number of times.
+loom witness=ales_clipboard_witness green=1 selftest_blocks=5 records=copy_to,cut_to,paste build=first
+file active-designing/20260814-fill-ales25-lotus-clipboard.md the self-approved design round naming the one crux and the shape
+file lotus/clipboard.rye the module — a held stereo span, pasted anywhere across masters, non-consuming, in lockstep
+file tools/ales_clipboard_witness.rish the witness proving GREEN on metal, purely local
+file lotus/README.md status line + clipboard bullet + closing paragraph advanced to ALES25
+recommend keep-going ALES26 — the choice of law where a pasted/grafted edit meets its neighbours (a crossfade join rather than a hard butt splice), or a multi-slot clipboard rack; both stay agent-doable on the edit side. The wire seam and the real sound-card write stay Keaton's word.
