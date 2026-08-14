@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260814.113625
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (cloud pier) — Eastern (EDT) time convention
+title ALES4 — Lotus's fade envelope
+prompt Continue the recursion loop: next agent-doable lap Lindy-first crux-first, self-approve the design round, send each increment; STOP only at custody gates.
+think ALES2 (edits) and ALES3 (mix) landed and sent. The README road-on named a fade envelope as a next rung. Lindy-first crux-first: a fade is the natural next DAW gesture after a constant gain, it prevents clicks (musically real), and it reuses the shared saturation truth — a tight, high-value bounded rung. Purely local, no custody gate.
+think The crux: a fade scales a span by a fraction that ramps linearly from a start to an end level, endpoints exact, saturating past unity. Wrote ramp_num as integer linear interpolation num0 + (num1-num0)*i/(count-1), all in i64 so a wide level difference never overflows; a single-sample span is the degenerate ramp taking the end level.
+think Reused timeline.saturate (made public in ALES3) — one true saturation now shared by gain, mix, and fade. A fade is a gain whose fraction moves, so ALES3's mix sums a fade-out under a fade-in with no new machinery — a crossfade falls out of composition, noted in prose rather than coded as a separate primitive.
+obs GREEN on the first build across seven blocks: fade-in 0→full exact endpoints and linear middle; fade-out mirror; saturation past unity (20000×2,×3 → +32767); sub-span leaves rest untouched; single-sample takes end level; BadGain on zero den; BadRange out-of-range leaving clip untouched. TAME bans clean.
+obs Every custody gate untouched — no socket, no network, no keys, no funds, no real device, no real sample rate (the ramp runs across sample indices, not seconds).
+loom witness=ales_fade_witness build=first_green blocks=7 ramp=linear_i64 saturation=reused_from_timeline
+file lotus/fade.rye the ALES4 rung — fade(clip,start,count,num0,num1,den) with linear ramp_num, reusing timeline.saturate
+file tools/ales_fade_witness.rish builds and runs the selftest, asserts the GREEN line
+file active-designing/20260814-fill-ales4-lotus-fade-envelope.md self-approved design capture
+file lotus/README.md front door synced — ALES4 rung, run block, road-on, status
+recommend keep-going the next Lotus rung can clock the timeline to a real sample rate, open a track table, or add an equal-power fade curve; still purely local, no gate
