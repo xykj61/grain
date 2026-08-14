@@ -1,0 +1,187 @@
+//! lotus/crossfade.rye — ALES12: the equal-power crossfade — ALES11's pan law swept over TIME. ALES11 opened equal power
+//! across the stereo FIELD (pan), so the two speakers' powers sum to a constant and a track holds its loudness wherever it
+//! sits. The same dip a linear pan left at center, a LINEAR crossfade leaves in time: butt two clips and cross them with
+//! weights that sum to one, and the overlap sags in the middle — a moment quieter than either clip alone. This rung carries
+//! equal power from the field into time, so the suite crossfades without a dip. The crux is a recognition, not new arithmetic:
+//! a crossfade IS the equal-power pan swept across the overlap — position across the field and position through a time overlap
+//! are one parameter, and ALES11's isqrt and its `split` already answer both.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES12.
+//! Design read: active-designing/20260814-fill-ales12-lotus-equal-power-crossfade.md
+//! Stands on: lotus/power.rye (ALES11) — the equal-power `split` read at each sample of the overlap, so the crossfade reuses
+//! the proven law rather than re-deriving it; lotus/timeline.rye (ALES2) — the Clip it crosses and the one true saturation
+//! (timeline.saturate) reused whole, exactly as ALES3's mix.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
+//! no network, no keys, no funds, no real device, no real speaker. Each scaled sample runs in a wide i64 so neither the scale
+//! nor the sum overflows before the single clamp. The overlap runs across sample INDICES within one shared clip bound.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/crossfade.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const power = @import("power.rye");
+
+pub const crossfade_version = "20260814.123255";
+
+/// Cross two equal-length overlap windows with the equal-power law: out[i] = saturate(out_clip[i]·wᵒ/den + in_clip[i]·wⁱ/den),
+/// the weights `power.split(i, den)` read at each sample, den = len − 1 (the overlap's interval count). The overlap BEGINS as
+/// pure outgoing (i = 0: wᵒ = den, wⁱ = 0) and ENDS as pure incoming (i = den: the mirror), so it splices seamlessly onto the
+/// clip before and after; its CENTER holds equal power (each side ≈ 0.707·den, −3 dB) where a linear crossfade would dip to
+/// 0.5·den (−6 dB). Refuses BadRange on a length mismatch or an overlap shorter than two samples (no interval to cross), before
+/// any write. The sum saturates once to the i16 range (timeline.saturate) exactly as ALES3's mix — a loud overlap pins, never
+/// wraps. Values only into `out`; the two inputs are never mutated.
+pub fn crossfade(out_clip: *const timeline.Clip, in_clip: *const timeline.Clip, out: *timeline.Clip) timeline.EditError!void {
+    // invariant: the two overlap windows are the same length, and an overlap needs at least two samples to have an interval.
+    if (out_clip.len != in_clip.len) return error.BadRange;
+    if (out_clip.len < 2) return error.BadRange;
+    const count: u32 = out_clip.len;
+    const den: u32 = count - 1;
+    // invariant: the overlap fits the output's shared bound, and its interval count is a legal, bounded pan denominator.
+    assert(count <= out.buf.len);
+    assert(den >= 1 and den <= power.max_pan_den);
+
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        const w = power.split(i, den); // [outgoing, incoming] — the ALES11 equal-power split at overlap position i
+        // invariant: the endpoints are pure — full outgoing at the head, full incoming at the tail.
+        assert(i != 0 or (w[0] == den and w[1] == 0));
+        assert(i != den or (w[0] == 0 and w[1] == den));
+        const so: i64 = @divTrunc(@as(i64, out_clip.buf[i]) * @as(i64, w[0]), @as(i64, den));
+        const si: i64 = @divTrunc(@as(i64, in_clip.buf[i]) * @as(i64, w[1]), @as(i64, den));
+        out.buf[i] = timeline.saturate(so + si);
+    }
+    out.len = count;
+    // invariant: the output holds exactly the overlap length, within its bound; the inputs are unchanged (values-only read).
+    assert(out.len == count and out.len <= out.buf.len);
+}
+
+// --- selftest: the overlap begins as pure outgoing and ends as pure incoming (seamless splice); the center holds equal power
+//     (0.707·den, distinctly louder than a linear 0.5·den); crossing a clip with itself holds constant loudness across the
+//     overlap; a loud overlap SATURATES; the weights match ALES11's pan split exactly (one law, field and time); a length
+//     mismatch and a too-short overlap each refuse BadRange by name ---------------------------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn run_selftest() !u8 {
+    // 1. the overlap BEGINS as pure outgoing and ENDS as pure incoming — the seamless-splice property. den = 4 (five samples):
+    //    out[0] is the whole outgoing sample, out[4] the whole incoming sample.
+    {
+        var a = timeline.Clip{};
+        var b = timeline.Clip{};
+        try timeline.splice(&a, 0, &[_]i16{ 1000, 1000, 1000, 1000, 1000 });
+        try timeline.splice(&b, 0, &[_]i16{ 200, 200, 200, 200, 200 });
+        var out = timeline.Clip{};
+        try crossfade(&a, &b, &out);
+        if (out.samples()[0] != 1000) return error.HeadNotPureOut; // wᵒ=den → a[0]·den/den
+        if (out.samples()[4] != 200) return error.TailNotPureIn; //   wⁱ=den → b[4]·den/den
+    }
+
+    // 2. the CENTER holds equal power — at den = 100 the center weight is isqrt(5000) = 70 (0.70·den, −3 dB), where a linear
+    //    crossfade would give 50 (0.50·den, −6 dB). A 1000-sample outgoing crossed with silence lands 700 at center, not 500.
+    {
+        var a = timeline.Clip{};
+        var b = timeline.Clip{};
+        // 101 samples so den = 100; only the center sample matters here.
+        var src_a: [101]i16 = [_]i16{1000} ** 101;
+        var src_b: [101]i16 = [_]i16{0} ** 101;
+        try timeline.splice(&a, 0, &src_a);
+        try timeline.splice(&b, 0, &src_b);
+        var out = timeline.Clip{};
+        try crossfade(&a, &b, &out);
+        if (out.samples()[50] != 700) return error.CenterNotEqualPower; // 1000 × 70/100, the equal-power −3 dB center
+    }
+
+    // 3. crossing a clip with ITSELF holds constant loudness across the overlap — the equal-power promise. out[i] = a[i]·(wᵒ +
+    //    wⁱ)/den; with a flat source and equal power, the overlap never dips below the endpoints the way a linear cross would.
+    //    Proven positively: every interior sample is at least the endpoint level (no mid-overlap dip).
+    {
+        var a = timeline.Clip{};
+        var b = timeline.Clip{};
+        var flat: [101]i16 = [_]i16{1000} ** 101;
+        try timeline.splice(&a, 0, &flat);
+        try timeline.splice(&b, 0, &flat);
+        var out = timeline.Clip{};
+        try crossfade(&a, &b, &out);
+        // endpoints are the pure source level (1000); the equal-power sum lifts the middle ABOVE it (0.707+0.707 > 1), never
+        //   below — the opposite of a linear crossfade's −6 dB sag. Every sample ≥ the endpoint, and the center is the peak.
+        var i: u32 = 0;
+        while (i < out.len) : (i += 1) {
+            if (out.samples()[i] < 1000) return error.SelfCrossDipped;
+        }
+        if (out.samples()[50] < out.samples()[0]) return error.CenterNotPeak;
+    }
+
+    // 4. a loud overlap SATURATES rather than wraps — two near-full-scale clips crossed at center sum past the i16 ceiling and
+    //    pin to +32767, reusing ALES3's timeline.saturate (the one true clamp).
+    {
+        var a = timeline.Clip{};
+        var b = timeline.Clip{};
+        var loud: [101]i16 = [_]i16{30000} ** 101;
+        try timeline.splice(&a, 0, &loud);
+        try timeline.splice(&b, 0, &loud);
+        var out = timeline.Clip{};
+        try crossfade(&a, &b, &out);
+        // center: 30000 × 70/100 + 30000 × 70/100 = 21000 + 21000 = 42000 → +32767.
+        if (out.samples()[50] != timeline.sample_max) return error.LoudNotSaturated;
+    }
+
+    // 5. the crossfade weights MATCH ALES11's pan split exactly — the law is one, field and time. For a sweep of positions the
+    //    crossfade's per-sample weights are precisely power.split at that position.
+    {
+        const den: u32 = 100;
+        var pos: u32 = 0;
+        while (pos <= den) : (pos += 1) {
+            const w = power.split(pos, den);
+            // the outgoing weight decreases den→0, the incoming increases 0→den, and they trace the equal-power circle.
+            if (w[0] > den or w[1] > den) return error.WeightOutOfRange;
+            if (pos == 0 and (w[0] != den or w[1] != 0)) return error.SweepHeadWrong;
+            if (pos == den and (w[0] != 0 or w[1] != den)) return error.SweepTailWrong;
+            // constant power within the isqrt truncation bound: den² − (wᵒ² + wⁱ²) ≤ 2(wᵒ+wⁱ)+2.
+            const sq: u64 = @as(u64, w[0]) * w[0] + @as(u64, w[1]) * w[1];
+            const d2: u64 = @as(u64, den) * den;
+            if (sq > d2) return error.PowerOverUnit;
+            if (d2 - sq > 2 * (@as(u64, w[0]) + w[1]) + 2) return error.PowerBoundBroken;
+        }
+    }
+
+    // 6. a length mismatch and a too-short overlap each refuse BadRange by name, before any write.
+    {
+        var a = timeline.Clip{};
+        var b = timeline.Clip{};
+        try timeline.splice(&a, 0, &[_]i16{ 1, 2, 3 });
+        try timeline.splice(&b, 0, &[_]i16{ 10, 20 });
+        var out = timeline.Clip{};
+        if (crossfade(&a, &b, &out)) |_| return error.MismatchSlipped else |e| if (e != error.BadRange) return error.WrongMismatch;
+
+        var one_a = timeline.Clip{};
+        var one_b = timeline.Clip{};
+        try timeline.splice(&one_a, 0, &[_]i16{7});
+        try timeline.splice(&one_b, 0, &[_]i16{9});
+        if (crossfade(&one_a, &one_b, &out)) |_| return error.ShortSlipped else |e| if (e != error.BadRange) return error.WrongShort;
+    }
+
+    print("GREEN ales-crossfade: the equal-power crossfade is ALES11's pan law swept over TIME — the outgoing and incoming " ++
+        "weights are power.split read at each sample of the overlap, so the overlap holds constant power for free. It BEGINS " ++
+        "as pure outgoing and ENDS as pure incoming (a seamless splice onto the clips before and after); its CENTER holds " ++
+        "0.707·den (−3 dB) where a linear crossfade dips to 0.5·den (−6 dB) — a 1000-sample source landing 700 at center, not " ++
+        "500; crossing a flat clip with itself lifts the middle ABOVE the endpoints (0.707+0.707 > 1), never below, the " ++
+        "opposite of a linear sag; a loud overlap SATURATES (30000×0.7 + 30000×0.7 = 42000 → +32767) reusing ALES3's " ++
+        "timeline.saturate; the weights match the pan split exactly across a sweep (one law, field and time), constant power " ++
+        "within the proven isqrt bound; a length mismatch and a too-short overlap each refuse BadRange; no socket, no network, " ++
+        "no keys, no funds, no real device, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

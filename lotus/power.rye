@@ -107,6 +107,19 @@ fn weights(p: PowerPan) [2]u64 {
     return .{ wl, wr };
 }
 
+/// The equal-power split at a position pos/den, as two u32 weights [outgoing, incoming] — the same `weights` a pan folds,
+/// exposed so ALES12's crossfade OVER TIME reads exactly the split the stereo FIELD would. A crossfade is this pan swept across
+/// an overlap: position across the field and position through a time overlap are one parameter, so the law is shared here, not
+/// copied. The caller guarantees the pan is legal (asserted); the weights never exceed den, so a u32 holds each.
+pub fn split(pos: u32, den: u32) [2]u32 {
+    // invariant: the caller passes a legal pan — a nonzero, bounded denominator and a position within the field.
+    assert(den >= 1 and pos <= den and den <= max_pan_den);
+    const w = weights(.{ .pos = pos, .den = den });
+    // invariant: each weight fits a u32 (isqrt is monotone, den ≤ max_pan_den its cap).
+    assert(w[0] <= max_pan_den and w[1] <= max_pan_den);
+    return .{ @intCast(w[0]), @intCast(w[1]) };
+}
+
 /// Fold a track's fader and a channel's equal-power weight into ONE effective fader for that channel: (f.num × weight) /
 /// (f.den × den). The two fractions compose to one, so the channel's mix is plain ALES8 — no stereo accumulation is invented,
 /// exactly as ALES10. The products stay within i32/u32 because every input is bounded: the weight by den ≤ max_pan_den, the
