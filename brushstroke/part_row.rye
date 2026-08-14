@@ -199,6 +199,53 @@ pub fn part_shelf(
     return grid;
 }
 
+/// How many full pages a catalog of this size needs at `rows` parts per page — a ceiling division, so a short last
+/// page still counts. Reuses the sprite shelf's own paging over the catalog's wrapped index, so the parts shelf and
+/// the sprite shelf page by one law. Zero parts is zero pages.
+pub fn part_page_count(cat: *const part_catalog.PartCatalog, rows: u32) u32 {
+    // invariant: paging needs at least one row per page.
+    assert(rows > 0);
+    return sprite_shelf.page_count(&cat.index, rows);
+}
+
+/// How many parts the page starting at `offset` shows — a full `rows` mid-catalog, fewer on the last page, zero
+/// when the offset lands at or past the catalog. The sprite shelf's own window length over the wrapped index.
+pub fn part_window_len(cat: *const part_catalog.PartCatalog, rows: u32, offset: u32) u32 {
+    // invariant: a window is at least one row tall.
+    assert(rows > 0);
+    return sprite_shelf.window_len(&cat.index, rows, offset);
+}
+
+/// Render one page of the catalog — the parts `[offset, offset + rows)` — onto a fresh grid, so a catalog larger
+/// than the screen is fully reachable one page at a time. A window shows a slice, so it never refuses `ShelfTooSmall`;
+/// it refuses `BadOffset` when the offset lands past the catalog (a page with no part), so every page a keeper reaches
+/// is a real one. Together the pages cover the whole catalog in held order, each part once — paging loses nothing.
+pub fn part_window(
+    allocator: std.mem.Allocator,
+    cat: *const part_catalog.PartCatalog,
+    cols: u32,
+    rows: u32,
+    offset: u32,
+) !skate.Grid {
+    // invariant: the catalog never outgrew its own sheet's product ceiling before it is paged.
+    assert(cat.len() <= sprite.max_products);
+    var grid = try fresh_grid(allocator, cols, rows);
+    // An offset past the catalog shows no part — refuse rather than paint an empty page. Offset 0 on an empty
+    // catalog is a real (empty) first page and is allowed.
+    if (offset >= cat.len() and !(offset == 0 and cat.len() == 0)) return error.BadOffset;
+
+    const n = part_window_len(cat, rows, offset);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        // invariant: the windowed part index sits inside the catalog.
+        assert(offset + i < cat.len());
+        try draw_part_row(allocator, &grid, i, cat, offset + i);
+    }
+    // invariant: exactly one row was drawn per part on this page.
+    assert(i == n);
+    return grid;
+}
+
 /// A fresh grid with the anchor palette set, after the shelf's dimension refusals — the same shape the sprite shelf
 /// builds, so a part row's swatch paints a solid color block. Refuses `EmptyShelf` on a zero dimension,
 /// `ShelfTooLarge` past the down-map ceiling, and `RowTooNarrow` when a row cannot hold a fact line and a swatch.
@@ -305,6 +352,27 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.eql(u8, pb[0..d], "$1000.00")); // full-width dollars, no loss
     }
 
+    // Paging loses nothing: three parts at two rows per page need two pages (window_len 2, then 1). Each page draws
+    // its own slice in held order, and walking every page shows each part exactly once — the second page's first row
+    // reads gear, the part the first page could not hold.
+    {
+        assert(part_page_count(&cat, 2) == 2);
+        assert(part_window_len(&cat, 2, 0) == 2);
+        assert(part_window_len(&cat, 2, 2) == 1);
+        const page0 = try part_window(garden, &cat, cols, 2, 0);
+        const page1 = try part_window(garden, &cat, cols, 2, 2);
+        var buf: [max_fact_line]u8 = undefined;
+        const p0r0 = row_text(&page0, 0, buf[0..]);
+        assert(std.mem.eql(u8, buf[0..p0r0], "bolt  HX-M8-40  stainless-304  $1.25"));
+        const p1r0 = row_text(&page1, 0, buf[0..]);
+        assert(std.mem.eql(u8, buf[0..p1r0], "gear  GR-24T  steel  $8.45")); // the part page 0 could not hold
+        assert(row_swatch_slot(&page1, 0) == 5); // gear's own blue swatch, drawn on its page
+        // An offset past the catalog refuses BadOffset — every page a keeper reaches holds a real part.
+        if (part_window(garden, &cat, cols, 2, 3)) |_| return error.PageSlipped else |e| {
+            if (e != error.BadOffset) return error.WrongPage;
+        }
+    }
+
     // The shelf is genuinely seen: it rasterizes to a lit canvas — the fact lines and swatches reach the glass.
     {
         const scale: u32 = 1;
@@ -339,7 +407,9 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         "swatch drawn from its own window; the painted facts equal the stored facts cell-for-cell (bolt HX-M8-40 " ++
         "stainless-304 $1.25 · nut NY-M8 brass $0.60 · gear GR-24T steel $8.45 — no drift); each swatch wears its " ++
         "product's own down-mapped color (slots 3,4,5); the price formats exactly ($8.45, a five-cent dime $0.05, " ++
-        "$0.00, $1000.00 — no float, no loss); the shelf rasterizes to a lit canvas; ShelfTooSmall, EmptyShelf, " ++
+        "$0.00, $1000.00 — no float, no loss); a catalog larger than the screen pages (three parts at two rows " ++
+        "need two pages, gear reached only on page two, paging loses nothing, an offset past the catalog refuses " ++
+        "BadOffset); the shelf rasterizes to a lit canvas; ShelfTooSmall, EmptyShelf, " ++
         "ShelfTooLarge, and RowTooNarrow each refuse by name. HUNK71 facts, HUNK38/39 swatch GREEN beneath; price " ++
         "is a fact formatted for reading, never moved — no network, no key, no funds\n", .{});
     return 0;
