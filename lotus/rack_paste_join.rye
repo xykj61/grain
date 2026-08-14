@@ -1,0 +1,176 @@
+//! lotus/rack_paste_join.rye — ALES32: the rack's paste, JOINED — a named slot dropped into the middle of a master crosses BOTH its
+//! seams equal-power. ALES30's rack lets a keeper hold a handful of named spans and paste each by name, yet its `paste` (like the
+//! clipboard's) still BUTTS the held span against the audio already there — a click where the samples disagree. ALES31 gave the single
+//! clipboard the joined paste; this rung hands the same law to the rack, so a keeper drops a FILED span (the count-in, the verse, the
+//! chorus) into the middle of a mix by name without a click at either boundary.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES32.
+//! Design read: active-designing/20260814-145422_fill-ales32-lotus-rack-paste-join.md
+//! Stands on: lotus/rack.rye (ALES30) — the named slots and `find`, so a name resolves to exactly one slot; lotus/paste_join.rye
+//! (ALES31) — the joined paste (ALES29's stereo two-sided insert-join over a held span), applied whole to the resolved slot's board;
+//! lotus/pan.rye (ALES10) — the StereoClip.
+//!
+//! THE CRUX: pasting a named slot with `rack_paste_join` is EXACTLY ALES31's `paste_join` on the slot resolved by name — so a filed
+//! span joins both its seams equal-power just as the single clipboard does, and a slot's held span is never touched by the paste (it
+//! is a read). Two facts make this exact: `find` resolves the unique name to a single slot index (ALES30's own naming invariant), so
+//! the paste routes to exactly one board; and that board is handed whole to ALES31's `paste_join`, which is itself ALES29's proven
+//! two-sided stereo insert-join — the rack's joined paste adds only the name resolution, no new arithmetic, seam law, or bound.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. A joined slot paste
+//! is a crossfade between two held sample buffers, not a signal on a wire. No socket, no network, no keys, no funds, no real device,
+//! no real meter, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/rack_paste_join.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const selection = @import("selection.rye");
+const rack = @import("rack.rye");
+const paste_join = @import("paste_join.rye");
+
+pub const rack_paste_join_version = "20260814.145422";
+
+/// The combined error set of a joined slot paste: a name the rack does not hold, plus ALES31's joined-paste faults forwarded (an
+/// empty slot Empty, and ALES29's BadRange / ClipFull). Every fault refuses by name before the master is touched.
+pub const RackPasteJoinError = error{
+    /// A joined paste of a name the rack does not hold — refused, never a silent no-op on the wrong span.
+    NoSlot,
+} || paste_join.PasteJoinError;
+
+/// Paste the span filed under `name` into `master` at `at`, crossing BOTH seams of BOTH channels equal-power — the joined twin of
+/// ALES30's butt `rack.paste`. `find` resolves the unique name to a single slot, whose held board is handed whole to ALES31's
+/// `paste_join` with the same `at`, `lead`, and `trail`. Atomic across the two channels and non-consuming (the slot is a read), so
+/// the same slot joins again and into other masters. Refuses NoSlot when the name is not held, and forwards Empty / BadRange /
+/// ClipFull. So a keeper drops a filed span into the middle of a mix by name without a click at either boundary.
+pub fn rack_paste_join(r: *const rack.Rack, name: []const u8, master: *pan.StereoClip, at: u32, lead: u32, trail: u32) RackPasteJoinError!void {
+    // invariant: the destination's two channels share one length on entry — the lockstep the joined paste keeps.
+    assert(master.left.len == master.right.len);
+    const i = rack.find(r, name) orelse return error.NoSlot;
+    // invariant: the resolved index names a live slot.
+    assert(i < r.count);
+    try paste_join.paste_join(&r.slots[i].board, master, at, lead, trail);
+    // invariant: the pasted destination stays aligned (ALES31's postcondition, restated at the rack edge).
+    assert(master.left.len == master.right.len);
+}
+
+// --- selftest: THE CRUX — a named slot joined into the middle of a master crosses both seams equal-power (a seam sample strictly
+//     inside a full-swing step); the new length shares both overlaps; a slot joins twice and cross-master with its held length
+//     unchanged; a name the rack does not hold refuses NoSlot; every ALES31 edge is forwarded by name -----------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn run_selftest() !u8 {
+    // 1. THE CRUX — a filed span joined at a full-swing sign flip lands a seam sample strictly inside the ±30000 extremes, where a
+    //    butt rack paste would step 60000. Master eight +30000 then eight −30000; file "flip" = four −30000 heads / four +30000
+    //    tails; join "flip" at the sign flip over lead 4 / trail 4.
+    {
+        var m = pan.StereoClip{};
+        try timeline.splice(&m.left, 0, &[_]i16{ 30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000, -30000, -30000, -30000, -30000, -30000, -30000, -30000, -30000 });
+        try timeline.splice(&m.right, 0, &[_]i16{ 30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000, -30000, -30000, -30000, -30000, -30000, -30000, -30000, -30000 });
+        var src = pan.StereoClip{};
+        try timeline.splice(&src.left, 0, &[_]i16{ -30000, -30000, -30000, -30000, 30000, 30000, 30000, 30000 });
+        try timeline.splice(&src.right, 0, &[_]i16{ -30000, -30000, -30000, -30000, 30000, 30000, 30000, 30000 });
+        var r = rack.Rack{};
+        try rack.copy_to(&r, "flip", &src, try selection.make(&src, 0, 8));
+
+        try rack_paste_join(&r, "flip", &m, 8, 4, 4);
+        // the new length shares both overlaps: 16 + 8 − 4 − 4 = 16.
+        if (m.left.len != 16 or m.right.len != 16) return error.JoinedLengthWrong;
+        if (m.left.len != m.right.len) return error.JoinedNotAligned;
+        var i: u32 = 0;
+        var crossed = false;
+        while (i < m.left.len) : (i += 1) {
+            const s = m.left.samples()[i];
+            if (s > -30000 and s < 30000) crossed = true;
+        }
+        if (!crossed) return error.NoEqualPowerSeam;
+        // the slot is a read — its held length is unchanged after the joined paste.
+        if (try rack.held(&r, "flip") != 8) return error.SlotHeldChanged;
+    }
+
+    // 2. NON-CONSUMING and CROSS-MASTER by name — a slot joins twice into one master and into a second, its held length unchanged;
+    //    and a second filed slot is untouched by the first's joined paste (disjoint slots, ALES30's invariant carried through).
+    {
+        var src = pan.StereoClip{};
+        try timeline.splice(&src.left, 0, &[_]i16{ 10, 20, 30, 40, 50, 60, 70, 80 });
+        try timeline.splice(&src.right, 0, &[_]i16{ 10, 20, 30, 40, 50, 60, 70, 80 });
+        var r = rack.Rack{};
+        try rack.copy_to(&r, "riff", &src, try selection.make(&src, 0, 8));
+        try rack.copy_to(&r, "hit", &src, try selection.make(&src, 0, 4)); // a second, independent slot
+
+        var a = pan.StereoClip{};
+        try timeline.splice(&a.left, 0, &[_]i16{ 1, 2, 3, 4, 5, 6 });
+        try timeline.splice(&a.right, 0, &[_]i16{ 1, 2, 3, 4, 5, 6 });
+        try rack_paste_join(&r, "riff", &a, 3, 2, 2); // 6 + 8 − 2 − 2 = 10
+        if (a.left.len != 10) return error.CrossMasterALenWrong;
+
+        var b = pan.StereoClip{};
+        try timeline.splice(&b.left, 0, &[_]i16{ 100, 200, 300, 400, 500, 600 });
+        try timeline.splice(&b.right, 0, &[_]i16{ 100, 200, 300, 400, 500, 600 });
+        try rack_paste_join(&r, "riff", &b, 3, 2, 2);
+        if (b.left.len != 10) return error.CrossMasterBLenWrong;
+        if (try rack.held(&r, "riff") != 8) return error.RiffHeldChanged;
+        // the OTHER slot is untouched.
+        if (try rack.held(&r, "hit") != 4) return error.HitDisturbed;
+    }
+
+    // 3. every edge refuses by name — a name the rack does not hold (NoSlot), a past-the-master position (BadRange), and an overflow
+    //    (ClipFull) forwarded from ALES31 — each before the master is touched, leaving it untouched and aligned.
+    {
+        var m = pan.StereoClip{};
+        try timeline.splice(&m.left, 0, &[_]i16{ 1, 2, 3, 4, 5, 6 });
+        try timeline.splice(&m.right, 0, &[_]i16{ 1, 2, 3, 4, 5, 6 });
+        const untouched = [_]i16{ 1, 2, 3, 4, 5, 6 };
+
+        var r = rack.Rack{};
+        // a name the rack does not hold refuses NoSlot before anything is read.
+        if (rack_paste_join(&r, "ghost", &m, 3, 2, 2)) |_| return error.GhostSlipped else |e| if (e != error.NoSlot) return error.WrongGhost;
+
+        var src = pan.StereoClip{};
+        try timeline.splice(&src.left, 0, &[_]i16{ 7, 7, 7, 7 });
+        try timeline.splice(&src.right, 0, &[_]i16{ 7, 7, 7, 7 });
+        try rack.copy_to(&r, "s", &src, try selection.make(&src, 0, 4));
+
+        // a past-the-master position forwards BadRange.
+        if (rack_paste_join(&r, "s", &m, 9, 2, 2)) |_| return error.PastSlipped else |e| if (e != error.BadRange) return error.WrongPast;
+        if (!eq(m.left.samples(), &untouched)) return error.RefusedMutated;
+        if (m.left.len != m.right.len) return error.RefusedMisaligned;
+
+        // an overflowing joined paste forwards ClipFull.
+        var full = pan.StereoClip{};
+        full.left.len = timeline.max_clip - 1;
+        full.right.len = timeline.max_clip - 1;
+        var wide_src = pan.StereoClip{};
+        var wbuf: [8]i16 = [_]i16{0} ** 8;
+        try timeline.splice(&wide_src.left, 0, &wbuf);
+        try timeline.splice(&wide_src.right, 0, &wbuf);
+        try rack.copy_to(&r, "wide", &wide_src, try selection.make(&wide_src, 0, 8));
+        if (rack_paste_join(&r, "wide", &full, full.left.len - 4, 2, 2)) |_| return error.OverflowSlipped else |e| if (e != error.ClipFull) return error.WrongOverflow;
+        if (full.left.len != full.right.len) return error.OverflowMisaligned;
+    }
+
+    print("GREEN ales-rack-paste-join: the rack's paste, JOINED — a named slot dropped into the middle of a master crosses BOTH its " ++
+        "seams equal-power. THE CRUX: rack_paste_join is EXACTLY ALES31's paste_join on the slot resolved by name — `find` resolves " ++
+        "the unique name to a single slot (ALES30's naming invariant) and hands its held board whole to paste_join, itself ALES29's " ++
+        "proven two-sided stereo insert-join, so the rack's joined paste adds only the name resolution and no new arithmetic, seam " ++
+        "law, or bound; a filed span joined at a full-swing sign flip lands a seam sample strictly inside the extremes where a butt " ++
+        "would step 60000, the new length shares both overlaps, a slot joins twice and cross-master with its held length unchanged " ++
+        "and a second slot untouched, and every edge refuses by name — NoSlot, and ALES31's Empty / BadRange / ClipFull forwarded, " ++
+        "the master untouched and aligned after each; rack and paste_join reused whole; no socket, no network, no keys, no funds, no " ++
+        "real device, no real meter, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
