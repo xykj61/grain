@@ -1,0 +1,39 @@
+# tools/fora_term_witness.rish — leadership made safe across re-election: an old leader can't commit (FORA16).
+#
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# FORA16. Design read: active-designing/20260814-083300_fora16-constel-terms-stale-leader.md
+# Law kin: .claude/rules/placeholder-ship-names.md — the real-sky round drives accepts through census respond/hear, which
+# deframe at the naming-law border, so a real address can never enter a termed decree even as an accept.
+#
+# constel/term.rye gives the elect·decree·log stack the one thing it was missing to survive a re-election: a TERM, a monotonic
+# logical clock on leadership. A voter whose current term exceeds a decree's term refuses StaleTerm — it has moved to a newer
+# leader. The safety follows from FORA9's intersection lemma: once a strict majority has advanced to term T, any decree in a
+# term < T gathers at most the un-advanced minority and can never commit, so an old leader is out-voted by construction. The
+# selftest proves: the term table is monotonic; a ground decree commits and its accepters adopt the term; a moved-on voter
+# refuses StaleTerm; AN OLD LEADER CAN'T COMMIT at the value level and again over a real sky; a full constellation of eight runs
+# bounded. Purely local — no socket, no network, no keys, no funds, no real address ever formed.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/fora_term_witness.rish
+
+say "fora-term: Language EN — FORA16 makes leadership safe across re-election: a term is a monotonic clock on who leads, and a pier that has seen a newer leader refuses (StaleTerm) to lend its vote to an older one, so an old leader whose sky has advanced can never reach a majority — it is out-voted, not forbidden."
+say "fora-term: Style Radiant — every leader knows its season; the one that has passed steps aside without a fork, because the term that names the sky's true leader only ever climbs."
+say "fora-term: Lens TAME — the term table is monotonic (observe never lowers a term); the stale-leader refusal is the whole safety, spending FORA9's intersection lemma; commit reflects only up-to-date accepts; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "constel/bin/term"
+
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/term.rye -femit-bin=${bin}"]
+assert build.ok else "fora-term: build failed — ${build.err}"
+
+let outfile = "constel/bin/term.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "fora-term: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "fora-term: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN fora-term' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "fora-term: selftest did not print the GREEN fora-term line"
+
+say "fora-term: GREEN — an old leader can't commit; the elect·decree·log stack now survives a re-election without forking in time, proven pure on the bench."
