@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260814.142259
+editor Zed
+model Fable 5
+voice Kyri
+host Framework 16 AMD — Eastern (EDT) — Vultr SEA VPS cloud pier, this session in ai-jail
+title ALES27 — Lotus's stereo crossfade join, both channels crossed in lockstep
+prompt Recur through agent-doable ALES laps Lindy-first crux-first; send each finished increment; stop at custody gates
+think ALES26 (the mono crossfade join) sent GREEN to both remotes. Its own road-on named the next Lindy-first crux: carry the join into stereo, both channels in lockstep — the highest-Lindy next move because it makes the seam law usable on the object a keeper actually edits (a StereoClip, not one channel), the way the graft and clipboard already carried the copy and paste into stereo.
+think Design: join_stereo(master, ins_left, ins_right, overlap) runs ALES26's mono join on each channel with the SAME overlap. Atomicity from two shared lengths — a StereoClip's channels are one length (ALES10 invariant) and a stereo span is one length (both incoming heads must match, else BadRange) — so ALES26's guards read identically for left and right; validate once against the shared length before either channel is touched, then apply join.join to each. A refusal leaves both untouched and aligned: the graft/clipboard capacity-checked-first idiom.
+think No unreachable — after pre-validation both channels pass, yet `try` on each still honours ALES26's untouched-on-error contract so lockstep holds even were a guard to disagree. Reuses join.join whole over its public API; no new arithmetic, no new error (timeline.EditError forwarded), no module seam, no gate.
+think Named lotus/stereo_join.rye to match the tree's stereo_* family (stereo_transport, stereo_loop, stereo_meter, stereo_loop_meter). No stereo_join collision.
+obs GREEN on the first build: tools/ales_stereo_join_witness.rish — four selftest blocks (both channels 5,5,2→8 aligned; each channel its own equal-power seam left 1000→200 right 4000→800 with its own remainder; full overlap a pure crossfade with nothing appended in both; refuse-by-name unequal-span/short/past-tail BadRange and overflow ClipFull, both channels untouched and aligned after each). tame_style_check bans clean, no new zero-assert ratchet.
+obs The stereo join is the mono join (ALES26) run twice under one shared-length guard — the seam law per channel, the lockstep shared, exactly the shape the graft and clipboard already proved for copy and paste.
+loom witness=ales_stereo_join_witness green=1 selftest_blocks=4 records=join_stereo build=first
+file active-designing/20260814-fill-ales27-lotus-stereo-crossfade-join.md the self-approved design round naming the one crux and the shape
+file lotus/stereo_join.rye the module — ALES26's join run on both channels under one shared-length guard, atomic and aligned
+file tools/ales_stereo_join_witness.rish the witness proving GREEN on metal, purely local
+file lotus/README.md status line + stereo-join bullet + closing paragraph advanced to ALES27
+recommend keep-going ALES28 — let the graft or paste join rather than butt by default (an edit that crossfades its seams when they would step), name a trailing-seam law where the audio after an insert rejoins the timeline, or a multi-slot clipboard rack. The wire seam and the real sound-card write stay Keaton's word.

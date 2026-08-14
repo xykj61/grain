@@ -1,0 +1,167 @@
+//! lotus/stereo_join.rye — ALES27: the crossfade join carried into stereo — both channels crossed in lockstep. ALES26 gave a
+//! mono Clip the choice of law at a seam: overlap the outgoing tail with the incoming head and cross them equal-power, so the
+//! boundary flows through ALES12's −3 dB curve rather than stepping into a click. Yet a Lotus master is a StereoClip (ALES10),
+//! two Clips heard together, and a keeper joins a stereo span, not one channel. This rung runs ALES26's `join` on each channel
+//! with the SAME overlap, so the join lands identically in both and the stereo image stays aligned — exactly the lockstep the
+//! graft (ALES24) and clipboard (ALES25) already keep for the copy and the paste.
+//!
+//! The crux is atomicity across the two channels: a stereo join grows both channels by the same shared-overlap count (clip +
+//! span − overlap) or touches NEITHER. Because a StereoClip's two channels are always one length (ALES10's invariant) and a
+//! stereo span is one length (both incoming heads equal), ALES26's guards read identically for left and right — so the join is
+//! validated once against the shared length BEFORE either channel is touched, then applied to each. A bad request (unequal
+//! span, an overlap under two, past the tail, past the head, or an overflow) refuses by name with both channels untouched and
+//! still aligned.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES27.
+//! Design read: active-designing/20260814-fill-ales27-lotus-stereo-crossfade-join.md
+//! Stands on: lotus/join.rye (ALES26) — the mono crossfade `join` run once per channel, reused whole over its public API, so
+//! the stereo join inherits the proven seam law rather than re-deriving it; lotus/pan.rye (ALES10) — the StereoClip whose two
+//! channels share one length, the lockstep this rung keeps.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
+//! no network, no keys, no funds, no real device, no real speaker. The real two-channel sound-card write stays a paused round.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_join.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const join = @import("join.rye");
+const power = @import("power.rye");
+
+pub const stereo_join_version = "20260814.142200";
+
+/// Crossfade-join a stereo span onto a stereo master, both channels in lockstep. `ins_left` and `ins_right` are the incoming
+/// span's two channels (one length); each crosses ALES26-equal-power with its own channel's outgoing tail over the same
+/// `overlap`, so the seam moves through power in both and the new length of each channel is `clip + span − overlap`. Validated
+/// once against the shared length before either channel is touched, so a refusal leaves both channels untouched and aligned:
+///   • BadRange when the two incoming channels differ in length (a stereo span is one length), when `overlap < 2`, when
+///     `overlap` exceeds the master's tail or the incoming head, or when `overlap − 1` exceeds the equal-power denominator cap;
+///   • ClipFull when the shared-overlap result would overflow the fixed buffer.
+pub fn join_stereo(master: *pan.StereoClip, ins_left: []const i16, ins_right: []const i16, overlap: u32) timeline.EditError!void {
+    // invariant: a StereoClip's two channels are always one length — the lockstep this rung is here to keep.
+    assert(master.left.len == master.right.len);
+    // invariant: a stereo span is one length, so the same (overlap, span) validates and applies to both channels.
+    if (ins_left.len != ins_right.len) return error.BadRange;
+
+    const len: u32 = master.left.len;
+    const n_ins: u32 = @intCast(ins_left.len);
+    // The very guards ALES26's `join` owes, checked ONCE against the shared length before either channel is touched — so the
+    // stereo join is atomic: both channels are legal or neither is edited (the graft/clipboard "capacity checked first" idiom).
+    if (overlap < 2) return error.BadRange;
+    if (overlap > len) return error.BadRange;
+    if (overlap > n_ins) return error.BadRange;
+    if (overlap - 1 > power.max_pan_den) return error.BadRange;
+    const appended: u32 = n_ins - overlap;
+    if (appended > master.left.buf.len - len) return error.ClipFull;
+
+    // Apply the proven mono join to each channel. Pre-validated against the shared length, so both succeed and grow equally;
+    // `try` still honours ALES26's untouched-on-error contract, keeping the lockstep even were a guard to disagree.
+    try join.join(&master.left, ins_left, overlap);
+    try join.join(&master.right, ins_right, overlap);
+
+    // invariant: both channels grew by the same shared-overlap count and stay one length — the stereo image is still aligned.
+    assert(master.left.len == master.right.len);
+    assert(master.left.len == len + n_ins - overlap);
+}
+
+// --- selftest: the stereo join grows both channels equally (clip + span − overlap), the seam flowing through power in each;
+//     the two channels keep independent audio yet one length; a full overlap is a pure crossfade with nothing appended in
+//     both; and an unequal span, a short overlap, a past-the-tail overlap, and an overflow each refuse by name leaving both
+//     channels untouched and aligned --------------------------------------------------------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn run_selftest() !u8 {
+    // 1. the stereo join grows BOTH channels by the shared-overlap count and keeps them one length — a 5-sample master joined
+    //    to a 5-sample span over a 2-sample overlap lands both channels at 5 + 5 − 2 = 8, still aligned.
+    {
+        var m = pan.StereoClip{};
+        try timeline.splice(&m.left, 0, &[_]i16{ 100, 100, 100, 100, 100 });
+        try timeline.splice(&m.right, 0, &[_]i16{ 50, 50, 50, 50, 50 });
+        try join_stereo(&m, &[_]i16{ 200, 200, 200, 200, 200 }, &[_]i16{ 80, 80, 80, 80, 80 }, 2);
+        if (m.left.len != 8 or m.right.len != 8) return error.StereoLengthWrong;
+        if (m.left.len != m.right.len) return error.StereoNotAligned;
+    }
+
+    // 2. the seam moves through POWER in EACH channel independently — each channel's join head is its own outgoing tail sample
+    //    (pure outgoing) and its join tail is its own incoming head's last sample (pure incoming), so the two channels carry
+    //    their own audio while staying one length. Left crosses 1000→200, right crosses 4000→800; both heads stay pure.
+    {
+        var m = pan.StereoClip{};
+        try timeline.splice(&m.left, 0, &[_]i16{ 0, 0, 0, 0, 1000, 1000, 1000, 1000, 1000 });
+        try timeline.splice(&m.right, 0, &[_]i16{ 0, 0, 0, 0, 4000, 4000, 4000, 4000, 4000 });
+        const tail_start: u32 = 4; // 9 − 5
+        try join_stereo(&m, &[_]i16{ 200, 200, 200, 200, 200, 7, 8 }, &[_]i16{ 800, 800, 800, 800, 800, 9, 10 }, 5);
+        // each channel's seam head is its own pure-outgoing tail sample.
+        if (m.left.samples()[tail_start] != 1000) return error.LeftSeamHeadWrong;
+        if (m.right.samples()[tail_start] != 4000) return error.RightSeamHeadWrong;
+        // each channel's seam tail is its own pure-incoming head sample, and its own remainder follows.
+        if (m.left.samples()[tail_start + 4] != 200 or m.left.samples()[tail_start + 5] != 7) return error.LeftTailWrong;
+        if (m.right.samples()[tail_start + 4] != 800 or m.right.samples()[tail_start + 5] != 9) return error.RightTailWrong;
+        if (m.left.len != 11 or m.right.len != 11) return error.Case2LengthWrong; // 9 + 7 − 5
+    }
+
+    // 3. a FULL overlap (overlap == span length) is a pure crossfade over the join in BOTH channels — nothing appends, both
+    //    lengths unchanged, both still aligned.
+    {
+        var m = pan.StereoClip{};
+        try timeline.splice(&m.left, 0, &[_]i16{ 500, 500, 500, 500, 500 });
+        try timeline.splice(&m.right, 0, &[_]i16{ 300, 300, 300, 300, 300 });
+        const before: u32 = m.left.len;
+        try join_stereo(&m, &[_]i16{ 100, 100, 100 }, &[_]i16{ 60, 60, 60 }, 3);
+        if (m.left.len != before or m.right.len != before) return error.FullOverlapGrew;
+        if (m.left.len != m.right.len) return error.FullOverlapMisaligned;
+    }
+
+    // 4. every edge refuses BY NAME before either channel is touched, and a refused join leaves both channels untouched and
+    //    aligned — the stereo atomicity this rung owes.
+    {
+        var m = pan.StereoClip{};
+        const l = [_]i16{ 1, 2, 3, 4 };
+        const r = [_]i16{ 5, 6, 7, 8 };
+        try timeline.splice(&m.left, 0, &l);
+        try timeline.splice(&m.right, 0, &r);
+
+        // an unequal-length stereo span — a stereo span is one length.
+        if (join_stereo(&m, &[_]i16{ 9, 9, 9 }, &[_]i16{ 9, 9 }, 2)) |_| return error.UnequalSpanSlipped else |e| if (e != error.BadRange) return error.WrongUnequalSpan;
+        // overlap under two.
+        if (join_stereo(&m, &[_]i16{ 9, 9 }, &[_]i16{ 9, 9 }, 1)) |_| return error.ShortSlipped else |e| if (e != error.BadRange) return error.WrongShort;
+        // overlap past the master's tail.
+        if (join_stereo(&m, &[_]i16{ 9, 9, 9, 9, 9 }, &[_]i16{ 9, 9, 9, 9, 9 }, 5)) |_| return error.OverTailSlipped else |e| if (e != error.BadRange) return error.WrongOverTail;
+        // both channels are untouched and aligned after every refusal.
+        if (!eq(m.left.samples(), &l) or !eq(m.right.samples(), &r)) return error.RefusedStereoMutated;
+        if (m.left.len != m.right.len) return error.RefusedStereoMisaligned;
+
+        // an overflowing join refuses ClipFull — the shared-overlap result would pass the fixed bound.
+        var big = pan.StereoClip{};
+        big.left.len = timeline.max_clip - 1; // one sample of room
+        big.right.len = timeline.max_clip - 1;
+        const ins = [_]i16{ 0, 0, 0, 0 }; // overlap 2 → appends 2, past the one free sample
+        if (join_stereo(&big, &ins, &ins, 2)) |_| return error.OverflowSlipped else |e| if (e != error.ClipFull) return error.WrongOverflow;
+        if (big.left.len != big.right.len) return error.OverflowMisaligned;
+    }
+
+    print("GREEN ales-stereo-join: the crossfade join carries into stereo — ALES26's mono `join` run on each channel with the " ++
+        "SAME overlap, so the seam moves through ALES12's equal-power curve in both and the stereo image stays aligned. Both " ++
+        "channels grow by the shared-overlap count (5,5,2 → 8 each) or NEITHER is touched: because a StereoClip's channels are " ++
+        "one length and a stereo span is one length, the guards are validated once against the shared length before either " ++
+        "channel is edited. Each channel carries its own audio (left 1000→200, right 4000→800) while staying one length; a " ++
+        "full overlap is a pure crossfade with nothing appended in both; and an unequal span, an overlap under two, an overlap " ++
+        "past the tail, and an overflow each refuse by name leaving both channels untouched and aligned; no socket, no " ++
+        "network, no keys, no funds, no real device, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
