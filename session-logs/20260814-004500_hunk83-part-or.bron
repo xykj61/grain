@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260814.004500
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title HUNK83 — the OR of clauses: widen the marketplace to the parts matching any facet
+prompt continue the recursion after HUNK82; take the next agent-doable lap Lindy-first crux-first, self-approve, send as its own signed round to origin and xykj61, stop at custody gates
+think HUNK78 gave the marketplace a conjunction (narrow to the parts matching EVERY clause) — half of a real facet sidebar. The other half WIDENS: a keeper who checks two materials wants the union, the parts matching EITHER. By Lindy-first crux-first the durable next thing is completing the boolean query algebra — the dual of AND — so the marketplace runs on a whole algebra (narrow with AND, widen with OR), a primitive reused across every search.
+think Chose image/part_or.rye mirroring part_and.rye clause for clause so the two read as the pair they are — parse_or into a bounded OrQuery (max_clauses = part_and.max_clauses so the superset check is measured at equal width), matches_any (matches with a logical OR, empty is false), count_or, filter_or over the same shared sheet. No new matching rule: a disjunction is just HUNK75's matches asked of every clause with OR.
+think The crux is the union law: filter_or keeps exactly the parts passing at least one clause, each part once, in the catalog's held order. Two laws make the dual honest: the De Morgan identity (empty AND is match-all, empty OR is match-none — following the algebra rather than a friendlier guess keeps them true duals) and the superset relation (over the same clauses OR is a superset of AND — a free cross-check against HUNK78 on one catalog filtered both ways).
+obs GREEN on the first build. Proven on metal over five parts across three materials and a price spread: material:stainless-304 material:brass keeps the two stainless parts each once; stainless OR max:10 keeps the union bolt/washer/hexnut with the membership reference confirming every kept part passes some clause and every dropped part none; the clauses commute (held order is the catalog's); a single clause behaves like the plain filter; an empty line is a match-none; OR is a superset of AND (stainless max:60 keeps hexnut alone under AND, four parts under OR — every AND match an OR match, and strictly wider here); a malformed clause (UnknownKey, NoColon) and an over-many line (TooManyClauses) refuse by name before any walk.
+obs A price clause compares a recorded cent count, never moved (custody gate #3 untouched). No network, no key, no funds. TAME bans clean (not flagged by the scan), width exit 0; HUNK78 conjunction re-run GREEN beneath.
+loom witness=hunk_part_or_witness parts=5 or_superset_of_and=true empty_or=match_none
+file image/part_or.rye HUNK83 — parse_or · matches_any · count_or · filter_or (the disjunction, dual to HUNK78's AND)
+file tools/hunk_part_or_witness.rish witnesses the OR on metal; re-runs HUNK78 GREEN beneath
+file active-designing/20260814-004500_hunk-part-or-any-of-query-exploration.md self-approved design round for HUNK83
+recommend keep-going the boolean query algebra stands whole (AND HUNK78, OR HUNK83); next agent-doable is the OR on glass (an or_search_shelf mirroring HUNK79), a mixed AND-of-ORs grammar, a back gesture closing the navigation loop, or opening another Season-A / double-seat journey (Mikrophone firmware, the McMaster single-sprite render at scale)

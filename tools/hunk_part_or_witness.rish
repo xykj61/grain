@@ -1,0 +1,45 @@
+# tools/hunk_part_or_witness.rish — an OR of clauses, the dual of HUNK78's AND (HUNK83).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK83.
+# Design read: active-designing/20260814-004500_hunk-part-or-any-of-query-exploration.md
+# Teacher, thanked clean-room: McMaster-Carr's faceted sidebar — checking two values of one facet widens the wall to
+# the union (concept only, siloed).
+#
+# HUNK78 gave the marketplace a conjunction (narrow to the parts matching EVERY clause). A real sidebar also WIDENS:
+# checking two materials wants the union. image/part_or.rye `parse_or`/`filter_or` build that disjunction, dual to
+# HUNK78. The selftest proves the union law (a line means the union of its clauses, each part once, in held order), the
+# De Morgan identity (an empty OR is a match-none, the dual of AND's match-all), the superset relation (every AND match
+# is an OR match), that the clauses commute, that a single clause behaves like the plain filter, and the named refusals
+# (a malformed clause, an over-many line). A price is a fact compared, never moved.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_part_or_witness.rish
+
+say "hunk-part-or: Language EN — HUNK83 duals HUNK78: a multi-clause line under OR widens the marketplace to the parts matching ANY facet — the union, each part once."
+say "hunk-part-or: Style Radiant — where AND narrows, OR widens; the empty query under each reads exactly as the algebra says (all-of-nothing true, any-of-nothing false), the two true De Morgan duals."
+say "hunk-part-or: Lens TAME — pure composition over HUNK75 matches and HUNK76 parse_query; the disjunction invents no matching rule; OR is a superset of AND over the same clauses; a price clause compares, never moves; a malformed clause and an over-many line each refuse by name; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/part_or"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_or.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-part-or: build failed — ${build.err}"
+
+# Read the GREEN line from a file — it carries an apostrophe ("AND's") that breaks a shell single-quote round-trip.
+let outfile = "image/bin/part_or.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "hunk-part-or: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "hunk-part-or: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN part-or' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "hunk-part-or: selftest did not print the GREEN part-or line"
+
+# HUNK78 stays GREEN — the conjunction this rung duals and is cross-checked against (OR superset of AND).
+let a = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_and.rye -femit-bin=image/bin/part_and && image/bin/part_and selftest > image/bin/part_and.out 2>&1"]
+assert a.ok else "hunk-part-or: HUNK78 part_and re-run failed — see image/bin/part_and.out"
+let a_green = run ["sh" "-c" "grep -q 'GREEN part-and' image/bin/part_and.out && echo yes"]
+assert (trim a_green.out) == "yes" else "hunk-part-or: HUNK78 part_and did not stay GREEN"
+
+say "hunk-part-or: GREEN — a keeper widens as freely as they narrow; the boolean query algebra stands whole (AND HUNK78, OR HUNK83), and HUNK78 stays GREEN beneath. HUNK83 lands."
