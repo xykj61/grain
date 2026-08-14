@@ -143,8 +143,10 @@ pub const EditTouch = struct {
 
 fn craft_tagged(allocator: std.mem.Allocator, w: u32, h: u32) !qoi.Pixmap {
     // invariant: a real image has both dimensions, kept small for the witness.
-    assert(w >= 1 and h >= 1);
-    assert(w <= 16 and h <= 16);
+    assert(w >= 1);
+    assert(h >= 1);
+    assert(w <= 16);
+    assert(h <= 16);
     const pixels = try allocator.alloc(u8, @as(usize, w) * @as(usize, h) * 4);
     var i: u32 = 0;
     while (i < w * h) : (i += 1) {
@@ -258,7 +260,8 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     // so there is a redo to walk to, then drag right from within cell 0.
     {
         cur.undo();
-        assert(cur.depth() == 1 and cur.can_redo());
+        assert(cur.depth() == 1);
+        assert(cur.can_redo());
         const fired = try touch(&surface, &cur, 3, 90); // starts in cell 0, dx +87 → redo
         assert(fired);
         assert(cur.depth() == 2); // redone, not a fresh flip_h commit
