@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260814.133106
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (Eastern / EDT time convention)
+title ALES20 — Lotus's markers track, named positions a keeper navigates and snaps to
+prompt Autonomous loop past REMEMBER + the itineraries — take the next agent-doable lap Lindy-first crux-first, self-approve the design round, send each finished increment, stop at the custody gates. baton prin recur.
+think ALES19 (the scrub window) landed and named a markers track as its next want: named positions a scrub snaps to. Crux-first: markers are read on every editing session for years (highest-Lindy read-side primitive), and the crux — keeping named positions SORTED and UNIQUE so the nearest query is exact — is small and wholly tractable, composing ALES19's move_to and ALES14's loop.make over public APIs. Wholly within the read side, no module seam, no gate. A punch region tying playback to the Mikrophone capture stays a seam that waits for Keaton's word.
+think The crux and why it is EXACT: a markers track keeps its positions sorted and unique, so the nearest-marker query returns the true nearest named place in one ordered pass. Every add refuses a duplicate and inserts in sorted order (a maintained invariant, not a re-sort per query); over an ascending run the marker of least distance is well-defined, ties resolving to the LOWER position (strictly-less keeps the first encountered), so snap is deterministic and never flaps between two equidistant marks. Composing ALES14, region_between i and j (i<j) is exactly the loop [pos_i, pos_j).
+think Reuse over reinvention: scrub.move_to reused whole for snap (a snap is a move to a named position), loop.make reused whole for region_between; the only new code is the sorted named set — a bounded fixed array of Marker (pos + a bounded name in a fixed [max_name]u8), a bounded sorted insert with a bounded tail shift, and a bounded nearest scan. A marker's name is a word a keeper reads, not an allocation. The two @intCast are proper seam casts (name.len ≤ max_name = 24, bounded before the cast); no usize in authored surface, no @memcpy (name copied by a bounded loop).
+think Bounds are named and enforced at the edge: max_markers = 64, max_name = 24. add refuses BadName / PastEnd / Duplicate / MarkersFull; nearest and snap refuse NoMarkers; region_between refuses BadPair. GREEN on the FIRST build.
+obs GREEN on the first build across five blocks: markers added out of order (8,2,5,0) read ascending 0,2,5,8 each with its name; nearest returned the true nearest at pos 1 (tie → lower index 0), 3, 7, and an exact 5, and a scrub snapped exactly onto the nearest marker's position (and onto the lower of two equidistant marks); region_between marker 1 and 3 gave the armed loop [2,8) span 6; every edge refused by name (Duplicate, PastEnd, empty and oversized BadName, MarkersFull, NoMarkers on nearest and snap, BadPair); filling max_markers then one more refused MarkersFull leaving the track exactly full.
+obs tame_style_check exit 0 (bans clean, no markers-specific ban); the new module carries many asserts, off the zero-assert ratchet.
+loom witness=ales_markers_witness cases=5 max_markers=64 max_name=24 result=GREEN build=first-try
+file lotus/markers.rye ALES20 module — the sorted, named markers track, scrub-snapped and loop-composed.
+file tools/ales_markers_witness.rish the witness proving ALES20 GREEN on metal.
+file active-designing/20260814-fill-ales20-lotus-markers.md the self-approved design round for ALES20.
+file lotus/README.md status line, rung bullet, and road-on updated for ALES20.
+recommend keep-going ALES21 can carry markers into real time through the ALES5 clock (the twin of loop.mark_ms), or offer the choice of pan/crossfade law where a crossfade meets a marked edit — both agent-doable, no custody gate. A punch region armed between two markers, tying playback to the Mikrophone's capture, is a module seam that waits for Keaton's word.
