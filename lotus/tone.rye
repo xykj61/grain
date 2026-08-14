@@ -96,23 +96,34 @@ pub fn low_pass(clip: *timeline.Clip, start: u32, count: u32, num: i32, den: u32
     return low_pass_carry(clip, start, count, &state, num, den);
 }
 
-/// High-pass `count` samples starting at `start` in place — the exact complement of the low-pass: each output is the input
-/// minus the low-pass output at that sample, saturated to the i16 range. Where the difference fits, low_pass + high_pass = x
-/// sample-for-sample; a constant input drives the output to zero (direct current removed — a bass cut); a transient past the
-/// i16 range saturates rather than wraps. Refuses BadCoeff and BadRange exactly as the low-pass, before any write.
-pub fn high_pass(clip: *timeline.Clip, start: u32, count: u32, num: i32, den: u32) ToneError!void {
+/// High-pass `count` samples starting at `start` in place, CONTINUING from the caller's low-pass `state` rather than from
+/// silence — the carried-state complement (ALES45). The high-pass output is `x − lp`, and `lp` is a pure function of the carried
+/// low-pass state, so lifting that state to the caller makes the complement continue exactly as low_pass_carry does: a span
+/// high-passed in two pieces (the second carrying the first's ending state) equals the whole high-passed once, no re-transient
+/// at the seam. A fresh `state` of 0 is exactly the from-silence high_pass. Refuses BadCoeff on an illegal coefficient and
+/// BadRange on a span outside the samples, before any write; on refusal `state` is left untouched. Values only.
+pub fn high_pass_carry(clip: *timeline.Clip, start: u32, count: u32, state: *i64, num: i32, den: u32) ToneError!void {
     try check(clip.len, start, count, num, den);
-    var state: i64 = 0;
     var i: u32 = 0;
     while (i < count) : (i += 1) {
         const x: i16 = clip.buf[start + i];
-        const lp: i16 = lp_step(&state, x, num, den);
+        const lp: i16 = lp_step(state, x, num, den);
         // The difference runs in i64 so it never overflows before the clamp; the clamp is the one owed correctness.
         clip.buf[start + i] = timeline.saturate(@as(i64, x) - @as(i64, lp));
     }
     // invariant: a filter changes sample values only, never the clip's length or bound.
     assert(start + count <= clip.len);
     assert(clip.len <= clip.buf.len);
+}
+
+/// High-pass `count` samples starting at `start` in place, from a zero initial state — the exact complement of the low-pass:
+/// each output is the input minus the low-pass output at that sample, saturated to the i16 range. Where the difference fits,
+/// low_pass + high_pass = x sample-for-sample; a constant input drives the output to zero (direct current removed — a bass cut);
+/// a transient past the i16 range saturates rather than wraps. Refuses BadCoeff and BadRange exactly as the low-pass, before any
+/// write. The from-silence case of high_pass_carry — one implementation, so the carried and from-silence forms cannot drift.
+pub fn high_pass(clip: *timeline.Clip, start: u32, count: u32, num: i32, den: u32) ToneError!void {
+    var state: i64 = 0;
+    return high_pass_carry(clip, start, count, &state, num, den);
 }
 
 // --- selftest: silence stays silence; identity at coefficient one passes through; a constant input low-passes MONOTONICALLY
