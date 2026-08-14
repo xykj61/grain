@@ -1,0 +1,282 @@
+//! mikrophone/wire.rye — DREY1: the wire frame that carries only what was committed. A session's committed payload is
+//! framed into a self-describing wire frame (magic · version · length · digest · payload), and the far side proves the
+//! payload whole before it yields a single byte — a corrupted, truncated, or overlong frame refuses by name, never a
+//! wrong byte handed onward.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY1.
+//! Design read: active-designing/20260814-021218_drey1-wire-frame-carry-only-committed-exploration.md
+//! Stands on: mikrophone/session.rye (DREY0) — the memory that forgets. `carry()` hands back the one committed payload.
+//!
+//! The Mantrapod's forgetting promise reaches all the way to the wire: `frame` reads `carry()`, so a session powered
+//! down without a commit frames NOTHING (`NothingToCarry`). Uncommitted or forgotten work never leaves the device — the
+//! wire carries only what a deliberate commit kept. Deframing is verify-before-trust, the same discipline the Open Image
+//! artifact and the constellation Deed already keep: every check — magic, version, declared length against the bound,
+//! truncation, and a Sha256 digest over the payload — runs BEFORE the payload slice is returned. No disk, no network, no
+//! key signs, no funds move (custody gate #2 — real hardware and any real wire — untouched). The Sha256 digest is an
+//! integrity check the far side recomputes itself, not a signature; a signed carry is a later, gated rung.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/wire.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const session = @import("session.rye");
+
+const Sha256 = std.crypto.hash.sha2.Sha256;
+
+pub const wire_version = "20260814.021218";
+
+/// The one version byte this firmware speaks on the wire. A frame carrying a different version refuses `BadVersion`
+/// rather than guessing at a layout it does not know.
+pub const frame_version: u8 = 1;
+
+/// The four magic bytes that open every Mikrophone frame — "MPOD" (Mantrapod). A frame that does not open with these
+/// refuses `BadMagic` before any field is read.
+pub const magic: [4]u8 = [4]u8{ 'M', 'P', 'O', 'D' };
+
+/// The digest length — a full Sha256 over the payload, so a single flipped payload byte fails the check.
+pub const digest_len: u32 = 32;
+
+/// The fixed header before every payload: magic(4) · version(1) · payload_len(u32, 4) · digest(32). Named once so the
+/// frame layout is a single source of truth and `deframe` can never read a field at the wrong offset.
+pub const header_len: u32 = 4 + 1 + 4 + digest_len;
+
+/// The widest a whole frame runs — the header plus a full-capacity payload. Bounded once by the session's own ceiling,
+/// so a frame can never outgrow the session it carries. No heap outlives this fixed buffer.
+pub const max_frame: u32 = header_len + session.max_samples;
+
+pub const WireError = error{
+    NothingToCarry,
+    FrameTooShort,
+    BadMagic,
+    BadVersion,
+    LengthOverflow,
+    FrameTruncated,
+    DigestMismatch,
+};
+
+/// A bounded wire frame: a fixed buffer sized for the widest possible frame, and the length actually written into it.
+/// `bytes()` reads back exactly the framed region — never a byte past what `frame` wrote.
+pub const Frame = struct {
+    buf: [max_frame]u8 = [_]u8{0} ** max_frame,
+    len: u32 = 0,
+
+    /// The framed bytes as they stand — exactly the header plus payload written by `frame`.
+    pub fn bytes(self: *const Frame) []const u8 {
+        // invariant: the frame length never claims more than the buffer holds.
+        assert(self.len <= self.buf.len);
+        // invariant: a written frame is at least a whole header — a payload can be empty, a header can never be.
+        assert(self.len == 0 or self.len >= header_len);
+        return self.buf[0..self.len];
+    }
+};
+
+/// Frame the session's committed payload for the wire. Reads `carry()` — so a session that committed nothing refuses
+/// `NothingToCarry`, and the forgotten working buffer never reaches the wire. Writes magic, version, the payload length,
+/// a Sha256 digest of the payload, then the payload itself. The payload copy is a plain bounded loop, never a bare
+/// memcpy.
+pub fn frame(self: *const session.Session, out: *Frame) !void {
+    const payload = self.carry();
+    // invariant: the wire carries only what a deliberate commit kept — an uncommitted session frames nothing.
+    if (payload.len == 0) return error.NothingToCarry;
+    // invariant: the committed payload is bounded by the session ceiling, so the frame fits its fixed buffer.
+    assert(payload.len <= session.max_samples);
+
+    const plen: u32 = @intCast(payload.len);
+
+    // magic (4)
+    var i: u32 = 0;
+    while (i < magic.len) : (i += 1) out.buf[i] = magic[i];
+    // version (1)
+    out.buf[4] = frame_version;
+    // payload length (u32, little-endian)
+    std.mem.writeInt(u32, out.buf[5..9], plen, .little);
+    // digest (32) — Sha256 over the payload region
+    var dg: [digest_len]u8 = undefined;
+    Sha256.hash(payload, &dg, .{});
+    var d: u32 = 0;
+    while (d < digest_len) : (d += 1) out.buf[9 + d] = dg[d];
+    // payload — a plain bounded loop, never a bare memcpy
+    var p: u32 = 0;
+    while (p < plen) : (p += 1) out.buf[header_len + p] = payload[p];
+
+    out.len = header_len + plen;
+    // invariant: the whole frame is header plus payload, and within the fixed buffer.
+    assert(out.len == header_len + plen);
+    assert(out.len <= out.buf.len);
+}
+
+/// Deframe wire bytes into their payload, proving the payload whole BEFORE a single byte is yielded. Every check runs in
+/// order and returns on failure: too short for a header, wrong magic, wrong version, a declared length past the bound, a
+/// truncated tail, and finally a Sha256 digest that must match the payload. Only when all pass is the payload returned.
+pub fn deframe(bytes: []const u8) ![]const u8 {
+    // invariant: a frame is at least a whole header — anything shorter cannot be read as one.
+    if (bytes.len < header_len) return error.FrameTooShort;
+    // magic
+    var i: u32 = 0;
+    while (i < magic.len) : (i += 1) {
+        if (bytes[i] != magic[i]) return error.BadMagic;
+    }
+    // version
+    if (bytes[4] != frame_version) return error.BadVersion;
+    // declared payload length — never trusted past the named ceiling, before any payload read
+    const plen = std.mem.readInt(u32, bytes[5..9], .little);
+    if (plen > session.max_samples) return error.LengthOverflow;
+    // truncation — the bytes must actually hold the whole declared payload
+    const whole = header_len + plen;
+    if (bytes.len < whole) return error.FrameTruncated;
+    // digest — recompute over the payload region and match BEFORE yielding the slice
+    const payload = bytes[header_len..whole];
+    var dg: [digest_len]u8 = undefined;
+    Sha256.hash(payload, &dg, .{});
+    var d: u32 = 0;
+    while (d < digest_len) : (d += 1) {
+        if (bytes[9 + d] != dg[d]) return error.DigestMismatch;
+    }
+    // invariant: every check passed — the payload is proven whole and within the bound before it is returned.
+    assert(plen <= session.max_samples);
+    assert(payload.len == plen);
+    return payload;
+}
+
+// --- selftest: a committed payload round-trips exactly, the wire carries only the committed, and every corruption
+//     refuses by name before a byte is yielded ------------------------------------------------------------------------
+
+/// Capture the bytes of `text` into a fresh session and commit them, returning the committed session — a small helper so
+/// each selftest block reads as its own clean scenario.
+fn committed_session(text: []const u8) !session.Session {
+    var s = session.Session.init();
+    var i: u32 = 0;
+    while (i < text.len) : (i += 1) try session.capture(&s, text[i]);
+    try session.commit(&s);
+    return s;
+}
+
+fn run_selftest() !u8 {
+    // 1. Round-trip is exact — a committed payload frames and deframes back byte-for-byte.
+    {
+        var s = try committed_session("field recording one");
+        var f = Frame{};
+        try frame(&s, &f);
+        const got = try deframe(f.bytes());
+        assert(std.mem.eql(u8, got, "field recording one"));
+        assert(std.mem.eql(u8, got, s.carry()));
+    }
+
+    // 2. The wire carries ONLY the committed — an uncommitted session frames nothing, and an uncommitted tail is never
+    //    carried.
+    {
+        // Captured, powered down without a commit — nothing to carry, nothing to frame.
+        var s = session.Session.init();
+        try session.capture(&s, 'l');
+        try session.capture(&s, 'o');
+        try session.capture(&s, 's');
+        try session.capture(&s, 't');
+        session.power_down(&s);
+        var f = Frame{};
+        if (frame(&s, &f)) |_| {
+            return error.FramedTheForgotten;
+        } else |e| {
+            if (e != error.NothingToCarry) return error.WrongNothingToCarry;
+        }
+        // Committed "save", then an uncommitted tail "XY" — the frame carries exactly "save".
+        var s2 = try committed_session("save");
+        try session.capture(&s2, 'X');
+        try session.capture(&s2, 'Y');
+        var f2 = Frame{};
+        try frame(&s2, &f2);
+        const got = try deframe(f2.bytes());
+        assert(std.mem.eql(u8, got, "save"));
+    }
+
+    // 3. Every corruption refuses by name, before a byte is yielded.
+    {
+        var s = try committed_session("prove me whole");
+        var f = Frame{};
+        try frame(&s, &f);
+
+        // A frame shorter than a whole header cannot be read as one.
+        if (deframe(f.buf[0 .. header_len - 1])) |_| {
+            return error.ShortSlipped;
+        } else |e| {
+            if (e != error.FrameTooShort) return error.WrongShort;
+        }
+
+        // A flipped magic byte refuses BadMagic.
+        {
+            var c = f;
+            c.buf[0] = 'X';
+            if (deframe(c.bytes())) |_| {
+                return error.MagicSlipped;
+            } else |e| {
+                if (e != error.BadMagic) return error.WrongMagic;
+            }
+        }
+
+        // A wrong version refuses BadVersion.
+        {
+            var c = f;
+            c.buf[4] = 2;
+            if (deframe(c.bytes())) |_| {
+                return error.VersionSlipped;
+            } else |e| {
+                if (e != error.BadVersion) return error.WrongVersion;
+            }
+        }
+
+        // A declared length past the ceiling refuses LengthOverflow.
+        {
+            var c = f;
+            std.mem.writeInt(u32, c.buf[5..9], session.max_samples + 1, .little);
+            if (deframe(c.bytes())) |_| {
+                return error.OverflowSlipped;
+            } else |e| {
+                if (e != error.LengthOverflow) return error.WrongOverflow;
+            }
+        }
+
+        // A truncated tail (bytes shorter than header + declared length) refuses FrameTruncated.
+        if (deframe(f.buf[0 .. f.len - 1])) |_| {
+            return error.TruncatedSlipped;
+        } else |e| {
+            if (e != error.FrameTruncated) return error.WrongTruncated;
+        }
+
+        // A single flipped payload byte refuses DigestMismatch — the digest is checked before the payload is yielded.
+        {
+            var c = f;
+            c.buf[header_len] = c.buf[header_len] ^ 0x01;
+            if (deframe(c.bytes())) |_| {
+                return error.TamperSlipped;
+            } else |e| {
+                if (e != error.DigestMismatch) return error.WrongTamper;
+            }
+        }
+    }
+
+    // 4. The frame is bounded — a full-capacity session frames within max_frame and never claims a length past the bound.
+    {
+        var s = session.Session.init();
+        var n: u32 = 0;
+        while (n < session.max_samples) : (n += 1) try session.capture(&s, 0xAB);
+        try session.commit(&s);
+        var f = Frame{};
+        try frame(&s, &f);
+        assert(f.bytes().len == max_frame);
+        const got = try deframe(f.bytes());
+        assert(got.len == session.max_samples);
+    }
+
+    print("GREEN drey-wire: the Mikrophone wire frame carries only what was committed and proves it whole before it " ++
+        "yields a byte — a committed payload round-trips byte-for-byte, an uncommitted session refuses NothingToCarry " ++
+        "(the forgotten buffer never reaches the wire), and every corruption refuses by name before the payload is " ++
+        "returned (FrameTooShort, BadMagic, BadVersion, LengthOverflow, FrameTruncated, DigestMismatch); the frame is " ++
+        "bounded by the session ceiling. Verify-before-trust, proven pure before metal; no disk, no network, no key, " ++
+        "no funds\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
