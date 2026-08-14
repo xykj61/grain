@@ -1,0 +1,204 @@
+//! lotus/shelf.rye — ALES41: a two-band tone shelf — bass and treble from the one-pole split. ALES40 gave Lotus its first
+//! filter, yet a filter alone only REMOVES a band; the tone control a keeper actually turns is two knobs — bass and treble —
+//! each boosting OR cutting its band independently. ALES40 already splits any signal into a low band and a high band whose sum
+//! reconstructs the input exactly (low_pass + high_pass = x); this rung scales each band by its own gain and sums them, the
+//! everyday equalizer. The one correctness beyond ALES40 is ALES8's fader lesson — scale in the WIDE domain and clamp ONCE, so
+//! a boost that would clip pins to the ceiling rather than wrapping, and unity on both bands reconstructs the input.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES41.
+//! Design read: active-designing/20260814-161231_fill-ales41-lotus-tone-shelf.md
+//! Stands on: lotus/tone.rye (ALES40) — the low-pass/high-pass split it scales; lotus/timeline.rye (ALES2) — the Clip and the
+//! one true saturation it reuses.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
+//! no network, no keys, no funds, no real device, no real sample rate (the coefficient sets where the split falls over sample
+//! INDICES, not a crossover in hertz — a real time base is a later rung). Every band scale and the sum run in i64 so nothing
+//! overflows before the single clamp.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/shelf.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const tone = @import("tone.rye");
+
+pub const shelf_version = "20260814.161231";
+
+/// The shelf's faults: ALES40's coefficient/range faults reused whole, plus a zero band denominator (a divide by zero on a
+/// bass or treble gain). Zig merges error sets by name, so BadRange coincides with tone's rather than doubling.
+pub const ShelfError = tone.ToneError || error{
+    /// A band gain with a zero denominator — refused, no divide by zero.
+    BadGain,
+};
+
+/// Shelve `count` samples starting at `start` in place: split the span into a low band (a one-pole low-pass, ALES40) and its
+/// exact high band (input minus low), scale each by its own gain (bass_num/bass_den, treble_num/treble_den), and write the sum
+/// saturated ONCE over the true wide-domain total. Unity on both bands (bass = bass_den, treble = treble_den) reconstructs the
+/// input byte-for-byte; at direct current the high band is zero, so treble cannot move a constant and only bass scales it.
+/// Refuses BadCoeff on an illegal filter coefficient, BadGain on a zero band denominator, and BadRange on a span outside the
+/// samples — each before any write. Values only — never the length.
+pub fn shelf(
+    clip: *timeline.Clip,
+    start: u32,
+    count: u32,
+    coeff_num: i32,
+    coeff_den: u32,
+    bass_num: i32,
+    bass_den: u32,
+    treble_num: i32,
+    treble_den: u32,
+) ShelfError!void {
+    // invariant: the filter coefficient is a legal fraction in (0, 1] — den nonzero, num in [1, den] (ALES40's own law).
+    if (coeff_den == 0) return error.BadCoeff;
+    if (coeff_num < 1) return error.BadCoeff;
+    if (@as(i64, coeff_num) > @as(i64, coeff_den)) return error.BadCoeff;
+    // invariant: neither band gain divides by zero.
+    if (bass_den == 0 or treble_den == 0) return error.BadGain;
+    // invariant: the span lies wholly within the current samples (checked without underflow — count vs the remainder).
+    if (start > clip.len) return error.BadRange;
+    if (count > clip.len - start) return error.BadRange;
+
+    // The low band lives in a scratch copy of the span so the original samples (the high band's minuend) stay intact until the
+    // combine writes them. The span always fits the scratch — both share timeline.max_clip.
+    var low = timeline.Clip{};
+    // invariant: the span fits the scratch buffer whole — no partial copy.
+    assert(count <= low.buf.len);
+    var i: u32 = 0;
+    while (i < count) : (i += 1) low.buf[i] = clip.buf[start + i];
+    low.len = count;
+    try tone.low_pass(&low, 0, count, coeff_num, coeff_den);
+
+    const bass_d: i64 = @as(i64, bass_den);
+    const treble_d: i64 = @as(i64, treble_den);
+    i = 0;
+    while (i < count) : (i += 1) {
+        const x: i64 = @as(i64, clip.buf[start + i]);
+        const lo: i64 = @as(i64, low.buf[i]);
+        const hi: i64 = x - lo; // the exact high band: input minus low (ALES40's complement)
+        // Each band divided in i64 (the ALES2 gain rule), the two summed in i64, the single clamp over the true sum — ALES8's
+        // fader lesson: scale in the wide domain and saturate once, never saturate then sum.
+        const scaled: i64 = @divTrunc(@as(i64, bass_num) * lo, bass_d) + @divTrunc(@as(i64, treble_num) * hi, treble_d);
+        clip.buf[start + i] = timeline.saturate(scaled);
+    }
+    // invariant: a shelf changes sample values only, never the clip's length or bound.
+    assert(start + count <= clip.len);
+    assert(clip.len <= clip.buf.len);
+}
+
+// --- selftest: silence stays silence; unity on both bands is the identity (the bands reconstruct); bass scales direct current
+//     while treble leaves it untouched (the knobs are orthogonal at direct current); a boost SATURATES rather than wraps; and a
+//     zero/oversize/negative coefficient, a zero band denominator, and an out-of-range span each refuse by name --------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn run_selftest() !u8 {
+    // 1. silence stays silence — an all-zero clip shelves to all zeros at any gains.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0 });
+        try shelf(&clip, 0, clip.len, 1, 2, 3, 1, 4, 1);
+        const zeros = [_]i16{ 0, 0, 0, 0, 0, 0 };
+        if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
+    }
+
+    // 2. unity on both bands is the IDENTITY — bass = bass_den, treble = treble_den writes L + (x - L) = x byte-for-byte, at
+    //    any coefficient. The sharpest proof the two bands reconstruct the input.
+    {
+        var clip = timeline.Clip{};
+        const src = [_]i16{ 100, -200, 3000, -4000, 500, 42 };
+        try load_clip(&clip, &src);
+        try shelf(&clip, 0, clip.len, 1, 3, 1, 1, 1, 1); // flat EQ
+        if (!eq(clip.samples(), &src)) return error.IdentityWrong;
+    }
+
+    // 3. bass moves direct current — a settled constant at bass = 2/1, treble = 1/1 doubles the constant's tail; the first
+    //    sample differs (the filter transient), the settled tail is exactly twice the input.
+    {
+        var clip = timeline.Clip{};
+        const src = [_]i16{1000} ** 30;
+        try load_clip(&clip, &src);
+        try shelf(&clip, 0, clip.len, 1, 2, 2, 1, 1, 1); // bass ×2, treble ×1
+        const out = clip.samples();
+        if (out[out.len - 1] != 2000) return error.BassDcWrong; // settled tail doubled
+        if (out[0] == 2000) return error.BassNoTransient; // the first sample is not yet settled
+    }
+
+    // 4. treble does NOT move direct current — the same constant at bass = 1/1, treble = 5/1 leaves the settled tail exactly the
+    //    input: the high band is zero at direct current, so the knobs are orthogonal.
+    {
+        var clip = timeline.Clip{};
+        const src = [_]i16{1000} ** 30;
+        try load_clip(&clip, &src);
+        try shelf(&clip, 0, clip.len, 1, 2, 1, 1, 5, 1); // bass ×1, treble ×5
+        const out = clip.samples();
+        if (out[out.len - 1] != 1000) return error.TrebleMovedDc; // treble cannot touch a constant
+    }
+
+    // 5. a boost SATURATES rather than wraps — a loud constant at bass = 2/1 whose doubled value exceeds the i16 range pins to
+    //    sample_max, never a wrapped negative.
+    {
+        var clip = timeline.Clip{};
+        const src = [_]i16{20000} ** 30;
+        try load_clip(&clip, &src);
+        try shelf(&clip, 0, clip.len, 1, 2, 2, 1, 1, 1); // bass ×2 → 40000, clamps to +32767
+        const out = clip.samples();
+        if (out[out.len - 1] != timeline.sample_max) return error.SaturateWrong;
+    }
+
+    // 6a. a zero-denominator coefficient refuses BadCoeff — no divide by zero on the filter.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 1, 2, 3 });
+        if (shelf(&clip, 0, clip.len, 1, 0, 1, 1, 1, 1)) |_| return error.ZeroCoeffSlipped else |e| if (e != error.BadCoeff) return error.WrongZeroCoeff;
+    }
+
+    // 6b. a coefficient above one (unstable) refuses BadCoeff.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 1, 2, 3 });
+        if (shelf(&clip, 0, clip.len, 3, 2, 1, 1, 1, 1)) |_| return error.OverOneSlipped else |e| if (e != error.BadCoeff) return error.WrongOverOne;
+    }
+
+    // 6c. a zero bass denominator and a zero treble denominator each refuse BadGain.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 1, 2, 3 });
+        if (shelf(&clip, 0, clip.len, 1, 2, 1, 0, 1, 1)) |_| return error.ZeroBassSlipped else |e| if (e != error.BadGain) return error.WrongZeroBass;
+        if (shelf(&clip, 0, clip.len, 1, 2, 1, 1, 1, 0)) |_| return error.ZeroTrebleSlipped else |e| if (e != error.BadGain) return error.WrongZeroTreble;
+    }
+
+    // 6d. an out-of-range span refuses BadRange before any write, leaving the clip untouched.
+    {
+        var clip = timeline.Clip{};
+        const src = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &src);
+        if (shelf(&clip, 2, 5, 1, 2, 1, 1, 1, 1)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(clip.samples(), &src)) return error.RefusedShelfMutated;
+    }
+
+    print("GREEN ales-shelf: a two-band tone shelf scales the low band and the high band independently and clamps once — " ++
+        "silence stays silence; unity on both bands (bass = bass_den, treble = treble_den) writes the input byte-for-byte " ++
+        "(the bands reconstruct); bass = 2/1 doubles a settled constant while the first sample stays in transient, and treble " ++
+        "= 5/1 leaves the same constant untouched (the high band is zero at direct current — the knobs are orthogonal); a bass " ++
+        "boost of a loud constant (20000×2) SATURATES to +32767 rather than wrapping, scaling in the wide domain and clamping " ++
+        "once (ALES8's fader lesson); a zero or above-one coefficient refuses BadCoeff, a zero bass or treble denominator " ++
+        "refuses BadGain, and an out-of-range span refuses BadRange leaving the clip untouched; no socket, no network, no " ++
+        "keys, no funds, no real device, no real sample rate\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
