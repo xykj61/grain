@@ -1,0 +1,36 @@
+# tools/fora_admit_witness.rish — the whole add-a-member lifecycle, closed: a caught-up learner is promoted by joint consensus (FORA26).
+#
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# FORA26. Design read: active-designing/20260814-074656_fora26-constel-admit-learner-promotion.md
+#
+# constel/admit.rye joins FORA25 (learner) to FORA13 (reconfig): `admit` refuses to propose a promotion until the learner is caught
+# up (NotCaughtUp) and is genuinely a non-voter (AlreadyVoter), then builds the joint config old → old∪{learner} that reconfig's
+# ballot commits only with a strict majority in BOTH configs. The selftest proves: a not-caught-up learner is refused; an already-
+# voter is refused; a caught-up learner is admitted (old 3 → new 4) and the switch commits when the whole union votes; the promoted
+# member then counts toward the new majority; a new-only quorum is refused NoJointMajority so no stale set smuggles the switch;
+# bounded seven → eight. Purely local — no socket, no network, no keys, no funds, no real address.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/fora_admit_witness.rish
+
+say "fora-admit: Language EN — FORA26 closes the add-a-member lifecycle: a non-voting learner (FORA25) is promoted into the voting set only once caught up, and the switch is carried by reconfig's joint consensus (FORA13) — safe end to end, never an empty voter and never without the no-fork joint switch."
+say "fora-admit: Style Radiant — a member earns its voice by first learning the sky's whole story, and the sky welcomes it only when both the circle it leaves and the circle it joins agree — so a hand is added without ever risking a fork."
+say "fora-admit: Lens TAME — admit gates on learner.require_caught_up (NotCaughtUp) and refuses AlreadyVoter, then composes reconfig.config_of / JointConfig / JointBallot / require_joint over public APIs only; the joint ballot's two-majority rule carries the FORA9 intersection lemma across the switch unchanged; bounded to roster.max_piers; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "constel/bin/admit"
+
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/admit.rye -femit-bin=${bin}"]
+assert build.ok else "fora-admit: build failed — ${build.err}"
+
+let outfile = "constel/bin/admit.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "fora-admit: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "fora-admit: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN fora-admit' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "fora-admit: selftest did not print the GREEN fora-admit line"
+
+say "fora-admit: GREEN — the whole add-a-member lifecycle is proven pure on the bench: catch up out of the critical path, then switch the membership by joint consensus, a member added exactly the safe way."
