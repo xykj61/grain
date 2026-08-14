@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260814.111419
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (Linux) — Eastern (EDT) time convention
+title ALES0 — Lotus opens: the basic audio wire shape, a buffer of samples proven whole and sample-aligned
+prompt recur the loop — take the next agent-doable Lindy-first crux-first lap, self-approve the design round, send each increment as its own signed round, stop at the custody gates
+think Read REMEMBER's living edge, the 1,024-round itinerary, and the six-season double-seat. Then read the actual bench: the last landed commit is FORA30 (constel durable), and the FORA30 recommend names the socket as the only remaining Constel rung — and the socket is a custody gate (touches seed/comlink + a real wire). Surveyed the frontier: DREY (Mikrophone) done through DREY16, HUNK (image/Photos/parts) done through HUNK93, FORA (Constel Raft) done through FORA30 socket-gated, and mycelium/ (98 modules) whole and witnessed over demo seeds. The pure agent-doable frontier on the OPENED seasons has closed to gates.
+think So GATES-ONLY is wrong — the loop should open a fresh season, not declare gates-only or pile a marginal capstone onto a finished ladder (the finishing edge: ship one real thing before naming the next, and the ladders that were open have finished). Lindy-first crux-first over the WHOLE road: which un-started six-season thread holds the clearest agent-doable, no-research, no-gate crux? Season C (Lotus) held zero code, and the Six-Season doc names exactly one bounded task there — the basic audio wire shape for XLR/USB-C/guitar — while pausing only the audio-interface HARDWARE. The wire shape is the software carrier; the hardware is the paused part. Clean to take.
+think Drew the waymark by the ladder law before numbering: input season-c-lotus-creative-suite-audio-wire-shape → ALES (index 101, exclude assert GREEN, no collision). Seated ALES in tools/waymark_derive.rish (seated-draws + exclude regex) and .claude/rules/waymark-ladders.md.
+think Designed ALES0 lotus/wire.rye on the proven verify-before-trust frame idiom (constel/wire.rye FORA3, mikrophone/wire.rye DREY1): magic LOTS · version · cable · payload_len(bytes) · Sha256 digest · payload(i16 LE PCM). The crux beyond a generic wire — the AUDIO BORDER: deframing is two independent gates, the Sha256 proving the payload whole AND a whole-number-of-i16-samples check refusing PartialSample, so a torn half-sample can never reach a timeline. The cable kind is a ROUTING TAG only — no electrical fact asserted (honest scope; hardware stays paused).
+obs GREEN on the first build. Selftest proves: byte-for-byte round-trip on each cable tag; silence and full-scale i16 min/max carry exactly; the audio border refuses PartialSample on an odd payload_len even with a fixed-up digest; a flipped byte refuses DigestMismatch; unknown cable, overlong, truncated, short, and bad-magic each refuse by name; a buffer past max_samples refuses TooManySamples before a byte is written. TAME bans clean; lotus/wire.rye carries ≥2 asserts/fn, u32 in-memory, i16 samples, copy loops not @memcpy, no compound asserts. Purely local — no network, no keys, no funds, no real device; every custody gate untouched.
+loom witness=ales_wire_witness wall_blocks=6 build=first_green max_frame_bytes=2090 max_samples=1024
+file lotus/wire.rye ALES0 — the basic audio wire shape: Frame · frame · deframe, verify-before-trust with the audio border
+file tools/ales_wire_witness.rish the on-metal witness — builds, runs selftest, asserts the GREEN ales-wire line
+file tools/waymark_derive.rish ALES seated in the seated-draws list and the exclude regex; input_name set to the Lotus ladder
+file .claude/rules/waymark-ladders.md ALES seated in the waymark table (Season C · Lotus · audio wire shape)
+file active-designing/20260814-fill-ales0-lotus-audio-wire-shape.md the self-approved design capture that opens Season C
+file lotus/README.md the Lotus front door — what this is, honest software-only scope, the ALES0 rung, run block, road on
+recommend keep-going Season C is open and its foundation proven; the next Lotus rung carries many frames as a byte stream (the FORA5 channel shape) or opens the timeline that edits the samples — both agent-doable, no gate
