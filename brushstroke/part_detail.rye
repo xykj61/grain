@@ -1,0 +1,270 @@
+//! brushstroke/part_detail.rye — HUNK81: the part detail page — a tapped ref paints the picture above its full facts.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK81.
+//! Design read: active-designing/20260814-002316_hunk-part-detail-page-from-a-tapped-ref-exploration.md
+//! Teacher, thanked clean-room: McMaster-Carr's product page — a tapped result opens onto the part's own picture and
+//! its full facts, larger than the catalog row (concept only, siloed).
+//!
+//! HUNK80 closed the marketplace loop up to the tap: a keeper narrows the shelf, touches a result, and the surface
+//! returns a `PartRef` (index, name, honest facts). Yet the tap opened onto nothing to SEE. A shelf row is a one-line
+//! glance — a fact line and a thumbnail swatch on one row; a detail page is larger, the picture bigger, each fact on
+//! its own line. This rung paints that page from the handle HUNK80 hands over, so the whole gesture arrives: search ->
+//! tap -> the part's own page.
+//!
+//! The crux is NO DRIFT between the page and the part: the picture is the tapped part's own window into the ONE shared
+//! sheet (`cat.render_part`, down-mapped as solid blocks), and each fact line reads exactly the fact the `PartRef`
+//! carries — so the page can never show one product's picture beside another's price. The picture reuses the same
+//! `image_skate.down_map` seam the thumbnail swatch uses, and the price reuses `part_row.format_price`, so the detail
+//! page and the shelf paint one product by one law.
+//!
+//! The page holds no state and no funds — a price is a `u64` count of the smallest honest unit, FORMATTED for reading,
+//! never a balance the tree can move (custody gate #3 untouched). No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/part_detail.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const part_catalog = @import("part_catalog.rye");
+const part_tap = @import("part_tap.rye");
+const part_row = @import("part_row.rye");
+const image_skate = @import("image_skate.rye");
+const skate = @import("skate_grid.rye");
+
+pub const part_detail_version = "20260814.002316";
+
+/// The detail page stacks four fact rows beneath the picture: the name, the part number, the material, and the price.
+/// Named at construction so the page-height bound (`pic_rows + detail_fact_rows <= rows`) reads plainly (TAME bound).
+pub const detail_fact_rows: u32 = 4;
+
+pub const DetailError = error{
+    EmptyPage,
+    PageTooLarge,
+    EmptyPicture,
+    PageTooShort,
+};
+
+/// Paint a tapped part's detail page: its picture down-mapped into the top `pic_rows` at full width, then the four
+/// fact rows beneath — name, part number, material, exact price — each read straight from `ref`. Because the picture
+/// and every fact row read the SAME part (the `ref` and the catalog it borrows), the page can never show one product's
+/// picture beside another's facts. Refuses `EmptyPage` on a zero dimension, `PageTooLarge` past the down-map ceiling,
+/// `EmptyPicture` on zero picture rows, and `PageTooShort` when the page cannot hold the picture plus its four fact
+/// rows — so a page a keeper reaches always holds a whole part.
+pub fn detail_page(
+    allocator: std.mem.Allocator,
+    cat: *const part_catalog.PartCatalog,
+    ref: part_tap.PartRef,
+    cols: u32,
+    rows: u32,
+    pic_rows: u32,
+) !skate.Grid {
+    if (cols == 0 or rows == 0) return error.EmptyPage;
+    if (cols > image_skate.max_map_cols or rows > image_skate.max_map_rows) return error.PageTooLarge;
+    if (pic_rows == 0) return error.EmptyPicture;
+    // The picture band and its four fact rows must both fit — a page shows the whole part or refuses.
+    if (pic_rows + detail_fact_rows > rows) return error.PageTooShort;
+    // invariant: the tapped ref names a live part in the catalog it borrows.
+    assert(ref.index < cat.len());
+
+    var grid = try skate.Grid.init(allocator, cols, rows);
+    image_skate.set_anchor_palette(&grid);
+    // invariant: the page was built at the requested, refusal-checked dimensions.
+    assert(grid.cols == cols);
+    assert(grid.rows == rows);
+
+    // The picture — a fresh cut of the ONE sheet at the part's window. `down_map` only downsamples (each block spans at
+    // least one pixel), so a small window is down-mapped to its own size and then STRETCHED across the page band, the
+    // same idiom the thumbnail swatch uses (`paint_swatch`) — a picture wider than its window never empties a partition.
+    const window = try cat.render_part(allocator, ref.name);
+    const pw: u32 = @min(cols, window.width);
+    const ph: u32 = @min(pic_rows, window.height);
+    // invariant: a window has at least one pixel on each axis, so the down-map grid is at least one cell each way.
+    assert(pw >= 1);
+    assert(ph >= 1);
+    const pic = try image_skate.down_map(allocator, &window, pw, ph);
+    // invariant: the down-map grid is exactly the size asked for.
+    assert(pic.cols == pw);
+    assert(pic.rows == ph);
+
+    var r: u32 = 0;
+    while (r < pic_rows) : (r += 1) {
+        const sr: u32 = r * ph / pic_rows; // stretch the picture band down over the (smaller-or-equal) source rows
+        // invariant: the stretched source row sits inside the down-map grid.
+        assert(sr < ph);
+        var c: u32 = 0;
+        while (c < cols) : (c += 1) {
+            const sc: u32 = c * pw / cols; // stretch across the (smaller-or-equal) source columns
+            // invariant: the stretched source column sits inside the down-map grid.
+            assert(sc < pw);
+            const src: usize = @intCast(@as(u64, sr) * @as(u64, pw) + @as(u64, sc));
+            const dst: usize = @intCast(@as(u64, r) * @as(u64, cols) + @as(u64, c));
+            // invariant: source and destination cells sit inside their grids.
+            assert(src < pic.cells.len);
+            assert(dst < grid.cells.len);
+            grid.cells[dst] = pic.cells[src];
+            grid.fg_index[dst] = pic.fg_index[src];
+        }
+    }
+
+    // The facts — each on its own row beneath the picture, read straight from the ref (no drift). `put_line` truncates
+    // to the page width, so a long fact never overwrites the row below it.
+    grid.put_line(pic_rows, ref.name);
+    grid.put_line(pic_rows + 1, ref.facts.part_number);
+    grid.put_line(pic_rows + 2, ref.facts.material);
+    var price_buf: [part_row.max_price_text]u8 = undefined;
+    const pn = try part_row.format_price(ref.facts.price_cents, price_buf[0..]);
+    grid.put_line(pic_rows + 3, price_buf[0..pn]);
+    return grid;
+}
+
+// --- selftest: a bands sheet, parts in known colour bands — the detail page paints each part's picture in its own
+//     colour and stacks its facts, each fact line equal to the stored fact (no drift); a different part paints a
+//     different picture and different facts; the page rasterizes to a lit canvas; the refusals fire; and the capstone:
+//     a tap on a narrowed search opens a detail page of the very part the search reached. -----------------------------
+
+/// A 16×8 sheet in four solid vertical bands — red, green, blue, yellow — so a 4-wide window is one known colour.
+fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 16;
+    const h: u32 = 8;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            const band = x / 4; // 0..3
+            buf[off] = if (band == 0 or band == 3) 255 else 0; // r
+            buf[off + 1] = if (band == 1 or band == 3) 255 else 0; // g
+            buf[off + 2] = if (band == 2) 255 else 0; // b
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+/// Read a page row back as bytes, trimmed of the blank tail (`Grid.init` fills cells with spaces) — so the reader
+/// sees exactly the painted fact line.
+fn row_text(grid: *const skate.Grid, row: u32, out: []u8) u32 {
+    const cells = grid.row_cells(row);
+    var n: u32 = @intCast(cells.len);
+    while (n > 0 and cells[n - 1] == ' ') : (n -= 1) {}
+    var i: u32 = 0;
+    while (i < n) : (i += 1) out[i] = cells[i];
+    return n;
+}
+
+/// Every picture cell of a page's top band is a solid colour block wearing one slot — read that slot (and assert the
+/// band paints blocks). Returns the slot the top-left picture cell wears.
+fn picture_slot(grid: *const skate.Grid, cols: u32, pic_rows: u32) u8 {
+    var r: u32 = 0;
+    while (r < pic_rows) : (r += 1) {
+        var c: u32 = 0;
+        while (c < cols) : (c += 1) {
+            const i: usize = @intCast(@as(u64, r) * @as(u64, cols) + @as(u64, c));
+            assert(grid.cells[i] == image_skate.block_cell); // the whole picture band is solid blocks
+        }
+    }
+    return grid.fg_index[0];
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const sheet = try craft_bands(garden);
+    var cat = part_catalog.PartCatalog.init(&sheet);
+    try cat.add_part("bolt", 0, 0, 4, 8, "HX-M8-40", "stainless-304", 125); // red band
+    try cat.add_part("nut", 4, 0, 4, 8, "NY-M8", "brass", 60); // green band
+    try cat.add_part("gear", 8, 0, 4, 8, "GR-24T", "steel", 845); // blue band
+    try cat.add_part("hexnut", 12, 0, 4, 8, "HX-N8", "stainless-304", 55); // yellow band
+    assert(cat.len() == 4);
+
+    const cols: u32 = 48;
+    const rows: u32 = 8;
+    const pic_rows: u32 = 4; // 4 picture rows + 4 fact rows == 8, an exact fit
+
+    // Bolt's detail page: a red picture (slot 3) above its facts, each fact line equal to what the catalog holds.
+    {
+        const ref = part_tap.tap_part(&cat, rows, 0, 0) orelse unreachable; // row 0 -> bolt
+        const page = try detail_page(garden, &cat, ref, cols, rows, pic_rows);
+        assert(picture_slot(&page, cols, pic_rows) == 3); // bolt's red window
+        var buf: [part_catalog.max_material_len + 8]u8 = undefined;
+        assert(std.mem.eql(u8, buf[0..row_text(&page, pic_rows, buf[0..])], "bolt"));
+        assert(std.mem.eql(u8, buf[0..row_text(&page, pic_rows + 1, buf[0..])], "HX-M8-40"));
+        assert(std.mem.eql(u8, buf[0..row_text(&page, pic_rows + 2, buf[0..])], "stainless-304"));
+        assert(std.mem.eql(u8, buf[0..row_text(&page, pic_rows + 3, buf[0..])], "$1.25"));
+    }
+
+    // A different part paints a different picture AND different facts — no drift between page and part.
+    {
+        const ref = part_tap.tap_part(&cat, rows, 0, 2) orelse unreachable; // row 2 -> gear
+        const page = try detail_page(garden, &cat, ref, cols, rows, pic_rows);
+        assert(picture_slot(&page, cols, pic_rows) == 5); // gear's blue window
+        var buf: [part_catalog.max_material_len + 8]u8 = undefined;
+        assert(std.mem.eql(u8, buf[0..row_text(&page, pic_rows, buf[0..])], "gear"));
+        assert(std.mem.eql(u8, buf[0..row_text(&page, pic_rows + 3, buf[0..])], "$8.45"));
+    }
+
+    // The page is genuinely seen: it rasterizes to a lit canvas — the picture and the fact lines reach the glass.
+    {
+        const ref = part_tap.tap_part(&cat, rows, 0, 0) orelse unreachable;
+        const page = try detail_page(garden, &cat, ref, cols, rows, pic_rows);
+        const scale: u32 = 1;
+        const width: u32 = page.cols * skate.cell_w * scale;
+        const height: u32 = page.rows * skate.cell_h * scale;
+        const stride: u32 = width * 4;
+        const canvas = try garden.alloc(u8, @as(usize, stride) * @as(usize, height));
+        const bg = skate.Color{ .r = 1, .g = 2, .b = 3 };
+        const fg = skate.Color{ .r = 210, .g = 210, .b = 210 };
+        page.rasterize(canvas, stride, @intCast(width), @intCast(height), bg, fg, scale);
+        assert(page.lit_pixel_count(canvas, stride, @intCast(width), @intCast(height), bg) > 0);
+    }
+
+    // The named refusals fire: a zero dimension EmptyPage, an over-ceiling dimension PageTooLarge, a zero picture band
+    // EmptyPicture, and a page too short for the picture plus its four fact rows PageTooShort.
+    {
+        const ref = part_tap.tap_part(&cat, rows, 0, 0) orelse unreachable;
+        if (detail_page(garden, &cat, ref, 0, rows, pic_rows)) |_| return error.PageSlipped else |e| {
+            if (e != error.EmptyPage) return error.WrongPage;
+        }
+        if (detail_page(garden, &cat, ref, image_skate.max_map_cols + 1, rows, pic_rows)) |_| return error.PageSlipped else |e| {
+            if (e != error.PageTooLarge) return error.WrongPage;
+        }
+        if (detail_page(garden, &cat, ref, cols, rows, 0)) |_| return error.PageSlipped else |e| {
+            if (e != error.EmptyPicture) return error.WrongPage;
+        }
+        // pic_rows 5 + 4 fact rows = 9 > 8 rows.
+        if (detail_page(garden, &cat, ref, cols, rows, 5)) |_| return error.PageSlipped else |e| {
+            if (e != error.PageTooShort) return error.WrongPage;
+        }
+    }
+
+    // THE CAPSTONE — search -> tap -> detail, end to end. A stainless-only search's second row is hexnut (the catalog's
+    // fourth part, HUNK80's crux); its detail page paints hexnut's own picture and hexnut's own facts.
+    {
+        const ref = (try part_tap.open_tapped_and(&cat, "material:stainless-304", rows, 0, 1)) orelse unreachable;
+        assert(ref.index == 3); // hexnut, resolved across the narrowing
+        const page = try detail_page(garden, &cat, ref, cols, rows, pic_rows);
+        var buf: [part_catalog.max_material_len + 8]u8 = undefined;
+        assert(std.mem.eql(u8, buf[0..row_text(&page, pic_rows, buf[0..])], "hexnut"));
+        assert(std.mem.eql(u8, buf[0..row_text(&page, pic_rows + 1, buf[0..])], "HX-N8"));
+        assert(std.mem.eql(u8, buf[0..row_text(&page, pic_rows + 2, buf[0..])], "stainless-304"));
+        assert(std.mem.eql(u8, buf[0..row_text(&page, pic_rows + 3, buf[0..])], "$0.55"));
+    }
+
+    print("GREEN part-detail: a tapped ref paints a detail page — the part's own window down-mapped as a solid-colour " ++
+        "picture band (bolt red slot 3, gear blue slot 5) above its facts, each fact line EQUAL to the stored fact " ++
+        "(bolt · HX-M8-40 · stainless-304 · $1.25; gear · $8.45 — no drift); the page rasterizes to a lit canvas; " ++
+        "EmptyPage, PageTooLarge, EmptyPicture, and PageTooShort each refuse by name; and the capstone — a " ++
+        "stainless-only search's second row taps through to hexnut (orig index 3) and its detail page paints " ++
+        "hexnut's picture and facts ($0.55), search to tap to detail end to end. No network, no key, no funds.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: part_detail selftest\n", .{});
+    return 1;
+}
