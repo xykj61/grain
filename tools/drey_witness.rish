@@ -1,4 +1,4 @@
-# tools/drey_witness.rish — the whole Mikrophone firmware journey, proven in one command (DREY0–DREY10).
+# tools/drey_witness.rish — the whole Mikrophone firmware journey, proven in one command (DREY0–DREY13).
 #
 # Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · aggregate witness.
 # Front door: mikrophone/README.md.
@@ -13,7 +13,7 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/drey_witness.rish
 
-say "drey: Language EN — the whole Mikrophone firmware journey (DREY0–DREY12), each rung's witness run in order and asserted GREEN in one command."
+say "drey: Language EN — the whole Mikrophone firmware journey (DREY0–DREY13), each rung's witness run in order and asserted GREEN in one command."
 say "drey: Style Radiant — a device that forgets on purpose, proven whole: a capture held only while powered, kept only on a deliberate commit, redacted where a keeper strikes it, carried only when committed, and received only once proven — no byte crossing that a keeper did not need, none kept that cannot be proven."
 say "drey: Lens TAME — every rung is pure Rye on the bench, bounded, invariant-asserted, refusing by name; no disk, no network, no key, no funds. Serving over a real transport stays the Comlink-served gate; real hardware stays custody gate #2."
 
@@ -65,4 +65,8 @@ let sync = run ["rishi/bin/rishi" "run" "tools/drey_sync_witness.rish"]
 assert sync.ok else "drey: DREY12 sync witness failed"
 assert (sync.out contains "GREEN drey-sync") else "drey: DREY12 sync not GREEN"
 
-say "GREEN drey: the whole Mikrophone firmware journey holds — DREY0 session · DREY1 wire · DREY2 recorder · DREY3 firmware · DREY4 inbox · DREY5 carry · DREY6 archive · DREY7 catalog · DREY8 manifest · DREY9 serve · DREY10 redact · DREY12 sync, all twelve rungs proven pure before metal in one command; no disk, no network, no key, no funds."
+let forget = run ["rishi/bin/rishi" "run" "tools/drey_forget_witness.rish"]
+assert forget.ok else "drey: DREY13 forget witness failed"
+assert (forget.out contains "GREEN drey-forget") else "drey: DREY13 forget not GREEN"
+
+say "GREEN drey: the whole Mikrophone firmware journey holds — DREY0 session · DREY1 wire · DREY2 recorder · DREY3 firmware · DREY4 inbox · DREY5 carry · DREY6 archive · DREY7 catalog · DREY8 manifest · DREY9 serve · DREY10 redact · DREY12 sync · DREY13 forget, all thirteen rungs proven pure before metal in one command; no disk, no network, no key, no funds."
