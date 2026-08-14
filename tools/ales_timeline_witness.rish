@@ -1,0 +1,40 @@
+# tools/ales_timeline_witness.rish — the three edit gestures transform a sample timeline exactly and in order (ALES2).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES2.
+# Design read: active-designing/20260814-fill-ales2-lotus-timeline-edits.md
+# Stands on: lotus/stream.rye (ALES1) — the reassembled Timeline this rung loads and edits; lotus/wire.rye (ALES0) for the
+# sample width. The full road reads: bytes → frames → gapless timeline → editable clip.
+#
+# lotus/timeline.rye opens the first real DAW gesture: an editable Clip of i16 PCM samples and the three edits every timeline
+# owes — cut (remove a span, close the gap), gain (scale a span, saturating so loud never wraps), splice (insert a span, shift
+# the tail right). The selftest proves: cut removes a span exactly; gain saturates rather than wraps (20000×2 pins to +32767)
+# and a negative num inverts phase clamping i16-min's negation; splice inserts in order; splice then cut the same span
+# round-trips to the original (exact inverses); an out-of-range cut refuses BadRange leaving the clip untouched, a zero
+# denominator refuses BadGain, an overflowing splice refuses ClipFull; and the rung composes on ALES1 — a byte stream
+# reassembles into a gapless Timeline, a Clip loads it, and an edit lands on the reassembled audio. Purely local — no network,
+# no keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_timeline_witness.rish
+
+say "ales-timeline: Language EN — ALES2 opens the first real DAW gesture over ALES1's reassembled timeline: cut, gain, and splice, each transforming the samples exactly and in order."
+say "ales-timeline: Style Radiant — three edits that keep the audio gapless and true; the one correctness beyond a generic buffer is saturation, so a scaled-loud sample never wraps to the opposite sign."
+say "ales-timeline: Lens TAME — bounded Clip, u32 counts, i16 samples, the gain multiply in i64 before the clamp; every edit checks its range at the edge and refuses by name; siloed to lotus/, no network, no keys, no funds, no real device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/timeline"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/timeline.rye -femit-bin=${bin}"]
+assert build.ok else "ales-timeline: build failed — ${build.err}"
+
+let outfile = "lotus/bin/timeline.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-timeline: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-timeline: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-timeline' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-timeline: selftest did not print the GREEN ales-timeline line"
+
+say "ales-timeline: GREEN — the timeline edits cut, gain, and splice transform the reassembled audio exactly and in order, gain saturates rather than wraps, and the rung composes on ALES1; the next Lotus rung can clock the timeline to a real sample rate or open a second track to mix."

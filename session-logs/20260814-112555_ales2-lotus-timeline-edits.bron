@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260814.112555
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (cloud pier) — Eastern (EDT) time convention
+title ALES2 — Lotus's timeline edits: cut, gain, splice
+prompt Read REMEMBER and the two itinerary docs; take the next agent-doable lap Lindy-first crux-first, approve my own design round, send each finished increment, STOP at custody gates.
+think Read the road: REMEMBER (huge, long-line) names custody gates as the fence; the two itinerary docs place the living edge on Season C, Lotus (waymark ALES). Recent commits: ALES0 wire, ALES1 stream. lotus/README names the road on: the timeline that edits the reassembled samples (cut, gain, splice) or clocking to a real rate.
+think Lindy-first crux-first: the timeline editor is the durable foundation the DAW stands on, and the crux is the first real edit gesture. Purely local Rye — no custody gate (no funds, no keys, no socket, no real device). Self-approved the design round.
+think Confirmed the toolchain by running the ALES1 stream witness GREEN before building on it (measurement before memory).
+think Designed ALES2 as an editable Clip of i16 samples with three edits. The one correctness beyond a generic integer buffer: SATURATION — gain clamps to the i16 range rather than wrapping, the audio-editor analog of ALES0's audio border. A doubled 20000 must pin to +32767, not wrap negative; negating i16-min clamps to +32767. The gain multiply widened to i64 so it never overflows before the clamp.
+think cut/splice are exact inverses over the same span — the round-trip restores the original, the cleanest honesty check for the two tail shifts. load ties the rung to ALES1: bytes → frames → gapless timeline → editable clip, proven in selftest block 10.
+obs GREEN on the first build across ten selftest blocks. TAME style check clean (no bans); the new file carries ≥2 asserts per fn, u32 counts, i16 samples, copy loops not memcpy, so it is not on the zero-assert ratchet list.
+obs Every custody gate untouched — no socket, no network, no keys, no funds, no real device, no real sample rate. The audio-interface hardware stays a paused research round.
+loom witness=ales_timeline_witness build=first_green blocks=10 samples_i16=1 gain_intermediate=i64
+file lotus/timeline.rye the ALES2 rung — Clip, load, cut, gain (saturating), splice; ten-block selftest
+file tools/ales_timeline_witness.rish builds and runs the selftest, asserts the GREEN line
+file active-designing/20260814-fill-ales2-lotus-timeline-edits.md self-approved design capture for the round
+file lotus/README.md front door synced — ALES2 rung, run block, road-on, status
+recommend keep-going the next Lotus rung can clock the timeline to a real sample rate or open a second track to mix; still purely local, no gate
