@@ -1,0 +1,225 @@
+//! brushstroke/edit_touch_view.rye — HUNK49: the touchable Photos editor — a gesture edits, the view repaints, from one cursor.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK49.
+//! Design read: active-designing/20260813-203500_hunk-edit-touch-view-exploration.md
+//! Teacher, thanked clean-room: the touch editor of a photo app (iCloud Photos / Google Photos) — a tap edits, a swipe
+//! walks the history, and the picture on glass is always what the gesture just produced (concept only, siloed).
+//!
+//! HUNK48 gave the input half: a raw gesture becomes exactly one EditCursor move. HUNK13 gave the render half: an
+//! edit-list replayed over a source and down-mapped to a Skate grid a keeper sees. What was missing is one surface
+//! that owns both — a device wants to touch and watch the same image. This rung is that surface: `EditTouchView`
+//! binds HUNK48's gesture seam and HUNK13's preview to ONE cursor. `gesture` mutates the cursor; `paint` renders
+//! exactly that cursor's applied prefix through the down-map — so the picture a keeper sees can never drift from the
+//! edit history, structurally (the one-graph discipline the Realidream editor and view share, carried to the touch
+//! surface). The exact parallel of HUNK47, which closed the scroll loop the same way. A pure composition — no new
+//! arithmetic, no new clamp, no new render primitive. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/edit_touch_view.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const edits = @import("photo_edits.rye");
+const edit_cursor = @import("edit_cursor.rye");
+const edit_input = @import("edit_input.rye");
+const edit_preview = @import("edit_preview.rye");
+const image_skate = @import("image_skate.rye");
+const skate = @import("skate_grid.rye");
+
+pub const edit_touch_view_version = "20260813.203500";
+
+pub const TouchViewError = error{
+    BadView,
+};
+
+/// A touchable Photos editor: one owned `EditCursor` (the history) and the grid it paints onto. A gesture moves the
+/// cursor; a paint renders exactly the cursor's applied prefix — the same cursor, so the picture is always the one the
+/// gesture just made. No pixels live here; the source stays the caller's, painted fresh each look.
+pub const EditTouchView = struct {
+    cursor: edit_cursor.EditCursor = edit_cursor.EditCursor.init(),
+    cols: u32,
+    rows: u32,
+
+    /// Open a view over a grid, refusing `BadView` on a zero or over-ceiling dimension so `paint` is never handed a
+    /// grid the down-map itself would reject — the refusal is caught here, once, at open.
+    pub fn open(cols: u32, rows: u32) TouchViewError!EditTouchView {
+        // invariant: a real grid has both dimensions.
+        if (cols == 0 or rows == 0) return error.BadView;
+        // invariant: the grid fits the down-map's own ceiling, so paint never refuses on dimension.
+        if (cols > image_skate.max_map_cols or rows > image_skate.max_map_rows) return error.BadView;
+        assert(cols >= 1);
+        assert(rows >= 1);
+        assert(cols <= image_skate.max_map_cols);
+        assert(rows <= image_skate.max_map_rows);
+        return EditTouchView{ .cursor = edit_cursor.EditCursor.init(), .cols = cols, .rows = rows };
+    }
+
+    /// Apply one raw editing gesture, delegating to HUNK48's seam over the owned cursor — every clamp inherited (both
+    /// edges no-op, a fresh commit forgets the redo tail, the list ceiling refuses `TooManyEdits`). The seam's only
+    /// refusal is the one it can surface; the view invents none.
+    pub fn gesture(self: *EditTouchView, g: edit_input.Gesture) edits.EditsError!void {
+        // invariant: the cursor stands within its history before the gesture.
+        assert(self.cursor.position <= self.cursor.list.count);
+        try edit_input.apply(&self.cursor, g);
+        // invariant: the cursor still stands within its history after the gesture.
+        assert(self.cursor.position <= self.cursor.list.count);
+    }
+
+    /// The undo depth — how many edits stand behind the cursor, for a caller's affordance.
+    pub fn depth(self: *const EditTouchView) u32 {
+        // invariant: the cursor stands within its history.
+        assert(self.cursor.position <= self.cursor.list.count);
+        return self.cursor.depth();
+    }
+
+    /// Paint the current view: the down-map of exactly the cursor's applied prefix. Pure — the source is never
+    /// mutated (HUNK11's `apply` folds from a clone) and the cursor is read, not moved, so two paints match and the
+    /// picture cannot drift from the position. A committed verb's own refusal surfaces through the fold.
+    pub fn paint(self: *const EditTouchView, allocator: std.mem.Allocator, source: *const qoi.Pixmap) !skate.Grid {
+        // invariant: the cursor stands within its history before the replay.
+        assert(self.cursor.position <= self.cursor.list.count);
+        // invariant: the source is a well-formed image — four bytes per pixel — the down-map relies on.
+        assert(source.pixels.len == @as(usize, source.width) * @as(usize, source.height) * 4);
+        const prefix = self.cursor.applied();
+        return edit_preview.preview(allocator, source, &prefix, self.cols, self.rows);
+    }
+};
+
+// --- selftest: a two-tone image on a real grid — a fresh view paints the source, a commit gesture tracks the flip on
+//     glass, undo returns to the source and redo to the flip, paint never drifts from the cursor and two paints match,
+//     a bad grid refuses at open, and a committed out-of-bounds crop refuses through paint's fold -------------------
+
+fn craft_two_tone(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 8;
+    const h: u32 = 8;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            const left = x < w / 2;
+            buf[off] = if (left) 255 else 0; // r
+            buf[off + 1] = 0; // g
+            buf[off + 2] = if (left) 0 else 255; // b
+            buf[off + 3] = 255; // a
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const pm = try craft_two_tone(garden);
+    const cols: u32 = 2;
+    const rows: u32 = 2;
+    const red_slot: u8 = 3; // anchors slot 3 is red
+    const blue_slot: u8 = 5; // anchors slot 5 is blue
+    const left_i: usize = 0;
+
+    var view = try EditTouchView.open(cols, rows);
+    // invariant: a fresh view stands at the original with nothing edited.
+    assert(view.depth() == 0);
+
+    // A fresh view paints the plain source: the left cell reads red.
+    {
+        const g = try view.paint(garden, &pm);
+        assert(g.fg_index[left_i] == red_slot);
+    }
+
+    // A commit gesture tracks on glass: after committing flip_h, the next paint shows the flipped image — the left
+    // cell now reads blue, the picture following exactly the gesture the keeper made.
+    try view.gesture(edit_input.Gesture.commit(.flip_h));
+    assert(view.depth() == 1);
+    {
+        const g = try view.paint(garden, &pm);
+        assert(g.fg_index[left_i] == blue_slot); // the edit is seen
+    }
+
+    // No drift: paint equals a direct preview of exactly the cursor's applied prefix, cell-for-cell.
+    {
+        const prefix = view.cursor.applied();
+        const painted = try view.paint(garden, &pm);
+        const direct = try edit_preview.preview(garden, &pm, &prefix, cols, rows);
+        assert(std.mem.eql(u8, painted.cells, direct.cells));
+        assert(std.mem.eql(u8, painted.fg_index, direct.fg_index));
+    }
+
+    // Pure and deterministic: two paints are byte-identical and the cursor is unmoved by painting.
+    {
+        const a = try view.paint(garden, &pm);
+        const b = try view.paint(garden, &pm);
+        assert(std.mem.eql(u8, a.cells, b.cells));
+        assert(std.mem.eql(u8, a.fg_index, b.fg_index));
+        assert(view.depth() == 1); // paint never walked the cursor
+    }
+
+    // An undo gesture returns the picture to the source (left cell red again); a redo returns it to the flip (blue) —
+    // the view walks the history byte-for-byte, the picture tracking each step.
+    try view.gesture(.{ .kind = .undo });
+    assert(view.depth() == 0);
+    {
+        const g = try view.paint(garden, &pm);
+        assert(g.fg_index[left_i] == red_slot); // back to the source
+    }
+    try view.gesture(.{ .kind = .redo });
+    assert(view.depth() == 1);
+    {
+        const g = try view.paint(garden, &pm);
+        assert(g.fg_index[left_i] == blue_slot); // forward to the flip again
+    }
+
+    // Genuinely seen: the current view rasterizes to a lit canvas with the flipped blue in the left cell.
+    {
+        const g = try view.paint(garden, &pm);
+        const view_scale: u32 = 1;
+        const width: u32 = cols * skate.cell_w * view_scale;
+        const height: u32 = rows * skate.cell_h * view_scale;
+        const stride: u32 = width * 4;
+        const canvas = try garden.alloc(u8, @as(usize, stride) * @as(usize, height));
+        const bg = skate.Color{ .r = 1, .g = 2, .b = 3 };
+        const fg = skate.Color{ .r = 200, .g = 200, .b = 200 };
+        g.rasterize(canvas, stride, @intCast(width), @intCast(height), bg, fg, view_scale);
+        const lit = g.lit_pixel_count(canvas, stride, @intCast(width), @intCast(height), bg);
+        assert(lit > 0);
+        assert(canvas[0] == 255); // Skate writes B,G,R,A — blue channel lit in the left cell
+        assert(canvas[2] == 0); // red channel dark
+    }
+
+    // A bad grid refuses at open, once: a zero dimension and an over-ceiling one each refuse BadView.
+    if (EditTouchView.open(0, rows)) |_| return error.ZeroSlipped else |e| {
+        if (e != error.BadView) return error.WrongZero;
+    }
+    if (EditTouchView.open(image_skate.max_map_cols + 1, rows)) |_| return error.TooLargeSlipped else |e| {
+        if (e != error.BadView) return error.WrongTooLarge;
+    }
+
+    // A committed out-of-bounds crop surfaces OutOfBounds through paint's fold — the seam and view invent no new
+    // failure mode, only sequence a proven one.
+    {
+        var bad = try EditTouchView.open(cols, rows);
+        try bad.gesture(edit_input.Gesture.commit(.{ .crop = .{ .x = 6, .y = 0, .w = 4, .h = 2 } })); // 6+4 > 8
+        if (bad.paint(garden, &pm)) |_| return error.OobSlipped else |e| {
+            if (e != error.OutOfBounds) return error.WrongOob;
+        }
+    }
+
+    print("GREEN edit-touch-view: an 8x8 two-tone edited on a {d}x{d} grid through one cursor — a fresh view paints " ++
+        "the source (left cell red), a commit(flip_h) gesture tracks on glass (left cell blue), an undo returns the " ++
+        "picture to the source and a redo to the flip; paint equals a direct preview of the applied prefix the cursor " ++
+        "stands on cell-for-cell (no drift), two paints are byte-identical and painting never walks the cursor " ++
+        "(pure); the current view rasterizes to a lit canvas with blue in the left cell; a zero and an over-ceiling " ++
+        "grid each refuse BadView at open, and a committed out-of-bounds crop refuses OutOfBounds through the paint " ++
+        "fold. HUNK48 seam and HUNK13 preview GREEN beneath; no network, no key, no funds\n", .{ cols, rows });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: edit_touch_view selftest\n", .{});
+    return 1;
+}

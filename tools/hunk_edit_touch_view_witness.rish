@@ -1,0 +1,53 @@
+# tools/hunk_edit_touch_view_witness.rish — the touchable Photos editor on metal (HUNK49).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK49.
+# Design read: active-designing/20260813-203500_hunk-edit-touch-view-exploration.md.
+# Teacher, thanked clean-room: the touch editor of a photo app (iCloud Photos / Google Photos) — a tap edits, a swipe
+# walks the history, and the picture on glass is always what the gesture just produced (concept only, siloed).
+#
+# HUNK48 gave the input half (a gesture becomes one EditCursor move); HUNK13 gave the render half (an edit-list
+# down-mapped to a Skate grid a keeper sees). This rung binds both to ONE cursor: `EditTouchView` mutates the cursor on
+# a gesture and paints exactly that cursor's applied prefix, so the picture can never drift from the edit history —
+# the exact parallel of HUNK47 for scroll. The selftest proves a fresh view paints the source, a commit gesture tracks
+# the flip on glass, undo returns to the source and redo to the flip, paint equals a direct preview of the cursor with
+# no drift and two paints match (pure), a bad grid refuses at open, and a committed out-of-bounds crop refuses through
+# paint's fold. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_edit_touch_view_witness.rish
+
+say "hunk-edit-touch-view: Language EN — HUNK49 binds HUNK48's gesture seam and HUNK13's preview to one cursor; a gesture edits, a paint renders exactly that cursor's applied prefix."
+say "hunk-edit-touch-view: Style Radiant — a device touches and watches the same image; the picture cannot drift from the history, structurally, the way the Realidream editor and view share one graph."
+say "hunk-edit-touch-view: Lens TAME — one owned EditCursor plus a grid; gesture delegates to the seam, paint to the preview; no new arithmetic, clamp, or render primitive; BadView caught once at open; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/edit_touch_view"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/edit_touch_view.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-edit-touch-view: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-edit-touch-view: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+say "hunk-edit-touch-view: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN edit-touch-view' && echo yes"]
+assert (trim green.out) == "yes" else "hunk-edit-touch-view: selftest did not print the GREEN touch-view line"
+
+let track = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a commit(flip_h) gesture tracks on glass' && echo yes"]
+assert (trim track.out) == "yes" else "hunk-edit-touch-view: a commit gesture did not track the edit on glass"
+
+let walk = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'an undo returns the picture to the source and a redo to the flip' && echo yes"]
+assert (trim walk.out) == "yes" else "hunk-edit-touch-view: undo/redo gestures did not walk the picture"
+
+let drift = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'no drift' && echo yes"]
+assert (trim drift.out) == "yes" else "hunk-edit-touch-view: paint drifted from the cursor's applied prefix"
+
+let pure = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'painting never walks the cursor' && echo yes"]
+assert (trim pure.out) == "yes" else "hunk-edit-touch-view: painting moved the cursor"
+
+let refuse = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'refuse BadView at open, and a committed out-of-bounds crop refuses OutOfBounds' && echo yes"]
+assert (trim refuse.out) == "yes" else "hunk-edit-touch-view: a bad grid or a bad crop did not refuse by name"
+
+say "hunk-edit-touch-view: GREEN — the touchable Photos editor: a gesture edits and the view repaints from one cursor, undo and redo walk the picture byte-for-byte, paint never drifts, a bad grid and a bad crop refuse by name; no network, no key, no funds."
