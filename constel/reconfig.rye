@@ -1,0 +1,440 @@
+//! constel/reconfig.rye — FORA13: change the constellation safely, through JOINT CONSENSUS. FORA12 gave the sky an
+//! append-only replicated log that can never fork — as long as the roster never changes. Yet every rung from FORA9 on reads
+//! sb.size() once and treats it as fixed: the quorum threshold, the leader's majority, the decree's support all rest on one
+//! constant population. A real network gains and loses members — a pier joins, a pier retires, a compromised pier is voted
+//! out — and the moment the population changes, the fixed-roster safety no longer holds. Reconfiguration is the single hardest
+//! thing a consensus protocol does, and this rung takes it and nothing more.
+//!
+//! The hazard is precise: during a switch from an old configuration C_old to a new one C_new, some piers still believe the old
+//! membership while others already believe the new. If a decision needs only a majority of WHICHEVER config a pier holds, two
+//! DISJOINT groups can each form a lawful majority — one under C_old, one under C_new — and each commit a conflicting value.
+//! That is a fork born of the reconfiguration itself, every individual decision looking perfectly legal.
+//!
+//! The fix is one bounded rule, and it spends the FORA9 intersection lemma directly: during the transition a decision requires
+//! a strict majority in BOTH C_old and C_new, simultaneously. Because any two strict majorities of the same config share at
+//! least one pier (2·threshold > n), a joint decision — carrying a majority of C_old — intersects any pure-C_old decision, and
+//! — carrying a majority of C_new — intersects any pure-C_new decision. No committed value can diverge across the switch: every
+//! decision on either side overlaps the joint decision in the middle. The reconfiguration INHERITS the no-fork guarantee.
+//!
+//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+//! FORA13. Design read: active-designing/20260814-055235_fora13-constel-joint-consensus-reconfig.md
+//! Stands on: constel/quorum.rye (FORA9) — majority_of and the intersection lemma; constel/census.rye (FORA8) — announce /
+//! respond / hear collect the votes; constel/switchboard.rye (FORA6) — the medium; constel/roster.rye (FORA1) — the bound.
+//!
+//! Purely LOCAL — a bounded decision over the switchboard on one bench, siloed to constel/, run from inside the jailed pier.
+//! No socket, no network, no keys, no funds, no real address ever formed (custody gate #2 — real hardware / any real wire —
+//! and gate #4 — real Kumara — both untouched).
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/reconfig.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const name = @import("name.rye");
+const wire = @import("wire.rye");
+const exchange = @import("exchange.rye");
+const roster = @import("roster.rye");
+const switchboard = @import("switchboard.rye");
+const census = @import("census.rye");
+const quorum = @import("quorum.rye");
+
+pub const reconfig_version = "20260814.055235";
+
+pub const ReconfigError = error{
+    /// A sealed joint decision lacked a strict majority in the old config, the new config, or both — the transition may not
+    /// commit. A change that carries only one side is exactly the split-brain door joint consensus exists to hold shut.
+    NoJointMajority,
+    /// A slot already recorded this round voted again — a pier votes exactly once per transition.
+    DoubleVote,
+    /// A vote arrived from a slot that is in neither the old nor the new config — a non-participant has no say in the switch.
+    NotInEitherConfig,
+    /// A config was built with no members — the strict majority of nobody is undefined, so an empty config is refused at
+    /// construction rather than dividing by an empty population later.
+    EmptyConfig,
+} || switchboard.SwitchboardError;
+
+/// A configuration: a bounded membership mask over roster slots, plus its population count. The count is the n whose strict
+/// majority (quorum.majority_of) governs every decision made under this config.
+pub const Config = struct {
+    member_mask: [roster.max_piers]bool = [_]bool{false} ** roster.max_piers,
+    size: u32 = 0,
+
+    /// Whether a slot belongs to this config.
+    pub fn contains(self: *const Config, slot: u32) bool {
+        // invariant: a membership read stays within the roster bound.
+        assert(slot < roster.max_piers);
+        return self.member_mask[slot];
+    }
+};
+
+/// Build a config from a membership mask, counting its population and refusing an empty config — the majority of no one is
+/// undefined, so this fails closed at construction.
+pub fn config_of(mask: [roster.max_piers]bool) ReconfigError!Config {
+    var pop: u32 = 0;
+    var i: u32 = 0;
+    while (i < roster.max_piers) : (i += 1) {
+        if (mask[i]) pop += 1;
+    }
+    // invariant: a config never holds more members than the roster it indexes.
+    assert(pop <= roster.max_piers);
+    if (pop == 0) return error.EmptyConfig;
+    // invariant: a non-empty config has a well-defined strict majority at or below its population.
+    assert(pop >= 1);
+    return Config{ .member_mask = mask, .size = pop };
+}
+
+/// A joint configuration: the old membership and the new, both subsets of the one physical roster. Their union is the set of
+/// piers that take part in the transition; a decision must carry a strict majority of EACH.
+pub const JointConfig = struct {
+    old: Config,
+    new: Config,
+
+    /// Whether a slot participates in the transition at all — a member of the old config, the new, or both.
+    pub fn in_union(self: *const JointConfig, slot: u32) bool {
+        // invariant: a union read stays within the roster bound.
+        assert(slot < roster.max_piers);
+        return self.old.contains(slot) or self.new.contains(slot);
+    }
+};
+
+/// A joint ballot over one proposed transition: each participant's single yes-vote, the joint config it is judged against, and
+/// — once sealed — the majorities reached in each config and whether the transition may commit.
+pub const JointBallot = struct {
+    voted: [roster.max_piers]bool = [_]bool{false} ** roster.max_piers,
+    joint: JointConfig,
+    yes_old: u32 = 0,
+    yes_new: u32 = 0,
+    reached: bool = false,
+    sealed: bool = false,
+
+    /// Record one honest yes-vote for the transition. A slot in neither config refuses NotInEitherConfig — a non-participant
+    /// has no say; a slot already recorded refuses DoubleVote. Votes are only cast before the decision is sealed.
+    pub fn cast(self: *JointBallot, slot: u32) ReconfigError!void {
+        // invariant: only a real roster slot ever votes, and only before the seal.
+        assert(slot < roster.max_piers);
+        assert(!self.sealed);
+        if (!self.joint.in_union(slot)) return error.NotInEitherConfig; // a non-participant has no say in the switch
+        if (self.voted[slot]) return error.DoubleVote; // a pier votes exactly once per transition
+        self.voted[slot] = true;
+    }
+
+    /// Close the ballot and compute the joint decision: count the yes-votes falling inside the old config and inside the new,
+    /// and reach only when BOTH are a strict majority of their own config. The seal asserts the whole safety — each side is a
+    /// strict majority, so by the FORA9 lemma the yes-set intersects any pure-old and any pure-new majority.
+    pub fn seal(self: *JointBallot) void {
+        // invariant: a ballot is sealed exactly once, over two well-defined configs.
+        assert(!self.sealed);
+        assert(self.joint.old.size >= 1 and self.joint.old.size <= roster.max_piers);
+        assert(self.joint.new.size >= 1 and self.joint.new.size <= roster.max_piers);
+        var yo: u32 = 0;
+        var yn: u32 = 0;
+        var i: u32 = 0;
+        while (i < roster.max_piers) : (i += 1) {
+            if (self.voted[i]) {
+                if (self.joint.old.contains(i)) yo += 1;
+                if (self.joint.new.contains(i)) yn += 1;
+            }
+        }
+        self.yes_old = yo;
+        self.yes_new = yn;
+        const old_major = 2 * yo > self.joint.old.size;
+        const new_major = 2 * yn > self.joint.new.size;
+        self.reached = old_major and new_major;
+        self.sealed = true;
+        // invariant: the yes-count on each side never exceeds that config, and reached agrees with the strict-majority test in
+        // BOTH configs — the joint rule, made checkable per transition.
+        assert(self.yes_old <= self.joint.old.size);
+        assert(self.yes_new <= self.joint.new.size);
+        assert(self.reached == ((2 * self.yes_old > self.joint.old.size) and (2 * self.yes_new > self.joint.new.size)));
+    }
+
+    /// Whether the member at a slot is part of the deciding set — a participant whose yes-vote was recorded.
+    pub fn in_decision(self: *const JointBallot, slot: u32) bool {
+        // invariant: a membership read stays within the roster bound.
+        assert(slot < roster.max_piers);
+        return self.voted[slot];
+    }
+};
+
+/// The hard gate: refuse NoJointMajority when a sealed transition did not carry a strict majority in both configs, for a
+/// proposer that must hold the whole sky — old and new — before the switch commits.
+pub fn require_joint(b: *const JointBallot) ReconfigError!void {
+    // invariant: a transition is required only after it is sealed.
+    assert(b.sealed);
+    if (!b.reached) return error.NoJointMajority;
+}
+
+/// The whole transition round over the switchboard: open (the proposer is a member, else NoSuchPier), build the joint config,
+/// announce, drive every union member respond+hear interleaved — so a vote counts only from a member proven present at the
+/// naming-law border — record each, record the proposer's own vote, and seal. The interleave keeps the proposer's mailbox to
+/// one reply at a time, so even a full-sky transition never risks ChannelFull.
+pub fn run_reconfig(
+    sb: *switchboard.Switchboard,
+    proposer: []const u8,
+    old_mask: [roster.max_piers]bool,
+    new_mask: [roster.max_piers]bool,
+) ReconfigError!JointBallot {
+    const proposer_slot = try sb.member(proposer); // a stranger cannot open a reconfiguration
+    const n = sb.size();
+    // invariant: the proposer is a real member of a bounded constellation.
+    assert(proposer_slot < n);
+    assert(n <= roster.max_piers);
+
+    const old = try config_of(old_mask);
+    const new = try config_of(new_mask);
+    const joint = JointConfig{ .old = old, .new = new };
+    // invariant: the proposer of a switch is itself a participant in it — it may not reconfigure a sky it has left.
+    assert(joint.in_union(proposer_slot));
+
+    var ping = wire.Frame{};
+    const reached = try census.announce(sb, proposer, &ping);
+    // invariant: the announce reached every other roster member, never more.
+    assert(reached < n);
+
+    var b = JointBallot{ .joint = joint };
+    try b.cast(proposer_slot); // the proposer votes for its own transition, present by definition
+
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        if (i == proposer_slot) continue; // the proposer does not vote to itself over the wire
+        if (!joint.in_union(i)) continue; // a non-participant neither responds nor votes
+        const who = try sb.roster.member(i);
+        var wb: [name.max_ship_len]u8 = undefined;
+        const wn = copy_name(&wb, who);
+        try census.respond(sb, wn, proposer); // the member replies its present token
+        const slot = try census.hear(sb, proposer); // the proposer reads exactly that one reply at the border
+        // invariant: a heard vote comes from a member whose reachability the medium just proved.
+        assert(slot < n);
+        try b.cast(slot); // an honest union member votes for the transition
+    }
+    b.seal();
+    return b;
+}
+
+// --- selftest: a joint majority commits; an old-only or new-only majority refuses; the intersection proof enumerated
+//     directly (no fork across the switch); DoubleVote, NotInEitherConfig, EmptyConfig each refuse; the border guards every
+//     vote; a full transition over eight stays bounded --------------------------------------------------------------------
+
+fn run_selftest() !u8 {
+    // A concrete overlapping transition used throughout: old = {0,1,2}, new = {1,2,3} — drop pier 0, admit pier 3, over a
+    // physical roster of four. Both configs have three members, so the strict majority of each is two.
+    const old3 = mask_of(&[_]u32{ 0, 1, 2 });
+    const new3 = mask_of(&[_]u32{ 1, 2, 3 });
+
+    // 0. The empty-config guard — a config of nobody has no majority and is refused at construction.
+    {
+        const none = [_]bool{false} ** roster.max_piers;
+        if (config_of(none)) |_| return error.EmptyAllowed else |e| if (e != error.EmptyConfig) return error.WrongEmpty;
+    }
+
+    // 1. A real transition with a majority in both configs commits — every union member votes over the switchboard, yes_old is
+    //    three of three and yes_new three of three, so the switch reaches and require_joint passes.
+    {
+        var sb = switchboard.Switchboard{};
+        try sb.stand_up(4);
+        const proposer = try name_of(&sb, 1); // slot 1 is in both configs
+        var pb: [name.max_ship_len]u8 = undefined;
+        const pn = copy_name(&pb, proposer);
+        var b = try run_reconfig(&sb, pn, old3, new3);
+        assert(b.reached and b.yes_old == 3 and b.yes_new == 3);
+        try require_joint(&b);
+        assert(b.in_decision(0) and b.in_decision(1) and b.in_decision(2) and b.in_decision(3));
+    }
+
+    // 2. An OLD-only majority refuses — a yes-set of {0,1} carries two of three old (a majority) but only one of three new
+    //    (slot 1), below new's majority of two. require_joint refuses NoJointMajority: the split-brain door held from the old
+    //    side, where a departing member could otherwise carry a decision the new sky never saw.
+    {
+        var b = ballot_of(old3, new3, &[_]u32{ 0, 1 });
+        assert(b.yes_old == 2 and b.yes_new == 1 and !b.reached);
+        if (require_joint(&b)) |_| return error.OldOnlyCommitted else |e| if (e != error.NoJointMajority) return error.WrongOldOnly;
+    }
+
+    // 3. A NEW-only majority refuses — a yes-set of {2,3} carries two of three new but only one of three old (slot 2). The
+    //    door held from the new side, where an admitted member could otherwise carry a decision the old sky never saw.
+    {
+        var b = ballot_of(old3, new3, &[_]u32{ 2, 3 });
+        assert(b.yes_old == 1 and b.yes_new == 2 and !b.reached);
+        if (require_joint(&b)) |_| return error.NewOnlyCommitted else |e| if (e != error.NoJointMajority) return error.WrongNewOnly;
+    }
+
+    // 4. THE NO-FORK PROOF, enumerated directly (as FORA10 checked leader uniqueness across every arrangement): over the four
+    //    slots {0,1,2,3}, every yes-set that reaches JOINT majority shares a member — inside the old config — with every
+    //    pure-old majority, and — inside the new config — with every pure-new majority. So a joint decision can never diverge
+    //    from a decision made purely under the old sky or purely under the new: no fork across the switch is possible, shown
+    //    exhaustively rather than argued.
+    {
+        const old_bits: u32 = 0b0111; // {0,1,2}
+        const new_bits: u32 = 0b1110; // {1,2,3}
+        var joint_seen: u32 = 0;
+        var j: u32 = 0;
+        while (j < 16) : (j += 1) {
+            const jo = popcount_masked(j, old_bits);
+            const jn = popcount_masked(j, new_bits);
+            const joint_major = (2 * jo > 3) and (2 * jn > 3);
+            if (!joint_major) continue;
+            joint_seen += 1;
+            // Against every pure-OLD majority A, the joint yes-set J intersects A inside the old config.
+            var a: u32 = 0;
+            while (a < 16) : (a += 1) {
+                if (2 * popcount_masked(a, old_bits) > 3) {
+                    assert(popcount_masked(j & a, old_bits) > 0);
+                }
+            }
+            // Against every pure-NEW majority C, J intersects C inside the new config.
+            var c: u32 = 0;
+            while (c < 16) : (c += 1) {
+                if (2 * popcount_masked(c, new_bits) > 3) {
+                    assert(popcount_masked(j & c, new_bits) > 0);
+                }
+            }
+        }
+        // invariant: the enumeration actually exercised joint-majority sets rather than passing vacuously.
+        assert(joint_seen > 0);
+    }
+
+    // 5. DoubleVote — a slot recorded twice in one round refuses on the second cast.
+    {
+        const joint = JointConfig{ .old = try config_of(old3), .new = try config_of(new3) };
+        var b = JointBallot{ .joint = joint };
+        try b.cast(1);
+        if (b.cast(1)) |_| return error.DoubleAllowed else |e| if (e != error.DoubleVote) return error.WrongDouble;
+    }
+
+    // 6. NotInEitherConfig — with old = new = {0,1}, slot 2 is a roster member yet a participant in neither config, so its vote
+    //    is refused: a non-participant has no say in the switch.
+    {
+        const small = mask_of(&[_]u32{ 0, 1 });
+        const joint = JointConfig{ .old = try config_of(small), .new = try config_of(small) };
+        var b = JointBallot{ .joint = joint };
+        if (b.cast(2)) |_| return error.OutsiderVoted else |e| if (e != error.NotInEitherConfig) return error.WrongOutsider;
+    }
+
+    // 7. The border guards every vote — a union member replying with a vowel-bearing greeting is refused at the proposer's
+    //    hear, so a real-@p-shaped name can never enter a reconfiguration even as a present token. (Same tamper the quorum and
+    //    census borders prove.)
+    {
+        var sb = switchboard.Switchboard{};
+        try sb.stand_up(3);
+        const proposer = try name_of(&sb, 0);
+        const who = try name_of(&sb, 1);
+        var cb: [name.max_ship_len]u8 = undefined;
+        var wb: [name.max_ship_len]u8 = undefined;
+        const cn = copy_name(&cb, proposer);
+        const wn = copy_name(&wb, who);
+
+        var ping = wire.Frame{};
+        _ = try census.announce(&sb, cn, &ping);
+        _ = try sb.receive(wn); // the responder drains its ping
+
+        var sky_buf: [name.max_constellation_bytes]u8 = undefined;
+        const whole = try sb.sky(&sky_buf);
+        const p = try exchange.party(wn, whole);
+        var pong = wire.Frame{};
+        try exchange.initiator_greets(&p, &pong);
+        const field_at = wire.header_len + 4;
+        pong.buf[field_at + 0] = 'z';
+        pong.buf[field_at + 1] = 'o'; // the smuggled vowel
+        pong.buf[field_at + 2] = 'b';
+        const plen = std.mem.readInt(u32, pong.buf[6..10], .little);
+        var dg: [wire.digest_len]u8 = undefined;
+        std.crypto.hash.sha2.Sha256.hash(pong.buf[wire.header_len .. wire.header_len + plen], &dg, .{});
+        var d: u32 = 0;
+        while (d < wire.digest_len) : (d += 1) pong.buf[10 + d] = dg[d];
+        try sb.deliver(cn, &pong);
+        if (census.hear(&sb, cn)) |_| return error.VowelVoted else |e| if (e != error.VowelPresent) return error.WrongVowelVote;
+    }
+
+    // 8. A full transition over a constellation of eight stays bounded — old = {0..6}, new = {1..7}, each seven members with a
+    //    majority of four. Every union member (all eight) votes, yes_old is seven and yes_new seven, reached; no ChannelFull,
+    //    because run_reconfig interleaves respond and hear.
+    {
+        var sb = switchboard.Switchboard{};
+        try sb.stand_up(roster.max_piers);
+        const old7 = mask_of(&[_]u32{ 0, 1, 2, 3, 4, 5, 6 });
+        const new7 = mask_of(&[_]u32{ 1, 2, 3, 4, 5, 6, 7 });
+        const proposer = try name_of(&sb, 1);
+        var pb: [name.max_ship_len]u8 = undefined;
+        const pn = copy_name(&pb, proposer);
+        var b = try run_reconfig(&sb, pn, old7, new7);
+        assert(b.reached and b.yes_old == 7 and b.yes_new == 7);
+        try require_joint(&b);
+    }
+
+    print("GREEN fora-reconfig: change the constellation safely through joint consensus — a transition with a strict majority " ++
+        "in BOTH the old and new configs commits (old {{0,1,2}} → new {{1,2,3}}, every union member voting over the " ++
+        "switchboard, yes_old three and yes_new three); an OLD-only majority ({{0,1}}) and a NEW-only majority ({{2,3}}) each " ++
+        "refuse NoJointMajority, holding the split-brain door shut from each side; NO FORK ACROSS THE SWITCH — enumerated " ++
+        "directly, every joint-majority yes-set intersects every pure-old majority inside the old config and every pure-new " ++
+        "majority inside the new; DoubleVote refuses a second cast, NotInEitherConfig refuses a non-participant, EmptyConfig " ++
+        "refuses a config of nobody; the border guards every vote (a vowel-bearing reply refuses VowelPresent at hear); and a " ++
+        "full transition over eight stays bounded (yes_old seven, yes_new seven, no ChannelFull) — the FORA9 intersection " ++
+        "lemma spent so a reconfiguration inherits the log's no-fork guarantee; no socket, no network, no keys, no funds, no " ++
+        "real address ever formed\n", .{});
+    return 0;
+}
+
+// --- selftest helpers ------------------------------------------------------------------------------------------------------
+
+/// Build a membership mask from a list of slots — a thin selftest convenience so a scenario names its config by its members.
+fn mask_of(slots: []const u32) [roster.max_piers]bool {
+    var m = [_]bool{false} ** roster.max_piers;
+    var i: u32 = 0;
+    while (i < slots.len) : (i += 1) {
+        // invariant: only a real roster slot ever enters a config mask.
+        assert(slots[i] < roster.max_piers);
+        m[slots[i]] = true;
+    }
+    return m;
+}
+
+/// Build a sealed ballot by hand from a joint config and a list of yes-voting slots — the partial-majority scenarios (old-only,
+/// new-only) are recorded directly rather than driven over the switchboard, since a silent member simply casts no vote.
+fn ballot_of(old_mask: [roster.max_piers]bool, new_mask: [roster.max_piers]bool, yes: []const u32) JointBallot {
+    const joint = JointConfig{
+        .old = config_of(old_mask) catch unreachable, // the selftest only ever builds non-empty configs here
+        .new = config_of(new_mask) catch unreachable,
+    };
+    var b = JointBallot{ .joint = joint };
+    var i: u32 = 0;
+    while (i < yes.len) : (i += 1) {
+        b.cast(yes[i]) catch unreachable; // every listed voter is a real union participant in these scenarios
+    }
+    b.seal();
+    return b;
+}
+
+/// Count set bits of `bits` that also fall inside `config_bits` — the exhaustive no-fork proof reads yes-sets and majorities
+/// as small bitmasks over the four slots, so an intersection is a masked popcount.
+fn popcount_masked(bits: u32, config_bits: u32) u32 {
+    var x = bits & config_bits;
+    var n: u32 = 0;
+    while (x != 0) : (x &= x - 1) n += 1; // clear the lowest set bit each pass, bounded by the bit width
+    // invariant: a masked popcount never exceeds the roster bound.
+    assert(n <= roster.max_piers);
+    return n;
+}
+
+/// The name at a roster slot — a thin selftest helper so a scenario names its piers off the roster rather than the alphabet.
+fn name_of(sb: *switchboard.Switchboard, slot: u32) switchboard.SwitchboardError![]const u8 {
+    // invariant: only a slot within the current constellation is ever named.
+    assert(slot < sb.size());
+    return sb.roster.member(slot);
+}
+
+/// Copy a pier name out of the roster's buffer into a caller-owned buffer, returning the plain slice — respond/hear mutate
+/// mailboxes but never the roster, so this is belt-and-braces clarity rather than a correctness need.
+fn copy_name(dst: []u8, src: []const u8) []const u8 {
+    // invariant: a pier name always fits the ship bound, so the copy never overruns.
+    assert(src.len <= name.max_ship_len);
+    assert(dst.len >= src.len);
+    var i: u32 = 0;
+    while (i < src.len) : (i += 1) dst[i] = src[i];
+    return dst[0..src.len];
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
