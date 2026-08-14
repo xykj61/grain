@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260814.190149
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title ALES65 — Lotus's keyed gate: the door opened by another signal
+prompt baton prin recur — continue the ALES ladder Lindy-first crux-first, sending each finished increment as its own signed round
+think ALES63 named three tools its keyed detector unlocks: de-esser, ducker, keyed gate. ALES64 built the de-esser. Crux-first, the keyed gate is the third named tool and the exact mirror of the sidechain compressor — where the compressor ducks the target when the key gets loud (above threshold), the gate opens the target when the key is loud and closes it when quiet (below threshold).
+think Uses (a click track gating a pad to the beat, a tom gated by its own close mic to kill kit bleed, a synth chopped by a drum loop) — all one keyed primitive.
+think Design: lotus/gate_key.rye mirrors ALES63's sidechain pair with the read-only key beside the mutable target, carrying env + hold_left. Advance hold_env.env_step_hold on the key; at/above threshold the target passes, below it the target is attenuated by ALES51's floor.
+think The load-bearing correctness care the compressor never faced: the gate acts BELOW the threshold, so a keyed detector can read exact silence from the KEY (e == 0) while the TARGET is loud — the fully-closed gate. ALES57 divides through the envelope (gat/e), undefined at e == 0. But that gain is algebraically den/num (the envelope cancels: (e·den/num)/e = den/num), so the e == 0 branch applies den/num directly — no divide by zero. For a self-key a zero key envelope means a zero target sample, so it writes zero over zero, byte-for-byte with ALES57. This preserves the grounding law AND handles the silent-key/loud-target case correctly.
+obs GREEN on the first build across eight clauses: silence; self-key == ALES57 byte-for-byte (grounding); a loud key opens the gate (quiet target passes whole where the in-line gate silences it, proven against ALES57); a silent key closes the gate (loud target attenuated where the in-line gate passes it — the e == 0 branch, proven both ways against ALES57); unit ratio identity even under a silent key; sign held / magnitude never expands; state carries (env + hold_left) so a mid-hold split equals the whole; and BadThreshold/BadRatio/BadCoeff/BadHold/BadRange/BadKey each refuse by name.
+obs This completes the keyed wing — all three tools ALES63 named now stand as compositions of proven parts. The ducker is the sidechain read with an external voice key (already proven behaviorally in ALES63); the keyed gate is its mirror.
+loom witness=ales_gate_key_witness green=yes clauses=8 reproofs=2 tame_bans=clean
+file lotus/gate_key.rye ALES65 module — gate_key_follow / gate_key_follow_carry, the e==0 silent-key branch, GREEN selftest
+file tools/ales_gate_key_witness.rish witness — builds and runs the selftest, re-proves ALES57 and ALES56 beside it, GREEN
+file active-designing/20260814-190149_fill-ales65-lotus-keyed-gate.md design read — the crux, the e==0 correctness argument, the eight laws
+file lotus/README.md front door — status line (ALES65) and body prose synced
+file session-logs/README.md index — newest-first row prepended
+recommend keep-going — the keyed wing is whole (de-esser, ducker, keyed gate). The next self-approvable crux is a carried/spanning de-esser (threading the band-pass and follower states so it can automate) or the lookahead delay line horizon (a true brickwall limiter — that one waits for Keaton's word). External key routing and real hardware stay custody gates.
