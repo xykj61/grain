@@ -1,0 +1,178 @@
+//! lotus/limit.rye — ALES49: a peak limiter — a hard ceiling the signal may touch yet never cross. The fixed-EQ family turns
+//! frequency (ALES40–48); this opens the DYNAMICS family, which turns level. A limiter stands between a master and a blown
+//! speaker, between a loud take and a clipped file: every sample whose magnitude already sits within the ceiling passes
+//! byte-for-byte, and every sample louder than the ceiling is pinned to it with its sign held. Its one law — the ceiling is
+//! never crossed — is the honest floor the whole dynamics family will later refine: a ratio makes it a compressor, an inverted
+//! threshold a gate, a soft knee a gentler limiter. Brickwall first, because every richer shape rests on it.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES49.
+//! Design read: active-designing/20260814-170815_fill-ales49-lotus-peak-limiter.md
+//! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/sample_max, and the range law shape; the whole EQ family
+//! (ALES40–48) which this rests beside without disturbing.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
+//! no network, no keys, no funds, no real device, no real sample rate — the ceiling is a magnitude in sample units, not decibels,
+//! and the limit is instantaneous (no attack/release time base — a time-shaped envelope is a later rung). One comparison and at
+//! most one sign-carry per sample; nothing on the audio path can overflow, since a limited magnitude is min(|x|, ceil) <= i16.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/limit.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+
+pub const limit_version = "20260814.170815";
+
+/// The limiter's faults: a ceiling outside the legal range (a magnitude in [1, sample_max]) and a span outside the samples.
+/// BadRange coincides by name with timeline's and the EQ family's — Zig merges error sets by name — so a composer sees one
+/// consistent fault whether the span is refused here or by a filter.
+pub const LimitError = error{
+    /// A ceiling of zero (would silence, not limit) or above sample_max (nothing could ever reach it) — refused, no write.
+    BadCeiling,
+    /// A span outside the current samples — refused, no write.
+    BadRange,
+};
+
+/// Limit `count` samples starting at `start` in place to the magnitude `ceil`: a sample already within the ceiling passes
+/// byte-for-byte, a sample louder than the ceiling is pinned to sign(x)·ceil. After the call every written sample's magnitude
+/// is at most `ceil`, and no sample's sign is changed. Refuses BadCeiling on a ceiling outside [1, sample_max] and BadRange on a
+/// span outside the samples — each before any write, so an illegal call leaves the clip exactly as it was. Values only — never
+/// the length.
+pub fn limit(clip: *timeline.Clip, start: u32, count: u32, ceil: i32) LimitError!void {
+    // invariant: the ceiling is a legal magnitude — at least one sample unit (a zero ceiling would silence, not limit) and no
+    // greater than the i16 rail (a ceiling nothing can reach is not a ceiling). Checked BEFORE any write.
+    if (ceil < 1) return error.BadCeiling;
+    if (ceil > @as(i32, timeline.sample_max)) return error.BadCeiling;
+    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
+    if (start > clip.len) return error.BadRange;
+    if (count > clip.len - start) return error.BadRange;
+
+    const ceiling: i16 = @intCast(ceil); // safe: 1 <= ceil <= sample_max, proven by the two checks above
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        const x: i16 = clip.buf[start + i];
+        // A sample within the ceiling passes untouched; one louder is pinned to the ceiling with its sign held. The negative
+        // side compares against -ceiling and pins there, so sign is preserved by construction — magnitude only ever shrinks.
+        if (x > ceiling) {
+            clip.buf[start + i] = ceiling;
+        } else if (x < -ceiling) {
+            clip.buf[start + i] = -ceiling;
+        }
+        // invariant: the written sample never exceeds the ceiling in magnitude, and its sign matches the input's.
+        const y: i16 = clip.buf[start + i];
+        assert(y <= ceiling and y >= -ceiling);
+        assert((x >= 0 and y >= 0) or (x <= 0 and y <= 0));
+    }
+    // invariant: a limiter changes sample values only, never the clip's length or bound.
+    assert(start + count <= clip.len);
+    assert(clip.len <= clip.buf.len);
+}
+
+// --- selftest: silence stays silence; a signal already within the ceiling passes byte-for-byte (below the ceiling is the
+//     identity); a loud signal is pinned so no output crosses the ceiling AND every sign is held; a ceiling at sample_max is the
+//     identity for in-range audio; and a zero ceiling, an over-rail ceiling, and an out-of-range span each refuse by name -----
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn run_selftest() !u8 {
+    // 1. silence stays silence — an all-zero clip limits to all zeros at any legal ceiling.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0 });
+        try limit(&clip, 0, clip.len, 1000);
+        const zeros = [_]i16{ 0, 0, 0, 0, 0, 0 };
+        if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
+    }
+
+    // 2. BELOW THE CEILING IS THE IDENTITY — a signal whose every peak sits within the ceiling passes byte-for-byte.
+    {
+        const quiet = [_]i16{ 500, -900, 1000, -1000, 250, -500, 999, -999 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &quiet);
+        try limit(&clip, 0, clip.len, 1000); // ceiling equals the loudest peak — inclusive, so it still passes
+        if (!eq(clip.samples(), &quiet)) return error.QuietNotIdentity;
+    }
+
+    // 3. THE CEILING IS NEVER CROSSED, AND THE SIGN IS HELD — a signal that pins both rails limits so every output magnitude is
+    //    at most the ceiling, every sign matches the input, and each over-ceiling sample lands exactly on the ceiling.
+    {
+        const loud = [_]i16{ 3000, -3000, 500, -20000, 20000, -400, 32767, -32768 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &loud);
+        const ceil: i16 = 1500;
+        try limit(&clip, 0, clip.len, ceil);
+        const out = clip.samples();
+        var i: u32 = 0;
+        while (i < out.len) : (i += 1) {
+            if (out[i] > ceil or out[i] < -ceil) return error.CeilingCrossed; // impossible — proves the ceiling holds
+            const src = loud[i];
+            if ((src > 0 and out[i] < 0) or (src < 0 and out[i] > 0)) return error.SignFlipped; // magnitude only shrinks
+            // an over-ceiling sample lands exactly on the ceiling; a within-ceiling sample is untouched.
+            const want: i16 = if (src > ceil) ceil else if (src < -ceil) -ceil else src;
+            if (out[i] != want) return error.WrongLimit;
+        }
+    }
+
+    // 4. A CEILING AT sample_max IS THE IDENTITY — no i16 sample exceeds the rail, so the loosest legal ceiling is a pass-through.
+    {
+        const any = [_]i16{ 100, -32768, 32767, -5000, 5000, 0 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &any);
+        try limit(&clip, 0, clip.len, @as(i32, timeline.sample_max));
+        // every sample stays within [-sample_max, sample_max]; sample_min alone is one below -sample_max, pinned to -sample_max.
+        const want = [_]i16{ 100, -32767, 32767, -5000, 5000, 0 };
+        if (!eq(clip.samples(), &want)) return error.RailCeilingMovedInRange;
+    }
+
+    // 5a. a zero ceiling refuses BadCeiling before any write, the clip untouched.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        if (limit(&clip, 0, clip.len, 0)) |_| return error.ZeroCeilingSlipped else |e| if (e != error.BadCeiling) return error.WrongZeroCeiling;
+        if (!eq(clip.samples(), &three)) return error.RefusedCeilingMutated;
+    }
+
+    // 5b. a ceiling above the rail refuses BadCeiling (nothing could ever reach it) before any write.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        if (limit(&clip, 0, clip.len, @as(i32, timeline.sample_max) + 1)) |_| return error.OverRailSlipped else |e| if (e != error.BadCeiling) return error.WrongOverRail;
+        if (!eq(clip.samples(), &three)) return error.RefusedRailMutated;
+    }
+
+    // 5c. an out-of-range span refuses BadRange before any write, leaving the clip untouched.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        if (limit(&clip, 2, 5, 1000)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(clip.samples(), &three)) return error.RefusedRangeMutated;
+    }
+
+    print("GREEN ales-limit: a peak limiter holds a hard ceiling the signal may touch yet never cross — a sample within the " ++
+        "ceiling passes byte-for-byte, a sample louder is pinned to sign(x)·ceil. Silence stays silence; below the ceiling is " ++
+        "the IDENTITY (a signal whose peaks all sit within the ceiling passes untouched); a signal pinning both rails limits so " ++
+        "no output magnitude exceeds the ceiling and every sign is held (magnitude only ever shrinks — the limiter cannot " ++
+        "invert phase); a ceiling at sample_max is the identity for in-range audio; and a zero ceiling refuses BadCeiling, an " ++
+        "over-rail ceiling BadCeiling, an out-of-range span BadRange, each leaving the clip untouched. Dynamics opens where EQ " ++
+        "closed; no socket, no network, no keys, no funds, no real device, no real sample rate\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
