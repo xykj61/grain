@@ -1,0 +1,329 @@
+//! constel/durable.rye — FORA30: durable state — a pier survives a restart without ever forgetting its vote. Every FORA rung before
+//! this proved Raft's safety WHILE THE PROCESS WAS ALIVE: an election that raises one leader, a log that never forks, a term that
+//! keeps a stale leader from committing, a repair that heals a divergent suffix, a lease read honest to the clock. None proved the
+//! one line Raft's Figure 2 lists first under "Persistent state on all servers": that currentTerm, votedFor, and log[] reach STABLE
+//! STORAGE before the pier answers an RPC.
+//!
+//! The gap it closes:
+//!   Raft's election safety — at most one leader per term — rests entirely on a pier NEVER VOTING TWICE in the same term. If a pier
+//!   grants its vote to candidate A, then crashes and restarts having FORGOTTEN the vote, it can grant the same term's vote to
+//!   candidate B; two candidates each collect a majority that counted that one pier, two leaders rise in one term, the sky forks.
+//!   FORA21 (vote) proved the up-to-date-log restriction; it never proved the vote SURVIVES A POWER CYCLE. This rung does: the durable
+//!   state round-trips through bytes (save · "crash" · restore) so a restored pier refuses to double-vote in a term it already voted
+//!   in, and refuses a torn or corrupted image rather than restore a half-written state.
+//!
+//! The image is self-describing and read VERIFY-BEFORE-TRUST, exactly as FORA3's wire deframe taught: magic("CDUR") · version ·
+//! term(u32 LE) · voted_for(u32 LE) · log_len(u32 LE) · log_len×(term,value) · digest(Sha256 over all preceding bytes). A flipped
+//! byte, a wild length, or a truncated tail each fails closed — never a partial restore.
+//!
+//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung FORA30.
+//! Design read: active-designing/20260814-105746_fora30-constel-durable-state.md
+//! Stands on: constel/repair.rye (FORA17) — the TermedLog it persists; constel/roster.rye (FORA1) — max_piers, the slot bound.
+//!
+//! Purely LOCAL — the "stable storage" is a plain in-memory byte buffer on the bench: no real file descriptor, no fsync, no socket,
+//! no network, no keys, no funds, no real address ever formed (custody gate #2 — real hardware / any real wire — and gate #4 — real
+//! Kumara — both untouched). The rung that backs this buffer with a real kernel fd is the same socket gate that stops for the
+//! maintainer's word.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/durable.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const roster = @import("roster.rye");
+const repair = @import("repair.rye");
+
+const Sha256 = std.crypto.hash.sha2.Sha256;
+
+pub const durable_version = "20260814.105746";
+
+/// The four magic bytes that open every durable image — "CDUR" (Constel DURable), distinct from FORA3's wire "CNST" so a wire frame
+/// can never be mistaken for a persisted image or the reverse.
+pub const magic: [4]u8 = [4]u8{ 'C', 'D', 'U', 'R' };
+
+/// The image format version. A future field change bumps this; a mismatched version refuses rather than misread an old layout.
+pub const image_version: u8 = 1;
+
+/// The digest length — a full Sha256 over every byte before it, so a single flipped image byte fails the check.
+pub const digest_len: u32 = 32;
+
+/// The sentinel `voted_for` value meaning "this pier has not voted in the current term". No real slot equals it: valid slots are
+/// 0..max_piers-1, and this is max_piers exactly.
+pub const none_voted: u32 = roster.max_piers;
+
+/// The most entries a durable log holds — the FORA17 bound, so the persisted ledger stays the one shape.
+pub const max_entries: u32 = repair.max_entries;
+
+/// The fixed header before the entries: magic(4) · version(1) · term(4) · voted_for(4) · log_len(4).
+pub const header_len: u32 = 4 + 1 + 4 + 4 + 4;
+
+/// One entry serializes as term(u32 LE) · value(u32 LE).
+pub const entry_bytes: u32 = 8;
+
+/// The largest an image can ever be: header + a full log + the trailing digest. Every buffer is checked against this bound.
+pub const max_image_bytes: u32 = header_len + max_entries * entry_bytes + digest_len;
+
+pub const DurableError = error{
+    /// A vote requested in a term the pier has already left behind — a pier never votes in a stale term.
+    StaleTerm,
+    /// A vote requested in a term where this pier already granted its vote to a DIFFERENT candidate — the single-vote invariant that
+    /// Raft's election safety rests on, and the one this whole rung proves survives a restart.
+    AlreadyVoted,
+    /// A save whose image would not fit the caller's buffer, or a load of bytes too short to even hold a header + digest — a bounded
+    /// store refuses rather than overrun or under-read.
+    ImageTooBig,
+    /// A load whose bytes do not describe a whole, lawful image: bad magic, bad version, a log_len past max_entries, or a Sha256 that
+    /// does not match the recomputed digest. Verify-before-trust refuses rather than restore a partial or tampered state.
+    CorruptImage,
+};
+
+/// A pier's durable Raft state — the exact triple Raft's Figure 2 requires on stable storage. `term` only ever climbs; `voted_for`
+/// is a slot in `term` or `none_voted`; `log` is the FORA17 ledger.
+pub const DurableState = struct {
+    /// The highest term the pier has seen. Monotonic — a restore never lowers it, and record_vote never sets it below its current value.
+    term: u32 = 0,
+    /// The slot this pier voted for IN `term`, or none_voted when it has not voted this term.
+    voted_for: u32 = none_voted,
+    /// The replicated log, persisted whole so no committed entry is lost across a crash.
+    log: repair.TermedLog = .{},
+
+    /// THE VOTE-RECORD DECISION whose durability is the point. A new term clears the prior vote (a clean slate); within a term the
+    /// pier votes at most once for at most one candidate; a stale term is refused. The mutation MUST be persisted (save) before the
+    /// pier answers — that is the whole rung.
+    pub fn record_vote(self: *DurableState, candidate: u32, cand_term: u32) DurableError!void {
+        // invariant: a candidate is a real roster slot, never the sentinel.
+        assert(candidate < roster.max_piers);
+        // invariant: the pier's own term is monotonic — it is never below the ground term.
+        assert(self.term >= 0);
+        if (cand_term < self.term) return error.StaleTerm; // never vote in a term already left behind
+        if (cand_term > self.term) {
+            // A new term is a clean slate — Raft: on seeing a higher term, adopt it and forget the prior vote.
+            self.term = cand_term;
+            self.voted_for = none_voted;
+        }
+        // Now within cand_term: refuse a second, different candidate; a repeat of the same one is idempotent.
+        if (self.voted_for != none_voted and self.voted_for != candidate) return error.AlreadyVoted;
+        self.term = cand_term;
+        self.voted_for = candidate;
+        // invariant: after granting, the vote is recorded in exactly the term it was granted, for exactly this candidate.
+        assert(self.term == cand_term and self.voted_for == candidate);
+    }
+
+    /// The number of bytes this state's image occupies — header + its entries + the digest. Always within max_image_bytes.
+    pub fn image_len(self: *const DurableState) u32 {
+        // invariant: a log never exceeds its bound, so the image never exceeds max_image_bytes.
+        assert(self.log.len <= max_entries);
+        return header_len + self.log.len * entry_bytes + digest_len;
+    }
+
+    /// SAVE to stable storage — write the self-describing image into `buf` and return the exact slice written. Refuses ImageTooBig
+    /// rather than overrun. The trailing digest is a Sha256 over every preceding byte, so load can prove the image whole.
+    pub fn save(self: *const DurableState, buf: []u8) DurableError![]u8 {
+        const need = self.image_len();
+        // invariant: the computed need never exceeds the format's own ceiling.
+        assert(need <= max_image_bytes);
+        if (buf.len < need) return error.ImageTooBig; // a bounded store never overruns its buffer
+        var at: u32 = 0;
+        var i: u32 = 0;
+        while (i < magic.len) : (i += 1) buf[at + i] = magic[i];
+        at += @intCast(magic.len);
+        buf[at] = image_version;
+        at += 1;
+        std.mem.writeInt(u32, buf[at..][0..4], self.term, .little);
+        at += 4;
+        std.mem.writeInt(u32, buf[at..][0..4], self.voted_for, .little);
+        at += 4;
+        std.mem.writeInt(u32, buf[at..][0..4], self.log.len, .little);
+        at += 4;
+        var e: u32 = 0;
+        while (e < self.log.len) : (e += 1) {
+            std.mem.writeInt(u32, buf[at..][0..4], self.log.entry[e].term, .little);
+            at += 4;
+            std.mem.writeInt(u32, buf[at..][0..4], self.log.entry[e].value, .little);
+            at += 4;
+        }
+        // invariant: the write cursor now sits exactly where the digest begins — header + entries, no gap, no overrun.
+        assert(at == need - digest_len);
+        var dg: [digest_len]u8 = undefined;
+        Sha256.hash(buf[0..at], &dg, .{});
+        var d: u32 = 0;
+        while (d < digest_len) : (d += 1) buf[at + d] = dg[d];
+        at += digest_len;
+        // invariant: the whole image was written, exactly need bytes.
+        assert(at == need);
+        return buf[0..need];
+    }
+};
+
+/// LOAD from stable storage — verify-before-trust, then rebuild the state. Refuses CorruptImage / ImageTooBig at the FIRST fault:
+/// too short, bad magic, bad version, a log_len past the bound, a declared length that overruns the bytes, or a Sha256 mismatch. Only
+/// when every gate passes is a DurableState returned — never a partial or tampered restore.
+pub fn load(bytes: []const u8) DurableError!DurableState {
+    // A whole image is at least a header plus its digest — anything shorter cannot even name a length.
+    if (bytes.len < header_len + digest_len) return error.ImageTooBig;
+    if (bytes.len > max_image_bytes) return error.ImageTooBig; // never trust an over-long buffer as one image
+    var i: u32 = 0;
+    while (i < magic.len) : (i += 1) {
+        if (bytes[i] != magic[i]) return error.CorruptImage; // not our image at all
+    }
+    if (bytes[4] != image_version) return error.CorruptImage; // an unknown layout version
+    const t = std.mem.readInt(u32, bytes[5..9], .little);
+    const vf = std.mem.readInt(u32, bytes[9..13], .little);
+    const llen = std.mem.readInt(u32, bytes[13..17], .little);
+    if (llen > max_entries) return error.CorruptImage; // a wild length never sizes an array
+    // invariant: a lawful log_len keeps the whole image within the ceiling.
+    assert(llen <= max_entries);
+    const need = header_len + llen * entry_bytes + digest_len;
+    if (bytes.len != need) return error.CorruptImage; // the declared length must account for every byte, no more, no less
+    // The digest gate — recompute over every byte before it; a single flip refuses.
+    var dg: [digest_len]u8 = undefined;
+    Sha256.hash(bytes[0 .. need - digest_len], &dg, .{});
+    var d: u32 = 0;
+    while (d < digest_len) : (d += 1) {
+        if (bytes[need - digest_len + d] != dg[d]) return error.CorruptImage; // a tampered or torn image
+    }
+    // A lawful voted_for is a real slot or the sentinel — nothing else.
+    if (vf != none_voted and vf >= roster.max_piers) return error.CorruptImage;
+    // Whole and lawful — rebuild.
+    var state = DurableState{ .term = t, .voted_for = vf };
+    var at: u32 = header_len;
+    var e: u32 = 0;
+    while (e < llen) : (e += 1) {
+        const et = std.mem.readInt(u32, bytes[at..][0..4], .little);
+        at += 4;
+        const ev = std.mem.readInt(u32, bytes[at..][0..4], .little);
+        at += 4;
+        // append_entry re-checks the monotonic-term invariant on the way back in, so a persisted log that somehow regressed a term
+        // would refuse here too — yet a lawful saved log always restores clean.
+        _ = state.log.append_entry(et, ev) catch return error.CorruptImage;
+    }
+    // invariant: the restored log holds exactly the entries the image declared.
+    assert(state.log.len == llen);
+    return state;
+}
+
+// --- selftest: round-trip identity; THE CRUX — no double vote across a restart; a new term clears the vote across a restart; the
+//     committed log survives whole; a corrupt image refuses; monotonic term never regresses; bounded over a full log. -------------
+
+fn run_selftest() !u8 {
+    var buf: [max_image_bytes]u8 = undefined;
+
+    // 1. ROUND-TRIP IDENTITY — a state with a term, a recorded vote, and a small log saves and loads byte-identical.
+    {
+        var s = DurableState{};
+        try s.record_vote(2, 5); // voted for slot 2 in term 5
+        _ = try s.log.append_entry(3, 100);
+        _ = try s.log.append_entry(5, 200);
+        const img = try s.save(&buf);
+        const back = try load(img);
+        assert(back.term == 5 and back.voted_for == 2);
+        assert(back.log.matches(&s.log)); // the whole ledger returned entry for entry
+    }
+
+    // 2. THE CRUX — NO DOUBLE VOTE ACROSS A RESTART. A pier votes for slot 1 in term 5, persists, "crashes", and restores from the
+    //    image. In the SAME term 5, a request to vote for slot 3 refuses AlreadyVoted — the memory Raft §5.3 demands, kept across the
+    //    power cycle. Without persistence the restarted pier would forget and could raise a second leader in one term.
+    {
+        var alive = DurableState{};
+        try alive.record_vote(1, 5); // granted candidate 1 in term 5
+        const img = try alive.save(&buf); // stable storage before answering
+        var restarted = try load(img); // power cycle — restore only what was persisted
+        assert(restarted.voted_for == 1 and restarted.term == 5); // the vote survived
+        const r = restarted.record_vote(3, 5); // a different candidate, SAME term
+        if (r) |_| unreachable else |err| assert(err == error.AlreadyVoted); // refused — the sky cannot fork
+        // Re-voting the SAME candidate in the same term is idempotent, never a fault.
+        try restarted.record_vote(1, 5);
+        assert(restarted.voted_for == 1);
+    }
+
+    // 3. A NEW TERM CLEARS THE VOTE ACROSS A RESTART — the clean slate is durable too. After restoring the term-5/voted-1 image, a
+    //    candidate at term 6 IS granted the vote (a new term forgets the prior one, exactly as Raft prescribes).
+    {
+        var alive = DurableState{};
+        try alive.record_vote(1, 5);
+        const img = try alive.save(&buf);
+        var restarted = try load(img);
+        try restarted.record_vote(2, 6); // term climbed — the prior vote is cleared
+        assert(restarted.term == 6 and restarted.voted_for == 2);
+        // A stale term is still refused after a restart.
+        const stale = restarted.record_vote(2, 4);
+        if (stale) |_| unreachable else |err| assert(err == error.StaleTerm);
+    }
+
+    // 4. THE COMMITTED LOG SURVIVES WHOLE — every entry persisted comes back in order, terms and values both.
+    {
+        var s = DurableState{};
+        _ = try s.log.append_entry(1, 11);
+        _ = try s.log.append_entry(1, 22);
+        _ = try s.log.append_entry(2, 33);
+        _ = try s.log.append_entry(4, 44);
+        const img = try s.save(&buf);
+        const back = try load(img);
+        assert(back.log.len == 4);
+        assert((try back.log.term_at(2)) == 2 and (try back.log.value_at(2)) == 33);
+        assert((try back.log.term_at(3)) == 4 and (try back.log.value_at(3)) == 44);
+        assert(back.log.matches(&s.log));
+    }
+
+    // 5. A CORRUPT IMAGE REFUSES — a flipped digest byte, a wild log_len, and a short buffer each fail closed rather than restore a
+    //    partial or tampered state.
+    {
+        var s = DurableState{};
+        try s.record_vote(0, 2);
+        _ = try s.log.append_entry(2, 7);
+        const img = try s.save(&buf);
+        const n = img.len;
+        // A flipped digest byte (the last byte) — the Sha256 gate refuses.
+        var tampered: [max_image_bytes]u8 = undefined;
+        var k: usize = 0;
+        while (k < n) : (k += 1) tampered[k] = img[k];
+        tampered[n - 1] ^= 0x01;
+        if (load(tampered[0..n])) |_| unreachable else |err| assert(err == error.CorruptImage);
+        // A wild log_len — write a huge count into the length field; the bound gate refuses before any array is sized.
+        var wild: [max_image_bytes]u8 = undefined;
+        k = 0;
+        while (k < n) : (k += 1) wild[k] = img[k];
+        std.mem.writeInt(u32, wild[13..17], max_entries + 99, .little);
+        if (load(wild[0..n])) |_| unreachable else |err| assert(err == error.CorruptImage);
+        // A truncated tail — one byte short of the header+digest floor refuses ImageTooBig.
+        var tiny: [header_len + digest_len - 1]u8 = [_]u8{0} ** (header_len + digest_len - 1);
+        if (load(&tiny)) |_| unreachable else |err| assert(err == error.ImageTooBig);
+        // A bad magic byte — not our image at all.
+        var badmagic: [max_image_bytes]u8 = undefined;
+        k = 0;
+        while (k < n) : (k += 1) badmagic[k] = img[k];
+        badmagic[0] = 'X';
+        if (load(badmagic[0..n])) |_| unreachable else |err| assert(err == error.CorruptImage);
+    }
+
+    // 6. MONOTONIC TERM NEVER REGRESSES ACROSS A RESTART, AND THE WHOLE THING IS BOUNDED — a full max_entries log persists and restores
+    //    within max_image_bytes, and the restored term equals the saved one (never lower).
+    {
+        var s = DurableState{};
+        try s.record_vote(7, 9);
+        var e: u32 = 0;
+        while (e < max_entries) : (e += 1) _ = try s.log.append_entry(9, e); // a full, monotonic-term log
+        assert(s.image_len() == max_image_bytes); // the largest image the format allows
+        const img = try s.save(&buf);
+        assert(img.len == max_image_bytes);
+        const back = try load(img);
+        assert(back.term == 9 and back.log.len == max_entries);
+        assert(back.log.matches(&s.log));
+    }
+
+    print("GREEN fora-durable: a pier survives a restart without forgetting its vote (Raft Figure 2 persistent state) — durable " ++
+        "(term, voted_for, TermedLog) round-trips through a self-describing, Sha256-sealed byte image, verify-before-trust on load; " ++
+        "THE CRUX: a pier that voted A in term 5, crashed, and restored REFUSES to vote B in term 5 (AlreadyVoted), so no restart " ++
+        "can raise a second leader in one term; a new term clears the vote across the restart, a stale term still refused; the " ++
+        "committed log survives whole and in order; a flipped digest, a wild log_len, a short buffer, a bad magic each fail closed " ++
+        "(CorruptImage / ImageTooBig); term never regresses; bounded to a full max_entries log within max_image_bytes — purely " ++
+        "local, no real fd, no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 " ++
+        "untouched)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
