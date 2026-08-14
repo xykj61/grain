@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260813.230403
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title HUNK69 — paint the Photos library as one wall of thumbnails on glass
+prompt recur baton — take the next agent-doable lap Lindy-first crux-first on the road past BUHR; send each finished increment as its own signed round; stop at the custody gates
+think HUNK68 built the library MODEL: an ordered set of verified image tiles, each a small Skate thumbnail. The next Lindy-first crux is the surface a keeper actually sees — the wall. sprite_shelf paints a name+swatch LIST, not a thumbnail wall, so this wants its own compositor.
+think brushstroke/library_view.rye: paint_wall composites every tile's thumbnail into one Skate grid, wall_cols tiles across, wrapping down, a one-cell gap. tile_origin(i, wall_cols, tw, th) fixes each tile's top-left cell — the seam a later tap-to-open rung reads to map a pixel back to a tile. The blit copies cells + per-cell fg_index, so the wall paints exactly the thumbnails the library already verified; no image is re-fetched or re-decoded here.
+think Bounded and refusing: EmptyWall on a zero-tile library, WallTooLarge past the down-map ceiling, RaggedTiles if the tiles are not uniform (build_library guarantees uniformity, so this is a defensive gate). Uniform tile size read from the first tile, checked across the rest before allocating.
+obs GREEN on first build. Selftest: five distinct images at a 3x3 thumbnail paint an 11x7 wall three across (3*3+2 gaps by 2*3+1 gap), every tile landing cell-for-cell at its computed origin; the wrap is real (tile 3 directly under tile 0); a one-image library is a single gapless 3x3 tile; an empty library refuses EmptyWall. TAME clean (no compound assert this time — split the tile_origin corner checks into two asserts from the start), width exit 0. No @memcpy, no new usize. No custody gate reached — no network, no key, no funds.
+loom witness=hunk_library_view_witness tiles=5 wall_cells=11x7 wall_cols=3 tame=clean width_exit=0
+file brushstroke/library_view.rye HUNK69 — paint_wall composites the library's tiles into one wall grid at fixed origins
+file tools/hunk_library_view_witness.rish the witness that binds the wall claim on metal
+file work-in-progress/REMEMBER.md Git nib refreshed to this round's HEAD
+recommend keep-going HUNK70 — tap a tile on the wall (map a pixel tap through tile_origin back to a library index) and open that image into the Photos editor, closing library -> open -> edit -> save -> library

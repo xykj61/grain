@@ -1,0 +1,239 @@
+//! brushstroke/library_view.rye — HUNK69: paint the Photos library as one wall of thumbnails on glass.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK69.
+//! Design read: active-designing/20260813-222956_hunk-filter-picker-exploration.md ("The road on from here").
+//! Teacher, thanked clean-room: the grid wall of iCloud Photos / Google Photos — thumbnails tiled left to right,
+//! wrapping down the screen (concept only, siloed).
+//!
+//! HUNK68 built the library model: an ordered set of verified image tiles, each a small Skate thumbnail. This
+//! rung lays that set onto one surface — the wall a keeper actually sees. `paint_wall` composites every tile's
+//! thumbnail into a single Skate grid, `wall_cols` tiles across, wrapping down as many rows as the count needs,
+//! a one-cell gap between tiles. Each tile lands at a fixed offset, so a later rung can map a pixel tap back to
+//! the tile under the finger and open it into the editor. The composite is a pure cell-and-palette blit — no
+//! image is re-fetched or re-decoded here; the library already proved every picture. No network, no key, no
+//! funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/library_view.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const tablecloth = @import("tablecloth.rye");
+const beading = @import("mantra/beading.rye");
+const image_artifact = @import("image_artifact.rye");
+const image_skate = @import("image_skate.rye");
+const photo_library = @import("photo_library.rye");
+const skate = @import("skate_grid.rye");
+
+pub const library_view_version = "20260813.230500";
+
+/// The gap between tiles, in cells — one blank column and row so the pictures read as separate tiles.
+pub const tile_gap: u32 = 1;
+
+/// A pleasant default — three thumbnails across before wrapping, the shape a narrow glass surface wants.
+pub const default_wall_cols: u32 = 3;
+
+/// Wall ceilings — the composite is a thumbnail wall, not a full panel; both axes bounded at construction.
+pub const max_wall_cols: u32 = image_skate.max_map_cols;
+pub const max_wall_rows: u32 = image_skate.max_map_rows;
+
+pub const LibraryViewError = error{
+    EmptyWall,
+    WallTooLarge,
+    RaggedTiles,
+};
+
+/// How many tile-rows a wall of `count` tiles needs at `wall_cols` tiles across — ceil(count / wall_cols).
+pub fn tile_row_count(count: u32, wall_cols: u32) u32 {
+    // invariant: a wall is at least one tile across, so the division never divides by zero.
+    assert(wall_cols >= 1);
+    if (count == 0) return 0;
+    return (count + wall_cols - 1) / wall_cols;
+}
+
+/// The top-left cell of tile `i` on a wall `wall_cols` tiles across, given a uniform tile of `tw × th` cells and
+/// the one-cell gap. Returns (col, row) in wall cells.
+pub fn tile_origin(i: u32, wall_cols: u32, tw: u32, th: u32) struct { col: u32, row: u32 } {
+    // invariant: a wall is at least one tile across.
+    assert(wall_cols >= 1);
+    const tc = i % wall_cols;
+    const tr = i / wall_cols;
+    return .{ .col = tc * (tw + tile_gap), .row = tr * (th + tile_gap) };
+}
+
+/// Composite the library's tiles into one Skate grid: `wall_cols` thumbnails across, wrapping down, a one-cell
+/// gap between them. Every tile must share the library's uniform thumbnail size (build_library guarantees this);
+/// a ragged set refuses (`RaggedTiles`). Refuses an empty library (`EmptyWall`) and a wall past the ceiling
+/// (`WallTooLarge`). The blit copies each tile's cells and per-cell palette, so the wall paints exactly the
+/// thumbnails the library already verified.
+pub fn paint_wall(
+    allocator: std.mem.Allocator,
+    lib: *const photo_library.Library,
+    wall_cols: u32,
+) !skate.Grid {
+    if (lib.count == 0) return error.EmptyWall;
+    if (wall_cols == 0) return error.WallTooLarge;
+    // invariant: the library never holds more tiles than its own ceiling.
+    assert(lib.count <= photo_library.max_entries);
+
+    // Every tile shares the first tile's size, or the wall is ragged and refuses before allocating.
+    const first = lib.entry_at(0);
+    const tw = first.thumb.cols;
+    const th = first.thumb.rows;
+    // invariant: a real tile is at least one cell on each axis.
+    assert(tw >= 1);
+    assert(th >= 1);
+    var chk: u32 = 1;
+    while (chk < lib.count) : (chk += 1) {
+        const e = lib.entry_at(chk);
+        if (e.thumb.cols != tw or e.thumb.rows != th) return error.RaggedTiles;
+    }
+
+    const rows_in_tiles = tile_row_count(lib.count, wall_cols);
+    const cols_in_tiles = @min(lib.count, wall_cols);
+    // The wall spans the tiles plus the gaps between them (no trailing gap past the last tile/row).
+    const wall_w = cols_in_tiles * tw + (cols_in_tiles - 1) * tile_gap;
+    const wall_h = rows_in_tiles * th + (rows_in_tiles - 1) * tile_gap;
+    if (wall_w > max_wall_cols or wall_h > max_wall_rows) return error.WallTooLarge;
+
+    var wall = try skate.Grid.init(allocator, wall_w, wall_h);
+    // Share the anchor palette so the blitted color slots read the same fixed colors the thumbnails were down-mapped in.
+    image_skate.set_anchor_palette(&wall);
+
+    var i: u32 = 0;
+    while (i < lib.count) : (i += 1) {
+        const e = lib.entry_at(i);
+        const org = tile_origin(i, wall_cols, tw, th);
+        // invariant: the whole tile lands inside the wall — its far corner sits within bounds.
+        assert(org.col + tw <= wall_w);
+        assert(org.row + th <= wall_h);
+        var r: u32 = 0;
+        while (r < th) : (r += 1) {
+            var c: u32 = 0;
+            while (c < tw) : (c += 1) {
+                const src: usize = @intCast(@as(u64, r) * @as(u64, tw) + @as(u64, c));
+                const dst: usize = @intCast(@as(u64, org.row + r) * @as(u64, wall_w) + @as(u64, org.col + c));
+                // invariant: source and destination both sit inside their grids.
+                assert(src < e.thumb.cells.len);
+                assert(dst < wall.cells.len);
+                wall.cells[dst] = e.thumb.cells[src];
+                wall.fg_index[dst] = e.thumb.fg_index[src];
+            }
+        }
+    }
+    return wall;
+}
+
+// --- selftest: build a library, paint the wall, and prove every tile lands where its origin says, cell for
+//     cell against the library's own thumbnails ---------------------------------------------------------------
+
+fn craft(allocator: std.mem.Allocator, seed: u8) !qoi.Pixmap {
+    const n: u32 = 64;
+    const buf = try allocator.alloc(u8, n * 4);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const band: u8 = @intCast((i / 8) & 0xFF);
+        const step: u8 = @intCast((i % 8) & 0xFF);
+        const off = @as(usize, i) * 4;
+        buf[off] = seed +% band *% 5;
+        buf[off + 1] = 20 +% step *% 2;
+        buf[off + 2] = 30 +% band *% seed;
+        buf[off + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = 8, .height = 8, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+/// Confirm the tile at library index `i` was blitted faithfully into the wall at its computed origin.
+fn tile_lands(wall: *const skate.Grid, lib: *const photo_library.Library, i: u32, wall_cols: u32) bool {
+    const e = lib.entry_at(i);
+    const tw = e.thumb.cols;
+    const th = e.thumb.rows;
+    const org = tile_origin(i, wall_cols, tw, th);
+    var r: u32 = 0;
+    while (r < th) : (r += 1) {
+        var c: u32 = 0;
+        while (c < tw) : (c += 1) {
+            const src: usize = @intCast(@as(u64, r) * @as(u64, tw) + @as(u64, c));
+            const dst: usize = @intCast(@as(u64, org.row + r) * @as(u64, wall.cols) + @as(u64, org.col + c));
+            if (wall.cells[dst] != e.thumb.cells[src]) return false;
+            if (wall.fg_index[dst] != e.thumb.fg_index[src]) return false;
+        }
+    }
+    return true;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    var store: beading.BeadStore = .empty();
+    var cat: tablecloth.Catalog = .empty();
+
+    // Five distinct images, so a 3-across wall wraps to two tile-rows (3 + 2).
+    const names = [_][]const u8{ "sunrise.qoi", "harbor.qoi", "orchard.qoi", "meadow.qoi", "dusk.qoi" };
+    const seeds = [_]u8{ 10, 60, 110, 160, 210 };
+    var k: u32 = 0;
+    while (k < 5) : (k += 1) {
+        const pm = try craft(garden, seeds[k]);
+        _ = try image_artifact.store_image(garden, &cat, &store, names[k], &pm);
+    }
+
+    // An empty library paints no wall — the refusal, not an empty grid.
+    {
+        const empty: photo_library.Library = .empty();
+        if (paint_wall(garden, &empty, default_wall_cols)) |_| {
+            return error.EmptyWallSlipped;
+        } else |e| {
+            if (e != error.EmptyWall) return error.WrongEmpty;
+        }
+    }
+
+    // Build the library at a 3×3 thumbnail, then paint a 3-across wall.
+    const lib = try photo_library.build_library(garden, &cat, &store, 3, 3);
+    assert(lib.count == 5);
+    const wall_cols: u32 = 3;
+    const wall = try paint_wall(garden, &lib, wall_cols);
+
+    // The wall spans three tiles across (3*3 + 2 gaps = 11) and two tile-rows down (2*3 + 1 gap = 7).
+    assert(wall.cols == 3 * 3 + 2 * tile_gap);
+    assert(wall.rows == 2 * 3 + 1 * tile_gap);
+
+    // Every one of the five tiles lands faithfully at its computed origin.
+    var i: u32 = 0;
+    while (i < lib.count) : (i += 1) {
+        assert(tile_lands(&wall, &lib, i, wall_cols));
+    }
+
+    // The wrap is real: tile 3 sits on the second tile-row, directly under tile 0.
+    const o0 = tile_origin(0, wall_cols, 3, 3);
+    const o3 = tile_origin(3, wall_cols, 3, 3);
+    assert(o3.col == o0.col);
+    assert(o3.row > o0.row);
+
+    // A one-tile library paints a one-tile wall with no gap.
+    {
+        var store1: beading.BeadStore = .empty();
+        var cat1: tablecloth.Catalog = .empty();
+        const pm = try craft(garden, 33);
+        _ = try image_artifact.store_image(garden, &cat1, &store1, "solo.qoi", &pm);
+        const lib1 = try photo_library.build_library(garden, &cat1, &store1, 3, 3);
+        const wall1 = try paint_wall(garden, &lib1, default_wall_cols);
+        assert(wall1.cols == 3);
+        assert(wall1.rows == 3);
+        assert(tile_lands(&wall1, &lib1, 0, default_wall_cols));
+    }
+
+    print("GREEN library-view: five verified images paint one wall three tiles across (11x7 cells over 3x3 " ++
+        "thumbnails with a one-cell gap), every tile landing cell-for-cell at its computed origin; the wrap is " ++
+        "real (tile 3 sits directly under tile 0 on the second row); a one-image library paints a single 3x3 " ++
+        "tile with no gap; an empty library refused EmptyWall; no network, no key, no funds\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: library_view selftest\n", .{});
+    return 1;
+}
