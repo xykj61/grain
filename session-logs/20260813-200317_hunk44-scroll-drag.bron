@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260813.200317
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title HUNK44 — the drag seam: a touch drag in pixels becomes line deltas over the cell height
+prompt Continue the autonomous loop — take the next agent-doable lap Lindy-first crux-first, self-approve design rounds, send each finished increment as its own signed round, stop only at custody gates.
+think HUNK43's recommend named the next crux: turn a real device delta (a touch drag in pixels) into line deltas over the cell height. Every touch scroll surface has this seam, and it composes HUNK43 exactly — durable and agent-doable, no gate touched.
+think The crux is the carried remainder: a touch device streams small pixel deltas, so a naive floor(delta/cell) loses a slow drag entirely (three pixels at a time over a ten-pixel cell never scrolls). A signed residual accumulates the sub-cell leftover between events, emitting a whole line only when the running total crosses a cell.
+think Arithmetic hazard: an i32-min pixel delta added to a negative residual overflows i32; took the running total in i64, then @divTrunc for the emitted lines and @rem for the carry, so total == lines*cell + residual holds exactly and |residual| < cell_px always.
+obs Kept one value model (a residual and a cell height), one new refusal (BadCellHeight), no storage, no render. The composed drag routes through HUNK43's apply, so every clamp is inherited, not re-proven.
+obs TAME caught nothing at build, yet I split five compound asserts (assert(a and b)) by hand before running the scan — the pond/apps tree is outside the tame scan fixture, so the discipline is applied by reading. Also avoided a u32→i32 @as coercion in the selftest bound checks (used the literal cell height 10).
+obs The apostrophe-in-GREEN-line shell hazard from HUNK39/40/42/43 did not recur — the print line carries no apostrophe, so the witness grep passed first build.
+loom witness=hunk_scroll_drag_witness cell_px=10 viewport=2x5 max_offset=3 carry_stream=0,0,0,1 mixed_stream=10
+file pond/apps/preset_scroll_drag.rye HUNK44 — feed(pixels) quantizes a drag to a whole-line delta over the cell height with a carried remainder; drag composes it with HUNK43's apply.
+file tools/hunk_scroll_drag_witness.rish proves the seam on metal — reversible full-cell drag, accumulating carry (0,0,0,1), bounded residual, i32-min quantize without wrap, inherited HUNK43 clamps, fitting-library no-op, BadCellHeight refusal.
+file active-designing/20260813-195829_hunk-scroll-drag-exploration.md self-approved design read.
+file work-in-progress/REMEMBER.md git nib refreshed in this same work commit (was 602dda35fe, behind HUNK40–43).
+recommend keep-going — HUNK45 could add a velocity fling (momentum decay after the finger lifts, wants a timer), a sticky page header over the scroll view, the served-marketplace module-assembly ruling (held for Keaton, HUNK39 checkpoint), or a fresh Season-A / double-seat journey.
