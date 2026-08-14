@@ -1,0 +1,387 @@
+//! lotus/gate_key.rye — ALES65: the keyed gate — the door opened by ANOTHER signal. ALES63 keyed the compressor on a separate signal
+//! and ALES64 spent that freedom for the de-esser; this rung gives the GATE the same key, the third tool ALES63 named. Where the
+//! sidechain compressor DUCKS the target when the key gets LOUD, the keyed gate does the mirror: it OPENS the target when the key is
+//! loud and CLOSES it when the key falls quiet — a gate triggered by a click track so a pad speaks only on the beat, a tom gated by
+//! its own close mic so the bleed from the rest of the kit stays silent, a synth chopped by a drum loop. It is the exact mirror of
+//! ALES63: the compressor keys the gain reduction ABOVE the threshold, the gate keys the gain reduction BELOW it, and both read the
+//! detector from the KEY rather than the target. The gain math is ALES51's silenced floor (not re-invented) and the time base is
+//! ALES56's held env_step (not re-invented); this rung is exactly their composition over public APIs with the detector advanced on
+//! the key, so a SELF-KEY reduces to ALES57's ordinary attack/hold/release gate byte-for-byte — the keyed gate GENERALIZES the proven
+//! in-line gate rather than replacing it.
+//!
+//! The one care the compressor did not need: the gate acts BELOW the threshold, where a keyed detector can read exact silence from
+//! the KEY while the TARGET is loud (a silent key over a loud target — the fully-closed gate). ALES57 divides the target magnitude by
+//! the ratio through the envelope (gat/e), which is undefined at e == 0; yet that gain is algebraically just den/num (the envelope
+//! cancels), so the e == 0 branch applies den/num directly — no divide by zero, and for a self-key (where a zero key envelope means a
+//! zero target sample) it writes zero over zero, byte-for-byte with ALES57.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES65.
+//! Design read: active-designing/20260814-190149_fill-ales65-lotus-keyed-gate.md
+//! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/sample_max, max_clip, the range law shape; lotus/gate.rye (ALES51) —
+//! the silenced floor this drives, re-proven beside it; lotus/hold_env.rye (ALES56) — the HELD time base, its env_step_hold advancing
+//! the KEY's follower; lotus/gate_env_hold.rye (ALES57) — the attack/hold/release gate this keys, equalled byte-for-byte by a self-key.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
+//! no network, no keys, no funds, no real device, no real sample rate — the attack, release, and hold are counted in sample INDICES,
+//! not milliseconds against a clock; the threshold is a magnitude in sample units, the ratio a plain fraction; there is no lookahead
+//! and no external key routing. One held envelope step and at most one multiply-divide per sample; nothing on the path can overflow,
+//! since the gated envelope is at most the envelope so the gain sits in [0, 1] and every written magnitude is at most the target
+//! input's, which already fits i16.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/gate_key.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const envelope = @import("envelope.rye");
+const hold_env = @import("hold_env.rye");
+const gate_env_hold = @import("gate_env_hold.rye");
+
+pub const gate_key_version = "20260814.190149";
+
+/// The keyed gate's faults, one consistent name each: a threshold outside [1, sample_max], a ratio below unity or with a zero
+/// denominator, an attack or release coefficient outside (0, 1], a hold longer than the widest clip, a span outside the TARGET
+/// samples, and a KEY clip too short to cover the span. The first five coincide by name with ALES57's, and BadKey with ALES63's — one
+/// consistent fault surface across the keyed family.
+pub const GateKeyError = error{
+    /// A threshold of zero (nothing left below it to gate) or above sample_max (nothing could ever reach it).
+    BadThreshold,
+    /// A ratio below unity (would boost the quiet, not silence it) or with a zero denominator — refused, no write.
+    BadRatio,
+    /// An attack or release coefficient outside (0, 1] — a frozen envelope, an overshooting step, or a divide by zero.
+    BadCoeff,
+    /// A hold longer than max_clip samples — no clip is that long, so such a hold could never expire within a span; refused, no write.
+    BadHold,
+    /// A span outside the current TARGET samples — refused, no write.
+    BadRange,
+    /// A KEY clip shorter than the span — the detector would read past the key's samples; refused, no write.
+    BadKey,
+};
+
+/// Gate `count` samples starting at `start` in place in `target`, the downward push FOLLOWING a HELD envelope driven by the `key`
+/// clip's samples over the SAME span rather than by the target's own — the keyed gate: the detector listens to the key while the gain
+/// lands on the target. The held envelope CONTINUES from the caller's `env` and `hold_left` (ALES43's carried-state lesson, carrying
+/// both the envelope and the hold countdown so the key's detector survives a call boundary). Each sample advances the proven ALES56
+/// held follower one step on `key.buf[start + i]`; when the held KEY envelope sits AT OR ABOVE the threshold the gate is OPEN and the
+/// target sample passes byte-for-byte, and when it falls BELOW the target's magnitude is attenuated by the ratio (ALES51's silenced
+/// floor). When the KEY envelope reads exact silence (e == 0, a silent key), the gate is fully closed and the target magnitude is
+/// scaled by den/num directly — the limit of gat/e as the envelope cancels, so no divide by zero. When `key` holds the same samples
+/// as `target` and both are read unmutated, this reduces to ALES57's gate_hold_follow_carry byte-for-byte (a zero key envelope then
+/// means a zero target sample, so the e == 0 branch writes zero over zero). Refuses BadThreshold, BadRatio, BadCoeff, BadHold,
+/// BadRange, and BadKey before any write; on refusal the target and the carried state are untouched. Target values only.
+pub fn gate_key_follow_carry(
+    target: *timeline.Clip,
+    key: *const timeline.Clip,
+    start: u32,
+    count: u32,
+    env: *i64,
+    hold_left: *u32,
+    threshold: i32,
+    ratio_num: u32,
+    ratio_den: u32,
+    attack_num: u32,
+    attack_den: u32,
+    release_num: u32,
+    release_den: u32,
+    hold_samples: u32,
+) GateKeyError!void {
+    // invariant: the threshold is a legal magnitude — at least one sample unit and no greater than the i16 rail. Before any write.
+    if (threshold < 1) return error.BadThreshold;
+    if (threshold > @as(i32, timeline.sample_max)) return error.BadThreshold;
+    // invariant: the ratio is at least one (num >= den) and its denominator is nonzero — a ratio below one would boost the quiet.
+    if (ratio_den == 0) return error.BadRatio;
+    if (ratio_num < ratio_den) return error.BadRatio;
+    // invariant: both attack and release coefficients are legal fractions in (0, 1] — checked by the follower's one proven rule.
+    if (!envelope.coeff_ok(attack_num, attack_den)) return error.BadCoeff;
+    if (!envelope.coeff_ok(release_num, release_den)) return error.BadCoeff;
+    // invariant: the hold is bounded by the widest clip — a longer hold could never expire within any span. Before any write.
+    if (hold_samples > timeline.max_clip) return error.BadHold;
+    // invariant: the span lies wholly within the current TARGET samples — checked without underflow (count vs the remainder).
+    if (start > target.len) return error.BadRange;
+    if (count > target.len - start) return error.BadRange;
+    // invariant: the KEY covers the whole span too — the detector never reads past the key's samples. Checked without underflow.
+    if (start > key.len) return error.BadKey;
+    if (count > key.len - start) return error.BadKey;
+
+    const thr: i64 = @as(i64, threshold);
+    const num: i64 = @as(i64, ratio_num);
+    const den: i64 = @as(i64, ratio_den);
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        const k: i16 = key.buf[start + i]; // the KEY sample drives the detector
+        const x: i16 = target.buf[start + i]; // the TARGET sample receives the gain
+        // Advance the proven ALES56 HELD follower one sample ON THE KEY; e is the smoothed-and-held key magnitude, in [0, sample_max].
+        _ = hold_env.env_step_hold(env, hold_left, k, attack_num, attack_den, release_num, release_den, hold_samples);
+        const e: i64 = env.*;
+        // invariant: the envelope stays a legal magnitude — never negative, never past the rail (the held step's own guarantee).
+        assert(e >= 0 and e <= @as(i64, timeline.sample_max));
+        if (e < thr) {
+            const m: i64 = if (x < 0) -@as(i64, x) else @as(i64, x); // |x| — safe in i64 (|sample_min| = 32768 fits)
+            const new_m: i64 = if (e == 0)
+                // The KEY reads exact silence — the gate is fully closed. The gate's below-threshold gain gat/e is algebraically
+                // den/num (the envelope cancels), so apply den/num directly: no divide by zero. For a self-key a zero key envelope
+                // means a zero target sample, so this writes zero over zero, byte-for-byte with ALES57.
+                @divTrunc(m * den, num)
+            else blk: {
+                // The gated envelope target — ALES51's silenced floor, computed on the KEY ENVELOPE not the target sample. Divided by
+                // the ratio (den/num <= 1), so gat sits in [0, e]; the gain gat/e is in [0, 1]. e·den fits i64 (e <= 32767).
+                const gat: i64 = @divTrunc(e * den, num);
+                // invariant: the gated envelope sits within [0, key envelope] — the gain gat/e is in [0, 1].
+                assert(gat >= 0 and gat <= e);
+                // Apply the gain gat/e to the raw TARGET sample. m·gat <= 32768·32767 fits i64; divTrunc keeps it at most m.
+                break :blk @divTrunc(m * gat, e);
+            };
+            // invariant: the gain reduces, never boosts — a keyed gate only ever leans down.
+            assert(new_m <= m);
+            const y: i16 = @intCast(if (x < 0) -new_m else new_m); // safe: 0 <= new_m <= m <= 32768 fits i16 by sign
+            target.buf[start + i] = y;
+            // invariant: the written sample holds the target input's sign (magnitude only shrank).
+            assert((x >= 0 and y >= 0) or (x <= 0 and y <= 0));
+        }
+        // a target sample whose held KEY envelope sits at or above the threshold is left exactly as it was — the gate is OPEN because
+        // the KEY is loud, whatever the target's own level. A loud target under a silent key still closes; a quiet target under a loud
+        // key still passes whole. That is the keyed gate.
+    }
+    // invariant: a gate changes target sample values only, never the target's length or bound, and never the key.
+    assert(start + count <= target.len);
+    assert(target.len <= target.buf.len);
+}
+
+/// Gate `count` samples starting at `start` in place in `target`, the downward push following a HELD envelope driven by `key` that
+/// begins FROM SILENCE (a fresh env of 0 with the hold unarmed) — one implementation shared with the carried form, so the two cannot
+/// drift. Refuses BadThreshold, BadRatio, BadCoeff, BadHold, BadRange, and BadKey before any write.
+pub fn gate_key_follow(
+    target: *timeline.Clip,
+    key: *const timeline.Clip,
+    start: u32,
+    count: u32,
+    threshold: i32,
+    ratio_num: u32,
+    ratio_den: u32,
+    attack_num: u32,
+    attack_den: u32,
+    release_num: u32,
+    release_den: u32,
+    hold_samples: u32,
+) GateKeyError!void {
+    var env: i64 = 0;
+    var hold_left: u32 = 0;
+    return gate_key_follow_carry(target, key, start, count, &env, &hold_left, threshold, ratio_num, ratio_den, attack_num, attack_den, release_num, release_den, hold_samples);
+}
+
+// --- selftest: silence stays silence; a SELF-KEY reduces to ALES57's attack/hold/release gate byte-for-byte (the grounding law); a
+//     LOUD KEY OPENS the gate (a quiet target passes whole where the in-line gate would silence it); a SILENT KEY CLOSES the gate (a
+//     loud target attenuated where the in-line gate would pass it — the e == 0 branch, the case the compressor never faced); UNIT
+//     RATIO is the identity everywhere; a gated target keeps its sign and never expands; the state CARRIES — env and hold_left both —
+//     so a span in two pieces equals the whole once; and each fault refuses by name -----------------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn abs16(v: i16) i32 {
+    return if (v < 0) -@as(i32, v) else @as(i32, v);
+}
+
+fn run_selftest() !u8 {
+    // 1. silence stays silence — an all-zero target gates to all zeros under any key at any legal knobs.
+    {
+        var target = timeline.Clip{};
+        try load_clip(&target, &[_]i16{ 0, 0, 0, 0, 0, 0 });
+        var key = timeline.Clip{};
+        try load_clip(&key, &[_]i16{ 9000, -9000, 9000, -9000, 9000, -9000 }); // loud key, silent target
+        try gate_key_follow(&target, &key, 0, target.len, 1000, 4, 1, 1, 4, 1, 8, 3);
+        const zeros = [_]i16{ 0, 0, 0, 0, 0, 0 };
+        if (!eq(target.samples(), &zeros)) return error.SilenceWrong;
+    }
+
+    // 2. A SELF-KEY IS THE ORDINARY ALES57 GATE — when the key holds the same samples as the target and is read unmutated, the keyed
+    //    detector reads exactly what ALES57's in-line detector reads (ALES57 reads each x BEFORE it writes, and its e == 0 case means
+    //    x == 0, which the keyed e == 0 branch writes as zero over zero). The keyed gate GENERALIZES the proven in-line gate. Proven by
+    //    running BOTH tools on the same signal — the grounding law.
+    {
+        const sig = [_]i16{ 5000, -5000, 800, -300, 200, -100, 9000, -9000, 400 };
+        var target = timeline.Clip{};
+        try load_clip(&target, &sig);
+        var key = timeline.Clip{}; // the key holds the target's own samples — a self-key
+        try load_clip(&key, &sig);
+        try gate_key_follow(&target, &key, 0, target.len, 1000, 4, 1, 1, 3, 1, 5, 2);
+        var inline_clip = timeline.Clip{};
+        try load_clip(&inline_clip, &sig);
+        try gate_env_hold.gate_hold_follow(&inline_clip, 0, inline_clip.len, 1000, 4, 1, 1, 3, 1, 5, 2); // proven ALES57
+        if (!eq(target.samples(), inline_clip.samples())) return error.SelfKeyNotInline;
+    }
+
+    // 3. A LOUD KEY OPENS THE GATE — a QUIET target sitting BELOW the threshold passes byte-for-byte when the key is loud above it. An
+    //    in-line gate would SILENCE that quiet target (its own envelope never crosses the threshold); the keyed gate holds the door
+    //    open because the KEY is loud. With instant attack the loud key seats its envelope above the threshold at once.
+    {
+        const quiet = [_]i16{ 400, -400, 400, -400, 400, -400 }; // a target wholly below the threshold
+        var target = timeline.Clip{};
+        try load_clip(&target, &quiet);
+        var key = timeline.Clip{};
+        try load_clip(&key, &[_]i16{ 20000, 20000, 20000, 20000, 20000, 20000 }); // a loud key above the threshold
+        try gate_key_follow(&target, &key, 0, target.len, 1000, 8, 1, 1, 1, 1, 1, 0); // instant attack
+        if (!eq(target.samples(), &quiet)) return error.LoudKeyDidNotOpen; // the gate stayed open, the quiet passed whole
+        // prove the contrast: keyed on itself, this quiet target would be gated shut (the in-line gate silences it hard).
+        var inline_clip = timeline.Clip{};
+        try load_clip(&inline_clip, &quiet);
+        try gate_env_hold.gate_hold_follow(&inline_clip, 0, inline_clip.len, 1000, 8, 1, 1, 1, 1, 1, 0);
+        var i: u32 = 0;
+        var inline_reduced = false;
+        while (i < quiet.len) : (i += 1) if (abs16(inline_clip.samples()[i]) < abs16(quiet[i])) {
+            inline_reduced = true;
+        };
+        if (!inline_reduced) return error.InlineShouldGate; // sanity: the in-line gate does silence the quiet target
+    }
+
+    // 4. A SILENT KEY CLOSES THE GATE — a LOUD target under a SILENT key is attenuated (gated shut) where an in-line gate would pass it
+    //    whole. This is the e == 0 branch, the case the sidechain compressor never faced (the compressor acts ABOVE the threshold, so
+    //    a silent key never triggered it). The gate acts BELOW, so a silent key fully closes the door on a loud target.
+    {
+        const loud = [_]i16{ 20000, -20000, 32767, -32767, 15000, -15000 };
+        var target = timeline.Clip{};
+        try load_clip(&target, &loud);
+        var key = timeline.Clip{};
+        try load_clip(&key, &[_]i16{ 0, 0, 0, 0, 0, 0 }); // a silent key — the gate stays shut
+        try gate_key_follow(&target, &key, 0, target.len, 1000, 8, 1, 1, 1, 1, 1, 0); // 8:1 ratio, instant attack
+        const out = target.samples();
+        var i: u32 = 0;
+        while (i < out.len) : (i += 1) {
+            if (abs16(out[i]) >= abs16(loud[i])) return error.SilentKeyDidNotClose; // the loud target was gated down
+            if ((loud[i] > 0 and out[i] < 0) or (loud[i] < 0 and out[i] > 0)) return error.SignFlipped;
+        }
+        // prove the contrast: keyed on itself, this loud target passes whole (its own envelope is well above the threshold).
+        var inline_clip = timeline.Clip{};
+        try load_clip(&inline_clip, &loud);
+        try gate_env_hold.gate_hold_follow(&inline_clip, 0, inline_clip.len, 1000, 8, 1, 1, 1, 1, 1, 0);
+        if (!eq(inline_clip.samples(), &loud)) return error.InlineShouldPass; // sanity: the in-line gate leaves the loud target alone
+    }
+
+    // 5. UNIT RATIO IS THE IDENTITY EVERYWHERE — ratio_num == ratio_den makes the gated magnitude equal the target magnitude, so the
+    //    gain is exactly one at every sample regardless of the key: the whole target passes byte-for-byte even under a silent key.
+    {
+        const loud = [_]i16{ 3000, -3000, 500, -20000, 20000, -400 };
+        var target = timeline.Clip{};
+        try load_clip(&target, &loud);
+        var key = timeline.Clip{};
+        try load_clip(&key, &[_]i16{ 0, 0, 0, 0, 0, 0 }); // a silent key — irrelevant at unit ratio
+        try gate_key_follow(&target, &key, 0, target.len, 1000, 3, 3, 1, 4, 1, 8, 4); // unit ratio 3:3
+        if (!eq(target.samples(), &loud)) return error.UnitRatioNotIdentity;
+    }
+
+    // 6. THE STATE CARRIES — env AND hold_left both, the KEY's detector — so gating a span in two pieces, the split falling MID-HOLD,
+    //    equals gating the whole once, byte-for-byte: the seam invisible, so a keyed gate can span and automate.
+    {
+        const sig = [_]i16{ 9000, -9000, 9000, -9000, 9000, -9000, 9000, -9000 };
+        const keysig = [_]i16{ 14000, 14000, 400, 400, 400, 9000, 6000, 6000 };
+        var whole = timeline.Clip{};
+        try load_clip(&whole, &sig);
+        var kwhole = timeline.Clip{};
+        try load_clip(&kwhole, &keysig);
+        try gate_key_follow(&whole, &kwhole, 0, whole.len, 1000, 4, 1, 1, 1, 1, 5, 2);
+
+        var split = timeline.Clip{};
+        try load_clip(&split, &sig);
+        var ksplit = timeline.Clip{};
+        try load_clip(&ksplit, &keysig);
+        var env: i64 = 0;
+        var hold_left: u32 = 0;
+        try gate_key_follow_carry(&split, &ksplit, 0, 3, &env, &hold_left, 1000, 4, 1, 1, 1, 1, 5, 2); // split at index 3 mid-hold
+        try gate_key_follow_carry(&split, &ksplit, 3, split.len - 3, &env, &hold_left, 1000, 4, 1, 1, 1, 1, 5, 2); // continues both
+        if (!eq(split.samples(), whole.samples())) return error.CarryNotEqual;
+    }
+
+    // 7a. a zero threshold refuses BadThreshold before any write, the target untouched.
+    {
+        var target = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&target, &three);
+        var key = timeline.Clip{};
+        try load_clip(&key, &[_]i16{ 9000, 9000, 9000 });
+        if (gate_key_follow(&target, &key, 0, target.len, 0, 4, 1, 1, 4, 1, 8, 2)) |_| return error.ZeroThresholdSlipped else |e| if (e != error.BadThreshold) return error.WrongZeroThreshold;
+        if (!eq(target.samples(), &three)) return error.RefusedThresholdMutated;
+    }
+
+    // 7b. a sub-unity ratio (would boost the quiet) refuses BadRatio before any write.
+    {
+        var target = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&target, &three);
+        var key = timeline.Clip{};
+        try load_clip(&key, &[_]i16{ 9000, 9000, 9000 });
+        if (gate_key_follow(&target, &key, 0, target.len, 1000, 1, 2, 1, 4, 1, 8, 2)) |_| return error.SubUnitySlipped else |e| if (e != error.BadRatio) return error.WrongSubUnity;
+        if (!eq(target.samples(), &three)) return error.RefusedRatioMutated;
+    }
+
+    // 7c. an illegal attack coefficient (numerator past the denominator) refuses BadCoeff before any write.
+    {
+        var target = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&target, &three);
+        var key = timeline.Clip{};
+        try load_clip(&key, &[_]i16{ 9000, 9000, 9000 });
+        if (gate_key_follow(&target, &key, 0, target.len, 1000, 4, 1, 3, 2, 1, 8, 2)) |_| return error.BadAttackSlipped else |e| if (e != error.BadCoeff) return error.WrongBadAttack;
+        if (!eq(target.samples(), &three)) return error.RefusedCoeffMutated;
+    }
+
+    // 7d. a hold longer than max_clip refuses BadHold before any write.
+    {
+        var target = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&target, &three);
+        var key = timeline.Clip{};
+        try load_clip(&key, &[_]i16{ 9000, 9000, 9000 });
+        if (gate_key_follow(&target, &key, 0, target.len, 1000, 4, 1, 1, 4, 1, 8, timeline.max_clip + 1)) |_| return error.BadHoldSlipped else |e| if (e != error.BadHold) return error.WrongBadHold;
+        if (!eq(target.samples(), &three)) return error.RefusedHoldMutated;
+    }
+
+    // 7e. an out-of-range span (past the TARGET) refuses BadRange before any write.
+    {
+        var target = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&target, &three);
+        var key = timeline.Clip{};
+        try load_clip(&key, &[_]i16{ 9000, 9000, 9000, 9000, 9000 }); // a long-enough key isolates the TARGET range fault
+        if (gate_key_follow(&target, &key, 2, 5, 1000, 4, 1, 1, 4, 1, 8, 2)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(target.samples(), &three)) return error.RefusedRangeMutated;
+    }
+
+    // 7f. a KEY shorter than the span refuses BadKey before any write — the target range is legal, so only the short key can be the fault.
+    {
+        var target = timeline.Clip{};
+        const four = [_]i16{ 1, 2, 3, 4 };
+        try load_clip(&target, &four);
+        var key = timeline.Clip{};
+        try load_clip(&key, &[_]i16{ 9000, 9000 }); // a key of only two samples under a span of four
+        if (gate_key_follow(&target, &key, 0, target.len, 1000, 4, 1, 1, 4, 1, 8, 2)) |_| return error.ShortKeySlipped else |e| if (e != error.BadKey) return error.WrongShortKey;
+        if (!eq(target.samples(), &four)) return error.RefusedKeyMutated;
+    }
+
+    print("GREEN ales-gate-key: the KEYED gate drives ALES51's silenced floor from ALES56's HELD follower advanced on a KEY clip " ++
+        "rather than on the target — the door OPENS when the key is loud and CLOSES when it falls quiet, the mirror of ALES63's " ++
+        "ducking compressor. Silence stays silence; a SELF-KEY reduces to ALES57's attack/hold/release gate BYTE-FOR-BYTE (the " ++
+        "grounding law, proven by running both tools); a LOUD KEY OPENS the gate (a quiet target passes whole where the in-line gate " ++
+        "would silence it); a SILENT KEY CLOSES the gate (a loud target attenuated where the in-line gate would pass it — the e == 0 " ++
+        "branch, the case the compressor never faced, the gate's gain den/num applied directly with no divide by zero); UNIT RATIO is " ++
+        "the identity everywhere; a gated target keeps its sign and never expands; the state CARRIES — env and hold_left both — so a " ++
+        "span in two pieces equals the whole once (the seam invisible, the key's detector surviving the boundary); and a zero " ++
+        "threshold refuses BadThreshold, a sub-unity ratio BadRatio, an illegal coefficient BadCoeff, a hold past max_clip BadHold, " ++
+        "an out-of-range span BadRange, a short key BadKey, each leaving the target untouched; no socket, no network, no keys, no " ++
+        "funds, no real device, no real sample rate\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
