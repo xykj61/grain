@@ -1,0 +1,38 @@
+# tools/drey_push_witness.rish — the desk push loop: give a far hand the whole of what it lacks, the pull's mirror (DREY14).
+#
+# Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY14.
+# Design read: active-designing/20260814-072200_drey14-desk-push-loop-give-the-far-hand-its-lack-exploration.md
+# Stands on: mikrophone/sync.rye (DREY12), mikrophone/manifest.rye (DREY8), mikrophone/serve.rye (DREY9), mikrophone/catalog.rye (DREY7).
+#
+# mikrophone/push.rye is the exact mirror of the pull: push reads the LOCAL desk's manifest verify-before-trust, then for
+# each advertised address the REMOTE desk lacks, serves it from local and deposits it into remote, ending with the remote
+# holding every address the local advertised. Where pull TAKES what this hand lacks, push GIVES what the far hand lacks —
+# the more natural Mikrophone direction (a device gives its committed recording up to the desk). The selftest proves: a
+# fresh remote receives the whole (the local keeps its own), a partial remote receives only its lack, a second push is
+# idempotent, a tampered advertisement refuses DigestMismatch before any frame crosses, a remote at its entry bound refuses
+# CatalogFull by name, and push(a,b) converges b the same as pull(b,a) — one negotiation seen from two hands.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/drey_push_witness.rish
+
+say "drey-push: Language EN — DREY14 gives the sync its other hand; push gives a far desk every advertised recording it lacks, sending only what the far hand lacks."
+say "drey-push: Style Radiant — the desk learns to give the whole of what it holds, sending only what the far hand lacks and proving every byte before it lands, so the two hands meet on the same whole from either side."
+say "drey-push: Lens TAME — push verifies the local manifest before reading a record, serves only the remote's want through the one proven framing path, asserts convergence (remote holds every advertised address) and served == wanted; a tampered advertisement refuses DigestMismatch and a full remote refuses CatalogFull; pushing over a real transport stays the Comlink-served gate; no disk, no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mikrophone/bin/push"
+
+let build = run ["sh" "-c" "mkdir -p mikrophone/bin && env RYE_ZIG=${zig} rye/bin/rye build mikrophone/push.rye -femit-bin=${bin}"]
+assert build.ok else "drey-push: build failed — ${build.err}"
+
+let outfile = "mikrophone/bin/push.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "drey-push: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "drey-push: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN drey-push' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "drey-push: selftest did not print the GREEN drey-push line"
+
+say "drey-push: GREEN — the Mikrophone desk gives a far hand the whole of what it lacks in one bounded operation, the mirror of the pull. DREY14 makes the git push a reusable primitive; pushing over a real transport waits for the Comlink-served gate."

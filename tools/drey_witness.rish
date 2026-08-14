@@ -1,4 +1,4 @@
-# tools/drey_witness.rish — the whole Mikrophone firmware journey, proven in one command (DREY0–DREY13).
+# tools/drey_witness.rish — the whole Mikrophone firmware journey, proven in one command (DREY0–DREY14).
 #
 # Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · aggregate witness.
 # Front door: mikrophone/README.md.
@@ -69,4 +69,8 @@ let forget = run ["rishi/bin/rishi" "run" "tools/drey_forget_witness.rish"]
 assert forget.ok else "drey: DREY13 forget witness failed"
 assert (forget.out contains "GREEN drey-forget") else "drey: DREY13 forget not GREEN"
 
-say "GREEN drey: the whole Mikrophone firmware journey holds — DREY0 session · DREY1 wire · DREY2 recorder · DREY3 firmware · DREY4 inbox · DREY5 carry · DREY6 archive · DREY7 catalog · DREY8 manifest · DREY9 serve · DREY10 redact · DREY12 sync · DREY13 forget, all thirteen rungs proven pure before metal in one command; no disk, no network, no key, no funds."
+let push = run ["rishi/bin/rishi" "run" "tools/drey_push_witness.rish"]
+assert push.ok else "drey: DREY14 push witness failed"
+assert (push.out contains "GREEN drey-push") else "drey: DREY14 push not GREEN"
+
+say "GREEN drey: the whole Mikrophone firmware journey holds — DREY0 session · DREY1 wire · DREY2 recorder · DREY3 firmware · DREY4 inbox · DREY5 carry · DREY6 archive · DREY7 catalog · DREY8 manifest · DREY9 serve · DREY10 redact · DREY12 sync · DREY13 forget · DREY14 push, all fourteen rungs proven pure before metal in one command; no disk, no network, no key, no funds."

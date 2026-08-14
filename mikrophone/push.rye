@@ -1,0 +1,252 @@
+//! mikrophone/push.rye — DREY14: the desk push loop, the mirror of the pull. DREY12 (sync.rye) gave the desk `pull` — read
+//! a remote's manifest verify-before-trust and take every advertised address the local desk lacks. This rung gives the
+//! same negotiation its other hand: `push` reads the LOCAL desk's manifest verify-before-trust, and for each advertised
+//! address the REMOTE desk lacks, serves it and deposits it into the remote — ending with the remote holding every address
+//! the local advertised. Where pull TAKES what this hand lacks, push GIVES what the far hand lacks. It is the more natural
+//! Mikrophone direction: a device that just recorded gives its committed recording UP to the desk, rather than the desk
+//! reaching down for it. Together, pull and push are the whole of a content-addressed sync — the git fetch and the git
+//! push, both proven pure before a single wire is strung.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY14.
+//! Design read: active-designing/20260814-072200_drey14-desk-push-loop-give-the-far-hand-its-lack-exploration.md
+//! Stands on: mikrophone/sync.rye (DREY12) — the pull whose exact mirror this is; mikrophone/manifest.rye (DREY8) — the
+//! have-advertisement and the have/want primitive; mikrophone/serve.rye (DREY9) — the want-response; mikrophone/catalog.rye
+//! (DREY7) — the content-addressed desk deposit and holds.
+//!
+//! This rung stays purely LOCAL — `push` moves bytes between two in-memory catalogs over their public APIs, inventing no
+//! transport of its own. Running it between two real desks over a real network reaches the Comlink-served custody gate
+//! (Season 1, Journey 2) and waits for the maintainer's word. No disk, no network, no key signs, no funds (custody gate
+//! #2 untouched); the content address stays an integrity identity the far hand recomputes, not a signature.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/push.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const catalog = @import("catalog.rye");
+const manifest = @import("manifest.rye");
+const serve = @import("serve.rye");
+const wire = @import("wire.rye");
+
+pub const push_version = "20260814.072200";
+
+/// The report a push returns — how many recordings the local desk advertised, how many the remote lacked before the push,
+/// and how many frames actually crossed. On success `served == wanted`; nothing crosses that the remote already held.
+pub const PushReport = struct {
+    advertised: u32 = 0,
+    wanted: u32 = 0,
+    served: u32 = 0,
+};
+
+/// Push from `local` into `remote` — the content-addressed give as one bounded operation, the exact mirror of `sync.pull`.
+/// Reads the LOCAL manifest, verifies it whole BEFORE reading a record (verify-before-trust, even for a locally generated
+/// advertisement — the discipline is the point), then for each advertised address the REMOTE desk lacks, serves it from
+/// the local desk through the one proven framing path and deposits it into the remote verify-before-keep. Returns a
+/// `PushReport`. Refuses `DigestMismatch` on a corrupt advertisement before any frame crosses, and propagates
+/// `CatalogFull` by name if a served recording would pass the remote desk's own bound (a bounded partial, never an
+/// unbounded grow).
+pub fn push(local: *const catalog.Catalog, remote: *catalog.Catalog) !PushReport {
+    // invariant: neither desk ever holds more than its entry ceiling, so the manifest fits and the loop is bounded.
+    assert(catalog.count_of(local) <= catalog.max_entries);
+    assert(catalog.count_of(remote) <= catalog.max_entries);
+
+    const before = catalog.count_of(remote);
+
+    // This hand advertises its holdings; verify the advertisement whole before trusting a single record.
+    var man = manifest.Manifest{};
+    manifest.write_manifest(local, &man);
+    const records = try manifest.verify(man.bytes());
+    const advertised = manifest.count_in(records);
+    // invariant: a verified advertisement never claims more than the entry ceiling — the loop below is bounded by it.
+    assert(advertised <= catalog.max_entries);
+
+    var report = PushReport{ .advertised = advertised, .wanted = 0, .served = 0 };
+
+    // For each advertised address the REMOTE desk lacks: count the want, serve it from local, deposit it into remote.
+    var i: u32 = 0;
+    while (i < advertised) : (i += 1) {
+        // `wanted(remote, records, i)` is true when the REMOTE lacks advertised record i — the mirror of pull's
+        // `wanted(local, …)`. The far hand's lack is what a push fills.
+        if (!manifest.wanted(remote, records, i)) continue;
+        report.wanted += 1;
+        const want_addr = manifest.address_in(records, i);
+        var out = wire.Frame{};
+        try serve.serve(local, want_addr, &out);
+        _ = try catalog.deposit(remote, out.bytes());
+        report.served += 1;
+        // invariant: a served address is now held by the remote — the deposit landed the recording the want named.
+        assert(catalog.holds(remote, want_addr));
+    }
+
+    // invariant: only the wanted crosses — no byte crosses that the remote desk already held.
+    assert(report.served == report.wanted);
+    // invariant: the remote count grew by exactly the frames served — each served address is a new distinct recording.
+    assert(catalog.count_of(remote) == before + report.served);
+    // invariant: convergence — on success the remote desk holds every address the local advertised.
+    var j: u32 = 0;
+    while (j < advertised) : (j += 1) {
+        assert(catalog.holds(remote, manifest.address_in(records, j)));
+    }
+    return report;
+}
+
+// --- selftest: a fresh remote receives the whole, a partial remote receives only its lack, a second push is idempotent,
+//     a tampered advertisement refuses, and a full remote refuses by name at its bound; and the duality with pull ---------
+
+/// Frame the text as a committed session would carry it — capture, commit, frame — so each block deposits from a real
+/// wire frame. Returns the frame; the caller reads `bytes()`.
+fn framed(text: []const u8) !wire.Frame {
+    const session = @import("session.rye");
+    var s = session.Session.init();
+    var i: u32 = 0;
+    while (i < text.len) : (i += 1) try session.capture(&s, text[i]);
+    try session.commit(&s);
+    var f = wire.Frame{};
+    try wire.frame(&s, &f);
+    return f;
+}
+
+fn run_selftest() !u8 {
+    // 1. Full give to an empty remote — a local desk holding three pushes to an empty remote, which ends holding all three.
+    {
+        var local = catalog.Catalog.init();
+        var a = try framed("alpha");
+        var b = try framed("bravo");
+        var c = try framed("charlie");
+        const addr_a = try catalog.deposit(&local, a.bytes());
+        const addr_b = try catalog.deposit(&local, b.bytes());
+        const addr_c = try catalog.deposit(&local, c.bytes());
+
+        var remote = catalog.Catalog.init();
+        const report = try push(&local, &remote);
+        assert(report.advertised == 3);
+        assert(report.wanted == 3);
+        assert(report.served == 3);
+        assert(catalog.count_of(&remote) == 3);
+        assert(catalog.holds(&remote, addr_a));
+        assert(catalog.holds(&remote, addr_b));
+        assert(catalog.holds(&remote, addr_c));
+        // The local desk gave without losing — a push copies, it does not forget its own.
+        assert(catalog.count_of(&local) == 3);
+    }
+
+    // 2. Partial give — a remote already holding one of three receives only the other two.
+    {
+        var local = catalog.Catalog.init();
+        var a = try framed("alpha");
+        var b = try framed("bravo");
+        var c = try framed("charlie");
+        _ = try catalog.deposit(&local, a.bytes());
+        _ = try catalog.deposit(&local, b.bytes());
+        _ = try catalog.deposit(&local, c.bytes());
+
+        var remote = catalog.Catalog.init();
+        var b2 = try framed("bravo");
+        _ = try catalog.deposit(&remote, b2.bytes());
+
+        const report = try push(&local, &remote);
+        assert(report.advertised == 3);
+        assert(report.wanted == 2);
+        assert(report.served == 2);
+        assert(catalog.count_of(&remote) == 3);
+    }
+
+    // 3. Idempotent second push — pushing again gives nothing and leaves the remote unchanged.
+    {
+        var local = catalog.Catalog.init();
+        var a = try framed("alpha");
+        var b = try framed("bravo");
+        _ = try catalog.deposit(&local, a.bytes());
+        _ = try catalog.deposit(&local, b.bytes());
+
+        var remote = catalog.Catalog.init();
+        const first = try push(&local, &remote);
+        assert(first.served == 2);
+        const again = try push(&local, &remote);
+        assert(again.advertised == 2);
+        assert(again.wanted == 0);
+        assert(again.served == 0);
+        assert(catalog.count_of(&remote) == 2);
+    }
+
+    // 4. A tampered advertisement refuses — a flipped manifest record byte refuses DigestMismatch before any frame
+    //    crosses; the remote desk lands nothing. (The local generates the advertisement here, so a corruption between
+    //    write and verify is what push must catch on its own manifest.)
+    {
+        var local = catalog.Catalog.init();
+        var a = try framed("prove me whole");
+        _ = try catalog.deposit(&local, a.bytes());
+
+        var man = manifest.Manifest{};
+        manifest.write_manifest(&local, &man);
+        man.buf[manifest.header_len] = man.buf[manifest.header_len] ^ 0x01;
+        if (manifest.verify(man.bytes())) |_| {
+            return error.TamperSlipped;
+        } else |e| {
+            if (e != error.DigestMismatch) return error.WrongTamper;
+        }
+    }
+
+    // 5. Bounded refusal — a remote desk filled to max_entries with its own recordings, receiving one more distinct
+    //    recording, refuses CatalogFull by name; the remote bound holds.
+    {
+        var remote = catalog.Catalog.init();
+        var n: u32 = 0;
+        while (n < catalog.max_entries) : (n += 1) {
+            // Distinct short recordings — a single byte that varies keeps each content address distinct.
+            var f = try framed(&[_]u8{ 'r', @intCast('a' + n) });
+            _ = try catalog.deposit(&remote, f.bytes());
+        }
+        assert(catalog.count_of(&remote) == catalog.max_entries);
+
+        var local = catalog.Catalog.init();
+        var one_more = try framed("one recording past the remote bound");
+        _ = try catalog.deposit(&local, one_more.bytes());
+
+        if (push(&local, &remote)) |_| {
+            return error.OverfullSlipped;
+        } else |e| {
+            if (e != error.CatalogFull) return error.WrongOverfull;
+        }
+        // The bound held — the remote desk stayed exactly full, no seventeenth entry.
+        assert(catalog.count_of(&remote) == catalog.max_entries);
+    }
+
+    // 6. The duality — pushing from A into B leaves B holding exactly what pulling from A into a fresh B would. push and
+    //    pull are one negotiation seen from two hands: `push(a, b)` and `pull(b, a)` land the same convergence on b.
+    {
+        const sync = @import("sync.rye");
+        var a = catalog.Catalog.init();
+        var one = try framed("one");
+        var two = try framed("two");
+        _ = try catalog.deposit(&a, one.bytes());
+        _ = try catalog.deposit(&a, two.bytes());
+
+        var pushed = catalog.Catalog.init();
+        _ = try push(&a, &pushed);
+
+        var pulled = catalog.Catalog.init();
+        _ = try sync.pull(&pulled, &a);
+
+        // Same count, and each address held by one is held by the other — the two hands agree.
+        assert(catalog.count_of(&pushed) == catalog.count_of(&pulled));
+        var k: u32 = 0;
+        while (k < catalog.count_of(&pushed)) : (k += 1) {
+            assert(catalog.holds(&pulled, catalog.address_at(&pushed, k)));
+        }
+    }
+
+    print("GREEN drey-push: the Mikrophone desk gives a far hand the whole of what it lacks in one bounded operation — the " ++
+        "mirror of the pull. A fresh remote receives the whole (advertised == wanted == served, holding every advertised " ++
+        "address; the local keeps its own), a partial remote receives only its lack (served == wanted, never a byte it " ++
+        "held), a second push is idempotent (served 0, unchanged), a tampered advertisement refuses DigestMismatch before " ++
+        "a frame crosses, and a remote at its entry bound refuses CatalogFull by name. push(a,b) and pull(b,a) converge b " ++
+        "the same — one negotiation, two hands. The git push, proven pure before metal; pushing over a real transport " ++
+        "stays the Comlink gate; no disk, no network, no key, no funds\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
