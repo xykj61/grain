@@ -1,0 +1,206 @@
+//! constel/transfer.rye — FORA23: leadership transfers only to a caught-up successor (Raft §3.10, the leadership-transfer
+//! extension). FORA22 gave the sky an orderly way to KEEP a healthy leader through a rejoining node's ballooned term. This rung
+//! gives it the orderly way to HAND OFF leadership on purpose — a planned handover for maintenance, load balancing, or a graceful
+//! shutdown, in which the leader chooses its successor rather than waiting for a random timeout to raise one.
+//!
+//! Raft's transfer runs in three moves:
+//!   1. The prior leader STOPS accepting new client entries, so its log stops growing and a target can reach it.
+//!   2. It brings the chosen target FULLY UP TO DATE (FORA17's catch-up / repair), until the target's log head matches its own.
+//!   3. Only then does it send TimeoutNow — the one message that makes the target start an election IMMEDIATELY, skipping its
+//!      election timeout. The target bumps its term by one and campaigns; the old leader, seeing the higher term, steps down.
+//!
+//! The crux this rung proves is SAFETY THROUGH THE HANDOFF: a transfer is authorized ONLY to a target that is caught up, so the
+//! successor holds every committed entry — Leader Completeness (FORA21) is preserved, not bypassed. A behind target is refused by
+//! name; TimeoutNow is never sent to a log that lacks the sky's settled history. This is also the ONE legitimate way to skip the
+//! pre-vote of FORA22: the current leader is orchestrating the handoff to a target it has personally verified, so the practice
+//! round is unnecessary — the pre-vote guards against a partitioned node's disruption, which a leader-driven transfer is the
+//! opposite of.
+//!
+//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+//! FORA23. Design read: active-designing/20260814-084700_fora23-constel-transfer-leadership.md
+//! Stands on: constel/vote.rye (FORA21) — at_least_as_current, the up-to-date measure a caught-up target must meet, and poll, the
+//! immediate election a transferred target then wins; constel/repair.rye (FORA17) — the TermedLog and its catch-up, how a target
+//! is brought current; constel/quorum.rye (FORA9) — the majority threshold; constel/roster.rye (FORA1) — the bound.
+//!
+//! Purely LOCAL — bounded in-memory logs, a target id, and a term on one bench, siloed to constel/, run from inside the jailed
+//! pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate #2 — real hardware / any real wire —
+//! and gate #4 — real Kumara — both untouched). A served TimeoutNow reaches the Comlink-served gate; the socket rung stays the
+//! maintainer's hand.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/transfer.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const roster = @import("roster.rye");
+const vote = @import("vote.rye");
+const quorum = @import("quorum.rye");
+const repair = @import("repair.rye");
+
+pub const transfer_version = "20260814.084700";
+
+const max_entries = repair.max_entries;
+const TermedLog = repair.TermedLog;
+
+pub const TransferError = error{
+    /// The chosen target's log does not yet match the leader's — TimeoutNow is withheld until catch-up (FORA17) brings the target
+    /// current. If catch-up does not complete within an election timeout the transfer aborts and the leader resumes; either way, a
+    /// behind target never receives the signal to campaign.
+    TargetNotCaughtUp,
+    /// A target id past the bounded roster. A transfer addresses a real member of the constellation, never a pier the sky lacks.
+    TargetOutOfRoster,
+};
+
+/// IS THE TARGET CAUGHT UP? A transfer target is ready only when its log HEAD matches the leader's exactly — same last term and
+/// same length. Because a follower's log can never be strictly more up-to-date than the leader that feeds it, "at least as current
+/// as the leader" (FORA21's measure, applied with the leader as the bar) collapses to this exact match: the target holds every one
+/// of the leader's entries and no phantom of its own.
+pub fn is_caught_up(leader_last_term: u32, leader_len: u32, target_last_term: u32, target_len: u32) bool {
+    // invariant: both logs are bounded by the entry cap, so their lengths are real.
+    assert(leader_len <= max_entries and target_len <= max_entries);
+    // invariant: the target is never strictly AHEAD of the leader it is catching up to (repair has already truncated any phantom
+    // suffix, so the leader is at least as current as the target — FORA17).
+    assert(vote.at_least_as_current(leader_last_term, leader_len, target_last_term, target_len));
+    return target_last_term == leader_last_term and target_len == leader_len;
+}
+
+/// MAY THE LEADER SEND TimeoutNow to this target? Yes only when the target is a real roster member AND caught up — the whole
+/// authorization gate in one predicate, checked before the leader releases the signal that makes a follower campaign.
+pub fn may_transfer(target_id: u32, roster_len: u32, leader_last_term: u32, leader_len: u32, target_last_term: u32, target_len: u32) bool {
+    // invariant: the roster polled is bounded to the constellation.
+    assert(roster_len <= roster.max_piers);
+    if (target_id >= roster_len) return false;
+    return is_caught_up(leader_last_term, leader_len, target_last_term, target_len);
+}
+
+/// AUTHORIZE AND SEND TimeoutNow. When the target is in the roster and caught up, returns the term the target will CAMPAIGN with —
+/// exactly leader_term + 1, one bump, an immediate election with no timeout wait and no pre-vote round (a leader-orchestrated
+/// handoff is the one legitimate skip of FORA22's pre-vote). Refuses TargetOutOfRoster or TargetNotCaughtUp by name, sending
+/// nothing on refusal.
+pub fn timeout_now(target_id: u32, roster_len: u32, leader_last_term: u32, leader_len: u32, target_last_term: u32, target_len: u32, leader_term: u32) TransferError!u32 {
+    // invariant: the roster is bounded, and the leader's term leaves room to advance without overflow.
+    assert(roster_len <= roster.max_piers);
+    assert(leader_term < std.math.maxInt(u32));
+    if (target_id >= roster_len) return error.TargetOutOfRoster;
+    if (!is_caught_up(leader_last_term, leader_len, target_last_term, target_len)) return error.TargetNotCaughtUp;
+    const campaign_term = leader_term + 1;
+    // invariant: the campaign term is exactly one above the leader's — a single, deliberate advance, never a jump.
+    assert(campaign_term == leader_term + 1 and campaign_term > leader_term);
+    return campaign_term;
+}
+
+/// THE OLD LEADER STEPS DOWN when it sees a term STRICTLY higher than its own — the successor's campaign term arriving back as a
+/// vote request. An equal or lower term leaves it in place; only a genuine advance deposes it, exactly as FORA16's term guard
+/// already rules everywhere else in the ladder.
+pub fn should_step_down(old_leader_term: u32, seen_term: u32) bool {
+    // invariant: the compared terms are real u32 values (comparison only, no arithmetic that could wrap).
+    assert(old_leader_term <= std.math.maxInt(u32) and seen_term <= std.math.maxInt(u32));
+    return seen_term > old_leader_term;
+}
+
+// --- selftest: is_caught_up is an exact head match; may_transfer / timeout_now authorize only a caught-up in-roster target and
+//     refuse the rest by name; the campaign term is exactly one bump; A CAUGHT-UP TARGET WINS ITS IMMEDIATE ELECTION over
+//     vote.poll (Leader Completeness preserved through the handoff); the old leader steps down only on a strictly higher term;
+//     bounded over a full roster. --------------------------------------------------------------------------------------------
+
+fn run_selftest() !u8 {
+    // 1. is_caught_up IS AN EXACT HEAD MATCH — same last term AND same length. A target behind in length or in term is not ready.
+    {
+        assert(is_caught_up(2, 3, 2, 3)); // identical heads — caught up
+        assert(!is_caught_up(2, 3, 2, 2)); // one entry short at the same term — not caught up
+        assert(!is_caught_up(2, 3, 1, 3)); // a stale last term though equal length — not caught up
+    }
+
+    // 2. may_transfer / timeout_now AUTHORIZE ONLY A CAUGHT-UP IN-ROSTER TARGET, refusing the rest BY NAME.
+    {
+        // A caught-up target within a roster of five — authorized; TimeoutNow returns the campaign term (leader term 5 → 6).
+        assert(may_transfer(1, 5, 2, 2, 2, 2));
+        const campaign = try timeout_now(1, 5, 2, 2, 2, 2, 5);
+        assert(campaign == 6);
+        // A behind target (one entry short) — refused TargetNotCaughtUp, and may_transfer answers no.
+        assert(!may_transfer(1, 5, 2, 2, 2, 1));
+        assert(timeout_now(1, 5, 2, 2, 2, 1, 5) == error.TargetNotCaughtUp);
+        // A target id past the roster — refused TargetOutOfRoster, sending nothing.
+        assert(!may_transfer(9, 5, 2, 2, 2, 2));
+        assert(timeout_now(9, 5, 2, 2, 2, 2, 5) == error.TargetOutOfRoster);
+    }
+
+    // 3. THE CAMPAIGN TERM IS EXACTLY ONE BUMP — a single deliberate advance, whatever the leader's current term.
+    {
+        assert((try timeout_now(0, 3, 1, 1, 1, 1, 5)) == 6);
+        assert((try timeout_now(0, 3, 1, 1, 1, 1, 6)) == 7);
+        assert((try timeout_now(0, 3, 4, 9, 4, 9, 41)) == 42);
+    }
+
+    // 4. A CAUGHT-UP TARGET WINS ITS IMMEDIATE ELECTION — the crux, composed with vote.poll (FORA21). The leader holds
+    //    [ (t1,10), (t2,20) ]; the chosen target is caught up to the same head. Over a roster of five (three complete incl. the
+    //    target, two behind), the target's campaign gathers the whole roster's grant — the majority the immediate election needs.
+    //    Leader Completeness is preserved BECAUSE the target was required to be caught up before TimeoutNow.
+    {
+        const th = quorum.majority_of(5); // 3
+
+        // The leader's own log head.
+        var leader = TermedLog{};
+        _ = try leader.append_entry(1, 10);
+        _ = try leader.append_entry(2, 20); // last_term 2, len 2
+
+        // Three complete logs (the target is one of them), two behind on the term-1 prefix.
+        var a = TermedLog{};
+        _ = try a.append_entry(1, 10);
+        _ = try a.append_entry(2, 20);
+        var b = TermedLog{};
+        _ = try b.append_entry(1, 10);
+        _ = try b.append_entry(2, 20);
+        var target = TermedLog{};
+        _ = try target.append_entry(1, 10);
+        _ = try target.append_entry(2, 20);
+        var d = TermedLog{};
+        _ = try d.append_entry(1, 10);
+        var e = TermedLog{};
+        _ = try e.append_entry(1, 10);
+
+        // The target is caught up to the leader's exact head — the gate that authorizes the handoff.
+        assert(is_caught_up(leader.last_term(), leader.len, target.last_term(), target.len));
+        const campaign = try timeout_now(2, 5, leader.last_term(), leader.len, target.last_term(), target.len, 5);
+        assert(campaign == 6); // one bump — the target campaigns at term 6
+
+        // The immediate election: the caught-up target (last_term 2, len 2) polls the whole roster.
+        const all = [_]*const TermedLog{ &a, &b, &target, &d, &e };
+        const grants = vote.poll(&all, target.last_term(), target.len);
+        assert(grants == 5); // every voter grants — the complete ones are equal, the behind ones see it ahead
+        assert(grants >= th); // a majority — the transferred target WINS its immediate election
+    }
+
+    // 5. THE OLD LEADER STEPS DOWN ONLY ON A STRICTLY HIGHER TERM — the successor's campaign term deposes it; its own or a stale
+    //    term does not.
+    {
+        assert(should_step_down(5, 6)); // the successor campaigns at 6 — the old leader steps down
+        assert(!should_step_down(5, 5)); // its own term — it stays
+        assert(!should_step_down(5, 4)); // a stale term — it stays
+    }
+
+    // 6. BOUNDED — a transfer runs over a full roster of eight within the pier cap; the last valid id authorizes, the id AT the
+    //    roster length refuses TargetOutOfRoster.
+    {
+        const full = roster.max_piers; // 8
+        assert(may_transfer(full - 1, full, 3, 4, 3, 4)); // id 7 in a roster of 8 — a real member
+        assert(timeout_now(full, full, 3, 4, 3, 4, 9) == error.TargetOutOfRoster); // id 8 — past the roster
+        assert((try timeout_now(full - 1, full, 3, 4, 3, 4, 9)) == 10); // the last real member campaigns at 10
+    }
+
+    print("GREEN fora-transfer: leadership transfers only to a caught-up successor (Raft §3.10, leadership transfer) — is_caught_up " ++
+        "is an EXACT head match (same last term and same length), a target behind in length or term refused; may_transfer and " ++
+        "timeout_now AUTHORIZE ONLY a caught-up in-roster target, refusing TargetNotCaughtUp and TargetOutOfRoster by name and " ++
+        "sending nothing on refusal; the campaign term is EXACTLY one bump (leader_term + 1), a single deliberate advance with no " ++
+        "timeout wait and no pre-vote (the one legitimate skip of FORA22); A CAUGHT-UP TARGET WINS ITS IMMEDIATE ELECTION over " ++
+        "vote.poll — LEADER COMPLETENESS PRESERVED THROUGH THE HANDOFF because the successor was required to hold the leader's " ++
+        "whole head first; the old leader steps down only on a strictly higher term; and the transfer runs bounded over a full " ++
+        "roster — no socket, no network, no keys, no funds, no real address ever formed\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
