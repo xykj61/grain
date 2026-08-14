@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260814.012818
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title HUNK90 — the sorted screen: a header names the sort above the cheapest-first parts
+prompt Recursion loop past HUNK89; take the next agent-doable lap Lindy-first crux-first; send each finished increment; stop at custody gates.
+think HUNK89 sorts the faceted result and HUNK88 crowns the shelf with a paged header, yet the two never met — the paged header sat over the held-order shelf and the sorted shelf carried no header, so a keeper reading a sorted page had no word it was sorted.
+think Built brushstroke/part_facets_sorted_screen.rye: format_sorted_header appends `  sorted by price` to HUNK88 format_facets_header_paged (only when a result exists), sorted_header_row draws it, facets_sorted_screen stacks it over HUNK89 facets_sorted_shelf cell-for-cell.
+think The crux is no drift between word and order — the header says `sorted by price` and the shelf beneath is the actually-sorted page; proven by row 0 equal to sorted_header_row and the shelf region equal to facets_sorted_shelf cell-for-cell, plus the cheapest part (hexnut $0.55) reading first beneath the sort word.
+obs First witness run panicked: the union header line runs 86 cols (query 45 + count 11 + page 13 + sort tail 17), truncated at cols=80 so the on-grid endsWith `sorted by price` failed — the same fixture-width bug HUNK88 hit; widened the selftest cols to 96. A module-level max_sorted_header_line bounds the real scratch, so the truncation was only the test grid, not the code.
+obs A price is echoed, compared, and reordered by, never moved — custody gate #3 untouched; no network, no key, no funds.
+loom witness=hunk_part_facets_sorted_screen_witness green=1 parts=5 header_len=86 cols=96 union_result=3 pages_union=2
+file brushstroke/part_facets_sorted_screen.rye HUNK90 format_sorted_header · sorted_header_row · facets_sorted_screen
+file tools/hunk_part_facets_sorted_screen_witness.rish witness GREEN; HUNK89 sorted shelf and HUNK88 paged header stay GREEN beneath
+file active-designing/20260814-012818_hunk-part-facets-sorted-screen-exploration.md self-approved design round for HUNK90
+file image/README.md search paragraph now names the sorted screen (sorted by price header over the cheapest-first parts) and its witness
+recommend keep-going — the faceted search now reads, echoes, pages, sorts, and names its sort in one surface; next is a per-facet count, sort-descending or sort-by-name, or another Season-A / double-seat journey. No gate reached.
