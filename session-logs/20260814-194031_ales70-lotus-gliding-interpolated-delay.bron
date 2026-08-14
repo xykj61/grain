@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260814.194031
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title ALES70 — Lotus's gliding delay, a fractional delay read by linear interpolation
+prompt recur the itinerary Lindy-first crux-first, take the next agent-doable lap, send each finished increment, stop at custody gates
+think Every delay so far (feedback echo ALES66, multi-tap ALES68) reads the line at a WHOLE-sample position. The chorus, flanger, and vibrato all need the delay to MOVE through positions BETWEEN samples — a delay of 2.5 samples, read by LINEAR INTERPOLATION of the two neighbours. That interpolation is the one genuinely new arithmetic the whole modulated-delay family needs.
+think Crux-first, introduce interpolation once in its simplest honest form — a delay that glides linearly from d0 to d1 across the span (the flanger's sweep) — so the periodic LFO (chorus, vibrato) becomes a thin later rung that only chooses HOW the delay moves. One new idea per rung.
+think Fixed-point: the delay is a scaled integer d_s = delay·glide_scale (256, a power of two so the interp divide is exact). d_whole = d_s/scale, frac = d_s%scale; delayed = (near·(scale-frac) + far·frac)/scale in i64. Every read off a FROZEN dry snapshot (the ALES68/graft idiom), so a moving read never reads a sample it just wrote.
+think Two anchors make interpolation trustworthy: frac=0 returns near exactly (a whole-sample glide is an exact integer tap, so it equals ALES68's one-tap multitap byte-for-byte — both tools run), and frac=scale/2 returns the exact average. Added a pure public scaled_delay_at helper so the ramp endpoints are testable directly.
+obs GREEN on the FIRST build across all six laws — no RED, even with genuinely new arithmetic. The care that paid off: the byte-for-byte equality against ALES68's integer tap (case 2) and the hand-computed 2.5-sample average (case 3, i5 = 4000 + (2000+1000)/2 = 5500) both landed exactly, confirming the interpolation is exact at integer positions and correct at the half-sample.
+obs The ramp helper's endpoints (d0 at k=0, d1 at k=n-1) and monotonicity proven directly, a falling glide (d1<d0) too, and the n==1 single-span case — so the sweep is a true linear ramp, not an approximation that drifts at the ends.
+loom witness=ales_glide_witness cases=6 green=1 reruns=ales68_taps glide_scale=256 max_clip=4096
+file lotus/glide.rye ALES70 — glide reads a fractional delay by linear interpolation off the frozen dry, the modulated-delay family's new primitive
+file tools/ales_glide_witness.rish witness GREEN, re-proves the ALES68 multi-tap beside it
+file active-designing/20260814-194031_fill-ales70-lotus-gliding-interpolated-delay.md design read for the rung, self-approved round
+file lotus/README.md Status rung list + stamp carry ALES70
+recommend keep-going ALES71 — the periodic modulated delay (a triangle LFO driving the scaled delay round a centre), a thin rung on this proven interpolation that yields the chorus; the flanger (a shorter modulated delay with feedback) follows
