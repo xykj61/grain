@@ -1,0 +1,153 @@
+//! lotus/mix.rye — ALES3: mix a second track. ALES2 edited ONE clip (cut, gain, splice). A DAW's second real gesture is
+//! summing two clips into one — the mixer. Two tracks sum sample for sample, and the sum SATURATES to the i16 range rather
+//! than wrapping, exactly as ALES2's gain does (mix reuses timeline.saturate — one true saturation, not a re-derivation).
+//! A shorter track contributes silence past its end, so the mix runs the length of the longer track and no sample is torn.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES3.
+//! Design read: active-designing/20260814-fill-ales3-lotus-mix-second-track.md
+//! Stands on: lotus/timeline.rye (ALES2) — the Clip it mixes and the saturation it reuses. To set a track's level before
+//! summing, run ALES2's `gain` on a clip first, then mix — level and mix stay separate gestures.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
+//! no network, no keys, no funds, no real device, no real sample rate. Mix is TOTAL over two valid clips: every clip shares
+//! the one bound (timeline.max_clip), so the mix length — the longer of the two — always fits and mix never fails. The one
+//! correctness beyond a position-wise integer add is saturation, the audio-editor's owed floor and ceiling.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/mix.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+
+pub const mix_version = "20260814.113212";
+
+/// The widest mix this rung proves — the same bound a Clip holds, so the sum of any two clips always fits.
+pub const max_mix: u32 = timeline.max_clip;
+
+/// Sum two clips position-wise into `out`, saturating each summed sample to the i16 range. The mix runs the length of the
+/// longer track; past a shorter track's end that track contributes silence (0), so nothing is torn and the longer audio
+/// carries through. Mix is total — every clip shares timeline.max_clip, so the longer length always fits `out`.
+pub fn mix(a: *const timeline.Clip, b: *const timeline.Clip, out: *timeline.Clip) void {
+    const n: u32 = if (a.len > b.len) a.len else b.len;
+    // invariant: the mix length is the longer track and always fits the output's shared bound — mix cannot overflow.
+    assert(n <= out.buf.len);
+    assert(n >= a.len and n >= b.len);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        // Past a track's end it contributes silence; the sum runs in i64 so it never overflows before the clamp.
+        const sa: i64 = if (i < a.len) @as(i64, a.buf[i]) else 0;
+        const sb: i64 = if (i < b.len) @as(i64, b.buf[i]) else 0;
+        out.buf[i] = timeline.saturate(sa + sb);
+    }
+    out.len = n;
+    // invariant: the output holds exactly the mix length, within its bound.
+    assert(out.len == n);
+    assert(out.len <= out.buf.len);
+}
+
+// --- selftest: two equal-length clips sum sample-for-sample; a sum past the i16 range SATURATES rather than wraps (the one
+//     owed correctness); a shorter track contributes silence past its end so the mix runs the longer length; mixing with an
+//     empty clip is identity (silence adds nothing); and mix is commutative (a+b == b+a) ---------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn run_selftest() !u8 {
+    // 1. two equal-length clips sum sample for sample.
+    {
+        var a = timeline.Clip{};
+        var b = timeline.Clip{};
+        try load_clip(&a, &[_]i16{ 1, 2, 3 });
+        try load_clip(&b, &[_]i16{ 10, 20, 30 });
+        var out = timeline.Clip{};
+        mix(&a, &b, &out);
+        const want = [_]i16{ 11, 22, 33 };
+        if (!eq(out.samples(), &want)) return error.SumWrong;
+    }
+
+    // 2. a summed sample past the i16 range SATURATES — never wraps. 30000 + 10000 = 40000 pins to +32767; the negative
+    //    mirror pins to -32768. A wrapping add would flip the sign; saturation holds the ceiling and floor.
+    {
+        var a = timeline.Clip{};
+        var b = timeline.Clip{};
+        try load_clip(&a, &[_]i16{ 30000, -30000 });
+        try load_clip(&b, &[_]i16{ 10000, -10000 });
+        var out = timeline.Clip{};
+        mix(&a, &b, &out);
+        const want = [_]i16{ timeline.sample_max, timeline.sample_min };
+        if (!eq(out.samples(), &want)) return error.SaturateWrong;
+    }
+
+    // 3. a shorter track contributes silence past its end; the mix runs the longer length, the tail carried unchanged.
+    {
+        var a = timeline.Clip{};
+        var b = timeline.Clip{};
+        try load_clip(&a, &[_]i16{ 1, 2, 3, 4 });
+        try load_clip(&b, &[_]i16{ 10, 20 });
+        var out = timeline.Clip{};
+        mix(&a, &b, &out);
+        const want = [_]i16{ 11, 22, 3, 4 };
+        if (!eq(out.samples(), &want)) return error.LengthWrong;
+    }
+
+    // 4. mixing with an empty clip is identity — silence adds nothing.
+    {
+        var a = timeline.Clip{};
+        var empty = timeline.Clip{};
+        try load_clip(&a, &[_]i16{ 7, -7, 100 });
+        var out = timeline.Clip{};
+        mix(&a, &empty, &out);
+        const want = [_]i16{ 7, -7, 100 };
+        if (!eq(out.samples(), &want)) return error.IdentityWrong;
+    }
+
+    // 5. mix is commutative — a + b equals b + a, sample for sample, whatever the lengths.
+    {
+        var a = timeline.Clip{};
+        var b = timeline.Clip{};
+        try load_clip(&a, &[_]i16{ 1, 2, 3, 4, 5 });
+        try load_clip(&b, &[_]i16{ 100, 200 });
+        var ab = timeline.Clip{};
+        var ba = timeline.Clip{};
+        mix(&a, &b, &ab);
+        mix(&b, &a, &ba);
+        if (!eq(ab.samples(), ba.samples())) return error.CommuteWrong;
+    }
+
+    // 6. mix composes with ALES2's gain — halve a track's level, then mix it under another, the level and the mix staying
+    //    separate gestures (a real mixer: set each track's fader, then sum).
+    {
+        var a = timeline.Clip{};
+        var b = timeline.Clip{};
+        try load_clip(&a, &[_]i16{ 400, 400 });
+        try load_clip(&b, &[_]i16{ 100, 100 });
+        try timeline.gain(&a, 0, a.len, 1, 2); // a to half level → 200, 200
+        var out = timeline.Clip{};
+        mix(&a, &b, &out);
+        const want = [_]i16{ 300, 300 };
+        if (!eq(out.samples(), &want)) return error.ComposeWrong;
+    }
+
+    print("GREEN ales-mix: two tracks sum into one, sample for sample, and the sum SATURATES to the i16 range rather than " ++
+        "wrapping (30000+10000 pins to +32767, its mirror to -32768) — the same owed correctness ALES2's gain keeps, reused " ++
+        "from timeline.saturate; a shorter track contributes silence past its end so the mix runs the longer length with the " ++
+        "tail unchanged; mixing with an empty clip is identity; mix is commutative (a+b == b+a); and mix composes with ALES2's " ++
+        "gain — set each track's level, then sum; mix is total over two valid clips, no failure path; no socket, no network, " ++
+        "no keys, no funds, no real device\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
