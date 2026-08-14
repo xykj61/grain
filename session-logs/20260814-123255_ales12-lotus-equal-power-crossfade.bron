@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260814.123255
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier (Eastern EDT convention)
+title ALES12 — Lotus's equal-power crossfade, the same law swept over time
+prompt Continue the autonomous recur (baton prin recur): next agent-doable lap Lindy-first crux-first, self-approve design rounds, send each finished increment to origin and xykj61, STOP only at custody gates.
+think Eighth increment of this recur, the second full round this turn (after ALES11 equal-power pan landed and pushed). No custody gate in reach — the Lotus ladder is pure local software.
+think Lindy-first crux-first: the most durable next thing is not a NEW law but the COMPLETION of the one just proven — carry equal power from the stereo field (pan) into time (crossfade). A linear crossfade sags in the middle exactly as a linear pan dips at center; ALES11 already answers it. Chosen over stereo metering / balance-width as the move that finishes the equal-power story across both axes.
+think The crux is a recognition, not new arithmetic: a crossfade IS the equal-power pan swept across the overlap. Position across the field and position through a time overlap are one parameter, so the outgoing/incoming weights are ALES11's split read at each overlap sample — the proven law REUSED, not re-derived.
+think To reuse cleanly I made one additive change to power.rye: a pub `split(pos, den) [2]u32` wrapping the private `weights`, named for the crossfade so the time axis reads exactly the pan the field would. Additive (tier-3 living code); ALES11's public surface only grows, the pan witness re-runs GREEN.
+think Because the two weights already satisfy constant power (out_power + in_power = den², out² + in² ≤ den² within the isqrt bound), the crossfade owes fall straight out: pure-outgoing head + pure-incoming tail (seamless splice), and a −3 dB equal-power center (0.707·den) where linear dips to 0.5·den. The sum is ALES3's mixer discipline unchanged — wide i64, saturate once (timeline.saturate).
+obs GREEN on first build across six blocks. Endpoint asserts inside the loop (i==0 → pure out, i==den → pure in) hold on metal. The self-cross test proves the equal-power lift positively: every interior sample ≥ the endpoint level and the center is the peak — the opposite of a linear sag. tame_style_check bans clean, power witness re-runs GREEN (split is additive), crossfade errors reuse timeline.EditError so no new error name.
+obs Honest scope kept explicit: the overlap runs across sample indices within one shared clip bound; a routing/loudness curve, no psychoacoustic or electrical claim; purely local, no socket, no network, no keys, no funds, no real device, no real speaker. No custody gate reached. Live clock read 123255, monotonic after ALES11's 122502.
+loom witness=ales_crossfade_witness cases=6 build=first_green tame=clean center_amp=700 linear_amp=500 power_regreen=1
+file lotus/power.rye additive pub `split(pos,den) [2]u32` — the equal-power split exposed for reuse over time (ALES11 surface grows, pan untouched)
+file lotus/crossfade.rye ALES12 module — crossfade two overlap windows via power.split per sample, sum saturated once (ALES3 reuse)
+file tools/ales_crossfade_witness.rish witness — 6 cases (pure-out/in endpoints, −3 dB center, no-dip self-cross, saturation, split-match sweep, BadRange refusals), GREEN on metal
+file active-designing/20260814-fill-ales12-lotus-equal-power-crossfade.md self-approved design round for ALES12
+file lotus/README.md seated ALES12 in status, rungs, prove-list, road-on
+recommend keep-going ALES13 — stereo metering (an RMS is a square root, same isqrt reading the master), a peak/RMS meter over the transport read blocks, or offer the keeper the choice of law on either axis. No custody gate in reach.
