@@ -1,0 +1,276 @@
+//! brushstroke/crop_editor.rye — HUNK62: the whole crop, end to end — drag a frame, see it, commit it into the history, chain another.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK62.
+//! Design read: active-designing/20260813-222800_hunk-crop-gesture-exploration.md ("The road on from here")
+//! Teacher, thanked clean-room: the crop tool of a photo app (iCloud Photos / Google Photos) — a keeper drags a frame,
+//! sees it over the picture, commits it, and can crop again or undo (concept only, siloed).
+//!
+//! HUNK60 turned a drag into a `.crop` edit; HUNK61 outlined it on glass. This rung ties them to the non-destructive
+//! history (HUNK16) so cropping becomes a complete, chainable tool. `CropEditor` owns the source, an `EditCursor`, and a
+//! `CropGesture` opened over the CURRENT edited view. `overlay` frames the current view; `commit` pushes the dragged
+//! rectangle as a `.crop` edit and re-opens the gesture over the newly cropped view, so a second crop is measured in the
+//! coordinates a keeper now sees — crops chain, each relative to the last. `undo`/`redo` walk the history and re-open the
+//! gesture over whatever view returns, so the frame a keeper drags always matches the picture on screen. A pure
+//! composition over four proven seams (HUNK60 gesture, HUNK61 overlay, HUNK16 cursor, HUNK3/HUNK11 crop + vocabulary);
+//! it invents no pixel op and one honest refusal, `NoRect`, for a drag that named no area. The source is never mutated.
+//! No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/crop_editor.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const edits = @import("photo_edits.rye");
+const photos = @import("photos.rye");
+const edit_cursor = @import("edit_cursor.rye");
+const crop_gesture = @import("crop_gesture.rye");
+const crop_overlay = @import("crop_overlay.rye");
+const skate = @import("skate_grid.rye");
+
+pub const crop_editor_version = "20260813.231500";
+
+/// A complete crop tool over one source image: it owns the immutable `source`, an `EditCursor` (the non-destructive edit
+/// history), a `CropGesture` opened over the CURRENT edited view, and the overlay grid geometry. The governing law: the
+/// gesture always frames the picture a keeper currently sees — after every commit, undo, or redo, the gesture is
+/// re-opened over the view the cursor now yields, so a dragged rectangle is always measured in on-screen coordinates and
+/// a committed crop chains onto the ones before it.
+pub const CropEditor = struct {
+    source: *const qoi.Pixmap,
+    cursor: edit_cursor.EditCursor,
+    gesture: crop_gesture.CropGesture,
+    cols: u32,
+    rows: u32,
+
+    /// Open a crop tool over `source`, painting overlays into a `cols`×`rows` grid. The cursor opens empty (the current
+    /// view is the source), so the first gesture frames the source itself. Folds `CropGesture.open`'s `BadImage` through
+    /// for a zero-dimension source.
+    pub fn open(source: *const qoi.Pixmap, cols: u32, rows: u32) !CropEditor {
+        const gesture = try crop_gesture.CropGesture.open(source.width, source.height);
+        // invariant: the fresh gesture frames the whole source (an empty cursor views the source unchanged).
+        assert(gesture.width == source.width);
+        assert(gesture.height == source.height);
+        return CropEditor{
+            .source = source,
+            .cursor = edit_cursor.EditCursor.init(),
+            .gesture = gesture,
+            .cols = cols,
+            .rows = rows,
+        };
+    }
+
+    /// The picture a keeper currently sees — the source with every edit up to the cursor's position applied (HUNK16).
+    /// A fresh allocation; the source is never mutated.
+    pub fn current_view(self: *const CropEditor, allocator: std.mem.Allocator) !qoi.Pixmap {
+        return edit_cursor.view(allocator, self.source, &self.cursor);
+    }
+
+    /// Re-open the gesture over the current view's dimensions — the one call that keeps the frame matched to the picture
+    /// after the history moves (commit, undo, redo). Reads the view only for its size.
+    fn resync_gesture(self: *CropEditor, allocator: std.mem.Allocator) !void {
+        const v = try self.current_view(allocator);
+        self.gesture = try crop_gesture.CropGesture.open(v.width, v.height);
+        // invariant: the gesture now frames exactly the current view.
+        assert(self.gesture.width == v.width);
+        assert(self.gesture.height == v.height);
+    }
+
+    /// A finger presses at view pixel `(x, y)` — delegate to the gesture (its arming and clamps).
+    pub fn finger_down(self: *CropEditor, x: i32, y: i32) void {
+        self.gesture.finger_down(x, y);
+    }
+
+    /// The finger sweeps — delegate to the gesture.
+    pub fn finger_move(self: *CropEditor, x: i32, y: i32) void {
+        self.gesture.finger_move(x, y);
+    }
+
+    /// The finger lifts — delegate to the gesture.
+    pub fn finger_up(self: *CropEditor, x: i32, y: i32) void {
+        self.gesture.finger_up(x, y);
+    }
+
+    /// Paint the current view with the pending crop rectangle outlined over it (HUNK61) — what a keeper sees while
+    /// dragging, before they commit. Refuses `NoRect` when the drag named no area. Pure — the source is never mutated.
+    pub fn overlay(self: *const CropEditor, allocator: std.mem.Allocator) !skate.Grid {
+        const v = try self.current_view(allocator);
+        // invariant: the overlay frames the very view the gesture was opened over.
+        assert(v.width == self.gesture.width);
+        assert(v.height == self.gesture.height);
+        return crop_overlay.crop_overlay(allocator, &v, &self.gesture, self.cols, self.rows);
+    }
+
+    /// Commit the pending crop: push the dragged rectangle as a `.crop` edit onto the history (HUNK16, forgetting any
+    /// redo tail; refusing `TooManyEdits` at the list ceiling), then re-open the gesture over the newly cropped view so
+    /// the next crop chains onto this one. Refuses `NoRect` when the drag named no area — nothing is pushed. Returns the
+    /// committed edit.
+    pub fn commit(self: *CropEditor, allocator: std.mem.Allocator) !edits.Edit {
+        // invariant: the cursor stands within its history before the commit.
+        assert(self.cursor.position <= self.cursor.list.count);
+        const e = try self.gesture.as_edit(); // NoRect if the drag named no area — nothing is pushed
+        try self.cursor.push(e);
+        // invariant: the committed crop is the live edge.
+        assert(self.cursor.position == self.cursor.list.count);
+        try self.resync_gesture(allocator);
+        return e;
+    }
+
+    /// Step one crop back, then re-sync the frame to the restored view (HUNK16 undo — a no-op at the original).
+    pub fn undo(self: *CropEditor, allocator: std.mem.Allocator) !void {
+        self.cursor.undo();
+        try self.resync_gesture(allocator);
+    }
+
+    /// Step one crop forward, then re-sync the frame to the restored view (HUNK16 redo — a no-op at the live edge).
+    pub fn redo(self: *CropEditor, allocator: std.mem.Allocator) !void {
+        self.cursor.redo();
+        try self.resync_gesture(allocator);
+    }
+};
+
+// --- selftest: an 8x8 source — a drag commits a crop into the history, the view becomes the cropped image, a second
+//     drag chains onto it (measured in the new coordinates), undo/redo walk the crops, and a tap commits nothing -------
+
+fn craft_two_tone(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 8;
+    const h: u32 = 8;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            buf[off] = @intCast(x * 8); // r — a per-column gradient so a mis-placed crop would show
+            buf[off + 1] = @intCast(y * 8); // g — a per-row gradient
+            buf[off + 2] = 0;
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const pm = try craft_two_tone(garden);
+    var ed = try CropEditor.open(&pm, 8, 8);
+
+    // The first view is the source itself, and the gesture frames the whole 8x8.
+    {
+        const v0 = try ed.current_view(garden);
+        assert(v0.width == 8);
+        assert(v0.height == 8);
+        assert(ed.gesture.width == 8);
+        assert(ed.gesture.height == 8);
+    }
+
+    // Drag (2,2)->(6,6) and see the frame: the overlay outlines the pending crop over the current view.
+    ed.finger_down(2, 2);
+    ed.finger_move(6, 6);
+    ed.finger_up(6, 6);
+    {
+        const grid = try ed.overlay(garden);
+        // A border cell of the {2,2,4,4} rectangle wears the crop slot — the frame is on glass (HUNK61 proves the rest).
+        const border_i: usize = @intCast(2 * grid.cols + 2); // top-left corner cell of the rectangle
+        assert(grid.fg_index[border_i] == crop_overlay.crop_slot);
+    }
+
+    // Commit: the crop joins the history, the view becomes the 4x4 cropped image, and the gesture re-opens over it.
+    {
+        const e = try ed.commit(garden);
+        switch (e) {
+            .crop => |c| {
+                assert(c.x == 2);
+                assert(c.y == 2);
+                assert(c.w == 4);
+                assert(c.h == 4);
+            },
+            else => return error.NotACrop,
+        }
+        assert(ed.cursor.position == 1);
+        const v1 = try ed.current_view(garden);
+        const direct1 = try photos.crop(garden, &pm, 2, 2, 4, 4);
+        assert(v1.same_bytes(&direct1)); // the view is exactly the committed crop
+        assert(ed.gesture.width == 4); // the gesture re-opened over the cropped view
+        assert(ed.gesture.height == 4);
+    }
+
+    // A second crop CHAINS onto the first, measured in the new 4x4 coordinates: drag (1,1)->(3,3) commits crop{1,1,2,2}
+    // over the current view, and the resulting view is the crop-of-a-crop byte-for-byte.
+    {
+        ed.finger_down(1, 1);
+        ed.finger_move(3, 3);
+        ed.finger_up(3, 3);
+        const e2 = try ed.commit(garden);
+        switch (e2) {
+            .crop => |c| {
+                assert(c.w == 2);
+                assert(c.h == 2);
+            },
+            else => return error.NotACrop,
+        }
+        assert(ed.cursor.position == 2);
+        const v2 = try ed.current_view(garden);
+        const mid = try photos.crop(garden, &pm, 2, 2, 4, 4);
+        const direct2 = try photos.crop(garden, &mid, 1, 1, 2, 2);
+        assert(v2.same_bytes(&direct2)); // crops chained, each relative to the last
+        assert(ed.gesture.width == 2);
+        assert(ed.gesture.height == 2);
+    }
+
+    // Non-destructive: undo walks back to the 4x4 crop, and the frame re-syncs to it; redo returns to the 2x2.
+    {
+        try ed.undo(garden);
+        assert(ed.cursor.position == 1);
+        const back = try ed.current_view(garden);
+        const direct1 = try photos.crop(garden, &pm, 2, 2, 4, 4);
+        assert(back.same_bytes(&direct1));
+        assert(ed.gesture.width == 4); // the frame followed the view back
+
+        try ed.redo(garden);
+        assert(ed.cursor.position == 2);
+        const fwd = try ed.current_view(garden);
+        assert(fwd.width == 2);
+        assert(fwd.height == 2);
+        assert(ed.gesture.width == 2);
+    }
+
+    // Undo all the way to the source recovers it byte-for-byte — every crop stayed a walk, never a wound.
+    {
+        try ed.undo(garden);
+        try ed.undo(garden);
+        assert(ed.cursor.position == 0);
+        const src = try ed.current_view(garden);
+        assert(src.same_bytes(&pm));
+        assert(ed.gesture.width == 8);
+    }
+
+    // A tap (press and lift at one point) commits nothing — it refuses NoRect, the history unmoved.
+    {
+        // Re-open a fresh editor so the redo tail from the undo above does not confuse the check.
+        var fresh = try CropEditor.open(&pm, 8, 8);
+        fresh.finger_down(3, 3);
+        fresh.finger_up(3, 3);
+        if (fresh.commit(garden)) |_| return error.RectSlipped else |e| {
+            if (e != error.NoRect) return error.WrongRect;
+        }
+        assert(fresh.cursor.position == 0); // nothing pushed
+    }
+
+    print("GREEN crop-editor: an 8x8 gradient source — a drag (2,2)->(6,6) shows a framed overlay and commits " ++
+        "crop{{2,2,4,4}} into the history, the view becoming the 4x4 cropped image byte-for-byte and the gesture " ++
+        "re-opening over it; a second drag (1,1)->(3,3) chains crop{{1,1,2,2}} in the new coordinates, the view the " ++
+        "crop-of-a-crop byte-for-byte; undo walks back to the 4x4 (the frame following) and redo returns to the 2x2; " ++
+        "undo to the source recovers it byte-for-byte (non-destructive throughout); a tap commits nothing, refusing " ++
+        "NoRect. HUNK61 overlay, HUNK60 gesture, HUNK16 cursor, HUNK3 crop GREEN beneath; no network, no key, no " ++
+        "funds\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: crop_editor selftest\n", .{});
+    return 1;
+}

@@ -1,0 +1,41 @@
+# tools/hunk_crop_editor_witness.rish — the whole crop tool end to end, on metal (HUNK62).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK62.
+# Design read: active-designing/20260813-222800_hunk-crop-gesture-exploration.md ("The road on from here").
+# Teacher, thanked clean-room: the crop tool of a photo app (iCloud Photos / Google Photos) — a keeper drags a frame,
+# sees it, commits it, chains another, or undoes (concept only, siloed).
+#
+# HUNK60 turned a drag into a .crop edit; HUNK61 outlined it on glass. This rung ties them to the non-destructive history
+# (HUNK16): CropEditor frames the current view, commits the dragged rectangle as a crop, re-opens the gesture over the
+# newly cropped view so crops chain, and walks the history with undo/redo. A tap commits nothing (NoRect). No network,
+# no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_crop_editor_witness.rish
+
+say "hunk-crop-editor: Language EN — HUNK62 ties the crop gesture (HUNK60), its overlay (HUNK61), and the edit cursor (HUNK16) into a complete crop tool; drag frames, commit crops, undo/redo walk the history."
+say "hunk-crop-editor: Style Radiant — cropping is finally a whole tool: a keeper drags, sees the frame, commits, crops again in the new coordinates, and undoes to the source byte-for-byte — nothing ever lost."
+say "hunk-crop-editor: Lens TAME — a pure composition over four proven seams; the gesture re-syncs to the current view after every history move, a tap commits nothing (NoRect), the source is never mutated; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/crop_editor"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/crop_editor.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-crop-editor: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-crop-editor: selftest exited non-zero — ${selftest.out}"
+
+# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# single-quoted string, so an apostrophe or brace in the GREEN line can never break a check (the loom for REDS #76).
+let out = trim selftest.out
+say "hunk-crop-editor: ${out}"
+
+assert out contains "GREEN crop-editor" else "hunk-crop-editor: selftest did not print the GREEN crop-editor line"
+assert out contains "commits crop{2,2,4,4} into the history, the view becoming the 4x4 cropped image byte-for-byte and the gesture re-opening over it" else "hunk-crop-editor: the first commit did not crop the view or re-open the gesture"
+assert out contains "a second drag (1,1)->(3,3) chains crop{1,1,2,2} in the new coordinates, the view the crop-of-a-crop byte-for-byte" else "hunk-crop-editor: crops did not chain in the new coordinates"
+assert out contains "undo walks back to the 4x4 (the frame following) and redo returns to the 2x2" else "hunk-crop-editor: undo/redo did not walk the crops or the frame did not follow"
+assert out contains "undo to the source recovers it byte-for-byte (non-destructive throughout)" else "hunk-crop-editor: the history was not non-destructive"
+assert out contains "a tap commits nothing, refusing NoRect" else "hunk-crop-editor: a tap committed something or did not refuse NoRect"
+
+say "hunk-crop-editor: GREEN — the crop tool drags, frames, commits into the history, chains a second crop in the new coordinates, walks it with undo/redo (the frame following), recovers the source byte-for-byte, and refuses a tap NoRect; no network, no key, no funds."

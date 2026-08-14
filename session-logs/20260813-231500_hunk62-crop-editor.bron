@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260813.231500
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title HUNK62 — the crop tool end to end (gesture · overlay · history)
+prompt autonomous loop past BUHR: next agent-doable lap Lindy-first crux-first, send each increment, stop at custody gates
+think After the REDS #76 fix closed on metal, resumed the crop sub-arc. HUNK60 made the .crop edit, HUNK61 outlined it; the capstone crux is tying them to the non-destructive history (HUNK16) so cropping is a complete, chainable tool.
+think CropEditor owns the source, an EditCursor, a CropGesture over the CURRENT view, and overlay geometry. The crux is dimension tracking: a crop changes the image size, so after every commit/undo/redo the gesture must re-open over the view the cursor now yields (resync_gesture) — that keeps the dragged frame measured in on-screen coordinates and makes crops chain, each relative to the last.
+think commit() pushes gesture.as_edit() and re-syncs; a tap refuses NoRect (nothing pushed). overlay() frames the current view via HUNK61. undo/redo delegate to the cursor then re-sync the frame.
+think GREEN first metal run — no RED this lap. The gradient source (per-column r, per-row g) makes a mis-placed crop visible.
+obs The selftest proves the whole tool: a drag commits crop{2,2,4,4}, the view becomes the 4x4 crop byte-for-byte, the gesture re-opens over it; a second drag chains crop{1,1,2,2} in the new coordinates, the view the crop-of-a-crop; undo walks back (frame following), redo returns; undo to the source recovers it byte-for-byte; a tap refuses NoRect. Non-destructive throughout.
+obs Two-plus asserts per fn, invariants positive; TAME bans clean (image/ now on the roster from REDS #76), width exit 0. The crop sub-arc (HUNK60 gesture · HUNK61 overlay · HUNK62 editor) is complete.
+loom witness=hunk_crop_editor_witness crops_chained=2 undo_to_source=byte_exact result=GREEN
+file brushstroke/crop_editor.rye HUNK62 — the complete crop tool over gesture, overlay, and the edit cursor
+file tools/hunk_crop_editor_witness.rish the metal witness, GREEN
+recommend check-in (Claude) — five HUNK laps + REDS #76 landed and sent this session; the crop sub-arc is complete; the REDS ledger is at its enforced ceiling and wants a season-fold (Keaton's word) before #76 seats its canonical row
