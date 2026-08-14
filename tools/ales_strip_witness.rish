@@ -1,0 +1,39 @@
+# tools/ales_strip_witness.rish — mute and solo: the channel strip's two switches, resolved to an effective fader column (ALES9).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES9.
+# Design read: active-designing/20260814-fill-ales9-lotus-mute-solo.md
+# Stands on: lotus/fader.rye (ALES8) — a Strip carries a Fader, and render resolves mute/solo to an effective fader column
+# then delegates to fader.render whole (no new accumulation, no second saturation); lotus/track.rye (ALES6) — the Session
+# table the strips align with; lotus/timeline.rye (ALES2) — the Clip and the one true saturation, reached through ALES8.
+#
+# lotus/strip.rye seats mute and solo as first-class session state, resolved the way every desk does — solo, when any track
+# holds it, wins (only soloed heard), otherwise every un-muted track is heard. Mute/solo is a pure map from switches to
+# levels, so the only sum in the suite stays ALES8's. The selftest proves: no mute/no solo reproduces the fader mix
+# byte-for-byte; a muted track goes silent; a soloed track silences every other; two solos heard together; a muted-and-soloed
+# track still heard (solo-in-place); a zero denominator on an audible strip forwards BadGain; a track past the master bound
+# forwards ClipFull. Purely local — no network, no keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_strip_witness.rish
+
+say "ales-strip: Language EN — ALES9 opens mute and solo: the two switches a mixing keeper reaches for beside the level, resolved to an effective fader so only the heard tracks join the mix."
+say "ales-strip: Style Radiant — the channel strip generalizes the fader column (no switches is exactly ALES8) and states the desk rule positively: solo, when present anywhere, is heard; otherwise the un-muted is heard."
+say "ales-strip: Lens TAME — mute/solo is a pure map from switches to levels (a silenced track carries 0/1), the mix delegated to ALES8's fader.render whole; no new sum, no second saturation; forwards BadGain / ClipFull by name; siloed to lotus/, no network, no keys, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/strip"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/strip.rye -femit-bin=${bin}"]
+assert build.ok else "ales-strip: build failed — ${build.err}"
+
+let outfile = "lotus/bin/strip.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-strip: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-strip: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-strip' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-strip: selftest did not print the GREEN ales-strip line"
+
+say "ales-strip: GREEN — mute and solo resolve to an effective fader column and the mix stays ALES8's one sum; solo-in-place overrides a track's own mute. The next Lotus rung can name pan (a fader per channel as stereo opens), a transport loop over a marked region, or the equal-power crossfade curve."
