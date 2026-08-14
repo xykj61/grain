@@ -1,0 +1,39 @@
+# tools/fora_commit_witness.rish — a leader commits an old-term entry only through a current-term one (FORA18).
+#
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# FORA18. Design read: active-designing/20260814-083700_fora18-constel-commit-rule-current-term.md
+#
+# constel/commit.rye states the one safety rule a multi-term log requires — Raft's §5.4.2, the scenario its paper draws as
+# Figure 8: a leader may NOT conclude that an entry from a previous term is committed merely because it is stored on a majority.
+# The safe rule is narrow: advance the commit index over an entry only once a CURRENT-term entry has reached a majority; that
+# commits the older entries beneath it transitively by the Log Matching Property (FORA17). The selftest proves: MatchView counts
+# replicas; a single-term log commits by majority (no regression from FORA11); THE FIGURE 8 REFUSAL — an old-term majority entry
+# is not committed while the naive term-blind rule would commit it; the transitive commit once a current-term entry reaches a
+# majority; the danger made real — the entry the naive rule would have committed is overwritten by FORA17 repair under a new
+# leader whose log lacked it, the exact fork the safe rule prevents; and the rule runs bounded. Purely local — no socket, no
+# network, no keys, no funds, no real address ever formed.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/fora_commit_witness.rish
+
+say "fora-commit: Language EN — FORA18 states Raft's Figure 8 safety rule: a leader commits an old-term entry only by committing a current-term entry above it, never by raw replica count — 'replicated on a majority' is not enough for an entry an earlier leader wrote."
+say "fora-commit: Style Radiant — no ledger calls a thing settled before it truly is; the one rule that tells the difference stays small enough to hold in a single reading."
+say "fora-commit: Lens TAME — MatchView and the commit rule are bounded to the roster and the entry cap; safe_commit_len is term-aware, naive_commit_len is kept only as the visible counter-example; the danger case spends FORA17 repair to show the fork the safe rule prevents; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "constel/bin/commit"
+
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/commit.rye -femit-bin=${bin}"]
+assert build.ok else "fora-commit: build failed — ${build.err}"
+
+let outfile = "constel/bin/commit.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "fora-commit: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "fora-commit: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN fora-commit' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "fora-commit: selftest did not print the GREEN fora-commit line"
+
+say "fora-commit: GREEN — an old-term entry is committed only through a current-term one; the constel consensus track now states the Figure 8 safety rule that keeps a multi-term ledger from a false commit, proven pure on the bench."

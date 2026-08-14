@@ -1,0 +1,240 @@
+//! constel/commit.rye — FORA18: a leader commits an old-term entry only through a current-term one. FORA11 committed a value on
+//! a strict majority; FORA12 ordered committed values; FORA16 made the leader safe across re-election and FORA17 made a follower's
+//! log safe across a rejoin. One subtle safety rule of replicated consensus is still unstated — the single most famous bug-class
+//! in the field, the scenario Raft's paper draws as FIGURE 8 (§5.4.2):
+//!
+//!   A leader may NOT conclude that an entry from a PREVIOUS term is committed merely because it is stored on a majority of piers.
+//!
+//! "Replicated on a majority = committed" is FALSE for an old-term entry. A later leader, elected on a log that happened to lack
+//! that entry, can still legally overwrite it — FORA17's repair is exactly the mechanism that would. Counting replicas is not
+//! enough. The safe rule Raft proves is narrow and exact:
+//!
+//!   A leader advances its commit index over an entry only once it has replicated an entry from its OWN CURRENT TERM on a
+//!   majority. Committing a current-term entry commits every earlier entry beneath it TRANSITIVELY, by the Log Matching Property
+//!   (FORA17) — those older entries are now pinned on a majority whose logs match the leader's, and Leader Completeness guarantees
+//!   no future leader can be elected without them.
+//!
+//! This rung computes the commit index by the current-term rule, never by raw replica count, and shows the Figure 8 danger
+//! refused. FORA11's decree never needed it — every accept in one round carries that round's term, so its committed value is
+//! always a current-term entry and the rule holds trivially. The danger appears only once a log spans MULTIPLE terms, exactly the
+//! world FORA16 and FORA17 opened.
+//!
+//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+//! FORA18. Design read: active-designing/20260814-083700_fora18-constel-commit-rule-current-term.md
+//! Stands on: constel/repair.rye (FORA17) — the TermedLog, its Log Matching Property, and repair (the overwrite the danger case
+//! spends); constel/quorum.rye (FORA9) — majority_of, the strict-majority threshold; constel/roster.rye (FORA1) — the bound.
+//!
+//! Purely LOCAL — a bounded in-memory TermedLog and a MatchView on one bench, siloed to constel/, run from inside the jailed pier.
+//! No socket, no network, no keys, no funds, no real address ever formed (custody gate #2 — real hardware / any real wire — and
+//! gate #4 — real Kumara — both untouched). The socket rung stays the maintainer's hand.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/commit.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const roster = @import("roster.rye");
+const quorum = @import("quorum.rye");
+const repair = @import("repair.rye");
+
+pub const commit_version = "20260814.083700";
+
+const TermedLog = repair.TermedLog;
+const max_entries = repair.max_entries;
+
+/// The leader's bounded record of how far each pier has replicated: match[slot] is the LENGTH of the follower's prefix that agrees
+/// with the leader (its matchIndex + 1, in Raft's terms). A fresh view has every pier at zero; the leader records itself at its
+/// own length.
+pub const MatchView = struct {
+    match: [roster.max_piers]u32 = [_]u32{0} ** roster.max_piers,
+    size: u32 = 0,
+
+    /// Record that `slot` holds a prefix of `replicated_len` entries agreeing with the leader. Bounded to the constellation and to
+    /// the entry cap — a leader never learns of more entries than a log can hold.
+    pub fn record(self: *MatchView, slot: u32, prefix_len: u32) void {
+        // invariant: only a real slot of a bounded constellation is ever recorded, within the entry cap.
+        assert(slot < self.size and self.size <= roster.max_piers);
+        assert(prefix_len <= max_entries);
+        self.match[slot] = prefix_len;
+        // invariant: the record took exactly the reported length.
+        assert(self.match[slot] == prefix_len);
+    }
+
+    /// How many piers hold at least `n` agreeing entries — the countable form of "replicated on a majority". The leader is one of
+    /// the slots, so a leader that recorded its own full length counts itself here.
+    pub fn replicated_len(self: *const MatchView, n: u32) u32 {
+        var c: u32 = 0;
+        var i: u32 = 0;
+        while (i < self.size) : (i += 1) {
+            if (self.match[i] >= n) c += 1;
+        }
+        // invariant: the count never exceeds the constellation it is drawn from.
+        assert(c <= self.size);
+        return c;
+    }
+};
+
+/// THE SAFE RULE (FORA18, Raft §5.4.2): the largest N such that entry N-1 carries `current_term` AND at least `threshold` piers
+/// hold N agreeing entries. Returns the committed prefix length — everything below N is committed transitively by the Log Matching
+/// Property (FORA17). Returns 0 when no current-term entry is yet majority-replicated: an old-term entry on a majority is NOT
+/// committed until a current-term entry above it reaches a majority too.
+pub fn safe_commit_len(leader: *const TermedLog, view: *const MatchView, current_term: u32, threshold: u32) u32 {
+    // invariant: the threshold is a real strict majority within the constellation the view counts.
+    assert(threshold >= 1 and threshold <= view.size);
+    assert(leader.len <= max_entries);
+    var n = leader.len;
+    while (n > 0) : (n -= 1) {
+        const top = leader.entry[n - 1]; // the highest entry of the candidate committed prefix
+        if (top.term == current_term and view.replicated_len(n) >= threshold) {
+            // invariant: the committed prefix is a real prefix, and its top entry is from the current term.
+            assert(n <= leader.len);
+            assert(leader.entry[n - 1].term == current_term);
+            return n;
+        }
+    }
+    return 0; // nothing yet safely committed — no current-term entry has reached a majority
+}
+
+/// THE TEMPTING WRONG RULE — the largest N majority-replicated, IGNORING term. Kept only so the witness can show, side by side,
+/// that it would commit an entry safe_commit_len refuses: the exact Figure 8 gap, made visible rather than argued. Never call this
+/// to actually commit — it is the counter-example, not the rule.
+pub fn naive_commit_len(leader: *const TermedLog, view: *const MatchView, threshold: u32) u32 {
+    // invariant: the threshold is a real majority; the log is bounded.
+    assert(threshold >= 1 and threshold <= view.size);
+    assert(leader.len <= max_entries);
+    var n = leader.len;
+    while (n > 0) : (n -= 1) {
+        if (view.replicated_len(n) >= threshold) return n; // majority-replicated — but term-blind, and therefore unsafe
+    }
+    return 0;
+}
+
+// --- selftest: MatchView counts replicas; a single-term log commits by majority (no regression); THE FIGURE 8 REFUSAL — an
+//     old-term majority entry is not committed while naive_commit_len would commit it; the transitive commit once a current-term
+//     entry reaches a majority; the danger made real (the naive entry is overwritten by FORA17 repair); bounded. ----------------
+
+fn run_selftest() !u8 {
+    // 1. MatchView counts replicas — the leader counts itself, a follower short of n does not count at n.
+    {
+        var view = MatchView{ .size = 5 };
+        view.record(0, 3); // the leader holds three entries
+        view.record(1, 3);
+        view.record(2, 2);
+        view.record(3, 1);
+        view.record(4, 0);
+        assert(view.replicated_len(1) == 4); // slots 0,1,2,3 hold at least one
+        assert(view.replicated_len(2) == 3); // slots 0,1,2
+        assert(view.replicated_len(3) == 2); // slots 0,1
+        assert(view.replicated_len(4) == 0); // none holds four
+    }
+
+    // 2. A SINGLE-TERM LOG commits by majority exactly as FORA11 did — the current-term rule is a strict generalization, not a
+    //    regression. Every entry is term 1, the current term; a majority holds all three, so all three commit.
+    {
+        var leader = TermedLog{};
+        _ = try leader.append_entry(1, 10);
+        _ = try leader.append_entry(1, 20);
+        _ = try leader.append_entry(1, 30);
+        var view = MatchView{ .size = 5 };
+        view.record(0, 3); // leader
+        view.record(1, 3);
+        view.record(2, 3); // a majority of five holds all three
+        view.record(3, 1);
+        view.record(4, 0);
+        const th = quorum.majority_of(5); // 3
+        assert(safe_commit_len(&leader, &view, 1, th) == 3); // all three current-term entries are committed
+    }
+
+    // 3. THE FIGURE 8 REFUSAL — the crux. A log spans terms: index 0 in term 1, index 1 in term 2. The current term is 4. Entry
+    //    (index 1, term 2) is replicated on a strict MAJORITY, yet no current-term-4 entry exists at all. The naive rule WOULD
+    //    commit index 1; the safe rule refuses, committing nothing, because no current-term entry has reached a majority.
+    {
+        var leader = TermedLog{};
+        _ = try leader.append_entry(1, 100); // index 0, term 1
+        _ = try leader.append_entry(2, 200); // index 1, term 2 — an OLD-term entry relative to the current term 4
+        var view = MatchView{ .size = 5 };
+        view.record(0, 2); // leader holds both
+        view.record(1, 2);
+        view.record(2, 2); // a majority of five holds the term-2 entry
+        view.record(3, 1);
+        view.record(4, 1);
+        const th = quorum.majority_of(5); // 3
+        const current_term: u32 = 4;
+
+        assert(naive_commit_len(&leader, &view, th) == 2); // the tempting wrong rule: "majority-replicated, so committed"
+        assert(safe_commit_len(&leader, &view, current_term, th) == 0); // the safe rule: NO current-term entry on a majority
+        // The two rules disagree exactly where Raft says they must — the term-2 entry on a majority is NOT yet committable.
+    }
+
+    // 4. THE TRANSITIVE COMMIT — the leader now replicates a CURRENT-term-4 entry above the old one on a majority. safe_commit_len
+    //    jumps to include BOTH: committing the current-term entry commits the older ones beneath it transitively (Log Matching).
+    {
+        var leader = TermedLog{};
+        _ = try leader.append_entry(1, 100); // index 0, term 1
+        _ = try leader.append_entry(2, 200); // index 1, term 2
+        _ = try leader.append_entry(4, 300); // index 2, term 4 — the current term
+        var view = MatchView{ .size = 5 };
+        view.record(0, 3); // leader holds all three
+        view.record(1, 3);
+        view.record(2, 3); // a majority now holds the current-term entry too
+        view.record(3, 2);
+        view.record(4, 1);
+        const th = quorum.majority_of(5); // 3
+        assert(safe_commit_len(&leader, &view, 4, th) == 3); // all three committed — the old ones beneath the current-term one
+    }
+
+    // 5. THE DANGER MADE REAL — the term-2 entry the naive rule would have committed in block 3 is then OVERWRITTEN by a new
+    //    leader (via FORA17 repair) whose log lacked it. This is the fork the safe rule prevents by never calling it committed.
+    {
+        // The old leader's log from block 3: [ (t1,100), (t2,200) ] — the naive rule "committed" index 1 here.
+        var old_follower = TermedLog{};
+        _ = try old_follower.append_entry(1, 100);
+        _ = try old_follower.append_entry(2, 200);
+
+        // A NEW leader, elected in a later term on a log that agreed only through index 0 and then wrote its own term-3 entry at
+        // index 1 (a perfectly legal Raft history — the term-2 entry never reached THIS leader before it won).
+        var new_leader = TermedLog{};
+        _ = try new_leader.append_entry(1, 100); // shares the term-1 prefix
+        _ = try new_leader.append_entry(3, 999); // its own term-3 entry at index 1 — different from the term-2 entry
+
+        // Repair (FORA17) brings the old follower to the new leader's history: the term-2 entry at index 1 is OVERWRITTEN.
+        const before = try old_follower.value_at(1);
+        assert(before == 200); // the "naively committed" value
+        _ = try repair.repair(&old_follower, &new_leader);
+        assert(old_follower.matches(&new_leader));
+        assert((try old_follower.value_at(1)) == 999); // the term-2 entry is gone — had the naive rule committed it, this is a fork
+        // The safe rule never returned a commit length covering index 1 in block 3, so it never called this entry settled. Safe.
+    }
+
+    // 6. BOUNDED — the rule runs over a full-length current-term log within the cap; a full majority holding all entries commits
+    //    the whole log, no overrun.
+    {
+        var leader = TermedLog{};
+        var i: u32 = 0;
+        while (i < max_entries) : (i += 1) _ = try leader.append_entry(7, 1000 + i); // all current term 7
+        var view = MatchView{ .size = 3 };
+        view.record(0, max_entries);
+        view.record(1, max_entries); // a majority of three holds the whole log
+        view.record(2, 1);
+        const th = quorum.majority_of(3); // 2
+        assert(safe_commit_len(&leader, &view, 7, th) == max_entries);
+    }
+
+    print("GREEN fora-commit: a leader commits an old-term entry only through a current-term one — MatchView counts how many " ++
+        "piers hold at least N agreeing entries (the leader counting itself); a single-term log commits by majority exactly as " ++
+        "FORA11 did, so the current-term rule is a strict generalization not a regression; THE FIGURE 8 REFUSAL — an old-term " ++
+        "entry replicated on a strict majority, with the current term higher and no current-term entry yet majority-replicated, " ++
+        "is NOT committed by safe_commit_len while naive_commit_len WOULD commit it (the two rules disagree exactly where Raft " ++
+        "§5.4.2 says they must); THE TRANSITIVE COMMIT — once a current-term entry above it reaches a majority, safe_commit_len " ++
+        "jumps to include both, the old entry committed beneath the new one by the Log Matching Property; THE DANGER MADE REAL " ++
+        "— the term-2 entry the naive rule would have committed is then overwritten by FORA17 repair under a new leader whose " ++
+        "log lacked it, the exact fork the safe rule prevents by never calling it settled; and the rule runs bounded over a " ++
+        "full-length log — no socket, no network, no keys, no funds, no real address ever formed\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
