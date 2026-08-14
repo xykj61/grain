@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260814.153033
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title ALES37 — Lotus's cue sheet, sealed: the arrangement map verifies before it is trusted
+prompt Continue the ALES recursion loop Lindy-first crux-first; approve my own design rounds and make progress before checking in; send each finished increment to origin and xykj61; stop at custody gates; baton prin recur
+think ALES36's road-on named a session file and the signing/wire seams. Rather than a large bundle (which couples rack + cue over one master and wants deliberate design), I took the cleaner durable rung that the shipped seal made visible: ALES34 sealed the RACK sheet, yet a keeper saves TWO kinds of thing — the held audio AND the arrangement map (ALES22 cue sheet) — and the map had no integrity gate.
+think Chose it Lindy-first crux-first. An integrity gate on a persistence format is durable (a silent wrong parse is the worst outcome a saved file can have), and the arrangement map is saved as often as the audio. The crux was already proven for the rack — this rung reveals the seal is NOT specific to a rack but a LAW for any travels-as-text record, and applying it to the cue sheet both protects the map and demonstrates the generalization without disturbing the shipped rack_seal.rye.
+think Mirrored rack_seal exactly: a distinct sealed header (format lotus-cue-sheet-sealed-v1, distinct from both the plain header and the rack's sealed header so no record is mistaken for another kind), a digest line over exactly the rendered ALES22 body, verify-before-trust handing the body to cue_sheet.parse_sheet only on a match. The one honest difference: parse_sheet bounds each marker position against a master clip, so verify_and_parse takes that master and passes it through — integrity gate first, position bounds after.
+obs GREEN on the first build across five cases: a sealed four-marker track (intro/verse/chorus/outro over a 500-sample master) round-tripped every position and name, the body exactly the plain ALES22 record; a flipped body byte and a truncated tail each refused DigestMismatch with the output track left empty; a plain record, a missing / short / non-hex digest line each refused BadRecord; a seal into a too-small buffer refused Overflow.
+obs Witness tools/ales_cue_seal_witness.rish GREEN; tame_style_check GREEN (bans clean, no new zero-assert file, no usize, no bare memcpy); CueSealError = error{DigestMismatch} || cue_sheet.MarkerTextError; cue_sheet.render_sheet / parse_sheet reused whole, the {x:0>2} hex idiom shared with tally/bud.rye and rack_seal. Purely local — a Sha256 over an in-process text record; no socket, no network, no keys, no funds, no real device, no real meter, no real speaker; every custody gate untouched.
+loom witness=ales_cue_seal_witness result=green digest=sha256 hex_len=64 build=first cases=5 reused=render_sheet+parse_sheet
+file lotus/cue_seal.rye ALES37 module — seal_sheet / verify_and_parse over the ALES22 cue sheet, the ALES34 rack seal generalized to the arrangement map
+file tools/ales_cue_seal_witness.rish the witness that builds and proves it GREEN on metal
+file active-designing/20260814-153033_fill-ales37-lotus-cue-seal.md the self-approved design read for the round
+file lotus/README.md front door synced — status list, ALES37 rung entry, road-on paragraph, stamp
+recommend keep-going ALES38 can bundle the rack and the cue sheet over one master into a single sealed session file (save a whole project), or refactor the now-general seal into one shared place both wrappers call; the SIGNED carry (Kumara key) and the ALES0-wire carry stay module seams for Keaton's word
