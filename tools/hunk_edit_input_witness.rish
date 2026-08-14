@@ -29,25 +29,16 @@ assert build.ok else "hunk-edit-input: build failed — ${build.err}"
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "hunk-edit-input: selftest exited non-zero — ${selftest.out}"
 
+# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# single-quoted string, so an apostrophe in the GREEN line can never break a check (the loom for REDS #75).
 let out = trim selftest.out
 say "hunk-edit-input: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-edit-input' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-edit-input: selftest did not print the GREEN edit-input line"
-
-let commit = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the viewed image is exactly that verb byte-for-byte' && echo yes"]
-assert (trim commit.out) == "yes" else "hunk-edit-input: a committed gesture did not apply exactly its verb"
-
-let walk = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'undo walks the depth back to the original recovered byte-for-byte and redo rolls forward' && echo yes"]
-assert (trim walk.out) == "yes" else "hunk-edit-input: undo/redo gestures did not walk the history byte-for-byte"
-
-let clamp = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'clamp as no-ops' && echo yes"]
-assert (trim clamp.out) == "yes" else "hunk-edit-input: a gesture at an edge did not clamp as a no-op"
-
-let forget = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'forgets the redo tail' && echo yes"]
-assert (trim forget.out) == "yes" else "hunk-edit-input: a commit while rewound did not forget the redo tail"
-
-let ceiling = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'still refuses TooManyEdits through the seam' && echo yes"]
-assert (trim ceiling.out) == "yes" else "hunk-edit-input: the list ceiling did not refuse through the seam"
+assert out contains "GREEN image-edit-input" else "hunk-edit-input: selftest did not print the GREEN edit-input line"
+assert out contains "the viewed image is exactly that verb byte-for-byte" else "hunk-edit-input: a committed gesture did not apply exactly its verb"
+assert out contains "undo walks the depth back to the original recovered byte-for-byte and redo rolls forward" else "hunk-edit-input: undo/redo gestures did not walk the history byte-for-byte"
+assert out contains "clamp as no-ops" else "hunk-edit-input: a gesture at an edge did not clamp as a no-op"
+assert out contains "forgets the redo tail" else "hunk-edit-input: a commit while rewound did not forget the redo tail"
+assert out contains "still refuses TooManyEdits through the seam" else "hunk-edit-input: the list ceiling did not refuse through the seam"
 
 say "hunk-edit-input: GREEN — the Photos app takes a gesture: a committed verb applies exactly, undo and redo walk byte-for-byte, both edges clamp as no-ops, a fresh commit forgets the road not taken, the ceiling still refuses; no network, no key, no funds."

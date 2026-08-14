@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260813.204200
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title REDS #76 — the apostrophe lantern becomes a loom: witnesses check claims with native contains
+prompt Continue the autonomous loop — after HUNK48/49, honor reds-first on the recurring apostrophe lantern that fired a fifth time.
+think The apostrophe-in-GREEN-line red fired again at HUNK49 (the witness assertion went RED while the binary plainly printed GREEN). The HUNK39/40/42/43 logs each booked it and each fixed it the same reflexive way — strip the apostrophe from the print line. Reds-first: a lantern that fires this many times should become a loom, a structural fix, not a fifth reflex.
+think The root cause is `run ["sh" "-c" "printf '%s' '${out}' | grep -q '…'"]` — interpolating the selftest output into a shell single-quoted string, so any apostrophe in the output closes the quote early and mangles the printf. The fix is to never route the output through a shell at all.
+think Rishi has a native `str contains "needle"` operator (already used across many witnesses). The output is a Rishi value, never a shell string, so an apostrophe in the haystack can never break a check. Converted both HUNK48 and HUNK49 witnesses from the printf-grep form to `assert out contains "…"`.
+obs Proved the loom on metal, not by claim: restored the natural apostrophe (`cursor's applied prefix`) to the HUNK49 selftest GREEN line and reran the witness — it passes WITH the apostrophe present, where the printf-grep form would have failed. The apostrophe red class is closed for any witness that adopts the convention.
+obs Booked REDS #76 (row 75 was already taken by the stamp-fabrication red) with all three fields, and tightened the row to keep REDS.md under its living_pin_max_bytes bound (24435 < 24576). The convention henceforth: check witness claims with native contains, never printf-grep over interpolated output. A later sweep could convert the older HUNK witnesses too; this round establishes and proves the convention.
+loom witness=hunk_edit_touch_view_witness apostrophe_in_green=true check=native_contains result=GREEN reds_bytes=24435 bound=24576
+file tools/hunk_edit_input_witness.rish claims checked with native contains — apostrophe-proof.
+file tools/hunk_edit_touch_view_witness.rish claims checked with native contains; passes with an apostrophe in the GREEN line.
+file brushstroke/edit_touch_view.rye GREEN line's natural apostrophe restored to prove the loom on metal.
+file work-in-progress/REDS.md REDS #76 booked — the lantern named a loom, three fields, under bound.
+file work-in-progress/REMEMBER.md git nib refreshed in this same work commit.
+recommend keep-going — the recurring apostrophe red is now closed structurally for adopting witnesses. Next: convert the older HUNK scroll witnesses to native contains on touch (a ratchet, not a sweep), bind a raw touch to the edit surface (HUNK50), or open a fresh Season-A / double-seat journey. Custody gates stay Keaton's.
