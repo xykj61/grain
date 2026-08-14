@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260813.224414
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention · ai-jail · Vultr SEA VPS
+title HUNK66 — the unified Photos editor
+prompt Keep going Lindy-first crux-first on the Season A Photos journey; approve own design rounds; send each finished increment.
+think The crop sub-arc (HUNK60-62) and the filter sub-arc (HUNK63-65) each built a whole tool with its OWN history. A photo app has ONE history — crop, filter, undo the filter, undo the crop, one stack. This capstone unifies them; it is the highest-Lindy move on the journey (the app's whole editing surface).
+think The assembly-identity seam that held the marketplace checkpoint does NOT bite here: crop_editor and filter_picker both live in brushstroke/ and both import edit_cursor.rye via the same ../image symlink path, so the shared EditCursor is one type. PhotosEditor owns one cursor; the crop side drives a CropGesture re-synced to the current view, the filter side a stock PresetBook + selection; commit_crop and commit_filter both push onto that one cursor.
+think Proven that edits interleave in ONE history and chain in EITHER order: crop then mono (view = mono over the cropped image byte-for-byte), and mono then crop (view = crop of the grayscale byte-for-byte); undo walks back the filter then the crop across both tools (the crop frame following via resync_gesture) and recovers the source; redo rolls both forward. NoRect and EmptyImage fold through.
+obs Built and ran GREEN on the first try. resync_gesture after a filter commit is dimensionally a no-op (a filter keeps the size) yet still clears stale drag state, so the two tools never confuse each other.
+obs brushstroke/ already on the TAME roster; tame_style_scan_bans GREEN, width exit 0. Four HUNK rungs this session (63 picker, 64 strip, 65 tap, 66 editor), each sent to origin + xykj61 as its own signed round.
+loom witness=hunk_photos_editor_witness build=ok selftest=green history_depth=2 filters=9 both_orders=green
+file brushstroke/photos_editor.rye PhotosEditor — crop and filter over ONE EditCursor; commit_crop/commit_filter interleave, undo/redo walk both
+file tools/hunk_photos_editor_witness.rish builds the module and checks the GREEN claims on metal
+recommend check-in (Claude) — the crop+filter sub-arcs are unified behind one history, a natural Photos-app capstone; the next crux (a served/content-addressed editing session across the pond/apps↔brushstroke assembly seam, or a new Season-A journey) crosses a design seam worth a ruling. Hardware buys stay custody gates #2/#3.

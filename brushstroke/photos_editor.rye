@@ -1,0 +1,352 @@
+//! brushstroke/photos_editor.rye — HUNK66: the Photos editor — crop and filter, one history behind both tools.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK66.
+//! Design read: active-designing/20260813-222956_hunk-filter-picker-exploration.md ("The road on from here")
+//! Teacher, thanked clean-room: the single editing surface of a photo app (iCloud Photos / Google Photos) — crop and
+//! filter are two tools over ONE undo stack, so a keeper crops, filters, and undoes across both without a seam (concept
+//! only, siloed).
+//!
+//! The crop sub-arc (HUNK60–62) and the filter sub-arc (HUNK63–65) each built a whole tool with its own history. Yet a
+//! photo app has ONE history: a keeper crops, then filters, then undoes the filter, then the crop, in one stack. This
+//! rung unifies them. `PhotosEditor` owns the immutable `source` and ONE `EditCursor` (HUNK16); the crop side drives a
+//! `CropGesture` re-synced to the current view (HUNK60/62), the filter side a stock `PresetBook` and a selection (HUNK63);
+//! `commit_crop` and `commit_filter` both push onto the SAME cursor, so crop and filter edits interleave in one
+//! non-destructive history and `undo`/`redo` walk across both. A pure composition over five proven seams; it invents no
+//! pixel op and two honest refusals folded through — `NoRect` (a crop drag that named no area) and `EmptyImage` (a
+//! zero-dimension source at open). The source is never mutated. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/photos_editor.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const edits = @import("photo_edits.rye");
+const photos = @import("photos.rye");
+const edit_cursor = @import("edit_cursor.rye");
+const edit_preview = @import("edit_preview.rye");
+const crop_gesture = @import("crop_gesture.rye");
+const crop_overlay = @import("crop_overlay.rye");
+const filter_preset = @import("filter_preset.rye");
+const skate = @import("skate_grid.rye");
+
+pub const photos_editor_version = "20260813.224500";
+
+pub const PhotosEditorError = error{
+    EmptyImage,
+};
+
+/// The whole Photos editing surface over one source image: it owns the immutable `source`, ONE `EditCursor` (the
+/// non-destructive history both tools commit into), a `CropGesture` re-synced to the current view (the crop tool), and a
+/// stock `PresetBook` plus a `selection` (the filter tool). The governing law: crop and filter both push onto the SAME
+/// cursor, so their edits interleave in one history and undo/redo walk across both — after every commit, undo, or redo,
+/// the crop gesture re-opens over the view the cursor now yields, so a dragged rectangle is always measured on-screen.
+pub const PhotosEditor = struct {
+    source: *const qoi.Pixmap,
+    cursor: edit_cursor.EditCursor,
+    gesture: crop_gesture.CropGesture,
+    book: filter_preset.PresetBook,
+    selection: u32,
+    cols: u32,
+    rows: u32,
+
+    /// Open the editor over `source`, painting overlays and previews into a `cols`×`rows` grid. The cursor opens empty
+    /// (the current view is the source), the crop gesture frames the whole source, the filter selection opens on the
+    /// first stock filter. Refuses `EmptyImage` for a zero-dimension source before any book is built.
+    pub fn open(source: *const qoi.Pixmap, cols: u32, rows: u32) !PhotosEditor {
+        if (source.width == 0 or source.height == 0) return error.EmptyImage;
+        // invariant: a well-formed source carries exactly four bytes per pixel — the whole pipeline relies on it.
+        assert(source.pixels.len == @as(usize, source.width) * @as(usize, source.height) * 4);
+        const gesture = try crop_gesture.CropGesture.open(source.width, source.height);
+        // invariant: the fresh gesture frames the whole source.
+        assert(gesture.width == source.width);
+        const book = try filter_preset.stock_book();
+        // invariant: the stock book is non-empty, so the opening selection names a real filter.
+        assert(book.len() > 0);
+        return PhotosEditor{
+            .source = source,
+            .cursor = edit_cursor.EditCursor.init(),
+            .gesture = gesture,
+            .book = book,
+            .selection = 0,
+            .cols = cols,
+            .rows = rows,
+        };
+    }
+
+    /// The picture a keeper currently sees — the source with every committed edit (crop or filter) applied (HUNK16). A
+    /// fresh allocation; the source is never mutated.
+    pub fn current_view(self: *const PhotosEditor, allocator: std.mem.Allocator) !qoi.Pixmap {
+        return edit_cursor.view(allocator, self.source, &self.cursor);
+    }
+
+    /// Re-open the crop gesture over the current view's dimensions — the one call that keeps the crop frame matched to the
+    /// picture after the history moves (any commit, undo, redo). A filter never changes the dimensions, yet the re-sync
+    /// still clears any stale pending drag, so the two tools never confuse each other's state.
+    fn resync_gesture(self: *PhotosEditor, allocator: std.mem.Allocator) !void {
+        const v = try self.current_view(allocator);
+        self.gesture = try crop_gesture.CropGesture.open(v.width, v.height);
+        // invariant: the gesture now frames exactly the current view.
+        assert(self.gesture.width == v.width);
+        assert(self.gesture.height == v.height);
+    }
+
+    // --- the crop tool -------------------------------------------------------------------------------------------
+
+    /// A finger presses at view pixel `(x, y)` for a crop drag — delegate to the gesture (its arming and clamps).
+    pub fn finger_down(self: *PhotosEditor, x: i32, y: i32) void {
+        self.gesture.finger_down(x, y);
+    }
+
+    /// The crop finger sweeps — delegate to the gesture.
+    pub fn finger_move(self: *PhotosEditor, x: i32, y: i32) void {
+        self.gesture.finger_move(x, y);
+    }
+
+    /// The crop finger lifts — delegate to the gesture.
+    pub fn finger_up(self: *PhotosEditor, x: i32, y: i32) void {
+        self.gesture.finger_up(x, y);
+    }
+
+    /// Paint the current view with the pending crop rectangle outlined over it (HUNK61). Refuses `NoRect` when the drag
+    /// named no area. Pure — the source is never mutated.
+    pub fn crop_overlay_grid(self: *const PhotosEditor, allocator: std.mem.Allocator) !skate.Grid {
+        const v = try self.current_view(allocator);
+        // invariant: the overlay frames the very view the gesture was opened over.
+        assert(v.width == self.gesture.width);
+        return crop_overlay.crop_overlay(allocator, &v, &self.gesture, self.cols, self.rows);
+    }
+
+    /// Commit the pending crop onto the shared history: push the dragged rectangle as a `.crop` edit (HUNK16), then
+    /// re-sync the gesture over the newly cropped view so a later crop chains. Refuses `NoRect` for a drag that named no
+    /// area — nothing is pushed. Returns the committed edit.
+    pub fn commit_crop(self: *PhotosEditor, allocator: std.mem.Allocator) !edits.Edit {
+        // invariant: the cursor stands within its history before the commit.
+        assert(self.cursor.position <= self.cursor.list.count);
+        const e = try self.gesture.as_edit(); // NoRect if the drag named no area — nothing is pushed
+        try self.cursor.push(e);
+        // invariant: the committed crop is the live edge.
+        assert(self.cursor.position == self.cursor.list.count);
+        try self.resync_gesture(allocator);
+        return e;
+    }
+
+    // --- the filter tool -----------------------------------------------------------------------------------------
+
+    /// How many filters the editor can choose among — the stock book's held count.
+    pub fn filter_count(self: *const PhotosEditor) u32 {
+        // invariant: the selection never names a filter the book does not hold.
+        assert(self.selection < self.book.len());
+        return self.book.len();
+    }
+
+    /// The name of the filter currently under the finger — a slice into the book's own storage.
+    pub fn selected_filter(self: *const PhotosEditor) []const u8 {
+        // invariant: the selection stays within the held book.
+        assert(self.selection < self.book.len());
+        return self.book.at(self.selection).name();
+    }
+
+    /// Walk the filter selection one forward, clamping at the last (a carousel that never falls off the end).
+    pub fn select_next(self: *PhotosEditor) void {
+        // invariant: the selection stands within the book before a step.
+        assert(self.selection < self.book.len());
+        if (self.selection + 1 < self.book.len()) self.selection += 1;
+        // invariant: the step never runs past the last filter.
+        assert(self.selection < self.book.len());
+    }
+
+    /// Walk the filter selection one back, clamping at the first without underflow.
+    pub fn select_prev(self: *PhotosEditor) void {
+        // invariant: the selection stands within the book before a step.
+        assert(self.selection < self.book.len());
+        if (self.selection > 0) self.selection -= 1;
+        // invariant: the selection never falls below the first filter.
+        assert(self.selection < self.book.len());
+    }
+
+    /// Jump the filter selection to `target`, clamping to the last filter.
+    pub fn select_to(self: *PhotosEditor, target: u32) void {
+        const last = self.book.len() - 1;
+        self.selection = if (target > last) last else target;
+        // invariant: the sought selection names a real filter.
+        assert(self.selection < self.book.len());
+    }
+
+    /// Preview the SELECTED filter over the CURRENT view (HUNK13, pure). A fresh Skate grid; the source is never mutated.
+    pub fn filter_preview(self: *const PhotosEditor, allocator: std.mem.Allocator) !skate.Grid {
+        const v = try self.current_view(allocator);
+        // invariant: the previewed view is a well-formed image the recipe can replay over.
+        assert(v.pixels.len == @as(usize, v.width) * @as(usize, v.height) * 4);
+        return edit_preview.preview(allocator, &v, &self.book.at(self.selection).list, self.cols, self.rows);
+    }
+
+    /// Commit the selected filter onto the shared history: push its whole recipe (each verb in book order, HUNK16), then
+    /// re-sync the crop gesture over the current view. Returns how many edits the recipe pushed. A stock recipe never
+    /// refuses on a well-formed image, so a committed filter always lands.
+    pub fn commit_filter(self: *PhotosEditor, allocator: std.mem.Allocator) !u32 {
+        // invariant: the cursor stands within its history before the commit.
+        assert(self.cursor.position <= self.cursor.list.count);
+        const recipe = &self.book.at(self.selection).list;
+        const pushed = recipe.len();
+        var i: u32 = 0;
+        while (i < pushed) : (i += 1) {
+            // invariant: each verb is read only from within the recipe.
+            assert(i < recipe.len());
+            try self.cursor.push(recipe.at(i));
+        }
+        // invariant: the whole recipe is the live edge, no redo tail remains.
+        assert(self.cursor.position == self.cursor.list.count);
+        try self.resync_gesture(allocator);
+        return pushed;
+    }
+
+    // --- the shared history --------------------------------------------------------------------------------------
+
+    /// Step one edit back across BOTH tools (HUNK16 undo — a no-op at the original), then re-sync the crop frame to the
+    /// restored view. Edit-granular: a two-verb filter walks in two undos.
+    pub fn undo(self: *PhotosEditor, allocator: std.mem.Allocator) !void {
+        self.cursor.undo();
+        try self.resync_gesture(allocator);
+    }
+
+    /// Step one edit forward across both tools (HUNK16 redo — a no-op at the live edge), then re-sync the crop frame.
+    pub fn redo(self: *PhotosEditor, allocator: std.mem.Allocator) !void {
+        self.cursor.redo();
+        try self.resync_gesture(allocator);
+    }
+};
+
+// --- selftest: an 8x8 gradient source — a crop then a filter chain in ONE history, undo/redo walk across both tools, a
+//     filter then a crop chains the other order, a bare crop refuses NoRect, and a zero-dimension source refuses --------
+
+fn craft_gradient(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 8;
+    const h: u32 = 8;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            buf[off] = @intCast(x * 20 + 10); // r — a per-column gradient
+            buf[off + 1] = @intCast(y * 20 + 10); // g — a per-row gradient
+            buf[off + 2] = @intCast(((x + y) * 12) & 0xff); // b — a diagonal, so a filter's colour work shows
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const pm = try craft_gradient(garden);
+    var ed = try PhotosEditor.open(&pm, 8, 8);
+    assert(ed.filter_count() == 9);
+
+    // A crop then a filter chain in ONE history: drag (2,2)->(6,6), commit the crop, then select and commit "mono".
+    ed.finger_down(2, 2);
+    ed.finger_move(6, 6);
+    ed.finger_up(6, 6);
+    {
+        const e = try ed.commit_crop(garden);
+        switch (e) {
+            .crop => |c| {
+                assert(c.w == 4);
+                assert(c.h == 4);
+            },
+            else => return error.NotACrop,
+        }
+        assert(ed.cursor.position == 1);
+        assert(ed.gesture.width == 4); // the crop gesture re-opened over the 4x4 cropped view
+    }
+    ed.select_to(2); // "mono"
+    assert(std.mem.eql(u8, ed.selected_filter(), "mono"));
+    {
+        const pushed = try ed.commit_filter(garden);
+        assert(pushed == 1);
+        assert(ed.cursor.position == 2); // one history: crop at 1, filter at 2
+        const v = try ed.current_view(garden);
+        const cropped = try photos.crop(garden, &pm, 2, 2, 4, 4);
+        const expected = try filter_preset.apply_preset(garden, &ed.book, "mono", &cropped);
+        assert(v.same_bytes(&expected)); // crop then filter, chained in one history
+    }
+
+    // Undo walks back the FILTER (view returns to the bare crop), then the CROP (view returns to the source) — one stack
+    // across both tools. Redo returns.
+    {
+        try ed.undo(garden);
+        assert(ed.cursor.position == 1);
+        const back = try ed.current_view(garden);
+        const cropped = try photos.crop(garden, &pm, 2, 2, 4, 4);
+        assert(back.same_bytes(&cropped)); // the filter walked back, the crop remains
+        assert(ed.gesture.width == 4); // the crop frame followed the view back
+
+        try ed.undo(garden);
+        assert(ed.cursor.position == 0);
+        const src = try ed.current_view(garden);
+        assert(src.same_bytes(&pm)); // the crop walked back too — the source recovered byte-for-byte
+        assert(ed.gesture.width == 8);
+
+        try ed.redo(garden);
+        try ed.redo(garden);
+        assert(ed.cursor.position == 2);
+        const fwd = try ed.current_view(garden);
+        const cropped2 = try photos.crop(garden, &pm, 2, 2, 4, 4);
+        const expected = try filter_preset.apply_preset(garden, &ed.book, "mono", &cropped2);
+        assert(fwd.same_bytes(&expected)); // both edits rolled forward again unchanged
+    }
+
+    // The other order chains too: a FILTER then a CROP in one history — filter "mono" over the whole 8x8, then crop it.
+    {
+        var ed2 = try PhotosEditor.open(&pm, 8, 8);
+        ed2.select_to(2); // "mono"
+        _ = try ed2.commit_filter(garden);
+        assert(ed2.cursor.position == 1);
+        assert(ed2.gesture.width == 8); // the gesture re-synced over the still-8x8 grayscale view
+        ed2.finger_down(1, 1);
+        ed2.finger_move(5, 5);
+        ed2.finger_up(5, 5);
+        _ = try ed2.commit_crop(garden);
+        assert(ed2.cursor.position == 2);
+        const v = try ed2.current_view(garden);
+        const gray = try filter_preset.apply_preset(garden, &ed2.book, "mono", &pm);
+        const expected = try photos.crop(garden, &gray, 1, 1, 4, 4);
+        assert(v.same_bytes(&expected)); // filter then crop, chained in one history
+    }
+
+    // A bare crop (a tap, no drag) refuses NoRect — nothing is pushed onto the shared history.
+    {
+        var ed3 = try PhotosEditor.open(&pm, 8, 8);
+        ed3.finger_down(3, 3);
+        ed3.finger_up(3, 3);
+        if (ed3.commit_crop(garden)) |_| return error.RectSlipped else |e| {
+            if (e != error.NoRect) return error.WrongRect;
+        }
+        assert(ed3.cursor.position == 0);
+    }
+
+    // A zero-dimension source refuses EmptyImage at open.
+    {
+        const empty = qoi.Pixmap{ .width = 0, .height = 8, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+        if (PhotosEditor.open(&empty, 8, 8)) |_| return error.EmptyImageSlipped else |e| {
+            if (e != error.EmptyImage) return error.WrongEmpty;
+        }
+    }
+
+    print("GREEN photos-editor: an 8x8 gradient source — a crop (2,2)->(6,6) then a filter mono chain in ONE history " ++
+        "(the view crop-then-filter byte-for-byte); undo walks back the filter then the crop across both tools (the " ++
+        "crop frame following) and recovers the source byte-for-byte, redo rolls both forward again; the other order " ++
+        "(filter mono then a crop) chains in one history too; a bare crop refuses NoRect and a zero-dimension source " ++
+        "refuses EmptyImage. HUNK62 crop, HUNK63 filter, HUNK16 cursor GREEN beneath; no network, no key, no funds\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: photos_editor selftest\n", .{});
+    return 1;
+}
