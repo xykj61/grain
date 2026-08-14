@@ -1,0 +1,43 @@
+# tools/hunk_filter_picker_witness.rish — the filter picker tool, on metal (HUNK63).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK63.
+# Design read: active-designing/20260813-222956_hunk-filter-picker-exploration.md.
+# Teacher, thanked clean-room: the filter carousel of a photo app (iCloud Photos / Instagram / VSCO) — a keeper swipes
+# through named filters, sees each over their own photo, and commits the one they like (concept only, siloed).
+#
+# The crop sub-arc (HUNK60–62) made cropping a whole tool. This rung lands the second central Photos gesture — choosing
+# a filter — as the exact parallel: FilterPicker walks the stock filters (HUNK30), previews the selected one over the
+# current view (HUNK33), and commits its whole recipe into the non-destructive history (HUNK16) so filters chain and
+# walk with undo/redo. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_filter_picker_witness.rish
+
+say "hunk-filter-picker: Language EN — HUNK63 ties the stock filter book (HUNK30), the named preview (HUNK33), and the edit cursor (HUNK16) into a complete filter tool; swipe selects, preview shows, commit joins the history, undo/redo walk it."
+say "hunk-filter-picker: Style Radiant — choosing a filter is finally a whole tool: a keeper walks the filters, sees each over their own picture, keeps the one they like, chains another, and undoes to the source byte-for-byte — nothing ever lost."
+say "hunk-filter-picker: Lens TAME — a pure composition over four proven seams; the selection clamps to the book's ends, a commit pushes the recipe into the shared history, the source is never mutated; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/filter_picker"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/filter_picker.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-filter-picker: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-filter-picker: selftest exited non-zero — ${selftest.out}"
+
+# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# single-quoted string, so an apostrophe or brace in the GREEN line can never break a check (the loom for REDS #76).
+let out = trim selftest.out
+say "hunk-filter-picker: ${out}"
+
+assert out contains "GREEN filter-picker" else "hunk-filter-picker: selftest did not print the GREEN filter-picker line"
+assert out contains "walks the nine stock filters (clamping at both ends)" else "hunk-filter-picker: the selection did not walk or clamp"
+assert out contains "previews the selected filter over the current view cell-for-cell (no drift)" else "hunk-filter-picker: the preview drifted from the recipe"
+assert out contains "the view the named filter byte-for-byte" else "hunk-filter-picker: the commit was not the named filter"
+assert out contains "the view the two recipes in order" else "hunk-filter-picker: filters did not chain"
+assert out contains "recovers the source byte-for-byte (non-destructive throughout)" else "hunk-filter-picker: the history was not non-destructive"
+assert out contains "commits two edits and one undo steps back a single verb" else "hunk-filter-picker: the edit-granular commit did not hold"
+assert out contains "a zero-dimension image refuses EmptyImage" else "hunk-filter-picker: a zero-dimension image did not refuse EmptyImage"
+
+say "hunk-filter-picker: GREEN — the filter tool walks the stock filters (clamping), previews the selected filter over the current view with no drift, commits a named filter into the history byte-for-byte, chains a second over it, walks them with undo/redo, recovers the source byte-for-byte, and refuses a zero-dimension image EmptyImage; no network, no key, no funds."

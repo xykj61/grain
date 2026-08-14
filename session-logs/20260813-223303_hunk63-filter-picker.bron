@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260813.223303
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention · ai-jail · Vultr SEA VPS
+title HUNK63 — the filter picker tool
+prompt Take the next agent-doable lap Lindy-first crux-first on the Season A road; approve own design rounds; send each finished increment; stop at custody gates.
+think Read the itinerary + double-seat expansion + the REMEMBER latest-lap prose. The crop sub-arc (HUNK60-62) closed a whole tool; the itinerary names cropping PLUS the common iCloud/Google Photos gestures. The second central gesture is choosing a filter.
+think Lindy-first crux-first: a filter picker is the app's second central editing act (read thousands of times), outweighing another history-surface refinement. Every seam already stands — HUNK30 stock book, HUNK33 named preview, HUNK16 non-destructive cursor, HUNK11 vocabulary — so the crux is composing them into a tool a keeper drives, exactly paralleling CropEditor.
+think Design self-approved: FilterPicker owns source + stock PresetBook + EditCursor + a clamped selection. select_next/prev/to walk the carousel; preview shows the selected filter over the CURRENT view; commit pushes the whole recipe (each verb in book order) into the shared history so filters chain and walk with undo/redo. Edit-granular commit chosen as the honest shape (noir = two edits, one undo steps one verb), matching the edit-list vocabulary rather than hiding a preset behind one opaque undo.
+think Confirmed the crop-editor witness builds+runs GREEN before writing, so the toolchain was known-good. brushstroke/ already symlinks qoi/photo_edits/filter_preset/edit_cursor and holds edit_preview/skate_grid real — every import resolves.
+obs Witness first failed only on Rishi string escaping — `assert out contains "...\"mono\"..."` treats backslash-quote literally, so the quoted claims never matched; the selftest itself was already GREEN. Fixed by matching quote-free substrings of the GREEN line. Lesson: keep witness `contains` needles free of embedded double-quotes.
+obs brushstroke/ is already on the TAME scan roster (REDS #76 widened it), so the new file was scanned without a roster change; tame_style_scan_bans GREEN, width-check exit 0.
+loom witness=hunk_filter_picker_witness build=ok selftest=green presets=9 grid=4x4 commit_edits_noir=2
+file active-designing/20260813-222956_hunk-filter-picker-exploration.md the HUNK63 design round (self-approved), naming the road on (filter strip, swipe driver, unified Photos editor)
+file brushstroke/filter_picker.rye FilterPicker — walk stock filters, preview selected over current view, commit recipe into the shared history, chain + undo/redo
+file tools/hunk_filter_picker_witness.rish builds the module and checks the GREEN claims on metal
+recommend keep-going the filter strip under the picture (HUNK33 preview_book with the selection marked) or a swipe-gesture driver (HUNK50 finger law) — both agent-doable; hardware buys stay custody gates #2/#3
