@@ -1,0 +1,37 @@
+# tools/fora_prevote_witness.rish — a partitioned pier cannot disrupt a stable sky, pre-vote (FORA22).
+#
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# FORA22. Design read: active-designing/20260814-084500_fora22-constel-prevote-no-disruption.md
+#
+# constel/prevote.rye closes the liveness cost of FORA16's terms — Raft's §9.6: a pier partitioned away keeps incrementing its
+# term, and on rejoining its ballooned term forces a healthy leader to step down, disrupting a stable sky. Pre-vote is the fix: a
+# candidate must win a practice election (no node changing its term) before it may bump its real term. A peer pre-grants only when
+# it has lost the leader AND the candidate is up-to-date (FORA21's rule reused). The selftest proves: a peer pre-grants only when
+# both hold; A STABLE SKY IS NOT DISRUPTED — a majority still hearing a leader make a rejoining high-term candidate's pre-vote
+# fail, its real term unchanged; a genuinely leaderless sky does elect; a behind candidate fails even leaderless; the term bumps
+# exactly once and only on success; bounded. Purely local — no socket, no network, no keys, no funds, no real address ever formed.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/fora_prevote_witness.rish
+
+say "fora-prevote: Language EN — FORA22 closes the liveness cost of monotonic terms (Raft §9.6): a candidate must win a practice election, in which no node changes its term, before it may bump its real term — so a partitioned pier's ballooned term can never force a healthy leader to step down."
+say "fora-prevote: Style Radiant — a sky that is well is left well, and a pier long gone rejoins without asking the whole sky to begin again."
+say "fora-prevote: Lens TAME — pre_grants requires leader-silence AND at_least_as_current (FORA21); pre_vote_passes and maybe_start_election are bounded to the roster and never bump the real term on a failed pre-vote; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "constel/bin/prevote"
+
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/prevote.rye -femit-bin=${bin}"]
+assert build.ok else "fora-prevote: build failed — ${build.err}"
+
+let outfile = "constel/bin/prevote.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "fora-prevote: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "fora-prevote: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN fora-prevote' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "fora-prevote: selftest did not print the GREEN fora-prevote line"
+
+say "fora-prevote: GREEN — a partitioned pier cannot disrupt a stable sky; the constel consensus track now bumps a real term only after a pre-vote passes, keeping a healthy leader in place through a rejoining node's ballooned term, proven pure on the bench."
