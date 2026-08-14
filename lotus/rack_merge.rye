@@ -1,0 +1,234 @@
+//! lotus/rack_merge.rye — ALES35: two saved racks JOINED — a rack merge, and a sealed import. ALES30 gave a keeper a rack of named
+//! held spans; ALES33 let it travel as text, ALES34 sealed the text so it verifies before it is trusted. A keeper can now save a rack
+//! and load it back whole — yet a real session is stems gathered from many places (the count-in from yesterday, the chorus from an
+//! archived sheet), and loading a saved rack replaces nothing and JOINS nothing: verify_and_parse hands back a FRESH rack, standing
+//! alone. This rung is the missing gesture — MERGE: bring the named slots of one rack into another, so a keeper loads an archived
+//! sheet's stems INTO the session they are already working, without losing what the live rack already holds.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES35.
+//! Design read: active-designing/20260814-151927_fill-ales35-lotus-rack-merge.md
+//! Stands on: lotus/rack.rye (ALES30) — the Rack and its disjoint named Slots, grafted whole; lotus/rack_seal.rye (ALES34) —
+//! verify_and_parse reused WHOLE as the integrity gate before a sealed import; lotus/rack_sheet.rye (ALES33) — the sheet grammar the
+//! seal wraps. The merge adds naming-collision and ceiling bounds atop ALES30's proven disjoint slots, and no new edit.
+//!
+//! THE CRUX: merging src into dst grafts every named slot of src WHOLE into dst — atomic and disjoint. It refuses Duplicate on any name
+//! already held and RackFull if the union exceeds the ceiling, and on any refusal dst is left EXACTLY as it was; a grafted slot is
+//! byte-for-byte src's held audio, disjoint from every dst slot, and src is unchanged (a read). Two facts make this exact. Precheck
+//! before any write: every fault is decided before a single slot is copied (walk src's names, refuse Duplicate if dst holds any, refuse
+//! RackFull if the union overflows), and a plain value-struct copy cannot fail — so the writes are unconditional and the merge is
+//! all-or-nothing without a scratch rack. And a slot is a disjoint value: a rack.Slot embeds a whole ALES25 Clipboard with its own
+//! fixed buffers, so dst.slots[dst.count] = src.slots[i] copies the held audio into dst's own storage, depending on no src memory.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Grafting fixed-array value structs in process, siloed to lotus/. A signed carry (who
+//! wrote a rack, via a Kumara key) and the ALES0-wire carry stay later seams on Keaton's word. No socket, no network, no keys, no
+//! funds, no real device, no real meter, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/rack_merge.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const selection = @import("selection.rye");
+const rack = @import("rack.rye");
+const rack_seal = @import("rack_seal.rye");
+
+pub const rack_merge_version = "20260814.151927";
+
+/// The merge forwards exactly ALES30's rack faults — Duplicate when a src name is already held in dst, RackFull when the union exceeds
+/// the ceiling. It names no new fault: the merge adds only collision and ceiling checks over ALES30's proven disjoint slots.
+pub const RackMergeError = rack.RackError;
+
+/// The error set of a sealed import — the seal's integrity faults (DigestMismatch / BadRecord / Overflow) plus the merge's naming and
+/// ceiling faults, each refused by name before dst is touched.
+pub const RackImportError = rack_seal.RackSealError || RackMergeError;
+
+/// Merge `src` into `dst` — graft every named slot of `src` whole into `dst`, atomic and disjoint. Refuses Duplicate if any src name is
+/// already held in dst, and RackFull if the union would exceed max_slots; on any refusal dst is left EXACTLY as it was (all-or-nothing).
+/// A grafted slot is byte-for-byte src's held audio in dst's own storage, disjoint from every dst slot and from src; src is unchanged.
+/// So a keeper joins a saved rack's stems into the session they are already working.
+pub fn merge(dst: *rack.Rack, src: *const rack.Rack) RackMergeError!void {
+    // invariant: both racks stand within their named ceiling on entry.
+    assert(dst.count <= rack.max_slots and src.count <= rack.max_slots);
+
+    // PRECHECK before any write — decide every fault first, so the copies below are unconditional and the merge is all-or-nothing.
+    // The union must fit the ceiling. dst.count + src.count is at most max_slots + max_slots, well within u32.
+    if (dst.count + src.count > rack.max_slots) return error.RackFull;
+    // No src name may already be held in dst — a collision refuses Duplicate before a single slot is grafted.
+    var i: u32 = 0;
+    while (i < src.count) : (i += 1) {
+        if (rack.find(dst, rack.name_of(src, i)) != null) return error.Duplicate;
+    }
+    // invariant: every src name was checked against dst and none collided.
+    assert(i == src.count);
+
+    // GRAFT — every check passed, so copy each src slot whole into dst. A plain value-struct copy carries the name and the whole ALES25
+    // clipboard into dst's own storage; it cannot fail, so the merge completes once begun.
+    const before = dst.count;
+    var k: u32 = 0;
+    while (k < src.count) : (k += 1) {
+        dst.slots[dst.count] = src.slots[k];
+        dst.count += 1;
+    }
+    // invariant: dst grew by exactly src's slot count, and stays within the ceiling.
+    assert(dst.count == before + src.count and dst.count <= rack.max_slots);
+}
+
+/// Verify a sealed slot sheet and import its slots INTO `dst` — the integrity gate BEFORE the join. The sheet is verified through
+/// ALES34's verify_and_parse into a temporary rack (a corrupt sheet refuses DigestMismatch / BadRecord before it is trusted), then that
+/// verified rack is merged into `dst` atomically. On any refusal — a tampered sheet or a name collision — `dst` is left exactly as it
+/// was. So a keeper loads a VERIFIED archive's stems into a live session in one call.
+pub fn verify_and_import(text: []const u8, dst: *rack.Rack) RackImportError!void {
+    // invariant: dst stands within its ceiling on entry (the merge rechecks; this documents the contract).
+    assert(dst.count <= rack.max_slots);
+    var loaded = rack.Rack{};
+    try rack_seal.verify_and_parse(text, &loaded);
+    // The seal is verified whole; only now is the loaded rack joined into dst — and the merge stays all-or-nothing on a collision.
+    try merge(dst, &loaded);
+    // invariant: a completed import leaves dst within its ceiling.
+    assert(dst.count <= rack.max_slots);
+}
+
+// --- selftest: THE CRUX — a two-slot src merges whole into a two-slot dst, all four slots present and byte-for-byte, src unchanged; a
+//     merged slot is disjoint; a name collision refuses Duplicate and a union past the ceiling refuses RackFull, dst untouched each
+//     time; an empty src is a no-op; verify_and_import loads a sealed sheet and a tampered sheet refuses before a slot joins ----------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn slot_is(r: *const rack.Rack, name: []const u8, want_l: []const i16, want_r: []const i16) !void {
+    var m = pan.StereoClip{};
+    try rack.paste(r, name, &m, 0);
+    if (!eq(m.left.samples(), want_l)) return error.SlotLeftWrong;
+    if (!eq(m.right.samples(), want_r)) return error.SlotRightWrong;
+}
+
+/// Build a fresh two-slot rack "head"={1,2}/{-1,-2}, "tail"={4,5}/{-4,-5} from a shared source — the fixture every case starts from.
+fn two_slot(name0: []const u8, name1: []const u8) !rack.Rack {
+    var src = pan.StereoClip{};
+    try timeline.splice(&src.left, 0, &[_]i16{ 0, 1, 2, 3, 4, 5 });
+    try timeline.splice(&src.right, 0, &[_]i16{ 0, -1, -2, -3, -4, -5 });
+    var r = rack.Rack{};
+    try rack.copy_to(&r, name0, &src, try selection.make(&src, 1, 3));
+    try rack.copy_to(&r, name1, &src, try selection.make(&src, 4, 6));
+    return r;
+}
+
+fn run_selftest() !u8 {
+    // 1. THE CRUX — a two-slot src merges whole into a two-slot dst; dst holds all four names in fill order, each byte-for-byte, and
+    //    src is unchanged (a read).
+    {
+        var dst = try two_slot("head", "tail");
+        var src = try two_slot("verse", "chorus");
+        try merge(&dst, &src);
+        if (dst.size() != 4) return error.MergeCountWrong;
+        // dst's own slots stay first, in order, then src's grafted after — the join is append-order.
+        if (!std.mem.eql(u8, rack.name_of(&dst, 0), "head")) return error.MergeName0Wrong;
+        if (!std.mem.eql(u8, rack.name_of(&dst, 1), "tail")) return error.MergeName1Wrong;
+        if (!std.mem.eql(u8, rack.name_of(&dst, 2), "verse")) return error.MergeName2Wrong;
+        if (!std.mem.eql(u8, rack.name_of(&dst, 3), "chorus")) return error.MergeName3Wrong;
+        // every slot's audio is byte-for-byte the source span.
+        try slot_is(&dst, "head", &[_]i16{ 1, 2 }, &[_]i16{ -1, -2 });
+        try slot_is(&dst, "chorus", &[_]i16{ 4, 5 }, &[_]i16{ -4, -5 });
+        // src is unchanged — still its own two slots, no borrow.
+        if (src.size() != 2) return error.SrcMutatedCount;
+        try slot_is(&src, "verse", &[_]i16{ 1, 2 }, &[_]i16{ -1, -2 });
+    }
+
+    // 2. DISJOINT graft — a slot grafted into dst pastes identically to its source, and dropping it from src leaves dst's copy whole
+    //    (the graft depends on no src memory).
+    {
+        var dst = try two_slot("a", "b");
+        var src = try two_slot("c", "d");
+        try merge(&dst, &src);
+        // drop "c" from src AFTER the merge — dst's grafted "c" is untouched.
+        try rack.drop(&src, "c");
+        if (src.size() != 1) return error.DropSrcCountWrong;
+        try slot_is(&dst, "c", &[_]i16{ 1, 2 }, &[_]i16{ -1, -2 });
+    }
+
+    // 3. ATOMIC on collision — a src that shares one name with dst refuses Duplicate and leaves dst EXACTLY as it was; none of src's
+    //    non-colliding slots leak in.
+    {
+        var dst = try two_slot("head", "tail");
+        var src = try two_slot("verse", "tail"); // "tail" collides with dst
+        if (merge(&dst, &src)) |_| return error.CollisionSlipped else |e| if (e != error.Duplicate) return error.WrongCollision;
+        if (dst.size() != 2) return error.CollisionMutated;
+        // dst still holds exactly its own two, "verse" never leaked in.
+        if (rack.find(&dst, "verse") != null) return error.CollisionLeaked;
+        try slot_is(&dst, "head", &[_]i16{ 1, 2 }, &[_]i16{ -1, -2 });
+    }
+
+    // 4. ATOMIC on overflow — a union past max_slots refuses RackFull with dst untouched. Fill dst to max_slots-1, then merge a
+    //    two-slot src (union = max_slots+1).
+    {
+        var m = pan.StereoClip{};
+        try timeline.splice(&m.left, 0, &[_]i16{ 1, 2, 3 });
+        try timeline.splice(&m.right, 0, &[_]i16{ 1, 2, 3 });
+        var dst = rack.Rack{};
+        var n: u32 = 0;
+        while (n < rack.max_slots - 1) : (n += 1) {
+            const nm = [_]u8{ 'd', @intCast('0' + n) };
+            try rack.copy_to(&dst, &nm, &m, try selection.make(&m, 0, 2));
+        }
+        if (dst.size() != rack.max_slots - 1) return error.PreFillWrong;
+        var src = try two_slot("x", "y"); // 2 more → union is max_slots + 1
+        if (merge(&dst, &src)) |_| return error.OverflowSlipped else |e| if (e != error.RackFull) return error.WrongOverflow;
+        if (dst.size() != rack.max_slots - 1) return error.OverflowMutated;
+        if (rack.find(&dst, "x") != null) return error.OverflowLeaked;
+    }
+
+    // 5. EMPTY src — merging an empty rack is a no-op that leaves dst unchanged.
+    {
+        var dst = try two_slot("head", "tail");
+        var empty = rack.Rack{};
+        try merge(&dst, &empty);
+        if (dst.size() != 2) return error.EmptyMergeMutated;
+        try slot_is(&dst, "tail", &[_]i16{ 4, 5 }, &[_]i16{ -4, -5 });
+    }
+
+    // 6. SEALED IMPORT — verify_and_import loads a sealed sheet's slots into a live rack; a tampered sheet refuses DigestMismatch
+    //    BEFORE a single slot joins, dst untouched.
+    {
+        var archive = try two_slot("stem1", "stem2");
+        var text: [600]u8 = undefined;
+        const nbytes = try rack_seal.seal_rack(&archive, text[0..]);
+
+        // load into a live rack that already holds its own slot.
+        var live = try two_slot("live1", "live2");
+        try verify_and_import(text[0..nbytes], &live);
+        if (live.size() != 4) return error.ImportCountWrong;
+        try slot_is(&live, "stem1", &[_]i16{ 1, 2 }, &[_]i16{ -1, -2 });
+        try slot_is(&live, "live1", &[_]i16{ 1, 2 }, &[_]i16{ -1, -2 });
+
+        // a tampered sealed sheet refuses before any slot joins — the live rack is left exactly as it was.
+        var live2 = try two_slot("keep1", "keep2");
+        text[nbytes - 2] = if (text[nbytes - 2] == '5') '6' else '5';
+        if (verify_and_import(text[0..nbytes], &live2)) |_| return error.TamperImported else |e| if (e != error.DigestMismatch) return error.WrongTamperImport;
+        if (live2.size() != 2) return error.TamperImportMutated;
+        if (rack.find(&live2, "stem1") != null) return error.TamperImportLeaked;
+    }
+
+    print("GREEN ales-rack-merge: two saved racks JOINED — a rack merge, and a sealed import. THE CRUX: merging src into dst grafts " ++
+        "every named slot of src WHOLE into dst — atomic and disjoint: it refuses Duplicate on any name already held and RackFull if " ++
+        "the union exceeds the ceiling, and on any refusal dst is left exactly as it was; a grafted slot is byte-for-byte src's held " ++
+        "audio in dst's own storage, disjoint from every dst slot, src unchanged. Precheck before any write makes it all-or-nothing " ++
+        "without a scratch rack, and a rack.Slot is a disjoint value struct so the graft depends on no src memory. A two-slot src " ++
+        "merges whole into a two-slot dst (all four present, byte-for-byte, src untouched); a grafted slot survives a drop from src; " ++
+        "a name collision refuses Duplicate and a union past the ceiling refuses RackFull, dst untouched each time; an empty src is a " ++
+        "no-op; verify_and_import loads a sealed sheet's slots into a live rack and a tampered sheet refuses DigestMismatch before a " ++
+        "single slot joins. rack slots grafted whole and rack_seal.verify_and_parse reused whole; no signature, no socket, no " ++
+        "network, no keys, no funds, no real device, no real meter, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

@@ -1,0 +1,40 @@
+# tools/ales_rack_merge_witness.rish — two saved racks joined, sealed import (ALES35).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES35.
+# Design read: active-designing/20260814-151927_fill-ales35-lotus-rack-merge.md
+# Stands on: lotus/rack.rye (ALES30) — the Rack and its disjoint named Slots, grafted whole; lotus/rack_seal.rye (ALES34) —
+# verify_and_parse reused whole as the integrity gate before a sealed import; lotus/rack_sheet.rye (ALES33) — the sheet grammar.
+#
+# lotus/rack_merge.rye joins two racks: merge grafts every named slot of src whole into dst, atomic and disjoint. The crux: merging src
+# into dst refuses Duplicate on any name already held and RackFull if the union exceeds the ceiling, and on any refusal dst is left
+# exactly as it was; a grafted slot is byte-for-byte src's held audio in dst's own storage, disjoint from every dst slot, src unchanged.
+# verify_and_import composes ALES34's verify_and_parse with merge, so a keeper loads a VERIFIED sealed sheet's stems into a live
+# session in one call. The selftest proves: a two-slot src merges whole into a two-slot dst (all four present, byte-for-byte, src
+# untouched); a grafted slot survives a drop from src; a name collision refuses Duplicate and a union past the ceiling refuses
+# RackFull, dst untouched each time; an empty src is a no-op; verify_and_import loads a sealed sheet and a tampered sheet refuses
+# DigestMismatch before a single slot joins. Purely local — no signature, no keys, no network, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_rack_merge_witness.rish
+
+say "ales-rack-merge: Language EN — ALES35 gives Lotus the load/import gesture: a keeper gathers stems from many places, and merge joins a saved rack's named slots INTO the session they are already working, without losing what the live rack already holds; verify_and_import loads a VERIFIED sealed sheet in one call."
+say "ales-rack-merge: Style Radiant — the law is stated positively: merging src into dst grafts every named slot WHOLE, atomic and disjoint — it refuses Duplicate on any name already held and RackFull if the union overflows, and on any refusal dst is left exactly as it was; a grafted slot is byte-for-byte src's held audio in dst's own storage, src unchanged."
+say "ales-rack-merge: Lens TAME — precheck before any write makes the merge all-or-nothing without a scratch rack (a plain value-struct copy cannot fail once the checks pass); a rack.Slot is a disjoint value so the graft depends on no src memory; rack_seal.verify_and_parse reused whole as the integrity gate before a sealed import (a tampered sheet refuses DigestMismatch before a single slot joins); siloed to lotus/, no signature, no key, no network, no funds, no device, no meter, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/rack_merge"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/rack_merge.rye -femit-bin=${bin}"]
+assert build.ok else "ales-rack-merge: build failed — ${build.err}"
+
+let outfile = "lotus/bin/rack_merge.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-rack-merge: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-rack-merge: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-rack-merge' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-rack-merge: selftest did not print the GREEN ales-rack-merge line"
+
+say "ales-rack-merge: GREEN — a keeper joins a saved rack's stems into a live session: merge grafts every named slot whole, refusing Duplicate on a name collision and RackFull past the ceiling with dst untouched, and verify_and_import loads a sealed sheet's slots only after the digest verifies whole. The next Lotus rung can rename a slot in place (a collision-checked re-name) or carry more than one rack in a session file; the SIGNED carry (who wrote a rack, via a Kumara key) and the ALES0-wire carry stay module seams for Keaton's word."
