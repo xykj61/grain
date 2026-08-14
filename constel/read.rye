@@ -1,0 +1,235 @@
+//! constel/read.rye — FORA20: a linearizable READ that appends nothing (Raft §8, the read-index). FORA19 gave the ledger a
+//! write that runs exactly once. Yet a service is read far more than it is written, and a read has its own trap — the other half
+//! of §8:
+//!
+//!   A client asks a DEPOSED leader for the current value. That old leader still believes it leads; it answers from its own state
+//!   machine — a value the true sky has already moved past. The read is STALE, and no write rule catches it, because the read
+//!   never went through the log at all.
+//!
+//! Routing every read through the log as a no-op entry is correct and needlessly slow. Raft's real answer is the READ-INDEX — a
+//! linearizable read WITHOUT appending anything, resting on two facts a leader checks cheaply:
+//!
+//!   1. CONFIRM LEADERSHIP — a majority still holds the leader's term, so no newer leader has superseded it. This spends FORA16's
+//!      exact lemma: once a majority advances past term T, a leader in T is out-voted by construction, so a majority STILL at T
+//!      proves the leader current.
+//!   2. CAPTURE THE READ-INDEX — record the current commit index (FORA18's safe_commit_len) as the read's floor, apply the state
+//!      machine THROUGH it (FORA19's apply_through), and only then answer. The value returned reflects every write committed
+//!      before the read began.
+//!
+//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+//! FORA20. Design read: active-designing/20260814-084100_fora20-constel-read-index-linearizable-reads.md
+//! Stands on: constel/apply.rye (FORA19) — Machine and apply_through, the state a read observes; constel/term.rye (FORA16) —
+//! TermTable.at_least, leadership confirmation; constel/commit.rye (FORA18) — safe_commit_len derives the read-index (shown in the
+//! witness). Because apply_one is exactly-once, applying through a read-index the machine has already reached is a no-op — a read
+//! never double-applies and never writes.
+//!
+//! Purely LOCAL — a bounded in-memory Machine, a committed Command array, and a TermTable on one bench, siloed to constel/, run
+//! from inside the jailed pier. No socket, no network, no keys, no funds, no real client, no real address ever formed (custody
+//! gate #2 — real hardware / any real wire — and gate #4 — real Kumara — both untouched). A served read reaches the Comlink-served
+//! gate; the socket rung stays the maintainer's hand.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/read.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const apply = @import("apply.rye");
+const term = @import("term.rye");
+
+pub const read_version = "20260814.084100";
+
+const Machine = apply.Machine;
+const Command = apply.Command;
+const max_commands = apply.max_commands;
+
+pub const ReadError = error{
+    /// The leader could not confirm a majority still holds its term — a newer leader may have superseded it, so it must not serve
+    /// a read. The deposed-leader stale read is refused at its root.
+    NotLeader,
+    /// A read-index past the committed command stream — a read never reflects more than the log has committed.
+    ReadIndexPastLog,
+};
+
+/// CONFIRM LEADERSHIP (FORA16's lemma, in one line): a strict majority has NOT advanced past the leader's term, so those piers
+/// still recognize it and no newer leader holds a majority. A pier that has observed a term ABOVE current_term has moved on to a
+/// newer leader and would reject this leader's heartbeat; `terms.at_least(current_term + 1)` counts exactly those, so the piers
+/// still with the leader are `size - at_least(current_term + 1)`. A strict majority of those proves the leader current — and once
+/// a majority has moved on, this is false, exactly the deposed leader §8 warns of.
+pub fn leadership_confirmed(terms: *const term.TermTable, current_term: u32, threshold: u32) bool {
+    // invariant: the threshold is a real strict majority the term table can count toward.
+    assert(threshold >= 1 and threshold <= terms.size);
+    // invariant: current_term leaves room for the next term, so counting "beyond" never overflows.
+    assert(current_term < std.math.maxInt(u32));
+    const moved_on = terms.at_least(current_term + 1); // piers that have seen a newer leader's term
+    const still_with_leader = terms.size - moved_on;
+    return still_with_leader >= threshold;
+}
+
+/// THE LINEARIZABLE READ (FORA20, Raft §8, the read-index): refuse NotLeader if leadership is not confirmed, mutating nothing;
+/// otherwise apply the committed prefix THROUGH `read_index` into the machine and return its register — a value reflecting every
+/// write committed before the read. Appends nothing: `cmds` is the already-committed stream, `read_index` the commit index at read
+/// time; applying through a prefix the machine has already reached is a no-op (apply_one is exactly-once), so a repeated read
+/// neither double-applies nor writes.
+pub fn linearizable_read(
+    machine: *Machine,
+    cmds: []const Command,
+    read_index: u32,
+    terms: *const term.TermTable,
+    current_term: u32,
+    threshold: u32,
+) (ReadError || apply.ApplyError)!u32 {
+    // invariant: a read never reflects more than the committed log holds, itself within the entry cap.
+    assert(cmds.len <= max_commands);
+    if (read_index > cmds.len) return error.ReadIndexPastLog;
+
+    // 1. Confirm leadership before serving — a stale leader answers for nothing.
+    if (!leadership_confirmed(terms, current_term, threshold)) return error.NotLeader;
+
+    // 2. Bring the state machine up to the read-index, then answer from it. apply_through folds only the committed prefix.
+    try apply.apply_through(machine, cmds, read_index);
+    // invariant: the machine has now applied through the read-index — the read reflects every write committed before it.
+    assert(read_index <= cmds.len);
+    return machine.register;
+}
+
+// --- selftest: a read reflects every write committed before it; the read-index IS the commit index (composes FORA18's
+//     safe_commit_len over a real TermedLog); a STALE LEADER serves nothing (NotLeader when a majority has moved on); monotonic
+//     reads (read-your-writes, the value only climbs); a read appends nothing and is idempotent; bounded. --------------------
+
+const commit = @import("commit.rye");
+const repair = @import("repair.rye");
+const quorum = @import("quorum.rye");
+
+fn run_selftest() !u8 {
+    // A five-pier sky; the leader is current at term 3 with a majority standing there.
+    const five: u32 = 5;
+    const th = quorum.majority_of(five); // 3
+
+    // 1. A READ REFLECTS EVERY WRITE COMMITTED BEFORE IT — three committed writes, read-index at the whole prefix, the value is
+    //    their sum.
+    {
+        const cmds = [_]Command{
+            .{ .client = 0, .seq = 1, .amount = 10 },
+            .{ .client = 1, .seq = 1, .amount = 20 },
+            .{ .client = 2, .seq = 1, .amount = 30 },
+        };
+        var m = Machine{};
+        var terms = term.TermTable{ .size = 5 };
+        _ = terms.observe(0, 3);
+        _ = terms.observe(1, 3);
+        _ = terms.observe(2, 3); // a majority of five stands at term 3 — the leader is current
+        const v = try linearizable_read(&m, &cmds, 3, &terms, 3, th);
+        assert(v == 60); // 10 + 20 + 30 — every committed write reflected
+    }
+
+    // 2. THE READ-INDEX IS THE COMMIT INDEX (composes FORA18). The committed length is derived by commit.safe_commit_len over a
+    //    real TermedLog + MatchView, NOT hand-set. A log spans terms: index 0 (term 1), index 1 (term 2), current term 4, and no
+    //    current-term entry yet majority-replicated — so safe_commit_len is 0 and the read reflects NOTHING, exactly as the write
+    //    path refuses to commit the old-term entry.
+    {
+        var leader = repair.TermedLog{};
+        _ = try leader.append_entry(1, 100); // index 0, term 1
+        _ = try leader.append_entry(2, 200); // index 1, term 2 — an old-term entry relative to current term 4
+        var view = commit.MatchView{ .size = 5 };
+        view.record(0, 2);
+        view.record(1, 2);
+        view.record(2, 2); // a majority holds the term-2 entry — yet it is old-term
+        view.record(3, 1);
+        view.record(4, 1);
+        const read_index = commit.safe_commit_len(&leader, &view, 4, th); // 0 — nothing safely committed
+        assert(read_index == 0);
+
+        const cmds = [_]Command{.{ .client = 0, .seq = 1, .amount = 100 }};
+        var m = Machine{};
+        var terms = term.TermTable{ .size = 5 };
+        _ = terms.observe(0, 4);
+        _ = terms.observe(1, 4);
+        _ = terms.observe(2, 4); // a majority at the current term 4 — leadership holds
+        const v = try linearizable_read(&m, &cmds, read_index, &terms, 4, th);
+        assert(v == 0); // read-index 0 — the uncommitted old-term write is NOT reflected in the served value
+    }
+
+    // 3. A STALE LEADER SERVES NOTHING. A majority has advanced to term 4 (a newer leader exists), yet this leader still believes
+    //    it leads at term 3. leadership_confirmed is false, and linearizable_read refuses NotLeader — the machine untouched.
+    {
+        const cmds = [_]Command{.{ .client = 0, .seq = 1, .amount = 42 }};
+        var m = Machine{};
+        var terms = term.TermTable{ .size = 5 };
+        _ = terms.observe(0, 4);
+        _ = terms.observe(1, 4);
+        _ = terms.observe(2, 4); // a majority of five has moved on to term 4 — term 3 is deposed
+        _ = terms.observe(3, 3);
+        _ = terms.observe(4, 3);
+        assert(!leadership_confirmed(&terms, 3, th)); // only two still at term 3 — below the majority
+        assert((linearizable_read(&m, &cmds, 1, &terms, 3, th)) == error.NotLeader);
+        assert(m.register == 0); // the refused read served nothing and applied nothing
+        assert(!m.has_applied(0));
+    }
+
+    // 4. MONOTONIC READS (read-your-writes). A first read at read-index 1 sees one write; more writes commit and a second read at
+    //    read-index 3 sees them all. The value only ever climbs — a linearizable read never goes backward.
+    {
+        const cmds = [_]Command{
+            .{ .client = 0, .seq = 1, .amount = 5 },
+            .{ .client = 1, .seq = 1, .amount = 7 },
+            .{ .client = 2, .seq = 1, .amount = 9 },
+        };
+        var m = Machine{};
+        var terms = term.TermTable{ .size = 5 };
+        _ = terms.observe(0, 3);
+        _ = terms.observe(1, 3);
+        _ = terms.observe(2, 3);
+        const first = try linearizable_read(&m, &cmds, 1, &terms, 3, th);
+        const second = try linearizable_read(&m, &cmds, 3, &terms, 3, th);
+        assert(first == 5 and second == 21); // 5, then 5+7+9
+        assert(second >= first); // monotonic — the register only climbs
+    }
+
+    // 5. A READ APPENDS NOTHING AND IS IDEMPOTENT. Two reads at the SAME read-index return the identical value and leave the
+    //    committed command stream unchanged; the read is side-effect-free on the log (the whole point of the read-index).
+    {
+        const cmds = [_]Command{
+            .{ .client = 0, .seq = 1, .amount = 11 },
+            .{ .client = 1, .seq = 1, .amount = 22 },
+        };
+        var m = Machine{};
+        var terms = term.TermTable{ .size = 5 };
+        _ = terms.observe(0, 3);
+        _ = terms.observe(1, 3);
+        _ = terms.observe(2, 3);
+        const a = try linearizable_read(&m, &cmds, 2, &terms, 3, th);
+        const b = try linearizable_read(&m, &cmds, 2, &terms, 3, th); // the SAME read again
+        assert(a == 33 and b == 33); // identical — no double-apply, no write
+        assert(m.register == 33); // the register moved once, not twice, though we read twice
+        assert(cmds.len == 2); // the log gained no no-op entry — the read appended nothing
+    }
+
+    // 6. BOUNDED — a read-index past the committed command stream refuses ReadIndexPastLog, changing nothing.
+    {
+        const cmds = [_]Command{.{ .client = 0, .seq = 1, .amount = 1 }};
+        var m = Machine{};
+        var terms = term.TermTable{ .size = 5 };
+        _ = terms.observe(0, 3);
+        _ = terms.observe(1, 3);
+        _ = terms.observe(2, 3);
+        assert((linearizable_read(&m, &cmds, 2, &terms, 3, th)) == error.ReadIndexPastLog);
+        assert(m.register == 0); // the refused read applied nothing
+    }
+
+    print("GREEN fora-read: a linearizable read appends nothing (Raft §8, the read-index) — a read reflects every write committed " ++
+        "before it, its value the sum of the committed prefix; THE READ-INDEX IS THE COMMIT INDEX — derived by FORA18's " ++
+        "safe_commit_len over a real TermedLog, so an old-term entry not yet safely committed is NOT reflected in the value " ++
+        "served; A STALE LEADER SERVES NOTHING — when a majority has advanced past the leader's term (a newer leader exists), " ++
+        "leadership_confirmed is false and the read refuses NotLeader, the deposed-leader stale read refused at its root; " ++
+        "MONOTONIC READS — a later read never goes backward, the register only climbing (read-your-writes); A READ APPENDS " ++
+        "NOTHING AND IS IDEMPOTENT — two reads at one read-index return the identical value, no double-apply and no log no-op; " ++
+        "and the read runs bounded, a read-index past the committed stream refusing by name — no socket, no network, no keys, no " ++
+        "funds, no real client, no real address ever formed\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
