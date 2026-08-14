@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260814.115724
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier (Eastern EDT convention)
+title ALES7 — Lotus's transport play head, read the master forward and stop at the end
+prompt Continue the autonomous recur (baton prin recur): next agent-doable lap Lindy-first crux-first, self-approve design rounds, send each finished increment to origin and xykj61, STOP only at custody gates.
+think Third increment of this recur, after ALES5 (clock) and ALES6 (track table) both landed and pushed. No custody gate in reach — the Lotus ladder is pure local software.
+think Lindy-first crux-first: the transport is the most durable of ALES6's three roads — the read side of the whole suite, on which every later playback feature (loop, scrub, monitor) is a differently-moving transport. Record is the Mikrophone, edit is ALES2–6, and this is PLAY.
+think Designed lotus/transport.rye: a Transport (a bounded sample position pos), read_block (copy next up-to-out.len samples, advance by exactly that, short at end, zero past it), at_end (pos == master.len exact), seek_ms + elapsed_ms (real time through the ALES5 clock, seek past master refuses PastEnd), read-only over the master.
+think The crux property: every block read from the start concatenates back to the master byte-for-byte — no sample skipped or repeated — and the end is a hard wall. Read-only means a replay after a rewind reads identical bytes.
+obs GREEN on first build across five blocks. tame_style_check bans clean, width-check exit 0, all seven prior ALES witnesses re-run GREEN (strictly additive). seek_ms's error union (TransportError || clock.ClockError) coerces cleanly.
+obs Honest scope kept explicit: no audio leaves the process — a block is copied samples, not a sound-card write; that real write is the paused hardware round. No custody gate reached.
+loom witness=ales_transport_witness cases=5 build=first_green tame=clean width=exit0 prior_rungs_regreen=7
+file lotus/transport.rye ALES7 module — Transport/read_block/at_end/seek_ms/elapsed_ms, read-only play head
+file tools/ales_transport_witness.rish witness — 5 cases, GREEN on metal
+file active-designing/20260814-fill-ales7-lotus-transport.md self-approved design round for ALES7
+file lotus/README.md seated ALES7 in status, rungs, prove-list, road-on
+recommend keep-going ALES8 — a loop (a transport wrapping a marked region), a scrub (a head driven by position), an equal-power crossfade curve, or a per-track fader column. No custody gate in reach.
