@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260814.142637
+editor Zed
+model Fable 5
+voice Kyri
+host Framework 16 AMD — Eastern (EDT) — Vultr SEA VPS cloud pier, this session in ai-jail
+title ALES28 — Lotus's two-sided insert-join, the trailing-seam law
+prompt Recur through agent-doable ALES laps Lindy-first crux-first; send each finished increment; stop at custody gates
+think ALES27 (the stereo crossfade join) is the living edge; its own road-on and the README named the next Lindy-first crux plainly: the trailing-seam law. ALES26's join crosses only the LEADING seam — it appends a span to the very end of a clip, where there is no audio after it. Yet a keeper drops a span into the MIDDLE, and a SECOND seam appears where the span's tail meets the audio that follows; ALES26 leaves that trailing seam a hard butt, and a butt is a click. Closing the mono seam story is higher-Lindy than a stereo-of-stereo or a multi-slot rack, so I took it.
+think Design: insert_join(clip, at, ins, lead, trail). The crux is a composition, not new arithmetic — the two-sided insert IS ALES26's join applied twice, once per seam. Split the clip at `at` into head A = clip[0..at] and following B = clip[at..]; crossfade-join the span onto A over `lead` (leading seam, exactly ALES26), then crossfade-join B onto that over `trail` (trailing seam, ALES26 again). New length shares both overlaps: clip + span − lead − trail.
+think The correctness beyond calling join twice is ATOMICITY — an insert touches the middle of the clip, so a half-done insert would corrupt audio a keeper already holds. Build the whole result in a private scratch Clip and copy it back only on full success; the real clip is never written until both seams are proven legal, so any refusal (past-the-master, lead wider than the head, trail wider than the following B, short overlap, overflow) leaves the clip exactly as it was. All guards fall out of ALES26's own join guards read per seam; timeline.EditError forwarded, no new fault, no module seam, no gate.
+think Named lotus/insert_join.rye — plainly the join that inserts (Comlink tendency: the clearest word). No insert_join collision in the tree.
+obs GREEN through Rishi on the first build: tools/ales_insert_join_witness.rish — five selftest blocks (a 10,5,2,2 insert shares both overlaps to length 11 not 15; a span disagreeing at BOTH edges lands with both seam samples strictly inside their raw 60000 steps where a butt insert leaves both adjacent; the leading seam still continues the clip before it and the trailing seam the audio after it; a past-the-master position, a lead wider than the head, a trail wider than the following audio, a short lead each refuse BadRange and an overflow ClipFull, the clip untouched after each). tame_style_check bans clean, no new zero-assert ratchet, no usize/@memcpy.
+obs The trailing-seam law is the mono join (ALES26) run twice against a scratch clip — the seam law per edge, atomicity from the copy-back-on-success-only build, exactly the capacity-checked-first discipline the graft and clipboard already keep.
+loom witness=ales_insert_join_witness green=1 selftest_blocks=5 records=insert_join build=first
+file active-designing/20260814-fill-ales28-lotus-two-sided-insert-join.md the self-approved design round naming the one crux and the shape
+file lotus/insert_join.rye the module — ALES26's join applied once per seam against a scratch clip, atomic on the copy-back
+file tools/ales_insert_join_witness.rish the witness proving GREEN on metal, purely local
+file lotus/README.md status line + insert-join bullet + witness list + closing paragraph advanced to ALES28
+recommend keep-going ALES29 — carry the two-sided insert into stereo (both channels, both seams, in lockstep — the twin of ALES27), offer a multi-slot clipboard rack, or let the graft/paste join rather than butt by default. The ALES0 wire seam and the real sound-card write stay Keaton's word.
