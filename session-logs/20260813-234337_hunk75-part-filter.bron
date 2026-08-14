@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260813.234337
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title HUNK75 — narrow the marketplace to the parts that match a query
+prompt recur the 1024-round itinerary Lindy-first crux-first, take the next agent-doable HUNK lap, self-approve the design round, send each increment to origin and xykj61, stop at custody gates
+think Read REMEMBER (living edge HUNK74, parts-marketplace journey) and both road docs; the parts marketplace has browse (part_shelf), page (part_window), and honest facts (part_catalog), yet no way to NARROW — McMaster-Carr's whole art.
+think Lindy-first crux-first, the next durable crux is filtering: a big catalog becomes the seven parts a keeper wants. Chose a filter that yields a sub-catalog (an ordinary PartCatalog), so it reuses every proven law — paint, page, round-trip — with no new failure class.
+think Read part_catalog.rye, part_row.rye, sprite.rye — confirmed SpriteIndex exposes .sheet and entry(i).win, so filter_catalog can rebuild a sub-catalog over the same shared sheet by re-adding each match's window and facts through add_part (validated once by the source, so never half-adds).
+think Wrote image/part_filter.rye: QueryKind (material · number_prefix · price_at_most · price_at_least), Query, matches, count_matches, filter_catalog; ≥2 positive invariants per fn, query text bounded to max_query_text, refusal QueryTextTooLong before any walk.
+obs Durable property proven: the filter loses no match and admits no stranger — match-all reproduces the catalog byte-for-byte, match-none yields a real empty catalog that re-parses empty, a filter composes (stainless then HX-N → one part, hexnut).
+obs Price stays a FACT compared, never moved — price_at_most/at_least weigh a recorded cent count; custody gate #3 untouched. No network, no key, no funds. Built GREEN first try; TAME bans clean, width exit 0; HUNK71 stays GREEN beneath.
+loom witness=hunk_part_filter_witness parts=5 queries=6 sub_catalogs=8 build=first-green
+file image/part_filter.rye HUNK75 — filter a PartCatalog to a sub-catalog of matches over the same sheet
+file tools/hunk_part_filter_witness.rish witnesses the filter on metal; re-runs HUNK71 GREEN beneath
+file active-designing/20260813-234337_hunk-part-filter-narrow-the-catalog-exploration.md self-approved design round for HUNK75
+recommend keep-going the parts journey wants a detail view (tap a row → the full part, bigger picture + all facts) or a query parsed from typed text; both agent-doable, no gate
