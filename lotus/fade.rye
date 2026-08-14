@@ -1,0 +1,156 @@
+//! lotus/fade.rye — ALES4: a fade envelope. ALES2's gain scaled a span by ONE constant fraction; a fade scales a span by a
+//! fraction that RAMPS linearly from a start level to an end level across the span — the gesture that opens a clip from
+//! silence (fade-in) or closes it to silence (fade-out) without the click a hard cut leaves. It reuses ALES2's owed
+//! correctness: each ramped sample saturates to the i16 range rather than wrapping (timeline.saturate, the one true clamp).
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES4.
+//! Design read: active-designing/20260814-fill-ales4-lotus-fade-envelope.md
+//! Stands on: lotus/timeline.rye (ALES2) — the Clip it fades and the saturation it reuses. A fade is a gain whose fraction
+//! moves; ALES3's mix then sums faded tracks, so a fade-out on one track under a fade-in on another is a crossfade.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
+//! no network, no keys, no funds, no real device, no real sample rate — the ramp runs across sample INDICES, not seconds (a
+//! time base is a later rung). The linear step runs in i64 so neither the ramp nor the scale overflows before the clamp.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/fade.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+
+pub const fade_version = "20260814.113625";
+
+pub const FadeError = error{
+    /// A fade with a zero denominator — refused, no divide by zero.
+    BadGain,
+    /// A start offset or count names samples outside the clip's current length — refused before any write.
+    BadRange,
+};
+
+/// The gain fraction at ramp position `i` of `count`: a linear interpolation from num0/den at the first sample to num1/den at
+/// the last. For a single-sample span the ramp is degenerate and the end level num1 applies. Computed in i64 so a wide level
+/// difference never overflows before it is scaled.
+fn ramp_num(num0: i32, num1: i32, i: u32, count: u32) i64 {
+    // invariant: the position lies within the span, and a span of one sample has no interval to divide.
+    assert(i < count);
+    if (count <= 1) return @as(i64, num1);
+    const delta: i64 = @as(i64, num1) - @as(i64, num0);
+    const span: i64 = @as(i64, count) - 1;
+    // The step is exact integer interpolation over the span's interval; endpoints land on num0 (i=0) and num1 (i=count-1).
+    const step: i64 = @divTrunc(delta * @as(i64, i), span);
+    return @as(i64, num0) + step;
+}
+
+/// Scale `count` samples starting at `start` by a fraction that ramps linearly from num0/den to num1/den across the span,
+/// saturating each result to the i16 range. A fade-in runs num0=0 → num1=den; a fade-out runs num0=den → num1=0. Refuses
+/// BadGain on a zero denominator and BadRange on a span outside the samples, before any write. Values only — never the length.
+pub fn fade(clip: *timeline.Clip, start: u32, count: u32, num0: i32, num1: i32, den: u32) FadeError!void {
+    // invariant: no divide by zero, and the span lies wholly within the current samples (checked without underflow).
+    if (den == 0) return error.BadGain;
+    if (start > clip.len) return error.BadRange;
+    if (count > clip.len - start) return error.BadRange;
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        const frac: i64 = ramp_num(num0, num1, i, count);
+        const scaled: i64 = @as(i64, clip.buf[start + i]) * frac;
+        clip.buf[start + i] = timeline.saturate(@divTrunc(scaled, @as(i64, den)));
+    }
+    // invariant: a fade changes sample values only, never the clip's length or bound.
+    assert(start + count <= clip.len);
+    assert(clip.len <= clip.buf.len);
+}
+
+// --- selftest: a fade-in ramps silence → full with exact endpoints and a linear middle; a fade-out mirrors it; the ramp
+//     SATURATES when it climbs past unity; a sub-span fade leaves the rest untouched; a fade-in then a mirror fade-out over a
+//     flat span leaves the endpoints at silence; and zero-denominator and out-of-range each refuse by name -----------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn run_selftest() !u8 {
+    // 1. a fade-in over a flat span ramps 0 → full, endpoints exact (first sample silent, last unchanged), linear between.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 400, 400, 400, 400, 400 });
+        try fade(&clip, 0, clip.len, 0, 4, 4); // fraction 0/4 → 4/4
+        const want = [_]i16{ 0, 100, 200, 300, 400 };
+        if (!eq(clip.samples(), &want)) return error.FadeInWrong;
+    }
+
+    // 2. a fade-out mirrors it — full → silence, the last sample silent.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 400, 400, 400, 400, 400 });
+        try fade(&clip, 0, clip.len, 4, 0, 4); // fraction 4/4 → 0/4
+        const want = [_]i16{ 400, 300, 200, 100, 0 };
+        if (!eq(clip.samples(), &want)) return error.FadeOutWrong;
+    }
+
+    // 3. a ramp that climbs past unity SATURATES — the tail, scaled above 1×, pins to the ceiling rather than wrapping.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 20000, 20000, 20000 });
+        try fade(&clip, 0, clip.len, 1, 3, 1); // 1× → 3× across three samples: 1×,2×,3×
+        // 20000×1=20000; 20000×2=40000→+32767; 20000×3=60000→+32767.
+        const want = [_]i16{ 20000, timeline.sample_max, timeline.sample_max };
+        if (!eq(clip.samples(), &want)) return error.FadeSaturateWrong;
+    }
+
+    // 4. a fade over a sub-span leaves the rest untouched — a fade-in on the first half only.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 100, 100, 100, 100, 100 });
+        try fade(&clip, 0, 3, 0, 2, 2); // ramp 0 → 1 across samples 0,1,2; samples 3,4 untouched
+        const want = [_]i16{ 0, 50, 100, 100, 100 };
+        if (!eq(clip.samples(), &want)) return error.FadeSpanWrong;
+    }
+
+    // 5. a single-sample fade is the degenerate ramp — the end level applies (here, silence).
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 500, 900 });
+        try fade(&clip, 1, 1, 4, 0, 4); // one sample, end level 0 → silence
+        const want = [_]i16{ 500, 0 };
+        if (!eq(clip.samples(), &want)) return error.FadeOneWrong;
+    }
+
+    // 6. a zero-denominator fade refuses BadGain — no divide by zero.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 1, 2, 3 });
+        if (fade(&clip, 0, clip.len, 0, 1, 0)) |_| return error.BadGainSlipped else |e| if (e != error.BadGain) return error.WrongBadGain;
+    }
+
+    // 7. an out-of-range fade refuses BadRange before any write, leaving the clip untouched.
+    {
+        var clip = timeline.Clip{};
+        const src = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &src);
+        if (fade(&clip, 2, 5, 0, 1, 1)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(clip.samples(), &src)) return error.RefusedFadeMutated;
+    }
+
+    print("GREEN ales-fade: a fade envelope scales a span by a fraction that ramps linearly from a start level to an end " ++
+        "level — a fade-in opens 0 → full with exact endpoints (first sample silent, last unchanged) and a linear middle, a " ++
+        "fade-out mirrors it to silence; a ramp climbing past unity SATURATES (20000×2 and ×3 pin to +32767, not a wrapped " ++
+        "negative), reusing ALES2's timeline.saturate; a sub-span fade leaves the rest untouched; a single-sample fade takes " ++
+        "the end level; a zero denominator refuses BadGain and an out-of-range span refuses BadRange leaving the clip " ++
+        "untouched; a fade is a gain whose fraction moves, and ALES3's mix then sums faded tracks into a crossfade; no socket, " ++
+        "no network, no keys, no funds, no real device\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
