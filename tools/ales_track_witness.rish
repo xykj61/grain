@@ -1,0 +1,39 @@
+# tools/ales_track_witness.rish — the track table: many placed clips rendered into one master (ALES6).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES6.
+# Design read: active-designing/20260814-fill-ales6-lotus-track-table.md
+# Stands on: lotus/clock.rye (ALES5) — each track's real offset converts through samples_for; lotus/timeline.rye (ALES2) —
+# the Clip a track holds and the one true saturation the master reuses; lotus/mix.rye (ALES3) — the two-track sum this
+# rung generalizes to N.
+#
+# lotus/track.rye seats the multi-track session a DAW is built around — a bounded table of placed clips summed into one
+# master, each aligned through the clock, the sum saturated ONCE over the whole sum rather than once per track. The selftest
+# proves: three tracks at three real offsets sum into one aligned master; the sum saturates once over all three (a mid-range
+# trio clamps correctly); an empty session renders silence; a single track reproduces place_at; two tracks at offset zero
+# reproduce mix; adding past max_tracks refuses SessionFull; a track past the master bound refuses ClipFull. Purely local —
+# no network, no keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_track_witness.rish
+
+say "ales-track: Language EN — ALES6 opens the track table: many placed clips heard together, each entering at its own real moment, summed into one master."
+say "ales-track: Style Radiant — the table generalizes the two proven rungs (place_at is one track, mix is two at offset zero) and adds the one correctness N tracks owe: saturate over the true sum, not per-track."
+say "ales-track: Lens TAME — a bounded Session (≤ max_tracks), a wide i64 accumulator per sample clamped once, each offset through the ALES5 clock; refuses SessionFull, ClipFull, DurationTooLong by name; siloed to lotus/, no network, no keys, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/track"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/track.rye -femit-bin=${bin}"]
+assert build.ok else "ales-track: build failed — ${build.err}"
+
+let outfile = "lotus/bin/track.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-track: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-track: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-track' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-track: selftest did not print the GREEN ales-track line"
+
+say "ales-track: GREEN — many placed clips render into one aligned master, the sum saturated once over all tracks; the table generalizes place_at and mix. The next Lotus rung can name a transport play head, add an equal-power crossfade curve, or open a per-track fader column."
