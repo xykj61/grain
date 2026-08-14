@@ -1,0 +1,51 @@
+# tools/hunk_part_tap_witness.rish — tap a searched part to open its detail (HUNK80).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK80.
+# Design read: active-designing/20260814-001609_hunk-part-tap-open-a-searched-part-exploration.md
+# Teacher, thanked clean-room: tapping a McMaster-Carr search result to open the part's own page (concept only, siloed).
+#
+# HUNK71–79 built the marketplace whole on the reading side (catalog, row, paged shelf, faceted search on glass). This
+# rung reaches into it: brushstroke/part_tap.rye reads the shelf's one-row-per-part geometry BACKWARD, so a tap resolves
+# to the part the keeper sees — and, the crux, across the search narrowing. The selftest proves a plain-page tap lands on
+# each row's part, a pixel tap maps through Skate's cell height, a tap on an empty tail row or a page past the catalog
+# opens nothing, and a stainless-only search's second row opens the catalog's FOURTH part (hexnut) — the tapped part
+# mapped back to its home in the original catalog by name, never the catalog's literal second part. A malformed clause
+# refuses TooManyClauses rather than opening a wrong part. A price is a fact compared, never moved.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_part_tap_witness.rish
+
+say "hunk-part-tap: Language EN — HUNK80 closes the marketplace loop: a tap on a narrowed shelf opens the part the keeper sees, across the search narrowing."
+say "hunk-part-tap: Style Radiant — the tap invents nothing; it reads the shelf geometry backward and maps the tapped part back to its home in the source catalog; a tail-row miss opens nothing and a nonsense line refuses by name."
+say "hunk-part-tap: Lens TAME — pure resolution over HUNK79 filter_and and HUNK73/74 shelf geometry; PartRef borrows the caller's live catalog, never the local sub-catalog; a price clause compares, never moves; positive invariants per fn; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/part_tap"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_tap.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-part-tap: build failed — ${build.err}"
+
+# Read the GREEN line from a file — it carries an apostrophe ("keeper's") that breaks a shell single-quote round-trip.
+let outfile = "brushstroke/bin/part_tap.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "hunk-part-tap: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "hunk-part-tap: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN part-tap' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "hunk-part-tap: selftest did not print the GREEN part-tap line"
+
+# HUNK79 stays GREEN — the faceted search this rung reaches into.
+let s = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_and_search.rye -femit-bin=brushstroke/bin/part_and_search && brushstroke/bin/part_and_search selftest > brushstroke/bin/part_and_search.out 2>&1"]
+assert s.ok else "hunk-part-tap: HUNK79 part_and_search re-run failed — see brushstroke/bin/part_and_search.out"
+let s_green = run ["sh" "-c" "grep -q 'GREEN part-and-search' brushstroke/bin/part_and_search.out && echo yes"]
+assert (trim s_green.out) == "yes" else "hunk-part-tap: HUNK79 part_and_search did not stay GREEN"
+
+# HUNK70 stays GREEN — the same tap gesture, on the Photos wall, that this rung carries to the marketplace.
+let l = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/library_tap.rye -femit-bin=brushstroke/bin/library_tap && brushstroke/bin/library_tap selftest > brushstroke/bin/library_tap.out 2>&1"]
+assert l.ok else "hunk-part-tap: HUNK70 library_tap re-run failed — see brushstroke/bin/library_tap.out"
+let l_green = run ["sh" "-c" "grep -q 'GREEN library-tap' brushstroke/bin/library_tap.out && echo yes"]
+assert (trim l_green.out) == "yes" else "hunk-part-tap: HUNK70 library_tap did not stay GREEN"
+
+say "hunk-part-tap: GREEN — a keeper narrows the marketplace and taps a result to open the very part they see, across the narrowing; HUNK79 faceted search and HUNK70 photo-wall tap underneath stay GREEN. HUNK80 lands."

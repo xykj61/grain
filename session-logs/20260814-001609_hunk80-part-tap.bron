@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260814.001609
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title HUNK80 — tap a searched part to open its detail: the marketplace loop closes
+prompt continue the recursion after HUNK79; take the next agent-doable lap Lindy-first crux-first, self-approve, send as its own signed round to origin and xykj61, stop at custody gates
+think HUNK71-79 built the marketplace whole on the reading side — content-addressed catalog, painted row, paged shelf, faceted search on glass. Yet a keeper could read the shelf and not reach into it. The Photos journey met this exact seam at HUNK70 and closed it with library_tap (finger on a wall tile opens the picture). The next durable crux is carrying that gesture to the marketplace.
+think The real crux is not the tap geometry but the narrowing: the shelf HUNK79 drew is the NARROWED catalog, so the row a finger touches sits at one place on glass and its part at another place in the original catalog. Reading row k as catalog part k is a lie the moment a search hides a part above the tap. open_tapped_and resolves the tap over the narrowed page, then maps the tapped part back to its home in the ORIGINAL catalog by its stable name — so the returned PartRef borrows the caller's long-lived catalog, never the local sub-catalog whose storage is a stack frame.
+think Chose pure resolution over surfaces already proven — no new storage, no codec, no funds. tap_cell_row (pixel to cell via skate.cell_h), tap_row (pure geometry, one part per row), tap_part (plain page), open_tapped_and (the search version). find_in_catalog maps a narrowed name back to its home index. No allocator needed — filter_and windows into the shared sheet and part_window_len allocates nothing.
+obs Durable property proven on metal over four parts across four bands with two stainless parts deliberately at catalog index 0 (bolt) and 3 (hexnut): a plain-page tap lands on each row's part name-for-name; a pixel tap maps through Skate's cell height to the same row; a tap on an empty tail row or an offset page past the catalog opens nothing; and the crux — a stainless-only search's second row opens the catalog's FOURTH part (hexnut, orig index 3), resolving the part the keeper SEES back to its home across the narrowing gap.
+obs A faceted match-one shelf opens the one part and its empty tail opens nothing; a malformed nine-clause line refuses TooManyClauses rather than opening a wrong part. A price is a fact compared, never moved — custody gate #3 untouched. No network, no key, no funds. TAME bans clean, width exit 0; HUNK79 faceted search and HUNK70 photo-wall tap stay GREEN beneath. GREEN on first build.
+loom witness=hunk_part_tap_witness parts=4 stainless_at=0,3 narrowed_row1_opens=orig_index_3
+file brushstroke/part_tap.rye HUNK80 — resolve a tap on a narrowed shelf back to the part's home in the source catalog
+file tools/hunk_part_tap_witness.rish witnesses the tap on metal; re-runs HUNK79 + HUNK70 GREEN beneath
+file active-designing/20260814-001609_hunk-part-tap-open-a-searched-part-exploration.md self-approved design round for HUNK80
+recommend keep-going the marketplace loop is closed on glass (catalog, row, page, search, tap-to-open); next agent-doable is a part detail page painted from a tapped PartRef (picture beside full facts), a query header above the shelf showing the typed clauses and N results, or another Season-A / double-seat journey
