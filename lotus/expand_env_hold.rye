@@ -1,0 +1,334 @@
+//! lotus/expand_env_hold.rye — ALES62: an attack/HOLD/release downward expander — the breathing expander given the one stage
+//! between its two knobs, and the rung that completes the HELD dynamics quartet. ALES61 gave the expander (ALES60) a patient sense
+//! of time, driving the deepened floor from ALES52's proven envelope follower so it eases in as a sound arrives and eases out as it
+//! falls away. Yet an un-held expander still deepens and re-opens on a brief DIP between two loud samples — it pumps, and the ear
+//! hears the gain move. A real expander carries a HOLD knob for exactly this: on a fall away from a peak, it pins the peak for a
+//! little while BEFORE the release begins, so the widening stays idle through the dip and the passage stays whole. ALES56 built that
+//! hold stage INSIDE the follower (hold_env.env_step_hold) and proved it once; ALES57–59 spent it for the gate, compressor, and
+//! limiter. This rung spends the same proof for the expander — the fourth and last member — so the held quartet mirrors the un-held
+//! quartet exactly. The gain math is not re-invented (it is ALES60's widening), and the time base is not re-invented (it is ALES56's
+//! held env_step); this rung is exactly their composition over public APIs, adding only the hold knob.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES62.
+//! Design read: active-designing/20260814-184011_fill-ales62-lotus-attack-hold-release-expander.md
+//! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/sample_max, max_clip, the range law shape; lotus/expand.rye (ALES60)
+//! — the deepened floor this drives over time, re-proven beside it; lotus/hold_env.rye (ALES56) — the HELD time base, its
+//! env_step_hold advancing the follower with the hold pinning the peak; lotus/expand_env.rye (ALES61) — the un-held attack/release
+//! expander this reduces to at a hold of zero, re-proven beside it as the zero-hold limit.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
+//! no network, no keys, no funds, no real device, no real sample rate — the attack, release, and hold are counted in sample INDICES,
+//! not milliseconds against a clock, and the threshold is a magnitude in sample units, the ratio a plain fraction. One held envelope
+//! step and at most one widen and one multiply-divide per sample; nothing on the path can overflow, since the expanded envelope is
+//! at most the envelope so the gain sits in [0, 1] and every written magnitude is at most the input's, which already fits i16.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/expand_env_hold.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const envelope = @import("envelope.rye");
+const hold_env = @import("hold_env.rye");
+const expand_env = @import("expand_env.rye");
+
+pub const expand_env_hold_version = "20260814.184011";
+
+/// The attack/hold/release expander's faults, one consistent name each: a threshold outside [1, sample_max], a ratio below unity or
+/// with a zero denominator, an attack or release coefficient outside (0, 1], a hold longer than the widest clip, and a span outside
+/// the samples. Each coincides by name with the tool it borrows from — BadThreshold and BadRatio from the expander, BadCoeff from
+/// the follower, BadHold from the held follower, BadRange from the whole family — so a composer sees one consistent fault surface.
+pub const ExpandEnvHoldError = error{
+    /// A threshold of zero (no band left below it to expand) or above sample_max (everything would fall below it) — refused.
+    BadThreshold,
+    /// A ratio below unity (would narrow the deficit, not widen it) or with a zero denominator — refused, no write.
+    BadRatio,
+    /// An attack or release coefficient outside (0, 1] — a frozen envelope, an overshooting step, or a divide by zero.
+    BadCoeff,
+    /// A hold longer than max_clip samples — no clip is that long, so such a hold could never expire within a span; refused, no write.
+    BadHold,
+    /// A span outside the current samples — refused, no write.
+    BadRange,
+};
+
+/// Expand `count` samples starting at `start` in place below the magnitude `threshold` by the ratio `ratio_num/ratio_den`, the
+/// downward widening FOLLOWING a HELD envelope that CONTINUES from the caller's `env` and `hold_left` rather than from silence — the
+/// carried-state form (ALES43's lesson), now carrying BOTH the envelope and the hold countdown so the hold survives across a call
+/// boundary. Each sample advances the proven ALES56 held follower one step (attack while rising and rearming the hold, the peak
+/// pinned while the countdown lasts, the release only once it expires); when the held envelope sits at or above the threshold the
+/// expander is idle and the sample passes byte-for-byte, and when it falls below, the envelope's deficit is widened by the ratio
+/// (ALES60's deepened floor) and that gain applied to the raw sample. With `hold_samples` zero the held follower reduces to ALES52's
+/// plain env_step, so this expander reduces to ALES61's un-held expander byte-for-byte. Refuses BadThreshold, BadRatio, BadCoeff,
+/// BadHold, and BadRange before any write; on refusal the clip and the carried state are untouched. Values only — never the length.
+pub fn expand_hold_follow_carry(
+    clip: *timeline.Clip,
+    start: u32,
+    count: u32,
+    env: *i64,
+    hold_left: *u32,
+    threshold: i32,
+    ratio_num: u32,
+    ratio_den: u32,
+    attack_num: u32,
+    attack_den: u32,
+    release_num: u32,
+    release_den: u32,
+    hold_samples: u32,
+) ExpandEnvHoldError!void {
+    // invariant: the threshold is a legal magnitude — at least one sample unit and no greater than the i16 rail. Before any write.
+    if (threshold < 1) return error.BadThreshold;
+    if (threshold > @as(i32, timeline.sample_max)) return error.BadThreshold;
+    // invariant: the ratio is at least one (num >= den) and its denominator is nonzero — a ratio below one would narrow the deficit.
+    if (ratio_den == 0) return error.BadRatio;
+    if (ratio_num < ratio_den) return error.BadRatio;
+    // invariant: both attack and release coefficients are legal fractions in (0, 1] — checked by the follower's one proven rule.
+    if (!envelope.coeff_ok(attack_num, attack_den)) return error.BadCoeff;
+    if (!envelope.coeff_ok(release_num, release_den)) return error.BadCoeff;
+    // invariant: the hold is bounded by the widest clip — a longer hold could never expire within any span. Before any write.
+    if (hold_samples > timeline.max_clip) return error.BadHold;
+    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
+    if (start > clip.len) return error.BadRange;
+    if (count > clip.len - start) return error.BadRange;
+
+    const thr: i64 = @as(i64, threshold);
+    const num: i64 = @as(i64, ratio_num);
+    const den: i64 = @as(i64, ratio_den);
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        const x: i16 = clip.buf[start + i];
+        // Advance the proven ALES56 HELD follower one sample; e is the smoothed-and-held magnitude, in [0, sample_max].
+        _ = hold_env.env_step_hold(env, hold_left, x, attack_num, attack_den, release_num, release_den, hold_samples);
+        const e: i64 = env.*;
+        // invariant: the envelope stays a legal magnitude — never negative, never past the rail (the held step's own guarantee).
+        assert(e >= 0 and e <= @as(i64, timeline.sample_max));
+        if (e < thr) {
+            if (e == 0) {
+                // The held detector reads exact silence. env_step forces at least a unit step toward any nonzero target and the hold
+                // only ever PINS a peak (it never lowers the envelope), so a zero envelope can only arise when this sample's own
+                // magnitude is zero — nothing to expand, and no divide by zero.
+                assert(x == 0);
+            } else {
+                // The expanded envelope target — ALES60's deepened floor, computed on the ENVELOPE not the bare sample: the deficit
+                // thr − e widened by the ratio (num/den >= 1) and floored at zero. The widened deficit fits i64 (thr−e <= 32767).
+                const deficit: i64 = thr - e; // strictly positive here (e < thr)
+                const widened: i64 = @divTrunc(deficit * num, den);
+                const raw_exp: i64 = thr - widened;
+                const exp: i64 = if (raw_exp < 0) 0 else raw_exp; // floor at silence — the gate reached from within the expander
+                // invariant: the expanded envelope sits within [0, envelope] — the gain exp/e is in [0, 1] (num/den >= 1 => exp <= e).
+                assert(exp >= 0 and exp <= e);
+                const m: i64 = if (x < 0) -@as(i64, x) else @as(i64, x); // |x| — safe in i64 (|sample_min| = 32768 fits)
+                // Apply the gain exp/e to the raw sample. m·exp <= 32768·32767 fits i64; divTrunc keeps it at most m.
+                const new_m: i64 = @divTrunc(m * exp, e);
+                // invariant: the gain reduces, never boosts — a smoothed expander only ever leans down.
+                assert(new_m <= m);
+                const y: i16 = @intCast(if (x < 0) -new_m else new_m); // safe: 0 <= new_m <= m <= 32768 fits i16 by sign
+                clip.buf[start + i] = y;
+                // invariant: the written sample holds the input's sign (magnitude only shrank).
+                assert((x >= 0 and y >= 0) or (x <= 0 and y <= 0));
+            }
+        }
+        // a sample whose held envelope sits at or above the threshold is left exactly as it was — the expander is idle, the hold
+        // keeping it idle through a brief dip that would otherwise have deepened it.
+    }
+    // invariant: an expander changes sample values only, never the clip's length or bound.
+    assert(start + count <= clip.len);
+    assert(clip.len <= clip.buf.len);
+}
+
+/// Expand `count` samples starting at `start` in place, the downward widening following a HELD envelope that begins FROM SILENCE (a
+/// fresh env of 0 with the hold unarmed) — one implementation shared with the carried form, so the two cannot drift. Refuses
+/// BadThreshold, BadRatio, BadCoeff, BadHold, and BadRange before any write.
+pub fn expand_hold_follow(
+    clip: *timeline.Clip,
+    start: u32,
+    count: u32,
+    threshold: i32,
+    ratio_num: u32,
+    ratio_den: u32,
+    attack_num: u32,
+    attack_den: u32,
+    release_num: u32,
+    release_den: u32,
+    hold_samples: u32,
+) ExpandEnvHoldError!void {
+    var env: i64 = 0;
+    var hold_left: u32 = 0;
+    return expand_hold_follow_carry(clip, start, count, &env, &hold_left, threshold, ratio_num, ratio_den, attack_num, attack_den, release_num, release_den, hold_samples);
+}
+
+// --- selftest: silence stays silence; a HOLD OF ZERO reduces to the plain ALES61 attack/release expander byte-for-byte (the
+//     zero-hold limit); UNIT RATIO is the identity everywhere; a quiet signal has its floor deepened with the sign held and the
+//     magnitude never expanding; a NONZERO HOLD keeps the expander idle across a brief dip (it does not pump, the knob monotone);
+//     the state CARRIES — env and hold_left both — so a span in two pieces equals the whole once; and a bad threshold, a sub-unity
+//     ratio, an illegal coefficient, a hold past max_clip, and an out-of-range span each refuse by name -----------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn abs16(v: i16) i32 {
+    return if (v < 0) -@as(i32, v) else @as(i32, v);
+}
+
+fn run_selftest() !u8 {
+    // 1. silence stays silence — an all-zero clip expands to all zeros at any legal threshold, ratio, coefficients, and hold.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0 });
+        try expand_hold_follow(&clip, 0, clip.len, 1000, 4, 1, 1, 4, 1, 8, 3);
+        const zeros = [_]i16{ 0, 0, 0, 0, 0, 0 };
+        if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
+    }
+
+    // 2. A HOLD OF ZERO IS THE PLAIN ALES61 EXPANDER — with hold_samples == 0 the held follower's fall branch never pins, so every
+    //    sample moves through ALES52's env_step exactly as ALES61's un-held expander does: the held expander with no hold IS the
+    //    ALES61 expander, byte-for-byte by construction. Proven by running BOTH tools on the same signal (the zero-hold limit, the
+    //    sibling of the family's unit-coefficient identities).
+    {
+        const mixed = [_]i16{ 800, -800, 5000, -600, 200, -9000, 32767, -32767, 400 };
+        var held = timeline.Clip{};
+        try load_clip(&held, &mixed);
+        try expand_hold_follow(&held, 0, held.len, 1000, 4, 1, 1, 3, 1, 5, 0); // hold of zero, real attack/release
+        var plain = timeline.Clip{};
+        try load_clip(&plain, &mixed);
+        try expand_env.expand_follow(&plain, 0, plain.len, 1000, 4, 1, 1, 3, 1, 5); // the proven ALES61 un-held expander
+        if (!eq(held.samples(), plain.samples())) return error.ZeroHoldNotPlainExpand;
+    }
+
+    // 3. UNIT RATIO IS THE IDENTITY EVERYWHERE — ratio_num == ratio_den makes the expanded envelope equal the envelope, so the gain
+    //    is exactly one at every sample regardless of smoothing or hold: the whole signal passes byte-for-byte, even below threshold.
+    {
+        const quiet = [_]i16{ 300, -300, 5000, -20, 20, -400 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &quiet);
+        try expand_hold_follow(&clip, 0, clip.len, 1000, 3, 3, 1, 4, 1, 8, 4); // unit ratio 3:3, real attack/release, hold 4
+        if (!eq(clip.samples(), &quiet)) return error.UnitRatioNotIdentity;
+    }
+
+    // 4. THE SIGN IS HELD AND THE MAGNITUDE NEVER EXPANDS — a quiet signal expands so every output magnitude is at most the input's
+    //    and every sign matches, under a real attack, release, and hold.
+    {
+        const mixed = [_]i16{ 200, -200, 5000, -300, 150, -9000, 250, -250 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &mixed);
+        try expand_hold_follow(&clip, 0, clip.len, 1000, 4, 1, 1, 2, 1, 6, 2);
+        const out = clip.samples();
+        var i: u32 = 0;
+        while (i < out.len) : (i += 1) {
+            if (abs16(out[i]) > abs16(mixed[i])) return error.MagnitudeExpanded; // the gain only ever reduces
+            if ((mixed[i] > 0 and out[i] < 0) or (mixed[i] < 0 and out[i] > 0)) return error.SignFlipped;
+        }
+    }
+
+    // 5. A NONZERO HOLD KEEPS THE EXPANDER IDLE ACROSS A BRIEF DIP — a loud sample, one quiet dip below the threshold, then loud
+    //    again. With INSTANT attack and INSTANT release and NO hold, the dip drops the envelope below the threshold and is deepened
+    //    (the expander pumped down). With a hold that spans the dip, the peak is pinned above the threshold so the expander stays
+    //    idle and the dip passes byte-for-byte. So the held magnitude is no SMALLER than the un-held one at every sample (the hold
+    //    knob is monotone), and strictly LOUDER at the dip (the expander audibly held idle rather than pumping).
+    {
+        const dip = [_]i16{ 15000, 300, 15000 }; // loud, a quiet dip below threshold, loud again
+        const thr: i32 = 1000;
+        var none = timeline.Clip{};
+        try load_clip(&none, &dip);
+        try expand_hold_follow(&none, 0, none.len, thr, 4, 1, 1, 1, 1, 1, 0); // instant attack, instant release, no hold
+        var held = timeline.Clip{};
+        try load_clip(&held, &dip);
+        try expand_hold_follow(&held, 0, held.len, thr, 4, 1, 1, 1, 1, 1, 1); // same, hold of 1 spans the single dip sample
+        var i: u32 = 0;
+        while (i < dip.len) : (i += 1) {
+            if (abs16(held.samples()[i]) < abs16(none.samples()[i])) return error.HoldExpandedMore;
+        }
+        // the dip sample (index 1): the held expander still reads the pinned peak above threshold and lets it pass, the un-held
+        // expander has already dropped below threshold and deepens it — the expander held idle through the dip instead of pumping.
+        if (abs16(held.samples()[1]) <= abs16(none.samples()[1])) return error.HoldDidNotSurvive;
+    }
+
+    // 6. THE STATE CARRIES — env AND hold_left both — so expanding a span in two pieces, the split falling MID-HOLD, equals expanding
+    //    the whole once, byte-for-byte: the seam invisible, so dynamics can span and automate and the hold survives across a boundary.
+    {
+        const sig = [_]i16{ 12000, 12000, 400, 400, 400, 9000, 200, 200 };
+        var whole = timeline.Clip{};
+        try load_clip(&whole, &sig);
+        try expand_hold_follow(&whole, 0, whole.len, 1000, 4, 1, 1, 1, 1, 6, 2);
+
+        var split = timeline.Clip{};
+        try load_clip(&split, &sig);
+        var env: i64 = 0;
+        var hold_left: u32 = 0;
+        try expand_hold_follow_carry(&split, 0, 3, &env, &hold_left, 1000, 4, 1, 1, 1, 1, 6, 2); // first piece — split at index 3 mid-hold
+        try expand_hold_follow_carry(&split, 3, split.len - 3, &env, &hold_left, 1000, 4, 1, 1, 1, 1, 6, 2); // second continues env AND hold_left
+        if (!eq(split.samples(), whole.samples())) return error.CarryNotEqual;
+    }
+
+    // 7a. a zero threshold refuses BadThreshold before any write, the clip untouched.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        if (expand_hold_follow(&clip, 0, clip.len, 0, 4, 1, 1, 4, 1, 8, 2)) |_| return error.ZeroThresholdSlipped else |e| if (e != error.BadThreshold) return error.WrongZeroThreshold;
+        if (!eq(clip.samples(), &three)) return error.RefusedThresholdMutated;
+    }
+
+    // 7b. a sub-unity ratio (would narrow the deficit) refuses BadRatio before any write.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        if (expand_hold_follow(&clip, 0, clip.len, 1000, 1, 2, 1, 4, 1, 8, 2)) |_| return error.SubUnitySlipped else |e| if (e != error.BadRatio) return error.WrongSubUnity;
+        if (!eq(clip.samples(), &three)) return error.RefusedRatioMutated;
+    }
+
+    // 7c. an illegal release coefficient (numerator past the denominator) refuses BadCoeff before any write.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        if (expand_hold_follow(&clip, 0, clip.len, 1000, 4, 1, 1, 4, 3, 2, 2)) |_| return error.BadReleaseSlipped else |e| if (e != error.BadCoeff) return error.WrongBadRelease;
+        if (!eq(clip.samples(), &three)) return error.RefusedCoeffMutated;
+    }
+
+    // 7d. a hold longer than max_clip (no clip is that long) refuses BadHold before any write.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        if (expand_hold_follow(&clip, 0, clip.len, 1000, 4, 1, 1, 4, 1, 8, timeline.max_clip + 1)) |_| return error.BadHoldSlipped else |e| if (e != error.BadHold) return error.WrongBadHold;
+        if (!eq(clip.samples(), &three)) return error.RefusedHoldMutated;
+    }
+
+    // 7e. an out-of-range span refuses BadRange before any write, leaving the clip untouched.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        if (expand_hold_follow(&clip, 2, 5, 1000, 4, 1, 1, 4, 1, 8, 2)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(clip.samples(), &three)) return error.RefusedRangeMutated;
+    }
+
+    print("GREEN ales-expand-env-hold: an attack/HOLD/release downward expander drives ALES60's deepened floor from ALES56's HELD " ++
+        "envelope — each sample advances the held follower one step (attack rising and rearming the hold, the peak pinned while the " ++
+        "countdown lasts, the release only once it expires), and when the held envelope falls below the threshold its deficit is " ++
+        "widened by the ratio and that gain applied to the raw sample. Silence stays silence; a HOLD OF ZERO reduces to the plain " ++
+        "ALES61 attack/release expander BYTE-FOR-BYTE (the zero-hold limit, proven by running both tools); UNIT RATIO is the " ++
+        "identity everywhere; a quiet signal has its floor deepened with the sign held and never expanding; a NONZERO HOLD keeps " ++
+        "the expander idle across a brief dip (it does not pump, the knob monotone); the state CARRIES — env and hold_left both — " ++
+        "so a span in two pieces equals the whole once (the seam invisible, the hold surviving the boundary); and a zero threshold " ++
+        "refuses BadThreshold, a sub-unity ratio BadRatio, an illegal coefficient BadCoeff, a hold past max_clip BadHold, an " ++
+        "out-of-range span BadRange, each leaving the clip untouched; the HELD dynamics quartet is now whole — gate, compressor, " ++
+        "limiter, expander all reading ALES56's one proven held follower; no socket, no network, no keys, no funds, no real device, " ++
+        "no real sample rate\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

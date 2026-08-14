@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260814.184011
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title ALES62 — Lotus's attack/hold/release downward expander: the held quartet made whole
+prompt recur the itinerary Lindy-first crux-first after ALES61; take the next agent-doable Lotus lap, send it as its own signed round, stop at custody gates
+think ALES56 built the hold stage inside the follower; ALES57-59 spent it for the gate, compressor, and limiter (the held trio, mirroring the un-held trio ALES53-55). ALES60 added the expander as the fourth classic dynamics processor and ALES61 gave it attack/release. The expander was the one member with no held form — so the crux that completes a symmetric HELD QUARTET is to give the expander its hold.
+think The rung mirrors ALES57 (held gate) line for line, with the gate's below-threshold DIVISION replaced by ALES60's below-threshold WIDENING. Same expand_hold_follow / expand_hold_follow_carry pair sharing one implementation, carrying both the i64 envelope and the u32 hold countdown; same ExpandEnvHoldError faults (adds BadHold); same per-sample hold_env.env_step_hold advance. The one changed step: e<thr -> target exp = max(0, thr - (thr-e)*num/den), gain exp/e applied to the raw sample.
+think The crux law is the family signature: hold_samples==0 reduces env_step_hold to env_step, so this held expander reduces to ALES61's un-held expander byte-for-byte. Proven by running both tools. The hold-specific proof mirrors the gate's: a nonzero hold keeps the expander IDLE across a brief dip (loud/dip/loud, instant attack/release, hold 0 vs 1) — the pinned peak stays above threshold so the dip passes, the pump gone, the dip strictly louder held.
+think Overflow and divide-by-zero guards are the gate's: (thr-e)*num fits i64, m*exp fits i64, e==0 implies x==0 (env_step forces a unit step toward any nonzero target and the hold only ever pins a peak, never lowers it) so no zero-envelope divide.
+think Monotonic stamp: live clock read 20260814.184011 (TZ=America/New_York), after ALES61's 183555 — later-is-larger holds.
+obs GREEN on the first build; the ALES57 idiom carried over clean with only the gain law swapped. tame_style_check bans clean, >=2 asserts per fn each with a positive // invariant:. The HELD dynamics quartet is now whole — gate, compressor, limiter, expander all reading ALES56's one env_step_hold, the exact mirror of the un-held quartet. Purely local — no lookahead, socket, network, keys, funds, device, or sample rate; every custody gate untouched.
+loom witness=ales_expand_env_hold_witness green=1 first_build=1 clauses=11 reproven=ales61_expand_env,ales56_hold_env
+file lotus/expand_env_hold.rye ALES62 — the held expander, ALES60's floor driven from ALES56's held follower
+file tools/ales_expand_env_hold_witness.rish proves the eleven clauses GREEN and re-proves ALES61 and ALES56 beneath it
+file active-designing/20260814-184011_fill-ales62-lotus-attack-hold-release-expander.md the self-approved design read
+file lotus/README.md seats ALES62 in the Season C status line
+recommend keep-going the held dynamics quartet is whole; the next Lindy-first crux is a fresh dynamics gesture (a de-esser composing the ALES46 band filter with a compressor, or a sidechain routing one signal's envelope to another) or the lookahead delay for a true brickwall — the delay stays a Keaton's-word horizon, so a check-in before crossing that one
