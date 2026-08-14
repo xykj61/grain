@@ -1,7 +1,7 @@
 # The Mikrophone firmware — a device that forgets on purpose
 
-**Stamp:** `20260814.070309` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Living front door — the Mikrophone firmware journey stands whole and witnessed (DREY0–DREY10)
+**Stamp:** `20260814.071500` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Living front door — the Mikrophone firmware journey stands whole and witnessed (DREY0–DREY12)
 **Season:** A — Hardware & Right-to-Repair · **Waymark:** DREY · second journey **Mikrophone firmware**
 **Kin:** [`../foundations/20260801-005853_mantrapod-venture-pitch.md`](../foundations/20260801-005853_mantrapod-venture-pitch.md) · [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`../active-designing/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/20260813-020035_double-seat-expansion-six-seasons.md) · [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md)
 
@@ -19,7 +19,7 @@ That promise is not a slogan to paint on a box — it is a **firmware invariant*
 rishi/bin/rishi run tools/drey_witness.rish
 ```
 
-It runs all eleven rungs' witnesses in order and asserts each GREEN.
+It runs every rung's witness in order and asserts each GREEN.
 
 ## The device — capture, keep, forget (DREY0–DREY3)
 
@@ -40,6 +40,7 @@ It runs all eleven rungs' witnesses in order and asserts each GREEN.
 - **`catalog.rye` — addressed by content (DREY7).** The desk keys each recording by the Sha256 the wire already carries — the tree's own Tablecloth spine at the desk: `deposit` deframes verify-before-trust first, then recognizes an address already held (**idempotent**, spending no bound) or appends within a bounded count and byte budget; `fetch(address)` never guesses. Witness: `tools/drey_catalog_witness.rish`.
 - **`manifest.rye` — describe by address, ship no payload (DREY8).** The **have** side of content-addressed sync: one record per holding — its address and length, no payload — verified whole before any record is read, with `wanted` the primitive that names which advertised addresses a local catalog lacks. Witness: `tools/drey_manifest_witness.rish`.
 - **`serve.rye` — the want-response (DREY9).** The desk answers a want by re-framing the payload it holds under an address into exactly the wire frame that carries it (or refuses `NotHeld`), reusing the one proven framing path so the served frame's content address **equals** the address asked for — catalog · manifest · serve closing a complete, purely local content-addressed sync (the git have/want shape, proven pure before any wire is strung). Witness: `tools/drey_serve_witness.rish`.
+- **`sync.rye` — the pull loop (DREY12).** The three sync primitives lifted into one named, bounded operation: `pull` reads a remote desk's manifest **verify-before-trust**, then for each advertised address the local desk lacks, serves it and deposits it — ending with the local desk holding **every** address the remote advertised. A fresh desk converges whole, a partial desk pulls only its lack (`served == wanted`), a second pull is idempotent, a tampered advertisement refuses `DigestMismatch` before a frame crosses, and a desk at its bound refuses `CatalogFull`. The git pull, proven pure; pulling over a real transport stays the Comlink-served gate. Witness: `tools/drey_sync_witness.rish`.
 
 ## The one promise underneath
 
