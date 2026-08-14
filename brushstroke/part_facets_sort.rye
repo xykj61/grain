@@ -1,0 +1,301 @@
+//! brushstroke/part_facets_sort.rye — HUNK89: the faceted result, sorted cheapest-first — the parts a query keeps,
+//! reordered by price, never changed.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK89.
+//! Design read: active-designing/20260814-012339_hunk-part-facets-sort-by-price-exploration.md
+//! Teacher, thanked clean-room: McMaster-Carr's *sort by price* control over a faceted result (concept only, siloed).
+//!
+//! HUNK86 drew the whole faceted grammar to glass, and HUNK87–HUNK88 crowned it with a header naming the query, the
+//! count, and the page. Yet the result draws in HELD ORDER — the order parts were added — which is no order a shopper
+//! wants. The first thing a keeper reaches for on a real parts wall is *cheapest first*. This rung answers it:
+//! `sort_by_price` reorders a catalog by its recorded cent count, ascending, ties keeping held order (a STABLE sort),
+//! and `facets_sorted_shelf` composes it after the faceted filter — parse → filter → sort → window — so the drawn page
+//! shows exactly the parts the query kept, least dear at the top.
+//!
+//! The crux is that the sort is a PERMUTATION, never a change: the sorted sub-catalog holds the same parts as the
+//! filtered result — same count, same names as a set — only the order differs. It invents no part and drops none, each
+//! swatch true to the one shared sheet (the sub-catalog windows into the caller's own sheet, never a copy). A malformed
+//! clause surfaces the parser's named refusal before any sort; an offset past the sorted result refuses `BadOffset`
+//! exactly as `part_window` does.
+//!
+//! A price clause COMPARES a recorded cent count and the sort REORDERS by it; nothing is moved (custody gate #3
+//! untouched). No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/part_facets_sort.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const sprite = @import("sprite.rye");
+const part_catalog = @import("part_catalog.rye");
+const part_facets = @import("part_facets.rye");
+const part_facets_search = @import("part_facets_search.rye");
+const part_row = @import("part_row.rye");
+const skate = @import("skate_grid.rye");
+
+pub const part_facets_sort_version = "20260814.012339";
+
+/// Build `out` as a fresh sub-catalog over `src`'s own sheet, holding every part of `src` in ASCENDING price order.
+/// Ties keep held order — a stable sort, so two parts at the same price read in the order a keeper added them. The
+/// reorder is a selection over an index permutation bounded by `sprite.max_products`; each chosen part is re-added
+/// through `add_part`, so every window is re-validated against the shared sheet and every fact re-checked. The
+/// sub-catalog windows into `src`'s sheet, never a copy.
+pub fn sort_by_price(src: *const part_catalog.PartCatalog, out: *part_catalog.PartCatalog) !void {
+    // invariant: the source never outgrew its own sheet's product ceiling.
+    assert(src.len() <= sprite.max_products);
+    out.* = part_catalog.PartCatalog.init(src.index.sheet);
+    // invariant: sorting starts from an empty sub-catalog over the source's own sheet.
+    assert(out.len() == 0);
+    assert(out.index.sheet == src.index.sheet);
+
+    const n = src.len();
+    var taken: [sprite.max_products]bool = [_]bool{false} ** sprite.max_products;
+
+    // Selection sort: n times, pick the cheapest not-yet-taken part, earliest held index breaking ties (stable).
+    var placed: u32 = 0;
+    while (placed < n) : (placed += 1) {
+        // invariant: fewer parts are placed than the source holds until the last is chosen.
+        assert(placed < n);
+        var best: u32 = n; // n marks "none chosen yet" — a real index is always < n
+        var best_price: u64 = 0;
+        var i: u32 = 0;
+        while (i < n) : (i += 1) {
+            if (taken[i]) continue;
+            const price = src.facts_at(i).price_cents;
+            // A strict `<` keeps the earliest held index among equal prices — the sort stays stable.
+            if (best == n or price < best_price) {
+                best = i;
+                best_price = price;
+            }
+        }
+        // invariant: a not-yet-taken part was found on every pass (placed < n guarantees one remains).
+        assert(best < n);
+        taken[best] = true;
+        const e = src.index.entry(best);
+        const f = src.facts_at(best);
+        try out.add_part(e.name, e.win.x, e.win.y, e.win.w, e.win.h, f.part_number, f.material, f.price_cents);
+    }
+    // invariant: the sorted sub-catalog holds exactly as many parts as the source — a permutation, never a change.
+    assert(out.len() == src.len());
+}
+
+/// Draw the faceted page in price order — parse the faceted line, filter the catalog into the query's kept parts
+/// (`filter_facets`), sort those cheapest-first (`sort_by_price`), and render the page `[offset, offset + rows)` with
+/// `part_window`. So what a keeper types is what a keeper sees, now least dear at the top. A malformed clause surfaces
+/// the parser's named refusal before any sort; an offset past the sorted result refuses `BadOffset` exactly as
+/// `part_window` does; a bad dimension refuses the window's own named error. The drawn grid owns its cells, so it
+/// outlives the local sub-catalogs whose sheet is the caller's original.
+pub fn facets_sorted_shelf(
+    allocator: std.mem.Allocator,
+    cat: *const part_catalog.PartCatalog,
+    text: []const u8,
+    cols: u32,
+    rows: u32,
+    offset: u32,
+) !skate.Grid {
+    // invariant: the catalog never outgrew its own sheet's product ceiling before it is searched.
+    assert(cat.len() <= sprite.max_products);
+    const fq = try part_facets.parse_facets(text);
+    var kept: part_catalog.PartCatalog = undefined;
+    try part_facets.filter_facets(cat, fq, &kept);
+    var sorted: part_catalog.PartCatalog = undefined;
+    try sort_by_price(&kept, &sorted);
+    // invariant: sorting is a permutation — the sorted result holds exactly the filtered result's parts.
+    assert(sorted.len() == kept.len());
+    // invariant: the sorted sub-catalog windows into the caller's own sheet, never a copy.
+    assert(sorted.index.sheet == cat.index.sheet);
+    return part_row.part_window(allocator, &sorted, cols, rows, offset);
+}
+
+// --- selftest: four parts across four bands with a price spread — the sort reads cheapest-first, is a permutation
+//     (same parts, only reordered), is stable on ties, the sorted page equals a hand-sorted window, and the named
+//     refusals fire --------------------------------------------------------------------------------------------
+
+/// A 16×8 sheet in four solid vertical bands (the part_row fixture), so a 4-wide window carries one known colour.
+fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 16;
+    const h: u32 = 8;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            const band = x / 4; // 0..3
+            buf[off] = if (band == 0 or band == 3) 255 else 0; // r
+            buf[off + 1] = if (band == 1 or band == 3) 255 else 0; // g
+            buf[off + 2] = if (band == 2) 255 else 0; // b
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+/// Read a row's fact line back as bytes — trim the blank tail, so the selftest sees exactly the painted fact text.
+fn row_text(grid: *const skate.Grid, row: u32, out: []u8) u32 {
+    const cells = grid.row_cells(row);
+    var n: u32 = @intCast(cells.len);
+    while (n > 0 and cells[n - 1] == ' ') : (n -= 1) {}
+    var i: u32 = 0;
+    while (i < n) : (i += 1) out[i] = cells[i];
+    return n;
+}
+
+/// True if the sorted catalog holds exactly `src`'s parts as a set — every source name found once in `sorted`, and the
+/// counts equal. Proves the sort is a permutation: no part invented, none dropped.
+fn same_parts_as_set(src: *const part_catalog.PartCatalog, sorted: *const part_catalog.PartCatalog) bool {
+    if (src.len() != sorted.len()) return false;
+    var i: u32 = 0;
+    while (i < src.len()) : (i += 1) {
+        const name = src.index.entry(i).name;
+        var found: u32 = 0;
+        var j: u32 = 0;
+        while (j < sorted.len()) : (j += 1) {
+            if (std.mem.eql(u8, sorted.index.entry(j).name, name)) found += 1;
+        }
+        if (found != 1) return false;
+    }
+    return true;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const sheet = try craft_bands(garden);
+    var cat = part_catalog.PartCatalog.init(&sheet);
+    // Four parts across the bands with a price spread, including a TIE at 55c so stability is testable: bolt 125c,
+    // nut 60c, gear 845c, hexnut 55c, and a second stainless part washer also 55c (added after hexnut).
+    try cat.add_part("bolt", 0, 0, 4, 8, "HX-M8-40", "stainless-304", 125);
+    try cat.add_part("nut", 4, 0, 4, 8, "NY-M8", "brass", 60);
+    try cat.add_part("gear", 8, 0, 4, 8, "GR-24T", "acetal", 845);
+    try cat.add_part("hexnut", 12, 0, 4, 8, "HX-N8", "stainless-304", 55);
+    try cat.add_part("washer", 12, 0, 4, 8, "FW-M8", "stainless-304", 55);
+    assert(cat.len() == 5);
+
+    const cols: u32 = 48;
+
+    // CHEAPEST-FIRST and STABLE: sorting the whole catalog by price reads 55, 55, 60, 125, 845 — and the two 55c parts
+    // (hexnut then washer) keep their held order (stable), while every price is >= the row above.
+    {
+        var sorted: part_catalog.PartCatalog = undefined;
+        try sort_by_price(&cat, &sorted);
+        assert(sorted.len() == 5);
+        assert(std.mem.eql(u8, sorted.index.entry(0).name, "hexnut")); // 55c, added first of the tie
+        assert(std.mem.eql(u8, sorted.index.entry(1).name, "washer")); // 55c, added second — stable
+        assert(std.mem.eql(u8, sorted.index.entry(2).name, "nut")); // 60c
+        assert(std.mem.eql(u8, sorted.index.entry(3).name, "bolt")); // 125c
+        assert(std.mem.eql(u8, sorted.index.entry(4).name, "gear")); // 845c
+        // Ascending, no descent anywhere.
+        var i: u32 = 1;
+        while (i < sorted.len()) : (i += 1) {
+            assert(sorted.facts_at(i).price_cents >= sorted.facts_at(i - 1).price_cents);
+        }
+        // A PERMUTATION: same parts as a set, only reordered.
+        assert(same_parts_as_set(&cat, &sorted));
+    }
+
+    // The sorted faceted shelf: (stainless OR brass) max:100 keeps nut(60), hexnut(55), washer(55) — sorted reads
+    // hexnut, washer, nut top to bottom (cheapest-first, tie stable), the bolt dropped by price at 125c.
+    {
+        const line = "material:stainless-304|material:brass max:100";
+        const page = try facets_sorted_shelf(garden, &cat, line, cols, 4, 0);
+        var buf: [part_row.max_fact_line]u8 = undefined;
+        const r0 = row_text(&page, 0, buf[0..]);
+        assert(std.mem.startsWith(u8, buf[0..r0], "hexnut  HX-N8  stainless-304  $0.55"));
+        const r1 = row_text(&page, 1, buf[0..]);
+        assert(std.mem.startsWith(u8, buf[0..r1], "washer  FW-M8  stainless-304  $0.55"));
+        const r2 = row_text(&page, 2, buf[0..]);
+        assert(std.mem.startsWith(u8, buf[0..r2], "nut  NY-M8  brass  $0.60"));
+        // Only three parts matched — the fourth row's label region is blank.
+        const r3 = row_text(&page, 3, buf[0..]);
+        assert(r3 == 0);
+    }
+
+    // The sorted page equals a hand-sorted window drawn directly — the composition invents nothing.
+    {
+        const line = "material:stainless-304|material:brass max:100";
+        const via_sort = try facets_sorted_shelf(garden, &cat, line, cols, 4, 0);
+        const fq = try part_facets.parse_facets(line);
+        var kept: part_catalog.PartCatalog = undefined;
+        try part_facets.filter_facets(&cat, fq, &kept);
+        var sorted: part_catalog.PartCatalog = undefined;
+        try sort_by_price(&kept, &sorted);
+        const via_hand = try part_row.part_window(garden, &sorted, cols, 4, 0);
+        var a: [part_row.max_fact_line]u8 = undefined;
+        var b: [part_row.max_fact_line]u8 = undefined;
+        var row: u32 = 0;
+        while (row < 4) : (row += 1) {
+            const na = row_text(&via_sort, row, a[0..]);
+            const nb = row_text(&via_hand, row, b[0..]);
+            assert(na == nb);
+            assert(std.mem.eql(u8, a[0..na], b[0..nb]));
+        }
+    }
+
+    // An empty line is a MATCH-ALL, sorted: every part drawn cheapest-first — hexnut first (55c), gear last (845c).
+    {
+        const page = try facets_sorted_shelf(garden, &cat, "", cols, 5, 0);
+        var buf: [part_row.max_fact_line]u8 = undefined;
+        const r0 = row_text(&page, 0, buf[0..]);
+        assert(std.mem.startsWith(u8, buf[0..r0], "hexnut  HX-N8  stainless-304  $0.55"));
+        const r4 = row_text(&page, 4, buf[0..]);
+        assert(std.mem.startsWith(u8, buf[0..r4], "gear  GR-24T  acetal  $8.45"));
+    }
+
+    // The sorted shelf agrees with the UNSORTED faceted shelf on the RESULT SET — same parts, only reordered. Over the
+    // union above, both draw three parts; the sorted one simply reads them least-dear first.
+    {
+        const line = "material:stainless-304|material:brass max:100";
+        assert((try part_facets_search.facets_search_result_count(&cat, line)) == 3);
+    }
+
+    // The composed sorted screen rasterizes to a lit canvas — the sorted search reaches the glass.
+    {
+        const g = try facets_sorted_shelf(garden, &cat, "", cols, 5, 0);
+        const scale: u32 = 1;
+        const width: u32 = g.cols * skate.cell_w * scale;
+        const height: u32 = g.rows * skate.cell_h * scale;
+        const stride: u32 = width * 4;
+        const canvas = try garden.alloc(u8, @as(usize, stride) * @as(usize, height));
+        const bg = skate.Color{ .r = 1, .g = 2, .b = 3 };
+        const fg = skate.Color{ .r = 210, .g = 210, .b = 210 };
+        g.rasterize(canvas, stride, @intCast(width), @intCast(height), bg, fg, scale);
+        const lit = g.lit_pixel_count(canvas, stride, @intCast(width), @intCast(height), bg);
+        assert(lit > 0);
+    }
+
+    // A malformed clause surfaces the parser's own named refusal before any sort.
+    if (facets_sorted_shelf(garden, &cat, "material:stainless-304|colour:red", cols, 4, 0)) |_| {
+        return error.LineSlipped;
+    } else |e| {
+        if (e != error.UnknownKey) return error.WrongLine;
+    }
+
+    // An offset past the sorted result refuses BadOffset through the window — three matches, so offset 3 at one row per
+    // page is past it.
+    if (facets_sorted_shelf(garden, &cat, "material:stainless-304|material:brass max:100", cols, 1, 3)) |_| {
+        return error.OffsetSlipped;
+    } else |e| {
+        if (e != error.BadOffset) return error.WrongOffset;
+    }
+
+    print("GREEN part-facets-sort: five parts across four bands with a price spread and a 55c tie — sort_by_price reads " ++
+        "cheapest-first (55, 55, 60, 125, 845), stable on the tie (hexnut before washer, held order kept), a " ++
+        "permutation of the source (same parts as a set, only reordered, every price >= the row above); the sorted " ++
+        "faceted shelf draws (stainless|brass) max:100 least-dear first (hexnut, washer, nut; bolt dropped at $1.25), " ++
+        "equal to the hand-sorted window drawn directly (the composition invents nothing); an empty line is a " ++
+        "match-all sorted (hexnut first, gear last); the sorted shelf agrees with the unsorted faceted count on the " ++
+        "result set; the sorted screen rasterizes to a lit canvas; a malformed clause refuses before any sort " ++
+        "(UnknownKey) and an offset past the result refuses BadOffset; a price is a fact compared and reordered by, " ++
+        "never moved — no network, no key, no funds\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: part_facets_sort selftest\n", .{});
+    return 1;
+}

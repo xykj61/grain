@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260814.012339
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title HUNK89 — the faceted result, sorted cheapest-first: a permutation, never a change
+prompt Recursion loop past HUNK88; take the next agent-doable lap Lindy-first crux-first; send each finished increment; stop at custody gates.
+think HUNK88's tail named a price sort as the next crux — the faceted shelf drew in HELD ORDER, no order a shopper wants; the first thing a keeper reaches for on a parts wall is cheapest-first, and every faceted rung so far left it undone.
+think Built brushstroke/part_facets_sort.rye over HUNK86 filter_facets and part_window: sort_by_price reorders a catalog into a fresh sub-catalog over the same sheet, ascending by recorded cent count, stable on ties (a strict `<` keeps the earliest held index), re-adding through add_part so every window and fact is re-validated; facets_sorted_shelf composes parse → filter → sort → window.
+think The crux is that the sort is a PERMUTATION, never a change — same parts as a set, only reordered; proven by same_parts_as_set plus an ascending-order walk, and a 55c tie (hexnut before washer) proving stability.
+obs Selection sort bounded by sprite.max_products (256), O(n²) yet n is small and the bound is named at construction; TAME bans + width clean, HUNK86 stays GREEN beneath.
+obs A price clause is compared and reordered by, never moved — custody gate #3 untouched; no network, no key, no funds.
+loom witness=hunk_part_facets_sort_witness green=1 parts=5 tie_price_cents=55 sorted_prices=55,55,60,125,845 union_result=3
+file brushstroke/part_facets_sort.rye HUNK89 sort_by_price (stable, ascending) · facets_sorted_shelf (parse → filter → sort → window)
+file tools/hunk_part_facets_sort_witness.rish witness GREEN; HUNK86 faceted shelf stays GREEN beneath
+file active-designing/20260814-012339_hunk-part-facets-sort-by-price-exploration.md self-approved design round for HUNK89
+file image/README.md search paragraph now names the cheapest-first sort (stable permutation) and its witness
+recommend keep-going — the faceted shelf now reads, echoes, pages, and sorts; next is a sorted header (echo the sort choice), a per-facet count, sort-descending or sort-by-name, or another Season-A / double-seat journey. No gate reached.
