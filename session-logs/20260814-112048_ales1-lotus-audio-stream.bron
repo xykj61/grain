@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260814.112048
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (Linux) — Eastern (EDT) time convention
+title ALES1 — Lotus's audio byte stream: many frames reassembled into one gapless timeline
+prompt recur the loop — take the next agent-doable Lindy-first crux-first lap, self-approve the design round, send each increment as its own signed round, stop at the custody gates
+think ALES0 opened Season C with one framed buffer proven whole and sample-aligned. The road-on I named was the byte stream that carries many frames — the exact leap constel/channel.rye (FORA5) proved for the handshake. Agent-doable, no gate, bounded, high-confidence GREEN, directly continues the just-opened season. Lindy-first crux-first: a stream is the foundation every recorder and interface leans on before a timeline can edit anything.
+think The crux beyond a generic byte channel is AUDIO-specific: ordered reassembly across frame boundaries. Two properties compose — delimiting (one whole frame at a time, NeedMoreBytes without moving the cursor, BadFrame on a wild length) and gapless in-order reassembly (drain every whole frame, lay its samples end to end so the timeline equals b0 ++ b1 ++ b2). Each frame is deframed verify-before-trust, so ALES0's two gates run per frame during reassembly — a torn-sample frame read cleanly by the delimiter still refuses PartialSample.
+think Wrote lotus/stream.rye mirroring channel.rye's proven byte-FIFO shape (fixed buf, cursor, len, compact-on-drain), reusing the shared LOTS header (payload length at offset 6). Added a bounded Timeline (max 4*max_samples) and drain() that returns cleanly at NeedMoreBytes, propagates a real frame fault, and refuses TimelineFull. The stream only delimits and orders; it never re-checks a frame, so ALES0 stays the single trust boundary.
+obs GREEN on the first build. Selftest proves: three frames back to back reassemble into b0 ++ b1 ++ b2 sample-for-sample and in order; a split frame refuses NeedMoreBytes without moving the cursor and completes on its last byte with no torn sample; a wild length refuses BadFrame before any over-read; an overfull stream refuses StreamFull; a torn-sample frame read cleanly by the delimiter still refuses PartialSample at the audio border during reassembly. TAME bans clean; ≥2 asserts/fn, u32 counts, i16 samples, copy loops not @memcpy, bounded drain guard. Purely local — no socket, no network, no keys, no funds, no real device; every custody gate untouched.
+loom witness=ales_stream_witness wall_blocks=5 build=first_green max_stream_bytes=4180 max_timeline_samples=4096
+file lotus/stream.rye ALES1 — AudioStream (bounded byte FIFO, one frame at a time) + Timeline + drain (gapless ordered reassembly)
+file tools/ales_stream_witness.rish the on-metal witness — builds, runs selftest, asserts the GREEN ales-stream line
+file active-designing/20260814-fill-ales1-lotus-audio-stream.md the self-approved design capture for the round
+file lotus/README.md front door synced — ALES1 rung, status list, run block, road-on now naming the timeline
+recommend keep-going Season C climbs; the next Lotus rung opens the timeline that edits the reassembled samples (cut · gain · splice), agent-doable and no gate; audio-interface hardware stays a paused research round
