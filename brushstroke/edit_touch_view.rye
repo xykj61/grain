@@ -206,11 +206,11 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
 
     print("GREEN edit-touch-view: an 8x8 two-tone edited on a {d}x{d} grid through one cursor — a fresh view paints " ++
         "the source (left cell red), a commit(flip_h) gesture tracks on glass (left cell blue), an undo returns the " ++
-        "picture to the source and a redo to the flip; paint equals a direct preview of the applied prefix the cursor " ++
-        "stands on cell-for-cell (no drift), two paints are byte-identical and painting never walks the cursor " ++
-        "(pure); the current view rasterizes to a lit canvas with blue in the left cell; a zero and an over-ceiling " ++
-        "grid each refuse BadView at open, and a committed out-of-bounds crop refuses OutOfBounds through the paint " ++
-        "fold. HUNK48 seam and HUNK13 preview GREEN beneath; no network, no key, no funds\n", .{ cols, rows });
+        "picture to the source and a redo to the flip; paint equals a direct preview of the cursor's applied prefix " ++
+        "cell-for-cell (no drift), two paints are byte-identical and painting never walks the cursor (pure); the " ++
+        "current view rasterizes to a lit canvas with blue in the left cell; a zero and an over-ceiling grid each " ++
+        "refuse BadView at open, and a committed out-of-bounds crop refuses OutOfBounds through the paint fold. " ++
+        "HUNK48 seam and HUNK13 preview GREEN beneath; no network, no key, no funds\n", .{ cols, rows });
     return 0;
 }
 
