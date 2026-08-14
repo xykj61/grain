@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260813.225135
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title HUNK67 — the Photos editor saves into the content-addressed store
+prompt recur baton — take the next agent-doable lap Lindy-first crux-first on the road past BUHR; send each finished increment as its own signed round; stop at the custody gates
+think Read REMEMBER, the 1,024-round itinerary, and the six-season double-seat. The frontier is Season A (waymark HUNK), the Photos-app journey. HEAD is HUNK66 (brushstroke/photos_editor.rye) — crop and filter unified over ONE EditCursor.
+think Lindy-first crux-first: the editor now edits, yet its edited view goes nowhere — it lives only in a running editor. The most durable next move closes the loop the journey opened at HUNK0 (codec) and HUNK1 (content-addressed store): save the edit as a durable, integrity-guarded Tablecloth artifact. This is the completing keystone, not a new tool.
+think Wiring probe: Zig resolves @import relative to the SYMLINK location, not the real directory (tested — a symlinked photos_editor in pond/apps failed to find its deps). So the save module belongs in brushstroke/, where the editor's deps already resolve; brought the storage chain in as symlinks (image_artifact.rye, tablecloth.rye, mantra/beading.rye, mantra/tally_copy.rye).
+think save_edit is a pure composition: editor.current_view (HUNK66) -> image_artifact.store_image (HUNK1). Two invariants (name non-empty, view well-formed RGBA) plus a postcondition (bead_count >= 1). No new pixel op, no @memcpy, no new usize.
+obs The selftest proves the whole loop on metal: an 8x8 gradient cropped (2,2)->(6,6) then mono-filtered, saved (56 bytes) and fetched back byte-for-byte as the editor's current view; the same edit under a second name stored once (dedup dividend rides through the editor); the saved image re-opens in a fresh editor as a first-class source (open -> edit -> save -> re-open, no seam); a bare editor saves the source itself; a tampered saved bead refuses DigestMismatch before a pixel is read.
+obs REMEMBER's frontier narrative already lags to ~HUNK55 while HEAD is HUNK66 — its latest-lap line is one enormous concatenation with no unique tail anchor, so a mid-line append is fragile. Updated the load-bearing Git nib only; a full remember-refresh of the narrative is its own later round. No custody gate reached — no network, no key, no funds.
+loom witness=hunk_photo_save_witness selftest_bytes=56 beads_deduped=1 bead_count=1 tame=clean width_exit=0
+file brushstroke/photo_save.rye HUNK67 — save_edit stores the editor's current view as a content-addressed artifact
+file tools/hunk_photo_save_witness.rish the witness that binds the claim on metal
+file brushstroke/image_artifact.rye symlink into brushstroke so the editor can reach the store
+file brushstroke/tablecloth.rye symlink — image_artifact's store dependency
+file brushstroke/mantra/beading.rye symlink — the content-addressed bead store
+file brushstroke/mantra/tally_copy.rye symlink — beading's bounded-copy dependency
+file work-in-progress/REMEMBER.md Git nib refreshed to this round's HEAD
+recommend keep-going HUNK68 — another Photos gesture (rotate/flip reusing the pixel ops, or hue/saturation), or thread a fresh Season-A / double-seat journey; the save loop is now closed end to end

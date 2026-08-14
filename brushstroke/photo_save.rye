@@ -1,0 +1,168 @@
+//! brushstroke/photo_save.rye — HUNK67: save the edited picture — the Photos editor meets the content-addressed store.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK67.
+//! Design read: active-designing/20260813-222956_hunk-filter-picker-exploration.md ("The road on from here").
+//! Teacher, thanked clean-room: the "Save a Copy" of a photo app (iCloud Photos / Google Photos) — an edit becomes a new
+//! image the library holds, the original untouched (concept only, siloed).
+//!
+//! HUNK66 gave the Photos app one editing surface: a keeper crops, filters, and undoes across both tools over ONE
+//! history. Yet an edit that lives only in a running editor is lost the moment the editor closes. This rung closes the
+//! loop the journey opened at HUNK0/HUNK1: the editor's `current_view` — the source with every committed edit applied —
+//! is encoded to QOI and BEADED into a Tablecloth artifact under a name, exactly as a stored image is (HUNK1). The saved
+//! picture inherits every property of a content-addressed artifact for free: its name pins a SHA3 address, a fetch proves
+//! every bead before a pixel is read, and two identical edits are stored once (the dedup dividend). The source pixmap is
+//! never mutated, and the saved image is itself a well-formed source a fresh editor can re-open — so the road runs
+//! open → edit → save → re-open with no seam. A pure composition over two proven seams. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/photo_save.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const photos_editor = @import("photos_editor.rye");
+const image_artifact = @import("image_artifact.rye");
+const tablecloth = @import("tablecloth.rye");
+const beading = @import("mantra/beading.rye");
+const filter_preset = @import("filter_preset.rye");
+
+pub const photo_save_version = "20260813.230000";
+
+/// Save an editor's current picture as a content-addressed Tablecloth artifact under `name`. The picture stored is
+/// `editor.current_view` — the immutable source with every committed crop and filter applied (HUNK66) — encoded to QOI
+/// and beaded exactly as a stored image is (HUNK1), so the saved copy carries a content address and per-bead integrity
+/// for free. The source is never mutated; a second save of the identical edit stores nothing new (the dedup dividend).
+/// Returns the beading report so a caller can see whether the edit deposited fresh beads. Refuses a stream past the
+/// content bound (`StreamTooLarge`, from HUNK1) rather than storing what a fetch cannot hold.
+pub fn save_edit(
+    allocator: std.mem.Allocator,
+    cat: *tablecloth.Catalog,
+    store: *beading.BeadStore,
+    editor: *const photos_editor.PhotosEditor,
+    name: []const u8,
+) !beading.BeadReport {
+    // invariant: a real name identifies the artifact — an empty name pins nothing a later fetch could find.
+    assert(name.len > 0);
+    const view = try editor.current_view(allocator);
+    // invariant: the saved view is a well-formed RGBA image — four bytes per pixel — before it reaches the codec.
+    assert(view.pixels.len == @as(usize, view.width) * @as(usize, view.height) * 4);
+    const report = try image_artifact.store_image(allocator, cat, store, name, &view);
+    // invariant: a stored artifact holds at least one bead — a saved image is never an empty address.
+    assert(report.bead_count >= 1);
+    return report;
+}
+
+// --- selftest: open an 8x8 gradient, crop then filter, SAVE the edit into the store, fetch it back byte-for-byte, prove
+//     the dedup dividend, re-open the saved image in a fresh editor, save the bare source, and refuse a tampered bead ---
+
+fn craft_gradient(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 8;
+    const h: u32 = 8;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            buf[off] = @intCast(x * 20 + 10); // r — a per-column gradient
+            buf[off + 1] = @intCast(y * 20 + 10); // g — a per-row gradient
+            buf[off + 2] = @intCast(((x + y) * 12) & 0xff); // b — a diagonal, so a filter's colour work shows
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const pm = try craft_gradient(garden);
+
+    var store: beading.BeadStore = .empty();
+    var cat: tablecloth.Catalog = .empty();
+
+    // Open the editor and make a real edit: crop (2,2)->(6,6), then a "mono" filter, over ONE history (HUNK66).
+    var ed = try photos_editor.PhotosEditor.open(&pm, 8, 8);
+    ed.finger_down(2, 2);
+    ed.finger_move(6, 6);
+    ed.finger_up(6, 6);
+    _ = try ed.commit_crop(garden);
+    ed.select_to(2); // "mono"
+    assert(std.mem.eql(u8, ed.selected_filter(), "mono"));
+    _ = try ed.commit_filter(garden);
+
+    // Save the edit into the store, then fetch it back and prove it IS the editor's current view, byte for byte.
+    const edited = try ed.current_view(garden);
+    const rep = try save_edit(garden, &cat, &store, &ed, "edit.qoi");
+    assert(rep.beads_deposited >= 1); // a fresh edit deposits its beads
+    const back = try image_artifact.fetch_image(garden, &cat, &store, "edit.qoi");
+    // The crux of this rung: the picture the store hands back is the very edit the keeper made.
+    assert(back.same_bytes(&edited));
+    assert(back.width == 4); // the crop took the view to 4x4
+    assert(back.height == 4);
+
+    // The dedup dividend rides through the editor too: saving the SAME edit under a second name stores nothing new.
+    const rep2 = try save_edit(garden, &cat, &store, &ed, "edit-copy.qoi");
+    assert(rep2.beads_deposited == 0); // identical edited bytes: nothing new stored
+    assert(rep2.beads_deduped == rep2.bead_count); // every bead already held
+
+    // The loop closes: the saved image is a well-formed source a fresh editor re-opens, its opening view the saved bytes.
+    {
+        var ed2 = try photos_editor.PhotosEditor.open(&back, 4, 4);
+        const reopened = try ed2.current_view(garden);
+        assert(reopened.same_bytes(&edited)); // open -> edit -> save -> re-open, no seam
+        assert(ed2.filter_count() == 9); // a re-opened image is a first-class editable source
+    }
+
+    // A bare editor (no edits) saves the SOURCE itself — save collapses exactly the committed history.
+    {
+        var ed3 = try photos_editor.PhotosEditor.open(&pm, 8, 8);
+        _ = try save_edit(garden, &cat, &store, &ed3, "source.qoi");
+        const src_back = try image_artifact.fetch_image(garden, &cat, &store, "source.qoi");
+        assert(src_back.same_bytes(&pm)); // an unedited save is the source, byte for byte
+    }
+
+    // Unwelcome: a tampered saved bead refuses BEFORE a pixel is read — the saved edit is integrity-guarded like any
+    // stored image. Corrupt a held bead in a fresh store so the rest of the selftest is untouched.
+    {
+        var store_t: beading.BeadStore = .empty();
+        var cat_t: tablecloth.Catalog = .empty();
+        var ed_t = try photos_editor.PhotosEditor.open(&pm, 8, 8);
+        ed_t.select_to(2); // "mono"
+        _ = try ed_t.commit_filter(garden);
+        _ = try save_edit(garden, &cat_t, &store_t, &ed_t, "tampered.qoi");
+        store_t.beads[0].bytes[0] +%= 1; // flip one byte of a held bead
+        if (image_artifact.fetch_image(garden, &cat_t, &store_t, "tampered.qoi")) |_| {
+            return error.TamperSlipped;
+        } else |e| {
+            if (e != error.DigestMismatch) return error.WrongTamper;
+        }
+    }
+
+    // Prove the edit really rode the store: read its published content address and length.
+    var addr: [tablecloth.address_hex_width]u8 = undefined;
+    try tablecloth.address_hex(&cat, "edit.qoi", addr[0..]);
+    const stored_len = try tablecloth.artifact_len(&cat, "edit.qoi");
+    assert(stored_len >= qoi.header_len + @as(u32, qoi.end_marker.len));
+
+    // A last honest tie: the source and the edit are different pictures, so they are different addresses.
+    const gray = try filter_preset.apply_preset(garden, &ed.book, "mono", &pm);
+    assert(!edited.same_bytes(&gray)); // a crop-then-filter is not a filter alone
+
+    print("GREEN photo-save: an 8x8 gradient cropped (2,2)->(6,6) then mono-filtered, SAVED into the content-addressed " ++
+        "store and fetched back byte-for-byte as the editor's current view ({d} bytes at address {s}); the same edit " ++
+        "under a second name stored once (deduped {d}/{d} beads); the saved image re-opens in a fresh editor as a " ++
+        "first-class source; a bare editor saves the source itself; a tampered saved bead refused DigestMismatch before " ++
+        "a pixel was read. HUNK66 editor, HUNK1 store GREEN beneath; the source never mutated; no network, no key, no funds\n", .{
+        stored_len, addr[0..16], rep2.beads_deduped, rep2.bead_count,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: photo_save selftest\n", .{});
+    return 1;
+}

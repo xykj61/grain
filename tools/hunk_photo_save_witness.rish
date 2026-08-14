@@ -1,0 +1,41 @@
+# tools/hunk_photo_save_witness.rish — the Photos editor saves into the content-addressed store, on metal (HUNK67).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK67.
+# Design read: active-designing/20260813-222956_hunk-filter-picker-exploration.md ("The road on from here").
+# Teacher, thanked clean-room: the "Save a Copy" of a photo app (iCloud Photos / Google Photos) — an edit becomes a new
+# image the library holds, the original untouched (concept only, siloed).
+#
+# HUNK66 gave the Photos app one editing surface; HUNK1 gave an image a content-addressed identity. This rung joins them:
+# the editor's current view — the source with every committed crop and filter applied — is saved into the Tablecloth
+# store, so the edit becomes a durable, integrity-guarded artifact that re-opens as a first-class source. The road runs
+# open -> edit -> save -> re-open with no seam. The source is never mutated; no network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_photo_save_witness.rish
+
+say "hunk-photo-save: Language EN — HUNK67 joins the Photos editor (HUNK66) to the content-addressed store (HUNK1); save_edit encodes the editor's current view to QOI and beads it into a Tablecloth artifact under a name."
+say "hunk-photo-save: Style Radiant — an edit no longer lives only in a running editor: it becomes a saved picture the library holds, its name a content address, its integrity proven bead by bead, the original untouched."
+say "hunk-photo-save: Lens TAME — a pure composition over two proven seams; the saved view inherits per-bead integrity and dedup for free, the source is never mutated, a tampered saved bead refuses before a pixel is read; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/photo_save"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/photo_save.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-photo-save: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-photo-save: selftest exited non-zero — ${selftest.out}"
+
+# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# single-quoted string, so an apostrophe or brace in the GREEN line can never break a check (the loom for REDS #76).
+let out = trim selftest.out
+say "hunk-photo-save: ${out}"
+
+assert out contains "GREEN photo-save" else "hunk-photo-save: selftest did not print the GREEN photo-save line"
+assert out contains "SAVED into the content-addressed store and fetched back byte-for-byte as the editor's current view" else "hunk-photo-save: the saved edit did not round-trip byte-for-byte"
+assert out contains "the same edit under a second name stored once" else "hunk-photo-save: the dedup dividend did not hold through the editor"
+assert out contains "the saved image re-opens in a fresh editor as a first-class source" else "hunk-photo-save: the saved image did not re-open as a source"
+assert out contains "a bare editor saves the source itself" else "hunk-photo-save: an unedited save did not recover the source"
+assert out contains "a tampered saved bead refused DigestMismatch before a pixel was read" else "hunk-photo-save: the tamper refusal did not fire"
+
+say "hunk-photo-save: GREEN — the Photos editor saves its current view into the content-addressed store, fetches it back byte-for-byte, dedups an identical edit, re-opens the saved image as a first-class source, saves the bare source unedited, and refuses a tampered saved bead before a pixel is read; no network, no key, no funds."
