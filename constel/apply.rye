@@ -1,0 +1,261 @@
+//! constel/apply.rye — FORA19: the committed log drives a state machine, each client request applied EXACTLY ONCE. Every rung
+//! before this made the sky AGREE — a roster (FORA1), a leader (FORA10), a committed value (FORA11), an ordered log (FORA12),
+//! terms and repair and the Figure 8 commit rule (FORA16–18). An agreed log is not yet a service. A replicated log is worthless
+//! until it DRIVES A STATE MACHINE: each committed entry applied, in order, moving a shared state forward. And the moment a real
+//! client talks to that machine, the field's second-most-famous correctness trap opens — Raft's §8 (client interaction):
+//!
+//!   A client sends a request; the leader commits it, then crashes BEFORE answering. The client, hearing nothing, RESENDS. A new
+//!   leader commits the resend too. The command is now in the log TWICE — and a naive machine applies it twice. A transfer of 40
+//!   becomes 80. No consensus rule above catches it: BOTH copies were legitimately committed.
+//!
+//! Consensus guarantees the log is agreed. It does NOT guarantee each REQUEST runs once — that is a separate, provable property,
+//! and this rung's crux. The safe rule Raft proves is a per-client session:
+//!
+//!   The machine remembers, per client, the highest request number (seq) it has applied and the result that application produced.
+//!   A command whose seq is NOT GREATER than that highest is a RETRY: return the cached result, mutate nothing. Only a strictly
+//!   higher seq is applied once. So a resend after a leader change is harmless, and the client's answer is stable.
+//!
+//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+//! FORA19. Design read: active-designing/20260814-083900_fora19-constel-apply-linearizable-sessions.md
+//! Stands on: constel/commit.rye (FORA18) — safe_commit_len, the committed prefix length this machine folds; constel/roster.rye
+//! (FORA1) — max_piers, the bound the log inherits.
+//!
+//! Purely LOCAL — a bounded in-memory Machine and a Command array on one bench, siloed to constel/, run from inside the jailed
+//! pier. No socket, no network, no keys, no funds, no real client, no real address ever formed (custody gate #2 — real hardware /
+//! any real wire — and gate #4 — real Kumara — both untouched). A served machine reaches the Comlink-served gate; the socket rung
+//! stays the maintainer's hand.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/apply.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const roster = @import("roster.rye");
+
+pub const apply_version = "20260814.083900";
+
+/// The most commands a committed log holds on this bench — the same 64-entry bound FORA12's value-log kept, so the applied stream
+/// stays one shape with the log it drives.
+pub const max_commands: u32 = 64;
+
+/// The most distinct clients the sky holds a session for. Bounded like every other roster: a session table cannot grow without
+/// end, so a machine refuses an unknown client rather than allocate one on demand.
+pub const max_clients: u32 = roster.max_piers;
+
+/// The largest value the bounded register ever holds — a named ceiling so an application that would climb past it refuses by name
+/// rather than overflow silently. Half of u32 leaves generous headroom for the summed amounts a witness ever feeds.
+pub const max_register: u32 = 2_000_000_000;
+
+pub const ApplyError = error{
+    /// A command naming a client past the session-table bound. The sky holds at most max_clients sessions.
+    UnknownClient,
+    /// An application whose amount would carry the bounded register past max_register. A bounded ledger refuses to overrun.
+    RegisterOverflow,
+    /// A commit length past the committed command count — a machine never applies more than the log holds.
+    TooManyCommitted,
+};
+
+/// One ordered request the sky committed: WHICH client sent it (a session id, 0..max_clients), that client's own monotonically
+/// climbing request number, and the work it carries (this machine adds `amount` to its register — the simplest honest state).
+/// This is the identity Raft §8 requires and FORA12's anonymous u32 value lacked.
+pub const Command = struct {
+    client: u32 = 0,
+    seq: u32 = 0,
+    amount: u32 = 0,
+};
+
+/// The replicated state machine: a bounded `register` the committed commands move, plus a SESSION TABLE — for each client, the
+/// highest seq it has applied (`last_seq`) and the result that application produced (`last_result`), guarded by `seen`. This is
+/// Raft §8's per-client dedup made concrete. Two machines fed the same committed prefix reach a byte-identical state — that is the
+/// whole reason to replicate a log.
+pub const Machine = struct {
+    register: u32 = 0,
+    last_seq: [max_clients]u32 = [_]u32{0} ** max_clients,
+    last_result: [max_clients]u32 = [_]u32{0} ** max_clients,
+    seen: [max_clients]bool = [_]bool{false} ** max_clients,
+
+    /// Whether `client` has ever applied a request, and if so at what highest seq. A fresh machine has seen no one.
+    pub fn has_applied(self: *const Machine, client: u32) bool {
+        // invariant: only a client within the bounded session table is ever asked after.
+        assert(client < max_clients);
+        return self.seen[client];
+    }
+
+    /// The result the machine last returned to `client` — meaningful only once has_applied(client) is true.
+    pub fn result_for(self: *const Machine, client: u32) u32 {
+        // invariant: a result is read only for a client that has actually applied a request.
+        assert(client < max_clients and self.seen[client]);
+        return self.last_result[client];
+    }
+
+    /// APPLY ONE COMMAND, EXACTLY ONCE (the heart of the rung, Raft §8). If `cmd.seq` is NOT GREATER than the client's last applied
+    /// seq, the command is a RETRY: return the cached result, mutate nothing — a resend after a leader change is harmless. Only a
+    /// strictly higher seq is applied: the register climbs by `amount`, and the session records the new seq and result. Refuses an
+    /// unknown client and a register overflow by name, changing nothing on refusal.
+    pub fn apply_one(self: *Machine, cmd: Command) ApplyError!u32 {
+        // invariant: a command is applied only for a client the bounded session table can hold.
+        assert(max_clients <= roster.max_piers);
+        if (cmd.client >= max_clients) return error.UnknownClient;
+
+        // A retry — a seq at or below what this client already applied. Return the cached answer; the state does not move.
+        if (self.seen[cmd.client] and cmd.seq <= self.last_seq[cmd.client]) {
+            // invariant: a retry never advances the client's session — the exactly-once guarantee in one line.
+            assert(cmd.seq <= self.last_seq[cmd.client]);
+            return self.last_result[cmd.client];
+        }
+
+        // A fresh request — strictly higher seq (or the client's first). Apply it once, refusing an overflow before any mutation.
+        if (cmd.amount > max_register - self.register) return error.RegisterOverflow;
+        const before = self.register;
+        self.register += cmd.amount;
+        self.seen[cmd.client] = true;
+        self.last_seq[cmd.client] = cmd.seq;
+        self.last_result[cmd.client] = self.register;
+        // invariant: the register moved by exactly the command's amount, and the session now holds this request's seq.
+        assert(self.register == before + cmd.amount);
+        assert(self.last_seq[cmd.client] == cmd.seq and self.seen[cmd.client]);
+        return self.register;
+    }
+};
+
+/// FOLD ONLY THE COMMITTED PREFIX into the machine, in log order — `commit_len` is FORA18's safe_commit_len over the same log, so
+/// an UNCOMMITTED tail never touches the state. Applying is incremental: a machine already advanced to some prefix, fed the same
+/// commands at a larger commit_len, applies EXACTLY the newly-committed suffix (each earlier command a retry that changes nothing),
+/// reaching the same state as one full apply. Commit and apply stay in lockstep.
+pub fn apply_through(machine: *Machine, cmds: []const Command, commit_len: u32) ApplyError!void {
+    // invariant: a machine never applies more commands than the committed log holds, itself within the entry cap.
+    assert(cmds.len <= max_commands);
+    if (commit_len > cmds.len) return error.TooManyCommitted;
+    var i: u32 = 0;
+    while (i < commit_len) : (i += 1) {
+        _ = try machine.apply_one(cmds[i]);
+    }
+    // invariant: the fold consumed exactly the committed prefix, no more.
+    assert(i == commit_len and commit_len <= cmds.len);
+}
+
+// --- selftest: the machine applies a committed prefix in order; two machines fed the same prefix reach a byte-identical state
+//     (the replicated-state-machine guarantee); THE §8 REFUSAL — a duplicated request applies once, the retry returning the cached
+//     result; the answer is stable across the retry; only the committed prefix drives the machine and apply is incremental; the
+//     session table and register are bounded, an unknown client and a register overflow each refusing by name. -----------------
+
+fn run_selftest() !u8 {
+    // 1. THE MACHINE APPLIES A COMMITTED PREFIX IN ORDER — three distinct clients, register climbs by the sum of the amounts, each
+    //    session records its seq and result.
+    {
+        var m = Machine{};
+        const cmds = [_]Command{
+            .{ .client = 0, .seq = 1, .amount = 10 },
+            .{ .client = 1, .seq = 1, .amount = 20 },
+            .{ .client = 2, .seq = 1, .amount = 30 },
+        };
+        try apply_through(&m, &cmds, 3);
+        assert(m.register == 60); // 10 + 20 + 30
+        assert(m.result_for(0) == 10 and m.result_for(1) == 30 and m.result_for(2) == 60);
+        assert(m.has_applied(0) and m.has_applied(1) and m.has_applied(2));
+    }
+
+    // 2. THE REPLICATED-STATE-MACHINE GUARANTEE (determinism) — two FRESH machines fed the SAME committed prefix reach a
+    //    byte-identical register and session table. Two piers that agree on the log agree on the state; this is the whole point of
+    //    replicating a log.
+    {
+        const cmds = [_]Command{
+            .{ .client = 3, .seq = 1, .amount = 5 },
+            .{ .client = 0, .seq = 1, .amount = 7 },
+            .{ .client = 3, .seq = 2, .amount = 9 },
+        };
+        var a = Machine{};
+        var b = Machine{};
+        try apply_through(&a, &cmds, 3);
+        try apply_through(&b, &cmds, 3);
+        assert(a.register == b.register and a.register == 21); // 5 + 7 + 9
+        assert(std.mem.eql(u32, &a.last_seq, &b.last_seq));
+        assert(std.mem.eql(u32, &a.last_result, &b.last_result));
+        assert(std.mem.eql(bool, &a.seen, &b.seen));
+    }
+
+    // 3. THE §8 REFUSAL — the crux. A committed log holds ONE client's command TWICE: the leader-crash-then-resend Raft §8 draws.
+    //    Client 0 sends seq 1 (amount 40); the leader commits it and crashes; the client resends seq 1; a new leader commits the
+    //    resend too — so the log carries (client 0, seq 1, 40) at BOTH index 0 and index 2. The machine applies it ONCE: the
+    //    register reflects a single 40 from client 0 (plus client 1's honest 3), never 80.
+    {
+        var m = Machine{};
+        const cmds = [_]Command{
+            .{ .client = 0, .seq = 1, .amount = 40 }, // the request
+            .{ .client = 1, .seq = 1, .amount = 3 }, // an unrelated honest command in between
+            .{ .client = 0, .seq = 1, .amount = 40 }, // THE RESEND — same client, same seq: a retry, not a second request
+        };
+        try apply_through(&m, &cmds, 3);
+        assert(m.register == 43); // 40 (once) + 3 — NOT 83; the duplicated request fired exactly once
+        assert(m.last_seq[0] == 1); // client 0's session never advanced past its single request
+    }
+
+    // 4. THE ANSWER IS STABLE — the result the retry returns equals the result the first application returned, so a client
+    //    resending after a leader change sees its answer once, unchanged.
+    {
+        var m = Machine{};
+        const first = try m.apply_one(.{ .client = 5, .seq = 1, .amount = 100 });
+        const retry = try m.apply_one(.{ .client = 5, .seq = 1, .amount = 100 }); // the resend
+        const stale = try m.apply_one(.{ .client = 5, .seq = 0, .amount = 100 }); // an even older seq — also already answered
+        assert(first == 100 and retry == 100 and stale == 100); // one answer, three askings
+        assert(m.register == 100); // the register moved once
+    }
+
+    // 5. ONLY THE COMMITTED PREFIX DRIVES THE MACHINE, AND APPLY IS INCREMENTAL. A four-command log; at first only two are
+    //    committed, so the uncommitted tail (index 2,3) never touches the state. When the commit index later advances to four, the
+    //    machine applies EXACTLY the newly-committed suffix — reaching the same register as a single full apply of all four.
+    {
+        const cmds = [_]Command{
+            .{ .client = 0, .seq = 1, .amount = 11 },
+            .{ .client = 1, .seq = 1, .amount = 22 },
+            .{ .client = 2, .seq = 1, .amount = 33 }, // uncommitted while commit_len == 2
+            .{ .client = 3, .seq = 1, .amount = 44 }, // uncommitted while commit_len == 2
+        };
+        var incremental = Machine{};
+        try apply_through(&incremental, &cmds, 2);
+        assert(incremental.register == 33); // 11 + 22 only — the tail did not apply
+        assert(!incremental.has_applied(2) and !incremental.has_applied(3));
+        try apply_through(&incremental, &cmds, 4); // commit index advances; the earlier two are retries, the tail applies once
+        assert(incremental.register == 110); // 11 + 22 + 33 + 44
+
+        var full = Machine{};
+        try apply_through(&full, &cmds, 4); // a single full apply
+        assert(full.register == incremental.register); // incremental apply reaches the same state — commit and apply in lockstep
+        assert(std.mem.eql(u32, &full.last_result, &incremental.last_result));
+    }
+
+    // 6. BOUNDED — the session table and register refuse to overrun. A command naming a client past max_clients refuses
+    //    UnknownClient; an amount that would carry the register past max_register refuses RegisterOverflow; a commit length past the
+    //    log refuses TooManyCommitted. Each refuses by name, changing nothing.
+    {
+        var m = Machine{};
+        assert(m.apply_one(.{ .client = max_clients, .seq = 1, .amount = 1 }) == error.UnknownClient);
+        assert(m.register == 0); // the refused command moved nothing
+
+        _ = try m.apply_one(.{ .client = 0, .seq = 1, .amount = max_register - 1 }); // fill the register near its ceiling
+        assert(m.apply_one(.{ .client = 1, .seq = 1, .amount = 2 }) == error.RegisterOverflow); // 2 past the ceiling: refused
+        assert(m.register == max_register - 1); // the overflow changed nothing
+        assert(!m.has_applied(1)); // and left client 1 with no session
+
+        const one = [_]Command{.{ .client = 0, .seq = 1, .amount = 1 }};
+        assert(apply_through(&m, &one, 2) == error.TooManyCommitted); // a commit length past the log refuses
+    }
+
+    print("GREEN fora-apply: the committed log drives a state machine, each request applied exactly once — the machine folds a " ++
+        "committed command prefix in order, the register climbing by the summed amounts; TWO machines fed the same prefix reach a " ++
+        "byte-identical register and session table (the replicated-state-machine guarantee — agree on the log, agree on the " ++
+        "state); THE §8 REFUSAL — a log holding one client's request TWICE (the leader-crash-then-resend) applies it ONCE, the " ++
+        "resend a retry that returns the cached result rather than firing again (43, never 83); THE ANSWER IS STABLE — a retry " ++
+        "returns the same result the first application produced, so a client resending after a leader change sees one unchanged " ++
+        "answer; ONLY THE COMMITTED PREFIX DRIVES THE MACHINE and apply is INCREMENTAL — an uncommitted tail never applies, and " ++
+        "advancing the commit index applies exactly the newly-committed suffix, reaching the same state as one full apply; and " ++
+        "the session table and register are BOUNDED — an unknown client, a register overflow, and an over-long commit each refuse " ++
+        "by name changing nothing — no socket, no network, no keys, no funds, no real client, no real address ever formed\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
