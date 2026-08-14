@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260814.131319
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (Eastern / EDT time convention)
+title ALES18 — Lotus's live loop meter, a looping stereo region read under two meters
+prompt Autonomous loop past REMEMBER + the itineraries — take the next agent-doable lap Lindy-first crux-first, self-approve the design round, send each finished increment, stop at the custody gates.
+think ALES17 (stereo meter during forward playback) landed and its own road-on named the next want plainly: meter a LOOPING stereo region live — ALES16's wrap under the ALES17 meter. Crux-first: composing the two most recent proven rungs (the wrapping head + the two-channel meter) is the highest-Lindy, most-tractable move — no new arithmetic, only the recognition that they already fit, closing the read side's stereo arc (play·loop·meter) into a freely-composing whole. A punch region would cross into the Mikrophone capture side (a module seam per collaboration.md — check-in Claude), so I deliberately did NOT take it.
+think The crux and why it is EXACT, not merely close: metering a whole number of cycles gives the identical per-channel peak and RMS as metering the region once at rest. Peak is a max, invariant under repetition. RMS is a mean square, whose sum_sq and count both scale by the cycle count K, and the common factor cancels EXACTLY even under integer floor division — @divTrunc(K·S, K·N) == @divTrunc(S, N), since K·S/(K·N) = S/N as rationals and the floor of an unchanged rational is unchanged. So the live loop VU is stable across cycle count for free, on ALES13's one true isqrt.
+think Reuse over reinvention: stereo_meter.StereoMeter/feed/peak_*/rms_* reused whole; stereo_loop.read_block + loop.enter drive the wrapping read; the only new code is measure_region (the at-rest reference), meter_loop_live (the live driver reading exactly cycles×span samples), and the cycle bound. The bound doubles as the overflow guard: cycles > @divTrunc(max_meter_samples, span) refuses MeterFull before the u32 product is formed.
+think First build failed — reached stereo_transport through stereo_meter.stereo_transport, which is not pub. Fixed by importing stereo_transport.rye directly for the LoopMeterError set. Second build GREEN.
+obs GREEN on the second build: block-and-cycle invariance at 1/2/5-sample blocks and 1,3,7 cycles matched measure_region exactly per channel; 100 cycles read the same peak and RMS as one (the human payoff — a steady practice-loop VU); a loud left (square wave 8000) and quiet right (spike 100) read distinct levels off the live loop; a power-rendered center pan loops-and-meters 700 per side; neither channel mutated after six cycles; the cycle count refused MeterFull past ALES13's bound.
+obs tame_style_check exit 0 (bans clean); the new module carries many asserts, off the zero-assert ratchet.
+loom witness=ales_stereo_loop_meter_witness cases=6 blocks=3 cycles=3 result=GREEN build=second-try
+file lotus/stereo_loop_meter.rye ALES18 module — the live loop meter, ALES16's wrapping head fed into ALES17's two meters.
+file tools/ales_stereo_loop_meter_witness.rish the witness proving ALES18 GREEN on metal.
+file active-designing/20260814-fill-ales18-lotus-stereo-loop-meter.md the self-approved design round for ALES18.
+file lotus/README.md status line, rung bullet, and road-on updated for ALES18.
+recommend keep-going ALES19 can name a scrub window (a small movable read across a mono or stereo master) or offer the keeper the choice of pan/crossfade law on either axis — both agent-doable, no custody gate. A punch region tying playback to the Mikrophone's capture is a module seam that waits for Keaton's word.
