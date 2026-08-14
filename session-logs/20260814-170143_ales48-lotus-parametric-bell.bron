@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260814.170143
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title ALES48 — Lotus's parametric bell: the fixed-EQ family made whole
+prompt keep taking the next Lindy-first crux-first Lotus lap, self-approve the design round, send each finished increment, stop only at the custody gates in REMEMBER
+think After the band-pass (ALES46, keep the middle) and band-reject (ALES47, drop the middle), the Lindy-first culmination is the gesture that TURNS the middle — the parametric bell (peaking EQ), the most-reached-for tool in any mix.
+think Design: keep the low and high edges at unity, scale the mid band by a gain. The mid is the exact residual M = x − L − H (ALES42 the stack's own lesson applied to two cutoffs instead of one split), so gaining only the middle can never disturb the edges and unity gain reconstructs by construction.
+think Crux chosen: the bell IS the whole fixed-EQ family at three gains — unity gain = identity byte-for-byte; zero gain = ALES47's band-reject, proven by equality against notch.notch over a copy (the bell is the notch at zero gain); larger gain boosts the middle. This composition proof ties the three rungs together with no new arithmetic on the audio path.
+obs A constant settles to itself at ANY gain because the middle is zero at direct current (M = x − x − 0 = 0) — proven at both a ×8 boost and a full cut, so the bell never moves the settled edges. Saturation proven with a wide alternating middle boosted ×20 pinning to the rail rather than wrapping.
+obs Reused tone.precheck (ALES46) for both cutoffs, BellError = tone.ToneError || error{ BadGain } (the same fault the shelf/stack name), and notch.notch as the zero-gain equality target — so the witness proves the identity honest by re-running ALES47 green.
+obs GREEN on the first build across six clauses; ALES47 band-reject re-run stays GREEN. TAME bans clean, zero-assert ratchet unchanged. Third rung of this turn (ALES46·47·48), each sent as its own signed round.
+loom witness=ales_bell_witness green=1 clauses=6 rungs_reused=4 family=lowpass,highpass,shelf,stack,bandpass,bandreject,bell
+file lotus/bell.rye the parametric bell — edges at unity, residual mid scaled by gain, unity=identity, zero=notch
+file tools/ales_bell_witness.rish builds, runs the selftest, asserts GREEN ales-bell, re-proves ALES47 band-reject green
+file active-designing/20260814-170143_fill-ales48-lotus-parametric-bell.md the self-approved design round for ALES48
+file lotus/README.md front door synced — the ALES48 bell sentence, the fixed-EQ family named whole
+recommend check-in the fixed-EQ family is whole (low-pass through parametric bell); the next natural cruxes — a moving centre (sweep the bell), a real hertz/Q, or gain automation under an envelope — all lean toward a real time base, a good place for Keaton to point the next journey
