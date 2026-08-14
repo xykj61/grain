@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260814.165106
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title ALES46 — Lotus's band-pass: the two proven filters meet, the middle kept
+prompt keep taking the next Lindy-first crux-first Lotus lap, self-approve the design round, send each finished increment, stop only at the custody gates in REMEMBER
+think Read REMEMBER's custody gates (seed force-push done; provisioning, funds/keys, Keaton's Kumara, deep debride, collaborator-domain seating are the fence) and the two itinerary docs; the living git edge is the Lotus/ALES ladder (Season C double-seat), at ALES45.
+think Surveyed the filter family: low-pass (ALES40), high-pass (ALES45), shelf (ALES41), stack (ALES42), carried state (ALES43), low-pass sweep (ALES44), carried high-pass (ALES45). Each keeps or tilts ONE edge; nothing yet ISOLATES a band.
+think Lindy-first crux-first: the band-pass is the more durable move than a symmetric high-pass sweep — it is the foundational primitive under any EQ/notch, and it composes the two already-proven carried filters with NO new arithmetic on the audio path (the ladder's signature).
+think Design: a Bandpass struct carries TWO i64 states (high-pass stage + low-pass stage); run() applies high_pass_carry (low cutoff, drop the lows) then low_pass_carry (high cutoff, drop the highs). Both states carry so split-equals-whole holds.
+think Correctness crux chosen: a Bandpass over the whole span equals tone.high_pass then tone.low_pass over a copy byte-for-byte — proving it IS the two proven stages in cascade.
+think Guard: both stage coefficients must be checked BEFORE either stage writes, else a legal high-pass mutates the span before an illegal low-pass refuses (a half-filtered span). Exposed a shared tone.precheck (thin public face of the private check) so no check logic is duplicated — one implementation.
+obs Honest degeneracy: the low-pass stage at identity (high_num==high_den) collapses the band-pass to the high-pass alone; the symmetric collapse is ABSENT because the high-pass has no exact integer pass-through (its identity coefficient is silence). Stated as absent, not faked.
+obs GREEN on the first build across six clauses; ALES45 carried-filter selftest re-run stays GREEN under the composition, so the reuse is proven by green, not by claim. TAME bans clean, zero-assert ratchet unchanged (band.rye and tone.rye both carry asserts).
+loom witness=ales_band_witness green=1 clauses=6 rungs_reused=2 new_files=2 touched=tone.rye,README.md
+file lotus/band.rye the Bandpass struct — high-pass then low-pass, two carried states, checked up front
+file lotus/tone.rye added pub precheck — the shared coefficient-and-span check so a composer validates both stages before writing
+file tools/ales_band_witness.rish builds, runs the selftest, asserts GREEN ales-band, re-proves ALES45 carried filter green
+file active-designing/20260814-165106_fill-ales46-lotus-band-pass.md the self-approved design round for ALES46
+file lotus/README.md front door synced — the ALES46 band-pass sentence on the ladder paragraph
+recommend keep-going next Lotus rung can sweep this band, name a band-reject (notch), or name the two cutoffs in hertz through a real time base — all agent-doable, no custody gate reached

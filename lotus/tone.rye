@@ -47,6 +47,13 @@ fn check(clip_len: u32, start: u32, count: u32, num: i32, den: u32) ToneError!vo
     if (count > clip_len - start) return error.BadRange;
 }
 
+/// The public face of `check` — one implementation of the coefficient-and-span law, shared so a composer (ALES46's band-pass)
+/// can validate BOTH its stage coefficients before either stage writes, rather than duplicating the check or letting a legal
+/// first stage mutate the span before an illegal second stage refuses. Same rules, same named errors as every filter call.
+pub fn precheck(clip_len: u32, start: u32, count: u32, num: i32, den: u32) ToneError!void {
+    return check(clip_len, start, count, num, den);
+}
+
 /// Advance the one-pole low-pass by one sample and return its output. `state` holds the smoothed estimate scaled by `den` at
 /// full i64 precision, so no fractional information is lost between samples. The state steps a fraction num/den of the way
 /// toward the input's scaled value; when that fractional step truncates to zero yet the state has not reached the input, the

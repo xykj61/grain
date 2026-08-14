@@ -1,0 +1,222 @@
+//! lotus/band.rye — ALES46: a band-pass — keep the middle, drop the lows below one cutoff and the highs above another.
+//! Every filter rung so far keeps or trims ONE edge: the low-pass keeps the lows (ALES40), the high-pass keeps the highs
+//! (ALES45), the shelf and stack tilt bands by gain (ALES41–42). The gesture a musician reaches for to ISOLATE a range — the
+//! telephone voice, the wah's throat, a drum bus carved to its body — is the band-pass: the high-pass at the LOW cutoff followed
+//! by the low-pass at the HIGH cutoff, keeping only the band between. The band-pass wants NO new arithmetic: it is exactly the
+//! two filters already proven byte-for-byte (ALES40 · ALES45) run in cascade, each carrying its own state so a span band-passed
+//! in two pieces (the second continuing both states) equals the whole band-passed once — the composition faithful, the seam
+//! seamless. The one correctness is that `Bandpass.run` equals `tone.high_pass` then `tone.low_pass` over a copy, byte-for-byte.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES46.
+//! Design read: active-designing/20260814-165106_fill-ales46-lotus-band-pass.md
+//! Stands on: lotus/tone.rye (ALES40, ALES45) — high_pass_carry and low_pass_carry, each a pure function of (state, x), threaded
+//! here across the whole span; lotus/timeline.rye (ALES2) — the Clip it filters.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
+//! no network, no keys, no funds, no real device, no real sample rate — the coefficients still smooth over sample INDICES, not a
+//! crossover in hertz (a real time base is a later rung). Both stage states run at full i64 precision, as in ALES40.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/band.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const tone = @import("tone.rye");
+
+pub const band_version = "20260814.165106";
+
+/// A band-pass that holds both stage states across calls: the high-pass stage's carried low-pass estimate and the low-pass
+/// stage's carried estimate. The struct carries no buffer — only the two full-precision i64 states and the two coefficients —
+/// so a keeper holds it beside a clip as a tiny value. `low_num/low_den` is the high-pass cutoff (drops content below it);
+/// `high_num/high_den` is the low-pass cutoff (drops content above it). A fresh Bandpass (both states 0) is the from-silence
+/// cascade; `run` continues from both carried states so a span band-passed piece by piece has no re-transient at a seam;
+/// `reset` returns both states to silence so the next run re-opens both transients deliberately.
+pub const Bandpass = struct {
+    /// The high-pass stage's carried low-pass estimate scaled by low_den at full i64 precision — the high-pass output is x − lp.
+    hp_state: i64 = 0,
+    /// The low-pass stage's carried estimate scaled by high_den at full i64 precision.
+    lp_state: i64 = 0,
+    num_low: i32,
+    den_low: u32,
+    num_high: i32,
+    den_high: u32,
+
+    /// Band-pass `count` samples starting at `start` in place, CONTINUING from both carried states and updating them: first the
+    /// high-pass at the low cutoff drops the lows, then the low-pass at the high cutoff drops the highs. The seam between two runs
+    /// is invisible because each stage opens on its own ending state rather than on silence. Refuses BadCoeff on an illegal
+    /// coefficient (either stage) and BadRange on a span outside the samples, before any write; both states are untouched on
+    /// refusal (the high-pass checks its coefficient and range before it writes; the low-pass checks its own before it writes,
+    /// and a legal high-pass followed by an illegal low-pass cannot happen here because both coefficients are checked up front).
+    pub fn run(self: *Bandpass, clip: *timeline.Clip, start: u32, count: u32) tone.ToneError!void {
+        // invariant: both coefficients and the span are checked BEFORE any stage writes, so an illegal call leaves the clip and
+        // both carried states exactly as they were — no half-filtered span, no advanced state.
+        try tone.precheck(clip.len, start, count, self.num_low, self.den_low);
+        try tone.precheck(clip.len, start, count, self.num_high, self.den_high);
+        // Stage one: drop the lows, continuing the high-pass state. Its own check re-runs and passes (already proven above).
+        try tone.high_pass_carry(clip, start, count, &self.hp_state, self.num_low, self.den_low);
+        // Stage two: drop the highs, continuing the low-pass state.
+        try tone.low_pass_carry(clip, start, count, &self.lp_state, self.num_high, self.den_high);
+        // invariant: a band-pass changes sample values only, never the clip's length or bound.
+        assert(start + count <= clip.len);
+        assert(clip.len <= clip.buf.len);
+    }
+
+    /// Return both stage states to silence, so the next `run` re-opens both from-silence transients deliberately.
+    pub fn reset(self: *Bandpass) void {
+        self.hp_state = 0;
+        self.lp_state = 0;
+        // invariant: reset restores exactly the from-silence start for both stages — a run after reset equals a fresh Bandpass.
+        assert(self.hp_state == 0 and self.lp_state == 0);
+    }
+};
+
+// --- selftest: a band-pass equals the high-pass then the low-pass over a copy byte-for-byte (the composition crux); a span
+//     band-passed in two pieces with both states carried equals the whole once; the low-pass stage at identity collapses to the
+//     high-pass alone; a constant input settles to zero (no direct current kept); reset re-opens both transients; and an illegal
+//     coefficient on either stage and an out-of-range span each refuse by name, both states untouched -------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn run_selftest() !u8 {
+    const src = [_]i16{ 1000, -800, 1200, 900, -1100, 700, 1300, -600, 1000, 500, -900, 1100 };
+
+    // 1. THE COMPOSITION CRUX — a Bandpass over the whole span equals tone.high_pass (low cutoff) then tone.low_pass (high cutoff)
+    //    applied in that order to a copy, byte-for-byte. The band-pass adds no arithmetic on the audio path; it IS the two proven
+    //    stages in cascade.
+    {
+        var band = timeline.Clip{};
+        try load_clip(&band, &src);
+        var f = Bandpass{ .num_low = 1, .den_low = 3, .num_high = 1, .den_high = 2 };
+        try f.run(&band, 0, band.len);
+
+        var cascade = timeline.Clip{};
+        try load_clip(&cascade, &src);
+        try tone.high_pass(&cascade, 0, cascade.len, 1, 3); // drop the lows
+        try tone.low_pass(&cascade, 0, cascade.len, 1, 2); // drop the highs
+
+        if (!eq(band.samples(), cascade.samples())) return error.BandNotCascade;
+    }
+
+    // 2. SPLIT-EQUALS-WHOLE — a span band-passed in two pieces, the second carrying BOTH ending states, equals the whole
+    //    band-passed once, byte-for-byte. Neither stage re-transients at the seam.
+    {
+        var whole = timeline.Clip{};
+        try load_clip(&whole, &src);
+        var fw = Bandpass{ .num_low = 1, .den_low = 4, .num_high = 1, .den_high = 3 };
+        try fw.run(&whole, 0, whole.len);
+
+        var pieces = timeline.Clip{};
+        try load_clip(&pieces, &src);
+        var fp = Bandpass{ .num_low = 1, .den_low = 4, .num_high = 1, .den_high = 3 };
+        const split: u32 = 5;
+        try fp.run(&pieces, 0, split); // first piece
+        try fp.run(&pieces, split, pieces.len - split); // second piece continues from both carried states
+
+        if (!eq(pieces.samples(), whole.samples())) return error.SplitNotWhole;
+    }
+
+    // 3. the low-pass stage at identity (high_num == high_den) collapses to the high-pass alone at the low cutoff — the upper edge
+    //    opened all the way passes the whole high band unchanged.
+    {
+        var band = timeline.Clip{};
+        try load_clip(&band, &src);
+        var f = Bandpass{ .num_low = 1, .den_low = 3, .num_high = 2, .den_high = 2 }; // low-pass stage identity
+        try f.run(&band, 0, band.len);
+
+        var hp = timeline.Clip{};
+        try load_clip(&hp, &src);
+        try tone.high_pass(&hp, 0, hp.len, 1, 3);
+
+        if (!eq(band.samples(), hp.samples())) return error.IdentityNotHighpass;
+    }
+
+    // 4. the band rejects direct current — a constant input settles to zero: the high-pass stage drives the constant to zero, and
+    //    the low-pass of a settled zero stays zero. A band-pass keeps no DC.
+    {
+        const run = [_]i16{2500} ** 60;
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &run);
+        var f = Bandpass{ .num_low = 1, .den_low = 3, .num_high = 1, .den_high = 2 };
+        try f.run(&clip, 0, clip.len);
+        if (clip.samples()[clip.len - 1] != 0) return error.ConstantNotRejected; // direct current removed exactly
+    }
+
+    // 5. reset re-opens both transients — after a settled constant run (band-pass of a constant → 0 at the tail), reset returns
+    //    both states to silence, so the next run over a constant leaves a NON-zero first sample again (the high-pass transient
+    //    before direct current is removed), rather than continuing settled at zero.
+    {
+        const run = [_]i16{3000} ** 40;
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &run);
+        var f = Bandpass{ .num_low = 1, .den_low = 3, .num_high = 1, .den_high = 2 };
+        try f.run(&clip, 0, clip.len); // settles: band-pass of a constant → 0 at the tail
+        if (clip.samples()[clip.len - 1] != 0) return error.NotSettledBeforeReset;
+
+        f.reset();
+        var fresh = timeline.Clip{};
+        try load_clip(&fresh, &run);
+        try f.run(&fresh, 0, fresh.len); // after reset, a from-silence transient again
+        if (fresh.samples()[0] == 0) return error.ResetDidNotReopen; // first sample non-zero: DC not yet removed
+    }
+
+    // 6a. an illegal coefficient on the HIGH-PASS stage (num_low above den_low — unstable) refuses BadCoeff, the clip and both
+    //     states untouched.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        var f = Bandpass{ .num_low = 3, .den_low = 2, .num_high = 1, .den_high = 2 };
+        if (f.run(&clip, 0, clip.len)) |_| return error.LowOverOneSlipped else |e| if (e != error.BadCoeff) return error.WrongLowOverOne;
+        if (f.hp_state != 0 or f.lp_state != 0) return error.RefusedMovedState;
+        if (!eq(clip.samples(), &three)) return error.RefusedBandMutated;
+    }
+
+    // 6b. an illegal coefficient on the LOW-PASS stage (num_high above den_high) refuses BadCoeff before ANY write — the
+    //     high-pass stage must not run first and leave a half-filtered span. Both states and the clip stay untouched.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        var f = Bandpass{ .num_low = 1, .den_low = 2, .num_high = 3, .den_high = 2 };
+        if (f.run(&clip, 0, clip.len)) |_| return error.HighOverOneSlipped else |e| if (e != error.BadCoeff) return error.WrongHighOverOne;
+        if (f.hp_state != 0 or f.lp_state != 0) return error.RefusedMovedStateHigh;
+        if (!eq(clip.samples(), &three)) return error.RefusedBandMutatedHigh; // no half-filtered span — the up-front check held
+    }
+
+    // 6c. an out-of-range span refuses BadRange before any write, leaving the clip untouched.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        var f = Bandpass{ .num_low = 1, .den_low = 2, .num_high = 1, .den_high = 2 };
+        if (f.run(&clip, 2, 5)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(clip.samples(), &three)) return error.RefusedRangeMutated;
+    }
+
+    print("GREEN ales-band: a band-pass keeps the middle — the high-pass at the low cutoff then the low-pass at the high cutoff, " ++
+        "each carrying its own state. A Bandpass over the whole span equals tone.high_pass then tone.low_pass over a copy " ++
+        "byte-for-byte (the composition crux: no new arithmetic on the audio path); a span band-passed in TWO PIECES, the second " ++
+        "continuing both states, equals the whole once byte-for-byte (the seam carries no re-transient); the low-pass stage at " ++
+        "identity collapses the band-pass to the high-pass alone at the low cutoff; a constant input settles to zero exactly (the " ++
+        "band keeps no direct current); reset returns both states to silence so the next run re-opens both transients; and an " ++
+        "illegal coefficient on either stage refuses BadCoeff before any write while an out-of-range span refuses BadRange, each " ++
+        "leaving the clip and both carried states untouched; no socket, no network, no keys, no funds, no real device, no real " ++
+        "sample rate\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

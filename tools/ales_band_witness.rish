@@ -1,0 +1,42 @@
+# tools/ales_band_witness.rish — a band-pass: keep the middle, drop the lows below one cutoff and the highs above another (ALES46).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES46.
+# Design read: active-designing/20260814-165106_fill-ales46-lotus-band-pass.md
+# Stands on: lotus/tone.rye (ALES40, ALES45 — high_pass_carry, low_pass_carry, precheck) and lotus/timeline.rye (ALES2 — the Clip).
+#
+# lotus/band.rye composes the two proven carried filters into one band-pass: the high-pass at the LOW cutoff then the low-pass at
+# the HIGH cutoff, each stage carrying its own i64 state. The selftest proves: a Bandpass over the whole span equals tone.high_pass
+# then tone.low_pass over a copy byte-for-byte (the composition crux — no new arithmetic on the audio path); a span band-passed in
+# two pieces, the second continuing both states, equals the whole once (the seam carries no re-transient); the low-pass stage at
+# identity collapses to the high-pass alone; a constant input settles to zero (the band keeps no direct current); reset re-opens
+# both transients; an illegal coefficient on either stage refuses BadCoeff before any write, an out-of-range span BadRange. Purely
+# local — no network, no keys, no funds, no real device, no real sample rate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_band_witness.rish
+
+say "ales-band: Language EN — ALES46 composes ALES40's low-pass and ALES45's high-pass into a band-pass that keeps the middle, the gesture a musician reaches for to isolate a range (the telephone voice, the wah's throat, a bus carved to its body)."
+say "ales-band: Style Radiant — the law is stated positively: a band-pass equals the high-pass then the low-pass over a copy byte-for-byte, a span band-passed in two pieces continues both states with no re-transient at a seam, and the band keeps no direct current."
+say "ales-band: Lens TAME — bounded Clip, u32 span, i16 samples, two full-precision i64 stage states carried across calls; both coefficients checked up front through tone.precheck so no half-filtered span survives an illegal stage; the band-pass adds no arithmetic on the audio path; an illegal coefficient on either stage refuses BadCoeff, an out-of-range span BadRange, each before a write; siloed to lotus/, no network, no keys, no funds, no device, no sample rate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/band"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/band.rye -femit-bin=${bin}"]
+assert build.ok else "ales-band: build failed — ${build.err}"
+
+let outfile = "lotus/bin/band.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-band: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-band: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-band' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-band: selftest did not print the GREEN ales-band line"
+
+# The band-pass reuses ALES45's carried high-pass and ALES40's low-pass whole — prove they still stand by their own green, not by claim.
+let carry = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/tone_carry.rye -femit-bin=lotus/bin/tone_carry && lotus/bin/tone_carry selftest 2>&1 | grep -q 'GREEN ales-tone-carry' && echo yes"]
+assert (trim carry.out) == "yes" else "ales-band: the ALES45 carried-filter witness regressed under the band-pass"
+
+say "ales-band: GREEN — a band-pass keeps the middle by composing the two proven filters, the high-pass at the low cutoff then the low-pass at the high cutoff, each carrying its own i64 state; a Bandpass equals tone.high_pass then tone.low_pass over a copy byte-for-byte (no new arithmetic on the audio path), a span band-passed in two pieces continues both states with no re-transient, the low-pass stage at identity collapses to the high-pass alone, a constant settles to zero exactly, and an illegal coefficient on either stage or an out-of-range span each refuse by name leaving the clip and both states untouched; the ALES45 carried-filter selftest stays GREEN. The next Lotus rung can sweep this band, name a band-reject (notch), or name the two cutoffs in hertz through a real time base."
