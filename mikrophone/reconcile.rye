@@ -1,0 +1,228 @@
+//! mikrophone/reconcile.rye — DREY15: the desk reconcile, two hands meeting on the union. DREY12 (sync.rye) gave `pull` —
+//! take every advertised address this hand lacks. DREY14 (push.rye) gave its mirror `push` — give the far hand every
+//! address IT lacks. This rung composes the two into one bounded operation: `reconcile(a, b)` first pulls b's lack into a,
+//! then pushes a's now-complete holdings out to b, so both desks end holding the UNION of what either began with — no
+//! recording on either side left behind, nothing crossing that a side already held. The git sync in full: fetch, then
+//! push, proven pure before a single wire is strung.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY15.
+//! Design read: active-designing/20260814-072800_drey15-desk-reconcile-two-hands-meet-on-the-union-exploration.md
+//! Stands on: mikrophone/sync.rye (DREY12) — the pull; mikrophone/push.rye (DREY14) — the push; both over their public
+//! APIs, inventing no new transport, buffer, or error of its own.
+//!
+//! This rung stays purely LOCAL — `reconcile` moves bytes between two in-memory catalogs over the two proven loops.
+//! Running it between two real desks over a real network reaches the Comlink-served custody gate (Season 1, Journey 2)
+//! and waits for the maintainer's word. No disk, no network, no key signs, no funds (custody gate #2 untouched); the
+//! content address stays an integrity identity the far hand recomputes, not a signature.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/reconcile.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const catalog = @import("catalog.rye");
+const sync = @import("sync.rye");
+const push_mod = @import("push.rye");
+
+pub const reconcile_version = "20260814.072800";
+
+/// The report a reconcile returns — how many recordings crossed each way, and the final union count both desks end
+/// holding. `pulled` is what `a` lacked and took from `b`; `pushed` is what `b` still lacked after the pull and took
+/// from `a`. On success both desks hold `union` recordings.
+pub const ReconcileReport = struct {
+    pulled: u32 = 0,
+    pushed: u32 = 0,
+    union_count: u32 = 0,
+};
+
+/// Reconcile `a` and `b` — leave both desks holding the union of what either began with, as one bounded operation. First
+/// `pull(a, b)` brings every address `a` lacked into `a` (so `a` now holds `a ∪ b`); then `push(a, b)` gives `b` every
+/// address it still lacks (which, after the pull, is exactly the union), so `b` converges to the same whole. Returns a
+/// `ReconcileReport`. Propagates `CatalogFull` by name if either desk's own bound is passed (a bounded partial, never an
+/// unbounded grow); a corrupt advertisement refuses `DigestMismatch` inside the loop it occurs in, before a frame crosses.
+pub fn reconcile(a: *catalog.Catalog, b: *catalog.Catalog) !ReconcileReport {
+    // invariant: neither desk ever holds more than its entry ceiling, so both manifests fit and both loops are bounded.
+    assert(catalog.count_of(a) <= catalog.max_entries);
+    assert(catalog.count_of(b) <= catalog.max_entries);
+
+    // First hand: a takes what it lacks from b — a now holds a ∪ b.
+    const pull_report = try sync.pull(a, b);
+    // invariant: after the pull, a holds every address b advertised (pull's own convergence, restated at this seam).
+    assert(catalog.count_of(a) >= catalog.count_of(b));
+
+    // Second hand: a gives b what b still lacks — which, a now holding the union, is the whole union.
+    const push_report = try push_mod.push(a, b);
+
+    var report = ReconcileReport{
+        .pulled = pull_report.served,
+        .pushed = push_report.served,
+        .union_count = catalog.count_of(a),
+    };
+
+    // invariant: both desks now hold the same number of recordings — the union.
+    assert(catalog.count_of(a) == catalog.count_of(b));
+    // invariant: convergence both ways — every address a holds, b holds, and every address b holds, a holds.
+    var i: u32 = 0;
+    while (i < catalog.count_of(a)) : (i += 1) {
+        assert(catalog.holds(b, catalog.address_at(a, i)));
+    }
+    var j: u32 = 0;
+    while (j < catalog.count_of(b)) : (j += 1) {
+        assert(catalog.holds(a, catalog.address_at(b, j)));
+    }
+    report.union_count = catalog.count_of(a);
+    return report;
+}
+
+// --- selftest: disjoint desks meet on the union, overlapping desks cross only their difference, a second reconcile is
+//     idempotent, order does not matter (reconcile(a,b) and reconcile(b,a) reach the same union), and the bound holds ----
+
+/// Frame the text as a committed session would carry it — capture, commit, frame — so each block deposits from a real
+/// wire frame. Returns the frame; the caller reads `bytes()`.
+fn framed(text: []const u8) !@import("wire.rye").Frame {
+    const wire = @import("wire.rye");
+    const session = @import("session.rye");
+    var s = session.Session.init();
+    var i: u32 = 0;
+    while (i < text.len) : (i += 1) try session.capture(&s, text[i]);
+    try session.commit(&s);
+    var f = wire.Frame{};
+    try wire.frame(&s, &f);
+    return f;
+}
+
+fn run_selftest() !u8 {
+    // 1. Disjoint desks meet on the union — a holds {alpha, bravo}, b holds {charlie}; after reconcile both hold all three.
+    {
+        var a = catalog.Catalog.init();
+        var fa1 = try framed("alpha");
+        var fa2 = try framed("bravo");
+        const addr_a = try catalog.deposit(&a, fa1.bytes());
+        const addr_b = try catalog.deposit(&a, fa2.bytes());
+
+        var b = catalog.Catalog.init();
+        var fb1 = try framed("charlie");
+        const addr_c = try catalog.deposit(&b, fb1.bytes());
+
+        const report = try reconcile(&a, &b);
+        assert(report.pulled == 1); // a lacked charlie
+        assert(report.pushed == 2); // b lacked alpha and bravo
+        assert(report.union_count == 3);
+        assert(catalog.count_of(&a) == 3);
+        assert(catalog.count_of(&b) == 3);
+        assert(catalog.holds(&a, addr_c));
+        assert(catalog.holds(&b, addr_a));
+        assert(catalog.holds(&b, addr_b));
+    }
+
+    // 2. Overlapping desks cross only their difference — a holds {alpha, bravo}, b holds {bravo, charlie}; the union is
+    //    three, and only the one-each difference crosses.
+    {
+        var a = catalog.Catalog.init();
+        var fa1 = try framed("alpha");
+        var fa2 = try framed("bravo");
+        _ = try catalog.deposit(&a, fa1.bytes());
+        _ = try catalog.deposit(&a, fa2.bytes());
+
+        var b = catalog.Catalog.init();
+        var fb1 = try framed("bravo");
+        var fb2 = try framed("charlie");
+        _ = try catalog.deposit(&b, fb1.bytes());
+        _ = try catalog.deposit(&b, fb2.bytes());
+
+        const report = try reconcile(&a, &b);
+        assert(report.pulled == 1); // a lacked charlie
+        assert(report.pushed == 1); // b lacked alpha (bravo already shared)
+        assert(report.union_count == 3);
+        assert(catalog.count_of(&a) == 3);
+        assert(catalog.count_of(&b) == 3);
+    }
+
+    // 3. Idempotent second reconcile — reconciling again crosses nothing and leaves both desks unchanged.
+    {
+        var a = catalog.Catalog.init();
+        var fa1 = try framed("alpha");
+        _ = try catalog.deposit(&a, fa1.bytes());
+        var b = catalog.Catalog.init();
+        var fb1 = try framed("bravo");
+        _ = try catalog.deposit(&b, fb1.bytes());
+
+        const first = try reconcile(&a, &b);
+        assert(first.union_count == 2);
+        const again = try reconcile(&a, &b);
+        assert(again.pulled == 0);
+        assert(again.pushed == 0);
+        assert(again.union_count == 2);
+        assert(catalog.count_of(&a) == 2);
+        assert(catalog.count_of(&b) == 2);
+    }
+
+    // 4. Order does not matter — reconcile(a, b) and reconcile(b, a) reach the same union on both sides. Two identical
+    //    pairs of desks are built; one is reconciled a-first, the other b-first, and both pairs reach the same union.
+    {
+        // Pair one, reconciled a-first.
+        var a1 = catalog.Catalog.init();
+        var b1 = catalog.Catalog.init();
+        var p1x = try framed("one");
+        var p1y = try framed("two");
+        var p1z = try framed("three");
+        _ = try catalog.deposit(&a1, p1x.bytes());
+        _ = try catalog.deposit(&a1, p1y.bytes());
+        _ = try catalog.deposit(&b1, p1z.bytes());
+        _ = try reconcile(&a1, &b1);
+
+        // Pair two, the same holdings, reconciled b-first.
+        var a2 = catalog.Catalog.init();
+        var b2 = catalog.Catalog.init();
+        var p2x = try framed("one");
+        var p2y = try framed("two");
+        var p2z = try framed("three");
+        _ = try catalog.deposit(&a2, p2x.bytes());
+        _ = try catalog.deposit(&a2, p2y.bytes());
+        _ = try catalog.deposit(&b2, p2z.bytes());
+        _ = try reconcile(&b2, &a2);
+
+        // Both pairs reach a three-recording union on every desk involved.
+        assert(catalog.count_of(&a1) == 3);
+        assert(catalog.count_of(&b1) == 3);
+        assert(catalog.count_of(&a2) == 3);
+        assert(catalog.count_of(&b2) == 3);
+    }
+
+    // 5. Bounded refusal — a union past a desk's max_entries refuses CatalogFull by name; the bound holds. a is filled to
+    //    max_entries with its own recordings, b holds one more distinct recording; the pull into a overflows a's bound.
+    {
+        var a = catalog.Catalog.init();
+        var n: u32 = 0;
+        while (n < catalog.max_entries) : (n += 1) {
+            var f = try framed(&[_]u8{ 'r', @intCast('a' + n) });
+            _ = try catalog.deposit(&a, f.bytes());
+        }
+        assert(catalog.count_of(&a) == catalog.max_entries);
+
+        var b = catalog.Catalog.init();
+        var one_more = try framed("one recording past the union bound");
+        _ = try catalog.deposit(&b, one_more.bytes());
+
+        if (reconcile(&a, &b)) |_| {
+            return error.OverfullSlipped;
+        } else |e| {
+            if (e != error.CatalogFull) return error.WrongOverfull;
+        }
+        // The bound held — a stayed exactly full, no seventeenth entry.
+        assert(catalog.count_of(&a) == catalog.max_entries);
+    }
+
+    print("GREEN drey-reconcile: the Mikrophone desks meet on the union in one bounded operation — pull then push composed. " ++
+        "Disjoint desks converge whole (each holds every recording either began with), overlapping desks cross only their " ++
+        "difference (never a byte a side held), a second reconcile is idempotent (nothing crosses, both unchanged), order " ++
+        "does not matter (a-first and b-first reach the same union), and a union past a desk's entry bound refuses " ++
+        "CatalogFull by name. The git sync in full — fetch then push, proven pure before metal; reconciling over a real " ++
+        "transport stays the Comlink gate; no disk, no network, no key, no funds\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
