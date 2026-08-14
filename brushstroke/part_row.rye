@@ -1,0 +1,356 @@
+//! brushstroke/part_row.rye — HUNK73: a part row — the picture beside its honest facts, on glass.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK73.
+//! Design read: active-designing/20260813-232756_hunk-part-row-picture-and-facts-exploration.md
+//! Teacher, thanked clean-room: McMaster-Carr's catalog row — a part is a picture PLUS its facts (concept only, siloed).
+//!
+//! HUNK71 bound honest facts beside each window (a part number, a material, a price in cents); HUNK72 gave the whole
+//! catalog a content address. Yet no rung had let a keeper SEE a part the way a real catalog shows one — the picture
+//! beside the facts, in one reading. HUNK38/39 painted a `SpriteIndex` shelf (name beside a thumbnail swatch), but a
+//! `SpriteIndex` carries no facts, so the price and the part number never reached the glass. This rung is that reading.
+//! `part_shelf` paints a whole `PartCatalog`, one row per part: the product's thumbnail swatch at the right (HUNK38/39's
+//! own `paint_swatch`, the product's real colors down-mapped from the ONE shared sheet) and a fact line at the left —
+//! `<name>  <part#>  <material>  $D.CC` — so a keeper reads picture and facts together.
+//!
+//! The crux is NO DRIFT between the stored facts and the painted row: the cells a keeper reads spell exactly the facts
+//! the catalog holds, and the price renders as exact dollars-and-cents (845 cents → `$8.45`), money a `u64` count of the
+//! smallest honest unit, FORMATTED for reading, never a balance the tree can move. No network, no key, no funds;
+//! disbursement stays a custody gate.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/part_row.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const sprite = @import("sprite.rye");
+const part_catalog = @import("part_catalog.rye");
+const sprite_shelf = @import("sprite_shelf.rye");
+const image_skate = @import("image_skate.rye");
+const skate = @import("skate_grid.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const part_row_version = "20260813.232756";
+
+/// A formatted price never runs past `$` + 20 dollar digits (a `u64` maximum) + `.` + two cents digits. Named at
+/// construction (TAME bound), so a scratch buffer for the price text is exactly this wide.
+pub const max_price_text: u32 = 24;
+
+/// A fact line holds the product name, its part number, its material, and its formatted price, each separated by a
+/// two-space gap. Bounded by the sum of the parts' own ceilings plus the gaps — a scratch buffer this wide can never
+/// overflow while a fact line is assembled.
+pub const max_fact_line: u32 =
+    sprite.max_name_len + part_catalog.max_part_number_len + part_catalog.max_material_len + max_price_text + 8;
+
+pub const PartRowError = error{
+    Overflow,
+};
+
+/// Write a `u64` as its decimal digits into `out`, returning the count written. Even zero prints one digit. The digit
+/// count is bounded by 20 (a `u64` maximum), so the reversal buffer and the loop are both bounded — no unbounded work.
+fn write_u64(v: u64, out: []u8) u32 {
+    // invariant: at least one digit is always written, so the destination needs at least one cell.
+    assert(out.len >= 1);
+    var digits: [20]u8 = undefined; // a u64 is at most 20 decimal digits
+    var count: u32 = 0;
+    var n: u64 = v;
+    if (n == 0) {
+        digits[0] = '0';
+        count = 1;
+    } else {
+        while (n > 0) : (n /= 10) {
+            // invariant: the digit count never runs past a u64's 20-digit width.
+            assert(count < 20);
+            digits[count] = '0' + @as(u8, @intCast(n % 10));
+            count += 1;
+        }
+    }
+    // invariant: the caller's buffer holds every digit produced.
+    assert(count <= out.len);
+    var i: u32 = 0;
+    while (i < count) : (i += 1) out[i] = digits[count - 1 - i]; // reverse: most-significant first
+    // invariant: a decimal render is at least one digit long.
+    assert(count >= 1);
+    return count;
+}
+
+/// Format a `u64` count of cents as `$D.CC` into `out`, returning the length. The cents are always two digits (a
+/// price of `$8.05` never collapses to `$8.5`), the dollars exact and full-width. No float and no division loss —
+/// money stays an integer count of the smallest honest unit. Refuses `Overflow` rather than write past `out`.
+pub fn format_price(cents: u64, out: []u8) PartRowError!u32 {
+    // invariant: a price prints at least `$0.00`, so the destination needs room for five bytes.
+    assert(out.len >= 1);
+    const dollars: u64 = cents / 100;
+    const rem: u32 = @intCast(cents % 100);
+    // invariant: the cents remainder is a two-digit quantity.
+    assert(rem < 100);
+    var tmp: [max_price_text]u8 = undefined;
+    var n: u32 = 0;
+    tmp[n] = '$';
+    n += 1;
+    n += write_u64(dollars, tmp[n..]);
+    tmp[n] = '.';
+    n += 1;
+    tmp[n] = '0' + @as(u8, @intCast(rem / 10));
+    n += 1;
+    tmp[n] = '0' + @as(u8, @intCast(rem % 10));
+    n += 1;
+    if (n > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[0..n], tmp[0..n]);
+    // invariant: a price is `$`, at least one dollar digit, `.`, and two cents digits — five bytes or more.
+    assert(n >= 5);
+    return n;
+}
+
+/// Copy `src` into the front of `dst`, returning the count copied. A bounded append the fact-line assembler leans on;
+/// the caller sizes `dst` (the `max_fact_line` scratch) to hold every run, so the fit is a construction invariant.
+fn append(dst: []u8, src: []const u8) u32 {
+    // invariant: the destination holds the appended run (the scratch is sized to the sum of the parts).
+    assert(src.len <= dst.len);
+    const n: u32 = @intCast(src.len);
+    tally_copy.copy_disjoint(u8, dst[0..src.len], src);
+    // invariant: exactly the source's bytes were copied.
+    assert(n == src.len);
+    return n;
+}
+
+/// Assemble a part's fact line — `<name>  <part#>  <material>  $D.CC` — into `out`, returning its length. The facts
+/// are read straight from the catalog (`facts_at` / `entry`), so the line can never drift from what the catalog holds.
+/// Refuses `Overflow` when the caller's buffer is too small for the assembled line.
+pub fn format_fact_line(name: []const u8, facts: part_catalog.PartFacts, out: []u8) PartRowError!u32 {
+    // invariant: a fact line needs at least a byte of room.
+    assert(out.len >= 1);
+    // invariant: the name fits a product-name cell — the catalog guaranteed this when it stored the product.
+    assert(name.len <= sprite.max_name_len);
+    var tmp: [max_fact_line]u8 = undefined;
+    var n: u32 = 0;
+    n += append(tmp[n..], name);
+    n += append(tmp[n..], "  ");
+    n += append(tmp[n..], facts.part_number);
+    n += append(tmp[n..], "  ");
+    n += append(tmp[n..], facts.material);
+    n += append(tmp[n..], "  ");
+    n += try format_price(facts.price_cents, tmp[n..]);
+    if (n > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[0..n], tmp[0..n]);
+    // invariant: the assembled line stayed inside the scratch it was built in.
+    assert(n <= max_fact_line);
+    return n;
+}
+
+/// Draw one part row onto `grid` at `row`: the fact line at the left (truncated to the label region so it never
+/// overwrites the swatch), the thumbnail swatch at the right (HUNK38/39's shared `paint_swatch`, the product's real
+/// colors from the ONE sheet). The fact line and the swatch both read the same catalog cell, so picture and facts
+/// can never point at different products.
+fn draw_part_row(
+    allocator: std.mem.Allocator,
+    grid: *skate.Grid,
+    row: u32,
+    cat: *const part_catalog.PartCatalog,
+    part_i: u32,
+) !void {
+    // invariant: a drawn row sits inside the grid.
+    assert(row < grid.rows);
+    // invariant: the grid is wide enough for a label, a gap, and a swatch (checked by the caller).
+    assert(grid.cols >= sprite_shelf.min_cols);
+
+    const name = cat.index.entry(part_i).name;
+    const facts = cat.facts_at(part_i);
+
+    const swatch_x0 = grid.cols - sprite_shelf.swatch_cols;
+    const label_cols = swatch_x0 - sprite_shelf.gap_cols;
+    // invariant: the label region leaves at least one cell for the fact line.
+    assert(label_cols >= 1);
+
+    var line_buf: [max_fact_line]u8 = undefined;
+    const line_len = try format_fact_line(name, facts, line_buf[0..]);
+    const shown: u32 = @min(line_len, label_cols);
+    grid.put_line(row, line_buf[0..shown]);
+
+    const window = try cat.render_part(allocator, name);
+    try sprite_shelf.paint_swatch(allocator, grid, row, &window);
+}
+
+/// Render a whole `PartCatalog` onto one Skate grid, one row per part reading its fact line beside its thumbnail
+/// swatch — the marketplace seen the way a real catalog shows it, picture and price together, every product drawn
+/// from the ONE shared sheet. Refuses `ShelfTooSmall` when the grid has fewer rows than the catalog has parts (a
+/// rendered shelf shows every part or none), beside the dimension refusals `fresh_grid` names.
+pub fn part_shelf(
+    allocator: std.mem.Allocator,
+    cat: *const part_catalog.PartCatalog,
+    cols: u32,
+    rows: u32,
+) !skate.Grid {
+    // invariant: the catalog never outgrew its own sheet's product ceiling before it is drawn.
+    assert(cat.len() <= sprite.max_products);
+    const n = cat.len();
+    // A shelf shows every part or none — never the parts past the last row silently dropped.
+    if (rows < n) return error.ShelfTooSmall;
+
+    var grid = try fresh_grid(allocator, cols, rows);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        // invariant: a drawn row sits inside the grid (rows >= n checked above).
+        assert(i < rows);
+        try draw_part_row(allocator, &grid, i, cat, i);
+    }
+    // invariant: exactly one row was drawn per part.
+    assert(i == n);
+    return grid;
+}
+
+/// A fresh grid with the anchor palette set, after the shelf's dimension refusals — the same shape the sprite shelf
+/// builds, so a part row's swatch paints a solid color block. Refuses `EmptyShelf` on a zero dimension,
+/// `ShelfTooLarge` past the down-map ceiling, and `RowTooNarrow` when a row cannot hold a fact line and a swatch.
+fn fresh_grid(allocator: std.mem.Allocator, cols: u32, rows: u32) !skate.Grid {
+    if (cols == 0 or rows == 0) return error.EmptyShelf;
+    if (cols > image_skate.max_map_cols or rows > image_skate.max_map_rows) return error.ShelfTooLarge;
+    if (cols < sprite_shelf.min_cols) return error.RowTooNarrow;
+    var grid = try skate.Grid.init(allocator, cols, rows);
+    image_skate.set_anchor_palette(&grid);
+    // invariant: the grid was built at the requested, refusal-checked dimensions.
+    assert(grid.cols == cols);
+    assert(grid.rows == rows);
+    return grid;
+}
+
+// --- selftest: three parts indexed into one four-band sheet, each with honest facts — the shelf paints each row's
+//     fact line (name, part number, material, exact price) and each row's swatch its product's own color, the painted
+//     facts equal the stored facts (no drift), the price formats exactly, and the shelf's refusals fire -------------
+
+/// A 16x8 sheet in four solid vertical bands — red, green, blue, yellow — so a 4-wide window carries one unambiguous
+/// color a down-map resolves to a known anchor slot (3,4,5,6), exactly as the sprite shelf's own fixture does.
+fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 16;
+    const h: u32 = 8;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            const band = x / 4; // 0..3
+            buf[off] = if (band == 0 or band == 3) 255 else 0; // r
+            buf[off + 1] = if (band == 1 or band == 3) 255 else 0; // g
+            buf[off + 2] = if (band == 2) 255 else 0; // b
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+/// The slot the swatch of `row` wears — its first swatch cell at the right of the row.
+fn row_swatch_slot(grid: *const skate.Grid, row: u32) u8 {
+    const swatch_x0 = grid.cols - sprite_shelf.swatch_cols;
+    const ci: usize = @intCast(row * grid.cols + swatch_x0);
+    return grid.fg_index[ci];
+}
+
+/// Read a row's fact line back as bytes — the label region a keeper reads (the cells left of the gap and swatch),
+/// trimmed of the blank tail (`Grid.init` fills cells with spaces). So the reader sees exactly the painted line.
+fn row_text(grid: *const skate.Grid, row: u32, out: []u8) u32 {
+    const cells = grid.row_cells(row);
+    const label_end = grid.cols - sprite_shelf.swatch_cols - sprite_shelf.gap_cols;
+    var n: u32 = @min(label_end, @as(u32, @intCast(cells.len)));
+    while (n > 0 and cells[n - 1] == ' ') : (n -= 1) {} // trim the blank tail
+    var i: u32 = 0;
+    while (i < n) : (i += 1) out[i] = cells[i];
+    return n;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const sheet = try craft_bands(garden);
+    var cat = part_catalog.PartCatalog.init(&sheet);
+    // Three parts, each a 4-wide window into its own band, each with honest facts and an exact price.
+    try cat.add_part("bolt", 0, 0, 4, 8, "HX-M8-40", "stainless-304", 125); // $1.25, red band → slot 3
+    try cat.add_part("nut", 4, 0, 4, 8, "NY-M8", "brass", 60); // $0.60, green band → slot 4
+    try cat.add_part("gear", 8, 0, 4, 8, "GR-24T", "steel", 845); // $8.45, blue band → slot 5
+    // invariant: three parts held, the catalog inside its ceiling.
+    assert(cat.len() == 3);
+
+    const cols: u32 = 48; // wide enough for the longest fact line (36 cells) plus a gap and the swatch
+    const rows: u32 = 3;
+    const shelf = try part_shelf(garden, &cat, cols, rows);
+    // invariant: the shelf was built at the requested dimensions.
+    assert(shelf.cols == cols);
+    assert(shelf.rows == rows);
+
+    // Each row's fact line equals the facts the catalog holds — no drift between store and view. The line reads the
+    // name, the part number, the material, and the exact formatted price, gap-separated.
+    {
+        var buf: [max_fact_line]u8 = undefined;
+        const n0 = row_text(&shelf, 0, buf[0..]);
+        assert(std.mem.eql(u8, buf[0..n0], "bolt  HX-M8-40  stainless-304  $1.25"));
+        const n1 = row_text(&shelf, 1, buf[0..]);
+        assert(std.mem.eql(u8, buf[0..n1], "nut  NY-M8  brass  $0.60"));
+        const n2 = row_text(&shelf, 2, buf[0..]);
+        assert(std.mem.eql(u8, buf[0..n2], "gear  GR-24T  steel  $8.45"));
+    }
+
+    // Each row's swatch wears its product's own down-mapped color — the picture true to the one sheet.
+    assert(row_swatch_slot(&shelf, 0) == 3); // red
+    assert(row_swatch_slot(&shelf, 1) == 4); // green
+    assert(row_swatch_slot(&shelf, 2) == 5); // blue
+
+    // The price formats exactly: cents never collapse (a nickel-less dime stays two digits), the dollars exact.
+    {
+        var pb: [max_price_text]u8 = undefined;
+        const a = try format_price(845, pb[0..]);
+        assert(std.mem.eql(u8, pb[0..a], "$8.45"));
+        const b = try format_price(5, pb[0..]);
+        assert(std.mem.eql(u8, pb[0..b], "$0.05")); // five cents keeps both digits
+        const c = try format_price(0, pb[0..]);
+        assert(std.mem.eql(u8, pb[0..c], "$0.00"));
+        const d = try format_price(100000, pb[0..]);
+        assert(std.mem.eql(u8, pb[0..d], "$1000.00")); // full-width dollars, no loss
+    }
+
+    // The shelf is genuinely seen: it rasterizes to a lit canvas — the fact lines and swatches reach the glass.
+    {
+        const scale: u32 = 1;
+        const width: u32 = shelf.cols * skate.cell_w * scale;
+        const height: u32 = shelf.rows * skate.cell_h * scale;
+        const stride: u32 = width * 4;
+        const canvas = try garden.alloc(u8, @as(usize, stride) * @as(usize, height));
+        const bg = skate.Color{ .r = 1, .g = 2, .b = 3 };
+        const fg = skate.Color{ .r = 210, .g = 210, .b = 210 };
+        shelf.rasterize(canvas, stride, @intCast(width), @intCast(height), bg, fg, scale);
+        const lit = shelf.lit_pixel_count(canvas, stride, @intCast(width), @intCast(height), bg);
+        assert(lit > 0);
+    }
+
+    // The named refusals fire: fewer rows than parts refuses ShelfTooSmall (every part or none), a zero dimension
+    // EmptyShelf, an over-ceiling dimension ShelfTooLarge, and a too-thin row RowTooNarrow.
+    if (part_shelf(garden, &cat, cols, 2)) |_| return error.ShelfSlipped else |e| {
+        if (e != error.ShelfTooSmall) return error.WrongShelf;
+    }
+    if (part_shelf(garden, &cat, 0, rows)) |_| return error.ShelfSlipped else |e| {
+        if (e != error.EmptyShelf) return error.WrongShelf;
+    }
+    if (part_shelf(garden, &cat, image_skate.max_map_cols + 1, rows)) |_| return error.ShelfSlipped else |e| {
+        if (e != error.ShelfTooLarge) return error.WrongShelf;
+    }
+    if (part_shelf(garden, &cat, sprite_shelf.min_cols - 1, rows)) |_| return error.ShelfSlipped else |e| {
+        if (e != error.RowTooNarrow) return error.WrongShelf;
+    }
+
+    print("GREEN part-row: three parts indexed into one four-band sheet, each with honest facts — the shelf paints " ++
+        "one row per part reading its fact line (name, part number, material, exact price) beside its thumbnail " ++
+        "swatch drawn from its own window; the painted facts equal the stored facts cell-for-cell (bolt HX-M8-40 " ++
+        "stainless-304 $1.25 · nut NY-M8 brass $0.60 · gear GR-24T steel $8.45 — no drift); each swatch wears its " ++
+        "product's own down-mapped color (slots 3,4,5); the price formats exactly ($8.45, a five-cent dime $0.05, " ++
+        "$0.00, $1000.00 — no float, no loss); the shelf rasterizes to a lit canvas; ShelfTooSmall, EmptyShelf, " ++
+        "ShelfTooLarge, and RowTooNarrow each refuse by name. HUNK71 facts, HUNK38/39 swatch GREEN beneath; price " ++
+        "is a fact formatted for reading, never moved — no network, no key, no funds\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: part_row selftest\n", .{});
+    return 1;
+}

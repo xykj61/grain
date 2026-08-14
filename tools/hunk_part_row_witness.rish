@@ -1,0 +1,60 @@
+# tools/hunk_part_row_witness.rish — a part row: the picture beside its honest facts, on glass (HUNK73).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK73.
+# Design read: active-designing/20260813-232756_hunk-part-row-picture-and-facts-exploration.md
+# Teacher, thanked clean-room: McMaster-Carr's catalog row — a part is a picture PLUS its facts (concept only, siloed).
+#
+# HUNK71 bound honest facts beside each window (a part number, a material, a price in cents); HUNK72 gave the catalog
+# a content address. This rung lets a keeper SEE a part the way a real catalog shows one — `brushstroke/part_row.rye`
+# `part_shelf` paints a whole PartCatalog, one row per part: a fact line `<name>  <part#>  <material>  $D.CC` at the
+# left, the product's thumbnail swatch (HUNK38/39's shared `paint_swatch`) at the right. The selftest indexes three
+# parts into one four-band sheet and proves the painted facts equal the stored facts cell-for-cell (no drift), the
+# price formats as exact dollars-and-cents ($8.45, a five-cent dime $0.05, $0.00, $1000.00 — no float, no loss), each
+# swatch wears its product's own colour, the shelf rasterizes to a lit canvas, and the shelf refusals fire. Pure
+# composition over public APIs. Price is a fact formatted for reading, never moved — no network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_part_row_witness.rish
+
+say "hunk-part-row: Language EN — HUNK73 paints a whole PartCatalog as a shelf: one row per part, its fact line (name, part number, material, exact price) beside its thumbnail swatch drawn from its own window into the one shared sheet."
+say "hunk-part-row: Style Radiant — a keeper reads the whole part in one glance, the picture true to the sheet and the price true to the cent; the painted facts can never drift from the facts the catalog holds."
+say "hunk-part-row: Lens TAME — pure composition over public APIs; the price is an integer count of cents formatted for reading, never a balance moved; every dimension refuses by name; positive invariants per fn; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/part_row"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_row.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-part-row: build failed — ${build.err}"
+
+# Write the selftest output to a file and grep the file — the GREEN line carries apostrophes ("product's") that
+# break a shell single-quoted round-trip, so read it from disk instead.
+let outfile = "brushstroke/bin/part_row.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "hunk-part-row: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "hunk-part-row: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN part-row' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "hunk-part-row: selftest did not print the GREEN part-row line"
+
+let nodrift = run ["sh" "-c" "grep -q 'no drift' ${outfile} && echo yes"]
+assert (trim nodrift.out) == "yes" else "hunk-part-row: the selftest did not prove the painted facts equal the stored facts"
+
+let price = run ["sh" "-c" "grep -q 'no float, no loss' ${outfile} && echo yes"]
+assert (trim price.out) == "yes" else "hunk-part-row: the selftest did not prove the price formats exactly"
+
+# HUNK71 stays GREEN — the facts the row reads (facts_at, entry, render_part) are the ones part_catalog proved.
+# Read the GREEN line from a file — it carries apostrophes ("product's") that break a shell single-quote round-trip.
+let cat = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_catalog.rye -femit-bin=image/bin/part_catalog && image/bin/part_catalog selftest > image/bin/part_catalog.out 2>&1"]
+assert cat.ok else "hunk-part-row: HUNK71 part_catalog re-run failed — see image/bin/part_catalog.out"
+let cat_green = run ["sh" "-c" "grep -q 'GREEN part-catalog' image/bin/part_catalog.out && echo yes"]
+assert (trim cat_green.out) == "yes" else "hunk-part-row: HUNK71 part_catalog did not stay GREEN"
+
+# HUNK38 stays GREEN — the shared paint_swatch the part row reuses was refactored additively; its own shelf must hold.
+let shelf = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/sprite_shelf.rye -femit-bin=brushstroke/bin/sprite_shelf && brushstroke/bin/sprite_shelf selftest > brushstroke/bin/sprite_shelf.out 2>&1"]
+assert shelf.ok else "hunk-part-row: HUNK38 sprite_shelf re-run failed — see brushstroke/bin/sprite_shelf.out"
+let shelf_green = run ["sh" "-c" "grep -q 'GREEN sprite-shelf' brushstroke/bin/sprite_shelf.out && echo yes"]
+assert (trim shelf_green.out) == "yes" else "hunk-part-row: HUNK38 sprite_shelf did not stay GREEN after the paint_swatch refactor"
+
+say "hunk-part-row: GREEN — a part is seen the way a real catalog shows it, picture and price together on metal; HUNK71 facts and HUNK38 swatch underneath stay GREEN. HUNK73 lands."

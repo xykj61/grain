@@ -91,23 +91,38 @@ fn draw_product_row(
     // invariant: the label region leaves at least one cell for a name.
     assert(label_cols >= 1);
 
-    // The product's thumbnail: render its window out of the one sheet (HUNK4), down-map it to a horizontal
-    // strip (HUNK2). The strip is as wide as the swatch when the window allows, so a product's left-to-right
-    // shape reads — a two-tone part shows two colors, not one average. A strip narrower than the swatch (a thin
-    // window) stretches to fill it; a 1-wide strip is a solid swatch, valid for a window of any size.
+    // The product's thumbnail: render its window out of the one sheet (HUNK4). Name at the left, truncated to
+    // the label region so it never overwrites the swatch; the swatch painted at the right by `paint_swatch`.
     const window = try index.render(allocator, name);
+    const shown: u32 = @intCast(@min(name.len, @as(usize, label_cols)));
+    grid.put_line(row, name[0..shown]);
+    try paint_swatch(allocator, grid, row, &window);
+}
+
+/// Paint a product's thumbnail swatch across the right `swatch_cols` cells of `row` — the product's `window`
+/// down-mapped to a horizontal strip (HUNK2), so its left-to-right shape reads, not only its dominant color: a
+/// two-tone part shows two colors, not one average. A strip narrower than the swatch (a thin window) stretches
+/// to fill it; a 1-wide strip is a solid swatch, valid for a window of any size. Shared by the sprite shelf and
+/// the parts shelf (HUNK73), so the swatch idiom lives in one place — a caller renders a window, this paints it.
+pub fn paint_swatch(
+    allocator: std.mem.Allocator,
+    grid: *skate.Grid,
+    row: u32,
+    window: *const qoi.Pixmap,
+) !void {
+    // invariant: the swatch is painted inside the grid.
+    assert(row < grid.rows);
+    // invariant: the grid is wide enough to hold the swatch (min_cols checked by the caller).
+    assert(grid.cols >= swatch_cols);
     // invariant: the rendered window is a real open image — four bytes per pixel.
     assert(window.pixels.len == @as(usize, window.width) * @as(usize, window.height) * 4);
+    const swatch_x0 = grid.cols - swatch_cols;
     const strip_n: u32 = @min(swatch_cols, window.width);
     // invariant: a strip is at least one cell wide — a window has at least one column.
     assert(strip_n >= 1);
-    const strip = try image_skate.down_map(allocator, &window, strip_n, 1);
+    const strip = try image_skate.down_map(allocator, window, strip_n, 1);
     // invariant: the strip holds exactly one slot per down-mapped column.
     assert(strip.fg_index.len == strip_n);
-
-    // Name at the left, truncated to the label region so it never overwrites the swatch.
-    const shown: u32 = @intCast(@min(name.len, @as(usize, label_cols)));
-    grid.put_line(row, name[0..shown]);
 
     // The swatch: the strip painted across the right of the row, each swatch column reading its strip column
     // (stretched when the strip is narrower than the swatch), each a solid block in that column's slot.
