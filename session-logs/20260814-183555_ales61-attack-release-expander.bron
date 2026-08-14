@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260814.183555
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title ALES61 — Lotus's attack/release downward expander: the expander given a sense of time
+prompt recur the itinerary Lindy-first crux-first after ALES60; take the next agent-doable Lotus lap, send it as its own signed round, stop at custody gates
+think ALES60 completed the dynamics quartet (compressor, limiter, gate, expander) but the expander was the only member still instantaneous — the compressor, gate, and limiter each earned their attack/release form (ALES53-55) by driving their gain from ALES52's proven envelope follower. Crux-first, the tightest next move is to give the expander the same breath so the whole family shares one time base.
+think The rung mirrors ALES54 (attack/release gate) line for line, with the gate's below-threshold DIVISION replaced by the expander's below-threshold WIDENING. Same expand_follow / expand_follow_carry pair sharing one implementation, same ExpandEnvError faults, same per-sample envelope.env_step advance. The one changed step: when the smoothed envelope e < thr, the target is ALES60's exp = max(0, thr - (thr-e)*num/den), and the gain exp/e is applied to the raw sample.
+think Proved the gain sits in [0,1] before coding: num/den >= 1 forces the widened deficit >= (thr-e), so exp <= thr-(thr-e) = e, and it is floored at 0 — so exp in [0,e], gain in [0,1], the magnitude only ever shrinks. A zero envelope means a zero sample (env_step forces a unit step toward any nonzero target), so no divide by zero. Overflow: (thr-e)*num <= 32767*2^32 fits i64; m*exp <= 32768*32767 fits i64.
+think Witness mirrors ALES54's seven clauses: silence; unit attack/release reduces to the plain ALES60 expander byte-for-byte (the zero-smoothing limit, both tools run); unit ratio identity; sign held / magnitude never expands; a slower release eases the widening longer (monotone, the first tail sample strictly louder); state carries across a split; each fault refuses by name. It re-proves ALES60 and ALES52 beside it so the rung rests on both parents.
+think Monotonic stamp: live clock read 20260814.183555 (TZ=America/New_York), after ALES60's 183030 — later-is-larger holds.
+obs GREEN on the first build; the ALES54 idiom carried over clean with only the gain law swapped. tame_style_check bans clean, >=2 asserts per fn each with a positive // invariant:. The whole dynamics family now shares ALES52's one time base across all four members. Purely local — no lookahead, socket, network, keys, funds, device, or sample rate; every custody gate untouched.
+loom witness=ales_expand_env_witness green=1 first_build=1 clauses=10 reproven=ales60_expand,ales52_envelope
+file lotus/expand_env.rye ALES61 — the attack/release expander, ALES60's floor driven from ALES52's follower
+file tools/ales_expand_env_witness.rish proves the ten clauses GREEN and re-proves ALES60 and ALES52 beneath it
+file active-designing/20260814-183555_fill-ales61-lotus-attack-release-expander.md the self-approved design read
+file lotus/README.md seats ALES61 in the Season C status line
+recommend keep-going the expander now has attack/release; the next Lindy-first crux is the held expander (ALES56's env_step_hold spent for the expander, completing a held quartet to match the held trio) or the lookahead delay for a true brickwall — the delay stays a Keaton's-word horizon, so a check-in before crossing that one

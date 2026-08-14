@@ -1,0 +1,308 @@
+//! lotus/expand_env.rye — ALES61: an attack/release downward expander — the expander's deepened floor given a patient sense of
+//! time. The expander (ALES60) leans on a sample the instant it sees it: a sample below the threshold has its deficit widened the
+//! moment it arrives, and the widening vanishes the moment the sample rises. A real expander breathes — it hears a sound END and
+//! holds through the release before it deepens, so the tail of a note falls smoothly rather than being wrenched down, and the
+//! expander does not pump on every dip between two loud samples. ALES52 built exactly that breath (an envelope follower, a running
+//! estimate of how loud the signal is right now) and proved it once; ALES53 spent it for the compressor and ALES54 for the gate.
+//! This rung spends the same proof for the expander: it drives the downward widening from the smoothed envelope rather than the
+//! bare sample, so the expander eases in as the sound arrives and eases out patiently as it falls away. The time base is not
+//! re-invented — the module reads the one ALES52 proved, through its public env_step.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES61.
+//! Design read: active-designing/20260814-183555_fill-ales61-lotus-attack-release-expander.md
+//! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/sample_max, the range law shape; lotus/expand.rye (ALES60) — the
+//! deepened floor this drives over time, re-proven beside it; lotus/envelope.rye (ALES52) — the proven time base, its env_step
+//! advancing the same follower one sample at a time; lotus/gate_env.rye (ALES54) — the sibling attack/release tool this mirrors,
+//! the below-threshold widening standing in for the below-threshold division.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
+//! no network, no keys, no funds, no real device, no real sample rate — the attack and release are fractions per sample index,
+//! not milliseconds against a clock, and the threshold is a magnitude in sample units, the ratio a plain fraction. One envelope
+//! step and at most one widen and one multiply-divide per sample; nothing on the path can overflow, since the expanded envelope is
+//! at most the envelope so the gain sits in [0, 1] and every written magnitude is at most the input's, which already fits i16.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/expand_env.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const expand = @import("expand.rye");
+const envelope = @import("envelope.rye");
+
+pub const expand_env_version = "20260814.183555";
+
+/// The attack/release expander's faults, one consistent name each: a threshold outside [1, sample_max], a ratio below unity or with
+/// a zero denominator, an attack or release coefficient outside (0, 1], and a span outside the samples. Each coincides by name with
+/// the tool it borrows from — BadThreshold and BadRatio from the expander, BadCoeff from the follower, BadRange from the whole
+/// family — so a composer sees one consistent fault surface.
+pub const ExpandEnvError = error{
+    /// A threshold of zero (no band left below it to expand) or above sample_max (everything would fall below it) — refused.
+    BadThreshold,
+    /// A ratio below unity (would narrow the deficit, not widen it) or with a zero denominator — refused, no write.
+    BadRatio,
+    /// An attack or release coefficient outside (0, 1] — a frozen envelope, an overshooting step, or a divide by zero.
+    BadCoeff,
+    /// A span outside the current samples — refused, no write.
+    BadRange,
+};
+
+/// Expand `count` samples starting at `start` in place below the magnitude `threshold` by the ratio `ratio_num/ratio_den`, the
+/// downward widening FOLLOWING an envelope that CONTINUES from the caller's `env` rather than from silence — the carried-state form
+/// (ALES43's lesson). Each sample advances the proven ALES52 follower one step (the attack fraction while it rises, the release
+/// while it falls); when the smoothed envelope sits at or above the threshold the expander is idle and the sample passes
+/// byte-for-byte, and when it falls below, the envelope's deficit is widened by the ratio (ALES60's deepened floor) and that gain
+/// applied to the raw sample. The caller owns the i64 envelope across calls, so a span expanded in two pieces equals the whole once
+/// — no fresh transient at the seam, and the release eases the widening across a call boundary. Refuses BadThreshold, BadRatio,
+/// BadCoeff, and BadRange before any write; on refusal the clip is untouched. Values only — never the length.
+pub fn expand_follow_carry(
+    clip: *timeline.Clip,
+    start: u32,
+    count: u32,
+    env: *i64,
+    threshold: i32,
+    ratio_num: u32,
+    ratio_den: u32,
+    attack_num: u32,
+    attack_den: u32,
+    release_num: u32,
+    release_den: u32,
+) ExpandEnvError!void {
+    // invariant: the threshold is a legal magnitude — at least one sample unit and no greater than the i16 rail. Before any write.
+    if (threshold < 1) return error.BadThreshold;
+    if (threshold > @as(i32, timeline.sample_max)) return error.BadThreshold;
+    // invariant: the ratio is at least one (num >= den) and its denominator is nonzero — a ratio below one would narrow the deficit.
+    if (ratio_den == 0) return error.BadRatio;
+    if (ratio_num < ratio_den) return error.BadRatio;
+    // invariant: both attack and release coefficients are legal fractions in (0, 1] — checked by the follower's one proven rule.
+    if (!envelope.coeff_ok(attack_num, attack_den)) return error.BadCoeff;
+    if (!envelope.coeff_ok(release_num, release_den)) return error.BadCoeff;
+    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
+    if (start > clip.len) return error.BadRange;
+    if (count > clip.len - start) return error.BadRange;
+
+    const thr: i64 = @as(i64, threshold);
+    const num: i64 = @as(i64, ratio_num);
+    const den: i64 = @as(i64, ratio_den);
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        const x: i16 = clip.buf[start + i];
+        // Advance the proven ALES52 follower one sample; e is the smoothed magnitude, in [0, sample_max].
+        _ = envelope.env_step(env, x, attack_num, attack_den, release_num, release_den);
+        const e: i64 = env.*;
+        // invariant: the envelope stays a legal magnitude — never negative, never past the rail (env_step's own guarantee).
+        assert(e >= 0 and e <= @as(i64, timeline.sample_max));
+        if (e < thr) {
+            if (e == 0) {
+                // The smoothed detector reads exact silence. env_step forces at least a unit step toward any nonzero target, so a
+                // zero envelope can only arise when this sample's own magnitude is zero — nothing to expand, and no divide by zero.
+                assert(x == 0);
+            } else {
+                // The expanded envelope target — ALES60's deepened floor, computed on the ENVELOPE not the bare sample: the deficit
+                // thr − e widened by the ratio (num/den >= 1) and floored at zero. The widened deficit fits i64 (thr−e <= 32767).
+                const deficit: i64 = thr - e; // strictly positive here (e < thr)
+                const widened: i64 = @divTrunc(deficit * num, den);
+                const raw_exp: i64 = thr - widened;
+                const exp: i64 = if (raw_exp < 0) 0 else raw_exp; // floor at silence — the gate reached from within the expander
+                // invariant: the expanded envelope sits within [0, envelope] — the gain exp/e is in [0, 1] (num/den >= 1 => exp <= e).
+                assert(exp >= 0 and exp <= e);
+                const m: i64 = if (x < 0) -@as(i64, x) else @as(i64, x); // |x| — safe in i64 (|sample_min| = 32768 fits)
+                // Apply the gain exp/e to the raw sample. m·exp <= 32768·32767 fits i64; divTrunc keeps it at most m.
+                const new_m: i64 = @divTrunc(m * exp, e);
+                // invariant: the gain reduces, never boosts — a smoothed expander only ever leans down.
+                assert(new_m <= m);
+                const y: i16 = @intCast(if (x < 0) -new_m else new_m); // safe: 0 <= new_m <= m <= 32768 fits i16 by sign
+                clip.buf[start + i] = y;
+                // invariant: the written sample holds the input's sign (magnitude only shrank).
+                assert((x >= 0 and y >= 0) or (x <= 0 and y <= 0));
+            }
+        }
+        // a sample whose smoothed envelope sits at or above the threshold is left exactly as it was — the expander is idle there.
+    }
+    // invariant: an expander changes sample values only, never the clip's length or bound.
+    assert(start + count <= clip.len);
+    assert(clip.len <= clip.buf.len);
+}
+
+/// Expand `count` samples starting at `start` in place, the downward widening following an envelope that begins FROM SILENCE (a
+/// fresh env of 0) — one implementation shared with the carried form, so the two cannot drift. Refuses BadThreshold, BadRatio,
+/// BadCoeff, and BadRange before any write.
+pub fn expand_follow(
+    clip: *timeline.Clip,
+    start: u32,
+    count: u32,
+    threshold: i32,
+    ratio_num: u32,
+    ratio_den: u32,
+    attack_num: u32,
+    attack_den: u32,
+    release_num: u32,
+    release_den: u32,
+) ExpandEnvError!void {
+    var env: i64 = 0;
+    return expand_follow_carry(clip, start, count, &env, threshold, ratio_num, ratio_den, attack_num, attack_den, release_num, release_den);
+}
+
+// --- selftest: silence stays silence; UNIT attack and release reduce it to the plain ALES60 expander byte-for-byte (the
+//     instantaneous expander is the zero-smoothing limit); UNIT RATIO is the identity everywhere; a quiet signal has its floor
+//     deepened with the sign held and the magnitude never expanding; a SLOWER RELEASE eases the widening longer (the tail of a note
+//     falls smoothly, the knob monotone); the state CARRIES so a span in two pieces equals the whole once; and a bad threshold, a
+//     sub-unity ratio, an illegal coefficient, and an out-of-range span each refuse by name -------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn abs16(v: i16) i32 {
+    return if (v < 0) -@as(i32, v) else @as(i32, v);
+}
+
+fn run_selftest() !u8 {
+    // 1. silence stays silence — an all-zero clip expands to all zeros at any legal threshold, ratio, and coefficients.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0 });
+        try expand_follow(&clip, 0, clip.len, 1000, 4, 1, 1, 4, 1, 8);
+        const zeros = [_]i16{ 0, 0, 0, 0, 0, 0 };
+        if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
+    }
+
+    // 2. UNIT ATTACK AND RELEASE REDUCE IT TO THE PLAIN EXPANDER — with instant attack and release the envelope IS the instantaneous
+    //    magnitude (ALES52's unit identity), so the gain application lands each sample at exactly ALES60's output. Proven by running
+    //    BOTH tools on the same signal (|x| <= sample_max throughout) and demanding byte-for-byte equality.
+    {
+        const mixed = [_]i16{ 800, -800, 5000, -600, 200, -9000, 32767, -32767, 400 };
+        var smoothed = timeline.Clip{};
+        try load_clip(&smoothed, &mixed);
+        try expand_follow(&smoothed, 0, smoothed.len, 1000, 4, 1, 1, 1, 1, 1); // instant attack, instant release
+        var plain = timeline.Clip{};
+        try load_clip(&plain, &mixed);
+        try expand.expand(&plain, 0, plain.len, 1000, 4, 1); // the proven ALES60 expander
+        if (!eq(smoothed.samples(), plain.samples())) return error.UnitNotPlainExpand;
+    }
+
+    // 3. UNIT RATIO IS THE IDENTITY EVERYWHERE — ratio_num == ratio_den makes the expanded envelope equal the envelope, so the gain
+    //    is exactly one at every sample regardless of smoothing: the whole signal passes byte-for-byte, even below the threshold.
+    {
+        const quiet = [_]i16{ 300, -300, 5000, -20, 20, -400 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &quiet);
+        try expand_follow(&clip, 0, clip.len, 1000, 3, 3, 1, 4, 1, 8); // unit ratio 3:3, real attack/release
+        if (!eq(clip.samples(), &quiet)) return error.UnitRatioNotIdentity;
+    }
+
+    // 4. THE SIGN IS HELD AND THE MAGNITUDE NEVER EXPANDS — a quiet signal expands so every output magnitude is at most the input's
+    //    and every sign matches, under a real attack and release.
+    {
+        const mixed = [_]i16{ 200, -200, 5000, -300, 150, -9000, 250, -250 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &mixed);
+        try expand_follow(&clip, 0, clip.len, 1000, 4, 1, 1, 2, 1, 6);
+        const out = clip.samples();
+        var i: u32 = 0;
+        while (i < out.len) : (i += 1) {
+            if (abs16(out[i]) > abs16(mixed[i])) return error.MagnitudeExpanded; // the gain only ever reduces
+            if ((mixed[i] > 0 and out[i] < 0) or (mixed[i] < 0 and out[i] > 0)) return error.SignFlipped;
+        }
+    }
+
+    // 5. A SLOWER RELEASE EASES THE WIDENING LONGER — after a loud passage ends, a slower release keeps the smoothed envelope above
+    //    the threshold for longer, so a quiet tail is attenuated LESS than under a fast release (the expander does not wrench the
+    //    note's fall or pump). So on the tail the slow-release magnitude is no smaller than the fast-release magnitude at every
+    //    sample — the release knob is monotone — and the first tail sample under a slow release is strictly louder than under a fast
+    //    one (the expander audibly eases out).
+    {
+        const tail = [_]i16{ 15000, 15000, 15000, 300, 300, 300, 300, 300 }; // a loud passage, then a quiet tail below threshold
+        const thr: i32 = 1000;
+        var slow = timeline.Clip{};
+        try load_clip(&slow, &tail);
+        try expand_follow(&slow, 0, slow.len, thr, 8, 1, 1, 1, 1, 16); // slow release 1:16
+        var fast = timeline.Clip{};
+        try load_clip(&fast, &tail);
+        try expand_follow(&fast, 0, fast.len, thr, 8, 1, 1, 1, 1, 1); // instant release 1:1
+        var i: u32 = 0;
+        while (i < tail.len) : (i += 1) {
+            if (abs16(slow.samples()[i]) < abs16(fast.samples()[i])) return error.SlowReleaseExpandedMore;
+        }
+        // the first quiet-tail sample (index 3): the slow release still reads the envelope above threshold and lets it pass, the
+        // instant release has already dropped below threshold and widens its deficit.
+        if (abs16(slow.samples()[3]) <= abs16(fast.samples()[3])) return error.HoldDidNotSurvive;
+    }
+
+    // 6. THE STATE CARRIES — expanding a span in two pieces (the second continuing the first's ending envelope) equals expanding the
+    //    whole once, byte-for-byte: the seam invisible, so dynamics can span and automate and the release eases across a call boundary.
+    {
+        const sig = [_]i16{ 12000, 12000, 400, 400, 300, 300, 9000, 200 };
+        var whole = timeline.Clip{};
+        try load_clip(&whole, &sig);
+        try expand_follow(&whole, 0, whole.len, 1000, 4, 1, 1, 1, 1, 6);
+
+        var split = timeline.Clip{};
+        try load_clip(&split, &sig);
+        var env: i64 = 0;
+        try expand_follow_carry(&split, 0, 3, &env, 1000, 4, 1, 1, 1, 1, 6); // first piece
+        try expand_follow_carry(&split, 3, split.len - 3, &env, 1000, 4, 1, 1, 1, 1, 6); // second continues the state
+        if (!eq(split.samples(), whole.samples())) return error.CarryNotEqual;
+    }
+
+    // 7a. a zero threshold refuses BadThreshold before any write, the clip untouched.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        if (expand_follow(&clip, 0, clip.len, 0, 4, 1, 1, 4, 1, 8)) |_| return error.ZeroThresholdSlipped else |e| if (e != error.BadThreshold) return error.WrongZeroThreshold;
+        if (!eq(clip.samples(), &three)) return error.RefusedThresholdMutated;
+    }
+
+    // 7b. a sub-unity ratio (would narrow the deficit) refuses BadRatio before any write.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        if (expand_follow(&clip, 0, clip.len, 1000, 1, 2, 1, 4, 1, 8)) |_| return error.SubUnitySlipped else |e| if (e != error.BadRatio) return error.WrongSubUnity;
+        if (!eq(clip.samples(), &three)) return error.RefusedRatioMutated;
+    }
+
+    // 7c. an illegal release coefficient (numerator past the denominator) refuses BadCoeff before any write.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        if (expand_follow(&clip, 0, clip.len, 1000, 4, 1, 1, 4, 3, 2)) |_| return error.BadReleaseSlipped else |e| if (e != error.BadCoeff) return error.WrongBadRelease;
+        if (!eq(clip.samples(), &three)) return error.RefusedCoeffMutated;
+    }
+
+    // 7d. an out-of-range span refuses BadRange before any write, leaving the clip untouched.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        if (expand_follow(&clip, 2, 5, 1000, 4, 1, 1, 4, 1, 8)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(clip.samples(), &three)) return error.RefusedRangeMutated;
+    }
+
+    print("GREEN ales-expand-env: an attack/release downward expander drives ALES60's deepened floor from ALES52's proven " ++
+        "envelope — each sample advances the follower one step (the attack fraction rising, the release falling), and when the " ++
+        "smoothed envelope falls below the threshold its deficit is widened by the ratio and that gain applied to the raw sample. " ++
+        "Silence stays silence; UNIT attack and release reduce it to the plain ALES60 expander BYTE-FOR-BYTE (the instantaneous " ++
+        "expander is the zero-smoothing limit, proven by running both tools); UNIT RATIO is the identity everywhere; a quiet signal " ++
+        "has its floor deepened with the sign held and never expanding; a SLOWER RELEASE eases the widening longer (the note's tail " ++
+        "falls smoothly, the knob monotone); the state CARRIES so a span in two pieces equals the whole once (the seam invisible, " ++
+        "the release easing across the boundary); and a zero threshold refuses BadThreshold, a sub-unity ratio BadRatio, an illegal " ++
+        "coefficient BadCoeff, an out-of-range span BadRange, each leaving the clip untouched; no socket, no network, no keys, no " ++
+        "funds, no real device, no real sample rate\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

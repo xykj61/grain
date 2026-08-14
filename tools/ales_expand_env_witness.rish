@@ -1,0 +1,47 @@
+# tools/ales_expand_env_witness.rish — an attack/release downward expander: the expander given a sense of time (ALES61).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES61.
+# Design read: active-designing/20260814-183555_fill-ales61-lotus-attack-release-expander.md
+# Stands on: lotus/timeline.rye (ALES2 — the Clip, the range law shape); lotus/expand.rye (ALES60 — the deepened floor this drives
+# over time, re-proven below); lotus/envelope.rye (ALES52 — the proven time base); lotus/gate_env.rye (ALES54 — the sibling this mirrors).
+#
+# lotus/expand_env.rye advances the ALES52 follower one step per sample and, when the smoothed envelope falls below the threshold,
+# widens its deficit by the ratio (ALES60's law) and applies that gain to the raw sample. The selftest proves: silence stays silence;
+# unit attack/release reduces to the plain ALES60 expander byte-for-byte; unit ratio is the identity everywhere; a quiet signal's
+# floor deepens with the sign held and the magnitude never expanding; a slower release eases the widening longer (the knob monotone);
+# the state carries so a span in two pieces equals the whole once; a zero threshold refuses BadThreshold, a sub-unity or
+# zero-denominator ratio BadRatio, an illegal coefficient BadCoeff, an out-of-range span BadRange. Purely local — no lookahead, no
+# network, no keys, no funds, no real device, no sample rate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_expand_env_witness.rish
+
+say "ales-expand-env: Language EN — ALES61 gives the downward expander (ALES60) a patient sense of time by driving its deepened floor from ALES52's proven envelope follower, exactly as ALES54 gave the gate its breath. The expander eases in as a sound arrives and eases out patiently as it falls away, so a note's tail falls smoothly rather than being wrenched down, and the expander does not pump on every dip between two loud samples."
+say "ales-expand-env: Style Radiant — the law is stated positively: unit attack and release reduce it to the plain ALES60 expander byte-for-byte (the instantaneous expander is the zero-smoothing limit), unit ratio is the identity everywhere, a slower release eases the widening longer (the knob monotone), and the state carries so a span in two pieces equals the whole once — the seam invisible, the release easing across the boundary."
+say "ales-expand-env: Lens TAME — bounded Clip, u32 span, i16 samples, i64 carried envelope; the threshold checked in [1, sample_max], the ratio at least unity with a nonzero denominator, both coefficients in (0,1] by the follower's one proven rule, all before any write; the deficit widened in i64 and floored at zero so the expanded envelope is at most the envelope, the gain in [0,1] and every written magnitude at most the input's; a zero threshold refuses BadThreshold, a sub-unity or zero-denominator ratio BadRatio, an illegal coefficient BadCoeff, an out-of-range span BadRange; siloed to lotus/, no lookahead, no network, no keys, no funds, no device, no sample rate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/expand_env"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/expand_env.rye -femit-bin=${bin}"]
+assert build.ok else "ales-expand-env: build failed — ${build.err}"
+
+let outfile = "lotus/bin/expand_env.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-expand-env: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-expand-env: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-expand-env' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-expand-env: selftest did not print the GREEN ales-expand-env line"
+
+# The attack/release expander drives the plain ALES60 expander over time — re-prove it still stands green beneath the new rung.
+let expand = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/expand.rye -femit-bin=lotus/bin/expand && lotus/bin/expand selftest 2>&1 | grep -q 'GREEN ales-expand' && echo yes"]
+assert (trim expand.out) == "yes" else "ales-expand-env: the ALES60 expander witness regressed under the attack/release expander"
+
+# The time base is ALES52's proven follower — re-prove it too, so the rung rests on both parents.
+let env = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/envelope.rye -femit-bin=lotus/bin/envelope && lotus/bin/envelope selftest 2>&1 | grep -q 'GREEN ales-envelope' && echo yes"]
+assert (trim env.out) == "yes" else "ales-expand-env: the ALES52 envelope follower witness regressed under the attack/release expander"
+
+say "ales-expand-env: GREEN — an attack/release downward expander drives ALES60's deepened floor from ALES52's proven envelope; unit attack/release reduces to the plain ALES60 expander byte-for-byte, unit ratio is the identity everywhere, a quiet signal's floor deepens with the sign held and the magnitude never expanding, a slower release eases the widening longer (the knob monotone), and the state carries so a span in two pieces equals the whole once; a zero threshold refuses BadThreshold, a sub-unity or zero-denominator ratio BadRatio, an illegal coefficient BadCoeff, an out-of-range span BadRange, each leaving the clip untouched; the ALES60 expander and ALES52 follower stay GREEN beneath it. The dynamics family now shares one time base across all four members — the next rung can give the expander its hold too (ALES56's held follower), or open the lookahead delay for a true brickwall (a Keaton's-word horizon)."
