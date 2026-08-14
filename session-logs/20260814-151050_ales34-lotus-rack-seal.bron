@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260814.151050
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title ALES34 — Lotus's slot sheet, sealed (verify before trust)
+prompt Continue the ALES recursion loop Lindy-first crux-first; send each finished increment to origin and xykj61; stop at custody gates; baton prin recur
+think ALES33's road-on named the next agent-doable rung: give the slot sheet a Sha256 content digest so it verifies before it is trusted, mirroring the ALES0 audio wire's deframe. The signing rung (who wrote it, via a Kumara key) is a module seam that waits for Keaton's word; the integrity seal is pure local text.
+think Chose it Lindy-first crux-first: an integrity gate on a persistence format is durable, and a silent wrong parse is the worst outcome a format can have. Designed the seal to WRAP ALES33 whole rather than re-spell its grammar — a sealed record is its own format lotus-rack-sheet-sealed-v1, a digest line, then the whole plain ALES33 record as the body; the digest is a Sha256 over exactly that body.
+think Rendered the body directly into the output and backfilled the digest — no large scratch buffer for a big rack. verify_and_parse locates the header and digest lines by their newlines to recover the exact body slice, validates the digest line's structure (BadRecord), recomputes and compares (DigestMismatch), and hands the body to rack_sheet.parse_rack only on a match — verify-before-trust, the integrity gate prior to every ALES33 grammar and bound check.
+think Kept structure vs content distinct: a malformed / short / non-hex digest line is BadRecord; a well-formed digest that no longer matches the body is DigestMismatch. Reused the tree's {x:0>2} hex idiom (tally/bud.rye). The seal proves a sheet arrived whole, not who wrote it — no signature, no key.
+obs GREEN on the first build across five cases: a sealed two-slot rack opened with the sealed header and a digest line, its body exactly the plain ALES33 record, and verify_and_parse recovered the exact rack (both names, both channels, checked by pasting each slot); a flipped body byte and a truncated tail each refused DigestMismatch with the output rack left empty; a plain record, a missing / short / non-hex digest line each refused BadRecord; a seal into a too-small buffer refused Overflow.
+obs Witness tools/ales_rack_seal_witness.rish GREEN; TAME style bans clean; no new zero-assert ratchet, no usize, no bare memcpy. rack_sheet.render_rack / parse_rack reused whole (RackSealError = error{DigestMismatch} || rack_sheet.RackSheetError). Purely local — a Sha256 over an in-process text record; no socket, no network, no keys, no funds, no real device, no real meter, no real speaker; every custody gate untouched.
+loom witness=ales_rack_seal_witness result=green digest=sha256 hex_len=64 build=first cases=5
+file lotus/rack_seal.rye ALES34 module — seal_rack / verify_and_parse over the ALES33 record, the ALES0 wire's verify-before-trust for the saveable sheet
+file tools/ales_rack_seal_witness.rish the witness that builds and proves it GREEN on metal
+file active-designing/20260814-151050_fill-ales34-lotus-rack-seal.md the self-approved design read for the round
+file lotus/README.md front door synced — status list, ALES34 rung entry, road-on paragraph, stamp
+recommend keep-going ALES35 can SIGN the seal with a Kumara key (who wrote it, not only that it arrived whole) — a module seam that waits for Keaton's word; a keep-going alternative on the sheet side is naming the next purely-local ergonomic rung

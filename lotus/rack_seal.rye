@@ -1,0 +1,246 @@
+//! lotus/rack_seal.rye — ALES34: the slot sheet, SEALED — a rack sheet that verifies before it is trusted. ALES33 lets a keeper's
+//! whole rack travel as a `format lotus-rack-sheet-v1` record, yet plain text carries no proof it arrived whole: a byte flipped in a
+//! copy-paste, a truncated file, a hand-edited sample all parse as some other rack without a word. The ALES0 audio wire already
+//! answers this for a live frame — a Sha256 over the payload, recomputed by the far side and checked BEFORE the payload is trusted
+//! (deframe verify-before-trust). This rung hands that same law to the saveable slot sheet: seal a rack sheet with a content digest,
+//! and refuse to parse a record whose digest does not match its body.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES34.
+//! Design read: active-designing/20260814-151050_fill-ales34-lotus-rack-seal.md
+//! Stands on: lotus/rack_sheet.rye (ALES33) — render_rack / parse_rack reused WHOLE as the sealed body, so the seal adds only the
+//! digest layer and no new grammar; lotus/rack.rye (ALES30) — the Rack sealed and rebuilt. Mirrors the Sha256 verify-before-trust of
+//! lotus/wire.rye (ALES0) — an integrity check the reader recomputes itself, not a signature.
+//!
+//! THE CRUX: a sealed slot sheet parses back to EXACTLY the same rack ONLY when its digest matches its body — verify_and_parse
+//! recomputes the Sha256 over the embedded ALES33 record and refuses DigestMismatch before a single slot is trusted, so a flipped
+//! sample, a truncated tail, or a hand-edited name is caught at the gate rather than parsed as some other rack. Two facts make this
+//! exact. The seal wraps ALES33 whole: seal_rack renders the plain record with rack_sheet.render_rack and writes a Sha256 over
+//! exactly those body bytes, so the digest covers the canonical text with nothing added or omitted. And verify runs BEFORE trust:
+//! verify_and_parse checks the digest first and hands the body to rack_sheet.parse_rack only on a match, so no corrupt record ever
+//! reaches the parser — the integrity gate is independent of and prior to every ALES33 grammar and bound check.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A Sha256 integrity check over an in-process text record, siloed to lotus/. It proves a
+//! sheet arrived whole, NOT who wrote it — no signature, no key. A signed carry stays a later rung on Keaton's word. No socket, no
+//! network, no keys, no funds, no real device, no real meter, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/rack_seal.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const selection = @import("selection.rye");
+const rack = @import("rack.rye");
+const rack_sheet = @import("rack_sheet.rye");
+
+const Sha256 = std.crypto.hash.sha2.Sha256;
+
+pub const rack_seal_version = "20260814.151050";
+
+/// The sealed record header, its own line — distinct from the plain ALES33 header so a plain sheet is never mistaken for a sealed one
+/// and vice versa. A parsed record must open with exactly this before its digest is read.
+const sealed_header = "format lotus-rack-sheet-sealed-v1";
+
+/// The digest line prefix — `digest ` then exactly `digest_hex_len` lowercase hex characters. Named so the one place the line's shape
+/// is checked reads plainly.
+const digest_prefix = "digest ";
+
+/// A full Sha256 is 32 bytes, rendered as 64 lowercase hex characters — the same width the ALES0 wire's digest carries, so a single
+/// flipped body byte fails the check.
+const digest_hex_len: u32 = Sha256.digest_length * 2;
+
+/// The combined error set of the seal: DigestMismatch when the body no longer matches its digest, plus ALES33's Overflow / BadRecord
+/// and every rack bound forwarded unchanged. Each fault refuses by name; DigestMismatch and a malformed seal are caught before any
+/// slot is parsed.
+pub const RackSealError = error{
+    /// The recomputed Sha256 over the body does not match the framed digest — a byte flipped, a tail truncated, a sample edited.
+    DigestMismatch,
+} || rack_sheet.RackSheetError;
+
+/// Write `bytes` as lowercase hex into `out`, two characters per byte. `out` must hold exactly `bytes.len * 2` characters. The same
+/// `{x:0>2}` idiom the tree already uses (tally/bud.rye), so a zero byte renders `00` rather than a bare `0`.
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex characters per byte.
+    assert(out.len == bytes.len * 2);
+    var i: u32 = 0;
+    while (i < bytes.len) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{bytes[i]}) catch unreachable; // two chars always fit the reserved pair
+    }
+}
+
+/// Seal a rack as a `format lotus-rack-sheet-sealed-v1` record into `out`, returning the length written. The record is the sealed
+/// header line, a `digest <64 hex>` line over the body, then the whole plain ALES33 record as the body. The body is rendered directly
+/// into `out` and the digest backfilled over exactly those bytes — no scratch buffer, and the digest covers the canonical text with
+/// nothing added or omitted. Refuses Overflow rather than writing past the caller's buffer. So a keeper's rack travels as text that
+/// verifies before it is trusted.
+pub fn seal_rack(r: *const rack.Rack, out: []u8) RackSealError!u32 {
+    // invariant: the rack stays within its named ceiling before it is ever sealed.
+    assert(r.count <= rack.max_slots);
+    const head = std.fmt.bufPrint(out, "{s}\n{s}", .{ sealed_header, digest_prefix }) catch return error.Overflow;
+    var off: u32 = @intCast(head.len);
+
+    // Reserve the 64 hex characters and the newline; the digest is backfilled after the body is rendered.
+    const hex_at = off;
+    if (off + digest_hex_len + 1 > out.len) return error.Overflow;
+    off += digest_hex_len;
+    out[off] = '\n';
+    off += 1;
+
+    // Render the plain ALES33 record directly as the body, then hash exactly those bytes.
+    const body_at = off;
+    const body_len = try rack_sheet.render_rack(r, out[body_at..]);
+    var dg: [Sha256.digest_length]u8 = undefined;
+    Sha256.hash(out[body_at .. body_at + body_len], &dg, .{});
+    to_hex(&dg, out[hex_at .. hex_at + digest_hex_len]);
+
+    // invariant: the sealed record stays within the buffer, header and digest ahead of the body.
+    assert(body_at + body_len <= out.len);
+    return body_at + body_len;
+}
+
+/// Verify a sealed record and parse it into a fresh rack — the integrity gate BEFORE trust. The record must open with the sealed
+/// header, carry a well-formed `digest <64 hex>` line, and its recomputed Sha256 over the body must match that digest; only then is
+/// the body handed to ALES33's rack_sheet.parse_rack. A missing or malformed header or digest line refuses BadRecord; a body that no
+/// longer matches its digest refuses DigestMismatch — in every refusal `out` is left an empty rack and no slot is trusted.
+pub fn verify_and_parse(text: []const u8, out: *rack.Rack) RackSealError!void {
+    // invariant: verification starts from an empty rack — a refused record leaves nothing half-parsed.
+    out.* = rack.Rack{};
+    assert(out.count == 0);
+
+    // The header line, then the digest line, located by their newlines so the exact body slice is recovered for hashing.
+    const nl0 = std.mem.indexOfScalar(u8, text, '\n') orelse return error.BadRecord;
+    if (!std.mem.eql(u8, text[0..nl0], sealed_header)) return error.BadRecord;
+
+    const after_head = text[nl0 + 1 ..];
+    const nl1_rel = std.mem.indexOfScalar(u8, after_head, '\n') orelse return error.BadRecord;
+    const digest_line = after_head[0..nl1_rel];
+
+    // The digest line must be exactly `digest ` then 64 hex characters — a structural check, distinct from a content mismatch.
+    if (digest_line.len != digest_prefix.len + digest_hex_len) return error.BadRecord;
+    if (!std.mem.eql(u8, digest_line[0..digest_prefix.len], digest_prefix)) return error.BadRecord;
+    const framed_hex = digest_line[digest_prefix.len..];
+    var k: u32 = 0;
+    while (k < framed_hex.len) : (k += 1) {
+        const c = framed_hex[k];
+        const is_hex = (c >= '0' and c <= '9') or (c >= 'a' and c <= 'f');
+        if (!is_hex) return error.BadRecord; // a non-hex digit is a malformed seal, not a content mismatch
+    }
+
+    // The body is everything after the digest line's newline — hashed and compared BEFORE it is ever parsed.
+    const body = after_head[nl1_rel + 1 ..];
+    var dg: [Sha256.digest_length]u8 = undefined;
+    Sha256.hash(body, &dg, .{});
+    var computed_hex: [digest_hex_len]u8 = undefined;
+    to_hex(&dg, computed_hex[0..]);
+    if (!std.mem.eql(u8, framed_hex, computed_hex[0..])) return error.DigestMismatch;
+
+    // Verified whole — only now is the body trusted to the ALES33 parser.
+    try rack_sheet.parse_rack(body, out);
+    // invariant: a verified rack holds no more than the slot ceiling.
+    assert(out.count <= rack.max_slots);
+}
+
+// --- selftest: THE CRUX — a sealed rack round-trips through verify_and_parse; a flipped body byte refuses DigestMismatch; a
+//     truncated tail refuses; a malformed header or digest line refuses BadRecord; the body verified is the exact ALES33 record ---
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn slot_is(r: *const rack.Rack, name: []const u8, want_l: []const i16, want_r: []const i16) !void {
+    var m = pan.StereoClip{};
+    try rack.paste(r, name, &m, 0);
+    if (!eq(m.left.samples(), want_l)) return error.SlotLeftWrong;
+    if (!eq(m.right.samples(), want_r)) return error.SlotRightWrong;
+}
+
+fn run_selftest() !u8 {
+    // Build a two-slot rack to seal in every case below.
+    var src = pan.StereoClip{};
+    try timeline.splice(&src.left, 0, &[_]i16{ 0, 1, 2, 3, 4, 5 });
+    try timeline.splice(&src.right, 0, &[_]i16{ 0, -1, -2, -3, -4, -5 });
+    var r = rack.Rack{};
+    try rack.copy_to(&r, "head", &src, try selection.make(&src, 1, 3));
+    try rack.copy_to(&r, "tail", &src, try selection.make(&src, 4, 6));
+
+    // 1. THE CRUX — a sealed record opens with the sealed header and a digest line, and verify_and_parse recovers the exact rack.
+    {
+        var text: [600]u8 = undefined;
+        const n = try seal_rack(&r, text[0..]);
+        // the record opens with the sealed header and a `digest ` line, then the plain ALES33 record as the body.
+        const want_head = "format lotus-rack-sheet-sealed-v1\ndigest ";
+        if (!std.mem.eql(u8, text[0..want_head.len], want_head)) return error.SealHeadWrong;
+        // the body (after the sealed header and 64-hex digest line) is exactly the plain ALES33 record.
+        const body_at = want_head.len + digest_hex_len + 1;
+        if (!std.mem.eql(u8, text[body_at .. body_at + "format lotus-rack-sheet-v1\n".len], "format lotus-rack-sheet-v1\n")) return error.SealBodyWrong;
+
+        var back = rack.Rack{};
+        try verify_and_parse(text[0..n], &back);
+        if (back.size() != 2) return error.VerifyCountWrong;
+        if (!std.mem.eql(u8, rack.name_of(&back, 0), "head")) return error.VerifyName0Wrong;
+        try slot_is(&back, "head", &[_]i16{ 1, 2 }, &[_]i16{ -1, -2 });
+        try slot_is(&back, "tail", &[_]i16{ 4, 5 }, &[_]i16{ -4, -5 });
+    }
+
+    // 2. a single flipped BODY byte refuses DigestMismatch — the integrity gate, before any slot is parsed. Flip a sample digit in
+    //    the last few bytes of the record (inside the body, never the digest line).
+    {
+        var text: [600]u8 = undefined;
+        const n = try seal_rack(&r, text[0..]);
+        // the final byte is the body's trailing newline; step back to a sample digit and change it.
+        text[n - 2] = if (text[n - 2] == '5') '6' else '5';
+        var back = rack.Rack{};
+        if (verify_and_parse(text[0..n], &back)) |_| return error.TamperSlipped else |e| if (e != error.DigestMismatch) return error.WrongTamper;
+        if (back.size() != 0) return error.TamperMutated;
+    }
+
+    // 3. a TRUNCATED tail refuses — the shortened body hashes differently. Drop the last byte of a good record.
+    {
+        var text: [600]u8 = undefined;
+        const n = try seal_rack(&r, text[0..]);
+        var back = rack.Rack{};
+        if (verify_and_parse(text[0 .. n - 1], &back)) |_| return error.TruncSlipped else |e| if (e != error.DigestMismatch) return error.WrongTrunc;
+    }
+
+    // 4. a malformed header or digest line refuses BadRecord — a plain (unsealed) record, a wrong header, a short digest, and a
+    //    non-hex digit in the digest — each caught before the body is hashed or parsed.
+    {
+        var back = rack.Rack{};
+        // a plain ALES33 record handed to the sealed verifier has the wrong first line.
+        if (verify_and_parse("format lotus-rack-sheet-v1\nslot a\nL 1\nR 1\n", &back)) |_| return error.PlainSlipped else |e| if (e != error.BadRecord) return error.WrongPlain;
+        // a sealed header with no digest line at all.
+        if (verify_and_parse("format lotus-rack-sheet-sealed-v1\n", &back)) |_| return error.NoDigestSlipped else |e| if (e != error.BadRecord) return error.WrongNoDigest;
+        // a digest line too short (not 64 hex characters).
+        if (verify_and_parse("format lotus-rack-sheet-sealed-v1\ndigest abc\nformat lotus-rack-sheet-v1\n", &back)) |_| return error.ShortDigestSlipped else |e| if (e != error.BadRecord) return error.WrongShortDigest;
+        // a digest line of the right length but carrying a non-hex character.
+        const bad_hex = "format lotus-rack-sheet-sealed-v1\ndigest " ++ ("z" ** 64) ++ "\nformat lotus-rack-sheet-v1\n";
+        if (verify_and_parse(bad_hex, &back)) |_| return error.BadHexSlipped else |e| if (e != error.BadRecord) return error.WrongBadHex;
+    }
+
+    // 5. a seal into a too-small buffer refuses Overflow rather than writing past its end.
+    {
+        var tiny: [40]u8 = undefined; // room for the header but not the digest line
+        if (seal_rack(&r, tiny[0..])) |_| return error.OverflowSlipped else |e| if (e != error.Overflow) return error.WrongOverflow;
+    }
+
+    print("GREEN ales-rack-seal: the slot sheet, SEALED — a rack sheet that verifies before it is trusted, the ALES0 wire's Sha256 " ++
+        "verify-before-trust handed to the saveable ALES33 record. THE CRUX: a sealed slot sheet parses back to exactly the same " ++
+        "rack ONLY when its digest matches its body — seal_rack wraps ALES33 whole (rendering the plain record as the body and a " ++
+        "Sha256 over exactly those bytes), and verify_and_parse recomputes the digest and hands the body to rack_sheet.parse_rack " ++
+        "only on a match, so a flipped sample, a truncated tail, or a hand-edited name is caught at the gate before a single slot is " ++
+        "trusted; a sealed two-slot rack round-trips whole, a flipped body byte and a truncated tail refuse DigestMismatch, a plain " ++
+        "record / a missing / short / non-hex digest line refuses BadRecord, and a seal into a too-small buffer refuses Overflow; " ++
+        "rack_sheet.render_rack / parse_rack reused whole; the seal proves a sheet arrived whole, not who wrote it — no signature, no " ++
+        "socket, no network, no keys, no funds, no real device, no real meter, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
