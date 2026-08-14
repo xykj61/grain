@@ -1,0 +1,44 @@
+# tools/ales_echo_time_witness.rish — the echo in real time: a delay named in milliseconds (ALES67).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES67.
+# Design read: active-designing/20260814-191951_fill-ales67-lotus-echo-in-real-time.md
+# Stands on: lotus/echo.rye (ALES66 — the feedback delay this speaks in real time, delegated unchanged, re-proven below);
+# lotus/clock.rye (ALES5 — the sample clock, its samples_for converting ms to a bounded sample count).
+#
+# lotus/echo_time.rye gives ALES66's feedback delay a real time base — echo_ms names the delay in MILLISECONDS, converting start_ms,
+# count_ms, and delay_ms through ALES5's proven clock.samples_for and delegating to ALES66's echo unchanged, so the clock adds only the
+# units, never the audio. The selftest proves: the millisecond-named echo lands byte-for-byte the same samples as the index-named echo
+# over the converted delay and span (the grounding law, both tools run — the exact 8000 -> 4000 -> 2000 -> 1000 train); at 48 kHz 1 ms
+# converts to 48 samples and the first echo sits exactly there; fb = 0 is the dry identity in real time too; a sub-sample delay (0 ms)
+# refuses BadDelay rather than silently doing nothing; a delay past the clip refuses DurationTooLong; a feedback at unity BadFeedback
+# and an out-of-range span BadRange forward by name. Purely local — the clock a samples-per-second count, no lookahead, no network, no
+# keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_echo_time_witness.rish
+
+say "ales-echo-time: Language EN — ALES67 gives the ALES66 feedback delay a real time base. Its delay was a count of sample indices; a musician thinks in time — an echo an eighth of a second later — and the one missing fact is the sample rate, which ALES5's validated Clock already holds. Every rung named in samples has earned its real-time twin this way: fade_ms followed the index-named fade, marker_time gave the markers track a face in milliseconds. echo_ms gives the echo the same face."
+say "ales-echo-time: Style Radiant — the law is stated positively: the clock adds only the units, never the audio. echo_ms converts start_ms, count_ms, and delay_ms through ALES5's samples_for and delegates to ALES66's echo unchanged, so the millisecond-named echo lands byte-for-byte the same samples as the index-named echo over the converted delay and span. Because samples_for is divTrunc(rate·ms, 1000), a delay too short to be one whole sample converts to zero, which the echo already refuses BadDelay — so a sub-sample echo refuses honestly rather than silently doing nothing."
+say "ales-echo-time: Lens TAME — a thin twin over ALES66, no new arithmetic on the audio path; the fault set is clock.ClockError || echo.EchoError, every edge forwarded unchanged — DurationTooLong from the clock (a span or delay past the clip), BadDelay (the converted delay being zero among them), BadFeedback, and BadRange from the echo, each before any write, the clip untouched on refusal; siloed to lotus/, the clock a samples-per-second count not a hardware claim, no lookahead, no network, no keys, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/echo_time"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/echo_time.rye -femit-bin=${bin}"]
+assert build.ok else "ales-echo-time: build failed — ${build.err}"
+
+let outfile = "lotus/bin/echo_time.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-echo-time: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-echo-time: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-echo-time' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-echo-time: selftest did not print the GREEN ales-echo-time line"
+
+# This rung delegates to ALES66's echo over its public API — re-prove the feedback delay still stands green beside it.
+let e = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/echo.rye -femit-bin=lotus/bin/echo && lotus/bin/echo selftest 2>&1 | grep -q 'GREEN ales-echo' && echo yes"]
+assert (trim e.out) == "yes" else "ales-echo-time: the ALES66 feedback delay regressed under the timed echo"
+
+say "ales-echo-time: GREEN — the echo in real time: echo_ms names the delay in milliseconds, converting through ALES5's clock and delegating to ALES66's echo unchanged, so the clock adds only the units. The millisecond-named echo lands byte-for-byte the same samples as the index-named echo over the converted delay and span (both tools run — the exact 8000 -> 4000 -> 2000 -> 1000 train); at 48 kHz 1 ms converts to 48 samples and the first echo sits exactly there; fb = 0 is the dry identity in real time too; a sub-sample delay refuses BadDelay, a delay past the clip DurationTooLong, a feedback at unity BadFeedback, an out-of-range span BadRange, each leaving the clip untouched; the ALES66 feedback delay stays GREEN. The modulated delay (chorus, flanger) and the multi-tap forms follow as later rungs, each nameable in milliseconds from here."
