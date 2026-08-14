@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260813.232310
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu VPS pier — Eastern (EDT) time convention
+title HUNK72 — the parts catalog is content-addressed; the marketplace-facts arc closes
+prompt recur baton prin — keep going Lindy-first crux-first; send often; close the marketplace-facts arc cleanly
+think HUNK71 made the parts catalog travel as text (a window AND its facts per product); HUNK6 already gave the sprite SHEET a content address. The clean closing rung: give the CATALOG one too, mirroring the proven pattern.
+think The catalog is text, so the analog is edit_store (HUNK12, beads a format record) not sprite_store (beads an image). Read both; mirrored edit_store's store_artifact/fetch_artifact flow: store_catalog renders + beads, open_catalog fetches verified + parses over a sheet into a fresh PartCatalog.
+think The durable guarantee: fetch proves every bead against its digest and the whole against its recorded address BEFORE parse_part_catalog reads a window or price — so a tampered catalog refuses DigestMismatch and an unknown market UnknownArtifact, each before a single fact is read. A whole marketplace (pictures and prices) reproduces from cold out of (sheet, catalog address).
+think Set up the pond/apps/part_catalog.rye symlink so imports resolve there (qoi · sprite · parse_int · tally_copy · mantra/beading · tablecloth all already present as symlinks). Worked from repo root after noticing the Bash cwd had persisted into pond/apps from an earlier cd.
+obs Selftest proves both halves survive the cold open (every picture byte-for-byte, gear's 845-cent price intact), the dedup dividend (same catalog two names, 1/1 beads deduped), and the tampered/unknown refusals. Witness GREEN; HUNK71 part_catalog GREEN beneath; TAME bans clean, width exit 0.
+obs Updated the front-door README in the same round (docs-implementation-sync): the marketplace arc now names part_store and its verify-before-read guarantee. No breach, no cairn; custody gate #3 (moving funds) untouched — price is a recorded fact, never moved.
+loom witness=hunk_part_store record_bytes=145 parts=3 beads_deduped=1 cold_open=byte_for_byte
+file pond/apps/part_store.rye store_catalog / open_catalog — the parts catalog content-addressed, verified before read
+file pond/apps/part_catalog.rye symlink to image/part_catalog.rye so imports resolve under pond/apps
+file tools/hunk_part_store_witness.rish proves cold open of both halves, dedup, tampered/unknown refusals, HUNK71 GREEN beneath
+file image/README.md front-door marketplace arc names part_store and verify-before-read
+recommend check-in (either) — the marketplace-facts arc closes cleanly (HUNK71 travels · HUNK72 content-addressed); next crux (a Skate render of a part row picture+facts, or the next Season-A/double-seat journey) is a fresh sub-arc worth a glance before opening

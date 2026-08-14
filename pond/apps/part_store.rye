@@ -1,0 +1,187 @@
+//! pond/apps/part_store.rye — HUNK72: the parts catalog is a content-addressed Tablecloth artifact.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK72.
+//! Design read: active-designing/20260813-020035_double-seat-expansion-six-seasons.md (Season A — parts marketplace).
+//! Teacher, thanked clean-room: McMaster-Carr's catalog (concept only, siloed — a part is a picture PLUS its facts).
+//!
+//! HUNK71 made a parts catalog travel as a `format part-catalog-v1` record — a window AND its facts for every
+//! product. HUNK6 gave the sprite SHEET a content address; this rung gives the CATALOG one. `store_catalog`
+//! renders a `PartCatalog` to its text and beads that text content-addressed (HUNK1's Tablecloth store), and
+//! `open_catalog` fetches it back — the fetch proving every bead against its digest and the whole against its
+//! recorded address BEFORE the text is parsed — then parses it over a sheet into a fresh catalog. So a whole
+//! marketplace (pictures and prices) is reproducible from cold out of the pair (sheet, catalog address): a
+//! tampered catalog refuses `DigestMismatch` and an unknown market refuses `UnknownArtifact`, each before a
+//! single window or price is read. Pure composition over public APIs — no new codec, no new notation. No
+//! network, no key, no funds; disbursement stays a custody gate.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/part_store.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const part_catalog = @import("part_catalog.rye");
+const tablecloth = @import("tablecloth.rye");
+const beading = @import("mantra/beading.rye");
+
+pub const part_store_version = "20260814.000000";
+
+/// The largest catalog text this rung stores — a resin's worth (the artifact-content bound). A marketplace page
+/// of parts fits well inside it; a catalog too long to bead refuses rather than truncating.
+pub const max_catalog_stream: u32 = tablecloth.max_content_bytes;
+
+pub const PartStoreError = error{
+    CatalogTooLarge,
+};
+
+/// Store a parts catalog content-addressed under a market name: render it to its `format part-catalog-v1` text,
+/// then bead that text into the shared store so the same catalog stored twice is stored once. Returns the beading
+/// report so a caller sees the dedup dividend. Refuses `CatalogTooLarge` rather than storing a catalog a fetch
+/// cannot hold.
+pub fn store_catalog(
+    cat: *tablecloth.Catalog,
+    store: *beading.BeadStore,
+    name: []const u8,
+    parts: *const part_catalog.PartCatalog,
+) !beading.BeadReport {
+    // invariant: the catalog stays within the sheet's product ceiling before it is ever rendered.
+    assert(parts.len() <= 256);
+    var buf: [max_catalog_stream]u8 = undefined;
+    const n = part_catalog.render_part_catalog(parts, buf[0..]) catch return error.CatalogTooLarge;
+    // invariant: only a catalog the fetch buffer can hold is ever stored.
+    assert(n <= max_catalog_stream);
+    return tablecloth.store_artifact(cat, store, name, buf[0..n]);
+}
+
+/// Open a parts catalog by name into a fresh catalog over `sheet`. The fetch reassembles the beads and proves
+/// each against its digest and the whole against its recorded address BEFORE this parses anything — so a tampered
+/// catalog refuses (`DigestMismatch`) and an unknown market refuses (`UnknownArtifact`), each before a window or a
+/// price is read. Only verified text ever reaches the parser, and every window is then validated against the real
+/// sheet by the catalog's own parse.
+pub fn open_catalog(
+    cat: *const tablecloth.Catalog,
+    store: *const beading.BeadStore,
+    name: []const u8,
+    sheet: *const qoi.Pixmap,
+    out: *part_catalog.PartCatalog,
+) !void {
+    var buf: [max_catalog_stream]u8 = undefined;
+    const n = try tablecloth.fetch_artifact(cat, store, name, buf[0..]);
+    // invariant: a verified catalog fits the content bound.
+    assert(n <= max_catalog_stream);
+    try part_catalog.parse_part_catalog(buf[0..n], sheet, out);
+}
+
+// --- selftest: bank a parts catalog content-addressed, open a market from cold over the verified catalog, prove
+//     both the pictures and the prices survive, the dedup dividend, and the tampered/unknown refusals -----------
+
+/// Build an 8×8 sheet where each pixel encodes its own coordinates, so a rendered window is unambiguous.
+fn craft_sheet(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 8;
+    const h: u32 = 8;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            buf[off] = @intCast(x * 30);
+            buf[off + 1] = @intCast(y * 30);
+            buf[off + 2] = @intCast(x + y);
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const sheet = try craft_sheet(garden);
+
+    // A three-part catalog — each product a window into the sheet AND its honest facts.
+    var built = part_catalog.PartCatalog.init(&sheet);
+    try built.add_part("bolt", 0, 0, 4, 4, "HX-M8-40", "stainless-304", 129);
+    try built.add_part("washer", 4, 0, 4, 4, "FW-M8", "zinc-steel", 7);
+    try built.add_part("gear", 2, 4, 4, 4, "SPUR-24T", "acetal", 845);
+
+    var store: beading.BeadStore = .empty();
+    var cat: tablecloth.Catalog = .empty();
+
+    // Bank the catalog content-addressed, then open the market FROM COLD over the verified catalog.
+    const rep = try store_catalog(&cat, &store, "market.parts", &built);
+    assert(rep.beads_deposited >= 1);
+    var cold: part_catalog.PartCatalog = undefined;
+    try open_catalog(&cat, &store, "market.parts", &sheet, &cold);
+    assert(cold.len() == built.len());
+
+    // The crux: the cold-opened catalog carries both halves — every picture renders byte-for-byte and every
+    // fact survives, out of nothing but (sheet, name).
+    {
+        var i: u32 = 0;
+        while (i < built.len()) : (i += 1) {
+            const a = built.index.entry(i);
+            const b = cold.index.entry(i);
+            assert(std.mem.eql(u8, a.name, b.name));
+            const fa = built.facts_at(i);
+            const fb = cold.facts_at(i);
+            assert(std.mem.eql(u8, fa.part_number, fb.part_number));
+            assert(std.mem.eql(u8, fa.material, fb.material));
+            assert(fa.price_cents == fb.price_cents);
+        }
+    }
+    const a_pic = try built.render_part(garden, "gear");
+    const b_pic = try cold.render_part(garden, "gear");
+    assert(a_pic.same_bytes(&b_pic));
+    const cold_gear = try cold.part_of("gear");
+    assert(cold_gear.price_cents == 845); // the price survived the cold open
+
+    // The dedup dividend for catalogs: the same catalog under a second name is stored once, and still opens.
+    const rep_copy = try store_catalog(&cat, &store, "market-v2.parts", &built);
+    assert(rep_copy.beads_deduped == rep_copy.bead_count); // identical text: nothing new stored
+    var cold2: part_catalog.PartCatalog = undefined;
+    try open_catalog(&cat, &store, "market-v2.parts", &sheet, &cold2);
+    assert(cold2.len() == built.len());
+
+    // Unwelcome: a tampered catalog refuses BEFORE a window or price is read. Store the same catalog in a fresh
+    // store, flip a single stored byte, and prove open_catalog refuses DigestMismatch — so no market is served
+    // from a catalog whose bytes are not the ones its name pins.
+    {
+        var store_t: beading.BeadStore = .empty();
+        var cat_t: tablecloth.Catalog = .empty();
+        _ = try store_catalog(&cat_t, &store_t, "market.parts", &built);
+        store_t.beads[0].bytes[0] +%= 1; // flip one byte of a held bead
+        var over: part_catalog.PartCatalog = undefined;
+        if (open_catalog(&cat_t, &store_t, "market.parts", &sheet, &over)) |_| {
+            return error.TamperSlipped;
+        } else |e| {
+            if (e != error.DigestMismatch) return error.WrongTamper;
+        }
+    }
+
+    // Unwelcome: an unknown market name refuses, again before any window or price is read.
+    var absent: part_catalog.PartCatalog = undefined;
+    if (open_catalog(&cat, &store, "absent.parts", &sheet, &absent)) |_| {
+        return error.UnknownSlipped;
+    } else |e| {
+        if (e != error.UnknownArtifact) return error.WrongUnknown;
+    }
+
+    const stored_len = try tablecloth.artifact_len(&cat, "market.parts");
+    print("GREEN part-store: a {d}-part catalog banked content-addressed ({d} bytes) — the whole marketplace " ++
+        "opens from cold out of (sheet, name), every picture rendering byte-for-byte and every part number, " ++
+        "material, and price surviving; the same catalog under two names is stored once (deduped {d}/{d} beads); " ++
+        "a tampered catalog refuses DigestMismatch and an unknown market refuses UnknownArtifact, each before a " ++
+        "window or price is read; no network, no key, no funds\n", .{
+        built.len(), stored_len, rep_copy.beads_deduped, rep_copy.bead_count,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: part_store selftest\n", .{});
+    return 1;
+}
