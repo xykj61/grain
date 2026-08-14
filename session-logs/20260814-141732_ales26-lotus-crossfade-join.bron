@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260814.141732
+editor Zed
+model Fable 5
+voice Kyri
+host Framework 16 AMD — Eastern (EDT) — Vultr SEA VPS cloud pier, this session in ai-jail
+title ALES26 — Lotus's crossfade join, the choice of law where an inserted span meets its neighbour
+prompt Recur through agent-doable ALES laps Lindy-first crux-first; send each finished increment; stop at custody gates
+think After ALES25 (clipboard) sent GREEN to both remotes, the recommendation named the next Lindy-first crux plainly: the choice of law where a pasted/grafted edit meets its neighbour — a crossfade join rather than a hard butt splice. Higher-Lindy than a multi-slot rack because it is not one more edit gesture but the law a seam may follow, reachable by every insert.
+think It is already proven: ALES12 carried equal power from the stereo field into time, so crossfade begins pure outgoing and ends pure incoming. The join is that law read at a splice point — a composition, not new arithmetic. Reuse crossfade.crossfade whole over its public API and timeline.splice to fill the two overlap windows and append the remainder; no new bound, no new error, no module seam, no gate.
+think Design: join(clip, ins, overlap) crosses the clip's last overlap samples (outgoing tail) with ins's first overlap samples (incoming head), overwrites the tail in place with the crossed window, then appends ins[overlap..]. New length shares the overlap: clip.len + ins.len − overlap. Read-before-write — both windows snapshotted before the cross writes — so it sees the true tail, the graft's self-overlap discipline.
+think Guards refuse by name before any write: overlap < 2 (no interval), overlap > clip.len (past the tail), overlap > ins.len (past the head), overlap − 1 > power.max_pan_den (denominator cap, refuse rather than trip ALES12's assert), and ClipFull on overflow computed as appended vs remaining room. Errors reused whole from timeline.EditError; the join names no new fault.
+think Verified no join/join_version collision in lotus/ (only prose uses of "join"). power.max_pan_den = 4096.
+obs GREEN on the first build: tools/ales_join_witness.rish — six selftest blocks (shared-overlap length 5,5,2→8 not 10; seam head pure-outgoing / tail pure-incoming with remainder appended; the butt-splice 60000 step vs the join's seam sample strictly inside it; full overlap a pure crossfade with nothing appended; self-join never dips below the level; refuse-by-name BadRange×3 and ClipFull each leaving the clip untouched). tame_style_check bans clean, no new zero-assert ratchet (join.rye carries five contract asserts).
+obs The join is the crossfade (ALES12) turned from a standalone gesture into the seam law of an edit — the same isqrt at the root, now chosen where an insert meets its neighbour.
+loom witness=ales_join_witness green=1 selftest_blocks=6 records=join build=first
+file active-designing/20260814-fill-ales26-lotus-crossfade-join.md the self-approved design round naming the one crux and the shape
+file lotus/join.rye the module — a crossfade join, ALES12's equal-power law read at a splice point, the neighbours sharing the overlap
+file tools/ales_join_witness.rish the witness proving GREEN on metal, purely local
+file lotus/README.md status line + join bullet + closing paragraph advanced to ALES26
+recommend keep-going ALES27 — carry the join into stereo (both channels crossed in lockstep, the graft/clipboard pattern over the join), let the graft or paste join rather than butt by default, or name a trailing-seam law where the audio after an insert rejoins the timeline. The wire seam and the real sound-card write stay Keaton's word.
