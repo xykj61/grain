@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260813.234932
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title HUNK76 — a typed search box: parse a keeper's query text into a filter
+prompt continue the recursion Lindy-first crux-first after HUNK75 landed; take the next agent-doable HUNK lap, self-approve, send as its own signed round, stop at custody gates
+think HUNK75 built filter_catalog over a Query struct, yet a keeper types text, not a struct. The next durable crux is the search box — parse a typed line into the Query the filter already narrows by.
+think Chose a strict one-pair key:value grammar (material · prefix · max · min) — clear at a glance, bounded, refusing malformed by name. Reused tally/parse_int for the price (rejects leading zero and non-numeric).
+think Wrote image/part_query.rye: parse_query returns a part_filter.Query, the text slice borrowed from the caller's line (allocates nothing), a price ceiling-checked exactly as add_part checks a stored price.
+think Fixed a tautological invariant (text.len <= text.len) into two real positive invariants — the colon sits inside the line, and key+value+1 accounts for the whole line. Fixed max_products namespace (sprite, not part_catalog) and added the sprite import.
+obs Durable property proven on metal: parse-then-filter narrows the SAME parts in the same held order as the hand-built Query for all four keys; min:0 matches every part; a missing colon, empty key/value, unknown key, non-numeric price, over-ceiling price, and over-long token each refuse by name.
+obs Price stays a FACT parsed to compare, never moved — custody gate #3 untouched. No network, no key, no funds. TAME bans clean, width exit 0; HUNK75 filter stays GREEN beneath.
+loom witness=hunk_part_query_witness keys=4 refusals=7 parse_then_filter=match-hand-built
+file image/part_query.rye HUNK76 — parse a typed key:value line into a part_filter Query
+file tools/hunk_part_query_witness.rish witnesses the parser on metal; re-runs HUNK75 GREEN beneath
+file active-designing/20260813-234932_hunk-part-query-typed-search-box-exploration.md self-approved design round for HUNK76
+recommend keep-going the parts journey wants the search box drawn on glass (a typed line above a paged shelf) or a part detail view; both agent-doable, no gate

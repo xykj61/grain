@@ -1,0 +1,249 @@
+//! image/part_query.rye — HUNK76: a typed search box — parse a keeper's query text into a filter Query.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK76.
+//! Design read: active-designing/20260813-234932_hunk-part-query-typed-search-box-exploration.md
+//! Teacher, thanked clean-room: McMaster-Carr's search box — a typed line reaches the narrowing sidebar (concept
+//! only, siloed).
+//!
+//! HUNK75 built the narrowing (`filter_catalog` turns a catalog and a `Query` into the sub-catalog of matches). Yet a
+//! `Query` is a struct a program builds; a keeper types TEXT. This rung is the search box: `parse_query` reads one
+//! line a keeper typed and returns the `Query` it means, refusing a malformed line by name so a bad search can never
+//! quietly match everything or nothing.
+//!
+//! The crux is that a typed line MEANS EXACTLY THE QUERY IT READS AS: `filter_catalog(cat, parse_query(text))`
+//! narrows identically to filtering with the hand-built `Query`. The search box adds no meaning of its own — it is a
+//! faithful mouth for the filter that already exists.
+//!
+//! A price token is read as a FACT to compare — parsed to a `u64` count of cents and ceiling-checked exactly as
+//! `add_part` checks a stored price; never a balance the tree can move (custody gate #3 untouched). No network, no
+//! key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/part_query.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const part_catalog = @import("part_catalog.rye");
+const part_filter = @import("part_filter.rye");
+const parse_int = @import("parse_int.rye");
+const sprite = @import("sprite.rye");
+
+pub const part_query_version = "20260813.234932";
+
+pub const QueryParseError = error{
+    NoColon,
+    EmptyKey,
+    EmptyValue,
+    UnknownKey,
+    BadPrice,
+};
+
+/// Parse one line a keeper typed — a single `key:value` pair — into the `Query` it means. The keys read at a glance:
+/// `material:<token>` (exact material), `prefix:<token>` (part-number prefix), `max:<cents>` (price at most),
+/// `min:<cents>` (price at least). The value slice for a text query points into the caller's own `text` (borrowed,
+/// never copied); a price value is parsed strictly and ceiling-checked exactly as a stored price is. A malformed line
+/// refuses by name rather than guessing.
+pub fn parse_query(text: []const u8) !part_filter.Query {
+    const colon = std.mem.indexOfScalar(u8, text, ':') orelse return error.NoColon;
+    // invariant: the separator sits inside the line, so key and value are both real slices of it.
+    assert(colon < text.len);
+    const key = text[0..colon];
+    const value = text[colon + 1 ..];
+    // invariant: key and value together, plus the one colon, account for the whole line — nothing invented.
+    assert(key.len + value.len + 1 == text.len);
+    if (key.len == 0) return error.EmptyKey;
+    if (value.len == 0) return error.EmptyValue;
+
+    if (std.mem.eql(u8, key, "material")) {
+        if (value.len > part_filter.max_query_text) return error.QueryTextTooLong;
+        return part_filter.Query{ .kind = .material, .text = value };
+    }
+    if (std.mem.eql(u8, key, "prefix")) {
+        if (value.len > part_filter.max_query_text) return error.QueryTextTooLong;
+        return part_filter.Query{ .kind = .number_prefix, .text = value };
+    }
+    if (std.mem.eql(u8, key, "max")) {
+        const cents = parse_int.parse_int(u64, value, .{}) catch return error.BadPrice;
+        if (cents > part_catalog.max_price_cents) return error.PriceTooLarge;
+        return part_filter.Query{ .kind = .price_at_most, .price = cents };
+    }
+    if (std.mem.eql(u8, key, "min")) {
+        const cents = parse_int.parse_int(u64, value, .{}) catch return error.BadPrice;
+        if (cents > part_catalog.max_price_cents) return error.PriceTooLarge;
+        return part_filter.Query{ .kind = .price_at_least, .price = cents };
+    }
+    return error.UnknownKey;
+}
+
+// --- selftest: parse each key into the query it means and prove parse-then-filter narrows a real catalog exactly as
+//     the hand-built query would; then the named refusals — no colon, empty key/value, unknown key, a non-numeric
+//     price, an over-ceiling price, and an over-long text token ---------------------------------------------------
+
+const qoi = @import("qoi.rye");
+
+/// The HUNK71 fixture sheet — each pixel encodes its coordinates, so a windowed part is unambiguous.
+fn craft_sheet(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 8;
+    const h: u32 = 8;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            buf[off] = @intCast(x * 30);
+            buf[off + 1] = @intCast(y * 30);
+            buf[off + 2] = @intCast(x + y);
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+/// Filter `cat` by a query and return the sub-catalog's held-order names into `names`, returning the count — a small
+/// helper so the selftest can compare parse-then-filter against a hand-built query name-for-name.
+fn filter_names(
+    garden: std.mem.Allocator,
+    cat: *const part_catalog.PartCatalog,
+    query: part_filter.Query,
+    names: [][]const u8,
+) !u32 {
+    _ = garden;
+    var sub: part_catalog.PartCatalog = undefined;
+    try part_filter.filter_catalog(cat, query, &sub);
+    var i: u32 = 0;
+    while (i < sub.len()) : (i += 1) names[i] = sub.index.entry(i).name;
+    return sub.len();
+}
+
+/// Two name lists hold the same names in the same order.
+fn same_names(a: [][]const u8, an: u32, b: [][]const u8, bn: u32) bool {
+    if (an != bn) return false;
+    var i: u32 = 0;
+    while (i < an) : (i += 1) {
+        if (!std.mem.eql(u8, a[i], b[i])) return false;
+    }
+    return true;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const sheet = try craft_sheet(garden);
+    var cat = part_catalog.PartCatalog.init(&sheet);
+    try cat.add_part("bolt", 0, 0, 2, 2, "HX-M8-40", "stainless-304", 129);
+    try cat.add_part("washer", 2, 0, 2, 2, "FW-M8", "zinc-steel", 7);
+    try cat.add_part("gear", 4, 0, 2, 2, "SPUR-24T", "acetal", 845);
+    try cat.add_part("hexnut", 0, 2, 2, 2, "HX-N8", "stainless-304", 55);
+    try cat.add_part("pin", 2, 2, 2, 2, "DP-3", "zinc-steel", 30);
+    assert(cat.len() == 5);
+
+    var typed: [sprite.max_products][]const u8 = undefined;
+    var hand: [sprite.max_products][]const u8 = undefined;
+
+    // A typed line means exactly its query — parse-then-filter narrows the SAME parts as the hand-built query, in the
+    // same held order, for each of the four keys.
+    {
+        const q = try parse_query("material:stainless-304");
+        assert(q.kind == .material);
+        assert(std.mem.eql(u8, q.text, "stainless-304"));
+        const tn = try filter_names(garden, &cat, q, typed[0..]);
+        const hn = try filter_names(garden, &cat, part_filter.Query{ .kind = .material, .text = "stainless-304" }, hand[0..]);
+        assert(same_names(typed[0..], tn, hand[0..], hn));
+        assert(tn == 2); // bolt, hexnut
+    }
+    {
+        const q = try parse_query("prefix:HX-");
+        assert(q.kind == .number_prefix);
+        const tn = try filter_names(garden, &cat, q, typed[0..]);
+        const hn = try filter_names(garden, &cat, part_filter.Query{ .kind = .number_prefix, .text = "HX-" }, hand[0..]);
+        assert(same_names(typed[0..], tn, hand[0..], hn));
+        assert(tn == 2); // bolt, hexnut
+    }
+    {
+        const q = try parse_query("max:55");
+        assert(q.kind == .price_at_most);
+        assert(q.price == 55);
+        const tn = try filter_names(garden, &cat, q, typed[0..]);
+        const hn = try filter_names(garden, &cat, part_filter.Query{ .kind = .price_at_most, .price = 55 }, hand[0..]);
+        assert(same_names(typed[0..], tn, hand[0..], hn));
+        assert(tn == 3); // washer, hexnut, pin
+    }
+    {
+        const q = try parse_query("min:129");
+        assert(q.kind == .price_at_least);
+        assert(q.price == 129);
+        const tn = try filter_names(garden, &cat, q, typed[0..]);
+        const hn = try filter_names(garden, &cat, part_filter.Query{ .kind = .price_at_least, .price = 129 }, hand[0..]);
+        assert(same_names(typed[0..], tn, hand[0..], hn));
+        assert(tn == 2); // bolt, gear
+    }
+
+    // A price of zero is a real floor — `min:0` matches every part (a match-all typed line).
+    {
+        const q = try parse_query("min:0");
+        assert(q.price == 0);
+        const tn = try filter_names(garden, &cat, q, typed[0..]);
+        assert(tn == cat.len());
+    }
+
+    // The named refusals: a line without a colon, an empty key, an empty value, an unknown key, a non-numeric price,
+    // an over-ceiling price, and an over-long text token each surface the fault they name.
+    if (parse_query("stainless-304")) |_| return error.ColonSlipped else |e| {
+        if (e != error.NoColon) return error.WrongColon;
+    }
+    if (parse_query(":304")) |_| return error.KeySlipped else |e| {
+        if (e != error.EmptyKey) return error.WrongKey;
+    }
+    if (parse_query("material:")) |_| return error.ValueSlipped else |e| {
+        if (e != error.EmptyValue) return error.WrongValue;
+    }
+    if (parse_query("colour:red")) |_| return error.UnknownSlipped else |e| {
+        if (e != error.UnknownKey) return error.WrongUnknown;
+    }
+    if (parse_query("max:xy")) |_| return error.PriceSlipped else |e| {
+        if (e != error.BadPrice) return error.WrongPrice;
+    }
+    {
+        var line: [40]u8 = undefined;
+        const pre = "max:";
+        var j: u32 = 0;
+        while (j < pre.len) : (j += 1) line[j] = pre[j];
+        // A price one past the ceiling — 10_000_000_001 has 11 digits.
+        const big = "10000000001";
+        var k: u32 = 0;
+        while (k < big.len) : (k += 1) line[pre.len + k] = big[k];
+        const n = pre.len + big.len;
+        if (parse_query(line[0..n])) |_| return error.OverSlipped else |e| {
+            if (e != error.PriceTooLarge) return error.WrongOver;
+        }
+    }
+    {
+        var line: [part_filter.max_query_text + 16]u8 = undefined;
+        const pre = "material:";
+        var j: u32 = 0;
+        while (j < pre.len) : (j += 1) line[j] = pre[j];
+        var k: u32 = 0;
+        while (k < part_filter.max_query_text + 1) : (k += 1) line[pre.len + k] = 'x';
+        const n = pre.len + part_filter.max_query_text + 1;
+        if (parse_query(line[0..n])) |_| return error.LongSlipped else |e| {
+            if (e != error.QueryTextTooLong) return error.WrongLong;
+        }
+    }
+
+    print("GREEN part-query: a keeper's typed line becomes exactly the query it reads as — material:stainless-304, " ++
+        "prefix:HX-, max:55, and min:129 each parse to the query a hand build would, and parse-then-filter narrows " ++
+        "the SAME parts in the same held order (two stainless, two HX-, three at most 55c, two at least 129c); min:0 " ++
+        "matches every part; a missing colon, an empty key, an empty value, an unknown key, a non-numeric price, an " ++
+        "over-ceiling price, and an over-long token each refuse by name; a price is a fact parsed to compare, never " ++
+        "moved — no network, no key, no funds\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: part_query selftest\n", .{});
+    return 1;
+}
