@@ -1,0 +1,203 @@
+//! lotus/transport.rye — ALES7: the transport play head — read a rendered master forward, block by block, stopping exactly
+//! at the end. ALES6 rendered many tracks into one master; a rendered master is still samples at rest, and nothing PLAYS it.
+//! The transport is the read side of the whole suite: a play head that begins at a position, reads the master forward in
+//! bounded blocks, and stops exactly at the end — never past it, never a torn read. Record is capture (the Mikrophone), edit
+//! is ALES2–ALES6, and PLAY is this.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES7.
+//! Design read: active-designing/20260814-fill-ales7-lotus-transport.md
+//! Stands on: lotus/track.rye (ALES6) — the master a transport reads; lotus/clock.rye (ALES5) — seek and elapsed speak real
+//! time through the clock; lotus/timeline.rye (ALES2) — the Clip the master is.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A bounded read cursor over an in-process i16 PCM master, siloed to lotus/. No
+//! audio leaves the process — a block is COPIED samples, not a sound-card write (that real write is the paused hardware
+//! round). No socket, no network, no keys, no funds, no real device. The one correctness beyond a bare index is that the head
+//! never advances past the master and every block read from the start concatenates back to the exact master.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/transport.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const clock = @import("clock.rye");
+
+pub const transport_version = "20260814.115415";
+
+pub const TransportError = error{
+    /// A seek to a real time past the master's end — refused, the head never sits beyond the last sample.
+    PastEnd,
+};
+
+/// A play head over a rendered master: a single bounded sample position that only ever moves forward through read_block or
+/// jumps through seek_ms. The transport reads only — it never mutates the master.
+pub const Transport = struct {
+    pos: u32 = 0,
+
+    /// The head's current sample position — always within [0, master.len]; the caller pairs it with its master.
+    pub fn position(self: *const Transport) u32 {
+        return self.pos;
+    }
+};
+
+/// The head sits exactly at the master's end — playback is complete. Exactly `pos == master.len`, so a caller loops
+/// `while (!at_end)` and stops with nothing left unread.
+pub fn at_end(t: *const Transport, master: *const timeline.Clip) bool {
+    // invariant: the head never runs past the master, so at-end is a clean equality, never a "past".
+    assert(t.pos <= master.len);
+    return t.pos == master.len;
+}
+
+/// Copy the next up-to-`out.len` samples from the head into `out`, advance the head by exactly that many, and return the
+/// count copied — a full block mid-master, an honestly SHORT block at the end, and zero past it (never an error, never a
+/// wrap). A playback engine pulls fixed blocks; this is that pull, bounded to the master.
+pub fn read_block(t: *Transport, master: *const timeline.Clip, out: []i16) u32 {
+    // invariant: the head is within the master before the read.
+    assert(t.pos <= master.len);
+    const remaining: u32 = master.len - t.pos;
+    const want: u32 = @intCast(out.len);
+    const n: u32 = if (want < remaining) want else remaining;
+    var i: u32 = 0;
+    while (i < n) : (i += 1) out[i] = master.buf[t.pos + i];
+    t.pos += n;
+    // invariant: the head advanced by exactly the count copied and still sits within the master.
+    assert(t.pos <= master.len);
+    assert(n <= want and n <= remaining);
+    return n;
+}
+
+/// Place the head at a real moment `ms` through the ALES5 clock. Refuses PastEnd when the time is past the master's end (the
+/// head never sits beyond the last sample) and forwards ALES5's DurationTooLong when the time exceeds the clip bound. So a
+/// keeper seeks in seconds, not sample indices.
+pub fn seek_ms(t: *Transport, master: *const timeline.Clip, clk: clock.Clock, ms: u32) (TransportError || clock.ClockError)!void {
+    // invariant: the clock is valid, so the conversion is bounded and safe.
+    assert(clk.rate >= 1 and clk.rate <= clock.max_rate);
+    const at = try clock.samples_for(clk, ms);
+    // invariant: the seek target must land within the master, inclusive of its end (a seek to the end is at_end).
+    if (at > master.len) return error.PastEnd;
+    t.pos = at;
+    assert(t.pos <= master.len);
+}
+
+/// The head's position reported back as a real duration through the clock — honestly lossy like ALES5's ms_for (a sample
+/// position rarely lands on a whole millisecond). So a transport shows the keeper a time, not a raw index.
+pub fn elapsed_ms(t: *const Transport, clk: clock.Clock) u32 {
+    // invariant: the clock is valid, so the conversion is safe.
+    assert(clk.rate >= 1 and clk.rate <= clock.max_rate);
+    return clock.ms_for(clk, t.pos);
+}
+
+// --- selftest: reading fixed blocks from the start concatenates back to the EXACT master (no sample skipped or repeated);
+//     the last block is honestly short and the read past the end is empty; at_end is exact at pos == len; seek_ms places the
+//     head at a real moment and elapsed_ms reports it back; a seek past the master refuses PastEnd; the transport never
+//     mutates the master (a replay reads the same bytes) ------------------------------------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn run_selftest() !u8 {
+    const c = try clock.make(1000); // 1 sample per ms — a millisecond position equals a sample position, legible on a bench
+
+    // 1. reading fixed 2-sample blocks from the start concatenates back to the exact master; the last block is honestly short
+    //    (the master has 5 samples, so blocks are 2, 2, 1), and the read after the end is empty (0). No sample skipped or
+    //    repeated — the concatenation equals the master byte for byte.
+    {
+        var master = timeline.Clip{};
+        try timeline.splice(&master, 0, &[_]i16{ 10, 20, 30, 40, 50 });
+        var t = Transport{};
+        var gathered: [5]i16 = [_]i16{0} ** 5;
+        var got: u32 = 0;
+        while (!at_end(&t, &master)) {
+            var block: [2]i16 = [_]i16{0} ** 2;
+            const n = read_block(&t, &master, &block);
+            var k: u32 = 0;
+            while (k < n) : (k += 1) {
+                gathered[got] = block[k];
+                got += 1;
+            }
+        }
+        if (got != 5) return error.CountWrong;
+        if (!eq(gathered[0..got], master.samples())) return error.ConcatWrong;
+        // the read past the end is empty — zero samples, no error, no wrap.
+        var tail: [2]i16 = [_]i16{0} ** 2;
+        if (read_block(&t, &master, &tail) != 0) return error.PastEndReadWrong;
+    }
+
+    // 2. at_end is exact — a fresh head over an empty master is already at end; a head at the last sample is not, and becomes
+    //    at end only when it reads the final sample.
+    {
+        var empty = timeline.Clip{};
+        var te = Transport{};
+        if (!at_end(&te, &empty)) return error.EmptyNotAtEnd;
+
+        var master = timeline.Clip{};
+        try timeline.splice(&master, 0, &[_]i16{ 7, 8 });
+        var t = Transport{};
+        if (at_end(&t, &master)) return error.FreshAtEnd;
+        var block: [2]i16 = [_]i16{0} ** 2;
+        _ = read_block(&t, &master, &block);
+        if (!at_end(&t, &master)) return error.NotAtEndAfterAll;
+    }
+
+    // 3. seek_ms places the head at a real moment and elapsed_ms reports it back. At 1000 Hz, 3 ms is sample 3; elapsed then
+    //    reads 3 ms. A whole-sample position round-trips.
+    {
+        var master = timeline.Clip{};
+        try timeline.splice(&master, 0, &[_]i16{ 1, 2, 3, 4, 5, 6 });
+        var t = Transport{};
+        try seek_ms(&t, &master, c, 3);
+        if (t.position() != 3) return error.SeekWrong;
+        if (elapsed_ms(&t, c) != 3) return error.ElapsedWrong;
+        // a read after the seek continues from the sought moment, not the start.
+        var block: [2]i16 = [_]i16{0} ** 2;
+        const n = read_block(&t, &master, &block);
+        const want = [_]i16{ 4, 5 };
+        if (n != 2 or !eq(block[0..n], &want)) return error.SeekReadWrong;
+    }
+
+    // 4. a seek to a real time past the master refuses PastEnd — the head never sits beyond the last sample. A seek exactly
+    //    to the end is allowed (it is at_end), so 6 ms on a 6-sample master is fine, 7 ms is refused.
+    {
+        var master = timeline.Clip{};
+        try timeline.splice(&master, 0, &[_]i16{ 1, 2, 3, 4, 5, 6 });
+        var t = Transport{};
+        try seek_ms(&t, &master, c, 6); // exactly the end
+        if (!at_end(&t, &master)) return error.SeekEndWrong;
+        if (seek_ms(&t, &master, c, 7)) |_| return error.PastEndSlipped else |e| if (e != error.PastEnd) return error.WrongPastEnd;
+    }
+
+    // 5. the transport never mutates the master — playing it through, then seeking back to the start and replaying, reads the
+    //    identical bytes. Read-only playback: the rendered audio is untouched.
+    {
+        var master = timeline.Clip{};
+        try timeline.splice(&master, 0, &[_]i16{ 9, 8, 7, 6 });
+        const original = [_]i16{ 9, 8, 7, 6 };
+        var t = Transport{};
+        var block: [4]i16 = [_]i16{0} ** 4;
+        _ = read_block(&t, &master, &block); // play to the end
+        try seek_ms(&t, &master, c, 0); // rewind
+        var again: [4]i16 = [_]i16{0} ** 4;
+        const n = read_block(&t, &master, &again);
+        if (n != 4 or !eq(again[0..n], &original)) return error.ReplayWrong;
+        if (!eq(master.samples(), &original)) return error.MasterMutated;
+    }
+
+    print("GREEN ales-transport: a play head reads a rendered master forward, block by block, and stops exactly at the end — " ++
+        "reading fixed blocks from the start concatenates back to the EXACT master (no sample skipped or repeated), the last " ++
+        "block is honestly short and the read past the end is empty (zero, never an error or a wrap); at_end is exact at " ++
+        "pos == len; seek_ms places the head at a real moment through the ALES5 clock and elapsed_ms reports it back, a seek " ++
+        "past the master refusing PastEnd; and the transport reads only — a replay after a rewind reads the identical bytes, " ++
+        "the rendered audio never mutated; no audio leaves the process, no socket, no network, no keys, no funds, no real " ++
+        "device\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
