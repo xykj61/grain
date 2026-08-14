@@ -1,0 +1,53 @@
+# tools/hunk_part_or_search_witness.rish — the widening search box on glass (HUNK84).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK84.
+# Design read: active-designing/20260814-004821_hunk-part-or-search-shelf-on-glass-exploration.md
+# Teacher, thanked clean-room: McMaster-Carr's faceted sidebar — checking two values of one facet widens the wall to
+# the union of both (concept only, siloed).
+#
+# HUNK83 gave the marketplace a faceted disjunction (parse_or -> filter_or), yet in the image layer, unseen. HUNK79
+# drew the AND on glass. This rung draws the other half: brushstroke/part_or_search.rye `or_search_shelf` reads a
+# catalog, a widening typed line, and a page offset, and draws exactly the union as one paged shelf (parse_or ->
+# filter_or -> part_window). The selftest proves what a keeper types is what a keeper sees: material:stainless-304
+# max:60 draws the union (bolt, nut, hexnut, each once, in held order, equal to the hand-filtered window), the clauses
+# commute on glass, an empty line is a match-none drawing a real empty page (the De Morgan dual of AND's match-all), a
+# bad offset refuses BadOffset, and a malformed clause surfaces the parser's named refusal rather than a wrong shelf.
+# A price is a fact compared, never moved.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_part_or_search_witness.rish
+
+say "hunk-part-or-search: Language EN — HUNK84 joins HUNK83's disjunction to the shelf: a widening key:value line draws exactly the union as one paged marketplace."
+say "hunk-part-or-search: Style Radiant — what a keeper types is what a keeper sees; the widening search view invents nothing, the clauses commute, and an empty line draws a real empty page (the De Morgan dual) rather than a friendlier guess."
+say "hunk-part-or-search: Lens TAME — pure composition over HUNK83 parse_or/filter_or and HUNK73/74 shelf; a price clause compares, never moves; positive invariants per fn; a malformed clause and a bad offset each refuse by name; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/part_or_search"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_or_search.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-part-or-search: build failed — ${build.err}"
+
+# Read the GREEN line from a file — it carries an apostrophe ("parser's") that breaks a shell single-quote round-trip.
+let outfile = "brushstroke/bin/part_or_search.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "hunk-part-or-search: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "hunk-part-or-search: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN part-or-search' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "hunk-part-or-search: selftest did not print the GREEN part-or-search line"
+
+# HUNK83 stays GREEN — the disjunction the search view draws is the one part_or proved.
+let o = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_or.rye -femit-bin=image/bin/part_or && image/bin/part_or selftest > image/bin/part_or.out 2>&1"]
+assert o.ok else "hunk-part-or-search: HUNK83 part_or re-run failed — see image/bin/part_or.out"
+let o_green = run ["sh" "-c" "grep -q 'GREEN part-or' image/bin/part_or.out && echo yes"]
+assert (trim o_green.out) == "yes" else "hunk-part-or-search: HUNK83 part_or did not stay GREEN"
+
+# HUNK79 stays GREEN — the AND on glass this rung duals.
+let a = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_and_search.rye -femit-bin=brushstroke/bin/part_and_search && brushstroke/bin/part_and_search selftest > brushstroke/bin/part_and_search.out 2>&1"]
+assert a.ok else "hunk-part-or-search: HUNK79 part_and_search re-run failed — see brushstroke/bin/part_and_search.out"
+let a_green = run ["sh" "-c" "grep -q 'GREEN part-and-search' brushstroke/bin/part_and_search.out && echo yes"]
+assert (trim a_green.out) == "yes" else "hunk-part-or-search: HUNK79 part_and_search did not stay GREEN"
+
+say "hunk-part-or-search: GREEN — a keeper widens on glass as freely as they narrow; the boolean query algebra a keeper can SEE stands whole (AND HUNK79, OR HUNK84), and HUNK83 disjunction and HUNK79 AND-on-glass beneath stay GREEN. HUNK84 lands."

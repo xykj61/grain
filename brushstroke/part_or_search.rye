@@ -1,0 +1,241 @@
+//! brushstroke/part_or_search.rye — HUNK84: the OR to glass — a widening line draws the union as one paged shelf.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK84.
+//! Design read: active-designing/20260814-004821_hunk-part-or-search-shelf-on-glass-exploration.md
+//! Teacher, thanked clean-room: McMaster-Carr's faceted sidebar — checking two values of one facet widens the wall to
+//! the union of both (concept only, siloed).
+//!
+//! HUNK83 gave the marketplace a disjunction — a line of `key:value` clauses widening to the parts that satisfy ANY
+//! one — yet in the image layer, unseen. HUNK79 drew the AND on glass. This rung draws the other half of the facet
+//! sidebar: `or_search_shelf` reads a catalog, a widening typed line, and a page offset, and paints exactly the union
+//! as one paged shelf — so the boolean query algebra a keeper can SEE stands whole: narrow with AND (HUNK79), widen
+//! with OR (HUNK84).
+//!
+//! The crux is HUNK79's, now over the disjunction: WHAT A KEEPER TYPES IS WHAT A KEEPER SEES. The drawn page is
+//! precisely what `part_window` would draw over the catalog `filter_or` widens — no part shown that fails every clause,
+//! no matching part hidden. The view invents nothing; it is the faithful composition parse_or → filter_or →
+//! part_window, inheriting every law HUNK83 proved (the clauses commute, each part once, paging loses nothing). The one
+//! honest difference from HUNK79 is the empty line: under AND it is a match-all drawing the whole catalog, under OR it
+//! is a match-NONE drawing a real empty page — the De Morgan dual, carried faithfully rather than softened. A malformed
+//! clause surfaces the parser's own named refusal rather than a wrong shelf.
+//!
+//! A price clause COMPARES a recorded cent count; nothing is moved (custody gate #3 untouched). No network, no key,
+//! no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/part_or_search.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const sprite = @import("sprite.rye");
+const part_catalog = @import("part_catalog.rye");
+const part_or = @import("part_or.rye");
+const part_row = @import("part_row.rye");
+const skate = @import("skate_grid.rye");
+
+pub const part_or_search_version = "20260814.004821";
+
+/// How many parts a widening line keeps — parse the line into an `OrQuery`, then count the parts passing at least one
+/// clause. A caller shows this as *N results* and sizes the paging before it draws. A malformed clause surfaces the
+/// parser's own named refusal.
+pub fn or_search_result_count(cat: *const part_catalog.PartCatalog, text: []const u8) !u32 {
+    const oq = try part_or.parse_or(text);
+    const n = try part_or.count_or(cat, oq);
+    // invariant: a widened result never holds more parts than the catalog it widened over.
+    assert(n <= cat.len());
+    return n;
+}
+
+/// How many pages the widened result needs at `rows` parts per page — parse, filter into a fresh sub-catalog over the
+/// same sheet with the disjunction, and count the pages over it. Zero matches (a match-none line) is zero pages.
+pub fn or_search_page_count(
+    allocator: std.mem.Allocator,
+    cat: *const part_catalog.PartCatalog,
+    text: []const u8,
+    rows: u32,
+) !u32 {
+    // invariant: paging needs at least one row per page.
+    assert(rows > 0);
+    const oq = try part_or.parse_or(text);
+    var sub: part_catalog.PartCatalog = undefined;
+    try part_or.filter_or(cat, oq, &sub);
+    _ = allocator;
+    const pages = part_row.part_page_count(&sub, rows);
+    // invariant: a widened result needs no more pages than the catalog would at the same page size.
+    assert(pages <= part_row.part_page_count(cat, rows));
+    return pages;
+}
+
+/// Draw the widened page — parse the multi-clause line into an `OrQuery`, filter the catalog into a fresh sub-catalog
+/// over the SAME sheet with `filter_or`, and render the page `[offset, offset + rows)` with `part_window`. So what a
+/// keeper types is what a keeper sees: the drawn page shows exactly the parts that satisfy at least one clause, in held
+/// order, each swatch true to the one shared sheet. A malformed clause surfaces the parser's named refusal and an
+/// over-long line refuses `TooManyClauses`; an offset past the widened result refuses `BadOffset` exactly as
+/// `part_window` does; a bad dimension refuses the shelf's own named error. The drawn grid owns its cells, so it
+/// outlives the local sub-catalog whose sheet is the caller's original.
+pub fn or_search_shelf(
+    allocator: std.mem.Allocator,
+    cat: *const part_catalog.PartCatalog,
+    text: []const u8,
+    cols: u32,
+    rows: u32,
+    offset: u32,
+) !skate.Grid {
+    // invariant: the catalog never outgrew its own sheet's product ceiling before it is searched.
+    assert(cat.len() <= sprite.max_products);
+    const oq = try part_or.parse_or(text);
+    var sub: part_catalog.PartCatalog = undefined;
+    try part_or.filter_or(cat, oq, &sub);
+    // invariant: the widened sub-catalog windows into the caller's own sheet, never a copy.
+    assert(sub.index.sheet == cat.index.sheet);
+    return part_row.part_window(allocator, &sub, cols, rows, offset);
+}
+
+// --- selftest: four parts across four bands, a widening search — the union page shows exactly the parts passing any
+//     clause (the same the hand-filtered window draws), the clauses commute on glass, an empty line is a match-NONE (the
+//     De Morgan dual of AND's match-all) drawing a real empty page, a bad offset and a malformed clause each refuse by
+//     name -----------------------------------------------------------------------------------------------------------
+
+/// A 16×8 sheet in four solid vertical bands (the part_row fixture), so a 4-wide window carries one known colour.
+fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 16;
+    const h: u32 = 8;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            const band = x / 4; // 0..3
+            buf[off] = if (band == 0 or band == 3) 255 else 0; // r
+            buf[off + 1] = if (band == 1 or band == 3) 255 else 0; // g
+            buf[off + 2] = if (band == 2) 255 else 0; // b
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+/// Read a row's fact line back as bytes — trim the blank tail, so the selftest sees exactly the painted fact text
+/// (the part_row reader's own idiom).
+fn row_text(grid: *const skate.Grid, row: u32, out: []u8) u32 {
+    const cells = grid.row_cells(row);
+    var n: u32 = @intCast(cells.len);
+    while (n > 0 and cells[n - 1] == ' ') : (n -= 1) {}
+    var i: u32 = 0;
+    while (i < n) : (i += 1) out[i] = cells[i];
+    return n;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const sheet = try craft_bands(garden);
+    var cat = part_catalog.PartCatalog.init(&sheet);
+    // Four parts across the bands, three materials, a price spread. Two are stainless-304 (bolt 125c, hexnut 55c);
+    // the brass nut is 60c, the acetal gear 845c.
+    try cat.add_part("bolt", 0, 0, 4, 8, "HX-M8-40", "stainless-304", 125);
+    try cat.add_part("nut", 4, 0, 4, 8, "NY-M8", "brass", 60);
+    try cat.add_part("gear", 8, 0, 4, 8, "GR-24T", "acetal", 845);
+    try cat.add_part("hexnut", 12, 0, 4, 8, "HX-N8", "stainless-304", 55);
+    assert(cat.len() == 4);
+
+    const cols: u32 = 48;
+
+    // A widening line: stainless-304 OR at most 60 cents keeps the union — the two stainless parts (bolt, hexnut) plus
+    // the brass nut (60c ≤ 60), each once, in held order: bolt, nut, hexnut. The page draws exactly that union — what a
+    // keeper types is what a keeper sees, over the disjunction.
+    {
+        assert((try or_search_result_count(&cat, "material:stainless-304 max:60")) == 3);
+        assert((try or_search_page_count(garden, &cat, "material:stainless-304 max:60", 4)) == 1);
+        const page = try or_search_shelf(garden, &cat, "material:stainless-304 max:60", cols, 4, 0);
+        var buf: [part_row.max_fact_line]u8 = undefined;
+        const r0 = row_text(&page, 0, buf[0..]);
+        assert(std.mem.startsWith(u8, buf[0..r0], "bolt  HX-M8-40  stainless-304  $1.25"));
+        const r1 = row_text(&page, 1, buf[0..]);
+        assert(std.mem.startsWith(u8, buf[0..r1], "nut  NY-M8  brass  $0.60"));
+        const r2 = row_text(&page, 2, buf[0..]);
+        assert(std.mem.startsWith(u8, buf[0..r2], "hexnut  HX-N8  stainless-304  $0.55"));
+        // Only three parts matched — the fourth row's label region is blank (gear is acetal at 845c, no clause).
+        const r3 = row_text(&page, 3, buf[0..]);
+        assert(r3 == 0);
+    }
+
+    // The widened page equals the hand-filtered window drawn directly — the widening search view invents nothing.
+    {
+        const via_search = try or_search_shelf(garden, &cat, "material:stainless-304 max:60", cols, 4, 0);
+        const oq = try part_or.parse_or("material:stainless-304 max:60");
+        var sub: part_catalog.PartCatalog = undefined;
+        try part_or.filter_or(&cat, oq, &sub);
+        const via_hand = try part_row.part_window(garden, &sub, cols, 4, 0);
+        var a: [part_row.max_fact_line]u8 = undefined;
+        var b: [part_row.max_fact_line]u8 = undefined;
+        var row: u32 = 0;
+        while (row < 4) : (row += 1) {
+            const na = row_text(&via_search, row, a[0..]);
+            const nb = row_text(&via_hand, row, b[0..]);
+            assert(na == nb);
+            assert(std.mem.eql(u8, a[0..na], b[0..nb]));
+        }
+    }
+
+    // The clauses COMMUTE on glass — the same union, in the same held order, whichever facet is named first (held
+    // order is the catalog's, not the clauses').
+    {
+        const forward = try or_search_shelf(garden, &cat, "material:stainless-304 max:60", cols, 4, 0);
+        const reverse = try or_search_shelf(garden, &cat, "max:60 material:stainless-304", cols, 4, 0);
+        var a: [part_row.max_fact_line]u8 = undefined;
+        var b: [part_row.max_fact_line]u8 = undefined;
+        var row: u32 = 0;
+        while (row < 4) : (row += 1) {
+            const na = row_text(&forward, row, a[0..]);
+            const nb = row_text(&reverse, row, b[0..]);
+            assert(na == nb);
+            assert(std.mem.eql(u8, a[0..na], b[0..nb]));
+        }
+    }
+
+    // An empty line under OR is a MATCH-NONE — the De Morgan dual of AND's match-all. A keeper who has named no way to
+    // match sees a real empty page: zero results, zero pages, every row blank.
+    {
+        assert((try or_search_result_count(&cat, "")) == 0);
+        assert((try or_search_page_count(garden, &cat, "", 4)) == 0);
+        const page = try or_search_shelf(garden, &cat, "", cols, 4, 0);
+        var buf: [part_row.max_fact_line]u8 = undefined;
+        var row: u32 = 0;
+        while (row < 4) : (row += 1) {
+            assert(row_text(&page, row, buf[0..]) == 0);
+        }
+    }
+
+    // An offset past the widened result refuses BadOffset — three matches, so page offset 3 (at rows=1) is past it.
+    if (or_search_shelf(garden, &cat, "material:stainless-304 max:60", cols, 1, 3)) |_| return error.OffsetSlipped else |e| {
+        if (e != error.BadOffset) return error.WrongOffset;
+    }
+
+    // A malformed clause surfaces the parser's own named refusal to the glass layer — a bad facet draws nothing.
+    if (or_search_shelf(garden, &cat, "material:stainless-304 colour:red", cols, 4, 0)) |_| return error.LineSlipped else |e| {
+        if (e != error.UnknownKey) return error.WrongLine;
+    }
+    if (or_search_result_count(&cat, "nocolonhere")) |_| return error.LineSlipped else |e| {
+        if (e != error.NoColon) return error.WrongLine;
+    }
+
+    print("GREEN part-or-search: four parts across four bands — a widening material:stainless-304 max:60 line draws " ++
+        "exactly the union (bolt $1.25, nut $0.60, hexnut $0.55, each once, in held order), the widened page equal to " ++
+        "the hand-filtered window drawn directly (the search view invents nothing); the clauses commute on glass; an " ++
+        "empty line is a match-none drawing a real empty page (the De Morgan dual of AND's match-all — zero results, " ++
+        "zero pages, every row blank); an offset past the widened result refuses BadOffset, and a malformed clause " ++
+        "(unknown key, no colon) surfaces the parser's named refusal rather than a wrong shelf; a price is a fact drawn " ++
+        "and compared, never moved — no network, no key, no funds\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: part_or_search selftest\n", .{});
+    return 1;
+}
