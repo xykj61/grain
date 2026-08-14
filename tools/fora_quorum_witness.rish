@@ -1,0 +1,38 @@
+# tools/fora_quorum_witness.rish — from a census, decide whether a majority may act (FORA9).
+#
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# FORA9. Design read: active-designing/20260814-052238_fora9-constel-quorum-majority-decision.md
+# Law kin: .claude/rules/placeholder-ship-names.md — the border guards every vote: a member replying with a vowel-bearing
+# greeting is refused at the caller's hear (wire.deframe). A real address can never enter a quorum even as a present token.
+#
+# constel/quorum.rye turns FORA8's census tally into a decision: majority_of is the strict-majority threshold (2·t > n, so
+# any two quorums intersect), a Quorum records each heard reply and seals into live/threshold/reached, require refuses
+# NoQuorum below a majority, and in_quorum names the deciding set. The selftest proves: a full sky is quorate; one absence
+# still holds a majority (silent slot outside the set); two absences lose it; two of three is a majority yet a lone pier is
+# not; a stranger cannot open a quorum; the border guards every vote; and a full constellation of eight stays bounded.
+# Purely local — no socket, no network, no keys, no funds, no real address ever formed.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/fora_quorum_witness.rish
+
+say "fora-quorum: Language EN — FORA9 turns FORA8's census tally into a decision: the strict majority (2·threshold > n) is the one safety property, so any two quorums of a constellation must share a pier and can never each decide a conflicting value."
+say "fora-quorum: Style Radiant — a count becomes a decision, and the deciding set is named by slot; one absence still leaves a majority, two lose it, and a lone pier never mistakes itself for the sky."
+say "fora-quorum: Lens TAME — majority_of asserts 2·threshold > n at construction; the round interleaves respond+hear so the caller's mailbox holds one reply at a time (never ChannelFull); siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "constel/bin/quorum"
+
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/quorum.rye -femit-bin=${bin}"]
+assert build.ok else "fora-quorum: build failed — ${build.err}"
+
+let outfile = "constel/bin/quorum.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "fora-quorum: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "fora-quorum: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN fora-quorum' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "fora-quorum: selftest did not print the GREEN fora-quorum line"
+
+say "fora-quorum: GREEN — the census tally becomes a decision; the constel consensus track can now ask whether a majority may act, proven pure on the bench."
