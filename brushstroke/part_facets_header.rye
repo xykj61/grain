@@ -1,0 +1,554 @@
+//! brushstroke/part_facets_header.rye — HUNK87: the faceted query header — the typed groups and their result count,
+//! above the narrowed-and-widened shelf.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK87.
+//! Design read: active-designing/20260814-010517_hunk-part-facets-header-typed-groups-and-count-exploration.md
+//! Teacher, thanked clean-room: McMaster-Carr's faceted sidebar — the chosen facets echoed back and a result count over
+//! the wall of parts (concept only, siloed).
+//!
+//! HUNK82 painted a query header over HUNK79's pure-AND shelf — the clauses echoed and an *N results* line — yet it
+//! reads only the conjunction. HUNK86 drew the WHOLE sidebar grammar on glass: OR within a facet, AND across facets. A
+//! faceted shelf wants the same header HUNK82 gave the AND page, now over the faceted grammar: the groups echoed so a
+//! keeper trusts the machine heard both the widening (`|`) and the narrowing (space), and an *N results* line so a
+//! keeper knows whether to refine. This rung paints that header and stacks it above HUNK86's narrowed-and-widened
+//! shelf, so the whole faceted search reads top to bottom in one surface: what I asked · how many I found · the parts
+//! themselves.
+//!
+//! The crux is NO DRIFT between the header and the shelf. Both read the same typed text through the same
+//! `part_facets.parse_facets`: the header counts with `count_facets`, the shelf filters with `filter_facets`, so a
+//! header can never claim a count the shelf does not number, nor echo a group the filter ignored. A sharper law makes
+//! the echo trustworthy: `format_facets_query` renders a CANONICAL line that RE-PARSES to the same query —
+//! `parse_facets(format_facets_query(parse_facets(text)))` reaches the same `FacetQuery` as `parse_facets(text)` — so
+//! the echo is the query the machine understood, a fixed point of the parser (as HUNK82's AND echo is of its own),
+//! not a hopeful transcript of keystrokes. Because a `|`-free line IS HUNK82's canonical AND line, this header is a
+//! strict superset of HUNK82's — every AND header it drew, this rung draws identically, plus the within-facet unions
+//! HUNK82 could not echo.
+//!
+//! A price clause is echoed as the keeper's own cents (the canonical `max:100`, re-parseable) — a fact drawn for
+//! reading, never a balance the tree can move (custody gate #3 untouched). No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/part_facets_header.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const sprite = @import("sprite.rye");
+const part_catalog = @import("part_catalog.rye");
+const part_filter = @import("part_filter.rye");
+const part_or = @import("part_or.rye");
+const part_facets = @import("part_facets.rye");
+const part_facets_search = @import("part_facets_search.rye");
+const image_skate = @import("image_skate.rye");
+const skate = @import("skate_grid.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const part_facets_header_version = "20260814.010517";
+
+/// The longest clause key is `material` (8 bytes); `prefix` is 6, `max` and `min` are 3. Named so the header-line bound
+/// below is honest at construction (TAME bound).
+pub const max_clause_key: u32 = 8;
+
+/// A clause's value is either a bounded text operand or a `u64` price rendered as decimal digits. Take the wider of the
+/// two, so a scratch buffer can hold either — a text query token or a full-width cents count.
+pub const max_clause_value: u32 =
+    if (part_filter.max_query_text > 20) part_filter.max_query_text else 20;
+
+/// The widest a single canonical clause runs — `<key>:<value>` plus one separator byte (a `|` within a group or a space
+/// between groups). A scratch buffer this wide per clause can never overflow while a faceted line is assembled.
+pub const max_clause_render: u32 = max_clause_key + 1 + max_clause_value + 1;
+
+/// The widest a canonical faceted line runs — every group its widest, every clause its longest, over the whole ceiling
+/// of `max_groups` groups each holding up to `part_or.max_clauses` clauses. A scratch buffer this wide holds any line
+/// `format_facets_query` could build, so the assembly is bounded at construction.
+pub const max_facets_line: u32 = part_facets.max_groups * part_or.max_clauses * max_clause_render;
+
+/// The widest a header line runs — the canonical faceted line, a two-space gap, a `u64` count (20 digits), and
+/// ` results`. The `all parts` label is shorter than the gap-plus-count-plus-word tail, so this bound covers it too.
+pub const max_header_line: u32 = max_facets_line + 32;
+
+pub const HeaderError = error{
+    HeaderOverflow,
+    EmptyHeader,
+    HeaderTooLarge,
+};
+
+/// Copy `src` into the front of `dst`, returning the count copied. The caller sizes `dst` (a `max_*` scratch) to hold
+/// every run, so the fit is a construction invariant — the same bounded append HUNK82's header assembler leans on.
+fn append(dst: []u8, src: []const u8) u32 {
+    // invariant: the destination holds the appended run (the scratch is sized to the sum of the parts).
+    assert(src.len <= dst.len);
+    const n: u32 = @intCast(src.len);
+    tally_copy.copy_disjoint(u8, dst[0..src.len], src);
+    // invariant: exactly the source's bytes were copied.
+    assert(n == src.len);
+    return n;
+}
+
+/// Write a `u64` as its decimal digits into `out`, returning the count written. Even zero prints one digit. The digit
+/// count is bounded by 20 (a `u64` maximum), so the reversal buffer and the loop are both bounded — no unbounded work.
+fn write_u64(v: u64, out: []u8) u32 {
+    // invariant: at least one digit is always written, so the destination needs at least one cell.
+    assert(out.len >= 1);
+    var digits: [20]u8 = undefined; // a u64 is at most 20 decimal digits
+    var count: u32 = 0;
+    var n: u64 = v;
+    if (n == 0) {
+        digits[0] = '0';
+        count = 1;
+    } else {
+        while (n > 0) : (n /= 10) {
+            // invariant: the digit count never runs past a u64's 20-digit width.
+            assert(count < 20);
+            digits[count] = '0' + @as(u8, @intCast(n % 10));
+            count += 1;
+        }
+    }
+    // invariant: the caller's buffer holds every digit produced.
+    assert(count <= out.len);
+    var i: u32 = 0;
+    while (i < count) : (i += 1) out[i] = digits[count - 1 - i]; // reverse: most-significant first
+    // invariant: a decimal render is at least one digit long.
+    assert(count >= 1);
+    return count;
+}
+
+/// The canonical key a clause kind prints under — the exact word `parse_query` reads back, so a rendered clause
+/// re-parses to its own kind.
+fn clause_key(kind: part_filter.QueryKind) []const u8 {
+    return switch (kind) {
+        .material => "material",
+        .number_prefix => "prefix",
+        .price_at_most => "max",
+        .price_at_least => "min",
+    };
+}
+
+/// Render one clause — its canonical key, a colon, and its operand (a text clause its own bytes, a price clause its
+/// cents as decimal digits) — into `out`, returning the length. The clause's key and value each fit the sized scratch
+/// by construction, so a clause is the atom every group and line is built from.
+fn format_clause(q: part_filter.Query, out: []u8) u32 {
+    var n: u32 = 0;
+    n += append(out[n..], clause_key(q.kind));
+    out[n] = ':';
+    n += 1;
+    switch (q.kind) {
+        .material, .number_prefix => n += append(out[n..], q.text),
+        .price_at_most, .price_at_least => n += write_u64(q.price, out[n..]),
+    }
+    // invariant: a rendered clause is at least a one-byte key, a colon, and a one-byte operand.
+    assert(n >= 3);
+    return n;
+}
+
+/// Render a parsed `FacetQuery` back to its canonical line — groups separated by a single space, clauses within a group
+/// joined by `|`, each clause its own canonical `key:value` — returning the length. Held order is kept, so
+/// `parse_facets(format_facets_query(fq))` reaches the same query (a fixed point of the parser): the space/`|` grammar
+/// this writes is exactly the grammar `parse_facets`/`parse_group` split on. Zero groups renders the empty line, which
+/// re-parses to the match-all query, so the round-trip law holds universally. A group always carries at least one
+/// clause (the parser never builds an empty group), so no group renders blank. Refuses `HeaderOverflow` rather than
+/// write past `out`.
+pub fn format_facets_query(fq: part_facets.FacetQuery, out: []u8) HeaderError!u32 {
+    // invariant: the group count never passes the ceiling.
+    assert(fq.count <= part_facets.max_groups);
+    var tmp: [max_facets_line]u8 = undefined;
+    var n: u32 = 0;
+    var g: u32 = 0;
+    while (g < fq.count) : (g += 1) {
+        // invariant: the walked group index sits inside the live group count.
+        assert(g < fq.count);
+        if (g > 0) {
+            tmp[n] = ' '; // one space between groups — the separator parse_facets splits on
+            n += 1;
+        }
+        const oq = fq.groups[g];
+        // invariant: a parsed group always carries at least one clause — parse_group never builds an empty group.
+        assert(oq.count >= 1);
+        var c: u32 = 0;
+        while (c < oq.count) : (c += 1) {
+            if (c > 0) {
+                tmp[n] = '|'; // the within-facet union separator parse_group splits on
+                n += 1;
+            }
+            n += format_clause(oq.clauses[c], tmp[n..]);
+        }
+    }
+    if (n > out.len) return error.HeaderOverflow;
+    tally_copy.copy_disjoint(u8, out[0..n], tmp[0..n]);
+    // invariant: the assembled line stayed inside the scratch it was built in.
+    assert(n <= max_facets_line);
+    return n;
+}
+
+/// Assemble the header line a keeper reads — the canonical faceted query (or `all parts` when zero groups) followed by
+/// a two-space gap and `N result` / `N results`, the count read straight from `part_facets.count_facets`. So the echo
+/// and the count both come from the one parse of the one typed line — no drift from the shelf that filters it. A
+/// malformed clause surfaces the parser's own named refusal, so a header is never drawn over a query the machine could
+/// not read.
+pub fn format_facets_header(
+    cat: *const part_catalog.PartCatalog,
+    text: []const u8,
+    out: []u8,
+) !u32 {
+    const fq = try part_facets.parse_facets(text);
+    const n_results = try part_facets.count_facets(cat, fq);
+    // invariant: a result count never exceeds the catalog it narrowed.
+    assert(n_results <= cat.len());
+    var tmp: [max_header_line]u8 = undefined;
+    var n: u32 = 0;
+    if (fq.count == 0) {
+        n += append(tmp[n..], "all parts");
+    } else {
+        n += try format_facets_query(fq, tmp[n..]);
+    }
+    n += append(tmp[n..], "  ");
+    n += write_u64(n_results, tmp[n..]);
+    if (n_results == 1) {
+        n += append(tmp[n..], " result");
+    } else {
+        n += append(tmp[n..], " results");
+    }
+    if (n > out.len) return error.HeaderOverflow;
+    tally_copy.copy_disjoint(u8, out[0..n], tmp[0..n]);
+    // invariant: the header line stayed inside its scratch.
+    assert(n <= max_header_line);
+    return n;
+}
+
+/// Draw the header as a fresh one-row anchor-palette grid — the header line truncated to `cols`. Refuses `EmptyHeader`
+/// on a zero dimension and `HeaderTooLarge` past the down-map ceiling, so a header a keeper reads always fits a real
+/// grid; a malformed clause surfaces the parser's named refusal through `format_facets_header`.
+pub fn facets_header_row(
+    allocator: std.mem.Allocator,
+    cat: *const part_catalog.PartCatalog,
+    text: []const u8,
+    cols: u32,
+) !skate.Grid {
+    if (cols == 0) return error.EmptyHeader;
+    if (cols > image_skate.max_map_cols) return error.HeaderTooLarge;
+    var line: [max_header_line]u8 = undefined;
+    const len = try format_facets_header(cat, text, line[0..]);
+    var grid = try skate.Grid.init(allocator, cols, 1);
+    image_skate.set_anchor_palette(&grid);
+    const shown: u32 = @min(len, cols);
+    grid.put_line(0, line[0..shown]);
+    // invariant: the header grid is exactly one row at the requested width.
+    assert(grid.rows == 1);
+    assert(grid.cols == cols);
+    return grid;
+}
+
+/// The whole faceted search screen in one call: the header row atop HUNK86's narrowed-and-widened shelf page, stacked
+/// into one grid `cols` wide and `1 + rows` tall (HUNK53's cell-for-cell copy idiom). Row 0 equals `facets_header_row`
+/// cell-for-cell and the shelf region equals `facets_search_shelf` cell-for-cell, so the stack adds no drift. The
+/// header counts and the shelf filters from the same parse of the same typed line, so the *N results* a keeper reads is
+/// exactly the number of parts drawn beneath it. A malformed clause surfaces the parser's named refusal (through the
+/// header, before any shelf work); an offset past the narrowed result refuses `BadOffset` and a too-thin row refuses
+/// the shelf's own named error.
+pub fn facets_search_screen(
+    allocator: std.mem.Allocator,
+    cat: *const part_catalog.PartCatalog,
+    text: []const u8,
+    cols: u32,
+    rows: u32,
+    offset: u32,
+) !skate.Grid {
+    const header = try facets_header_row(allocator, cat, text, cols); // parses; a malformed clause refuses here first
+    const shelf = try part_facets_search.facets_search_shelf(allocator, cat, text, cols, rows, offset);
+    // invariant: both surfaces stand at the requested width before they are stacked.
+    assert(header.cols == cols);
+    assert(shelf.cols == cols);
+    assert(shelf.rows == rows);
+
+    var grid = try skate.Grid.init(allocator, cols, 1 + rows);
+    image_skate.set_anchor_palette(&grid);
+    // invariant: the stacked screen is one row taller than the shelf.
+    assert(grid.rows == rows + 1);
+
+    // Row 0 — the header, cell-for-cell.
+    var c: u32 = 0;
+    while (c < cols) : (c += 1) {
+        const i: usize = @intCast(c);
+        // invariant: the header cell and the destination cell sit inside their grids.
+        assert(i < header.cells.len);
+        assert(i < grid.cells.len);
+        grid.cells[i] = header.cells[i];
+        grid.fg_index[i] = header.fg_index[i];
+    }
+
+    // Rows 1.. — the narrowed-and-widened shelf, each source cell into the row below the header.
+    var r: u32 = 0;
+    while (r < rows) : (r += 1) {
+        var sc: u32 = 0;
+        while (sc < cols) : (sc += 1) {
+            const src: usize = @intCast(r * cols + sc);
+            const dst: usize = @intCast((r + 1) * cols + sc);
+            // invariant: both the shelf cell and the destination cell sit inside their grids.
+            assert(src < shelf.cells.len);
+            assert(dst < grid.cells.len);
+            grid.cells[dst] = shelf.cells[src];
+            grid.fg_index[dst] = shelf.fg_index[src];
+        }
+    }
+    return grid;
+}
+
+// --- selftest: four parts across four bands — the header echoes the canonical faceted query and its result count, the
+//     echo re-parses to the same query (a fixed point), a |-free line equals HUNK82's AND header (a strict superset),
+//     the header count equals the shelf's narrowed count (no drift), the screen stacks header over shelf cell-for-cell,
+//     singular/plural read right, and the named refusals fire --------------------------------------------------------
+
+/// A 16×8 sheet in four solid vertical bands (the part_row fixture), so a 4-wide window carries one known colour.
+fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 16;
+    const h: u32 = 8;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            const band = x / 4; // 0..3
+            buf[off] = if (band == 0 or band == 3) 255 else 0; // r
+            buf[off + 1] = if (band == 1 or band == 3) 255 else 0; // g
+            buf[off + 2] = if (band == 2) 255 else 0; // b
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+/// Read a row's cells back as bytes, trimming the blank tail — so the selftest sees exactly the painted text.
+fn row_text(grid: *const skate.Grid, row: u32, out: []u8) u32 {
+    const cells = grid.row_cells(row);
+    var n: u32 = @intCast(cells.len);
+    while (n > 0 and cells[n - 1] == ' ') : (n -= 1) {}
+    var i: u32 = 0;
+    while (i < n) : (i += 1) out[i] = cells[i];
+    return n;
+}
+
+/// Two `FacetQuery`s hold the same groups in the same order, each group the same clauses (kind, and text or price by
+/// kind). The heart of the round-trip law: `format_facets_query` then `parse_facets` must reach exactly the query it
+/// rendered.
+fn same_facets(a: part_facets.FacetQuery, b: part_facets.FacetQuery) bool {
+    if (a.count != b.count) return false;
+    var g: u32 = 0;
+    while (g < a.count) : (g += 1) {
+        const ag = a.groups[g];
+        const bg = b.groups[g];
+        if (ag.count != bg.count) return false;
+        var c: u32 = 0;
+        while (c < ag.count) : (c += 1) {
+            if (ag.clauses[c].kind != bg.clauses[c].kind) return false;
+            switch (ag.clauses[c].kind) {
+                .material, .number_prefix => if (!std.mem.eql(u8, ag.clauses[c].text, bg.clauses[c].text)) return false,
+                .price_at_most, .price_at_least => if (ag.clauses[c].price != bg.clauses[c].price) return false,
+            }
+        }
+    }
+    return true;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const sheet = try craft_bands(garden);
+    var cat = part_catalog.PartCatalog.init(&sheet);
+    // Four parts across the bands, three materials, a price spread. Two are stainless-304 (bolt 125c, hexnut 55c),
+    // the brass nut 60c, the acetal gear 845c.
+    try cat.add_part("bolt", 0, 0, 4, 8, "HX-M8-40", "stainless-304", 125);
+    try cat.add_part("nut", 4, 0, 4, 8, "NY-M8", "brass", 60);
+    try cat.add_part("gear", 8, 0, 4, 8, "GR-24T", "acetal", 845);
+    try cat.add_part("hexnut", 12, 0, 4, 8, "HX-N8", "stainless-304", 55);
+    assert(cat.len() == 4);
+
+    const cols: u32 = 56;
+
+    // The header echoes the canonical faceted query and its result count — (stainless|brass) max:100 keeps the two
+    // under a dollar (nut 60c, hexnut 55c; bolt dropped at 125c), so it reads `... 2 results` (plural), the count
+    // exactly the one the shelf narrows-and-widens to.
+    {
+        var buf: [max_header_line]u8 = undefined;
+        const n = try format_facets_header(&cat, "material:stainless-304|material:brass max:100", buf[0..]);
+        assert(std.mem.eql(u8, buf[0..n], "material:stainless-304|material:brass max:100  2 results"));
+    }
+
+    // A faceted line keeping one part reads its count singular — material:stainless-304 max:100 keeps hexnut alone
+    // (bolt is stainless yet 125c), so `1 result`.
+    {
+        var buf: [max_header_line]u8 = undefined;
+        const n = try format_facets_header(&cat, "material:stainless-304 max:100", buf[0..]);
+        assert(std.mem.eql(u8, buf[0..n], "material:stainless-304 max:100  1 result"));
+    }
+
+    // An empty line reads `all parts  4 results` (plural, the friendly match-all label), the count the whole catalog.
+    {
+        var buf: [max_header_line]u8 = undefined;
+        const n = try format_facets_header(&cat, "", buf[0..]);
+        assert(std.mem.eql(u8, buf[0..n], "all parts  4 results"));
+    }
+
+    // The echo is a FIXED POINT of the parser — the canonical line re-parses to the same query, for a faceted line
+    // (OR within a facet, AND across facets) and for the empty (match-all) line. So the header shows the query the
+    // machine understood, not a hopeful transcript.
+    {
+        const fq = try part_facets.parse_facets("prefix:HX-|prefix:NY- material:stainless-304 min:50");
+        var buf: [max_facets_line]u8 = undefined;
+        const n = try format_facets_query(fq, buf[0..]);
+        const round = try part_facets.parse_facets(buf[0..n]);
+        assert(same_facets(fq, round));
+        // The canonical render is the tidy single-space / single-`|` line, whatever the keeper's spacing was.
+        assert(std.mem.eql(u8, buf[0..n], "prefix:HX-|prefix:NY- material:stainless-304 min:50"));
+
+        const empty = try part_facets.parse_facets("   ");
+        var eb: [max_facets_line]u8 = undefined;
+        const en = try format_facets_query(empty, eb[0..]);
+        assert(en == 0); // zero groups render the empty line
+        const eround = try part_facets.parse_facets(eb[0..en]);
+        assert(same_facets(empty, eround));
+    }
+
+    // BACKWARD-COMPATIBILITY: a `|`-free line renders exactly HUNK82's canonical AND line (each group one clause), so
+    // this header is a strict superset — every AND header it drew, this rung draws identically.
+    {
+        const fq = try part_facets.parse_facets("material:stainless-304 max:100");
+        var buf: [max_facets_line]u8 = undefined;
+        const n = try format_facets_query(fq, buf[0..]);
+        assert(std.mem.eql(u8, buf[0..n], "material:stainless-304 max:100"));
+    }
+
+    // NO DRIFT: the count the header shows is exactly the count the shelf narrows-and-widens to, for several faceted
+    // lines.
+    {
+        const lines = [_][]const u8{
+            "material:stainless-304|material:brass",
+            "material:stainless-304|material:brass max:100",
+            "max:10",
+            "",
+        };
+        for (lines) |line| {
+            const fq = try part_facets.parse_facets(line);
+            const header_count = try part_facets.count_facets(&cat, fq);
+            const shelf_count = try part_facets_search.facets_search_result_count(&cat, line);
+            assert(header_count == shelf_count);
+        }
+    }
+
+    // The screen stacks the header over the narrowed-and-widened shelf into one grid: cols wide, 1 + rows tall.
+    {
+        const g = try facets_search_screen(garden, &cat, "material:stainless-304|material:brass max:100", cols, 4, 0);
+        assert(g.cols == cols);
+        assert(g.rows == 5);
+    }
+
+    // No drift, top row: the screen's row 0 equals facets_header_row cell-for-cell.
+    {
+        const line = "material:stainless-304|material:brass max:100";
+        const g = try facets_search_screen(garden, &cat, line, cols, 4, 0);
+        const hdr = try facets_header_row(garden, &cat, line, cols);
+        var c: u32 = 0;
+        while (c < cols) : (c += 1) {
+            assert(g.cells[c] == hdr.cells[c]);
+            assert(g.fg_index[c] == hdr.fg_index[c]);
+        }
+    }
+
+    // No drift, shelf region: the screen's rows 1.. equal facets_search_shelf cell-for-cell — the narrowed page,
+    // unmoved.
+    {
+        const line = "material:stainless-304|material:brass max:100";
+        const g = try facets_search_screen(garden, &cat, line, cols, 4, 0);
+        const shelf = try part_facets_search.facets_search_shelf(garden, &cat, line, cols, 4, 0);
+        var r: u32 = 0;
+        while (r < 4) : (r += 1) {
+            var sc: u32 = 0;
+            while (sc < cols) : (sc += 1) {
+                const src: usize = @intCast(r * cols + sc);
+                const dst: usize = @intCast((r + 1) * cols + sc);
+                assert(g.cells[dst] == shelf.cells[src]);
+                assert(g.fg_index[dst] == shelf.fg_index[src]);
+            }
+        }
+    }
+
+    // The header reads the same first part the shelf draws beneath it — one reading, no drift: the header names two
+    // results, and the shelf's first row is the first part of the union under a dollar (brass nut $0.60).
+    {
+        const line = "material:stainless-304|material:brass max:100";
+        const g = try facets_search_screen(garden, &cat, line, cols, 4, 0);
+        var buf: [max_header_line]u8 = undefined;
+        const hr = row_text(&g, 0, buf[0..]);
+        assert(std.mem.eql(u8, buf[0..hr], "material:stainless-304|material:brass max:100  2 results"));
+        const sr = row_text(&g, 1, buf[0..]);
+        assert(std.mem.startsWith(u8, buf[0..sr], "nut  NY-M8  brass  $0.60"));
+    }
+
+    // The composed screen rasterizes to a lit canvas — the whole faceted search reaches the glass.
+    {
+        const g = try facets_search_screen(garden, &cat, "material:stainless-304|material:brass max:100", cols, 4, 0);
+        const scale: u32 = 1;
+        const width: u32 = g.cols * skate.cell_w * scale;
+        const height: u32 = g.rows * skate.cell_h * scale;
+        const stride: u32 = width * 4;
+        const canvas = try garden.alloc(u8, @as(usize, stride) * @as(usize, height));
+        const bg = skate.Color{ .r = 1, .g = 2, .b = 3 };
+        const fg = skate.Color{ .r = 210, .g = 210, .b = 210 };
+        g.rasterize(canvas, stride, @intCast(width), @intCast(height), bg, fg, scale);
+        const lit = g.lit_pixel_count(canvas, stride, @intCast(width), @intCast(height), bg);
+        assert(lit > 0);
+    }
+
+    // A malformed clause surfaces the parser's own named refusal through the header (before any shelf work) — a bad
+    // facet draws no screen, never a wrong one.
+    if (facets_search_screen(garden, &cat, "material:stainless-304|colour:red", cols, 4, 0)) |_| {
+        return error.LineSlipped;
+    } else |e| {
+        if (e != error.UnknownKey) return error.WrongLine;
+    }
+    {
+        var hdr_buf: [max_header_line]u8 = undefined;
+        if (format_facets_header(&cat, "material:brass nocolonhere", hdr_buf[0..])) |_| {
+            return error.LineSlipped;
+        } else |e| {
+            if (e != error.NoColon) return error.WrongLine;
+        }
+    }
+
+    // A zero-width header refuses EmptyHeader, an over-ceiling one HeaderTooLarge.
+    if (facets_header_row(garden, &cat, "", 0)) |_| return error.HeaderSlipped else |e| {
+        if (e != error.EmptyHeader) return error.WrongHeader;
+    }
+    if (facets_header_row(garden, &cat, "", image_skate.max_map_cols + 1)) |_| return error.HeaderSlipped else |e| {
+        if (e != error.HeaderTooLarge) return error.WrongHeader;
+    }
+
+    // An offset past the narrowed result refuses BadOffset through the shelf — two matches, so page offset 2 at one row
+    // per page is past the result.
+    if (facets_search_screen(garden, &cat, "material:stainless-304|material:brass max:100", cols, 1, 2)) |_| {
+        return error.OffsetSlipped;
+    } else |e| {
+        if (e != error.BadOffset) return error.WrongOffset;
+    }
+
+    print("GREEN part-facets-header: four parts across four bands — the header echoes the canonical faceted query and " ++
+        "its result count ((stainless|brass) max:100 reads `2 results`, stainless max:100 `1 result`, an empty line " ++
+        "`all parts  4 results`); the echo re-parses to the same query (a fixed point of the parser, the canonical " ++
+        "single-space/single-| line), a |-free line renders exactly HUNK82's AND header (a strict superset), the " ++
+        "header count equals the shelf's narrowed-and-widened count for every line (no drift); facets_search_screen " ++
+        "stacks the header over the faceted shelf into one grid, row 0 equal to facets_header_row and the shelf region " ++
+        "equal to facets_search_shelf cell-for-cell (no drift), the header naming two results over the brass nut's own " ++
+        "row; the screen rasterizes to a lit canvas; a malformed clause refuses through the header before any shelf " ++
+        "work (UnknownKey, NoColon), a zero and over-ceiling header refuse EmptyHeader/HeaderTooLarge, and an offset " ++
+        "past the narrowed result refuses BadOffset; a price is a fact echoed and compared, never moved — no network, " ++
+        "no key, no funds\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: part_facets_header selftest\n", .{});
+    return 1;
+}
