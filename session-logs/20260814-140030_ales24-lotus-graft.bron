@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260814.140030
+editor Zed
+model Fable 5
+voice Kyri
+host Framework 16 AMD — Eastern (EDT) — Vultr SEA VPS cloud pier, this session in ai-jail
+title ALES24 — Lotus's graft, a selected span copied or moved onto a second point
+prompt Take the next agent-doable ALES lap Lindy-first crux-first; send each finished increment; stop at custody gates; baton prin recur
+think Read REMEMBER (living edge), the 1,024-round itinerary, and the six-season double-seat expansion; the living edge is the ALES ladder (Season C Lotus creative suite, the audio wire/edit side), last landed ALES23 (selection).
+think ALES23's road-on named three candidates: crossfade-meets-selection, splice a selection onto a second point (copy/move), carry a selection across the ALES0 wire (gated seam). Lindy-first crux-first: copy and move are the primitives every arrangement edit rides on, read for as long as the tool lives, and stay wholly on the edit side (no module seam, no gate). Chose ALES24 = graft.
+think Named the module graft (Comlink tendency: clear, fun, safe, and on the Grain/garden voice — the horticulturist's join). Verified no graft/paste collision in lotus/ or tools/.
+think Studied the reused APIs: selection.rye (Selection, make, cut), timeline.rye (splice, cut, saturate, max_clip = 4*wire.max_samples = 4096), pan.rye (StereoClip, left.len == right.len).
+think Design: snapshot BOTH channels' span into a bounded scratch [max_clip]i16 BEFORE any mutation, so a self-overlapping copy reads the original audio. copy = capacity guard then paired splice; move = snapshot, selection.cut source, re-base destination (dest = at - span when at >= sel.end, else at), paired splice — net length unchanged so move can never overflow.
+think Destination law: BadDest on a destination past the master or strictly inside the moved span (sel.start < at < sel.end); a destination on either edge is the honest identity no-op.
+obs GREEN on metal: tools/ales_graft_witness.rish — six selftest blocks (crux copy, self-overlap-before-source proof, move-after with re-base, move-before, edge-identity, refuse-by-name BadDest/ClipFull). tame_style_check bans clean, no new ratchet.
+obs Atomicity rests on the shared length: both channels have the same buf bound and length, so a capacity fit on the left is a fit on the right — the guard checks the left first and both change or neither does.
+loom witness=ales_graft_witness green=1 selftest_blocks=6 module_bytes=graft.rye records=copy,move
+file active-designing/20260814-fill-ales24-lotus-graft.md the self-approved design round naming the one crux and the shape
+file lotus/graft.rye the module — copy/move a selection onto a second point, both channels in lockstep, snapshot-before-mutate
+file tools/ales_graft_witness.rish the witness proving GREEN on metal, purely local
+file lotus/README.md status line + graft bullet + closing paragraph advanced to ALES24
+recommend keep-going ALES25 — the choice of law where a crossfade meets a grafted edit (a smooth join), or a named clipboard so a span survives across masters; both stay agent-doable on the edit side. The wire seam and the real sound-card write stay Keaton's word.
