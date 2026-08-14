@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260814.113212
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (cloud pier) — Eastern (EDT) time convention
+title ALES3 — Lotus mixes a second track
+prompt Continue the recursion loop: next agent-doable lap Lindy-first crux-first, self-approve the design round, send each increment; STOP only at custody gates.
+think ALES2 landed and sent (both remotes GREEN). The README road-on named a second track (mix) as one next rung. Lindy-first crux-first: mixing is a DAW's second real gesture and higher-Lindy (the core of a mixer), and it extends ALES2's owed saturation correctness — thematically the strongest next step over clocking. Purely local, no custody gate.
+think The crux: two tracks sum sample-aligned and the sum SATURATES to i16 rather than wrapping. To keep one truth, made timeline.saturate public and had mix reuse it (DRY — one saturation, no drift). Re-ran the ALES2 timeline witness after the pub change: still GREEN.
+think Considered a MixError guard, but every clip shares timeline.max_clip so the mix length (the longer of the two) always fits — the error would be unreachable. Chose an honest assert over a never-firing named error; mix is total. Documented that choice in prose.
+think Level and mix stay separate gestures — a real mixer sets each track's fader then sums, so I proved composition with ALES2's gain (halve a track, then mix) rather than folding a per-track gain into mix.
+obs GREEN on the first build across six blocks: equal-length sum; saturation (30000+10000 → +32767, mirror → -32768); shorter track silent past its end; empty-clip identity; commutativity; gain∘mix composition. TAME bans clean.
+obs Every custody gate untouched — no socket, no network, no keys, no funds, no real device, no real sample rate.
+loom witness=ales_mix_witness build=first_green blocks=6 sum_intermediate=i64 saturation=reused_from_timeline
+file lotus/mix.rye the ALES3 rung — mix(a,b,out), total, saturating, reusing timeline.saturate
+file lotus/timeline.rye saturate made public — one true saturation shared by gain and mix
+file tools/ales_mix_witness.rish builds and runs the selftest, asserts the GREEN line
+file active-designing/20260814-fill-ales3-lotus-mix-second-track.md self-approved design capture
+file lotus/README.md front door synced — ALES3 rung, run block, road-on, status
+recommend keep-going the next Lotus rung can clock the timeline to a real sample rate, add a fade envelope, or open a track table; still purely local, no gate
