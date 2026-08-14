@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260814.191743
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title ALES66 — Lotus's feedback delay, the time-based wing opens
+prompt recur the itinerary Lindy-first crux-first, take the next agent-doable lap, send each finished increment, stop at custody gates
+think Read REMEMBER (huge card), the 1,024-round itinerary, and the six-season double-seat; the living edge is the Lotus creative suite, waymark ALES, at rung ALES65 (keyed gate) per recent commits.
+think Studied gate_key.rye (ALES65), deess.rye (ALES64), sidechain.rye (ALES63), mix.rye (ALES3) to learn the idiom: opening triad, error enum with per-fault doc comments, a from-silence form, a grounding law proven byte-for-byte, faults refused before any write.
+think The dynamics/sidechain wing is complete — ALES63 named three tools (de-esser, ducker, keyed gate); the de-esser and keyed gate are built, and the ducker is ALES63 read with an external voice key (already behavioral). Confirmed by the ALES65 design doc.
+think Lindy-first crux-first: the next durable crux is the feedback delay — the foundational primitive of a whole second wing (echo, chorus, flanger, reverb), exactly as the sidechain opened the keyed wing. Crux = an integer-exact bounded feedback loop that decays and never wraps.
+think Key design insight: the delay line is the clip buffer itself (applied in place, left to right), so buf[i-delay] inside the span already holds the output written this pass — true feedback with NO carried state, and split-equals-whole holds for free.
+think Self-approved the design round (no custody gate — a new primitive on timeline.saturate), wrote the fill doc, the module, and the witness.
+obs First selftest RED on case 4 (EchoDidNotReachSilence): 300 with fb 1/3 over a length-10 clip only reaches 3 on the even lane; shrank the impulse to 30 (30 to 10 to 3 to 1 to 0) so the train reaches silence within the clip. Second run GREEN.
+obs Refusal law: fb_num < fb_den is the safety invariant — a feedback at or above unity is a runaway, refused BadFeedback; delay in [1, max_clip]; span within the clip; each before any write.
+loom witness=ales_echo_witness cases=12 green=1 reruns=ales3_mix
+file lotus/echo.rye ALES66 — the feedback delay, y[i]=saturate(x[i]+fb*y[i-delay]), the delay line the clip buffer itself
+file tools/ales_echo_witness.rish witness GREEN, re-proves the ALES3 mixer beside it
+file active-designing/20260814-191111_fill-ales66-lotus-feedback-delay.md design read for the rung, self-approved round
+file lotus/README.md Status rung list + stamp + narrative extended for ALES66
+recommend keep-going ALES67 on this foundation — the single-tap slapback (dry-keyed), then the modulated delay (chorus, flanger), or the real-time echo through the ALES5 clock; each a small composition of proven parts
