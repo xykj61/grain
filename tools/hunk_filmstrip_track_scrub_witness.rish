@@ -1,0 +1,45 @@
+# tools/hunk_filmstrip_track_scrub_witness.rish — drag a windowed filmstrip; a too-long history finally scrubs, on metal (HUNK59).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK59.
+# Design read: active-designing/20260813-215013_hunk-filmstrip-track-exploration.md (the HUNK59 fork named there).
+# Teacher, thanked clean-room: the history scrubber of a photo app (iCloud Photos / Google Photos) — a keeper presses
+# the visible slice of a long edit strip and drags, scrubbing band by band within the shown window (concept only, siloed).
+#
+# HUNK56 scrubs the WHOLE strip, which refuses FilmstripTooWide once a history outgrows the map ceiling; HUNK58 gave the
+# strip a following window. This rung fuses them: FilmstripTrackScrub arms a drag over a gesture window snapshotted at the
+# press and held fixed through the drag, so the band under the finger is the marked band (no drift); on lift the window
+# re-follows the cursor. The crux it earns: a drag scrubs a history the whole-strip scrub cannot even paint. No network,
+# no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_filmstrip_track_scrub_witness.rish
+
+say "hunk-filmstrip-track-scrub: Language EN — HUNK59 fuses HUNK56's drag with HUNK58's following window; a drag scrubs within a gesture window frozen at the press, the band under the finger the marked band."
+say "hunk-filmstrip-track-scrub: Style Radiant — a 64-edit history too long for the whole strip finally scrubs under a finger; the window holds still through the drag and re-follows on lift."
+say "hunk-filmstrip-track-scrub: Lens TAME — a pure composition over HUNK16 seek and HUNK57 filmstrip_window; a scrub always lands within the shown window, refuses a bad or too-wide window and a bad thumbnail by name; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/edit_filmstrip_track_scrub"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/edit_filmstrip_track_scrub.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-filmstrip-track-scrub: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-filmstrip-track-scrub: selftest exited non-zero — ${selftest.out}"
+
+# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# single-quoted string, so an apostrophe in the GREEN line can never break a check (the loom for REDS #76).
+let out = trim selftest.out
+say "hunk-filmstrip-track-scrub: ${out}"
+
+assert out contains "GREEN edit-filmstrip-track-scrub" else "hunk-filmstrip-track-scrub: selftest did not print the GREEN line"
+assert out contains "the whole-strip scrub refuses FilmstripTooWide" else "hunk-filmstrip-track-scrub: the too-long history did not refuse on the whole strip — the crux is not real"
+assert out contains "the band under the finger is the marked band, no drift, the window's cols and first unchanged through the drag" else "hunk-filmstrip-track-scrub: a drift appeared or the gesture window did not stay frozen"
+assert out contains "on lift the window re-follows the cursor (re-centered, HUNK58)" else "hunk-filmstrip-track-scrub: the window did not re-follow the cursor on lift"
+assert out contains "a second press re-centers a fresh gesture window" else "hunk-filmstrip-track-scrub: a second press did not re-center the window"
+assert out contains "a scrub pins at both shown ends" else "hunk-filmstrip-track-scrub: a scrub did not pin at the shown ends"
+assert out contains "a scrub forgets nothing (the redo tail survives a back-scrub)" else "hunk-filmstrip-track-scrub: a scrub discarded the redo tail"
+assert out contains "a move with no press fires nothing" else "hunk-filmstrip-track-scrub: an unarmed move moved the cursor"
+assert out contains "a zero window refuses BadWindow, a too-wide window WindowTooWide, a bad thumbnail BadThumb" else "hunk-filmstrip-track-scrub: an open refusal did not name its error"
+
+say "hunk-filmstrip-track-scrub: GREEN — a windowed drag scrubs a 64-edit history the whole strip cannot paint, band by band within a frozen gesture window (no drift), re-following on lift, re-centering on a fresh press, pinning at both shown ends, forgetting nothing, ignoring an unarmed move, and refusing bad or too-wide windows and bad thumbnails by name; no network, no key, no funds."
