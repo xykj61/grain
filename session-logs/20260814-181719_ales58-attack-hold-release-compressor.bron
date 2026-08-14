@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260814.181719
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title ALES58 — the attack/hold/release compressor, the hold's mirror for the gain reduction
+prompt recur the road past BUHR — take the next agent-doable lap Lindy-first crux-first; approve own design rounds; send each finished increment; stop at custody gates
+think ALES57 gave the gate the hold and named the next rung: the same swap gives the compressor (ALES53) and the limiter (ALES55) their hold too. Lindy-first crux-first, the compressor is the most-reached-for dynamics tool, so it takes the hold before the limiter. The lookahead delay stays the Keaton's-word horizon; the held-follower spend is self-approvable.
+think The design is the exact mirror of ALES57: compress_env_hold.rye mirrors ALES53's compress_env.rye with two changes — carry hold_left beside env, and advance hold_env.env_step_hold instead of envelope.env_step. The gain math is ALES50's, the time base ALES56's; no arithmetic added on the audio path. The crux law is the zero-hold limit: hold_samples == 0 reduces env_step_hold to env_step, so this compressor reduces to ALES53's compress_follow byte-for-byte.
+think The hold-specific proof is the MIRROR of the gate's. The gate's hold keeps the door OPEN across a dip (the held sample passes louder). The compressor's hold keeps the gain reduction ENGAGED across a duck (the held sample is attenuated — quieter). So the monotone direction flips: held magnitude <= un-held at every sample (the hold only ever keeps the gain DOWN), strictly quieter at the duck. Signal [15000, 300, 15000], threshold 1000, instant attack and release, hold 0 vs 1: un-held releases at the duck and passes 300 (the pump); held pins env=15000 and compresses 300 to 90 (comp=1000+(15000-1000)/4=4500, 300*4500/15000=90).
+think Simpler than the gate in one way: the compressor's branch is e > threshold >= 1, so the envelope is strictly positive there — no zero-envelope divide to guard. The gate's branch is e < threshold and e can reach 0, so it needed the forced-unit-step guard; the compressor never has.
+think Monotonic stamp: live clock read 20260814.181719 (TZ=America/New_York), after ALES57's 180706 — later-is-larger holds.
+obs Two mechanical stumbles caught before green, both known from ALES57: a stray </content> line leaked into the module on write (stripped, then it parsed clean); and I first wrote hold_env.envelope_coeff_ok (which hold_env does not re-export) and imported an unused compress — swapped to import envelope and call envelope.coeff_ok, matching gate_env_hold. After both, GREEN on the next build.
+obs Witness GREEN on metal; three parents re-proven beneath it — ALES56 held follower, ALES50 compressor, ALES53 attack/release compressor all GREEN under the new rung. tame_style_check bans clean. Hold bounded by timeline.max_clip; a longer hold refuses BadHold before any write. Purely local — no socket, network, keys, funds, device, or sample rate; every custody gate untouched.
+loom witness=ales_compress_env_hold_witness result=GREEN reproves=3 rung=ALES58
+file lotus/compress_env_hold.rye ALES58 — the held compressor: ALES53's compressor with the plain follower swapped for ALES56's held one, a hold of zero reducing to it byte-for-byte
+file tools/ales_compress_env_hold_witness.rish witness — selftest GREEN plus the ALES56 follower, ALES50 compressor, and ALES53 compressor re-proven beneath
+file active-designing/20260814-181719_fill-ales58-lotus-attack-hold-release-compressor.md self-approved design round for the rung
+file lotus/README.md status line and road-on prose extended to ALES58 (the compressor now holds too)
+recommend keep-going ALES59 gives the limiter (ALES55) the same hold — the last of the trio, a short rung reading the same proven env_step_hold — after which the held dynamics trio is whole; the lookahead delay line for a true brickwall stays the Keaton's-word horizon
+</content>
