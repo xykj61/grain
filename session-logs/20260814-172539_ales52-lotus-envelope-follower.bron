@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260814.172539
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title ALES52 — Lotus's envelope follower: the dynamics time base opens
+prompt take the next agent-doable Lindy-first crux-first lap, self-approve the design round, send each finished increment to origin and xykj61, stop only at the custody gates in REMEMBER
+think With the limiter (ALES49), compressor (ALES50), and gate (ALES51) all instantaneous, the Lindy-first crux is the one thing all three want underneath them — a time base. Crux-first: build the envelope follower ONCE and prove it, so the attack/release versions of the limiter, compressor, and gate all read the same proven follower rather than each re-deriving a smoother. It is the hardest-solvable move that opens the rest.
+think Design: follow(clip, start, count, attack_num, attack_den, release_num, release_den) in place, replacing each sample with the running envelope magnitude. target = min(|x|, sample_max) (a full-scale negative peak reads at the rail so the envelope fits i16); gap = target - env; step by the attack fraction when rising, the release fraction when falling; a forced unit step when the fraction truncates to zero yet the gap remains — reusing ALES40's exact-reach guarantee and ALES43's carried state (a single i64 env carried by the caller).
+think Crux chosen: unit attack AND unit release (both 1:1) make step = gap, so env = min(|x|, sample_max) every sample — the peak follower with no smoothing IS the rectified signal, byte-for-byte by construction (the envelope's counterpart to the compressor's unit-ratio identity); and the carried state makes a span followed in two pieces equal the whole once, which is precisely what the coming attack/release dynamics need to span and automate.
+obs Caught one test-authorship red BEFORE claiming green: clause 3 first asserted exact reach of a 1:4 attack over only 8 samples — the geometric step decays ~(3/4)^n and needs ~30 steps before the forced unit step finishes, so 8 was far too few. Fixed by lengthening the constant-input buffers to 64 samples (Zig `** 64` / `++`); the exact-reach law is a finite-steps guarantee, not an every-length one. The code was correct; the test was impatient.
+obs GREEN across seven clauses; ALES51 gate re-run stays GREEN, so the time base rests beside the inverted floor. TAME bans clean; lotus/envelope.rye carries plenty of asserts (not on the zero-assert ratchet). Second rung of this turn (ALES51 gate · ALES52 follower), each sent as its own signed round to origin and xykj61.
+loom witness=ales_envelope_witness green=1 clauses=7 family=dynamics rung=ALES52 reuses=timeline,tone,gate
+file lotus/envelope.rye the envelope follower — render the running magnitude, attack rising and release falling, unit coefficients the instantaneous magnitude, forced unit step exact-reach, carried state
+file tools/ales_envelope_witness.rish builds, runs the selftest, asserts GREEN ales-envelope, re-proves ALES51 gate green
+file active-designing/20260814-172539_fill-ales52-lotus-envelope-follower.md the self-approved design round for ALES52
+file lotus/README.md front door synced — the ALES52 envelope-follower sentence and the status header
+recommend keep-going the dynamics family now holds the brickwall, the softened ratio, the inverted floor, and their shared time base; the next crux is to wire the envelope into the limiter, compressor, or gate so each leans in over an attack and eases off over a release — a time-based gate reading the follower is the cleanest first

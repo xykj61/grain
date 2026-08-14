@@ -1,0 +1,44 @@
+# tools/ales_envelope_witness.rish — an envelope follower: the time base the dynamics family waits for (ALES52).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES52.
+# Design read: active-designing/20260814-172539_fill-ales52-lotus-envelope-follower.md
+# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/sample_max, the range law shape); lotus/tone.rye (ALES40/43 — the
+# forced-unit-step exact-reach guarantee and the carried-state lesson); lotus/gate.rye (ALES51 — the dynamics rung this time base
+# will later drive, re-proven below).
+#
+# lotus/envelope.rye renders a running magnitude estimate: the target min(|x|, sample_max), the envelope stepping a fraction of
+# the way toward it (the attack fraction while rising, the release while falling), a forced unit step making a held level
+# reachable exactly. The selftest proves: silence stays silence; unit attack and release are the instantaneous magnitude; a
+# constant input is reached exactly from below and from above, monotonically and without overshoot; the envelope stays in
+# [0, sample_max]; a faster attack rises at least as fast; the state carries so a span in two pieces equals the whole once; an
+# illegal coefficient refuses BadCoeff, an out-of-range span BadRange. Purely local — no network, no keys, no funds, no real
+# device, no sample rate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_envelope_witness.rish
+
+say "ales-envelope: Language EN — ALES52 opens the dynamics time base with an envelope follower: a running estimate of how loud the signal is right now, rising quickly toward a new peak (the attack) and falling slowly after it (the release). Build it once and the attack/release versions of the limiter, compressor, and gate all read the same proven time base — the crux that opens the rest of dynamics."
+say "ales-envelope: Style Radiant — the law is stated positively: unit attack and release are the instantaneous magnitude (a follower with no smoothing IS the rectified signal), a held level is reached exactly (a forced unit step, ALES40's guarantee) monotonically and without overshoot, a faster attack rises at least as fast, and the state carries so a span followed in two pieces equals the whole once — the seam invisible, ALES43's lesson."
+say "ales-envelope: Lens TAME — bounded Clip, u32 span, i16 samples, i64 envelope; both coefficients checked in (0, 1] before any write; the target clamped to sample_max so a full-scale negative peak reads at the rail and the envelope stays in [0, sample_max], fitting i16; an illegal attack or release coefficient refuses BadCoeff, an out-of-range span BadRange; siloed to lotus/, no network, no keys, no funds, no device, no sample rate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/envelope"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/envelope.rye -femit-bin=${bin}"]
+assert build.ok else "ales-envelope: build failed — ${build.err}"
+
+let outfile = "lotus/bin/envelope.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-envelope: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-envelope: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-envelope' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-envelope: selftest did not print the GREEN ales-envelope line"
+
+# The follower is the time base the gate will later read — re-prove ALES51's gate still stands green, so the two rest together.
+let gate = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/gate.rye -femit-bin=lotus/bin/gate && lotus/bin/gate selftest 2>&1 | grep -q 'GREEN ales-gate' && echo yes"]
+assert (trim gate.out) == "yes" else "ales-envelope: the ALES51 noise-gate witness regressed under the envelope follower"
+
+say "ales-envelope: GREEN — an envelope follower renders a running magnitude estimate stepping a fraction toward min(|x|, sample_max), the attack fraction rising and the release falling, a forced unit step making a held level reachable exactly; unit attack and release are the instantaneous magnitude, a constant input is reached exactly from below and above monotonically and without overshoot, a faster attack rises at least as fast, the state carries so a span in two pieces equals the whole once; an illegal coefficient refuses BadCoeff, an out-of-range span BadRange, each leaving the clip untouched; the ALES51 gate selftest stays GREEN. The dynamics family now holds its time base — the next rung can wire this envelope into the limiter, compressor, or gate so each leans in over an attack and eases off over a release."
