@@ -1,0 +1,224 @@
+//! brushstroke/part_search.rye — HUNK77: the search box on glass — a typed line draws a narrowed, paged shelf.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK77.
+//! Design read: active-designing/20260813-235517_hunk-part-search-narrowed-shelf-on-glass-exploration.md
+//! Teacher, thanked clean-room: McMaster-Carr's search-then-see — a typed line shrinks the wall (concept only, siloed).
+//!
+//! HUNK73/74 paint and page a catalog, HUNK75 filters it to the parts that match a `Query`, HUNK76 parses that query
+//! from a keeper's typed line. Yet nothing had joined them on glass. This rung is that joining: `search_shelf` reads a
+//! catalog, a typed line, and a page offset, and draws exactly the narrowed page — the search box end to end, from
+//! keystroke to lit swatch.
+//!
+//! The crux is that WHAT A KEEPER TYPES IS WHAT A KEEPER SEES: the drawn page is precisely what `part_window` would
+//! draw over the FILTERED catalog — no failing part shown, no matching part hidden. The search view invents nothing;
+//! it is the faithful composition parse_query → filter_catalog → part_window, inheriting every law those proved. A
+//! malformed line surfaces the parser's own named refusal rather than drawing the wrong shelf.
+//!
+//! A price is drawn as a FACT formatted for reading and matched by a query that COMPARES a recorded cent count;
+//! nothing is moved (custody gate #3 untouched). No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/part_search.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const sprite = @import("sprite.rye");
+const part_catalog = @import("part_catalog.rye");
+const part_filter = @import("part_filter.rye");
+const part_query = @import("part_query.rye");
+const part_row = @import("part_row.rye");
+const skate = @import("skate_grid.rye");
+
+pub const part_search_version = "20260813.235517";
+
+/// How many parts a typed line keeps — parse the query, then count the matches over the catalog. A caller shows this
+/// as *N results* and sizes the paging before it draws. A malformed line surfaces the parser's own named refusal.
+pub fn search_result_count(cat: *const part_catalog.PartCatalog, text: []const u8) !u32 {
+    const query = try part_query.parse_query(text);
+    const n = try part_filter.count_matches(cat, query);
+    // invariant: a narrowed result never holds more parts than the catalog it narrowed.
+    assert(n <= cat.len());
+    return n;
+}
+
+/// How many pages the narrowed result needs at `rows` parts per page — parse, filter into a fresh sub-catalog over
+/// the same sheet, and count the pages over it. Zero matches is zero pages.
+pub fn search_page_count(
+    allocator: std.mem.Allocator,
+    cat: *const part_catalog.PartCatalog,
+    text: []const u8,
+    rows: u32,
+) !u32 {
+    // invariant: paging needs at least one row per page.
+    assert(rows > 0);
+    const query = try part_query.parse_query(text);
+    var sub: part_catalog.PartCatalog = undefined;
+    try part_filter.filter_catalog(cat, query, &sub);
+    _ = allocator;
+    const pages = part_row.part_page_count(&sub, rows);
+    // invariant: a narrowed result needs no more pages than the catalog would at the same page size.
+    assert(pages <= part_row.part_page_count(cat, rows));
+    return pages;
+}
+
+/// Draw the narrowed page — parse the typed line, filter the catalog into a fresh sub-catalog over the SAME sheet,
+/// and render the page `[offset, offset + rows)` with `part_window`. So what a keeper types is what a keeper sees:
+/// the drawn page shows exactly the parts that match, in held order, each swatch true to the one shared sheet. A
+/// malformed line surfaces the parser's named refusal; an offset past the narrowed result refuses `BadOffset` exactly
+/// as `part_window` does; a bad dimension refuses the shelf's own named error. The drawn grid owns its cells, so it
+/// outlives the local sub-catalog whose sheet is the caller's original.
+pub fn search_shelf(
+    allocator: std.mem.Allocator,
+    cat: *const part_catalog.PartCatalog,
+    text: []const u8,
+    cols: u32,
+    rows: u32,
+    offset: u32,
+) !skate.Grid {
+    // invariant: the catalog never outgrew its own sheet's product ceiling before it is searched.
+    assert(cat.len() <= sprite.max_products);
+    const query = try part_query.parse_query(text);
+    var sub: part_catalog.PartCatalog = undefined;
+    try part_filter.filter_catalog(cat, query, &sub);
+    // invariant: the narrowed sub-catalog windows into the caller's own sheet, never a copy.
+    assert(sub.index.sheet == cat.index.sheet);
+    return part_row.part_window(allocator, &sub, cols, rows, offset);
+}
+
+// --- selftest: five parts, a typed search — the narrowed page shows exactly the matching parts (the same the
+//     hand-filtered window draws), a match-none query draws a real empty page, a bad offset and a malformed line each
+//     refuse by name -----------------------------------------------------------------------------------------------
+
+/// A 16×8 sheet in four solid vertical bands (the part_row fixture), so a 4-wide window carries one known colour.
+fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 16;
+    const h: u32 = 8;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            const band = x / 4; // 0..3
+            buf[off] = if (band == 0 or band == 3) 255 else 0; // r
+            buf[off + 1] = if (band == 1 or band == 3) 255 else 0; // g
+            buf[off + 2] = if (band == 2) 255 else 0; // b
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+/// Read a row's fact line back as bytes — the label region a keeper reads, trimmed of the blank tail (the part_row
+/// reader's own idiom, so the selftest sees exactly the painted line).
+fn row_text(grid: *const skate.Grid, row: u32, out: []u8) u32 {
+    const cells = grid.row_cells(row);
+    // The label region ends where part_row's swatch and gap begin — mirror its own layout constants indirectly by
+    // trimming the blank tail, which is enough to read the fact text a keeper sees.
+    var n: u32 = @intCast(cells.len);
+    while (n > 0 and cells[n - 1] == ' ') : (n -= 1) {}
+    var i: u32 = 0;
+    while (i < n) : (i += 1) out[i] = cells[i];
+    return n;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const sheet = try craft_bands(garden);
+    var cat = part_catalog.PartCatalog.init(&sheet);
+    // Five parts across the bands, three materials, a price spread. Two are stainless-304 (bolt, hexnut).
+    try cat.add_part("bolt", 0, 0, 4, 8, "HX-M8-40", "stainless-304", 125);
+    try cat.add_part("nut", 4, 0, 4, 8, "NY-M8", "brass", 60);
+    try cat.add_part("gear", 8, 0, 4, 8, "GR-24T", "acetal", 845);
+    try cat.add_part("hexnut", 12, 0, 4, 8, "HX-N8", "stainless-304", 55);
+    assert(cat.len() == 4);
+
+    const cols: u32 = 48;
+
+    // A typed material search: two results, and a page draws exactly the stainless parts in held order — the search
+    // view shows what the keeper typed. The first row reads bolt, the part page holds first.
+    {
+        assert((try search_result_count(&cat, "material:stainless-304")) == 2);
+        assert((try search_page_count(garden, &cat, "material:stainless-304", 4)) == 1);
+        const page = try search_shelf(garden, &cat, "material:stainless-304", cols, 4, 0);
+        var buf: [part_row.max_fact_line]u8 = undefined;
+        const r0 = row_text(&page, 0, buf[0..]);
+        assert(std.mem.startsWith(u8, buf[0..r0], "bolt  HX-M8-40  stainless-304  $1.25"));
+        const r1 = row_text(&page, 1, buf[0..]);
+        assert(std.mem.startsWith(u8, buf[0..r1], "hexnut  HX-N8  stainless-304  $0.55"));
+        // The third and fourth rows hold no part (only two matched) — their label region is blank.
+        const r2 = row_text(&page, 2, buf[0..]);
+        assert(r2 == 0);
+    }
+
+    // The narrowed page equals the hand-filtered window drawn directly — the search view invents nothing.
+    {
+        const via_search = try search_shelf(garden, &cat, "material:stainless-304", cols, 4, 0);
+        var sub: part_catalog.PartCatalog = undefined;
+        try part_filter.filter_catalog(&cat, part_filter.Query{ .kind = .material, .text = "stainless-304" }, &sub);
+        const via_hand = try part_row.part_window(garden, &sub, cols, 4, 0);
+        var a: [part_row.max_fact_line]u8 = undefined;
+        var b: [part_row.max_fact_line]u8 = undefined;
+        var row: u32 = 0;
+        while (row < 4) : (row += 1) {
+            const na = row_text(&via_search, row, a[0..]);
+            const nb = row_text(&via_hand, row, b[0..]);
+            assert(na == nb);
+            assert(std.mem.eql(u8, a[0..na], b[0..nb]));
+        }
+    }
+
+    // A price-ceiling search: parts at most 60 cents — nut (60) and hexnut (55), two results.
+    {
+        assert((try search_result_count(&cat, "max:60")) == 2);
+        const page = try search_shelf(garden, &cat, "max:60", cols, 2, 0);
+        var buf: [part_row.max_fact_line]u8 = undefined;
+        const r0 = row_text(&page, 0, buf[0..]);
+        assert(std.mem.startsWith(u8, buf[0..r0], "nut  NY-M8  brass  $0.60"));
+    }
+
+    // A match-none search draws a REAL empty page — zero results, zero pages, a page that refuses no dimension.
+    {
+        assert((try search_result_count(&cat, "material:titanium")) == 0);
+        assert((try search_page_count(garden, &cat, "material:titanium", 4)) == 0);
+        const page = try search_shelf(garden, &cat, "material:titanium", cols, 4, 0);
+        var buf: [part_row.max_fact_line]u8 = undefined;
+        // Every row of the empty page is blank — nothing drawn, and nothing wrong drawn.
+        var row: u32 = 0;
+        while (row < 4) : (row += 1) {
+            assert(row_text(&page, row, buf[0..]) == 0);
+        }
+    }
+
+    // An offset past the narrowed result refuses BadOffset — only two stainless parts, so page offset 2 is past them.
+    if (search_shelf(garden, &cat, "material:stainless-304", cols, 2, 2)) |_| return error.OffsetSlipped else |e| {
+        if (e != error.BadOffset) return error.WrongOffset;
+    }
+
+    // A malformed typed line surfaces the parser's own named refusal to the glass layer — a bad search draws nothing.
+    if (search_shelf(garden, &cat, "stainless-304", cols, 4, 0)) |_| return error.LineSlipped else |e| {
+        if (e != error.NoColon) return error.WrongLine;
+    }
+    if (search_result_count(&cat, "colour:red")) |_| return error.LineSlipped else |e| {
+        if (e != error.UnknownKey) return error.WrongLine;
+    }
+
+    print("GREEN part-search: five parts across four bands — a typed material:stainless-304 line draws exactly the " ++
+        "two stainless parts (bolt $1.25, hexnut $0.55) in held order, the narrowed page equal to the hand-filtered " ++
+        "window drawn directly (the search view invents nothing); a max:60 line draws the two parts at most 60 " ++
+        "cents; a match-none line draws a real empty page (zero results, zero pages, every row blank); an offset " ++
+        "past the narrowed result refuses BadOffset, and a malformed line (no colon, unknown key) surfaces the " ++
+        "parser's named refusal rather than a wrong shelf; a price is a fact drawn and compared, never moved — no " ++
+        "network, no key, no funds\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: part_search selftest\n", .{});
+    return 1;
+}

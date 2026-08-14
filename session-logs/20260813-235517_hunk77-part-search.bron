@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260813.235517
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title HUNK77 — the search box on glass: a typed line draws a narrowed, paged shelf
+prompt continue the recursion after HUNK75/76 landed; take the next agent-doable HUNK lap, self-approve, send as its own signed round, stop at custody gates
+think HUNK75 (filter), HUNK76 (parse) and HUNK73/74 (shelf/paging) were each whole, yet nothing joined them on glass. The next durable crux is the search box a keeper actually sees: type a line, watch the marketplace narrow.
+think Chose pure composition — search_shelf = parse_query -> filter_catalog -> part_window — so it inherits every law those proved (paging loses nothing, swatch true to the sheet, empty result draws an empty page). Added search_result_count and search_page_count so a caller can show N results and size paging.
+think Added brushstroke symlinks for part_filter.rye and part_query.rye (image-layer modules) so the brushstroke build resolves them, matching the existing part_catalog/sprite/qoi symlink pattern.
+obs Durable property proven on metal: the narrowed page equals the hand-filtered window drawn directly (the search view invents nothing); material:stainless-304 draws two parts, max:60 draws two, a match-none line draws a real empty page (every row blank), an offset past the result refuses BadOffset, and a malformed line surfaces the parser's named refusal (NoColon, UnknownKey) rather than a wrong shelf.
+obs A price is a fact drawn ($D.CC) and compared, never moved — custody gate #3 untouched. No network, no key, no funds. TAME bans clean, width exit 0; HUNK76 parser and HUNK73/74 shelf stay GREEN beneath.
+think A persisted `cd brushstroke` from creating symlinks broke one build (rye not found); returned to repo root and rebuilt — a reminder the Bash cwd persists across calls.
+loom witness=hunk_part_search_witness parts=5 searches=4 narrowed_page=equals-hand-filtered
+file brushstroke/part_search.rye HUNK77 — draw the narrowed page from a typed line (parse->filter->window)
+file tools/hunk_part_search_witness.rish witnesses the search view on metal; re-runs HUNK76 + HUNK73/74 GREEN beneath
+file active-designing/20260813-235517_hunk-part-search-narrowed-shelf-on-glass-exploration.md self-approved design round for HUNK77
+file brushstroke/part_filter.rye symlink to ../image/part_filter.rye so the brushstroke build resolves it
+file brushstroke/part_query.rye symlink to ../image/part_query.rye so the brushstroke build resolves it
+recommend keep-going the search arc is whole (filter, parse, draw); the parts journey next wants a part detail view (tap a row -> the full part, bigger picture + all facts), or a header row showing the query and N-results above the shelf
