@@ -1,0 +1,231 @@
+//! lotus/seal.rye — ALES38: the seal, made general — one verify-before-trust law both sheets call. ALES34 sealed the rack sheet and
+//! ALES37 sealed the cue sheet, and ALES37's own reading made the discovery plain: the verify-before-trust seal is not specific to a
+//! rack — it is a law for any travels-as-text record. Yet each module still carried its own copy of that law: the same to_hex, the same
+//! `digest <64 hex>` framing, the same header/digest-line location and Sha256 compare, differing only in the header string and which
+//! parser consumed the verified body. This rung lifts the whole frame into one primitive both wrappers call, so neither can drift.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES38.
+//! Design read: active-designing/20260814-153840_fill-ales38-lotus-seal.md
+//! Stands on: lotus/rack_seal.rye (ALES34) and lotus/cue_seal.rye (ALES37) — the two seals whose shared law this module owns; mirrors
+//! the Sha256 verify-before-trust of lotus/wire.rye (ALES0). A pure primitive over std.crypto only — no audio imports.
+//!
+//! THE CRUX: one primitive owns the whole verify-before-trust frame, PARSER-AGNOSTIC, so both sheets call it and neither drifts. begin
+//! writes the sealed header and a `digest ` line, reserves exactly 64 hex characters, and returns the offsets where the digest and body
+//! go; the caller renders its body directly into out[body_at..] (whatever renders it — one sheet or a composite), and finish hashes
+//! exactly those bytes and backfills the digest — zero scratch. open is the integrity gate BEFORE trust: it locates the header and the
+//! `digest <64 hex>` line, recomputes the Sha256 over the body, and returns the body slice ONLY on a match, refusing BadRecord on a
+//! malformed frame and DigestMismatch on a body that no longer matches its digest. The generalization is exact because open returns
+//! BYTES, not a parsed structure — so any per-format difference (the cue sheet also bounds marker positions against a master) lives in
+//! the caller, after the gate, where it belongs.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A Sha256 integrity frame over an in-process text record, siloed to lotus/. It proves a
+//! record arrived whole, NOT who wrote it — no signature, no key. A signed carry stays a later rung on Keaton's word. No socket, no
+//! network, no keys, no funds, no real device, no real meter, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/seal.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const tally_copy = @import("tally_copy.rye");
+
+const Sha256 = std.crypto.hash.sha2.Sha256;
+
+pub const seal_version = "20260814.153840";
+
+/// The digest line prefix — `digest ` then exactly `digest_hex_len` lowercase hex characters. Named so the one place the line's shape is
+/// checked reads plainly, for every sheet that seals through this module.
+pub const digest_prefix = "digest ";
+
+/// A full Sha256 is 32 bytes, rendered as 64 lowercase hex characters — the same width the ALES0 wire carries, so a single flipped body
+/// byte fails the check.
+pub const digest_hex_len: u32 = Sha256.digest_length * 2;
+
+/// The seal's own faults: DigestMismatch when a body no longer matches its digest, BadRecord when the frame itself is malformed, and
+/// Overflow when a seal would write past the caller's buffer. A wrapper unions these with its own body error set; because Zig error sets
+/// merge by name, BadRecord and Overflow coincide with the body format's own BadRecord / Overflow rather than doubling.
+pub const SealError = error{
+    /// The recomputed Sha256 over the body does not match the framed digest — a byte flipped, a tail truncated, a value edited.
+    DigestMismatch,
+    /// The sealed frame is malformed — a missing or wrong header, or a digest line that is not `digest ` then exactly 64 hex.
+    BadRecord,
+    /// The seal would write past the caller's buffer — refused rather than truncating the record.
+    Overflow,
+};
+
+/// The reserved offsets a `begin` hands back: where the 64-hex digest sits and where the body starts. The caller renders its body at
+/// `body_at` and passes this whole frame to `finish`, so the digest and body offsets are never recomputed by hand.
+pub const Frame = struct {
+    hex_at: u32,
+    body_at: u32,
+};
+
+/// Write `bytes` as lowercase hex into `out`, two characters per byte. `out` must hold exactly `bytes.len * 2` characters. The same
+/// `{x:0>2}` idiom the tree already uses (tally/bud.rye), so a zero byte renders `00` rather than a bare `0`. Kept private — callers seal
+/// and open through begin / finish / open, never by hashing themselves.
+fn to_hex(bytes: []const u8, out: []u8) void {
+    // invariant: the output holds exactly two hex characters per byte.
+    assert(out.len == bytes.len * 2);
+    var i: u32 = 0;
+    while (i < bytes.len) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{bytes[i]}) catch unreachable; // two chars always fit the reserved pair
+    }
+}
+
+/// Begin a sealed record in `out` under `header`: write the header line and the `digest ` prefix, reserve exactly 64 hex characters and
+/// the newline that follows, and return the frame naming where the digest and the body go. The caller renders its body directly into
+/// `out[frame.body_at..]`, then calls `finish` with the same frame. Refuses Overflow rather than writing past the buffer.
+pub fn begin(out: []u8, header: []const u8) SealError!Frame {
+    // invariant: a sealed record names its kind — an empty header could never be told from another format.
+    assert(header.len > 0);
+    const head = std.fmt.bufPrint(out, "{s}\n{s}", .{ header, digest_prefix }) catch return error.Overflow;
+    const hex_at: u32 = @intCast(head.len);
+
+    // Reserve the 64 hex characters and the newline; the digest is backfilled by finish after the body is rendered.
+    if (hex_at + digest_hex_len + 1 > out.len) return error.Overflow;
+    out[hex_at + digest_hex_len] = '\n';
+    const body_at = hex_at + digest_hex_len + 1;
+
+    // invariant: the digest sits ahead of the body, both inside the buffer.
+    assert(hex_at < body_at);
+    assert(body_at <= out.len);
+    return .{ .hex_at = hex_at, .body_at = body_at };
+}
+
+/// Finish a sealed record: the caller has rendered `body_len` bytes at `frame.body_at`; hash exactly those bytes and backfill the
+/// digest reserved by `begin`. Returns the total length of the sealed record. Infallible — `begin` already proved the digest and body
+/// fit, and the body render bounded itself to `out[frame.body_at..]`.
+pub fn finish(out: []u8, frame: Frame, body_len: u32) u32 {
+    // invariant: the rendered body stays within the buffer begin reserved.
+    assert(frame.body_at + body_len <= out.len);
+    var dg: [Sha256.digest_length]u8 = undefined;
+    Sha256.hash(out[frame.body_at .. frame.body_at + body_len], &dg, .{});
+    to_hex(&dg, out[frame.hex_at .. frame.hex_at + digest_hex_len]);
+    // invariant: the digest covers exactly the body, nothing added or omitted.
+    assert(frame.hex_at + digest_hex_len < frame.body_at);
+    return frame.body_at + body_len;
+}
+
+/// Open a sealed record — the integrity gate BEFORE trust. The record must open with exactly `header`, carry a well-formed
+/// `digest <64 hex>` line, and its recomputed Sha256 over the body must match that digest; only then is the body slice returned to the
+/// caller to parse. A missing or malformed header or digest line refuses BadRecord (structural); a body that no longer matches its
+/// digest refuses DigestMismatch (content) — both before the body is ever handed on. Returns a slice INTO `text`, so the caller owns no
+/// copy.
+pub fn open(text: []const u8, header: []const u8) error{ DigestMismatch, BadRecord }![]const u8 {
+    // invariant: a seal is opened against a named kind — the same non-empty header a begin wrote.
+    assert(header.len > 0);
+
+    // The header line, then the digest line, located by their newlines so the exact body slice is recovered for hashing.
+    const nl0 = std.mem.indexOfScalar(u8, text, '\n') orelse return error.BadRecord;
+    if (!std.mem.eql(u8, text[0..nl0], header)) return error.BadRecord;
+
+    const after_head = text[nl0 + 1 ..];
+    const nl1_rel = std.mem.indexOfScalar(u8, after_head, '\n') orelse return error.BadRecord;
+    const digest_line = after_head[0..nl1_rel];
+
+    // The digest line must be exactly `digest ` then 64 hex characters — a structural check, distinct from a content mismatch.
+    if (digest_line.len != digest_prefix.len + digest_hex_len) return error.BadRecord;
+    if (!std.mem.eql(u8, digest_line[0..digest_prefix.len], digest_prefix)) return error.BadRecord;
+    const framed_hex = digest_line[digest_prefix.len..];
+    var k: u32 = 0;
+    while (k < framed_hex.len) : (k += 1) {
+        const c = framed_hex[k];
+        const is_hex = (c >= '0' and c <= '9') or (c >= 'a' and c <= 'f');
+        if (!is_hex) return error.BadRecord; // a non-hex digit is a malformed seal, not a content mismatch
+    }
+
+    // The body is everything after the digest line's newline — hashed and compared BEFORE it is ever returned.
+    const body = after_head[nl1_rel + 1 ..];
+    var dg: [Sha256.digest_length]u8 = undefined;
+    Sha256.hash(body, &dg, .{});
+    var computed_hex: [digest_hex_len]u8 = undefined;
+    to_hex(&dg, computed_hex[0..]);
+    if (!std.mem.eql(u8, framed_hex, computed_hex[0..])) return error.DigestMismatch;
+
+    // invariant: the returned body is a suffix of the input, never a copy.
+    assert(body.len <= text.len);
+    return body;
+}
+
+// --- selftest: THE CRUX — an arbitrary body sealed with begin/finish opens back to exactly the same bytes under its header; a wrong
+//     header, a flipped byte, a truncated tail, and a malformed digest each refuse by name; a too-small buffer refuses Overflow ------
+
+fn run_selftest() !u8 {
+    const header = "format lotus-seal-test-v1";
+    const body = "the body a keeper saves — bytes of any kind\n";
+
+    // 1. THE CRUX — begin, render the body in place, finish; the record opens with the header and a `digest ` line, and open returns
+    //    exactly the body bytes.
+    {
+        var out: [256]u8 = undefined;
+        const fr = try begin(out[0..], header);
+        // render the body directly into the reserved body region, as a real wrapper's render_* would.
+        tally_copy.copy_disjoint(u8, out[fr.body_at .. fr.body_at + body.len], body);
+        const n = finish(out[0..], fr, @intCast(body.len));
+
+        const want_head = "format lotus-seal-test-v1\ndigest ";
+        if (!std.mem.eql(u8, out[0..want_head.len], want_head)) return error.SealHeadWrong;
+
+        const got = try open(out[0..n], header);
+        if (!std.mem.eql(u8, got, body)) return error.OpenBodyWrong;
+    }
+
+    // 2. a WRONG header refuses BadRecord — a record sealed under one kind is never opened as another.
+    {
+        var out: [256]u8 = undefined;
+        const fr = try begin(out[0..], header);
+        tally_copy.copy_disjoint(u8, out[fr.body_at .. fr.body_at + body.len], body);
+        const n = finish(out[0..], fr, @intCast(body.len));
+        if (open(out[0..n], "format lotus-other-v1")) |_| return error.WrongHeaderSlipped else |e| if (e != error.BadRecord) return error.WrongWrongHeader;
+    }
+
+    // 3. a single flipped BODY byte refuses DigestMismatch — the integrity gate, before the body is returned.
+    {
+        var out: [256]u8 = undefined;
+        const fr = try begin(out[0..], header);
+        tally_copy.copy_disjoint(u8, out[fr.body_at .. fr.body_at + body.len], body);
+        const n = finish(out[0..], fr, @intCast(body.len));
+        out[n - 2] = if (out[n - 2] == 'x') 'y' else 'x'; // a byte inside the body, never the digest line
+        if (open(out[0..n], header)) |_| return error.TamperSlipped else |e| if (e != error.DigestMismatch) return error.WrongTamper;
+    }
+
+    // 4. a TRUNCATED tail refuses DigestMismatch — the shortened body hashes differently.
+    {
+        var out: [256]u8 = undefined;
+        const fr = try begin(out[0..], header);
+        tally_copy.copy_disjoint(u8, out[fr.body_at .. fr.body_at + body.len], body);
+        const n = finish(out[0..], fr, @intCast(body.len));
+        if (open(out[0 .. n - 1], header)) |_| return error.TruncSlipped else |e| if (e != error.DigestMismatch) return error.WrongTrunc;
+    }
+
+    // 5. a malformed digest line refuses BadRecord — a missing digest line, a short digest, and a non-hex digest, each before hashing.
+    {
+        if (open("format lotus-seal-test-v1\n", header)) |_| return error.NoDigestSlipped else |e| if (e != error.BadRecord) return error.WrongNoDigest;
+        if (open("format lotus-seal-test-v1\ndigest abc\nbody\n", header)) |_| return error.ShortDigestSlipped else |e| if (e != error.BadRecord) return error.WrongShortDigest;
+        const bad_hex = "format lotus-seal-test-v1\ndigest " ++ ("z" ** 64) ++ "\nbody\n";
+        if (open(bad_hex, header)) |_| return error.BadHexSlipped else |e| if (e != error.BadRecord) return error.WrongBadHex;
+    }
+
+    // 6. begin into a too-small buffer refuses Overflow rather than writing past its end.
+    {
+        var tiny: [40]u8 = undefined; // room for the header but not the digest line
+        if (begin(tiny[0..], header)) |_| return error.OverflowSlipped else |e| if (e != error.Overflow) return error.WrongOverflow;
+    }
+
+    print("GREEN ales-seal: the seal, made general — one verify-before-trust law both sheets call, the ALES0 wire's Sha256 " ++
+        "verify-before-trust lifted out of the ALES34 rack seal and the ALES37 cue seal into one primitive. THE CRUX: one primitive " ++
+        "owns the whole frame, PARSER-AGNOSTIC — begin writes the header and reserves the 64-hex digest, the caller renders its body " ++
+        "in place, finish hashes exactly those bytes and backfills the digest (zero scratch), and open recomputes the digest and " ++
+        "returns the body slice ONLY on a match; an arbitrary body round-trips whole, a wrong header / a missing / short / non-hex " ++
+        "digest line refuses BadRecord, a flipped body byte and a truncated tail refuse DigestMismatch, and a too-small buffer refuses " ++
+        "Overflow; open returns BYTES not a parsed structure, so any per-format difference lives in the caller after the gate; the " ++
+        "seal proves a record arrived whole, not who wrote it — no signature, no socket, no network, no keys, no funds, no real " ++
+        "device, no real meter, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

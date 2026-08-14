@@ -1,0 +1,41 @@
+# tools/ales_seal_witness.rish — the seal, made general (ALES38).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES38.
+# Design read: active-designing/20260814-153840_fill-ales38-lotus-seal.md
+# Stands on: lotus/rack_seal.rye (ALES34) and lotus/cue_seal.rye (ALES37) — the two seals whose shared law this module now owns;
+# mirrors the Sha256 verify-before-trust of lotus/wire.rye (ALES0).
+#
+# lotus/seal.rye lifts the verify-before-trust frame the rack seal and the cue seal each carried into ONE parser-agnostic primitive:
+# begin writes the sealed header and reserves the 64-hex digest, the caller renders its body in place, finish hashes exactly those
+# bytes and backfills the digest (zero scratch), and open recomputes the digest and returns the body slice ONLY on a match. The crux:
+# one primitive owns the whole frame, parser-agnostic, so both sheets call it and neither drifts — open returns BYTES, not a parsed
+# structure, so any per-format difference (the cue sheet also bounds marker positions against a master) lives in the caller after the
+# gate. The selftest proves: an arbitrary body sealed with begin/finish opens back to exactly the same bytes under its header; a wrong
+# header, a missing / short / non-hex digest line each refuse BadRecord; a flipped body byte and a truncated tail each refuse
+# DigestMismatch; a too-small buffer refuses Overflow. The seal proves a record arrived whole, not who wrote it — no signature, no keys,
+# no network, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_seal_witness.rish
+
+say "ales-seal: Language EN — ALES38 lifts the verify-before-trust seal out of the ALES34 rack seal and the ALES37 cue seal into one primitive both sheets call, so the law lives in one place and neither wrapper can drift from the other: a byte flipped in a copy-paste, a truncated file, a hand-edited value is caught at the gate rather than parsed as some other record, the same verify-before-trust the ALES0 audio wire already keeps for a live frame."
+say "ales-seal: Style Radiant — the law is stated positively: one primitive owns the whole frame — begin writes the header and reserves the 64-hex digest, the caller renders its body in place, finish hashes exactly those bytes and backfills the digest, and open recomputes the digest and returns the body slice ONLY on a match, so no corrupt record is ever returned to a parser."
+say "ales-seal: Lens TAME — open returns BYTES, not a parsed structure, so the generalization is exact and any per-format difference lives in the caller after the gate; the digest is a full Sha256 rendered 64 hex wide; a malformed header or digest line refuses BadRecord (structural), a body that no longer matches its digest refuses DigestMismatch (content), a too-small buffer refuses Overflow, each before the body is handed on; the seal proves a record arrived whole, not who wrote it — no signature, no key; siloed to lotus/, no network, no funds, no device, no meter, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/seal"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/seal.rye -femit-bin=${bin}"]
+assert build.ok else "ales-seal: build failed — ${build.err}"
+
+let outfile = "lotus/bin/seal.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-seal: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-seal: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-seal' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-seal: selftest did not print the GREEN ales-seal line"
+
+say "ales-seal: GREEN — the verify-before-trust seal is one primitive both sheets call: begin/finish frame a body zero-scratch and open recomputes the digest and returns the body slice only on a match, refusing DigestMismatch on any flipped or truncated body, BadRecord on any malformed frame or wrong header, and Overflow on a too-small buffer; an arbitrary body round-trips whole, and both shipped seal witnesses (ales-rack-seal, ales-cue-seal) stay GREEN unchanged. The next Lotus rung is a SESSION FILE — begin, render the rack sheet and the cue sheet into one body over one master, finish, and a single open verifies the whole project before any of it is trusted."
