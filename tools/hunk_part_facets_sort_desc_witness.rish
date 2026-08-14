@@ -1,0 +1,45 @@
+# tools/hunk_part_facets_sort_desc_witness.rish — the sort a keeper can reverse, dearest-first (HUNK91).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK91.
+# Design read: active-designing/20260814-013432_hunk-part-facets-sort-direction-exploration.md
+# Teacher, thanked clean-room: a search box whose price sort turns both ways — low to high, high to low (concept only, siloed).
+#
+# HUNK89 sorts the faceted result cheapest-first, yet the direction was fixed — a keeper could find the least dear part,
+# never the dearest. This rung is the descending half: brushstroke/part_facets_sort_desc.rye `sort_by_price_desc`
+# reorders a catalog descending by its recorded cent count, ties keeping HELD order (stable, the same tie rule as
+# ascending — not reversed), and `facets_sorted_desc_shelf` composes it after the faceted filter. The selftest proves
+# dearest-first, that descending is the exact reverse of ascending on distinct prices, that a tie keeps held order in
+# both directions (not a naive reversal), that the sort is a permutation, and that a malformed clause and a bad offset
+# each refuse by name. It is additive — HUNK89's ascending pair stays GREEN beside it.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_part_facets_sort_desc_witness.rish
+
+say "hunk-part-facets-sort-desc: Language EN — HUNK91 turns the price sort both ways: sort_by_price_desc reads the faceted result dearest-first, and facets_sorted_desc_shelf draws that page high to low."
+say "hunk-part-facets-sort-desc: Style Radiant — a sort you cannot reverse is half a sort; the descending half answers the other honest question — what is the best they have — still stable, still a permutation."
+say "hunk-part-facets-sort-desc: Lens TAME — pure text-and-catalog over HUNK89's ascending sort, mirrored; a tie is broken by held order in BOTH directions, so descending is not a naive reversal; a price is compared and reordered by, never moved; positive invariants per fn; a malformed clause and a bad offset each refuse by name; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/part_facets_sort_desc"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_facets_sort_desc.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-part-facets-sort-desc: build failed — ${build.err}"
+
+# Read the GREEN line from a file — it carries an apostrophe ("parser's") that breaks a shell single-quote round-trip.
+let outfile = "brushstroke/bin/part_facets_sort_desc.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "hunk-part-facets-sort-desc: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "hunk-part-facets-sort-desc: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN part-facets-sort-desc' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "hunk-part-facets-sort-desc: selftest did not print the GREEN part-facets-sort-desc line"
+
+# HUNK89 stays GREEN — the ascending sort this rung mirrors and reuses (the distinct-price reverse check calls it).
+let a = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_facets_sort.rye -femit-bin=brushstroke/bin/part_facets_sort && brushstroke/bin/part_facets_sort selftest > brushstroke/bin/part_facets_sort.out 2>&1"]
+assert a.ok else "hunk-part-facets-sort-desc: HUNK89 part_facets_sort re-run failed — see brushstroke/bin/part_facets_sort.out"
+let a_green = run ["sh" "-c" "grep -q 'GREEN part-facets-sort' brushstroke/bin/part_facets_sort.out && echo yes"]
+assert (trim a_green.out) == "yes" else "hunk-part-facets-sort-desc: HUNK89 part_facets_sort did not stay GREEN"
+
+say "hunk-part-facets-sort-desc: GREEN — a keeper reads the faceted result dearest-first as well as cheapest-first, the tie held in both directions; HUNK89 ascending sort stays GREEN beside it. HUNK91 lands."

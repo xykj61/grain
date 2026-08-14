@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260814.013432
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title HUNK91 — the sort a keeper can reverse: dearest-first, the tie held both ways
+prompt Recursion loop past HUNK90; take the next agent-doable lap Lindy-first crux-first; send each finished increment; stop at custody gates.
+think HUNK89 sorts cheapest-first and HUNK90 names the sort, yet the direction was fixed — a keeper could find the least dear part, never the dearest; a sort you cannot reverse is half a sort.
+think Built brushstroke/part_facets_sort_desc.rye mirroring HUNK89: sort_by_price_desc picks the DEAREST not-yet-taken part with a strict `>` (so a tie keeps the earliest held index), and facets_sorted_desc_shelf composes parse → filter → sort desc → window; additive, HUNK89's ascending pair keeps its name and GREEN witness.
+think The crux is that a tie is broken by HELD ORDER in BOTH directions — descending is NOT a naive reversal of the ascending array; proven by the exact-reverse check on a distinct-price result (descending[i] == ascending[n-1-i]) beside the tie holding hexnut before washer whichever way the sort turns.
+obs Clean first run — GREEN on the first witness pass; TAME bans + width clean; the ascending HUNK89 re-runs GREEN (the reverse check calls its sort_by_price directly).
+obs A price is compared and reordered by, never moved — custody gate #3 untouched; no network, no key, no funds.
+loom witness=hunk_part_facets_sort_desc_witness green=1 parts=5 tie_price_cents=55 desc_prices=845,125,60,55,55 union_result=3
+file brushstroke/part_facets_sort_desc.rye HUNK91 sort_by_price_desc (stable, descending, tie in held order) · facets_sorted_desc_shelf
+file tools/hunk_part_facets_sort_desc_witness.rish witness GREEN; HUNK89 ascending sort stays GREEN beside it
+file active-designing/20260814-013432_hunk-part-facets-sort-direction-exploration.md self-approved design round for HUNK91
+file image/README.md search paragraph now names the both-ways sort (dearest-first, tie held both ways) and its witness
+recommend keep-going — the price sort now turns both ways; next is a directional sorted header (name low-to-high / high-to-low), a per-facet count, or another Season-A / double-seat journey. No gate reached.
