@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260814.121500
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier (Eastern EDT convention)
+title ALES9 — Lotus's mute and solo, the channel strip's two switches
+prompt Continue the autonomous recur (baton prin recur): next agent-doable lap Lindy-first crux-first, self-approve design rounds, send each finished increment to origin and xykj61, STOP only at custody gates.
+think Fifth increment of this recur, right after ALES8 (fader column) landed and pushed to both remotes. No custody gate in reach — the Lotus ladder is pure local software.
+think Lindy-first crux-first: of ALES8's named next roads (pan · mute/solo · transport loop · crossfade curve), mute and solo are the most durable — the channel strip's two most-used controls after the fader, and they compose DIRECTLY on the fader I just built. Pan waits on stereo (a larger architectural opening); a loop only extends the ALES7 read head; a curve refines the ALES4 fade.
+think The one crux: mute/solo add NO new sum and NO new saturation. A Strip resolves to an EFFECTIVE fader (its own fader if audible, else 0/1 silence), then the mix is ALES8's fader.render delegated whole. The only sum in the suite stays the one wide-i64-accumulate-then-saturate-once. The desk rule stated positively: solo, when any track holds it, wins (solo-in-place overrides even a track's own mute); otherwise every un-muted track is heard.
+think Designed lotus/strip.rye: Strip{fader,muted,soloed}, any_solo, audible(strip, solo_active) as a positive predicate, resolve → effective fader column, render(session, strips, clock, out) delegating to fader.render. A default column reproduces ALES8 byte-for-byte (channel strip generalizes fader column). ALES8's fader.rye untouched — composed over its public API.
+obs GREEN on first build across seven blocks. tame_style_check bans clean (strip.rye carries ≥2 asserts per fn), width-check exit 0, ALES8 fader witness re-run GREEN (strictly additive). render's error union (TrackError || clock.ClockError || timeline.EditError) coerces the delegated try cleanly.
+obs Honest scope kept explicit: mute/solo are a pure map from switches to levels, no electrical or hardware claim; purely local, no socket, no network, no keys, no funds, no real device. No custody gate reached.
+loom witness=ales_strip_witness cases=7 build=first_green tame=clean width=exit0 ales8_regreen=1
+file lotus/strip.rye ALES9 module — Strip/any_solo/audible/resolve/render, mute+solo resolved to an effective fader, mix delegated to ALES8
+file tools/ales_strip_witness.rish witness — 7 cases (rest==ALES8, mute, solo, two-solo, solo-over-mute, BadGain, ClipFull), GREEN on metal
+file active-designing/20260814-fill-ales9-lotus-mute-solo.md self-approved design round for ALES9
+file lotus/README.md seated ALES9 in status, rungs, prove-list, road-on
+recommend keep-going ALES10 — pan (a fader per channel as stereo opens), a transport loop over a marked region, or the equal-power crossfade curve. No custody gate in reach.
