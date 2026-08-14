@@ -1,0 +1,292 @@
+//! lotus/markers.rye — ALES20: the markers track — named positions a keeper navigates and snaps to. Play (ALES7/15), loop
+//! (ALES14/16), meter (ALES13/17/18), and scrub (ALES19) all read a master by RAW SAMPLE INDEX, yet a keeper thinks in NAMED
+//! PLACES — the verse, the chorus, the edit point, the downbeat. A markers track is the one primitive that turns a number into a
+//! name, and every gesture already built reads better through it: a scrub SNAPS to the nearest named place, a loop is the REGION
+//! BETWEEN two markers. This rung is that named, sorted track.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES20.
+//! Design read: active-designing/20260814-fill-ales20-lotus-markers.md
+//! Stands on: lotus/scrub.rye (ALES19) — the scrub's move_to reused whole for snap (a marker snap is a move to a named position);
+//! lotus/loop.rye (ALES14) — loop.make reused whole for the region between two markers; lotus/pan.rye (ALES10) — the StereoClip
+//! whose two channels share one length; lotus/timeline.rye (ALES2) — the Clip the master is built from.
+//!
+//! THE CRUX: a markers track keeps its named positions SORTED and UNIQUE, so the nearest-marker query returns the true nearest
+//! named place in one ordered pass — and a scrub snapped to it lands EXACTLY there. Two facts make this exact. Every `add` refuses
+//! a duplicate position and inserts in sorted order, so the track is always a strictly-ascending run of positions — the order is a
+//! maintained invariant, not a re-sort per query. And over an ascending run the marker of least distance to a query is well-
+//! defined, ties resolving to the LOWER position (the first encountered in order), so `snap` is deterministic, never flapping
+//! between two equidistant marks. Composing ALES14, the region between marker i and marker j (i < j) is exactly the loop
+//! [pos_i, pos_j).
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A bounded, sorted set of named positions into an in-process two-channel i16 PCM
+//! master, siloed to lotus/. A marker is a label on an index, not a signal on a wire. No socket, no network, no keys, no funds, no
+//! real device, no real meter, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/markers.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const loop = @import("loop.rye");
+const scrub = @import("scrub.rye");
+
+pub const markers_version = "20260814.133106";
+
+/// The most markers one track holds. Bounded so the sorted insert and the nearest scan are proven to terminate over a fixed array,
+/// never an unbounded collection.
+pub const max_markers: u32 = 64;
+
+/// The longest marker name in bytes. Bounded so each Marker carries its label in a fixed array — a place is a word a keeper reads
+/// (verse, chorus), not an allocation.
+pub const max_name: u32 = 24;
+
+/// The combined error set of the markers track: every fault refuses by name before a marker is inserted, snapped, or looped.
+pub const MarkerError = error{
+    /// A name that is empty or longer than max_name — refused at add, before any insert.
+    BadName,
+    /// A marker position past the master's shared end — refused at add (a marker at the end is a valid boundary).
+    PastEnd,
+    /// A second marker at a position already marked — refused so the track stays strictly ascending and unique.
+    Duplicate,
+    /// A marker past the max_markers bound — refused before the fixed array overflows.
+    MarkersFull,
+    /// A nearest query (or snap) on an empty track — there is no nearest named place.
+    NoMarkers,
+    /// A region_between whose indices are not an ascending pair of valid marker indices.
+    BadPair,
+} || scrub.ScrubError;
+
+/// A named position in a master: a sample index and a bounded name. The name lives in a fixed array with a length, so a marker
+/// carries a word a keeper reads without any allocation.
+pub const Marker = struct {
+    pos: u32 = 0,
+    name_buf: [max_name]u8 = [_]u8{0} ** max_name,
+    name_len: u32 = 0,
+};
+
+/// A bounded, sorted set of named positions over one master. The items stay strictly ascending by position (add's maintained
+/// invariant), so nearest scans in order. A fresh track is empty — plain index reading until a keeper marks a place.
+pub const Markers = struct {
+    items: [max_markers]Marker = [_]Marker{.{}} ** max_markers,
+    count: u32 = 0,
+};
+
+/// The name of marker `i`, read back as the exact bytes stored. So a keeper reads the word they marked a place with.
+pub fn name_of(m: *const Markers, i: u32) []const u8 {
+    // invariant: the index names a live marker whose stored name fits the bound.
+    assert(i < m.count and m.items[i].name_len <= max_name);
+    return m.items[i].name_buf[0..m.items[i].name_len];
+}
+
+/// The position of marker `i`. So a keeper (or a snap/loop) reads a named place as a sample index.
+pub fn pos_of(m: *const Markers, i: u32) u32 {
+    // invariant: the index names a live marker.
+    assert(i < m.count);
+    return m.items[i].pos;
+}
+
+/// Add a named position, kept SORTED ascending and UNIQUE. Refuses BadName (empty or oversized), PastEnd (past the master's shared
+/// end), Duplicate (a marker already at pos), MarkersFull (past the bound) — each before any insert, so the track's ascending-and-
+/// unique invariant holds after every add. The one place a marker's legality is proven.
+pub fn add(m: *Markers, master: *const pan.StereoClip, pos: u32, name: []const u8) MarkerError!void {
+    // invariant: the two channels share one length and the track is within its bound on entry.
+    assert(master.left.len == master.right.len and m.count <= max_markers);
+    if (name.len == 0 or name.len > max_name) return error.BadName;
+    if (pos > master.left.len) return error.PastEnd;
+    if (m.count == max_markers) return error.MarkersFull;
+
+    // find the insert slot keeping ascending order, refusing a duplicate position along the way (one bounded pass).
+    var slot: u32 = 0;
+    while (slot < m.count) : (slot += 1) {
+        if (m.items[slot].pos == pos) return error.Duplicate;
+        if (m.items[slot].pos > pos) break;
+    }
+    // shift the tail up by one to open the slot — a bounded descent from the end, so no element is overwritten before it moves.
+    var k: u32 = m.count;
+    while (k > slot) : (k -= 1) m.items[k] = m.items[k - 1];
+
+    var mk = Marker{ .pos = pos, .name_len = @intCast(name.len) };
+    var b: u32 = 0;
+    // copy the name into the fixed array — a bounded loop, so no seam cast and no unbounded copy.
+    while (b < name.len) : (b += 1) mk.name_buf[b] = name[b];
+    m.items[slot] = mk;
+    m.count += 1;
+
+    // invariant: the track grew by one and stays strictly ascending and unique (checked in full by the witness).
+    assert(m.count >= 1 and m.count <= max_markers);
+    assert(slot == 0 or m.items[slot - 1].pos < m.items[slot].pos);
+    assert(slot + 1 == m.count or m.items[slot].pos < m.items[slot + 1].pos);
+}
+
+/// The index of the marker nearest `pos`, ties resolving to the LOWER position (the first in ascending order). One ordered pass
+/// over a strictly-ascending run, so the nearest is unambiguous and the result deterministic. Refuses NoMarkers on an empty track.
+pub fn nearest(m: *const Markers, pos: u32) MarkerError!u32 {
+    if (m.count == 0) return error.NoMarkers;
+    // invariant: a live track carries at least one marker within its bound.
+    assert(m.count >= 1 and m.count <= max_markers);
+    var best: u32 = 0;
+    var best_dist: u32 = dist(m.items[0].pos, pos);
+    var i: u32 = 1;
+    while (i < m.count) : (i += 1) {
+        const d = dist(m.items[i].pos, pos);
+        // strictly-less keeps the FIRST (lower-position) marker on a tie — deterministic snap.
+        if (d < best_dist) {
+            best_dist = d;
+            best = i;
+        }
+    }
+    // invariant: the chosen marker is a real index and no marker is strictly nearer than it.
+    assert(best < m.count);
+    return best;
+}
+
+/// The absolute distance between two sample positions — an unsigned magnitude, whichever side `a` lies on.
+fn dist(a: u32, b: u32) u32 {
+    return if (a >= b) a - b else b - a;
+}
+
+/// Move a scrub to the nearest marker to its current position, returning the marker index landed on. Composes ALES19's move_to
+/// over the found position (which is ≤ master.len, so the move never refuses PastEnd). So a keeper drops a scrub roughly and it
+/// snaps to the nearest named place. Refuses NoMarkers on an empty track.
+pub fn snap(s: *scrub.Scrub, m: *const Markers, master: *const pan.StereoClip) MarkerError!u32 {
+    // invariant: the two channels share one length; the scrub carries a legal window.
+    assert(master.left.len == master.right.len);
+    const i = try nearest(m, s.pos);
+    try scrub.move_to(s, master, m.items[i].pos);
+    // invariant: the scrub now sits exactly on the nearest marker's position.
+    assert(s.pos == m.items[i].pos);
+    return i;
+}
+
+/// The ALES14 loop region between marker `i` and marker `j` (i < j) — exactly [pos_i, pos_j). Composes loop.make over the two
+/// named positions (strictly ascending, so pos_i < pos_j, a non-empty region). Refuses BadPair when the indices are not an
+/// ascending pair of valid marker indices. So a keeper loops between two named places.
+pub fn region_between(m: *const Markers, i: u32, j: u32, master: *const pan.StereoClip) MarkerError!loop.Loop {
+    // invariant: the two channels share one length.
+    assert(master.left.len == master.right.len);
+    if (i >= j or j >= m.count) return error.BadPair;
+    // the track is strictly ascending, so i < j gives pos_i < pos_j — loop.make then proves the region within the master.
+    return loop.make(m.items[i].pos, m.items[j].pos, master.left.len) catch return error.BadPair;
+}
+
+// --- selftest: THE CRUX — markers added OUT OF ORDER stay sorted and unique, nearest returns the true nearest with ties to the
+//     lower position, and a scrub snapped to the track lands EXACTLY on the nearest marker; a marker carries its name back byte-
+//     for-byte; region_between yields exactly the loop [pos_i, pos_j) and drives a real ALES14 loop; every edge refuses by name --
+
+fn run_selftest() !u8 {
+    var master = pan.StereoClip{};
+    try timeline.splice(&master.left, 0, &[_]i16{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+    try timeline.splice(&master.right, 0, &[_]i16{ 0, -1, -2, -3, -4, -5, -6, -7, -8, -9 });
+
+    // 1. THE CRUX — markers added OUT OF ORDER stay sorted and unique. Add positions 8, 2, 5, 0 in that order; the track reads
+    //    ascending 0, 2, 5, 8, each carrying its own name.
+    {
+        var m = Markers{};
+        try add(&m, &master, 8, "chorus");
+        try add(&m, &master, 2, "verse");
+        try add(&m, &master, 5, "bridge");
+        try add(&m, &master, 0, "intro");
+        if (m.count != 4) return error.CountWrong;
+        const want_pos = [_]u32{ 0, 2, 5, 8 };
+        const want_name = [_][]const u8{ "intro", "verse", "bridge", "chorus" };
+        var i: u32 = 0;
+        while (i < m.count) : (i += 1) {
+            if (pos_of(&m, i) != want_pos[i]) return error.NotSorted;
+            if (!std.mem.eql(u8, name_of(&m, i), want_name[i])) return error.NameWrong;
+            // strictly ascending — every marker's position exceeds its predecessor's.
+            if (i > 0 and !(pos_of(&m, i - 1) < pos_of(&m, i))) return error.NotStrictlyAscending;
+        }
+    }
+
+    // 2. THE CRUX — nearest returns the true nearest, ties resolving to the LOWER position; a scrub snapped lands EXACTLY there.
+    //    Track {0,2,5,8}: pos 1 → marker 0 (dist 1 vs 1 tie → lower, index 0 at pos 0); pos 3 → marker 1 (pos 2, dist 1 < 2);
+    //    pos 7 → marker 3 (pos 8, dist 1 < 2); pos 5 → marker 2 exactly.
+    {
+        var m = Markers{};
+        try add(&m, &master, 0, "a");
+        try add(&m, &master, 2, "b");
+        try add(&m, &master, 5, "c");
+        try add(&m, &master, 8, "d");
+
+        if (try nearest(&m, 1) != 0) return error.NearestTieWrong; // dist 1 to pos 0, dist 1 to pos 2 → lower (0)
+        if (try nearest(&m, 3) != 1) return error.NearestWrong3;
+        if (try nearest(&m, 7) != 3) return error.NearestWrong7;
+        if (try nearest(&m, 5) != 2) return error.NearestExactWrong;
+
+        // a scrub dropped roughly at 7 snaps to marker 3 (pos 8) exactly.
+        var s = try scrub.make(2);
+        try scrub.move_to(&s, &master, 7);
+        const landed = try snap(&s, &m, &master);
+        if (landed != 3 or s.pos != 8) return error.SnapWrong;
+        // and a scrub at 1 snaps to the lower of the two equidistant marks (pos 0).
+        try scrub.move_to(&s, &master, 1);
+        if (try snap(&s, &m, &master) != 0 or s.pos != 0) return error.SnapTieWrong;
+    }
+
+    // 3. region_between yields exactly the loop [pos_i, pos_j) and drives a real ALES14 loop — markers {0,2,5,8}, the region
+    //    between marker 1 (pos 2) and marker 3 (pos 8) is the armed loop [2,8), span 6.
+    {
+        var m = Markers{};
+        try add(&m, &master, 0, "a");
+        try add(&m, &master, 2, "b");
+        try add(&m, &master, 5, "c");
+        try add(&m, &master, 8, "d");
+        const lp = try region_between(&m, 1, 3, &master);
+        if (lp.start != 2 or lp.end != 8 or !lp.on or lp.span() != 6) return error.RegionWrong;
+    }
+
+    // 4. every edge refuses by name — a duplicate position, a position past the master, an empty and an oversized name, a track
+    //    filled past the bound, a nearest/snap on an empty track, and a non-ascending index pair.
+    {
+        var m = Markers{};
+        try add(&m, &master, 3, "x");
+        if (add(&m, &master, 3, "y")) |_| return error.DupSlipped else |e| if (e != error.Duplicate) return error.WrongDup;
+        if (add(&m, &master, 11, "z")) |_| return error.PastEndSlipped else |e| if (e != error.PastEnd) return error.WrongPastEnd;
+        if (add(&m, &master, 4, "")) |_| return error.EmptyNameSlipped else |e| if (e != error.BadName) return error.WrongEmptyName;
+        const huge = [_]u8{'q'} ** (max_name + 1);
+        if (add(&m, &master, 4, &huge)) |_| return error.HugeNameSlipped else |e| if (e != error.BadName) return error.WrongHugeName;
+
+        var empty = Markers{};
+        if (nearest(&empty, 0)) |_| return error.NoMarkersSlipped else |e| if (e != error.NoMarkers) return error.WrongNoMarkers;
+        var s = try scrub.make(1);
+        if (snap(&s, &empty, &master)) |_| return error.SnapEmptySlipped else |e| if (e != error.NoMarkers) return error.WrongSnapEmpty;
+
+        // a non-ascending or out-of-range index pair refuses BadPair.
+        if (region_between(&m, 0, 0, &master)) |_| return error.BadPairSlipped else |e| if (e != error.BadPair) return error.WrongBadPair;
+    }
+
+    // 5. the track refuses MarkersFull past its bound — filling max_markers legal positions, then one more refuses, leaving the
+    //    track exactly full and unchanged.
+    {
+        var big = pan.StereoClip{};
+        // a master long enough to hold max_markers distinct positions.
+        var buf: [max_markers]i16 = [_]i16{0} ** max_markers;
+        try timeline.splice(&big.left, 0, &buf);
+        try timeline.splice(&big.right, 0, &buf);
+        var m = Markers{};
+        var p: u32 = 0;
+        while (p < max_markers) : (p += 1) try add(&m, &big, p, "m");
+        if (m.count != max_markers) return error.FillCountWrong;
+        // the master has one more legal position (max_markers itself, the end), yet the track is full.
+        if (add(&m, &big, max_markers, "over")) |_| return error.FullSlipped else |e| if (e != error.MarkersFull) return error.WrongFull;
+        if (m.count != max_markers) return error.FullMutated;
+    }
+
+    print("GREEN ales-markers: a bounded, SORTED, UNIQUE set of named positions over a stereo master — a keeper reads by name, not " ++
+        "raw index. THE CRUX: markers added out of order stay strictly ascending and unique (add's maintained invariant), so " ++
+        "nearest returns the true nearest named place in one ordered pass, ties resolving to the LOWER position, and a scrub " ++
+        "snapped to the track lands EXACTLY on the nearest marker; a marker carries its name back byte-for-byte; region_between " ++
+        "yields exactly the ALES14 loop [pos_i, pos_j) and drives a real armed loop; and every edge refuses by name — a duplicate " ++
+        "position, a position past the master, an empty or oversized name, a track filled past the bound, a nearest/snap on an " ++
+        "empty track, a non-ascending index pair; scrub.move_to and loop.make reused whole; no socket, no network, no keys, no " ++
+        "funds, no real device, no real meter, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
