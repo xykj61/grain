@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260813.231906
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu VPS pier — Eastern (EDT) time convention
+title HUNK71 — the parts marketplace carries honest facts beside each window
+prompt recur baton prin — next agent-doable lap Lindy-first crux-first; send often; the front-door README named a real parts catalog as the horizon
+think After the Open Image front door landed, the crux that opens Season A's marketplace half is the real parts catalog — HUNK4–7 built the visual half (one sheet, each product a window, the index travelling as text); a McMaster-Carr catalog carries more than a picture.
+think Read sprite.rye and sprite_catalog.rye first to extend rather than duplicate. SpriteIndex holds name→window; the new PartCatalog wraps one SpriteIndex plus a parallel PartRecord array, grown together by add_part so a part is never a window without facts.
+think A part carries a part number, a material, and a price. Price is a FACT — a u64 count of cents (money is a wire-persistent quantity, TAME), ceiling-checked so a parsed price can never wrap a downstream sum, never a balance the tree can move. Custody gate #3 (moving funds) untouched.
+think Fields are token-checked (non-empty, within ceiling, no space or newline) so a flat-Bron line always round-trips through the space-tokenizer. The catalog travels as format part-catalog-v1; render(parse(render(x))) is a fixed point over BOTH the windows and the facts.
+obs Witness first failed on an apostrophe in the GREEN line ("part's picture") breaking the shell single-quote grep — reworded the selftest print to "each part picture" to stay shell-safe, exactly the kind of quoting fault a witness is meant to catch early.
+obs TAME bans clean (image/ on the roster since REDS #76), width exit 0, HUNK4 sprite selftest stays GREEN beneath. Updated the front-door README in the same round (docs-implementation-sync): the marketplace arc now names HUNK71, and the horizon narrows to "real part values" (a web-search round; buying is a gate).
+loom witness=hunk_part_catalog record_bytes=145 parts=3 price_field=u64_cents
+file image/part_catalog.rye PartCatalog — window + part number + material + price-as-fact, travels as format part-catalog-v1
+file tools/hunk_part_catalog_witness.rish proves the fixed point over both halves, the facts survive, the custody floor, HUNK4 GREEN beneath
+file image/README.md front door updated — marketplace arc names HUNK71; horizon narrowed to real part values
+recommend keep-going next agent-doable crux: a content-addressed part catalog (bead the part-catalog-v1 record into Tablecloth like sprite_store beads the sheet), a Skate render of a part row (picture + facts side by side), or the next Season-A / double-seat journey — all agent-doable, gates untouched

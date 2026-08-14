@@ -23,9 +23,11 @@ This module is the floor beneath Season A's **parts marketplace** and its **Phot
 - **`../brushstroke/image_skate.rye`** — the decoded grid meets **Skate**: `down_map` averages each block to the nearest of a seven-color anchor palette and wears it over a full-block glyph, so a picture paints on the glass surface. Witness: `tools/hunk_skate_witness.rish`.
 - **`photos.rye` — `crop`** — the first Photos verb, pure and bounded: read a rectangle, return a fresh smaller image, source untouched; coordinates checked in `u64` so a rectangle can never wrap. Witness: `tools/hunk_photos_witness.rish`.
 
-### The parts marketplace — McMaster-Carr's one-sheet trick (HUNK4–HUNK7)
+### The parts marketplace — McMaster-Carr's one-sheet trick, with honest facts (HUNK4–HUNK7 · HUNK71)
 
-One decoded sheet serves a whole catalog. `sprite.rye` binds each product name to a bounded **window** into a single decoded image and renders it by reusing `photos.crop` — every window bound-checked in `u64` at **add time**, so a render can never fail on bounds. `../pond/apps/sprite_store.rye` gives the sheet a content-addressed identity; `sprite_catalog.rye` lets the index itself travel as a flat-Bron `format sprite-catalog-v1` record, so `render(parse(render(x)))` is a fixed point. Disjoint windows never leak a neighbor's bytes; the sheet is shared and unmutated across every render. Witnesses: `tools/hunk_sprite_*_witness.rish`.
+One decoded sheet serves a whole catalog. `sprite.rye` binds each product name to a bounded **window** into a single decoded image and renders it by reusing `photos.crop` — every window bound-checked in `u64` at **add time**, so a render can never fail on bounds. `../pond/apps/sprite_store.rye` gives the sheet a content-addressed identity; `sprite_catalog.rye` lets the index itself travel as a flat-Bron `format sprite-catalog-v1` record, so `render(parse(render(x)))` is a fixed point. Disjoint windows never leak a neighbor's bytes; the sheet is shared and unmutated across every render.
+
+A part is a picture *with its facts*. `part_catalog.rye` binds each product's window to a **part number**, a **material**, and a **price in cents** — recorded as a `u64` fact, never a balance the tree can move — so a `PartCatalog` holds one `SpriteIndex` (the pictures) and one record per product (the facts) in the same order, grown together so a part is never a window without facts. The whole catalog travels as `format part-catalog-v1`, a fixed point over *both* halves. Witnesses: `tools/hunk_sprite_*_witness.rish`, `tools/hunk_part_catalog_witness.rish`.
 
 ### The Photos app — edit without ever losing the original (HUNK8–HUNK70)
 
@@ -48,7 +50,7 @@ Named plainly **Photos**, built entirely on the module above. Every gesture is a
 
 These wait for their own rounds (some for a web-search research pass, per the Season-A capture):
 
-- A **real parts catalog** binding each window to honest part metadata (part number, material, price recorded as *fact*), and MCP-API-friendly sourcing shapes — **research round; buying real parts is a custody gate.**
+- **Real part values** — HUNK71 built the catalog *structure* (window + part number + material + price-as-fact); filling it from real refurbished-parts sources through MCP-API-friendly marketplaces is a **web-search research round**, and **buying real parts is a custody gate.**
 - A **colour e-ink** render target for the Grainphone hybrid — research round.
 - Richer resamplers and a wider filter grammar as the Photos app grows.
 

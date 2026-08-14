@@ -1,0 +1,380 @@
+//! image/part_catalog.rye — HUNK71: the parts marketplace carries honest facts beside each window.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK71.
+//! Design read: active-designing/20260813-020035_double-seat-expansion-six-seasons.md (Season A — the parts marketplace).
+//! Teacher, thanked clean-room: McMaster-Carr's catalog (concept only, siloed — a part is a picture PLUS its facts).
+//!
+//! HUNK4–HUNK7 built the visual half of the marketplace: one decoded sheet, each product a window into it, the
+//! index travelling as text. A real parts catalog carries more than a picture — a part has a *part number*, a
+//! *material*, and a *price*. This rung binds those honest facts beside each window: a `PartCatalog` holds one
+//! `SpriteIndex` (the picture) and, in the same held order, one `PartRecord` per product (the facts). `add_part`
+//! grows both together, so a product is never a window without facts or facts without a window. `render_part`
+//! reuses the sprite index to cut the product's picture; `part_of` reads its facts. The whole catalog travels
+//! as a flat-Bron `format part-catalog-v1` record, so `render(parse(render(x)))` is a fixed point over both the
+//! windows AND the facts.
+//!
+//! Price is recorded as a FACT — a `u64` count of cents, the shape money takes on the wire — never a balance the
+//! tree can move. No network, no key, no funds; disbursement stays a custody gate.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/part_catalog.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const sprite = @import("sprite.rye");
+const parse_int = @import("parse_int.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const part_catalog_version = "20260814.000000";
+
+/// A part number and a material are short tokens, bounded at construction (TAME bounds). A part number like
+/// `HX-M8-40` and a material like `stainless-304` fit well inside these ceilings; both stay space-free so the
+/// flat-Bron line round-trips through a space-tokenizer exactly.
+pub const max_part_number_len: u32 = 32;
+pub const max_material_len: u32 = 32;
+
+/// A price is a count of cents — the smallest honest unit, so no fraction is ever lost. Held as a `u64` (money
+/// is a wire-persistent quantity), bounded to a named ceiling so a parsed price can never wrap a downstream sum.
+/// A hundred million dollars in cents; a marketplace part never legitimately reaches it, so it doubles as a
+/// malformed-input fence.
+pub const max_price_cents: u64 = 10_000_000_000;
+
+pub const PartError = error{
+    BadPartCatalog,
+    FieldTooLong,
+    FieldEmpty,
+    FieldHasSpace,
+    PriceTooLarge,
+    CountMismatch,
+    Overflow,
+    UnknownProduct,
+};
+
+/// The honest facts of one part, read back out: its part number, its material, and its price in cents. The
+/// string fields are slices into the catalog's own storage; a caller reads them to render the catalog as text.
+pub const PartFacts = struct {
+    part_number: []const u8 = &[_]u8{},
+    material: []const u8 = &[_]u8{},
+    price_cents: u64 = 0,
+};
+
+/// One part's facts, held in fixed buffers (never a borrowed slice), paralleling one `SpriteIndex` cell.
+const PartRecord = struct {
+    number_buf: [max_part_number_len]u8 = [_]u8{0} ** max_part_number_len,
+    number_len: u32 = 0,
+    material_buf: [max_material_len]u8 = [_]u8{0} ** max_material_len,
+    material_len: u32 = 0,
+    price_cents: u64 = 0,
+
+    fn part_number(self: *const PartRecord) []const u8 {
+        // invariant: the stored part-number length never exceeds its buffer.
+        assert(self.number_len <= max_part_number_len);
+        return self.number_buf[0..self.number_len];
+    }
+
+    fn material(self: *const PartRecord) []const u8 {
+        // invariant: the stored material length never exceeds its buffer.
+        assert(self.material_len <= max_material_len);
+        return self.material_buf[0..self.material_len];
+    }
+};
+
+/// A field a person types as a single token: non-empty, within its ceiling, and free of the space and newline
+/// that would break the flat-Bron line. Refuses each fault by name so a bad field never reaches storage.
+fn check_token(field: []const u8, ceiling: u32) PartError!void {
+    if (field.len == 0) return error.FieldEmpty;
+    if (field.len > ceiling) return error.FieldTooLong;
+    // invariant: a token carries no separator that would split its own line on the way back.
+    for (field) |c| {
+        if (c == ' ' or c == '\n') return error.FieldHasSpace;
+    }
+}
+
+/// The parts catalog: one decoded sheet's `SpriteIndex` (the pictures) and, in the same held order, one
+/// `PartRecord` per product (the facts). The two grow together and are read together, so a product is always a
+/// window WITH facts.
+pub const PartCatalog = struct {
+    index: sprite.SpriteIndex,
+    facts: [sprite.max_products]PartRecord = [_]PartRecord{.{}} ** sprite.max_products,
+
+    /// Open a catalog over an already-decoded sheet — the sheet is decoded once and shared by every product,
+    /// exactly as the sprite index intends.
+    pub fn init(sheet: *const qoi.Pixmap) PartCatalog {
+        return PartCatalog{ .index = sprite.SpriteIndex.init(sheet) };
+    }
+
+    /// Bind a product to BOTH a window into the sheet and its honest facts. The window is validated by the
+    /// sprite index (an out-of-bounds or duplicate window refuses there); the facts are token-checked and the
+    /// price ceiling-checked here — so a part is never half-added. The two arrays stay the same length.
+    pub fn add_part(
+        self: *PartCatalog,
+        product: []const u8,
+        x: u32,
+        y: u32,
+        w: u32,
+        h: u32,
+        number: []const u8,
+        material: []const u8,
+        price_cents: u64,
+    ) !void {
+        // invariant: the facts array is exactly as long as the index it parallels.
+        assert(self.index.len() <= sprite.max_products);
+        try check_token(number, max_part_number_len);
+        try check_token(material, max_material_len);
+        if (price_cents > max_price_cents) return error.PriceTooLarge;
+
+        // The window is added first; if it refuses (bounds, duplicate, full), no fact is recorded.
+        const slot = self.index.len();
+        try self.index.add(product, x, y, w, h);
+
+        var rec = PartRecord{
+            .number_len = @intCast(number.len),
+            .material_len = @intCast(material.len),
+            .price_cents = price_cents,
+        };
+        tally_copy.copy_disjoint(u8, rec.number_buf[0..number.len], number);
+        tally_copy.copy_disjoint(u8, rec.material_buf[0..material.len], material);
+        self.facts[slot] = rec;
+        // invariant: the two arrays grew together — one new window, one new fact.
+        assert(self.index.len() == slot + 1);
+    }
+
+    /// How many parts the catalog holds — a reader walks `0..len` to render both halves as text.
+    pub fn len(self: *const PartCatalog) u32 {
+        // invariant: the count never exceeds the sheet's product ceiling.
+        assert(self.index.len() <= sprite.max_products);
+        return self.index.len();
+    }
+
+    /// The honest facts the i-th product carries.
+    pub fn facts_at(self: *const PartCatalog, i: u32) PartFacts {
+        // invariant: the index sits inside the held catalog.
+        assert(i < self.index.len());
+        const rec = &self.facts[i];
+        return PartFacts{
+            .part_number = rec.part_number(),
+            .material = rec.material(),
+            .price_cents = rec.price_cents,
+        };
+    }
+
+    /// The facts a product name carries, or `UnknownProduct` if the catalog holds no such name.
+    pub fn part_of(self: *const PartCatalog, product: []const u8) !PartFacts {
+        // invariant: the catalog count never exceeds the array behind it.
+        assert(self.index.len() <= sprite.max_products);
+        var i: u32 = 0;
+        while (i < self.index.len()) : (i += 1) {
+            if (std.mem.eql(u8, self.index.entry(i).name, product)) return self.facts_at(i);
+        }
+        return error.UnknownProduct;
+    }
+
+    /// Render a product's picture — cut the ONE sheet at its window, a fresh open image. Reuses the sprite
+    /// index, so a rendered part is still an open image that re-encodes and round-trips.
+    pub fn render_part(self: *const PartCatalog, allocator: std.mem.Allocator, product: []const u8) !qoi.Pixmap {
+        return self.index.render(allocator, product);
+    }
+};
+
+/// A safe upper bound on a rendered part catalog: the header plus a generous per-part line. A 48-byte name, four
+/// u32 window fields, a 32-byte part number, a 32-byte material, a 20-digit price, the `part ` tag, spaces, and a
+/// newline all fit inside this width. Named at construction (TAME bound).
+pub const per_part_line_bound: u32 =
+    sprite.max_name_len + max_part_number_len + max_material_len + 96;
+pub const max_part_catalog_bytes: u32 = 22 + sprite.max_products * per_part_line_bound;
+
+const part_header = "format part-catalog-v1\n";
+
+/// Render a part catalog as its `format part-catalog-v1` Bron record into `out`, returning its length. One
+/// `part <name> <x> <y> <w> <h> <number> <material> <price_cents>` line per product, in held order. Refuses
+/// `Overflow` rather than writing past the buffer a caller supplied.
+pub fn render_part_catalog(cat: *const PartCatalog, out: []u8) PartError!u32 {
+    // invariant: a catalog names at most the sheet's product ceiling.
+    assert(cat.len() <= sprite.max_products);
+    if (part_header.len > out.len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[0..part_header.len], part_header);
+    var off: u32 = @intCast(part_header.len);
+
+    var i: u32 = 0;
+    while (i < cat.len()) : (i += 1) {
+        const e = cat.index.entry(i);
+        const f = cat.facts_at(i);
+        const line = std.fmt.bufPrint(out[off..], "part {s} {d} {d} {d} {d} {s} {s} {d}\n", .{
+            e.name, e.win.x, e.win.y, e.win.w, e.win.h, f.part_number, f.material, f.price_cents,
+        }) catch return error.Overflow;
+        off += @intCast(line.len);
+    }
+    // invariant: the rendered catalog stays within the buffer.
+    assert(off <= out.len);
+    return off;
+}
+
+/// Parse a `format part-catalog-v1` record into a fresh catalog over `sheet`. Each part is added through
+/// `add_part`, so every window is validated against the real sheet and every fact token-checked — a catalog can
+/// never name bytes the sheet lacks or carry a field that would not round-trip. An unknown header, a malformed
+/// line, or an out-of-range field refuses `BadPartCatalog`; a window past the sheet surfaces the index's own
+/// named refusal.
+pub fn parse_part_catalog(text: []const u8, sheet: *const qoi.Pixmap, out: *PartCatalog) !void {
+    out.* = PartCatalog.init(sheet);
+    // invariant: parsing starts from an empty catalog.
+    assert(out.len() == 0);
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    const first = lines.next() orelse return error.BadPartCatalog;
+    if (!std.mem.eql(u8, first, "format part-catalog-v1")) return error.BadPartCatalog;
+
+    while (lines.next()) |line| {
+        if (line.len == 0) continue; // a trailing newline yields an empty final piece
+        var parts = std.mem.tokenizeScalar(u8, line, ' ');
+        const tag = parts.next() orelse return error.BadPartCatalog;
+        if (!std.mem.eql(u8, tag, "part")) return error.BadPartCatalog;
+        const name = parts.next() orelse return error.BadPartCatalog;
+        const x_tok = parts.next() orelse return error.BadPartCatalog;
+        const y_tok = parts.next() orelse return error.BadPartCatalog;
+        const w_tok = parts.next() orelse return error.BadPartCatalog;
+        const h_tok = parts.next() orelse return error.BadPartCatalog;
+        const number = parts.next() orelse return error.BadPartCatalog;
+        const material = parts.next() orelse return error.BadPartCatalog;
+        const price_tok = parts.next() orelse return error.BadPartCatalog;
+        if (parts.next() != null) return error.BadPartCatalog; // no slack past the fields
+        const x = parse_int.parse_int(u32, x_tok, .{}) catch return error.BadPartCatalog;
+        const y = parse_int.parse_int(u32, y_tok, .{}) catch return error.BadPartCatalog;
+        const w = parse_int.parse_int(u32, w_tok, .{}) catch return error.BadPartCatalog;
+        const h = parse_int.parse_int(u32, h_tok, .{}) catch return error.BadPartCatalog;
+        const price = parse_int.parse_int(u64, price_tok, .{}) catch return error.BadPartCatalog;
+        try out.add_part(name, x, y, w, h, number, material, price);
+    }
+    // invariant: a parsed catalog holds no more than the sheet's product ceiling.
+    assert(out.len() <= sprite.max_products);
+}
+
+// --- selftest: bind three real parts (window + facts) into one sheet, render the catalog to text, parse it back,
+//     prove the fixed point over BOTH halves, prove the facts and the pictures survive, then the named refusals -
+
+/// Build an 8×8 sheet where each pixel encodes its own coordinates, so a rendered window is unambiguous.
+fn craft_sheet(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 8;
+    const h: u32 = 8;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            buf[off] = @intCast(x * 30);
+            buf[off + 1] = @intCast(y * 30);
+            buf[off + 2] = @intCast(x + y);
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const sheet = try craft_sheet(garden);
+    var cat = PartCatalog.init(&sheet);
+
+    // Three honest parts: a window into the sheet AND its part number, material, and price in cents.
+    try cat.add_part("bolt", 0, 0, 4, 4, "HX-M8-40", "stainless-304", 129);
+    try cat.add_part("washer", 4, 0, 4, 4, "FW-M8", "zinc-steel", 7);
+    try cat.add_part("gear", 2, 4, 4, 4, "SPUR-24T", "acetal", 845);
+    assert(cat.len() == 3);
+
+    // The facts a name pins read back exactly.
+    const bolt = try cat.part_of("bolt");
+    assert(std.mem.eql(u8, bolt.part_number, "HX-M8-40"));
+    assert(std.mem.eql(u8, bolt.material, "stainless-304"));
+    assert(bolt.price_cents == 129);
+
+    // Render the catalog to text.
+    var buf: [max_part_catalog_bytes]u8 = undefined;
+    const n = try render_part_catalog(&cat, buf[0..]);
+    const text = buf[0..n];
+
+    // Parse it back over the same sheet, and prove the rebuilt catalog equals the original — BOTH halves,
+    // window field for window field AND fact for fact.
+    var rebuilt: PartCatalog = undefined;
+    try parse_part_catalog(text, &sheet, &rebuilt);
+    assert(rebuilt.len() == cat.len());
+    {
+        var i: u32 = 0;
+        while (i < cat.len()) : (i += 1) {
+            const a = cat.index.entry(i);
+            const b = rebuilt.index.entry(i);
+            assert(std.mem.eql(u8, a.name, b.name));
+            assert(a.win.x == b.win.x);
+            assert(a.win.y == b.win.y);
+            assert(a.win.w == b.win.w);
+            assert(a.win.h == b.win.h);
+            const fa = cat.facts_at(i);
+            const fb = rebuilt.facts_at(i);
+            assert(std.mem.eql(u8, fa.part_number, fb.part_number));
+            assert(std.mem.eql(u8, fa.material, fb.material));
+            assert(fa.price_cents == fb.price_cents);
+        }
+    }
+
+    // Fixed point: rendering the rebuilt catalog reproduces the same bytes.
+    var buf2: [max_part_catalog_bytes]u8 = undefined;
+    const n2 = try render_part_catalog(&rebuilt, buf2[0..]);
+    assert(n2 == n);
+    assert(std.mem.eql(u8, buf2[0..n2], text));
+
+    // The rebuilt catalog renders every product's PICTURE from the same window byte-for-byte.
+    const a_pic = try cat.render_part(garden, "gear");
+    const b_pic = try rebuilt.render_part(garden, "gear");
+    assert(a_pic.same_bytes(&b_pic));
+
+    // Unwelcome: an unknown product name refuses on the facts side.
+    if (cat.part_of("phantom")) |_| return error.UnknownSlipped else |e| {
+        if (e != error.UnknownProduct) return error.WrongUnknown;
+    }
+    // Unwelcome: a window past the sheet refuses at add time — no half-added part.
+    if (cat.add_part("wide", 6, 0, 4, 2, "W-1", "steel", 10)) |_| return error.BoundsSlipped else |e| {
+        if (e != error.WindowOutOfBounds) return error.WrongBounds;
+    }
+    // Unwelcome: a fact with an embedded space would break its own line — refuses.
+    if (cat.add_part("spacey", 0, 4, 2, 2, "P 1", "steel", 10)) |_| return error.SpaceSlipped else |e| {
+        if (e != error.FieldHasSpace) return error.WrongSpace;
+    }
+    // Unwelcome: an empty material refuses.
+    if (cat.add_part("bare", 0, 4, 2, 2, "P-1", "", 10)) |_| return error.EmptySlipped else |e| {
+        if (e != error.FieldEmpty) return error.WrongEmpty;
+    }
+    // Unwelcome: a price past the ceiling refuses (a malformed-input fence).
+    if (cat.add_part("dear", 0, 4, 2, 2, "P-2", "gold", max_price_cents + 1)) |_| {
+        return error.PriceSlipped;
+    } else |e| {
+        if (e != error.PriceTooLarge) return error.WrongPrice;
+    }
+    // Unwelcome: a malformed price token (non-numeric) refuses at parse.
+    var junk: PartCatalog = undefined;
+    const bad = "format part-catalog-v1\npart bolt 0 0 4 4 HX-M8 steel xy\n";
+    if (parse_part_catalog(bad, &sheet, &junk)) |_| return error.LineSlipped else |e| {
+        if (e != error.BadPartCatalog) return error.WrongLine;
+    }
+    // Unwelcome: a short line missing the fact fields refuses (the sprite catalog's own shape is not enough).
+    var short: PartCatalog = undefined;
+    const shortline = "format part-catalog-v1\npart bolt 0 0 4 4\n";
+    if (parse_part_catalog(shortline, &sheet, &short)) |_| return error.ShortSlipped else |e| {
+        if (e != error.BadPartCatalog) return error.WrongShort;
+    }
+
+    print("GREEN part-catalog: {d} parts bound to a window AND its facts, rendered to a {d}-byte " ++
+        "part-catalog-v1 record and parsed back over the sheet — render(parse(render)) is a fixed point over " ++
+        "both the windows and the facts; each part picture renders byte-for-byte and its part number, " ++
+        "material, and price in cents survive; unknown/out-of-bounds/spaced/empty/over-price/malformed/short " ++
+        "each refuse by name; no network, no key, no funds\n", .{ cat.len(), n });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: part_catalog selftest\n", .{});
+    return 1;
+}
