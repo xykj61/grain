@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260814.125046
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (Eastern / EDT time convention)
+title ALES14 — Lotus's transport loop, a marked region read round and round
+prompt Autonomous loop past REMEMBER + the itineraries — take the next agent-doable lap Lindy-first crux-first, self-approve the design round, send each finished increment, stop at the custody gates.
+think ALES13 (the meter) sent GREEN to both remotes. Next lap, Lindy-first crux-first over the Lotus road-on: the playback spine (play ALES7 → meter ALES13 → loop) is read on every session for years, so the most durable next move is the transport loop — the first read that does not end — over the smaller balance/width variation or the choice-of-law ergonomics.
+think The crux: a loop is a play head that WRAPS at a marked end instead of stopping. ALES7 only moved forward and halted at master.len; a Loop keeps a region [start,end) and wraps the head to start whenever it reaches end, so a continuous read cycles forever and the pulled block is always full. The owed correctness is that the head stays WITHIN [start,end) after every read, so K cycles concatenate to the region repeated K times — no seam sample skipped or doubled.
+think Kept it generalizing, not replacing: a loop OFF delegates to transport.read_block whole, so the loop IS ALES7 when disarmed. Reused the ALES5 clock for mark_ms (region in real time) and refused BadLoop at the edge for empty/inverted/past-the-master regions.
+obs GREEN on the first build across eight selftest blocks: loop-off matches the forward read; a region [1,4) cycles 20,30,40,… exactly (three cycles concatenate); the head stays within the region at one-sample-at-a-time reads; a whole-master loop replays continuously; a single-sample region repeats; make refuses BadLoop three ways; mark_ms places [200ms,400ms) at samples [200,400) via the 1000 Hz clock; a master cycled eight times over is byte-for-byte unmutated.
+obs No new arithmetic and no downstream churn — loop.rye imports transport/clock/timeline over their public APIs only; nothing else touched. Purely local, every custody gate untouched.
+loom witness=ales_loop_witness result=GREEN rung=ALES14 selftest_blocks=8 first_build=GREEN
+file lotus/loop.rye ALES14 — Loop{start,end,on}; make / mark_ms validate the region; enter arms the cycle; read_block wraps at end (delegates to ALES7 when off).
+file tools/ales_loop_witness.rish witness proving the loop GREEN — off matches forward, exact cycling, head-in-region, whole-master replay, single-sample, BadLoop, mark_ms, read-only.
+file active-designing/20260814-fill-ales14-lotus-transport-loop.md the self-approved design capture for the round.
+file lotus/README.md front door synced — ALES14 in the status line, the rung prose, the prove block, and the road-on.
+recommend keep-going — the next Lotus rung (a stereo transport, a scrub window, a punch region tying playback back to capture, or balance/width) is mechanical and single-module, policy already written; custody gates all still untouched.
