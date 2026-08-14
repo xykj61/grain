@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260813.230810
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title HUNK70 — tap a wall tile to open it in the editor; the Photos loop closes
+prompt recur baton — take the next agent-doable lap Lindy-first crux-first on the road past BUHR; send each finished increment as its own signed round; stop at the custody gates
+think HUNK69 painted the wall with every tile at a fixed origin via tile_origin. The Lindy-first crux is reading that geometry BACKWARD so a finger reaches the picture it touched — the gesture that turns a wall into a home screen you can enter.
+think brushstroke/library_tap.rye: tap_tile(wall_cols, tw, th, count, cell_col, cell_row) inverts HUNK69's pitch (tw+gap, th+gap) — a tap on a gap column, a gap row, past the last column, or past the last held tile resolves to null; otherwise to the tile index. tap_cell maps a pixel tap through Skate's fixed cell_w/cell_h to a wall cell, so a real finger reaches the drawn tile.
+think open_tapped resolves the tap, fetches the image (proving every bead FIRST — a tampered tile refuses unopened), and opens PhotosEditor over it. PhotosEditor holds source by POINTER, so the fetched pixmap must be caller-owned: open_tapped writes into a caller-supplied source_out the returned editor borrows. No dangling.
+obs GREEN on first build. Selftest proves the whole gesture: an interior tap on each of five tiles resolves to its index; gap-column, gap-row, and the empty trailing slot resolve to null; a pixel tap reaches the same cell; tapping tile 3 opens the editor over meadow.qoi byte-for-byte; a missed tap opens nothing; and the loop CLOSES — the opened picture saved under a new name (HUNK67) grows the rebuilt library (HUNK68) to six tiles. TAME clean, width exit 0, no @memcpy, no new usize. No custody gate reached — no network, no key, no funds.
+obs This closes the Photos-library arc HUNK68-70 (model -> wall -> tap-to-open) on top of the editor+save arc: library -> tap -> open -> edit -> save -> library is now proven end to end on metal.
+loom witness=hunk_library_tap_witness tiles=5 opened=meadow.qoi loop_close_count=6 tame=clean width_exit=0
+file brushstroke/library_tap.rye HUNK70 — tap_tile inverts the wall geometry; open_tapped fetches and opens the tapped picture
+file tools/hunk_library_tap_witness.rish the witness that binds the tap-to-open loop on metal
+file work-in-progress/REMEMBER.md Git nib refreshed to this round's HEAD
+recommend keep-going HUNK71 — the wall on glass as a scrollable surface (reuse touch_scroll to page a wall taller than the screen), or open the next Season-A journey (the parts marketplace McMaster-Carr sprite render) now the Photos home screen is enterable end to end
