@@ -1,0 +1,50 @@
+# tools/ales_taps_witness.rish — the multi-tap delay: several fixed taps of the dry signal (ALES68).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES68.
+# Design read: active-designing/20260814-192743_fill-ales68-lotus-multi-tap-delay.md
+# Stands on: lotus/echo.rye (ALES66 — the feedback delay this contrasts); lotus/graft.rye (ALES24 — the dry-span snapshot-before-write
+# idiom reused); lotus/timeline.rye (ALES2 — the Clip, sample_max, max_clip, and the one true saturate); lotus/mix.rye (ALES3 — the same
+# saturate, re-proven green below).
+#
+# lotus/taps.rye reads a delay line the second way, contrasting ALES66's feedback: several FIXED taps of the DRY signal, each at its own
+# delay and level, summed with the dry — y[i] = saturate(x[i] + Σ_k num_k/den_k·x[i-d_k]). Every tap reads a FROZEN snapshot of the dry
+# prefix (the graft/clipboard snapshot-before-write idiom), so the taps are INDEPENDENT — neither feeds the other, the sharp contrast
+# with the decaying feedback train. The selftest proves: two taps are two independent copies (an impulse's tap-4 copy is 1/4 of the
+# ORIGINAL dry, not the compounded feedback value); a single unity tap lands one full copy of the dry (unity legal here — no loop to run
+# away); silence stays silence and a zero level is the dry identity; a loud constructive sum saturates to the i16 rail rather than
+# wrapping (ALES3's one true saturation, reused, once over the whole sum); the taps sum order-independently; and zero taps or too many
+# refuse BadTapCount, a zero or too-wide delay BadDelay, a tap above unity or a zero denominator BadLevel, an out-of-range span BadRange.
+# Purely local — no lookahead beyond the snapshot read, no network, no keys, no funds, no real device, no sample rate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_taps_witness.rish
+
+say "ales-taps: Language EN — ALES66 opened the time-based wing with the FEEDBACK delay, where the delay line is the clip buffer itself and each echo feeds the next. This rung reads a delay line the second way: several FIXED taps of the DRY signal, each at its own delay and level, summed with the dry — the discrete early-reflection pattern (a snare hitting three walls at three distances) a single feeding echo cannot voice, because a feedback tap decays geometrically while independent taps stand at their chosen levels. The multi-tap is the building block the reverb's early-reflection network stands on."
+say "ales-taps: Style Radiant — the law is stated positively: the taps read a FROZEN snapshot of the dry prefix (the graft/clipboard snapshot-before-write idiom, reused), so every tap reads the ORIGINAL audio and the taps are INDEPENDENT — a two-tap impulse lands two distinct copies, neither attenuating the other; unlike the feedback echo, unity is legal (no loop to run away); silence stays silence, a zero level is the dry identity, and a constructive sum past the rail saturates through the one true saturation rather than wrapping."
+say "ales-taps: Lens TAME — one clip of i16 PCM, a u32 span, a bounded slice of at most max_taps taps each a u32 delay and a plain u32/u32 level; the dry prefix is snapshotted into one bounded [max_clip]i16 scratch (graft's width and stack cost), the sum runs in i64 and saturates once, so nothing on the path can overflow; zero taps or more than max_taps refuse BadTapCount, a zero or too-wide delay BadDelay, a tap above unity or a zero denominator BadLevel, a span outside the samples BadRange, all before any write, the clip untouched on refusal; siloed to lotus/, the delay counted in sample indices not milliseconds, no lookahead, no network, no keys, no funds, no device, no sample rate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/taps"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/taps.rye -femit-bin=${bin}"]
+assert build.ok else "ales-taps: build failed — ${build.err}"
+
+let outfile = "lotus/bin/taps.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-taps: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-taps: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-taps' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-taps: selftest did not print the GREEN ales-taps line"
+
+# This rung reuses ALES3's one true saturation over its public API — re-prove the mixer still stands green beside it.
+let mix = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/mix.rye -femit-bin=lotus/bin/mix && lotus/bin/mix selftest 2>&1 | grep -q 'GREEN ales-mix' && echo yes"]
+assert (trim mix.out) == "yes" else "ales-taps: the ALES3 mixer regressed under the multi-tap delay"
+
+# And the ALES66 feedback echo this rung contrasts must stand green beside it — the two delay-line readings live side by side.
+let echo = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/echo.rye -femit-bin=lotus/bin/echo && lotus/bin/echo selftest 2>&1 | grep -q 'GREEN ales-echo' && echo yes"]
+assert (trim echo.out) == "yes" else "ales-taps: the ALES66 feedback echo regressed under the multi-tap delay"
+
+say "ales-taps: GREEN — the multi-tap delay reads a delay line the second way: several fixed taps of the DRY signal, y[i] = saturate(x[i] + Σ_k num_k/den_k·x[i-d_k]), every tap reading a frozen dry snapshot so the taps are INDEPENDENT (neither feeds the other) — the contrast with ALES66's feedback train. Two taps are two independent copies (an impulse's tap-4 copy is 1/4 of the ORIGINAL dry, not the compounded feedback value); a single unity tap lands one full copy of the dry (unity legal — no loop); silence stays silence, a zero level is the dry identity; a loud constructive sum saturates rather than wraps; the taps sum order-independently; zero taps or too many refuse BadTapCount, a zero or too-wide delay BadDelay, a tap above unity or a zero denominator BadLevel, an out-of-range span BadRange, each leaving the clip untouched; the ALES3 mixer and the ALES66 echo stay GREEN beside it. The real-time twin (multitap_ms through the ALES5 clock) and the modulated delay (chorus, flanger) follow as later rungs on this foundation."
