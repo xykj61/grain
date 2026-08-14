@@ -1,0 +1,187 @@
+//! constel/depart.rye — FORA28: the whole remove-a-member lifecycle, closed. The symmetric twin of FORA26 (admit): where admit
+//! promoted a caught-up learner into the voting set through joint consensus, depart removes a voter through the same no-fork switch,
+//! and names the one edge that makes removal genuinely harder than addition — a LEADER that removes ITSELF (Raft §4.2.2).
+//!
+//! The gap it closes:
+//!   FORA13 (reconfig) gives a joint-consensus switch that can shrink a config, yet it never named the self-removal edge: when the
+//!   pier leaving the sky IS the leader, it must still drive the transition to commit (it is a member of the OLD config, so it votes
+//!   and helps reach the old majority), yet it is absent from the NEW config — so the new-config majority must come entirely from the
+//!   piers that remain. Once the switch commits, the departed leader STEPS DOWN: it is no longer in the configuration it just
+//!   installed. A naive removal that let the leaving leader count toward the NEW majority could let a leader shrink the sky around
+//!   itself and keep a title the remaining piers never granted. The joint rule forbids it structurally (the leader simply is not in
+//!   the new config); this rung makes that safety checkable and ties the post-commit step-down to FORA24's CheckQuorum.
+//!
+//! This composes FORA13 (reconfig — config_of, JointConfig, the no-fork joint switch) with FORA24 (tenure — the leader steps down
+//! when it no longer belongs), over their public APIs only. No new transport, no new quorum math: the removal is a reconfig
+//! transition whose new config is the old minus one voter, and the joint ballot's own two-majority rule carries the FORA9
+//! intersection lemma across the switch unchanged.
+//!
+//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+//! FORA28. Design read: active-designing/20260814-080327_fora28-constel-depart-remove-member.md
+//! Stands on: constel/reconfig.rye (FORA13) — config_of, JointConfig, JointBallot, require_joint, the no-fork joint switch;
+//! constel/roster.rye (FORA1) — max_piers, the membership bound.
+//!
+//! Purely LOCAL — bounded membership masks and index scalars on one bench, siloed to constel/, run from inside the jailed pier. No
+//! socket, no network, no keys, no funds, no real address ever formed (custody gate #2 — real hardware / any real wire — and gate
+//! #4 — real Kumara — both untouched).
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/depart.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const roster = @import("roster.rye");
+const reconfig = @import("reconfig.rye");
+
+pub const depart_version = "20260814.080327";
+
+pub const DepartError = error{
+    /// The slot proposed for removal is not a voter in the old config — a member, not a stranger, is what gets removed. The mirror
+    /// of admit's AlreadyVoter: there is nothing to remove where no one stands.
+    NotAVoter,
+};
+
+/// The whole set of ways a removal can be refused: the slot may not be a voter (NotAVoter), or the resulting configs may be
+/// malformed — reconfig.EmptyConfig when the removal would empty the sky, since a constellation never shrinks to no one.
+pub const RemoveError = DepartError || reconfig.ReconfigError;
+
+/// REMOVE A VOTER FROM THE SKY. Given the old voting mask and the slot leaving, refuse unless the slot is genuinely a voter
+/// (NotAVoter), then build the joint config old → old\{slot} that a reconfig ballot commits. reconfig.config_of refuses
+/// EmptyConfig if this was the last voter — a sky never removes itself to nothing. The switch still needs a strict majority in
+/// BOTH configs; the removed pier, absent from the new config, cannot count toward the new majority.
+pub fn depart(
+    old_mask: [roster.max_piers]bool,
+    leaving_slot: u32,
+) RemoveError!reconfig.JointConfig {
+    // invariant: the removed slot is a real roster slot.
+    assert(leaving_slot < roster.max_piers);
+    if (!old_mask[leaving_slot]) return error.NotAVoter; // a non-member cannot be removed
+    var new_mask = old_mask;
+    new_mask[leaving_slot] = false; // the new config is the old minus this one voter
+    const old = try reconfig.config_of(old_mask);
+    const new = try reconfig.config_of(new_mask); // EmptyConfig if this was the last voter
+    // invariant: removal shrinks the voting set by exactly one — the leaving voter, no other change.
+    assert(new.size == old.size - 1);
+    return reconfig.JointConfig{ .old = old, .new = new };
+}
+
+/// THE §4.2.2 EDGE, MADE CHECKABLE. The leader must step down after this switch commits exactly when it is a member of the OLD
+/// config but not the NEW — it removed itself, so it no longer belongs to the configuration it just installed. FORA24's
+/// CheckQuorum then keeps it down: a leader absent from the sky can never again command its majority.
+pub fn leader_relinquishes(joint: *const reconfig.JointConfig, leader_slot: u32) bool {
+    // invariant: the leader is a real roster slot.
+    assert(leader_slot < roster.max_piers);
+    return joint.old.contains(leader_slot) and !joint.new.contains(leader_slot);
+}
+
+/// Build a membership mask from a list of voter slots — a small pure helper for callers and the selftest (mirror of admit.mask_of).
+pub fn mask_of(slots: []const u32) [roster.max_piers]bool {
+    // invariant: the slot list is bounded by the roster it indexes.
+    assert(slots.len <= roster.max_piers);
+    var mask = [_]bool{false} ** roster.max_piers;
+    var i: u32 = 0;
+    while (i < slots.len) : (i += 1) {
+        assert(slots[i] < roster.max_piers); // invariant: every listed slot is a real roster slot
+        mask[slots[i]] = true;
+    }
+    return mask;
+}
+
+// --- selftest: removing a non-voter is refused; removing the last voter is refused; a VOTER IS REMOVED through a joint config
+//     old → old\{slot} that commits only with a strict majority in BOTH configs; THE LEADER-REMOVES-ITSELF edge — the departing
+//     leader votes in the old side yet the new majority comes from the remaining piers alone, and leader_relinquishes fires; a
+//     shrunk set cannot smuggle the removal; bounded. --------------------------------------------------------------------------
+
+fn run_selftest() !u8 {
+    // 1. REMOVING A NON-VOTER IS REFUSED — no joint config is ever built, so the voter set cannot change. Voters {0,1,2}; slot 3 is
+    //    not among them, so there is nothing there to remove.
+    {
+        const old = mask_of(&[_]u32{ 0, 1, 2 });
+        const r = depart(old, 3);
+        if (r) |_| unreachable else |e| assert(e == error.NotAVoter);
+    }
+
+    // 2. REMOVING THE LAST VOTER IS REFUSED — a lone voter {0} cannot depart to an empty sky; config_of of the empty new mask
+    //    refuses EmptyConfig, so a constellation never shrinks to no one.
+    {
+        const solo = mask_of(&[_]u32{0});
+        const r = depart(solo, 0);
+        if (r) |_| unreachable else |e| assert(e == error.EmptyConfig);
+    }
+
+    // 3. THE CRUX — A VOTER IS REMOVED, AND THE SWITCH COMMITS ONLY WITH A STRICT MAJORITY IN BOTH CONFIGS. Slot 3 leaves the sky:
+    //    `depart` yields the joint config old {0,1,2,3} → new {0,1,2}. A joint ballot where the remaining three all vote carries a
+    //    strict majority in both (3 of 4 old, 3 of 3 new) — the removal commits without the leaving pier's vote at all.
+    {
+        const old = mask_of(&[_]u32{ 0, 1, 2, 3 });
+        const joint = try depart(old, 3);
+        assert(joint.old.size == 4 and joint.new.size == 3);
+        assert(joint.old.contains(3) and !joint.new.contains(3)); // slot 3 leaves the NEW config only
+        var b = reconfig.JointBallot{ .joint = joint };
+        try b.cast(0);
+        try b.cast(1);
+        try b.cast(2); // the three remaining piers carry the switch — the leaver need not vote at all
+        b.seal();
+        try reconfig.require_joint(&b); // committed — a strict majority in both old (3 of 4) and new (3 of 3)
+        assert(b.yes_old == 3 and b.yes_new == 3);
+    }
+
+    // 4. THE LEADER-REMOVES-ITSELF EDGE (Raft §4.2.2). The leader is slot 3, and slot 3 is the one leaving. `leader_relinquishes`
+    //    fires — the leader is in the old config, absent from the new. It may still VOTE in the old side (it is an old member) and
+    //    help reach the old majority, yet the NEW majority (2 of the 3 remaining) must come from {0,1,2} alone. A ballot of just the
+    //    leaving leader and one peer — {3, 0} — carries 2 of 4 old (NOT a majority) and 1 of 3 new (NOT a majority): refused, so a
+    //    leader can never shrink the sky around itself on its own vote.
+    {
+        const old = mask_of(&[_]u32{ 0, 1, 2, 3 });
+        const joint = try depart(old, 3);
+        assert(leader_relinquishes(&joint, 3)); // the leader removed itself — it steps down after the commit
+        assert(!leader_relinquishes(&joint, 0)); // a staying member does not relinquish
+        var b = reconfig.JointBallot{ .joint = joint };
+        try b.cast(3); // the departing leader votes in the old side
+        try b.cast(0);
+        b.seal();
+        const guard = reconfig.require_joint(&b);
+        if (guard) |_| unreachable else |e| assert(e == error.NoJointMajority);
+        assert(b.yes_old == 2 and b.yes_new == 1 and !b.reached); // old 2 of 4, new 1 of 3 — neither a majority
+    }
+
+    // 5. A SHRUNK SET CANNOT SMUGGLE THE REMOVAL — the new config alone cannot force it either. Removing slot 3 from {0,1,2,3}, a
+    //    ballot of just {0,1} carries a new majority (2 of 3) yet only 2 of 4 old — NOT an old majority — so require_joint refuses
+    //    NoJointMajority: the post-removal set cannot drop a member over the old config's own head.
+    {
+        const old = mask_of(&[_]u32{ 0, 1, 2, 3 });
+        const joint = try depart(old, 3);
+        var b = reconfig.JointBallot{ .joint = joint };
+        try b.cast(0);
+        try b.cast(1); // 2 of 3 new (a majority), 2 of 4 old (NOT a majority)
+        b.seal();
+        const guard = reconfig.require_joint(&b);
+        if (guard) |_| unreachable else |e| assert(e == error.NoJointMajority);
+        assert(b.yes_old == 2 and b.yes_new == 2 and !b.reached);
+    }
+
+    // 6. BOUNDED — a full roster: eight voters {0..7} remove the last to seven, the joint config sizing exactly eight → seven within
+    //    the pier cap.
+    {
+        const eight = mask_of(&[_]u32{ 0, 1, 2, 3, 4, 5, 6, 7 });
+        const joint = try depart(eight, roster.max_piers - 1);
+        assert(joint.old.size == roster.max_piers and joint.new.size == roster.max_piers - 1);
+        assert(!joint.new.contains(roster.max_piers - 1));
+    }
+
+    print("GREEN fora-depart: the whole remove-a-member lifecycle, closed (the symmetric twin of FORA26 admit, over FORA13 " ++
+        "reconfig + FORA24 tenure) — `depart` refuses to remove a non-voter (NotAVoter) or the last voter (EmptyConfig), then " ++
+        "builds the joint config old → old\\{{slot}} that reconfig's ballot commits only with a strict majority in BOTH configs; " ++
+        "THE CRUX: a voter is removed (old 4 → new 3) and the remaining piers carry the switch without the leaver's vote; THE " ++
+        "§4.2.2 EDGE: a LEADER that removes ITSELF relinquishes (leader_relinquishes fires) — it votes in the old side yet the new " ++
+        "majority comes from the remaining piers alone, so it can never shrink the sky around itself; neither an old-only nor a " ++
+        "new-only quorum can smuggle the removal (NoJointMajority); bounded over a full roster eight → seven — a member removed " ++
+        "exactly the safe way, no socket, no network, no keys, no funds, no real address ever formed\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
