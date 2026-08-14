@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260814.175827
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title ALES56 — the hold stage, the patience between attack and release
+prompt recur the road past BUHR — take the next agent-doable lap Lindy-first crux-first; approve own design rounds; send each finished increment; stop at custody gates
+think ALES55's tail (and the dynamics trio being whole) named two next rungs: a hold stage between attack and release, or a lookahead delay for a true brickwall. Lindy-first crux-first, the hold is the durable, self-contained move — it lives INSIDE the follower where attack and release already live, so the same held time base can later drive the whole family, and it needs no custody gate. The lookahead delay is honestly larger and the ALES55 doc named it a horizon for Keaton's word.
+think The design choice that keeps it Lindy: delegate EVERY envelope move to ALES52's proven env_step, so the held follower cannot drift from the time base it holds. env_step_hold reads the gap before any move; on gap<0 with hold_left>0 it pins the peak (no move, spend one hold sample), otherwise it calls env_step and rearms the countdown on a rising sample.
+think The crux law is the family's signature shape: hold_samples == 0 reduces to env_step every sample byte-for-byte (the fall branch never pins, the rise rearms to zero — a no-op). This is the sibling of the unit-coefficient and instant-attack identities that anchor every dynamics rung. Proven by running hold_follow(hold=0) against envelope.follow on one signal.
+think A second state now carries: the u32 hold countdown beside the i64 envelope. hold_follow_carry carries both, so the state-carries clause proves a split landing MID-HOLD equals the whole once — the hold surviving the boundary, not just the envelope.
+think Monotonic stamp: live clock read 20260814.175827 (TZ=America/New_York), after ALES55's 174700 — later-is-larger holds.
+obs The hold expires EXACTLY: with instant attack and instant release and hold=3, [10000,3000,3000,...] pins 10000 for exactly three held samples (i1,i2,i3) then releases at i4 — checked byte-for-byte against [10000,10000,10000,10000,3000,3000,3000]. A level sample (gap==0) neither arms nor spends the hold, so a sustained peak keeps its patience full for when the fall comes.
+obs Witness GREEN on metal on the first build; ALES52 follower re-proven GREEN beneath the hold stage. tame_style_check bans clean (hold_env.rye not in the zero-assert list — three asserts on env_step_hold, positive invariants throughout). Hold bounded by timeline.max_clip (4096); a longer hold refuses BadHold before any write.
+loom witness=ales_hold_env_witness result=GREEN reproves=1 rung=ALES56
+file lotus/hold_env.rye ALES56 — the held follower, every envelope move delegated to ALES52's env_step, a hold of zero reducing to it byte-for-byte
+file tools/ales_hold_env_witness.rish witness — selftest GREEN plus the ALES52 follower re-proven beneath
+file active-designing/20260814-175827_fill-ales56-lotus-hold-stage.md self-approved design round for the rung
+file lotus/README.md status line and road-on prose extended to ALES56 (the hold inside the follower)
+recommend keep-going ALES57 can drive the limiter, compressor, or gate from the held follower (the hold spent where it was built), or open the lookahead delay line for a true brickwall (Keaton's-word horizon) — same proven follower, no custody gate

@@ -1,0 +1,44 @@
+# tools/ales_hold_env_witness.rish — the envelope follower given a HOLD stage between attack and release (ALES56).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES56.
+# Design read: active-designing/20260814-175827_fill-ales56-lotus-hold-stage.md
+# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/sample_max, max_clip, the range law shape); lotus/envelope.rye
+# (ALES52 — the proven follower whose env_step makes every envelope move here, re-proven below).
+#
+# lotus/hold_env.rye adds a hold stage to ALES52's follower: a rising sample moves by the attack and rearms the hold countdown, a
+# fallen sample pins the peak while the countdown lasts and only then releases, and a level sample moves nothing — every envelope
+# MOVE delegated to ALES52's proven env_step so the held follower cannot drift from the time base it holds. The selftest proves:
+# silence stays silence; a hold of zero reduces to the plain ALES52 follower byte-for-byte (proven by running both tools); a nonzero
+# hold delays the release (the peak pinned, the tail no lower than under a smaller hold, the knob monotone); the hold expires exactly
+# (a peak pinned for precisely `hold` samples, then released); the state carries — env and hold_left both — so a span in two pieces
+# equals the whole once; an illegal coefficient refuses BadCoeff, a hold past max_clip BadHold, an out-of-range span BadRange. Purely
+# local — no network, no keys, no funds, no real device, no sample rate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_hold_env_witness.rish
+
+say "ales-hold-env: Language EN — ALES56 gives the follower the one stage between its two knobs: after a peak falls away, the envelope HOLDS the peak for a while before the release begins, so a gate does not chatter on a brief dip and a limiter does not pump on a momentary duck. The hold lives INSIDE the follower, so the same held time base can later drive the whole dynamics family, and every envelope move still goes through the one ALES52 proved."
+say "ales-hold-env: Style Radiant — the law is stated positively: a hold of zero IS the plain ALES52 follower byte-for-byte (the zero-hold limit, proven by running both tools on one signal), a nonzero hold delays the release (the peak pinned, the tail no lower than under a smaller hold, the knob monotone), the hold expires after exactly `hold` samples, and the state carries — env and hold_left both — so a span in two pieces equals the whole once, the seam invisible (ALES43's lesson)."
+say "ales-hold-env: Lens TAME — bounded Clip, u32 span, i16 samples, i64 envelope, u32 hold counter; both coefficients checked in (0, 1] by the follower's one proven rule and the hold bounded by max_clip, all before any write; every envelope move delegated to ALES52's env_step so the [0, sample_max] range and the monotone convergence are inherited, not restated; an illegal coefficient refuses BadCoeff, a hold past max_clip BadHold, an out-of-range span BadRange; siloed to lotus/, no network, no keys, no funds, no device, no sample rate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/hold_env"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/hold_env.rye -femit-bin=${bin}"]
+assert build.ok else "ales-hold-env: build failed — ${build.err}"
+
+let outfile = "lotus/bin/hold_env.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-hold-env: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-hold-env: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-hold-env' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-hold-env: selftest did not print the GREEN ales-hold-env line"
+
+# This rung delegates every envelope move to ALES52's env_step — re-prove the follower still stands green beneath the hold stage.
+let env = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/envelope.rye -femit-bin=lotus/bin/envelope && lotus/bin/envelope selftest 2>&1 | grep -q 'GREEN ales-envelope' && echo yes"]
+assert (trim env.out) == "yes" else "ales-hold-env: the ALES52 envelope follower regressed under the hold stage"
+
+say "ales-hold-env: GREEN — the envelope follower given a HOLD stage between attack and release: a rising sample moves by the attack and rearms the hold, a fallen sample pins the peak while the countdown lasts and only then releases, every envelope move delegated to ALES52's proven env_step so the held follower cannot drift; a hold of zero reduces to the plain ALES52 follower byte-for-byte, a nonzero hold delays the release (the peak pinned, the tail no lower than under a smaller hold, the knob monotone), the hold expires after exactly `hold` samples, the state carries — env and hold_left both — so a span in two pieces equals the whole once; an illegal coefficient refuses BadCoeff, a hold past max_clip BadHold, an out-of-range span BadRange, each leaving the clip untouched; the ALES52 follower selftest stays GREEN. The next rung can drive the limiter, compressor, or gate from the held follower, or open a lookahead delay for a true brickwall."
