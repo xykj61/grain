@@ -1,0 +1,191 @@
+//! lotus/paste_join.rye — ALES31: the paste that JOINS rather than butts — a held span dropped into the middle of a master crosses
+//! BOTH its seams equal-power. ALES25's clipboard `paste` and ALES30's rack both splice a held span into a master with a hard BUTT
+//! (timeline.splice), exact where the samples already agree, yet where the span's head disagrees with the outgoing tail — or its own
+//! tail disagrees with the audio that follows — the waveform STEPS, and a step is a click a keeper hears. ALES26 gave a seam the
+//! choice of law and ALES28/ALES29 carried the two-sided insert into stereo; this rung hands that law to the PASTE, so a keeper drops
+//! a carried span into the middle of a mix and both new boundaries flow through power rather than stepping.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES31.
+//! Design read: active-designing/20260814-144834_fill-ales31-lotus-paste-join.md
+//! Stands on: lotus/clipboard.rye (ALES25) — the held stereo span (its own bounded left/right buffers, `held()` the length), read
+//! whole as the span to insert; lotus/stereo_insert_join.rye (ALES29) — `insert_join_stereo`, the two-sided stereo insert-join run
+//! whole so both seams of both channels cross equal-power with proven scratch-clip atomicity; lotus/pan.rye (ALES10) — the StereoClip.
+//!
+//! THE CRUX: pasting a held span with `paste_join` is EXACTLY ALES29's stereo two-sided insert-join applied to the clipboard's own
+//! held buffers — so the paste crosses both seams of both channels equal-power, atomic across the two channels, where ALES25's plain
+//! `paste` butts. One fact makes this exact: the clipboard already holds its two channels at one shared length (ALES25's invariant),
+//! and `paste_join` hands `left[0..held]` and `right[0..held]` to ALES29's `insert_join_stereo` with the same `at`, `lead`, and
+//! `trail` — adding only the Empty guard, no new arithmetic, no new seam law, no new bound. The clipboard is UNCHANGED (a read), so a
+//! joined paste is still non-consuming and cross-master, exactly like ALES25's butt paste.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. A joined paste is a
+//! crossfade between two held sample buffers, not a signal on a wire. No socket, no network, no keys, no funds, no real device, no
+//! real meter, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/paste_join.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const selection = @import("selection.rye");
+const clipboard = @import("clipboard.rye");
+const stereo_insert_join = @import("stereo_insert_join.rye");
+
+pub const paste_join_version = "20260814.144834";
+
+/// The combined error set of a joined paste: an empty clipboard, plus ALES29's insert-join faults forwarded (a `BadRange` for an
+/// insert point past the master or a `lead`/`trail` wider than its neighbour or an overlap under two, and a `ClipFull` overflow).
+/// Every fault refuses by name before either destination channel is touched.
+pub const PasteJoinError = error{
+    /// A joined paste of a clipboard that holds no span — refused, never a zero-length no-op mistaken for a real paste.
+    Empty,
+} || timeline.EditError;
+
+/// Paste the held span into `master` at `at`, crossing BOTH seams of BOTH channels equal-power — the joined twin of ALES25's butt
+/// `paste`. The clipboard's two held channels (one shared length) are handed to ALES29's `insert_join_stereo` with the same `at`,
+/// `lead`, and `trail`, so the span's leading seam crosses the outgoing tail over `lead` and its trailing seam crosses the following
+/// audio over `trail`, each through ALES12's −3 dB curve, and the new length is `master + held − lead − trail`. Atomic across the two
+/// channels (ALES29's own guarantee); the clipboard is UNCHANGED so a joined paste is still non-consuming and cross-master. Refuses
+/// Empty when nothing is held, and forwards BadRange / ClipFull. So a keeper drops a carried span into the middle of a mix without a
+/// click at either boundary.
+pub fn paste_join(cb: *const clipboard.Clipboard, master: *pan.StereoClip, at: u32, lead: u32, trail: u32) PasteJoinError!void {
+    // invariant: the destination's two channels share one length on entry — the lockstep the joined paste keeps.
+    assert(master.left.len == master.right.len);
+    const n = cb.held();
+    if (n == 0) return error.Empty;
+    // invariant: the held span is one length across the two channels (ALES25's own invariant), so the same span applies to both.
+    assert(cb.len <= cb.left.len and cb.len <= cb.right.len);
+
+    // The joined paste IS ALES29's stereo two-sided insert-join over the clipboard's own held buffers — both seams, both channels,
+    // atomic, with the proven scratch-clip build; paste_join adds only the Empty guard, no new arithmetic or seam law.
+    try stereo_insert_join.insert_join_stereo(master, at, cb.left[0..n], cb.right[0..n], lead, trail);
+
+    // invariant: both channels grew by the same shared count and stay one length — the stereo image is still aligned.
+    assert(master.left.len == master.right.len);
+}
+
+// --- selftest: THE CRUX — a joined paste crosses BOTH seams equal-power where ALES25's butt paste steps; the new length shares both
+//     overlaps (master + held − lead − trail); the clipboard is unchanged (non-consuming) and pastes into a second master (cross-
+//     master); a full overlap onto the very end is a pure leading crossfade; and every edge refuses by name -----------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn run_selftest() !u8 {
+    // 1. THE CRUX — a held span joined into the middle of a master crosses both seams equal-power, so where a butt paste would step
+    //    the full swing, the joined seam samples sit strictly inside. Master left eight +30000 then eight −30000; hold a span of four
+    //    −30000 heads and four +30000 tails; join at the sign flip over lead 4 / trail 4 (an overlap wide enough to hold an interior
+    //    equal-power sample, den ≥ 2). The butt paste (ALES25) would leave adjacent samples at +30000 and −30000 (a 60000 step); the
+    //    joined paste moves each seam through power.
+    {
+        var m = pan.StereoClip{};
+        try timeline.splice(&m.left, 0, &[_]i16{ 30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000, -30000, -30000, -30000, -30000, -30000, -30000, -30000, -30000 });
+        try timeline.splice(&m.right, 0, &[_]i16{ 30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000, -30000, -30000, -30000, -30000, -30000, -30000, -30000, -30000 });
+        // hold a span whose head disagrees with the outgoing +30000 tail and whose tail disagrees with the incoming −30000 audio.
+        var src = pan.StereoClip{};
+        try timeline.splice(&src.left, 0, &[_]i16{ -30000, -30000, -30000, -30000, 30000, 30000, 30000, 30000 });
+        try timeline.splice(&src.right, 0, &[_]i16{ -30000, -30000, -30000, -30000, 30000, 30000, 30000, 30000 });
+        var cb = clipboard.Clipboard{};
+        try clipboard.copy_to(&cb, &src, try selection.make(&src, 0, 8));
+
+        try paste_join(&cb, &m, 8, 4, 4);
+        // the new length shares both overlaps: 16 + 8 − 4 − 4 = 16.
+        if (m.left.len != 16 or m.right.len != 16) return error.JoinedLengthWrong;
+        if (m.left.len != m.right.len) return error.JoinedNotAligned;
+        // every seam sample sits strictly inside the ±30000 extremes — no full-swing step remains where the curves crossed.
+        var i: u32 = 0;
+        var crossed = false;
+        while (i < m.left.len) : (i += 1) {
+            const s = m.left.samples()[i];
+            if (s > -30000 and s < 30000) crossed = true;
+        }
+        if (!crossed) return error.NoEqualPowerSeam;
+    }
+
+    // 2. NON-CONSUMING and CROSS-MASTER — the same clipboard joins into a second, different master and its held length is unchanged.
+    {
+        var src = pan.StereoClip{};
+        try timeline.splice(&src.left, 0, &[_]i16{ 10, 20, 30, 40 });
+        try timeline.splice(&src.right, 0, &[_]i16{ 11, 21, 31, 41 });
+        var cb = clipboard.Clipboard{};
+        try clipboard.copy_to(&cb, &src, try selection.make(&src, 0, 4)); // hold four samples
+
+        var a = pan.StereoClip{};
+        try timeline.splice(&a.left, 0, &[_]i16{ 1, 2, 3, 4, 5, 6 });
+        try timeline.splice(&a.right, 0, &[_]i16{ 1, 2, 3, 4, 5, 6 });
+        try paste_join(&cb, &a, 3, 2, 2); // 6 + 4 − 2 − 2 = 6
+        if (a.left.len != 6) return error.CrossMasterALenWrong;
+        if (cb.held() != 4) return error.HeldChangedAfterA;
+
+        var b = pan.StereoClip{};
+        try timeline.splice(&b.left, 0, &[_]i16{ 100, 200, 300, 400, 500, 600 });
+        try timeline.splice(&b.right, 0, &[_]i16{ 100, 200, 300, 400, 500, 600 });
+        try paste_join(&cb, &b, 3, 2, 2);
+        if (b.left.len != 6) return error.CrossMasterBLenWrong;
+        if (cb.held() != 4) return error.HeldChangedAfterB;
+    }
+
+    // 3. every edge refuses by name — an empty clipboard (Empty), a past-the-master position (BadRange), a lead wider than the head
+    //    (BadRange), and an overflow (ClipFull) — each before the master is touched, leaving it untouched and aligned.
+    {
+        var m = pan.StereoClip{};
+        try timeline.splice(&m.left, 0, &[_]i16{ 1, 2, 3, 4, 5, 6 });
+        try timeline.splice(&m.right, 0, &[_]i16{ 1, 2, 3, 4, 5, 6 });
+        const untouched = [_]i16{ 1, 2, 3, 4, 5, 6 };
+
+        var empty = clipboard.Clipboard{};
+        if (paste_join(&empty, &m, 3, 2, 2)) |_| return error.EmptySlipped else |e| if (e != error.Empty) return error.WrongEmpty;
+
+        var src = pan.StereoClip{};
+        try timeline.splice(&src.left, 0, &[_]i16{ 7, 7, 7, 7 });
+        try timeline.splice(&src.right, 0, &[_]i16{ 7, 7, 7, 7 });
+        var cb = clipboard.Clipboard{};
+        try clipboard.copy_to(&cb, &src, try selection.make(&src, 0, 4));
+
+        // a past-the-master position forwards BadRange.
+        if (paste_join(&cb, &m, 9, 2, 2)) |_| return error.PastSlipped else |e| if (e != error.BadRange) return error.WrongPast;
+        // a lead wider than the head (at=1 leaves a 1-sample head) forwards BadRange.
+        if (paste_join(&cb, &m, 1, 2, 2)) |_| return error.LeadWideSlipped else |e| if (e != error.BadRange) return error.WrongLeadWide;
+        // the master is untouched and aligned after the refusals.
+        if (!eq(m.left.samples(), &untouched)) return error.RefusedMutated;
+        if (m.left.len != m.right.len) return error.RefusedMisaligned;
+
+        // an overflowing joined paste forwards ClipFull — a nearly-full master with a span whose net growth passes the free room.
+        var full = pan.StereoClip{};
+        full.left.len = timeline.max_clip - 1;
+        full.right.len = timeline.max_clip - 1;
+        // hold a wider span so net growth (held − lead − trail) exceeds the one free sample.
+        var wide_src = pan.StereoClip{};
+        var wbuf: [8]i16 = [_]i16{0} ** 8;
+        try timeline.splice(&wide_src.left, 0, &wbuf);
+        try timeline.splice(&wide_src.right, 0, &wbuf);
+        var wcb = clipboard.Clipboard{};
+        try clipboard.copy_to(&wcb, &wide_src, try selection.make(&wide_src, 0, 8));
+        if (paste_join(&wcb, &full, full.left.len - 4, 2, 2)) |_| return error.OverflowSlipped else |e| if (e != error.ClipFull) return error.WrongOverflow;
+        if (full.left.len != full.right.len) return error.OverflowMisaligned;
+    }
+
+    print("GREEN ales-paste-join: the paste that JOINS rather than butts — a held span dropped into the middle of a master crosses " ++
+        "BOTH its seams equal-power. THE CRUX: paste_join is EXACTLY ALES29's stereo two-sided insert-join applied to the " ++
+        "clipboard's own held buffers — the held span (one shared length, ALES25's invariant) handed to insert_join_stereo with the " ++
+        "same at/lead/trail, adding only the Empty guard and no new arithmetic, seam law, or bound; so both seams of both channels " ++
+        "flow through ALES12's −3 dB curve where ALES25's plain paste butts, the new length shares both overlaps (master + held − " ++
+        "lead − trail), and the paste stays atomic across the two channels; the clipboard is UNCHANGED so a joined paste is still " ++
+        "non-consuming and cross-master; a full-swing butt step becomes a seam sample strictly inside the extremes; and every edge " ++
+        "refuses by name — Empty, a past-the-master or too-wide-lead BadRange, an overflow ClipFull — the master untouched and " ++
+        "aligned after each; stereo_insert_join and clipboard reused whole; no socket, no network, no keys, no funds, no real " ++
+        "device, no real meter, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

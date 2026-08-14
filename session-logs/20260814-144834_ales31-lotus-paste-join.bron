@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260814.144834
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title ALES31 — Lotus's paste that joins rather than butts
+prompt Continue the ALES recursion loop Lindy-first crux-first; send each finished increment to origin and xykj61; stop at custody gates; baton prin recur
+think After ALES30 (the multi-slot rack) sent, weighed the next rung. A rack-to-text slot sheet would serialize kilobytes of PCM per slot — a genuinely new, heavier serialization surface, riskier than a clean composition. The ALES29 road-on named "let the graft or paste join rather than butt" — a pure composition of two proven modules.
+think Recognized paste_join IS ALES29's stereo two-sided insert-join applied to ALES25's held span: the clipboard holds its two channels at one shared length, so handing left[0..held]/right[0..held] to insert_join_stereo with the same at/lead/trail crosses both seams of both channels equal-power, atomic, with the proven scratch-clip build — adding only the Empty guard, no new arithmetic, seam law, or bound.
+think Chosen crux-first: closes the last butt on the paste side (the gesture reached for most), lowest-risk, purely local, no seam, no gate. lotus/paste_join.rye — PasteJoinError = error{Empty} || timeline.EditError; one fn paste_join(cb, master, at, lead, trail).
+obs First build failed the crux case: an overlap of 2 (den=1) hits only the crossfade's pure endpoints, no interior equal-power sample, so no seam sample landed strictly inside the ±30000 extremes. Fixed by widening the master to 16 samples, the span to 8, and lead/trail to 4 (den=3, a genuine interior crossover). GREEN after that single fix.
+obs Witness tools/ales_paste_join_witness.rish GREEN; TAME style bans clean on the scan roster; no new zero-assert ratchet, no usize, no bare memcpy. stereo_insert_join and clipboard reused whole. Purely local — no socket, no network, no keys, no funds, no real device, no real meter, no real speaker; every custody gate untouched.
+loom witness=ales_paste_join_witness result=green overlap_den=3 lead=4 trail=4 net_len=16 build=second
+file lotus/paste_join.rye ALES31 module — the joined paste, ALES29 over the ALES25 held span
+file tools/ales_paste_join_witness.rish the witness that builds and proves it GREEN on metal
+file active-designing/20260814-144834_fill-ales31-lotus-paste-join.md the self-approved design read for the round
+file lotus/README.md front door synced — status list, ALES31 rung entry, road-on paragraph
+recommend keep-going ALES32 can hand the same joined law to the rack's paste (a named slot pasted joined) — a clean composition; the slot-sheet text and wire-carry seam remain later doors

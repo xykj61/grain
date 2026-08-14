@@ -1,0 +1,40 @@
+# tools/ales_paste_join_witness.rish — the paste that joins rather than butts (ALES31).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES31.
+# Design read: active-designing/20260814-144834_fill-ales31-lotus-paste-join.md
+# Stands on: lotus/clipboard.rye (ALES25) — the held stereo span, read whole as the span to insert; lotus/stereo_insert_join.rye
+# (ALES29) — insert_join_stereo, the two-sided stereo insert-join reused whole; lotus/pan.rye (ALES10) — the StereoClip.
+#
+# lotus/paste_join.rye drops a held span into the middle of a master crossing BOTH its seams equal-power, where ALES25's plain paste
+# butts. The crux: paste_join is EXACTLY ALES29's stereo two-sided insert-join applied to the clipboard's own held buffers — the held
+# span (one shared length) handed to insert_join_stereo with the same at/lead/trail, adding only the Empty guard and no new arithmetic,
+# seam law, or bound; so both seams of both channels flow through ALES12's -3 dB curve, the new length shares both overlaps, and the
+# paste stays atomic across the two channels and non-consuming. The selftest proves: a held span joined at a full-swing sign flip lands
+# a seam sample strictly inside the extremes where a butt would step 60000; the new length is master + held - lead - trail; the same
+# clipboard joins into a second master with its held length unchanged; every edge refuses by name (Empty / BadRange / ClipFull).
+# Purely local — no network, no keys, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_paste_join_witness.rish
+
+say "ales-paste-join: Language EN — ALES31 hands the seam law to the PASTE: a keeper drops a carried span into the middle of a mix and both new boundaries flow through power rather than stepping into a click, exactly as the append-join (ALES26) and two-sided insert (ALES28/29) already do for the timeline."
+say "ales-paste-join: Style Radiant — the law is stated positively: paste_join is exactly ALES29's stereo two-sided insert-join applied to the clipboard's own held buffers, so it crosses both seams of both channels equal-power, keeps the new length sharing both overlaps, and stays atomic and non-consuming; it adds only the Empty guard, no new arithmetic or seam law."
+say "ales-paste-join: Lens TAME — stereo_insert_join.insert_join_stereo and clipboard reused whole (no new sample-touching arithmetic, no new error beyond Empty, no module seam); the held span already bounded by ALES25; a joined paste checks emptiness before the insert and forwards BadRange/ClipFull by name; siloed to lotus/, no network, no keys, no funds, no device, no meter, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/paste_join"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/paste_join.rye -femit-bin=${bin}"]
+assert build.ok else "ales-paste-join: build failed — ${build.err}"
+
+let outfile = "lotus/bin/paste_join.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-paste-join: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-paste-join: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-paste-join' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-paste-join: selftest did not print the GREEN ales-paste-join line"
+
+say "ales-paste-join: GREEN — a keeper drops a carried span into the middle of a mix without a click at either boundary: paste_join crosses both seams of both channels equal-power (ALES29 over the ALES25 held span), the new length shares both overlaps, the clipboard is unchanged so the joined paste is still non-consuming and cross-master, and every edge refuses by name. The next Lotus rung can hand the same joined law to the rack's paste, let a rack travel as text (a saveable slot sheet), or carry a slot across the ALES0 audio wire (a module seam, taken on Keaton's word)."
