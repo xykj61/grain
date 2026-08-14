@@ -1,0 +1,141 @@
+//! lotus/marker_time.rye — ALES21: markers in real time — a named place set and read in SECONDS. ALES20 gave a keeper named
+//! places, yet every place is set and read by RAW SAMPLE INDEX. A musician marks the downbeat by TIME — "the chorus at forty-two
+//! seconds" — not by counting samples. ALES14's loop already learned this move (mark_ms sets loop points in seconds through the
+//! ALES5 clock); this rung gives markers the same twin, so a keeper drops a named place in seconds and reads it back in seconds.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES21.
+//! Design read: active-designing/20260814-fill-ales21-lotus-marker-time.md
+//! Stands on: lotus/markers.rye (ALES20) — the sorted, unique named track and its add reused whole (the sample-index face stays
+//! pure; this rung only adds a time face over it); lotus/clock.rye (ALES5) — samples_for and ms_for, the one proven seconds ↔
+//! samples conversion, exactly as loop.mark_ms uses it; lotus/pan.rye (ALES10) — the StereoClip whose two channels share a length.
+//!
+//! THE CRUX: a named place set in seconds lands at EXACTLY samples_for(ms) and reads back the honestly-lossy same time — and the
+//! track it lands in stays SORTED and UNIQUE by ALES20's own add invariant. Two facts make this exact. The conversion is ALES5's,
+//! proven — mark_ms converts ms → samples through the same clock.samples_for the loop's mark_ms uses (bounded, refusing
+//! DurationTooLong past the clip), then hands the sample position to ALES20's add, so the marker lands sorted, unique, and within
+//! the master with no new bound of its own. And reading back is the clock's own round-trip — pos_ms reports through clock.ms_for,
+//! honestly lossy exactly as ALES5 defines (at one sample per ms the round-trip is exact; at any rate it is the clock's own
+//! documented truncation, not a new loss).
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A time face over ALES20's in-process named track, siloed to lotus/. A marker is a
+//! label on an index, and a time is that index read through the clock. No socket, no network, no keys, no funds, no real device,
+//! no real meter, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/marker_time.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const clock = @import("clock.rye");
+const pan = @import("pan.rye");
+const loop = @import("loop.rye");
+const scrub = @import("scrub.rye");
+const markers = @import("markers.rye");
+
+pub const marker_time_version = "20260814.133633";
+
+/// The combined error set of the timed markers face: ALES20's marker edges and ALES5's clock edges, forwarded unchanged. Every
+/// fault refuses by name before a marker is placed.
+pub const MarkerTimeError = markers.MarkerError || clock.ClockError;
+
+/// Set a named place at a real moment `ms`: convert ms → samples through ALES5's clock.samples_for (bounded, refusing
+/// DurationTooLong past the clip), then add through ALES20's markers.add — so the marker lands sorted, unique, and within the
+/// master with no new bound of its own. Forwards every ALES20 edge (BadName, PastEnd, Duplicate, MarkersFull) and ALES5's
+/// DurationTooLong. So a keeper drops a named place in seconds.
+pub fn mark_ms(m: *markers.Markers, master: *const pan.StereoClip, clk: clock.Clock, ms: u32, name: []const u8) MarkerTimeError!void {
+    // invariant: the clock is valid, so the conversion is bounded and safe; the two channels share one length.
+    assert(clk.rate >= 1 and clk.rate <= clock.max_rate);
+    assert(master.left.len == master.right.len);
+    const at = try clock.samples_for(clk, ms);
+    try markers.add(m, master, at, name);
+    // invariant: the track now carries a marker at exactly the converted sample position.
+    assert(m.count >= 1);
+}
+
+/// Read marker `i`'s position back as a real duration through ALES5's clock.ms_for, honestly lossy exactly as ALES5 defines. So a
+/// keeper reads a place as a time, not a raw index.
+pub fn pos_ms(m: *const markers.Markers, i: u32, clk: clock.Clock) u32 {
+    // invariant: the index names a live marker and the clock is valid, so the conversion is safe.
+    assert(i < m.count and clk.rate >= 1 and clk.rate <= clock.max_rate);
+    return clock.ms_for(clk, markers.pos_of(m, i));
+}
+
+// --- selftest: at a legible clock (1 sample per ms) a place set at ms lands at sample ms and reads back ms exactly; places set in
+//     seconds OUT OF ORDER stay sorted and unique (ALES20's invariant carried through the time face); pos_ms round-trips each
+//     marker; a place past the master refuses PastEnd and a duration past the clip refuses DurationTooLong; two places at the same
+//     time refuse Duplicate; a marker set in seconds drives a real ALES20 region_between and scrub snap ---------------------------
+
+fn run_selftest() !u8 {
+    const c = try clock.make(1000); // 1 sample per ms — a millisecond equals a sample, legible on a bench
+
+    var master = pan.StereoClip{};
+    var buf: [500]i16 = [_]i16{0} ** 500;
+    try timeline.splice(&master.left, 0, &buf);
+    try timeline.splice(&master.right, 0, &buf);
+
+    // 1. THE CRUX — places set in SECONDS out of order land at their sample positions, stay sorted and unique, and read back the
+    //    same time. Set 300ms, 100ms, 250ms, 0ms; the track reads ascending samples 0, 100, 250, 300, each reading its ms back.
+    {
+        var m = markers.Markers{};
+        try mark_ms(&m, &master, c, 300, "chorus");
+        try mark_ms(&m, &master, c, 100, "verse");
+        try mark_ms(&m, &master, c, 250, "bridge");
+        try mark_ms(&m, &master, c, 0, "intro");
+        if (m.count != 4) return error.CountWrong;
+        const want_pos = [_]u32{ 0, 100, 250, 300 };
+        const want_ms = [_]u32{ 0, 100, 250, 300 };
+        const want_name = [_][]const u8{ "intro", "verse", "bridge", "chorus" };
+        var i: u32 = 0;
+        while (i < m.count) : (i += 1) {
+            if (markers.pos_of(&m, i) != want_pos[i]) return error.NotSorted;
+            if (pos_ms(&m, i, c) != want_ms[i]) return error.MsRoundTripWrong;
+            if (!std.mem.eql(u8, markers.name_of(&m, i), want_name[i])) return error.NameWrong;
+        }
+    }
+
+    // 2. the edges refuse by name — a place past the master refuses PastEnd (500ms is sample 500, the end, allowed; 501ms is past),
+    //    a duration past the clip refuses DurationTooLong, and two places at the same time refuse Duplicate.
+    {
+        var m = markers.Markers{};
+        try mark_ms(&m, &master, c, 500, "end"); // exactly the end is allowed (a boundary marker)
+        if (mark_ms(&m, &master, c, 501, "over")) |_| return error.PastEndSlipped else |e| if (e != error.PastEnd) return error.WrongPastEnd;
+        // a duration past the clip bound refuses the clock's own DurationTooLong before any add — at 1 sample/ms, max_clip + 1 ms
+        // converts to max_clip + 1 samples, one past the clip bound, so samples_for throws before markers.add is ever reached.
+        const huge_ms: u32 = timeline.max_clip + 1;
+        if (mark_ms(&m, &master, c, huge_ms, "far")) |_| return error.DurationSlipped else |e| if (e != error.DurationTooLong) return error.WrongDuration;
+        // a second place at the same time is a duplicate sample position.
+        try mark_ms(&m, &master, c, 200, "a");
+        if (mark_ms(&m, &master, c, 200, "b")) |_| return error.DupSlipped else |e| if (e != error.Duplicate) return error.WrongDup;
+    }
+
+    // 3. a marker set in SECONDS drives a real ALES20 region_between and scrub snap — set two timed places, loop between them, and
+    //    snap a scrub onto the nearest. The time face composes cleanly with ALES20's sample-index gestures.
+    {
+        var m = markers.Markers{};
+        try mark_ms(&m, &master, c, 100, "a"); // sample 100
+        try mark_ms(&m, &master, c, 400, "b"); // sample 400
+        const lp = try markers.region_between(&m, 0, 1, &master);
+        if (lp.start != 100 or lp.end != 400 or !lp.on or lp.span() != 300) return error.RegionWrong;
+
+        var s = try scrub.make(4);
+        try scrub.move_to(&s, &master, 380); // dropped near the second mark
+        const landed = try markers.snap(&s, &m, &master);
+        if (landed != 1 or s.pos != 400) return error.SnapWrong;
+    }
+
+    print("GREEN ales-marker-time: named places set and read in SECONDS — the twin of ALES14's loop.mark_ms, over ALES20's sorted " ++
+        "track. THE CRUX: a place set at ms lands at exactly samples_for(ms) and reads back the honestly-lossy same time (at one " ++
+        "sample per ms, exact), the track staying sorted and unique by ALES20's own add invariant however out of order the times " ++
+        "arrive; the edges refuse by name — a place past the master PastEnd, a duration past the clip DurationTooLong, two places " ++
+        "at one time Duplicate; and a marker set in seconds drives a real ALES20 region_between (an armed loop between two timed " ++
+        "marks) and scrub snap; clock.samples_for/ms_for and markers.add reused whole; no socket, no network, no keys, no funds, " ++
+        "no real device, no real meter, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
