@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260813.233541
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu VPS pier — Eastern (EDT) time convention
+title HUNK73 — a part row: the picture beside its honest facts, on glass
+prompt recur baton prin — keep going Lindy-first crux-first, approve own design rounds, send often; take HUNK72's named next crux (a Skate render of a part row, picture + facts)
+think REMEMBER's card is stale (latest lap HUNK55, git nib 8f232926d4) yet the git log stands at HUNK72 — the loop climbed past the card. Read the HUNK72 commit and session log to find the true edge: the marketplace-facts arc closed (HUNK71 travels, HUNK72 content-addressed), and its recommend named the next crux — a Skate render of a part row (picture + facts).
+think Took that crux Lindy-first: a part is a picture PLUS facts (HUNK71), but no rung let a keeper SEE both together. HUNK38/39 painted a SpriteIndex shelf (name + swatch) but a SpriteIndex carries no facts. The keystone: part_shelf paints a PartCatalog, one row per part — fact line at the left, thumbnail swatch at the right.
+think Reuse over duplication: the swatch idiom lived only inside sprite_shelf's private draw_product_row. Extracted it to a pub paint_swatch(allocator, grid, row, window) — an additive refactor (draw_product_row now calls it), re-ran the HUNK38 witness GREEN before building on it, then reused paint_swatch in part_row. One swatch idiom, two shelves.
+think The crux is NO DRIFT between stored and painted facts: the row reads facts_at/entry/render_part directly, so the cells a keeper reads spell exactly the facts the catalog holds. Price is a u64 count of cents formatted to $D.CC (write_u64 + format_price) — exact dollars-and-cents, no float, no loss; money formatted for reading, never a balance moved (custody gate #3 untouched).
+obs Two reds caught and fixed on metal before GREEN: a fact line 36 cells wide truncated at cols=40 (label region 33) — widened to cols=48; and row_text scanned for a NUL sentinel, but Grid.init fills cells with spaces (0x20), so the reader ran into the swatch — fixed to read the label region and trim trailing spaces. After both: witness GREEN (fact lines equal stored facts cell-for-cell, price exact across $8.45/$0.05/$0.00/$1000.00, swatch slots 3,4,5, lit canvas, four refusals), HUNK71 + HUNK38 GREEN beneath.
+obs tame_style_check GREEN (bans clean), width-check exit 0. No breach, no cairn — a new file plus an additive refactor. Added brushstroke/part_catalog.rye symlink so imports resolve under brushstroke.
+loom witness=hunk_part_row parts=3 shelf_cols=48 shelf_rows=3 price_cases=4 refusals=4 cold_reds_fixed=2
+file brushstroke/part_row.rye part_shelf / format_price / format_fact_line — a part row, picture beside honest facts
+file brushstroke/sprite_shelf.rye extracted pub paint_swatch, reused by both shelves (additive; HUNK38 GREEN)
+file brushstroke/part_catalog.rye symlink to image/part_catalog.rye so imports resolve under brushstroke
+file tools/hunk_part_row_witness.rish proves no-drift, exact price, swatch colour, refusals; HUNK71 + HUNK38 GREEN beneath
+file active-designing/20260813-232756_hunk-part-row-picture-and-facts-exploration.md self-approved design round
+recommend keep-going — the part is now seen; next crux is the paged part shelf (a catalog larger than the screen, mirroring catalog_window) or a tapped part row opening the product, both agent-doable in this journey
