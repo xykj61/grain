@@ -1,0 +1,270 @@
+//! constel/roster.rye — FORA1: a bounded registry of fake piers. FORA0 seated the naming law — a Constel name is provably
+//! never a real @p, and generate(index) draws a distinct vowel-free name per index. This rung holds the next thing every
+//! Comlink handshake will lean on: the roster of who is in the constellation, kept pure and bounded on the bench, exactly
+//! as DREY proved the Mikrophone firmware pure before any metal.
+//!
+//! The crux: membership is an invariant, not a hope. A roster holds up to max_piers distinct fake piers; every member only
+//! ever enters through generate + never_a_ship, a duplicate name refuses by name, a ninth pier refuses by name, and the
+//! hyphen-joined whole always passes check_constellation — so the roster can never present a string the naming law rejects.
+//!
+//! Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA1.
+//! Design read: active-designing/20260814-041928_fora1-constel-roster-fake-pier-registry.md
+//!
+//! Purely LOCAL — a bounded in-memory registry over name.rye's public API, siloed to constel/, run from inside the jailed
+//! pier. No network, no Comlink transport, no handshake, no keys, no funds, no real address ever formed. The handshake and
+//! transport cross the Comlink seam and stay their own later FORA round; this round gives that round a roster already proven
+//! correct to greet across.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/roster.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const name = @import("name.rye");
+
+pub const roster_version = "20260814";
+
+/// A roster holds at most this many piers — exactly name.max_ships, so a full roster renders to a lawful constellation of
+/// the largest count the naming law admits.
+pub const max_piers: u32 = name.max_ships;
+
+pub const RosterError = error{
+    /// A join past max_piers — the constellation is full.
+    RosterFull,
+    /// A join whose drawn name is already held — piers must be distinct.
+    DuplicatePier,
+    /// find/member handed a name or slot the roster does not hold.
+    NotFound,
+    /// A slot index at or past the current count.
+    SlotOutOfRange,
+    /// The rendered whole would exceed max_constellation_bytes, or the caller's render buffer is too small.
+    ConstellationTooLong,
+} || name.NameError;
+
+/// One fake pier: the u32 draw index that named it, and its generated Constel name held in a fixed buffer.
+pub const Pier = struct {
+    index: u32,
+    name_buf: [name.max_ship_len]u8,
+    name_len: u32,
+
+    /// The pier's name as a slice into its own buffer.
+    pub fn label(self: *const Pier) []const u8 {
+        // invariant: the stored length never exceeds the name bound, so the slice is always in range.
+        assert(self.name_len <= name.max_ship_len);
+        return self.name_buf[0..self.name_len];
+    }
+};
+
+/// A whole fake constellation held in memory: a bounded set of distinct piers, every one provably never a ship.
+pub const Roster = struct {
+    piers: [max_piers]Pier,
+    count: u32,
+
+    /// An empty roster — no piers yet.
+    pub fn init() Roster {
+        return Roster{ .piers = undefined, .count = 0 };
+    }
+
+    /// The current member count.
+    pub fn size(self: *const Roster) u32 {
+        // invariant: a roster never holds more than the bound.
+        assert(self.count <= max_piers);
+        return self.count;
+    }
+
+    /// Linear scan for a name — its slot, or NotFound. Bounded by the current count.
+    pub fn find(self: *const Roster, who: []const u8) RosterError!u32 {
+        // invariant: the scan is bounded by the count, itself bounded by max_piers.
+        assert(self.count <= max_piers);
+        var i: u32 = 0;
+        while (i < self.count) : (i += 1) {
+            if (std.mem.eql(u8, self.piers[i].label(), who)) return i;
+        }
+        return error.NotFound;
+    }
+
+    /// The predicate form of find — true when the roster already holds this name.
+    pub fn contains(self: *const Roster, who: []const u8) bool {
+        _ = self.find(who) catch return false;
+        return true;
+    }
+
+    /// The name held at a slot. Refuses SlotOutOfRange rather than reading past the count.
+    pub fn member(self: *const Roster, slot: u32) RosterError![]const u8 {
+        if (slot >= self.count) return error.SlotOutOfRange;
+        return self.piers[slot].label();
+    }
+
+    /// The bytes a fresh join of `count` piers would render to, hyphens included — count-1 hyphens between the members plus
+    /// the incoming name. Used to refuse a join before it would overflow the constellation bound.
+    fn joined_bytes(self: *const Roster, incoming: u32) u32 {
+        var total: u32 = 0;
+        var i: u32 = 0;
+        while (i < self.count) : (i += 1) total += self.piers[i].name_len;
+        total += incoming;
+        // one hyphen between each pair of members once the incoming pier is counted.
+        total += self.count; // == (count + 1) members - 1 hyphens
+        return total;
+    }
+
+    /// Draw generate(index), prove it never-a-ship, refuse a duplicate or an overfull/overlong roster, then append and
+    /// return the new slot. The one door a pier enters by, so every invariant is enforced in exactly one place.
+    pub fn join(self: *Roster, index: u32) RosterError!u32 {
+        // invariant: a full roster admits no more piers.
+        if (self.count >= max_piers) return error.RosterFull;
+
+        var buf: [name.max_ship_len]u8 = undefined;
+        const drawn = try name.generate(index, &buf);
+
+        // invariant: only a lawful, vowel-free name — provably never a real @p — is ever admitted.
+        assert(name.never_a_ship(drawn));
+
+        // A name already held refuses rather than doubling the pier.
+        if (self.contains(drawn)) return error.DuplicatePier;
+
+        // The whole must stay a lawful constellation string after this join.
+        if (self.joined_bytes(@intCast(drawn.len)) > name.max_constellation_bytes) return error.ConstellationTooLong;
+
+        const slot = self.count;
+        self.piers[slot].index = index;
+        var c: u32 = 0;
+        while (c < drawn.len) : (c += 1) self.piers[slot].name_buf[c] = drawn[c];
+        self.piers[slot].name_len = @intCast(drawn.len);
+        self.count += 1;
+
+        // invariant: the new member reads back exactly what was drawn, and stays never-a-ship.
+        assert(std.mem.eql(u8, self.piers[slot].label(), drawn));
+        assert(name.never_a_ship(self.piers[slot].label()));
+        return slot;
+    }
+
+    /// Stand up an n-pier local constellation in one call — join indices 0 … n-1 deterministically. The convenience the
+    /// harness reaches for; the result is reproducible, since generate is deterministic.
+    pub fn stand_up(self: *Roster, n: u32) RosterError!void {
+        // invariant: cannot stand up more piers than the bound holds.
+        if (n > max_piers) return error.RosterFull;
+        var i: u32 = 0;
+        while (i < n) : (i += 1) {
+            _ = try self.join(i);
+        }
+        // invariant: exactly n piers stand once stood up on a fresh roster.
+        assert(self.count == n);
+    }
+
+    /// Render the whole constellation as a hyphen-joined string into `buf`, asserted to pass check_constellation so the
+    /// roster can never present a name the law would reject. Returns the filled slice.
+    pub fn render(self: *const Roster, buf: []u8) RosterError![]const u8 {
+        if (self.count == 0) return error.NotFound;
+        if (buf.len < name.max_constellation_bytes) return error.ConstellationTooLong;
+
+        var w: u32 = 0;
+        var i: u32 = 0;
+        while (i < self.count) : (i += 1) {
+            if (i > 0) {
+                buf[w] = '-';
+                w += 1;
+            }
+            const lbl = self.piers[i].label();
+            var c: u32 = 0;
+            while (c < lbl.len) : (c += 1) {
+                buf[w] = lbl[c];
+                w += 1;
+            }
+        }
+
+        const whole = buf[0..w];
+        // invariant: what the roster renders is always a lawful constellation of fake piers.
+        try name.check_constellation(whole);
+        return whole;
+    }
+};
+
+// --- selftest: an empty roster, deterministic stand-up, distinctness, the bound, lookup present and absent, render passing
+//     check_constellation, and every member provably never a ship ----------------------------------------------------------
+
+fn run_selftest() !u8 {
+    // 1. A fresh roster is empty.
+    {
+        var r = Roster.init();
+        assert(r.size() == 0);
+        if (r.member(0)) |_| return error.EmptyReadSlipped else |e| assert(e == error.SlotOutOfRange);
+        var empty_buf: [name.max_constellation_bytes]u8 = undefined;
+        if (r.render(&empty_buf)) |_| return error.EmptyRenderSlipped else |e| assert(e == error.NotFound);
+    }
+
+    // 2. Stand up a small constellation deterministically, and prove every member never-a-ship.
+    {
+        var r = Roster.init();
+        try r.stand_up(4);
+        assert(r.size() == 4);
+        var i: u32 = 0;
+        while (i < r.size()) : (i += 1) {
+            const who = try r.member(i);
+            assert(name.never_a_ship(who));
+        }
+        // Determinism: a second roster stood up the same way holds byte-identical names.
+        var r2 = Roster.init();
+        try r2.stand_up(4);
+        var j: u32 = 0;
+        while (j < 4) : (j += 1) {
+            assert(std.mem.eql(u8, try r.member(j), try r2.member(j)));
+        }
+    }
+
+    // 3. A duplicate index refuses DuplicatePier — a pier cannot be doubled.
+    {
+        var r = Roster.init();
+        _ = try r.join(7);
+        if (r.join(7)) |_| return error.DuplicateSlipped else |e| assert(e == error.DuplicatePier);
+        assert(r.size() == 1);
+    }
+
+    // 4. The bound refuses a ninth pier — a full roster admits no more.
+    {
+        var r = Roster.init();
+        try r.stand_up(max_piers); // exactly full
+        assert(r.size() == max_piers);
+        if (r.join(1000)) |_| return error.OverfullSlipped else |e| assert(e == error.RosterFull);
+        // stand_up past the bound refuses too.
+        var r2 = Roster.init();
+        if (r2.stand_up(max_piers + 1)) |_| return error.OverStandSlipped else |e| assert(e == error.RosterFull);
+    }
+
+    // 5. Lookup — a present name finds its slot, an absent name refuses NotFound.
+    {
+        var r = Roster.init();
+        try r.stand_up(3);
+        const first = try r.member(0);
+        const slot = try r.find(first);
+        assert(slot == 0);
+        assert(r.contains(first));
+        assert(!r.contains("zzzz9"));
+        if (r.find("zzzz9")) |_| return error.AbsentFound else |e| assert(e == error.NotFound);
+    }
+
+    // 6. Render is a lawful constellation — the hyphen-joined whole passes check_constellation, and a full roster still fits
+    //    the constellation byte bound.
+    {
+        var r = Roster.init();
+        try r.stand_up(max_piers);
+        var buf: [name.max_constellation_bytes]u8 = undefined;
+        const whole = try r.render(&buf);
+        try name.check_constellation(whole);
+        // The whole carries no vowel — the roster inherits the naming law's safety end to end.
+        assert(!name.contains_vowel(whole));
+        assert(whole.len <= name.max_constellation_bytes);
+    }
+
+    print("GREEN fora-roster: a Constel roster holds only plainly-fake piers — an empty roster reads and renders by name, " ++
+        "stand_up draws a deterministic constellation, a duplicate index refuses DuplicatePier, a ninth pier refuses " ++
+        "RosterFull, lookup finds the present and refuses the absent NotFound, and the full roster renders a lawful " ++
+        "check_constellation whole with no vowel end to end — membership is an invariant, not a hope; no network, no " ++
+        "handshake, no keys, no funds, no real address ever formed\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
