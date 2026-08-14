@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260814.123000
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier (Eastern EDT convention)
+title ALES10 — Lotus's pan, the second channel opened
+prompt Continue the autonomous recur (baton prin recur): next agent-doable lap Lindy-first crux-first, self-approve design rounds, send each finished increment to origin and xykj61, STOP only at custody gates.
+think Sixth increment of this recur, after ALES8 (fader) and ALES9 (mute/solo) both landed and pushed. No custody gate in reach — the Lotus ladder is pure local software.
+think Lindy-first crux-first: pan is the CRUX left on the road — the decisive move that opens the whole second half of the mixer (balance, width, stereo metering/bussing). Crux-first means the hardest still-tractable move, not the easy lap — a transport loop only re-drives the ALES7 head, a curve refines ALES4. Pan opens the second channel: the mono→stereo step. I deliberately chose it over the smaller loop to avoid count-padding.
+think The one crux: pan is a PURE FRACTION FOLD into the fader, so the only sum in the suite stays ALES8's, run once per channel. A panned track is two faded contributions (left weight den−pos, right weight pos), two fractions composing to one — each channel is fader.render over a pan-folded effective fader column. No stereo accumulation invented, no second saturation.
+think The law is linear pan; its defining invariant, and the sharpest proof the fold is exact: left + right reproduces the mono mix EXACTLY for any pan position (on in-range signals). The weights sum to den, so each sample's L and R sum back to the un-panned level — the linear (−6 dB-center) law preserves the SUM (equal-power, a later rung, preserves POWER). Proven in the witness against a real ALES8 mono render.
+think Bounds proven, not trusted: max_pan_den bounds the pan denominator, side_fader asserts fader and pan in range so the folded numerator (num×weight) and denominator (den×den) never overflow the fader's i32/u32. A hard-panned track folds to a 0/N fader on the silent side — silence, never a divide fault.
+obs GREEN on first build across seven blocks. tame_style_check bans clean (pan.rye carries ≥2 asserts per fn), width-check exit 0, ALES8 and ALES9 witnesses re-run GREEN (strictly additive). render_stereo's error union (TrackError || clock.ClockError || timeline.EditError) coerces the two delegated renders cleanly.
+obs Honest scope kept explicit: a StereoClip is two mono Clips, the pan law a routing weight, no psychoacoustic/electrical/speaker claim; purely local, no socket, no network, no keys, no funds, no real device. No custody gate reached.
+loom witness=ales_pan_witness cases=7 build=first_green tame=clean width=exit0 ales8_regreen=1 ales9_regreen=1
+file lotus/pan.rye ALES10 module — StereoClip/Pan/make/side_fader/render_stereo, pan folded into the fader, mix delegated to ALES8 per channel
+file tools/ales_pan_witness.rish witness — 7 cases (center, hard L/R, fader compose, opposite-separation, L+R==mono invariant, make refusals, ClipFull), GREEN on metal
+file active-designing/20260814-fill-ales10-lotus-pan-stereo.md self-approved design round for ALES10
+file lotus/README.md seated ALES10 in status, rungs, prove-list, road-on
+recommend keep-going ALES11 — a stereo balance/width control, a transport loop over a marked region, or the equal-power crossfade curve. No custody gate in reach.

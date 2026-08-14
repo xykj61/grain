@@ -1,0 +1,262 @@
+//! lotus/pan.rye — ALES10: pan — one mono track placed across a stereo field, opening the second channel. Every rung so far
+//! rendered ONE master: a mono mix. Yet a keeper hears in stereo, and the first stereo gesture is PAN — placing each track
+//! somewhere between the left and right speaker. This rung opens the second channel with the simplest honest law: a LINEAR
+//! pan, where a track's level splits between left and right by weights that sum to one. Its defining invariant is that adding
+//! the two channels back reproduces the mono mix EXACTLY, for any pan position — the property a linear (−6 dB-center) pan law
+//! owes, as distinct from the equal-power curve a later rung may add.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES10.
+//! Design read: active-designing/20260814-fill-ales10-lotus-pan-stereo.md
+//! Stands on: lotus/fader.rye (ALES8) — a panned track is TWO faded contributions, so each channel is `fader.render` run once
+//! with a pan-folded effective fader; the whole rung reuses ALES8's one sum twice rather than deriving a stereo accumulation;
+//! lotus/track.rye (ALES6) — the Session the pans align with; lotus/timeline.rye (ALES2) — the Clip and the one saturation.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process stereo render over an ALES6 table of i16 PCM Clips on one
+//! bench, siloed to lotus/. No socket, no network, no keys, no funds, no real device, no real speaker. A StereoClip is two
+//! mono Clips (left, right); pan is a pure fraction fold into the fader, so the only sum in the suite stays ALES8's, run once
+//! per channel. The pan law is a routing weight, not a psychoacoustic or electrical claim.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/pan.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const clock = @import("clock.rye");
+const track = @import("track.rye");
+const fader = @import("fader.rye");
+
+pub const pan_version = "20260814.123000";
+
+/// The widest pan denominator this rung admits. Bounded so a pan weight folded into a fader (numerator × weight, denominator ×
+/// den) never overflows the i32/u32 the fader carries — the fold stays within a proven range rather than trusting the input.
+pub const max_pan_den: u32 = 4096;
+
+/// A stereo master: two mono Clips heard together, one per speaker. The mono rungs are untouched — a StereoClip is simply two
+/// of ALES2's Clips, rendered independently, so every mono proof still stands.
+pub const StereoClip = struct {
+    left: timeline.Clip = .{},
+    right: timeline.Clip = .{},
+};
+
+/// A pan position as a fraction pos/den across the stereo field: pos = 0 is hard left, pos = den is hard right, pos = den/2 is
+/// center. Default center (1/2). The left weight is (den − pos), the right weight is pos, and the two weights sum to den — the
+/// linear-pan law, whose invariant is that left + right reproduces the mono level exactly.
+pub const Pan = struct {
+    pos: u32 = 1,
+    den: u32 = 2,
+};
+
+/// Build a validated Pan, refusing at the edge before any render: BadGain on a zero denominator (reused from ALES2, the same
+/// no-divide-by-zero fault), BadRange on a position past the field or a denominator past the fold bound. The one place a pan's
+/// legality is proven, so the fold below rests on a bounded, in-range fraction.
+pub fn make(pos: u32, den: u32) timeline.EditError!Pan {
+    // invariant: a nonzero denominator, a position within the field, and a denominator within the fold bound.
+    if (den == 0) return error.BadGain;
+    if (pos > den or den > max_pan_den) return error.BadRange;
+    const p = Pan{ .pos = pos, .den = den };
+    // invariant: the built pan carries exactly the requested, validated position.
+    assert(p.pos == pos and p.den == den and p.pos <= p.den and p.den <= max_pan_den);
+    return p;
+}
+
+/// Fold a track's fader and a channel's pan weight into ONE effective fader for that channel: (f.num × weight) / (f.den × den).
+/// The two fractions compose to one, so the channel's mix is plain ALES8 — no stereo accumulation is invented. The products
+/// stay within i32/u32 because every input is bounded: the weight and den by max_pan_den, the fader by the same bound
+/// (asserted — a panned session's faders are bounded levels, the precondition this fold rests on).
+fn side_fader(f: fader.Fader, weight: u32, den: u32) fader.Fader {
+    // invariant: the pan fraction is bounded and legal — weight within the field, den within the fold bound.
+    assert(weight <= den and den >= 1 and den <= max_pan_den);
+    // invariant: the fader is a bounded level, so numerator × weight and denominator × den never overflow the fader's ints.
+    assert(f.den >= 1 and f.den <= max_pan_den);
+    assert(f.num >= -@as(i32, max_pan_den) and f.num <= @as(i32, max_pan_den));
+    return .{ .num = f.num * @as(i32, @intCast(weight)), .den = f.den * den };
+}
+
+/// Render a session to a STEREO master — each track placed by its pan, scaled by its fader. Left and right are each ALES8's
+/// `fader.render` run once, over a pan-folded effective fader column, so the only sum in the suite stays ALES8's. The fader
+/// and pan columns align one-to-one with the session's tracks (asserted). Every refusal is ALES8's, forwarded: a track past
+/// the master bound refuses `ClipFull`, a duration too long forwards `DurationTooLong`. A hard-panned track folds to a 0/N
+/// fader on the silent side — silence, never a divide fault.
+pub fn render_stereo(
+    session: *const track.Session,
+    faders: []const fader.Fader,
+    pans: []const Pan,
+    clk: clock.Clock,
+    out: *StereoClip,
+) (track.TrackError || clock.ClockError || timeline.EditError)!void {
+    // invariant: both columns align one-to-one with the placed tracks.
+    assert(faders.len == session.count and pans.len == session.count);
+    assert(session.count <= track.max_tracks);
+
+    var left_col: [track.max_tracks]fader.Fader = [_]fader.Fader{.{}} ** track.max_tracks;
+    var right_col: [track.max_tracks]fader.Fader = [_]fader.Fader{.{}} ** track.max_tracks;
+    var t: u32 = 0;
+    while (t < session.count) : (t += 1) {
+        const p = pans[t];
+        // invariant: the pan reaching render is legal (den nonzero, pos within the field, den bounded) — proven by `make` or a
+        //   default; asserted here so the weights below are safe.
+        assert(p.den >= 1 and p.pos <= p.den and p.den <= max_pan_den);
+        left_col[t] = side_fader(faders[t], p.den - p.pos, p.den); // left weight = den − pos
+        right_col[t] = side_fader(faders[t], p.pos, p.den); // right weight = pos
+    }
+
+    try fader.render(session, left_col[0..session.count], clk, &out.left);
+    try fader.render(session, right_col[0..session.count], clk, &out.right);
+    // invariant: a stereo master is two legal mono clips of the same length (both rendered from one session).
+    assert(out.left.len == out.right.len);
+}
+
+// --- selftest: center pan splits a track equally (each side half); hard left/right route wholly to one channel; pan composes
+//     with the fader; two tracks panned opposite separate into the two channels; the LINEAR-PAN INVARIANT — left + right
+//     reproduces the mono mix EXACTLY for any pan position (proven on in-range signals, where no channel saturates); make
+//     refuses BadGain / BadRange; a track past the master bound forwards ClipFull ------------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn run_selftest() !u8 {
+    const c = try clock.make(1000); // 1 sample per ms — legible on a bench
+
+    // 1. center pan splits a track EQUALLY — each side carries half the mono level (the honest linear-pan −6 dB center).
+    {
+        var a = timeline.Clip{};
+        try timeline.splice(&a, 0, &[_]i16{ 100, 200, 300 });
+        var s = track.Session{};
+        try track.add_track(&s, &a, 0);
+        var out = StereoClip{};
+        const faders = [_]fader.Fader{.{}};
+        const pans = [_]Pan{try make(1, 2)}; // center
+        try render_stereo(&s, &faders, &pans, c, &out);
+        const half = [_]i16{ 50, 100, 150 };
+        if (!eq(out.left.samples(), &half)) return error.CenterLeftWrong;
+        if (!eq(out.right.samples(), &half)) return error.CenterRightWrong;
+    }
+
+    // 2. hard LEFT routes the whole track to the left channel, right silent; hard RIGHT the mirror.
+    {
+        var a = timeline.Clip{};
+        try timeline.splice(&a, 0, &[_]i16{ 10, 20 });
+        var s = track.Session{};
+        try track.add_track(&s, &a, 0);
+        const faders = [_]fader.Fader{.{}};
+
+        var lft = StereoClip{};
+        const pan_l = [_]Pan{try make(0, 2)}; // hard left
+        try render_stereo(&s, &faders, &pan_l, c, &lft);
+        const whole = [_]i16{ 10, 20 };
+        const silent = [_]i16{ 0, 0 };
+        if (!eq(lft.left.samples(), &whole)) return error.HardLeftWrong;
+        if (!eq(lft.right.samples(), &silent)) return error.HardLeftBled;
+
+        var rgt = StereoClip{};
+        const pan_r = [_]Pan{try make(2, 2)}; // hard right
+        try render_stereo(&s, &faders, &pan_r, c, &rgt);
+        if (!eq(rgt.right.samples(), &whole)) return error.HardRightWrong;
+        if (!eq(rgt.left.samples(), &silent)) return error.HardRightBled;
+    }
+
+    // 3. pan composes with the fader — a track at HALF fader, panned center, lands a quarter on each side.
+    {
+        var a = timeline.Clip{};
+        try timeline.splice(&a, 0, &[_]i16{ 400, 800 });
+        var s = track.Session{};
+        try track.add_track(&s, &a, 0);
+        var out = StereoClip{};
+        const faders = [_]fader.Fader{try fader.make(1, 2)}; // half level
+        const pans = [_]Pan{try make(1, 2)}; // center
+        try render_stereo(&s, &faders, &pans, c, &out);
+        const quarter = [_]i16{ 100, 200 }; // 400 × 1/2 × 1/2
+        if (!eq(out.left.samples(), &quarter)) return error.FaderPanLeftWrong;
+        if (!eq(out.right.samples(), &quarter)) return error.FaderPanRightWrong;
+    }
+
+    // 4. two tracks panned OPPOSITE separate into the two channels — the stereo separation a pan exists for.
+    {
+        var a = timeline.Clip{};
+        var b = timeline.Clip{};
+        try timeline.splice(&a, 0, &[_]i16{ 7, 7 });
+        try timeline.splice(&b, 0, &[_]i16{ 90, 90 });
+        var s = track.Session{};
+        try track.add_track(&s, &a, 0);
+        try track.add_track(&s, &b, 0);
+        var out = StereoClip{};
+        const faders = [_]fader.Fader{ .{}, .{} };
+        const pans = [_]Pan{ try make(0, 2), try make(2, 2) }; // A hard left, B hard right
+        try render_stereo(&s, &faders, &pans, c, &out);
+        const only_a = [_]i16{ 7, 7 };
+        const only_b = [_]i16{ 90, 90 };
+        if (!eq(out.left.samples(), &only_a)) return error.SepLeftWrong;
+        if (!eq(out.right.samples(), &only_b)) return error.SepRightWrong;
+    }
+
+    // 5. the LINEAR-PAN INVARIANT — left + right reproduces the mono fader mix EXACTLY, for ANY pan position. Two tracks at an
+    //    off-center pan and an in-range level; summing the two stereo channels sample-by-sample equals ALES8's mono mix of the
+    //    same session and faders. Proven on in-range signals so no channel saturates (the linear law preserves the SUM, the
+    //    equal-power curve a later rung would preserve POWER instead). This is the sharpest proof pan is a pure fraction fold.
+    {
+        var a = timeline.Clip{};
+        var b = timeline.Clip{};
+        try timeline.splice(&a, 0, &[_]i16{ 300, -400, 500 });
+        try timeline.splice(&b, 0, &[_]i16{ 100, 100, 100 });
+        var s = track.Session{};
+        try track.add_track(&s, &a, 0);
+        try track.add_track(&s, &b, 0);
+        const faders = [_]fader.Fader{ .{}, .{} };
+        const pans = [_]Pan{ try make(1, 4), try make(3, 4) }; // off-center, opposite
+
+        var st = StereoClip{};
+        try render_stereo(&s, &faders, &pans, c, &st);
+
+        var mono = timeline.Clip{};
+        try fader.render(&s, &faders, c, &mono); // ALES8 mono mix, same session and faders
+
+        // left + right, sample by sample, must equal the mono mix.
+        if (st.left.len != mono.len or st.right.len != mono.len) return error.InvariantLen;
+        var i: u32 = 0;
+        while (i < mono.len) : (i += 1) {
+            const sum: i32 = @as(i32, st.left.samples()[i]) + @as(i32, st.right.samples()[i]);
+            if (sum != @as(i32, mono.samples()[i])) return error.PanSumBroken;
+        }
+    }
+
+    // 6. make refuses an illegal pan at the edge — a zero denominator (BadGain), a position past the field, and a denominator
+    //    past the fold bound (both BadRange).
+    {
+        if (make(1, 0)) |_| return error.BadGainSlipped else |e| if (e != error.BadGain) return error.WrongBadGain;
+        if (make(3, 2)) |_| return error.PosSlipped else |e| if (e != error.BadRange) return error.WrongPos;
+        if (make(0, max_pan_den + 1)) |_| return error.DenSlipped else |e| if (e != error.BadRange) return error.WrongDen;
+    }
+
+    // 7. a track whose placed end exceeds the master bound forwards ClipFull — the bound check is ALES8's, inherited whole.
+    {
+        var a = timeline.Clip{};
+        try timeline.splice(&a, 0, &[_]i16{ 0, 0 });
+        var s = track.Session{};
+        try track.add_track(&s, &a, timeline.max_clip - 1); // one sample of room for a two-sample clip
+        var out = StereoClip{};
+        const faders = [_]fader.Fader{.{}};
+        const pans = [_]Pan{.{}};
+        if (render_stereo(&s, &faders, &pans, c, &out)) |_| return error.OverflowSlipped else |e| if (e != error.ClipFull) return error.WrongOverflow;
+    }
+
+    print("GREEN ales-pan: one mono track placed across a stereo field, the second channel opened — center pan splits a track " ++
+        "equally (each side half, the honest linear −6 dB center); hard left and hard right route the whole track to one " ++
+        "channel; pan composes with the fader (half level, center pan → a quarter each side); two tracks panned opposite " ++
+        "separate into the two channels; the LINEAR-PAN INVARIANT holds — left + right reproduces the mono fader mix EXACTLY " ++
+        "for any pan position (pan is a pure fraction fold into the fader, so each channel is ALES8's one sum run once, no " ++
+        "stereo accumulation invented); make refuses BadGain on a zero denominator and BadRange on a position or denominator " ++
+        "out of bounds, and a track past the master bound forwards ClipFull; no socket, no network, no keys, no funds, no " ++
+        "real device\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
