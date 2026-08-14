@@ -1,0 +1,257 @@
+//! brushstroke/edit_filmstrip.rye — HUNK54: the edit history as a filmstrip — every step a thumbnail, the cursor marked.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK54.
+//! Design read: active-designing/20260813-211417_hunk-filmstrip-exploration.md
+//! Teacher, thanked clean-room: the edit-history filmstrip of a photo app (iCloud Photos / Google Photos) — a keeper
+//! reads the road their picture took, step by step, and sees where they currently stand (concept only, siloed).
+//!
+//! The finger arc (HUNK48–53) let a keeper walk the undo/redo history by swipe, yet showed only the one picture the
+//! cursor currently stands on. What a keeper reading a long edit misses is the whole road at a glance — where each
+//! edit took the picture, and which step they are on now. This rung paints it: `filmstrip` replays the cursor's
+//! history one step at a time — step 0 the untouched source, step k the picture with the first k edits applied — and
+//! tiles each as a HUNK2 down-mapped thumbnail into one Skate grid, with a marker row above naming exactly the step
+//! the cursor stands on (`position`). The composition adds no drift — thumbnail k equals a direct `edit_preview.preview`
+//! of the first k edits, cell-for-cell. A pure read over proven seams; no new render primitive, no history mutated.
+//! No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/edit_filmstrip.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const edits = @import("photo_edits.rye");
+const edit_cursor = @import("edit_cursor.rye");
+const edit_preview = @import("edit_preview.rye");
+const image_skate = @import("image_skate.rye");
+const skate = @import("skate_grid.rye");
+
+pub const edit_filmstrip_version = "20260813.211417";
+
+/// The widest filmstrip this rung paints — the down-map ceiling, so the tiled grid stays bounded (TAME bound at
+/// construction). A history of many small thumbnails must still fit inside the map ceiling, or it refuses rather than
+/// allocating past the bound.
+pub const max_film_cols: u32 = image_skate.max_map_cols;
+
+/// The palette slot the "you are here" marker wears — white (anchor slot 2), a solid block over the current step's
+/// band so a keeper reads their position at a glance. Distinct from the thumbnail colors beneath it.
+pub const marker_slot: u8 = 2;
+
+pub const FilmstripError = error{
+    FilmstripTooWide,
+};
+
+/// Paint the whole edit history as a filmstrip: for each step `k` in `0..=history`, a `tcols`×`trows` thumbnail of the
+/// picture with the first `k` edits applied, tiled left to right into one grid; a marker row above wears a solid block
+/// over the band of the step the cursor stands on. The grid is `steps·tcols` wide and `trows + 1` tall. Refuses
+/// `FilmstripTooWide` when the tiled width would pass the map ceiling — a bounded surface never allocates past its
+/// budget. Pure — the cursor's history is read, never moved, and the source is never mutated.
+pub fn filmstrip(
+    allocator: std.mem.Allocator,
+    source: *const qoi.Pixmap,
+    cursor: *const edit_cursor.EditCursor,
+    tcols: u32,
+    trows: u32,
+) !skate.Grid {
+    // invariant: the cursor stands within its history — the whole-structure law the filmstrip reads.
+    assert(cursor.position <= cursor.list.count);
+    // invariant: a thumbnail has both dimensions, so each step down-maps a real block.
+    assert(tcols >= 1);
+    assert(trows >= 1);
+
+    const history = cursor.list.count;
+    // invariant: the history never outgrew the edit-list bound before it is read.
+    assert(history <= edits.max_edits);
+    const steps = history + 1; // step 0 is the untouched source, step `history` the full edit
+    // A tiled width past the map ceiling refuses rather than allocating past the bound.
+    if (steps > max_film_cols / tcols) return error.FilmstripTooWide;
+
+    const width = steps * tcols;
+    const height = trows + 1; // one marker row above the thumbnails
+    // invariant: the tiled grid stays within the named ceiling and holds a marker row above every thumbnail row.
+    assert(width <= max_film_cols);
+    assert(height == trows + 1);
+
+    var grid = try skate.Grid.init(allocator, width, height);
+    // The one seam every down-mapped surface shares: the block atlas and the seven anchor colors, so both the copied
+    // thumbnails and the marker paint solid blocks in the same fixed palette.
+    image_skate.set_anchor_palette(&grid);
+
+    // The marker row (row 0): a solid block over the current step's band, the rest blank — "you are here."
+    const here = cursor.position; // the step the cursor stands on: 0..=history
+    // invariant: the marked step is a real step in the filmstrip.
+    assert(here < steps);
+    var mc: u32 = 0;
+    while (mc < tcols) : (mc += 1) {
+        const dst: usize = @intCast(here * tcols + mc);
+        // invariant: the marker cell sits inside the parallel cell and fg buffers.
+        assert(dst < grid.cells.len);
+        grid.cells[dst] = image_skate.block_cell;
+        grid.fg_index[dst] = marker_slot;
+    }
+
+    // The thumbnails (rows 1..): step k the picture with the first k edits applied, down-mapped to tcols×trows.
+    var k: u32 = 0;
+    while (k < steps) : (k += 1) {
+        var prefix = edits.EditList.init();
+        var i: u32 = 0;
+        while (i < k) : (i += 1) {
+            // invariant: the copied edit sits inside the recorded history.
+            assert(i < cursor.list.count);
+            try prefix.push(cursor.list.at(i));
+        }
+        // invariant: the prefix holds exactly the first k edits.
+        assert(prefix.len() == k);
+        const thumb = try edit_preview.preview(allocator, source, &prefix, tcols, trows);
+        // invariant: the thumbnail is exactly the tile the filmstrip reserved for it.
+        assert(thumb.cols == tcols);
+        assert(thumb.rows == trows);
+
+        var tr: u32 = 0;
+        while (tr < trows) : (tr += 1) {
+            var tc: u32 = 0;
+            while (tc < tcols) : (tc += 1) {
+                const src: usize = @intCast(tr * tcols + tc);
+                const dst: usize = @intCast((tr + 1) * width + (k * tcols + tc));
+                // invariant: both the source thumbnail cell and the destination cell sit inside their grids.
+                assert(src < thumb.cells.len);
+                assert(dst < grid.cells.len);
+                grid.cells[dst] = thumb.cells[src];
+                grid.fg_index[dst] = thumb.fg_index[src];
+            }
+        }
+    }
+    // invariant: exactly one thumbnail was tiled per step.
+    assert(k == steps);
+    return grid;
+}
+
+// --- selftest: a two-tone source, a cursor holding two edits (flip_h, flip_v) rewound one step — the filmstrip shows
+//     three thumbnails (source, flip_h, flip_h+flip_v) each equal to a direct preview cell-for-cell, the marker over
+//     the current step (position 1), and a too-wide filmstrip refuses by name ---------------------------------------
+
+fn craft_two_tone(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 8;
+    const h: u32 = 8;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            const left = x < w / 2;
+            buf[off] = if (left) 255 else 0; // r
+            buf[off + 1] = 0; // g
+            buf[off + 2] = if (left) 0 else 255; // b
+            buf[off + 3] = 255; // a
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+/// A direct thumbnail of the first k edits — the ground truth the filmstrip's tile k must equal.
+fn direct_thumb(garden: std.mem.Allocator, source: *const qoi.Pixmap, cursor: *const edit_cursor.EditCursor, k: u32, tcols: u32, trows: u32) !skate.Grid {
+    var prefix = edits.EditList.init();
+    var i: u32 = 0;
+    while (i < k) : (i += 1) try prefix.push(cursor.list.at(i));
+    return edit_preview.preview(garden, source, &prefix, tcols, trows);
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const pm = try craft_two_tone(garden);
+
+    // A cursor with two edits, rewound one step so the live position is 1 (flip_h in effect, flip_v the redo tail).
+    var cursor = edit_cursor.EditCursor.init();
+    try cursor.push(.flip_h);
+    try cursor.push(.flip_v);
+    cursor.undo();
+    assert(cursor.position == 1);
+    assert(cursor.list.count == 2);
+
+    const tcols: u32 = 2;
+    const trows: u32 = 2;
+    const film = try filmstrip(garden, &pm, &cursor, tcols, trows);
+
+    // Three steps (0, 1, 2): the grid is 3·tcols wide and trows+1 tall.
+    const steps: u32 = 3;
+    assert(film.cols == steps * tcols);
+    assert(film.rows == trows + 1);
+
+    // No drift: tile k equals a direct preview of the first k edits, cell-for-cell, for every step.
+    {
+        var k: u32 = 0;
+        while (k < steps) : (k += 1) {
+            const truth = try direct_thumb(garden, &pm, &cursor, k, tcols, trows);
+            var tr: u32 = 0;
+            while (tr < trows) : (tr += 1) {
+                var tc: u32 = 0;
+                while (tc < tcols) : (tc += 1) {
+                    const src: usize = @intCast(tr * tcols + tc);
+                    const dst: usize = @intCast((tr + 1) * film.cols + (k * tcols + tc));
+                    assert(film.cells[dst] == truth.cells[src]);
+                    assert(film.fg_index[dst] == truth.fg_index[src]);
+                }
+            }
+        }
+    }
+
+    // The marker names the current step: row 0 over band 1 (position 1) is a solid marker block; the other bands blank.
+    {
+        const here: u32 = 1;
+        var band: u32 = 0;
+        while (band < steps) : (band += 1) {
+            const cell_i: usize = @intCast(band * tcols); // first marker cell of the band
+            if (band == here) {
+                assert(film.cells[cell_i] == image_skate.block_cell);
+                assert(film.fg_index[cell_i] == marker_slot);
+            } else {
+                assert(film.cells[cell_i] != image_skate.block_cell); // blank — not the current step
+            }
+        }
+    }
+
+    // Genuinely seen: the filmstrip rasterizes to a lit canvas — the whole history reaches the glass.
+    {
+        const scale: u32 = 1;
+        const width: u32 = film.cols * skate.cell_w * scale;
+        const height: u32 = film.rows * skate.cell_h * scale;
+        const stride: u32 = width * 4;
+        const canvas = try garden.alloc(u8, @as(usize, stride) * @as(usize, height));
+        const bg = skate.Color{ .r = 1, .g = 2, .b = 3 };
+        const fg = skate.Color{ .r = 200, .g = 200, .b = 200 };
+        film.rasterize(canvas, stride, @intCast(width), @intCast(height), bg, fg, scale);
+        const lit = film.lit_pixel_count(canvas, stride, @intCast(width), @intCast(height), bg);
+        assert(lit > 0);
+    }
+
+    // A fresh cursor (no edits) still paints a one-step filmstrip — just the source, marked at step 0.
+    {
+        const fresh = edit_cursor.EditCursor.init();
+        const one = try filmstrip(garden, &pm, &fresh, tcols, trows);
+        assert(one.cols == 1 * tcols); // one step: the untouched source
+        assert(one.fg_index[0] == marker_slot); // the marker stands at step 0
+    }
+
+    // A too-wide filmstrip refuses by name — a thumbnail width that would tile past the map ceiling.
+    if (filmstrip(garden, &pm, &cursor, max_film_cols, trows)) |_| return error.WideSlipped else |e| {
+        if (e != error.FilmstripTooWide) return error.WrongWide;
+    }
+
+    print("GREEN edit-filmstrip: a two-tone source, a cursor of two edits rewound to position 1 — the filmstrip is a " ++
+        "{d}x{d} grid of {d} steps (source, flip_h, flip_h+flip_v), each tile equal to a direct preview cell-for-cell " ++
+        "(no drift); the marker names the current step (position 1) as a solid block, the other bands blank; the strip " ++
+        "rasterizes to a lit canvas; a fresh cursor paints a one-step strip marked at step 0; a too-wide filmstrip " ++
+        "refuses FilmstripTooWide. HUNK16 cursor, HUNK13 preview, HUNK2 down-map GREEN beneath; no network, no key, no " ++
+        "funds\n", .{ film.cols, film.rows, steps });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: edit_filmstrip selftest\n", .{});
+    return 1;
+}

@@ -1,0 +1,42 @@
+# tools/hunk_edit_filmstrip_witness.rish — the edit history as a filmstrip on metal (HUNK54).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK54.
+# Design read: active-designing/20260813-211417_hunk-filmstrip-exploration.md.
+# Teacher, thanked clean-room: the edit-history filmstrip of a photo app (iCloud Photos / Google Photos) — a keeper
+# reads the road their picture took, step by step, and sees where they currently stand (concept only, siloed).
+#
+# The finger arc let a keeper walk the undo/redo history by swipe, yet showed only the one picture the cursor stands on.
+# This rung paints the whole road: filmstrip replays the cursor's history one step at a time — step 0 the source, step k
+# the first k edits applied — and tiles each as a HUNK2 down-mapped thumbnail into one grid, with a marker row above
+# naming exactly the step the cursor stands on. The composition adds no drift — thumbnail k equals a direct preview of
+# the first k edits, cell-for-cell. The selftest proves the tiling, the no-drift, the marker on the current step, a
+# fresh cursor's one-step strip, and a too-wide filmstrip refusing by name. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_edit_filmstrip_witness.rish
+
+say "hunk-edit-filmstrip: Language EN — HUNK54 replays the cursor's history into a filmstrip of thumbnails (HUNK16 cursor · HUNK13 preview · HUNK2 down-map), the current step marked."
+say "hunk-edit-filmstrip: Style Radiant — a keeper reads the whole road their picture took at a glance and sees where they stand; each step a thumbnail, the cursor a solid marker block above it."
+say "hunk-edit-filmstrip: Lens TAME — a pure read over proven seams; the history is read never moved, the source never mutated; bounded by max_film_cols, refusing FilmstripTooWide; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/edit_filmstrip"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/edit_filmstrip.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-edit-filmstrip: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-edit-filmstrip: selftest exited non-zero — ${selftest.out}"
+
+# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# single-quoted string, so an apostrophe in the GREEN line can never break a check (the loom for REDS #76).
+let out = trim selftest.out
+say "hunk-edit-filmstrip: ${out}"
+
+assert out contains "GREEN edit-filmstrip" else "hunk-edit-filmstrip: selftest did not print the GREEN edit-filmstrip line"
+assert out contains "each tile equal to a direct preview cell-for-cell (no drift)" else "hunk-edit-filmstrip: a tile drifted from a direct preview"
+assert out contains "the marker names the current step (position 1) as a solid block" else "hunk-edit-filmstrip: the marker did not name the current step"
+assert out contains "a fresh cursor paints a one-step strip marked at step 0" else "hunk-edit-filmstrip: a fresh cursor did not paint a one-step strip"
+assert out contains "refuses FilmstripTooWide" else "hunk-edit-filmstrip: a too-wide filmstrip did not refuse by name"
+
+say "hunk-edit-filmstrip: GREEN — the edit history paints as a filmstrip: every step a thumbnail equal to a direct preview, the current step marked, a fresh cursor a one-step strip, and a too-wide strip refusing by name; no network, no key, no funds."
