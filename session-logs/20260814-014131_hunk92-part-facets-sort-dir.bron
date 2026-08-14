@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260814.014131
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title HUNK92 — the sort names which way it turns: a directional header over the page that direction draws
+prompt Recursion loop past HUNK91; take the next agent-doable lap Lindy-first crux-first; send each finished increment; stop at custody gates.
+think HUNK90 stacks `sorted by price` over the ascending shelf and HUNK91 builds the descending sort, yet the two never met — the header named no direction and the descending shelf carried no header at all; a keeper could not read low-to-high from high-to-low by the words above the page.
+think The crux is NO DRIFT between the word and the order: one SortDir parameter must drive both the header tail and the shelf, so the label can never disagree with the page — this is why `tail_for` and `shelf_for` are twin switches on the same `dir`, not two independent choices that could fall out of step.
+think Built brushstroke/part_facets_sort_dir.rye mirroring HUNK90 with a direction: SortDir{ascending,descending}, format_sorted_header_dir appends `  sorted by price low to high` / `high to low` (equal-length tails, a comptime assert pins that so one scratch bounds either way), sorted_header_dir_row draws it, facets_sorted_screen_dir stacks the directional header over HUNK89's ascending or HUNK91's descending shelf cell-for-cell.
+think Proved the reverse honestly — a naive reverse check over the five-part fixture would break on the 55c tie, so the exact-reverse assertion runs over a genuinely distinct trio (bolt·nut·gear) where ascending row i+1 equals descending row 3-i part for part; the tie is left to the no-drift first-row checks.
+obs Clean first build — GREEN on the first witness pass; TAME bans + width check clean (exit 0); HUNK90 sorted-screen and HUNK91 sort-desc both re-run GREEN beside it (the screen composes HUNK89/HUNK91 shelves directly).
+obs A price is echoed, compared, and reordered by, never moved — custody gate #3 untouched; no network, no key, no funds.
+loom witness=hunk_part_facets_sort_dir_witness green=1 parts=5 tie_price_cents=55 asc_tail=low_to_high desc_tail=high_to_low reverse_trio=bolt,nut,gear
+file brushstroke/part_facets_sort_dir.rye HUNK92 SortDir · format_sorted_header_dir · sorted_header_dir_row · facets_sorted_screen_dir (tail_for/shelf_for twin switches, no drift)
+file tools/hunk_part_facets_sort_dir_witness.rish witness GREEN; HUNK90 and HUNK91 stay GREEN beside it
+file active-designing/20260814-014131_hunk-part-facets-sort-direction-named-exploration.md self-approved design round for HUNK92
+file image/README.md search paragraph now names the directional sort screen (low-to-high / high-to-low) and its witness
+recommend keep-going — the sort now names its own direction with no drift; next is a keeper-chosen direction toggle on glass, a per-facet count above each value, or another Season-A / double-seat journey. No gate reached.

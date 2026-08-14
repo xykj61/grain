@@ -1,0 +1,407 @@
+//! brushstroke/part_facets_sort_dir.rye — HUNK92: the sort names which way it turns — a directional header over the
+//! page that direction draws.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK92.
+//! Design read: active-designing/20260814-014131_hunk-part-facets-sort-direction-named-exploration.md
+//! Teacher, thanked clean-room: a search box whose sort label reads *price: low to high* / *price: high to low* above
+//! the parts it ordered (concept only, siloed).
+//!
+//! HUNK90 stacks `sorted by price` over the cheapest-first shelf, and HUNK91 builds the descending sort — the same
+//! result read dearest-first — yet the two never met: the header names no direction, and the descending shelf carries
+//! no header at all. A keeper reading a sorted page cannot tell low-to-high from high-to-low by the words above it. This
+//! rung says it: `SortDir` carries the direction, `format_sorted_header_dir` appends `  sorted by price low to high` or
+//! `  sorted by price high to low`, and `facets_sorted_screen_dir` stacks that directional header over the shelf that
+//! direction draws — HUNK89's ascending `facets_sorted_shelf` or HUNK91's descending `facets_sorted_desc_shelf`.
+//!
+//! The crux is NO DRIFT between the word and the order: one direction parameter drives both the header tail and the
+//! shelf, so the label can never disagree with the page — a header reading `high to low` sits over the dearest-first
+//! page, and `low to high` over the cheapest-first page. A zero-result line names neither page nor direction — there is
+//! nothing to order. A malformed clause surfaces the parser's named refusal through the header before any sort work.
+//!
+//! A price is echoed, compared, and reordered by; nothing is moved (custody gate #3 untouched). No network, no key, no
+//! funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/part_facets_sort_dir.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const part_catalog = @import("part_catalog.rye");
+const part_facets_search = @import("part_facets_search.rye");
+const part_facets_paged = @import("part_facets_paged.rye");
+const part_facets_sort = @import("part_facets_sort.rye");
+const part_facets_sort_desc = @import("part_facets_sort_desc.rye");
+const image_skate = @import("image_skate.rye");
+const skate = @import("skate_grid.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const part_facets_sort_dir_version = "20260814.014131";
+
+/// The direction the price sort turns — the one parameter that chooses both the header tail and the shelf, so the word
+/// and the order can never disagree.
+pub const SortDir = enum {
+    ascending,
+    descending,
+};
+
+/// The ascending tail — a two-space gap and `sorted by price low to high`.
+const sort_tail_asc = "  sorted by price low to high";
+/// The descending tail — a two-space gap and `sorted by price high to low`. Same length as the ascending tail, so a
+/// caller sizes one scratch for either direction.
+const sort_tail_desc = "  sorted by price high to low";
+
+// invariant: both direction tails are the same length, so `max_dir_header_line` bounds either direction.
+comptime {
+    assert(sort_tail_asc.len == sort_tail_desc.len);
+}
+
+/// The widest a directional sorted header line runs — HUNK88's whole paged header plus the (equal-length) direction
+/// tail. A caller sizes its scratch to this, so a directional header can never overflow.
+pub const max_dir_header_line: u32 = part_facets_paged.max_paged_header_line + sort_tail_asc.len;
+
+pub const SortDirError = error{
+    HeaderOverflow,
+};
+
+/// The tail for a direction — chosen by `dir`, never guessed. This is the single point where a direction becomes words,
+/// so the label always matches the shelf that same `dir` selects downstream.
+fn tail_for(dir: SortDir) []const u8 {
+    return switch (dir) {
+        .ascending => sort_tail_asc,
+        .descending => sort_tail_desc,
+    };
+}
+
+/// Assemble the directional sorted header line — HUNK88's whole paged header (query echo · result count · `page N of M`)
+/// followed by the direction's tail, added only when a result exists. A zero-result line names neither page nor
+/// direction — there is nothing to order. A malformed clause surfaces the parser's named refusal through the base header
+/// before any direction work.
+pub fn format_sorted_header_dir(
+    allocator: std.mem.Allocator,
+    cat: *const part_catalog.PartCatalog,
+    text: []const u8,
+    rows: u32,
+    offset: u32,
+    dir: SortDir,
+    out: []u8,
+) !u32 {
+    // invariant: paging needs at least one row per page.
+    assert(rows > 0);
+    const tail = tail_for(dir);
+    // invariant: the chosen tail is the bounded direction tail, never longer than the scratch reserves.
+    assert(tail.len == sort_tail_asc.len);
+    var tmp: [max_dir_header_line]u8 = undefined;
+    var n = try part_facets_paged.format_facets_header_paged(allocator, cat, text, rows, offset, tmp[0..]);
+    // invariant: the paged header never filled the whole directional scratch — the tail has room.
+    assert(n <= part_facets_paged.max_paged_header_line);
+    const count = try part_facets_search.facets_search_result_count(cat, text);
+    if (count >= 1) {
+        // invariant: the direction tail fits in the room the paged header left.
+        assert(n + tail.len <= tmp.len);
+        tally_copy.copy_disjoint(u8, tmp[n .. n + tail.len], tail);
+        n += @intCast(tail.len);
+    }
+    if (n > out.len) return error.HeaderOverflow;
+    tally_copy.copy_disjoint(u8, out[0..n], tmp[0..n]);
+    // invariant: the directional header line stayed inside its scratch.
+    assert(n <= max_dir_header_line);
+    return n;
+}
+
+/// Draw the directional sorted header as a fresh one-row anchor-palette grid — the header line truncated to `cols`.
+/// Refuses `EmptyHeader` on a zero dimension and `HeaderTooLarge` past the down-map ceiling (the same guards HUNK90
+/// uses), so a header a keeper reads always fits a real grid; a malformed clause surfaces the parser's named refusal.
+pub fn sorted_header_dir_row(
+    allocator: std.mem.Allocator,
+    cat: *const part_catalog.PartCatalog,
+    text: []const u8,
+    cols: u32,
+    rows: u32,
+    offset: u32,
+    dir: SortDir,
+) !skate.Grid {
+    if (cols == 0) return error.EmptyHeader;
+    if (cols > image_skate.max_map_cols) return error.HeaderTooLarge;
+    var line: [max_dir_header_line]u8 = undefined;
+    const len = try format_sorted_header_dir(allocator, cat, text, rows, offset, dir, line[0..]);
+    var grid = try skate.Grid.init(allocator, cols, 1);
+    image_skate.set_anchor_palette(&grid);
+    const shown: u32 = @min(len, cols);
+    grid.put_line(0, line[0..shown]);
+    // invariant: the header grid is exactly one row at the requested width.
+    assert(grid.rows == 1);
+    assert(grid.cols == cols);
+    return grid;
+}
+
+/// The shelf a direction draws — HUNK89's ascending page for `ascending`, HUNK91's descending page for `descending`.
+/// This is the single point where a direction becomes an order, the twin of `tail_for`: the same `dir` picks the tail
+/// and the shelf, so the header's word and the shelf's order are chosen together and can never drift.
+fn shelf_for(
+    allocator: std.mem.Allocator,
+    cat: *const part_catalog.PartCatalog,
+    text: []const u8,
+    cols: u32,
+    rows: u32,
+    offset: u32,
+    dir: SortDir,
+) !skate.Grid {
+    return switch (dir) {
+        .ascending => part_facets_sort.facets_sorted_shelf(allocator, cat, text, cols, rows, offset),
+        .descending => part_facets_sort_desc.facets_sorted_desc_shelf(allocator, cat, text, cols, rows, offset),
+    };
+}
+
+/// The whole directional sorted screen in one call: the directional header row atop the shelf that same direction draws,
+/// stacked into one grid `cols` wide and `1 + rows` tall (HUNK53's cell-for-cell copy idiom). Row 0 equals
+/// `sorted_header_dir_row` cell-for-cell and the shelf region equals `shelf_for` cell-for-cell, so the stack adds no
+/// drift — the parts under the direction's label are the parts that direction ordered. A malformed clause refuses
+/// through the header first; an offset past the sorted result refuses `BadOffset` through the shelf; a too-thin row
+/// refuses the shelf's own named error.
+pub fn facets_sorted_screen_dir(
+    allocator: std.mem.Allocator,
+    cat: *const part_catalog.PartCatalog,
+    text: []const u8,
+    cols: u32,
+    rows: u32,
+    offset: u32,
+    dir: SortDir,
+) !skate.Grid {
+    const header = try sorted_header_dir_row(allocator, cat, text, cols, rows, offset, dir); // parses; refuses here first
+    const shelf = try shelf_for(allocator, cat, text, cols, rows, offset, dir);
+    // invariant: both surfaces stand at the requested width before they are stacked.
+    assert(header.cols == cols);
+    assert(shelf.cols == cols);
+    assert(shelf.rows == rows);
+
+    var grid = try skate.Grid.init(allocator, cols, 1 + rows);
+    image_skate.set_anchor_palette(&grid);
+    // invariant: the stacked screen is one row taller than the shelf.
+    assert(grid.rows == rows + 1);
+
+    // Row 0 — the directional header, cell-for-cell.
+    var c: u32 = 0;
+    while (c < cols) : (c += 1) {
+        const i: usize = @intCast(c);
+        // invariant: the header cell and the destination cell sit inside their grids.
+        assert(i < header.cells.len);
+        assert(i < grid.cells.len);
+        grid.cells[i] = header.cells[i];
+        grid.fg_index[i] = header.fg_index[i];
+    }
+
+    // Rows 1.. — the direction's shelf page, each source cell into the row below the header.
+    var r: u32 = 0;
+    while (r < rows) : (r += 1) {
+        var sc: u32 = 0;
+        while (sc < cols) : (sc += 1) {
+            const src: usize = @intCast(r * cols + sc);
+            const dst: usize = @intCast((r + 1) * cols + sc);
+            // invariant: both the shelf cell and the destination cell sit inside their grids.
+            assert(src < shelf.cells.len);
+            assert(dst < grid.cells.len);
+            grid.cells[dst] = shelf.cells[src];
+            grid.fg_index[dst] = shelf.fg_index[src];
+        }
+    }
+    return grid;
+}
+
+// --- selftest: five parts across four bands with a 55c tie — the header names the direction, the page beneath matches
+//     it (no drift), the two directions are exact reverses on distinct prices, a zero-result line names neither page nor
+//     direction, and the named refusals fire -------------------------------------------------------------------------
+
+/// A 16×8 sheet in four solid vertical bands (the part_row fixture), so a 4-wide window carries one known colour.
+fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 16;
+    const h: u32 = 8;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            const band = x / 4; // 0..3
+            buf[off] = if (band == 0 or band == 3) 255 else 0; // r
+            buf[off + 1] = if (band == 1 or band == 3) 255 else 0; // g
+            buf[off + 2] = if (band == 2) 255 else 0; // b
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+/// Read a row's cells back as bytes, trimming the blank tail — so the selftest sees exactly the painted text.
+fn row_text(grid: *const skate.Grid, row: u32, out: []u8) u32 {
+    const cells = grid.row_cells(row);
+    var n: u32 = @intCast(cells.len);
+    while (n > 0 and cells[n - 1] == ' ') : (n -= 1) {}
+    var i: u32 = 0;
+    while (i < n) : (i += 1) out[i] = cells[i];
+    return n;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const sheet = try craft_bands(garden);
+    var cat = part_catalog.PartCatalog.init(&sheet);
+    // Five parts with a price spread and a 55c tie: bolt 125c, nut 60c, gear 845c, hexnut 55c, washer 55c.
+    try cat.add_part("bolt", 0, 0, 4, 8, "HX-M8-40", "stainless-304", 125);
+    try cat.add_part("nut", 4, 0, 4, 8, "NY-M8", "brass", 60);
+    try cat.add_part("gear", 8, 0, 4, 8, "GR-24T", "acetal", 845);
+    try cat.add_part("hexnut", 12, 0, 4, 8, "HX-N8", "stainless-304", 55);
+    try cat.add_part("washer", 12, 0, 4, 8, "FW-M8", "stainless-304", 55);
+    assert(cat.len() == 5);
+
+    const cols: u32 = 100; // wide enough that the longest header line (query + count + page + direction tail) fits without truncation
+
+    // The header NAMES THE DIRECTION: ascending ends `low to high`, descending ends `high to low`.
+    {
+        var buf: [max_dir_header_line]u8 = undefined;
+        const na = try format_sorted_header_dir(garden, &cat, "", 5, 0, .ascending, buf[0..]);
+        assert(std.mem.eql(u8, buf[0..na], "all parts  5 results  page 1 of 1  sorted by price low to high"));
+        const nd = try format_sorted_header_dir(garden, &cat, "", 5, 0, .descending, buf[0..]);
+        assert(std.mem.eql(u8, buf[0..nd], "all parts  5 results  page 1 of 1  sorted by price high to low"));
+    }
+
+    // A ZERO-RESULT line names NEITHER page NOR direction — there is nothing to order, either way.
+    {
+        var buf: [max_dir_header_line]u8 = undefined;
+        const na = try format_sorted_header_dir(garden, &cat, "material:stainless-304 max:10", 1, 0, .ascending, buf[0..]);
+        assert(std.mem.eql(u8, buf[0..na], "material:stainless-304 max:10  0 results"));
+        const nd = try format_sorted_header_dir(garden, &cat, "material:stainless-304 max:10", 1, 0, .descending, buf[0..]);
+        assert(std.mem.eql(u8, buf[0..nd], "material:stainless-304 max:10  0 results"));
+    }
+
+    // NO DRIFT, word to order — DESCENDING: the header says `high to low` and the shelf's first row is the DEAREST.
+    {
+        const g = try facets_sorted_screen_dir(garden, &cat, "", cols, 5, 0, .descending);
+        var buf: [max_dir_header_line]u8 = undefined;
+        const hr = row_text(&g, 0, buf[0..]);
+        assert(std.mem.endsWith(u8, buf[0..hr], "sorted by price high to low"));
+        const sr = row_text(&g, 1, buf[0..]);
+        assert(std.mem.startsWith(u8, buf[0..sr], "gear  GR-24T  acetal  $8.45"));
+    }
+
+    // NO DRIFT, word to order — ASCENDING: the header says `low to high` and the shelf's first row is the CHEAPEST.
+    {
+        const g = try facets_sorted_screen_dir(garden, &cat, "", cols, 5, 0, .ascending);
+        var buf: [max_dir_header_line]u8 = undefined;
+        const hr = row_text(&g, 0, buf[0..]);
+        assert(std.mem.endsWith(u8, buf[0..hr], "sorted by price low to high"));
+        const sr = row_text(&g, 1, buf[0..]);
+        assert(std.mem.startsWith(u8, buf[0..sr], "hexnut  HX-N8  stainless-304  $0.55"));
+    }
+
+    // EXACT REVERSE on a genuinely distinct trio: a fresh catalog of three distinct prices, so no tie can muddy the
+    // reversal — the ascending screen's shelf rows read backward equal the descending screen's, part for part.
+    {
+        var trio = part_catalog.PartCatalog.init(&sheet);
+        try trio.add_part("bolt", 0, 0, 4, 8, "HX-M8-40", "stainless-304", 125);
+        try trio.add_part("nut", 4, 0, 4, 8, "NY-M8", "brass", 60);
+        try trio.add_part("gear", 8, 0, 4, 8, "GR-24T", "acetal", 845);
+        const asc = try facets_sorted_screen_dir(garden, &trio, "", cols, 3, 0, .ascending);
+        const desc = try facets_sorted_screen_dir(garden, &trio, "", cols, 3, 0, .descending);
+        var a_buf: [max_dir_header_line]u8 = undefined;
+        var d_buf: [max_dir_header_line]u8 = undefined;
+        var i: u32 = 0;
+        while (i < 3) : (i += 1) {
+            const an = row_text(&asc, i + 1, a_buf[0..]);
+            const dn = row_text(&desc, 3 - i, d_buf[0..]); // descending row (3-i) mirrors ascending row (i+1)
+            assert(std.mem.eql(u8, a_buf[0..an], d_buf[0..dn]));
+        }
+    }
+
+    // The screen stacks the directional header over the direction's shelf: cols wide, 1 + rows tall.
+    {
+        const g = try facets_sorted_screen_dir(garden, &cat, "", cols, 5, 0, .descending);
+        assert(g.cols == cols);
+        assert(g.rows == 6);
+    }
+
+    // No drift, top row: the screen's row 0 equals sorted_header_dir_row cell-for-cell.
+    {
+        const g = try facets_sorted_screen_dir(garden, &cat, "", cols, 5, 0, .descending);
+        const hdr = try sorted_header_dir_row(garden, &cat, "", cols, 5, 0, .descending);
+        var c: u32 = 0;
+        while (c < cols) : (c += 1) {
+            assert(g.cells[c] == hdr.cells[c]);
+            assert(g.fg_index[c] == hdr.fg_index[c]);
+        }
+    }
+
+    // No drift, shelf region: the screen's rows 1.. equal the direction's shelf cell-for-cell — the sorted page, unmoved.
+    {
+        const g = try facets_sorted_screen_dir(garden, &cat, "", cols, 5, 0, .descending);
+        const shelf = try part_facets_sort_desc.facets_sorted_desc_shelf(garden, &cat, "", cols, 5, 0);
+        var r: u32 = 0;
+        while (r < 5) : (r += 1) {
+            var sc: u32 = 0;
+            while (sc < cols) : (sc += 1) {
+                const src: usize = @intCast(r * cols + sc);
+                const dst: usize = @intCast((r + 1) * cols + sc);
+                assert(g.cells[dst] == shelf.cells[src]);
+                assert(g.fg_index[dst] == shelf.fg_index[src]);
+            }
+        }
+    }
+
+    // The composed directional screen rasterizes to a lit canvas — the whole sorted search reaches the glass.
+    {
+        const g = try facets_sorted_screen_dir(garden, &cat, "", cols, 5, 0, .ascending);
+        const scale: u32 = 1;
+        const width: u32 = g.cols * skate.cell_w * scale;
+        const height: u32 = g.rows * skate.cell_h * scale;
+        const stride: u32 = width * 4;
+        const canvas = try garden.alloc(u8, @as(usize, stride) * @as(usize, height));
+        const bg = skate.Color{ .r = 1, .g = 2, .b = 3 };
+        const fg = skate.Color{ .r = 210, .g = 210, .b = 210 };
+        g.rasterize(canvas, stride, @intCast(width), @intCast(height), bg, fg, scale);
+        const lit = g.lit_pixel_count(canvas, stride, @intCast(width), @intCast(height), bg);
+        assert(lit > 0);
+    }
+
+    // A malformed clause surfaces the parser's own named refusal through the header (before any direction work).
+    if (facets_sorted_screen_dir(garden, &cat, "material:stainless-304|colour:red", cols, 2, 0, .descending)) |_| {
+        return error.LineSlipped;
+    } else |e| {
+        if (e != error.UnknownKey) return error.WrongLine;
+    }
+
+    // A zero-width header refuses EmptyHeader, an over-ceiling one HeaderTooLarge — either direction.
+    if (sorted_header_dir_row(garden, &cat, "", 0, 1, 0, .ascending)) |_| return error.HeaderSlipped else |e| {
+        if (e != error.EmptyHeader) return error.WrongHeader;
+    }
+    if (sorted_header_dir_row(garden, &cat, "", image_skate.max_map_cols + 1, 1, 0, .descending)) |_| return error.HeaderSlipped else |e| {
+        if (e != error.HeaderTooLarge) return error.WrongHeader;
+    }
+
+    // An offset past the sorted result refuses BadOffset through the shelf — five matches, so offset 5 at one row per
+    // page is past the result, either direction.
+    if (facets_sorted_screen_dir(garden, &cat, "", cols, 1, 5, .descending)) |_| {
+        return error.OffsetSlipped;
+    } else |e| {
+        if (e != error.BadOffset) return error.WrongOffset;
+    }
+
+    print("GREEN part-facets-sort-dir: five parts across four bands with a 55c tie — the header NAMES the direction " ++
+        "(ascending ends `sorted by price low to high`, descending `sorted by price high to low`); a zero-result line " ++
+        "names NEITHER page NOR direction (nothing to order); NO DRIFT word to order (the `high to low` header sits " ++
+        "over gear $8.45 first, `low to high` over hexnut $0.55 first); the two directions are EXACT REVERSES on a " ++
+        "distinct trio (ascending row i+1 == descending row 3-i, part for part); the screen stacks the directional " ++
+        "header over the direction's shelf cell-for-cell (row 0 == sorted_header_dir_row, shelf region == the shelf, " ++
+        "no drift); it rasterizes to a lit canvas; a malformed clause refuses through the header before any direction " ++
+        "(UnknownKey), a zero/over-ceiling header EmptyHeader/HeaderTooLarge, an offset past the result BadOffset; a " ++
+        "price is echoed, compared, and reordered by, never moved — no network, no key, no funds\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: part_facets_sort_dir selftest\n", .{});
+    return 1;
+}
