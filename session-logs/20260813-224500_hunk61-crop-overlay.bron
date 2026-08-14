@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260813.224500
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title HUNK61 — outline the crop rectangle on the picture
+prompt autonomous loop past BUHR: next agent-doable lap Lindy-first crux-first, send each increment, stop at custody gates
+think HUNK60 turned a drag into a .crop edit that lived only in numbers; the crop gesture's visible half was still missing. Took HUNK61 — the overlay — completing the gesture a keeper can see.
+think crop_overlay down-maps the source to a Skate grid (HUNK2) and draws the rectangle's OUTLINE over it: span_cells maps image spans to grid cells by down_map's own integer partition (px*cells/size), so the outline lands on the cells that actually show the rectangle's pixels; only border cells wear crop_slot, the interior keeps the picture — a frame, not a fill.
+think Placed the module in brushstroke/ (Skate lives there); crop_gesture lives in image/, so added a symlink brushstroke/crop_gesture.rye -> ../image/crop_gesture.rye, matching the qoi/photo_edits/edit_cursor symlink pattern.
+think RED on TAME: the symlink pulled image/crop_gesture.rye into the brushstroke scan roster, exposing compound asserts (assert(a and b)) that HUNK60 never scanned (image/ was off-roster). Split every compound assert in BOTH crop_overlay.rye and crop_gesture.rye — a ratchet-on-touch fix. TAME bans clean after.
+obs The selftest proves the outline is a drift-free frame: every border cell of a {2,2,4,4} rectangle (12 cells) wears crop_slot, every interior and exterior cell equals a plain down_map cell-for-cell; a one-cell-wide rectangle is all border; a degenerate rectangle refuses NoRect; a too-large grid folds down_map's GridTooLarge through; the overlay rasterizes lit.
+obs Two-plus asserts per fn, invariants positive; width exit 0. The crop_gesture ratchet also improves a file already sent in HUNK60 — accrete, never break.
+loom witness=hunk_crop_overlay_witness grid=8x8 rect=2,2,4,4 border_cells=12 result=GREEN
+file brushstroke/crop_overlay.rye HUNK61 — the crop-rectangle outline over the down-mapped picture
+file tools/hunk_crop_overlay_witness.rish the metal witness, GREEN
+file image/crop_gesture.rye compound-assert ratchet split (TAME on touch)
+file brushstroke/crop_gesture.rye symlink so brushstroke can compose the image-side gesture
+recommend keep-going HUNK62 — a live crop preview surface tying the gesture, overlay, and edit-cursor together (drag frames, lift commits a .crop into the history); agent-doable, single module
