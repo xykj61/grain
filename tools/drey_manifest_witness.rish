@@ -1,0 +1,37 @@
+# tools/drey_manifest_witness.rish — the desk manifest of holdings: describe by address, ship no payload (DREY8).
+#
+# Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY8.
+# Design read: active-designing/20260814-065231_drey8-desk-manifest-of-holdings-exploration.md
+# Stands on: mikrophone/catalog.rye (DREY7) — the content-addressed desk; and mikrophone/wire.rye (DREY1) — the same
+# verify-before-trust framing discipline, here over metadata rather than payload.
+#
+# mikrophone/manifest.rye lets the desk describe WHAT it holds — one record per recording carrying its content address
+# and payload length, no payload bytes at all — so a far hand learns the desk's holdings by address and computes exactly
+# which recordings it lacks (have/want), before a single payload byte crosses. The selftest proves: a catalog's manifest
+# round-trips exactly, its size is header + count records regardless of payload size, every corruption refuses by name,
+# have/want is honest, and an empty catalog advertises a whole manifest of zero holdings.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/drey_manifest_witness.rish
+
+say "drey-manifest: Language EN — DREY8 lets the Mikrophone desk describe its holdings without shipping a payload — the HAVE side of content-addressed sync, so a far hand asks only for what it lacks."
+say "drey-manifest: Style Radiant — a desk that says plainly what it holds spares a far hand every byte it does not need; addresses and lengths travel, payloads stay home until asked."
+say "drey-manifest: Lens TAME — write_manifest emits address + length per entry and no payload; verify proves magic, version, count-within-bound, truncation, and a Sha256 over the records BEFORE a record is read; every refusal is by name; the manifest is bounded by the catalog's entry ceiling; describing crosses no gate, serving the wanted payloads stays the Comlink-served gate; no disk, no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mikrophone/bin/manifest"
+
+let build = run ["sh" "-c" "mkdir -p mikrophone/bin && env RYE_ZIG=${zig} rye/bin/rye build mikrophone/manifest.rye -femit-bin=${bin}"]
+assert build.ok else "drey-manifest: build failed — ${build.err}"
+
+let outfile = "mikrophone/bin/manifest.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "drey-manifest: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "drey-manifest: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN drey-manifest' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "drey-manifest: selftest did not print the GREEN drey-manifest line"
+
+say "drey-manifest: GREEN — the Mikrophone desk describes its holdings by address, ships no payload. DREY8 is the have side of content-addressed sync; serving the wanted payloads waits for the Comlink-served gate."
