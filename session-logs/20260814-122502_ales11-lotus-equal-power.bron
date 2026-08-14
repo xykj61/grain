@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260814.122502
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier (Eastern EDT convention)
+title ALES11 — Lotus's equal-power law, and the constant it keeps
+prompt Continue the autonomous recur (baton prin recur): next agent-doable lap Lindy-first crux-first, self-approve design rounds, send each finished increment to origin and xykj61, STOP only at custody gates.
+think Seventh increment of this recur, after ALES10 (pan) landed and pushed. No custody gate in reach — the Lotus ladder is pure local software.
+think Lindy-first crux-first: three rungs deferred the same companion law in the same words — ALES4's fade, ALES10's pan, the README road-on all point at the EQUAL-POWER curve. The most durable unbuilt thing on the Lotus road is the law those three kept promising; the crux that makes it real is arithmetic the suite never had — a square root over the integers. Chosen over the smaller balance/width and transport-loop laps deliberately, to take the crux not the count-pad.
+think The one crux: "equal power" MEANS the two squared weights sum to den². Build them from that fact — left_power = den·(den−pos), right_power = den·pos, summing to den² EXACTLY before a single root — and the amplitude weights are the floor square root of each. The power split is linear in pos; the sqrt bends the straight line into the quarter circle the ear hears as constant loudness. No trigonometry, no float. The linear law was linear in amplitude; equal-power is linear in power.
+think The genuinely new piece is the bounded integer sqrt: a twelve-digit binary descent over a 2²⁴ domain (max_pan_den²), proven to its contract r² ≤ x < (r+1)² at the postcondition — no unbounded loop, no float. Constant power then survives isqrt truncation with a PROVEN bound: left²+right² ≤ den², and den²−(left²+right²) ≤ 2·(left+right)+2. At any usable den (100, 1000) the truncation is inaudible; the −3 dB center it buys (0.707 vs the linear 0.5) is the whole point.
+think Fold and render are ALES10's shape unchanged — side_fader folds each channel's weight into the fader, each channel is ALES8's fader.render run once, StereoClip and max_pan_den reused from pan.rye whole (accrete-never-break: ALES10 untouched). The only sum in the suite stays ALES8's.
+obs GREEN on first build across eight blocks. tame_style_check bans clean (power.rye carries ≥2 asserts per fn), the isqrt contract holds across a 0..4096 sweep plus the domain ceiling, the constant-power law holds for every position 0..den, center lands 700 each side on a 1000-sample track (0.707 vs linear 0.5). ALES10 and prior witnesses unaffected — power.rye is strictly additive.
+obs Stamp read from the live jail clock (TZ=America/New_York → 122502); it reads slightly behind ALES10's 123000, a prior round's forward drift. Honoring never-fabricate (REDS 63) over cosmetic monotonicity — the index seats ALES11 newest-first by meaning. Dated stamps are never rewritten.
+obs Honest scope kept explicit: a routing weight, not a psychoacoustic or electrical claim; purely local, no socket, no network, no keys, no funds, no real device, no real speaker. No custody gate reached.
+loom witness=ales_power_witness cases=8 isqrt_sweep=4097 build=first_green tame=clean center_amp=700 linear_amp=500 ales10_regreen=1
+file lotus/power.rye ALES11 module — isqrt (bounded, contract r²≤x<(r+1)²), PowerPan/make/weights/side_fader/render_stereo, equal-power fold delegated to ALES8 per channel
+file tools/ales_power_witness.rish witness — 8 cases (isqrt contract sweep, constant-power law, −3 dB center vs linear, hard L/R, fader compose, opposite-separation, make refusals, ClipFull), GREEN on metal
+file active-designing/20260814-fill-ales11-lotus-equal-power.md self-approved design round for ALES11
+file lotus/README.md seated ALES11 in status, rungs, prove-list, road-on
+recommend keep-going ALES12 — the equal-power crossfade over time (ALES4's fade bent the same way), stereo metering (an RMS is a square root), or offer the keeper the choice of both pan laws. No custody gate in reach.
