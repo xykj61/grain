@@ -1,0 +1,44 @@
+# tools/hunk_filmstrip_track_witness.rish — a filmstrip window that follows the cursor, on metal (HUNK58).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK58.
+# Design read: active-designing/20260813-215013_hunk-filmstrip-track-exploration.md.
+# Teacher, thanked clean-room: the scrollable edit-history strip of a photo app (iCloud Photos / Google Photos) — the
+# strip scrolls to keep the step you stand on in view, pinning at both ends (concept only, siloed).
+#
+# HUNK57 gave the filmstrip a bounded window and forced no decision about which window to show, blanking the marker
+# honestly when the current step scrolled off-view. This rung decides: FilmstripTrack centers the cursor and clamps to
+# the edges, so the window always contains the current step — the marker never blanks. The selftest walks a full 64-edit
+# history (65 steps) the whole strip refuses FilmstripTooWide and paints GREEN at EVERY step, the marker always in view,
+# no drift, following monotonically and pinning at both ends; a short history equals the whole filmstrip. No network,
+# no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_filmstrip_track_witness.rish
+
+say "hunk-filmstrip-track: Language EN — HUNK58 adds a following window (FilmstripTrack) that centers the cursor and clamps to the edges, so the step a keeper stands on is always in view."
+say "hunk-filmstrip-track: Style Radiant — a history longer than the strip is wide finally scrolls to follow you; the marker never blanks, and the window pins gently at the original and the live edge."
+say "hunk-filmstrip-track: Lens TAME — a pure read over proven seams; the window always contains the cursor by construction, refuses a bad or too-wide window and a bad thumbnail by name; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/edit_filmstrip_track"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/edit_filmstrip_track.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-filmstrip-track: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-filmstrip-track: selftest exited non-zero — ${selftest.out}"
+
+# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# single-quoted string, so an apostrophe in the GREEN line can never break a check (the loom for REDS #76).
+let out = trim selftest.out
+say "hunk-filmstrip-track: ${out}"
+
+assert out contains "GREEN edit-filmstrip-track" else "hunk-filmstrip-track: selftest did not print the GREEN edit-filmstrip-track line"
+assert out contains "paints GREEN at EVERY step 0..64" else "hunk-filmstrip-track: the tracking window did not paint every step of a too-long history"
+assert out contains "the marker always in view (never blank, the honest contrast to a fixed window)" else "hunk-filmstrip-track: the marker blanked — the tracking window failed to follow the cursor"
+assert out contains "the marked band equal to a direct preview of its absolute step cell-for-cell (no drift)" else "hunk-filmstrip-track: a window band drifted from its absolute step"
+assert out contains "the window follows monotonically (never scrolls backward) and pins at both the original and the live edge" else "hunk-filmstrip-track: the window did not follow monotonically or did not pin at both ends"
+assert out contains "a short history that fits equals the whole filmstrip cell-for-cell at first 0" else "hunk-filmstrip-track: a short history did not equal the whole filmstrip"
+assert out contains "a zero window refuses BadWindow, a too-wide window WindowTooWide, a zero-dimension thumbnail BadThumb" else "hunk-filmstrip-track: a bad window, a too-wide window, or a bad thumbnail did not refuse by name"
+
+say "hunk-filmstrip-track: GREEN — the tracking window follows the cursor across a full 64-edit history the whole strip refuses, the marker always in view with no drift, following monotonically and pinning at both ends, equal to the whole filmstrip when the history fits, refusing bad or too-wide windows and bad thumbnails by name; no network, no key, no funds."
