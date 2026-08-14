@@ -1,0 +1,37 @@
+# tools/fora_census_witness.rish — announce, collect, and know who is present (FORA8).
+#
+# Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA8.
+# Design read: active-designing/20260814-051119_fora8-constel-census-liveness-round.md
+# Law kin: .claude/rules/placeholder-ship-names.md — the border guards every reply: a member replying with a vowel-bearing
+# greeting is refused at the caller's hear (wire.deframe). A real address can never enter the census even as an answer.
+#
+# constel/census.rye closes the gossip round FORA7 opened — announce fans a ping to all, respond replies each member's own
+# greeting as its "present" token, hear reads one reply off the caller's mailbox at the border, and take_census interleaves
+# respond+hear to tally who is present (and, by slot, who is silent). The selftest proves: a full census sees every other
+# member; a silent member is detected by slot; a reply proves reachability; the border guards every reply; a stranger cannot
+# open a census; and a full constellation of eight censuses without a ChannelFull. Purely local — no socket, no network.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/fora_census_witness.rish
+
+say "fora-census: Language EN — FORA8 closes the gossip round: announce fans a ping to all, each member replies its own greeting as a present token, and take_census interleaves respond+hear to tally who is present and, by slot, who is silent — the liveness primitive every consensus stands on."
+say "fora-census: Style Radiant — every present voice is counted and every silent one is known; a reply proves the ear that heard, and the border keeps its watch even over an answer."
+say "fora-census: Lens TAME — a fixed [max_piers]bool tally indexed by roster slot, the round interleaved so the caller's inbox holds one reply at a time (never ChannelFull); siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "constel/bin/census"
+
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/census.rye -femit-bin=${bin}"]
+assert build.ok else "fora-census: build failed — ${build.err}"
+
+let outfile = "constel/bin/census.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "fora-census: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "fora-census: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN fora-census' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "fora-census: selftest did not print the GREEN fora-census line"
+
+say "fora-census: GREEN — the gossip round closes; the constel consensus track is handed a tally already proven pure on the bench."
