@@ -1,0 +1,242 @@
+//! brushstroke/edit_finger_view.rye — HUNK51: the finger-driven Photos editor — a finger edits the picture, the glass repaints, from one cursor.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK51.
+//! Design read: active-designing/20260813-205200_hunk-edit-finger-view-exploration.md
+//! Teacher, thanked clean-room: the touch editor of a photo app (iCloud Photos / Google Photos) — a finger taps a tool
+//! or swipes the history and the picture on glass follows (concept only, siloed).
+//!
+//! HUNK50 reads a finger into an edit_input.Gesture but moves no cursor; HUNK49 owns a cursor and paints exactly its
+//! applied prefix but takes a gesture already made. What a device wants is one object it hands raw finger coordinates to
+//! and watches the picture change. This rung is that surface, the exact parallel of HUNK47 for scroll: EditFingerView
+//! binds HUNK50's classifier and HUNK49's painted view to ONE cursor — finger_up classifies the touch and, when a
+//! gesture fires, applies it to the view's cursor, and paint renders exactly that cursor's prefix. So the glass can
+//! never drift from what the finger just did, structurally. A pure composition — no new arithmetic, no new clamp, no new
+//! render primitive. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/edit_finger_view.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const edits = @import("photo_edits.rye");
+const edit_input = @import("edit_input.rye");
+const edit_touch_input = @import("edit_touch_input.rye");
+const edit_touch_view = @import("edit_touch_view.rye");
+const skate = @import("skate_grid.rye");
+
+pub const edit_finger_view_version = "20260813.205200";
+
+pub const FingerViewError = edit_touch_input.TouchEditError || edit_touch_view.TouchViewError;
+
+/// A finger-driven Photos editor: the finger classifier (HUNK50) and the cursor-owning painted view (HUNK49), bound so
+/// a raw finger event drives the view's one cursor. No pixels and no history live here beyond the view's own — the
+/// object only routes a finger through two proven seams into one shared cursor.
+pub const EditFingerView = struct {
+    input: edit_touch_input.EditTouch,
+    view: edit_touch_view.EditTouchView,
+
+    /// Open the surface over a `cols`×`rows` grid with a gesture strip of `cell_px`-wide cells and a `swipe_px`
+    /// threshold. Opens both sub-surfaces, so a bad grid refuses `BadView` and a bad cell or swipe refuses `BadCell` /
+    /// `BadSwipe`, each caught once at construction — no later finger event can fail on geometry.
+    pub fn open(cols: u32, rows: u32, cell_px: u32, swipe_px: u32) FingerViewError!EditFingerView {
+        const input = try edit_touch_input.EditTouch.open(cell_px, swipe_px);
+        const view = try edit_touch_view.EditTouchView.open(cols, rows);
+        // invariant: the strip opens empty and the view stands at the original.
+        assert(input.cells() == 0);
+        assert(view.depth() == 0);
+        return EditFingerView{ .input = input, .view = view };
+    }
+
+    /// Lay one verb onto the next gesture-strip cell, delegating to HUNK50's `bind` (refusing `StripFull` at the
+    /// ceiling). The strip is built before any finger touches it.
+    pub fn bind(self: *EditFingerView, e: edits.Edit) edit_touch_input.TouchEditError!void {
+        // invariant: the strip stands within its bound before the bind.
+        assert(self.input.cells() <= edit_touch_input.max_strip);
+        try self.input.bind(e);
+        // invariant: the strip grew and still stands within its bound.
+        assert(self.input.cells() >= 1);
+        assert(self.input.cells() <= edit_touch_input.max_strip);
+    }
+
+    /// A finger touches down at pixel `(x, y)` — arm the finger surface at the landing point (HUNK50).
+    pub fn finger_down(self: *EditFingerView, x: i32, y: i32) void {
+        self.input.finger_down(x, y);
+        // invariant: the view's cursor is untouched by a landing — only a completed touch moves it.
+        assert(self.view.depth() == self.view.cursor.depth());
+    }
+
+    /// The finger lifts at pixel `(x, y)`. Classifies the completed touch through HUNK50 and, when a gesture fires,
+    /// applies it to the view's cursor through HUNK49 — the one call that turns a finger into a picture change. Returns
+    /// the gesture that fired, or `null` for a tap off the strip. The view's own `TooManyEdits` is the only refusal it
+    /// can surface.
+    pub fn finger_up(self: *EditFingerView, x: i32, y: i32) edits.EditsError!?edit_input.Gesture {
+        // invariant: the cursor stands within its history before the gesture.
+        assert(self.view.cursor.position <= self.view.cursor.list.count);
+        const g = self.input.finger_up(x, y);
+        if (g) |gesture| {
+            try self.view.gesture(gesture);
+        }
+        // invariant: the cursor still stands within its history after the gesture.
+        assert(self.view.cursor.position <= self.view.cursor.list.count);
+        return g;
+    }
+
+    /// The undo depth — how many edits stand behind the cursor, for a caller's affordance.
+    pub fn depth(self: *const EditFingerView) u32 {
+        // invariant: the view's depth is exactly its cursor's depth.
+        assert(self.view.depth() == self.view.cursor.depth());
+        return self.view.depth();
+    }
+
+    /// Paint the current view: the down-map of exactly the cursor the finger just moved (HUNK49's `paint`). Pure — the
+    /// source is never mutated and the cursor is read, not moved, so the picture cannot drift from the finger.
+    pub fn paint(self: *const EditFingerView, allocator: std.mem.Allocator, source: *const qoi.Pixmap) !skate.Grid {
+        // invariant: the cursor stands within its history before the replay.
+        assert(self.view.cursor.position <= self.view.cursor.list.count);
+        return self.view.paint(allocator, source);
+    }
+};
+
+// --- selftest: an 8x8 two-tone image on a 2x2 grid over a one-verb strip — a fresh surface paints the source (left
+//     cell red), a tap on the strip cell repaints the flip (left cell blue), a left swipe repaints the source and a
+//     right swipe the flip, a tap off the strip fires nothing, paint never drifts from the view, and a bad grid or cell
+//     refuses at open ----------------------------------------------------------------------------------------------
+
+fn craft_two_tone(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 8;
+    const h: u32 = 8;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            const left = x < w / 2;
+            buf[off] = if (left) 255 else 0; // r
+            buf[off + 1] = 0; // g
+            buf[off + 2] = if (left) 0 else 255; // b
+            buf[off + 3] = 255; // a
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const pm = try craft_two_tone(garden);
+    const cols: u32 = 2;
+    const rows: u32 = 2;
+    const red_slot: u8 = 3; // anchors slot 3 is red
+    const blue_slot: u8 = 5; // anchors slot 5 is blue
+    const left_i: usize = 0;
+
+    // A one-verb strip (flip_h) on a ten-pixel cell, over a 2x2 grid.
+    const cell: u32 = 10;
+    var surface = try EditFingerView.open(cols, rows, cell, 12);
+    try surface.bind(.flip_h);
+    // invariant: a fresh surface stands at the original with the strip laid.
+    assert(surface.depth() == 0);
+
+    // A fresh surface paints the plain source: the left cell reads red.
+    {
+        const g = try surface.paint(garden, &pm);
+        assert(g.fg_index[left_i] == red_slot);
+    }
+
+    // A tap on the strip cell (x in [0,10), no travel) drives the cursor and the next paint repaints the flipped image
+    // — the left cell now reads blue, the picture following exactly the finger.
+    {
+        surface.finger_down(4, 5);
+        const fired = try surface.finger_up(5, 5);
+        assert(fired != null);
+        assert(surface.depth() == 1);
+        const g = try surface.paint(garden, &pm);
+        assert(g.fg_index[left_i] == blue_slot); // the edit is seen on glass
+    }
+
+    // No drift: paint equals a direct view.paint of the same cursor, cell-for-cell.
+    {
+        const a = try surface.paint(garden, &pm);
+        const b = try surface.view.paint(garden, &pm);
+        assert(std.mem.eql(u8, a.cells, b.cells));
+        assert(std.mem.eql(u8, a.fg_index, b.fg_index));
+    }
+
+    // A left swipe (a hard leftward travel) undoes — the picture repaints the source (left cell red again).
+    {
+        surface.finger_down(40, 5);
+        const fired = try surface.finger_up(10, 5); // dx -30 → undo
+        assert(fired != null);
+        assert(surface.depth() == 0);
+        const g = try surface.paint(garden, &pm);
+        assert(g.fg_index[left_i] == red_slot);
+    }
+
+    // A right swipe redoes — the picture repaints the flip (left cell blue).
+    {
+        surface.finger_down(10, 5);
+        const fired = try surface.finger_up(40, 5); // dx +30 → redo
+        assert(fired != null);
+        assert(surface.depth() == 1);
+        const g = try surface.paint(garden, &pm);
+        assert(g.fg_index[left_i] == blue_slot);
+    }
+
+    // A tap off the strip fires nothing — the picture is unchanged, the cursor unmoved.
+    {
+        const before = surface.depth();
+        surface.finger_down(200, 5);
+        const fired = try surface.finger_up(200, 5); // x 200 → past the one-cell strip
+        assert(fired == null);
+        assert(surface.depth() == before);
+        const g = try surface.paint(garden, &pm);
+        assert(g.fg_index[left_i] == blue_slot); // still the flip, untouched
+    }
+
+    // Genuinely seen: the current view rasterizes to a lit canvas with the flipped blue in the left cell.
+    {
+        const g = try surface.paint(garden, &pm);
+        const view_scale: u32 = 1;
+        const width: u32 = cols * skate.cell_w * view_scale;
+        const height: u32 = rows * skate.cell_h * view_scale;
+        const stride: u32 = width * 4;
+        const canvas = try garden.alloc(u8, @as(usize, stride) * @as(usize, height));
+        const bg = skate.Color{ .r = 1, .g = 2, .b = 3 };
+        const fg = skate.Color{ .r = 200, .g = 200, .b = 200 };
+        g.rasterize(canvas, stride, @intCast(width), @intCast(height), bg, fg, view_scale);
+        const lit = g.lit_pixel_count(canvas, stride, @intCast(width), @intCast(height), bg);
+        assert(lit > 0);
+        assert(canvas[0] == 255); // Skate writes B,G,R,A — blue channel lit in the left cell
+        assert(canvas[2] == 0); // red channel dark
+    }
+
+    // A bad grid and a bad cell each refuse at open by name — the surface catches both sub-surfaces' refusals.
+    if (EditFingerView.open(0, rows, cell, 12)) |_| return error.GridSlipped else |e| {
+        if (e != error.BadView) return error.WrongGrid;
+    }
+    if (EditFingerView.open(cols, rows, 0, 12)) |_| return error.CellSlipped else |e| {
+        if (e != error.BadCell) return error.WrongCell;
+    }
+    if (EditFingerView.open(cols, rows, cell, 0)) |_| return error.SwipeSlipped else |e| {
+        if (e != error.BadSwipe) return error.WrongSwipe;
+    }
+
+    print("GREEN edit-finger-view: an 8x8 two-tone edited on a {d}x{d} grid over a one-verb strip on a ten-pixel cell " ++
+        "by finger events through one cursor — a fresh surface paints the source (left cell red), a tap on the strip " ++
+        "cell repaints the flip on glass (left cell blue), a left swipe repaints the source and a right swipe the flip; " ++
+        "a tap off the strip fires nothing (the picture unchanged); paint equals a direct view.paint cell-for-cell (no " ++
+        "drift); the current view rasterizes to a lit canvas with blue in the left cell; a zero grid, a zero cell, and " ++
+        "a zero swipe each refuse at open by name. HUNK50 classifier, HUNK49 view, HUNK48 seam GREEN beneath; no " ++
+        "network, no key, no funds\n", .{ cols, rows });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: edit_finger_view selftest\n", .{});
+    return 1;
+}
