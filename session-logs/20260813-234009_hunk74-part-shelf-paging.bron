@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260813.234009
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu VPS pier — Eastern (EDT) time convention
+title HUNK74 — the parts shelf pages; a catalog larger than the screen loses nothing
+prompt recur baton prin — keep going Lindy-first crux-first, approve own design rounds, send often; continue the parts-marketplace journey after HUNK73
+think HUNK73 painted a whole PartCatalog as one shelf, one row per part. A real catalog outgrows the screen. The sprite shelf already solved this (catalog_window · page_count · window_len over a SpriteIndex); the parts shelf wants the same, and a PartCatalog wraps a SpriteIndex.
+think Reuse over reinvention: part_page_count and part_window_len delegate straight to sprite_shelf.page_count/window_len over cat.index, so the two shelves page by ONE law. part_window mirrors catalog_window — a fresh grid, a BadOffset refusal for an offset past the catalog, then draw_part_row over [offset, offset+rows). Additive on part_row.rye; HUNK73's part_shelf untouched.
+think The durable property: paging loses nothing — every part reachable exactly once, in held order. Proven by walking the two pages of a three-part catalog at two rows each: page 0 reads bolt then nut, page 1 reads gear (the part page 0 could not hold) with its own blue swatch; an offset past the catalog refuses BadOffset.
+obs Witness extended with a 'paging loses nothing' assertion, GREEN; tame_style_check bans clean; width-check exit 0. HUNK71 facts + HUNK38 swatch still GREEN beneath (the witness re-runs both). No breach, no cairn; no custody gate reached — a picture-and-price view pages, no fact is moved.
+loom witness=hunk_part_row parts=3 rows_per_page=2 pages=2 window_lens=2,1 refusals=BadOffset
+file brushstroke/part_row.rye part_window / part_page_count / part_window_len — the parts shelf pages, reusing sprite_shelf's paging over the wrapped index
+file tools/hunk_part_row_witness.rish extended: paging loses nothing (every part reachable once, in order)
+file session-logs/20260813-234009_hunk74-part-shelf-paging.bron this log
+recommend keep-going — the marketplace is browsable at any size; next crux is a tapped part row (map a pixel tap back to a part index, mirroring library_tap / sprite tap) opening the product, or the next Season-A / double-seat journey

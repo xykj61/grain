@@ -44,6 +44,10 @@ assert (trim nodrift.out) == "yes" else "hunk-part-row: the selftest did not pro
 let price = run ["sh" "-c" "grep -q 'no float, no loss' ${outfile} && echo yes"]
 assert (trim price.out) == "yes" else "hunk-part-row: the selftest did not prove the price formats exactly"
 
+# HUNK74: a catalog larger than the screen pages, and paging loses nothing (every part reachable once, in order).
+let paging = run ["sh" "-c" "grep -q 'paging loses nothing' ${outfile} && echo yes"]
+assert (trim paging.out) == "yes" else "hunk-part-row: the selftest did not prove the parts shelf pages without loss"
+
 # HUNK71 stays GREEN — the facts the row reads (facts_at, entry, render_part) are the ones part_catalog proved.
 # Read the GREEN line from a file — it carries apostrophes ("product's") that break a shell single-quote round-trip.
 let cat = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_catalog.rye -femit-bin=image/bin/part_catalog && image/bin/part_catalog selftest > image/bin/part_catalog.out 2>&1"]
