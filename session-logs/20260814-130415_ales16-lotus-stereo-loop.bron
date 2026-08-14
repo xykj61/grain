@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260814.130415
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (Eastern / EDT time convention)
+title ALES16 — Lotus's stereo loop, one region cycled through two channels
+prompt Autonomous loop past REMEMBER + the itineraries — take the next agent-doable lap Lindy-first crux-first, self-approve the design round, send each finished increment, stop at the custody gates.
+think ALES15 (stereo transport) landed as the living edge — the read side's play tool made genuinely stereo. Crux-first next: the read side has three tools (play, meter, loop); play is now stereo, meter and loop are still mono. Bringing the loop to stereo completes the read side's SECOND tool over two channels — the twin of the move ALES15 proved for play, and a tighter generalization than the additive per-channel meter. Lindy-first: both complete the read side; the loop is the more decisive lockstep proof (a wrap that must stay aligned across the seam), so crux-first takes it.
+think The crux: one region and one head cycle BOTH channels in lockstep, because ALES10's StereoClip invariant is left.len == right.len. So no second region and no second cursor — a single marked region [start,end) and a single wrapping head advance through both channels at once, wrapping both the instant the one head reaches end. The correctness beyond running ALES14 twice is the lockstep across the seam: both channels wrap on the same sample every cycle, so K cycles concatenate to EACH channel's region repeated K times.
+think Reuse over reinvention: loop.Loop, loop.make, loop.enter, and the mark_ms shape are ALES14's, called against the shared length (a thin stereo `make`/`mark_ms` face passes stereo.left.len); a loop OFF delegates to ALES15's stereo_transport.read_block whole; the BadBlock error is shared from stereo_transport. Only the ON wrapping read over two channels is new.
+think Clock skew noted and resolved honestly: TZ=America/New_York reads ~12:5x-13:0x; the design-doc body stamps (13:15 etc.) were loose round numbers, but the authoritative session-log stream uses the real clock (ALES15 log at 125530). Current reading is correctly AFTER it, so monotonicity holds on the one-clock stream. Used the real clock, never fabricated.
+obs GREEN on the first build across eight selftest blocks: a loop off concatenates both channels byte-for-byte with a short last block and empty past-end; a region [1,4) cycles left 20,30,40,… and right -2,-3,-4,… exactly for three cycles; the head stays within [start,end) at one-sample block size; a whole-master loop cycles both channels; a single-sample region repeats 33/77 per channel; mismatched out buffers refuse BadBlock; mark_ms marks the region in real time; a power-rendered center pan loops back 700/700 per side; both channels unmutated after eight cycles.
+obs tame_style_check GREEN (bans clean, new module carries asserts so it is off the zero-assert ratchet); width-check exit 0.
+loom witness=ales_stereo_loop_witness blocks=8 result=GREEN build=first-try
+file lotus/stereo_loop.rye ALES16 module — the stereo looping read, both channels wrapped in lockstep off one region and one head.
+file tools/ales_stereo_loop_witness.rish the witness proving ALES16 GREEN on metal.
+file active-designing/20260814-fill-ales16-lotus-stereo-loop.md the self-approved design round for ALES16.
+file lotus/README.md status line, rung bullet, prove list, and road-on updated for ALES16.
+recommend keep-going ALES17 can meter a stereo master during playback (ALES13 Meter per channel), name a scrub window, or a punch region tying playback to the Mikrophone's capture — all agent-doable, no custody gate; the hardware sound-card write stays paused.
