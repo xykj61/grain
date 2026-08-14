@@ -1,0 +1,225 @@
+//! pond/apps/preset_touch_view.rye — HUNK47: the touchable painted surface — the page scrolls under the finger, on glass.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · marketplace / Photos-app surface · rung HUNK47.
+//! Design read: active-designing/20260813-201754_hunk-touch-view-exploration.md
+//! Teacher, thanked clean-room: the touchable list surface of any reader (iCloud Photos / a McMaster-Carr catalog) —
+//! a finger drives the page and the same page is drawn, so the glass shows where the finger left it (concept only,
+//! siloed).
+//!
+//! The touch-scroll journey grew along two arcs that never met: render (HUNK40 cursor · HUNK41 bar · HUNK42 painted
+//! view) and input (HUNK43 seam · HUNK44 drag · HUNK45 fling · HUNK46 session). A device wants one surface it touches
+//! and watches scroll. This rung binds the two to the SAME cursor: HUNK46's session mutates it, HUNK42's view paints
+//! it, so `paint()` is always `scroll_view` of the cursor the session just moved — the picture cannot drift from the
+//! position, the one-graph discipline carried to the touch surface. A pure composition — no new arithmetic, no new
+//! clamp, no new render primitive. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run pond/apps/preset_touch_view.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const preset_detail = @import("preset_detail.rye");
+const preset_scroll = @import("preset_scroll.rye");
+const preset_scroll_view = @import("preset_scroll_view.rye");
+const preset_touch_scroll = @import("preset_touch_scroll.rye");
+const skate = @import("brushstroke/skate_grid.rye");
+
+pub const preset_touch_view_version = "20260813.201754";
+
+pub const TouchViewError = preset_touch_scroll.TouchError || preset_scroll.ScrollError;
+
+/// A touchable painted list surface. It holds HUNK46's touch session, the ONE cursor both the session and the view
+/// share, and the grid geometry (`cols` wide, a `bar_w`-column scroll bar). The governing law: `paint()` renders this
+/// same cursor through HUNK42's `scroll_view`, so the glass can only ever show where the finger left the page — input
+/// and picture are two readings of one cursor. No listing is owned; it is borrowed at `paint`.
+pub const TouchView = struct {
+    session: preset_touch_scroll.TouchScroll,
+    cursor: preset_scroll.ScrollCursor,
+    cols: u32 = 1,
+    bar_w: u32 = 1,
+
+    /// Open a touchable surface over a library of `count` books, `rows` tall, a row `cell_px` pixels high, flung under
+    /// the given friction, painted `cols` wide with a `bar_w`-column bar. Validates the cursor (HUNK40), the session's
+    /// cell height and friction (HUNK46), and the bar geometry once.
+    pub fn open(
+        count: u32,
+        rows: u32,
+        cell_px: u32,
+        friction_num: u32,
+        friction_den: u32,
+        cols: u32,
+        bar_w: u32,
+    ) TouchViewError!TouchView {
+        // invariant: the bar owns at least one column and leaves at least one for the books.
+        if (bar_w == 0 or bar_w >= cols) return error.BadTrack;
+        const cursor = try preset_scroll.ScrollCursor.open(count, rows);
+        const session = try preset_touch_scroll.TouchScroll.open(cell_px, friction_num, friction_den);
+        return TouchView{ .session = session, .cursor = cursor, .cols = cols, .bar_w = bar_w };
+    }
+
+    pub fn is_flinging(self: *const TouchView) bool {
+        return self.session.is_flinging();
+    }
+
+    pub fn is_idle(self: *const TouchView) bool {
+        return self.session.is_idle();
+    }
+
+    /// A finger touches down — enters dragging, cancels any coast (grab-to-stop).
+    pub fn finger_down(self: *TouchView, y: i32) void {
+        self.session.finger_down(y);
+    }
+
+    /// The finger moves — drags the shared cursor by the pixel delta (HUNK44, every clamp inherited).
+    pub fn finger_move(self: *TouchView, y: i32) void {
+        self.session.finger_move(&self.cursor, y);
+        // invariant: the shared cursor still stands on a real, bottom-pinned viewport after the drag.
+        assert(self.cursor.offset <= self.cursor.max_offset());
+    }
+
+    /// The finger lifts — seeds a fling from the last velocity or returns to idle at rest.
+    pub fn finger_up(self: *TouchView) void {
+        self.session.finger_up();
+    }
+
+    /// Step one frame of coast, returning whether still flinging.
+    pub fn tick(self: *TouchView) bool {
+        return self.session.tick(&self.cursor);
+    }
+
+    /// Run the whole coast to rest, returning the tick count.
+    pub fn settle(self: *TouchView) u32 {
+        return self.session.settle(&self.cursor);
+    }
+
+    /// Paint the current surface — the cursor's page beside a live scroll bar (HUNK42), onto a fresh Skate grid. Because
+    /// it renders the very cursor the session drives, the glass shows exactly where the finger left the page. Refuses as
+    /// `scroll_view` does (`BadBar` / `EmptyView`).
+    pub fn paint(self: *const TouchView, allocator: std.mem.Allocator, listing: *const preset_detail.DetailListing) !skate.Grid {
+        // invariant: the surface's cursor matches the listing it paints.
+        assert(self.cursor.count == listing.count);
+        return preset_scroll_view.scroll_view(allocator, listing, &self.cursor, self.cols, self.bar_w);
+    }
+};
+
+// --- selftest: build the same real five-book library and drive a touchable painted surface — the page tracks the
+//     finger, a flick coasts to a bottom-pinned page on glass, the picture never drifts, and the refusals hold --------
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const beading = @import("mantra/beading.rye");
+    const tablecloth = @import("tablecloth.rye");
+    const filter_preset = @import("filter_preset.rye");
+    const preset_store = @import("preset_store.rye");
+    const photo_edits = @import("photo_edits.rye");
+
+    // The same real five-book library the HUNK40/42/46 selftests build.
+    var store: beading.BeadStore = .empty();
+    var cat: tablecloth.Catalog = .empty();
+    const stock = try filter_preset.stock_book();
+    _ = try preset_store.store_book(&cat, &store, "stock.presets", &stock);
+    var small = filter_preset.PresetBook.init();
+    var flip = photo_edits.EditList.init();
+    try flip.push(.flip_h);
+    try small.define("mirror", &flip);
+    _ = try preset_store.store_book(&cat, &store, "custom.presets", &small);
+    {
+        var one = photo_edits.EditList.init();
+        try one.push(.flip_h);
+        const names = [_][]const u8{ "a.presets", "b.presets", "c.presets" };
+        var k: u32 = 0;
+        while (k < names.len) : (k += 1) {
+            var b = filter_preset.PresetBook.init();
+            try b.define("edit", &one);
+            _ = try preset_store.store_book(&cat, &store, names[k], &b);
+        }
+    }
+    var lib: preset_detail.DetailListing = undefined;
+    try preset_detail.detail_books(&cat, &store, &lib);
+    assert(lib.len() == 5);
+
+    const cols: u32 = 24;
+    const bar_w: u32 = 2;
+    const text_cols: u32 = cols - bar_w;
+    const rows: u32 = 2;
+    const cell: u32 = 10;
+
+    // At the top, the painted surface shows the first two books and the thumb on the top bar cell.
+    var tv = try TouchView.open(lib.count, rows, cell, 3, 4, cols, bar_w);
+    assert(tv.is_idle());
+    {
+        const g = try tv.paint(garden, &lib);
+        assert(std.mem.indexOf(u8, g.row_cells(0), lib.at(0).name_slice()) != null); // first book on top
+        assert(g.row_cells(0)[text_cols] == preset_scroll_view.thumb_glyph); // thumb on the top bar cell
+        assert(g.row_cells(1)[text_cols] == preset_scroll_view.track_glyph); // groove below
+    }
+
+    // The page tracks the finger: a drag down of one full cell, then a still finger, then release (no fling) — the
+    // painted top book is now a LATER book, and the thumb has walked down the bar.
+    tv.finger_down(0);
+    tv.finger_move(25); // +25px → two lines down (offset 0 → 2)
+    tv.finger_move(25); // delta 0 → still finger
+    tv.finger_up(); // released at rest → idle, no fling
+    assert(tv.is_idle());
+    {
+        const g = try tv.paint(garden, &lib);
+        assert(std.mem.indexOf(u8, g.row_cells(0), lib.at(2).name_slice()) != null); // the page followed the finger
+        assert(std.mem.indexOf(u8, g.row_cells(0), lib.at(0).name_slice()) == null); // the first book scrolled away
+        assert(g.row_cells(1)[text_cols] == preset_scroll_view.thumb_glyph); // the thumb walked down to the bottom cell
+        assert(g.row_cells(0)[text_cols] == preset_scroll_view.track_glyph); // the top cell is now the groove
+    }
+
+    // A flick coasts on glass to a bottom-pinned page: down, a move while travelling, release — settle the coast and
+    // the painted surface shows the last two books with the thumb on the bottom bar cell.
+    {
+        var fv = try TouchView.open(lib.count, rows, cell, 3, 4, cols, bar_w);
+        fv.finger_down(0);
+        fv.finger_move(40); // +40px → four lines (clamped to max_offset 3), velocity 40 travelling
+        fv.finger_up(); // flinging
+        assert(fv.is_flinging());
+        const ticks = fv.settle();
+        assert(fv.is_idle());
+        assert(ticks > 0);
+        const g = try fv.paint(garden, &lib);
+        assert(std.mem.indexOf(u8, g.row_cells(0), lib.at(3).name_slice()) != null); // last page top book
+        assert(std.mem.indexOf(u8, g.row_cells(1), lib.at(4).name_slice()) != null); // the final book, pinned
+        assert(g.row_cells(1)[text_cols] == preset_scroll_view.thumb_glyph); // thumb on the bottom bar cell
+    }
+
+    // The picture never drifts: paint() equals scroll_view of the surface's own cursor, and two paints of the same
+    // state are byte-identical (cells and colors).
+    {
+        const g1 = try tv.paint(garden, &lib);
+        const direct = try preset_scroll_view.scroll_view(garden, &lib, &tv.cursor, cols, bar_w);
+        assert(std.mem.eql(u8, g1.cells, direct.cells)); // paint == scroll_view of the shared cursor
+        assert(std.mem.eql(u8, g1.fg_index, direct.fg_index));
+        const g2 = try tv.paint(garden, &lib);
+        assert(std.mem.eql(u8, g1.cells, g2.cells)); // deterministic
+        assert(std.mem.eql(u8, g1.fg_index, g2.fg_index));
+    }
+
+    // A bad bar geometry refuses at open by name (the bar owning no column).
+    if (TouchView.open(lib.count, rows, cell, 3, 4, cols, 0)) |_| return error.BarSlipped else |e| {
+        if (e != error.BadTrack) return error.WrongBar;
+    }
+
+    print("GREEN preset-touch-view: a five-book library on a touchable painted surface ({d}x{d} grid, {d}-column bar, " ++
+        "ten-pixel cell) — at the top the painted page shows the first two books with the thumb on the top bar cell; a " ++
+        "drag down of two cells (then a still finger, release) tracks the finger so the painted top book is a later " ++
+        "book and the thumb walks down the bar; a flick (move while travelling, release) coasts and settles the " ++
+        "painted page bottom-pinned (the last book on the bottom row, the thumb on the bottom bar cell); the picture " ++
+        "never drifts (paint equals scroll_view of the shared cursor, two paints byte-identical); a bad bar refuses " ++
+        "at open by name. HUNK46 session, HUNK42 view, and the whole touch-scroll journey GREEN beneath\n", .{
+        cols, rows, bar_w,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: preset_touch_view selftest\n", .{});
+    return 1;
+}

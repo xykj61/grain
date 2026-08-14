@@ -1,0 +1,50 @@
+# tools/hunk_touch_view_witness.rish — the touchable painted surface: the page scrolls under the finger (HUNK47).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · marketplace / Photos-app surface · rung HUNK47.
+# Design read: active-designing/20260813-201754_hunk-touch-view-exploration.md.
+# Teacher, thanked clean-room: the touchable list surface of any reader (iCloud Photos / a McMaster-Carr catalog) — a
+# finger drives the page and the same page is drawn, so the glass shows where the finger left it (concept only, siloed).
+#
+# The touch-scroll journey grew along two arcs that never met: render (HUNK40 cursor · HUNK41 bar · HUNK42 painted view)
+# and input (HUNK43 seam · HUNK44 drag · HUNK45 fling · HUNK46 session). This rung binds them to the SAME cursor:
+# `pond/apps/preset_touch_view.rye` `TouchView` lets HUNK46's session mutate the cursor and HUNK42's view paint it, so
+# `paint()` is always `scroll_view` of the cursor the session just moved — the picture cannot drift from the position.
+# The selftest drives a touchable painted surface over a real five-book library and proves the page tracks the finger, a
+# flick coasts to a bottom-pinned page on glass, the picture never drifts, and the refusals hold. No network, no key, no
+# funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_touch_view_witness.rish
+
+say "hunk-touch-view: Language EN — HUNK47 is the surface a device touches and watches scroll: a finger drives the cursor and the same cursor is painted, so the glass shows exactly where the finger left the page — no network, no key, no funds."
+say "hunk-touch-view: Style Radiant — input and picture are two readings of one cursor; bind them to the same three counts and the glass can only ever show the truth of where the finger left the page."
+say "hunk-touch-view: Lens TAME — a pure composition over HUNK46's session and HUNK42's view, positive invariants per fn, no new arithmetic and no new clamp; paint renders the very cursor the session drives."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/apps/bin/preset_touch_view"
+
+let build = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/preset_touch_view.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-touch-view: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-touch-view: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+say "hunk-touch-view: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN preset-touch-view' && echo yes"]
+assert (trim green.out) == "yes" else "hunk-touch-view: selftest did not print the GREEN preset-touch-view line"
+
+let track = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'tracks the finger so the painted top book is a later book and the thumb walks down the bar' && echo yes"]
+assert (trim track.out) == "yes" else "hunk-touch-view: the page-tracks-the-finger property was not proven"
+
+let flick = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'coasts and settles the painted page bottom-pinned' && echo yes"]
+assert (trim flick.out) == "yes" else "hunk-touch-view: the flick-coasts-on-glass property was not proven"
+
+let drift = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the picture never drifts (paint equals scroll_view of the shared cursor, two paints byte-identical)' && echo yes"]
+assert (trim drift.out) == "yes" else "hunk-touch-view: the picture-never-drifts property was not proven"
+
+let refuse = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a bad bar refuses at open by name' && echo yes"]
+assert (trim refuse.out) == "yes" else "hunk-touch-view: the open-time refusal was not proven"
+
+say "hunk-touch-view: GREEN — a touchable painted surface shows the page scrolling under the finger: the painted page tracks a drag, a flick coasts to a bottom-pinned page on glass, the picture never drifts from the cursor, and a bad bar refuses at open. HUNK46 session, HUNK42 view, and the whole touch-scroll journey GREEN beneath."

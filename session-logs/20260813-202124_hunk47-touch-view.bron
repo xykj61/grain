@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260813.202124
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title HUNK47 — the touchable painted surface: the page scrolls under the finger, on glass
+prompt Continue the autonomous loop — take the next agent-doable lap Lindy-first crux-first, self-approve design rounds, send each finished increment as its own signed round, stop only at custody gates.
+think The touch-scroll journey grew along two arcs that never met: render (HUNK40 cursor · HUNK41 bar · HUNK42 painted view) and input (HUNK43 seam · HUNK44 drag · HUNK45 fling · HUNK46 session). A device wants one surface it touches and watches scroll — the highest-Lindy next crux closes the loop between the two arcs.
+think The crux: bind the session and the view to the SAME cursor. HUNK46's session mutates a cursor; HUNK42's view paints a cursor; sharing one cursor makes paint() always scroll_view of the cursor the session just moved — the picture cannot drift from the position, structurally. The one-graph discipline the Realidream editor+view share (BUHR), carried to the touch surface.
+think TouchView { session, cursor, cols, bar_w } delegates finger_down/move/up/tick/settle to the session over the shared cursor and paints through scroll_view. Pure composition — no new arithmetic, no new clamp, no new render primitive.
+obs Caught one red at build: asserting the thumb moved to the bottom cell at offset 1 failed — the scrollbar rounding pins offset 1 of max 3 to thumb_start 0 (still top). Moved the drag to offset 2 (25px = two cells), where thumb_start rounds to travel (bottom cell), so the thumb assertion is honest; fixed the print text to say two cells. Measurement corrected memory.
+obs One value model (a session, a cursor, two counts), refusals inherited (BadTrack at open, BadBar/EmptyView at paint), no storage beyond the shared cursor, no timer — a caller ticks it per frame. A real Wayland frame-callback loop, rubber-band overscroll, and velocity smoothing are named horizons.
+obs The witness reads the painted grid, not internal state: after a drag the painted top book is a later book and the first scrolled away; after a flick+settle the painted page is bottom-pinned; paint equals a direct scroll_view of the shared cursor, two paints byte-identical — so a drift bug is caught on glass.
+loom witness=hunk_touch_view_witness grid=24x2 bar_w=2 cell_px=10 gestures=drag_to_offset2,flick_to_bottom drift_check=paint==scroll_view
+file pond/apps/preset_touch_view.rye HUNK47 — TouchView binds HUNK46 session + HUNK42 view to one cursor; paint() shows exactly where the finger left the page.
+file tools/hunk_touch_view_witness.rish proves the surface on metal — page tracks the finger, flick coasts on glass, picture never drifts, bad bar refuses.
+file active-designing/20260813-201754_hunk-touch-view-exploration.md self-approved design read.
+file work-in-progress/REMEMBER.md git nib refreshed in this same work commit.
+recommend keep-going — the touch-scroll journey now closes the loop between input and render (HUNK40–47). HUNK48 could pivot to a fresh Season-A / double-seat journey, add rubber-band overscroll or velocity smoothing, or wire this touchable surface onto the marketplace catalog shelf (the served-market module-assembly ruling stays held for Keaton).
