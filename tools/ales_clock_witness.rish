@@ -1,0 +1,39 @@
+# tools/ales_clock_witness.rish — the sample clock: a real time base for the timeline (ALES5).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES5.
+# Design read: active-designing/20260814-fill-ales5-lotus-sample-clock.md
+# Stands on: lotus/timeline.rye (ALES2) — the Clip and the saturation it reuses; lotus/fade.rye (ALES4) — the fade fade_ms
+# names in milliseconds; lotus/mix.rye (ALES3) — the sum place_at carries to a real offset.
+#
+# lotus/clock.rye gives the timeline a real time base — a validated Clock names a sample rate and converts between
+# milliseconds and sample counts, exactly and bounded, both directions. The selftest proves: a validated clock converts
+# 50 ms at 48 kHz to 2400 samples and back; a zero or absurd rate refuses BadRate; a duration past the clip bound refuses
+# DurationTooLong; ms_for is honestly lossy on a fractional-millisecond sample count; a fade named in milliseconds (fade_ms)
+# lands exactly the samples ALES4's index-named fade lands over the converted span; and place_at aligns a second clip at a
+# real offset, the lead-in carrying the base alone and the overlap summing and saturating. Purely local — no network, no
+# keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_clock_witness.rish
+
+say "ales-clock: Language EN — ALES5 gives the timeline a real time base: a sample rate, so a duration is named in milliseconds and a clip is placed at a real moment."
+say "ales-clock: Style Radiant — the one missing fact is samples-per-second; supplied, every span speaks real time, and the two payoffs (fade_ms, place_at) reuse ALES4 and ALES3 unchanged."
+say "ales-clock: Lens TAME — a validated Clock (rate in [1, max_rate]), conversions in u64 before the divide, bounded to timeline.max_clip; refuses BadRate, DurationTooLong, ClipFull by name; siloed to lotus/, no network, no keys, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/clock"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/clock.rye -femit-bin=${bin}"]
+assert build.ok else "ales-clock: build failed — ${build.err}"
+
+let outfile = "lotus/bin/clock.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-clock: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-clock: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-clock' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-clock: selftest did not print the GREEN ales-clock line"
+
+say "ales-clock: GREEN — a validated sample clock converts real time to samples and back, bounded and honest about its loss; a fade is named in milliseconds and two clips align at a real offset. The next Lotus rung can open a track table, add an equal-power crossfade curve, or name a transport play head."
