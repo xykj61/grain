@@ -1,0 +1,169 @@
+//! lotus/rack_rename.rye — ALES36: a slot RE-NAMED in place. ALES30 lets a keeper file a span under a name; ALES33–35 save, seal,
+//! load, and merge whole racks. Yet one small gesture a keeper reaches for constantly is still missing: a name typed in haste is wrong,
+//! or a merge brought in a stem whose name a keeper wants to change — and today the only way to re-name a slot is to DROP it and re-file
+//! it, which needs the source span it may no longer hold. This rung is the rename in place: keep the held audio exactly where it is and
+//! change only the name.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES36.
+//! Design read: active-designing/20260814-152510_fill-ales36-lotus-rack-rename.md
+//! Stands on: lotus/rack.rye (ALES30) — the Rack, its named Slots, find / name_of, and the naming invariant (a name names at most one
+//! slot), reused whole. The rename adds only the in-place name rewrite; it opens no new edit and names no new fault.
+//!
+//! THE CRUX: renaming the slot `from` to `to` re-names exactly one slot in place — the held audio and every OTHER slot untouched — and
+//! preserves ALES30's naming invariant that a name names at most one slot. It refuses NoSlot when `from` is not held, Duplicate when
+//! `to` is already held by a DIFFERENT slot, and BadName when `to` is empty or oversized; renaming a slot to its own current name is a
+//! clean no-op. One fact makes it exact: a rack.Slot holds its name and its audio in SEPARATE storage (name_buf beside the embedded
+//! Clipboard), so overwriting the name buffer cannot touch the held samples — the rename resolves `from` to one index, checks `to`
+//! against every OTHER slot for a collision, and rewrites only that slot's name bytes; the count, the order, and every audio buffer stay.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. One name buffer rewritten in process, siloed to lotus/. No signature, no key, no socket,
+//! no network, no funds, no real device, no real meter, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/rack_rename.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const selection = @import("selection.rye");
+const rack = @import("rack.rye");
+
+pub const rack_rename_version = "20260814.152510";
+
+/// The rename forwards exactly ALES30's rack faults — NoSlot when `from` is absent, Duplicate when `to` collides with a different slot,
+/// BadName when `to` is empty or oversized. It names no new fault: the rename adds only the in-place name rewrite.
+pub const RackRenameError = rack.RackError;
+
+/// Re-name the slot held under `from` to `to`, in place — the held audio and every other slot untouched. Refuses NoSlot when `from` is
+/// not held, Duplicate when a DIFFERENT slot already holds `to`, and BadName when `to` is empty or longer than max_name. Renaming a slot
+/// to its own current name is a clean no-op. So a keeper fixes a mistyped name without dropping and re-filing the span.
+pub fn rename(r: *rack.Rack, from: []const u8, to: []const u8) RackRenameError!void {
+    // invariant: the rack stands within its ceiling on entry.
+    assert(r.count <= rack.max_slots);
+    if (to.len == 0 or to.len > rack.max_name) return error.BadName;
+    const i = rack.find(r, from) orelse return error.NoSlot;
+    // invariant: the resolved index names a live slot.
+    assert(i < r.count);
+
+    // A collision is a DIFFERENT slot already holding `to`. Renaming to the slot's own name is a no-op, so exclude index i from the
+    // check — otherwise rename("x", "x") would falsely report Duplicate against itself.
+    if (rack.find(r, to)) |j| {
+        if (j != i) return error.Duplicate;
+        // to == from's own name — nothing to rewrite; the slot already answers to `to`.
+        // invariant: a same-name rename leaves the slot holding exactly `to`.
+        assert(std.mem.eql(u8, rack.name_of(r, i), to));
+        return;
+    }
+
+    // Rewrite only the slot's name bytes — the embedded clipboard's audio buffers are separate storage, so the held samples never move.
+    var k: u32 = 0;
+    while (k < to.len) : (k += 1) r.slots[i].name_buf[k] = to[k];
+    r.slots[i].name_len = @intCast(to.len);
+    // invariant: the slot now answers to `to` and no longer to `from` (from != to here), the count and order unchanged.
+    assert(std.mem.eql(u8, rack.name_of(r, i), to) and rack.find(r, from) == null);
+}
+
+// --- selftest: THE CRUX — a slot re-named in place answers to its new name with the SAME audio, the old name gone, every other slot
+//     untouched; a same-name rename is a no-op; a collision refuses Duplicate; an absent `from` refuses NoSlot; a bad `to` refuses
+//     BadName — the rack untouched in every refusal --------------------------------------------------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn slot_is(r: *const rack.Rack, name: []const u8, want_l: []const i16, want_r: []const i16) !void {
+    var m = pan.StereoClip{};
+    try rack.paste(r, name, &m, 0);
+    if (!eq(m.left.samples(), want_l)) return error.SlotLeftWrong;
+    if (!eq(m.right.samples(), want_r)) return error.SlotRightWrong;
+}
+
+/// Build a fresh two-slot rack "head"={1,2}/{-1,-2}, "tail"={4,5}/{-4,-5} — the fixture every case starts from.
+fn two_slot() !rack.Rack {
+    var src = pan.StereoClip{};
+    try timeline.splice(&src.left, 0, &[_]i16{ 0, 1, 2, 3, 4, 5 });
+    try timeline.splice(&src.right, 0, &[_]i16{ 0, -1, -2, -3, -4, -5 });
+    var r = rack.Rack{};
+    try rack.copy_to(&r, "head", &src, try selection.make(&src, 1, 3));
+    try rack.copy_to(&r, "tail", &src, try selection.make(&src, 4, 6));
+    return r;
+}
+
+fn run_selftest() !u8 {
+    // 1. THE CRUX — rename "head" to "intro"; the renamed slot answers to "intro" with the SAME audio byte-for-byte, "head" is now
+    //    NoSlot, "tail" is untouched, and the count and slot order are unchanged (rename is in place, not a drop-and-append).
+    {
+        var r = try two_slot();
+        try rename(&r, "head", "intro");
+        if (r.size() != 2) return error.RenameCountWrong;
+        // slot 0 kept its position; only its name changed.
+        if (!std.mem.eql(u8, rack.name_of(&r, 0), "intro")) return error.RenameName0Wrong;
+        if (!std.mem.eql(u8, rack.name_of(&r, 1), "tail")) return error.RenameName1Wrong;
+        // the same audio, now under the new name.
+        try slot_is(&r, "intro", &[_]i16{ 1, 2 }, &[_]i16{ -1, -2 });
+        // the old name is gone.
+        if (rack.find(&r, "head") != null) return error.OldNameSurvived;
+        // the other slot is untouched.
+        try slot_is(&r, "tail", &[_]i16{ 4, 5 }, &[_]i16{ -4, -5 });
+    }
+
+    // 2. SAME-NAME no-op — renaming a slot to its own current name succeeds and changes nothing.
+    {
+        var r = try two_slot();
+        try rename(&r, "head", "head");
+        if (r.size() != 2) return error.NoopCountWrong;
+        if (!std.mem.eql(u8, rack.name_of(&r, 0), "head")) return error.NoopNameWrong;
+        try slot_is(&r, "head", &[_]i16{ 1, 2 }, &[_]i16{ -1, -2 });
+    }
+
+    // 3. COLLISION — renaming "head" to "tail" (a name a DIFFERENT slot already holds) refuses Duplicate; both names and both audios
+    //    are untouched.
+    {
+        var r = try two_slot();
+        if (rename(&r, "head", "tail")) |_| return error.CollisionSlipped else |e| if (e != error.Duplicate) return error.WrongCollision;
+        if (r.size() != 2) return error.CollisionMutated;
+        if (!std.mem.eql(u8, rack.name_of(&r, 0), "head")) return error.CollisionName0Wrong;
+        try slot_is(&r, "head", &[_]i16{ 1, 2 }, &[_]i16{ -1, -2 });
+        try slot_is(&r, "tail", &[_]i16{ 4, 5 }, &[_]i16{ -4, -5 });
+    }
+
+    // 4. ABSENT from — renaming a name the rack does not hold refuses NoSlot, the rack untouched.
+    {
+        var r = try two_slot();
+        if (rename(&r, "ghost", "x")) |_| return error.AbsentSlipped else |e| if (e != error.NoSlot) return error.WrongAbsent;
+        if (r.size() != 2) return error.AbsentMutated;
+        if (rack.find(&r, "x") != null) return error.AbsentLeaked;
+    }
+
+    // 5. BAD target — an empty or oversized `to` refuses BadName before any rewrite, the rack untouched.
+    {
+        var r = try two_slot();
+        if (rename(&r, "head", "")) |_| return error.EmptySlipped else |e| if (e != error.BadName) return error.WrongEmpty;
+        const huge = [_]u8{'q'} ** (rack.max_name + 1);
+        if (rename(&r, "head", &huge)) |_| return error.HugeSlipped else |e| if (e != error.BadName) return error.WrongHuge;
+        // the rack is untouched — "head" still answers with its audio.
+        if (!std.mem.eql(u8, rack.name_of(&r, 0), "head")) return error.BadNameMutated;
+        try slot_is(&r, "head", &[_]i16{ 1, 2 }, &[_]i16{ -1, -2 });
+    }
+
+    print("GREEN ales-rack-rename: a slot RE-NAMED in place. THE CRUX: renaming `from` to `to` re-names exactly one slot in place — " ++
+        "the held audio and every OTHER slot untouched — and preserves ALES30's naming invariant that a name names at most one slot. " ++
+        "A rack.Slot holds its name and its audio in SEPARATE storage, so overwriting the name buffer cannot touch the held samples; " ++
+        "the rename resolves `from` to one index, checks `to` against every OTHER slot for a collision, and rewrites only that slot's " ++
+        "name bytes, leaving the count, the order, and every audio buffer. A renamed slot answers to its new name with the same audio " ++
+        "byte-for-byte and the old name is gone; a same-name rename is a clean no-op; a collision refuses Duplicate; an absent `from` " ++
+        "refuses NoSlot; an empty or oversized `to` refuses BadName — the rack untouched in every refusal. rack.find / name_of reused " ++
+        "whole, RackRenameError = rack.RackError names no new fault; no signature, no socket, no network, no keys, no funds, no real " ++
+        "device, no real meter, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

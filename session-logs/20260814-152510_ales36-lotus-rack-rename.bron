@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260814.152510
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title ALES36 — Lotus's rack rename: a slot re-named in place
+prompt Continue the ALES recursion loop Lindy-first crux-first; approve my own design rounds and make progress before checking in; send each finished increment to origin and xykj61; stop at custody gates; baton prin recur
+think ALES35's road-on named two purely-local next rungs (rename a slot in place · a session file) plus the signing and wire seams that wait for Keaton's word. Took rename first: it is the smaller, cleaner primitive that completes the everyday rack gestures, and a session file is a larger multi-round journey I can open after.
+think Chose it Lindy-first crux-first. Naming is the interface a keeper touches every session; today re-naming a slot means drop-and-re-file, which needs the source span the keeper may no longer hold. A rename that never risks the audio is a durable convenience (Lindy). Its hard-but-tractable core is ALES30's naming invariant (a name names at most one slot) — a rename must refuse a target a DIFFERENT slot already holds, exactly as copy_to does, while a same-name rename stays a clean no-op.
+think Made it exact by separation of storage: a rack.Slot keeps name_buf beside the embedded ALES25 Clipboard, so rewriting the name bytes cannot touch the held samples. The collision check excludes the slot being renamed (find returns index i; a match at i is the slot's own name, a no-op; a match at j != i is a real Duplicate) — this is the one subtlety that would otherwise make rename("x","x") a false Duplicate.
+obs GREEN on the first build across five cases: renaming head→intro left slot 0 in place answering to intro with the same audio byte-for-byte, head now NoSlot, tail untouched, count and order unchanged; a same-name rename changed nothing; renaming head→tail refused Duplicate with both names and audios intact; an absent from refused NoSlot; an empty and an oversized to each refused BadName, the rack untouched.
+obs Witness tools/ales_rack_rename_witness.rish GREEN; tame_style_check GREEN (bans clean, no new zero-assert file, no usize, no bare memcpy); RackRenameError = rack.RackError (no new fault); rack.find / name_of reused whole. Purely local — one name buffer rewritten in process; no socket, no network, no keys, no funds, no real device, no real meter, no real speaker; every custody gate untouched.
+loom witness=ales_rack_rename_witness result=green build=first cases=5 new_fault=0 reused=rack_find+name_of
+file lotus/rack_rename.rye ALES36 module — rename a slot in place, refusing NoSlot / Duplicate (different slot) / BadName, same-name a no-op
+file tools/ales_rack_rename_witness.rish the witness that builds and proves it GREEN on metal
+file active-designing/20260814-152510_fill-ales36-lotus-rack-rename.md the self-approved design read for the round
+file lotus/README.md front door synced — status list, ALES36 rung entry, road-on paragraph, stamp
+recommend keep-going ALES37 can carry more than one rack in a session file (the next purely-local durable rung — save a whole project, not one rack); the SIGNED carry (Kumara key) and the ALES0-wire carry stay module seams for Keaton's word
