@@ -1,0 +1,226 @@
+//! mikrophone/archive.rye — DREY6: the desk archive. A bounded log that keeps a sequence of proven-whole recordings in
+//! arrival order. Where DREY4's inbox kept only the last accepted frame, the archive keeps many — each landing only once
+//! proven whole, within a fixed entry count and byte budget that refuse by name rather than overrun.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY6.
+//! Design read: active-designing/20260814-064021_drey6-desk-archive-bounded-log-of-proven-recordings-exploration.md
+//! Stands on: mikrophone/wire.rye (DREY1) — deframe proves a payload whole BEFORE a byte is yielded.
+//!
+//! A field recorder is not one recording; a day of civic use is many, and a desk that forgets all but the newest is not
+//! yet the desk a keeper needs. This rung grows the receiving hand from a single slot to a bounded log, held to the same
+//! verify-before-keep promise across many: `deposit` deframes first and appends the proven payload ONLY on a clean
+//! deframe, refusing `ArchiveFull` before a write would pass either bound; any wire error propagates by name and the
+//! archive is left exactly as it was, so a bad frame neither lands nor disturbs a prior entry. `clear` forgets the whole
+//! store. No disk, no network, no key signs, no funds (custody gate #2 — real hardware, a real desk, a real disk —
+//! untouched); verifying the frame's Sha256 stays an integrity check the receiver recomputes, not a signature.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/archive.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const session = @import("session.rye");
+const wire = @import("wire.rye");
+
+pub const archive_version = "20260814.064021";
+
+/// The most recordings a desk archive holds at once — a named bound so the entry index can never overrun.
+pub const max_entries: u32 = 16;
+
+/// The total bytes the archive's packed store holds across all recordings — a named bound so the store can never
+/// overrun. Sized to hold several whole session payloads without an unbounded buffer.
+pub const max_bytes: u32 = 8 * session.max_samples;
+
+pub const ArchiveError = error{
+    /// A deposit would pass the entry count or the byte budget — refused before a single byte is written past a bound.
+    ArchiveFull,
+};
+
+/// One kept recording's place in the packed store: where it starts and how long it is.
+const Entry = struct {
+    off: u32 = 0,
+    len: u32 = 0,
+};
+
+/// A bounded desk archive: a packed byte store, the length actually used, and a bounded index of entries in arrival
+/// order. A fresh archive is empty; no heap outlives it.
+pub const Archive = struct {
+    store: [max_bytes]u8 = [_]u8{0} ** max_bytes,
+    used: u32 = 0,
+    entries: [max_entries]Entry = [_]Entry{.{}} ** max_entries,
+    count: u32 = 0,
+
+    /// A fresh, empty archive holding nothing.
+    pub fn init() Archive {
+        return Archive{};
+    }
+};
+
+/// How many recordings the archive holds.
+pub fn count_of(self: *const Archive) u32 {
+    // invariant: the count never claims more entries than the index can hold.
+    assert(self.count <= max_entries);
+    return self.count;
+}
+
+/// The i-th kept recording as bytes, in arrival order. `i` must be within the count.
+pub fn entry_at(self: *const Archive, i: u32) []const u8 {
+    // invariant: only a kept entry can be read — never past the count.
+    assert(i < self.count);
+    const e = self.entries[i];
+    // invariant: every entry's span stays inside the used region of the store.
+    assert(e.off + e.len <= self.used);
+    return self.store[e.off .. e.off + e.len];
+}
+
+/// Deposit a carried frame — deframe it verify-before-trust FIRST, and append the proven payload to the store ONLY on a
+/// clean deframe within both bounds. Refuses `ArchiveFull` if the entry index is full or the payload would exceed the
+/// byte budget, before a single byte is written. Any wire error propagates by name and the archive is left exactly as it
+/// was — a bad frame neither lands nor disturbs a prior entry. The copy is a plain bounded loop, never a bare memcpy.
+pub fn deposit(self: *Archive, frame_bytes: []const u8) !void {
+    // invariant: nothing is kept until the frame is proven whole — deframe runs before any bound is even checked.
+    const payload = try wire.deframe(frame_bytes);
+    // invariant: a proven payload is bounded by the session ceiling.
+    assert(payload.len <= session.max_samples);
+    const plen: u32 = @intCast(payload.len);
+    // The entry index is bounded — refuse before recording a seventeenth recording.
+    if (self.count >= max_entries) return error.ArchiveFull;
+    // The byte budget is bounded — refuse before a byte would pass the store. Checked in u64 so the sum cannot wrap.
+    const need: u64 = @as(u64, self.used) + @as(u64, plen);
+    if (need > max_bytes) return error.ArchiveFull;
+    const start = self.used;
+    var i: u32 = 0;
+    while (i < plen) : (i += 1) self.store[start + i] = payload[i];
+    self.entries[self.count] = .{ .off = start, .len = plen };
+    self.used = start + plen;
+    self.count += 1;
+    // invariant: the newest entry reads back exactly the proven payload, byte-for-byte.
+    assert(std.mem.eql(u8, entry_at(self, self.count - 1), payload));
+}
+
+/// Forget the whole archive, zeroing the store so nothing once kept can be recovered — the forgetting promise on the
+/// receiving hand, across every recording. A cleared archive holds nothing.
+pub fn clear(self: *Archive) void {
+    var i: u32 = 0;
+    while (i < self.store.len) : (i += 1) self.store[i] = 0;
+    self.used = 0;
+    self.count = 0;
+    // invariant: a cleared archive holds no recordings and no residue remains in the store.
+    assert(self.count == 0);
+    assert(self.used == 0);
+}
+
+// --- selftest: a sequence lands in order, only proven-whole recordings land, both bounds refuse ArchiveFull, and clear
+//     forgets whole ------------------------------------------------------------------------------------------------------
+
+/// Frame the text as a committed session would carry it — capture, commit, frame — so each block starts from a real wire
+/// frame the archive can deposit. Returns the frame; the caller reads `bytes()`.
+fn framed(text: []const u8) !wire.Frame {
+    var s = session.Session.init();
+    var i: u32 = 0;
+    while (i < text.len) : (i += 1) try session.capture(&s, text[i]);
+    try session.commit(&s);
+    var f = wire.Frame{};
+    try wire.frame(&s, &f);
+    return f;
+}
+
+fn run_selftest() !u8 {
+    // 1. The archive keeps a sequence in arrival order, each recording byte-for-byte.
+    {
+        var arc = Archive.init();
+        assert(count_of(&arc) == 0);
+        var a = try framed("first take");
+        var b = try framed("second take");
+        var c = try framed("third take");
+        try deposit(&arc, a.bytes());
+        try deposit(&arc, b.bytes());
+        try deposit(&arc, c.bytes());
+        assert(count_of(&arc) == 3);
+        assert(std.mem.eql(u8, entry_at(&arc, 0), "first take"));
+        assert(std.mem.eql(u8, entry_at(&arc, 1), "second take"));
+        assert(std.mem.eql(u8, entry_at(&arc, 2), "third take"));
+    }
+
+    // 2. Only proven-whole recordings land — a tampered frame refuses DigestMismatch and the archive is unchanged.
+    {
+        var arc = Archive.init();
+        var a = try framed("kept one");
+        try deposit(&arc, a.bytes());
+        assert(count_of(&arc) == 1);
+        // A tampered frame handed to an archive already holding a good recording.
+        var bad = try framed("junk");
+        bad.buf[wire.header_len] = bad.buf[wire.header_len] ^ 0x01;
+        if (deposit(&arc, bad.bytes())) |_| {
+            return error.TamperKept;
+        } else |e| {
+            if (e != error.DigestMismatch) return error.WrongTamper;
+        }
+        // The archive stands exactly as it was — count unchanged, the earlier recording intact.
+        assert(count_of(&arc) == 1);
+        assert(std.mem.eql(u8, entry_at(&arc, 0), "kept one"));
+    }
+
+    // 3. The entry count is bounded — a deposit past max_entries refuses ArchiveFull before it writes.
+    {
+        var arc = Archive.init();
+        var f = try framed("x");
+        var n: u32 = 0;
+        while (n < max_entries) : (n += 1) try deposit(&arc, f.bytes());
+        assert(count_of(&arc) == max_entries);
+        if (deposit(&arc, f.bytes())) |_| {
+            return error.CountUnbounded;
+        } else |e| {
+            if (e != error.ArchiveFull) return error.WrongCountBound;
+        }
+        // No entry past the index — the count still stands at the bound.
+        assert(count_of(&arc) == max_entries);
+    }
+
+    // 4. The byte budget is bounded — a deposit that would exceed max_bytes refuses ArchiveFull before it writes.
+    {
+        var arc = Archive.init();
+        // A whole-session payload is max_samples bytes; eight of them exactly fill the store, a ninth overruns it.
+        var big: [session.max_samples]u8 = undefined;
+        var k: u32 = 0;
+        while (k < session.max_samples) : (k += 1) big[k] = 0xAB;
+        var f = try framed(&big);
+        var n: u32 = 0;
+        while (n < 8) : (n += 1) try deposit(&arc, f.bytes());
+        assert(arc.used == max_bytes);
+        if (deposit(&arc, f.bytes())) |_| {
+            return error.BytesUnbounded;
+        } else |e| {
+            if (e != error.ArchiveFull) return error.WrongBytesBound;
+        }
+        // No byte past the store — used still stands at the budget.
+        assert(arc.used == max_bytes);
+    }
+
+    // 5. Clear forgets whole — the count is nothing and the store is entirely zero.
+    {
+        var arc = Archive.init();
+        var a = try framed("forget me");
+        var b = try framed("and me");
+        try deposit(&arc, a.bytes());
+        try deposit(&arc, b.bytes());
+        assert(count_of(&arc) == 2);
+        clear(&arc);
+        assert(count_of(&arc) == 0);
+        var i: u32 = 0;
+        while (i < arc.store.len) : (i += 1) assert(arc.store[i] == 0);
+    }
+
+    print("GREEN drey-archive: the Mikrophone desk keeps a bounded log of proven recordings in arrival order — three " ++
+        "framed takes deposit and read back byte-for-byte in order, only proven-whole recordings land (a tampered frame " ++
+        "refuses DigestMismatch and the archive stands unchanged), both bounds refuse ArchiveFull before a write (a " ++
+        "seventeenth entry, a byte past the store), and clear forgets whole (count nothing, store zeroed). The receiving " ++
+        "hand grows from one slot to a bounded archive, the verify-before-keep promise held across many; pure before " ++
+        "metal, no disk, no network, no key, no funds\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
