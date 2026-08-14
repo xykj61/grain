@@ -60,17 +60,23 @@ pub fn make(pos: u32, den: u32) timeline.EditError!PowerPan {
     return p;
 }
 
+/// The widest input the audio suite's one square root ever needs: the square of the largest i16 magnitude, 32768² = 2³⁰. The
+/// pan fold's inputs (≤ max_pan_den² = 2²⁴) fit well inside this, and ALES13's meter reaches a full-scale mean square of 2³⁰ —
+/// so one bound covers both readers of the root. 2³⁰ = 4¹⁵, a whole power of four, so sixteen binary digits of descent suffice.
+pub const isqrt_max: u64 = @as(u64, 1) << 30;
+
 /// The bounded integer square root: the exact floor of √x, returned as the r with r² ≤ x < (r+1)². No float — a digit-by-digit
-/// binary descent, one power of four at a time from the top of the bounded domain down to one. The input is bounded by
-/// max_pan_den² (= 2²⁴), so `bit` needs no digit above 4¹² and the loop runs at most twelve steps — no unbounded recursion, no
-/// unbounded loop. This is the one genuinely new arithmetic the equal-power law needs.
-fn isqrt(x: u64) u64 {
-    // invariant: the input stays within the bounded power domain, so twelve digits of descent are enough.
-    assert(x <= @as(u64, max_pan_den) * @as(u64, max_pan_den));
+/// binary descent, one power of four at a time from the top of the bounded domain down to one. Public and audio-domain-wide so
+/// both readers share ONE root: ALES11 SHAPES the field with it (inputs ≤ 2²⁴), and ALES13's meter READS the master with it
+/// (a mean square ≤ 2³⁰). The input is bounded by isqrt_max, so `bit` needs no digit above 4¹⁵ and the loop runs at most sixteen
+/// steps — no unbounded recursion, no unbounded loop. This is the one genuinely new arithmetic the equal-power law needed.
+pub fn isqrt(x: u64) u64 {
+    // invariant: the input stays within the bounded audio square domain, so sixteen digits of descent are enough.
+    assert(x <= isqrt_max);
     var rem: u64 = x;
     var root: u64 = 0;
-    // 4¹² = 2²⁴ is the largest digit the bounded domain can need; shift it down to the largest power of four not exceeding x.
-    var bit: u64 = @as(u64, 1) << 24;
+    // 4¹⁵ = 2³⁰ is the largest digit the bounded domain can need; shift it down to the largest power of four not exceeding x.
+    var bit: u64 = isqrt_max;
     while (bit > rem) : (bit >>= 2) {}
     while (bit != 0) : (bit >>= 2) {
         if (rem >= root + bit) {

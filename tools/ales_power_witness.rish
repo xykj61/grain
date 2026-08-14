@@ -20,7 +20,7 @@
 
 say "ales-power: Language EN — ALES11 places each track on the quarter circle, so the two channels' powers sum to a constant: constant loudness where the linear law dipped −6 dB at center."
 say "ales-power: Style Radiant — the law is stated positively: left_power + right_power = den² exactly, and the amplitude weights are the floor square roots that bend the straight power line into the circle the ear hears."
-say "ales-power: Lens TAME — the one new arithmetic is a bounded integer sqrt with a proven contract (r² ≤ x < (r+1)², twelve digits over a 2²⁴ domain); each channel is ALES8's fader.render run once over an equal-power fold; refuses BadGain / BadRange / ClipFull by name; siloed to lotus/, no network, no keys, no funds, no device."
+say "ales-power: Lens TAME — the one new arithmetic is a bounded integer sqrt with a proven contract (r² ≤ x < (r+1)²); the pan fold feeds it inputs ≤ 2²⁴, and the root itself is bounded to the audio square domain 2³⁰ so ALES13's meter shares the one root; each channel is ALES8's fader.render run once over an equal-power fold; refuses BadGain / BadRange / ClipFull by name; siloed to lotus/, no network, no keys, no funds, no device."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "lotus/bin/power"

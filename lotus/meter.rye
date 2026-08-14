@@ -1,0 +1,281 @@
+//! lotus/meter.rye — ALES13: the peak/RMS meter — the same root ALES11 proved, turned around to READ the master rather than
+//! SHAPE the field. ALES11 placed each track on the quarter circle with a bounded integer square root; ALES12 swept that law
+//! across time. Both DECIDED how loud the audio should be. Nothing yet READS a rendered master to tell a keeper how loud it
+//! actually is — and a DAW without a meter is a mixing desk with no lights. This rung opens the meter, and the crux is a
+//! recognition: an RMS level is the square root of a mean square, so the meter needs no new arithmetic — it reuses the one
+//! true isqrt, now audio-domain-wide.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES13.
+//! Design read: active-designing/20260814-fill-ales13-lotus-meter.md
+//! Stands on: lotus/power.rye (ALES11) — the proven isqrt, now public and widened to the audio square domain (2³⁰), reused
+//! whole; lotus/transport.rye (ALES7) — the read blocks the meter is fed; lotus/timeline.rye (ALES2) and lotus/pan.rye (ALES10)
+//! — the mono Clip and stereo StereoClip masters the meter reads.
+//!
+//! THE TWO TRUTHS a meter owes beyond a bare maximum:
+//!   1. rms ≤ peak, always — the mean of the squares never exceeds the largest square, and isqrt is monotone, so the root of
+//!      the mean is at most the root of the max square, which is the peak exactly. Asserted at the postcondition, not hoped.
+//!   2. BLOCK-INVARIANCE — peak is a running maximum and mean-square a running sum over a running count, both associative, so
+//!      metering a master block by block off ALES7's transport yields the SAME peak and RMS as metering it whole. The meter
+//!      reads exactly what the play head plays, at any block size.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process read over an i16 PCM master, siloed to lotus/. The meter
+//! never mutates the master (read-only, like the transport). No socket, no network, no keys, no funds, no real device, no real
+//! meter hardware — a level is a number a UI would draw, not a signal on a wire.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/meter.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const power = @import("power.rye");
+const transport = @import("transport.rye");
+
+pub const meter_version = "20260814.164000";
+
+/// The most samples one meter accumulates before it refuses more. Bounded so the sum of squares stays well inside u64: each
+/// square is at most 2³⁰ (isqrt_max), so sum_sq ≤ max_meter_samples × 2³⁰ = 2⁵⁶, far below the u64 ceiling. 2²⁶ samples is
+/// ~23 minutes at 48 kHz — a generous window for one metered pass; a longer session meters in more than one window.
+pub const max_meter_samples: u32 = 1 << 26;
+
+/// The largest magnitude any i16 sample owns: |−32768| = 32768, one larger than the maximum positive sample (32767). Named so
+/// the square bound below reads plainly and the meter's one asymmetry is not a hidden number.
+pub const sample_peak_max: u32 = 32768;
+
+pub const MeterError = error{
+    /// A feed would grow the accumulated count past its fixed bound — refused, never an unbounded sum.
+    MeterFull,
+};
+
+/// The magnitude of one sample, |s|, in [0, sample_peak_max]. Computed through i32 so the i16 minimum (−32768) negates without
+/// overflow — the mirror of ALES2's saturation, which pins the maximum; here the minimum's magnitude is the largest a sample
+/// owns, one beyond the positive maximum.
+fn sample_abs(s: i16) u32 {
+    const w: i32 = @as(i32, s);
+    const a: i32 = if (w < 0) -w else w;
+    // invariant: the magnitude of any i16 fits [0, 32768] — the minimum (−32768) has magnitude 32768, the largest a sample owns.
+    assert(a >= 0 and a <= @as(i32, sample_peak_max));
+    return @intCast(a);
+}
+
+/// A running level accumulation: the sum of squared magnitudes, the sample count, and the peak magnitude. Fed block by block
+/// (the transport's read blocks) or whole (measure). The sum is a wide u64 accumulator so no partial sum overflows; the count
+/// and peak are bounded u32 counts. A fresh Meter over nothing reads as silence — peak 0, rms 0.
+pub const Meter = struct {
+    sum_sq: u64 = 0,
+    count: u32 = 0,
+    peak: u32 = 0,
+};
+
+/// Fold one block of samples into the meter: accumulate each sample's squared magnitude, advance the count, and lift the peak.
+/// Refuses MeterFull before any accumulation when the block would carry the count past its bound — the bounded-everything edge
+/// check. This is the call ALES7's read_block feeds, block by block, across a whole playthrough.
+pub fn feed(m: *Meter, block: []const i16) MeterError!void {
+    // invariant: the meter is consistent on entry — count within its bound, peak a legal magnitude.
+    assert(m.count <= max_meter_samples and m.peak <= sample_peak_max);
+    // invariant: a single fed block is itself bounded by the meter's window, so its length fits a u32.
+    assert(block.len <= max_meter_samples);
+    const n: u32 = @intCast(block.len);
+    if (m.count + n > max_meter_samples) return error.MeterFull;
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const a: u32 = sample_abs(block[i]);
+        // invariant: a magnitude never exceeds 32768, so its square never exceeds 2³⁰ (isqrt_max) — the root's domain holds.
+        assert(a <= sample_peak_max);
+        const sq: u64 = @as(u64, a) * @as(u64, a);
+        assert(sq <= power.isqrt_max);
+        m.sum_sq += sq;
+        if (a > m.peak) m.peak = a;
+    }
+    m.count += n;
+    // invariant: the count advanced by exactly the block length and stayed within the bound.
+    assert(m.count <= max_meter_samples and m.peak <= sample_peak_max);
+}
+
+/// The peak magnitude seen so far, in [0, sample_peak_max] — the largest |sample| any fed block carried. Zero over an empty
+/// meter (silence).
+pub fn peak(m: *const Meter) u32 {
+    // invariant: the peak is a legal magnitude and the count is within the bound.
+    assert(m.peak <= sample_peak_max and m.count <= max_meter_samples);
+    return m.peak;
+}
+
+/// The root-mean-square level, isqrt(sum_sq / count), in [0, sample_peak_max]. Honestly lossy in the mean (@divTrunc rounds
+/// toward zero, like ALES5's ms_for), and 0 over an empty meter — silence, never a divide fault. The one proven truth beyond a
+/// maximum: rms ≤ peak, because the mean of the squares never exceeds the max square and isqrt is monotone.
+pub fn rms(m: *const Meter) u32 {
+    // invariant: the meter is consistent — count within its bound, peak a legal magnitude.
+    assert(m.count <= max_meter_samples and m.peak <= sample_peak_max);
+    if (m.count == 0) return 0;
+    const mean_sq: u64 = @divTrunc(m.sum_sq, @as(u64, m.count));
+    // invariant: the mean of the squares never exceeds the largest square (the peak's), so the root's domain holds and the
+    //   result cannot exceed the peak.
+    assert(mean_sq <= @as(u64, m.peak) * @as(u64, m.peak));
+    assert(mean_sq <= power.isqrt_max);
+    const r: u64 = power.isqrt(mean_sq);
+    // invariant: rms ≤ peak — the root of the mean square never exceeds the root of the max square (isqrt monotone, peak² its
+    //   exact square).
+    assert(r <= @as(u64, m.peak));
+    return @intCast(r);
+}
+
+/// Meter a whole mono master in one shot — feed exactly its samples and read peak/rms off the returned meter. The convenience
+/// a caller reaches for when it holds the whole master rather than a stream of blocks; block-invariance proves it equals the
+/// transport-fed path.
+pub fn measure(clip: *const timeline.Clip) MeterError!Meter {
+    // invariant: the clip's length never exceeds the editable bound.
+    assert(clip.len <= timeline.max_clip);
+    var m = Meter{};
+    try feed(&m, clip.samples());
+    // invariant: a measured clip fed exactly its own samples, no more.
+    assert(m.count == clip.len);
+    return m;
+}
+
+/// Meter a stereo master, each channel independently, into [left, right] meters — so a keeper reads a per-channel level, the
+/// pair a stereo VU shows. Both channels of a StereoClip share one length (ALES10's invariant), so the two meters carry the
+/// same count.
+pub fn measure_stereo(sc: *const pan.StereoClip) MeterError![2]Meter {
+    // invariant: a stereo master's two channels share one length.
+    assert(sc.left.len == sc.right.len);
+    const l = try measure(&sc.left);
+    const r = try measure(&sc.right);
+    // invariant: the two channels metered the same number of samples.
+    assert(l.count == r.count);
+    return .{ l, r };
+}
+
+// --- selftest: silence reads 0/0; a full-scale constant reads its own magnitude as both peak and rms (the RMS of a DC signal
+//     is its level), including the i16 minimum at the wide domain's ceiling (32768² = 2³⁰); rms ≤ peak across a sweep;
+//     BLOCK-INVARIANCE — metering a master in 1-, 2-, and 7-sample blocks off the transport gives the identical peak and rms
+//     as one whole measure; a stereo master meters each channel independently; metering never mutates the master; feed refuses
+//     MeterFull past the bound ------------------------------------------------------------------------------------------------
+
+fn clip_of(samples: []const i16) !timeline.Clip {
+    var c = timeline.Clip{};
+    try timeline.splice(&c, 0, samples);
+    return c;
+}
+
+/// Meter a master by pulling fixed blocks through ALES7's transport and feeding each into the meter — the real read path a
+/// playback engine would drive, so block-invariance is proven over the transport, not a bare sub-slice.
+fn meter_via_transport(master: *const timeline.Clip, block_len: u32) !Meter {
+    var t = transport.Transport{};
+    var m = Meter{};
+    var scratch: [16]i16 = [_]i16{0} ** 16;
+    // invariant: the requested block never exceeds the scratch buffer, so the read is bounded.
+    assert(block_len >= 1 and block_len <= scratch.len);
+    while (!transport.at_end(&t, master)) {
+        const n = transport.read_block(&t, master, scratch[0..block_len]);
+        try feed(&m, scratch[0..n]);
+    }
+    return m;
+}
+
+fn run_selftest() !u8 {
+    // 1. silence reads peak 0 and rms 0 — an empty meter and a meter of zeros both report nothing.
+    {
+        var empty = Meter{};
+        if (peak(&empty) != 0 or rms(&empty) != 0) return error.EmptyNotSilent;
+
+        var zeros = try clip_of(&[_]i16{ 0, 0, 0, 0 });
+        const m = try measure(&zeros);
+        if (peak(&m) != 0 or rms(&m) != 0) return error.ZerosNotSilent;
+    }
+
+    // 2. a full-scale CONSTANT reads its own magnitude as both peak and rms — the RMS of a DC signal is its level exactly. A
+    //    constant 1000 reads 1000/1000; the i16 minimum −32768 reads 32768/32768, exercising the wide domain's ceiling
+    //    (32768² = 2³⁰ = isqrt_max), the very reason the root was widened past the pan fold.
+    {
+        var dc = try clip_of(&[_]i16{ 1000, 1000, 1000, 1000 });
+        const m = try measure(&dc);
+        if (peak(&m) != 1000 or rms(&m) != 1000) return error.DcWrong;
+
+        var floor = try clip_of(&[_]i16{ -32768, -32768, -32768 });
+        const mf = try measure(&floor);
+        if (peak(&mf) != 32768 or rms(&mf) != 32768) return error.FloorWrong;
+    }
+
+    // 3. rms ≤ peak across a sweep of mixed signals — the meter's defining invariant, that no reported level ever exceeds the
+    //    loudest sample. A signal with one loud sample among quiet ones has an rms well below its peak.
+    {
+        const cases = [_][]const i16{
+            &[_]i16{ 100, -200, 300, -400 },
+            &[_]i16{ 32767, 0, 0, 0, 0, 0, 0, 0 }, // one spike, mostly silence: rms far below peak
+            &[_]i16{ -1, 1, -1, 1 },
+            &[_]i16{ 5000, -5000, 5000, -5000 }, // a square wave: rms == peak
+        };
+        var ci: u32 = 0;
+        while (ci < cases.len) : (ci += 1) {
+            var c = try clip_of(cases[ci]);
+            const m = try measure(&c);
+            if (rms(&m) > peak(&m)) return error.RmsAbovePeak;
+        }
+        // the lone spike proves the strict case — its rms is strictly below its peak.
+        var spike = try clip_of(&[_]i16{ 32767, 0, 0, 0, 0, 0, 0, 0 });
+        const ms = try measure(&spike);
+        if (!(rms(&ms) < peak(&ms))) return error.SpikeRmsNotBelow;
+        // the square wave proves the boundary — its rms equals its peak (every sample at full magnitude).
+        var sq = try clip_of(&[_]i16{ 5000, -5000, 5000, -5000 });
+        const msq = try measure(&sq);
+        if (rms(&msq) != peak(&msq)) return error.SquareRmsNotEqual;
+    }
+
+    // 4. BLOCK-INVARIANCE — the tie to the transport. Metering a master in 1-, 2-, and 7-sample blocks off ALES7's read_block
+    //    gives the IDENTICAL peak and rms as one whole measure. Peak is a running max and mean-square a running sum, both
+    //    associative, so the meter reads what the play head plays at any block size.
+    {
+        var master = try clip_of(&[_]i16{ 100, -200, 300, -32768, 5, 6000, -9000, 12, -13, 14 });
+        const whole = try measure(&master);
+        const original = [_]i16{ 100, -200, 300, -32768, 5, 6000, -9000, 12, -13, 14 };
+
+        const sizes = [_]u32{ 1, 2, 7 };
+        var si: u32 = 0;
+        while (si < sizes.len) : (si += 1) {
+            const blocked = try meter_via_transport(&master, sizes[si]);
+            if (peak(&blocked) != peak(&whole)) return error.BlockPeakDiffers;
+            if (rms(&blocked) != rms(&whole)) return error.BlockRmsDiffers;
+            if (blocked.count != whole.count) return error.BlockCountDiffers;
+        }
+        // 5. metering never mutates the master — after every read the samples are untouched (read-only, like the transport).
+        if (!std.mem.eql(i16, master.samples(), &original)) return error.MasterMutated;
+    }
+
+    // 6. a STEREO master meters each channel independently — a loud left and a quiet right report distinct levels.
+    {
+        var sc = pan.StereoClip{};
+        try timeline.splice(&sc.left, 0, &[_]i16{ 8000, -8000, 8000, -8000 }); // full square wave: rms == peak == 8000
+        try timeline.splice(&sc.right, 0, &[_]i16{ 100, 0, 0, 0 }); // one small spike: rms well below peak 100
+        const both = try measure_stereo(&sc);
+        if (peak(&both[0]) != 8000 or rms(&both[0]) != 8000) return error.StereoLeftWrong;
+        if (peak(&both[1]) != 100 or !(rms(&both[1]) < 100)) return error.StereoRightWrong;
+    }
+
+    // 7. feed refuses MeterFull past the bound — a block that would carry the count past max_meter_samples is refused whole,
+    //    before any accumulation, leaving the meter untouched.
+    {
+        var m = Meter{};
+        m.count = max_meter_samples - 1; // one sample of room
+        const two = [_]i16{ 10, 20 };
+        if (feed(&m, &two)) |_| return error.OverfillSlipped else |e| if (e != error.MeterFull) return error.WrongOverfill;
+        // the refusal left the meter's count and sum untouched — no partial accumulation.
+        if (m.count != max_meter_samples - 1 or m.sum_sq != 0) return error.RefusalNotClean;
+    }
+
+    print("GREEN ales-meter: the peak/RMS meter reads a rendered master with the same isqrt ALES11 proved, now audio-domain-wide " ++
+        "(32768² = 2³⁰) — silence reads 0/0; a full-scale constant reads its own magnitude as both peak and RMS (a DC signal's " ++
+        "RMS is its level, the i16 minimum landing 32768/32768 at the domain ceiling); rms ≤ peak across a sweep (a lone spike " ++
+        "strictly below, a square wave exactly equal); BLOCK-INVARIANCE holds — metering a master in 1-, 2-, and 7-sample " ++
+        "blocks off ALES7's transport gives the IDENTICAL peak and RMS as one whole measure, the meter reading exactly what the " ++
+        "play head plays; a stereo master meters each channel independently; metering never mutates the master; and feed " ++
+        "refuses MeterFull past the bound, leaving the meter untouched; no socket, no network, no keys, no funds, no real " ++
+        "device, no real meter\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

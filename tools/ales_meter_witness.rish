@@ -1,0 +1,40 @@
+# tools/ales_meter_witness.rish — the peak/RMS meter: the same root, now reading the master (ALES13).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES13.
+# Design read: active-designing/20260814-fill-ales13-lotus-meter.md
+# Stands on: lotus/power.rye (ALES11) — the proven isqrt, now public and widened to the audio square domain (2³⁰), reused
+# whole; lotus/transport.rye (ALES7) — the read blocks the meter is fed; lotus/timeline.rye (ALES2) and lotus/pan.rye (ALES10)
+# — the mono Clip and stereo StereoClip masters the meter reads.
+#
+# lotus/meter.rye turns ALES11's square root around: where the equal-power law SHAPED the field, the meter READS the master.
+# An RMS level is isqrt of a mean square, so the meter needs no new arithmetic — one true root, two readers. The selftest
+# proves: silence reads 0/0; a full-scale constant reads its own magnitude as both peak and RMS (the i16 minimum landing
+# 32768/32768 at the wide domain's ceiling); rms ≤ peak across a sweep (a lone spike strictly below, a square wave equal);
+# BLOCK-INVARIANCE — metering a master in 1-, 2-, and 7-sample blocks off the transport equals one whole measure; a stereo
+# master meters each channel independently; metering never mutates the master; feed refuses MeterFull. Purely local — no
+# network, no keys, no funds, no real device, no real meter.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_meter_witness.rish
+
+say "ales-meter: Language EN — ALES13 reads a rendered master, reporting peak (the loudest sample) and RMS (the root of the mean square): the meter lights a mixing desk has never had until now."
+say "ales-meter: Style Radiant — the law is stated positively: rms ≤ peak always, and metering a master block by block off the transport equals metering it whole (peak a running max, mean-square a running sum, both associative)."
+say "ales-meter: Lens TAME — no new arithmetic: the meter reuses ALES11's proven isqrt, widened to the audio square domain (2³⁰) and shared as one root; count and squares are bounded; refuses MeterFull by name; read-only, never mutating the master; siloed to lotus/, no network, no keys, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/meter"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/meter.rye -femit-bin=${bin}"]
+assert build.ok else "ales-meter: build failed — ${build.err}"
+
+let outfile = "lotus/bin/meter.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-meter: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-meter: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-meter' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-meter: selftest did not print the GREEN ales-meter line"
+
+say "ales-meter: GREEN — the meter reads the master with the same root ALES11 proved, rms ≤ peak, and a block-fed pass off the transport equals a whole measure. The next Lotus rung can name a stereo balance/width control, a transport loop over a marked region, or offer the keeper the choice of pan/crossfade law."

@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260814.124341
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (Eastern / EDT time convention)
+title ALES13 — Lotus's peak/RMS meter, the same root reading the master
+prompt Read REMEMBER + the 1024-round itinerary + six-season double-seat; take the next agent-doable lap Lindy-first crux-first; approve my own design round; send each finished increment; stop at the custody gates.
+think Read the two itinerary docs and the custody gates in REMEMBER. Living track is the ALES ladder (Lotus, Season C double-seat) — recent commits climbed ALES8..ALES12. The Lotus README road-on names the next rungs: peak/RMS meter, stereo balance/width, transport loop, choice-of-law.
+think Lindy-first crux-first: a meter is the most durable next move — a mixing surface read on every playthrough for years, foundational to any DAW — over the smaller transport loop (only re-drives ALES7) or balance/width (a variation on pan). Its crux is a wider square root: an RMS is isqrt of a mean square, and a full-scale i16 mean square reaches 32768² = 2³⁰, past ALES11's pan-fold isqrt bound of 2²⁴.
+think Reuse over copy (the tree's saturate precedent): rather than a second isqrt, widened ALES11's proven isqrt to the audio square domain (2³⁰, sixteen digits) and made it public — power's own inputs stay ≤ 2²⁴, so ALES11's callers and witness are untouched. One root, two readers: ALES11 shapes the field, ALES13 reads the master.
+think Two owed truths beyond a bare maximum: rms ≤ peak always (mean of squares ≤ max square, isqrt monotone — asserted at the postcondition), and BLOCK-INVARIANCE (peak a running max, mean-square a running sum, both associative) so metering a master block by block off ALES7's transport equals one whole measure. The second ties the meter to the real read path.
+obs GREEN on the first build across seven selftest blocks: silence 0/0; a full-scale constant reads its own magnitude (the i16 minimum landing 32768/32768 at the wide domain's ceiling, exercising the very reason the root was widened); rms ≤ peak across a sweep (a lone spike strictly below, a square wave exactly equal); block-invariance at 1/2/7-sample blocks off transport.read_block; stereo channels metered independently; master never mutated; feed refuses MeterFull leaving the meter untouched.
+obs Kept docs synced: refreshed the ALES11 witness Lens line (its old "twelve digits over a 2²⁴ domain" understated the now-widened shared root) and re-ran the power and crossfade witnesses GREEN — nothing downstream of the widened isqrt broke.
+obs Custody gates untouched — purely local i16 buffers, no socket, no network, no keys, no funds, no real device, no real meter hardware. The audio-interface hardware a metered master would feed stays the paused research round.
+loom witness=ales_meter_witness result=GREEN rung=ALES13 selftest_blocks=7 isqrt_domain_bits=30 max_meter_samples=67108864
+file lotus/meter.rye ALES13 — the peak/RMS meter: a Meter accumulates sum-of-squares, count, peak; rms = isqrt(mean square) reusing power.isqrt; measure / measure_stereo convenience.
+file lotus/power.rye widened isqrt to the audio square domain (2³⁰) and made it public + isqrt_max const, so the meter shares the one true root; ALES11's inputs and witness untouched.
+file tools/ales_meter_witness.rish witness proving the meter GREEN — silence, DC, rms ≤ peak, block-invariance off the transport, stereo, read-only, MeterFull.
+file tools/ales_power_witness.rish refreshed the Lens line to name the shared, widened root honestly (docs-implementation-sync).
+file active-designing/20260814-fill-ales13-lotus-meter.md the self-approved design capture for the round.
+file lotus/README.md front door synced — ALES13 in the status line, the rung prose, the prove block, and the road-on.
+recommend keep-going — the next Lotus rung (stereo balance/width, a transport loop over a marked region, or offering the keeper the choice of pan/crossfade law) is mechanical and single-module, policy already written; custody gates all still untouched.
