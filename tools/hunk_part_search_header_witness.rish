@@ -1,0 +1,52 @@
+# tools/hunk_part_search_header_witness.rish — the query header above the narrowed shelf (HUNK82).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK82.
+# Design read: active-designing/20260814-003328_hunk-part-search-header-typed-line-and-count-exploration.md
+# Teacher, thanked clean-room: McMaster-Carr's search box — the query echoed and a result count over the wall of parts
+# (concept only, siloed).
+#
+# HUNK79 drew the faceted search on glass, yet the drawn page carried no word of what was asked or how many were found.
+# This rung paints that header: brushstroke/part_search_header.rye `format_header` echoes the canonical query and its
+# result count, `header_row` draws it, and `search_screen` stacks it over HUNK79's narrowed shelf into one grid. The
+# selftest proves no drift — the echo re-parses to the same query (a fixed point of the parser), the header count
+# equals the shelf's narrowed count, and the stacked screen equals header_row and and_search_shelf cell-for-cell — and
+# the named refusals (a malformed clause, a zero/over-ceiling header, a bad offset). A price is a fact echoed and
+# compared, never moved.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_part_search_header_witness.rish
+
+say "hunk-part-search-header: Language EN — HUNK82 paints the query header above HUNK79's narrowed shelf: the typed clauses echoed and an N-results count, stacked into one surface a keeper reads top to bottom."
+say "hunk-part-search-header: Style Radiant — what a keeper asked, how many were found, and the parts themselves in one reading; the header echoes the query the machine understood (a fixed point of the parser), never a hopeful transcript."
+say "hunk-part-search-header: Lens TAME — pure text-and-painting over HUNK79 and_search_shelf and HUNK78 count_and; the header count equals the shelf count (no drift); a price clause is echoed and compared, never moved; positive invariants per fn; a malformed clause, a bad dimension, and a bad offset each refuse by name; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/part_search_header"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_search_header.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-part-search-header: build failed — ${build.err}"
+
+# Read the GREEN line from a file — it carries an apostrophe ("shelf's") that breaks a shell single-quote round-trip.
+let outfile = "brushstroke/bin/part_search_header.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "hunk-part-search-header: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "hunk-part-search-header: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN part-search-header' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "hunk-part-search-header: selftest did not print the GREEN part-search-header line"
+
+# HUNK79 stays GREEN — the narrowed shelf this rung stacks a header above.
+let s = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_and_search.rye -femit-bin=brushstroke/bin/part_and_search && brushstroke/bin/part_and_search selftest > brushstroke/bin/part_and_search.out 2>&1"]
+assert s.ok else "hunk-part-search-header: HUNK79 part_and_search re-run failed — see brushstroke/bin/part_and_search.out"
+let s_green = run ["sh" "-c" "grep -q 'GREEN part-and-search' brushstroke/bin/part_and_search.out && echo yes"]
+assert (trim s_green.out) == "yes" else "hunk-part-search-header: HUNK79 part_and_search did not stay GREEN"
+
+# HUNK78 stays GREEN — the conjunction the header counts and the shelf filters by.
+let a = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_and.rye -femit-bin=image/bin/part_and && image/bin/part_and selftest > image/bin/part_and.out 2>&1"]
+assert a.ok else "hunk-part-search-header: HUNK78 part_and re-run failed — see image/bin/part_and.out"
+let a_green = run ["sh" "-c" "grep -q 'GREEN part-and' image/bin/part_and.out && echo yes"]
+assert (trim a_green.out) == "yes" else "hunk-part-search-header: HUNK78 part_and did not stay GREEN"
+
+say "hunk-part-search-header: GREEN — a keeper reads back the query they asked and the honest count of its answers, above the very parts that answer them; HUNK79 narrowed shelf and HUNK78 conjunction underneath stay GREEN. HUNK82 lands."
