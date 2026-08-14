@@ -330,7 +330,8 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(again.same_bytes(&replayed));
 
     // Non-destructive: the source is untouched, and the EMPTY list recovers it byte-for-byte.
-    assert(pm.pixels[0] == 0 and pm.pixels[3] == 255);
+    assert(pm.pixels[0] == 0);
+    assert(pm.pixels[3] == 255);
     var empty = EditList.init();
     const untouched = try apply(garden, &pm, &empty);
     assert(untouched.same_bytes(&pm));

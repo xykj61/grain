@@ -386,7 +386,8 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const back = try decode(garden, stream);
     // The crux: a full round-trip recovers the pixmap byte-for-byte.
     assert(back.same_bytes(&pm));
-    assert(back.channels == 4 and back.colorspace == 0);
+    assert(back.channels == 4);
+    assert(back.colorspace == 0);
 
     // --- named refusals -------------------------------------------------------------------------------
     // Truncated: drop the last byte.
