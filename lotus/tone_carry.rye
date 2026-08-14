@@ -6,8 +6,13 @@
 //! is seamless. The one correctness is the split-equals-whole property: filtering a span in two pieces (the second carrying the
 //! first's ending state) equals filtering the whole span once, byte-for-byte — exact by ALES40's stepping law, no new arithmetic.
 //!
-//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES43.
-//! Design read: active-designing/20260814-163000_fill-ales43-lotus-carried-filter.md
+//! ALES45 accretes the complement here — a `Highpass` that carries its state the same way, so the whole split (and the shelf
+//! and stack built on it) can span a re-berthed region and be swept; `high_pass` becomes the state = 0 case of one
+//! high_pass_carry implementation in tone.rye, symmetric to the low-pass.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rungs ALES43, ALES45.
+//! Design reads: active-designing/20260814-163000_fill-ales43-lotus-carried-filter.md ·
+//!   active-designing/20260814-164244_fill-ales45-lotus-carried-highpass.md
 //! Stands on: lotus/tone.rye (ALES40, accreted) — its lp_step is a pure function of (state, x), now reached through the public
 //! low_pass_carry; lotus/timeline.rye (ALES2) — the Clip it filters.
 //!
@@ -49,6 +54,33 @@ pub const Lowpass = struct {
     pub fn reset(self: *Lowpass) void {
         self.state = 0;
         // invariant: reset restores exactly the from-silence start — a run after reset equals ALES40's low_pass.
+        assert(self.state == 0);
+    }
+};
+
+/// A one-pole high-pass that holds its own state across calls (ALES45) — the complement of `Lowpass`, the same memory for the
+/// high band. The high-pass output is `x − lp`, and `lp` is driven by the carried low-pass state, so this struct carries exactly
+/// that one i64 state. A fresh Highpass (state = 0) is exactly ALES40's from-silence high_pass; `run` continues from the carried
+/// state so a span high-passed piece by piece has no re-transient at a seam; `reset` returns the state to silence.
+pub const Highpass = struct {
+    /// The low-pass estimate scaled by `den` at full i64 precision — the same carried state a `Lowpass` holds, since the
+    /// high-pass is the complement `x − lp` of that low-pass.
+    state: i64 = 0,
+    num: i32,
+    den: u32,
+
+    /// High-pass `count` samples starting at `start` in place, CONTINUING from `self.state` and updating it. The seam between
+    /// two runs is invisible because the second run opens on the first's ending state rather than on silence. Refuses BadCoeff
+    /// on an illegal coefficient and BadRange on a span outside the samples, before any write; the state is untouched on refusal.
+    pub fn run(self: *Highpass, clip: *timeline.Clip, start: u32, count: u32) tone.ToneError!void {
+        // invariant: the carried state is the caller's own — run threads it through ALES45's single high-pass stepping.
+        try tone.high_pass_carry(clip, start, count, &self.state, self.num, self.den);
+    }
+
+    /// Return the state to silence, so the next `run` re-opens the from-silence high-pass deliberately.
+    pub fn reset(self: *Highpass) void {
+        self.state = 0;
+        // invariant: reset restores exactly the from-silence start — a run after reset equals ALES40's high_pass.
         assert(self.state == 0);
     }
 };
@@ -158,6 +190,95 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &three)) return error.RefusedFilterMutated;
     }
 
+    // 6. a fresh Highpass (state = 0) over the whole span writes exactly ALES40's from-silence high_pass — the carried high-pass
+    //    form's zero case IS the from-silence case (one implementation, so they cannot drift).
+    {
+        var carried = timeline.Clip{};
+        try load_clip(&carried, &src);
+        var f = Highpass{ .num = 1, .den = 3 };
+        try f.run(&carried, 0, carried.len);
+
+        var plain = timeline.Clip{};
+        try load_clip(&plain, &src);
+        try tone.high_pass(&plain, 0, plain.len, 1, 3);
+
+        if (!eq(carried.samples(), plain.samples())) return error.HpFreshNotFromSilence;
+    }
+
+    // 7. THE HIGH-PASS CRUX — a span high-passed in two pieces, the second carrying the first's ending state, equals the whole
+    //    high-passed once, byte-for-byte. The seam at the split index carries no re-transient.
+    {
+        var whole = timeline.Clip{};
+        try load_clip(&whole, &src);
+        var fw = Highpass{ .num = 1, .den = 4 };
+        try fw.run(&whole, 0, whole.len);
+
+        var pieces = timeline.Clip{};
+        try load_clip(&pieces, &src);
+        var fp = Highpass{ .num = 1, .den = 4 };
+        const split: u32 = 5;
+        try fp.run(&pieces, 0, split); // first piece
+        try fp.run(&pieces, split, pieces.len - split); // second piece continues from the carried state
+
+        if (!eq(pieces.samples(), whole.samples())) return error.HpSplitNotWhole;
+    }
+
+    // 8. the carried complement reconstructs — a Lowpass and a Highpass at the same coefficient, each run over the whole span,
+    //    sum back to the input sample-for-sample where the difference fits (a moderate mixed signal): low + high = x.
+    {
+        var lp = timeline.Clip{};
+        try load_clip(&lp, &src);
+        var flp = Lowpass{ .num = 1, .den = 3 };
+        try flp.run(&lp, 0, lp.len);
+
+        var hp = timeline.Clip{};
+        try load_clip(&hp, &src);
+        var fhp = Highpass{ .num = 1, .den = 3 };
+        try fhp.run(&hp, 0, hp.len);
+
+        var i: u32 = 0;
+        while (i < src.len) : (i += 1) {
+            if (@as(i32, lp.samples()[i]) + @as(i32, hp.samples()[i]) != @as(i32, src[i])) return error.HpComplementWrong;
+        }
+    }
+
+    // 9. reset re-opens the high-pass transient — after a settled constant run (high-pass drives direct current to zero), reset
+    //    returns the state to silence, so the next run over a constant leaves a NON-zero first sample again (the transient before
+    //    direct current is removed), rather than continuing settled at zero.
+    {
+        const run = [_]i16{3000} ** 30;
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &run);
+        var f = Highpass{ .num = 1, .den = 3 };
+        try f.run(&clip, 0, clip.len); // settles: high-pass of a constant → 0 at the tail
+        if (clip.samples()[clip.len - 1] != 0) return error.HpNotSettledBeforeReset;
+
+        f.reset();
+        var fresh = timeline.Clip{};
+        try load_clip(&fresh, &run);
+        try f.run(&fresh, 0, fresh.len); // after reset, a from-silence transient again
+        if (fresh.samples()[0] == 0) return error.HpResetDidNotReopen; // first sample non-zero: direct current not yet removed
+    }
+
+    // 10a. an illegal coefficient (above one — unstable) refuses BadCoeff, the clip and state untouched.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 1, 2, 3 });
+        var f = Highpass{ .num = 3, .den = 2 };
+        if (f.run(&clip, 0, clip.len)) |_| return error.HpOverOneSlipped else |e| if (e != error.BadCoeff) return error.HpWrongOverOne;
+        if (f.state != 0) return error.HpRefusedMovedState;
+    }
+
+    // 10b. an out-of-range span refuses BadRange before any write, leaving the clip untouched.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        var f = Highpass{ .num = 1, .den = 2 };
+        if (f.run(&clip, 2, 5)) |_| return error.HpBadRangeSlipped else |e| if (e != error.BadRange) return error.HpWrongBadRange;
+        if (!eq(clip.samples(), &three)) return error.HpRefusedFilterMutated;
+    }
+
     print("GREEN ales-tone-carry: a carried-state low-pass spans a re-berthed region without a fresh transient — a fresh " ++
         "filter (state = 0) equals ALES40's from-silence low_pass byte-for-byte; a span filtered in TWO PIECES, the second " ++
         "continuing from the first's ending state, equals the whole filtered once byte-for-byte (the crux — the seam carries " ++
@@ -165,7 +286,11 @@ fn run_selftest() !u8 {
         "rather than rolling off again; reset returns the state to silence so the next run re-opens the from-silence transient " ++
         "deliberately; an illegal coefficient refuses BadCoeff leaving the state untouched, and an out-of-range span refuses " ++
         "BadRange leaving the clip untouched; low_pass is now the state = 0 case of one low_pass_carry implementation, so the " ++
-        "carried and from-silence forms cannot drift; no socket, no network, no keys, no funds, no real device, no real " ++
+        "carried and from-silence forms cannot drift; and (ALES45) a carried-state HIGH-pass carries its state the same way — a " ++
+        "fresh Highpass equals ALES40's from-silence high_pass byte-for-byte, a span high-passed in two pieces equals the whole " ++
+        "high-passed once (the complement crux), a Lowpass and a Highpass at one coefficient sum back to the input where the " ++
+        "difference fits (low + high = x), reset re-opens the high-pass transient, and an illegal coefficient/out-of-range span " ++
+        "each refuse by name; no socket, no network, no keys, no funds, no real device, no real " ++
         "sample rate\n", .{});
     return 0;
 }

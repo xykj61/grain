@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260814.164658
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title ALES45 — Lotus's carried-state high-pass: the complement gains a memory too, so a whole split spans and sweeps
+prompt Autonomous loop — take the next agent-doable lap Lindy-first crux-first, self-approve the design, send each finished increment to origin and xykj61; stop at custody gates
+think Second lap of the turn (ALES44 sweep already landed and sent). The filter family was asymmetric: after ALES43 (carried low-pass) and ALES44 (low-pass sweep), the low band carries its state and sweeps, yet the high-pass still runs only from silence — so a shelf or stack cannot span a re-berthed region or sweep its high band.
+think Lindy-first crux-first: carrying the high-pass is the missing half of the filter foundation — one small symmetric move that unlocks a whole branch (carried/swept shelf and stack). The real time base is more Lindy still, yet it is a cross-cutting sample-rate concept touching many modules (clock, timeline) and changing every coefficient's meaning — a design/check-in seam, not a clean kg lap. The carried high-pass is contained, policy-clear, one keystone.
+think The crux is ALES43's split-equals-whole property, now for the complement: a high-pass filtered in two pieces, the second carrying the first's ending state, equals the whole once byte-for-byte. Because high_pass output is x − lp and lp is a pure function of (state, x), lifting that one state to the caller makes the complement continue too — no new arithmetic.
+think Shape: tone.rye grows high_pass_carry (the caller owning the low-pass state), and high_pass becomes its state = 0 case — symmetric to ALES43's low_pass_carry, so the carried and from-silence forms cannot drift. tone_carry.rye gains a Highpass struct beside Lowpass (run continues from self.state, reset returns it to silence). Accreted, not a new module — tone_carry.rye is the natural home for the filters that carry their state.
+obs GREEN across all: the tone_carry selftest gained five high-pass cases — a fresh Highpass equals ALES40's from-silence high_pass byte-for-byte; a span high-passed in two pieces with a carried state equals the whole once (the complement crux); a Lowpass and a Highpass at one coefficient sum back to the input where the difference fits (low + high = x); reset re-opens the high-pass transient; an illegal coefficient refused BadCoeff leaving the state untouched, an out-of-range span BadRange leaving the clip untouched.
+obs The high_pass_carry refactor left every dependent GREEN, proven by their green not by claim: ALES40 tone, ALES44 sweep, ALES42 stack, ALES41 shelf (both use tone.high_pass). The ALES45 witness re-runs ALES40 and ALES44 and asserts the ALES45 clause is present in the combined GREEN line. TAME bans clean; width-check on tone.rye and tone_carry.rye exit 0.
+loom witness=ales_carried_highpass_witness build=first_green hp_cases=5 deps_green=tone,sweep,stack,shelf
+file active-designing/20260814-164244_fill-ales45-lotus-carried-highpass.md the self-approved design read (carrying the complement, the symmetric partner to ALES43)
+file lotus/tone.rye ALES45 — high_pass_carry added; high_pass now its state = 0 case, symmetric to low_pass
+file lotus/tone_carry.rye Highpass struct accreted beside Lowpass; selftest gained five high-pass cases; banner and GREEN line note ALES45
+file tools/ales_carried_highpass_witness.rish the witness — asserts the ALES45 high-pass clause and re-runs ALES40 tone + ALES44 sweep GREEN
+file lotus/README.md front door synced — the road-on paragraph accretes ALES45 after ALES44
+recommend keep-going ALES46 is agent-doable and purely local Lindy-first crux-first: a carried shelf/stack (a whole EQ that spans a re-berthed region), a high-pass sweep (ALES44's schedule over the carried high-pass), or the real time base (a check-in seam — a crossover in hertz). Hardware/funds/serve stay custody gates for Keaton's hand.
