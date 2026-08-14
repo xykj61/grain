@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260814.131001
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (Eastern / EDT time convention)
+title ALES17 — Lotus's stereo meter during playback, two meters read both channels live
+prompt Autonomous loop past REMEMBER + the itineraries — take the next agent-doable lap Lindy-first crux-first, self-approve the design round, send each finished increment, stop at the custody gates.
+think ALES16 (stereo loop) landed and sent. The read side has three tools — play, loop, meter; ALES15/ALES16 made play and loop stereo, but the meter still lives only in mono time (ALES13 can measure_stereo AT REST, yet nothing meters a stereo master DURING playback). Crux-first: bring the meter to the stereo read path — the live stereo VU — completing the read side's third tool over two channels. A punch region would cross into the Mikrophone capture side (a module seam per collaboration.md — check-in Claude), so I deliberately did NOT take it; the stereo meter stays wholly within the read side.
+think The crux: two meters read both channels in lockstep, because ALES15's read_block fills both out buffers with the same count off one head. So no new accumulation — feed ALES13's proven Meter per channel. The correctness beyond running ALES13 twice is the lockstep: both channels feed the same count every block, and BLOCK-INVARIANCE holds PER CHANNEL over the stereo transport — metering live off the head equals ALES13's whole-master measure_stereo at any block size.
+think Reuse over reinvention: meter.Meter, meter.feed, meter.peak, meter.rms, meter.measure_stereo all reused whole; stereo_transport.read_block and at_end drive the live path; the only new code is the StereoMeter struct (two Meter fields) and a feed that fans a stereo block into both, asserting equal length and matched counts.
+obs GREEN on the first build across six blocks: a fresh meter reads silence in both channels; block-invariance per channel at 1/2/7-sample blocks off the stereo head, matched to measure_stereo exactly, the two channels feeding the same count; a loud left (square wave 8000) and quiet right (spike 100) read distinct levels; a power-rendered center pan meters 700 per side; neither channel mutated; feed refuses MeterFull leaving the meter untouched.
+obs tame_style_check exit 0 (bans clean); width-check exit 0. The new module carries asserts, off the zero-assert ratchet.
+loom witness=ales_stereo_meter_witness blocks=6 result=GREEN build=first-try
+file lotus/stereo_meter.rye ALES17 module — the live stereo VU, two meters fanned off the one stereo head in lockstep.
+file tools/ales_stereo_meter_witness.rish the witness proving ALES17 GREEN on metal.
+file active-designing/20260814-fill-ales17-lotus-stereo-meter.md the self-approved design round for ALES17.
+file lotus/README.md status line, rung bullet, prove list, and road-on updated for ALES17.
+recommend keep-going ALES18 can name a scrub window or meter a looping stereo region live (ALES16 under ALES17) — both agent-doable, no custody gate. A punch region tying playback to the Mikrophone's capture is a module seam that waits for Keaton's word.

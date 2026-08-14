@@ -1,0 +1,197 @@
+//! lotus/stereo_meter.rye — ALES17: the stereo meter during playback — two meters read both channels in lockstep off the one
+//! stereo head. ALES13 opened the peak/RMS meter and proved BLOCK-INVARIANCE over the MONO transport (ALES7): metering a master
+//! block by block reads the same peak and RMS as metering it whole. ALES15 made the read head genuinely stereo and ALES16
+//! looped it; ALES13 can already `measure_stereo` a master AT REST. What no rung yet does is meter a stereo master DURING
+//! playback — a live stereo VU fed by the same blocks the stereo head plays. This rung is that live path.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES17.
+//! Design read: active-designing/20260814-fill-ales17-lotus-stereo-meter.md
+//! Stands on: lotus/meter.rye (ALES13) — the Meter, feed, peak, rms, and measure_stereo reused whole (one true meter per
+//! channel, no new arithmetic); lotus/stereo_transport.rye (ALES15) — the stereo read blocks the two meters are fed, in
+//! lockstep off the one head; lotus/pan.rye (ALES10) — the StereoClip whose two channels share one length.
+//!
+//! THE CRUX: two meters read both channels in lockstep, because the one stereo head hands each block to both channels at once
+//! (ALES15's read_block fills both out buffers with the same count). So the stereo meter needs no new accumulation — it feeds
+//! ALES13's proven Meter per channel. The correctness beyond running ALES13 twice is exactly the LOCKSTEP: both channels feed
+//! the same count every block, so the pair reads a matched-length stereo level, and BLOCK-INVARIANCE holds PER CHANNEL over the
+//! stereo transport — metering a stereo master block by block off the one head gives the IDENTICAL per-channel peak and RMS as
+//! ALES13's whole-master measure_stereo, at any block size. The live VU reads exactly what the stereo head plays.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process read over a two-channel i16 PCM master, siloed to lotus/.
+//! The meter never mutates the master (read-only, like the transport). A level is a number a UI would draw, not a signal on a
+//! wire. No socket, no network, no keys, no funds, no real device, no real meter hardware, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_meter.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const transport = @import("transport.rye");
+const meter = @import("meter.rye");
+const stereo_transport = @import("stereo_transport.rye");
+
+pub const stereo_meter_version = "20260814.130631";
+
+/// A stereo level accumulation: one ALES13 Meter per channel, fed in lockstep off the stereo head. Both channels of a stereo
+/// master share one length (ALES10's invariant), so after any playthrough the two meters carry the same count. A fresh
+/// StereoMeter over nothing reads as silence in both channels — peak 0, rms 0.
+pub const StereoMeter = struct {
+    left: meter.Meter = .{},
+    right: meter.Meter = .{},
+};
+
+/// Fold one stereo block into the meter: feed the left samples into the left channel meter and the right samples into the right,
+/// each through ALES13's proven `feed` (which refuses MeterFull past its bound before any accumulation). The two blocks are one
+/// length — a stereo block filled by ALES15's read_block — so the two channel meters advance by the same count. This is the call
+/// a playback engine drives block by block, off `stereo_transport.read_block`, across a whole stereo playthrough.
+pub fn feed(sm: *StereoMeter, block_left: []const i16, block_right: []const i16) meter.MeterError!void {
+    // invariant: a stereo block is one length, so the two channels stay matched in count.
+    assert(block_left.len == block_right.len);
+    // invariant: the two channel meters carry the same count on entry (lockstep from every prior feed).
+    assert(sm.left.count == sm.right.count);
+    try meter.feed(&sm.left, block_left);
+    try meter.feed(&sm.right, block_right);
+    // invariant: both channels advanced by the same block length and stay matched.
+    assert(sm.left.count == sm.right.count);
+}
+
+/// The left channel's peak/RMS level, read through ALES13's proven `peak`/`rms`. So a keeper reads a per-channel level, the pair
+/// a stereo VU shows.
+pub fn peak_left(sm: *const StereoMeter) u32 {
+    return meter.peak(&sm.left);
+}
+pub fn peak_right(sm: *const StereoMeter) u32 {
+    return meter.peak(&sm.right);
+}
+pub fn rms_left(sm: *const StereoMeter) u32 {
+    return meter.rms(&sm.left);
+}
+pub fn rms_right(sm: *const StereoMeter) u32 {
+    return meter.rms(&sm.right);
+}
+
+// --- selftest: a fresh stereo meter reads silence in both channels; a stereo master metered LIVE off ALES15's stereo transport,
+//     block by block, gives the IDENTICAL per-channel peak and RMS as ALES13's whole-master measure_stereo, at 1-, 2-, and
+//     7-sample blocks (block-invariance per channel over the stereo head); the two channels always feed the same count
+//     (lockstep); a loud left and quiet right report distinct levels; a StereoClip rendered by ALES11's power.render_stereo
+//     meters its two channels exactly; metering never mutates either channel; feed refuses MeterFull past the bound ------------
+
+fn meter_stereo_via_transport(sc: *const pan.StereoClip, block_len: u32) !StereoMeter {
+    var t = transport.Transport{};
+    var sm = StereoMeter{};
+    var sl: [16]i16 = [_]i16{0} ** 16;
+    var sr: [16]i16 = [_]i16{0} ** 16;
+    // invariant: the requested block never exceeds the scratch buffers, so the read is bounded.
+    assert(block_len >= 1 and block_len <= sl.len);
+    while (!stereo_transport.at_end(&t, sc)) {
+        const n = try stereo_transport.read_block(&t, sc, sl[0..block_len], sr[0..block_len]);
+        try feed(&sm, sl[0..n], sr[0..n]);
+    }
+    return sm;
+}
+
+fn run_selftest() !u8 {
+    // 1. a fresh stereo meter reads silence in both channels — peak 0, rms 0, left and right.
+    {
+        var empty = StereoMeter{};
+        if (peak_left(&empty) != 0 or rms_left(&empty) != 0) return error.EmptyLeftNotSilent;
+        if (peak_right(&empty) != 0 or rms_right(&empty) != 0) return error.EmptyRightNotSilent;
+    }
+
+    // 2. THE CRUX — BLOCK-INVARIANCE per channel over the stereo transport. A stereo master metered LIVE off ALES15's read head,
+    //    block by block at 1-, 2-, and 7-sample blocks, gives the IDENTICAL per-channel peak and RMS as ALES13's whole-master
+    //    measure_stereo. The live VU reads exactly what the stereo head plays, at any block size, and the two channels feed the
+    //    same count every block (lockstep).
+    {
+        var sc = pan.StereoClip{};
+        try timeline.splice(&sc.left, 0, &[_]i16{ 100, -200, 300, -32768, 5, 6000, -9000, 12, -13, 14 });
+        try timeline.splice(&sc.right, 0, &[_]i16{ -1, 2, -3, 4, -5, 6, -7, 8, -9, 10 });
+        const whole = try meter.measure_stereo(&sc); // ALES13 at rest — the reference
+
+        const sizes = [_]u32{ 1, 2, 7 };
+        var si: u32 = 0;
+        while (si < sizes.len) : (si += 1) {
+            const live = try meter_stereo_via_transport(&sc, sizes[si]);
+            if (peak_left(&live) != meter.peak(&whole[0])) return error.BlockLeftPeakDiffers;
+            if (rms_left(&live) != meter.rms(&whole[0])) return error.BlockLeftRmsDiffers;
+            if (peak_right(&live) != meter.peak(&whole[1])) return error.BlockRightPeakDiffers;
+            if (rms_right(&live) != meter.rms(&whole[1])) return error.BlockRightRmsDiffers;
+            // lockstep: both channels metered the same number of samples.
+            if (live.left.count != live.right.count) return error.LiveCountUnmatched;
+            if (live.left.count != whole[0].count) return error.LiveCountDiffers;
+        }
+    }
+
+    // 3. a loud left and a quiet right report distinct levels off the live path — a full square wave left (rms == peak == 8000),
+    //    one small spike right (rms well below peak 100).
+    {
+        var sc = pan.StereoClip{};
+        try timeline.splice(&sc.left, 0, &[_]i16{ 8000, -8000, 8000, -8000 });
+        try timeline.splice(&sc.right, 0, &[_]i16{ 100, 0, 0, 0 });
+        const live = try meter_stereo_via_transport(&sc, 2);
+        if (peak_left(&live) != 8000 or rms_left(&live) != 8000) return error.LiveLeftWrong;
+        if (peak_right(&live) != 100 or !(rms_right(&live) < 100)) return error.LiveRightWrong;
+    }
+
+    // 4. a StereoClip rendered by ALES11's power.render_stereo meters its two channels EXACTLY off the live path — a track panned
+    //    center renders 0.707 per side (700 on a 1000 source), so both channels read peak 700 and, on a DC block, rms 700.
+    {
+        var a = timeline.Clip{};
+        try timeline.splice(&a, 0, &[_]i16{ 1000, 1000, 1000, 1000 });
+        var s = @import("track.rye").Session{};
+        try @import("track.rye").add_track(&s, &a, 0);
+        var rendered = pan.StereoClip{};
+        const c = try @import("clock.rye").make(1000);
+        const faders = [_]@import("fader.rye").Fader{.{}};
+        const pans = [_]@import("power.rye").PowerPan{try @import("power.rye").make(50, 100)}; // center
+        try @import("power.rye").render_stereo(&s, &faders, &pans, c, &rendered);
+
+        const live = try meter_stereo_via_transport(&rendered, 3);
+        if (peak_left(&live) != 700 or rms_left(&live) != 700) return error.RenderedLeftWrong;
+        if (peak_right(&live) != 700 or rms_right(&live) != 700) return error.RenderedRightWrong;
+    }
+
+    // 5. metering never mutates either channel — a master metered live is byte-for-byte unchanged (read-only, like the transport).
+    {
+        var sc = pan.StereoClip{};
+        try timeline.splice(&sc.left, 0, &[_]i16{ 9, 8, 7, 6, 5 });
+        try timeline.splice(&sc.right, 0, &[_]i16{ 90, 80, 70, 60, 50 });
+        const orig_l = [_]i16{ 9, 8, 7, 6, 5 };
+        const orig_r = [_]i16{ 90, 80, 70, 60, 50 };
+        _ = try meter_stereo_via_transport(&sc, 2);
+        if (!std.mem.eql(i16, sc.left.samples(), &orig_l)) return error.LeftMutated;
+        if (!std.mem.eql(i16, sc.right.samples(), &orig_r)) return error.RightMutated;
+    }
+
+    // 6. feed refuses MeterFull past the bound — a stereo block that would carry the count past max_meter_samples is refused
+    //    through ALES13's own edge check, leaving the meter untouched. (The left channel refuses first; the shared bound means
+    //    neither channel over-accumulates.)
+    {
+        var sm = StereoMeter{};
+        sm.left.count = meter.max_meter_samples - 1; // one sample of room
+        sm.right.count = meter.max_meter_samples - 1;
+        const two_l = [_]i16{ 10, 20 };
+        const two_r = [_]i16{ 30, 40 };
+        if (feed(&sm, &two_l, &two_r)) |_| return error.OverfillSlipped else |e| if (e != error.MeterFull) return error.WrongOverfill;
+        // the refusal left the left channel untouched — no partial accumulation.
+        if (sm.left.count != meter.max_meter_samples - 1 or sm.left.sum_sq != 0) return error.RefusalNotClean;
+    }
+
+    print("GREEN ales-stereo-meter: two meters read both channels of a stereo master in LOCKSTEP off the one ALES15 head — the " ++
+        "live stereo VU. A fresh meter reads silence in both channels; BLOCK-INVARIANCE holds PER CHANNEL over the stereo " ++
+        "transport — metering a stereo master live off ALES15's read head at 1-, 2-, and 7-sample blocks gives the IDENTICAL " ++
+        "per-channel peak and RMS as ALES13's whole-master measure_stereo, the two channels feeding the same count every block; " ++
+        "a loud left and quiet right report distinct levels; a StereoClip rendered by ALES11's power.render_stereo meters its " ++
+        "two channels exactly (a center pan's 0.707 per side, 700 on a 1000 source); metering never mutates either channel; and " ++
+        "feed refuses MeterFull past the bound, leaving the meter untouched; no socket, no network, no keys, no funds, no real " ++
+        "device, no real meter, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
