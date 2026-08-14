@@ -1,0 +1,37 @@
+# tools/fora_flexquorum_witness.rish — flexible quorums: every election quorum meets every replication quorum when qe + qr > n (FORA27).
+#
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# FORA27. Design read: active-designing/20260814-075309_fora27-constel-flexible-quorums.md
+#
+# constel/flexquorum.rye proves Flexible Paxos (Howard, Malkhi & Spiegelman 2016): consensus needs only every election quorum to
+# intersect every replication quorum, so any split with qe + qr > n is safe, and FORA9's strict-majority pair is merely the
+# symmetric special case (2·majority > n). The selftest proves: safe_split is qe+qr>n with an exact boundary; the majority-majority
+# pair is safe for every n; min_overlap is the pigeonhole strength (qe+qr−n when safe, 0 when not); the crux enumerated over real
+# subset pairs — every election quorum meets every replication quorum precisely when the split is safe, and a disjoint pair exists
+# when it is not; the asymmetric tradeoff; bounded over a full roster of eight. Purely local — no socket, no network, no keys, no
+# funds, no real address.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/fora_flexquorum_witness.rish
+
+say "fora-flexquorum: Language EN — FORA27 proves flexible quorums (Flexible Paxos): consensus needs only every election quorum to intersect every replication quorum, so any split with qe + qr > n is safe and the strict-majority pair is the symmetric special case."
+say "fora-flexquorum: Style Radiant — the ladder's one lemma opens into the truth beneath it; a constellation may tune fast elections against fast commits along a single line, and the majority it always trusted is just the balance point on that line."
+say "fora-flexquorum: Lens TAME — safe_split computes qe+qr>n in u64 (no wrap); min_overlap is the pigeonhole strength; the crux is grounded by an exhaustive bounded enumeration of real subset pairs (2^n per side, n ≤ roster.max_piers), never merely asserted; composes quorum.majority_of and roster.max_piers over public APIs only; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "constel/bin/flexquorum"
+
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/flexquorum.rye -femit-bin=${bin}"]
+assert build.ok else "fora-flexquorum: build failed — ${build.err}"
+
+let outfile = "constel/bin/flexquorum.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "fora-flexquorum: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "fora-flexquorum: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN fora-flexquorum' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "fora-flexquorum: selftest did not print the GREEN fora-flexquorum line"
+
+say "fora-flexquorum: GREEN — flexible quorums proven pure and enumerated on the bench; the FORA9 intersection lemma stands revealed as the symmetric special case of qe + qr > n, the whole foundation the ladder leans on generalized."

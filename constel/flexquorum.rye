@@ -1,0 +1,177 @@
+//! constel/flexquorum.rye — FORA27: flexible quorums (Flexible Paxos, Howard, Malkhi & Spiegelman 2016). FORA9 proved that any two
+//! strict majorities of a constellation must intersect — the one lemma the whole ladder leans on (a unique leader, a no-fork commit,
+//! a no-fork joint switch). This rung proves the more general truth beneath it: consensus never needed EVERY quorum to intersect
+//! every other. It needs only every ELECTION quorum to intersect every REPLICATION quorum — so any two quorum sizes with
+//! qe + qr > n are safe, and the strict-majority pair is merely the symmetric special case.
+//!
+//! Why it matters:
+//!   A leader is elected by an election quorum Qe; it commits an entry by replicating to a replication quorum Qr. Safety needs one
+//!   thing: a newly-elected leader must SEE every entry a prior leader committed — that is, Qe must intersect every Qr. It does NOT
+//!   need Qe to intersect another Qe, nor Qr another Qr. So a deployment may trade the two against each other: a small Qe for fast,
+//!   cheap elections paired with a large Qr, or a small Qr for fast commits paired with a large Qe — any split with qe + qr > n.
+//!   The strict-majority choice (qe = qr = ⌊n/2⌋+1) is the one point on that line where both are equal, and FORA9 is exactly its
+//!   qe + qr > n instance: 2·majority > n.
+//!
+//! This composes FORA9 (quorum.majority_of) and FORA1 (roster.max_piers) over their public APIs only, adding no new state — a pure
+//! theorem about set sizes, grounded by an exhaustive enumeration of real subset pairs so the arithmetic is never merely asserted.
+//!
+//! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+//! FORA27. Design read: active-designing/20260814-075309_fora27-constel-flexible-quorums.md
+//! Stands on: constel/quorum.rye (FORA9) — majority_of, the symmetric special case; constel/roster.rye (FORA1) — max_piers.
+//!
+//! Purely LOCAL — bounded size arithmetic and a bounded subset enumeration on one bench, siloed to constel/, run from inside the
+//! jailed pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched).
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/flexquorum.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const roster = @import("roster.rye");
+const quorum = @import("quorum.rye");
+
+pub const flexquorum_version = "20260814.075309";
+
+/// IS THIS (ELECTION, REPLICATION) QUORUM SPLIT SAFE? The whole Flexible Paxos condition in one line: an election quorum of size qe
+/// and a replication quorum of size qr over n piers are guaranteed to intersect exactly when qe + qr > n. Computed in u64 so the sum
+/// can never wrap, though both sizes are bounded by the roster.
+pub fn safe_split(qe: u32, qr: u32, n: u32) bool {
+    // invariant: both quorum sizes are real, non-empty, and drawn from the same constellation.
+    assert(qe >= 1 and qe <= n);
+    assert(qr >= 1 and qr <= n);
+    // invariant: the constellation is a real one within the roster bound.
+    assert(n >= 1 and n <= roster.max_piers);
+    return @as(u64, qe) + @as(u64, qr) > @as(u64, n);
+}
+
+/// THE GUARANTEED OVERLAP. When a split is safe, any election quorum and any replication quorum of these sizes share AT LEAST
+/// qe + qr − n piers (pigeonhole); when unsafe, no overlap is guaranteed at all. This is the strength of the intersection, not just
+/// its existence.
+pub fn min_overlap(qe: u32, qr: u32, n: u32) u32 {
+    // invariant: both sizes are real and within the constellation.
+    assert(qe >= 1 and qe <= n and qr >= 1 and qr <= n);
+    assert(n >= 1 and n <= roster.max_piers);
+    if (!safe_split(qe, qr, n)) return 0;
+    const overlap = qe + qr - n; // safe_split guarantees qe + qr > n, so this never underflows
+    // invariant: a guaranteed overlap of a safe split is at least one pier and never exceeds the smaller quorum.
+    assert(overlap >= 1 and overlap <= qe and overlap <= qr);
+    return overlap;
+}
+
+/// Population count of a subset bitmask, bounded to the constellation size.
+fn popcount(mask: u32, n: u32) u32 {
+    // invariant: the mask indexes only real piers within the constellation.
+    assert(n >= 1 and n <= roster.max_piers);
+    var count: u32 = 0;
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        if ((mask >> @intCast(i)) & 1 == 1) count += 1;
+    }
+    // invariant: a subset of n piers holds at most n members.
+    assert(count <= n);
+    return count;
+}
+
+/// THE SMALLEST OVERLAP OVER ALL REAL SUBSET PAIRS of the two sizes — an exhaustive search that grounds the arithmetic in genuine
+/// set intersection. Returns the minimum popcount of (E AND R) across every size-qe election subset E and size-qr replication subset
+/// R of the n piers. If any disjoint pair exists the minimum is 0; a safe split makes it at least min_overlap.
+fn enumerated_min_overlap(qe: u32, qr: u32, n: u32) u32 {
+    // invariant: the enumeration is bounded — n piers means 2^n subsets, and n is capped by the roster.
+    assert(n >= 1 and n <= roster.max_piers);
+    assert(qe >= 1 and qe <= n and qr >= 1 and qr <= n);
+    const bound: u32 = @as(u32, 1) << @intCast(n); // 2^n, bounded by 2^max_piers
+    var smallest: u32 = n + 1; // larger than any real overlap, lowered by the first pair
+    var e: u32 = 0;
+    while (e < bound) : (e += 1) {
+        if (popcount(e, n) != qe) continue; // only election subsets of the exact size
+        var r: u32 = 0;
+        while (r < bound) : (r += 1) {
+            if (popcount(r, n) != qr) continue; // only replication subsets of the exact size
+            const shared = popcount(e & r, n);
+            if (shared < smallest) smallest = shared;
+        }
+    }
+    // invariant: at least one pair of each size exists (both sizes are ≤ n), so the minimum was lowered from its sentinel.
+    assert(smallest <= n);
+    return smallest;
+}
+
+// --- selftest: safe_split is qe+qr>n with an exact boundary; the strict-majority pair is the symmetric special case and FORA9 its
+//     instance; min_overlap is the pigeonhole strength; THE CRUX enumerated — every election quorum meets every replication quorum
+//     exactly when the split is safe, and a disjoint pair exists when it is not; the asymmetric tradeoff; bounded. -----------------
+
+fn run_selftest() !u8 {
+    // 1. safe_split IS qe + qr > n, WITH AN EXACT BOUNDARY. Five piers: a fast election quorum of 2 pairs safely with a replication
+    //    quorum of 4 (2+4=6>5) but not with 3 (2+3=5, not >5).
+    {
+        assert(safe_split(2, 4, 5)); // 6 > 5
+        assert(!safe_split(2, 3, 5)); // 5 is not > 5 — the exact boundary
+        assert(safe_split(3, 3, 5)); // 6 > 5
+        assert(!safe_split(1, 4, 5)); // 5 is not > 5
+        assert(safe_split(1, 5, 5)); // 6 > 5 — a one-pier election needs the whole cluster to replicate
+    }
+
+    // 2. THE STRICT-MAJORITY PAIR IS THE SYMMETRIC SPECIAL CASE — and FORA9 is exactly its safe_split instance. For every n a
+    //    majority-majority split is safe, because 2·majority_of(n) > n is FORA9's own lemma.
+    {
+        var n: u32 = 1;
+        while (n <= roster.max_piers) : (n += 1) {
+            const m = quorum.majority_of(n);
+            assert(safe_split(m, m, n)); // 2·majority > n — FORA9, generalized
+        }
+    }
+
+    // 3. min_overlap IS THE PIGEONHOLE STRENGTH — qe + qr − n when safe, 0 when not.
+    {
+        assert(min_overlap(2, 4, 5) == 1); // 6 − 5
+        assert(min_overlap(3, 3, 5) == 1); // 6 − 5
+        assert(min_overlap(4, 4, 5) == 3); // 8 − 5 — a larger overlap
+        assert(min_overlap(2, 3, 5) == 0); // unsafe — no overlap guaranteed
+    }
+
+    // 4. THE CRUX, ENUMERATED — the arithmetic grounded in real set intersection. For a SAFE split (n=5, qe=2, qr=4) every one of
+    //    the size-2 election quorums shares at least one pier with every size-4 replication quorum, and the smallest real overlap
+    //    equals min_overlap. For an UNSAFE split (n=5, qe=2, qr=3) a disjoint pair EXISTS — the enumerated minimum is 0 — so an
+    //    election could raise a leader that never saw a committed entry.
+    {
+        assert(enumerated_min_overlap(2, 4, 5) == min_overlap(2, 4, 5)); // == 1: always intersect
+        assert(enumerated_min_overlap(2, 4, 5) >= 1);
+        assert(enumerated_min_overlap(3, 3, 5) == 1); // strict majorities always intersect
+        assert(enumerated_min_overlap(2, 3, 5) == 0); // UNSAFE — a real disjoint pair exists
+    }
+
+    // 5. THE ASYMMETRIC TRADEOFF — a deployment tunes elections against commits along the qe + qr > n line. The fastest possible
+    //    commit (qr = 1, a leader that persists locally) demands the whole cluster to elect (qe = n); the fastest election (qe = 1)
+    //    demands every pier to commit (qr = n). Both endpoints are safe; neither interior point below the line is.
+    {
+        assert(safe_split(roster.max_piers, 1, roster.max_piers)); // qr = 1 needs qe = n
+        assert(!safe_split(roster.max_piers - 1, 1, roster.max_piers)); // one short of the whole election — unsafe
+        assert(safe_split(1, roster.max_piers, roster.max_piers)); // qe = 1 needs qr = n
+        assert(!safe_split(1, roster.max_piers - 1, roster.max_piers)); // one short of the whole commit — unsafe
+    }
+
+    // 6. BOUNDED — the enumeration runs over a full roster of eight (2^8 = 256 subsets per side) and a majority-majority split there
+    //    always intersects, the guaranteed overlap matching the enumerated one.
+    {
+        const n = roster.max_piers; // 8
+        const m = quorum.majority_of(n); // 5
+        assert(safe_split(m, m, n));
+        assert(min_overlap(m, m, n) == 2); // 5 + 5 − 8
+        assert(enumerated_min_overlap(m, m, n) == 2); // grounded over all real size-5 subset pairs of eight
+    }
+
+    print("GREEN fora-flexquorum: flexible quorums (Flexible Paxos) — consensus needs only every ELECTION quorum to intersect every " ++
+        "REPLICATION quorum, so any split with qe + qr > n is safe; safe_split is that condition with an exact boundary (n=5: 2+4 " ++
+        "safe, 2+3 not); the strict-majority pair is the symmetric special case and FORA9's 2·majority>n is exactly its instance; " ++
+        "min_overlap is the pigeonhole strength (qe+qr−n when safe, 0 when not); THE CRUX enumerated over real subset pairs — every " ++
+        "election quorum meets every replication quorum precisely when the split is safe, and a genuine disjoint pair exists when it " ++
+        "is not; the asymmetric tradeoff tunes elections against commits along the line; bounded over a full roster of eight — a " ++
+        "pure theorem about set sizes, no socket, no network, no keys, no funds, no real address ever formed\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
