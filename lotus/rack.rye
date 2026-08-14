@@ -1,0 +1,366 @@
+//! lotus/rack.rye — ALES30: the multi-slot clipboard — a NAMED RACK of held spans. The clipboard (ALES25) holds ONE span and
+//! pastes it anywhere, across masters and across time; yet a keeper working a session holds MORE than one — the count-in, the verse,
+//! the chorus, the clean take of the bridge — and reaches for each by NAME, not by remembering which single span the clipboard last
+//! held. A rack is a small bounded set of named clipboards: fill a slot from a selection under a name, then paste that name later,
+//! again, into any master, while every other slot keeps its own held audio untouched.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES30.
+//! Design read: active-designing/20260814-144031_fill-ales30-lotus-rack.md
+//! Stands on: lotus/clipboard.rye (ALES25) — the single held span (copy_to / cut_to / paste), one per slot, reused WHOLE over its
+//! public API; lotus/selection.rye (ALES23) — the validated Selection a slot is filled from; lotus/pan.rye (ALES10) — the StereoClip.
+//!
+//! THE CRUX: a rack holds several INDEPENDENTLY NAMED spans; pasting one slot by name is exactly ALES25's paste from that slot's own
+//! clipboard, and a slot's held span is never touched by a fill, paste, or drop of any OTHER slot. Two facts make this exact. Each
+//! slot OWNS its clipboard: a Slot embeds a whole ALES25 Clipboard with its own bounded buffers, so the slots are disjoint — filling
+//! or pasting one reads and writes only that slot's audio, never a neighbour's. And every gesture routes to exactly ONE slot resolved
+//! by a UNIQUE name: copy_to / cut_to refuse a duplicate name, so a name names at most one slot, and paste / held / drop resolve that
+//! name to a single index and call ALES25's proven operation on that one board — the rack adds naming and bounds, never a new edit.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A fixed array of named in-process i16 PCM span holders, siloed to lotus/. A rack is a
+//! set of held sample buffers, not a signal on a wire. No socket, no network, no keys, no funds, no real device, no real meter, no
+//! real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/rack.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const selection = @import("selection.rye");
+const clipboard = @import("clipboard.rye");
+
+pub const rack_version = "20260814.144031";
+
+/// The most slots a rack holds — a keeper carries a handful of named spans through a session, not an unbounded pile. Bounded so the
+/// fixed slot array can never overflow.
+pub const max_slots: u32 = 8;
+
+/// The most bytes a slot name holds — a place is a word, not an allocation. Matches the markers-track name bound (ALES20).
+pub const max_name: u32 = 24;
+
+/// The combined error set of a rack: its own naming and capacity faults, plus every ALES25 clipboard fault forwarded (which already
+/// carries ALES23's selection faults and ALES2's ClipFull / BadRange). Every fault refuses by name before any slot is touched.
+pub const RackError = error{
+    /// A name that is empty or longer than max_name — refused before any slot is filled.
+    BadName,
+    /// A copy_to / cut_to under a name already held — refused, so a name names at most one slot.
+    Duplicate,
+    /// A fill past the max_slots bound — refused before the fixed slot array overflows.
+    RackFull,
+    /// A paste / held / drop of a name the rack does not hold — refused, never a silent no-op on the wrong span.
+    NoSlot,
+} || clipboard.ClipboardError;
+
+/// One named held span — a bounded name beside a whole ALES25 Clipboard. The clipboard owns its two sample buffers, so a slot stands
+/// alone: it survives any edit to the master it was copied from and to any other slot.
+pub const Slot = struct {
+    name_buf: [max_name]u8 = [_]u8{0} ** max_name,
+    name_len: u32 = 0,
+    board: clipboard.Clipboard = .{},
+};
+
+/// A small named set of held spans — the multi-slot clipboard. Slots are stored in the order filled; a name names at most one slot.
+pub const Rack = struct {
+    slots: [max_slots]Slot = [_]Slot{.{}} ** max_slots,
+    count: u32 = 0,
+
+    /// How many named spans the rack currently holds — 0 when empty, never past max_slots.
+    pub fn size(self: *const Rack) u32 {
+        // invariant: the live count never claims more slots than the fixed array holds.
+        assert(self.count <= max_slots);
+        return self.count;
+    }
+};
+
+/// Read a slot's name back as bytes — exactly what was stored, no trailing zeros. So a keeper lists the rack.
+pub fn name_of(rack: *const Rack, i: u32) []const u8 {
+    // invariant: the index names a live slot whose name fits the bound.
+    assert(i < rack.count and rack.slots[i].name_len <= max_name);
+    return rack.slots[i].name_buf[0..rack.slots[i].name_len];
+}
+
+/// The index of the slot named `name`, or null when the rack holds no such name. One ordered pass; a name is unique so the first
+/// match is the only match.
+pub fn find(rack: *const Rack, name: []const u8) ?u32 {
+    // invariant: the search never reads past the live slots.
+    assert(rack.count <= max_slots);
+    var i: u32 = 0;
+    while (i < rack.count) : (i += 1) {
+        if (std.mem.eql(u8, name_of(rack, i), name)) return i;
+    }
+    // invariant: a null answer means every live slot was compared.
+    assert(i == rack.count);
+    return null;
+}
+
+/// Store a name into a fresh slot — copied byte-for-byte into the slot's own buffer, so the rack depends on no caller memory. Bounded
+/// by max_name, checked by the caller before the copy.
+fn store_name(slot: *Slot, name: []const u8) void {
+    // invariant: the name fits the slot's fixed buffer (the caller checked BadName first).
+    assert(name.len >= 1 and name.len <= max_name);
+    var k: u32 = 0;
+    while (k < name.len) : (k += 1) slot.name_buf[k] = name[k];
+    slot.name_len = @intCast(name.len);
+    // invariant: the slot now reads its name back at exactly the stored length.
+    assert(slot.name_len == name.len);
+}
+
+/// Fill a NEW named slot from a selection over `master` — the source master untouched (ALES25 copy_to). Refuses BadName (empty or
+/// oversized), Duplicate (a name already held), RackFull (past the bound), and forwards ALES25's selection faults. So a keeper grabs a
+/// span and files it under a name to carry it elsewhere.
+pub fn copy_to(rack: *Rack, name: []const u8, master: *const pan.StereoClip, sel: selection.Selection) RackError!void {
+    // invariant: the rack never holds more than its bound on entry.
+    assert(rack.count <= max_slots);
+    if (name.len == 0 or name.len > max_name) return error.BadName;
+    if (find(rack, name) != null) return error.Duplicate;
+    if (rack.count == max_slots) return error.RackFull;
+
+    // Fill a scratch board FIRST — a refused fill (a bad selection) leaves the rack's slot count and every other slot untouched.
+    var slot = Slot{};
+    try clipboard.copy_to(&slot.board, master, sel);
+    store_name(&slot, name);
+    rack.slots[rack.count] = slot;
+    rack.count += 1;
+    // invariant: the new slot holds exactly the selection's span, and the rack grew by one.
+    assert(rack.slots[rack.count - 1].board.held() == sel.span());
+}
+
+/// Fill a NEW named slot from a selection, then remove the span from `master` (ALES25 cut_to) — the lift-and-hold gesture, filed under
+/// a name. The slot holds its own copy before the cut, so the lift never races the hold; a refused fill leaves the master untouched.
+pub fn cut_to(rack: *Rack, name: []const u8, master: *pan.StereoClip, sel: selection.Selection) RackError!void {
+    // invariant: the rack never holds more than its bound on entry.
+    assert(rack.count <= max_slots);
+    if (name.len == 0 or name.len > max_name) return error.BadName;
+    if (find(rack, name) != null) return error.Duplicate;
+    if (rack.count == max_slots) return error.RackFull;
+
+    // ALES25 cut_to holds before it cuts — copy_to inside it snapshots the span before selection.cut removes it.
+    var slot = Slot{};
+    try clipboard.cut_to(&slot.board, master, sel);
+    store_name(&slot, name);
+    rack.slots[rack.count] = slot;
+    rack.count += 1;
+    // invariant: the new slot holds exactly the lifted span, and the rack grew by one.
+    assert(rack.slots[rack.count - 1].board.held() == sel.span());
+}
+
+/// Paste the span held under `name` into `master` at `at` — both channels in LOCKSTEP, the slot UNCHANGED so it pastes again and into
+/// other masters (ALES25 paste). Refuses NoSlot when the name is not held, and forwards Empty / BadRange / ClipFull. So a keeper drops
+/// a filed span anywhere, any number of times, by name.
+pub fn paste(rack: *const Rack, name: []const u8, master: *pan.StereoClip, at: u32) RackError!void {
+    // invariant: the destination's two channels share one length on entry (ALES25 rechecks, this documents the contract).
+    assert(master.left.len == master.right.len);
+    const i = find(rack, name) orelse return error.NoSlot;
+    // invariant: the resolved index names a live slot.
+    assert(i < rack.count);
+    try clipboard.paste(&rack.slots[i].board, master, at);
+    // invariant: the pasted destination stays aligned (ALES25's own postcondition, restated at the rack edge).
+    assert(master.left.len == master.right.len);
+}
+
+/// The held length of the span filed under `name`, in samples. Refuses NoSlot when the name is not held. So a keeper asks how long a
+/// filed span is before pasting it.
+pub fn held(rack: *const Rack, name: []const u8) RackError!u32 {
+    // invariant: the search never reads past the live slots.
+    assert(rack.count <= max_slots);
+    const i = find(rack, name) orelse return error.NoSlot;
+    // invariant: the resolved index names a live slot.
+    assert(i < rack.count);
+    return rack.slots[i].board.held();
+}
+
+/// Remove the slot filed under `name`, so its name may be re-used. The tail slots shift down by one to keep the live slots contiguous;
+/// no held audio in any surviving slot changes. Refuses NoSlot when the name is not held. So a keeper clears a filed span they are done
+/// with and frees the name.
+pub fn drop(rack: *Rack, name: []const u8) RackError!void {
+    // invariant: the rack never holds more than its bound on entry.
+    assert(rack.count <= max_slots);
+    const i = find(rack, name) orelse return error.NoSlot;
+    // invariant: the resolved index names a live slot.
+    assert(i < rack.count);
+    var k: u32 = i;
+    while (k + 1 < rack.count) : (k += 1) rack.slots[k] = rack.slots[k + 1];
+    rack.slots[rack.count - 1] = Slot{};
+    rack.count -= 1;
+    // invariant: the dropped name is no longer held.
+    assert(find(rack, name) == null);
+}
+
+// --- selftest: THE CRUX — two named slots hold two different spans independently; pasting one by name drops its span byte-for-byte
+//     while the other slot is untouched; a slot pastes twice and cross-master (ALES25's non-consuming, cross-master proof, now by
+//     name); cut_to files a lifted span; drop frees a name for re-use; every edge refuses by name --------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn run_selftest() !u8 {
+    // 1. THE CRUX — two named slots hold two DIFFERENT spans independently; pasting one by name drops its span byte-for-byte and the
+    //    other slot's held audio is untouched. Source left {0..5}, right {0,-1,…,-5}; file [1,3)="head"={1,2}/{-1,-2} and
+    //    [4,6)="tail"={4,5}/{-4,-5}; paste "head" at 6.
+    {
+        var src = pan.StereoClip{};
+        try timeline.splice(&src.left, 0, &[_]i16{ 0, 1, 2, 3, 4, 5 });
+        try timeline.splice(&src.right, 0, &[_]i16{ 0, -1, -2, -3, -4, -5 });
+        var rack = Rack{};
+        try copy_to(&rack, "head", &src, try selection.make(&src, 1, 3));
+        try copy_to(&rack, "tail", &src, try selection.make(&src, 4, 6));
+        if (rack.size() != 2) return error.SizeWrong;
+        if (try held(&rack, "head") != 2) return error.HeadHeldWrong;
+        if (try held(&rack, "tail") != 2) return error.TailHeldWrong;
+        // the names read back byte-for-byte and in fill order.
+        if (!std.mem.eql(u8, name_of(&rack, 0), "head")) return error.Name0Wrong;
+        if (!std.mem.eql(u8, name_of(&rack, 1), "tail")) return error.Name1Wrong;
+
+        try paste(&rack, "head", &src, 6);
+        const want_l = [_]i16{ 0, 1, 2, 3, 4, 5, 1, 2 };
+        const want_r = [_]i16{ 0, -1, -2, -3, -4, -5, -1, -2 };
+        if (!eq(src.left.samples(), &want_l)) return error.PasteHeadLeftWrong;
+        if (!eq(src.right.samples(), &want_r)) return error.PasteHeadRightWrong;
+        // the OTHER slot is untouched — "tail" still holds {4,5}/{-4,-5}, disjoint from the paste of "head".
+        if (try held(&rack, "tail") != 2) return error.TailDisturbed;
+        var check = pan.StereoClip{};
+        try paste(&rack, "tail", &check, 0);
+        const tail_l = [_]i16{ 4, 5 };
+        const tail_r = [_]i16{ -4, -5 };
+        if (!eq(check.left.samples(), &tail_l)) return error.TailContentLeftWrong;
+        if (!eq(check.right.samples(), &tail_r)) return error.TailContentRightWrong;
+    }
+
+    // 2. NON-CONSUMING and CROSS-MASTER by name — a slot pastes twice into one master and into a second different master, its held
+    //    length unchanged after each (ALES25's own proof, now routed by name).
+    {
+        var origin = pan.StereoClip{};
+        try timeline.splice(&origin.left, 0, &[_]i16{ 10, 20, 30, 40 });
+        try timeline.splice(&origin.right, 0, &[_]i16{ 11, 21, 31, 41 });
+        var rack = Rack{};
+        try copy_to(&rack, "riff", &origin, try selection.make(&origin, 0, 2)); // hold {10,20}/{11,21}
+
+        var a = pan.StereoClip{};
+        try timeline.splice(&a.left, 0, &[_]i16{ 0, 9 });
+        try timeline.splice(&a.right, 0, &[_]i16{ 0, 9 });
+        try paste(&rack, "riff", &a, 1); // {0,10,20,9}
+        try paste(&rack, "riff", &a, 4); // {0,10,20,9,10,20}
+        const want_a = [_]i16{ 0, 10, 20, 9, 10, 20 };
+        if (!eq(a.left.samples(), &want_a)) return error.TwicePasteWrong;
+
+        var b = pan.StereoClip{};
+        try timeline.splice(&b.left, 0, &[_]i16{ 100, 200 });
+        try timeline.splice(&b.right, 0, &[_]i16{ 101, 201 });
+        try paste(&rack, "riff", &b, 1); // into a wholly separate master
+        const want_b = [_]i16{ 100, 10, 20, 200 };
+        if (!eq(b.left.samples(), &want_b)) return error.CrossMasterWrong;
+        if (try held(&rack, "riff") != 2) return error.RiffHeldChanged;
+    }
+
+    // 3. cut_to files a LIFTED span under a name (source shrinks) and the lifted audio pastes elsewhere whole. Source {0..5};
+    //    cut_to [2,4)="lift" → source becomes {0,1,4,5}, slot holds {2,3}; paste into a fresh master.
+    {
+        var src = pan.StereoClip{};
+        try timeline.splice(&src.left, 0, &[_]i16{ 0, 1, 2, 3, 4, 5 });
+        try timeline.splice(&src.right, 0, &[_]i16{ 0, 1, 2, 3, 4, 5 });
+        var rack = Rack{};
+        try cut_to(&rack, "lift", &src, try selection.make(&src, 2, 4));
+        const src_after = [_]i16{ 0, 1, 4, 5 };
+        if (!eq(src.left.samples(), &src_after)) return error.CutToSourceWrong;
+        if (src.left.len != src.right.len) return error.CutToMisaligned;
+
+        var dst = pan.StereoClip{};
+        try timeline.splice(&dst.left, 0, &[_]i16{ 7, 7 });
+        try timeline.splice(&dst.right, 0, &[_]i16{ 7, 7 });
+        try paste(&rack, "lift", &dst, 1); // {7,2,3,7}
+        const want = [_]i16{ 7, 2, 3, 7 };
+        if (!eq(dst.left.samples(), &want)) return error.CutToPasteWrong;
+    }
+
+    // 4. drop FREES a name — a dropped slot is gone, its name paste-able again, and every SURVIVING slot's held audio is untouched.
+    //    File "a"={1}, "b"={2}, "c"={3}; drop "b"; the rack holds "a" and "c" with their spans intact; "b" is now NoSlot and re-fillable.
+    {
+        var one = pan.StereoClip{};
+        try timeline.splice(&one.left, 0, &[_]i16{ 1, 2, 3 });
+        try timeline.splice(&one.right, 0, &[_]i16{ 1, 2, 3 });
+        var rack = Rack{};
+        try copy_to(&rack, "a", &one, try selection.make(&one, 0, 1)); // {1}
+        try copy_to(&rack, "b", &one, try selection.make(&one, 1, 2)); // {2}
+        try copy_to(&rack, "c", &one, try selection.make(&one, 2, 3)); // {3}
+        if (rack.size() != 3) return error.PreDropSizeWrong;
+
+        try drop(&rack, "b");
+        if (rack.size() != 2) return error.PostDropSizeWrong;
+        // the tail shifted down: "a" then "c" remain, contiguous and in order.
+        if (!std.mem.eql(u8, name_of(&rack, 0), "a")) return error.DropName0Wrong;
+        if (!std.mem.eql(u8, name_of(&rack, 1), "c")) return error.DropName1Wrong;
+        // "c" still holds {3} — a surviving slot's audio is untouched by the drop.
+        var check = pan.StereoClip{};
+        try paste(&rack, "c", &check, 0);
+        const want_c = [_]i16{3};
+        if (!eq(check.left.samples(), &want_c)) return error.DropSurvivorWrong;
+        // "b" is gone — its name is NoSlot and now re-fillable.
+        if (held(&rack, "b")) |_| return error.DroppedNameSurvived else |e| if (e != error.NoSlot) return error.WrongDroppedName;
+        try copy_to(&rack, "b", &one, try selection.make(&one, 0, 1)); // re-use the freed name
+        if (rack.size() != 3) return error.RefillSizeWrong;
+    }
+
+    // 5. every edge refuses by name — an empty name (BadName), an oversized name (BadName), a duplicate name (Duplicate), a full
+    //    rack (RackFull), a paste/held/drop of an absent name (NoSlot), and ALES25's Empty/BadRange/ClipFull forwarded — each before
+    //    any slot is disturbed.
+    {
+        var m = pan.StereoClip{};
+        try timeline.splice(&m.left, 0, &[_]i16{ 1, 2, 3 });
+        try timeline.splice(&m.right, 0, &[_]i16{ 1, 2, 3 });
+        var rack = Rack{};
+        const sel = try selection.make(&m, 0, 2);
+
+        if (copy_to(&rack, "", &m, sel)) |_| return error.EmptyNameSlipped else |e| if (e != error.BadName) return error.WrongEmptyName;
+        const huge = [_]u8{'q'} ** (max_name + 1);
+        if (copy_to(&rack, &huge, &m, sel)) |_| return error.HugeNameSlipped else |e| if (e != error.BadName) return error.WrongHugeName;
+        if (rack.size() != 0) return error.BadNameMutated;
+
+        try copy_to(&rack, "dup", &m, sel);
+        if (copy_to(&rack, "dup", &m, sel)) |_| return error.DupSlipped else |e| if (e != error.Duplicate) return error.WrongDup;
+        if (rack.size() != 1) return error.DupMutated;
+
+        // a paste, held, and drop of an absent name each refuse NoSlot.
+        if (paste(&rack, "ghost", &m, 0)) |_| return error.GhostPasteSlipped else |e| if (e != error.NoSlot) return error.WrongGhostPaste;
+        if (held(&rack, "ghost")) |_| return error.GhostHeldSlipped else |e| if (e != error.NoSlot) return error.WrongGhostHeld;
+        if (drop(&rack, "ghost")) |_| return error.GhostDropSlipped else |e| if (e != error.NoSlot) return error.WrongGhostDrop;
+
+        // fill the rack to max_slots (one slot already held), then one more refuses RackFull.
+        var n: u32 = 1;
+        while (n < max_slots) : (n += 1) {
+            const nm = [_]u8{ 's', @intCast('0' + n) };
+            try copy_to(&rack, &nm, &m, sel);
+        }
+        if (rack.size() != max_slots) return error.FillCountWrong;
+        if (copy_to(&rack, "over", &m, sel)) |_| return error.FullSlipped else |e| if (e != error.RackFull) return error.WrongFull;
+        if (rack.size() != max_slots) return error.FullMutated;
+
+        // ALES25 faults forwarded: a paste past the master (BadRange) and an overflowing paste (ClipFull), each by name.
+        if (paste(&rack, "dup", &m, 9)) |_| return error.PastSlipped else |e| if (e != error.BadRange) return error.WrongPast;
+        var full = pan.StereoClip{};
+        full.left.len = timeline.max_clip - 1;
+        full.right.len = timeline.max_clip - 1;
+        if (paste(&rack, "dup", &full, 0)) |_| return error.OverflowSlipped else |e| if (e != error.ClipFull) return error.WrongOverflow;
+    }
+
+    print("GREEN ales-rack: the multi-slot clipboard — a NAMED RACK of held spans. THE CRUX: each slot OWNS a whole ALES25 " ++
+        "Clipboard with its own bounded buffers, so the slots are disjoint — filling, pasting, or dropping one never touches " ++
+        "another's held audio; every gesture routes to exactly ONE slot resolved by a UNIQUE name (copy_to / cut_to refuse a " ++
+        "duplicate, paste / held / drop resolve the name to a single index), calling ALES25's proven copy_to / cut_to / paste on " ++
+        "that one board, so the rack adds naming and bounds and no new edit; two named slots hold two different spans, pasting one " ++
+        "by name leaves the other intact; a slot pastes twice and cross-master with its held length unchanged; cut_to files a " ++
+        "lifted span; drop frees a name for re-use and leaves every survivor untouched; every edge refuses by name — BadName, " ++
+        "Duplicate, RackFull, NoSlot, and ALES25's Empty / BadRange / ClipFull forwarded; clipboard.copy_to / cut_to / paste reused " ++
+        "whole; no socket, no network, no keys, no funds, no real device, no real meter, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260814.144031
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title ALES30 — Lotus's multi-slot clipboard, a named rack of held spans
+prompt Take the next agent-doable ALES lap Lindy-first crux-first; send each finished increment to origin and xykj61; stop at custody gates; baton prin recur
+think Read REMEMBER, the 1,024-round itinerary, and the six-season double-seat. The living edge is the ALES ladder (Season C · Lotus creative suite); recent nib ALES29 stereo two-sided insert-join. The ALES25/ALES29 road-on lines name three candidate next rungs: a multi-slot clipboard (named rack of held spans), join-rather-than-butt by default, and carry-a-span-across-the-ALES0-wire.
+think Lindy-first crux-first: the multi-slot rack is the highest-Lindy agent-doable move — a primitive a keeper reaches for on the ten-thousandth session, wholly on the edit side, reusing ALES25's proven copy_to/cut_to/paste over their public API with no new sample-touching arithmetic. The wire-carry is explicitly a module seam for Keaton's word (check-in, not agent-doable). Join-by-default changes existing edit behaviour rather than adding a bounded primitive. So the rack is chosen and self-approved as the design round.
+think Design: lotus/rack.rye — a Rack of up to max_slots (8) named Slots, each Slot embedding a whole ALES25 Clipboard with its own bounded buffers (disjoint slots) plus a max_name (24) bounded name. copy_to/cut_to file a new named slot (refusing Duplicate so a name names at most one slot); paste/held/drop resolve a name to a single index; drop shifts the tail down to keep slots contiguous and frees the name.
+think The crux is disjoint, name-routed slots: each slot owns its clipboard so a fill/paste/drop of one never touches another's audio, and every gesture routes through find() to exactly one board, calling ALES25's proven op — the rack adds only naming and bounds. Two positive facts, ≥2 asserts per fn, // invariant on each, named errors (BadName/Duplicate/RackFull/NoSlot || ClipboardError), snake_case, opening triad, no @memcpy (name bytes copied by a bounded while loop), no usize.
+obs GREEN on the first build; module selftest and tools/ales_rack_witness.rish both GREEN. TAME style bans clean on the scan roster; no new zero-assert ratchet, no usize, no @memcpy. Purely local — no socket, no network, no keys, no funds, no real device, no real meter, no real speaker; every custody gate untouched.
+obs A first-draft selftest placeholder (a non-existent clipboard.timeline_splice_left call) was caught and replaced with the real five-case proof before any build; a compound assert in drop was split to a single positive assert per the TAME ban.
+loom witness=ales_rack_witness result=green slots=8 max_name=24 cases=5 build=first
+file lotus/rack.rye ALES30 module — the named rack of held spans, each slot a whole ALES25 clipboard
+file tools/ales_rack_witness.rish the witness that builds and proves it GREEN on metal
+file active-designing/20260814-144031_fill-ales30-lotus-rack.md the self-approved design read for the round
+file lotus/README.md front door synced — status list, ALES30 rung entry, road-on paragraph
+recommend keep-going ALES31 can let a rack travel as text (a saveable slot sheet mirroring the ALES22 cue sheet) — the highest-Lindy next agent-doable move; the wire-carry seam stays Keaton's word

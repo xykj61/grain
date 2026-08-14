@@ -1,0 +1,39 @@
+# tools/ales_rack_witness.rish — the multi-slot clipboard, a named rack of held spans (ALES30).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES30.
+# Design read: active-designing/20260814-144031_fill-ales30-lotus-rack.md
+# Stands on: lotus/clipboard.rye (ALES25) — the single held span (copy_to / cut_to / paste), one per slot, reused whole over its
+# public API; lotus/selection.rye (ALES23) — the validated Selection a slot is filled from; lotus/pan.rye (ALES10) — the StereoClip.
+#
+# lotus/rack.rye holds several NAMED spans and pastes any one by name, anywhere, across masters. The crux: a rack holds several
+# independently named spans; pasting one slot by name is exactly ALES25's paste from that slot's own clipboard, and a slot's held
+# span is never touched by a fill, paste, or drop of any OTHER slot — each slot owns its clipboard (disjoint buffers), and every
+# gesture routes to exactly one slot resolved by a unique name. The selftest proves: two named slots hold two different spans, pasting
+# one by name leaves the other intact; a slot pastes twice and cross-master with its held length unchanged; cut_to files a lifted span;
+# drop frees a name for re-use and leaves every survivor untouched; every edge refuses by name (BadName / Duplicate / RackFull / NoSlot
+# and ALES25's Empty / BadRange / ClipFull). Purely local — no network, no keys, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_rack_witness.rish
+
+say "ales-rack: Language EN — ALES30 lets a keeper hold MORE than one span through a session and reach for each by NAME: the count-in, the verse, the chorus, the clean take of the bridge, each filed under a word and pasted later, again, into any master."
+say "ales-rack: Style Radiant — the law is stated positively: each slot owns its own ALES25 clipboard, so the slots are disjoint and one gesture never disturbs another's held audio; every fill, paste, and drop routes to exactly one slot resolved by a unique name; the rack adds naming and bounds, never a new edit."
+say "ales-rack: Lens TAME — clipboard.copy_to / cut_to / paste reused whole (no new edit, no new sample-touching arithmetic); the slots bounded by max_slots and each name by max_name; every fill checks name, duplicate, and capacity before a slot is touched, refusing by name; siloed to lotus/, no network, no keys, no funds, no device, no meter, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/rack"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/rack.rye -femit-bin=${bin}"]
+assert build.ok else "ales-rack: build failed — ${build.err}"
+
+let outfile = "lotus/bin/rack.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-rack: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-rack: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-rack' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-rack: selftest did not print the GREEN ales-rack line"
+
+say "ales-rack: GREEN — a keeper carries a handful of named spans through a session and pastes each by name: two named slots hold two different spans independently, pasting one leaves the other intact; a slot pastes twice and cross-master unchanged; cut_to files a lifted span; drop frees a name; every edge refuses by name. The next Lotus rung can let a rack travel as text (a saveable slot sheet, mirroring the ALES22 cue sheet), let a pasted slot join rather than butt its neighbour, or carry a slot across the ALES0 audio wire so a filed span travels between two Lotus benches (a module seam, taken on Keaton's word)."
