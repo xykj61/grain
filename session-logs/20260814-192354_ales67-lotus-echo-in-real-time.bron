@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260814.192354
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title ALES67 — Lotus's echo in real time, a delay named in milliseconds
+prompt recur the itinerary Lindy-first crux-first, take the next agent-doable lap, send each finished increment, stop at custody gates
+think ALES66 opened the time-based wing but named its delay in sample indices; the family's established pattern gives each index-named rung a real-time twin (fade_ms over the fade, place_at, marker_time over the markers). The echo wants the same.
+think Chose to build it as its own module echo_time.rye (ALES67), mirroring marker_time.rye being a separate module rather than editing ALES5 or ALES66 — additive, touches nothing proven.
+think echo_ms converts start_ms/count_ms/delay_ms through clock.samples_for and delegates to echo unchanged; the grounding law is that the clock adds only the units, so the ms-named echo equals the index-named echo byte-for-byte.
+think Nice property fell out: samples_for is divTrunc(rate*ms,1000), so a sub-sample delay (0 ms) converts to 0 and the echo already refuses BadDelay — a sub-sample echo refuses honestly rather than silently doing nothing.
+obs First selftest RED: case 2 used count_ms 200 at 48 kHz, converting to 9600 samples, past max_clip (4096, = 4*wire.max_samples=4*1024) — an uncaught DurationTooLong. Fixed by sizing the clip to 240 samples (5 ms at 48 kHz) so count_ms 5 covers it exactly. Second run GREEN.
+obs Confirmed the real-rate arithmetic on metal: at 48 kHz, 1 ms = 48 samples, the first echo sitting exactly at index 48 at half the impulse.
+loom witness=ales_echo_time_witness cases=6 green=1 reruns=ales66_echo max_clip=4096
+file lotus/echo_time.rye ALES67 — echo_ms names the delay in milliseconds, a thin twin over ALES66 through the ALES5 clock
+file tools/ales_echo_time_witness.rish witness GREEN, re-proves the ALES66 feedback delay beside it
+file active-designing/20260814-191951_fill-ales67-lotus-echo-in-real-time.md design read for the rung, self-approved round
+file lotus/README.md Status rung list + stamp + narrative extended for ALES67
+recommend keep-going ALES68 — the single-tap slapback (dry-keyed, one echo not a train) or the modulated delay's LFO toward chorus/flanger, each a composition on this foundation, now nameable in milliseconds
