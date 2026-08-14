@@ -1,0 +1,50 @@
+# tools/ales_sidechain_witness.rish — the sidechain compressor: the gain that follows another signal (ALES63).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES63.
+# Design read: active-designing/20260814-184728_fill-ales63-lotus-sidechain-compressor.md
+# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/sample_max, max_clip, the range law shape); lotus/compress.rye (ALES50 —
+# the softened ceiling this drives); lotus/hold_env.rye (ALES56 — the HELD time base, re-proven below); lotus/compress_env_hold.rye
+# (ALES58 — the attack/hold/release compressor this keys, re-proven below, and equalled byte-for-byte by a self-key).
+#
+# lotus/sidechain.rye drives ALES50's softened ceiling from ALES56's HELD follower advanced on a KEY clip rather than on the target
+# it processes: the detector listens to the key while the gain lands on the target. When the held KEY envelope crosses the threshold
+# its excess is divided by the ratio and that gain applied to the raw TARGET sample. The selftest proves: silence stays silence; a
+# self-key (the key holding the target's own samples) reduces to ALES58's attack/hold/release compressor byte-for-byte (the grounding
+# law, proven by running both tools); a silent key never reduces (the target passes whole however loud — the gain follows the key, not
+# the signal); a loud key ducks a quiet target (a target below the threshold turned down where the in-line compressor leaves it alone —
+# ducking); unit ratio is the identity everywhere; a loud target's magnitude reduces with the sign held and never expanding; the state
+# carries so a span in two pieces equals the whole once; a bad threshold refuses BadThreshold, a sub-unity ratio BadRatio, an illegal
+# coefficient BadCoeff, a hold past max_clip BadHold, an out-of-range span BadRange, a short key BadKey. Purely local — no network, no
+# keys, no funds, no real device, no sample rate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_sidechain_witness.rish
+
+say "ales-sidechain: Language EN — ALES63 opens a whole wing of the craft with one change: the detector listens to a DIFFERENT signal. Every held dynamics processor so far (ALES57–62) reads its detector from the same track it turns down; a real console lets a kick key a compressor on the bass so the bass ducks each time the kick lands, a voice key a compressor on a music bed so the music steps back whenever someone speaks, the sibilant band key a compressor on a vocal so only the ess is tamed. All of these are one primitive — a sidechain, a detector that follows a KEY signal while the gain lands on a TARGET signal. Once a detector reads a separate key, ducking, de-essing, and keyed gating all follow as compositions rather than new machinery."
+say "ales-sidechain: Style Radiant — the law is stated positively: a self-key IS the ordinary ALES58 attack/hold/release compressor byte-for-byte (the grounding law — the sidechain generalizes the proven in-line compressor rather than replacing it, proven by running both tools on one signal), a silent key never reduces (the gain follows the key, not the signal), a loud key ducks a quiet target (turned down where the in-line compressor leaves it alone), unit ratio is the identity everywhere, and the state carries — env and hold_left both — so a span in two pieces equals the whole once, the seam invisible (ALES43's lesson)."
+say "ales-sidechain: Lens TAME — two bounded Clips (a read-only key beside the mutable target), u32 span, i16 samples, i64 envelope, u32 hold counter; threshold checked in [1, sample_max], ratio at least unity with a nonzero denominator, both coefficients in (0, 1] by the follower's one proven rule, the hold bounded by max_clip, the span within the target, the key covering the span, all before any write; the compressed key envelope kept within [threshold, envelope] so the gain sits in (0, 1] and every written target magnitude is at most its input's, fitting i16; the branch is e > threshold >= 1 so the divide is always safe; a bad threshold refuses BadThreshold, a sub-unity ratio BadRatio, an illegal coefficient BadCoeff, a hold past max_clip BadHold, an out-of-range span BadRange, a short key BadKey; siloed to lotus/, no network, no keys, no funds, no device, no sample rate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/sidechain"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/sidechain.rye -femit-bin=${bin}"]
+assert build.ok else "ales-sidechain: build failed — ${build.err}"
+
+let outfile = "lotus/bin/sidechain.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-sidechain: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-sidechain: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-sidechain' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-sidechain: selftest did not print the GREEN ales-sidechain line"
+
+# This rung keys ALES58 with an ALES56-held detector over their public APIs — re-prove both still stand green under it.
+let ceh = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/compress_env_hold.rye -femit-bin=lotus/bin/compress_env_hold && lotus/bin/compress_env_hold selftest 2>&1 | grep -q 'GREEN ales-compress-env-hold' && echo yes"]
+assert (trim ceh.out) == "yes" else "ales-sidechain: the ALES58 attack/hold/release compressor regressed under the sidechain compressor"
+
+let h = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/hold_env.rye -femit-bin=lotus/bin/hold_env && lotus/bin/hold_env selftest 2>&1 | grep -q 'GREEN ales-hold-env' && echo yes"]
+assert (trim h.out) == "yes" else "ales-sidechain: the ALES56 held follower regressed under the sidechain compressor"
+
+say "ales-sidechain: GREEN — the sidechain compressor drives ALES50's softened ceiling from ALES56's HELD follower advanced on a KEY clip rather than on the target, when the held key envelope crosses the threshold dividing its excess by the ratio and applying that gain to the raw target sample; a self-key is the ordinary ALES58 compressor byte-for-byte, a silent key never reduces, a loud key ducks a quiet target, unit ratio is the identity everywhere, a loud target's magnitude reduces with the sign held, the state carries so a span in two pieces equals the whole once; a bad threshold refuses BadThreshold, a sub-unity ratio BadRatio, an illegal coefficient BadCoeff, a hold past max_clip BadHold, an out-of-range span BadRange, a short key BadKey, each leaving the target untouched; the ALES58 compressor and ALES56 held follower selftests stay GREEN. The detector can now listen to a signal other than the one it turns down — the de-esser (a band-pass key), the ducker (a voice key), and the keyed gate become compositions of proven parts next; external key routing and lookahead stay Keaton's hand."

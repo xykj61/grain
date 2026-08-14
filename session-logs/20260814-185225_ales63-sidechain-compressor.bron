@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260814.185225
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title ALES63 — Lotus's sidechain compressor: the gain that follows another signal
+prompt baton prin recur — take the next agent-doable lap Lindy-first crux-first on the road past BUHR (the 1,024-round itinerary and the six-season double-seat), send each finished increment as its own signed round, stop at custody gates
+think Read the road-ahead: REMEMBER's living edge is the ALES ladder (Season C, Lotus creative suite), the itinerary keeps one crux ahead of the bench, and the six-season expansion names Season C's audio work. The dynamics family had reached ALES62 — gate, compressor, limiter, expander each in base, attack/release, and attack/hold/release form (the held quartet whole), all reading ALES56's one proven held follower.
+think Lindy-first crux-first: the next durable crux is the one that opens the most. Every dynamics processor so far reads its detector from the same track it turns down. A sidechain — a detector that follows a separate KEY signal while the gain lands on a TARGET signal — is the primitive that unlocks ducking, de-essing, and keyed gating as compositions rather than new machinery. That is the crux that opens the wing.
+think Studied the pattern in compress_env_hold.rye (ALES58) and hold_env.rye (ALES56): the per-sample loop reads x, advances env_step_hold, computes ALES50's softened ceiling comp = thr + divTrunc(excess·den, num), applies comp/e to the raw sample. The one change for the sidechain: advance the held follower on key.buf[start+i] rather than the target's sample, land the gain on target.buf[start+i].
+think The grounding law fell out beautifully: because ALES58 reads each sample BEFORE it writes, a SELF-KEY (an identical unmutated copy) reproduces its detector exactly — so compress_key_follow with key==target equals compress_hold_follow byte-for-byte. The sidechain GENERALIZES the proven in-line compressor rather than replacing it. Proven by running both tools.
+think Added one fault beyond ALES58's five: BadKey, for a key clip shorter than the span (the detector would read past the key). Checked at the edge without underflow, before any write, like every other fault.
+obs Eight witness clauses: silence; self-key == ALES58 byte-for-byte (grounding law); silent key never reduces (gain follows key not signal); loud key ducks a quiet target where the in-line compressor leaves it alone (ducking, proven against ALES58 explicitly); unit ratio identity; sign held / magnitude never expands; state carries (env + hold_left) so a mid-hold split equals the whole; and BadThreshold/BadRatio/BadCoeff/BadHold/BadRange/BadKey each refuse by name with the target untouched.
+obs Doc drift caught and fixed: the README body paragraph ended at ALES59 — the expander rungs ALES60/61/62 had updated only the status line, not the body prose. Tightened sync while the file was open (docs-implementation-sync ratchet): appended ALES60, ALES61, ALES62, and ALES63 body entries so the front-door ledger is honest and complete.
+loom witness=ales_sidechain_witness green=yes clauses=8 reproofs=2 tame_bans=clean
+file lotus/sidechain.rye ALES63 module — compress_key_follow / compress_key_follow_carry, a read-only key beside the mutable target, GREEN selftest
+file tools/ales_sidechain_witness.rish witness — builds and runs the selftest, re-proves ALES58 and ALES56 beside it, GREEN
+file active-designing/20260814-184728_fill-ales63-lotus-sidechain-compressor.md design read — the crux, the shape, the eight laws, honest scope
+file lotus/README.md front door — status line + body prose synced for ALES60/61/62/63 (body had drifted to ALES59)
+file session-logs/README.md index — newest-first row prepended
+recommend keep-going — the sidechain primitive is proven; the de-esser (a band-pass key), the ducker (a voice key), and the keyed gate are the next self-approvable crux rungs, each a composition of proven parts. External key routing and the lookahead delay stay custody gates (Keaton's hand).
