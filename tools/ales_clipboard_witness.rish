@@ -1,0 +1,40 @@
+# tools/ales_clipboard_witness.rish — the clipboard, a held span pasted anywhere across masters (ALES25).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES25.
+# Design read: active-designing/20260814-fill-ales25-lotus-clipboard.md
+# Stands on: lotus/selection.rye (ALES23) — the validated Selection a keeper fills the clipboard from, and its cut for lift-and-hold;
+# lotus/timeline.rye (ALES2) — splice, applied to each destination channel; lotus/pan.rye (ALES10) — the StereoClip whose two
+# channels share one length.
+#
+# lotus/clipboard.rye holds a stereo span and pastes it anywhere, repeatably, across masters. The crux: a held span pastes
+# byte-for-byte into ANY master, repeatably, keeping both channels in LOCKSTEP — the clipboard holds its own copy (so it survives any
+# edit to the source), paste is non-consuming and cross-master (a read, never a move out of it), and every paste passes the same
+# (at, span) to each channel with capacity checked first. The selftest proves: copy_to fills the clipboard and leaves the source
+# untouched; paste drops the held span byte-for-byte in both channels; the same clipboard pastes into a second different master and
+# twice into one master, the held length unchanged; cut_to lifts a span for a move across masters; every edge refuses by name
+# (Empty / BadRange / ClipFull). Purely local — no network, no keys, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_clipboard_witness.rish
+
+say "ales-clipboard: Language EN — ALES25 lets a keeper hold a span and paste it later, again, and into a different master: copy the chorus off one take and drop it into the mixdown, lift a clean count-in and reuse it on three songs."
+say "ales-clipboard: Style Radiant — the law is stated positively: the clipboard holds its own copy, so the held audio survives any edit to the source; paste is non-consuming and cross-master, so the same span pastes into three places and three masters identically; every paste passes the same (at, span) to each channel, so the stereo stays aligned."
+say "ales-clipboard: Lens TAME — timeline.splice and selection.cut reused whole (no new edit, no new bound); the held buffers bounded by max_clip; a paste checks emptiness, range, and capacity before either channel is touched, refusing by name; siloed to lotus/, no network, no keys, no funds, no device, no meter, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/clipboard"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/clipboard.rye -femit-bin=${bin}"]
+assert build.ok else "ales-clipboard: build failed — ${build.err}"
+
+let outfile = "lotus/bin/clipboard.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-clipboard: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-clipboard: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-clipboard' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-clipboard: selftest did not print the GREEN ales-clipboard line"
+
+say "ales-clipboard: GREEN — a keeper carries a span between places and masters: the clipboard holds its own copy, pastes byte-for-byte into any master, repeats without consuming itself, and keeps the stereo aligned; cut_to lifts a span for a move across masters. The next Lotus rung can offer the choice of law where a pasted edit meets its neighbours, a multi-slot clipboard rack, or render the held span as an ALES0 wire frame so a span travels between two Lotus benches."
