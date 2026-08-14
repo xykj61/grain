@@ -91,8 +91,10 @@ pub const CropGesture = struct {
         self.by = self.ay;
         // invariant: an armed drag has both corners clamped inside the image.
         assert(self.dragging);
-        assert(self.ax <= self.width and self.ay <= self.height);
-        assert(self.bx <= self.width and self.by <= self.height);
+        assert(self.ax <= self.width);
+        assert(self.ay <= self.height);
+        assert(self.bx <= self.width);
+        assert(self.by <= self.height);
     }
 
     /// The finger sweeps to `(x, y)`: while armed, move the opposite corner to the clamped point — the anchor stays put,
@@ -103,7 +105,8 @@ pub const CropGesture = struct {
         self.bx = self.clamp_x(x);
         self.by = self.clamp_y(y);
         // invariant: an armed move keeps the opposite corner inside the image.
-        assert(self.bx <= self.width and self.by <= self.height);
+        assert(self.bx <= self.width);
+        assert(self.by <= self.height);
     }
 
     /// The finger lifts at `(x, y)`: settle the opposite corner and disarm. A lift only follows a press. The rectangle is
@@ -116,7 +119,8 @@ pub const CropGesture = struct {
         self.dragging = false;
         // invariant: the surface disarmed with both corners inside the image.
         assert(!self.dragging);
-        assert(self.bx <= self.width and self.by <= self.height);
+        assert(self.bx <= self.width);
+        assert(self.by <= self.height);
     }
 
     /// The normalized rectangle the two corners currently name: top-left `min` of the corners, size their `max` minus
@@ -148,7 +152,8 @@ pub const CropGesture = struct {
         const r = self.rect();
         if (r.w == 0 or r.h == 0) return error.NoRect;
         // invariant: the committed rectangle is a real, in-bounds area.
-        assert(r.w >= 1 and r.h >= 1);
+        assert(r.w >= 1);
+        assert(r.h >= 1);
         assert(@as(u64, r.x) + @as(u64, r.w) <= self.width);
         assert(@as(u64, r.y) + @as(u64, r.h) <= self.height);
         return edits.Edit{ .crop = .{ .x = r.x, .y = r.y, .w = r.w, .h = r.h } };
@@ -216,11 +221,15 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(g.has_rect());
         g.finger_up(6, 6);
         const r = g.rect();
-        assert(r.x == 2 and r.y == 2 and r.w == 4 and r.h == 4);
+        assert(r.x == 2);
+        assert(r.y == 2);
+        assert(r.w == 4);
+        assert(r.h == 4);
 
         const live = try g.preview(garden, &pm);
         const direct = try photos.crop(garden, &pm, 2, 2, 4, 4);
-        assert(live.width == 4 and live.height == 4);
+        assert(live.width == 4);
+        assert(live.height == 4);
         assert(same_bytes(&live, &direct)); // the preview is the crop, no drift
 
         // The edit round-trips the vocabulary: push it, render, parse, apply — the same cropped image returns.
@@ -243,7 +252,10 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         rg.finger_move(2, 2);
         rg.finger_up(2, 2);
         const r = rg.rect();
-        assert(r.x == 2 and r.y == 2 and r.w == 4 and r.h == 4);
+        assert(r.x == 2);
+        assert(r.y == 2);
+        assert(r.w == 4);
+        assert(r.h == 4);
     }
 
     // Corners past the edges clamp to the whole image: a drag from far off the top-left to far off the bottom-right keeps
@@ -254,7 +266,10 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         wg.finger_move(500, 500);
         wg.finger_up(500, 500);
         const r = wg.rect();
-        assert(r.x == 0 and r.y == 0 and r.w == 8 and r.h == 8);
+        assert(r.x == 0);
+        assert(r.y == 0);
+        assert(r.w == 8);
+        assert(r.h == 8);
         const whole = try wg.preview(garden, &pm);
         assert(same_bytes(&whole, &pm)); // cropping to the whole image recovers the source
     }
@@ -290,7 +305,10 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     {
         var fg = try CropGesture.open(pm.width, pm.height);
         fg.finger_move(5, 5);
-        assert(fg.ax == 0 and fg.ay == 0 and fg.bx == 0 and fg.by == 0);
+        assert(fg.ax == 0);
+        assert(fg.ay == 0);
+        assert(fg.bx == 0);
+        assert(fg.by == 0);
         assert(!fg.dragging);
     }
 
