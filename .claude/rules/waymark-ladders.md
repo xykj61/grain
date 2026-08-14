@@ -40,6 +40,7 @@ Before the first rung is written as `X0` / `X1` / … in TASKS, ROADMAP, compres
 | **AHOY** | `root-readme-lindy-foundation-weave-and-seed-legitimacy` | Front-door season — root README rewrite (Lindy-durable, favorite words) · Lindy foundation silo · fascia crosslink weave · seed legitimacy + final depersonalized push |
 | **WADE** | `bit-design-system-surface-takeover-and-dimeroll-entities` | Double-seated beside AHOY — DJINN's Bit Design System over the Skate·Realidream·Brushstroke surface (DVUI/Zig 0.16 in a Swift macOS Dock shell, Glow·Rishi·Rye·.brush impl) · Pond onboarding · Vultr SEA IaC · Dimeroll expansion for Siya Fund + Linengrow PBC HR & accounting |
 | **HUNK** | `season-a-open-image-decode-and-photos-surface` | Six-Season expansion Season A — Hardware & Right-to-Repair; opening journey the **open image module** (QOI decode → bounded RGBA grid, content-addressed in Tablecloth) beneath the parts marketplace and Photos app |
+| **DREY** | `season-a-mikrophone-firmware-forgetful-session-capture` | Season A second journey — the **Mikrophone firmware** (the Mantrapod's near-term surface): the *memory that forgets* session buffer, proven pure in Rye before metal — a bounded capture held only while powered, persisted only on a deliberate commit, provably dissolved on power-down |
 
 **Hand-seated names on the exclude roster** (not waymark draws): **SEVA** (viewer; absent from flw), **MAND** (M vane; in flw), **MONA** (prior name of Mand — one season). **SALA** retired from exclude with the Sala→Seva alias close.
 
