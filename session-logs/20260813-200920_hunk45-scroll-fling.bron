@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260813.200920
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title HUNK45 — the fling: momentum decay after the finger lifts
+prompt Continue the autonomous loop — take the next agent-doable lap Lindy-first crux-first, self-approve design rounds, send each finished increment as its own signed round, stop only at custody gates.
+think HUNK44's recommend named a velocity fling as one next crux. HUNK43 (input) and HUNK44 (pixel drag) carry a finger touching the glass; the fling is the gesture after it lifts — the completing rung of the touch-scroll input story, and it composes HUNK44 exactly.
+think The crux is a bounded, provable decay: a fling is a signed px/tick velocity whose magnitude must strictly decrease every tick and settle to exactly zero. Truncation-toward-zero of velocity*num/den with num<den guarantees strict decrease and sign stability (never crosses zero until it settles); bounding friction to decay at least an eighth per tick and capping the initial speed lets the tick count be a real assertion (settles within max_fling_ticks=256).
+think Each tick's delta feeds HUNK44's drag, so the cursor's clamps are inherited — a hard fling lands bottom-pinned, never past. The decay is taken in i64 so velocity*num never wraps.
+obs One value model (a velocity and a friction fraction), two refusals (BadFriction for a zero/non-decaying/too-gentle fraction, BadVelocity for an over-cap speed), no storage, no render, no timer — a caller ticks it per frame. A real wall-clock timer and rubber-band overscroll are named horizons.
+obs Caught a shadowing red at build: a local const named speed shadowed the speed() method in open() — renamed the local to init_speed. Fixed first build after. Split every compound assert by hand (pond/apps outside the tame scan fixture); TAME bans clean, width exit 0.
+obs The monotone-decay witness asserts now < prev each tick over a real coast (45 px/tick, friction 3/4 → 10 ticks to rest) and delta > 0 each tick, so an index or sign bug is caught regardless of the exact friction arithmetic.
+loom witness=hunk_scroll_fling_witness cell_px=10 viewport=2x5 fling_v0=45 friction=3/4 ticks_to_rest=10 tick_ceiling=256
+file pond/apps/preset_scroll_fling.rye HUNK45 — Fling { velocity, friction } decays strictly to rest, each tick fed through HUNK44's drag; run() bounds the coast within max_fling_ticks.
+file tools/hunk_scroll_fling_witness.rish proves the seam on metal — monotone sign-stable decay, upward-fling sign stability, no-overshoot clamp, gentlest-friction bounded ceiling, immediate-done zero fling, friction/velocity refusals.
+file active-designing/20260813-200615_hunk-scroll-fling-exploration.md self-approved design read.
+file work-in-progress/REMEMBER.md git nib refreshed in this same work commit.
+recommend keep-going — HUNK46 could add rubber-band overscroll (a bounce past the end that springs back), a sticky page header over the scroll view, a real wall-clock tick loop as a named seam, the served-marketplace module-assembly ruling (held for Keaton), or a fresh Season-A / double-seat journey.
