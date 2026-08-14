@@ -1,0 +1,53 @@
+# tools/hunk_part_facets_paged_witness.rish — the paged faceted header, page named above its own parts (HUNK88).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK88.
+# Design read: active-designing/20260814-011200_hunk-part-facets-paged-header-page-of-count-exploration.md
+# Teacher, thanked clean-room: McMaster-Carr's search box — a page count over a wall of parts too tall for one screen
+# (concept only, siloed).
+#
+# HUNK87 gave the faceted shelf a header (query echo and result count), yet a keeper on the second page reads no word of
+# which page nor how many. This rung appends the page line: brushstroke/part_facets_paged.rye `page_index` names the
+# 1-based page an offset sits on, `format_facets_header_paged` appends `  page N of M` to HUNK87's header (M from
+# facets_search_page_count), `facets_paged_header_row` draws it, and `facets_paged_screen` stacks it over HUNK86's
+# shelf. The selftest proves no drift — the named page equals the drawn page — a zero-result line carries no page tail
+# (never `page 1 of 0`), the screen equals facets_paged_header_row and facets_search_shelf cell-for-cell, and the named
+# refusals fire (a malformed clause, a zero/over-ceiling header, a bad offset). A price is a fact echoed and compared,
+# never moved.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hunk_part_facets_paged_witness.rish
+
+say "hunk-part-facets-paged: Language EN — HUNK88 names the page a keeper reads above HUNK86's shelf: page N of M appended to HUNK87's faceted header, stacked into one surface read top to bottom."
+say "hunk-part-facets-paged: Style Radiant — what a keeper asked, how many were found, which page they are on, and the parts of that page; the page named is the page drawn, and a zero-result line carries no page at all."
+say "hunk-part-facets-paged: Lens TAME — pure text-and-painting over HUNK87 format_facets_header and HUNK86 facets_search_page_count/facets_search_shelf; the named page equals the drawn page (no drift); a price clause is echoed and compared, never moved; positive invariants per fn; a malformed clause, a bad dimension, and a bad offset each refuse by name; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/part_facets_paged"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_facets_paged.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-part-facets-paged: build failed — ${build.err}"
+
+# Read the GREEN line from a file — it carries an apostrophe ("parser's") that breaks a shell single-quote round-trip.
+let outfile = "brushstroke/bin/part_facets_paged.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "hunk-part-facets-paged: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "hunk-part-facets-paged: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN part-facets-paged' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "hunk-part-facets-paged: selftest did not print the GREEN part-facets-paged line"
+
+# HUNK87 stays GREEN — the faceted header this rung appends a page line to.
+let h = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_facets_header.rye -femit-bin=brushstroke/bin/part_facets_header && brushstroke/bin/part_facets_header selftest > brushstroke/bin/part_facets_header.out 2>&1"]
+assert h.ok else "hunk-part-facets-paged: HUNK87 part_facets_header re-run failed — see brushstroke/bin/part_facets_header.out"
+let h_green = run ["sh" "-c" "grep -q 'GREEN part-facets-header' brushstroke/bin/part_facets_header.out && echo yes"]
+assert (trim h_green.out) == "yes" else "hunk-part-facets-paged: HUNK87 part_facets_header did not stay GREEN"
+
+# HUNK86 stays GREEN — the faceted shelf this rung pages and crowns.
+let s = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_facets_search.rye -femit-bin=brushstroke/bin/part_facets_search && brushstroke/bin/part_facets_search selftest > brushstroke/bin/part_facets_search.out 2>&1"]
+assert s.ok else "hunk-part-facets-paged: HUNK86 part_facets_search re-run failed — see brushstroke/bin/part_facets_search.out"
+let s_green = run ["sh" "-c" "grep -q 'GREEN part-facets-search' brushstroke/bin/part_facets_search.out && echo yes"]
+assert (trim s_green.out) == "yes" else "hunk-part-facets-paged: HUNK86 part_facets_search did not stay GREEN"
+
+say "hunk-part-facets-paged: GREEN — a keeper reads which page of the faceted result they are on and how many remain, above the very parts of that page; HUNK87 faceted header and HUNK86 faceted shelf beneath stay GREEN. HUNK88 lands."

@@ -1,0 +1,399 @@
+//! brushstroke/part_facets_paged.rye — HUNK88: the paged faceted header — the page a keeper reads, named above the very
+//! parts that page holds.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK88.
+//! Design read: active-designing/20260814-011200_hunk-part-facets-paged-header-page-of-count-exploration.md
+//! Teacher, thanked clean-room: McMaster-Carr's search box — a page count over a wall of parts too tall for one screen
+//! (concept only, siloed).
+//!
+//! HUNK87 gave the faceted shelf a header — the query echoed and an *N results* count — yet a keeper on the second page
+//! of a tall result reads no word of WHICH page, nor HOW MANY there are. A real search box answers both: *page 2 of 5*,
+//! so a keeper knows a page remains to reach. This rung appends that page line to HUNK87's header and stacks it over
+//! HUNK86's shelf at the requested page, so the whole paged search reads top to bottom in one surface: what I asked ·
+//! how many I found · which page I am on · the parts of that page.
+//!
+//! The crux is NO DRIFT between the named page and the drawn page. The header names the page `page_index(offset, rows)`
+//! sits on and counts the pages with `facets_search_page_count`; the shelf draws exactly `[offset, offset + rows)` of
+//! the same faceted result. Both read the same typed line through the same `parse_facets`, so the *page N of M* a
+//! keeper reads is exactly the page of parts drawn beneath it — a keeper reading `page 2 of 2` sees the second page's
+//! own parts. A zero-result line carries no page tail (there is no page), so the header never claims `page 1 of 0`.
+//!
+//! A price clause is echoed and compared, never moved (custody gate #3 untouched). No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/part_facets_paged.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const sprite = @import("sprite.rye");
+const part_catalog = @import("part_catalog.rye");
+const part_facets = @import("part_facets.rye");
+const part_facets_search = @import("part_facets_search.rye");
+const part_facets_header = @import("part_facets_header.rye");
+const image_skate = @import("image_skate.rye");
+const skate = @import("skate_grid.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const part_facets_paged_version = "20260814.011200";
+
+/// The widest the page tail runs — a two-space gap, `page `, a `u64` page index (20 digits), ` of `, and a `u64` page
+/// count (20 digits). A scratch this wide holds any page line, so the append is bounded at construction.
+pub const max_page_tail: u32 = 2 + 5 + 20 + 4 + 20;
+
+/// The widest a paged header line runs — HUNK87's whole header plus the page tail. A caller sizes its scratch to this,
+/// so a paged header can never overflow.
+pub const max_paged_header_line: u32 = part_facets_header.max_header_line + max_page_tail;
+
+pub const PagedError = error{
+    HeaderOverflow,
+};
+
+/// Copy `src` into the front of `dst`, returning the count copied. The caller sizes `dst` (a `max_*` scratch) to hold
+/// every run, so the fit is a construction invariant.
+fn append(dst: []u8, src: []const u8) u32 {
+    // invariant: the destination holds the appended run (the scratch is sized to the sum of the parts).
+    assert(src.len <= dst.len);
+    const n: u32 = @intCast(src.len);
+    tally_copy.copy_disjoint(u8, dst[0..src.len], src);
+    // invariant: exactly the source's bytes were copied.
+    assert(n == src.len);
+    return n;
+}
+
+/// Write a `u64` as its decimal digits into `out`, returning the count written. Even zero prints one digit. The digit
+/// count is bounded by 20 (a `u64` maximum), so the reversal buffer and the loop are both bounded.
+fn write_u64(v: u64, out: []u8) u32 {
+    // invariant: at least one digit is always written, so the destination needs at least one cell.
+    assert(out.len >= 1);
+    var digits: [20]u8 = undefined; // a u64 is at most 20 decimal digits
+    var count: u32 = 0;
+    var n: u64 = v;
+    if (n == 0) {
+        digits[0] = '0';
+        count = 1;
+    } else {
+        while (n > 0) : (n /= 10) {
+            // invariant: the digit count never runs past a u64's 20-digit width.
+            assert(count < 20);
+            digits[count] = '0' + @as(u8, @intCast(n % 10));
+            count += 1;
+        }
+    }
+    // invariant: the caller's buffer holds every digit produced.
+    assert(count <= out.len);
+    var i: u32 = 0;
+    while (i < count) : (i += 1) out[i] = digits[count - 1 - i]; // reverse: most-significant first
+    // invariant: a decimal render is at least one digit long.
+    assert(count >= 1);
+    return count;
+}
+
+/// The 1-based page a `rows`-tall window at `offset` sits on — `offset / rows + 1`, so offset 0 is page 1 and offset
+/// `rows` is page 2. Pages are `rows`-aligned as every caller draws them, so the floor is exact on a page boundary.
+pub fn page_index(offset: u32, rows: u32) u32 {
+    // invariant: paging needs at least one row per page.
+    assert(rows > 0);
+    const p = offset / rows + 1;
+    // invariant: a page index is always at least the first page.
+    assert(p >= 1);
+    return p;
+}
+
+/// Assemble the paged header line — HUNK87's whole header (query echo and result count) followed by `  page N of M`,
+/// where N is `page_index(offset, rows)` and M is `facets_search_page_count`. A zero-result line has no pages, so the
+/// tail is omitted entirely — the header never claims `page 1 of 0`. The base header comes straight from HUNK87, so the
+/// query echo and its count are unchanged; only the page line is added. A malformed clause surfaces the parser's named
+/// refusal through the base header, before any page work.
+pub fn format_facets_header_paged(
+    allocator: std.mem.Allocator,
+    cat: *const part_catalog.PartCatalog,
+    text: []const u8,
+    rows: u32,
+    offset: u32,
+    out: []u8,
+) !u32 {
+    // invariant: paging needs at least one row per page.
+    assert(rows > 0);
+    var tmp: [max_paged_header_line]u8 = undefined;
+    var n = try part_facets_header.format_facets_header(cat, text, tmp[0..]);
+    const pages = try part_facets_search.facets_search_page_count(allocator, cat, text, rows);
+    // invariant: the base header never filled the whole paged scratch — the page tail has room.
+    assert(n <= part_facets_header.max_header_line);
+    if (pages >= 1) {
+        n += append(tmp[n..], "  page ");
+        n += write_u64(page_index(offset, rows), tmp[n..]);
+        n += append(tmp[n..], " of ");
+        n += write_u64(pages, tmp[n..]);
+    }
+    if (n > out.len) return error.HeaderOverflow;
+    tally_copy.copy_disjoint(u8, out[0..n], tmp[0..n]);
+    // invariant: the paged header line stayed inside its scratch.
+    assert(n <= max_paged_header_line);
+    return n;
+}
+
+/// Draw the paged header as a fresh one-row anchor-palette grid — the paged header line truncated to `cols`. Refuses
+/// `EmptyHeader` on a zero dimension and `HeaderTooLarge` past the down-map ceiling (through the same guards HUNK87
+/// uses), so a header a keeper reads always fits a real grid; a malformed clause surfaces the parser's named refusal.
+pub fn facets_paged_header_row(
+    allocator: std.mem.Allocator,
+    cat: *const part_catalog.PartCatalog,
+    text: []const u8,
+    cols: u32,
+    rows: u32,
+    offset: u32,
+) !skate.Grid {
+    if (cols == 0) return error.EmptyHeader;
+    if (cols > image_skate.max_map_cols) return error.HeaderTooLarge;
+    var line: [max_paged_header_line]u8 = undefined;
+    const len = try format_facets_header_paged(allocator, cat, text, rows, offset, line[0..]);
+    var grid = try skate.Grid.init(allocator, cols, 1);
+    image_skate.set_anchor_palette(&grid);
+    const shown: u32 = @min(len, cols);
+    grid.put_line(0, line[0..shown]);
+    // invariant: the header grid is exactly one row at the requested width.
+    assert(grid.rows == 1);
+    assert(grid.cols == cols);
+    return grid;
+}
+
+/// The whole paged faceted search screen in one call: the paged header row atop HUNK86's shelf page, stacked into one
+/// grid `cols` wide and `1 + rows` tall (HUNK53's cell-for-cell copy idiom). Row 0 equals `facets_paged_header_row`
+/// cell-for-cell and the shelf region equals `facets_search_shelf` cell-for-cell, so the stack adds no drift. The
+/// header names the page `offset` sits on and the shelf draws exactly that page, so the *page N of M* a keeper reads is
+/// the very page of parts beneath it. A malformed clause refuses through the header first; an offset past the result
+/// refuses `BadOffset` through the shelf; a too-thin row refuses the shelf's own named error.
+pub fn facets_paged_screen(
+    allocator: std.mem.Allocator,
+    cat: *const part_catalog.PartCatalog,
+    text: []const u8,
+    cols: u32,
+    rows: u32,
+    offset: u32,
+) !skate.Grid {
+    const header = try facets_paged_header_row(allocator, cat, text, cols, rows, offset); // parses; refuses here first
+    const shelf = try part_facets_search.facets_search_shelf(allocator, cat, text, cols, rows, offset);
+    // invariant: both surfaces stand at the requested width before they are stacked.
+    assert(header.cols == cols);
+    assert(shelf.cols == cols);
+    assert(shelf.rows == rows);
+
+    var grid = try skate.Grid.init(allocator, cols, 1 + rows);
+    image_skate.set_anchor_palette(&grid);
+    // invariant: the stacked screen is one row taller than the shelf.
+    assert(grid.rows == rows + 1);
+
+    // Row 0 — the paged header, cell-for-cell.
+    var c: u32 = 0;
+    while (c < cols) : (c += 1) {
+        const i: usize = @intCast(c);
+        // invariant: the header cell and the destination cell sit inside their grids.
+        assert(i < header.cells.len);
+        assert(i < grid.cells.len);
+        grid.cells[i] = header.cells[i];
+        grid.fg_index[i] = header.fg_index[i];
+    }
+
+    // Rows 1.. — the shelf page, each source cell into the row below the header.
+    var r: u32 = 0;
+    while (r < rows) : (r += 1) {
+        var sc: u32 = 0;
+        while (sc < cols) : (sc += 1) {
+            const src: usize = @intCast(r * cols + sc);
+            const dst: usize = @intCast((r + 1) * cols + sc);
+            // invariant: both the shelf cell and the destination cell sit inside their grids.
+            assert(src < shelf.cells.len);
+            assert(dst < grid.cells.len);
+            grid.cells[dst] = shelf.cells[src];
+            grid.fg_index[dst] = shelf.fg_index[src];
+        }
+    }
+    return grid;
+}
+
+// --- selftest: four parts across four bands — the paged header names the page a keeper reads and the page count, a
+//     zero-result line carries no page tail, the named page equals the drawn page (no drift), the screen stacks header
+//     over shelf cell-for-cell, and the named refusals fire ---------------------------------------------------------
+
+/// A 16×8 sheet in four solid vertical bands (the part_row fixture), so a 4-wide window carries one known colour.
+fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 16;
+    const h: u32 = 8;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            const band = x / 4; // 0..3
+            buf[off] = if (band == 0 or band == 3) 255 else 0; // r
+            buf[off + 1] = if (band == 1 or band == 3) 255 else 0; // g
+            buf[off + 2] = if (band == 2) 255 else 0; // b
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+/// Read a row's cells back as bytes, trimming the blank tail — so the selftest sees exactly the painted text.
+fn row_text(grid: *const skate.Grid, row: u32, out: []u8) u32 {
+    const cells = grid.row_cells(row);
+    var n: u32 = @intCast(cells.len);
+    while (n > 0 and cells[n - 1] == ' ') : (n -= 1) {}
+    var i: u32 = 0;
+    while (i < n) : (i += 1) out[i] = cells[i];
+    return n;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const sheet = try craft_bands(garden);
+    var cat = part_catalog.PartCatalog.init(&sheet);
+    // Four parts across the bands, three materials, a price spread. Two are stainless-304 (bolt 125c, hexnut 55c),
+    // the brass nut 60c, the acetal gear 845c.
+    try cat.add_part("bolt", 0, 0, 4, 8, "HX-M8-40", "stainless-304", 125);
+    try cat.add_part("nut", 4, 0, 4, 8, "NY-M8", "brass", 60);
+    try cat.add_part("gear", 8, 0, 4, 8, "GR-24T", "acetal", 845);
+    try cat.add_part("hexnut", 12, 0, 4, 8, "HX-N8", "stainless-304", 55);
+    assert(cat.len() == 4);
+
+    const cols: u32 = 80; // wide enough that the longest header line (query + count + page tail) fits without truncation
+
+    // page_index is the plain 1-based page: offset 0 is page 1, offset rows is page 2, offset 2*rows is page 3.
+    {
+        assert(page_index(0, 1) == 1);
+        assert(page_index(1, 1) == 2);
+        assert(page_index(0, 2) == 1);
+        assert(page_index(2, 2) == 2);
+        assert(page_index(4, 2) == 3);
+    }
+
+    // The paged header names the page and the count — (stainless|brass) max:100 keeps two parts, so at one row per page
+    // the first page reads `... 2 results  page 1 of 2` and the second `... page 2 of 2`.
+    {
+        var buf: [max_paged_header_line]u8 = undefined;
+        const n0 = try format_facets_header_paged(garden, &cat, "material:stainless-304|material:brass max:100", 1, 0, buf[0..]);
+        assert(std.mem.eql(u8, buf[0..n0], "material:stainless-304|material:brass max:100  2 results  page 1 of 2"));
+        const n1 = try format_facets_header_paged(garden, &cat, "material:stainless-304|material:brass max:100", 1, 1, buf[0..]);
+        assert(std.mem.eql(u8, buf[0..n1], "material:stainless-304|material:brass max:100  2 results  page 2 of 2"));
+    }
+
+    // An empty line is a match-all — four parts, two rows per page, so page 1 of 2 over `all parts  4 results`.
+    {
+        var buf: [max_paged_header_line]u8 = undefined;
+        const n = try format_facets_header_paged(garden, &cat, "", 2, 0, buf[0..]);
+        assert(std.mem.eql(u8, buf[0..n], "all parts  4 results  page 1 of 2"));
+    }
+
+    // A ZERO-RESULT line carries NO page tail — there is no page, so the header never claims `page 1 of 0`.
+    {
+        var buf: [max_paged_header_line]u8 = undefined;
+        const n = try format_facets_header_paged(garden, &cat, "material:stainless-304 max:10", 1, 0, buf[0..]);
+        assert(std.mem.eql(u8, buf[0..n], "material:stainless-304 max:10  0 results"));
+    }
+
+    // NO DRIFT: the page the header names is the page the shelf draws. Over the two-part union at one row per page, the
+    // second page (offset 1) names `page 2 of 2` and draws the second part of the result (hexnut $0.55) beneath it.
+    {
+        const line = "material:stainless-304|material:brass max:100";
+        const g = try facets_paged_screen(garden, &cat, line, cols, 1, 1);
+        var buf: [max_paged_header_line]u8 = undefined;
+        const hr = row_text(&g, 0, buf[0..]);
+        assert(std.mem.endsWith(u8, buf[0..hr], "  page 2 of 2"));
+        const sr = row_text(&g, 1, buf[0..]);
+        assert(std.mem.startsWith(u8, buf[0..sr], "hexnut  HX-N8  stainless-304  $0.55"));
+    }
+
+    // The screen stacks the paged header over the shelf into one grid: cols wide, 1 + rows tall.
+    {
+        const g = try facets_paged_screen(garden, &cat, "", cols, 2, 0);
+        assert(g.cols == cols);
+        assert(g.rows == 3);
+    }
+
+    // No drift, top row: the screen's row 0 equals facets_paged_header_row cell-for-cell.
+    {
+        const g = try facets_paged_screen(garden, &cat, "", cols, 2, 0);
+        const hdr = try facets_paged_header_row(garden, &cat, "", cols, 2, 0);
+        var c: u32 = 0;
+        while (c < cols) : (c += 1) {
+            assert(g.cells[c] == hdr.cells[c]);
+            assert(g.fg_index[c] == hdr.fg_index[c]);
+        }
+    }
+
+    // No drift, shelf region: the screen's rows 1.. equal facets_search_shelf cell-for-cell — the page, unmoved.
+    {
+        const g = try facets_paged_screen(garden, &cat, "", cols, 2, 0);
+        const shelf = try part_facets_search.facets_search_shelf(garden, &cat, "", cols, 2, 0);
+        var r: u32 = 0;
+        while (r < 2) : (r += 1) {
+            var sc: u32 = 0;
+            while (sc < cols) : (sc += 1) {
+                const src: usize = @intCast(r * cols + sc);
+                const dst: usize = @intCast((r + 1) * cols + sc);
+                assert(g.cells[dst] == shelf.cells[src]);
+                assert(g.fg_index[dst] == shelf.fg_index[src]);
+            }
+        }
+    }
+
+    // The composed screen rasterizes to a lit canvas — the whole paged search reaches the glass.
+    {
+        const g = try facets_paged_screen(garden, &cat, "", cols, 2, 0);
+        const scale: u32 = 1;
+        const width: u32 = g.cols * skate.cell_w * scale;
+        const height: u32 = g.rows * skate.cell_h * scale;
+        const stride: u32 = width * 4;
+        const canvas = try garden.alloc(u8, @as(usize, stride) * @as(usize, height));
+        const bg = skate.Color{ .r = 1, .g = 2, .b = 3 };
+        const fg = skate.Color{ .r = 210, .g = 210, .b = 210 };
+        g.rasterize(canvas, stride, @intCast(width), @intCast(height), bg, fg, scale);
+        const lit = g.lit_pixel_count(canvas, stride, @intCast(width), @intCast(height), bg);
+        assert(lit > 0);
+    }
+
+    // A malformed clause surfaces the parser's own named refusal through the header (before any page work).
+    if (facets_paged_screen(garden, &cat, "material:stainless-304|colour:red", cols, 2, 0)) |_| {
+        return error.LineSlipped;
+    } else |e| {
+        if (e != error.UnknownKey) return error.WrongLine;
+    }
+
+    // A zero-width header refuses EmptyHeader, an over-ceiling one HeaderTooLarge.
+    if (facets_paged_header_row(garden, &cat, "", 0, 1, 0)) |_| return error.HeaderSlipped else |e| {
+        if (e != error.EmptyHeader) return error.WrongHeader;
+    }
+    if (facets_paged_header_row(garden, &cat, "", image_skate.max_map_cols + 1, 1, 0)) |_| return error.HeaderSlipped else |e| {
+        if (e != error.HeaderTooLarge) return error.WrongHeader;
+    }
+
+    // An offset past the narrowed result refuses BadOffset through the shelf — two matches, so page offset 2 at one row
+    // per page is past the result.
+    if (facets_paged_screen(garden, &cat, "material:stainless-304|material:brass max:100", cols, 1, 2)) |_| {
+        return error.OffsetSlipped;
+    } else |e| {
+        if (e != error.BadOffset) return error.WrongOffset;
+    }
+
+    print("GREEN part-facets-paged: four parts across four bands — the paged header names the page a keeper reads and " ++
+        "the page count ((stainless|brass) max:100 at one row per page reads `page 1 of 2` then `page 2 of 2`, an " ++
+        "empty line two rows per page `all parts  4 results  page 1 of 2`); a zero-result line carries NO page tail " ++
+        "(never `page 1 of 0`); the named page equals the drawn page (page 2 of 2 draws hexnut's own row, no drift); " ++
+        "facets_paged_screen stacks the header over the shelf into one grid, row 0 equal to facets_paged_header_row " ++
+        "and the shelf region equal to facets_search_shelf cell-for-cell (no drift); the screen rasterizes to a lit " ++
+        "canvas; a malformed clause refuses through the header before any page work (UnknownKey), a zero and " ++
+        "over-ceiling header refuse EmptyHeader/HeaderTooLarge, and an offset past the result refuses BadOffset; a " ++
+        "price is a fact echoed and compared, never moved — no network, no key, no funds\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: part_facets_paged selftest\n", .{});
+    return 1;
+}

@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260814.011200
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title HUNK88 — the paged faceted header: page N of M above its own parts
+prompt Recursion loop past HUNK87; take the next agent-doable lap Lindy-first crux-first; send each finished increment; stop at custody gates.
+think HUNK87 landed the faceted header (query echo + N results), yet paging stayed invisible — a keeper on page 2 read no word of which page or how many; HUNK87's own tail named this the next rung.
+think Built brushstroke/part_facets_paged.rye over HUNK87 format_facets_header and HUNK86 facets_search_page_count/facets_search_shelf: page_index names the 1-based page, the tail `  page N of M` appended only when a page exists, stacked over the shelf cell-for-cell.
+think The crux is no drift — the page named equals the page drawn — proven by the second page reading `page 2 of 2` and drawing hexnut's own row beneath it; a zero-result line carries no tail (never `page 1 of 0`).
+obs First witness run panicked: the 69-char header truncated at cols=64, cutting ` of 2` so endsWith failed — a test-fixture bug, not a module bug. Widened the selftest cols to 80 so the longest line fits; GREEN.
+obs A price clause is echoed as cents and compared, never moved — custody gate #3 untouched; no network, no key, no funds.
+loom witness=hunk_part_facets_paged_witness green=1 parts=4 header_len=69 cols=80 pages_union=2 pages_all=2 pages_zero=0
+file brushstroke/part_facets_paged.rye HUNK88 the paged faceted header — page_index · format_facets_header_paged · facets_paged_header_row · facets_paged_screen
+file tools/hunk_part_facets_paged_witness.rish witness GREEN; HUNK87 header and HUNK86 shelf stay GREEN beneath
+file active-designing/20260814-011200_hunk-part-facets-paged-header-page-of-count-exploration.md self-approved design round for HUNK88
+file image/README.md search paragraph now names the paged header (page N of M) and its witness
+recommend keep-going — the readable faceted search now reads query, count, page, and parts top to bottom; next is a sort over the result (by price), a per-facet count, or another Season-A / double-seat journey. No gate reached.
