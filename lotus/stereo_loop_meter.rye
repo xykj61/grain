@@ -1,0 +1,232 @@
+//! lotus/stereo_loop_meter.rye — ALES18: metering a looping stereo region live — the ALES16 loop head feeding the ALES17 stereo
+//! meter. ALES17 metered a stereo master DURING FORWARD playback and proved BLOCK-INVARIANCE per channel over the stereo head:
+//! a live VU reads exactly what the head plays. ALES16 taught that same head to LOOP — a marked region cycled through both
+//! channels in lockstep, round and round. What no rung yet did is meter that LOOPING region live — a practice loop's VU, the
+//! meter a musician actually watches while a marked bar cycles. This rung is that live path: the ALES16 wrapping head under the
+//! ALES17 two-channel meter.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES18.
+//! Design read: active-designing/20260814-fill-ales18-lotus-stereo-loop-meter.md
+//! Stands on: lotus/stereo_meter.rye (ALES17) — the StereoMeter and feed/peak/rms reused whole (one true meter per channel, no
+//! new arithmetic); lotus/stereo_loop.rye (ALES16) — the wrapping stereo read the meter is fed, in lockstep off the one head;
+//! lotus/loop.rye (ALES14) — the validated, armed region and enter; lotus/pan.rye (ALES10) — the StereoClip whose two channels
+//! share one length; lotus/meter.rye (ALES13) — the Meter and its MeterFull edge, and the max_meter_samples bound.
+//!
+//! THE CRUX: metering a WHOLE NUMBER OF CYCLES of a looping region gives the IDENTICAL per-channel peak and RMS as metering the
+//! region once AT REST — however many times the region is looped, the live VU reads the region's own true level and never drifts.
+//! Two facts make this exact, not merely close. PEAK is a maximum, and the loudest sample of K copies of a region is the loudest
+//! sample of one copy — invariant under repetition. RMS is the square root of a mean square, and repeating a region K times
+//! leaves the MEAN of the squares unchanged: the sum of squares scales by K and the count scales by K, and the common factor K
+//! cancels EXACTLY even under integer floor division (@divTrunc(K·S, K·N) == @divTrunc(S, N), since K·S/(K·N) = S/N as rationals
+//! and the floor of an unchanged rational is unchanged). So the loop VU is stable across cycle count for free — no new
+//! arithmetic, only ALES17's proven StereoMeter fed off ALES16's wrapping head.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process read over a two-channel i16 PCM master, siloed to lotus/.
+//! The meter never mutates the master (read-only, like the transport and the loop). A level is a number a UI would draw, not a
+//! signal on a wire. No socket, no network, no keys, no funds, no real device, no real meter hardware, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_loop_meter.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const transport = @import("transport.rye");
+const loop = @import("loop.rye");
+const meter = @import("meter.rye");
+const stereo_transport = @import("stereo_transport.rye");
+const stereo_meter = @import("stereo_meter.rye");
+const stereo_loop = @import("stereo_loop.rye");
+
+pub const stereo_loop_meter_version = "20260814.131319";
+
+/// The combined error set of the live loop meter: the stereo read's BadBlock, ALES13's MeterFull, plus the loop-metering bound.
+pub const LoopMeterError = stereo_transport.StereoReadError || meter.MeterError;
+
+/// Meter the loop's REGION [start, end) of both channels ONCE, at rest — the reference the live loop meter must match. Feeds the
+/// region slice of each channel straight into a fresh ALES17 StereoMeter (one length, in lockstep). This is the level a keeper
+/// would read from the marked bar with the transport stopped. Refuses ALES13's MeterFull if the region alone exceeds the meter
+/// bound (it cannot here — a region is at most the master's length, itself bounded).
+pub fn measure_region(sc: *const pan.StereoClip, lp: *const loop.Loop) meter.MeterError!stereo_meter.StereoMeter {
+    // invariant: a stereo master's two channels share one length (ALES10), so the region slices are one length.
+    assert(sc.left.len == sc.right.len);
+    // invariant: an armed, validated loop is a non-empty region wholly within the shared length.
+    assert(lp.start < lp.end and lp.end <= sc.left.len);
+    var sm = stereo_meter.StereoMeter{};
+    // both channels feed the SAME region span, so the two channel meters stay matched in count (ALES17's lockstep).
+    try stereo_meter.feed(&sm, sc.left.buf[lp.start..lp.end], sc.right.buf[lp.start..lp.end]);
+    // invariant: the reference metered exactly one region span in each channel.
+    assert(sm.left.count == lp.end - lp.start and sm.left.count == sm.right.count);
+    return sm;
+}
+
+/// The LIVE loop meter: drive the ALES16 wrapping head for exactly `cycles` whole cycles of the region, feeding each stereo block
+/// into an ALES17 StereoMeter block by block at `block_len` samples. `enter` places the head at the region top, then exactly
+/// `cycles × span` samples are read and metered — a whole number of cycles, so the accumulation is exactly K copies of the
+/// region. Refuses MeterFull when the requested cycles would carry the count past ALES13's bound (which also guards the
+/// `cycles × span` product against overflow before a single read). Returns the StereoMeter the live VU shows.
+pub fn meter_loop_live(sc: *const pan.StereoClip, lp: *const loop.Loop, cycles: u32, block_len: u32) LoopMeterError!stereo_meter.StereoMeter {
+    // invariant: the two channels share one length and the loop is an armed, validated, non-empty region within it.
+    assert(sc.left.len == sc.right.len);
+    assert(lp.on and lp.start < lp.end and lp.end <= sc.left.len);
+    // invariant: at least one cycle, and the block fits the bounded scratch buffers below.
+    assert(cycles >= 1 and block_len >= 1 and block_len <= 16);
+    const span: u32 = lp.end - lp.start;
+    // bound the whole read to ALES13's meter capacity — this both honours the meter's contract and guards `cycles × span` from
+    // overflowing u32 before it is formed (span ≥ 1, so the divide is safe).
+    if (cycles > @divTrunc(meter.max_meter_samples, span)) return error.MeterFull;
+    const total: u32 = cycles * span;
+    // invariant: the whole read is a bounded number of samples within the meter capacity.
+    assert(total >= span and total <= meter.max_meter_samples);
+
+    var t = transport.Transport{};
+    loop.enter(&t, lp); // head at the region top — the K cycles concatenate to K copies of the region exactly
+    var sm = stereo_meter.StereoMeter{};
+    var sl: [16]i16 = [_]i16{0} ** 16;
+    var sr: [16]i16 = [_]i16{0} ** 16;
+
+    var remaining: u32 = total;
+    while (remaining > 0) {
+        // the last block is honestly short so the total lands on exactly `cycles × span`; a looping read always fills what it is
+        // asked (a non-empty region never runs dry), so `n == want` every time.
+        const want: u32 = if (block_len < remaining) block_len else remaining;
+        const n = try stereo_loop.read_block(&t, sc, lp, sl[0..want], sr[0..want]);
+        // invariant: the looping read fills the whole requested block in both channels (lockstep, never dry).
+        assert(n == want);
+        try stereo_meter.feed(&sm, sl[0..n], sr[0..n]);
+        remaining -= n;
+    }
+    // invariant: the live meter accumulated exactly `total` samples per channel, the two channels matched (lockstep across the seam).
+    assert(sm.left.count == total and sm.left.count == sm.right.count);
+    return sm;
+}
+
+// --- selftest: THE CRUX — metering any whole number of cycles of a looping region live gives the IDENTICAL per-channel peak and
+//     RMS as metering the region once at rest, at every block size (the loop VU never drifts however long it loops); a loud left
+//     and quiet right report distinct levels off the live loop; a StereoClip rendered by ALES11's power.render_stereo loops-and-
+//     meters its two channels exactly; the live loop meter never mutates either channel; and the cycle count is refused past the
+//     meter bound ------------------------------------------------------------------------------------------------------------
+
+fn run_selftest() !u8 {
+    // 1. THE CRUX — block-and-cycle invariance. A region [1,4) of a five-sample stereo master (left 20,30,40 · right -2,-3,-4)
+    //    metered LIVE off the ALES16 loop head for 1, 3, and 7 whole cycles, at 1-, 2-, and 5-sample blocks, gives the IDENTICAL
+    //    per-channel peak and RMS as measure_region at rest — however many cycles, whatever the block. The K in sum_sq and count
+    //    cancels exactly under the floor divide, so RMS is stable, not merely close; peak is a max, invariant under repetition.
+    {
+        var sc = pan.StereoClip{};
+        try timeline.splice(&sc.left, 0, &[_]i16{ 10, 20, 30, 40, 50 });
+        try timeline.splice(&sc.right, 0, &[_]i16{ -1, -2, -3, -4, -5 });
+        const lp = try stereo_loop.make(1, 4, &sc); // region [1,4)
+        const rest = try measure_region(&sc, &lp); // the reference — region metered once, at rest
+
+        const cycles = [_]u32{ 1, 3, 7 };
+        const blocks = [_]u32{ 1, 2, 5 };
+        var ci: u32 = 0;
+        while (ci < cycles.len) : (ci += 1) {
+            var bi: u32 = 0;
+            while (bi < blocks.len) : (bi += 1) {
+                const live = try meter_loop_live(&sc, &lp, cycles[ci], blocks[bi]);
+                if (stereo_meter.peak_left(&live) != stereo_meter.peak_left(&rest)) return error.LoopLeftPeakDiffers;
+                if (stereo_meter.rms_left(&live) != stereo_meter.rms_left(&rest)) return error.LoopLeftRmsDiffers;
+                if (stereo_meter.peak_right(&live) != stereo_meter.peak_right(&rest)) return error.LoopRightPeakDiffers;
+                if (stereo_meter.rms_right(&live) != stereo_meter.rms_right(&rest)) return error.LoopRightRmsDiffers;
+                // the two channels metered the same count every cycle (lockstep across the seam).
+                if (live.left.count != live.right.count) return error.LoopCountUnmatched;
+                if (live.left.count != cycles[ci] * (lp.end - lp.start)) return error.LoopCountWrong;
+            }
+        }
+        // the reference itself reads the region's own level — peak_left 40, and rms_left isqrt(2900/3)=isqrt(966)=31.
+        if (stereo_meter.peak_left(&rest) != 40 or stereo_meter.rms_left(&rest) != 31) return error.RestLeftWrong;
+        if (stereo_meter.peak_right(&rest) != 4 or stereo_meter.rms_right(&rest) != 3) return error.RestRightWrong;
+    }
+
+    // 2. stability across a LONG loop — the same region metered for 100 cycles reads the IDENTICAL peak and RMS as one cycle. The
+    //    live VU is rock-steady however long a practice loop runs; this is the human payoff of the K-cancels-exactly fact above.
+    {
+        var sc = pan.StereoClip{};
+        try timeline.splice(&sc.left, 0, &[_]i16{ 7, 8, 9, 6, 5 });
+        try timeline.splice(&sc.right, 0, &[_]i16{ 70, 60, 50, 40, 30 });
+        const lp = try stereo_loop.make(0, sc.left.len, &sc); // the whole master
+        const one = try meter_loop_live(&sc, &lp, 1, 4);
+        const hundred = try meter_loop_live(&sc, &lp, 100, 3);
+        if (stereo_meter.peak_left(&one) != stereo_meter.peak_left(&hundred)) return error.LongLeftPeakDrifted;
+        if (stereo_meter.rms_left(&one) != stereo_meter.rms_left(&hundred)) return error.LongLeftRmsDrifted;
+        if (stereo_meter.peak_right(&one) != stereo_meter.peak_right(&hundred)) return error.LongRightPeakDrifted;
+        if (stereo_meter.rms_right(&one) != stereo_meter.rms_right(&hundred)) return error.LongRightRmsDrifted;
+    }
+
+    // 3. a loud left and a quiet right report distinct levels off the live loop — a full square wave left (rms == peak == 8000),
+    //    one small spike right (rms well below peak 100), cycled several times.
+    {
+        var sc = pan.StereoClip{};
+        try timeline.splice(&sc.left, 0, &[_]i16{ 8000, -8000, 8000, -8000 });
+        try timeline.splice(&sc.right, 0, &[_]i16{ 100, 0, 0, 0 });
+        const lp = try stereo_loop.make(0, 4, &sc);
+        const live = try meter_loop_live(&sc, &lp, 5, 2); // five cycles
+        if (stereo_meter.peak_left(&live) != 8000 or stereo_meter.rms_left(&live) != 8000) return error.LiveLeftWrong;
+        if (stereo_meter.peak_right(&live) != 100 or !(stereo_meter.rms_right(&live) < 100)) return error.LiveRightWrong;
+    }
+
+    // 4. a StereoClip rendered by ALES11's power.render_stereo loops-and-meters its two channels EXACTLY — a track panned center
+    //    renders 0.707 per side (700 on a 1000 source), so a looping region of it reads peak 700 and, being DC, rms 700 per side,
+    //    for any cycle count. The stereo side (pan/power) meets the read side (loop) under the meter, round and round.
+    {
+        var a = timeline.Clip{};
+        try timeline.splice(&a, 0, &[_]i16{ 1000, 1000, 1000, 1000 });
+        var s = @import("track.rye").Session{};
+        try @import("track.rye").add_track(&s, &a, 0);
+        var rendered = pan.StereoClip{};
+        const c = try @import("clock.rye").make(1000);
+        const faders = [_]@import("fader.rye").Fader{.{}};
+        const pans = [_]@import("power.rye").PowerPan{try @import("power.rye").make(50, 100)}; // center
+        try @import("power.rye").render_stereo(&s, &faders, &pans, c, &rendered);
+
+        const lp = try stereo_loop.make(1, 3, &rendered); // a mid region of the rendered master
+        const live = try meter_loop_live(&rendered, &lp, 4, 3);
+        if (stereo_meter.peak_left(&live) != 700 or stereo_meter.rms_left(&live) != 700) return error.RenderedLeftWrong;
+        if (stereo_meter.peak_right(&live) != 700 or stereo_meter.rms_right(&live) != 700) return error.RenderedRightWrong;
+    }
+
+    // 5. the live loop meter never mutates either channel — cycling and metering a master many times over, then checking BOTH
+    //    channels are byte-for-byte unchanged (read-only, like the loop and the transport it stands on).
+    {
+        var sc = pan.StereoClip{};
+        try timeline.splice(&sc.left, 0, &[_]i16{ 9, 8, 7, 6, 5 });
+        try timeline.splice(&sc.right, 0, &[_]i16{ 90, 80, 70, 60, 50 });
+        const orig_l = [_]i16{ 9, 8, 7, 6, 5 };
+        const orig_r = [_]i16{ 90, 80, 70, 60, 50 };
+        const lp = try stereo_loop.make(1, 4, &sc);
+        _ = try meter_loop_live(&sc, &lp, 6, 2); // six cycles
+        if (!std.mem.eql(i16, sc.left.samples(), &orig_l)) return error.LeftMutated;
+        if (!std.mem.eql(i16, sc.right.samples(), &orig_r)) return error.RightMutated;
+    }
+
+    // 6. the cycle count is refused past the meter bound — a region whose `cycles × span` would carry the count past ALES13's
+    //    max_meter_samples refuses MeterFull before any read, leaving nothing accumulated (the same edge that guards the u32
+    //    product from overflow).
+    {
+        var sc = pan.StereoClip{};
+        try timeline.splice(&sc.left, 0, &[_]i16{ 1, 2 });
+        try timeline.splice(&sc.right, 0, &[_]i16{ 3, 4 });
+        const lp = try stereo_loop.make(0, 2, &sc); // span 2
+        const too_many: u32 = (meter.max_meter_samples / 2) + 1; // 2 × this exceeds the bound
+        if (meter_loop_live(&sc, &lp, too_many, 2)) |_| return error.OverfillSlipped else |e| if (e != error.MeterFull) return error.WrongOverfill;
+    }
+
+    print("GREEN ales-stereo-loop-meter: a looping stereo region metered LIVE off the ALES16 wrapping head under ALES17's two " ++
+        "meters — the practice-loop VU. THE CRUX: metering any whole number of cycles gives the IDENTICAL per-channel peak and " ++
+        "RMS as metering the region once at rest, at 1-, 2-, and 5-sample blocks and 1, 3, 7 cycles — the K in sum_sq and count " ++
+        "cancels EXACTLY under the floor divide, so the live VU never drifts (100 cycles read the same as one); a loud left and " ++
+        "quiet right report distinct levels; a StereoClip rendered by ALES11's power.render_stereo loops-and-meters its two " ++
+        "channels exactly (a center pan's 0.707 per side, 700 on a 1000 source); the live loop meter mutates neither channel; " ++
+        "and the cycle count is refused past ALES13's meter bound, guarding the read against overflow; no socket, no network, " ++
+        "no keys, no funds, no real device, no real meter, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
