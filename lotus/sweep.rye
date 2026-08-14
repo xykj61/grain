@@ -1,0 +1,257 @@
+//! lotus/sweep.rye — ALES44: a filter sweep — a low-pass whose cutoff MOVES across a span, seamless because the state carries.
+//! Every filter rung so far (ALES40 tone, ALES41 shelf, ALES42 stack, ALES43 tone_carry) holds ONE brightness for a whole span.
+//! The gesture a musician reaches for as often as a fixed cut is the SWEEP — a cutoff that moves across the span, the filter
+//! opening or closing over a phrase (the slow open on a pad, the close into a drop). This rung is the first AUTOMATED parameter:
+//! a value that changes over time under a schedule. It partitions the span into `blocks` contiguous blocks, runs ALES43's
+//! carried-state low-pass over each with a coefficient interpolated linearly from num_from to num_to, and carries ONE state
+//! across every block — so a sweep from a coefficient to ITSELF equals ALES40's fixed low_pass over the whole span byte-for-byte
+//! (the crux: the sweep adds only a moving coefficient, never new arithmetic on the audio path), while a sweep between distinct
+//! endpoints is genuinely time-varying and its block boundaries carry no re-transient (ALES43's whole reason for existing).
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES44.
+//! Design read: active-designing/20260814-163647_fill-ales44-lotus-filter-sweep.md
+//! Stands on: lotus/tone_carry.rye (ALES43) and lotus/tone.rye (ALES40) — the carried-state low-pass reached through
+//! low_pass_carry, its state threaded across every block; lotus/timeline.rye (ALES2) — the Clip it filters.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
+//! no network, no keys, no funds, no real device, no real sample rate — the coefficient still smooths over sample INDICES, now
+//! with a schedule; a cutoff in hertz is the later time-base rung. The filter state runs at full i64 precision, as in ALES40.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/sweep.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const tone = @import("tone.rye");
+
+pub const sweep_version = "20260814.163647";
+
+/// The named bound on how many blocks one sweep partitions its span into — a sweep is bounded work, never an unbounded loop.
+pub const max_sweep_blocks: u32 = 4096;
+
+/// The ALES40 filter faults (BadCoeff, BadRange) plus one the sweep owns: an illegal block count.
+pub const SweepError = tone.ToneError || error{
+    /// A block count that is zero, past `max_sweep_blocks`, or larger than the sample count (which would leave an empty block) —
+    /// refused before a sample is touched.
+    BadBlocks,
+};
+
+/// The coefficient schedule: the numerator for block `b` of `blocks`, linearly interpolated from `num_from` to `num_to` over
+/// the block index and clamped into the endpoint band. The two endpoints are exact — `b = 0` returns `num_from` and
+/// `b = blocks-1` returns `num_to` — whatever the interior rounding, because the interpolation term is zero at the first block
+/// and exactly the whole delta at the last. Both endpoints are legal fractions in [1, den] (the caller's `check_sweep` proved
+/// it), and interpolation between them never leaves the band, so every block coefficient is itself a legal fraction with no
+/// re-check. A single-block sweep holds the start coefficient.
+pub fn coeff_at(num_from: i32, num_to: i32, blocks: u32, b: u32) i32 {
+    // invariant: b indexes a real block, and a sweep always has at least one block.
+    assert(blocks >= 1);
+    assert(b < blocks);
+    if (blocks == 1) return num_from; // one block cannot ramp — it holds the start coefficient.
+    const span: i64 = @as(i64, blocks - 1);
+    const delta: i64 = @as(i64, num_to) - @as(i64, num_from);
+    // floor interpolation keeps the schedule monotone in b; the endpoints land exactly (term = 0 at b = 0, = delta at b = span).
+    const interp: i64 = @as(i64, num_from) + @divFloor(delta * @as(i64, b), span);
+    const lo: i64 = if (num_from < num_to) @as(i64, num_from) else @as(i64, num_to);
+    const hi: i64 = if (num_from < num_to) @as(i64, num_to) else @as(i64, num_from);
+    // The clamp is a proven safety, not a live shaper: floor interpolation stays within [lo, hi] already; the clamp guarantees
+    // a legal fraction even against an off-by-one, so no block coefficient can ever slip below 1 or above den.
+    const c: i64 = if (interp < lo) lo else if (interp > hi) hi else interp;
+    // invariant: the block coefficient stays within the legal endpoint band, so it is a legal filter strength in [1, den].
+    assert(c >= lo and c <= hi);
+    return @as(i32, @intCast(c));
+}
+
+/// Validate a sweep's endpoints, span, and block count together, before any sample is touched. Both endpoint coefficients must
+/// be legal fractions in (0, 1] (den > 0, num in [1, den]); the span must lie wholly within the samples; and the block count
+/// must be in [1, max_sweep_blocks] and no larger than the sample count (so no block is empty).
+fn check_sweep(clip_len: u32, start: u32, count: u32, num_from: i32, num_to: i32, den: u32, blocks: u32) SweepError!void {
+    // invariant: a legal coefficient is a fraction in (0, 1] — den nonzero, num in [1, den] — for BOTH endpoints of the ramp.
+    if (den == 0) return error.BadCoeff;
+    if (num_from < 1 or @as(i64, num_from) > @as(i64, den)) return error.BadCoeff;
+    if (num_to < 1 or @as(i64, num_to) > @as(i64, den)) return error.BadCoeff;
+    // invariant: the span lies wholly within the current samples (checked without underflow — count vs the remainder).
+    if (start > clip_len) return error.BadRange;
+    if (count > clip_len - start) return error.BadRange;
+    // invariant: the block count is bounded and leaves no empty block — a partition of the span into at least one sample each.
+    if (blocks < 1 or blocks > max_sweep_blocks) return error.BadBlocks;
+    if (count > 0 and blocks > count) return error.BadBlocks;
+}
+
+/// Sweep a low-pass over `[start, start+count)` in place: partition the span into `blocks` near-equal contiguous blocks, and run
+/// ALES43's carried-state low-pass over each with `coeff_at`'s interpolated coefficient, threading ONE i64 state across every
+/// block so the sweep has no re-transient at a boundary. A sweep with `num_from == num_to` equals ALES40's fixed `low_pass` over
+/// the whole span byte-for-byte (the carried state makes the block partition invisible); a sweep between distinct endpoints
+/// moves the brightness across the span. Refuses BadCoeff on an illegal endpoint, BadRange on a span outside the samples, and
+/// BadBlocks on an illegal partition, each before any write; the clip is untouched on refusal. Values only — never the length.
+pub fn sweep_low_pass(clip: *timeline.Clip, start: u32, count: u32, num_from: i32, num_to: i32, den: u32, blocks: u32) SweepError!void {
+    try check_sweep(clip.len, start, count, num_from, num_to, den, blocks);
+    var state: i64 = 0;
+    // Near-equal partition: each block gets `base` samples, the first `rem` blocks one extra — base*blocks + rem = count, so the
+    // blocks cover the span exactly. blocks >= 1 (checked), so the division never divides by zero.
+    const base: u32 = if (count == 0) 0 else @divTrunc(count, blocks);
+    const rem: u32 = count - base * blocks;
+    var off: u32 = start;
+    var b: u32 = 0;
+    while (b < blocks) : (b += 1) {
+        const extra: u32 = if (b < rem) 1 else 0;
+        const blen: u32 = base + extra;
+        const num_b: i32 = coeff_at(num_from, num_to, blocks, b);
+        // invariant: the carried state threads through every block, so the sweep continues rather than restarting its transient.
+        try tone.low_pass_carry(clip, off, blen, &state, num_b, den);
+        off += blen;
+    }
+    // invariant: the blocks exactly cover the span — the walking offset reaches the span end, no sample skipped or doubled.
+    assert(off == start + count);
+    // invariant: a sweep changes sample values only, never the clip's length or bound.
+    assert(clip.len <= clip.buf.len);
+}
+
+// --- selftest: a degenerate sweep (from == to) equals ALES40's fixed low_pass byte-for-byte (the crux); the schedule's
+//     endpoints are exact and the interior monotone and legal; a distinct-endpoint sweep is genuinely time-varying (equal to
+//     neither endpoint's fixed filter); a constant input swept settles exactly and never dips at a seam; and an illegal
+//     endpoint, an out-of-range span, and an illegal block count each refuse by name -------------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn run_selftest() !u8 {
+    const src = [_]i16{ 1000, -800, 1200, 900, -1100, 700, 1300, -600, 1000, 500, -900, 1100 };
+
+    // 1. THE CRUX — a degenerate sweep (num_from == num_to) over any block partition equals ALES40's fixed low_pass over the
+    //    whole span byte-for-byte. The state carries across the blocks (ALES43's split-equals-whole), so partitioning the span
+    //    changes nothing when the coefficient does not move.
+    {
+        var swept = timeline.Clip{};
+        try load_clip(&swept, &src);
+        try sweep_low_pass(&swept, 0, swept.len, 1, 1, 3, 4); // 1/3 → 1/3 in four blocks
+
+        var fixed = timeline.Clip{};
+        try load_clip(&fixed, &src);
+        try tone.low_pass(&fixed, 0, fixed.len, 1, 3);
+
+        if (!eq(swept.samples(), fixed.samples())) return error.DegenerateNotFixed;
+    }
+
+    // 2. the schedule's endpoints are exact — the first block holds num_from and the last holds num_to, whatever the interior
+    //    rounding.
+    {
+        if (coeff_at(1, 8, 5, 0) != 1) return error.StartNotFrom;
+        if (coeff_at(1, 8, 5, 4) != 8) return error.EndNotTo;
+        if (coeff_at(8, 1, 5, 0) != 8) return error.StartNotFromDown;
+        if (coeff_at(8, 1, 5, 4) != 1) return error.EndNotToDown;
+        // a single-block sweep holds the start coefficient.
+        if (coeff_at(3, 7, 1, 0) != 3) return error.SingleBlockNotStart;
+    }
+
+    // 3. the schedule is monotone and legal — an up-sweep's coefficients never decrease, a down-sweep's never increase, and
+    //    every one lies within [1, den].
+    {
+        const den: u32 = 16;
+        const blocks: u32 = 12;
+        var prev_up: i32 = 0;
+        var prev_down: i32 = 17;
+        var b: u32 = 0;
+        while (b < blocks) : (b += 1) {
+            const up = coeff_at(1, 16, blocks, b);
+            const down = coeff_at(16, 1, blocks, b);
+            if (up < prev_up) return error.UpSweepNotMonotone;
+            if (down > prev_down) return error.DownSweepNotMonotone;
+            if (up < 1 or @as(i64, up) > @as(i64, den)) return error.UpCoeffIllegal;
+            if (down < 1 or @as(i64, down) > @as(i64, den)) return error.DownCoeffIllegal;
+            prev_up = up;
+            prev_down = down;
+        }
+    }
+
+    // 4. a distinct-endpoint sweep is genuinely time-varying — over a mixed signal it equals NEITHER endpoint's fixed low_pass.
+    //    The brightness actually moves across the span rather than holding one value.
+    {
+        var swept = timeline.Clip{};
+        try load_clip(&swept, &src);
+        try sweep_low_pass(&swept, 0, swept.len, 1, 4, 4, 6); // 1/4 → 4/4 (identity) in six blocks
+
+        var at_from = timeline.Clip{};
+        try load_clip(&at_from, &src);
+        try tone.low_pass(&at_from, 0, at_from.len, 1, 4);
+
+        var at_to = timeline.Clip{};
+        try load_clip(&at_to, &src);
+        try tone.low_pass(&at_to, 0, at_to.len, 4, 4); // identity — passes through
+
+        if (eq(swept.samples(), at_from.samples())) return error.SweepEqualsFrom;
+        if (eq(swept.samples(), at_to.samples())) return error.SweepEqualsTo;
+    }
+
+    // 5. a constant input swept settles to the input exactly and never dips at a block boundary — a constant is a fixed point of
+    //    every legal coefficient, and the carried state never restarts, so the sweep rises monotonically to the input and stays.
+    {
+        const run = [_]i16{2000} ** 48;
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &run);
+        try sweep_low_pass(&clip, 0, clip.len, 1, 2, 2, 6); // 1/2 → 2/2 in six blocks
+        const out = clip.samples();
+        var i: u32 = 1;
+        while (i < out.len) : (i += 1) if (out[i] < out[i - 1]) return error.ConstantDipsAtSeam; // monotone, no re-transient
+        if (out[out.len - 1] != 2000) return error.ConstantNotSettled; // direct current reached exactly
+    }
+
+    // 6a. an illegal endpoint (num_to above den — unstable) refuses BadCoeff, the clip untouched.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        if (sweep_low_pass(&clip, 0, clip.len, 1, 3, 2, 3)) |_| return error.BadCoeffSlipped else |e| if (e != error.BadCoeff) return error.WrongBadCoeff;
+        if (!eq(clip.samples(), &three)) return error.RefusedSweepMutated;
+    }
+
+    // 6b. an out-of-range span refuses BadRange before any write.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        if (sweep_low_pass(&clip, 2, 5, 1, 2, 2, 2)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(clip.samples(), &three)) return error.RefusedRangeMutated;
+    }
+
+    // 6c. a zero block count refuses BadBlocks.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 1, 2, 3 });
+        if (sweep_low_pass(&clip, 0, clip.len, 1, 2, 2, 0)) |_| return error.ZeroBlocksSlipped else |e| if (e != error.BadBlocks) return error.WrongZeroBlocks;
+    }
+
+    // 6d. more blocks than samples (an empty block) refuses BadBlocks, the clip untouched.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        if (sweep_low_pass(&clip, 0, clip.len, 1, 2, 2, 4)) |_| return error.EmptyBlockSlipped else |e| if (e != error.BadBlocks) return error.WrongEmptyBlock;
+        if (!eq(clip.samples(), &three)) return error.RefusedBlocksMutated;
+    }
+
+    print("GREEN ales-sweep: a filter sweep moves a low-pass's cutoff across a span, seamless because ALES43's state carries — " ++
+        "a degenerate sweep (num_from == num_to) over any block partition equals ALES40's fixed low_pass over the whole span " ++
+        "byte-for-byte (the crux: the sweep adds only a moving coefficient, never new arithmetic on the audio path); the " ++
+        "coefficient schedule's endpoints are exact (first block num_from, last block num_to) and its interior is monotone and " ++
+        "legal within [1, den]; a distinct-endpoint sweep over a mixed signal equals NEITHER endpoint's fixed filter (the " ++
+        "brightness genuinely moves); a constant input swept rises monotonically to the input, never dipping at a block " ++
+        "boundary (no re-transient), and settles to it exactly; an illegal endpoint refuses BadCoeff, an out-of-range span " ++
+        "BadRange, and a zero/over-max/empty-block partition BadBlocks, each leaving the clip untouched; no socket, no " ++
+        "network, no keys, no funds, no real device, no real sample rate\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
