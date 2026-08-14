@@ -1,0 +1,152 @@
+//! lotus/stereo_insert_join.rye — ALES29: the two-sided insert-join carried into stereo — both channels, both seams, in
+//! lockstep. ALES28 gave a mono Clip the trailing-seam law: a span dropped into the MIDDLE of a clip has two seams, not one, and
+//! `insert_join` crosses both equal-power (ALES26's `join` applied once per edge) so neither boundary steps into a click. Yet a
+//! Lotus master is a StereoClip (ALES10), two Clips heard together, and a keeper inserts a stereo span, not one channel. This
+//! rung runs ALES28's `insert_join` on each channel with the SAME `at`, `lead`, and `trail`, so the insert lands identically in
+//! both and the stereo image stays aligned — exactly the lockstep the graft (ALES24), clipboard (ALES25), and stereo join
+//! (ALES27) already keep for the copy, the paste, and the append-join.
+//!
+//! The crux is atomicity across the two channels: a stereo insert grows both by the same shared count (clip + span − lead −
+//! trail) or touches NEITHER. Because a StereoClip's two channels are always one length (ALES10's invariant) and a stereo span
+//! is one length (both incoming heads equal, refused BadRange otherwise), every one of ALES28's guards depends ONLY on the
+//! shared length and the shared span dimensions — never on a sample's value. So `insert_join` on the left succeeds if and only
+//! if it succeeds on the right: a refused insert refuses on the first channel, atomically, before the second is ever called, and
+//! a legal insert lands in both. The two channels carry their own audio through their own two seams while staying one length.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES29.
+//! Design read: active-designing/20260814-fill-ales29-lotus-stereo-two-sided-insert-join.md
+//! Stands on: lotus/insert_join.rye (ALES28) — the mono two-sided `insert_join` run once per channel, reused whole over its
+//! public API, so the stereo insert inherits the proven trailing-seam law and its scratch-clip atomicity rather than re-deriving
+//! either; lotus/pan.rye (ALES10) — the StereoClip whose two channels share one length, the lockstep this rung keeps.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket, no
+//! network, no keys, no funds, no real device, no real speaker. The real two-channel sound-card write stays a paused round.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_insert_join.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const insert_join = @import("insert_join.rye");
+
+pub const stereo_insert_join_version = "20260814.143348";
+
+/// Insert a stereo span into a stereo master at offset `at`, crossing BOTH seams of BOTH channels equal-power, in lockstep.
+/// `ins_left` and `ins_right` are the incoming span's two channels (one length); each is two-sided-inserted with ALES28's
+/// `insert_join` at the same `at`, `lead`, and `trail`, so the seam moves through ALES12's −3 dB curve at both edges in both
+/// channels and each channel's new length is `clip + span − lead − trail`. Atomic across the two channels — a refusal leaves both
+/// untouched and aligned:
+///   • BadRange when the two incoming channels differ in length (a stereo span is one length), or on any of ALES28's own
+///     per-seam refusals (a past-the-master `at`, a `lead`/`trail` wider than its neighbour, or an overlap under two);
+///   • ClipFull when the two-seam result would overflow the fixed buffer.
+pub fn insert_join_stereo(master: *pan.StereoClip, at: u32, ins_left: []const i16, ins_right: []const i16, lead: u32, trail: u32) timeline.EditError!void {
+    // invariant: a StereoClip's two channels are always one length — the lockstep this rung is here to keep.
+    assert(master.left.len == master.right.len);
+    // invariant: a stereo span is one length, so the same (at, lead, trail) validates and applies to both channels.
+    if (ins_left.len != ins_right.len) return error.BadRange;
+
+    const old_len: u32 = master.left.len;
+    const n_ins: u32 = @intCast(ins_left.len);
+
+    // Apply the proven mono two-sided insert to each channel. Because every ALES28 guard depends only on the shared length and
+    // the shared span dimensions (never on a sample's value), the left insert refuses if and only if the right would — so a
+    // refusal refuses on the left, ATOMICALLY, before the right is ever touched (ALES28's scratch build leaves the left clip
+    // untouched on its own refusal), and a legal insert lands in both. `try` carries the exact fault by name.
+    try insert_join.insert_join(&master.left, at, ins_left, lead, trail);
+    try insert_join.insert_join(&master.right, at, ins_right, lead, trail);
+
+    // invariant: both channels grew by the same shared count (span − lead − trail, both overlaps shared) and stay one length —
+    // the stereo image is still aligned.
+    assert(master.left.len == old_len + n_ins - lead - trail);
+    assert(master.left.len == master.right.len);
+}
+
+// --- selftest: the stereo insert grows both channels equally (clip + span − lead − trail), each channel flowing through power
+//     at BOTH its seams; the two channels keep independent audio yet one length; and an unequal span, a past-the-master `at`, a
+//     lead wider than the head, a trail wider than the following audio, and an overflow each refuse by name leaving both
+//     channels untouched and aligned ------------------------------------------------------------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn run_selftest() !u8 {
+    // 1. the stereo insert grows BOTH channels by the shared count and keeps them one length — a 10-sample master with a
+    //    5-sample span inserted at the middle over lead 2 / trail 2 lands both channels at 10 + 5 − 2 − 2 = 11, still aligned.
+    {
+        var m = pan.StereoClip{};
+        try timeline.splice(&m.left, 0, &[_]i16{ 1, 1, 1, 1, 1, 2, 2, 2, 2, 2 });
+        try timeline.splice(&m.right, 0, &[_]i16{ 3, 3, 3, 3, 3, 4, 4, 4, 4, 4 });
+        try insert_join_stereo(&m, 5, &[_]i16{ 9, 9, 9, 9, 9 }, &[_]i16{ 8, 8, 8, 8, 8 }, 2, 2);
+        if (m.left.len != 11 or m.right.len != 11) return error.StereoLengthWrong;
+        if (m.left.len != m.right.len) return error.StereoNotAligned;
+    }
+
+    // 2. each channel flows through POWER at BOTH its seams independently — the leading seam continues the clip before the insert
+    //    (pure outgoing) and the trailing seam continues the audio after it (pure incoming), in each channel on its own audio.
+    //    Left has 100s then 200s; right has 500s then 600s; a span inserted at at=4 keeps each channel's own boundary samples.
+    {
+        var m = pan.StereoClip{};
+        try timeline.splice(&m.left, 0, &[_]i16{ 100, 100, 100, 100, 200, 200, 200, 200 });
+        try timeline.splice(&m.right, 0, &[_]i16{ 500, 500, 500, 500, 600, 600, 600, 600 });
+        try insert_join_stereo(&m, 4, &[_]i16{ 300, 300, 300, 300 }, &[_]i16{ 700, 700, 700, 700 }, 2, 2);
+        // each channel's leading seam head is its own pure-outgoing sample; its trailing seam tail its own pure-incoming sample.
+        if (m.left.samples()[2] != 100) return error.LeftLeadingWrong;
+        if (m.right.samples()[2] != 500) return error.RightLeadingWrong;
+        if (m.left.samples()[m.left.len - 1] != 200) return error.LeftTrailingWrong;
+        if (m.right.samples()[m.right.len - 1] != 600) return error.RightTrailingWrong;
+        if (m.left.len != 8 or m.right.len != 8) return error.Case2LengthWrong; // 8 + 4 − 2 − 2
+    }
+
+    // 3. every edge refuses BY NAME before either channel is touched, and a refused insert leaves both channels untouched and
+    //    aligned — the stereo atomicity this rung owes.
+    {
+        var m = pan.StereoClip{};
+        const l = [_]i16{ 10, 20, 30, 40, 50, 60 };
+        const r = [_]i16{ 70, 80, 90, 11, 12, 13 };
+        try timeline.splice(&m.left, 0, &l);
+        try timeline.splice(&m.right, 0, &r);
+
+        // an unequal-length stereo span — a stereo span is one length.
+        if (insert_join_stereo(&m, 3, &[_]i16{ 9, 9, 9 }, &[_]i16{ 9, 9 }, 2, 2)) |_| return error.UnequalSpanSlipped else |e| if (e != error.BadRange) return error.WrongUnequalSpan;
+        // an insert point past the master's length.
+        if (insert_join_stereo(&m, 7, &[_]i16{ 9, 9, 9, 9 }, &[_]i16{ 9, 9, 9, 9 }, 2, 2)) |_| return error.PastMasterSlipped else |e| if (e != error.BadRange) return error.WrongPastMaster;
+        // a lead wider than the head (at=1 leaves a 1-sample head).
+        if (insert_join_stereo(&m, 1, &[_]i16{ 9, 9, 9, 9 }, &[_]i16{ 9, 9, 9, 9 }, 2, 2)) |_| return error.LeadTooWideSlipped else |e| if (e != error.BadRange) return error.WrongLeadTooWide;
+        // a trail wider than the following audio (at=5 leaves a 1-sample following tail).
+        if (insert_join_stereo(&m, 5, &[_]i16{ 9, 9, 9, 9 }, &[_]i16{ 9, 9, 9, 9 }, 2, 2)) |_| return error.TrailTooWideSlipped else |e| if (e != error.BadRange) return error.WrongTrailTooWide;
+        // both channels are untouched and aligned after every refusal.
+        if (!eq(m.left.samples(), &l) or !eq(m.right.samples(), &r)) return error.RefusedStereoMutated;
+        if (m.left.len != m.right.len) return error.RefusedStereoMisaligned;
+
+        // an overflowing insert refuses ClipFull — the two-seam result would pass the fixed bound.
+        var big = pan.StereoClip{};
+        big.left.len = timeline.max_clip - 1; // one sample of room
+        big.right.len = timeline.max_clip - 1;
+        const wide = [_]i16{ 0, 0, 0, 0, 0, 0, 0, 0 }; // grows by span − 4, past the one free sample
+        if (insert_join_stereo(&big, big.left.len - 4, &wide, &wide, 2, 2)) |_| return error.OverflowSlipped else |e| if (e != error.ClipFull) return error.WrongOverflow;
+        if (big.left.len != big.right.len) return error.OverflowMisaligned;
+    }
+
+    print("GREEN ales-stereo-insert-join: the two-sided insert-join carries into stereo — ALES28's mono `insert_join` run on " ++
+        "each channel with the SAME at/lead/trail, so a span dropped into the MIDDLE of a stereo master flows through ALES12's " ++
+        "equal-power curve at BOTH seams in BOTH channels and the stereo image stays aligned. Both channels grow by the shared " ++
+        "count (10,5,2,2 → 11 each) or NEITHER is touched: because a StereoClip's channels are one length and a stereo span is " ++
+        "one length, every ALES28 guard depends only on the shared dimensions, so the left insert refuses if and only if the " ++
+        "right would — atomically, before the second channel is touched. Each channel carries its own audio through its own two " ++
+        "seams (left 100→200, right 500→600) while staying one length; and an unequal span, a past-the-master position, a lead " ++
+        "wider than the head, a trail wider than the following audio, and an overflow each refuse by name leaving both channels " ++
+        "untouched and aligned; no socket, no network, no keys, no funds, no real device, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
