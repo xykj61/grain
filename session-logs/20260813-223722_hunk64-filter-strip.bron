@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260813.223722
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention · ai-jail · Vultr SEA VPS
+title HUNK64 — the filter strip
+prompt Keep going Lindy-first crux-first on the Season A Photos journey; approve own design rounds; send each finished increment.
+think HUNK63 landed the filter tool but showed one filter at a time. The design doc's road-on names the filter strip (every filter over the picture, selection marked) as the next rung — the exact parallel of the crop overlay (HUNK61) framing a pending crop and the filmstrip (HUNK54) tiling the history.
+think Reused the filmstrip's tiling idiom exactly: preview each filter over the current view, tile thumbnails left to right, a marker row (white anchor slot 2, block_cell) over the selected band. Bounded by max_strip_cols = image_skate.max_map_cols; refuses StripTooWide before allocating past the ceiling.
+think Crux: the strip must preview over the CURRENT view, not the stale source, so after a commit every candidate is shown over the edited picture. Proven by committing mono then asserting each band equals a direct preview over the grayscale view, and that the view really changed (!same_bytes source).
+obs Built and ran GREEN on the first try — the tiling idiom transplanted cleanly. Replaced an initial magic-number ceiling helper with the real filter_preset.max_presets import for honesty.
+obs brushstroke/ already on the TAME roster (REDS #76); no roster change needed. tame_style_scan_bans GREEN, width exit 0.
+loom witness=hunk_filter_strip_witness build=ok selftest=green filters=9 strip=18x3 marker_slot=2
+file brushstroke/filter_strip.rye paint_strip — tile every filter's preview over the current view, mark the selected band
+file tools/hunk_filter_strip_witness.rish builds the module and checks the GREEN claims on metal
+recommend keep-going a swipe-gesture driver (HUNK50 finger law → select_next/prev over the strip bands, tap-to-select paralleling HUNK55 filmstrip tap), or a unified Photos editor owning one cursor both crop and filter commit into; hardware buys stay custody gates #2/#3

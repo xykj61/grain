@@ -1,0 +1,241 @@
+//! brushstroke/filter_strip.rye — HUNK64: the filter strip — every filter previewed over the picture, the selection marked.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK64.
+//! Design read: active-designing/20260813-222956_hunk-filter-picker-exploration.md ("The road on from here")
+//! Teacher, thanked clean-room: the filter strip of a photo app (iCloud Photos / Instagram / VSCO) — a row of the same
+//! photo under each named filter, the chosen one framed, so a keeper reads the whole book at a glance (concept only, siloed).
+//!
+//! HUNK63 gave a keeper the filter tool — walk the stock filters, preview the selected one, commit it. Yet the picker
+//! showed one filter at a time; a keeper could not see the WHOLE book over their own picture and read which one they had
+//! under their finger. This rung paints that carousel. `paint_strip` previews every filter in the picker's book over the
+//! CURRENT view (HUNK33/HUNK13, pure) and tiles the thumbnails left to right into one Skate grid, a marker row above
+//! wearing a solid block over the SELECTED band — so the filter a keeper reads as chosen is exactly the one `commit` will
+//! push. The exact parallel of the crop overlay (HUNK61) framing the pending crop, and of the filmstrip (HUNK54) tiling
+//! the history. A pure read over three proven seams; it invents no pixel op and refuses `StripTooWide` rather than
+//! allocate past the map ceiling. The source is never mutated. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/filter_strip.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const edit_preview = @import("edit_preview.rye");
+const image_skate = @import("image_skate.rye");
+const skate = @import("skate_grid.rye");
+const filter_preset = @import("filter_preset.rye");
+const filter_picker = @import("filter_picker.rye");
+
+pub const filter_strip_version = "20260813.223956";
+
+/// The widest strip this rung paints — the down-map ceiling, so the tiled grid stays bounded (TAME bound at
+/// construction). A book of many thumbnails must still fit inside the map ceiling, or it refuses rather than allocating
+/// past the bound.
+pub const max_strip_cols: u32 = image_skate.max_map_cols;
+
+/// The palette slot the "you are here" marker wears — white (anchor slot 2), a solid block over the selected filter's
+/// band so a keeper reads their choice at a glance. Distinct from the thumbnail colors beneath it.
+pub const marker_slot: u8 = 2;
+
+pub const StripError = error{
+    StripTooWide,
+};
+
+/// Paint the filter strip: preview every filter in the picker's book over the current view, tiled left to right into one
+/// grid (`count·tcols` wide, `trows + 1` tall), a marker row above wearing a solid block over the selected band. The band
+/// a keeper reads as chosen is exactly the filter `picker.commit` will push. Refuses `StripTooWide` when the book would
+/// pass the map ceiling. Pure — the book and cursor are read, never moved, and the source is never mutated.
+pub fn paint_strip(
+    allocator: std.mem.Allocator,
+    picker: *const filter_picker.FilterPicker,
+    tcols: u32,
+    trows: u32,
+) !skate.Grid {
+    // invariant: a thumbnail has both dimensions, so each filter down-maps a real block.
+    assert(tcols >= 1);
+    assert(trows >= 1);
+    // invariant: the selection names a real filter — the marker always lands on a held band.
+    assert(picker.selection < picker.book.len());
+
+    const filters = picker.book.len();
+    // invariant: the book never outgrew its own ceiling before it is read.
+    assert(filters <= filter_preset.max_presets);
+    // A book wider than the map ceiling refuses rather than allocating past the bound.
+    if (filters > max_strip_cols / tcols) return error.StripTooWide;
+
+    const width = filters * tcols;
+    const height = trows + 1; // one marker row above the thumbnails
+    // invariant: the tiled grid stays within the named ceiling and holds a marker row above every thumbnail row.
+    assert(width <= max_strip_cols);
+    assert(height == trows + 1);
+
+    // The current view — the picture with every committed edit applied. Read once; every filter previews over it.
+    const view = try picker.current_view(allocator);
+    // invariant: the current view is a well-formed image the filters can preview over.
+    assert(view.pixels.len == @as(usize, view.width) * @as(usize, view.height) * 4);
+
+    var grid = try skate.Grid.init(allocator, width, height);
+    // The one seam every down-mapped surface shares: the block atlas and the seven anchor colors, so both the copied
+    // thumbnails and the marker paint solid blocks in the same fixed palette.
+    image_skate.set_anchor_palette(&grid);
+
+    // The marker row (row 0): a solid block over the selected filter's band.
+    {
+        const band = picker.selection;
+        // invariant: the marked band sits inside the strip.
+        assert(band < filters);
+        var mc: u32 = 0;
+        while (mc < tcols) : (mc += 1) {
+            const dst: usize = @intCast(band * tcols + mc);
+            // invariant: the marker cell sits inside the parallel cell and fg buffers.
+            assert(dst < grid.cells.len);
+            grid.cells[dst] = image_skate.block_cell;
+            grid.fg_index[dst] = marker_slot;
+        }
+    }
+
+    // The thumbnails (rows 1..): band `i` shows filter `i` previewed over the current view, down-mapped to tcols×trows.
+    var i: u32 = 0;
+    while (i < filters) : (i += 1) {
+        // invariant: the previewed filter is a real filter in the book.
+        assert(i < picker.book.len());
+        const thumb = try edit_preview.preview(allocator, &view, &picker.book.at(i).list, tcols, trows);
+        // invariant: the thumbnail is exactly the tile the strip reserved for it.
+        assert(thumb.cols == tcols);
+        assert(thumb.rows == trows);
+
+        var tr: u32 = 0;
+        while (tr < trows) : (tr += 1) {
+            var tc: u32 = 0;
+            while (tc < tcols) : (tc += 1) {
+                const src: usize = @intCast(tr * tcols + tc);
+                const dst: usize = @intCast((tr + 1) * width + (i * tcols + tc));
+                // invariant: both the source thumbnail cell and the destination cell sit inside their grids.
+                assert(src < thumb.cells.len);
+                assert(dst < grid.cells.len);
+                grid.cells[dst] = thumb.cells[src];
+                grid.fg_index[dst] = thumb.fg_index[src];
+            }
+        }
+    }
+    // invariant: exactly one thumbnail was tiled per filter band.
+    assert(i == filters);
+    return grid;
+}
+
+// --- selftest: a colour source — the strip tiles every stock filter over the current view (each band equal to a direct
+//     preview cell-for-cell), the marker sits over the selected band and follows the selection, the strip previews over
+//     the edited view after a commit, and a too-wide strip refuses by name -----------------------------------------
+
+fn craft_colour(allocator: std.mem.Allocator, w: u32, h: u32) !qoi.Pixmap {
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            buf[off] = @intCast(x * 40 + 20);
+            buf[off + 1] = @intCast(y * 30 + 10);
+            buf[off + 2] = @intCast(((x * 3 + y * 7) * 5) & 0xff);
+            buf[off + 3] = 255;
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+/// Assert every thumbnail band equals a direct preview of that filter over `view`, cell-for-cell (rows 1..).
+fn assert_bands_match(garden: std.mem.Allocator, grid: *const skate.Grid, picker: *const filter_picker.FilterPicker, view: *const qoi.Pixmap, tcols: u32, trows: u32) !void {
+    const filters = picker.book.len();
+    const width = filters * tcols;
+    var i: u32 = 0;
+    while (i < filters) : (i += 1) {
+        const thumb = try edit_preview.preview(garden, view, &picker.book.at(i).list, tcols, trows);
+        var tr: u32 = 0;
+        while (tr < trows) : (tr += 1) {
+            var tc: u32 = 0;
+            while (tc < tcols) : (tc += 1) {
+                const src: usize = @intCast(tr * tcols + tc);
+                const dst: usize = @intCast((tr + 1) * width + (i * tcols + tc));
+                assert(grid.cells[dst] == thumb.cells[src]);
+                assert(grid.fg_index[dst] == thumb.fg_index[src]);
+            }
+        }
+    }
+}
+
+/// Assert the marker row (row 0) wears the marker block over `band` and nothing elsewhere.
+fn assert_marker_on(grid: *const skate.Grid, band: u32, tcols: u32) void {
+    var c: u32 = 0;
+    while (c < grid.cols) : (c += 1) {
+        const in_band = c >= band * tcols and c < (band + 1) * tcols;
+        const idx: usize = @intCast(c);
+        if (in_band) {
+            assert(grid.fg_index[idx] == marker_slot);
+            assert(grid.cells[idx] == image_skate.block_cell);
+        } else {
+            assert(grid.fg_index[idx] != marker_slot);
+        }
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const pm = try craft_colour(garden, 4, 4);
+    var pk = try filter_picker.FilterPicker.open(&pm, 2, 2);
+    const tcols: u32 = 2;
+    const trows: u32 = 2;
+
+    // The strip tiles every stock filter (nine) over the current view; it is filters·tcols wide, trows+1 tall.
+    pk.select_to(0); // "vivid"
+    {
+        const grid = try paint_strip(garden, &pk, tcols, trows);
+        assert(grid.cols == 9 * tcols);
+        assert(grid.rows == trows + 1);
+        // Each band equals a direct preview of that filter over the source (the current view, no edits yet).
+        const view0 = try pk.current_view(garden);
+        try assert_bands_match(garden, &grid, &pk, &view0, tcols, trows);
+        // The marker sits over band 0 (the selected filter) and nowhere else.
+        assert_marker_on(&grid, 0, tcols);
+    }
+
+    // Moving the selection moves the marker — the strip reads which filter is under the finger.
+    pk.select_to(3); // "noir"
+    {
+        const grid = try paint_strip(garden, &pk, tcols, trows);
+        assert_marker_on(&grid, 3, tcols);
+    }
+
+    // After committing a filter, the strip previews every candidate over the NEW current view, not the stale source.
+    pk.select_to(2); // "mono"
+    _ = try pk.commit(garden); // the view is now grayscale
+    {
+        const grid = try paint_strip(garden, &pk, tcols, trows);
+        const edited = try pk.current_view(garden); // the committed grayscale view
+        assert(!edited.same_bytes(&pm)); // the view really changed
+        try assert_bands_match(garden, &grid, &pk, &edited, tcols, trows); // the strip previews over the edited view
+        assert_marker_on(&grid, 2, tcols); // the marker still reads the selection
+    }
+
+    // A strip wider than the map ceiling refuses StripTooWide rather than allocating past the bound.
+    {
+        if (paint_strip(garden, &pk, max_strip_cols, trows)) |_| return error.WideSlipped else |e| {
+            if (e != error.StripTooWide) return error.WrongWide;
+        }
+    }
+
+    print("GREEN filter-strip: a 4x4 colour source — the strip tiles all nine stock filters over the current view " ++
+        "(each band equal to a direct preview cell-for-cell, no drift), the marker sits over the selected band and " ++
+        "follows the selection, and after committing mono the strip previews every candidate over the edited " ++
+        "grayscale view (not the stale source) with the marker still reading the selection; a too-wide strip refuses " ++
+        "StripTooWide. HUNK63 picker, HUNK33 preview, HUNK54 tiling GREEN beneath; no network, no key, no funds\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: filter_strip selftest\n", .{});
+    return 1;
+}
