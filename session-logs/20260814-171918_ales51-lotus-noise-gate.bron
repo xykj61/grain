@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260814.171918
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title ALES51 — Lotus's noise gate: the compressor's threshold inverted
+prompt take the next agent-doable Lindy-first crux-first lap, self-approve the design round, send each finished increment to origin and xykj61, stop only at the custody gates in REMEMBER
+think ALES49 opened dynamics with the brickwall limiter and ALES50 softened it into the compressor. Lindy-first, crux-first, the next durable rung is the one the ALES50 witness itself named — invert the threshold into a gate: where the compressor leans on what rises ABOVE the threshold, the gate leans on what falls BELOW it, silencing the hiss between words, the amp hum, the room tone in a pause. It completes the dynamics family's loud-and-quiet halves.
+think Design: gate(clip, start, count, threshold, ratio_num, ratio_den) with ratio >= 1 — the exact mirror of compress. Below threshold, new_m = m·ratio_den/ratio_num (i64 divTrunc); at or above threshold, identity. Since ratio >= 1 the quotient <= m <= sample_max, so nothing on the audio path overflows, no saturate needed.
+think Crux chosen: unit ratio (ratio_num == ratio_den) is the identity EVERYWHERE (m·1 = |x| even below threshold) — the gate's counterpart to the compressor's unit-ratio identity; a higher ratio gates at least as hard (monotone); and a ratio far past the magnitude divides it to zero, dropping the quiet exactly to silence — the hard gate reached from within the downward expander.
+obs Ratio params are u32 (num >= den, den nonzero) — a sub-unity ratio would BOOST the quiet (a different tool) so it refuses BadRatio; threshold in [1, sample_max] else BadThreshold; span BadRange coincides by name with timeline/EQ/limiter/compressor. All checks before any write. The gate is compress.rye reflected: m > thr → reduce excess became m < thr → reduce whole magnitude; below-is-identity became above-is-identity.
+obs GREEN on the first build across seven clauses; ALES50 compressor re-run stays GREEN, so the inverted floor rests beside the softened ceiling. TAME bans clean; lotus/gate.rye carries plenty of asserts (not on the zero-assert ratchet). Third dynamics rung of the arc (ALES49·50·51), each sent as its own signed round to origin and xykj61.
+loom witness=ales_gate_witness green=1 clauses=7 family=dynamics rung=ALES51 reuses=timeline,compress
+file lotus/gate.rye the noise gate — pass at/above threshold, divide the below-threshold magnitude by the ratio, unit ratio the identity, high ratio the hard gate
+file tools/ales_gate_witness.rish builds, runs the selftest, asserts GREEN ales-gate, re-proves ALES50 compressor green
+file active-designing/20260814-171918_fill-ales51-lotus-noise-gate.md the self-approved design round for ALES51
+file lotus/README.md front door synced — the ALES51 noise-gate sentence and the status header
+recommend keep-going the dynamics family now holds the brickwall (ALES49), the softened ratio (ALES50), and the inverted floor (ALES51); the next natural crux is an attack/hold/release envelope that gives all three a real time base, or a soft knee that rounds the threshold's corner
