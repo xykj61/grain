@@ -98,6 +98,19 @@ pub const EditCursor = struct {
         assert(self.position <= self.list.count);
     }
 
+    /// Jump the position to `target`, clamping to `0..=list.count` without under/overflow. A jump is a multi-step walk
+    /// that forgets nothing — every edit stays reachable, unlike `push` which discards the redo tail — so seeking back
+    /// then forward recovers the live edge byte-for-byte. A tap-to-jump surface (HUNK55) lands the cursor on a tapped
+    /// filmstrip band through this one move. A no-op when `target` already equals the position.
+    pub fn seek(self: *EditCursor, target: u32) void {
+        // invariant: the cursor stands within its history before the jump.
+        assert(self.position <= self.list.count);
+        self.position = if (target > self.list.count) self.list.count else target;
+        // invariant: the sought position is the clamped target and stays within the history.
+        assert(self.position <= self.list.count);
+        assert(self.position == target or self.position == self.list.count);
+    }
+
     /// The count of edits behind the cursor — the undo depth.
     pub fn depth(self: *const EditCursor) u32 {
         // invariant: the cursor stands within its history.
@@ -235,6 +248,31 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(full_cur.position == edits.max_edits);
     if (full_cur.push(.flip_v)) |_| return error.CeilingSlipped else |e| {
         if (e != error.TooManyEdits) return error.WrongCeiling;
+    }
+
+    // Seek jumps the position in one move and forgets nothing: on the branched 3-edit history, seek to 1, view the
+    // one-edit image, seek back to 3, and the full picture returns byte-for-byte — every edit stayed reachable. A seek
+    // past the count clamps to the live edge; a seek to 0 stays at the original.
+    {
+        var s = EditCursor.init();
+        try s.push(.{ .crop = .{ .x = 1, .y = 1, .w = 4, .h = 4 } });
+        try s.push(.{ .rotate = .{ .turns = 1 } });
+        try s.push(.{ .adjust = .{ .brightness = 40, .num = 1, .den = 1 } });
+        const full_s = try view(garden, &pm, &s);
+        s.seek(1);
+        assert(s.position == 1);
+        const at1 = try view(garden, &pm, &s);
+        assert(at1.same_bytes(&by_hand_crop)); // one edit in effect: the crop alone
+        s.seek(3);
+        assert(s.position == 3);
+        const back = try view(garden, &pm, &s);
+        assert(back.same_bytes(&full_s)); // a jump forgot nothing — the live edge recovered
+        s.seek(99);
+        assert(s.position == 3); // clamped to the count, never past the live edge
+        s.seek(0);
+        assert(s.position == 0); // seek to the original
+        const orig = try view(garden, &pm, &s);
+        assert(orig.same_bytes(&pm));
     }
 
     print("GREEN image-edit-cursor: a {d}-edit history walks — undo to {d} equals the first two verbs by hand and " ++
