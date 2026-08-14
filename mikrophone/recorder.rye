@@ -1,0 +1,242 @@
+//! mikrophone/recorder.rye — DREY2: the recorder controls. A sample lands in the session only while the recorder is
+//! actively recording; a paused, idle, or stopped recorder refuses the sample by name, and every illegal control
+//! transition refuses by name — no byte enters the buffer outside a live record run.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY2.
+//! Design read: active-designing/20260814-021722_drey2-recorder-control-state-machine-exploration.md
+//! Stands on: mikrophone/session.rye (DREY0) — the memory that forgets. The recorder gates its `capture`.
+//!
+//! A field recorder is not a raw buffer a keeper writes into byte by byte — it is a device with a record button, a
+//! pause, a stop. This rung proves that control discipline pure: four states (idle · recording · paused · stopped) and a
+//! small set of transitions, with the single invariant that `feed` reaches `session.capture` ONLY in the recording
+//! state. The forgetting promise deepens — a paused or stopped recorder accepts nothing, and only what landed during a
+//! live recording can ever be committed and carried. No disk, no network, no key signs, no funds (custody gate #2 —
+//! real hardware, a real record button — untouched).
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/recorder.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const session = @import("session.rye");
+
+pub const recorder_version = "20260814.021722";
+
+/// The recorder's control state. A fresh recorder is `idle`; `start` opens a run, `pause`/`resume` hold and continue it,
+/// and `stop` ends it. `stopped` is terminal for this powered run — a keeper power-cycles to begin again.
+pub const RecState = enum {
+    idle,
+    recording,
+    paused,
+    stopped,
+};
+
+pub const RecorderError = error{
+    AlreadyRecording,
+    NotRecording,
+    NotPaused,
+    Stopped,
+};
+
+/// A Mikrophone field recorder: the session that forgets, plus the control state that decides when a sample may land.
+/// Nothing beyond the session's own fixed buffers — no heap outlives the power.
+pub const Recorder = struct {
+    ses: session.Session = session.Session.init(),
+    state: RecState = .idle,
+
+    /// A fresh, idle recorder over a fresh powered session.
+    pub fn init() Recorder {
+        return Recorder{};
+    }
+
+    /// The control state as it stands.
+    pub fn control(self: *const Recorder) RecState {
+        return self.state;
+    }
+
+    /// The working buffer of the underlying session — exactly the samples fed during recording so far.
+    pub fn working(self: *const Recorder) []const u8 {
+        return self.ses.working();
+    }
+
+    /// The one committed payload, read through the recorder that holds the session — empty until a commit lands.
+    pub fn committed_carry(self: *const Recorder) []const u8 {
+        return self.ses.carry();
+    }
+};
+
+/// Open a record run: `idle → recording`. A recorder already recording (or paused mid-run) refuses `AlreadyRecording`;
+/// a stopped recorder refuses `Stopped` — a finished run does not reopen without a power cycle.
+pub fn start(self: *Recorder) !void {
+    // invariant: a run is opened only from idle — recording/paused are already open, stopped is finished.
+    if (self.state == .stopped) return error.Stopped;
+    if (self.state != .idle) return error.AlreadyRecording;
+    self.state = .recording;
+    // invariant: the recorder is now recording, ready to accept samples.
+    assert(self.state == .recording);
+}
+
+/// Accept one sample into the session — ONLY while recording. Any other state refuses `NotRecording` before a byte
+/// moves; a full session still surfaces its own `BufferFull`. This is the single door from the control to the buffer.
+pub fn feed(self: *Recorder, sample: u8) !void {
+    // invariant: a sample lands only during a live recording — the founding gate of the record control.
+    if (self.state != .recording) return error.NotRecording;
+    const before = self.ses.working().len;
+    try session.capture(&self.ses, sample);
+    // invariant: exactly one sample was accepted into the working buffer.
+    assert(self.ses.working().len == before + 1);
+}
+
+/// Hold the run: `recording → paused`. Only a recording recorder can pause (`NotRecording` otherwise). The buffer is
+/// untouched — pause holds what was captured, it does not forget it.
+pub fn pause(self: *Recorder) !void {
+    // invariant: only a live recording can be paused.
+    if (self.state != .recording) return error.NotRecording;
+    const held = self.ses.working().len;
+    self.state = .paused;
+    // invariant: pausing changes only the control state — not one captured byte.
+    assert(self.state == .paused);
+    assert(self.ses.working().len == held);
+}
+
+/// Continue a held run: `paused → recording`. Only a paused recorder can resume (`NotPaused` otherwise). The earlier
+/// samples stand; feeding continues after them in order.
+pub fn resume_run(self: *Recorder) !void {
+    // invariant: only a paused run can resume — resuming is meaningless from any other state.
+    if (self.state != .paused) return error.NotPaused;
+    const held = self.ses.working().len;
+    self.state = .recording;
+    // invariant: resuming changes only the control state — the held buffer is carried forward whole.
+    assert(self.state == .recording);
+    assert(self.ses.working().len == held);
+}
+
+/// End the run: `recording | paused → stopped`. The captured buffer is ready to commit; a sample fed after stop refuses
+/// `NotRecording`. An idle or already-stopped recorder refuses `NotRecording` — there is no live run to end.
+pub fn stop(self: *Recorder) !void {
+    // invariant: a run is ended only from an open state (recording or paused).
+    if (self.state != .recording and self.state != .paused) return error.NotRecording;
+    const held = self.ses.working().len;
+    self.state = .stopped;
+    // invariant: stopping changes only the control state — the captured buffer stands, ready to commit.
+    assert(self.state == .stopped);
+    assert(self.ses.working().len == held);
+}
+
+// --- selftest: samples land only while recording, the transitions are a real state machine, pause holds without
+//     forgetting, and only a recorded-and-committed run carries -------------------------------------------------------
+
+fn run_selftest() !u8 {
+    // 1. Samples land only while recording. An idle recorder refuses a feed; a started one accepts exactly.
+    {
+        var r = Recorder.init();
+        assert(r.control() == .idle);
+        // A feed before start refuses NotRecording before a byte moves.
+        if (feed(&r, 'x')) |_| {
+            return error.FedWhileIdle;
+        } else |e| {
+            if (e != error.NotRecording) return error.WrongIdleFeed;
+        }
+        try start(&r);
+        try feed(&r, 'g');
+        try feed(&r, 'r');
+        try feed(&r, 'a');
+        try feed(&r, 'i');
+        try feed(&r, 'n');
+        assert(std.mem.eql(u8, r.working(), "grain"));
+    }
+
+    // 2. The control transitions are a real state machine — each illegal move refuses by name.
+    {
+        var r = Recorder.init();
+        try start(&r);
+        // start on a recording recorder refuses AlreadyRecording.
+        if (start(&r)) |_| {
+            return error.DoubleStart;
+        } else |e| {
+            if (e != error.AlreadyRecording) return error.WrongDoubleStart;
+        }
+        // resume off a recording run refuses NotPaused.
+        if (resume_run(&r)) |_| {
+            return error.ResumedRecording;
+        } else |e| {
+            if (e != error.NotPaused) return error.WrongResume;
+        }
+        try stop(&r);
+        // A fresh start after stop refuses Stopped — a finished run does not reopen.
+        if (start(&r)) |_| {
+            return error.RestartedStopped;
+        } else |e| {
+            if (e != error.Stopped) return error.WrongRestart;
+        }
+        // pause off a stopped run refuses NotRecording.
+        if (pause(&r)) |_| {
+            return error.PausedStopped;
+        } else |e| {
+            if (e != error.NotRecording) return error.WrongPauseStopped;
+        }
+    }
+
+    // 3. Pause holds, it does not forget — the buffer across a pause is the samples before plus the samples after.
+    {
+        var r = Recorder.init();
+        try start(&r);
+        try feed(&r, 'h');
+        try feed(&r, 'i');
+        try pause(&r);
+        // A feed while paused refuses NotRecording — nothing lands during a hold.
+        if (feed(&r, '?')) |_| {
+            return error.FedWhilePaused;
+        } else |e| {
+            if (e != error.NotRecording) return error.WrongPausedFeed;
+        }
+        // The earlier samples still stand across the pause.
+        assert(std.mem.eql(u8, r.working(), "hi"));
+        try resume_run(&r);
+        try feed(&r, '!');
+        assert(std.mem.eql(u8, r.working(), "hi!"));
+    }
+
+    // 4. Only a recorded, committed run carries: recorded and stopped without a commit carries nothing; committed then
+    //    stopped carries exactly the committed bytes.
+    {
+        var r = Recorder.init();
+        try start(&r);
+        try feed(&r, 'l');
+        try feed(&r, 'o');
+        try feed(&r, 's');
+        try feed(&r, 't');
+        try stop(&r);
+        // Stopped without a commit — nothing carried.
+        assert(r.committed_carry().len == 0);
+
+        var r2 = Recorder.init();
+        try start(&r2);
+        try feed(&r2, 's');
+        try feed(&r2, 'a');
+        try feed(&r2, 'v');
+        try feed(&r2, 'e');
+        try session.commit(&r2.ses);
+        try stop(&r2);
+        // Committed before stop — exactly the committed bytes carry, and a feed after stop refuses.
+        assert(std.mem.eql(u8, r2.committed_carry(), "save"));
+        if (feed(&r2, 'X')) |_| {
+            return error.FedAfterStop;
+        } else |e| {
+            if (e != error.NotRecording) return error.WrongStopFeed;
+        }
+        assert(std.mem.eql(u8, r2.committed_carry(), "save"));
+    }
+
+    print("GREEN drey-recorder: the Mikrophone recorder gates the session that forgets — a sample lands ONLY while " ++
+        "recording (a feed in idle, paused, or stopped refuses NotRecording before a byte moves), the control " ++
+        "transitions are a real state machine (AlreadyRecording, NotPaused, Stopped each refuse by name), pause holds " ++
+        "the buffer without forgetting it, and only a recorded-and-committed run carries. The record button proven " ++
+        "pure before metal; no disk, no network, no key, no funds\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
