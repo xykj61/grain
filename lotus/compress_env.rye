@@ -1,0 +1,294 @@
+//! lotus/compress_env.rye — ALES53: an attack/release compressor — the compressor's softened ceiling given a patient sense of
+//! time. The compressor (ALES50) leans on a sample the instant it sees it: a peak the moment it arrives is already softened, and
+//! the softening vanishes the moment the peak passes. A real compressor breathes — it hears a peak ARRIVE and leans in over a few
+//! samples (the attack), then eases the gain back as the sound falls away (the release). ALES52 built exactly that breath (an
+//! envelope follower, a running estimate of how loud the signal is right now) and proved it once. This rung SPENDS that proof: it
+//! drives the gain reduction from the smoothed envelope rather than the bare sample, so the compressor leans in patiently and lets
+//! go gently. The time base is not re-invented — the module reads the one ALES52 proved, through its public env_step.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES53.
+//! Design read: active-designing/20260814-174500_fill-ales53-lotus-attack-release-compressor.md
+//! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/sample_max, the range law shape; lotus/compress.rye (ALES50) —
+//! the softened ceiling this drives over time, re-proven beside it; lotus/envelope.rye (ALES52) — the proven time base, its
+//! env_step advancing the same follower one sample at a time.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket,
+//! no network, no keys, no funds, no real device, no real sample rate — the attack and release are fractions per sample index,
+//! not milliseconds against a clock, and the threshold is a magnitude in sample units, the ratio a plain fraction. One envelope
+//! step and at most one multiply-divide per sample; nothing on the path can overflow, since the compressed envelope is at most
+//! the envelope so the gain sits in (0, 1] and every written magnitude is at most the input's, which already fits i16.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/compress_env.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const compress = @import("compress.rye");
+const envelope = @import("envelope.rye");
+
+pub const compress_env_version = "20260814.174500";
+
+/// The attack/release compressor's faults, one consistent name each: a threshold outside [1, sample_max], a ratio below unity or
+/// with a zero denominator, an attack or release coefficient outside (0, 1], and a span outside the samples. Each coincides by
+/// name with the tool it borrows from — BadThreshold and BadRatio from the compressor, BadCoeff from the follower, BadRange from
+/// the whole family — so a composer sees one consistent fault surface.
+pub const CompressEnvError = error{
+    /// A threshold of zero (no band left to compress below it) or above sample_max (nothing could ever cross it).
+    BadThreshold,
+    /// A ratio below unity (would expand, not compress) or with a zero denominator — refused, no write.
+    BadRatio,
+    /// An attack or release coefficient outside (0, 1] — a frozen envelope, an overshooting step, or a divide by zero.
+    BadCoeff,
+    /// A span outside the current samples — refused, no write.
+    BadRange,
+};
+
+/// Compress `count` samples starting at `start` in place above the magnitude `threshold` by the ratio `ratio_num/ratio_den`,
+/// the gain reduction FOLLOWING an envelope that CONTINUES from the caller's `env` rather than from silence — the carried-state
+/// form (ALES43's lesson). Each sample advances the proven ALES52 follower one step (the attack fraction while it rises, the
+/// release while it falls); when the smoothed envelope sits within the threshold the sample passes byte-for-byte, and when it
+/// rises above, the envelope's excess is divided by the ratio (ALES50's softened ceiling) and that gain applied to the raw
+/// sample. The caller owns the i64 envelope across calls, so a span compressed in two pieces equals the whole once — no fresh
+/// transient at the seam. Refuses BadThreshold, BadRatio, BadCoeff, and BadRange before any write; on refusal the clip is
+/// untouched. Values only — never the length.
+pub fn compress_follow_carry(
+    clip: *timeline.Clip,
+    start: u32,
+    count: u32,
+    env: *i64,
+    threshold: i32,
+    ratio_num: u32,
+    ratio_den: u32,
+    attack_num: u32,
+    attack_den: u32,
+    release_num: u32,
+    release_den: u32,
+) CompressEnvError!void {
+    // invariant: the threshold is a legal magnitude — at least one sample unit and no greater than the i16 rail. Before any write.
+    if (threshold < 1) return error.BadThreshold;
+    if (threshold > @as(i32, timeline.sample_max)) return error.BadThreshold;
+    // invariant: the ratio is at least one (num >= den) and its denominator is nonzero — a ratio below one would expand.
+    if (ratio_den == 0) return error.BadRatio;
+    if (ratio_num < ratio_den) return error.BadRatio;
+    // invariant: both attack and release coefficients are legal fractions in (0, 1] — checked by the follower's one proven rule.
+    if (!envelope.coeff_ok(attack_num, attack_den)) return error.BadCoeff;
+    if (!envelope.coeff_ok(release_num, release_den)) return error.BadCoeff;
+    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
+    if (start > clip.len) return error.BadRange;
+    if (count > clip.len - start) return error.BadRange;
+
+    const thr: i64 = @as(i64, threshold);
+    const num: i64 = @as(i64, ratio_num);
+    const den: i64 = @as(i64, ratio_den);
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        const x: i16 = clip.buf[start + i];
+        // Advance the proven ALES52 follower one sample; e is the smoothed magnitude, in [0, sample_max].
+        _ = envelope.env_step(env, x, attack_num, attack_den, release_num, release_den);
+        const e: i64 = env.*;
+        // invariant: the envelope stays a legal magnitude — never negative, never past the rail (env_step's own guarantee).
+        assert(e >= 0 and e <= @as(i64, timeline.sample_max));
+        if (e > thr) {
+            const excess: i64 = e - thr; // strictly positive: the smoothed detector has crossed the ceiling
+            // The compressed envelope target — ALES50's softened ceiling, computed on the ENVELOPE not the bare sample.
+            const comp: i64 = thr + @divTrunc(excess * den, num);
+            // invariant: the compressed envelope sits within [threshold, envelope] — the gain comp/e is in (0, 1].
+            assert(comp >= thr and comp <= e);
+            const m: i64 = if (x < 0) -@as(i64, x) else @as(i64, x); // |x| — safe in i64 (|sample_min| = 32768 fits)
+            // Apply the gain comp/e to the raw sample. m·comp <= 32768·32767 fits i64; divTrunc keeps it at most m.
+            const new_m: i64 = @divTrunc(m * comp, e);
+            // invariant: the gain reduces, never boosts — a smoothed compressor only ever leans down.
+            assert(new_m <= m);
+            const y: i16 = @intCast(if (x < 0) -new_m else new_m); // safe: 0 <= new_m <= m <= 32768 fits i16 by sign
+            clip.buf[start + i] = y;
+            // invariant: the written sample holds the input's sign (magnitude only shrank).
+            assert((x >= 0 and y >= 0) or (x <= 0 and y <= 0));
+        }
+        // a sample whose smoothed envelope sits within the threshold is left exactly as it was — the gain reduction has not opened.
+    }
+    // invariant: a compressor changes sample values only, never the clip's length or bound.
+    assert(start + count <= clip.len);
+    assert(clip.len <= clip.buf.len);
+}
+
+/// Compress `count` samples starting at `start` in place, the gain reduction following an envelope that begins FROM SILENCE (a
+/// fresh env of 0) — one implementation shared with the carried form, so the two cannot drift. Refuses BadThreshold, BadRatio,
+/// BadCoeff, and BadRange before any write.
+pub fn compress_follow(
+    clip: *timeline.Clip,
+    start: u32,
+    count: u32,
+    threshold: i32,
+    ratio_num: u32,
+    ratio_den: u32,
+    attack_num: u32,
+    attack_den: u32,
+    release_num: u32,
+    release_den: u32,
+) CompressEnvError!void {
+    var env: i64 = 0;
+    return compress_follow_carry(clip, start, count, &env, threshold, ratio_num, ratio_den, attack_num, attack_den, release_num, release_den);
+}
+
+// --- selftest: silence stays silence; UNIT attack and release reduce it to the plain ALES50 compressor byte-for-byte (the
+//     instantaneous compressor is the zero-smoothing limit); UNIT RATIO is the identity everywhere; a loud signal has its
+//     magnitude reduced with the sign held and never expanding; a SLOWER attack lets the transient through (the gain reduction
+//     lags, the knob monotone); the state CARRIES so a span in two pieces equals the whole once; and a bad threshold, a sub-unity
+//     ratio, an illegal coefficient, and an out-of-range span each refuse by name -----------------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn abs16(v: i16) i32 {
+    return if (v < 0) -@as(i32, v) else @as(i32, v);
+}
+
+fn run_selftest() !u8 {
+    // 1. silence stays silence — an all-zero clip compresses to all zeros at any legal threshold, ratio, and coefficients.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0 });
+        try compress_follow(&clip, 0, clip.len, 1000, 4, 1, 1, 4, 1, 8);
+        const zeros = [_]i16{ 0, 0, 0, 0, 0, 0 };
+        if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
+    }
+
+    // 2. UNIT ATTACK AND RELEASE REDUCE IT TO THE PLAIN COMPRESSOR — with instant attack and release the envelope IS the
+    //    instantaneous magnitude (ALES52's unit identity), so the gain application lands each sample at exactly ALES50's output.
+    //    Proven by running BOTH tools on the same signal (|x| <= sample_max throughout) and demanding byte-for-byte equality.
+    {
+        const loud = [_]i16{ 5000, -5000, 800, -9000, 9000, -200, 32767, -32767, 1200 };
+        var smoothed = timeline.Clip{};
+        try load_clip(&smoothed, &loud);
+        try compress_follow(&smoothed, 0, smoothed.len, 1000, 4, 1, 1, 1, 1, 1); // instant attack, instant release
+        var plain = timeline.Clip{};
+        try load_clip(&plain, &loud);
+        try compress.compress(&plain, 0, plain.len, 1000, 4, 1); // the proven ALES50 compressor
+        if (!eq(smoothed.samples(), plain.samples())) return error.UnitNotPlainCompressor;
+    }
+
+    // 3. UNIT RATIO IS THE IDENTITY EVERYWHERE — ratio_num == ratio_den makes the compressed envelope equal the envelope, so the
+    //    gain is exactly one at every sample regardless of smoothing: the whole signal passes byte-for-byte.
+    {
+        const loud = [_]i16{ 3000, -3000, 500, -20000, 20000, -400 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &loud);
+        try compress_follow(&clip, 0, clip.len, 1000, 3, 3, 1, 4, 1, 8); // unit ratio 3:3, real attack/release
+        if (!eq(clip.samples(), &loud)) return error.UnitRatioNotIdentity;
+    }
+
+    // 4. THE SIGN IS HELD AND THE MAGNITUDE NEVER EXPANDS — a loud signal compresses so every output magnitude is at most the
+    //    input's and every sign matches, under a real attack and release.
+    {
+        const loud = [_]i16{ 6000, -6000, 800, -12000, 12000, -300, 9000, -9000 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &loud);
+        try compress_follow(&clip, 0, clip.len, 1000, 4, 1, 1, 2, 1, 6);
+        const out = clip.samples();
+        var i: u32 = 0;
+        while (i < out.len) : (i += 1) {
+            if (abs16(out[i]) > abs16(loud[i])) return error.MagnitudeExpanded; // the gain only ever reduces
+            if ((loud[i] > 0 and out[i] < 0) or (loud[i] < 0 and out[i] > 0)) return error.SignFlipped;
+        }
+    }
+
+    // 5. A SLOWER ATTACK LETS THE TRANSIENT THROUGH — on a sudden loud onset after quiet, a slower attack reduces the first
+    //    above-threshold samples LESS than an instant attack (the gain reduction lags the peak). So at the onset the slow-attack
+    //    magnitude is no smaller than the instant-attack magnitude at every sample — the attack knob is monotone — and the first
+    //    onset sample under a slow attack is strictly louder than under an instant attack (the transient audibly survives).
+    {
+        const onset = [_]i16{ 100, 100, 15000, 15000, 15000, 15000, 15000, 15000 }; // quiet, then a hard onset
+        const thr: i32 = 1000;
+        var slow = timeline.Clip{};
+        try load_clip(&slow, &onset);
+        try compress_follow(&slow, 0, slow.len, thr, 8, 1, 1, 8, 1, 8); // slow attack 1:8
+        var fast = timeline.Clip{};
+        try load_clip(&fast, &onset);
+        try compress_follow(&fast, 0, fast.len, thr, 8, 1, 1, 1, 1, 8); // instant attack 1:1
+        var i: u32 = 0;
+        while (i < onset.len) : (i += 1) {
+            if (abs16(slow.samples()[i]) < abs16(fast.samples()[i])) return error.SlowAttackClampedMore;
+        }
+        // the first onset sample (index 2) rises hard: the instant attack clamps it, the slow attack lets much of it through.
+        if (abs16(slow.samples()[2]) <= abs16(fast.samples()[2])) return error.TransientDidNotSurvive;
+    }
+
+    // 6. THE STATE CARRIES — compressing a span in two pieces (the second continuing the first's ending envelope) equals
+    //    compressing the whole once, byte-for-byte: the seam invisible, so dynamics can span and automate.
+    {
+        const sig = [_]i16{ 2000, -14000, 14000, -2000, 9000, -9000, 6000, -6000 };
+        var whole = timeline.Clip{};
+        try load_clip(&whole, &sig);
+        try compress_follow(&whole, 0, whole.len, 1000, 4, 1, 1, 3, 1, 5);
+
+        var split = timeline.Clip{};
+        try load_clip(&split, &sig);
+        var env: i64 = 0;
+        try compress_follow_carry(&split, 0, 3, &env, 1000, 4, 1, 1, 3, 1, 5); // first piece
+        try compress_follow_carry(&split, 3, split.len - 3, &env, 1000, 4, 1, 1, 3, 1, 5); // second continues the state
+        if (!eq(split.samples(), whole.samples())) return error.CarryNotEqual;
+    }
+
+    // 7a. a zero threshold refuses BadThreshold before any write, the clip untouched.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        if (compress_follow(&clip, 0, clip.len, 0, 4, 1, 1, 4, 1, 8)) |_| return error.ZeroThresholdSlipped else |e| if (e != error.BadThreshold) return error.WrongZeroThreshold;
+        if (!eq(clip.samples(), &three)) return error.RefusedThresholdMutated;
+    }
+
+    // 7b. a sub-unity ratio (would expand) refuses BadRatio before any write.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        if (compress_follow(&clip, 0, clip.len, 1000, 1, 2, 1, 4, 1, 8)) |_| return error.SubUnitySlipped else |e| if (e != error.BadRatio) return error.WrongSubUnity;
+        if (!eq(clip.samples(), &three)) return error.RefusedRatioMutated;
+    }
+
+    // 7c. an illegal attack coefficient (numerator past the denominator) refuses BadCoeff before any write.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        if (compress_follow(&clip, 0, clip.len, 1000, 4, 1, 3, 2, 1, 8)) |_| return error.BadAttackSlipped else |e| if (e != error.BadCoeff) return error.WrongBadAttack;
+        if (!eq(clip.samples(), &three)) return error.RefusedCoeffMutated;
+    }
+
+    // 7d. an out-of-range span refuses BadRange before any write, leaving the clip untouched.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        if (compress_follow(&clip, 2, 5, 1000, 4, 1, 1, 4, 1, 8)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(clip.samples(), &three)) return error.RefusedRangeMutated;
+    }
+
+    print("GREEN ales-compress-env: an attack/release compressor drives ALES50's softened ceiling from ALES52's proven envelope — " ++
+        "each sample advances the follower one step (the attack fraction rising, the release falling), and when the smoothed " ++
+        "envelope crosses the threshold its excess is divided by the ratio and that gain applied to the raw sample. Silence stays " ++
+        "silence; UNIT attack and release reduce it to the plain ALES50 compressor BYTE-FOR-BYTE (the instantaneous compressor is " ++
+        "the zero-smoothing limit, proven by running both tools); UNIT RATIO is the identity everywhere; a loud signal has its " ++
+        "magnitude reduced with the sign held and never expanding; a SLOWER attack lets the transient through (the gain reduction " ++
+        "lags, the knob monotone); the state CARRIES so a span in two pieces equals the whole once (the seam invisible); and a " ++
+        "zero threshold refuses BadThreshold, a sub-unity ratio BadRatio, an illegal coefficient BadCoeff, an out-of-range span " ++
+        "BadRange, each leaving the clip untouched; no socket, no network, no keys, no funds, no real device, no real sample " ++
+        "rate\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

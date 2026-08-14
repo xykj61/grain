@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260814.173912
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title ALES53 — the attack/release compressor, the envelope leans in
+prompt take the next agent-doable lap Lindy-first crux-first past ALES52; approve own design rounds; send each increment; stop at custody gates
+think Read REMEMBER, the 1,024-round itinerary, and the six-season double-seat; the living git edge is Season C (Lotus, waymark ALES) at ALES52, the envelope follower.
+think ALES52's own design named the next rung outright — wiring the proven envelope into the limiter, compressor, and gate. That is the crux-first Lindy move: build the shared time base's first consumer, and the compressor is the most-reached-for dynamics tool, so it opens the rest.
+think Crux chosen so the new module reduces to a proven one — with instant attack and release the smoothed compressor is ALES50 byte-for-byte, proven by running both tools on one signal. That ties ALES53 to ALES50 rather than re-deriving compression.
+think Exposed envelope.env_step and envelope.coeff_ok pub (additive) so the compressor reads the one proven follower rather than duplicating it — TAME's no-drift discipline. Gain computed from the smoothed envelope, applied to the raw sample as m·comp/e (i64 divTrunc), comp<=e keeping the gain in (0,1] so magnitude never expands and no product overflows i64.
+obs Byte-for-byte identity holds for |x| <= sample_max (every i16 but the single sample_min value, which reads at the rail through the follower's documented saturation) — stated honestly in the design and module rather than overclaimed.
+obs A slower attack lets the transient through and the state carries across a split — both proven in the selftest; the two forms (from-silence and carried) share one implementation so they cannot drift.
+loom witness=ales_compress_env_witness green=1 cases=9 reproven=ales_envelope,ales_compress
+file lotus/compress_env.rye ALES53 module — the attack/release compressor driving ALES50 from ALES52
+file lotus/envelope.rye exposed env_step and coeff_ok pub so the compressor reads the one proven time base
+file tools/ales_compress_env_witness.rish witness — GREEN, re-proves the envelope follower and the compressor beside it
+file active-designing/20260814-174500_fill-ales53-lotus-attack-release-compressor.md self-approved design round for the rung
+file lotus/README.md status roster + narrative + stamp carry ALES53
+recommend keep-going — the next rung gives the limiter and gate the same attack/release over the same proven follower; no custody gate reached (software only, purely local, no keys/funds/device)
