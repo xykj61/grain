@@ -1,0 +1,280 @@
+//! brushstroke/edit_strip_view.rye — HUNK52: the strip painted beside the picture — a keeper reads the palette they tap.
+//!
+//! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK52.
+//! Design read: active-designing/20260813-205957_hunk-strip-chips-view-exploration.md
+//! Teachers, thanked clean-room: the tool palette of a photo editor (iCloud Photos / Google Photos) — a row of tool
+//! chips a keeper reads and taps (concept only, siloed) · gratitude/qoi.md via HUNK2's anchor palette.
+//!
+//! HUNK51 gave the Photos editor a whole finger — a tap on a gesture-strip cell repaints the edit on glass — yet the
+//! strip itself is invisible: a keeper taps pixel columns they cannot see. This rung paints them. EditStripView wraps
+//! HUNK51's finger view and adds paint_strip: a chips×1 Skate row where chip i wears the stable color of the verb bound
+//! at strip cell i, drawn over HUNK2's full-block down-map palette. The load-bearing tie is geometric — chip i occupies
+//! exactly the pixel span [i·cell_px, (i+1)·cell_px) that finger_up reads as cell i — so the palette a keeper reads and
+//! the palette a keeper taps can never disagree, structurally. The exact parallel of HUNK51's no-drift, carried from the
+//! picture to the palette. A pure composition — no new render primitive, no new clamp. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/edit_strip_view.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const edits = @import("photo_edits.rye");
+const edit_input = @import("edit_input.rye");
+const edit_touch_input = @import("edit_touch_input.rye");
+const edit_finger_view = @import("edit_finger_view.rye");
+const image_skate = @import("image_skate.rye");
+const skate = @import("skate_grid.rye");
+
+pub const edit_strip_view_version = "20260813.205957";
+
+pub const StripViewError = edit_finger_view.FingerViewError;
+
+/// Refused when a caller asks for the chip row before any verb is bound — an empty palette has nothing to paint, and a
+/// zero-width grid is not a valid Skate row. A named refusal, caught before any allocation.
+pub const StripPaintError = error{EmptyStrip};
+
+/// The stable palette slot (1..anchor_count) a verb wears in the chip row — the verb kind's ordinal folded into HUNK2's
+/// seven-anchor palette, so the same verb is always the same color and a keeper learns the palette once. A pure
+/// function of the verb kind; the payload never changes the color.
+pub fn chip_slot(e: edits.Edit) u8 {
+    const ord: u32 = @intFromEnum(std.meta.activeTag(e));
+    // invariant: the fold lands on a real anchor slot, never the sentinel and never past the palette.
+    const slot: u8 = @intCast(ord % image_skate.anchor_count + 1);
+    assert(slot >= 1);
+    assert(slot <= image_skate.anchor_count);
+    return slot;
+}
+
+/// A finger-driven Photos editor that also paints its own palette: HUNK51's finger view, wrapped so the one object that
+/// edits the picture renders the chip row a keeper reads and taps. No pixels and no history live here beyond the finger
+/// view's own — this surface adds only the palette's paint and the chip↔finger geometry that ties it to the picture.
+pub const EditStripView = struct {
+    finger: edit_finger_view.EditFingerView,
+
+    /// Open the surface over a `cols`×`rows` picture grid with a gesture strip of `cell_px`-wide cells and a `swipe_px`
+    /// threshold — delegating to HUNK51, so a bad grid refuses `BadView` and a bad cell or swipe refuses
+    /// `BadCell` / `BadSwipe`, each caught once at construction.
+    pub fn open(cols: u32, rows: u32, cell_px: u32, swipe_px: u32) StripViewError!EditStripView {
+        const finger = try edit_finger_view.EditFingerView.open(cols, rows, cell_px, swipe_px);
+        // invariant: a fresh surface opens with an empty palette and the picture at the original.
+        assert(finger.input.cells() == 0);
+        assert(finger.depth() == 0);
+        return EditStripView{ .finger = finger };
+    }
+
+    /// Lay one verb onto the next gesture-strip cell (HUNK50's `bind`, refusing `StripFull`). Each bound verb becomes one
+    /// chip in the painted row, in the order laid.
+    pub fn bind(self: *EditStripView, e: edits.Edit) edit_touch_input.TouchEditError!void {
+        // invariant: the strip stands within its bound before the bind.
+        assert(self.finger.input.cells() <= edit_touch_input.max_strip);
+        try self.finger.bind(e);
+        // invariant: the strip grew and still stands within its bound.
+        assert(self.finger.input.cells() >= 1);
+        assert(self.finger.input.cells() <= edit_touch_input.max_strip);
+    }
+
+    /// A finger touches down at pixel `(x, y)` — arm the finger surface (HUNK51).
+    pub fn finger_down(self: *EditStripView, x: i32, y: i32) void {
+        self.finger.finger_down(x, y);
+    }
+
+    /// The finger lifts at pixel `(x, y)` — classify and, when a gesture fires, apply it to the one cursor (HUNK51).
+    /// Returns the gesture that fired, or `null` for a tap off the strip.
+    pub fn finger_up(self: *EditStripView, x: i32, y: i32) edits.EditsError!?edit_input.Gesture {
+        return self.finger.finger_up(x, y);
+    }
+
+    /// How many verb chips the strip carries — the width of the painted row (HUNK50's `cells`).
+    pub fn chips(self: *const EditStripView) u32 {
+        // invariant: the chip count never exceeds the strip's bound.
+        assert(self.finger.input.cells() <= edit_touch_input.max_strip);
+        return self.finger.input.cells();
+    }
+
+    /// The pixel column at the center of chip `i` — exactly where a tap commits verb `i`, since `finger_up` reads cell
+    /// `x / cell_px` and chip `i` spans `[i·cell_px, (i+1)·cell_px)`. The tie between the painted chip and the finger.
+    pub fn chip_center_x(self: *const EditStripView, i: u32) i32 {
+        // invariant: the asked chip is a real cell in the grown strip.
+        assert(i < self.finger.input.cells());
+        const cell_px = self.finger.input.cell_px;
+        // invariant: a cell has real width, so its center sits strictly inside its own span.
+        assert(cell_px >= 1);
+        return @intCast(i * cell_px + cell_px / 2);
+    }
+
+    /// The undo depth — how many edits stand behind the cursor (HUNK51).
+    pub fn depth(self: *const EditStripView) u32 {
+        return self.finger.depth();
+    }
+
+    /// Paint the picture: the down-map of exactly the cursor the finger just moved (HUNK51's `paint`). Pure.
+    pub fn paint(self: *const EditStripView, allocator: std.mem.Allocator, source: *const qoi.Pixmap) !skate.Grid {
+        return self.finger.paint(allocator, source);
+    }
+
+    /// Paint the gesture strip as a `chips × 1` Skate row: chip `i` wears `chip_slot` of the verb bound at cell `i`, over
+    /// HUNK2's full-block glyph, so the row rasterizes to one solid color block per chip. Refuses `EmptyStrip` before any
+    /// grid is built when nothing is bound. Pure — the strip is read, never moved, so the palette cannot drift from the
+    /// verbs a tap commits.
+    pub fn paint_strip(self: *const EditStripView, allocator: std.mem.Allocator) (StripPaintError || error{OutOfMemory})!skate.Grid {
+        const n = self.finger.input.cells();
+        if (n == 0) return error.EmptyStrip;
+        // invariant: a painted row has at least one chip and stands within the strip's bound.
+        assert(n >= 1);
+        assert(n <= edit_touch_input.max_strip);
+
+        var grid = try skate.Grid.init(allocator, n, 1);
+        // The one seam a down-map and the chip row share: the full-block atlas and the seven anchor colors, so a chip
+        // paints a solid block in its palette color exactly as HUNK2's thumbnails do.
+        image_skate.set_anchor_palette(&grid);
+
+        var i: u32 = 0;
+        while (i < n) : (i += 1) {
+            const slot = chip_slot(self.finger.input.verb(i));
+            // invariant: the chip index sits inside the parallel cell and fg buffers.
+            assert(i < grid.cells.len);
+            grid.cells[i] = image_skate.block_cell;
+            grid.fg_index[i] = slot;
+        }
+        // invariant: every chip was laid — the loop reached exactly one past the last chip.
+        assert(i == n);
+        return grid;
+    }
+};
+
+// --- selftest: a three-verb strip on a ten-pixel cell — paint_strip yields a 3x1 row of solid chips, each chip's color
+//     is exactly chip_slot of its bound verb, the row rasterizes lit, a real finger tap centered on chip i commits
+//     exactly verb i (the seen palette equals the tapped palette), an unbound strip refuses EmptyStrip, and bad geometry
+//     refuses at open ----------------------------------------------------------------------------------------------
+
+fn craft_two_tone(allocator: std.mem.Allocator) !qoi.Pixmap {
+    const w: u32 = 8;
+    const h: u32 = 8;
+    const buf = try allocator.alloc(u8, w * h * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            const left = x < w / 2;
+            buf[off] = if (left) 255 else 0; // r
+            buf[off + 1] = 0; // g
+            buf[off + 2] = if (left) 0 else 255; // b
+            buf[off + 3] = 255; // a
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const pm = try craft_two_tone(garden);
+    const cols: u32 = 2;
+    const rows: u32 = 2;
+    const cell: u32 = 10;
+
+    // A three-verb strip: cell 0 flip_h, cell 1 flip_v, cell 2 rotate one quarter — three distinct verb kinds.
+    const bound = [_]edits.Edit{ .flip_h, .flip_v, .{ .rotate = .{ .turns = 1 } } };
+    var surface = try EditStripView.open(cols, rows, cell, 12);
+    for (bound) |e| try surface.bind(e);
+    assert(surface.chips() == bound.len);
+
+    // paint_strip yields a 3x1 row; every chip is a full block; every chip wears exactly chip_slot of its bound verb.
+    {
+        const row = try surface.paint_strip(garden);
+        assert(row.cols == bound.len);
+        assert(row.rows == 1);
+        var i: u32 = 0;
+        while (i < bound.len) : (i += 1) {
+            assert(row.cells[i] == image_skate.block_cell); // a solid chip, not blank
+            assert(row.fg_index[i] == chip_slot(bound[i])); // the seen color is exactly the verb's stable color
+        }
+    }
+
+    // Genuinely seen: the row rasterizes to a lit canvas, each chip its own solid color.
+    {
+        const row = try surface.paint_strip(garden);
+        const scale: u32 = 1;
+        const width: u32 = bound.len * skate.cell_w * scale;
+        const height: u32 = 1 * skate.cell_h * scale;
+        const stride: u32 = width * 4;
+        const canvas = try garden.alloc(u8, @as(usize, stride) * @as(usize, height));
+        const bg = skate.Color{ .r = 1, .g = 2, .b = 3 };
+        const fg = skate.Color{ .r = 200, .g = 200, .b = 200 };
+        row.rasterize(canvas, stride, @intCast(width), @intCast(height), bg, fg, scale);
+        const lit = row.lit_pixel_count(canvas, stride, @intCast(width), @intCast(height), bg);
+        assert(lit > 0); // the palette reached the glass
+    }
+
+    // The crux: a real finger tap centered on chip i fires a commit of exactly verb i — the seen palette equals the
+    // tapped palette, cell-for-cell. A fresh surface per chip so each tap classifies from the original.
+    {
+        var i: u32 = 0;
+        while (i < bound.len) : (i += 1) {
+            var probe = try EditStripView.open(cols, rows, cell, 12);
+            for (bound) |e| try probe.bind(e);
+            const x = probe.chip_center_x(i);
+            probe.finger_down(x, 5);
+            const fired = try probe.finger_up(x, 5);
+            assert(fired != null); // a tap on a chip commits
+            assert(fired.?.kind == .commit);
+            // the committed verb kind is exactly the kind chip i paints
+            assert(std.meta.activeTag(fired.?.edit) == std.meta.activeTag(bound[i]));
+            // and its chip color matches the verb it committed — the palette a keeper read is the palette they tapped
+            assert(chip_slot(fired.?.edit) == chip_slot(bound[i]));
+        }
+    }
+
+    // An unbound strip has nothing to paint — paint_strip refuses EmptyStrip before any grid is built.
+    {
+        var empty = try EditStripView.open(cols, rows, cell, 12);
+        if (empty.paint_strip(garden)) |_| return error.EmptySlipped else |e| {
+            if (e != error.EmptyStrip) return error.WrongEmpty;
+        }
+    }
+
+    // Bad geometry still refuses at open by name (HUNK51 beneath) — a zero grid, a zero cell, a zero swipe.
+    if (EditStripView.open(0, rows, cell, 12)) |_| return error.GridSlipped else |e| {
+        if (e != error.BadView) return error.WrongGrid;
+    }
+    if (EditStripView.open(cols, rows, 0, 12)) |_| return error.CellSlipped else |e| {
+        if (e != error.BadCell) return error.WrongCell;
+    }
+    if (EditStripView.open(cols, rows, cell, 0)) |_| return error.SwipeSlipped else |e| {
+        if (e != error.BadSwipe) return error.WrongSwipe;
+    }
+
+    // The picture still edits through the same object: a tap centered on chip 0 (flip_h) repaints the flip on glass.
+    {
+        const red_slot: u8 = 3; // anchors slot 3 is red
+        const blue_slot: u8 = 5; // anchors slot 5 is blue
+        const left_i: usize = 0;
+        var editor = try EditStripView.open(cols, rows, cell, 12);
+        try editor.bind(.flip_h);
+        const before = try editor.paint(garden, &pm);
+        assert(before.fg_index[left_i] == red_slot); // the plain source: left cell red
+        const cx = editor.chip_center_x(0);
+        editor.finger_down(cx, 5);
+        _ = try editor.finger_up(cx, 5);
+        const after = try editor.paint(garden, &pm);
+        assert(after.fg_index[left_i] == blue_slot); // the edit is seen on glass: left cell blue
+    }
+
+    print("GREEN edit-strip-view: a three-verb strip (flip_h, flip_v, rotate) on a ten-pixel cell — paint_strip yields " ++
+        "a {d}x1 row of solid chips, each chip wearing exactly chip_slot of its bound verb; the row rasterizes to a lit " ++
+        "canvas; a real finger tap centered on chip i commits exactly verb i (the seen palette equals the tapped " ++
+        "palette, cell-for-cell); an unbound strip refuses EmptyStrip, and a zero grid, cell, and swipe each refuse at " ++
+        "open by name; the picture still edits through the same object. HUNK51 finger view and HUNK2 down-map GREEN " ++
+        "beneath; no network, no key, no funds\n", .{bound.len});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: edit_strip_view selftest\n", .{});
+    return 1;
+}

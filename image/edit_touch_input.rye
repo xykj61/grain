@@ -84,6 +84,15 @@ pub const EditTouch = struct {
         return self.strip_len;
     }
 
+    /// The verb bound at strip cell `i` — for a surface painting the palette (HUNK52's chip row). A pure read; the
+    /// caller asks only for cells within the bound the strip has grown.
+    pub fn verb(self: *const EditTouch, i: u32) edits.Edit {
+        // invariant: the asked cell holds a bound verb, within the strip's grown length.
+        assert(i < self.strip_len);
+        assert(self.strip_len <= max_strip);
+        return self.strip[i];
+    }
+
     /// A finger touches down at pixel `(x, y)`. Records the landing point and arms the surface, so the matching lift can
     /// measure the travel. A fresh down re-arms over any prior one (a touchscreen never lifts without a down first).
     pub fn finger_down(self: *EditTouch, x: i32, y: i32) void {
