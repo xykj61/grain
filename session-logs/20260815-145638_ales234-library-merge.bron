@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260815.145638
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title ALES234 — lotus/library_merge, two change-sets reconciled
+prompt recur the itinerary Lindy-first crux-first, take the next agent-doable lap, send each finished increment, stop at custody gates
+think Read REMEMBER (custody gates 1-6, all Keaton's hand), the 1024-round itinerary, and the six-season double-seat; living edge is the Lotus creative suite (Season C, waymark ALES).
+think Surveyed the Lotus manifest family — album and library both stand whole through diff_sheet (ALES224-233): manifest, sheet, find, diff, diff_sheet at each level. The family was complete; the named next crux (a signed carry) is a crypto seam gated on Keaton's word.
+think Lindy-first crux-first: the durable, hardest-still-tractable, non-gated next step is the operation diff was built toward — a three-way merge. It reconciles two independent change-sets against a common base, the shape collaboration grows in, and composes purely on the ALES228 find resolve (no new hash, no crypto, no custody).
+think Wrote it at the library level first, honoring the established order (library led find/diff/diff_sheet, album mirrored). Canonical three-way rule per album name: agree -> take it (unchanged/agreed); one side at base -> take the other (ours/theirs), honoring a removal as a clean drop; both changed differently or change-vs-remove -> a NAMED conflict carrying base/our/their digests, never guessed. Absence is a value (eq_opt), so removed-on-both reads as agreement.
+think Bounds: resolved and conflicts by 2*max_albums (a name is present only if in ours or theirs), dropped by max_albums (only a base album drops). Visited counter gives a strong postcondition: resolved+dropped+conflict == distinct names visited.
+obs Witness proves five laws on metal (clean, agreement, conflict incl. change-vs-remove, untouched, identity); GREEN. TAME style bans clean; the module carries ample asserts (not on the zero-assert ratchet list).
+obs Kept scope honest — software only, purely local, content-addressing not a signature, no real file/DAC/network/keys/funds/device, no custody gate crossed.
+loom witness=ales_library_merge_witness result=GREEN laws=5 rung=ALES234
+file lotus/library_merge.rye the ALES234 three-way merge over three opened library manifests
+file tools/ales_library_merge_witness.rish builds and runs the selftest, asserts the GREEN line
+file active-designing/20260815-145638_fill-ales234-lotus-library-merge.md self-approved design read
+file work-in-progress/REMEMBER.md living edge advanced ALES227 -> ALES234, git nib refreshed in the work commit
+recommend keep-going ALES235 album_merge mirrors this one level down, then a merge_sheet renders the verdict as a readable page; the signed-carry crux stays gated

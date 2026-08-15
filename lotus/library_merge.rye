@@ -1,0 +1,382 @@
+//! lotus/library_merge.rye — ALES234: two independent sets of catalog changes, reconciled. ALES229 answered what changed between
+//! two versions of a catalog; yet a diff only ever compares two. The moment more than one hand touches a body of work the honest
+//! question changes — one keeper remasters a record while another retires a demo and adds a single, both from yesterday's catalog,
+//! and the next morning the two must become one. A diff cannot answer that; a MERGE can, and a merge is the whole reason a diff
+//! exists. This rung seats the canonical three-way merge: a common ancestor `base` and two descendants `ours` and `theirs`, every
+//! album reconciled into one verdict — resolved, dropped, or a named conflict.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES234.
+//! Design read: active-designing/20260815-145638_fill-ales234-lotus-library-merge.md
+//! Stands on: lotus/library_find.rye (ALES228) — the find / digest_of resolve this composes on, the same resolve library_diff uses;
+//! lotus/library_manifest.rye (ALES226) — the three opened LibraryManifest values this reconciles. It stands BESIDE library_diff
+//! (ALES229): both are second-order primitives over one find, and a merge is two diffs reconciled against one base. No new hash, no
+//! new frame.
+//!
+//! THE CRUX — a merge is a decision procedure, not a guess. Per album name, where only one side changed it the merge takes that
+//! change; where both sides made the SAME change (same new digest, or both removed it) the merge takes it and marks it agreed; where
+//! both sides changed it to DIFFERENT content (or one changed while the other removed) the merge names a conflict carrying all three
+//! digests — never silently resolved. The content-address digest is the whole comparison — two matching digests mean identical
+//! bytes, two differing digests mean the record moved — so the merge needs no byte compare and no new hash, only the handles the
+//! three manifests already carry.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A bounded classification over in-process fields already proven whole by
+//! open_library_manifest, siloed to lotus/. Content-addressing on every handle it reports, never a signature: it reconciles what two
+//! hands changed, not who made a change — the signed carry remains a later crypto seam on Keaton's word. No real file, no DAC, no
+//! acoustic or electrical fact, no network, no funds, no real device.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/library_merge.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const library_manifest = @import("library_manifest.rye");
+const library_find = @import("library_find.rye");
+
+pub const library_merge_version = "20260815.145638";
+
+/// Which hand a clean verdict came from. `unchanged` — neither side touched the album (it equals base). `ours` / `theirs` — one
+/// side's change was taken because the other left the album at base. `agreed` — both sides made the same change.
+pub const Source = enum { unchanged, ours, theirs, agreed };
+
+/// One album the merged catalog holds: its name, the content-address digest chosen for the merge, and the source of that choice.
+/// Both slices point into the opened manifests the merge read.
+pub const Resolution = struct {
+    name: []const u8,
+    digest: []const u8,
+    source: Source,
+};
+
+/// One album the merge removes from the catalog: its name and the source that removed it — `ours` or `theirs` for a one-sided
+/// removal, `agreed` when both sides removed it. `unchanged` never drops an album.
+pub const Drop = struct {
+    name: []const u8,
+    source: Source,
+};
+
+/// One album the two sides disagree on: both changed it from base, to different content, or one changed it while the other removed
+/// it. Every digest is a slice into an opened manifest, or `""` where that side does not hold the album at all. A conflict is named,
+/// never resolved — a keeper's eye decides it.
+pub const Conflict = struct {
+    name: []const u8,
+    base_digest: []const u8,
+    our_digest: []const u8,
+    their_digest: []const u8,
+};
+
+/// The most albums a merged verdict can hold in its present-bearing lists. An album is `resolved` or in `conflicts` only if it is
+/// present in `ours` or `theirs`, so two catalogs' worth is the true ceiling; sized from max_albums so the fixed arrays cannot
+/// overflow and every walk terminates.
+pub const max_present: u32 = 2 * library_manifest.max_albums;
+
+/// The whole verdict of reconciling `base`, `ours`, and `theirs`. `dropped` is bounded by one catalog's albums — only a base album
+/// can be removed. Every album across the three catalogs lands in exactly one of resolved / dropped / conflicts.
+pub const Merge = struct {
+    resolved: [max_present]Resolution = undefined,
+    resolved_count: u32 = 0,
+    dropped: [library_manifest.max_albums]Drop = undefined,
+    dropped_count: u32 = 0,
+    conflicts: [max_present]Conflict = undefined,
+    conflict_count: u32 = 0,
+};
+
+/// True when no album conflicts — the merge stands on its own, no keeper's eye needed. A caller reads one bool rather than walking
+/// the conflict list.
+pub fn is_clean(m: *const Merge) bool {
+    return m.conflict_count == 0;
+}
+
+/// The content-address digest of `name` in `lm`, or null when the catalog does not hold it — the optional the three-way rule reads.
+/// Composes on the ALES228 resolve: a find to the index, then digest_of at that index.
+fn digest_in(lm: *const library_manifest.LibraryManifest, name: []const u8) ?[]const u8 {
+    if (library_find.find(lm, name)) |i| return library_find.digest_of(lm, i);
+    return null;
+}
+
+/// True when two optional digests are equal — both absent is equal, one absent is not, both present compares bytes. Absence is a
+/// value here, so "removed on both sides" reads as agreement and "present only in base" reads as a change from base.
+fn eq_opt(a: ?[]const u8, b: ?[]const u8) bool {
+    if (a == null and b == null) return true;
+    if (a == null or b == null) return false;
+    return std.mem.eql(u8, a.?, b.?);
+}
+
+/// Classify one album `name` present in at least one catalog into `m`, by the three-way rule. Reads each side's digest as an optional
+/// and appends exactly one verdict — a resolution, a drop, or a conflict.
+fn classify_name(
+    m: *Merge,
+    base: *const library_manifest.LibraryManifest,
+    ours: *const library_manifest.LibraryManifest,
+    theirs: *const library_manifest.LibraryManifest,
+    name: []const u8,
+) void {
+    const b = digest_in(base, name);
+    const o = digest_in(ours, name);
+    const t = digest_in(theirs, name);
+    // invariant: the name came from one of the three catalogs, so at least one side holds it.
+    assert(b != null or o != null or t != null);
+
+    if (eq_opt(o, t)) {
+        // both sides agree — take what they agree on, or drop it if they agree it is gone.
+        if (o) |od| {
+            const src: Source = if (eq_opt(o, b)) .unchanged else .agreed;
+            m.resolved[m.resolved_count] = .{ .name = name, .digest = od, .source = src };
+            m.resolved_count += 1;
+        } else {
+            // both absent, so base must hold it (the name came from somewhere) — both removed it.
+            m.dropped[m.dropped_count] = .{ .name = name, .source = .agreed };
+            m.dropped_count += 1;
+        }
+    } else if (eq_opt(o, b)) {
+        // ours left the album at base; only theirs changed it — take theirs (present) or honor its removal (absent).
+        if (t) |td| {
+            m.resolved[m.resolved_count] = .{ .name = name, .digest = td, .source = .theirs };
+            m.resolved_count += 1;
+        } else {
+            m.dropped[m.dropped_count] = .{ .name = name, .source = .theirs };
+            m.dropped_count += 1;
+        }
+    } else if (eq_opt(t, b)) {
+        // theirs left the album at base; only ours changed it — take ours (present) or honor its removal (absent).
+        if (o) |od| {
+            m.resolved[m.resolved_count] = .{ .name = name, .digest = od, .source = .ours };
+            m.resolved_count += 1;
+        } else {
+            m.dropped[m.dropped_count] = .{ .name = name, .source = .ours };
+            m.dropped_count += 1;
+        }
+    } else {
+        // both sides changed the album, to different content or one to a removal — a conflict, named not guessed.
+        m.conflicts[m.conflict_count] = .{
+            .name = name,
+            .base_digest = b orelse "",
+            .our_digest = o orelse "",
+            .their_digest = t orelse "",
+        };
+        m.conflict_count += 1;
+    }
+}
+
+/// Reconcile `base`, `ours`, and `theirs` into one Merge. Visit every distinct album name exactly once — base in order, then names
+/// only ours holds, then names only theirs holds — and classify each by the three-way rule. Bounded on open, so the walk is total
+/// and the verdict infallible.
+pub fn merge(
+    base: *const library_manifest.LibraryManifest,
+    ours: *const library_manifest.LibraryManifest,
+    theirs: *const library_manifest.LibraryManifest,
+) Merge {
+    // invariant: no catalog names more albums than the shared bound — open_library_manifest already proved it, re-asserted here.
+    assert(base.count <= library_manifest.max_albums and ours.count <= library_manifest.max_albums and theirs.count <= library_manifest.max_albums);
+    var m: Merge = .{};
+    var visited: u32 = 0;
+
+    // Every base name — each is classified once regardless of what the descendants did with it.
+    var i: u32 = 0;
+    while (i < base.count) : (i += 1) {
+        classify_name(&m, base, ours, theirs, library_find.name_of(base, i));
+        visited += 1;
+    }
+
+    // Names ours holds that base did not — a fresh album on our side.
+    var j: u32 = 0;
+    while (j < ours.count) : (j += 1) {
+        const name = library_find.name_of(ours, j);
+        if (library_find.find(base, name) == null) {
+            classify_name(&m, base, ours, theirs, name);
+            visited += 1;
+        }
+    }
+
+    // Names theirs holds that neither base nor ours did — a fresh album on their side alone.
+    var k: u32 = 0;
+    while (k < theirs.count) : (k += 1) {
+        const name = library_find.name_of(theirs, k);
+        if (library_find.find(base, name) == null and library_find.find(ours, name) == null) {
+            classify_name(&m, base, ours, theirs, name);
+            visited += 1;
+        }
+    }
+
+    // invariant: every distinct name landed in exactly one list — the three tallies account for the whole union.
+    assert(m.resolved_count + m.dropped_count + m.conflict_count == visited);
+    // invariant: no list overflowed its bound — present-bearing lists by two catalogs, drops by one.
+    assert(m.resolved_count <= max_present and m.conflict_count <= max_present and m.dropped_count <= library_manifest.max_albums);
+    return m;
+}
+
+// --- selftest: THE CLEAN LAW — one-sided changes are taken with zero conflicts, each naming its hand, a one-sided removal drops
+//     cleanly; THE AGREEMENT LAW — both sides making the same change is clean and marked agreed; THE CONFLICT LAW — both sides
+//     changing an album differently (or change-vs-remove) is named a conflict carrying base/our/their digests; THE UNTOUCHED LAW —
+//     an album neither side changed resolves unchanged with its base digest; THE IDENTITY LAW — merge(base, base, base) resolves
+//     every album unchanged, zero drops, zero conflicts -----------------------------------------------------------------------------
+
+/// Seal a small library over stand-in album-manifest bytes into `out`, returning its length — the content address a keeper holds for
+/// a whole catalog. Any bytes serve as an album manifest here; the library addresses their bytes, so equal bytes mean an equal
+/// digest (an unchanged album) and different bytes mean a moved digest (a changed album).
+fn make_library(out: []u8, names: []const []const u8, manifests: []const []const u8) !u32 {
+    // invariant: a witness helper builds a small, well-formed catalog — the two arrays run in lockstep.
+    assert(names.len == manifests.len);
+    var albums: [8]library_manifest.AlbumIn = undefined;
+    var i: u32 = 0;
+    while (i < names.len) : (i += 1) albums[i] = .{ .name = names[i], .album_manifest = manifests[i] };
+    return library_manifest.seal_library_manifest(out, albums[0..names.len]);
+}
+
+/// Find a resolution by name in a merge, or null — a witness reader so a law can assert on one album without a fixed index.
+fn resolution_of(m: *const Merge, name: []const u8) ?Resolution {
+    var i: u32 = 0;
+    while (i < m.resolved_count) : (i += 1) {
+        if (std.mem.eql(u8, m.resolved[i].name, name)) return m.resolved[i];
+    }
+    return null;
+}
+
+fn run_selftest() !u8 {
+    // Stand-in album-manifest bytes. A `*b` variant shares a name's slot but carries different bytes — a reseal, so a moved digest.
+    const m0 = "first album manifest bytes.....\x01\x02\x03";
+    const m0b = "first album manifest RESEALED.\x01\x02\x04";
+    const m0c = "first album manifest OTHER.....\x01\x02\x05";
+    const m1 = "second album manifest bytes....\x04\x05\x06";
+    const m1b = "second album manifest RESEALED.\x04\x05\x07";
+    const m2 = "third album manifest bytes.....\x07\x08\x09";
+    const m4 = "fourth album manifest bytes....\x0a\x0b\x0c";
+    const m5 = "fifth album manifest bytes.....\x0d\x0e\x0f";
+
+    // 1. THE CLEAN LAW + THE UNTOUCHED LAW — every album changed by at most one side; the merge takes each change, names its hand,
+    //    and drops a one-sided removal, all with zero conflicts.
+    //    base:  {debut m0, sequel m1, demo m2, jam m4}
+    //    ours:  {debut m0 (unchanged), sequel m1b (ours changed), demo m2 (unchanged), extra m5 (ours added)}  [ours removed jam]
+    //    theirs:{debut m0b (theirs changed), sequel m1 (unchanged), demo m2 (unchanged), jam m4 (unchanged)}   [theirs kept jam]
+    {
+        var base_rec: [library_manifest.max_library_manifest_bytes]u8 = undefined;
+        var ours_rec: [library_manifest.max_library_manifest_bytes]u8 = undefined;
+        var theirs_rec: [library_manifest.max_library_manifest_bytes]u8 = undefined;
+        const bn = try make_library(base_rec[0..], &.{ "debut", "sequel", "demo", "jam" }, &.{ m0, m1, m2, m4 });
+        const on = try make_library(ours_rec[0..], &.{ "debut", "sequel", "demo", "extra" }, &.{ m0, m1b, m2, m5 });
+        const tn = try make_library(theirs_rec[0..], &.{ "debut", "sequel", "demo", "jam" }, &.{ m0b, m1, m2, m4 });
+        const base = try library_manifest.open_library_manifest(base_rec[0..bn]);
+        const ours = try library_manifest.open_library_manifest(ours_rec[0..on]);
+        const theirs = try library_manifest.open_library_manifest(theirs_rec[0..tn]);
+
+        const g = merge(&base, &ours, &theirs);
+        if (!is_clean(&g)) return error.CleanNotClean;
+        if (g.conflict_count != 0) return error.CleanConflictLeaked;
+
+        // debut: ours unchanged, theirs changed → take theirs.
+        const debut = resolution_of(&g, "debut") orelse return error.DebutMissing;
+        if (debut.source != .theirs) return error.DebutSourceWrong;
+        if (!std.mem.eql(u8, debut.digest, digest_in(&theirs, "debut").?)) return error.DebutDigestWrong;
+        // sequel: theirs unchanged, ours changed → take ours.
+        const sequel = resolution_of(&g, "sequel") orelse return error.SequelMissing;
+        if (sequel.source != .ours) return error.SequelSourceWrong;
+        if (!std.mem.eql(u8, sequel.digest, digest_in(&ours, "sequel").?)) return error.SequelDigestWrong;
+        // demo: neither side changed → unchanged, base digest.
+        const demo = resolution_of(&g, "demo") orelse return error.DemoMissing;
+        if (demo.source != .unchanged) return error.DemoSourceWrong; // THE UNTOUCHED LAW
+        if (!std.mem.eql(u8, demo.digest, digest_in(&base, "demo").?)) return error.DemoDigestWrong;
+        // extra: ours added, theirs never had it → take ours (clean add).
+        const extra = resolution_of(&g, "extra") orelse return error.ExtraMissing;
+        if (extra.source != .ours) return error.ExtraSourceWrong;
+        // jam: ours removed, theirs left at base → clean removal by ours.
+        if (resolution_of(&g, "jam") != null) return error.JamStillPresent;
+        if (g.dropped_count != 1) return error.DropCountWrong;
+        if (!std.mem.eql(u8, g.dropped[0].name, "jam")) return error.DropNameWrong;
+        if (g.dropped[0].source != .ours) return error.DropSourceWrong;
+        // four albums remain in the merged catalog: debut, sequel, demo, extra.
+        if (g.resolved_count != 4) return error.ResolvedCountWrong;
+    }
+
+    // 2. THE AGREEMENT LAW — both sides make the SAME change: an identical reseal reads agreed; both removing an album drops it agreed.
+    //    base:  {debut m0, sequel m1}
+    //    ours:  {debut m0b}            [ours resealed debut, ours removed sequel]
+    //    theirs:{debut m0b}            [theirs resealed debut identically, theirs removed sequel]
+    {
+        var base_rec: [library_manifest.max_library_manifest_bytes]u8 = undefined;
+        var ours_rec: [library_manifest.max_library_manifest_bytes]u8 = undefined;
+        var theirs_rec: [library_manifest.max_library_manifest_bytes]u8 = undefined;
+        const bn = try make_library(base_rec[0..], &.{ "debut", "sequel" }, &.{ m0, m1 });
+        const on = try make_library(ours_rec[0..], &.{"debut"}, &.{m0b});
+        const tn = try make_library(theirs_rec[0..], &.{"debut"}, &.{m0b});
+        const base = try library_manifest.open_library_manifest(base_rec[0..bn]);
+        const ours = try library_manifest.open_library_manifest(ours_rec[0..on]);
+        const theirs = try library_manifest.open_library_manifest(theirs_rec[0..tn]);
+
+        const g = merge(&base, &ours, &theirs);
+        if (!is_clean(&g)) return error.AgreeNotClean;
+        const debut = resolution_of(&g, "debut") orelse return error.AgreeDebutMissing;
+        if (debut.source != .agreed) return error.AgreeSourceWrong; // both made the same change
+        if (!std.mem.eql(u8, debut.digest, digest_in(&ours, "debut").?)) return error.AgreeDigestWrong;
+        // both removed sequel → dropped agreed.
+        if (g.dropped_count != 1) return error.AgreeDropCountWrong;
+        if (!std.mem.eql(u8, g.dropped[0].name, "sequel")) return error.AgreeDropNameWrong;
+        if (g.dropped[0].source != .agreed) return error.AgreeDropSourceWrong;
+        if (g.resolved_count != 1) return error.AgreeResolvedCountWrong;
+    }
+
+    // 3. THE CONFLICT LAW — both sides change the same album to different content is a conflict carrying all three digests; one side
+    //    changing while the other removes is also a conflict, with the removing side's digest empty.
+    {
+        // change vs change: base debut m0, ours m0b, theirs m0c — different reseals.
+        var base_rec: [library_manifest.max_library_manifest_bytes]u8 = undefined;
+        var ours_rec: [library_manifest.max_library_manifest_bytes]u8 = undefined;
+        var theirs_rec: [library_manifest.max_library_manifest_bytes]u8 = undefined;
+        const bn = try make_library(base_rec[0..], &.{"debut"}, &.{m0});
+        const on = try make_library(ours_rec[0..], &.{"debut"}, &.{m0b});
+        const tn = try make_library(theirs_rec[0..], &.{"debut"}, &.{m0c});
+        const base = try library_manifest.open_library_manifest(base_rec[0..bn]);
+        const ours = try library_manifest.open_library_manifest(ours_rec[0..on]);
+        const theirs = try library_manifest.open_library_manifest(theirs_rec[0..tn]);
+
+        const g = merge(&base, &ours, &theirs);
+        if (is_clean(&g)) return error.ConflictReadClean;
+        if (g.conflict_count != 1) return error.ConflictCountWrong;
+        if (g.resolved_count != 0 or g.dropped_count != 0) return error.ConflictLeaked;
+        const c = g.conflicts[0];
+        if (!std.mem.eql(u8, c.name, "debut")) return error.ConflictNameWrong;
+        if (!std.mem.eql(u8, c.base_digest, digest_in(&base, "debut").?)) return error.ConflictBaseWrong;
+        if (!std.mem.eql(u8, c.our_digest, digest_in(&ours, "debut").?)) return error.ConflictOurWrong;
+        if (!std.mem.eql(u8, c.their_digest, digest_in(&theirs, "debut").?)) return error.ConflictTheirWrong;
+
+        // change vs remove: ours changes debut, theirs removes it → conflict, their digest empty.
+        var trec: [library_manifest.max_library_manifest_bytes]u8 = undefined;
+        const empty = [_]library_manifest.AlbumIn{};
+        const en = try library_manifest.seal_library_manifest(trec[0..], empty[0..]);
+        const gone = try library_manifest.open_library_manifest(trec[0..en]);
+        const g2 = merge(&base, &ours, &gone);
+        if (g2.conflict_count != 1) return error.ModDelCountWrong;
+        if (g2.conflicts[0].their_digest.len != 0) return error.ModDelTheirNotEmpty;
+        if (!std.mem.eql(u8, g2.conflicts[0].our_digest, digest_in(&ours, "debut").?)) return error.ModDelOurWrong;
+    }
+
+    // 4. THE IDENTITY LAW — a catalog merged with itself on both sides resolves every album unchanged, zero drops, zero conflicts.
+    {
+        var base_rec: [library_manifest.max_library_manifest_bytes]u8 = undefined;
+        const bn = try make_library(base_rec[0..], &.{ "debut", "sequel", "demo" }, &.{ m0, m1, m2 });
+        const base = try library_manifest.open_library_manifest(base_rec[0..bn]);
+        const g = merge(&base, &base, &base);
+        if (!is_clean(&g)) return error.IdentityNotClean;
+        if (g.resolved_count != base.count) return error.IdentityResolvedWrong;
+        if (g.dropped_count != 0 or g.conflict_count != 0) return error.IdentityMoved;
+        var i: u32 = 0;
+        while (i < g.resolved_count) : (i += 1) {
+            if (g.resolved[i].source != .unchanged) return error.IdentitySourceWrong;
+        }
+    }
+
+    print("GREEN ales-library-merge: two independent sets of catalog changes reconciled — merge(base, ours, theirs) sorts every " ++
+        "album into resolved (with its chosen digest and source), dropped, or a named conflict. THE CRUX: a merge is a decision " ++
+        "procedure, not a guess — it composes on the ALES228 resolve the diff uses, and the content-address digest is the whole " ++
+        "comparison (no byte compare, no new hash). THE CLEAN LAW: a one-sided change is taken and names its hand (ours/theirs), a " ++
+        "one-sided removal drops cleanly, zero conflicts. THE AGREEMENT LAW: both sides making the same change reads agreed. THE " ++
+        "CONFLICT LAW: both sides changing an album differently — or change-vs-remove — is named a conflict carrying base, our, and " ++
+        "their digests, never silently resolved. THE UNTOUCHED LAW: an album neither side touched resolves unchanged with its base " ++
+        "digest. THE IDENTITY LAW: merge(base, base, base) resolves every album unchanged, zero drops, zero conflicts. It stands " ++
+        "beside library_diff, both second-order primitives over one find; content-addressing on every handle, not a signature — no " ++
+        "real file, no DAC, no network, no keys, no funds, no real device\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
