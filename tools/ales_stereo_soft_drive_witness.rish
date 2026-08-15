@@ -1,0 +1,42 @@
+# tools/ales_stereo_soft_drive_witness.rish — stereo_soft_drive: the soft-clip overdrive carried into stereo with ONE SHARED SHOULDER, both channels in lockstep, the rounded corner of the stereo
+# NONLINEAR class (ALES133).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES133.
+# Design read: active-designing/20260815-032747_fill-ales133-lotus-stereo-soft-drive.md
+# Stands on: lotus/soft_drive.rye (ALES79 — the mono soft-clip overdrive run once per channel, itself ALES78's pre-gain and ceiling with a knee opened below it), lotus/stereo_drive.rye (ALES132 — the
+# hard-drive sibling this rounds), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, sample_min/max).
+# A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length. This rung carries ALES79's rounded corner into stereo — below a knee the boosted signal passes clean,
+# between the knee and the ceiling the slope halves, and once that shoulder reaches the ceiling it pins, the warmth of an overdriven tube rather than the buzz of a fuzz. It holds the nonlinear lesson as
+# ALES132 stated it, honestly: a soft drive is not linear, so the same shoulder does not hold the inter-channel ratio; each channel bends toward the same ceiling by its own level, a louder channel bending
+# harder, the ratio compressing. What the shared map keeps, per channel, is the ceiling and sign discipline, an identical-channel master stays identical, and a knee AT the ceiling degenerates both channels
+# to ALES132's hard drive.
+#
+# lotus/stereo_soft_drive.rye validates both channels once against the shared parameters and length before either is mutated (BadGain on a zero denominator / below-unity gain / oversized numerator, BadKnee
+# on a knee below one sample unit or above the ceiling, BadCeiling on a ceiling outside [1, sample_max], BadRange on a span outside the samples), then soft-drives both channels through ALES79's soft_drive;
+# SoftDriveError reused whole. The crux is four laws. THE STEREO SOFT-DRIVE LAW: each channel equals ALES79's mono soft_drive with the same params byte for byte. THE BALANCE / LENGTH LAW: left.len ==
+# right.len after, both holding their starting length. THE PER-CHANNEL NONLINEAR LAW: the ceiling and sign hold per channel, a 1:2 master's ratio compresses under a hard drive, an identical-channel master
+# staying identical, a knee at the ceiling reproducing ALES132's hard drive. THE ATOMICITY / DEGENERATE LAW: a refusal leaves both channels untouched and balanced, a unity drive at the rail the identity,
+# count 0 the identity.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_stereo_soft_drive_witness.rish
+
+say "ales-stereo-soft-drive: Language EN — stereo_soft_drive soft-drives a span in both channels of a stereo master by the same gain through the same knee into the same ceiling, the same shoulder on each, so one overdrive lands on both speakers together. A Lotus master is two Clips heard together, one per speaker, whose defining invariant is that left and right hold the same length so the two channels stay aligned in time. This rung carries the rounded corner of the stereo nonlinear class on ALES79's soft-clip overdrive, running the proven mono soft drive on each channel with the same rational gain, knee, and ceiling, validated once against the shared parameters and length before either channel is mutated so a refusal never soft-drives one channel and leaves the other dry."
+say "ales-stereo-soft-drive: Style Radiant — the nonlinear class holds exactly as ALES132's hard drive stated it, honestly: where normalize, fade, and crossfade shared a quantity that preserved the stereo image because scaling is linear, a soft drive is not linear, so the same shoulder does not hold the inter-channel ratio — each channel bends toward the same ceiling by its own level, a louder channel bending harder, the ratio compressing; that is what a stereo soft drive is, not a bug to design around. The rule is stated positively: refuse BadGain, BadKnee, BadCeiling, and BadRange before either channel is mutated (each fault depends only on the shared parameters or the shared length, so each is made once up front), else soft-drive both channels over the span by num/den through knee into ceil via ALES79's soft_drive. It reuses ALES79's SoftDriveError by name and ALES79's soft_drive for the arithmetic, inventing no new fault and no new primitive. The crux stands out as four laws: the stereo soft-drive law (each channel equals ALES79's mono soft_drive with the same params byte for byte, a boosted sample below the knee passing clean, one in the shoulder rising at half slope, one past the top pinning to the sign-held ceiling), the balance / length law (left.len == right.len after the edit and both hold their starting length, a soft drive writing values only), the per-channel nonlinear law (the ceiling and sign discipline hold per channel, a 1:2 master's ratio compressing under a hard drive where the linear amplitude class would have held it, an identical-channel master staying identical, and a knee AT the ceiling degenerating both channels to ALES132's hard drive byte for byte), and the atomicity / degenerate law (any refusal leaves both channels byte for byte untouched and still balanced, a unity drive at the rail the identity on both, count 0 the identity on both)."
+say "ales-stereo-soft-drive: Lens TAME — two bounded i16 Clips (left, right) soft-driven in lockstep by one shared nonlinear waveshaper; the balance invariant is asserted on entry and exit, the gain, knee, ceiling, and span are bound-checked once before any write, and because those checks hold identically for both channels each mono soft drive is pre-validated to succeed so no refusal can land between the two channel edits; soft_drive walks the span once per channel, boosting each sample by num/den in an i64 accumulator so the pre-gain never overflows before the piecewise shape lands every output in [-ceil, ceil] by construction (clean below the knee, half slope to the shoulder top, pinned above), the sign held (the waveshaper is odd), never touching a byte past len, so the length holds exactly; it reuses ALES79's soft_drive per channel over its public API and ALES79's SoftDriveError whole, inventing no new primitive; the stereo soft-drive law is proven against ALES79's own soft_drive run per channel, the per-channel nonlinear law proves the ceiling and sign hold on both channels, that a 1:2 field's ratio compresses to the rail, and that a knee at the ceiling reproduces ALES132's hard drive, the four refusals leave both channels byte-for-byte untouched, and a unity drive at the rail is the identity; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_soft_drive"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_soft_drive.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-soft-drive: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_soft_drive.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-soft-drive: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-soft-drive: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-soft-drive' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-soft-drive: selftest did not print the GREEN ales-stereo-soft-drive line"
