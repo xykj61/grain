@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260815.021504
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (Eastern EDT convention)
+title ALES121 — Lotus's stereo_paste_over: the overwrite paste carried into stereo, both channels in lockstep
+prompt Continue the recurring baton (prin recur) on the ALES/Lotus edge, Lindy-first crux-first; send each finished increment as its own signed round; stop at custody gates.
+think After ALES120 (stereo_duplicate) sent, the recur baton says keep climbing. Crux-first within the stereo edit family: ALES116 lifted the insert-mode paste (replace's general case), but the OVERWRITE mode — ALES114's paste_over, whose length holds — had no stereo twin. Lifting it names the second paste mode on a real master, the smallest decisive next rung.
+think Read paste_over.rye (mono overwrite, faults BadRange only, length holds) and stereo_replace.rye (the two-payload validation pattern). A stereo payload names one span across both channels, so left_src and right_src must be equal length (BadRange otherwise); the mono preconditions check once against the shared length up front. paste_over keeps each channel's length, so balance is preserved trivially — the up-front validation keeps the edit coherent and refuses before either channel mutates.
+think Wrote the design read, module, witness. stereo_paste_over(sc, at, left_src, right_src) checks payload-equality, max_clip bound, at and span against shared len, then runs mono paste_over per channel. Four laws proven on metal: stereo overwrite law (each channel == ALES114 byte for byte), balance/length law (left.len == right.len, both holding starting length), insert-contrast law (same payloads keep length here, grow both channels through stereo_replace(count 0)), atomicity/degenerate law (a refusal leaves both untouched, empty payloads the identity, mismatched payloads BadRange).
+obs The insert-contrast law reads cleanly against ALES116's stereo_replace with count 0 — the same payloads set the two paste modes side by side (overwrite holds length, insert grows). No new fault invented; EditError reused whole. Witness GREEN first run; tame_style_check clean (the module carries asserts).
+loom witness=ales_stereo_paste_over_witness result=GREEN laws=4 channels=2
+file lotus/stereo_paste_over.rye ALES121 — stereo_paste_over lifts ALES114's mono paste_over to a StereoClip, validate-both-before-either, four laws.
+file tools/ales_stereo_paste_over_witness.rish the witness — builds, runs selftest, asserts the GREEN ales-stereo-paste-over line.
+file active-designing/20260815-021504_fill-ales121-lotus-stereo-paste-over.md the self-approved design read for this rung.
+file lotus/README.md front door synced — ALES121 status entry and roster paragraph.
+recommend keep-going the mono-only edits still awaiting a stereo twin narrow to insert_silence, silence_span, and shift; the next crux is another lift, no gate reached.
