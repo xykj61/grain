@@ -1,0 +1,197 @@
+//! lotus/insert_silence.rye — ALES109: insert_silence — open `count` samples of silence at position `at`, shifting the tail right to make room, GROWING the clip, the
+//! lossless twin of ALES108's shift. Where ALES108's shift slides the clip within a fixed frame and DROPS what falls off the edge (a lossy translation), insert_silence
+//! makes room without translating and KEEPS every sample — the length grows by exactly `count`. This is the Insert → Silence gesture every editor and DAW ships: open a gap
+//! of quiet so a downbeat lands where it should, so a countdown has room, so two takes align without overwriting either. Naming it beside shift teaches the one distinction
+//! that matters about making room in a bounded signal: DROP, or GROW.
+//!
+//! The rule, stated once: `insert_silence(clip, at, count)` opens `count` silent seats at `at`, shifting the tail right — exactly ALES2's own splice gesture, filling the
+//! opened gap with zero instead of a caller's bytes. It refuses BadRange when `at` falls past the current samples and ClipFull when the growth would overrun the fixed
+//! buffer, each before any write, reusing ALES2's EditError whole. One in-place pass bounded by len, no allocation, no second buffer.
+//!
+//! The crux — four laws. THE INSERT LAW: after insert_silence(clip, at, count) the result is original[0..at] ++ zeros(count) ++ original[at..], the length grown by exactly
+//! count, checked against hand-built vectors at head, middle, and tail. THE INVERSE LAW: insert_silence(at, count) then ALES2's cut(at, count) returns the original BYTE FOR
+//! BYTE, for any clip and any legal span — insert_silence is the EXACT inverse of cut, the lossless round-trip ALES108's shift honestly could not make (shift(k) then
+//! shift(-k) loses the dropped tail; open-then-cut loses nothing). THE PEAK / SILENCE LAW: the inserted span is all zero, so the peak magnitude re-measured through ALES13 is
+//! UNCHANGED at any position or count — where shift's peak is non-increasing because it can drop a loud sample, insert_silence's peak is exactly preserved because it loses
+//! nothing. THE DEGENERATE / REFUSAL LAW: count = 0 is the identity, at = 0 opens at the head and at = len appends silence at the tail, an empty clip grows into a
+//! pure-silence clip, at > len refuses BadRange, and a count past the buffer refuses ClipFull.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES109.
+//! Design read: active-designing/20260815-010035_fill-ales109-lotus-insert-silence.md
+//! Stands on: lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, the EditError reused whole, and the cut imported by the selftest to prove the exact-inverse law;
+//! lotus/meter.rye (ALES13) — the peak/RMS meter, used only by the witness to prove that opening a silent gap never changes the peak.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. It opens a gap and fills it with SILENCE (zero) — the
+//! one thing it writes that was not already there, and silence is the honest content of a gap a keeper opened on purpose; it invents no non-zero sample, drops nothing, and
+//! reads no byte past len. No real sample rate, no network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/insert_silence.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const meter = @import("meter.rye");
+
+pub const insert_silence_version = "20260815.010035";
+
+/// insert_silence forwards ALES2's OWN faults reused by name — BadRange when `at` falls past the current samples, ClipFull when the growth would overrun the fixed buffer —
+/// and invents none of its own; `count` is a plain grow amount with no illegal value save the one the buffer bound already names.
+pub const InsertSilenceError = timeline.EditError;
+
+/// Open `count` samples of silence at position `at`, shifting the tail right to make room and growing the clip by exactly `count`. The opened gap is filled with zero.
+/// Refuses BadRange when `at` falls past the current samples and ClipFull when the growth would overrun the fixed buffer, each before any write. This is ALES2's splice
+/// gesture with silence for the payload — the lossless complement of ALES108's shift.
+pub fn insert_silence(clip: *timeline.Clip, at: u32, count: u32) InsertSilenceError!void {
+    // invariant: the length never claims more samples than the buffer holds — the whole edit works inside the fixed buffer.
+    assert(clip.len <= clip.buf.len);
+
+    // invariant: the insertion point lies within the current samples, and the grown clip fits the fixed buffer — both refused by name before any write, never a silent overrun.
+    if (at > clip.len) return error.BadRange;
+    if (count > clip.buf.len - clip.len) return error.ClipFull;
+
+    const old_len: u32 = clip.len;
+    if (count == 0) {
+        // invariant: a zero-count insert is the identity — nothing moves, nothing clears, the length is exactly what it was.
+        assert(clip.len == old_len and clip.len <= clip.buf.len);
+        return;
+    }
+
+    // Shift the tail [at, old_len) right by count, high index first, so no sample overwrites one still to move — exactly ALES2 splice's own safe direction.
+    var i: u32 = old_len;
+    while (i > at) : (i -= 1) {
+        // invariant: source and destination are both legal seats — the destination i-1+count is within the grown length old_len+count <= buf.len.
+        assert(i - 1 >= at and i - 1 + count < clip.buf.len);
+        clip.buf[i - 1 + count] = clip.buf[i - 1];
+    }
+
+    // Fill the opened gap [at, at+count) with silence — the one thing this edit writes that was not already there.
+    var g: u32 = at;
+    while (g < at + count) : (g += 1) clip.buf[g] = 0;
+
+    clip.len = old_len + count;
+    // invariant: the clip grew by exactly the opened span and never past its bound.
+    assert(clip.len == old_len + count);
+    assert(clip.len <= clip.buf.len);
+}
+
+// --- selftest: THE INSERT LAW — insert_silence lands original[0..at] ++ zeros(count) ++ original[at..] at head, middle, and tail; THE INVERSE LAW — insert_silence(at,count)
+//     then ALES2's cut(at,count) returns the original byte for byte, the exact inverse the lossy shift could not make; THE PEAK / SILENCE LAW — the peak re-measured through
+//     ALES13 is unchanged (opening silence loses nothing); THE DEGENERATE / REFUSAL LAW — count 0 the identity, at 0 the head, at = len the tail, an empty clip grown to pure
+//     silence, at > len BadRange, a count past the buffer ClipFull ----------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+/// The clip's current peak magnitude, re-measured through ALES13 — the reader the peak law checks the result against.
+fn clip_peak(clip: *const timeline.Clip) !u32 {
+    const m = try meter.measure(clip);
+    return meter.peak(&m);
+}
+
+fn run_selftest() !u8 {
+    // 1. THE INSERT LAW — insert_silence opens exactly `count` zeros at `at` and keeps every original sample, the length grown by count. Proven at the middle, the head, and
+    //    the tail so no edge is assumed.
+    {
+        var mid = timeline.Clip{};
+        try load_clip(&mid, &[_]i16{ 10, 20, 30, 40 });
+        try insert_silence(&mid, 2, 3); // open 3 zeros between 20 and 30
+        if (!eq(mid.samples(), &[_]i16{ 10, 20, 0, 0, 0, 30, 40 })) return error.InsertMidWrong;
+
+        var head = timeline.Clip{};
+        try load_clip(&head, &[_]i16{ 10, 20, 30 });
+        try insert_silence(&head, 0, 2); // open 2 zeros at the head
+        if (!eq(head.samples(), &[_]i16{ 0, 0, 10, 20, 30 })) return error.InsertHeadWrong;
+
+        var tail = timeline.Clip{};
+        try load_clip(&tail, &[_]i16{ 10, 20, 30 });
+        try insert_silence(&tail, tail.len, 2); // append 2 zeros at the tail
+        if (!eq(tail.samples(), &[_]i16{ 10, 20, 30, 0, 0 })) return error.InsertTailWrong;
+    }
+
+    // 2. THE INVERSE LAW — insert_silence(at, count) then ALES2's cut(at, count) returns the original byte for byte: open-then-cut loses nothing, the exact inverse the lossy
+    //    shift honestly could not make (ALES108's shift(k) then shift(-k) drops the tail). Proven at a mid span and the head.
+    {
+        const src = [_]i16{ 5, 6, 7, 8, 9 };
+
+        var mid = timeline.Clip{};
+        try load_clip(&mid, &src);
+        try insert_silence(&mid, 2, 4); // open 4 zeros at 2
+        try timeline.cut(&mid, 2, 4); // cut the same 4 — the exact inverse
+        if (!eq(mid.samples(), &src)) return error.InverseMidWrong;
+
+        var head = timeline.Clip{};
+        try load_clip(&head, &src);
+        try insert_silence(&head, 0, 3); // open 3 zeros at the head
+        try timeline.cut(&head, 0, 3); // cut the same 3
+        if (!eq(head.samples(), &src)) return error.InverseHeadWrong;
+    }
+
+    // 3. THE PEAK / SILENCE LAW — the inserted span is all zero, so the peak re-measured through ALES13 is unchanged: opening silence loses nothing, where ALES108's shift can
+    //    drop a loud sample and lower the peak. The loudest sample (-30000) survives whole across the insert.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 100, -30000, 200, -50 });
+        const before = try clip_peak(&clip);
+        try insert_silence(&clip, 1, 5); // open a wide silent gap right before the loudest sample
+        const after = try clip_peak(&clip);
+        if (after != before) return error.PeakMoved;
+    }
+
+    // 4a. THE DEGENERATE LAW — count 0 is the identity (nothing opens), and an empty clip grows into a pure-silence clip of exactly the requested length.
+    {
+        var idc = timeline.Clip{};
+        try load_clip(&idc, &[_]i16{ 7, 8, 9 });
+        try insert_silence(&idc, 1, 0); // zero count — the identity
+        if (!eq(idc.samples(), &[_]i16{ 7, 8, 9 })) return error.ZeroCountMoved;
+
+        var empty = timeline.Clip{};
+        try insert_silence(&empty, 0, 4); // grow an empty clip into pure silence
+        if (!eq(empty.samples(), &[_]i16{ 0, 0, 0, 0 })) return error.EmptyGrowWrong;
+    }
+
+    // 4b. THE REFUSAL LAW — `at` past the current samples refuses BadRange before any write, and a count past the fixed buffer refuses ClipFull, each by name.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 1, 2, 3 });
+        if (insert_silence(&clip, 4, 1)) |_| return error.BadRangeNotRefused else |e| {
+            if (e != error.BadRange) return error.WrongError;
+        }
+        // The clip is untouched by the refused call — the refusal came before any write.
+        if (!eq(clip.samples(), &[_]i16{ 1, 2, 3 })) return error.RefusedCallWrote;
+
+        var full = timeline.Clip{};
+        try load_clip(&full, &[_]i16{ 1, 2, 3 });
+        const past_buffer: u32 = @intCast(full.buf.len); // more than the buffer can ever hold
+        if (insert_silence(&full, 0, past_buffer)) |_| return error.ClipFullNotRefused else |e| {
+            if (e != error.ClipFull) return error.WrongError;
+        }
+        if (!eq(full.samples(), &[_]i16{ 1, 2, 3 })) return error.RefusedFullWrote;
+    }
+
+    print("GREEN ales-insert-silence: INSERT_SILENCE — open `count` samples of silence at position `at`, shifting the tail right to make room, GROWING the clip, the lossless " ++
+        "twin of ALES108's shift (where shift slides within a fixed frame and DROPS what falls off, insert_silence makes room without translating and KEEPS every sample). " ++
+        "This is the Insert → Silence gesture every editor ships — open a gap of quiet so a downbeat lands where it should. The rule: open `count` silent seats at `at` " ++
+        "(exactly ALES2's splice gesture with zero for the payload), refusing BadRange past the samples and ClipFull past the buffer before any write; no second buffer. The " ++
+        "crux is four laws. THE INSERT LAW: the result is original[0..at] ++ zeros(count) ++ original[at..], the length grown by count, checked at head, middle, and tail. " ++
+        "THE INVERSE LAW: insert_silence(at,count) then ALES2's cut(at,count) returns the original byte for byte — the exact inverse the lossy shift could not make. THE " ++
+        "PEAK / SILENCE LAW: the inserted span is all zero, so the peak re-measured through ALES13 is unchanged (opening silence loses nothing). THE DEGENERATE / REFUSAL " ++
+        "LAW: count 0 the identity, at 0 the head, at = len the tail, an empty clip grown to pure silence, at > len BadRange, a count past the buffer ClipFull. Purely local " ++
+        "— it opens a gap and fills it with silence, inventing no non-zero sample, dropping nothing, reading no byte past len; no real sample rate, no network, no keys, no " ++
+        "funds, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
