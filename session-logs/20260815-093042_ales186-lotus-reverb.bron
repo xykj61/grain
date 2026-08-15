@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260815.093042
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title ALES186 — Lotus's reverb: Schroeder's network, parallel combs summed then diffused through series allpasses — the time-based wing's keystone
+prompt Take the next agent-doable lap Lindy-first crux-first on the ALES / Lotus edge; approve the design round, make progress, send each finished increment to origin and xykj61; stop at custody gates.
+think Read REMEMBER (living edge DREY/HUNK/ALES), the 1,024-round itinerary, and the six-season double-seat expansion. The living ALES edge is Season C (Lotus). ALES184 seated the mono allpass, ALES185 the stereo allpass; every ALES184/185 doc and the README index name the reverb (parallel combs diffused through series allpasses) as the wing's keystone crux.
+think Crux-first: the reverb is the decisive move the whole time-based wing was climbing toward, and it is tractable now precisely because it invents no new arithmetic — every sample is written by a stage already proven byte-for-byte (echo ALES66 as the comb, allpass ALES184 as the diffusion). The reverb's own work is the SHAPE: parallel combs on their own dry copies, summed once through timeline.saturate, then allpasses in series in place.
+think Chose the mono reverb (one keystone, the finishing edge) over jumping to the stereo reverb, which becomes a thin twin over this. Kept the network parametrized (bounded slices of CombSpec/AllpassSpec, max_stages 16) so a room preset and Freeverb-sized banks fit without new machinery.
+think Atomicity was the design crux beyond the sample laws: a reverb carries many stages, so validate the span and EVERY comb and allpass through the stages' own precheck BEFORE any write — a bad late allpass must leave the clip untouched. Folded EchoError/AllpassError into ReverbError names (BadDelay, BadGain, BadRange) plus NoCombs and TooManyStages.
+think Hand-computed the two-comb + one-allpass impulse response [-8000,0,10000,-1333,8000,2000,5056,1000] and demanded the reverb equal BOTH that hand value AND an independent in-test composition (echo twice, saturating sum, allpass) — belt and suspenders. Also proved the single-comb/no-allpass degenerate IS ALES66's echo, silence stays silence, the tail settles to zero within the clip, and a loud two-comb sum saturates to the rail.
+obs GREEN on the FIRST metal pass — the hand arithmetic matched the primitives exactly, and the composition-law and hand-value assertions agreed, which is the strongest evidence the network is honestly the sum of proven stages. TAME bans clean, width exit 0. Purely local, siloed to lotus/; no socket, network, keys, funds, device, or sample rate — no custody gate reached, a self-approved design round.
+loom witness=ales_reverb_witness result=green cases=11 combs_max=16 allpasses_max=16
+file active-designing/20260815-093042_fill-ales186-lotus-reverb.md the self-approved design read choosing the reverb crux and naming its five laws
+file lotus/reverb.rye ALES186 — the reverb: wet = series_allpass(sum of parallel combs(dry)), composing echo (ALES66) and allpass (ALES184)
+file tools/ales_reverb_witness.rish the witness — build, selftest, and the GREEN ales-reverb assertion on metal
+file session-logs/README.md prepended the newest-first ALES186 index row
+file work-in-progress/REMEMBER.md refreshed the living edge to ALES186 and the git nib in the same work commit
+recommend keep-going the stereo reverb (each channel through its own network, a thin twin over ALES186) or a named-room preset is the next agent-doable ALES crux, Lindy-first; no custody gate reached
