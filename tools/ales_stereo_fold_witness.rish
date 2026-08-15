@@ -1,0 +1,40 @@
+# tools/ales_stereo_fold_witness.rish — stereo_fold: the wavefolder carried into stereo with ONE SHARED TRIANGLE, both channels in lockstep, the reflecting corner of the stereo NONLINEAR class (ALES134).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES134.
+# Design read: active-designing/20260815-033358_fill-ales134-lotus-stereo-fold.md
+# Stands on: lotus/fold.rye (ALES80 — the mono wavefolder run once per channel, itself ALES78's pre-gain reflected off ALES49's ceiling), lotus/stereo_drive.rye (ALES132 — the hard-drive sibling this
+# mirrors), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, sample_min/max). A Lotus master is a
+# StereoClip whose defining invariant is that left and right hold the same length. This rung carries ALES80's fold into stereo — a boosted sample below the ceiling passes clean, the excess above reflects
+# back down a triangle of period 2·ceil, the West-Coast fold that turns a plain tone into a bright metallic swarm; where the hard clip builds a wall, the fold builds a mirror. It holds the nonlinear lesson
+# as ALES132 stated it, honestly: a fold is not linear, so the same triangle does not hold the inter-channel ratio; a 1:2 master folded through a ceiling can land both channels on one value, the ratio
+# collapsing by reflection. What the shared map keeps, per channel, is the ceiling and sign discipline, an identical-channel master stays identical, and where the hard drive pins the excess the fold reflects
+# it.
+#
+# lotus/stereo_fold.rye validates both channels once against the shared parameters and length before either is mutated (BadGain on a zero denominator / below-unity gain / oversized numerator, BadCeiling on a
+# ceiling outside [1, sample_max], BadRange on a span outside the samples), then folds both channels through ALES80's wavefold; FoldError reused whole. The crux is four laws. THE STEREO FOLD LAW: each
+# channel equals ALES80's mono wavefold with the same params byte for byte. THE BALANCE / LENGTH LAW: left.len == right.len after, both holding their starting length. THE PER-CHANNEL NONLINEAR LAW: the
+# ceiling and sign hold per channel, a 1:2 master's ratio collapses by reflection under a shared fold, an identical-channel master staying identical, the fold reflecting where the hard drive pins. THE
+# ATOMICITY / DEGENERATE LAW: a refusal leaves both channels untouched and balanced, a unity fold below the ceiling the identity, count 0 the identity.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_stereo_fold_witness.rish
+
+say "ales-stereo-fold: Language EN — stereo_fold wavefolds a span in both channels of a stereo master by the same gain into the same ceiling, the same triangle on each, so one fold lands on both speakers together. A Lotus master is two Clips heard together, one per speaker, whose defining invariant is that left and right hold the same length so the two channels stay aligned in time. This rung carries the reflecting corner of the stereo nonlinear class on ALES80's wavefolder, running the proven mono wavefold on each channel with the same rational gain and ceiling, validated once against the shared parameters and length before either channel is mutated so a refusal never folds one channel and leaves the other dry."
+say "ales-stereo-fold: Style Radiant — the nonlinear class holds exactly as ALES132's hard drive stated it, honestly: where normalize, fade, and crossfade shared a quantity that preserved the stereo image because scaling is linear, a fold is not linear, so the same triangle does not hold the inter-channel ratio — a 1:2 master folded through a ceiling can land both channels on one value, the ratio collapsing not by pinning but by reflection (a 1000/2000 field folded through 1500 gives 1000/1000); that is what a stereo fold is, not a bug to design around. The rule is stated positively: refuse BadGain, BadCeiling, and BadRange before either channel is mutated (each fault depends only on the shared parameters or the shared length, so each is made once up front), else wavefold both channels over the span by num/den into ceil via ALES80's wavefold. It reuses ALES80's FoldError by name and ALES80's wavefold for the arithmetic, inventing no new fault and no new primitive. The crux stands out as four laws: the stereo fold law (each channel equals ALES80's mono wavefold with the same params byte for byte, a boosted sample below the ceiling passing clean and the excess above reflecting back down the triangle), the balance / length law (left.len == right.len after the edit and both hold their starting length, a fold writing values only), the per-channel nonlinear law (the ceiling and sign discipline hold per channel, a 1:2 master's ratio collapsing by reflection where the linear amplitude class would have held it, an identical-channel master staying identical, and the fold reflecting where the hard drive pins — the two agreeing below the ceiling and diverging above), and the atomicity / degenerate law (any refusal leaves both channels byte for byte untouched and still balanced, a unity fold below the ceiling the identity on both, count 0 the identity on both)."
+say "ales-stereo-fold: Lens TAME — two bounded i16 Clips (left, right) folded in lockstep by one shared nonlinear triangle; the balance invariant is asserted on entry and exit, the gain, ceiling, and span are bound-checked once before any write, and because those checks hold identically for both channels each mono wavefold is pre-validated to succeed so no refusal can land between the two channel edits; wavefold walks the span once per channel, boosting each sample by num/den in an i64 accumulator so the pre-gain never overflows before the triangle (period 2·ceil, @mod of a non-negative magnitude) lands every output in [-ceil, ceil] by construction, the sign held (the fold is odd), never touching a byte past len, so the length holds exactly; it reuses ALES80's wavefold per channel over its public API and ALES80's FoldError whole, inventing no new primitive; the stereo fold law is proven against ALES80's own wavefold run per channel, the per-channel nonlinear law proves the ceiling and sign hold on both channels, that a 1:2 field's ratio collapses to 1:1 by reflection (neither channel at the ceiling), and that the fold reflects a just-past-ceiling sample below the ceiling where ALES132's hard drive pins it there, the three refusals leave both channels byte-for-byte untouched, and a unity fold below the ceiling is the identity; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_fold"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_fold.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-fold: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_fold.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-fold: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-fold: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-fold' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-fold: selftest did not print the GREEN ales-stereo-fold line"
