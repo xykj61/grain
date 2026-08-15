@@ -1,0 +1,331 @@
+//! lotus/pad_tail.rye — ALES99: the padded top-and-tail — trim the leading and trailing silence like ALES98, yet keep a chosen margin of silence adjacent to the content.
+//! ALES98 cuts the dead air at both ends flush against the first and last sound. That is right for a sample library and wrong for a spoken take — a cut that lands
+//! exactly on the first consonant clips the attack and reads abrupt. Every recorder, DAW, and voice-memo app that trims silence also lets a keeper KEEP A MARGIN —
+//! trim the ends, but leave a quarter-second of air so the take breathes. This rung adds that one honest parameter: a `pad` count of silence samples to keep adjacent
+//! to the content at each end. The flush trim is exactly pad = 0; every larger pad keeps that much of the dead air back, bounded by how much silence each end holds.
+//!
+//! The rule, stated once: segment [0, clip.len) through ALES95, find the FIRST and LAST non-silent runs, then keep up to `pad` samples of the leading and trailing
+//! silence and cut only the EXCESS — the trailing excess first (a suffix cut shifts nothing before it), then the leading excess. Every silent run BETWEEN the first and
+//! last non-silent runs, and the kept margin, stay untouched.
+//!
+//! The crux — two laws, each tying this rung to a proven predecessor so it can never drift. THE PAD-ZERO LAW: top_and_tail_pad(clip, ..., 0) equals ALES98's
+//! top_and_tail(clip, ...) byte for byte — the flush trim is exactly the zero-margin case. THE MARGIN LAW: the result equals the original over [first.start -
+//! min(pad, lead_silence), last.end + min(pad, tail_silence)) byte for byte — the kept margin at each end is exactly min(pad, available); a pad larger than the
+//! available silence keeps all of it and no more (never inventing a sample), and a pad at least as large as both ends leaves the clip unchanged; monotone in pad.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES99.
+//! Design read: active-designing/20260814-234744_fill-ales99-lotus-padded-top-tail.md
+//! Stands on: lotus/top_tail.rye (ALES98) — the flush top-and-tail, the pad-zero twin; lotus/segment.rye (ALES95) — the voice-activity segmenter, reused by name;
+//! lotus/timeline.rye (ALES2) — the Clip and cut; lotus/voiced.rye (ALES94) — the .silent verdict.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. It edits only by removing whole excess-silent
+//! frames at the two ends through ALES2's own cut, fabricating no sample and reordering nothing, never touching a sample between the first and last non-silent runs or
+//! within the kept margin. NOT a transcript, not a real adaptive VAD; no real sample rate, no network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/pad_tail.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const voiced = @import("voiced.rye");
+const segment = @import("segment.rye");
+const top_tail = @import("top_tail.rye");
+
+pub const pad_tail_version = "20260814.234744";
+
+/// The padded trimmer's faults are ALES98's OWN faults (the segmenter's SegmentError and the editor's EditError) reused by name — it invents none of its own, and `pad`
+/// is a plain count with no illegal value (a huge pad simply keeps all available silence).
+pub const PadTailError = top_tail.TopTailError;
+
+/// Trim the leading and trailing silence from `clip` like ALES98, yet keep up to `pad` samples of silence adjacent to the content at each end. Segments the whole clip
+/// `[0, clip.len)` through ALES95, finds the first and last non-silent runs, keeps `min(pad, available)` of the silence at each end, and cuts only the excess — the
+/// trailing excess first (so the leading index stays valid), then the leading excess. Validates the whole span, band, floor, and frame length through ALES95's own
+/// checks BEFORE any cut; on refusal the clip is untouched. `pad = 0` is exactly ALES98. An empty clip refuses `BadFrame`; an all-silent clip trims to empty; a
+/// no-silent clip is unchanged.
+pub fn top_and_tail_pad(
+    clip: *timeline.Clip,
+    frame_len: u32,
+    t_low: i32,
+    t_high: i32,
+    silence_floor: u32,
+    voice_split: u32,
+    pad: u32,
+) PadTailError!void {
+    const original_len: u32 = clip.len;
+
+    // Segment the whole clip once — the boundaries are exactly the segmenter's, so this rung can never keep a span the segmenter did not name. All of ALES95's
+    // validation runs here before a single sample is cut.
+    var segs = segment.Segments{};
+    try segment.segment(clip, &segs, 0, original_len, frame_len, t_low, t_high, silence_floor, voice_split);
+
+    // invariant: segmenting a non-empty clip yields at least one run that tiles it — the segmenter's own postcondition, relied on here.
+    assert(segs.len >= 1 and segs.len <= segment.max_segments);
+
+    // Find the FIRST and LAST non-silent runs. `found` stays false only when every run is silent (an all-silence clip).
+    var found: bool = false;
+    var first_ns: u32 = 0;
+    var last_ns: u32 = 0;
+    var i: u32 = 0;
+    while (i < segs.len) : (i += 1) {
+        if (segs.items[i].verdict != .silent) {
+            if (!found) {
+                first_ns = i;
+                found = true;
+            }
+            last_ns = i;
+        }
+    }
+
+    if (!found) {
+        // ALL-SILENT: no content to keep a margin around — the whole clip is dead air, so it trims to empty regardless of pad (a margin needs a sound to sit beside).
+        // invariant: cutting the whole span leaves the clip empty; the span is exactly the clip.
+        try timeline.cut(clip, 0, original_len);
+        assert(clip.len == 0);
+        return;
+    }
+
+    const content_start: u32 = segs.items[first_ns].start; // first content sample
+    const content_end: u32 = segs.items[last_ns].start + segs.items[last_ns].count; // one past the last content sample
+    // invariant: the content span sits inside the clip.
+    assert(content_start <= content_end and content_end <= original_len);
+
+    const lead_silence: u32 = content_start; // silence before the content
+    const tail_silence: u32 = original_len - content_end; // silence after the content
+
+    // Keep min(pad, available) of the silence at each end; cut only the excess.
+    const lead_keep: u32 = if (pad < lead_silence) pad else lead_silence;
+    const tail_keep: u32 = if (pad < tail_silence) pad else tail_silence;
+    const lead_start: u32 = content_start - lead_keep; // kept span start (content_start minus the kept lead margin)
+    const tail_stop: u32 = content_end + tail_keep; // kept span end (content_end plus the kept tail margin)
+    // invariant: the kept span brackets the content and lies inside the clip.
+    assert(lead_start <= content_start and content_end <= tail_stop and tail_stop <= original_len);
+
+    // Cut the TRAILING excess first (from tail_stop to the clip's end). A suffix cut shifts nothing before it, so the leading index stays valid for the next cut.
+    const tail_cut: u32 = original_len - tail_stop;
+    if (tail_cut > 0) {
+        // invariant: the trailing excess lies wholly at the clip's end.
+        assert(tail_stop + tail_cut == clip.len);
+        try timeline.cut(clip, tail_stop, tail_cut);
+    }
+
+    // Cut the LEADING excess (from the clip's start, `lead_start` samples). The kept span shifts down to the front, internal pauses and the kept margins intact.
+    if (lead_start > 0) {
+        // invariant: the leading excess still lies at the front — the tail cut touched only samples after it.
+        assert(lead_start <= clip.len);
+        try timeline.cut(clip, 0, lead_start);
+    }
+
+    // invariant: the trimmed clip holds exactly the content plus the two kept margins.
+    assert(clip.len == tail_stop - lead_start);
+    assert(clip.len <= clip.buf.len);
+}
+
+// --- selftest: THE PAD-ZERO LAW — top_and_tail_pad(pad=0) equals ALES98's top_and_tail byte for byte; THE MARGIN LAW — the kept margin at each end is exactly
+//     min(pad, available), the result equal to the original over the padded span; a pad past both ends leaves the clip unchanged; monotone in pad; an all-silent clip
+//     trims to empty; a no-silent clip is unchanged; an empty clip, a ragged frame length, an inverted band, and an illegal floor each refuse by name, clip untouched -
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+/// The hand-built expectation the padded trimmer is checked against in the margin law — segment the ORIGINAL, find the first and last non-silent runs, and copy the
+/// original's samples over the padded span [content_start - min(pad, lead), content_end + min(pad, tail)). An all-silent clip leaves `out` empty.
+fn by_hand(out: *timeline.Clip, src: *const timeline.Clip, frame_len: u32, t_low: i32, t_high: i32, floor: u32, split: u32, pad: u32) !void {
+    var segs = segment.Segments{};
+    try segment.segment(src, &segs, 0, src.len, frame_len, t_low, t_high, floor, split);
+    var found: bool = false;
+    var first_ns: u32 = 0;
+    var last_ns: u32 = 0;
+    var i: u32 = 0;
+    while (i < segs.len) : (i += 1) {
+        if (segs.items[i].verdict != .silent) {
+            if (!found) {
+                first_ns = i;
+                found = true;
+            }
+            last_ns = i;
+        }
+    }
+    if (!found) return; // all silence — nothing kept
+    const content_start = segs.items[first_ns].start;
+    const content_end = segs.items[last_ns].start + segs.items[last_ns].count;
+    const lead_silence = content_start;
+    const tail_silence = src.len - content_end;
+    const lead_keep = if (pad < lead_silence) pad else lead_silence;
+    const tail_keep = if (pad < tail_silence) pad else tail_silence;
+    const samples = src.samples();
+    try timeline.splice(out, 0, samples[content_start - lead_keep .. content_end + tail_keep]);
+}
+
+fn run_selftest() !u8 {
+    const band_low: i32 = -1000;
+    const band_high: i32 = 1000;
+
+    // The classic dead-air-at-the-ends recording plus an interior gap. Frames of 4 samples. Quiet runs classify silent; the loud body voiced; the alternating run
+    // unvoiced. The head silence is 4 samples, the tail silence 4 samples.
+    const mixed = [_]i16{
+        40,    -40,   40,    -40, // silent (quiet head, 4 samples)
+        20000, 20000, -20000, -20000, // voiced
+        20000, 20000, -20000, -20000, // voiced
+        30,    -30,   30,    -30, // silent (interior gap)
+        20000, -20000, 20000, -20000, // unvoiced (loud noisy)
+        50,    -50,   50,    -50, // silent (quiet tail, 4 samples)
+    };
+
+    // 1. THE PAD-ZERO LAW — over many frame lengths, floors, and splits, top_and_tail_pad(pad=0) equals ALES98's flush top_and_tail.
+    {
+        const flens = [_]u32{ 1, 2, 3, 4, 6, 8, 12, 24 };
+        const floors = [_]u32{ 100, 500, 1000, 5000 };
+        const splits = [_]u32{ 1, 2, 4 };
+        var li: u32 = 0;
+        while (li < flens.len) : (li += 1) {
+            var fi: u32 = 0;
+            while (fi < floors.len) : (fi += 1) {
+                var si: u32 = 0;
+                while (si < splits.len) : (si += 1) {
+                    var padded = timeline.Clip{};
+                    try load_clip(&padded, &mixed);
+                    var flush = timeline.Clip{};
+                    try load_clip(&flush, &mixed);
+                    try top_and_tail_pad(&padded, flens[li], band_low, band_high, floors[fi], splits[si], 0);
+                    try top_tail.top_and_tail(&flush, flens[li], band_low, band_high, floors[fi], splits[si]);
+                    if (!eq(padded.samples(), flush.samples())) return error.PadZeroNotFlush;
+                }
+            }
+        }
+    }
+
+    // 2. THE MARGIN LAW — over many pads, the padded trim equals the hand-built padded span, and the kept margin is exactly min(pad, available).
+    {
+        const pads = [_]u32{ 0, 1, 2, 3, 4, 5, 8, 100 };
+        var pi: u32 = 0;
+        while (pi < pads.len) : (pi += 1) {
+            var got = timeline.Clip{};
+            try load_clip(&got, &mixed);
+            var src = timeline.Clip{};
+            try load_clip(&src, &mixed);
+            var want = timeline.Clip{};
+            try top_and_tail_pad(&got, 4, band_low, band_high, 500, 2, pads[pi]);
+            try by_hand(&want, &src, 4, band_low, band_high, 500, 2, pads[pi]);
+            if (!eq(got.samples(), want.samples())) return error.NotThePaddedSpan;
+        }
+    }
+
+    // 3. A KNOWN PAD — with frame 4, floor 500, pad 2: content is [4, 20), each end holds 4 silent samples, so 2 are kept at each end. Result = mixed[2, 22) = 20
+    //    samples: the last 2 head-silent samples, the body, gap, noisy, and the first 2 tail-silent samples.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &mixed);
+        try top_and_tail_pad(&clip, 4, band_low, band_high, 500, 2, 2);
+        const want = [_]i16{
+            40,    -40, // 2 kept head-silent samples (of 4)
+            20000, 20000, -20000, -20000, 20000, 20000, -20000, -20000, // body
+            30,    -30,   30,    -30, // interior gap (kept, as in ALES98)
+            20000, -20000, 20000, -20000, // noisy
+            50,    -50, // 2 kept tail-silent samples (of 4)
+        };
+        if (!eq(clip.samples(), &want)) return error.KnownPadWrong;
+        if (clip.len != 20) return error.KnownPadLength;
+    }
+
+    // 4. A PAD PAST BOTH ENDS leaves the clip unchanged — pad 4 keeps all 4 head-silent and all 4 tail-silent samples, and there is no silence beyond them.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &mixed);
+        try top_and_tail_pad(&clip, 4, band_low, band_high, 500, 2, 4);
+        if (!eq(clip.samples(), &mixed)) return error.FullPadChanged;
+    }
+
+    // 5. MONOTONE IN PAD — a larger margin keeps a clip at least as long.
+    {
+        const pads = [_]u32{ 0, 1, 2, 3, 4, 8 };
+        var prev: u32 = 0;
+        var pi: u32 = 0;
+        while (pi < pads.len) : (pi += 1) {
+            var clip = timeline.Clip{};
+            try load_clip(&clip, &mixed);
+            try top_and_tail_pad(&clip, 4, band_low, band_high, 500, 2, pads[pi]);
+            if (clip.len < prev) return error.NotMonotone;
+            prev = clip.len;
+        }
+    }
+
+    // 6. AN ALL-SILENT CLIP trims to empty whatever the pad (a margin needs a sound to sit beside).
+    {
+        const quiet = [_]i16{ 40, -40, 40, -40, 30, -30, 30, -30 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &quiet);
+        try top_and_tail_pad(&clip, 4, band_low, band_high, 500, 2, 3);
+        if (clip.len != 0) return error.AllSilentNotEmpty;
+    }
+
+    // 7. A NO-SILENT CLIP is unchanged — no silence at either end to trim or keep.
+    {
+        const loud = [_]i16{ 20000, 20000, -20000, -20000, 20000, -20000, 20000, -20000 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &loud);
+        try top_and_tail_pad(&clip, 4, band_low, band_high, 500, 2, 2);
+        if (!eq(clip.samples(), &loud)) return error.NoSilentChanged;
+    }
+
+    // 8a. AN EMPTY CLIP refuses BadFrame, untouched.
+    {
+        var clip = timeline.Clip{};
+        if (top_and_tail_pad(&clip, 4, band_low, band_high, 500, 2, 2)) |_| return error.EmptySlipped else |e| if (e != error.BadFrame) return error.WrongEmpty;
+        if (clip.len != 0) return error.EmptyMutated;
+    }
+
+    // 8b. A RAGGED FRAME LENGTH refuses BadFrame, the clip untouched.
+    {
+        const five = [_]i16{ 1, 2, 3, 4, 5 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &five);
+        if (top_and_tail_pad(&clip, 2, band_low, band_high, 500, 2, 2)) |_| return error.RaggedSlipped else |e| if (e != error.BadFrame) return error.WrongRagged;
+        if (!eq(clip.samples(), &five)) return error.RaggedMutated;
+    }
+
+    // 8c. AN INVERTED BAND refuses BadThreshold, the clip untouched.
+    {
+        const four = [_]i16{ 10, 20, 30, 40 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &four);
+        if (top_and_tail_pad(&clip, 2, 1000, -1000, 500, 2, 2)) |_| return error.InvertedSlipped else |e| if (e != error.BadThreshold) return error.WrongInverted;
+        if (!eq(clip.samples(), &four)) return error.InvertedMutated;
+    }
+
+    // 8d. AN ILLEGAL FLOOR refuses BadFloor, the clip untouched.
+    {
+        const four = [_]i16{ 10, 20, 30, 40 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &four);
+        if (top_and_tail_pad(&clip, 2, band_low, band_high, 32769, 2, 2)) |_| return error.BadFloorSlipped else |e| if (e != error.BadFloor) return error.WrongBadFloor;
+        if (!eq(clip.samples(), &four)) return error.BadFloorMutated;
+    }
+
+    print("GREEN ales-pad-tail: the PADDED TOP-AND-TAIL — trim the leading and trailing silence like ALES98, yet keep a chosen margin of silence adjacent to the " ++
+        "content at each end. The rule: segment [0, clip.len) into frames of frame_len samples, find the FIRST and LAST non-silent runs, keep min(pad, available) of " ++
+        "the silence at each end, and cut only the EXCESS (trailing first, so the leading index stays valid). The margin every recorder and DAW gives a spoken take so " ++
+        "it breathes — a flush cut clips the attack; a padded cut leaves the air. The crux is two laws. THE PAD-ZERO LAW: top_and_tail_pad(pad=0) equals ALES98's " ++
+        "flush top_and_tail byte for byte — the flush trim is exactly the zero-margin case. THE MARGIN LAW: the result equals the original over [first.start - " ++
+        "min(pad, lead_silence), last.end + min(pad, tail_silence)) byte for byte — the kept margin at each end is exactly min(pad, available), a pad past the " ++
+        "available silence keeps all of it and no more (never inventing a sample), and a pad past both ends leaves the clip unchanged; monotone in pad. A known pad " ++
+        "keeps exactly the named samples; an all-silent clip trims to empty whatever the pad; a no-silent clip is unchanged; an empty clip, a ragged frame length, an " ++
+        "inverted band, and an illegal floor each refuse by name — BadFrame, BadFrame, BadThreshold, BadFloor — the clip untouched. Purely local — it edits only by " ++
+        "removing whole excess-silent frames at the two ends through cut, fabricating no samples and reordering nothing; NOT a transcript or a real adaptive VAD; no " ++
+        "real sample rate, no network, no keys, no funds, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
