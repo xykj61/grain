@@ -1,0 +1,47 @@
+# tools/ales_stereo_reverb_time_witness.rish — the stereo reverb in real time: a linked Schroeder network named in milliseconds (ALES189).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES189.
+# Design read: active-designing/20260815-095002_fill-ales189-lotus-stereo-reverb-in-real-time.md
+# Stands on: lotus/stereo_reverb.rye (ALES187 — the linked stereo reverb this speaks in real time, delegated unchanged); lotus/reverb_time.rye
+# (ALES188 — the mono timed twin this mirrors, its CombSpecMs / AllpassSpecMs reused); lotus/clock.rye (ALES5 — the sample clock, its
+# samples_for converting ms to a bounded sample count); lotus/stereo_echo_time.rye (ALES182 — the first stereo real-time face, the pattern).
+#
+# lotus/stereo_reverb_time.rye gives the ALES187 stereo reverb a face in milliseconds, mirroring reverb_ms's two-bank conversion and
+# delegating to ALES187 unchanged. stereo_reverb_ms converts start_ms, count_ms, and every comb's and allpass's delay_ms once through ALES5's
+# proven clock.samples_for into an index-named comb bank and allpass bank and delegates to ALES187's stereo_reverb UNCHANGED, so a
+# millisecond-named stereo reverb lands BYTE-FOR-BYTE the same samples on each channel as the index-named stereo reverb over the converted
+# delays and span, the image held. The selftest proves: the clock adds only units (both tools run, the channels genuinely differing); at
+# 48 kHz 1 ms converts to 48 samples on both and the first recirculation sits exactly there; an identical-channel master stays identical
+# (an exact panned ratio does not survive the @divTrunc recirculation, inherited from ALES187); a sub-sample comb (0 ms) refuses BadDelay;
+# a stage delay past the clip refuses DurationTooLong; an empty comb bank refuses NoCombs, a feedback at unity BadGain, an out-of-range span
+# BadRange, each leaving BOTH channels untouched and balanced; count_ms 0 the identity. Purely local — no cross-channel read, no network,
+# no keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_stereo_reverb_time_witness.rish
+
+say "ales-stereo-reverb-time: Language EN — ALES187 carried the reverb into stereo (the same comb-and-allpass bank on both channels, each channel through its own network) but named every delay in sample INDICES. A keeper names a room in TIME — the pre-delays and decays of a hall are milliseconds, not sample counts — and the one missing fact is the sample rate, which ALES5's validated Clock holds. stereo_reverb.rye's own header named this rung, and ALES188's mono reverb_ms opened it; this is the stereo face, mirroring reverb_ms's two-bank conversion and delegating to ALES187 unchanged."
+say "ales-stereo-reverb-time: Style Radiant — the law is stated positively: the CLOCK ADDS ONLY THE UNITS, NEVER THE AUDIO, and the SAME conversion feeds BOTH channels. stereo_reverb_ms converts start_ms, count_ms, and every stage's delay_ms once through ALES5's samples_for into an index-named comb bank and allpass bank and delegates to ALES187's stereo_reverb unchanged, so a millisecond-named stereo reverb lands byte-for-byte the same samples on each channel as the index-named form over the converted delays and span, the image held; a sub-sample stage converts to zero and refuses BadDelay honestly."
+say "ales-stereo-reverb-time: Lens TAME — two bounded i16 Clips (left, right), a validated clock, two bounded stack banks of at most reverb.max_stages timed stages each a u32 delay_ms and a plain u32/u32 fraction; the bank counts are checked before any conversion, each delay converted into a bounded stack bank, then the proven stereo reverb run; DurationTooLong from the clock and NoCombs / TooManyStages / BadDelay / BadGain / BadRange from the reverb forward by name before any write, both channels untouched and balanced on refusal; siloed to lotus/, no new arithmetic on the audio path, no cross-channel read, no network, no keys, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_reverb_time"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb_time.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-reverb-time: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_reverb_time.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-reverb-time: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-reverb-time: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-reverb-time' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-reverb-time: selftest did not print the GREEN ales-stereo-reverb-time line"
+
+# This rung delegates to ALES187's stereo_reverb over its public API — re-prove the index-named stereo reverb still stands green beside it.
+let stereo = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb.rye -femit-bin=lotus/bin/stereo_reverb && lotus/bin/stereo_reverb selftest 2>&1 | grep -q 'GREEN ales-stereo-reverb' && echo yes"]
+assert (trim stereo.out) == "yes" else "ales-stereo-reverb-time: the ALES187 stereo reverb regressed under its real-time twin"
+
+say "ales-stereo-reverb-time: GREEN — the stereo reverb in real time: ALES187's linked Schroeder network spoken in milliseconds, a thin twin over it exactly as ALES188's reverb_ms is over ALES186's reverb. The clock adds only the units, never the audio, and the same conversion feeds both channels: stereo_reverb_ms converts start_ms, count_ms, and every comb's and allpass's delay_ms once through ALES5's samples_for and delegates to ALES187's stereo_reverb unchanged, so a millisecond-named stereo reverb lands byte-for-byte the same samples on each channel as the index-named stereo reverb (the channels genuinely differing); at 48 kHz 1 ms converts to 48 samples on both and the first recirculation sits exactly there; an identical-channel master stays identical; a sub-sample comb refuses BadDelay, a stage delay past the clip DurationTooLong, an empty comb bank NoCombs, a feedback at unity BadGain, an out-of-range span BadRange, each leaving both channels untouched and balanced, count_ms 0 the identity; the ALES187 stereo reverb stays GREEN beside it. The timed reverb family is now whole in mono and stereo; a named-room preset (a curated hall/room/plate bank a keeper reaches for by name) is the higher-Lindy move next."
