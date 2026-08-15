@@ -1,0 +1,196 @@
+//! lotus/rectify.rye — ALES84: the full-wave rectifier — fold the wave at zero, y = |x|, the plainest EVEN-harmonic generator. The DRIVE family
+//! (ALES78–ALES83) shapes a wave by clipping, quantizing, or holding it — the hard clip, overdrive, wavefolder, bit-crush, tube, and decimator; three
+//! of those are ODD maps (magnitude shaped, sign carried) and make only odd harmonics. The rectifier is the complement: it takes the ABSOLUTE VALUE,
+//! folding the whole negative half of the wave up onto the positive side. A full-wave rectifier turns a symmetric wave into a one-sided, DC-heavy
+//! signal at DOUBLE the frequency — the diode bridge of a power supply, the octave-up fuzz of a guitar pedal, a signal made entirely of EVEN harmonics
+//! and a DC term, the plainest even generator there is. Where the tube drive (ALES82) coaxes even harmonics from an UNEVEN clip, the rectifier makes
+//! them from the purest even map: |−x| = |x|.
+//!
+//! The crux is that |x| is EXACT for every i16 EXCEPT ONE — sample_min = −32768, whose true magnitude 32768 overflows the positive rail (sample_max =
+//! 32767). Rather than wrap (the one place |x| would leave the rail), the rectifier SATURATES that lone sample to sample_max, the same honest ceiling
+//! every Lotus edit owes so loud never wraps to quiet. Stated positively: the rectifier is |x| pinned to the rail, exact everywhere the rail can hold
+//! the magnitude and one unit shy at the single sample it cannot. The map is MEMORYLESS — every output depends only on its own input, so the in-place
+//! read-then-write touches nothing another step needs, and rectifying a span block by block equals rectifying it whole. It is IDEMPOTENT — a
+//! non-negative sample rectifies to itself, so rectify(rectify(x)) = rectify(x). And its output is always NON-NEGATIVE — the one-sided signal is the
+//! rectifier's whole point.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES84.
+//! Design read: active-designing/20260814-213747_fill-ales84-lotus-full-wave-rectifier.md
+//! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/max, the one true saturate. It carries NO gain and NO ceiling parameter — the purest
+//! even map, taking one argument-free absolute value per sample; a keeper who wants a boosted or half-wave rectification composes this with ALES78's
+//! drive over the same span, both in-place span maps that compose.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket, no network, no keys, no
+//! funds, no real device, no real sample rate — the shape is a full-wave absolute value, instantaneous (no attack/release, no anti-aliasing — a
+//! rectifier doubles frequency and is a heavy even-harmonic generator, and its harmonics fold in the i16 domain exactly as any diode rectifier's). One
+//! negate-and-pin per sample; the rectifier only takes a magnitude, so the output fits the i16 rail after the single-sample saturate.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/rectify.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+
+pub const rectify_version = "20260814.213747";
+
+/// The full-wave rectifier's faults, one consistent name each. BadRange coincides by name with the sibling drives and ALES2's timeline (Zig merges
+/// error sets by name), so a composer sees one consistent span fault. The rectifier names NO other fault — it takes no gain, no ceiling, no
+/// resolution: an absolute value has no parameter that could be illegal.
+pub const RectifyError = error{
+    /// A span outside the current samples — refused, no write.
+    BadRange,
+};
+
+/// Rectify `count` samples starting at `start` in place in `clip`: each sample becomes its absolute value `|x|`, the negative half of the wave folded
+/// up onto the positive side. Exact for every i16 except sample_min, whose magnitude 32768 overflows the positive rail and saturates to sample_max.
+/// After the call every output is non-negative, at most the input's magnitude, and depends only on its own input (the rectifier is memoryless).
+/// Refuses BadRange on a span outside the samples — BEFORE any write, so an illegal call leaves the clip exactly as it was. Values only — never the
+/// length.
+pub fn rectify(clip: *timeline.Clip, start: u32, count: u32) RectifyError!void {
+    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder), exactly as the sibling drives.
+    if (start > clip.len) return error.BadRange;
+    if (count > clip.len - start) return error.BadRange;
+
+    var k: u32 = 0;
+    while (k < count) : (k += 1) {
+        const i: u32 = start + k;
+        const dry: i64 = @as(i64, clip.buf[i]);
+        // invariant: the sample read is a legal i16 — it is audio, never a wide intermediate.
+        assert(dry >= @as(i64, timeline.sample_min) and dry <= @as(i64, timeline.sample_max));
+        // The absolute value in i64, so negating sample_min gives +32768 WITHOUT overflow (a wide-enough type holds the true magnitude); the saturate
+        // below pins that lone over-rail value to sample_max. Every other |x| already sits within the rail.
+        const mag: i64 = if (dry < 0) -dry else dry;
+        // invariant: the magnitude is non-negative and no wider than |sample_min| = 32768, so the saturate pins exactly one value (sample_min's
+        // magnitude) and passes every other through unchanged — the map is |x| clamped to the positive rail.
+        assert(mag >= 0 and mag <= 32768);
+        const out: i16 = timeline.saturate(mag);
+        // invariant: the output is non-negative (a rectifier makes a one-sided signal) and no greater than the input's magnitude was — 32768 pinned to
+        // 32767 is the only place the two differ, and it lowers, never raises.
+        assert(out >= 0 and @as(i64, out) <= mag);
+        clip.buf[i] = out;
+    }
+    // invariant: a rectify changes sample values only, never the clip's length or bound.
+    assert(start + count <= clip.len);
+    assert(clip.len <= clip.buf.len);
+}
+
+// --- selftest: NON-NEGATIVES ARE UNCHANGED (|x| = x for x ≥ 0); NEGATIVES FOLD to their magnitude by hand; the RAIL EDGE (|sample_min| = 32768
+//     saturates to sample_max, the one sample |x| cannot hold); every output is NON-NEGATIVE and the map is IDEMPOTENT (|­|x|| = |x|); the map DOUBLES
+//     a symmetric pair onto one side (the even-harmonic signature: +a and −a both map to a); the SPAN discipline holds; and a span past the end
+//     refuses BadRange, the clip untouched ---
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn run_selftest() !u8 {
+    // 1. NON-NEGATIVES ARE UNCHANGED — |x| = x for every x ≥ 0, so a signal already one-sided rectifies to itself. The positive half of the wave
+    //    passes through untouched, the way ALES8's unity fader reproduces the plain render.
+    {
+        const sig = [_]i16{ 0, 1, 12345, 32767, 200, 5 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try rectify(&clip, 0, clip.len);
+        if (!eq(clip.samples(), &sig)) return error.NonNegChanged;
+    }
+
+    // 2. NEGATIVES FOLD TO THEIR MAGNITUDE BY HAND — each negative sample flips up to +|x|, the negative half of the wave folded onto the positive
+    //    side. −1→1, −100→100, −12345→12345, −32767→32767; the positives among them pass unchanged.
+    {
+        const sig = [_]i16{ -1, 100, -100, -12345, 32767, -32767 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try rectify(&clip, 0, clip.len);
+        const want = [_]i16{ 1, 100, 100, 12345, 32767, 32767 };
+        if (!eq(clip.samples(), &want)) return error.FoldWrong;
+    }
+
+    // 3. THE RAIL EDGE — |sample_min| = 32768 overflows the positive rail (sample_max = 32767), so the lone most-negative sample SATURATES to
+    //    sample_max rather than wrapping. This is the one place |x| leaves the i16 rail, and the rectifier pins it honestly.
+    {
+        const sig = [_]i16{ timeline.sample_min, -32767, 0, 32767 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try rectify(&clip, 0, clip.len);
+        const want = [_]i16{ 32767, 32767, 0, 32767 }; // sample_min → 32767 (saturated), −32767 → 32767 (exact)
+        if (!eq(clip.samples(), &want)) return error.RailEdgeWrong;
+    }
+
+    // 4. EVERY OUTPUT IS NON-NEGATIVE, AND THE MAP IS IDEMPOTENT — a rectifier makes a one-sided signal, so no output is below zero; and rectifying
+    //    the already-rectified clip a second time changes nothing (a non-negative sample rectifies to itself).
+    {
+        const sig = [_]i16{ 100, -200, 5000, -5000, timeline.sample_min, 0, -1, 32767 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try rectify(&clip, 0, clip.len);
+        const once = clip.samples();
+        var i: u32 = 0;
+        while (i < once.len) : (i += 1) if (once[i] < 0) return error.NegativeOutput;
+        var again = timeline.Clip{};
+        try load_clip(&again, once);
+        try rectify(&again, 0, again.len);
+        if (!eq(again.samples(), once)) return error.NotIdempotent;
+    }
+
+    // 5. THE EVEN-HARMONIC SIGNATURE — a symmetric pair +a and −a BOTH map to a, folding the two halves of the wave onto one side. That doubling of the
+    //    fundamental into a one-sided, DC-heavy shape is the full-wave rectifier's even-harmonic voice — the complement of the DRIVE family's odd maps.
+    {
+        const sig = [_]i16{ 6000, -6000, 300, -300 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try rectify(&clip, 0, clip.len);
+        const out = clip.samples();
+        if (out[0] != out[1] or out[2] != out[3]) return error.NotFoldedTogether; // +a and −a coincide at a
+        if (out[0] != 6000 or out[2] != 300) return error.MagnitudeWrong;
+    }
+
+    // 6. THE SPAN DISCIPLINE — rectifying a sub-span leaves samples outside [start, count) exactly as they were, the in-place discipline the whole
+    //    suite keeps. Rectify the middle two of six; the first and last two are untouched, negatives among them preserved.
+    {
+        const sig = [_]i16{ -100, -200, -500, 500, -300, -400 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try rectify(&clip, 2, 2); // indices 2,3 only: −500→500, 500→500
+        const want = [_]i16{ -100, -200, 500, 500, -300, -400 };
+        if (!eq(clip.samples(), &want)) return error.SpanLeaked;
+    }
+
+    // 7. A SPAN past the end refuses BadRange — before any write, the clip untouched. The rectifier names no other fault (an absolute value has no
+    //    parameter that could be illegal).
+    {
+        const sig = [_]i16{ 9, -10, 11 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        if (rectify(&clip, 1, 3)) |_| return error.OverRangeSlipped else |e| if (e != error.BadRange) return error.WrongOverRange;
+        if (!eq(clip.samples(), &sig)) return error.RefusedOverRangeTouched;
+    }
+
+    print("GREEN ales-rectify: the FULL-WAVE RECTIFIER — fold the wave at zero, y = |x|, the plainest EVEN-harmonic generator. The DRIVE family " ++
+        "(ALES78–ALES83) clips, quantizes, or holds a wave, three of them ODD maps that make only odd harmonics; the rectifier is the complement — it " ++
+        "takes the ABSOLUTE VALUE, folding the whole negative half up onto the positive side, turning a symmetric wave into a one-sided, DC-heavy " ++
+        "signal at DOUBLE the frequency (the diode bridge, the octave-up fuzz, a signal of even harmonics and a DC term). Where the tube drive coaxes " ++
+        "even harmonics from an UNEVEN clip, the rectifier makes them from the purest even map: |−x| = |x|. The crux is that |x| is EXACT for every " ++
+        "i16 except ONE — sample_min = −32768, whose magnitude 32768 overflows the positive rail, so that lone sample SATURATES to sample_max rather " ++
+        "than wrapping; the rectifier is |x| pinned to the rail. Non-negatives pass unchanged; negatives fold by hand (−1→1, −100→100, −12345→12345, " ++
+        "−32767→32767); the rail edge saturates sample_min to 32767; every output is NON-NEGATIVE and the map is IDEMPOTENT (a non-negative sample " ++
+        "rectifies to itself); the even-harmonic signature folds +a and −a both onto a; the span discipline holds; a span past the end refuses " ++
+        "BadRange, the clip untouched. The magnitude runs in i64 so negating sample_min never overflows before the pin; the map is MEMORYLESS; one " ++
+        "negate-and-pin per sample; no gain, no ceiling, no delay line, no anti-aliasing, no socket, no network, no keys, no funds, no real device, " ++
+        "no real sample rate. The rectifier opens the EVEN family beside the DRIVE clippers; a half-wave rectifier (keep the positive half, zero the " ++
+        "negative) is its plain sibling\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
