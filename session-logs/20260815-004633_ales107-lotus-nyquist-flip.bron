@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260815.004633
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title ALES107 — Lotus's Nyquist flip, alternate-sign, the value family's parity-cousin of invert
+prompt recur the itinerary Lindy-first crux-first; after ALES106 sent, take the next agent-doable Lotus lap, self-approve, prove GREEN, send as its own signed round; STOP at custody gates
+think ALES105 (invert) flips EVERY sample's sign about zero — the whole value-mirror. Its exact, genuinely-distinct cousin is to flip every OTHER sign, y[n] = saturate((-1)^n · x[n]), holding the even seats fixed. This is not a trivial variant: multiplying by (-1)^n = cos(π n) is modulation by the Nyquist frequency (fs/2), the classic spectral-inversion trick every filter-design text teaches to turn a lowpass kernel into its highpass twin. So it is a real, Lindy DSP primitive — structure that composes and reads true on the long return — that no existing lotus/ module covers (invert flips all signs; rotate/reverse move seats; none flip a parity pattern).
+think Honesty guard: the operation is purely time-domain (a per-sample sign flip on odd indices); the spectral reading is named as INTERPRETATION, never computed. No FFT, no real rate — the "Nyquist frequency" is the interpretation of a sign pattern, stated as such in the module head, the design read, the witness, and the README.
+think Shape: nyquist_flip(clip), no parameter, raises no fault from legal input. Walk the odd seats only (i = 1, step 2), writing saturate(-x) into each, reusing ALES2's one true saturate so the signed rail lives in one place; even seats left exactly as they are. One in-place pass, no allocation, no second buffer, no byte past len read or written.
+think Four laws plus fixpoints, all provable: the ALTERNATING-SIGN law (sample i holds saturate((-1)^i·x), hand-checked vector with sample_min on an odd seat saturating to sample_max and sample_max on an odd seat negating to -32767, plus a sample_min on an EVEN seat left untouched to prove the parity); the INVOLUTION law with an honest rail (flip twice is the identity off the floor, an odd-indexed sample_min pinning to -32767 while an even-indexed sample_min round-trips exactly); the MAGNITUDE law (length and peak re-measured through ALES13 unchanged off the rail); the FIXED-SEAT / PARITY law (every even seat a fixed point — a single-sample clip on index 0 untouched — the all-zero and empty clips each their own flip).
+obs Witness GREEN on the first pass — all five sections. The parity walk (start 1, step 2) is what makes the fixed-seat law hold by construction: even seats are never written, so an even-indexed sample_min can never saturate. TAME style bans clean (ratchet zero-assert count unchanged at 11); >=2 asserts per fn (nyquist_flip carries four, including an i%2==1 parity invariant in the loop); width-check clean; the Clip and the ALES13 meter reused whole, no new arithmetic beyond the negation-and-clamp already proven in ALES105.
+loom witness=ales_nyquist_witness green=1 laws=4 rung=ALES107
+file lotus/nyquist.rye the ALES107 rung — nyquist_flip, the parity-restricted twin of invert, four laws proven in-file
+file tools/ales_nyquist_witness.rish the on-metal witness — build, selftest, GREEN-line assert
+file active-designing/20260815-004633_fill-ales107-lotus-nyquist.md the self-approved design read for the rung
+file lotus/README.md front door synced — Status-line short entry and the long per-rung paragraph both carry ALES107
+recommend keep-going the next agent-doable Lotus lap continues the value/position family; STOP remains at REMEMBER's custody gates
