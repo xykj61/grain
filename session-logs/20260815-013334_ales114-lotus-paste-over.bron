@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260815.013334
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title ALES114 — Lotus's paste_over, overwrite a span in place (the overwrite-twin of splice)
+prompt recur the itinerary Lindy-first crux-first; after ALES113 sent, take the next agent-doable Lotus lap, self-approve, prove GREEN, send as its own signed round; STOP at custody gates
+think ALES2's splice pastes by INSERTING — the clip grows by what you paste. Every editor also ships the other paste: OVERWRITE. Drop a corrected word onto a muffled one, punch a clean take over a flubbed bar, and the new samples land on top without moving anything after them, the length HOLDING. This rung names it: paste_over — the overwrite-twin of splice (the two paste modes every DAW carries) and the general case of ALES110's silence_span (which overwrites a span with zeros; paste_over overwrites with ANY samples, so silence is the overwrite whose paint is zero). Absent from the suite (checked: no paste_over/overwrite/replace).
+think Shape: paste_over(clip, at, src) writes src over [at, at+src.len) in one bounded in-place pass. The payload is a caller slice, so bound it once against max_clip before @intCast to u32 at the std seam (a bounded seam cast, correct Tiger code), then refuse BadRange when at > len or src.len > len - at (checked without underflow, count against the remainder) before any write. Reuses timeline.EditError whole; no allocation, no second buffer.
+think Four laws: the OVERWRITE law (the span becomes src exactly and the rest byte for byte, the length untouched, proven mid/head/tail); the SPECIALIZATION law — the crux tying it to ALES110: paste_over of a zero src equals silence_span byte for byte, proven side by side; the INSERT-CONTRAST / LENGTH law (the same src at the same at KEEPS the length through paste_over and GROWS it by src.len through splice, two paste modes two lengths side by side; honestly not lossless — the covered samples are gone unless the caller kept them, which is exactly what ALES113's move does); the DEGENERATE / REFUSAL law (an empty src the identity, a paste past the samples BadRange, before any write).
+obs Witness GREEN on the first pass — all four laws, both BadRange branches (bad at, payload past the remainder), and both the empty-src identity and the zero-paint specialization against silence_span's own output. The specialization law is the teaching crux: proving paste_over of zeros IS silence_span makes the overwrite family read as one gesture with a parameter, not two unrelated ops. The length-contrast against splice names the insert/overwrite pair the way move/duplicate named the relocate/copy pair. TAME style bans clean (ratchet zero-assert count unchanged); >=2 positive-invariant asserts per fn; the one seam cast bounds the payload against max_clip first; width-check clean; timeline.EditError reused whole. No custody gate touched — pure-Rye local i16 buffer, siloed to lotus/.
+loom witness=ales_paste_over_witness green=1 laws=4 rung=ALES114
+file lotus/paste_over.rye the ALES114 rung — paste_over, the overwrite-twin of splice, four laws proven in-file
+file tools/ales_paste_over_witness.rish the on-metal witness — build, selftest, GREEN-line assert
+file active-designing/20260815-013334_fill-ales114-lotus-paste-over.md the self-approved design read for the rung
+file lotus/README.md front door synced — Status-line short entry and the long per-rung paragraph both carry ALES114, stamp refreshed
+recommend keep-going the paste family continues (an insert-mode paste_in that grows the clip from a caller slice, or a stereo overwrite, are natural next twins); the loop stays Lindy-first crux-first; STOP remains at REMEMBER's custody gates
