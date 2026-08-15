@@ -1,0 +1,239 @@
+//! lotus/stereo_reverb_freeze.rye — ALES209: THE STEREO FREEZE — the reverb's HELD TAIL carried across a stereo master, sustained by iterated
+//! reverberation. ALES208 gave the MONO reverb its freeze — a held tail that sustains and thickens instead of decaying to silence — by composing
+//! ALES190's named-room reverb with ITSELF. Yet a keeper mixing a STEREO master had no such knob; the freeze stopped at mono, exactly as the
+//! early/late balance did before ALES207 carried it across. This rung is the thin twin ALES208 named next: the SAME iterated reverberation, over
+//! BOTH channels of a StereoClip, one shared room and depth, the image held.
+//!
+//! The shape: run ALES191's stereo_reverb_preset over the master `passes` times in place, UNCHANGED —
+//!   pass 1: wet = stereo_reverb_preset(dry)   (the identity edge — one pass is exactly the plain stereo wet)
+//!   pass k: wet = stereo_reverb_preset(wet)   (the wash smeared into a longer, denser held tail, per ear)
+//! One shared bank feeds both channels, each reverberating its OWN audio with no cross-channel read, so the image the preset held is held across
+//! every pass. It invents NO new audio arithmetic: every sample it writes is written by a stage already proven byte-for-byte (ALES191's stereo
+//! preset), each pass saturating once so an iterated pile-up pins to the i16 rail rather than wrapping. The freeze depth is validated BEFORE any
+//! write (BadPasses on a zero or over-bound depth); the FIRST pass prechecks before it writes (its own contract), so a span or bank fault leaves
+//! both channels DRY and BALANCED. Once the first pass succeeds it has validated the span, room, and clock, so every later pass over the SAME
+//! master cannot fault — the loop refuses whole up front or completes whole. The up-front check and the first pass's precheck are the atomicity crux.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES209.
+//! Design read: active-designing/20260815-115900_fill-ales209-lotus-stereo-reverb-freeze.md
+//! Stands on: lotus/stereo_reverb_preset.rye (ALES191) — the named-room stereo wet, run over the master unchanged and composed with itself, its
+//! StereoReverbPresetError forwarded whole; lotus/reverb_freeze.rye (ALES208) — the mono freeze this carries across, the same iterated
+//! reverberation and the same max_passes bound; lotus/pan.rye — the StereoClip; lotus/clock.rye (ALES5) — the sample clock the freeze is spoken
+//! against; lotus/timeline.rye (ALES2) — the Clip each channel is, its saturate the rail each preset pass already rides.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM in one StereoClip, a validated clock, ALES190's fixed banks, and a
+//! bounded freeze depth (max_passes), siloed to lotus/. No new audio arithmetic — the freeze is the proven stereo reverb composed with itself.
+//! The depth is a named count of passes, not a decay time in seconds; "freeze" names iterated reverberation honestly (a longer, denser, held
+//! tail), not a literal infinite sustain. No socket, no network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_reverb_freeze.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const clock = @import("clock.rye");
+const stereo_reverb_preset = @import("stereo_reverb_preset.rye");
+const reverb_freeze = @import("reverb_freeze.rye");
+
+pub const stereo_reverb_freeze_version = "20260815.115900";
+
+/// The named rooms are ALES190's own (through ALES191) — reused whole, so the stereo freeze and the mono freeze name the same tunings.
+pub const Room = stereo_reverb_preset.Room;
+
+/// The deepest freeze this rung proves — the SAME bound the mono freeze carries (ALES208's max_passes), so the pair cannot drift apart.
+pub const max_passes: u32 = reverb_freeze.max_passes;
+
+/// The stereo freeze's faults: ALES208's own `BadPasses` (a zero depth or a depth past `max_passes`), beside ALES191's StereoReverbPresetError
+/// (the clock's DurationTooLong and the reverb's NoCombs / TooManyStages / BadDelay / BadGain / BadRange), forwarded whole from the passes. Each
+/// refuses by name before any write.
+pub const StereoReverbFreezeError = stereo_reverb_preset.StereoReverbPresetError || error{BadPasses};
+
+/// Freeze `count_ms` of a stereo master `sc` from `start_ms` for a NAMED ROOM by iterating ALES191's `stereo_reverb_preset` over the master
+/// `passes` times in place. Pass one is exactly the plain stereo wet (the identity edge, byte for byte on both channels); each further pass
+/// reverberates the reverberation, smearing each ear's wash into a longer, denser, held tail with no cross-channel read, so the image is held.
+/// Refuses BadPasses on a zero or over-bound depth before any write, then forwards ALES191's faults (DurationTooLong, BadRange) from the first
+/// pass's own precheck, which runs before it writes — so on any refusal both channels are untouched and balanced. Values only — never a length.
+pub fn stereo_reverb_freeze(
+    sc: *pan.StereoClip,
+    clk: clock.Clock,
+    room: Room,
+    start_ms: u32,
+    count_ms: u32,
+    passes: u32,
+) StereoReverbFreezeError!void {
+    // invariant: the two channels enter balanced — the defining StereoClip invariant every pass preserves.
+    assert(sc.left.len == sc.right.len);
+    // invariant: the clock is valid — the freeze is spoken against it, and each stereo preset pass asserts the same.
+    assert(clk.rate >= 1 and clk.rate <= clock.max_rate);
+    // invariant: the freeze depth is a real count in [1, max_passes] — a zero depth is no reverb at all, a depth past the bound would grow an
+    // unbounded loop. Refused before any conversion or write.
+    if (passes == 0 or passes > max_passes) return error.BadPasses;
+
+    // Reverberate the master once per unit of depth. The FIRST pass prechecks before any write (ALES191's contract), so a span or bank fault
+    // surfaces here with both channels still dry and balanced. Once it succeeds it has validated the span, room, and clock; every later pass over
+    // the SAME master therefore cannot fault — the freeze either refuses whole above or completes whole here.
+    var p: u32 = 0;
+    while (p < passes) : (p += 1) {
+        // invariant: every pass runs the identical validated master, so no pass past the first can raise a new fault.
+        assert(p < max_passes);
+        try stereo_reverb_preset.stereo_reverb_preset(sc, clk, room, start_ms, count_ms);
+    }
+
+    // invariant: the freeze accepted a real depth and ran exactly that many passes.
+    assert(passes >= 1 and passes <= max_passes and p == passes);
+    // invariant: the channels leave balanced — a reverb writes values only, so each channel keeps its length across every pass.
+    assert(sc.left.len == sc.right.len);
+}
+
+// --- selftest: THE IDENTITY EDGE (passes = 1) — each channel equals stereo_reverb_preset over the master byte for byte; IT EQUALS ITS
+//     COMPOSITION — passes = 2 equals stereo_reverb_preset applied twice and passes = 3 thrice, byte for byte on both channels; THE FREEZE
+//     DEEPENS — passes = 2 differs from passes = 1; THE IMAGE IS HELD — a centred master identical channel-to-channel, a stereo master distinct;
+//     THE CHANNELS LEAVE BALANCED and silence stays silence; and the faults forward atomic — a bad depth BadPasses, a span past the clip
+//     DurationTooLong, an out-of-range span BadRange, both channels untouched and balanced
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try timeline.splice(&sc.left, 0, l);
+    try timeline.splice(&sc.right, 0, r);
+}
+
+fn run_selftest() !u8 {
+    const c = try clock.make(1000); // 1 sample per ms — each ms delay is one sample, the bench legible
+    // Two distinct impulses so the channels genuinely differ (no crossing can hide).
+    const left = blk: {
+        var b: [1024]i16 = [_]i16{0} ** 1024;
+        b[0] = 12000;
+        break :blk b;
+    };
+    const right = blk: {
+        var b: [1024]i16 = [_]i16{0} ** 1024;
+        b[3] = 9000; // a different impulse at a different position — the right channel is not the left
+        break :blk b;
+    };
+
+    // 1. THE IDENTITY EDGE — passes = 1 leaves each channel equal to ALES191's stereo_reverb_preset over the master, byte for byte. One pass is
+    //    exactly the plain stereo wet.
+    {
+        var by_freeze = pan.StereoClip{};
+        try load_stereo(&by_freeze, &left, &right);
+        try stereo_reverb_freeze(&by_freeze, c, .hall, 0, 1024, 1);
+
+        var by_preset = pan.StereoClip{};
+        try load_stereo(&by_preset, &left, &right);
+        try stereo_reverb_preset.stereo_reverb_preset(&by_preset, c, .hall, 0, 1024);
+
+        if (!eq(by_freeze.left.samples(), by_preset.left.samples())) return error.IdentityEdgeLeftNotPreset;
+        if (!eq(by_freeze.right.samples(), by_preset.right.samples())) return error.IdentityEdgeRightNotPreset;
+    }
+
+    // 2. IT EQUALS ITS COMPOSITION — passes = 2 equals stereo_reverb_preset applied twice byte for byte on both channels, passes = 3 thrice: the
+    //    stereo freeze IS iterated reverberation, every sample written by a stage already proven byte for byte.
+    {
+        var frozen2 = pan.StereoClip{};
+        try load_stereo(&frozen2, &left, &right);
+        try stereo_reverb_freeze(&frozen2, c, .hall, 0, 1024, 2);
+        var twice = pan.StereoClip{};
+        try load_stereo(&twice, &left, &right);
+        try stereo_reverb_preset.stereo_reverb_preset(&twice, c, .hall, 0, 1024);
+        try stereo_reverb_preset.stereo_reverb_preset(&twice, c, .hall, 0, 1024);
+        if (!eq(frozen2.left.samples(), twice.left.samples())) return error.FreezeTwoLeftNotDouble;
+        if (!eq(frozen2.right.samples(), twice.right.samples())) return error.FreezeTwoRightNotDouble;
+
+        var frozen3 = pan.StereoClip{};
+        try load_stereo(&frozen3, &left, &right);
+        try stereo_reverb_freeze(&frozen3, c, .hall, 0, 1024, 3);
+        var thrice = pan.StereoClip{};
+        try load_stereo(&thrice, &left, &right);
+        try stereo_reverb_preset.stereo_reverb_preset(&thrice, c, .hall, 0, 1024);
+        try stereo_reverb_preset.stereo_reverb_preset(&thrice, c, .hall, 0, 1024);
+        try stereo_reverb_preset.stereo_reverb_preset(&thrice, c, .hall, 0, 1024);
+        if (!eq(frozen3.left.samples(), thrice.left.samples())) return error.FreezeThreeLeftNotTriple;
+        if (!eq(frozen3.right.samples(), thrice.right.samples())) return error.FreezeThreeRightNotTriple;
+    }
+
+    // 3. THE FREEZE DEEPENS — passes = 2 differs from passes = 1: a second pass genuinely changes the tail (a room's wash is not a fixed point).
+    {
+        var one = pan.StereoClip{};
+        try load_stereo(&one, &left, &right);
+        try stereo_reverb_freeze(&one, c, .hall, 0, 1024, 1);
+        var two = pan.StereoClip{};
+        try load_stereo(&two, &left, &right);
+        try stereo_reverb_freeze(&two, c, .hall, 0, 1024, 2);
+        if (eq(two.left.samples(), one.left.samples()) and eq(two.right.samples(), one.right.samples())) return error.FreezeDidNotDeepen;
+    }
+
+    // 4. THE IMAGE IS HELD — a CENTRED master (left == right) stays identical channel-to-channel at any depth (one shared bank, no cross-channel
+    //    read); and our genuinely STEREO master keeps its two channels distinct — no crossing.
+    {
+        var centred = pan.StereoClip{};
+        try load_stereo(&centred, &left, &left);
+        try stereo_reverb_freeze(&centred, c, .hall, 0, 1024, 3);
+        if (!eq(centred.left.samples(), centred.right.samples())) return error.CentredImageBroken;
+
+        var stereo = pan.StereoClip{};
+        try load_stereo(&stereo, &left, &right);
+        try stereo_reverb_freeze(&stereo, c, .hall, 0, 1024, 3);
+        if (eq(stereo.left.samples(), stereo.right.samples())) return error.StereoImageCollapsed;
+    }
+
+    // 5. SILENCE STAYS SILENCE — an all-zero master at any depth stays all zeros on both channels; the reverberation of silence is silence, iterated.
+    {
+        var sc = pan.StereoClip{};
+        const zeros = [_]i16{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        try load_stereo(&sc, &zeros, &zeros);
+        try stereo_reverb_freeze(&sc, c, .plate, 0, 16, 4);
+        if (!eq(sc.left.samples(), &zeros)) return error.SilenceLeftWrong;
+        if (!eq(sc.right.samples(), &zeros)) return error.SilenceRightWrong;
+        if (sc.left.len != sc.right.len) return error.SilenceUnbalanced;
+    }
+
+    // 6. THE FAULTS FORWARD, ATOMIC — a zero depth refuses BadPasses, a depth past max_passes BadPasses, a span past the clip DurationTooLong, an
+    //    out-of-range span BadRange, each by name with both channels untouched and balanced. The depth is checked before any conversion, and the
+    //    first pass prechecks before it writes, so no refusal ever half-writes the master.
+    {
+        var sc = pan.StereoClip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_stereo(&sc, &three, &three);
+        // a zero depth is no reverb at all — BadPasses, before any conversion or write.
+        if (stereo_reverb_freeze(&sc, c, .room, 0, 3, 0)) |_| return error.ZeroPassesSlipped else |e| if (e != error.BadPasses) return error.WrongZeroPasses;
+        if (!eq(sc.left.samples(), &three) or !eq(sc.right.samples(), &three)) return error.RefusedZeroPassesMutated;
+        // a depth past the bound would grow an unbounded loop — BadPasses.
+        if (stereo_reverb_freeze(&sc, c, .room, 0, 3, max_passes + 1)) |_| return error.OverPassesSlipped else |e| if (e != error.BadPasses) return error.WrongOverPasses;
+        if (!eq(sc.left.samples(), &three) or !eq(sc.right.samples(), &three)) return error.RefusedOverPassesMutated;
+        // a count past max_clip converts past the clip bound — DurationTooLong (raised by the first preset pass before any write).
+        if (stereo_reverb_freeze(&sc, c, .room, 0, timeline.max_clip + 1, 2)) |_| return error.LongSpanSlipped else |e| if (e != error.DurationTooLong) return error.WrongLongSpan;
+        if (!eq(sc.left.samples(), &three) or !eq(sc.right.samples(), &three)) return error.RefusedLongSpanMutated;
+        // an out-of-range span (2 ms start, 5 ms count past a 3-sample master) refuses BadRange before the master is written.
+        if (stereo_reverb_freeze(&sc, c, .room, 2, 5, 2)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(sc.left.samples(), &three) or !eq(sc.right.samples(), &three)) return error.RefusedRangeMutated;
+    }
+
+    print("GREEN ales-stereo-reverb-freeze: THE STEREO FREEZE — the reverb's HELD TAIL carried across a stereo master, sustained by iterated " ++
+        "reverberation, the thin twin ALES208 named next. ALES208 gave the MONO reverb its freeze; a keeper mixing a STEREO master had none, " ++
+        "exactly as the early/late balance stopped at mono before ALES207. The shape composes ALES191's stereo_reverb_preset with ITSELF over " ++
+        "both channels: pass one the plain stereo wet, each further pass reverberating the reverberation per ear with no cross-channel read, so " ++
+        "the image the preset held is held. It invents NO new audio arithmetic: every sample is written by a stage already proven byte for byte, " ++
+        "each pass saturating once so an iterated pile-up pins never wraps. Proven: at passes = 1 each channel equals stereo_reverb_preset byte " ++
+        "for byte (the plain stereo wet); passes = 2 equals stereo_reverb_preset applied twice and passes = 3 thrice, byte for byte on both " ++
+        "channels (the freeze IS iterated reverberation); passes = 2 differs from passes = 1 (the freeze deepens); the image is held — a centred " ++
+        "master identical channel-to-channel, a stereo master distinct; the channels leave balanced and silence stays silence; and the faults " ++
+        "forward atomic — a zero or over-bound depth BadPasses, a span past the clip DurationTooLong, an out-of-range span BadRange — each " ++
+        "leaving both channels untouched and balanced (the depth checked up front, the first pass prechecked). The depth is a named count of " ++
+        "passes, not a decay time in seconds; 'freeze' names iterated reverberation honestly, not a literal infinite sustain; siloed to lotus/, " ++
+        "no network, no keys, no funds, no real device, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
