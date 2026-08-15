@@ -1,0 +1,314 @@
+//! lotus/smooth_runs.rye — ALES101: the run-length smoother — absorb every run shorter than a minimum into what surrounds it, the smoothing hysteresis a real VAD needs.
+//! ALES95's own scope note named this rung plainly: "a real voice-activity detector adds adaptive floors, spectral tilt, and smoothing hysteresis this rung does not —
+//! those are later rungs." This is that rung. Raw per-frame segmentation flickers: one loud tick inside a pause reads as a one-frame .voiced blip, one quiet frame inside
+//! speech as a spurious .silent gap. Feed that flicker to ALES96's stripper or ALES100's collapser and it splits a pause in two, or spares a click as if it were a word.
+//! Every VAD, every gate, every auto-splitter in a century of audio editing fixes this the same way: a region must last a minimum duration to count — anything shorter is
+//! absorbed into what surrounds it. This is the decisive robustness move that turns a per-frame reader into a usable segmenter.
+//!
+//! The rule, stated once: seed the output with the first input run; walk the rest and, for each run, if it is SHORTER than min_run OR its verdict already matches the
+//! open output run, extend that open run (keeping the open run's verdict); otherwise push it as a new run. A short excursion is thus relabeled to the surrounding sound,
+//! and any two runs left adjacent with the same verdict re-coalesce in the same pass.
+//!
+//! The crux — four laws, each checked as data on the output rather than by mirroring the loop. THE COVERAGE LAW: the smoothed runs tile the same span exactly (same
+//! first start, same total length) — smoothing only relabels and merges, never adds or drops a sample. THE COALESCED LAW: no two adjacent output runs share a verdict.
+//! THE HOLD LAW: every output run except possibly the first has count >= min_run — a run is pushed only when it already meets the minimum, and merging only grows it; the
+//! first is the honest exception, a causal left-to-right hold having nothing before the opener to absorb it into. IDEMPOTENCE + MONOTONICITY: smoothing a smoothed
+//! sequence with the same min_run is a fixed point; a larger min_run yields at most as many runs. The identity law falls out: a min_run no larger than the shortest run
+//! leaves an already-coalesced input unchanged, so min_run = 0 is exactly the identity.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES101.
+//! Design read: active-designing/20260815-000323_fill-ales101-lotus-run-length-smoother.md
+//! Stands on: lotus/segment.rye (ALES95) — the voice-activity segmenter, whose Segments this reads and rewrites; lotus/voiced.rye (ALES94) — the Verdict the runs carry.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, and READ-ONLY over the LABELS. A bounded in-process rewrite of one Segments on one bench, siloed to lotus/, touching no
+//! PCM. It is a causal, left-to-right minimum-duration hold: it cannot rescue a too-short OPENING run (nothing precedes it) and does not do the symmetric two-sided
+//! smoothing or the adaptive floors a production VAD would — those stay later rungs. Not a transcript, not a diarization; no real sample rate, no network, no keys, no
+//! funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/smooth_runs.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const segment = @import("segment.rye");
+const voiced = @import("voiced.rye");
+
+pub const smooth_runs_version = "20260815.000323";
+
+/// The smoother's only fault, kept named for the honest path the type system can see: more output runs than max_segments. It cannot fire — smoothing only ever merges
+/// runs, so out.len <= in.len <= max_segments — yet it stays named, the same honesty ALES95 keeps about its own SegmentsFull.
+pub const SmoothError = error{
+    SegmentsFull,
+};
+
+/// Smooth `in` into `out` by absorbing every run shorter than `min_run` samples into the run it extends, keeping the tiling exact and the sequence coalesced. READ-ONLY
+/// over the labels — not one PCM sample is read or written; this rewrites a run-length sequence, nothing else. Seeds `out` with the first input run, then for each later
+/// run extends the open output run when the run is shorter than `min_run` OR shares the open run's verdict, else pushes it. `min_run = 0` is the identity; a `min_run`
+/// past the whole span coalesces every run into one. An empty input yields an empty output; a single-run input is unchanged. Writes into a fresh `out` so a caller
+/// reusing it never sees a half-written mix.
+pub fn smooth_runs(in: *const segment.Segments, out: *segment.Segments, min_run: u32) SmoothError!void {
+    // invariant: the input is the segmenter's own postcondition — a coalesced tiling. Assert that contract rather than re-derive it, so a caller who hands us a
+    // malformed sequence fails loudly at the seam instead of silently smoothing nonsense.
+    assert(in.len <= segment.max_segments);
+    {
+        var k: u32 = 1;
+        while (k < in.len) : (k += 1) {
+            // invariant: adjacent input runs never share a verdict (coalesced), and they tile contiguously (each run begins where the last ended).
+            assert(in.items[k].verdict != in.items[k - 1].verdict);
+            assert(in.items[k].start == in.items[k - 1].start + in.items[k - 1].count);
+            assert(in.items[k].count > 0);
+        }
+    }
+
+    // Refuse into a fresh, empty result — an empty input stays empty and returns at once.
+    out.len = 0;
+    if (in.len == 0) return;
+
+    // Seed with the first run. The opener is the honest exception to the hold law: nothing precedes it to absorb it into, so it survives even when shorter than min_run.
+    out.items[0] = in.items[0];
+    out.len = 1;
+
+    var i: u32 = 1;
+    while (i < in.len) : (i += 1) {
+        const run = in.items[i];
+        const cur = &out.items[out.len - 1];
+        if (run.count < min_run or run.verdict == cur.verdict) {
+            // Absorb: extend the open output run, KEEPING its verdict, so a short excursion is relabeled to the surrounding sound and a same-verdict run re-coalesces.
+            cur.count += run.count;
+        } else {
+            // A distinct run long enough to stand: push it whole (its own start already tiles the output's covered end, since input tiles and the output is contiguous).
+            if (out.len >= segment.max_segments) return error.SegmentsFull;
+            out.items[out.len] = run;
+            out.len += 1;
+        }
+    }
+
+    // invariant: smoothing never grows the run count — it only ever merges.
+    assert(out.len <= in.len);
+    // invariant: the output tiles the same span the input did — same first start, same total length (coverage), and it is coalesced (no adjacent shared verdict).
+    if (out.len > 0) {
+        assert(out.items[0].start == in.items[0].start);
+        var covered: u32 = 0;
+        var j: u32 = 0;
+        while (j < out.len) : (j += 1) {
+            assert(out.items[j].start == out.items[0].start + covered);
+            assert(out.items[j].count > 0);
+            if (j > 0) assert(out.items[j].verdict != out.items[j - 1].verdict);
+            // invariant: every run past the first meets the minimum — the causal hold's guarantee.
+            if (j > 0) assert(out.items[j].count >= min_run);
+            covered += out.items[j].count;
+        }
+        assert(covered == total_count(in));
+    }
+}
+
+/// The summed length of every run in a sequence — the span it tiles.
+fn total_count(seq: *const segment.Segments) u32 {
+    var sum: u32 = 0;
+    var i: u32 = 0;
+    while (i < seq.len) : (i += 1) sum += seq.items[i].count;
+    return sum;
+}
+
+// --- selftest: a spurious short blip inside a long region is absorbed; a leading short run honestly survives (causal hold); the coverage/coalesced/hold laws hold over a
+//     grid of min_run values and inputs; smoothing is idempotent and monotone in min_run; min_run = 0 and a min_run below the shortest run are the identity; a min_run
+//     past the whole span coalesces to one run; an empty input stays empty and a single run is unchanged ----------------------------------------------------------------
+
+fn same(a: *const segment.Segments, b: *const segment.Segments) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) {
+        if (a.items[i].verdict != b.items[i].verdict) return false;
+        if (a.items[i].start != b.items[i].start) return false;
+        if (a.items[i].count != b.items[i].count) return false;
+    }
+    return true;
+}
+
+/// Verify the three data laws on a smoothed sequence against its source: coverage (same first start and total length), coalesced (no adjacent shared verdict), and the
+/// hold (every run past the first at least min_run). Returns true when all three hold.
+fn well_smoothed(out: *const segment.Segments, in: *const segment.Segments, min_run: u32) bool {
+    if (in.len == 0) return out.len == 0;
+    if (out.len == 0 or out.len > in.len) return false;
+    if (out.items[0].start != in.items[0].start) return false;
+    var covered: u32 = 0;
+    var i: u32 = 0;
+    while (i < out.len) : (i += 1) {
+        if (out.items[i].start != out.items[0].start + covered) return false; // tiles contiguously
+        if (out.items[i].count == 0) return false;
+        if (i > 0 and out.items[i].verdict == out.items[i - 1].verdict) return false; // coalesced
+        if (i > 0 and out.items[i].count < min_run) return false; // hold, first exempt
+        covered += out.items[i].count;
+    }
+    return covered == total_count(in);
+}
+
+/// Build a Segments by hand from a list of (verdict, count) pairs tiling from start 0 — a small, independent way to hand a known label sequence to the smoother without
+/// running the segmenter, so the known cases pin exact shapes.
+fn build(out: *segment.Segments, verdicts: []const voiced.Verdict, counts: []const u32) void {
+    out.len = 0;
+    var start: u32 = 0;
+    var i: u32 = 0;
+    while (i < verdicts.len) : (i += 1) {
+        out.items[out.len] = .{ .verdict = verdicts[i], .start = start, .count = counts[i] };
+        out.len += 1;
+        start += counts[i];
+    }
+}
+
+fn run_selftest() !u8 {
+    const V = voiced.Verdict;
+
+    // 1. A SPURIOUS SHORT BLIP inside a long region is absorbed, and the two long neighbours re-coalesce into one run. silent(100) · voiced(2 tick) · silent(100), a
+    //    min_run of 10, becomes a single silent(202) run — the pause is not split by the click.
+    {
+        var in = segment.Segments{};
+        build(&in, &[_]V{ .silent, .voiced, .silent }, &[_]u32{ 100, 2, 100 });
+        var out = segment.Segments{};
+        try smooth_runs(&in, &out, 10);
+        if (out.len != 1) return error.BlipNotAbsorbed;
+        if (out.items[0].verdict != .silent or out.items[0].start != 0 or out.items[0].count != 202) return error.BlipWrongRun;
+        if (!well_smoothed(&out, &in, 10)) return error.BlipNotWellSmoothed;
+    }
+
+    // 2. A LEADING SHORT RUN honestly survives — the causal hold has nothing before the opener to absorb it into. voiced(3) · silent(100), min_run 10, stays two runs
+    //    with the short opener intact.
+    {
+        var in = segment.Segments{};
+        build(&in, &[_]V{ .voiced, .silent }, &[_]u32{ 3, 100 });
+        var out = segment.Segments{};
+        try smooth_runs(&in, &out, 10);
+        if (out.len != 2) return error.LeadingShortMerged;
+        if (out.items[0].verdict != .voiced or out.items[0].count != 3) return error.LeadingShortLost;
+        if (out.items[1].verdict != .silent or out.items[1].start != 3 or out.items[1].count != 100) return error.LeadingTailWrong;
+    }
+
+    // 3. THE CRUX — the coverage, coalesced, and hold laws hold on the output over a grid of min_run values, for several input shapes that mix short and long runs.
+    {
+        const mins = [_]u32{ 0, 1, 2, 3, 5, 8, 20, 100, 1000 };
+        // three shapes: a flickering middle, an alternating chain of shorts, and a clean two-region input.
+        var mi: u32 = 0;
+        while (mi < mins.len) : (mi += 1) {
+            const m = mins[mi];
+
+            var a = segment.Segments{};
+            build(&a, &[_]V{ .voiced, .silent, .voiced, .silent, .unvoiced }, &[_]u32{ 40, 3, 5, 50, 4 });
+            var oa = segment.Segments{};
+            try smooth_runs(&a, &oa, m);
+            if (!well_smoothed(&oa, &a, m)) return error.CruxShapeA;
+
+            var b = segment.Segments{};
+            build(&b, &[_]V{ .silent, .voiced, .silent, .voiced, .silent, .voiced }, &[_]u32{ 2, 3, 2, 3, 2, 3 });
+            var ob = segment.Segments{};
+            try smooth_runs(&b, &ob, m);
+            if (!well_smoothed(&ob, &b, m)) return error.CruxShapeB;
+
+            var c = segment.Segments{};
+            build(&c, &[_]V{ .silent, .unvoiced }, &[_]u32{ 80, 80 });
+            var oc = segment.Segments{};
+            try smooth_runs(&c, &oc, m);
+            if (!well_smoothed(&oc, &c, m)) return error.CruxShapeC;
+        }
+    }
+
+    // 4. IDEMPOTENCE — smoothing a smoothed sequence with the same min_run is a fixed point.
+    {
+        const mins = [_]u32{ 0, 2, 5, 8, 20 };
+        var mi: u32 = 0;
+        while (mi < mins.len) : (mi += 1) {
+            const m = mins[mi];
+            var in = segment.Segments{};
+            build(&in, &[_]V{ .voiced, .silent, .voiced, .silent, .unvoiced, .silent }, &[_]u32{ 40, 3, 5, 50, 4, 30 });
+            var once = segment.Segments{};
+            try smooth_runs(&in, &once, m);
+            var twice = segment.Segments{};
+            try smooth_runs(&once, &twice, m);
+            if (!same(&once, &twice)) return error.NotIdempotent;
+        }
+    }
+
+    // 5. MONOTONE IN MIN_RUN — a larger min_run yields at most as many runs.
+    {
+        const mins = [_]u32{ 0, 1, 2, 3, 5, 8, 20, 100 };
+        var in = segment.Segments{};
+        build(&in, &[_]V{ .voiced, .silent, .voiced, .silent, .unvoiced, .silent, .voiced }, &[_]u32{ 40, 3, 5, 50, 4, 30, 6 });
+        var prev: u32 = 0xffff_ffff;
+        var mi: u32 = 0;
+        while (mi < mins.len) : (mi += 1) {
+            var out = segment.Segments{};
+            try smooth_runs(&in, &out, mins[mi]);
+            if (out.len > prev) return error.NotMonotone;
+            prev = out.len;
+        }
+    }
+
+    // 6. THE IDENTITY — min_run = 0, and any min_run no larger than the shortest run, leave an already-coalesced input byte-for-byte unchanged.
+    {
+        var in = segment.Segments{};
+        build(&in, &[_]V{ .silent, .voiced, .unvoiced, .silent }, &[_]u32{ 12, 20, 16, 12 }); // shortest run is 12
+        const mins = [_]u32{ 0, 1, 5, 12 }; // all <= 12, so nothing is short enough to absorb
+        var mi: u32 = 0;
+        while (mi < mins.len) : (mi += 1) {
+            var out = segment.Segments{};
+            try smooth_runs(&in, &out, mins[mi]);
+            if (!same(&out, &in)) return error.IdentityChanged;
+        }
+    }
+
+    // 7. A MIN_RUN PAST THE WHOLE SPAN coalesces every run into one, carrying the FIRST run's verdict (the causal seed).
+    {
+        var in = segment.Segments{};
+        build(&in, &[_]V{ .silent, .voiced, .unvoiced }, &[_]u32{ 10, 20, 30 });
+        var out = segment.Segments{};
+        try smooth_runs(&in, &out, 1000);
+        if (out.len != 1 or out.items[0].verdict != .silent or out.items[0].start != 0 or out.items[0].count != 60) return error.SpanCoalesceWrong;
+    }
+
+    // 8. AN EMPTY INPUT stays empty; a SINGLE RUN is returned unchanged even when shorter than min_run (the opener is exempt).
+    {
+        var empty = segment.Segments{};
+        var out = segment.Segments{};
+        try smooth_runs(&empty, &out, 10);
+        if (out.len != 0) return error.EmptyNotEmpty;
+
+        var one = segment.Segments{};
+        build(&one, &[_]V{.voiced}, &[_]u32{3});
+        var out1 = segment.Segments{};
+        try smooth_runs(&one, &out1, 10);
+        if (out1.len != 1 or out1.items[0].verdict != .voiced or out1.items[0].count != 3) return error.SingleRunChanged;
+    }
+
+    // 9. GROUNDED IN THE SEGMENTER — smoothing the runs ALES95 actually produces stays well-formed. A clip with a loud tick buried in a quiet stretch segments to a
+    //    flickering sequence; smoothing it with a modest min_run holds the pause whole.
+    {
+        // handed straight as labels the segmenter would emit: a long silent stretch broken by a 1-frame voiced tick, then a real voiced body.
+        var in = segment.Segments{};
+        build(&in, &[_]V{ .silent, .voiced, .silent, .voiced }, &[_]u32{ 40, 4, 40, 60 });
+        var out = segment.Segments{};
+        try smooth_runs(&in, &out, 8); // 8 > the 4-sample tick, <= the real runs
+        // the tick is absorbed, the two silent stretches coalesce, leaving pause then speech.
+        if (out.len != 2) return error.SegmenterGroundWrong;
+        if (out.items[0].verdict != .silent or out.items[0].count != 84) return error.SegmenterGroundPause;
+        if (out.items[1].verdict != .voiced or out.items[1].start != 84 or out.items[1].count != 60) return error.SegmenterGroundSpeech;
+        if (!well_smoothed(&out, &in, 8)) return error.SegmenterGroundNotWell;
+    }
+
+    print("GREEN ales-smooth-runs: the RUN-LENGTH SMOOTHER — absorb every run shorter than a minimum into what surrounds it, the smoothing hysteresis ALES95 named as a " ++
+        "later rung. The rule: seed the output with the first run, then for each later run extend the open run (keeping its verdict) when the run is shorter than " ++
+        "min_run OR shares the open run's verdict, else push it — a short excursion is relabeled to the surrounding sound and same-verdict neighbours re-coalesce. " ++
+        "READ-ONLY over the labels, not one PCM sample touched. The crux is four laws checked as data. COVERAGE: the output tiles the same span exactly (same first " ++
+        "start, same total length). COALESCED: no two adjacent output runs share a verdict. HOLD: every run past the first is at least min_run — the opener is the " ++
+        "honest exception, a causal hold having nothing before it to absorb it into. IDEMPOTENCE + MONOTONICITY: a second pass at the same min_run is a fixed point, " ++
+        "and a larger min_run yields at most as many runs. A spurious short blip inside a long region is absorbed and its neighbours re-coalesce; a leading short run " ++
+        "honestly survives; min_run = 0 (and any min_run below the shortest run) is the identity; a min_run past the whole span coalesces to one; an empty input stays " ++
+        "empty and a single run is unchanged. Purely local, read-only — a rewrite of one run-length label sequence, NOT a transcript or a diarization; a causal " ++
+        "left-to-right hold, not the symmetric smoothing or adaptive floors a production VAD would add; no real sample rate, no network, no keys, no funds, no real " ++
+        "speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
