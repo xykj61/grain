@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260815.142207
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title ALES227 — Lotus library_sheet: a keeper's whole catalog as a readable page
+prompt continue the autonomous loop past ALES226 on the next agent-doable Lindy-first crux-first lap, send often, stop at custody gates
+think ALES226 sealed the library's content address, yet it is a byte frame a program reads, not a page a keeper reads — the library level had only one of the two projections the album level carries (album_manifest · album_sheet)
+think the honest non-gated next rung completes the pair: a readable discography page, the projection twin, mirroring album_sheet (ALES225) one level up — a projection not a round-trip, no new frame no new hash
+think the signed carry remains the crux-first thing yet stops at the custody gate; a readable projection is squarely agent-doable and completes the family cleanly
+obs render_sheet reads an opened LibraryManifest and writes a format lotus-library-sheet-v1 header, a library <count> line, then one album <i> <name> <digest> line per album; every field bounded (u32 index, name within bound, fixed 64-hex digest) so the page is proven to fit a fixed buffer, a too-small buffer refusing Overflow
+obs added a use-site assert that each entry digest is exactly digest_hex_len — open_library_manifest already proves it, re-asserted so a malformed entry can never reach the page (≥2 asserts per fn)
+obs GREEN on the first metal pass; tame_style_check bans clean; the library level now stands whole — content address (ALES226) and readable page (ALES227), the exact pair the album level carries
+loom witness=ales_library_sheet_witness result=GREEN laws=4 rung=ALES227
+file active-designing/20260815-142207_fill-ales227-lotus-library-sheet.md the self-approved design round naming the crux and the four laws
+file lotus/library_sheet.rye the module — render_sheet over an opened LibraryManifest, a bounded projection, SheetError=error{Overflow}
+file tools/ales_library_sheet_witness.rish the witness — build, run selftest, grep the GREEN line, four laws on metal
+recommend keep-going the Lotus album/library family stands whole (bundle · album · library, each with its content address and its readable page); the next Lotus crux — the signed carry naming who made it — is a crypto seam that stops at the custody gate for Keaton's word, so continue on the next non-gated durable rung
