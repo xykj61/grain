@@ -1,0 +1,40 @@
+# tools/ales_stereo_reverb_witness.rish — the REVERB carried into stereo: Schroeder's network on both channels, the same bank each (ALES187).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES187.
+# Design read: active-designing/20260815-093859_fill-ales187-lotus-stereo-reverb.md
+# Stands on: lotus/reverb.rye (ALES186 — the mono reverb run once per channel, its ReverbError reused whole and its precheck reused for the
+# up-front atomic validation); lotus/pan.rye (ALES10 — the StereoClip and its balance invariant); lotus/timeline.rye (ALES2 — the Clip the
+# mono reverb composes over).
+#
+# lotus/stereo_reverb.rye carries ALES186's Schroeder network into stereo — the same comb-and-allpass bank on both channels, each channel
+# reverbed through its OWN network, the wing's keystone made stereo. wet = series_allpass(sum of parallel combs(dry)) on each channel. The
+# selftest proves: the stereo reverb law (each channel equal to ALES186's mono reverb with the same bank byte for byte, the channels
+# genuinely differing); the identical-channel image law (a centred master staying identical — an exact panned ratio does NOT survive,
+# honestly noted, because the delayed-output @divTrunc recirculation drifts it, like the echo, flanger, and allpass); and the silence /
+# balance / atomicity / degenerate law (silence to silence on both, left.len == right.len after, an empty bank / an over-long bank / a bad
+# delay / a bad gain / an out-of-range span each refusing by name with both channels untouched and balanced, count 0 the identity). Purely
+# local — the delays counted in sample indices not milliseconds, no cross-channel read, no network, no keys, no funds, no real device, no
+# sample rate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_stereo_reverb_witness.rish
+
+say "ales-stereo-reverb: Language EN — ALES186 seated the mono reverb, Schroeder's network (parallel combs summed then diffused through series allpasses), the time-based wing's keystone. A reverb is heard in a room and a room has two ears, so carrying it into stereo is the natural next rung, exactly as the stereo comb (echo ALES181), the stereo multi-tap (ALES183), and the stereo allpass (ALES185) were carried before it — each ran a proven mono stage on both channels with one shared set of knobs."
+say "ales-stereo-reverb: Style Radiant — the law is stated positively: the same comb-and-allpass bank on both channels, each reverbed through its own network, is the linked stereo reverb — both reverberant tails settle in lockstep, the image held. The combs and allpasses are sample counts and named fractions the caller names, so the same bank on each channel gives each ear the same room; mono reverb runs every comb on a copy of its own clip and diffuses its own sum, so the left reverberates the left's audio and the right the right's, never crossed. Honestly noted: the reverb's delayed-output recirculation drifts an exact panned ratio, so the identical-channel image law is the one claimed."
+say "ales-stereo-reverb: Lens TAME — two bounded i16 Clips (left, right), a u32 span, and two bounded slices of plain-fraction stage specs; each channel reverbed through ALES186's own bounded network (bounded whole-clip comb copies, a bounded saturating comb-bank sum, each allpass's bounded snapshot); the whole bank and span validated ONCE against the shared length before either channel is touched (NoCombs, TooManyStages, BadDelay, BadGain, BadRange; ALES186's precheck reused), so a refusal never reverbs one channel and leaves the other torn, ReverbError reused whole; it writes values only and the two channels leave balanced; siloed to lotus/, no cross-channel read, no network, no keys, no funds, no device, no sample rate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_reverb"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-reverb: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_reverb.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-reverb: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-reverb: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-reverb' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-reverb: selftest did not print the GREEN ales-stereo-reverb line"

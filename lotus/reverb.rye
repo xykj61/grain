@@ -110,6 +110,24 @@ fn check_allpass(clip_len: u32, start: u32, count: u32, a: AllpassSpec) ReverbEr
     };
 }
 
+/// Validate a whole reverb bank and span against a clip length WITHOUT touching a sample — the same invariants `reverb` enforces up front,
+/// factored out so a stereo carry can validate one shared bank and span against both channels' shared length before either channel is
+/// reverbed (mirroring ALES66/ALES184's own precheck refactors). Refuses NoCombs (an empty bank), TooManyStages (a bank past max_stages),
+/// and each stage's own BadDelay/BadGain/BadRange, all before any write. Takes a plain length rather than a clip, so it reads no buffer.
+pub fn precheck(clip_len: u32, start: u32, count: u32, combs: []const CombSpec, allpasses: []const AllpassSpec) ReverbError!void {
+    // invariant: a reverb needs at least one comb and a bounded bank — an empty bank would erase the span, an unbounded one is refused.
+    if (combs.len == 0) return error.NoCombs;
+    if (combs.len > max_stages) return error.TooManyStages;
+    if (allpasses.len > max_stages) return error.TooManyStages;
+    // invariant: the span lies wholly within the current samples — checked without underflow before any stage runs.
+    if (start > clip_len) return error.BadRange;
+    if (count > clip_len - start) return error.BadRange;
+    // invariant: EVERY stage is legal — validate all combs then all allpasses, so a fault in a late stage never leaves a half-reverbed
+    // clip (the reverb is atomic).
+    for (combs) |c| try check_comb(clip_len, start, count, c);
+    for (allpasses) |a| try check_allpass(clip_len, start, count, a);
+}
+
 /// Reverberate `count` samples starting at `start` in place in `clip` through Schroeder's network: sum every comb (a feedback echo,
 /// ALES66) run in parallel on its own copy of the dry, then diffuse that sum through each allpass (ALES184) in series. The comb-bank sum
 /// saturates once per sample (ALES3's one true saturation) so a constructive pile-up pins to the i16 rail rather than wrapping. Every
@@ -123,17 +141,9 @@ pub fn reverb(
     combs: []const CombSpec,
     allpasses: []const AllpassSpec,
 ) ReverbError!void {
-    // invariant: a reverb needs at least one comb and a bounded bank — an empty bank would erase the span, an unbounded one is refused.
-    if (combs.len == 0) return error.NoCombs;
-    if (combs.len > max_stages) return error.TooManyStages;
-    if (allpasses.len > max_stages) return error.TooManyStages;
-    // invariant: the span lies wholly within the current samples — checked without underflow before any stage runs.
-    if (start > clip.len) return error.BadRange;
-    if (count > clip.len - start) return error.BadRange;
-    // invariant: EVERY stage is legal before ANY write — validate all combs then all allpasses, so a fault in a late stage never leaves a
-    // half-reverbed clip (the reverb is atomic).
-    for (combs) |c| try check_comb(clip.len, start, count, c);
-    for (allpasses) |a| try check_allpass(clip.len, start, count, a);
+    // invariant: the whole bank and span are legal before ANY write — every comb, every allpass, and the span validated up front through
+    // `precheck`, so a fault in a late stage never leaves a half-reverbed clip (the reverb is atomic).
+    try precheck(clip.len, start, count, combs, allpasses);
 
     const end: u32 = start + count;
     // The comb-bank sum over the span, in one bounded scratch — index i-start. Each comb's output is added here and saturated once, so the
