@@ -1,0 +1,230 @@
+//! lotus/reverb_freeze.rye — ALES208: THE FREEZE — the reverb's HELD TAIL, sustained by iterated reverberation. ALES190 gave the reverb WHICH
+//! room, ALES192/193 HOW MUCH (the wet/dry balance), ALES194–197 WHEN (the pre-delay), ALES198/199 + ALES204/205 HOW BRIGHT (the tone and the
+//! two-band shelf), ALES200–203 HOW LONG the tail is HEARD (the gate and the gated envelope), and ALES206/207 the EARLY reflections against the
+//! LATE wash. ALES207 closed the early/late axis whole and named the next fresh axis openly — width or FREEZE. This rung takes freeze: a real
+//! frozen reverb is the held pad, the cinematic swell, the shimmer that hangs in the air — a reverberant tail that SUSTAINS and thickens instead
+//! of decaying to silence. Without it a reverb always dies away; with it the wash is held as long as a keeper asks.
+//!
+//! The shape: reverberate the span WET in place through ALES190's reverb_preset UNCHANGED, then reverberate the reverberation, and again — one
+//! pass per unit of freeze depth:
+//!   pass 1: wet   = reverb_preset(dry)          (the identity edge — one pass is exactly the plain wet)
+//!   pass 2: wet   = reverb_preset(wet)          (the wash smeared into a longer, denser tail)
+//!   pass k: wet   = reverb_preset(wet)          (held, frozen)
+//! This is precisely what a feedback-fed freeze IS — reverberation of reverberation — modelled by composing the named-room reverb with itself.
+//! It invents NO new audio arithmetic: every sample it writes is written by a stage already proven byte-for-byte (ALES190's preset), each pass
+//! saturating once as the reverb already does, so an iterated pile-up pins to the i16 rail rather than wrapping. The freeze depth is validated
+//! BEFORE any write (a zero depth is no reverb at all, a depth past the bound would grow an unbounded loop → BadPasses); the FIRST pass prechecks
+//! before it writes (its own contract), so a span or bank fault leaves the clip DRY. Once the first pass succeeds it has validated the span, room,
+//! and clock, so every later pass over the SAME span cannot fault — the loop refuses whole up front or completes whole. The up-front check and the
+//! first pass's precheck are the atomicity crux.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES208.
+//! Design read: active-designing/20260815-115209_fill-ales208-lotus-reverb-freeze.md
+//! Stands on: lotus/reverb_preset.rye (ALES190) — the named-room wet, run over the span unchanged and composed with itself, its ReverbPresetError
+//! forwarded whole; lotus/clock.rye (ALES5) — the sample clock the freeze is spoken against; lotus/timeline.rye (ALES2) — the Clip, its max_clip
+//! bounding the span and its saturate the rail each preset pass already rides.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM in one clip, a validated clock, ALES190's fixed banks, and a bounded
+//! freeze depth (max_passes), siloed to lotus/. No new audio arithmetic — the freeze is the proven named-room reverb composed with itself. The
+//! room is a named word for a tuning, the depth a named count of passes, neither a decibel nor a real decay time in seconds; "freeze" names
+//! iterated reverberation honestly (a longer, denser, held tail), not a literal infinite sustain. No socket, no network, no keys, no funds, no
+//! real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/reverb_freeze.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const clock = @import("clock.rye");
+const reverb_preset = @import("reverb_preset.rye");
+
+pub const reverb_freeze_version = "20260815.115209";
+
+/// The named rooms are ALES190's own — reused whole, so the freeze and the presets name the same tunings and cannot drift apart.
+pub const Room = reverb_preset.Room;
+
+/// The deepest freeze this rung proves — a held tail may iterate the room's reverb up to this many passes. Bounded so no freeze can grow an
+/// unbounded loop; a handful of passes already sustains a wash into a held pad, so this bound is generous rather than tight.
+pub const max_passes: u32 = 16;
+
+/// The freeze's faults: this rung's own `BadPasses` (a zero depth or a depth past `max_passes`), beside ALES190's ReverbPresetError (the clock's
+/// DurationTooLong and the reverb's NoCombs / TooManyStages / BadDelay / BadGain / BadRange), forwarded whole from the passes. Each refuses by
+/// name before any write.
+pub const ReverbFreezeError = reverb_preset.ReverbPresetError || error{BadPasses};
+
+/// Freeze `count_ms` of `clip` from `start_ms` for a NAMED ROOM by iterating ALES190's `reverb_preset` over the span `passes` times in place.
+/// Pass one is exactly the plain wet (the identity edge: `reverb_freeze(clip, clk, room, ..., 1)` equals `reverb_preset(clip, clk, room, ...)`
+/// byte for byte); each further pass reverberates the reverberation, smearing the wash into a longer, denser, held tail. Refuses BadPasses on a
+/// zero or over-bound depth before any write, then forwards ALES190's faults (DurationTooLong on a span past the clip, BadRange on an out-of-range
+/// span) from the first pass's own precheck, which runs before it writes — so on any refusal the clip is untouched. Values only — never a length.
+pub fn reverb_freeze(
+    clip: *timeline.Clip,
+    clk: clock.Clock,
+    room: Room,
+    start_ms: u32,
+    count_ms: u32,
+    passes: u32,
+) ReverbFreezeError!void {
+    // invariant: the clock is valid — the freeze is spoken against it, and each preset pass asserts the same.
+    assert(clk.rate >= 1 and clk.rate <= clock.max_rate);
+    // invariant: the freeze depth is a real count in [1, max_passes] — a zero depth is no reverb at all, a depth past the bound would grow an
+    // unbounded loop. Refused before any conversion or write.
+    if (passes == 0 or passes > max_passes) return error.BadPasses;
+
+    // Reverberate the span once per unit of depth. The FIRST pass prechecks before any write (ALES190's contract), so a span or bank fault
+    // surfaces here with the clip still dry. Once it succeeds it has validated the span, room, and clock; every later pass over the SAME span
+    // therefore cannot fault — the freeze either refuses whole above or completes whole here.
+    var p: u32 = 0;
+    while (p < passes) : (p += 1) {
+        // invariant: every pass runs the identical validated span, so no pass past the first can raise a new fault.
+        assert(p < max_passes);
+        try reverb_preset.reverb_preset(clip, clk, room, start_ms, count_ms);
+    }
+
+    // invariant: the freeze accepted a real depth and ran exactly that many passes.
+    assert(passes >= 1 and passes <= max_passes and p == passes);
+    // invariant: reverberation writes values only — the clip keeps its length across every pass.
+    assert(clip.len <= clip.buf.len);
+}
+
+// --- selftest: THE IDENTITY EDGE (passes = 1) — equals reverb_preset over the span byte for byte; IT EQUALS ITS COMPOSITION — passes = 2 equals
+//     reverb_preset applied twice and passes = 3 thrice, byte for byte; THE FREEZE DEEPENS — passes = 2 differs from passes = 1; THE ROOMS DIFFER —
+//     room, hall, and plate frozen tails are three different washes; SILENCE STAYS SILENCE; and the faults forward atomic — a bad depth BadPasses,
+//     a span past the clip DurationTooLong, an out-of-range span BadRange, the clip untouched
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn run_selftest() !u8 {
+    const c = try clock.make(1000); // 1 sample per ms — each ms delay is one sample, the bench legible
+    const impulse = blk: {
+        var b: [1024]i16 = [_]i16{0} ** 1024;
+        b[0] = 12000;
+        break :blk b;
+    };
+
+    // 1. THE IDENTITY EDGE — passes = 1 leaves the span equal to ALES190's reverb_preset over the span, byte for byte. One pass is exactly the
+    //    plain wet; the freeze at its shallowest is the un-frozen reverb.
+    {
+        var by_freeze = timeline.Clip{};
+        try load_clip(&by_freeze, &impulse);
+        try reverb_freeze(&by_freeze, c, .hall, 0, 1024, 1);
+
+        var by_preset = timeline.Clip{};
+        try load_clip(&by_preset, &impulse);
+        try reverb_preset.reverb_preset(&by_preset, c, .hall, 0, 1024);
+
+        if (!eq(by_freeze.samples(), by_preset.samples())) return error.IdentityEdgeNotPreset;
+    }
+
+    // 2. IT EQUALS ITS COMPOSITION — passes = 2 equals reverb_preset applied twice byte for byte, passes = 3 thrice: the freeze IS iterated
+    //    reverberation, every sample written by a stage already proven byte for byte.
+    {
+        var frozen2 = timeline.Clip{};
+        try load_clip(&frozen2, &impulse);
+        try reverb_freeze(&frozen2, c, .hall, 0, 1024, 2);
+        var twice = timeline.Clip{};
+        try load_clip(&twice, &impulse);
+        try reverb_preset.reverb_preset(&twice, c, .hall, 0, 1024);
+        try reverb_preset.reverb_preset(&twice, c, .hall, 0, 1024);
+        if (!eq(frozen2.samples(), twice.samples())) return error.FreezeTwoNotDoubleComposition;
+
+        var frozen3 = timeline.Clip{};
+        try load_clip(&frozen3, &impulse);
+        try reverb_freeze(&frozen3, c, .hall, 0, 1024, 3);
+        var thrice = timeline.Clip{};
+        try load_clip(&thrice, &impulse);
+        try reverb_preset.reverb_preset(&thrice, c, .hall, 0, 1024);
+        try reverb_preset.reverb_preset(&thrice, c, .hall, 0, 1024);
+        try reverb_preset.reverb_preset(&thrice, c, .hall, 0, 1024);
+        if (!eq(frozen3.samples(), thrice.samples())) return error.FreezeThreeNotTripleComposition;
+    }
+
+    // 3. THE FREEZE DEEPENS — passes = 2 differs from passes = 1: a second pass genuinely changes the tail (a room's wash is not a fixed point),
+    //    so the freeze knob does real work.
+    {
+        var one = timeline.Clip{};
+        try load_clip(&one, &impulse);
+        try reverb_freeze(&one, c, .hall, 0, 1024, 1);
+        var two = timeline.Clip{};
+        try load_clip(&two, &impulse);
+        try reverb_freeze(&two, c, .hall, 0, 1024, 2);
+        if (eq(two.samples(), one.samples())) return error.FreezeDidNotDeepen;
+    }
+
+    // 4. THE ROOMS DIFFER — the frozen tail for room, hall, and plate produce genuinely different washes: the named banks are real, not three
+    //    names for one.
+    {
+        var r = timeline.Clip{};
+        try load_clip(&r, &impulse);
+        try reverb_freeze(&r, c, .room, 0, 1024, 2);
+        var h = timeline.Clip{};
+        try load_clip(&h, &impulse);
+        try reverb_freeze(&h, c, .hall, 0, 1024, 2);
+        var p = timeline.Clip{};
+        try load_clip(&p, &impulse);
+        try reverb_freeze(&p, c, .plate, 0, 1024, 2);
+        if (eq(r.samples(), h.samples())) return error.RoomEqualsHall;
+        if (eq(r.samples(), p.samples())) return error.RoomEqualsPlate;
+        if (eq(h.samples(), p.samples())) return error.HallEqualsPlate;
+    }
+
+    // 5. SILENCE STAYS SILENCE — an all-zero clip at any depth stays all zeros; the reverberation of silence is silence, iterated.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+        try reverb_freeze(&clip, c, .plate, 0, 16, 4);
+        const zeros = [_]i16{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
+    }
+
+    // 6. THE FAULTS FORWARD, ATOMIC — a zero depth refuses BadPasses, a depth past max_passes BadPasses, a span past the clip DurationTooLong, an
+    //    out-of-range span BadRange, each by name with the clip untouched. The freeze checks the depth before any conversion, and the first pass
+    //    prechecks before it writes, so no refusal ever half-writes the clip.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        // a zero depth is no reverb at all — BadPasses, before any conversion or write.
+        if (reverb_freeze(&clip, c, .room, 0, 3, 0)) |_| return error.ZeroPassesSlipped else |e| if (e != error.BadPasses) return error.WrongZeroPasses;
+        if (!eq(clip.samples(), &three)) return error.RefusedZeroPassesMutated;
+        // a depth past the bound would grow an unbounded loop — BadPasses.
+        if (reverb_freeze(&clip, c, .room, 0, 3, max_passes + 1)) |_| return error.OverPassesSlipped else |e| if (e != error.BadPasses) return error.WrongOverPasses;
+        if (!eq(clip.samples(), &three)) return error.RefusedOverPassesMutated;
+        // a count past max_clip converts past the clip bound — DurationTooLong from the clock (raised by the first preset pass before any write).
+        if (reverb_freeze(&clip, c, .room, 0, timeline.max_clip + 1, 2)) |_| return error.LongSpanSlipped else |e| if (e != error.DurationTooLong) return error.WrongLongSpan;
+        if (!eq(clip.samples(), &three)) return error.RefusedLongSpanMutated;
+        // an out-of-range span (2 ms start, 5 ms count past a 3-sample clip) refuses BadRange before the clip is written.
+        if (reverb_freeze(&clip, c, .room, 2, 5, 2)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(clip.samples(), &three)) return error.RefusedRangeMutated;
+    }
+
+    print("GREEN ales-reverb-freeze: THE FREEZE — the reverb's HELD TAIL, sustained by iterated reverberation, the reverb's fresh axis after the " ++
+        "early/late axis closed. A frozen reverb is the held pad, the cinematic swell, the shimmer that hangs — a wash that SUSTAINS instead of " ++
+        "decaying. The shape composes ALES190's named-room reverb with ITSELF: pass one is the plain wet, each further pass reverberates the " ++
+        "reverberation, smearing the wash into a longer, denser tail — precisely what a feedback-fed freeze IS. It invents NO new audio " ++
+        "arithmetic: every sample is written by a stage already proven byte for byte, each pass saturating once so an iterated pile-up pins never " ++
+        "wraps. Proven: at passes = 1 the span equals reverb_preset byte for byte (one pass is exactly the plain wet); passes = 2 equals " ++
+        "reverb_preset applied twice and passes = 3 thrice, byte for byte (the freeze IS iterated reverberation); passes = 2 differs from passes " ++
+        "= 1 (the freeze deepens the tail); the rooms differ (room, hall, and plate frozen tails three real washes); silence stays silence; and " ++
+        "the faults forward atomic — a zero or over-bound depth BadPasses, a span past the clip DurationTooLong, an out-of-range span BadRange — " ++
+        "each leaving the clip untouched (the depth checked up front, the first pass prechecked). The depth is a named count of passes, not a " ++
+        "decay time in seconds; 'freeze' names iterated reverberation honestly, not a literal infinite sustain; siloed to lotus/, no network, no " ++
+        "keys, no funds, no real device, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

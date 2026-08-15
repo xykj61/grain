@@ -1,0 +1,47 @@
+# tools/ales_reverb_freeze_witness.rish — the frozen reverb: the held tail, sustained by iterated reverberation (ALES208).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES208.
+# Design read: active-designing/20260815-115209_fill-ales208-lotus-reverb-freeze.md
+# Stands on: lotus/reverb_preset.rye (ALES190 — the named-room wet, run over the span unchanged and composed with itself); lotus/clock.rye (ALES5 —
+# the sample clock the freeze is spoken against); lotus/timeline.rye (ALES2 — the Clip, its max_clip bounding the span and its saturate the rail each
+# preset pass already rides).
+#
+# lotus/reverb_freeze.rye opens a FRESH reverb axis after the early/late axis closed — the FREEZE: a held tail that SUSTAINS and thickens instead of
+# decaying to silence, the held pad, the cinematic swell, the shimmer that hangs. It invents NO new audio arithmetic: the freeze composes ALES190's
+# named-room reverb with ITSELF — pass one is the plain wet, each further pass reverberates the reverberation, smearing the wash into a longer, denser
+# tail (precisely what a feedback-fed freeze IS), each pass saturating once so an iterated pile-up pins never wraps. The freeze depth is validated up
+# front (BadPasses on a zero or over-bound depth), and the FIRST pass prechecks before it writes, so a refusal never half-writes the clip (atomic). The
+# selftest proves: at passes = 1 the span equals reverb_preset over the span byte for byte (one pass is the plain wet); passes = 2 equals reverb_preset
+# applied twice and passes = 3 thrice, byte for byte (the freeze IS iterated reverberation); passes = 2 differs from passes = 1 (the freeze deepens the
+# tail); the rooms differ (room, hall, and plate frozen tails three real washes); silence stays silence; and the faults forward atomic (a bad depth
+# BadPasses, a span past the clip DurationTooLong, an out-of-range span BadRange), the clip untouched. Purely local — one clip, a validated clock, a
+# bounded freeze depth; no network, no keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_reverb_freeze_witness.rish
+
+say "ales-reverb-freeze: Language EN — ALES207 closed the early/late axis whole (mono and stereo, the first reflections against the diffuse wash) and named the next fresh axis openly: width or FREEZE. This rung takes freeze — a frozen reverb is the held pad, the cinematic swell, the shimmer that hangs in the air, a reverberant tail that SUSTAINS and thickens instead of decaying to silence. Without it a reverb always dies away; with it the wash is held as long as a keeper asks."
+say "ales-reverb-freeze: Style Radiant — the freeze is stated positively and proven exact: at passes = 1 the span equals ALES190's reverb_preset byte for byte (one pass is exactly the plain wet), passes = 2 equals reverb_preset applied twice byte for byte and passes = 3 thrice (the freeze IS iterated reverberation), a second pass genuinely deepens the tail (a room's wash is not a fixed point). One named room chooses the tuning every pass shares; the depth is a named count of passes, not a decay time in seconds."
+say "ales-reverb-freeze: Lens TAME — one clip of i16 PCM, a validated clock, ALES190's fixed reverb banks, and a bounded freeze depth (max_passes); NO new audio arithmetic — the freeze composes the proven named-room reverb with itself, each pass saturating ONCE so an iterated pile-up pins never wraps; ReverbFreezeError = reverb_preset.ReverbPresetError || BadPasses, the depth checked BEFORE any conversion and the first pass PRECHECKED so a refusal never half-writes the clip (atomic), BadPasses / DurationTooLong / BadRange by name before any write; siloed to lotus/, no network, no keys, no funds, no device. 'Freeze' names iterated reverberation honestly (a longer, denser, held tail), not a literal infinite sustain."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/reverb_freeze"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_freeze.rye -femit-bin=${bin}"]
+assert build.ok else "ales-reverb-freeze: build failed — ${build.err}"
+
+let outfile = "lotus/bin/reverb_freeze.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-reverb-freeze: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-reverb-freeze: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-reverb-freeze' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-reverb-freeze: selftest did not print the GREEN ales-reverb-freeze line"
+
+# This rung composes ALES190's reverb_preset with itself over its public API — re-prove the named-room preset still stands green beside it.
+let preset = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_preset.rye -femit-bin=lotus/bin/reverb_preset && lotus/bin/reverb_preset selftest 2>&1 | grep -q 'GREEN ales-reverb-preset' && echo yes"]
+assert (trim preset.out) == "yes" else "ales-reverb-freeze: the ALES190 named-room preset regressed under its freeze"
+
+say "ales-reverb-freeze: GREEN — the frozen reverb: the held tail, sustained by iterated reverberation, the reverb's fresh axis after the early/late axis closed. Reverberate the span with ALES190's reverb_preset in place, then reverberate the reverberation once per unit of depth — pass one the plain wet, each further pass smearing the wash into a longer, denser held tail — no new audio arithmetic, each pass saturating once so an iterated pile-up pins never wraps. Proven: at passes = 1 exactly reverb_preset byte for byte (the plain wet); passes = 2 exactly reverb_preset applied twice and passes = 3 thrice, byte for byte (the freeze IS iterated reverberation); passes = 2 differs from passes = 1 (the freeze deepens the tail); the rooms differ (room, hall, and plate frozen tails three real washes); silence stays silence; a zero or over-bound depth refuses BadPasses, a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving the clip untouched (the depth checked up front, the first pass prechecked, so atomic); the ALES190 preset stays GREEN beside it. The stereo frozen reverb (the same iterated reverberation over both channels, image held) is the thin twin next."
