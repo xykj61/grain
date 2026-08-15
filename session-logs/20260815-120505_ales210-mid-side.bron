@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260815.120505
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — ai-jail — Eastern (EDT) time convention
+title ALES210 — Lotus's mid/side: the stereo master read as its sum and its difference, the reversible primitive the width family spends
+prompt Recur the road Lindy-first crux-first, self-approve design rounds, send each finished increment, stop at custody gates, baton prin recur
+think Read REMEMBER (living-edge card), the 1,024-round itinerary, and the six-season double-seat; the true git edge is Season C Lotus (ALES ladder), latest ALES209 stereo_reverb_freeze, the freeze axis closed whole for mono and stereo
+think ALES209's design read and log both name width next, noting width wants its OWN mid/side primitive and so opens a small primitive round before the reverb rung that spends it — so the crux-first next lap is the primitive, not another one-off effect
+think Lindy-first choice: a reusable reversible primitive (spent by width, mono-compatibility checks, side-only EQ) outlasts a one-off effect; built lotus/mid_side.rye — encode folds L/R into mid=(l+r)/2 and side=(l-r)/2, decode folds back l=saturate(mid+side), r=saturate(mid-side)
+think Honest rail: encode never clips (proven in place, still routed through ALES2's one saturate so the rail lives in one place); the side is HALVED to stay on i16, so one bit cannot be stored — decode(encode) is EXACT where l+r is even and off by at most one LSB otherwise, named not hidden. A centred master (l==r) encodes to all-zero side and always round-trips exact (mono-compatibility)
+think Both ops total (void, no EditError), balance asserted on entry/exit, exactly as ALES127 stereo_invert; five laws proven byte-for-byte in the selftest; caught one hand-computed test value before the run — divTrunc(-1,2)=0 not -1 for the (32767,-32768) mid — fixed, then GREEN on the metal pass
+obs Discovery worth recording: the lotus/README.md front door has drifted well behind the code — its Status line stops at ALES159 and the Prove-the-rungs block at ALES29, and none of ALES160–209 touched it; REMEMBER's living-edge line still names DREY and its git nib was stale too. Per docs-sync (a ratchet, not a sweep) I shipped the rung without churning the stale front door, and flag a dedicated Lotus README + REMEMBER living-edge sync round as its own future lap
+obs Kept the mono-then-stereo rhythm's spirit: this primitive is channel-symmetric (no mono/stereo split); the width rung it opens (mono then stereo, scale the side and recombine, spending ALES8's proven fader) is next
+loom witness=ales_mid_side_witness green=1 laws=5 recon_lsb_bound=1 rye_modules=1 rish_witness=1
+file lotus/mid_side.rye ALES210 module — encode/decode the mid/side change of basis, five laws proven in the selftest, GREEN on first metal pass
+file tools/ales_mid_side_witness.rish the witness — builds, runs the selftest GREEN, states Language/Style/Lens
+file active-designing/20260815-120505_fill-ales210-lotus-mid-side.md the self-approved design round for the primitive
+file work-in-progress/REMEMBER.md git nib refreshed to this send in the same work commit
+recommend keep-going ALES211 reverb_width (mono then stereo) — encode, scale the side by a width fraction (ALES8's fader), decode, spending this proven primitive; and a separate Lotus README + REMEMBER living-edge sync round for the front-door drift found this lap
