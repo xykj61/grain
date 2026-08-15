@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260815.110731
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title ALES202 — Lotus's envelope-gated reverb, the shaped-edge gated tail
+prompt recur loop — take the next agent-doable lap Lindy-first crux-first, each finished rung its own signed round, stop at the custody gates
+think Read REMEMBER's custody gates (provisioning · funds · Keaton's Kumara · deep debride · collaborator domain) — none reached by local DSP, so the agent-doable queue is open. The living edge is ALES (Lotus, Season C); the last log (ALES201) named the next crux as either a shaped envelope-gate (a true new primitive) or a fresh reverb axis (width, freeze, early/late).
+think Crux-first, honoring the finishing edge: ALES200 and ALES201 BOTH named the same horizon in their docstrings — a time-following envelope gate carried onto the wet. The primitive gate_follow (ALES54, attack/release over ALES52's proven time base) already stands, so the "richer horizon" is not a new primitive but a clean composition of two proven stages — the hardest still-tractable rung on the gate axis, taken before the axis turns fresh.
+think Mirrored reverb_gate (ALES200) exactly: precheck threshold/ratio/attack/release coeffs up front (the same guards gate_follow raises, coeff_ok from envelope.rye) BEFORE the wet is written so a bad gate leaves the clip dry (atomicity), convert the span with the same clock reverb_preset uses, range-check (BadRange), run reverb_preset (the wet), then gate_follow over the wet span. ReverbGateEnvError = reverb_preset.ReverbPresetError || BadThreshold || BadRatio || BadCoeff.
+obs Witness GREEN on the first metal pass — no RED to book. Seven laws: the identity edge (unit ratio = reverb_preset byte for byte), it equals its composition (reverb_preset then gate_follow) and differs from the un-gated wet, THE INSTANTANEOUS LIMIT IS ALES200 (unit attack/release equals the static reverb_gate byte for byte — the static gate is this rung's zero-smoothing limit, tying back to the proven one), the tail is gated (energy strictly reduced), THE RELEASE SHAPES THE EDGE (a slower release holds the gate open longer, tail energy monotone — the shaped edge the static gate cannot express), silence stays silence, faults forward atomic (BadThreshold/BadRatio/BadCoeff clip still dry, DurationTooLong, BadRange). ALES190 preset, ALES54 envelope gate, and ALES200 static gate all re-run GREEN beside it; TAME bans clean, width exit 0.
+loom witness=ales_reverb_gate_env_witness selftest=GREEN laws=7 max_clip=4096 bench_samples=1024 ratio=8:1 threshold=2000 attack=1/4 release_slow=1/16 release_fast=1/2
+file active-designing/20260815-110731_fill-ales202-lotus-reverb-gate-env.md the self-approved design round naming the crux, shape, and seven laws
+file lotus/reverb_gate_env.rye the rung — the wet-tail envelope gate, ALES54 gate_follow over ALES190's wet, threshold/ratio/coeffs prechecked, ALES200 its instantaneous limit
+file tools/ales_reverb_gate_env_witness.rish the witness proving seven laws and re-proving ALES190/ALES54/ALES200 green beside it
+recommend keep-going — the shaped envelope gate stands whole for mono; the thin twin is the stereo envelope gate (the same follow-gate over both channels of a StereoClip, one shared threshold/ratio/attack/release, the image held), then a fresh reverb axis (width, freeze, or early/late balance).
