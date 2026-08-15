@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260815.122004
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — ai-jail — Eastern (EDT) time convention
+title ALES212 — Lotus's reverb_width: reverberate the master wet, then set how wide the reverberated result sits, closing the width axis the reverb series opened
+prompt Recur the road Lindy-first crux-first, self-approve design rounds, send each finished increment, stop at custody gates, baton prin recur
+think Third lap of this recursion: ALES211 (stereo_width) named reverb_width as the reverb series' own next rung — reverberate wet, then widen the wet result — closing the width axis the long reverb family opened; took it crux-first
+think reverb_width composes two proven stages with NO new audio arithmetic: validate the width fraction FIRST (a bad width refuses BadWidth before the reverb writes, so the master is left dry), reverberate wet in place (ALES191 stereo_reverb_preset, unchanged), widen the wet result (ALES211 stereo_width, the width already proven legal so it cannot fault)
+think Ordering discipline is the whole invariant: the width is checked before stereo_reverb_preset runs, so on any refusal the master is left DRY and balanced; the stereo_width catch is provably unreachable and kept as a re-raise guard
+think Edges: width==0 collapses the wet to mono (both channels the reverberated master's shared mid = (wl+wr)/2), width==2den widens (|L-R| grows), width==den is the mid/side round-trip over the reverberated master within <=1 LSB of the pure stereo reverb
+obs First RED of the lap and booked: WidenDidNotWiden fired on tiny ODD wet differences — a half-side of a +/-1 difference truncates to zero (ALES210's honest halved-side cost), so widening a +/-1 diff gives 0. Fix: compare the widened difference against the UNITY round-trip (which already carries the truncation), where widening strictly grows or holds — not against the raw pure wet. What caught it: the selftest on metal. What it taught: the honest widen baseline is the round-trip, not the ideal signal
+obs Widen law proven byte-for-byte by composition equality — reverb_width == stereo_width over a fresh copy of the pure reverb — rather than by replicating gain/encode rounding by hand; robust against the halved-side truncation
+obs GREEN on the second metal pass after the fix; TAME bans clean; no new custody gate (purely local DSP, one StereoClip)
+loom witness=ales_reverb_width_witness green=1 laws=5 reds_booked=1 max_width_den=4096 max_width_num=32768 rye_modules=1 rish_witness=1
+file lotus/reverb_width.rye ALES212 module — validate width, reverberate wet (ALES191), widen the wet result (ALES211); five laws proven, GREEN after the widen-baseline fix
+file tools/ales_reverb_width_witness.rish the witness — builds, runs the selftest GREEN, states Language/Style/Lens
+file active-designing/20260815-122004_fill-ales212-lotus-reverb-width.md the self-approved design round for the rung
+file work-in-progress/REMEMBER.md git nib refreshed to this send in the same work commit
+recommend keep-going ALES213 reverb_pan (reverberate wet, then pan the wet image with ALES10's equal-power pan) — setting WHERE the wash sits after HOW WIDE; and still the flagged Lotus README + REMEMBER living-edge sync round for the front-door drift
