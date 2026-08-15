@@ -1,0 +1,309 @@
+//! lotus/collapse_silence.rye — ALES100: the silence collapser — cap every silent run to a maximum, keeping the pauses yet shortening the long ones.
+//! ALES96 removes EVERY silent sample, which is right for a sample library and wrong for a spoken take — strip all the pauses and a conversation runs together,
+//! breathless, the natural rhythm gone. ALES98/99 handled the ends; this rung handles the INTERIOR, the way a podcast editor actually works: keep the pauses, but cap
+//! the long ones. "Truncate silence to a quarter-second" is the single most-reached-for gesture in every voice-memo cleanup tool — it shortens dead air without
+//! deleting the breath that makes speech legible. The full strip is exactly max_silence = 0; every larger cap keeps that many samples of each silent run back.
+//!
+//! The rule, stated once: segment [0, clip.len) through ALES95, then walk the runs BACK TO FRONT and, for each .silent run longer than max_silence, cut only the EXCESS
+//! (keep the run's first min(count, max_silence) samples, cut the rest). Back-to-front keeps every earlier run's index valid, because a cut shifts only samples that lie
+//! AFTER it — an earlier run sits before the cut and cannot move. Every non-silent sample, and the kept head of every pause, stay untouched.
+//!
+//! The crux — two laws, each tying this rung to a proven predecessor so it can never drift. THE ZERO-CAP LAW: collapse_silence(clip, ..., 0) equals ALES96's
+//! trim_silence(clip, ...) byte for byte — capping every run to zero removes all silence, which is exactly the stripper. THE CAP LAW: the result equals the hand-built
+//! concatenation where each silent run keeps its first min(count, max_silence) samples and each non-silent run keeps all of its; a max_silence at least as large as the
+//! longest silent run leaves the clip unchanged (the identity cap keeps every pause whole); monotone in max_silence — a larger cap keeps a clip at least as long.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES100.
+//! Design read: active-designing/20260814-235506_fill-ales100-lotus-silence-collapser.md
+//! Stands on: lotus/trim_silence.rye (ALES96) — the silence stripper, the zero-cap twin; lotus/segment.rye (ALES95) — the voice-activity segmenter, reused by name;
+//! lotus/timeline.rye (ALES2) — the Clip and cut; lotus/voiced.rye (ALES94) — the .silent verdict.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. It edits only by removing whole excess-silent
+//! frames from within each silent run through ALES2's own cut, fabricating no sample and reordering nothing, never touching a non-silent sample or the kept head of any
+//! pause. NOT a transcript, not a real adaptive VAD; no real sample rate, no network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/collapse_silence.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const voiced = @import("voiced.rye");
+const segment = @import("segment.rye");
+const trim_silence = @import("trim_silence.rye");
+
+pub const collapse_silence_version = "20260814.235506";
+
+/// The collapser's faults are ALES96's OWN faults (the segmenter's SegmentError and the editor's EditError) reused by name — it invents none of its own, and
+/// `max_silence` is a plain count with no illegal value (a huge cap simply keeps every silent run whole).
+pub const CollapseError = trim_silence.TrimError;
+
+/// Cap every silent run in `clip` to at most `max_silence` samples, keeping the voiced and unvoiced audio and the shortened pauses in original order. Segments the whole
+/// clip `[0, clip.len)` into frames of `frame_len` samples through ALES95, then for each `.silent` run longer than `max_silence` cuts the excess (keeping the run's
+/// first `min(count, max_silence)` samples) through ALES2's `cut`, walking back to front so every earlier run's index stays valid. Validates the whole span, band,
+/// floor, and frame length through ALES95's own checks BEFORE any cut; on refusal the clip is untouched. `max_silence = 0` is exactly ALES96. An empty clip refuses
+/// `BadFrame`; a no-silent clip is unchanged; an all-silent clip caps its single run to `min(clip.len, max_silence)`.
+pub fn collapse_silence(
+    clip: *timeline.Clip,
+    frame_len: u32,
+    t_low: i32,
+    t_high: i32,
+    silence_floor: u32,
+    voice_split: u32,
+    max_silence: u32,
+) CollapseError!void {
+    const original_len: u32 = clip.len;
+
+    // Segment the whole clip once — the verdicts are exactly the segmenter's, so the collapser can never cap a run the segmenter did not name. All of ALES95's
+    // validation (precheck for band/range, the floor ceiling, the dividing frame length, the empty-clip BadFrame) runs here before a single sample is cut.
+    var segs = segment.Segments{};
+    try segment.segment(clip, &segs, 0, original_len, frame_len, t_low, t_high, silence_floor, voice_split);
+
+    // invariant: segmenting a non-empty clip yields at least one run that tiles it — the segmenter's own postcondition, relied on here.
+    assert(segs.len >= 1 and segs.len <= segment.max_segments);
+
+    // Count the excess silence up front so the postcondition can be asserted exactly — the excess of each silent run is count minus the kept min(count, max_silence).
+    var total_excess: u32 = 0;
+    var i: u32 = 0;
+    while (i < segs.len) : (i += 1) {
+        const run = segs.items[i];
+        if (run.verdict == .silent and run.count > max_silence) total_excess += run.count - max_silence;
+    }
+    // invariant: the silence removed can never exceed the clip it came from.
+    assert(total_excess <= original_len);
+
+    // Walk the runs BACK TO FRONT, capping each over-long silent run. Back-to-front is the whole trick: a cut shifts only samples after it, so an earlier run — which
+    // sits before every cut made so far — keeps its original start index. `segs.len` is at least one, so the unsigned countdown starts from a real index.
+    var r: u32 = segs.len;
+    while (r > 0) {
+        r -= 1;
+        const run = segs.items[r];
+        if (run.verdict == .silent and run.count > max_silence) {
+            const keep: u32 = max_silence; // min(count, max_silence), and here count > max_silence
+            const excess: u32 = run.count - keep;
+            const cut_at: u32 = run.start + keep; // keep the run's first `keep` samples, cut the rest
+            // invariant: the excess lies wholly inside the current clip — it did before any cut, and only later runs (already cut) sat after it.
+            assert(cut_at + excess <= clip.len);
+            try timeline.cut(clip, cut_at, excess);
+        }
+    }
+
+    // invariant: the collapsed clip holds exactly the original minus every excess-silent sample removed.
+    assert(clip.len == original_len - total_excess);
+    assert(clip.len <= clip.buf.len);
+}
+
+// --- selftest: THE ZERO-CAP LAW — collapse_silence(max=0) equals ALES96's trim_silence byte for byte; THE CAP LAW — each silent run keeps min(count, max) samples, the
+//     result equal to the hand-built concatenation; a cap past the longest run leaves the clip unchanged; monotone in max; a known cap keeps exactly the named samples;
+//     an all-silent clip caps its one run; a no-silent clip is unchanged; an empty clip, a ragged frame length, an inverted band, and an illegal floor each refuse by
+//     name, the clip untouched ------------------------------------------------------------------------------------------------------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+/// The hand-built expectation the collapser is checked against in the cap law — segment the ORIGINAL, then concatenate each non-silent run whole and each silent run's
+/// first min(count, max_silence) samples, in order, into `out`.
+fn by_hand(out: *timeline.Clip, src: *const timeline.Clip, frame_len: u32, t_low: i32, t_high: i32, floor: u32, split: u32, max_silence: u32) !void {
+    var segs = segment.Segments{};
+    try segment.segment(src, &segs, 0, src.len, frame_len, t_low, t_high, floor, split);
+    const samples = src.samples();
+    var i: u32 = 0;
+    while (i < segs.len) : (i += 1) {
+        const run = segs.items[i];
+        if (run.verdict == .silent) {
+            const keep = if (run.count < max_silence) run.count else max_silence;
+            try timeline.splice(out, out.len, samples[run.start .. run.start + keep]);
+        } else {
+            try timeline.splice(out, out.len, samples[run.start .. run.start + run.count]);
+        }
+    }
+}
+
+fn run_selftest() !u8 {
+    const band_low: i32 = -1000;
+    const band_high: i32 = 1000;
+
+    // The classic dead-air-at-the-ends recording plus an interior gap. Frames of 4 samples. Quiet runs classify silent; the loud body voiced; the alternating run
+    // unvoiced. Three silent runs of 4 samples each (head, interior gap, tail).
+    const mixed = [_]i16{
+        40,    -40,   40,    -40, // silent (quiet head, 4 samples)
+        20000, 20000, -20000, -20000, // voiced
+        20000, 20000, -20000, -20000, // voiced
+        30,    -30,   30,    -30, // silent (interior gap, 4 samples)
+        20000, -20000, 20000, -20000, // unvoiced (loud noisy)
+        50,    -50,   50,    -50, // silent (quiet tail, 4 samples)
+    };
+
+    // 1. THE ZERO-CAP LAW — over many frame lengths, floors, and splits, collapse_silence(max=0) equals ALES96's trim_silence byte for byte.
+    {
+        const flens = [_]u32{ 1, 2, 3, 4, 6, 8, 12, 24 };
+        const floors = [_]u32{ 100, 500, 1000, 5000 };
+        const splits = [_]u32{ 1, 2, 4 };
+        var li: u32 = 0;
+        while (li < flens.len) : (li += 1) {
+            var fi: u32 = 0;
+            while (fi < floors.len) : (fi += 1) {
+                var si: u32 = 0;
+                while (si < splits.len) : (si += 1) {
+                    var capped = timeline.Clip{};
+                    try load_clip(&capped, &mixed);
+                    var stripped = timeline.Clip{};
+                    try load_clip(&stripped, &mixed);
+                    try collapse_silence(&capped, flens[li], band_low, band_high, floors[fi], splits[si], 0);
+                    try trim_silence.trim_silence(&stripped, flens[li], band_low, band_high, floors[fi], splits[si]);
+                    if (!eq(capped.samples(), stripped.samples())) return error.ZeroCapNotStripped;
+                }
+            }
+        }
+    }
+
+    // 2. THE CAP LAW — over many caps, the collapse equals the hand-built capped concatenation, each silent run keeping min(count, max_silence) samples.
+    {
+        const caps = [_]u32{ 0, 1, 2, 3, 4, 5, 8, 100 };
+        var ci: u32 = 0;
+        while (ci < caps.len) : (ci += 1) {
+            var got = timeline.Clip{};
+            try load_clip(&got, &mixed);
+            var src = timeline.Clip{};
+            try load_clip(&src, &mixed);
+            var want = timeline.Clip{};
+            try collapse_silence(&got, 4, band_low, band_high, 500, 2, caps[ci]);
+            try by_hand(&want, &src, 4, band_low, band_high, 500, 2, caps[ci]);
+            if (!eq(got.samples(), want.samples())) return error.NotTheCappedConcat;
+        }
+    }
+
+    // 3. A KNOWN CAP — with frame 4, floor 500, max 2: each of the three silent runs (4 samples) keeps its first 2 and cuts 2. Result = 24 − 3·2 = 18 samples: the
+    //    kept head pair, the body, the kept gap pair, the noisy run, and the kept tail pair.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &mixed);
+        try collapse_silence(&clip, 4, band_low, band_high, 500, 2, 2);
+        const want = [_]i16{
+            40,    -40, // 2 kept head-silent samples (of 4)
+            20000, 20000, -20000, -20000, 20000, 20000, -20000, -20000, // body
+            30,    -30, // 2 kept interior-gap samples (of 4)
+            20000, -20000, 20000, -20000, // noisy
+            50,    -50, // 2 kept tail-silent samples (of 4)
+        };
+        if (!eq(clip.samples(), &want)) return error.KnownCapWrong;
+        if (clip.len != 18) return error.KnownCapLength;
+    }
+
+    // 4. A CAP PAST THE LONGEST RUN leaves the clip unchanged — max 4 keeps all 4 samples of each 4-sample silent run, so nothing is cut.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &mixed);
+        try collapse_silence(&clip, 4, band_low, band_high, 500, 2, 4);
+        if (!eq(clip.samples(), &mixed)) return error.IdentityCapChanged;
+    }
+
+    // 5. MONOTONE IN MAX — a larger cap keeps a clip at least as long.
+    {
+        const caps = [_]u32{ 0, 1, 2, 3, 4, 8 };
+        var prev: u32 = 0;
+        var ci: u32 = 0;
+        while (ci < caps.len) : (ci += 1) {
+            var clip = timeline.Clip{};
+            try load_clip(&clip, &mixed);
+            try collapse_silence(&clip, 4, band_low, band_high, 500, 2, caps[ci]);
+            if (clip.len < prev) return error.NotMonotone;
+            prev = clip.len;
+        }
+    }
+
+    // 6. AN ALL-SILENT CLIP caps its single coalesced silent run — at max 0 it empties (matching ALES96), at a cap past its length it is unchanged, at max 2 it keeps 2.
+    {
+        const quiet = [_]i16{ 40, -40, 40, -40, 30, -30, 30, -30 }; // one silent run of 8
+        {
+            var clip = timeline.Clip{};
+            try load_clip(&clip, &quiet);
+            try collapse_silence(&clip, 4, band_low, band_high, 500, 2, 0);
+            if (clip.len != 0) return error.AllSilentZeroNotEmpty;
+        }
+        {
+            var clip = timeline.Clip{};
+            try load_clip(&clip, &quiet);
+            try collapse_silence(&clip, 4, band_low, band_high, 500, 2, 100);
+            if (!eq(clip.samples(), &quiet)) return error.AllSilentIdentityChanged;
+        }
+        {
+            var clip = timeline.Clip{};
+            try load_clip(&clip, &quiet);
+            try collapse_silence(&clip, 4, band_low, band_high, 500, 2, 2);
+            const want = [_]i16{ 40, -40 };
+            if (!eq(clip.samples(), &want)) return error.AllSilentCapWrong;
+        }
+    }
+
+    // 7. A NO-SILENT CLIP is unchanged — no silent run to cap, for any max.
+    {
+        const loud = [_]i16{ 20000, 20000, -20000, -20000, 20000, -20000, 20000, -20000 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &loud);
+        try collapse_silence(&clip, 4, band_low, band_high, 500, 2, 0);
+        if (!eq(clip.samples(), &loud)) return error.NoSilentChanged;
+    }
+
+    // 8a. AN EMPTY CLIP refuses BadFrame, untouched.
+    {
+        var clip = timeline.Clip{};
+        if (collapse_silence(&clip, 4, band_low, band_high, 500, 2, 2)) |_| return error.EmptySlipped else |e| if (e != error.BadFrame) return error.WrongEmpty;
+        if (clip.len != 0) return error.EmptyMutated;
+    }
+
+    // 8b. A RAGGED FRAME LENGTH refuses BadFrame, the clip untouched.
+    {
+        const five = [_]i16{ 1, 2, 3, 4, 5 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &five);
+        if (collapse_silence(&clip, 2, band_low, band_high, 500, 2, 2)) |_| return error.RaggedSlipped else |e| if (e != error.BadFrame) return error.WrongRagged;
+        if (!eq(clip.samples(), &five)) return error.RaggedMutated;
+    }
+
+    // 8c. AN INVERTED BAND refuses BadThreshold, the clip untouched.
+    {
+        const four = [_]i16{ 10, 20, 30, 40 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &four);
+        if (collapse_silence(&clip, 2, 1000, -1000, 500, 2, 2)) |_| return error.InvertedSlipped else |e| if (e != error.BadThreshold) return error.WrongInverted;
+        if (!eq(clip.samples(), &four)) return error.InvertedMutated;
+    }
+
+    // 8d. AN ILLEGAL FLOOR refuses BadFloor, the clip untouched.
+    {
+        const four = [_]i16{ 10, 20, 30, 40 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &four);
+        if (collapse_silence(&clip, 2, band_low, band_high, 32769, 2, 2)) |_| return error.BadFloorSlipped else |e| if (e != error.BadFloor) return error.WrongBadFloor;
+        if (!eq(clip.samples(), &four)) return error.BadFloorMutated;
+    }
+
+    print("GREEN ales-collapse-silence: the SILENCE COLLAPSER — cap every silent run to a maximum, keeping the pauses yet shortening the long ones. The rule: segment " ++
+        "[0, clip.len) into frames of frame_len samples, then walk the runs BACK TO FRONT and, for each .silent run longer than max_silence, cut only the EXCESS (keep " ++
+        "the run's first min(count, max_silence) samples). Back-to-front keeps every earlier run's index valid, since a cut shifts only samples after it. The gesture " ++
+        "every podcast editor reaches for — truncate silence without deleting the breath that makes speech legible; ALES96 strips every pause, this keeps them and " ++
+        "shortens only the long ones. The crux is two laws. THE ZERO-CAP LAW: collapse_silence(max=0) equals ALES96's trim_silence byte for byte — capping every run " ++
+        "to zero removes all silence, exactly the stripper. THE CAP LAW: the result equals the hand-built concatenation where each silent run keeps its first " ++
+        "min(count, max_silence) samples and each non-silent run keeps all of its; a cap past the longest run leaves the clip unchanged (the identity cap keeps every " ++
+        "pause whole); monotone in max_silence. A known cap keeps exactly the named samples; an all-silent clip caps its one coalesced run (empty at 0, unchanged " ++
+        "past its length); a no-silent clip is unchanged; an empty clip, a ragged frame length, an inverted band, and an illegal floor each refuse by name — BadFrame, " ++
+        "BadFrame, BadThreshold, BadFloor — the clip untouched. Purely local — it edits only by removing whole excess-silent frames from within each pause through " ++
+        "cut, fabricating no samples and reordering nothing; NOT a transcript or a real adaptive VAD; no real sample rate, no network, no keys, no funds, no real " ++
+        "speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
