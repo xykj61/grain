@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260815.020325
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title ALES119 — Lotus's stereo_move, the drag gesture carried into stereo, both channels in lockstep, closing the stereo edit family
+prompt recur the itinerary Lindy-first crux-first; keep taking agent-doable Lotus laps, self-approve, prove GREEN, send each as its own signed round; STOP at custody gates
+think ALES117 lifted cut (remove a span) and ALES118 lifted crop (keep a span) into stereo. move (carry a span somewhere new) is the third and last of the destructive span family. Chosen crux-first because naming its stereo twin makes the family stand whole — on a master a keeper can now remove a span, keep only a span, or drag one to a new beat, always both speakers in lockstep. It closes the arc ALES117-118 opened; a whole family is higher-Lindy than any single further op.
+think Shape: stereo_move(sc, start, count, dest) runs ALES113's proven mono move on each channel with the same start, count, and dest, no new primitive. Same validate-both-before-either discipline: mono move can fault ONLY with BadRange (three checks — start against len, count against the remainder, dest against len minus count), both channels enter equal-length, so the three range checks are made ONCE against the shared length up front. Each channel's move carries its own bounded scratch buffer (max_clip); the net length is unchanged so splice inside move can never refuse ClipFull.
+think Four laws: the STEREO MOVE law (left equals mono move(left,...) and right equals mono move(right,...), byte for byte, plus concrete forward result {30,40,50,10,20}); the BALANCE / INVARIANT law (left.len == right.len after, the length held, forward and backward); the INVERSE law — the round-trip crux — move(start,count,dest) then move(dest,count,start) returns both channels byte for byte, the same inverse ALES113 proved for one channel now lockstep; the ATOMICITY / DEGENERATE law (a refusal leaves both channels untouched and balanced; count 0 the identity on both, dest = start the identity).
+obs GREEN on the first pass — no build red. All four laws pass on metal. The stereo edit family (cut · crop · move) now stands whole beside the general edit (replace, ALES116), each the mono op run per channel with the shared validate-both discipline. Reuses ALES113's move and ALES2's EditError whole, invents no primitive and no error. >=2 positive-invariant asserts per fn (enter-balanced, leave-balanced, plus the three span guards); width-check exit 0; TAME style bans clean, ratchet zero-assert count unchanged. No custody gate touched — two pure-Rye local i16 Clips, siloed to lotus/.
+loom witness=ales_stereo_move_witness green=1 laws=4 rung=ALES119
+file lotus/stereo_move.rye the ALES119 rung — stereo_move, ALES113's mono move lifted to the StereoClip, validate-both-before-either, four laws proven in-file
+file tools/ales_stereo_move_witness.rish the on-metal witness — build, selftest, GREEN-line assert, three-lens say head
+file active-designing/20260815-020325_fill-ales119-lotus-stereo-move.md the self-approved design read for the rung
+file lotus/README.md front door synced — Status-line short entry and the long per-rung paragraph both carry ALES119, stamp refreshed
+recommend keep-going the stereo span family stands whole (cut · crop · move beside replace); natural next rungs carry the stereo lockstep discipline to duplicate (ALES112), paste_over (ALES114), insert_silence (ALES109), or silence_span (ALES110) — each the mono op run per channel with validate-both; the loop stays Lindy-first crux-first; STOP remains at REMEMBER's custody gates
