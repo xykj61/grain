@@ -1,0 +1,463 @@
+//! lotus/stereo_split_silence.rye — ALES149: the auto-splitter carried into stereo, ONE cut line for BOTH channels — the stereo twin of the silence stripper. ALES97
+//! named `split_silence`: segment a mono clip through ALES95, then cut AT the silence, keeping each maximal non-silent region as its own take — the auto-splitter every
+//! recorder, sampler, and podcast tool ships, the twin of ALES96's trimmer. That is a mono edit. Carried into stereo it meets the same wall ALES148 met: a Lotus master
+//! is a StereoClip (ALES10), two Clips whose defining invariant is that LEFT and RIGHT hold the SAME length, and ALES147 proved the two channels segment INDEPENDENTLY —
+//! their silences differ in count and boundary. Splitting each channel by its OWN silence would cut the two speakers at DIFFERENT positions and tear every take apart.
+//!
+//! The rule, stated once — the SILENCE INTERSECTION, exactly as ALES148 proved it: segment BOTH channels through ALES147 over one shared frame grid, decide a frame
+//! jointly-silent only where it is `.silent` in BOTH channels, and split ONLY at jointly-silent frames. A stereo take is a maximal span of frames that is NOT
+//! jointly-silent — a region either speaker fills — cut IDENTICALLY from both channels, so every take is a balanced StereoClip. A frame silent in only ONE channel keeps
+//! the open take running: a sound panned hard to the left is real audio the right's silence must never split away. Only a moment where NEITHER speaker carries sound is a
+//! pause, and only a pause ends a take.
+//!
+//! The crux — two laws, each tying this rung to a proven predecessor so it can never drift. THE STEREO TAKE LAW: the index-th take clip equals, byte for byte, the
+//! original's samples over the index-th not-jointly-silent region's [start, start+count) on BOTH channels, and out.len equals the number of not-jointly-silent regions —
+//! the splitter is ALES148's jointly-silent mask complemented, coalesced, and named, nothing more, and every take stays balanced. THE JOIN LAW: concatenating every take
+//! clip in order, per channel, equals ALES148's stereo_trim_silence on the same signal, byte for byte — the trimmer joins the not-jointly-silent frames, the splitter
+//! keeps them apart, and re-joining the splitter's pieces returns exactly the trimmer's clip. This binds ALES149 to ALES148 the way ALES97 is bound to ALES96.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES149.
+//! Design read: active-designing/20260815-052853_fill-ales149-lotus-stereo-split-silence.md
+//! Stands on: lotus/stereo_segment.rye (ALES147) — the stereo voice-activity segmenter, run once to read BOTH channels' silences over one shared frame grid, its
+//! `segment_stereo`, its `StereoSegments`, and its `StereoSegmentError` reused whole; lotus/segment.rye (ALES95) — the mono segmenter (the frame grid and `.silent`
+//! verdict, through ALES147) and `max_segments`; lotus/stereo_trim_silence.rye (ALES148) — the stereo silence stripper, the JOIN-law twin, imported by the selftest;
+//! lotus/split_silence.rye (ALES97) — the mono auto-splitter, the shape carried up; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance
+//! invariant; lotus/timeline.rye (ALES2) — the Clip, its `splice`, its `max_clip`, and the EditError reused whole; lotus/voiced.rye (ALES94) — the `.silent` verdict.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, read-only through the split. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. The split
+//! READS — it names shared spans and mutates not one sample of the source; stereo_take_clip WRITES only a fresh balanced destination StereoClip, copying whole
+//! classified-not-jointly-silent samples on both channels through ALES2's own splice, fabricating nothing and reordering nothing. NOT a transcript, not a diarizer, not
+//! a real adaptive VAD; those stay later rungs. No real sample rate, no network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_split_silence.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const segment = @import("segment.rye");
+const stereo_segment = @import("stereo_segment.rye");
+const stereo_trim_silence = @import("stereo_trim_silence.rye");
+
+pub const stereo_split_silence_version = "20260815.052853";
+
+/// The most frames a span can carry — one per sample, when `frame_len` is 1 — bounded by the clip's own sample ceiling. Names the joint-silence walk's size once.
+const max_frames: u32 = timeline.max_clip;
+
+/// A not-jointly-silent region named as a shared span into BOTH channels of the ORIGINAL master — the stereo auto-splitter's unit of result. A take never crosses a
+/// jointly-silent frame; a frame silent in only one channel keeps the open take running (the other speaker still carries sound), since a keeper splits a stereo
+/// recording on its shared pauses, not on either speaker's phonemes. The same span serves both channels, so every take is balanced by construction.
+pub const StereoTake = struct {
+    start: u32,
+    count: u32,
+};
+
+/// The most takes any legal split can hold — one per not-jointly-silent region, bounded by the segmenter's own run ceiling (a region is at least one frame, and the
+/// frames are bounded by max_segments). So a StereoTake per region is always representable and TakesFull, below, stays an honest unreachable-under-the-bound named path.
+pub const max_stereo_takes: u32 = segment.max_segments;
+
+/// The stereo splitter's faults are the stereo segmenter's OWN faults (ALES147's StereoSegmentError, itself ALES95's SegmentError) reused by name for the read, and the
+/// editor's OWN faults (ALES2's EditError from splice) reused by name for stereo_take_clip. The stereo lift invents none of its own — an empty clip refuses BadFrame
+/// through the segmenter — so a keeper reads exactly one error vocabulary across the analysis and the materialization. TakesFull is named for the honest path though
+/// max_stereo_takes equals the segmenter's own run ceiling and cannot be exceeded.
+pub const StereoSplitError = stereo_segment.StereoSegmentError || timeline.EditError || error{
+    /// More coalesced takes than max_stereo_takes — impossible while the ceiling equals the segmenter's own run bound, kept named for the honest path.
+    TakesFull,
+};
+
+/// A bounded list of not-jointly-silent regions over one stereo master, written through an out-pointer so no large struct is returned by value (the same discipline
+/// segment.Segments, split_silence.Takes, and splice keep).
+pub const StereoTakes = struct {
+    items: [max_stereo_takes]StereoTake = undefined,
+    len: u32 = 0,
+
+    /// A read-only view of the takes actually written.
+    pub fn takes(self: *const StereoTakes) []const StereoTake {
+        // invariant: len never exceeds the bound — every push checks it at the edge.
+        assert(self.len <= max_stereo_takes);
+        return self.items[0..self.len];
+    }
+};
+
+/// Split `sc` on its JOINT silence, writing one StereoTake per maximal not-jointly-silent region into `out`. Segments BOTH channels of the whole master `[0, len)` into
+/// frames of `frame_len` samples through ALES147, decides a frame jointly-silent only where it is `.silent` in both channels, then coalesces every span of consecutive
+/// not-jointly-silent frames into one shared take. READ-ONLY — not one sample of `sc` is written. Validates the whole span, band, floor, and frame length through
+/// ALES147's own up-front checks BEFORE any take is written; on refusal `out` is left empty. An empty clip refuses `BadFrame` (a zero span cannot carry a legal frame);
+/// an all-jointly-silent master yields zero takes; a master loud on at least one channel per frame yields exactly one take of the whole master.
+pub fn split_stereo_on_silence(
+    sc: *const pan.StereoClip,
+    out: *StereoTakes,
+    frame_len: u32,
+    t_low: i32,
+    t_high: i32,
+    silence_floor: u32,
+    voice_split: u32,
+) StereoSplitError!void {
+    out.len = 0;
+
+    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the whole split rests on.
+    assert(sc.left.len == sc.right.len);
+    const total_len: u32 = sc.left.len;
+
+    // Segment BOTH channels once over one shared frame grid. ALES147 runs all of its (and ALES95's) validation here — band/span precheck, the floor ceiling, the
+    // dividing frame length, the empty-clip BadFrame — read-only, before a single take is named. On refusal it leaves out empty and both channels untouched.
+    var segs = stereo_segment.StereoSegments{};
+    try stereo_segment.segment_stereo(sc, &segs, 0, total_len, frame_len, t_low, t_high, silence_floor, voice_split);
+
+    // invariant: segmenting a non-empty master yields at least one run per channel that tiles it — ALES147's own postcondition, relied on here.
+    assert(segs.left.len >= 1 and segs.left.len <= segment.max_segments);
+    assert(segs.right.len >= 1 and segs.right.len <= segment.max_segments);
+
+    // The frames tile [0, total_len) exactly — the segmenter refused a non-dividing or zero frame length, so this division is exact and at least one.
+    const frames: u32 = total_len / frame_len;
+    // invariant: the frame count is real and never exceeds the walk that reads it.
+    assert(frames >= 1 and frames <= max_frames);
+
+    // Forward pass — the SILENCE INTERSECTION, coalesced. Walk the frames left to right, advancing one cursor per channel across its own tiling run list (the same walk
+    // ALES148 uses), decide each frame jointly-silent only where it is `.silent` in both channels, and coalesce every maximal span of consecutive NOT-jointly-silent
+    // frames into one shared take. A jointly-silent frame closes the open take; the next not-jointly-silent frame opens a fresh one, so takes are separated by at least
+    // one jointly-silent frame — the split falls only on a shared pause. A frame silent in only one channel is NOT jointly-silent, so it extends the open take.
+    var open: bool = false;
+    var li: u32 = 0;
+    var ri: u32 = 0;
+    var k: u32 = 0;
+    while (k < frames) : (k += 1) {
+        const fs: u32 = k * frame_len;
+        // Runs tile [0, total_len) in order and frame starts only increase, so each cursor advances monotonically to the run covering this frame's start.
+        while (li + 1 < segs.left.len and segs.left.items[li].start + segs.left.items[li].count <= fs) : (li += 1) {}
+        while (ri + 1 < segs.right.len and segs.right.items[ri].start + segs.right.items[ri].count <= fs) : (ri += 1) {}
+        // invariant: each cursor names the run that actually covers fs — the runs tile the span, so exactly one always does.
+        assert(segs.left.items[li].start <= fs and fs < segs.left.items[li].start + segs.left.items[li].count);
+        assert(segs.right.items[ri].start <= fs and fs < segs.right.items[ri].start + segs.right.items[ri].count);
+        const joint_silent = segs.left.items[li].verdict == .silent and segs.right.items[ri].verdict == .silent;
+        if (joint_silent) {
+            // A shared pause: close the open take. The next not-jointly-silent frame will open a fresh one.
+            open = false;
+        } else if (open) {
+            // Extend the open take across this consecutive not-jointly-silent frame (no shared pause since the last one).
+            // invariant: frames are contiguous, so this frame begins exactly where the open take currently ends — the extension stays contiguous.
+            assert(fs == out.items[out.len - 1].start + out.items[out.len - 1].count);
+            out.items[out.len - 1].count += frame_len;
+        } else {
+            // Open a new take at this not-jointly-silent frame.
+            if (out.len >= max_stereo_takes) return error.TakesFull;
+            out.items[out.len] = .{ .start = fs, .count = frame_len };
+            out.len += 1;
+            open = true;
+        }
+    }
+
+    // invariant: takes are in strict order and each lies wholly inside the master on both channels — the frame walk's own ordering carried through the coalesce.
+    assert(out.len <= max_stereo_takes);
+    if (out.len > 0) {
+        assert(out.items[0].start >= 0);
+        assert(out.items[out.len - 1].start + out.items[out.len - 1].count <= total_len);
+    }
+}
+
+/// Materialize the `index`-th take into a fresh balanced StereoClip `dst` by copying exactly the original's samples over that take's SHARED span, on BOTH channels,
+/// through ALES2's `splice`. `dst` must start empty on both channels; the copy fabricates no sample and reorders nothing, and the shared span keeps the take balanced.
+/// Asserts `index < out.len` (a caller reads `out.len` first) and forwards `splice`'s `EditError`.
+pub fn stereo_take_clip(
+    src: *const pan.StereoClip,
+    out: *const StereoTakes,
+    index: u32,
+    dst: *pan.StereoClip,
+) timeline.EditError!void {
+    // invariant: the index names a real take, and the destination begins empty and balanced so the copy is the take alone.
+    assert(index < out.len);
+    assert(dst.left.len == 0 and dst.right.len == 0);
+    const take = out.items[index];
+    // invariant: the take's shared span sits wholly inside both channels — the split's own postcondition, re-checked before the read.
+    assert(take.start + take.count <= src.left.len and take.start + take.count <= src.right.len);
+    const left_samples = src.left.samples();
+    const right_samples = src.right.samples();
+    try timeline.splice(&dst.left, 0, left_samples[take.start .. take.start + take.count]);
+    try timeline.splice(&dst.right, 0, right_samples[take.start .. take.start + take.count]);
+    // invariant: the destination now holds exactly the take's samples on both channels and leaves balanced.
+    assert(dst.left.len == take.count and dst.right.len == take.count);
+    assert(dst.left.len == dst.right.len);
+}
+
+// --- selftest: THE STEREO TAKE LAW — the index-th take clip equals the original over its shared span on both channels and out.len equals the not-jointly-silent-region
+//     count, across many frame lengths, floors, and splits, every take balanced; THE JOIN LAW — the takes concatenated per channel equal ALES148's stereo_trim_silence
+//     byte for byte; THE PRESERVATION / LOCKSTEP LAW — a frame silent on only one channel keeps the open take running (no false split), the take boundaries identical on
+//     both channels; an all-jointly-silent master yields zero takes; a master loud on at least one channel per frame yields one whole-master take; the source is
+//     byte-for-byte unchanged (read-only); an empty clip, a ragged frame length, an inverted band, and an illegal floor each refuse by name, out left empty ----------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try timeline.splice(&sc.left, 0, l);
+    try timeline.splice(&sc.right, 0, r);
+}
+
+/// The verdict of the frame that starts at sample `fs`, read from a mono segmentation by finding the run that covers it — an independent reference to the cursor walk
+/// inside `split_stereo_on_silence`, so the crux is proven against a second implementation.
+fn frame_verdict(segs: *const segment.Segments, fs: u32) segment.Segment {
+    var i: u32 = 0;
+    while (i < segs.len) : (i += 1) {
+        if (segs.items[i].start <= fs and fs < segs.items[i].start + segs.items[i].count) return segs.items[i];
+    }
+    unreachable; // the runs tile the span, so a frame start always lands in one
+}
+
+/// The hand-built take list the splitter is checked against — segment BOTH channels of the ORIGINAL, then coalesce consecutive not-jointly-silent frames into shared
+/// regions, exactly as the splitter must. Kept independent of split_stereo_on_silence's own loop so the crux compares two paths, not one against itself.
+fn by_hand(out: *StereoTakes, src: *const pan.StereoClip, frame_len: u32, t_low: i32, t_high: i32, floor: u32, split: u32) !void {
+    out.len = 0;
+    var ls = segment.Segments{};
+    try segment.segment(&src.left, &ls, 0, src.left.len, frame_len, t_low, t_high, floor, split);
+    var rs = segment.Segments{};
+    try segment.segment(&src.right, &rs, 0, src.right.len, frame_len, t_low, t_high, floor, split);
+    const frames: u32 = src.left.len / frame_len;
+    var open: bool = false;
+    var k: u32 = 0;
+    while (k < frames) : (k += 1) {
+        const fs: u32 = k * frame_len;
+        const joint_silent = frame_verdict(&ls, fs).verdict == .silent and frame_verdict(&rs, fs).verdict == .silent;
+        if (joint_silent) {
+            open = false;
+        } else if (open) {
+            out.items[out.len - 1].count += frame_len;
+        } else {
+            out.items[out.len] = .{ .start = fs, .count = frame_len };
+            out.len += 1;
+            open = true;
+        }
+    }
+}
+
+fn run_selftest() !u8 {
+    const band_low: i32 = -1000;
+    const band_high: i32 = 1000;
+
+    // Six frames of four samples. The two channels carry DIFFERENT silences on purpose: frame 3 is quiet on the LEFT yet loud on the RIGHT (a hard-left sound's absence
+    // on the right), frame 1 and frame 4 are quiet on BOTH (true shared pauses). Only frames 1 and 4 are jointly silent, so they split the master into three takes:
+    // frame 0, frames 2–3, and frame 5.
+    const left_sig = [_]i16{
+        20000, 20000, -20000, -20000, // frame 0 — loud on both (voiced)
+        40,    -40,    40,     -40, // frame 1 — quiet on BOTH (jointly silent — a shared pause)
+        20000, -20000, 20000,  -20000, // frame 2 — loud on both (unvoiced)
+        30,    -30,    30,     -30, // frame 3 — LEFT quiet (silent), right loud → NOT jointly silent
+        50,    -50,    50,     -50, // frame 4 — quiet on BOTH (jointly silent — a shared pause)
+        20000, 20000, -20000, -20000, // frame 5 — loud on both
+    };
+    const right_sig = [_]i16{
+        20000, 20000, -20000, -20000, // frame 0 — loud
+        41,    -41,    41,     -41, // frame 1 — quiet (silent)
+        20000, 20000, -20000, -20000, // frame 2 — loud
+        20000, 20000, -20000, -20000, // frame 3 — RIGHT loud (keeps the take running)
+        51,    -51,    51,     -51, // frame 4 — quiet (silent)
+        20000, 20000, -20000, -20000, // frame 5 — loud
+    };
+
+    // 1. THE STEREO TAKE LAW — over many frame lengths, floors, and splits, split_stereo_on_silence names exactly the hand-coalesced not-jointly-silent regions, and
+    //    each materialized take clip equals the original's samples over that region's shared span on BOTH channels, every take balanced.
+    {
+        const flens = [_]u32{ 1, 2, 3, 4, 6, 8, 12, 24 }; // each divides 24
+        const floors = [_]u32{ 100, 500, 1000, 5000 }; // all above the quiet ~40 rms, below the loud
+        const splits = [_]u32{ 1, 2, 4 };
+        var li: u32 = 0;
+        while (li < flens.len) : (li += 1) {
+            var fi: u32 = 0;
+            while (fi < floors.len) : (fi += 1) {
+                var si: u32 = 0;
+                while (si < splits.len) : (si += 1) {
+                    var src = pan.StereoClip{};
+                    try load_stereo(&src, &left_sig, &right_sig);
+
+                    var got = StereoTakes{};
+                    try split_stereo_on_silence(&src, &got, flens[li], band_low, band_high, floors[fi], splits[si]);
+                    var want = StereoTakes{};
+                    try by_hand(&want, &src, flens[li], band_low, band_high, floors[fi], splits[si]);
+
+                    if (got.len != want.len) return error.TakeCountWrong;
+                    var t: u32 = 0;
+                    while (t < want.len) : (t += 1) {
+                        if (got.items[t].start != want.items[t].start) return error.TakeStartWrong;
+                        if (got.items[t].count != want.items[t].count) return error.TakeCountSpanWrong;
+                        // Each take clip equals the original over its shared span on both channels — materialize and compare.
+                        var dst = pan.StereoClip{};
+                        try stereo_take_clip(&src, &got, t, &dst);
+                        const lo = got.items[t].start;
+                        const hi = got.items[t].start + got.items[t].count;
+                        if (!eq(dst.left.samples(), left_sig[lo..hi])) return error.TakeClipLeftWrong;
+                        if (!eq(dst.right.samples(), right_sig[lo..hi])) return error.TakeClipRightWrong;
+                        if (dst.left.len != dst.right.len) return error.TakeUnbalanced;
+                    }
+                    // The source is byte-for-byte unchanged on both channels — the split reads only.
+                    if (!eq(src.left.samples(), &left_sig)) return error.SourceLeftMutated;
+                    if (!eq(src.right.samples(), &right_sig)) return error.SourceRightMutated;
+                }
+            }
+        }
+    }
+
+    // 2. THE JOIN LAW — concatenating every take clip in order, per channel, equals ALES148's stereo_trim_silence on the same signal, byte for byte.
+    {
+        const flens = [_]u32{ 1, 2, 4, 6, 12 };
+        const floors = [_]u32{ 500, 1000 };
+        const splits = [_]u32{ 1, 2 };
+        var li: u32 = 0;
+        while (li < flens.len) : (li += 1) {
+            var fi: u32 = 0;
+            while (fi < floors.len) : (fi += 1) {
+                var si: u32 = 0;
+                while (si < splits.len) : (si += 1) {
+                    var src = pan.StereoClip{};
+                    try load_stereo(&src, &left_sig, &right_sig);
+
+                    var takes = StereoTakes{};
+                    try split_stereo_on_silence(&src, &takes, flens[li], band_low, band_high, floors[fi], splits[si]);
+
+                    // Join the takes back into one balanced master, in order, per channel.
+                    var joined = pan.StereoClip{};
+                    var t: u32 = 0;
+                    while (t < takes.len) : (t += 1) {
+                        var dst = pan.StereoClip{};
+                        try stereo_take_clip(&src, &takes, t, &dst);
+                        try timeline.splice(&joined.left, joined.left.len, dst.left.samples());
+                        try timeline.splice(&joined.right, joined.right.len, dst.right.samples());
+                    }
+
+                    // Trim the same signal through ALES148 — the join must equal it exactly on both channels.
+                    var trimmed = pan.StereoClip{};
+                    try load_stereo(&trimmed, &left_sig, &right_sig);
+                    try stereo_trim_silence.stereo_trim_silence(&trimmed, flens[li], band_low, band_high, floors[fi], splits[si]);
+
+                    if (!eq(joined.left.samples(), trimmed.left.samples())) return error.JoinNotTrimLeft;
+                    if (!eq(joined.right.samples(), trimmed.right.samples())) return error.JoinNotTrimRight;
+                    if (joined.left.len != joined.right.len) return error.JoinUnbalanced;
+                }
+            }
+        }
+    }
+
+    // 3. THE PRESERVATION / LOCKSTEP LAW — with frame 4 and floor 500, the master yields exactly THREE takes, split by the two shared pauses (frames 1 and 4). Frame 3
+    //    (quiet on the left, loud on the right) does NOT force a split — it extends the second take, because the right speaker still carries sound. The take boundaries
+    //    are identical on both channels.
+    {
+        var src = pan.StereoClip{};
+        try load_stereo(&src, &left_sig, &right_sig);
+        var takes = StereoTakes{};
+        try split_stereo_on_silence(&src, &takes, 4, band_low, band_high, 500, 2);
+        if (takes.len != 3) return error.MixedTakeCount;
+        // Take 0 — frame 0 alone, 4 samples at index 0.
+        if (takes.items[0].start != 0 or takes.items[0].count != 4) return error.MixedTake0;
+        // Take 1 — frames 2 and 3 coalesced (frame 3 kept though quiet on the left), 8 samples at index 8.
+        if (takes.items[1].start != 8 or takes.items[1].count != 8) return error.MixedTake1;
+        // Take 2 — frame 5 alone, 4 samples at index 20.
+        if (takes.items[2].start != 20 or takes.items[2].count != 4) return error.MixedTake2;
+        // A shared pause always sits between takes — each starts strictly after the prior ends.
+        if (takes.items[1].start <= takes.items[0].start + takes.items[0].count) return error.NoPauseBetween01;
+        if (takes.items[2].start <= takes.items[1].start + takes.items[1].count) return error.NoPauseBetween12;
+        // The kept frame 3 proves the preservation law — materialize take 1 and confirm it carries the left-quiet frame on both channels.
+        var dst = pan.StereoClip{};
+        try stereo_take_clip(&src, &takes, 1, &dst);
+        if (!eq(dst.left.samples(), left_sig[8..16])) return error.PreservationLeftWrong;
+        if (!eq(dst.right.samples(), right_sig[8..16])) return error.PreservationRightWrong;
+    }
+
+    // 4. AN ALL-JOINTLY-SILENT MASTER — quiet on BOTH channels everywhere — yields zero takes.
+    {
+        const quiet_l = [_]i16{ 40, -40, 40, -40, 30, -30, 30, -30 };
+        const quiet_r = [_]i16{ 41, -41, 41, -41, 31, -31, 31, -31 };
+        var src = pan.StereoClip{};
+        try load_stereo(&src, &quiet_l, &quiet_r);
+        var takes = StereoTakes{};
+        try split_stereo_on_silence(&src, &takes, 4, band_low, band_high, 500, 2);
+        if (takes.len != 0) return error.AllJointSilentNotEmpty;
+    }
+
+    // 5. A NO-JOINTLY-SILENT MASTER — loud on at least one channel in every frame — yields exactly one take equal to the whole master. Here the left goes quiet in the
+    //    second frame yet the right stays loud, so NOTHING is jointly silent and the take runs whole.
+    {
+        const some_l = [_]i16{ 20000, -20000, 20000, -20000, 40, -40, 40, -40 };
+        const loud_r = [_]i16{ 20000, 20000, -20000, -20000, 20000, 20000, -20000, -20000 };
+        var src = pan.StereoClip{};
+        try load_stereo(&src, &some_l, &loud_r);
+        var takes = StereoTakes{};
+        try split_stereo_on_silence(&src, &takes, 4, band_low, band_high, 500, 1);
+        if (takes.len != 1) return error.NoJointSilentTakeCount;
+        if (takes.items[0].start != 0 or takes.items[0].count != 8) return error.NoJointSilentSpan;
+        var dst = pan.StereoClip{};
+        try stereo_take_clip(&src, &takes, 0, &dst);
+        if (!eq(dst.left.samples(), &some_l)) return error.NoJointSilentLeftClip;
+        if (!eq(dst.right.samples(), &loud_r)) return error.NoJointSilentRightClip;
+    }
+
+    // 6a. AN EMPTY CLIP refuses BadFrame through the segmenter, out left empty.
+    {
+        var src = pan.StereoClip{};
+        var takes = StereoTakes{};
+        if (split_stereo_on_silence(&src, &takes, 4, band_low, band_high, 500, 2)) |_| return error.EmptySlipped else |e| if (e != error.BadFrame) return error.WrongEmpty;
+        if (takes.len != 0) return error.EmptyWroteTakes;
+    }
+
+    // 6b. A RAGGED FRAME LENGTH — one that does not divide the master — refuses BadFrame, out left empty, both channels untouched.
+    {
+        const five_l = [_]i16{ 1, 2, 3, 4, 5 };
+        const five_r = [_]i16{ 6, 7, 8, 9, 10 };
+        var src = pan.StereoClip{};
+        try load_stereo(&src, &five_l, &five_r);
+        var takes = StereoTakes{};
+        if (split_stereo_on_silence(&src, &takes, 2, band_low, band_high, 500, 2)) |_| return error.RaggedSlipped else |e| if (e != error.BadFrame) return error.WrongRagged;
+        if (takes.len != 0) return error.RaggedWroteTakes;
+        if (!eq(src.left.samples(), &five_l) or !eq(src.right.samples(), &five_r)) return error.RaggedMutated;
+    }
+
+    // 6c. AN INVERTED BAND refuses BadThreshold (through ALES147's precheck), out left empty.
+    {
+        const four_l = [_]i16{ 10, 20, 30, 40 };
+        const four_r = [_]i16{ 50, 60, 70, 80 };
+        var src = pan.StereoClip{};
+        try load_stereo(&src, &four_l, &four_r);
+        var takes = StereoTakes{};
+        if (split_stereo_on_silence(&src, &takes, 2, 1000, -1000, 500, 2)) |_| return error.InvertedSlipped else |e| if (e != error.BadThreshold) return error.WrongInverted;
+        if (takes.len != 0) return error.InvertedWroteTakes;
+    }
+
+    // 6d. AN ILLEGAL FLOOR — above the peak ceiling — refuses BadFloor, out left empty.
+    {
+        const four_l = [_]i16{ 10, 20, 30, 40 };
+        const four_r = [_]i16{ 50, 60, 70, 80 };
+        var src = pan.StereoClip{};
+        try load_stereo(&src, &four_l, &four_r);
+        var takes = StereoTakes{};
+        if (split_stereo_on_silence(&src, &takes, 2, band_low, band_high, 32769, 2)) |_| return error.BadFloorSlipped else |e| if (e != error.BadFloor) return error.WrongBadFloor;
+        if (takes.len != 0) return error.BadFloorWroteTakes;
+    }
+
+    print("GREEN ales-stereo-split-silence: the AUTO-SPLITTER CARRIED INTO STEREO, one cut line for both channels — the stereo twin of the silence stripper. ALES97 " ++
+        "splits a mono clip AT its silence, keeping each non-silent region as its own take; carried into stereo it meets the wall ALES148 met — a StereoClip's " ++
+        "defining invariant is that left and right hold the SAME length, yet ALES147 proved the two channels segment INDEPENDENTLY, their silences differing in count " ++
+        "and boundary. Splitting each channel by its own silence would cut the two speakers at different positions and tear every take apart, so this rung decides ONE " ++
+        "cut line for both — the SILENCE INTERSECTION, exactly as ALES148 proved it: segment both channels over one shared frame grid, decide a frame jointly-silent " ++
+        "only where it is silent in BOTH channels, and split only at jointly-silent frames. A stereo take is a maximal span of frames that is NOT jointly-silent — a " ++
+        "region either speaker fills — cut identically from both channels, so every take is a balanced StereoClip; a frame silent in only one channel keeps the open " ++
+        "take running, because a sound panned hard left is real audio the right's silence must never split away. The crux is two laws. THE STEREO TAKE LAW: the " ++
+        "index-th take clip equals the original's samples over the index-th not-jointly-silent region's shared span on BOTH channels, and out.len equals the region " ++
+        "count — the splitter is ALES148's jointly-silent mask complemented, coalesced, and named, nothing more, every take balanced, across many frame lengths, " ++
+        "floors, and splits. THE JOIN LAW: concatenating every take clip in order, per channel, equals ALES148's stereo_trim_silence on the same signal, byte for " ++
+        "byte — the trimmer joins the not-jointly-silent frames, the splitter keeps them apart, and re-joining the splitter's pieces returns exactly the trimmer's " ++
+        "master. A mixed master yields three takes split by two shared pauses, the frame quiet on the left yet loud on the right kept in its take (the preservation " ++
+        "law); an all-jointly-silent master yields zero takes; a master loud on at least one channel per frame yields one whole-master take; the source is " ++
+        "byte-for-byte unchanged on both channels (read-only); an empty clip, a ragged frame length, an inverted band, and an illegal floor each refuse by name — " ++
+        "BadFrame, BadFrame, BadThreshold, BadFloor — out left empty. Purely local — the split reads only, stereo_take_clip copies whole not-jointly-silent samples " ++
+        "on both channels through splice, fabricating none; NOT a transcript or a real adaptive VAD; no real sample rate, no network, no keys, no funds, no real " ++
+        "speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
