@@ -1,0 +1,235 @@
+//! lotus/stereo_crush.rye — ALES136: the bit-crusher carried into stereo, ONE SHARED GRID, the resolution corner of the stereo NONLINEAR class. ALES81 named `crush` — drop the low 16−bits bits of every
+//! sample, q = divFloor(x, step)·step with step = 2^(16−bits), a floor toward −∞ onto the grid of that step, so a sixteen-bit signal leaves at eight, four, or one: the coarse quantized voice of an early
+//! sampler. Where ALES132's hard clip, ALES133's soft clip, and ALES134's wavefold all shape AMPLITUDE and hold RESOLUTION, and ALES135's tube pins the two halves unevenly, the bit-crush shapes the OTHER
+//! axis — resolution — and, like the tube, is NOT odd: crush(−100) = −256 while crush(100) = 0 at eight bits, the faint downward DC offset that is bit reduction's honest fingerprint. Yet a Lotus master is a
+//! StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and RIGHT hold the SAME length. This rung carries the crush into stereo the plain way: run ALES81's proven mono `crush`
+//! on each channel with the SAME bits, so one grid lands on BOTH speakers together.
+//!
+//! The nonlinear class holds as ALES132 stated it, and the crush shares the tube's second edge (ALES135): a not-odd map holds neither the inter-channel ratio nor the inter-channel ANTISYMMETRY. An
+//! out-of-phase master (right the negation of left) crushed through the same grid comes back NOT out of phase, because the floor is not symmetric about zero — at eight bits crush(100) = 0 but crush(−100) =
+//! −256, so right ≠ −left. That is not a bug to design around; it is bit reduction's honest fingerprint read in the stereo field. What the shared map DOES keep, per channel, is that every output is a grid
+//! point at or below its input, the map is IDEMPOTENT (a grid point crushes to itself, so twice equals once), an identical-channel master stays identical, and bits = 16 is the identity.
+//!
+//! The rule, stated once: the mono crush carries NO pre-gain and NO ceiling — the purest DRIVE member — so the stereo lift is the plainest of the nonlinear class. Refuse BadBits (a resolution outside [1, 16])
+//! and BadRange (a span outside the samples) BEFORE either channel is mutated — each fault depends only on the shared bits or the shared length, so each check is made ONCE up front, and a refusal never
+//! crushes one channel and leaves the other at full resolution; otherwise crush both channels over [start, start+count) to `bits` via ALES81's `crush`. CrushError reused whole — the stereo lift adds no fault.
+//!
+//! The crux — four laws. THE STEREO CRUSH LAW: each channel equals ALES81's mono `crush` with the same `bits` over the same span byte for byte — every written sample a multiple of the grid step 2^(16−bits).
+//! THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their starting length (a crush writes values only). THE PER-CHANNEL NOT-ODD LAW: the crush floors toward −∞, so a shared grid
+//! holds neither the inter-channel ratio nor the inter-channel antisymmetry (an out-of-phase master coming back NOT out of phase, the downward DC fingerprint on both channels); yet per channel every output is
+//! a grid point at or below its input, the map is idempotent (twice equals once), an identical-channel master stays identical, and bits = 16 is the identity. THE ATOMICITY / DEGENERATE LAW: any refusal
+//! (BadBits, BadRange) leaves BOTH channels byte for byte untouched and still balanced; bits = 16 the identity on both, count = 0 the identity on both.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES136.
+//! Design read: active-designing/20260815-034830_fill-ales136-lotus-stereo-crush.md
+//! Stands on: lotus/crush.rye (ALES81) — the mono bit-crusher run once per channel, a floor onto the grid of step 2^(16−bits); lotus/stereo_tube.rye (ALES135) — the not-odd sibling whose antisymmetry-break
+//! lesson this shares; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, sample_min/max.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only through ALES81's own crush, never a length, never a
+//! byte fabricated; the resolution is a bit count, the grid a power-of-two step in sample units, the shape a quantizer, instantaneous (no dither, no anti-aliasing). No real sample rate, no network, no keys, no
+//! funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_crush.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const crush = @import("crush.rye");
+
+pub const stereo_crush_version = "20260815.034830";
+
+/// Stereo crush's faults are exactly ALES81's own `CrushError` — `BadBits` (a resolution outside [1, 16]) and `BadRange` (a span outside the samples) — reused by name, since the stereo lift adds no new fault:
+/// it only runs the same crush on each channel after one shared validation.
+pub const StereoCrushError = crush.CrushError;
+
+/// Crush `[start, start+count)` in BOTH channels of `sc` to the same `bits` of resolution, the SAME grid on each, running ALES81's proven mono `crush`. Each sample's low `16 − bits` bits are cleared — a floor
+/// toward −∞ onto the grid of step `2^(16−bits)`. `bits = 16` is the identity. Validates both channels once against the shared bits and length before either is mutated: refuses `BadBits` / `BadRange`, both
+/// channels untouched. Values only — never the length; the two channels leave balanced.
+pub fn stereo_crush(sc: *pan.StereoClip, start: u32, count: u32, bits: u32) StereoCrushError!void {
+    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the edit preserves.
+    assert(sc.left.len == sc.right.len);
+
+    // invariant: the resolution and span are legal — refused by name before any write, so a refusal never crushes one channel and leaves the other at full resolution. The bits check depends only on the shared
+    // resolution; the span check on the shared length. These mirror ALES81's own guards exactly, so each mono crush below is pre-validated to succeed.
+    if (bits < 1) return error.BadBits;
+    if (bits > crush.max_bits) return error.BadBits;
+    const len: u32 = sc.left.len;
+    if (start > len) return error.BadRange;
+    if (count > len - start) return error.BadRange;
+
+    // Every check passed and holds identically for both channels, so each mono crush is pre-validated to succeed — no refusal can land between the two channel edits. The SAME grid on each.
+    try crush.crush(&sc.left, start, count, bits);
+    try crush.crush(&sc.right, start, count, bits);
+
+    // invariant: the channels leave balanced — a crush writes values only, so each channel holds its starting length and the stereo image stays aligned.
+    assert(sc.left.len == sc.right.len);
+    assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
+}
+
+// --- selftest: THE STEREO CRUSH LAW — each channel equals ALES81's mono crush with the same bits byte for byte; THE BALANCE / LENGTH LAW — left.len == right.len after, both holding their starting length; THE
+//     PER-CHANNEL NOT-ODD LAW — every output a grid point at or below its input, the map idempotent, an OUT-OF-PHASE master coming back NOT out of phase (the floor is not symmetric about zero), an
+//     identical-channel master staying identical, bits = 16 the identity; THE ATOMICITY / DEGENERATE LAW — each refusal leaves both channels untouched and balanced, bits = 16 the identity, count = 0 the
+//     identity ----
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try timeline.splice(&sc.left, 0, l);
+    try timeline.splice(&sc.right, 0, r);
+}
+
+fn run_selftest() !u8 {
+    // 1. THE STEREO CRUSH LAW — each channel equals ALES81's mono crush with the same bits, proven side by side over one span with different per-channel samples; an eight-bit crush floors each sample onto the
+    //    grid of step 256, per channel.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 300, -300, 1000, -2000 }, &[_]i16{ 100, -50, 2500, -3000 });
+        try stereo_crush(&sc, 0, 4, 8); // to 8 bits (step 256)
+
+        var ml = timeline.Clip{};
+        try timeline.splice(&ml, 0, &[_]i16{ 300, -300, 1000, -2000 });
+        try crush.crush(&ml, 0, 4, 8);
+        var mr = timeline.Clip{};
+        try timeline.splice(&mr, 0, &[_]i16{ 100, -50, 2500, -3000 });
+        try crush.crush(&mr, 0, 4, 8);
+
+        if (!eq(sc.left.samples(), ml.samples())) return error.LeftChannelWrong;
+        if (!eq(sc.right.samples(), mr.samples())) return error.RightChannelWrong;
+    }
+
+    // 2. THE BALANCE / LENGTH LAW — the channels stay equal length and each holds its starting length; a crush writes values only. Proven at an even and an odd length.
+    {
+        var even = pan.StereoClip{};
+        try load_stereo(&even, &[_]i16{ 100, 200, 300, 400 }, &[_]i16{ 400, 300, 200, 100 });
+        try stereo_crush(&even, 0, 4, 4);
+        if (even.left.len != even.right.len) return error.EvenUnbalanced;
+        if (even.left.len != 4) return error.EvenLength;
+
+        var odd = pan.StereoClip{};
+        try load_stereo(&odd, &[_]i16{ 100, 200, 300 }, &[_]i16{ 300, 200, 100 });
+        try stereo_crush(&odd, 0, 3, 6);
+        if (odd.left.len != odd.right.len) return error.OddUnbalanced;
+        if (odd.left.len != 3) return error.OddLength;
+    }
+
+    // 3a. THE PER-CHANNEL NOT-ODD LAW, the grid discipline — every output is a multiple of the grid step and no greater than its input (the floor never raises a sample), on BOTH channels. Proven at eight bits
+    //     (step 256).
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 800, -4000, 20 }, &[_]i16{ -30000, 7, -900 });
+        try stereo_crush(&sc, 0, 3, 8); // step 256
+        const l = sc.left.samples();
+        const r = sc.right.samples();
+        const li = [_]i16{ 800, -4000, 20 };
+        const ri = [_]i16{ -30000, 7, -900 };
+        var i: u32 = 0;
+        while (i < 3) : (i += 1) {
+            if (@rem(l[i], 256) != 0) return error.LeftOffGrid;
+            if (@rem(r[i], 256) != 0) return error.RightOffGrid;
+            if (l[i] > li[i]) return error.LeftFloorRaised;
+            if (r[i] > ri[i]) return error.RightFloorRaised;
+        }
+    }
+
+    // 3b. THE PER-CHANNEL NOT-ODD LAW, the ANTISYMMETRY BREAKS — an out-of-phase master (right the exact negation of left) crushed through the same grid comes back NOT out of phase, because the floor toward −∞
+    //     is not symmetric about zero: at eight bits crush(100) = 0 while crush(−100) = −256, so right ≠ −left. Under any ODD sibling the mirror would have held. This is bit reduction's downward DC fingerprint
+    //     read in the stereo field.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 100, 300, -100 }, &[_]i16{ -100, -300, 100 }); // right = −left, out of phase
+        try stereo_crush(&sc, 0, 3, 8); // step 256
+        const l = sc.left.samples();
+        const r = sc.right.samples();
+        if (l[0] != 0) return error.LeftFloorWrong; // 100 floors to 0
+        if (r[0] != -256) return error.RightFloorWrong; // −100 floors to −256
+        if (@as(i32, r[0]) == -@as(i32, l[0])) return error.AntisymmetryUnexpectedlyHeld; // the odd law does NOT hold here — that is the point
+    }
+
+    // 3c. THE PER-CHANNEL NOT-ODD LAW, idempotence — a grid point crushes to itself, so crushing twice equals crushing once on BOTH channels (the map is memoryless and idempotent).
+    {
+        var once = pan.StereoClip{};
+        try load_stereo(&once, &[_]i16{ 700, -1500, 4000 }, &[_]i16{ -4000, 900, -700 });
+        try stereo_crush(&once, 0, 3, 5);
+        var twice = pan.StereoClip{};
+        try load_stereo(&twice, &[_]i16{ 700, -1500, 4000 }, &[_]i16{ -4000, 900, -700 });
+        try stereo_crush(&twice, 0, 3, 5);
+        try stereo_crush(&twice, 0, 3, 5);
+        if (!eq(once.left.samples(), twice.left.samples())) return error.LeftNotIdempotent;
+        if (!eq(once.right.samples(), twice.right.samples())) return error.RightNotIdempotent;
+    }
+
+    // 3d. an identical-channel master stays identical through the crush — a shared grid on equal inputs gives equal outputs (a mono-in-stereo signal never splits, even under a not-odd map).
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 500, -3000, 500, -3000 }, &[_]i16{ 500, -3000, 500, -3000 });
+        try stereo_crush(&sc, 0, 4, 3);
+        if (!eq(sc.left.samples(), sc.right.samples())) return error.IdentityChannelsSplit;
+    }
+
+    // 4a. THE ATOMICITY LAW, bad bits — a resolution of zero refuses BadBits, both channels byte for byte untouched and still balanced.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 100, -200, 300 }, &[_]i16{ -50, 60, -70 });
+        if (stereo_crush(&sc, 0, 3, 0)) |_| return error.BadBitsSlipped else |e| if (e != error.BadBits) return error.WrongBadBits;
+        if (!eq(sc.left.samples(), &[_]i16{ 100, -200, 300 })) return error.BadBitsLeftMutated;
+        if (!eq(sc.right.samples(), &[_]i16{ -50, 60, -70 })) return error.BadBitsRightMutated;
+        if (sc.left.len != sc.right.len) return error.BadBitsUnbalanced;
+
+        // a resolution past sixteen also refuses BadBits — no low bits to drop.
+        var over = pan.StereoClip{};
+        try load_stereo(&over, &[_]i16{ 1, 2, 3 }, &[_]i16{ 3, 2, 1 });
+        if (stereo_crush(&over, 0, 3, 17)) |_| return error.BadBitsOverSlipped else |e| if (e != error.BadBits) return error.WrongBadBitsOver;
+        if (!eq(over.left.samples(), &[_]i16{ 1, 2, 3 })) return error.BadBitsOverLeftMutated;
+    }
+
+    // 4b. THE ATOMICITY LAW, bad span — a span past the samples refuses BadRange, both channels untouched.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 5, 6, 7 }, &[_]i16{ 7, 6, 5 });
+        if (stereo_crush(&sc, 1, 3, 8)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(sc.left.samples(), &[_]i16{ 5, 6, 7 })) return error.BadRangeLeftMutated;
+        if (!eq(sc.right.samples(), &[_]i16{ 7, 6, 5 })) return error.BadRangeRightMutated;
+    }
+
+    // 4c. THE DEGENERATE LAW — bits = 16 clears no bits, so it is the identity on both channels; and count = 0 is the identity on both.
+    {
+        var full = pan.StereoClip{};
+        try load_stereo(&full, &[_]i16{ 401, -299, 703 }, &[_]i16{ -701, 201, -401 });
+        try stereo_crush(&full, 0, 3, 16); // identity — no low bits to drop
+        if (!eq(full.left.samples(), &[_]i16{ 401, -299, 703 })) return error.FullBitsLeftChanged;
+        if (!eq(full.right.samples(), &[_]i16{ -701, 201, -401 })) return error.FullBitsRightChanged;
+
+        var noop = pan.StereoClip{};
+        try load_stereo(&noop, &[_]i16{ 7, -8, 9 }, &[_]i16{ -7, 8, -9 });
+        try stereo_crush(&noop, 1, 0, 4); // empty span — identity
+        if (!eq(noop.left.samples(), &[_]i16{ 7, -8, 9 })) return error.ZeroCountLeftChanged;
+        if (!eq(noop.right.samples(), &[_]i16{ -7, 8, -9 })) return error.ZeroCountRightChanged;
+    }
+
+    print("GREEN ales-stereo-crush: the BIT-CRUSHER CARRIED INTO STEREO, ONE SHARED GRID, the resolution corner of the stereo NONLINEAR class — crush a span in both channels of a master to the same bits of " ++
+        "resolution, running ALES81's proven mono crush on each (a floor toward −∞ onto the grid of step 2^(16−bits)), so one grid lands on both speakers together. A Lotus master is a StereoClip (ALES10) " ++
+        "whose defining invariant is that left and right hold the same length. The crush shapes RESOLUTION where the four DRIVE corners shape amplitude, and like ALES135's tube it is NOT odd — the floor is " ++
+        "not symmetric about zero (crush(−100) = −256 while crush(100) = 0 at eight bits, the downward DC fingerprint of bit reduction) — so a shared grid holds neither the inter-channel ratio nor the " ++
+        "inter-channel ANTISYMMETRY: an out-of-phase master (right the negation of left) comes back NOT out of phase. What the shared map keeps, per channel, is that every output is a grid point at or below " ++
+        "its input, the map is IDEMPOTENT (twice equals once), an identical-channel master stays identical, and bits = 16 is the identity. It validates both channels once against the shared bits and length " ++
+        "before either is mutated (BadBits outside [1, 16], BadRange on a span past the samples), so a refusal never crushes one channel and leaves the other at full resolution; CrushError reused whole. The " ++
+        "crux is four laws. THE STEREO CRUSH LAW: each channel equals ALES81's mono crush with the same bits byte for byte, every written sample a multiple of the grid step. THE BALANCE / LENGTH LAW: left.len " ++
+        "== right.len after and both hold their starting length. THE PER-CHANNEL NOT-ODD LAW: every output a grid point at or below its input, the map idempotent, the antisymmetry breaking under the shared " ++
+        "grid, an identical-channel master staying identical, bits = 16 the identity. THE ATOMICITY / DEGENERATE LAW: a refusal leaves both channels untouched and balanced, bits = 16 the identity, count = 0 " ++
+        "the identity. Purely local — two bounded i16 Clips crushed through the proven mono crush, the resolution a bit count and the grid a power-of-two step in sample units; no real sample rate, no network, " ++
+        "no keys, no funds, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
