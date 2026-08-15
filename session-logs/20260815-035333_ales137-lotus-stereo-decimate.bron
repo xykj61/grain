@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260815.035333
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (Eastern EDT convention)
+title ALES137 — Lotus's stereo_decimate: the sample-rate decimator carried into stereo, one shared run grid, closing the DRIVE-family stereo lift
+prompt Read REMEMBER and the 1024-round itinerary + six-season double-seat; take the next agent-doable lap Lindy-first crux-first; approve my own design rounds; send each finished increment as its own signed round; stop at custody gates; baton prin recur.
+think Fourth lap of this recur turn (after ALES135 tube and ALES136 crush landed and sent). The ALES136 log named decimate as the last DRIVE-family stereo lift. Taking it closes the arc — a satisfying finishing edge for this turn.
+think Read decimate.rye (ALES83): decimate(clip, start, count, hold), a zero-order hold pinning each run of `hold` samples to its anchor; DecimateError = {BadHold (hold outside [1, max_clip]), BadRange}. Same plain shape as crush — no gain, no ceiling. Validated hold and span once, ran mono decimate per channel; reused DecimateError whole.
+think The crux this round is the HONEST REVERSE of ALES135/136: the decimator copies an anchor rather than computing a new value, so it PRESERVES the stereo image where the two not-odd members broke it. Because both channels share the run grid and each holds its own anchor at the same time index, right[i]=right[anchor]=−left[anchor]=−left[i] — so an out-of-phase master STAYS out of phase, and a 1:2 master keeps its ratio at each held index. Proved both explicitly (r == −l and r == 2·l at every index after hold=2), plus idempotence and the partial-last-run case. Witness GREEN; tame_style_check bans clean; width-check exit 0.
+obs The DRIVE-family stereo lift is now COMPLETE across three axes: amplitude (pin ALES132, round ALES133, reflect ALES134, uneven-pin ALES135), resolution (crush ALES136), time (decimate ALES137). The class holds a clean lesson: linear/copy maps preserve the stereo image (fade, crossfade, normalize, decimate), not-odd maps break it (tube, crush). Decimate is the honest counterweight that makes the lesson symmetric — one rung on each side of the same time axis. No custody gate reached: purely local software, two bounded i16 Clips, self-approved design round. Natural finishing edge for the turn; the next Lotus lap could open a new effect family (modulation stereo lifts, or a new mono primitive) — a check-in-worthy choice of direction rather than a mechanical continuation.
+loom witness=ales_stereo_decimate_witness result=GREEN laws=4 channels=2 class=nonlinear axis=time cases=image-preserved+idempotence+partial-run
+file lotus/stereo_decimate.rye ALES137 — stereo_decimate, the zero-order hold lifted to stereo: one shared run grid on both channels, validated once (hold + span), four laws with the shared-grid image law (the image is preserved, the honest reverse of the not-odd members) and idempotence.
+file tools/ales_stereo_decimate_witness.rish the witness — builds, runs selftest, asserts the GREEN ales-stereo-decimate line.
+file active-designing/20260815-035333_fill-ales137-lotus-stereo-decimate.md the self-approved design read for this rung.
+file lotus/README.md front door synced — ALES137 roster entry on the Status line, stamp refreshed.
+recommend check-in (either) the DRIVE-family stereo lift is complete across amplitude, resolution, and time (ALES132–137); the next Lotus lap chooses a new direction (a modulation-family stereo lift, or a fresh mono primitive) rather than a mechanical continuation — a good place to confirm heading. Three rounds landed and sent this turn; no gate reached.
