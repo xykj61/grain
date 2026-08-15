@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260815.182511
+editor Zed
+model claude-fable-5
+voice Kyri
+host Framework 16 AMD — Eastern (EDT); this session in ai-jail on Vultr SEA VPS
+title Season G third primitive — ChaCha20 (RFC 8439) in pure Rye, RFC + std.crypto parity GREEN
+prompt Recursion loop (baton prin recur): keep taking agent-doable laps Lindy-first crux-first, Rye prioritized; send each finished increment as its own signed round; stop at the custody gates.
+think Two hashes stand GREEN (BLAKE2b, SHA-512). The named next Season G crux toward signing is edwards25519 field/group arithmetic (Ed25519) — big-integer field math, a season of its own, wants a design round. The tractable crux-first move is the adjacent ChaCha20/Poly1305 line: ChaCha20 is Monocypher's stream cipher, pure 32-bit integer arithmetic (no field math), so it is genuinely buildable in authored Rye this round.
+think Provable now against two references: the RFC 8439 known-answers (the §2.3.2 block for counter 1 and the §2.4.2 encryption of the RFC's own 114-byte plaintext) and Zig's std.crypto ChaCha20IETF as an independent oracle. The primitive calls no std.crypto; std is used only inside the selftest.
+think Authored the four "expand 32-byte k" constants, the quarter-round (four adds, four XORs, four fixed left-rotations 16/12/8/7), the twenty-round (ten double-round) block function, little-endian keystream serialization, and the counter-per-block stream XOR. Encryption and decryption are the same XOR; the selftest proves the round-trip recovers the plaintext.
+obs A transcription slip: when I cleaned readability spaces out of the §2.3.2 KAT hex I dropped an extra nibble; the RFC-known-answer check would have gone RED, so I re-derived both hex constants directly from RFC 8439 line by line and simplified hex_eq to a plain compare. GREEN held after the fix.
+obs Self-approved under the season's opening design read (20260815-180728), which names the ChaCha/Poly line as a primitive following the hash foundation, each its own round — no new design round, no custody gate near a keyless stream cipher run on the RFC's public test vectors.
+obs The RFC §2.4.2 plaintext carries the word "tip" in the landed-edge sense the nib rule retires; it is reproduced byte-for-byte as the standard's own published input (claim-preservation), not our prose.
+loom witness=crypto_chacha20_witness rfc_vectors=2 std_parity_inputs=4 block_bytes=64 rounds=20 result=GREEN
+file crypto/chacha20.rye the authored ChaCha20 primitive — sigma constants, quarter_round, keystream_block, stream_xor, block; bounded input, contract asserts, wrapping +% for the mod-2^32 adds, no std.crypto in the primitive
+file tools/crypto_chacha20_witness.rish builds and runs the selftest; asserts the GREEN crypto-chacha20 line; RFC 8439 known-answers + std.crypto parity proven on metal across the block edges
+recommend keep-going — three primitives now stand GREEN (BLAKE2b · SHA-512 · ChaCha20). The next Season G rung is Poly1305 (the MAC that completes the ChaCha20-Poly1305 AEAD, a bit of 130-bit arithmetic, still tractable in Rye), after which Ed25519's edwards25519 field/group arithmetic wants its own design round. Signing with the maintainer's identity key stays the custody gate.

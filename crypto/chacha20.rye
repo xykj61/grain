@@ -1,0 +1,289 @@
+//! crypto/chacha20.rye — Season G (Cryptography), the third primitive: ChaCha20 (IETF, RFC 8439) authored in pure Rye. ChaCha20 is
+//! Monocypher's stream cipher — the confidentiality half of its authenticated encryption, and the keystream the ChaCha/Poly line the
+//! decision wave named is built on — so this primitive is the direct next stone after the two hashes toward the Rye-native encryption
+//! and signing stack. Like BLAKE2b and SHA-512 it is pure integer arithmetic (32-bit words, mod 2^32, no big-integer field math,
+//! unlike the curve), so it is genuinely buildable in authored Rye this round, and it carries the published RFC 8439 known-answers
+//! (the §2.3.2 block function and the §2.4.2 encryption vector), so it is provable against a neutral public reference.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/20260815-180728_open-season-g-crypto-blake2b.md (the season's opening read names the ChaCha/Poly line
+//! as a primitive that follows the hash foundation, each its own round).
+//! Kin: crypto/blake2b.rye · crypto/sha512.rye (the first two primitives, GREEN on metal). Monocypher (vendor/monocypher, CC0/BSD-dual)
+//! is the parity TARGET, never a copied line — our own arithmetic, studied clean-room from the public RFC and Monocypher's public API
+//! (.claude/rules/gratitude-licenses.md).
+//!
+//! THE CRUX — ChaCha20 is a bounded loop over 64-bit-worth of 32-bit words, mod 2^32. The cipher fills a sixteen-word state from four
+//! constant words ("expand 32-byte k"), eight key words, one block counter, and three nonce words, then folds it through twenty rounds
+//! (ten column-then-diagonal double-rounds) of the quarter-round — four adds, four XORs, four fixed left-rotations (16, 12, 8, 7) — adds
+//! the original state back, and serializes the sixteen words little-endian into a 64-byte keystream block. The message is XORed against
+//! that keystream, block by block, the counter rising by one per block. Every add is mod 2^32 (Zig's wrapping +%); every rotation is a
+//! fixed constant. Nothing here is a claim about a device — it is arithmetic anyone can replay against RFC 8439.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. The key and nonce are the RFC's own public test
+//! vectors, never a real secret; the primitive holds no long-lived key and signs nothing. It calls no std.crypto; it is authored from
+//! the RFC. Parity is proven at selftest against two references runnable now — the RFC 8439 known-answers (the §2.3.2 block for counter
+//! 1 and the §2.4.2 encryption of the RFC's own 114-byte plaintext), and Zig's own std.crypto ChaCha20IETF as an independent
+//! implementation, byte-for-byte over the empty message, a sub-block input, an exact-64-byte boundary, and a multi-block input at a
+//! raised counter. Monocypher passes the same RFC vector — its vendored source is a held network fetch — so Monocypher-source parity is
+//! an honest HORIZON rung, added later without changing a byte. Constant-time timing-safety is a separate named horizon; ChaCha20's data
+//! flow is data-independent by construction (the keystream never branches on the message).
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/chacha20.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const chacha20_version = "20260815.183000";
+
+/// ChaCha20's fixed shapes. block_bytes is the 64-byte keystream block; key_bytes the 32-byte key; nonce_bytes the 12-byte IETF nonce;
+/// state_words the sixteen 32-bit words of the working state; rounds the twenty the cipher runs (as ten double-rounds). These are the
+/// RFC's own constants, named so every bound below cites one rather than a bare number.
+pub const block_bytes: u32 = 64;
+pub const key_bytes: u32 = 32;
+pub const nonce_bytes: u32 = 12;
+const state_words: u32 = 16;
+const rounds: u32 = 20;
+
+/// The largest message this primitive enciphers in one call. Generous for the test vectors and any in-process artifact, yet named so the
+/// block loop and the block-count cast both cite a maximum — the TAME reflex that every loop and every count declares its ceiling.
+pub const max_message_bytes: u32 = 1 << 20;
+
+/// The faults this primitive can raise, each refused before a single byte is enciphered.
+pub const ChaCha20Error = error{
+    /// A message longer than max_message_bytes — refused at the edge, before the keystream begins.
+    MessageTooLong,
+    /// Output and input slices of unequal length — a stream cipher writes exactly as many bytes as it reads.
+    LengthMismatch,
+};
+
+/// The four ChaCha20 constant words — the ASCII of "expand 32-byte k" read as four little-endian 32-bit words (RFC 8439 §2.3). Named as
+/// a constant so the state builder reads from one source of truth.
+const sigma = [4]u32{ 0x61707865, 0x3320646e, 0x79622d32, 0x6b206574 };
+
+/// The ChaCha20 quarter-round (RFC 8439 §2.1) applied to four words of the state by index: four wrapping adds, four XORs, four fixed
+/// left-rotations. This is the whole of the cipher's mixing; twenty rounds are eighty quarter-rounds.
+fn quarter_round(s: *[state_words]u32, a: u32, b: u32, c: u32, d: u32) void {
+    // invariant: the four indices address distinct words within the sixteen-word state.
+    assert(a < state_words and b < state_words and c < state_words and d < state_words);
+    s[a] +%= s[b];
+    s[d] = std.math.rotl(u32, s[d] ^ s[a], 16);
+    s[c] +%= s[d];
+    s[b] = std.math.rotl(u32, s[b] ^ s[c], 12);
+    s[a] +%= s[b];
+    s[d] = std.math.rotl(u32, s[d] ^ s[a], 8);
+    s[c] +%= s[d];
+    s[b] = std.math.rotl(u32, s[b] ^ s[c], 7);
+}
+
+/// Produce one 64-byte keystream block for the given key, block counter, and nonce (RFC 8439 §2.3). The initial state is copied to a
+/// working state, folded through twenty rounds (ten column-then-diagonal double-rounds), the initial state is added back word by word,
+/// and the sixteen words are serialized little-endian.
+fn keystream_block(key: *const [key_bytes]u8, counter: u32, nonce: *const [nonce_bytes]u8) [block_bytes]u8 {
+    // invariant: the state carries exactly sixteen 32-bit words, filling the 64-byte block.
+    comptime assert(state_words * 4 == block_bytes);
+    // invariant: twenty rounds run as ten double-rounds — an even count.
+    comptime assert(rounds == 20 and rounds % 2 == 0);
+
+    var state: [state_words]u32 = undefined;
+    state[0] = sigma[0];
+    state[1] = sigma[1];
+    state[2] = sigma[2];
+    state[3] = sigma[3];
+    var i: u32 = 0;
+    while (i < 8) : (i += 1) {
+        state[4 + i] = std.mem.readInt(u32, key[i * 4 ..][0..4], .little);
+    }
+    state[12] = counter;
+    i = 0;
+    while (i < 3) : (i += 1) {
+        state[13 + i] = std.mem.readInt(u32, nonce[i * 4 ..][0..4], .little);
+    }
+
+    var work = state;
+    var r: u32 = 0;
+    while (r < rounds) : (r += 2) {
+        // Column round.
+        quarter_round(&work, 0, 4, 8, 12);
+        quarter_round(&work, 1, 5, 9, 13);
+        quarter_round(&work, 2, 6, 10, 14);
+        quarter_round(&work, 3, 7, 11, 15);
+        // Diagonal round.
+        quarter_round(&work, 0, 5, 10, 15);
+        quarter_round(&work, 1, 6, 11, 12);
+        quarter_round(&work, 2, 7, 8, 13);
+        quarter_round(&work, 3, 4, 9, 14);
+    }
+
+    var out: [block_bytes]u8 = undefined;
+    i = 0;
+    while (i < state_words) : (i += 1) {
+        std.mem.writeInt(u32, out[i * 4 ..][0..4], work[i] +% state[i], .little);
+    }
+    return out;
+}
+
+/// XOR a message against the ChaCha20 keystream into out, starting from the given block counter (RFC 8439 §2.4). Each 64-byte span uses
+/// the counter plus its block index; a partial final span uses only as many keystream bytes as remain. Encryption and decryption are the
+/// same operation — XOR is its own inverse.
+pub fn stream_xor(out: []u8, in: []const u8, key: *const [key_bytes]u8, counter: u32, nonce: *const [nonce_bytes]u8) ChaCha20Error!void {
+    // invariant: a stream cipher writes exactly as many bytes as it reads.
+    if (out.len != in.len) return error.LengthMismatch;
+    // invariant: the message fits the named bound, so its length casts to u32 losslessly and the block count never overflows.
+    if (in.len > max_message_bytes) return error.MessageTooLong;
+
+    const total: u32 = @intCast(in.len);
+    // invariant: the u32 count names exactly the message bytes — the bounded cast lost nothing.
+    assert(total == in.len);
+
+    var offset: u32 = 0;
+    var block_index: u32 = 0;
+    while (offset < total) : (block_index += 1) {
+        const ks = keystream_block(key, counter +% block_index, nonce);
+        const span: u32 = if (total - offset < block_bytes) total - offset else block_bytes;
+        // invariant: the span never exceeds one keystream block.
+        assert(span <= block_bytes);
+        var j: u32 = 0;
+        while (j < span) : (j += 1) {
+            out[offset + j] = in[offset + j] ^ ks[j];
+        }
+        offset += span;
+    }
+}
+
+/// Produce one raw 64-byte keystream block, exposed for the RFC §2.3.2 block known-answer and for callers that want the keystream
+/// directly. The stream cipher above is this block XORed against the message.
+pub fn block(key: *const [key_bytes]u8, counter: u32, nonce: *const [nonce_bytes]u8) [block_bytes]u8 {
+    return keystream_block(key, counter, nonce);
+}
+
+/// Render bytes as lowercase hex, for comparison against the RFC's own hex form. Bounded by a named maximum on the input length.
+const max_hex_input: u32 = 128;
+fn to_hex(bytes: []const u8, out: *[max_hex_input * 2]u8) u32 {
+    const alphabet = "0123456789abcdef";
+    // invariant: the input fits the hex buffer — two hex characters per byte.
+    assert(bytes.len <= max_hex_input);
+    var i: u32 = 0;
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = alphabet[bytes[i] >> 4];
+        out[i * 2 + 1] = alphabet[bytes[i] & 0x0f];
+    }
+    return @as(u32, @intCast(bytes.len)) * 2;
+}
+
+// The RFC 8439 §2.3.1 test key — the bytes 0x00 through 0x1f — shared by both known-answers. A public test vector, never a real secret.
+const rfc_key = [key_bytes]u8{
+    0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
+    0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f,
+};
+
+// The RFC 8439 §2.3.2 block-function known-answer: for counter 1 and nonce 00:00:00:09:00:00:00:4a:00:00:00:00, the 64-byte keystream
+// block is exactly this. A single wrong constant or rotation breaks it at once, which the selftest proves it does not.
+const rfc_block_nonce = [nonce_bytes]u8{ 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00, 0x4a, 0x00, 0x00, 0x00, 0x00 };
+const rfc_block_hex = "10f1e7e4d13b5915500fdd1fa32071c4c7d1f4c733c068030422aa9ac3d46c4ed2826446079faa0914c2d705d98b02a2b5129cd1de164eb9cbd083e8a2503c4e";
+
+// The RFC 8439 §2.4.2 encryption known-answer: with counter 1 and nonce 00:00:00:00:00:00:00:4a:00:00:00:00, the RFC's own 114-byte
+// plaintext enciphers to exactly this ciphertext. The plaintext is the RFC's published test string, reproduced byte-for-byte as the
+// neutral reference (its wording is the standard's, not ours).
+const rfc_enc_nonce = [nonce_bytes]u8{ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x4a, 0x00, 0x00, 0x00, 0x00 };
+const rfc_plaintext = "Ladies and Gentlemen of the class of '99: If I could offer you only one tip for the future, sunscreen would be it.";
+const rfc_cipher_hex = "6e2e359a2568f98041ba0728dd0d6981e97e7aec1d4360c20a27afccfd9fae0bf91b65c5524733ab8f593dabcd62b3571639d624e65152ab8f530c359f0861d807ca0dbf500d6a6156a38e088a22b65e52bc514d16ccf806818ce91ab77937365af90bbf74a35be6b40b8eedf2785e42874d";
+
+/// Independent reference: Zig's own std.crypto ChaCha20IETF, used ONLY inside the selftest as a second implementation to prove our
+/// authored primitive matches byte-for-byte. The primitive above never calls this.
+fn ref_xor(out: []u8, in: []const u8, counter: u32, key: [key_bytes]u8, nonce: [nonce_bytes]u8) void {
+    std.crypto.stream.chacha.ChaCha20IETF.xor(out, in, counter, key, nonce);
+}
+
+fn hex_eq(got: []const u8, want: []const u8) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < got.len) : (i += 1) {
+        if (got[i] != want[i]) return false;
+    }
+    return true;
+}
+
+fn bytes_eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) {
+        if (a[i] != b[i]) return false;
+    }
+    return true;
+}
+
+fn run_selftest() !u8 {
+    var hexbuf: [max_hex_input * 2]u8 = undefined;
+
+    // 1. RFC 8439 §2.3.2 block known-answer: the keystream block for counter 1 equals the published 64-byte block, hex for hex.
+    {
+        const ks = block(&rfc_key, 1, &rfc_block_nonce);
+        const n = to_hex(&ks, &hexbuf);
+        if (!hex_eq(hexbuf[0..n], rfc_block_hex)) return error.BlockVectorMismatch;
+    }
+
+    // 2. RFC 8439 §2.4.2 encryption known-answer: the RFC's 114-byte plaintext enciphers to the published ciphertext, hex for hex, and
+    //    decryption (XOR again) recovers the plaintext exactly.
+    {
+        var ct: [rfc_plaintext.len]u8 = undefined;
+        try stream_xor(&ct, rfc_plaintext, &rfc_key, 1, &rfc_enc_nonce);
+        const n = to_hex(&ct, &hexbuf);
+        if (!hex_eq(hexbuf[0..n], rfc_cipher_hex)) return error.EncVectorMismatch;
+
+        var pt: [rfc_plaintext.len]u8 = undefined;
+        try stream_xor(&pt, &ct, &rfc_key, 1, &rfc_enc_nonce);
+        if (!bytes_eq(&pt, rfc_plaintext)) return error.RoundTripMismatch;
+    }
+
+    // 3. Independent-implementation parity: our authored Rye equals Zig's std.crypto ChaCha20IETF byte-for-byte across the block edges —
+    //    the empty message, a sub-block input, an exact-64-byte boundary, and a multi-block input at a raised counter.
+    {
+        const sizes = [_]u32{ 0, 5, 64, 200 };
+        for (sizes, 0..) |sz, si| {
+            var msg: [200]u8 = undefined;
+            var i: u32 = 0;
+            while (i < sz) : (i += 1) msg[i] = @as(u8, @truncate(i *% 11 +% 3));
+            const ctr: u32 = @as(u32, @intCast(si)) *% 7;
+
+            var ours: [200]u8 = undefined;
+            try stream_xor(ours[0..sz], msg[0..sz], &rfc_key, ctr, &rfc_enc_nonce);
+
+            var theirs: [200]u8 = undefined;
+            ref_xor(theirs[0..sz], msg[0..sz], ctr, rfc_key, rfc_enc_nonce);
+
+            if (!bytes_eq(ours[0..sz], theirs[0..sz])) return error.RefMismatch;
+        }
+    }
+
+    // 4. The bounds refuse malformed calls before a byte is enciphered.
+    {
+        var small: [8]u8 = undefined;
+        var wrong: [4]u8 = undefined;
+        if (stream_xor(&small, &wrong, &rfc_key, 0, &rfc_enc_nonce)) |_| return error.MismatchSlipped else |err| if (err != error.LengthMismatch) return error.WrongMismatch;
+
+        const oversize_in: []const u8 = @as([*]const u8, @ptrFromInt(0x2000))[0 .. max_message_bytes + 1];
+        const oversize_out: []u8 = @as([*]u8, @ptrFromInt(0x4000))[0 .. max_message_bytes + 1];
+        if (stream_xor(oversize_out, oversize_in, &rfc_key, 0, &rfc_enc_nonce)) |_| return error.OversizeSlipped else |err| if (err != error.MessageTooLong) return error.WrongOversize;
+    }
+
+    print("GREEN crypto-chacha20: ChaCha20 (IETF, RFC 8439) authored in pure Rye — Season G's third primitive, Monocypher's stream " ++
+        "cipher and the keystream the ChaCha/Poly line is built on. A sixteen-word state (four \"expand 32-byte k\" constants, eight " ++
+        "key words, one block counter, three nonce words) folds through twenty rounds of the quarter-round — four adds, four XORs, four " ++
+        "fixed left-rotations (16, 12, 8, 7) — adds the initial state back, and serializes little-endian into a 64-byte keystream block " ++
+        "the message is XORed against, the counter rising per block, every add mod 2^32. Parity holds against two references runnable " ++
+        "now: the RFC 8439 known-answers (the §2.3.2 block for counter 1 AND the §2.4.2 encryption of the RFC's own 114-byte plaintext) " ++
+        "match hex for hex and decrypt round-trips exactly, and our authored Rye equals Zig's independent std.crypto ChaCha20IETF " ++
+        "byte-for-byte over the empty message, a 5-byte input, an exact-64-byte boundary, and a 200-byte multi-block input at a raised " ++
+        "counter. Monocypher passes the same RFC vector — its vendored source is a held fetch, so Monocypher-source parity is an honest " ++
+        "horizon rung. A length-mismatched or over-long call refuses before a byte is enciphered. Purely local arithmetic — the " ++
+        "primitive calls no std.crypto, the key and nonce are the RFC's public vectors, no real secret, no signature, no network, no " ++
+        "funds, no real device; constant-time timing-safety stays a separate named horizon. The stream cipher now stands beside the two " ++
+        "hashes.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
