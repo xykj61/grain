@@ -1,0 +1,220 @@
+//! lotus/rotate.rye — ALES106: rotate — cyclic left-shift the whole clip by k samples, the k that fall off the front wrapping onto the tail, the third pure REARRANGEMENT
+//! beside ALES104's reverse and ALES105's invert. A cyclic shift is the loop-aligning gesture behind every "rotate the loop to the downbeat", every phase-aligned wavetable,
+//! every circular buffer read at an offset. Like reverse it invents no sample, drops none, and rounds nothing — a permutation, exact by construction.
+//!
+//! The rule, stated once: reduce the shift modulo the length (an over-long shift is the equivalent short one), then rotate in place by the classic three-reversal identity —
+//! reverse [0, k), reverse [k, len), reverse [0, len). One private reverse_range helper (the same swap-from-both-ends reverse uses) does all three; no second buffer, no
+//! allocation. An empty or single-sample clip, and any shift that reduces to zero, return untouched.
+//!
+//! The crux — four laws. THE SHIFT LAW: after rotate_left(clip, k), result index j holds original[(j + k) mod len] — the front k samples move to the tail, exactly, checked
+//! against a hand-rotated vector at several offsets. THE MODULAR LAW: rotating by 0, by len, or by any multiple of len is the identity, and rotate_left(k) equals
+//! rotate_left(k mod len) — a shift past a full turn is the equivalent short shift. THE COMPOSITION-AND-INVERSE LAW: rotate_left(k1) then rotate_left(k2) equals
+//! rotate_left(k1 + k2), so rotations add; in particular rotate_left(k) then rotate_left(len − k) returns to the byte — every rotation's inverse is another rotation, so a
+//! keeper who over-rotates rotates the rest of the way back home. THE PERMUTATION LAW: a pure rearrangement — length unchanged and the multiset of samples unchanged, so
+//! every order-blind metric is invariant; witnessed through ALES13, the peak magnitude before and after a rotate is identical, no value ever changing, only its seat.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES106.
+//! Design read: active-designing/20260815-003935_fill-ales106-lotus-rotate.md
+//! Stands on: lotus/timeline.rye (ALES2) — the Clip and its buf/len/samples; lotus/meter.rye (ALES13) — the peak/RMS meter, used only by the witness to prove a
+//! permutation moves no loudness. The three-reversal rotate reuses the same swap primitive ALES104's reverse is built from, so it stands on proven ground.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. It reseats existing samples cyclically and fabricates
+//! none; it changes no length and reads no byte past len. No real sample rate, no network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/rotate.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const meter = @import("meter.rye");
+
+pub const rotate_version = "20260815.003935";
+
+/// Reverse the half-open span [lo, hi) of `clip` in place — the same swap-from-both-ends primitive ALES104's reverse is built from, kept private here so rotate stands on
+/// exactly one range operation. Total on any span within the buffer.
+fn reverse_range(clip: *timeline.Clip, lo: u32, hi: u32) void {
+    // invariant: the span lies within the clip's samples — both ends inside len, lo no greater than hi.
+    assert(lo <= hi and hi <= clip.len);
+    if (hi - lo < 2) return;
+    var a: u32 = lo;
+    var b: u32 = hi - 1;
+    // invariant: a and b close in from the two ends and never cross — every swap moves a still-unvisited pair, the loop stopping the instant they meet.
+    while (a < b) : (a += 1) {
+        assert(a < clip.len and b < clip.len);
+        const tmp = clip.buf[a];
+        clip.buf[a] = clip.buf[b];
+        clip.buf[b] = tmp;
+        b -= 1;
+    }
+}
+
+/// Cyclic left-shift `clip` by `by` samples in place: the front `k = by mod len` samples move to the tail, the rest sliding left to fill the gap. Reduced modulo the length
+/// so any `by` is legal — an over-long shift is the equivalent short one. Total on any legal Clip: it names no out-of-range span, so it can raise no fault; the length and
+/// the samples-past-len are left exactly as they are.
+pub fn rotate_left(clip: *timeline.Clip, by: u32) void {
+    // invariant: the length never claims more samples than the buffer holds — every seat the three reversals touch is inside the buffer.
+    assert(clip.len <= clip.buf.len);
+
+    const original_len: u32 = clip.len;
+    if (original_len < 2) {
+        // invariant: an empty or single-sample clip is its own rotation for any shift — nothing to move.
+        assert(clip.len == original_len);
+        return;
+    }
+
+    const k: u32 = by % original_len;
+    if (k == 0) {
+        // invariant: a shift that reduces to zero (0, len, or a full-turn multiple) is the identity.
+        assert(clip.len == original_len);
+        return;
+    }
+
+    // The three-reversal rotate: reverse the front k, reverse the rest, reverse the whole — the front block and the tail block each land reversed-then-reversed (upright)
+    // in their swapped positions. No second buffer.
+    reverse_range(clip, 0, k);
+    reverse_range(clip, k, original_len);
+    reverse_range(clip, 0, original_len);
+
+    // invariant: rotate reseats samples, never the count — the length and its bound are exactly what they were.
+    assert(clip.len == original_len);
+    assert(clip.len <= clip.buf.len);
+}
+
+// --- selftest: THE SHIFT LAW — rotate_left(k) lands a hand-rotated vector, result[j] = original[(j+k) mod len], at several offsets; THE MODULAR LAW — rotate by 0, by len,
+//     and by k vs k+len each land identical; THE COMPOSITION-AND-INVERSE LAW — rotate(k1) then rotate(k2) equals rotate(k1+k2), and rotate(k) then rotate(len-k) is the
+//     identity; THE PERMUTATION LAW — length and the peak magnitude (re-measured through ALES13) unchanged, no value moving only its seat -------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+/// The clip's current peak magnitude, re-measured through ALES13 — the reader the permutation law checks the result against.
+fn clip_peak(clip: *const timeline.Clip) !u32 {
+    const m = try meter.measure(clip);
+    return meter.peak(&m);
+}
+
+fn run_selftest() !u8 {
+    // 1. THE SHIFT LAW — rotate_left(k) lands exactly the hand-rotated vector: the front k samples move to the tail. Offsets 1, 2, and 3 over [10,20,30,40,50].
+    {
+        var c1 = timeline.Clip{};
+        try load_clip(&c1, &[_]i16{ 10, 20, 30, 40, 50 });
+        rotate_left(&c1, 1);
+        if (!eq(c1.samples(), &[_]i16{ 20, 30, 40, 50, 10 })) return error.Shift1Wrong;
+
+        var c2 = timeline.Clip{};
+        try load_clip(&c2, &[_]i16{ 10, 20, 30, 40, 50 });
+        rotate_left(&c2, 2);
+        if (!eq(c2.samples(), &[_]i16{ 30, 40, 50, 10, 20 })) return error.Shift2Wrong;
+
+        var c3 = timeline.Clip{};
+        try load_clip(&c3, &[_]i16{ 10, 20, 30, 40, 50 });
+        rotate_left(&c3, 3);
+        if (!eq(c3.samples(), &[_]i16{ 40, 50, 10, 20, 30 })) return error.Shift3Wrong;
+    }
+
+    // 2. THE MODULAR LAW — rotating by 0, by len, and by a full-turn multiple is the identity; rotate by k equals rotate by k+len. A shift past a full turn is the
+    //    equivalent short shift, so no over-long shift is ever out of range.
+    {
+        const src = [_]i16{ 1, 2, 3, 4, 5, 6, 7 };
+        var zero = timeline.Clip{};
+        try load_clip(&zero, &src);
+        rotate_left(&zero, 0);
+        if (!eq(zero.samples(), &src)) return error.RotZeroChanged;
+
+        var full = timeline.Clip{};
+        try load_clip(&full, &src);
+        rotate_left(&full, 7); // len
+        if (!eq(full.samples(), &src)) return error.RotFullChanged;
+
+        var double = timeline.Clip{};
+        try load_clip(&double, &src);
+        rotate_left(&double, 14); // 2·len
+        if (!eq(double.samples(), &src)) return error.RotDoubleChanged;
+
+        var short = timeline.Clip{};
+        try load_clip(&short, &src);
+        rotate_left(&short, 3);
+        var wrapped = timeline.Clip{};
+        try load_clip(&wrapped, &src);
+        rotate_left(&wrapped, 10); // 3 + len
+        if (!eq(short.samples(), wrapped.samples())) return error.ModularWrong;
+    }
+
+    // 3. THE COMPOSITION-AND-INVERSE LAW — rotate(k1) then rotate(k2) equals rotate(k1+k2), so rotations add; and rotate(k) then rotate(len-k) returns to the byte, every
+    //    rotation's inverse another rotation.
+    {
+        const src = [_]i16{ -5, 10, -15, 20, -25, 30, 100, -100 }; // len 8
+
+        var step = timeline.Clip{};
+        try load_clip(&step, &src);
+        rotate_left(&step, 3);
+        rotate_left(&step, 2);
+        var once = timeline.Clip{};
+        try load_clip(&once, &src);
+        rotate_left(&once, 5); // 3 + 2
+        if (!eq(step.samples(), once.samples())) return error.CompositionWrong;
+
+        var inv = timeline.Clip{};
+        try load_clip(&inv, &src);
+        rotate_left(&inv, 3);
+        rotate_left(&inv, 5); // len - 3
+        if (!eq(inv.samples(), &src)) return error.InverseWrong;
+    }
+
+    // 4. THE PERMUTATION LAW — rotate is a pure rearrangement: the length is unchanged and the peak magnitude, re-measured through ALES13, is unchanged, because no value
+    //    ever changes, only its seat. The i16 minimum (magnitude 32768) rides along at the meter's domain ceiling.
+    {
+        const clips = [_][]const i16{
+            &[_]i16{ 4000, -8000, 2000, 100, -50 },
+            &[_]i16{ -32768, 5, -5, 30000, 1 },
+            &[_]i16{ 1, -1, 1, -1, 1, -1 },
+        };
+        var ci: u32 = 0;
+        while (ci < clips.len) : (ci += 1) {
+            var clip = timeline.Clip{};
+            try load_clip(&clip, clips[ci]);
+            const len_before = clip.len;
+            const peak_before = try clip_peak(&clip);
+            rotate_left(&clip, 2);
+            if (clip.len != len_before) return error.LengthChanged;
+            if (try clip_peak(&clip) != peak_before) return error.PeakMoved;
+        }
+    }
+
+    // 5. FIXPOINT — an empty clip and a single-sample clip are their own rotation for any shift, no special-casing.
+    {
+        var empty = timeline.Clip{};
+        rotate_left(&empty, 5);
+        if (empty.len != 0) return error.EmptyChanged;
+
+        var one = timeline.Clip{};
+        try load_clip(&one, &[_]i16{ 777 });
+        rotate_left(&one, 3);
+        if (!eq(one.samples(), &[_]i16{ 777 })) return error.SingleChanged;
+    }
+
+    print("GREEN ales-rotate: ROTATE — cyclic left-shift the whole clip by k samples, the front k wrapping onto the tail, the third pure REARRANGEMENT beside ALES104's " ++
+        "reverse and ALES105's invert (rotate the loop to the downbeat, align a wavetable's phase). The rule: reduce the shift modulo len, then rotate in place by three " ++
+        "range-reversals (reverse [0,k), reverse [k,len), reverse [0,len)) — no second buffer, standing on the same swap primitive reverse is built from. The crux is four " ++
+        "laws. THE SHIFT LAW: rotate_left(k) lands the hand-rotated vector exactly, result[j] = original[(j+k) mod len]. THE MODULAR LAW: rotate by 0, len, or a full turn " ++
+        "is the identity, and rotate(k) equals rotate(k mod len), so no over-long shift is out of range. THE COMPOSITION-AND-INVERSE LAW: rotate(k1) then rotate(k2) equals " ++
+        "rotate(k1+k2), and rotate(k) then rotate(len-k) returns to the byte — every rotation's inverse another rotation. THE PERMUTATION LAW: length and peak magnitude " ++
+        "(re-measured through ALES13) unchanged, no value moving only its seat. Purely local — it reseats existing samples cyclically and fabricates none, changes no " ++
+        "length, reads no byte past len; no real sample rate, no network, no keys, no funds, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
