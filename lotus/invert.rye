@@ -1,0 +1,165 @@
+//! lotus/invert.rye — ALES105: invert — flip every sample's sign, y = saturate(-x), the exact VALUE-mirror of ALES104's reverse. Where reverse traded every seat and touched
+//! no value, invert flips every value and touches no seat: the whole clip mirrored about the zero line. This is the "Invert" (or "Invert Phase") menu item every editor and
+//! DAW ships, and it earns real reach — a phase flip brings two mics on one source into agreement, cancels a difference signal, folds a stereo side.
+//!
+//! The rule, stated once: walk the clip and replace each sample with saturate(-x), reusing ALES2's one true saturation so the signed rail is handled exactly as gain
+//! already handles it. The length is untouched; the buffer past len is never read or written. One in-place pass of len writes, no allocation, no second buffer.
+//!
+//! The crux — four laws. THE VALUE-MIRROR LAW: after invert, sample i holds saturate(-x) — every value flips sign, no seat moves, checked against a hand-inverted vector;
+//! the exact mirror of reverse's order law. THE INVOLUTION LAW, WITH AN HONEST RAIL: invert twice returns every sample to the byte EXCEPT sample_min (-32768), whose true
+//! negation +32768 is out of i16 range and saturates to sample_max (+32767); inverted again it lands -32767, not -32768 — the fixed asymmetry of two's-complement, the
+//! floor with no positive twin, saturated by design rather than wrapped. THE MAGNITUDE LAW: off the rail |−x| = |x|, so for a clip whose peak is not sample_min the peak
+//! magnitude (re-measured through ALES13) is unchanged — the flip moves the sign, never the loudness. THE FIXPOINT LAW: zero is the unique fixed point of negation, so the
+//! all-zero clip and the empty clip are each their own invert (−0 = 0), landing on themselves with no special-casing.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES105.
+//! Design read: active-designing/20260815-003415_fill-ales105-lotus-invert.md
+//! Stands on: lotus/timeline.rye (ALES2) — the Clip and its buf/len/samples, and `saturate`, the one true clamp reused here so the rail lives in one place; lotus/meter.rye
+//! (ALES13) — the peak/RMS meter, used only by the witness to prove a sign flip off the rail moves no loudness.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. It flips existing samples about zero and fabricates
+//! none; it changes no length and reads no byte past len. No real sample rate, no network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/invert.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const meter = @import("meter.rye");
+
+pub const invert_version = "20260815.003415";
+
+/// Flip `clip` about the zero line in place: each sample becomes saturate(-x), the phase inverted. Reuses ALES2's `saturate` so the one non-exact sample — sample_min,
+/// whose negation +32768 is out of range — clamps to sample_max exactly as gain's rail already does, rather than wrapping. Total on any legal Clip: it names no span, so it
+/// can raise no fault; the length and the samples-past-len are left exactly as they are.
+pub fn invert(clip: *timeline.Clip) void {
+    // invariant: the length never claims more samples than the buffer holds — every seat we flip is inside the buffer.
+    assert(clip.len <= clip.buf.len);
+
+    const original_len: u32 = clip.len;
+    var i: u32 = 0;
+    // invariant: i walks every seat from 0 to len once and flips it in place — no seat is skipped and none past len is touched.
+    while (i < original_len) : (i += 1) {
+        assert(i < original_len);
+        // The negation runs in i64 so it never overflows before the clamp; saturate pins +32768 (sample_min's true negation) to sample_max, the rail handled once.
+        clip.buf[i] = timeline.saturate(-@as(i64, clip.buf[i]));
+    }
+
+    // invariant: invert flips values, never the count — the length and its bound are exactly what they were.
+    assert(clip.len == original_len);
+    assert(clip.len <= clip.buf.len);
+}
+
+// --- selftest: THE VALUE-MIRROR LAW — invert lands a hand-inverted vector, sample i holding saturate(-x), no seat moved; THE INVOLUTION LAW — invert twice is the identity
+//     for clips free of the floor, and pins sample_min's seats to -32767 (its saturated round-trip) for clips holding it; THE MAGNITUDE LAW — for a clip whose peak is not
+//     sample_min the peak magnitude (re-measured through ALES13) is unchanged; THE FIXPOINT LAW — the all-zero clip and the empty clip are each their own invert ----------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+/// The clip's current peak magnitude, re-measured through ALES13 — the reader the magnitude law checks the result against.
+fn clip_peak(clip: *const timeline.Clip) !u32 {
+    const m = try meter.measure(clip);
+    return meter.peak(&m);
+}
+
+fn run_selftest() !u8 {
+    // 1. THE VALUE-MIRROR LAW — invert lands exactly the hand-inverted vector: each sample flips sign, no seat moves. The i16 floor sample_min rides along so its saturated
+    //    negation (+32768 clamps to sample_max) is proven in place, and sample_max negates cleanly to -32767.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 10, -20, 0, 100, -100, 32767, -32768 });
+        invert(&clip);
+        //                                  -10  20  0 -100  100  -32767  32767 (the floor's negation saturates to sample_max)
+        if (!eq(clip.samples(), &[_]i16{ -10, 20, 0, -100, 100, -32767, 32767 })) return error.ValueMirrorWrong;
+    }
+
+    // 2a. THE INVOLUTION LAW, off the rail — for a clip free of sample_min, invert twice returns every sample to the byte: the flip is its own inverse.
+    {
+        const clips = [_][]const i16{
+            &[_]i16{ 10, 20, 30, 40 },
+            &[_]i16{ 1, -2, 3, -4, 5 },
+            &[_]i16{ 32767, -32767, 0, 100, -100, 7 },
+            &[_]i16{ 42 },
+            &[_]i16{},
+        };
+        var ci: u32 = 0;
+        while (ci < clips.len) : (ci += 1) {
+            var clip = timeline.Clip{};
+            try load_clip(&clip, clips[ci]);
+            var twice = timeline.Clip{};
+            try load_clip(&twice, clips[ci]);
+            invert(&twice);
+            invert(&twice);
+            if (!eq(twice.samples(), clip.samples())) return error.NotInvolutionOffRail;
+        }
+    }
+
+    // 2b. THE INVOLUTION LAW, on the rail — a clip holding sample_min does NOT round-trip to the byte: invert(-32768) = 32767, invert(32767) = -32767, so those seats land
+    //     -32767, not -32768. This is the honest two's-complement asymmetry, saturated by design; every other seat still round-trips exactly.
+    {
+        var twice = timeline.Clip{};
+        try load_clip(&twice, &[_]i16{ -32768, 500, -32768, -1 });
+        invert(&twice);
+        invert(&twice);
+        //                                  -32767 500 -32767 -1 (the two floor seats pinned; 500 and -1 exact)
+        if (!eq(twice.samples(), &[_]i16{ -32767, 500, -32767, -1 })) return error.RailRoundTripWrong;
+    }
+
+    // 3. THE MAGNITUDE LAW — off the rail |−x| = |x|, so for a clip whose peak sample is not sample_min the peak magnitude, re-measured through ALES13, is unchanged: the
+    //    flip moves the sign, never the loudness. The length is unchanged too.
+    {
+        const clips = [_][]const i16{
+            &[_]i16{ 4000, -8000, 2000, 100 },
+            &[_]i16{ -30000, 5, -5, 30000 },
+            &[_]i16{ 1, -1, 1, -1, 1 },
+        };
+        var ci: u32 = 0;
+        while (ci < clips.len) : (ci += 1) {
+            var clip = timeline.Clip{};
+            try load_clip(&clip, clips[ci]);
+            const len_before = clip.len;
+            const peak_before = try clip_peak(&clip);
+            invert(&clip);
+            if (clip.len != len_before) return error.LengthChanged;
+            if (try clip_peak(&clip) != peak_before) return error.PeakMoved;
+        }
+    }
+
+    // 4. THE FIXPOINT LAW — zero is the unique fixed point of negation: the all-zero clip and the empty clip are each their own invert (−0 = 0), landing on themselves.
+    {
+        var empty = timeline.Clip{};
+        invert(&empty);
+        if (empty.len != 0) return error.EmptyChanged;
+
+        var zeros = timeline.Clip{};
+        try load_clip(&zeros, &[_]i16{ 0, 0, 0, 0 });
+        invert(&zeros);
+        if (!eq(zeros.samples(), &[_]i16{ 0, 0, 0, 0 })) return error.ZerosChanged;
+    }
+
+    print("GREEN ales-invert: INVERT — flip every sample's sign, y = saturate(-x), the exact VALUE-mirror of ALES104's reverse (the Invert / Invert Phase menu item every " ++
+        "editor ships: two mics brought into agreement, a difference signal cancelled). The rule: replace each sample with saturate(-x), reusing ALES2's one true clamp so " ++
+        "the rail lives in one place; length untouched. The crux is four laws. THE VALUE-MIRROR LAW: invert lands the hand-inverted vector exactly, every value flipped, no " ++
+        "seat moved. THE INVOLUTION LAW, WITH AN HONEST RAIL: invert twice is the identity off the floor, yet sample_min (-32768) negates to +32768 which saturates to " ++
+        "+32767 and round-trips to -32767 — the fixed two's-complement asymmetry, saturated by design not wrapped. THE MAGNITUDE LAW: off the rail the peak magnitude " ++
+        "(re-measured through ALES13) is unchanged, the flip moving the sign not the loudness. THE FIXPOINT LAW: the all-zero and empty clips are each their own invert. " ++
+        "Purely local — it flips existing samples about zero and fabricates none, changes no length, reads no byte past len; no real sample rate, no network, no keys, no " ++
+        "funds, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
