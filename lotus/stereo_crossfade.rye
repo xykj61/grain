@@ -1,0 +1,216 @@
+//! lotus/stereo_crossfade.rye — ALES131: the equal-power crossfade carried into stereo, ONE SHARED LAW. ALES12 named `crossfade` — cross two equal-length overlap windows with the equal-power weights
+//! `power.split(i, den)` read at each sample, the overlap beginning as pure outgoing, ending as pure incoming, and holding equal power (−3 dB) at the center where a linear cross would sag (−6 dB) — for
+//! mono Clips. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and RIGHT hold the SAME length. ALES130's fade closed on the recognition that a
+//! stereo fade-out laid under a stereo fade-in IS a stereo crossfade; this rung makes that gesture its own primitive: run ALES12's proven mono `crossfade` on each channel with the SAME equal-power
+//! weights, so two whole masters cross without a dip and without splitting the image. Like the fade's positional ramp, ALES12's weights are POSITIONAL — identical at each seat regardless of channel — so
+//! the shared law preserves the stereo image for free (no measurement, no linking needed).
+//!
+//! The rule, stated once: refuse BadRange when the two masters name different overlap lengths, and BadRange when the overlap is shorter than two samples (no interval to cross), BEFORE either output
+//! channel is written — both masters enter balanced, so the overlap length is checked ONCE against the shared length up front, and a refusal never writes one channel and leaves the other stale;
+//! otherwise cross both channels over the overlap through ALES12's `crossfade`, the SAME equal-power weights on each.
+//!
+//! The crux — four laws. THE STEREO CROSSFADE LAW: each channel of `out` equals ALES12's mono `crossfade` of that channel's outgoing and incoming windows byte for byte — the head pure outgoing, the
+//! tail pure incoming, the equal-power center between, per channel. THE BALANCE / LENGTH LAW: out.left.len == out.right.len == count (the shared overlap length), the output a legal balanced master, the
+//! two channels staying aligned in time. THE SHARED-WEIGHT IMAGE LAW: the same equal-power weights cross both channels at each seat, so the seam splices seamlessly on both speakers (head = the outgoing
+//! master, tail = the incoming master, per channel) and an identical-channel pair of masters crosses to an identical-channel output — the stereo image never splits through the cross. THE ATOMICITY /
+//! DEGENERATE LAW: any refusal (an overlap-length mismatch, a too-short overlap) leaves the output untouched and no channel half-written; a loud overlap saturates on both channels, never wraps.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES131.
+//! Design read: active-designing/20260815-031427_fill-ales131-lotus-stereo-crossfade.md
+//! Stands on: lotus/crossfade.rye (ALES12) — the mono equal-power crossfade run once per channel, itself reusing ALES11's `split` and ALES2's one true saturate; lotus/pan.rye (ALES10) — the StereoClip
+//! (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, and the EditError reused whole.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Four bounded in-process i16 Clips (two masters, two channels each) crossed into two more on one bench, siloed to lotus/. It reads values from the two
+//! masters and writes VALUES only into the output through ALES12's own crossfade, fabricating no sample and inventing no primitive; the overlap runs across sample INDICES, not seconds (no real time
+//! base). No real sample rate, no network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_crossfade.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const crossfade = @import("crossfade.rye");
+
+pub const stereo_crossfade_version = "20260815.031427";
+
+/// Stereo crossfade's faults are exactly ALES12's own `EditError` — `BadRange` on a length mismatch or an overlap shorter than two samples — reused by name, since the stereo lift adds no new fault: it
+/// only runs the same equal-power cross on each channel after one shared validation.
+pub const StereoCrossfadeError = timeline.EditError;
+
+/// Cross two `StereoClip` masters over their shared overlap into `out`, running ALES12's proven mono `crossfade` on each channel with the SAME equal-power weights. The overlap BEGINS as pure outgoing
+/// and ENDS as pure incoming on both channels, so it splices seamlessly onto the masters before and after; its center holds equal power. Validates the overlap once against the shared length before
+/// either output channel is written: refuses `BadRange` on a length mismatch between the two masters or an overlap shorter than two samples, the output untouched. Values only into `out`; the two
+/// masters are never mutated.
+pub fn stereo_crossfade(out_master: *const pan.StereoClip, in_master: *const pan.StereoClip, out: *pan.StereoClip) StereoCrossfadeError!void {
+    // invariant: both masters enter balanced — the defining StereoClip invariant, the ground the cross rests on.
+    assert(out_master.left.len == out_master.right.len);
+    assert(in_master.left.len == in_master.right.len);
+
+    // invariant: the two masters cross over ONE shared overlap length, and an overlap needs at least two samples to have an interval — checked once up front, so a refusal never writes one channel.
+    const count: u32 = out_master.left.len;
+    if (count != in_master.left.len) return error.BadRange;
+    if (count < 2) return error.BadRange;
+
+    // Every check passed and holds identically for both channels (both masters balanced at `count`), so each mono cross is pre-validated to succeed — no refusal can land between the two channel
+    // writes. The SAME equal-power weights on each, so the shared law preserves the stereo image for free.
+    try crossfade.crossfade(&out_master.left, &in_master.left, &out.left);
+    try crossfade.crossfade(&out_master.right, &in_master.right, &out.right);
+
+    // invariant: the output is a legal balanced master holding exactly the overlap length — the two channels aligned in time.
+    assert(out.left.len == out.right.len);
+    assert(out.left.len == count and out.left.len <= out.left.buf.len and out.right.len <= out.right.buf.len);
+}
+
+// --- selftest: THE STEREO CROSSFADE LAW — each channel equals ALES12's mono crossfade byte for byte, head pure outgoing and tail pure incoming; THE BALANCE / LENGTH LAW — out.left.len == out.right.len
+//     == count; THE SHARED-WEIGHT IMAGE LAW — the seam splices seamlessly on both speakers and an identical-channel pair stays identical; THE ATOMICITY / DEGENERATE LAW — a length mismatch and a
+//     too-short overlap each refuse BadRange with the output untouched, a loud overlap saturates on both channels ---------------------------------------------------------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try timeline.splice(&sc.left, 0, l);
+    try timeline.splice(&sc.right, 0, r);
+}
+
+fn run_selftest() !u8 {
+    // 1. THE STEREO CROSSFADE LAW — each channel equals ALES12's mono crossfade run side by side over the same overlap with different per-channel samples; the head is pure outgoing and the tail pure
+    //    incoming, per channel (the seamless-splice endpoints).
+    {
+        var out_m = pan.StereoClip{};
+        try load_stereo(&out_m, &[_]i16{ 1000, 1000, 1000, 1000, 1000 }, &[_]i16{ 500, 500, 500, 500, 500 });
+        var in_m = pan.StereoClip{};
+        try load_stereo(&in_m, &[_]i16{ 200, 200, 200, 200, 200 }, &[_]i16{ 80, 80, 80, 80, 80 });
+        var out = pan.StereoClip{};
+        try stereo_crossfade(&out_m, &in_m, &out);
+
+        var ml_o = timeline.Clip{};
+        try timeline.splice(&ml_o, 0, &[_]i16{ 1000, 1000, 1000, 1000, 1000 });
+        var ml_i = timeline.Clip{};
+        try timeline.splice(&ml_i, 0, &[_]i16{ 200, 200, 200, 200, 200 });
+        var ml = timeline.Clip{};
+        try crossfade.crossfade(&ml_o, &ml_i, &ml);
+
+        var mr_o = timeline.Clip{};
+        try timeline.splice(&mr_o, 0, &[_]i16{ 500, 500, 500, 500, 500 });
+        var mr_i = timeline.Clip{};
+        try timeline.splice(&mr_i, 0, &[_]i16{ 80, 80, 80, 80, 80 });
+        var mr = timeline.Clip{};
+        try crossfade.crossfade(&mr_o, &mr_i, &mr);
+
+        if (!eq(out.left.samples(), ml.samples())) return error.LeftChannelWrong;
+        if (!eq(out.right.samples(), mr.samples())) return error.RightChannelWrong;
+        // the seamless-splice endpoints, per channel: head pure outgoing, tail pure incoming.
+        if (out.left.samples()[0] != 1000 or out.left.samples()[4] != 200) return error.LeftEndpointsWrong;
+        if (out.right.samples()[0] != 500 or out.right.samples()[4] != 80) return error.RightEndpointsWrong;
+    }
+
+    // 2. THE BALANCE / LENGTH LAW — the output is a balanced master holding exactly the overlap length. Proven at an even and an odd overlap length.
+    {
+        var out_m = pan.StereoClip{};
+        try load_stereo(&out_m, &[_]i16{ 100, 200, 300, 400 }, &[_]i16{ 400, 300, 200, 100 });
+        var in_m = pan.StereoClip{};
+        try load_stereo(&in_m, &[_]i16{ 10, 20, 30, 40 }, &[_]i16{ 40, 30, 20, 10 });
+        var out = pan.StereoClip{};
+        try stereo_crossfade(&out_m, &in_m, &out);
+        if (out.left.len != out.right.len) return error.EvenUnbalanced;
+        if (out.left.len != 4) return error.EvenLength;
+
+        var out_m3 = pan.StereoClip{};
+        try load_stereo(&out_m3, &[_]i16{ 100, 200, 300 }, &[_]i16{ 300, 200, 100 });
+        var in_m3 = pan.StereoClip{};
+        try load_stereo(&in_m3, &[_]i16{ 9, 8, 7 }, &[_]i16{ 7, 8, 9 });
+        var out3 = pan.StereoClip{};
+        try stereo_crossfade(&out_m3, &in_m3, &out3);
+        if (out3.left.len != out3.right.len) return error.OddUnbalanced;
+        if (out3.left.len != 3) return error.OddLength;
+    }
+
+    // 3a. THE SHARED-WEIGHT IMAGE LAW — the seam splices seamlessly on BOTH speakers: at den = 100 the center weight is the equal-power −3 dB point (isqrt(5000) = 70), so a 1000-outgoing crossed with a
+    //     silent incoming lands 700 at center on the left while a 2000-outgoing lands 1400 on the right — the same positional weight applied to each channel's own level, the image held not split.
+    {
+        var out_m = pan.StereoClip{};
+        var out_l: [101]i16 = [_]i16{1000} ** 101;
+        var out_r: [101]i16 = [_]i16{2000} ** 101;
+        try load_stereo(&out_m, &out_l, &out_r);
+        var in_m = pan.StereoClip{};
+        var zeros: [101]i16 = [_]i16{0} ** 101;
+        try load_stereo(&in_m, &zeros, &zeros);
+        var out = pan.StereoClip{};
+        try stereo_crossfade(&out_m, &in_m, &out);
+        if (out.left.samples()[50] != 700) return error.LeftCenterNotEqualPower; // 1000 × 70/100
+        if (out.right.samples()[50] != 1400) return error.RightCenterNotEqualPower; // 2000 × 70/100 — same weight, each channel's own level
+    }
+
+    // 3b. an identical-channel pair of masters crosses to an identical-channel output — the shared weights land the same value in both channels at every seat (a mono-in-stereo signal never splits).
+    {
+        var out_m = pan.StereoClip{};
+        try load_stereo(&out_m, &[_]i16{ 900, 900, 900, 900 }, &[_]i16{ 900, 900, 900, 900 });
+        var in_m = pan.StereoClip{};
+        try load_stereo(&in_m, &[_]i16{ 100, 100, 100, 100 }, &[_]i16{ 100, 100, 100, 100 });
+        var out = pan.StereoClip{};
+        try stereo_crossfade(&out_m, &in_m, &out);
+        if (!eq(out.left.samples(), out.right.samples())) return error.IdentityChannelsSplit;
+    }
+
+    // 4a. THE ATOMICITY LAW, overlap-length mismatch — the two masters name different overlap lengths, refused BadRange, the output untouched (still empty, no channel half-written).
+    {
+        var out_m = pan.StereoClip{};
+        try load_stereo(&out_m, &[_]i16{ 1, 2, 3 }, &[_]i16{ 3, 2, 1 });
+        var in_m = pan.StereoClip{};
+        try load_stereo(&in_m, &[_]i16{ 10, 20 }, &[_]i16{ 20, 10 });
+        var out = pan.StereoClip{};
+        if (stereo_crossfade(&out_m, &in_m, &out)) |_| return error.MismatchSlipped else |e| if (e != error.BadRange) return error.WrongMismatch;
+        if (out.left.len != 0 or out.right.len != 0) return error.MismatchWrote;
+    }
+
+    // 4b. THE ATOMICITY LAW, too-short overlap — a one-sample overlap has no interval to cross, refused BadRange, the output untouched.
+    {
+        var out_m = pan.StereoClip{};
+        try load_stereo(&out_m, &[_]i16{7}, &[_]i16{9});
+        var in_m = pan.StereoClip{};
+        try load_stereo(&in_m, &[_]i16{1}, &[_]i16{2});
+        var out = pan.StereoClip{};
+        if (stereo_crossfade(&out_m, &in_m, &out)) |_| return error.ShortSlipped else |e| if (e != error.BadRange) return error.WrongShort;
+        if (out.left.len != 0 or out.right.len != 0) return error.ShortWrote;
+    }
+
+    // 4c. THE DEGENERATE LAW — a loud overlap SATURATES on both channels rather than wraps, reusing ALES2's one true clamp through ALES12: two near-full-scale masters crossed at center sum past the
+    //     i16 ceiling and pin to +32767 on each channel.
+    {
+        var out_m = pan.StereoClip{};
+        var loud_l: [101]i16 = [_]i16{30000} ** 101;
+        var loud_r: [101]i16 = [_]i16{31000} ** 101;
+        try load_stereo(&out_m, &loud_l, &loud_r);
+        var in_m = pan.StereoClip{};
+        try load_stereo(&in_m, &loud_l, &loud_r);
+        var out = pan.StereoClip{};
+        try stereo_crossfade(&out_m, &in_m, &out);
+        // center: level × 70/100 + level × 70/100 exceeds the ceiling on both channels → +32767.
+        if (out.left.samples()[50] != timeline.sample_max) return error.LeftNotSaturated;
+        if (out.right.samples()[50] != timeline.sample_max) return error.RightNotSaturated;
+    }
+
+    print("GREEN ales-stereo-crossfade: the EQUAL-POWER CROSSFADE CARRIED INTO STEREO, ONE SHARED LAW — cross two stereo masters over their shared overlap into an output master, running ALES12's proven " ++
+        "mono crossfade on each channel with the SAME equal-power weights, so two whole masters cross without a dip and without splitting the image. A Lotus master is a StereoClip (ALES10) whose " ++
+        "defining invariant is that left and right hold the same length; ALES12's weights are positional (identical at each seat regardless of channel), so — exactly as ALES130's shared ramp — the " ++
+        "shared law preserves the stereo image for free. It validates the overlap once against the shared length before either output channel is written (BadRange on a length mismatch between the two " ++
+        "masters or an overlap shorter than two samples), so a refusal never writes one channel and leaves the other stale; EditError reused whole. The crux is four laws. THE STEREO CROSSFADE LAW: " ++
+        "each channel equals ALES12's mono crossfade byte for byte, head pure outgoing and tail pure incoming. THE BALANCE / LENGTH LAW: out.left.len == out.right.len == the overlap length. THE " ++
+        "SHARED-WEIGHT IMAGE LAW: the same weights cross both channels at each seat, the seam splicing seamlessly on both speakers and an identical-channel pair staying identical. THE ATOMICITY / " ++
+        "DEGENERATE LAW: a mismatch or a too-short overlap refuses BadRange with the output untouched, a loud overlap saturating on both channels. Purely local — four bounded i16 Clips crossed into " ++
+        "two through the proven mono crossfade, the overlap across sample indices not seconds; no real sample rate, no network, no keys, no funds, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
