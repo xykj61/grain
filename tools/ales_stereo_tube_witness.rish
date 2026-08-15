@@ -1,0 +1,41 @@
+# tools/ales_stereo_tube_witness.rish — stereo_tube: the asymmetric tube drive carried into stereo with ONE SHARED UNEVEN RAIL, both channels in lockstep, the even-harmonic corner of the stereo NONLINEAR
+# class (ALES135).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES135.
+# Design read: active-designing/20260815-034120_fill-ales135-lotus-stereo-tube.md
+# Stands on: lotus/tube.rye (ALES82 — the mono asymmetric tube drive run once per channel, itself ALES78's pre-gain split into one ceiling per sign), lotus/stereo_drive.rye (ALES132 — the odd hard-drive
+# sibling equal ceilings recover), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, sample_min/max).
+# A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length. This rung carries ALES82's uneven rail into stereo — the positive half of each wave pinned at ceil_pos and
+# the negative half at ceil_neg, the warm even-order harmonics of a real vacuum-tube stage that clips harder on one polarity than the other. It holds the nonlinear lesson as ALES132 stated it, and adds the
+# tube's own second edge: the map is not odd, so the same rail does not hold the inter-channel ratio OR the inter-channel antisymmetry — an out-of-phase master comes back not out of phase. What the shared map
+# keeps, per channel, is the two-sided ceiling and sign discipline, an identical-channel master stays identical, and EQUAL ceilings degenerate both channels to ALES132's stereo hard drive.
+#
+# lotus/stereo_tube.rye validates both channels once against the shared parameters and length before either is mutated (BadGain on a zero denominator / below-unity gain / oversized numerator, BadCeiling on
+# EITHER ceiling below one sample unit or above sample_max, BadRange on a span outside the samples), then tube-drives both channels through ALES82's tube; TubeError reused whole. The crux is four laws. THE
+# STEREO TUBE LAW: each channel equals ALES82's mono tube with the same params byte for byte. THE BALANCE / LENGTH LAW: left.len == right.len after, both holding their starting length. THE PER-CHANNEL
+# ASYMMETRIC LAW: the two-sided ceiling and sign hold per channel, a 1:2 master's ratio and an out-of-phase master's antisymmetry both break under the uneven rail, an identical-channel master staying identical,
+# and equal ceilings reproducing ALES132's stereo hard drive. THE ATOMICITY / DEGENERATE LAW: a refusal leaves both channels untouched and balanced, a unity drive within both rails the identity, count 0 the
+# identity.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_stereo_tube_witness.rish
+
+say "ales-stereo-tube: Language EN — stereo_tube tube-drives a span in both channels of a stereo master by the same gain into the same two ceilings, the positive half pinned to ceil_pos and the negative half to ceil_neg, the same uneven rail on each, so one asymmetric overdrive lands on both speakers together. A Lotus master is two Clips heard together, one per speaker, whose defining invariant is that left and right hold the same length so the two channels stay aligned in time. This rung carries the even-harmonic corner of the stereo nonlinear class on ALES82's asymmetric tube drive, running the proven mono tube on each channel with the same rational gain and the same two ceilings, validated once against the shared parameters and length before either channel is mutated so a refusal never drives one channel and leaves the other dry."
+say "ales-stereo-tube: Style Radiant — the nonlinear class holds exactly as ALES132's hard drive stated it, and the tube adds a second edge honestly: where the hard clip, soft drive, and wavefold are all odd (magnitude shaped, sign carried), the tube is not odd, pinning the two halves of the wave at different ceilings the way a real vacuum tube clips harder on one polarity than the other. So the same rail holds neither the inter-channel ratio nor the inter-channel antisymmetry — an out-of-phase master (right the negation of left) comes back not out of phase, because the left's positive peak pins to ceil_pos while the right's mirrored negative peak pins to minus ceil_neg and the two ceilings differ; that is the tube's even-harmonic signature read in the stereo field, not a bug to design around. The rule is stated positively: refuse BadGain, BadCeiling on either side, and BadRange before either channel is mutated (each fault depends only on the shared parameters or the shared length, so each is made once up front), else tube-drive both channels over the span by num/den into ceil_pos and ceil_neg via ALES82's tube. It reuses ALES82's TubeError by name and ALES82's tube for the arithmetic, inventing no new fault and no new primitive. The crux stands out as four laws: the stereo tube law (each channel equals ALES82's mono tube with the same params byte for byte, the positive half pinned to ceil_pos and the negative to minus ceil_neg per channel), the balance / length law (left.len == right.len after the edit and both hold their starting length, a tube writing values only), the per-channel asymmetric law (the two-sided ceiling and sign discipline hold per channel, a 1:2 master's ratio compresses toward the rail and an out-of-phase master's antisymmetry breaks under unequal ceilings where the odd class would have held both, an identical-channel master staying identical, and equal ceilings degenerating both channels to ALES132's stereo hard drive byte for byte), and the atomicity / degenerate law (any refusal leaves both channels byte for byte untouched and still balanced, a unity drive within both rails the identity on both, count 0 the identity on both)."
+say "ales-stereo-tube: Lens TAME — two bounded i16 Clips (left, right) tube-driven in lockstep by one shared asymmetric waveshaper; the balance invariant is asserted on entry and exit, the gain, both ceilings, and span are bound-checked once before any write, and because those checks hold identically for both channels each mono tube is pre-validated to succeed so no refusal can land between the two channel edits; tube walks the span once per channel, boosting each sample by num/den in an i64 accumulator so the pre-gain never overflows before the sign-aware pin lands every positive output at most ceil_pos and every negative at least minus ceil_neg by construction, the sign held (the map never flips a sample even as it clips the two halves unevenly), never touching a byte past len, so the length holds exactly; it reuses ALES82's tube per channel over its public API and ALES82's TubeError whole, inventing no new primitive; the stereo tube law is proven against ALES82's own tube run per channel, the per-channel asymmetric law proves the two-sided ceiling and sign hold on both channels, that a 1:2 field's ratio compresses and an out-of-phase field's antisymmetry breaks under the uneven rail, and that equal ceilings reproduce ALES132's stereo hard drive (proven against ALES78's own hard drive per channel), the four refusals leave both channels byte-for-byte untouched, and a unity drive within both rails is the identity; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_tube"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_tube.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-tube: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_tube.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-tube: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-tube: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-tube' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-tube: selftest did not print the GREEN ales-stereo-tube line"

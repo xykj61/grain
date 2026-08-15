@@ -1,0 +1,253 @@
+//! lotus/stereo_tube.rye — ALES135: the asymmetric tube drive carried into stereo, ONE SHARED UNEVEN RAIL, the even-harmonic corner of the stereo NONLINEAR class. ALES82 named `tube` — the DRIVE family's
+//! first CLIP that is not odd: a pre-gain into TWO ceilings, the positive half of the wave pinned at ceil_pos and the negative half at ceil_neg. A real vacuum-tube stage clips harder on one polarity than
+//! the other, and that uneven clipping is exactly where a tube's warm EVEN-order harmonics are born — the second harmonic a symmetric transistor clip never makes. Where ALES132's hard clip, ALES133's soft
+//! clip, and ALES134's wavefold are all ODD (magnitude shaped, sign carried), the tube breaks that symmetry on purpose. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining
+//! invariant is that LEFT and RIGHT hold the SAME length. This rung carries the tube into stereo the plain way, ALES132/ALES133/ALES134's sibling: run ALES82's proven mono `tube` on each channel with the
+//! SAME gain and the SAME two ceilings, so one uneven rail lands on BOTH speakers together.
+//!
+//! The nonlinear class holds as ALES132 stated it, and the tube adds a second edge. A tube drive is nonlinear, so a shared map does NOT hold the inter-channel ratio (a 1:2 master compresses toward the rail);
+//! and because the map is ALSO not odd, it does NOT hold the inter-channel ANTISYMMETRY either — an out-of-phase master (right the negation of left) driven through unequal ceilings comes back NOT out of
+//! phase, because the left's positive peak pins to ceil_pos while the right's mirrored negative peak pins to −ceil_neg, and ceil_pos ≠ ceil_neg breaks the mirror. That is not a bug to design around; it is the
+//! tube's even-harmonic signature read in the stereo field. What the shared map DOES keep, per channel, is the two-sided ceiling and sign discipline (the positive half at most ceil_pos, the negative at least
+//! −ceil_neg, the sign never flipped); an identical-channel master still drives to an identical-channel output; and EQUAL ceilings degenerate both channels to ALES132's stereo hard drive byte for byte.
+//!
+//! The rule, stated once: refuse BadGain (a zero denominator, a below-unity gain, an oversized numerator), BadCeiling (EITHER ceiling outside [1, sample_max]), and BadRange (a span outside the samples) BEFORE
+//! either channel is mutated — every fault depends only on the shared parameters or the shared length, so each check is made ONCE up front, and a refusal never drives one channel and leaves the other dry;
+//! otherwise tube both channels over [start, start+count) by num/den into (ceil_pos, ceil_neg) via ALES82's `tube`. TubeError reused whole — the stereo lift adds no new fault and no new primitive.
+//!
+//! The crux — four laws. THE STEREO TUBE LAW: each channel equals ALES82's mono `tube` with the same (num, den, ceil_pos, ceil_neg) over the same span byte for byte — the positive half pinned to ceil_pos, the
+//! negative half to −ceil_neg, per channel. THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their starting length (a tube writes values only). THE PER-CHANNEL ASYMMETRIC LAW: the
+//! tube is nonlinear AND not odd, so a shared map holds neither the inter-channel ratio (a 1:2 master compressing toward the rail) nor the inter-channel antisymmetry (an out-of-phase master coming back NOT out
+//! of phase, ceil_pos ≠ ceil_neg breaking the mirror); yet the two-sided ceiling and sign hold per channel, an identical-channel master stays identical, and EQUAL ceilings reproduce ALES132's stereo hard
+//! drive — the family recognition. THE ATOMICITY / DEGENERATE LAW: any refusal (BadGain, BadCeiling on either side, BadRange) leaves BOTH channels byte for byte untouched and still balanced; a unity drive
+//! whose samples already sit within both rails is the identity on both, count = 0 the identity on both.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES135.
+//! Design read: active-designing/20260815-034120_fill-ales135-lotus-stereo-tube.md
+//! Stands on: lotus/tube.rye (ALES82) — the mono asymmetric tube drive run once per channel, itself ALES78's pre-gain split into one ceiling per sign; lotus/stereo_drive.rye (ALES132) — the odd hard-drive
+//! sibling this generalizes (equal ceilings recover it); lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, its buf/len/
+//! samples, sample_min/max.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only through ALES82's own tube, never a length, never a
+//! byte fabricated; the drive gain is a rational num/den (unity = 1/1), the two ceilings magnitudes in sample units NOT decibels, the shape a piecewise-constant asymmetric clip, instantaneous (no attack/
+//! release, no anti-aliasing). No real sample rate, no network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_tube.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const drive = @import("drive.rye");
+const tube = @import("tube.rye");
+
+pub const stereo_tube_version = "20260815.034120";
+
+/// Stereo tube's faults are exactly ALES82's own `TubeError` — `BadGain` (zero denominator, below-unity gain, oversized numerator), `BadCeiling` (EITHER ceiling outside [1, sample_max]), and `BadRange` (a span
+/// outside the samples) — reused by name, since the stereo lift adds no new fault: it only runs the same tube drive on each channel after one shared validation.
+pub const StereoTubeError = tube.TubeError;
+
+/// Tube-drive `[start, start+count)` in BOTH channels of `sc` by the rational gain `num`/`den` (at least unity) into the two magnitudes `ceil_pos` (the positive half) and `ceil_neg` (the negative half), the
+/// SAME uneven rail on each, running ALES82's proven mono `tube`. When `ceil_pos == ceil_neg` this recovers ALES132's stereo hard drive. Validates both channels once against the shared parameters and length
+/// before either is mutated: refuses `BadGain` / `BadCeiling` / `BadRange`, both channels untouched. Values only — never the length; the two channels leave balanced.
+pub fn stereo_tube(sc: *pan.StereoClip, start: u32, count: u32, num: u32, den: u32, ceil_pos: i32, ceil_neg: i32) StereoTubeError!void {
+    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the edit preserves.
+    assert(sc.left.len == sc.right.len);
+
+    // invariant: the gain, both ceilings, and the span are legal — refused by name before any write, so a refusal never drives one channel and leaves the other dry. The gain and ceiling checks depend only on
+    // the shared parameters; the span check on the shared length. These mirror ALES82's own guards exactly, so each mono tube below is pre-validated to succeed.
+    if (den == 0) return error.BadGain;
+    if (num < den) return error.BadGain;
+    if (num > drive.max_drive_num) return error.BadGain;
+    if (ceil_pos < 1) return error.BadCeiling;
+    if (ceil_pos > @as(i32, timeline.sample_max)) return error.BadCeiling;
+    if (ceil_neg < 1) return error.BadCeiling;
+    if (ceil_neg > @as(i32, timeline.sample_max)) return error.BadCeiling;
+    const len: u32 = sc.left.len;
+    if (start > len) return error.BadRange;
+    if (count > len - start) return error.BadRange;
+
+    // Every check passed and holds identically for both channels, so each mono tube is pre-validated to succeed — no refusal can land between the two channel edits. The SAME uneven rail on each.
+    try tube.tube(&sc.left, start, count, num, den, ceil_pos, ceil_neg);
+    try tube.tube(&sc.right, start, count, num, den, ceil_pos, ceil_neg);
+
+    // invariant: the channels leave balanced — a tube writes values only, so each channel holds its starting length and the stereo image stays aligned.
+    assert(sc.left.len == sc.right.len);
+    assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
+}
+
+// --- selftest: THE STEREO TUBE LAW — each channel equals ALES82's mono tube with the same params byte for byte; THE BALANCE / LENGTH LAW — left.len == right.len after, both holding their starting length; THE
+//     PER-CHANNEL ASYMMETRIC LAW — the two-sided ceiling and sign hold per channel, a 1:2 master's ratio compresses under the rail, an OUT-OF-PHASE master comes back NOT out of phase (unequal ceilings break
+//     the mirror), an identical-channel master stays identical, and EQUAL ceilings reproduce ALES132's stereo hard drive; THE ATOMICITY / DEGENERATE LAW — each refusal leaves both channels untouched and
+//     balanced, a unity drive within both rails the identity, count = 0 the identity ----
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try timeline.splice(&sc.left, 0, l);
+    try timeline.splice(&sc.right, 0, r);
+}
+
+fn run_selftest() !u8 {
+    // 1. THE STEREO TUBE LAW — each channel equals ALES82's mono tube with the same params, proven side by side over one span with different per-channel samples; a ×2 drive into an uneven rail (ceil_pos 1500,
+    //    ceil_neg 800) pins each half to its own ceiling, per channel.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 300, -300, 1000, -2000 }, &[_]i16{ 100, -50, 2500, -3000 });
+        try stereo_tube(&sc, 0, 4, 2, 1, 1500, 800); // ×2 into (+1500, −800)
+
+        var ml = timeline.Clip{};
+        try timeline.splice(&ml, 0, &[_]i16{ 300, -300, 1000, -2000 });
+        try tube.tube(&ml, 0, 4, 2, 1, 1500, 800);
+        var mr = timeline.Clip{};
+        try timeline.splice(&mr, 0, &[_]i16{ 100, -50, 2500, -3000 });
+        try tube.tube(&mr, 0, 4, 2, 1, 1500, 800);
+
+        if (!eq(sc.left.samples(), ml.samples())) return error.LeftChannelWrong;
+        if (!eq(sc.right.samples(), mr.samples())) return error.RightChannelWrong;
+    }
+
+    // 2. THE BALANCE / LENGTH LAW — the channels stay equal length and each holds its starting length; a tube writes values only. Proven at an even and an odd length.
+    {
+        var even = pan.StereoClip{};
+        try load_stereo(&even, &[_]i16{ 100, 200, 300, 400 }, &[_]i16{ 400, 300, 200, 100 });
+        try stereo_tube(&even, 0, 4, 2, 1, 500, 250);
+        if (even.left.len != even.right.len) return error.EvenUnbalanced;
+        if (even.left.len != 4) return error.EvenLength;
+
+        var odd = pan.StereoClip{};
+        try load_stereo(&odd, &[_]i16{ 100, 200, 300 }, &[_]i16{ 300, 200, 100 });
+        try stereo_tube(&odd, 0, 3, 3, 2, 250, 400);
+        if (odd.left.len != odd.right.len) return error.OddUnbalanced;
+        if (odd.left.len != 3) return error.OddLength;
+    }
+
+    // 3a. THE PER-CHANNEL ASYMMETRIC LAW — the two-sided ceiling and sign discipline hold per channel: every positive output is at most ceil_pos, every negative at least −ceil_neg, and every sign matches the
+    //     input, on BOTH channels, under a hard boost that drives every sample to a rail. This is the tube's honest promise, asymmetric where the odd class was symmetric.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 800, -4000, 20 }, &[_]i16{ -30000, 7, -900 });
+        const cpos: i16 = 1200;
+        const cneg: i16 = 600;
+        try stereo_tube(&sc, 0, 3, 5, 2, cpos, cneg); // ×2.5 into (+1200, −600)
+        const l = sc.left.samples();
+        const r = sc.right.samples();
+        const li = [_]i16{ 800, -4000, 20 };
+        const ri = [_]i16{ -30000, 7, -900 };
+        var i: u32 = 0;
+        while (i < 3) : (i += 1) {
+            if (l[i] > cpos or l[i] < -cneg) return error.LeftRailCrossed;
+            if (r[i] > cpos or r[i] < -cneg) return error.RightRailCrossed;
+            if (!((li[i] >= 0 and l[i] >= 0) or (li[i] <= 0 and l[i] <= 0))) return error.LeftSignFlipped;
+            if (!((ri[i] >= 0 and r[i] >= 0) or (ri[i] <= 0 and r[i] <= 0))) return error.RightSignFlipped;
+        }
+    }
+
+    // 3b. THE PER-CHANNEL ASYMMETRIC LAW, the ANTISYMMETRY BREAKS — an out-of-phase master (right the exact negation of left) driven through UNEQUAL ceilings comes back NOT out of phase, because the tube is
+    //     not odd: the left's boosted +2000 pins to +ceil_pos (1500), while the right's boosted −2000 pins to −ceil_neg (−800), and 1500 ≠ 800, so right ≠ −left. Under any ODD sibling (hard clip / soft drive /
+    //     fold) the mirror would have held. This is the even-harmonic signature read in the stereo field.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 2000, 2000, 2000 }, &[_]i16{ -2000, -2000, -2000 }); // right = −left, out of phase
+        try stereo_tube(&sc, 0, 3, 1, 1, 1500, 800); // unity into (+1500, −800)
+        const l = sc.left.samples();
+        const r = sc.right.samples();
+        if (l[0] != 1500) return error.LeftPosPinWrong; // +2000 pins to +ceil_pos
+        if (r[0] != -800) return error.RightNegPinWrong; // −2000 pins to −ceil_neg
+        if (@as(i32, r[0]) == -@as(i32, l[0])) return error.AntisymmetryUnexpectedlyHeld; // the odd law does NOT hold here — that is the point
+    }
+
+    // 3c. an identical-channel master stays identical through the tube — a shared uneven rail on equal inputs gives equal outputs (a mono-in-stereo signal never splits, even under an asymmetric map).
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 500, -3000, 500, -3000 }, &[_]i16{ 500, -3000, 500, -3000 });
+        try stereo_tube(&sc, 0, 4, 4, 1, 1000, 400);
+        if (!eq(sc.left.samples(), sc.right.samples())) return error.IdentityChannelsSplit;
+    }
+
+    // 3d. THE FAMILY RECOGNITION — EQUAL ceilings degenerate the stereo tube to ALES132's stereo hard drive byte for byte, on both channels. Proven against ALES78's own hard drive run per channel (the drive
+    //     ALES132 lifts). The tube only GENERALIZES the odd hard clip; it never replaces it.
+    {
+        const sl = [_]i16{ 900, -1600, 2000 };
+        const sr = [_]i16{ -2000, 1600, -900 };
+        var tubed = pan.StereoClip{};
+        try load_stereo(&tubed, &sl, &sr);
+        var hard = pan.StereoClip{};
+        try load_stereo(&hard, &sl, &sr);
+        try stereo_tube(&tubed, 0, 3, 1, 1, 1500, 1500); // equal ceilings — the symmetric degenerate
+        try drive.drive(&hard.left, 0, 3, 1, 1, 1500);
+        try drive.drive(&hard.right, 0, 3, 1, 1, 1500);
+        if (!eq(tubed.left.samples(), hard.left.samples())) return error.EqualCeilLeftNotHardDrive;
+        if (!eq(tubed.right.samples(), hard.right.samples())) return error.EqualCeilRightNotHardDrive;
+    }
+
+    // 4a. THE ATOMICITY LAW, bad gain — a below-unity gain refuses BadGain, both channels byte for byte untouched and still balanced.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 100, -200, 300 }, &[_]i16{ -50, 60, -70 });
+        if (stereo_tube(&sc, 0, 3, 1, 2, 1000, 500)) |_| return error.BadGainSlipped else |e| if (e != error.BadGain) return error.WrongBadGain;
+        if (!eq(sc.left.samples(), &[_]i16{ 100, -200, 300 })) return error.BadGainLeftMutated;
+        if (!eq(sc.right.samples(), &[_]i16{ -50, 60, -70 })) return error.BadGainRightMutated;
+        if (sc.left.len != sc.right.len) return error.BadGainUnbalanced;
+    }
+
+    // 4b. THE ATOMICITY LAW, bad ceiling — a zero NEGATIVE ceiling refuses BadCeiling (either side guards), both channels untouched.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 1, 2, 3 }, &[_]i16{ 3, 2, 1 });
+        if (stereo_tube(&sc, 0, 3, 2, 1, 1000, 0)) |_| return error.BadCeilingSlipped else |e| if (e != error.BadCeiling) return error.WrongBadCeiling;
+        if (!eq(sc.left.samples(), &[_]i16{ 1, 2, 3 })) return error.BadCeilingLeftMutated;
+        if (!eq(sc.right.samples(), &[_]i16{ 3, 2, 1 })) return error.BadCeilingRightMutated;
+    }
+
+    // 4c. THE ATOMICITY LAW, bad span — a span past the samples refuses BadRange, both channels untouched.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 5, 6, 7 }, &[_]i16{ 7, 6, 5 });
+        if (stereo_tube(&sc, 1, 3, 2, 1, 1000, 800)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(sc.left.samples(), &[_]i16{ 5, 6, 7 })) return error.BadRangeLeftMutated;
+        if (!eq(sc.right.samples(), &[_]i16{ 7, 6, 5 })) return error.BadRangeRightMutated;
+    }
+
+    // 4d. THE DEGENERATE LAW — a unity drive whose samples already sit within both rails is the identity on both channels (nothing reaches a ceiling), and count = 0 is the identity on both.
+    {
+        var within = pan.StereoClip{};
+        try load_stereo(&within, &[_]i16{ 400, -300, 700 }, &[_]i16{ -700, 200, -400 });
+        try stereo_tube(&within, 0, 3, 1, 1, 1500, 800); // unity, every sample within (+1500, −800) — identity
+        if (!eq(within.left.samples(), &[_]i16{ 400, -300, 700 })) return error.UnityLeftChanged;
+        if (!eq(within.right.samples(), &[_]i16{ -700, 200, -400 })) return error.UnityRightChanged;
+
+        var noop = pan.StereoClip{};
+        try load_stereo(&noop, &[_]i16{ 7, -8, 9 }, &[_]i16{ -7, 8, -9 });
+        try stereo_tube(&noop, 1, 0, 4, 1, 1000, 500); // empty span — identity
+        if (!eq(noop.left.samples(), &[_]i16{ 7, -8, 9 })) return error.ZeroCountLeftChanged;
+        if (!eq(noop.right.samples(), &[_]i16{ -7, 8, -9 })) return error.ZeroCountRightChanged;
+    }
+
+    print("GREEN ales-stereo-tube: the ASYMMETRIC TUBE DRIVE CARRIED INTO STEREO, ONE SHARED UNEVEN RAIL, the even-harmonic corner of the stereo NONLINEAR class — tube-drive a span in both channels of a " ++
+        "master by the same gain into the same two ceilings (the positive half to ceil_pos, the negative to ceil_neg), running ALES82's proven mono tube on each, so one uneven rail lands on both speakers " ++
+        "together. A Lotus master is a StereoClip (ALES10) whose defining invariant is that left and right hold the same length. The nonlinear class holds as ALES132 stated it, and the tube adds a second " ++
+        "edge: the tube is nonlinear AND not odd, so a shared map holds neither the inter-channel ratio (a 1:2 master compressing toward the rail) nor the inter-channel antisymmetry — an out-of-phase master " ++
+        "(right the negation of left) comes back NOT out of phase, because the left's positive peak pins to ceil_pos while the right's mirrored negative peak pins to −ceil_neg, and ceil_pos ≠ ceil_neg breaks " ++
+        "the mirror; that is the tube's even-harmonic signature read in the stereo field. What the shared map keeps, per channel, is the two-sided ceiling and sign discipline, an identical-channel master " ++
+        "stays identical, and EQUAL ceilings degenerate both channels to ALES132's stereo hard drive byte for byte — the family recognition. It validates both channels once against the shared parameters and " ++
+        "length before either is mutated (BadGain, BadCeiling on either side, BadRange), so a refusal never drives one channel and leaves the other dry; TubeError reused whole. The crux is four laws. THE " ++
+        "STEREO TUBE LAW: each channel equals ALES82's mono tube with the same params byte for byte. THE BALANCE / LENGTH LAW: left.len == right.len after and both hold their starting length. THE PER-CHANNEL " ++
+        "ASYMMETRIC LAW: the two-sided ceiling and sign hold per channel, the ratio and antisymmetry both break under the uneven rail, an identical-channel master stays identical, and equal ceilings recover " ++
+        "the stereo hard drive. THE ATOMICITY / DEGENERATE LAW: a refusal leaves both channels untouched and balanced, a unity drive within both rails the identity, count = 0 the identity. Purely local — two " ++
+        "bounded i16 Clips driven through the proven mono tube, the gain a rational num/den and the two ceilings sample magnitudes not decibels; no real sample rate, no network, no keys, no funds, no real " ++
+        "speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
