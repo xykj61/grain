@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260815.131432
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (VPS) — Eastern (EDT) time convention
+title ALES217 — Lotus render, an ordered effect chain becomes a .wav
+prompt recur the road Lindy-first crux-first; take the next agent-doable lap, self-approve design rounds, send each increment, stop at custody gates
+think ALES216's recommend named the honest next crux plainly — a render rung that runs a small effect chain over a buffer and writes the .wav result. That is Lindy-first: the pipeline endpoint every one of the 200-plus effects reaches toward, the point where the suite stops being separate verbs and becomes a pipeline.
+think Read the two proven halves: timeline.rye (ALES2) gives the editable Clip and gain; fade.rye and invert.rye (ALES105) give two more real effects; wav.rye (ALES215) is the canonical mono container. render.rye composes their public functions verbatim, adding only the sequencing and one new promise.
+think The atomic promise rides on one invariant: gain, fade, and invert each leave the clip's LENGTH unchanged. So the whole request — chain length, rate, output size, every step's span — is checkable up front against the one fixed length, and a faulty chain is a no-op rather than a half-edited clip beside a half-written file.
+think Chain is a bounded Step slice (max_steps 32) with a StepKind tagged union (gain/fade/invert); check_step proves each legal before apply_step dispatches to the tree's own effect. RenderError merges timeline.EditError || fade.FadeError || wav.WavError plus TooManySteps — the tree's own normalize.rye idiom.
+obs GREEN on the first metal pass once the error sets were merged (first cut declared a closed RenderError; Zig rejected the wider EditError/WavError at the try sites — fixed by union, honest over an unreachable). Seven laws proven: render (byte-for-byte to a hand-applied chain), order (same steps reordered → different file), empty-chain, atomic-fault (BadRange/BadGain leave the clip unchanged), output-border, step-bound, empty-clip; plus a bad-rate refusal.
+obs Honest scope held: byte container only, no real file/DAC/acoustic fact, no network/keys/funds. No custody gate. tame_style_check bans clean; width-check exits 0 clean.
+loom witness=ales_render_witness result=GREEN laws=7 steps_max=32 chain_effects=3 header_bytes=44
+file lotus/render.rye the render rung — a bounded ordered chain of gain/fade/invert over a Clip encodes to a canonical mono .wav, atomically
+file tools/ales_render_witness.rish the on-metal witness, GREEN
+file active-designing/20260815-131432_fill-ales217-lotus-render.md self-approved design round for ALES217
+recommend keep-going the render endpoint stands; a stereo render (the same chain over two channels into stereo_wav) or a named preset chain a keeper loads by name is the honest next crux
