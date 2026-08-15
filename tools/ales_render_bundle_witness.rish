@@ -1,0 +1,39 @@
+# tools/ales_render_bundle_witness.rish — manifest and .wav as one saveable artifact: a `LOTUSBND` frame packs the ALES221
+# sealed manifest beside its .wav and unpacks it verify-before-trust, needing no new seal (ALES222).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES222.
+# Design read: active-designing/20260815-134607_fill-ales222-lotus-render-bundle.md
+# Idiom kin: lotus/render_manifest.rye (ALES221, open_manifest + verify_wav — the verify-before-trust the bundle inherits whole)
+# · lotus/wav.rye (ALES215, the .wav the bundle carries). No new hash, no new grammar — only a bounded length frame.
+#
+# lotus/render_bundle.rye packs a sealed manifest and a .wav into one framed artifact and unpacks it verify-before-trust. The
+# selftest proves: pack then unpack recovers every manifest field and the exact .wav bytes (the round-trip law); a single flipped
+# .wav byte refuses WavDigestMismatch and a flipped manifest byte DigestMismatch, so the bundle needs no new seal — its two
+# components bind the whole (the self-binding law); a wrong magic and a length that does not tile the buffer exactly refuse
+# BadBundle (the frame law); a too-small buffer refuses Overflow (the atomic law). A byte frame only — no real file, no DAC, no
+# network, no keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_render_bundle_witness.rish
+
+say "ales-render-bundle: Language EN — ALES222 joins the ALES221 sealed manifest and its .wav into ONE saveable artifact: a `LOTUSBND` length frame packed and unpacked verify-before-trust, the durable unit a publish or a chain of custody actually saves."
+say "ales-render-bundle: Style Radiant — the crux is a quiet one: the bundle needs no new seal, since the manifest already binds its own text and the audio it names; the round-trip law, the self-binding law, the frame law, and the atomic law each named and proven on metal."
+say "ales-render-bundle: Lens TAME — it proves an artifact arrived whole, not who made it; every bound named, every fault refused by name, siloed to lotus/, no real file, no DAC, no network, no keys, no funds, no real device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/render_bundle"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/render_bundle.rye -femit-bin=${bin}"]
+assert build.ok else "ales-render-bundle: build failed — ${build.err}"
+
+let outfile = "lotus/bin/render_bundle.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-render-bundle: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-render-bundle: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-render-bundle' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-render-bundle: selftest did not print the GREEN ales-render-bundle line"
+
+say "ales-render-bundle: GREEN — a render's manifest and its .wav now save and open as one verify-before-trust artifact, the render→manifest→bundle loop closed. The next Lotus crux can carry the bundle over a stereo render, or let a keeper name and index a shelf of bundles."

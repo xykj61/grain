@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260815.134843
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) time convention
+title ALES222 — Lotus render_bundle: manifest and .wav as one saveable artifact
+prompt recur the itinerary Lindy-first crux-first, take the next agent-doable lap, send each increment, stop at custody gates
+think ALES221 sealed a manifest that binds its own .wav, yet manifest and .wav still travel apart; a publish/chain-of-custody wants ONE thing to save and open
+think Lindy-first crux-first: the bundle is the actual publishable unit — render → manifest → bundle closes the loop
+think the crux is a quiet one — the bundle needs NO NEW SEAL, since the ALES221 manifest already binds its text (seal digest) and audio (wav_digest); a corrupted length shifts the slices into one of those same refusals
+think a small LOTUSBND frame (magic + two u32 LE lengths + manifest + wav), lengths must tile the buffer exactly, then open_manifest + verify_wav gate before returning
+obs clean first build — removed an unnecessary seal import used only to bind a version; the bundle inherits seal through the manifest
+obs used tally_copy.copy_disjoint for all three byte copies, std.mem.writeInt/readInt for the LE lengths; u32 the design type throughout, @intCast only at the .len seam with a bound check first
+obs no custody gate reached — a byte frame over in-process slices, siloed to lotus/, no file/DAC/network/keys/funds
+loom witness=ales_render_bundle_witness result=GREEN laws=4 module=lotus/render_bundle.rye
+file active-designing/20260815-134607_fill-ales222-lotus-render-bundle.md the self-approved design round naming the crux and four laws
+file lotus/render_bundle.rye the module — pack and unpack over the ALES221 manifest, no new seal
+file tools/ales_render_bundle_witness.rish the witness proving the four laws GREEN on metal
+recommend keep-going the next Lotus crux can carry the bundle over a stereo render, or let a keeper name and index a shelf of bundles
