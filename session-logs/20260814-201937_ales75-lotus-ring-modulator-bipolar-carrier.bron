@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260814.201937
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title ALES75 — Lotus's ring modulator, the tremolo's carrier let cross zero
+prompt recur the itinerary Lindy-first crux-first, take the next agent-doable lap, approve own design rounds, send each finished increment, stop at custody gates
+think ALES74's tremolo named its two siblings — auto-pan (the LFO on the stereo field) and the ring modulator (a faster carrier on the same gain). The ring modulator is the nearer and keeps the tremolo's in-place mono discipline, so it is the tighter one-round close; auto-pan introduces stereo output and a linear-vs-equal-power choice, more design surface. Chose the ring modulator: it generalizes the tremolo by removing one restriction — the carrier is let CROSS ZERO and go bipolar — so a positive-carrier ring mod IS the tremolo, a family identity in the other direction.
+think The honest distinction from the tremolo is real, not a restatement: the tremolo held its gain non-negative, so it never inverted a sample and its saturate was a proven no-op. The ring modulator's carrier at −unity flips the sign, and the two's-complement i16 rail is ASYMMETRIC — sample_min = −32768, sample_max = 32767 — so −(−32768) = 32768 overflows by exactly one. That lone corner is the one place the ring modulator's saturate genuinely earns its keep, clamping 32768 to 32767 rather than wrapping. Reasoned it out before building and the first build confirmed it exactly.
+think This changed the loop invariant honestly. The tremolo could assert the write value already in [sample_min, sample_max] (saturate a no-op); the ring modulator asserts it in [sample_min, sample_max + 1] and lets saturate clamp the single +32768 corner. Named the fault BadCarrier (the tremolo's one-sided BadGain widened to a two-sided magnitude bound |c| ≤ scale), kept BadPeriod/BadDepth/BadRange, dropped BadGain/BadDelay/BadLevel.
+think Proved the family identity against the REAL tremolo (both tools run) on a loud signal including sample_min — with a non-negative carrier no inversion occurs, so even sample_min never overflows, and the two rungs match byte-for-byte. Then a hand-computed bipolar case (centre 0, depth scale, period 4, carrier 0 → +1 → 0 → −1) shows the sign flip; a constant −unity carrier inverts a no-sample_min signal exactly; unity passes through; and the corner test lands sample_max, not a wrap.
+obs GREEN on the first build across all six laws — no RED. The two's-complement corner behaved exactly as reasoned (sample_min·−unity → sample_max), validating the [sample_min, sample_max + 1] invariant. tame_style_check bans clean, ratchets printed. Self-approved design round (no custody gate — bounded in-process i16 PCM, no network/keys/funds/device/sample-rate). Second full rung this turn beside ALES74, both sent as their own signed rounds.
+loom witness=ales_ring_mod_witness laws=6 green=1 reuses=triangle_delay_at,tremolo glide_scale=256 carrier=bipolar_unit_bounded saturate=corner_only snapshot=none
+file lotus/ring_mod.rye ALES75 — the bipolar triangle carrier, y[i]=saturate(x[i]·c(i)/glide_scale), in place; a non-negative carrier is the tremolo
+file tools/ales_ring_mod_witness.rish witness GREEN, proves a non-negative carrier equals the tremolo and the lone corner saturates rather than wraps
+file active-designing/20260814-201937_fill-ales75-lotus-ring-modulator-bipolar-carrier.md design read for the rung, self-approved round
+file lotus/README.md Status rung list + stamp carry ALES75
+recommend keep-going ALES76 — auto-pan (the same triangle LFO on ALES10's stereo field, a mono voice swung left-right across two channels rather than up-down in loudness); the amplitude-and-position sibling that completes the LFO's targets

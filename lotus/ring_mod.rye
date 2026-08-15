@@ -1,0 +1,247 @@
+//! lotus/ring_mod.rye — ALES75: the ring modulator — the tremolo's carrier let CROSS ZERO. ALES74's tremolo pointed the triangle LFO at the
+//! sample's amplitude and held the result to an ATTENUATION — a gain between silence and unity, so the voice was never louder than the dry and
+//! the write's saturate was a proven no-op. The ring modulator is that rung with ONE RESTRICTION LIFTED: the carrier is allowed to cross zero
+//! and go negative. A carrier that dips below zero flips the sample's sign; swung fast it multiplies the signal by a bipolar wave and scatters
+//! the spectrum into metallic sum-and-difference tones — the ring modulator's unmistakable clang. It is the tremolo's named sibling.
+//!
+//! The crux is that A RING MODULATOR WHOSE CARRIER NEVER GOES NEGATIVE IS EXACTLY THE TREMOLO — the two rungs are one multiply, the carrier's
+//! sign the only difference. The write is the tremolo's verbatim: y[i] = saturate(x[i]·c(i)/glide_scale), c the reused ALES71 triangle. The one
+//! change is the carrier's legal range: where the tremolo required 0 ≤ c ≤ glide_scale (an attenuation), the ring modulator requires only
+//! −glide_scale ≤ c ≤ glide_scale (a unit-bounded BIPOLAR carrier). The magnitude bound at unity stays, so the voice is still never louder than
+//! the dry — only its sign may turn.
+//!
+//! There is one honest subtlety the tremolo never met: the two's-complement i16 rail is ASYMMETRIC (sample_min = −32768, sample_max = 32767),
+//! so inverting sample_min overflows by exactly one — −(−32768) = 32768, one past sample_max. The tremolo's non-negative gain could never
+//! invert a sample, so its saturate was a no-op; the ring modulator's carrier at −unity on a full-negative sample lands 32768, and the one true
+//! saturate GENUINELY EARNS ITS KEEP, clamping that lone corner to 32767 rather than wrapping. So x·c/scale sits in [−32768, 32768], and the
+//! write saturates the single overflowing point honestly — the ring modulator's real distinction from the tremolo, not a restatement of it.
+//! Every output depends only on its own input sample, so the ring modulator writes IN PLACE WITH NO SNAPSHOT (the tremolo's thinnest discipline).
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES75.
+//! Design read: active-designing/20260814-201937_fill-ales75-lotus-ring-modulator-bipolar-carrier.md
+//! Stands on: lotus/tremolo.rye (ALES74) — the amplitude write this generalizes by removing the floor; lotus/chorus.rye (ALES71) — the
+//! triangle-LFO driver `triangle_delay_at`, now the carrier; lotus/glide.rye (ALES70) — `glide_scale`, the fixed-point unit (256 = unity);
+//! lotus/timeline.rye (ALES2) — the Clip, sample_min/max, the one true saturate.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM in one clip, siloed to lotus/. No socket, no network, no keys, no
+//! funds, no real device, no real sample rate — the carrier is counted in scaled units (256 = unity, −256 = inverted unity) and the period in
+//! samples, not hertz. No delay line, no snapshot, no lookahead. The triangle and the multiply run in i64 and the write saturates once — a
+//! documented no-op EXCEPT the lone sample_min-inverted corner, where it clamps 32768 to 32767 rather than wrapping.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/ring_mod.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const glide = @import("glide.rye");
+const chorus = @import("chorus.rye");
+const tremolo = @import("tremolo.rye");
+
+pub const ring_mod_version = "20260814.201937";
+
+/// The ring modulator's faults, one consistent name each: a period that is not a positive multiple of four (the triangle's quarter anchors
+/// need P/4 whole) or wider than max_clip, a negative depth (a swing has a magnitude, never a sign), a carrier whose swing passes unity in
+/// EITHER direction (|centre| + depth past glide_scale — past that the voice could exceed the rail by more than the lone two's-complement
+/// corner), and a span outside the samples. Each refused before any write. There is NO BadGain (the one-sided tremolo bound widens to the
+/// two-sided BadCarrier), NO BadDelay, and NO BadLevel — the carrier IS the level.
+pub const RingModError = error{
+    /// A period that is not a positive multiple of four, or wider than max_clip — refused, no write.
+    BadPeriod,
+    /// A negative depth — a swing has a magnitude, never a sign — refused, no write.
+    BadDepth,
+    /// A carrier whose swing passes unity in either direction (centre + depth > glide_scale, or centre − depth < −glide_scale) — refused, no write.
+    BadCarrier,
+    /// A span outside the current samples — refused, no write.
+    BadRange,
+};
+
+/// Apply a ring modulator over `count` samples starting at `start` in place in `clip`: a triangle carrier of `depth_scaled` round
+/// `centre_scaled` over `period` samples (ALES71's `triangle_delay_at`, read as a BIPOLAR carrier in units of glide_scale) multiplies each
+/// sample — y[i] = saturate(x[i]·c(i)/glide_scale). No delay line and no snapshot: every output depends only on its own input sample. The
+/// carrier is unit-bounded (|c| ≤ glide_scale), so the voice is never louder than the dry; the write saturates once — a no-op except the lone
+/// sample_min-inverted corner (−32768·−1 = 32768 clamped to 32767). A non-negative carrier makes this EXACTLY the tremolo. Refuses BadPeriod,
+/// BadDepth, BadCarrier, and BadRange before any write; on refusal the clip is untouched. Values only — never a length.
+pub fn ring_mod(
+    clip: *timeline.Clip,
+    start: u32,
+    count: u32,
+    centre_scaled: i64,
+    depth_scaled: i64,
+    period: u32,
+) RingModError!void {
+    // invariant: the period is a positive multiple of four (the triangle's quarter anchors need P/4 whole) and no wider than the widest
+    // clip, so the carrier is bounded. Checked at the edge before any read.
+    if (period == 0 or period % 4 != 0) return error.BadPeriod;
+    if (period > timeline.max_clip) return error.BadPeriod;
+    // invariant: the depth is non-negative — a swing has a magnitude, never a sign.
+    if (depth_scaled < 0) return error.BadDepth;
+    // invariant: the carrier's swing stays within ±unity in BOTH directions — the tremolo's one-sided attenuation bound widened to a
+    // two-sided magnitude bound. This is what keeps |y| ≤ |x| (so the only rail-touching point is the lone sample_min inversion).
+    if (centre_scaled + depth_scaled > glide.glide_scale) return error.BadCarrier;
+    if (centre_scaled - depth_scaled < -glide.glide_scale) return error.BadCarrier;
+    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
+    if (start > clip.len) return error.BadRange;
+    if (count > clip.len - start) return error.BadRange;
+
+    const scale: i64 = glide.glide_scale;
+    var k: u32 = 0;
+    while (k < count) : (k += 1) {
+        const i: u32 = start + k;
+        // ALES71's `triangle_delay_at` is a general scaled triangle — here it is the BIPOLAR CARRIER. c in [centre − depth, centre + depth].
+        const c: i64 = chorus.triangle_delay_at(centre_scaled, depth_scaled, period, k);
+        // invariant: the carrier never leaves the validated unit-magnitude window, so |c| stays at or below unity.
+        assert(c >= -scale and c <= scale);
+        const dry: i64 = @as(i64, clip.buf[i]);
+        // invariant: the sample read is a legal i16 — it is audio, never a wide intermediate.
+        assert(dry >= @as(i64, timeline.sample_min) and dry <= @as(i64, timeline.sample_max));
+        // The ring-modulated voice: dry times the carrier. |dry| ≤ 32768 and |c| ≤ scale, so the product fits i64 and the quotient's
+        // magnitude is no larger than |dry| ≤ 32768. The ONLY value outside the i16 rail is +32768 (dry = sample_min, c = −scale).
+        const rung: i64 = @divTrunc(dry * c, scale);
+        // invariant: the voice sits in [sample_min, sample_max + 1] — in the rail except the lone sample_min-inverted corner (+32768), which
+        // the saturate below clamps to sample_max. This is where the ring modulator's saturate genuinely earns its keep, unlike the tremolo's.
+        assert(rung >= @as(i64, timeline.sample_min) and rung <= @as(i64, timeline.sample_max) + 1);
+        clip.buf[i] = timeline.saturate(rung);
+    }
+    // invariant: a ring modulator changes sample values only, never the clip's length or bound.
+    assert(start + count <= clip.len);
+    assert(clip.len <= clip.buf.len);
+}
+
+// --- selftest: A NON-NEGATIVE CARRIER IS THE TREMOLO (the family identity, proven against the real tremolo); a hand-computed bipolar case
+//     shows the sign flip; a constant −unity carrier inverts; unity passthrough is exact; the lone two's-complement corner saturates rather
+//     than wraps; and each fault refuses by name, the clip untouched ----------------------------------------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn run_selftest() !u8 {
+    const scale = glide.glide_scale;
+
+    // 1. A NON-NEGATIVE CARRIER IS THE TREMOLO — the family identity. With centre − depth ≥ 0 the carrier never goes negative, so the ring
+    //    modulator equals the tremolo at every sample (both run). A modulation wide enough to exercise the swing, on a loud signal (including
+    //    sample_min, where a non-negative gain still never overflows — the inversion corner belongs to the bipolar case alone).
+    {
+        const sig = [_]i16{ timeline.sample_min, -6000, 3000, -4000, 30000, -30000, 7000, -8000 };
+        const centre: i64 = @divTrunc(scale, 2);
+        const depth: i64 = @divTrunc(scale, 2); // centre − depth = 0, carrier stays in [0, scale]
+        var ring = timeline.Clip{};
+        try load_clip(&ring, &sig);
+        try ring_mod(&ring, 0, ring.len, centre, depth, 8);
+        var trem = timeline.Clip{};
+        try load_clip(&trem, &sig);
+        try tremolo.tremolo(&trem, 0, trem.len, centre, depth, 8);
+        if (!eq(ring.samples(), trem.samples())) return error.NonNegNotTremolo;
+    }
+
+    // 2. A HAND-COMPUTED BIPOLAR CASE — centre 0, depth scale, period 4 (q = 1): the carrier traces the four anchors 0 → +1 → 0 → −1 → 0.
+    //      k:      0   1     2   3     4   5
+    //      c(k):   0   256   0   -256  0   256   (0, +1, 0, −1, 0, +1 of scale = 256)
+    //      y[k]: 1000·c/256 =  0  1000  0  -1000  0  1000    — the sign flip made visible.
+    {
+        const sig = [_]i16{ 1000, 1000, 1000, 1000, 1000, 1000 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try ring_mod(&clip, 0, clip.len, 0, scale, 4);
+        const want = [_]i16{ 0, 1000, 0, -1000, 0, 1000 };
+        if (!eq(clip.samples(), &want)) return error.BipolarHandWrong;
+    }
+
+    // 3. A CONSTANT CARRIER AT −UNITY INVERTS THE SIGNAL — centre −scale, depth 0: y = x·(−scale)/scale = −x exactly, on a signal with no
+    //    sample_min (where inversion is exact and overflows nothing).
+    {
+        const sig = [_]i16{ 100, -200, 300, -400 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try ring_mod(&clip, 0, clip.len, -scale, 0, 4);
+        const want = [_]i16{ -100, 200, -300, 400 };
+        if (!eq(clip.samples(), &want)) return error.NegUnityNotInvert;
+    }
+
+    // 4. UNITY PASSTHROUGH IS EXACT — centre = scale, depth = 0: the carrier is +1, so every sample passes through byte-for-byte, including
+    //    sample_max at the top of the rail.
+    {
+        const sig = [_]i16{ timeline.sample_max, -1, 0, 12345, -12345 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try ring_mod(&clip, 0, clip.len, scale, 0, 4);
+        if (!eq(clip.samples(), &sig)) return error.UnityNotPassthrough;
+    }
+
+    // 5. THE LONE TWO'S-COMPLEMENT CORNER SATURATES, NEVER WRAPS — sample_min under a −unity carrier: −(−32768) = 32768, one past sample_max,
+    //    clamped to sample_max rather than wrapping to −32768. This is the one place the ring modulator's saturate does real work.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ timeline.sample_min, timeline.sample_min });
+        try ring_mod(&clip, 0, clip.len, -scale, 0, 4);
+        const want = [_]i16{ timeline.sample_max, timeline.sample_max };
+        if (!eq(clip.samples(), &want)) return error.CornerWrapped;
+    }
+
+    // 6a. A PERIOD not a positive multiple of four refuses BadPeriod; zero refuses BadPeriod; a period wider than max_clip refuses BadPeriod —
+    //     before any write.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        if (ring_mod(&clip, 0, clip.len, 0, scale, 6)) |_| return error.OddPeriodSlipped else |e| if (e != error.BadPeriod) return error.WrongOddPeriod;
+        if (!eq(clip.samples(), &three)) return error.RefusedOddPeriodMutated;
+        if (ring_mod(&clip, 0, clip.len, 0, scale, 0)) |_| return error.ZeroPeriodSlipped else |e| if (e != error.BadPeriod) return error.WrongZeroPeriod;
+        if (!eq(clip.samples(), &three)) return error.RefusedZeroPeriodMutated;
+        const wide: u32 = timeline.max_clip + 4;
+        if (ring_mod(&clip, 0, clip.len, 0, scale, wide)) |_| return error.WidePeriodSlipped else |e| if (e != error.BadPeriod) return error.WrongWidePeriod;
+        if (!eq(clip.samples(), &three)) return error.RefusedWidePeriodMutated;
+    }
+
+    // 6b. A NEGATIVE DEPTH refuses BadDepth; a carrier swing past +unity refuses BadCarrier; a carrier swing past −unity refuses BadCarrier —
+    //     each before any write.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        if (ring_mod(&clip, 0, clip.len, 0, -1, 4)) |_| return error.NegDepthSlipped else |e| if (e != error.BadDepth) return error.WrongNegDepth;
+        if (!eq(clip.samples(), &three)) return error.RefusedNegDepthMutated;
+        // centre ½·scale, depth ¾·scale → top = centre + depth > glide_scale
+        if (ring_mod(&clip, 0, clip.len, @divTrunc(scale, 2), @divTrunc(3 * scale, 4), 4)) |_| return error.HighTopSlipped else |e| if (e != error.BadCarrier) return error.WrongHighTop;
+        if (!eq(clip.samples(), &three)) return error.RefusedHighTopMutated;
+        // centre −½·scale, depth ¾·scale → bottom = centre − depth < −glide_scale
+        if (ring_mod(&clip, 0, clip.len, -@divTrunc(scale, 2), @divTrunc(3 * scale, 4), 4)) |_| return error.LowBotSlipped else |e| if (e != error.BadCarrier) return error.WrongLowBot;
+        if (!eq(clip.samples(), &three)) return error.RefusedLowBotMutated;
+    }
+
+    // 6c. AN OUT-OF-RANGE SPAN refuses BadRange before any write.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        if (ring_mod(&clip, 2, 5, 0, scale, 4)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(clip.samples(), &three)) return error.RefusedRangeMutated;
+    }
+
+    print("GREEN ales-ring-mod: the RING MODULATOR — the tremolo's triangle carrier let CROSS ZERO. It writes the tremolo's line verbatim, " ++
+        "y[i] = saturate(x[i]·c(i)/glide_scale), and only widens the carrier's legal range from the tremolo's one-sided attenuation " ++
+        "(0 ≤ c ≤ scale) to a two-sided unit-bounded BIPOLAR carrier (−scale ≤ c ≤ scale); a carrier below zero flips the sample's sign, the " ++
+        "metallic clang. So A NON-NEGATIVE CARRIER IS EXACTLY THE TREMOLO, proven sample-by-sample against the real tremolo; a hand-computed " ++
+        "bipolar case (0 → +1 → 0 → −1) shows the sign flip; a constant −unity carrier inverts; unity passthrough is exact; and the lone " ++
+        "two's-complement corner — sample_min under a −unity carrier, −(−32768) = 32768 — SATURATES to sample_max rather than wrapping, the " ++
+        "one place the ring modulator's saturate does real work the tremolo's never did. A period not a positive multiple of four refuses " ++
+        "BadPeriod, a negative depth BadDepth, a carrier past unity in either direction BadCarrier, an out-of-range span BadRange, each " ++
+        "leaving the clip untouched — there is no BadGain, no BadDelay, and no BadLevel, the carrier IS the level; no delay line, no snapshot, " ++
+        "no socket, no network, no keys, no funds, no real device, no real sample rate. Auto-pan (the same LFO on the stereo field) is the " ++
+        "family's next rung\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
