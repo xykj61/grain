@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260815.130522
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (VPS) — Eastern (EDT) time convention
+title ALES215 — Lotus WAV container, the open door every effect leaves through
+prompt recur the road Lindy-first crux-first past ALES214; take the next agent-doable lap, self-approve design rounds, send each increment, stop at custody gates
+think Read REMEMBER (gates, live edge ALES214) + the 1024-round itinerary + the six-season double-seat; live edge is Lotus (Season C, waymark ALES), reverb family complete at ALES214.
+think ALES214's own design read named the honest next move: open a fresh Lotus family rather than another reverb knob. Lindy-first crux-first: the most durable thing the suite lacks is a container — a way for any of the 200-plus effects to leave the bench as a real file.
+think Chose the canonical RIFF/WAVE mono 16-bit PCM container (lotus/wav.rye) — a public, unencumbered, 30-year-old interchange format; the crux that opens the rest (every effect gains export/import for free) and the highest-Lindy surface in the suite.
+think Carried ALES0 wire.rye's discipline verbatim: verify-before-trust decode with TWO independent gates — the size chain proving the container self-consistent, the audio border (data_size % 2 == 0) proving it sample-aligned so no torn half-sample reaches a timeline.
+think Encode/decode over caller-provided buffers (no giant fixed arrays), every bound named at the edge; ≥2 asserts per fn with // invariant, named errors, no bare memcpy (writeInt loops), opening triad present.
+obs GREEN on metal: ales_wav_witness proves byte-for-byte round-trip, canonical header, empty buffer, PartialSample at the audio border, and 15 named faults each refusing before a sample crosses. tame_style_check GREEN (bans clean; wav.rye carries asserts, not in the zero-assert ratchet list).
+obs Honest scope held: a byte container only — no real file opened, no DAC, no acoustic/electrical fact asserted, no network, no keys, no funds. No custody gate touched.
+loom witness=ales_wav_witness result=GREEN samples_roundtrip=8 faults_named=15 header_bytes=44
+file lotus/wav.rye the canonical RIFF/WAVE mono 16-bit PCM container, encode/decode verify-before-trust
+file tools/ales_wav_witness.rish the on-metal witness, GREEN
+file active-designing/20260815-130110_fill-ales215-lotus-wav-container.md self-approved design round for ALES215
+file work-in-progress/REMEMBER.md live edge advanced ALES214 to ALES215
+recommend keep-going ALES216 stereo_wav (channels 2, interleaved) is the natural mono-stereo twin; a render rung that runs an effect chain and writes the result follows
