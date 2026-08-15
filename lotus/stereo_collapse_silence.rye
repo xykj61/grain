@@ -1,0 +1,467 @@
+//! lotus/stereo_collapse_silence.rye — ALES152: the interior silence-capper carried into stereo, ONE JOINT SILENCE capped in ONE LOCKSTEP — the stripper of ALES148
+//! kept its pauses. ALES100 named `collapse_silence`: segment a mono clip, then cap each `.silent` run to a maximum, keeping the pauses yet shortening the long ones —
+//! "truncate silence to a quarter-second," the single most-reached-for gesture in every voice-memo cleanup, because it shortens dead air without deleting the breath
+//! that makes speech legible. That is a mono edit. Carried into stereo it meets the wall ALES148 met and no earlier: a Lotus master is a StereoClip (ALES10), two Clips
+//! whose defining invariant is that LEFT and RIGHT hold the SAME length, and ALES147 proved the two channels segment INDEPENDENTLY — their silences differ in count and
+//! boundary. Capping each channel by its OWN silence would cap different runs to different lengths and desync the pair, tearing the stereo image apart. So this rung
+//! cannot run the mono capper twice; it must decide ONE cap that serves BOTH.
+//!
+//! The rule, stated once — the JOINT-SILENCE CAP: read the jointly-silent frames through ALES148's own silence intersection (a frame is dead air only where NEITHER
+//! speaker carries sound), coalesce consecutive jointly-silent frames into jointly-silent RUNS, and for each run longer than `max_silence` cut only the EXCESS (keep the
+//! run's first `min(count, max_silence)` samples, cut the rest) from BOTH channels in lockstep, walking back to front. A frame silent in only one channel is KEPT whole —
+//! its other speaker carries sound; only the shared dead air is shortened, and only its excess is cut, so the breath stays. Both channels are cut at identical positions,
+//! so they leave exactly as long as each other: the stereo image stays whole.
+//!
+//! The crux — two laws, each tying this rung to a proven predecessor so it can never drift. THE ZERO-CAP LAW: stereo_collapse_silence(max=0) equals ALES148's
+//! stereo_trim_silence byte for byte on BOTH channels — capping every joint-silent run to zero removes all joint silence, exactly the stereo stripper. THE CAP LAW: the
+//! result equals the hand-built keep where each jointly-silent run keeps its first min(count, max_silence) samples and every other frame stays whole; a cap at least as
+//! large as the longest joint run leaves the master unchanged; monotone in max_silence — a larger cap keeps a master at least as long. It invents no new measurement and
+//! no new sample: it reads its silences through ALES148/ALES147 and removes whole excess-silent frames through ALES2's own `cut`, fabricating nothing and reordering
+//! nothing. What is NEW is the composition rule — capping the intersection of two independent silences — and its honesty is that running the proven mono collapse per
+//! channel would DESYNC the pair, where this caps once for both and keeps them balanced.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES152.
+//! Design read: active-designing/20260815-055202_fill-ales152-lotus-stereo-collapse-silence.md
+//! Stands on: lotus/stereo_trim_silence.rye (ALES148) — the stereo silence stripper, the zero-cap twin, imported by the selftest to prove the zero-cap law; its silence
+//! intersection is the joint-silence this rung caps; lotus/stereo_segment.rye (ALES147) — the stereo voice-activity segmenter, run once to read BOTH channels' silences
+//! over one shared frame grid, its `segment_stereo`, `StereoSegments`, `StereoSegmentError` reused whole; lotus/segment.rye (ALES95) — the mono segmenter (the frame grid
+//! and `.silent` verdict, through ALES147) and `max_segments`; lotus/collapse_silence.rye (ALES100) — the mono interior capper, imported by the selftest to prove the
+//! lockstep law (that running it per channel would desync the pair); lotus/pan.rye (ALES10) — the StereoClip and its balance invariant; lotus/timeline.rye (ALES2) — the
+//! Clip, its `cut`, its `max_clip`, and the EditError reused whole; lotus/voiced.rye (ALES94) — the `.silent` verdict this intersects.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. This rung WRITES — it edits both clips —
+//! yet only by removing whole excess-silent frames from within each jointly-silent run through ALES2's own cut, on both channels in lockstep; it fabricates no samples,
+//! reorders nothing, and never touches a non-silent sample or the kept head of any joint pause. NOT a transcript, not a real adaptive VAD; no real sample rate, no
+//! network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_collapse_silence.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const segment = @import("segment.rye");
+const stereo_segment = @import("stereo_segment.rye");
+const stereo_trim_silence = @import("stereo_trim_silence.rye");
+const collapse_silence = @import("collapse_silence.rye");
+
+pub const stereo_collapse_silence_version = "20260815.055202";
+
+/// The most frames a span can carry — one per sample, when `frame_len` is 1 — bounded by the clip's own sample ceiling. Names the jointly-silent mask's size once.
+const max_frames: u32 = timeline.max_clip;
+
+/// The stereo capper's faults are the stereo segmenter's OWN faults (ALES147's StereoSegmentError, itself ALES95's SegmentError: the classifier's band/floor faults, plus
+/// BadFrame and the honest unreachable SegmentsFull) and the editor's OWN faults (ALES2's EditError from cut), each reused by name. The stereo lift invents none of its
+/// own, and `max_silence` is a plain count with no illegal value (a huge cap keeps every joint pause whole); an empty clip refuses BadFrame through the segmenter.
+pub const StereoCollapseError = stereo_segment.StereoSegmentError || timeline.EditError;
+
+/// Cap every JOINTLY-silent run in both channels of `sc` to at most `max_silence` samples, keeping the audio and the shortened joint pauses in order and the stereo image
+/// balanced. Segments BOTH channels of the whole clip `[0, len)` into frames of `frame_len` samples through ALES147, marks a frame jointly-silent only where it is
+/// `.silent` in BOTH channels, coalesces consecutive jointly-silent frames into runs, and for each run longer than `max_silence` cuts the excess (keeping the run's first
+/// `min(count, max_silence)` samples) from BOTH channels through ALES2's `cut`, walking back to front so every earlier run's index stays valid. A frame silent in only one
+/// channel is KEPT whole. Validates the whole span, band, floor, and frame length through ALES147's own checks BEFORE any cut; on refusal both channels are untouched.
+/// `max_silence = 0` is exactly ALES148. An empty clip refuses `BadFrame`.
+pub fn stereo_collapse_silence(
+    sc: *pan.StereoClip,
+    frame_len: u32,
+    t_low: i32,
+    t_high: i32,
+    silence_floor: u32,
+    voice_split: u32,
+    max_silence: u32,
+) StereoCollapseError!void {
+    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the whole edit preserves.
+    assert(sc.left.len == sc.right.len);
+    const original_len: u32 = sc.left.len;
+
+    // Segment BOTH channels once over one shared frame grid. ALES147 runs all of its (and ALES95's) validation here — band/span precheck, the floor ceiling, the
+    // dividing frame length, the empty-clip BadFrame — read-only, before a single sample is cut. On refusal it leaves the source untouched, so both channels are too.
+    var segs = stereo_segment.StereoSegments{};
+    try stereo_segment.segment_stereo(sc, &segs, 0, original_len, frame_len, t_low, t_high, silence_floor, voice_split);
+
+    // invariant: segmenting a non-empty clip yields at least one run per channel that tiles it — ALES147's own postcondition, relied on here.
+    assert(segs.left.len >= 1 and segs.left.len <= segment.max_segments);
+    assert(segs.right.len >= 1 and segs.right.len <= segment.max_segments);
+
+    // The frames tile [0, original_len) exactly — the segmenter refused a non-dividing or zero frame length, so this division is exact and at least one.
+    const frames: u32 = original_len / frame_len;
+    // invariant: the frame count is real and never exceeds the mask that records it.
+    assert(frames >= 1 and frames <= max_frames);
+
+    // Forward pass — the SILENCE INTERSECTION (ALES148's own rule). Walk the frames left to right, advancing one cursor per channel across its own tiling run list, and
+    // mark a frame jointly-silent ONLY where it is `.silent` in both channels. A frame silent in one channel alone stays unmarked — the other speaker's content keeps it.
+    var joint_silent = [_]bool{false} ** max_frames;
+    var li: u32 = 0;
+    var ri: u32 = 0;
+    var k: u32 = 0;
+    while (k < frames) : (k += 1) {
+        const fs: u32 = k * frame_len;
+        // Runs tile [0, original_len) in order and frame starts only increase, so each cursor advances monotonically to the run covering this frame's start.
+        while (li + 1 < segs.left.len and segs.left.items[li].start + segs.left.items[li].count <= fs) : (li += 1) {}
+        while (ri + 1 < segs.right.len and segs.right.items[ri].start + segs.right.items[ri].count <= fs) : (ri += 1) {}
+        // invariant: each cursor names the run that actually covers fs — the runs tile the span, so exactly one always does.
+        assert(segs.left.items[li].start <= fs and fs < segs.left.items[li].start + segs.left.items[li].count);
+        assert(segs.right.items[ri].start <= fs and fs < segs.right.items[ri].start + segs.right.items[ri].count);
+        if (segs.left.items[li].verdict == .silent and segs.right.items[ri].verdict == .silent) joint_silent[k] = true;
+    }
+
+    // Coalesce consecutive jointly-silent frames into runs and count the total excess over `max_silence` up front, so the length postcondition can be asserted exactly.
+    // Each run's sample count is its frame span times `frame_len`; its excess is count minus the kept min(count, max_silence).
+    var total_excess: u32 = 0;
+    {
+        var f: u32 = 0;
+        while (f < frames) {
+            if (!joint_silent[f]) {
+                f += 1;
+                continue;
+            }
+            const run_start_frame: u32 = f;
+            while (f < frames and joint_silent[f]) : (f += 1) {}
+            const count: u32 = (f - run_start_frame) * frame_len;
+            if (count > max_silence) total_excess += count - max_silence;
+        }
+    }
+    // invariant: the joint silence removed can never exceed the clip it came from.
+    assert(total_excess <= original_len);
+
+    // Backward pass — cut each over-long jointly-silent run's excess from BOTH channels in lockstep. Back-to-front is the whole trick: a cut shifts only samples after it,
+    // so an earlier run keeps its original start index. Cutting the SAME span from both channels keeps them balanced at every step; the bounds are asserted, so neither
+    // cut can fault and leave the pair half-capped. Walk frames from the end, closing each maximal joint run as it is entered from the right.
+    {
+        var b: u32 = frames;
+        while (b > 0) {
+            b -= 1;
+            if (!joint_silent[b]) continue;
+            // b is the LAST frame of a joint run; find the run's first frame by walking left through the marked frames.
+            const run_end_frame: u32 = b; // inclusive
+            var run_start_frame: u32 = b;
+            while (run_start_frame > 0 and joint_silent[run_start_frame - 1]) run_start_frame -= 1;
+            const count: u32 = (run_end_frame - run_start_frame + 1) * frame_len;
+            if (count > max_silence) {
+                const keep: u32 = max_silence; // min(count, max_silence), and here count > max_silence
+                const excess: u32 = count - keep;
+                const cut_at: u32 = run_start_frame * frame_len + keep; // keep the run's first `keep` samples, cut the rest
+                // invariant: the excess lies wholly inside both current clips — it did before any cut, and only later runs (already cut) sat after it.
+                assert(cut_at + excess <= sc.left.len and cut_at + excess <= sc.right.len);
+                try timeline.cut(&sc.left, cut_at, excess);
+                try timeline.cut(&sc.right, cut_at, excess);
+            }
+            // Skip the rest of this run — b will step down past run_start_frame on the next iterations, all already handled.
+            b = run_start_frame;
+        }
+    }
+
+    // invariant: both channels lost exactly the joint excess and leave balanced — the length holds identical on both, the original minus every excess-silent sample.
+    assert(sc.left.len == original_len - total_excess);
+    assert(sc.right.len == original_len - total_excess);
+    assert(sc.left.len == sc.right.len);
+}
+
+// --- selftest: THE ZERO-CAP LAW — stereo_collapse_silence(max=0) equals ALES148's stereo_trim_silence byte for byte on both channels, across many frame lengths, floors,
+//     and splits (the crux tie); THE CAP LAW — the result equals a by-hand keep where each jointly-silent run keeps min(count, max) samples and every other frame stays
+//     whole, per channel, both channels equal length, a cap past the longest joint run unchanged, monotone in max; THE LOCKSTEP LAW — running mono collapse per channel
+//     desyncs the pair where this holds them balanced; THE DEGENERATE / ATOMICITY LAW — an all-joint-silent master caps its one run, a no-joint-silent master unchanged,
+//     a shared BadFrame / BadThreshold / BadFloor refuses before any cut, both channels untouched and balanced -----------------------------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try timeline.splice(&sc.left, 0, l);
+    try timeline.splice(&sc.right, 0, r);
+}
+
+/// The verdict of the frame that starts at sample `fs`, read from a mono segmentation by finding the run that covers it — an independent reference to the cursor walk
+/// inside `stereo_collapse_silence`, so the cap law is proven against a second implementation.
+fn frame_verdict(segs: *const segment.Segments, fs: u32) segment.Segment {
+    var i: u32 = 0;
+    while (i < segs.len) : (i += 1) {
+        if (segs.items[i].start <= fs and fs < segs.items[i].start + segs.items[i].count) return segs.items[i];
+    }
+    unreachable; // the runs tile the span, so a frame start always lands in one
+}
+
+/// The hand-built expectation the stereo capper is checked against — segment BOTH channels of the ORIGINAL, mark each frame jointly-silent where it is silent in both,
+/// coalesce into runs, then keep each jointly-silent run's first min(count, max_silence) samples and every other frame whole, on each channel. The capped pair must equal
+/// this exactly, both channels the same length.
+fn by_hand(out: *pan.StereoClip, src: *const pan.StereoClip, frame_len: u32, t_low: i32, t_high: i32, floor: u32, split: u32, max_silence: u32) !void {
+    var ls = segment.Segments{};
+    try segment.segment(&src.left, &ls, 0, src.left.len, frame_len, t_low, t_high, floor, split);
+    var rs = segment.Segments{};
+    try segment.segment(&src.right, &rs, 0, src.right.len, frame_len, t_low, t_high, floor, split);
+    const left_samples = src.left.samples();
+    const right_samples = src.right.samples();
+    const frames: u32 = src.left.len / frame_len;
+    var k: u32 = 0;
+    while (k < frames) {
+        const fs: u32 = k * frame_len;
+        const l_silent = frame_verdict(&ls, fs).verdict == .silent;
+        const r_silent = frame_verdict(&rs, fs).verdict == .silent;
+        if (l_silent and r_silent) {
+            // Extend the jointly-silent run to its full frame span.
+            const run_start_frame: u32 = k;
+            while (k < frames) {
+                const gs: u32 = k * frame_len;
+                const gl = frame_verdict(&ls, gs).verdict == .silent;
+                const gr = frame_verdict(&rs, gs).verdict == .silent;
+                if (!(gl and gr)) break;
+                k += 1;
+            }
+            const count: u32 = (k - run_start_frame) * frame_len;
+            const keep: u32 = if (count < max_silence) count else max_silence;
+            const rs0: u32 = run_start_frame * frame_len;
+            try timeline.splice(&out.left, out.left.len, left_samples[rs0 .. rs0 + keep]);
+            try timeline.splice(&out.right, out.right.len, right_samples[rs0 .. rs0 + keep]);
+        } else {
+            try timeline.splice(&out.left, out.left.len, left_samples[fs .. fs + frame_len]);
+            try timeline.splice(&out.right, out.right.len, right_samples[fs .. fs + frame_len]);
+            k += 1;
+        }
+    }
+}
+
+fn run_selftest() !u8 {
+    const band_low: i32 = -1000;
+    const band_high: i32 = 1000;
+
+    // Six frames of four samples. The two channels carry DIFFERENT silences on purpose. Frames 1–3 are quiet on BOTH (one jointly-silent run of three frames = 12
+    // samples), frame 4 is quiet on the LEFT yet loud on the RIGHT (kept — panned content the right carries), the ends loud on both.
+    const left_sig = [_]i16{
+        20000, 20000, -20000, -20000, // frame 0 — loud on both
+        40,    -40,    40,     -40, // frame 1 — quiet on both (joint silent)
+        30,    -30,    30,     -30, // frame 2 — quiet on both (joint silent)
+        45,    -45,    45,     -45, // frame 3 — quiet on both (joint silent)
+        35,    -35,    35,     -35, // frame 4 — LEFT quiet, right loud (KEPT)
+        20000, 20000, -20000, -20000, // frame 5 — loud on both
+    };
+    const right_sig = [_]i16{
+        20000, 20000, -20000, -20000, // frame 0 — loud
+        41,    -41,    41,     -41, // frame 1 — quiet (joint silent)
+        31,    -31,    31,     -31, // frame 2 — quiet (joint silent)
+        46,    -46,    46,     -46, // frame 3 — quiet (joint silent)
+        20000, 20000, -20000, -20000, // frame 4 — RIGHT loud (keeps the frame)
+        20000, 20000, -20000, -20000, // frame 5 — loud
+    };
+
+    // 1. THE ZERO-CAP LAW — over many frame lengths, floors, and splits, stereo_collapse_silence(max=0) equals ALES148's stereo_trim_silence byte for byte on both
+    //    channels — capping every joint-silent run to zero removes all joint silence, exactly the stereo stripper.
+    {
+        const flens = [_]u32{ 1, 2, 4, 8, 12, 24 }; // each divides 24
+        const floors = [_]u32{ 100, 500, 1000, 5000 };
+        const splits = [_]u32{ 1, 2, 4 };
+        var fli: u32 = 0;
+        while (fli < flens.len) : (fli += 1) {
+            var fi: u32 = 0;
+            while (fi < floors.len) : (fi += 1) {
+                var si: u32 = 0;
+                while (si < splits.len) : (si += 1) {
+                    var capped = pan.StereoClip{};
+                    try load_stereo(&capped, &left_sig, &right_sig);
+                    var stripped = pan.StereoClip{};
+                    try load_stereo(&stripped, &left_sig, &right_sig);
+                    try stereo_collapse_silence(&capped, flens[fli], band_low, band_high, floors[fi], splits[si], 0);
+                    try stereo_trim_silence.stereo_trim_silence(&stripped, flens[fli], band_low, band_high, floors[fi], splits[si]);
+                    if (!eq(capped.left.samples(), stripped.left.samples())) return error.ZeroCapLeftNotStripped;
+                    if (!eq(capped.right.samples(), stripped.right.samples())) return error.ZeroCapRightNotStripped;
+                    if (capped.left.len != capped.right.len) return error.ZeroCapUnbalanced;
+                }
+            }
+        }
+    }
+
+    // 2. THE CAP LAW — over many caps, the stereo collapse equals the hand-built capped keep, each jointly-silent run keeping min(count, max) samples, both channels
+    //    equal length.
+    {
+        const caps = [_]u32{ 0, 1, 2, 3, 4, 5, 8, 12, 100 };
+        var ci: u32 = 0;
+        while (ci < caps.len) : (ci += 1) {
+            var got = pan.StereoClip{};
+            try load_stereo(&got, &left_sig, &right_sig);
+            var src = pan.StereoClip{};
+            try load_stereo(&src, &left_sig, &right_sig);
+            var want = pan.StereoClip{};
+            try stereo_collapse_silence(&got, 4, band_low, band_high, 500, 2, caps[ci]);
+            try by_hand(&want, &src, 4, band_low, band_high, 500, 2, caps[ci]);
+            if (!eq(got.left.samples(), want.left.samples())) return error.CapLeftNotHandKept;
+            if (!eq(got.right.samples(), want.right.samples())) return error.CapRightNotHandKept;
+            if (got.left.len != got.right.len) return error.CapUnbalanced;
+        }
+    }
+
+    // 3. A KNOWN CAP — with frame 4, floor 500, max 2: the one jointly-silent run (frames 1–3, 12 samples) keeps its first 2 and cuts 10; frame 4 (quiet left, loud
+    //    right) is KEPT on both. Result = 24 − 10 = 14 samples on each channel.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &left_sig, &right_sig);
+        try stereo_collapse_silence(&sc, 4, band_low, band_high, 500, 2, 2);
+        const want_left = [_]i16{
+            20000, 20000, -20000, -20000, // frame 0
+            40,    -40, // 2 kept samples of the 12-sample joint run
+            35,    -35,    35,     -35, // frame 4 — KEPT, quiet on the left
+            20000, 20000, -20000, -20000, // frame 5
+        };
+        const want_right = [_]i16{
+            20000, 20000, -20000, -20000, // frame 0
+            41,    -41, // 2 kept samples of the joint run
+            20000, 20000, -20000, -20000, // frame 4 — the loud right that kept the frame
+            20000, 20000, -20000, -20000, // frame 5
+        };
+        if (!eq(sc.left.samples(), &want_left)) return error.KnownCapLeftWrong;
+        if (!eq(sc.right.samples(), &want_right)) return error.KnownCapRightWrong;
+        if (sc.left.len != 14 or sc.right.len != 14) return error.KnownCapLength;
+    }
+
+    // 4. A CAP PAST THE LONGEST JOINT RUN leaves the master unchanged — max 12 keeps all 12 samples of the one joint run, so nothing is cut.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &left_sig, &right_sig);
+        try stereo_collapse_silence(&sc, 4, band_low, band_high, 500, 2, 12);
+        if (!eq(sc.left.samples(), &left_sig)) return error.IdentityCapLeftChanged;
+        if (!eq(sc.right.samples(), &right_sig)) return error.IdentityCapRightChanged;
+    }
+
+    // 5. MONOTONE IN MAX — a larger cap keeps a master at least as long, both channels equal at every step.
+    {
+        const caps = [_]u32{ 0, 1, 2, 3, 4, 8, 12 };
+        var prev: u32 = 0;
+        var ci: u32 = 0;
+        while (ci < caps.len) : (ci += 1) {
+            var sc = pan.StereoClip{};
+            try load_stereo(&sc, &left_sig, &right_sig);
+            try stereo_collapse_silence(&sc, 4, band_low, band_high, 500, 2, caps[ci]);
+            if (sc.left.len != sc.right.len) return error.MonotoneUnbalanced;
+            if (sc.left.len < prev) return error.NotMonotone;
+            prev = sc.left.len;
+        }
+    }
+
+    // 6. THE LOCKSTEP LAW — the reason this rung exists. Running the proven mono collapse_silence per channel caps DIFFERENT runs: the left's joint region plus frame 4
+    //    (four quiet frames = one 16-sample run) caps to 2, while the right's (three quiet frames = one 12-sample run) also caps to 2 — yet the left keeps 8 fewer
+    //    samples, so the two channels desync. The stereo capper instead holds both equal by capping only the joint run.
+    {
+        var ml = timeline.Clip{};
+        try timeline.splice(&ml, 0, &left_sig);
+        try collapse_silence.collapse_silence(&ml, 4, band_low, band_high, 500, 2, 2);
+        var mr = timeline.Clip{};
+        try timeline.splice(&mr, 0, &right_sig);
+        try collapse_silence.collapse_silence(&mr, 4, band_low, band_high, 500, 2, 2);
+        if (ml.len == mr.len) return error.MonoDidNotDesync; // the honest premise: per-channel mono collapse DOES desync here
+
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &left_sig, &right_sig);
+        try stereo_collapse_silence(&sc, 4, band_low, band_high, 500, 2, 2);
+        if (sc.left.len != sc.right.len) return error.StereoTornApart;
+        if (sc.left.len != 14) return error.StereoWrongLength; // one joint run of 12 capped to 2 → 24 − 10 = 14
+    }
+
+    // 7. THE DEGENERATE LAW, all-joint-silent — a master quiet on BOTH channels everywhere is one coalesced joint run: empty at max 0, unchanged past its length, capped
+    //    to 2 at max 2.
+    {
+        const quiet_l = [_]i16{ 40, -40, 40, -40, 30, -30, 30, -30 }; // one joint run of 8
+        const quiet_r = [_]i16{ 41, -41, 41, -41, 31, -31, 31, -31 };
+        {
+            var sc = pan.StereoClip{};
+            try load_stereo(&sc, &quiet_l, &quiet_r);
+            try stereo_collapse_silence(&sc, 4, band_low, band_high, 500, 2, 0);
+            if (sc.left.len != 0 or sc.right.len != 0) return error.AllJointZeroNotEmpty;
+        }
+        {
+            var sc = pan.StereoClip{};
+            try load_stereo(&sc, &quiet_l, &quiet_r);
+            try stereo_collapse_silence(&sc, 4, band_low, band_high, 500, 2, 100);
+            if (!eq(sc.left.samples(), &quiet_l) or !eq(sc.right.samples(), &quiet_r)) return error.AllJointIdentityChanged;
+        }
+        {
+            var sc = pan.StereoClip{};
+            try load_stereo(&sc, &quiet_l, &quiet_r);
+            try stereo_collapse_silence(&sc, 4, band_low, band_high, 500, 2, 2);
+            const wl = [_]i16{ 40, -40 };
+            const wr = [_]i16{ 41, -41 };
+            if (!eq(sc.left.samples(), &wl) or !eq(sc.right.samples(), &wr)) return error.AllJointCapWrong;
+        }
+    }
+
+    // 8. THE DEGENERATE LAW, no-joint-silent — a master loud on at least one channel in every frame is unchanged on both. Here every frame is loud on the right, so
+    //    NOTHING is jointly silent even though the left goes quiet in the middle.
+    {
+        const some_l = [_]i16{
+            20000, -20000, 20000, -20000, 40, -40, 40, -40, // loud then quiet on the left
+        };
+        const loud_r = [_]i16{
+            20000, 20000, -20000, -20000, 20000, 20000, -20000, -20000, // loud throughout on the right
+        };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &some_l, &loud_r);
+        try stereo_collapse_silence(&sc, 4, band_low, band_high, 500, 1, 0);
+        if (!eq(sc.left.samples(), &some_l)) return error.NoJointLeftChanged;
+        if (!eq(sc.right.samples(), &loud_r)) return error.NoJointRightChanged;
+    }
+
+    // 9a. AN EMPTY CLIP refuses BadFrame (nothing to cap), both channels untouched and balanced.
+    {
+        var sc = pan.StereoClip{};
+        if (stereo_collapse_silence(&sc, 4, band_low, band_high, 500, 2, 2)) |_| return error.EmptySlipped else |e| if (e != error.BadFrame) return error.WrongEmpty;
+        if (sc.left.len != 0 or sc.right.len != 0) return error.EmptyMutated;
+    }
+
+    // 9b. A RAGGED FRAME LENGTH — one that does not divide the clip — refuses BadFrame, both channels untouched.
+    {
+        const five_l = [_]i16{ 1, 2, 3, 4, 5 };
+        const five_r = [_]i16{ 6, 7, 8, 9, 10 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &five_l, &five_r);
+        if (stereo_collapse_silence(&sc, 2, band_low, band_high, 500, 2, 2)) |_| return error.RaggedSlipped else |e| if (e != error.BadFrame) return error.WrongRagged;
+        if (!eq(sc.left.samples(), &five_l) or !eq(sc.right.samples(), &five_r)) return error.RaggedMutated;
+    }
+
+    // 9c. AN INVERTED BAND refuses BadThreshold (through ALES147's precheck), both channels untouched.
+    {
+        const four_l = [_]i16{ 10, 20, 30, 40 };
+        const four_r = [_]i16{ 50, 60, 70, 80 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &four_l, &four_r);
+        if (stereo_collapse_silence(&sc, 2, 1000, -1000, 500, 2, 2)) |_| return error.InvertedSlipped else |e| if (e != error.BadThreshold) return error.WrongInverted;
+        if (!eq(sc.left.samples(), &four_l) or !eq(sc.right.samples(), &four_r)) return error.InvertedMutated;
+    }
+
+    // 9d. AN ILLEGAL FLOOR — above the peak ceiling — refuses BadFloor, both channels untouched and balanced.
+    {
+        const four_l = [_]i16{ 10, 20, 30, 40 };
+        const four_r = [_]i16{ 50, 60, 70, 80 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &four_l, &four_r);
+        if (stereo_collapse_silence(&sc, 2, band_low, band_high, 32769, 2, 2)) |_| return error.BadFloorSlipped else |e| if (e != error.BadFloor) return error.WrongBadFloor;
+        if (!eq(sc.left.samples(), &four_l) or !eq(sc.right.samples(), &four_r)) return error.BadFloorMutated;
+        if (sc.left.len != sc.right.len) return error.BadFloorUnbalanced;
+    }
+
+    print("GREEN ales-stereo-collapse-silence: the INTERIOR SILENCE-CAPPER CARRIED INTO STEREO, one joint silence capped in one lockstep — ALES100 caps each silent run " ++
+        "of a mono clip to a maximum, keeping the pauses yet shortening the long ones (truncate silence to a quarter-second, without deleting the breath that makes " ++
+        "speech legible). Carried into stereo it meets the wall ALES148 met: a StereoClip's defining invariant is that left and right hold the SAME length, yet ALES147 " ++
+        "proved the two channels segment INDEPENDENTLY, their silences differing in count and boundary. Capping each channel by its own silence would cap different runs " ++
+        "to different lengths and desync the pair, so this rung decides ONE cap for BOTH. The rule is the JOINT-SILENCE CAP: read the jointly-silent frames through " ++
+        "ALES148's silence intersection (a frame is dead air only where NEITHER speaker carries sound), coalesce consecutive jointly-silent frames into runs, and for " ++
+        "each run longer than max_silence cut only the EXCESS (keep the run's first min(count, max_silence) samples) from both channels in lockstep, walking back to " ++
+        "front so every earlier run's index stays valid. A frame silent in only one channel is KEPT whole — its other speaker carries sound; only the shared dead air " ++
+        "is shortened, and only its excess is cut, so the breath stays. The crux is two laws. THE ZERO-CAP LAW: stereo_collapse_silence(max=0) equals ALES148's " ++
+        "stereo_trim_silence byte for byte on both channels — capping every joint-silent run to zero removes all joint silence, exactly the stereo stripper. THE CAP " ++
+        "LAW: the result equals the hand-built keep where each jointly-silent run keeps its first min(count, max_silence) samples and every other frame stays whole, per " ++
+        "channel, both channels equal length; a cap past the longest joint run leaves the master unchanged; monotone in max. Proven too: a known cap keeps exactly the " ++
+        "named samples; the lockstep law (per-channel mono collapse desyncs where this holds both at 14); an all-joint-silent master caps its one coalesced run (empty " ++
+        "at 0, unchanged past its length); a no-joint-silent master unchanged on both; an empty clip, a ragged frame length, an inverted band, and an illegal floor each " ++
+        "refuse by name — BadFrame, BadFrame, BadThreshold, BadFloor — both channels untouched and still balanced. It invents no new measurement and no new sample: it " ++
+        "reads its silences through ALES148/ALES147 and removes whole excess-silent frames through ALES2's cut, on both channels in lockstep, fabricating no samples and " ++
+        "reordering nothing; NOT a transcript or a real adaptive VAD; no real sample rate, no network, no keys, no funds, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
