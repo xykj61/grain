@@ -1,0 +1,38 @@
+# tools/ales_stereo_nyquist_witness.rish — stereo_nyquist_flip: the Nyquist flip of a master, both channels in lockstep, total (no refusal), completing the stereo pure-rearrangement class (ALES128).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES128.
+# Design read: active-designing/20260815-025105_fill-ales128-lotus-stereo-nyquist.md
+# Stands on: lotus/nyquist.rye (ALES107 — the mono parity sign flip run once per channel, itself reusing ALES2's one true saturate), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips
+# left/right, and its balance invariant), lotus/timeline.rye (ALES2 — the Clip and its buf/len/samples), lotus/meter.rye (ALES13 — the peak/RMS meter). A Lotus master is a StereoClip whose
+# defining invariant is that left and right hold the same length so the channels stay aligned in time; because both channels hold the same length the parity pattern is identical in each, so
+# modulating a master by the Nyquist frequency lands in both speakers at once. This rung carries ALES107's nyquist_flip into stereo the way ALES127 carried invert: run the proven mono nyquist_flip
+# on each channel. With reverse, rotate, invert, and now the parity flip lifted, the pure-rearrangement class stands whole; like the other three it is total.
+#
+# lotus/stereo_nyquist.rye flips the odd-indexed samples of both channels, reusing ALES107's mono nyquist_flip per channel; because mono nyquist_flip is total and holds each channel's length, the
+# balance invariant is preserved trivially and there is no EditError to forward. The crux is four laws. THE STEREO ALTERNATING-SIGN LAW: each channel equals ALES107's mono nyquist_flip on that
+# channel byte for byte, sample i holding saturate((-1)^i · x), even seats held and odd seats negated. THE BALANCE / LENGTH LAW: left.len == right.len after, both holding their starting length.
+# THE INVOLUTION LAW WITH AN HONEST RAIL: twice the identity off the floor, an odd-indexed sample_min (-32768) seat pinning to -32767 on both channels while even seats always round-trip. THE
+# MAGNITUDE / PARITY LAW: each channel's peak unchanged off the rail, every even seat a fixed point, an all-zero pair and an empty pair their own flip.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_stereo_nyquist_witness.rish
+
+say "ales-stereo-nyquist: Language EN — stereo_nyquist_flip flips the sign of every odd-indexed sample of both channels of a StereoClip, so the Nyquist flip ALES107 named for a mono clip now lands on a real stereo master. A Lotus master is two Clips heard together, one per speaker, whose defining invariant is that left and right hold the same length so the two channels stay aligned in time; because both channels hold the same length the parity pattern is identical in each, so modulating a master by the Nyquist frequency (the spectral-inversion trick that carries a lowpass shape to its highpass twin) lands in both speakers at once. It lifts the parity flip of the stereo suite's pure rearrangement class, and with reverse (ALES125), rotate (ALES126), invert (ALES127), and now the parity flip lifted, the class stands whole. It carries ALES107's proven mono nyquist_flip into stereo — the same parity flip on each channel — so the modulation lands identically in both and the stereo image stays balanced; like the other three it is total and needs no validation. The spectral reading is interpretation, never computed here."
+say "ales-stereo-nyquist: Style Radiant — the rule is stated positively: run the mono nyquist_flip per channel over its public API, itself reusing ALES2's one true saturate so the two's-complement floor is clamped in exactly one place; because mono nyquist_flip is total (it names no span, so it raises no fault) and holds each channel's length, the balance invariant is preserved trivially — both channels enter equal-length, both flip their odd seats, both hold their length, so they leave equal-length, and there is no fault to forward. The crux stands out as four laws: the stereo alternating-sign law (each channel equals ALES107's mono nyquist_flip on that channel byte for byte against a hand-computed vector, sample i holding saturate((-1)^i · x), even seats unchanged and odd seats negated), the balance / length law (left.len == right.len after the edit and both hold their starting length, the stereo image staying aligned), the involution law with an honest rail (stereo_nyquist_flip twice returns both channels to the byte except an odd-indexed sample_min, which saturates to +32767 then lands -32767 per channel while even seats always round-trip), and the magnitude / parity law (off the rail each channel's peak re-measured through ALES13 is unchanged, every even-indexed sample a fixed point per channel, an all-zero pair and an empty pair each their own flip)."
+say "ales-stereo-nyquist: Lens TAME — two bounded i16 Clips (left, right) parity-flipped in lockstep; the balance invariant is asserted on entry and exit, and because mono nyquist_flip is total (void, no EditError) and holds the length, the assertion can never fail and no refusal can land between the two channel edits; nyquist_flip walks only the odd seats of each channel, starting at 1 and stepping by 2, replacing each with saturate(-x) computed in i64 so the negation never overflows before the clamp, never touching an even seat or a byte past len, so the length holds exactly; it reuses ALES107's nyquist_flip per channel over its public API and ALES2's single saturate for the rail, inventing no new primitive; the stereo alternating-sign law is proven against ALES107's own flip run per channel, the honest-rail case is proven in place (an odd-indexed floor pinning to -32767), and the magnitude law reads each channel's peak through ALES13 so a parity sign-flip off the rail is shown to move no loudness; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_nyquist"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_nyquist.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-nyquist: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_nyquist.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-nyquist: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-nyquist: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-nyquist' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-nyquist: selftest did not print the GREEN ales-stereo-nyquist line"
