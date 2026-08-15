@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260815.103732
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title ALES197 — Lotus's stereo console pre-delay, the axis whole
+prompt recur loop — continue the Lotus/ALES ladder Lindy-first crux-first, each finished rung its own signed round
+think ALES196 finished the console pre-delay for mono; the stereo master still had only the wet-domain stereo pre-delay (ALES195). The thin twin ALES196 named closes the pre-delay axis whole — after it the reverb's which/how-much/when are complete for mono and stereo.
+think Composed ALES193's per-channel wet/dry blend over ALES195's per-channel bounded reindex: snapshot each channel's dry, run ALES191 stereo_reverb_preset for wet, form each channel's pre-delayed wet, blend each against its own dry, no cross-channel read so the image holds. No new sample law.
+think StereoReverbConsolePredelayError = stereo_reverb_predelay.StereoReverbPredelayError || BadMix — folds the stereo pre-delay's whole fault set with the mix's BadMix; refusals precede any write, the dry snapshots reads only.
+obs Witness GREEN — six laws, the three edges pinning the composition to its two stereo parents exactly (no-gap = stereo_reverb_mix, dry = identity, full-wet = stereo_reverb_predelay), the mid composition the per-channel weighted average, image held / channels balanced / silence silent, faults forward. ALES195 stereo pre-delay and ALES193 stereo mix re-proven GREEN beside it.
+obs Four rungs this turn (ALES195/196/197 plus the mono pieces they lean on re-proven): the whole pre-delay axis now stands whole across mono and stereo, wet-domain and dry-composed. Purely local, no custody gate reached.
+loom witness=ales_stereo_reverb_console_predelay_witness selftest=GREEN laws=6 edges=3 channels=2 snapshots=4 max_clip=4096
+file active-designing/20260815-103451_fill-ales197-lotus-stereo-console-predelay.md the self-approved design round naming the crux, shape, and six laws
+file lotus/stereo_reverb_console_predelay.rye the rung — stereo dry-composed console pre-delay, ALES193 blend over ALES195 reindex
+file tools/ales_stereo_reverb_console_predelay_witness.rish the witness proving six laws and re-proving ALES195/ALES193 green beside it
+recommend keep-going — the pre-delay axis is whole; the next genuinely new primitive is a damping knob (a high-frequency roll-off inside the reverberant tail, so the room darkens as it decays), purely local, no gate.
