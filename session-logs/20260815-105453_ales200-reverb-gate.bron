@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260815.105453
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title ALES200 — Lotus's gated reverb, the tail cut to a shape
+prompt recur loop — continue the Lotus/ALES ladder Lindy-first crux-first, each finished rung its own signed round
+think The tone axis (ALES198/199) stands whole for mono and stereo, and its named horizon (a true in-loop damped-comb primitive) wants genuinely new arithmetic rather than a clean composition. So this rung opens a fresh reverb axis a reader can build purely by composing proven stages: HOW LONG the tail is heard — gated reverb, the famous eighties drum sound (reverberate into a big room, then slam a noise gate across the quiet decay so only the loud early wash is heard).
+think Shape mirrors reverb_tone (ALES198) exactly, with reverb_mix's precedent for atomicity: reverberate the span wet through ALES190 reverb_preset unchanged, then gate the wet with ALES49's proven downward gate. gate.rye has no precheck helper, so I validate its threshold and ratio inline up front — the SAME guards gate raises (threshold in [1, sample_max], ratio >= 1 with nonzero denominator) — before the wet is written, so a bad gate leaves the clip dry (the atomicity crux). ReverbGateError = reverb_preset.ReverbPresetError || BadThreshold || BadRatio; BadRange is the reverb's own, raised up front.
+obs Witness GREEN on the first metal pass — no RED to book. Five laws: the identity edge (ratio_num == ratio_den equals reverb_preset byte for byte), it equals its composition byte for byte (reverb_preset then gate) with the gated tail differing from the wet, the tail is gated (total energy strictly less than the un-gated wet's), silence stays silence, and the faults forward atomic (BadThreshold, BadRatio, DurationTooLong, BadRange, each with the clip still dry). ALES190 preset and ALES49 gate re-run GREEN beside it; TAME bans clean, width exit 0.
+loom witness=ales_reverb_gate_witness selftest=GREEN laws=5 max_clip=4096 bench_samples=1024 ratio=8:1 threshold=2000
+file active-designing/20260815-105453_fill-ales200-lotus-reverb-gate.md the self-approved design round naming the crux, shape, and five laws
+file lotus/reverb_gate.rye the rung — the wet-tail gate, ALES49 downward gate over ALES190 wet, threshold and ratio prechecked
+file tools/ales_reverb_gate_witness.rish the witness proving five laws and re-proving ALES190/ALES49 green beside it
+recommend keep-going — the thin twin stereo_reverb_gate (the same gate over both channels of a StereoClip, one shared threshold and ratio, the image held) is the ladder's next rung; beyond the pair, a shaped envelope-gate (attack/hold/release over the tail) or a further reverb axis (width, freeze, early/late balance) remain open.
