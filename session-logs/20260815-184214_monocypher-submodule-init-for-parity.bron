@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260815.184214
+editor Zed
+model claude-opus-4-8
+voice Kyri
+host Framework 16 AMD — Eastern (EDT); this session in ai-jail on Vultr SEA VPS
+title Pull the Monocypher parity source — Season G crypto enablement
+prompt Keaton gave permission to pull any submodule crypto source needed, before he restarts the recursion loop
+think Updated to latest state: the loop restarted on its own and is climbing Season G Cryptography — BLAKE2b-512, SHA-512, ChaCha20, and Poly1305 are already landed in Rye and witnessed on metal (HEAD b422b17416), working tree clean.
+think The parity half of Season G needs the vendored Monocypher on disk. git submodule status showed vendor/monocypher uninitialized (leading dash, gitlink ab2b16dd, empty directory), so no parity target was present.
+think Ran git submodule update --init vendor/monocypher — checked out at the pinned ab2b16dd. Monocypher is CC0/BSD-dual, the safe-to-vendor parity target under gratitude-licenses; the source lives inside ~/grain so it survives jail HOME resets.
+obs The parent gitlink is unchanged (still ab2b16dd), so the pull records no parent-repo diff — this is a working-tree enablement, not a commit. This session log is the only tree change, riding alone to record the enablement before the loop restarts.
+obs All four built primitives now have their Monocypher parity source: BLAKE2b/ChaCha20/Poly1305 in src/monocypher.c, SHA-512 in src/optional/monocypher-ed25519.c; the Ed25519 source waits for the signed carry, whose identity-key signing stays the custody gate.
+loom head=b422b17416 monocypher_commit=ab2b16dd primitives_built=4 worktree=clean
+file session-logs/20260815-184214_monocypher-submodule-init-for-parity.bron this record; the submodule checkout itself is a working-tree enablement with no parent-repo diff
+recommend keep-going the crypto source is on disk for parity; the loop can run byte-for-byte parity witnesses on restart, Rye-first, Monocypher as the target
