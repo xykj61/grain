@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260815.025105
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (Eastern EDT convention)
+title ALES128 — Lotus's stereo_nyquist_flip: the Nyquist flip of a master, both channels in lockstep, completing the stereo pure-rearrangement class
+prompt Continue the recurring baton (prin recur) on the ALES/Lotus edge, Lindy-first crux-first; approve my own design rounds; send each finished increment as its own signed round; stop at custody gates.
+think Third lap of this recur run. The stereo pure-rearrangement class opened at ALES125 (reverse), grew at ALES126 (rotate), gained its value-mirror at ALES127 (invert); the crux now is its last member, the parity flip nyquist_flip (ALES107) — modulation by the Nyquist frequency, the spectral-inversion trick carrying a lowpass kernel to its highpass twin, stated honestly in the time domain. Lifting it completes the class in stereo.
+think Read nyquist.rye (mono, void, total; walks only the odd seats from 1 stepping by 2, replacing each with saturate(-x), reusing ALES2's one true saturate; even seats never touched; the honest rail — an odd-indexed sample_min pins to -32767). Because both channels hold the same length, the parity pattern is identical in each. Like reverse/rotate/invert, the lift runs mono nyquist_flip per channel with no argument; total and length-holding, so balance is preserved trivially and no fault forwards — void, no try.
+think Wrote the design read, module (void, no try), witness. A transient dropped the first witness write (FileNotFound on run); re-wrote it and it built. Four laws proven on metal: stereo alternating-sign law (each channel == ALES107 byte for byte, sample i holds saturate((-1)^i · x), floor rides along), balance/length law (left.len == right.len even and odd, both hold length), involution law with honest rail (twice the identity off the floor, odd-indexed sample_min seats pinning to -32767 on both channels while even seats round-trip), magnitude/parity law (each channel's peak through ALES13 unchanged off the rail, every even seat a fixed point, all-zero and empty pairs their own flip).
+obs The class is whole — reverse (seats, total order), rotate (seats, cyclic), invert (values, all signs), nyquist_flip (values, parity signs) all lifted to stereo, each proven per channel against its mono elder. The parity pattern being length-locked across channels is the neat fact that makes the lift trivial. Witness GREEN after the re-write. No custody gate reached — purely local software, self-approved design round.
+loom witness=ales_stereo_nyquist_witness result=GREEN laws=4 channels=2
+file lotus/stereo_nyquist.rye ALES128 — stereo_nyquist_flip lifts ALES107's total mono nyquist_flip to a StereoClip, no validation needed, four laws with the honest rail.
+file tools/ales_stereo_nyquist_witness.rish the witness — builds, runs selftest, asserts the GREEN ales-stereo-nyquist line.
+file active-designing/20260815-025105_fill-ales128-lotus-stereo-nyquist.md the self-approved design read for this rung.
+file lotus/README.md front door synced — ALES128 roster entry and stamp.
+recommend check-in (either) stereo pure-rearrangement class complete (reverse · rotate · invert · nyquist_flip); a natural pause point to pick the next stereo family (value maps, or the analysis/silence rungs) — no gate reached.
