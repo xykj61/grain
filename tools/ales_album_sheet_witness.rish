@@ -1,0 +1,37 @@
+# tools/ales_album_sheet_witness.rish — a whole record's readable table of contents: a `format lotus-album-sheet-v1` page rendered
+# from an unpacked ALES223 album, the eye's version of the album frame (ALES225).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES225.
+# Design read: active-designing/20260815-140635_fill-ales225-lotus-album-sheet.md
+# Idiom kin: lotus/cue_sheet.rye (ALES21, the readable-render idiom) · lotus/render_album.rye (ALES223, the unpacked album this
+# reads). A projection — no new frame, no new hash.
+#
+# lotus/album_sheet.rye renders an unpacked album as a human-readable listing. The selftest proves: every track appears in order
+# with its name and manifest fields, the wav_bytes exactly the .wav length (the listing law); the page opens with the format and
+# `album <count>` lines (the header law); a zero-track album renders just the two header lines (the empty law); a too-small buffer
+# refuses Overflow (the atomic law). A text render only — no real file, no DAC, no network, no keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_album_sheet_witness.rish
+
+say "ales-album-sheet: Language EN — ALES225 draws a whole record's readable table of contents: a `format lotus-album-sheet-v1` page listing the track count and, per track, its name, preset, rate, channels, frames, and size — the eye's version of the ALES223 album frame."
+say "ales-album-sheet: Style Radiant — a projection, not a round-trip, the same shape the cue sheet took: the album frame is the round-trippable artifact, the sheet is the page a keeper reads; the listing law, the header law, the empty law, and the atomic law each named and proven on metal."
+say "ales-album-sheet: Lens TAME — every field bounded so the page fits a fixed buffer, a too-small buffer refused by name; siloed to lotus/, no real file, no DAC, no network, no keys, no funds, no real device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/album_sheet"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/album_sheet.rye -femit-bin=${bin}"]
+assert build.ok else "ales-album-sheet: build failed — ${build.err}"
+
+let outfile = "lotus/bin/album_sheet.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-album-sheet: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-album-sheet: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-album-sheet' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-album-sheet: selftest did not print the GREEN ales-album-sheet line"
+
+say "ales-album-sheet: GREEN — a whole record now reads as a page a keeper can see at a glance, the album triad (frame · content address · table of contents) whole. The next Lotus crux names who made it — a signed carry (crypto seam) on Keaton's word."

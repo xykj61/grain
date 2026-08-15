@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260815.140914
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) time convention
+title ALES225 — Lotus album_sheet: a whole record's readable table of contents
+prompt recur the itinerary Lindy-first crux-first, take the next agent-doable lap, send each increment, stop at custody gates
+think ALES223 (album frame) and ALES224 (album content address) are byte frames a program reads, not a page a keeper reads; before opening every track a keeper wants to SEE what a record holds
+think Lindy-first crux-first, and the finishing edge: album_sheet completes the album triad (frame - content address - table of contents) that mirrors the render family, a clean no-crypto rung before the signed-carry seam
+think the crux is a quiet one, the cue-sheet shape (ALES21): a PROJECTION, not a round-trip — the album frame is round-trippable, the sheet is the eye's version; no new frame, no new hash, only a bounded render over fields already proven by unpack and open_manifest
+obs GREEN on the first metal pass; removed an unused tally_copy import caught before running (kept the file to its actual dependencies); the witness checks the rendered text with std.mem.indexOf for the header, count line, ordered track lines, and the exact wav_bytes field
+obs SheetError is just Overflow — a projection is otherwise infallible; render_sheet reads render_album.Album (Track.name, bundle.manifest.{preset_name, sample_rate, channels, frames, wav_bytes}); every field bounded so max_sheet_bytes is a comptime ceiling
+obs no custody gate reached — a bounded text render over in-process fields, siloed to lotus/; the next Lotus crux (name who made it, a signed carry) is a crypto seam that surfaces for Keaton's word rather than crossing
+loom witness=ales_album_sheet_witness result=GREEN laws=4 module=lotus/album_sheet.rye
+file active-designing/20260815-140635_fill-ales225-lotus-album-sheet.md the self-approved design round naming the crux and four laws
+file lotus/album_sheet.rye the module — render_sheet, a projection over an unpacked album
+file tools/ales_album_sheet_witness.rish the witness proving the four laws GREEN on metal
+recommend check-in the album triad (frame - content address - table of contents) is whole; the next Lotus crux names who made it — a signed carry over the vendored Monocypher, a crypto seam that wants Keaton's word before it opens
