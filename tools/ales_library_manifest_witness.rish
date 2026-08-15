@@ -1,0 +1,40 @@
+# tools/ales_library_manifest_witness.rish — a keeper's whole catalog, content-addressed: a sealed `format lotus-library-v1` record
+# listing each album by name and the Sha256 of its ALES224 album_manifest, one level up from the album manifest (ALES226).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES226.
+# Design read: active-designing/20260815-141539_fill-ales226-lotus-library-manifest.md
+# Idiom kin: lotus/album_manifest.rye (ALES224, the sealed content-address this mirrors one level up) · lotus/seal.rye (ALES38, the
+# verify-before-trust frame reused whole). Content-addressing composes upward — a library names each album by its manifest digest,
+# not its bytes, so the record stays kilobytes no matter how large the catalog.
+#
+# lotus/library_manifest.rye seals a keeper's whole catalog. The selftest proves: seal then open recovers the count and every
+# (name, digest) in order and verify_library accepts the exact albums (the content-address law); a flipped album-manifest byte
+# refuses AlbumDigestMismatch, a swapped name AlbumNameMismatch, a dropped album CountMismatch (the tamper law); a tampered body
+# refuses DigestMismatch, a wrong header BadRecord (the seal law); a spaced name refuses NameTooLong, a malformed body
+# BadLibraryManifest (the grammar law); a too-small buffer refuses Overflow (the atomic law). Content-addressing, not a signature —
+# no real file, no DAC, no network, no keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_library_manifest_witness.rish
+
+say "ales-library-manifest: Language EN — ALES226 seals a keeper's whole catalog: a `format lotus-library-v1` record listing the album count and, per album, its name and the Sha256 of its ALES224 album_manifest — one level up from the album manifest, the top artifact a whole body of work publishes under."
+say "ales-library-manifest: Style Radiant — content-addressing composes upward where bytes cannot: a library names each album by its manifest digest, so the record stays kilobytes no matter how large the catalog; the content-address law, the tamper law, the seal law, the grammar law, and the atomic law each named and proven on metal."
+say "ales-library-manifest: Lens TAME — every field bounded so the record fits a fixed buffer, a too-small buffer refused by name; content-addressing, not a signature; siloed to lotus/, no real file, no DAC, no network, no keys, no funds, no real device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/library_manifest"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/library_manifest.rye -femit-bin=${bin}"]
+assert build.ok else "ales-library-manifest: build failed — ${build.err}"
+
+let outfile = "lotus/bin/library_manifest.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-library-manifest: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-library-manifest: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-library-manifest' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-library-manifest: selftest did not print the GREEN ales-library-manifest line"
+
+say "ales-library-manifest: GREEN — a keeper's whole body of work now carries one short, sealed, citable name, content-addressed without shipping a byte of audio. The album family climbs whole: bundle · album · library, each fixed by the digest of the level below. The next Lotus crux still names who made it — a signed carry (crypto seam) on Keaton's word."
