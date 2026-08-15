@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260815.130938
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (VPS) — Eastern (EDT) time convention
+title ALES216 — Lotus stereo WAV container, the door widened to two channels
+prompt recur the road Lindy-first crux-first; take the next agent-doable lap, self-approve design rounds, send each increment, stop at custody gates
+think ALES215 opened the container family with mono; the suite keeps a mono→stereo pair for almost every effect, and the reverb/width/pan families all closed their axis whole across both channels. The container owes the same completeness so a placed stereo wet image (ALES214) can be exported as stereo, not folded to mono.
+think stereo_wav carries ALES215's discipline verbatim, differing only where stereo differs: channels 2, block_align 4, byte_rate rate*4, samples stored interleaved L R L R as every WAV reader expects.
+think Widened the alignment gate: a stereo data chunk must be a whole number of two-sample FRAMES (data_size % 4 == 0), refusing PartialFrame so neither channel ever receives a lone unpaired sample.
+think encode takes two equal-length channel buffers (ChannelLengthMismatch guards inequality); decode de-interleaves into two caller buffers. A stereo decoder refuses a MONO container by name (NotStereo).
+obs GREEN on the first metal pass: round-trip byte-for-byte on both channels, interleave law (L at even frame slots, R at odd), canonical stereo header, empty pair, PartialFrame at the frame border, and every named fault including NotStereo. tame_style_check bans clean.
+obs Caught and removed a stray [max_file]u8 (~4MB) stack buffer left in the encode-fault selftest block before running — a bounded-discipline slip fixed at authoring, no RED booked (never reached metal).
+obs Honest scope held: byte container only, no real file/DAC/acoustic fact, no network/keys/funds. No custody gate.
+loom witness=ales_stereo_wav_witness result=GREEN frames_roundtrip=8 channels=2 faults_named=15 header_bytes=44
+file lotus/stereo_wav.rye the canonical interleaved stereo RIFF/WAVE container, encode/decode verify-before-trust
+file tools/ales_stereo_wav_witness.rish the on-metal witness, GREEN
+file active-designing/20260815-130649_fill-ales216-lotus-stereo-wav.md self-approved design round for ALES216
+recommend keep-going the container family stands whole (mono + stereo); a render rung — run a small effect chain over a buffer and write the .wav result — is the honest next crux
