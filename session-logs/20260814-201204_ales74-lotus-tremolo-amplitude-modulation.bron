@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260814.201204
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title ALES74 — Lotus's tremolo, the triangle LFO turned on amplitude
+prompt recur the itinerary Lindy-first crux-first, take the next agent-doable lap, approve own design rounds, send each finished increment, stop at custody gates
+think ALES71–73 all point the triangle LFO at ONE target — the delay: the chorus mixes the swinging copy, the vibrato hears it alone, the flanger feeds it back. The LFO driver triangle_delay_at is a GENERAL scaled triangle, though — named for its first use, it knows nothing of delay. Lindy-first, the family had not yet grown modulation of AMPLITUDE, the primitive auto-pan and the ring modulator will stand on; crux-first, the decisive recognition is that the SAME triangle that drove the delay drives the gain — a new target, no new arithmetic.
+think The thinning is the reward. Every earlier delay rung snapshotted the dry prefix BECAUSE a moving read must not read a sample it just wrote. The tremolo's output depends only on its OWN input sample — never a neighbour — so it writes IN PLACE WITH NO SNAPSHOT; the whole frozen-prefix machinery falls away. This is the thinnest rung in the modulation family, and the honest reason is stated as an invariant, not assumed.
+think Held the gain to an ATTENUATION — 0 ≤ g ≤ glide_scale (floor at silence via BadDepth centre − depth < 0, top at unity via BadGain centre + depth > glide_scale). So x·g/scale is never louder than x and already fits the i16 rail: the write's saturate is a proven no-op, exactly as the vibrato's wet-only write never clips. A gain above unity would risk the rail and is refused rather than silently saturated.
+think Chose centre scale/2, depth scale/2, period 4 for the hand-computed law — the four quarter anchors trace ½ → 1 → ½ → 0, so a steady 1000 becomes 500,1000,500,0,500,1000, each an exact integer. Proved the family recognition directly: a DC signal traces triangle_delay_at sample-by-sample. Zero-depth is a constant-gain fader; unity+zero-depth passes sample_min through byte-for-byte (the saturate no-op made visible at the very edge of the rail).
+obs GREEN on the first build across all six laws — no RED. Faults: BadPeriod (odd/zero/wide), BadDepth (negative depth or floor below silence), BadGain (top past unity), BadRange — each refusing before any write, the clip untouched; there is NO BadDelay and NO BadLevel (no delay line, the gain IS the level). tame_style_check bans clean, ratchets printed. The design read was self-approved (no custody gate — bounded in-process i16 PCM, no network/keys/funds/device/sample-rate).
+loom witness=ales_tremolo_witness laws=6 green=1 reuses=triangle_delay_at glide_scale=256 period_law=multiple_of_4 gain=attenuation snapshot=none
+file lotus/tremolo.rye ALES74 — the triangle LFO read as a gain, y[i]=saturate(x[i]·g(i)/glide_scale), in place with no snapshot; reuses ALES71's driver
+file tools/ales_tremolo_witness.rish witness GREEN, proves a steady signal traces the triangle gain and each fault refuses by name
+file active-designing/20260814-201204_fill-ales74-lotus-tremolo-amplitude-modulation.md design read for the rung, self-approved round
+file lotus/README.md Status rung list + stamp carry ALES74
+recommend keep-going ALES75 — auto-pan (the same LFO on ALES10's stereo field, a voice swung left-right rather than up-down in loudness) or the ring modulator (a faster carrier on the same gain); both stand on this proven amplitude-LFO path
