@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260814.232010
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title ALES96 — Lotus's silence stripper, the first rung to turn an analysis result back into an edit
+prompt recur the itinerary Lindy-first crux-first; after ALES95 sent, take the next agent-doable Lotus lap, self-approve, prove GREEN, send as its own signed round; STOP at custody gates
+think ALES95's design read named the first tool built on it — a silence trimmer that drops the .silent runs. Lindy-first that is the most common single gesture in all of audio editing (trim silence, the dead-air remover every recorder ships). Crux-first it is the decisive move that closes the analysis→edit loop: a reader (ALES93) fused into a classifier (ALES94) sequenced into a segmenter (ALES95) now ACTS on the clip.
+think The whole correctness is composition again: the trimmed clip must equal a hand-built concatenation of the non-silent runs read from the original — the trimmer is the segmenter's silent runs removed, nothing invented. The crux law checks it across a grid of frame lengths, floors, and splits over a mixed head/body/gap/noise/tail signal.
+think The one real algorithmic care: cut the silent runs BACK TO FRONT so earlier runs' indices stay valid — a cut shifts only samples after it. Wrote that as an invariant on each cut (run.start + run.count <= clip.len holds because only already-cut later runs sat after it) and a length postcondition (clip.len == original - silent_total).
+think Name collision caught: lotus/strip.rye already exists as ALES9 (mute/solo channel strip). Renamed the module trim_silence.rye and function trim_silence to stand clear, per the comlink-tendency (clear, safe, no collision) — noted the rename in the header, README, and witness so a reader never confuses the two.
+obs First build and first witness run both GREEN — the composition-of-a-proven-reader pattern (ALES93→94→95→96) keeps each rung provably its predecessor read (or now acted) a new way, so bugs have nowhere to hide.
+obs This rung WRITES (an edit) where ALES93/94/95 were read-only — yet only through ALES2's own cut over whole classified-silent frames; it fabricates no samples and reorders nothing, kept honest in the scope note.
+obs No custody gate reached — software only, local; no funds, keys, network, device, or real speaker.
+loom witness=ales_trim_silence_witness green=1 laws=8 module_bytes=16k
+file lotus/trim_silence.rye ALES96 — trim_silence(), segmenting through ALES95 then cutting the .silent runs back-to-front through ALES2's cut.
+file tools/ales_trim_silence_witness.rish the witness — builds, runs the selftest, asserts the GREEN line.
+file active-designing/20260814-232010_fill-ales96-lotus-silence-stripper.md the self-approved design read naming the concatenation crux and the back-to-front cut.
+recommend keep-going — the next Lotus crux each build on this analysis→edit loop (a voice-activity gate opening ALES65 on the voiced runs, a keep-only-voiced extractor, or an end-trim-only variant), each its own self-approved round; no custody gate reached.
