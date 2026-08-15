@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260815.032122
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (Eastern EDT convention)
+title ALES132 — Lotus's stereo_drive: the hard-clip drive carried into stereo, one shared map, opening the stereo nonlinear class
+prompt Continue the recurring baton (prin recur) on the ALES/Lotus edge, Lindy-first crux-first; approve my own design rounds; send each finished increment as its own signed round; stop at custody gates.
+think Seventh lap of this recur run. The stereo amplitude class stood whole in three (normalize ALES129, fade ALES130, crossfade ALES131), all carrying one lesson: a per-channel quantity identical across channels preserves the stereo image because scaling is LINEAR. Crux-first, the highest-Lindy next move is not another linear lift but to OPEN the complementary class — the nonlinear one — because it teaches the amplitude class's own lesson in reverse and because the DRIVE/saturation family is core to a suite serving musicians (Linengrow).
+think Read drive.rye (ALES78): drive(clip, start, count, num, den, ceil), y[i] = pin(x[i]·num/den, ±ceil), a pre-gain into ALES49's ceiling; DriveError = {BadGain (zero den, num<den below unity, num>max_drive_num), BadCeiling ([1, sample_max]), BadRange}. Because BadGain and BadCeiling depend only on the shared params and BadRange on the shared length, I mirrored ALES78's own guards once up front (matching the stereo_fade validate-before-either-mutates pattern), then ran mono drive per channel — each pre-validated to succeed. Reused drive.DriveError and drive.max_drive_num by name.
+think Wrote design read, module, witness. The honest crux is the PER-CHANNEL NONLINEAR LAW: unlike ALES130/131 where a shared quantity held the inter-channel ratio, a drive is nonlinear, so a 1:2 master driven ×8 into a 3000 ceiling pins BOTH channels to 3000 — the ratio compresses to 1:1 at the rail. I proved this positively (both pin to the ceiling) AND asserted the linear law does NOT hold (r != 2·l) so the contrast is checkable, not just narrated. The ceiling and sign discipline still hold per channel, and an identical-channel master stays identical even under the nonlinear map. Witness GREEN; tame_style_check bans clean.
+obs This opens a new stereo class cleanly and states a real lesson: the stereo lift's image-preservation story is a property of LINEARITY, not of stereo. The amplitude class got it for free; the nonlinear class honestly cannot, and pretending otherwise would be the bug. No custody gate reached — purely local software, self-approved design round. The remaining DRIVE-family lifts (soft_drive, crush, fold, tube, decimate) now inherit this rung's pattern and its nonlinear-law framing.
+loom witness=ales_stereo_drive_witness result=GREEN laws=4 channels=2 class=nonlinear-open
+file lotus/stereo_drive.rye ALES132 — stereo_drive, the hard-clip drive lifted to stereo: one shared map on both channels, validated once, four laws with the per-channel nonlinear crux (the ratio compresses).
+file tools/ales_stereo_drive_witness.rish the witness — builds, runs selftest, asserts the GREEN ales-stereo-drive line.
+file active-designing/20260815-032122_fill-ales132-lotus-stereo-drive.md the self-approved design read for this rung.
+file lotus/README.md front door synced — ALES132 roster entry on the Status line.
+recommend keep-going the stereo nonlinear class is open; the next mechanical laps lift the remaining DRIVE-family maps (soft_drive, crush, fold, tube, decimate) to stereo, each inheriting this rung's shared-map pattern and nonlinear-law framing — no gate reached.
