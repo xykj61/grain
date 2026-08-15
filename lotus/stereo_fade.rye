@@ -1,0 +1,218 @@
+//! lotus/stereo_fade.rye — ALES130: the fade envelope carried into stereo, ONE SHARED RAMP. ALES4 named `fade` — scale a span by a fraction that ramps linearly from num0/den to num1/den across the
+//! span, the click-free fade-in from silence and fade-out to silence every editor ships — for a mono Clip. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining
+//! invariant is that LEFT and RIGHT hold the SAME length so the channels stay aligned in time. This rung carries fade into stereo the way the amplitude class asks: run ALES4's proven mono `fade` on
+//! each channel with the SAME ramp, so a fade opens or closes BOTH speakers together. A fade differs from ALES129's normalize in a clarifying way — its gain is not a measured scalar but a positional
+//! ramp the caller names, and because a positional gain is identical for both channels, that shared ramp preserves the stereo image for free (no measurement, no linking needed).
+//!
+//! The rule, stated once: refuse BadGain on a zero denominator and BadRange on a span outside the samples BEFORE either channel is mutated — both channels enter equal-length, so the denominator and
+//! span are checked ONCE against the shared length up front, and a refusal never desynchronises the channels; otherwise ramp both channels over [start, start+count) from num0/den to num1/den through
+//! ALES4's `fade`. A fade-in opens both speakers from silence, a fade-out closes them, a stereo fade-out laid under a stereo fade-in is a stereo crossfade.
+//!
+//! The crux — four laws. THE STEREO FADE LAW: each channel equals ALES4's mono `fade` with the SAME ramp (num0, num1, den) over the same span byte for byte, in both directions — a fade-in leaving the
+//! first sample silent and the last unchanged, a fade-out mirroring it, per channel. THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their starting length (a fade writes
+//! values only, never the count). THE SHARED-RAMP IMAGE LAW: the same positional ramp scales both channels at each seat, so the inter-channel ratio is held sample by sample — a master whose right is
+//! twice its left, faded in, keeps that 1:2 ratio at every seat (a panned source stays panned through the fade); an identical-channel master stays identical. THE ATOMICITY / DEGENERATE LAW: any
+//! refusal (a zero denominator, a span past the samples) leaves BOTH channels byte for byte untouched and still balanced; count = 0 the identity on both, a sub-span fade leaving the rest untouched.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES130.
+//! Design read: active-designing/20260815-030651_fill-ales130-lotus-stereo-fade.md
+//! Stands on: lotus/fade.rye (ALES4) — the mono ramped gain run once per channel, itself reusing ALES2's one true saturate; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and
+//! its balance invariant; lotus/timeline.rye (ALES2) — the Clip and its buf/len/samples; lotus/meter.rye (ALES13) — the peak/RMS meter, used by the witness to read each channel's peak.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only through ALES4's own fade, never a length,
+//! never a byte fabricated; the ramp runs across sample INDICES, not seconds (no real time base), and the levels are plain fractions, NOT decibels. No real sample rate, no network, no keys, no funds,
+//! no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_fade.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const fade = @import("fade.rye");
+const meter = @import("meter.rye");
+
+pub const stereo_fade_version = "20260815.030651";
+
+/// Stereo fade's faults are exactly ALES4's own `FadeError` — `BadGain` on a zero denominator and `BadRange` on a span outside the samples — reused by name, since the stereo lift adds no new fault:
+/// it only runs the same ramp on each channel after one shared validation.
+pub const StereoFadeError = fade.FadeError;
+
+/// Ramp the gain of `[start, start+count)` in BOTH channels of `sc` from num0/den to num1/den, the SAME ramp on each, saturating to the i16 range. A fade-in runs num0=0 → num1=den, a fade-out runs
+/// num0=den → num1=0. Validates both channels once against the shared length before either is mutated: refuses `BadGain` on a zero denominator and `BadRange` on a span outside the samples, both
+/// channels untouched. Values only — never the length; the two channels leave balanced.
+pub fn stereo_fade(sc: *pan.StereoClip, start: u32, count: u32, num0: i32, num1: i32, den: u32) StereoFadeError!void {
+    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the edit preserves.
+    assert(sc.left.len == sc.right.len);
+
+    // invariant: no divide by zero, and the span lies wholly within the (shared) current samples, checked without underflow — refused by name before any write, so a refusal never desyncs the channels.
+    if (den == 0) return error.BadGain;
+    const len: u32 = sc.left.len;
+    if (start > len) return error.BadRange;
+    if (count > len - start) return error.BadRange;
+
+    // Every check passed and holds identically for both channels, so each mono fade is pre-validated to succeed — no refusal can land between the two channel edits. The SAME ramp on each.
+    try fade.fade(&sc.left, start, count, num0, num1, den);
+    try fade.fade(&sc.right, start, count, num0, num1, den);
+
+    // invariant: the channels leave balanced — a fade writes values only, so each channel holds its starting length and the stereo image stays aligned.
+    assert(sc.left.len == sc.right.len);
+    assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
+}
+
+// --- selftest: THE STEREO FADE LAW — each channel equals ALES4's mono fade with the SAME ramp byte for byte, fade-in and fade-out; THE BALANCE / LENGTH LAW — left.len == right.len after, both holding
+//     their starting length; THE SHARED-RAMP IMAGE LAW — the inter-channel ratio held at each seat (a 1:2 master stays 1:2 through the fade), an identical-channel master staying identical; THE
+//     ATOMICITY / DEGENERATE LAW — a refusal leaves both channels untouched and balanced, count = 0 the identity, a sub-span fade leaving the rest untouched ------------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try timeline.splice(&sc.left, 0, l);
+    try timeline.splice(&sc.right, 0, r);
+}
+
+fn run_selftest() !u8 {
+    // 1. THE STEREO FADE LAW — each channel equals ALES4's mono fade with the SAME ramp, proven side by side over one span with different per-channel samples; a fade-in ramps 0 → full with exact
+    //    endpoints (first sample silent, last unchanged) and a linear middle, on each channel independently against ALES4's own fade.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 400, 400, 400, 400, 400 }, &[_]i16{ 800, 800, 800, 800, 800 });
+        try stereo_fade(&sc, 0, 5, 0, 4, 4); // fade-in, fraction 0/4 → 4/4
+
+        var ml = timeline.Clip{};
+        try timeline.splice(&ml, 0, &[_]i16{ 400, 400, 400, 400, 400 });
+        try fade.fade(&ml, 0, 5, 0, 4, 4);
+        var mr = timeline.Clip{};
+        try timeline.splice(&mr, 0, &[_]i16{ 800, 800, 800, 800, 800 });
+        try fade.fade(&mr, 0, 5, 0, 4, 4);
+
+        if (!eq(sc.left.samples(), ml.samples())) return error.LeftChannelWrong;
+        if (!eq(sc.right.samples(), mr.samples())) return error.RightChannelWrong;
+        // Concretely: left ramps 0→400, right ramps 0→800, each linear.
+        if (!eq(sc.left.samples(), &[_]i16{ 0, 100, 200, 300, 400 })) return error.LeftFadeInWrong;
+        if (!eq(sc.right.samples(), &[_]i16{ 0, 200, 400, 600, 800 })) return error.RightFadeInWrong;
+    }
+
+    // 1b. A fade-out mirrors it on both channels — full → silence, the last sample silent, per channel.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 400, 400, 400, 400, 400 }, &[_]i16{ 800, 800, 800, 800, 800 });
+        try stereo_fade(&sc, 0, 5, 4, 0, 4); // fade-out, fraction 4/4 → 0/4
+        if (!eq(sc.left.samples(), &[_]i16{ 400, 300, 200, 100, 0 })) return error.LeftFadeOutWrong;
+        if (!eq(sc.right.samples(), &[_]i16{ 800, 600, 400, 200, 0 })) return error.RightFadeOutWrong;
+    }
+
+    // 2. THE BALANCE / LENGTH LAW — the channels stay equal length and each holds its starting length; a fade writes values only. Proven at an even and an odd length.
+    {
+        var even = pan.StereoClip{};
+        try load_stereo(&even, &[_]i16{ 100, 200, 300, 400 }, &[_]i16{ 400, 300, 200, 100 });
+        try stereo_fade(&even, 0, 4, 0, 2, 2);
+        if (even.left.len != even.right.len) return error.EvenUnbalanced;
+        if (even.left.len != 4) return error.EvenLength;
+
+        var odd = pan.StereoClip{};
+        try load_stereo(&odd, &[_]i16{ 100, 200, 300 }, &[_]i16{ 300, 200, 100 });
+        try stereo_fade(&odd, 0, 3, 2, 0, 2);
+        if (odd.left.len != odd.right.len) return error.OddUnbalanced;
+        if (odd.left.len != 3) return error.OddLength;
+    }
+
+    // 3a. THE SHARED-RAMP IMAGE LAW — the same positional ramp scales both channels at each seat, so a master whose right is exactly twice its left keeps that 1:2 ratio at every seat through the fade.
+    //     A panned source stays panned; the fade never drifts the image (contrast ALES129, where the SCALAR is shared; here the whole RAMP is shared).
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 1000, 1000, 1000, 1000, 1000 }, &[_]i16{ 2000, 2000, 2000, 2000, 2000 });
+        try stereo_fade(&sc, 0, 5, 0, 4, 4); // fade-in
+        var i: u32 = 0;
+        while (i < 5) : (i += 1) {
+            const l = sc.left.samples()[i];
+            const r = sc.right.samples()[i];
+            // right is twice left at every seat — the 1:2 image held through the ramp (l=0 at i=0, and 2·l==r thereafter).
+            if (@as(i32, r) != 2 * @as(i32, l)) return error.ImageRatioBroken;
+        }
+    }
+
+    // 3b. An identical-channel master stays identical through the fade — the shared ramp lands the same value in both channels at every seat (a mono-in-stereo signal never splits).
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 500, 500, 500, 500 }, &[_]i16{ 500, 500, 500, 500 });
+        try stereo_fade(&sc, 0, 4, 4, 0, 4); // fade-out
+        if (!eq(sc.left.samples(), sc.right.samples())) return error.IdentityChannelsSplit;
+    }
+
+    // 4a. THE ATOMICITY LAW, bad span — a span past the samples refuses BadRange, both channels byte for byte untouched and still balanced.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 100, -200, 300 }, &[_]i16{ -50, 60, -70 });
+        if (stereo_fade(&sc, 2, 5, 0, 4, 4)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(sc.left.samples(), &[_]i16{ 100, -200, 300 })) return error.BadRangeLeftMutated;
+        if (!eq(sc.right.samples(), &[_]i16{ -50, 60, -70 })) return error.BadRangeRightMutated;
+        if (sc.left.len != sc.right.len) return error.BadRangeUnbalanced;
+    }
+
+    // 4b. THE ATOMICITY LAW, zero denominator — refuses BadGain, both channels untouched.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 100, -200, 300 }, &[_]i16{ -50, 60, -70 });
+        if (stereo_fade(&sc, 0, 3, 0, 4, 0)) |_| return error.BadGainSlipped else |e| if (e != error.BadGain) return error.WrongBadGain;
+        if (!eq(sc.left.samples(), &[_]i16{ 100, -200, 300 })) return error.BadGainLeftMutated;
+        if (!eq(sc.right.samples(), &[_]i16{ -50, 60, -70 })) return error.BadGainRightMutated;
+    }
+
+    // 4c. THE DEGENERATE LAW — count = 0 is the identity on both channels, and a sub-span fade leaves the rest of each channel untouched.
+    {
+        var noop = pan.StereoClip{};
+        try load_stereo(&noop, &[_]i16{ 7, -8, 9 }, &[_]i16{ -7, 8, -9 });
+        try stereo_fade(&noop, 1, 0, 0, 4, 4); // empty span — identity
+        if (!eq(noop.left.samples(), &[_]i16{ 7, -8, 9 })) return error.ZeroCountLeftChanged;
+        if (!eq(noop.right.samples(), &[_]i16{ -7, 8, -9 })) return error.ZeroCountRightChanged;
+
+        var sub = pan.StereoClip{};
+        try load_stereo(&sub, &[_]i16{ 400, 400, 400, 400 }, &[_]i16{ 800, 800, 800, 800 });
+        try stereo_fade(&sub, 0, 2, 0, 2, 2); // fade only the first two seats
+        // the untouched tail stays exactly as it was on both channels.
+        if (sub.left.samples()[2] != 400 or sub.left.samples()[3] != 400) return error.SubSpanLeftTailTouched;
+        if (sub.right.samples()[2] != 800 or sub.right.samples()[3] != 800) return error.SubSpanRightTailTouched;
+    }
+
+    // The witness reads each channel's peak through ALES13 to confirm a throughout-attenuating fade (half → silence, no seat at unity) lowers each channel's loudness, the meter reused read-only. A
+    // fade-OUT would leave its first sample at full gain and so hold the peak; a half→zero ramp attenuates every seat, so the peak strictly drops on both channels.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 1000, 1000, 1000, 1000 }, &[_]i16{ 2000, 2000, 2000, 2000 });
+        const lb = try clip_peak(&sc.left);
+        const rb = try clip_peak(&sc.right);
+        try stereo_fade(&sc, 0, 4, 2, 0, 4); // half → silence, attenuating every seat
+        if (!(try clip_peak(&sc.left) < lb)) return error.LeftPeakNotLowered;
+        if (!(try clip_peak(&sc.right) < rb)) return error.RightPeakNotLowered;
+    }
+
+    print("GREEN ales-stereo-fade: STEREO FADE ENVELOPE, ONE SHARED RAMP — ramp the gain of a span in both channels of a master from one level to another, the SAME ramp on each, the click-free " ++
+        "fade-in from silence and fade-out to silence carried into stereo. A Lotus master is a StereoClip (ALES10) whose defining invariant is that left and right hold the same length; a fade's " ++
+        "gain is a positional ramp the caller names, not a measured scalar, and because a positional gain is identical for both channels the shared ramp preserves the stereo image for free. It " ++
+        "validates both channels once against the shared length before either is mutated (BadGain on a zero denominator, BadRange on a span outside the samples), so a refusal never desyncs the " ++
+        "channels; FadeError reused whole. The crux is four laws. THE STEREO FADE LAW: each channel equals ALES4's mono fade with the same ramp byte for byte, a fade-in leaving the first sample " ++
+        "silent and the last unchanged, a fade-out mirroring it. THE BALANCE / LENGTH LAW: left.len == right.len after and both hold their starting length. THE SHARED-RAMP IMAGE LAW: the same ramp " ++
+        "scales both channels at each seat, so a 1:2 master keeps its 1:2 ratio through the fade and an identical-channel master stays identical. THE ATOMICITY / DEGENERATE LAW: a refusal leaves " ++
+        "both channels untouched and balanced, count = 0 the identity on both, a sub-span fade leaving the rest untouched. Purely local — two bounded i16 Clips ramped through the proven mono fade, " ++
+        "the ramp across sample indices not seconds, the levels plain fractions not decibels; no real sample rate, no network, no keys, no funds, no real speaker\n", .{});
+    return 0;
+}
+
+/// A channel's current peak magnitude, re-measured through ALES13 — the reader the witness uses to confirm a fade lowers each channel's loudness.
+fn clip_peak(clip: *const timeline.Clip) !u32 {
+    const m = try meter.measure(clip);
+    return meter.peak(&m);
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

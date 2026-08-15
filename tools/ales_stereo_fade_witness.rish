@@ -1,0 +1,38 @@
+# tools/ales_stereo_fade_witness.rish — stereo_fade: the fade envelope carried into stereo with ONE SHARED RAMP, both channels in lockstep, validated once before either mutates (ALES130).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES130.
+# Design read: active-designing/20260815-030651_fill-ales130-lotus-stereo-fade.md
+# Stands on: lotus/fade.rye (ALES4 — the mono ramped gain run once per channel, itself reusing ALES2's one true saturate), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its
+# balance invariant), lotus/timeline.rye (ALES2 — the Clip and its buf/len/samples), lotus/meter.rye (ALES13 — the peak/RMS meter, read-only). A Lotus master is a StereoClip whose defining invariant
+# is that left and right hold the same length. This rung carries ALES4's fade into stereo the way the amplitude class asks: run the proven mono fade on each channel with the SAME ramp, so a fade
+# opens or closes both speakers together. A fade's gain is a positional ramp the caller names, not a measured scalar, and because a positional gain is identical for both channels the shared ramp
+# preserves the stereo image for free — no measurement, no linking needed (contrast ALES129's normalize, where the shared thing is a measured scalar).
+#
+# lotus/stereo_fade.rye validates both channels once against the shared length before either is mutated (BadGain on a zero denominator, BadRange on a span outside the samples), then ramps both
+# channels through ALES4's fade; FadeError reused whole. The crux is four laws. THE STEREO FADE LAW: each channel equals ALES4's mono fade with the same ramp byte for byte, fade-in and fade-out.
+# THE BALANCE / LENGTH LAW: left.len == right.len after, both holding their starting length. THE SHARED-RAMP IMAGE LAW: the same ramp scales both channels at each seat, so a 1:2 master keeps its 1:2
+# ratio through the fade and an identical-channel master stays identical. THE ATOMICITY / DEGENERATE LAW: a refusal leaves both channels untouched and balanced, count 0 the identity, a sub-span fade
+# leaving the rest untouched.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_stereo_fade_witness.rish
+
+say "ales-stereo-fade: Language EN — stereo_fade ramps the gain of a span in both channels of a stereo master from one level to another, the same ramp on each, the click-free fade-in from silence and fade-out to silence carried into stereo. A Lotus master is two Clips heard together, one per speaker, whose defining invariant is that left and right hold the same length so the two channels stay aligned in time. A fade's gain is a positional ramp the caller names, not a measured scalar, and because a positional gain is identical for both channels the shared ramp preserves the stereo image for free — a fade-in opens both speakers together from silence, a fade-out closes them, a stereo fade-out laid under a stereo fade-in is a stereo crossfade. It carries ALES4's proven mono fade into stereo, running it on each channel with the same ramp arguments, validated once against the shared length before either channel is mutated so a refusal never desyncs the channels."
+say "ales-stereo-fade: Style Radiant — the rule is stated positively: refuse BadGain on a zero denominator and BadRange on a span outside the samples before either channel is mutated (both channels enter equal-length, so the denominator and span are checked once against the shared length up front), else ramp both channels over the span from num0/den to num1/den through ALES4's fade. It reuses ALES4's FadeError by name and ALES4's fade for the arithmetic, inventing no new fault and no new primitive. The crux stands out as four laws: the stereo fade law (each channel equals ALES4's mono fade with the same ramp byte for byte, a fade-in leaving the first sample silent and the last unchanged and a fade-out mirroring it, per channel), the balance / length law (left.len == right.len after the edit and both hold their starting length, a fade writing values only), the shared-ramp image law (the same positional ramp scales both channels at each seat so the inter-channel ratio is held sample by sample, a master whose right is twice its left keeping that 1:2 ratio through the fade and an identical-channel master staying identical), and the atomicity / degenerate law (any refusal leaves both channels byte for byte untouched and still balanced, count 0 the identity on both, a sub-span fade leaving the rest of each channel untouched)."
+say "ales-stereo-fade: Lens TAME — two bounded i16 Clips (left, right) ramped in lockstep by one shared envelope; the balance invariant is asserted on entry and exit, the denominator and span are bound-checked once before any write, and because both checks hold identically for both channels each mono fade is pre-validated to succeed so no refusal can land between the two channel edits; fade walks the span once per channel, computing the linear ramp position in i64 so a wide level difference never overflows before the scale and reusing ALES2's single saturate for the clamp, never touching a byte past len, so the length holds exactly; it reuses ALES4's fade per channel over its public API and ALES4's FadeError whole, inventing no new primitive; the stereo fade law is proven against ALES4's own fade run per channel, the shared-ramp image law proves a 1:2 field keeps its ratio at every seat and an identical-channel master never splits, the two refusals leave both channels byte-for-byte untouched, and the witness reads each channel's peak through ALES13 to confirm a fade-out lowers each channel's loudness; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_fade"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_fade.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-fade: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_fade.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-fade: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-fade: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-fade' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-fade: selftest did not print the GREEN ales-stereo-fade line"

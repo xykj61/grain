@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260815.030651
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (Eastern EDT convention)
+title ALES130 — Lotus's stereo_fade: the fade envelope carried into stereo, one shared ramp, both channels in lockstep
+prompt Continue the recurring baton (prin recur) on the ALES/Lotus edge, Lindy-first crux-first; approve my own design rounds; send each finished increment as its own signed round; stop at custody gates.
+think Fifth lap of this recur run. ALES129 opened the stereo amplitude class on its crux (normalize, one measured shared scalar). This rung carries the class's most-reached-for member, ALES4's fade — the click-free fade-in and fade-out. A fade differs from normalize in a clarifying way: its gain is a positional RAMP the caller names, not a measured scalar, so the stereo lift is validation-first (like the span edits), not measurement-first — and because a positional gain is identical for both channels, the SAME ramp preserves the image for free.
+think Read fade.rye: fade(clip, start, count, num0, num1, den), FadeError = {BadGain (zero den), BadRange (span outside)}. Matched the shared-validation pattern from stereo_silence_span: assert balance, check den==0 then span once against the shared length before either channel mutates, then run mono fade per channel with the SAME ramp. Reused fade.FadeError by name.
+think Wrote design read, module, witness. Four laws: stereo fade law (each channel == ALES4's fade with the same ramp byte for byte, fade-in and fade-out), balance/length law (equal-length, both hold starting length), shared-ramp image law (a 1:2 master keeps its 1:2 ratio at every seat, an identical-channel master stays identical), atomicity/degenerate law (BadRange and BadGain each leave both channels untouched and balanced, count=0 the identity, sub-span fade leaving the rest untouched). One red caught and fixed: my peak-lowering flourish used a fade-out, whose first sample stays at full gain, so the peak held — LeftPeakNotLowered. Changed it to a half→zero ramp that attenuates every seat, so the peak strictly drops. Witness GREEN; tame_style_check bans clean.
+obs The amplitude class now has its measured-scalar member (normalize) and its positional-ramp member (fade) side by side, and the contrast is the lesson: normalize shares ONE measured number across channels to hold the image, fade shares the WHOLE ramp — different mechanisms, same image-preserving end. The self-caught peak red is a small reds-first win: a wrong assumption about fade-out geometry, caught by the witness on metal before the send. No custody gate reached — purely local software, self-approved design round.
+loom witness=ales_stereo_fade_witness result=GREEN laws=4 channels=2 reds_caught=1
+file lotus/stereo_fade.rye ALES130 — stereo_fade, the fade envelope lifted to stereo: one shared ramp on both channels, validated once, four laws with the shared-ramp image crux.
+file tools/ales_stereo_fade_witness.rish the witness — builds, runs selftest, asserts the GREEN ales-stereo-fade line.
+file active-designing/20260815-030651_fill-ales130-lotus-stereo-fade.md the self-approved design read for this rung.
+file lotus/README.md front door synced — ALES130 roster entry and stamp.
+recommend keep-going the stereo amplitude class is climbing; the next mechanical laps lift the remaining value/amplitude ops (halve, rectify) to stereo, each trivial per-channel where the image is unaffected — no gate reached.
