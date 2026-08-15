@@ -1,0 +1,240 @@
+//! lotus/stereo_echo_time.rye — ALES182: the STEREO ECHO in real time — ALES181's linked stereo feedback delay spoken in MILLISECONDS, a thin twin over it exactly as ALES67's echo_ms is over ALES66's echo. ALES181 opened the stereo
+//! time-based wing with its primitive, the feedback delay carried onto both channels, each reading and feeding back through its own live buffer — yet its delay is a count of sample INDICES ("an echo every 12000 samples"). A musician thinks
+//! in TIME ("an echo an eighth of a second later"), and the one missing fact is the sample rate, which ALES5's validated Clock already holds. Every rung named in samples has earned its real-time twin this way — the mono echo's the instant
+//! its primitive landed (ALES66 -> ALES67). The stereo wing earns the same twin now: this is the FIRST real-time face in stereo, the pattern every later stereo real-time twin (a timed multitap, a timed reverb) will follow.
+//!
+//! The crux — the CLOCK ADDS ONLY THE UNITS, NEVER THE AUDIO, and the SAME conversion feeds BOTH channels. stereo_echo_ms converts start_ms, count_ms, and delay_ms ONCE through ALES5's proven clock.samples_for (bounded, refusing
+//! DurationTooLong past the clip) and delegates to ALES181's stereo_echo UNCHANGED with the converted delay and span and the caller's named feedback. The conversion is shared, so the image is held for free — one delay_ms becomes one sample
+//! delay applied identically to both channels, exactly as ALES181 already shares its delay and feedback, so both trains still decay in lockstep. Because samples_for is divTrunc(rate·ms, 1000), a millisecond-named stereo echo lands
+//! BYTE-FOR-BYTE the same samples on each channel as the index-named stereo echo over the converted delay and span. A delay_ms too short to be one whole sample converts to 0, which ALES181 (through ALES66's precheck) already refuses BadDelay
+//! on both channels before any write — so a sub-sample echo refuses by name rather than silently doing nothing.
+//!
+//! The rule, stated once: convert the three ms quantities through the clock (DurationTooLong forwarded before any write), then run ALES181's stereo_echo — which validates the shared delay, feedback, and span ONCE against the shared length
+//! before either channel is mutated (BadDelay, BadFeedback, BadRange), so a refusal never echoes one channel and leaves the other torn. No new arithmetic on the audio path — the clock's own conversion, then the proven stereo echo.
+//!
+//! The crux — four laws. THE CLOCK-ADDS-ONLY-UNITS LAW: at 1 sample per ms, stereo_echo_ms lands byte-for-byte the same samples on BOTH channels as ALES181's index-named stereo_echo over the converted delay and span (both tools run). THE
+//! REAL-RATE LAW: at 48 kHz, 1 ms converts to divTrunc(48000·1, 1000) = 48 samples on both channels, the first echo sitting exactly 48 samples after the impulse on each. THE DRY-IDENTITY LAW: a zero-feedback (fb_num = 0) timed stereo echo
+//! is the exact dry master on both channels. THE FORWARDING / ATOMICITY / BALANCE LAW: a sub-sample delay (0 ms) refuses BadDelay, a delay past the clip DurationTooLong, a feedback at unity BadFeedback, an out-of-range span BadRange — each
+//! by name with BOTH channels byte for byte untouched and still balanced; count_ms = 0 the identity on both; and the image law inherited whole (an identical-channel master stays identical through the timed echo).
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES182.
+//! Design read: active-designing/20260815-090218_fill-ales182-lotus-stereo-echo-in-real-time.md
+//! Stands on: lotus/stereo_echo.rye (ALES181) — the linked stereo feedback delay this speaks in real time, delegated unchanged, its StereoEchoError forwarded; lotus/echo.rye (ALES66) — the mono feedback delay ALES181 runs per channel, its
+//! EchoError the echo half of this face's error set; lotus/clock.rye (ALES5) — the sample clock, its samples_for converting ms to a bounded sample count and its echo_ms/fade_ms the payoff pattern this follows; lotus/pan.rye (ALES10) — the
+//! StereoClip and its balance invariant; lotus/timeline.rye (ALES2) — the Clip.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) and a validated Clock; three millisecond conversions through the clock's own bounded samples_for, then ALES181's proven stereo echo delegated
+//! unchanged — no new arithmetic on the audio path, siloed to lotus/. It changes sample VALUES only, never a length; the two channels leave balanced. The clock is a samples-per-second count, not a claim about any hardware clock; the delay is
+//! spoken in milliseconds and the feedback is a named fraction strictly below unity, not a decibel. No cross-channel feedback, no real sample rate device, no network, no keys, no funds, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_echo_time.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const clock = @import("clock.rye");
+const echo = @import("echo.rye");
+const stereo_echo = @import("stereo_echo.rye");
+
+pub const stereo_echo_time_version = "20260815.090218";
+
+/// The timed stereo echo's faults are ALES5's clock edges beside ALES181's echo edges, forwarded unchanged: DurationTooLong from the
+/// clock (a span or delay past the clip), and BadDelay (the converted delay being zero among them), BadFeedback, and BadRange from the
+/// echo. The real-time face adds no fault of its own — it converts the units, then runs the proven stereo echo.
+pub const StereoEchoTimeError = clock.ClockError || echo.EchoError;
+
+/// Echo a stereo master over a span named in MILLISECONDS: convert `start_ms`, `count_ms`, and `delay_ms` through ALES5's proven
+/// clock.samples_for (bounded, refusing DurationTooLong past the clip), then delegate to ALES181's `stereo_echo` UNCHANGED — the same
+/// linked feedback delay on both channels, now spoken in real time. The clock adds only the units, and the same conversion feeds both
+/// channels, so this lands byte-for-byte the same samples on each channel as the index-named stereo echo over the converted delay and
+/// span, the image held. A delay too short to be one whole sample converts to zero, which the echo refuses BadDelay on both channels, so
+/// a sub-sample echo refuses honestly. Forwards ALES5's DurationTooLong and ALES181's BadDelay / BadFeedback / BadRange before any write;
+/// on refusal both channels are untouched and balanced. Values only — never a length.
+pub fn stereo_echo_ms(
+    sc: *pan.StereoClip,
+    clk: clock.Clock,
+    start_ms: u32,
+    count_ms: u32,
+    delay_ms: u32,
+    fb_num: u32,
+    fb_den: u32,
+) StereoEchoTimeError!void {
+    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the shared conversion and echo preserve.
+    assert(sc.left.len == sc.right.len);
+    // invariant: the clock is valid, so each conversion is bounded and safe; the units change, never the audio.
+    assert(clk.rate >= 1 and clk.rate <= clock.max_rate);
+    const start = try clock.samples_for(clk, start_ms);
+    const count = try clock.samples_for(clk, count_ms);
+    const delay = try clock.samples_for(clk, delay_ms);
+
+    // The shared, converted delay and span run through ALES181's stereo echo unchanged — one conversion feeding both channels, each
+    // reading and feeding back through its OWN live buffer. A zero converted delay is refused BadDelay here, both channels untouched.
+    try stereo_echo.stereo_echo(sc, start, count, delay, fb_num, fb_den);
+
+    // invariant: the channels leave balanced — a timed echo writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
+    assert(sc.left.len == sc.right.len);
+    assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
+}
+
+// --- selftest: THE CLOCK-ADDS-ONLY-UNITS LAW — at 1 sample/ms both channels equal ALES181's index-named stereo echo byte for byte;
+//     THE REAL-RATE LAW — at 48 kHz 1 ms == 48 samples on both, the first echo there; THE DRY-IDENTITY LAW — fb 0 the dry master on
+//     both; THE FORWARDING / ATOMICITY / BALANCE LAW — a sub-sample delay, a long delay, a unity feedback, an out-of-range span each
+//     refusing by name with both channels untouched and balanced, count_ms 0 the identity, an identical-channel master staying identical
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try timeline.splice(&sc.left, 0, l);
+    try timeline.splice(&sc.right, 0, r);
+}
+
+fn run_selftest() !u8 {
+    // 1. THE CLOCK-ADDS-ONLY-UNITS LAW — at 1 sample per ms, a timed stereo echo lands byte-for-byte the same samples on BOTH channels
+    //    as ALES181's index-named stereo echo over the converted delay and span, with genuinely different per-channel content. Run both
+    //    tools side by side and demand equality: stereo_echo_ms adds no arithmetic on the audio path.
+    {
+        const c = try clock.make(1000); // 1 sample per ms — a millisecond equals a sample, legible on a bench
+        const ll = [_]i16{ 8000, 0, 3000, 0, 5000, 0, 7000, 0 };
+        const rr = [_]i16{ 0, 6000, 0, 2000, 0, 100, 0, 1500 };
+
+        var timed = pan.StereoClip{};
+        try load_stereo(&timed, &ll, &rr);
+        try stereo_echo_ms(&timed, c, 0, 8, 2, 1, 2); // delay 2 ms == 2 samples, span 0..8 ms == 0..8
+
+        var indexed = pan.StereoClip{};
+        try load_stereo(&indexed, &ll, &rr);
+        try stereo_echo.stereo_echo(&indexed, 0, 8, 2, 1, 2);
+
+        if (!eq(timed.left.samples(), indexed.left.samples())) return error.LeftNotSameAsIndexed;
+        if (!eq(timed.right.samples(), indexed.right.samples())) return error.RightNotSameAsIndexed;
+        // the two channels genuinely differ — the left is not the right rung, proving no crossing
+        if (eq(timed.left.samples(), timed.right.samples())) return error.ChannelsDidNotDiffer;
+    }
+
+    // 2. THE REAL-RATE LAW — at 48 kHz, 1 ms converts to divTrunc(48000·1, 1000) = 48 samples on both channels. A stereo echo at
+    //    delay_ms 1 over a clip long enough to hold two taps lands its first echo exactly 48 samples after the impulse on each channel,
+    //    matching the index-named stereo echo at delay 48. Proven by equality against the index form and by reading the echo's position.
+    {
+        const c = try clock.make(48000);
+        if (clock.samples_for(c, 1) catch 0 != 48) return error.RateConversionWrong; // guard the arithmetic itself
+        var lbuf: [240]i16 = [_]i16{0} ** 240; // 240 samples == 5 ms at 48 kHz, so count_ms 5 covers the whole clip exactly
+        var rbuf: [240]i16 = [_]i16{0} ** 240;
+        lbuf[0] = 10000; // an impulse at index 0 on the left
+        rbuf[0] = 6000; //  a different impulse on the right, so the channels genuinely differ
+        var timed = pan.StereoClip{};
+        try load_stereo(&timed, &lbuf, &rbuf);
+        try stereo_echo_ms(&timed, c, 0, 5, 1, 1, 2); // span 5 ms == 240 samples, 1 ms delay == 48 samples, fb 1/2
+
+        var indexed = pan.StereoClip{};
+        try load_stereo(&indexed, &lbuf, &rbuf);
+        try stereo_echo.stereo_echo(&indexed, 0, 240, 48, 1, 2);
+        if (!eq(timed.left.samples(), indexed.left.samples())) return error.RealRateLeftNotSameAsIndexed;
+        if (!eq(timed.right.samples(), indexed.right.samples())) return error.RealRateRightNotSameAsIndexed;
+        // the first echo sits at index 48, half the impulse, on each channel
+        if (timed.left.samples()[48] != 5000) return error.LeftEchoNotAtConvertedDelay;
+        if (timed.right.samples()[48] != 3000) return error.RightEchoNotAtConvertedDelay;
+    }
+
+    // 3. THE DRY-IDENTITY LAW — a zero-feedback (fb_num = 0) timed stereo echo adds nothing, the dry master passing byte for byte on
+    //    both channels at any delay, in real time too.
+    {
+        const c = try clock.make(1000);
+        const ll = [_]i16{ 1000, -2000, 3000, -4000, 5000, -6000 };
+        const rr = [_]i16{ -400, 1200, 500, 2000, -700, 100 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &ll, &rr);
+        try stereo_echo_ms(&sc, c, 0, 6, 3, 0, 4); // fb 0/4 — feedback fully off
+        if (!eq(sc.left.samples(), &ll)) return error.ZeroFbLeftChanged;
+        if (!eq(sc.right.samples(), &rr)) return error.ZeroFbRightChanged;
+    }
+
+    // 4. THE IMAGE LAW (identical-channel) — an identical-channel (centred) master stays identical through the timed echo: the same
+    //    conversion, then the same live-buffer feedback on each channel, is the same deterministic output on both, so a centred voice
+    //    never splits. Inherited whole from ALES181.
+    {
+        const c = try clock.make(1000);
+        const same = [_]i16{ 8000, 0, 0, 0, 0, 0, 0, 0 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &same, &same);
+        try stereo_echo_ms(&sc, c, 0, 8, 2, 1, 2);
+        if (!eq(sc.left.samples(), sc.right.samples())) return error.IdentityChannelsSplit;
+    }
+
+    // 5. A SUB-SAMPLE DELAY REFUSES BadDelay — at 1 sample per ms a delay of 0 ms converts to 0 samples, which the echo refuses on both
+    //    channels; the timed face forwards it by name rather than silently doing nothing, both channels untouched and balanced.
+    {
+        const c = try clock.make(1000);
+        const tl = [_]i16{ 5, -6, 7, -8 };
+        const tr = [_]i16{ -7, 6, -5, 4 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &tl, &tr);
+        if (stereo_echo_ms(&sc, c, 0, 4, 0, 1, 2)) |_| return error.SubSampleSlipped else |e| if (e != error.BadDelay) return error.WrongSubSample;
+        if (!eq(sc.left.samples(), &tl) or !eq(sc.right.samples(), &tr) or sc.left.len != sc.right.len) return error.SubSampleRefusalMutated;
+    }
+
+    // 6. A DELAY PAST THE CLIP REFUSES DurationTooLong — a delay_ms whose sample count exceeds max_clip is refused by the clock's own
+    //    bound, before any write, both channels untouched and balanced.
+    {
+        const c = try clock.make(1000);
+        const tl = [_]i16{ 1, 2, 3 };
+        const tr = [_]i16{ 3, 2, 1 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &tl, &tr);
+        // max_clip ms at 1 sample/ms converts to max_clip samples (legal); one ms more exceeds the bound.
+        if (stereo_echo_ms(&sc, c, 0, 3, timeline.max_clip + 1, 1, 2)) |_| return error.LongDelaySlipped else |e| if (e != error.DurationTooLong) return error.WrongLongDelay;
+        if (!eq(sc.left.samples(), &tl) or !eq(sc.right.samples(), &tr) or sc.left.len != sc.right.len) return error.LongDelayRefusalMutated;
+    }
+
+    // 7. THE ECHO'S FAULTS FORWARD — a feedback at unity refuses BadFeedback, an out-of-range span refuses BadRange, each by name with
+    //    both channels untouched and balanced; and count_ms = 0 is the identity on both.
+    {
+        const c = try clock.make(1000);
+        const tl = [_]i16{ 1, 2, 3 };
+        const tr = [_]i16{ 3, 2, 1 };
+
+        var f = pan.StereoClip{};
+        try load_stereo(&f, &tl, &tr);
+        if (stereo_echo_ms(&f, c, 0, 3, 1, 4, 4)) |_| return error.UnityFbSlipped else |e| if (e != error.BadFeedback) return error.WrongUnityFb; // fb 4/4 = unity — a runaway
+        if (!eq(f.left.samples(), &tl) or !eq(f.right.samples(), &tr) or f.left.len != f.right.len) return error.UnityFbRefusalMutated;
+
+        var d = pan.StereoClip{};
+        try load_stereo(&d, &tl, &tr);
+        if (stereo_echo_ms(&d, c, 2, 5, 1, 1, 2)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange; // start 2 ms + count 5 ms > len 3
+        if (!eq(d.left.samples(), &tl) or !eq(d.right.samples(), &tr) or d.left.len != d.right.len) return error.RangeRefusalMutated;
+
+        var noop = pan.StereoClip{};
+        try load_stereo(&noop, &[_]i16{ 8000, -8000, 4000 }, &[_]i16{ -50, 60, -70 });
+        try stereo_echo_ms(&noop, c, 1, 0, 2, 1, 2); // empty span — identity
+        if (!eq(noop.left.samples(), &[_]i16{ 8000, -8000, 4000 })) return error.ZeroCountLeftChanged;
+        if (!eq(noop.right.samples(), &[_]i16{ -50, 60, -70 })) return error.ZeroCountRightChanged;
+    }
+
+    print("GREEN ales-stereo-echo-time: the STEREO ECHO IN REAL TIME — ALES181's linked stereo feedback delay spoken in MILLISECONDS, " ++
+        "a thin twin over it exactly as ALES67's echo_ms is over ALES66's echo, and the FIRST real-time face in stereo (the pattern " ++
+        "every later stereo real-time twin will follow). The clock adds only the units, never the audio, and the SAME conversion feeds " ++
+        "BOTH channels: stereo_echo_ms converts start_ms, count_ms, and delay_ms once through ALES5's samples_for and delegates to " ++
+        "ALES181's stereo_echo unchanged, so a millisecond-named stereo echo lands BYTE-FOR-BYTE the same samples on each channel as " ++
+        "the index-named stereo echo over the converted delay and span (the grounding law, both tools run, the channels genuinely " ++
+        "differing). At 48 kHz, 1 ms converts to 48 samples on both channels and the first echo sits exactly there on each; fb = 0 is " ++
+        "the dry identity in real time too; an identical-channel master stays identical through the timed echo. A sub-sample delay " ++
+        "(0 ms) refuses BadDelay rather than silently doing nothing; a delay past the clip refuses DurationTooLong; a feedback at " ++
+        "unity refuses BadFeedback and an out-of-range span BadRange, each leaving BOTH channels untouched and balanced; count_ms = 0 " ++
+        "the identity on both. No new arithmetic on the audio path — the clock's own conversion, then the proven stereo echo; two " ++
+        "bounded i16 Clips and a validated clock, siloed to lotus/, the delay spoken in milliseconds not sample indices and the " ++
+        "feedback a named fraction below unity not a decibel; no cross-channel feedback, no real sample rate device, no network, no " ++
+        "keys, no funds, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
