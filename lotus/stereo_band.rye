@@ -1,0 +1,270 @@
+//! lotus/stereo_band.rye — ALES172: a BAND-PASS carried into stereo — ALES46's high-pass-then-low-pass cascade run on BOTH channels with the SAME two cutoffs, each channel carrying its OWN cascade state, the third rung of the
+//! stereo EQ / filter class. ALES170 opened the class with the one-pole tone control (one edge kept) and ALES171 followed with the two-band shelf (both bands tilted by gain); the gesture a keeper reaches for to ISOLATE a
+//! range on a master — the telephone voice, the drum bus carved to its body, the wah's throat — is the band-pass: drop the lows below one cutoff, drop the highs above another, keep only the band between. ALES46 built that for
+//! a mono Clip as a `Bandpass` struct: a high-pass at the low cutoff cascaded into a low-pass at the high cutoff, each stage carrying its own i64 state so a span band-passed in two pieces equals the whole band-passed once. This
+//! rung carries it into stereo the way the EQ class asks — a `StereoBandpass` holding two mono `Bandpass`, both built with the SAME four coefficients, run on each channel so the band turns on BOTH speakers together.
+//!
+//! Like every parametric edit (ALES130's fade, ALES170's tone, ALES171's shelf), a band-pass's cutoffs are fractions the caller NAMES, not scalars measured across the field, so the SAME two cutoffs on each channel preserve the
+//! stereo image for free — no linking, no measurement. Each channel band-passes its OWN content through those shared cutoffs, which is exactly right for EQ: an identical-channel (mono-in-stereo) master stays identical because
+//! the same input through the same cutoffs evolves the same state, while a panned master shapes each side by its own spectrum. Like ALES170's tone and unlike ALES171's stateless shelf, a band-pass carries running estimates, so
+//! each channel keeps its OWN cascade state — the two states are independent, one pair per channel, because a filter's state is the running estimate of the signal it filters and the two signals differ. Linking the state across
+//! channels would bleed one channel's transients into the other's band — a bug here, exactly as it would be for the tone control. `reset` returns both channels' four states to silence together.
+//!
+//! The rule, stated once: refuse BadCoeff (a low or high cutoff outside (0, 1]) and BadRange (a span past the shared length) BEFORE either channel is touched — BOTH coefficient pairs and the span validated once against the
+//! shared length up front, so a refusal never band-passes one channel and leaves the other torn, and no legal low cutoff mutates a span before an illegal high cutoff refuses; then run ALES46's proven mono `Bandpass.run` on each
+//! channel with the SAME two cutoffs, each carrying its OWN cascade state.
+//!
+//! The crux — four laws. THE STEREO BAND-PASS LAW: each channel equals ALES46's mono `Bandpass.run` with the SAME two cutoffs over the same span byte for byte, proven side by side with genuinely different per-channel content —
+//! the left band-passed by the left's spectrum, the right by the right's, never crossed. THE CARRY LAW: a master band-passed in two pieces (each channel continuing its own ending cascade state) equals the whole band-passed
+//! once, byte for byte on BOTH channels — both channels' states surviving the boundary independently, no fresh transient at the seam. THE IMAGE LAW: an identical-channel master stays identical through the band-pass (a
+//! mono-in-stereo signal never splits), a settled constant rejected to zero on both (direct current dropped by the high-pass stage, per channel), the shared cutoffs holding the image. THE RESET / BALANCE / SILENCE / ATOMICITY /
+//! DEGENERATE LAW: `reset` re-opens both channels' transients; an all-silent master band-passes to silence on both; left.len == right.len after; an illegal low cutoff, an illegal high cutoff, and an out-of-range span each
+//! refuse by name with BOTH channels and all four states byte for byte untouched and still balanced; count = 0 the identity on both.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES172.
+//! Design read: active-designing/20260815-075923_fill-ales172-lotus-stereo-band.md
+//! Stands on: lotus/band.rye (ALES46) — the mono two-stage band-pass Bandpass run once per channel, its ToneError reused whole and its cascade shared; lotus/tone.rye (ALES40, ALES45) — the high-pass and low-pass stages and the
+//! `precheck` sharing one coefficient-and-span validation; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip and its buf/len/samples.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right), each band-passed through ALES46's own two-stage cascade, siloed to lotus/. It changes sample VALUES only, never a length; both
+//! channels' four cascade states run at full i64 precision so no fractional information is lost between samples. The cutoffs set where the split falls over sample INDICES, not crossovers in hertz (a real time base is a later
+//! rung). No real sample rate, no anti-aliasing, no network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_band.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const tone = @import("tone.rye");
+const band = @import("band.rye");
+
+pub const stereo_band_version = "20260815.075923";
+
+/// The stereo band-pass's faults are exactly ALES46's own `ToneError` — `BadCoeff` on an illegal cutoff (either stage) and `BadRange` on a span outside the samples — reused by name, since carrying the band-pass into stereo adds
+/// no new fault: it validates two shared cutoffs and one span against the shared length, then runs the same mono band-pass on each channel with its own cascade state.
+pub const StereoBandError = tone.ToneError;
+
+/// A band-pass carried into stereo: two mono `Bandpass` (ALES46), one per channel, both built with the SAME two cutoffs so the band turns on both speakers together, each carrying its OWN cascade state so the two channels never
+/// cross. `low_num/low_den` is the high-pass cutoff (drops content below it); `high_num/high_den` is the low-pass cutoff (drops content above it). A fresh StereoBandpass (all four states 0 on both channels) is the from-silence
+/// cascade on each; `run` continues each channel from its own carried states; `reset` returns both channels to silence so the next run re-opens both transients deliberately.
+pub const StereoBandpass = struct {
+    /// The left channel's mono band-pass and its two carried states.
+    left: band.Bandpass,
+    /// The right channel's mono band-pass, built with the SAME cutoffs as the left, its own two carried states.
+    right: band.Bandpass,
+
+    /// Build a stereo band-pass with the SAME two cutoffs on both channels, each channel from silence. The shared cutoffs preserve the stereo image; the independent states let each channel band-pass its own content.
+    pub fn init(num_low: i32, den_low: u32, num_high: i32, den_high: u32) StereoBandpass {
+        return .{
+            .left = .{ .num_low = num_low, .den_low = den_low, .num_high = num_high, .den_high = den_high },
+            .right = .{ .num_low = num_low, .den_low = den_low, .num_high = num_high, .den_high = den_high },
+        };
+    }
+
+    /// Band-pass `count` sample-PAIRS starting at `start` in BOTH channels of `sc`, each channel CONTINUING from its own cascade state: a high-pass at the low cutoff drops the lows, then a low-pass at the high cutoff drops the
+    /// highs. Both channels share the SAME two cutoffs (held in each inner Bandpass), so the same band lands on both speakers; each carries its OWN states, so the two channels never cross. Validates BOTH cutoffs and the span
+    /// ONCE against the shared length before either channel is mutated: refuses BadCoeff and BadRange, both channels and all four states untouched. Values only — never the length; the two channels leave balanced.
+    pub fn run(self: *StereoBandpass, sc: *pan.StereoClip, start: u32, count: u32) StereoBandError!void {
+        // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the shared cutoffs preserve.
+        assert(sc.left.len == sc.right.len);
+        // invariant: both channels carry the SAME two cutoffs — the shared knobs that hold the stereo image.
+        assert(self.left.num_low == self.right.num_low and self.left.den_low == self.right.den_low);
+        assert(self.left.num_high == self.right.num_high and self.left.den_high == self.right.den_high);
+        // invariant: BOTH cutoffs and the span are checked against the SHARED length BEFORE any stage on either channel writes, so a refusal never band-passes one channel and leaves the other torn, and no legal low cutoff
+        // advances a state before an illegal high cutoff refuses.
+        const len: u32 = sc.left.len;
+        try tone.precheck(len, start, count, self.left.num_low, self.left.den_low);
+        try tone.precheck(len, start, count, self.left.num_high, self.left.den_high);
+
+        // Every check passed and holds identically for both channels (same cutoffs, same span, shared length), so each mono band-pass is pre-validated to succeed — no refusal can land between the two channel edits. The SAME
+        // cutoffs on each channel, each carrying its OWN cascade state.
+        try self.left.run(&sc.left, start, count);
+        try self.right.run(&sc.right, start, count);
+
+        // invariant: the channels leave balanced — a band-pass writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
+        assert(sc.left.len == len and sc.right.len == len);
+        assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
+    }
+
+    /// Return both channels' cascade states to silence, so the next `run` re-opens both from-silence transients deliberately on each channel.
+    pub fn reset(self: *StereoBandpass) void {
+        self.left.reset();
+        self.right.reset();
+        // invariant: reset restores exactly the from-silence start for both stages on both channels — a run after reset equals a fresh StereoBandpass with the same cutoffs.
+        assert(self.left.hp_state == 0 and self.left.lp_state == 0);
+        assert(self.right.hp_state == 0 and self.right.lp_state == 0);
+    }
+};
+
+// --- selftest: THE STEREO BAND-PASS LAW — each channel equals ALES46's mono Bandpass.run with the SAME two cutoffs byte for byte, different per-channel content; THE CARRY LAW — a span band-passed in two pieces (each channel
+//     carrying its own state) equals the whole once on both; THE IMAGE LAW — an identical-channel master stays identical through the band-pass, a constant rejected to zero per channel; THE RESET / BALANCE / SILENCE / ATOMICITY /
+//     DEGENERATE LAW — reset re-opens both, silence to silence, balanced, each refusal untouched, count 0 identity
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try timeline.splice(&sc.left, 0, l);
+    try timeline.splice(&sc.right, 0, r);
+}
+
+fn run_selftest() !u8 {
+    // 1. THE STEREO BAND-PASS LAW — each channel equals ALES46's mono Bandpass.run with the SAME two cutoffs, proven side by side over one span with genuinely different per-channel content: the left band-passed by the left's
+    //    spectrum, the right by the right's, never crossed.
+    {
+        const ll = [_]i16{ 3000, -3000, 500, -20000, 20000, -400, 6000, -6000, 1000, 500, -900, 1100 };
+        const rr = [_]i16{ -400, 1200, 500, 2000, -700, 100, -1500, 1500, 900, -800, 1200, 900 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &ll, &rr);
+        var f = StereoBandpass.init(1, 3, 1, 2); // low cutoff 1/3, high cutoff 1/2 on both
+        try f.run(&sc, 0, 12);
+
+        var ml = timeline.Clip{};
+        try timeline.splice(&ml, 0, &ll);
+        var mfl = band.Bandpass{ .num_low = 1, .den_low = 3, .num_high = 1, .den_high = 2 };
+        try mfl.run(&ml, 0, 12);
+        var mr = timeline.Clip{};
+        try timeline.splice(&mr, 0, &rr);
+        var mfr = band.Bandpass{ .num_low = 1, .den_low = 3, .num_high = 1, .den_high = 2 };
+        try mfr.run(&mr, 0, 12);
+
+        if (!eq(sc.left.samples(), ml.samples())) return error.LeftBandNotMono;
+        if (!eq(sc.right.samples(), mr.samples())) return error.RightBandNotMono;
+        // The two channels genuinely differ — the left is not the right band-passed, proving no crossing.
+        if (eq(sc.left.samples(), sc.right.samples())) return error.ChannelsDidNotDiffer;
+    }
+
+    // 2. THE CARRY LAW — each channel carries its OWN cascade state, so band-passing a span in two pieces (the second continuing each side's ending state) equals band-passing the whole span once, byte for byte on BOTH channels.
+    {
+        const ll = [_]i16{ 2000, -14000, 14000, -2000, 9000, -9000, 6000, -6000 };
+        const rr = [_]i16{ -400, 6000, -1000, 2000, -700, 800, -1500, 1500 };
+        var whole = pan.StereoClip{};
+        try load_stereo(&whole, &ll, &rr);
+        var wf = StereoBandpass.init(1, 3, 1, 2);
+        try wf.run(&whole, 0, 8);
+
+        var split = pan.StereoClip{};
+        try load_stereo(&split, &ll, &rr);
+        var sf = StereoBandpass.init(1, 3, 1, 2);
+        try sf.run(&split, 0, 3); // first piece
+        try sf.run(&split, 3, 5); // second continues BOTH channels' states
+        if (!eq(split.left.samples(), whole.left.samples())) return error.CarryLeftNotEqual;
+        if (!eq(split.right.samples(), whole.right.samples())) return error.CarryRightNotEqual;
+    }
+
+    // 3a. THE IMAGE LAW — an identical-channel (mono-in-stereo) master stays identical through the band-pass: the same input through the same cutoffs evolves the same state, so the two channels never split, the image held.
+    {
+        const same = [_]i16{ 900, -700, 15000, -400, 9000, -9000, 300, -300 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &same, &same);
+        var f = StereoBandpass.init(1, 4, 1, 2);
+        try f.run(&sc, 0, 8);
+        if (!eq(sc.left.samples(), sc.right.samples())) return error.IdentityChannelsSplit;
+    }
+
+    // 3b. a settled constant is rejected to zero on both channels — the high-pass stage drops direct current, so a run of one value band-passes to silence at the tail per channel (the band-pass keeps no direct current).
+    {
+        const run = [_]i16{1000} ** 40;
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &run, &run);
+        var f = StereoBandpass.init(1, 2, 1, 2);
+        try f.run(&sc, 0, 40);
+        if (sc.left.samples()[39] != 0 or sc.right.samples()[39] != 0) return error.ConstantNotRejected;
+    }
+
+    // 4a. THE RESET LAW — a run settles a constant toward zero, then reset returns both channels to silence so a fresh run re-opens both transients (the first sample after reset is non-zero, direct current not yet removed).
+    {
+        const run = [_]i16{1000} ** 30;
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &run, &run);
+        var f = StereoBandpass.init(1, 2, 1, 2);
+        try f.run(&sc, 0, 30);
+        if (sc.left.samples()[29] != 0 or sc.right.samples()[29] != 0) return error.NotSettledBeforeReset;
+        f.reset();
+        if (f.left.hp_state != 0 or f.left.lp_state != 0 or f.right.hp_state != 0 or f.right.lp_state != 0) return error.ResetDidNotClearBoth;
+
+        var fresh = pan.StereoClip{};
+        try load_stereo(&fresh, &run, &run);
+        try f.run(&fresh, 0, 30); // re-opens from silence on both
+        if (fresh.left.samples()[0] == 0 or fresh.right.samples()[0] == 0) return error.ResetDidNotReopen;
+    }
+
+    // 4b. THE SILENCE / BALANCE / LENGTH LAW — an all-silent master band-passes to silence on both; the channels stay equal length and each holds its starting length.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 0, 0, 0, 0, 0 }, &[_]i16{ 0, 0, 0, 0, 0 });
+        var f = StereoBandpass.init(1, 4, 1, 2);
+        try f.run(&sc, 0, 5);
+        const zeros = [_]i16{ 0, 0, 0, 0, 0 };
+        if (!eq(sc.left.samples(), &zeros) or !eq(sc.right.samples(), &zeros)) return error.SilenceWrong;
+
+        var bc = pan.StereoClip{};
+        try load_stereo(&bc, &[_]i16{ 8000, -8000, 200, -9000, 100 }, &[_]i16{ -400, 3000, -700, 5000, -50 });
+        var g = StereoBandpass.init(1, 4, 1, 2);
+        try g.run(&bc, 0, 5);
+        if (bc.left.len != bc.right.len) return error.Unbalanced;
+        if (bc.left.len != 5) return error.LengthChanged;
+    }
+
+    // 4c. THE ATOMICITY LAW — an illegal low cutoff (above one), an illegal high cutoff (zero denominator), and an out-of-range span each refuse by name with BOTH channels byte for byte untouched, all four states still zero,
+    //     and the channels still balanced.
+    {
+        const tl = [_]i16{ 5, -6, 7 };
+        const tr = [_]i16{ -7, 6, -5 };
+
+        var a = pan.StereoClip{};
+        try load_stereo(&a, &tl, &tr);
+        var af = StereoBandpass.init(3, 2, 1, 2); // low cutoff above one
+        if (af.run(&a, 0, 3)) |_| return error.LowOverOneSlipped else |e| if (e != error.BadCoeff) return error.WrongLowOverOne;
+        if (!eq(a.left.samples(), &tl) or !eq(a.right.samples(), &tr) or a.left.len != a.right.len) return error.LowRefusalMutated;
+        if (af.left.hp_state != 0 or af.right.hp_state != 0) return error.LowRefusalMovedState;
+
+        var b = pan.StereoClip{};
+        try load_stereo(&b, &tl, &tr);
+        var bf = StereoBandpass.init(1, 2, 1, 0); // high cutoff zero denominator
+        if (bf.run(&b, 0, 3)) |_| return error.HighZeroDenSlipped else |e| if (e != error.BadCoeff) return error.WrongHighZeroDen;
+        if (!eq(b.left.samples(), &tl) or !eq(b.right.samples(), &tr) or b.left.len != b.right.len) return error.HighRefusalMutated;
+        if (bf.left.lp_state != 0 or bf.right.lp_state != 0) return error.HighRefusalMovedState;
+
+        var c = pan.StereoClip{};
+        try load_stereo(&c, &tl, &tr);
+        var cf = StereoBandpass.init(1, 2, 1, 2);
+        if (cf.run(&c, 1, 3)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(c.left.samples(), &tl) or !eq(c.right.samples(), &tr) or c.left.len != c.right.len) return error.RangeRefusalMutated;
+    }
+
+    // 4d. THE DEGENERATE LAW — count = 0 (an empty span in the middle) is the identity on both channels; no pair to band-pass.
+    {
+        var noop = pan.StereoClip{};
+        try load_stereo(&noop, &[_]i16{ 8000, -8000, 4000 }, &[_]i16{ -50, 60, -70 });
+        var f = StereoBandpass.init(1, 2, 1, 2);
+        try f.run(&noop, 1, 0); // empty span — identity
+        if (!eq(noop.left.samples(), &[_]i16{ 8000, -8000, 4000 })) return error.ZeroCountLeftChanged;
+        if (!eq(noop.right.samples(), &[_]i16{ -50, 60, -70 })) return error.ZeroCountRightChanged;
+    }
+
+    print("GREEN ales-stereo-band: a BAND-PASS CARRIED INTO STEREO — ALES46's high-pass-then-low-pass cascade run on BOTH channels with the SAME two cutoffs, each channel carrying its OWN cascade state, the third rung of the " ++
+        "stereo EQ / filter class. ALES170 opened the class with the tone control (one edge kept) and ALES171 followed with the two-band shelf (both bands tilted by gain); the gesture that ISOLATES a range on a master is the " ++
+        "band-pass — drop the lows below one cutoff, drop the highs above another, keep the band between. A band-pass's cutoffs are fractions the caller names, not scalars measured across the field, so the same two cutoffs on " ++
+        "each channel preserve the stereo image for free (no linking, no measurement); each channel band-passes its own content and, like the tone control and unlike the stateless shelf, keeps its OWN cascade state so the two " ++
+        "channels never cross. It validates BOTH cutoffs and the span once against the shared length before either channel is mutated (BadCoeff, BadRange), so a refusal never band-passes one channel and leaves the other torn " ++
+        "and no legal low cutoff advances a state before an illegal high cutoff refuses; ToneError reused whole. THE STEREO BAND-PASS LAW: each channel equals ALES46's mono Bandpass.run with the same two cutoffs byte for byte, " ++
+        "the channels genuinely differing. THE CARRY LAW: a span band-passed in two pieces (each channel carrying its own state) equals the whole once on both, all four states surviving the boundary. THE IMAGE LAW: an " ++
+        "identical-channel master stays identical through the band-pass, a settled constant rejected to zero per channel. THE RESET / BALANCE / SILENCE / ATOMICITY / DEGENERATE LAW: reset re-opening both transients, silence " ++
+        "staying silence on both, left.len == right.len after, an illegal low cutoff / an illegal high cutoff / an out-of-range span each refusing by name with both channels and all four states untouched and balanced, " ++
+        "count = 0 the identity on both. Purely local — two bounded i16 Clips band-passed through the proven mono cascade, four independent i64 states, the cutoffs fractions over sample indices not hertz; no real sample rate, " ++
+        "no anti-aliasing, no network, no keys, no funds, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
