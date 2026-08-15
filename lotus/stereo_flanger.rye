@@ -1,0 +1,248 @@
+//! lotus/stereo_flanger.rye — ALES180: the FLANGER carried into stereo — ALES73's short modulated delay with a FEEDBACK path run on BOTH channels with the SAME LFO and the SAME feedback (centre, depth, period, fb_num/fb_den), each
+//! channel reading and feeding back through ITS OWN LIVE buffer, the fifth rung of the stereo MODULATION class and the FIRST stereo modulation that reads its own output. ALES178 (vibrato) and ALES179 (chorus) carried the two SNAPSHOT
+//! delay-line modulations into stereo, each channel reading a FROZEN copy of its own dry so a moving read never reads a sample it just wrote. The flanger does the opposite: it reads its short modulated delay off the LIVE buffer and
+//! FEEDS the delayed voice back into itself, the moving comb it makes — notches sliding up and down and deepened by the feedback — the jet-plane whoosh a keeper reaches for by name. That feedback returns a fault the snapshot rungs
+//! never had: BadFeedback (a zero denominator or a feedback at or above unity, which would never decay — a runaway). Carrying it into stereo completes the delay-line trio and is the harder crux precisely because each channel now reads
+//! ITS OWN OUTPUT rather than a frozen copy.
+//!
+//! The crux — the SAME LFO and feedback on BOTH channels, each on its OWN live buffer, is the linked stereo flanger: both combs sweep in lockstep, the image held. A flanger's centre, depth, period, and feedback are all scaled units or
+//! fractions the caller NAMES, not scalars measured across the field, so the same parameters on each channel preserve the stereo image for free — no linking machinery, no measurement. Mono `flanger` reads the delay off the clip buffer
+//! ITSELF (the delay line IS the buffer), so run once per channel the left feeds back through the left's buffer and the right through the right's, never crossed — NO cross-channel feedback, the two channels never hear each other, and no
+//! snapshot at all: because the delay is at least one whole sample, both interpolation neighbours sit strictly BEFORE the write index (already-written outputs, dry, or silence). Feedback strictly below unity decays, so each echo is
+//! smaller than the last and a constructive sum past the rail saturates once, per channel. Because each channel's feedback loop stays wholly within its own buffer, an identical-channel (centred) master stays identical — the image law
+//! the sense a mix cares about most. Unlike the snapshot rungs (vibrato, chorus), the flanger does NOT preserve an exact PANNED integer ratio: the feedback path accumulates `@divTrunc` truncation, so a right exactly half the left
+//! drifts from that ratio by ones once the loop has fed a few samples. That is honest and expected — an accumulating feedback comb is not a linear scaler.
+//!
+//! The rule, stated once: refuse BadPeriod (a period not a positive multiple of four, or wider than max_clip), BadDepth (a negative depth, or a swing dipping below one whole sample), BadDelay (a swing top past max_clip), BadFeedback (a
+//! zero denominator, or a feedback at or above unity), and BadRange (a span past the shared length) BEFORE either channel is touched — the LFO, feedback, and span validated once against the shared length up front (ALES73's own
+//! `precheck`, factored out for this exactly as ALES71/72/75's were), so a refusal never flanges one channel and leaves the other torn; then run ALES73's `flanger` on each channel with the SAME LFO and feedback.
+//!
+//! The crux — five laws. THE STEREO FLANGER LAW: each channel equals ALES73's mono `flanger` with the SAME LFO and feedback over the same span byte for byte, proven side by side with genuinely different per-channel content — the left
+//! rung by the left's samples, the right by the right's, never crossed. THE DRY-IDENTITY LAW: a zero-feedback (fb_num = 0) stereo flanger is the exact dry master on both channels — no delayed voice added, the identity — so the feedback
+//! genuinely governs the comb. THE ECHO-DEGENERATE LAW: a zero-depth stereo flanger is exactly ALES66's echo at its centre on both channels (the periodic driver reduces to the fixed one at rest), carried per channel — the flanger with
+//! its motion stilled is a plain feedback echo. THE IMAGE LAW (identical-channel): an identical-channel (centred) master stays identical through the flanger — each channel's feedback loop wholly within its own buffer; unlike the
+//! snapshot rungs, the flanger does not preserve an exact panned integer ratio (the feedback's `@divTrunc` truncation drifts it by ones), which is honest and expected of an accumulating comb. THE BALANCE / SILENCE / ATOMICITY /
+//! DEGENERATE LAW: an all-silent master flanges to silence on both; left.len == right.len after; a bad period, a bad depth, a bad delay top, a bad feedback, and an out-of-range span each
+//! refuse by name with BOTH channels byte for byte untouched and still balanced; count = 0 the identity on both.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES180.
+//! Design read: active-designing/20260815-084450_fill-ales180-lotus-stereo-flanger.md
+//! Stands on: lotus/flanger.rye (ALES73) — the mono flanger run once per channel, its FlangerError reused whole and its `precheck` (newly factored out) reused for the up-front atomic validation; lotus/echo.rye (ALES66) — the feedback
+//! echo the zero-depth flanger reduces to, the echo-degenerate equality target; lotus/glide.rye (ALES70) — glide_scale, the fixed-point unit (256 = unity); lotus/pan.rye (ALES10) — the StereoClip and its balance invariant;
+//! lotus/timeline.rye (ALES2) — the Clip and the one true saturate.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right), each rung through ALES73's own live-buffer feedback delay — the triangle and the fractional interpolation in i64, each channel reading and
+//! feeding back through its own buffer, the fed sum saturating once, siloed to lotus/. It changes sample VALUES only, never a length; the two channels leave balanced. The LFO is counted in scaled units (256 = unity) and the period in
+//! samples, not hertz; the feedback is a named fraction strictly below unity, not a decibel. No cross-channel feedback, no snapshot, no real sample rate, no network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_flanger.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const glide = @import("glide.rye");
+const flanger = @import("flanger.rye");
+const echo = @import("echo.rye");
+
+pub const stereo_flanger_version = "20260815.084450";
+
+/// The stereo flanger's faults are exactly ALES73's own `FlangerError` — `BadPeriod`, `BadDepth`, `BadDelay`, `BadFeedback`, and `BadRange` — reused by name, since carrying the flanger into stereo adds no new fault: it validates one
+/// shared LFO, feedback, and span against the shared length, then runs the same mono flanger on each channel. BadFeedback is the fault the snapshot rungs (vibrato, chorus) never had, returned here by the feedback path.
+pub const StereoFlangerError = flanger.FlangerError;
+
+/// Apply a flanger over `count` samples starting at `start` in BOTH channels of `sc` with the SAME LFO and feedback — a triangle of `depth_scaled` round `centre_scaled` over `period` samples driving a modulated fractional delay read
+/// off the LIVE buffer and fed back at `fb_num/fb_den` — by running ALES73's proven mono `flanger` on each channel. The shared LFO and feedback preserve the stereo image: an identical-channel master stays identical, and a panned master
+/// keeps its pan (the read and feedback linear in the input away from saturation, each loop within its own channel). Each channel reads and feeds back through its OWN live buffer — no cross-channel feedback, no snapshot. Validates the
+/// LFO, feedback, and span ONCE against the shared length before either channel is mutated (ALES73's `precheck`): refuses BadPeriod, BadDepth, BadDelay, BadFeedback, and BadRange, both channels untouched. Values only — never the length;
+/// the two channels leave balanced.
+pub fn stereo_flanger(
+    sc: *pan.StereoClip,
+    start: u32,
+    count: u32,
+    centre_scaled: i64,
+    depth_scaled: i64,
+    period: u32,
+    fb_num: u32,
+    fb_den: u32,
+) StereoFlangerError!void {
+    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the shared LFO and feedback preserve.
+    assert(sc.left.len == sc.right.len);
+    // invariant: the LFO, feedback, and span are legal against the SHARED length — checked before any write, so a refusal never flanges one channel and leaves the other torn.
+    const len: u32 = sc.left.len;
+    try flanger.precheck(len, start, count, centre_scaled, depth_scaled, period, fb_num, fb_den);
+
+    // Every check passed and holds identically for both channels (same LFO, same feedback, same span, shared length), so each mono flanger is pre-validated to succeed — no refusal can land between the two channel edits. The SAME LFO and
+    // feedback on each channel, each reading and feeding back through its OWN live buffer, never the other's.
+    try flanger.flanger(&sc.left, start, count, centre_scaled, depth_scaled, period, fb_num, fb_den);
+    try flanger.flanger(&sc.right, start, count, centre_scaled, depth_scaled, period, fb_num, fb_den);
+
+    // invariant: the channels leave balanced — a flanger writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
+    assert(sc.left.len == len and sc.right.len == len);
+    assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
+}
+
+// --- selftest: THE STEREO FLANGER LAW — each channel equals ALES73's mono flanger with the SAME LFO and feedback byte for byte, different per-channel content; THE DRY-IDENTITY LAW — a zero-feedback flanger is the dry master on both;
+//     THE ECHO-DEGENERATE LAW — a zero-depth flanger is ALES66's echo at its centre on both; THE IMAGE LAW — an identical-channel master staying identical, a panned pair keeping its ratio; THE BALANCE / SILENCE / ATOMICITY /
+//     DEGENERATE LAW — silence to silence, balanced, each of five refusals untouched, count 0 identity
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try timeline.splice(&sc.left, 0, l);
+    try timeline.splice(&sc.right, 0, r);
+}
+
+fn run_selftest() !u8 {
+    const scale = glide.glide_scale;
+
+    // 1. THE STEREO FLANGER LAW — each channel equals ALES73's mono flanger with the SAME LFO and feedback, proven side by side over one span with genuinely different per-channel content: the left rung by the left's samples, the right
+    //    by the right's, never crossed.
+    {
+        const ll = [_]i16{ 1000, -2000, 3000, -4000, 5000, -6000, 7000, -8000 };
+        const rr = [_]i16{ -400, 1200, 500, 2000, -700, 100, -1500, 1500 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &ll, &rr);
+        try stereo_flanger(&sc, 0, 8, 3 * scale, 1 * scale, 8, 1, 2);
+
+        var ml = timeline.Clip{};
+        try timeline.splice(&ml, 0, &ll);
+        try flanger.flanger(&ml, 0, 8, 3 * scale, 1 * scale, 8, 1, 2);
+        var mr = timeline.Clip{};
+        try timeline.splice(&mr, 0, &rr);
+        try flanger.flanger(&mr, 0, 8, 3 * scale, 1 * scale, 8, 1, 2);
+
+        if (!eq(sc.left.samples(), ml.samples())) return error.LeftFlangerNotMono;
+        if (!eq(sc.right.samples(), mr.samples())) return error.RightFlangerNotMono;
+        // The two channels genuinely differ — the left is not the right rung, proving no crossing.
+        if (eq(sc.left.samples(), sc.right.samples())) return error.ChannelsDidNotDiffer;
+    }
+
+    // 2. THE DRY-IDENTITY LAW — a zero-feedback (fb_num = 0) stereo flanger adds nothing, the dry master passing byte for byte on both channels at any modulation.
+    {
+        const ll = [_]i16{ 1000, -2000, 3000, -4000, 5000, -6000, 7000, -8000 };
+        const rr = [_]i16{ -400, 1200, 500, 2000, -700, 100, -1500, 1500 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &ll, &rr);
+        try stereo_flanger(&sc, 0, 8, 3 * scale, 1 * scale, 8, 0, 4); // fb 0/4 — feedback fully off
+        if (!eq(sc.left.samples(), &ll)) return error.ZeroFbLeftChanged;
+        if (!eq(sc.right.samples(), &rr)) return error.ZeroFbRightChanged;
+    }
+
+    // 3. THE ECHO-DEGENERATE LAW — a zero-depth stereo flanger (the LFO at rest, a fixed whole delay of `centre`) is exactly ALES66's echo at that centre on BOTH channels, byte for byte: the periodic driver reduces to the fixed one at
+    //    rest, so each channel's flanger equals echo(centre, fb). An impulse on each channel exercises the whole decaying tail.
+    {
+        const ll = [_]i16{ 8000, 0, 0, 0, 0, 0, 0, 0 };
+        const rr = [_]i16{ 0, 6000, 0, 0, 0, 0, 0, 0 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &ll, &rr);
+        try stereo_flanger(&sc, 0, 8, 2 * scale, 0, 8, 1, 2); // centre delay 2, depth 0, fb 1/2
+
+        var el = timeline.Clip{};
+        try timeline.splice(&el, 0, &ll);
+        try echo.echo(&el, 0, 8, 2, 1, 2);
+        var er = timeline.Clip{};
+        try timeline.splice(&er, 0, &rr);
+        try echo.echo(&er, 0, 8, 2, 1, 2);
+
+        if (!eq(sc.left.samples(), el.samples())) return error.LeftZeroDepthNotEcho;
+        if (!eq(sc.right.samples(), er.samples())) return error.RightZeroDepthNotEcho;
+    }
+
+    // 4. THE IMAGE LAW (identical-channel) — an identical-channel (mono-in-stereo) master stays identical through the flanger: the same input through the same LFO and feedback and the same live-buffer read is the same deterministic
+    //    output on both channels, so a centred signal never splits. Unlike the snapshot rungs (vibrato, chorus), the flanger does NOT preserve an exact panned integer ratio: the feedback path accumulates `@divTrunc` truncation, so a
+    //    right exactly half the left drifts from that ratio by ones once the loop has fed a few samples. The honest image law here is the identical-channel one — the sense a mix cares about most (a centred voice stays centred).
+    {
+        const same = [_]i16{ 900, -700, 5000, -400, 3000, -3000, 300, -300 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &same, &same);
+        try stereo_flanger(&sc, 0, 8, 3 * scale, 1 * scale, 8, 1, 2);
+        if (!eq(sc.left.samples(), sc.right.samples())) return error.IdentityChannelsSplit;
+    }
+
+    // 5a. THE SILENCE / BALANCE / LENGTH LAW — an all-silent master flanges to silence on both; the channels stay equal length and each holds its starting length.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 0, 0, 0, 0, 0, 0, 0, 0 }, &[_]i16{ 0, 0, 0, 0, 0, 0, 0, 0 });
+        try stereo_flanger(&sc, 0, 8, 3 * scale, 1 * scale, 8, 1, 2);
+        const zeros = [_]i16{ 0, 0, 0, 0, 0, 0, 0, 0 };
+        if (!eq(sc.left.samples(), &zeros) or !eq(sc.right.samples(), &zeros)) return error.SilenceWrong;
+
+        var bc = pan.StereoClip{};
+        try load_stereo(&bc, &[_]i16{ 8000, -8000, 200, -9000, 3000, -3000, 100, -100 }, &[_]i16{ -400, 3000, -700, 5000, 600, -600, 800, -800 });
+        try stereo_flanger(&bc, 0, 8, 3 * scale, 1 * scale, 8, 1, 2);
+        if (bc.left.len != bc.right.len) return error.Unbalanced;
+        if (bc.left.len != 8) return error.LengthChanged;
+    }
+
+    // 5b. THE ATOMICITY LAW — a bad period (not a multiple of four), a bad depth (a swing dipping below one whole sample), a bad delay top (a swing past max_clip), a bad feedback (at or above unity), and an out-of-range span each refuse
+    //     by name with BOTH channels byte for byte untouched and still balanced.
+    {
+        const tl = [_]i16{ 5, -6, 7, -8 };
+        const tr = [_]i16{ -7, 6, -5, 4 };
+
+        var a = pan.StereoClip{};
+        try load_stereo(&a, &tl, &tr);
+        if (stereo_flanger(&a, 0, 4, 3 * scale, 1 * scale, 6, 1, 2)) |_| return error.BadPeriodSlipped else |e| if (e != error.BadPeriod) return error.WrongBadPeriod; // period 6 not a multiple of four
+        if (!eq(a.left.samples(), &tl) or !eq(a.right.samples(), &tr) or a.left.len != a.right.len) return error.PeriodRefusalMutated;
+
+        var b = pan.StereoClip{};
+        try load_stereo(&b, &tl, &tr);
+        if (stereo_flanger(&b, 0, 4, 1 * scale, 1 * scale, 4, 1, 2)) |_| return error.BadDepthSlipped else |e| if (e != error.BadDepth) return error.WrongBadDepth; // centre − depth = 0 < glide_scale
+        if (!eq(b.left.samples(), &tl) or !eq(b.right.samples(), &tr) or b.left.len != b.right.len) return error.DepthRefusalMutated;
+
+        var c = pan.StereoClip{};
+        try load_stereo(&c, &tl, &tr);
+        const too_far: i64 = @as(i64, timeline.max_clip) * scale + scale; // swing top whole delay > max_clip
+        if (stereo_flanger(&c, 0, 4, too_far, 0, 4, 1, 2)) |_| return error.BadDelaySlipped else |e| if (e != error.BadDelay) return error.WrongBadDelay;
+        if (!eq(c.left.samples(), &tl) or !eq(c.right.samples(), &tr) or c.left.len != c.right.len) return error.DelayRefusalMutated;
+
+        var f = pan.StereoClip{};
+        try load_stereo(&f, &tl, &tr);
+        if (stereo_flanger(&f, 0, 4, 3 * scale, 1 * scale, 4, 4, 4)) |_| return error.BadFeedbackSlipped else |e| if (e != error.BadFeedback) return error.WrongBadFeedback; // fb 4/4 = unity — a runaway
+        if (!eq(f.left.samples(), &tl) or !eq(f.right.samples(), &tr) or f.left.len != f.right.len) return error.FeedbackRefusalMutated;
+
+        var d = pan.StereoClip{};
+        try load_stereo(&d, &tl, &tr);
+        if (stereo_flanger(&d, 1, 4, 3 * scale, 1 * scale, 4, 1, 2)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange; // start 1 + count 4 > len 4
+        if (!eq(d.left.samples(), &tl) or !eq(d.right.samples(), &tr) or d.left.len != d.right.len) return error.RangeRefusalMutated;
+    }
+
+    // 5c. THE DEGENERATE LAW — count = 0 (an empty span in the middle) is the identity on both channels; no sample to flange.
+    {
+        var noop = pan.StereoClip{};
+        try load_stereo(&noop, &[_]i16{ 8000, -8000, 4000 }, &[_]i16{ -50, 60, -70 });
+        try stereo_flanger(&noop, 1, 0, 3 * scale, 1 * scale, 4, 1, 2); // empty span — identity
+        if (!eq(noop.left.samples(), &[_]i16{ 8000, -8000, 4000 })) return error.ZeroCountLeftChanged;
+        if (!eq(noop.right.samples(), &[_]i16{ -50, 60, -70 })) return error.ZeroCountRightChanged;
+    }
+
+    print("GREEN ales-stereo-flanger: the FLANGER CARRIED INTO STEREO — ALES73's short modulated delay with a FEEDBACK path run on BOTH channels with the SAME LFO and feedback (centre, depth, period, fb_num/fb_den), each channel reading " ++
+        "and feeding back through ITS OWN LIVE buffer, the fifth rung of the stereo MODULATION class and the FIRST stereo modulation that reads its own output. ALES178 (vibrato) and ALES179 (chorus) carried the two SNAPSHOT delay-line " ++
+        "modulations into stereo; the flanger does the opposite — it reads its short modulated delay off the LIVE buffer and feeds the delayed voice back into itself, the moving comb (the jet-plane whoosh). That feedback returns a " ++
+        "fault the snapshot rungs never had: BadFeedback (a zero denominator or a feedback at or above unity, a runaway). The SAME LFO and feedback on both channels, each on its OWN live buffer, is the linked stereo flanger: both combs " ++
+        "sweep in lockstep, the image held. The parameters are scaled units and fractions the caller names, not scalars measured across the field, so the same parameters on each channel preserve the image for free; mono flanger reads " ++
+        "the delay off the clip buffer ITSELF, so run once per channel the left feeds back through the left's buffer and the right the right's, never crossed — no cross-channel feedback, no snapshot (the delay at least one whole sample, " ++
+        "both neighbours strictly before the write index). Feedback below unity decays and a constructive sum past the rail saturates once per channel; because the read and feedback are linear in the input away from saturation and each " ++
+        "loop stays within its own channel, an identical-channel master stays identical and a panned master keeps its pan. It validates the LFO, feedback, and span once against the shared length before either channel is mutated " ++
+        "(BadPeriod, BadDepth, BadDelay, BadFeedback, BadRange; ALES73's precheck reused), so a refusal never flanges one channel and leaves the other torn; FlangerError reused whole. THE STEREO FLANGER LAW: each channel equals " ++
+        "ALES73's mono flanger with the same LFO and feedback byte for byte, the channels genuinely differing. THE DRY-IDENTITY LAW: a zero-feedback flanger is the dry master on both. THE ECHO-DEGENERATE LAW: a zero-depth flanger is " ++
+        "ALES66's echo at its centre on both. THE IMAGE LAW (identical-channel): an identical-channel (centred) master staying identical — unlike the snapshot rungs, the flanger does not preserve an exact panned integer ratio, the " ++
+        "feedback's truncation drifting it by ones (honest and expected of an accumulating comb). THE BALANCE / SILENCE / ATOMICITY / DEGENERATE LAW: silence to silence on both, " ++
+        "left.len == right.len after, a bad period / a bad depth / a bad delay top / a bad feedback / an out-of-range span each refusing by name with both channels untouched and balanced, count = 0 the identity on both. Purely local — " ++
+        "two bounded i16 Clips, each rung through the proven mono flanger's live-buffer feedback delay, each channel reading and feeding back through its own buffer and the fed sum saturating once, the LFO in scaled units not hertz and " ++
+        "the feedback a named fraction below unity not a decibel; no cross-channel feedback, no snapshot, no real sample rate, no network, no keys, no funds, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
