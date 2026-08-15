@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260814.195637
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title ALES72 — Lotus's vibrato, the triangle-LFO modulated delay heard wet-only
+prompt recur the itinerary Lindy-first crux-first, take the next agent-doable lap, approve own design rounds, send each finished increment, stop at custody gates
+think ALES71's own recommendation named the next crux plainly: the vibrato, the same triangle-LFO modulated delay heard WET-ONLY (no dry), so the pitch itself wavers. Lindy-first every part of the arithmetic is already proven — the triangle driver (ALES71), the fractional interpolation (ALES70), the frozen-snapshot discipline (ALES68); this rung invents nothing new, it only changes what reaches the output. Crux-first the one decisive move is to prove the family identity outright: the chorus is the dry plus the vibrato.
+think Reused chorus.triangle_delay_at and glide.glide_scale over their public APIs — no new driver, no new interpolation. The only change from the chorus is the write: where the chorus writes saturate(x[i] + delayed) the vibrato writes `delayed` ALONE. So chorus[i] = saturate(dry[i] + vibrato[i]) at every sample, the two rungs one delay heard two ways.
+think delayed is a convex combination of two i16 neighbours (weights non-negative, summing to glide_scale), so it already fits the i16 rail — there is no dry sum to overflow. Wrote through timeline.saturate for family uniformity, with an invariant stating it never actually clips: the vibrato voice can only be as loud as the dry it reads. Dropped num/den entirely — the vibrato is inherently full-wet — so there is no BadLevel fault; the other four carry over from the chorus.
+think Law 1 proves the identity sample-by-sample: snapshot the dry, run vibrato for V, run chorus at 1/1 for C, verify C[i] == saturate(dry[i] + V[i]). Law 2 is the chorus's whole-sample-anchored case heard wet-only (centre 2·scale, depth 1·scale, period 4 → delays 2,3,2,1,2,3), each output dry[i−delay(i)] alone, computed by hand. Law 3 a zero-depth vibrato is a fixed fractional delay heard alone. Law 4 a loud steady signal read wet-only never exceeds the rail.
+obs GREEN on the first build across all five laws — no RED. Faults: BadPeriod, BadDepth, BadDelay, BadRange, each refusing before any write, the clip untouched; deliberately no BadLevel (no mix level). TAME style bans clean, width clean, ALES71 chorus stays GREEN beside the vibrato. The design read was self-approved (no custody gate — bounded in-process i16 PCM, no network/keys/funds/device/sample-rate).
+loom witness=ales_vibrato_witness laws=5 green=1 reruns=ales71_chorus glide_scale=256 period_law=multiple_of_4 max_clip=4096 mix_level=none
+file lotus/vibrato.rye ALES72 — the triangle-LFO modulated delay heard wet-only; reuses ALES71's driver and ALES70's read, writes the delayed voice alone
+file tools/ales_vibrato_witness.rish witness GREEN, proves the chorus is the dry plus the vibrato and re-proves the ALES71 chorus beside it
+file active-designing/20260814-195637_fill-ales72-lotus-vibrato-wet-only-modulated-delay.md design read for the rung, self-approved round
+file lotus/README.md Status rung list + stamp carry ALES72
+recommend keep-going ALES73 — the flanger (a shorter modulated delay with a feedback path), the family's next rung and the one that adds a genuinely new element rather than only changing the mix
