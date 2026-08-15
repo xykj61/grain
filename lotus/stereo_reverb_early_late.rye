@@ -1,0 +1,286 @@
+//! lotus/stereo_reverb_early_late.rye — ALES207: THE STEREO EARLY/LATE BALANCE — the first reflections against the diffuse wash, now across a
+//! stereo master. ALES206 gave the MONO reverb its early/late balance: a crossfade between a room's discrete first reflections (a multi-tap of
+//! the dry) and its diffuse late wash (the named-room preset). Yet a keeper mixing a stereo master had no such knob — the early/late balance
+//! stopped at mono, exactly as the wet/dry mix did before ALES193 carried it across. This rung is the thin twin ALES206 named next: the SAME
+//! crossfade, over BOTH channels of a StereoClip, one shared early bank, room, and balance, the image held.
+//!
+//! The shape mirrors ALES193's stereo wet/dry mix exactly, swapping the dry snapshot for the EARLY reflections: compute the early signal on a full
+//! COPY of the master (ALES69's multitap_ms over ALES206's fixed early bank, run per channel — the left ear reads the left's dry, the right the
+//! right's, never crossed), reverberate the master WET in place through ALES191's stereo_reverb_preset UNCHANGED, then BLEND each channel —
+//!   out[i] = saturate((den - num)·early[i]/den + num·late[i]/den)
+//! the exact linear balance ALES206 proved, run per ear with NO cross-channel read. The two edges are exact and provable on both ears: at
+//! balance = 0 each channel equals the multi-tap over the room's early bank byte for byte (fully early is exactly the first reflections), and at
+//! balance = den it equals stereo_reverb_preset over the span byte for byte (fully late is exactly the stereo preset). Between, each sample of each
+//! channel is the honest weighted average of its own early and its own late, so the image the preset held is held through the blend as well.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES207.
+//! Design read: active-designing/20260815-114348_fill-ales207-lotus-stereo-reverb-early-late.md
+//! Stands on: lotus/reverb_early_late.rye (ALES206) — the mono early/late balance this mirrors per ear, its published early banks reused whole;
+//! lotus/multitap_time.rye (ALES69) — the timed multi-tap voicing the early reflections, run per channel on the copy, its MultitapTimeError
+//! forwarded whole; lotus/stereo_reverb_preset.rye (ALES191) — the named-room stereo wet, run over the master unchanged, its StereoReverbPresetError
+//! forwarded whole; lotus/pan.rye — the StereoClip and its two balanced channels; lotus/clock.rye (ALES5) — the sample clock converting the span;
+//! lotus/timeline.rye (ALES2) — the Clip each channel holds, its max_clip bounding the early copy and its saturate clamping the blend.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM in one StereoClip, a validated clock, ALES191's fixed reverb banks and
+//! ALES206's fixed early-tap banks, and one bounded full-master copy for the early signal, siloed to lotus/. No new audio arithmetic — the crossfade
+//! is ALES206's proven linear blend run per ear, each channel's early and late computed by a proven stage, saturated once so it can never wrap. The
+//! early banks are named in MILLISECONDS, so one room sounds the same at any sample rate; the balance is a named fraction, not a decibel. No socket,
+//! no network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_reverb_early_late.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const clock = @import("clock.rye");
+const multitap_time = @import("multitap_time.rye");
+const reverb_early_late = @import("reverb_early_late.rye");
+const stereo_reverb_preset = @import("stereo_reverb_preset.rye");
+
+pub const stereo_reverb_early_late_version = "20260815.114348";
+
+/// The named rooms are ALES206's own (themselves ALES190's, through ALES191) — reused whole, so the stereo early/late balance and the presets name
+/// the same tunings and cannot drift apart.
+pub const Room = reverb_early_late.Room;
+
+/// The stereo early/late balance's faults: this rung's own `BadBalance`, beside ALES69's MultitapTimeError (the clock's DurationTooLong and the
+/// multi-tap's edges, forwarded from the early half) and ALES191's StereoReverbPresetError (the clock's DurationTooLong and the reverb's edges,
+/// forwarded from the late half). The two halves' shared clock faults are deduped by the union. Each refuses by name before any write.
+pub const StereoReverbEarlyLateError = multitap_time.MultitapTimeError || stereo_reverb_preset.StereoReverbPresetError || error{BadBalance};
+
+/// Balance `count_ms` of a stereo master `sc` from `start_ms` for a NAMED ROOM between its EARLY reflections and its LATE diffuse wash, per channel.
+/// Compute the early signal on a full copy of the master (ALES69's `multitap_ms` over the room's fixed early bank, run per channel), reverberate the
+/// master wet in place (ALES191's `stereo_reverb_preset`, unchanged), then blend each channel:
+///   out[i] = saturate((balance_den - balance_num)·early[i]/balance_den + balance_num·late[i]/balance_den).
+/// At `balance_num = 0` each channel equals the multi-tap over the early bank byte for byte (fully early); at `balance_num = balance_den` it equals
+/// `stereo_reverb_preset` byte for byte on both channels (fully late). Refuses BadBalance on a bad fraction, then forwards ALES69's and ALES191's
+/// faults (DurationTooLong on a span past the clip, BadRange on an out-of-range span) before any write; on refusal both channels are untouched and
+/// balanced. No cross-channel read — the image is held.
+pub fn stereo_reverb_early_late(
+    sc: *pan.StereoClip,
+    clk: clock.Clock,
+    room: Room,
+    start_ms: u32,
+    count_ms: u32,
+    balance_num: u32,
+    balance_den: u32,
+) StereoReverbEarlyLateError!void {
+    // invariant: the two channels enter balanced — the defining StereoClip invariant the shared early bank and preset preserve.
+    assert(sc.left.len == sc.right.len);
+    // invariant: the clock is valid — the balance is spoken against it, and both halves assert the same.
+    assert(clk.rate >= 1 and clk.rate <= clock.max_rate);
+    // invariant: the balance is a real fraction in [0, 1] — a zero denominator or a numerator past it is no balance at all.
+    if (balance_den == 0 or balance_num > balance_den) return error.BadBalance;
+
+    // The EARLY signal, on a full COPY of the master — the diffuse late (written next into the real master) never feeds the early reflections.
+    // multitap_ms prechecks before any write, so a span or bank fault surfaces here with the REAL master still untouched and balanced. Run once
+    // per channel, each reading its OWN dry — no cross-channel snapshot, the mono discipline twice (ALES183's own argument).
+    var early_sc: pan.StereoClip = sc.*;
+    const bank = reverb_early_late.early_bank_for(room);
+    try multitap_time.multitap_ms(&early_sc.left, clk, start_ms, count_ms, bank);
+    try multitap_time.multitap_ms(&early_sc.right, clk, start_ms, count_ms, bank);
+
+    // The LATE signal, in place on the real master — ALES191's stereo_reverb_preset, unchanged. It prechecks before any write, so a reverb fault
+    // here leaves both channels dry and balanced (and the early copy is discarded, no write survives).
+    try stereo_reverb_preset.stereo_reverb_preset(sc, clk, room, start_ms, count_ms);
+
+    // Convert the span with the SAME clock both halves used, so the blend covers exactly the span they wrote. Both halves already succeeded above
+    // against this span (the channels balanced, one bound governs both), so these conversions and bounds hold — assert them rather than re-raise.
+    const start = clock.samples_for(clk, start_ms) catch unreachable;
+    const count = clock.samples_for(clk, count_ms) catch unreachable;
+    // invariant: the span the two halves wrote lies wholly within the master — proven by their own success just above.
+    assert(start <= sc.left.len and count <= sc.left.len - start);
+    assert(start + count <= early_sc.left.len);
+
+    const den: i64 = @intCast(balance_den);
+    const num: i64 = @intCast(balance_num);
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        // invariant: the two weights are the balance and its complement, so together they carry exactly one whole sample's worth.
+        assert(num >= 0 and num <= den);
+        // The left ear blends its own early against its own late; the right ear its own — no cross-channel read, so the image is held.
+        const el: i64 = @intCast(early_sc.left.buf[start + i]);
+        const ll: i64 = @intCast(sc.left.buf[start + i]);
+        sc.left.buf[start + i] = timeline.saturate(@divTrunc((den - num) * el, den) + @divTrunc(num * ll, den));
+        const er: i64 = @intCast(early_sc.right.buf[start + i]);
+        const lr: i64 = @intCast(sc.right.buf[start + i]);
+        sc.right.buf[start + i] = timeline.saturate(@divTrunc((den - num) * er, den) + @divTrunc(num * lr, den));
+    }
+    // invariant: the blend wrote only within the span on each channel; the channels leave balanced.
+    assert(start + count <= sc.left.len);
+    assert(sc.left.len == sc.right.len);
+}
+
+// --- selftest: THE EARLY EDGE (balance = 0) — each channel equals multitap_ms over the room's early bank byte for byte; THE LATE EDGE (balance =
+//     den) — equals stereo_reverb_preset over the span byte for byte on both channels; THE BLEND IS BETWEEN — a half balance differs from both and
+//     each sample of each channel is the honest weighted average; THE IMAGE IS HELD — a centred master identical channel-to-channel, a stereo
+//     master distinct; THE CHANNELS LEAVE BALANCED and silence stays silence; and the faults forward atomic — a bad fraction BadBalance, a span
+//     past the clip DurationTooLong, an out-of-range span BadRange, both channels untouched -------------------------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try timeline.splice(&sc.left, 0, l);
+    try timeline.splice(&sc.right, 0, r);
+}
+
+fn run_selftest() !u8 {
+    const c = try clock.make(1000); // 1 sample per ms — each ms delay is one sample, the bench legible
+    // Two distinct impulses so the channels genuinely differ (no crossing can hide), each long enough for the hall's strongest comb to decay.
+    const left = blk: {
+        var b: [1024]i16 = [_]i16{0} ** 1024;
+        b[0] = 12000;
+        break :blk b;
+    };
+    const right = blk: {
+        var b: [1024]i16 = [_]i16{0} ** 1024;
+        b[3] = 9000; // a different impulse at a different position — the right channel is not the left
+        break :blk b;
+    };
+
+    // 1. THE EARLY EDGE — balance_num = 0 leaves each channel equal to ALES69's multi-tap over the room's published early bank, byte for byte. Fully
+    //    toward early is exactly the discrete first reflections per ear; the late reverb ran on a copy that no write survives.
+    {
+        var by_balance = pan.StereoClip{};
+        try load_stereo(&by_balance, &left, &right);
+        try stereo_reverb_early_late(&by_balance, c, .hall, 0, 1024, 0, 4);
+
+        const bank = reverb_early_late.early_bank_for(.hall);
+        var el = timeline.Clip{};
+        try timeline.splice(&el, 0, &left);
+        try multitap_time.multitap_ms(&el, c, 0, 1024, bank);
+        var er = timeline.Clip{};
+        try timeline.splice(&er, 0, &right);
+        try multitap_time.multitap_ms(&er, c, 0, 1024, bank);
+
+        if (!eq(by_balance.left.samples(), el.samples())) return error.EarlyEdgeLeftNotMultitap;
+        if (!eq(by_balance.right.samples(), er.samples())) return error.EarlyEdgeRightNotMultitap;
+    }
+
+    // 2. THE LATE EDGE — balance_num = balance_den equals ALES191's stereo_reverb_preset over the span, byte for byte on both channels.
+    {
+        var balanced = pan.StereoClip{};
+        try load_stereo(&balanced, &left, &right);
+        try stereo_reverb_early_late(&balanced, c, .hall, 0, 1024, 4, 4);
+
+        var preset = pan.StereoClip{};
+        try load_stereo(&preset, &left, &right);
+        try stereo_reverb_preset.stereo_reverb_preset(&preset, c, .hall, 0, 1024);
+
+        if (!eq(balanced.left.samples(), preset.left.samples())) return error.LateEdgeLeftNotPreset;
+        if (!eq(balanced.right.samples(), preset.right.samples())) return error.LateEdgeRightNotPreset;
+    }
+
+    // 3. THE BLEND IS BETWEEN — a half balance (num = 1, den = 2) differs from both edges on each channel, and each sample of each channel is the
+    //    honest weighted average of its own early and its own late: out[i] == saturate(early[i]/2 + late[i]/2), proven against the two edges
+    //    computed side by side, on both ears.
+    {
+        var early = pan.StereoClip{};
+        try load_stereo(&early, &left, &right); // balance 0 leaves the early
+        try stereo_reverb_early_late(&early, c, .hall, 0, 1024, 0, 2);
+
+        var late = pan.StereoClip{};
+        try load_stereo(&late, &left, &right);
+        try stereo_reverb_early_late(&late, c, .hall, 0, 1024, 2, 2); // balance den is the pure late
+
+        var half = pan.StereoClip{};
+        try load_stereo(&half, &left, &right);
+        try stereo_reverb_early_late(&half, c, .hall, 0, 1024, 1, 2);
+
+        // the half blend is neither edge, on either channel
+        if (eq(half.left.samples(), early.left.samples())) return error.HalfLeftEqualsEarly;
+        if (eq(half.left.samples(), late.left.samples())) return error.HalfLeftEqualsLate;
+        if (eq(half.right.samples(), early.right.samples())) return error.HalfRightEqualsEarly;
+        if (eq(half.right.samples(), late.right.samples())) return error.HalfRightEqualsLate;
+        // and each sample of each channel is the weighted average of the two edges, byte for byte
+        const hl = half.left.samples();
+        const el = early.left.samples();
+        const ll = late.left.samples();
+        const hr = half.right.samples();
+        const er = early.right.samples();
+        const lr = late.right.samples();
+        var i: u32 = 0;
+        while (i < hl.len) : (i += 1) {
+            const want_l = timeline.saturate(@divTrunc(@as(i64, el[i]), 2) + @divTrunc(@as(i64, ll[i]), 2));
+            if (hl[i] != want_l) return error.BlendLeftNotWeightedAverage;
+            const want_r = timeline.saturate(@divTrunc(@as(i64, er[i]), 2) + @divTrunc(@as(i64, lr[i]), 2));
+            if (hr[i] != want_r) return error.BlendRightNotWeightedAverage;
+        }
+    }
+
+    // 4. THE IMAGE IS HELD — a CENTRED master (left == right) stays identical channel-to-channel through any balance (one shared early bank, one
+    //    preset, one blend, no cross-channel read); and our genuinely STEREO master keeps its two channels distinct — no crossing.
+    {
+        var centred = pan.StereoClip{};
+        try load_stereo(&centred, &left, &left);
+        try stereo_reverb_early_late(&centred, c, .hall, 0, 1024, 1, 3);
+        if (!eq(centred.left.samples(), centred.right.samples())) return error.CentredImageBroken;
+        var stereo = pan.StereoClip{};
+        try load_stereo(&stereo, &left, &right);
+        try stereo_reverb_early_late(&stereo, c, .hall, 0, 1024, 1, 3);
+        if (eq(stereo.left.samples(), stereo.right.samples())) return error.ChannelsCrossed;
+    }
+
+    // 5. THE CHANNELS LEAVE BALANCED and silence stays silence — an all-zero master at any balance stays all zeros on both channels, the channels
+    //    balanced: both halves add nothing to nothing and the blend of two silences is silence.
+    {
+        var clip = pan.StereoClip{};
+        const zl = [_]i16{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        const zr = [_]i16{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        try load_stereo(&clip, &zl, &zr);
+        try stereo_reverb_early_late(&clip, c, .plate, 0, 16, 1, 3);
+        if (clip.left.samples().len != clip.right.samples().len) return error.ChannelsUnbalanced;
+        if (!eq(clip.left.samples(), &zl)) return error.SilenceWrongLeft;
+        if (!eq(clip.right.samples(), &zr)) return error.SilenceWrongRight;
+    }
+
+    // 6. THE FAULTS FORWARD, ATOMIC — a bad balance fraction refuses BadBalance, a span past the clip DurationTooLong, an out-of-range span
+    //    BadRange, each by name with both channels untouched and balanced. The early multi-tap runs on the copy and the late preset prechecks, so
+    //    no refusal ever half-writes the master.
+    {
+        var clip = pan.StereoClip{};
+        const threel = [_]i16{ 1, 2, 3 };
+        const threer = [_]i16{ 4, 5, 6 };
+        try load_stereo(&clip, &threel, &threer);
+        // a zero denominator is no balance — BadBalance, before any conversion or write.
+        if (stereo_reverb_early_late(&clip, c, .room, 0, 3, 1, 0)) |_| return error.BadBalanceSlipped else |e| if (e != error.BadBalance) return error.WrongBadBalance;
+        if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.RefusedBadBalanceMutated;
+        // a numerator past the denominator is past full late — BadBalance.
+        if (stereo_reverb_early_late(&clip, c, .room, 0, 3, 5, 4)) |_| return error.OverBalanceSlipped else |e| if (e != error.BadBalance) return error.WrongOverBalance;
+        if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.RefusedOverBalanceMutated;
+        // a count past max_clip converts past the clip bound — DurationTooLong from the clock (raised by the early multi-tap on the copy).
+        if (stereo_reverb_early_late(&clip, c, .room, 0, timeline.max_clip + 1, 1, 2)) |_| return error.LongSpanSlipped else |e| if (e != error.DurationTooLong) return error.WrongLongSpan;
+        if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.RefusedLongSpanMutated;
+        // an out-of-range span (2 ms start, 5 ms count past a 3-sample clip) refuses BadRange before the real master is written.
+        if (stereo_reverb_early_late(&clip, c, .room, 2, 5, 1, 2)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.RefusedRangeMutated;
+    }
+
+    print("GREEN ales-stereo-reverb-early-late: THE STEREO EARLY/LATE BALANCE — the first reflections against the diffuse wash, now across a stereo " ++
+        "master, the thin twin ALES206 named next. Compute the EARLY reflections with ALES69's multi-tap over the room's fixed early bank (on a copy, " ++
+        "run per channel, each reading its own dry — no cross-channel snapshot), reverberate the master WET in place through ALES191's " ++
+        "stereo_reverb_preset unchanged, then blend each channel — out[i] = saturate((den-num)·early[i]/den + num·late[i]/den), the same linear " ++
+        "balance ALES206 proved, run per ear with no cross-channel read, saturated once so a loud blend pins never wraps — no new audio arithmetic. " ++
+        "The two edges are exact and proven on both channels: at balance = 0 each channel equals the multi-tap over the room's early bank byte for " ++
+        "byte (fully early is exactly the first reflections), and at balance = den it equals stereo_reverb_preset over the span byte for byte (fully " ++
+        "late is exactly the stereo preset); a half balance differs from both and each sample of each channel is the honest weighted average; the " ++
+        "image is held — a centred master stays identical channel-to-channel while a stereo master keeps its channels distinct; the channels leave " ++
+        "balanced and silence stays silence; and the faults forward atomic — a bad fraction BadBalance, a span past the clip DurationTooLong, an " ++
+        "out-of-range span BadRange — each leaving both channels untouched (the early multi-tap on the copy, the late preset prechecked). The early " ++
+        "banks are named in MILLISECONDS, so one room sounds the same at any sample rate; siloed to lotus/, no network, no keys, no funds, no real " ++
+        "device, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
