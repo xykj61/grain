@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260815.143152
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — EDT (America/New_York) — this session in ai-jail
+title ALES229 — Lotus library_diff: what changed between two catalog versions
+prompt Continuing the autonomous recur loop: take the next agent-doable Lotus crux Lindy-first crux-first, send each finished increment, stop at custody gates.
+think ALES228 seated the resolve (find an album by name). The next crux crux-first: a body of work grows — a keeper reseals their library when they finish, retire, or remaster a record. The honest morning question is what changed since yesterday's catalog. Answering by eye means reading two sheets side by side; the difference wants to be named.
+think Chose a diff of two opened library manifests into three verdicts — added, removed, changed — everything else same. The deciding design move: it COMPOSES on ALES228's find rather than re-walking from scratch. Each verdict is a find into the other catalog, and the content-address digest is the whole comparison — content-addressing already proved matching digests mean identical bytes and differing digests mean the record moved, so no byte compare and no new hash. First Lotus rung to stand ON another catalog primitive rather than beside it — the shape the level should grow in.
+think Diff struct holds added[]/removed[] (library_manifest.Entry) and changed[] (Change: name, old_digest, new_digest), each bounded by max_albums, plus a same tally. classify walks the after against the before (added/changed/same) then the before against the after (removed). Two closing asserts: the three after-tallies account for the whole after count, and no list overflows its catalog's bound.
+obs Four laws proven on metal, GREEN on the first metal pass (no red this lap): the added law (an after-only album once, with its digest); the removed law (a before-only album once, with its digest); the changed law (a name in both with a moved digest once, carrying old and new; an unchanged name in no list, counted same); the identity law (a catalog against itself yields all zeros and same_count equal to the album count).
+obs Pure local classification; content-addressing on every handle it reports, never a signature. No custody gate. tame_style_check bans clean. The library level's working set is now content address · readable page · resolve · diff.
+loom witness=ales_library_diff_witness result=GREEN laws=4 build_reds=0
+file active-designing/20260815-143152_fill-ales229-lotus-library-diff.md the self-approved design round naming the crux and four laws
+file lotus/library_diff.rye ALES229 — classify(before, after) over two opened library manifests, composing on library_find
+file tools/ales_library_diff_witness.rish the on-metal witness, GREEN
+recommend keep-going the next Lotus rung stays agent-doable and non-gated (a diff rendered as a readable change page, or a resolve-then-verify); the signed carry that names who made a catalog stays the custody gate for Keaton's word
