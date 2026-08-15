@@ -1,0 +1,318 @@
+//! lotus/stereo_reverb_gate_env.rye — ALES203: THE STEREO ENVELOPE GATE — the reverb's GATED TAIL given a shaped edge, the time-following gated reverb,
+//! now across a stereo master. ALES202 gave the MONO reverb its shaped-edge gated tail: reverberate the span wet in place, then follow-gate the wet
+//! with an attack/release envelope gate so the release holds the gate open over the decay (the tail breathes rather than chops). Yet a keeper mixing a
+//! STEREO master still had only the STATIC stereo gate (ALES201); the shaped edge stopped at mono, exactly as the static gate did before ALES201
+//! carried it across. This rung is the thin twin ALES202 named next: the SAME envelope gate, over BOTH channels of a StereoClip, one shared threshold,
+//! ratio, and attack/release, the image held.
+//!
+//! The shape: reverberate the master WET in place through ALES191's stereo_reverb_preset UNCHANGED, then follow-gate EACH channel's wet with ALES54's
+//! proven envelope-following gate at the SAME threshold, ratio, and coefficients —
+//!   out = gate_follow(wet, threshold, ratio_num, ratio_den, attack, release)   per channel, no cross-channel read
+//! ratio_num == ratio_den is the identity (a unit-ratio follow-gate is exactly the un-gated stereo reverb); a larger ratio cuts the below-threshold
+//! tail harder on both ears, and a slower release holds the gate open longer over each ear's decay. The static stereo gate (ALES201) is the
+//! zero-smoothing limit of this one: unit attack and unit release make each envelope the bare magnitude, so stereo_reverb_gate_env then equals
+//! stereo_reverb_gate byte for byte on both channels. This invents NO new audio arithmetic: every gated sample is written by a stage already proven
+//! byte-for-byte (ALES54's follow-gate over ALES191's wet), so no value is ever recomputed or can wrap. The gate's threshold, ratio, and both
+//! attack/release coefficients are validated BEFORE the wet is written — the SAME guards ALES54 raises — so a bad gate leaves both channels DRY and
+//! balanced (the atomicity crux). The left ear follow-gates left and the right ear follow-gates right with the same settings and a fresh envelope each,
+//! so the stereo image the preset held is held through the gating.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES203.
+//! Design read: active-designing/20260815-111333_fill-ales203-lotus-stereo-reverb-gate-env.md
+//! Stands on: lotus/stereo_reverb_preset.rye (ALES191) — the named-room stereo wet, run over the master unchanged, its StereoReverbPresetError
+//! forwarded whole; lotus/gate_env.rye (ALES54) — the attack/release envelope gate and its guards, run per channel (its BadThreshold / BadRatio /
+//! BadCoeff forwarded, its BadRange the reverb's own); lotus/envelope.rye (ALES52) — the coeff_ok rule the coefficients are prechecked against;
+//! lotus/pan.rye (ALES) — the StereoClip, its two balanced channels; lotus/clock.rye (ALES5) — the sample clock, its samples_for converting the span
+//! (the SAME conversion the preset uses); lotus/timeline.rye (ALES2) — the Clip each channel holds and its sample_max the gate's rail;
+//! lotus/reverb_gate_env.rye (ALES202) — the mono envelope gate this mirrors per ear; lotus/stereo_reverb_gate.rye (ALES201) — the static stereo gate
+//! this contains as its instantaneous limit.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM in one StereoClip, a validated clock, and ALES191's fixed banks, siloed to
+//! lotus/. No new audio arithmetic — the gate is ALES54's proven envelope-following gate over the proven stereo wet, run per ear. A WET-TAIL stereo
+//! envelope gate; the threshold is a magnitude and the ratio and coefficients plain fractions per sample index, so the gate means the same relative
+//! shape at any sample rate. No socket, no network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_reverb_gate_env.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const clock = @import("clock.rye");
+const envelope = @import("envelope.rye");
+const stereo_reverb_preset = @import("stereo_reverb_preset.rye");
+const gate_env = @import("gate_env.rye");
+const stereo_reverb_gate = @import("stereo_reverb_gate.rye");
+
+pub const stereo_reverb_gate_env_version = "20260815.111333";
+
+/// The named rooms are ALES190's own, reached through ALES191 — reused whole, so the stereo envelope gate and the presets name the same tunings and
+/// cannot drift apart.
+pub const Room = stereo_reverb_preset.Room;
+
+/// The stereo envelope-gated reverb's faults are ALES191's `StereoReverbPresetError` (the clock's DurationTooLong and the reverb's own faults,
+/// forwarded whole) beside this rung's three own faults, forwarded from ALES54's follow-gate: `BadThreshold` — a threshold outside [1, sample_max] —
+/// `BadRatio` — a ratio below one or with a zero denominator — and `BadCoeff` — an attack or release coefficient outside (0, 1]. Each is refused by
+/// name before any write. (ALES54's gate_follow also names BadRange; here that span fault is the reverb's own BadRange, raised up front, so the two
+/// error sets meet on one name.)
+pub const StereoReverbGateEnvError = stereo_reverb_preset.StereoReverbPresetError || error{ BadThreshold, BadRatio, BadCoeff };
+
+/// Reverberate `count_ms` of a stereo master `sc` from `start_ms` with a NAMED ROOM, then follow-gate the reverberant tail on BOTH channels below
+/// `threshold` by the ratio ratio_num/ratio_den, the downward push following a smoothed envelope with the given attack/release. Convert the span
+/// through ALES5's clock (the SAME conversion the preset uses); PRE-CHECK the gate's threshold, ratio, and both coefficients with the SAME guards
+/// ALES54's gate_follow raises (refusing BadThreshold / BadRatio / BadCoeff before any write, so a bad gate leaves both channels dry and balanced —
+/// the atomicity crux); range-check the span (BadRange, the reverb's own, raised up front); run ALES191's stereo_reverb_preset over the master (the
+/// wet, in place, unchanged); then follow-gate each channel's wet span through ALES54's gate_follow at the same settings, with no cross-channel read.
+///   ratio_num == ratio_den is the identity — the span equals stereo_reverb_preset byte for byte on both channels; a larger ratio cuts the quiet tail
+///   harder on both ears; a slower release holds the gate open longer over each ear's decay.
+/// Refuses BadThreshold / BadRatio / BadCoeff on an illegal gate, then forwards ALES191's StereoReverbPresetError (DurationTooLong on a span past the
+/// clip, BadRange on an out-of-range span, and the reverb's own faults) before any write; on refusal both channels are untouched and balanced.
+pub fn stereo_reverb_gate_env(
+    sc: *pan.StereoClip,
+    clk: clock.Clock,
+    room: Room,
+    start_ms: u32,
+    count_ms: u32,
+    threshold: i32,
+    ratio_num: u32,
+    ratio_den: u32,
+    attack_num: u32,
+    attack_den: u32,
+    release_num: u32,
+    release_den: u32,
+) StereoReverbGateEnvError!void {
+    // invariant: the two channels enter balanced — the defining StereoClip invariant the shared preset and per-ear gate preserve.
+    assert(sc.left.len == sc.right.len);
+    // invariant: the clock is valid — the span is spoken against it, and stereo_reverb_preset asserts the same.
+    assert(clk.rate >= 1 and clk.rate <= clock.max_rate);
+
+    // Pre-check the gate's threshold, ratio, and coefficients BEFORE any write — the atomicity crux. These are the SAME guards ALES54's gate_follow
+    // raises (its single source of truth), raised up front so a bad gate leaves both channels DRY and balanced rather than reverbed-then-refused.
+    if (threshold < 1) return error.BadThreshold;
+    if (threshold > @as(i32, timeline.sample_max)) return error.BadThreshold;
+    if (ratio_den == 0) return error.BadRatio;
+    if (ratio_num < ratio_den) return error.BadRatio;
+    if (!envelope.coeff_ok(attack_num, attack_den)) return error.BadCoeff;
+    if (!envelope.coeff_ok(release_num, release_den)) return error.BadCoeff;
+
+    // Convert the span with the SAME clock the preset uses, so the gate acts on exactly the preset's written span. A span past the clip forwards
+    // DurationTooLong here, before any write.
+    const start = try clock.samples_for(clk, start_ms);
+    const count = try clock.samples_for(clk, count_ms);
+    // The span must be in-bounds before any write — the same BadRange the reverb would raise, raised before the wet is written. The channels are
+    // balanced, so one bound governs both.
+    if (start > sc.left.len) return error.BadRange;
+    if (count > sc.left.len - start) return error.BadRange;
+
+    // The wet, in place — ALES191's stereo_reverb_preset, unchanged. It prechecks before any write, so a reverb fault here leaves both channels dry
+    // and balanced.
+    try stereo_reverb_preset.stereo_reverb_preset(sc, clk, room, start_ms, count_ms);
+
+    // Follow-gate each channel's wet span through ALES54's envelope gate at the SAME settings — prechecked just above, so neither ear can fail here.
+    // No cross-channel read, a fresh envelope per ear: the left ear follow-gates left, the right ear follow-gates right, so the image is held.
+    gate_env.gate_follow(&sc.left, start, count, threshold, ratio_num, ratio_den, attack_num, attack_den, release_num, release_den) catch unreachable;
+    gate_env.gate_follow(&sc.right, start, count, threshold, ratio_num, ratio_den, attack_num, attack_den, release_num, release_den) catch unreachable;
+
+    // invariant: the follow-gate changed sample values only on each channel; the channels leave balanced.
+    assert(start + count <= sc.left.len);
+    assert(sc.left.len == sc.right.len);
+}
+
+// --- selftest: THE IDENTITY EDGE (ratio_num == ratio_den) — equals stereo_reverb_preset over the span byte for byte on BOTH channels; IT EQUALS ITS
+//     COMPOSITION — for a firm ratio, each channel equals stereo_reverb_preset then gate_follow on that channel byte for byte, and each shaped-gated
+//     channel differs from its wet; THE INSTANTANEOUS LIMIT IS ALES201 — with unit attack and unit release it equals the static stereo_reverb_gate
+//     byte for byte on both channels; THE TAIL IS GATED — each gated channel's total energy is strictly less than its wet's; THE IMAGE IS HELD — a
+//     centred master stays identical channel-to-channel, a stereo master keeps its channels distinct; THE CHANNELS LEAVE BALANCED and silence stays
+//     silence; and the faults forward, ATOMIC — a bad threshold BadThreshold, a bad ratio BadRatio, an illegal coefficient BadCoeff with both channels
+//     untouched (still dry), a span past the clip DurationTooLong, an out-of-range span BadRange -----------------------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try timeline.splice(&sc.left, 0, l);
+    try timeline.splice(&sc.right, 0, r);
+}
+
+/// The total energy of a span — the sum of absolute sample magnitudes. A downward gate reduces every below-threshold magnitude, so gating a channel
+/// that carries any quiet tail strictly reduces this. Run in i64 so a long loud span never overflows the accumulator.
+fn energy(s: []const i16) i64 {
+    var total: i64 = 0;
+    var i: u32 = 0;
+    while (i < s.len) : (i += 1) {
+        const v: i64 = @as(i64, s[i]);
+        total += if (v < 0) -v else v;
+    }
+    return total;
+}
+
+fn run_selftest() !u8 {
+    const c = try clock.make(1000); // 1 sample per ms — the bench legible
+    // Two distinct impulses so the channels genuinely differ (no crossing can hide), each long enough for the hall's strongest comb to decay.
+    const left = blk: {
+        var b: [1024]i16 = [_]i16{0} ** 1024;
+        b[0] = 12000;
+        break :blk b;
+    };
+    const right = blk: {
+        var b: [1024]i16 = [_]i16{0} ** 1024;
+        b[3] = 9000; // a different impulse at a different position — the right channel is not the left
+        break :blk b;
+    };
+
+    // 1. THE IDENTITY EDGE — ratio_num == ratio_den (a unit-ratio follow-gate) equals ALES191's stereo_reverb_preset over the span, byte for byte on
+    //    both channels. A unit-ratio follow-gate is exactly the un-gated stereo reverb, at any threshold and any coefficients.
+    {
+        var gated = pan.StereoClip{};
+        try load_stereo(&gated, &left, &right);
+        try stereo_reverb_gate_env(&gated, c, .hall, 0, 1024, 1000, 1, 1, 1, 4, 1, 8);
+
+        var preset = pan.StereoClip{};
+        try load_stereo(&preset, &left, &right);
+        try stereo_reverb_preset.stereo_reverb_preset(&preset, c, .hall, 0, 1024);
+
+        if (!eq(gated.left.samples(), preset.left.samples())) return error.IdentityLeftNotPreset;
+        if (!eq(gated.right.samples(), preset.right.samples())) return error.IdentityRightNotPreset;
+    }
+
+    // 2. IT EQUALS ITS COMPOSITION — for a firm ratio (8:1) at a mid threshold with a real attack/release, each channel equals stereo_reverb_preset
+    //    then gate_follow on that channel computed side by side, byte for byte; and each shaped-gated channel differs from its un-gated wet.
+    {
+        var gated = pan.StereoClip{};
+        try load_stereo(&gated, &left, &right);
+        try stereo_reverb_gate_env(&gated, c, .hall, 0, 1024, 2000, 8, 1, 1, 4, 1, 8);
+
+        var composed = pan.StereoClip{};
+        try load_stereo(&composed, &left, &right);
+        try stereo_reverb_preset.stereo_reverb_preset(&composed, c, .hall, 0, 1024);
+        var wet = pan.StereoClip{};
+        try load_stereo(&wet, &left, &right);
+        try stereo_reverb_preset.stereo_reverb_preset(&wet, c, .hall, 0, 1024); // the un-gated stereo wet, kept for the difference check
+        try gate_env.gate_follow(&composed.left, 0, 1024, 2000, 8, 1, 1, 4, 1, 8);
+        try gate_env.gate_follow(&composed.right, 0, 1024, 2000, 8, 1, 1, 4, 1, 8);
+
+        if (!eq(gated.left.samples(), composed.left.samples())) return error.LeftNotComposition;
+        if (!eq(gated.right.samples(), composed.right.samples())) return error.RightNotComposition;
+        if (eq(gated.left.samples(), wet.left.samples())) return error.GatedLeftEqualsWet;
+        if (eq(gated.right.samples(), wet.right.samples())) return error.GatedRightEqualsWet;
+    }
+
+    // 3. THE INSTANTANEOUS LIMIT IS ALES201 — with UNIT attack and UNIT release each smoothed envelope IS the bare magnitude (ALES52's unit identity),
+    //    so the envelope follow-gate lands each sample at exactly the static gate's output — stereo_reverb_gate_env then equals ALES201's static
+    //    stereo_reverb_gate byte for byte on both channels. The shaped stereo gate contains the hard stereo gate as its zero-smoothing limit.
+    {
+        var smoothed = pan.StereoClip{};
+        try load_stereo(&smoothed, &left, &right);
+        try stereo_reverb_gate_env(&smoothed, c, .hall, 0, 1024, 2000, 8, 1, 1, 1, 1, 1); // instant attack, instant release
+
+        var hard = pan.StereoClip{};
+        try load_stereo(&hard, &left, &right);
+        try stereo_reverb_gate.stereo_reverb_gate(&hard, c, .hall, 0, 1024, 2000, 8, 1); // the proven ALES201 static stereo gate
+
+        if (!eq(smoothed.left.samples(), hard.left.samples())) return error.InstantLeftNotStatic;
+        if (!eq(smoothed.right.samples(), hard.right.samples())) return error.InstantRightNotStatic;
+    }
+
+    // 4. THE TAIL IS GATED — each shaped-gated channel's total energy (summed magnitude) is strictly less than that channel's un-gated wet's. A
+    //    downward follow-gate pushes the quiet decay down on both ears.
+    {
+        var gated = pan.StereoClip{};
+        try load_stereo(&gated, &left, &right);
+        try stereo_reverb_gate_env(&gated, c, .hall, 0, 1024, 2000, 8, 1, 1, 4, 1, 8);
+
+        var wet = pan.StereoClip{};
+        try load_stereo(&wet, &left, &right);
+        try stereo_reverb_preset.stereo_reverb_preset(&wet, c, .hall, 0, 1024);
+
+        if (energy(gated.left.samples()) >= energy(wet.left.samples())) return error.LeftNotGated;
+        if (energy(gated.right.samples()) >= energy(wet.right.samples())) return error.RightNotGated;
+    }
+
+    // 5. THE IMAGE IS HELD — a CENTRED master (left == right) stays identical channel-to-channel through the shared settings and a fresh envelope per
+    //    ear; and our genuinely STEREO master keeps its two channels distinct — no crossing.
+    {
+        var centred = pan.StereoClip{};
+        try load_stereo(&centred, &left, &left);
+        try stereo_reverb_gate_env(&centred, c, .hall, 0, 1024, 2000, 4, 1, 1, 4, 1, 8);
+        if (!eq(centred.left.samples(), centred.right.samples())) return error.CentredImageBroken;
+        var stereo = pan.StereoClip{};
+        try load_stereo(&stereo, &left, &right);
+        try stereo_reverb_gate_env(&stereo, c, .hall, 0, 1024, 2000, 4, 1, 1, 4, 1, 8);
+        if (eq(stereo.left.samples(), stereo.right.samples())) return error.ChannelsCrossed;
+    }
+
+    // 6. THE CHANNELS LEAVE BALANCED and silence stays silence — an all-zero master at any gate stays all zeros on both channels, the channels
+    //    balanced: an envelope gate of silence is silence.
+    {
+        var clip = pan.StereoClip{};
+        const zl = [_]i16{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        const zr = [_]i16{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        try load_stereo(&clip, &zl, &zr);
+        try stereo_reverb_gate_env(&clip, c, .plate, 0, 16, 1000, 4, 1, 1, 4, 1, 8);
+        if (clip.left.samples().len != clip.right.samples().len) return error.ChannelsUnbalanced;
+        if (!eq(clip.left.samples(), &zl)) return error.SilenceWrongLeft;
+        if (!eq(clip.right.samples(), &zr)) return error.SilenceWrongRight;
+    }
+
+    // 7. THE FAULTS FORWARD, ATOMIC — a bad threshold refuses BadThreshold, a bad ratio BadRatio, an illegal coefficient BadCoeff, each with both
+    //    channels UNTOUCHED (still dry — the gate is prechecked before the wet is written), a span past the clip DurationTooLong, an out-of-range span
+    //    BadRange, each by name with both channels untouched.
+    {
+        var clip = pan.StereoClip{};
+        const threel = [_]i16{ 1, 2, 3 };
+        const threer = [_]i16{ 4, 5, 6 };
+        try load_stereo(&clip, &threel, &threer);
+        // a threshold of zero has no band left to gate below it — BadThreshold, before any write, both channels still dry.
+        if (stereo_reverb_gate_env(&clip, c, .room, 0, 3, 0, 4, 1, 1, 4, 1, 8)) |_| return error.BadThresholdSlipped else |e| if (e != error.BadThreshold) return error.WrongBadThreshold;
+        if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.RefusedBadThresholdMutated;
+        // a threshold past the i16 rail (everything would fall below it) — BadThreshold, before any write.
+        if (stereo_reverb_gate_env(&clip, c, .room, 0, 3, @as(i32, timeline.sample_max) + 1, 4, 1, 1, 4, 1, 8)) |_| return error.HighThresholdSlipped else |e| if (e != error.BadThreshold) return error.WrongHighThreshold;
+        if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.RefusedHighThresholdMutated;
+        // a ratio below unity (num 1 < den 4) would BOOST the quiet — a different tool — BadRatio, before any write.
+        if (stereo_reverb_gate_env(&clip, c, .room, 0, 3, 1000, 1, 4, 1, 4, 1, 8)) |_| return error.BadRatioSlipped else |e| if (e != error.BadRatio) return error.WrongBadRatio;
+        if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.RefusedBadRatioMutated;
+        // a zero ratio denominator is a divide by zero — BadRatio, before any write.
+        if (stereo_reverb_gate_env(&clip, c, .room, 0, 3, 1000, 4, 0, 1, 4, 1, 8)) |_| return error.ZeroDenSlipped else |e| if (e != error.BadRatio) return error.WrongZeroDen;
+        if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.RefusedZeroDenMutated;
+        // an attack coefficient outside (0, 1] — a zero attack is a frozen envelope — BadCoeff, before any write.
+        if (stereo_reverb_gate_env(&clip, c, .room, 0, 3, 1000, 4, 1, 0, 4, 1, 8)) |_| return error.BadAttackSlipped else |e| if (e != error.BadCoeff) return error.WrongBadAttack;
+        if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.RefusedBadAttackMutated;
+        // a release coefficient above one (num 2 > den 1) overshoots — BadCoeff, before any write.
+        if (stereo_reverb_gate_env(&clip, c, .room, 0, 3, 1000, 4, 1, 1, 4, 2, 1)) |_| return error.BadReleaseSlipped else |e| if (e != error.BadCoeff) return error.WrongBadRelease;
+        if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.RefusedBadReleaseMutated;
+        // a count past max_clip converts past the clip bound — DurationTooLong from the clock.
+        if (stereo_reverb_gate_env(&clip, c, .room, 0, timeline.max_clip + 1, 1000, 4, 1, 1, 4, 1, 8)) |_| return error.LongSpanSlipped else |e| if (e != error.DurationTooLong) return error.WrongLongSpan;
+        if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.RefusedLongSpanMutated;
+        // an out-of-range span (2 ms start, 5 ms count past a 3-sample clip) refuses BadRange before the wet is written.
+        if (stereo_reverb_gate_env(&clip, c, .room, 2, 5, 1000, 4, 1, 1, 4, 1, 8)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.RefusedRangeMutated;
+    }
+
+    print("GREEN ales-stereo-reverb-gate-env: THE STEREO ENVELOPE GATE — the reverb's GATED TAIL given a shaped edge (the release holds the gate open " ++
+        "over the decay so the tail breathes rather than chops), now across a stereo master. Reverberate the master WET in place through ALES191's " ++
+        "stereo_reverb_preset unchanged, then follow-gate EACH channel's wet with ALES54's proven envelope-following gate at the SAME threshold, ratio, " ++
+        "and attack/release — run per ear with a fresh envelope and no cross-channel read, ratio_num == ratio_den the identity, a larger ratio cutting " ++
+        "the quiet tail harder, a slower release holding the gate open longer. NO new audio arithmetic: every gated sample is written by a proven stage " ++
+        "(ALES54's follow-gate over ALES191's wet), no value recomputed or wrapping. Proven on both channels: at ratio_num == ratio_den the span equals " ++
+        "stereo_reverb_preset byte for byte (a unit-ratio follow-gate is the un-gated stereo reverb); for a firm ratio each channel EQUALS " ++
+        "stereo_reverb_preset then gate_follow on that channel byte for byte and each shaped-gated channel differs from its wet; with unit attack and " ++
+        "unit release it equals ALES201's static stereo_reverb_gate byte for byte (the static gate is its zero-smoothing limit); each gated channel's " ++
+        "total energy is strictly less than its wet's (the tail is gated); the image is held — a centred master stays identical channel-to-channel " ++
+        "while a stereo master keeps its channels distinct; the channels leave balanced and silence stays silence; and the faults forward ATOMIC — a " ++
+        "bad threshold BadThreshold, a bad ratio BadRatio, an illegal coefficient BadCoeff with both channels still DRY (the gate prechecked before " ++
+        "the wet is written), a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving both channels untouched. A wet-tail " ++
+        "stereo envelope gate, the threshold a magnitude and the ratio and coefficients plain fractions per sample index; purely local: one " ++
+        "StereoClip, a validated clock, ALES191's fixed banks; no network, no keys, no funds, no real device, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
