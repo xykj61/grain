@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260815.020930
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (Eastern EDT convention)
+title ALES120 — Lotus's stereo_duplicate: the growth gesture carried into stereo, both channels in lockstep
+prompt Take the next agent-doable lap Lindy-first crux-first on the ALES/Lotus edge; approve my own design round; send each finished increment as its own signed round; stop at custody gates; baton prin recur.
+think Read the two itinerary docs and the tail of REMEMBER — plenty of agent-doable work remains, so not gates-only. The live edge is the ALES ladder (Lotus creative suite, Season C double-seat): recent commits lifted the mono span-edit family into stereo (ALES116 replace, ALES117 cut, ALES118 crop, ALES119 move).
+think Crux-first within the family: the destructive span-edits (cut/crop/move) now stand whole in stereo, yet the GROWTH side — ALES112's duplicate — had no stereo twin. Lifting it completes the family (grow as well as shrink) and reuses a proven mono edit per channel, so it is the smallest decisive next rung.
+think Read stereo_move.rye (the lift pattern), duplicate.rye (the mono edit), timeline.rye (max_clip, EditError = {ClipFull, BadRange}), stereo_cut.rye (for the inverse law). Both channels enter equal-length over the same fixed buffer, so mono duplicate's two faults (BadRange, ClipFull) depend only on the shared length and pre-validate once up front — validate-both-before-either keeps the channels balanced across a refusal.
+think Wrote the design read, the module, and the witness. stereo_duplicate(sc, start, count) checks start>len, count>len-start (BadRange) and count>max_clip-len (ClipFull) once, then runs mono duplicate per channel. Four laws proven on metal: stereo duplicate law (each channel == ALES112 byte for byte), balance law (left.len==right.len, both grown by count), inverse law (then stereo_cut(end,count) returns the original), atomicity/degenerate law (a refusal leaves both untouched and balanced, count 0 the identity, a grow past the buffer ClipFull).
+obs The lift pattern held exactly — validate the shared length up front, run the proven mono edit per channel over its public API, invent no new fault. ClipFull is the one addition over stereo_move (duplicate grows where move holds length), so the up-front guard gained the max_clip headroom check; both channels share max_clip so one guard covers both.
+obs Witness GREEN first run; tame_style_check bans clean and the new module carries asserts (not on the zero-assert ratchet list). Synced lotus/README.md (status line + roster) in the same round.
+loom witness=ales_stereo_duplicate_witness result=GREEN laws=4 channels=2
+file lotus/stereo_duplicate.rye ALES120 — stereo_duplicate lifts ALES112's mono duplicate to a StereoClip, validate-both-before-either, four laws.
+file tools/ales_stereo_duplicate_witness.rish the witness — builds, runs selftest, asserts the GREEN ales-stereo-duplicate line.
+file active-designing/20260815-020930_fill-ales120-lotus-stereo-duplicate.md the self-approved design read for this rung.
+file lotus/README.md front door synced — ALES120 status entry and roster paragraph.
+recommend keep-going the growth family opens duplicate's neighbours for stereo (paste_over, insert_silence, silence_span, shift each still mono-only); the next crux is another lift, no gate reached.
