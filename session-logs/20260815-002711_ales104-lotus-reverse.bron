@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260815.002711
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title ALES104 — Lotus's reverse, turn the whole clip end for end, the plainest exact edit on the timeline
+prompt recur the itinerary Lindy-first crux-first; after ALES103 sent, take the next agent-doable Lotus lap, self-approve, prove GREEN, send as its own signed round; STOP at custody gates
+think ALES103 fused reader and writer over the whole clip — measure the peak, scale to a target, changing every VALUE and no position. The natural sibling is an RMS normalize, yet RMS-to-target is only approximate (per-sample divTrunc rounding under a sqrt-of-means), which would weaken the ALES ladder's exact-law discipline and risk a tolerance-flaky witness. The cleanest EXACT rung still open is reverse — the Reverse menu item every editor and DAW ships, and the exact mirror of normalize: it changes every POSITION and no value. No reverse.rye or invert.rye existed yet; reverse is the more Lindy of the two (a headline creative effect — reversed cymbal, backwards reverb) and stays perfectly exact.
+think Shape: reverse(clip), no parameter, no fault from legal input. Walk from both ends inward swapping buf[lo] with buf[hi] until lo meets hi — one in-place pass of len/2 swaps, no allocation, no second buffer. The middle sample of an odd clip is its own mirror and never moves; a clip shorter than two samples returns early untouched. It names no span, so it forwards no EditError — total on any legal Clip.
+think Four laws, all exact and provable: the ORDER law (sample i holds what len-1-i held, checked against a hand-reversed vector, even and odd length); the INVOLUTION law (reverse twice is the identity for any clip — the swap is its own inverse, so a mistaken reverse reverses back to the byte); the PERMUTATION law (a pure rearrangement — length unchanged and the multiset of samples unchanged, so every order-blind metric is invariant, witnessed through ALES13: peak magnitude before equals peak after, the i16 minimum riding along at the meter's domain ceiling); the FIXPOINT law (an empty clip, a single-sample clip, and a palindrome are each their own reverse, no special-casing).
+obs Witness GREEN on the first pass — order on even [10,20,30,40]→[40,30,20,10] and odd [1..5]→[5..1] with the middle 3 unmoved; involution over five clips including a single-sample and an empty clip; permutation over three clips checking length and re-measured peak unchanged; fixpoint on empty, single, palindrome, and all-zero. TAME style bans clean (ratchet zero-assert count unchanged at 11); ≥2 asserts per fn, invariants stated positively; the Clip and the ALES13 meter reused whole, no new arithmetic invented.
+obs No custody gate reached — software only, local; it rearranges existing samples and fabricates none, changes no length, reads no byte past len; no funds, keys, network, device, or real speaker.
+loom witness=ales_reverse_witness green=1 laws=4 swaps=len_over_2 module_bytes=7k
+file lotus/reverse.rye ALES104 — reverse() swaps buf[lo]/buf[hi] from both ends inward, len/2 swaps in place; early-return for len < 2; postcondition asserts the length is unchanged.
+file tools/ales_reverse_witness.rish the witness — builds, runs the selftest, asserts the GREEN line.
+file active-designing/20260815-002711_fill-ales104-lotus-reverse.md the self-approved design read naming the order, involution, permutation, and fixpoint laws.
+file lotus/README.md front door — the ALES104 rung added to the roster, appended to the status line beside ALES103's mirror.
+recommend keep-going — the next Lotus crux stays exact and structural: an invert/polarity flip (negate every sample through ALES2's gain, its own involution), a rotate/shift that reseats the clip around a point, or a per-region reverse over an ALES23 selection; each its own self-approved round, no custody gate reached.
