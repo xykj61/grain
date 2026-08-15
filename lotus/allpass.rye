@@ -1,0 +1,284 @@
+//! lotus/allpass.rye — ALES184: the ALLPASS filter — Schroeder's diffusion stage, the delayed DRY read against the delayed OUTPUT. The
+//! stereo time-based wing now holds both its read-a-delay-line-differently primitives (the feedback echo ALES181 and the snapshot
+//! multi-tap ALES183), and above the wing stands the reverb — named since ALES66 as its large composition. A reverb is not one more read
+//! of the delay line, though; it is a NETWORK of two kinds of stage: parallel COMB stages (the feedback echo IS the comb) and series
+//! ALLPASS stages that DIFFUSE the comb train into a smooth dense tail. The tree holds the comb (echo.rye) and the early-reflection
+//! cluster (taps.rye) — it does NOT hold the allpass. This rung is that one missing primitive, and it is the clean FUSION of the two
+//! idioms already proven: it reads a delayed DRY input x[n-d] (the multi-tap's frozen snapshot) AND a delayed OUTPUT y[n-d] (the echo's
+//! in-place read) in one difference equation. Neither read is new machinery — the allpass is what happens when a single rung needs both
+//! at once.
+//!
+//! The law: y[n] = -g·x[n] + x[n-d] + g·y[n-d], g = num/den, 0 <= num < den. The signature is an INITIAL INVERTED spike (-g·x) then a
+//! smoothly decaying diffuse tail. Three facts make it exact and safe on integer PCM. First, THE DELAYED DRY x[n-d] READS A FROZEN
+//! SNAPSHOT: the whole dry prefix [0, end) is copied into one bounded scratch BEFORE any write (the graft/multi-tap snapshot-before-write
+//! idiom ALES24/68), so the delayed INPUT term is always the original audio, never a sample this pass just wrote. Second, THE DELAYED
+//! OUTPUT y[n-d] READS THE CLIP BUFFER IN PLACE: for n-d inside the span it is the output written earlier this pass (true feedback, the
+//! echo idiom ALES66), before the span the dry audio there, before the clip silence. Third, g STRICTLY BELOW UNITY KEEPS THE POLE SAFE
+//! and THE SUM SATURATES ONCE: num >= den (or den == 0) refuses BadGain — an allpass at unity sits on the unit circle and can grow
+//! without bound, exactly the runaway the echo refuses — and a constructive sum past the i16 rail SATURATES through timeline.saturate
+//! (ALES3's one true saturation, reused) rather than wrapping. num == 0 is the legal degenerate: a PURE DELAY of the dry (y[n] = x[n-d]),
+//! not the dry identity — the allpass with no diffusion is a delay line, the honest thing it becomes.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES184.
+//! Design read: active-designing/20260815-091646_fill-ales184-lotus-allpass.md
+//! Stands on: lotus/echo.rye (ALES66) — the delayed-OUTPUT in-place read reused; lotus/taps.rye (ALES68) — the delayed-INPUT dry-snapshot
+//! read reused; lotus/timeline.rye (ALES2) — the Clip, sample_max, max_clip, and the one true saturate; lotus/mix.rye (ALES3) — the same
+//! saturate for a constructive sum.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM in one clip and one bounded dry scratch, siloed to lotus/. No
+//! socket, no network, no keys, no funds, no real device, no real sample rate — the delay is a count of sample INDICES, not milliseconds
+//! against a clock (a real-time twin `allpass_ms` through the ALES5 clock is a later rung, exactly as echo_ms followed the index-named
+//! echo); the gain is a plain fraction, not a diffusion coefficient in seconds. Because the allpass reads a per-call dry snapshot, a
+//! split across two calls re-snapshots already-written samples (the multi-tap's own boundary), so split-equals-whole is NOT claimed — a
+//! single call over the span is exact. Both delayed reads are bounded; the sum runs in i64 and saturates once, so nothing on the path can
+//! overflow.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/allpass.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+
+pub const allpass_version = "20260815.091646";
+
+/// The allpass filter's faults, one consistent name each: a delay of zero or wider than the widest clip, a gain at or above unity (a pole
+/// on the unit circle — a runaway that would never settle) or with a zero denominator, and a span outside the clip's samples. Each
+/// refused before any write.
+pub const AllpassError = error{
+    /// A delay of zero (a sample cannot diffuse into itself) or longer than max_clip samples — refused, no write.
+    BadDelay,
+    /// A gain numerator at or above the denominator (a pole on the unit circle — would never settle) or a zero denominator — refused, no write.
+    BadGain,
+    /// A span outside the current samples — refused, no write.
+    BadRange,
+};
+
+/// Validate an allpass's delay, gain, and span against a clip length WITHOUT touching a sample — the same three invariants `allpass`
+/// enforces inline, factored out so a stereo carry can validate one shared delay, gain, and span against both channels' shared length
+/// before either channel is snapshotted (mirroring ALES66/68's own precheck refactors). Refuses BadDelay (a delay of zero or wider than
+/// max_clip), BadGain (a zero denominator or a gain at or above unity), and BadRange (a span past the clip's samples), each before any
+/// write. Takes a plain length rather than a clip, so it reads no buffer.
+pub fn precheck(clip_len: u32, start: u32, count: u32, delay: u32, num: u32, den: u32) AllpassError!void {
+    // invariant: the delay is at least one sample (no self-diffusion) and no wider than the widest clip. Before any write.
+    if (delay == 0) return error.BadDelay;
+    if (delay > timeline.max_clip) return error.BadDelay;
+    // invariant: the gain is a legal fraction strictly below unity — a nonzero denominator, and a numerator under it so the pole stays
+    // inside the unit circle and the diffuse tail always settles. num == 0 (a pure delay of the dry) is legal.
+    if (den == 0) return error.BadGain;
+    if (num >= den) return error.BadGain;
+    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
+    if (start > clip_len) return error.BadRange;
+    if (count > clip_len - start) return error.BadRange;
+}
+
+/// Allpass-filter `count` samples starting at `start` in place in `clip`: each output is Schroeder's difference equation
+/// y[n] = saturate(-g·x[n] + x[n-delay] + g·y[n-delay]), g = num/den. The delayed DRY input x[n-delay] reads a FROZEN snapshot of the dry
+/// prefix (the graft/multi-tap snapshot-before-write idiom), so it is always the original audio; the delayed OUTPUT y[n-delay] reads the
+/// clip buffer in place (the echo idiom) — a written output inside the span, dry audio before it, silence before the clip. The whole sum
+/// accumulates in i64 and saturates once (ALES3's one true saturation, reused) rather than wrapping. `num == 0` is a pure delay of the
+/// dry (not the identity — an allpass with no diffusion is a delay line). Refuses BadDelay, BadGain, and BadRange before any write; on
+/// refusal the clip is untouched. Values only — never a length.
+pub fn allpass(
+    clip: *timeline.Clip,
+    start: u32,
+    count: u32,
+    delay: u32,
+    num: u32,
+    den: u32,
+) AllpassError!void {
+    // invariant: the delay, gain, and span are all legal against this clip's length — checked before any write, so on refusal the clip is
+    // untouched (the same three invariants, now shared with a stereo carry through `precheck`).
+    try precheck(clip.len, start, count, delay, num, den);
+
+    const end: u32 = start + count;
+    // Snapshot the dry prefix [0, end) BEFORE any write, so the delayed DRY term x[n-delay] reads the ORIGINAL audio and never a sample
+    // this pass just wrote — the graft/multi-tap snapshot-before-write idiom (ALES24/68), reused. One bounded scratch, the width graft
+    // already carries. The delayed OUTPUT term reads the clip buffer directly (the echo idiom), so it is NOT snapshotted.
+    var dry: [timeline.max_clip]i16 = [_]i16{0} ** timeline.max_clip;
+    {
+        var j: u32 = 0;
+        // invariant: end never exceeds the clip's length, so the snapshot stays within the bounded scratch.
+        assert(end <= clip.len and end <= dry.len);
+        while (j < end) : (j += 1) dry[j] = clip.buf[j];
+    }
+
+    const g_num: i64 = @as(i64, num);
+    const g_den: i64 = @as(i64, den);
+    var i: u32 = start;
+    while (i < end) : (i += 1) {
+        // The current dry input x[n], from the frozen snapshot (identical to clip.buf[i], not yet written this pass).
+        const x: i64 = @as(i64, dry[i]);
+        // The delayed DRY input x[n-delay]: from the snapshot, silence before the clip (i - delay < 0). i - delay signed to test the floor.
+        const p: i64 = @as(i64, i) - @as(i64, delay);
+        const x_d: i64 = if (p >= 0) @as(i64, dry[@intCast(p)]) else 0;
+        // invariant: both delayed-input candidates already fit the i16 rail — they are dry audio, never a wide intermediate.
+        assert(x >= @as(i64, timeline.sample_min) and x <= @as(i64, timeline.sample_max));
+        assert(x_d >= @as(i64, timeline.sample_min) and x_d <= @as(i64, timeline.sample_max));
+        // The delayed OUTPUT y[n-delay]: read in place from the clip buffer — a written output inside the span (true feedback), dry audio
+        // before the span, silence before the clip.
+        const y_d: i64 = if (p >= 0) @as(i64, clip.buf[@intCast(p)]) else 0;
+        // invariant: the delayed output already fits the i16 rail — it is either a written output (saturated) or dry audio.
+        assert(y_d >= @as(i64, timeline.sample_min) and y_d <= @as(i64, timeline.sample_max));
+        // g·x[n] and g·y[n-delay] divided in i64 (num < den, |s| <= 32768, so |num·s| < den·32768 fits i64); each contributes no more in
+        // magnitude than its source, and the whole sum saturates once.
+        const g_x: i64 = @divTrunc(g_num * x, g_den);
+        const g_yd: i64 = @divTrunc(g_num * y_d, g_den);
+        // invariant: a gain strictly below unity contributes no more than its source sample in magnitude.
+        assert((if (g_x < 0) -g_x else g_x) <= (if (x < 0) -x else x));
+        assert((if (g_yd < 0) -g_yd else g_yd) <= (if (y_d < 0) -y_d else y_d));
+        // The whole Schroeder sum (-g·x + x[n-delay] + g·y[n-delay]) saturates ONCE over the true total — never per term — so a
+        // constructive pile-up pins to the i16 rail rather than wraps.
+        clip.buf[i] = timeline.saturate(-g_x + x_d + g_yd);
+    }
+    // invariant: an allpass changes sample values only, never the clip's length or bound.
+    assert(start + count <= clip.len);
+    assert(clip.len <= clip.buf.len);
+}
+
+// --- selftest: the allpass impulse response is EXACT (an inverted spike then a diffuse decaying tail, computed by hand byte-for-byte);
+//     g = 0 is a PURE DELAY of the dry (not the identity); silence stays silence; the diffuse tail DECAYS to silence, never grows; a
+//     loud constructive sum SATURATES rather than wraps; and each fault refuses by name, the clip untouched -----------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn abs16(v: i16) i32 {
+    return if (v < 0) -@as(i32, v) else @as(i32, v);
+}
+
+fn run_selftest() !u8 {
+    // 1. THE ALLPASS IMPULSE RESPONSE IS EXACT — an impulse of 8000 at index 0, delay 2, g = 1/2, lands the allpass signature:
+    //    y[0] = -g·8000 = -4000 (the inverted spike); y[2] = -g·0 + x[0] + g·y[0] = 8000 + 1/2·(-4000) = 6000 = 8000·(1-g²); then the
+    //    diffuse tail halves each delay: y[4] = g·y[2] = 3000, y[6] = g·y[4] = 1500. Odd indices stay silent (nothing reaches them).
+    //    Computed by hand and demanded byte-for-byte — the defining law: an inverted spike, then a smoothly decaying diffuse tail.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 8000, 0, 0, 0, 0, 0, 0, 0 });
+        try allpass(&clip, 0, clip.len, 2, 1, 2);
+        const want = [_]i16{ -4000, 0, 6000, 0, 3000, 0, 1500, 0 };
+        if (!eq(clip.samples(), &want)) return error.ImpulseResponseWrong;
+    }
+
+    // 2. g = 0 IS A PURE DELAY OF THE DRY — not the identity: with the gain fully off, y[n] = -0·x[n] + x[n-d] + 0·y[n-d] = x[n-d], the
+    //    dry signal delayed by d with silence before it. A signal delayed 3 lands each dry sample three later, nothing before.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 100, 200, 300, 400, 500, 600 });
+        try allpass(&clip, 0, clip.len, 3, 0, 4); // g = 0/4, no diffusion — a pure delay
+        const want = [_]i16{ 0, 0, 0, 100, 200, 300 };
+        if (!eq(clip.samples(), &want)) return error.ZeroGainNotPureDelay;
+    }
+
+    // 3. SILENCE STAYS SILENCE — an all-zero clip allpass-filters to all zeros under any legal knobs.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0, 0, 0 });
+        try allpass(&clip, 0, clip.len, 2, 1, 3);
+        const zeros = [_]i16{ 0, 0, 0, 0, 0, 0, 0, 0 };
+        if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
+    }
+
+    // 4. THE DIFFUSE TAIL DECAYS TO SILENCE, NEVER GROWS — over the even lane past the first delay the successive tail magnitudes strictly
+    //    shrink and reach zero within the clip; @divTrunc pulls a small term to silence, so the diffuse tail always settles. An impulse of
+    //    90 at index 0, delay 2, g = 1/3: y[2] = 90·(1-1/9) = 80 (truncated), then the tail y[4] = 1/3·80 = 26, y[6] = 8, y[8] = 2,
+    //    y[10] = 0. Read the even lane from the first delay: strictly shrinking, reaching zero.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 90, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+        try allpass(&clip, 0, clip.len, 2, 1, 3);
+        const out = clip.samples();
+        var prev: i32 = abs16(out[2]); // start at the first delay (the diffuse tail's head), past the inverted spike at 0
+        var lane: u32 = 4;
+        var reached_zero = false;
+        while (lane < out.len) : (lane += 2) {
+            const cur: i32 = abs16(out[lane]);
+            if (cur >= prev) return error.TailDidNotDecay; // strictly shrinking
+            if (cur == 0) reached_zero = true;
+            prev = cur;
+        }
+        if (!reached_zero) return error.TailDidNotReachSilence;
+    }
+
+    // 5. A LOUD CONSTRUCTIVE SUM SATURATES RATHER THAN WRAPS — a crafted pair drives one output past the i16 rail; it pins to sample_min
+    //    (ALES3's floor) instead of wrapping positive. Signal [-32000, 32000, 0, 0], delay 1, g = 3/4:
+    //    y[0] = -3/4·(-32000) = 24000; y[1] = -3/4·32000 + x[0] + 3/4·y[0] = -24000 + (-32000) + 18000 = -38000 -> -32768;
+    //    y[2] = -3/4·0 + x[1](32000) + 3/4·y[1](-32768) = 32000 - 24576 = 7424; y[3] = 3/4·y[2](7424) = 5568. Demanded byte-for-byte.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ -32000, 32000, 0, 0 });
+        try allpass(&clip, 0, clip.len, 1, 3, 4);
+        const want = [_]i16{ 24000, -32768, 7424, 5568 };
+        if (!eq(clip.samples(), &want)) return error.SaturateWrong;
+    }
+
+    // 6a. a zero delay refuses BadDelay before any write, the clip untouched.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        if (allpass(&clip, 0, clip.len, 0, 1, 2)) |_| return error.ZeroDelaySlipped else |e| if (e != error.BadDelay) return error.WrongZeroDelay;
+        if (!eq(clip.samples(), &three)) return error.RefusedZeroDelayMutated;
+    }
+
+    // 6b. a delay wider than max_clip refuses BadDelay before any write.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        if (allpass(&clip, 0, clip.len, timeline.max_clip + 1, 1, 2)) |_| return error.WideDelaySlipped else |e| if (e != error.BadDelay) return error.WrongWideDelay;
+        if (!eq(clip.samples(), &three)) return error.RefusedWideDelayMutated;
+    }
+
+    // 6c. a gain at unity (numerator == denominator — a pole on the unit circle that would never settle) refuses BadGain before any write.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        if (allpass(&clip, 0, clip.len, 1, 4, 4)) |_| return error.UnityGainSlipped else |e| if (e != error.BadGain) return error.WrongUnityGain;
+        if (!eq(clip.samples(), &three)) return error.RefusedUnityGainMutated;
+    }
+
+    // 6d. a zero gain denominator refuses BadGain before any write.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        if (allpass(&clip, 0, clip.len, 1, 1, 0)) |_| return error.ZeroDenSlipped else |e| if (e != error.BadGain) return error.WrongZeroDen;
+        if (!eq(clip.samples(), &three)) return error.RefusedZeroDenMutated;
+    }
+
+    // 6e. an out-of-range span (past the samples) refuses BadRange before any write.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        if (allpass(&clip, 2, 5, 1, 1, 2)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(clip.samples(), &three)) return error.RefusedRangeMutated;
+    }
+
+    print("GREEN ales-allpass: the ALLPASS filter — Schroeder's diffusion stage, y[n] = saturate(-g·x[n] + x[n-delay] + g·y[n-delay]), " ++
+        "the FUSION of the multi-tap's frozen dry snapshot (the delayed INPUT x[n-delay]) with the echo's in-place read (the delayed " ++
+        "OUTPUT y[n-delay]) — the one missing primitive the reverb stands on. The impulse response is EXACT (an inverted spike -g·V at " ++
+        "0, then V(1-g²) at the first delay, then a diffuse tail halving each delay — [-4000,0,6000,0,3000,0,1500,0] for V=8000, delay " ++
+        "2, g=1/2, computed by hand byte-for-byte); g = 0 is a PURE DELAY of the dry (not the identity — an allpass with no diffusion is " ++
+        "a delay line); silence stays silence; the diffuse tail DECAYS to silence within the clip, never growing; a loud constructive " ++
+        "sum SATURATES to the i16 rail rather than wrapping (ALES3's one true saturation, reused, once over the whole sum); and a zero " ++
+        "or too-wide delay refuses BadDelay, a gain at unity or a zero denominator BadGain, an out-of-range span BadRange, each leaving " ++
+        "the clip untouched; no socket, no network, no keys, no funds, no real device, no real sample rate\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

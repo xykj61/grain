@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260815.091646
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title ALES184 — Lotus's allpass: Schroeder's diffusion filter, the delayed dry read against the delayed output
+prompt read REMEMBER + the 1024-round itinerary + the six-season double-seat; take the next agent-doable lap Lindy-first crux-first, approve my own design round, send each increment as its own signed round; stop at custody gates
+think REMEMBER's living edge and the git log both put the bench deep in the Lotus creative suite (Season C, waymark ALES) — the stereo effect ladder, at ALES183 (stereo_taps). Each rung is one keystone: a mono primitive, then its stereo carry, each with an exhaustive byte-for-byte selftest witness on metal.
+think The ALES183 design doc names the reverb as the wing's next large composition — "parallel combs diffused through series allpasses." Grepped lotus/ for allpass/comb/reverb/schroeder: the comb (echo.rye, feedback delay) and the early-reflection cluster (taps.rye, multitap) exist; the allpass does NOT. So crux-first, the honest decisive move before the reverb is the missing allpass primitive itself — not a stereo carry, a genuinely new stage.
+think Read echo.rye and taps.rye to match the house idiom. The allpass y[n] = -g·x[n] + x[n-d] + g·y[n-d] is the clean FUSION of both proven reads: the delayed DRY input x[n-d] is the multi-tap's frozen-snapshot read (the original audio), and the delayed OUTPUT y[n-d] is the echo's in-place buffer read (the output written this pass). Neither read is new machinery; the allpass is what happens when one rung needs both at once.
+think Worked the impulse response by hand for the witness: V=8000, delay 2, g=1/2 gives [-4000, 0, 6000, 0, 3000, 0, 1500, 0] — the inverted spike -g·V at 0, then V(1-g²)=6000 at the first delay, then a diffuse tail halving each delay. Crafted a saturation case [-32000, 32000] at g=3/4 that drives y[1] to -38000 → -32768, whole array demanded byte for byte.
+obs g strictly below unity (num<den) refuses BadGain exactly as the echo refuses a runaway feedback — an allpass at unity sits on the unit circle and can grow without bound. num==0 is the legal degenerate: a pure delay of the dry (y[n]=x[n-d]), not the dry identity — an allpass with no diffusion is a delay line, the honest thing it becomes.
+obs Because the allpass reads a per-call dry snapshot (like the multi-tap), split-equals-whole is NOT claimed — a split re-snapshots already-written samples. Stated plainly in doc, module, and witness. Single call over the span is exact.
+loom witness=ales_allpass_witness result=GREEN cases=9 impulse_exact=1 saturate_exact=1 faults=5
+file active-designing/20260815-091646_fill-ales184-lotus-allpass.md the self-approved design round naming the crux and the laws
+file lotus/allpass.rye ALES184 — the allpass filter, both delayed reads fused, saturated once, faults refused before any write
+file tools/ales_allpass_witness.rish the on-metal witness: three-lens preamble, build, selftest, GREEN assertion
+recommend keep-going the reverb (parallel combs diffused through series allpasses) is now a bounded composition of proven stages — the next crux on the ALES ladder
