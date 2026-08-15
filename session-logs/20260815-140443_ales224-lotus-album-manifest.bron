@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260815.140443
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) time convention
+title ALES224 — Lotus album_manifest: a whole record's own content address, sealed
+prompt recur the itinerary Lindy-first crux-first, take the next agent-doable lap, send each increment, stop at custody gates
+think ALES223 gathered many renders into an album, yet the album as a whole had no small citable name; a publish or a chain of custody (Journey 2 Publishing, Journey 6 Provenance) wants ONE sealed record fixing the collection's identity without shipping the audio
+think Lindy-first crux-first: album_manifest is to the album exactly what render_manifest (ALES221) is to a single render, one level up — the higher-Lindy move over a render-only table of contents, since a content address is what you publish and cite
+think the crux is a quiet composition — no new hash, no new frame: the ALES38 seal binds the manifest text, each track's bundle Sha256 already binds that track's whole (a bundle self-binds, ALES222), so listing those digests fixes the collection
+think body grammar: a `count <n>` line then one `track <name> <digest>` line per track, sealed through seal.begin/finish; names are single tokens here since the readable line reserves space and newline (stricter than render_album's length-prefixed names, documented)
+obs GREEN on the first metal pass, no RED to book; verify_album confirms a collection in hand — count, each name, each recomputed bundle Sha256, in order, refusing CountMismatch / TrackNameMismatch / TrackDigestMismatch by name
+obs bounds harmonized with render_album (max_tracks, max_track_name); max_album_manifest_bytes computed comptime from the seal overhead plus the count and track lines; @intCast only at std.fmt/indexOf seams after the body is bounded
+obs no custody gate reached — a Sha256 record over in-process bytes, siloed to lotus/, content-addressing not a signature; a signed carry (who made it) stays a later crypto-seam rung on Keaton's word
+loom witness=ales_album_manifest_witness result=GREEN laws=5 module=lotus/album_manifest.rye
+file active-designing/20260815-140211_fill-ales224-lotus-album-manifest.md the self-approved design round naming the crux and five laws
+file lotus/album_manifest.rye the module — seal_album_manifest, open_album_manifest, verify_album over ALES223 tracks
+file tools/ales_album_manifest_witness.rish the witness proving the five laws GREEN on metal
+recommend keep-going the next Lotus crux can render the album manifest as a readable table of contents, or name who made it — a signed carry (crypto seam) on Keaton's word

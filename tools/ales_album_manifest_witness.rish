@@ -1,0 +1,40 @@
+# tools/ales_album_manifest_witness.rish — a whole record's own content address, sealed: a `format lotus-album-v1` record lists a
+# collection's track count and per-track (name · bundle Sha256), sealed verify-before-trust, one level up from the render manifest
+# (ALES224).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES224.
+# Design read: active-designing/20260815-140211_fill-ales224-lotus-album-manifest.md
+# Idiom kin: lotus/render_manifest.rye (ALES221, the per-render manifest this is one level up from) · lotus/render_album.rye
+# (ALES223, the TrackIn catalog this names) · lotus/seal.rye (ALES38, the verify-before-trust frame reused whole). No new hash.
+#
+# lotus/album_manifest.rye seals an album's content address and confirms a collection in hand against it. The selftest proves:
+# seal then open recovers the count and every (name, digest) in order and verify_album accepts the exact tracks (the content-address
+# law); a flipped bundle byte refuses TrackDigestMismatch, a swapped name TrackNameMismatch, a dropped track CountMismatch (the
+# tamper law); a tampered body refuses DigestMismatch and a wrong header BadRecord (the seal law); a spaced name refuses NameTooLong
+# and a malformed body BadAlbumManifest (the grammar law); a too-small buffer refuses Overflow (the atomic law). Content-addressing,
+# not a signature — no real file, no DAC, no network, no keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_album_manifest_witness.rish
+
+say "ales-album-manifest: Language EN — ALES224 gives a whole record ONE small citable name: a `format lotus-album-v1` sealed record listing the track count and per-track name and bundle Sha256, so a keeper can publish, cite, or compare a collection without shipping the audio."
+say "ales-album-manifest: Style Radiant — it is to the album exactly what the render manifest is to a single render, one level up; the content-address law, the tamper law, the seal law, the grammar law, and the atomic law each named and proven on metal."
+say "ales-album-manifest: Lens TAME — content-addressing, not a signature: it proves a collection's identity is whole, not who made it; every bound named, every fault refused by name, siloed to lotus/, no real file, no DAC, no network, no keys, no funds, no real device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/album_manifest"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/album_manifest.rye -femit-bin=${bin}"]
+assert build.ok else "ales-album-manifest: build failed — ${build.err}"
+
+let outfile = "lotus/bin/album_manifest.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-album-manifest: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-album-manifest: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-album-manifest' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-album-manifest: selftest did not print the GREEN ales-album-manifest line"
+
+say "ales-album-manifest: GREEN — a whole record now carries one small sealed content address a keeper can cite and verify. The next Lotus crux can render the manifest as a readable table of contents, or name who made it — a signed carry (crypto seam) on Keaton's word."
