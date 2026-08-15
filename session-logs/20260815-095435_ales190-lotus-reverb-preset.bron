@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260815.095435
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title ALES190 — Lotus's reverb_preset: named rooms (room · hall · plate), a reverb a keeper reaches for by name — the raw Schroeder network made a musician's instrument
+prompt Continue the recursion loop on the ALES / Lotus edge, Lindy-first crux-first; approve the design round, make progress, send each finished increment to origin and xykj61; stop at custody gates.
+think ALES186–189 built the reverb network whole (mono, stereo, both real-time faces), yet the network is bare — a caller must hand it a whole bank of comb and allpass specs. A musician thinks a hall, a room, a plate, not four combs at 25/27/29/31 ms with feedbacks 7/10. By Lindy-first crux-first this is the highest-Lindy move in the reverb arc: it turns the raw network into an instrument reached for by name, read thousands of times over years.
+think Shape: a Room enum (room · hall · plate), each a published compile-time constant bank of ALES188's CombSpecMs/AllpassSpecMs tuned as bounded honest constants (delays in ms, feedbacks and gains named fractions strictly below unity so every stage decays). bank_for(room) is the single source of truth a preset and its witness both read; reverb_preset picks the bank and delegates to ALES188's reverb_ms UNCHANGED. ReverbPresetError = reverb_time.ReverbTimeError forwarded whole — no new arithmetic, no new fault.
+think The honest provable law: a preset IS exactly its named bank. There is no external reference reverb to check byte-for-byte, so the witness proves the reproducible claim instead — a preset equals reverb_ms over that room's explicit published bank, byte for byte, for all three rooms. Then: the rooms genuinely differ (three washes, not three names for one bank); each decays to silence within the clip; silence stays silence; the underlying faults forward (DurationTooLong, BadRange).
+think RED caught and fixed honestly: the tail-reaches-silence law first failed on a 64-sample clip — the hall's strongest comb (delay 25, feedback 7/10) recirculates 12000·(7/10)^k, rounding to zero only near k≈29 (last tap ~sample 725), so 64 samples cannot hold its decay. Fixed by sizing the bench clip to 1024 samples (the room a long strong hall actually decays in) and checking the last eighth (896..1024) is silent — a truer test than a clip too short to settle. Also fixed a build RED: the three switch arms each inferred a distinct anonymous struct, so named a pub Bank type for bank_for's return.
+obs GREEN after the two REDs fixed, TAME bans clean, width exit 0, ALES188 timed reverb re-run GREEN beside it. The reverb arc now stands whole from raw network to named instrument. Purely local, siloed to lotus/; three fixed banks named in milliseconds so one preset sounds the same room at any rate; the room names a keeper's word for a tuning, not a claim about any real hall — no socket, network, keys, funds, device — no custody gate reached, a self-approved design round.
+loom witness=ales_reverb_preset_witness result=green rooms=3 clip_samples=1024 reverb_ms_rerun=green reds_fixed=2
+file active-designing/20260815-095435_fill-ales190-lotus-named-room-reverb-presets.md the self-approved design read choosing the preset crux and naming its five laws
+file lotus/reverb_preset.rye ALES190 — three named rooms, each a published constant bank run through ALES188's reverb_ms; a preset IS its bank
+file tools/ales_reverb_preset_witness.rish the witness — build, selftest, and the GREEN ales-reverb-preset assertion on metal, ALES188 re-proven beside it
+file session-logs/README.md prepended the newest-first ALES190 index row
+file work-in-progress/REMEMBER.md refreshed the git nib in the same work commit
+recommend keep-going the stereo named-room preset (stereo_reverb_preset — the same banks through ALES189's stereo_reverb_ms) is the thin twin, a wet/dry mix (blending the reverberated span with a snapshot of the dry) the next genuinely new expressive knob after it; no custody gate reached
