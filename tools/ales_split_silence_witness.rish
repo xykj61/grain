@@ -1,0 +1,39 @@
+# tools/ales_split_silence_witness.rish — the silence splitter: segment the clip through ALES95, then cut AT the silence, keeping each non-silent region as its own take (ALES97).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES97.
+# Design read: active-designing/20260814-232954_fill-ales97-lotus-silence-splitter.md
+# Stands on: lotus/segment.rye (ALES95 — the voice-activity segmenter), lotus/trim_silence.rye (ALES96 — the silence stripper, the join-law twin), lotus/timeline.rye
+# (ALES2 — the Clip and splice), lotus/voiced.rye (ALES94 — the .silent verdict). ALES95's own scope note named three tools its loop enables — every voice-activity
+# gate, every silence trimmer, every AUTO-SPLITTER. ALES96 built the trimmer; this is the auto-splitter, the twin gesture in every recorder, sampler, and podcast tool.
+#
+# lotus/split_silence.rye segments [0, clip.len) into frames of frame_len samples through ALES95, then coalesces every maximal span of consecutive non-silent runs
+# into one Take (a {start, count} span into the original). It splits AT silence, not at every verdict change — a voiced run directly followed by an unvoiced run (no
+# pause between) is ONE take. The crux is two laws. THE TAKE LAW: the index-th take clip equals the original's samples over the index-th non-silent region's span, and
+# out.len equals the non-silent-region count. THE JOIN LAW: concatenating every take clip in order equals ALES96's trim_silence on the same signal, byte for byte —
+# the trimmer joins the non-silent samples, the splitter keeps them apart, and re-joining the splitter's pieces returns exactly the trimmer's clip. The selftest proves
+# both, plus: a mixed clip yields one take per non-silent region with a pause always between; consecutive non-silent runs coalesce; an all-silent clip yields zero
+# takes; a no-silent clip yields one whole-clip take; the source is byte-for-byte unchanged; an empty clip, a ragged frame length, an inverted band, and an illegal
+# floor each refuse by name, out left empty.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_split_silence_witness.rish
+
+say "ales-split-silence: Language EN — ALES95's scope note named three tools its loop enables: every voice-activity gate, every silence trimmer, every AUTO-SPLITTER. ALES96 built the trimmer; this is the auto-splitter — split on silence, find where the silence lives and cut the clip THERE, so each spoken sentence, each take, each sample lands as its own separate clip. The twin of ALES96: where the trimmer REMOVES the silent runs and joins the rest, the splitter CUTS AT the silence and keeps the non-silent regions apart."
+say "ales-split-silence: Style Radiant — the rule is stated positively: segment [0, clip.len) into frames, then coalesce every maximal span of CONSECUTIVE non-silent runs into one take. It splits AT silence, not at every verdict change — a voiced run directly followed by an unvoiced run (no pause) is ONE take. The crux stands out as two laws: the take law (each take clip equals the original over its span, out.len equals the non-silent-region count) and the join law (the takes concatenated equal ALES96's trim_silence byte for byte)."
+say "ales-split-silence: Lens TAME — one mono clip of i16 PCM segmented through ALES95 (all its validation — precheck for band/range, the floor ceiling, the dividing frame length, the empty-clip BadFrame — runs before any take), read-only through the split; take_clip copies whole classified-non-silent samples into a fresh clip through ALES2's own splice; no sample fabricated, nothing reordered; the error vocabulary is the segmenter's SegmentError and the editor's EditError reused by name; siloed to lotus/, not a transcript or a real adaptive VAD, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/split_silence"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/split_silence.rye -femit-bin=${bin}"]
+assert build.ok else "ales-split-silence: build failed — ${build.err}"
+
+let outfile = "lotus/bin/split_silence.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-split-silence: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-split-silence: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-split-silence' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-split-silence: selftest did not print the GREEN ales-split-silence line"
