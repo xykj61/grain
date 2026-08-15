@@ -1,0 +1,284 @@
+//! lotus/auto_pan.rye — ALES76: auto-pan — the same triangle LFO swept across the STEREO FIELD, the family's third and last target.
+//! The modulation family began on a DELAY (chorus ALES71, vibrato ALES72, flanger ALES73), turned onto AMPLITUDE (tremolo ALES74, ring
+//! modulator ALES75), and both the tremolo and the ring modulator closed on the same named next rung: auto-pan, the same LFO on the stereo
+//! field. Point ALES71's triangle at a track's PAN POSITION instead of its delay or its gain, and a steady note swings left and right across
+//! the two speakers — the auto-pan, the family's rung on POSITION.
+//!
+//! The crux is that AUTO-PAN IS ALES10's LINEAR PAN SWEPT ACROSS TIME — position through the stereo field and position through a triangle
+//! period are one parameter (exactly as ALES12 recognized a crossfade to be an equal-power pan swept across an overlap). No new LFO and no new
+//! sum: only the pan position moves, sample by sample, on the same triangle that drove the delay and the gain. ALES10's defining invariant is
+//! that left + right reproduces the mono level EXACTLY for any pan position; ALES10 preserved that sum by folding each channel's weight into
+//! its own fader (two independent divisions, exact only where the split falls on a whole sample). Auto-pan STRENGTHENS the invariant to hold
+//! exactly at every sample for every signal, by computing the far channel as the RESIDUAL of the near — the same residual move ALES42's tone
+//! stack used to make its mid band reconstruct exactly: right[i] = saturate(x[i]·pos(i)/glide_scale) is the near division, and
+//! left[i] = saturate(x[i] − right[i]) is the far channel, so left[i] + right[i] == x[i] BYTE-FOR-BYTE, never x − 1.
+//!
+//! Because the position stays a NON-NEGATIVE attenuation weight (0 ≤ pos ≤ glide_scale), each channel is a fraction of the dry, so
+//! |left|, |right| ≤ |x| and both sit inside the i16 rail: the write's saturate is a proven NO-OP, exactly as the tremolo's was — auto-pan is
+//! the tremolo's non-negative kin, not the ring modulator's bipolar one (no sign flip, no two's-complement corner). Every output depends only
+//! on its own input sample, and auto-pan READS the mono source and writes a fresh StereoClip: the source is untouched, a stereo render rather
+//! than an in-place edit.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES76.
+//! Design read: active-designing/20260814-202856_fill-ales76-lotus-auto-pan-lfo-stereo-field.md
+//! Stands on: lotus/pan.rye (ALES10) — the linear pan this sweeps in time and the StereoClip it renders into; lotus/chorus.rye (ALES71) —
+//! the triangle-LFO driver `triangle_delay_at`, now the pan position; lotus/glide.rye (ALES70) — `glide_scale`, the field unit (256 = hard
+//! right); lotus/timeline.rye (ALES2) — the Clip, sample_min/max, the one true saturate.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM in one mono clip rendered to a two-channel StereoClip, siloed to
+//! lotus/. No socket, no network, no keys, no funds, no real device, no real speaker, no real sample rate — the position is counted in scaled
+//! units (0 = hard left, 256 = hard right) and the period in samples, not hertz. No delay line, no snapshot, no lookahead. The triangle and the
+//! two divisions run in i64 and each write saturates once — a documented no-op, since every channel is an attenuation of an in-range sample.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/auto_pan.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const glide = @import("glide.rye");
+const chorus = @import("chorus.rye");
+const pan = @import("pan.rye");
+
+pub const auto_pan_version = "20260814.202856";
+
+/// The auto-pan's faults, one consistent name each: a period that is not a positive multiple of four (the triangle's quarter anchors need P/4
+/// whole) or wider than max_clip, a negative depth or a swing whose floor (centre − depth) falls past hard-left (below 0 — a pan weight has no
+/// sign), and a swing whose top (centre + depth) rises past hard-right (above glide_scale — the position stays within the field). Each refused
+/// before any write. There is NO BadGain (the field denominator is the fixed glide_scale, never a caller's divide), NO BadDelay, and NO
+/// BadRange on a span — the whole clip is panned and `out` shares the source's bound, so the render always fits (asserted, never a live error).
+pub const AutoPanError = error{
+    /// A period that is not a positive multiple of four, or wider than max_clip — refused, no write.
+    BadPeriod,
+    /// A negative depth, or a swing whose floor (centre − depth) falls past hard-left (below 0) — refused, no write.
+    BadDepth,
+    /// A swing whose top (centre + depth) rises past hard-right (above glide_scale) — refused, no write.
+    BadPan,
+};
+
+/// Auto-pan the whole mono `src` clip into `out`, an ALES10 StereoClip: a triangle LFO of `depth_scaled` round `centre_scaled` over `period`
+/// samples drives the PAN POSITION (ALES71's `triangle_delay_at`, read as the right-hand weight in units of glide_scale — 0 = hard left,
+/// glide_scale = hard right). Each sample is split right[i] = saturate(x[i]·pos(i)/glide_scale) and left[i] = saturate(x[i] − right[i]), the far
+/// channel the RESIDUAL of the near, so left[i] + right[i] == x[i] byte-for-byte. The position is a non-negative attenuation weight, so each
+/// channel is a fraction of the dry and the write saturates once yet never clips. The source is READ-ONLY. Refuses BadPeriod, BadDepth, and
+/// BadPan before any write; on refusal `src` and `out` are untouched. Values only — the two channels take the source's length.
+pub fn auto_pan(
+    src: *const timeline.Clip,
+    out: *pan.StereoClip,
+    centre_scaled: i64,
+    depth_scaled: i64,
+    period: u32,
+) AutoPanError!void {
+    // invariant: the period is a positive multiple of four (the triangle's quarter anchors need P/4 whole) and no wider than the widest
+    // clip, so the LFO is bounded. Checked at the edge before any read.
+    if (period == 0 or period % 4 != 0) return error.BadPeriod;
+    if (period > timeline.max_clip) return error.BadPeriod;
+    // invariant: the depth is non-negative and the swing's floor stays at or past hard-left — a pan weight has no sign, so a position below 0
+    // is not a legal place in the field.
+    if (depth_scaled < 0) return error.BadDepth;
+    if (centre_scaled - depth_scaled < 0) return error.BadDepth;
+    // invariant: the swing's top stays at or within hard-right — the position never leaves the field, so pos/glide_scale is a legal weight in
+    // [0, 1]. This is what keeps each channel an attenuation and the write's saturate a proven no-op.
+    if (centre_scaled + depth_scaled > glide.glide_scale) return error.BadPan;
+    // invariant: the mono source fits both output channels — every clip shares one bound, so a whole-clip render always fits (never a live
+    // error, held by an assert).
+    assert(src.len <= out.left.buf.len and src.len <= out.right.buf.len);
+
+    const scale: i64 = glide.glide_scale;
+    var i: u32 = 0;
+    while (i < src.len) : (i += 1) {
+        // ALES71's `triangle_delay_at` is a general scaled triangle — here it is the PAN POSITION, the right-hand weight. pos in
+        // [centre − depth, centre + depth] ⊆ [0, glide_scale].
+        const pos: i64 = chorus.triangle_delay_at(centre_scaled, depth_scaled, period, i);
+        // invariant: the position never leaves the validated field window, so it is a legal weight between hard-left and hard-right.
+        assert(pos >= 0 and pos <= scale);
+        const dry: i64 = @as(i64, src.buf[i]);
+        // invariant: the sample read is a legal i16 — it is audio, never a wide intermediate.
+        assert(dry >= @as(i64, timeline.sample_min) and dry <= @as(i64, timeline.sample_max));
+        // The near (right) channel: a fraction pos/scale of the dry. |dry| ≤ 32768 and pos ≤ scale, so the product fits i64 and the
+        // quotient's magnitude is no larger than |dry|, of the dry's own sign — so it sits in the i16 rail (saturate a no-op).
+        const right_v: i64 = @divTrunc(dry * pos, scale);
+        // invariant: the near channel is an attenuation of an in-range sample, so it already fits the i16 rail.
+        assert(right_v >= @as(i64, timeline.sample_min) and right_v <= @as(i64, timeline.sample_max));
+        // The far (left) channel: the RESIDUAL of the near, so left + right == dry exactly. |dry − right_v| ≤ |dry|, of the dry's sign, so it
+        // too sits in the rail.
+        const left_v: i64 = dry - right_v;
+        // invariant: the far channel is the dry minus an equal-signed attenuation, so it also fits the i16 rail.
+        assert(left_v >= @as(i64, timeline.sample_min) and left_v <= @as(i64, timeline.sample_max));
+        out.right.buf[i] = timeline.saturate(right_v);
+        out.left.buf[i] = timeline.saturate(left_v);
+        // invariant: the split reconstructs the dry exactly — the residual construction makes ALES10's linear-pan sum invariant hold
+        // byte-for-byte at this sample, for any pan position.
+        assert(@as(i64, out.left.buf[i]) + @as(i64, out.right.buf[i]) == dry);
+    }
+    out.left.len = src.len;
+    out.right.len = src.len;
+    // invariant: a stereo master is two legal mono clips of the same length (both the source's length).
+    assert(out.left.len == out.right.len and out.left.len == src.len);
+    assert(out.left.len <= out.left.buf.len and out.right.len <= out.right.buf.len);
+}
+
+// --- selftest: THE MOVING-PAN SUM INVARIANT IS EXACT (left + right == src at every sample under a full swing, the crux); a hand-computed
+//     sweep across the field matches exactly; a depth-0 auto-pan is a static pan (center splits equally, hard left/right route wholly to one
+//     channel); the source is read-only; the auto-pan voice never exceeds the dry rail; and each fault refuses by name, src and out untouched -
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn run_selftest() !u8 {
+    const scale = glide.glide_scale;
+
+    // 1. THE MOVING-PAN SUM INVARIANT IS EXACT — the crux. Under a full triangle swing over a varied signal (including sample_min, where the
+    //    residual must still reconstruct exactly), left[i] + right[i] == src[i] byte-for-byte at every sample. This is ALES10's linear-pan
+    //    invariant strengthened to hold everywhere by the residual construction, not only where the split divides evenly.
+    {
+        const sig = [_]i16{ timeline.sample_min, -6001, 3001, -4000, 30001, -30000, 7003, -8001 };
+        var src = timeline.Clip{};
+        try load_clip(&src, &sig);
+        var out = pan.StereoClip{};
+        try auto_pan(&src, &out, @divTrunc(scale, 2), @divTrunc(scale, 2), 8);
+        if (out.left.len != src.len or out.right.len != src.len) return error.SumInvariantLen;
+        var i: u32 = 0;
+        while (i < src.len) : (i += 1) {
+            const sum: i64 = @as(i64, out.left.samples()[i]) + @as(i64, out.right.samples()[i]);
+            if (sum != @as(i64, sig[i])) return error.SumInvariantBroken;
+        }
+    }
+
+    // 2. A HAND-COMPUTED SWEEP — centre scale/2, depth scale/2, period 4 (q = 1): the position traces the four anchors 128 → 256 → 128 → 0 →
+    //    128 (center → hard right → center → hard left → center). On a steady 1000:
+    //      k:        0    1     2    3    4
+    //      pos(k):   128  256   128  0    128
+    //      right[k]: 500  1000  500  0    500   (1000·pos/256)
+    //      left[k]:  500  0     500  1000 500   (1000 − right)
+    {
+        const sig = [_]i16{ 1000, 1000, 1000, 1000, 1000 };
+        var src = timeline.Clip{};
+        try load_clip(&src, &sig);
+        var out = pan.StereoClip{};
+        try auto_pan(&src, &out, @divTrunc(scale, 2), @divTrunc(scale, 2), 4);
+        const want_right = [_]i16{ 500, 1000, 500, 0, 500 };
+        const want_left = [_]i16{ 500, 0, 500, 1000, 500 };
+        if (!eq(out.right.samples(), &want_right)) return error.SweepRightWrong;
+        if (!eq(out.left.samples(), &want_left)) return error.SweepLeftWrong;
+    }
+
+    // 3. A DEPTH-0 AUTO-PAN IS A STATIC PAN — the LFO at rest holds one position. Centre scale/2 splits every sample equally (right =
+    //    floor(x/2), left = x − floor(x/2) = the same on even samples); centre 0 routes the whole clip to the LEFT (right silent); centre
+    //    scale routes it wholly to the RIGHT (left silent).
+    {
+        const sig = [_]i16{ 100, 200, 300, 400 };
+
+        var mid = pan.StereoClip{};
+        var src_mid = timeline.Clip{};
+        try load_clip(&src_mid, &sig);
+        try auto_pan(&src_mid, &mid, @divTrunc(scale, 2), 0, 4);
+        const half = [_]i16{ 50, 100, 150, 200 };
+        if (!eq(mid.left.samples(), &half)) return error.StaticCenterLeftWrong;
+        if (!eq(mid.right.samples(), &half)) return error.StaticCenterRightWrong;
+
+        var lft = pan.StereoClip{};
+        var src_l = timeline.Clip{};
+        try load_clip(&src_l, &sig);
+        try auto_pan(&src_l, &lft, 0, 0, 4); // hard left
+        const silent = [_]i16{ 0, 0, 0, 0 };
+        if (!eq(lft.left.samples(), &sig)) return error.HardLeftWrong;
+        if (!eq(lft.right.samples(), &silent)) return error.HardLeftBled;
+
+        var rgt = pan.StereoClip{};
+        var src_r = timeline.Clip{};
+        try load_clip(&src_r, &sig);
+        try auto_pan(&src_r, &rgt, scale, 0, 4); // hard right
+        if (!eq(rgt.right.samples(), &sig)) return error.HardRightWrong;
+        if (!eq(rgt.left.samples(), &silent)) return error.HardRightBled;
+    }
+
+    // 4. THE SOURCE IS READ-ONLY — a stereo effect reads the mono, never mutates it. After auto_pan, src holds its original samples.
+    {
+        const sig = [_]i16{ 111, -222, 333, -444, 555, -666 };
+        var src = timeline.Clip{};
+        try load_clip(&src, &sig);
+        var out = pan.StereoClip{};
+        try auto_pan(&src, &out, @divTrunc(scale, 2), @divTrunc(scale, 2), 4);
+        if (!eq(src.samples(), &sig)) return error.SourceMutated;
+    }
+
+    // 5. THE AUTO-PAN VOICE NEVER EXCEEDS THE DRY RAIL — a loud steady signal under a full swing keeps both channels within
+    //    [sample_min, sample_max]: each channel is an attenuation of an in-range sample. A steady -30000 under a full field swing traces both
+    //    channels between silence and -30000, never past the rail.
+    {
+        var src = timeline.Clip{};
+        try load_clip(&src, &[_]i16{ -30000, -30000, -30000, -30000 });
+        var out = pan.StereoClip{};
+        try auto_pan(&src, &out, @divTrunc(scale, 2), @divTrunc(scale, 2), 4);
+        var i: u32 = 0;
+        while (i < src.len) : (i += 1) {
+            const l = out.left.samples()[i];
+            const r = out.right.samples()[i];
+            if (l < timeline.sample_min or l > timeline.sample_max) return error.LeftExceedsRail;
+            if (r < timeline.sample_min or r > timeline.sample_max) return error.RightExceedsRail;
+        }
+    }
+
+    // 6a. A PERIOD not a positive multiple of four refuses BadPeriod; zero refuses BadPeriod; a period wider than max_clip refuses BadPeriod —
+    //     before any write, src and out untouched.
+    {
+        const three = [_]i16{ 1, 2, 3 };
+        var src = timeline.Clip{};
+        try load_clip(&src, &three);
+        var out = pan.StereoClip{};
+        if (auto_pan(&src, &out, @divTrunc(scale, 2), 0, 6)) |_| return error.OddPeriodSlipped else |e| if (e != error.BadPeriod) return error.WrongOddPeriod;
+        if (!eq(src.samples(), &three) or out.left.len != 0 or out.right.len != 0) return error.RefusedOddPeriodTouched;
+        if (auto_pan(&src, &out, @divTrunc(scale, 2), 0, 0)) |_| return error.ZeroPeriodSlipped else |e| if (e != error.BadPeriod) return error.WrongZeroPeriod;
+        if (!eq(src.samples(), &three) or out.left.len != 0) return error.RefusedZeroPeriodTouched;
+        const wide: u32 = timeline.max_clip + 4;
+        if (auto_pan(&src, &out, @divTrunc(scale, 2), 0, wide)) |_| return error.WidePeriodSlipped else |e| if (e != error.BadPeriod) return error.WrongWidePeriod;
+        if (!eq(src.samples(), &three) or out.left.len != 0) return error.RefusedWidePeriodTouched;
+    }
+
+    // 6b. A NEGATIVE DEPTH refuses BadDepth; a swing floor past hard-left refuses BadDepth; a swing top past hard-right refuses BadPan — each
+    //     before any write, src untouched.
+    {
+        const three = [_]i16{ 1, 2, 3 };
+        var src = timeline.Clip{};
+        try load_clip(&src, &three);
+        var out = pan.StereoClip{};
+        if (auto_pan(&src, &out, @divTrunc(scale, 2), -1, 4)) |_| return error.NegDepthSlipped else |e| if (e != error.BadDepth) return error.WrongNegDepth;
+        if (!eq(src.samples(), &three)) return error.RefusedNegDepthTouched;
+        // centre ½·scale, depth ¾·scale → floor = centre − depth < 0 (past hard-left)
+        if (auto_pan(&src, &out, @divTrunc(scale, 2), @divTrunc(3 * scale, 4), 4)) |_| return error.LowFloorSlipped else |e| if (e != error.BadDepth) return error.WrongLowFloor;
+        if (!eq(src.samples(), &three)) return error.RefusedLowFloorTouched;
+        // centre ½·scale, depth ¾·scale off the top: centre + depth > glide_scale (past hard-right) → centre unity, depth ½·scale
+        if (auto_pan(&src, &out, scale, @divTrunc(scale, 2), 4)) |_| return error.HighTopSlipped else |e| if (e != error.BadPan) return error.WrongHighTop;
+        if (!eq(src.samples(), &three)) return error.RefusedHighTopTouched;
+    }
+
+    print("GREEN ales-auto-pan: the AUTO-PAN — the same triangle LFO swept across the STEREO FIELD, the modulation family's third and last " ++
+        "target (delay, amplitude, and now position). It reuses ALES71's triangle_delay_at verbatim, reading its result as the PAN POSITION " ++
+        "(the right-hand weight, 0 = hard left, glide_scale = hard right) rather than a delay or a gain, so AUTO-PAN IS ALES10's LINEAR PAN " ++
+        "SWEPT ACROSS TIME. It STRENGTHENS ALES10's sum invariant to hold EXACTLY at every sample for every signal by computing the far " ++
+        "channel as the RESIDUAL of the near — right[i] = saturate(x[i]·pos(i)/glide_scale), left[i] = saturate(x[i] − right[i]) — so " ++
+        "left + right == src byte-for-byte, proven under a full swing including sample_min; a hand-computed sweep (128 → 256 → 128 → 0) " ++
+        "matches exactly; a depth-0 auto-pan is a static pan (center splits equally, hard left/right route wholly to one channel); the source " ++
+        "is READ-ONLY; each channel is an attenuation of an in-range sample, so the auto-pan voice never exceeds the dry rail and the write's " ++
+        "saturate is a proven no-op (auto-pan is the tremolo's non-negative kin, not the ring modulator's bipolar one — no sign flip, no " ++
+        "two's-complement corner); a period not a positive multiple of four refuses BadPeriod, a negative depth or a swing past hard-left " ++
+        "BadDepth, a swing past hard-right BadPan, each leaving src and out untouched — there is no BadGain, no BadDelay, no BadRange on a " ++
+        "span; no delay line, no snapshot, no socket, no network, no keys, no funds, no real device, no real speaker, no real sample rate. " ++
+        "The equal-power auto-pan (ALES11's power.split swept in place of the linear weight) is the family's next rung\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
