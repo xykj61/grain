@@ -1,0 +1,250 @@
+//! lotus/stereo_normalize.rye — ALES129: peak normalization carried into stereo, ONE SHARED GAIN. ALES103 named `normalize_peak` — measure the loudest sample through ALES13's meter, then scale
+//! the whole clip through ALES2's gain so that sample lands exactly on a chosen target — for a mono Clip. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining
+//! invariant is that LEFT and RIGHT hold the SAME length so the channels stay aligned in time. This rung opens the stereo AMPLITUDE class on the one member where the trivial per-channel lift would
+//! be a BUG: normalize each channel to `target` independently and the quieter channel's peak is dragged up to `target` too, collapsing the inter-channel level difference — the very thing that IS
+//! the stereo image. A vocal panned slightly left would drift to dead centre.
+//!
+//! The honest lift is LINKED: measure the peak of BOTH channels, take the larger — the master peak — and scale BOTH channels by the SAME fraction target/master_peak through ALES2's `gain`. One
+//! shared gain, applied to each channel. The channel that held the master peak lands its loudest sample on exactly ±target; the other channel, scaled by the identical fraction, keeps its samples
+//! strictly inside — its own peak lands proportionally quieter, so the ratio between the channels is preserved to the sample. This is every DAW's "Normalize (linked / stereo)", a separate button
+//! from per-channel normalize for exactly this reason.
+//!
+//! The rule, stated once: refuse a zero or over-ceiling target (BadTarget) before any read; measure both channels' peaks through ALES13; a both-silent master (master peak 0) is left EXACTLY as it
+//! is (no divide by zero); otherwise scale both channels `[0, len)` by target/master_peak through ALES2's `gain`. The master's loudest sample maps to exactly ±target, every other sample in either
+//! channel strictly inside it — so the NEW master peak equals `target` exactly and the two channels keep their relative level.
+//!
+//! The crux — five laws. THE LINKED-SCALE LAW: both channels are scaled by the SAME fraction target/master_peak, so each channel equals ALES2's gain(channel, 0, len, target, master_peak) byte for
+//! byte, one shared denominator. THE MASTER-PEAK LAW: after normalize, the peak magnitude across BOTH channels (the max of the two channel peaks, re-measured through ALES13) equals `target` exactly.
+//! THE IMAGE-PRESERVING LAW: for a master whose channels differ in level (left peak 8000, right peak 4000), linked normalize to 16000 leaves left peak 16000 and right peak 8000 — the 2:1 ratio held
+//! — where an independent per-channel normalize would have driven both to 16000 and flattened the image. THE BALANCE / SILENCE LAW: left.len == right.len and each channel keeps its starting length;
+//! a both-silent pair and an empty pair are unchanged whatever the target. THE IDEMPOTENCE LAW, WITH REFUSALS: normalize twice to one target equals once (the shared gain is unity the second time),
+//! and a zero target or a target past sample_max each refuse BadTarget, both channels untouched.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES129.
+//! Design read: active-designing/20260815-025919_fill-ales129-lotus-stereo-normalize.md
+//! Stands on: lotus/normalize.rye (ALES103) — the mono peak normalizer, its NormalizeError reused by name; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance
+//! invariant; lotus/meter.rye (ALES13) — the peak/RMS meter, its `measure_stereo` reads both channels read-only and `peak` reads the loudest of each; lotus/timeline.rye (ALES2) — the Clip and the
+//! saturating `gain` that scales it.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only through ALES2's own gain, never a length,
+//! never a byte fabricated; the target is a plain magnitude in samples, NOT a decibel level and NOT a loudness model (this is PEAK normalization, the plainest reading). No real sample rate, no
+//! network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_normalize.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const meter = @import("meter.rye");
+const normalize = @import("normalize.rye");
+
+pub const stereo_normalize_version = "20260815.025919";
+
+/// Stereo normalization's faults are exactly ALES103's own `NormalizeError` — the meter's `MeterError` and the editor's `EditError` (both honestly unreachable on a bounded master and a measured
+/// non-zero denominator over the whole span) plus `BadTarget` for a zero or over-ceiling target — reused by name so the stereo lift invents no new fault.
+pub const StereoNormalizeError = normalize.NormalizeError;
+
+/// Scale the stereo master `sc` so its loudest sample ANYWHERE (across both channels) lands exactly on `target` (a magnitude in [1, sample_max]), while the two channels keep their relative level.
+/// Measures both channels' peaks through ALES13's `measure_stereo`, takes the larger — the master peak — then scales BOTH channels by the SAME fraction target/master_peak through ALES2's `gain`.
+/// A both-silent master (master peak 0) is left exactly as it is; a zero or over-ceiling target refuses `BadTarget`, both channels untouched.
+pub fn stereo_normalize_peak(sc: *pan.StereoClip, target: u32) StereoNormalizeError!void {
+    // invariant: the target is a reachable positive magnitude — zero is not a normalize, and no positive i16 sample can exceed sample_max, so a larger target is a lie.
+    if (target == 0 or target > @as(u32, @intCast(timeline.sample_max))) return error.BadTarget;
+
+    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the linked scale preserves.
+    assert(sc.left.len == sc.right.len);
+    const original_len: u32 = sc.left.len;
+
+    // Measure both channels read-only through ALES13, then take the LARGER peak — the master peak. This shared denominator is what keeps the lift linked; per-channel peaks would flatten the image.
+    const m = try meter.measure_stereo(sc);
+    const peak_left: u32 = meter.peak(&m[0]);
+    const peak_right: u32 = meter.peak(&m[1]);
+    const master_peak: u32 = if (peak_left >= peak_right) peak_left else peak_right;
+
+    // invariant: the meter read exactly this master's samples, and the master peak is a legal magnitude within the meter's domain.
+    assert(m[0].count == original_len and m[1].count == original_len);
+    assert(master_peak <= meter.sample_peak_max);
+
+    // A both-silent master has no peak to lift — leaving it exactly as it is is the only honest normalize, and it keeps the division below from ever dividing by zero.
+    if (master_peak == 0) {
+        // invariant: the silent path changes nothing — both channels hold their length and stay balanced.
+        assert(sc.left.len == original_len and sc.right.len == original_len);
+        return;
+    }
+
+    // ONE shared gain across both channels — the linked normalize. The denominator is the measured non-zero master peak (no BadGain) and each span is the whole channel (no BadRange), so the
+    // forwarded EditError is honestly unreachable here; the channel holding the master peak maps that sample to exactly ±target, the other channel proportionally quieter.
+    try timeline.gain(&sc.left, 0, original_len, @intCast(target), master_peak);
+    try timeline.gain(&sc.right, 0, original_len, @intCast(target), master_peak);
+
+    // invariant: stereo normalize changes sample values only — each channel holds its length, and the channels leave balanced.
+    assert(sc.left.len == original_len and sc.right.len == original_len);
+    assert(sc.left.len == sc.right.len);
+    assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
+}
+
+// --- selftest: THE LINKED-SCALE LAW — each channel equals ALES2's gain with the SHARED denominator; THE MASTER-PEAK LAW — the master peak (max of both channel peaks) equals the target exactly;
+//     THE IMAGE-PRESERVING LAW — a 2:1 master keeps its 2:1 ratio (right stays strictly below target) where independent normalize would flatten it; THE BALANCE / SILENCE LAW — balanced length,
+//     a both-silent pair and an empty pair unchanged; THE IDEMPOTENCE LAW WITH REFUSALS — twice equals once, a zero and an over-ceiling target each refuse BadTarget untouched -------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try timeline.splice(&sc.left, 0, l);
+    try timeline.splice(&sc.right, 0, r);
+}
+
+/// A channel's current peak magnitude, re-measured through ALES13 — the reader the peak laws check each channel against.
+fn clip_peak(clip: *const timeline.Clip) !u32 {
+    const m = try meter.measure(clip);
+    return meter.peak(&m);
+}
+
+/// The master peak — the larger of the two channels' peaks, re-measured through ALES13 — the reader the master-peak law checks the whole master against.
+fn master_peak_of(sc: *const pan.StereoClip) !u32 {
+    const l = try clip_peak(&sc.left);
+    const r = try clip_peak(&sc.right);
+    return if (l >= r) l else r;
+}
+
+fn run_selftest() !u8 {
+    // 1. THE LINKED-SCALE LAW — both channels are scaled by the SAME fraction target/master_peak. A master with left peak 8000 and right peak 4000, normalized to 16000, uses the shared denominator
+    //    8000, so left ×2 and right ×2 (not right ×4). Proven byte for byte against ALES2's gain run with the shared denominator on each channel.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 4000, -8000, 2000 }, &[_]i16{ 2000, -4000, 1000 }); // master peak 8000 (left)
+        try stereo_normalize_peak(&sc, 16000);
+
+        var gl = timeline.Clip{};
+        try timeline.splice(&gl, 0, &[_]i16{ 4000, -8000, 2000 });
+        try timeline.gain(&gl, 0, gl.len, 16000, 8000); // the SHARED denominator
+        var gr = timeline.Clip{};
+        try timeline.splice(&gr, 0, &[_]i16{ 2000, -4000, 1000 });
+        try timeline.gain(&gr, 0, gr.len, 16000, 8000);
+
+        if (!eq(sc.left.samples(), gl.samples())) return error.LeftScaleWrong;
+        if (!eq(sc.right.samples(), gr.samples())) return error.RightScaleWrong;
+        // Concretely: left ×2 lands on the target, right ×2 stays proportionally quieter.
+        if (!eq(sc.left.samples(), &[_]i16{ 8000, -16000, 4000 })) return error.LeftValueWrong;
+        if (!eq(sc.right.samples(), &[_]i16{ 4000, -8000, 2000 })) return error.RightValueWrong;
+    }
+
+    // 2. THE MASTER-PEAK LAW — after normalize, the master peak (the larger of the two channel peaks) equals the target EXACTLY, for every non-silent master at every target, whichever channel holds
+    //    the loudest sample. Includes the i16 minimum at the meter's domain ceiling riding in one channel.
+    {
+        const lefts = [_][]const i16{
+            &[_]i16{ 4000, -8000, 2000 },
+            &[_]i16{ 100, 0, -50 },
+            &[_]i16{ -32768, 100, -200 }, // magnitude 32768 in the left, the domain ceiling
+            &[_]i16{ 1, -1, 1 },
+        };
+        const rights = [_][]const i16{
+            &[_]i16{ 2000, -4000, 1000 }, // quieter than left
+            &[_]i16{ 20000, -30000, 10000 }, // louder than left — master peak lives on the right
+            &[_]i16{ 5, -5, 5 },
+            &[_]i16{ -1, 1, -1 },
+        };
+        const targets = [_]u32{ 1, 100, 1000, 16000, 32767 };
+        var ci: u32 = 0;
+        while (ci < lefts.len) : (ci += 1) {
+            var ti: u32 = 0;
+            while (ti < targets.len) : (ti += 1) {
+                var sc = pan.StereoClip{};
+                try load_stereo(&sc, lefts[ci], rights[ci]);
+                try stereo_normalize_peak(&sc, targets[ti]);
+                if (try master_peak_of(&sc) != targets[ti]) return error.MasterPeakNotTarget;
+                if (sc.left.len != sc.right.len) return error.PeakLawUnbalanced;
+            }
+        }
+    }
+
+    // 3. THE IMAGE-PRESERVING LAW — the crux made checkable. A master whose left is twice as loud as its right (left peak 8000, right peak 4000), normalized to 16000, leaves left peak 16000 (on the
+    //    target) and right peak 8000 (strictly below) — the 2:1 image held. An INDEPENDENT per-channel normalize would have driven the right peak to 16000 too, flattening the field; linked never does.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 8000, -4000, 2000 }, &[_]i16{ 4000, -2000, 1000 });
+        try stereo_normalize_peak(&sc, 16000);
+        const lp = try clip_peak(&sc.left);
+        const rp = try clip_peak(&sc.right);
+        if (lp != 16000) return error.ImageLeftNotTarget;
+        if (rp != 8000) return error.ImageRatioBroken; // still exactly half — the field is preserved
+        if (rp >= 16000) return error.ImageFlattened; // the guard the naive lift would trip
+    }
+
+    // 4. THE BALANCE / SILENCE LAW — a both-silent master (master peak 0) is unchanged whatever the target (no gain, no divide by zero), and an empty master likewise; a normalized master keeps its
+    //    channels equal-length.
+    {
+        const targets = [_]u32{ 1, 1000, 32767 };
+        var ti: u32 = 0;
+        while (ti < targets.len) : (ti += 1) {
+            var zeros = pan.StereoClip{};
+            try load_stereo(&zeros, &[_]i16{ 0, 0, 0, 0 }, &[_]i16{ 0, 0, 0, 0 });
+            try stereo_normalize_peak(&zeros, targets[ti]);
+            if (!eq(zeros.left.samples(), &[_]i16{ 0, 0, 0, 0 })) return error.SilenceLeftChanged;
+            if (!eq(zeros.right.samples(), &[_]i16{ 0, 0, 0, 0 })) return error.SilenceRightChanged;
+
+            var empty = pan.StereoClip{};
+            try stereo_normalize_peak(&empty, targets[ti]);
+            if (empty.left.len != 0 or empty.right.len != 0) return error.EmptyChanged;
+        }
+    }
+
+    // 5a. THE IDEMPOTENCE LAW — normalize to a target, then again to the same target, is a no-op the second time: the master peak already sits on the target, so the shared gain is unity and every
+    //     sample in both channels maps to itself.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 4000, -8000, 2000, -1000 }, &[_]i16{ 3000, -5000, 1500, -500 });
+        try stereo_normalize_peak(&sc, 20000);
+        var once_l = timeline.Clip{};
+        try timeline.splice(&once_l, 0, sc.left.samples());
+        var once_r = timeline.Clip{};
+        try timeline.splice(&once_r, 0, sc.right.samples());
+        try stereo_normalize_peak(&sc, 20000); // second pass
+        if (!eq(sc.left.samples(), once_l.samples())) return error.NotIdempotentLeft;
+        if (!eq(sc.right.samples(), once_r.samples())) return error.NotIdempotentRight;
+    }
+
+    // 5b. A ZERO TARGET refuses BadTarget — normalizing to silence is not a normalize; both channels untouched.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 100, -200, 300 }, &[_]i16{ -50, 60, -70 });
+        if (stereo_normalize_peak(&sc, 0)) |_| return error.ZeroTargetSlipped else |e| if (e != error.BadTarget) return error.WrongZeroTarget;
+        if (!eq(sc.left.samples(), &[_]i16{ 100, -200, 300 })) return error.ZeroTargetLeftMutated;
+        if (!eq(sc.right.samples(), &[_]i16{ -50, 60, -70 })) return error.ZeroTargetRightMutated;
+    }
+
+    // 5c. A TARGET PAST sample_max refuses BadTarget — no positive sample can reach it, so it is a lie; both channels untouched.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 100, -200, 300 }, &[_]i16{ -50, 60, -70 });
+        if (stereo_normalize_peak(&sc, 32768)) |_| return error.OverTargetSlipped else |e| if (e != error.BadTarget) return error.WrongOverTarget;
+        if (!eq(sc.left.samples(), &[_]i16{ 100, -200, 300 })) return error.OverTargetLeftMutated;
+        if (!eq(sc.right.samples(), &[_]i16{ -50, 60, -70 })) return error.OverTargetRightMutated;
+    }
+
+    print("GREEN ales-stereo-normalize: STEREO PEAK NORMALIZATION, ONE SHARED GAIN — scale a master so its loudest sample anywhere (across both channels) lands exactly on a chosen target while " ++
+        "the two channels keep their relative level. A Lotus master is a StereoClip (ALES10) whose defining invariant is that left and right hold the same length; the naive lift — normalize each " ++
+        "channel to the target independently — would drag the quieter channel's peak up to the target too, collapsing the inter-channel level difference that IS the stereo image. The honest lift " ++
+        "is LINKED: measure both channels' peaks, take the larger (the master peak), and scale BOTH channels by the SAME fraction target/master_peak through ALES2's gain. The crux is five laws. " ++
+        "THE LINKED-SCALE LAW: each channel equals ALES2's gain with the shared denominator byte for byte, so a master with left peak 8000 and right peak 4000 to 16000 is left ×2 and right ×2 " ++
+        "(not right ×4). THE MASTER-PEAK LAW: after normalize the master peak (max of both channel peaks re-measured through ALES13) equals the target EXACTLY, whichever channel holds it, " ++
+        "including the i16 minimum at the domain ceiling. THE IMAGE-PRESERVING LAW: a 2:1 master to 16000 leaves left 16000 and right 8000 — the ratio held — where independent normalize would " ++
+        "have driven both to 16000 and flattened the field. THE BALANCE / SILENCE LAW: the channels stay equal-length, and a both-silent pair and an empty pair are unchanged whatever the target. " ++
+        "THE IDEMPOTENCE LAW WITH REFUSALS: normalize twice to one target equals once (the shared gain unity the second time); a zero target and a target past sample_max each refuse BadTarget, " ++
+        "both channels untouched. Purely local — it changes sample values only through gain, fabricating none; a plain sample magnitude, NOT a decibel or a loudness model; no real sample rate, no " ++
+        "network, no keys, no funds, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
