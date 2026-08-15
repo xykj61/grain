@@ -1,0 +1,147 @@
+//! lotus/library_sheet.rye — ALES227: a keeper's whole catalog as a readable page. ALES226 sealed a library by content address —
+//! yet that record is a byte frame a program reads, not a page a keeper reads. Before opening any album, a keeper wants to SEE
+//! their body of work at a glance: how many records, and for each its name and its content-address digest, the short handle they
+//! cite, publish, or compare by. This rung draws that page — a bounded, human-readable listing rendered from an opened library
+//! manifest.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES227.
+//! Design read: active-designing/20260815-142207_fill-ales227-lotus-library-sheet.md
+//! Stands on: lotus/library_manifest.rye (ALES226) — the opened LibraryManifest (its entries and their digests) this reads. No new
+//! frame, no new hash — a projection, the same shape album_sheet (ALES225) took over an unpacked album.
+//!
+//! A PROJECTION, NOT A ROUND-TRIP. Like the album sheet's render, this draws a human view; it does not parse back, because the
+//! digests here are the eye's handles, not a re-sealable body. The library manifest (ALES226) is the round-trippable, verify-
+//! before-trust artifact; this sheet is the eye's version of it. It completes the library level's two projections — the sealed
+//! content address and its readable page — the exact pair the album level carries (album_manifest · album_sheet).
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A bounded text render over in-process fields, siloed to lotus/. Content-addressing
+//! on the page, never a signature. No real file, no DAC, no acoustic or electrical fact, no network, no keys, no funds, no real
+//! device.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/library_sheet.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const library_manifest = @import("library_manifest.rye");
+
+pub const library_sheet_version = "20260815.142207";
+
+/// The sheet's first line, its own line — names the page's shape so a reader (or a grep) can tell it from an album sheet or a
+/// manifest.
+pub const sheet_header = "format lotus-library-sheet-v1";
+
+/// The widest single album line: `album ` (6), a u32 index (10), a space, the album name bound, a space, the 64-hex digest, then a
+/// newline. A named ceiling so the whole page is proven to fit a fixed buffer, never an unbounded string.
+pub const album_line_max: u32 = 6 + 10 + 1 + library_manifest.max_album_name + 1 + library_manifest.digest_hex_len + 1;
+
+/// The most bytes a rendered sheet can need: the header line, the `library <count>` line, then one album line per album.
+pub const max_sheet_bytes: u32 = @intCast(sheet_header.len + 1 + 8 + 10 + 1 + library_manifest.max_albums * album_line_max);
+
+/// The sheet's only fault: a render whose text would exceed the caller's buffer, refused rather than writing past its end. A
+/// projection is otherwise infallible — every field it reads was already proven by open_library_manifest.
+pub const SheetError = error{
+    /// The rendered page would exceed the caller's buffer — refused, never truncated.
+    Overflow,
+};
+
+/// Render an opened library manifest as its readable page into `out`, returning the length written. The header line, a
+/// `library <count>` line, then one `album <i> <name> <digest>` line per album in order — the eye's version of a whole catalog.
+/// Refuses Overflow rather than writing past the buffer a caller supplied.
+pub fn render_sheet(lm: *const library_manifest.LibraryManifest, out: []u8) SheetError!u32 {
+    // invariant: the library stays within its named ceiling before a byte is rendered.
+    assert(lm.count <= library_manifest.max_albums);
+    const head = std.fmt.bufPrint(out, "{s}\nlibrary {d}\n", .{ sheet_header, lm.count }) catch return error.Overflow;
+    var off: u32 = @intCast(head.len);
+
+    var i: u32 = 0;
+    while (i < lm.count) : (i += 1) {
+        const e = lm.entries[i];
+        // invariant: the digest slice is exactly the full hex width — open_library_manifest already proved it, re-asserted at the
+        // use site so a malformed entry can never reach the page.
+        assert(e.digest.len == library_manifest.digest_hex_len);
+        // Every field is bounded — a u32 index, a name within its bound, a fixed-width digest — so a line can never overrun a
+        // well-sized buffer; a too-small buffer refuses Overflow at the seam.
+        const line = std.fmt.bufPrint(out[off..], "album {d} {s} {s}\n", .{ i, e.name, e.digest }) catch return error.Overflow;
+        off += @intCast(line.len);
+    }
+
+    // invariant: the rendered page stays within the buffer.
+    assert(off <= out.len);
+    return off;
+}
+
+// --- selftest: THE LISTING LAW — every album appears in order with its name and its full digest; THE HEADER LAW — the page opens
+//     with the format line and a `library <count>` line; THE EMPTY LAW — a zero-album library renders just the two header lines;
+//     THE ATOMIC LAW — a too-small buffer refuses Overflow -----------------------------------------------------------------------
+
+fn run_selftest() !u8 {
+    // Two stand-in album manifests — any bytes serve; the library addresses their OUTPUT bytes, and the sheet reads the opened
+    // catalog. Small hand-built manifests keep the witness self-contained.
+    const m0 = "first album manifest bytes.....\x01\x02\x03";
+    const m1 = "second album manifest bytes....\x04\x05\x06";
+    const albums = [_]library_manifest.AlbumIn{
+        .{ .name = "debut", .album_manifest = m0 },
+        .{ .name = "sequel", .album_manifest = m1 },
+    };
+
+    // 1. THE LISTING & HEADER LAWS — seal, open, render; the page opens with the format and count lines and lists both albums in
+    //    order with their names and full digests.
+    {
+        var rec: [library_manifest.max_library_manifest_bytes]u8 = undefined;
+        const rn = try library_manifest.seal_library_manifest(rec[0..], albums[0..]);
+        const lm = try library_manifest.open_library_manifest(rec[0..rn]);
+
+        var sheet: [max_sheet_bytes]u8 = undefined;
+        const sn = try render_sheet(&lm, sheet[0..]);
+        const text = sheet[0..sn];
+
+        if (std.mem.indexOf(u8, text, "format lotus-library-sheet-v1\n") != 0) return error.HeaderWrong;
+        if (std.mem.indexOf(u8, text, "library 2\n") == null) return error.CountWrong;
+
+        // each album line carries its index, name, and the exact 64-hex digest the manifest holds.
+        const at0 = std.mem.indexOf(u8, text, "album 0 debut ") orelse return error.Album0Wrong;
+        const at1 = std.mem.indexOf(u8, text, "album 1 sequel ") orelse return error.Album1Wrong;
+        if (!(at0 < at1)) return error.OrderWrong;
+        if (std.mem.indexOf(u8, text, lm.entries[0].digest) == null) return error.Digest0Missing;
+        if (std.mem.indexOf(u8, text, lm.entries[1].digest) == null) return error.Digest1Missing;
+    }
+
+    // 2. THE EMPTY LAW — a zero-album library renders exactly the two header lines and no album line.
+    {
+        var rec: [library_manifest.max_library_manifest_bytes]u8 = undefined;
+        const empty = [_]library_manifest.AlbumIn{};
+        const rn = try library_manifest.seal_library_manifest(rec[0..], empty[0..]);
+        const lm = try library_manifest.open_library_manifest(rec[0..rn]);
+
+        var sheet: [max_sheet_bytes]u8 = undefined;
+        const sn = try render_sheet(&lm, sheet[0..]);
+        const text = sheet[0..sn];
+        if (!std.mem.eql(u8, text, "format lotus-library-sheet-v1\nlibrary 0\n")) return error.EmptyWrong;
+        if (std.mem.indexOf(u8, text, "album ") != null) return error.EmptyHadAlbum;
+    }
+
+    // 3. THE ATOMIC LAW — a buffer too small for the whole page refuses Overflow rather than truncating it.
+    {
+        var rec: [library_manifest.max_library_manifest_bytes]u8 = undefined;
+        const rn = try library_manifest.seal_library_manifest(rec[0..], albums[0..]);
+        const lm = try library_manifest.open_library_manifest(rec[0..rn]);
+        var tiny: [16]u8 = undefined; // room for the header line at most, not both albums
+        if (render_sheet(&lm, tiny[0..])) |_| return error.OverflowSlipped else |e| if (e != error.Overflow) return error.WrongOverflow;
+    }
+
+    print("GREEN ales-library-sheet: a keeper's whole catalog as a readable page — a `format lotus-library-sheet-v1` page (a " ++
+        "`library <count>` line then one `album <i> <name> <digest>` line per album) rendered from an opened ALES226 library " ++
+        "manifest. THE LISTING LAW: every album appears in order with its name and its full content-address digest. THE HEADER " ++
+        "LAW: the page opens with the format and count lines. THE EMPTY LAW: a zero-album library renders just the two header " ++
+        "lines. THE ATOMIC LAW: a small buffer refuses Overflow. A projection, not a round-trip — the eye's version of the library " ++
+        "manifest, completing the library level's content-address and page pair; no real file, no DAC, no network, no keys, no " ++
+        "funds, no real device\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

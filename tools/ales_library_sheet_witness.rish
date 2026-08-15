@@ -1,0 +1,37 @@
+# tools/ales_library_sheet_witness.rish — a keeper's whole catalog as a readable page: a `format lotus-library-sheet-v1` page
+# rendered from an opened ALES226 library manifest, the eye's version of the library's content address (ALES227).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES227.
+# Design read: active-designing/20260815-142207_fill-ales227-lotus-library-sheet.md
+# Idiom kin: lotus/album_sheet.rye (ALES225, the readable-projection idiom one level down) · lotus/library_manifest.rye (ALES226,
+# the opened content-address this reads). A projection — no new frame, no new hash.
+#
+# lotus/library_sheet.rye renders an opened library manifest as a human-readable page. The selftest proves: every album appears in
+# order with its name and its full content-address digest (the listing law); the page opens with the format and `library <count>`
+# lines (the header law); a zero-album library renders just the two header lines (the empty law); a too-small buffer refuses
+# Overflow (the atomic law). A text render only — no real file, no DAC, no network, no keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_library_sheet_witness.rish
+
+say "ales-library-sheet: Language EN — ALES227 draws a keeper's whole catalog as a readable page: a `format lotus-library-sheet-v1` page listing the album count and, per album, its name and its content-address digest — the eye's version of the ALES226 library manifest."
+say "ales-library-sheet: Style Radiant — a projection, not a round-trip, the same shape the album sheet took: the library manifest is the round-trippable artifact, the sheet is the page a keeper reads; it completes the library level's content-address and page pair; the listing law, the header law, the empty law, and the atomic law each named and proven on metal."
+say "ales-library-sheet: Lens TAME — every field bounded so the page fits a fixed buffer, a too-small buffer refused by name; content-addressing on the page, not a signature; siloed to lotus/, no real file, no DAC, no network, no keys, no funds, no real device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/library_sheet"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/library_sheet.rye -femit-bin=${bin}"]
+assert build.ok else "ales-library-sheet: build failed — ${build.err}"
+
+let outfile = "lotus/bin/library_sheet.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-library-sheet: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-library-sheet: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-library-sheet' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-library-sheet: selftest did not print the GREEN ales-library-sheet line"
+
+say "ales-library-sheet: GREEN — a keeper's whole body of work now reads as a page they can see at a glance, and the library level stands whole (content address · readable page), the exact pair the album level carries. The next Lotus crux still names who made it — a signed carry (crypto seam) on Keaton's word."
