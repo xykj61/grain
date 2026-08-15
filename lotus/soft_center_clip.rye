@@ -1,0 +1,245 @@
+//! lotus/soft_center_clip.rye — ALES88: the soft center clipper — silence the quiet middle AND subtract the threshold, y = if |x| ≤ t then 0 else
+//! x − sign(x)·t. The hard center clipper (ALES87) silences the quiet middle and passes the loud UNCHANGED, leaving a JUMP at the boundary: a sample at
+//! |x| = t becomes 0 while the next louder sample at |x| = t+1 leaps straight to t+1. This rung rounds that corner — it silences the same quiet middle,
+//! then shifts every surviving sample TOWARD zero by exactly the threshold, so the survivor rises CONTINUOUSLY from zero (|x| = t+1 → ±1, not ±(t+1)).
+//! It is the floor-side twin of the ceiling-side pair the DRIVE family already carries: ALES78's hard clip pins abruptly, ALES79's soft clip rounds the
+//! corner; ALES87's hard center clip jumps, this soft center clip is continuous. The classic hiss remover of noise reduction and the static curve of a
+//! downward expander — it not only silences the quiet, it pulls the surviving signal gently toward zero so nothing clicks.
+//!
+//! The crux is EXACT for every i16 with NO rail edge and NO saturate: a sample inside the dead zone becomes 0; a positive survivor drops to x − t (still
+//! positive, since x > t); a negative survivor rises to x + t (still negative, since x < −t). Every output lands in a legal i16 by construction —
+//! [1, sample_max] for positive survivors, [sample_min, −1] for negative, 0 for the dead zone — so no saturate is owed. The magnitude is taken in i32
+//! because |sample_min| is 32768, one past the positive rail (the care the full-wave rectifier owed).
+//!
+//! The map is MEMORYLESS — every output depends only on its own input. It is ODD — sign(−x)·t flips with the sign, so a symmetric input yields a symmetric
+//! output (odd harmonics). Unlike the hard center clipper it is NOT idempotent — each pass subtracts t again — and that is honest: the soft dead-zone is a
+//! SHIFT, not a mask, stated plainly rather than dressed in a symmetry it lacks. On every survivor |soft| = |hard| − t: the soft form is ALES87's hard
+//! center clip pulled toward zero by exactly the threshold, silencing the same dead zone.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES88.
+//! Design read: active-designing/20260814-220520_fill-ales88-lotus-soft-center-clipper.md
+//! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/max; lotus/center_clip.rye (ALES87) — the hard center clip whose dead zone this rung
+//! shares and whose survivors this rung pulls toward zero by t.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket, no network, no keys, no
+//! funds, no real device, no real sample rate — the shape is a static continuous dead-zone threshold on instantaneous magnitude, memoryless (no
+//! attack/release, no envelope, no anti-aliasing). One magnitude, one compare, one signed subtract per sample; no saturate is needed, since every output
+//! fits the i16 rail by construction.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/soft_center_clip.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+
+pub const soft_center_clip_version = "20260814.220520";
+
+/// The soft center clipper's faults, one consistent name each — the same two as the hard center clipper (ALES87), so a composer sees one consistent pair.
+/// BadThreshold coincides with ALES87's floor bound: a threshold outside [0, sample_max] is refused (zero is the legal identity, negative is impossible
+/// for a magnitude, above the rail is a floor no positive sample could clear). BadRange coincides by name with the drives, the rectifiers, the hard center
+/// clipper, and ALES2's timeline (Zig merges error sets by name).
+pub const SoftCenterClipError = error{
+    /// A threshold below zero (a magnitude is never negative) or above sample_max (a floor nothing could clear) — refused, no write.
+    BadThreshold,
+    /// A span outside the current samples — refused, no write.
+    BadRange,
+};
+
+/// Soft-center-clip `count` samples starting at `start` in place in `clip`: each sample whose magnitude is at most `thresh` becomes `0` (the quiet middle
+/// silenced), and every louder sample is shifted toward zero by `thresh` — y = if |x| ≤ thresh then 0 else x − sign(x)·thresh, the survivor rising
+/// continuously from zero. Exact for EVERY i16 — a positive survivor lands in [1, sample_max], a negative in [sample_min, −1], the dead zone at 0, so
+/// there is no rail edge and no saturate. After the call every written sample is either `0` or its input pulled toward zero by exactly `thresh`, and
+/// depends only on its own input (the soft center clipper is memoryless). Refuses BadThreshold on a threshold outside [0, sample_max] and BadRange on a
+/// span outside the samples — each BEFORE any write, so an illegal call leaves the clip exactly as it was. Values only — never the length.
+pub fn soft_center_clip(clip: *timeline.Clip, start: u32, count: u32, thresh: i32) SoftCenterClipError!void {
+    // invariant: the threshold is a legal magnitude — at least zero (a magnitude is never negative; zero is the identity floor) and no greater than the
+    // i16 rail (a floor nothing could clear is not a floor). ALES87's bound. Checked BEFORE any write.
+    if (thresh < 0) return error.BadThreshold;
+    if (thresh > @as(i32, timeline.sample_max)) return error.BadThreshold;
+    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder), exactly as the hard center clipper.
+    if (start > clip.len) return error.BadRange;
+    if (count > clip.len - start) return error.BadRange;
+
+    var k: u32 = 0;
+    while (k < count) : (k += 1) {
+        const i: u32 = start + k;
+        const dry: i16 = clip.buf[i];
+        // invariant: the sample read is a legal i16 — it is audio, never a wide intermediate.
+        assert(dry >= timeline.sample_min and dry <= timeline.sample_max);
+        // The magnitude in i32 so |sample_min| = 32768 is representable (one past the positive rail — the care the full-wave rectifier owed).
+        const mag: i32 = if (dry < 0) -@as(i32, dry) else @as(i32, dry);
+        // invariant: the magnitude is non-negative and no wider than one past the rail — |x| ≤ 32768 for every legal i16.
+        assert(mag >= 0 and mag <= @as(i32, timeline.sample_max) + 1);
+        var out: i16 = 0;
+        if (mag > thresh) {
+            // The soft-center map on a survivor: shift toward zero by thresh, sign held. Since |x| > thresh ≥ 0, the shift never crosses zero — a
+            // positive x drops to x − thresh ≥ 1, a negative x rises to x + thresh ≤ −1. In i32 so the arithmetic is plain; it fits i16 by construction.
+            const shifted: i32 = if (dry > 0) @as(i32, dry) - thresh else @as(i32, dry) + thresh;
+            // invariant: the shifted survivor stays within the i16 rail and keeps its sign, never reaching zero — so the @intCast below is exact and the
+            // write needs no saturate.
+            assert(shifted >= @as(i32, timeline.sample_min) and shifted <= @as(i32, timeline.sample_max));
+            assert((dry > 0 and shifted >= 1) or (dry < 0 and shifted <= -1));
+            out = @intCast(shifted);
+        }
+        // invariant: the output is silence in the dead zone, or a same-sign survivor pulled toward zero by exactly thresh — the map only silences or
+        // quiets, never lifts a sample away from zero and never flips its sign.
+        assert(if (mag <= thresh) out == 0 else ((dry > 0 and out == @as(i16, @intCast(@as(i32, dry) - thresh))) or (dry < 0 and out == @as(i16, @intCast(@as(i32, dry) + thresh)))));
+        clip.buf[i] = out;
+    }
+    // invariant: a soft center clip changes sample values only, never the clip's length or bound.
+    assert(start + count <= clip.len);
+    assert(clip.len <= clip.buf.len);
+}
+
+// --- selftest: A ZERO THRESHOLD IS THE IDENTITY (nothing silenced, nothing subtracted); THE QUIET MIDDLE IS SILENCED and THE LOUD SHIFTED inward by t
+//     read by hand; THE BOUNDARY IS CONTINUOUS (|x| = t → 0, |x| = t+1 → ±1, no jump — the whole point against ALES87's leap); the map is ODD
+//     (soft_center_clip(−x) = −soft_center_clip(x)); the SOFT/HARD BOND — soft and hard silence the same dead zone and |soft| = |hard| − t on every
+//     survivor; a RAIL THRESHOLD silences all but the deepest sample (sample_min survives shifted to −1); the span discipline holds; and each fault —
+//     BadThreshold (negative, over-rail), BadRange (span past the end) — refuses by name, the clip untouched ---
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn run_selftest() !u8 {
+    const center_clip = @import("center_clip.rye"); // ALES87 — the hard center clip whose dead zone this rung shares
+
+    // 1. A ZERO THRESHOLD IS THE IDENTITY — no sample is silenced (|x| ≤ 0 only for x = 0, already 0) and nothing is subtracted, so the whole clip
+    //    passes byte-for-byte. The soft center clipper adds nothing until a threshold carves out the middle; this proves it.
+    {
+        const sig = [_]i16{ 500, -900, 1000, -1000, 32767, timeline.sample_min, 250, 0 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try soft_center_clip(&clip, 0, clip.len, 0);
+        if (!eq(clip.samples(), &sig)) return error.ZeroNotIdentity;
+    }
+
+    // 2. THE QUIET MIDDLE IS SILENCED, THE LOUD SHIFTED INWARD BY t — at t = 1000, every sample with |x| ≤ 1000 drops to 0 and every survivor is pulled
+    //    toward zero by 1000. 500→0, 1000→0 (equal to t, silenced by the ≤), 1500→500, 3000→2000; -1500→-500, -3000→-2000.
+    {
+        const sig = [_]i16{ 500, 1000, 1500, 3000, -1500, -3000, -1000, 250 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try soft_center_clip(&clip, 0, clip.len, 1000);
+        const want = [_]i16{ 0, 0, 500, 2000, -500, -2000, 0, 0 };
+        if (!eq(clip.samples(), &want)) return error.MiddleWrong;
+    }
+
+    // 3. THE BOUNDARY IS CONTINUOUS — at t = 3000, |x| = 3000 silences (the ≤) and |x| = 3001 rises to ±1 (NOT ±3001 the way ALES87's hard center clip
+    //    leaps). The survivor climbs smoothly out of silence — the whole point of the soft form. Read the boundary by hand on both signs.
+    {
+        const sig = [_]i16{ 3000, -3000, 3001, -3001, 3002, -3002 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try soft_center_clip(&clip, 0, clip.len, 3000);
+        const want = [_]i16{ 0, 0, 1, -1, 2, -2 }; // continuous: rises from 0, no jump
+        if (!eq(clip.samples(), &want)) return error.BoundaryNotContinuous;
+    }
+
+    // 4. THE MAP IS ODD — soft_center_clip(−x) = −soft_center_clip(x), since the shift sign(x)·t flips with the sign. A ± symmetric input yields a ±
+    //    symmetric output: odd harmonics. out[0] = −out[1], out[2] = −out[3], out[4] = −out[5].
+    {
+        const sig = [_]i16{ 800, -800, 4000, -4000, 20, -20 }; // symmetric pairs
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try soft_center_clip(&clip, 0, clip.len, 1000);
+        const out = clip.samples();
+        if (out[0] != -out[1] or out[2] != -out[3] or out[4] != -out[5]) return error.NotOddSymmetric;
+    }
+
+    // 5. THE SOFT/HARD BOND — the soft center clip (this rung) and the hard center clip (ALES87) silence the SAME dead zone, and on every survivor the
+    //    soft output is exactly t quieter in magnitude: |soft| = |hard| − t. Run both over one signal at one threshold and prove it sample for sample.
+    {
+        const sig = [_]i16{ 300, -300, 1200, -1200, 5000, -5000, 900, -900 };
+        const t: i32 = 1000;
+        var soft = timeline.Clip{};
+        try load_clip(&soft, &sig);
+        try soft_center_clip(&soft, 0, soft.len, t);
+        var hard = timeline.Clip{};
+        try load_clip(&hard, &sig);
+        try center_clip.center_clip(&hard, 0, hard.len, t);
+        var i: u32 = 0;
+        while (i < sig.len) : (i += 1) {
+            const s = soft.samples()[i];
+            const h = hard.samples()[i];
+            if (h == 0) {
+                if (s != 0) return error.DeadZoneDiffers; // same samples silenced
+            } else {
+                const smag: i32 = if (s < 0) -@as(i32, s) else @as(i32, s);
+                const hmag: i32 = if (h < 0) -@as(i32, h) else @as(i32, h);
+                if (smag != hmag - t) return error.SoftHardBondWrong; // |soft| = |hard| − t on every survivor
+            }
+        }
+    }
+
+    // 6. A RAIL THRESHOLD SILENCES ALL BUT THE DEEPEST SAMPLE — at t = sample_max (32767), every sample is silenced except sample_min (−32768), whose
+    //    magnitude 32768 alone exceeds the floor; it survives shifted to sample_min + sample_max = −1.
+    {
+        const sig = [_]i16{ 32767, -32767, 0, timeline.sample_min, 20000, -20000 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try soft_center_clip(&clip, 0, clip.len, timeline.sample_max);
+        const want = [_]i16{ 0, 0, 0, -1, 0, 0 }; // sample_min → sample_min + sample_max = −1
+        if (!eq(clip.samples(), &want)) return error.RailThresholdWrong;
+    }
+
+    // 7. THE SPAN DISCIPLINE — soft-center-clipping a sub-span leaves the samples outside [start, count) exactly as they were. Clip the middle two of six
+    //    at t = 1000; the first and last two are untouched.
+    {
+        const sig = [_]i16{ 100, 200, 500, 5000, 300, 400 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try soft_center_clip(&clip, 2, 2, 1000); // indices 2,3 only: 500→0, 5000→4000
+        const want = [_]i16{ 100, 200, 0, 4000, 300, 400 };
+        if (!eq(clip.samples(), &want)) return error.SpanLeaked;
+    }
+
+    // 8a. A NEGATIVE THRESHOLD refuses BadThreshold; an OVER-RAIL threshold refuses BadThreshold — each before any write, the clip untouched.
+    {
+        const sig = [_]i16{ 1, -2, 3, -4 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        if (soft_center_clip(&clip, 0, clip.len, -1)) |_| return error.NegThreshSlipped else |e| if (e != error.BadThreshold) return error.WrongNegThresh;
+        if (!eq(clip.samples(), &sig)) return error.RefusedNegThreshTouched;
+        if (soft_center_clip(&clip, 0, clip.len, @as(i32, timeline.sample_max) + 1)) |_| return error.OverThreshSlipped else |e| if (e != error.BadThreshold) return error.WrongOverThresh;
+        if (!eq(clip.samples(), &sig)) return error.RefusedOverThreshTouched;
+    }
+
+    // 8b. A SPAN past the end refuses BadRange — before any write, the clip untouched.
+    {
+        const sig = [_]i16{ 9, -10, 11 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        if (soft_center_clip(&clip, 1, 3, 1000)) |_| return error.OverRangeSlipped else |e| if (e != error.BadRange) return error.WrongOverRange;
+        if (!eq(clip.samples(), &sig)) return error.RefusedOverRangeTouched;
+    }
+
+    print("GREEN ales-soft-center-clip: the SOFT CENTER CLIPPER — silence the quiet middle AND subtract the threshold, y = if |x| ≤ t then 0 else " ++
+        "x − sign(x)·t. The hard center clipper (ALES87) silences the quiet middle and passes the loud UNCHANGED, leaving a JUMP at the boundary (|x| = " ++
+        "t+1 leaps to t+1); this rung rounds it — the survivor rises CONTINUOUSLY from zero (|x| = t+1 → ±1), the floor-side twin of ALES79's soft clip " ++
+        "on the ceiling. The crux is EXACT for every i16 with NO rail edge and NO saturate: a positive survivor lands in [1, sample_max], a negative in " ++
+        "[sample_min, −1], the dead zone at 0; the magnitude is taken in i32 so |sample_min| = 32768 is representable. A zero threshold is the identity; " ++
+        "the quiet middle is silenced and the loud shifted inward by t; the boundary is CONTINUOUS (|x| = t → 0, |x| = t+1 → ±1, no jump); the map is " ++
+        "ODD (soft_center_clip(−x) = −soft_center_clip(x)); soft and hard silence the SAME dead zone and |soft| = |hard| − t on every survivor (the soft " ++
+        "form exactly t quieter); a rail threshold silences all but the deepest sample (sample_min survives shifted to −1); the span discipline holds; a " ++
+        "negative or over-rail threshold refuses BadThreshold and a span past the end refuses BadRange, each leaving the clip untouched. The map is " ++
+        "MEMORYLESS and NOT idempotent (each pass subtracts t again — a shift, not a mask, stated plainly); one magnitude, one compare, one signed " ++
+        "subtract per sample; no gain, no ceiling, no saturate, no delay line, no envelope, no anti-aliasing, no socket, no network, no keys, no funds, " ++
+        "no real device, no real sample rate. The DRIVE family now carries a hard/soft pair on BOTH sides — the ceiling (hard clip / overdrive) and the " ++
+        "floor (hard / soft center clip)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

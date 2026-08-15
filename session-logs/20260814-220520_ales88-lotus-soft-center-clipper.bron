@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260814.220520
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (cloud pier) — Eastern (EDT) time convention
+title ALES88 — Lotus's soft center clipper, the continuous dead-zone that completes the bracket
+prompt recur baton prin — continue the next agent-doable Lindy-first crux-first lap, send each finished increment to origin and xykj61, stop at custody gates
+think ALES87 opened the floor side with the hard center clipper but left a JUMP at the boundary (|x| = t+1 leaps to t+1). The DRIVE family already carries a hard/soft pair on the ceiling side (ALES78 hard clip, ALES79 soft clip); crux-first within tier, the cleanest next move is the floor-side soft form that rounds ALES87's corner — y = if |x| ≤ t then 0 else x − sign(x)·t, the survivor rising continuously from zero. This completes a hard/soft pair on BOTH sides.
+think Chose the soft center clipper over the booked DC blocker for this lap: it is exact, memoryless, and low-risk (high confidence of GREEN), continuing the proven pattern, while the DC blocker's fractional feedback is a meatier round kept booked. Exactness holds by construction — a positive survivor lands in [1, sample_max], a negative in [sample_min, −1], the dead zone at 0 — so no saturate is owed; the magnitude is taken in i32 so |sample_min| = 32768 is representable.
+think The teaching this rung adds is the soft/hard bond, proven sample for sample against ALES87: soft and hard center clip silence the SAME dead zone, and on every survivor |soft| = |hard| − t (the soft form exactly t quieter). The map is odd and — honestly — NOT idempotent (each pass subtracts t again; a shift, not a mask), stated plainly rather than dressed in a symmetry it lacks. The boundary law proves continuity (|x| = t → 0, |x| = t+1 → ±1) directly against ALES87's leap.
+obs Followed the parametric-waveshaper pattern exactly (center_clip.rye / soft_drive.rye): module + design doc + witness + README status-line sync and re-stamp + session log, one signed commit. Eight laws proven; the witness imports ALES87 and re-proves the bond beside it. Witness GREEN on the first run; tame_style_check bans clean; width exit 0. The postcondition assert spells the exact map per sign, the @intCast guarded by a range assert.
+loom witness=ales_soft_center_clip_witness selftest=GREEN laws=8 module_lines=196
+file lotus/soft_center_clip.rye the soft center clipper, y = if |x| ≤ t then 0 else x − sign(x)·t, exact for every i16 with no rail edge, eight laws proven
+file tools/ales_soft_center_clip_witness.rish builds the module, runs the selftest, asserts the single GREEN ales-soft-center-clip line
+file active-designing/20260814-220520_fill-ales88-lotus-soft-center-clipper.md the self-approved design read naming the crux, the soft/hard bond, and the eight laws
+file lotus/README.md front-door status line synced with ALES88 and re-stamped
+recommend keep-going the DRIVE family now carries a hard/soft pair on both the ceiling (hard clip / overdrive) and the floor (hard / soft center clip); the loop names its own next Lotus crux — the booked DC blocker that removes the offset the rectifier and asymmetric-drive rungs introduce, or a fresh DSP family — as its own self-approved design round
