@@ -1,0 +1,245 @@
+//! lotus/stereo_vibrato.rye — ALES178: the VIBRATO carried into stereo — ALES72's wet-only triangle-LFO modulated delay run on BOTH channels with the SAME LFO (centre, depth, period), each channel read off ITS OWN frozen snapshot,
+//! the third rung of the stereo MODULATION class and the FIRST that snapshots. ALES176 (tremolo) and ALES177 (ring modulator) opened the class with the two THIN per-sample modulations — every output depends only on its own input
+//! sample, so both write in place with NO snapshot. The delay-line modulations are the class's other half, and the vibrato is the thinnest of them: the delayed voice heard ALONE, wet-only, no dry mixed under it and no mix level to
+//! name, so it carries only four faults and no BadLevel. That makes it the honest first delay-line stereo lift — the crux is not the arithmetic (ALES72's is reused verbatim) but the SNAPSHOT discipline, carried cleanly into two channels.
+//!
+//! The crux — the SAME LFO on BOTH channels, each on its OWN snapshot, is the linked stereo vibrato: both voices wobble in lockstep, the image held. A vibrato's LFO (centre, depth, period) is scaled units the caller NAMES, not
+//! scalars measured across the field, so the same LFO on each channel preserves the stereo image for free — no linking machinery, no measurement. Mono `vibrato` snapshots the dry prefix of its OWN clip before any write; run once per
+//! channel, the left reads the left's dry and the right reads the right's, never crossed — there is NO cross-channel snapshot, the two channels never read each other, so the discipline is exactly the mono one twice, nothing threaded
+//! across the seam. Because the interpolation read is a convex combination LINEAR in the input, an identical-channel (mono-in-stereo) master stays identical (the same input through the same LFO and snapshot is the same output), and a
+//! PANNED master keeps its pan: both sides read at the same fractional delay off proportional snapshots, so the left:right ratio at every sample is untouched — and the wet voice never touches the rail, so no saturation breaks it.
+//!
+//! The vibrato is heard WET-ONLY — the delayed voice is the whole output on each channel — so it carries NO mix level and thus no BadLevel; `StereoVibratoError = vibrato.VibratoError` is reused whole (BadPeriod, BadDepth, BadDelay,
+//! BadRange), the stereo lift adding no fault. The write saturates once for family uniformity yet never clips: the vibrato voice is a convex combination of two in-range dry neighbours and so already fits the i16 rail, on each channel.
+//!
+//! The rule, stated once: refuse BadPeriod (a period not a positive multiple of four, or wider than max_clip), BadDepth (a negative depth, or a swing dipping below one whole sample), BadDelay (a swing top past max_clip), and BadRange
+//! (a span past the shared length) BEFORE either channel is snapshotted — the LFO and span validated once against the shared length up front (ALES72's own `precheck`, factored out for this exactly as ALES75's was for the ring
+//! modulator), so a refusal never wobbles one channel and leaves the other torn; then run ALES72's `vibrato` on each channel with the SAME LFO.
+//!
+//! The crux — four laws. THE STEREO VIBRATO LAW: each channel equals ALES72's mono `vibrato` with the SAME LFO over the same span byte for byte, proven side by side with genuinely different per-channel content — the left rung by the
+//! left's samples, the right by the right's, never crossed. THE CHORUS-FAMILY LAW: the family identity chorus[i] = saturate(dry[i] + vibrato[i]) holds PER CHANNEL — a stereo chorus at full wet equals the dry master plus this stereo
+//! vibrato sample for sample on both channels (proven against ALES71's mono chorus run per channel), so the wet-only lift sits under the eventual stereo chorus exactly as the mono rungs do. THE IMAGE LAW: an identical-channel master
+//! stays identical through the vibrato (a mono-in-stereo signal never splits), AND a panned pair keeps its left:right ratio at every sample (the interpolation linear in the input, the wet voice off the rail). THE BALANCE / SILENCE /
+//! ATOMICITY / DEGENERATE LAW: an all-silent master wobbles to silence on both; left.len == right.len after; a bad period, a bad depth, a bad delay top, and an out-of-range span each refuse by name with BOTH channels byte for byte
+//! untouched and still balanced; count = 0 the identity on both.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES178.
+//! Design read: active-designing/20260815-083330_fill-ales178-lotus-stereo-vibrato.md
+//! Stands on: lotus/vibrato.rye (ALES72) — the mono wet-only vibrato run once per channel, its VibratoError reused whole and its `precheck` (newly factored out) reused for the up-front atomic validation; lotus/chorus.rye (ALES71) — the
+//! full-wet chorus that is the dry plus this vibrato, the chorus-family equality target; lotus/glide.rye (ALES70) — glide_scale, the fixed-point unit (256 = unity); lotus/pan.rye (ALES10) — the StereoClip and its balance invariant;
+//! lotus/timeline.rye (ALES2) — the Clip and the one true saturate.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right), each rung through ALES72's own wet-only modulated delay — the triangle and the fractional interpolation in i64, each channel snapshotting its
+//! own dry prefix into one bounded [max_clip]i16 scratch, the write saturating once (a proven no-op), siloed to lotus/. It changes sample VALUES only, never a length; the two channels leave balanced. The LFO is counted in scaled units
+//! (256 = unity) and the period in samples, not hertz (a real time base is a later rung). No cross-channel snapshot, no lookahead beyond each channel's own prefix, no feedback (the flanger's element, a later rung), no real sample rate,
+//! no network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_vibrato.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const glide = @import("glide.rye");
+const vibrato = @import("vibrato.rye");
+const chorus = @import("chorus.rye");
+
+pub const stereo_vibrato_version = "20260815.083330";
+
+/// The stereo vibrato's faults are exactly ALES72's own `VibratoError` — `BadPeriod`, `BadDepth`, `BadDelay`, and `BadRange` — reused by name, since carrying the wet-only vibrato into stereo adds no new fault: it validates one shared
+/// LFO and span against the shared length, then runs the same mono vibrato on each channel. There is no BadLevel — the vibrato is heard wet-only and carries no mix level.
+pub const StereoVibratoError = vibrato.VibratoError;
+
+/// Apply a vibrato over `count` samples starting at `start` in BOTH channels of `sc` with the SAME LFO — a triangle of `depth_scaled` round `centre_scaled` over `period` samples driving a wet-only modulated fractional delay — by
+/// running ALES72's proven mono `vibrato` on each channel. The shared LFO preserves the stereo image: an identical-channel master stays identical, and a panned master keeps its pan (both sides read at the same fractional delay off
+/// proportional snapshots, the interpolation linear in the input). Each channel reads its OWN frozen snapshot — no cross-channel read. Validates the LFO and span ONCE against the shared length before either channel is snapshotted
+/// (ALES72's `precheck`): refuses BadPeriod, BadDepth, BadDelay, and BadRange, both channels untouched. Values only — never the length; the two channels leave balanced.
+pub fn stereo_vibrato(
+    sc: *pan.StereoClip,
+    start: u32,
+    count: u32,
+    centre_scaled: i64,
+    depth_scaled: i64,
+    period: u32,
+) StereoVibratoError!void {
+    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the shared LFO preserves.
+    assert(sc.left.len == sc.right.len);
+    // invariant: the LFO and span are legal against the SHARED length — checked before any snapshot, so a refusal never wobbles one channel and leaves the other torn.
+    const len: u32 = sc.left.len;
+    try vibrato.precheck(len, start, count, centre_scaled, depth_scaled, period);
+
+    // Every check passed and holds identically for both channels (same LFO, same span, shared length), so each mono vibrato is pre-validated to succeed — no refusal can land between the two channel edits. The SAME LFO on each channel,
+    // each reading its OWN frozen dry snapshot, never the other's.
+    try vibrato.vibrato(&sc.left, start, count, centre_scaled, depth_scaled, period);
+    try vibrato.vibrato(&sc.right, start, count, centre_scaled, depth_scaled, period);
+
+    // invariant: the channels leave balanced — a vibrato writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
+    assert(sc.left.len == len and sc.right.len == len);
+    assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
+}
+
+// --- selftest: THE STEREO VIBRATO LAW — each channel equals ALES72's mono vibrato with the SAME LFO byte for byte, different per-channel content; THE CHORUS-FAMILY LAW — a full-wet stereo chorus equals dry plus this vibrato per
+//     channel; THE IMAGE LAW — an identical-channel master staying identical, a panned pair keeping its ratio; THE BALANCE / SILENCE / ATOMICITY / DEGENERATE LAW — silence to silence, balanced, each refusal untouched, count 0 identity
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try timeline.splice(&sc.left, 0, l);
+    try timeline.splice(&sc.right, 0, r);
+}
+
+fn run_selftest() !u8 {
+    const scale = glide.glide_scale;
+
+    // 1. THE STEREO VIBRATO LAW — each channel equals ALES72's mono vibrato with the SAME LFO, proven side by side over one span with genuinely different per-channel content: the left rung by the left's samples, the right by the
+    //    right's, never crossed.
+    {
+        const ll = [_]i16{ 1000, -2000, 3000, -4000, 5000, -6000, 7000, -8000 };
+        const rr = [_]i16{ -400, 1200, 500, 2000, -700, 100, -1500, 1500 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &ll, &rr);
+        try stereo_vibrato(&sc, 0, 8, 3 * scale, 1 * scale, 8);
+
+        var ml = timeline.Clip{};
+        try timeline.splice(&ml, 0, &ll);
+        try vibrato.vibrato(&ml, 0, 8, 3 * scale, 1 * scale, 8);
+        var mr = timeline.Clip{};
+        try timeline.splice(&mr, 0, &rr);
+        try vibrato.vibrato(&mr, 0, 8, 3 * scale, 1 * scale, 8);
+
+        if (!eq(sc.left.samples(), ml.samples())) return error.LeftVibratoNotMono;
+        if (!eq(sc.right.samples(), mr.samples())) return error.RightVibratoNotMono;
+        // The two channels genuinely differ — the left is not the right rung, proving no crossing.
+        if (eq(sc.left.samples(), sc.right.samples())) return error.ChannelsDidNotDiffer;
+    }
+
+    // 2. THE CHORUS-FAMILY LAW — the family identity chorus[i] = saturate(dry[i] + vibrato[i]) held PER CHANNEL: a full-wet (1/1) stereo chorus equals the dry master plus this stereo vibrato, sample for sample on both channels.
+    {
+        const ll = [_]i16{ 1000, -2000, 3000, -4000, 5000, -6000, 7000, -8000 };
+        const rr = [_]i16{ 900, -700, 15000, -400, 9000, -9000, 300, -300 };
+
+        var wet = pan.StereoClip{};
+        try load_stereo(&wet, &ll, &rr);
+        try stereo_vibrato(&wet, 0, 8, 3 * scale, 1 * scale, 8);
+
+        var cl = timeline.Clip{};
+        try timeline.splice(&cl, 0, &ll);
+        try chorus.chorus(&cl, 0, 8, 3 * scale, 1 * scale, 8, 1, 1);
+        var cr = timeline.Clip{};
+        try timeline.splice(&cr, 0, &rr);
+        try chorus.chorus(&cr, 0, 8, 3 * scale, 1 * scale, 8, 1, 1);
+
+        var i: u32 = 0;
+        while (i < 8) : (i += 1) {
+            const want_l: i16 = timeline.saturate(@as(i64, ll[i]) + @as(i64, wet.left.samples()[i]));
+            const want_r: i16 = timeline.saturate(@as(i64, rr[i]) + @as(i64, wet.right.samples()[i]));
+            if (cl.samples()[i] != want_l) return error.LeftChorusNotDryPlusVibrato;
+            if (cr.samples()[i] != want_r) return error.RightChorusNotDryPlusVibrato;
+        }
+    }
+
+    // 3. THE IMAGE LAW — an identical-channel (mono-in-stereo) master stays identical through the vibrato: the same input through the same LFO and the same snapshot logic is the same deterministic output, so the two channels never split.
+    {
+        const same = [_]i16{ 900, -700, 15000, -400, 9000, -9000, 300, -300 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &same, &same);
+        try stereo_vibrato(&sc, 0, 8, 3 * scale, 1 * scale, 8);
+        if (!eq(sc.left.samples(), sc.right.samples())) return error.IdentityChannelsSplit;
+    }
+
+    // 3b. THE IMAGE LAW, panned — a panned pair (the right exactly half the left) keeps its left:right ratio at every sample, because the interpolation read is a convex combination LINEAR in the input: each channel reads at the same
+    //     fractional delay off proportional snapshots, so wherever the pre-vibrato pair held 2·right == left, the post-vibrato pair holds it too. The wet voice never touches the rail, so no saturation breaks the ratio. The left values
+    //     are even so the halving is exact.
+    {
+        const ll = [_]i16{ 8000, -8000, 12000, -4000, 16000, -16000, 2000, -2000 };
+        var rr: [8]i16 = undefined;
+        var j: u32 = 0;
+        while (j < 8) : (j += 1) rr[j] = @intCast(@divTrunc(@as(i64, ll[j]), 2)); // right is exactly half the left — a pan
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &ll, &rr);
+        try stereo_vibrato(&sc, 0, 8, 3 * scale, 1 * scale, 8);
+        const lo = sc.left.samples();
+        const ro = sc.right.samples();
+        var k: u32 = 0;
+        while (k < 8) : (k += 1) if (2 * @as(i64, ro[k]) != @as(i64, lo[k])) return error.PanRatioWandered;
+    }
+
+    // 4a. THE SILENCE / BALANCE / LENGTH LAW — an all-silent master wobbles to silence on both; the channels stay equal length and each holds its starting length.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 0, 0, 0, 0, 0, 0, 0, 0 }, &[_]i16{ 0, 0, 0, 0, 0, 0, 0, 0 });
+        try stereo_vibrato(&sc, 0, 8, 3 * scale, 1 * scale, 8);
+        const zeros = [_]i16{ 0, 0, 0, 0, 0, 0, 0, 0 };
+        if (!eq(sc.left.samples(), &zeros) or !eq(sc.right.samples(), &zeros)) return error.SilenceWrong;
+
+        var bc = pan.StereoClip{};
+        try load_stereo(&bc, &[_]i16{ 8000, -8000, 200, -9000, 3000, -3000, 100, -100 }, &[_]i16{ -400, 3000, -700, 5000, 600, -600, 800, -800 });
+        try stereo_vibrato(&bc, 0, 8, 3 * scale, 1 * scale, 8);
+        if (bc.left.len != bc.right.len) return error.Unbalanced;
+        if (bc.left.len != 8) return error.LengthChanged;
+    }
+
+    // 4b. THE ATOMICITY LAW — a bad period (not a multiple of four), a bad depth (a swing dipping below one whole sample), a bad delay top (a swing past max_clip), and an out-of-range span each refuse by name with BOTH channels byte for
+    //     byte untouched and still balanced.
+    {
+        const tl = [_]i16{ 5, -6, 7, -8 };
+        const tr = [_]i16{ -7, 6, -5, 4 };
+
+        var a = pan.StereoClip{};
+        try load_stereo(&a, &tl, &tr);
+        if (stereo_vibrato(&a, 0, 4, 3 * scale, 1 * scale, 6)) |_| return error.BadPeriodSlipped else |e| if (e != error.BadPeriod) return error.WrongBadPeriod; // period 6 not a multiple of four
+        if (!eq(a.left.samples(), &tl) or !eq(a.right.samples(), &tr) or a.left.len != a.right.len) return error.PeriodRefusalMutated;
+
+        var b = pan.StereoClip{};
+        try load_stereo(&b, &tl, &tr);
+        if (stereo_vibrato(&b, 0, 4, 1 * scale, 1 * scale, 4)) |_| return error.BadDepthSlipped else |e| if (e != error.BadDepth) return error.WrongBadDepth; // centre − depth = 0 < glide_scale
+        if (!eq(b.left.samples(), &tl) or !eq(b.right.samples(), &tr) or b.left.len != b.right.len) return error.DepthRefusalMutated;
+
+        var c = pan.StereoClip{};
+        try load_stereo(&c, &tl, &tr);
+        const too_far: i64 = @as(i64, timeline.max_clip) * scale + scale; // swing top whole delay > max_clip
+        if (stereo_vibrato(&c, 0, 4, too_far, 0, 4)) |_| return error.BadDelaySlipped else |e| if (e != error.BadDelay) return error.WrongBadDelay;
+        if (!eq(c.left.samples(), &tl) or !eq(c.right.samples(), &tr) or c.left.len != c.right.len) return error.DelayRefusalMutated;
+
+        var d = pan.StereoClip{};
+        try load_stereo(&d, &tl, &tr);
+        if (stereo_vibrato(&d, 1, 4, 3 * scale, 1 * scale, 4)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange; // start 1 + count 4 > len 4
+        if (!eq(d.left.samples(), &tl) or !eq(d.right.samples(), &tr) or d.left.len != d.right.len) return error.RangeRefusalMutated;
+    }
+
+    // 4c. THE DEGENERATE LAW — count = 0 (an empty span in the middle) is the identity on both channels; no sample to wobble.
+    {
+        var noop = pan.StereoClip{};
+        try load_stereo(&noop, &[_]i16{ 8000, -8000, 4000 }, &[_]i16{ -50, 60, -70 });
+        try stereo_vibrato(&noop, 1, 0, 3 * scale, 1 * scale, 4); // empty span — identity
+        if (!eq(noop.left.samples(), &[_]i16{ 8000, -8000, 4000 })) return error.ZeroCountLeftChanged;
+        if (!eq(noop.right.samples(), &[_]i16{ -50, 60, -70 })) return error.ZeroCountRightChanged;
+    }
+
+    print("GREEN ales-stereo-vibrato: the VIBRATO CARRIED INTO STEREO — ALES72's wet-only triangle-LFO modulated delay run on BOTH channels with the SAME LFO (centre, depth, period), each channel read off ITS OWN frozen snapshot, the " ++
+        "third rung of the stereo MODULATION class and the FIRST that snapshots. ALES176 (tremolo) and ALES177 (ring modulator) opened the class with the two THIN per-sample modulations that write in place with no snapshot; the " ++
+        "vibrato is the thinnest delay-line modulation — the delayed voice heard ALONE, wet-only, no dry mixed under it and no mix level to name, four faults and no BadLevel — so it is the honest first delay-line stereo lift, the crux " ++
+        "the SNAPSHOT discipline rather than the arithmetic (ALES72's reused verbatim). The SAME LFO on both channels, each on its OWN snapshot, is the linked stereo vibrato: both voices wobble in lockstep, the image held. An LFO is " ++
+        "scaled units the caller names (256 = unity), not scalars measured across the field, so the same LFO on each channel preserves the image for free; mono vibrato snapshots the dry prefix of its OWN clip, so run once per channel " ++
+        "the left reads the left's dry and the right the right's, never crossed — no cross-channel snapshot, the mono discipline twice. Because the interpolation read is a convex combination linear in the input, an identical-channel " ++
+        "master stays identical and a panned master keeps its pan (both sides read at the same fractional delay off proportional snapshots, the wet voice off the rail so no saturation breaks the ratio). It validates the LFO and span " ++
+        "once against the shared length before either channel is snapshotted (BadPeriod, BadDepth, BadDelay, BadRange; ALES72's precheck reused), so a refusal never wobbles one channel and leaves the other torn; VibratoError reused " ++
+        "whole. THE STEREO VIBRATO LAW: each channel equals ALES72's mono vibrato with the same LFO byte for byte, the channels genuinely differing. THE CHORUS-FAMILY LAW: a full-wet stereo chorus equals the dry master plus this " ++
+        "stereo vibrato per channel, sample for sample. THE IMAGE LAW: an identical-channel master staying identical, a panned pair keeping its left:right ratio. THE BALANCE / SILENCE / ATOMICITY / DEGENERATE LAW: silence to silence " ++
+        "on both, left.len == right.len after, a bad period / a bad depth / a bad delay top / an out-of-range span each refusing by name with both channels untouched and balanced, count = 0 the identity on both. Purely local — two " ++
+        "bounded i16 Clips, each rung through the proven mono vibrato's wet-only modulated delay, each channel snapshotting its own dry prefix and the write saturating once (a proven no-op), the LFO in scaled units not hertz; no " ++
+        "cross-channel snapshot, no feedback, no real sample rate, no network, no keys, no funds, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
