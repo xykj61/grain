@@ -1,0 +1,296 @@
+//! lotus/stereo_infinite_clip.rye — ALES143: the infinite clipper carried into stereo, ONE SHARED RAIL, CLOSING the dead-zone family in stereo. ALES89 named `infinite_clip` — silence the quiet middle AND pin every
+//! survivor all the way to the rail, y = if |x| ≤ t then 0 else sign(x)·sample_max: the third and loudest reading of the survivor's fate. The hard center clip (ALES141) PASSES the survivor at its own value, the soft
+//! center clip (ALES142) SHIFTS it toward zero by the threshold, and this rung PINS it to ±sample_max — a sine in becomes a square out, the harshest fuzz there is, the comparator of every zero-crossing detector. Yet
+//! a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and RIGHT hold the SAME length. This rung carries the infinite clip into stereo the plain way: run ALES89's
+//! proven mono `infinite_clip` on each channel with the SAME threshold, so one rail lands on BOTH speakers together — and with it the dead-zone family (hard ALES141, soft ALES142, infinite here) stands WHOLE in stereo.
+//!
+//! The infinite clip is ODD (sign(−x) flips with the sign; the negative survivor pins to −sample_max, not sample_min, precisely to keep the map exactly odd for every i16, the deepest sample included), so like both
+//! center clips it HOLDS the inter-channel antisymmetry: an out-of-phase master (right the exact negation of left) comes back STILL out of phase. Yet it is the EXTREME of the family — every survivor is slammed to the
+//! SAME magnitude regardless of its input, so a shared rail COLLAPSES the inter-channel ratio to unity: a 1:2 master comes back 1:1 where both survive. And thresh = 0 is NOT the identity here (as it was for ALES141
+//! and ALES142) but the PURE COMPARATOR — every nonzero sample pins to the rail, only exact silence surviving as 0. Idempotence holds precisely on [0, sample_max − 1]: a pinned survivor at sample_max clears any
+//! threshold below the rail, so a second pass leaves it; only at t = sample_max does the pinned survivor itself fall back into the dead zone and drop to 0.
+//!
+//! The rule, stated once: the infinite clip is EXACT for every i16 with NO rail edge and NO saturate — only −sample_max, 0, sample_max is ever written, each a legal i16 by construction. It carries ONE parameter, the
+//! threshold magnitude, and names TWO faults. Refuse BadThreshold (a threshold outside [0, sample_max]) and BadRange (a span outside the samples) BEFORE either channel is mutated — each fault depends only on the
+//! shared threshold or the shared length, so each check is made ONCE up front, and a refusal never infinite-clips one channel and leaves the other whole; otherwise infinite_clip both channels over [start, start+count)
+//! with the same `thresh` via ALES89's `infinite_clip`. InfiniteClipError reused whole — the stereo lift adds no fault.
+//!
+//! The crux — four laws. THE STEREO INFINITE-CLIP LAW: each channel equals ALES89's mono `infinite_clip` with the same threshold over the same span byte for byte — the quiet middle silenced, every survivor pinned to
+//! sign(x)·sample_max, only three values ever written. THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their starting length (an infinite clip writes values only). THE PER-CHANNEL ODD /
+//! RAIL LAW: the infinite clip is odd, so a shared rail HOLDS the inter-channel antisymmetry (an out-of-phase master staying out of phase); yet it COLLAPSES the inter-channel ratio to unity (a 1:2 master coming back
+//! 1:1 where both survive), because every survivor pins to the same magnitude; an identical-channel master stays identical, thresh = 0 the PURE COMPARATOR (not the identity), the map idempotent on [0, sample_max − 1].
+//! THE ATOMICITY / DEGENERATE LAW: any refusal (BadThreshold, BadRange) leaves BOTH channels byte for byte untouched and still balanced; count = 0 the identity on both (the sole degenerate identity, since thresh = 0
+//! is the comparator).
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES143.
+//! Design read: active-designing/20260815-043212_fill-ales143-lotus-stereo-infinite-clip.md
+//! Stands on: lotus/infinite_clip.rye (ALES89) — the mono infinite clipper run once per channel, y = if |x| ≤ t then 0 else sign(x)·sample_max with no rail edge; lotus/stereo_center_clip.rye (ALES141) — the hard
+//! sibling whose dead zone this shares (the same samples silenced, the survivors pinned to the rail instead of passed); lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant;
+//! lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, sample_min/max.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only through ALES89's own infinite_clip, each output one of three
+//! constants (−sample_max, 0, sample_max), never a length; the shape is a static dead-zone comparator on instantaneous magnitude, memoryless (no attack/release, no envelope, no hysteresis, no anti-aliasing). No
+//! saturate is owed — every output is a legal i16 by construction. No real sample rate, no network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_infinite_clip.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const infinite_clip = @import("infinite_clip.rye");
+const stereo_center_clip = @import("stereo_center_clip.rye");
+
+pub const stereo_infinite_clip_version = "20260815.043212";
+
+/// Stereo infinite-clip's faults are exactly ALES89's own `InfiniteClipError` — `BadThreshold` (a threshold outside [0, sample_max]) and `BadRange` (a span outside the samples) — reused by name, since the stereo lift
+/// adds no new fault: it only runs the same infinite_clip on each channel after one shared validation.
+pub const StereoInfiniteClipError = infinite_clip.InfiniteClipError;
+
+/// Infinite-clip `[start, start+count)` in BOTH channels of `sc` with the same `thresh`, the SAME rail on each, running ALES89's proven mono `infinite_clip`. Each sample whose magnitude is at most `thresh` becomes `0`
+/// (the quiet middle silenced), and every louder sample is pinned to `sign(x)·sample_max` — y = if |x| ≤ thresh then 0 else sign(x)·sample_max, the survivor slammed to the rail. Exact for every i16 — only −sample_max,
+/// 0, or sample_max is ever written, so no rail edge and no saturate. `thresh = 0` is the pure comparator, not the identity. Validates both channels once against the shared threshold and length before either is
+/// mutated: refuses `BadThreshold` / `BadRange`, both channels untouched. Values only — never the length; the two channels leave balanced.
+pub fn stereo_infinite_clip(sc: *pan.StereoClip, start: u32, count: u32, thresh: i32) StereoInfiniteClipError!void {
+    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the edit preserves.
+    assert(sc.left.len == sc.right.len);
+
+    // invariant: the threshold and span are legal — refused by name before any write, so a refusal never infinite-clips one channel and leaves the other whole. The threshold check depends only on the shared magnitude
+    // bound; the span check on the shared length. These mirror ALES89's own guards exactly, so each mono infinite_clip below is pre-validated to succeed.
+    if (thresh < 0) return error.BadThreshold;
+    if (thresh > @as(i32, timeline.sample_max)) return error.BadThreshold;
+    const len: u32 = sc.left.len;
+    if (start > len) return error.BadRange;
+    if (count > len - start) return error.BadRange;
+
+    // Every check passed and holds identically for both channels, so each mono infinite_clip is pre-validated to succeed — no refusal can land between the two channel edits. The SAME rail on each.
+    try infinite_clip.infinite_clip(&sc.left, start, count, thresh);
+    try infinite_clip.infinite_clip(&sc.right, start, count, thresh);
+
+    // invariant: the channels leave balanced — an infinite clip writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
+    assert(sc.left.len == sc.right.len);
+    assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
+}
+
+// --- selftest: THE STEREO INFINITE-CLIP LAW — each channel equals ALES89's mono infinite_clip with the same threshold over the same span byte for byte; THE BALANCE / LENGTH LAW — left.len == right.len after, both
+//     holding their starting length; THE PER-CHANNEL ODD / RAIL LAW — an OUT-OF-PHASE master coming back STILL out of phase (odd holds the antisymmetry), a 1:2 master COLLAPSING to 1:1 (every survivor pinned to the
+//     same magnitude), an identical-channel master staying identical, thresh = 0 the PURE COMPARATOR (not the identity), the map idempotent on [0, sample_max − 1], the same dead zone as ALES141 (the family bond);
+//     THE ATOMICITY / DEGENERATE LAW — each refusal leaves both channels untouched and balanced, count = 0 the identity ----
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try timeline.splice(&sc.left, 0, l);
+    try timeline.splice(&sc.right, 0, r);
+}
+
+fn run_selftest() !u8 {
+    // 1. THE STEREO INFINITE-CLIP LAW — each channel equals ALES89's mono infinite_clip with the same threshold, proven side by side over one span with different per-channel samples; at t = 1000 the quiet middle
+    //    silences and every survivor pins to ±sample_max.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 500, -1000, 1001, -5000, timeline.sample_min }, &[_]i16{ 100, 2500, -300, 32767, -900 });
+        try stereo_infinite_clip(&sc, 0, 5, 1000);
+
+        var ml = timeline.Clip{};
+        try timeline.splice(&ml, 0, &[_]i16{ 500, -1000, 1001, -5000, timeline.sample_min });
+        try infinite_clip.infinite_clip(&ml, 0, 5, 1000);
+        var mr = timeline.Clip{};
+        try timeline.splice(&mr, 0, &[_]i16{ 100, 2500, -300, 32767, -900 });
+        try infinite_clip.infinite_clip(&mr, 0, 5, 1000);
+
+        if (!eq(sc.left.samples(), ml.samples())) return error.LeftChannelWrong;
+        if (!eq(sc.right.samples(), mr.samples())) return error.RightChannelWrong;
+        // by hand: left |500|,|−1000| ≤ 1000 silence; 1001→+max, −5000→−max, sample_min→−max (odd, not sample_min). right |100| silence; 2500→+max, |−300| silence, 32767→+max, −900 silence.
+        if (!eq(sc.left.samples(), &[_]i16{ 0, 0, timeline.sample_max, -timeline.sample_max, -timeline.sample_max })) return error.LeftHandWrong;
+        if (!eq(sc.right.samples(), &[_]i16{ 0, timeline.sample_max, 0, timeline.sample_max, 0 })) return error.RightHandWrong;
+    }
+
+    // 2. THE BALANCE / LENGTH LAW — the channels stay equal length and each holds its starting length; an infinite clip writes values only. Proven at an even and an odd length.
+    {
+        var even = pan.StereoClip{};
+        try load_stereo(&even, &[_]i16{ 100, -2000, 3000, -4000 }, &[_]i16{ -400, 3000, -200, 5000 });
+        try stereo_infinite_clip(&even, 0, 4, 1000);
+        if (even.left.len != even.right.len) return error.EvenUnbalanced;
+        if (even.left.len != 4) return error.EvenLength;
+
+        var odd = pan.StereoClip{};
+        try load_stereo(&odd, &[_]i16{ 100, -2000, 3000 }, &[_]i16{ 3000, -200, 100 });
+        try stereo_infinite_clip(&odd, 0, 3, 500);
+        if (odd.left.len != odd.right.len) return error.OddUnbalanced;
+        if (odd.left.len != 3) return error.OddLength;
+    }
+
+    // 3a. THE PER-CHANNEL ODD LAW, the ANTISYMMETRY HOLDS — an out-of-phase master (right the exact negation of left) infinite-clipped through the same threshold comes back STILL out of phase, because the map is odd
+    //     (sign(−x) flips with the sign and the negative survivor pins to −sample_max, not sample_min), so infinite_clip(−x) = −infinite_clip(x) and right = −left after. The phase is held, like both center clips.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 500, -3000, 900, -1200 }, &[_]i16{ -500, 3000, -900, 1200 }); // right = −left
+        try stereo_infinite_clip(&sc, 0, 4, 1000);
+        const l = sc.left.samples();
+        const r = sc.right.samples();
+        var i: u32 = 0;
+        while (i < 4) : (i += 1) {
+            if (@as(i32, r[i]) != -@as(i32, l[i])) return error.AntisymmetryBroke; // right = −left held — the odd law in stereo
+        }
+        // by hand: |500|,|900| ≤ 1000 silence; −3000→−max, −1200? left is −1200→−max, 1200→+max. left {0,−max,0,−max}, right {0,+max,0,+max}.
+        if (!eq(l, &[_]i16{ 0, -timeline.sample_max, 0, -timeline.sample_max })) return error.LeftPhaseWrong;
+        if (!eq(r, &[_]i16{ 0, timeline.sample_max, 0, timeline.sample_max })) return error.RightPhaseWrong;
+    }
+
+    // 3b. THE RAIL LAW, the RATIO COLLAPSES TO UNITY — a 1:2 master (right twice left) comes back 1:1 where both survive, because every survivor is slammed to the SAME magnitude regardless of its input: the infinite
+    //     clip discards all amplitude and keeps only the sign. This is the extreme of the dead-zone family — the hard center clip held the ratio, the soft broke it by a shift, the infinite clip collapses it entirely.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 2000, 3000 }, &[_]i16{ 4000, 6000 }); // right = 2·left, both survive t = 1000
+        try stereo_infinite_clip(&sc, 0, 2, 1000);
+        const l = sc.left.samples();
+        const r = sc.right.samples();
+        // by hand: every survivor pins to +sample_max, so left = right = {+max, +max} — the 2:1 ratio collapsed to 1:1.
+        if (!eq(l, &[_]i16{ timeline.sample_max, timeline.sample_max })) return error.RatioLeftWrong;
+        if (!eq(r, &[_]i16{ timeline.sample_max, timeline.sample_max })) return error.RatioRightWrong;
+        var i: u32 = 0;
+        while (i < 2) : (i += 1) {
+            if (r[i] != l[i]) return error.RatioNotCollapsed; // right == left now, not 2·left — the ratio collapsed
+        }
+    }
+
+    // 3c. THE RAIL LAW, IDEMPOTENT BELOW THE RAIL — a pinned survivor at sample_max clears any threshold t ≤ sample_max − 1, so infinite-clipping twice equals once on both channels for a below-rail threshold; the
+    //     dead zone stays silent. (Only at t = sample_max would the pinned survivor fall back into the dead zone — not exercised here, the honest edge stated in the module.)
+    {
+        const li = [_]i16{ 700, -1500, 4000, -90 };
+        const ri = [_]i16{ -4000, 900, -700, 33 };
+        var once = pan.StereoClip{};
+        try load_stereo(&once, &li, &ri);
+        try stereo_infinite_clip(&once, 0, 4, 1000);
+        var twice = pan.StereoClip{};
+        try load_stereo(&twice, &li, &ri);
+        try stereo_infinite_clip(&twice, 0, 4, 1000);
+        try stereo_infinite_clip(&twice, 0, 4, 1000);
+        if (!eq(once.left.samples(), twice.left.samples())) return error.LeftNotIdempotent;
+        if (!eq(once.right.samples(), twice.right.samples())) return error.RightNotIdempotent;
+    }
+
+    // 3d. THE FAMILY BOND — the infinite clip and ALES141's hard center clip silence the SAME dead zone: wherever the hard center clip silenced a sample, the infinite clip silences it too, and wherever it passed one,
+    //     the infinite clip pins it to the rail with the same sign. Proven per channel per sample against ALES141's stereo_center_clip — the dead-zone family read across the three survivors' fates.
+    {
+        const li = [_]i16{ 300, -300, 1200, -1200, 5000, -5000 };
+        const ri = [_]i16{ -900, 900, -3000, 3000, 700, -700 };
+        const t: i32 = 1000;
+        var inf = pan.StereoClip{};
+        try load_stereo(&inf, &li, &ri);
+        try stereo_infinite_clip(&inf, 0, 6, t);
+        var hard = pan.StereoClip{};
+        try load_stereo(&hard, &li, &ri);
+        try stereo_center_clip.stereo_center_clip(&hard, 0, 6, t);
+        const il = inf.left.samples();
+        const ir = inf.right.samples();
+        const hl = hard.left.samples();
+        const hr = hard.right.samples();
+        var i: u32 = 0;
+        while (i < 6) : (i += 1) {
+            // left channel: same dead zone; where hard passed, inf pins to the same sign.
+            if (hl[i] == 0) {
+                if (il[i] != 0) return error.LeftDeadZoneDiffers;
+            } else {
+                const want: i16 = if (hl[i] > 0) timeline.sample_max else -timeline.sample_max;
+                if (il[i] != want) return error.LeftRailWrong;
+            }
+            // right channel.
+            if (hr[i] == 0) {
+                if (ir[i] != 0) return error.RightDeadZoneDiffers;
+            } else {
+                const want: i16 = if (hr[i] > 0) timeline.sample_max else -timeline.sample_max;
+                if (ir[i] != want) return error.RightRailWrong;
+            }
+        }
+    }
+
+    // 3e. THRESH = 0 IS THE PURE COMPARATOR, not the identity — at t = 0 every nonzero sample pins to ±sample_max on both channels and only exact silence survives as 0. This is where the infinite clip parts from the
+    //     center clips (for which thresh = 0 was the identity): the loudest member turns the whole wave into a square at zero threshold.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 1, -1, 0, 32767, timeline.sample_min }, &[_]i16{ -1, 0, 5, -20000, 100 });
+        try stereo_infinite_clip(&sc, 0, 5, 0); // pure comparator — only exact 0 survives
+        if (!eq(sc.left.samples(), &[_]i16{ timeline.sample_max, -timeline.sample_max, 0, timeline.sample_max, -timeline.sample_max })) return error.LeftComparatorWrong;
+        if (!eq(sc.right.samples(), &[_]i16{ -timeline.sample_max, 0, timeline.sample_max, -timeline.sample_max, timeline.sample_max })) return error.RightComparatorWrong;
+    }
+
+    // 3f. an identical-channel master stays identical through the infinite clip — a shared rail on equal inputs gives equal outputs (a mono-in-stereo signal never splits).
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 500, -3000, 500, -3000 }, &[_]i16{ 500, -3000, 500, -3000 });
+        try stereo_infinite_clip(&sc, 0, 4, 1000);
+        if (!eq(sc.left.samples(), sc.right.samples())) return error.IdentityChannelsSplit;
+    }
+
+    // 3g. THE SPAN DISCIPLINE — infinite-clipping a sub-span leaves samples outside [start, count) exactly as they were on both channels (the in-place discipline the whole suite keeps).
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 100, 200, 500, 5000, 300, 400 }, &[_]i16{ -400, -300, 500, -5000, 300, 400 });
+        try stereo_infinite_clip(&sc, 2, 2, 1000); // indices 2,3 only, both channels: 500→0, 5000→+max / 500→0, −5000→−max
+        if (!eq(sc.left.samples(), &[_]i16{ 100, 200, 0, timeline.sample_max, 300, 400 })) return error.LeftSpanLeaked;
+        if (!eq(sc.right.samples(), &[_]i16{ -400, -300, 0, -timeline.sample_max, 300, 400 })) return error.RightSpanLeaked;
+    }
+
+    // 4a. THE ATOMICITY LAW, bad threshold — a negative threshold and an over-rail threshold each refuse BadThreshold, both channels byte for byte untouched and still balanced.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 1, -2, 3 }, &[_]i16{ -3, 2, -1 });
+        if (stereo_infinite_clip(&sc, 0, 3, -1)) |_| return error.NegThreshSlipped else |e| if (e != error.BadThreshold) return error.WrongNegThresh;
+        if (!eq(sc.left.samples(), &[_]i16{ 1, -2, 3 })) return error.NegThreshLeftMutated;
+        if (!eq(sc.right.samples(), &[_]i16{ -3, 2, -1 })) return error.NegThreshRightMutated;
+        if (sc.left.len != sc.right.len) return error.NegThreshUnbalanced;
+
+        var over = pan.StereoClip{};
+        try load_stereo(&over, &[_]i16{ 1, 2, 3 }, &[_]i16{ 3, 2, 1 });
+        if (stereo_infinite_clip(&over, 0, 3, @as(i32, timeline.sample_max) + 1)) |_| return error.OverThreshSlipped else |e| if (e != error.BadThreshold) return error.WrongOverThresh;
+        if (!eq(over.left.samples(), &[_]i16{ 1, 2, 3 })) return error.OverThreshLeftMutated;
+    }
+
+    // 4b. THE ATOMICITY LAW, bad span — a span past the samples refuses BadRange, both channels untouched.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 5, -6, 7 }, &[_]i16{ -7, 6, -5 });
+        if (stereo_infinite_clip(&sc, 1, 3, 1000)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(sc.left.samples(), &[_]i16{ 5, -6, 7 })) return error.BadRangeLeftMutated;
+        if (!eq(sc.right.samples(), &[_]i16{ -7, 6, -5 })) return error.BadRangeRightMutated;
+    }
+
+    // 4c. THE DEGENERATE LAW — count = 0 is the identity on both channels (an empty span clips nothing); it is the SOLE degenerate identity, since thresh = 0 is the comparator rather than the identity here.
+    {
+        var noop = pan.StereoClip{};
+        try load_stereo(&noop, &[_]i16{ 7, -8, 9 }, &[_]i16{ -7, 8, -9 });
+        try stereo_infinite_clip(&noop, 1, 0, 1000); // empty span — identity
+        if (!eq(noop.left.samples(), &[_]i16{ 7, -8, 9 })) return error.ZeroCountLeftChanged;
+        if (!eq(noop.right.samples(), &[_]i16{ -7, 8, -9 })) return error.ZeroCountRightChanged;
+    }
+
+    print("GREEN ales-stereo-infinite-clip: the INFINITE CLIPPER CARRIED INTO STEREO, ONE SHARED RAIL, CLOSING the dead-zone family in stereo — infinite-clip a span in both channels of a master with the same " ++
+        "threshold, running ALES89's proven mono infinite_clip on each (y = if |x| ≤ t then 0 else sign(x)·sample_max, the quiet middle silenced and every survivor pinned to the rail, a sine becoming a square, only " ++
+        "three values ever written and no saturate), so one rail lands on both speakers together. A Lotus master is a StereoClip (ALES10) whose defining invariant is that left and right hold the same length. It is " ++
+        "the third and loudest reading of the survivor's fate — the hard center clip (ALES141) PASSES the survivor, the soft (ALES142) SHIFTS it toward zero, the infinite clip PINS it to ±sample_max — and with it " ++
+        "the dead-zone family stands WHOLE in stereo. The infinite clip is ODD (the negative survivor pins to −sample_max, not sample_min, to keep the map exactly odd), so it HOLDS the inter-channel antisymmetry (an " ++
+        "out-of-phase master staying out of phase), like both center clips; yet it COLLAPSES the inter-channel ratio to unity (a 1:2 master coming back 1:1 where both survive), because every survivor is slammed to " ++
+        "the same magnitude — the extreme of the family. thresh = 0 is the PURE COMPARATOR, not the identity (every nonzero sample pinning to the rail, only exact silence surviving), where for the center clips it was " ++
+        "the identity; the map is idempotent on [0, sample_max − 1]. All three dead-zone members silence the SAME dead zone, proven here against ALES141's stereo_center_clip; an identical-channel master stays " ++
+        "identical. It validates both channels once against the shared threshold and length before either is mutated (BadThreshold outside [0, sample_max], BadRange on a span past the samples), so a refusal never " ++
+        "infinite-clips one channel and leaves the other whole; InfiniteClipError reused whole. The crux is four laws. THE STEREO INFINITE-CLIP LAW: each channel equals ALES89's mono infinite_clip with the same " ++
+        "threshold byte for byte. THE BALANCE / LENGTH LAW: left.len == right.len after and both hold their starting length. THE PER-CHANNEL ODD / RAIL LAW: the antisymmetry held (an out-of-phase master staying out " ++
+        "of phase), the ratio collapsed to unity (a 1:2 master coming back 1:1), an identical master staying identical, thresh = 0 the pure comparator, the map idempotent below the rail. THE ATOMICITY / DEGENERATE " ++
+        "LAW: a refusal leaves both channels untouched and balanced, count = 0 the identity. Purely local — two bounded i16 Clips infinite-clipped through the proven mono infinite_clip, a static dead-zone comparator " ++
+        "on instantaneous magnitude, memoryless; no real sample rate, no network, no keys, no funds, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
