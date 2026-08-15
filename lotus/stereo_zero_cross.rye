@@ -1,0 +1,340 @@
+//! lotus/stereo_zero_cross.rye — ALES145: the zero-crossing counter carried into stereo, ONE SHARED BAND and TWO INDEPENDENT COUNTERS — the suite's first STEREO ANALYSIS rung over the hysteresis comparator. ALES93 named
+//! `zero_cross` — the suite's first analysis rung: it READS a span, counts how many times ALES92's Schmitt trigger flips rail (a zero crossing in the hysteresis sense IS a rail flip), and returns that count with the
+//! clip untouched — the oldest activity / pitch estimate there is, the front of voiced/unvoiced detection and the cheapest pitch tracker, reading how many times the signal GENUINELY crossed past the noise the band
+//! suppresses. Where ALES144 carried the Schmitt trigger's WRITE into stereo (two rails writing two clips), this rung carries its READ into stereo: two counters reading two channels, writing not one sample.
+//!
+//! Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and RIGHT hold the SAME length. This rung carries the counter into stereo the plain way, mirroring the meter's
+//! own stereo shape (ALES17): run ALES93's proven mono counter on each channel with the SAME band, so one band reads BOTH speakers. It offers ALES93's two forms mirrored — `count_crossings_stereo` counts each channel from
+//! silence and returns the pair, and `StereoZeroCounter` holds each channel's ZeroCounter so a keeper feeds span after span and reads a per-channel running count.
+//!
+//! The honest signature of a stereo analysis rung: EACH channel carries its OWN counter — its own trigger rail, its own running count, its own previous-rail memory. So the two counts are INDEPENDENT: an identical-channel
+//! master (left = right) gives EQUAL counts (a mono-in-stereo signal reads the same on both), while a busy left over a calm right reports MORE crossings on the left. The counts measure per-channel activity, never a single
+//! shared number — a keeper reads left and right apart, exactly as the stereo meter reads two levels.
+//!
+//! The crux — split-equals-whole carried up ONE LEVEL, in stereo. ALES93's crux is that a flip can land exactly at the SEAM between two counted pieces, so its counter carries BOTH the trigger's rail AND the previous
+//! output rail across a call, and a span counted in two pieces equals the whole counted once — the seam flip counted exactly once per channel. Carried into stereo, `StereoZeroCounter` holds that carried state PER CHANNEL,
+//! so a stereo span counted in two pieces (each channel's second piece continuing THAT channel's rail and previous-rail memory) equals the whole counted once ON BOTH channels: neither speaker's seam flip is missed or
+//! doubled. That is ALES93's crux made stereo, and it is the whole reason `StereoZeroCounter` holds two ZeroCounters rather than restarting from silence each call.
+//!
+//! The rule, stated once: the counter READS only — the source StereoClip leaves byte for byte unchanged, both channels, and the count is a pure sample count of rail flips (NOT a pitch in Hz — a real pitch is
+//! crossings / (2 · duration · sample_rate), and there is no real sample rate in the suite yet, so this reports the raw honest count per channel and names the pitch conversion a later rung). It carries ONE band and names
+//! ALES93's own faults whole. Refuse BadThreshold (a band that is not two ordered thresholds inside the rails), BadRange (a span outside the samples), and CountFull (the accumulation bound) — validated ONCE up front
+//! against the shared band and length, because both channels are balanced, so a refusal never counts one channel and leaves the other's state moved. ZeroCrossError reused whole — the stereo lift adds no fault.
+//!
+//! The crux — four laws. THE STEREO ZERO-CROSS LAW: each channel's count equals ALES93's mono `count_crossings` (from silence) with the same band over the same span — the same flips counted on each. THE READ-ONLY /
+//! BALANCE LAW: the source StereoClip is byte for byte unchanged after counting (both channels), and the two channels stay balanced (reading writes nothing). THE INDEPENDENT-COUNTER LAW: each channel carries its own
+//! counter, so an identical-channel master gives equal counts while a busier channel counts more; hysteresis suppresses chatter counting on each; silence and in-band-only count zero on both. THE CARRIED-STATE / ATOMICITY
+//! / DEGENERATE LAW: `StereoZeroCounter` carries each channel's rail and previous-rail memory, so a two-piece count equals the whole count once on both channels (each seam flip counted once); any refusal (BadThreshold,
+//! BadRange) leaves both counters untouched and the clip unchanged; count = 0 the identity (zero crossings) on both.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES145.
+//! Design read: active-designing/20260815-044940_fill-ales145-lotus-stereo-zero-cross.md
+//! Stands on: lotus/zero_cross.rye (ALES93) — the mono zero-crossing counter run once per channel, its from-silence `count_crossings`, its carried `ZeroCounter`, and its `ZeroCrossError`, all reused whole; lotus/schmitt.rye
+//! (ALES92) — the hysteresis comparator whose flips these count (through ALES93); lotus/stereo_meter.rye (ALES17) — the stereo analysis shape this mirrors (two mono readers, per-channel accessors); lotus/pan.rye (ALES10)
+//! — the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, and READ-ONLY. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/, NEVER mutated by this rung. Each count is a pure sample count of rail flips over
+//! the trigger's hysteresis band (so it already resists the chatter a raw sign change would miscount), not a pitch in Hz; no real sample rate, no anti-aliasing, no windowing, no network, no keys, no funds, no real device,
+//! no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_zero_cross.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const schmitt = @import("schmitt.rye");
+const zero_cross = @import("zero_cross.rye");
+
+pub const stereo_zero_cross_version = "20260815.044940";
+
+/// Stereo zero-cross's faults are exactly ALES93's own `ZeroCrossError` — `BadThreshold` (an illegal band), `BadRange` (a span outside the samples), and `CountFull` (the accumulation bound) — reused by name, since the
+/// stereo lift adds no new fault: it only runs the same counter on each channel after one shared validation.
+pub const StereoZeroCrossError = zero_cross.ZeroCrossError;
+
+/// A per-channel pair of crossing counts, returned by the from-silence convenience — the left and right speaker's flip counts read apart, never a single shared number.
+pub const StereoCrossings = struct {
+    /// The left channel's zero-crossing count.
+    left: u32,
+    /// The right channel's zero-crossing count.
+    right: u32,
+};
+
+/// A stereo zero-crossing counter a keeper holds beside a StereoClip — ALES93's `ZeroCounter` idiom, mirrored per channel, exactly as the stereo meter (ALES17) holds two mono meters. It carries each channel's own counter
+/// (its trigger rail, running count, previous-rail memory, and started bit), so the two counts advance independently. A fresh StereoZeroCounter fed one span is exactly the from-silence `count_crossings_stereo`; `feed`
+/// continues EACH channel from its OWN state so a stereo span counted piece by piece counts each seam flip exactly once per channel; `reset` returns both counters to silence.
+pub const StereoZeroCounter = struct {
+    /// The left channel's counter — its own rail, count, and previous-rail memory.
+    left: zero_cross.ZeroCounter,
+    /// The right channel's counter — its own rail, count, and previous-rail memory. Both counters hold the SAME band by construction (see `init`).
+    right: zero_cross.ZeroCounter,
+
+    /// Build a StereoZeroCounter over a shared band, both channels from silence (rail low, count zero, unstarted). The single `init` is the one place the band is shared, so left and right can never drift to different
+    /// thresholds — the same discipline `StereoSchmitt.init` keeps for the writing trigger.
+    pub fn init(t_low: i32, t_high: i32) StereoZeroCounter {
+        return .{
+            .left = .{ .trigger = .{ .t_low = t_low, .t_high = t_high } },
+            .right = .{ .trigger = .{ .t_low = t_low, .t_high = t_high } },
+        };
+    }
+
+    /// Count the rail flips over `[start, start+count)` in BOTH channels of `sc`, CONTINUING each channel from its OWN rail and previous-rail memory, reading the clip only — writing not one sample on either speaker.
+    /// Validates the shared band and length ONCE against ALES93's own `precheck` (through the left counter's own `feed`, then the right's) before either channel's state advances; because both channels are balanced one
+    /// validation covers both, so a refusal never counts one channel and leaves the other's state moved. Refuses `BadThreshold` / `BadRange` / `CountFull`.
+    pub fn feed(self: *StereoZeroCounter, sc: *const pan.StereoClip, start: u32, count: u32) StereoZeroCrossError!void {
+        // invariant: the two channels enter balanced — the defining StereoClip invariant.
+        assert(sc.left.len == sc.right.len);
+        // invariant: the two counters hold the SAME band — `init` is the only constructor and shares it.
+        assert(self.left.trigger.t_low == self.right.trigger.t_low and self.left.trigger.t_high == self.right.trigger.t_high);
+
+        // Validate once up front against the shared length and band, so a refusal advances NEITHER counter — the atomicity the carried form owes across two independent counts. This mirrors ALES93's own precheck exactly.
+        try schmitt.precheck(sc.left.len, start, count, self.left.trigger.t_low, self.left.trigger.t_high);
+
+        // Pre-validated to succeed on both — each channel continues its own counter through ALES93's ZeroCounter.feed over the matching channel. Read-only: feed writes no sample.
+        try self.left.feed(&sc.left, start, count);
+        try self.right.feed(&sc.right, start, count);
+
+        // invariant: the channels stay balanced — reading changed no length.
+        assert(sc.left.len == sc.right.len);
+    }
+
+    /// The left channel's crossings so far — a pure sample count of rail flips, not a pitch in Hz.
+    pub fn crossings_left(self: *const StereoZeroCounter) u32 {
+        return self.left.crossings();
+    }
+
+    /// The right channel's crossings so far — read apart from the left, so a keeper sees per-channel activity.
+    pub fn crossings_right(self: *const StereoZeroCounter) u32 {
+        return self.right.crossings();
+    }
+
+    /// Return both counters to silence — count zero, rail low, unstarted — so the next `feed` counts from silence on both channels rather than continuing prior rails.
+    pub fn reset(self: *StereoZeroCounter) void {
+        self.left.reset();
+        self.right.reset();
+        // invariant: reset restores exactly the from-silence state on both — a feed after reset equals count_crossings_stereo.
+        assert(self.left.count == 0 and self.right.count == 0);
+    }
+};
+
+/// Count the rail flips over `[start, start+count)` in both channels of `sc` from SILENCE, returning the pair — the from-silence convenience. A fresh StereoZeroCounter fed one span; one implementation, so the carried and
+/// from-silence forms cannot drift. Reads the clip only. Refuses BadThreshold on an illegal band, BadRange on a span outside the samples, CountFull only in the impossible case a single span exceeds the bound.
+pub fn count_crossings_stereo(sc: *const pan.StereoClip, start: u32, count: u32, t_low: i32, t_high: i32) StereoZeroCrossError!StereoCrossings {
+    var zc = StereoZeroCounter.init(t_low, t_high);
+    try zc.feed(sc, start, count);
+    return .{ .left = zc.crossings_left(), .right = zc.crossings_right() };
+}
+
+// --- selftest: THE STEREO ZERO-CROSS LAW — each channel's count equals ALES93's mono count_crossings (from silence) with the same band over the same span; THE READ-ONLY / BALANCE LAW — the source StereoClip byte for byte
+//     unchanged after counting, both channels, the pair balanced; THE INDEPENDENT-COUNTER LAW — an identical-channel master giving equal counts, a busier channel counting more, hysteresis suppressing chatter on each,
+//     silence and in-band-only counting zero on both; THE CARRIED-STATE / ATOMICITY / DEGENERATE LAW — a two-piece StereoZeroCounter count equalling the whole count once on both (each seam flip counted once), the fresh
+//     counter equalling the convenience, reset re-opening from silence, each refusal leaving both counters and the clip untouched, count = 0 the identity ----
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try timeline.splice(&sc.left, 0, l);
+    try timeline.splice(&sc.right, 0, r);
+}
+
+fn run_selftest() !u8 {
+    // 1. THE STEREO ZERO-CROSS LAW — each channel's count equals ALES93's mono count_crossings with the same band, proven side by side over one span with different per-channel samples. The flips on each speaker are exactly
+    //    ALES93's, read twice with one shared band.
+    {
+        const li = [_]i16{ 100, 700, -200, 800, -900, 300, 1200, -1300, 50, 900, -50, 1100 };
+        const ri = [_]i16{ -1500, 300, 1600, -200, 1400, -1700, 250, 1550, -1600, 350, 1500, -1550 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &li, &ri);
+        const pair = try count_crossings_stereo(&sc, 0, 12, -500, 500);
+
+        var ml = timeline.Clip{};
+        try timeline.splice(&ml, 0, &li);
+        const cl = try zero_cross.count_crossings(&ml, 0, 12, -500, 500);
+        var mr = timeline.Clip{};
+        try timeline.splice(&mr, 0, &ri);
+        const cr = try zero_cross.count_crossings(&mr, 0, 12, -500, 500);
+
+        if (pair.left != cl) return error.LeftCountWrong;
+        if (pair.right != cr) return error.RightCountWrong;
+    }
+
+    // 2. THE READ-ONLY / BALANCE LAW — the source StereoClip is byte for byte UNCHANGED after counting (not one sample written on either speaker), and the two channels stay equal length.
+    {
+        const li = [_]i16{ 111, 900, -900, 222, 1500, -1500, 333 };
+        const ri = [_]i16{ -111, 950, -950, -222, 1600, -1600, -333 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &li, &ri);
+        _ = try count_crossings_stereo(&sc, 0, 7, -800, 800);
+        if (!eq(sc.left.samples(), &li)) return error.LeftCountingWrote;
+        if (!eq(sc.right.samples(), &ri)) return error.RightCountingWrote;
+        if (sc.left.len != sc.right.len) return error.Unbalanced;
+    }
+
+    // 3a. THE INDEPENDENT-COUNTER LAW, an IDENTICAL-CHANNEL master gives EQUAL counts — a shared band on equal inputs reads the same on both (a mono-in-stereo signal reads once).
+    {
+        const s = [_]i16{ 0, 1000, 500, -1000, -500, 2000, 999, -1000 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &s, &s);
+        const pair = try count_crossings_stereo(&sc, 0, 8, -1000, 1000);
+        if (pair.left != pair.right) return error.IdenticalCountsDiffer;
+        if (pair.left != 4) return error.IdenticalCountWrong; // by hand (ALES93 law 5): 4 crossings
+    }
+
+    // 3b. THE INDEPENDENT-COUNTER LAW, a BUSIER channel counts MORE — a left that alternates past the band on every step against a right that never leaves the band: left counts many, right counts zero.
+    {
+        const busy = [_]i16{ 900, -900, 900, -900, 900, -900 }; // band [−800,800]: alternating rails → 5 crossings
+        const calm = [_]i16{ 0, 100, -100, 50, -50, 0 }; // strictly inside the band → 0 crossings
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &busy, &calm);
+        const pair = try count_crossings_stereo(&sc, 0, 6, -800, 800);
+        if (pair.left != 5) return error.BusyLeftWrong; // 6 alternating samples → 5 crossings
+        if (pair.right != 0) return error.CalmRightNotZero;
+        if (!(pair.left > pair.right)) return error.BusierNotMore;
+    }
+
+    // 3c. HYSTERESIS SUPPRESSES CHATTER COUNTING on each channel — after a rise past t_high, a dither wholly inside the band adds zero crossings on that channel. Proven on both speakers at once.
+    {
+        const dith = [_]i16{ 2000, 800, -800, 500, -500, 900, -900 }; // triggers high once, then dithers inside [−1000,1000]
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &dith, &dith);
+        const pair = try count_crossings_stereo(&sc, 0, 7, -1000, 1000);
+        if (pair.left != 0 or pair.right != 0) return error.HysteresisMiscounted; // once high, the dither never flips
+    }
+
+    // 3d. SILENCE AND IN-BAND-ONLY COUNT ZERO on both — a span that never leaves the band yields no crossings on either channel.
+    {
+        const inside = [_]i16{ 0, 500, -500, 999, -999, 100, -100 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &inside, &inside);
+        const pair = try count_crossings_stereo(&sc, 0, 7, -1000, 1000);
+        if (pair.left != 0 or pair.right != 0) return error.InBandNotZero;
+    }
+
+    // 4a. THE CARRIED-STATE LAW, the CRUX — a stereo span counted in TWO PIECES through StereoZeroCounter (each channel's second piece continuing THAT channel's rail and previous-rail memory) equals the whole counted once
+    //     on BOTH channels. The split is chosen so a flip lands exactly at the seam on each channel: a per-piece counter would MISS that seam flip and undercount. The carried counter counts it exactly once per channel.
+    {
+        const li = [_]i16{ 900, -900, 900, -900, 900, -900, 900, -900 }; // alternating → a flip at every step
+        const ri = [_]i16{ -900, 900, -900, 900, -900, 900, -900, 900 }; // the opposite phase, also alternating
+        var whole = pan.StereoClip{};
+        try load_stereo(&whole, &li, &ri);
+        const wp = try count_crossings_stereo(&whole, 0, 8, -800, 800);
+
+        var pieces = pan.StereoClip{};
+        try load_stereo(&pieces, &li, &ri);
+        var zc = StereoZeroCounter.init(-800, 800);
+        const split: u32 = 4; // a rail flip lands exactly at the seam on each channel
+        try zc.feed(&pieces, 0, split);
+        try zc.feed(&pieces, split, 8 - split);
+        if (zc.crossings_left() != wp.left) return error.LeftSplitNotWhole;
+        if (zc.crossings_right() != wp.right) return error.RightSplitNotWhole;
+        if (wp.left != 7 or wp.right != 7) return error.WholeCountWrong; // 8 alternating → 7 crossings each
+    }
+
+    // 4b. THE FROM-SILENCE EQUIVALENCE — a fresh StereoZeroCounter fed one span equals the from-silence `count_crossings_stereo`, so the carried form's default case IS the from-silence case per channel (one implementation).
+    {
+        const li = [_]i16{ 100, 1200, -200, 900, -1300, 300 };
+        const ri = [_]i16{ -1400, 200, 1500, -300, 1300, -1600 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &li, &ri);
+        const pair = try count_crossings_stereo(&sc, 0, 6, -1000, 1000);
+
+        var zc = StereoZeroCounter.init(-1000, 1000);
+        try zc.feed(&sc, 0, 6);
+        if (zc.crossings_left() != pair.left) return error.CarriedLeftDrifted;
+        if (zc.crossings_right() != pair.right) return error.CarriedRightDrifted;
+    }
+
+    // 4c. RESET RE-OPENS FROM SILENCE on both — after a run leaves counts and high rails, reset returns both counters to zero, so a next in-band run counts zero on both.
+    {
+        const rise_l = [_]i16{ 100, 2000, -2000, 2000 };
+        const rise_r = [_]i16{ 200, 1800, -1800, 1800 };
+        var up = pan.StereoClip{};
+        try load_stereo(&up, &rise_l, &rise_r);
+        var zc = StereoZeroCounter.init(-1000, 1000);
+        try zc.feed(&up, 0, 4);
+        if (zc.crossings_left() == 0 or zc.crossings_right() == 0) return error.ExpectedSomeCrossings;
+
+        zc.reset();
+        if (zc.crossings_left() != 0 or zc.crossings_right() != 0) return error.ResetDidNotZero;
+        const inside = [_]i16{ 0, 500, -500 };
+        var fresh = pan.StereoClip{};
+        try load_stereo(&fresh, &inside, &inside);
+        try zc.feed(&fresh, 0, 3);
+        if (zc.crossings_left() != 0 or zc.crossings_right() != 0) return error.ResetDidNotReopen;
+    }
+
+    // 4d. THE SPAN DISCIPLINE — counting a sub-span reads only [start, count) and leaves the whole clip byte for byte unchanged on both channels (read-only, so nothing outside the span could change either).
+    {
+        const li = [_]i16{ 111, 222, 900, -900, 900, 444 };
+        const ri = [_]i16{ -111, -222, 950, -950, 950, -444 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &li, &ri);
+        const pair = try count_crossings_stereo(&sc, 2, 3, -800, 800); // indices 2,3,4: 900,−900,900 → 2 crossings each
+        if (pair.left != 2 or pair.right != 2) return error.SubSpanCountWrong;
+        if (!eq(sc.left.samples(), &li)) return error.SubSpanLeftWrote;
+        if (!eq(sc.right.samples(), &ri)) return error.SubSpanRightWrote;
+    }
+
+    // 5a. THE ATOMICITY LAW, an inverted band (t_low > t_high) refuses BadThreshold, both counters untouched (count zero, unstarted) and the clip byte for byte unchanged.
+    {
+        const li = [_]i16{ 1, -2, 3 };
+        const ri = [_]i16{ -3, 2, -1 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &li, &ri);
+        var zc = StereoZeroCounter.init(1000, -1000);
+        if (zc.feed(&sc, 0, 3)) |_| return error.InvertedSlipped else |e| if (e != error.BadThreshold) return error.WrongInverted;
+        if (zc.crossings_left() != 0 or zc.crossings_right() != 0) return error.InvertedMovedCount;
+        if (zc.left.started != false or zc.right.started != false) return error.InvertedMovedState;
+        if (!eq(sc.left.samples(), &li) or !eq(sc.right.samples(), &ri)) return error.InvertedMutatedClip;
+    }
+
+    // 5b. THE ATOMICITY LAW, an out-of-range span refuses BadRange before any read, both counters untouched.
+    {
+        const li = [_]i16{ 5, -6, 7 };
+        const ri = [_]i16{ -7, 6, -5 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &li, &ri);
+        var zc = StereoZeroCounter.init(-1000, 1000);
+        if (zc.feed(&sc, 1, 3)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (zc.crossings_left() != 0 or zc.crossings_right() != 0) return error.BadRangeMovedCount;
+        if (!eq(sc.left.samples(), &li) or !eq(sc.right.samples(), &ri)) return error.BadRangeMutatedClip;
+    }
+
+    // 5c. THE DEGENERATE LAW — count = 0 is the identity on both (an empty span counts no crossings), and it leaves both counters untouched.
+    {
+        const li = [_]i16{ 900, -900, 900 };
+        const ri = [_]i16{ -900, 900, -900 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &li, &ri);
+        const pair = try count_crossings_stereo(&sc, 1, 0, -800, 800); // empty span — zero on both
+        if (pair.left != 0 or pair.right != 0) return error.ZeroCountNotIdentity;
+    }
+
+    print("GREEN ales-stereo-zero-cross: the ZERO-CROSSING COUNTER CARRIED INTO STEREO, ONE SHARED BAND and TWO INDEPENDENT COUNTERS — the suite's first STEREO ANALYSIS rung over the hysteresis comparator. Where ALES144 " ++
+        "carried the Schmitt trigger's WRITE into stereo, this carries its READ: two counters reading two channels, writing not one sample. A zero crossing in the hysteresis sense is a rail flip, so counting flips reads " ++
+        "how many times each channel GENUINELY crossed past the noise the band suppresses — the oldest activity / pitch estimate there is. It runs ALES93's proven mono counter on each channel with the same band, mirroring " ++
+        "the stereo meter's shape (ALES17), and offers ALES93's two forms mirrored: count_crossings_stereo counts each channel from silence and returns the pair, StereoZeroCounter holds each channel's ZeroCounter so a " ++
+        "keeper reads a per-channel running count. Each channel carries its OWN counter (rail, count, previous-rail memory), so the two counts are INDEPENDENT: an identical-channel master reads equal counts, a busy left " ++
+        "over a calm right reports more crossings on the left, hysteresis suppresses chatter on each, silence and in-band-only count zero on both. The crux: split-equals-whole carried up one level, in stereo — a flip can " ++
+        "land at the SEAM between two counted pieces, so StereoZeroCounter carries each channel's rail AND previous-rail memory, and a stereo span counted in two pieces equals the whole counted once ON BOTH channels, " ++
+        "each seam flip counted exactly once, ALES93's crux made stereo. It READS only — the source StereoClip leaves byte for byte unchanged on both, the count a pure sample count of rail flips, NOT a pitch in Hz (no " ++
+        "real sample rate yet). It validates the shared band and length once before either channel is read (BadThreshold on an illegal band, BadRange on a span past the samples, CountFull on the accumulation bound), so a " ++
+        "refusal never counts one channel and leaves the other's state moved; ZeroCrossError reused whole. The crux is four laws. THE STEREO ZERO-CROSS LAW: each channel's count equals ALES93's mono count_crossings with " ++
+        "the same band. THE READ-ONLY / BALANCE LAW: the source unchanged on both, the pair balanced. THE INDEPENDENT-COUNTER LAW: an identical master reading equal counts, a busier channel counting more, chatter " ++
+        "suppressed on each, in-band-only zero on both. THE CARRIED-STATE / ATOMICITY / DEGENERATE LAW: a two-piece count equals the whole once on both (each seam flip counted once), a refusal leaves both counters and " ++
+        "the clip untouched, count = 0 the identity. Purely local, read-only — two bounded i16 Clips counted through the proven mono counter, one counter per channel over a static hysteresis band; no real sample rate, no " ++
+        "network, no keys, no funds, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
