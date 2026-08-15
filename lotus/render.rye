@@ -75,7 +75,7 @@ pub const RenderError = timeline.EditError || fade.FadeError || wav.WavError || 
 /// Prove one step legal against the clip's fixed length, WITHOUT mutating a sample. Sound because gain, fade, and invert all
 /// leave the length invariant, so a span checked here holds for the whole chain. The range test avoids underflow by comparing
 /// count against the remainder rather than adding start + count.
-fn check_step(clip: *const timeline.Clip, step: Step) RenderError!void {
+pub fn check_step(clip: *const timeline.Clip, step: Step) RenderError!void {
     // invariant: the clip's length never claims more samples than its buffer holds.
     assert(clip.len <= clip.buf.len);
     switch (step.kind) {
@@ -90,7 +90,7 @@ fn check_step(clip: *const timeline.Clip, step: Step) RenderError!void {
 
 /// Apply one already-checked step to the clip in place, dispatching to the tree's own proven effect. Every call is a `try` even
 /// though check_step already proved the request legal — the effect's own asserts stay the second gate, never bypassed.
-fn apply_step(clip: *timeline.Clip, step: Step) RenderError!void {
+pub fn apply_step(clip: *timeline.Clip, step: Step) RenderError!void {
     switch (step.kind) {
         .gain => try timeline.gain(clip, step.start, step.count, step.num0, step.den),
         .fade => try fade.fade(clip, step.start, step.count, step.num0, step.num1, step.den),

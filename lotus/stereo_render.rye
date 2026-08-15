@@ -1,0 +1,240 @@
+//! lotus/stereo_render.rye — ALES218: the stereo render rung — an ordered effect chain over a StereoClip becomes an interleaved
+//! stereo .wav. ALES217 rendered a mono Clip through a chain into a canonical container; a Lotus master is a StereoClip (ALES10),
+//! two mono Clips heard together whose defining invariant is that LEFT and RIGHT hold the same length. This rung is the mono→
+//! stereo twin: it reuses ALES217's own Step, check_step, and apply_step VERBATIM, applies each proven step to both channels,
+//! then encodes the two channels interleaved through ALES216's stereo_wav container. It invents no new effect and no new check —
+//! it only widens the render to the second channel, exactly as the reverb, width, and pan families widened their axes whole.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES218.
+//! Design read: active-designing/20260815-132120_fill-ales218-lotus-stereo-render.md
+//! Stands on: lotus/render.rye (ALES217) — the Step chain and its per-Clip check/apply, reused per channel; lotus/pan.rye
+//! (ALES10) — the StereoClip (left/right Clips, the equal-length invariant); lotus/stereo_wav.rye (ALES216) — the interleaved
+//! stereo RIFF/WAVE container the two rendered channels encode into.
+//!
+//! THE BALANCED PROMISE — a StereoClip enters balanced (left and right equal length), and gain, fade, and invert each preserve a
+//! Clip's length, so the same step applied to both channels keeps them equal-length by construction. The whole request is
+//! checkable against that one shared length before a sample moves, so ALES217's atomic promise carries over unchanged: a faulty
+//! chain refuses by name and leaves BOTH channels byte-for-byte unchanged, nothing written; the two channels stay balanced
+//! through every legal render.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. The same as ALES217, widened to two channels and the interleaved container. No
+//! real file opened, no DAC, no acoustic or electrical fact, no network, no keys, no funds, no real device. The stored sample
+//! rate is a carried field, not a real clock. Siloed to lotus/.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_render.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const render = @import("render.rye");
+const stereo_wav = @import("stereo_wav.rye");
+
+pub const stereo_render_version = "20260815.132120";
+
+/// The stereo render composes ALES217's chain and the interleaved container, so its error set is the union of theirs. The named
+/// faults it reports up front — TooManySteps, BadGain, BadRange (from the chain), OutputTooSmall, BadSampleRate (from the
+/// container) — are members of these merged sets, checked before a sample moves.
+pub const StereoRenderError = render.RenderError || stereo_wav.StereoWavError;
+
+/// Run a bounded, ordered chain of effects over BOTH channels of `sc`, then encode the two channels interleaved into `out` as a
+/// canonical stereo RIFF/WAVE container, returning the byte length. THE BALANCED PROMISE: the two channels enter equal-length
+/// and the chain preserves length, so the whole request is validated once against that shared length before a sample moves — a
+/// faulty chain refuses BY NAME and leaves both channels byte-for-byte unchanged with nothing written to `out`.
+pub fn render_stereo(sample_rate: u32, sc: *pan.StereoClip, steps: []const render.Step, out: []u8) StereoRenderError!u32 {
+    // invariant: the StereoClip enters balanced — left and right are the same length, the ground the whole render preserves.
+    assert(sc.left.len == sc.right.len);
+
+    if (steps.len > render.max_steps) return error.TooManySteps;
+    if (sample_rate == 0 or sample_rate > stereo_wav.max_sample_rate) return error.BadSampleRate;
+    const frames: u32 = sc.left.len;
+    const need: u32 = stereo_wav.header_len + frames * stereo_wav.frame_bytes;
+    if (out.len < need) return error.OutputTooSmall;
+
+    // Gate one: prove every step legal against the shared length before a sample moves. Checking one channel suffices — the two
+    // hold the same length, and a step's legality depends only on that length.
+    var c: u32 = 0;
+    while (c < steps.len) : (c += 1) try render.check_step(&sc.left, steps[c]);
+
+    // The request is wholly legal; apply each step to both channels in order. Both applies succeed (same params, same length),
+    // so the channels stay balanced throughout.
+    var i: u32 = 0;
+    while (i < steps.len) : (i += 1) {
+        try render.apply_step(&sc.left, steps[i]);
+        try render.apply_step(&sc.right, steps[i]);
+    }
+    // invariant: the chain preserved each channel's length, so the two are still balanced and the encoded size still matches.
+    assert(sc.left.len == sc.right.len);
+    assert(sc.left.len == frames);
+    assert(stereo_wav.header_len + sc.left.len * stereo_wav.frame_bytes == need);
+
+    const wrote = try stereo_wav.encode(sample_rate, sc.left.samples(), sc.right.samples(), out);
+    // invariant: the encoded container is exactly the size the up-front output check proved room for.
+    assert(wrote == need);
+    return wrote;
+}
+
+// --- selftest: THE STEREO-RENDER LAW — a real chain over both channels decodes back byte-for-byte on each channel to the same
+//     chain applied by hand; THE INDEPENDENT-CHANNEL LAW — each channel renders exactly as ALES217's mono render would; THE
+//     BALANCE LAW — every legal render leaves the channels equal length; THE EMPTY-CHAIN, ATOMIC-FAULT, OUTPUT-BORDER,
+//     STEP-BOUND, BAD-RATE, and EMPTY-CLIP laws each refuse or render exactly ------------------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try load_clip(&sc.left, l);
+    try load_clip(&sc.right, r);
+}
+
+/// The widest stereo container this selftest renders — header plus the whole clip bound of frames, sized once so no stack buffer
+/// guesses. One frame is two i16 samples = 4 bytes.
+const test_cap: u32 = stereo_wav.header_len + timeline.max_clip * stereo_wav.frame_bytes;
+
+fn run_selftest() !u8 {
+    const rate: u32 = 48_000;
+    const left_src = [_]i16{ 1000, -2000, 3000, -4000, 5000, -6000 };
+    const right_src = [_]i16{ -1500, 2500, -3500, 4500, -5500, 6500 };
+
+    // The chain proven this rung: halve each channel, fade-in the first three samples, invert the whole channel.
+    const chain = [_]render.Step{
+        .{ .kind = .gain, .start = 0, .count = 6, .num0 = 1, .den = 2 }, // ×1/2
+        .{ .kind = .fade, .start = 0, .count = 3, .num0 = 0, .num1 = 1, .den = 1 }, // fade-in first three
+        .{ .kind = .invert }, // whole-channel phase flip
+    };
+
+    // 1. THE STEREO-RENDER LAW + 2. THE INDEPENDENT-CHANNEL LAW — render the StereoClip, then prove each decoded channel equals
+    //    the SAME chain applied to that channel alone (a mono render's output), so a stereo render is two mono renders sharing a
+    //    container.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &left_src, &right_src);
+        var file: [test_cap]u8 = undefined;
+        const wrote = try render_stereo(rate, &sc, &chain, &file);
+
+        // Apply the identical chain by hand to each channel on fresh mono clips.
+        var hand_l = timeline.Clip{};
+        try load_clip(&hand_l, &left_src);
+        var hand_r = timeline.Clip{};
+        try load_clip(&hand_r, &right_src);
+        var s: u32 = 0;
+        while (s < chain.len) : (s += 1) {
+            try render.apply_step(&hand_l, chain[s]);
+            try render.apply_step(&hand_r, chain[s]);
+        }
+
+        // The rendered StereoClip matches the hand-applied channels.
+        if (!eq(sc.left.samples(), hand_l.samples())) return error.StereoLeftWrong;
+        if (!eq(sc.right.samples(), hand_r.samples())) return error.StereoRightWrong;
+
+        // The stereo .wav decodes byte-for-byte on each channel to the hand-applied channels, the rate preserved.
+        var back_l: [left_src.len]i16 = undefined;
+        var back_r: [right_src.len]i16 = undefined;
+        const got = try stereo_wav.decode(file[0..wrote], &back_l, &back_r);
+        if (got.sample_rate != rate) return error.StereoRateWrong;
+        if (got.frames != left_src.len) return error.StereoFramesWrong;
+        if (!eq(back_l[0..got.frames], hand_l.samples())) return error.StereoLawLeftWrong;
+        if (!eq(back_r[0..got.frames], hand_r.samples())) return error.StereoLawRightWrong;
+
+        // 3. THE BALANCE LAW — the render left the two channels equal length.
+        if (sc.left.len != sc.right.len) return error.BalanceBroken;
+    }
+
+    // 4. THE EMPTY-CHAIN LAW — a bare chain renders both channels unchanged.
+    {
+        const empty_chain = [_]render.Step{};
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &left_src, &right_src);
+        var file: [test_cap]u8 = undefined;
+        const wrote = try render_stereo(rate, &sc, &empty_chain, &file);
+        var back_l: [left_src.len]i16 = undefined;
+        var back_r: [right_src.len]i16 = undefined;
+        const got = try stereo_wav.decode(file[0..wrote], &back_l, &back_r);
+        if (!eq(back_l[0..got.frames], &left_src)) return error.EmptyLeftWrong;
+        if (!eq(back_r[0..got.frames], &right_src)) return error.EmptyRightWrong;
+    }
+
+    // 5. THE ATOMIC-FAULT LAW — a chain whose second step names a span past the clip refuses BadRange leaving BOTH channels
+    //    byte-for-byte unchanged; a zero-denominator gain refuses BadGain, also atomically.
+    {
+        const bad_range = [_]render.Step{
+            .{ .kind = .gain, .start = 0, .count = 6, .num0 = 1, .den = 2 }, // legal
+            .{ .kind = .fade, .start = 3, .count = 99, .num0 = 0, .num1 = 1, .den = 1 }, // span past the clip
+        };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &left_src, &right_src);
+        var file: [test_cap]u8 = undefined;
+        if (render_stereo(rate, &sc, &bad_range, &file)) |_| return error.RangeSlipped else |e| if (e != error.BadRange) return error.WrongRange;
+        if (!eq(sc.left.samples(), &left_src)) return error.RangeLeftMutated;
+        if (!eq(sc.right.samples(), &right_src)) return error.RangeRightMutated;
+
+        const bad_gain = [_]render.Step{.{ .kind = .gain, .start = 0, .count = 6, .num0 = 1, .den = 0 }};
+        var sc2 = pan.StereoClip{};
+        try load_stereo(&sc2, &left_src, &right_src);
+        if (render_stereo(rate, &sc2, &bad_gain, &file)) |_| return error.GainSlipped else |e| if (e != error.BadGain) return error.WrongGain;
+        if (!eq(sc2.left.samples(), &left_src)) return error.GainLeftMutated;
+        if (!eq(sc2.right.samples(), &right_src)) return error.GainRightMutated;
+    }
+
+    // 6. THE OUTPUT-BORDER, STEP-BOUND, and BAD-RATE LAWS — each refuses before any effect runs, both channels untouched.
+    {
+        const one = [_]render.Step{.{ .kind = .invert }};
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &left_src, &right_src);
+
+        var tiny: [stereo_wav.header_len]u8 = undefined; // header only, no room for frames
+        if (render_stereo(rate, &sc, &one, &tiny)) |_| return error.SmallSlipped else |e| if (e != error.OutputTooSmall) return error.WrongSmall;
+        if (!eq(sc.left.samples(), &left_src)) return error.SmallMutated;
+
+        var many: [render.max_steps + 1]render.Step = undefined;
+        var k: u32 = 0;
+        while (k < many.len) : (k += 1) many[k] = .{ .kind = .invert };
+        var file: [test_cap]u8 = undefined;
+        if (render_stereo(rate, &sc, &many, &file)) |_| return error.StepsSlipped else |e| if (e != error.TooManySteps) return error.WrongSteps;
+        if (!eq(sc.left.samples(), &left_src)) return error.StepsMutated;
+
+        if (render_stereo(0, &sc, &one, &file)) |_| return error.RateSlipped else |e| if (e != error.BadSampleRate) return error.WrongRate;
+        if (!eq(sc.right.samples(), &right_src)) return error.RateMutated;
+    }
+
+    // 7. THE EMPTY-CLIP LAW — a zero-frame StereoClip renders to a valid 44-byte stereo header and decodes back to zero frames.
+    {
+        const one = [_]render.Step{.{ .kind = .invert }}; // invert of nothing is nothing
+        var sc = pan.StereoClip{};
+        var file: [test_cap]u8 = undefined;
+        const wrote = try render_stereo(rate, &sc, &one, &file);
+        if (wrote != stereo_wav.header_len) return error.EmptyClipSize;
+        var bl: [1]i16 = undefined;
+        var br: [1]i16 = undefined;
+        const got = try stereo_wav.decode(file[0..wrote], &bl, &br);
+        if (got.frames != 0) return error.EmptyClipFrames;
+        if (got.sample_rate != rate) return error.EmptyClipRate;
+    }
+
+    print("GREEN ales-stereo-render: STEREO RENDER — an ordered, bounded chain of the tree's own proven effects (gain · fade · " ++
+        "invert) runs over BOTH channels of a StereoClip and encodes the result into a canonical interleaved stereo RIFF/WAVE " ++
+        ".wav in a single call, reusing ALES217's Step, check_step, and apply_step verbatim per channel. THE STEREO-RENDER LAW: " ++
+        "each channel decodes back byte-for-byte to the same chain applied by hand, the rate preserved. THE INDEPENDENT-CHANNEL " ++
+        "LAW: a stereo render is two mono renders sharing one container. THE BALANCE LAW: every legal render leaves the two " ++
+        "channels equal length, the StereoClip invariant held end to end. THE ATOMIC PROMISE, proven: a span past the clip " ++
+        "refuses BadRange, a zero denominator refuses BadGain, a small output refuses OutputTooSmall, a chain past max_steps " ++
+        "refuses TooManySteps, a wild rate refuses BadSampleRate — each BEFORE a sample moves, leaving BOTH channels " ++
+        "byte-for-byte unchanged and nothing written. An empty StereoClip renders a valid 44-byte stereo header. Software only " ++
+        "— no real file, no DAC, no acoustic fact, no network, no keys, no funds, no real device\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
