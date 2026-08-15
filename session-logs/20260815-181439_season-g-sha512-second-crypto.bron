@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260815.181439
+editor Zed
+model claude-fable-5
+voice Kyri
+host Framework 16 AMD — Eastern (EDT); this session in ai-jail on Vultr SEA VPS
+title Season G second primitive — SHA-512 in pure Rye, FIPS + std.crypto parity GREEN
+prompt Recursion loop (baton prin recur): keep taking agent-doable laps Lindy-first crux-first, Rye prioritized; send each finished increment as its own signed round; stop at the custody gates.
+think With BLAKE2b GREEN as the hash foundation, the crux-first next Season G primitive is SHA-512 — the hash standard Ed25519 signs with (RFC 8032 / FIPS 180-4), so it is the direct next stone toward the signing primitive that unblocks the Lotus signed carry.
+think Same shape as BLAKE2b, and provable now: pure 64-bit arithmetic, a published FIPS 180-4 known-answer, and Zig's std.crypto SHA-512 as an independent oracle. The primitive calls no std.crypto; std is used only inside the selftest.
+think Authored the initial hash value, the eighty round constants, the Ch/Maj/big-Sigma/small-sigma functions, the eighty-round compression, and FIPS padding (0x80 marker, zeros, 128-bit big-endian bit length). Handled the two padding edges explicitly — the 111-byte case where the length still fits one block and the 112-byte case that forces a second all-padding block — and proved both against std.crypto.
+obs The eighty K constants are typo-prone; the std.crypto byte-for-byte parity check is the safety net that would go RED on any wrong entry. It stayed GREEN on the first metal pass, so the table is correct.
+obs Self-approved under the season's opening design read (20260815-180728) rather than a new design round — SHA-512 was named there as the primitive following the hash foundation; no custody gate is near a pure hash.
+loom witness=crypto_sha512_witness fips_vectors=2 std_parity_inputs=5 digest_bits=512 rounds=80 result=GREEN
+file crypto/sha512.rye the authored SHA-512 primitive — h_init, the eighty K constants, Ch/Maj/Sigma, compression, hash, to_hex; bounded input, contract asserts, FIPS padding with both edges, no std.crypto in the primitive
+file tools/crypto_sha512_witness.rish builds and runs the selftest; asserts the GREEN crypto-sha512 line; FIPS 180-4 + std.crypto parity proven on metal across both padding edges
+recommend keep-going — the two hashes (BLAKE2b, SHA-512) now stand GREEN; the next Season G crux toward signing is the edwards25519 field/group arithmetic under Ed25519, a larger primitive (big-integer field math) that wants its own design round; a smaller adjacent rung is the ChaCha20/Poly1305 line. Signing with the maintainer's identity key stays the custody gate.
