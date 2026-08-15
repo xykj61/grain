@@ -60,14 +60,12 @@ pub const TremoloError = error{
 /// the in-place read-then-write at one index touches nothing another step needs. The gain is an attenuation (0 ≤ g ≤ glide_scale), so the
 /// write saturates once yet never clips — the tremolo voice is no louder than the dry it scales, and so already fits the i16 rail. Refuses
 /// BadPeriod, BadDepth, BadGain, and BadRange before any write; on refusal the clip is untouched. Values only — never a length.
-pub fn tremolo(
-    clip: *timeline.Clip,
-    start: u32,
-    count: u32,
-    centre_scaled: i64,
-    depth_scaled: i64,
-    period: u32,
-) TremoloError!void {
+/// Validate a tremolo's period, swing, and span together, before any sample is touched — the four faults refused up front so a caller (the
+/// mono `tremolo`, or a stereo lift running the same swing on each channel) can prove atomicity once against the shared length. The period must
+/// be a positive multiple of four (the triangle's quarter anchors need P/4 whole) and no wider than max_clip; the depth non-negative with a
+/// floor (centre − depth) at or above silence; the top (centre + depth) at or below unity (glide_scale — the tremolo attenuates, never boosts);
+/// and the span wholly within the samples. Refuses BadPeriod, BadDepth, BadGain, and BadRange.
+pub fn precheck(clip_len: u32, start: u32, count: u32, centre_scaled: i64, depth_scaled: i64, period: u32) TremoloError!void {
     // invariant: the period is a positive multiple of four (the triangle's quarter anchors need P/4 whole) and no wider than the widest
     // clip, so the LFO is bounded. Checked at the edge before any read.
     if (period == 0 or period % 4 != 0) return error.BadPeriod;
@@ -80,8 +78,20 @@ pub fn tremolo(
     // loud sample past the rail. This is what keeps the write's saturate a proven no-op.
     if (centre_scaled + depth_scaled > glide.glide_scale) return error.BadGain;
     // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
-    if (start > clip.len) return error.BadRange;
-    if (count > clip.len - start) return error.BadRange;
+    if (start > clip_len) return error.BadRange;
+    if (count > clip_len - start) return error.BadRange;
+}
+
+pub fn tremolo(
+    clip: *timeline.Clip,
+    start: u32,
+    count: u32,
+    centre_scaled: i64,
+    depth_scaled: i64,
+    period: u32,
+) TremoloError!void {
+    // invariant: the period, swing, and span are all legal — the four faults refused before any read, so a refusal never half-writes.
+    try precheck(clip.len, start, count, centre_scaled, depth_scaled, period);
 
     const scale: i64 = glide.glide_scale;
     var k: u32 = 0;
