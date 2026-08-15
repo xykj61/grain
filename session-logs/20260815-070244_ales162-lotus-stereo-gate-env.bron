@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260815.070244
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) time convention · ai-jail
+title ALES162 — Lotus's stereo_gate_env: the attack/release noise gate carried into stereo, the linked envelope driving one linked gate over time
+prompt Keep going Lindy-first crux-first on the Lotus (ALES) ladder; approve my own design rounds; send each finished increment as its own signed round; stop at the custody gates.
+think ALES161 fused the linked detector (ALES160) with the linked gain (ALES157) for the compressor — the representative time-varying rung, and its design read closed on the promise that proving the fusion opens the mechanical gate/limiter/expander versions. The next crux is the first of those three: the attack/release noise gate carried into stereo. The mono family crossed this exact seam at ALES54, one rung after the mono attack/release compressor (ALES53), spending ALES52's envelope to drive ALES51's silenced floor patiently.
+think The shape spends both proofs: advance ONE shared envelope toward the linked peak by ALES160's stereo_env_step (attack rising, release falling); at or above the threshold both pass byte for byte; below it, gat = e·den/num on the ENVELOPE (ALES51's floor), one gain gat/e applied to BOTH raw samples. One detector, one gate, the image held. A shared envelope of exactly zero arises only when both channels are silent (asserted), so no divide by zero.
+think The crux LINK: under unit attack+release the linked envelope is the instantaneous linked peak, so stereo_gate_env reduces to ALES156's memoryless stereo_gate byte for byte on both — the time-varying rung's zero-smoothing limit is exactly the memoryless rung already proven. Proven by running both tools on the same master.
+obs First selftest run went RED on IndependentDidNotDiffer — my test-2 master let the release keep the right's own envelope above threshold the whole span, so mono gate_env(right) equalled identity and matched the shared right. Fixed the fixture (a loud head then a sustained quiet tail, release 1:2) so the linked envelope eases below threshold over the tail while the independent right closes on different samples. GREEN after.
+obs Six laws GREEN on metal: the instantaneous law (== stereo_gate under unit coeffs on both); the linked-gate-over-time law (a left-always-peak master has left' == ALES54 mono gate_env(left), the right scaled by the same fraction, the independent push differing); the image law (out-of-phase pair returns still out of phase, no expansion, no sign flip); the knob laws (unit ratio identity, a slower release holds the gate open longer — the tail survives, monotone); the carry law (split == whole on both); the above-threshold/silence/balance/atomicity(five refusals)/degenerate law.
+obs StereoGateEnvError = gate_env.GateEnvError reused whole; the fusion adds no fault. Purely local, siloed to lotus/; gain gat/e in [0,1], no overflow (i64). No custody gate reached — a self-approved design round.
+loom witness=ales_stereo_gate_env_witness green=1 module=lotus/stereo_gate_env.rye laws=6
+file active-designing/20260815-065745_fill-ales162-lotus-stereo-gate-env.md the self-approved design round naming the crux and the six laws
+file lotus/stereo_gate_env.rye the linked stereo attack/release gate — stereo_gate_follow_carry, stereo_gate_follow
+file tools/ales_stereo_gate_env_witness.rish the trilingual witness (EN · Radiant · TAME), build + selftest GREEN gate
+recommend keep-going — the family stays mechanical: stereo_limit_env (the brickwall envelope) and stereo_expand_env (the expander envelope) each wire the linked envelope into their memoryless stereo rung the same way, single-module, policy written, no seam.
