@@ -1,0 +1,377 @@
+//! crypto/poly1305.rye — Season G (Cryptography), the fourth primitive: Poly1305 (RFC 8439) authored in pure Rye. Poly1305 is the
+//! one-time authenticator half of Monocypher's ChaCha20-Poly1305 — the tag that proves a ciphertext arrived exactly as sent — so this
+//! primitive is the direct next stone after ChaCha20 toward the Rye-native authenticated-encryption stack the decision wave named. Like
+//! the two hashes and the stream cipher it is pure integer arithmetic: a polynomial evaluated over the prime field 2^130 − 5, carried in
+//! five 26-bit limbs so every multiply of two limbs fits a single 64-bit product (no big-integer library, unlike the curve). It carries
+//! the published RFC 8439 §2.5.2 known-answer, so it is provable against a neutral public reference.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/20260815-180728_open-season-g-crypto-blake2b.md (the season's opening read names the ChaCha/Poly line
+//! as the primitives that follow the hash foundation, each its own round) and active-designing/20260815-175524_rye-first-crypto-parity-
+//! and-the-decision-wave.md (Poly1305 completes the ChaCha20-Poly1305 AEAD, the named next Season G crux after ChaCha20).
+//! Kin: crypto/chacha20.rye · crypto/blake2b.rye · crypto/sha512.rye (the first three primitives, GREEN on metal). Monocypher
+//! (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line — our own arithmetic, studied clean-room from the public
+//! RFC and Monocypher's public API (.claude/rules/gratitude-licenses.md).
+//!
+//! THE CRUX — Poly1305 evaluates a polynomial in the message blocks with a secret coefficient r, modulo the prime 2^130 − 5, then adds a
+//! secret pad s. The accumulator h starts at zero; for each 16-byte block, the block (with a high bit set to mark its length) is added to
+//! h, then h is multiplied by r and reduced mod 2^130 − 5. After the last block, h is fully carried, conditionally reduced once more, and
+//! s is added mod 2^128 to yield the 16-byte tag. The reduction mod 2^130 − 5 is the field's own trick: a carry out of bit 130 folds back
+//! as ×5 (because 2^130 ≡ 5), which is why the limb products need only add a ×5 fold rather than a general division. The key's r half is
+//! clamped (specific bits cleared, RFC 8439 §2.5) so the 130-bit arithmetic never overflows the limb schedule. Nothing here is a claim
+//! about a device — it is arithmetic anyone can replay against RFC 8439.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. The one-time key is the RFC's own public test vector,
+//! never a real secret; the primitive holds no long-lived key and signs nothing (a MAC authenticates, it does not sign with an identity).
+//! It calls no std.crypto; it is authored from the RFC. Parity is proven at selftest against two references runnable now — the RFC 8439
+//! §2.5.2 known-answer (the tag for "Cryptographic Forum Research Group" under the RFC's one-time key), and Zig's own std.crypto
+//! Poly1305 as an independent implementation, byte-for-byte across the empty message, sub-block, exact-block-boundary, one-over-a-block,
+//! the RFC's own message length, and a multi-block input. Monocypher passes the same RFC vector — its vendored source is a held network
+//! fetch — so Monocypher-source parity is an honest HORIZON rung, added later without changing a byte. Constant-time timing-safety is a
+//! separate named horizon; the limb schedule is data-independent by construction (the flow never branches on the message or the key), yet
+//! the conditional final reduction wants measurement before any timing claim, so it stays a horizon rather than a boast.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/poly1305.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const poly1305_version = "20260815.190000";
+
+/// Poly1305's fixed shapes. block_bytes is the 16-byte message block the polynomial consumes; key_bytes the 32-byte one-time key (its
+/// first half clamped into r, its second half the pad s); tag_bytes the 16-byte authenticator. These are the RFC's own constants, named
+/// so every bound below cites one rather than a bare number.
+pub const block_bytes: u32 = 16;
+pub const key_bytes: u32 = 32;
+pub const tag_bytes: u32 = 16;
+
+/// The limb mask — 2^26 − 1. The 130-bit accumulator and coefficient are each carried in five 26-bit limbs, so a limb-by-limb product of
+/// two 26-bit values fits a single 64-bit word with room for the running sum. Named so every mask and shift below cites one source.
+const limb_mask: u32 = 0x3ffffff;
+
+/// The largest message this primitive authenticates in one call. Generous for the test vectors and any in-process artifact, yet named so
+/// the block loop and its byte-count cast both cite a maximum — the TAME reflex that every loop and every count declares its ceiling.
+pub const max_message_bytes: u32 = 1 << 20;
+
+/// The faults this primitive can raise, refused before any block is absorbed.
+pub const Poly1305Error = error{
+    /// A message longer than max_message_bytes — refused at the edge, before the polynomial begins.
+    MessageTooLong,
+};
+
+/// The Poly1305 running state: the clamped coefficient r in five 26-bit limbs, the ×5 folds of r[1..5] precomputed (s_fold, so the
+/// mod-2^130−5 reduction is a multiply-add rather than a division), the accumulator h in five 26-bit limbs, and the pad s in four 32-bit
+/// words added at the very end. All state is derived from the one-time key; none of it is a long-lived secret.
+const State = struct {
+    r: [5]u32,
+    s_fold: [4]u32,
+    h: [5]u32,
+    pad: [4]u32,
+};
+
+/// Clamp the key's r half and load the pad, producing a fresh state with a zero accumulator (RFC 8439 §2.5). Clamping clears the specific
+/// bits the RFC names so the limb schedule can never overflow; the four r limbs are masked with the RFC's clamp constants as they are cut
+/// from the little-endian key words.
+fn init(key: *const [key_bytes]u8) State {
+    const t0 = std.mem.readInt(u32, key[0..4], .little);
+    const t1 = std.mem.readInt(u32, key[4..8], .little);
+    const t2 = std.mem.readInt(u32, key[8..12], .little);
+    const t3 = std.mem.readInt(u32, key[12..16], .little);
+
+    // The RFC 8439 §2.5 clamp constants, applied per limb as r is cut from the key. The whole clamp is r &= 0x0ffffffc0ffffffc0ffffffc0fffffff.
+    var st: State = undefined;
+    st.r[0] = t0 & 0x3ffffff;
+    st.r[1] = ((t0 >> 26) | (t1 << 6)) & 0x3ffff03;
+    st.r[2] = ((t1 >> 20) | (t2 << 12)) & 0x3ffc0ff;
+    st.r[3] = ((t2 >> 14) | (t3 << 18)) & 0x3f03fff;
+    st.r[4] = (t3 >> 8) & 0x00fffff;
+
+    // invariant: every clamped r limb fits 26 bits, so a limb product stays within a 64-bit word.
+    assert(st.r[0] <= limb_mask and st.r[1] <= limb_mask and st.r[2] <= limb_mask and st.r[3] <= limb_mask and st.r[4] <= limb_mask);
+
+    // s_fold[i] carries r[i+1] × 5 — the mod-2^130−5 fold, since 2^130 ≡ 5. Each stays below 5·2^26 < 2^29, well within u32.
+    st.s_fold[0] = st.r[1] * 5;
+    st.s_fold[1] = st.r[2] * 5;
+    st.s_fold[2] = st.r[3] * 5;
+    st.s_fold[3] = st.r[4] * 5;
+
+    st.pad[0] = std.mem.readInt(u32, key[16..20], .little);
+    st.pad[1] = std.mem.readInt(u32, key[20..24], .little);
+    st.pad[2] = std.mem.readInt(u32, key[24..28], .little);
+    st.pad[3] = std.mem.readInt(u32, key[28..32], .little);
+
+    st.h = [_]u32{ 0, 0, 0, 0, 0 };
+    return st;
+}
+
+/// Absorb one 16-byte block into the accumulator: add the block (with a high marker bit for a full block) to h, multiply h by r modulo
+/// 2^130 − 5, and store the reduced limbs back. `full` is true for a whole 16-byte block (the marker bit 2^128 is set) and false for the
+/// final partial block, whose 0x01 marker byte already sits inside the padded buffer. The multiply carries products in 64-bit words —
+/// the arithmetic genuinely needs 64 bits (two 26-bit limbs multiply to ~52 bits, summed across five terms), not a wire width.
+fn absorb(st: *State, blk: *const [block_bytes]u8, full: bool) void {
+    const hibit: u32 = if (full) (1 << 24) else 0;
+
+    const m0 = std.mem.readInt(u32, blk[0..4], .little);
+    const m1 = std.mem.readInt(u32, blk[4..8], .little);
+    const m2 = std.mem.readInt(u32, blk[8..12], .little);
+    const m3 = std.mem.readInt(u32, blk[12..16], .little);
+
+    // Add the block to the accumulator, limb by limb; h limbs stay below 2^27 here, within a u64.
+    var h0: u64 = @as(u64, st.h[0]) + (m0 & limb_mask);
+    var h1: u64 = @as(u64, st.h[1]) + (((m0 >> 26) | (m1 << 6)) & limb_mask);
+    var h2: u64 = @as(u64, st.h[2]) + (((m1 >> 20) | (m2 << 12)) & limb_mask);
+    var h3: u64 = @as(u64, st.h[3]) + (((m2 >> 14) | (m3 << 18)) & limb_mask);
+    var h4: u64 = @as(u64, st.h[4]) + ((m3 >> 8) | hibit);
+
+    const r0: u64 = st.r[0];
+    const r1: u64 = st.r[1];
+    const r2: u64 = st.r[2];
+    const r3: u64 = st.r[3];
+    const r4: u64 = st.r[4];
+    const f1: u64 = st.s_fold[0];
+    const f2: u64 = st.s_fold[1];
+    const f3: u64 = st.s_fold[2];
+    const f4: u64 = st.s_fold[3];
+
+    // h × r mod 2^130 − 5, folding each over-130 term back as ×5 (the s_fold coefficients). Each d is a sum of five ~52-bit products.
+    const d0: u64 = h0 * r0 + h1 * f4 + h2 * f3 + h3 * f2 + h4 * f1;
+    const d1: u64 = h0 * r1 + h1 * r0 + h2 * f4 + h3 * f3 + h4 * f2;
+    const d2: u64 = h0 * r2 + h1 * r1 + h2 * r0 + h3 * f4 + h4 * f3;
+    const d3: u64 = h0 * r3 + h1 * r2 + h2 * r1 + h3 * r0 + h4 * f4;
+    const d4: u64 = h0 * r4 + h1 * r3 + h2 * r2 + h3 * r1 + h4 * r0;
+
+    // Carry the limb chain, folding the final carry back through ×5 (the 2^130 ≡ 5 reduction).
+    var c: u64 = d0 >> 26;
+    h0 = d0 & limb_mask;
+    const e1 = d1 + c;
+    c = e1 >> 26;
+    h1 = e1 & limb_mask;
+    const e2 = d2 + c;
+    c = e2 >> 26;
+    h2 = e2 & limb_mask;
+    const e3 = d3 + c;
+    c = e3 >> 26;
+    h3 = e3 & limb_mask;
+    const e4 = d4 + c;
+    c = e4 >> 26;
+    h4 = e4 & limb_mask;
+    h0 += c * 5;
+    c = h0 >> 26;
+    h0 &= limb_mask;
+    h1 += c;
+
+    // invariant: every stored limb fits 26 bits after reduction, so the next block's arithmetic stays in range.
+    assert(h0 <= limb_mask and h1 <= limb_mask + 1 and h2 <= limb_mask and h3 <= limb_mask and h4 <= limb_mask);
+
+    st.h[0] = @intCast(h0);
+    st.h[1] = @intCast(h1);
+    st.h[2] = @intCast(h2);
+    st.h[3] = @intCast(h3);
+    st.h[4] = @intCast(h4);
+}
+
+/// Finalize: fully carry the accumulator, conditionally subtract the prime 2^130 − 5 once (so h is the true residue), fold the five
+/// 26-bit limbs into four 32-bit words, add the pad s mod 2^128, and serialize the 16-byte tag little-endian (RFC 8439 §2.5.1).
+fn finalize(st: *State, tag: *[tag_bytes]u8) void {
+    var h0 = st.h[0];
+    var h1 = st.h[1];
+    var h2 = st.h[2];
+    var h3 = st.h[3];
+    var h4 = st.h[4];
+
+    // Fully carry h so every limb is below 2^26 before the conditional reduction.
+    var c: u32 = h1 >> 26;
+    h1 &= limb_mask;
+    h2 += c;
+    c = h2 >> 26;
+    h2 &= limb_mask;
+    h3 += c;
+    c = h3 >> 26;
+    h3 &= limb_mask;
+    h4 += c;
+    c = h4 >> 26;
+    h4 &= limb_mask;
+    h0 += c * 5;
+    c = h0 >> 26;
+    h0 &= limb_mask;
+    h1 += c;
+
+    // Compute h + 5 (i.e. h − (2^130 − 5) staged as an add), so a borrow out of the top limb tells us whether h < p.
+    var g0 = h0 + 5;
+    c = g0 >> 26;
+    g0 &= limb_mask;
+    var g1 = h1 + c;
+    c = g1 >> 26;
+    g1 &= limb_mask;
+    var g2 = h2 + c;
+    c = g2 >> 26;
+    g2 &= limb_mask;
+    var g3 = h3 + c;
+    c = g3 >> 26;
+    g3 &= limb_mask;
+    const g4 = (h4 + c) -% (1 << 26);
+
+    // If the top limb borrowed (h < p), keep h; otherwise (h ≥ p) take g = h − p. Branchless via a mask so the choice is data-independent.
+    const use_g: u32 = (g4 >> 31) -% 1; // 0x00000000 when h < p, 0xffffffff when h ≥ p
+    const keep_h: u32 = ~use_g;
+    h0 = (h0 & keep_h) | (g0 & use_g);
+    h1 = (h1 & keep_h) | (g1 & use_g);
+    h2 = (h2 & keep_h) | (g2 & use_g);
+    h3 = (h3 & keep_h) | (g3 & use_g);
+    h4 = (h4 & keep_h) | (g4 & use_g);
+
+    // Fold the five 26-bit limbs into four 32-bit words (bits shifted past 32 truncate, as the low-32 recombination intends).
+    const w0: u32 = h0 | (h1 << 26);
+    const w1: u32 = (h1 >> 6) | (h2 << 20);
+    const w2: u32 = (h2 >> 12) | (h3 << 14);
+    const w3: u32 = (h3 >> 18) | (h4 << 8);
+
+    // Add the pad s mod 2^128, carrying word to word in a 64-bit accumulator.
+    var f: u64 = @as(u64, w0) + st.pad[0];
+    std.mem.writeInt(u32, tag[0..4], @truncate(f), .little);
+    f = @as(u64, w1) + st.pad[1] + (f >> 32);
+    std.mem.writeInt(u32, tag[4..8], @truncate(f), .little);
+    f = @as(u64, w2) + st.pad[2] + (f >> 32);
+    std.mem.writeInt(u32, tag[8..12], @truncate(f), .little);
+    f = @as(u64, w3) + st.pad[3] + (f >> 32);
+    std.mem.writeInt(u32, tag[12..16], @truncate(f), .little);
+}
+
+/// Authenticate a message under a one-time key, writing the 16-byte tag (RFC 8439 §2.5.1). Full 16-byte blocks are absorbed with the
+/// 2^128 marker bit; a final partial block is copied into a zeroed buffer with a single 0x01 marker byte after the message bytes. The
+/// key must be used once — reusing a Poly1305 one-time key across two messages breaks the authenticator (the RFC's own warning).
+pub fn mac(tag: *[tag_bytes]u8, msg: []const u8, key: *const [key_bytes]u8) Poly1305Error!void {
+    // invariant: the message fits the named bound, so its length casts to u32 losslessly and the block loop is bounded.
+    if (msg.len > max_message_bytes) return error.MessageTooLong;
+
+    const total: u32 = @intCast(msg.len);
+    // invariant: the u32 count names exactly the message bytes — the bounded cast lost nothing.
+    assert(total == msg.len);
+
+    var st = init(key);
+
+    var offset: u32 = 0;
+    while (total - offset >= block_bytes) : (offset += block_bytes) {
+        absorb(&st, msg[offset..][0..block_bytes], true);
+    }
+
+    if (offset < total) {
+        const rem = total - offset;
+        // invariant: the remainder is a strict partial block — a full block would have been taken by the loop above.
+        assert(rem < block_bytes);
+        var buf = [_]u8{0} ** block_bytes;
+        var i: u32 = 0;
+        while (i < rem) : (i += 1) buf[i] = msg[offset + i];
+        buf[rem] = 1; // the RFC's length marker for the final partial block
+        absorb(&st, &buf, false);
+    }
+
+    finalize(&st, tag);
+}
+
+/// Render bytes as lowercase hex, for comparison against the RFC's own hex form. Bounded by a named maximum on the input length.
+const max_hex_input: u32 = 64;
+fn to_hex(bytes: []const u8, out: *[max_hex_input * 2]u8) u32 {
+    const alphabet = "0123456789abcdef";
+    // invariant: the input fits the hex buffer — two hex characters per byte.
+    assert(bytes.len <= max_hex_input);
+    var i: u32 = 0;
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = alphabet[bytes[i] >> 4];
+        out[i * 2 + 1] = alphabet[bytes[i] & 0x0f];
+    }
+    return @as(u32, @intCast(bytes.len)) * 2;
+}
+
+// The RFC 8439 §2.5.2 one-time key — a public test vector, never a real secret. The first 16 bytes clamp into r; the second 16 are the pad s.
+const rfc_key = [key_bytes]u8{
+    0x85, 0xd6, 0xbe, 0x78, 0x57, 0x55, 0x6d, 0x33, 0x7f, 0x44, 0x52, 0xfe, 0x42, 0xd5, 0x06, 0xa8,
+    0x01, 0x03, 0x80, 0x8a, 0xfb, 0x0d, 0xb2, 0xfd, 0x4a, 0xbf, 0xf6, 0xaf, 0x41, 0x49, 0xf5, 0x1b,
+};
+
+// The RFC 8439 §2.5.2 message and its expected tag. The message is the standard's own published test string, reproduced byte-for-byte as
+// the neutral reference (its wording is the RFC's, not ours); the tag is the authenticator the RFC computes for it.
+const rfc_message = "Cryptographic Forum Research Group";
+const rfc_tag_hex = "a8061dc1305136c6c22b8baf0c0127a9";
+
+/// Independent reference: Zig's own std.crypto Poly1305, used ONLY inside the selftest as a second implementation to prove our authored
+/// primitive matches byte-for-byte. The primitive above never calls this.
+fn ref_mac(out: *[tag_bytes]u8, msg: []const u8, key: [key_bytes]u8) void {
+    std.crypto.onetimeauth.Poly1305.create(out, msg, &key);
+}
+
+fn hex_eq(got: []const u8, want: []const u8) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < got.len) : (i += 1) {
+        if (got[i] != want[i]) return false;
+    }
+    return true;
+}
+
+fn bytes_eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) {
+        if (a[i] != b[i]) return false;
+    }
+    return true;
+}
+
+fn run_selftest() !u8 {
+    var hexbuf: [max_hex_input * 2]u8 = undefined;
+
+    // 1. RFC 8439 §2.5.2 known-answer: the tag for the RFC's message under the RFC's one-time key equals the published tag, hex for hex.
+    {
+        var tag: [tag_bytes]u8 = undefined;
+        try mac(&tag, rfc_message, &rfc_key);
+        const n = to_hex(&tag, &hexbuf);
+        if (!hex_eq(hexbuf[0..n], rfc_tag_hex)) return error.RfcVectorMismatch;
+    }
+
+    // 2. Independent-implementation parity: our authored Rye equals Zig's std.crypto Poly1305 byte-for-byte across the block edges — the
+    //    empty message, a sub-block input, an exact-16-byte block, one byte over a block, the RFC's 34-byte length, and a multi-block input.
+    {
+        const sizes = [_]u32{ 0, 1, 15, 16, 17, 34, 256 };
+        for (sizes) |sz| {
+            var msg: [256]u8 = undefined;
+            var i: u32 = 0;
+            while (i < sz) : (i += 1) msg[i] = @as(u8, @truncate(i *% 7 +% 1));
+
+            var ours: [tag_bytes]u8 = undefined;
+            try mac(&ours, msg[0..sz], &rfc_key);
+
+            var theirs: [tag_bytes]u8 = undefined;
+            ref_mac(&theirs, msg[0..sz], rfc_key);
+
+            if (!bytes_eq(&ours, &theirs)) return error.RefMismatch;
+        }
+    }
+
+    // 3. The bound refuses an over-long call before any block is absorbed.
+    {
+        var tag: [tag_bytes]u8 = undefined;
+        const oversize: []const u8 = @as([*]const u8, @ptrFromInt(0x2000))[0 .. max_message_bytes + 1];
+        if (mac(&tag, oversize, &rfc_key)) |_| return error.OversizeSlipped else |err| if (err != error.MessageTooLong) return error.WrongOversize;
+    }
+
+    print("GREEN crypto-poly1305: Poly1305 (RFC 8439) authored in pure Rye — Season G's fourth primitive, the one-time authenticator that " ++
+        "completes Monocypher's ChaCha20-Poly1305. A polynomial in the 16-byte message blocks with a clamped secret coefficient r, " ++
+        "evaluated over the prime field 2^130 − 5 in five 26-bit limbs so every limb product fits one 64-bit word, then the secret pad s " ++
+        "added mod 2^128 to yield the 16-byte tag; the over-130 carry folds back as ×5 because 2^130 ≡ 5. The primitive calls no " ++
+        "std.crypto. Parity holds against two references runnable now: the RFC 8439 §2.5.2 known-answer (the tag for \"Cryptographic " ++
+        "Forum Research Group\" under the RFC's one-time key) matches hex for hex, and our authored Rye equals Zig's independent " ++
+        "std.crypto Poly1305 byte-for-byte across the empty message, a sub-block input, an exact 16-byte block, one byte over a block, " ++
+        "the RFC's 34-byte length, and a 256-byte multi-block input. Monocypher passes the same RFC vector — its vendored source is a " ++
+        "held fetch, so Monocypher-source parity is an honest horizon rung. An over-long call refuses before a block is absorbed. Purely " ++
+        "local arithmetic — the primitive calls no std.crypto, the key is the RFC's public one-time vector, no real secret, no signature, " ++
+        "no network, no funds, no real device; constant-time timing-safety stays a separate named horizon. The authenticator now stands " ++
+        "beside the stream cipher, ready to complete the AEAD.\n", .{});
+    return 0;
+}
+
+pub fn main(init_args: std.process.Init) !u8 {
+    _ = init_args;
+    return run_selftest();
+}
