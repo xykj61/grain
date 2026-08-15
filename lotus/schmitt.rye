@@ -1,0 +1,361 @@
+//! lotus/schmitt.rye — ALES92: the Schmitt trigger — a HYSTERESIS comparator that gives ALES89's square a MEMORY against chatter,
+//! flip HIGH on a rise past t_high, flip LOW on a fall past t_low, hold between.
+//! ALES89's infinite clipper is the MEMORYLESS comparator: it judges each sample against one threshold on its own, keeps only the sign, a sine into a square.
+//! That is right for a clean signal and wrong for a noisy one — a signal riding near the threshold (a hum on a gate key, a slow envelope crossing zero, a
+//! sensor line trembling at its trip point) crosses that single level many times in a row, and the memoryless comparator CHATTERS: the square flips on the
+//! noise, not on the event. The classic answer, a century old at the front of every zero-crossing detector, is HYSTERESIS: two thresholds and a memory of
+//! which rail the output is on. It flips up only when the signal rises past the UPPER threshold t_high, and back down only when it falls past the LOWER one
+//! t_low; between the two it HOLDS. The band [t_low, t_high] is a dead zone the noise cannot rattle. It is the rung the ALES89 doc booked in as many words.
+//!
+//! The crux: a comparator WITH HYSTERESIS carries state — one bit, which rail am I on right now — so, exactly as ALES91's carried DC blocker, a span compared
+//! in TWO PIECES (the second continuing the first's ending rail) equals the whole compared ONCE, byte-for-byte, no spurious flip at the seam. That
+//! split-equals-whole property is the whole reason this rung is a SIBLING of the infinite clipper rather than a copy: infinite_clip is memoryless (a
+//! comparator with no band), this one has memory (a comparator with a band and a remembered rail). It is the ALES91 SHAPE — one bit where the blocker carries
+//! two i64 states.
+//!
+//! The map: if LOW and x ≥ t_high → flip HIGH; if HIGH and x ≤ t_low → flip LOW; otherwise hold. Output = +sample_max when HIGH, −sample_max when LOW — the
+//! two rails of ALES89, so no saturate is owed (both are legal i16 by construction) and the map is odd about the band. From silence the convention is the LOW
+//! rail (high = false): before the signal has risen past t_high even once it has not triggered, so it reads low — stated plainly so the fresh trigger and the
+//! from-silence schmitt cannot drift. The band law is its own: sample_min ≤ t_low ≤ t_high ≤ sample_max. t_low = t_high is LEGAL — the zero-width band, the
+//! plain memoryless comparator (chattering exactly at the shared level, a hard sign comparator everywhere else), the degenerate this rung reduces to, exactly
+//! as ALES91's R = 0 is the legal first difference; t_low > t_high is an inverted, meaningless band and refuses BadThreshold.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES92.
+//! Design read: active-designing/20260814-224452_fill-ales92-lotus-schmitt-trigger.md
+//! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/max; the carried-state idiom is ALES91's (lotus/dc_block.rye) — a tiny value the keeper holds
+//! beside a clip, the from-silence form the state = default case of one carried implementation so the two can never drift; the two rails are ALES89's.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. One two-threshold comparison carrying one
+//! bit of state, run sample by sample; the comparison is in i32 so a threshold at the deep rail is representable; only ±sample_max is ever written, so no
+//! saturate is owed. The "hysteresis" is a static band over instantaneous sample level, not a claim about any hardware comparator or slew rate; no real sample
+//! rate, no anti-aliasing, no debounce time constant (the band is over amplitude, not time — a timed debounce is a later rung), no socket, no network, no
+//! keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/schmitt.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+
+pub const schmitt_version = "20260814.224452";
+
+/// The Schmitt trigger's two faults. BadThreshold coincides by name with the center clips and the infinite clipper (Zig merges error sets by name), yet the
+/// LAW behind it differs: here two SIGNED thresholds must be ordered inside the rails (sample_min ≤ t_low ≤ t_high ≤ sample_max), where the comparators bound
+/// one magnitude in [0, sample_max]. BadRange coincides with the whole suite's one span law.
+pub const SchmittError = error{
+    /// A band that is not two ordered thresholds inside the rails — a t_low below the floor, a t_high above the ceiling, or an inverted band t_low > t_high
+    /// (meaningless: the upper trip would sit below the lower). Refused before a sample is touched.
+    BadThreshold,
+    /// A start offset or count naming samples outside the clip's current length — refused before any read or write.
+    BadRange,
+};
+
+/// Validate a trigger call's band and span together, before any sample is touched. The band t_low..t_high must be two signed thresholds inside the rails and
+/// ordered: sample_min ≤ t_low ≤ t_high ≤ sample_max (t_low = t_high is the legal zero-width band, the plain comparator; t_low > t_high is inverted and
+/// refused). The span must lie wholly within the current samples.
+fn check(clip_len: u32, start: u32, count: u32, t_low: i32, t_high: i32) SchmittError!void {
+    // invariant: the band is two thresholds ordered inside the rails — the low at or above sample_min, the high at or below sample_max, the low no greater
+    // than the high (a zero-width band is legal — the memoryless comparator — an inverted band is not).
+    if (t_low < @as(i32, timeline.sample_min)) return error.BadThreshold;
+    if (t_high > @as(i32, timeline.sample_max)) return error.BadThreshold;
+    if (t_low > t_high) return error.BadThreshold;
+    // invariant: the span lies wholly within the current samples (checked without underflow — count vs the remainder), exactly as the rest of the suite.
+    if (start > clip_len) return error.BadRange;
+    if (count > clip_len - start) return error.BadRange;
+}
+
+/// The public face of `check` — one implementation of the band-and-span law, so a composer can validate a trigger's band before it writes, sharing the exact
+/// same rules and named errors as every trigger call.
+pub fn precheck(clip_len: u32, start: u32, count: u32, t_low: i32, t_high: i32) SchmittError!void {
+    return check(clip_len, start, count, t_low, t_high);
+}
+
+/// Advance the Schmitt trigger by one sample and return its output rail. `high` holds the one bit of state — the rail the output currently rides. When low, a
+/// sample at or above `t_high` flips it high (a rise past the upper threshold); when high, a sample at or below `t_low` flips it low (a fall past the lower);
+/// a sample strictly between the two holds the rail — the hysteresis. The output is +sample_max on the high rail, −sample_max on the low, so no saturate is
+/// owed. The comparison is in i32 so a threshold at the deep rail (sample_min) is representable.
+fn schmitt_step(high: *bool, x: i16, t_low: i32, t_high: i32) i16 {
+    // invariant: the band reaching this step is already ordered inside the rails — check() ran at the edge.
+    assert(t_low <= t_high);
+    const xi: i32 = @as(i32, x);
+    if (high.*) {
+        // On the high rail: fall to or below the LOWER threshold to flip low; otherwise hold high.
+        if (xi <= t_low) high.* = false;
+    } else {
+        // On the low rail: rise to or above the UPPER threshold to flip high; otherwise hold low.
+        if (xi >= t_high) high.* = true;
+    }
+    // invariant: the output is exactly one of the two rails, matching the current bit — no middle value ever appears.
+    const y: i16 = if (high.*) timeline.sample_max else -timeline.sample_max;
+    assert((high.* and y == timeline.sample_max) or (!high.* and y == -timeline.sample_max));
+    return y;
+}
+
+/// Schmitt-trigger `count` samples starting at `start` in place, CONTINUING from the caller's `high` rail rather than from silence — the carried-state form
+/// (the ALES91 shape). The caller owns the one bit across calls, so comparing a span in two pieces (the second carrying the first's ending rail) equals
+/// comparing the whole span once: no spurious flip at the seam, the false trigger a per-span restart would invent. A fresh rail of `false` is exactly the
+/// from-silence `schmitt`. Refuses BadThreshold on an illegal band and BadRange on a span outside the samples, before any write; on refusal the rail is left
+/// untouched. Values only — never the length.
+pub fn schmitt_carry(clip: *timeline.Clip, start: u32, count: u32, high: *bool, t_low: i32, t_high: i32) SchmittError!void {
+    try check(clip.len, start, count, t_low, t_high);
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        clip.buf[start + i] = schmitt_step(high, clip.buf[start + i], t_low, t_high);
+    }
+    // invariant: a Schmitt trigger changes sample values only, never the clip's length or bound.
+    assert(start + count <= clip.len);
+    assert(clip.len <= clip.buf.len);
+}
+
+/// Schmitt-trigger `count` samples starting at `start` in place, from the LOW rail (the from-silence convention: before a rise past t_high the output has not
+/// triggered). Flips high on a rise past `t_high`, low on a fall past `t_low`, holds between. Refuses BadThreshold on an illegal band and BadRange on a span
+/// outside the samples, before any write. Values only — never the length. The from-silence case of schmitt_carry — one implementation, so the carried and
+/// from-silence forms can never drift.
+pub fn schmitt(clip: *timeline.Clip, start: u32, count: u32, t_low: i32, t_high: i32) SchmittError!void {
+    var high: bool = false;
+    return schmitt_carry(clip, start, count, &high, t_low, t_high);
+}
+
+/// A Schmitt trigger that holds its own rail across calls — the ALES91 idiom for this rung. The struct carries no buffer, only the one bit of state and the
+/// two thresholds, so a keeper holds it beside a clip as a tiny value. A fresh SchmittTrigger (rail low) is exactly the from-silence schmitt; `run` continues
+/// from the carried rail so a span compared piece by piece has no spurious flip at a seam; `reset` returns the rail to low so the next run re-opens the
+/// from-silence low rail deliberately.
+pub const SchmittTrigger = struct {
+    /// The one bit of state — the rail the output currently rides, low (false) at silence. The value the hysteresis remembers.
+    high: bool = false,
+    /// The lower threshold: a fall to or below it flips the output low.
+    t_low: i32,
+    /// The upper threshold: a rise to or above it flips the output high. t_low ≤ t_high, both inside the rails.
+    t_high: i32,
+
+    /// Schmitt-trigger `count` samples starting at `start` in place, CONTINUING from `self.high` and updating it. The seam between two runs is invisible
+    /// because the second run opens on the first's ending rail rather than on silence. Refuses BadThreshold on an illegal band and BadRange on a span outside
+    /// the samples, before any write; the rail is untouched on refusal.
+    pub fn run(self: *SchmittTrigger, clip: *timeline.Clip, start: u32, count: u32) SchmittError!void {
+        // invariant: the carried rail is the caller's own — run threads the one bit through the one schmitt_carry implementation.
+        try schmitt_carry(clip, start, count, &self.high, self.t_low, self.t_high);
+    }
+
+    /// Return the rail to low, so the next `run` re-opens the from-silence low rail again — the deliberate re-open a keeper asks for when a new region should
+    /// begin untriggered rather than continue a prior rail.
+    pub fn reset(self: *SchmittTrigger) void {
+        self.high = false;
+        // invariant: reset restores exactly the from-silence rail — a run after reset equals the from-silence schmitt.
+        assert(self.high == false);
+    }
+};
+
+// --- selftest: a fresh trigger is from-silence (equals schmitt); HYSTERESIS resists chatter a single-threshold comparator cannot (the reason it exists); a
+//     span compared in two pieces with a carried rail equals the whole compared once (the crux); it flips exactly at the band edges; reset re-opens the low
+//     rail; the zero-width band is the plain comparator; only two values ever appear; the span discipline holds; and an illegal band and an out-of-range span
+//     each refuse by name -----------------------------------------------------------------------------------------------------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn run_selftest() !u8 {
+    const M: i16 = timeline.sample_max; // +32767, the high rail
+    const L: i16 = -timeline.sample_max; // −32767, the low rail (odd about the band, as ALES89)
+
+    // 1. A FRESH TRIGGER (rail low) over the whole span writes exactly the from-silence schmitt — the carried form's default case IS the from-silence case
+    //    (one implementation, so they cannot drift).
+    {
+        const src = [_]i16{ 100, 700, -200, 800, -900, 300, 1200, -1300, 50, 900, -50, 1100 };
+        var carried = timeline.Clip{};
+        try load_clip(&carried, &src);
+        var f = SchmittTrigger{ .t_low = -500, .t_high = 500 };
+        try f.run(&carried, 0, carried.len);
+
+        var plain = timeline.Clip{};
+        try load_clip(&plain, &src);
+        try schmitt(&plain, 0, plain.len, -500, 500);
+
+        if (!eq(carried.samples(), plain.samples())) return error.FreshNotFromSilence;
+    }
+
+    // 2. HYSTERESIS RESISTS CHATTER — the reason this rung exists beside ALES89. After a rise past t_high triggers the output high, a signal that only DITHERS
+    //    within the band [t_low, t_high] never flips (every sample stays +max). A single-threshold comparator on the same dither chatters flip after flip.
+    {
+        const t_low: i32 = -1000;
+        const t_high: i32 = 1000;
+        const sig = [_]i16{ 2000, 800, -800, 500, -500, 900, -900 }; // rises past t_high once, then dithers inside the band
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        var f = SchmittTrigger{ .t_low = t_low, .t_high = t_high };
+        try f.run(&clip, 0, clip.len);
+        const out = clip.samples();
+        // once triggered high, the dither leaves it high: NOT ONE flip after the first sample.
+        var flips: u32 = 0;
+        var i: u32 = 1;
+        while (i < out.len) : (i += 1) if (out[i] != out[i - 1]) {
+            flips += 1;
+        };
+        if (out[0] != M) return error.DidNotTrigger; // 2000 ≥ t_high → high
+        if (flips != 0) return error.HysteresisChattered; // the whole point: zero flips across the dither
+
+        // contrast: a single-threshold comparator at t = 0 (out = x ≥ 0 ? +max : −max) chatters on the SAME dither — several flips.
+        var cmp_flips: u32 = 0;
+        var prev: i16 = if (@as(i32, sig[0]) >= 0) M else L;
+        i = 1;
+        while (i < sig.len) : (i += 1) {
+            const cur: i16 = if (@as(i32, sig[i]) >= 0) M else L;
+            if (cur != prev) cmp_flips += 1;
+            prev = cur;
+        }
+        if (cmp_flips == 0) return error.ComparatorAssumptionWrong; // the memoryless comparator DOES chatter where hysteresis does not
+    }
+
+    // 3. THE CRUX — a span compared in TWO PIECES, the second carrying the first's ending rail, equals the whole compared once, byte-for-byte. The seam at the
+    //    split index carries no spurious flip. This is what makes it the carried-state SIBLING of ALES89's memoryless comparator.
+    {
+        const src = [_]i16{ 200, 900, -300, 850, -950, 400, 1100, -1200, 100, 950, -100, 1050 };
+        var whole = timeline.Clip{};
+        try load_clip(&whole, &src);
+        var fw = SchmittTrigger{ .t_low = -800, .t_high = 800 };
+        try fw.run(&whole, 0, whole.len);
+
+        var pieces = timeline.Clip{};
+        try load_clip(&pieces, &src);
+        var fp = SchmittTrigger{ .t_low = -800, .t_high = 800 };
+        const split: u32 = 5;
+        try fp.run(&pieces, 0, split); // first piece
+        try fp.run(&pieces, split, pieces.len - split); // second piece continues from the carried rail
+
+        if (!eq(pieces.samples(), whole.samples())) return error.SplitNotWhole;
+    }
+
+    // 4. IT FLIPS EXACTLY AT THE BAND EDGES — x ≥ t_high forces high, x ≤ t_low forces low, a sample strictly between holds the current rail. Band
+    //    [−1000, 1000], from silence (low). Read by hand.
+    {
+        const sig = [_]i16{ 0, 1000, 500, -1000, -500, 2000, 999, -1000 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        var f = SchmittTrigger{ .t_low = -1000, .t_high = 1000 };
+        try f.run(&clip, 0, clip.len);
+        // 0 between → hold low (L); 1000 ≥ t_high → high (M); 500 between → hold high (M); −1000 ≤ t_low → low (L);
+        // −500 between → hold low (L); 2000 ≥ t_high → high (M); 999 between → hold high (M); −1000 ≤ t_low → low (L).
+        const want = [_]i16{ L, M, M, L, L, M, M, L };
+        if (!eq(clip.samples(), &want)) return error.BandEdgesWrong;
+    }
+
+    // 5. RESET RE-OPENS THE LOW RAIL — after a run leaves the trigger high, reset returns it to the low rail, so a next run over a signal that starts INSIDE
+    //    the band holds low (the untriggered rail) rather than continuing high.
+    {
+        const rise = [_]i16{ 100, 2000, 1500 }; // ends high (2000 ≥ t_high)
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &rise);
+        var f = SchmittTrigger{ .t_low = -1000, .t_high = 1000 };
+        try f.run(&clip, 0, clip.len);
+        if (clip.samples()[clip.len - 1] != M) return error.NotHighBeforeReset;
+
+        f.reset();
+        const inside = [_]i16{ 0, 500, -500 }; // all strictly inside the band
+        var fresh = timeline.Clip{};
+        try load_clip(&fresh, &inside);
+        try f.run(&fresh, 0, fresh.len); // after reset, the low rail holds through the whole in-band run
+        const want = [_]i16{ L, L, L };
+        if (!eq(fresh.samples(), &want)) return error.ResetDidNotReopen;
+    }
+
+    // 6. THE ZERO-WIDTH BAND IS THE PLAIN COMPARATOR — t_low = t_high = 0 reduces to a memoryless sign comparator away from the exact threshold. Over a signal
+    //    that avoids x = 0, schmitt equals a hand-built comparator (x > 0 → +max, x < 0 → −max). Legal here, the degenerate (unlike a band, which needs width).
+    {
+        const sig = [_]i16{ 5, -5, 3, -3, 100, -100, 2, -2 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try schmitt(&clip, 0, clip.len, 0, 0);
+        const want = [_]i16{ M, L, M, L, M, L, M, L }; // the plain sign comparator, no hysteresis
+        if (!eq(clip.samples(), &want)) return error.ZeroWidthNotComparator;
+    }
+
+    // 7. ONLY TWO VALUES EVER APPEAR — every output is −sample_max or sample_max, whatever the input and band. Run a wide signal and check every written
+    //    sample lands on one of the two rails.
+    {
+        const sig = [_]i16{ 1, -1, 12345, -6789, 0, 32767, timeline.sample_min, 30000, -30000, 4, -4 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try schmitt(&clip, 0, clip.len, -2000, 2000);
+        const out = clip.samples();
+        var i: u32 = 0;
+        while (i < out.len) : (i += 1) {
+            if (out[i] != L and out[i] != M) return error.NotTwoValued;
+        }
+    }
+
+    // 8. THE SPAN DISCIPLINE — triggering a sub-span leaves the samples outside [start, count) exactly as they were. Trigger the middle three of a six-sample
+    //    clip at band [−1000, 1000]; the outer samples are untouched.
+    {
+        const sig = [_]i16{ 111, 222, 1500, -1500, 1500, 444 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        var f = SchmittTrigger{ .t_low = -1000, .t_high = 1000 };
+        try f.run(&clip, 2, 3); // indices 2,3,4 only: 1500→high(M), −1500→low(L), 1500→high(M)
+        const want = [_]i16{ 111, 222, M, L, M, 444 };
+        if (!eq(clip.samples(), &want)) return error.SpanLeaked;
+    }
+
+    // 9a. AN INVERTED BAND — t_low above t_high — refuses BadThreshold, the clip and rail untouched.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        var f = SchmittTrigger{ .t_low = 1000, .t_high = -1000 };
+        if (f.run(&clip, 0, clip.len)) |_| return error.InvertedSlipped else |e| if (e != error.BadThreshold) return error.WrongInverted;
+        if (f.high != false) return error.RefusedMovedRail;
+        if (!eq(clip.samples(), &three)) return error.RefusedTriggerMutated;
+    }
+
+    // 9b. A t_low BELOW THE FLOOR refuses BadThreshold.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 1, 2, 3 });
+        var f = SchmittTrigger{ .t_low = @as(i32, timeline.sample_min) - 1, .t_high = 1000 };
+        if (f.run(&clip, 0, clip.len)) |_| return error.LowUnderFloorSlipped else |e| if (e != error.BadThreshold) return error.WrongLowUnderFloor;
+    }
+
+    // 9c. A t_high ABOVE THE CEILING refuses BadThreshold.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 1, 2, 3 });
+        var f = SchmittTrigger{ .t_low = -1000, .t_high = @as(i32, timeline.sample_max) + 1 };
+        if (f.run(&clip, 0, clip.len)) |_| return error.HighOverCeilingSlipped else |e| if (e != error.BadThreshold) return error.WrongHighOverCeiling;
+    }
+
+    // 10. AN OUT-OF-RANGE SPAN refuses BadRange before any write, leaving the clip untouched.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        var f = SchmittTrigger{ .t_low = -1000, .t_high = 1000 };
+        if (f.run(&clip, 2, 5)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(clip.samples(), &three)) return error.RefusedTriggerMutatedRange;
+    }
+
+    print("GREEN ales-schmitt: the SCHMITT TRIGGER — a HYSTERESIS comparator that gives ALES89's square a MEMORY against chatter, flip HIGH on a rise past " ++
+        "t_high, flip LOW on a fall past t_low, hold between. Where the infinite clipper is memoryless (one threshold, a sine into a square, chattering on a " ++
+        "signal that rides near the level), this rung carries one bit — which rail am I on — and the band [t_low, t_high] is a dead zone the noise cannot " ++
+        "rattle. The crux: it carries state, so a span compared in TWO PIECES (the second continuing the first's ending rail) equals the whole compared ONCE, " ++
+        "byte-for-byte — the ALES91 shape, no spurious flip at the seam. A fresh trigger equals the from-silence schmitt (rail low by convention); HYSTERESIS " ++
+        "resists chatter a single-threshold comparator cannot (zero flips across a dither the comparator chatters on); it flips exactly at the band edges " ++
+        "(x ≥ t_high → high, x ≤ t_low → low, between → hold); reset re-opens the low rail; the zero-width band (t_low = t_high) is the legal plain " ++
+        "comparator; only two values ever appear (±sample_max, odd about the band); the span discipline holds; and an inverted band (t_low > t_high), a low " ++
+        "below the floor, or a high above the ceiling refuses BadThreshold with the rail untouched while an out-of-range span refuses BadRange with the clip " ++
+        "untouched. Purely local — one two-threshold compare in i32, one bit of state, one rail per sample; no saturate, no time constant, no real device, " ++
+        "no real sample rate, no network, no keys, no funds\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
