@@ -85,16 +85,12 @@ pub fn triangle_delay_at(centre_scaled: i64, depth_scaled: i64, period: u32, k: 
 /// is off a FROZEN snapshot of the dry prefix, so a moving read never reads a sample it just wrote. A zero depth is a fixed whole delay at
 /// the centre, equal to ALES70's glide at that centre byte-for-byte. The wet plus dry saturates once. Refuses BadPeriod, BadDepth, BadDelay,
 /// BadLevel, and BadRange before any write; on refusal the clip is untouched. Values only — never a length.
-pub fn chorus(
-    clip: *timeline.Clip,
-    start: u32,
-    count: u32,
-    centre_scaled: i64,
-    depth_scaled: i64,
-    period: u32,
-    num: u32,
-    den: u32,
-) ChorusError!void {
+/// Validate a chorus's LFO, mix level, and span against a clip length ONCE, before any write — factored out of `chorus` so the stereo lift
+/// (`stereo_chorus`, ALES179) can refuse against the shared length before either channel is snapshotted, mirroring ALES75's `ring_mod.precheck`
+/// and ALES72's `vibrato.precheck`. Refuses a period not a positive multiple of four (or wider than max_clip) BadPeriod, a negative depth or a
+/// swing dipping below one whole sample BadDepth, a swing top past the widest clip BadDelay, a zero denominator or a wet above unity BadLevel,
+/// and a span outside `clip_len` BadRange.
+pub fn precheck(clip_len: u32, start: u32, count: u32, centre_scaled: i64, depth_scaled: i64, period: u32, num: u32, den: u32) ChorusError!void {
     // invariant: the period is a positive multiple of four (the triangle's quarter anchors need P/4 whole) and no wider than the widest
     // clip, so the LFO is bounded. Checked at the edge before any read.
     if (period == 0 or period % 4 != 0) return error.BadPeriod;
@@ -109,8 +105,23 @@ pub fn chorus(
     if (den == 0) return error.BadLevel;
     if (num > den) return error.BadLevel;
     // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
-    if (start > clip.len) return error.BadRange;
-    if (count > clip.len - start) return error.BadRange;
+    if (start > clip_len) return error.BadRange;
+    if (count > clip_len - start) return error.BadRange;
+}
+
+pub fn chorus(
+    clip: *timeline.Clip,
+    start: u32,
+    count: u32,
+    centre_scaled: i64,
+    depth_scaled: i64,
+    period: u32,
+    num: u32,
+    den: u32,
+) ChorusError!void {
+    // invariant: the LFO, mix level, and span are all legal — the five faults refused before any read, so a refusal never half-writes.
+    // ALES179's stereo lift reuses this same `precheck` against the shared length.
+    try precheck(clip.len, start, count, centre_scaled, depth_scaled, period, num, den);
 
     const end: u32 = start + count;
     // Snapshot the dry prefix [0, end) BEFORE any write, so every interpolated read is of the ORIGINAL audio — the ALES68/ALES70/graft
