@@ -1,0 +1,224 @@
+//! lotus/library_merge_sheet.rye — ALES236: the merge verdict, as a readable page. ALES234 reconciled two independent sets of catalog
+//! changes into a Merge — resolved, dropped, and named conflicts — yet that verdict lives in a struct a program reads, not a page a
+//! keeper reads. Before a keeper accepts a merge or reaches for the ear a conflict wants, they want to SEE it at a glance: which
+//! records the merge takes and from whose hand, which it drops, and exactly where the two sides disagree. This rung draws that page.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES236.
+//! Design read: active-designing/20260815-150804_fill-ales236-lotus-library-merge-sheet.md
+//! Stands on: lotus/library_merge.rye (ALES234) — the Merge this reads. The readable-projection idiom is the same one
+//! library_diff_sheet (ALES230) took over a Diff: no new frame, no new hash — a projection, not a round-trip.
+//!
+//! A PROJECTION, NOT A ROUND-TRIP. The Merge is the computed verdict; this sheet is the eye's version of it. It parses back to nothing
+//! — it completes the merge's usefulness the way the diff sheet completed the diff: every catalog primitive earns its readable page.
+//! An absent digest in a conflict (a side that lacks the album) renders as a single `-`, a token a real 64-hex digest can never be,
+//! so every conflict line keeps four positional fields a reader (or a grep) can trust.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A bounded text render over in-process fields already proven whole by merge, siloed to
+//! lotus/. Content-addressing on the page, never a signature. No real file, no DAC, no acoustic or electrical fact, no network, no
+//! keys, no funds, no real device.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/library_merge_sheet.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const library_manifest = @import("library_manifest.rye");
+const library_merge = @import("library_merge.rye");
+
+pub const library_merge_sheet_version = "20260815.150804";
+
+/// The page's first line, its own line — names the shape so a reader (or a grep) can tell it from a diff sheet or a manifest.
+pub const sheet_header = "format lotus-library-merge-sheet-v1";
+
+/// The token a conflict line prints where a side does not hold the album. A single `-` — a real 64-hex digest can never be one
+/// character, so an absent digest is unambiguous and every conflict line keeps its four positional fields.
+pub const absent_token = "-";
+
+/// The longest source word — `unchanged` at nine characters. A named ceiling so a resolved line's width is proven.
+pub const source_word_max: u32 = 9;
+
+/// The widest resolved line: `resolved ` (9), the name bound, a space, the source word, a space, the 64-hex digest, then a newline.
+pub const resolved_line_max: u32 = 9 + library_manifest.max_album_name + 1 + source_word_max + 1 + library_manifest.digest_hex_len + 1;
+
+/// The widest dropped line: `dropped ` (8), the name bound, a space, the source word, then a newline.
+pub const dropped_line_max: u32 = 8 + library_manifest.max_album_name + 1 + source_word_max + 1;
+
+/// The widest conflict line: `conflict ` (9), the name bound, then three digest fields each preceded by a space (a full 64-hex
+/// digest or the one-character absent token — the digest width is the wider), then a newline.
+pub const conflict_line_max: u32 = 9 + library_manifest.max_album_name + 3 * (1 + library_manifest.digest_hex_len) + 1;
+
+/// The widest summary line: `summary ` (8) plus three u32 decimals (10 each) with single spaces, then a newline.
+pub const summary_line_max: u32 = 8 + 3 * 10 + 2 + 1;
+
+/// The most bytes a rendered merge sheet can need: the header line, the summary line, then every resolved line (up to max_present),
+/// every dropped line (up to one catalog's albums), and every conflict line (up to max_present).
+pub const max_sheet_bytes: u32 =
+    @intCast(sheet_header.len + 1 + summary_line_max + library_merge.max_present * resolved_line_max + library_manifest.max_albums * dropped_line_max + library_merge.max_present * conflict_line_max);
+
+/// The sheet's only fault: a render whose text would exceed the caller's buffer, refused rather than truncated. A projection is
+/// otherwise infallible — every field it reads was already proven by merge.
+pub const SheetError = error{
+    /// The rendered page would exceed the caller's buffer — refused, never truncated.
+    Overflow,
+};
+
+/// The plain word for a merge source, for the readable page — the enum's name a keeper reads. Total over the enum.
+fn source_word(s: library_merge.Source) []const u8 {
+    return switch (s) {
+        .unchanged => "unchanged",
+        .ours => "ours",
+        .theirs => "theirs",
+        .agreed => "agreed",
+    };
+}
+
+/// A digest for the page, or the absent token when the side lacks the album — keeps a conflict line's fields positional.
+fn dig_or_absent(d: []const u8) []const u8 {
+    // invariant: a present digest is exactly the full hex width; an absent one is empty — no other shape reaches the page.
+    assert(d.len == library_manifest.digest_hex_len or d.len == 0);
+    return if (d.len == 0) absent_token else d;
+}
+
+/// Render a Merge as its readable page into `out`, returning the length written. The header line, a
+/// `summary <resolved> <dropped> <conflicts>` line, then one line per verdict in order: `resolved <name> <source> <digest>`,
+/// `dropped <name> <source>`, `conflict <name> <base> <ours> <theirs>` (an absent side's digest a `-`). Refuses Overflow rather than
+/// writing past the buffer.
+pub fn render_sheet(m: *const library_merge.Merge, out: []u8) SheetError!u32 {
+    // invariant: every list stays within its ceiling — merge already proved it, re-asserted before a byte renders.
+    assert(m.resolved_count <= library_merge.max_present and m.conflict_count <= library_merge.max_present and m.dropped_count <= library_manifest.max_albums);
+    const head = std.fmt.bufPrint(out, "{s}\nsummary {d} {d} {d}\n", .{ sheet_header, m.resolved_count, m.dropped_count, m.conflict_count }) catch return error.Overflow;
+    var off: u32 = @intCast(head.len);
+
+    var r: u32 = 0;
+    while (r < m.resolved_count) : (r += 1) {
+        const e = m.resolved[r];
+        // invariant: a resolved digest is exactly the full hex width — merge carried it straight from a proven manifest entry.
+        assert(e.digest.len == library_manifest.digest_hex_len);
+        const line = std.fmt.bufPrint(out[off..], "resolved {s} {s} {s}\n", .{ e.name, source_word(e.source), e.digest }) catch return error.Overflow;
+        off += @intCast(line.len);
+    }
+
+    var d: u32 = 0;
+    while (d < m.dropped_count) : (d += 1) {
+        const e = m.dropped[d];
+        const line = std.fmt.bufPrint(out[off..], "dropped {s} {s}\n", .{ e.name, source_word(e.source) }) catch return error.Overflow;
+        off += @intCast(line.len);
+    }
+
+    var c: u32 = 0;
+    while (c < m.conflict_count) : (c += 1) {
+        const cf = m.conflicts[c];
+        const line = std.fmt.bufPrint(out[off..], "conflict {s} {s} {s} {s}\n", .{ cf.name, dig_or_absent(cf.base_digest), dig_or_absent(cf.our_digest), dig_or_absent(cf.their_digest) }) catch return error.Overflow;
+        off += @intCast(line.len);
+    }
+
+    // invariant: the rendered page stays within the buffer.
+    assert(off <= out.len);
+    return off;
+}
+
+// --- selftest: THE SUMMARY LAW — the page opens with the format line and a summary line carrying the three tallies; THE RESOLVED
+//     LAW — every resolved album appears in order with its source word and digest; THE DROPPED LAW — every dropped album appears with
+//     the source that removed it; THE CONFLICT LAW — every conflict appears with its name and three digest fields, an absent side a
+//     `-`; THE ATOMIC LAW — a too-small buffer refuses Overflow ------------------------------------------------------------------
+
+fn make_library(out: []u8, names: []const []const u8, manifests: []const []const u8) !u32 {
+    // invariant: a witness helper builds a small, well-formed catalog — the two arrays run in lockstep.
+    assert(names.len == manifests.len);
+    var albums: [8]library_manifest.AlbumIn = undefined;
+    var i: u32 = 0;
+    while (i < names.len) : (i += 1) albums[i] = .{ .name = names[i], .album_manifest = manifests[i] };
+    return library_manifest.seal_library_manifest(out, albums[0..names.len]);
+}
+
+fn run_selftest() !u8 {
+    const m0 = "first album manifest bytes.....\x01\x02\x03";
+    const m1 = "second album manifest bytes....\x04\x05\x06";
+    const m1b = "second album manifest RESEALED.\x04\x05\x07";
+    const m2 = "third album manifest bytes.....\x07\x08\x09";
+    const m2c = "third album manifest OTHER.....\x07\x08\x0a";
+    const m4 = "fourth album manifest bytes....\x0b\x0c\x0d";
+
+    // base:  {debut m0, sequel m1, demo m2, jam m4}
+    // ours:  {debut m0 (unchanged), sequel m1b (ours changed), demo m2c (ours changed), extra ... none}  [ours removed jam]
+    // theirs:{debut m0 (unchanged), sequel m1 (unchanged), demo m4 (theirs changed differently → conflict on demo), jam m4}
+    // Verdicts: debut unchanged; sequel resolved ours; demo conflict (ours m2c vs theirs m4); jam dropped ours.
+    var base_rec: [library_manifest.max_library_manifest_bytes]u8 = undefined;
+    var ours_rec: [library_manifest.max_library_manifest_bytes]u8 = undefined;
+    var theirs_rec: [library_manifest.max_library_manifest_bytes]u8 = undefined;
+    const bn = try make_library(base_rec[0..], &.{ "debut", "sequel", "demo", "jam" }, &.{ m0, m1, m2, m4 });
+    const on = try make_library(ours_rec[0..], &.{ "debut", "sequel", "demo" }, &.{ m0, m1b, m2c });
+    const tn = try make_library(theirs_rec[0..], &.{ "debut", "sequel", "demo", "jam" }, &.{ m0, m1, m4, m4 });
+    const base = try library_manifest.open_library_manifest(base_rec[0..bn]);
+    const ours = try library_manifest.open_library_manifest(ours_rec[0..on]);
+    const theirs = try library_manifest.open_library_manifest(theirs_rec[0..tn]);
+    const g = library_merge.merge(&base, &ours, &theirs);
+
+    var sheet: [max_sheet_bytes]u8 = undefined;
+    const sn = try render_sheet(&g, sheet[0..]);
+    const text = sheet[0..sn];
+
+    // 1. THE SUMMARY LAW — the page opens with the format line and a three-tally summary (2 resolved · 1 dropped · 1 conflict:
+    //    debut unchanged + sequel ours resolved = 2; jam dropped = 1; demo conflict = 1).
+    if (std.mem.indexOf(u8, text, "format lotus-library-merge-sheet-v1\n") != 0) return error.HeaderWrong;
+    if (std.mem.indexOf(u8, text, "summary 2 1 1\n") == null) return error.SummaryWrong;
+
+    // 2. THE RESOLVED LAW — debut resolves unchanged; sequel resolves from ours; each with its digest.
+    if (std.mem.indexOf(u8, text, "resolved debut unchanged ") == null) return error.ResolvedUnchangedMissing;
+    if (std.mem.indexOf(u8, text, "resolved sequel ours ") == null) return error.ResolvedOursMissing;
+
+    // 3. THE DROPPED LAW — jam is dropped, and by ours (theirs left it at base).
+    if (std.mem.indexOf(u8, text, "dropped jam ours\n") == null) return error.DroppedMissing;
+
+    // 4. THE CONFLICT LAW — demo conflicts, carrying base, our, and their digests, each the full hex width (no side absent here).
+    if (std.mem.indexOf(u8, text, "conflict demo ") == null) return error.ConflictMissing;
+    {
+        const cf = g.conflicts[0];
+        if (std.mem.indexOf(u8, text, cf.base_digest) == null) return error.ConflictBaseMissing;
+        if (std.mem.indexOf(u8, text, cf.our_digest) == null) return error.ConflictOurMissing;
+        if (std.mem.indexOf(u8, text, cf.their_digest) == null) return error.ConflictTheirMissing;
+    }
+
+    // 5. THE CONFLICT-ABSENT LAW — a change-vs-remove conflict prints the removing side as `-`. base {solo m0}, ours changes it,
+    //    theirs removes it → conflict solo with a present base and our digest and a `-` for theirs.
+    {
+        var brec: [library_manifest.max_library_manifest_bytes]u8 = undefined;
+        var orec: [library_manifest.max_library_manifest_bytes]u8 = undefined;
+        var trec: [library_manifest.max_library_manifest_bytes]u8 = undefined;
+        const b2 = try make_library(brec[0..], &.{"solo"}, &.{m0});
+        const o2 = try make_library(orec[0..], &.{"solo"}, &.{m1b});
+        const empty = [_]library_manifest.AlbumIn{};
+        const t2 = try library_manifest.seal_library_manifest(trec[0..], empty[0..]);
+        const bb = try library_manifest.open_library_manifest(brec[0..b2]);
+        const oo = try library_manifest.open_library_manifest(orec[0..o2]);
+        const tt = try library_manifest.open_library_manifest(trec[0..t2]);
+        const g2 = library_merge.merge(&bb, &oo, &tt);
+        var sheet2: [max_sheet_bytes]u8 = undefined;
+        const sn2 = try render_sheet(&g2, sheet2[0..]);
+        const text2 = sheet2[0..sn2];
+        if (std.mem.indexOf(u8, text2, "conflict solo ") == null) return error.AbsentConflictMissing;
+        if (std.mem.indexOf(u8, text2, " -\n") == null) return error.AbsentTokenMissing; // theirs is `-` at line end
+    }
+
+    // 6. THE ATOMIC LAW — a buffer too small for the whole page refuses Overflow rather than truncating it.
+    {
+        var tiny: [40]u8 = undefined; // room for the header at most, not the summary and verdict lines
+        if (render_sheet(&g, tiny[0..])) |_| return error.OverflowSlipped else |e| if (e != error.Overflow) return error.WrongOverflow;
+    }
+
+    print("GREEN ales-library-merge-sheet: the merge verdict, as a readable page — a `format lotus-library-merge-sheet-v1` page (a " ++
+        "`summary <resolved> <dropped> <conflicts>` line then one `resolved` / `dropped` / `conflict` line per verdict) rendered " ++
+        "from an ALES234 Merge. THE SUMMARY LAW: the page opens with the format and three-tally summary lines. THE RESOLVED LAW: " ++
+        "every resolved album appears with its source word (unchanged/ours/theirs/agreed) and digest. THE DROPPED LAW: every " ++
+        "dropped album appears with the source that removed it. THE CONFLICT LAW: every conflict appears with its name and three " ++
+        "digest fields, an absent side printed `-` (a token a 64-hex digest can never be). THE ATOMIC LAW: a small buffer refuses " ++
+        "Overflow. A projection, not a round-trip — the eye's version of the merge, every catalog primitive earning its readable " ++
+        "page; no real file, no DAC, no network, no keys, no funds, no real device\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
