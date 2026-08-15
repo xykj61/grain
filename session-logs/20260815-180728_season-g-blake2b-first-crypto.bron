@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260815.180728
+editor Zed
+model claude-fable-5
+voice Kyri
+host Framework 16 AMD — Eastern (EDT); this session in ai-jail on Vultr SEA VPS
+title Season G opens — BLAKE2b-512 authored in pure Rye, RFC + std.crypto parity GREEN
+prompt Recursion loop (baton prin recur): take the next agent-doable lap Lindy-first crux-first, Rye prioritized, Glow on green-witnessed Rye; approve own design rounds; send each finished increment as its own signed round; stop at the custody gates.
+think The living edge was ALES238 (Lotus catalog_verify). The named next Lotus crux — a signed carry naming who made a record — is a crypto/custody seam, so the Lindy-first crux-first move is not one more Lotus lap but opening Season G (Cryptography), the highest-Lindy new thread in the decision wave: it serves every module that will ever sign or verify.
+think Of Monocypher's primitives (Ed25519, X25519, BLAKE2b, ChaCha/Poly), BLAKE2b is the crux-first opening — Monocypher's own hash, the foundation the whole signing stack stands on, and pure 64-bit arithmetic (no field math), so it is genuinely solvable in authored Rye this round rather than a season of its own.
+think vendor/monocypher is an empty submodule — its network fetch is held on Keaton's hand (diagnosis 20260726.025926). So the honest, runnable parity ground is the RFC 7693 Appendix A known-answer plus Zig's independent std.crypto BLAKE2b; Monocypher passes the same RFC vectors and is added as a third target in a later rung without changing a byte. Named Monocypher-source parity as a horizon, not claimed.
+think Authored the primitive from the algorithm — IV, SIGMA schedule, the G mixing function (comptime-unrolled, index bounds proven at compile time), twelve-round compression, byte counter and final-block flag, wrapping +% for the mod-2^64 adds. The primitive calls no std.crypto; std is used only inside the selftest as an independent oracle.
+obs Self-approved the design round (active-designing/20260815-180728) rather than checking in — the crypto library is engineering; only signing with the maintainer's identity key is the gate, which this hash primitive never touches.
+obs Named the rung semantically (Season G · blake2b), not a bare-letter ladder rung — the waymark for Season G is a later small round under the ladder law, and CION favors semantic labels regardless.
+obs Constant-time timing-safety kept a separate named horizon — it wants measurement, not a claim; BLAKE2b's data flow is data-independent by construction.
+loom witness=crypto_blake2b_witness rfc_vectors=2 std_parity_inputs=4 digest_bits=512 rounds=12 result=GREEN
+file crypto/blake2b.rye the authored BLAKE2b-512 primitive — IV, SIGMA, the G function, compression, hash512, to_hex; bounded input, contract asserts, no std.crypto in the primitive
+file tools/crypto_blake2b_witness.rish builds and runs the selftest; asserts the GREEN crypto-blake2b line; RFC 7693 + std.crypto parity proven on metal
+file active-designing/20260815-180728_open-season-g-crypto-blake2b.md self-approved design read opening Season G, naming why BLAKE2b first and the held-Monocypher parity ground
+recommend keep-going — the next Season G crypto crux (SHA-512 or the ChaCha/Poly line, then Ed25519) builds on this GREEN hash foundation; the Lotus signed carry unblocks once a Rye signing primitive is parity-GREEN, signing-with-identity-key staying the gate
