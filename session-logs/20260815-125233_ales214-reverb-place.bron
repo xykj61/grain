@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260815.125233
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — ai-jail — Eastern (EDT) time convention
+title ALES214 — Lotus's reverb_place: reverberate the master WET, then seat the wet image in the field — how wide AND where, in one call
+prompt Recur the road Lindy-first crux-first, self-approve design rounds, send each finished increment, stop at custody gates, baton prin recur
+think Second lap of the turn: with the REMEMBER living edge synced, continued the ALES cadence. ALES213's named next was a stereo-axis twin of reverb_pan (a linked pan or per-return balance); examined against the proven primitives, a true cross-mixing pan of an already-stereo wet needs NEW cross-channel arithmetic — a DSP design seam that breaks the reverb series' standing no-new-arithmetic discipline
+think Chose instead the honest capstone the width (ALES212) and pan (ALES213) sub-series earned: reverb_place — reverberate once, then seat the wet image's width AND position in one call, composing three stages already proven byte for byte (stereo_reverb_preset + stereo_width + power.split/timeline.gain). No new arithmetic; it orders proven stages
+think Atomicity crux: validate BOTH fractions (BadWidth by ALES211's bounds, BadPan by ALES11's) BEFORE the reverb writes, so a bad seating leaves the master fully dry; the reverb then prechecks its own DurationTooLong/BadRange; the width is proven legal so stereo_width cannot fault; each pan weight is proven <= den so both gains are attenuations whose saturate is a no-op — a legal call refuses whole up front or completes whole
+think Five laws on a 1024-sample two-impulse bench: width-at-centre (width 0 + centre pan folds to mono, each channel an attenuation of the shared mid), pan-at-unity (unity width keeps the stereo image within 1 LSB, hard-left pan routes the whole wash left, right silenced), composition (a general width+off-centre pan equals reverb then width then the two equal-power gains byte for byte, each channel an attenuation of the widened wet), centred-invariant (a centred master seated at centre keeps left==right, each attenuated), fault (bad width BadWidth, bad pan BadPan, DurationTooLong, BadRange, each leaving the master dry)
+obs GREEN on the first metal pass — no RED to book. tools/ales_reverb_place_witness.rish GREEN; tame_style_check bans clean (the 11 zero-assert ratchets are pre-existing files, not this module); width-check exit 0. Definition of Done met: opening triad, contract asserts (>=2/fn, each // invariant:), no new @memcpy, witness GREEN
+obs Followed reverb_pan's structure exactly for legibility (same eq/load_stereo/abs16 helpers, same fault-law shape), adding only the width stage between reverb and pan and a second up-front fraction check
+loom witness=ales_reverb_place_witness result=green bench_samples=1024 laws=5 tame=clean width=0
+file lotus/reverb_place.rye ALES214 module — reverberate, widen, place; three proven stages, no new arithmetic
+file tools/ales_reverb_place_witness.rish the witness (build + selftest + GREEN grep), three EN/Radiant/TAME say lines
+file active-designing/20260815-125233_fill-ales214-lotus-reverb-place.md the self-approved design read
+file lotus/README.md front door Status extended to ALES213+ALES214, road-on sentence + stamp refreshed
+file work-in-progress/REMEMBER.md living edge repointed to ALES214, git nib refreshed in the same work commit
+file session-logs/20260815-125233_ales214-reverb-place.bron this record
+recommend keep-going the width-and-pan sub-series is closed and the reverb family stands complete (mix, time, tone, predelay, console-predelay, gate, gate-env, shelf, early/late, freeze, width, pan, place, preset); the honest next crux likely opens a FRESH Lotus family (a spatial or utility surface) rather than another reverb knob — name it as its own self-approved design round
