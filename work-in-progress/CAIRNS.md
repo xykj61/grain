@@ -24,6 +24,12 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260815.175524` — Decision-wave breach queue: Bron→Kyri and work-in-progress→crux (prep, no cut yet)
+
+**Walk-back nib:** `9e3c2dccfa`
+**Swept:** *nothing yet* — planted **ahead** of two newly approved breaches so each keeps its walk-back before it cuts: **Bron → Kyri** (unify the notation entirely under Kyri — `.kyri` takes the responsibility of `.bron`; Kyri is voice · notation · *compressed receipts* · preferred Grain variant, named in gratitude after Kyrie Irving) and **`work-in-progress/` → `crux/`** (a higher-sorting priority folder — `crux/REMEMBER.md`, etc.; 902 files reference `work-in-progress/`, every one repointed in the rename round). Each executes as its own signed loop round; the dated `.bron` logs' deep rename stays a separate circled step under the one-clock law.
+**What waits there, worth recalling:** the whole tree under the elder folder name `work-in-progress/` and the elder notation name `.bron` — every REMEMBER/CAIRNS/TASKS path, every `.bron` session log, and the pre-rename reference graph. Walk back with `git show 9e3c2dccfa:work-in-progress/REMEMBER.md` or `git log --oneline 9e3c2dccfa`. Decisions + flags: [`../active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md`](../active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md).
+
 ### `20260813.020035` — Double-seat expansion breach queue (prep, no cut yet)
 
 **Walk-back nib:** `0a074d5059`
