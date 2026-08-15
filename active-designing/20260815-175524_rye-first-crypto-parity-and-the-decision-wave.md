@@ -139,6 +139,25 @@ impression is the freshest weave, in one clean deep pass rather than many.
 
 ---
 
+## Brix configuration — the composition language in the plan
+
+**Crux · cross-cutting, infrastructure.** Brix (`.brix`) is Grain's composition
+language: it declares systems, evaluates to Bron/Kyri, interfaces with Mantra,
+and targets Aurora + Tally. It belongs explicitly in the season plan so
+configuration is authored *in Brix*, not scattered across ad-hoc files. Two
+strands:
+
+- **Brix code** — grow real `.brix` configuration for the modules that need
+  declared systems (the Puddle/Aurora fleet, the constel test networks, the
+  crypto/Kumara identity wiring), under TAME Guidance, Rye-first beneath it.
+- **Brix docs, molted** — molt the Brix design and reference docs alongside the
+  docs-compression pass so an Acme Corporation employee can read what Brix is and
+  write it, and so the molted docs ride into the seed. This composes with the
+  docs-compression molt above (one docs round can carry both).
+
+Seated into planning as its own thread; the loop grows Brix config as the
+modules it configures come online.
+
 ## Pause & yonder
 
 ### Brushstroke — paused, waiting on the Bit Design System
