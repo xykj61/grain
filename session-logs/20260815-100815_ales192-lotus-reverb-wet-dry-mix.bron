@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260815.100815
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title ALES192 — Lotus's reverb_mix: the wet/dry balance, the first reverb knob that is not a bank choice — snapshot the dry, wet in place, blend the span
+prompt Continue the recursion loop on the ALES / Lotus edge, Lindy-first crux-first; approve the design round, make progress, send each finished increment to origin and xykj61; stop at custody gates.
+think ALES190 and ALES191 gave the reverb a face reached for by name (room · hall · plate), mono and stereo — yet every knob so far chose WHICH room. A mixing keeper reaches for one more control before any other: HOW MUCH reverb, the wet/dry balance that sits a voice in a room without drowning it. ALES191's own recommend named it next as the first preset control that is not a bank choice. By Lindy-first crux-first this is the highest-Lindy tractable move — the single most-reached-for reverb knob, read for years.
+think The shape: snapshot the DRY span into a bounded stack buffer (max_clip = 4096, an 8 KB snapshot), reverberate WET in place through ALES190's reverb_preset UNCHANGED, then blend out[i] = saturate((den-num)·dry[i]/den + num·wet[i]/den) — a linear balance at the named fraction num/den, summed in i64 and saturated ONCE exactly as ALES3's mix. Confirmed reverb.rye writes only within [start, start+count), so the blend covers exactly the modified span. The span is converted with the same clock.samples_for reverb_preset uses, so the snapshot and blend span match the preset's written span.
+think Five laws, each provable: the DRY EDGE (mix = 0 restores the exact dry — the identity, even though the wet ran underneath); the WET EDGE (mix = den equals reverb_preset over the span byte for byte); the BLEND IS BETWEEN (a half mix differs from both edges and each sample is the honest weighted average dry/2 + wet/2, byte for byte against the two edges run side by side); SILENCE STAYS SILENCE; the FAULTS FORWARD (a bad fraction BadMix — this rung's one own fault — a span past the clip DurationTooLong, an out-of-range span BadRange, the clip untouched, the dry snapshot a read only so a refusal never mutates).
+obs GREEN on the FIRST metal pass — no RED to book. TAME bans clean, width exit 0, ALES190 preset re-run GREEN beside it. The one new arithmetic is the linear blend, bounded in i64 and clamped once so it can never wrap; the mix a named u32/u32 fraction, not a decibel. Purely local: one clip, a validated clock, ALES190's fixed banks, a bounded stack snapshot, siloed to lotus/; no socket, network, keys, funds, device, or speaker — no custody gate reached, a self-approved design round.
+loom witness=ales_reverb_mix_witness result=green rooms=3 clip_samples=1024 snapshot_max=4096 preset_rerun=green reds_fixed=0
+file active-designing/20260815-100815_fill-ales192-lotus-reverb-wet-dry-mix.md the self-approved design read choosing the wet/dry-mix crux and naming its five laws
+file lotus/reverb_mix.rye ALES192 — the wet/dry balance: snapshot the dry, wet in place through reverb_preset, blend the span; the two edges exact
+file tools/ales_reverb_mix_witness.rish the witness — build, selftest, and the GREEN ales-reverb-mix assertion on metal, ALES190 re-proven beside it
+file session-logs/README.md prepended the newest-first ALES192 index row
+file work-in-progress/REMEMBER.md refreshed the git nib in the same work commit
+recommend keep-going a stereo wet/dry mix (the same blend over both channels of a StereoClip, the image held) is the thin twin next, exactly as ALES191 followed ALES190; no custody gate reached
