@@ -1,0 +1,186 @@
+//! lotus/stereo_silence_span.rye — ALES122: stereo_silence_span — silencing a span carried into stereo, both channels in lockstep. ALES110 named `silence_span` — write silence over the
+//! `count` samples starting at `start` IN PLACE, so [start, start+count) becomes zero and the length HOLDS — for a mono Clip. Yet a Lotus master is a StereoClip (ALES10), two Clips heard
+//! together whose defining invariant is that LEFT and RIGHT hold the SAME length so the two channels stay aligned in time. This rung carries silence_span into stereo the way ALES121
+//! carried paste_over: run ALES110's proven mono `silence_span` on each channel with the SAME `start` and `count`, so muting a bleed or dropping a cough clears both speakers at once.
+//! It is exactly the zero-paint case of ALES121's stereo_paste_over — silence is the overwrite whose paint is zero — and the length-preserving third beside stereo_cut (which SHRINKS).
+//!
+//! The rule, stated once: stereo_silence_span(sc, start, count) writes silence over [start, start+count) in both channels, reusing ALES110's mono `silence_span` per channel over its
+//! public API. BOTH channels are validated BEFORE either is mutated — because mono silence_span can fault only with BadRange and both channels enter equal-length, the span is checked
+//! once against the shared length up front, so once it passes each mono silence_span is pre-validated to succeed and a refusal never desynchronises the channels. It reuses ALES2's
+//! EditError whole and invents none of its own.
+//!
+//! The crux — four laws. THE STEREO SILENCE LAW: the left channel equals mono silence_span(left, start, count) and the right equals mono silence_span(right, start, count), each byte for
+//! byte, the span all zero and every sample outside it unchanged. THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their starting length — silencing writes
+//! values only, never resizing, so the stereo image stays aligned. THE SPECIALIZATION LAW: stereo_silence_span(start, count) equals ALES121's stereo_paste_over(start, zeros, zeros) byte
+//! for byte on both channels — silence is the overwrite whose paint is zero. THE ATOMICITY / DEGENERATE LAW: any refusal leaves BOTH channels byte for byte untouched and still balanced;
+//! count 0 the identity on both, silence_span(0, len) silences both wholly, a span past the samples BadRange.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES122.
+//! Design read: active-designing/20260815-021904_fill-ales122-lotus-stereo-silence-span.md
+//! Stands on: lotus/silence_span.rye (ALES110) — the mono span-silence run once per channel; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance
+//! invariant; lotus/stereo_paste_over.rye (ALES121) — the stereo overwrite this rung specializes (zero paint), imported by the selftest to prove the specialization law; lotus/timeline.rye
+//! (ALES2) — the Clip and the EditError reused whole; lotus/meter.rye (ALES13) — the peak/RMS meter, used only by the witness to read the result.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It writes zeros over an existing span in each channel —
+//! changing no length and reading no byte past either channel's len. No real sample rate, no network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_silence_span.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const silence_span = @import("silence_span.rye");
+const stereo_paste_over = @import("stereo_paste_over.rye");
+const meter = @import("meter.rye");
+
+pub const stereo_silence_span_version = "20260815.021904";
+
+/// stereo_silence_span forwards ALES2's OWN fault reused by name — BadRange when the span falls outside the current samples — and invents none of its own.
+pub const StereoSilenceSpanError = timeline.EditError;
+
+/// Write silence over [start, start+count) in both channels in lockstep — the stereo image staying balanced and the length holding. Both channels are validated before either is
+/// mutated: because mono silence_span can fault only with BadRange and the channels enter equal-length, the span is checked once against the shared length up front, so a refusal never
+/// leaves one channel silenced and the other not. Reuses ALES110's mono silence_span per channel.
+pub fn stereo_silence_span(sc: *pan.StereoClip, start: u32, count: u32) StereoSilenceSpanError!void {
+    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the edit preserves.
+    assert(sc.left.len == sc.right.len);
+
+    // invariant: the span lies wholly within the (shared) current samples, checked without underflow — count against the remainder — refused by name before any write.
+    const len: u32 = sc.left.len;
+    if (start > len) return error.BadRange;
+    if (count > len - start) return error.BadRange;
+
+    // Every check passed and holds identically for both channels, so each mono silence_span is pre-validated to succeed — no refusal can land between the two channel edits.
+    try silence_span.silence_span(&sc.left, start, count);
+    try silence_span.silence_span(&sc.right, start, count);
+
+    // invariant: the channels leave balanced — silencing writes values only, so each channel holds its starting length and the stereo image stays aligned.
+    assert(sc.left.len == sc.right.len);
+}
+
+// --- selftest: THE STEREO SILENCE LAW — each channel equals ALES110's mono silence_span on that channel byte for byte, the length held; THE BALANCE / LENGTH LAW — left.len == right.len
+//     after, both holding their starting length; THE SPECIALIZATION LAW — stereo_silence_span equals ALES121's stereo_paste_over with zero payloads; THE ATOMICITY / DEGENERATE LAW — a
+//     refusal leaves both channels untouched, count 0 the identity, silence_span(0, len) silences both wholly, a span past the samples BadRange ----------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try timeline.splice(&sc.left, 0, l);
+    try timeline.splice(&sc.right, 0, r);
+}
+
+fn run_selftest() !u8 {
+    // 1. THE STEREO SILENCE LAW — each channel equals ALES110's mono silence_span on that channel, proven side by side over one anchor with different per-channel samples.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 10, 20, 30, 40, 50 }, &[_]i16{ 11, 21, 31, 41, 51 });
+        try stereo_silence_span(&sc, 1, 2); // silence [1,3) in both channels
+
+        var ml = timeline.Clip{};
+        try timeline.splice(&ml, 0, &[_]i16{ 10, 20, 30, 40, 50 });
+        try silence_span.silence_span(&ml, 1, 2);
+        var mr = timeline.Clip{};
+        try timeline.splice(&mr, 0, &[_]i16{ 11, 21, 31, 41, 51 });
+        try silence_span.silence_span(&mr, 1, 2);
+
+        if (!eq(sc.left.samples(), ml.samples())) return error.LeftChannelWrong;
+        if (!eq(sc.right.samples(), mr.samples())) return error.RightChannelWrong;
+        // Concretely: {10,0,0,40,50} on the left, {11,0,0,41,51} on the right; length held at 5.
+        if (!eq(sc.left.samples(), &[_]i16{ 10, 0, 0, 40, 50 })) return error.LeftSpanWrong;
+        if (!eq(sc.right.samples(), &[_]i16{ 11, 0, 0, 41, 51 })) return error.RightSpanWrong;
+    }
+
+    // 2. THE BALANCE / LENGTH LAW — the channels stay equal length and each holds its starting length; the stereo image stays aligned. Proven at the head and through the tail.
+    {
+        var head = pan.StereoClip{};
+        try load_stereo(&head, &[_]i16{ 1, 2, 3 }, &[_]i16{ 6, 7, 8 });
+        try stereo_silence_span(&head, 0, 1); // silence the head
+        if (head.left.len != head.right.len) return error.HeadUnbalanced;
+        if (head.left.len != 3) return error.HeadLength;
+        if (!eq(head.left.samples(), &[_]i16{ 0, 2, 3 })) return error.HeadLeftWrong;
+        if (!eq(head.right.samples(), &[_]i16{ 0, 7, 8 })) return error.HeadRightWrong;
+
+        var tail = pan.StereoClip{};
+        try load_stereo(&tail, &[_]i16{ 1, 2, 3 }, &[_]i16{ 6, 7, 8 });
+        try stereo_silence_span(&tail, 1, 2); // through the tail
+        if (tail.left.len != tail.right.len) return error.TailUnbalanced;
+        if (!eq(tail.left.samples(), &[_]i16{ 1, 0, 0 })) return error.TailLeftWrong;
+        if (!eq(tail.right.samples(), &[_]i16{ 6, 0, 0 })) return error.TailRightWrong;
+    }
+
+    // 3. THE SPECIALIZATION LAW — stereo_silence_span(start, count) equals ALES121's stereo_paste_over(start, zeros, zeros) byte for byte on both channels: silence is the overwrite
+    //    whose paint is zero.
+    {
+        const l0 = [_]i16{ 10, 20, 30, 40, 50 };
+        const r0 = [_]i16{ 11, 21, 31, 41, 51 };
+
+        var silenced = pan.StereoClip{};
+        try load_stereo(&silenced, &l0, &r0);
+        try stereo_silence_span(&silenced, 1, 2);
+
+        var pasted = pan.StereoClip{};
+        try load_stereo(&pasted, &l0, &r0);
+        try stereo_paste_over.stereo_paste_over(&pasted, 1, &[_]i16{ 0, 0 }, &[_]i16{ 0, 0 });
+
+        if (!eq(silenced.left.samples(), pasted.left.samples())) return error.SpecializationLeftWrong;
+        if (!eq(silenced.right.samples(), pasted.right.samples())) return error.SpecializationRightWrong;
+    }
+
+    // 4a. THE ATOMICITY LAW — a refusal leaves BOTH channels byte for byte untouched and still balanced, proven for a start past the samples and a count past the remainder.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 1, 2, 3 }, &[_]i16{ 4, 5, 6 });
+
+        if (stereo_silence_span(&sc, 4, 1)) |_| return error.StartNotRefused else |e| {
+            if (e != error.BadRange) return error.WrongError;
+        }
+        if (stereo_silence_span(&sc, 2, 5)) |_| return error.CountNotRefused else |e| {
+            if (e != error.BadRange) return error.WrongError;
+        }
+        if (!eq(sc.left.samples(), &[_]i16{ 1, 2, 3 })) return error.RefusedWroteLeft;
+        if (!eq(sc.right.samples(), &[_]i16{ 4, 5, 6 })) return error.RefusedWroteRight;
+        if (sc.left.len != sc.right.len) return error.RefusedUnbalanced;
+    }
+
+    // 4b. THE DEGENERATE LAW — count 0 the identity on both channels, and silence_span(0, len) silences both wholly.
+    {
+        var zero = pan.StereoClip{};
+        try load_stereo(&zero, &[_]i16{ 7, 8, 9 }, &[_]i16{ 1, 2, 3 });
+        try stereo_silence_span(&zero, 1, 0); // silence nothing — the identity
+        if (!eq(zero.left.samples(), &[_]i16{ 7, 8, 9 })) return error.ZeroLeftMoved;
+        if (!eq(zero.right.samples(), &[_]i16{ 1, 2, 3 })) return error.ZeroRightMoved;
+
+        var whole = pan.StereoClip{};
+        try load_stereo(&whole, &[_]i16{ 7, 8, 9 }, &[_]i16{ 1, 2, 3 });
+        try stereo_silence_span(&whole, 0, 3); // silence the whole span
+        if (!eq(whole.left.samples(), &[_]i16{ 0, 0, 0 })) return error.WholeLeftWrong;
+        if (!eq(whole.right.samples(), &[_]i16{ 0, 0, 0 })) return error.WholeRightWrong;
+    }
+
+    _ = meter;
+
+    print("GREEN ales-stereo-silence-span: STEREO_SILENCE_SPAN — silencing a span carried into stereo, both channels in lockstep. Write silence over [start, start+count) in both " ++
+        "channels, reusing ALES110's mono silence_span per channel; a Lotus master is a StereoClip (ALES10) whose defining invariant is that left and right hold the same length, so " ++
+        "muting a bleed clears both speakers at once. It is exactly the zero-paint case of ALES121's stereo_paste_over — silence is the overwrite whose paint is zero — and the " ++
+        "length-preserving third beside stereo_cut (which shrinks). BOTH channels are validated before either is mutated — because mono silence_span can fault only with BadRange and " ++
+        "the channels enter equal-length, the span is checked once against the shared length up front, so a refusal never desynchronises the channels. The crux is four laws. THE " ++
+        "STEREO SILENCE LAW: each channel equals ALES110's mono silence_span on that channel byte for byte, the span all zero and every sample outside it unchanged. THE BALANCE / " ++
+        "LENGTH LAW: left.len == right.len after the edit and both hold their starting length. THE SPECIALIZATION LAW: stereo_silence_span equals ALES121's stereo_paste_over with zero " ++
+        "payloads byte for byte on both channels. THE ATOMICITY / DEGENERATE LAW: any refusal leaves both channels byte for byte untouched and still balanced, count 0 the identity on " ++
+        "both, silence_span(0, len) silencing both wholly, a span past the samples BadRange. Purely local — two bounded i16 Clips silenced through the proven mono silence_span, reading " ++
+        "no byte past either channel's len; no real sample rate, no network, no keys, no funds, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
