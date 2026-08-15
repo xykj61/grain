@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260815.074743
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) time convention — this session in ai-jail
+title ALES170 — Lotus's stereo_tone: the one-pole tone control carried into stereo, the SAME coefficient shaping BOTH channels — the rung that OPENS the stereo EQ / filter class
+prompt Autonomous loop lap after ALES169: take the next agent-doable crux Lindy-first crux-first, self-approve the design round, send each finished increment to origin and xykj61 as its own signed round, STOP at custody gates.
+think After ALES169 closed the stereo held-dynamics quartet, I surveyed the mono/stereo gap: the biggest un-ported family was the EQ / filter class (mono ALES40-48), which the mono ladder opened BEFORE dynamics. Lindy-first crux-first — a channel strip's tone shaping is read on every master — so the EQ class is the durable next family, and its simplest member (ALES40's one-pole tone control) is the rung that opens it, the way ALES129's normalize opened the stereo amplitude class.
+think The stereo lift is parametric, not linked: a tone control's coefficient num/den is a smoothing fraction the caller names, not a measured scalar, so the SAME coefficient on both channels preserves the image for free (like ALES130's shared ramp, unlike ALES129's linked scalar or the dynamics detector's linked envelope). The two filter states stay INDEPENDENT, one per channel — a filter's state is the running estimate of the signal it filters, and linking it across channels would be a BUG here, bleeding one channel's transients into the other's brightness. That independence is exactly right for EQ.
+think Composed it as ALES40 run per channel: StereoToneError = tone.ToneError reused whole; validate once via tone.precheck against the shared length before either channel writes (atomic refusal), then tone.low_pass_carry / high_pass_carry on each channel with the same coefficient and its own i64 state. Carried forms lift BOTH per-channel states so a two-piece filter equals the whole once, one impl shared with from-silence so they cannot drift.
+think Proved five laws against the real ALES40 tool: stereo low-pass law (each channel == mono low_pass byte for byte, channels genuinely differing); stereo high-pass law (same, plus per-channel reconstruction lp+hp=x where the difference fits); parametric/image law (identical-channel master stays identical through both filters, a constant input settling to DC exactly per channel); carry law (two-piece == whole once on both, both states surviving); silence/balance/atomicity/degenerate law.
+obs No custody gate reached — pure local i16 DSP siloed to lotus/, a self-approved design round. Built and ran on metal; witness GREEN through Rishi, TAME clean (opening triad, ≥2 asserts/fn with // invariant, no @memcpy, named errors with try). The stereo EQ / filter class is now open at its simplest member; the shelf, band-pass, band-reject, and parametric bell are its remaining Lindy rungs.
+loom witness=ales_stereo_tone_witness selftest=GREEN laws=5 channels=2 class=eq-filter-opened
+file active-designing/20260815-074743_fill-ales170-lotus-stereo-tone.md the self-approved design read
+file lotus/stereo_tone.rye the module — one coefficient, two independent states, over both channels
+file tools/ales_stereo_tone_witness.rish the witness proving it GREEN on metal
+recommend keep-going the stereo EQ / filter class is open; the next Lindy rung is stereo_shelf (ALES41) or the carried filter (ALES43) — continue the EQ family before the modulation/delay family
