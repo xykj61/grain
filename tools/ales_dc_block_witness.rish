@@ -1,0 +1,39 @@
+# tools/ales_dc_block_witness.rish — the one-pole IIR DC blocker: a drifting-offset remover with carried state, y[n] = x[n] − x[n−1] + R·y[n−1] (ALES91).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES91.
+# Design read: active-designing/20260814-223442_fill-ales91-lotus-dc-blocker.md
+# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/max, the one true saturate) and the carried-state idiom of lotus/tone_carry.rye (ALES43 — the
+# filter that spans a re-berthed region without a fresh transient). The sibling of lotus/dc_remove.rye (ALES90 — the block-mean remover): where the block mean
+# is memoryless and subtracts one average (a CONSTANT offset over a bounded region), this rung carries state and FOLLOWS a drifting offset the block mean cannot.
+#
+# lotus/dc_block.rye runs the one-pole difference equation sample by sample, saturating at the rails. The crux is that it CARRIES STATE (the previous input
+# and previous output), so — exactly as ALES43's carried low-pass — a span blocked in two pieces (the second continuing the first's ending state) equals the
+# whole blocked once, byte-for-byte, no re-transient at the seam. The selftest proves it: a fresh blocker equals the from-silence dc_block; a constant offset
+# settles to EXACTLY zero (the feedback truncates to nothing in finite steps); a span blocked in two pieces equals the whole blocked once (the crux); it
+# FOLLOWS a DC step a block mean cannot (each region driven to zero where the block mean leaves ±3000); reset re-opens the from-silence transient; R = 0 is the
+# legal first-difference highpass (num ≥ 0 here, unlike the tone filter's num ≥ 1); saturation at the rail is honest (a sharp edge pins to +32767, never wraps);
+# the span discipline holds; an illegal pole (num = den, num < 0, den = 0, den past the ceiling) refuses BadCoeff with the state untouched; an out-of-range
+# span refuses BadRange with the clip untouched. Purely local — one recursive difference in i64, one saturate per sample; no real device, no real sample rate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_dc_block_witness.rish
+
+say "ales-dc-block: Language EN — a real DC offset DRIFTS: a mic warms and its bias creeps, two takes spliced together each ride a different rail, the offset steps partway through a clip. ALES90's block mean subtracts one average and cannot follow a moving offset. The classic answer is the one-pole IIR DC blocker, y[n] = x[n] − x[n−1] + R·y[n−1] — a highpass with a zero AT direct current and a pole just inside it, driving WHATEVER offset the signal currently rides toward zero, sample by sample, and following the offset as it moves."
+say "ales-dc-block: Style Radiant — the law is stated positively: the difference x[n] − x[n−1] is the zero at direct current (a constant settles to zero out — DC removed EXACTLY, reached in finite steps), R·y[n−1] the leaky integrator that widens the notch (R near one → a narrow notch keeping the bass just above DC; R = 0 → the plain first difference). The crux stands out: the blocker CARRIES STATE, so a span blocked in two pieces equals the whole blocked once byte-for-byte — the carried-state SIBLING of the memoryless block mean, the ALES43 shape."
+say "ales-dc-block: Lens TAME — one mono clip of i16 PCM DC-blocked in place over a span; one recursive difference equation run sample by sample, every intermediate in i64 so nothing overflows before the one saturate (ALES2 reused, never a wrap), the feedback multiply bounded by max_pole_den; the pole must be a stable fraction in [0, 1) (num ≥ 0, num < den) or refuse BadCoeff before a sample is touched; a span outside the samples refuses BadRange before any read or write, the clip and carried state untouched on refusal; siloed to lotus/, no real sample rate, no frequency in hertz, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/dc_block"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/dc_block.rye -femit-bin=${bin}"]
+assert build.ok else "ales-dc-block: build failed — ${build.err}"
+
+let outfile = "lotus/bin/dc_block.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-dc-block: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-dc-block: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-dc-block' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-dc-block: selftest did not print the GREEN ales-dc-block line"

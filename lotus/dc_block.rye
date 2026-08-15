@@ -1,0 +1,363 @@
+//! lotus/dc_block.rye — ALES91: the one-pole IIR DC blocker — a DRIFTING-offset remover with CARRIED STATE, y[n] = x[n] − x[n−1] + R·y[n−1].
+//! ALES90's dc_remove is the BLOCK-MEAN remover: it looks at a whole span at once, subtracts the one average, and is memoryless — perfect for the CONSTANT
+//! offset a rectifier introduces over a bounded region. Yet a real offset DRIFTS: a mic warms and its bias creeps, two takes spliced together each ride a
+//! different rail, the DC steps partway through a clip. A block mean cannot follow a moving offset — it subtracts one number, leaving each region offset by
+//! its distance from the whole-span average. The classic answer is the one-pole IIR DC blocker: a highpass with a ZERO at direct current and a POLE just
+//! inside it, so it drives WHATEVER offset the signal currently rides toward zero, sample by sample, and follows the offset as it moves.
+//!
+//! The crux: a DC blocker CARRIES STATE (the previous input and the previous output), so — exactly as ALES43's carried low-pass — a span blocked in TWO
+//! PIECES, the second continuing from the first's ending state, equals the whole blocked ONCE, byte-for-byte. That split-equals-whole property is the whole
+//! reason this rung is a SIBLING of dc_remove rather than a copy: dc_remove is memoryless (its second pass is a no-op), this one has memory (its second span
+//! continues the first's decay with no fresh transient at the seam — the click a per-span restart would leave). It is the ALES43 SHAPE the dc_remove doc
+//! booked in as many words.
+//!
+//! The step is y[n] = (x[n] − x[n−1]) + R·y[n−1] with R = num/den a stable pole in [0, 1): the difference x[n] − x[n−1] is the zero AT direct current (a
+//! constant in gives zero out at steady state — DC removed EXACTLY, reached in finite steps because @divTrunc shrinks the feedback to nothing once the tail
+//! is small enough), and R·y[n−1] is the leaky integrator that widens the notch (R near one → a narrow notch that keeps the bass just above DC; R = 0 → the
+//! plain first difference, a wide highpass). The pole must be STRICTLY inside the unit circle (num < den): num = den is a pure integrator (y[n] = x[n] − x[0],
+//! marching, never settling), and num > den is unstable — both refuse BadCoeff. num = 0 is legal here (the first-difference highpass), UNLIKE the ALES40 tone
+//! filter whose coefficient must move forward (num ≥ 1); a DC blocker at R = 0 is a real, useful filter, so its coefficient law is its own.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES91.
+//! Design read: active-designing/20260814-223442_fill-ales91-lotus-dc-blocker.md
+//! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/max, and the one true saturate; the carried-state idiom is ALES43's (lotus/tone_carry.rye) —
+//! a tiny value the keeper holds beside a clip, the from-silence form the state = 0 case of one carried implementation so the two can never drift.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. One recursive difference equation run
+//! sample by sample, every intermediate in i64 so nothing overflows before the one clamp, the feedback multiply bounded by max_pole_den. The "DC" is the
+//! zero-frequency component by definition, not a claim about any hardware highpass; no real sample rate (the pole is a fraction over sample INDICES, not a
+//! cutoff in hertz — a real time base is a later rung), no anti-aliasing, no socket, no network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/dc_block.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+
+pub const dc_block_version = "20260814.223442";
+
+/// The largest pole denominator the blocker accepts. A real DC blocker wants R very close to one (0.9995 ≈ 32751/32768) for a narrow notch, so the ceiling
+/// is generous; it exists only to keep the feedback multiply provably inside i64 — num < den ≤ max_pole_den and |y_prev| ≤ 32767, so num·y_prev < 2^16·2^15
+/// = 2^31, vast headroom. Bounding it is the TAME reflex: every quantity that enters a multiply names its maximum.
+pub const max_pole_den: u32 = 1 << 16;
+
+/// The DC blocker's two faults. BadRange coincides by name with dc_remove, the drives, the rectifiers, and ALES2's timeline (Zig merges error sets by name),
+/// so a composer sees one consistent span law across the whole suite. BadCoeff coincides by name with the ALES40 tone filter, yet the LAW behind it differs:
+/// here the pole must be a fraction in [0, 1) (num ≥ 0, num < den) for stability, where the tone filter demands (0, 1].
+pub const DcBlockError = error{
+    /// A pole coefficient num/den that is not a stable DC-blocker pole in [0, 1) — a zero or over-large denominator, a negative numerator, or a numerator at
+    /// or past the denominator (a pole on or outside the unit circle — a marching integrator or an unstable filter). Refused before a sample is touched.
+    BadCoeff,
+    /// A start offset or count naming samples outside the clip's current length — refused before any read or write.
+    BadRange,
+};
+
+/// Validate a blocker call's pole and span together, before any sample is touched. The pole num/den must be a stable DC-blocker pole: den > 0 (no divide by
+/// zero) and den ≤ max_pole_den (the feedback multiply stays inside i64), num ≥ 0 (a DC blocker at R = 0 is the legal first-difference highpass), and
+/// num < den STRICTLY (the pole lies inside the unit circle — num = den is a pure integrator that never settles, num > den is unstable). The span must lie
+/// wholly within the current samples.
+fn check(clip_len: u32, start: u32, count: u32, num: i32, den: u32) DcBlockError!void {
+    // invariant: a stable DC-blocker pole is a fraction in [0, 1) — den in (0, max_pole_den], num in [0, den).
+    if (den == 0) return error.BadCoeff;
+    if (den > max_pole_den) return error.BadCoeff;
+    if (num < 0) return error.BadCoeff;
+    if (@as(i64, num) >= @as(i64, den)) return error.BadCoeff;
+    // invariant: the span lies wholly within the current samples (checked without underflow — count vs the remainder), exactly as the rest of the suite.
+    if (start > clip_len) return error.BadRange;
+    if (count > clip_len - start) return error.BadRange;
+}
+
+/// The public face of `check` — one implementation of the pole-and-span law, so a composer can validate a blocker's coefficient before it writes, sharing the
+/// exact same rules and named errors as every blocker call.
+pub fn precheck(clip_len: u32, start: u32, count: u32, num: i32, den: u32) DcBlockError!void {
+    return check(clip_len, start, count, num, den);
+}
+
+/// Advance the one-pole DC blocker by one sample and return its output. `x_prev` holds the previous input, `y_prev` the previous (saturated) output — the two
+/// values the recurrence y[n] = (x[n] − x[n−1]) + R·y[n−1] carries. The difference is the zero at direct current; the feedback term R·y[n−1] = num·y_prev/den
+/// (truncated toward zero, the suite's honest-lossy rule) is the leaky integrator. Because @divTrunc shrinks the feedback to exactly zero once |y_prev| falls
+/// below den/num, a settled constant reaches output zero EXACTLY in finite steps rather than drifting near it forever. The feedback reads the SATURATED prior
+/// output, so the recurrence stays bounded (|y_prev| ≤ sample_max); every intermediate runs in i64 so nothing overflows before the one clamp.
+fn dc_step(x_prev: *i64, y_prev: *i64, x: i16, num: i32, den: u32) i16 {
+    // invariant: the pole reaching this step is already a stable fraction in [0, 1) — check() ran at the edge.
+    assert(num >= 0 and @as(i64, num) < @as(i64, den));
+    const xd: i64 = @as(i64, x);
+    // The zero at direct current: a constant input makes this difference zero, so the steady-state output is zero (DC removed).
+    const diff: i64 = xd - x_prev.*;
+    // The leaky integrator R·y[n−1], truncated toward zero — the term that reaches exactly zero in finite steps and lets the pole sit near one for a narrow
+    // notch. Bounded: num < den ≤ max_pole_den and |y_prev| ≤ sample_max, so this product is far inside i64.
+    const fb: i64 = @divTrunc(@as(i64, num) * y_prev.*, @as(i64, den));
+    // The output saturates at the rails (ALES2 reused, never a wrap): a sharp edge (a large difference plus feedback) that runs past i16 pins rather than
+    // wrapping to the opposite sign — honest for a fixed-point buffer, a proven safety on ordinary audio where the difference stays in range.
+    const y: i16 = timeline.saturate(diff + fb);
+    x_prev.* = xd;
+    y_prev.* = @as(i64, y);
+    return y;
+}
+
+/// Block direct current from `count` samples starting at `start` in place, CONTINUING from the caller's `x_prev` / `y_prev` state rather than from silence —
+/// the carried-state form (the ALES43 shape). The caller owns the two i64 states across calls, so blocking a span in two pieces (the second carrying the
+/// first's ending state) equals blocking the whole span once: no fresh transient at the seam, the click a per-span restart would leave. Fresh states of 0 are
+/// exactly the from-silence dc_block. Refuses BadCoeff on an illegal pole and BadRange on a span outside the samples, before any write; on refusal both states
+/// are left untouched. Values only — never the length.
+pub fn dc_block_carry(clip: *timeline.Clip, start: u32, count: u32, x_prev: *i64, y_prev: *i64, num: i32, den: u32) DcBlockError!void {
+    try check(clip.len, start, count, num, den);
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        clip.buf[start + i] = dc_step(x_prev, y_prev, clip.buf[start + i], num, den);
+    }
+    // invariant: a DC blocker changes sample values only, never the clip's length or bound.
+    assert(start + count <= clip.len);
+    assert(clip.len <= clip.buf.len);
+}
+
+/// Block direct current from `count` samples starting at `start` in place, from a zero initial state, by the pole num/den. R near one keeps the notch narrow
+/// (bass just above DC survives); R = 0 is the plain first-difference highpass. Refuses BadCoeff on an illegal pole and BadRange on a span outside the samples,
+/// before any write. Values only — never the length. The from-silence case of dc_block_carry — one implementation, so the carried and from-silence forms can
+/// never drift.
+pub fn dc_block(clip: *timeline.Clip, start: u32, count: u32, num: i32, den: u32) DcBlockError!void {
+    var x_prev: i64 = 0;
+    var y_prev: i64 = 0;
+    return dc_block_carry(clip, start, count, &x_prev, &y_prev, num, den);
+}
+
+/// A one-pole DC blocker that holds its own state across calls — the ALES43 idiom for this rung. The struct carries no buffer, only the two i64 recurrence
+/// states and the pole num/den, so a keeper holds it beside a clip as a tiny value. A fresh DcBlocker (both states 0) is exactly the from-silence dc_block;
+/// `run` continues from the carried state so a span blocked piece by piece has no re-transient at a seam; `reset` returns the state to silence so the next run
+/// re-opens the from-silence transient deliberately.
+pub const DcBlocker = struct {
+    /// The previous input sample x[n−1] — a plain i16 value held wide, zero at silence.
+    x_prev: i64 = 0,
+    /// The previous (saturated) output y[n−1] — held wide, zero at silence; the value the leaky integrator feeds back.
+    y_prev: i64 = 0,
+    num: i32,
+    den: u32,
+
+    /// Block direct current from `count` samples starting at `start` in place, CONTINUING from `self.x_prev` / `self.y_prev` and updating them. The seam
+    /// between two runs is invisible because the second run opens on the first's ending state rather than on silence. Refuses BadCoeff on an illegal pole and
+    /// BadRange on a span outside the samples, before any write; the state is untouched on refusal.
+    pub fn run(self: *DcBlocker, clip: *timeline.Clip, start: u32, count: u32) DcBlockError!void {
+        // invariant: the carried state is the caller's own — run threads both states through the one dc_block_carry implementation.
+        try dc_block_carry(clip, start, count, &self.x_prev, &self.y_prev, self.num, self.den);
+    }
+
+    /// Return the state to silence, so the next `run` re-opens the from-silence transient again — the deliberate re-open a keeper asks for when a new region
+    /// should begin fresh rather than continue a prior decay.
+    pub fn reset(self: *DcBlocker) void {
+        self.x_prev = 0;
+        self.y_prev = 0;
+        // invariant: reset restores exactly the from-silence start — a run after reset equals the from-silence dc_block.
+        assert(self.x_prev == 0 and self.y_prev == 0);
+    }
+};
+
+// --- selftest: a fresh blocker is from-silence (equals dc_block); a constant offset settles to EXACTLY zero (the defining correctness); a span blocked in
+//     two pieces with a carried state equals the whole blocked once (the crux); it FOLLOWS A DRIFTING offset a block mean cannot (the reason it exists);
+//     reset re-opens the transient; R = 0 is the legal first difference; saturation at the rail is honest; the span discipline holds; and an illegal pole
+//     and an out-of-range span each refuse by name -------------------------------------------------------------------------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn run_selftest() !u8 {
+    // 1. A FRESH BLOCKER (both states 0) over the whole span writes exactly the from-silence dc_block — the carried form's zero case IS the from-silence case
+    //    (one implementation, so they cannot drift).
+    {
+        const src = [_]i16{ 1000, -800, 1200, 900, -1100, 700, 1300, -600, 1000, 500, -900, 1100 };
+        var carried = timeline.Clip{};
+        try load_clip(&carried, &src);
+        var f = DcBlocker{ .num = 1, .den = 2 };
+        try f.run(&carried, 0, carried.len);
+
+        var plain = timeline.Clip{};
+        try load_clip(&plain, &src);
+        try dc_block(&plain, 0, plain.len, 1, 2);
+
+        if (!eq(carried.samples(), plain.samples())) return error.FreshNotFromSilence;
+    }
+
+    // 2. A CONSTANT OFFSET SETTLES TO EXACTLY ZERO — the defining correctness of a DC blocker. A constant span passes its first sample (the transient — DC not
+    //    yet removed) then decays to a tail of EXACTLY 0 (the feedback truncates to nothing in finite steps). The first sample is the input; the last is 0.
+    {
+        const run = [_]i16{3000} ** 40;
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &run);
+        var f = DcBlocker{ .num = 1, .den = 2 };
+        try f.run(&clip, 0, clip.len);
+        if (clip.samples()[0] != 3000) return error.FirstNotPassed; // the edge passes — a highpass keeps the transient
+        if (clip.samples()[clip.len - 1] != 0) return error.DcNotRemovedExactly; // the tail is exactly zero — DC removed
+    }
+
+    // 3. THE CRUX — a span blocked in TWO PIECES, the second carrying the first's ending state, equals the whole blocked once, byte-for-byte. The seam at the
+    //    split index carries no re-transient. This is what makes it the carried-state SIBLING of ALES90's memoryless block mean.
+    {
+        const src = [_]i16{ 2000, 2100, 1900, 2200, 2050, 1980, 2300, 1700, 2000, 2500, 1600, 2400 };
+        var whole = timeline.Clip{};
+        try load_clip(&whole, &src);
+        var fw = DcBlocker{ .num = 3, .den = 4 };
+        try fw.run(&whole, 0, whole.len);
+
+        var pieces = timeline.Clip{};
+        try load_clip(&pieces, &src);
+        var fp = DcBlocker{ .num = 3, .den = 4 };
+        const split: u32 = 5;
+        try fp.run(&pieces, 0, split); // first piece
+        try fp.run(&pieces, split, pieces.len - split); // second piece continues from the carried state
+
+        if (!eq(pieces.samples(), whole.samples())) return error.SplitNotWhole;
+    }
+
+    // 4. IT FOLLOWS A DRIFTING OFFSET A BLOCK MEAN CANNOT — the reason this rung exists beside ALES90. A DC STEP: a constant +4000 for twenty samples, then a
+    //    constant −2000 for twenty. The IIR blocker drives EACH region toward zero (each tail exactly 0), following the moving offset. ALES90's block mean
+    //    would subtract one average (1000), leaving the first region riding +3000 and the second −3000 — DC not removed per region.
+    {
+        var sig: [40]i16 = undefined;
+        var k: u32 = 0;
+        while (k < 20) : (k += 1) sig[k] = 4000;
+        while (k < 40) : (k += 1) sig[k] = -2000;
+
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        var f = DcBlocker{ .num = 1, .den = 2 };
+        try f.run(&clip, 0, clip.len);
+        const out = clip.samples();
+        if (out[19] != 0) return error.FirstRegionNotSettled; // first constant region driven to zero by its end
+        if (out[39] != 0) return error.SecondRegionNotSettled; // second region ALSO driven to zero — the offset followed
+        // and the step itself passes as a transient (a highpass keeps the edge): the first sample of the second region is a large negative jump, not 0.
+        if (out[20] >= 0) return error.StepNotPassed;
+
+        // contrast: ALES90's block mean leaves a nonzero tail in each region (mean = 1000, so region tails ride ±3000) — the drift it cannot follow.
+        const dc_remove = @import("dc_remove.rye");
+        var mean_clip = timeline.Clip{};
+        try load_clip(&mean_clip, &sig);
+        try dc_remove.dc_remove(&mean_clip, 0, mean_clip.len);
+        const m = mean_clip.samples();
+        if (m[19] != 3000 or m[39] != -3000) return error.BlockMeanAssumptionWrong; // the residual the IIR blocker removes and the block mean leaves
+    }
+
+    // 5. RESET RE-OPENS THE TRANSIENT — after a settled constant run (tail at zero), reset returns the state to silence, so the next run over a constant passes
+    //    its FIRST sample as the input again (a fresh transient), rather than continuing settled at zero.
+    {
+        const run = [_]i16{3000} ** 30;
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &run);
+        var f = DcBlocker{ .num = 1, .den = 2 };
+        try f.run(&clip, 0, clip.len); // settles: tail at 0
+        if (clip.samples()[clip.len - 1] != 0) return error.NotSettledBeforeReset;
+
+        f.reset();
+        var fresh = timeline.Clip{};
+        try load_clip(&fresh, &run);
+        try f.run(&fresh, 0, fresh.len); // after reset, a from-silence transient again
+        if (fresh.samples()[0] != 3000) return error.ResetDidNotReopen; // first sample passes the input: the transient re-opened
+    }
+
+    // 6. R = 0 IS THE LEGAL FIRST DIFFERENCE — a DC blocker at num = 0 is y[n] = x[n] − x[n−1], the wide first-difference highpass (legal here, unlike the
+    //    ALES40 tone filter which demands num ≥ 1). A constant becomes its first sample then exactly zero forever after (each difference is zero).
+    {
+        const run = [_]i16{ 500, 500, 500, 500, 500 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &run);
+        var f = DcBlocker{ .num = 0, .den = 2 };
+        try f.run(&clip, 0, clip.len);
+        const want = [_]i16{ 500, 0, 0, 0, 0 };
+        if (!eq(clip.samples(), &want)) return error.FirstDifferenceWrong;
+    }
+
+    // 7. SATURATION AT THE RAIL IS HONEST — a sharp edge whose difference plus feedback runs past the ceiling pins to sample_max rather than wrapping to a
+    //    negative. A deep sample_min run drives the output negative; one sample_max sample then makes the difference exceed the ceiling — it pins.
+    {
+        const src = [_]i16{timeline.sample_min} ** 8 ++ [_]i16{timeline.sample_max};
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &src);
+        var f = DcBlocker{ .num = 1, .den = 2 };
+        try f.run(&clip, 0, clip.len);
+        const last = clip.samples()[clip.len - 1];
+        if (last != timeline.sample_max) return error.SaturateWrong; // clamped high, not wrapped negative
+    }
+
+    // 8. THE SPAN DISCIPLINE — blocking a sub-span leaves the samples outside [start, count) exactly as they were. Block the middle four of a six-sample clip;
+    //    the outer two are untouched.
+    {
+        const sig = [_]i16{ 111, 222, 4000, 4000, 4000, 4000 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        var f = DcBlocker{ .num = 1, .den = 2 };
+        try f.run(&clip, 2, 4); // indices 2..5 only
+        const want = [_]i16{ 111, 222, 4000, 2000, 1000, 500 };
+        if (!eq(clip.samples(), &want)) return error.SpanLeaked; // outside untouched; the inner span decays from silence (4000 → 2000 → 1000 → 500)
+    }
+
+    // 9a. AN ILLEGAL POLE — a numerator AT the denominator (a pure integrator, pole on the unit circle) refuses BadCoeff, the clip and state untouched.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        var f = DcBlocker{ .num = 2, .den = 2 };
+        if (f.run(&clip, 0, clip.len)) |_| return error.PoleOnCircleSlipped else |e| if (e != error.BadCoeff) return error.WrongPoleOnCircle;
+        if (f.x_prev != 0 or f.y_prev != 0) return error.RefusedMovedState;
+        if (!eq(clip.samples(), &three)) return error.RefusedBlockerMutated;
+    }
+
+    // 9b. A NEGATIVE NUMERATOR refuses BadCoeff.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 1, 2, 3 });
+        var f = DcBlocker{ .num = -1, .den = 2 };
+        if (f.run(&clip, 0, clip.len)) |_| return error.NegNumSlipped else |e| if (e != error.BadCoeff) return error.WrongNegNum;
+        if (f.x_prev != 0 or f.y_prev != 0) return error.NegRefusedMovedState;
+    }
+
+    // 9c. A ZERO DENOMINATOR refuses BadCoeff — no divide by zero.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 1, 2, 3 });
+        var f = DcBlocker{ .num = 0, .den = 0 };
+        if (f.run(&clip, 0, clip.len)) |_| return error.ZeroDenSlipped else |e| if (e != error.BadCoeff) return error.WrongZeroDen;
+    }
+
+    // 9d. A DENOMINATOR PAST THE CEILING refuses BadCoeff — the feedback multiply stays provably inside i64.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 1, 2, 3 });
+        var f = DcBlocker{ .num = 1, .den = max_pole_den + 1 };
+        if (f.run(&clip, 0, clip.len)) |_| return error.OverCeilingSlipped else |e| if (e != error.BadCoeff) return error.WrongOverCeiling;
+    }
+
+    // 10. AN OUT-OF-RANGE SPAN refuses BadRange before any write, leaving the clip untouched.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        var f = DcBlocker{ .num = 1, .den = 2 };
+        if (f.run(&clip, 2, 5)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(clip.samples(), &three)) return error.RefusedBlockerMutatedRange;
+    }
+
+    print("GREEN ales-dc-block: the one-pole IIR DC BLOCKER — a DRIFTING-offset remover with CARRIED STATE, y[n] = x[n] − x[n−1] + R·y[n−1]. Where ALES90's " ++
+        "block mean is memoryless and subtracts one average (right for a CONSTANT offset over a bounded region), this rung has memory: it drives WHATEVER " ++
+        "offset the signal currently rides toward zero and FOLLOWS the offset as it moves. The crux: it carries the previous input and previous output, so a " ++
+        "span blocked in TWO PIECES (the second continuing the first's ending state) equals the whole blocked ONCE, byte-for-byte — the ALES43 shape, no " ++
+        "re-transient at the seam. A fresh blocker equals the from-silence dc_block; a constant offset settles to EXACTLY zero (the feedback truncates to " ++
+        "nothing in finite steps); it FOLLOWS A DC STEP a block mean cannot (each region driven to zero where the block mean leaves ±3000); reset re-opens " ++
+        "the from-silence transient; R = 0 is the legal first-difference highpass (num ≥ 0 here, unlike the tone filter's num ≥ 1); saturation at the rail " ++
+        "is honest (a sharp edge pins to +32767, never wraps); the span discipline holds; and an illegal pole (num = den, num < 0, den = 0, den past the " ++
+        "ceiling) refuses BadCoeff with the state untouched while an out-of-range span refuses BadRange with the clip untouched. Purely local — one " ++
+        "recursive difference in i64, one saturate per sample; no real device, no real sample rate, no network, no keys, no funds\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
