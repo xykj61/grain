@@ -1,0 +1,187 @@
+//! lotus/move.rye — ALES113: move — lift the `count` samples starting at `start` out of the timeline and reinsert them at `dest`, IN PLACE, so the span is RELOCATED and the
+//! clip's length HOLDS. This is the relocate-twin of ALES112's duplicate: where duplicate COPIES a span (a second copy lands beside the first and the clip GROWS), move CARRIES
+//! one span somewhere new (the span leaves its old spot and the clip stays the same length). Circle a bar, drag it, and it lifts out of one place and lands at another — the verse
+//! pulled ahead of the chorus, the stray breath slid to a rest, the loop nudged whole to a new beat. Naming it beside duplicate completes the copy/relocate pair on a selection:
+//! repeat it where it is, or carry it somewhere new.
+//!
+//! The rule, stated once: move(clip, start, count, dest) copies the span [start, start+count) into one bounded scratch buffer, then ALES2's cut removes the span in place (the
+//! clip shrinks by count), then ALES2's splice reinserts the saved span at `dest` (the clip grows back by count) — so the net length is unchanged and no third primitive is
+//! invented. `dest` names a position in the timeline AFTER the span is removed (0 ≤ dest ≤ len − count); because the head [0, start) has length `start`, dest = start is the
+//! identity and the inverse is exactly move(dest, count, start). Every range is refused BadRange BEFORE any write, reusing ALES2's EditError whole. One bounded scratch buffer.
+//!
+//! The crux — four laws. THE MOVE LAW: after move(clip, start, count, dest) the clip is the removed timeline (original[0..start] ++ original[start+count..len)) with the span
+//! reinserted at dest, checked forward, backward, and to the head. THE INVERSE LAW: move(start, count, dest) then move(dest, count, start) returns the original byte for byte —
+//! move is its own inverse under swapped endpoints. THE PRESERVATION / PEAK LAW: move relocates existing samples and invents none, the length unchanged and the multiset of
+//! samples unchanged, so the peak re-measured through ALES13 is unchanged. THE DEGENERATE / REFUSAL LAW: count = 0 the identity, dest = start the identity, a start past the
+//! samples or a count past the remainder or a dest past len − count each BadRange, before any write.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES113.
+//! Design read: active-designing/20260815-012632_fill-ales113-lotus-move.md
+//! Stands on: lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, the EditError reused whole, and the cut + splice this rung composes; lotus/meter.rye (ALES13) — the
+//! peak/RMS meter, used only by the witness to prove that relocating existing samples never moves the peak.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. It copies a span into one bounded scratch buffer and
+//! reinserts it through the proven cut/splice — it invents no sample, changes no value, and reads no byte past len. No real sample rate, no network, no keys, no funds, no real
+//! device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/move.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const meter = @import("meter.rye");
+
+pub const move_version = "20260815.012632";
+
+/// move forwards ALES2's OWN faults reused by name — BadRange when the span falls outside the current samples or the destination falls outside the removed timeline — and invents
+/// none of its own; `start`, `count`, and `dest` are plain span/position bounds with no illegal value save the ranges the samples already name.
+pub const MoveError = timeline.EditError;
+
+/// Lift the `count` samples starting at `start` out of the timeline and reinsert them at `dest` (a position in the timeline after the span is removed, 0 ≤ dest ≤ len − count), in
+/// place — the span is relocated and the clip's length holds. Refuses BadRange when the span falls outside the current samples or `dest` falls outside the removed timeline, before
+/// any write. This is ALES112's duplicate read as a relocation rather than a copy — the copy/relocate twin on a selection.
+pub fn move(clip: *timeline.Clip, start: u32, count: u32, dest: u32) MoveError!void {
+    // invariant: the length never claims more samples than the buffer holds — every seat we read is inside the buffer.
+    assert(clip.len <= clip.buf.len);
+
+    // invariant: the span lies wholly within the current samples (checked without underflow — count against the remainder), refused by name before any write.
+    if (start > clip.len) return error.BadRange;
+    if (count > clip.len - start) return error.BadRange;
+
+    // invariant: the destination lies within the timeline that remains once the span is removed — dest ≤ len − count, checked without underflow before any write.
+    if (dest > clip.len - count) return error.BadRange;
+
+    // Copy the span into one bounded scratch buffer before removing it — its budget is max_clip, the same bound the Clip's own buffer names, so count ≤ len ≤ max_clip always fits.
+    var scratch: [timeline.max_clip]i16 = [_]i16{0} ** timeline.max_clip;
+    // invariant: the span we save never exceeds the scratch budget — count is bounded by the current samples, themselves bounded by max_clip.
+    assert(count <= scratch.len);
+    var i: u32 = 0;
+    while (i < count) : (i += 1) scratch[i] = clip.buf[start + i];
+
+    // Remove the span in place through ALES2's cut (the clip shrinks by count), then reinsert the saved span at `dest` through ALES2's splice (the clip grows back by count). The
+    // net length is unchanged, so splice can never refuse ClipFull here; both are reached only after every range above passed, so no write precedes a refusal.
+    try timeline.cut(clip, start, count);
+    try timeline.splice(clip, dest, scratch[0..count]);
+
+    // invariant: move relocated the span without changing the count of samples — the length is back within its bound, exactly as it began.
+    assert(clip.len <= clip.buf.len);
+}
+
+// --- selftest: THE MOVE LAW — the span is relocated, the length unchanged, proven forward, backward, and to the head; THE INVERSE LAW — move then move(dest, count, start)
+//     returns the original byte for byte; THE PRESERVATION / PEAK LAW — move relocates existing samples, so the peak re-measured through ALES13 is unchanged; THE DEGENERATE /
+//     REFUSAL LAW — count 0 the identity, dest = start the identity, a span past the samples or a dest past len − count BadRange, before any write ----------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+/// The clip's current peak magnitude, re-measured through ALES13 — the reader the peak law checks the result against.
+fn clip_peak(clip: *const timeline.Clip) !u32 {
+    const m = try meter.measure(clip);
+    return meter.peak(&m);
+}
+
+fn run_selftest() !u8 {
+    // 1. THE MOVE LAW — the span is relocated and the length is unchanged. Proven at a forward move, a backward move, and a move to the head.
+    {
+        // Forward: lift {20, 30} (start 1, count 2), reinsert at dest 2 of the removed timeline {10, 40, 50} → {10, 40, 20, 30, 50}.
+        var fwd = timeline.Clip{};
+        try load_clip(&fwd, &[_]i16{ 10, 20, 30, 40, 50 });
+        try move(&fwd, 1, 2, 2);
+        if (fwd.len != 5) return error.MoveFwdLength;
+        if (!eq(fwd.samples(), &[_]i16{ 10, 40, 20, 30, 50 })) return error.MoveFwdWrong;
+
+        // Backward: lift {40, 50} (start 3, count 2), reinsert at dest 1 of the removed timeline {10, 20, 30} → {10, 40, 50, 20, 30}.
+        var back = timeline.Clip{};
+        try load_clip(&back, &[_]i16{ 10, 20, 30, 40, 50 });
+        try move(&back, 3, 2, 1);
+        if (!eq(back.samples(), &[_]i16{ 10, 40, 50, 20, 30 })) return error.MoveBackWrong;
+
+        // To the head: lift {30, 40} (start 2, count 2), reinsert at dest 0 of the removed timeline {10, 20, 50} → {30, 40, 10, 20, 50}.
+        var head = timeline.Clip{};
+        try load_clip(&head, &[_]i16{ 10, 20, 30, 40, 50 });
+        try move(&head, 2, 2, 0);
+        if (!eq(head.samples(), &[_]i16{ 30, 40, 10, 20, 50 })) return error.MoveHeadWrong;
+    }
+
+    // 2. THE INVERSE LAW — move(start, count, dest) then move(dest, count, start) returns the original byte for byte, the span carried out and carried home.
+    {
+        const src = [_]i16{ 10, 20, 30, 40, 50 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &src);
+        try move(&clip, 1, 2, 3); // lift {20, 30}, reinsert at 3 of {10, 40, 50} → {10, 40, 50, 20, 30}
+        if (!eq(clip.samples(), &[_]i16{ 10, 40, 50, 20, 30 })) return error.MoveInverseSetup;
+        try move(&clip, 3, 2, 1); // carry it home: lift {20, 30} from index 3, reinsert at 1
+        if (!eq(clip.samples(), &src)) return error.InverseBroken;
+    }
+
+    // 3. THE PRESERVATION / PEAK LAW — move relocates existing samples and invents none, so the peak re-measured through ALES13 is unchanged: the loudest sample simply sits at a
+    //    new index, the length unchanged.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 100, -30000, 200, -50, 75 });
+        const before = try clip_peak(&clip);
+        const len_before = clip.len;
+        try move(&clip, 1, 1, 3); // carry the loud -30000 to a new index
+        if (clip.len != len_before) return error.PeakLawLengthMoved;
+        if (try clip_peak(&clip) != before) return error.PeakMoved;
+    }
+
+    // 4a. THE DEGENERATE LAW — count 0 is the identity, and dest = start is the identity (the span reinserted exactly where it was removed).
+    {
+        var zeroc = timeline.Clip{};
+        try load_clip(&zeroc, &[_]i16{ 7, 8, 9 });
+        try move(&zeroc, 1, 0, 0); // zero count — the identity
+        if (!eq(zeroc.samples(), &[_]i16{ 7, 8, 9 })) return error.ZeroCountMoved;
+
+        var same = timeline.Clip{};
+        try load_clip(&same, &[_]i16{ 7, 8, 9, 10 });
+        try move(&same, 1, 2, 1); // dest = start — reinserted exactly where removed, the identity
+        if (!eq(same.samples(), &[_]i16{ 7, 8, 9, 10 })) return error.SameDestMoved;
+    }
+
+    // 4b. THE REFUSAL LAW — a `start` past the current samples, a `count` past the remainder, and a `dest` past len − count each refuse BadRange, before any write, the clip
+    //     untouched.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 1, 2, 3, 4 });
+        if (move(&clip, 5, 1, 0)) |_| return error.StartNotRefused else |e| {
+            if (e != error.BadRange) return error.WrongError;
+        }
+        if (move(&clip, 2, 5, 0)) |_| return error.CountNotRefused else |e| {
+            if (e != error.BadRange) return error.WrongError;
+        }
+        // dest past len − count: len 4, count 2, so dest must be ≤ 2; dest 3 refuses.
+        if (move(&clip, 0, 2, 3)) |_| return error.DestNotRefused else |e| {
+            if (e != error.BadRange) return error.WrongError;
+        }
+        // The clip is untouched by the refused range calls — each refusal came before any write.
+        if (!eq(clip.samples(), &[_]i16{ 1, 2, 3, 4 })) return error.RefusedCallWrote;
+    }
+
+    print("GREEN ales-move: MOVE — lift the `count` samples starting at `start` out of the timeline and reinsert them at `dest`, IN PLACE, so the span is RELOCATED and the clip's " ++
+        "length HOLDS; the relocate-twin of ALES112's duplicate (which COPIES a span, growing the clip): move CARRIES one span somewhere new. This is the drag gesture every " ++
+        "editor ships — circle a bar, drag it, and it lifts out of one place and lands at another (the verse pulled ahead of the chorus, the loop nudged whole). The rule: copy " ++
+        "the span into one bounded scratch buffer, then ALES2's cut removes it in place, then ALES2's splice reinserts it at dest; the net length is unchanged and no third " ++
+        "primitive is invented. `dest` names a position in the removed timeline (0 ≤ dest ≤ len − count), so dest = start is the identity and the inverse is move(dest, count, " ++
+        "start). Refuses BadRange for a start past the samples, a count past the remainder, or a dest past len − count, before any write. The crux is four laws. THE MOVE LAW: " ++
+        "the clip is the removed timeline with the span reinserted at dest. THE INVERSE LAW: move then move(dest, count, start) returns the original byte for byte. THE " ++
+        "PRESERVATION / PEAK LAW: move relocates existing samples and invents none, so the peak re-measured through ALES13 is unchanged. THE DEGENERATE / REFUSAL LAW: count 0 " ++
+        "the identity, dest = start the identity, a bad range BadRange. Purely local — it copies a span and reinserts it through the proven cut/splice, inventing no sample, " ++
+        "changing no value, reading no byte past len; no real sample rate, no network, no keys, no funds, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
