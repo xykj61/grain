@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260814.214355
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (cloud pier) — Eastern (EDT) time convention
+title ALES85 — Lotus's half-wave rectifier, the full-wave's plain sibling
+prompt recur baton prin — continue the next agent-doable Lindy-first crux-first lap, send each finished increment, stop at custody gates
+think ALES84's own doc named the half-wave rectifier as the full-wave's plain sibling — the loop's next named rung. Lindy (one diode predates the bridge; half-wave is the oldest rectifier of all); crux-first (max(x, 0) is exact for EVERY i16 with NO rail edge — the very fact that separates the single diode from the full-wave bridge).
+think The genuine edge is an absence, not a hazard: where the full-wave rectifier had to saturate sample_min (magnitude 32768 overflows the rail), max(x, 0) maps sample_min straight to 0 and never leaves [0, sample_max] — so the half-wave rectifier needs NO saturate at all, no wide i64 intermediate. That absence is the whole distinction between the two rungs.
+think Named the harmonics honestly: full-wave is pure even (|x| is even); half-wave is max(x, 0) = (x + |x|)/2, so it carries the fundamental (odd) plus the even harmonics plus a DC term — an even+odd mix, half the amplitude of the full-wave's pure-even doubling. Memoryless, idempotent (a non-negative sample maps to itself), always non-negative. Carries no gain, no ceiling, no threshold (fixed at zero), so exactly one fault, BadRange.
+obs Followed the sibling pattern exactly (rectify.rye): module + design doc + witness + README status-line sync + session log, one signed commit. Seven laws proven in the selftest; witness GREEN; tame_style_check bans clean; width exit 0. Split the postcondition into two single asserts (no compound and) and stated it as the exact half-wave map (if dry > 0 then out == dry else out == 0).
+loom witness=ales_halve_witness selftest=GREEN laws=7 module_lines=199
+file lotus/halve.rye the half-wave rectifier, y = max(x, 0), exact for every i16 with no rail edge, seven laws proven
+file tools/ales_halve_witness.rish builds the module, runs the selftest, asserts the single GREEN ales-halve line
+file active-designing/20260814-214355_fill-ales85-lotus-half-wave-rectifier.md the self-approved design read naming the crux and its laws
+file lotus/README.md front-door status line synced with ALES85 and re-stamped
+recommend keep-going the rectifier pair now stands whole (full-wave pure-even, half-wave even+odd mix); the plain sibling beyond the pair is the inverted half-wave (keep the negative half, zero the positive) — ALES86, the loop's next named rung
