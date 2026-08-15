@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260814.213747
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (cloud pier) — Eastern (EDT) time convention
+title ALES84 — Lotus's full-wave rectifier, the plainest even-harmonic generator
+prompt recur baton — continue the next agent-doable Lindy-first crux-first lap, send each finished increment, stop at custody gates
+think With the DRIVE family whole at ALES83, the plainest step beside it is the even-harmonic complement to its odd clippers: the full-wave rectifier, y = |x|. Lindy (rectification is the oldest even-harmonic move in analog electronics); crux-first (|−x| = |x| is the purest even map, exact everywhere but one sample).
+think The one genuine edge: |sample_min| = 32768 overflows the i16 positive rail, so that lone sample saturates to sample_max rather than wrapping. Computed the magnitude in i64 so negating sample_min never overflows before the pin — timeline.saturate does honest work here (unlike ALES83, where the decimator only copies existing samples).
+think Named it as the purest even map (no gain, no ceiling, no resolution — only a span), so it carries exactly one fault, BadRange. Memoryless, idempotent (a non-negative sample rectifies to itself), and always non-negative — the one-sided signal is the point.
+obs Followed the sibling pattern exactly (crush.rye, tube.rye, decimate.rye): module + design doc + witness + README status-line sync + session log, one signed commit. Seven laws proven in the selftest; witness GREEN; tame_style_check clean; width clean.
+loom witness=ales_rectify_witness selftest=GREEN laws=7 module_lines=190
+file lotus/rectify.rye the full-wave rectifier, |x| pinned to the rail, seven laws proven
+file tools/ales_rectify_witness.rish builds the module, runs the selftest, asserts the single GREEN ales-rectify line
+file active-designing/20260814-213747_fill-ales84-lotus-full-wave-rectifier.md the self-approved design read naming the crux and its laws
+file lotus/README.md front-door status line synced with ALES84 and re-stamped
+recommend keep-going the even family opens beside the DRIVE clippers; its plain sibling is the half-wave rectifier (keep the positive half, zero the negative) — ALES85, the loop's next named rung
