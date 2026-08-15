@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260815.024705
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (Eastern EDT convention)
+title ALES127 — Lotus's stereo_invert: the phase flip of a master, both channels in lockstep, total (no refusal)
+prompt Continue the recurring baton (prin recur) on the ALES/Lotus edge, Lindy-first crux-first; approve my own design rounds; send each finished increment as its own signed round; stop at custody gates.
+think Second lap of this recur run. The stereo pure-rearrangement class opened at ALES125 (reverse) and grew at ALES126 (rotate); the crux now is the class's value-mirror, invert (ALES105) — the Invert / Invert Phase menu item, a phase flip that brings two mics into agreement or cancels a difference signal. Only nyquist_flip (parity) remains after this to complete the class in stereo.
+think Read invert.rye (mono, void, total; walks len seats replacing each with saturate(-x) computed in i64, reusing ALES2's one true saturate so the two's-complement floor is clamped in one place; the honest rail — sample_min -32768 negates to +32768, saturates to +32767, round-trips to -32767). Like reverse and rotate, the lift runs mono invert per channel with no argument; total and length-holding, so balance is preserved trivially and no fault forwards — void, no try.
+think Wrote the design read, module (void, no try), witness. Four laws proven on metal: stereo value-mirror law (each channel == ALES105 byte for byte, sample i holds saturate(-x), floor rides along on both channels), balance/length law (left.len == right.len even and odd, both hold length), involution law with honest rail (twice the identity off the floor, sample_min seats pinning to -32767 on both channels), magnitude/fixpoint law (each channel's peak through ALES13 unchanged off the rail, all-zero and empty pairs their own invert).
+obs The honest two's-complement rail carries faithfully into stereo — proven in place on both channels, not hand-waved. nyquist_flip (ALES107, parity flip) is the single remaining lift to complete the pure-rearrangement class in stereo. Witness GREEN first run. No custody gate reached — purely local software, self-approved design round.
+loom witness=ales_stereo_invert_witness result=GREEN laws=4 channels=2
+file lotus/stereo_invert.rye ALES127 — stereo_invert lifts ALES105's total mono invert to a StereoClip, no validation needed, four laws with the honest rail.
+file tools/ales_stereo_invert_witness.rish the witness — builds, runs selftest, asserts the GREEN ales-stereo-invert line.
+file active-designing/20260815-024705_fill-ales127-lotus-stereo-invert.md the self-approved design read for this rung.
+file lotus/README.md front door synced — ALES127 roster entry and stamp.
+recommend keep-going stereo_nyquist_flip (ALES107 parity flip) completes the stereo pure-rearrangement class; no gate reached.
