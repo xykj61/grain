@@ -1,0 +1,50 @@
+# tools/ales_stereo_reverb_mix_witness.rish — the stereo wet/dry mix: the reverb's most-reached-for knob, HOW MUCH reverb, across a stereo master (ALES193).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES193.
+# Design read: active-designing/20260815-101449_fill-ales193-lotus-stereo-reverb-wet-dry-mix.md
+# Stands on: lotus/stereo_reverb_preset.rye (ALES191 — the named-room stereo wet, run over the master unchanged); lotus/reverb_mix.rye (ALES192 —
+# the mono blend this mirrors per ear); lotus/clock.rye (ALES5 — the sample clock); lotus/timeline.rye (ALES2 — the Clip, its max_clip bounding
+# each dry snapshot and its saturate clamping the blend).
+#
+# lotus/stereo_reverb_mix.rye gives the STEREO reverb its most-reached-for knob — HOW MUCH reverb, the wet/dry balance — the thin twin ALES192
+# named next. It snapshots each channel's dry span, reverberates the master wet in place through ALES191's stereo_reverb_preset UNCHANGED, then
+# blends each channel independently: out[i] = saturate((den-num)·dry[i]/den + num·wet[i]/den), the same linear balance ALES192 proved, run per ear
+# with no cross-channel read, saturated once so a loud blend pins never wraps. The selftest proves: at mix = 0 each channel is restored to the
+# exact dry (the identity); at mix = den it equals stereo_reverb_preset over the span byte for byte on both channels; a half mix differs from both
+# and each sample of each channel is the honest weighted average; the image is held (a centred master stays identical channel-to-channel, a stereo
+# master keeps its channels distinct); the channels leave balanced and silence stays silence; and the faults forward (a bad fraction BadMix, a
+# span past the clip DurationTooLong, an out-of-range span BadRange), both channels untouched. Purely local — one StereoClip, two bounded stack
+# snapshots; no network, no keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_stereo_reverb_mix_witness.rish
+
+say "ales-stereo-reverb-mix: Language EN — ALES192 gave the MONO reverb its wet/dry balance: snapshot the dry span, reverberate it wet in place, blend the two at a named fraction so a voice sits in a room without drowning. Yet a keeper mixing a stereo master had no such knob — the wet/dry comfort stopped at mono. This rung is the thin twin ALES192 named next: the same blend, over both channels of a StereoClip, the image held."
+say "ales-stereo-reverb-mix: Style Radiant — the two edges are stated positively and proven exact on both ears: at mix = 0 each channel is restored to the exact dry (the identity, the reverb fully closed changing nothing), and at mix = den it equals stereo_reverb_preset over the span byte for byte (fully open, exactly the stereo preset); between, each sample of each channel is the honest weighted average of its own dry and its own wet, so the image the preset held is held through the blend. The mix is a named fraction, not a decibel."
+say "ales-stereo-reverb-mix: Lens TAME — one StereoClip of i16 PCM, a validated clock, ALES191's fixed banks, and two bounded stack snapshots (max_clip = 4096 samples each); the one arithmetic is ALES192's proven linear blend, a weighted average of two i16 spans summed in i64 and saturated once so it can never wrap, run per channel with no cross-channel read; StereoReverbMixError = stereo_reverb_preset.StereoReverbPresetError || BadMix, DurationTooLong / BadRange / BadMix by name before any write, the dry snapshots reads only so a refusal leaves both channels untouched and balanced; siloed to lotus/, no network, no keys, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_reverb_mix"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb_mix.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-reverb-mix: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_reverb_mix.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-reverb-mix: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-reverb-mix: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-reverb-mix' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-reverb-mix: selftest did not print the GREEN ales-stereo-reverb-mix line"
+
+# This rung runs ALES191's stereo_reverb_preset over its public API for the wet — re-prove the named-room stereo preset still stands green beside it.
+let preset = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb_preset.rye -femit-bin=lotus/bin/stereo_reverb_preset && lotus/bin/stereo_reverb_preset selftest 2>&1 | grep -q 'GREEN ales-stereo-reverb-preset' && echo yes"]
+assert (trim preset.out) == "yes" else "ales-stereo-reverb-mix: the ALES191 stereo named-room preset regressed under its wet/dry mix"
+
+# And re-prove the ALES192 mono wet/dry mix this twin mirrors still stands green.
+let mono = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_mix.rye -femit-bin=lotus/bin/reverb_mix && lotus/bin/reverb_mix selftest 2>&1 | grep -q 'GREEN ales-reverb-mix' && echo yes"]
+assert (trim mono.out) == "yes" else "ales-stereo-reverb-mix: the ALES192 mono wet/dry mix regressed under its stereo twin"
+
+say "ales-stereo-reverb-mix: GREEN — the stereo wet/dry mix: the reverb's most-reached-for knob (HOW MUCH reverb), now across a stereo master. Snapshot each channel's dry span, reverberate the master wet in place through ALES191's stereo_reverb_preset unchanged, then blend each channel out[i] = saturate((den-num)·dry[i]/den + num·wet[i]/den), the same linear balance ALES192 proved, run per ear with no cross-channel read, saturated once so a loud blend pins never wraps. Proven: at mix = 0 the exact dry on both channels (the identity); at mix = den exactly the stereo preset byte for byte; a half mix neither edge, each sample of each channel the honest weighted average; the image is held; the channels leave balanced and silence stays silence; a bad fraction refuses BadMix, a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving both channels untouched; the ALES191 stereo preset and ALES192 mono mix stay GREEN beside it. With the wet/dry pair complete for mono and stereo, a pre-delay or a damping knob on the proven network is the next genuinely new expressive control."

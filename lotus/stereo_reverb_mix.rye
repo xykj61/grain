@@ -1,0 +1,275 @@
+//! lotus/stereo_reverb_mix.rye — ALES193: THE STEREO WET/DRY MIX — the reverb's most-reached-for knob, HOW MUCH reverb, now across a stereo
+//! master. ALES192 gave the MONO reverb its wet/dry balance: snapshot the dry span, reverberate it wet in place, blend the two at a named
+//! fraction so a voice sits in a room without drowning. Yet a keeper mixing a stereo master still had no such knob — the wet/dry comfort stopped
+//! at mono. This rung is the thin twin ALES192 itself named next: the SAME blend, over BOTH channels of a StereoClip, the image held.
+//!
+//! The shape: snapshot the DRY span of EACH channel, reverberate the master WET in place through ALES191's stereo_reverb_preset UNCHANGED, then
+//! BLEND each channel independently —
+//!   out[i] = saturate((den - num)·dry[i]/den + num·wet[i]/den)
+//! the exact linear wet/dry balance ALES192 proved, summed in i64 and saturated ONCE to the i16 rail, run per channel with NO cross-channel read.
+//! The two edges are exact and provable on both ears: at mix = 0 each channel is restored to the exact dry (the identity — the reverb fully
+//! closed changes nothing), and at mix = den it equals stereo_reverb_preset over the span byte for byte on both channels (fully open, exactly the
+//! stereo preset). Between, each sample of each channel is the honest weighted average of its own dry and its own wet, so the stereo image the
+//! preset held is held through the blend as well.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES193.
+//! Design read: active-designing/20260815-101449_fill-ales193-lotus-stereo-reverb-wet-dry-mix.md
+//! Stands on: lotus/stereo_reverb_preset.rye (ALES191) — the named-room stereo wet, run over the master unchanged, its StereoReverbPresetError
+//! forwarded whole; lotus/pan.rye (ALES) — the StereoClip, its two balanced channels; lotus/clock.rye (ALES5) — the sample clock, its samples_for
+//! converting the span (the SAME conversion the preset uses, so the spans match); lotus/timeline.rye (ALES2) — the Clip each channel holds, its
+//! max_clip bounding each dry snapshot and its saturate clamping the blend; lotus/reverb_mix.rye (ALES192) — the mono blend this mirrors per ear.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM in one StereoClip, a validated clock, ALES191's fixed banks, and two
+//! bounded stack snapshots (max_clip = 4096 samples each), siloed to lotus/. The one arithmetic is ALES192's proven linear blend — a weighted
+//! average of two i16 spans summed in i64 and saturated once, so it can never wrap — now run per channel with no cross-channel read. The mix is a
+//! named u32/u32 fraction, not a decibel. No socket, no network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_reverb_mix.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const clock = @import("clock.rye");
+const stereo_reverb_preset = @import("stereo_reverb_preset.rye");
+
+pub const stereo_reverb_mix_version = "20260815.101449";
+
+/// The named rooms are ALES190's own, reached through ALES191 — reused whole, so the stereo mix and the presets name the same tunings and cannot
+/// drift apart.
+pub const Room = stereo_reverb_preset.Room;
+
+/// The stereo wet/dry mix's faults are ALES191's `StereoReverbPresetError` (the clock's DurationTooLong and the reverb's NoCombs / TooManyStages /
+/// BadDelay / BadGain / BadRange, forwarded whole) beside this rung's one own fault, `BadMix` — a mix fraction with a zero denominator or a
+/// numerator past the denominator, refused by name before any write.
+pub const StereoReverbMixError = stereo_reverb_preset.StereoReverbPresetError || error{BadMix};
+
+/// Reverberate `count_ms` of a stereo master `sc` from `start_ms` with a NAMED ROOM and blend the wet with the dry at the mix fraction
+/// `mix_num/mix_den`, per channel. Snapshot each channel's dry span, run ALES191's `stereo_reverb_preset` over the master (the wet, in place,
+/// unchanged), then blend each sample of each channel:
+///   out[i] = saturate((mix_den - mix_num)·dry[i]/mix_den + mix_num·wet[i]/mix_den).
+/// At `mix_num = 0` each channel is restored to the exact dry (the identity); at `mix_num = mix_den` it equals `stereo_reverb_preset` byte for
+/// byte on both channels. Refuses BadMix on a bad fraction, then forwards ALES191's StereoReverbPresetError (DurationTooLong on a span past the
+/// clip, BadRange on an out-of-range span, and the reverb's own faults) before any write; on refusal both channels are untouched and balanced.
+pub fn stereo_reverb_mix(
+    sc: *pan.StereoClip,
+    clk: clock.Clock,
+    room: Room,
+    start_ms: u32,
+    count_ms: u32,
+    mix_num: u32,
+    mix_den: u32,
+) StereoReverbMixError!void {
+    // invariant: the two channels enter balanced — the defining StereoClip invariant the shared preset and blend preserve.
+    assert(sc.left.len == sc.right.len);
+    // invariant: the clock is valid — the mix is spoken against it, and stereo_reverb_preset asserts the same.
+    assert(clk.rate >= 1 and clk.rate <= clock.max_rate);
+    // invariant: the mix is a real fraction in [0, 1] — a zero denominator or a numerator past it is no balance at all.
+    if (mix_den == 0 or mix_num > mix_den) return error.BadMix;
+
+    // Convert the span with the SAME clock the preset uses, so each snapshot and blend span matches the preset's written span exactly. A span
+    // past the clip forwards DurationTooLong here, before any write.
+    const start = try clock.samples_for(clk, start_ms);
+    const count = try clock.samples_for(clk, count_ms);
+    // The span must be in-bounds before the dry snapshots read it — the same BadRange the reverb would raise, raised before any read of the clip.
+    // The channels are balanced, so one bound governs both.
+    if (start > sc.left.len) return error.BadRange;
+    if (count > sc.left.len - start) return error.BadRange;
+    // invariant: the span fits each snapshot bound — every Clip shares max_clip, so a whole span always fits either stack buffer.
+    assert(count <= timeline.max_clip);
+
+    // Snapshot each channel's dry span (a read only — neither channel is yet mutated, so a later refusal leaves both untouched).
+    var dry_l: [timeline.max_clip]i16 = undefined;
+    var dry_r: [timeline.max_clip]i16 = undefined;
+    var s: u32 = 0;
+    while (s < count) : (s += 1) {
+        dry_l[s] = sc.left.buf[start + s];
+        dry_r[s] = sc.right.buf[start + s];
+    }
+
+    // The wet, in place — ALES191's stereo_reverb_preset, unchanged. It prechecks before any write, so a reverb fault here leaves both channels
+    // dry and balanced.
+    try stereo_reverb_preset.stereo_reverb_preset(sc, clk, room, start_ms, count_ms);
+
+    // Blend each channel's dry snapshot with its own wet in place, the same linear weighted average per sample ALES192 proved, saturated once so a
+    // loud blend pins never wraps. No cross-channel read — the left ear blends left, the right ear blends right, so the image is held.
+    const den: i64 = @intCast(mix_den);
+    const num: i64 = @intCast(mix_num);
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        // invariant: the two weights are the mix and its complement, so together they carry exactly one whole sample's worth.
+        assert(num >= 0 and num <= den);
+        const wl: i64 = @intCast(sc.left.buf[start + i]);
+        const dl: i64 = @intCast(dry_l[i]);
+        sc.left.buf[start + i] = timeline.saturate(@divTrunc((den - num) * dl, den) + @divTrunc(num * wl, den));
+        const wr: i64 = @intCast(sc.right.buf[start + i]);
+        const dr: i64 = @intCast(dry_r[i]);
+        sc.right.buf[start + i] = timeline.saturate(@divTrunc((den - num) * dr, den) + @divTrunc(num * wr, den));
+    }
+    // invariant: the blend wrote only within the span on each channel; the channels leave balanced.
+    assert(start + count <= sc.left.len);
+    assert(sc.left.len == sc.right.len);
+}
+
+// --- selftest: THE DRY EDGE (mix = 0) — each channel byte-for-byte unchanged; THE WET EDGE (mix = den) — equals stereo_reverb_preset over the
+//     span byte for byte on both channels; THE BLEND IS BETWEEN — a half mix differs from both and each sample of each channel is the honest
+//     weighted average; THE IMAGE IS HELD — a centred master stays identical channel-to-channel, a stereo master keeps its channels distinct;
+//     THE CHANNELS LEAVE BALANCED and silence stays silence; and the faults forward — a span past the clip DurationTooLong, an out-of-range span
+//     BadRange, a bad fraction BadMix, both channels untouched --------------------------------------------------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try timeline.splice(&sc.left, 0, l);
+    try timeline.splice(&sc.right, 0, r);
+}
+
+fn run_selftest() !u8 {
+    const c = try clock.make(1000); // 1 sample per ms — each ms delay is one sample, the bench legible
+    // Two distinct impulses so the channels genuinely differ (no crossing can hide), each long enough for the hall's strongest comb to decay.
+    const left = blk: {
+        var b: [1024]i16 = [_]i16{0} ** 1024;
+        b[0] = 12000;
+        break :blk b;
+    };
+    const right = blk: {
+        var b: [1024]i16 = [_]i16{0} ** 1024;
+        b[3] = 9000; // a different impulse at a different position — the right channel is not the left
+        break :blk b;
+    };
+
+    // 1. THE DRY EDGE — mix_num = 0 restores each channel to the exact dry: both channels byte-for-byte the untouched input. The knob fully closed
+    //    is the identity on both ears, even though the wet stereo reverb ran underneath.
+    {
+        var clip = pan.StereoClip{};
+        try load_stereo(&clip, &left, &right);
+        try stereo_reverb_mix(&clip, c, .hall, 0, 1024, 0, 4);
+        if (!eq(clip.left.samples(), &left)) return error.DryEdgeLeftNotIdentity;
+        if (!eq(clip.right.samples(), &right)) return error.DryEdgeRightNotIdentity;
+    }
+
+    // 2. THE WET EDGE — mix_num = mix_den equals ALES191's stereo_reverb_preset over the span, byte for byte on both channels. The knob fully open
+    //    is exactly the stereo preset.
+    {
+        var mixed = pan.StereoClip{};
+        try load_stereo(&mixed, &left, &right);
+        try stereo_reverb_mix(&mixed, c, .hall, 0, 1024, 4, 4);
+
+        var preset = pan.StereoClip{};
+        try load_stereo(&preset, &left, &right);
+        try stereo_reverb_preset.stereo_reverb_preset(&preset, c, .hall, 0, 1024);
+
+        if (!eq(mixed.left.samples(), preset.left.samples())) return error.WetEdgeLeftNotPreset;
+        if (!eq(mixed.right.samples(), preset.right.samples())) return error.WetEdgeRightNotPreset;
+    }
+
+    // 3. THE BLEND IS BETWEEN — a half mix (num = 1, den = 2) differs from both the pure dry and the pure wet on each channel, and each sample of
+    //    each channel is the honest weighted average of its own dry and its own wet: out[i] == saturate(dry[i]/2 + wet[i]/2), proven against the
+    //    two edges computed side by side, on both ears.
+    {
+        var dry = pan.StereoClip{};
+        try load_stereo(&dry, &left, &right); // mix 0 leaves the dry
+        try stereo_reverb_mix(&dry, c, .hall, 0, 1024, 0, 2);
+
+        var wet = pan.StereoClip{};
+        try load_stereo(&wet, &left, &right);
+        try stereo_reverb_mix(&wet, c, .hall, 0, 1024, 2, 2); // mix 1 is the pure wet
+
+        var half = pan.StereoClip{};
+        try load_stereo(&half, &left, &right);
+        try stereo_reverb_mix(&half, c, .hall, 0, 1024, 1, 2);
+
+        // the half blend is neither edge, on either channel
+        if (eq(half.left.samples(), dry.left.samples())) return error.HalfLeftEqualsDry;
+        if (eq(half.left.samples(), wet.left.samples())) return error.HalfLeftEqualsWet;
+        if (eq(half.right.samples(), dry.right.samples())) return error.HalfRightEqualsDry;
+        if (eq(half.right.samples(), wet.right.samples())) return error.HalfRightEqualsWet;
+        // and each sample of each channel is the weighted average of the two edges, byte for byte
+        const hl = half.left.samples();
+        const dl = dry.left.samples();
+        const wl = wet.left.samples();
+        const hr = half.right.samples();
+        const dr = dry.right.samples();
+        const wr = wet.right.samples();
+        var i: u32 = 0;
+        while (i < hl.len) : (i += 1) {
+            const want_l = timeline.saturate(@divTrunc(@as(i64, dl[i]), 2) + @divTrunc(@as(i64, wl[i]), 2));
+            if (hl[i] != want_l) return error.BlendLeftNotWeightedAverage;
+            const want_r = timeline.saturate(@divTrunc(@as(i64, dr[i]), 2) + @divTrunc(@as(i64, wr[i]), 2));
+            if (hr[i] != want_r) return error.BlendRightNotWeightedAverage;
+        }
+    }
+
+    // 4. THE IMAGE IS HELD — a CENTRED master (left == right) stays identical channel-to-channel through any mix (one shared bank, one blend
+    //    fraction); and our genuinely STEREO master keeps its two channels distinct — no crossing.
+    {
+        var centred = pan.StereoClip{};
+        try load_stereo(&centred, &left, &left);
+        try stereo_reverb_mix(&centred, c, .hall, 0, 1024, 1, 3);
+        if (!eq(centred.left.samples(), centred.right.samples())) return error.CentredImageBroken;
+        var stereo = pan.StereoClip{};
+        try load_stereo(&stereo, &left, &right);
+        try stereo_reverb_mix(&stereo, c, .hall, 0, 1024, 1, 3);
+        if (eq(stereo.left.samples(), stereo.right.samples())) return error.ChannelsCrossed;
+    }
+
+    // 5. THE CHANNELS LEAVE BALANCED and silence stays silence — an all-zero master at any mix stays all zeros on both channels, the channels
+    //    balanced: the reverb adds nothing to nothing and the blend of two silences is silence.
+    {
+        var clip = pan.StereoClip{};
+        const zl = [_]i16{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        const zr = [_]i16{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        try load_stereo(&clip, &zl, &zr);
+        try stereo_reverb_mix(&clip, c, .plate, 0, 16, 1, 3);
+        if (clip.left.samples().len != clip.right.samples().len) return error.ChannelsUnbalanced;
+        if (!eq(clip.left.samples(), &zl)) return error.SilenceWrongLeft;
+        if (!eq(clip.right.samples(), &zr)) return error.SilenceWrongRight;
+    }
+
+    // 6. THE FAULTS FORWARD — a bad fraction refuses BadMix, a span past the clip DurationTooLong, an out-of-range span BadRange, each by name
+    //    with both channels untouched. The mix adds only BadMix; ALES191's faults forward whole.
+    {
+        var clip = pan.StereoClip{};
+        const threel = [_]i16{ 1, 2, 3 };
+        const threer = [_]i16{ 4, 5, 6 };
+        try load_stereo(&clip, &threel, &threer);
+        // a zero denominator is no balance — BadMix, before any conversion or write.
+        if (stereo_reverb_mix(&clip, c, .room, 0, 3, 1, 0)) |_| return error.BadMixSlipped else |e| if (e != error.BadMix) return error.WrongBadMix;
+        if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.RefusedBadMixMutated;
+        // a numerator past the denominator is past full wet — BadMix.
+        if (stereo_reverb_mix(&clip, c, .room, 0, 3, 5, 4)) |_| return error.OverMixSlipped else |e| if (e != error.BadMix) return error.WrongOverMix;
+        if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.RefusedOverMixMutated;
+        // a count past max_clip converts past the clip bound — DurationTooLong from the clock.
+        if (stereo_reverb_mix(&clip, c, .room, 0, timeline.max_clip + 1, 1, 2)) |_| return error.LongSpanSlipped else |e| if (e != error.DurationTooLong) return error.WrongLongSpan;
+        if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.RefusedLongSpanMutated;
+        // an out-of-range span (2 ms start, 5 ms count past a 3-sample clip) refuses BadRange before the dry snapshots read it.
+        if (stereo_reverb_mix(&clip, c, .room, 2, 5, 1, 2)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(clip.left.samples(), &threel) or !eq(clip.right.samples(), &threer)) return error.RefusedRangeMutated;
+    }
+
+    print("GREEN ales-stereo-reverb-mix: THE STEREO WET/DRY MIX — the reverb's most-reached-for knob (HOW MUCH reverb, the wet/dry balance that " ++
+        "sits a voice in a room without drowning it), now across a stereo master. Snapshot the DRY span of EACH channel, reverberate the master " ++
+        "WET in place through ALES191's stereo_reverb_preset unchanged, then blend each channel — out[i] = saturate((den-num)·dry[i]/den + " ++
+        "num·wet[i]/den), the same linear balance ALES192 proved, run per ear with no cross-channel read, saturated once so a loud blend pins " ++
+        "never wraps. The two edges are exact and proven on both channels: at mix = 0 each channel is restored to the exact dry (the identity, " ++
+        "the reverb fully closed changing nothing), and at mix = den it equals stereo_reverb_preset over the span byte for byte (fully open, " ++
+        "exactly the stereo preset); a half mix differs from both and each sample of each channel is the honest weighted average of the two; the " ++
+        "image is held — a centred master stays identical channel-to-channel while a stereo master keeps its channels distinct; the channels " ++
+        "leave balanced and silence stays silence; and the faults forward — a bad fraction BadMix, a span past the clip DurationTooLong, an " ++
+        "out-of-range span BadRange — each leaving both channels untouched. Purely local: one StereoClip, a validated clock, ALES191's fixed " ++
+        "banks, two bounded stack snapshots; the mix a named fraction, not a decibel; no network, no keys, no funds, no real device, no real " ++
+        "speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
