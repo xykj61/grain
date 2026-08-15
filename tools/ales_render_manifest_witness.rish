@@ -1,0 +1,41 @@
+# tools/ales_render_manifest_witness.rish — a render describes itself, sealed: a `format lotus-render-v1` manifest binds its own
+# .wav bytes by Sha256, verify-before-trust (ALES221).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES221.
+# Design read: active-designing/20260815-133848_fill-ales221-lotus-render-manifest.md
+# Idiom kin: lotus/seal.rye (ALES38, begin/finish/open — the general verify-before-trust frame reused whole) · lotus/render.rye
+# (ALES217) and lotus/stereo_render.rye (ALES218, the renders whose output .wav this manifest describes). Content-addressing,
+# never a signature — it proves the render arrived whole, not who made it.
+#
+# lotus/render_manifest.rye seals a render's own description — preset · sample_rate · channels · frames · wav_bytes · wav_digest
+# — where wav_digest is the Sha256 of the .wav bytes themselves. The selftest proves: seal then open recovers every field and the
+# digest matches the audio (the self-describing law); verify_wav accepts the exact bytes and refuses a single flipped audio byte
+# (WavDigestMismatch) and a wrong length (WavLenMismatch) (the content-address law); a tampered body refuses DigestMismatch and a
+# wrong header BadRecord, inherited from ALES38 (the seal law); an over-long name refuses NameTooLong, a bad channel or a missing
+# field BadManifest (the grammar law); a small buffer refuses Overflow (the atomic law). A byte record only — no real file, no
+# DAC, no network, no keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_render_manifest_witness.rish
+
+say "ales-render-manifest: Language EN — ALES221 seats the small honest record that travels beside a render's .wav and binds it: a `format lotus-render-v1` manifest, sealed through the ALES38 verify-before-trust frame, whose wav_digest is the Sha256 of the audio bytes."
+say "ales-render-manifest: Style Radiant — two hashes, two jobs: the seal's digest binds the manifest text, the wav_digest binds the audio it names; the self-describing law, the content-address law, the seal law, the grammar law, and the atomic law each named and proven on metal."
+say "ales-render-manifest: Lens TAME — content-addressing, never a signature: it proves the render arrived whole, not who made it; every bound named, every fault refused by name, siloed to lotus/, no real file, no DAC, no network, no keys, no funds, no real device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/render_manifest"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/render_manifest.rye -femit-bin=${bin}"]
+assert build.ok else "ales-render-manifest: build failed — ${build.err}"
+
+let outfile = "lotus/bin/render_manifest.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-render-manifest: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-render-manifest: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-render-manifest' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-render-manifest: selftest did not print the GREEN ales-render-manifest line"
+
+say "ales-render-manifest: GREEN — a render now describes itself in a sealed, content-addressed manifest that binds its own .wav bytes, the durable record a publish or a chain of custody stands on. The next Lotus crux can carry the manifest beside a stereo render or let a keeper bundle manifest and .wav as one saveable artifact."

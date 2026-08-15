@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260815.134407
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) time convention
+title ALES221 — Lotus render_manifest: a render describes itself, sealed
+prompt recur the itinerary Lindy-first crux-first, take the next agent-doable lap, send each increment, stop at custody gates
+think Read REMEMBER custody gates + the 1024-round itinerary + the six-season double-seat; the loop's live edge is the Lotus (Season C · ALES) render+preset family, whole for mono and stereo (ALES217-220)
+think Lindy-first crux-first within Lotus: a rendered .wav leaves carrying nothing about what it is; the highest-Lindy still-tractable move is a self-describing, content-addressed manifest — the durable artifact Season 1 J2 (Publishing) and Season 2 J6 (Provenance) both stand on
+think seal.rye (ALES38) already owns the general Sha256 verify-before-trust frame (begin/finish/open) — reuse it whole; the manifest adds only its body grammar and one new promise, wav_digest binding the audio bytes themselves
+think Two hashes, two jobs — the seal digest binds the manifest TEXT, wav_digest binds the AUDIO; content-addressing not signing, so no key and no custody gate
+obs first build RED — cursor+key.len promoted to usize at the return; narrowed both key.len and nl at the seam with @intCast and a why-comment (u32 kept as the design type)
+obs TAME ratchet flagged std.fmt.parseInt (leading-zero footgun) — migrated field_u32 to the tree's own parse_int.parse_int for fresh code, strict decimal refuses 007-as-7
+obs copyForwards is TAME-banned — used tally_copy.copy_disjoint in the selftest scratch copies like seal.rye does
+obs no custody gate reached — software-only Sha256 record over in-process bytes, siloed to lotus/, no file/DAC/network/keys/funds
+loom witness=ales_render_manifest_witness result=GREEN laws=5 module=lotus/render_manifest.rye
+file active-designing/20260815-133848_fill-ales221-lotus-render-manifest.md the self-approved design round naming the crux and the five laws
+file lotus/render_manifest.rye the module — seal_manifest, open_manifest, verify_wav over the ALES38 frame
+file tools/ales_render_manifest_witness.rish the witness proving the five laws GREEN on metal
+recommend keep-going the next Lotus crux carries the manifest beside a stereo render or bundles manifest and .wav as one saveable artifact
