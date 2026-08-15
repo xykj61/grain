@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260815.034830
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (Eastern EDT convention)
+title ALES136 — Lotus's stereo_crush: the bit-crusher carried into stereo, one shared grid, the resolution corner of the nonlinear class
+prompt Read REMEMBER and the 1024-round itinerary + six-season double-seat; take the next agent-doable lap Lindy-first crux-first; approve my own design rounds; send each finished increment as its own signed round; stop at custody gates; baton prin recur.
+think Third lap of this recur turn (after ALES135 stereo_tube landed and sent). The ALES135 log named crush and decimate as the remaining DRIVE-family stereo lifts. Crush before decimate: crush is the second not-odd DRIVE member, so it directly reuses ALES135's antisymmetry-break lesson (the crux is already proven; this rung shows the same law arising from a different not-odd cause — a floor toward −∞ rather than an uneven pin).
+think Read crush.rye (ALES81): crush(clip, start, count, bits), a floor onto the grid of step 2^(16−bits); CrushError = {BadBits (resolution outside [1,16]), BadRange}. It carries NO pre-gain and NO ceiling — the purest DRIVE member — so the stereo lift is the plainest of the nonlinear class: validate bits and span once, run mono crush per channel. Reused CrushError whole.
+think Wrote the self-approved design read, module, witness. Proved four laws. The not-odd crux this round arises from the floor, not the uneven pin: an out-of-phase master (right = −left, {100,300,−100}/{−100,−300,100}) crushed to 8 bits comes back left {0,256,−256}, right {−256,−512,0} — so right[0]=−256 while −left[0]=0, asserted r != −l. Added a grid-discipline test (@rem(x,256)==0 on both channels, floor never raises) and an idempotence test (twice equals once, a grid point crushing to itself). Witness GREEN; tame_style_check bans clean; width-check exit 0.
+obs The stereo nonlinear class now holds five DRIVE readings across two axes: amplitude (pin ALES132, round ALES133, reflect ALES134, uneven-pin ALES135) and resolution (crush ALES136). Both not-odd members (tube, crush) prove the antisymmetry-break, each from a different cause — the uneven ceiling and the downward floor — so the lesson is now shown to be a property of not-odd maps in general, not a quirk of one. No custody gate reached: purely local software, two bounded i16 Clips, self-approved design round. Decimate (the last named DRIVE-family stereo lift) remains; it holds sample values across a downsample grid, a third reading again.
+loom witness=ales_stereo_crush_witness result=GREEN laws=4 channels=2 class=nonlinear axis=resolution cases=antisymmetry-break+idempotence+grid-discipline
+file lotus/stereo_crush.rye ALES136 — stereo_crush, the bit-crusher lifted to stereo: one shared grid on both channels, validated once (bits + span), four laws with the per-channel not-odd crux (antisymmetry breaks under the downward floor) and idempotence.
+file tools/ales_stereo_crush_witness.rish the witness — builds, runs selftest, asserts the GREEN ales-stereo-crush line.
+file active-designing/20260815-034830_fill-ales136-lotus-stereo-crush.md the self-approved design read for this rung.
+file lotus/README.md front door synced — ALES136 roster entry on the Status line, stamp refreshed.
+recommend keep-going the stereo nonlinear class holds five DRIVE readings across amplitude and resolution; the last named lap lifts decimate (a downsample grid) to stereo, inheriting this rung's shared-map validate-once pattern — no gate reached.
