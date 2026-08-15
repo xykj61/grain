@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260815.193010
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) — this session in ai-jail
+title Season G sixth rung — the Curve25519 base field fe25519 in pure Rye
+prompt Take the next agent-doable lap Lindy-first crux-first on the Rye-first crypto-parity wave; Rye prioritized, Glow on green-witnessed Rye; approve own design rounds; send each finished increment; stop at custody gates.
+think Read REMEMBER (living edge Season G, FIVE primitives GREEN), the 1024-round itinerary, the six-season double-seat, and the decision-wave doc. Every one repeated the same boundary: the AEAD "adds no new field math (the curve, edwards25519, still wants its own design round)," and Ed25519 is the Lotus unblock.
+think Lindy-first crux-first: the durable stone every remaining curve primitive (Ed25519 signing, X25519 key agreement) reaches for is the base field GF(2^255-19). It is pure arithmetic — no key, no signature, no identity, no custody gate — so an agent can build, prove, and send it. That is the crux: the hardest still-tractable move that opens both curve operations as composition rounds over a proven base.
+think Self-approved the design round (active-designing/20260815-193010_fe25519-the-curve-field-crux.md) rather than pausing to check in, per the prompt. Chose five 51-bit limbs (radix 2^51) — the exact sibling of Poly1305's five 26-bit limbs over 2^130-5, matching house style.
+think Wrote crypto/fe25519.rye: from_bytes/to_bytes, add, sub (folded 2p), mul (schoolbook radix-2^51 with the 2^255=19 fold, u128 accumulation, carry chain), square (product with self), invert (Fermat a^(p-2) by a fixed 254-squaring ladder). Bounded every limb; asserted >=2 contracts per fn with positive // invariant comments.
+think Parity strategy, two references runnable now: by-hand known-answers (1*1=1, 2*3=6, base coordinate 9 round-trips, a-a=0, a*inv(a)=1, encodings of p and p+5 reduce to 0 and 5) AND Zig's independent std.crypto.ecc.Edwards25519.Fe byte-for-byte on the canonical packing of add/sub/mul/sq/invert across 24 field elements. Canonical-byte comparison lets the two implementations carry limbs their own way and still agree exactly.
+obs One build fix: c0 in mul was never mutated (only c1..c4 accumulate carries) — Zig flagged it; changed var to const. Then GREEN on the metal pass; the Zig-Fe parity net would have caught any wrong limb in mul/invert and did not.
+obs tame_style_check bans clean; the new file lands in none of the ratchet lists (no @memcpy application site, snake_case, assert imported, contracts present).
+obs Honest scope held: a field element is arithmetic, not a secret and not a signature. No real key, no signing (Ed25519's signing with the identity key stays its own separate GATED round), no network, no funds, no real device — no custody gate crossed. Monocypher-source parity stays the held-fetch horizon; constant-time timing-safety a separate named horizon (the ladder is data-independent by construction, yet timing wants measurement, not a claim).
+loom witness=crypto_fe25519_witness parity_elements=24 ops=5 known_answers=7 result=GREEN
+file active-designing/20260815-193010_fe25519-the-curve-field-crux.md the self-approved design round naming the crux and the parity plan
+file crypto/fe25519.rye the Curve25519 base field GF(2^255-19) in pure Rye, six operators, parity-GREEN
+file tools/crypto_fe25519_witness.rish the witness that builds, runs selftest, asserts the GREEN line
+file work-in-progress/REMEMBER.md living edge updated to SIX primitives GREEN; git nib refreshed
+recommend keep-going Ed25519 and X25519 are now composition rounds over a proven field; the next crux is the edwards25519 group law (point add/double, the base point) then Ed25519 sign/verify parity vs Monocypher/RFC 8032 KATs — signing with the identity key stays the custody gate.
