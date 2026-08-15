@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260815.123923
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — ai-jail — Eastern (EDT) time convention
+title ALES213 — Lotus's reverb_pan: reverberate the master WET, then place the wet image WHERE it sits, the equal-power pan after ALES212's width
+prompt Recur the road Lindy-first crux-first, self-approve design rounds, send each finished increment, stop at custody gates, baton prin recur
+think Read REMEMBER (stale at DREY6), the 1024-round itinerary, and the six-season double-seat; the true living edge is Season C (Lotus, ALES ladder), and the ALES212 log plus the ALES212 design read both name the same next crux — ALES213 reverb_pan (reverberate wet, then place the wet image in the field)
+think Confirmed reverb_width builds and witnesses GREEN in this toolchain as a baseline before writing, so a red would be mine, not inherited
+think The clean composition: stereo_reverb_preset (ALES191) reverberates wet, power.split (ALES11) reads the two equal-power weights for the position, timeline.gain (ALES2) scales each wet channel by its weight over the field denominator — three proven stages, NO new audio arithmetic. Validate the pan FIRST so a bad position never lets the reverb write (the same atomicity crux the width rung holds)
+think The design read named ALES10's pan as equal-power; ALES10 is the LINEAR pan, ALES11 (power.rye) is the equal-power split — recorded the lineage correctly in the module and witness (power.split verbatim), so the doc's citation and the code agree
+obs Five laws proven on metal: HARD-LEFT (pan==0 → left byte-exact the pure wet, right silenced), HARD-RIGHT (mirror), COMPOSITION (off-centre pan == reverb then the two equal-power gains, byte for byte, each channel an attenuation), CENTRE-SYMMETRY (a centred master stays centred and attenuated at the equal-power centre), FAULT (BadPan / DurationTooLong / BadRange each leave the master dry). Each weight ≤ den, so the gain's saturate is a proven no-op — the pan places, never amplifies
+obs No custody gate reached — purely local DSP, siloed to lotus/. TAME style check GREEN on the touched .rye (opening triad, ≥2 asserts per fn, no new memcpy, unqualified assert)
+loom witness=ales_reverb_pan_witness rung=ALES213 laws=5 result=green tame=green
+file lotus/reverb_pan.rye ALES213 — reverb_pan composes stereo_reverb_preset + power.split + timeline.gain, five laws in selftest, GREEN
+file tools/ales_reverb_pan_witness.rish the ALES213 witness — three-lens say + build + selftest + GREEN-line assert, mirroring the reverb_width harness
+file active-designing/20260815-123603_fill-ales213-lotus-reverb-pan.md the self-approved design read naming the crux, shape, edges, and provable laws
+file work-in-progress/REMEMBER.md git nib refreshed to this send in the same work commit
+recommend keep-going ALES214 reverb_pan's stereo-axis-whole twin (a linked left/right pan or per-return balance), keeping the reverb series' control-then-companion habit; the REMEMBER living-edge narrative (still DREY6) waits a heavier doc-sync round
