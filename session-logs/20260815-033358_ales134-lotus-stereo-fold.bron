@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260815.033358
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (Eastern EDT convention)
+title ALES134 — Lotus's stereo_fold: the wavefolder carried into stereo, one shared triangle, the reflecting corner of the nonlinear class
+prompt Read REMEMBER and the 1024-round itinerary + six-season double-seat; take the next agent-doable lap Lindy-first crux-first; approve my own design rounds; send each finished increment as its own signed round; stop at custody gates; baton prin recur.
+think Second lap of this recur turn (after ALES133 stereo_soft_drive landed and sent). The stereo nonlinear class now holds two DRIVE corners — the sharp (ALES132) and the rounded (ALES133). Crux-first, the next durable member is ALES80's wavefolder: the third reading of the same excess, where what would cross the ceiling REFLECTS back down a triangle rather than pinning. It teaches the honest contrast with the hard drive (pin vs reflect) and continues the DRIVE-family lift the ALES132 log named.
+think Read fold.rye (ALES80): wavefold(clip, start, count, num, den, ceil), the pre-gain of ALES78 folded through a triangle of period 2·ceil (@mod of the boosted magnitude); FoldError = {BadGain, BadCeiling, BadRange} — the SAME shape as drive, no knee, so the stereo lift is structurally identical to ALES132's stereo_drive with wavefold in place of drive. Mirrored ALES80's guards once up front against the shared params and shared length, then ran mono wavefold per channel; reused FoldError whole.
+think Wrote the self-approved design read, module, witness. Proved four laws. The nonlinear crux this time is REFLECTION not pinning: a 1000/2000 field folded unity through a 1500 ceiling lands 1000/1000 — 1000 passes clean, 2000's excess reflects to 3000−2000=1000 — so the ratio collapses to 1:1 AND neither channel is at the ceiling (asserted both: r != 2·l, and neither == 1500). Added a fold-vs-drive divergence test: a just-past-ceiling 1600 folds to 1400 (below the ceiling) where ALES132's hard drive pins it to 1500, proven against drive.drive per channel. Witness GREEN; tame_style_check bans clean.
+obs The DRIVE family now holds three stereo readings of the excess: pin (ALES132), round (ALES133), reflect (ALES134). The pin-vs-reflect divergence test makes the family's distinction checkable, not just narrated — below the ceiling they agree, above they diverge. No custody gate reached — purely local software, self-approved design round. The remaining DRIVE-family lifts (crush, tube, decimate) inherit this pattern; crush is the first non-odd map (a floor toward negative infinity), so its stereo lift will want a slightly different sign-law note.
+loom witness=ales_stereo_fold_witness result=GREEN laws=4 channels=2 class=nonlinear
+file lotus/stereo_fold.rye ALES134 — stereo_fold, the wavefolder lifted to stereo: one shared triangle on both channels, validated once, four laws with the per-channel nonlinear crux (the ratio collapses by reflection) and the fold-vs-drive pin/reflect divergence.
+file tools/ales_stereo_fold_witness.rish the witness — builds, runs selftest, asserts the GREEN ales-stereo-fold line.
+file active-designing/20260815-033358_fill-ales134-lotus-stereo-fold.md the self-approved design read for this rung.
+file lotus/README.md front door synced — ALES134 roster entry on the Status line, stamp refreshed.
+recommend keep-going the stereo nonlinear class holds three DRIVE readings of the excess (pin · round · reflect); the next mechanical laps lift crush, tube, and decimate to stereo, each inheriting this rung's shared-map pattern — no gate reached.
