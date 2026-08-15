@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260815.194926
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) — this session in ai-jail
+title Season G eighth rung — scalar multiplication k*P on edwards25519 in pure Rye
+prompt Keep climbing the Rye-first crypto-parity wave Lindy-first crux-first; Rye prioritized, Glow on green-witnessed Rye; send each finished increment as its own signed round; stop only at custody gates. baton prin recur.
+think With the edwards25519 group law GREEN and sent (seventh rung, HEAD b1be7ea437), the direct next crux toward Ed25519 is scalar multiplication — the group law's own closing line and the group session log both name it. Non-gated: a scalar times a point is arithmetic, no key and no signature.
+think Crux-first scoping: the tractable keystone is k*P by double-and-add, composed only over pt.dbl and pt.add — no new field math, no new curve math. Point decode (sqrt-based) and Ed25519 sign/verify are their own later rounds; this rung turns a proven group into a proven scalar multiplication.
+think Built the ladder MSB-to-LSB over 256 bits from the group identity (X=0,Y=1,Z=1,T=0), constructed in fe.Field literals since the group keeps its zero/one constructors private. The scalar rides little-endian, exactly Ed25519's order for both secret scalars and the encoded challenge.
+think Parity net: algebraic known-answers anyone can check (0*B identity, 1*B=B, 2*B=dbl(B), (k+1)*B=k*B+B) plus Zig's independent std.crypto.ecc.Edwards25519.mul byte-for-byte on k*P across eight small scalars and one fixed large scalar, over both the base point and 3*B. Chose the large scalar with a small top byte so it is well under 2^252 — never zero, never a multiple of L — so Zig's mul rejects no IdentityElement.
+obs GREEN on the first metal pass — no build fix needed. The double-and-add agreed with Zig's windowed precompute method on every scalar and both points, and the algebraic checks held.
+obs Named the honest limit plainly: the ladder branches on scalar bits, so it is deliberately VARIABLE-TIME — correct, not yet timing-safe. A constant-time ladder for secret scalars is a separate named horizon, the same one the whole Season carries; the group law itself stays data-independent.
+obs tame_style bans clean; the new file lands in none of the ratchet lists. Composes entirely over the group law's public API — no new field or curve math, no new std.crypto call. Honest scope held: no key, no signing, no network, no funds, no real device — no custody gate crossed.
+loom witness=crypto_ed25519_scalarmul_witness parity_points=2 scalars=9 known_answers=4 result=GREEN
+file crypto/ed25519_scalarmul.rye scalar multiplication k*P on edwards25519 in pure Rye, composed over the group law, parity-GREEN
+file tools/crypto_ed25519_scalarmul_witness.rish the witness that builds, runs selftest, asserts the GREEN line
+file work-in-progress/REMEMBER.md living edge updated to EIGHT primitives GREEN; git nib refreshed in this work commit
+recommend keep-going point decode (recover x from y via the field's sqrt, pow (p+3)/8) is the one remaining non-gated arithmetic rung; after it Ed25519 sign/verify parity vs RFC 8032 / Monocypher KATs — signing with the identity key stays the custody gate.
