@@ -1,0 +1,41 @@
+# tools/ales_stereo_halve_witness.rish — stereo_halve: the half-wave rectifier carried into stereo with ONE SHARED THRESHOLD AT ZERO, both channels in lockstep, the EVEN+ODD member of the stereo NONLINEAR class's
+# even corner (ALES139).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES139.
+# Design read: active-designing/20260815-040747_fill-ales139-lotus-stereo-half-wave-rectifier.md
+# Stands on: lotus/halve.rye (ALES85 — the mono half-wave rectifier run once per channel, max(x, 0) with no rail edge), lotus/stereo_rectify.rye (ALES138 — the pure-even full-wave sibling this rung partitions where
+# that one collapsed), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, sample_min/max). A Lotus master is a
+# StereoClip whose defining invariant is that left and right hold the same length. This rung carries ALES85's half-wave rectifier into stereo — keeping the positive half of the wave whole and folding the negative
+# half away to silence in both channels so a half-wave rectification lands on both speakers together, the single-diode voice. The half-wave partitions where the full-wave collapsed: it keeps only the positive half,
+# so an out-of-phase master (right = −left) returns partitioned — at each index exactly one channel survives, left · right = 0 and left + right = |left|, the two half-waves splitting the antisymmetric pair.
+#
+# lotus/stereo_halve.rye validates the span once against the shared length before either channel is mutated (BadRange on a span outside the samples), then halves both channels through ALES85's halve; HalveError
+# reused whole (max(x, 0) has no illegal parameter and no rail edge, so no saturate is owed). The crux is four laws. THE STEREO HALVE LAW: each channel equals ALES85's mono halve over the same span byte for byte.
+# THE BALANCE / LENGTH LAW: left.len == right.len after, both holding their starting length. THE IMAGE-PARTITION LAW: an out-of-phase master returns partitioned (left · right = 0 and left + right = |left|), the ratio
+# held on the kept samples, an identical-channel master staying identical, every output non-negative on both, the map idempotent. THE ATOMICITY / DEGENERATE LAW: a refusal leaves both channels untouched and
+# balanced, count 0 the identity.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_stereo_halve_witness.rish
+
+say "ales-stereo-halve: Language EN — stereo_halve half-wave-rectifies a span in both channels of a stereo master, keeping the positive half of the wave whole and folding the negative half away to silence, y = max(x, 0), the same threshold at zero on each, so one half-wave rectification lands on both speakers together. A Lotus master is two Clips heard together, one per speaker, whose defining invariant is that left and right hold the same length so the two channels stay aligned in time. This rung carries the even+odd member of the stereo nonlinear class's even corner on ALES85's half-wave rectifier, running the proven mono halve on each channel, validated once against the shared length before either channel is mutated so a refusal never rectifies one channel and leaves the other signed."
+
+say "ales-stereo-halve: Style Radiant — the full-wave rectifier just carried into stereo folds the whole negative half up onto the positive side, pure even harmonics, and the half-wave is its plain sibling: where a diode bridge makes full-wave rectification a single diode makes half-wave, passing current one way and blocking it the other, so the positive half is kept whole and the negative half folded away to silence, an even plus odd mix since max of x and zero equals x plus the magnitude of x, all over two. And the half-wave partitions where the full-wave collapsed. The full-wave folded plus a and minus a both onto a, so an out-of-phase master came back identical; the half-wave keeps only the positive half, so an out-of-phase master, right the negation of left, comes back partitioned — at each index exactly one channel survives, because a sample and its negation cannot both be positive, so the left keeps its positives and silences where it was negative while the right keeps its own positives there. Two facts hold at every index: left times right equals zero, the channels disjoint and never both sounding at once, and left plus right equals the magnitude of left, the two half-waves partitioning the antisymmetric pair and summing to the full-wave magnitude. That is what a stereo half-wave rectification is, the pair split into complementary one-sided channels rather than folded to mono. Yet a one to two master keeps its ratio on the kept samples, both going to silence where the left is negative, and an identical-channel master stays identical. The rule is stated positively: max of x and zero is exact for every i16 with no rail edge at all, a non-negative sample passing unchanged and a negative becoming zero, so the half-wave needs no saturate, even plainer than the full-wave lift, and it names exactly one fault — refuse BadRange before either channel is mutated, else halve both channels over the span via ALES85's halve. It reuses ALES85's HalveError by name and ALES85's halve for the arithmetic, inventing no new fault and no new primitive. The crux stands out as four laws: the stereo halve law (each channel equals ALES85's mono halve over the same span byte for byte), the balance / length law (left.len == right.len after the edit and both hold their starting length, a halve writing values only), the image-partition law (an out-of-phase master returns partitioned, left times right zero and left plus right the magnitude of left, the ratio held on the kept samples, an identical master staying identical, every output non-negative on both, the map idempotent), and the atomicity / degenerate law (any refusal leaves both channels byte for byte untouched and still balanced, count zero the identity on both)."
+
+say "ales-stereo-halve: Lens TAME — two bounded i16 Clips (left, right) half-wave-rectified in lockstep by one shared threshold at zero; the balance invariant is asserted on entry and exit, the span is bound-checked once before any write, and because that check depends only on the shared length and holds for both channels each mono halve is pre-validated to succeed so no refusal can land between the two channel edits; halve walks the span once per channel, writing max of x and zero, the map memoryless (every output depends only on its own input) and each output non-negative and at most its input, with no rail edge so no saturate is owed, never touching a byte past len so the length holds exactly; it reuses ALES85's halve per channel over its public API and ALES85's HalveError whole, inventing no new primitive and no new fault since max of x and zero has no illegal parameter; the stereo halve law is proven against ALES85's own halve run per channel and by hand, the image-partition law proves an out-of-phase master returns two disjoint channels whose sum is the full-wave magnitude while a one to two master keeps its ratio on the kept samples (the honest contrast with the image-collapsing full-wave), every output non-negative on both, the map idempotent, the one refusal leaves both channels byte-for-byte untouched, and count equal to zero is the identity; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_halve"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_halve.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-halve: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_halve.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-halve: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-halve: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-halve' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-halve: selftest did not print the GREEN ales-stereo-halve line"
