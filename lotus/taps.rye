@@ -64,6 +64,19 @@ pub const TapError = error{
     BadRange,
 };
 
+/// Validate a whole multi-tap request — the tap slice AND the span — against a clip length WITHOUT touching a sample. The same edges
+/// `multitap` enforced inline, factored out so a stereo carry can validate one shared tap set and span against both channels' shared
+/// length before either channel is snapshotted (mirroring ALES66/71/72/73's own precheck refactors). Refuses BadTapCount, BadDelay,
+/// BadLevel (through `check_taps`), and BadRange (a span past the length), each before any write. Takes a plain length rather than a clip,
+/// so it reads no buffer.
+pub fn precheck(clip_len: u32, start: u32, count: u32, taps: []const Tap) TapError!void {
+    // invariant: every tap is legal — count, each delay, each level — before any read.
+    try check_taps(taps);
+    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
+    if (start > clip_len) return error.BadRange;
+    if (count > clip_len - start) return error.BadRange;
+}
+
 /// Validate the tap slice against every edge before a sample is touched: the count, each delay, and each level. Split out so
 /// `multitap` refuses wholly before its snapshot, leaving the clip untouched on any bad tap.
 fn check_taps(taps: []const Tap) TapError!void {
@@ -94,11 +107,9 @@ pub fn multitap(
     count: u32,
     taps: []const Tap,
 ) TapError!void {
-    // invariant: every tap is legal before any read — the whole slice validated at the edge, the clip untouched on refusal.
-    try check_taps(taps);
-    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
-    if (start > clip.len) return error.BadRange;
-    if (count > clip.len - start) return error.BadRange;
+    // invariant: every tap and the span are legal before any read — the whole request validated at the edge (now shared with the stereo
+    // carry through `precheck`), the clip untouched on refusal.
+    try precheck(clip.len, start, count, taps);
 
     const end: u32 = start + count;
     // Snapshot the dry prefix [0, end) BEFORE any write, so every tap reads the ORIGINAL audio and never a sample this pass just wrote —
