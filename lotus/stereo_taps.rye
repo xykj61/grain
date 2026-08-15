@@ -1,0 +1,260 @@
+//! lotus/stereo_taps.rye — ALES183: the MULTI-TAP delay carried into stereo — ALES68's several fixed taps of the DRY signal run on BOTH channels with the SAME tap set, each channel read off ITS OWN frozen dry snapshot — the SECOND rung of
+//! the stereo TIME-BASED wing, the echo's SNAPSHOT sibling. ALES181 opened the wing with the feedback echo (each tap reads the live OUTPUT, a decaying train) and ALES182 gave it its real-time face; the multi-tap is the wing's other primitive —
+//! several FIXED taps of the dry, each at its own delay and level, summed with the dry, the discrete early-reflection pattern (a snare hitting three walls at three distances) a single feeding echo cannot voice, because a feedback tap decays
+//! geometrically while independent taps stand at their own chosen levels. Where the echo reads its own output (live), the multi-tap reads a FROZEN dry SNAPSHOT — so like the stereo vibrato (ALES178) and chorus (ALES179), and unlike the
+//! feedback echo (ALES181), it carries a SNAPSHOT read into stereo, and the snapshot is what lets the panned integer ratio survive exactly.
+//!
+//! The crux — the SAME tap set on BOTH channels, each read off ITS OWN dry snapshot, is the linked stereo multi-tap: both early-reflection patterns land in lockstep, the image held. A tap's delay is a sample count and its level a named fraction
+//! the caller NAMES, not scalars measured across the field, so the same tap set on each channel preserves the stereo image for free. Mono `multitap` snapshots the dry prefix of its OWN clip, so run once per channel the left reads the left's dry
+//! and the right the right's, never crossed — NO cross-channel snapshot, the mono discipline twice. Because every tap reads the frozen dry and the sum is LINEAR in the input away from saturation, an identical-channel (centred) master stays
+//! identical AND a panned pair kept off the rail keeps its exact ratio — the stronger both-cases image law the snapshot rungs earn and the feedback echo cannot (its @divTrunc feedback truncation drifts a panned ratio by ones). The whole sum
+//! (dry plus every tap) saturates ONCE through timeline.saturate per channel, so a constructive pile-up pins to the i16 rail rather than wrapping.
+//!
+//! The rule, stated once: refuse BadTapCount (no taps or more than max_taps), BadDelay (a tap delay of zero or wider than max_clip), BadLevel (a tap louder than the dry or a zero denominator), and BadRange (a span past the shared length) BEFORE
+//! either channel is touched — the tap set and span validated ONCE against the shared length up front (ALES68's own `precheck`, factored out for this exactly as ALES71/72/73's were), so a refusal never taps one channel and leaves the other torn;
+//! then run ALES68's `multitap` on each channel with the SAME tap set. Unlike the feedback echo, a tap AT UNITY is legal (a full-level discrete echo) — a multi-tap has no loop to run away.
+//!
+//! The crux — three laws. THE STEREO MULTI-TAP LAW: each channel equals ALES68's mono `multitap` with the SAME tap set over the same span byte for byte, proven side by side with genuinely different per-channel content — the left rung by the
+//! left's samples, the right by the right's, never crossed. THE DRY-IDENTITY LAW: an all-zero-level tap set (num = 0) stereo multi-tap is the exact dry master on both channels — no reflection added, the identity — so the levels genuinely govern
+//! the reflections. THE IMAGE / BALANCE / SILENCE / ATOMICITY / DEGENERATE LAW: an identical-channel (centred) master stays identical AND a panned pair kept off the rail keeps its exact ratio (the snapshot read is linear); an all-silent master
+//! taps to silence on both; left.len == right.len after; a bad tap count, a bad delay, a bad level, and an out-of-range span each refuse by name with BOTH channels byte for byte untouched and still balanced; count = 0 the identity on both.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES183.
+//! Design read: active-designing/20260815-090818_fill-ales183-lotus-stereo-multi-tap.md
+//! Stands on: lotus/taps.rye (ALES68) — the mono multi-tap run once per channel, its TapError reused whole and its `precheck` (newly factored out) reused for the up-front atomic validation; lotus/pan.rye (ALES10) — the StereoClip and its
+//! balance invariant; lotus/timeline.rye (ALES2) — the Clip and the one true saturate the mono multi-tap reuses.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right), each rung through ALES68's own bounded snapshot multi-tap — one frozen dry snapshot and at most max_taps multiply-divides per sample, run in i64 and
+//! summed once, siloed to lotus/. It changes sample VALUES only, never a length; the two channels leave balanced. A tap delay is a count of sample INDICES, not milliseconds against a clock (a real-time twin through the ALES5 clock is a later rung,
+//! exactly as stereo_echo_time followed stereo_echo); each tap level is a named fraction at or below unity, not a decibel. No cross-channel snapshot, no real sample rate, no network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_taps.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const taps = @import("taps.rye");
+
+pub const stereo_taps_version = "20260815.090818";
+
+/// The stereo multi-tap's faults are exactly ALES68's own `TapError` — `BadTapCount`, `BadDelay`, `BadLevel`, and `BadRange` — reused by
+/// name, since carrying the multi-tap into stereo adds no new fault: it validates one shared tap set and span against the shared length,
+/// then runs the same mono multi-tap on each channel.
+pub const StereoTapError = taps.TapError;
+
+/// Apply a multi-tap delay over `count` samples starting at `start` in BOTH channels of `sc` with the SAME tap set — each sample the dry
+/// input plus the sum of every tap's attenuated copy of the DRY sample its delay earlier — by running ALES68's proven mono `multitap` on
+/// each channel. The shared tap set preserves the stereo image: an identical-channel master stays identical and a panned pair kept off the
+/// rail keeps its exact ratio (each tap reads a frozen dry snapshot, the sum linear in the input). Each channel snapshots and reads its
+/// OWN dry — no cross-channel snapshot. Validates the tap set and span ONCE against the shared length before either channel is snapshotted
+/// (ALES68's `precheck`): refuses BadTapCount, BadDelay, BadLevel, and BadRange, both channels untouched. Values only — never the length;
+/// the two channels leave balanced.
+pub fn stereo_multitap(
+    sc: *pan.StereoClip,
+    start: u32,
+    count: u32,
+    tap_set: []const taps.Tap,
+) StereoTapError!void {
+    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the shared tap set preserves.
+    assert(sc.left.len == sc.right.len);
+    // invariant: the tap set and span are legal against the SHARED length — checked before any write, so a refusal never taps one channel and leaves the other torn.
+    const len: u32 = sc.left.len;
+    try taps.precheck(len, start, count, tap_set);
+
+    // Every check passed and holds identically for both channels (same tap set, same span, shared length), so each mono multi-tap is
+    // pre-validated to succeed — no refusal can land between the two channel edits. The SAME tap set on each channel, each snapshotting and
+    // reading its OWN dry, never the other's.
+    try taps.multitap(&sc.left, start, count, tap_set);
+    try taps.multitap(&sc.right, start, count, tap_set);
+
+    // invariant: the channels leave balanced — a multi-tap writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
+    assert(sc.left.len == len and sc.right.len == len);
+    assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
+}
+
+// --- selftest: THE STEREO MULTI-TAP LAW — each channel equals ALES68's mono multitap with the SAME tap set byte for byte, different
+//     per-channel content; THE DRY-IDENTITY LAW — a zero-level tap set is the dry master on both; THE IMAGE / BALANCE / SILENCE /
+//     ATOMICITY / DEGENERATE LAW — an identical-channel master staying identical AND a panned pair keeping its ratio, silence to silence,
+//     balanced, each of four refusals untouched, count 0 identity
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try timeline.splice(&sc.left, 0, l);
+    try timeline.splice(&sc.right, 0, r);
+}
+
+fn run_selftest() !u8 {
+    // 1. THE STEREO MULTI-TAP LAW — each channel equals ALES68's mono multitap with the SAME tap set, proven side by side over one span
+    //    with genuinely different per-channel content: the left rung by the left's samples, the right by the right's, never crossed.
+    {
+        const ll = [_]i16{ 8000, 0, 0, 0, 0, 0, 0, 0 };
+        const rr = [_]i16{ 0, 0, 6000, 0, 0, 0, 0, 0 };
+        const two = [_]taps.Tap{
+            .{ .delay = 2, .num = 1, .den = 2 },
+            .{ .delay = 4, .num = 1, .den = 4 },
+        };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &ll, &rr);
+        try stereo_multitap(&sc, 0, 8, &two);
+
+        var ml = timeline.Clip{};
+        try timeline.splice(&ml, 0, &ll);
+        try taps.multitap(&ml, 0, 8, &two);
+        var mr = timeline.Clip{};
+        try timeline.splice(&mr, 0, &rr);
+        try taps.multitap(&mr, 0, 8, &two);
+
+        if (!eq(sc.left.samples(), ml.samples())) return error.LeftTapsNotMono;
+        if (!eq(sc.right.samples(), mr.samples())) return error.RightTapsNotMono;
+        // the two channels genuinely differ — the left is not the right rung, proving no crossing
+        if (eq(sc.left.samples(), sc.right.samples())) return error.ChannelsDidNotDiffer;
+    }
+
+    // 2. THE DRY-IDENTITY LAW — an all-zero-level tap set (num = 0) stereo multi-tap adds nothing, the dry master passing byte for byte on
+    //    both channels at any delay.
+    {
+        const ll = [_]i16{ 1000, -2000, 3000, -4000, 5000, -6000 };
+        const rr = [_]i16{ -400, 1200, 500, 2000, -700, 100 };
+        const off = [_]taps.Tap{
+            .{ .delay = 2, .num = 0, .den = 4 },
+            .{ .delay = 3, .num = 0, .den = 8 },
+        };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &ll, &rr);
+        try stereo_multitap(&sc, 0, 6, &off);
+        if (!eq(sc.left.samples(), &ll)) return error.ZeroLevelLeftChanged;
+        if (!eq(sc.right.samples(), &rr)) return error.ZeroLevelRightChanged;
+    }
+
+    // 3. THE IMAGE LAW — an identical-channel (centred) master stays identical AND a panned pair kept off the rail keeps its exact ratio.
+    //    Because every tap reads the frozen dry and the sum is linear in the input away from saturation, a right exactly half the left
+    //    stays exactly half after — the stronger both-cases image law the snapshot rungs earn and the feedback echo (ALES181) cannot.
+    {
+        const two = [_]taps.Tap{
+            .{ .delay = 2, .num = 1, .den = 2 },
+            .{ .delay = 4, .num = 1, .den = 4 },
+        };
+        // 3a. identical channels stay identical
+        {
+            const same = [_]i16{ 8000, 0, 0, 0, 0, 0, 0, 0 };
+            var sc = pan.StereoClip{};
+            try load_stereo(&sc, &same, &same);
+            try stereo_multitap(&sc, 0, 8, &two);
+            if (!eq(sc.left.samples(), sc.right.samples())) return error.IdentityChannelsSplit;
+        }
+        // 3b. a panned pair (right exactly half the left, everything even and off the rail) keeps its ratio through the multi-tap
+        {
+            const lp = [_]i16{ 8000, 0, 400, 0, 1200, 0, 0, 0 };
+            const rp = [_]i16{ 4000, 0, 200, 0, 600, 0, 0, 0 }; // exactly half of lp, sample for sample
+            var sc = pan.StereoClip{};
+            try load_stereo(&sc, &lp, &rp);
+            try stereo_multitap(&sc, 0, 8, &two);
+            var i: u32 = 0;
+            while (i < 8) : (i += 1) {
+                // right == left / 2 exactly: the linear snapshot sum scales, so the pan ratio survives (no feedback truncation).
+                if (sc.right.samples()[i] * 2 != sc.left.samples()[i]) return error.PanRatioBroke;
+            }
+        }
+    }
+
+    // 4a. THE SILENCE / BALANCE / LENGTH LAW — an all-silent master taps to silence on both; the channels stay equal length and each holds
+    //     its starting length.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 0, 0, 0, 0, 0, 0, 0, 0 }, &[_]i16{ 0, 0, 0, 0, 0, 0, 0, 0 });
+        const one = [_]taps.Tap{.{ .delay = 2, .num = 1, .den = 2 }};
+        try stereo_multitap(&sc, 0, 8, &one);
+        const zeros = [_]i16{ 0, 0, 0, 0, 0, 0, 0, 0 };
+        if (!eq(sc.left.samples(), &zeros) or !eq(sc.right.samples(), &zeros)) return error.SilenceWrong;
+
+        var bc = pan.StereoClip{};
+        try load_stereo(&bc, &[_]i16{ 8000, -8000, 200, -9000, 3000, -3000, 100, -100 }, &[_]i16{ -400, 3000, -700, 5000, 600, -600, 800, -800 });
+        const set = [_]taps.Tap{
+            .{ .delay = 1, .num = 1, .den = 2 },
+            .{ .delay = 3, .num = 1, .den = 4 },
+        };
+        try stereo_multitap(&bc, 0, 8, &set);
+        if (bc.left.len != bc.right.len) return error.Unbalanced;
+        if (bc.left.len != 8) return error.LengthChanged;
+    }
+
+    // 4b. THE ATOMICITY LAW — a bad tap count (zero taps), a bad delay (zero), a bad level (above unity), and an out-of-range span each
+    //     refuse by name with BOTH channels byte for byte untouched and still balanced.
+    {
+        const tl = [_]i16{ 5, -6, 7, -8 };
+        const tr = [_]i16{ -7, 6, -5, 4 };
+        const ok = [_]taps.Tap{.{ .delay = 1, .num = 1, .den = 2 }};
+
+        var a = pan.StereoClip{};
+        try load_stereo(&a, &tl, &tr);
+        const none = [_]taps.Tap{};
+        if (stereo_multitap(&a, 0, 4, &none)) |_| return error.ZeroTapsSlipped else |e| if (e != error.BadTapCount) return error.WrongZeroTaps;
+        if (!eq(a.left.samples(), &tl) or !eq(a.right.samples(), &tr) or a.left.len != a.right.len) return error.TapCountRefusalMutated;
+
+        var d = pan.StereoClip{};
+        try load_stereo(&d, &tl, &tr);
+        const zero = [_]taps.Tap{.{ .delay = 0, .num = 1, .den = 2 }};
+        if (stereo_multitap(&d, 0, 4, &zero)) |_| return error.ZeroDelaySlipped else |e| if (e != error.BadDelay) return error.WrongZeroDelay;
+        if (!eq(d.left.samples(), &tl) or !eq(d.right.samples(), &tr) or d.left.len != d.right.len) return error.DelayRefusalMutated;
+
+        var l = pan.StereoClip{};
+        try load_stereo(&l, &tl, &tr);
+        const loud = [_]taps.Tap{.{ .delay = 1, .num = 5, .den = 4 }}; // 5/4 — a tap louder than the dry, refused
+        if (stereo_multitap(&l, 0, 4, &loud)) |_| return error.LoudTapSlipped else |e| if (e != error.BadLevel) return error.WrongLoudTap;
+        if (!eq(l.left.samples(), &tl) or !eq(l.right.samples(), &tr) or l.left.len != l.right.len) return error.LevelRefusalMutated;
+
+        var r = pan.StereoClip{};
+        try load_stereo(&r, &tl, &tr);
+        if (stereo_multitap(&r, 1, 4, &ok)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange; // start 1 + count 4 > len 4
+        if (!eq(r.left.samples(), &tl) or !eq(r.right.samples(), &tr) or r.left.len != r.right.len) return error.RangeRefusalMutated;
+    }
+
+    // 4c. THE DEGENERATE LAW — count = 0 (an empty span in the middle) is the identity on both channels; no sample to tap.
+    {
+        var noop = pan.StereoClip{};
+        try load_stereo(&noop, &[_]i16{ 8000, -8000, 4000 }, &[_]i16{ -50, 60, -70 });
+        const one = [_]taps.Tap{.{ .delay = 2, .num = 1, .den = 2 }};
+        try stereo_multitap(&noop, 1, 0, &one); // empty span — identity
+        if (!eq(noop.left.samples(), &[_]i16{ 8000, -8000, 4000 })) return error.ZeroCountLeftChanged;
+        if (!eq(noop.right.samples(), &[_]i16{ -50, 60, -70 })) return error.ZeroCountRightChanged;
+    }
+
+    print("GREEN ales-stereo-taps: the MULTI-TAP delay CARRIED INTO STEREO — ALES68's several fixed taps of the DRY signal run on BOTH " ++
+        "channels with the SAME tap set (y[i] = saturate(x[i] + Σ_k num_k/den_k·x[i-d_k])), each channel read off ITS OWN frozen dry " ++
+        "snapshot, the SECOND rung of the stereo TIME-BASED wing and the echo's SNAPSHOT sibling. ALES181 opened the wing with the " ++
+        "feedback echo (each tap reads the live output, a decaying train); the multi-tap is the wing's other primitive — several fixed " ++
+        "taps of the dry standing at their own chosen levels, the discrete early-reflection pattern a single feeding echo cannot voice. " ++
+        "Like the stereo vibrato and chorus and unlike the feedback echo, it carries a SNAPSHOT read into stereo, and the snapshot is " ++
+        "what lets the panned integer ratio survive EXACTLY. The same tap set on both channels, each read off its own dry snapshot, is " ++
+        "the linked stereo multi-tap: both early-reflection patterns land in lockstep, the image held; a tap's delay is a sample count " ++
+        "and its level a named fraction the caller names, so the same tap set on each channel preserves the image for free; mono " ++
+        "multitap snapshots the dry prefix of its own clip, so run once per channel the left reads the left's dry and the right the " ++
+        "right's, never crossed — no cross-channel snapshot. Because every tap reads the frozen dry and the sum is linear in the input " ++
+        "away from saturation, an identical-channel master stays identical AND a panned pair kept off the rail keeps its exact ratio — " ++
+        "the stronger both-cases image law the snapshot rungs earn and the feedback echo cannot. The whole sum saturates once per " ++
+        "channel. Unlike the feedback echo a tap at unity is legal (no loop to run away). It validates the tap set and span once against " ++
+        "the shared length before either channel is snapshotted (BadTapCount, BadDelay, BadLevel, BadRange; ALES68's precheck reused), " ++
+        "so a refusal never taps one channel and leaves the other torn; TapError reused whole. THE STEREO MULTI-TAP LAW: each channel " ++
+        "equals ALES68's mono multitap with the same tap set byte for byte, the channels genuinely differing. THE DRY-IDENTITY LAW: a " ++
+        "zero-level tap set is the dry master on both. THE IMAGE / BALANCE / SILENCE / ATOMICITY / DEGENERATE LAW: an identical-channel " ++
+        "master staying identical and a panned pair keeping its exact ratio, silence to silence on both, left.len == right.len after, a " ++
+        "bad tap count / a bad delay / a bad level / an out-of-range span each refusing by name with both channels untouched and " ++
+        "balanced, count = 0 the identity on both. Purely local — two bounded i16 Clips, each rung through the proven mono multi-tap's " ++
+        "bounded snapshot, the delay a count of sample indices not milliseconds and the level a named fraction at or below unity not a " ++
+        "decibel; no cross-channel snapshot, no real sample rate, no network, no keys, no funds, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
