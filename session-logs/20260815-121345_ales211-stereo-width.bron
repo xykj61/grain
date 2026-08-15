@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260815.121345
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — ai-jail — Eastern (EDT) time convention
+title ALES211 — Lotus's stereo_width: the image narrowed or widened by scaling the side and recombining, the first rung to spend the mid/side primitive
+prompt Recur the road Lindy-first crux-first, self-approve design rounds, send each finished increment, stop at custody gates, baton prin recur
+think Second lap of this recursion: ALES210 laid the mid/side primitive and named width as the rung that first spends it; took width crux-first to prove the primitive was worth laying first
+think stereo_width composes two proven stages with NO new audio arithmetic: mid_side.encode, then timeline.gain on the side channel (ALES2's proven scalar gain, saturates once), then mid_side.decode — width invents nothing, it composes
+think Three edges name the knob: width==den is the mid/side round-trip (exact on a same-parity master), width==0 is the mono collapse (side zeroed, both channels become the shared mid), width>den widens (side grows, |L-R| grows, saturating at the rail)
+think Atomicity: the width fraction is bounded (max_width_den 4096, max_width_num 32768) and checked BEFORE encode runs, so a bad width leaves the master untouched; once legal, gain over the full span and decode cannot fault. The gain-catch branch is provably unreachable (den>0, span=full clip), kept as a restore-and-reraise guard
+think A centred master (l==r) has a zero side, so width leaves it untouched at any setting — proven at collapse and 2x; a mono signal has no width to turn
+obs Chose stereo_width (general, usable on ANY stereo master) over reverb_width specifically — more reusable, and reverb_width now composes it with the wet tail as the next reverb-family rung
+obs Five laws proven byte-for-byte on a same-parity master (so the round-trip is exact); GREEN on the first metal pass, TAME bans clean, no RED to book
+loom witness=ales_stereo_width_witness green=1 laws=5 max_width_den=4096 max_width_num=32768 rye_modules=1 rish_witness=1
+file lotus/stereo_width.rye ALES211 module — encode, scale the side by width/den, decode; five laws proven in the selftest, GREEN on first metal pass
+file tools/ales_stereo_width_witness.rish the witness — builds, runs the selftest GREEN, states Language/Style/Lens
+file active-designing/20260815-121345_fill-ales211-lotus-stereo-width.md the self-approved design round for the rung
+file work-in-progress/REMEMBER.md git nib refreshed to this send in the same work commit
+recommend keep-going ALES212 reverb_width (reverberate the master wet, then widen the wet tail with stereo_width) — closing the width axis the reverb series opened; and still the flagged Lotus README + REMEMBER living-edge sync round for the front-door drift
