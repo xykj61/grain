@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260814.205812
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title ALES79 — Lotus's soft-clip overdrive: ALES78's hard clip with its corner rounded
+prompt Continue the autonomous loop — the next agent-doable lap Lindy-first crux-first, self-approve the design round, send each finished increment to origin and xykj61, stop at custody gates.
+think ALES78 (the hard-clip drive) opened the DRIVE family and named its successor by name: a soft-clip / overdrive with a knee. Lindy-first crux-first, that is the next durable rung — the overdrive every player reaches for, the warm rounded shoulder against the fuzz's sharp corner.
+think The crux is one recognition, the family identity read at two knee positions: SOFT-CLIP DRIVE IS ALES78's HARD CLIP WITH ITS CORNER ROUNDED, and a hard clip is the soft clip whose KNEE sits AT the ceiling. Pull the knee below the ceiling and a half-slope shoulder opens; push it to the ceiling and the shoulder vanishes, leaving ALES78's pin.
+think Shape: pre-gain ALES78's verbatim, then a piecewise-linear map on the boosted magnitude with the sign carried — clean below the knee (slope 1), half-slope shoulder knee→ceil (slope 1/2, knee + (m−knee)/2), pinned above (slope 0, reaching ceil exactly at m = 2·ceil − knee). Three straight integer segments meeting without a gap. Added one fault name, BadKnee (knee outside [1, ceil]); BadGain/BadCeiling/BadRange coincide with ALES78's by name.
+obs Safe by construction exactly as the hard clip: the shape caps at ceil, so the shaped value lands in [−ceil, ceil] ⊆ the i16 rail BEFORE the write and the saturate is a documented no-op. The map is ODD (magnitude shaped, sign carried) → odd harmonics softened; MEMORYLESS → in place, no snapshot.
+obs GREEN on the FIRST build across all seven laws — no RED. The strongest law proves the family bond directly: with knee == ceil the soft drive reproduces the REAL ALES78 hard drive byte-for-byte (both tools run in the one selftest), and a wide-knee overdrive is proven never louder than the hard pin at the same gain. tame_style_check clean.
+loom witness=ales_soft_drive_witness laws=7 result=green build=first
+file lotus/soft_drive.rye ALES79 — the soft-clip overdrive, ALES78's hard clip with a half-slope knee.
+file tools/ales_soft_drive_witness.rish builds and runs the selftest (re-proving ALES78 beside it), asserts the GREEN ales-soft-drive line.
+file active-designing/20260814-205812_fill-ales79-lotus-soft-clip-overdrive.md the self-approved design read for the rung.
+file lotus/README.md status line synced (ALES79 added, stamp refreshed) — front door current.
+recommend keep-going ALES80 the DRIVE family's next corner — a wavefolder, where the excess past the ceiling reflects back rather than pinning (a mirror, not a wall). Mechanical, single-module, policy already written; no custody gate.
