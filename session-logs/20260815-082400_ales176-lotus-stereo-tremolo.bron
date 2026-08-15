@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260815.082400
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) time convention — this session in ai-jail
+title ALES176 — Lotus's stereo_tremolo: the tremolo (triangle LFO on amplitude) carried into stereo, the SAME swing on BOTH channels — the rung that OPENS the stereo MODULATION class
+prompt Autonomous loop lap after ALES175: take the next agent-doable crux Lindy-first crux-first, self-approve the design round, send each finished increment to origin and xykj61 as its own signed round, STOP at custody gates.
+think ALES175 finished the stereo EQ/filter class (tone, shelf, band-pass, notch, bell, swept low-pass). The next Lindy-first crux is to OPEN a whole new class rather than fill one more filter — the modulation family (chorus, vibrato, flanger, tremolo). Crux-first within that: the thinnest, most foundational opener, exactly as tone (thinnest filter) opened the EQ class. That is the tremolo (ALES74): a triangle LFO drives the GAIN, every output depends only on its own input sample, so it writes in place with no snapshot/delay/lookahead — the cleanest possible per-channel stereo pass.
+think The SAME swing (centre, depth, period) on both channels is the classic LINKED auto-tremolo — both speakers pulse together, image held. Composed stereo_tremolo mirroring the EQ openers: StereoTremoloError = tremolo.TremoloError reused whole; validate ONCE up front. tremolo's four checks were inline, so factored them into a shared pub `precheck` (mirroring tone.precheck across the EQ rungs) and had mono tremolo call it — a tidy additive refactor; the mono ales_tremolo_witness re-runs GREEN.
+think Proved four laws: stereo tremolo law (each channel == mono tremolo byte for byte, channels genuinely differing); image law (identical-channel master stays identical AND a right-is-half-left pan keeps its L:R ratio sample for sample — the crux distinguishing the linked tremolo from an image-wandering offset one); attenuation law (unity passthrough exact even at ±full-scale, no voice louder than the dry on either channel); balance/silence/atomicity/degenerate (four refusals — BadPeriod, BadDepth, BadGain, BadRange — each leaving both channels untouched and balanced, count 0 the identity).
+obs No custody gate reached — pure local i16 DSP siloed to lotus/, a self-approved design round. Built and ran on metal; witness GREEN through Rishi, TAME clean (opening triad, ≥2 asserts/fn with // invariant, no @memcpy, named errors with try, triangle+multiply in i64, saturate a proven no-op), width exit 0. The stereo MODULATION class is now OPEN; the next rungs carry the delay-line modulations (chorus, vibrato, flanger — each keeps its own per-channel delay-line state) and the amplitude/ring family (ring_mod, auto_pan).
+loom witness=ales_stereo_tremolo_witness selftest=GREEN laws=4 channels=2 class=modulation-rung-1-opener
+file active-designing/20260815-082400_fill-ales176-lotus-stereo-tremolo.md the self-approved design read
+file lotus/stereo_tremolo.rye the module — the same swing on both channels, the linked auto-tremolo holding the image
+file lotus/tremolo.rye precheck factored out pub (additive) for the up-front atomic validation
+file tools/ales_stereo_tremolo_witness.rish the witness proving it GREEN on metal
+recommend keep-going the stereo modulation class is open; the next Lindy rungs carry the delay-line modulations (chorus, vibrato, flanger — each channel keeping its own delay-line state, like the band-pass) or the amplitude/ring family (ring_mod, auto_pan)
