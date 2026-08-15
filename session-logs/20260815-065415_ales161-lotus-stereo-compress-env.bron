@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260815.065415
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) time convention · ai-jail
+title ALES161 — Lotus's stereo_compress_env: the attack/release compressor carried into stereo, the linked envelope driving one linked gain over time
+prompt Keep going Lindy-first crux-first on the Lotus (ALES) ladder; approve my own design rounds; send each finished increment as its own signed round; stop at the custody gates.
+think With ALES160 seating the linked envelope (the time base) and ALES157 the linked gain, the next crux is their fusion: the attack/release compressor carried into stereo — the representative member of the stereo time-varying family, since the compressor's gain is nonlinear in loudness. Proving the fusion here opens the mechanical gate_env/limit_env/expand_env versions.
+think The shape spends both proofs: advance ONE shared envelope toward the linked peak by ALES160's stereo_env_step (attack rising, release falling); within the threshold both pass; above it, comp = threshold + excess·den/num on the ENVELOPE (ALES50's ceiling), one gain comp/e to BOTH raw samples. One detector, one gain, the image held.
+think The crux LINK: under unit attack+release the linked envelope is the instantaneous linked peak, so stereo_compress_env reduces to ALES157's memoryless stereo_compress byte for byte on both — the time-varying rung's zero-smoothing limit is exactly the memoryless rung already proven. Proven by running both tools on the same master.
+obs Six laws GREEN on metal: the instantaneous law (== stereo_compress under unit coeffs on both); the linked-gain-over-time law (a left-always-peak master has left' == ALES53 mono compress_env(left), the right scaled by the same fraction, the independent lift differing); the image law (out-of-phase pair returns still out of phase, no expansion, no sign flip); the knob laws (unit ratio identity, a slower attack lets the transient through — monotone); the carry law (split == whole on both); the sub-threshold/silence/balance/atomicity(five refusals)/degenerate law.
+obs StereoCompressEnvError = compress_env.CompressEnvError reused whole; the fusion adds no fault. Purely local, siloed to lotus/; gain comp/e in (0,1], no overflow (i64). No custody gate reached — a self-approved design round.
+loom witness=ales_stereo_compress_env_witness green=1 module=lotus/stereo_compress_env.rye laws=6
+file active-designing/20260815-065200_fill-ales161-lotus-stereo-compress-env.md the self-approved design round naming the crux and the six laws
+file lotus/stereo_compress_env.rye the linked stereo attack/release compressor — stereo_compress_follow_carry, stereo_compress_follow
+file tools/ales_stereo_compress_env_witness.rish the trilingual witness (EN · Radiant · TAME), build + selftest GREEN gate
+recommend keep-going — the family is now mechanical: stereo_gate_env, stereo_limit_env, stereo_expand_env each wire the linked envelope into their memoryless stereo rung the same way, single-module, policy written, no seam.
