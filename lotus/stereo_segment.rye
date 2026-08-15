@@ -1,0 +1,286 @@
+//! lotus/stereo_segment.rye — ALES147: the voice-activity segmenter carried into stereo, ONE SHARED FRAME GRID and TWO INDEPENDENT SEGMENTATIONS — the suite's third STEREO ANALYSIS rung. ALES95 named `segment`: ALES94's
+//! per-span classifier read across a WHOLE clip, frame by frame, coalesced into runs — the voice-activity loop at the heart of every silence trimmer and auto-splitter (classify each frame, then coalesce neighbouring frames
+//! of the same verdict into runs). Where ALES146 carried the per-span classifier into stereo (two verdicts over one span), this rung carries the reader that runs that classifier across a whole clip: two segmenters reading
+//! two channels, each producing its own run-length label sequence, writing not one sample.
+//!
+//! A Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and RIGHT hold the SAME length. This rung carries the segmenter into stereo the plain way, mirroring the stereo
+//! classifier (ALES146) and the stereo meter (ALES17): run ALES95's proven mono segmenter on each channel with the SAME frame length, band, floor, and split, so one grid reads BOTH speakers. A `Segments` run list is far too
+//! large to return by value, so — exactly as mono `segment` does — this writes both channels' runs into an out-pointer `StereoSegments{left, right}`, the same discipline splice and feed keep.
+//!
+//! The honest signature of a stereo analysis rung, at its deepest yet: EACH channel is segmented on its OWN frames. So the two segmentations are INDEPENDENT not merely in a scalar but in the COUNT and BOUNDARIES of their runs
+//! — an identical-channel master (left = right) produces the SAME runs on both, while a channel that goes voiced-then-silent segments into two runs where a uniform channel stays one. A keeper reads left and right apart, the
+//! two run lists a stereo auto-splitter would cut on.
+//!
+//! The crux — the SEQUENCING RULE carried up ONE LEVEL, in stereo. ALES95's crux is that its segmentation equals a decision built BY HAND from repeated ALES94 classify calls over consecutive frames, coalesced, so it can
+//! never drift from the classifier it sequences. Carried into stereo, each channel's segmentation equals ALES95's mono `segment` on that channel, so `segment_stereo` can never drift from the mono segmenter, which cannot drift
+//! from the classifier, which cannot drift from its two readers. The tower of readers stays a tower, in stereo.
+//!
+//! The rule, stated once: the segmenter READS only — the source StereoClip leaves byte for byte unchanged, both channels, and each output is a run-length label sequence over one channel (NOT a transcript or a diarization). It
+//! carries ONE frame length, band, floor, and split and names ALES95's own faults whole. The shared frame length, band, span, and floor are validated ONCE up front (ALES92's `precheck` for band and span, the floor against
+//! the peak ceiling, the frame-length divisibility) before either channel is read; because both channels are balanced and share every parameter, one up-front pass guarantees BOTH mono calls succeed, so a refusal never
+//! segments one channel and leaves the other's run list half-written. SegmentError reused whole — the stereo lift adds no fault.
+//!
+//! The crux — four laws. THE STEREO SEGMENT LAW: each channel's run sequence equals ALES95's mono `segment` on that channel with the same frame length and setting, run for run (start, count, verdict). THE READ-ONLY / BALANCE
+//! LAW: the source StereoClip is byte for byte unchanged after segmenting (both channels), and the two channels stay balanced (reading writes nothing). THE INDEPENDENT-SEGMENTATION LAW: each channel is segmented on its own
+//! frames, so a voiced-then-silent left produces two runs where a uniform right stays one, an identical-channel master produces identical runs on both, and each channel's runs tile its span exactly (coverage) with no two
+//! adjacent runs sharing a verdict (coalescing). THE ATOMICITY / DEGENERATE LAW: a shared illegal frame length (BadFrame), floor (BadFloor), band (BadThreshold), or span (BadRange) refuses before either channel is segmented,
+//! both run lists left as they were and the clip untouched; a uniform channel is one run on both.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES147.
+//! Design read: active-designing/20260815-050741_fill-ales147-lotus-stereo-segment.md
+//! Stands on: lotus/segment.rye (ALES95) — the mono voice-activity segmenter run once per channel, its `segment`, its `Segments` run list, its `Segment` run, and its `SegmentError`, all reused whole; lotus/voiced.rye (ALES94)
+//! — the per-frame classifier the segmenter sequences (through ALES95); lotus/schmitt.rye (ALES92) — the band's own `precheck`; lotus/meter.rye (ALES13) — `sample_peak_max`, the floor ceiling; lotus/stereo_voiced.rye (ALES146)
+//! — the stereo analysis shape this mirrors (one shared setting, per-channel independence); lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, and READ-ONLY. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/, NEVER mutated by this rung. Each output is a run-length label sequence over one
+//! channel, NOT a transcript, diarization, or phoneme boundary; a real voice-activity detector adds adaptive floors, spectral tilt, and smoothing hysteresis this rung does not. No real sample rate, no windowing overlap, no
+//! network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_segment.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const schmitt = @import("schmitt.rye");
+const meter = @import("meter.rye");
+const segment = @import("segment.rye");
+
+pub const stereo_segment_version = "20260815.050741";
+
+/// Stereo segment's faults are exactly ALES95's own `SegmentError` — the classifier's band-and-span/floor faults (BadThreshold, BadRange, BadFloor), the composed CountFull/MeterFull, plus BadFrame (an illegal frame length)
+/// and SegmentsFull (a run overflow that cannot fire under the clip-sized bound) — reused by name, since the stereo lift adds no new fault: it only runs the same segmenter on each channel after one shared validation.
+pub const StereoSegmentError = segment.SegmentError;
+
+/// A per-channel pair of run-length label sequences, written through an out-pointer — the left and right speaker's segmentations kept apart, never one shared list. A `Segments` holds up to `segment.max_segments` runs, so this
+/// carries two; it is written into, never returned by value (the same discipline mono `segment` keeps).
+pub const StereoSegments = struct {
+    /// The left channel's coalesced runs.
+    left: segment.Segments = .{},
+    /// The right channel's coalesced runs — read apart from the left, so a keeper sees per-channel structure.
+    right: segment.Segments = .{},
+};
+
+/// Segment `[start, count)` in BOTH channels of `sc` into runs of same-verdict frames, writing each channel's coalesced result into `out.left` / `out.right` through the out-pointer. Splits the span into consecutive frames of
+/// exactly `frame_len` samples, classifies each through ALES94, and coalesces neighbouring frames of the same verdict — per channel. READ-ONLY: not one sample is written on either speaker. Validates the shared frame length,
+/// band, span, and floor ONCE up front (BadThreshold / BadRange via ALES92's precheck, BadFloor against the peak ceiling, BadFrame on a zero/oversized/non-dividing length) before either channel is read; because both channels
+/// are balanced and share every parameter, one pass guarantees both mono calls succeed, so a refusal never segments one channel and leaves the other's run list half-written. On refusal `out` is left exactly as it was.
+pub fn segment_stereo(
+    sc: *const pan.StereoClip,
+    out: *StereoSegments,
+    start: u32,
+    count: u32,
+    frame_len: u32,
+    t_low: i32,
+    t_high: i32,
+    silence_floor: u32,
+    voice_split: u32,
+) StereoSegmentError!void {
+    // invariant: the two channels enter balanced — the defining StereoClip invariant, so one shared validation is honest for both.
+    assert(sc.left.len == sc.right.len);
+
+    // Validate once up front against the shared length, band, floor, and frame grid, so a refusal segments NEITHER channel — the atomicity the pair form owes across two run lists. This mirrors ALES95's own prechecks exactly,
+    // in the same order (band/span, then floor, then frame length), so the stereo segmenter can never validate differently than the mono segmenter it composes.
+    try schmitt.precheck(sc.left.len, start, count, t_low, t_high);
+    // invariant: a floor no RMS could ever reach would make every frame silent — refuse it up front. A floor of 0 is legal (it disables the silence verdict), so the ceiling is the only illegal floor.
+    if (silence_floor > meter.sample_peak_max) return error.BadFloor;
+    // invariant: every frame carries the same weight — a zero, oversized, or non-dividing frame length is refused so the segments tile the span exactly on both channels.
+    if (frame_len == 0 or frame_len > count or count % frame_len != 0) return error.BadFrame;
+
+    // Pre-validated to succeed on both — each channel is segmented through ALES95's own `segment` over the matching channel with the shared setting, into its own side of `out`. Read-only: segment writes no sample.
+    try segment.segment(&sc.left, &out.left, start, count, frame_len, t_low, t_high, silence_floor, voice_split);
+    try segment.segment(&sc.right, &out.right, start, count, frame_len, t_low, t_high, silence_floor, voice_split);
+
+    // invariant: the channels stay balanced — segmenting changed no length.
+    assert(sc.left.len == sc.right.len);
+    // invariant: neither channel's run list exceeds the bound — every push checks it at the edge, per channel.
+    assert(out.left.len <= segment.max_segments and out.right.len <= segment.max_segments);
+}
+
+// --- selftest: THE STEREO SEGMENT LAW — each channel's runs equal ALES95's mono segment on that channel with the same setting; THE READ-ONLY / BALANCE LAW — the source StereoClip byte for byte unchanged after segmenting,
+//     both channels, the pair balanced; THE INDEPENDENT-SEGMENTATION LAW — a voiced-then-silent left producing two runs where a uniform right stays one, an identical master producing identical runs on both, each channel's runs
+//     tiling its span with no adjacent runs sharing a verdict; THE ATOMICITY / DEGENERATE LAW — a shared BadFrame / BadFloor / BadThreshold / BadRange refusing before either channel is segmented with both lists and the clip
+//     untouched, a uniform channel one run on both ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try timeline.splice(&sc.left, 0, l);
+    try timeline.splice(&sc.right, 0, r);
+}
+
+/// Two run lists are equal run for run — the comparison the stereo segment law is proven with, mirroring ALES95's own `same`.
+fn same(a: *const segment.Segments, b: *const segment.Segments) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) {
+        if (a.items[i].verdict != b.items[i].verdict) return false;
+        if (a.items[i].start != b.items[i].start) return false;
+        if (a.items[i].count != b.items[i].count) return false;
+    }
+    return true;
+}
+
+/// The coverage invariant, checked as data: the runs tile [start, count) contiguously with none sharing a verdict — mirroring ALES95's own `tiles`.
+fn tiles(out: *const segment.Segments, start: u32, count: u32) bool {
+    if (out.len == 0) return count == 0;
+    if (out.items[0].start != start) return false;
+    var covered: u32 = 0;
+    var i: u32 = 0;
+    while (i < out.len) : (i += 1) {
+        if (out.items[i].start != start + covered) return false;
+        if (out.items[i].count == 0) return false;
+        if (i > 0 and out.items[i].verdict == out.items[i - 1].verdict) return false;
+        covered += out.items[i].count;
+    }
+    return covered == count;
+}
+
+fn run_selftest() !u8 {
+    const band_low: i32 = -1000;
+    const band_high: i32 = 1000;
+
+    // Two channels with genuinely different structure: the left is loud-periodic (voiced) for the first half then quiet (silent) for the second — two runs; the right is loud-periodic throughout — one run. Four frames of four.
+    const left_sig = [_]i16{
+        20000, 20000, -20000, -20000, 20000, 20000, -20000, -20000, // two voiced frames
+        40,    -40,    40,     -40,    40,    -40,    40,     -40, // two quiet (silent) frames, rms ≈ 40 under a 500 floor
+    };
+    const right_sig = [_]i16{
+        20000, 20000, -20000, -20000, 20000, 20000, -20000, -20000,
+        20000, 20000, -20000, -20000, 20000, 20000, -20000, -20000, // loud-periodic throughout
+    };
+
+    // 1. THE STEREO SEGMENT LAW — each channel's runs equal ALES95's mono segment on that channel, proven side by side across several frame lengths, floors, and splits. The runs on each speaker are exactly ALES95's, read
+    //    twice with one shared setting — so the stereo segmenter can never drift from the mono segmenter, which cannot drift from the classifier it sequences.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &left_sig, &right_sig);
+        var ml = timeline.Clip{};
+        try timeline.splice(&ml, 0, &left_sig);
+        var mr = timeline.Clip{};
+        try timeline.splice(&mr, 0, &right_sig);
+
+        const flens = [_]u32{ 4, 8, 16 };
+        const floors = [_]u32{ 0, 500, 5000 };
+        const splits = [_]u32{ 1, 2, 4 };
+        var li: u32 = 0;
+        while (li < flens.len) : (li += 1) {
+            var fi: u32 = 0;
+            while (fi < floors.len) : (fi += 1) {
+                var si: u32 = 0;
+                while (si < splits.len) : (si += 1) {
+                    var st = StereoSegments{};
+                    try segment_stereo(&sc, &st, 0, 16, flens[li], band_low, band_high, floors[fi], splits[si]);
+                    var wl = segment.Segments{};
+                    var wr = segment.Segments{};
+                    try segment.segment(&ml, &wl, 0, 16, flens[li], band_low, band_high, floors[fi], splits[si]);
+                    try segment.segment(&mr, &wr, 0, 16, flens[li], band_low, band_high, floors[fi], splits[si]);
+                    if (!same(&st.left, &wl)) return error.LeftRunsWrong;
+                    if (!same(&st.right, &wr)) return error.RightRunsWrong;
+                    if (!tiles(&st.left, 0, 16) or !tiles(&st.right, 0, 16)) return error.RunsDoNotTile;
+                }
+            }
+        }
+    }
+
+    // 2. THE READ-ONLY / BALANCE LAW — the source StereoClip is byte for byte UNCHANGED after segmenting (not one sample written on either speaker), and the two channels stay equal length.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &left_sig, &right_sig);
+        var st = StereoSegments{};
+        _ = try segment_stereo(&sc, &st, 0, 16, 4, band_low, band_high, 500, 2);
+        if (!eq(sc.left.samples(), &left_sig)) return error.LeftSegmentingWrote;
+        if (!eq(sc.right.samples(), &right_sig)) return error.RightSegmentingWrote;
+        if (sc.left.len != sc.right.len) return error.Unbalanced;
+    }
+
+    // 3a. THE INDEPENDENT-SEGMENTATION LAW — a voiced-then-silent left produces TWO runs (voiced then silent) where a loud-periodic right stays ONE run. The two channels segment apart, differing in the COUNT of runs.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &left_sig, &right_sig);
+        var st = StereoSegments{};
+        try segment_stereo(&sc, &st, 0, 16, 4, band_low, band_high, 500, 4);
+        if (st.left.len != 2) return error.LeftNotTwoRuns;
+        if (st.left.runs()[0].verdict != .voiced or st.left.runs()[1].verdict != .silent) return error.LeftRunOrderWrong;
+        if (st.right.len != 1) return error.RightNotOneRun;
+        if (st.right.runs()[0].verdict != .voiced) return error.RightRunNotVoiced;
+    }
+
+    // 3b. THE INDEPENDENT-SEGMENTATION LAW — an IDENTICAL-CHANNEL master produces IDENTICAL runs on both (a mono-in-stereo signal reads once).
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &left_sig, &left_sig);
+        var st = StereoSegments{};
+        try segment_stereo(&sc, &st, 0, 16, 4, band_low, band_high, 500, 4);
+        if (!same(&st.left, &st.right)) return error.IdenticalRunsDiffer;
+        if (st.left.len != 2) return error.IdenticalRunCountWrong;
+    }
+
+    // 4a. THE ATOMICITY LAW, a shared ILLEGAL FRAME LENGTH (not dividing the span) refuses BadFrame before either channel is segmented, both run lists left as they were (empty) and the clip untouched.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &left_sig, &right_sig);
+        var st = StereoSegments{};
+        if (segment_stereo(&sc, &st, 0, 16, 5, band_low, band_high, 500, 2)) |_| return error.BadFrameSlipped else |e| if (e != error.BadFrame) return error.WrongBadFrame;
+        if (st.left.len != 0 or st.right.len != 0) return error.BadFrameMovedRuns;
+        if (!eq(sc.left.samples(), &left_sig) or !eq(sc.right.samples(), &right_sig)) return error.BadFrameMutatedClip;
+    }
+
+    // 4b. THE ATOMICITY LAW, a shared ILLEGAL FLOOR (above the peak ceiling) refuses BadFloor before either channel is segmented.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &left_sig, &right_sig);
+        var st = StereoSegments{};
+        if (segment_stereo(&sc, &st, 0, 16, 4, band_low, band_high, meter.sample_peak_max + 1, 2)) |_| return error.BadFloorSlipped else |e| if (e != error.BadFloor) return error.WrongBadFloor;
+        if (st.left.len != 0 or st.right.len != 0) return error.BadFloorMovedRuns;
+    }
+
+    // 4c. THE ATOMICITY LAW, a shared INVERTED BAND refuses BadThreshold, and a shared OUT-OF-RANGE SPAN refuses BadRange — each before any read, the clip untouched.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &left_sig, &right_sig);
+        var st = StereoSegments{};
+        if (segment_stereo(&sc, &st, 0, 16, 4, 1000, -1000, 500, 2)) |_| return error.InvertedSlipped else |e| if (e != error.BadThreshold) return error.WrongInverted;
+        if (segment_stereo(&sc, &st, 4, 16, 4, band_low, band_high, 500, 2)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(sc.left.samples(), &left_sig) or !eq(sc.right.samples(), &right_sig)) return error.AtomicityMutatedClip;
+    }
+
+    // 4d. THE DEGENERATE LAW — a UNIFORM master (both channels loud-periodic throughout) is ONE run on both.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &right_sig, &right_sig);
+        var st = StereoSegments{};
+        try segment_stereo(&sc, &st, 0, 16, 4, band_low, band_high, 500, 4);
+        if (st.left.len != 1 or st.right.len != 1) return error.UniformNotOneRun;
+        if (st.left.runs()[0].verdict != .voiced or st.right.runs()[0].verdict != .voiced) return error.UniformRunNotVoiced;
+    }
+
+    print("GREEN ales-stereo-segment: the VOICE-ACTIVITY SEGMENTER CARRIED INTO STEREO, ONE SHARED FRAME GRID and TWO INDEPENDENT SEGMENTATIONS — the suite's third STEREO ANALYSIS rung. Where ALES146 carried the per-span " ++
+        "classifier into stereo, this carries the reader that runs it across a WHOLE clip: two segmenters reading two channels, each producing its own run-length label sequence, writing not one sample. ALES95 splits a span " ++
+        "into consecutive frames, classifies each through ALES94, and coalesces neighbouring frames of the same verdict into runs. It runs ALES95's proven mono segmenter on each channel with the same frame length, band, floor, " ++
+        "and split, mirroring the stereo classifier (ALES146) and the stereo meter (ALES17); a Segments run list is far too large to return by value, so it writes both channels' runs into an out-pointer holding a left and " ++
+        "right run list, the discipline splice and feed keep. Each channel is segmented on its OWN frames, so the two segmentations are INDEPENDENT in the COUNT and BOUNDARIES of their runs: a voiced-then-silent left produces two " ++
+        "runs where a uniform right stays one, an identical-channel master produces identical runs on both, and each channel's runs tile its span exactly with no adjacent runs sharing a verdict. The crux: the SEQUENCING RULE " ++
+        "carried up one level, in stereo — each channel's segmentation equals ALES95's mono segment, which cannot drift from the classifier it sequences, which cannot drift from its two readers, so segment_stereo cannot " ++
+        "drift from the mono segmenter; the tower of readers stays a tower. It READS only — the source StereoClip leaves byte for byte unchanged on both, each output a run-length label sequence over one channel, NOT a " ++
+        "transcript or a diarization. It validates the shared frame length, band, span, and floor once before either channel is read (BadThreshold on an illegal band, BadRange on a span past the samples, BadFloor on a floor " ++
+        "above the peak ceiling, BadFrame on a zero/oversized/non-dividing length), so a refusal never segments one channel and leaves the other's run list half-written; SegmentError reused whole. The crux is four laws. THE " ++
+        "STEREO SEGMENT LAW: each channel's runs equal ALES95's mono segment with the same setting, run for run. THE READ-ONLY / BALANCE LAW: the source unchanged on both, the pair balanced. THE INDEPENDENT-SEGMENTATION LAW: " ++
+        "a voiced-then-silent left producing two runs where a uniform right stays one, an identical master producing identical runs, each channel's runs tiling its span with no adjacent runs sharing a verdict. THE ATOMICITY / " ++
+        "DEGENERATE LAW: a shared BadFrame / BadFloor / BadThreshold / BadRange refusing before either channel is segmented with both lists and the clip untouched, a uniform channel one run on both. Purely local, read-only — " ++
+        "two bounded i16 Clips segmented through the proven mono segmenter over one shared frame grid; a run-length label sequence per channel, not a transcript; no real sample rate, no network, no keys, no funds, no real " ++
+        "speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
