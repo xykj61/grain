@@ -1,0 +1,40 @@
+# tools/ales_album_merge_witness.rish — two independent sets of record changes reconciled: merge(base, ours, theirs) sorts every
+# track into resolved, dropped, or a named conflict (ALES235).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES235.
+# Design read: active-designing/20260815-150324_fill-ales235-lotus-album-merge.md
+# Idiom kin: lotus/library_merge.rye (ALES234, the three-way merge this mirrors one level down) · lotus/album_diff.rye (ALES232, the
+# sibling second-order primitive this stands beside) · lotus/album_find.rye (ALES231, the find / digest_of resolve this composes on) ·
+# lotus/album_manifest.rye (ALES224, the three opened records this reconciles). A merge is two diffs reconciled against one base — no
+# new hash, no new frame.
+#
+# lotus/album_merge.rye reconciles three opened album manifests by the canonical three-way rule. The selftest proves: a one-sided
+# change is taken and names its hand, a one-sided removal drops cleanly, with zero conflicts (the clean law); both sides making the
+# same change reads agreed (the agreement law); both sides changing a track differently — or change-vs-remove — is named a conflict
+# carrying base, our, and their digests (the conflict law); a track neither side touched resolves unchanged with its base digest (the
+# untouched law); a record merged with itself on both sides resolves every track unchanged with zero drops and zero conflicts (the
+# identity law). A pure classification only — no real file, no DAC, no network, no keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_album_merge_witness.rish
+
+say "ales-album-merge: Language EN — ALES235 reconciles two independent sets of record changes: merge(base, ours, theirs) sorts every track into resolved (its chosen digest and source), dropped, or a named conflict — the mirror of library_merge one level down, the honest answer when more than one hand touches a record."
+say "ales-album-merge: Style Radiant — a merge is a decision procedure, not a guess; it composes ON the ALES231 resolve the diff uses, the content-address digest is the whole comparison (no byte compare, no new hash); the clean law, the agreement law, the conflict law, the untouched law, and the identity law each named and proven on metal."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/album_merge"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/album_merge.rye -femit-bin=${bin}"]
+assert build.ok else "ales-album-merge: build failed — ${build.err}"
+
+let outfile = "lotus/bin/album_merge.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-album-merge: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-album-merge: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-album-merge' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-album-merge: selftest did not print the GREEN ales-album-merge line"
+
+say "ales-album-merge: GREEN — two engineers' independent edits become one record, every clean verdict taken and every conflict named, never guessed; the merge tier now stands at both levels (record and catalog), the shape collaboration grows in. The next Lotus crux still names who made it — a signed carry (crypto seam) on Keaton's word."
