@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260815.135740
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) time convention
+title ALES223 — Lotus render_album: a whole record as one saveable artifact
+prompt recur the itinerary Lindy-first crux-first, take the next agent-doable lap, send each increment, stop at custody gates
+think ALES222 closed render→manifest→bundle — one saveable unit per track; yet a record is rarely one track (an album, a podcast season, a reel is many bundles that travel apart)
+think Lindy-first crux-first: the ALES222 witness itself named "index a shelf of bundles" as the durable next move; the album is the publishable unit a whole record actually saves
+think the crux is the same quiet one one level up — the album needs NO NEW SEAL, since each bundle already self-binds (manifest binds its text, wav_digest binds its audio); a LOTUSALB frame that lays bundles side by side is already verify-before-trust
+think frame: magic + u32 count + per track (u32 name_len, u32 bundle_len, name, bundle); unpack walks each entry inside the buffer, render_bundle.unpack gates each, the whole frame must tile exactly
+obs first RED was my own test, not the module — the manifest-tamper flip landed in the sealed header (BadRecord) instead of the body; moved the flip to two bytes before the .wav (na - wav_a.len - 2), inside the manifest body, and DigestMismatch caught it as designed
+obs bounded everything — max_tracks 64, max_track_name 24, max_bundle_bytes reused from render_bundle.max_part_bytes, max_album_bytes a comptime ceiling so every offset stays inside u32; @intCast only at the .len seam after a bound check
+obs added THE EMPTY LAW — a zero-track album round-trips to an empty catalog, so an opening record is a real verifiable artifact rather than a special case
+obs no custody gate reached — a byte catalog over in-process slices, siloed to lotus/, no file/DAC/network/keys/funds; a signed carry (who made it) stays a later rung on Keaton's word
+loom witness=ales_render_album_witness result=GREEN laws=5 module=lotus/render_album.rye
+file active-designing/20260815-135313_fill-ales223-lotus-render-album.md the self-approved design round naming the crux and five laws
+file lotus/render_album.rye the module — pack and unpack over ALES222 bundles, no new seal
+file tools/ales_render_album_witness.rish the witness proving the five laws GREEN on metal
+recommend keep-going the next Lotus crux can carry the album to a keeper session save/load, or name who made it — a signed carry (crypto seam) on Keaton's word
