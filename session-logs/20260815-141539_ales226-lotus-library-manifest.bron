@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260815.141539
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title ALES226 — Lotus library_manifest: a keeper's whole catalog, content-addressed
+prompt read REMEMBER + the 1024-round itinerary + the six-season double-seat; take the next agent-doable lap Lindy-first crux-first, approve own design rounds, double-seat visions, send often, stop at custody gates
+think REMEMBER's living edge is ALES225 — the Lotus album triad (frame · content address · table of contents) is whole; the next named Lotus crux is a signed carry over vendored Monocypher, a crypto seam the prior run flagged as wanting Keaton's word
+think a crypto/signing seam sits at the custody fence (gate 3 keys · gate 4 Keaton's own Kumara); Lindy-first crux-first says when the crux-first thing is gated, take the next hardest solvable non-gated durable rung — so I do NOT fire the signed carry autonomously
+think confirmed the ALES waymark's own seated crux (the cable-tagged wire shape, ALES0) and the whole 227-file ladder are already built; the honest non-gated next rung is one level up the same proven fractal — a keeper's whole body of work
+think first sketched render_library (inline whole album frames like render_album inlined bundles), then computed the bound: max_part_bytes is 16 MiB, so 64 albums × ~1 GB each ≈ 68 GB in one buffer overflows u32 — inlining is the wrong shape at the library level
+obs the composition that scales is content-addressing, exactly what album_manifest chose: a library names each album by the Sha256 of its album_manifest bytes, digests composing upward where bytes cannot; library_manifest is album_manifest one level up, unchanged in shape (track→album, bundle→album_manifest), the record staying kilobytes no matter how large the catalog
+obs seal.rye (ALES38) reused whole — no new hash, no new frame; header format lotus-library-v1 so a library can never open as an album or render manifest; max_albums 64, max_album_name reused from album_manifest.max_track_name (24) so the bounds agree
+obs one fix before GREEN: referenced album_manifest.render_album.TrackIn but that import is file-private, so imported render_album directly in the witness helper
+loom witness=ales_library_manifest_witness result=GREEN laws=5 rung=ALES226
+file active-designing/20260815-141539_fill-ales226-lotus-library-manifest.md the self-approved design round naming the crux, the four functions, and the five laws
+file lotus/library_manifest.rye the module — seal_library_manifest · open_library_manifest · verify_library over a sealed format lotus-library-v1 record, ≥2 asserts per fn, bounded, named errors
+file tools/ales_library_manifest_witness.rish the witness — build, run selftest, grep the GREEN line, five laws proven on metal
+recommend keep-going the album family stands whole (bundle · album · library); the next Lotus crux — the signed carry naming who made it — is a crypto seam that stops at the custody gate for Keaton's word, so continue on the next non-gated durable rung
