@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260815.111333
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title ALES203 — Lotus's stereo envelope-gated reverb, the shaped-edge gated tail per ear
+prompt recur loop — continue the Lotus/ALES ladder Lindy-first crux-first, each finished rung its own signed round, stop at the custody gates
+think ALES202 gave the mono reverb its shaped-edge gated tail (the time-following envelope gate, the release holding the gate open over the decay); the ladder always closes the mono/stereo pair before opening a fresh axis, so the thin twin is stereo_reverb_gate_env — the same envelope gate over both channels of a StereoClip, one shared threshold/ratio/attack/release, the image held. Mirrored stereo_reverb_gate (ALES201) exactly, swapping the static gate for gate_follow per ear.
+think Reverberate the master wet through ALES191 stereo_reverb_preset unchanged; precheck threshold/ratio/attack/release coeffs (envelope.coeff_ok) BEFORE the wet is written so a bad gate leaves both channels dry and balanced (atomicity); then follow-gate each channel with a fresh envelope and no cross-channel read so the image is held. StereoReverbGateEnvError = stereo_reverb_preset.StereoReverbPresetError || BadThreshold || BadRatio || BadCoeff.
+obs Witness GREEN on the first metal pass — no RED to book. Seven laws on a 1024-sample bench with two distinct impulses: the identity edge on both channels, each channel equals its composition (stereo_reverb_preset then gate_follow) byte for byte and differs from its wet, THE INSTANTANEOUS LIMIT IS ALES201 (unit attack/release equals the static stereo_reverb_gate byte for byte on both channels), the tail gated per ear (energy strictly reduced), the image held (centred identical, stereo distinct), channels balanced + silence, faults forward atomic (BadThreshold/BadRatio/BadCoeff both channels dry, DurationTooLong, BadRange). ALES191 stereo preset, ALES202 mono envelope gate, and ALES201 static stereo gate all re-run GREEN beside it; TAME bans clean, width exit 0. The gate axis now stands whole for mono and stereo in both static and shaped forms.
+loom witness=ales_stereo_reverb_gate_env_witness selftest=GREEN laws=7 channels=2 max_clip=4096 bench_samples=1024 ratio=8:1 threshold=2000 attack=1/4 release=1/8
+file active-designing/20260815-111333_fill-ales203-lotus-stereo-reverb-gate-env.md the self-approved design round naming the crux, shape, and seven laws
+file lotus/stereo_reverb_gate_env.rye the rung — the stereo wet-tail envelope gate, ALES54 gate_follow per ear over ALES191 wet, coeffs prechecked, ALES201 its instantaneous limit
+file tools/ales_stereo_reverb_gate_env_witness.rish the witness proving seven laws and re-proving ALES191/ALES202/ALES201 green beside it
+recommend keep-going — the gate axis is whole for mono and stereo in both static and shaped forms; the next crux is a fresh reverb axis — width (the stereo spread of the tail), freeze (an infinite-hold sustain), or early/late balance (first reflections vs the diffuse wash).
