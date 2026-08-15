@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260814.200314
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title ALES73 — Lotus's flanger, a short modulated delay with a feedback path
+prompt recur the itinerary Lindy-first crux-first, take the next agent-doable lap, approve own design rounds, send each finished increment, stop at custody gates
+think ALES72's own recommendation named the next crux plainly: the flanger, the family's first rung that adds a genuinely new ELEMENT rather than only changing the mix — a feedback path. Lindy-first both halves are already proven: the triangle-LFO driver (ALES71) and fractional interpolation (ALES70) on one side, the in-place decaying feedback loop (ALES66) on the other. Crux-first the decisive move is to marry them safely — the modulated delay reads the OUTPUT (feedback), not a frozen dry.
+think The design tension is real: chorus/vibrato snapshot the dry BECAUSE a moving read must not read a sample it just wrote; the flanger WANTS feedback, so it reads the live buffer. The resolution is the BadDepth invariant already in the family — centre − depth ≥ glide_scale means the whole delay is at least one sample, so both interpolation neighbours sit STRICTLY BEFORE i: already-written outputs (true feedback), dry, or silence. Reading strictly-earlier indices is safe in place and needs no snapshot — the exact inversion of the chorus/vibrato idiom.
+think The reuse anchor mirrors the zero-depth chorus = glide: a ZERO-DEPTH flanger is exactly ALES66's echo at its centre delay byte-for-byte. depth 0 → fixed whole delay centre → frac 0 → interp returns near exactly → y[i] = saturate(x[i] + fb·buf[i−centre]) = echo. Proven against the real echo (both tools run), inheriting echo's proven decay for the fixed case.
+think Chose centre 2·scale, depth 1·scale, period 4 (delays 2,3,2,1,2,3, all whole) and an impulse for the hand-computed law, so each read is an exact integer FEEDBACK tap off the live buffer — at i3 the read of buf[2]=4000 is the output just written at i2, genuine feedback through the moving delay, computable by hand: 8000,0,4000,2000,2000,2000.
+obs GREEN on the first build across all five laws — no RED. Faults: BadPeriod, BadDepth, BadDelay from the modulation window plus BadFeedback (num ≥ den a runaway, or zero den) from the echo, and BadRange, each refusing before any write. TAME style bans clean, width clean, ALES66 feedback delay stays GREEN beside the flanger. The design read was self-approved (no custody gate — bounded in-process i16 PCM, no network/keys/funds/device/sample-rate).
+loom witness=ales_flanger_witness laws=5 green=1 reruns=ales66_echo glide_scale=256 period_law=multiple_of_4 max_clip=4096 feedback=below_unity read=live_buffer
+file lotus/flanger.rye ALES73 — a modulated fractional delay read off the LIVE output (feedback); reuses ALES71's driver, ALES70's read, ALES66's in-place feedback
+file tools/ales_flanger_witness.rish witness GREEN, proves the zero-depth flanger equals the echo and re-proves the ALES66 feedback delay beside it
+file active-designing/20260814-200314_fill-ales73-lotus-flanger-feedback-modulated-delay.md design read for the rung, self-approved round
+file lotus/README.md Status rung list + stamp carry ALES73
+recommend keep-going ALES74 — the reverb (many delays and feedbacks composed into a dense tail), the last and largest rung of the time-based wing; or a real-time flanger twin (flanger_ms) as multitap_ms followed the index-named multitap
