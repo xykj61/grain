@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260815.081412
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) time convention — this session in ai-jail
+title ALES175 — Lotus's stereo_sweep: the filter sweep (a moving low-pass) carried into stereo, the SAME schedule on BOTH channels — the sixth rung of the stereo EQ / filter class, the automated brightness
+prompt Autonomous loop lap after ALES174: take the next agent-doable crux Lindy-first crux-first, self-approve the design round, send each finished increment to origin and xykj61 as its own signed round, STOP at custody gates.
+think ALES170–174 carried the fixed-EQ family (tone, shelf, band-pass, notch, bell) into stereo — each holds ONE brightness for a span. The one remaining EQ-family mono module without a stereo twin is sweep (ALES44): a cutoff that MOVES across the span (the slow open on a pad, the close into a drop), the first automated parameter in the suite. Carrying it into stereo is the natural sixth stereo EQ rung and completes the fixed-and-swept filter family in stereo.
+think Unlike the stateless shelf/notch/bell, sweep DOES carry filter state — yet sweep_low_pass opens its OWN state = 0 per call and threads it across its own blocks, so a stereo sweep runs the SAME schedule (num_from, num_to, den, blocks) on each channel with each channel carrying its own filter memory; the two sides never share state. Composed stereo_sweep mirroring stereo_bell: StereoSweepError = sweep.SweepError (BadCoeff, BadRange, BadBlocks) reused whole. To keep the up-front atomic check, exported ALES44's check_sweep as a one-word additive pub and validated the shared schedule ONCE against the shared length before either channel writes.
+think Proved four laws against the real ALES44/ALES40 tools: stereo sweep law (each channel == mono sweep_low_pass byte for byte, channels genuinely differing); degenerate law (num_from == num_to equals ALES40's fixed low_pass on both, a settled constant sweeping to itself on both); image law (identical-channel master stays identical); balance/silence/atomicity/degenerate (three refusals — BadCoeff, BadRange, BadBlocks — each leaving both channels untouched and balanced, count 0 the identity).
+obs No custody gate reached — pure local i16 DSP siloed to lotus/, a self-approved design round. Built and ran on metal; witness GREEN through Rishi, TAME clean (opening triad, ≥2 asserts/fn with // invariant, no @memcpy, named errors with try, filter state in i64), width exit 0. The additive pub on sweep.check_sweep is non-breaking — the mono ales_sweep_witness re-runs GREEN. Sixth EQ rung landed; the stereo EQ/filter class now holds tone, shelf, band-pass, notch, bell, and the swept low-pass — the fixed-and-swept family whole in stereo.
+loom witness=ales_stereo_sweep_witness selftest=GREEN laws=4 channels=2 class=eq-filter-rung-6
+file active-designing/20260815-081412_fill-ales175-lotus-stereo-sweep.md the self-approved design read
+file lotus/stereo_sweep.rye the module — the same schedule on both channels, each carrying its own filter state
+file lotus/sweep.rye check_sweep exported pub (additive) for the up-front atomic validation
+file tools/ales_stereo_sweep_witness.rish the witness proving it GREEN on metal
+recommend keep-going the stereo EQ/filter class holds tone, shelf, band-pass, notch, bell, and the swept low-pass — the fixed-and-swept family whole; the next Lindy rungs carry the remaining mono filters (the deesser, the carried tone_carry) or open the stereo modulation class (chorus, flanger, vibrato)
