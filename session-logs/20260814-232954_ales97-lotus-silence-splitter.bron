@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260814.232954
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title ALES97 — Lotus's silence splitter, the auto-splitter twin of ALES96's trimmer
+prompt recur the itinerary Lindy-first crux-first; after ALES96 sent, take the next agent-doable Lotus lap, self-approve, prove GREEN, send as its own signed round; STOP at custody gates
+think ALES95's design read named three tools its loop enables — every VAD gate, every silence trimmer, every AUTO-SPLITTER. ALES96 built the trimmer; the other half of that named pair is the auto-splitter (split on silence), the twin gesture in every recorder, sampler, and podcast tool. Lindy-first that is a century-old editing gesture; crux-first it is the decisive move turning the segmenter's one run-length sequence into MANY clips a keeper can name, export, or drop — the first Lotus rung whose result is a list of clips, not one.
+think Correctness is composition twice over. The take law: the index-th take clip equals the original's samples over the index-th non-silent region's span, and out.len equals the non-silent-region count — the splitter is the segmenter's non-silent runs coalesced and named. The JOIN LAW ties it to ALES96: concatenating every take clip in order equals trim_silence on the same signal byte for byte — the trimmer joins exactly what the splitter keeps apart. Two tools reading one segmentation to opposite ends, cross-checked against each other.
+think The one real design care: split AT silence, not at every verdict change. A voiced run directly followed by an unvoiced run (no pause between) must be ONE take, because a keeper splits a recording on its pauses, not on every phoneme. So a take coalesces every maximal span of consecutive non-silent runs; a silent run (or a clip edge) closes it. Held that as the coalesce loop's open/close flag, with an invariant that each extended run begins exactly where the open take ends (the segmenter's tiling carried through).
+think Memory-honest by naming spans, not copying: Takes is a bounded list of {start,count} into the original (like segment.Segments), read-only through the split; take_clip materializes one take on demand through ALES2's splice. So no array of large Clips is held, and the source is provably unmutated.
+obs One build red, quickly fixed: a literal start-and-count brace pair in the GREEN print string parsed as a Zig format placeholder (too few arguments). Reworded to prose — the trim_silence print had avoided braces for the same reason.
+obs After that, first witness run GREEN across the take-law grid (8 frame lengths × 4 floors × 3 splits) and the join-law grid against ALES96, plus coalesce, all-silent→0, no-silent→1, read-only, and four named refusals. TAME style bans clean.
+obs No custody gate reached — software only, local; no funds, keys, network, device, or real speaker. The split reads only; take_clip writes only a fresh destination clip.
+loom witness=ales_split_silence_witness green=1 laws=8 take_law_grid=96 join_law_grid=20 module_bytes=17k
+file lotus/split_silence.rye ALES97 — split_on_silence() coalescing the segmenter's non-silent runs into Takes, and take_clip() materializing one through ALES2's splice.
+file tools/ales_split_silence_witness.rish the witness — builds, runs the selftest, asserts the GREEN line.
+file active-designing/20260814-232954_fill-ales97-lotus-silence-splitter.md the self-approved design read naming the take law, the join law, and split-at-silence coalescing.
+file lotus/README.md front door — the ALES97 rung and status roster synced.
+recommend keep-going — the next Lotus crux builds on this list-of-takes result (a per-take export/label pass, a keep-loudest-take selector, or a min-take-length filter that drops too-short regions), each its own self-approved round; no custody gate reached.
