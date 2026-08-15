@@ -66,7 +66,7 @@ pub fn coeff_at(num_from: i32, num_to: i32, blocks: u32, b: u32) i32 {
 /// Validate a sweep's endpoints, span, and block count together, before any sample is touched. Both endpoint coefficients must
 /// be legal fractions in (0, 1] (den > 0, num in [1, den]); the span must lie wholly within the samples; and the block count
 /// must be in [1, max_sweep_blocks] and no larger than the sample count (so no block is empty).
-fn check_sweep(clip_len: u32, start: u32, count: u32, num_from: i32, num_to: i32, den: u32, blocks: u32) SweepError!void {
+pub fn check_sweep(clip_len: u32, start: u32, count: u32, num_from: i32, num_to: i32, den: u32, blocks: u32) SweepError!void {
     // invariant: a legal coefficient is a fraction in (0, 1] — den nonzero, num in [1, den] — for BOTH endpoints of the ramp.
     if (den == 0) return error.BadCoeff;
     if (num_from < 1 or @as(i64, num_from) > @as(i64, den)) return error.BadCoeff;
