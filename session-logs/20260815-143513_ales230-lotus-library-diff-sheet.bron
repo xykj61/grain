@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260815.143513
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — EDT (America/New_York) — this session in ai-jail
+title ALES230 — Lotus library_diff_sheet: what changed, as a readable page
+prompt Continuing the autonomous recur loop: take the next agent-doable Lotus crux Lindy-first crux-first, send each finished increment, stop at custody gates.
+think ALES229 classified two catalog versions into added/removed/changed, yet that verdict lives in a Diff struct a program reads, not a page a keeper reads. The projection idiom (album_sheet over the album manifest, library_sheet over the library manifest) says every catalog primitive earns its readable page. The diff had earned none yet — that gap is the crux.
+think Drew render_sheet(diff, out): a format lotus-library-diff-sheet-v1 header, a summary <added> <removed> <changed> <same> line, then one added/removed/changed line per moved album in order. A changed line carries BOTH the old and new digest — the record's before and after handles. A projection, not a round-trip: no new frame, no new hash; SheetError = error{Overflow} only, since classify already proved every field.
+think Bounds: max_sheet_bytes = header + summary line + three catalogs' worth of moved lines (each list bounded by max_albums), so the whole page provably fits a fixed buffer. Use-site asserts re-prove each digest is the full hex width before it renders.
+obs Four laws proven on metal, GREEN on the first metal pass: the summary law (format + four-tally line); the moved law (every moved album in order with name and full digest(s), changed carrying both); the quiet law (an unchanged album appears in no album line — verified debut never shows in the text); the atomic law (a small buffer refuses Overflow).
+obs Pure local text render; content-addressing on the page, never a signature. No custody gate. tame_style_check bans clean. The library level's working set is now content address · readable page · resolve · diff · diff page — the diff earns its projection just as every primitive before it.
+loom witness=ales_library_diff_sheet_witness result=GREEN laws=4 build_reds=0
+file active-designing/20260815-143513_fill-ales230-lotus-library-diff-sheet.md the self-approved design round naming the crux and four laws
+file lotus/library_diff_sheet.rye ALES230 — render_sheet over an ALES229 Diff, the readable change page
+file tools/ales_library_diff_sheet_witness.rish the on-metal witness, GREEN
+recommend keep-going the catalog level is well furnished (address · page · resolve · diff · diff page); the next Lotus crux worth naming is the signed carry — who made a catalog — which is the crypto seam custody gate for Keaton's word, so a resolve-then-verify or a cross-level catalog walk is the next non-gated agent-doable rung
