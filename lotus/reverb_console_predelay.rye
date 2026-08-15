@@ -1,0 +1,261 @@
+//! lotus/reverb_console_predelay.rye — ALES196: THE CONSOLE PRE-DELAY — the dry-composed pre-delay, end to end. ALES194 and ALES195 gave the reverb
+//! its WHEN, yet both are WET-DOMAIN: they delay the reverberant tail within the span and leave nothing of the original dry behind. On a real
+//! console the pre-delay is heard AGAINST the dry — the voice sounds first, then the delayed room blooms behind it. That is the classic console
+//! pre-delay, exactly the composition ALES194's own scope named: combined with the dry through ALES192's wet/dry mix it is the console pre-delay.
+//! This rung is that composition — the pre-delay axis finished end to end.
+//!
+//! The shape: snapshot the DRY span, reverberate it WET in place through ALES190's reverb_preset UNCHANGED, snapshot the wet, form the PRE-DELAYED
+//! wet in a second buffer (pw[i] = 0 for i < predelay, else wet[i - predelay]), then BLEND each sample against the dry —
+//!   out[i] = saturate((den - num)·dry[i]/den + num·pw[i]/den)
+//! the exact ALES192 linear balance with the pre-delayed wet standing in for the wet. This invents NO new audio arithmetic: the blend is ALES192's
+//! proven weighted average summed in i64 and saturated ONCE (so it can never wrap), the pre-delay ALES194's bounded reindex with a true-zero gap.
+//! The three edges are exact and provable: at predelay = 0 the span equals ALES192's reverb_mix byte for byte (no gap is exactly the wet/dry mix),
+//! at mix = 0 the span is the exact dry at any pre-delay (the room fully closed is the identity), and at mix = den it equals ALES194's
+//! reverb_predelay byte for byte (fully open is exactly the wet-domain pre-delay). Between, each sample is the honest weighted average of the dry
+//! and the pre-delayed wet.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES196.
+//! Design read: active-designing/20260815-103104_fill-ales196-lotus-console-predelay.md
+//! Stands on: lotus/reverb_predelay.rye (ALES194) — the wet-domain pre-delay whose ReverbPredelayError (ReverbPresetError || BadPredelay) this
+//! forwards whole, and whose full-wet edge this equals; lotus/reverb_mix.rye (ALES192) — the linear wet/dry blend this reuses per sample, and whose
+//! no-gap edge this equals; lotus/reverb_preset.rye (ALES190) — the named-room wet, run over the span unchanged; lotus/clock.rye (ALES5) — the
+//! sample clock, converting BOTH the span and the pre-delay; lotus/timeline.rye (ALES2) — the Clip, its max_clip bounding each snapshot and its
+//! saturate clamping the blend.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM in one clip, a validated clock, ALES190's fixed banks, and two bounded
+//! stack snapshots (max_clip = 4096 samples each), siloed to lotus/. No new audio arithmetic — ALES192's proven blend over ALES194's proven
+//! reindex. The pre-delay is a named duration in milliseconds and the mix a named fraction, so both mean the same at any sample rate. No socket, no
+//! network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/reverb_console_predelay.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const clock = @import("clock.rye");
+const reverb_preset = @import("reverb_preset.rye");
+const reverb_predelay = @import("reverb_predelay.rye");
+const reverb_mix = @import("reverb_mix.rye");
+
+pub const reverb_console_predelay_version = "20260815.103104";
+
+/// The named rooms are ALES190's own — reused whole, so the console pre-delay and the presets name the same tunings and cannot drift apart.
+pub const Room = reverb_preset.Room;
+
+/// The console pre-delay's faults are ALES194's `ReverbPredelayError` (the clock's DurationTooLong, the reverb's own faults, and the pre-delay's
+/// BadPredelay, forwarded whole) beside this rung's one own fault, `BadMix` — a mix fraction with a zero denominator or a numerator past the
+/// denominator, refused by name before any write.
+pub const ReverbConsolePredelayError = reverb_predelay.ReverbPredelayError || error{BadMix};
+
+/// Reverberate `count_ms` of `clip` from `start_ms` with a NAMED ROOM, delay the reverberant onset by `predelay_ms`, and blend that pre-delayed wet
+/// against the original dry at the mix fraction `mix_num/mix_den` — the classic console pre-delay. Snapshot the dry span, run ALES190's
+/// `reverb_preset` over it (the wet, in place, unchanged), form the pre-delayed wet (pw[i] = 0 for i < predelay, else wet[i - predelay]), then blend
+///   out[i] = saturate((mix_den - mix_num)·dry[i]/mix_den + mix_num·pw[i]/mix_den).
+/// At `predelay_ms = 0` the span equals ALES192's `reverb_mix`; at `mix_num = 0` it is the exact dry at any pre-delay; at `mix_num = mix_den` it
+/// equals ALES194's `reverb_predelay`. Refuses BadMix on a bad fraction, BadPredelay on a pre-delay past the span, then forwards ALES190's faults
+/// (DurationTooLong, BadRange, and the reverb's own) before any write; on refusal the clip is untouched.
+pub fn reverb_console_predelay(
+    clip: *timeline.Clip,
+    clk: clock.Clock,
+    room: Room,
+    start_ms: u32,
+    count_ms: u32,
+    predelay_ms: u32,
+    mix_num: u32,
+    mix_den: u32,
+) ReverbConsolePredelayError!void {
+    // invariant: the clock is valid — the span, the pre-delay, and the mix are all spoken against it, and reverb_preset asserts the same.
+    assert(clk.rate >= 1 and clk.rate <= clock.max_rate);
+    // invariant: the mix is a real fraction in [0, 1] — a zero denominator or a numerator past it is no balance at all.
+    if (mix_den == 0 or mix_num > mix_den) return error.BadMix;
+
+    // Convert the span with the SAME clock reverb_preset uses, so the snapshots and blend span match the preset's written span exactly. A span past
+    // the clip forwards DurationTooLong here, before any write.
+    const start = try clock.samples_for(clk, start_ms);
+    const count = try clock.samples_for(clk, count_ms);
+    // The span must be in-bounds before the dry snapshot reads it — the same BadRange the reverb would raise, raised before any read of the clip.
+    if (start > clip.len) return error.BadRange;
+    if (count > clip.len - start) return error.BadRange;
+    // The pre-delay is converted with the same clock; a gap wider than the span is no pre-delay at all — refuse BadPredelay before any write.
+    const predelay = try clock.samples_for(clk, predelay_ms);
+    if (predelay > count) return error.BadPredelay;
+    // invariant: the span fits each snapshot bound — every Clip shares max_clip, so a whole span always fits either stack buffer.
+    assert(count <= timeline.max_clip);
+    // invariant: the pre-delay is within the span, so every shifted read wet[i - predelay] stays inside the snapshot.
+    assert(predelay <= count);
+
+    // Snapshot the dry span (a read only — the clip is not yet mutated, so a later refusal leaves it untouched).
+    var dry: [timeline.max_clip]i16 = undefined;
+    var s: u32 = 0;
+    while (s < count) : (s += 1) dry[s] = clip.buf[start + s];
+
+    // The wet, in place — ALES190's reverb_preset, unchanged. It prechecks before any write, so a reverb fault here leaves the clip dry.
+    try reverb_preset.reverb_preset(clip, clk, room, start_ms, count_ms);
+
+    // Snapshot the wet, then blend the dry against the PRE-DELAYED wet in place: the pre-delayed wet is the wet reindexed right by predelay with a
+    // true-zero gap, and the blend is ALES192's linear weighted average, saturated once so a loud blend pins never wraps.
+    var wet: [timeline.max_clip]i16 = undefined;
+    var w: u32 = 0;
+    while (w < count) : (w += 1) wet[w] = clip.buf[start + w];
+    const den: i64 = @intCast(mix_den);
+    const num: i64 = @intCast(mix_num);
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        // invariant: the two weights are the mix and its complement, so together they carry exactly one whole sample's worth.
+        assert(num >= 0 and num <= den);
+        // invariant: the pre-delayed wet reads only within the snapshot — a true zero in the gap, else a wet sample from within [0, count).
+        assert(i < timeline.max_clip);
+        const pw: i64 = if (i < predelay) 0 else @intCast(wet[i - predelay]);
+        const d: i64 = @intCast(dry[i]);
+        clip.buf[start + i] = timeline.saturate(@divTrunc((den - num) * d, den) + @divTrunc(num * pw, den));
+    }
+    // invariant: the blend wrote only within the span; the clip keeps its length.
+    assert(start + count <= clip.len);
+}
+
+// --- selftest: THE NO-GAP EDGE (predelay = 0) — equals reverb_mix over the span byte for byte; THE DRY EDGE (mix = 0) — the exact dry at any
+//     pre-delay; THE FULL-WET EDGE (mix = den) — equals reverb_predelay over the span byte for byte; THE COMPOSITION IS EXACT — a mid pre-delay and
+//     mid mix is the weighted average of the dry and the pre-delayed wet; SILENCE STAYS SILENCE; and the faults forward — a bad fraction BadMix, a
+//     pre-delay past the span BadPredelay, a span past the clip DurationTooLong, an out-of-range span BadRange, the clip untouched --------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn run_selftest() !u8 {
+    const c = try clock.make(1000); // 1 sample per ms — each ms of pre-delay is one sample, the bench legible
+    const impulse = blk: {
+        var b: [1024]i16 = [_]i16{0} ** 1024;
+        b[0] = 12000;
+        break :blk b;
+    };
+
+    // 1. THE NO-GAP EDGE — predelay_ms = 0 equals ALES192's reverb_mix over the span at the same mix, byte for byte. With no gap the console
+    //    pre-delay is exactly the wet/dry mix.
+    {
+        var console = timeline.Clip{};
+        try load_clip(&console, &impulse);
+        try reverb_console_predelay(&console, c, .hall, 0, 1024, 0, 1, 3);
+
+        var mixed = timeline.Clip{};
+        try load_clip(&mixed, &impulse);
+        try reverb_mix.reverb_mix(&mixed, c, .hall, 0, 1024, 1, 3);
+
+        if (!eq(console.samples(), mixed.samples())) return error.NoGapNotMix;
+    }
+
+    // 2. THE DRY EDGE — mix_num = 0 restores the span to the exact dry at any pre-delay: the room fully closed is the identity, the delayed wet
+    //    weighted to nothing.
+    {
+        var console = timeline.Clip{};
+        try load_clip(&console, &impulse);
+        try reverb_console_predelay(&console, c, .hall, 0, 1024, 32, 0, 4);
+        if (!eq(console.samples(), &impulse)) return error.DryEdgeNotIdentity;
+    }
+
+    // 3. THE FULL-WET EDGE — mix_num = mix_den equals ALES194's reverb_predelay over the span, byte for byte. Fully open the console pre-delay is
+    //    exactly the wet-domain pre-delay.
+    {
+        var console = timeline.Clip{};
+        try load_clip(&console, &impulse);
+        try reverb_console_predelay(&console, c, .hall, 0, 1024, 16, 4, 4);
+
+        var predelayed = timeline.Clip{};
+        try load_clip(&predelayed, &impulse);
+        try reverb_predelay.reverb_predelay(&predelayed, c, .hall, 0, 1024, 16);
+
+        if (!eq(console.samples(), predelayed.samples())) return error.FullWetNotPredelay;
+    }
+
+    // 4. THE COMPOSITION IS EXACT — for a mid pre-delay (16 ms) and a mid mix (1/2), each sample is the honest weighted average of the dry and the
+    //    pre-delayed wet: out[i] == saturate(dry[i]/2 + pw[i]/2), pw the un-delayed wet shifted by 16 with a zero gap, proven against the dry and the
+    //    un-delayed wet computed side by side. And the console pre-delay genuinely differs from both the plain mix and the plain pre-delay.
+    {
+        var wetc = timeline.Clip{};
+        try load_clip(&wetc, &impulse);
+        try reverb_preset.reverb_preset(&wetc, c, .hall, 0, 1024); // the un-delayed wet
+
+        var console = timeline.Clip{};
+        try load_clip(&console, &impulse);
+        try reverb_console_predelay(&console, c, .hall, 0, 1024, 16, 1, 2);
+
+        const ws = wetc.samples();
+        const cs = console.samples();
+        var i: u32 = 0;
+        while (i < cs.len) : (i += 1) {
+            const dryi: i64 = impulse[i];
+            const pw: i64 = if (i < 16) 0 else @as(i64, ws[i - 16]);
+            const want = timeline.saturate(@divTrunc(dryi, 2) + @divTrunc(pw, 2));
+            if (cs[i] != want) return error.CompositionNotExact;
+        }
+
+        // a plain no-gap mix and a plain full-wet pre-delay computed side by side — the console blend is neither
+        var mixed = timeline.Clip{};
+        try load_clip(&mixed, &impulse);
+        try reverb_mix.reverb_mix(&mixed, c, .hall, 0, 1024, 1, 2);
+        if (eq(cs, mixed.samples())) return error.ConsoleEqualsPlainMix;
+
+        var predelayed = timeline.Clip{};
+        try load_clip(&predelayed, &impulse);
+        try reverb_predelay.reverb_predelay(&predelayed, c, .hall, 0, 1024, 16);
+        if (eq(cs, predelayed.samples())) return error.ConsoleEqualsPlainPredelay;
+    }
+
+    // 5. SILENCE STAYS SILENCE — an all-zero clip at any pre-delay and any mix stays all zeros: the reverb adds nothing to nothing, a shifted
+    //    silence is silence, and the blend of two silences is silence.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+        try reverb_console_predelay(&clip, c, .plate, 0, 16, 4, 1, 3);
+        const zeros = [_]i16{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
+    }
+
+    // 6. THE FAULTS FORWARD — a bad fraction refuses BadMix, a pre-delay past the span BadPredelay, a span past the clip DurationTooLong, an
+    //    out-of-range span BadRange, each by name with the clip untouched. The console pre-delay adds only BadMix; ALES194's faults forward whole.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        // a zero denominator is no balance — BadMix, before any conversion or write.
+        if (reverb_console_predelay(&clip, c, .room, 0, 3, 0, 1, 0)) |_| return error.BadMixSlipped else |e| if (e != error.BadMix) return error.WrongBadMix;
+        if (!eq(clip.samples(), &three)) return error.RefusedBadMixMutated;
+        // a pre-delay of 4 ms over a 3-sample span converts to 4 samples > 3 — BadPredelay, before any write.
+        if (reverb_console_predelay(&clip, c, .room, 0, 3, 4, 1, 2)) |_| return error.BadPredelaySlipped else |e| if (e != error.BadPredelay) return error.WrongBadPredelay;
+        if (!eq(clip.samples(), &three)) return error.RefusedBadPredelayMutated;
+        // a count past max_clip converts past the clip bound — DurationTooLong from the clock.
+        if (reverb_console_predelay(&clip, c, .room, 0, timeline.max_clip + 1, 0, 1, 2)) |_| return error.LongSpanSlipped else |e| if (e != error.DurationTooLong) return error.WrongLongSpan;
+        if (!eq(clip.samples(), &three)) return error.RefusedLongSpanMutated;
+        // an out-of-range span (2 ms start, 5 ms count past a 3-sample clip) refuses BadRange before the dry snapshot reads it.
+        if (reverb_console_predelay(&clip, c, .room, 2, 5, 0, 1, 2)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(clip.samples(), &three)) return error.RefusedRangeMutated;
+    }
+
+    print("GREEN ales-reverb-console-predelay: THE CONSOLE PRE-DELAY — the dry-composed pre-delay, end to end. On a real console the pre-delay is " ++
+        "heard AGAINST the dry: the voice sounds first, then the delayed room blooms behind it. Snapshot the DRY span, reverberate it WET in place " ++
+        "through ALES190's reverb_preset unchanged, form the pre-delayed wet (pw[i] = 0 for i < predelay, else wet[i - predelay]), then blend " ++
+        "out[i] = saturate((den-num)·dry[i]/den + num·pw[i]/den) — ALES192's proven linear balance over ALES194's bounded reindex, saturated once " ++
+        "so a loud blend pins never wraps, NO new audio arithmetic. The three edges are exact and proven: at predelay = 0 the span equals " ++
+        "reverb_mix byte for byte (no gap is exactly the wet/dry mix), at mix = 0 the exact dry at any pre-delay (the room fully closed is the " ++
+        "identity), and at mix = den it equals reverb_predelay byte for byte (fully open is exactly the wet-domain pre-delay); between, each sample " ++
+        "is the honest weighted average of the dry and the pre-delayed wet, byte for byte, and the console blend genuinely differs from both the " ++
+        "plain mix and the plain pre-delay; silence stays silence; and the faults forward — a bad fraction BadMix, a pre-delay past the span " ++
+        "BadPredelay, a span past the clip DurationTooLong, an out-of-range span BadRange — each leaving the clip untouched. Purely local: one " ++
+        "clip, a validated clock, ALES190's fixed banks, two bounded stack snapshots; the pre-delay a named duration in milliseconds and the mix a " ++
+        "named fraction; no network, no keys, no funds, no real device, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
