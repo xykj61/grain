@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260815.023038
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (Eastern EDT convention)
+title ALES124 — Lotus's stereo_shift: the grid nudge carried into stereo, both channels in lockstep, total (no refusal)
+prompt Continue the recurring baton (prin recur) on the ALES/Lotus edge, Lindy-first crux-first; approve my own design rounds; send each finished increment as its own signed round; stop at custody gates.
+think Fifth lap of the session's recur run. ALES123's recommend line named shift as the next clean lift, and it is the tighter crux: mono shift (ALES108) is TOTAL — void, no EditError, names no out-of-range span — so its stereo twin is the plainest lift of the family, needing no validation and unable to refuse.
+think Read shift.rye (mono, signed by:i32, void, length holds; negative slides left, positive right; magnitude clamped to len; vacated end silenced). The stereo lift runs mono shift per channel with the same by; because shift holds each channel's length and both enter equal-length, the balance invariant is preserved trivially and no fault can land between the two edits. One signed by for both channels — a master is nudged as one thing.
+think Wrote the design read, module (void, no try), witness. Four laws proven on metal: stereo shift law (each channel == ALES108 byte for byte both directions, vacated end silent), balance/length law (left.len == right.len, both hold length), composition-loss law (shift(k) then shift(-k) zeros the leading k on both — not invertible — a pre-silent region round-tripping, lifted from mono ALES108), magnitude/degenerate law (each channel's peak through ALES13 non-increasing, by 0 identity, |by|>=len all silence, empty pair its own shift).
+obs The keystone this round is that the lift is total — no EditError, no validate-before-mutate seam, the balance assertion provably unfailable because mono shift cannot fault and holds the length. The magnitude law reads each channel's peak independently so a loud left edge dropping while the right keeps its own peak is shown side by side. Witness GREEN first run; tame_style_check clean.
+loom witness=ales_stereo_shift_witness result=GREEN laws=4 channels=2
+file lotus/stereo_shift.rye ALES124 — stereo_shift lifts ALES108's total mono shift to a StereoClip, no validation needed, four laws.
+file tools/ales_stereo_shift_witness.rish the witness — builds, runs selftest, asserts the GREEN ales-stereo-shift line.
+file active-designing/20260815-023038_fill-ales124-lotus-stereo-shift.md the self-approved design read for this rung.
+file lotus/README.md front door synced — ALES124 roster entry, detail paragraph, and stamp.
+recommend keep-going the remaining mono-only edits (reverse · invert · rotate · nyquist_flip — the pure rearrangements) are the next clean lifts; no gate reached.
