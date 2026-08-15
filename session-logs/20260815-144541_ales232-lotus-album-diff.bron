@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260815.144541
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title ALES232 — Lotus album_diff: what changed between two record versions
+prompt Keep climbing the Lotus ALES ladder Lindy-first crux-first; send each finished increment as its own signed round; stop at custody gates.
+think ALES231 brought the album level a resolve, at parity with the library's ALES228. The next parity rung is the album level's second-order primitive: album_diff, mirroring library_diff (ALES229) one level down — classify two opened album manifests into added / removed / changed / same.
+think The crux is the same one library_diff proved: a diff composes ON the ALES231 resolve rather than re-walking from scratch — each verdict is an album_find.find into the other record, and the content-address digest IS the whole comparison, so no byte compare and no new hash.
+think Mirrored library_diff.rye's shape exactly: Change (name · old_digest · new_digest), Diff (added/removed Entry lists, changed Change list, same_count), each bounded by album_manifest.max_tracks; two closing asserts account for the whole after and guard every list bound.
+obs GREEN on the first metal pass — the mirror held cleanly because album_manifest.Entry and album_find carry the same shape as their library twins. The witness builds a before/after with a remastered track (same name, different bundle bytes → changed) and proves added, removed, changed, and identity.
+obs This is the album level's first rung that stands ON another album primitive (album_find) rather than beside it — the same growth shape library_diff opened one level up.
+loom witness=ales_album_diff_witness result=GREEN laws=4 rung=ALES232
+file active-designing/20260815-144541_fill-ales232-lotus-album-diff.md the self-approved design read naming the crux and the four laws
+file lotus/album_diff.rye the module — Change · Diff · classify over two opened AlbumManifests, invariants at construction and postcondition
+file tools/ales_album_diff_witness.rish builds and runs the selftest on metal, asserts the GREEN line
+recommend keep-going ALES233 draws the diff as a readable page (album_diff_sheet), mirroring library_diff_sheet (ALES230), completing album parity; the signed carry stays the crypto seam gated on Keaton's word.
